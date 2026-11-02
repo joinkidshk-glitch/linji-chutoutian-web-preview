@@ -1,5 +1,5 @@
 {
-  "version": "1.2.1",
+  "version": "1.2.3",
   "locale": "zh-Hant-written-HK",
   "source": "merge phase1–5 detail JSON; C16–C17 appended 2026-11-02; wiring openConditions v1.1 2026-11-02; C1–C5 map hint／loc／C5 thresh=2 BOARD_DECISIONS_v1 2026-11-03",
   "nodes": [
@@ -113,7 +113,12 @@
       ],
       "openConditions": [],
       "openConditionsNote": "開局／教學後首次重要通告選擇時觸發（方向性）。phase=P1；衝突 T1。引擎亦可掛首次重要通告事件。",
-      "artId": "story_c1"
+      "artId": "story_c1",
+      "pacing": {
+        "weekMin": 3,
+        "minDaysAfterPrev": 0,
+        "note": "開局可播；唔受日耗"
+      }
     },
     {
       "id": "C2",
@@ -130,8 +135,8 @@
       ],
       "synopsis": "一場戲殺青，後巷有人約飯、交換名片。同一時間，下一輪通告板剛貼出。阿偉要決定留下應酬，還是趕去接下一張通告。",
       "playerOffer": true,
-      "playerHint": "後巷有人約飯；通告欄又貼咗新單。",
-      "lockedHint": "殺青後喺片場後巷留低——人脈同下一張通告會撞期。",
+      "playerHint": "星河片場後巷有人約飯；通告欄又貼咗新單。",
+      "lockedHint": "殺青後喺星河片場後巷留低——人脈同下一張通告會撞期。",
       "nextHint": "下一幕「對對手硬／忍」——多留意星河電影組通告欄。",
       "beats": [
         {
@@ -220,10 +225,18 @@
         "flag_hustle_board"
       ],
       "openConditions": [
-        "C1"
+        "C1",
+        "week_min:4",
+        "days_after_prev:1"
       ],
-      "openConditionsNote": "C1 完成後；何生在場事件（方向性）。",
-      "artId": "story_c2"
+      "openConditionsNote": "C1 完成後；何生在場事件（方向性）。；FLOW_v1.2.3：pacing.weekMin=4＋minDaysAfterPrev=1（禁同日連播）",
+      "artId": "story_c2",
+      "pacing": {
+        "weekMin": 4,
+        "minDaysAfterPrev": 1,
+        "when": "1988春 / W4-5",
+        "prevMain": "C1"
+      }
     },
     {
       "id": "C3",
@@ -240,7 +253,7 @@
       ],
       "synopsis": "通告板貼出下周廠景名單。高俊傑當眾指阿偉走位慢，順手把阿偉的名牌從板上抽走。阿偉要決定硬碰還是忍讓。林曉晴在旁觀望，沒有出聲。",
       "playerOffer": true,
-      "playerHint": "通告欄前氣氛緊，有人睇住你嘅名牌。",
+      "playerHint": "星河電影組通告欄前氣氛緊，有人睇住你嘅名牌。",
       "lockedHint": "多去星河電影組通告欄——搶位爭執快發生。",
       "nextHint": "下一幕「何生拒單」——中環廣告那邊有份外判通告等你表態。",
       "beats": [
@@ -311,7 +324,7 @@
             "stats": {
               "craft": 1
             },
-            "notes": "壓力暫緩；你觀察到對手排板的習慣"
+            "notes": "你觀察到對手走位同搶位嘅習慣，先唔硬碰。"
           }
         }
       ],
@@ -321,10 +334,18 @@
         "rival_gao_endure"
       ],
       "openConditions": [
-        "C2"
+        "C2",
+        "week_min:6",
+        "days_after_prev:1"
       ],
-      "openConditionsNote": "C2 後與高俊傑同場搶板（方向性）。可與 A_ko_meet 雙軌（sync／互斥政策另定）。",
-      "artId": "story_c3"
+      "openConditionsNote": "C2 後與高俊傑同場搶板（方向性）。可與 A_ko_meet 雙軌（sync／互斥政策另定）。；FLOW_v1.2.3：pacing.weekMin=6＋minDaysAfterPrev=1（禁同日連播）",
+      "artId": "story_c3",
+      "pacing": {
+        "weekMin": 6,
+        "minDaysAfterPrev": 1,
+        "when": "1988春 / W6-8",
+        "prevMain": "C2"
+      }
     },
     {
       "id": "C4",
@@ -341,7 +362,7 @@
       "synopsis": "何生帶來一份外判通告。工時寫得含糊，條款不清，片酬只有口頭承諾。何生主張拒單。阿偉可以跟何生，也可以自己硬接。",
       "playerOffer": true,
       "playerHint": "何生檯面有份通告紙等你表態。",
-      "lockedHint": "何生會拎份條款含糊嘅外判通告——留意經理人事務所。",
+      "lockedHint": "何生會拎份條款含糊嘅外判通告——去中環廣告那邊表態。",
       "nextHint": "下一幕「采兒小訪題」——同周采兒處好關係，或捱到台慶籌備季。",
       "beats": [
         {
@@ -421,10 +442,18 @@
         "flag_take_harsh_gig"
       ],
       "openConditions": [
-        "C3"
+        "C3",
+        "week_min:8",
+        "days_after_prev:1"
       ],
-      "openConditionsNote": "何生帶來可疑／苛刻通告（方向性）。可與 A_ho_push1 雙軌。",
-      "artId": "story_c4"
+      "openConditionsNote": "何生帶來可疑／苛刻通告（方向性）。可與 A_ho_push1 雙軌。；FLOW_v1.2.3：pacing.weekMin=8＋minDaysAfterPrev=1（禁同日連播）",
+      "artId": "story_c4",
+      "pacing": {
+        "weekMin": 8,
+        "minDaysAfterPrev": 1,
+        "when": "1988春 / W8-9",
+        "prevMain": "C3"
+      }
     },
     {
       "id": "C5",
@@ -560,18 +589,26 @@
         "choi_dodge"
       ],
       "openConditions": [
-        "C4"
+        "C4",
+        "week_min:9",
+        "days_after_prev:1"
       ],
       "openConditionsAny": [
         "rel_choi_threshold",
         "season_1988_summer_anni_prep"
       ],
-      "openConditionsNote": "方向性／playtest：C4 後，且（rel_choi≥2 OR 1988 夏台慶籌備季）。門檻拍板 2026-11-03＝2（BOARD_DECISIONS_v1）。",
+      "openConditionsNote": "方向性／playtest：C4 後，且（rel_choi≥2 OR 1988 夏台慶籌備季）。門檻拍板 2026-11-03＝2（BOARD_DECISIONS_v1）。；FLOW_v1.2.3：pacing.weekMin=9＋minDaysAfterPrev=1（禁同日連播）",
       "thresholds": {
         "rel_choi_threshold": 2,
         "rel_choi_threshold_note": "拍板 2026-11-03＝2（BOARD_DECISIONS_v1；小刻度；夏 OR 保留）"
       },
-      "artId": "story_c5"
+      "artId": "story_c5",
+      "pacing": {
+        "weekMin": 9,
+        "minDaysAfterPrev": 1,
+        "when": "1988夏 / W9-10",
+        "prevMain": "C4"
+      }
     },
     {
       "id": "C6",
@@ -696,14 +733,16 @@
         "date_choi_1"
       ],
       "openConditions": [
-        "C5"
+        "C5",
+        "week_min:12",
+        "days_after_prev:1"
       ],
       "openConditionsAny": [
         "rel_vera_threshold",
         "rel_hiu_threshold",
         "rel_choi_threshold"
       ],
-      "openConditionsNote": "方向性／playtest：至少一條可攻略線達約會門檻；可平行未確定。門檻數值 playtest。",
+      "openConditionsNote": "方向性／playtest：至少一條可攻略線達約會門檻；可平行未確定。門檻數值 playtest。；FLOW_v1.2.3：pacing.weekMin=12＋minDaysAfterPrev=1（禁同日連播）",
       "thresholds": {
         "rel_vera_threshold": null,
         "rel_hiu_threshold": null,
@@ -711,7 +750,13 @@
         "thresholds_note": "playtest 可調；UNLOCK 未給精確值"
       },
       "artId": "story_c6",
-      "conflict": null
+      "conflict": null,
+      "pacing": {
+        "weekMin": 12,
+        "minDaysAfterPrev": 1,
+        "when": "1988秋 / W12-14",
+        "prevMain": "C5"
+      }
     },
     {
       "id": "C7",
@@ -817,11 +862,19 @@
         "flag_lei_signed"
       ],
       "openConditions": [
-        "C6"
+        "C6",
+        "week_min:14",
+        "days_after_prev:1"
       ],
-      "openConditionsNote": "P1.5 可提前；若玩家未觸，引擎可於進入 P2 且尚未寫 flag_anti_lei／flag_lei_delay／flag_lei_signed 時補觸（方向性）。可與 A_lei_crisis 雙軌。",
+      "openConditionsNote": "P1.5 可提前；若玩家未觸，引擎可於進入 P2 且尚未寫 flag_anti_lei／flag_lei_delay／flag_lei_signed 時補觸（方向性）。可與 A_lei_crisis 雙軌。；FLOW_v1.2.3：pacing.weekMin=14＋minDaysAfterPrev=1（禁同日連播）",
       "artId": "story_c7",
-      "conflict": null
+      "conflict": null,
+      "pacing": {
+        "weekMin": 14,
+        "minDaysAfterPrev": 1,
+        "when": "1988秋冬 / W14-16",
+        "prevMain": "C6"
+      }
     },
     {
       "id": "C8",
@@ -929,11 +982,19 @@
         "route_indie"
       ],
       "openConditions": [
-        "C7"
+        "C7",
+        "week_min:20",
+        "days_after_prev:1"
       ],
-      "openConditionsNote": "進入 1989／P2；高文瀚機會與張子駿邀約同時可見（方向性）。可與 A_gao_meet／A_tsijun_push2 雙軌。",
+      "openConditionsNote": "進入 1989／P2；高文瀚機會與張子駿邀約同時可見（方向性）。可與 A_gao_meet／A_tsijun_push2 雙軌。；FLOW_v1.2.3：pacing.weekMin=20＋minDaysAfterPrev=1（禁同日連播）",
       "artId": "story_c8",
-      "conflict": null
+      "conflict": null,
+      "pacing": {
+        "weekMin": 20,
+        "minDaysAfterPrev": 1,
+        "when": "1989春 / W20-24",
+        "prevMain": "C7"
+      }
     },
     {
       "id": "C9",
@@ -1055,15 +1116,23 @@
         "lan_cut"
       ],
       "openConditions": [
-        "C8"
+        "C8",
+        "week_min:28",
+        "days_after_prev:1"
       ],
       "openConditionsAny": [
         "flag_lan_met_warm",
         "flag_lan_met_cool"
       ],
-      "openConditionsNote": "方向性／playtest：藍若曦線已開芽（meet 任一旗）＋狗仔事件。可與 R_lan_push2 連動。",
+      "openConditionsNote": "方向性／playtest：藍若曦線已開芽（meet 任一旗）＋狗仔事件。可與 R_lan_push2 連動。；FLOW_v1.2.3：pacing.weekMin=28＋minDaysAfterPrev=1（禁同日連播）",
       "artId": "story_c9",
-      "conflict": null
+      "conflict": null,
+      "pacing": {
+        "weekMin": 28,
+        "minDaysAfterPrev": 1,
+        "when": "1989夏秋 / W28-32",
+        "prevMain": "C8"
+      }
     },
     {
       "id": "C10",
@@ -1174,11 +1243,19 @@
         "anni_yield"
       ],
       "openConditions": [
-        "C9"
+        "C9",
+        "week_min:40",
+        "days_after_prev:1"
       ],
-      "openConditionsNote": "台慶季＋高俊傑競爭位（方向性）；衝突 T2。可與 A_ko_crisis／A_ko_push2 雙軌。",
+      "openConditionsNote": "台慶季＋高俊傑競爭位（方向性）；衝突 T2。可與 A_ko_crisis／A_ko_push2 雙軌。；FLOW_v1.2.3：pacing.weekMin=40＋minDaysAfterPrev=1（禁同日連播）",
       "artId": "story_c10",
-      "conflict": "T2"
+      "conflict": "T2",
+      "pacing": {
+        "weekMin": 40,
+        "minDaysAfterPrev": 1,
+        "when": "1989冬 / W40-44",
+        "prevMain": "C9"
+      }
     },
     {
       "id": "C11",
@@ -1284,7 +1361,9 @@
         "route_indie"
       ],
       "openConditions": [
-        "C10"
+        "C10",
+        "week_min:60",
+        "days_after_prev:1"
       ],
       "openConditionsAny": [
         "route_indie",
@@ -1292,9 +1371,15 @@
         "flag_tsijun_push1_grind",
         "flag_tsijun_push2_film"
       ],
-      "openConditionsNote": "張子駿線進行中（任一導師推進旗或 route_indie）＋影展／文藝檔（方向性）；衝突 T3。可與 A_tsijun_crisis 雙軌。",
+      "openConditionsNote": "張子駿線進行中（任一導師推進旗或 route_indie）＋影展／文藝檔（方向性）；衝突 T3。可與 A_tsijun_crisis 雙軌。；FLOW_v1.2.3：pacing.weekMin=60＋minDaysAfterPrev=1（禁同日連播）",
       "artId": "story_c11",
-      "conflict": "T3"
+      "conflict": "T3",
+      "pacing": {
+        "weekMin": 60,
+        "minDaysAfterPrev": 1,
+        "when": "1990秋 / W60-64",
+        "prevMain": "C10"
+      }
     },
     {
       "id": "C12",
@@ -1400,11 +1485,19 @@
         "love_crisis"
       ],
       "openConditions": [
-        "C11"
+        "C11",
+        "week_min:80",
+        "days_after_prev:1"
       ],
-      "openConditionsNote": "方向性／playtest：中高 tier＋已有確定或高好感線（引擎映射 rel_partner／commit）。衝突 T4。可與 C15／C14 同季並行，不強制等 C13。",
+      "openConditionsNote": "方向性／playtest：中高 tier＋已有確定或高好感線（引擎映射 rel_partner／commit）。衝突 T4。可與 C15／C14 同季並行，不強制等 C13。；FLOW_v1.2.3：pacing.weekMin=80＋minDaysAfterPrev=1（禁同日連播）",
       "artId": "story_c12",
-      "conflict": "T4"
+      "conflict": "T4",
+      "pacing": {
+        "weekMin": 80,
+        "minDaysAfterPrev": 1,
+        "when": "1991夏 / W80-84",
+        "prevMain": "C11"
+      }
     },
     {
       "id": "C13",
@@ -1525,7 +1618,9 @@
         "flag_public_romance"
       ],
       "openConditions": [
-        "C11"
+        "C11",
+        "week_min:92",
+        "days_after_prev:1"
       ],
       "openConditionsAny": [
         "rel_choi_threshold",
@@ -1533,7 +1628,7 @@
         "fame_threshold",
         "R_choi_crisis"
       ],
-      "openConditionsNote": "方向性／playtest：周采兒或關海媚事件鏈＋fame 門檻；可與 R_choi_crisis 連動。關海媚無 commit。P4 內不強制晚於 C12。",
+      "openConditionsNote": "方向性／playtest：周采兒或關海媚事件鏈＋fame 門檻；可與 R_choi_crisis 連動。關海媚無 commit。P4 內不強制晚於 C12。；FLOW_v1.2.3：pacing.weekMin=92＋minDaysAfterPrev=1（禁同日連播）",
       "thresholds": {
         "rel_choi_threshold": null,
         "rel_mei_threshold": null,
@@ -1541,7 +1636,13 @@
         "thresholds_note": "playtest 可調"
       },
       "artId": "story_c13",
-      "conflict": null
+      "conflict": null,
+      "pacing": {
+        "weekMin": 92,
+        "minDaysAfterPrev": 1,
+        "when": "1991冬 / W92-96",
+        "prevMain": "C12"
+      }
     },
     {
       "id": "C14",
@@ -1659,7 +1760,9 @@
         "flag_bao_refuse"
       ],
       "openConditions": [
-        "C11"
+        "C11",
+        "week_min:88",
+        "days_after_prev:1"
       ],
       "openConditionsAny": [
         "flag_xu_met_polite",
@@ -1667,9 +1770,15 @@
         "flag_xu_coop_talk",
         "R_xu_crisis"
       ],
-      "openConditionsNote": "徐寶珊線開芽＋金援邀請（方向性）；衝突 T6。可與 R_xu_crisis 連動。",
+      "openConditionsNote": "徐寶珊線開芽＋金援邀請（方向性）；衝突 T6。可與 R_xu_crisis 連動。；FLOW_v1.2.3：pacing.weekMin=88＋minDaysAfterPrev=1（禁同日連播）",
       "artId": "story_c14",
-      "conflict": "T6"
+      "conflict": "T6",
+      "pacing": {
+        "weekMin": 88,
+        "minDaysAfterPrev": 1,
+        "when": "1991秋 / W88-90",
+        "prevMain": "C13"
+      }
     },
     {
       "id": "C15",
@@ -1797,7 +1906,9 @@
         "flag_family_marriage"
       ],
       "openConditions": [
-        "C11"
+        "C11",
+        "week_min:72",
+        "days_after_prev:1"
       ],
       "openConditionsAny": [
         "flag_lan_sang_together",
@@ -1806,13 +1917,19 @@
         "rel_lan_threshold",
         "R_lan_crisis"
       ],
-      "openConditionsNote": "方向性／playtest：藍若曦高好感／推進後＋家族壓事件。可與 R_lan_crisis 連動。when＝1991春，可早於 C12。",
+      "openConditionsNote": "方向性／playtest：藍若曦高好感／推進後＋家族壓事件。可與 R_lan_crisis 連動。when＝1991春，可早於 C12。；FLOW_v1.2.3：pacing.weekMin=72＋minDaysAfterPrev=1（禁同日連播）",
       "thresholds": {
         "rel_lan_threshold": null,
         "rel_lan_threshold_note": "playtest 可調"
       },
       "artId": "story_c15",
-      "conflict": null
+      "conflict": null,
+      "pacing": {
+        "weekMin": 72,
+        "minDaysAfterPrev": 1,
+        "when": "1991春 / W72-76",
+        "prevMain": "C14"
+      }
     },
     {
       "id": "C16",
@@ -1912,11 +2029,19 @@
         "flag_legacy_refuse"
       ],
       "openConditions": [
-        "phase_P5"
+        "phase_P5",
+        "week_min:100",
+        "days_after_prev:1"
       ],
-      "openConditionsNote": "進入 1992 結局季；金九／傳承事件（方向性）。建議 P4 至少完成關鍵節之一，精確集合 playtest。",
+      "openConditionsNote": "進入 1992 結局季；金九／傳承事件（方向性）。建議 P4 至少完成關鍵節之一，精確集合 playtest。；FLOW_v1.2.3：pacing.weekMin=100＋minDaysAfterPrev=1（禁同日連播）",
       "artId": "story_c16",
-      "conflict": null
+      "conflict": null,
+      "pacing": {
+        "weekMin": 100,
+        "minDaysAfterPrev": 1,
+        "when": "1992夏 / W100-104",
+        "prevMain": "C15"
+      }
     },
     {
       "id": "C17",
@@ -2242,11 +2367,19 @@
         "career_lock"
       ],
       "openConditions": [
-        "C16"
+        "C16",
+        "week_min:105",
+        "days_after_prev:1"
       ],
-      "openConditionsNote": "C16 後；事業數值＋旗標齊（方向性）。結算優先序：玩家最終選擇＞旗標＞數值（UNLOCK §6）。",
+      "openConditionsNote": "C16 後；事業數值＋旗標齊（方向性）。結算優先序：玩家最終選擇＞旗標＞數值（UNLOCK §6）。；FLOW_v1.2.3：pacing.weekMin=105＋minDaysAfterPrev=1（禁同日連播）",
       "artId": "story_c17",
-      "conflict": null
+      "conflict": null,
+      "pacing": {
+        "weekMin": 105,
+        "minDaysAfterPrev": 1,
+        "when": "1992收束 / W105-108",
+        "prevMain": "C16"
+      }
     }
   ],
   "coverage": {
@@ -2351,16 +2484,30 @@
         "romance／rival meet playerOffer"
       ],
       "lexicon": "COPY_STYLE_HK_LEXICON.md"
+    },
+    "flow_fail_nits_v1": {
+      "status": "script_defaults_pending_user",
+      "week_gate": "proposed week_min in note; engine ticket",
+      "c5_lock_hint": "UI must use lockedHint; ban need_done",
+      "next_no_b01": "下一節 CTA ≠ B01"
+    },
+    "flow_pacing_v1": {
+      "status": "json_ready_await_eng",
+      "version": "1.2.3",
+      "gates": "week_min from when lo + days_after_prev:1",
+      "c5_lock": "UI lockedHint only",
+      "next_no_b01": "eng CTA"
     }
   },
   "conditionSchema": {
-    "version": 1,
+    "version": 2,
     "openConditions": "string[] AND",
     "openConditionsAny": "string[] OR optional",
     "openConditionsNote": "string",
     "thresholds": "object playtest numerics or null",
-    "semantics": "openConditions＝AND 清單（全過才開）；空 []＝無額外閘（仍受 phase／when 約束）。openConditionsAny＝可選 OR 清單：若有，須至少中一項，並與 openConditions 同時成立。tokens：C*／R_*／A_*＝該節完成；flag_*／裸前綴／route_*＝旗標真；rel_*_threshold＝關係數值達門檻（見 thresholds 或檔級，playtest）；phase_P*＝當前 phase 已達；era_*／season_*＝季節／時代軟匹配。與 Tang 陣列 schema 相容；Tang push 仍只用 openConditions AND。",
-    "alignedWith": "story_detail_romance_tang.json openConditions array"
+    "semantics": "openConditions＝AND 清單（全過才開）；空 []＝無額外閘（仍受 phase／when 約束）。openConditionsAny＝可選 OR 清單：若有，須至少中一項，並與 openConditions 同時成立。tokens：C*／R_*／A_*＝該節完成；flag_*／裸前綴／route_*＝旗標真；rel_*_threshold＝關係數值達門檻（見 thresholds 或檔級，playtest）；phase_P*＝當前 phase 已達；era_*／season_*＝季節／時代軟匹配。與 Tang 陣列 schema 相容；Tang push 仍只用 openConditions AND。 tokens 另加：week_min:N＝當前年曆週（game week）≥N；days_after_prev:N＝上一節主線（openConditions 裡最近一個 C*）完成日之後至少隔 N 個日曆日。主線 C2+ 另有 pacing.weekMin／pacing.minDaysAfterPrev 與 token 同步，eng 可讀其一。政策：禁止同日連播多節主線 C*（FLOW_FAIL v17y）。",
+    "alignedWith": "story_detail_romance_tang.json openConditions array",
+    "pacing": "{ weekMin?: number, minDaysAfterPrev?: number } — 主線節奏；與 openConditions token 雙寫"
   },
   "edits": [
     "v1.1 wiring：每節補 openConditions（＋可選 openConditionsAny／Note／thresholds）；對白未改",
@@ -2368,6 +2515,16 @@
     {
       "at": "2026-11-03",
       "note": "HINT nit：C5 nextHint 去 P1.5；這段→呢段（QA_HINT_C1C5_MAP_v1）"
+    },
+    {
+      "id": "FLOW_FAIL_NITS_v1",
+      "at": "2026-11-03",
+      "note": "C2/C3 hint 對齊星河針；C4 lockedHint→中環廣告；C3_b notes 去假壓力；week_min 寫入 openConditionsNote（引擎未執行）"
+    },
+    {
+      "id": "FLOW_PACING_v1",
+      "at": "2026-11-03",
+      "note": "用戶批全套：C2–C17 openConditions 加 week_min:N＋days_after_prev:1；pacing 雙寫；C1 無日耗。對齊 PLAN_FLOW_FAIL_DECISIONS＋ENG handoff。"
     }
   ]
 }
