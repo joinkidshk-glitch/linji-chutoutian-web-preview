@@ -38,3 +38,11 @@
 
 - NOTES：本檔 + `/workspace/star-volunteer-qa-playthrough/V17P_P0_AUTOC1_LOCKEDHINT_GIG.md`
 - tar：`/workspace/star-volunteer-web-v17p.tar.gz`
+
+## Ship
+
+- commit：`c62bc4e`（`c62bc4eb233992b6ed58c3d8682e57a2d9dae2ab`）· 2026-11-03 01:05 HKT
+- URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/（`?v=17p`，清 `starVolunteer_map_*`）
+- curl-verify：SAVE v17p + `postTutorialEntry` + `flushPendingB01` + era `boardNote`；LIVE HTML size 1152183；NOTES path OK
+- tar：`/workspace/star-volunteer-web-v17p.tar.gz`
+- Soft≠PASS；出圖暫緩
