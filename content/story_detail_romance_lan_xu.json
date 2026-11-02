@@ -1,5 +1,5 @@
 {
-  "version": 2.2,
+  "version": 2.3,
   "locale": "zh-Hant-written-HK",
   "source": "DeepSeek romance Lan/Xu Pack2 rev; cast_main; pcSilent; UNLOCK§4; links C9/C14/C15/T6; tang stub→supersededBy R_tang_meet",
   "romanceLines": [
@@ -903,10 +903,10 @@
         }
       ],
       "flags_written": [
-        "flag_tang_open"
+        "flag_tang_met"
       ],
       "openConditions": [],
-      "openConditionsNote": "偶遇 stub：無雙閘。choice 寫 flag_tang_met；正式 open 見 R_tang_meet。Soft HOLD：節點 flags_written 仍列 flag_tang_open（與 choice／notes 不一致，本輪不改）。｜原註：偶遇不寫 flag_tang_open；正式線 R_tang_meet 才開閘",
+      "openConditionsNote": "偶遇 stub：無雙閘。choice 寫 flag_tang_met；正式 open 見 R_tang_meet。SOFT_NITS_FIX_v2：flags_written 已對齊 choice＝flag_tang_met；偶遇不寫 flag_tang_open；正式線 R_tang_meet 才開閘",
       "artId": "rom_tang_meet_stub",
       "conflict": null,
       "romanceLine": "tang",
@@ -939,7 +939,8 @@
         "R_tang_meet_stub.flags_written 含 flag_tang_open",
         "徐 tier"
       ]
-    }
+    },
+    "soft_nits_fix_v2_stub_flags": "flags_written=[flag_tang_met]"
   },
   "rule": "玩家=阿偉，對白不寫阿偉「我」；確定前可平行；HE／BE 與事業並存；關海媚無 HE；鄧麗萍 stub 已 supersededBy R_tang_meet（見 story_detail_romance_tang.json）。",
   "conditionSchema": {
@@ -948,6 +949,7 @@
     "conflictConvention": "T→conflict；C→linksMain（Soft）"
   },
   "edits": [
-    "v2.2 wiring：lan／xu／stub 補 openConditions；Tang stub Soft HOLD flags_written；對白未改"
+    "v2.2 wiring：lan／xu／stub 補 openConditions；Tang stub Soft HOLD flags_written；對白未改",
+    "v2.3 SOFT_NITS_FIX_v2：R_tang_meet_stub.flags_written 對齊 choice＝[flag_tang_met]"
   ]
 }

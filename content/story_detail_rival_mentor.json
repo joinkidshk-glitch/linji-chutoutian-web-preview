@@ -1,5 +1,5 @@
 {
-  "version": 2.2,
+  "version": 2.3,
   "locale": "zh-Hant-written-HK",
   "source": "DeepSeek Pack3 v2 written rewrite; structure/id/flag from v1; cast_main; pcSilent; UNLOCK§5; MASTER v1.4-DS; lexicon; no art",
   "arcs": [
@@ -591,7 +591,7 @@
       "artId": "arc_ko_ending",
       "conflict": "C12",
       "arcBeat": "ending",
-      "parallelOk": true,
+      "parallelOk": false,
       "pcSilent": true,
       "arcLine": "ko",
       "arcKind": "rival",
@@ -1085,7 +1085,7 @@
       "artId": "arc_hakfan_ending",
       "conflict": "台慶後台最後對望，張克凡放下家世語氣講演技，你決定敵線收於尊重抑或繼續死敵；連 A_hakfan_crisis。",
       "arcBeat": "ending",
-      "parallelOk": true,
+      "parallelOk": false,
       "pcSilent": true,
       "arcLine": "hakfan",
       "arcKind": "rival"
@@ -1522,7 +1522,7 @@
       "artId": "arc_tsijun_ending",
       "conflict": "C17／E03",
       "arcBeat": "ending",
-      "parallelOk": true,
+      "parallelOk": false,
       "pcSilent": true,
       "arcLine": "tsijun",
       "arcKind": "mentor",
@@ -1997,7 +1997,7 @@
       "artId": "arc_fong_ending",
       "conflict": "E05",
       "arcBeat": "ending",
-      "parallelOk": true,
+      "parallelOk": false,
       "pcSilent": true,
       "arcLine": "fong",
       "arcKind": "friend",
@@ -2445,7 +2445,7 @@
       "artId": "arc_tong_ending",
       "conflict": "E09",
       "arcBeat": "ending",
-      "parallelOk": true,
+      "parallelOk": false,
       "pcSilent": true,
       "arcLine": "tong",
       "arcKind": "mentor",
@@ -2888,7 +2888,7 @@
       "openConditionsNote": "ho 結局：P5；連 E01。",
       "artId": "arc_ho_ending",
       "conflict": "E01",
-      "parallelOk": true,
+      "parallelOk": false,
       "pcSilent": true,
       "arcLine": "ho",
       "arcKind": "mentor",
@@ -3392,7 +3392,7 @@
       "artId": "arc_gao_ending",
       "conflict": "E02",
       "arcBeat": "ending",
-      "parallelOk": true,
+      "parallelOk": false,
       "pcSilent": true,
       "arcLine": "gao",
       "arcKind": "mentor",
@@ -3808,7 +3808,7 @@
         "flag_lei_push1",
         "C7"
       ],
-      "openConditionsNote": "lei 危機：拒苛約；linksMain=C7。可與 C7 雙軌。",
+      "openConditionsNote": "lei 危機：拒不合理合約條款；linksMain=C7。可與 C7 雙軌。",
       "artId": "arc_lei_crisis",
       "conflict": "C7",
       "arcBeat": "crisis",
@@ -3926,7 +3926,7 @@
       "artId": "arc_lei_ending",
       "conflict": "flag_anti_lei",
       "arcBeat": "ending",
-      "parallelOk": true,
+      "parallelOk": false,
       "pcSilent": true,
       "arcLine": "lei",
       "arcKind": "capital",
@@ -4202,15 +4202,18 @@
       "softHold": [
         "ending parallelOk true"
       ]
-    }
+    },
+    "parallelOkEndingPolicy": "non-romance ending → parallelOk=false after arc close"
   },
-  "rule": "對手／導師／友情／資本弧非戀愛攻略；pcSilent；禁薄本趕板苛約；高俊傑≠張克凡聲口；星河電視台；結局 rival_respect／cold_war／mentor_complete／friend_saved／ally_danger；出圖暫緩。",
+  "rule": "對手／導師／友情／資本弧非戀愛攻略；pcSilent；禁薄本趕板苛約；高俊傑≠張克凡聲口；星河電視台；結局 rival_respect／cold_war／mentor_complete／friend_saved／ally_danger；出圖暫緩。非戀愛弧 ending 收束後 parallelOk=false。",
   "conditionSchema": {
     "version": 1,
     "semantics": "openConditions＝AND 清單（全過才開）；空 []＝無額外閘（仍受 phase／when 約束）。openConditionsAny＝可選 OR 清單：若有，須至少中一項，並與 openConditions 同時成立。tokens：C*／R_*／A_*＝該節完成；flag_*／裸前綴／route_*＝旗標真；rel_*_threshold＝關係數值達門檻（見 thresholds 或檔級，playtest）；phase_P*＝當前 phase 已達；era_*／season_*＝季節／時代軟匹配。與 Tang 陣列 schema 相容；Tang push 仍只用 openConditions AND。",
-    "parallelOkEnding": "全部 ending parallelOk=true（Soft HOLD；本輪不改）"
+    "parallelOkEnding": "SOFT_NITS_FIX_v2：八條 *_ending parallelOk=false（弧收束後不再平行開該 ending）；meet／push 仍 true；A_fong_crisis=false"
   },
   "edits": [
-    "v2.2 wiring：40 節補 openConditions／Any／Note；linksMain 既有保留；parallelOk Soft HOLD；對白未改"
+    "v2.2 wiring：40 節補 openConditions／Any／Note；linksMain 既有保留；parallelOk Soft HOLD；對白未改",
+    "v2.3 SOFT_NITS_FIX_v2：八條 *_ending parallelOk true→false（非戀愛弧 ending 收束後不再平行開）；meet／push 不變；A_fong_crisis 仍 false",
+    "v2.3：顺手清 A_lei_crisis openConditionsNote 禁詞「苛約」→「不合理合約條款」"
   ]
 }

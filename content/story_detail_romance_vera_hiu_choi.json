@@ -1,5 +1,5 @@
 {
-  "version": 1.2,
+  "version": 1.3,
   "locale": "zh-Hant-written-HK",
   "source": "DeepSeek romance Vera/Hiu/Choi; UNLOCK§4 + MASTER§5–6 + HK_LEXICON; parallel until commit",
   "romanceLines": [
@@ -28,9 +28,9 @@
           ]
         },
         {
-          "speaker": "阿偉",
+          "speaker": "旁白",
           "lines": [
-            "我第一次來試造型，不太懂規矩，你直接告訴我怎樣穿就好。"
+            "阿偉說自己第一次來試造型，不太懂規矩，請她直接告訴他怎樣穿就好。"
           ]
         },
         {
@@ -40,9 +40,9 @@
           ]
         },
         {
-          "speaker": "阿偉",
+          "speaker": "旁白",
           "lines": [
-            "那我這身打扮，給你的第一感覺是什麼？"
+            "阿偉問她，這身打扮給她的第一感覺是什麼。"
           ]
         },
         {
@@ -52,9 +52,9 @@
           ]
         },
         {
-          "speaker": "阿偉",
+          "speaker": "旁白",
           "lines": [
-            "多謝你肯講真話，我會記住這句。"
+            "阿偉多謝她肯講真話，並說會記住這句。"
           ]
         }
       ],
@@ -120,9 +120,9 @@
           ]
         },
         {
-          "speaker": "阿偉",
+          "speaker": "旁白",
           "lines": [
-            "我信你的眼光，不過我不想變成另一個人，觀眾認得我才重要。"
+            "阿偉說信她的眼光，不過不想變成另一個人，觀眾認得他才重要。"
           ]
         },
         {
@@ -132,9 +132,9 @@
           ]
         },
         {
-          "speaker": "阿偉",
+          "speaker": "旁白",
           "lines": [
-            "肯，你約時間，我盡量配合。"
+            "阿偉答應，請她約時間，他會盡量配合。"
           ]
         },
         {
@@ -210,9 +210,9 @@
           ]
         },
         {
-          "speaker": "阿偉",
+          "speaker": "旁白",
           "lines": [
-            "剛剛拍完一場戲，趁有空檔來吃個下午茶。你？"
+            "阿偉說剛剛拍完一場戲，趁有空檔來吃個下午茶，並反問她近況。"
           ]
         },
         {
@@ -222,9 +222,9 @@
           ]
         },
         {
-          "speaker": "阿偉",
+          "speaker": "旁白",
           "lines": [
-            "不搏命不行，機會不是經常有的。"
+            "阿偉說不搏命不行，機會不是經常有的。"
           ]
         },
         {
@@ -300,9 +300,9 @@
           ]
         },
         {
-          "speaker": "阿偉",
+          "speaker": "旁白",
           "lines": [
-            "本來是，但如果你有事，我可以推遲。"
+            "阿偉說本來有約，但如果她有事，他可以推遲。"
           ]
         },
         {
@@ -312,9 +312,9 @@
           ]
         },
         {
-          "speaker": "阿偉",
+          "speaker": "旁白",
           "lines": [
-            "我知道，最近真的太忙，但我不是故意冷落你。"
+            "阿偉說知道最近真的太忙，但不是故意冷落她。"
           ]
         },
         {
@@ -390,9 +390,9 @@
           ]
         },
         {
-          "speaker": "阿偉",
+          "speaker": "旁白",
           "lines": [
-            "不趕了，今晚留下來陪你。"
+            "阿偉說不趕了，今晚留下來陪她。"
           ]
         },
         {
@@ -402,9 +402,9 @@
           ]
         },
         {
-          "speaker": "阿偉",
+          "speaker": "旁白",
           "lines": [
-            "如果沒有你幫我整理形象，我可能還是那個草根臨記。"
+            "阿偉說如果沒有她幫忙整理形象，他可能還是那個草根臨記。"
           ]
         },
         {
@@ -519,7 +519,7 @@
           "label": "交換情報",
           "effects": {
             "flags": [
-              "hiu_meet_exchange"
+              "flag_hiu_meet_exchange"
             ],
             "stats": {
               "rel_hiu": 1
@@ -532,7 +532,7 @@
           "label": "客氣疏離",
           "effects": {
             "flags": [
-              "hiu_meet_distant"
+              "flag_hiu_meet_distant"
             ],
             "stats": {
               "rel_hiu": 0
@@ -542,8 +542,8 @@
         }
       ],
       "flags_written": [
-        "hiu_meet_distant",
-        "hiu_meet_exchange"
+        "flag_hiu_meet_distant",
+        "flag_hiu_meet_exchange"
       ],
       "openConditions": [],
       "openConditionsNote": "林曉晴認識節；廠景同期。無額外旗閘。",
@@ -609,7 +609,7 @@
           "label": "幫她讓位／報料",
           "effects": {
             "flags": [
-              "hiu_push1_help"
+              "flag_hiu_push1_help"
             ],
             "stats": {
               "rel_hiu": 2
@@ -622,7 +622,7 @@
           "label": "自己先搶",
           "effects": {
             "flags": [
-              "hiu_push1_self"
+              "flag_hiu_push1_self"
             ],
             "stats": {
               "rel_hiu": -1,
@@ -633,15 +633,15 @@
         }
       ],
       "flags_written": [
-        "hiu_push1_help",
-        "hiu_push1_self"
+        "flag_hiu_push1_help",
+        "flag_hiu_push1_self"
       ],
       "openConditions": [],
       "openConditionsAny": [
-        "hiu_meet_exchange",
-        "hiu_meet_distant"
+        "flag_hiu_meet_exchange",
+        "flag_hiu_meet_distant"
       ],
-      "openConditionsNote": "曉晴推進1：meet 後（裸前綴旗；見 qa.flagAlias）。Soft HOLD：不改名。",
+      "openConditionsNote": "曉晴推進1：meet 後（已正式 flag_ 前綴；見 qa.flagAlias 遷移註）。",
       "artId": "rom_hiu_push1",
       "conflict": null,
       "romanceLine": "hiu",
@@ -704,7 +704,7 @@
           "label": "約下次",
           "effects": {
             "flags": [
-              "hiu_push2_date"
+              "flag_hiu_push2_date"
             ],
             "stats": {
               "rel_hiu": 2
@@ -717,7 +717,7 @@
           "label": "只當同期",
           "effects": {
             "flags": [
-              "hiu_push2_friend"
+              "flag_hiu_push2_friend"
             ],
             "stats": {
               "rel_hiu": 0
@@ -727,13 +727,13 @@
         }
       ],
       "flags_written": [
-        "hiu_push2_date",
-        "hiu_push2_friend"
+        "flag_hiu_push2_date",
+        "flag_hiu_push2_friend"
       ],
       "openConditions": [],
       "openConditionsAny": [
-        "hiu_push1_help",
-        "hiu_push1_self"
+        "flag_hiu_push1_help",
+        "flag_hiu_push1_self"
       ],
       "openConditionsNote": "曉晴推進2：push1 後。",
       "artId": "rom_hiu_push2",
@@ -798,7 +798,7 @@
           "label": "成全她",
           "effects": {
             "flags": [
-              "hiu_crisis_yield"
+              "flag_hiu_crisis_yield"
             ],
             "stats": {
               "rel_hiu": 2,
@@ -812,7 +812,7 @@
           "label": "硬搶同場",
           "effects": {
             "flags": [
-              "hiu_crisis_fight"
+              "flag_hiu_crisis_fight"
             ],
             "stats": {
               "rel_hiu": -2,
@@ -823,13 +823,13 @@
         }
       ],
       "flags_written": [
-        "hiu_crisis_fight",
-        "hiu_crisis_yield"
+        "flag_hiu_crisis_fight",
+        "flag_hiu_crisis_yield"
       ],
       "openConditions": [],
       "openConditionsAny": [
-        "hiu_push2_date",
-        "hiu_push2_friend"
+        "flag_hiu_push2_date",
+        "flag_hiu_push2_friend"
       ],
       "openConditionsNote": "曉晴危機：同場搶通告；push2 後。",
       "artId": "rom_hiu_crisis",
@@ -926,12 +926,12 @@
         "phase_P5"
       ],
       "openConditionsAny": [
-        "hiu_crisis_fight",
-        "hiu_crisis_yield",
-        "hiu_push2_date",
-        "hiu_push2_friend"
+        "flag_hiu_crisis_fight",
+        "flag_hiu_crisis_yield",
+        "flag_hiu_push2_date",
+        "flag_hiu_push2_friend"
       ],
-      "openConditionsNote": "曉晴結局：P5。HE／BE＋flag_hiu_commit。裸前綴見 alias。",
+      "openConditionsNote": "曉晴結局：P5。HE／BE＋flag_hiu_commit。已正式 flag_ 前綴。",
       "artId": "rom_hiu_ending",
       "conflict": null,
       "romanceLine": "hiu",
@@ -994,7 +994,7 @@
           "label": "坦誠回答：分享真實想法",
           "effects": {
             "flags": [
-              "choi_meet_honest"
+              "flag_choi_meet_honest"
             ],
             "stats": {
               "rel_choi": 1,
@@ -1008,7 +1008,7 @@
           "label": "官腔保護：只說標準答案",
           "effects": {
             "flags": [
-              "choi_meet_official"
+              "flag_choi_meet_official"
             ],
             "stats": {
               "rel_choi": 0,
@@ -1019,8 +1019,8 @@
         }
       ],
       "flags_written": [
-        "choi_meet_honest",
-        "choi_meet_official"
+        "flag_choi_meet_honest",
+        "flag_choi_meet_official"
       ],
       "openConditions": [],
       "openConditionsNote": "采兒認識節；可與 C5 交錯（方向性）。",
@@ -1086,7 +1086,7 @@
           "label": "給她獨家方向：在不傷害人的前提下提供線索",
           "effects": {
             "flags": [
-              "choi_give_tip"
+              "flag_choi_give_tip"
             ],
             "stats": {
               "rel_choi": 2,
@@ -1100,7 +1100,7 @@
           "label": "拒絕提供：保護劇組聲譽",
           "effects": {
             "flags": [
-              "choi_refuse_tip"
+              "flag_choi_refuse_tip"
             ],
             "stats": {
               "rel_choi": 0,
@@ -1111,18 +1111,18 @@
         }
       ],
       "flags_written": [
-        "choi_give_tip",
-        "choi_refuse_tip"
+        "flag_choi_give_tip",
+        "flag_choi_refuse_tip"
       ],
       "openConditions": [],
       "openConditionsAny": [
-        "choi_meet_honest",
-        "choi_meet_official",
-        "choi_honest",
-        "choi_spin",
-        "choi_dodge"
+        "flag_choi_meet_honest",
+        "flag_choi_meet_official",
+        "flag_choi_honest",
+        "flag_choi_spin",
+        "flag_choi_dodge"
       ],
-      "openConditionsNote": "采兒推進1：meet 或主線 C5 采兒旗後（OR；裸前綴 Soft HOLD）。",
+      "openConditionsNote": "采兒推進1：meet 或主線 C5 采兒旗後（OR；含 C5 遷移旗 flag_choi_honest／spin／dodge，主線仍可能寫裸名，wiring 讀 alias）。",
       "artId": "rom_choi_push1",
       "conflict": null,
       "romanceLine": "choi",
@@ -1185,7 +1185,7 @@
           "label": "當真約會：放下記者與受訪者的身份",
           "effects": {
             "flags": [
-              "choi_real_date"
+              "flag_choi_real_date"
             ],
             "stats": {
               "rel_choi": 2
@@ -1198,7 +1198,7 @@
           "label": "當採訪延續：保持專業距離",
           "effects": {
             "flags": [
-              "choi_keep_professional"
+              "flag_choi_keep_professional"
             ],
             "stats": {
               "rel_choi": 0
@@ -1208,13 +1208,13 @@
         }
       ],
       "flags_written": [
-        "choi_keep_professional",
-        "choi_real_date"
+        "flag_choi_keep_professional",
+        "flag_choi_real_date"
       ],
       "openConditions": [],
       "openConditionsAny": [
-        "choi_give_tip",
-        "choi_refuse_tip"
+        "flag_choi_give_tip",
+        "flag_choi_refuse_tip"
       ],
       "openConditionsNote": "采兒推進2：push1 後。",
       "artId": "rom_choi_push2",
@@ -1294,7 +1294,7 @@
           "label": "公關切割：否認關係，保護事業",
           "effects": {
             "flags": [
-              "choi_deny_romance"
+              "flag_choi_deny_romance"
             ],
             "stats": {
               "rel_choi": -2,
@@ -1305,13 +1305,13 @@
         }
       ],
       "flags_written": [
-        "choi_deny_romance",
+        "flag_choi_deny_romance",
         "flag_public_romance"
       ],
       "openConditions": [],
       "openConditionsAny": [
-        "choi_real_date",
-        "choi_keep_professional"
+        "flag_choi_real_date",
+        "flag_choi_keep_professional"
       ],
       "openConditionsNote": "采兒危機：push2 後；linksMain=C13（已有）。可與 C13 同步。",
       "artId": "rom_choi_crisis",
@@ -1420,9 +1420,9 @@
       ],
       "openConditionsAny": [
         "flag_public_romance",
-        "choi_deny_romance",
-        "choi_real_date",
-        "choi_keep_professional"
+        "flag_choi_deny_romance",
+        "flag_choi_real_date",
+        "flag_choi_keep_professional"
       ],
       "openConditionsNote": "采兒結局：P5。HE／BE＋flag_choi_commit。",
       "artId": "rom_choi_ending",
@@ -1454,25 +1454,28 @@
     },
     "arc": "meet→push×2→crisis→ending(HE/BE); parallelOk until ending",
     "effects_note": "all choices have flags + stats with rel_*",
-    "soft_nits_fix": "v1",
+    "soft_nits_fix": "v2",
     "flagAlias": {
-      "hiu_meet_exchange": "flag_hiu_meet_exchange",
+      "choi_deny_romance": "flag_choi_deny_romance",
+      "choi_dodge": "flag_choi_dodge",
+      "choi_give_tip": "flag_choi_give_tip",
+      "choi_honest": "flag_choi_honest",
+      "choi_keep_professional": "flag_choi_keep_professional",
+      "choi_meet_honest": "flag_choi_meet_honest",
+      "choi_meet_official": "flag_choi_meet_official",
+      "choi_real_date": "flag_choi_real_date",
+      "choi_refuse_tip": "flag_choi_refuse_tip",
+      "choi_spin": "flag_choi_spin",
+      "hiu_crisis_fight": "flag_hiu_crisis_fight",
+      "hiu_crisis_yield": "flag_hiu_crisis_yield",
       "hiu_meet_distant": "flag_hiu_meet_distant",
+      "hiu_meet_exchange": "flag_hiu_meet_exchange",
       "hiu_push1_help": "flag_hiu_push1_help",
       "hiu_push1_self": "flag_hiu_push1_self",
       "hiu_push2_date": "flag_hiu_push2_date",
-      "hiu_push2_friend": "flag_hiu_push2_friend",
-      "hiu_crisis_fight": "flag_hiu_crisis_fight",
-      "hiu_crisis_yield": "flag_hiu_crisis_yield",
-      "choi_meet_honest": "flag_choi_meet_honest",
-      "choi_meet_official": "flag_choi_meet_official",
-      "choi_give_tip": "flag_choi_give_tip",
-      "choi_refuse_tip": "flag_choi_refuse_tip",
-      "choi_real_date": "flag_choi_real_date",
-      "choi_keep_professional": "flag_choi_keep_professional",
-      "choi_deny_romance": "flag_choi_deny_romance"
+      "hiu_push2_friend": "flag_hiu_push2_friend"
     },
-    "flagAliasNote": "舊裸前綴→建議 flag_*；wiring 用 alias，本輪不破壞性 rename flags_written",
+    "flagAliasNote": "SOFT_NITS_FIX_v2：nodes 內 effects／flags_written／openConditionsAny 已全部改為 flag_ 前綴；本表留舊→新遷移對照（含 C5 讀閘 choi_honest／spin／dodge）。主線 C5 仍可能寫裸名，wiring 須讀 alias。",
     "choi_choice_id_renames": {
       "R_choi_meet_a": "C_choi_meet_a",
       "R_choi_meet_b": "C_choi_meet_b",
@@ -1489,13 +1492,18 @@
     "pcSilent_hiu_choi": true,
     "player_beats": "speaker「我」→旁白（第三人稱阿偉）",
     "wiring_openConditions": {
-      "version": "v1",
+      "version": "v2",
       "nodesWithOC": 15,
-      "softHold": [
+      "softHoldCleared": [
         "裸前綴 flags",
         "Vera speaker 阿偉對白"
+      ],
+      "softHoldRemain": [
+        "鄧節序並放（他包）",
+        "出圖"
       ]
-    }
+    },
+    "pcSilent_vera": "speaker「阿偉」→旁白（第三人稱敘；pcSilent 維持原值）"
   },
   "models": {
     "vera": "deepseek-chat",
@@ -1518,6 +1526,7 @@
     "flagAlias": "qa.flagAlias：裸前綴↔flag_*；本輪不 rename flags_written"
   },
   "edits": [
-    "v1.2 wiring：15 節補 openConditions／Any／Note；對白與裸前綴旗未改（Soft HOLD）"
+    "v1.2 wiring：15 節補 openConditions／Any／Note；對白與裸前綴旗未改（Soft HOLD）",
+    "v1.3 SOFT_NITS_FIX_v2：hiu／choi 裸旗→flag_；Vera speaker 阿偉→旁白第三人稱；qa.flagAlias 改遷移註"
   ]
 }
