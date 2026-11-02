@@ -3647,7 +3647,7 @@ function doScout(L){
         const gate=canAudition(g);
         S.flags=S.flags||{};
         if(!S.flags.sawTutAudLock){
-          maybeShowTutToast("sawTutAudLock","TUT_AUD_LOCK");
+          maybeShowTutToast("sawTutAudLock","TUT_AUD_LOCK", ()=>doScout(L));
         } else {
           toast(gate.ok ? "已可試鏡" : (gateShortReason(g)||gate.reason||"未解鎖"));
         }
