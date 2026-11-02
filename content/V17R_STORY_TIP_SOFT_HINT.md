@@ -1,7 +1,7 @@
 # V17R_STORY_TIP_SOFT_HINT
 
 **SAVE：** `starVolunteer_map_v17r`  
-**時間：** 2026-11-03 ~02:xx（Asia/Hong_Kong）  
+**時間：** 2026-11-03 ~02:17（Asia/Hong_Kong）  
 **預覽：** `joinkidshk-glitch/linji-chutoutian-web-preview`（lean Pages）  
 **HOLD：** Soft≠PASS；唔 formal publish；出圖暫緩
 
@@ -28,4 +28,7 @@
 
 ## Ship
 
+- commit：`03e819f`（03e819fdc54261bd809e4bec919381748c668213）· 2026-11-03 02:17 HKT
+- curl-verify：**PASS** — SAVE v17r + `has-story-tip .dot` + `mark-story` + soft C5「呢段」；LIVE HTML **1154424**
+- tar：`/workspace/star-volunteer-web-v17r.tar.gz`
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=17r （清 `starVolunteer_map_*`）
