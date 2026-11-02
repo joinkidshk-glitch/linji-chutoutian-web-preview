@@ -30,5 +30,8 @@
 
 ## Ship
 
-- （push 後填 commit／curl-verify）
+- commit：`8d209aa`（`8d209aa97655951da04f58a308c4d4ed91b628d7`）· 2026-11-03 ~04:09 HKT
+- curl-verify：**PASS** — SAVE v17s + `lg-story` +「金框／「劇」針」；LIVE HTML **1156252**
+- tar：`/workspace/star-volunteer-web-v17s.tar.gz`
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=17s （清 `starVolunteer_map_*`）
+- Soft≠PASS；出圖暫緩
