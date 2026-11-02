@@ -1,5 +1,5 @@
 {
-  "version": 1.2,
+  "version": "1.2.1",
   "locale": "zh-Hant-written-HK",
   "source": "DeepSeek romance Tang Pack; cast_main tang_laiping; pcSilent; dual gate flag_tang_open+rel_tang; supersedes stub",
   "romanceLines": [
@@ -99,7 +99,8 @@
       "openConditions": [],
       "notes": "正式 meet＝排片談判初遇；可寫入 flag_tang_open。正式推進（push+）需雙條件 flag_tang_open＋rel_tang 門檻。",
       "supersedes": "R_tang_meet_stub",
-      "openConditionsNote": "本節可寫入 flag_tang_open；不要求雙閘"
+      "openConditionsNote": "本節可寫入 flag_tang_open；不要求雙閘",
+      "playerOffer": false
     },
     {
       "id": "R_tang_push1",
@@ -502,6 +503,7 @@
     "pushAndAfter": "flag_tang_open AND rel_tang_threshold(=2)"
   },
   "edits": [
-    "v1.2 wiring：確認 meet=[]／push+雙閘；節點補 thresholds.rel_tang_threshold=2；對白未改"
+    "v1.2 wiring：確認 meet=[]／push+雙閘；節點補 thresholds.rel_tang_threshold=2；對白未改",
+    "v1.2.1 PLAYER_OFFER_MEET_v1：R_tang_meet playerOffer=false（可選線唔自動推）"
   ]
 }

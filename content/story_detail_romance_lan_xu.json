@@ -1,5 +1,5 @@
 {
-  "version": 2.3,
+  "version": "2.3.2",
   "locale": "zh-Hant-written-HK",
   "source": "DeepSeek romance Lan/Xu Pack2 rev; cast_main; pcSilent; UNLOCK§4; links C9/C14/C15/T6; tang stub→supersededBy R_tang_meet",
   "romanceLines": [
@@ -80,7 +80,8 @@
       "romanceLine": "lan",
       "arcBeat": "meet",
       "parallelOk": true,
-      "pcSilent": true
+      "pcSilent": true,
+      "playerOffer": false
     },
     {
       "id": "R_lan_push1",
@@ -493,7 +494,8 @@
       "romanceLine": "xu",
       "arcBeat": "meet",
       "parallelOk": true,
-      "pcSilent": true
+      "pcSilent": true,
+      "playerOffer": false
     },
     {
       "id": "R_xu_push1",
@@ -916,7 +918,8 @@
       "stub": true,
       "supersededBy": "R_tang_meet",
       "supersededByFile": "story_detail_romance_tang.json",
-      "notes": "偶遇只寫 flag_tang_met＋rel_tang；flag_tang_open 由正式線 R_tang_meet 寫入；push1+ 另需 rel_tang_threshold=2。"
+      "notes": "偶遇只寫 flag_tang_met＋rel_tang；flag_tang_open 由正式線 R_tang_meet 寫入；push1+ 另需 rel_tang_threshold=2。",
+      "playerOffer": false
     }
   ],
   "qa": {
@@ -935,10 +938,15 @@
     "wiring_openConditions": {
       "version": "v1",
       "nodesWithOC": 11,
-      "softHold": [
-        "R_tang_meet_stub.flags_written 含 flag_tang_open",
-        "徐 tier"
-      ]
+      "softHold": [],
+      "softHoldCleared": {
+        "at": "2026-11-03",
+        "cleared": [
+          "R_tang_meet_stub.flags_written 含 flag_tang_open",
+          "徐 tier"
+        ],
+        "note": "SOFT_NITS_FIX_v2 已修 stub flags_written＋徐 cast tier；本欄清空。鄧節序／出圖／C5 裸旗仍全局 HOLD（非本 pack softHold）。"
+      }
     },
     "soft_nits_fix_v2_stub_flags": "flags_written=[flag_tang_met]"
   },
@@ -950,6 +958,11 @@
   },
   "edits": [
     "v2.2 wiring：lan／xu／stub 補 openConditions；Tang stub Soft HOLD flags_written；對白未改",
-    "v2.3 SOFT_NITS_FIX_v2：R_tang_meet_stub.flags_written 對齊 choice＝[flag_tang_met]"
+    "v2.3 SOFT_NITS_FIX_v2：R_tang_meet_stub.flags_written 對齊 choice＝[flag_tang_met]",
+    {
+      "at": "2026-11-03",
+      "note": "qa.wiring_openConditions.softHold 清零（對齊 SOFT_NITS_FIX_v2／QA_SOFT_NITS_FIX_v2 nit）"
+    },
+    "v2.3.2 PLAYER_OFFER_MEET_v1：R_lan/xu_meet＋R_tang_meet_stub playerOffer=false"
   ]
 }

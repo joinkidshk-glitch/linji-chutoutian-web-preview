@@ -1,7 +1,7 @@
 {
-  "version": 1.1,
+  "version": "1.2.1",
   "locale": "zh-Hant-written-HK",
-  "source": "merge phase1–5 detail JSON; C16–C17 appended 2026-11-02; wiring openConditions v1.1 2026-11-02",
+  "source": "merge phase1–5 detail JSON; C16–C17 appended 2026-11-02; wiring openConditions v1.1 2026-11-02; C1–C5 map hint／loc／C5 thresh=2 BOARD_DECISIONS_v1 2026-11-03",
   "nodes": [
     {
       "id": "C1",
@@ -9,6 +9,7 @@
       "title": "先練／先賺",
       "when": "1988春 / W3-4",
       "setting": "星河電視台廠景通告板旁，何生事務所",
+      "locId": "tvb_longmen",
       "eraTag": "era_1988_spring_grassroot",
       "cast": [
         "何生",
@@ -16,6 +17,10 @@
         "張子駿"
       ],
       "synopsis": "何生帶來兩條路。一條是跟張子駿的練功班底磨戲，較穩，但錢來得慢。另一條是趕通告，接電影散工臨記，錢快，但功夫未必有進。阿偉要在開工與練功之間先選一邊。",
+      "playerOffer": true,
+      "playerHint": "星河電視台廠景有幕等你：先練定先賺。",
+      "lockedHint": "去星河電視台廠景——通告欄旁有幕等你揀。",
+      "nextHint": "下一幕「留人脈／趕通告」——殺青後可喺片場後巷留低。",
       "beats": [
         {
           "speaker": "何生",
@@ -101,14 +106,14 @@
           }
         }
       ],
+      "conflict": "T1",
       "flags_written": [
         "route_tv",
         "route_film"
       ],
       "openConditions": [],
       "openConditionsNote": "開局／教學後首次重要通告選擇時觸發（方向性）。phase=P1；衝突 T1。引擎亦可掛首次重要通告事件。",
-      "artId": "story_c1",
-      "conflict": "T1"
+      "artId": "story_c1"
     },
     {
       "id": "C2",
@@ -116,6 +121,7 @@
       "title": "留人脈／趕通告",
       "when": "1988春 / W4-5",
       "setting": "片場後巷，附近茶餐廳",
+      "locId": "tvb_longmen",
       "eraTag": "era_1988_spring_alley",
       "cast": [
         "何生",
@@ -123,6 +129,10 @@
         "林曉晴"
       ],
       "synopsis": "一場戲殺青，後巷有人約飯、交換名片。同一時間，下一輪通告板剛貼出。阿偉要決定留下應酬，還是趕去接下一張通告。",
+      "playerOffer": true,
+      "playerHint": "後巷有人約飯；通告欄又貼咗新單。",
+      "lockedHint": "殺青後喺片場後巷留低——人脈同下一張通告會撞期。",
+      "nextHint": "下一幕「對對手硬／忍」——多留意星河電影組通告欄。",
       "beats": [
         {
           "speaker": "林曉晴",
@@ -204,6 +214,7 @@
           }
         }
       ],
+      "conflict": null,
       "flags_written": [
         "flag_network_stay",
         "flag_hustle_board"
@@ -212,8 +223,7 @@
         "C1"
       ],
       "openConditionsNote": "C1 完成後；何生在場事件（方向性）。",
-      "artId": "story_c2",
-      "conflict": null
+      "artId": "story_c2"
     },
     {
       "id": "C3",
@@ -221,6 +231,7 @@
       "title": "對對手硬／忍",
       "when": "1988春 / W6-8",
       "setting": "星河電視台電影組通告板前，走廊人來人往",
+      "locId": "tvb_longmen",
       "eraTag": "era_1988_spring_factory",
       "cast": [
         "阿偉",
@@ -228,6 +239,10 @@
         "林曉晴"
       ],
       "synopsis": "通告板貼出下周廠景名單。高俊傑當眾指阿偉走位慢，順手把阿偉的名牌從板上抽走。阿偉要決定硬碰還是忍讓。林曉晴在旁觀望，沒有出聲。",
+      "playerOffer": true,
+      "playerHint": "通告欄前氣氛緊，有人睇住你嘅名牌。",
+      "lockedHint": "多去星河電影組通告欄——搶位爭執快發生。",
+      "nextHint": "下一幕「何生拒單」——中環廣告那邊有份外判通告等你表態。",
       "beats": [
         {
           "speaker": "系統",
@@ -300,6 +315,7 @@
           }
         }
       ],
+      "conflict": null,
       "flags_written": [
         "rival_gao_hard",
         "rival_gao_endure"
@@ -308,8 +324,7 @@
         "C2"
       ],
       "openConditionsNote": "C2 後與高俊傑同場搶板（方向性）。可與 A_ko_meet 雙軌（sync／互斥政策另定）。",
-      "artId": "story_c3",
-      "conflict": null
+      "artId": "story_c3"
     },
     {
       "id": "C4",
@@ -317,12 +332,17 @@
       "title": "何生拒單",
       "when": "1988春 / W8-9",
       "setting": "何生事務所，桌面堆著記數簿與通告紙",
+      "locId": "ad_central",
       "eraTag": "era_1988_spring_grassroot",
       "cast": [
         "何生",
         "阿偉"
       ],
       "synopsis": "何生帶來一份外判通告。工時寫得含糊，條款不清，片酬只有口頭承諾。何生主張拒單。阿偉可以跟何生，也可以自己硬接。",
+      "playerOffer": true,
+      "playerHint": "何生檯面有份通告紙等你表態。",
+      "lockedHint": "何生會拎份條款含糊嘅外判通告——留意經理人事務所。",
+      "nextHint": "下一幕「采兒小訪題」——同周采兒處好關係，或捱到台慶籌備季。",
       "beats": [
         {
           "speaker": "何生",
@@ -395,6 +415,7 @@
           }
         }
       ],
+      "conflict": null,
       "flags_written": [
         "flag_refuse_gig_with_ho",
         "flag_take_harsh_gig"
@@ -403,8 +424,7 @@
         "C3"
       ],
       "openConditionsNote": "何生帶來可疑／苛刻通告（方向性）。可與 A_ho_push1 雙軌。",
-      "artId": "story_c4",
-      "conflict": null
+      "artId": "story_c4"
     },
     {
       "id": "C5",
@@ -412,12 +432,17 @@
       "title": "采兒小訪題",
       "when": "1988夏 / W9-10",
       "setting": "片場邊的小桌，摺椅與保溫壺；午後光線偏白",
+      "locId": "tvb_longmen",
       "eraTag": "era_1988_summer_variety",
       "cast": [
         "周采兒",
         "阿偉"
       ],
       "synopsis": "星河台慶籌備的傳聞在片場流轉，獎項名單未到阿偉手上。周采兒好感足夠，約他在片場邊做一段小訪，只問片場日常與新人起步。她翻開筆記本，筆尖停在第一題。",
+      "playerOffer": true,
+      "playerHint": "片場邊有小訪位，筆記本已經打開。",
+      "lockedHint": "同周采兒處好關係，或捱到台慶籌備季，先有小訪。",
+      "nextHint": "主線呢段告一段落——繼續跑通告、見人，留意之後會嚟嘅新事態。",
       "beats": [
         {
           "speaker": "周采兒",
@@ -528,6 +553,7 @@
           }
         }
       ],
+      "conflict": null,
       "flags_written": [
         "choi_honest",
         "choi_spin",
@@ -540,13 +566,12 @@
         "rel_choi_threshold",
         "season_1988_summer_anni_prep"
       ],
-      "openConditionsNote": "方向性／playtest：C4 後，且（rel_choi 達門檻 OR 1988 夏台慶籌備季）。門檻數值未鎖死。",
+      "openConditionsNote": "方向性／playtest：C4 後，且（rel_choi≥2 OR 1988 夏台慶籌備季）。門檻拍板 2026-11-03＝2（BOARD_DECISIONS_v1）。",
       "thresholds": {
-        "rel_choi_threshold": null,
-        "rel_choi_threshold_note": "playtest 可調；UNLOCK 未給精確值"
+        "rel_choi_threshold": 2,
+        "rel_choi_threshold_note": "拍板 2026-11-03＝2（BOARD_DECISIONS_v1；小刻度；夏 OR 保留）"
       },
-      "artId": "story_c5",
-      "conflict": null
+      "artId": "story_c5"
     },
     {
       "id": "C6",
@@ -2285,7 +2310,47 @@
       "softHold": [
         "index.html 未掛載",
         "stub／裸旗／parallelOk 未改"
-      ]
+      ],
+      "mapHintNote": "v1.2 C1–C5 hint／loc 已落；引擎仍未讀欄（index HOLD）"
+    },
+    "map_hint_c1c5": {
+      "version": "HINT_C1C5_MAP_v1",
+      "date": "2026-11-03",
+      "board": "PLAN_MAP_BOARD_DECISIONS_v1.md",
+      "nodes": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "fields": [
+        "locId",
+        "playerHint",
+        "lockedHint",
+        "nextHint",
+        "playerOffer"
+      ],
+      "locs": {
+        "C1": "tvb_longmen",
+        "C2": "tvb_longmen",
+        "C3": "tvb_longmen",
+        "C4": "ad_central",
+        "C5": "tvb_longmen"
+      },
+      "C5_rel_choi_threshold": 2,
+      "C5_openConditionsAny_OR": [
+        "rel_choi_threshold",
+        "season_1988_summer_anni_prep"
+      ],
+      "hold": [
+        "出圖",
+        "鄧節序",
+        "C5 裸旗 rename",
+        "index 引擎",
+        "romance／rival meet playerOffer"
+      ],
+      "lexicon": "COPY_STYLE_HK_LEXICON.md"
     }
   },
   "conditionSchema": {
@@ -2298,6 +2363,11 @@
     "alignedWith": "story_detail_romance_tang.json openConditions array"
   },
   "edits": [
-    "v1.1 wiring：每節補 openConditions（＋可選 openConditionsAny／Note／thresholds）；對白未改"
+    "v1.1 wiring：每節補 openConditions（＋可選 openConditionsAny／Note／thresholds）；對白未改",
+    "v1.2 BOARD_DECISIONS：C1–C5 加 locId／playerHint／lockedHint／nextHint／playerOffer；C5 thresholds.rel_choi_threshold=2；對白／beats／flags_written 未改；出圖／鄧節序／C5 裸旗 HOLD",
+    {
+      "at": "2026-11-03",
+      "note": "HINT nit：C5 nextHint 去 P1.5；這段→呢段（QA_HINT_C1C5_MAP_v1）"
+    }
   ]
 }

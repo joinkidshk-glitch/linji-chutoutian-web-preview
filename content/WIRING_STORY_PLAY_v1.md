@@ -101,4 +101,15 @@
 
 ---
 
+---
+
+## 2026-11-03 補丁（tester｜事態／一屏）
+
+- 玩家入口改稱「**事態**」；接線／Playtest 收 debug。  
+- StoryPlay：**一屏無滾**零容忍（翻頁；禁內層 `overflow:auto`）。  
+- 結算加玩家 `lockedHint`／下一幕句（PLAN_MAP §4）；禁工程結算詞。  
+- Soft → `SOFT_NITS_FIX_v2.md`；地圖 P0 → `PLAN_MAP_STORY_PROGRESS_v1.md`；gap → `QA_PLAN_GAP_vs_PLAYER_V17N_v1.md`。  
+- 本檔「Soft HOLD｜stub／Vera…」段：**過時**（v2 已清五項）。
+
+
 *完 — WIRING_STORY_PLAY_v1*

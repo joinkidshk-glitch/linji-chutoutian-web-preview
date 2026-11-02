@@ -136,4 +136,17 @@ Console：`StoryOC.listOpen()`、`StoryOC.evalNode(node)`。
 
 ---
 
+---
+
+## 2026-11-03 補丁（tester｜玩家閘）
+
+| 項 | 規格 |
+|---|---|
+| 玩家 `listOpen`／`StoryPlay.start` | 必須 **`ev.ok`**（含 phase soft）；`openable`  alone 唔夠 |
+| stub | 唔入玩家 open（見 PLAN_MAP §9.3） |
+| `setPhase` | 跟 **`PHASE_AUTO_TABLE_v1.md`**；唔靠 Playtest |
+| Soft | **`SOFT_NITS_FIX_v2.md`** 為準（本檔 §9 Soft HOLD 段過時） |
+| 地圖／事態 | `PLAN_MAP_STORY_PROGRESS_v1.md`；gap：`QA_PLAN_GAP_vs_PLAYER_V17N_v1.md` |
+
+
 *完 — WIRING_OC_ENGINE_v1*

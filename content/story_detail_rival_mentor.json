@@ -1,5 +1,5 @@
 {
-  "version": 2.3,
+  "version": "2.3.1",
   "locale": "zh-Hant-written-HK",
   "source": "DeepSeek Pack3 v2 written rewrite; structure/id/flag from v1; cast_main; pcSilent; UNLOCK§5; MASTER v1.4-DS; lexicon; no art",
   "arcs": [
@@ -223,7 +223,8 @@
       "arcKind": "rival",
       "linksMain": [
         "C3"
-      ]
+      ],
+      "playerOffer": false
     },
     {
       "id": "A_ko_push1",
@@ -697,7 +698,8 @@
       "arcKind": "rival",
       "linksMain": [
         "P2資源場"
-      ]
+      ],
+      "playerOffer": false
     },
     {
       "id": "A_hakfan_push1",
@@ -1167,7 +1169,8 @@
       "linksMain": [
         "C1",
         "T1"
-      ]
+      ],
+      "playerOffer": false
     },
     {
       "id": "A_tsijun_push1",
@@ -1608,7 +1611,8 @@
       "parallelOk": true,
       "pcSilent": true,
       "arcLine": "fong",
-      "arcKind": "friend"
+      "arcKind": "friend",
+      "playerOffer": false
     },
     {
       "id": "A_fong_push1",
@@ -2086,7 +2090,8 @@
       "arcKind": "mentor",
       "linksMain": [
         "P2去留"
-      ]
+      ],
+      "playerOffer": false
     },
     {
       "id": "A_tong_push1",
@@ -2532,7 +2537,8 @@
       "linksMain": [
         "C2"
       ],
-      "arcBeat": "meet"
+      "arcBeat": "meet",
+      "playerOffer": false
     },
     {
       "id": "A_ho_push1",
@@ -2997,7 +3003,8 @@
       "arcKind": "mentor",
       "linksMain": [
         "C8"
-      ]
+      ],
+      "playerOffer": false
     },
     {
       "id": "A_gao_push1",
@@ -3500,7 +3507,8 @@
       "parallelOk": true,
       "pcSilent": true,
       "arcLine": "lei",
-      "arcKind": "capital"
+      "arcKind": "capital",
+      "playerOffer": false
     },
     {
       "id": "A_lei_push1",
@@ -4214,6 +4222,7 @@
   "edits": [
     "v2.2 wiring：40 節補 openConditions／Any／Note；linksMain 既有保留；parallelOk Soft HOLD；對白未改",
     "v2.3 SOFT_NITS_FIX_v2：八條 *_ending parallelOk true→false（非戀愛弧 ending 收束後不再平行開）；meet／push 不變；A_fong_crisis 仍 false",
-    "v2.3：顺手清 A_lei_crisis openConditionsNote 禁詞「苛約」→「不合理合約條款」"
+    "v2.3：顺手清 A_lei_crisis openConditionsNote 禁詞「苛約」→「不合理合約條款」",
+    "v2.3.1 PLAYER_OFFER_MEET_v1：八線 *_meet playerOffer=false（平行 meet 唔自動推；push/crisis/ending 唔改）"
   ]
 }
