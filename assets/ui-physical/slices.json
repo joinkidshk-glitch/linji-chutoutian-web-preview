@@ -1,0 +1,69 @@
+{
+  "version": "v2",
+  "safeAreaHintPt": {
+    "top": 54,
+    "bottom": 34
+  },
+  "notice_paper": {
+    "capInsets": {
+      "top": 28,
+      "left": 36,
+      "bottom": 36,
+      "right": 28
+    },
+    "note": "9-slice paper; keep tear/holes outside content"
+  },
+  "btn_primary": {
+    "capInsets": {
+      "top": 18,
+      "left": 32,
+      "bottom": 18,
+      "right": 32
+    }
+  },
+  "map_polaroid": {
+    "contentRectNorm": {
+      "x": 0.08829787234042553,
+      "y": 0.07079646017699115,
+      "w": 0.823404255319149,
+      "h": 0.727433628318584
+    },
+    "outerAspect": "1:1.2",
+    "note": "transparent photo well; thicker bottom border; classic Instant ratio"
+  },
+  "map_pin": {
+    "anchorNorm": {
+      "x": 0.5,
+      "y": 0.92
+    },
+    "note": "pin tip near bottom-center"
+  },
+  "ticket_stub": {
+    "capInsets": {
+      "top": 16,
+      "left": 48,
+      "bottom": 16,
+      "right": 24
+    },
+    "stubFraction": 0.22,
+    "note": "blank stub; perforation ~22% from left"
+  },
+  "notebook_day_cell": {
+    "layout": "list_rows",
+    "rows": 7,
+    "cols": 1,
+    "suggestedPt": {
+      "w": 280,
+      "h": 52
+    },
+    "marginGuideNorm": 0.08,
+    "headerBandNorm": 0.056,
+    "note": "list-lined blank spread; App overlays day labels + events on horizontal rows — NO vertical 7-col grid (old 7col in notebook/_7col_bak/)"
+  },
+  "blank_bases": [
+    "notebook/notebook_spread",
+    "notebook/notebook_spread_list",
+    "toast/ticket_stub"
+  ],
+  "rule": "Text must never collide with decorative grid/ornament lines. Prefer cream underlay behind live type if needed. notebook_spread is list-lined (horizontal rules only)."
+}
