@@ -14,3 +14,12 @@ v1 備份：`_v1_bak/`
 
 ## 新增／覆蓋檔
 見 `MANIFEST.md`。重點新檔：`map_pin.png`、`map_leader_line.png`、`stamp_complete.png`、moodboard v4。
+
+## krea-opt Free 加強（2026-11-02 17:32 Asia/Hong_Kong）
+用戶「你處理」後已將 `assets/krea-opt/` 套入實體 UI／阿偉立繪。
+- 阿偉：`assets/hero_awi.jpg` + `dialog/hero_awi.jpg` ← awi_enhance
+- 通告／票根／手帳紙質重建（空白、無 baked 中文）
+- 開始卡：start_mood 底（已遮英文殘字）＋ brush wordmark C＋加強阿偉
+- moodboard 已更新
+- 包：`/workspace/star-volunteer-web-v17-krea.tar.gz`
+**仍等用戶視覺 OK 先叫 iOS。** 唔好主動套 SAVE。
