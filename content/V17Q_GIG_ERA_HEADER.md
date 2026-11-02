@@ -28,3 +28,11 @@ PASS 已確認：auto C1、lockedHint、「跳過教學」、開局事態=1。
 
 - NOTES：本檔 + `/workspace/star-volunteer-qa-playthrough/V17Q_GIG_ERA_HEADER.md`
 - tar：`/workspace/star-volunteer-web-v17q.tar.gz`
+
+## Ship
+
+- commit：`9d9fa84`（`9d9fa8422e2ae6a0b359d0879efd49489b722c88`）· 2026-11-03 01:30 HKT
+- URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/（`?v=17q`，清 `starVolunteer_map_*`）
+- curl-verify：**PASS** — SAVE v17q + `humanizeEraId`/`looksLikeEraId` + `失敗則不開拍`／`board-lead`；LIVE HTML **1153950**；顯示 helper 先 `boardNote`、拒 raw `eraTagLabel`
+- tar：`/workspace/star-volunteer-web-v17q.tar.gz`
+- Soft≠PASS；出圖暫緩
