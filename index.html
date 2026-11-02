@@ -1230,6 +1230,54 @@ button.g, .start button.g{
 }
 .day-row .cp:disabled, .day-row.locked .cp{ opacity:.35; cursor:not-allowed; }
 .day-row.hint-edit .nm small{ color:#6b4e2e; }
+
+/* v17j EXTRA: #loc-sheet cream contrast — beat late .sheet{background:var(--panel)} + .sub{var(--muted)} */
+#loc-sheet.sheet,
+#app #loc-sheet.sheet{
+  background: #F2EBD8 !important; /* cream plate = stress-preview modal */
+  border: 2px solid #C9A227 !important;
+  border-bottom: 0 !important;
+  color: #1A1410 !important;
+  box-shadow: 0 -8px 28px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.55) !important;
+}
+#loc-sheet.sheet .grab{
+  background: rgba(107,83,64,.45) !important;
+}
+#loc-sheet.sheet h2{
+  color: #1A1A2E !important;
+  font-weight: 800 !important;
+}
+#loc-sheet.sheet .sub{
+  color: #3a2e22 !important; /* muted-ink; NOT var(--muted) light-on-dark */
+}
+#loc-sheet.sheet .act{
+  background: #efe6cf !important;
+  border: 1.5px solid rgba(196,165,116,.7) !important;
+  color: #1A1410 !important;
+}
+#loc-sheet.sheet .act .n{ color: #1A1410 !important; font-weight: 800 !important; }
+#loc-sheet.sheet .act .h{ color: #5a4328 !important; opacity: 1 !important; }
+#loc-sheet.sheet .act .cost{ color: #C43C2A !important; font-weight: 800 !important; }
+#loc-sheet.sheet .act.act-priority{
+  background: #f5e6c0 !important;
+  border: 2px solid #C9A227 !important;
+  color: #1A1410 !important;
+}
+#loc-sheet.sheet .act.act-priority .n{ color: #1A1410 !important; }
+#loc-sheet.sheet .act.act-priority .h{ color: #3a2e22 !important; }
+#loc-sheet.sheet button.p,
+#loc-sheet.sheet .btnrow button.p{
+  /* keep paper primary */
+  background: linear-gradient(180deg,#efe0bc,#d8d0c4) !important;
+  color: #1A1410 !important;
+  border: 2px solid #1A1410 !important;
+}
+#loc-sheet.sheet button.g,
+#loc-sheet.sheet .btnrow button.g{
+  background: #F2EBD8 !important;
+  color: #1A1410 !important;
+  border: 1px solid #C9A227 !important;
+}
 /* brighten ± elsewhere in cream modals (incl. b.good/b.bad outside stress-preview) */
 #mask:not(.tut-on) .modal .good,
 #mask:not(.tut-on) .modal span.good,
