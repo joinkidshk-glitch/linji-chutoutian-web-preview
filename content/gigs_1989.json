@@ -1,0 +1,1557 @@
+{
+  "version": "1.0",
+  "year": 1989,
+  "locale": "zh-Hant-written-HK",
+  "source": "PLOT_MASTER_PLAN_v1.4-DS §2A.2／§2A.6；WIRING gigs schema 對齊 gigs_1988",
+  "displayRules": {
+    "tvStationName": "星河電視台",
+    "locIdRetained": [
+      "tvb_longmen",
+      "tvb_kowloon",
+      "tvb_harbour"
+    ],
+    "banned": [
+      "政治口號",
+      "真實抗爭場景",
+      "真人藝名",
+      "真實商標全名"
+    ]
+  },
+  "counts": {
+    "電視劇": 9,
+    "廣告": 5,
+    "電影": 8,
+    "綜藝": 7,
+    "唱片通告": 8
+  },
+  "seasonCounts": {
+    "春": 9,
+    "夏": 9,
+    "秋": 10,
+    "冬": 9
+  },
+  "highBySeason": {
+    "春": 4,
+    "夏": 4,
+    "秋": 4,
+    "冬": 4
+  },
+  "eraTagPrimary": {
+    "春": [
+      "era_1989_spring_quiet",
+      "era_1989_spring_charity"
+    ],
+    "夏": [
+      "era_1989_summer_departure",
+      "era_1989_summer_literary"
+    ],
+    "秋": [
+      "era_1989_autumn_music",
+      "era_1989_autumn_karaoke"
+    ],
+    "冬": [
+      "era_1989_winter_anniversary",
+      "era_1989_winter_festive"
+    ]
+  },
+  "eraTagSecondary": {
+    "春": [
+      "era_1989_spring_studio"
+    ],
+    "夏": [
+      "era_1989_summer_action"
+    ],
+    "秋": [
+      "era_1989_autumn_variety"
+    ],
+    "冬": [
+      "era_1989_winter_press"
+    ]
+  },
+  "seasonWeightRule": "主eraTag=1.0；次=0.6；非當季=0.3（由 eraTag×season 自動推導）",
+  "edits": [
+    "v1.0 初產 37 則；跟 春公益文藝→夏離合→秋唱片→冬台慶"
+  ],
+  "gigs": [
+    {
+      "id": "gig_1989_tv_01",
+      "season": "春",
+      "type": "電視劇",
+      "title": "《街燈下》公益單元：夜班清潔工阿強",
+      "loc": "tvb_longmen",
+      "roleHint": "飾演默默清掃街道的夜班工人，少對白多眼神",
+      "blurb": "星河電視台公益單元劇，要一個肯「少講多做」的草根面孔。",
+      "synopsis": "星河電視台開拍公益向單元劇《街燈下》。這一集寫夜班清潔工阿強在雨夜收拾紙皮與玻璃瓶，對白極少，全靠神態撑場。導演不要煽情喊口號，只要你把「把分內事做好」演得令人信服。",
+      "heroAngle": "沉住氣：氣氛轉沉下，把本分演清楚。",
+      "diasporaHook": "街燈、雨夜與清潔車，是港人共同的城市夜景記憶。",
+      "eraTag": "era_1989_spring_charity",
+      "discoverNote": "星河廠景通告板的公益單元試鏡",
+      "boardPriority": "high",
+      "boardNote": "春主推・公益單元",
+      "req": {
+        "acting": 22,
+        "stamina": 20,
+        "charm": 12
+      },
+      "pay": [
+        2500,
+        4500
+      ],
+      "fame": [
+        8,
+        14
+      ],
+      "popularity": [
+        6,
+        12
+      ],
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "夜戲為主，少對白，考驗耐力與微表情。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_tv_02",
+      "season": "春",
+      "type": "電視劇",
+      "title": "《鄰里電台》文藝處境：不愛抱怨的租客",
+      "loc": "tvb_kowloon",
+      "roleHint": "飾演樓宇租客，用日常語氣回應鄰居紛爭",
+      "blurb": "處境劇要一個「不吵鬧、把話說清楚」的年輕租客。",
+      "synopsis": "處境劇《鄰里電台》寫一幢舊樓的日常。你飾演新搬入的租客，鄰居為水費與走廊雜物爭執，你的角色不站隊喊口號，只把帳單、時間與責任講清楚。監製強調：語氣平、眼神穩。",
+      "heroAngle": "沉住氣：少講多做的鄰里戲。",
+      "diasporaHook": "舊樓走廊與水費單，是海外港人熟悉的住屋日常。",
+      "eraTag": "era_1989_spring_quiet",
+      "discoverNote": "九龍廠景內部推薦的文藝處境角",
+      "boardPriority": "high",
+      "boardNote": "春主推・文藝處境",
+      "req": {
+        "acting": 25,
+        "iq": 18,
+        "charm": 15
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        10,
+        16
+      ],
+      "popularity": [
+        8,
+        14
+      ],
+      "tier": "初",
+      "shootDaysHint": 4,
+      "shootHint": "多室內對手戲，節奏慢，要聽得進對方的話。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_tv_03",
+      "season": "春",
+      "type": "電視劇",
+      "title": "《長夜燈火》探訪義工客串",
+      "loc": "tvb_longmen",
+      "roleHint": "飾演社區探訪義工，送物資時不多言",
+      "blurb": "星河公益特別環節，要懂分寸的年輕義工面孔。",
+      "synopsis": "星河電視台公益特別環節《長夜燈火》邀請藝人客串社區探訪。你飾演義工，把米與棉被送到長者家，對白只餘「放這裡就好」「我再來」。導演禁止任何誇張感動表情，只要你把東西放穩、把門關好。",
+      "heroAngle": "公益先行：語氣克制，不做道德表演。",
+      "diasporaHook": "社區探訪與棉被米袋，是華人慈善活動的含蓄畫面。",
+      "eraTag": "era_1989_spring_charity",
+      "discoverNote": "星河公益組點名要「穩陣」面孔",
+      "boardPriority": "high",
+      "boardNote": "春主推・公益探訪",
+      "req": {
+        "charm": 18,
+        "looks": 14,
+        "stamina": 16
+      },
+      "pay": [
+        2000,
+        3800
+      ],
+      "fame": [
+        6,
+        12
+      ],
+      "popularity": [
+        10,
+        18
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "實景探訪，鏡頭跟拍，忌搶戲。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_tv_04",
+      "season": "春",
+      "type": "電視劇",
+      "title": "《半頁信》單元：讀信的碼頭工人",
+      "loc": "tvb_harbour",
+      "roleHint": "飾演在碼頭讀家書的工人，幾乎沒有對白",
+      "blurb": "文藝單元要一張「肯安靜讀信」的臉。",
+      "synopsis": "單元劇《半頁信》只有一場重頭戲：碼頭工人下班後坐在木箱上讀一封寫得極短的家書。你要在風聲與輪船汽笛之間，把「想回覆卻寫不出」的猶豫演出來。沒有旁白控訴，只有紙張翻動。",
+      "heroAngle": "沉住氣：內省多於宣洩。",
+      "diasporaHook": "家書與碼頭，是離散家庭常見的記憶意象。",
+      "eraTag": "era_1989_spring_quiet",
+      "discoverNote": "海傍錄影廠文藝單元缺男配",
+      "boardPriority": "high",
+      "boardNote": "春主推・文藝讀信",
+      "req": {
+        "acting": 28,
+        "looks": 12,
+        "iq": 16
+      },
+      "pay": [
+        2800,
+        5000
+      ],
+      "fame": [
+        9,
+        15
+      ],
+      "popularity": [
+        5,
+        10
+      ],
+      "tier": "中",
+      "shootDaysHint": 2,
+      "shootHint": "單人長鏡頭，容易穿幫，要耐得住靜。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_ad_01",
+      "season": "春",
+      "type": "廣告",
+      "title": "「暖巢」慈善機構形象短片",
+      "loc": "ad_central",
+      "roleHint": "飾演協助搬運物資的青年義工",
+      "blurb": "虛構慈善機構「暖巢」徵求不喊口號的形象面孔。",
+      "synopsis": "虛構慈善機構「暖巢」拍攝形象短片。故事只有搬箱、貼標籤、把物資送上貨車。旁白極短，不提任何政治口號。廣告公司要你表現「把事情做完」的踏實，而不是感動自己。",
+      "heroAngle": "公益先行：克制、完成任務。",
+      "diasporaHook": "物資紙箱與義工背心，是華人社區常見的慈善視覺。",
+      "eraTag": "era_1989_spring_charity",
+      "discoverNote": "中環廣告行佈告欄的公益向廣告",
+      "boardPriority": "normal",
+      "boardNote": "春公益廣告",
+      "req": {
+        "stamina": 20,
+        "charm": 16,
+        "looks": 14
+      },
+      "pay": [
+        3500,
+        6000
+      ],
+      "fame": [
+        5,
+        10
+      ],
+      "popularity": [
+        12,
+        20
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "多搬運鏡頭，服裝樸素。",
+      "stressDeltaHint": "低",
+      "hard": 0.25,
+      "year": 1989,
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1989_ad_02",
+      "season": "春",
+      "type": "廣告",
+      "title": "「同路」人壽溫情平面＋十五秒",
+      "loc": "ad_adm",
+      "roleHint": "飾演陪長者排隊掛號的晚輩",
+      "blurb": "虛構保險品牌要「陪伴」而非「推銷」的臉。",
+      "synopsis": "虛構人壽品牌「同路」拍十五秒溫情廣告：你陪長者在診所排隊，替對方拿號票，坐下來等。台詞只有一句「我陪你」。創意總監不要笑容過度，只要安穩。",
+      "heroAngle": "沉住氣：陪伴比說話重要。",
+      "diasporaHook": "診所排隊與號票，是城市生活的共同細節。",
+      "eraTag": "era_1989_spring_quiet",
+      "discoverNote": "廣告公司內部試鏡短名單",
+      "boardPriority": "normal",
+      "boardNote": "春溫情廣告",
+      "req": {
+        "charm": 22,
+        "looks": 18,
+        "acting": 12
+      },
+      "pay": [
+        4000,
+        7500
+      ],
+      "fame": [
+        6,
+        11
+      ],
+      "popularity": [
+        14,
+        22
+      ],
+      "tier": "中",
+      "shootDaysHint": 1,
+      "shootHint": "近鏡多，表情要收。",
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "year": 1989,
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1989_film_01",
+      "season": "春",
+      "type": "電影",
+      "title": "《靜巷》文藝短場：送傘的路人",
+      "loc": "film_lion",
+      "roleHint": "飾演雨中把傘留給陌生人的路人",
+      "blurb": "獅子山製片文藝組要一場無對白的雨巷戲。",
+      "synopsis": "獨立文藝片《靜巷》有一場過場：你在雨巷遇見趕車的陌生人，把傘留下，自己淋雨走開。導演不要英雄式回眸，只要動作乾淨。場記提醒：少講多做。",
+      "heroAngle": "沉住氣：一個乾淨的善意動作。",
+      "diasporaHook": "雨巷與舊傘，是港產文藝片常見畫面。",
+      "eraTag": "era_1989_spring_quiet",
+      "discoverNote": "獅子山製片場務臨時找人",
+      "boardPriority": "normal",
+      "boardNote": "春文藝過場",
+      "req": {
+        "looks": 14,
+        "acting": 18,
+        "stamina": 18
+      },
+      "pay": [
+        4500,
+        8000
+      ],
+      "fame": [
+        8,
+        14
+      ],
+      "popularity": [
+        4,
+        9
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "雨戲，注意防滑與鏡頭距離。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_film_02",
+      "season": "春",
+      "type": "電影",
+      "title": "《廠房回聲》工廠夜班群戲",
+      "loc": "film_cotton",
+      "roleHint": "飾演工廠夜班工人，車間群戲之一",
+      "blurb": "紅棉影業廠房戲缺肯熬夜的群戲面孔。",
+      "synopsis": "電影《廠房回聲》拍製衣廠夜班。你是車間工人之一，要在轟鳴機台間走位、遞布料、對錶。對白零散，氣氛偏沉。副導說：這季戲都偏靜，不要自己加笑料。",
+      "heroAngle": "沉住氣：廠房節奏裡站穩。",
+      "diasporaHook": "製衣廠夜班是八十年代香港工業記憶。",
+      "eraTag": "era_1989_spring_studio",
+      "discoverNote": "紅棉影業通告板的群戲缺額",
+      "boardPriority": "low",
+      "boardNote": "春次級廠房群戲",
+      "req": {
+        "stamina": 28,
+        "acting": 10,
+        "looks": 10
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        4,
+        8
+      ],
+      "popularity": [
+        3,
+        6
+      ],
+      "tier": "初",
+      "shootDaysHint": 4,
+      "shootHint": "夜班連拍，體力消耗大。",
+      "hard": 0.4,
+      "year": 1989,
+      "seasonWeight": 0.6,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_var_01",
+      "season": "春",
+      "type": "綜藝",
+      "title": "《人間溫度》星河溫情探訪環節助演",
+      "loc": "tvb_longmen",
+      "roleHint": "助演探訪小隊成員，負責遞物與帶位",
+      "blurb": "星河溫情綜藝要懂分寸的助演，不要搶鏡。",
+      "synopsis": "星河綜藝《人間溫度》有社區探訪環節。你是助演，負責遞熱水、帶長者入座。主持會說話，你幾乎不說話。導演叮囑：氣氛偏沉的季節，笑要收、動作要穩。",
+      "heroAngle": "公益先行：助演把場撑住即可。",
+      "diasporaHook": "溫情探訪節目是華語電視常見類型。",
+      "eraTag": "era_1989_spring_charity",
+      "discoverNote": "星河綜藝組助演臨記位",
+      "boardPriority": "low",
+      "boardNote": "春綜藝助演",
+      "req": {
+        "charm": 14,
+        "stamina": 16,
+        "looks": 12
+      },
+      "pay": [
+        1800,
+        3200
+      ],
+      "fame": [
+        3,
+        7
+      ],
+      "popularity": [
+        8,
+        14
+      ],
+      "tier": "初",
+      "shootDaysHint": 1,
+      "shootHint": "實景跟拍，服從場務指揮。",
+      "stressDeltaHint": "低",
+      "hard": 0.22,
+      "year": 1989,
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1989_film_03",
+      "season": "夏",
+      "type": "電影",
+      "title": "《離岸燈》送機一場：不說出口的再見",
+      "loc": "film_lion",
+      "roleHint": "飾演在機場禁區外揮手的友人",
+      "blurb": "文藝片要一場「去留之間」的含蓄送別，不寫標語。",
+      "synopsis": "電影《離岸燈》有一場機場送別：朋友移居外地，你在禁區外揮手。對白只有「到那邊記得寫信」。導演禁止任何政治隱喻式台詞，只要把「有人走、有人留」的私人情緒演好。",
+      "heroAngle": "有人走有人留：去留之間的選擇感。",
+      "diasporaHook": "機場揮手是海外港人極熟的離合畫面。",
+      "eraTag": "era_1989_summer_departure",
+      "discoverNote": "獅子山製片文藝組急招男配",
+      "boardPriority": "high",
+      "boardNote": "夏主推・離合送別",
+      "req": {
+        "acting": 30,
+        "looks": 16,
+        "charm": 18
+      },
+      "pay": [
+        8000,
+        15000
+      ],
+      "fame": [
+        14,
+        22
+      ],
+      "popularity": [
+        10,
+        16
+      ],
+      "tier": "中",
+      "shootDaysHint": 3,
+      "shootHint": "外景人群多，情緒戲要收斂。",
+      "hard": 0.42,
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_film_04",
+      "season": "夏",
+      "type": "電影",
+      "title": "《半張船票》碼頭夜戲：猶豫的腳步",
+      "loc": "film_harbour",
+      "roleHint": "飾演在船票與行李之間來回的青年",
+      "blurb": "文藝片夜戲，要「走或不走」的身體節奏。",
+      "synopsis": "《半張船票》寫一個青年拿到船票卻反覆走回岸邊。你幾乎無對白，靠腳步快慢與停頓說話。製片強調：這是私人去留，不是時代宣言。",
+      "heroAngle": "離合：身體比嘴巴先做決定。",
+      "diasporaHook": "船票與碼頭夜景，是離散故事的經典意象。",
+      "eraTag": "era_1989_summer_departure",
+      "discoverNote": "海傍片場夜戲缺人",
+      "boardPriority": "high",
+      "boardNote": "夏主推・船票猶豫",
+      "req": {
+        "acting": 32,
+        "stamina": 22,
+        "looks": 15
+      },
+      "pay": [
+        9000,
+        16000
+      ],
+      "fame": [
+        15,
+        24
+      ],
+      "popularity": [
+        8,
+        14
+      ],
+      "tier": "中",
+      "shootDaysHint": 3,
+      "shootHint": "夜戲潮汐時間緊，走位要準。",
+      "hard": 0.45,
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_film_05",
+      "season": "夏",
+      "type": "電影",
+      "title": "《窗台的信》文藝：替人保管信件的書店店員",
+      "loc": "film_cotton",
+      "roleHint": "飾演書店店員，替即將遠行的客人保管信件",
+      "blurb": "紅棉文藝組要溫柔、不煽情的店員角色。",
+      "synopsis": "文藝片《窗台的信》裡，你是書店店員，客人把一疊未寄出的信交給你保管，說「若我走了，請按地址寄出」。你只問一句「要幫你寄掛號嗎」。導演要克制，不要哭戲。",
+      "heroAngle": "文藝離合：保管比挽留更難。",
+      "diasporaHook": "書店與未寄出的信，是文藝片常見物件。",
+      "eraTag": "era_1989_summer_literary",
+      "discoverNote": "紅棉影業文藝通告",
+      "boardPriority": "high",
+      "boardNote": "夏主推・文藝信件",
+      "req": {
+        "acting": 26,
+        "iq": 20,
+        "charm": 17
+      },
+      "pay": [
+        7000,
+        13000
+      ],
+      "fame": [
+        12,
+        20
+      ],
+      "popularity": [
+        9,
+        15
+      ],
+      "tier": "中",
+      "shootDaysHint": 4,
+      "shootHint": "室內對手戲，道具信件多，注意連戲。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_tv_05",
+      "season": "夏",
+      "type": "電視劇",
+      "title": "《潮汐家庭》單元：送機當日的長子",
+      "loc": "tvb_longmen",
+      "roleHint": "飾演送親人出門口的長子，強作鎮定",
+      "blurb": "星河家庭單元劇要懂「把眼淚吞回去」的長子。",
+      "synopsis": "單元劇《潮汐家庭》寫送機當日的早晨。你是長子，替母親提行李，把護照放進袋子，說「到了打電話」。星河製片部不要任何口號式對白，只要家庭倫理戲的分寸。",
+      "heroAngle": "有人走有人留：家庭倫理裡的去留。",
+      "diasporaHook": "護照與大門口叮囑，是移民家庭的日常記憶。",
+      "eraTag": "era_1989_summer_departure",
+      "discoverNote": "星河單元劇組公開試鏡",
+      "boardPriority": "high",
+      "boardNote": "夏主推・家庭送別",
+      "req": {
+        "acting": 28,
+        "charm": 16,
+        "looks": 14
+      },
+      "pay": [
+        4500,
+        8000
+      ],
+      "fame": [
+        12,
+        18
+      ],
+      "popularity": [
+        10,
+        16
+      ],
+      "tier": "中",
+      "shootDaysHint": 3,
+      "shootHint": "情緒戲連拍，注意妝面。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_tv_06",
+      "season": "夏",
+      "type": "電視劇",
+      "title": "《街角照相館》留影的客人",
+      "loc": "tvb_kowloon",
+      "roleHint": "飾演臨行前去照相館留影的青年",
+      "blurb": "處境短劇要一場「拍完就走」的含蓄戲。",
+      "synopsis": "短劇《街角照相館》寫你在臨行前去拍證件照與家庭合照。攝影師叫你「笑一點」，你笑得很淡。劇本不解釋你為何要走，只留下相片乾掉的聲音。",
+      "heroAngle": "離合：相片比諾言長久。",
+      "diasporaHook": "街角照相館是港人集體回憶。",
+      "eraTag": "era_1989_summer_literary",
+      "discoverNote": "九龍廠景短劇配角",
+      "boardPriority": "normal",
+      "boardNote": "夏文藝短劇",
+      "req": {
+        "looks": 18,
+        "acting": 20,
+        "charm": 14
+      },
+      "pay": [
+        3200,
+        5800
+      ],
+      "fame": [
+        8,
+        13
+      ],
+      "popularity": [
+        7,
+        12
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "小景多，過場快。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_tv_07",
+      "season": "夏",
+      "type": "電視劇",
+      "title": "《碼頭茶餐廳》夜更：聽人話別的侍應",
+      "loc": "tvb_harbour",
+      "roleHint": "飾演茶餐廳夜更侍應，聽客人話別不多嘴",
+      "blurb": "要一個「聽得住別人說話」的侍應角色。",
+      "synopsis": "劇集夜戲設在碼頭茶餐廳。你是侍應，一對友人話別，你添茶、收碟，不插嘴。導演說：這季很多戲都在聽，不在辯。",
+      "heroAngle": "沉住氣延續到夏：聽，比說重要。",
+      "diasporaHook": "茶餐廳夜更是香港日常符號。",
+      "eraTag": "era_1989_summer_literary",
+      "discoverNote": "海傍錄影廠夜戲侍應角",
+      "boardPriority": "normal",
+      "boardNote": "夏茶餐廳配角",
+      "req": {
+        "acting": 18,
+        "stamina": 20,
+        "charm": 12
+      },
+      "pay": [
+        2800,
+        4800
+      ],
+      "fame": [
+        6,
+        11
+      ],
+      "popularity": [
+        6,
+        11
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "煙火氣場景，走位要自然。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_rec_01",
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "合唱單曲《船票》和音錄音",
+      "loc": "rec_star",
+      "roleHint": "和音歌手，錄副歌氣聲與低音",
+      "blurb": "虛構唱片公司為離合主題單曲徵和音。",
+      "synopsis": "虛構唱片品牌「星軌唱片」為單曲《船票》召和音。歌名與詞意寫私人離合，不涉時事口號。你負責副歌氣聲，錄音師要你「唱淡一點，像在碼頭風裡」。",
+      "heroAngle": "一首歌裡的去留情緒。",
+      "diasporaHook": "離合主題粵語歌是時代共同聽覺。",
+      "eraTag": "era_1989_summer_departure",
+      "discoverNote": "星軌錄音室和音試音",
+      "boardPriority": "normal",
+      "boardNote": "夏離合和音",
+      "req": {
+        "charm": 20,
+        "looks": 14,
+        "iq": 12
+      },
+      "pay": [
+        4000,
+        7000
+      ],
+      "fame": [
+        7,
+        12
+      ],
+      "popularity": [
+        12,
+        20
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "錄音室夜更，保護聲帶。",
+      "stressDeltaHint": "低",
+      "hard": 0.3,
+      "year": 1989,
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1989_rec_02",
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "卡拉OK示範帶《慢行》畫面出演",
+      "loc": "rec_wanchai",
+      "roleHint": "示範帶男主角，在碼頭慢行",
+      "blurb": "卡拉OK示範畫面要「慢慢走」的文藝臉。",
+      "synopsis": "唱片宣傳部為新歌《慢行》拍卡拉OK示範帶。你在碼頭與電車軌旁慢行，不對口型也可，重點是神態。製作人提醒：不要現代舞，要八十年代末的含蓄步伐。",
+      "heroAngle": "文藝節奏：慢，才有去留的重量。",
+      "diasporaHook": "卡拉OK示範帶是海外華人聚會記憶。",
+      "eraTag": "era_1989_summer_literary",
+      "discoverNote": "灣仔錄音大樓示範帶選角",
+      "boardPriority": "low",
+      "boardNote": "夏示範帶次級",
+      "req": {
+        "looks": 22,
+        "charm": 18,
+        "stamina": 14
+      },
+      "pay": [
+        3500,
+        6500
+      ],
+      "fame": [
+        5,
+        9
+      ],
+      "popularity": [
+        14,
+        22
+      ],
+      "tier": "初",
+      "shootDaysHint": 1,
+      "shootHint": "外景跟拍，服裝偏素。",
+      "hard": 0.26,
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_ad_03",
+      "season": "夏",
+      "type": "廣告",
+      "title": "「歸程電話卡」長途電話廣告",
+      "loc": "ad_central",
+      "roleHint": "飾演在公用電話亭打電話的青年",
+      "blurb": "虛構電訊廣告，主題是「打一通電話報平安」。",
+      "synopsis": "虛構品牌「歸程電話卡」拍長途電話廣告。你在街頭電話亭投幣、撥號、說「我還在」。創意要求溫暖克制，不提任何國家大事，只談家人報平安。",
+      "heroAngle": "去留之間：先報平安。",
+      "diasporaHook": "電話亭與長途電話卡是移民家庭共同記憶。",
+      "eraTag": "era_1989_summer_departure",
+      "discoverNote": "中環廣告行夏檔選角",
+      "boardPriority": "low",
+      "boardNote": "夏電話卡廣告",
+      "req": {
+        "charm": 20,
+        "looks": 16,
+        "acting": 12
+      },
+      "pay": [
+        5000,
+        9000
+      ],
+      "fame": [
+        6,
+        10
+      ],
+      "popularity": [
+        15,
+        24
+      ],
+      "tier": "中",
+      "shootDaysHint": 1,
+      "shootHint": "電話亭近鏡，對白短。",
+      "stressDeltaHint": "低",
+      "hard": 0.27,
+      "year": 1989,
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1989_rec_03",
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "主打歌《三年》錄音室領唱試音",
+      "loc": "rec_star",
+      "roleHint": "試音主唱，錄一段副歌",
+      "blurb": "星軌唱片黃金檔徵「一首歌養三年」的新聲音。",
+      "synopsis": "星軌唱片為主打歌《三年》公開試音。詞曲寫打拼與停留，不抄真實歌手作品。錄音總監要你穩、要你準，並說：今年秋檔唱片通告多，能多棲的人先上。",
+      "heroAngle": "一首歌養三年：多棲曝光起點。",
+      "diasporaHook": "錄音室紅燈與大耳筒，是粵語流行曲盛世符號。",
+      "eraTag": "era_1989_autumn_music",
+      "discoverNote": "星軌唱片公開試音",
+      "boardPriority": "high",
+      "boardNote": "秋主推・主打試音",
+      "req": {
+        "charm": 24,
+        "looks": 18,
+        "acting": 10
+      },
+      "pay": [
+        6000,
+        12000
+      ],
+      "fame": [
+        12,
+        20
+      ],
+      "popularity": [
+        18,
+        28
+      ],
+      "tier": "中",
+      "shootDaysHint": 2,
+      "shootHint": "多take，注意嗓子。",
+      "hard": 0.4,
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_rec_04",
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "合唱專輯《夜班咪》和音＋口白",
+      "loc": "rec_hk",
+      "roleHint": "和音兼口白，錄兩段對白式開場",
+      "blurb": "唱片公司夜班專輯要「有生活感」的男聲。",
+      "synopsis": "虛構廠牌「海港音像」做合唱專輯《夜班咪》。你錄和音，並念兩句口白：「下班未？」「咪高峰還熱。」製作人不要偶像腔，要臨記出身的沙啞真實。",
+      "heroAngle": "多棲：錄音室也是通告板。",
+      "diasporaHook": "夜班與咪高峰，是歌廳文化記憶。",
+      "eraTag": "era_1989_autumn_music",
+      "discoverNote": "海港音像錄音棚缺和音",
+      "boardPriority": "high",
+      "boardNote": "秋主推・合唱和音",
+      "req": {
+        "charm": 22,
+        "stamina": 16,
+        "iq": 12
+      },
+      "pay": [
+        4500,
+        8500
+      ],
+      "fame": [
+        9,
+        15
+      ],
+      "popularity": [
+        14,
+        22
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "夜更錄音，交通自行安排。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_rec_05",
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "打歌期電台訪問陪坐",
+      "loc": "rec_wanchai",
+      "roleHint": "陪主打歌星坐訪問，偶有一句回應",
+      "blurb": "打歌期要穩陣陪客，不要搶主持話。",
+      "synopsis": "打歌期安排電台訪問，你是陪坐新人，主打由別人唱。你只需在主持問「現場朋友怎看」時回一句實在話。宣傳提醒：秋季风頭在唱片，多露臉、少爭功。",
+      "heroAngle": "多棲曝光：陪坐也是位置。",
+      "diasporaHook": "電台直播室是粵語歌宣傳經典場景。",
+      "eraTag": "era_1989_autumn_music",
+      "discoverNote": "灣仔電台宣傳位",
+      "boardPriority": "high",
+      "boardNote": "秋主推・電台陪坐",
+      "req": {
+        "charm": 20,
+        "looks": 16,
+        "iq": 14
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        7,
+        12
+      ],
+      "popularity": [
+        16,
+        26
+      ],
+      "tier": "初",
+      "shootDaysHint": 1,
+      "shootHint": "直播無重來，聽指示。",
+      "stressDeltaHint": "中",
+      "hard": 0.33,
+      "year": 1989,
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1989_rec_06",
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "卡拉OK影碟《同場》對唱畫面",
+      "loc": "rec_star",
+      "roleHint": "對唱畫面男方，中段有一句高音",
+      "blurb": "卡拉OK影碟拍攝，要親切不油的對唱臉。",
+      "synopsis": "為卡拉OK影碟《同場》拍對唱畫面。場景是錄音室玻璃房與簡單舞台燈。製作人強調：這不是現代華麗K房，是八十年代末影碟畫面——親切、光硬、笑容克制。",
+      "heroAngle": "卡拉OK文化：一首歌的大眾臉。",
+      "diasporaHook": "卡拉OK影碟是家庭派對共同記憶。",
+      "eraTag": "era_1989_autumn_karaoke",
+      "discoverNote": "星軌影碟組選角",
+      "boardPriority": "high",
+      "boardNote": "秋主推・卡拉OK影碟",
+      "req": {
+        "looks": 20,
+        "charm": 22,
+        "stamina": 14
+      },
+      "pay": [
+        5000,
+        9500
+      ],
+      "fame": [
+        8,
+        14
+      ],
+      "popularity": [
+        20,
+        30
+      ],
+      "tier": "中",
+      "shootDaysHint": 2,
+      "shootHint": "對口型與眼神交流要準。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_rec_07",
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "唱片舖簽唱會助陣排隊區主持",
+      "loc": "rec_hk",
+      "roleHint": "簽唱會場區協助，帶粉絲排隊",
+      "blurb": "簽唱會要懂得控場的助陣面孔。",
+      "synopsis": "唱片舖簽唱會，你負責排隊區帶位與安全提示。不是主角，但鏡頭會掃到。店長說：秋檔簽唱密，能多棲的人先累積面孔。",
+      "heroAngle": "多棲：場務也是曝光。",
+      "diasporaHook": "唱片舖簽唱是實體唱片年代風景。",
+      "eraTag": "era_1989_autumn_music",
+      "discoverNote": "唱片舖活動臨記",
+      "boardPriority": "normal",
+      "boardNote": "秋簽唱助陣",
+      "req": {
+        "stamina": 22,
+        "charm": 16,
+        "looks": 12
+      },
+      "pay": [
+        2200,
+        4000
+      ],
+      "fame": [
+        4,
+        8
+      ],
+      "popularity": [
+        10,
+        18
+      ],
+      "tier": "初",
+      "shootDaysHint": 1,
+      "shootHint": "站立長久，聲線要清楚。",
+      "hard": 0.3,
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_var_02",
+      "season": "秋",
+      "type": "綜藝",
+      "title": "《咪高峰夜》卡拉OK擂台暖場",
+      "loc": "tvb_longmen",
+      "roleHint": "暖場先唱歌手，唱一首虛構流行曲",
+      "blurb": "星河綜藝卡拉OK擂台要暖場男聲。",
+      "synopsis": "星河綜藝《咪高峰夜》設卡拉OK擂台。你是暖場，唱一首虛構曲《路燈下》。評審口味偏穩，不要過度加花。台慶季尚未到，秋檔先用歌聲混個臉熟。",
+      "heroAngle": "曝光：歌聲比名氣先到。",
+      "diasporaHook": "電視卡拉OK擂台是家庭娛樂記憶。",
+      "eraTag": "era_1989_autumn_karaoke",
+      "discoverNote": "星河綜藝暖場試音",
+      "boardPriority": "normal",
+      "boardNote": "秋綜藝暖場",
+      "req": {
+        "charm": 23,
+        "looks": 17,
+        "stamina": 15
+      },
+      "pay": [
+        3500,
+        6500
+      ],
+      "fame": [
+        8,
+        13
+      ],
+      "popularity": [
+        15,
+        25
+      ],
+      "tier": "初",
+      "shootDaysHint": 1,
+      "shootHint": "直播感錄影，一次過。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_var_03",
+      "season": "秋",
+      "type": "綜藝",
+      "title": "《星河點唱機》觀眾席帶動拍掌",
+      "loc": "tvb_kowloon",
+      "roleHint": "觀眾席帶動員，按指示拍掌歡呼",
+      "blurb": "點唱節目要會帶氣氛但不搶鏡的拍掌人。",
+      "synopsis": "《星河點唱機》錄影要觀眾席帶動。你按場務手勢拍掌、點頭、微笑。這是秋檔多棲曝光的入門通告，待遇一般，但能混臉熟。",
+      "heroAngle": "多棲基層：先站進畫面。",
+      "diasporaHook": "電視錄影廠觀眾席是經典後台記憶。",
+      "eraTag": "era_1989_autumn_variety",
+      "discoverNote": "九龍廠景觀眾席臨記",
+      "boardPriority": "low",
+      "boardNote": "秋觀眾席",
+      "req": {
+        "stamina": 18,
+        "charm": 12,
+        "looks": 10
+      },
+      "pay": [
+        1200,
+        2200
+      ],
+      "fame": [
+        2,
+        5
+      ],
+      "popularity": [
+        6,
+        12
+      ],
+      "tier": "初",
+      "shootDaysHint": 1,
+      "shootHint": "久坐久站，服從場務。",
+      "stressDeltaHint": "低",
+      "hard": 0.2,
+      "year": 1989,
+      "seasonWeight": 0.6
+    },
+    {
+      "id": "gig_1989_ad_04",
+      "season": "秋",
+      "type": "廣告",
+      "title": "「音巢」卡式帶隨身聽廣告",
+      "loc": "ad_central",
+      "roleHint": "飾演巴士上聽卡式帶的上班族",
+      "blurb": "虛構音響品牌秋檔廣告，要生活感面孔。",
+      "synopsis": "虛構品牌「音巢」推卡式帶隨身聽。你在巴士上層戴耳機聽歌，窗外是電車線。廣告不出現真實商標，只要八十年代末的聽歌姿勢。",
+      "heroAngle": "唱片季外圍：聽歌的城市臉。",
+      "diasporaHook": "卡式帶隨身聽是一代人的上下班儀式。",
+      "eraTag": "era_1989_autumn_music",
+      "discoverNote": "中環廣告秋檔選角",
+      "boardPriority": "normal",
+      "boardNote": "秋隨身聽廣告",
+      "req": {
+        "looks": 19,
+        "charm": 17,
+        "stamina": 12
+      },
+      "pay": [
+        5500,
+        10000
+      ],
+      "fame": [
+        6,
+        11
+      ],
+      "popularity": [
+        16,
+        26
+      ],
+      "tier": "中",
+      "shootDaysHint": 1,
+      "shootHint": "巴士包車拍攝，班次緊。",
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "year": 1989,
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1989_ad_05",
+      "season": "秋",
+      "type": "廣告",
+      "title": "「樂茶」即飲茶廣告群戲",
+      "loc": "ad_adm",
+      "roleHint": "茶餐廳群戲客人，舉杯一瞬",
+      "blurb": "即飲茶廣告要茶餐廳群像。",
+      "synopsis": "虛構飲料「樂茶」在茶餐廳拍群戲。你是客人之一，舉杯、碰杯、轉身。鏡頭一掃而過，但秋檔廣告通告密，能上鏡就上。",
+      "heroAngle": "多棲：群戲也是日程表。",
+      "diasporaHook": "茶餐廳即飲茶是香港街景符號。",
+      "eraTag": "era_1989_autumn_variety",
+      "discoverNote": "廣告公司群戲召集",
+      "boardPriority": "low",
+      "boardNote": "秋飲料群戲",
+      "req": {
+        "looks": 12,
+        "stamina": 14,
+        "charm": 10
+      },
+      "pay": [
+        2500,
+        4500
+      ],
+      "fame": [
+        2,
+        5
+      ],
+      "popularity": [
+        8,
+        14
+      ],
+      "tier": "初",
+      "shootDaysHint": 1,
+      "shootHint": "半天收工，服裝自備素色。",
+      "hard": 0.2,
+      "year": 1989,
+      "seasonWeight": 0.6,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_var_04",
+      "season": "冬",
+      "type": "綜藝",
+      "title": "《星河台慶綵排》群舞底座",
+      "loc": "tvb_longmen",
+      "roleHint": "台慶群舞底座，負責托舉穩定性",
+      "blurb": "星河台慶綵排缺底座，要體力與服從。",
+      "synopsis": "星河電視台台慶晚會進入綵排。你是群舞底座，托舉、走位、聽數。位置只有有限幾個高光，高俊傑那類人會搶前排——你先把底座站穩。禁止討論真實台慶流程細節，只做你的拍子。",
+      "heroAngle": "台慶位得一個：先站穩底座。",
+      "diasporaHook": "台慶綵排與群舞是港產電視盛世記憶。",
+      "eraTag": "era_1989_winter_anniversary",
+      "discoverNote": "星河台慶組體力臨記",
+      "boardPriority": "high",
+      "boardNote": "冬主推・台慶綵排",
+      "req": {
+        "stamina": 32,
+        "looks": 14,
+        "acting": 8
+      },
+      "pay": [
+        4000,
+        7500
+      ],
+      "fame": [
+        10,
+        16
+      ],
+      "popularity": [
+        12,
+        20
+      ],
+      "tier": "中",
+      "shootDaysHint": 5,
+      "shootHint": "連日綵排，傷筋風險，聽防護指示。",
+      "hard": 0.5,
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_var_05",
+      "season": "冬",
+      "type": "綜藝",
+      "title": "《星光夜》台慶歌舞過場男群",
+      "loc": "tvb_longmen",
+      "roleHint": "歌舞過場男群，中段有兩步獨舞",
+      "blurb": "台慶正片過場要齊腳、肯Sweat的男群。",
+      "synopsis": "台慶節目《星光夜》過場歌舞需要男群。你有兩步簡單獨舞，其餘跟隊形。監製說：台慶位得一個，群舞先證明你跟得上節奏。",
+      "heroAngle": "競爭白熱化：群舞裡也被看見。",
+      "diasporaHook": "台慶歌舞過場是家庭圍爐回憶。",
+      "eraTag": "era_1989_winter_anniversary",
+      "discoverNote": "星河台慶歌舞組複試",
+      "boardPriority": "high",
+      "boardNote": "冬主推・台慶歌舞",
+      "req": {
+        "stamina": 28,
+        "looks": 18,
+        "charm": 16
+      },
+      "pay": [
+        5000,
+        9000
+      ],
+      "fame": [
+        12,
+        18
+      ],
+      "popularity": [
+        14,
+        24
+      ],
+      "tier": "中",
+      "shootDaysHint": 4,
+      "shootHint": "妝髮重，燈光熱，補水。",
+      "hard": 0.48,
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_var_06",
+      "season": "冬",
+      "type": "綜藝",
+      "title": "台慶後台快速換裝助演",
+      "loc": "tvb_harbour",
+      "roleHint": "後台助演，協助換裝與遞咪",
+      "blurb": "台慶後台要冷静、手快的助演。",
+      "synopsis": "台慶錄影當日，後台需要助演協助換裝、遞咪、清路。你幾乎不上鏡，但能學到節奏。場務說：比較從後台開始，誰穩誰上。",
+      "heroAngle": "台慶後台：比較從細節開始。",
+      "diasporaHook": "後台換裝與咪高峰是電視工業日常。",
+      "eraTag": "era_1989_winter_anniversary",
+      "discoverNote": "海傍廠景台慶後台召集",
+      "boardPriority": "normal",
+      "boardNote": "冬台慶後台",
+      "req": {
+        "stamina": 24,
+        "iq": 14,
+        "charm": 10
+      },
+      "pay": [
+        2200,
+        4000
+      ],
+      "fame": [
+        3,
+        7
+      ],
+      "popularity": [
+        5,
+        10
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "長時間待命，腳步要輕。",
+      "hard": 0.35,
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_var_07",
+      "season": "冬",
+      "type": "綜藝",
+      "title": "《賀歲倒數前哨》遊戲環節對手",
+      "loc": "tvb_kowloon",
+      "roleHint": "遊戲環節固定對手，輸贏都要有反應",
+      "blurb": "賀歲前哨綜藝要反應快的遊戲對手。",
+      "synopsis": "星河賀歲前哨特備《賀歲倒數前哨》設遊戲環節。你是固定對手，要接得住主持的節奏。這是台慶季延伸的曝光，競爭感強，但劇本不許寫黑幕。",
+      "heroAngle": "賀歲前哨：反應即位置。",
+      "diasporaHook": "賀歲遊戲環節是家庭節目經典。",
+      "eraTag": "era_1989_winter_festive",
+      "discoverNote": "九龍廠景賀歲前哨選角",
+      "boardPriority": "high",
+      "boardNote": "冬主推・賀歲遊戲",
+      "req": {
+        "charm": 22,
+        "stamina": 20,
+        "looks": 16
+      },
+      "pay": [
+        3800,
+        7000
+      ],
+      "fame": [
+        9,
+        15
+      ],
+      "popularity": [
+        16,
+        26
+      ],
+      "tier": "中",
+      "shootDaysHint": 2,
+      "shootHint": "肢體遊戲，注意安全墊。",
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35
+    },
+    {
+      "id": "gig_1989_film_06",
+      "season": "冬",
+      "type": "電影",
+      "title": "《團年夜》賀歲前哨：廚房幫工",
+      "loc": "film_lion",
+      "roleHint": "飾演廚房幫工，團年夜趕菜",
+      "blurb": "賀歲片前哨場次要有市井氣的廚房戲。",
+      "synopsis": "賀歲片《團年夜》前哨場次在廚房。你切菜、傳碟、被罵、再站起來。氣氛熱鬧，但你的角色是「 compar 裡的小人物」。製片說：台慶搶位之外，賀歲檔也要臉。",
+      "heroAngle": "賀歲前哨：熱鬧裡站穩。",
+      "diasporaHook": "團年廚房是華人年節共同記憶。",
+      "eraTag": "era_1989_winter_festive",
+      "discoverNote": "獅子山賀歲組廚房戲",
+      "boardPriority": "high",
+      "boardNote": "冬主推・賀歲廚房",
+      "req": {
+        "stamina": 26,
+        "acting": 16,
+        "charm": 12
+      },
+      "pay": [
+        6000,
+        11000
+      ],
+      "fame": [
+        10,
+        16
+      ],
+      "popularity": [
+        8,
+        14
+      ],
+      "tier": "中",
+      "shootDaysHint": 3,
+      "shootHint": "煙火與熱油場景，聽安全指引。",
+      "hard": 0.44,
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_film_07",
+      "season": "冬",
+      "type": "電影",
+      "title": "《搶位》賀歲喜劇：跑龍套記者會群演",
+      "loc": "film_cotton",
+      "roleHint": "記者會群演，舉手發問一次",
+      "blurb": "賀歲喜劇記者會戲，要敢舉手的群演。",
+      "synopsis": "賀歲喜劇《搶位》拍虛構記者會。你是記者群演，舉手問一句「檔期定了沒有」。片名與劇情都是虛構行業諷刺，不影射真實新聞事件。",
+      "heroAngle": "競爭：連群演都在搶一句。",
+      "diasporaHook": "記者會群戲是港產賀歲片常見橋段。",
+      "eraTag": "era_1989_winter_press",
+      "discoverNote": "紅棉賀歲記者會群演",
+      "boardPriority": "normal",
+      "boardNote": "冬記者會群演",
+      "req": {
+        "charm": 14,
+        "looks": 12,
+        "acting": 12
+      },
+      "pay": [
+        3500,
+        6500
+      ],
+      "fame": [
+        5,
+        9
+      ],
+      "popularity": [
+        7,
+        12
+      ],
+      "tier": "初",
+      "shootDaysHint": 1,
+      "shootHint": "閃光燈多，勿直視強光。",
+      "hard": 0.3,
+      "year": 1989,
+      "seasonWeight": 0.6,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_tv_08",
+      "season": "冬",
+      "type": "電視劇",
+      "title": "《台慶劇《星河風雲》》侍衛替補",
+      "loc": "tvb_longmen",
+      "roleHint": "古裝侍衛替補，走位齊腳",
+      "blurb": "星河台慶劇侍衛組缺替補。",
+      "synopsis": "星河台慶年度大劇《星河風雲》侍衛組有人病假，要替補。你穿甲、齊腳、不出聲。這與台慶位競爭同一季氣氛，但你的任務只是不走錯位。",
+      "heroAngle": "台慶季：替補也要齊。",
+      "diasporaHook": "台慶劇侍衛齊腳是經典電視畫面。",
+      "eraTag": "era_1989_winter_anniversary",
+      "discoverNote": "星河戲劇組侍衛替補",
+      "boardPriority": "normal",
+      "boardNote": "冬台慶劇替補",
+      "req": {
+        "stamina": 24,
+        "looks": 13,
+        "acting": 10
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        11
+      ],
+      "popularity": [
+        5,
+        10
+      ],
+      "tier": "初",
+      "shootDaysHint": 4,
+      "shootHint": "甲重，注意中暑與補水。",
+      "hard": 0.38,
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_tv_09",
+      "season": "冬",
+      "type": "電視劇",
+      "title": "《歲晚》處境：搶通告的臨記群戲",
+      "loc": "tvb_kowloon",
+      "roleHint": "臨記群戲，在通告板前推擠但不打架",
+      "blurb": "處境劇要「搶通告」的真實感，不要真衝突。",
+      "synopsis": "處境劇《歲晚》重現臨記在通告板前的推擠。你要演得像真搶，又不能真傷人。導演說：冬天天氣冷、人火氣大，戲裡比較，戲外收着。",
+      "heroAngle": "比較：通告板前的距離。",
+      "diasporaHook": "通告板推擠是臨記生涯共同記憶。",
+      "eraTag": "era_1989_winter_festive",
+      "discoverNote": "九龍處境劇群戲",
+      "boardPriority": "normal",
+      "boardNote": "冬搶通告群戲",
+      "req": {
+        "stamina": 22,
+        "acting": 14,
+        "charm": 10
+      },
+      "pay": [
+        2500,
+        4500
+      ],
+      "fame": [
+        5,
+        9
+      ],
+      "popularity": [
+        6,
+        11
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "群戲安全第一，聽武指。",
+      "hard": 0.36,
+      "year": 1989,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_film_08",
+      "season": "冬",
+      "type": "電影",
+      "title": "《紅封包》賀歲：舞獅隊替補頭槌",
+      "loc": "film_harbour",
+      "roleHint": "舞獅隊替補，練獅頭基礎步",
+      "blurb": "賀歲片舞獅場次缺替補頭槌。",
+      "synopsis": "賀歲片《紅封包》有舞獅場次。你是替補頭槌，練基本步與轉頭。氣氛熱鬧喜慶，屬冬檔次類型中的動作支線，era 用次標。",
+      "heroAngle": "賀歲動作支線：體力說話。",
+      "diasporaHook": "舞獅賀歲是華人年節符號。",
+      "eraTag": "era_1989_winter_press",
+      "discoverNote": "海傍片場舞獅替補",
+      "boardPriority": "low",
+      "boardNote": "冬舞獅替補",
+      "req": {
+        "stamina": 30,
+        "looks": 11,
+        "acting": 8
+      },
+      "pay": [
+        4000,
+        7500
+      ],
+      "fame": [
+        4,
+        8
+      ],
+      "popularity": [
+        6,
+        12
+      ],
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "獅頭視野差，聽鼓點。",
+      "hard": 0.46,
+      "year": 1989,
+      "seasonWeight": 0.6,
+      "stressDeltaHint": "中"
+    },
+    {
+      "id": "gig_1989_rec_08",
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "音樂雜誌封面男配角棚拍",
+      "loc": "rec_wanchai",
+      "roleHint": "雜誌棚拍男配，站在主唱身後半步",
+      "blurb": "虛構音樂雜誌秋檔封面要半步以外的配角臉。",
+      "synopsis": "虛構刊物《音軌週刊》拍封面。主唱在前，你在後半步持咪但不對口。攝影要層次，不要搶焦。秋檔唱片視覺多，這是便宜曝光。",
+      "heroAngle": "多棲：封面邊緣也有位置。",
+      "diasporaHook": "音樂雜誌封面是實體媒體年代符號。",
+      "eraTag": "era_1989_autumn_karaoke",
+      "discoverNote": "灣仔棚拍臨記",
+      "boardPriority": "low",
+      "boardNote": "秋雜誌配角",
+      "req": {
+        "looks": 20,
+        "charm": 15,
+        "stamina": 10
+      },
+      "pay": [
+        2800,
+        5000
+      ],
+      "fame": [
+        3,
+        7
+      ],
+      "popularity": [
+        11,
+        18
+      ],
+      "tier": "初",
+      "shootDaysHint": 1,
+      "shootHint": "閃光密集，勿眨眼。",
+      "stressDeltaHint": "低",
+      "hard": 0.24,
+      "year": 1989,
+      "seasonWeight": 1.0
+    }
+  ]
+}

@@ -1,0 +1,468 @@
+{
+  "nodes": [
+    {
+      "id": "R_xu_meet",
+      "title": "春茗初遇",
+      "synopsis": "阿偉在春茗酒會搬運道具時，不慎撞到剛好經過的徐寶珊。徐寶珊是廣告界有名的女強人，正與客戶應酬。阿偉連忙道歉，徐寶珊見他手腳勤快，順口提點幾句。",
+      "beats": [
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "後生仔，你搬東西要看路，這裡紅酒一跌就幾千元，你賠得起嗎？"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "對不起，徐小姐，我趕著在客戶到之前擺好佈景，一時心急，真是不好意思。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "你認識我？我好像沒見過你，你是哪個部門的臨時演員？"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "我是特約臨時演員，今晚負責佈景和雜務，徐小姐你是今晚的主禮嘉賓，我怎麼會不認識。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "挺機靈。做臨時演員也要有記性，記住誰是客人、誰是老闆，你才有機會站前一點。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "多謝徐小姐提點，我會記住。你剛才那杯酒濺到一點，我幫你換一杯新的。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_xu_meet_polite",
+          "label": "有禮接招：多謝提點，主動幫忙換酒",
+          "effects": {
+            "flags": [
+              "flag_xu_met_polite"
+            ],
+            "stats": {
+              "rel_xu": 1,
+              "craft": 1
+            },
+            "notes": "徐寶珊覺得阿偉機靈又有禮，留下好印象。"
+          }
+        },
+        {
+          "id": "C_xu_meet_distance",
+          "label": "保持距離：點頭致意，繼續做自己的事",
+          "effects": {
+            "flags": [
+              "flag_xu_met_distance"
+            ],
+            "stats": {
+              "rel_xu": 0,
+              "standing": 1
+            },
+            "notes": "阿偉不想攀附，專心做好臨時演員的本份。"
+          }
+        }
+      ],
+      "arcBeat": "meet",
+      "romanceLine": "xu",
+      "phase": "P2–P3",
+      "when": "1990年春",
+      "setting": "星河電視台春茗酒會，廣告客戶雲集，阿偉以臨時演員身份在場協助佈景。",
+      "eraTag": "era_1990_spring_ad",
+      "cast": [
+        "阿偉",
+        "徐寶珊"
+      ],
+      "artId": "rom_xu_meet",
+      "conflict": "",
+      "flags_written": [
+        "flag_xu_met_polite",
+        "flag_xu_met_distance"
+      ]
+    },
+    {
+      "id": "R_xu_push1",
+      "title": "商場活動的試探",
+      "synopsis": "活動結束後，徐寶珊主動找阿偉，讚他現場應變快，並暗示可以投資幫他開設製作公司，條件是阿偉要跟她合作。",
+      "beats": [
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "今天活動這麼多突發事，你都可以處理好，證明你不止做臨時演員這麼簡單。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "都是靠一班手足幫忙，我一個人哪有這麼大本事，徐小姐你過獎了。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "我看人很準。你有沒有想過自己開一間製作公司？我可以幫你搭路，資金方面也可以商量。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "開公司？我連租寫字樓的錢都沒有，徐小姐你不要跟我開玩笑啦。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "我不開玩笑。你出人脈和執行力，我出資金和客戶網絡，賺到錢大家分，你考慮一下。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "徐小姐，你這麼看得起我，我當然想聽多一點，不過我想知道你為什麼選我。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_xu_push1_accept",
+          "label": "願意談合作：詳細請教合作條件",
+          "effects": {
+            "flags": [
+              "flag_xu_coop_talk"
+            ],
+            "stats": {
+              "rel_xu": 2,
+              "wealth": 1
+            },
+            "notes": "阿偉表現出進取心，徐寶珊欣賞。"
+          }
+        },
+        {
+          "id": "C_xu_push1_decline",
+          "label": "婉拒金援口風：想先靠自己站穩陣腳",
+          "effects": {
+            "flags": [
+              "flag_xu_coop_decline"
+            ],
+            "stats": {
+              "rel_xu": 0,
+              "standing": 1
+            },
+            "notes": "阿偉不想太快接受金援，保持自主。"
+          }
+        }
+      ],
+      "arcBeat": "push",
+      "romanceLine": "xu",
+      "phase": "P3",
+      "when": "1990年",
+      "setting": "大型商場廣告活動，徐寶珊的公司是主要贊助商，阿偉獲派做現場臨時演員統籌。",
+      "eraTag": "era_1990_spring_ad",
+      "cast": [
+        "阿偉",
+        "徐寶珊"
+      ],
+      "artId": "rom_xu_push1",
+      "conflict": "",
+      "flags_written": [
+        "flag_xu_coop_talk",
+        "flag_xu_coop_decline"
+      ]
+    },
+    {
+      "id": "R_xu_push2",
+      "title": "私人飯局的距離",
+      "synopsis": "飯局上徐寶珊談笑風生，介紹人脈之餘，也問起阿偉的私生活。阿偉察覺徐寶珊對自己不止公事上的興趣。",
+      "beats": [
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "剛才那位陳老闆，他公司每年廣告預算過千萬，你懂得和他打交道，以後不怕沒工作。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "多謝徐小姐介紹，不過我剛剛才開始，怕應酬不來，到時失禮你怎麼辦。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "你不用這麼緊張，我在這裡看著你。你平時下班之後有什麼消遣？有沒有女朋友？"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "都是和班手足喝點東西，哪有時間拍拖。徐小姐你呢？經常見你一個人來飯局。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "我離婚好幾年了，生意就是我的伴侶。不過最近覺得，有個人聊聊天也不錯。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "徐小姐你條件這麼好，怎麼會沒有人追，是你要求高而已。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_xu_push2_open",
+          "label": "打開私人一面：分享自己的生活同想法",
+          "effects": {
+            "flags": [
+              "flag_xu_personal_open"
+            ],
+            "stats": {
+              "rel_xu": 2,
+              "craft": 1
+            },
+            "notes": "阿偉願意讓徐寶珊了解自己，關係升溫。"
+          }
+        },
+        {
+          "id": "C_xu_push2_business",
+          "label": "只談生意：將話題帶回公事",
+          "effects": {
+            "flags": [
+              "flag_xu_business_only"
+            ],
+            "stats": {
+              "rel_xu": 1,
+              "standing": 1
+            },
+            "notes": "阿偉保持專業距離，徐寶珊略感失望但欣賞。"
+          }
+        }
+      ],
+      "arcBeat": "push",
+      "romanceLine": "xu",
+      "phase": "P3–P4",
+      "when": "1991年",
+      "setting": "高級私人會所飯局，徐寶珊約阿偉單獨見面，說要介紹幾位重要客戶給他認識。",
+      "eraTag": "era_1991_autumn_capital",
+      "cast": [
+        "阿偉",
+        "徐寶珊"
+      ],
+      "artId": "rom_xu_push2",
+      "conflict": "",
+      "flags_written": [
+        "flag_xu_personal_open",
+        "flag_xu_business_only"
+      ]
+    },
+    {
+      "id": "R_xu_crisis",
+      "title": "包廂裡的條件",
+      "synopsis": "徐寶珊開門見山，說可以全力支持阿偉的事業，但條件是他要成為她的人。阿偉要決定接受尊重合作，還是依賴這條捷徑。",
+      "beats": [
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "我不想轉彎抹角。你跟我，我擔保你三年內有自己的製作公司，不用再做臨時演員。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "徐小姐，你說的『跟你』，是指合作夥伴，還是其他東西？我想搞清楚。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "你是聰明人，應該明白我的意思。我欣賞你，想將你留在我身邊，就是這麼簡單。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "如果我要靠這種關係才上到位，我怕我以後在行內抬不起頭做人。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "行內哪個不是這樣？你以為單靠實力就行？我當年也是這樣捱過來。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "我明白你的好意，但我希望我和你之間，是對等的合作，而不是我依附你。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_xu_crisis_respect",
+          "label": "尊重合作：講明要對等關係，不做依附",
+          "effects": {
+            "flags": [
+              "flag_bao_respect"
+            ],
+            "stats": {
+              "rel_xu": 2,
+              "wealth": 1,
+              "standing": 1
+            },
+            "notes": "徐寶珊意外阿偉有底線，反而更尊重他。"
+          }
+        },
+        {
+          "id": "C_xu_crisis_depend",
+          "label": "依賴結構：接受條件，換取事業捷徑",
+          "effects": {
+            "flags": [
+              "flag_bao_depend"
+            ],
+            "stats": {
+              "rel_xu": 1,
+              "wealth": 3,
+              "standing": -1
+            },
+            "notes": "阿偉選擇捷徑，但尊嚴受損，關係變得不平等。"
+          }
+        },
+        {
+          "id": "C_xu_crisis_refuse",
+          "label": "拒絕：不想將感情和利益混在一起",
+          "effects": {
+            "flags": [
+              "flag_bao_refuse"
+            ],
+            "stats": {
+              "rel_xu": -1,
+              "standing": 1
+            },
+            "notes": "阿偉斷然拒絕，徐寶珊覺得被拂逆，關係降溫。"
+          }
+        }
+      ],
+      "arcBeat": "crisis",
+      "romanceLine": "xu",
+      "phase": "P4",
+      "when": "1991年",
+      "setting": "資本場私人包廂，徐寶珊約阿偉見面，直接提出更緊密的合作條件，暗示可以包起他的事業。",
+      "eraTag": "era_1991_autumn_capital",
+      "cast": [
+        "阿偉",
+        "徐寶珊"
+      ],
+      "artId": "rom_xu_crisis",
+      "conflict": "T6",
+      "flags_written": [
+        "flag_bao_respect",
+        "flag_bao_depend",
+        "flag_bao_refuse"
+      ]
+    },
+    {
+      "id": "R_xu_ending",
+      "title": "燈光之後的抉擇",
+      "synopsis": "晚宴曲終人散，徐寶珊問阿偉接下來的路想怎樣走。阿偉要決定是否與她建立平等伴侶關係，還是讓這段關係走向決裂或冷淡。",
+      "beats": [
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "今晚之後，我就要飛去外國談一單大生意，可能幾個月都不在香港。你有什麼想跟我說？"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "我想你知道，無論我將來做成怎樣，我都不會忘記你在我最倒楣的時候幫過我。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "我不需要你記住我幫過你，我想知道你當我是什麼人。合作夥伴？還是其他？"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "如果你肯將我當作平等的伴侶，而不是你旗下的人，我想和你認真走下去。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "平等？我從來沒有試過和別人平等相處。不過你是第一個令我覺得值得試的人。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "我不會急，你飛完回來，我們再慢慢談。最重要是大家都舒服。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_xu_end_he",
+          "label": "平等伴侶：約定再見，認真發展",
+          "effects": {
+            "flags": [
+              "flag_xu_he",
+              "flag_xu_commit"
+            ],
+            "stats": {
+              "rel_xu": 3,
+              "standing": 1
+            },
+            "notes": "兩人約定以平等身份重新開始，感情線開花。"
+          }
+        },
+        {
+          "id": "C_xu_end_be",
+          "label": "依賴決裂：關係變質，各行各路",
+          "effects": {
+            "flags": [
+              "flag_xu_be"
+            ],
+            "stats": {
+              "rel_xu": -2,
+              "wealth": -1
+            },
+            "notes": "阿偉無法接受不平等關係，徐寶珊亦不願改變，最終冷淡收場。"
+          }
+        }
+      ],
+      "arcBeat": "ending",
+      "romanceLine": "xu",
+      "phase": "P5",
+      "when": "1992年",
+      "setting": "資本場合大型晚宴結束後，後台走廊只剩阿偉與徐寶珊，兩人終於要面對關係的定局。",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "阿偉",
+        "徐寶珊"
+      ],
+      "artId": "rom_xu_ending",
+      "conflict": "",
+      "flags_written": [
+        "flag_xu_he",
+        "flag_xu_commit",
+        "flag_xu_be"
+      ]
+    }
+  ]
+}

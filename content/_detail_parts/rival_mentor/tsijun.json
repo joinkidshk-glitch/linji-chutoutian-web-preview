@@ -1,0 +1,412 @@
+{
+  "nodes": [
+    {
+      "id": "A_tsijun_meet",
+      "phase": "P1",
+      "title": "練功房的第一課",
+      "when": "1988春",
+      "setting": "星河電視台舊廠大樓三樓，單元劇練功房。牆身油漆剝落，鏡前鋪住一塊起毛嘅地膠，角落擺住一疊手寫分鏡紙。",
+      "eraTag": "era_1988_spring",
+      "cast": [
+        "張子駿",
+        "高俊傑"
+      ],
+      "synopsis": "你被派去單元劇練功房試鏡，遇到文藝導演張子駿。佢唔急住睇你演戲，反而叫你喺鏡前企定，慢慢講一次自己點解想做戲。高俊傑喺門口探頭，催你唔好嘥時間。",
+      "beats": [
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "唔使急，企定先。你望住塊鏡，諗清楚自己想喺鏡入面見到咩人。",
+            "影展唔係靠人氣，係靠你肯唔肯喺一個鏡頭入面磨到自己都怕。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "喂，張導，呢個新人我哋廠等住用㗎，你唔好同佢磨到天黑啦。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "天黑就天黑。你返去同上面講，戲未磨好，我唔會放人。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tsijun_meet_stay",
+          "label": "留低跟張子駿慢慢磨，唔理外面催",
+          "effects": {
+            "flags": [
+              "flag_tsijun_met_stay"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C1；張子駿記住你肯留低"
+          }
+        },
+        {
+          "id": "C_tsijun_meet_leave",
+          "label": "跟高俊傑走，先接廠期通告",
+          "effects": {
+            "flags": [
+              "flag_tsijun_met_leave"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 T1；張子駿冇攔你，但眼神沉一沉"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tsijun_met_leave",
+        "flag_tsijun_met_stay"
+      ],
+      "artId": "arc_tsijun_meet",
+      "conflict": "C1／T1",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tsijun",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C1",
+        "T1"
+      ]
+    },
+    {
+      "id": "A_tsijun_push1",
+      "phase": "P1.5",
+      "title": "單元劇班底",
+      "when": "1988秋",
+      "setting": "星河電視台二號錄影廠，單元劇《夜行街》佈景。凌晨兩點，劇組食完外賣，燈光師喺度換燈泡。",
+      "eraTag": "era_1988_autumn",
+      "cast": [
+        "張子駿",
+        "高俊傑"
+      ],
+      "synopsis": "張子駿把你收入單元劇班底，要你演一個只有三場戲嘅小角色。高俊傑嫌你曝光太少，話廠方想換個有話題嘅人。張子駿頂住壓力，叫你喺排練房再磨一次。",
+      "beats": [
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "三場戲夠唔夠？夠。你喺第三場嗰個回頭，我要觀眾記十年。",
+            "唔好理人氣，人氣會散，層次唔會。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "張導，廠方話收視要緊，換個有新聞嘅人企喺度，觀眾先會留低。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "咁你叫廠方自己嚟同我講。我個班底，我話事。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tsijun_push1_grind",
+          "label": "留喺排練房，同張子駿磨到收廠",
+          "effects": {
+            "flags": [
+              "flag_tsijun_push1_grind"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C8；張子駿開始當你係自己班底"
+          }
+        },
+        {
+          "id": "C_tsijun_push1_side",
+          "label": "私下應承高俊傑，兩邊都唔得罪",
+          "effects": {
+            "flags": [
+              "flag_tsijun_push1_side"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C8；張子駿後來會知你兩頭走"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tsijun_push1_grind",
+        "flag_tsijun_push1_side"
+      ],
+      "artId": "arc_tsijun_push1",
+      "conflict": "收視話題同演出層次拉扯；張子駿守住班底，高俊傑要廠方交代。",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tsijun",
+      "arcKind": "mentor"
+    },
+    {
+      "id": "A_tsijun_push2",
+      "phase": "P2",
+      "title": "商業同文藝兩張通告",
+      "when": "1989春",
+      "setting": "星河電視台大堂，兩張通告同時貼喺佈告板：一張係大騷綜藝嘉賓，一張係張子駿嘅影展短片試鏡。",
+      "eraTag": "era_1989_spring",
+      "cast": [
+        "張子駿",
+        "高俊傑"
+      ],
+      "synopsis": "高俊傑幫你爭到綜藝大騷嘅位，話曝光難得。張子駿同時遞上短片試鏡邀請，講明冇錢、冇人氣，但會送去影展。你只可以揀一張通告。",
+      "beats": [
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "呢個大騷位，我幫你講到口水乾。你上到去企三分鐘，全港都識你。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "我唔阻你。不過你問下自己，你想人記得你個名，定記得你嗰場戲。",
+            "影展唔係靠人氣，係靠你肯唔肯慢慢磨戲。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "張導，你個影展幾時先有人睇？廠方睇收視㗎。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tsijun_push2_film",
+          "label": "揀張子駿嘅短片試鏡，放棄大騷",
+          "effects": {
+            "flags": [
+              "flag_tsijun_push2_film"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C8；張子駿應承親自同你排戲"
+          }
+        },
+        {
+          "id": "C_tsijun_push2_variety",
+          "label": "揀綜藝大騷，同張子駿講聲抱歉",
+          "effects": {
+            "flags": [
+              "flag_tsijun_push2_variety"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 C8；張子駿冇鬧你，只叫你記住今日個選擇"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tsijun_push2_film",
+        "flag_tsijun_push2_variety"
+      ],
+      "artId": "arc_tsijun_push2",
+      "conflict": "C8",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tsijun",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C8"
+      ]
+    },
+    {
+      "id": "A_tsijun_crisis",
+      "phase": "P3",
+      "title": "曝光同層次",
+      "when": "1990秋",
+      "setting": "影展放映室，外面落緊雨。張子駿嘅短片入圍一個小單元，你喺片入面只有一個長鏡頭。",
+      "eraTag": "era_1990_autumn",
+      "cast": [
+        "張子駿",
+        "高俊傑"
+      ],
+      "synopsis": "短片放映後，有發行商想剪走你嗰個長鏡頭，換成節奏快嘅版本，話咁先有人氣。張子駿堅持保留，高俊傑就話機會難得。你被夾喺中間。",
+      "beats": [
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "嗰個長鏡頭係成套戲嘅心。剪走咗，你演嘅嘢就變佈景。",
+            "你想人記得你，就要人記得你點樣企喺個鏡頭入面。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "發行商話剪短啲先有人睇。張導，你唔好同錢鬥氣啦。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "我唔係同錢鬥氣，我係同你講，層次剪唔走。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tsijun_crisis_hold",
+          "label": "公開支持張子駿，企硬保留長鏡頭",
+          "effects": {
+            "flags": [
+              "flag_tsijun_crisis_hold"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C11／T3；發行商讓步，張子駿當眾多謝你"
+          }
+        },
+        {
+          "id": "C_tsijun_crisis_cut",
+          "label": "勸張子駿剪短，換發行商支持",
+          "effects": {
+            "flags": [
+              "flag_tsijun_crisis_cut"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 C11／T3；張子駿冇出聲，收工自己一個走"
+          }
+        },
+        {
+          "id": "C_tsijun_crisis_silent",
+          "label": "唔表態，等兩邊自己傾",
+          "effects": {
+            "flags": [
+              "flag_tsijun_crisis_silent"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C11／T3；張子駿望你一眼，冇講嘢"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tsijun_crisis_cut",
+        "flag_tsijun_crisis_hold",
+        "flag_tsijun_crisis_silent"
+      ],
+      "artId": "arc_tsijun_crisis",
+      "conflict": "C11／T3",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tsijun",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C11",
+        "T3"
+      ]
+    },
+    {
+      "id": "A_tsijun_ending",
+      "phase": "P5",
+      "title": "評審席上嘅熟面口",
+      "when": "1992",
+      "setting": "影展頒獎禮後台走廊，張子駿坐喺評審席隔籬嘅休息位，手上仲揸住節目表。",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "張子駿",
+        "高俊傑"
+      ],
+      "synopsis": "幾年過去，你喺影展再遇張子駿。佢望住你，話你個樣熟口熟面，但問你仲記唔記得當初練功房嗰堂。高俊傑喺旁邊等緊你過去應酬。",
+      "beats": [
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "你個樣，我熟口熟面。不過我想知，你仲記唔記得練功房塊鏡。",
+            "影展唔係靠人氣，係靠你仲肯唔肯慢慢磨戲。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "喂，前面個酒會等緊你㗎，唔好喺度企咁耐啦。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "你去啦。不過我行過咁多屆評審席，認得邊個係磨出嚟，邊個係企出嚟。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tsijun_ending_respect",
+          "label": "留低同張子駿講返當年嗰堂，先過去酒會",
+          "effects": {
+            "flags": [
+              "flag_tsijun_ending_respect"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "rival_respect；張子駿拍你膊頭，話你仲有得磨"
+          }
+        },
+        {
+          "id": "C_tsijun_ending_complete",
+          "label": "請張子駿做你下一部戲嘅監製",
+          "effects": {
+            "flags": [
+              "flag_tsijun_ending_complete"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "mentor_complete；張子駿笑住話要睇你個劇本先"
+          }
+        },
+        {
+          "id": "C_tsijun_ending_cold",
+          "label": "點頭就走，過去酒會應酬",
+          "effects": {
+            "flags": [
+              "flag_tsijun_ending_cold"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "cold_war；張子駿望住你背影，冇再叫住你"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tsijun_ending_cold",
+        "flag_tsijun_ending_complete",
+        "flag_tsijun_ending_respect"
+      ],
+      "artId": "arc_tsijun_ending",
+      "conflict": "C17／E03",
+      "arcBeat": "ending",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tsijun",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C17",
+        "E03"
+      ]
+    }
+  ]
+}

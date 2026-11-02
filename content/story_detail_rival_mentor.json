@@ -1,0 +1,4216 @@
+{
+  "version": 2.2,
+  "locale": "zh-Hant-written-HK",
+  "source": "DeepSeek Pack3 v2 written rewrite; structure/id/flag from v1; cast_main; pcSilent; UNLOCK§5; MASTER v1.4-DS; lexicon; no art",
+  "arcs": [
+    {
+      "arcLine": "ko",
+      "name": "高俊傑",
+      "arcKind": "rival",
+      "nodePrefix": "A_ko_",
+      "linksMain": [
+        "C3",
+        "C10",
+        "C12",
+        "T2"
+      ],
+      "nodeIds": [
+        "A_ko_meet",
+        "A_ko_push1",
+        "A_ko_push2",
+        "A_ko_crisis",
+        "A_ko_ending"
+      ]
+    },
+    {
+      "arcLine": "hakfan",
+      "name": "張克凡",
+      "arcKind": "rival",
+      "nodePrefix": "A_hakfan_",
+      "linksMain": [
+        "P2–P4資源場"
+      ],
+      "nodeIds": [
+        "A_hakfan_meet",
+        "A_hakfan_push1",
+        "A_hakfan_push2",
+        "A_hakfan_crisis",
+        "A_hakfan_ending"
+      ]
+    },
+    {
+      "arcLine": "tsijun",
+      "name": "張子駿",
+      "arcKind": "mentor",
+      "nodePrefix": "A_tsijun_",
+      "linksMain": [
+        "C8",
+        "C11",
+        "C17",
+        "E03",
+        "T3"
+      ],
+      "nodeIds": [
+        "A_tsijun_meet",
+        "A_tsijun_push1",
+        "A_tsijun_push2",
+        "A_tsijun_crisis",
+        "A_tsijun_ending"
+      ]
+    },
+    {
+      "arcLine": "fong",
+      "name": "方小龍",
+      "arcKind": "friend",
+      "nodePrefix": "A_fong_",
+      "linksMain": [
+        "P3替身危機",
+        "E05"
+      ],
+      "nodeIds": [
+        "A_fong_meet",
+        "A_fong_push1",
+        "A_fong_push2",
+        "A_fong_crisis",
+        "A_fong_ending"
+      ]
+    },
+    {
+      "arcLine": "tong",
+      "name": "唐素雲",
+      "arcKind": "mentor",
+      "nodePrefix": "A_tong_",
+      "linksMain": [
+        "P2去留",
+        "E09"
+      ],
+      "nodeIds": [
+        "A_tong_meet",
+        "A_tong_push1",
+        "A_tong_push2",
+        "A_tong_crisis",
+        "A_tong_ending"
+      ]
+    },
+    {
+      "arcLine": "ho",
+      "name": "何生",
+      "arcKind": "mentor",
+      "nodePrefix": "A_ho_",
+      "linksMain": [
+        "C2",
+        "C4",
+        "E01"
+      ],
+      "nodeIds": [
+        "A_ho_meet",
+        "A_ho_push1",
+        "A_ho_push2",
+        "A_ho_crisis",
+        "A_ho_ending"
+      ]
+    },
+    {
+      "arcLine": "gao",
+      "name": "高文瀚",
+      "arcKind": "mentor",
+      "nodePrefix": "A_gao_",
+      "linksMain": [
+        "C8",
+        "C12",
+        "E02",
+        "T4"
+      ],
+      "nodeIds": [
+        "A_gao_meet",
+        "A_gao_push1",
+        "A_gao_push2",
+        "A_gao_crisis",
+        "A_gao_ending"
+      ]
+    },
+    {
+      "arcLine": "lei",
+      "name": "雷勁",
+      "arcKind": "capital",
+      "nodePrefix": "A_lei_",
+      "linksMain": [
+        "C7",
+        "flag_anti_lei"
+      ],
+      "nodeIds": [
+        "A_lei_meet",
+        "A_lei_push1",
+        "A_lei_push2",
+        "A_lei_crisis",
+        "A_lei_ending"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "A_ko_meet",
+      "phase": "P1",
+      "title": "搶板初遇",
+      "when": "1988春",
+      "setting": "星河電視台二號錄影廠外走廊，臨時演員排隊等派通告",
+      "eraTag": "era_1988_spring",
+      "cast": [
+        "高俊傑"
+      ],
+      "synopsis": "阿偉排隊等候派發通告時，高俊傑突然插隊，搶走阿偉手上的紙本通告，更當眾讀出阿偉的名字來挑釁阿偉。",
+      "beats": [
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "那個位置我早已排好，你還不明白嗎？",
+            "你的名字如此難讀，難怪副導演都記不住你。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "我不是星二代，我是自己一步一步熬上來的，你呢？站在這裡等運到？"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "算了，今日我心情好，把通告還給你，但下次不要再要我開口。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ko_meet_grab",
+          "label": "搶回通告機會，堅決不讓",
+          "effects": {
+            "flags": [
+              "flag_ko_met_grab"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C3；高俊傑記住你不是軟弱可欺的人"
+          }
+        },
+        {
+          "id": "C_ko_meet_yield",
+          "label": "讓他一次，看清楚他的底細",
+          "effects": {
+            "flags": [
+              "flag_ko_met_yield"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C3；高俊傑覺得你懂分寸，但心底看不起你"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ko_met_grab",
+        "flag_ko_met_yield"
+      ],
+      "openConditions": [],
+      "openConditionsNote": "高俊傑搶板初遇；可與 C3 同步／互斥（政策另定）。",
+      "artId": "arc_ko_meet",
+      "conflict": "C3",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ko",
+      "arcKind": "rival",
+      "linksMain": [
+        "C3"
+      ]
+    },
+    {
+      "id": "A_ko_push1",
+      "phase": "P1",
+      "title": "同場走位互懟",
+      "when": "1988夏",
+      "setting": "星河電視台一號錄影廠，處境劇圍讀同走位排練",
+      "eraTag": "era_1988_summer",
+      "cast": [
+        "高俊傑"
+      ],
+      "synopsis": "圍讀時，高俊傑刻意打亂阿偉念對白的節奏，走位時又霸佔阿偉的位置，副導在場觀察誰的反應更快。",
+      "beats": [
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "你站的那個位置擋住我入鏡，請你讓開。",
+            "我剛才試了新節奏，副導也說順暢，你不要跟不上。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "你的名字我記住了，不過是因為你經常慢半拍。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "不要只望著我，你也有戲要交。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ko_push1_counter",
+          "label": "即場改變節奏反壓他，讓副導看到你的應變",
+          "effects": {
+            "flags": [
+              "flag_ko_push1_counter"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C10；高俊傑開始當你是真正對手"
+          }
+        },
+        {
+          "id": "C_ko_push1_observe",
+          "label": "先記住他的走位習慣，不急於反擊",
+          "effects": {
+            "flags": [
+              "flag_ko_push1_observe"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C10；高俊傑以為你怕了他"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ko_push1_counter",
+        "flag_ko_push1_observe"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_ko_met_grab",
+        "flag_ko_met_yield"
+      ],
+      "openConditionsNote": "ko push1：meet 後。",
+      "artId": "arc_ko_push1",
+      "conflict": "排練場上互較執生同搶鏡位",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ko",
+      "arcKind": "rival"
+    },
+    {
+      "id": "A_ko_push2",
+      "phase": "P2",
+      "title": "台慶籌備互較",
+      "when": "1989秋",
+      "setting": "星河電視台台慶籌備會議室同排舞室",
+      "eraTag": "era_1989_autumn",
+      "cast": [
+        "高俊傑"
+      ],
+      "synopsis": "台慶節目排位時，高俊傑四處散播消息，說阿偉的環節只是「填時間」，還在排舞室當眾比較誰能站中間。",
+      "beats": [
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "台慶的位置只有這麼多，你以為真的人人有份站中間嗎？",
+            "我聽說你的環節連綵排時間都未排到，不要說我沒有提醒你。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "你的名字現在開始有人認識，不過是因為我經常提起你。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "排舞室的鏡位我先霸佔了，你想練習就早點到。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ko_push2_ally",
+          "label": "拉攏排舞師和助導，用實力爭回位置",
+          "effects": {
+            "flags": [
+              "flag_ko_push2_ally"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C10／T2；高俊傑發現你有人脈"
+          }
+        },
+        {
+          "id": "C_ko_push2_confront",
+          "label": "當面跟他說清楚，不要再放風",
+          "effects": {
+            "flags": [
+              "flag_ko_push2_confront"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C10／T2；兩人關係更僵"
+          }
+        },
+        {
+          "id": "C_ko_push2_ignore",
+          "label": "懶理他的說話，專心練習自己的環節",
+          "effects": {
+            "flags": [
+              "flag_ko_push2_ignore"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C10／T2；高俊傑覺得你不敢接招"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ko_push2_ally",
+        "flag_ko_push2_confront",
+        "flag_ko_push2_ignore"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_ko_push1_counter",
+        "flag_ko_push1_observe"
+      ],
+      "openConditionsNote": "ko push2：push1 後；linksMain 含 C10／T2。",
+      "artId": "arc_ko_push2",
+      "conflict": "台慶排位同放風比較，爭企中間嘅機會",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ko",
+      "arcKind": "rival",
+      "linksMain": [
+        "C10",
+        "T2"
+      ]
+    },
+    {
+      "id": "A_ko_crisis",
+      "phase": "P2",
+      "title": "台慶位危機",
+      "when": "1989冬",
+      "setting": "星河電視台台慶綵排後台同監製房",
+      "eraTag": "era_1989_winter_anni",
+      "cast": [
+        "高俊傑"
+      ],
+      "synopsis": "台慶前夕突然要刪減一個環節，高俊傑和阿偉都被點名，監製要二人自己說明為何應該留下。",
+      "beats": [
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "監製說要刪減一個，你猜他會刪減哪個？",
+            "你的名字我幫你讀了整年，不差在讀多最後一次。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "我不會退讓，你有膽量就在監製面前跟我說清楚。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "不過說真的，你的環節如果真的有實力，我也不會看死你。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ko_crisis_fight",
+          "label": "在監製面前堅決表態，講出自己環節的價值",
+          "effects": {
+            "flags": [
+              "flag_ko_crisis_fight"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "連 C10／T2；高俊傑被逼正面交鋒"
+          }
+        },
+        {
+          "id": "C_ko_crisis_deal",
+          "label": "跟高俊傑私下商議，一人讓一步",
+          "effects": {
+            "flags": [
+              "flag_ko_crisis_deal"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C10／T2；兩人關係出現微妙變化"
+          }
+        },
+        {
+          "id": "C_ko_crisis_stepback",
+          "label": "主動退一步，換取下次機會",
+          "effects": {
+            "flags": [
+              "flag_ko_crisis_stepback"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 C10／T2；高俊傑覺得你輸了一仗"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ko_crisis_deal",
+        "flag_ko_crisis_fight",
+        "flag_ko_crisis_stepback"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_ko_push2_ally",
+        "flag_ko_push2_confront",
+        "flag_ko_push2_ignore",
+        "flag_ko_push1_counter",
+        "flag_ko_push1_observe"
+      ],
+      "openConditionsNote": "ko 危機：台慶位；linksMain=C10／T2。可與 C10 雙軌。",
+      "artId": "arc_ko_crisis",
+      "conflict": "C10／T2",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ko",
+      "arcKind": "rival",
+      "linksMain": [
+        "C10",
+        "T2"
+      ]
+    },
+    {
+      "id": "A_ko_ending",
+      "phase": "P4",
+      "title": "賀歲片場再遇",
+      "when": "1991夏",
+      "setting": "星河電視台賀歲片廠景，兩人多年後再同場",
+      "eraTag": "era_1991_summer",
+      "cast": [
+        "高俊傑"
+      ],
+      "synopsis": "賀歲片開鏡，阿偉和高俊傑多年後再同場，他主動走過來，重提當年搶通告和台慶的事。",
+      "beats": [
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "很久不見，你的名字現在不用我讀，也有人認識了。",
+            "當年台慶的位置，我現在回想也覺得自己幼稚。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "我不會說你贏了，但我承認你是一個值得站在一起的對手。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "今次這場戲，我們不要再搶位了，好嗎？"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ko_ending_respect",
+          "label": "跟他握手，承認大家爭鬥這麼多年都是為了做好這場戲",
+          "effects": {
+            "flags": [
+              "flag_ko_rival_respect"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "連 C12；rival_respect：高俊傑由對手變成長期互相尊重的同輩"
+          }
+        },
+        {
+          "id": "C_ko_ending_cold",
+          "label": "笑笑口帶過，不表態，留一條界線",
+          "effects": {
+            "flags": [
+              "flag_ko_cold_war"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C12；cold_war：兩人表面客氣，心底仍有條刺"
+          }
+        },
+        {
+          "id": "C_ko_ending_mentor",
+          "label": "反過來提點他幾句，當自己行先一步",
+          "effects": {
+            "flags": [
+              "flag_ko_mentor_complete"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C12；mentor_complete：高俊傑半信半疑，但開始當你是半個前輩"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ko_cold_war",
+        "flag_ko_mentor_complete",
+        "flag_ko_rival_respect"
+      ],
+      "openConditions": [
+        "phase_P4"
+      ],
+      "openConditionsAny": [
+        "flag_ko_crisis_deal",
+        "flag_ko_crisis_fight",
+        "flag_ko_crisis_stepback",
+        "flag_ko_push2_ally",
+        "flag_ko_push2_confront",
+        "flag_ko_push2_ignore"
+      ],
+      "openConditionsNote": "ko 收束：建議危機後；linksMain=C12。parallelOk 仍 true（Soft HOLD）。",
+      "artId": "arc_ko_ending",
+      "conflict": "C12",
+      "arcBeat": "ending",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ko",
+      "arcKind": "rival",
+      "linksMain": [
+        "C12"
+      ]
+    },
+    {
+      "id": "A_hakfan_meet",
+      "phase": "P2",
+      "title": "試鏡房門外的世家子弟",
+      "when": "1989春",
+      "setting": "星河電視台三號試鏡房走廊，牆上貼着新劇《赤道線》角色表，長櫈坐滿等待叫名的演員。",
+      "eraTag": "era_1989_spring",
+      "cast": [
+        "張克凡",
+        "副導演芬姐",
+        "助導阿森"
+      ],
+      "synopsis": "阿偉在走廊等候試鏡，張克凡由芬姐親自帶入房間，連排隊都不需要。他臨入房前望阿偉一眼，語氣不重，但句句都是資源壓人，說這個角色早有人打過招呼。阿偉未入房已經知道，這場不只考演技。",
+      "beats": [
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "你也是等《赤道線》嗎？我勸你不要浪費心機，這個位置我爸爸和監製吃過飯。",
+            "不是說你不行，不過電視台的事情，有時是講誰先開口。"
+          ]
+        },
+        {
+          "speaker": "副導演芬姐",
+          "lines": [
+            "克凡，監製叫你進去先，試完再講。",
+            "後面那位，你準備好，下一輪到你。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "我試完出來跟你說一聲，看看你輸在哪裡。做戲這回事，輸也要輸得明白。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_hakfan_meet_hold",
+          "label": "站定不走，等入房用實力說話",
+          "effects": {
+            "flags": [
+              "flag_hakfan_met",
+              "flag_hakfan_stand_ground"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_hakfan_push1；堅持留下，張克凡記住你不肯讓"
+          }
+        },
+        {
+          "id": "C_hakfan_meet_probe",
+          "label": "不動氣，反問他哪個角色最難做",
+          "effects": {
+            "flags": [
+              "flag_hakfan_met",
+              "flag_hakfan_probed"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 A_hakfan_push1；張克凡談演技會認真，開始當你是對手"
+          }
+        },
+        {
+          "id": "C_hakfan_meet_walk",
+          "label": "不想糾纏，轉身去找其他通告",
+          "effects": {
+            "flags": [
+              "flag_hakfan_met",
+              "flag_hakfan_avoided"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 A_hakfan_push1；避開初遇衝突，但資源場上讓了一步"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_hakfan_avoided",
+        "flag_hakfan_met",
+        "flag_hakfan_probed",
+        "flag_hakfan_stand_ground"
+      ],
+      "openConditions": [
+        "phase_P2"
+      ],
+      "openConditionsNote": "張克凡：P2 資源場認識（方向性）。",
+      "artId": "arc_hakfan_meet",
+      "conflict": "P2資源場",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "hakfan",
+      "arcKind": "rival",
+      "linksMain": [
+        "P2資源場"
+      ]
+    },
+    {
+      "id": "A_hakfan_push1",
+      "phase": "P2",
+      "title": "人脈飯局搶走的角色",
+      "when": "1989夏",
+      "setting": "星河電視台製作部樓層，佈告板啱啱貼出《赤道線》casting名單，隔籬茶水間有人講緊昨晚飯局。",
+      "eraTag": "era_1989_summer",
+      "cast": [
+        "張克凡",
+        "助導阿森",
+        "監製周世昌"
+      ],
+      "synopsis": "名單公佈了，角色落在張克凡手上。阿偉在茶水間碰到他，他不否認是飯局談回來的，還說這行本來就是這樣運作。阿偉手上只剩一個戲份少的配角位置，要決定爭不爭。",
+      "beats": [
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "名單你看過了？我不會裝意外，這個角色是我爭回來的。",
+            "你可以說我靠家裡，但我進到廠一樣要交戲，不會白坐。"
+          ]
+        },
+        {
+          "speaker": "助導阿森",
+          "lines": [
+            "克凡，監製叫你下去試造型。",
+            "你還沒走？配角那個位置還沒回覆實，你要就快點答應。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "配角也是戲，做得好監製會看到。不過你留下來，就要預了被人比較。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_hakfan_push1_take",
+          "label": "答應配角位置，留在同一個廠鬥",
+          "effects": {
+            "flags": [
+              "flag_hakfan_took_support"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_hakfan_push2；同劇同廠，較量機會大增"
+          }
+        },
+        {
+          "id": "C_hakfan_push1_negotiate",
+          "label": "跟助導講數，要求加戲份才接",
+          "effects": {
+            "flags": [
+              "flag_hakfan_negotiated"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 A_hakfan_push2；張克凡知道你敢討價，態度稍變"
+          }
+        },
+        {
+          "id": "C_hakfan_push1_reject",
+          "label": "不接配角，另覓其他劇組",
+          "effects": {
+            "flags": [
+              "flag_hakfan_rejected_support"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 A_hakfan_push2；避開比較，但同劇對戲機會減少"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_hakfan_negotiated",
+        "flag_hakfan_rejected_support",
+        "flag_hakfan_took_support"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_hakfan_met"
+      ],
+      "openConditionsNote": "hakfan push1：meet 後（flag_hakfan_met）。",
+      "artId": "arc_hakfan_push1",
+      "conflict": "張克凡靠飯局人脈搶走主角，你只剩配角位；連 P2資源場，接 A_hakfan_push2。",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "hakfan",
+      "arcKind": "rival"
+    },
+    {
+      "id": "A_hakfan_push2",
+      "phase": "P3",
+      "title": "同一場戲，兩種演法",
+      "when": "1990",
+      "setting": "星河電視台五號錄影廠，《赤道線》中段重頭戲排練，導演要求一次過排完整場對手戲。",
+      "eraTag": "era_1990",
+      "cast": [
+        "張克凡",
+        "導演陸志明",
+        "場務強哥"
+      ],
+      "synopsis": "排練場上阿偉跟張克凡正面對戲。他用世家出身的方法拆解角色，阿偉用地道草根的演法回應。導演未叫停，全廠都在看誰帶得住場。",
+      "beats": [
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "你這句對白這樣講，觀眾會覺得你沒有準備。",
+            "不是說你不對，不過我在家和爸爸對過這場，節奏不是這樣。"
+          ]
+        },
+        {
+          "speaker": "導演陸志明",
+          "lines": [
+            "兩個都不要停，我在看哪個版本適合這個角色。",
+            "克凡，你放慢一點；你，不要跟他的節奏，做回你自己。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "好，我不跟劇本，我跟你。你出什麼，我接什麼。",
+            "做戲最緊要的是對手夠不夠膽，你夠膽就來。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_hakfan_push2_match",
+          "label": "接住他的節奏，當場對到盡",
+          "effects": {
+            "flags": [
+              "flag_hakfan_faced_off"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_hakfan_crisis；張克凡開始服你的膽色"
+          }
+        },
+        {
+          "id": "C_hakfan_push2_own",
+          "label": "不理他，照自己草根演法做到底",
+          "effects": {
+            "flags": [
+              "flag_hakfan_own_style"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 A_hakfan_crisis；導演留意到你，但張克凡覺得你不接戲"
+          }
+        },
+        {
+          "id": "C_hakfan_push2_defer",
+          "label": "讓半拍，等他帶完整場先",
+          "effects": {
+            "flags": [
+              "flag_hakfan_deferred"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 A_hakfan_crisis；場面過了，但氣勢讓了給張克凡"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_hakfan_deferred",
+        "flag_hakfan_faced_off",
+        "flag_hakfan_own_style"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_hakfan_negotiated",
+        "flag_hakfan_rejected_support",
+        "flag_hakfan_took_support"
+      ],
+      "openConditionsNote": "hakfan push2：push1 後。",
+      "artId": "arc_hakfan_push2",
+      "conflict": "同場對戲，張克凡用世家訓練壓你節奏，你用地道演法頂返；連 A_hakfan_crisis。",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "hakfan",
+      "arcKind": "rival"
+    },
+    {
+      "id": "A_hakfan_crisis",
+      "phase": "P4",
+      "title": "廠期危機，兩條船同一條水",
+      "when": "1991",
+      "setting": "星河電視台製作部會議室，臨時召開《赤道線》續集危機會議，佈景費和廠期都出了問題。",
+      "eraTag": "era_1991",
+      "cast": [
+        "張克凡",
+        "監製周世昌",
+        "副導演芬姐"
+      ],
+      "synopsis": "續集資金出事，電視台想削減廠期，阿偉跟張克凡的重頭戲隨時被剪。監製要人扛下責任同外間製作公司談，張克凡手上有人脈，阿偉有草根觀眾緣，兩條路本來不相交，現在要選聯手還是各自保命。",
+      "beats": [
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "我爸爸認識外間公司那個老闆，我可以搭路，但不擔保人家肯見你。",
+            "你不要以為我想幫你，我只是不想整套劇死在廠期上。"
+          ]
+        },
+        {
+          "speaker": "監製周世昌",
+          "lines": [
+            "兩個都是我簽回來的，哪個搞得定我不管，總之廠期要保住。",
+            "你們自己談，談不攏我剪戲。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "我出人脈，你出你那把口去說服班伙記撐住。做不做，一句。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_hakfan_crisis_ally",
+          "label": "跟張克凡聯手，一起去談外間公司",
+          "effects": {
+            "flags": [
+              "flag_hakfan_allied"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_hakfan_ending；共同危機建立互信，鋪 rival_respect"
+          }
+        },
+        {
+          "id": "C_hakfan_crisis_solo",
+          "label": "不靠他人脈，自己找監製談減廠期方案",
+          "effects": {
+            "flags": [
+              "flag_hakfan_solo"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 A_hakfan_ending；各自保命，關係停留對峙"
+          }
+        },
+        {
+          "id": "C_hakfan_crisis_leak",
+          "label": "將他爸爸搭路的事爆給記者，搶輿論",
+          "effects": {
+            "flags": [
+              "flag_hakfan_leaked"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 A_hakfan_ending；張克凡知道後關係轉冷，鋪 cold_war"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_hakfan_allied",
+        "flag_hakfan_leaked",
+        "flag_hakfan_solo"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_hakfan_deferred",
+        "flag_hakfan_faced_off",
+        "flag_hakfan_own_style"
+      ],
+      "openConditionsNote": "hakfan 危機：P2–P4 資源場（方向性）。",
+      "artId": "arc_hakfan_crisis",
+      "conflict": "P2–P4資源場",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "hakfan",
+      "arcKind": "rival",
+      "linksMain": [
+        "P2",
+        "P3",
+        "P4"
+      ]
+    },
+    {
+      "id": "A_hakfan_ending",
+      "phase": "P5",
+      "title": "頒獎禮後台，兩種收場",
+      "when": "1992",
+      "setting": "星河電視台台慶頒獎禮後台化妝間，獎項剛剛頒完，走廊還傳來掌聲。",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "張克凡",
+        "副導演芬姐",
+        "記者群"
+      ],
+      "synopsis": "幾年較量去到台慶夜。阿偉跟張克凡在後台化妝間碰正，獎項塵埃落定。他望着阿偉，第一次沒有用家世開場，而是講演技。阿偉怎麼回應，決定這條敵線怎麼收。",
+      "beats": [
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "今晚這個獎誰拿都好，我認你是我遇過最難接的對手。",
+            "我從小到大都是人家讓我先，你沒有讓過，所以我記住你。"
+          ]
+        },
+        {
+          "speaker": "副導演芬姐",
+          "lines": [
+            "兩個都不要站在走廊，記者在拍照。",
+            "克凡，你爸爸在前面等你；你，監製叫你過去。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "我不會跟你講什麼友誼萬歲，不過下次有戲，我想跟你再對一次。",
+            "你選吧，是不是都要做敵人。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_hakfan_ending_respect",
+          "label": "伸手說下次同場再較量，認他是對手",
+          "effects": {
+            "flags": [
+              "flag_hakfan_rival_respect"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "rival_respect；惺惺相惜，敵線收於互相尊重"
+          }
+        },
+        {
+          "id": "C_hakfan_ending_cold",
+          "label": "冷淡回應，說獎項才是真章",
+          "effects": {
+            "flags": [
+              "flag_hakfan_cold_war"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "cold_war；繼續死敵，資源場上長期對峙"
+          }
+        },
+        {
+          "id": "C_hakfan_ending_mentor",
+          "label": "反問他有沒有興趣一起帶新人",
+          "effects": {
+            "flags": [
+              "flag_hakfan_mentor_complete"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "mentor_complete；將較量轉化為傳承，敵線升華"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_hakfan_cold_war",
+        "flag_hakfan_mentor_complete",
+        "flag_hakfan_rival_respect"
+      ],
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_hakfan_allied",
+        "flag_hakfan_leaked",
+        "flag_hakfan_solo"
+      ],
+      "openConditionsNote": "hakfan 結局：P5。parallelOk Soft HOLD。",
+      "artId": "arc_hakfan_ending",
+      "conflict": "台慶後台最後對望，張克凡放下家世語氣講演技，你決定敵線收於尊重抑或繼續死敵；連 A_hakfan_crisis。",
+      "arcBeat": "ending",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "hakfan",
+      "arcKind": "rival"
+    },
+    {
+      "id": "A_tsijun_meet",
+      "phase": "P1",
+      "title": "練功房的第一課",
+      "when": "1988春",
+      "setting": "星河電視台舊廠大樓三樓，單元劇練功房。牆身油漆剝落，鏡前鋪着一塊起毛的地膠，角落擺着一疊手寫分鏡紙。",
+      "eraTag": "era_1988_spring",
+      "cast": [
+        "張子駿",
+        "高俊傑"
+      ],
+      "synopsis": "阿偉被派往單元劇練功房試鏡，遇到文藝導演張子駿。他不急於看阿偉演戲，反而叫阿偉在鏡前站定，慢慢講一次自己為何想做戲。高俊傑在門口探頭，催促阿偉不要浪費時間。",
+      "beats": [
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "不用急，先站定。你望着鏡子，想清楚自己想在鏡裏見到什麼人。",
+            "影展不是靠人氣，而是靠你肯不肯在一個鏡頭裏磨到自己都怕。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "張導，這個新人我們廠等着用，你不要和他磨到天黑。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "天黑就天黑。你回去跟上面說，戲未磨好，我不會放人。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tsijun_meet_stay",
+          "label": "留下跟張子駿慢慢磨，不理外面催促",
+          "effects": {
+            "flags": [
+              "flag_tsijun_met_stay"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C1；張子駿記住你肯留下"
+          }
+        },
+        {
+          "id": "C_tsijun_meet_leave",
+          "label": "跟高俊傑走，先接廠期通告",
+          "effects": {
+            "flags": [
+              "flag_tsijun_met_leave"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 T1；張子駿沒有攔你，但眼神沉一沉"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tsijun_met_leave",
+        "flag_tsijun_met_stay"
+      ],
+      "openConditions": [],
+      "openConditionsNote": "張子駿練功房；可與 C1／T1 雙軌。",
+      "artId": "arc_tsijun_meet",
+      "conflict": "C1／T1",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tsijun",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C1",
+        "T1"
+      ]
+    },
+    {
+      "id": "A_tsijun_push1",
+      "phase": "P1.5",
+      "title": "單元劇班底",
+      "when": "1988秋",
+      "setting": "星河電視台二號錄影廠，單元劇《夜行街》佈景。凌晨兩點，劇組吃完外賣，燈光師正在換燈泡。",
+      "eraTag": "era_1988_autumn",
+      "cast": [
+        "張子駿",
+        "高俊傑"
+      ],
+      "synopsis": "張子駿把阿偉收入單元劇班底，要阿偉演一個只有三場戲的小角色。高俊傑嫌阿偉曝光太少，說廠方想換個有話題的人。張子駿頂住壓力，叫阿偉在排練房再磨一次。",
+      "beats": [
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "三場戲夠不夠？夠。你在第三場那個回頭，我要觀眾記十年。",
+            "不要理人氣，人氣會散，層次不會。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "張導，廠方說收視要緊，換個有新聞的人站在那裏，觀眾才會留下。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "那麼你叫廠方自己來跟我說。我的班底，我話事。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tsijun_push1_grind",
+          "label": "留在排練房，跟張子駿磨到收廠",
+          "effects": {
+            "flags": [
+              "flag_tsijun_push1_grind"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C8；張子駿開始當你是自己班底"
+          }
+        },
+        {
+          "id": "C_tsijun_push1_side",
+          "label": "私下應承高俊傑，兩邊都不得罪",
+          "effects": {
+            "flags": [
+              "flag_tsijun_push1_side"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C8；張子駿後來會知你兩頭走"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tsijun_push1_grind",
+        "flag_tsijun_push1_side"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_tsijun_met_leave",
+        "flag_tsijun_met_stay"
+      ],
+      "openConditionsNote": "tsijun push1：meet 後。",
+      "artId": "arc_tsijun_push1",
+      "conflict": "收視話題同演出層次拉扯；張子駿守住班底，高俊傑要廠方交代。",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tsijun",
+      "arcKind": "mentor"
+    },
+    {
+      "id": "A_tsijun_push2",
+      "phase": "P2",
+      "title": "商業同文藝兩張通告",
+      "when": "1989春",
+      "setting": "星河電視台大堂，兩張通告同時貼在佈告欄：一張是大型綜藝嘉賓，一張是張子駿的影展短片試鏡。",
+      "eraTag": "era_1989_spring",
+      "cast": [
+        "張子駿",
+        "高俊傑"
+      ],
+      "synopsis": "高俊傑幫阿偉爭到綜藝大騷的位，說曝光難得。張子駿同時遞上短片試鏡邀請，講明沒有錢、沒有人氣，但會送去影展。阿偉只可以揀一張通告。",
+      "beats": [
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "這個大騷位，我幫你講到口水乾。你上去站三分鐘，全港都識你。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "我不阻你。不過你問一問自己：你想人記得你的名字，還是記得你那場戲。",
+            "影展不是靠人氣，而是靠你肯不肯慢慢磨戲。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "張導，你那個影展什麼時候才有人看？廠方看的是收視。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tsijun_push2_film",
+          "label": "揀張子駿的短片試鏡，放棄大騷",
+          "effects": {
+            "flags": [
+              "flag_tsijun_push2_film"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C8；張子駿應承親自跟你排戲"
+          }
+        },
+        {
+          "id": "C_tsijun_push2_variety",
+          "label": "揀綜藝大騷，跟張子駿說聲抱歉",
+          "effects": {
+            "flags": [
+              "flag_tsijun_push2_variety"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 C8；張子駿沒有罵你，只叫你記住今日這個選擇"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tsijun_push2_film",
+        "flag_tsijun_push2_variety"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_tsijun_push1_grind",
+        "flag_tsijun_push1_side"
+      ],
+      "openConditionsNote": "tsijun push2：push1 後；linksMain=C8。",
+      "artId": "arc_tsijun_push2",
+      "conflict": "C8",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tsijun",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C8"
+      ]
+    },
+    {
+      "id": "A_tsijun_crisis",
+      "phase": "P3",
+      "title": "曝光同層次",
+      "when": "1990秋",
+      "setting": "影展放映室，外面下着雨。張子駿的短片入圍一個小單元，阿偉在片中只有一個長鏡頭。",
+      "eraTag": "era_1990_autumn",
+      "cast": [
+        "張子駿",
+        "高俊傑"
+      ],
+      "synopsis": "短片放映後，有發行商想剪走阿偉那個長鏡頭，換成節奏快的版本，說這樣才有人氣。張子駿堅持保留，高俊傑就說機會難得。阿偉被夾在中間。",
+      "beats": [
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "那個長鏡頭是整套戲的心。剪走了，你演的的東西就變佈景。",
+            "你想人記得你，就要人記得你怎樣站在鏡頭裏面。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "發行商說剪短些才有人看。張導，你不要跟錢鬥氣。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "我不是跟錢鬥氣，我是跟你講，層次剪不走。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tsijun_crisis_hold",
+          "label": "公開支持張子駿，堅持保留長鏡頭",
+          "effects": {
+            "flags": [
+              "flag_tsijun_crisis_hold"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C11／T3；發行商讓步，張子駿當眾多謝你"
+          }
+        },
+        {
+          "id": "C_tsijun_crisis_cut",
+          "label": "勸張子駿剪短，換發行商支持",
+          "effects": {
+            "flags": [
+              "flag_tsijun_crisis_cut"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 C11／T3；張子駿沒有出聲，收工自己一個走"
+          }
+        },
+        {
+          "id": "C_tsijun_crisis_silent",
+          "label": "不表態，等兩邊自己談",
+          "effects": {
+            "flags": [
+              "flag_tsijun_crisis_silent"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C11／T3；張子駿望你一眼，沒有講話"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tsijun_crisis_cut",
+        "flag_tsijun_crisis_hold",
+        "flag_tsijun_crisis_silent"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_tsijun_push2_film",
+        "flag_tsijun_push2_variety",
+        "route_indie",
+        "C8"
+      ],
+      "openConditionsNote": "tsijun 危機：linksMain=C11／T3。",
+      "artId": "arc_tsijun_crisis",
+      "conflict": "C11／T3",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tsijun",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C11",
+        "T3"
+      ]
+    },
+    {
+      "id": "A_tsijun_ending",
+      "phase": "P5",
+      "title": "評審席上的熟面孔",
+      "when": "1992",
+      "setting": "影展頒獎禮後台走廊，張子駿坐在評審席旁邊的休息位，手上還拿着節目表。",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "張子駿",
+        "高俊傑"
+      ],
+      "synopsis": "幾年過去，阿偉在影展再遇張子駿。他望着阿偉，說阿偉個樣熟口熟面，但問阿偉還記不記得當初練功房那堂。高俊傑在旁邊等着阿偉過去應酬。",
+      "beats": [
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "你個樣，我熟口熟面。不過我想知，你還記不記得練功房那塊鏡。",
+            "影展不是靠人氣，而是靠你還肯不肯慢慢磨戲。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "前面那個酒會等着你，不要在這裏站這麼久。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "你去吧。不過我走過這麼多屆評審席，分得出誰是磨出來的，誰是站出來的。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tsijun_ending_respect",
+          "label": "留下跟張子駿講返當年那堂，先過去酒會",
+          "effects": {
+            "flags": [
+              "flag_tsijun_ending_respect"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "rival_respect；張子駿拍你膊頭，說你還可以磨"
+          }
+        },
+        {
+          "id": "C_tsijun_ending_complete",
+          "label": "請張子駿做你下一部戲的監製",
+          "effects": {
+            "flags": [
+              "flag_tsijun_ending_complete"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "mentor_complete；張子駿笑着說要先看你個劇本"
+          }
+        },
+        {
+          "id": "C_tsijun_ending_cold",
+          "label": "點頭就走，過去酒會應酬",
+          "effects": {
+            "flags": [
+              "flag_tsijun_ending_cold"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "cold_war；張子駿望着你背影，沒有再叫住你"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tsijun_ending_cold",
+        "flag_tsijun_ending_complete",
+        "flag_tsijun_ending_respect"
+      ],
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_tsijun_crisis_cut",
+        "flag_tsijun_crisis_hold",
+        "flag_tsijun_crisis_silent",
+        "C17",
+        "route_indie"
+      ],
+      "openConditionsNote": "tsijun 結局：P5；連 C17／E03。",
+      "artId": "arc_tsijun_ending",
+      "conflict": "C17／E03",
+      "arcBeat": "ending",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tsijun",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C17",
+        "E03"
+      ]
+    },
+    {
+      "id": "A_fong_meet",
+      "phase": "P1",
+      "title": "茶餐廳兩份早餐",
+      "when": "1988",
+      "setting": "旺角舊式茶餐廳，卡位油漬斑斑，吊扇慢轉",
+      "eraTag": "era_1988",
+      "cast": [
+        "方小龍",
+        "高俊傑"
+      ],
+      "synopsis": "阿偉與方小龍自小在武館相識，他現職武師替身，經常大聲拍阿偉膊頭。今日他拉阿偉到茶餐廳，說有門路介紹阿偉入星河電視台做臨記，順便談及自己班底的辛酸。",
+      "beats": [
+        {
+          "speaker": "方小龍",
+          "lines": [
+            "很久不見，你怎麼瘦了？坐下來，我請客。",
+            "我現在跟高師傅的班底，做替身做到周身瘀傷，不過有飯吃就不怕。",
+            "你不是一直想入行嗎？星河電視台明天有廠景要人，我幫你搭路。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "小龍，你的朋友？手腳看來頗紮實，不過臨記還臨記，不要妄想一步登天。"
+          ]
+        },
+        {
+          "speaker": "方小龍",
+          "lines": [
+            "高師傅，你不要嚇他，我們自小打到大，他吃得了苦的。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_fong_meet_take",
+          "label": "多謝小龍，跟他去星河見識一下",
+          "effects": {
+            "flags": [
+              "flag_fong_met",
+              "flag_fong_intro_sent"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_fong_push1；小龍介紹你入星河廠景"
+          }
+        },
+        {
+          "id": "C_fong_meet_ask",
+          "label": "問清楚替身有多危險才決定",
+          "effects": {
+            "flags": [
+              "flag_fong_met",
+              "flag_fong_warned"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 A_fong_push1；你對替身風險有心理準備"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_fong_intro_sent",
+        "flag_fong_met",
+        "flag_fong_warned"
+      ],
+      "openConditions": [],
+      "openConditionsNote": "方小龍友情線認識；P1。",
+      "artId": "arc_fong_meet",
+      "conflict": "你對入行嘅猶豫 vs 小龍嘅熱心拉攏；高俊傑對臨記嘅冷淡",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "fong",
+      "arcKind": "friend"
+    },
+    {
+      "id": "A_fong_push1",
+      "phase": "P2",
+      "title": "武師棚推進",
+      "when": "1989",
+      "setting": "星河電視台舊廠棚，木搭高台同軟墊，燈光刺眼",
+      "eraTag": "era_1989",
+      "cast": [
+        "方小龍",
+        "張克凡"
+      ],
+      "synopsis": "廠景開拍，方小龍在棚內做替身跳高台，阿偉在下面做臨記。張克凡任武指，要求越來越高。小龍跳完一次，拍阿偉膊頭說仍頂得住，但腳已有些拐。",
+      "beats": [
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "這個鏡頭要一氣呵成，不要NG，跳不到就換人。"
+          ]
+        },
+        {
+          "speaker": "方小龍",
+          "lines": [
+            "行！我跳！你在下面看住我的位置，不要走開。",
+            "跳完這場我請你吃宵夜，哈哈！"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "小龍，你的腳怎樣？不行就出聲，不要死頂。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_fong_push1_watch",
+          "label": "在下面看實小龍的位置，出事即扶",
+          "effects": {
+            "flags": [
+              "flag_fong_push1_watch"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_fong_push2；你與小龍默契加深"
+          }
+        },
+        {
+          "id": "C_fong_push1_learn",
+          "label": "趁機問張克凡如何做武師",
+          "effects": {
+            "flags": [
+              "flag_fong_push1_learn"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_fong_push2；張克凡開始留意你"
+          }
+        },
+        {
+          "id": "C_fong_push1_let",
+          "label": "不敢出聲，站在一旁觀看",
+          "effects": {
+            "flags": [
+              "flag_fong_push1_let"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 A_fong_push2；小龍有些失望"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_fong_push1_learn",
+        "flag_fong_push1_let",
+        "flag_fong_push1_watch"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_fong_met"
+      ],
+      "openConditionsNote": "fong push1：meet 後。",
+      "artId": "arc_fong_push1",
+      "conflict": "張克凡嘅嚴要求 vs 小龍嘅死頂；你喺棚入面嘅位置",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "fong",
+      "arcKind": "friend"
+    },
+    {
+      "id": "A_fong_push2",
+      "phase": "P3",
+      "title": "外銷高峰練功夜",
+      "when": "1990夏",
+      "setting": "星河電視台天台，夜燈同水塔，遠處霓虹招牌",
+      "eraTag": "era_1990_summer",
+      "cast": [
+        "方小龍",
+        "高俊傑"
+      ],
+      "synopsis": "動作片外銷高峰，棚內通告密集。方小龍收工拉阿偉上天台練功，說不練就追不上。高俊傑路過，談起替身行情與班底規矩。",
+      "beats": [
+        {
+          "speaker": "方小龍",
+          "lines": [
+            "來吧！多打兩套，我今天還有氣力！",
+            "你近來跟得不錯，遲些我向張師傅說，讓你做多些位置。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "練功是好，但班底有班底的規矩，不要只靠一股蠻力。"
+          ]
+        },
+        {
+          "speaker": "方小龍",
+          "lines": [
+            "高師傅你放心，我們不會亂來！"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_fong_push2_train",
+          "label": "陪小龍練到下雨才走",
+          "effects": {
+            "flags": [
+              "flag_fong_push2_train"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_fong_crisis；體能與默契都提升"
+          }
+        },
+        {
+          "id": "C_fong_push2_rest",
+          "label": "勸小龍休息，不要練到受傷",
+          "effects": {
+            "flags": [
+              "flag_fong_push2_rest"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_fong_crisis；小龍覺得你夠朋友"
+          }
+        },
+        {
+          "id": "C_fong_push2_leave",
+          "label": "說疲倦，先走一步",
+          "effects": {
+            "flags": [
+              "flag_fong_push2_leave"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 A_fong_crisis；小龍有些沒趣"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_fong_push2_leave",
+        "flag_fong_push2_rest",
+        "flag_fong_push2_train"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_fong_push1_learn",
+        "flag_fong_push1_let",
+        "flag_fong_push1_watch"
+      ],
+      "openConditionsNote": "fong push2：push1 後。",
+      "artId": "arc_fong_push2",
+      "conflict": "密集通告下嘅練功壓力 vs 班底規矩；你同小龍嘅投入程度",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "fong",
+      "arcKind": "friend"
+    },
+    {
+      "id": "A_fong_crisis",
+      "phase": "P3",
+      "title": "替身危機",
+      "when": "1990夏",
+      "setting": "星河電視台廠棚，高台邊緣同濕滑地板，現場一片混亂",
+      "eraTag": "era_1990_summer_stunt",
+      "cast": [
+        "方小龍",
+        "張克凡",
+        "高俊傑"
+      ],
+      "synopsis": "一場高台跳躍戲，方小龍做替身，落地時腳一滑，半邊身掛在台邊。張克凡叫停，高俊傑在下面喝止。阿偉要立即決定怎樣做。",
+      "beats": [
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "停！全部停手！小龍你捉實邊緣，不要亂動！"
+          ]
+        },
+        {
+          "speaker": "方小龍",
+          "lines": [
+            "我……我頂得住……你不要過來，這個台不穩！"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "誰負責安全帶？怎麼會這麼鬆？快找人上去！"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_fong_crisis_rescue",
+          "label": "衝上去捉實小龍，不理台穩不穩",
+          "effects": {
+            "flags": [
+              "flag_fong_crisis_rescue",
+              "flag_fong_saved_once"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "連 A_fong_ending；friend_saved 伏線"
+          }
+        },
+        {
+          "id": "C_fong_crisis_call",
+          "label": "大聲叫張克凡與高俊傑指揮救人",
+          "effects": {
+            "flags": [
+              "flag_fong_crisis_call"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_fong_ending；你保持冷靜但小龍有些介意"
+          }
+        },
+        {
+          "id": "C_fong_crisis_freeze",
+          "label": "嚇到呆住，站在原地",
+          "effects": {
+            "flags": [
+              "flag_fong_crisis_freeze"
+            ],
+            "stats": {
+              "standing": -2
+            },
+            "notes": "連 A_fong_ending；小龍受傷，你們之間有裂痕"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_fong_crisis_call",
+        "flag_fong_crisis_freeze",
+        "flag_fong_crisis_rescue",
+        "flag_fong_saved_once"
+      ],
+      "openConditions": [
+        "phase_P3"
+      ],
+      "openConditionsAny": [
+        "flag_fong_push2_leave",
+        "flag_fong_push2_rest",
+        "flag_fong_push2_train"
+      ],
+      "openConditionsNote": "替身危機；linksMain=P3替身危機。",
+      "artId": "arc_fong_crisis",
+      "conflict": "P3替身危機",
+      "arcBeat": "crisis",
+      "parallelOk": false,
+      "pcSilent": true,
+      "arcLine": "fong",
+      "arcKind": "friend",
+      "linksMain": [
+        "P3替身危機"
+      ]
+    },
+    {
+      "id": "A_fong_ending",
+      "phase": "P5",
+      "title": "動作班底兩條路",
+      "when": "1992",
+      "setting": "星河電視台新廠棚外，黃昏，貨車同道具箱堆滿空地",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "方小龍",
+        "張克凡",
+        "高俊傑"
+      ],
+      "synopsis": "兩年過去，動作班底重組。方小龍傷後復出，問阿偉還會不會與他一起捱。張克凡想拉阿偉入新班底，高俊傑則說規矩要講清楚。阿偉要選擇怎樣走下去。",
+      "beats": [
+        {
+          "speaker": "方小龍",
+          "lines": [
+            "我隻腳好了七成，夠膽與你一起再跳！",
+            "你不會忘記我們由茶餐廳講到現在吧？"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "新班底要人，你的身手我看著你長大，考慮一下。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "跟哪個也好，合約與安全要寫清楚，不要再死頂。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_fong_ending_save",
+          "label": "與小龍一起入新班底，互相照應",
+          "effects": {
+            "flags": [
+              "flag_fong_ending_save",
+              "flag_friend_saved"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "friend_saved；連 E05 動作班底線"
+          }
+        },
+        {
+          "id": "C_fong_ending_respect",
+          "label": "各自跟不同班底，但講明有事一定幫手",
+          "effects": {
+            "flags": [
+              "flag_fong_ending_respect",
+              "flag_rival_respect"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "rival_respect；連 E05 動作班底線"
+          }
+        },
+        {
+          "id": "C_fong_ending_cold",
+          "label": "不再玩替身，與小龍各行各路",
+          "effects": {
+            "flags": [
+              "flag_fong_ending_cold",
+              "flag_cold_war"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "cold_war；連 E05 動作班底線"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_cold_war",
+        "flag_fong_ending_cold",
+        "flag_fong_ending_respect",
+        "flag_fong_ending_save",
+        "flag_friend_saved",
+        "flag_rival_respect"
+      ],
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_fong_crisis_call",
+        "flag_fong_crisis_freeze",
+        "flag_fong_crisis_rescue",
+        "flag_fong_saved_once",
+        "flag_fong_saved_once"
+      ],
+      "openConditionsNote": "fong 結局：P5；連 E05。",
+      "artId": "arc_fong_ending",
+      "conflict": "E05",
+      "arcBeat": "ending",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "fong",
+      "arcKind": "friend",
+      "linksMain": [
+        "E05"
+      ]
+    },
+    {
+      "id": "A_tong_meet",
+      "phase": "P2",
+      "title": "旁聽點名",
+      "when": "1989",
+      "setting": "星河電視台排練室，下午，陽光斜照，唐素雲正為幾位新人試戲。",
+      "eraTag": "era_1989",
+      "cast": [
+        "唐素雲",
+        "高俊傑",
+        "張克凡"
+      ],
+      "synopsis": "阿偉混入排練室旁聽，唐素雲點名要阿偉即場演一段，考驗阿偉的膽量與反應。",
+      "beats": [
+        {
+          "speaker": "唐素雲",
+          "lines": [
+            "年輕人，你在門口站了這麼久，不如進來試一段。",
+            "演戲不是比快，而是比真。你讓我看看你有幾分真。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "唐老師，他只是來八卦一下而已，需要這麼認真嗎？",
+            "我們還有很多東西要排練。"
+          ]
+        },
+        {
+          "speaker": "唐素雲",
+          "lines": [
+            "我教戲這麼多年，誰有火，我一眼就能看出。",
+            "你不嘗試，就永遠都是站在門口的那個人。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tong_meet_step_in",
+          "label": "走進去，照唐老師指示演一段",
+          "effects": {
+            "flags": [
+              "flag_tong_met_step_in"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_tong_push1"
+          }
+        },
+        {
+          "id": "C_tong_meet_watch",
+          "label": "站在門口繼續看，不敢走進去",
+          "effects": {
+            "flags": [
+              "flag_tong_met_watch"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 A_tong_push1，但唐素雲對你印象較淺"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tong_met_step_in",
+        "flag_tong_met_watch"
+      ],
+      "openConditions": [
+        "phase_P2"
+      ],
+      "openConditionsNote": "唐素雲；P2 去留季認識。",
+      "artId": "arc_tong_meet",
+      "conflict": "唐素雲賞識 vs 高俊傑輕視；玩家要決定是否踏出第一步。",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tong",
+      "arcKind": "mentor",
+      "linksMain": [
+        "P2去留"
+      ]
+    },
+    {
+      "id": "A_tong_push1",
+      "phase": "P2",
+      "title": "演技矯正",
+      "when": "1989夏",
+      "setting": "星河電視台二號排練室，黃昏，唐素雲單對單指導阿偉。",
+      "eraTag": "era_1989_summer",
+      "cast": [
+        "唐素雲"
+      ],
+      "synopsis": "唐素雲逐句矯正阿偉的唸白，要阿偉放下表演痕跡，用真感情。",
+      "beats": [
+        {
+          "speaker": "唐素雲",
+          "lines": [
+            "你剛才那句對白，感情是假的。你只是在讀字，不是在做人。",
+            "你試著想一件你真正很害怕的事，然後用那種恐懼去講這句對白。"
+          ]
+        },
+        {
+          "speaker": "唐素雲",
+          "lines": [
+            "演戲不是要你哭，而是要你忍。忍不住的那一刻，觀眾才會哭。",
+            "你太想表現，反而失去了自己。"
+          ]
+        },
+        {
+          "speaker": "唐素雲",
+          "lines": [
+            "我年輕的時候，也是這樣被人罵大的。",
+            "有人走，有人留。你留得下來，就要對得起自己。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tong_push1_accept",
+          "label": "虛心接受，照唐老師方法重新演一次",
+          "effects": {
+            "flags": [
+              "flag_tong_push1_accept"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_tong_push2"
+          }
+        },
+        {
+          "id": "C_tong_push1_argue",
+          "label": "覺得自己方法沒有問題，與唐老師理論",
+          "effects": {
+            "flags": [
+              "flag_tong_push1_argue"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 A_tong_push2，唐素雲覺得你未開竅"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tong_push1_accept",
+        "flag_tong_push1_argue"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_tong_met_step_in",
+        "flag_tong_met_watch"
+      ],
+      "openConditionsNote": "tong push1：meet 後。",
+      "artId": "arc_tong_push1",
+      "conflict": "唐素雲的嚴格要求 vs 你對自己演法的堅持。",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tong",
+      "arcKind": "mentor",
+      "linksMain": [
+        "P2去留"
+      ]
+    },
+    {
+      "id": "A_tong_push2",
+      "phase": "P2",
+      "title": "去留一句鉤",
+      "when": "1989",
+      "setting": "星河電視台走廊，夜晚，排練完結後唐素雲叫住阿偉。",
+      "eraTag": "era_1989_leave",
+      "cast": [
+        "唐素雲",
+        "張克凡"
+      ],
+      "synopsis": "唐素雲用一句話鉤住阿偉，要阿偉想清楚是否真的想在這個行業留下。",
+      "beats": [
+        {
+          "speaker": "唐素雲",
+          "lines": [
+            "我看你排了一整天，你是有點東西的。但是這一行，不是單靠有點東西。",
+            "有人走，有人留。你想清楚，你是哪種人。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "唐老師很少這樣跟人說話，你賺到了。",
+            "不過她說話就是這樣，你別太在意。"
+          ]
+        },
+        {
+          "speaker": "唐素雲",
+          "lines": [
+            "我不是要你立刻回答我。我只是想你記住，你今天為什麼會站在這裡。",
+            "如果你連自己為什麼留下都不知道，那麼你走也不會走得遠。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tong_push2_stay",
+          "label": "同唐老師講，想留下多學一點",
+          "effects": {
+            "flags": [
+              "flag_tong_push2_stay"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_tong_crisis"
+          }
+        },
+        {
+          "id": "C_tong_push2_doubt",
+          "label": "坦白同唐老師說，你尚未想清楚",
+          "effects": {
+            "flags": [
+              "flag_tong_push2_doubt"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 A_tong_crisis，唐素雲覺得你還有得想"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tong_push2_doubt",
+        "flag_tong_push2_stay"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_tong_push1_accept",
+        "flag_tong_push1_argue"
+      ],
+      "openConditionsNote": "tong push2：去留一句鉤。",
+      "artId": "arc_tong_push2",
+      "conflict": "P2去留",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tong",
+      "arcKind": "mentor",
+      "linksMain": [
+        "P2去留"
+      ]
+    },
+    {
+      "id": "A_tong_crisis",
+      "phase": "P3",
+      "title": "是否繼續跟她磨",
+      "when": "1990",
+      "setting": "星河電視台排練室，深夜，唐素雲同阿偉排一場重頭戲，阿偉頻頻NG。",
+      "eraTag": "era_1990",
+      "cast": [
+        "唐素雲",
+        "高俊傑"
+      ],
+      "synopsis": "二人排了一整晚，唐素雲開始失去耐性，高俊傑在旁邊冷嘲熱諷，阿偉要決定是否繼續跟唐素雲磨下去。",
+      "beats": [
+        {
+          "speaker": "唐素雲",
+          "lines": [
+            "你今天心不在焉。你是不是有話想跟我說？",
+            "我不是要你交戲，我要你交心。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "唐老師，他跟你跟了整年都是這樣，不如算了吧。",
+            "有些人沒有天份，你教多久都沒有用。"
+          ]
+        },
+        {
+          "speaker": "唐素雲",
+          "lines": [
+            "我教戲，不是只教天份。我教的是，你怎樣面對自己不行的時候。",
+            "你今天可以走，但你走了，就不要回來跟我說你想演戲。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tong_crisis_stay",
+          "label": "留下，繼續跟唐老師磨練",
+          "effects": {
+            "flags": [
+              "flag_tong_crisis_stay"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_tong_ending"
+          }
+        },
+        {
+          "id": "C_tong_crisis_leave",
+          "label": "頂不住，決定不再跟唐老師",
+          "effects": {
+            "flags": [
+              "flag_tong_crisis_leave"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 A_tong_ending，唐素雲失望"
+          }
+        },
+        {
+          "id": "C_tong_crisis_confess",
+          "label": "同唐老師坦白自己的困難，請求體諒",
+          "effects": {
+            "flags": [
+              "flag_tong_crisis_confess"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 A_tong_ending，唐素雲態度軟化"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tong_crisis_confess",
+        "flag_tong_crisis_leave",
+        "flag_tong_crisis_stay"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_tong_push2_doubt",
+        "flag_tong_push2_stay"
+      ],
+      "openConditionsNote": "tong 危機：是否繼續磨。",
+      "artId": "arc_tong_crisis",
+      "conflict": "E09氣氛",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tong",
+      "arcKind": "mentor",
+      "linksMain": [
+        "E09"
+      ]
+    },
+    {
+      "id": "A_tong_ending",
+      "phase": "P5",
+      "title": "教室窗邊的去留",
+      "when": "1992",
+      "setting": "星河電視台天台，黃昏，唐素雲約阿偉見面，說有事要談。",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "唐素雲"
+      ],
+      "synopsis": "唐素雲告訴阿偉，她要退休了，問阿偉記不記得當初為什麼留下，並將她的演戲心得交託給阿偉。",
+      "beats": [
+        {
+          "speaker": "唐素雲",
+          "lines": [
+            "我教了這麼多年，是時候退下來了。",
+            "你是我最後一個學生，我想你記住，演戲先做人。"
+          ]
+        },
+        {
+          "speaker": "唐素雲",
+          "lines": [
+            "有人走，有人留。你留得下來，就要幫忙看住這個地方。",
+            "我沒有什麼可以留給你，就只有這句話。"
+          ]
+        },
+        {
+          "speaker": "唐素雲",
+          "lines": [
+            "你以後的路，你自己走。但你要記住，你曾經在我這裡學過東西。",
+            "不要失禮我。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tong_ending_mentor",
+          "label": "承諾會記住唐老師教誨，繼續做戲",
+          "effects": {
+            "flags": [
+              "flag_tong_ending_mentor"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "mentor_complete；連 E09"
+          }
+        },
+        {
+          "id": "C_tong_ending_respect",
+          "label": "多謝唐老師，但話自己可能會轉行",
+          "effects": {
+            "flags": [
+              "flag_tong_ending_respect"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "rival_respect；連 E09"
+          }
+        },
+        {
+          "id": "C_tong_ending_cold",
+          "label": "冷淡回應，說自己已經不再需要她教",
+          "effects": {
+            "flags": [
+              "flag_tong_ending_cold"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "cold_war；連 E09"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tong_ending_cold",
+        "flag_tong_ending_mentor",
+        "flag_tong_ending_respect"
+      ],
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_tong_crisis_confess",
+        "flag_tong_crisis_leave",
+        "flag_tong_crisis_stay"
+      ],
+      "openConditionsNote": "tong 結局：P5；連 E09 氣氛。",
+      "artId": "arc_tong_ending",
+      "conflict": "E09",
+      "arcBeat": "ending",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "tong",
+      "arcKind": "mentor",
+      "linksMain": [
+        "E09"
+      ]
+    },
+    {
+      "id": "A_ho_meet",
+      "phase": "P1",
+      "title": "事務所初帶",
+      "when": "1988春",
+      "setting": "星河電視台走廊，排隊等候試鏡的人龍旁邊",
+      "eraTag": "era_1988_spring",
+      "cast": [
+        "何生",
+        "高俊傑"
+      ],
+      "synopsis": "何生在走廊截住阿偉，說阿偉站位全錯，順道教阿偉如何在人龍中讓導演記得阿偉的名字。他不講大道理，只講哪個監製看人看哪一點。",
+      "beats": [
+        {
+          "speaker": "何生",
+          "lines": [
+            "你在這裡等，等到天黑都沒人問你叫什麼名字。",
+            "跟我走，我帶你認一認幾個監製的面孔。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "何生帶人？那你要聽話一點，他不喜歡別人臨場才問東問西。"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "lines": [
+            "記住，這行靠人帶，但帶得你入場，站不站得穩是你自己的事。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ho_meet_follow",
+          "label": "跟何生走一圈，逐個監製打招呼",
+          "effects": {
+            "flags": [
+              "flag_ho_met",
+              "flag_ho_intro_round"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C2；何生開始記住你的名字"
+          }
+        },
+        {
+          "id": "C_ho_meet_ask",
+          "label": "先問清楚何生為何要幫你",
+          "effects": {
+            "flags": [
+              "flag_ho_met",
+              "flag_ho_asked_why"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C2；何生覺得你審慎，但未算信你"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ho_asked_why",
+        "flag_ho_intro_round",
+        "flag_ho_met"
+      ],
+      "openConditions": [],
+      "openConditionsNote": "何生事務所初帶；可與 C2 雙軌。",
+      "artId": "arc_ho_meet",
+      "conflict": "C2",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ho",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C2"
+      ],
+      "arcBeat": "meet"
+    },
+    {
+      "id": "A_ho_push1",
+      "phase": "P1",
+      "title": "拒單信任",
+      "when": "1988春",
+      "setting": "何生那間小小的事務所，枱面擺着一疊通告紙",
+      "eraTag": "era_1988_spring",
+      "cast": [
+        "何生",
+        "張克凡"
+      ],
+      "synopsis": "有一張出手闊綽的單找上門，錢多但條件含糊，何生看完直搖頭，要二人自己選擇接不接。",
+      "beats": [
+        {
+          "speaker": "何生",
+          "lines": [
+            "這張單錢是多，但條款寫得一塌糊塗，出事沒人與你承擔。",
+            "我不會幫你接糊塗單，你要接，你自己簽名。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "何生，機會來到不接，轉頭就給第二個搶去了。"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "lines": [
+            "搶去就搶去，總好過你收不到錢還要貼車錢。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ho_push1_refuse",
+          "label": "聽何生講，推掉那張糊塗單",
+          "effects": {
+            "flags": [
+              "flag_ho_refused_deal",
+              "flag_ho_trust_up"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C4；何生信你懂分寸"
+          }
+        },
+        {
+          "id": "C_ho_push1_take",
+          "label": "照接，錢要緊，條款自己啃",
+          "effects": {
+            "flags": [
+              "flag_ho_took_deal"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 C4；何生面色一沉，在記數簿上寫低一筆"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ho_refused_deal",
+        "flag_ho_took_deal",
+        "flag_ho_trust_up"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_ho_met"
+      ],
+      "openConditionsNote": "ho push1：拒單信任；可與 C4 雙軌。",
+      "artId": "arc_ho_push1",
+      "conflict": "C4",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ho",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C4"
+      ],
+      "arcBeat": "push"
+    },
+    {
+      "id": "A_ho_push2",
+      "phase": "P2",
+      "title": "通告品質把關",
+      "when": "1989",
+      "setting": "深夜的片場外圍，何生拿着通告表逐項圈選",
+      "eraTag": "era_1989",
+      "cast": [
+        "何生",
+        "高俊傑"
+      ],
+      "synopsis": "阿偉開始多了通告，何生逐張與阿偉核對，告訴阿偉哪張是消耗阿偉、哪張是幫阿偉儲底。",
+      "beats": [
+        {
+          "speaker": "何生",
+          "lines": [
+            "這張通宵廠景，拍足十二個鐘得三個鏡頭，你說值不值？",
+            "我幫你推了兩張，留回精神拍下個禮拜那組。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "何生幫你篩通告，你不要連一句多謝都沒有。"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "lines": [
+            "不用多謝，你拍得好看，我個名也好聽一點。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ho_push2_trust",
+          "label": "交給何生篩，自己專心拍戲",
+          "effects": {
+            "flags": [
+              "flag_ho_quality_trust"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "何生把關通告品質，你專心演出"
+          }
+        },
+        {
+          "id": "C_ho_push2_self",
+          "label": "自己揀通告，不想什麼都靠人",
+          "effects": {
+            "flags": [
+              "flag_ho_self_select"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "何生沒有生氣，但說你遲早要學懂看數"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ho_quality_trust",
+        "flag_ho_self_select"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_ho_refused_deal",
+        "flag_ho_took_deal",
+        "flag_ho_trust_up"
+      ],
+      "openConditionsNote": "ho push2：通告品質把關。",
+      "artId": "arc_ho_push2",
+      "conflict": "通告量同品質拉鋸；何生要你唔好做蝕底嘅工",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ho",
+      "arcKind": "mentor",
+      "arcBeat": "push"
+    },
+    {
+      "id": "A_ho_crisis",
+      "phase": "P4",
+      "title": "賭大的信任考驗",
+      "when": "1991冬",
+      "setting": "何生事務所，暖爐壞了，兩個人穿着大衣談條件",
+      "eraTag": "era_1991_winter",
+      "cast": [
+        "何生",
+        "張克凡"
+      ],
+      "synopsis": "何生押了事務所大半本錢幫阿偉爭一個大項目，另一邊有人出更高價撬阿偉過檔，他要阿偉講清楚站在哪一邊。",
+      "beats": [
+        {
+          "speaker": "何生",
+          "lines": [
+            "我押了這一鋪，不是押個項目，是押你個人。",
+            "你走，我不會攔，但你今日要走，以後不要回來問我拿意見。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "何生，人家出的價，你事務所跟不跟得起？"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "lines": [
+            "跟不跟得起是我的事，你只答我一句：你信不信我揀的路。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ho_crisis_stay",
+          "label": "留下，與何生一起賭這一鋪",
+          "effects": {
+            "flags": [
+              "flag_ho_crisis_stay",
+              "flag_ho_big_bet"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "連 E01；何生把身家押埋你一齊"
+          }
+        },
+        {
+          "id": "C_ho_crisis_leave",
+          "label": "過檔，錢與前途要緊",
+          "effects": {
+            "flags": [
+              "flag_ho_crisis_leave"
+            ],
+            "stats": {
+              "standing": -2
+            },
+            "notes": "連 E01；何生沒有罵，只是收埋你張相"
+          }
+        },
+        {
+          "id": "C_ho_crisis_ask",
+          "label": "要求何生講明風險先決定",
+          "effects": {
+            "flags": [
+              "flag_ho_crisis_ask"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 E01；何生照講，但說你還未夠膽"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ho_big_bet",
+        "flag_ho_crisis_ask",
+        "flag_ho_crisis_leave",
+        "flag_ho_crisis_stay"
+      ],
+      "openConditions": [
+        "phase_P4"
+      ],
+      "openConditionsAny": [
+        "flag_ho_quality_trust",
+        "flag_ho_self_select"
+      ],
+      "openConditionsNote": "ho 危機：賭大信任；連 E01。",
+      "artId": "arc_ho_crisis",
+      "conflict": "忠誠同利益對撞；何生押上身家；連 E01",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ho",
+      "arcKind": "mentor",
+      "linksMain": [
+        "E01"
+      ],
+      "arcBeat": "crisis"
+    },
+    {
+      "id": "A_ho_ending",
+      "phase": "P5",
+      "title": "穩陣線信任巔峰",
+      "when": "1992",
+      "setting": "星河電視台大堂，頒獎禮散場後人潮漸散",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "何生",
+        "高俊傑"
+      ],
+      "synopsis": "幾年過去，何生站在大堂一角等阿偉，講回當年走廊那句「這行靠人帶」，然後問阿偉之後想怎樣走。",
+      "beats": [
+        {
+          "speaker": "何生",
+          "lines": [
+            "當年我帶你入走廊，今日你自己行得入大堂。",
+            "我不會帶你一世，但你記得怎樣帶下一個，就夠了。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "何生講到這句，即是真係睇得起你。"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "lines": [
+            "你揀哪條路，我都不會攔；不過揀之前，想清楚哪個陪你捱過最凍那個冬天。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ho_ending_complete",
+          "label": "認何生做一世師傅，留在穩陣線",
+          "effects": {
+            "flags": [
+              "flag_ho_mentor_complete"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "mentor_complete；連 E01 師徒線收成"
+          }
+        },
+        {
+          "id": "C_ho_ending_respect",
+          "label": "多謝何生，但想自己出去闖",
+          "effects": {
+            "flags": [
+              "flag_ho_rival_respect"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "rival_respect；各自行，見面還會點頭"
+          }
+        },
+        {
+          "id": "C_ho_ending_cold",
+          "label": "當面講清條數，從此各行各路",
+          "effects": {
+            "flags": [
+              "flag_ho_cold_war"
+            ],
+            "stats": {
+              "standing": -2
+            },
+            "notes": "cold_war；連 E01 決裂收場"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ho_cold_war",
+        "flag_ho_mentor_complete",
+        "flag_ho_rival_respect"
+      ],
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_ho_big_bet",
+        "flag_ho_crisis_ask",
+        "flag_ho_crisis_leave",
+        "flag_ho_crisis_stay"
+      ],
+      "openConditionsNote": "ho 結局：P5；連 E01。",
+      "artId": "arc_ho_ending",
+      "conflict": "E01",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ho",
+      "arcKind": "mentor",
+      "linksMain": [
+        "E01"
+      ],
+      "arcBeat": "ending"
+    },
+    {
+      "id": "A_gao_meet",
+      "phase": "P2",
+      "title": "試鏡房的第一眼",
+      "when": "1989春",
+      "setting": "星河電視台七樓試鏡房，長枱後面坐着三個監製，窗外是春天濕漉漉的廣播道",
+      "eraTag": "era_1989_spring",
+      "cast": [
+        "高文瀚",
+        "張克凡",
+        "助導阿玲"
+      ],
+      "synopsis": "阿偉在走廊等了整整一個小時，進入試鏡房後，高文瀚沒有要求阿偉自我介紹，只叫阿偉讀出手上那頁劇本。阿偉讀完後，他沒有立刻給予評語，反而問阿偉一句：阿偉覺得這場戲，角色是想贏還是想走？阿偉回答後，他才慢慢翻看阿偉的履歷。",
+      "beats": [
+        {
+          "speaker": "高文瀚",
+          "lines": [
+            "不用自我介紹，我不想聽你背稿。你讀這一頁，讀完後我會問你問題。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "（低聲）高先生今天心情不錯，你隨機應變吧。"
+          ]
+        },
+        {
+          "speaker": "高文瀚",
+          "lines": [
+            "你覺得這場戲，角色是想贏，還是想走？這個答案沒有標準，但我要聽你真心那個。"
+          ]
+        },
+        {
+          "speaker": "高文瀚",
+          "lines": [
+            "好，我記住你。這個位置由我決定，不是因為你演得最好，而是因為你肯回答我的問題。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_gao_meet_answer",
+          "label": "照直說角色想走，不怕與監製唱反調",
+          "effects": {
+            "flags": [
+              "flag_gao_met",
+              "flag_gao_honest"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "高文瀚記住你的坦白，連 C8"
+          }
+        },
+        {
+          "id": "C_gao_meet_safe",
+          "label": "順著劇本說角色想贏，穩妥一點為先",
+          "effects": {
+            "flags": [
+              "flag_gao_met"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "安全答案，高文瀚沒有特別反應，連 C8"
+          }
+        },
+        {
+          "id": "C_gao_meet_ask",
+          "label": "反問他心目中的答案是什麼",
+          "effects": {
+            "flags": [
+              "flag_gao_met",
+              "flag_gao_curious"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "高文瀚覺得你有膽識，連 C8"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_gao_curious",
+        "flag_gao_honest",
+        "flag_gao_met"
+      ],
+      "openConditions": [
+        "phase_P2"
+      ],
+      "openConditionsNote": "高文瀚試鏡；可與 C8 雙軌。",
+      "artId": "arc_gao_meet",
+      "conflict": "C8",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "gao",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C8"
+      ]
+    },
+    {
+      "id": "A_gao_push1",
+      "phase": "P2",
+      "title": "搶位要趁早",
+      "when": "1989",
+      "setting": "星河電視台服裝間外面的走廊，通告欄貼滿手寫紙條，人來人往",
+      "eraTag": "era_1989",
+      "cast": [
+        "高文瀚",
+        "張克凡",
+        "助導阿玲"
+      ],
+      "synopsis": "高文瀚手上有一個二線角色的位置，幾個人爭奪。他沒有明言給予誰，只在走廊撞到阿偉時，對阿偉說了一句「阿偉知不知道自己爭取什麼」。阿偉要在他面前展示阿偉值得這個位置，還是乖乖等待安排。",
+      "beats": [
+        {
+          "speaker": "高文瀚",
+          "lines": [
+            "這個位置很多人覬覦，我不會因為你可憐就給你。你知不知道自己爭取什麼？"
+          ]
+        },
+        {
+          "speaker": "助導阿玲",
+          "lines": [
+            "高先生，張先生那邊催促回覆，說今天要答覆。"
+          ]
+        },
+        {
+          "speaker": "高文瀚",
+          "lines": [
+            "叫他等。這個位置由我決定，我未想清楚就沒有人能回覆。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "（對你低聲）他肯對你說這句，即是你還有機會，不要浪費。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_gao_push1_grab",
+          "label": "即場說出你如何演繹這個角色，搶回位置",
+          "effects": {
+            "flags": [
+              "flag_gao_push_grab"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "高文瀚欣賞你的主動，連 push2"
+          }
+        },
+        {
+          "id": "C_gao_push1_wait",
+          "label": "不搶，等他自行決定，先做好本分",
+          "effects": {
+            "flags": [
+              "flag_gao_push_wait"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "高文瀚覺得你穩重，但不夠渴求，連 push2"
+          }
+        },
+        {
+          "id": "C_gao_push1_ask",
+          "label": "先問清楚角色的戲份與走向再決定",
+          "effects": {
+            "flags": [
+              "flag_gao_push_ask"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "高文瀚覺得你懂得問重點，連 push2"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_gao_push_ask",
+        "flag_gao_push_grab",
+        "flag_gao_push_wait"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_gao_met"
+      ],
+      "openConditionsNote": "gao push1：meet 後。",
+      "artId": "arc_gao_push1",
+      "conflict": "爭位嘅野心 vs 唔想顯得咄咄逼人；高文瀚要睇你係唔係真係餓",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "gao",
+      "arcKind": "mentor"
+    },
+    {
+      "id": "A_gao_push2",
+      "phase": "P3",
+      "title": "台慶夜的一分鐘",
+      "when": "1990",
+      "setting": "星河電視台一號錄影廠，台慶綵排現場，燈光師試燈，滿地電線",
+      "eraTag": "era_1990",
+      "cast": [
+        "高文瀚",
+        "張克凡",
+        "助導阿玲"
+      ],
+      "synopsis": "台慶夜有一個一分鐘的曝光位置，高文瀚說給阿偉，但條件是阿偉要在綵排時一次過完成，不可以 NG。廠內所有人都看著阿偉，包括幾個等著阿偉出錯的人。",
+      "beats": [
+        {
+          "speaker": "高文瀚",
+          "lines": [
+            "台慶這一分鐘，我給你。不是因為你可憐，而是因為我想看你站不站得穩。"
+          ]
+        },
+        {
+          "speaker": "助導阿玲",
+          "lines": [
+            "高先生，綵排只有一次，沒有補救。"
+          ]
+        },
+        {
+          "speaker": "高文瀚",
+          "lines": [
+            "一次就夠。這個位置由我決定，我說可以就可以。你不行，我下次不會再給。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "（對你低聲）他講到這麼白，即是真的看得起你，你不要發抖。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_gao_push2_deliver",
+          "label": "頂住壓力，一次過交足貨",
+          "effects": {
+            "flags": [
+              "flag_gao_push2_deliver"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "高文瀚對你信心大增，連 crisis"
+          }
+        },
+        {
+          "id": "C_gao_push2_safe",
+          "label": "收住做，寧願穩妥不博",
+          "effects": {
+            "flags": [
+              "flag_gao_push2_safe"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "高文瀚覺得你穩但膽子不夠，連 crisis"
+          }
+        },
+        {
+          "id": "C_gao_push2_help",
+          "label": "主動叫張克凡幫你對一次位",
+          "effects": {
+            "flags": [
+              "flag_gao_push2_help"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "高文瀚留意到你懂得用人，連 crisis"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_gao_push2_deliver",
+        "flag_gao_push2_help",
+        "flag_gao_push2_safe"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_gao_push_ask",
+        "flag_gao_push_grab",
+        "flag_gao_push_wait"
+      ],
+      "openConditionsNote": "gao push2：台慶一分鐘。",
+      "artId": "arc_gao_push2",
+      "conflict": "一次過嘅壓力 vs 廠內等你出錯嘅目光；高文瀚要睇你係唔係佢可以推出去嘅人",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "gao",
+      "arcKind": "mentor"
+    },
+    {
+      "id": "A_gao_crisis",
+      "phase": "P4",
+      "title": "賀歲檔的賭注",
+      "when": "1991夏",
+      "setting": "星河電視台高文瀚的辦公室，枱面攤着賀歲片的預算表，冷氣開得很冷",
+      "eraTag": "era_1991_summer",
+      "cast": [
+        "高文瀚",
+        "張克凡",
+        "助導阿玲"
+      ],
+      "synopsis": "高文瀚押了公司的賀歲檔在阿偉身上，但上面有人質疑，說阿偉未夠班擔正。高文瀚叫阿偉入房，沒有安慰阿偉，只將預算表推到阿偉面前，問阿偉一句：阿偉覺得我應不應該繼續賭下去。",
+      "beats": [
+        {
+          "speaker": "高文瀚",
+          "lines": [
+            "上面有人說你未夠班。我不是叫你解釋，我是問你，你覺得我應不應該繼續賭下去。"
+          ]
+        },
+        {
+          "speaker": "助導阿玲",
+          "lines": [
+            "高先生，預算表改了三次，再拖就趕不及賀歲檔。"
+          ]
+        },
+        {
+          "speaker": "高文瀚",
+          "lines": [
+            "趕不及就不要趕。這個位置由我決定，我寧願遲，也不要出來給人笑。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "（對你低聲）他這次真的押了很多在你身上，你說話要想清楚。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_gao_crisis_commit",
+          "label": "叫他繼續賭，你承擔所有責任",
+          "effects": {
+            "flags": [
+              "flag_gao_crisis_commit"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "高文瀚與你綁在一起，連 ending"
+          }
+        },
+        {
+          "id": "C_gao_crisis_honest",
+          "label": "照直說你害怕，但會盡力做",
+          "effects": {
+            "flags": [
+              "flag_gao_crisis_honest"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "高文瀚欣賞你不裝模作樣，連 ending"
+          }
+        },
+        {
+          "id": "C_gao_crisis_stepback",
+          "label": "叫他縮小賭注，保住公司",
+          "effects": {
+            "flags": [
+              "flag_gao_crisis_stepback"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "高文瀚覺得你顧全大局但不夠狠，連 ending"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_gao_crisis_commit",
+        "flag_gao_crisis_honest",
+        "flag_gao_crisis_stepback"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_gao_push2_deliver",
+        "flag_gao_push2_help",
+        "flag_gao_push2_safe",
+        "C12"
+      ],
+      "openConditionsNote": "gao 危機：賀歲賭注；linksMain=C12／T4。",
+      "artId": "arc_gao_crisis",
+      "conflict": "C12／T4",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "gao",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C12",
+        "T4"
+      ]
+    },
+    {
+      "id": "A_gao_ending",
+      "phase": "P5",
+      "title": "金牌推手的最後一句",
+      "when": "1992",
+      "setting": "星河電視台天台，黃昏，遠處是九龍的樓景，風有點大",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "高文瀚",
+        "張克凡"
+      ],
+      "synopsis": "幾年過去，高文瀚約阿偉上天台。他說自己手上的資源開始要分給新人，問阿偉覺得自己站不站得穩。阿偉怎樣回答，決定他繼續做阿偉的推手，還是慢慢撤走資源。",
+      "beats": [
+        {
+          "speaker": "高文瀚",
+          "lines": [
+            "我手上的位置開始要分給其他人。你不要問我為什麼，你問自己站不站得穩。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "（對你低聲）他肯約你上天台，即是還當你是自己人。"
+          ]
+        },
+        {
+          "speaker": "高文瀚",
+          "lines": [
+            "這個位置由我決定，但我不可以永遠決定。你答我一句，你想我繼續推你，還是想我放手。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_gao_ending_respect",
+          "label": "多謝他一路推你，講明你會自己行下去",
+          "effects": {
+            "flags": [
+              "flag_gao_ending_respect"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "高文瀚正式認你可自立，mentor_complete"
+          }
+        },
+        {
+          "id": "C_gao_ending_stay",
+          "label": "叫他繼續推，你還需要他這個位置",
+          "effects": {
+            "flags": [
+              "flag_gao_ending_stay"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "高文瀚沒有拒絕，但資源開始收，cold_war 味"
+          }
+        },
+        {
+          "id": "C_gao_ending_break",
+          "label": "說你不想再靠他的名字，想自己爭取",
+          "effects": {
+            "flags": [
+              "flag_gao_ending_break"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "高文瀚有點意外但尊重你，rival_respect"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_gao_ending_break",
+        "flag_gao_ending_respect",
+        "flag_gao_ending_stay"
+      ],
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_gao_crisis_commit",
+        "flag_gao_crisis_honest",
+        "flag_gao_crisis_stepback"
+      ],
+      "openConditionsNote": "gao 結局：P5；連 E02。",
+      "artId": "arc_gao_ending",
+      "conflict": "E02",
+      "arcBeat": "ending",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "gao",
+      "arcKind": "mentor",
+      "linksMain": [
+        "E02"
+      ]
+    },
+    {
+      "id": "A_lei_meet",
+      "phase": "P1.5",
+      "title": "茶餐廳攤約",
+      "when": "1988秋",
+      "setting": "旺角一間舊式茶餐廳，卡位油漬還沒擦乾淨，雷勁坐在最裡面那張枱，面前擺着一疊文件和兩杯凍奶茶。",
+      "eraTag": "era_1988_autumn",
+      "cast": [
+        "雷勁",
+        "張克凡"
+      ],
+      "synopsis": "雷勁透過中間人約阿偉見面，聲稱想談「合作」，實際上想觀察阿偉是否一個可以收歸旗下的人。他一開口就笑著談及以前當龍虎武師的艱辛，笑完便將一份合約推到阿偉面前。",
+      "beats": [
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "坐下吧，不必站著，我不會吃人的。",
+            "我雷勁以前也是被人在片場呼喝的那個，熬到今天，你猜靠什麼？靠懂得做人。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "雷先生，你約我來，是想談戲還是談人？",
+            "我聽說你手上的合約，簽了就很難脫身。"
+          ]
+        },
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "哈哈，你這小子挺直接，我喜歡。",
+            "合約這種事，你情我願，簽之前看清楚，沒有人拿著你的手簽。"
+          ]
+        },
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "不過我告訴你，跟我找飯吃，至少不會被人欺負。",
+            "你考慮一下，不急，但機會不會等人太久。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_lei_meet_read",
+          "label": "拿起合約逐條看清楚再談",
+          "effects": {
+            "flags": [
+              "flag_lei_met",
+              "flag_lei_contract_read"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_lei_push1；看清條款，雷勁覺得你不是蠢人"
+          }
+        },
+        {
+          "id": "C_lei_meet_polite",
+          "label": "客氣推搪，說要與公司商量",
+          "effects": {
+            "flags": [
+              "flag_lei_met"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 A_lei_push1；雷勁表面笑笑，心裏記住你耍太極"
+          }
+        },
+        {
+          "id": "C_lei_meet_bluff",
+          "label": "裝作有後台，不好意思拒絕",
+          "effects": {
+            "flags": [
+              "flag_lei_met",
+              "flag_lei_bluff"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 A_lei_push1；雷勁最討厭人裝模作樣，日後會查你底細"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_lei_bluff",
+        "flag_lei_contract_read",
+        "flag_lei_met"
+      ],
+      "openConditions": [
+        "phase_P1_5"
+      ],
+      "openConditionsNote": "雷勁攤約；P1.5。可用 phase_P1.5 或秋冬 when。",
+      "artId": "arc_lei_meet",
+      "conflict": "雷勁想收你入旗下，你想保住自主；合約條款苛刻，簽與唔簽都係壓力。",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "lei",
+      "arcKind": "capital"
+    },
+    {
+      "id": "A_lei_push1",
+      "phase": "P1.5",
+      "title": "脅迫推進",
+      "when": "1988秋冬",
+      "setting": "星河電視台停車場出口，夜晚，雷勁靠住一架舊平治，兩個手下企遠少少食煙。",
+      "eraTag": "era_1988_winter",
+      "cast": [
+        "雷勁",
+        "高俊傑"
+      ],
+      "synopsis": "雷勁開始出手，先是阿偉的通告被「技術性」調走，再在停車場截住阿偉，語氣半笑半嚇，說這行很現實，不埋堆就會被邊緣化。",
+      "beats": [
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "你近來的通告，好像少了。",
+            "我不知道是否與我有關，不過這行很多事，都是一句話而已。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "雷先生，你這樣做好不好看？",
+            "人家不簽你，你就玩這些？"
+          ]
+        },
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "我玩什麼？我不知多空閒。",
+            "年輕人，我是提醒你，不是嚇你，不要把好心當狗肺。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_lei_push1_stand",
+          "label": "堅持，說不會因為這樣就範",
+          "effects": {
+            "flags": [
+              "flag_lei_push1",
+              "flag_lei_defiant"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "連 A_lei_crisis；雷勁覺得你有骨氣，但會加大壓力"
+          }
+        },
+        {
+          "id": "C_lei_push1_soften",
+          "label": "低調安撫，說有機會再談",
+          "effects": {
+            "flags": [
+              "flag_lei_push1"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 A_lei_push2；雷勁當你鬆口，之後更纏身"
+          }
+        },
+        {
+          "id": "C_lei_push1_seek_help",
+          "label": "找高俊傑幫忙擋一擋",
+          "effects": {
+            "flags": [
+              "flag_lei_push1",
+              "flag_ko_ally"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_lei_crisis；高俊傑應承，但欠了一個人情"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ko_ally",
+        "flag_lei_defiant",
+        "flag_lei_push1"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_lei_met"
+      ],
+      "openConditionsNote": "lei push1：脅迫推進。",
+      "artId": "arc_lei_push1",
+      "conflict": "雷勁用通告同人脈施壓，你想守住立場又唔想斷咗條路。",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "lei",
+      "arcKind": "capital"
+    },
+    {
+      "id": "A_lei_push2",
+      "phase": "P2",
+      "title": "低成本動作片班底拉攏",
+      "when": "1989",
+      "setting": "新界一間改裝貨倉，用來拍低成本動作片，地上有軟墊，牆邊擺着幾支木棍和威亞。",
+      "eraTag": "era_1989",
+      "cast": [
+        "雷勁",
+        "張克凡"
+      ],
+      "synopsis": "雷勁正在搞一部低成本動作片，想找阿偉加入班底做主角，說是機會，但合約條件一樣苛刻，還要阿偉兼做替身和宣傳。他帶阿偉看貨倉，語氣似賞識又似試探。",
+      "beats": [
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "你看看這個倉，我租了半年，夠我拍三套。",
+            "我不是大公司，但我肯用新人，你在星河要等幾年才等到一個主角？"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "雷先生，你那份合約寫明要我做替身，還要自己出錢買戲服？",
+            "這樣叫機會？"
+          ]
+        },
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "叫熬出頭呀後生仔。",
+            "我當年跳樓梯也是自己買護膝，你猜成功是免費的？"
+          ]
+        },
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "你不做，外面大把人排隊。",
+            "不過我看得起你，才跟你說這麼多。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_lei_push2_join",
+          "label": "應承加入班底，但要改兩條條款",
+          "effects": {
+            "flags": [
+              "flag_lei_push2",
+              "flag_lei_deal"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_lei_crisis；雷勁肯讓一小步，但記住你夠膽講價"
+          }
+        },
+        {
+          "id": "C_lei_push2_refuse",
+          "label": "婉拒，說想留在電視台發展",
+          "effects": {
+            "flags": [
+              "flag_lei_push2",
+              "flag_lei_refuse_film"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 A_lei_crisis；雷勁面色一沉，說你不識貨"
+          }
+        },
+        {
+          "id": "C_lei_push2_probe",
+          "label": "問清楚片酬和分帳才打算",
+          "effects": {
+            "flags": [
+              "flag_lei_push2",
+              "flag_lei_contract_read"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_lei_crisis；雷勁覺得你計數精明，反而有興趣"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_lei_contract_read",
+        "flag_lei_deal",
+        "flag_lei_push2",
+        "flag_lei_refuse_film"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_ko_ally",
+        "flag_lei_defiant",
+        "flag_lei_push1",
+        "phase_P2"
+      ],
+      "openConditionsNote": "lei push2：低成本動作片拉攏；P2。",
+      "artId": "arc_lei_push2",
+      "conflict": "雷勁用電影機會換你接受苛刻條件，你想上位又唔想俾人食住。",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "lei",
+      "arcKind": "capital"
+    },
+    {
+      "id": "A_lei_crisis",
+      "phase": "P1.5",
+      "title": "拒苛刻合約危機",
+      "when": "1988秋冬",
+      "setting": "雷勁的寫字樓，枱面擺着合約和一本記數簿，窗外是舊樓天台。",
+      "eraTag": "era_1988_winter_contract",
+      "cast": [
+        "雷勁",
+        "高俊傑"
+      ],
+      "synopsis": "雷勁要阿偉即刻簽一份長約，年期長、抽佣高、違約罰得重，還說不簽就當阿偉不給面子。阿偉拒絕之後，他沒有即刻發惡，只是慢慢合上計數簿，說了一句令阿偉心寒的話。",
+      "beats": [
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "合約我改過，已經很給你面子。",
+            "你簽了，我擔保你三年內有戲拍；你不簽，我不敢說。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "雷先生，違約罰款寫到這麼重，你當人是賣身？",
+            "我們不會簽這種東西。"
+          ]
+        },
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "賣身？哈哈，我賣了十幾年才有今天。",
+            "你們不簽，我不會逼，不過這行很小，消息很快傳開。"
+          ]
+        },
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "我雷勁講義氣，但義氣是留給自己人。",
+            "你們走出這個門口之前，想清楚。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_lei_crisis_refuse",
+          "label": "當面拒絕，說不會簽這種合約",
+          "effects": {
+            "flags": [
+              "flag_lei_crisis",
+              "flag_anti_lei"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "連 A_lei_ending；雷勁記住你不給面子，日後或成對頭"
+          }
+        },
+        {
+          "id": "C_lei_crisis_negotiate",
+          "label": "提出反建議，拉高自己籌碼",
+          "effects": {
+            "flags": [
+              "flag_lei_crisis",
+              "flag_lei_negotiated"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_lei_ending；雷勁覺得你難纏但有腦，關係未斷"
+          }
+        },
+        {
+          "id": "C_lei_crisis_sign",
+          "label": "頂不住壓力，簽了再算",
+          "effects": {
+            "flags": [
+              "flag_lei_crisis",
+              "flag_lei_bound"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 A_lei_ending；雷勁當你是自己人，但你欠了自由"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_anti_lei",
+        "flag_lei_bound",
+        "flag_lei_crisis",
+        "flag_lei_negotiated"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_lei_bluff",
+        "flag_lei_contract_read",
+        "flag_lei_met",
+        "flag_ko_ally",
+        "flag_lei_defiant",
+        "flag_lei_push1",
+        "C7"
+      ],
+      "openConditionsNote": "lei 危機：拒苛約；linksMain=C7。可與 C7 雙軌。",
+      "artId": "arc_lei_crisis",
+      "conflict": "C7",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "lei",
+      "arcKind": "capital",
+      "linksMain": [
+        "C7"
+      ]
+    },
+    {
+      "id": "A_lei_ending",
+      "phase": "P5",
+      "title": "危險盟友或決裂",
+      "when": "1992",
+      "setting": "一間已經空置的舊片場，佈景拆剩一半，雷勁一個人坐在導演椅上，手上轉着一支筆。",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "雷勁",
+        "張克凡"
+      ],
+      "synopsis": "幾年過去，雷勁的勢力不同以往，阿偉亦不再是當年那個新人。他約阿偉在舊片場見面，說想「埋尾」，但說到底都是要阿偉表態：做他的盟友，還是各行各路。",
+      "beats": [
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "這個廠，我第一次做武師就是在這裏被人踢下樓梯。",
+            "今天我坐在這裏，你猜我還會不會被人踢？"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "雷先生，你找我來，不是只想懷舊吧。",
+            "你想我怎樣表態，不如直接說。"
+          ]
+        },
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "好，爽快。",
+            "我現在要人幫手看住盤數，你肯埋來，以前的事我當沒發生。"
+          ]
+        },
+        {
+          "speaker": "雷勁",
+          "lines": [
+            "你不肯，我也不會攔你。",
+            "不過你要記住，我這個人，不會忘記誰在我低谷時走了。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_lei_ending_ally",
+          "label": "應承做盟友，但講明底線",
+          "effects": {
+            "flags": [
+              "flag_lei_ally",
+              "flag_ally_danger"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_lei_ending；危險盟友 ally_danger，雷勁欣賞你坦白但隨時翻臉"
+          }
+        },
+        {
+          "id": "C_lei_ending_respect",
+          "label": "拒絕埋堆，但保住互相尊重",
+          "effects": {
+            "flags": [
+              "flag_lei_rival_respect"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 A_lei_ending；rival_respect，雷勁不服但認你有種"
+          }
+        },
+        {
+          "id": "C_lei_ending_cold",
+          "label": "當面數清舊帳，各行各路",
+          "effects": {
+            "flags": [
+              "flag_anti_lei",
+              "flag_lei_cold_war"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 A_lei_ending；cold_war，雷勁冷笑收場，日後還有手尾"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ally_danger",
+        "flag_anti_lei",
+        "flag_lei_ally",
+        "flag_lei_cold_war",
+        "flag_lei_rival_respect"
+      ],
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_anti_lei",
+        "flag_lei_bound",
+        "flag_lei_negotiated",
+        "flag_lei_crisis",
+        "flag_lei_ally"
+      ],
+      "openConditionsNote": "lei 結局：P5；linksMain 含 flag_anti_lei。",
+      "artId": "arc_lei_ending",
+      "conflict": "flag_anti_lei",
+      "arcBeat": "ending",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "lei",
+      "arcKind": "capital",
+      "linksMain": [
+        "flag_anti_lei"
+      ]
+    }
+  ],
+  "qa": {
+    "nodeCount": 40,
+    "lines": [
+      "ko",
+      "hakfan",
+      "tsijun",
+      "fong",
+      "tong",
+      "ho",
+      "gao",
+      "lei"
+    ],
+    "perLine": {
+      "ko": {
+        "name": "高俊傑",
+        "arcKind": "rival",
+        "count": 5,
+        "ids": [
+          "A_ko_meet",
+          "A_ko_push1",
+          "A_ko_push2",
+          "A_ko_crisis",
+          "A_ko_ending"
+        ],
+        "arcBeats": [
+          "crisis",
+          "ending",
+          "meet",
+          "push"
+        ],
+        "linksExpected": [
+          "C3",
+          "C10",
+          "C12",
+          "T2"
+        ]
+      },
+      "hakfan": {
+        "name": "張克凡",
+        "arcKind": "rival",
+        "count": 5,
+        "ids": [
+          "A_hakfan_meet",
+          "A_hakfan_push1",
+          "A_hakfan_push2",
+          "A_hakfan_crisis",
+          "A_hakfan_ending"
+        ],
+        "arcBeats": [
+          "crisis",
+          "ending",
+          "meet",
+          "push"
+        ],
+        "linksExpected": [
+          "P2–P4資源場"
+        ]
+      },
+      "tsijun": {
+        "name": "張子駿",
+        "arcKind": "mentor",
+        "count": 5,
+        "ids": [
+          "A_tsijun_meet",
+          "A_tsijun_push1",
+          "A_tsijun_push2",
+          "A_tsijun_crisis",
+          "A_tsijun_ending"
+        ],
+        "arcBeats": [
+          "crisis",
+          "ending",
+          "meet",
+          "push"
+        ],
+        "linksExpected": [
+          "C8",
+          "C11",
+          "C17",
+          "E03",
+          "T3"
+        ]
+      },
+      "fong": {
+        "name": "方小龍",
+        "arcKind": "friend",
+        "count": 5,
+        "ids": [
+          "A_fong_meet",
+          "A_fong_push1",
+          "A_fong_push2",
+          "A_fong_crisis",
+          "A_fong_ending"
+        ],
+        "arcBeats": [
+          "crisis",
+          "ending",
+          "meet",
+          "push"
+        ],
+        "linksExpected": [
+          "P3替身危機",
+          "E05"
+        ]
+      },
+      "tong": {
+        "name": "唐素雲",
+        "arcKind": "mentor",
+        "count": 5,
+        "ids": [
+          "A_tong_meet",
+          "A_tong_push1",
+          "A_tong_push2",
+          "A_tong_crisis",
+          "A_tong_ending"
+        ],
+        "arcBeats": [
+          "crisis",
+          "ending",
+          "meet",
+          "push"
+        ],
+        "linksExpected": [
+          "P2去留",
+          "E09"
+        ]
+      },
+      "ho": {
+        "name": "何生",
+        "arcKind": "mentor",
+        "count": 5,
+        "ids": [
+          "A_ho_meet",
+          "A_ho_push1",
+          "A_ho_push2",
+          "A_ho_crisis",
+          "A_ho_ending"
+        ],
+        "arcBeats": [
+          "crisis",
+          "ending",
+          "meet",
+          "push"
+        ],
+        "linksExpected": [
+          "C2",
+          "C4",
+          "E01"
+        ]
+      },
+      "gao": {
+        "name": "高文瀚",
+        "arcKind": "mentor",
+        "count": 5,
+        "ids": [
+          "A_gao_meet",
+          "A_gao_push1",
+          "A_gao_push2",
+          "A_gao_crisis",
+          "A_gao_ending"
+        ],
+        "arcBeats": [
+          "crisis",
+          "ending",
+          "meet",
+          "push"
+        ],
+        "linksExpected": [
+          "C8",
+          "C12",
+          "E02",
+          "T4"
+        ]
+      },
+      "lei": {
+        "name": "雷勁",
+        "arcKind": "capital",
+        "count": 5,
+        "ids": [
+          "A_lei_meet",
+          "A_lei_push1",
+          "A_lei_push2",
+          "A_lei_crisis",
+          "A_lei_ending"
+        ],
+        "arcBeats": [
+          "crisis",
+          "ending",
+          "meet",
+          "push"
+        ],
+        "linksExpected": [
+          "C7",
+          "flag_anti_lei"
+        ]
+      }
+    },
+    "noForbiddenLexicon": true,
+    "noAweiSpeaker": true,
+    "choiceIdsAllCPrefix": true,
+    "flagsPresent": true,
+    "meetPushCrisisPerLine": true,
+    "koVsHakfanVoiceDistinct": true,
+    "noRealCelebrityNames": true,
+    "starRiverTV": true,
+    "noRomanceHEBELabels": true,
+    "artDeferred": true,
+    "issues": [],
+    "checkedAt": "2026-11-02T23:16:04+08:00",
+    "koSample": "喂，呢個位我早排咗，你仲唔識趣？ 你個名咁難讀，難怪副導都記唔住你啦。 我唔係星二代，我係自己一步一步捱上嚟，你呢？企喺度等運到？ 算啦，今日我心情好，張通告還返你，不過下次唔好要我開口。 你企嗰個位擋住我入鏡呀，唔該借借。 我頭先試咗個新",
+    "hakfanSample": "你係咪都係等《赤道線》？我勸你唔好嘥心機，呢個位我爸爸同監製食過飯。 唔係話你唔得，不過電視台啲嘢，有時係講邊個開口先。 克凡，監製叫你入去先，試完再講。 後面嗰位，你準備定，下一輪到你。 我試完出嚟同你講聲，睇下你輸喺邊。做戲呢家嘢，輸都",
+    "pass": true,
+    "version": 2,
+    "idSetUnchanged": true,
+    "choiceIdSetUnchanged": true,
+    "flagsUnchanged": true,
+    "structureFieldsUnchanged": true,
+    "structureIssues": [],
+    "forbiddenHits": {},
+    "aweiSpeakerCount": 0,
+    "colloquialMarkerHits": {},
+    "colloquialMarkerTotal": 0,
+    "writtenApproxPass": true,
+    "beforeSamples": [
+      {
+        "id": "A_ko_meet",
+        "synopsis": "你排隊等派通告，高俊傑突然插隊搶走你手上嗰張板紙通告，仲要當眾讀出你個名來激你。",
+        "line0": "喂，呢個位我早排咗，你仲唔識趣？"
+      },
+      {
+        "id": "A_hakfan_meet",
+        "synopsis": "你喺走廊等試鏡，張克凡由芬姐親自帶入房，連排隊都唔使。佢臨入房前望你一眼，語氣唔重但句句都係資源壓人，話呢個角色早有人打過招呼。你未入房已經知道，呢場唔止考演技。",
+        "line0": "你係咪都係等《赤道線》？我勸你唔好嘥心機，呢個位我爸爸同監製食過飯。"
+      },
+      {
+        "id": "A_lei_crisis",
+        "synopsis": "雷勁要你即刻簽一份長約，年期長、抽佣高、違約罰得重，仲話唔簽就當你唔俾面。你拒絕之後，佢冇即刻發惡，只係慢慢合上計數簿，講咗句令你心寒嘅說話。",
+        "line0": "份約我改過，已經好俾面你。"
+      }
+    ],
+    "afterSamples": [
+      {
+        "id": "A_ko_meet",
+        "synopsis": "你排隊等候派發通告時，高俊傑突然插隊，搶走你手上的紙本通告，更當眾讀出你的名字來挑釁你。",
+        "line0": "那個位置我早已排好，你還不明白嗎？"
+      },
+      {
+        "id": "A_hakfan_meet",
+        "synopsis": "你在走廊等候試鏡，張克凡由芬姐親自帶入房間，連排隊都不需要。他臨入房前望你一眼，語氣不重，但句句都是資源壓人，說這個角色早有人打過招呼。你未入房已經知道，這場不只考演技。",
+        "line0": "你也是等《赤道線》嗎？我勸你不要浪費心機，這個位置我爸爸和監製吃過飯。"
+      },
+      {
+        "id": "A_lei_crisis",
+        "synopsis": "雷勁要你即刻簽一份長約，年期長、抽佣高、違約罰得重，還說不簽就當你不給面子。你拒絕之後，他沒有即刻發惡，只是慢慢合上計數簿，說了一句令你心寒的話。",
+        "line0": "合約我改過，已經很給你面子。"
+      }
+    ],
+    "manualPolish": true,
+    "soft_nits_fix": "v2.1",
+    "written_title_setting": true,
+    "synopsis_pov": "阿偉",
+    "wiring_openConditions": {
+      "version": "v1",
+      "nodesWithOC": 40,
+      "softHold": [
+        "ending parallelOk true"
+      ]
+    }
+  },
+  "rule": "對手／導師／友情／資本弧非戀愛攻略；pcSilent；禁薄本趕板苛約；高俊傑≠張克凡聲口；星河電視台；結局 rival_respect／cold_war／mentor_complete／friend_saved／ally_danger；出圖暫緩。",
+  "conditionSchema": {
+    "version": 1,
+    "semantics": "openConditions＝AND 清單（全過才開）；空 []＝無額外閘（仍受 phase／when 約束）。openConditionsAny＝可選 OR 清單：若有，須至少中一項，並與 openConditions 同時成立。tokens：C*／R_*／A_*＝該節完成；flag_*／裸前綴／route_*＝旗標真；rel_*_threshold＝關係數值達門檻（見 thresholds 或檔級，playtest）；phase_P*＝當前 phase 已達；era_*／season_*＝季節／時代軟匹配。與 Tang 陣列 schema 相容；Tang push 仍只用 openConditions AND。",
+    "parallelOkEnding": "全部 ending parallelOk=true（Soft HOLD；本輪不改）"
+  },
+  "edits": [
+    "v2.2 wiring：40 節補 openConditions／Any／Note；linksMain 既有保留；parallelOk Soft HOLD；對白未改"
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "nodes": [
+    {
+      "id": "R_tang_meet_stub",
+      "phase": "P3–P4",
+      "title": "公關公司偶遇鄧麗萍",
+      "when": "1991年秋",
+      "setting": "公關公司會議室",
+      "eraTag": "era_1991_autumn_capital",
+      "cast": [
+        "阿偉",
+        "鄧麗萍"
+      ],
+      "synopsis": "阿偉到公關公司洽談臨記工作，在會議室遇見鄧麗萍。二人短暫交談，交換聯絡與否，將影響日後感情線能否正式開啟。此節為佔位短認識，正式開線需同時滿足 flag_tang_open 及 rel_tang 達到門檻。",
+      "beats": [
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "你就是星河那邊派來的臨記代表？我是鄧麗萍，負責這次活動的客戶對接。",
+            "待會兒開會前，有幾樣現場安排想先跟你對一對。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "鄧小姐你好，我是阿偉。第一次跟公關公司合作，有甚麼要注意的，請你直接提點。",
+            "我帶了通告清單，可以逐項核對。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "你做事都算有準備。我最怕臨記臨場才問東問西，浪費大家時間。",
+            "這樣吧，開會前我們先交換電話，之後有改動可以直接聯絡。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "好，我寫低我傳呼機號碼。不過我多數在片場，未必即刻覆到。",
+            "如果急事，可以留口訊，我收工一定回覆。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "明白，做這行時間難遷就。你留低號碼，我這邊有消息就通知你。",
+            "希望今次合作順利，之後陸續有來。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tang_meet_keep_contact",
+          "label": "留下聯絡：交換傳呼機號碼，方便日後合作",
+          "effects": {
+            "flags": [
+              "flag_tang_open"
+            ],
+            "stats": {
+              "rel_tang": 1
+            },
+            "notes": "開啟鄧麗萍線的初步條件，仍需 rel_tang 達標才正式開線。"
+          }
+        },
+        {
+          "id": "C_tang_meet_hold_back",
+          "label": "先不深交：只談公事，暫不交換私人聯絡",
+          "effects": {
+            "flags": [],
+            "stats": {
+              "rel_tang": 0
+            },
+            "notes": "保持距離，感情線暫不開啟。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tang_open"
+      ],
+      "artId": "rom_tang_meet_stub",
+      "conflict": "阿偉在公關場合與客戶對接，需在專業表現與私人聯絡之間拿捏分寸。",
+      "romanceLine": "tang",
+      "arcBeat": "meet",
+      "parallelOk": true
+    }
+  ]
+}

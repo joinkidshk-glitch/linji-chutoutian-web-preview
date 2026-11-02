@@ -1,0 +1,408 @@
+{
+  "nodes": [
+    {
+      "id": "R_tang_meet",
+      "phase": "P3",
+      "title": "上門談排片：四成上座率先講嘢",
+      "when": "1990秋",
+      "setting": "龍頭院線排片部會議室；牆上貼滿午夜場與周末場的報表，紅筆圈住每一格未達標的數字。",
+      "eraTag": "era_1990_autumn",
+      "cast": [
+        "鄧麗萍"
+      ],
+      "synopsis": "你帶住新片資料上門，想喺龍頭院線爭一個正式檔期。鄧麗萍冇同你寒暄，一開口就係上座率同午夜場數據；你要喺佢嘅報表邏輯入面，證明自己套戲值得一個位。",
+      "beats": [
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "你套戲我睇過試片，午夜場上座率三成八，周末場我哋平均要五成二先叫合格。你今日上嚟，係想我點幫你？"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "我唔係唔鍾意講故事，但院線每晚電費、人工、租金都係實數。你給我一個理由，點解我要將一個黃金檔期交畀一個三成八嘅數字。"
+          ]
+        },
+        {
+          "speaker": "院線助理",
+          "lines": [
+            "鄧小姐，隔籬線嗰套動作片已經排到兩周後，午夜場仲有七成。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "我聽到。所以你更加要講清楚，你套戲憑咩令我覺得可以拉高整體入座，而唔係拖低我條線。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tang_meet_data",
+          "label": "攤開你手上嘅觀眾數據，同佢講清楚套戲嘅目標客群同口碑走勢",
+          "effects": {
+            "flags": [
+              "flag_tang_open"
+            ],
+            "stats": {
+              "rel_tang": 1
+            },
+            "notes": "以數據回應數據，打開同鄧麗萍合作嘅第一道閘；supersedes=R_tang_meet_stub"
+          }
+        },
+        {
+          "id": "C_tang_meet_wait",
+          "label": "唔急住爭，先問清楚佢條線嘅排片準則，返去再補數據",
+          "effects": {
+            "flags": [
+              "flag_tang_met_wait"
+            ],
+            "stats": {
+              "rel_tang": 0
+            },
+            "notes": "暫緩開閘，鄧麗萍覺得你至少唔係亂衝；supersedes=R_tang_meet_stub"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tang_met_wait",
+        "flag_tang_open"
+      ],
+      "artId": "rom_tang_meet",
+      "conflict": "新片爭檔期 vs 院線數據門檻",
+      "romanceLine": "tang",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "openConditions": [
+        "flag_tang_open",
+        "rel_tang_threshold"
+      ],
+      "notes": "正式 meet＝排片談判初遇；可寫入 flag_tang_open。正式推進（push+）需雙條件 flag_tang_open＋rel_tang 門檻。",
+      "supersedes": "R_tang_meet_stub"
+    },
+    {
+      "id": "R_tang_push1",
+      "phase": "P3",
+      "title": "中控室夜話：數據互助第一步",
+      "when": "1990冬",
+      "setting": "院線票房中控室，深夜十一點半，螢幕上跳住各院即時入座數字，枱面有一疊未拆嘅午夜場報告。",
+      "eraTag": "era_1990_winter",
+      "cast": [
+        "鄧麗萍"
+      ],
+      "synopsis": "你同鄧麗萍開始有來往，但佢仍然句句帶百分比。你哋交換試映情報同冷門檔期資料，佢第一次主動問你套戲喺其他區嘅口碑走勢。",
+      "beats": [
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "你上次講嘅目標客群，我睇咗三日數據，十八至三十歲嗰截真係升咗兩個百分點。唔算多，但唔係噪音。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "我手上有個冷門檔期，周四開畫，全線只得六成場次。你夠膽試，我就夠膽畀你試；但你要自己盯住午夜場條數。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "你唔好以為我開始信你。我只係信數字有得傾。你畀到我睇，我就繼續同你傾。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tang_push1_exchange",
+          "label": "用你手上嘅試映口碑情報，換佢一個冷門檔期嘅正式位",
+          "effects": {
+            "flags": [
+              "flag_tang_push1_exchange"
+            ],
+            "stats": {
+              "rel_tang": 1
+            },
+            "notes": "數據互助成立，鄧麗萍開始留意你嘅號召力"
+          }
+        },
+        {
+          "id": "C_tang_push1_prove",
+          "label": "唔換情報，直接應承冷門檔期，用午夜場數字證明自己",
+          "effects": {
+            "flags": [
+              "flag_tang_push1_prove"
+            ],
+            "stats": {
+              "rel_tang": 1
+            },
+            "notes": "鄧麗萍欣賞你肯孭數，但未完全放下審判官姿態"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tang_push1_exchange",
+        "flag_tang_push1_prove"
+      ],
+      "artId": "rom_tang_push1",
+      "conflict": "冷門檔期風險 vs 數據回報",
+      "romanceLine": "tang",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "openConditions": [
+        "flag_tang_open",
+        "rel_tang_threshold"
+      ],
+      "notes": "正式推進需雙條件已滿足。數據互助、試映／冷門檔交換情報。鄧仍冷酷但開始留意你號召力。"
+    },
+    {
+      "id": "R_tang_push2",
+      "phase": "P4",
+      "title": "午夜場之後：黃金檔試水",
+      "when": "1991春",
+      "setting": "周六深夜午夜場散場後，戲院後巷茶餐廳，枱上攤住即日票房紙，隔籬枱仲有人食緊宵夜。",
+      "eraTag": "era_1991_spring",
+      "cast": [
+        "鄧麗萍"
+      ],
+      "synopsis": "黃金檔試水成績出爐，鄧麗萍約你喺午夜場後對數。佢心情比平時鬆一點，講起自己以前排過一套文藝片，蝕到要寫報告。你可以選擇繼續純商業，或者問佢私人嗰句。",
+      "beats": [
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "黃金檔三日，上座率五成六，比預期高四個百分點。你套戲嘅午夜場仲企得住，呢點我認。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "我以前排過一套文藝片，開畫周末得兩成九。我寫咗成個月報告，之後就同自己講，唔可以再憑感覺排片。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "你唔使可憐我。我講呢件事，係想你知道我點解每一格檔期都計到咁盡。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tang_push2_business",
+          "label": "唔追問私人嘢，順住數據講下一季黃金檔合作",
+          "effects": {
+            "flags": [
+              "flag_tang_push2_business"
+            ],
+            "stats": {
+              "rel_tang": 1
+            },
+            "notes": "維持商業盟友節奏，鄧麗萍覺得你識做"
+          }
+        },
+        {
+          "id": "C_tang_push2_private",
+          "label": "問佢當年套文藝片，係咪到今日仲有條刺",
+          "effects": {
+            "flags": [
+              "flag_tang_push2_private"
+            ],
+            "stats": {
+              "rel_tang": 1
+            },
+            "notes": "略觸 secret，鄧麗萍冇即刻封閉，但叫你唔好再問落去"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tang_push2_business",
+        "flag_tang_push2_private"
+      ],
+      "artId": "rom_tang_push2",
+      "conflict": "純商業計算 vs 私人情感試探",
+      "romanceLine": "tang",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "openConditions": [
+        "flag_tang_open",
+        "rel_tang_threshold"
+      ],
+      "notes": "可略露 secret（藝術片虧損）但不完全打開。玩家選：繼續純商業 vs 問私人。"
+    },
+    {
+      "id": "R_tang_crisis",
+      "phase": "P4",
+      "title": "檔期數據 vs 人情：黃金檔只得一個",
+      "when": "1991秋",
+      "setting": "院線總部會議室，對手片發行商啱啱離開，枱面留低兩份搶黃金檔嘅建議書，牆上排片表用紅筆畫到密密麻麻。",
+      "eraTag": "era_1991_autumn_capital",
+      "cast": [
+        "鄧麗萍"
+      ],
+      "synopsis": "對手片用高價搶黃金檔，你手上有一套帶人情同藝術傾向嘅片想排同一個位。鄧麗萍要你喺數據同人情之間揀，佢自己亦被上頭壓住要交數。",
+      "beats": [
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "對手片開價高我哋現有組合一成半，仲保證午夜場七成入座。你嗰套人情片，試映上座率五成一，數字上唔輸，但風險高。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "上頭今日問我，點解要將黃金檔留畀一套冇明星嘅戲。我答唔到一個只有感情嘅理由。"
+          ]
+        },
+        {
+          "speaker": "院線助理",
+          "lines": [
+            "鄧小姐，對手發行商話今晚十二點前要回覆。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "你畀我一個決定。你要我照數據排，定要我為你破一次例？講清楚，我唔想事後聽你講早知。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tang_crisis_data",
+          "label": "照數據排，將黃金檔讓畀對手片，自己套戲退去次檔",
+          "effects": {
+            "flags": [
+              "flag_tang_crisis_data"
+            ],
+            "stats": {
+              "rel_tang": 1
+            },
+            "notes": "鄧麗萍認同你嘅理性，但關係停留喺商業層面"
+          }
+        },
+        {
+          "id": "C_tang_crisis_favor",
+          "label": "堅持為人情片爭黃金檔，願意自己孭上座率風險",
+          "effects": {
+            "flags": [
+              "flag_tang_crisis_favor"
+            ],
+            "stats": {
+              "rel_tang": 1
+            },
+            "notes": "鄧麗萍為你破例，但講明只此一次，數字唔達標就冇下次"
+          }
+        },
+        {
+          "id": "C_tang_crisis_middle",
+          "label": "提出折衷：黃金檔讓一半場次，午夜場用你套戲試口碑",
+          "effects": {
+            "flags": [
+              "flag_tang_crisis_middle"
+            ],
+            "stats": {
+              "rel_tang": 1
+            },
+            "notes": "鄧麗萍接受折衷方案，覺得你識計數又識做人"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tang_crisis_data",
+        "flag_tang_crisis_favor",
+        "flag_tang_crisis_middle"
+      ],
+      "artId": "rom_tang_crisis",
+      "conflict": "排片危機（虛構院線）",
+      "romanceLine": "tang",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "pcSilent": true,
+      "openConditions": [
+        "flag_tang_open",
+        "rel_tang_threshold"
+      ],
+      "notes": "危機主題明確：檔期數據 vs 人情／藝術。三支 choice：堅持數據／為人情破例／折衷。連院線排片、票房、午夜場（虛構）。"
+    },
+    {
+      "id": "R_tang_ending",
+      "phase": "P5",
+      "title": "年終檢討之後：盟友定決裂",
+      "when": "1992",
+      "setting": "院線年終檢討會後，走廊燈光半暗，盡頭係一間未開場嘅空戲院，銀幕仲未拉開。",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "鄧麗萍"
+      ],
+      "synopsis": "年終數字出爐，你套戲全年為院線帶嚟實質增長。鄧麗萍喺走廊叫住你，講明佢認可你嘅號召力；但佢要你揀，係做一個並肩嘅商業盟友，定係繼續用感情挑戰佢條線。",
+      "beats": [
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "全年計，你套戲為我哋條線帶嚟百分之七嘅整體增長，午夜場平均上座率五成九。呢個數字，我認。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "我由第一日到今日，都係用同一把尺量你。你唔止過咗把尺，仲令我考慮過改把尺。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "但我要講清楚，我唔會因為感情而亂排檔期。你要嘅話，我哋可以做並肩嘅盟友；你要更多，就要接受我仍然係一個講數字嘅人。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tang_ending_he",
+          "label": "應承做佢並肩嘅商業盟友，同時講明感情唔會影響排片決定",
+          "effects": {
+            "flags": [
+              "flag_tang_commit",
+              "flag_tang_he"
+            ],
+            "stats": {
+              "rel_tang": 1
+            },
+            "notes": "HE：商業盟友＋感情並存；可與事業結局並存，唔取代事業名"
+          }
+        },
+        {
+          "id": "C_tang_ending_be",
+          "label": "BE：數字至上決裂／冷淡（可與事業並存）",
+          "effects": {
+            "flags": [
+              "flag_tang_be"
+            ],
+            "stats": {
+              "rel_tang": 0
+            },
+            "notes": "BE：數字至上決裂，鄧麗萍冷淡收場；可與事業結局並存"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tang_be",
+        "flag_tang_commit",
+        "flag_tang_he"
+      ],
+      "artId": "rom_tang_ending",
+      "conflict": "商業盟友 vs 感情原則",
+      "romanceLine": "tang",
+      "arcBeat": "ending",
+      "parallelOk": false,
+      "pcSilent": true,
+      "openConditions": [
+        "flag_tang_open",
+        "rel_tang_threshold"
+      ],
+      "notes": "HE 支含 flag_tang_he＋flag_tang_commit；BE 支含 flag_tang_be。鄧麗萍認可號召力。感情線與事業結局並存，可與事業結局並存。"
+    }
+  ]
+}

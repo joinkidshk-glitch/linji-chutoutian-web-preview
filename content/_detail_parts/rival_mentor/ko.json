@@ -1,0 +1,420 @@
+{
+  "nodes": [
+    {
+      "id": "A_ko_meet",
+      "phase": "P1",
+      "title": "搶板初遇",
+      "when": "1988春",
+      "setting": "星河電視台二號錄影廠外走廊，臨時演員排隊等派通告",
+      "eraTag": "era_1988_spring",
+      "cast": [
+        "高俊傑"
+      ],
+      "synopsis": "你排隊等派通告，高俊傑突然插隊搶走你手上嗰張板紙通告，仲要當眾讀出你個名來激你。",
+      "beats": [
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "喂，呢個位我早排咗，你仲唔識趣？",
+            "你個名咁難讀，難怪副導都記唔住你啦。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "我唔係星二代，我係自己一步一步捱上嚟，你呢？企喺度等運到？"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "算啦，今日我心情好，張通告還返你，不過下次唔好要我開口。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ko_meet_grab",
+          "label": "搶返通告機會，企硬唔讓",
+          "effects": {
+            "flags": [
+              "flag_ko_met_grab"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C3；高俊傑記住你唔係軟腳蟹"
+          }
+        },
+        {
+          "id": "C_ko_meet_yield",
+          "label": "讓佢一次，睇清楚佢咩底細",
+          "effects": {
+            "flags": [
+              "flag_ko_met_yield"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C3；高俊傑覺得你識做，但心底睇低你"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ko_met_grab",
+        "flag_ko_met_yield"
+      ],
+      "artId": "arc_ko_meet",
+      "conflict": "C3",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ko",
+      "arcKind": "rival",
+      "linksMain": [
+        "C3"
+      ]
+    },
+    {
+      "id": "A_ko_push1",
+      "phase": "P1",
+      "title": "同場走位互懟",
+      "when": "1988夏",
+      "setting": "星河電視台一號錄影廠，處境劇圍讀同走位排練",
+      "eraTag": "era_1988_summer",
+      "cast": [
+        "高俊傑"
+      ],
+      "synopsis": "圍讀時高俊傑刻意搶你句對白嘅節奏，走位又霸住你個位，副導在場睇住邊個執生快。",
+      "beats": [
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "你企嗰個位擋住我入鏡呀，唔該借借。",
+            "我頭先試咗個新節奏，副導都話順，你唔好跟唔上喎。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "你個名我記住咗，不過係因為你成日慢半拍。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "喂，唔好淨係望住我，你都有戲要交㗎。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ko_push1_counter",
+          "label": "即場改節奏反壓佢，畀副導睇你執生",
+          "effects": {
+            "flags": [
+              "flag_ko_push1_counter"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C10；高俊傑開始當你係真對手"
+          }
+        },
+        {
+          "id": "C_ko_push1_observe",
+          "label": "先記住佢嘅走位習慣，唔急住反擊",
+          "effects": {
+            "flags": [
+              "flag_ko_push1_observe"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C10；高俊傑以為你怕咗佢"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ko_push1_counter",
+        "flag_ko_push1_observe"
+      ],
+      "artId": "arc_ko_push1",
+      "conflict": "排練場上互較執生同搶鏡位",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ko",
+      "arcKind": "rival"
+    },
+    {
+      "id": "A_ko_push2",
+      "phase": "P2",
+      "title": "台慶籌備互較",
+      "when": "1989秋",
+      "setting": "星河電視台台慶籌備會議室同排舞室",
+      "eraTag": "era_1989_autumn",
+      "cast": [
+        "高俊傑"
+      ],
+      "synopsis": "台慶節目排位，高俊傑四圍放風話你嘅環節係「攝時間」，仲喺排舞室當眾比較邊個企中間。",
+      "beats": [
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "台慶個位得咁多，你估真係人人有份企中間咩？",
+            "我聽講你個環節連綵排時間都未排到，唔好話我唔提你。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "你個名而家開始有人識，不過係因為我成日提住你咋。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "排舞室個鏡位我霸咗先，你想練就早啲到啦。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ko_push2_ally",
+          "label": "拉攏排舞師同助導，用實力爭返個位",
+          "effects": {
+            "flags": [
+              "flag_ko_push2_ally"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C10／T2；高俊傑發現你有人脈"
+          }
+        },
+        {
+          "id": "C_ko_push2_confront",
+          "label": "當面同佢講清楚，唔好再放風",
+          "effects": {
+            "flags": [
+              "flag_ko_push2_confront"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C10／T2；兩人關係更僵"
+          }
+        },
+        {
+          "id": "C_ko_push2_ignore",
+          "label": "懶理佢把口，專心練自己環節",
+          "effects": {
+            "flags": [
+              "flag_ko_push2_ignore"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C10／T2；高俊傑覺得你唔敢接招"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ko_push2_ally",
+        "flag_ko_push2_confront",
+        "flag_ko_push2_ignore"
+      ],
+      "artId": "arc_ko_push2",
+      "conflict": "台慶排位同放風比較，爭企中間嘅機會",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ko",
+      "arcKind": "rival",
+      "linksMain": [
+        "C10",
+        "T2"
+      ]
+    },
+    {
+      "id": "A_ko_crisis",
+      "phase": "P2",
+      "title": "台慶位危機",
+      "when": "1989冬",
+      "setting": "星河電視台台慶綵排後台同監製房",
+      "eraTag": "era_1989_winter_anni",
+      "cast": [
+        "高俊傑"
+      ],
+      "synopsis": "台慶前夕突然要 cut 一個環節，高俊傑同你都被點名，監製要你哋自己講點解應該留低。",
+      "beats": [
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "監製話要 cut 一個，你估佢會 cut 邊個？",
+            "你個名我幫你讀咗成年，唔爭在讀多最後一次。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "我唔會讓㗎，你夠膽就同我喺監製面前講清楚。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "不過講真，你個環節如果真係得，我都唔會睇死你。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ko_crisis_fight",
+          "label": "喺監製面前企硬，講出自己環節嘅價值",
+          "effects": {
+            "flags": [
+              "flag_ko_crisis_fight"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "連 C10／T2；高俊傑被逼正面交鋒"
+          }
+        },
+        {
+          "id": "C_ko_crisis_deal",
+          "label": "同高俊傑私下講數，一人讓一步",
+          "effects": {
+            "flags": [
+              "flag_ko_crisis_deal"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C10／T2；兩人關係出現微妙變化"
+          }
+        },
+        {
+          "id": "C_ko_crisis_stepback",
+          "label": "主動退一步，換取下次機會",
+          "effects": {
+            "flags": [
+              "flag_ko_crisis_stepback"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 C10／T2；高俊傑覺得你輸咗一仗"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ko_crisis_deal",
+        "flag_ko_crisis_fight",
+        "flag_ko_crisis_stepback"
+      ],
+      "artId": "arc_ko_crisis",
+      "conflict": "C10／T2",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ko",
+      "arcKind": "rival",
+      "linksMain": [
+        "C10",
+        "T2"
+      ]
+    },
+    {
+      "id": "A_ko_ending",
+      "phase": "P4",
+      "title": "賀歲片場再遇",
+      "when": "1991夏",
+      "setting": "星河電視台賀歲片廠景，兩人多年後再同場",
+      "eraTag": "era_1991_summer",
+      "cast": [
+        "高俊傑"
+      ],
+      "synopsis": "賀歲片開鏡，你同高俊傑多年後再同場，佢主動行埋嚟，講返當年搶板同台慶嘅事。",
+      "beats": [
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "喂，好耐冇見，你個名而家唔使我讀都有人識啦。",
+            "當年台慶個位，我而家諗返都覺得自己幼稚。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "我唔會話你贏咗，不過我認你係一個值得企埋一齊嘅對手。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "今次場戲，我哋唔好再搶位啦，好唔好？"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ko_ending_respect",
+          "label": "同佢握手，承認大家鬥咗咁多年都係為咗做好場戲",
+          "effects": {
+            "flags": [
+              "flag_ko_rival_respect"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "連 C12；rival_respect：高俊傑由對手變成長期互相尊重嘅同輩"
+          }
+        },
+        {
+          "id": "C_ko_ending_cold",
+          "label": "笑笑口帶過，唔表態，留返條界線",
+          "effects": {
+            "flags": [
+              "flag_ko_cold_war"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C12；cold_war：兩人表面客氣，心底仲有條刺"
+          }
+        },
+        {
+          "id": "C_ko_ending_mentor",
+          "label": "反過來提點佢幾句，當自己行先一步",
+          "effects": {
+            "flags": [
+              "flag_ko_mentor_complete"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C12；mentor_complete：高俊傑半信半疑，但開始當你係半個前輩"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ko_cold_war",
+        "flag_ko_mentor_complete",
+        "flag_ko_rival_respect"
+      ],
+      "artId": "arc_ko_ending",
+      "conflict": "C12",
+      "arcBeat": "ending",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ko",
+      "arcKind": "rival",
+      "linksMain": [
+        "C12"
+      ]
+    }
+  ]
+}

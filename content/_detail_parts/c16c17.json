@@ -1,0 +1,430 @@
+{
+  "nodes": [
+    {
+      "id": "C16",
+      "phase": "P5",
+      "title": "舊底片交付",
+      "when": "1992夏 / W100-104",
+      "setting": "舊片場倉庫／金九休息角",
+      "eraTag": "era_1992_summer_legacy",
+      "cast": [
+        "阿偉",
+        "金九"
+      ],
+      "synopsis": "舊片場倉庫清拆在即，金九把一卷保存多年的舊底片交到阿偉手上，那是早年臨記的紀錄，也是他半生人脈與心血的起點。金九談起傳承與回望，阿偉要決定接不接這份重量。",
+      "beats": [
+        {
+          "speaker": "金九",
+          "lines": [
+            "這個倉庫下個月就要拆，我這幾天一直在翻舊東西，翻到這卷底片。",
+            "裡面拍的是幾十年前一班臨記開工的情況，有幾個面孔你應該在舊戲裡見過。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "九叔，這種舊底片不是應該交給星河檔案室保存嗎？",
+            "我這種後輩拿着，好像有點不合適。"
+          ]
+        },
+        {
+          "speaker": "金九",
+          "lines": [
+            "檔案室只會把它鎖在鐵櫃裡面，十年都不會有人拿出來看一次。",
+            "我想交給一個仍然會落場開工、仍然記得臨記是什麼的人。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "你這樣說，我反而有點壓力。這卷底片背後的故事，我未必承擔得起。",
+            "而且我連自己下一張通告在哪裡都未知道。"
+          ]
+        },
+        {
+          "speaker": "金九",
+          "lines": [
+            "我當年也是這樣，口袋裡只有幾塊錢，還不是照樣開工。",
+            "傳承這種事，不是等你發了達才做，是你肯不肯記住自己是從哪裡來的。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "九叔，你這樣一說，我好像沒有理由推。",
+            "但你要我答應，我會好好保存它，不會隨便放在一邊。"
+          ]
+        },
+        {
+          "speaker": "金九",
+          "lines": [
+            "你肯接，我就安心。將來你有機會，就把裡面的人與事講給下一代聽。",
+            "這一行最怕的不是辛苦，是沒有人記得我們曾經存在過。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C16_a",
+          "label": "接下舊底片：記住臨記的來路",
+          "effects": {
+            "flags": [
+              "flag_legacy_film"
+            ],
+            "stats": {
+              "craft": 1,
+              "standing": 1
+            },
+            "notes": "你接下金九的舊底片與人情；craft／standing 微升，寫入 flag_legacy_film。"
+          }
+        },
+        {
+          "id": "C16_b",
+          "label": "婉拒不接：先顧好眼前生計",
+          "effects": {
+            "flags": [
+              "flag_legacy_refuse"
+            ],
+            "stats": {
+              "craft": 0,
+              "standing": 0
+            },
+            "notes": "你婉拒；flag_legacy_refuse。金九略失落，傳承線未開。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_legacy_film",
+        "flag_legacy_refuse"
+      ],
+      "artId": "story_c16",
+      "conflict": null
+    },
+    {
+      "id": "C17",
+      "phase": "P5",
+      "title": "最終定位／結算",
+      "when": "1992收束 / W105-108",
+      "setting": "星河電視台會議室／劇本堆與片場晨光",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "阿偉",
+        "何生",
+        "張子駿"
+      ],
+      "synopsis": "1992年收束。何生與張子駿把幕前、幕後、雙線意向攤開；阿偉在十檔事業結局之中鎖定一條路。愛情 HE／BE 另表並存，本節只鎖事業。",
+      "beats": [
+        {
+          "speaker": "何生",
+          "lines": [
+            "阿偉，這幾年你在星河由臨記做到有名字，觀眾開始記得你，這一步得來不易。",
+            "今日找你來，是想聽清楚你自己的意向：你想繼續站在幕前，還是慢慢轉去幕後發展？"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "何生，我對演戲仍然有火，但這幾年看多了片場運作，也開始對幕後工作有興趣。",
+            "我不敢說自己已經想得很清楚，但希望公司給我一個方向，讓我知道怎樣走下去。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "我看著你由試鏡緊張到現在可以撐起一場戲，你的底子是真的磨出來了。",
+            "如果你選擇幕前，就要有心理準備，名氣這種東西來得慢，也可能一夜之間就變。"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "lines": [
+            "公司這邊有幾個方向可以談：繼續做演員、轉做幕後班底，或者兩邊兼顧。",
+            "每條路都有代價，你要想清楚自己最想要的是穩定、是名氣，還是手上的功夫。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "我補一句，做演員不等於一定要爭做最紅那個，有些人穩穩定定做綠葉，一樣有戲可演。",
+            "但如果你心頭高，就要接受被人評頭品足，也要接受有時努力了都未必有人看見。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "lines": [
+            "我明白，這些年我見過有人紅得快，也見過有人默默做足十年都沒人記得。",
+            "我不想只為名氣而做，但也不想一世停在原地，連自己走到哪裡都不知道。"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "lines": [
+            "好，既然你肯坦白，我就把公司看到的幾條路攤開來講，你自己選一條最合心意的。",
+            "記住，今日選的不只是工作，是你往後幾年想過怎樣的生活。"
+          ]
+        },
+        {
+          "speaker": "張子駿",
+          "lines": [
+            "阿偉，無論你選哪一條路，記住當初在片場捱通宵的那份心，不要丟掉。",
+            "有機會的話，我希望將來仍然可以在片場見到你，不管是鏡頭前還是鏡頭後。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C17_e01",
+          "label": "E01　穩陣男演員",
+          "effects": {
+            "flags": [
+              "ending_e01",
+              "career_lock"
+            ],
+            "stats": {
+              "standing": 1,
+              "fame": 1
+            },
+            "notes": "少醜聞、何生信任；穩定有薪向。愛情結局另表並存。"
+          },
+          "endingId": "E01",
+          "endingName": "穩陣男演員",
+          "artId": "ending_e01"
+        },
+        {
+          "id": "C17_e02",
+          "label": "E02　有名有實",
+          "effects": {
+            "flags": [
+              "ending_e02",
+              "career_lock"
+            ],
+            "stats": {
+              "standing": 2,
+              "fame": 2
+            },
+            "notes": "台慶／賀歲級曝光；高人氣＋高聲望。愛情結局另表並存。"
+          },
+          "endingId": "E02",
+          "endingName": "有名有實",
+          "artId": "ending_e02"
+        },
+        {
+          "id": "C17_e03",
+          "label": "E03　評審眼熟",
+          "effects": {
+            "flags": [
+              "ending_e03",
+              "career_lock"
+            ],
+            "stats": {
+              "craft": 2,
+              "fame": 0
+            },
+            "notes": "張子駿／文藝線；craft 高。愛情結局另表並存。"
+          },
+          "endingId": "E03",
+          "endingName": "評審眼熟",
+          "artId": "ending_e03"
+        },
+        {
+          "id": "C17_e04",
+          "label": "E04　跨界紅人",
+          "effects": {
+            "flags": [
+              "ending_e04",
+              "career_lock"
+            ],
+            "stats": {
+              "fame": 2,
+              "music": 2
+            },
+            "notes": "打歌／廣告多棲。愛情結局另表並存。"
+          },
+          "endingId": "E04",
+          "endingName": "跨界紅人",
+          "artId": "ending_e04"
+        },
+        {
+          "id": "C17_e05",
+          "label": "E05　動作班底",
+          "effects": {
+            "flags": [
+              "ending_e05",
+              "career_lock"
+            ],
+            "stats": {
+              "craft": 1,
+              "standing": 1
+            },
+            "notes": "方小龍線／動作向。愛情結局另表並存。"
+          },
+          "endingId": "E05",
+          "endingName": "動作班底",
+          "artId": "ending_e05"
+        },
+        {
+          "id": "C17_e06",
+          "label": "E06　海外發展",
+          "effects": {
+            "flags": [
+              "ending_e06",
+              "career_lock"
+            ],
+            "stats": {
+              "fame": 1,
+              "wealth": 1
+            },
+            "notes": "含蓄離合／海外機會。愛情結局另表並存。"
+          },
+          "endingId": "E06",
+          "endingName": "海外發展",
+          "artId": "ending_e06"
+        },
+        {
+          "id": "C17_e07",
+          "label": "E07　金援靠山",
+          "effects": {
+            "flags": [
+              "ending_e07",
+              "career_lock"
+            ],
+            "stats": {
+              "wealth": 3,
+              "standing": 0
+            },
+            "notes": "徐寶珊金援高；wealth 高、聲望可議。愛情結局另表並存。"
+          },
+          "endingId": "E07",
+          "endingName": "金援靠山",
+          "artId": "ending_e07"
+        },
+        {
+          "id": "C17_e08",
+          "label": "E08　有錢但空",
+          "effects": {
+            "flags": [
+              "ending_e08",
+              "career_lock"
+            ],
+            "stats": {
+              "wealth": 3,
+              "standing": -1
+            },
+            "notes": "錢高、聲望歪。愛情結局另表並存。"
+          },
+          "endingId": "E08",
+          "endingName": "有錢但空",
+          "artId": "ending_e08"
+        },
+        {
+          "id": "C17_e09",
+          "label": "E09　淡出守住",
+          "effects": {
+            "flags": [
+              "ending_e09",
+              "career_lock"
+            ],
+            "stats": {
+              "rel_partner": 1,
+              "fame": 0
+            },
+            "notes": "關係優先、未大紅未崩。愛情結局另表並存。"
+          },
+          "endingId": "E09",
+          "endingName": "淡出守住",
+          "artId": "ending_e09"
+        },
+        {
+          "id": "C17_e10",
+          "label": "E10　未出頭",
+          "effects": {
+            "flags": [
+              "ending_e10",
+              "career_lock"
+            ],
+            "stats": {
+              "fame": -1,
+              "standing": -1
+            },
+            "notes": "四年未穩或崩盤向。愛情結局另表並存。"
+          },
+          "endingId": "E10",
+          "endingName": "未出頭",
+          "artId": "ending_e10"
+        }
+      ],
+      "orientation_hint": [
+        "幕前",
+        "幕後",
+        "雙線"
+      ],
+      "endings_catalog": [
+        {
+          "id": "E01",
+          "name": "穩陣男演員",
+          "artId": "ending_e01"
+        },
+        {
+          "id": "E02",
+          "name": "有名有實",
+          "artId": "ending_e02"
+        },
+        {
+          "id": "E03",
+          "name": "評審眼熟",
+          "artId": "ending_e03"
+        },
+        {
+          "id": "E04",
+          "name": "跨界紅人",
+          "artId": "ending_e04"
+        },
+        {
+          "id": "E05",
+          "name": "動作班底",
+          "artId": "ending_e05"
+        },
+        {
+          "id": "E06",
+          "name": "海外發展",
+          "artId": "ending_e06"
+        },
+        {
+          "id": "E07",
+          "name": "金援靠山",
+          "artId": "ending_e07"
+        },
+        {
+          "id": "E08",
+          "name": "有錢但空",
+          "artId": "ending_e08"
+        },
+        {
+          "id": "E09",
+          "name": "淡出守住",
+          "artId": "ending_e09"
+        },
+        {
+          "id": "E10",
+          "name": "未出頭",
+          "artId": "ending_e10"
+        }
+      ],
+      "flags_written": [
+        "ending_e01",
+        "ending_e02",
+        "ending_e03",
+        "ending_e04",
+        "ending_e05",
+        "ending_e06",
+        "ending_e07",
+        "ending_e08",
+        "ending_e09",
+        "ending_e10",
+        "career_lock"
+      ],
+      "artId": "story_c17",
+      "conflict": null
+    }
+  ]
+}

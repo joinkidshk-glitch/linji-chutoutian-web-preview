@@ -1,0 +1,416 @@
+{
+  "nodes": [
+    {
+      "id": "A_ho_meet",
+      "phase": "P1",
+      "title": "事務所初帶",
+      "when": "1988春",
+      "setting": "星河電視台走廊，排隊等試鏡嘅人龍旁邊",
+      "eraTag": "era_1988_spring",
+      "cast": [
+        "何生",
+        "高俊傑"
+      ],
+      "synopsis": "何生喺走廊截住你，話你企位企錯晒，順手教你點樣喺人龍入面畀導演記得你個名。佢唔講大道理，只講邊個監製睇人睇邊樣。",
+      "beats": [
+        {
+          "speaker": "何生",
+          "lines": [
+            "你企喺呢度等，等到天黑都冇人問你叫咩名。",
+            "跟我行，我帶你認一認幾個監製嘅面口。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "何生帶人？咁你要聽話啲喇，佢唔鍾意人哋臨場先嚟問東問西。"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "lines": [
+            "記住，呢行靠人帶，但帶得你入場，企唔企得穩係你自己嘅事。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ho_meet_follow",
+          "label": "跟何生行一圈，逐個監製打招呼",
+          "effects": {
+            "flags": [
+              "flag_ho_met",
+              "flag_ho_intro_round"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C2；何生開始記住你個名"
+          }
+        },
+        {
+          "id": "C_ho_meet_ask",
+          "label": "先問清楚何生點解要幫你",
+          "effects": {
+            "flags": [
+              "flag_ho_met",
+              "flag_ho_asked_why"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 C2；何生覺得你審慎，但未算信你"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ho_asked_why",
+        "flag_ho_intro_round",
+        "flag_ho_met"
+      ],
+      "artId": "arc_ho_meet",
+      "conflict": "C2",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ho",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C2"
+      ],
+      "arcBeat": "meet"
+    },
+    {
+      "id": "A_ho_push1",
+      "phase": "P1",
+      "title": "拒單信任",
+      "when": "1988春",
+      "setting": "何生間細細嘅事務所，枱面擺住一疊通告紙",
+      "eraTag": "era_1988_spring",
+      "cast": [
+        "何生",
+        "張克凡"
+      ],
+      "synopsis": "有張出手好闊嘅單搵上門，錢多但條件糊塗，何生睇完搖晒頭，要你哋自己揀接唔接。",
+      "beats": [
+        {
+          "speaker": "何生",
+          "lines": [
+            "呢張單錢係多，但條款寫到一舊雲，出事冇人同你孭。",
+            "我唔會幫你接糊塗單，你要接，你自己簽名。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "何生，機會嚟到唔接，轉頭就畀第二個執咗去喇。"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "lines": [
+            "執咗去就執咗去，總好過你收唔到錢仲要貼車錢。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ho_push1_refuse",
+          "label": "聽何生講，推咗張糊塗單",
+          "effects": {
+            "flags": [
+              "flag_ho_refused_deal",
+              "flag_ho_trust_up"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "連 C4；何生信你識分寸"
+          }
+        },
+        {
+          "id": "C_ho_push1_take",
+          "label": "照接，錢要緊，條款自己啃",
+          "effects": {
+            "flags": [
+              "flag_ho_took_deal"
+            ],
+            "stats": {
+              "standing": -1
+            },
+            "notes": "連 C4；何生面色一沉，記數簿度寫低一筆"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ho_refused_deal",
+        "flag_ho_took_deal",
+        "flag_ho_trust_up"
+      ],
+      "artId": "arc_ho_push1",
+      "conflict": "C4",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ho",
+      "arcKind": "mentor",
+      "linksMain": [
+        "C4"
+      ],
+      "arcBeat": "push"
+    },
+    {
+      "id": "A_ho_push2",
+      "phase": "P2",
+      "title": "通告品質把關",
+      "when": "1989",
+      "setting": "深夜嘅片場外圍，何生攞住張通告表逐項圈",
+      "eraTag": "era_1989",
+      "cast": [
+        "何生",
+        "高俊傑"
+      ],
+      "synopsis": "你開始多咗通告，何生逐張同你核對，話你知邊張係消耗你、邊張係幫你儲底。",
+      "beats": [
+        {
+          "speaker": "何生",
+          "lines": [
+            "呢張通宵廠景，拍足十二個鐘得三個鏡頭，你話值唔值？",
+            "我幫你推咗兩張，留返精神拍下個禮拜嗰組。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "何生幫你篩通告，你唔好連句多謝都冇。"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "lines": [
+            "唔使多謝，你拍得好睇，我個名都好聽啲。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ho_push2_trust",
+          "label": "交畀何生篩，自己專心拍戲",
+          "effects": {
+            "flags": [
+              "flag_ho_quality_trust"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "何生把關通告品質，你專心演出"
+          }
+        },
+        {
+          "id": "C_ho_push2_self",
+          "label": "自己揀通告，唔想乜都靠人",
+          "effects": {
+            "flags": [
+              "flag_ho_self_select"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "何生冇嬲，但話你遲早要學識睇數"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ho_quality_trust",
+        "flag_ho_self_select"
+      ],
+      "artId": "arc_ho_push2",
+      "conflict": "通告量同品質拉鋸；何生要你唔好做蝕底嘅工",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ho",
+      "arcKind": "mentor",
+      "arcBeat": "push"
+    },
+    {
+      "id": "A_ho_crisis",
+      "phase": "P4",
+      "title": "賭大嘅信任考驗",
+      "when": "1991冬",
+      "setting": "何生事務所，暖爐壞咗，兩個人着住大褸講數",
+      "eraTag": "era_1991_winter",
+      "cast": [
+        "何生",
+        "張克凡"
+      ],
+      "synopsis": "何生押咗事務所大半本錢幫你爭一個大項目，另一邊有人出更高價撬你過檔，佢要你講清楚企邊邊。",
+      "beats": [
+        {
+          "speaker": "何生",
+          "lines": [
+            "我押咗呢鋪，唔係押個項目，係押你個人。",
+            "你走，我唔會攔，但你今日要走，以後唔好返嚟問我攞意見。"
+          ]
+        },
+        {
+          "speaker": "張克凡",
+          "lines": [
+            "何生，人哋出嘅價，你事務所跟唔跟得起先？"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "lines": [
+            "跟唔跟得起係我嘅事，你淨係答我一句：你信唔信我揀嘅路。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ho_crisis_stay",
+          "label": "留低，同何生一齊賭呢鋪",
+          "effects": {
+            "flags": [
+              "flag_ho_crisis_stay",
+              "flag_ho_big_bet"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "連 E01；何生把身家押埋你一齊"
+          }
+        },
+        {
+          "id": "C_ho_crisis_leave",
+          "label": "過檔，錢同前途要緊",
+          "effects": {
+            "flags": [
+              "flag_ho_crisis_leave"
+            ],
+            "stats": {
+              "standing": -2
+            },
+            "notes": "連 E01；何生冇鬧，只係收埋你張相"
+          }
+        },
+        {
+          "id": "C_ho_crisis_ask",
+          "label": "要求何生講明風險先決定",
+          "effects": {
+            "flags": [
+              "flag_ho_crisis_ask"
+            ],
+            "stats": {
+              "standing": 0
+            },
+            "notes": "連 E01；何生照講，但話你仲未夠膽"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ho_big_bet",
+        "flag_ho_crisis_ask",
+        "flag_ho_crisis_leave",
+        "flag_ho_crisis_stay"
+      ],
+      "artId": "arc_ho_crisis",
+      "conflict": "忠誠同利益對撞；何生押上身家；連 E01",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ho",
+      "arcKind": "mentor",
+      "linksMain": [
+        "E01"
+      ],
+      "arcBeat": "crisis"
+    },
+    {
+      "id": "A_ho_ending",
+      "phase": "P5",
+      "title": "穩陣線信任巔峰",
+      "when": "1992",
+      "setting": "星河電視台大堂，頒獎禮散場後人潮漸散",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "何生",
+        "高俊傑"
+      ],
+      "synopsis": "幾年過去，何生企喺大堂一角等你，講返當年走廊嗰句「呢行靠人帶」，然後問你之後想點行。",
+      "beats": [
+        {
+          "speaker": "何生",
+          "lines": [
+            "當年我帶你入走廊，今日你自己行得入大堂。",
+            "我唔會帶你一世，但你記得點樣帶下一個，就夠喇。"
+          ]
+        },
+        {
+          "speaker": "高俊傑",
+          "lines": [
+            "何生講到呢句，即係真係睇得起你。"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "lines": [
+            "你揀邊條路，我都唔會攔；不過揀之前，諗清楚邊個陪你捱過最凍嗰個冬天。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_ho_ending_complete",
+          "label": "認何生做一世師傅，留喺穩陣線",
+          "effects": {
+            "flags": [
+              "flag_ho_mentor_complete"
+            ],
+            "stats": {
+              "standing": 2
+            },
+            "notes": "mentor_complete；連 E01 師徒線收成"
+          }
+        },
+        {
+          "id": "C_ho_ending_respect",
+          "label": "多謝何生，但想自己出去闖",
+          "effects": {
+            "flags": [
+              "flag_ho_rival_respect"
+            ],
+            "stats": {
+              "standing": 1
+            },
+            "notes": "rival_respect；各自行，見面仲會點頭"
+          }
+        },
+        {
+          "id": "C_ho_ending_cold",
+          "label": "當面講清條數，從此各行各路",
+          "effects": {
+            "flags": [
+              "flag_ho_cold_war"
+            ],
+            "stats": {
+              "standing": -2
+            },
+            "notes": "cold_war；連 E01 決裂收場"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_ho_cold_war",
+        "flag_ho_mentor_complete",
+        "flag_ho_rival_respect"
+      ],
+      "artId": "arc_ho_ending",
+      "conflict": "E01",
+      "parallelOk": true,
+      "pcSilent": true,
+      "arcLine": "ho",
+      "arcKind": "mentor",
+      "linksMain": [
+        "E01"
+      ],
+      "arcBeat": "ending"
+    }
+  ]
+}
