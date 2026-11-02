@@ -14,5 +14,8 @@
 
 ## Ship
 
-- （push 後填）
-- URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=17t
+- commit：`db2b2fa`（`db2b2fa134d24930ae48faf5d815527bcbe2f18d`）· 2026-11-03 ~04:35 HKT
+- curl-verify：**PASS** — SAVE v17t + `doScout(L)` after TUT_AUD_LOCK + B01 post-C1 copy；LIVE HTML **1157020**
+- tar：`/workspace/star-volunteer-web-v17t.tar.gz`
+- URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=17t （清 `starVolunteer_map_*`）
+- Soft≠PASS；出圖暫緩；瀏覽器全量覆測交下輪（靜態／curl 已過；對標 QA_V17S P1）
