@@ -1,79 +1,103 @@
 {
-  "version": "2.3.2",
+  "version": "3.0.0",
   "year": 1988,
-  "source": "user Prompt 4",
-  "edits": [
-    "discoverNote：LOC_001→星河電視台（舊稱星河電視）；喺→在",
-    "tv_04 補 diasporaHook",
-    "film synopsis 公司名改用中文（獅子山／紅棉）",
-    "§2A 標註 v1：eraTag 詞表化＋boardPriority／boardNote／seasonWeight；synopsis 未改",
-    "v2.1 修好：季節口吻＋星河顯示名；pay／id 未改",
-    "v2.2.0 A→B PLAN_SHOOT_CAREER_SCHEDULE_v2：全則補 roleScale／shootBand／抬 shootDaysHint／shootWeekdays／shootDeadlineDays；+5（photo×2／mtv_02／film_07／tv_08）",
-    "v2.3.0 loc×季節填縫：+17（每缺口一則；優先 tvb_harbour 春）；全則仍含 roleScale／shootBand／shootWeekdays／shootDeadlineDays"
-  ],
+  "source": "MATRIX_GIG_REGEN_1988 v1.8.3 + PLAN_GIG_FULL_REGEN_MV3_v1",
+  "planRef": "PLAN_GIG_FULL_REGEN_MV3_v1",
+  "softStatus": "≠PASS",
   "counts": {
-    "廣告": 10,
-    "綜藝": 7,
-    "電視劇": 10,
-    "電影": 13,
-    "唱片通告": 12,
-    "total": 52,
+    "gigs": 72,
+    "byTier": {
+      "初": 25,
+      "中": 33,
+      "高": 14
+    },
+    "byType": {
+      "廣告": 14,
+      "綜藝": 8,
+      "電視劇": 14,
+      "電影": 18,
+      "唱片通告": 18
+    },
+    "byLoc": {
+      "ad_central": 7,
+      "ad_adm": 7,
+      "tvb_longmen": 10,
+      "tvb_harbour": 5,
+      "tvb_kowloon": 7,
+      "film_lion": 6,
+      "film_cotton": 6,
+      "film_harbour": 6,
+      "rec_hk": 6,
+      "rec_wanchai": 7,
+      "rec_star": 5
+    },
     "byRoleScale": {
-      "ad_av": 6,
-      "ad_print": 2,
-      "film_lead_big": 3,
-      "film_support_main": 4,
-      "film_support_small": 6,
-      "mtv": 4,
-      "photobook": 2,
-      "rec_album": 8,
+      "ad_av": 9,
+      "ad_print": 3,
+      "variety_ep": 7,
+      "variety_special": 1,
       "tv_cameo_short": 3,
-      "tv_lead_long": 3,
-      "tv_support_main": 4,
-      "variety_ep": 6,
-      "variety_special": 1
-    }
+      "tv_support_main": 7,
+      "tv_lead_long": 4,
+      "film_support_small": 6,
+      "film_support_main": 8,
+      "film_lead_big": 4,
+      "rec_album": 11,
+      "mtv": 7,
+      "photobook": 2
+    },
+    "total": 72
   },
+  "edits": [
+    "2026-11-03 22:47（Asia/Hong_Kong）｜3.0.0 重生：按矩陣 v1.8.3 寫入 72 則（舊 52 id 保留＋新 20）；MV3 全欄；Soft≠PASS；89–92 HOLD；出圖 HOLD；唔 publish"
+  ],
+  "notes": "89–92 HOLD；出圖 HOLD；唔 publish；Soft≠PASS；唔推 tip",
   "gigs": [
     {
       "id": "gig_1988_ad_01",
       "year": 1988,
       "season": "春",
       "type": "廣告",
-      "title": "「星聲」隨身聽潮流街舞宣傳片",
+      "title": "《隨身聽．街頭節拍》路人演員",
       "loc": "ad_central",
-      "roleHint": "飾演在霓虹街頭戴著隨身聽沉浸熱舞的都市青年",
-      "blurb": "日本隨身聽品牌登陸香港，尋找能在霓虹街頭展現極致躍動感的樂天面孔！",
-      "synopsis": "虛構日本音響品牌「星聲」推出主打年輕市場的隨身聽。廣告故事設定在深夜的尖沙咀霓虹燈下，男主角戴上耳機瞬間進入自己的音樂世界，一邊喝著汽水一邊在街頭跳起動感迪斯可，展現不受拘束的都市活力。",
-      "heroAngle": "阿偉那種深水埗街頭混出來的靈動與市井痞勁，完美契合廣告所需的街頭躍動感。",
-      "diasporaHook": "隨身聽與迪斯可舞步是80年代全球華人的共同青春記憶，畫面極具時代共鳴。",
-      "eraTag": "era_1988_spring_alley",
-      "discoverNote": "中環經紀行佈告欄的公開選角",
+      "workTitle": "隨身聽．街頭節拍",
+      "genreLabel": "街頭宣傳",
+      "roleLabel": "路人演員",
+      "director": "方啟明",
+      "roleHint": "路人演員・街頭宣傳",
+      "blurb": "路人演員戴耳機走入霓虹街巷，汽水在手，步點跟隨鼓點而行。",
+      "synopsis": "路人演員戴耳機走入霓虹街巷，汽水在手，步點跟隨鼓點而行。街拍式跟拍，考驗自然反應與節奏感。",
+      "eraTag": "era_1988_spring_ad",
+      "discoverNote": "中環經紀行通告欄的公開選角",
       "boardPriority": "normal",
-      "boardNote": "街頭廣告次級曝光",
+      "boardNote": "短單次級曝光",
       "seasonWeight": 0.6,
       "req": {
-        "stamina": 25,
-        "charm": 20,
-        "looks": 15
+        "looks": 90,
+        "charm": 100,
+        "stamina": 120
       },
       "pay": [
-        3000,
-        5000
+        3600,
+        4400
       ],
+      "payExact": 4000,
+      "breachFee": 2000,
       "fame": [
         5,
-        10
+        12
       ],
       "popularity": [
         15,
-        25
+        29
       ],
       "stressDeltaHint": "低",
-      "hard": 0.3,
+      "hard": 0.28,
       "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 5,
       "shootDaysHint": 3,
-      "shootHint": "需連續拍攝數小時高強度跳舞鏡頭，考驗體能與面部表情管理。",
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
       "roleScale": "ad_av",
       "shootBand": [
         3,
@@ -84,49 +108,64 @@
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "shootDeadlineDays": 7
+      "shootDeadlineDays": 14,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受組製特別安排"
+        ]
+      }
     },
     {
       "id": "gig_1988_ad_02",
       "year": 1988,
       "season": "春",
       "type": "廣告",
-      "title": "「囍福」傳統龍鳳喜餅平面海報",
+      "title": "《龍鳳禮盒．新裝上市》模特兒",
       "loc": "ad_adm",
-      "roleHint": "飾演龍年大婚中踏實可靠的新郎官",
-      "blurb": "老字號喜餅迎龍年結婚大潮，徵求樣貌端正喜慶的新人拍攝幸福海報！",
-      "synopsis": "老字號餅家「囍福」為迎合1988龍年大婚潮打造「傳承龍鳳情」海報。男主角需穿著傳統中式馬褂與花旦新娘對視微笑，手捧燙金餅盒，傳遞出傳統家庭對婚姻與福氣的厚重期許。",
-      "heroAngle": "阿偉長相踏實且帶有傳統溫情，穿上中式馬褂展現出平民靠得住的新郎形象。",
-      "diasporaHook": "龍年大婚與中式喜餅凝聚了海外華人對傳統婚嫁文化與家族圓滿的深刻寄托。",
-      "eraTag": "era_1988_spring_alley",
-      "discoverNote": "導師引薦的喜慶海報試鏡",
-      "boardPriority": "low",
-      "boardNote": "平面海報曝光有限",
+      "workTitle": "龍鳳禮盒．新裝上市",
+      "genreLabel": "平面廣告",
+      "roleLabel": "模特兒",
+      "director": "黎婉婷",
+      "roleHint": "模特兒・平面廣告",
+      "blurb": "傳統喜餅換上新包裝，模特兒穿上新郎半身造型，手捧龍鳳鐵盒。",
+      "synopsis": "傳統喜餅換上新包裝，模特兒穿上新郎半身造型，手捧龍鳳鐵盒。窗外春聯虛化作背景，重點交出一張體面又喜氣的平面照。",
+      "eraTag": "era_1988_spring_ad",
+      "discoverNote": "廣告公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "短單次級曝光",
       "seasonWeight": 0.6,
       "req": {
-        "looks": 20,
-        "charm": 15,
-        "acting": 10
+        "looks": 105,
+        "charm": 90,
+        "acting": 65
       },
       "pay": [
-        2500,
-        4000
+        2900,
+        3600
       ],
+      "payExact": 3250,
+      "breachFee": 1600,
       "fame": [
-        2,
-        5
+        5,
+        12
       ],
       "popularity": [
-        10,
-        20
+        15,
+        29
       ],
       "stressDeltaHint": "低",
-      "hard": 0.25,
+      "hard": 0.28,
       "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 5,
       "shootDaysHint": 3,
-      "shootHint": "需長時間保持親切溫暖的微笑，注意避免面部肌肉僵硬。",
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
       "roleScale": "ad_print",
       "shootBand": [
         2,
@@ -137,149 +176,178 @@
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "shootDeadlineDays": 7
+      "shootDeadlineDays": 14,
+      "producer": "黃兆麟"
     },
     {
       "id": "gig_1988_ad_03",
       "year": 1988,
       "season": "夏",
       "type": "廣告",
-      "title": "「冰爽」檸檬茶夏日沙灘篇",
+      "title": "《凝露一開．海傍追逐》路人演員",
       "loc": "ad_central",
-      "roleHint": "飾演沙灘上揮灑汗水後暢飲冰飲的陽光少年",
-      "blurb": "青春飲料品牌年度大片！在陽光沙灘暢飲冰檸茶，招牌眨眼要夠清爽！",
-      "discoverNote": "事務所發出的夏日沙灘選角",
+      "workTitle": "凝露一開．海傍追逐",
+      "genreLabel": "影視廣告",
+      "roleLabel": "路人演員",
+      "director": "霍建銘",
+      "roleHint": "路人演員・影視廣告",
+      "blurb": "烈日下碼頭工人休息，一罐凝露檸檬茶開蓋，水珠特寫接跳切海傍追逐嬉水。",
+      "synopsis": "烈日下碼頭工人休息，一罐凝露檸檬茶開蓋，水珠特寫接跳切海傍追逐嬉水。路人演員要投入群戲，帶出夏日爽快氣氛。",
+      "eraTag": "era_1988_summer_ad",
+      "discoverNote": "中環經紀行通告欄的公開選角",
       "boardPriority": "normal",
-      "boardNote": "沙灘廣告商場向",
-      "seasonWeight": 0.6,
-      "synopsis": "本土飲料大廠「冰爽」的年度夏日沙灘大片。故事講述炎夏沙灘上少年追逐足球後，接過冰鎮檸檬茶大口暢飲，鏡頭定格在他抹去汗水、對著鏡頭調皮眨眼的清爽瞬間。",
-      "heroAngle": "阿偉健康膚色與陽光笑容，恰好能精準演繹平民男孩最接地氣的夏日清涼感。",
-      "diasporaHook": "經典的夏日沙灘飲料廣告，呈現出東亞華人青春記憶中最純粹無憂的夏日時光。",
-      "eraTag": "era_1988_summer_mall",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
       "req": {
-        "charm": 35,
-        "looks": 30,
-        "stamina": 20
+        "looks": 340,
+        "charm": 320,
+        "stamina": 210
       },
       "pay": [
-        5000,
-        8000
+        5850,
+        7150
       ],
+      "payExact": 6500,
+      "breachFee": 3200,
       "fame": [
-        10,
-        20
+        18,
+        31
       ],
       "popularity": [
-        30,
-        50
+        39,
+        62
       ],
       "stressDeltaHint": "中",
-      "hard": 0.4,
+      "hard": 0.43,
       "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 8,
       "shootDaysHint": 3,
-      "shootHint": "烈日下需反覆飲用冰飲並保持眼神清透，防止暴曬影響連戲。",
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
       "roleScale": "ad_av",
       "shootBand": [
         3,
         4
       ],
       "shootWeekdays": [
-        6,
-        7
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
       ],
-      "shootDeadlineDays": 13
+      "shootDeadlineDays": 14
     },
     {
       "id": "gig_1988_ad_04",
       "year": 1988,
       "season": "夏",
       "type": "廣告",
-      "title": "「滅蟲靈」無厘頭喜劇廣告",
+      "title": "《噴霧一到．清場》路人演員",
       "loc": "ad_adm",
-      "roleHint": "飾演被殺蟲水噴飛撞牆的搞笑忍者害蟲",
-      "blurb": "無厘頭殺蟲水廣告！身穿忍者服被吊威亞飛撞牆壁，喜劇肢體要誇張！",
-      "discoverNote": "道具房門口的緊急臨記招募",
-      "boardPriority": "high",
-      "boardNote": "無厘頭喜劇曝光",
-      "seasonWeight": 1.0,
-      "synopsis": "經典家庭防蟲產品「滅蟲靈」的無厘頭宣傳片。故事設定在深夜廚房，忍者裝束的害蟲企圖偷食，被女主人噴灑殺蟲水後，以誇張的肢體動作哀嚎並被威亞吊起撞飛向牆壁。",
-      "heroAngle": "阿偉具備龍虎武師的摔打底子，做誇張喜劇動作毫不避諱，展現極強的能屈能伸精神。",
-      "diasporaHook": "香港獨有的無厘頭廣告風格，深受全球華人喜愛，具備極高的娛樂趣味。",
-      "eraTag": "era_1988_summer_variety",
+      "workTitle": "噴霧一到．清場",
+      "genreLabel": "影視廣告",
+      "roleLabel": "路人演員",
+      "director": "丁一凡",
+      "roleHint": "路人演員・影視廣告",
+      "blurb": "廚房蟑螂大軍來襲，男主角誇張撲打連環失手，噴霧一登場全場瞬間清場。",
+      "synopsis": "廚房蟑螂大軍來襲，男主角誇張撲打連環失手，噴霧一登場全場瞬間清場。路人演員做街坊群戲，反應要誇張到位。",
+      "eraTag": "era_1988_summer_ad",
+      "discoverNote": "廣告公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "短單次級曝光",
+      "seasonWeight": 0.6,
       "req": {
-        "acting": 30,
-        "stamina": 30,
-        "charm": 10
+        "looks": 85,
+        "charm": 95,
+        "acting": 120,
+        "stamina": 110
       },
       "pay": [
-        2000,
-        3500
+        2500,
+        3050
       ],
+      "payExact": 2750,
+      "breachFee": 1400,
       "fame": [
-        5,
-        8
+        6,
+        14
       ],
       "popularity": [
-        15,
-        25
+        18,
+        33
       ],
       "stressDeltaHint": "低",
-      "hard": 0.35,
+      "hard": 0.34,
       "tier": "初",
+      "stars": 2,
+      "applyDeadlineDays": 5,
       "shootDaysHint": 3,
-      "shootHint": "穿厚重皮套被威亞吊起撞牆，需精確控制落地姿態以防受傷。",
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
       "roleScale": "ad_av",
       "shootBand": [
         3,
         4
       ],
       "shootWeekdays": [
-        6,
-        7
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
       ],
-      "shootDeadlineDays": 13
+      "shootDeadlineDays": 14
     },
     {
       "id": "gig_1988_ad_05",
       "year": 1988,
       "season": "秋",
       "type": "廣告",
-      "title": "「塑型高手」強效髮膠電視廣告",
+      "title": "《定型髮膠．風吹不亂》模特兒",
       "loc": "ad_central",
-      "roleHint": "飾演風馳電掣中依然保持完美髮型的摩登型男",
-      "blurb": "男士髮型流行大潮！示範經典微捲分頭，強風吹拂下絲毫不亂的帥氣！",
-      "discoverNote": "時尚總監預留的品牌試鏡",
+      "workTitle": "定型髮膠．風吹不亂",
+      "genreLabel": "影視廣告",
+      "roleLabel": "模特兒",
+      "director": "簡沛然",
+      "roleHint": "模特兒・影視廣告",
+      "blurb": "夜店射燈下男模定型後風吹不亂，鏡頭跟隨髮絲切至梳妝鏡。",
+      "synopsis": "夜店射燈下男模定型後風吹不亂，鏡頭跟隨髮絲切至梳妝鏡。模特兒要交出自信一笑，造型與眼神均要夠硬淨。",
+      "eraTag": "era_1988_autumn_ad",
+      "discoverNote": "中環經紀行通告欄的公開選角",
       "boardPriority": "normal",
-      "boardNote": "髮膠廣告棚次級",
-      "seasonWeight": 0.6,
-      "synopsis": "高端美髮品牌「塑型高手」推出引領時尚的分頭髮膠。故事講述男主角身穿皮衣騎摩托車疾馳，在強風機狂吹下髮型依然定型完好，自信撫摸頭髮展現都市型男魅力。",
-      "heroAngle": "阿偉自帶幾分80年代港式痞帥，梳起分頭後展現出草根小子翻身變都市型男的驚艷反差。",
-      "diasporaHook": "分頭與髮膠是80年代末席捲港台及海外華人圈的男士時尚標誌。",
-      "eraTag": "era_1988_autumn_studio",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
       "req": {
-        "looks": 45,
-        "charm": 40,
-        "acting": 20
+        "looks": 380,
+        "charm": 330,
+        "acting": 170
       },
       "pay": [
-        8000,
-        12000
+        9000,
+        11000
       ],
+      "payExact": 10000,
+      "breachFee": 5000,
       "fame": [
-        15,
-        25
+        18,
+        31
       ],
       "popularity": [
-        40,
-        60
+        39,
+        62
       ],
       "stressDeltaHint": "中",
-      "hard": 0.45,
+      "hard": 0.43,
       "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 8,
       "shootDaysHint": 3,
-      "shootHint": "忍受大量定型噴霧直接噴灑面部，需保持眼睛不流淚並盯緊鏡頭。",
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
       "roleScale": "ad_av",
       "shootBand": [
         3,
@@ -290,49 +358,57 @@
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "shootDeadlineDays": 7
+      "shootDeadlineDays": 14,
+      "producer": "林佩兒"
     },
     {
       "id": "gig_1988_ad_06",
       "year": 1988,
       "season": "秋",
       "type": "廣告",
-      "title": "「美味快餐」連鎖形象代言",
+      "title": "《家庭套餐．托盤笑臉》模特兒",
       "loc": "ad_adm",
-      "roleHint": "飾演帶公屋小朋友吃快餐的溫暖大哥哥",
-      "blurb": "本土連鎖快餐品牌重點宣傳，需要極具親和力的大哥哥展現溫情！",
-      "discoverNote": "經紀人桌上的商業試鏡",
-      "boardPriority": "low",
-      "boardNote": "快餐代言曝光有限",
-      "seasonWeight": 0.6,
-      "synopsis": "本土連鎖品牌「美味快餐」抗衡洋快餐的年度品牌廣告。故事設定在屋邨附近的快餐店，大哥哥領著放學的小朋友分享炸雞與漢堡，展現濃濃的人情味與平民美食的簡單快樂。",
-      "heroAngle": "阿偉從小在公屋長大，與小朋友互動時的真誠親和感完全是本色演出。",
-      "diasporaHook": "本土快餐與屋邨童年記憶，勾起海外華人對故鄉基層生活溫情的人情味回憶。",
-      "eraTag": "era_1988_autumn_studio",
+      "workTitle": "家庭套餐．托盤笑臉",
+      "genreLabel": "產品代言",
+      "roleLabel": "模特兒",
+      "director": "余兆東",
+      "roleHint": "模特兒・產品代言",
+      "blurb": "連鎖快餐秋日家庭套餐，代言模特兒穿制服微笑遞上托盤，切家長與小孩碰頭彩。",
+      "synopsis": "連鎖快餐秋日家庭套餐，代言模特兒穿制服微笑遞上托盤，切家長與小孩碰頭彩。氣氛要暖，笑容要自然夠親切。",
+      "eraTag": "era_1988_autumn_ad",
+      "discoverNote": "廣告公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
       "req": {
-        "charm": 40,
-        "iq": 30,
-        "acting": 25
+        "looks": 320,
+        "charm": 350,
+        "stamina": 180
       },
       "pay": [
-        6000,
-        10000
+        7200,
+        8800
       ],
+      "payExact": 8000,
+      "breachFee": 4000,
       "fame": [
-        10,
-        18
+        18,
+        31
       ],
       "popularity": [
-        35,
-        55
+        39,
+        62
       ],
       "stressDeltaHint": "中",
-      "hard": 0.4,
+      "hard": 0.43,
       "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 8,
       "shootDaysHint": 3,
-      "shootHint": "需與小演員頻繁互動，考驗耐心與即興現場應變。",
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
       "roleScale": "ad_av",
       "shootBand": [
         3,
@@ -343,49 +419,56 @@
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "shootDeadlineDays": 7
+      "shootDeadlineDays": 14
     },
     {
       "id": "gig_1988_ad_07",
       "year": 1988,
       "season": "冬",
       "type": "廣告",
-      "title": "「尊爵」金錶平面雜誌大片",
+      "title": "《金錶西裝大片》模特兒",
       "loc": "ad_central",
-      "roleHint": "飾演金融地產浪潮中崛起的野心新貴",
-      "blurb": "針對80年代末暴富階層的高端名錶，穿頂級西裝展現霸氣金融氣場！",
-      "discoverNote": "千金指定的高門檻代言試鏡",
-      "boardPriority": "low",
-      "boardNote": "金錶奢華非賀歲主線",
-      "seasonWeight": 0.6,
-      "synopsis": "針對香港股市與地產狂潮暴富階層的「尊爵」金錶廣告。拍攝地為尖沙咀高層夜景酒會，男主角身穿精緻三件套西裝，手握紅酒杯，在抿酒間無意露出手腕金錶，眼神冷酷威嚴。",
-      "heroAngle": "阿偉眼神裡的狠勁與對命運的不屈，為這種高高在上的奢華商業代言抹上一層狼性霸氣。",
-      "diasporaHook": "80年代地產金融狂潮下的金錶夢，是全世界華人商業圈奮鬥與成功的直觀符號。",
-      "eraTag": "era_1988_winter_record",
+      "workTitle": "金錶西裝大片",
+      "genreLabel": "平面廣告",
+      "roleLabel": "模特兒",
+      "director": "高詠心",
+      "roleHint": "模特兒・平面廣告",
+      "blurb": "黑白跨頁硬照，男模西裝袖口金錶作三吋特寫，遠景借冬霧海面壓出高級冷調，攝影師全場只追住腕上那格光。",
+      "synopsis": "黑白跨頁硬照，男模西裝袖口金錶作三吋特寫，遠景借冬霧海面壓出高級冷調，攝影師全場只追住腕上那格光。",
+      "eraTag": "era_1988_winter_ad",
+      "discoverNote": "中環經紀行通告欄的公開選角",
+      "boardPriority": "high",
+      "boardNote": "高階檔期主推",
+      "seasonWeight": 0.95,
       "req": {
-        "looks": 60,
-        "charm": 55,
-        "acting": 45
+        "looks": 820,
+        "charm": 680,
+        "acting": 520
       },
       "pay": [
-        20000,
-        35000
+        24750,
+        30250
       ],
+      "payExact": 27500,
+      "breachFee": 16500,
       "fame": [
-        30,
-        50
+        50,
+        85
       ],
       "popularity": [
-        50,
-        80
+        80,
+        110
       ],
       "stressDeltaHint": "高",
       "hard": 0.65,
       "tier": "高",
+      "stars": 5,
+      "applyDeadlineDays": 12,
       "shootDaysHint": 3,
-      "shootHint": "微表情需極具高級感，微小的面部肌肉抖動都會被長焦鏡頭放大。",
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
       "roleScale": "ad_print",
       "shootBand": [
         2,
@@ -396,49 +479,65 @@
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "shootDeadlineDays": 7
+      "shootDeadlineDays": 14,
+      "producer": "吳美玲",
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受長時間硬照拍攝"
+        ]
+      }
     },
     {
       "id": "gig_1988_ad_08",
       "year": 1988,
       "season": "冬",
       "type": "廣告",
-      "title": "「遠航」移居諮詢服務電視廣告",
+      "title": "《登機前的一封信》路人演員",
       "loc": "ad_adm",
-      "roleHint": "飾演在機場依依不捨告別家人的離港青年",
-      "blurb": "回應88移民潮熱門話題，飾演機場告別家人的青年，情感要真摯動人！",
-      "discoverNote": "周刊透露的諮詢廣告線索",
-      "boardPriority": "low",
-      "boardNote": "社會題材廣告沉底",
-      "seasonWeight": 0.6,
-      "synopsis": "因應1988年移民潮社會現象推出的諮詢廣告。故事設定在啟德機場離境大堂，年輕男子與父母及戀人擁抱告別，眼含淚水但眼神中寫滿對未知未來的勇敢與憧憬。",
-      "heroAngle": "阿偉對身邊朋友離港的切身感受，讓他能精準捕捉到那個年代草根離別的真實傷感。",
-      "diasporaHook": "直接觸碰80年代離散與移民記憶，海外華人對這份離別與牽掛有著刻骨銘心的體會。",
-      "eraTag": "era_1988_winter_record",
+      "workTitle": "登機前的一封信",
+      "genreLabel": "影視廣告",
+      "roleLabel": "路人演員",
+      "director": "溫紹華",
+      "roleHint": "路人演員・影視廣告",
+      "blurb": "候機大堂內一家三口拖行李走位，路人演員扮演航空公司顧問遞上小冊子，男主角在登機閘前眼神猶疑，鏡頭最後定格於他手上那封未寄出的信。",
+      "synopsis": "候機大堂內一家三口拖行李走位，路人演員扮演航空公司顧問遞上小冊子，男主角在登機閘前眼神猶疑，鏡頭最後定格於他手上那封未寄出的信。",
+      "eraTag": "era_1988_winter_ad",
+      "discoverNote": "廣告公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7999999999999999,
       "req": {
-        "acting": 50,
-        "charm": 35,
-        "looks": 30
+        "looks": 300,
+        "charm": 340,
+        "acting": 240
       },
       "pay": [
-        10000,
-        15000
+        11250,
+        13750
       ],
+      "payExact": 12500,
+      "breachFee": 6200,
       "fame": [
-        20,
-        30
+        18,
+        31
       ],
       "popularity": [
-        40,
-        60
+        39,
+        62
       ],
       "stressDeltaHint": "中",
-      "hard": 0.55,
+      "hard": 0.43,
       "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 8,
       "shootDaysHint": 3,
-      "shootHint": "機場實景拍攝，需在人潮擁擠環境下迅速投入深情眼淚戲。",
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
       "roleScale": "ad_av",
       "shootBand": [
         3,
@@ -449,99 +548,57 @@
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "shootDeadlineDays": 7
+      "shootDeadlineDays": 14,
+      "producer": "鄭永康"
     },
     {
       "id": "gig_1988_var_01",
       "year": 1988,
       "season": "春",
       "type": "綜藝",
-      "title": "《今宵同樂》茶樓夥計烏龍短劇",
+      "title": "《茶樓猜情晚會》嘉賓",
       "loc": "tvb_longmen",
-      "roleHint": "飾演日常喜劇短劇中弄巧成拙的茶樓夥計",
-      "blurb": "長壽直播節目日常環節！無NG現場直播，考驗即時反應與喜劇細胞！",
-      "discoverNote": "星河電視台錄影廠門口的日常直播招募",
-      "boardPriority": "high",
-      "boardNote": "春檔草根直播主推",
-      "seasonWeight": 1.0,
-      "synopsis": "全港收視第一的長壽直播綜藝《今宵同樂》日常喜劇環節。阿偉需飾演茶樓夥計，在現場直播中與幾位資深諧星搭檔演出人情烏龍短劇，為現場觀眾及電視機前的觀眾送去笑聲。",
-      "heroAngle": "阿偉在街頭應變極快，現場直播不怯場，能將市井小人物的靈動喜感發揮得淋漓盡致。",
-      "diasporaHook": "經典電視直播草根喜劇，還原全球華人圍坐電視機前看長壽綜藝的溫馨氛圍。",
-      "eraTag": "era_1988_spring_grassroot",
+      "workTitle": "茶樓猜情晚會",
+      "genreLabel": "遊戲節目",
+      "roleLabel": "嘉賓",
+      "director": "羅啟山",
+      "roleHint": "嘉賓：綜合晚會短劇環節",
+      "blurb": "綜合晚會短劇環節，嘉賓扮茶客即興答謎，輸者罰唱兩句，主持在旁加碼出難題，全場笑聲一浪接一浪。",
+      "synopsis": "綜合晚會短劇環節，嘉賓扮茶客即興答謎，輸者罰唱兩句，主持在旁加碼出難題，全場笑聲一浪接一浪。",
+      "eraTag": "era_1988_spring_variety",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
       "req": {
-        "iq": 30,
-        "acting": 25,
-        "charm": 20
+        "charm": 105,
+        "iq": 120,
+        "acting": 85
       },
       "pay": [
-        1500,
-        2500
+        1800,
+        2200
       ],
+      "payExact": 2000,
+      "breachFee": 1000,
       "fame": [
-        8,
-        15
+        5,
+        12
       ],
       "popularity": [
-        20,
-        35
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.45,
-      "tier": "初",
-      "shootDaysHint": 3,
-      "shootHint": "完全現場直播，面對數百位現場觀眾，講錯對白必須立刻即興補救。",
-      "roleScale": "variety_ep",
-      "shootBand": [
-        2,
-        4
-      ],
-      "shootWeekdays": [
-        6,
-        7
-      ],
-      "shootDeadlineDays": 13
-    },
-    {
-      "id": "gig_1988_var_02",
-      "year": 1988,
-      "season": "夏",
-      "type": "綜藝",
-      "title": "《紫荊小姐競選》泰國外景伴舞嘉賓",
-      "loc": "tvb_harbour",
-      "roleHint": "飾演外景歌舞環節中的陽光健美襯托男主角",
-      "blurb": "年度選美大賽遠赴泰國取景，恰逢星河台慶籌備季，需要高大健碩男藝人於瀑布前伴舞！",
-      "discoverNote": "星河台慶籌備季的黃金時段曝光",
-      "boardPriority": "high",
-      "boardNote": "夏檔選美・台慶籌備季",
-      "seasonWeight": 1.0,
-      "synopsis": "全城矚目的年度選美盛事外景特別環節。團隊前往泰國普吉島拍攝，阿偉需穿著熱帶風情襯衫與泳褲，在瀑布與沙灘背景前與佳麗們共舞，襯托選美佳麗的優雅與青春活力。",
-      "heroAngle": "阿偉常年做替身練就的健碩體魄，在高光鏡頭下展現出極具力量感的草根健美美感。",
-      "diasporaHook": "選美比賽外景是80年代電視工業盛世的代表，具備極高的視覺欣賞價值。",
-      "eraTag": "era_1988_summer_variety",
-      "req": {
-        "stamina": 40,
-        "charm": 35,
-        "looks": 30
-      },
-      "pay": [
-        4000,
-        7000
-      ],
-      "fame": [
         15,
-        25
+        29
       ],
-      "popularity": [
-        35,
-        50
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.5,
-      "tier": "中",
-      "shootDaysHint": 4,
-      "shootHint": "在瀑布濕滑岩石上完成高強度舞蹈，注意腳下安全。",
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 5,
+      "shootDaysHint": 3,
+      "shootHint": "綜合晚會短劇環節。",
       "roleScale": "variety_ep",
       "shootBand": [
         2,
@@ -555,97 +612,53 @@
         5,
         6
       ],
-      "shootDeadlineDays": 7
+      "shootDeadlineDays": 14
     },
     {
-      "id": "gig_1988_var_03",
+      "id": "gig_1988_var_02",
       "year": 1988,
       "season": "夏",
       "type": "綜藝",
-      "title": "《龍鳳大智多星》水上趣味競技賽",
-      "loc": "tvb_kowloon",
-      "roleHint": "飾演拚命衝關的水上競技隊員",
-      "blurb": "二台挑戰收視霸主的狂野戶外遊戲，濕身落水混戰，要夠瘋狂夠賣力！",
-      "discoverNote": "二台高酬勞遊戲通告",
-      "boardPriority": "high",
-      "boardNote": "水上競技綜藝主推",
-      "seasonWeight": 1.0,
-      "synopsis": "二台為搶奪夏季收視率打造的瘋狂戶外競技節目。藝人們需在水上浮台進行泥漿摔跤、踩氣球與水上障礙衝關，阿偉需不顧形象地拚命衝鋒，製造緊張又滑稽的落水笑點。",
-      "heroAngle": "阿偉毫無偶像包袱，為了勝出玩得極狠，這種「豁出去」的拼勁深受觀眾喜愛。",
-      "diasporaHook": "熱血搞笑的水上闖關遊戲，不分地域都能感受到滿滿的綜藝娛樂效果。",
+      "title": "《選美外景群英》嘉賓",
+      "loc": "tvb_harbour",
+      "workTitle": "選美外景群英",
+      "genreLabel": "外景綜藝",
+      "roleLabel": "嘉賓",
+      "director": "馬詠芝",
+      "roleHint": "嘉賓：選美外景日",
+      "blurb": "選美外景日，男嘉賓伴舞兼扛道具，海傍高溫下連續走位三次，導演要求笑容不減，鏡頭前後一樣精神。",
+      "synopsis": "選美外景日，男嘉賓伴舞兼扛道具，海傍高溫下連續走位三次，導演要求笑容不減，鏡頭前後一樣精神。",
       "eraTag": "era_1988_summer_variety",
-      "req": {
-        "stamina": 45,
-        "iq": 25,
-        "charm": 20
-      },
-      "pay": [
-        3500,
-        6000
-      ],
-      "fame": [
-        10,
-        18
-      ],
-      "popularity": [
-        25,
-        45
-      ],
-      "stressDeltaHint": "低",
-      "hard": 0.4,
-      "tier": "初",
-      "shootDaysHint": 3,
-      "shootHint": "高強度水上運動，注意體能分配與防止肌肉抽筋。",
-      "roleScale": "variety_ep",
-      "shootBand": [
-        2,
-        4
-      ],
-      "shootWeekdays": [
-        6,
-        7
-      ],
-      "shootDeadlineDays": 13
-    },
-    {
-      "id": "gig_1988_var_04",
-      "year": 1988,
-      "season": "秋",
-      "type": "綜藝",
-      "title": "《金曲流行榜》季選音樂劇嘉賓",
-      "loc": "tvb_longmen",
-      "roleHint": "飾演串燒流行金曲短劇中的音樂青年",
-      "blurb": "季選頒獎禮現場直播！在天王登場前演出音樂短劇，氣氛極度狂熱！",
-      "discoverNote": "電台透露的音樂特別節目",
+      "discoverNote": "星河電視台通告欄的公開選角",
       "boardPriority": "normal",
-      "boardNote": "音樂嘉賓非單元主線",
-      "seasonWeight": 0.6,
-      "synopsis": "第三季金曲頒獎禮現場直播的前奏環節。在兩大歌壇天王粉絲撕扯的狂熱氣氛下，阿偉需在舞台現場演出一段貫穿年度熱門金曲的音樂情景短劇，為即將登場的巨星鋪墊氣氛。",
-      "heroAngle": "阿偉對流行音樂打榜文化的親身體會，讓他演起愛歌如命的街頭青年極具說服力。",
-      "diasporaHook": "重現80年代流行歌壇雙雄爭霸的巔峰盛況，是全亞洲華人共同的流行文化回憶。",
-      "eraTag": "era_1988_autumn_studio",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
       "req": {
-        "stage": 35,
-        "charm": 35,
-        "acting": 30
+        "charm": 320,
+        "stamina": 340,
+        "looks": 240
       },
       "pay": [
-        3000,
-        5000
+        4950,
+        6050
       ],
+      "payExact": 5500,
+      "breachFee": 2800,
       "fame": [
-        20,
-        35
+        18,
+        31
       ],
       "popularity": [
-        40,
-        65
+        39,
+        62
       ],
-      "stressDeltaHint": "高",
-      "hard": 0.55,
+      "stressDeltaHint": "中",
+      "hard": 0.43,
       "tier": "中",
-      "shootDaysHint": 2,
-      "shootHint": "在萬千狂熱歌迷的尖叫噪聲中保持專注，精確卡準音樂走位。",
+      "stars": 3,
+      "applyDeadlineDays": 8,
+      "shootDaysHint": 3,
+      "shootHint": "按組製場記安排拍攝。",
       "roleScale": "variety_ep",
       "shootBand": [
         2,
@@ -656,49 +669,177 @@
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "shootDeadlineDays": 5
+      "shootDeadlineDays": 14
+    },
+    {
+      "id": "gig_1988_var_03",
+      "year": 1988,
+      "season": "夏",
+      "type": "綜藝",
+      "title": "《水上智多星》嘉賓",
+      "loc": "tvb_kowloon",
+      "workTitle": "水上智多星",
+      "genreLabel": "遊戲節目",
+      "roleLabel": "嘉賓",
+      "director": "謝國樑",
+      "roleHint": "嘉賓・遊戲節目",
+      "blurb": "泳池競技通關，嘉賓濕身搬球搶答，體力關接益智短問，主持在池邊計時打氣，輸隊即場接受潑水懲罰。",
+      "synopsis": "泳池競技通關，嘉賓濕身搬球搶答，體力關接益智短問，主持在池邊計時打氣，輸隊即場接受潑水懲罰。",
+      "eraTag": "era_1988_summer_variety",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "charm": 115,
+        "stamina": 160,
+        "iq": 100
+      },
+      "pay": [
+        4300,
+        5200
+      ],
+      "payExact": 4750,
+      "breachFee": 2400,
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        18,
+        33
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.34,
+      "tier": "初",
+      "stars": 2,
+      "applyDeadlineDays": 5,
+      "shootDaysHint": 3,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 14,
+      "producer": "梁偉明"
+    },
+    {
+      "id": "gig_1988_var_04",
+      "year": 1988,
+      "season": "秋",
+      "type": "綜藝",
+      "title": "《流行榜季選夜》嘉賓",
+      "loc": "tvb_longmen",
+      "workTitle": "流行榜季選夜",
+      "genreLabel": "歌唱節目",
+      "roleLabel": "嘉賓",
+      "director": "梁子彥",
+      "roleHint": "嘉賓：流行榜季選",
+      "blurb": "流行榜季選之夜，嘉賓獻唱一首快歌，再與主持鬥嘴介紹排行榜走勢，台下觀眾舉牌和唱，氣氛炒到最熱。",
+      "synopsis": "流行榜季選之夜，嘉賓獻唱一首快歌，再與主持鬥嘴介紹排行榜走勢，台下觀眾舉牌和唱，氣氛炒到最熱。",
+      "eraTag": "era_1988_autumn_variety",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "charm": 300,
+        "stage": 340,
+        "acting": 210
+      },
+      "pay": [
+        3600,
+        4400
+      ],
+      "payExact": 4000,
+      "breachFee": 2000,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 8,
+      "shootDaysHint": 3,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 14
     },
     {
       "id": "gig_1988_var_05",
       "year": 1988,
       "season": "冬",
       "type": "綜藝",
-      "title": "《歲月星輝賀歲夜》大型人肉疊羅漢特技",
+      "title": "《賀歲群星賀台慶》固定班底",
       "loc": "tvb_longmen",
-      "roleHint": "飾演疊羅漢底座與爆破跳躍的特技隊員",
-      "blurb": "賀歲晚會壓軸節目！全台男藝人賣命疊羅漢與驚險爆破，絕不可失手！",
-      "discoverNote": "監製下達的賀歲硬性任務",
+      "workTitle": "賀歲群星賀台慶",
+      "genreLabel": "晚會",
+      "roleLabel": "固定班底",
+      "director": "程浩天",
+      "roleHint": "固定班底：頻道賀歲特備",
+      "blurb": "頻道賀歲特備，固定班底串場歌舞、短劇、尾場合唱，全台動員綵排至凌晨，服裝間燈火通明，主戲壓力集中在幾段長鏡頭。",
+      "synopsis": "頻道賀歲特備，固定班底串場歌舞、短劇、尾場合唱，全台動員綵排至凌晨，服裝間燈火通明，主戲壓力集中在幾段長鏡頭。",
+      "eraTag": "era_1988_winter_variety",
+      "discoverNote": "星河電視台通告欄的公開選角",
       "boardPriority": "high",
-      "boardNote": "賀歲特技冬主推",
-      "seasonWeight": 1.0,
-      "synopsis": "電視台賀歲晚會的壓軸高潮節目。全台數十名男藝人需在直播鏡頭下組成人肉金字塔，並配合現場煙火爆破進行高空翻滾跳躍。阿偉作為底座力量擔當，需頂住重壓完成危險特技。",
-      "heroAngle": "阿偉身上那股為團體賣命、死嗑到底的龍虎武師精神，在賀歲高光時刻震撼全場。",
-      "diasporaHook": "電視台賀歲群星賣命演出，是港產電視黃金時代最熱血澎湃的集體記憶。",
-      "eraTag": "era_1988_winter_festive",
+      "boardNote": "台慶特備主推",
+      "seasonWeight": 0.95,
       "req": {
-        "stamina": 60,
-        "iq": 35,
-        "acting": 30
+        "charm": 780,
+        "stage": 650,
+        "stamina": 580
       },
       "pay": [
-        5000,
-        9000
+        6300,
+        7700
       ],
+      "payExact": 7000,
+      "breachFee": 4200,
       "fame": [
-        35,
-        60
+        50,
+        85
       ],
       "popularity": [
-        50,
-        75
+        80,
+        110
       ],
       "stressDeltaHint": "高",
-      "hard": 0.6,
+      "hard": 0.65,
       "tier": "高",
+      "stars": 5,
+      "applyDeadlineDays": 12,
       "shootDaysHint": 5,
-      "shootHint": "直播現場高空特技，需頂住數人重量且不能有絲毫晃動。",
+      "shootHint": "頻道賀歲特備。",
       "roleScale": "variety_special",
       "shootBand": [
         4,
@@ -712,776 +853,1006 @@
         5,
         6
       ],
-      "shootDeadlineDays": 8
+      "shootDeadlineDays": 14,
+      "producer": "蔡志傑",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受通宵綵排"
+        ]
+      }
     },
     {
       "id": "gig_1988_tv_01",
       "year": 1988,
       "season": "春",
       "type": "電視劇",
-      "title": "《都市梟雄錄》龍套打手",
+      "title": "《掃蕩封鎖線》群戲",
       "loc": "tvb_longmen",
-      "roleHint": "飾演九龍城寨黑幫無名打手",
-      "blurb": "長篇警匪劇現場臨時加戲！飾演城寨打手，在雨夜巷戰被男主角踢飛！",
-      "discoverNote": "片場人情爭取的龍套開工",
-      "boardPriority": "high",
-      "boardNote": "春檔主推警匪龍套",
-      "seasonWeight": 1.0,
-      "synopsis": "講述九龍城寨黑幫勢力崛起的長篇警匪劇。阿偉飾演底層暗殺行動的無名打手，只有一句喊殺對白。導演現場臨時加戲，要求他在雨夜狹窄巷戰中被主角一腳踢飛砸向垃圾桶。",
-      "heroAngle": "阿偉對城寨環境了如指掌，演起底層混混來眼神狠戾、動作真實感十足。",
-      "diasporaHook": "九龍城寨黑幫與警匪對決，是海外華人最熟悉的經典港劇核心元素。",
-      "eraTag": "era_1988_spring_grassroot",
-      "req": {
-        "stamina": 25,
-        "acting": 20,
-        "iq": 15
-      },
-      "pay": [
-        800,
-        1500
-      ],
-      "fame": [
-        2,
-        5
-      ],
-      "popularity": [
-        5,
-        10
-      ],
-      "stressDeltaHint": "低",
-      "hard": 0.2,
-      "tier": "初",
-      "shootDaysHint": 9,
-      "shootHint": "連續熬夜拍攝18小時，需在人工降雨下完成摔跌動作。",
-      "roleScale": "tv_cameo_short",
-      "shootBand": [
-        8,
-        10
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 13,
-      "workTitle": "都市梟雄錄",
+      "workTitle": "掃蕩封鎖線",
       "genreLabel": "警匪劇",
-      "roleLabel": "群戲打手",
+      "roleLabel": "群戲",
       "director": "何子聰",
-      "producer": "陳雅琳",
-      "limits": {
-        "gender": "male",
-        "licenses": [],
-        "groupOnly": false,
-        "notes": []
+      "roleHint": "群戲・警匪劇",
+      "blurb": "群戲扮酒客與記者，行動組掃蕩夜場時慌忙走避；槍戰過後被趕離封鎖線，混亂人群裡各自執生。",
+      "synopsis": "群戲扮酒客與記者，行動組掃蕩夜場時慌忙走避；槍戰過後被趕離封鎖線，混亂人群裡各自執生。",
+      "eraTag": "era_1988_spring_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "acting": 90,
+        "stamina": 110,
+        "iq": 75
       },
+      "pay": [
+        1050,
+        1250
+      ],
       "payExact": 1150,
-      "breachFee": 600
-    },
-    {
-      "id": "gig_1988_tv_02",
-      "year": 1988,
-      "season": "春",
-      "type": "電視劇",
-      "title": "《大漠群英傳》武俠劇小兵替身",
-      "loc": "tvb_kowloon",
-      "roleHint": "飾演金國敵將身邊的蒙古親衛替身",
-      "blurb": "重拍經典風格武俠劇！穿三十斤鐵甲無軟墊被掌風打飛，全靠摔打功底！",
-      "discoverNote": "武師班底拉來的替身通告",
-      "boardPriority": "high",
-      "boardNote": "武俠片廠替身主推",
-      "seasonWeight": 1.0,
-      "synopsis": "宋金交戰背景的大型古裝武俠劇。阿偉擔任敵將親衛隊長的動作替身，在城牆爆破大戲中，需身穿三十斤重的仿真鐵甲，被威亞高速向後拉扯，從三樓高的城牆平台摔落至地上。",
-      "heroAngle": "阿偉繼承了父親龍虎武師的摔打功底，面對極具危險性的無保護動作毫不退縮。",
-      "diasporaHook": "古裝武俠劇是全球華人文化的共通語言，展現純粹的東方武學魅力。",
-      "eraTag": "era_1988_spring_factory",
-      "req": {
-        "stamina": 35,
-        "acting": 15,
-        "iq": 20
-      },
-      "pay": [
-        1500,
-        2500
-      ],
-      "fame": [
-        3,
-        8
-      ],
-      "popularity": [
-        8,
-        15
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.35,
-      "tier": "初",
-      "shootDaysHint": 9,
-      "shootHint": "高空威亞拉扯落地，需極精確地控制身軀落點以防摔傷脊椎。",
-      "roleScale": "tv_cameo_short",
-      "shootBand": [
-        8,
-        10
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 13
-    },
-    {
-      "id": "gig_1988_tv_03",
-      "year": 1988,
-      "season": "夏",
-      "type": "電視劇",
-      "title": "《情仇風雲錄》壞警察威廉",
-      "loc": "tvb_longmen",
-      "roleHint": "飾演為了上位不擇手段的反派探員威廉",
-      "blurb": "黃金檔恩怨劇反派！與當家花旦同台飆戲，考驗內心黑化文戲！",
-      "discoverNote": "監製指定的上位轉折角色",
-      "boardPriority": "normal",
-      "boardNote": "夏檔劇非綜藝主線",
-      "seasonWeight": 0.6,
-      "synopsis": "講述70-80年代警界貪腐與廉政公署成立的黃金檔大劇。阿偉飾演出身底層卻心術不正的探員「威廉」，因嫉妒主角而暗中勾結黑幫舉報同僚，最終在廉署調查下走向瘋狂崩潰。",
-      "heroAngle": "阿偉看盡了底層為了上位苟延殘喘的嘴臉，將角色那種壓抑、扭曲與掙扎演得入木三分。",
-      "diasporaHook": "反派心路歷程極具張力，展現社會轉型期人性在慾望與良知間的拉扯。",
-      "eraTag": "era_1988_summer_mall",
-      "req": {
-        "acting": 45,
-        "charm": 30,
-        "iq": 30
-      },
-      "pay": [
-        6000,
-        10000
-      ],
-      "fame": [
-        25,
-        45
-      ],
-      "popularity": [
-        35,
-        60
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.5,
-      "tier": "中",
-      "shootDaysHint": 15,
-      "shootHint": "多場內心扭曲與審訊室攤牌文戲，需精確控制台詞爆發力。",
-      "roleScale": "tv_support_main",
-      "shootBand": [
-        14,
-        16
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 20
-    },
-    {
-      "id": "gig_1988_tv_04",
-      "year": 1988,
-      "season": "夏",
-      "type": "電視劇",
-      "title": "《滬上大風暴》忠義幫會小弟阿木",
-      "loc": "tvb_kowloon",
-      "roleHint": "飾演民國上海灘忠肝義膽的碼頭小弟阿木",
-      "blurb": "二台大預算民國恩怨劇，雨中隨大哥砍人並擋槍，戲份短但極具感染力！",
-      "discoverNote": "二台挖角試探的客串角色",
-      "boardPriority": "normal",
-      "boardNote": "客串劇沉於綜藝後",
-      "seasonWeight": 0.6,
-      "synopsis": "30年代上海灘黑幫爭霸大劇。阿偉客串碼頭幫會小弟「阿木」，在街頭數百人雨夜砍殺中，用身體為大哥擋下致命子彈，臨死前用滿手鮮血交出關鍵幫會名冊，劇情極具悲情色彩。",
-      "heroAngle": "阿偉身上的江湖義氣與市井血性，讓這個小弟角色的犧牲顯得無比真實動人。",
-      "diasporaHook": "民國上海灘恩怨與忠義犧牲，是兩岸三地華人觀眾熟悉的悲情江湖敘事。",
-      "eraTag": "era_1988_summer_mall",
-      "req": {
-        "acting": 35,
-        "stamina": 40,
-        "charm": 25
-      },
-      "pay": [
-        4000,
-        7000
-      ],
-      "fame": [
-        15,
-        25
-      ],
-      "popularity": [
-        20,
-        40
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.45,
-      "tier": "中",
-      "shootDaysHint": 15,
-      "shootHint": "在人工降雨機下連拍整夜打戲與中槍戲，注意防寒保暖。",
-      "roleScale": "tv_support_main",
-      "shootBand": [
-        14,
-        16
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 20
-    },
-    {
-      "id": "gig_1988_tv_05",
-      "year": 1988,
-      "season": "秋",
-      "type": "電視劇",
-      "title": "《同舟共濟》茶餐廳夥計阿強",
-      "loc": "tvb_longmen",
-      "roleHint": "飾演處境喜劇中幽默熱心的茶餐廳夥計",
-      "blurb": "每晚八點處境喜劇！搞笑茶餐廳夥計，對白極度生活化，考驗觀眾緣！",
-      "discoverNote": "喜劇組發出的茶餐廳選角",
-      "boardPriority": "high",
-      "boardNote": "處境喜劇秋主推",
-      "seasonWeight": 1.0,
-      "synopsis": "講述公共屋邨同一個單位兩家人溫馨日常的長壽處境喜劇。阿偉飾演隔壁茶餐廳熱心又愛八卦的夥計「阿強」，經常送外賣時插科打諢，鬧出各種令人啼笑皆非的街坊烏龍。",
-      "heroAngle": "阿偉從小在茶餐廳幫忙的真實經歷，讓他端茶倒水、甩布抹檯的動作渾然天成。",
-      "diasporaHook": "茶餐廳與屋邨鄰里情，傳遞出全球華人都懂的互助包容與煙火氣。",
-      "eraTag": "era_1988_autumn_unitdrama",
-      "req": {
-        "charm": 50,
-        "acting": 40,
-        "iq": 35
-      },
-      "pay": [
-        8000,
-        14000
-      ],
-      "fame": [
-        30,
-        50
-      ],
-      "popularity": [
-        50,
-        80
-      ],
-      "stressDeltaHint": "低",
-      "hard": 0.5,
-      "tier": "中",
-      "shootDaysHint": 15,
-      "shootHint": "使用地道諧趣語調，精確把控喜劇包袱的停頓節奏。",
-      "roleScale": "tv_support_main",
-      "shootBand": [
-        14,
-        16
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 20
-    },
-    {
-      "id": "gig_1988_tv_06",
-      "year": 1988,
-      "season": "冬",
-      "type": "電視劇",
-      "title": "《城寨暗夜1988》臥底警察阿鋒",
-      "loc": "tvb_longmen",
-      "roleHint": "飾演潛伏城寨毒窩三年的痛苦臥底探員",
-      "blurb": "城寨實景犯罪單元劇！黑白兩道邊緣撕裂痛苦，衝擊年末最佳男主角！",
-      "discoverNote": "衝擊大獎的深度男一劇本",
-      "boardPriority": "high",
-      "boardNote": "演技男一搶位主推",
-      "seasonWeight": 1.0,
-      "synopsis": "改編自真實案件的深度犯罪單元劇。阿偉飾演潛伏九龍城寨賭檔三年的臥底警察「阿鋒」，在黑道大哥的信任與警方的逼迫間雙重撕裂，最終在城寨拆遷前夕上演一場絕望的自我救贖。",
-      "heroAngle": "阿偉草根出身的滄桑感與眼神中那股被生活逼迫的狠勁，與臥底角色的痛苦完美融合。",
-      "diasporaHook": "深入九龍城寨末期歷史背景，臥底內心掙扎震撼人心。",
-      "eraTag": "era_1988_winter_recruit",
-      "req": {
-        "acting": 70,
-        "stamina": 55,
-        "iq": 45
-      },
-      "pay": [
-        15000,
-        25000
-      ],
-      "fame": [
-        50,
-        80
-      ],
-      "popularity": [
-        60,
-        90
-      ],
-      "stressDeltaHint": "高",
-      "hard": 0.65,
-      "tier": "高",
-      "shootDaysHint": 22,
-      "shootHint": "深入城寨實景拍攝，多場心理崩潰與眼神無聲哭戲需一氣呵成。",
-      "roleScale": "tv_lead_long",
-      "shootBand": [
-        20,
-        24
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 28
-    },
-    {
-      "id": "gig_1988_tv_07",
-      "year": 1988,
-      "season": "冬",
-      "type": "電視劇",
-      "title": "《豪門風雲》金融新貴陳世傑",
-      "loc": "tvb_harbour",
-      "roleHint": "飾演憑股市奇蹟崛起的草根金融新貴",
-      "blurb": "跨年賀歲檔大劇！與對手同台飆戲，草根新貴商戰硬撼豪門繼承人！",
-      "discoverNote": "賀歲檔臨時代替試鏡",
-      "boardPriority": "high",
-      "boardNote": "賀歲檔大劇主推",
-      "seasonWeight": 1.0,
-      "synopsis": "講述香港80年代股市狂飆與地產風雲的豪門恩怨劇。阿偉飾演從觀塘打工仔憑股市眼光崛起的金融新貴「陳世傑」，與豪門嫡系繼承人在董事會及股市大盤上演生死決戰。",
-      "heroAngle": "阿偉從底層一路殺上來的真實氣場，賦予了這個草根金融新貴極強的狼性與侵略感。",
-      "diasporaHook": "草根打工仔憑智謀逆襲商界豪門，滿足全球華人對寒門貴子的終極幻想。",
-      "eraTag": "era_1988_winter_festive",
-      "req": {
-        "acting": 65,
-        "looks": 60,
-        "charm": 55
-      },
-      "pay": [
-        18000,
-        30000
-      ],
-      "fame": [
-        60,
-        95
-      ],
-      "popularity": [
-        70,
-        100
-      ],
-      "stressDeltaHint": "高",
-      "hard": 0.7,
-      "tier": "高",
-      "shootDaysHint": 22,
-      "shootHint": "氣場必須壓制對手，身穿名貴西裝在交易所與晚宴現場進行激烈對辯。",
-      "roleScale": "tv_lead_long",
-      "shootBand": [
-        20,
-        24
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 28
-    },
-    {
-      "id": "gig_1988_film_01",
-      "year": 1988,
-      "season": "春",
-      "type": "電影",
-      "title": "《鐵血英雄傳》火海槍手替身",
-      "loc": "film_lion",
-      "roleHint": "飾演反派伏擊男主角時的領頭槍手替身",
-      "blurb": "英雄片狂潮！穿風衣在火海爆破中被雙槍打飛摔下懸崖，防護極簡陋！",
-      "discoverNote": "發小介紹的高薪特技替身",
-      "boardPriority": "high",
-      "boardNote": "動作片廠危險替身",
-      "seasonWeight": 1.0,
-      "synopsis": "老牌影業獅子山製片出品的江湖英雄片。講述黑幫兄弟情告終與背叛的故事，阿偉飾演反派伏擊主角時的領頭槍手，需在玻璃爆炸與真正的火海中被雙槍擊中，並從兩層樓高的平台背部著地摔落。",
-      "heroAngle": "阿偉拿命去搏的龍虎武師精神，讓他能完成這類極度危險、奶油小生不敢接的硬核鏡頭。",
-      "diasporaHook": "雙槍、風衣與慢鏡頭槍戰，是港產動作片席捲全球影壇的最強符號。",
-      "eraTag": "era_1988_spring_factory",
-      "req": {
-        "stamina": 40,
-        "acting": 20,
-        "iq": 20
-      },
-      "pay": [
-        2500,
-        4500
-      ],
-      "fame": [
-        5,
-        10
-      ],
-      "popularity": [
-        10,
-        20
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.4,
-      "tier": "初",
-      "shootDaysHint": 13,
-      "shootHint": "在真正的火藥爆破點旁跳躍，需精確把握毫秒級別的跳躍時機。",
-      "roleScale": "film_support_small",
-      "shootBand": [
-        12,
-        15
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 18,
-      "workTitle": "鐵血英雄傳",
-      "genreLabel": "江湖動作片",
-      "roleLabel": "動作替身",
-      "director": "梁兆山",
-      "limits": {
-        "gender": "any",
-        "licenses": [],
-        "groupOnly": false,
-        "notes": [
-          "須接受煙火場面"
-        ]
-      },
-      "payExact": 3500,
-      "breachFee": 1800
-    },
-    {
-      "id": "gig_1988_film_02",
-      "year": 1988,
-      "season": "夏",
-      "type": "電影",
-      "title": "《霓虹夜冷風暴》古惑仔刀仔",
-      "loc": "film_cotton",
-      "roleHint": "飾演性格暴躁但講義氣的幫會骨幹刀仔",
-      "blurb": "黑道資金獨立大片！旺角街頭實景手持砍刀狂奔，眼神要夠狠夠爆發！",
-      "discoverNote": "片場看中後給予的刀仔角色",
-      "boardPriority": "low",
-      "boardNote": "黑幫片非夏主推",
-      "seasonWeight": 0.6,
-      "synopsis": "黑道背景獨立公司紅棉影業出品的江湖片。聚焦油尖旺街頭青年命運，阿偉飾演幫會骨幹「刀仔」，因保護街坊小妹而隻身獨闖敵對幫會據點，在旺角深夜街頭上演幾百人持刀追逐慘烈砍殺。",
-      "heroAngle": "阿偉混跡街頭的草根背景，讓他的刀子般銳利的狠辣眼神完全不需要表演痕跡。",
-      "diasporaHook": "旺角霓虹燈下的熱血江湖，展現東亞街頭文化中最真實生動的市井野性。",
-      "eraTag": "era_1988_summer_mall",
-      "req": {
-        "acting": 40,
-        "stamina": 45,
-        "charm": 30
-      },
-      "pay": [
-        5000,
-        9000
-      ],
-      "fame": [
-        15,
-        30
-      ],
-      "popularity": [
-        25,
-        45
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.45,
-      "tier": "初",
-      "shootDaysHint": 13,
-      "shootHint": "深夜在旺角女人街實景狂奔手持道具刀，防止被真實路人與警察誤會。",
-      "roleScale": "film_support_small",
-      "shootBand": [
-        12,
-        15
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 18
-    },
-    {
-      "id": "gig_1988_film_03",
-      "year": 1988,
-      "season": "夏",
-      "type": "電影",
-      "title": "《神勇拍檔1988》反派手下阿標",
-      "loc": "film_lion",
-      "roleHint": "飾演搞笑笨賊集團中的功夫高手阿標",
-      "blurb": "暑期檔大片！配合喜劇巨星做滑稽挨打與飛車撞飛特技，考驗肢體喜劇！",
-      "discoverNote": "影業公開招募的動作喜劇",
-      "boardPriority": "normal",
-      "boardNote": "暑期動作喜劇次級",
-      "seasonWeight": 0.6,
-      "synopsis": "暑期檔龍頭動作喜劇片。講述神勇警探大鬧香港圍剿國際笨賊集團的故事。阿偉飾演反派身邊懂功夫但運氣極差的手下「阿標」，在商場追逐中被各種機關砸中並被飛車撞飛入噴水池。",
-      "heroAngle": "阿偉懂得拿捏草根小人物被命運捉弄的滑稽感，將挨打特技轉化為極具吸引力的喜劇笑點。",
-      "diasporaHook": "輕鬆幽默的港式動作喜劇，跨越語言藩籬，是各地華人合家歡的首選。",
-      "eraTag": "era_1988_summer_mall",
-      "req": {
-        "stamina": 50,
-        "acting": 35,
-        "iq": 25
-      },
-      "pay": [
-        8000,
-        13000
-      ],
-      "fame": [
-        20,
-        35
-      ],
-      "popularity": [
-        35,
-        60
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.5,
-      "tier": "中",
-      "shootDaysHint": 22,
-      "shootHint": "配合飛車特技做出誇張的空中翻滾落地動作，極耗體力。",
-      "roleScale": "film_support_main",
-      "shootBand": [
-        20,
-        24
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 28
-    },
-    {
-      "id": "gig_1988_film_04",
-      "year": 1988,
-      "season": "秋",
-      "type": "電影",
-      "title": "《斜陽舊事》落魄少爺陳懷安",
-      "loc": "film_harbour",
-      "roleHint": "飾演30年代沉迷煙榻、揮霍家產的頹廢少爺",
-      "blurb": "懷舊文藝膠片大片！衝擊金像獎，與過氣影后同台飆淒美文戲！",
-      "discoverNote": "導師力薦的演技考驗通告",
-      "boardPriority": "high",
-      "boardNote": "文藝磨戲秋主推",
-      "seasonWeight": 1.0,
-      "synopsis": "名導執導的30年代懷舊文藝大片。背景為塘西風月區，阿偉飾演將家產揮霍一空的落魄少爺「陳懷安」，在煙榻吸食鴉片頹廢度日，與唐素雲飾演的老牌名妓上演跨越十年的淒美愛情悲劇。",
-      "heroAngle": "阿偉眼神裡對命運無奈的絕望感，讓這個落魄少爺的頹廢美感具有極強的草根悲劇震撼力。",
-      "diasporaHook": "濃郁的舊時代懷舊美學與東方情感，深受全球華人文藝影迷與影評人推崇。",
-      "eraTag": "era_1988_autumn_readthrough",
-      "req": {
-        "acting": 60,
-        "looks": 55,
-        "charm": 50
-      },
-      "pay": [
-        12000,
-        20000
-      ],
-      "fame": [
-        40,
-        70
-      ],
-      "popularity": [
-        45,
-        75
-      ],
-      "stressDeltaHint": "高",
-      "hard": 0.6,
-      "tier": "中",
-      "shootDaysHint": 22,
-      "shootHint": "長鏡頭下展現眼神中的頹廢與深情，對台詞情緒與氣息要求極高。",
-      "roleScale": "film_support_main",
-      "shootBand": [
-        20,
-        24
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 28
-    },
-    {
-      "id": "gig_1988_film_05",
-      "year": 1988,
-      "season": "冬",
-      "type": "電影",
-      "title": "《黑金風雲》黑道梟雄海哥",
-      "loc": "film_cotton",
-      "roleHint": "飾演碼頭苦力殺上幫會龍頭位置的黑道梟雄",
-      "blurb": "黑道持槍逼拍大片！劇本邊拍邊改，雙男主衝擊賀歲檔票房！",
-      "discoverNote": "強行送來的開工合約",
-      "boardPriority": "normal",
-      "boardNote": "黑道逼拍次於賀歲",
-      "seasonWeight": 1.0,
-      "synopsis": "雷勁公司強行投資的黑金題材大片。阿偉與張克凡領銜雙男主，飾演從碼頭苦力一路殺上幫會龍頭位置的梟雄「海哥」。拍攝現場常有真實黑道圍觀，導演邊拍邊改劇本，衝擊賀歲票房。",
-      "heroAngle": "阿偉身上那股從底層泥潭硬殺出一條血路的草根狠勁，與黑道梟雄的角色設定完美契合。",
-      "diasporaHook": "揭露80年代末黑金政治與娛樂圈幕後奇觀，題材極具話題吸引力。",
-      "eraTag": "era_1988_winter_recruit",
-      "req": {
-        "acting": 70,
-        "stamina": 65,
-        "charm": 55
-      },
-      "pay": [
-        25000,
-        45000
-      ],
-      "fame": [
-        60,
-        90
-      ],
-      "popularity": [
-        70,
-        100
-      ],
-      "stressDeltaHint": "高",
-      "hard": 0.65,
-      "tier": "高",
-      "shootDaysHint": 29,
-      "shootHint": "在真實黑幫氣氛籠罩下完成高強度槍戰與內心戲爆發。",
-      "roleScale": "film_lead_big",
-      "shootBand": [
-        28,
-        30
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 36
-    },
-    {
-      "id": "gig_1988_film_06",
-      "year": 1988,
-      "season": "冬",
-      "type": "電影",
-      "title": "《皇家防暴隊1988》熱血刑警阿龍",
-      "loc": "film_lion",
-      "roleHint": "飾演單槍匹馬圍剿跨國犯罪集團的熱血刑警",
-      "blurb": "頂級動作巨制！零替身撞破真玻璃跳天幕，衝擊國際票房！",
-      "discoverNote": "聯手爭取的頂級電影男一",
-      "boardPriority": "high",
-      "boardNote": "賀歲動作男一主推",
-      "seasonWeight": 1.0,
-      "synopsis": "老牌影業獅子山製片年度壓軸動作巨制。阿偉飾演不聽上司指揮、憑一身硬功夫單槍匹馬殺入大廈圍剿國際犯罪集團的便衣刑警「阿龍」。劇中包含從商場數層樓高的玻璃天幕躍下的極限特技。",
-      "heroAngle": "阿偉堅持不使用替身親自上陣的英雄氣概，重新定義了80年代末香港草根硬漢巨星形象。",
-      "diasporaHook": "搏命式的真功夫與極限特技，是港產動作片征服全球市場的最高憑證。",
-      "eraTag": "era_1988_winter_festive",
-      "req": {
-        "stamina": 80,
-        "acting": 75,
-        "looks": 65
-      },
-      "pay": [
-        40000,
-        70000
-      ],
-      "fame": [
-        80,
-        100
-      ],
-      "popularity": [
-        85,
-        100
-      ],
-      "stressDeltaHint": "高",
-      "hard": 0.7,
-      "tier": "高",
-      "shootDaysHint": 29,
-      "shootHint": "不使用替身親自完成高空跳躍與撞破真玻璃危險鏡頭。",
-      "roleScale": "film_lead_big",
-      "shootBand": [
-        28,
-        30
-      ],
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootDeadlineDays": 36
-    },
-    {
-      "id": "gig_1988_rec_01",
-      "year": 1988,
-      "season": "春",
-      "type": "唱片通告",
-      "title": "合唱單曲《深水埗的故事》錄音",
-      "loc": "rec_hk",
-      "roleHint": "擔任敘事民謠歌曲主唱之一",
-      "blurb": "黑膠與卡帶時代！唱出九龍舊區草根打拼心酸，歌聲要夠滄桑街頭感！",
-      "discoverNote": "電台引薦的合唱錄音試音",
-      "boardPriority": "normal",
-      "boardNote": "錄音試水非春主線",
-      "seasonWeight": 0.6,
-      "synopsis": "跨國唱片公司香江唱片嘗試推出的本土草根主題合唱單曲。歌曲講述九龍舊區底層市民每日辛勤打拼的溫暖與心酸，阿偉需用帶有微沙感與街頭氣息的歌聲，演譯九龍巷弄裡的奮鬥故事。",
-      "heroAngle": "阿偉土生土長於深水埗，嗓音裡自帶的真實生活磨礪感是任何技巧都無法替代的。",
-      "diasporaHook": "唱出基層打工者的奮鬥心聲，引發所有離開故鄉在外打拼華人的強烈共鳴。",
-      "eraTag": "era_1988_spring_alley",
-      "req": {
-        "stage": 30,
-        "charm": 25,
-        "acting": 20
-      },
-      "pay": [
-        2000,
-        4000
-      ],
+      "breachFee": 600,
       "fame": [
         5,
         12
       ],
       "popularity": [
         15,
-        30
+        29
       ],
       "stressDeltaHint": "低",
-      "hard": 0.35,
+      "hard": 0.28,
       "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 9,
+      "shootDaysHint": 9,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 15,
+      "producer": "羅心怡",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受槍戰場面"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tv_02",
+      "year": 1988,
+      "season": "春",
+      "type": "電視劇",
+      "title": "《蒙面替影》替身",
+      "loc": "tvb_kowloon",
+      "workTitle": "蒙面替影",
+      "genreLabel": "時代劇",
+      "roleLabel": "替身",
+      "director": "關振邦",
+      "roleHint": "替身・時代劇",
+      "blurb": "替身戴面具演竹林追逐，翻滾落地不露正角；武指要求連拍數個鏡位，替身頂住體力極限完成每個翻身。",
+      "synopsis": "替身戴面具演竹林追逐，翻滾落地不露正角；武指要求連拍數個鏡位，替身頂住體力極限完成每個翻身。",
+      "eraTag": "era_1988_spring_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "stamina": 145,
+        "acting": 80,
+        "iq": 95
+      },
+      "pay": [
+        1800,
+        2200
+      ],
+      "payExact": 2000,
+      "breachFee": 1000,
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        18,
+        33
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.34,
+      "tier": "初",
+      "stars": 2,
+      "applyDeadlineDays": 9,
+      "shootDaysHint": 9,
+      "shootHint": "動作場面須按替身組指令走位。",
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 15
+    },
+    {
+      "id": "gig_1988_tv_03",
+      "year": 1988,
+      "season": "夏",
+      "type": "電視劇",
+      "title": "《兩行爭雄》男配角",
+      "loc": "tvb_longmen",
+      "workTitle": "兩行爭雄",
+      "genreLabel": "時裝劇",
+      "roleLabel": "男配角",
+      "director": "葉詠衡",
+      "roleHint": "男配角：兩大貿易行惡性競爭",
+      "blurb": "男配角坐鎮秘書室，以英語接聽長途電話，兩大貿易行同時搶單，他一邊應付上司追問，一邊在忠誠與戀愛之間左右為難。",
+      "synopsis": "男配角坐鎮秘書室，以英語接聽長途電話，兩大貿易行同時搶單，他一邊應付上司追問，一邊在忠誠與戀愛之間左右為難。收線後獨自留在寫字樓走廊出神，門後女方一個眼神，已教他心亂如麻。",
+      "eraTag": "era_1988_summer_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 340,
+        "charm": 240,
+        "iq": 230
+      },
+      "pay": [
+        7200,
+        8800
+      ],
+      "payExact": 8000,
+      "breachFee": 4000,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 15,
+      "shootHint": "兩大貿易行惡性競爭。",
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 23
+    },
+    {
+      "id": "gig_1988_tv_04",
+      "year": 1988,
+      "season": "夏",
+      "type": "電視劇",
+      "title": "《碼頭風雲》男配角",
+      "loc": "tvb_kowloon",
+      "workTitle": "碼頭風雲",
+      "genreLabel": "時代劇",
+      "roleLabel": "男配角",
+      "director": "區偉成",
+      "roleHint": "男配角：三十年代碼頭工會與商會摩擦",
+      "blurb": "男配角飾工頭副手，夜戲雨中帶頭與商會人馬對峙，濕透衣衫襯住碼頭燈影，一句江湖話鎮住全場。",
+      "synopsis": "男配角飾工頭副手，夜戲雨中帶頭與商會人馬對峙，濕透衣衫襯住碼頭燈影，一句江湖話鎮住全場。他既要護住手下兄弟，又要為工會留一線餘地，殺氣與義氣同時寫在臉上。",
+      "eraTag": "era_1988_summer_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 300,
+        "stamina": 290,
+        "charm": 210
+      },
+      "pay": [
+        4950,
+        6050
+      ],
+      "payExact": 5500,
+      "breachFee": 2800,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 15,
+      "shootHint": "三十年代碼頭工會與商會摩擦。",
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 23,
+      "producer": "鄧啟東"
+    },
+    {
+      "id": "gig_1988_tv_05",
+      "year": 1988,
+      "season": "秋",
+      "type": "電視劇",
+      "title": "《同屋共住好時節》男配角",
+      "loc": "tvb_longmen",
+      "workTitle": "同屋共住好時節",
+      "genreLabel": "家庭倫理劇",
+      "roleLabel": "男配角",
+      "director": "馮靜宜",
+      "roleHint": "男配角・家庭倫理劇",
+      "blurb": "男配角演失業姐夫，一家人趁中秋在公屋走廊開飯，兩家人為錢銀面紅耳熱，他夾在中間賠笑又賠不是。",
+      "synopsis": "男配角演失業姐夫，一家人趁中秋在公屋走廊開飯，兩家人為錢銀面紅耳熱，他夾在中間賠笑又賠不是。吵到最後齊齊分月餅，笑中有淚，一屋人情味收場。",
+      "eraTag": "era_1988_autumn_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 320,
+        "looks": 230,
+        "iq": 260,
+        "charm": 360
+      },
+      "pay": [
+        9900,
+        12100
+      ],
+      "payExact": 11000,
+      "breachFee": 5500,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 15,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 23
+    },
+    {
+      "id": "gig_1988_tv_06",
+      "year": 1988,
+      "season": "冬",
+      "type": "電視劇",
+      "title": "《暗線行動》男主角",
+      "loc": "tvb_longmen",
+      "workTitle": "暗線行動",
+      "genreLabel": "警匪劇",
+      "roleLabel": "男主角",
+      "director": "陸子謙",
+      "roleHint": "男主角：新丁督察潛入城寨查军火",
+      "blurb": "男主角演新丁督察，潛入城寨查軍火，在窄巷與線人交收情報，步步為營。",
+      "synopsis": "男主角演新丁督察，潛入城寨查軍火，在窄巷與線人交收情報，步步為營。二十多集長線推進，線人忽然反水，兄弟在後巷決裂，他要在行動與情義之間作出最痛的取捨。",
+      "eraTag": "era_1988_winter_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "high",
+      "boardNote": "長劇主線主推",
+      "seasonWeight": 0.95,
+      "req": {
+        "acting": 800,
+        "stamina": 620,
+        "iq": 540,
+        "charm": 450
+      },
+      "pay": [
+        18000,
+        22000
+      ],
+      "payExact": 20000,
+      "breachFee": 12000,
+      "fame": [
+        50,
+        85
+      ],
+      "popularity": [
+        80,
+        110
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.65,
+      "tier": "高",
+      "stars": 5,
+      "applyDeadlineDays": 16,
+      "shootDaysHint": 22,
+      "shootHint": "新丁督察潛入城寨查军火。",
+      "roleScale": "tv_lead_long",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 33,
+      "producer": "溫文傑",
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受高危拍攝場面"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tv_07",
+      "year": 1988,
+      "season": "冬",
+      "type": "電視劇",
+      "title": "《海傍世家》男主角",
+      "loc": "tvb_harbour",
+      "workTitle": "海傍世家",
+      "genreLabel": "偶像劇",
+      "roleLabel": "男主角",
+      "director": "岑美琳",
+      "roleHint": "男主角：海傍兩個世家聯姻破裂",
+      "blurb": "男主角夾在兩個世家聯姻破裂的風波中，事業與戀愛雙線拉扯，每一場飯局都暗藏角力。",
+      "synopsis": "男主角夾在兩個世家聯姻破裂的風波中，事業與戀愛雙線拉扯，每一場飯局都暗藏角力。主題曲在錄音室配唱，卡式帶版本趕在台慶前推出，他的歌聲與命運同時被推上浪尖。",
+      "eraTag": "era_1988_winter_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "high",
+      "boardNote": "長劇主線主推",
+      "seasonWeight": 0.95,
+      "req": {
+        "acting": 740,
+        "looks": 680,
+        "charm": 650,
+        "stamina": 500,
+        "iq": 450
+      },
+      "pay": [
+        21600,
+        26400
+      ],
+      "payExact": 24000,
+      "breachFee": 14400,
+      "fame": [
+        50,
+        85
+      ],
+      "popularity": [
+        80,
+        110
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.65,
+      "tier": "高",
+      "stars": 5,
+      "applyDeadlineDays": 16,
+      "shootDaysHint": 22,
+      "shootHint": "海傍兩個世家聯姻破裂。",
+      "roleScale": "tv_lead_long",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 33,
+      "producer": "蘇嘉莉"
+    },
+    {
+      "id": "gig_1988_tv_08",
+      "year": 1988,
+      "season": "秋",
+      "type": "電視劇",
+      "title": "《渡輪上的約定》男主角",
+      "loc": "tvb_longmen",
+      "workTitle": "渡輪上的約定",
+      "genreLabel": "時裝劇",
+      "roleLabel": "男主角",
+      "director": "鄧雅婷",
+      "roleHint": "男主角：中環至紅磡渡輪上重逢舊情人",
+      "blurb": "男主角在渡輪甲板重遇舊情人，海風吹起外套衣角，兩人未說出口的話比海浪更翻湧。",
+      "synopsis": "男主角在渡輪甲板重遇舊情人，海風吹起外套衣角，兩人未說出口的話比海浪更翻湧。長劇跨秋冬，壓軸一場碼頭送別，他要決定留港還是移民，長鏡頭下眼神一沉，全劇命運就此定案。",
+      "eraTag": "era_1988_autumn_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "high",
+      "boardNote": "長劇主線主推",
+      "seasonWeight": 0.85,
+      "req": {
+        "acting": 720,
+        "stamina": 580,
+        "charm": 560,
+        "looks": 500
+      },
+      "pay": [
+        19800,
+        24200
+      ],
+      "payExact": 22000,
+      "breachFee": 13200,
+      "fame": [
+        46,
+        79
+      ],
+      "popularity": [
+        75,
+        105
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.6,
+      "tier": "高",
+      "stars": 4,
+      "applyDeadlineDays": 16,
+      "shootDaysHint": 22,
+      "shootHint": "中環至紅磡渡輪上重逢舊情人。",
+      "roleScale": "tv_lead_long",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 33,
+      "producer": "潘浩然"
+    },
+    {
+      "id": "gig_1988_film_01",
+      "year": 1988,
+      "season": "春",
+      "type": "電影",
+      "title": "《商場天橋大搏殺》動作替身",
+      "loc": "film_lion",
+      "workTitle": "商場天橋大搏殺",
+      "genreLabel": "江湖動作片",
+      "roleLabel": "動作替身",
+      "director": "梁兆山",
+      "roleHint": "動作替身：商場天橋槍戰替身翻落",
+      "blurb": "商場天橋槍戰一觸即發，你戴上面具頂替主角走位，於煙霧中連續滾翻摔落地面，替身組全程屏息緊盯每一拍。",
+      "synopsis": "商場天橋槍戰一觸即發，你戴上面具頂替主角走位，於煙霧中連續滾翻摔落地面，替身組全程屏息緊盯每一拍。",
+      "eraTag": "era_1988_spring_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "stamina": 165,
+        "acting": 95,
+        "iq": 85
+      },
+      "pay": [
+        3150,
+        3850
+      ],
+      "payExact": 3500,
+      "breachFee": 1800,
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        18,
+        33
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.34,
+      "tier": "初",
+      "stars": 2,
+      "applyDeadlineDays": 9,
+      "shootDaysHint": 13,
+      "shootHint": "商場天橋槍戰替身翻落。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 21,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受槍戰場面"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_film_02",
+      "year": 1988,
+      "season": "夏",
+      "type": "電影",
+      "title": "《地盤講數》群戲",
+      "loc": "film_cotton",
+      "workTitle": "地盤講數",
+      "genreLabel": "江湖動作片",
+      "roleLabel": "群戲",
+      "director": "鄭啟文",
+      "roleHint": "群戲：舊棉廠地盤談判破裂",
+      "blurb": "舊棉廠地盤談判破裂，你身處群戲圍毆之中，雨水與燈光在拳腳間反照，氣氛愈打愈緊。",
+      "synopsis": "舊棉廠地盤談判破裂，你身處群戲圍毆之中，雨水與燈光在拳腳間反照，氣氛愈打愈緊。",
+      "eraTag": "era_1988_summer_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "acting": 120,
+        "stamina": 155,
+        "charm": 90
+      },
+      "pay": [
+        6300,
+        7700
+      ],
+      "payExact": 7000,
+      "breachFee": 3500,
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        18,
+        33
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.34,
+      "tier": "初",
+      "stars": 2,
+      "applyDeadlineDays": 9,
+      "shootDaysHint": 13,
+      "shootHint": "舊棉廠地盤談判破裂。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 21,
+      "producer": "陳啟文"
+    },
+    {
+      "id": "gig_1988_film_03",
+      "year": 1988,
+      "season": "夏",
+      "type": "電影",
+      "title": "《烏龍差館搶證物》男配角",
+      "loc": "film_lion",
+      "workTitle": "烏龍差館搶證物",
+      "genreLabel": "喜劇片",
+      "roleLabel": "男配角",
+      "director": "黃志遠",
+      "roleHint": "男配角：兩個糊塗警探錯搶證物",
+      "blurb": "兩個糊塗警探錯搶證物，你演急驚風檔長，在笑料與車禍特技之間奔走，節奏一浪接一浪。",
+      "synopsis": "兩個糊塗警探錯搶證物，你演急驚風檔長，在笑料與車禍特技之間奔走，節奏一浪接一浪。",
+      "eraTag": "era_1988_summer_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 360,
+        "looks": 260,
+        "stamina": 310,
+        "charm": 300
+      },
+      "pay": [
+        9450,
+        11550
+      ],
+      "payExact": 10500,
+      "breachFee": 5200,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 22,
+      "shootHint": "兩個糊塗警探錯搶證物。",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 33
+    },
+    {
+      "id": "gig_1988_film_04",
+      "year": 1988,
+      "season": "秋",
+      "type": "電影",
+      "title": "《船票未寄》男配角",
+      "loc": "film_harbour",
+      "workTitle": "船票未寄",
+      "genreLabel": "文藝片",
+      "roleLabel": "男配角",
+      "director": "陳詠秋",
+      "roleHint": "男配角：臨別移民前在貨櫃碼頭寫信",
+      "blurb": "臨別移民前在貨櫃碼頭寫信，你演遠房表弟，沉默遞上船票，一場無聲對手戲道盡離散滋味。",
+      "synopsis": "臨別移民前在貨櫃碼頭寫信，你演遠房表弟，沉默遞上船票，一場無聲對手戲道盡離散滋味。",
+      "eraTag": "era_1988_autumn_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 390,
+        "looks": 360,
+        "iq": 300,
+        "charm": 340
+      },
+      "pay": [
+        14400,
+        17600
+      ],
+      "payExact": 16000,
+      "breachFee": 8000,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 22,
+      "shootHint": "臨別移民前在貨櫃碼頭寫信。",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 33
+    },
+    {
+      "id": "gig_1988_film_05",
+      "year": 1988,
+      "season": "冬",
+      "type": "電影",
+      "title": "《黑冊雙面》男主角",
+      "loc": "film_cotton",
+      "workTitle": "黑冊雙面",
+      "genreLabel": "警匪片",
+      "roleLabel": "男主角",
+      "director": "林柏喬",
+      "roleHint": "男主角：廉政與黑幫帳冊爭奪",
+      "blurb": "男主角雙面身份周旋廉政與黑幫之間，冬夜貨倉對決搶帳冊；連場追逐與舉槍戲一氣呵成，壓力全壓在主角身上。",
+      "synopsis": "男主角雙面身份周旋廉政與黑幫之間，冬夜貨倉對決搶帳冊；連場追逐與舉槍戲一氣呵成，壓力全壓在主角身上。",
+      "eraTag": "era_1988_winter_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "high",
+      "boardNote": "院線檔主推",
+      "seasonWeight": 0.95,
+      "req": {
+        "acting": 820,
+        "stamina": 700,
+        "charm": 580,
+        "iq": 540
+      },
+      "pay": [
+        31500,
+        38500
+      ],
+      "payExact": 35000,
+      "breachFee": 21000,
+      "fame": [
+        50,
+        85
+      ],
+      "popularity": [
+        80,
+        110
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.65,
+      "tier": "高",
+      "stars": 5,
+      "applyDeadlineDays": 16,
+      "shootDaysHint": 29,
+      "shootHint": "廉政與黑幫帳冊爭奪。",
+      "roleScale": "film_lead_big",
+      "shootBand": [
+        28,
+        30
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 43,
+      "producer": "張國邦",
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受槍戰場面"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_film_06",
+      "year": 1988,
+      "season": "冬",
+      "type": "電影",
+      "title": "《盾牆壓境》男主角",
+      "loc": "film_lion",
+      "workTitle": "盾牆壓境",
+      "genreLabel": "警匪片",
+      "roleLabel": "男主角",
+      "director": "蔡偉傑",
+      "roleHint": "男主角：防暴隊長夾在上級命令與街頭真相之間",
+      "blurb": "男主角飾演防暴隊長，在盾牆推進的長鏡頭壓力下，一邊承受上級下達的清場死線，一邊面對街頭現場與命令不符的真相，最後要在人潮前作出抉擇。",
+      "synopsis": "男主角飾演防暴隊長，在盾牆推進的長鏡頭壓力下，一邊承受上級下達的清場死線，一邊面對街頭現場與命令不符的真相，最後要在人潮前作出抉擇。",
+      "eraTag": "era_1988_winter_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "high",
+      "boardNote": "院線檔主推",
+      "seasonWeight": 0.95,
+      "req": {
+        "acting": 900,
+        "stamina": 880,
+        "looks": 620,
+        "iq": 560
+      },
+      "pay": [
+        49500,
+        60500
+      ],
+      "payExact": 55000,
+      "breachFee": 33000,
+      "fame": [
+        50,
+        85
+      ],
+      "popularity": [
+        80,
+        110
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.65,
+      "tier": "高",
+      "stars": 5,
+      "applyDeadlineDays": 16,
+      "shootDaysHint": 29,
+      "shootHint": "防暴隊長夾在上級命令與街頭真相之間。",
+      "roleScale": "film_lead_big",
+      "shootBand": [
+        28,
+        30
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 43,
+      "producer": "林佩兒",
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受高強度動作場面"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_film_07",
+      "year": 1988,
+      "season": "冬",
+      "type": "電影",
+      "title": "《未寄的信》男主角",
+      "loc": "film_lion",
+      "workTitle": "未寄的信",
+      "genreLabel": "青春片",
+      "roleLabel": "男主角",
+      "director": "何兆麟",
+      "roleHint": "男主角：預科生一封未寄出的信貫穿冬日",
+      "blurb": "男主角演預科生，一封未寄出的信貫穿整個冬日；工廠區黃昏、天台收音機與離境潮交錯，青春在告別前最滄桑。",
+      "synopsis": "男主角演預科生，一封未寄出的信貫穿整個冬日；工廠區黃昏、天台收音機與離境潮交錯，青春在告別前最滄桑。",
+      "eraTag": "era_1988_winter_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "high",
+      "boardNote": "院線檔主推",
+      "seasonWeight": 0.95,
+      "req": {
+        "acting": 780,
+        "stamina": 650,
+        "charm": 620,
+        "looks": 560,
+        "iq": 480
+      },
+      "pay": [
+        34200,
+        41800
+      ],
+      "payExact": 38000,
+      "breachFee": 22800,
+      "fame": [
+        46,
+        79
+      ],
+      "popularity": [
+        75,
+        105
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.6,
+      "tier": "高",
+      "stars": 4,
+      "applyDeadlineDays": 16,
+      "shootDaysHint": 29,
+      "shootHint": "預科生一封未寄出的信貫穿冬日。",
+      "roleScale": "film_lead_big",
+      "shootBand": [
+        28,
+        30
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 43,
+      "producer": "周子豪"
+    },
+    {
+      "id": "gig_1988_rec_01",
+      "year": 1988,
+      "season": "春",
+      "type": "唱片通告",
+      "title": "《社區合唱聲》和音",
+      "loc": "rec_hk",
+      "workTitle": "社區合唱聲",
+      "genreLabel": "合唱",
+      "roleLabel": "和音",
+      "director": "江子安",
+      "roleHint": "和音・合唱",
+      "blurb": "和音在錄音室通宵對咪，主歌留給資深歌者，聲部要一板一眼對齊。",
+      "synopsis": "和音在錄音室通宵對咪，主歌留給資深歌者，聲部要一板一眼對齊。社區主題合唱卡式帶趕工，收工時天已微亮，耳邊仍縈繞住整齊和聲。",
+      "eraTag": "era_1988_spring_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "stage": 120,
+        "charm": 100
+      },
+      "pay": [
+        2700,
+        3300
+      ],
+      "payExact": 3000,
+      "breachFee": 1500,
+      "fame": [
+        5,
+        12
+      ],
+      "popularity": [
+        15,
+        29
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 7,
       "shootDaysHint": 12,
-      "shootHint": "在老式模擬錄音室面對大型麥克風，精準掌控呼吸聲與吐字。",
+      "shootHint": "按組製場記安排拍攝。",
       "roleScale": "rec_album",
       "shootBand": [
         10,
@@ -1494,97 +1865,114 @@
         4,
         5
       ],
-      "shootDeadlineDays": 19
+      "shootDeadlineDays": 19,
+      "producer": "吳美玲"
     },
     {
       "id": "gig_1988_rec_02",
       "year": 1988,
       "season": "夏",
       "type": "唱片通告",
-      "title": "藍若曦大碟情歌 MV 男主角",
+      "title": "《海風情歌》男主角",
       "loc": "rec_wanchai",
-      "roleHint": "飾演雨夜石板街上目送戀人離去的悲情窮小子",
-      "blurb": "當紅玉女歌手主打情歌MV！在石板街與霓虹燈下上演雨中分手悲劇！",
-      "discoverNote": "玉女歌手指名的情歌MV",
-      "boardPriority": "high",
-      "boardNote": "MV卡拉OK夏主推",
-      "seasonWeight": 1.0,
-      "synopsis": "當紅玉女歌手藍若曦主打抒情歌MV。故事講述一對青梅竹馬在名利場走散，阿偉飾演在雨夜石板街與霓虹燈下，目送藍若曦坐豪車離去的窮小子，只需眼神與對嘴，隨實體卡帶全港發售。",
-      "heroAngle": "阿偉眼神中那種看著心愛女孩遠去卻無能為力的草根自卑與深情，感染力極強。",
-      "diasporaHook": "經典的港式卡拉OK MV畫風，勾起全球華人在KTV點唱懷舊金曲的溫柔記憶。",
-      "eraTag": "era_1988_summer_karaoke",
+      "workTitle": "海風情歌",
+      "genreLabel": "音樂錄像",
+      "roleLabel": "男主角",
+      "director": "周明德",
+      "roleHint": "男主角・音樂錄像",
+      "blurb": "男主角在碼頭夜燈下對口型拍情歌主打音樂錄像，一鏡到底，海風吹起衣角。",
+      "synopsis": "男主角在碼頭夜燈下對口型拍情歌主打音樂錄像，一鏡到底，海風吹起衣角。導演要求眼神深情，拍足全晚，他要在鏡頭前把一段未圓的戀愛唱到入心。",
+      "eraTag": "era_1988_summer_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
       "req": {
-        "charm": 45,
-        "acting": 35,
-        "looks": 35
+        "stage": 130,
+        "looks": 150,
+        "charm": 165
       },
       "pay": [
-        4000,
-        7000
+        4950,
+        6050
       ],
+      "payExact": 5500,
+      "breachFee": 2800,
       "fame": [
-        15,
-        30
+        6,
+        14
       ],
       "popularity": [
-        35,
-        60
+        18,
+        33
       ],
       "stressDeltaHint": "低",
-      "hard": 0.4,
+      "hard": 0.34,
       "tier": "初",
+      "stars": 2,
+      "applyDeadlineDays": 7,
       "shootDaysHint": 2,
-      "shootHint": "在人工降雨與慢鏡頭下展現極具深情的眼神，配合歌詞對嘴演出。",
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
       "roleScale": "mtv",
       "shootBand": [
         2,
         3
       ],
       "shootWeekdays": [
-        6,
-        7
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
       ],
-      "shootDeadlineDays": 9
+      "shootDeadlineDays": 14
     },
     {
       "id": "gig_1988_rec_03",
       "year": 1988,
       "season": "秋",
       "type": "唱片通告",
-      "title": "首張個人 EP《獅子山下阿偉》錄製",
+      "title": "《首張個人大碟》主唱",
       "loc": "rec_star",
-      "roleHint": "錄製個人首張白金唱片大碟主唱",
-      "blurb": "改編爆款流行曲加原創慢歌，連續熬夜錄音衝擊白金唱片銷量！",
-      "discoverNote": "唱片公司個人開發合約",
+      "workTitle": "首張個人大碟",
+      "genreLabel": "粵語流行",
+      "roleLabel": "主唱",
+      "director": "江子安",
+      "roleHint": "主唱・粵語流行",
+      "blurb": "錄音室主唱位，快慢歌各半，首張個人大碟要唱出招牌聲線，監製逐句收貨，壓力全在咪前。",
+      "synopsis": "錄音室主唱位，快慢歌各半，首張個人大碟要唱出招牌聲線，監製逐句收貨，壓力全在咪前。",
+      "eraTag": "era_1988_autumn_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
       "boardPriority": "normal",
-      "boardNote": "個人EP錄音棚次級",
-      "seasonWeight": 0.6,
-      "synopsis": "唱片公司為阿偉量身打造的首張個人EP。包含兩首改編自大熱舞曲與一首本土原創抒情慢歌。主打歌講述底層青年死不服輸的拼勁，需在廣播道電台進行密集打榜宣傳。",
-      "heroAngle": "唱片主打歌歌詞完全就是阿偉草根人生的真實寫照，每一句歌聲都充斥著熱血與不甘。",
-      "diasporaHook": "不屈不撓的獅子山打拼精神，是全球華人圈最核心、最具感染力的精神共鳴。",
-      "eraTag": "era_1988_autumn_studio",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
       "req": {
-        "stage": 55,
-        "charm": 50,
-        "stamina": 40
+        "stage": 420,
+        "charm": 340,
+        "stamina": 290
       },
       "pay": [
-        10000,
-        20000
+        13500,
+        16500
       ],
+      "payExact": 15000,
+      "breachFee": 7500,
       "fame": [
-        35,
-        60
+        18,
+        31
       ],
       "popularity": [
-        50,
-        85
+        39,
+        62
       ],
       "stressDeltaHint": "中",
-      "hard": 0.55,
+      "hard": 0.43,
       "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 10,
       "shootDaysHint": 12,
-      "shootHint": "連續一整週在錄音室熬夜錄音，需保持嗓音狀態與高音穩定。",
+      "shootHint": "按組製場記安排拍攝。",
       "roleScale": "rec_album",
       "shootBand": [
         10,
@@ -1604,40 +1992,895 @@
       "year": 1988,
       "season": "冬",
       "type": "唱片通告",
-      "title": "紅磡體育館「龍年金曲巨星演唱會」嘉賓",
+      "title": "《賀歲壓軸兩首》嘉賓",
       "loc": "rec_star",
-      "roleHint": "作為年度新人登台獨唱並配合快歌熱舞",
-      "blurb": "聖殿紅館四面台！面對三萬觀眾獨唱大熱單曲，勁歌熱舞掌控全場！",
-      "discoverNote": "電台與唱片聯合推薦登台",
-      "boardPriority": "normal",
-      "boardNote": "紅館嘉賓唱片次級",
-      "seasonWeight": 0.6,
-      "synopsis": "集結全港頂尖歌手的年末紅磡體育館大型盛事。阿偉作為年度最佳新人代表登上紅館四面台，在萬人現場樂隊伴奏下獨唱個人大熱單曲，並配合高難度舞步炸翻全場。",
-      "heroAngle": "阿偉從街頭一步步踩上音樂最高聖殿紅館，這一刻的耀眼象徵著草根逆襲的巔峰。",
-      "diasporaHook": "紅館四面台代表著東亞流行音樂最高殿堂，是無數華人心中巨星誕生的聖地。",
-      "eraTag": "era_1988_winter_record",
+      "workTitle": "賀歲壓軸兩首",
+      "genreLabel": "粵語流行",
+      "roleLabel": "嘉賓",
+      "director": "江子安",
+      "roleHint": "嘉賓：賀歲演唱會嘉賓位兩首歌＋尾場合唱",
+      "blurb": "賀歲演唱會嘉賓位兩首歌加尾場合唱，巨蛋級綵排，出場要壓得住全場，走位與燈光半秒都不能差。",
+      "synopsis": "賀歲演唱會嘉賓位兩首歌加尾場合唱，巨蛋級綵排，出場要壓得住全場，走位與燈光半秒都不能差。",
+      "eraTag": "era_1988_winter_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "high",
+      "boardNote": "賀歲主打主推",
+      "seasonWeight": 0.95,
       "req": {
-        "stage": 70,
-        "charm": 65,
-        "stamina": 50
+        "stage": 860,
+        "charm": 740,
+        "stamina": 620
       },
       "pay": [
-        20000,
-        35000
+        24750,
+        30250
       ],
+      "payExact": 27500,
+      "breachFee": 16500,
       "fame": [
-        60,
-        95
+        50,
+        85
       ],
       "popularity": [
-        75,
-        100
+        80,
+        110
       ],
       "stressDeltaHint": "高",
       "hard": 0.65,
       "tier": "高",
+      "stars": 5,
+      "applyDeadlineDays": 14,
       "shootDaysHint": 12,
-      "shootHint": "在紅館四面台面對三萬名狂熱觀眾現場演唱，克服極度緊張並卡準走位。",
+      "shootHint": "賀歲演唱會嘉賓位兩首歌＋尾場合唱。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19,
+      "producer": "何嘉欣",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受高壓檔期安排"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_photo_01",
+      "year": 1988,
+      "season": "夏",
+      "type": "廣告",
+      "title": "《夏日寫真．單車汽水》模特兒",
+      "loc": "ad_adm",
+      "workTitle": "夏日寫真．單車汽水",
+      "genreLabel": "個人寫真",
+      "roleLabel": "模特兒",
+      "director": "施雅雯",
+      "roleHint": "模特兒・個人寫真",
+      "blurb": "夏日巷拍寫真集，以膠片機、單車、汽水箱作道具。",
+      "synopsis": "夏日巷拍寫真集，以膠片機、單車、汽水箱作道具。模特兒在自然光下抓拍輕鬆一面，笑容與動態均要夠生活感。",
+      "eraTag": "era_1988_summer_ad",
+      "discoverNote": "廣告公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "短單次級曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "looks": 140,
+        "charm": 110,
+        "stamina": 85
+      },
+      "pay": [
+        6300,
+        7700
+      ],
+      "payExact": 7000,
+      "breachFee": 3500,
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        18,
+        33
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.34,
+      "tier": "初",
+      "stars": 2,
+      "applyDeadlineDays": 5,
+      "shootDaysHint": 6,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "photobook",
+      "shootBand": [
+        5,
+        7
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 14
+    },
+    {
+      "id": "gig_1988_mtv_02",
+      "year": 1988,
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "《射燈群舞三段》男主角",
+      "loc": "rec_wanchai",
+      "workTitle": "射燈群舞三段",
+      "genreLabel": "音樂錄像",
+      "roleLabel": "男主角",
+      "director": "葉紹基",
+      "roleHint": "男主角・音樂錄像",
+      "blurb": "天台射燈下拍快歌音樂錄像，男主角領舞三段，群舞走位要跟拍子齊上齊落，排到燈光師都點頭。",
+      "synopsis": "天台射燈下拍快歌音樂錄像，男主角領舞三段，群舞走位要跟拍子齊上齊落，排到燈光師都點頭。",
+      "eraTag": "era_1988_autumn_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "stage": 140,
+        "stamina": 155,
+        "charm": 120,
+        "looks": 110
+      },
+      "pay": [
+        4300,
+        5200
+      ],
+      "payExact": 4750,
+      "breachFee": 2400,
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        18,
+        33
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.34,
+      "tier": "初",
+      "stars": 2,
+      "applyDeadlineDays": 7,
+      "shootDaysHint": 2,
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
+      "roleScale": "mtv",
+      "shootBand": [
+        2,
+        3
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 14
+    },
+    {
+      "id": "gig_1988_photo_02",
+      "year": 1988,
+      "season": "冬",
+      "type": "廣告",
+      "title": "《大衣冷雨封面》模特兒",
+      "loc": "ad_central",
+      "workTitle": "大衣冷雨封面",
+      "genreLabel": "雜誌封面",
+      "roleLabel": "模特兒",
+      "director": "施雅雯",
+      "roleHint": "模特兒・雜誌封面",
+      "blurb": "冬裝雜誌封面拍攝，模特兒穿長大衣站在街燈下，攝影師以雨後冷調淺景深連拍兩套造型，要求眼神帶三分冷傲。",
+      "synopsis": "冬裝雜誌封面拍攝，模特兒穿長大衣站在街燈下，攝影師以雨後冷調淺景深連拍兩套造型，要求眼神帶三分冷傲。",
+      "eraTag": "era_1988_winter_ad",
+      "discoverNote": "中環經紀行通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7999999999999999,
+      "req": {
+        "looks": 380,
+        "charm": 300,
+        "stamina": 160
+      },
+      "pay": [
+        7650,
+        9350
+      ],
+      "payExact": 8500,
+      "breachFee": 4200,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 8,
+      "shootDaysHint": 6,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "photobook",
+      "shootBand": [
+        5,
+        7
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 14,
+      "producer": "蔡志傑"
+    },
+    {
+      "id": "gig_1988_fill_harbour_spring",
+      "year": 1988,
+      "season": "春",
+      "type": "電視劇",
+      "title": "《街頭證人》客串",
+      "loc": "tvb_harbour",
+      "workTitle": "街頭證人",
+      "genreLabel": "單元劇",
+      "roleLabel": "客串",
+      "director": "司徒朗",
+      "roleHint": "客串・單元劇",
+      "blurb": "客串途人，在單元劇中目擊車禍後挺身指證；兩場日戲站路邊向探員落口供，短短幾句對白成為破案關鍵。",
+      "synopsis": "客串途人，在單元劇中目擊車禍後挺身指證；兩場日戲站路邊向探員落口供，短短幾句對白成為破案關鍵。",
+      "eraTag": "era_1988_spring_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "acting": 95,
+        "stamina": 110,
+        "iq": 75
+      },
+      "pay": [
+        1550,
+        1850
+      ],
+      "payExact": 1700,
+      "breachFee": 800,
+      "fame": [
+        5,
+        12
+      ],
+      "popularity": [
+        15,
+        29
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 9,
+      "shootDaysHint": 9,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 15
+    },
+    {
+      "id": "gig_1988_fill_harbour_autumn",
+      "year": 1988,
+      "season": "秋",
+      "type": "綜藝",
+      "title": "《夜半傾心話舊歌》嘉賓",
+      "loc": "tvb_harbour",
+      "workTitle": "夜半傾心話舊歌",
+      "genreLabel": "訪談節目",
+      "roleLabel": "嘉賓",
+      "director": "司徒朗",
+      "roleHint": "嘉賓：深夜訪談沙發",
+      "blurb": "深夜訪談沙發環節，嘉賓細談入行趣事與一首舊歌的來歷，三段錄影一氣呵成，主持遞茶時鏡頭慢慢推近。",
+      "synopsis": "深夜訪談沙發環節，嘉賓細談入行趣事與一首舊歌的來歷，三段錄影一氣呵成，主持遞茶時鏡頭慢慢推近。",
+      "eraTag": "era_1988_autumn_variety",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "charm": 320,
+        "looks": 230,
+        "iq": 250
+      },
+      "pay": [
+        2000,
+        2400
+      ],
+      "payExact": 2200,
+      "breachFee": 1100,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 8,
+      "shootDaysHint": 3,
+      "shootHint": "深夜訪談沙發。",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 14
+    },
+    {
+      "id": "gig_1988_tv_kowloon_autumn",
+      "year": 1988,
+      "season": "秋",
+      "type": "電視劇",
+      "title": "《街坊生意經》男配角",
+      "loc": "tvb_kowloon",
+      "workTitle": "街坊生意經",
+      "genreLabel": "處境喜劇",
+      "roleLabel": "男配角",
+      "director": "莫啟棠",
+      "roleHint": "男配角・處境喜劇",
+      "blurb": "男配角演慳錢表哥，在小食檔幫手，每集為慳一毫子搞出連串笑話，計數計到街坊啼笑皆非。",
+      "synopsis": "男配角演慳錢表哥，在小食檔幫手，每集為慳一毫子搞出連串笑話，計數計到街坊啼笑皆非。收工後與街坊圍坐食糖水，一班屋企人式的吵吵鬧鬧，正是處境喜劇的日常。",
+      "eraTag": "era_1988_autumn_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 270,
+        "looks": 210,
+        "stamina": 220,
+        "charm": 250
+      },
+      "pay": [
+        2700,
+        3300
+      ],
+      "payExact": 3000,
+      "breachFee": 1500,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 15,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 23,
+      "producer": "馮詠珊"
+    },
+    {
+      "id": "gig_1988_tv_kowloon_winter",
+      "year": 1988,
+      "season": "冬",
+      "type": "綜藝",
+      "title": "《搶答冷知識》嘉賓",
+      "loc": "tvb_kowloon",
+      "workTitle": "搶答冷知識",
+      "genreLabel": "遊戲節目",
+      "roleLabel": "嘉賓",
+      "director": "莫啟棠",
+      "roleHint": "嘉賓・遊戲節目",
+      "blurb": "益智搶答加懲罰遊戲，嘉賓按鈴答港產冷知識，答錯即場接受小懲罰，主持一邊計分一邊搞氣氛。",
+      "synopsis": "益智搶答加懲罰遊戲，嘉賓按鈴答港產冷知識，答錯即場接受小懲罰，主持一邊計分一邊搞氣氛。",
+      "eraTag": "era_1988_winter_variety",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "charm": 120,
+        "iq": 130,
+        "stamina": 95
+      },
+      "pay": [
+        2150,
+        2650
+      ],
+      "payExact": 2400,
+      "breachFee": 1200,
+      "fame": [
+        5,
+        12
+      ],
+      "popularity": [
+        15,
+        29
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 5,
+      "shootDaysHint": 3,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 14
+    },
+    {
+      "id": "gig_1988_film_lion_autumn",
+      "year": 1988,
+      "season": "秋",
+      "type": "電影",
+      "title": "《武館踢館風波》客串",
+      "loc": "film_lion",
+      "workTitle": "武館踢館風波",
+      "genreLabel": "江湖動作片",
+      "roleLabel": "客串",
+      "director": "梁兆山",
+      "roleHint": "客串：武館門口客串踢館圍觀者",
+      "blurb": "武館門口有人上門踢館，你客串圍觀者，一場對峙無對白近景，靠眼神與站位撐住氣氛。",
+      "synopsis": "武館門口有人上門踢館，你客串圍觀者，一場對峙無對白近景，靠眼神與站位撐住氣氛。",
+      "eraTag": "era_1988_autumn_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "acting": 100,
+        "stamina": 130,
+        "iq": 75
+      },
+      "pay": [
+        3400,
+        4200
+      ],
+      "payExact": 3800,
+      "breachFee": 1900,
+      "fame": [
+        5,
+        12
+      ],
+      "popularity": [
+        15,
+        29
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 9,
+      "shootDaysHint": 13,
+      "shootHint": "武館門口客串踢館圍觀者。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 21
+    },
+    {
+      "id": "gig_1988_film_cotton_spring",
+      "year": 1988,
+      "season": "春",
+      "type": "電影",
+      "title": "《棉廠情書》客串",
+      "loc": "film_cotton",
+      "workTitle": "棉廠情書",
+      "genreLabel": "文藝片",
+      "roleLabel": "客串",
+      "director": "沈若蘭",
+      "roleHint": "客串：棉廠宿舍窗前文藝短場",
+      "blurb": "棉廠宿舍窗前一段文藝短場，你客串送信青年，隔著窗框遞出信件，講完唯一一場對白便退場。",
+      "synopsis": "棉廠宿舍窗前一段文藝短場，你客串送信青年，隔著窗框遞出信件，講完唯一一場對白便退場。",
+      "eraTag": "era_1988_spring_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "acting": 110,
+        "looks": 95,
+        "iq": 85
+      },
+      "pay": [
+        3200,
+        3900
+      ],
+      "payExact": 3550,
+      "breachFee": 1800,
+      "fame": [
+        5,
+        12
+      ],
+      "popularity": [
+        15,
+        29
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 9,
+      "shootDaysHint": 13,
+      "shootHint": "棉廠宿舍窗前文藝短場。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 21,
+      "producer": "溫文傑"
+    },
+    {
+      "id": "gig_1988_film_cotton_autumn",
+      "year": 1988,
+      "season": "秋",
+      "type": "電影",
+      "title": "《假金倉庫大追緝》男配角",
+      "loc": "film_cotton",
+      "workTitle": "假金倉庫大追緝",
+      "genreLabel": "警匪片",
+      "roleLabel": "男配角",
+      "director": "沈若蘭",
+      "roleHint": "男配角：秋日追緝假金飾集團",
+      "blurb": "秋日追緝假金飾集團，你演師弟卧底，倉庫火併半場由你開火，身份隨時穿幫壓力逼人。",
+      "synopsis": "秋日追緝假金飾集團，你演師弟卧底，倉庫火併半場由你開火，身份隨時穿幫壓力逼人。",
+      "eraTag": "era_1988_autumn_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 330,
+        "stamina": 270,
+        "iq": 240,
+        "charm": 210
+      },
+      "pay": [
+        5400,
+        6600
+      ],
+      "payExact": 6000,
+      "breachFee": 3000,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 22,
+      "shootHint": "秋日追緝假金飾集團。",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 33
+    },
+    {
+      "id": "gig_1988_film_harbour_spring",
+      "year": 1988,
+      "season": "春",
+      "type": "電影",
+      "title": "《貨櫃場風雲錄》客串",
+      "loc": "film_harbour",
+      "workTitle": "貨櫃場風雲錄",
+      "genreLabel": "文藝片",
+      "roleLabel": "客串",
+      "director": "歐陽信",
+      "roleHint": "客串：貨櫃場文藝群像",
+      "blurb": "貨櫃場文藝群像日戲，你客串報關職員，站在閘口高聲喊出箱號，為整場調度帶出生活質感。",
+      "synopsis": "貨櫃場文藝群像日戲，你客串報關職員，站在閘口高聲喊出箱號，為整場調度帶出生活質感。",
+      "eraTag": "era_1988_spring_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "acting": 100,
+        "stamina": 95,
+        "iq": 80
+      },
+      "pay": [
+        2950,
+        3650
+      ],
+      "payExact": 3300,
+      "breachFee": 1600,
+      "fame": [
+        5,
+        12
+      ],
+      "popularity": [
+        15,
+        29
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 9,
+      "shootDaysHint": 13,
+      "shootHint": "貨櫃場文藝群像。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 21
+    },
+    {
+      "id": "gig_1988_film_harbour_summer",
+      "year": 1988,
+      "season": "夏",
+      "type": "電影",
+      "title": "《海關緝毒大行動》男配角",
+      "loc": "film_harbour",
+      "workTitle": "海關緝毒大行動",
+      "genreLabel": "警匪片",
+      "roleLabel": "男配角",
+      "director": "歐陽信",
+      "roleHint": "男配角：海關緝毒夏日篇",
+      "blurb": "海關緝毒夏日篇，你演關員被脅持，碼頭槍戰一場由你引發突圍，緊張感直逼鏡頭。",
+      "synopsis": "海關緝毒夏日篇，你演關員被脅持，碼頭槍戰一場由你引發突圍，緊張感直逼鏡頭。",
+      "eraTag": "era_1988_summer_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 300,
+        "stamina": 290,
+        "iq": 230
+      },
+      "pay": [
+        5050,
+        6150
+      ],
+      "payExact": 5600,
+      "breachFee": 2800,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 22,
+      "shootHint": "海關緝毒夏日篇。",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 33,
+      "producer": "鍾美華"
+    },
+    {
+      "id": "gig_1988_film_harbour_winter",
+      "year": 1988,
+      "season": "冬",
+      "type": "電影",
+      "title": "《傘下離人》客串",
+      "loc": "film_harbour",
+      "workTitle": "傘下離人",
+      "genreLabel": "愛情文藝片",
+      "roleLabel": "客串",
+      "director": "歐陽信",
+      "roleHint": "客串：棧橋分手一場",
+      "blurb": "客串撐傘路人，在棧橋分手戲入鏡兩秒便走遠；雨霧遠景中只留一道背影，替這段離別添一筆路人見證。",
+      "synopsis": "客串撐傘路人，在棧橋分手戲入鏡兩秒便走遠；雨霧遠景中只留一道背影，替這段離別添一筆路人見證。",
+      "eraTag": "era_1988_winter_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 105,
+        "looks": 100,
+        "charm": 90,
+        "stamina": 75,
+        "iq": 75
+      },
+      "pay": [
+        3250,
+        3950
+      ],
+      "payExact": 3600,
+      "breachFee": 1800,
+      "fame": [
+        5,
+        12
+      ],
+      "popularity": [
+        15,
+        29
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 9,
+      "shootDaysHint": 13,
+      "shootHint": "棧橋分手一場。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 21
+    },
+    {
+      "id": "gig_1988_rec_hk_summer",
+      "year": 1988,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "《熱浪節拍三軌》和音",
+      "loc": "rec_hk",
+      "workTitle": "熱浪節拍三軌",
+      "genreLabel": "快歌",
+      "roleLabel": "和音",
+      "director": "鄺志輝",
+      "roleHint": "和音・快歌",
+      "blurb": "錄音室悶熱如蒸籠，和音要貼密鼓點卡位，第二、三軌疊聲通宵補錄，唱到聲帶發燙仍要笑著收貨。",
+      "synopsis": "錄音室悶熱如蒸籠，和音要貼密鼓點卡位，第二、三軌疊聲通宵補錄，唱到聲帶發燙仍要笑著收貨。",
+      "eraTag": "era_1988_summer_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "stage": 125,
+        "stamina": 135,
+        "charm": 100
+      },
+      "pay": [
+        2800,
+        3400
+      ],
+      "payExact": 3100,
+      "breachFee": 1600,
+      "fame": [
+        5,
+        12
+      ],
+      "popularity": [
+        15,
+        29
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 7,
+      "shootDaysHint": 12,
+      "shootHint": "按組製場記安排拍攝。",
       "roleScale": "rec_album",
       "shootBand": [
         10,
@@ -1653,145 +2896,475 @@
       "shootDeadlineDays": 19
     },
     {
-      "id": "gig_1988_photo_01",
-      "year": 1988,
-      "season": "夏",
-      "type": "廣告",
-      "title": "「星河映像」初夏寫真集《巷口少年》",
-      "loc": "ad_adm",
-      "roleHint": "擔任寫真集封面與內頁主角，演繹深水埗巷口的夏日少年",
-      "blurb": "新興寫真工作室徵求有故事感的面孔！街坊巷口、天台晾衫與黃昏電車，拍成一本可放書店櫥窗的寫真集。",
-      "synopsis": "虛構影像品牌「星河映像」推出青年寫真線。阿偉需在深水埗街市後巷、唐樓天台與電車站連拍數日，以自然光與簡單便服呈現「巷口長大」的真實感，寫真集隨秋季書展上架。",
-      "heroAngle": "阿偉身上未修飾的街坊氣質，正是寫真集想留住的八十年代末香港少年臉孔。",
-      "diasporaHook": "巷口、天台與電車是海外華人共同的城市記憶，寫真畫面易引起鄉愁。",
-      "eraTag": "era_1988_summer_mall",
-      "discoverNote": "影像工作室公開海選",
-      "boardPriority": "normal",
-      "boardNote": "寫真集書店線曝光",
-      "seasonWeight": 0.8,
-      "req": {
-        "looks": 30,
-        "charm": 25,
-        "stamina": 20
-      },
-      "pay": [
-        5000,
-        9000
-      ],
-      "fame": [
-        8,
-        18
-      ],
-      "popularity": [
-        25,
-        45
-      ],
-      "stressDeltaHint": "低",
-      "hard": 0.35,
-      "tier": "初",
-      "shootDaysHint": 6,
-      "shootHint": "連日戶外自然光拍攝，注意日曬與連續換景的體力。",
-      "roleScale": "photobook",
-      "shootBand": [
-        5,
-        7
-      ],
-      "shootWeekdays": [
-        5,
-        6,
-        7
-      ],
-      "shootDeadlineDays": 16
-    },
-    {
-      "id": "gig_1988_mtv_02",
+      "id": "gig_1988_rec_hk_autumn",
       "year": 1988,
       "season": "秋",
       "type": "唱片通告",
-      "title": "樂隊「夜航燈」主打快歌 MTV 男主角",
-      "loc": "rec_wanchai",
-      "roleHint": "飾演夜遊中環天橋、被節奏推著往前跑的都市青年",
-      "blurb": "新晉樂隊快歌卡帶主打！需要能在霓虹與天橋上跟得上剪接節奏的面孔！",
-      "synopsis": "虛構樂隊「夜航燈」首支快歌 MTV。阿偉在中環行人天橋、碼頭倉庫與夜巴上層連拍趕路、對嘴與簡單群舞，畫面跟卡拉 OK 字幕一併發行。",
-      "heroAngle": "阿偉替身出身的爆發力與鏡頭前的生猛，剛好撐起快歌 MTV 的街頭速度感。",
-      "diasporaHook": "卡帶 MTV 與卡拉 OK 字幕是八十年代末全球華語流行樂的共同載體。",
-      "eraTag": "era_1988_autumn_board",
-      "discoverNote": "唱片公司試鏡欄的快歌男主",
+      "title": "《雨聲副歌採樣》主唱",
+      "loc": "rec_hk",
+      "workTitle": "雨聲副歌採樣",
+      "genreLabel": "粵語流行",
+      "roleLabel": "主唱",
+      "director": "鄺志輝",
+      "roleHint": "主唱：秋季主打粵語流行",
+      "blurb": "秋季主打粵語流行，主唱重錄副歌，城市雨聲採樣襯底，唱出街頭濕冷質感，尾音要收得乾淨。",
+      "synopsis": "秋季主打粵語流行，主唱重錄副歌，城市雨聲採樣襯底，唱出街頭濕冷質感，尾音要收得乾淨。",
+      "eraTag": "era_1988_autumn_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
       "boardPriority": "normal",
-      "boardNote": "秋檔卡帶 MTV",
+      "boardNote": "中檔曝光",
       "seasonWeight": 0.7,
       "req": {
-        "stamina": 35,
-        "charm": 30,
-        "looks": 25
+        "stage": 360,
+        "charm": 280,
+        "looks": 230
       },
       "pay": [
         3500,
-        6000
+        4300
       ],
+      "payExact": 3900,
+      "breachFee": 2000,
       "fame": [
-        10,
-        22
+        18,
+        31
       ],
       "popularity": [
-        30,
-        50
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 10,
+      "shootDaysHint": 13,
+      "shootHint": "秋季主打粵語流行。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        12,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 21,
+      "producer": "李慧敏"
+    },
+    {
+      "id": "gig_1988_rec_hk_winter",
+      "year": 1988,
+      "season": "冬",
+      "type": "唱片通告",
+      "title": "《圍爐三聲部》和音",
+      "loc": "rec_hk",
+      "workTitle": "圍爐三聲部",
+      "genreLabel": "合唱",
+      "roleLabel": "和音",
+      "director": "鄺志輝",
+      "roleHint": "和音・合唱",
+      "blurb": "冬日合唱溫情帶，和音三聲部對位，錄音室暖氣不足，笑場後重來，和聲要齊到分毫不差。",
+      "synopsis": "冬日合唱溫情帶，和音三聲部對位，錄音室暖氣不足，笑場後重來，和聲要齊到分毫不差。",
+      "eraTag": "era_1988_winter_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "stage": 110,
+        "charm": 120
+      },
+      "pay": [
+        3150,
+        3850
+      ],
+      "payExact": 3500,
+      "breachFee": 1800,
+      "fame": [
+        5,
+        12
+      ],
+      "popularity": [
+        15,
+        29
       ],
       "stressDeltaHint": "低",
-      "hard": 0.4,
+      "hard": 0.28,
       "tier": "初",
-      "shootDaysHint": 3,
-      "shootHint": "夜景對嘴與來回奔跑鏡頭多，注意補水與腳下安全。",
+      "stars": 1,
+      "applyDeadlineDays": 7,
+      "shootDaysHint": 12,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1988_mtv_wanchai_spring",
+      "year": 1988,
+      "season": "春",
+      "type": "唱片通告",
+      "title": "《春雨電車廂》群戲",
+      "loc": "rec_wanchai",
+      "workTitle": "春雨電車廂",
+      "genreLabel": "音樂錄像",
+      "roleLabel": "群戲",
+      "director": "潘曉彤",
+      "roleHint": "群戲・音樂錄像",
+      "blurb": "群戲在電車廂內外對口型群舞，窗外春雨綿綿，車聲雨聲襯住整齊動作。",
+      "synopsis": "群戲在電車廂內外對口型群舞，窗外春雨綿綿，車聲雨聲襯住整齊動作。分兩段拍攝，導演要求笑容自然、拍子齊整，一班臨記在鏡頭前後都要保持住那份春日輕快。",
+      "eraTag": "era_1988_spring_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "stage": 105,
+        "looks": 115,
+        "charm": 120,
+        "stamina": 95
+      },
+      "pay": [
+        1950,
+        2350
+      ],
+      "payExact": 2150,
+      "breachFee": 1100,
+      "fame": [
+        5,
+        12
+      ],
+      "popularity": [
+        15,
+        29
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 7,
+      "shootDaysHint": 2,
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
       "roleScale": "mtv",
       "shootBand": [
         2,
         3
       ],
       "shootWeekdays": [
-        6,
-        7
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
       ],
-      "shootDeadlineDays": 13
+      "shootDeadlineDays": 14
     },
     {
-      "id": "gig_1988_film_07",
+      "id": "gig_1988_mtv_wanchai_winter",
       "year": 1988,
       "season": "冬",
-      "type": "電影",
-      "title": "《獅子山下的信》歸僑少年阿信",
-      "loc": "film_lion",
-      "roleHint": "飾演從南洋回流、在船廠學師並尋找失散家人的歸僑少年阿信",
-      "blurb": "賀歲檔文藝大製作！跨過船廠、碼頭與唐樓的長線主角，檔期要鎖死整個冬檔。",
-      "synopsis": "獅子山影業賀歲文藝片。阿偉擔正男主角「阿信」，講述八十年代末歸僑少年回流香港、在船廠學師並尋找失散家人的故事。全片實景多、對手戲重，是一張真正要排滿月餘的大檔。",
-      "heroAngle": "阿偉草根出身的倔強與鄉土感，與歸僑少年在都市重新站穩的主題貼合。",
-      "diasporaHook": "回流、船廠與尋親是東南亞與北美華人家庭常見的親身故事。",
-      "eraTag": "era_1988_winter_recruit",
-      "discoverNote": "賀歲檔男主試鏡入圍",
-      "boardPriority": "high",
-      "boardNote": "冬檔賀歲文藝主推",
-      "seasonWeight": 1.0,
+      "type": "唱片通告",
+      "title": "《霓虹過客特寫》客串",
+      "loc": "rec_wanchai",
+      "workTitle": "霓虹過客特寫",
+      "genreLabel": "音樂錄像",
+      "roleLabel": "客串",
+      "director": "潘曉彤",
+      "roleHint": "客串・音樂錄像",
+      "blurb": "夜景音樂錄像客串路人，推門入酒吧一個眼神特寫，鏡頭雖短，要在霓虹光裡留下印象。",
+      "synopsis": "夜景音樂錄像客串路人，推門入酒吧一個眼神特寫，鏡頭雖短，要在霓虹光裡留下印象。",
+      "eraTag": "era_1988_winter_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.7,
       "req": {
-        "acting": 75,
-        "stamina": 70,
-        "charm": 60
+        "stage": 95,
+        "looks": 105,
+        "charm": 110
       },
       "pay": [
-        28000,
-        48000
+        2050,
+        2550
       ],
+      "payExact": 2300,
+      "breachFee": 1200,
       "fame": [
-        65,
-        95
+        5,
+        12
       ],
       "popularity": [
-        75,
+        15,
+        29
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 7,
+      "shootDaysHint": 2,
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
+      "roleScale": "mtv",
+      "shootBand": [
+        2,
+        3
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 14
+    },
+    {
+      "id": "gig_1988_rec_star_spring",
+      "year": 1988,
+      "season": "春",
+      "type": "唱片通告",
+      "title": "《春日合唱企劃》和音",
+      "loc": "rec_star",
+      "workTitle": "春日合唱企劃",
+      "genreLabel": "合唱",
+      "roleLabel": "和音",
+      "director": "江子安",
+      "roleHint": "和音・合唱",
+      "blurb": "和音在春日合唱企劃中領唱一句橋段，錄音室內與其他聲部逐句對位，製作人要求感情到位。",
+      "synopsis": "和音在春日合唱企劃中領唱一句橋段，錄音室內與其他聲部逐句對位，製作人要求感情到位。收咪後一齊食宵夜，笑談剛才邊個走音，合唱工房的人情味就在其中。",
+      "eraTag": "era_1988_spring_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "stage": 340,
+        "charm": 260
+      },
+      "pay": [
+        3700,
+        4500
+      ],
+      "payExact": 4100,
+      "breachFee": 2000,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 10,
+      "shootDaysHint": 13,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        12,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 21
+    },
+    {
+      "id": "gig_1988_rec_star_summer",
+      "year": 1988,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "《夏日情書兩版》主唱",
+      "loc": "rec_star",
+      "workTitle": "夏日情書兩版",
+      "genreLabel": "情歌",
+      "roleLabel": "主唱",
+      "director": "江子安",
+      "roleHint": "主唱・情歌",
+      "blurb": "鋼琴版與樂隊版各錄一次，主唱在咪前拿捏溫柔力度，副歌收放要留白；泳池邊概念短片另日再約。",
+      "synopsis": "鋼琴版與樂隊版各錄一次，主唱在咪前拿捏溫柔力度，副歌收放要留白；泳池邊概念短片另日再約。",
+      "eraTag": "era_1988_summer_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "入門通告曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "stage": 145,
+        "looks": 135,
+        "charm": 120
+      },
+      "pay": [
+        3350,
+        4050
+      ],
+      "payExact": 3700,
+      "breachFee": 1800,
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        18,
+        33
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.34,
+      "tier": "初",
+      "stars": 2,
+      "applyDeadlineDays": 7,
+      "shootDaysHint": 12,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1988_ad_adm_winter_high",
+      "year": 1988,
+      "season": "冬",
+      "type": "廣告",
+      "title": "《金錶冬日代言》模特兒",
+      "loc": "ad_adm",
+      "workTitle": "金錶冬日代言",
+      "genreLabel": "產品代言",
+      "roleLabel": "模特兒",
+      "director": "高詠心",
+      "roleHint": "模特兒・產品代言",
+      "blurb": "先拍黑白硬照再錄電視短版，男模腕錶特寫貫穿全場，導演要求每個眼神都似一句廣告金句，長鏡頭壓力一路遞增。",
+      "synopsis": "先拍黑白硬照再錄電視短版，男模腕錶特寫貫穿全場，導演要求每個眼神都似一句廣告金句，長鏡頭壓力一路遞增。",
+      "eraTag": "era_1988_winter_ad",
+      "discoverNote": "廣告公司通告欄的公開選角",
+      "boardPriority": "high",
+      "boardNote": "高階檔期主推",
+      "seasonWeight": 0.95,
+      "req": {
+        "looks": 880,
+        "charm": 740,
+        "acting": 560
+      },
+      "pay": [
+        28800,
+        35200
+      ],
+      "payExact": 32000,
+      "breachFee": 19200,
+      "fame": [
+        50,
+        85
+      ],
+      "popularity": [
+        80,
         110
       ],
       "stressDeltaHint": "高",
-      "hard": 0.7,
+      "hard": 0.65,
       "tier": "高",
+      "stars": 5,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 3,
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
+      "roleScale": "ad_print",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 14,
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受長時間硬照拍攝"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_film_harbour_high",
+      "year": 1988,
+      "season": "秋",
+      "type": "電影",
+      "title": "《碼頭雙雄》男主角",
+      "loc": "film_harbour",
+      "workTitle": "碼頭雙雄",
+      "genreLabel": "警匪片",
+      "roleLabel": "男主角",
+      "director": "歐陽信",
+      "roleHint": "男主角：碼頭貨櫃夜槍戰",
+      "blurb": "男主角遊走黑白兩道，貨櫃場夜槍戰打到火花四濺；尾聲與兄弟決裂，慢鏡頭下轉身離去，一個背影收住全片殺氣。",
+      "synopsis": "男主角遊走黑白兩道，貨櫃場夜槍戰打到火花四濺；尾聲與兄弟決裂，慢鏡頭下轉身離去，一個背影收住全片殺氣。",
+      "eraTag": "era_1988_autumn_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "high",
+      "boardNote": "院線檔主推",
+      "seasonWeight": 0.85,
+      "req": {
+        "acting": 860,
+        "stamina": 740,
+        "charm": 620,
+        "iq": 560
+      },
+      "pay": [
+        43200,
+        52800
+      ],
+      "payExact": 48000,
+      "breachFee": 28800,
+      "fame": [
+        50,
+        85
+      ],
+      "popularity": [
+        80,
+        110
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.65,
+      "tier": "高",
+      "stars": 5,
+      "applyDeadlineDays": 16,
       "shootDaysHint": 29,
-      "shootHint": "長線主角檔，實景與對手戲密集，需預留整段冬檔拍攝日。",
+      "shootHint": "碼頭貨櫃夜槍戰。",
       "roleScale": "film_lead_big",
       "shootBand": [
         28,
@@ -1802,50 +3375,260 @@
         2,
         3,
         4,
-        5,
-        6
+        5
       ],
-      "shootDeadlineDays": 36
+      "shootDeadlineDays": 43,
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受槍戰場面"
+        ]
+      }
     },
     {
-      "id": "gig_1988_tv_08",
+      "id": "gig_1988_rec_hk_winter_high",
       "year": 1988,
-      "season": "秋",
-      "type": "電視劇",
-      "title": "《渡輪彼岸》渡輪水手阿海",
-      "loc": "tvb_longmen",
-      "roleHint": "飾演維港渡輪水手阿海，串起兩岸家庭與城市變遷的主線男主角",
-      "blurb": "星河長篇處境正劇！男主貫穿整季，碼頭、渡輪與公屋走廊都要拍。",
-      "synopsis": "星河電視台秋季長篇。阿偉飾演維港渡輪水手「阿海」，以每日渡海為軸，串起兩岸家庭矛盾、工廠結業與年輕人抉留港或遠行的故事，是一張要長期駐廠的長劇男主通告。",
-      "heroAngle": "阿偉熟悉基層作息與碼頭氣味，演水手不必硬撐精英腔，反而更真。",
-      "diasporaHook": "渡輪與離合是海外華人回港探親時最常想起的城市節奏。",
-      "eraTag": "era_1988_autumn_board",
-      "discoverNote": "長劇男主內部試鏡",
+      "season": "冬",
+      "type": "唱片通告",
+      "title": "《賀歲金曲．紅館前哨》主唱",
+      "loc": "rec_hk",
+      "workTitle": "賀歲金曲．紅館前哨",
+      "genreLabel": "粵語流行",
+      "roleLabel": "主唱",
+      "director": "鄺志輝",
+      "roleHint": "主唱・粵語流行",
+      "blurb": "主唱兩首賀歲金曲，由黃昏綵排至夜深，走位、和聲、燈光俱要一次過理順。",
+      "synopsis": "主唱兩首賀歲金曲，由黃昏綵排至夜深，走位、和聲、燈光俱要一次過理順。尾聲全體大合唱排位，主唱須頂住長鏡頭壓力，帶起全場氣氛。",
+      "eraTag": "era_1988_winter_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
       "boardPriority": "high",
-      "boardNote": "秋檔長劇男主",
-      "seasonWeight": 1.0,
+      "boardNote": "賀歲主打主推",
+      "seasonWeight": 0.95,
       "req": {
-        "acting": 65,
-        "stamina": 55,
-        "charm": 50
+        "stage": 820,
+        "charm": 700,
+        "stamina": 580
       },
       "pay": [
-        16000,
-        28000
+        23400,
+        28600
       ],
+      "payExact": 26000,
+      "breachFee": 15600,
       "fame": [
-        55,
+        50,
         85
       ],
       "popularity": [
-        65,
-        95
+        80,
+        110
       ],
       "stressDeltaHint": "高",
       "hard": 0.65,
       "tier": "高",
+      "stars": 5,
+      "applyDeadlineDays": 14,
+      "shootDaysHint": 12,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受通宵綵排"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_mtv_wanchai_summer_mid",
+      "year": 1988,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "《天台結他Live》男主角",
+      "loc": "rec_wanchai",
+      "workTitle": "天台結他Live",
+      "genreLabel": "音樂錄像",
+      "roleLabel": "男主角",
+      "director": "葉紹基",
+      "roleHint": "男主角：夏日天台快歌 MTV",
+      "blurb": "夏日天台拍快歌音樂錄像，男主角領唱兼簡單編舞，結他Live感分鏡要一氣呵成，風大亦不可斷拍。",
+      "synopsis": "夏日天台拍快歌音樂錄像，男主角領唱兼簡單編舞，結他Live感分鏡要一氣呵成，風大亦不可斷拍。",
+      "eraTag": "era_1988_summer_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "stage": 380,
+        "stamina": 350,
+        "charm": 290,
+        "looks": 240
+      },
+      "pay": [
+        8100,
+        9900
+      ],
+      "payExact": 9000,
+      "breachFee": 4500,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 10,
+      "shootDaysHint": 2,
+      "shootHint": "夏日天台快歌 MTV。",
+      "roleScale": "mtv",
+      "shootBand": [
+        2,
+        3
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 14
+    },
+    {
+      "id": "gig_1988_rec_wanchai_winter_high",
+      "year": 1988,
+      "season": "冬",
+      "type": "唱片通告",
+      "title": "《冬夜主打．通宵錄音室》主唱",
+      "loc": "rec_wanchai",
+      "workTitle": "冬夜主打．通宵錄音室",
+      "genreLabel": "粵語流行",
+      "roleLabel": "主唱",
+      "director": "潘曉彤",
+      "roleHint": "主唱・粵語流行",
+      "blurb": "個人專輯冬日主打，主唱親自調整唱腔與和聲，通宵錄畢即轉夜景拍攝 MTV。",
+      "synopsis": "個人專輯冬日主打，主唱親自調整唱腔與和聲，通宵錄畢即轉夜景拍攝 MTV。鏡頭前後均須保持狀態，唱到最後一口氣亦要穩。",
+      "eraTag": "era_1988_winter_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "high",
+      "boardNote": "賀歲主打主推",
+      "seasonWeight": 0.95,
+      "req": {
+        "stage": 780,
+        "charm": 650,
+        "stamina": 560,
+        "looks": 500
+      },
+      "pay": [
+        21600,
+        26400
+      ],
+      "payExact": 24000,
+      "breachFee": 14400,
+      "fame": [
+        46,
+        79
+      ],
+      "popularity": [
+        75,
+        105
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.6,
+      "tier": "高",
+      "stars": 4,
+      "applyDeadlineDays": 14,
+      "shootDaysHint": 12,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受通宵綵排"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tv_kowloon_winter_high",
+      "year": 1988,
+      "season": "冬",
+      "type": "電視劇",
+      "title": "《行動組小隊長》男主角",
+      "loc": "tvb_kowloon",
+      "workTitle": "行動組小隊長",
+      "genreLabel": "警匪劇",
+      "roleLabel": "男主角",
+      "director": "莫啟棠",
+      "roleHint": "男主角：行動組長劇",
+      "blurb": "男主角演小隊長，跨二十集帶隊搗破城寨軍火線，行動前在簡報室向隊員逐點交代計劃，氣氛凝重。",
+      "synopsis": "男主角演小隊長，跨二十集帶隊搗破城寨軍火線，行動前在簡報室向隊員逐點交代計劃，氣氛凝重。街頭追逐戲拍到深夜，他既要護住隊員，又要頂住上頭壓力，長鏡頭下壓力爆燈。",
+      "eraTag": "era_1988_winter_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "high",
+      "boardNote": "長劇主線主推",
+      "seasonWeight": 0.95,
+      "req": {
+        "acting": 780,
+        "stamina": 650,
+        "iq": 560,
+        "charm": 470
+      },
+      "pay": [
+        18900,
+        23100
+      ],
+      "payExact": 21000,
+      "breachFee": 12600,
+      "fame": [
+        50,
+        85
+      ],
+      "popularity": [
+        80,
+        110
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.65,
+      "tier": "高",
+      "stars": 5,
+      "applyDeadlineDays": 16,
       "shootDaysHint": 22,
-      "shootHint": "長篇男主，廠景與渡輪實景交替，需預留連續數週可拍日。",
+      "shootHint": "長檔期拍攝，須保持狀態穩定。",
       "roleScale": "tv_lead_long",
       "shootBand": [
         20,
@@ -1856,54 +3639,188 @@
         2,
         3,
         4,
+        5
+      ],
+      "shootDeadlineDays": 33,
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受高危拍攝場面"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_ad_adm_spring_mid",
+      "year": 1988,
+      "season": "春",
+      "type": "廣告",
+      "title": "《喜餅影視．過大禮》模特兒",
+      "loc": "ad_adm",
+      "workTitle": "喜餅影視．過大禮",
+      "genreLabel": "影視廣告",
+      "roleLabel": "模特兒",
+      "director": "黎婉婷",
+      "roleHint": "模特兒・影視廣告",
+      "blurb": "喜餅品牌春季影視版，模特兒與對手新人對望遞上鐵盒，接喜宴跳切。",
+      "synopsis": "喜餅品牌春季影視版，模特兒與對手新人對望遞上鐵盒，接喜宴跳切。要交出體面而自然的喜氣，眼神與手勢均須有戲。",
+      "eraTag": "era_1988_spring_ad",
+      "discoverNote": "廣告公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "looks": 340,
+        "charm": 300,
+        "acting": 180
+      },
+      "pay": [
+        6750,
+        8250
+      ],
+      "payExact": 7500,
+      "breachFee": 3800,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 8,
+      "shootDaysHint": 3,
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
         5,
         6
       ],
-      "shootDeadlineDays": 28
+      "shootDeadlineDays": 14
     },
     {
-      "id": "gig_1988_photo_02",
+      "id": "gig_1988_ad_central_spring_mid",
       "year": 1988,
-      "season": "冬",
+      "season": "春",
       "type": "廣告",
-      "title": "「香江鏡框」冬日寫真集《大衣與街燈》",
+      "title": "《耳機接力．行人路上》路人演員",
       "loc": "ad_central",
-      "roleHint": "擔任冬日寫真集男主角，演繹穿大衣走在街燈下的都會側寫",
-      "blurb": "書店與百貨聯乘寫真！需要能撐起大衣質感、又不像模特兒空心的面孔。",
-      "synopsis": "虛構出版品牌「香江鏡框」冬日寫真線。阿偉在中環街燈、天星碼頭與舊戲院門口連拍大衣造型，強調「普通人穿上體面衣服」的溫度，寫真集於聖誕檔期上架。",
-      "heroAngle": "阿偉不是空心模特兒臉，穿上大衣反而顯出剛站穩的年輕藝人緊張與認真。",
-      "diasporaHook": "大衣、街燈與聖誕櫥窗是海外華人回港過節常見的城市印象。",
-      "eraTag": "era_1988_winter_festive",
-      "discoverNote": "出版品牌冬日寫真試鏡",
+      "workTitle": "耳機接力．行人路上",
+      "genreLabel": "街頭宣傳",
+      "roleLabel": "路人演員",
+      "director": "方啟明",
+      "roleHint": "路人演員・街頭宣傳",
+      "blurb": "街頭宣傳片中段，路人演員在行人路上接過耳機，隨拍檔步伐自然接力前行；鏡頭貼身跟拍，要交出輕鬆笑容與穩定節奏。",
+      "synopsis": "街頭宣傳片中段，路人演員在行人路上接過耳機，隨拍檔步伐自然接力前行；鏡頭貼身跟拍，要交出輕鬆笑容與穩定節奏。",
+      "eraTag": "era_1988_spring_ad",
+      "discoverNote": "中環經紀行通告欄的公開選角",
       "boardPriority": "normal",
-      "boardNote": "冬日寫真書店線",
-      "seasonWeight": 0.75,
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
       "req": {
-        "looks": 35,
-        "charm": 30,
-        "acting": 20
+        "looks": 320,
+        "charm": 340,
+        "stamina": 240
       },
       "pay": [
-        6000,
-        11000
+        6300,
+        7700
       ],
+      "payExact": 7000,
+      "breachFee": 3500,
       "fame": [
-        10,
-        20
+        18,
+        31
       ],
       "popularity": [
-        30,
-        50
+        39,
+        62
       ],
-      "stressDeltaHint": "低",
-      "hard": 0.4,
+      "stressDeltaHint": "中",
+      "hard": 0.43,
       "tier": "中",
-      "shootDaysHint": 6,
-      "shootHint": "夜景街拍為主，注意保暖與連續站姿的肩頸負荷。",
-      "roleScale": "photobook",
+      "stars": 3,
+      "applyDeadlineDays": 8,
+      "shootDaysHint": 3,
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
+      "roleScale": "ad_av",
       "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
         5,
-        7
+        6
+      ],
+      "shootDeadlineDays": 14
+    },
+    {
+      "id": "gig_1988_film_cotton_summer_mid",
+      "year": 1988,
+      "season": "夏",
+      "type": "電影",
+      "title": "《婚宴大龍鳳》男配角",
+      "loc": "film_cotton",
+      "workTitle": "婚宴大龍鳳",
+      "genreLabel": "喜劇片",
+      "roleLabel": "男配角",
+      "director": "鄭啟文",
+      "roleHint": "男配角：賀歲群戲夏日補拍",
+      "blurb": "賀歲群戲夏日補拍，你演慳錢親戚，在棉廠婚宴上計較人情鬧出連串笑話，餐桌氣氛被你帶動得熱鬧起來。",
+      "synopsis": "賀歲群戲夏日補拍，你演慳錢親戚，在棉廠婚宴上計較人情鬧出連串笑話，餐桌氣氛被你帶動得熱鬧起來。",
+      "eraTag": "era_1988_summer_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 340,
+        "looks": 270,
+        "stamina": 280,
+        "charm": 310
+      },
+      "pay": [
+        10800,
+        13200
+      ],
+      "payExact": 12000,
+      "breachFee": 6000,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 22,
+      "shootHint": "賀歲群戲夏日補拍。",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
       ],
       "shootWeekdays": [
         1,
@@ -1912,892 +3829,660 @@
         4,
         5
       ],
-      "shootDeadlineDays": 11
+      "shootDeadlineDays": 33
     },
     {
-      "id": "gig_1988_fill_harbour_spring",
-      "season": "春",
-      "type": "電視劇",
-      "title": "《海港春潮》碼頭倉庫夜班少年",
-      "loc": "tvb_harbour",
-      "roleHint": "飾演海港貨倉夜班搬運少年，捲入走私線的目擊證人",
-      "blurb": "海港台春檔單元劇加場！碼頭夜班少年撞見走私換貨，一句對白也要站住場。",
-      "synopsis": "虛構海港廣播春檔單元劇《海港春潮》，以維港貨運碼頭為背景。阿偉飾演夜班搬運少年，在換班途中撞見走私換貨，被迫在貨倉鐵閘前與調查員對峙。全劇強調海風、貨櫃與霓虹倒影。",
-      "heroAngle": "阿偉對碼頭氣味與夜班節奏熟悉，演底層目擊證人時眼神自然帶著提防與倔強。",
-      "diasporaHook": "維港貨櫃與夜班碼頭，是海外華人回憶八十年代香港海運繁華的共同畫面。",
-      "eraTag": "era_1988_spring_alley",
-      "discoverNote": "海港台錄影廠春檔補位招募",
-      "boardNote": "海港春檔填縫・優先上板",
+      "id": "gig_1988_film_lion_autumn_mid",
+      "year": 1988,
+      "season": "秋",
+      "type": "電影",
+      "title": "《鐵窗秋涼》男配角",
+      "loc": "film_lion",
+      "workTitle": "鐵窗秋涼",
+      "genreLabel": "警匪片",
+      "roleLabel": "男配角",
+      "director": "梁兆山",
+      "roleHint": "男配角：獄中線人秋日翻供",
+      "blurb": "男配角演新入冊師弟，隔著探訪室玻璃與線人師兄對望；秋日翻供前夕，兩人壓低聲線交換一句關鍵口供，眼神先過戲。",
+      "synopsis": "男配角演新入冊師弟，隔著探訪室玻璃與線人師兄對望；秋日翻供前夕，兩人壓低聲線交換一句關鍵口供，眼神先過戲。",
+      "eraTag": "era_1988_autumn_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
       "req": {
-        "stamina": 28,
-        "acting": 22,
-        "iq": 18
+        "acting": 360,
+        "stamina": 330,
+        "iq": 270,
+        "charm": 220
       },
       "pay": [
-        1200,
-        2200
+        12600,
+        15400
       ],
+      "payExact": 14000,
+      "breachFee": 7000,
       "fame": [
-        4,
-        9
+        18,
+        31
       ],
       "popularity": [
-        10,
-        18
+        39,
+        62
       ],
-      "stressDeltaHint": "低",
-      "hard": 0.28,
-      "tier": "初",
-      "shootDaysHint": 9,
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 22,
+      "shootHint": "獄中線人秋日翻供。",
+      "roleScale": "film_support_main",
       "shootBand": [
-        8,
-        10
+        20,
+        24
       ],
-      "roleScale": "tv_cameo_short",
       "shootWeekdays": [
         1,
         2,
         3,
         4,
-        5,
-        6
+        5
       ],
-      "shootHint": "夜戲為主，需在人造海風與貨櫃景下對白清晰、動作乾淨。",
-      "shootDeadlineDays": 13,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
+      "shootDeadlineDays": 33
     },
     {
-      "id": "gig_1988_fill_harbour_autumn",
-      "season": "秋",
-      "type": "綜藝",
-      "title": "《海港夜話》秋日碼頭點歌短劇",
-      "loc": "tvb_harbour",
-      "roleHint": "飾演碼頭工人點歌環節的對手戲短劇角色",
-      "blurb": "海港台秋日綜藝外景！在碼頭倉庫唱錯歌名也要接得住觀眾笑聲。",
-      "synopsis": "虛構海港廣播秋季綜藝《海港夜話》外景環節，邀請觀眾在碼頭點歌，並穿插短劇。阿偉飾演被點錯歌仍硬著頭皮唱下去的碼頭工人，現場即興與主持互損。",
-      "heroAngle": "阿偉街頭反應快，短劇即興能把尷尬變成笑點。",
-      "diasporaHook": "碼頭點歌與秋夜海風，喚起海外華人對港台夜綜藝的集體記憶。",
-      "eraTag": "era_1988_autumn_studio",
-      "discoverNote": "海港台秋檔外景臨時招募",
-      "boardNote": "海港秋檔綜藝填縫",
+      "id": "gig_1988_rec_hk_summer_mid",
+      "year": 1988,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "《快歌主打軌》主唱",
+      "loc": "rec_hk",
+      "workTitle": "快歌主打軌",
+      "genreLabel": "快歌",
+      "roleLabel": "主唱",
+      "director": "鄺志輝",
+      "roleHint": "主唱・快歌",
+      "blurb": "快歌主唱位，鼓點密、和音層層疊軌，唱完趕去海邊拍卡式帶封面，聲線要夠利落夠搶耳。",
+      "synopsis": "快歌主唱位，鼓點密、和音層層疊軌，唱完趕去海邊拍卡式帶封面，聲線要夠利落夠搶耳。",
+      "eraTag": "era_1988_summer_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
       "req": {
-        "charm": 26,
-        "iq": 24,
-        "acting": 20
+        "stage": 400,
+        "stamina": 340,
+        "charm": 280
       },
       "pay": [
-        1600,
-        2800
+        9900,
+        12100
       ],
+      "payExact": 11000,
+      "breachFee": 5500,
       "fame": [
-        6,
-        12
+        18,
+        31
       ],
       "popularity": [
-        18,
-        30
+        39,
+        62
       ],
       "stressDeltaHint": "中",
-      "hard": 0.4,
+      "hard": 0.43,
       "tier": "中",
-      "shootDaysHint": 3,
+      "stars": 3,
+      "applyDeadlineDays": 10,
+      "shootDaysHint": 12,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "rec_album",
       "shootBand": [
-        2,
-        4
-      ],
-      "roleScale": "variety_ep",
-      "shootWeekdays": [
-        6,
-        7
-      ],
-      "shootHint": "外景麥克風與海風雜訊並存，講錯要即興補救。",
-      "shootDeadlineDays": 13,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
-    },
-    {
-      "id": "gig_1988_tv_kowloon_autumn",
-      "season": "秋",
-      "type": "電視劇",
-      "title": "《九龍夜市》魚蛋檔少東",
-      "loc": "tvb_kowloon",
-      "roleHint": "飾演九龍夜市魚蛋檔少東，夾在家族與街坊之間",
-      "blurb": "九龍台秋檔市井劇！魚蛋檔少東要在街坊糾紛裡站穩一句公道話。",
-      "synopsis": "虛構九龍廣播秋檔市井劇《九龍夜市》，以廟街與油麻地夜市為舞台。阿偉飾演魚蛋檔少東，一邊顧檔一邊調停街坊糾紛，台詞少但眼神戲重。",
-      "heroAngle": "阿偉懂夜市節奏與街坊人情，演少東時自然帶著討價還價的伶俐。",
-      "diasporaHook": "魚蛋檔與夜市燈火，是海外華人記憶中最濃的香港煙火氣。",
-      "eraTag": "era_1988_autumn_unitdrama",
-      "discoverNote": "九龍台秋檔配角試鏡",
-      "boardNote": "九龍秋檔市井填縫",
-      "req": {
-        "acting": 28,
-        "charm": 24,
-        "iq": 22
-      },
-      "pay": [
-        2200,
-        3800
-      ],
-      "fame": [
-        8,
+        10,
         14
       ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1988_tv_harbour_spring_mid",
+      "year": 1988,
+      "season": "春",
+      "type": "電視劇",
+      "title": "《碼頭恩怨》男配角",
+      "loc": "tvb_harbour",
+      "workTitle": "碼頭恩怨",
+      "genreLabel": "時裝劇",
+      "roleLabel": "男配角",
+      "director": "司徒朗",
+      "roleHint": "男配角：時代鉅製時裝線",
+      "blurb": "男配角演碼頭文員，捲入商幫恩怨；在貨倉與賬房之間奔走傳話，神色左右為難，一句口訊足以牽動兩幫神經。",
+      "synopsis": "男配角演碼頭文員，捲入商幫恩怨；在貨倉與賬房之間奔走傳話，神色左右為難，一句口訊足以牽動兩幫神經。",
+      "eraTag": "era_1988_spring_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 320,
+        "charm": 260,
+        "iq": 240,
+        "stamina": 220
+      },
+      "pay": [
+        6750,
+        8250
+      ],
+      "payExact": 7500,
+      "breachFee": 3800,
+      "fame": [
+        18,
+        31
+      ],
       "popularity": [
-        16,
-        28
+        39,
+        62
       ],
       "stressDeltaHint": "中",
-      "hard": 0.42,
+      "hard": 0.43,
       "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
       "shootDaysHint": 15,
+      "shootHint": "時代鉅製時裝線。",
+      "roleScale": "tv_support_main",
       "shootBand": [
         14,
         16
       ],
-      "roleScale": "tv_support_main",
       "shootWeekdays": [
         1,
         2,
         3,
         4,
-        5,
-        6
+        5
       ],
-      "shootHint": "夜戲為主，要在油煙與人潮嘈雜中對白清楚。",
-      "shootDeadlineDays": 20,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
+      "shootDeadlineDays": 23
     },
     {
-      "id": "gig_1988_tv_kowloon_winter",
-      "season": "冬",
-      "type": "綜藝",
-      "title": "《冬夜歡樂坊》賀歲街坊趣味賽",
+      "id": "gig_1988_tv_kowloon_spring_mid",
+      "year": 1988,
+      "season": "春",
+      "type": "電視劇",
+      "title": "《清明家宴》男配角",
       "loc": "tvb_kowloon",
-      "roleHint": "擔任賀歲趣味賽嘉賓，與街坊同台闖關",
-      "blurb": "九龍台冬檔賀歲綜藝！趣味賽嘉賓要肯出醜、肯笑、肯跟街坊起哄。",
-      "synopsis": "虛構九龍廣播冬檔賀歲綜藝《冬夜歡樂坊》，以街坊趣味賽為主軸。阿偉作為新晉嘉賓參與闖關遊戲，需與街坊搭檔完成默契題。",
-      "heroAngle": "阿偉不怕出醜，跟街坊起哄自然，適合賀歲氣氛。",
-      "diasporaHook": "冬夜賀歲綜藝是全球華人圍爐收看的固定儀式感。",
-      "eraTag": "era_1988_winter_festive",
-      "discoverNote": "九龍台冬檔嘉賓名單補位",
-      "boardNote": "九龍冬檔賀歲填縫",
+      "workTitle": "清明家宴",
+      "genreLabel": "家庭倫理劇",
+      "roleLabel": "男配角",
+      "director": "關振邦",
+      "roleHint": "男配角・家庭倫理劇",
+      "blurb": "男配角演返港親戚，清明飯局上舊樓倫理線爆發衝突；飯桌對白一鏡到底，杯筷之間全是多年積怨。",
+      "synopsis": "男配角演返港親戚，清明飯局上舊樓倫理線爆發衝突；飯桌對白一鏡到底，杯筷之間全是多年積怨。",
+      "eraTag": "era_1988_spring_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
       "req": {
-        "charm": 28,
-        "stamina": 24,
-        "iq": 18
+        "acting": 300,
+        "looks": 210,
+        "iq": 250,
+        "charm": 330
       },
       "pay": [
-        1800,
-        3000
+        7650,
+        9350
       ],
+      "payExact": 8500,
+      "breachFee": 4200,
       "fame": [
-        7,
-        13
+        18,
+        31
       ],
       "popularity": [
-        20,
-        32
+        39,
+        62
       ],
-      "stressDeltaHint": "低",
-      "hard": 0.32,
-      "tier": "初",
-      "shootDaysHint": 3,
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 15,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "tv_support_main",
       "shootBand": [
-        2,
-        4
+        14,
+        16
       ],
-      "roleScale": "variety_ep",
       "shootWeekdays": [
-        6,
-        7
+        1,
+        2,
+        3,
+        4,
+        5
       ],
-      "shootHint": "現場遊戲節奏快，跌倒也要笑著起來。",
-      "shootDeadlineDays": 13,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
+      "shootDeadlineDays": 23
     },
     {
-      "id": "gig_1988_film_lion_autumn",
-      "season": "秋",
-      "type": "電影",
-      "title": "《秋刀江湖》茶樓跑堂",
-      "loc": "film_lion",
-      "roleHint": "飾演茶樓跑堂，目睹一場江湖談判後被捲入追殺",
-      "blurb": "獅子山秋檔武俠片！茶樓跑堂只有幾場戲，但要在飛椅與碎碗裡站得住。",
-      "synopsis": "虛構獅子山製片秋檔武俠片《秋刀江湖》。阿偉飾演茶樓跑堂，在一場江湖談判中端茶撞見殺機，隨後被雙方追殺。動作場面以碎碗、飛椅與窄梯為主。",
-      "heroAngle": "阿偉身手靈活，演跑堂逃命時身體語言真實。",
-      "diasporaHook": "茶樓江湖與秋刀名義，延續全球華人熟悉的港產武俠符號。",
-      "eraTag": "era_1988_autumn_board",
-      "discoverNote": "獅子山製片秋檔小配角試鏡",
-      "boardNote": "獅子山秋檔填縫",
+      "id": "gig_1988_tv_longmen_spring_mid",
+      "year": 1988,
+      "season": "春",
+      "type": "電視劇",
+      "title": "《廣告社新丁》男配角",
+      "loc": "tvb_longmen",
+      "workTitle": "廣告社新丁",
+      "genreLabel": "偶像劇",
+      "roleLabel": "男配角",
+      "director": "何子聰",
+      "roleHint": "男配角：時裝偶像線",
+      "blurb": "男配角演廣告社新丁，跟前輩開會度橋兼執手尾；意外捲入前輩戀愛三角，辦公室走廊對峙一場最考演技。",
+      "synopsis": "男配角演廣告社新丁，跟前輩開會度橋兼執手尾；意外捲入前輩戀愛三角，辦公室走廊對峙一場最考演技。",
+      "eraTag": "era_1988_spring_tv",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
       "req": {
-        "stamina": 32,
-        "acting": 22,
-        "iq": 18
+        "acting": 340,
+        "looks": 300,
+        "charm": 320,
+        "stamina": 240
       },
       "pay": [
-        2800,
-        4800
+        8100,
+        9900
       ],
+      "payExact": 9000,
+      "breachFee": 4500,
       "fame": [
-        6,
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 15,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 23
+    },
+    {
+      "id": "gig_1988_ad_central_autumn_low",
+      "year": 1988,
+      "season": "秋",
+      "type": "廣告",
+      "title": "《街訪喜劇．蟲出沒》路人演員",
+      "loc": "ad_central",
+      "workTitle": "街訪喜劇．蟲出沒",
+      "genreLabel": "街頭宣傳",
+      "roleLabel": "路人演員",
+      "director": "丁一凡",
+      "roleHint": "路人演員・街頭宣傳",
+      "blurb": "街頭街訪式喜劇短片，路人演員被「蟲出沒」嚇一跳，再由噴霧救場。",
+      "synopsis": "街頭街訪式喜劇短片，路人演員被「蟲出沒」嚇一跳，再由噴霧救場。反應要誇張到位，一鏡過帶出無厘頭笑位。",
+      "eraTag": "era_1988_autumn_ad",
+      "discoverNote": "中環經紀行通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "短單次級曝光",
+      "seasonWeight": 0.6,
+      "req": {
+        "looks": 90,
+        "charm": 100,
+        "acting": 95,
+        "stamina": 105
+      },
+      "pay": [
+        2700,
+        3300
+      ],
+      "payExact": 3000,
+      "breachFee": 1500,
+      "fame": [
+        5,
         12
       ],
       "popularity": [
-        12,
-        22
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.38,
-      "tier": "初",
-      "shootDaysHint": 13,
-      "shootBand": [
-        12,
-        15
-      ],
-      "roleScale": "film_support_small",
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootHint": "茶樓打戲需配合飛椅與碎瓷安全落點。",
-      "shootDeadlineDays": 18,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
-    },
-    {
-      "id": "gig_1988_film_cotton_spring",
-      "season": "春",
-      "type": "電影",
-      "title": "《棉廠春雨》縫紉女工弟弟",
-      "loc": "film_cotton",
-      "roleHint": "飾演棉紡廠女工的弟弟，為姐姐送飯時捲入勞資衝突",
-      "blurb": "棉花廠春檔寫實片！送飯少年要在工廠鐵閘前把恐懼演成倔強。",
-      "synopsis": "虛構棉花廠影業春檔寫實電影《棉廠春雨》，以紡織廠女工生活為主線。阿偉飾演女工弟弟，為姐姐送飯盒時撞見勞資糾紛，成為旁觀又被捲入的少年。",
-      "heroAngle": "阿偉懂工廠區節奏，演送飯少年時眼神有生活感。",
-      "diasporaHook": "棉紡廠與送飯盒，是海外華人對香港工業年代的共同記憶。",
-      "eraTag": "era_1988_spring_factory",
-      "discoverNote": "棉花廠影業春檔配角招募",
-      "boardNote": "棉花廠春檔填縫",
-      "req": {
-        "acting": 26,
-        "stamina": 24,
-        "iq": 20
-      },
-      "pay": [
-        2600,
-        4500
-      ],
-      "fame": [
-        5,
-        11
-      ],
-      "popularity": [
-        10,
-        20
-      ],
-      "stressDeltaHint": "低",
-      "hard": 0.35,
-      "tier": "初",
-      "shootDaysHint": 14,
-      "shootBand": [
-        12,
-        15
-      ],
-      "roleScale": "film_support_small",
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootHint": "廠房戲多煙塵，對白要壓過機器噪音但不喊破。",
-      "shootDeadlineDays": 19,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
-    },
-    {
-      "id": "gig_1988_film_cotton_autumn",
-      "season": "秋",
-      "type": "電影",
-      "title": "《金秋棉途》廠區執勤警察",
-      "loc": "film_cotton",
-      "roleHint": "飾演廠區執勤警察，追查一批失踪原料",
-      "blurb": "棉花廠秋檔警匪片！廠區警察戲份集中，要站得住審訊與夜巡兩場。",
-      "synopsis": "虛構棉花廠影業秋檔警匪片《金秋棉途》。阿偉飾演廠區執勤警察，追查失踪棉紗原料，在夜巡與倉庫對峙中完成主要配角弧線。",
-      "heroAngle": "阿偉能把青年警察的生澀與責任感演得可信。",
-      "diasporaHook": "廠區警匪與原料走私，延續海外華人熟悉的港產犯罪片節奏。",
-      "eraTag": "era_1988_autumn_board",
-      "discoverNote": "棉花廠影業秋檔主要配角試鏡",
-      "boardNote": "棉花廠秋檔填縫",
-      "req": {
-        "acting": 32,
-        "stamina": 28,
-        "iq": 26
-      },
-      "pay": [
-        4500,
-        7500
-      ],
-      "fame": [
-        12,
-        20
-      ],
-      "popularity": [
-        18,
-        30
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.48,
-      "tier": "中",
-      "shootDaysHint": 22,
-      "shootBand": [
-        20,
-        24
-      ],
-      "roleScale": "film_support_main",
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootHint": "夜巡長鏡頭多，體力與眼神要撐得住。",
-      "shootDeadlineDays": 28,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
-    },
-    {
-      "id": "gig_1988_film_harbour_spring",
-      "season": "春",
-      "type": "電影",
-      "title": "《春潮貨櫃》碼頭報關員",
-      "loc": "film_harbour",
-      "roleHint": "飾演海港片廠碼頭報關員，發現貨櫃夾帶違禁品",
-      "blurb": "海港片廠春檔！報關員小配角要在貨櫃場把驚慌壓成冷靜。",
-      "synopsis": "虛構海港片廠春檔犯罪片《春潮貨櫃》。阿偉飾演碼頭報關員，例行檢查時發現貨櫃夾帶違禁品，成為整段追查的第一個線索人物。",
-      "heroAngle": "阿偉能把文書小人物的驚惶與責任感演得細緻。",
-      "diasporaHook": "貨櫃與報關，是海外華人理解香港港口經濟的經典入口。",
-      "eraTag": "era_1988_spring_alley",
-      "discoverNote": "海港片廠春檔小配角公開試鏡",
-      "boardNote": "海港片廠春檔填縫",
-      "req": {
-        "acting": 24,
-        "iq": 26,
-        "stamina": 20
-      },
-      "pay": [
-        2400,
-        4200
-      ],
-      "fame": [
-        5,
-        10
-      ],
-      "popularity": [
-        10,
-        18
-      ],
-      "stressDeltaHint": "低",
-      "hard": 0.33,
-      "tier": "初",
-      "shootDaysHint": 12,
-      "shootBand": [
-        12,
-        15
-      ],
-      "roleScale": "film_support_small",
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ],
-      "shootHint": "貨櫃場外景風大，對白收音要配合擋風。",
-      "shootDeadlineDays": 19,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
-    },
-    {
-      "id": "gig_1988_film_harbour_summer",
-      "season": "夏",
-      "type": "電影",
-      "title": "《盛夏海關》緝私隊新丁",
-      "loc": "film_harbour",
-      "roleHint": "飾演緝私隊新丁，首次執行夜間登船檢查",
-      "blurb": "海港片廠夏檔動作片！緝私新丁要在晃船甲板上把害怕演成真。",
-      "synopsis": "虛構海港片廠夏檔動作片《盛夏海關》。阿偉飾演緝私隊新丁，首次夜間登船檢查，在晃動甲板與強光手電筒下完成緊張對手戲。",
-      "heroAngle": "阿偉的生澀與衝勁適合演新丁第一次上場。",
-      "diasporaHook": "緝私登船是海外華人印象中港產警匪片的高燃場面。",
-      "eraTag": "era_1988_summer_mall",
-      "discoverNote": "海港片廠夏檔配角試鏡",
-      "boardNote": "海港片廠夏檔填縫",
-      "req": {
-        "stamina": 34,
-        "acting": 26,
-        "iq": 22
-      },
-      "pay": [
-        4200,
-        7000
-      ],
-      "fame": [
-        10,
-        18
-      ],
-      "popularity": [
-        16,
-        28
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.5,
-      "tier": "中",
-      "shootDaysHint": 21,
-      "shootBand": [
-        20,
-        24
-      ],
-      "roleScale": "film_support_main",
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootHint": "甲板戲需適應晃動與煙霧，注意防滑。",
-      "shootDeadlineDays": 27,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
-    },
-    {
-      "id": "gig_1988_film_harbour_winter",
-      "season": "冬",
-      "type": "電影",
-      "title": "《寒夜碼頭》船務公司秘書",
-      "loc": "film_harbour",
-      "roleHint": "飾演船務公司年輕秘書，掌握一份關鍵船期表",
-      "blurb": "海港片廠冬檔懸疑片！秘書戲份不多，但船期表一場要演得心虛又硬撐。",
-      "synopsis": "虛構海港片廠冬檔懸疑片《寒夜碼頭》。阿偉飾演船務公司年輕秘書，被雙方勢力追問船期表下落，在辦公室與碼頭倉庫各有關鍵對手戲。",
-      "heroAngle": "阿偉能把小職員被逼到牆角時的顫抖與倔強演出來。",
-      "diasporaHook": "寒夜碼頭與船期表，延續海外華人熟悉的港口懸疑氛圍。",
-      "eraTag": "era_1988_winter_recruit",
-      "discoverNote": "海港片廠冬檔小配角補位",
-      "boardNote": "海港片廠冬檔填縫",
-      "req": {
-        "acting": 28,
-        "iq": 28,
-        "charm": 18
-      },
-      "pay": [
-        2600,
-        4600
-      ],
-      "fame": [
-        6,
-        12
-      ],
-      "popularity": [
-        12,
-        20
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.4,
-      "tier": "初",
-      "shootDaysHint": 14,
-      "shootBand": [
-        12,
-        15
-      ],
-      "roleScale": "film_support_small",
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "shootHint": "室內對手戲要求眼神層次，忌過度喊戲。",
-      "shootDeadlineDays": 19,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
-    },
-    {
-      "id": "gig_1988_rec_hk_summer",
-      "season": "夏",
-      "type": "唱片通告",
-      "title": "夏日單曲《碼頭汽水》和聲錄音",
-      "loc": "rec_hk",
-      "roleHint": "擔任夏日清涼單曲的和聲與對唱段落",
-      "blurb": "香江唱片夏檔！汽水主題單曲要唱出碼頭午後的甜與熱。",
-      "synopsis": "虛構香江唱片夏檔單曲《碼頭汽水》，主打清涼情歌。阿偉負責和聲與一段對唱，需在模擬錄音室把熱氣與甜感唱出來。",
-      "heroAngle": "阿偉嗓音帶街頭氣息，和聲能托住主唱又不搶戲。",
-      "diasporaHook": "夏日汽水歌是海外華人回憶香港炎夏的輕快符號。",
-      "eraTag": "era_1988_summer_karaoke",
-      "discoverNote": "香江唱片夏檔和聲試音",
-      "boardNote": "香江夏檔錄音填縫",
-      "req": {
-        "stage": 28,
-        "charm": 24,
-        "acting": 18
-      },
-      "pay": [
-        2200,
-        4000
-      ],
-      "fame": [
-        5,
-        11
-      ],
-      "popularity": [
-        14,
-        26
-      ],
-      "stressDeltaHint": "低",
-      "hard": 0.3,
-      "tier": "初",
-      "shootDaysHint": 12,
-      "shootBand": [
-        10,
-        14
-      ],
-      "roleScale": "rec_album",
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ],
-      "shootHint": "和聲對準主唱氣口，忌搶拍。",
-      "shootDeadlineDays": 19,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
-    },
-    {
-      "id": "gig_1988_rec_hk_autumn",
-      "season": "秋",
-      "type": "唱片通告",
-      "title": "秋季專輯《九龍雨巷》主唱錄音",
-      "loc": "rec_hk",
-      "roleHint": "擔任敘事民謠專輯主唱段落錄音",
-      "blurb": "香江唱片秋檔！雨巷民謠要唱出濕冷與倔強，忌油腔。",
-      "synopsis": "虛構香江唱片秋檔專輯《九龍雨巷》，以舊區雨夜為主題。阿偉擔任主唱段落錄音，需以微沙嗓音演譯雨巷故事。",
-      "heroAngle": "阿偉嗓音有生活磨礪，適合雨巷敘事。",
-      "diasporaHook": "雨巷民謠能勾起海外華人對舊區香港的鄉愁。",
-      "eraTag": "era_1988_autumn_studio",
-      "discoverNote": "香江唱片秋檔主唱試音",
-      "boardNote": "香江秋檔錄音填縫",
-      "req": {
-        "stage": 32,
-        "charm": 26,
-        "acting": 22
-      },
-      "pay": [
-        2800,
-        5000
-      ],
-      "fame": [
-        8,
-        15
-      ],
-      "popularity": [
-        18,
-        30
-      ],
-      "stressDeltaHint": "中",
-      "hard": 0.4,
-      "tier": "中",
-      "shootDaysHint": 13,
-      "shootBand": [
-        12,
-        14
-      ],
-      "roleScale": "rec_album",
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ],
-      "shootHint": "長錄音日需護嗓，忌連續嘶吼。",
-      "shootDeadlineDays": 21,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
-    },
-    {
-      "id": "gig_1988_rec_hk_winter",
-      "season": "冬",
-      "type": "唱片通告",
-      "title": "賀歲合唱《圍爐》錄音",
-      "loc": "rec_hk",
-      "roleHint": "擔任賀歲合唱中段主歌之一",
-      "blurb": "香江唱片冬檔賀歲歌！圍爐合唱要溫暖、要齊、要聽到街坊感。",
-      "synopsis": "虛構香江唱片冬檔賀歲合唱《圍爐》。阿偉擔任中段主歌之一，與多位歌手輪唱，強調溫暖與街坊感。",
-      "heroAngle": "阿偉唱賀歲歌不虛假，能把市井溫暖唱出來。",
-      "diasporaHook": "賀歲圍爐合唱是全球華人過年的聲音記憶。",
-      "eraTag": "era_1988_winter_record",
-      "discoverNote": "香江唱片冬檔合唱補位",
-      "boardNote": "香江冬檔錄音填縫",
-      "req": {
-        "stage": 30,
-        "charm": 28,
-        "iq": 16
-      },
-      "pay": [
-        2500,
-        4500
-      ],
-      "fame": [
-        7,
-        13
-      ],
-      "popularity": [
-        20,
-        34
-      ],
-      "stressDeltaHint": "低",
-      "hard": 0.32,
-      "tier": "初",
-      "shootDaysHint": 12,
-      "shootBand": [
-        10,
-        14
-      ],
-      "roleScale": "rec_album",
-      "shootWeekdays": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ],
-      "shootHint": "合唱對齊拍點，個人段要穩。",
-      "shootDeadlineDays": 19,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
-    },
-    {
-      "id": "gig_1988_mtv_wanchai_spring",
-      "season": "春",
-      "type": "唱片通告",
-      "title": "春日 MTV《電車窗外》群演",
-      "loc": "rec_wanchai",
-      "roleHint": "飾演電車車廂內的年輕乘客群演，有特寫鏡頭",
-      "blurb": "灣仔錄影廠春檔 MTV！電車車廂特寫，表情要自然不要望鏡。",
-      "synopsis": "虛構灣仔錄影廠春檔 MTV《電車窗外》。阿偉作為車廂乘客群演，有兩段特寫：望出窗外與被主唱擦肩。",
-      "heroAngle": "阿偉鏡頭感自然，適合不搶主角的群演特寫。",
-      "diasporaHook": "電車車廂是海外華人對香港街頭的經典印象。",
-      "eraTag": "era_1988_spring_alley",
-      "discoverNote": "灣仔錄影廠春檔 MTV 群演招募",
-      "boardNote": "灣仔春檔 MTV 填縫",
-      "req": {
-        "looks": 22,
-        "charm": 20,
-        "acting": 16
-      },
-      "pay": [
-        1500,
-        2800
-      ],
-      "fame": [
-        3,
-        8
-      ],
-      "popularity": [
-        12,
-        22
-      ],
-      "stressDeltaHint": "低",
-      "hard": 0.25,
-      "tier": "初",
-      "shootDaysHint": 2,
-      "shootBand": [
-        2,
-        3
-      ],
-      "roleScale": "mtv",
-      "shootWeekdays": [
-        6,
-        7
-      ],
-      "shootHint": "車廂燈光強，忌眨眼過多與望鏡頭。",
-      "shootDeadlineDays": 9,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
-    },
-    {
-      "id": "gig_1988_mtv_wanchai_winter",
-      "season": "冬",
-      "type": "唱片通告",
-      "title": "冬夜 MTV《霓虹未眠》酒吧侍應",
-      "loc": "rec_wanchai",
-      "roleHint": "飾演酒吧侍應，在主唱段落端酒走過",
-      "blurb": "灣仔錄影廠冬檔 MTV！酒吧侍應鏡頭短，但步伐與眼神要跟音樂。",
-      "synopsis": "虛構灣仔錄影廠冬檔 MTV《霓虹未眠》。阿偉飾演酒吧侍應，在主唱段落端酒走過，需對準節拍完成走位。",
-      "heroAngle": "阿偉節奏感好，走位能貼音樂。",
-      "diasporaHook": "霓虹酒吧是海外華人記憶中的香港夜生活符號。",
-      "eraTag": "era_1988_winter_record",
-      "discoverNote": "灣仔錄影廠冬檔 MTV 補位",
-      "boardNote": "灣仔冬檔 MTV 填縫",
-      "req": {
-        "looks": 24,
-        "stage": 22,
-        "acting": 18
-      },
-      "pay": [
-        1600,
-        3000
-      ],
-      "fame": [
-        4,
-        9
-      ],
-      "popularity": [
-        14,
-        24
+        15,
+        29
       ],
       "stressDeltaHint": "低",
       "hard": 0.28,
       "tier": "初",
+      "stars": 1,
+      "applyDeadlineDays": 5,
       "shootDaysHint": 3,
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 14
+    },
+    {
+      "id": "gig_1988_film_harbour_spring_mid",
+      "year": 1988,
+      "season": "春",
+      "type": "電影",
+      "title": "《碼頭講數夜》男配角",
+      "loc": "film_harbour",
+      "workTitle": "碼頭講數夜",
+      "genreLabel": "江湖動作片",
+      "roleLabel": "男配角",
+      "director": "歐陽信",
+      "roleHint": "男配角：碼頭春雨江湖談判",
+      "blurb": "碼頭春雨下江湖談判，你演主角師弟，長鏡頭群毆由你帶頭捲入亂局，場面一發不可收拾。",
+      "synopsis": "碼頭春雨下江湖談判，你演主角師弟，長鏡頭群毆由你帶頭捲入亂局，場面一發不可收拾。",
+      "eraTag": "era_1988_spring_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 350,
+        "stamina": 320,
+        "charm": 260,
+        "iq": 220
+      },
+      "pay": [
+        11700,
+        14300
+      ],
+      "payExact": 13000,
+      "breachFee": 6500,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 22,
+      "shootHint": "碼頭春雨江湖談判。",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 33
+    },
+    {
+      "id": "gig_1988_rec_star_summer_mid",
+      "year": 1988,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "《泳池對唱慢鏡》男主角",
+      "loc": "rec_star",
+      "workTitle": "泳池對唱慢鏡",
+      "genreLabel": "音樂錄像",
+      "roleLabel": "男主角",
+      "director": "江子安",
+      "roleHint": "男主角・音樂錄像",
+      "blurb": "夏日情歌音樂錄像，男主角在泳池邊慢鏡對口型，水花與眼神都要交足戲，一鏡到底考驗定力。",
+      "synopsis": "夏日情歌音樂錄像，男主角在泳池邊慢鏡對口型，水花與眼神都要交足戲，一鏡到底考驗定力。",
+      "eraTag": "era_1988_summer_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "stage": 360,
+        "looks": 320,
+        "charm": 300
+      },
+      "pay": [
+        8550,
+        10450
+      ],
+      "payExact": 9500,
+      "breachFee": 4800,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 10,
+      "shootDaysHint": 2,
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
+      "roleScale": "mtv",
       "shootBand": [
         2,
         3
       ],
-      "roleScale": "mtv",
       "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
         5,
-        6,
-        7
+        6
       ],
-      "shootHint": "端酒走位要跟鼓點，忌潑灑道具酒。",
-      "shootDeadlineDays": 9,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
+      "shootDeadlineDays": 14
     },
     {
-      "id": "gig_1988_rec_star_spring",
-      "season": "春",
+      "id": "gig_1988_mtv_wanchai_autumn_mid",
+      "year": 1988,
+      "season": "秋",
       "type": "唱片通告",
-      "title": "春檔專輯《天星序曲》合唱錄音",
-      "loc": "rec_star",
-      "roleHint": "擔任新晉專輯合唱與對唱段落",
-      "blurb": "天星音樂春檔！新晉專輯合唱要亮、要齊，忌搶主唱。",
-      "synopsis": "虛構天星音樂春檔專輯《天星序曲》。阿偉擔任合唱與一段對唱，錄音室要求音色乾淨、情緒向上。",
-      "heroAngle": "阿偉能把草根嗓音磨成乾淨合唱，不搶主唱。",
-      "diasporaHook": "春檔新星專輯是海外華人追港樂的入門儀式。",
-      "eraTag": "era_1988_spring_grassroot",
-      "discoverNote": "天星音樂春檔合唱試音",
-      "boardNote": "天星春檔錄音填縫",
+      "title": "《秋雨天橋冷場》男主角",
+      "loc": "rec_wanchai",
+      "workTitle": "秋雨天橋冷場",
+      "genreLabel": "音樂錄像",
+      "roleLabel": "男主角",
+      "director": "潘曉彤",
+      "roleHint": "男主角・音樂錄像",
+      "blurb": "冷感城市秋雨音樂錄像，男主角步行過天橋，旁白式對口型拍出疏離氣氛，濕冷質感要入鏡。",
+      "synopsis": "冷感城市秋雨音樂錄像，男主角步行過天橋，旁白式對口型拍出疏離氣氛，濕冷質感要入鏡。",
+      "eraTag": "era_1988_autumn_rec",
+      "discoverNote": "唱片公司通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
       "req": {
-        "stage": 30,
-        "charm": 26,
-        "acting": 20
+        "stage": 350,
+        "charm": 310,
+        "iq": 240,
+        "looks": 260
       },
       "pay": [
-        3000,
-        5200
+        7900,
+        9700
       ],
+      "payExact": 8800,
+      "breachFee": 4400,
       "fame": [
-        8,
-        14
+        18,
+        31
       ],
       "popularity": [
-        18,
-        30
+        39,
+        62
       ],
       "stressDeltaHint": "中",
-      "hard": 0.38,
+      "hard": 0.43,
       "tier": "中",
-      "shootDaysHint": 13,
+      "stars": 3,
+      "applyDeadlineDays": 10,
+      "shootDaysHint": 2,
+      "shootHint": "短單密集拍攝，注意表情與節奏。",
+      "roleScale": "mtv",
       "shootBand": [
-        12,
-        14
+        2,
+        3
       ],
-      "roleScale": "rec_album",
       "shootWeekdays": [
         1,
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
-      "shootHint": "多軌疊錄，耳機監聽要穩。",
-      "shootDeadlineDays": 21,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
+      "shootDeadlineDays": 14
     },
     {
-      "id": "gig_1988_rec_star_summer",
-      "season": "夏",
-      "type": "唱片通告",
-      "title": "夏日單曲《泳池邊》主唱試音錄音",
-      "loc": "rec_star",
-      "roleHint": "擔任夏日單曲主唱試音與正式錄音",
-      "blurb": "天星音樂夏檔！泳池主題單曲要唱得輕快，忌用力過猛。",
-      "synopsis": "虛構天星音樂夏檔單曲《泳池邊》。阿偉先試音後正式錄音，需唱出夏日輕快與一點青澀。",
-      "heroAngle": "阿偉唱輕快歌時仍有市井真實感，不易假甜。",
-      "diasporaHook": "夏日泳池情歌是八十年代華語流行的共同回憶。",
-      "eraTag": "era_1988_summer_karaoke",
-      "discoverNote": "天星音樂夏檔主唱試音",
-      "boardNote": "天星夏檔錄音填縫",
+      "id": "gig_1988_var_longmen_winter_mid",
+      "year": 1988,
+      "season": "冬",
+      "type": "綜藝",
+      "title": "《冬夜金榜獻唱》嘉賓",
+      "loc": "tvb_longmen",
+      "workTitle": "冬夜金榜獻唱",
+      "genreLabel": "歌唱節目",
+      "roleLabel": "嘉賓",
+      "director": "梁子彥",
+      "roleHint": "嘉賓・歌唱節目",
+      "blurb": "冬夜榜單嘉賓位，獻唱一首歌再加短訪，樂隊即場試音兩次，主持在旁對稿，綵排至深夜才收工。",
+      "synopsis": "冬夜榜單嘉賓位，獻唱一首歌再加短訪，樂隊即場試音兩次，主持在旁對稿，綵排至深夜才收工。",
+      "eraTag": "era_1988_winter_variety",
+      "discoverNote": "星河電視台通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7999999999999999,
       "req": {
-        "stage": 28,
-        "charm": 28,
-        "looks": 20
+        "charm": 340,
+        "stage": 360,
+        "acting": 220
       },
       "pay": [
-        2600,
-        4800
+        4700,
+        5700
       ],
+      "payExact": 5200,
+      "breachFee": 2600,
       "fame": [
-        7,
-        13
+        18,
+        31
       ],
       "popularity": [
-        16,
-        28
+        39,
+        62
       ],
-      "stressDeltaHint": "低",
-      "hard": 0.35,
-      "tier": "初",
-      "shootDaysHint": 12,
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 8,
+      "shootDaysHint": 3,
+      "shootHint": "按組製場記安排拍攝。",
+      "roleScale": "variety_ep",
       "shootBand": [
-        10,
-        14
+        2,
+        4
       ],
-      "roleScale": "rec_album",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 14
+    },
+    {
+      "id": "gig_1988_film_cotton_spring_mid",
+      "year": 1988,
+      "season": "春",
+      "type": "電影",
+      "title": "《舊樓鬼來信》男配角",
+      "loc": "film_cotton",
+      "workTitle": "舊樓鬼來信",
+      "genreLabel": "文藝片",
+      "roleLabel": "男配角",
+      "director": "沈若蘭",
+      "roleHint": "男配角：塘西春日舊樓傳說",
+      "blurb": "舊樓春日流傳女鬼來信，你演報館記者，夜戲中追查信件下落，與對手一場對白層層逼問。",
+      "synopsis": "舊樓春日流傳女鬼來信，你演報館記者，夜戲中追查信件下落，與對手一場對白層層逼問。",
+      "eraTag": "era_1988_spring_film",
+      "discoverNote": "片廠通告欄的公開選角",
+      "boardPriority": "normal",
+      "boardNote": "中檔曝光",
+      "seasonWeight": 0.7,
+      "req": {
+        "acting": 380,
+        "looks": 340,
+        "iq": 280,
+        "charm": 320
+      },
+      "pay": [
+        13500,
+        16500
+      ],
+      "payExact": 15000,
+      "breachFee": 7500,
+      "fame": [
+        18,
+        31
+      ],
+      "popularity": [
+        39,
+        62
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.43,
+      "tier": "中",
+      "stars": 3,
+      "applyDeadlineDays": 12,
+      "shootDaysHint": 22,
+      "shootHint": "塘西春日舊樓傳說。",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
       "shootWeekdays": [
         1,
         2,
@@ -2805,14 +4490,7 @@
         4,
         5
       ],
-      "shootHint": "試音與正式兩輪，護嗓優先。",
-      "shootDeadlineDays": 19,
-      "year": 1988,
-      "boardPriority": "high",
-      "seasonWeight": 1.0
+      "shootDeadlineDays": 33
     }
-  ],
-  "planRef": "PLAN_SHOOT_CAREER_SCHEDULE_v2",
-  "softStatus": "Soft≠PASS",
-  "notes": " | 2.3.2 QA stub：鐵血＋都市梟雄 補 genreLabel／roleLabel／director／limits／payExact（tester 測細類 pill）"
+  ]
 }
