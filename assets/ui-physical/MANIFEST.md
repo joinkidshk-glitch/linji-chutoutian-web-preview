@@ -26,9 +26,3 @@ v1 備份：`_v1_bak/`
 
 出品名：**臨記出頭天**。NPC 唔改。立繪：`../hero_awi.jpg`。  
 中文一律本機 Noto；禁止 AI 漢字。用戶批後先叫 iOS 套。
-
-## krea-opt 套入（2026-11-02 Asia/Hong_Kong）
-- 來源：`assets/krea-opt/`（awi_enhance／paper_cream／paper_ticket／paper_notebook／start_mood）
-- 已換：`hero_awi`、`notice_paper`、`ticket_stub`、`notebook_spread(+_list)`、`start_title_card`、`logo_lockup`、moodboard
-- 備份：`assets/_style_bak/`、`ui-physical/_krea_bak_20261102/`
-- **仍等用戶 OK 先叫 iOS**；NPC 未動。

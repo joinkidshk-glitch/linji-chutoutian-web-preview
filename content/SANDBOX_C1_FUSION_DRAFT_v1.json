@@ -1,0 +1,231 @@
+{
+  "meta": {
+    "sandbox": true,
+    "liveTouch": false,
+    "docId": "SANDBOX_C1_FUSION_DRAFT_v1",
+    "created": "2026-11-03",
+    "timezone": "Asia/Hong_Kong",
+    "sources": [
+      "NOVEL_SCRIPT_MAIN_VOL1_C1C5_v1.md §C1",
+      "PLAN_NOVEL_GAME_FUSION_v1.md",
+      "story_detail_c1_to_c17.json C1（只讀對照）"
+    ],
+    "style": [
+      "COPY_STYLE_HK_LEXICON.md",
+      "COPY_STYLE_MODERN_v1.md"
+    ],
+    "holds": [
+      "Soft≠PASS",
+      "出圖 HOLD",
+      "鄧 HOLD"
+    ],
+    "beatCount": 11,
+    "beatCountNote": "sandbox 11 beats（LIVE 為 7）；場面建立＋人情＋電話＋抉擇，內心壓短。",
+    "lexiconFixes": [
+      "對齊硬規則：動作戲學習線寫「學做動作戲／磨戲」，唔用舊縮寫腔",
+      "禁自造縮寫（記數簿等按詞庫）"
+    ],
+    "compatibility": {
+      "choiceIds": [
+        "C1_a",
+        "C1_b"
+      ],
+      "flags": [
+        "route_tv",
+        "route_film"
+      ],
+      "statsDirection": "C1_a craft+1；C1_b wealth+1；與 LIVE 一致",
+      "locId": "tvb_longmen",
+      "playerOffer": true,
+      "openConditions": [],
+      "pacing": {
+        "weekMin": 1,
+        "minDaysAfterPrev": 0
+      }
+    },
+    "engineNotes": {
+      "resultBeats": "optional；引擎未讀則忽略，靠 effects.notes",
+      "aftermathHint": "文案池／地圖餘波候補；未必有欄位，tester 可當 nextHint 延伸讀",
+      "journalCandidate": "手帳候補句；唔當必播 beat"
+    }
+  },
+  "node": {
+    "id": "C1",
+    "phase": "P1",
+    "title": "先學做動作戲／先賺",
+    "when": "1988春 / W1-2",
+    "setting": "星河電視台附近茶餐廳；片場後巷感",
+    "locId": "tvb_longmen",
+    "eraTag": "era_1988_spring_grassroot",
+    "cast": [
+      "何生",
+      "阿偉",
+      "張子駿"
+    ],
+    "synopsis": "阿偉剛從廠景收工，手頭緊。何生在茶餐廳平鋪兩條路：跟張子駿班底學做動作戲（較穩、錢慢），或趕電影散工通告（錢快、班底易散）。張子駿來電留位，今日要答。阿偉得先選一邊，唔想兩邊都落空。",
+    "playerOffer": true,
+    "playerHint": "開局事態：茶餐廳裡何生擺兩條路——先學做動作戲，定先賺錢趕通告。你仲係通告板上有名、少人記得樣嘅臨記。",
+    "lockedHint": "開局主線喺星河一帶——通告欄旁有幕等你揀。感情線／大咖牆／送禮先鎖住；而家只推呢一幕。",
+    "nextHint": "無論你揀邊邊，何生月底都會再搵你；通告板上開始有人記得你個名。下一幕「留人脈／趕通告」約第4週起，而且要隔一日先開——未到就照常跑通告同訓練，唔使返去重播呢幕。",
+    "beats": [
+      {
+        "speaker": "系統",
+        "lines": [
+          "下午三點多，星河電視台後門那條街有貨車倒車聲，臨時演員蹲在路邊抽煙。",
+          "阿偉剛從廠景收工，袖口沾著佈景灰。何生約他到兩條街外的茶餐廳。"
+        ]
+      },
+      {
+        "speaker": "系統",
+        "lines": [
+          "茶餐廳冷氣不夠，油煙和奶茶味攪在一起。阿偉面前那杯凍奶茶的冰差不多融完。",
+          "這個月房租交完，戶口裡的錢只夠撐到月中。他本來想叫東西吃，看過價錢又把餐牌放下。"
+        ]
+      },
+      {
+        "speaker": "何生",
+        "lines": [
+          "你今天做了幾組？",
+          "你跟我入行差不多大半年了。我帶你，不是因為你特別——你準時，少無故甩通告，叫你重拍你就重拍。",
+          "行規是這樣，肯做的人，我帶路。"
+        ]
+      },
+      {
+        "speaker": "何生",
+        "lines": [
+          "現在擺在你面前有兩條路，你自己選一條來走。",
+          "第一條，是跟張子駿的班底學做動作戲。他那邊不是武館，是班底——鏡頭前怎麼打、怎麼跌、怎麼走位，戲會慢慢磨出來。",
+          "另一邊，通告板剛剛貼出來，有電影散工，即日就有錢收。你自己看。"
+        ]
+      },
+      {
+        "speaker": "阿偉",
+        "lines": [
+          "學做動作戲要學多久才能見到成果？",
+          "趕通告又有多密集？"
+        ]
+      },
+      {
+        "speaker": "何生",
+        "lines": [
+          "學做動作戲，進度慢，收入也少。有人磨半年才站得穩一個位置，你想快，快不了。",
+          "趕通告，錢來得快，但班底容易散。今天這組、明天那組，認識的人多，卻未必有人記得你叫什麼。",
+          "你想做演員，還是想做臨時演員？"
+        ]
+      },
+      {
+        "speaker": "系統",
+        "lines": [
+          "茶餐廳電話響了。伙計喊：偉哥，電話。",
+          "何生抬了抬下巴，示意他去接。"
+        ]
+      },
+      {
+        "speaker": "張子駿",
+        "lines": [
+          "（電話）我班底下星期開課。",
+          "你肯來，我留位給你。不來，位置就留給別人了。",
+          "那就今天答。我不會打第二次。"
+        ]
+      },
+      {
+        "speaker": "阿偉",
+        "lines": [
+          "我知道。今日就要答覆。"
+        ]
+      },
+      {
+        "speaker": "何生",
+        "lines": [
+          "答之前想清楚。學做動作戲不會立刻見到錢。趕通告不會等你。",
+          "兩邊都做，兩邊都做不好。張子駿最討厭人遲到，也最討厭人趕到排練場一副沒睡醒的樣子。"
+        ]
+      },
+      {
+        "speaker": "阿偉",
+        "lines": [
+          "我選。不想兩邊都落空。"
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "id": "C1_a",
+        "label": "先跟班底學做動作戲：跟張子駿磨戲",
+        "effects": {
+          "flags": [
+            "route_tv"
+          ],
+          "stats": {
+            "craft": 1,
+            "wealth": 0
+          },
+          "notes": "你拿走班底地址那張紙。何生只說：下星期一準時，遲到一次他不會留位。錢會慢，但你開始知道腳步該落在哪裡。"
+        },
+        "resultBeats": [
+          {
+            "speaker": "系統",
+            "lines": [
+              "你把電影通告那張紙推回給何生，拿起寫著張子駿班底地址的那張。",
+              "紙邊有點皺。你摺好放進外套內袋，按了兩下才按實。"
+            ]
+          },
+          {
+            "speaker": "何生",
+            "lines": [
+              "下星期一，準時。遲到一次，他不會留位。"
+            ]
+          }
+        ],
+        "resultBeatsOptional": true,
+        "resultBeatsNote": "若引擎未讀 resultBeats，只播 effects.notes 即可；optional。"
+      },
+      {
+        "id": "C1_b",
+        "label": "先賺錢、趕通告：接電影散工臨記",
+        "effects": {
+          "flags": [
+            "route_film"
+          ],
+          "stats": {
+            "wealth": 1,
+            "craft": 0
+          },
+          "notes": "何生替你填散工登記表，邊寫邊說：你自己決定，之後不要說我沒提過。錢會快，班底卻容易散。"
+        },
+        "resultBeats": [
+          {
+            "speaker": "系統",
+            "lines": [
+              "你把張子駿那張紙推回去，拿起電影散工的通告登記表。",
+              "表格最下面有一行小字：現金即日，自備服裝。"
+            ]
+          },
+          {
+            "speaker": "何生",
+            "lines": [
+              "你自己決定，之後不要說我沒有提過。"
+            ]
+          }
+        ],
+        "resultBeatsOptional": true,
+        "resultBeatsNote": "若引擎未讀 resultBeats，只播 effects.notes 即可；optional。"
+      }
+    ],
+    "conflict": "T1",
+    "flags_written": [
+      "route_tv",
+      "route_film"
+    ],
+    "openConditions": [],
+    "openConditionsNote": "開局／教學後首次重要通告選擇時觸發（方向性）。phase=P1；衝突 T1。引擎亦可掛首次重要通告事件。；FLOW hint P0：章戳 W1-2 對齊開局週；nextHint 單一指向 C2。sandbox 唔改語義。",
+    "artId": "story_c1",
+    "pacing": {
+      "weekMin": 1,
+      "minDaysAfterPrev": 0,
+      "note": "開局可播；章戳跟遊戲第1–2週；唔受日耗"
+    },
+    "aftermathHint": "播完返地圖：通告板／訓練照跑。張子駿班底同電影散工兩條線仍然並存——你只係先站穩一邊。月底何生會再搵你；下一主線要等週數同隔日。",
+    "journalCandidate": "茶餐廳兩張紙。我揀咗一邊。通告板上開始有人記得我個名——起碼我咁同自己講。"
+  }
+}
