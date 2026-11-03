@@ -1,0 +1,459 @@
+{
+  "version": "1.0.0",
+  "date": "2026-11-03",
+  "model": "deepseek-chat",
+  "count": 66,
+  "items": [
+    {
+      "id": "UI_LEGEND_BOARD",
+      "old": "有板",
+      "new": "有通告",
+      "reason": "「板」單獨作通告義，改為「通告」"
+    },
+    {
+      "id": "UI_MAP_HINT",
+      "old": "有板／情報／「劇」事態見圖例 · 板免費／入場試鏡 +1日",
+      "new": "有通告／情報／「劇」事態見圖例 · 通告欄免費／入場試鏡 +1日",
+      "reason": "「有板」「板」改為「有通告」「通告欄」"
+    },
+    {
+      "id": "UI_BOARD_LEAD_SOFT",
+      "old": "免費睇板 · 有通告可搏一搏（條件未齊）",
+      "new": "免費查看通告 · 有通告可搏一搏（條件未齊）",
+      "reason": "「睇板」改為「查看通告」，與已定卡頭一致"
+    },
+    {
+      "id": "UI_BOARD_LEAD_OK",
+      "old": "免費睇板 · 達標可試鏡",
+      "new": "免費查看通告 · 達標可試鏡",
+      "reason": "「睇板」改為「查看通告」"
+    },
+    {
+      "id": "UI_BOARD_LEAD_HARD",
+      "old": "免費睇板 · 有通告暫未能報（條件未合）",
+      "new": "免費查看通告 · 有通告暫未能報（條件未合）",
+      "reason": "「睇板」改為「查看通告」，與已定卡頭一致"
+    },
+    {
+      "id": "UI_BOARD_EMPTY",
+      "old": "今日通告板冇貼。",
+      "new": "今日通告欄沒有張貼。",
+      "reason": "「通告板」改「通告欄」，口語「冇貼」改書面"
+    },
+    {
+      "id": "UI_BOARD_TITLE",
+      "old": "只睇通告板",
+      "new": "只查看通告欄",
+      "reason": "「睇通告板」改書面「查看通告欄」"
+    },
+    {
+      "id": "UI_AUD_FAIL_CONT",
+      "old": "可以免費繼續睇板；達標後再嚟。",
+      "new": "可以免費繼續查看通告；達標後再來。",
+      "reason": "「睇板」改「查看通告」，口語「再嚟」改書面"
+    },
+    {
+      "id": "UI_STORY_DONE",
+      "old": "本節已完成。可回地圖繼續訓練／睇板；有新事態時頂欄會提示。",
+      "new": "本節已完成。可回地圖繼續訓練／查看通告；有新事態時頂欄會提示。",
+      "reason": "「睇板」改「查看通告」"
+    },
+    {
+      "id": "UI_STORY_EMPTY",
+      "old": "暫時沒有事態可播。繼續訓練、傾偈或睇板，有新幕時會在頂欄提示。",
+      "new": "暫時沒有事態可播。繼續訓練、傾談或查看通告，有新幕時會在頂欄提示。",
+      "reason": "「睇板」改「查看通告」，口語「傾偈」略潤為書面"
+    },
+    {
+      "id": "UI_ACT_EMPTY",
+      "old": "未有待試鏡通告。去地圖睇板；達標先可「約試鏡日」排入手帳「工作」。",
+      "new": "未有待試鏡通告。去地圖查看通告；達標後可「約試鏡日」排入手帳「工作」。",
+      "reason": "「睇板」改「查看通告」，口語「先可」改書面"
+    },
+    {
+      "id": "UI_SHOOT_LOCK_P",
+      "old": "原本休息／安排會取消，改為拍攝鎖定。",
+      "new": "原本休息／安排會取消，改為拍攝檔期已定。",
+      "reason": "書面（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_LOCKED_HINT",
+      "old": "已鎖定 N 日製作",
+      "new": "檔期已定：共 N 日製作",
+      "reason": "去硬鎖標籤味（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_REST_MODAL",
+      "old": "可改日子會全部改成「休息睡覺」。拍攝／鎖定日唔郁。之後仍可用「還原」。",
+      "new": "可改日子會全部改成「休息睡覺」。拍攝／檔期已定之日不變。之後仍可用「還原」。",
+      "reason": "書面（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_TRAIN_MODAL",
+      "old": "可改日子會全部改成「訓練」。拍攝／鎖定日唔郁。之後仍可用「還原」。",
+      "new": "可改日子會全部改成「訓練」。拍攝／檔期已定之日不變。之後仍可用「還原」。",
+      "reason": "書面（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_CLEAR_MODAL",
+      "old": "可改日子會改成「到處逛逛」。拍攝／鎖定日保留。確定？",
+      "new": "可改日子會改成「到處逛逛」。拍攝／檔期已定之日保留。確定？",
+      "reason": "書面（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_TOAST_COPY",
+      "old": "呢日已鎖定，唔可複製",
+      "new": "此日檔期已定，不可複製",
+      "reason": "書面（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_TOAST_LOCKED",
+      "old": "呢日已鎖定",
+      "new": "此日檔期已定",
+      "reason": "書面（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_DAY_HINT",
+      "old": "拍攝鎖定 · 不可改",
+      "new": "拍攝檔期已定 · 不可改",
+      "reason": "書面（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_TOAST_SHOOT",
+      "old": "拍攝日已鎖定",
+      "new": "拍攝日檔期已定",
+      "reason": "書面（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_LOC_BOARD",
+      "old": "通告板 N 則",
+      "new": "通告欄 N 則",
+      "reason": "「通告板」改「通告欄」"
+    },
+    {
+      "id": "UI_STRESS_HARD",
+      "old": "你壓力偏高，硬試鏡成功率會跌。",
+      "new": "壓力偏高時，試鏡把握會較低。",
+      "reason": "去硬試鏡／成功率 debug 味（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_NOTE_HELP",
+      "old": "訓練須先到公司報名，再排入手帳；只看通告板不耗日。",
+      "new": "訓練須先到公司報名，再排入手帳；只看通告欄不耗日。",
+      "reason": "「通告板」改書面「通告欄」"
+    },
+    {
+      "id": "UI_TIMING_RUN",
+      "old": "時機未到，先照常跑板。",
+      "new": "時機未到，先照常跑通告。",
+      "reason": "「跑板」改「跑通告」"
+    },
+    {
+      "id": "UI_TIMING_RUN2",
+      "old": "時機未到，先照常跑板、見人。",
+      "new": "時機未到，先照常跑通告、見人。",
+      "reason": "「跑板」改「跑通告」"
+    },
+    {
+      "id": "UI_TIMING_CHAT",
+      "old": "相關人物線未到位，先照常跑通告同傾偈。",
+      "new": "相關人物線未到位，先照常跑通告、與人交談。",
+      "reason": "「傾偈」口語改書面「與人交談」，保留原意"
+    },
+    {
+      "id": "UI_GATE_HARD_LEGACY",
+      "old": "未達門檻 · 硬鎖唔能試",
+      "new": "暫未能報 · 條件未合",
+      "reason": "去除「硬鎖」「唔能試」，用已定硬鎖卡頭"
+    },
+    {
+      "id": "UI_GATE_HARD_LEAD",
+      "old": "免費睇板 · 🔒未達門檻（硬鎖，唔能試）",
+      "new": "免費查看通告 · 有通告暫未能報（條件未合）",
+      "reason": "PLAN §5；刪鎖 emoji／硬鎖（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_SOFT_LEGACY",
+      "old": "門檻未齊亦可搏（成功率反映差距）",
+      "new": "免費查看通告 · 有通告可搏一搏（條件未齊）",
+      "reason": "對齊 PLAN §5；刪成功率反映差距（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_REQ_LEGACY",
+      "old": "演技≥30（你25）",
+      "new": "演技：未合組製要求",
+      "reason": "PLAN §2.5 禁數字差額（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_FAME_LEGACY",
+      "old": "要≥X，你而家 Y",
+      "new": "組製暫未考慮你的檔——聲望未合這檔要求。",
+      "reason": "PLAN §2.1（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_TRAIN_HINT_LEGACY",
+      "old": "能力門檻未夠（演技差5、體力差3）——去手帳排訓練提升",
+      "new": "試鏡條件未合。可到手帳安排訓練，再回來報名。",
+      "reason": "PLAN §2.4（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_TRAIN_HINT2",
+      "old": "能力未夠試鏡——睇板得，先去報名訓練",
+      "new": "暫時未能試鏡。可先報名訓練，再來接這檔。",
+      "reason": "PLAN §2.4（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_THIN_BOOK",
+      "old": "薄本",
+      "new": "記數簿",
+      "reason": "自造縮寫「薄本」改「記數簿」"
+    },
+    {
+      "id": "UI_THIN_TITLE",
+      "old": "薄本與行程",
+      "new": "記數簿與行程",
+      "reason": "「薄本」改「記數簿」"
+    },
+    {
+      "id": "UI_THIN_BODY",
+      "old": "薄本記收支和數目，別漏任何一筆。",
+      "new": "記數簿記收支和數目，別漏任何一筆。",
+      "reason": "「薄本」改「記數簿」"
+    },
+    {
+      "id": "UI_THIN_ALT",
+      "old": "數目記在薄本，收支要清楚。",
+      "new": "數目記在記數簿，收支要清楚。",
+      "reason": "「薄本」改「記數簿」"
+    },
+    {
+      "id": "UI_TUT_BOARD_TITLE",
+      "old": "通告與鎖定",
+      "new": "通告與報名條件",
+      "reason": "用戶反感「鎖定」系統味；改報名條件書面（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_TUT_BOARD_BODY",
+      "old": "通告板可以先睇板，睇板唔耗日。",
+      "new": "通告欄可先免費查看，不耗日。",
+      "reason": "禁睇板／通告板；接通告感（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_TUT_BOARD_BODY2",
+      "old": "鎖住＝能力未夠，暫時唔能試鏡；約試鏡日亦唔等於即場。",
+      "new": "條件未合時暫未能試鏡；約試鏡日亦不等於即場開工。",
+      "reason": "禁唔能試／鎖住工程味（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_TUT_BOARD_ALT",
+      "old": "先睇板，再決定要不要約試鏡。",
+      "new": "先看通告欄，再決定是否約試鏡。",
+      "reason": "「睇板」改「看通告欄」"
+    },
+    {
+      "id": "UI_TUT_BOARD_ALT2",
+      "old": "見到鎖就係能力未夠；約日子唔等於即場可入。",
+      "new": "見到暫未能報，即條件未合；約定日子不等於即場可入。",
+      "reason": "書面（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "UI_TUT_DONE",
+      "old": "建議先去訓練、看通告板，或打開選單「事態」。",
+      "new": "建議先去訓練、看通告欄，或打開選單「事態」。",
+      "reason": "「通告板」改「通告欄」"
+    },
+    {
+      "id": "UI_TUT_DONE_ALT",
+      "old": "下一步建議：先訓練、睇通告板，或打開「事態」。",
+      "new": "下一步建議：先訓練、看通告欄，或打開「事態」。",
+      "reason": "「睇通告板」改「看通告欄」"
+    },
+    {
+      "id": "UI_TUT_LOCK",
+      "old": "呢張通告仲鎖住，因為能力未夠。",
+      "new": "這張通告暫未能報，因為能力未夠。",
+      "reason": "粵語口語轉書面，對齊硬鎖卡頭用語"
+    },
+    {
+      "id": "UI_TUT_LOCK_ALT",
+      "old": "而家仲唔能試呢張通告。",
+      "new": "這張通告暫未能報。",
+      "reason": "去除「唔能試」硬禁詞，改書面"
+    },
+    {
+      "id": "UI_TUT_LOCK_BODY2",
+      "old": "能力還不夠。先去訓練，夠了再試。",
+      "new": "能力還不夠。可先到手帳安排訓練，再回來報名。",
+      "reason": "對齊已定訓練提示用語"
+    },
+    {
+      "id": "NPC_BOARD1",
+      "old": "來了就好，先看板上還有沒有空位",
+      "new": "來了就好，先看通告欄還有沒有空位。",
+      "reason": "「看板」改「通告欄」，補句號"
+    },
+    {
+      "id": "NPC_BOARD2",
+      "old": "你狀態不錯，去幾間電視台看看通告板",
+      "new": "你狀態不錯，去幾間電視台看看通告欄。",
+      "reason": "「通告板」優先改「通告欄」，補句號"
+    },
+    {
+      "id": "NPC_BOARD3",
+      "old": "接不到就換區，別在同一塊板前發呆",
+      "new": "接不到就換區，別在同一處通告欄前發呆。",
+      "reason": "量詞（post-edit）",
+      "postEdit": true
+    },
+    {
+      "id": "NPC_BOARD4",
+      "old": "各區通告板更新很快，早晚各看一次",
+      "new": "各區通告欄更新很快，早晚各看一次。",
+      "reason": "「通告板」改「通告欄」，補句號"
+    },
+    {
+      "id": "NPC_RUN1",
+      "old": "跑板要勤，別等電話響才動",
+      "new": "跑通告要勤，別等電話響才動。",
+      "reason": "「跑板」改「跑通告」，補句號"
+    },
+    {
+      "id": "NPC_RUN2",
+      "old": "跑板雖然辛苦，但入鏡機會比較多",
+      "new": "跑通告雖然辛苦，但入鏡機會比較多。",
+      "reason": "「跑板」改「跑通告」，補句號"
+    },
+    {
+      "id": "NPC_RUN3",
+      "old": "別只等何生安排，自己也要主動跑板",
+      "new": "別只等何生安排，自己也要主動跑通告。",
+      "reason": "「跑板」改「跑通告」，補句號"
+    },
+    {
+      "id": "NPC_BOARD5",
+      "old": "看來何生給你的板子不少",
+      "new": "看來何生給你的通告不少。",
+      "reason": "「板子」指通告，改書面，補句號"
+    },
+    {
+      "id": "WV_SEE",
+      "old": "真正通告要自己跑公司、睇板、試鏡。",
+      "new": "真正通告要自己跑公司、看通告欄、試鏡。",
+      "reason": "「睇板」改「看通告欄」"
+    },
+    {
+      "id": "STORY_BEAT_THIN1",
+      "old": "手上有薄本和名片冊，開始跑通告。",
+      "new": "手上有記數簿和名片冊，開始跑通告。",
+      "reason": "自造縮寫「薄本」改「記數簿」"
+    },
+    {
+      "id": "STORY_BEAT_THIN2",
+      "old": "薄本與名片冊",
+      "new": "記數簿與名片冊",
+      "reason": "「薄本」改「記數簿」"
+    },
+    {
+      "id": "STORY_BEAT_BOARD1",
+      "old": "頭兩週過去，他學會看通告板，也學會等。",
+      "new": "頭兩週過去，他學會看通告欄，也學會等。",
+      "reason": "「通告板」改「通告欄」"
+    },
+    {
+      "id": "STORY_BEAT_BOARD2",
+      "old": "阿偉自己跑通告板，記下地址和時間。",
+      "new": "阿偉自己跑通告，記下地址和時間。",
+      "reason": "「跑通告板」改「跑通告」"
+    },
+    {
+      "id": "STORY_BEAT_THIN3",
+      "old": "第一單通告殺青，薄本記下這筆收入。",
+      "new": "第一單通告殺青，記數簿記下這筆收入。",
+      "reason": "「薄本」改「記數簿」"
+    },
+    {
+      "id": "STORY_BEAT_THIN4",
+      "old": "薄本用來記數，名片冊用來記人。兩樣都別弄丟。",
+      "new": "記數簿用來記數，名片冊用來記人。兩樣都別弄丟。",
+      "reason": "「薄本」改「記數簿」"
+    },
+    {
+      "id": "STORY_BEAT_BOARD3",
+      "old": "通告板分兩欄：約試鏡日、即場候補。",
+      "new": "通告欄分兩欄：約試鏡日、即場候補。",
+      "reason": "「通告板」改「通告欄」"
+    },
+    {
+      "id": "STORY_BEAT_THIN5",
+      "old": "結算後，薄本多了一行訓練紀錄。",
+      "new": "結算後，記數簿多了一行訓練紀錄。",
+      "reason": "「薄本」改「記數簿」"
+    },
+    {
+      "id": "STORY_BEAT_THIN6",
+      "old": "薄本多了一筆收入，數目不大。",
+      "new": "記數簿多了一筆收入，數目不大。",
+      "reason": "「薄本」改「記數簿」"
+    },
+    {
+      "id": "STORY_BEAT_BOARD4",
+      "old": "轉頭他先一步搶下那塊通告板。",
+      "new": "轉頭他先一步報了那張通告。",
+      "reason": "「搶通告欄」不自然（post-edit）",
+      "postEdit": true
+    }
+  ],
+  "usage": [
+    {
+      "prompt_tokens": 1528,
+      "completion_tokens": 1509,
+      "total_tokens": 3037,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1528
+    },
+    {
+      "prompt_tokens": 1461,
+      "completion_tokens": 1467,
+      "total_tokens": 2928,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 1205
+    },
+    {
+      "prompt_tokens": 1480,
+      "completion_tokens": 1404,
+      "total_tokens": 2884,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 1224
+    }
+  ],
+  "postEditNote": "Aligned PLAN_GIG_CARD_PLAYER_COPY_v1 + COPY_STYLE_HK_LEXICON; Soft≠PASS"
+}

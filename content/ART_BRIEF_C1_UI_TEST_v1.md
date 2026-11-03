@@ -34,7 +34,7 @@
 
 ---
 
-## 3. C1 對白情緒對照（劇本建議；尚未寫入 LIVE JSON）
+## 3. C1 對白情緒對照（已入 LIVE 1.2.8＋sandbox；本表為準）
 
 | beat | kind | speakerId | emotion | expression | bg 建議 |
 |---|---|---|---|---|---|
