@@ -1,5 +1,5 @@
 {
-  "version": "1.2.3",
+  "version": "1.2.4",
   "locale": "zh-Hant-written-HK",
   "source": "merge phase1–5 detail JSON; C16–C17 appended 2026-11-02; wiring openConditions v1.1 2026-11-02; C1–C5 map hint／loc／C5 thresh=2 BOARD_DECISIONS_v1 2026-11-03",
   "nodes": [
@@ -7,7 +7,7 @@
       "id": "C1",
       "phase": "P1",
       "title": "先練／先賺",
-      "when": "1988春 / W3-4",
+      "when": "1988春 / W1-2",
       "setting": "星河電視台廠景通告板旁，何生事務所",
       "locId": "tvb_longmen",
       "eraTag": "era_1988_spring_grassroot",
@@ -18,9 +18,9 @@
       ],
       "synopsis": "何生帶來兩條路。一條是跟張子駿的練功班底磨戲，較穩，但錢來得慢。另一條是趕通告，接電影散工臨記，錢快，但功夫未必有進。阿偉要在開工與練功之間先選一邊。",
       "playerOffer": true,
-      "playerHint": "星河電視台廠景有幕等你：先練定先賺。",
-      "lockedHint": "去星河電視台廠景——通告欄旁有幕等你揀。",
-      "nextHint": "下一幕「留人脈／趕通告」——殺青後可喺片場後巷留低。",
+      "playerHint": "開局事態：星河電視台廠景有幕等你——先練定先賺。",
+      "lockedHint": "開局主線喺星河電視台廠景——通告欄旁有幕等你揀。",
+      "nextHint": "下一幕只有「留人脈／趕通告」——約第4週起，而且要隔一日先開；未到就照常跑通告，唔使返去重播「先練／先賺」。",
       "beats": [
         {
           "speaker": "何生",
@@ -112,12 +112,12 @@
         "route_film"
       ],
       "openConditions": [],
-      "openConditionsNote": "開局／教學後首次重要通告選擇時觸發（方向性）。phase=P1；衝突 T1。引擎亦可掛首次重要通告事件。",
+      "openConditionsNote": "開局／教學後首次重要通告選擇時觸發（方向性）。phase=P1；衝突 T1。引擎亦可掛首次重要通告事件。；FLOW hint P0：章戳 W1-2 對齊開局週；nextHint 單一指向 C2。",
       "artId": "story_c1",
       "pacing": {
-        "weekMin": 3,
+        "weekMin": 1,
         "minDaysAfterPrev": 0,
-        "note": "開局可播；唔受日耗"
+        "note": "開局可播；章戳跟遊戲第1–2週；唔受日耗"
       }
     },
     {
@@ -136,8 +136,8 @@
       "synopsis": "一場戲殺青，後巷有人約飯、交換名片。同一時間，下一輪通告板剛貼出。阿偉要決定留下應酬，還是趕去接下一張通告。",
       "playerOffer": true,
       "playerHint": "星河片場後巷有人約飯；通告欄又貼咗新單。",
-      "lockedHint": "殺青後喺星河片場後巷留低——人脈同下一張通告會撞期。",
-      "nextHint": "下一幕「對對手硬／忍」——多留意星河電影組通告欄。",
+      "lockedHint": "約第4週起，且隔一日之後先開。未到唔使專程蹲後巷——先照常跑通告；開咗再去星河片場後巷。",
+      "nextHint": "下一幕「對對手硬／忍」——約第6週起、隔一日之後；開咗先留意星河電影組通告欄。",
       "beats": [
         {
           "speaker": "林曉晴",
@@ -254,8 +254,8 @@
       "synopsis": "通告板貼出下周廠景名單。高俊傑當眾指阿偉走位慢，順手把阿偉的名牌從板上抽走。阿偉要決定硬碰還是忍讓。林曉晴在旁觀望，沒有出聲。",
       "playerOffer": true,
       "playerHint": "星河電影組通告欄前氣氛緊，有人睇住你嘅名牌。",
-      "lockedHint": "多去星河電影組通告欄——搶位爭執快發生。",
-      "nextHint": "下一幕「何生拒單」——中環廣告那邊有份外判通告等你表態。",
+      "lockedHint": "約第6週起，且隔一日之後先開。未到唔使專登去盯通告欄——先照常開工；開咗再去星河電影組通告欄。",
+      "nextHint": "下一幕「何生拒單」——約第8週起、隔一日之後；開咗先去中環廣告。",
       "beats": [
         {
           "speaker": "系統",
@@ -362,8 +362,8 @@
       "synopsis": "何生帶來一份外判通告。工時寫得含糊，條款不清，片酬只有口頭承諾。何生主張拒單。阿偉可以跟何生，也可以自己硬接。",
       "playerOffer": true,
       "playerHint": "何生檯面有份通告紙等你表態。",
-      "lockedHint": "何生會拎份條款含糊嘅外判通告——去中環廣告那邊表態。",
-      "nextHint": "下一幕「采兒小訪題」——同周采兒處好關係，或捱到台慶籌備季。",
+      "lockedHint": "約第8週起，且隔一日之後先開。未到唔使專程跑中環——先照常跑通告；開咗再去中環廣告聽何生講。",
+      "nextHint": "下一幕「采兒小訪題」——約第9週起；仲要同周采兒處好關係，或捱到夏台慶籌備季。",
       "beats": [
         {
           "speaker": "何生",
@@ -470,7 +470,7 @@
       "synopsis": "星河台慶籌備的傳聞在片場流轉，獎項名單未到阿偉手上。周采兒好感足夠，約他在片場邊做一段小訪，只問片場日常與新人起步。她翻開筆記本，筆尖停在第一題。",
       "playerOffer": true,
       "playerHint": "片場邊有小訪位，筆記本已經打開。",
-      "lockedHint": "同周采兒處好關係，或捱到台慶籌備季，先有小訪。",
+      "lockedHint": "約第9週起先輪到呢幕。采兒／台慶未登場前：可喺片場或多露面同周采兒混個面（好感約到2），或捱到初夏台慶籌備季（約夏初、台慶前）；兩樣中一樣就得。未到週數就照常跑通告，唔使估下一步。",
       "nextHint": "主線呢段告一段落——繼續跑通告、見人，留意之後會嚟嘅新事態。",
       "beats": [
         {
@@ -2497,6 +2497,11 @@
       "gates": "week_min from when lo + days_after_prev:1",
       "c5_lock": "UI lockedHint only",
       "next_no_b01": "eng CTA"
+    },
+    "hint_pacing_p0": {
+      "status": "json_1.2.4",
+      "no_fake_meet": true,
+      "c1_when": "W1-2"
     }
   },
   "conditionSchema": {
@@ -2525,6 +2530,11 @@
       "id": "FLOW_PACING_v1",
       "at": "2026-11-03",
       "note": "用戶批全套：C2–C17 openConditions 加 week_min:N＋days_after_prev:1；pacing 雙寫；C1 無日耗。對齊 PLAN_FLOW_FAIL_DECISIONS＋ENG handoff。"
+    },
+    {
+      "id": "HINT_PACING_P0_v1",
+      "at": "2026-11-03",
+      "note": "tester 玩家角度偏硬：C1 when→W1-2；C2–C4 lockedHint 寫實 week_min＋隔日、行動降級；C1 next 單一；C5 lockedHint 約第9週＋台慶時機；唔加假見面節。"
     }
   ]
 }

@@ -25,7 +25,7 @@ game week = floor(dayIndex/7)+1。C1 openConditions=[] 開局可播（唔強制 
 3) C4 後「即將可出」見 C5 lockedHint（采兒／台慶），無 need_done:
 
 ## Ship
-- commit：（push 後填）
-- curl-verify：（push 後填）
+- commit：`dc32836` (`dc32836a243dd2d48bfb4e6fb83e4699ae5211d8`)
+- curl-verify：LIVE PASS 07:17 HKT — SAVE=starVolunteer_map_v17z; JSON 1.2.3; week_min/days_after/same_day/下一節≠B01/lockedHint
 - tar：`/workspace/star-volunteer-web-v17z.tar.gz`
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=17z
