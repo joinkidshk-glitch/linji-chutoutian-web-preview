@@ -1,5 +1,5 @@
 {
-  "version": "2.3.1",
+  "version": "2.3.2",
   "year": 1988,
   "source": "user Prompt 4",
   "edits": [
@@ -766,7 +766,20 @@
         5,
         6
       ],
-      "shootDeadlineDays": 13
+      "shootDeadlineDays": 13,
+      "workTitle": "都市梟雄錄",
+      "genreLabel": "警匪劇",
+      "roleLabel": "群戲打手",
+      "director": "何子聰",
+      "producer": "陳雅琳",
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": []
+      },
+      "payExact": 1150,
+      "breachFee": 600
     },
     {
       "id": "gig_1988_tv_02",
@@ -1144,7 +1157,21 @@
         5,
         6
       ],
-      "shootDeadlineDays": 18
+      "shootDeadlineDays": 18,
+      "workTitle": "鐵血英雄傳",
+      "genreLabel": "江湖動作片",
+      "roleLabel": "動作替身",
+      "director": "梁兆山",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "須接受煙火場面"
+        ]
+      },
+      "payExact": 3500,
+      "breachFee": 1800
     },
     {
       "id": "gig_1988_film_02",
@@ -2786,5 +2813,6 @@
     }
   ],
   "planRef": "PLAN_SHOOT_CAREER_SCHEDULE_v2",
-  "softStatus": "Soft≠PASS"
+  "softStatus": "Soft≠PASS",
+  "notes": " | 2.3.2 QA stub：鐵血＋都市梟雄 補 genreLabel／roleLabel／director／limits／payExact（tester 測細類 pill）"
 }
