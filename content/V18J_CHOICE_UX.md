@@ -34,6 +34,6 @@
 
 - feature commit（choices UX）：`44bf8db5702c` (`44bf8db5702c52359f466c6373b124c585620f22`)
 - anti-zoom：`63ed2c885347` (`63ed2c885347a117d35496b2c40d4a51a2960ca8`)
-- tip／NOTES：`14e0eb5c2e3b` (`14e0eb5c2e3be39a6aecd14b653e1a7b629c917e`)
+- tip／NOTES：`9259ff7d89c6` (`9259ff7d89c61f933dae6d34fad9532ab045e656`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18j
 - Soft≠PASS · 全量出圖 HOLD
