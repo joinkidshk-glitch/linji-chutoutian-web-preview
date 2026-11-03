@@ -33,11 +33,12 @@
 - JSON version=`1.2.7` SHA16=`ed1f006c2267cfe8`
 - C1.setting 無「暫掛／locId」
 - 舊 title「先練／先賺」= 唔見（註解除外）
+- curl confirmed 2026-11-03 11:12+ HKT（Asia/Hong_Kong）
 
 ## Ship
 
 - feature commit：`5b73bb4` (`5b73bb410680bbc7e193d93f8acb477a89cefe2c`)
-- NOTES commit：（填）
+- NOTES commit：`8e71832` (`8e71832f1b1cf0d2f029696d32789f31fc5f8d89`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18f
 - tar：`/workspace/star-volunteer-web-v18f.tar.gz`
 - Soft≠PASS · 出圖 HOLD
