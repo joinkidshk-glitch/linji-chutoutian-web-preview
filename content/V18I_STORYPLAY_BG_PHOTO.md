@@ -32,7 +32,7 @@
 ## Ship
 
 - feature commit：`24132cbf59e2` (`24132cbf59e2d489451653dcc5e9e82028c2c21b`)
-- tip／NOTES commit：`(pending-final)`
+- tip／NOTES commit：`b5cf8359f00a` (`b5cf8359f00aee7960be431b6ecdc6f02339af4c`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18i
 - curl confirmed LIVE Pages：SAVE `starVolunteer_map_v18i` · `__spApplyBgPhotos = function` · `function advance()` · asset 200 (`bg_loc_tvb_longmen.jpg`／`char_ho_bust_default.png`)
 - Soft≠PASS · 全量出圖 HOLD
