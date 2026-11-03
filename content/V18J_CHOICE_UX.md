@@ -15,6 +15,7 @@
 | 4 | **Forced chrome** | C1（`spIsForcedStory`／`_sess.forced`）：藏 modal「先返回」；藏「跳至選項」；outside dismiss → re-render 唔 abort |
 | 5 | SAVE | `…_v18i` → `starVolunteer_map_v18j` |
 | 6 | 未改 | Soft≠PASS；全量出圖 HOLD；`advance`／`__spApplyBgPhotos` 保留 |
+| 7 | **No double-tap zoom** | viewport `maximum-scale=1, user-scalable=no`；CSS `touch-action: manipulation` on html/body/button/a/[role=button]/.sp-* |
 
 ## Tester 覆測（清 SAVE）
 
