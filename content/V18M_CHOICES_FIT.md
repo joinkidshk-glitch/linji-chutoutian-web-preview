@@ -40,7 +40,7 @@
 ## Ship
 
 - feature commit：`cf6dff29fa7d` (`cf6dff29fa7d8b0a1c6bdc97cd5ac9356c34b1ee`)
-- tip／NOTES：`3154681198aa` (`3154681198aa3766f4d2a37433ebe80768eaf361`)
+- tip／NOTES：`0fa86460cad4` (`0fa86460cad47d217d36704aa22fd6a4719ad51b`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18m
 - gigs 2.2.0 commit：`a8d71c8127cb` (`a8d71c8127cb0e351319415ba4a68bad4c633417`) · sha16 `20a8b9740e802176`
 - Soft≠PASS · 全量出圖 HOLD
