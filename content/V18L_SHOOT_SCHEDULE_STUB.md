@@ -39,6 +39,6 @@
 ## Ship
 
 - feature：`22e3251e2d7d` (`22e3251e2d7d4c244499f2ff72d3dac7522cfa72`)
-- NOTES tip：`ce80a52c5443` (`ce80a52c544329721d5aad89e2a9a3ca47c19470`)
+- NOTES tip：`e4b05f803991` (`e4b05f803991f5c95189e064a77d35c94f0adf69`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18l
 - Soft≠PASS · 全量出圖 HOLD · gigs JSON untouched
