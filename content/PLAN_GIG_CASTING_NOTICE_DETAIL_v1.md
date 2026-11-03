@@ -112,17 +112,19 @@
 
 （精確表可調；UI 只顯示星，唔顯示 `hard` 小數。）
 
-### 3.7 條件列顯示（禁 debug）— **2026-11-03 用戶拍板覆寫**
-Detail 條件欄要顯示**玩家現值／門檻**，唔淨寫合／未合。全文句式見 **`PLAN_GIG_CASTING_REQ_NUM_COPY_v1`**。
+### 3.7 條件列顯示（禁 debug）— **2026-11-03 改口 v1.1**
+Detail 條件欄：`{名}：>{need}`（例 `演技：>60`）。**唔要**「現／要求／合／未合」長句。用戶明確要 `>`。全文見 **`PLAN_GIG_CASTING_REQ_NUM_COPY_v1`**（v1.1）。
 
-- 已達：`演技：現 {cur}／要求 {need} · 合`  
-- 未達：`演技：現 {cur}／要求 {need} · 未合`  
-- 聲望：`聲望：現 {cur}／這檔要求 {need} · 合|未合`  
-- **禁** `差 N`／`你 X`／`≥`／`>`（唔用參考圖裸 `>515`；用「現／要求」斜線）  
-- Detail：永遠本句式（preview v18x 已刪 `SHOW_REQ_THRESHOLD`；唔用舊 `>N`）；列表短卡／teaser 仍可無數字（見通告卡 PLAN）
+- 能力：`演技：>60`  
+- 聲望：`聲望：>{need}`  
+- **禁**差N／你X／`≥`；**可用** `>`  
+- 達／未達可用色，字串唔寫合未合  
+- Detail：`SHOW_REQ_THRESHOLD=true`
+
 
 ### 3.8 片酬
-- `酬勞　$ {low} – {high}`  
+- Detail：`$ {low}–{high}` → v19a compact **`$2,000–4,000`**（`$` 後無空格、en-dash、`.cn-pay` nowrap）
+- （舊）`酬勞　$ {low} – {high}`  
 - 簽約／特殊：MVP `—`（預留兩行對齊參考圖）
 
 ### 3.9 劇情簡介
@@ -179,7 +181,7 @@ Detail 條件欄要顯示**玩家現值／門檻**，唔淨寫合／未合。全
 | 階段 | 誰 | 內容 |
 |---|---|---|
 | **A｜UI 骨架** | iOS＋GD | Detail 跟 §4；字段全用 §3 派生；無新 JSON 亦可出板 |
-| **B｜顯示名／條件** | iOS | 合 PLAN＋DS 表；Detail 現／要求＋合／未合；刪展開 |
+| **B｜顯示名／條件** | iOS | 合 PLAN＋DS 表；Detail `{名}：>{need}`；刪展開 |
 | **C｜補庫** | 劇本 | 抽樣→全庫補 `workTitle`／`genreLabel`／`director`；（可選）`castWindow`；多 `roles` 暫緩 |
 | **D｜美術** | GD | 招募單紙質／pill／星／角色 tab；立繪位 | 
 
@@ -214,6 +216,6 @@ Detail 條件欄要顯示**玩家現值／門檻**，唔淨寫合／未合。全
 **Tester：** A＋B 上板後對 §1 十一欄逐項有無；禁詞抽樣。  
 **劇本：** 等用戶 OK 補庫節奏再跑 `workTitle`／`director`／`genreLabel` 批次。
 
-**用戶已拍板（2026-11-03）：** Detail 條件顯示現值／門檻（見 `PLAN_GIG_CASTING_REQ_NUM_COPY_v1`）；禁差N／你X／≥。
+**用戶改口（2026-11-03）：** Detail 條件 `>{need}`（見 `PLAN_GIG_CASTING_REQ_NUM_COPY_v1` v1.1）；禁差N／你X／≥；要 `>`。
 
 Soft≠PASS · 出圖 HOLD。
