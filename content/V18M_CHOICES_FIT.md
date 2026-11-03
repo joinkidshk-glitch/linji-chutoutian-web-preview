@@ -16,12 +16,21 @@
 | 5 | SAVE | `…_v18l` → `starVolunteer_map_v18m` |
 | 6 | 未改 | Soft≠PASS；出圖 HOLD；gigs JSON／shoot-schedule 無動 |
 
+
+## Piggyback（同船 18m）
+
+| # | 項 | 做法 |
+|---|---|---|
+| G1 | **gigs_1988.json 2.2.0** | SHA16 `20a8b9740e802176`；35 gigs；`roleScale`／`shootBand`／`shootWeekdays`／`shootDeadlineDays`（跟 PLAN v2） |
+| G2 | 取代 LIVE 2.1.1 | 俾 shoot full-field 覆測；唔發明內容；檔已喺 disk |
+
 ## Tester 覆測（清 SAVE）
 
 1. `?v=18m` 硬 refresh；SAVE=`starVolunteer_map_v18m`
 2. C1 選項頁：兩掣（含「先賺錢、趕通告…」）一屏內完整可見；唔使整頁豎滾
 3. 茶餐廳底圖仍見（較矮 crop／cover OK）；唔回歸短灰條
-4. Soft≠PASS
+4. `content/gigs_1988.json` version **2.2.0**／sha16 `20a8b9740e802176`／35 條有 roleScale／shootBand／weekdays／deadline
+5. Soft≠PASS
 
 ## curl-verify（填 ship 後）
 

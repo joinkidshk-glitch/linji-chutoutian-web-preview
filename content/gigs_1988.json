@@ -1,5 +1,5 @@
 {
-  "version": "2.1.1",
+  "version": "2.2.0",
   "year": 1988,
   "source": "user Prompt 4",
   "edits": [
@@ -7,14 +7,31 @@
     "tv_04 補 diasporaHook",
     "film synopsis 公司名改用中文（獅子山／紅棉）",
     "§2A 標註 v1：eraTag 詞表化＋boardPriority／boardNote／seasonWeight；synopsis 未改",
-    "v2.1 修好：季節口吻＋星河顯示名；pay／id 未改"
+    "v2.1 修好：季節口吻＋星河顯示名；pay／id 未改",
+    "v2.2.0 A→B PLAN_SHOOT_CAREER_SCHEDULE_v2：全則補 roleScale／shootBand／抬 shootDaysHint／shootWeekdays／shootDeadlineDays；+5（photo×2／mtv_02／film_07／tv_08）"
   ],
   "counts": {
-    "廣告": 8,
+    "廣告": 10,
     "綜藝": 5,
-    "電視劇": 7,
-    "電影": 6,
-    "唱片通告": 4
+    "電視劇": 8,
+    "電影": 7,
+    "唱片通告": 5,
+    "total": 35,
+    "byRoleScale": {
+      "ad_av": 6,
+      "ad_print": 2,
+      "film_lead_big": 3,
+      "film_support_main": 2,
+      "film_support_small": 2,
+      "mtv": 2,
+      "photobook": 2,
+      "rec_album": 3,
+      "tv_cameo_short": 2,
+      "tv_lead_long": 3,
+      "tv_support_main": 3,
+      "variety_ep": 4,
+      "variety_special": 1
+    }
   },
   "gigs": [
     {
@@ -54,8 +71,21 @@
       "stressDeltaHint": "低",
       "hard": 0.3,
       "tier": "初",
-      "shootDaysHint": 2,
-      "shootHint": "需連續拍攝數小時高強度跳舞鏡頭，考驗體能與面部表情管理。"
+      "shootDaysHint": 3,
+      "shootHint": "需連續拍攝數小時高強度跳舞鏡頭，考驗體能與面部表情管理。",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1988_ad_02",
@@ -94,8 +124,21 @@
       "stressDeltaHint": "低",
       "hard": 0.25,
       "tier": "初",
-      "shootDaysHint": 1,
-      "shootHint": "需長時間保持親切溫暖的微笑，注意避免面部肌肉僵硬。"
+      "shootDaysHint": 3,
+      "shootHint": "需長時間保持親切溫暖的微笑，注意避免面部肌肉僵硬。",
+      "roleScale": "ad_print",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1988_ad_03",
@@ -135,7 +178,17 @@
       "hard": 0.4,
       "tier": "中",
       "shootDaysHint": 3,
-      "shootHint": "烈日下需反覆飲用冰飲並保持眼神清透，防止暴曬影響連戲。"
+      "shootHint": "烈日下需反覆飲用冰飲並保持眼神清透，防止暴曬影響連戲。",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1988_ad_04",
@@ -174,8 +227,18 @@
       "stressDeltaHint": "低",
       "hard": 0.35,
       "tier": "初",
-      "shootDaysHint": 1,
-      "shootHint": "穿厚重皮套被威亞吊起撞牆，需精確控制落地姿態以防受傷。"
+      "shootDaysHint": 3,
+      "shootHint": "穿厚重皮套被威亞吊起撞牆，需精確控制落地姿態以防受傷。",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1988_ad_05",
@@ -214,8 +277,21 @@
       "stressDeltaHint": "中",
       "hard": 0.45,
       "tier": "中",
-      "shootDaysHint": 2,
-      "shootHint": "忍受大量定型噴霧直接噴灑面部，需保持眼睛不流淚並盯緊鏡頭。"
+      "shootDaysHint": 3,
+      "shootHint": "忍受大量定型噴霧直接噴灑面部，需保持眼睛不流淚並盯緊鏡頭。",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1988_ad_06",
@@ -254,8 +330,21 @@
       "stressDeltaHint": "中",
       "hard": 0.4,
       "tier": "中",
-      "shootDaysHint": 2,
-      "shootHint": "需與小演員頻繁互動，考驗耐心與即興現場應變。"
+      "shootDaysHint": 3,
+      "shootHint": "需與小演員頻繁互動，考驗耐心與即興現場應變。",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1988_ad_07",
@@ -295,7 +384,20 @@
       "hard": 0.65,
       "tier": "高",
       "shootDaysHint": 3,
-      "shootHint": "微表情需極具高級感，微小的面部肌肉抖動都會被長焦鏡頭放大。"
+      "shootHint": "微表情需極具高級感，微小的面部肌肉抖動都會被長焦鏡頭放大。",
+      "roleScale": "ad_print",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1988_ad_08",
@@ -334,8 +436,21 @@
       "stressDeltaHint": "中",
       "hard": 0.55,
       "tier": "中",
-      "shootDaysHint": 2,
-      "shootHint": "機場實景拍攝，需在人潮擁擠環境下迅速投入深情眼淚戲。"
+      "shootDaysHint": 3,
+      "shootHint": "機場實景拍攝，需在人潮擁擠環境下迅速投入深情眼淚戲。",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1988_var_01",
@@ -374,8 +489,18 @@
       "stressDeltaHint": "中",
       "hard": 0.45,
       "tier": "初",
-      "shootDaysHint": 1,
-      "shootHint": "完全現場直播，面對數百位現場觀眾，講錯對白必須立刻即興補救。"
+      "shootDaysHint": 3,
+      "shootHint": "完全現場直播，面對數百位現場觀眾，講錯對白必須立刻即興補救。",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1988_var_02",
@@ -415,7 +540,21 @@
       "hard": 0.5,
       "tier": "中",
       "shootDaysHint": 4,
-      "shootHint": "在瀑布濕滑岩石上完成高強度舞蹈，注意腳下安全。"
+      "shootHint": "在瀑布濕滑岩石上完成高強度舞蹈，注意腳下安全。",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1988_var_03",
@@ -454,8 +593,18 @@
       "stressDeltaHint": "低",
       "hard": 0.4,
       "tier": "初",
-      "shootDaysHint": 1,
-      "shootHint": "高強度水上運動，注意體能分配與防止肌肉抽筋。"
+      "shootDaysHint": 3,
+      "shootHint": "高強度水上運動，注意體能分配與防止肌肉抽筋。",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1988_var_04",
@@ -495,7 +644,20 @@
       "hard": 0.55,
       "tier": "中",
       "shootDaysHint": 2,
-      "shootHint": "在萬千狂熱歌迷的尖叫噪聲中保持專注，精確卡準音樂走位。"
+      "shootHint": "在萬千狂熱歌迷的尖叫噪聲中保持專注，精確卡準音樂走位。",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1988_var_05",
@@ -534,8 +696,22 @@
       "stressDeltaHint": "高",
       "hard": 0.6,
       "tier": "高",
-      "shootDaysHint": 3,
-      "shootHint": "直播現場高空特技，需頂住數人重量且不能有絲毫晃動。"
+      "shootDaysHint": 5,
+      "shootHint": "直播現場高空特技，需頂住數人重量且不能有絲毫晃動。",
+      "roleScale": "variety_special",
+      "shootBand": [
+        4,
+        7
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 8
     },
     {
       "id": "gig_1988_tv_01",
@@ -574,8 +750,22 @@
       "stressDeltaHint": "低",
       "hard": 0.2,
       "tier": "初",
-      "shootDaysHint": 2,
-      "shootHint": "連續熬夜拍攝18小時，需在人工降雨下完成摔跌動作。"
+      "shootDaysHint": 9,
+      "shootHint": "連續熬夜拍攝18小時，需在人工降雨下完成摔跌動作。",
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1988_tv_02",
@@ -614,8 +804,22 @@
       "stressDeltaHint": "中",
       "hard": 0.35,
       "tier": "初",
-      "shootDaysHint": 2,
-      "shootHint": "高空威亞拉扯落地，需極精確地控制身軀落點以防摔傷脊椎。"
+      "shootDaysHint": 9,
+      "shootHint": "高空威亞拉扯落地，需極精確地控制身軀落點以防摔傷脊椎。",
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1988_tv_03",
@@ -654,8 +858,22 @@
       "stressDeltaHint": "中",
       "hard": 0.5,
       "tier": "中",
-      "shootDaysHint": 5,
-      "shootHint": "多場內心扭曲與審訊室攤牌文戲，需精確控制台詞爆發力。"
+      "shootDaysHint": 15,
+      "shootHint": "多場內心扭曲與審訊室攤牌文戲，需精確控制台詞爆發力。",
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 20
     },
     {
       "id": "gig_1988_tv_04",
@@ -694,8 +912,22 @@
       "stressDeltaHint": "中",
       "hard": 0.45,
       "tier": "中",
-      "shootDaysHint": 3,
-      "shootHint": "在人工降雨機下連拍整夜打戲與中槍戲，注意防寒保暖。"
+      "shootDaysHint": 15,
+      "shootHint": "在人工降雨機下連拍整夜打戲與中槍戲，注意防寒保暖。",
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 20
     },
     {
       "id": "gig_1988_tv_05",
@@ -734,8 +966,22 @@
       "stressDeltaHint": "低",
       "hard": 0.5,
       "tier": "中",
-      "shootDaysHint": 6,
-      "shootHint": "使用地道諧趣語調，精確把控喜劇包袱的停頓節奏。"
+      "shootDaysHint": 15,
+      "shootHint": "使用地道諧趣語調，精確把控喜劇包袱的停頓節奏。",
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 20
     },
     {
       "id": "gig_1988_tv_06",
@@ -774,8 +1020,22 @@
       "stressDeltaHint": "高",
       "hard": 0.65,
       "tier": "高",
-      "shootDaysHint": 8,
-      "shootHint": "深入城寨實景拍攝，多場心理崩潰與眼神無聲哭戲需一氣呵成。"
+      "shootDaysHint": 22,
+      "shootHint": "深入城寨實景拍攝，多場心理崩潰與眼神無聲哭戲需一氣呵成。",
+      "roleScale": "tv_lead_long",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1988_tv_07",
@@ -814,8 +1074,22 @@
       "stressDeltaHint": "高",
       "hard": 0.7,
       "tier": "高",
-      "shootDaysHint": 10,
-      "shootHint": "氣場必須壓制對手，身穿名貴西裝在交易所與晚宴現場進行激烈對辯。"
+      "shootDaysHint": 22,
+      "shootHint": "氣場必須壓制對手，身穿名貴西裝在交易所與晚宴現場進行激烈對辯。",
+      "roleScale": "tv_lead_long",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1988_film_01",
@@ -854,8 +1128,22 @@
       "stressDeltaHint": "中",
       "hard": 0.4,
       "tier": "初",
-      "shootDaysHint": 2,
-      "shootHint": "在真正的火藥爆破點旁跳躍，需精確把握毫秒級別的跳躍時機。"
+      "shootDaysHint": 13,
+      "shootHint": "在真正的火藥爆破點旁跳躍，需精確把握毫秒級別的跳躍時機。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
     },
     {
       "id": "gig_1988_film_02",
@@ -894,8 +1182,22 @@
       "stressDeltaHint": "中",
       "hard": 0.45,
       "tier": "初",
-      "shootDaysHint": 4,
-      "shootHint": "深夜在旺角女人街實景狂奔手持道具刀，防止被真實路人與警察誤會。"
+      "shootDaysHint": 13,
+      "shootHint": "深夜在旺角女人街實景狂奔手持道具刀，防止被真實路人與警察誤會。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
     },
     {
       "id": "gig_1988_film_03",
@@ -934,8 +1236,22 @@
       "stressDeltaHint": "中",
       "hard": 0.5,
       "tier": "中",
-      "shootDaysHint": 5,
-      "shootHint": "配合飛車特技做出誇張的空中翻滾落地動作，極耗體力。"
+      "shootDaysHint": 22,
+      "shootHint": "配合飛車特技做出誇張的空中翻滾落地動作，極耗體力。",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1988_film_04",
@@ -974,8 +1290,22 @@
       "stressDeltaHint": "高",
       "hard": 0.6,
       "tier": "中",
-      "shootDaysHint": 7,
-      "shootHint": "長鏡頭下展現眼神中的頹廢與深情，對台詞情緒與氣息要求極高。"
+      "shootDaysHint": 22,
+      "shootHint": "長鏡頭下展現眼神中的頹廢與深情，對台詞情緒與氣息要求極高。",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1988_film_05",
@@ -1014,8 +1344,22 @@
       "stressDeltaHint": "高",
       "hard": 0.65,
       "tier": "高",
-      "shootDaysHint": 12,
-      "shootHint": "在真實黑幫氣氛籠罩下完成高強度槍戰與內心戲爆發。"
+      "shootDaysHint": 29,
+      "shootHint": "在真實黑幫氣氛籠罩下完成高強度槍戰與內心戲爆發。",
+      "roleScale": "film_lead_big",
+      "shootBand": [
+        28,
+        30
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 36
     },
     {
       "id": "gig_1988_film_06",
@@ -1054,8 +1398,22 @@
       "stressDeltaHint": "高",
       "hard": 0.7,
       "tier": "高",
-      "shootDaysHint": 15,
-      "shootHint": "不使用替身親自完成高空跳躍與撞破真玻璃危險鏡頭。"
+      "shootDaysHint": 29,
+      "shootHint": "不使用替身親自完成高空跳躍與撞破真玻璃危險鏡頭。",
+      "roleScale": "film_lead_big",
+      "shootBand": [
+        28,
+        30
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 36
     },
     {
       "id": "gig_1988_rec_01",
@@ -1094,8 +1452,21 @@
       "stressDeltaHint": "低",
       "hard": 0.35,
       "tier": "初",
-      "shootDaysHint": 2,
-      "shootHint": "在老式模擬錄音室面對大型麥克風，精準掌控呼吸聲與吐字。"
+      "shootDaysHint": 12,
+      "shootHint": "在老式模擬錄音室面對大型麥克風，精準掌控呼吸聲與吐字。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
     },
     {
       "id": "gig_1988_rec_02",
@@ -1135,7 +1506,17 @@
       "hard": 0.4,
       "tier": "初",
       "shootDaysHint": 2,
-      "shootHint": "在人工降雨與慢鏡頭下展現極具深情的眼神，配合歌詞對嘴演出。"
+      "shootHint": "在人工降雨與慢鏡頭下展現極具深情的眼神，配合歌詞對嘴演出。",
+      "roleScale": "mtv",
+      "shootBand": [
+        2,
+        3
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 9
     },
     {
       "id": "gig_1988_rec_03",
@@ -1174,8 +1555,21 @@
       "stressDeltaHint": "中",
       "hard": 0.55,
       "tier": "中",
-      "shootDaysHint": 5,
-      "shootHint": "連續一整週在錄音室熬夜錄音，需保持嗓音狀態與高音穩定。"
+      "shootDaysHint": 12,
+      "shootHint": "連續一整週在錄音室熬夜錄音，需保持嗓音狀態與高音穩定。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
     },
     {
       "id": "gig_1988_rec_04",
@@ -1214,8 +1608,285 @@
       "stressDeltaHint": "高",
       "hard": 0.65,
       "tier": "高",
+      "shootDaysHint": 12,
+      "shootHint": "在紅館四面台面對三萬名狂熱觀眾現場演唱，克服極度緊張並卡準走位。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1988_photo_01",
+      "year": 1988,
+      "season": "夏",
+      "type": "廣告",
+      "title": "「星河映像」初夏寫真集《巷口少年》",
+      "loc": "ad_adm",
+      "roleHint": "擔任寫真集封面與內頁主角，演繹深水埗巷口的夏日少年",
+      "blurb": "新興寫真工作室徵求有故事感的面孔！街坊巷口、天台晾衫與黃昏電車，拍成一本可放書店櫥窗的寫真集。",
+      "synopsis": "虛構影像品牌「星河映像」推出青年寫真線。阿偉需在深水埗街市後巷、唐樓天台與電車站連拍數日，以自然光與簡單便服呈現「巷口長大」的真實感，寫真集隨秋季書展上架。",
+      "heroAngle": "阿偉身上未修飾的街坊氣質，正是寫真集想留住的八十年代末香港少年臉孔。",
+      "diasporaHook": "巷口、天台與電車是海外華人共同的城市記憶，寫真畫面易引起鄉愁。",
+      "eraTag": "era_1988_summer_mall",
+      "discoverNote": "影像工作室公開海選",
+      "boardPriority": "normal",
+      "boardNote": "寫真集書店線曝光",
+      "seasonWeight": 0.8,
+      "req": {
+        "looks": 30,
+        "charm": 25,
+        "stamina": 20
+      },
+      "pay": [
+        5000,
+        9000
+      ],
+      "fame": [
+        8,
+        18
+      ],
+      "popularity": [
+        25,
+        45
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 6,
+      "shootHint": "連日戶外自然光拍攝，注意日曬與連續換景的體力。",
+      "roleScale": "photobook",
+      "shootBand": [
+        5,
+        7
+      ],
+      "shootWeekdays": [
+        5,
+        6,
+        7
+      ],
+      "shootDeadlineDays": 16
+    },
+    {
+      "id": "gig_1988_mtv_02",
+      "year": 1988,
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "樂隊「夜航燈」主打快歌 MTV 男主角",
+      "loc": "rec_wanchai",
+      "roleHint": "飾演夜遊中環天橋、被節奏推著往前跑的都市青年",
+      "blurb": "新晉樂隊快歌卡帶主打！需要能在霓虹與天橋上跟得上剪接節奏的面孔！",
+      "synopsis": "虛構樂隊「夜航燈」首支快歌 MTV。阿偉在中環行人天橋、碼頭倉庫與夜巴上層連拍趕路、對嘴與簡單群舞，畫面跟卡拉 OK 字幕一併發行。",
+      "heroAngle": "阿偉替身出身的爆發力與鏡頭前的生猛，剛好撐起快歌 MTV 的街頭速度感。",
+      "diasporaHook": "卡帶 MTV 與卡拉 OK 字幕是八十年代末全球華語流行樂的共同載體。",
+      "eraTag": "era_1988_autumn_board",
+      "discoverNote": "唱片公司試鏡欄的快歌男主",
+      "boardPriority": "normal",
+      "boardNote": "秋檔卡帶 MTV",
+      "seasonWeight": 0.7,
+      "req": {
+        "stamina": 35,
+        "charm": 30,
+        "looks": 25
+      },
+      "pay": [
+        3500,
+        6000
+      ],
+      "fame": [
+        10,
+        22
+      ],
+      "popularity": [
+        30,
+        50
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.4,
+      "tier": "初",
       "shootDaysHint": 3,
-      "shootHint": "在紅館四面台面對三萬名狂熱觀眾現場演唱，克服極度緊張並卡準走位。"
+      "shootHint": "夜景對嘴與來回奔跑鏡頭多，注意補水與腳下安全。",
+      "roleScale": "mtv",
+      "shootBand": [
+        2,
+        3
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1988_film_07",
+      "year": 1988,
+      "season": "冬",
+      "type": "電影",
+      "title": "《獅子山下的信》歸僑少年阿信",
+      "loc": "film_lion",
+      "roleHint": "飾演從南洋回流、在船廠學師並尋找失散家人的歸僑少年阿信",
+      "blurb": "賀歲檔文藝大製作！跨過船廠、碼頭與唐樓的長線主角，檔期要鎖死整個冬檔。",
+      "synopsis": "獅子山影業賀歲文藝片。阿偉擔正男主角「阿信」，講述八十年代末歸僑少年回流香港、在船廠學師並尋找失散家人的故事。全片實景多、對手戲重，是一張真正要排滿月餘的大檔。",
+      "heroAngle": "阿偉草根出身的倔強與鄉土感，與歸僑少年在都市重新站穩的主題貼合。",
+      "diasporaHook": "回流、船廠與尋親是東南亞與北美華人家庭常見的親身故事。",
+      "eraTag": "era_1988_winter_recruit",
+      "discoverNote": "賀歲檔男主試鏡入圍",
+      "boardPriority": "high",
+      "boardNote": "冬檔賀歲文藝主推",
+      "seasonWeight": 1.0,
+      "req": {
+        "acting": 75,
+        "stamina": 70,
+        "charm": 60
+      },
+      "pay": [
+        28000,
+        48000
+      ],
+      "fame": [
+        65,
+        95
+      ],
+      "popularity": [
+        75,
+        110
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.7,
+      "tier": "高",
+      "shootDaysHint": 29,
+      "shootHint": "長線主角檔，實景與對手戲密集，需預留整段冬檔拍攝日。",
+      "roleScale": "film_lead_big",
+      "shootBand": [
+        28,
+        30
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 36
+    },
+    {
+      "id": "gig_1988_tv_08",
+      "year": 1988,
+      "season": "秋",
+      "type": "電視劇",
+      "title": "《渡輪彼岸》渡輪水手阿海",
+      "loc": "tvb_longmen",
+      "roleHint": "飾演維港渡輪水手阿海，串起兩岸家庭與城市變遷的主線男主角",
+      "blurb": "星河長篇處境正劇！男主貫穿整季，碼頭、渡輪與公屋走廊都要拍。",
+      "synopsis": "星河電視台秋季長篇。阿偉飾演維港渡輪水手「阿海」，以每日渡海為軸，串起兩岸家庭矛盾、工廠結業與年輕人抉留港或遠行的故事，是一張要長期駐廠的長劇男主通告。",
+      "heroAngle": "阿偉熟悉基層作息與碼頭氣味，演水手不必硬撐精英腔，反而更真。",
+      "diasporaHook": "渡輪與離合是海外華人回港探親時最常想起的城市節奏。",
+      "eraTag": "era_1988_autumn_board",
+      "discoverNote": "長劇男主內部試鏡",
+      "boardPriority": "high",
+      "boardNote": "秋檔長劇男主",
+      "seasonWeight": 1.0,
+      "req": {
+        "acting": 65,
+        "stamina": 55,
+        "charm": 50
+      },
+      "pay": [
+        16000,
+        28000
+      ],
+      "fame": [
+        55,
+        85
+      ],
+      "popularity": [
+        65,
+        95
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.65,
+      "tier": "高",
+      "shootDaysHint": 22,
+      "shootHint": "長篇男主，廠景與渡輪實景交替，需預留連續數週可拍日。",
+      "roleScale": "tv_lead_long",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
+    },
+    {
+      "id": "gig_1988_photo_02",
+      "year": 1988,
+      "season": "冬",
+      "type": "廣告",
+      "title": "「香江鏡框」冬日寫真集《大衣與街燈》",
+      "loc": "ad_central",
+      "roleHint": "擔任冬日寫真集男主角，演繹穿大衣走在街燈下的都會側寫",
+      "blurb": "書店與百貨聯乘寫真！需要能撐起大衣質感、又不像模特兒空心的面孔。",
+      "synopsis": "虛構出版品牌「香江鏡框」冬日寫真線。阿偉在中環街燈、天星碼頭與舊戲院門口連拍大衣造型，強調「普通人穿上體面衣服」的溫度，寫真集於聖誕檔期上架。",
+      "heroAngle": "阿偉不是空心模特兒臉，穿上大衣反而顯出剛站穩的年輕藝人緊張與認真。",
+      "diasporaHook": "大衣、街燈與聖誕櫥窗是海外華人回港過節常見的城市印象。",
+      "eraTag": "era_1988_winter_festive",
+      "discoverNote": "出版品牌冬日寫真試鏡",
+      "boardPriority": "normal",
+      "boardNote": "冬日寫真書店線",
+      "seasonWeight": 0.75,
+      "req": {
+        "looks": 35,
+        "charm": 30,
+        "acting": 20
+      },
+      "pay": [
+        6000,
+        11000
+      ],
+      "fame": [
+        10,
+        20
+      ],
+      "popularity": [
+        30,
+        50
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.4,
+      "tier": "中",
+      "shootDaysHint": 6,
+      "shootHint": "夜景街拍為主，注意保暖與連續站姿的肩頸負荷。",
+      "roleScale": "photobook",
+      "shootBand": [
+        5,
+        7
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 11
     }
-  ]
+  ],
+  "planRef": "PLAN_SHOOT_CAREER_SCHEDULE_v2",
+  "softStatus": "Soft≠PASS"
 }
