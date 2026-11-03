@@ -31,6 +31,6 @@
 
 ## Ship
 
-- feature／tip：（push 後填）
+- feature／tip： ()
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18j
 - Soft≠PASS · 全量出圖 HOLD
