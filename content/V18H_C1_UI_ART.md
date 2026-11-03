@@ -42,5 +42,6 @@
 ## Ship
 
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18h
+- feature commit： ()
 - tip／NOTES commit：_pending_
 - Soft≠PASS · 全量出圖 HOLD
