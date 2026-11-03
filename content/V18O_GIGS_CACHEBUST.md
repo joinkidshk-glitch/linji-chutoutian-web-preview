@@ -24,7 +24,7 @@
 3. 再開／跳板唔硬 refresh → 仍應見 52／海港春有板（唔應回 35）
 4. Soft≠PASS
 
-## curl-verify（填 ship 後）
+## curl-verify
 
 - SAVE=`starVolunteer_map_v18o`
 - get 行含 `?v="+bust`／bust←SAVE
@@ -32,7 +32,7 @@
 
 ## Ship
 
-- feature commit： ()`TBD`
-- tip／NOTES： ()`TBD`
+- feature commit：`5d2755b00a1b` (`5d2755b00a1b04dee3a45223e2c356e783e6b55b`)
+- tip／NOTES：`52cb10538d24` (`52cb10538d249371e42b36d015b422c861ebefb2`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18o
 - Soft≠PASS · 全量出圖 HOLD
