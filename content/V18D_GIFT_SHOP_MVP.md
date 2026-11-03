@@ -49,7 +49,7 @@
 
 ## Ship
 
-- commit：（deploy 後填）
+- commit：`294f413` (`294f4131a8646143f7967dcf1e86f34cf6d64967`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18d
 - tar：`/workspace/star-volunteer-web-v18d.tar.gz`
 - Soft≠PASS · 出圖 HOLD
