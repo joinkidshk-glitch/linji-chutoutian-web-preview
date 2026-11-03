@@ -1,7 +1,8 @@
-# NOTES v18t — 通告卡真・接通告 player UX
+# NOTES v18t — 通告卡玩家面（跟 PLAN_GIG_CARD_PLAYER_COPY_v1）
 
 **日期：** 2026-11-03（Asia/Hong_Kong）  
 **SAVE：** `starVolunteer_map_v18t`  
+**規格：** `content/PLAN_GIG_CARD_PLAYER_COPY_v1.md`  
 **Soft≠PASS · 出圖 HOLD**  
 **URL：** https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18t
 
@@ -9,23 +10,29 @@
 
 | 檔 | version | note |
 |---|---|---|
-| `content/gigs_1988.json` | **2.3.1**（不變） | 天星 brand 維持 |
+| `content/gigs_1988.json` | **2.3.1**（不變） | JSON 本輪唔改 |
 
-## index.html（玩家面文案／版式）
+## index.html（對照 PLAN §2–§5）
 
-1. **reqHtml**：改試鏡條件表格式。達標＝`聲望 達標`／能力 `達標`；未達＝`… 未達（要≥N）`。**無**`（你N）`、`差N`。
-2. **gateShortReason**（卡鎖 `🔒 …`）：`試鏡門檻未達：聲望、台風、…`——列齊未達類別（聲望＋能力），**無**差距數字。
-3. **gateTrainHint**／canAudition 聲望 reason：同步去工程口吻（toast 亦讀似通告條件）。
-4. **meta**：`片酬約 $ …`＋`檔期：約 N 日 · 逢週…拍攝 · 限期 N 日`；CSS 全 theme 取消 `nowrap`／ellipsis，可換行完整可見。
-5. **synopsis**：全文顯示；**刪** `.syn-toggle`「展開」掣（`wireGigCardSynToggles` 留無害）。
-6. **rate**：`可試鏡 · 預估取錄約 N%`（可搏註：條件未齊仍可搏）。
+| 區 | 實作 |
+|---|---|
+| §2.1 `gateShortReason` | 聲望句／能力 1–2／≥3＋等／聲望+能力／兜底；板面短標 `暫未能報 · 條件未合` |
+| §2.2 rate／soft | `可搏一搏 · 條件未齊`（可留單一 %）；無「成功率反映差距」括註 |
+| §2.3 consumed | `本單已殺青。`／逾期組製取消／`通告已下架。` |
+| §2.4 `gateTrainHint` | 兩句書面語（已報名／未報名） |
+| §2.5 `reqHtml` | `演技：合／未合組製要求`；`聲望：合／未合這檔檔次`；無 ≥／你X |
+| canAudition fame | §2.1 聲望句 |
+| §3 meta | `酬勞約 $… · 拍攝／錄音約 N 日 · 逢週… · 獲聘後 N 日內完成`；CSS wrap 無截斷 |
+| §3 weekday／HUD | `shootWeekdayLabel(…, gig)` 切拍攝／錄音；七日→每日可拍／可錄；手帳限期句 |
+| §4 synopsis | 全文；無「展開」掣 |
+| §5 board | lead／lock-sub 跟表 |
 
-## Tester checklist
+## Tester（PLAN §7）
 
-- [ ] `?v=18t` 硬 reload；SAVE `starVolunteer_map_v18t`
-- [ ] 天星合唱錄音卡：無「你12」「差4」；見「試鏡條件／試鏡門檻未達」
-- [ ] 片酬＋檔期行完整可見（可換行，無…裁切）
-- [ ] 無「展開」掣；synopsis 全文
-- [ ] gigs JSON 仍 2.3.1；邏輯門檻未改
+- [ ] 鎖卡無「差 N」「你 X」「≥」；見「條件未合／暫未能報」
+- [ ] 軟搏「可搏一搏」；無「成功率反映差距」
+- [ ] 唱片：完整「錄音約 N 日」
+- [ ] 無「展開」；synopsis 全文
+- [ ] Soft≠PASS
 
 Soft≠PASS。
