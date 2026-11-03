@@ -38,12 +38,14 @@
 ## curl-verify（公開 Pages）
 
 - SAVE=`starVolunteer_map_v18g`
-- markers：`sp-stage` `sp-bust` `sp-narration` `char_hero` `bg_generic_interior`
-- feature `99f0b93fc5a5`
+- HTML markers：`sp-stage` `sp-bust` `sp-narration` `char_hero` `bg_generic_interior` `raise_brow`
+- curl confirmed 2026-11-03 12:41 HKT（Asia/Hong_Kong）
+- raw.githubusercontent main OK
 
 ## Ship
 
 - feature commit：`99f0b93fc5a5` (`99f0b93fc5a5a216c3aa572873d65ad860cfb7f5`)
+- NOTES commit：`e6f9074d9d42` (`e6f9074d9d427e96c556d7052e2148be5897b44c`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18g
 - tar：`/workspace/star-volunteer-web-v18g.tar.gz`
 - Soft≠PASS · 出圖 HOLD（C1 UI test gate only）
