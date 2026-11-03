@@ -40,7 +40,7 @@
 ## Ship
 
 - feature commit：`d6ed19d` (`d6ed19db2069f2e43bab1e663c2d1770a9696568`)
-- NOTES commit：`8871539` (`8871539d52b71d8f5e7e5e21b82ef229ae0db8fa`)
+- NOTES commit：`b598376` (`b598376ccc32fe83dd19d9bd56a5238802c35d68`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18e
 - tar：`/workspace/star-volunteer-web-v18e.tar.gz`
 - Soft≠PASS · 出圖 HOLD

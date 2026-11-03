@@ -1,5 +1,5 @@
 {
-  "version": "1.2.6",
+  "version": "1.2.7",
   "locale": "zh-Hant-written-HK",
   "source": "merge phase1–5 detail JSON; C16–C17 appended 2026-11-02; wiring openConditions v1.1 2026-11-02; C1–C5 map hint／loc／C5 thresh=2 BOARD_DECISIONS_v1 2026-11-03",
   "nodes": [
@@ -8,7 +8,7 @@
       "phase": "P1",
       "title": "先學做動作戲／先賺",
       "when": "1988春 / W1-2",
-      "setting": "星河電視台附近茶餐廳；片場後巷感（locId 暫掛 tvb_longmen）",
+      "setting": "星河電視台附近茶餐廳；片場後巷感",
       "locId": "tvb_longmen",
       "eraTag": "era_1988_spring_grassroot",
       "cast": [
@@ -2651,6 +2651,13 @@
       "id": "C1_FUSION_LIVE_v1",
       "at": "2026-11-03",
       "note": "sandbox merge C1 fusion 2026-11-03：用戶批合 LIVE＋保留 11 beats；文案／hints／notes／title／setting 換入；choice id／flags／stats／openConditions／pacing／locId／playerOffer 不變；Soft≠PASS／出圖 HOLD／鄧 HOLD；唔 publish Soft。"
+    },
+    {
+      "at": "2026-11-03",
+      "from": "1.2.6",
+      "to": "1.2.7",
+      "note": "nits: strip locId from setting + title fallback 學做動作戲",
+      "id": "C1_NITS_127_v1"
     }
   ]
 }
