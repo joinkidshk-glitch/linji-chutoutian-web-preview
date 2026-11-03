@@ -35,7 +35,7 @@
 
 ## Ship
 
-- feature commit： ()
-- tip／NOTES： ()
+- feature commit：`8c178a91c15b` (`8c178a91c15b64e843fb0d525e9b67fdc6905f3e`)
+- tip／NOTES：`feaa5c447ccf` (`feaa5c447ccf410378897ce01bf2ac6615403bd9`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18p
 - Soft≠PASS · 全量出圖 HOLD
