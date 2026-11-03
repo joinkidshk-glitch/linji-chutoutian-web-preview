@@ -1,7 +1,7 @@
 # V18G_STORYPLAY_VISUAL
 
 **SAVE：** `starVolunteer_map_v18g`  
-**時間：** 2026-11-03 12:40 HKT（Asia/Hong_Kong）  
+**時間：** 2026-11-03 12:41 HKT（Asia/Hong_Kong）  
 **預覽：** `joinkidshk-glitch/linji-chutoutian-web-preview`  
 **HOLD：** Soft≠PASS；全量出圖未開；**C1 UI test art gate** 已開（GD 產 bust／`bg_loc_tvb_longmen`；未到檔＝佔位＋路徑已留）  
 **契約：** 用戶拍板劇情界面；schema 跟 `PLAN_STORY_UI_BEAT_SCHEMA_v1.md`；LIVE JSON **唔改**；meet／送禮 unlock **未改**
@@ -40,12 +40,12 @@
 - SAVE=`starVolunteer_map_v18g`
 - HTML markers：`sp-stage` `sp-bust` `sp-narration` `char_hero` `bg_generic_interior` `raise_brow`
 - curl confirmed 2026-11-03 12:41 HKT（Asia/Hong_Kong）
-- raw.githubusercontent main OK
+- raw + Pages both serve v18g SAVE
 
 ## Ship
 
 - feature commit：`99f0b93fc5a5` (`99f0b93fc5a5a216c3aa572873d65ad860cfb7f5`)
-- NOTES commit：`e6f9074d9d42` (`e6f9074d9d427e96c556d7052e2148be5897b44c`)
+- NOTES commit：`a7a372430f3d` (`a7a372430f3d` pending fill after this fix)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18g
 - tar：`/workspace/star-volunteer-web-v18g.tar.gz`
 - Soft≠PASS · 出圖 HOLD（C1 UI test gate only）
