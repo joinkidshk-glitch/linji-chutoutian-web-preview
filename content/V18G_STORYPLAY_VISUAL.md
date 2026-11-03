@@ -45,7 +45,7 @@
 ## Ship
 
 - feature commit：`99f0b93fc5a5` (`99f0b93fc5a5a216c3aa572873d65ad860cfb7f5`)
-- NOTES commit：`a7a372430f3d` (`a7a372430f3d` pending fill after this fix)
+- NOTES commit：`0a08956a6155` (`0a08956a6155489c3a33d8a5a05fbb3de0feff7c`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18g
 - tar：`/workspace/star-volunteer-web-v18g.tar.gz`
 - Soft≠PASS · 出圖 HOLD（C1 UI test gate only）
