@@ -31,7 +31,7 @@
 
 ## Ship
 
-- feature commit：`(pending)`
+- feature commit：`24132cbf59e2` (`24132cbf59e2d489451653dcc5e9e82028c2c21b`)
 - tip／NOTES commit：`(pending)`
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18i
 - Soft≠PASS · 全量出圖 HOLD
