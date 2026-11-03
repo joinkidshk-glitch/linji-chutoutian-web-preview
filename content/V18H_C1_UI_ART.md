@@ -41,8 +41,9 @@
 
 ## Ship
 
-- feature commit：
-- tip／NOTES commit： ()
+- feature commit：`8d74a19d7909`
+- tip／NOTES commit：`de6d1c169352` (`de6d1c16935283cb848705a2387b0260136d4c1b`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18h
-- curl confirmed LIVE Pages SAVE v18h + function advance + asset 200
+- tar：`/workspace/star-volunteer-web-v18h.tar.gz`
+- curl confirmed LIVE Pages：SAVE `starVolunteer_map_v18h` · `function advance()` · asset 200 (`char_hero_bust_default.png`／`bg_loc_tvb_longmen.jpg`)
 - Soft≠PASS · 全量出圖 HOLD
