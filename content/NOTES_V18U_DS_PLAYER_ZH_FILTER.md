@@ -18,7 +18,7 @@
 
 | 檔 | SHA16 |
 |---|---|
-| tutorial_zh_HK.json | `8e1efc59751267d5` |
+| tutorial_zh_HK.json | `68055992ede78697`（對齊 DS UI_TUT_LOCK「因為能力未夠」；原 HANDOFF 條件未合版已覆） |
 | npc_lines_core.json | `74044efce1996f4f` |
 | worldview.json | `b01d186e38c0a504` |
 | story_beats_phase1.json | `96fad0d682edd9ca` |
@@ -33,3 +33,8 @@
 `sv-phone-preview` → `star-volunteer-web` → `/tmp/linji-chutoutian-web-preview` push `main`（no force）。
 
 Soft≠PASS · 出圖 HOLD
+
+## 另議 soft
+
+- boardNote 含「填縫」：顯示層 `boardNotePlayerOk` 跳過，唔改 gigs JSON。
+- 硬編碼 TUT_AUD_LOCK fallback 已改 DS 新句。
