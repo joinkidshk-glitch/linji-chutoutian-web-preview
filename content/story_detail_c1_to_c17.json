@@ -1,5 +1,5 @@
 {
-  "version": "1.2.7",
+  "version": "1.2.8",
   "locale": "zh-Hant-written-HK",
   "source": "merge phase1–5 detail JSON; C16–C17 appended 2026-11-02; wiring openConditions v1.1 2026-11-02; C1–C5 map hint／loc／C5 thresh=2 BOARD_DECISIONS_v1 2026-11-03",
   "nodes": [
@@ -27,14 +27,20 @@
           "lines": [
             "下午三點多，星河電視台後門那條街有貨車倒車聲，臨時演員蹲在路邊抽煙。",
             "阿偉剛從廠景收工，袖口沾著佈景灰。何生約他到兩條街外的茶餐廳。"
-          ]
+          ],
+          "kind": "system",
+          "speakerId": null,
+          "bg": "bg_loc_tvb_longmen"
         },
         {
           "speaker": "系統",
           "lines": [
             "茶餐廳冷氣不夠，油煙和奶茶味攪在一起。阿偉面前那杯凍奶茶的冰差不多融完。",
             "這個月房租交完，戶口裡的錢只夠撐到月中。他本來想叫東西吃，看過價錢又把餐牌放下。"
-          ]
+          ],
+          "kind": "system",
+          "speakerId": null,
+          "bg": "bg_c1_tea_restaurant"
         },
         {
           "speaker": "何生",
@@ -42,7 +48,12 @@
             "你今天做了幾組？",
             "你跟我入行差不多大半年了。我帶你，不是因為你特別——你準時，少無故甩通告，叫你重拍你就重拍。",
             "行規是這樣，肯做的人，我帶路。"
-          ]
+          ],
+          "kind": "dialogue",
+          "speakerId": "ho_sang",
+          "emotion": "firm",
+          "expression": "default",
+          "bg": "bg_c1_tea_restaurant"
         },
         {
           "speaker": "何生",
@@ -50,14 +61,24 @@
             "現在擺在你面前有兩條路，你自己選一條來走。",
             "第一條，是跟張子駿的班底學做動作戲。他那邊不是武館，是班底——鏡頭前怎麼打、怎麼跌、怎麼走位，戲會慢慢磨出來。",
             "另一邊，通告板剛剛貼出來，有電影散工，即日就有錢收。你自己看。"
-          ]
+          ],
+          "kind": "dialogue",
+          "speakerId": "ho_sang",
+          "emotion": "firm",
+          "expression": "raise_brow",
+          "bg": "bg_c1_tea_restaurant"
         },
         {
           "speaker": "阿偉",
           "lines": [
             "學做動作戲要學多久才能見到成果？",
             "趕通告又有多密集？"
-          ]
+          ],
+          "kind": "dialogue",
+          "speakerId": "awi",
+          "emotion": "worried",
+          "expression": "eyes_down",
+          "bg": "bg_c1_tea_restaurant"
         },
         {
           "speaker": "何生",
@@ -65,14 +86,22 @@
             "學做動作戲，進度慢，收入也少。有人磨半年才站得穩一個位置，你想快，快不了。",
             "趕通告，錢來得快，但班底容易散。今天這組、明天那組，認識的人多，卻未必有人記得你叫什麼。",
             "你想做演員，還是想做臨時演員？"
-          ]
+          ],
+          "kind": "dialogue",
+          "speakerId": "ho_sang",
+          "emotion": "firm",
+          "expression": "frown",
+          "bg": "bg_c1_tea_restaurant"
         },
         {
           "speaker": "系統",
           "lines": [
             "茶餐廳電話響了。伙計喊：偉哥，電話。",
             "何生抬了抬下巴，示意他去接。"
-          ]
+          ],
+          "kind": "system",
+          "speakerId": null,
+          "bg": "bg_c1_tea_restaurant"
         },
         {
           "speaker": "張子駿",
@@ -80,26 +109,46 @@
             "（電話）我班底下星期開課。",
             "你肯來，我留位給你。不來，位置就留給別人了。",
             "那就今天答。我不會打第二次。"
-          ]
+          ],
+          "kind": "dialogue",
+          "speakerId": "cheung_tsijun",
+          "emotion": "firm",
+          "expression": "default",
+          "bg": "bg_c1_tea_restaurant"
         },
         {
           "speaker": "阿偉",
           "lines": [
             "我知道。今日就要答覆。"
-          ]
+          ],
+          "kind": "dialogue",
+          "speakerId": "awi",
+          "emotion": "tense",
+          "expression": "default",
+          "bg": "bg_c1_tea_restaurant"
         },
         {
           "speaker": "何生",
           "lines": [
             "答之前想清楚。學做動作戲不會立刻見到錢。趕通告不會等你。",
             "兩邊都做，兩邊都做不好。張子駿最討厭人遲到，也最討厭人趕到排練場一副沒睡醒的樣子。"
-          ]
+          ],
+          "kind": "dialogue",
+          "speakerId": "ho_sang",
+          "emotion": "firm",
+          "expression": "frown",
+          "bg": "bg_c1_tea_restaurant"
         },
         {
           "speaker": "阿偉",
           "lines": [
             "我選。不想兩邊都落空。"
-          ]
+          ],
+          "kind": "dialogue",
+          "speakerId": "awi",
+          "emotion": "firm",
+          "expression": "raise_brow",
+          "bg": "bg_c1_tea_restaurant"
         }
       ],
       "choices": [
@@ -2658,6 +2707,11 @@
       "to": "1.2.7",
       "note": "nits: strip locId from setting + title fallback 學做動作戲",
       "id": "C1_NITS_127_v1"
+    },
+    {
+      "at": "2026-11-03T12:50+08:00",
+      "ver": "1.2.8",
+      "note": "C1 UI-test: additive kind/speakerId/emotion/expression/bg on 11 beats (ART_BRIEF_C1_UI_TEST); Soft≠PASS"
     }
   ]
 }
