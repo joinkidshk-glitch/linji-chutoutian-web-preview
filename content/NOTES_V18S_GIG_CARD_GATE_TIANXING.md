@@ -31,7 +31,7 @@ Brand：`gig_1988_rec_star_spring`／summer — 「星途」→**天星**（見 
 
 ## Ship
 
-- Feature commit：index + gigs_1988 2.3.1 + 本 NOTES（初稿可無 tip SHA）
-- Tip／NOTES commit：填 feature／tip SHA
+- Feature SHA：
+- Tip／NOTES SHA：*(下一 commit)*
 
 Soft≠PASS。
