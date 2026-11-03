@@ -1,0 +1,61 @@
+{
+  "version": "1.0.0",
+  "note": "ALIGN §2 signed likes + cast lan/xu/tang · Soft≠PASS · 出圖 HOLD · reaction key = npcId:itemId:pref",
+  "placeholderLines": {
+    "liked": "（佔位）她接過禮物，表情開朗。",
+    "neutral": "（佔位）她接過禮物，表情平淡。",
+    "dislike": "（佔位）她接過禮物，皺了皺眉。",
+    "softcap": "（佔位）她心領了，這週人情先到這裡。"
+  },
+  "npcs": {
+    "vera": {
+      "relKey": "rel_vera",
+      "displayName": "Vera",
+      "mapNpcId": "stylist",
+      "requireFlagsAny": ["flag_vera_met_warm", "flag_vera_met_cold"],
+      "likes": ["gift_fashion_mag", "gift_perfume_sample", "gift_hair_clip_set"],
+      "dislikes": ["gift_pineapple_bun_set", "gift_egg_tart_box"]
+    },
+    "hiu": {
+      "relKey": "rel_hiu",
+      "displayName": "林曉晴",
+      "mapNpcId": "colleague",
+      "requireFlagsAny": ["flag_hiu_meet_exchange", "flag_hiu_meet_distant"],
+      "likes": ["gift_pineapple_bun_set", "gift_egg_tart_box", "gift_thermos", "gift_hair_clip_set", "gift_handmade_sweet", "gift_cassette_indie"],
+      "dislikes": []
+    },
+    "choi": {
+      "relKey": "rel_choi",
+      "displayName": "周采兒",
+      "mapNpcId": "reporter",
+      "requireFlagsAny": ["flag_choi_meet_honest", "flag_choi_meet_official"],
+      "requireDoneAny": ["C5"],
+      "likes": ["gift_coffee_beans", "gift_memo_pad", "gift_cassette_indie"],
+      "dislikes": []
+    },
+    "lan": {
+      "relKey": "rel_lan",
+      "displayName": "藍若曦",
+      "mapNpcId": null,
+      "requireFlagsAny": ["flag_lan_met_warm", "flag_lan_met_cool", "flag_lan_met_cold"],
+      "likes": ["gift_handmade_sweet", "gift_cassette_indie"],
+      "dislikes": ["gift_perfume_sample"]
+    },
+    "xu": {
+      "relKey": "rel_xu",
+      "displayName": "徐寶珊",
+      "mapNpcId": null,
+      "requireFlagsAny": ["flag_xu_met_warm", "flag_xu_met_cold", "flag_xu_met_cool"],
+      "likes": [],
+      "dislikes": ["gift_pineapple_bun_set", "gift_handmade_sweet", "gift_egg_tart_box"]
+    },
+    "tang": {
+      "relKey": "rel_tang",
+      "displayName": "鄧麗萍",
+      "mapNpcId": null,
+      "requireFlagsAny": ["flag_tang_open"],
+      "likes": [],
+      "dislikes": []
+    }
+  }
+}

@@ -40,8 +40,6 @@
 
 ## Ship
 
-- commit：`d6a351d` (`d6a351d822779e0a27cecb6e3935cda90ae1a29f`)
-- curl-verify：LIVE PASS 08:04 HKT — SAVE=starVolunteer_map_v18a; JSON 1.2.4; C1 when W1-2; lockedHints; soft-try／wire debug gate
-- tar：`/workspace/star-volunteer-web-v18a.tar.gz`
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18a
+- tar：`/workspace/star-volunteer-web-v18a.tar.gz`
 - Soft≠PASS · 出圖 HOLD
