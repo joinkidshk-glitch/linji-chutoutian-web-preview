@@ -25,6 +25,7 @@
 
 ## Ship
 
+- commit：`7cb6be0` (`7cb6be05fbfca45fa780ba24378c21cd916949e6`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18b
 - tar：`/workspace/star-volunteer-web-v18b.tar.gz`
 - Soft≠PASS · 出圖 HOLD
