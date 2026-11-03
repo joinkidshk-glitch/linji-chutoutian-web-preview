@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1.0",
   "year": 1992,
   "locale": "zh-Hant-written-HK",
   "source": "PLOT_MASTER_PLAN_v1.4-DS §2／§2A.5；規格對齊 GIGS_1989–1991_v1",
@@ -22,21 +22,38 @@
     ]
   },
   "counts": {
-    "電影": 12,
-    "電視劇": 5,
-    "唱片通告": 4,
-    "綜藝": 5,
-    "廣告": 4
+    "電影": 16,
+    "電視劇": 7,
+    "唱片通告": 12,
+    "綜藝": 7,
+    "廣告": 9,
+    "total": 51,
+    "byRoleScale": {
+      "ad_av": 4,
+      "ad_print": 3,
+      "film_lead_big": 2,
+      "film_support_main": 4,
+      "film_support_small": 10,
+      "mtv": 1,
+      "photobook": 2,
+      "rec_album": 11,
+      "tv_cameo_short": 4,
+      "tv_lead_long": 1,
+      "tv_support_main": 2,
+      "variety_ep": 7
+    }
   },
   "seasonCounts": {
-    "春": 12,
-    "夏": 12,
-    "秋": 3,
-    "冬": 3
+    "春": 14,
+    "夏": 15,
+    "秋": 11,
+    "冬": 11
   },
   "highBySeason": {
-    "春": 4,
-    "夏": 4
+    "春": 1,
+    "夏": 1,
+    "秋": 1,
+    "冬": 0
   },
   "eraTagPrimary": {
     "春": [
@@ -59,7 +76,9 @@
   "eraTagWrapNote": "秋冬無獨立詞表；收束通告掛 era_1992_summer_lookback／legacy",
   "seasonWeightRule": "主=1.0；次=0.6；其他=0.3",
   "edits": [
-    "v1.0 初產 30 則；春揀劇本→夏舊底片收束；秋冬少量收束"
+    "v1.0 初產 30 則；春揀劇本→夏舊底片收束；秋冬少量收束",
+    "v1.1.0 A→B PLAN_SHOOT_CAREER_SCHEDULE_v2：全則補 roleScale／shootBand／抬 shootDaysHint／shootWeekdays／shootDeadlineDays；career+4；loc×season fill+17（空板 FAIL 補齊 11 loc×4 季）",
+    "v1.1.0 文案微修：繁簡／寫真季節對齊／id 連續"
   ],
   "gigs": [
     {
@@ -95,12 +114,26 @@
         16
       ],
       "tier": "高",
-      "shootDaysHint": 2,
+      "shootDaysHint": 29,
       "shootHint": "晨光窗位，連戲要穩。",
       "hard": 0.42,
       "year": 1992,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_lead_big",
+      "shootBand": [
+        28,
+        30
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 36
     },
     {
       "id": "gig_1992_film_02",
@@ -135,12 +168,26 @@
         14
       ],
       "tier": "中",
-      "shootDaysHint": 2,
+      "shootDaysHint": 22,
       "shootHint": "對白密，勿搶拍。",
       "hard": 0.4,
       "year": 1992,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1992_film_03",
@@ -175,12 +222,26 @@
         12
       ],
       "tier": "中",
-      "shootDaysHint": 2,
+      "shootDaysHint": 22,
       "shootHint": "長鏡頭，情緒連。",
       "year": 1992,
       "seasonWeight": 0.6,
       "stressDeltaHint": "中",
-      "hard": 0.32
+      "hard": 0.32,
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1992_film_04",
@@ -215,12 +276,26 @@
         13
       ],
       "tier": "中",
-      "shootDaysHint": 1,
+      "shootDaysHint": 22,
       "shootHint": "近鏡補光。",
       "hard": 0.36,
       "year": 1992,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1992_film_05",
@@ -255,12 +330,26 @@
         9
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 13,
       "shootHint": "安靜，翻頁輕。",
       "stressDeltaHint": "低",
       "hard": 0.22,
       "year": 1992,
-      "seasonWeight": 1.0
+      "seasonWeight": 1.0,
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
     },
     {
       "id": "gig_1992_tv_01",
@@ -295,12 +384,26 @@
         18
       ],
       "tier": "中",
-      "shootDaysHint": 3,
+      "shootDaysHint": 15,
       "shootHint": "兩場對照，服裝連。",
       "year": 1992,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.32
+      "hard": 0.32,
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 20
     },
     {
       "id": "gig_1992_tv_02",
@@ -335,12 +438,26 @@
         16
       ],
       "tier": "初",
-      "shootDaysHint": 2,
+      "shootDaysHint": 9,
       "shootHint": "對手年輕，節奏慢。",
       "year": 1992,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.32
+      "hard": 0.32,
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1992_tv_03",
@@ -375,12 +492,26 @@
         15
       ],
       "tier": "中",
-      "shootDaysHint": 2,
+      "shootDaysHint": 15,
       "shootHint": "妝髮對照舊照。",
       "year": 1992,
       "seasonWeight": 0.6,
       "stressDeltaHint": "中",
-      "hard": 0.32
+      "hard": 0.32,
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 20
     },
     {
       "id": "gig_1992_tv_04",
@@ -415,12 +546,26 @@
         8
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 9,
       "shootHint": "夜班，補眠。",
       "stressDeltaHint": "低",
       "hard": 0.28,
       "year": 1992,
-      "seasonWeight": 1.0
+      "seasonWeight": 1.0,
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1992_rec_01",
@@ -455,12 +600,22 @@
         20
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 12,
       "shootHint": "隔音室。",
       "stressDeltaHint": "低",
       "hard": 0.26,
       "year": 1992,
-      "seasonWeight": 1.0
+      "seasonWeight": 1.0,
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 44
     },
     {
       "id": "gig_1992_rec_02",
@@ -495,12 +650,22 @@
         16
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 12,
       "shootHint": "聽耳機對位。",
       "hard": 0.24,
       "year": 1992,
       "seasonWeight": 0.6,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 44
     },
     {
       "id": "gig_1992_rec_03",
@@ -535,12 +700,25 @@
         22
       ],
       "tier": "中",
-      "shootDaysHint": 1,
+      "shootDaysHint": 10,
       "shootHint": "直播無重來。",
       "hard": 0.3,
       "year": 1992,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 16
     },
     {
       "id": "gig_1992_film_06",
@@ -575,12 +753,26 @@
         16
       ],
       "tier": "高",
-      "shootDaysHint": 2,
+      "shootDaysHint": 29,
       "shootHint": "手部與眼神連戲。",
       "hard": 0.44,
       "year": 1992,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_lead_big",
+      "shootBand": [
+        28,
+        30
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 36
     },
     {
       "id": "gig_1992_film_07",
@@ -615,12 +807,26 @@
         14
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 13,
       "shootHint": "晨早召集。",
       "hard": 0.28,
       "year": 1992,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
     },
     {
       "id": "gig_1992_film_08",
@@ -655,12 +861,26 @@
         15
       ],
       "tier": "中",
-      "shootDaysHint": 2,
+      "shootDaysHint": 22,
       "shootHint": "對手新人，多次重拍。",
       "hard": 0.36,
       "year": 1992,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1992_film_09",
@@ -695,12 +915,26 @@
         9
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 13,
       "shootHint": "紅燈環境，護眼。",
       "year": 1992,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.32
+      "hard": 0.32,
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
     },
     {
       "id": "gig_1992_film_10",
@@ -735,12 +969,26 @@
         8
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 13,
       "shootHint": "重物護腰。",
       "stressDeltaHint": "低",
       "hard": 0.26,
       "year": 1992,
-      "seasonWeight": 0.6
+      "seasonWeight": 0.6,
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
     },
     {
       "id": "gig_1992_var_01",
@@ -780,7 +1028,20 @@
       "hard": 0.34,
       "year": 1992,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1992_var_02",
@@ -815,12 +1076,25 @@
         22
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 2,
       "shootHint": "燈光熱。",
       "year": 1992,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.32
+      "hard": 0.32,
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1992_var_03",
@@ -860,7 +1134,20 @@
       "year": 1992,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.32
+      "hard": 0.32,
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1992_var_04",
@@ -895,12 +1182,25 @@
         20
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 2,
       "shootHint": "站立久。",
       "hard": 0.28,
       "year": 1992,
       "seasonWeight": 0.6,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1992_ad_01",
@@ -935,12 +1235,25 @@
         24
       ],
       "tier": "中",
-      "shootDaysHint": 1,
+      "shootDaysHint": 3,
       "shootHint": "店內燈暖。",
       "stressDeltaHint": "低",
       "hard": 0.26,
       "year": 1992,
-      "seasonWeight": 1.0
+      "seasonWeight": 1.0,
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1992_ad_02",
@@ -975,12 +1288,25 @@
         20
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 3,
       "shootHint": "手部近鏡。",
       "hard": 0.24,
       "year": 1992,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1992_ad_03",
@@ -1015,28 +1341,41 @@
         16
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 3,
       "shootHint": "閃光。",
       "hard": 0.2,
       "year": 1992,
       "seasonWeight": 0.6,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "ad_print",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1992_film_11",
       "season": "秋",
       "type": "電影",
-      "title": "《底片盒》短片：归档舊片旁觀",
+      "title": "《底片盒》短片：歸檔舊片旁觀",
       "loc": "film_lion",
-      "roleHint": "归档室旁觀，遞盒一次",
+      "roleHint": "歸檔室旁觀，遞盒一次",
       "blurb": "收束短片後勤，安靜即可。",
-      "synopsis": "短片《底片盒》拍归档。你遞一盒舊底片。秋檔僅作收束通告，非完整秋庫。",
+      "synopsis": "短片《底片盒》拍歸檔。你遞一盒舊底片。秋檔僅作收束通告，非完整秋庫。",
       "heroAngle": "收束：盒蓋合上。",
-      "diasporaHook": "底片归档是影庫日常。",
+      "diasporaHook": "底片歸檔是影庫日常。",
       "eraTag": "era_1992_summer_legacy",
-      "discoverNote": "獅子山归档旁觀",
+      "discoverNote": "獅子山歸檔旁觀",
       "boardPriority": "low",
-      "boardNote": "秋收束归档",
+      "boardNote": "秋收束歸檔",
       "req": {
         "acting": 10,
         "iq": 10,
@@ -1055,12 +1394,26 @@
         6
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 13,
       "shootHint": "灰塵口罩。",
       "stressDeltaHint": "低",
       "hard": 0.2,
       "year": 1992,
-      "seasonWeight": 0.3
+      "seasonWeight": 0.3,
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
     },
     {
       "id": "gig_1992_var_05",
@@ -1095,12 +1448,25 @@
         10
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 2,
       "shootHint": "站姿。",
       "hard": 0.18,
       "year": 1992,
       "seasonWeight": 0.3,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1992_rec_04",
@@ -1135,12 +1501,25 @@
         12
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 10,
       "shootHint": "對咪。",
       "hard": 0.18,
       "year": 1992,
       "seasonWeight": 0.3,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 16
     },
     {
       "id": "gig_1992_film_12",
@@ -1175,12 +1554,26 @@
         9
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 13,
       "shootHint": "單人長鏡頭。",
       "hard": 0.3,
       "year": 1992,
       "seasonWeight": 0.3,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
     },
     {
       "id": "gig_1992_ad_04",
@@ -1215,12 +1608,25 @@
         16
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 3,
       "shootHint": "室內暖光。",
       "hard": 0.2,
       "year": 1992,
       "seasonWeight": 0.3,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "ad_print",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1992_tv_05",
@@ -1255,12 +1661,1136 @@
         10
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 9,
       "shootHint": "手部與眼神。",
       "hard": 0.28,
       "year": 1992,
       "seasonWeight": 0.3,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1992_photo_01",
+      "year": 1992,
+      "season": "冬",
+      "type": "廣告",
+      "title": "「晨光冊頁」寫真集《舊底片上的臉》",
+      "loc": "ad_central",
+      "roleHint": "擔任寫真集封面與內頁主角，以自然光便服入鏡",
+      "blurb": "虛構寫真工作室徵求有生活感的面孔，街景連拍成冊上架書店。",
+      "synopsis": "虛構寫真品牌為1992年冊頁線選角。阿偉需在街巷、天台與室內窗邊連拍數日，以自然光呈現年代質感，寫真集隨書展與唱片舖聯展上架。",
+      "heroAngle": "未修飾的街坊氣質，正是寫真想留住的臉。",
+      "diasporaHook": "街燈、天台與窗邊是海外華人共同的城市記憶。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "寫真工作室公開海選",
+      "boardPriority": "normal",
+      "boardNote": "寫真集書店線",
+      "seasonWeight": 0.8,
+      "req": {
+        "looks": 28,
+        "charm": 24,
+        "stamina": 18
+      },
+      "pay": [
+        5000,
+        9500
+      ],
+      "fame": [
+        8,
+        18
+      ],
+      "popularity": [
+        22,
+        42
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.34,
+      "tier": "初",
+      "shootDaysHint": 6,
+      "shootHint": "連日自然光拍攝，注意換景體力。",
+      "roleScale": "photobook",
+      "shootBand": [
+        5,
+        7
+      ],
+      "shootWeekdays": [
+        5,
+        6,
+        7
+      ],
+      "shootDeadlineDays": 16
+    },
+    {
+      "id": "gig_1992_photo_02",
+      "year": 1992,
+      "season": "春",
+      "type": "廣告",
+      "title": "「收束冊」寫真集《燈滅前一頁》",
+      "loc": "ad_central",
+      "roleHint": "擔任冬／秋裝寫真主角，大衣與城市夜景對比",
+      "blurb": "影像品牌季節寫真線，要能撐起書店櫥窗的面孔。",
+      "synopsis": "1992年季節寫真。阿偉以大衣、街燈與碼頭／商場為背景連拍，強調層次與情緒，而非時裝走秀。",
+      "heroAngle": "大衣一裹，城市夜色便有了主角。",
+      "diasporaHook": "季節大衣與街景易勾起外地華人的鄉愁。",
+      "eraTag": "era_1992_spring_choice",
+      "discoverNote": "季節寫真選角",
+      "boardPriority": "normal",
+      "boardNote": "季節寫真櫥窗",
+      "seasonWeight": 0.85,
+      "req": {
+        "looks": 32,
+        "charm": 26,
+        "stamina": 20
+      },
+      "pay": [
+        7000,
+        12000
+      ],
+      "fame": [
+        12,
+        22
+      ],
+      "popularity": [
+        28,
+        48
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.38,
+      "tier": "中",
+      "shootDaysHint": 6,
+      "shootHint": "夜景連拍，注意保暖與連續換景。",
+      "roleScale": "photobook",
+      "shootBand": [
+        5,
+        7
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 11
+    },
+    {
+      "id": "gig_1992_mtv_01",
+      "year": 1992,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "回望輯快歌《舊路燈》MTV 男主角",
+      "loc": "rec_hk",
+      "roleHint": "飾演跟得上剪接節奏的都市青年，對嘴與簡單走位",
+      "blurb": "卡帶／影碟主打 MTV，需要能在霓虹與天橋上跟節奏的面孔！",
+      "synopsis": "虛構唱片公司1992年主打 MTV。阿偉在行人天橋、碼頭倉庫與夜巴上層連拍趕路、對嘴與簡單群舞，畫面跟卡拉 OK 字幕一併發行。",
+      "heroAngle": "節奏推著往前跑，鏡頭才跟得上城市。",
+      "diasporaHook": "卡拉 OK MTV 是海外華人週末派對常見畫面。",
+      "eraTag": "era_1992_summer_legacy",
+      "discoverNote": "唱片公司 MTV 選角",
+      "boardPriority": "normal",
+      "boardNote": "主打 MTV",
+      "seasonWeight": 0.7,
+      "req": {
+        "looks": 24,
+        "charm": 22,
+        "dance": 16
+      },
+      "pay": [
+        3500,
+        6500
+      ],
+      "fame": [
+        10,
+        22
+      ],
+      "popularity": [
+        28,
+        48
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.4,
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "週末趕拍，對嘴與走位要準。",
+      "roleScale": "mtv",
+      "shootBand": [
+        2,
+        3
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1992_tv_06",
+      "year": 1992,
+      "season": "秋",
+      "type": "電視劇",
+      "title": "《選擇題》青年演員阿偉自傳式長線",
+      "loc": "tvb_harbour",
+      "roleHint": "飾演貫穿整季的主線男主角，廠景與外景並重",
+      "blurb": "星河長篇正劇男主！整季貫穿，廠期與外景都要鎖。",
+      "synopsis": "星河電視台收束向長篇。阿偉以演員身份串起四年通告回憶，是一張要駐廠拍滿長線的男主通告。",
+      "heroAngle": "長劇男主：檔期就是半條演藝命。",
+      "diasporaHook": "粵語長劇男主是海外華人晚餐時光的共同記憶。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "長劇男主試鏡",
+      "boardPriority": "high",
+      "boardNote": "季節主推・長劇男主",
+      "seasonWeight": 1.0,
+      "req": {
+        "acting": 36,
+        "charm": 28,
+        "stamina": 30
+      },
+      "pay": [
+        16000,
+        28000
+      ],
+      "fame": [
+        55,
+        85
+      ],
+      "popularity": [
+        65,
+        95
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.65,
+      "tier": "高",
+      "shootDaysHint": 22,
+      "shootHint": "長駐廠，外景與廠景交替，對白量大。",
+      "roleScale": "tv_lead_long",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
+    },
+    {
+      "id": "gig_1992_var_06",
+      "year": 1992,
+      "season": "秋",
+      "type": "綜藝",
+      "title": "《龍門秋訊》廠內短訪",
+      "loc": "tvb_longmen",
+      "roleHint": "擔任綜藝短環節助演或觀眾席帶動",
+      "blurb": "廠景綜藝短通告，要肯笑肯拍掌的面孔。",
+      "synopsis": "星河電視台秋檔短綜藝。阿偉在tvb_longmen廠景擔任助演／拍掌位，節奏快、通告短，適合填檔。",
+      "heroAngle": "短綜藝：把氣氛托住就功成。",
+      "diasporaHook": "粵語綜藝拍掌位是海外華人電視記憶的一部分。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "綜藝助演選角",
+      "boardPriority": "normal",
+      "boardNote": "秋・廠景短綜",
+      "seasonWeight": 0.65,
+      "req": {
+        "charm": 18,
+        "looks": 16,
+        "stamina": 14
+      },
+      "pay": [
+        2000,
+        4000
+      ],
+      "fame": [
+        4,
+        10
+      ],
+      "popularity": [
+        10,
+        20
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.25,
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "廠內燈光強，表情要跟得上主持節奏。",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1992_tv_07",
+      "year": 1992,
+      "season": "冬",
+      "type": "電視劇",
+      "title": "《龍門歲晚》單元：搶通告臨記",
+      "loc": "tvb_longmen",
+      "roleHint": "客串數場，少對白多神態",
+      "blurb": "單元劇短客串，要穩、要快、要聽場記。",
+      "synopsis": "星河電視台冬單元在tvb_longmen開拍。阿偉客串一兩場，對白不多，重在準時與神態。",
+      "heroAngle": "客串也是履歷上的一筆。",
+      "diasporaHook": "粵語單元劇客串是海外觀眾熟悉的面孔輪替。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "單元客串選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・電視客串",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        2500,
+        5000
+      ],
+      "fame": [
+        6,
+        12
+      ],
+      "popularity": [
+        8,
+        16
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.3,
+      "tier": "初",
+      "shootDaysHint": 9,
+      "shootHint": "廠景／外景短場，聽場記口令。",
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1992_var_07",
+      "year": 1992,
+      "season": "冬",
+      "type": "綜藝",
+      "title": "《九龍倒數》前哨對手",
+      "loc": "tvb_kowloon",
+      "roleHint": "擔任綜藝短環節助演或觀眾席帶動",
+      "blurb": "廠景綜藝短通告，要肯笑肯拍掌的面孔。",
+      "synopsis": "星河電視台冬檔短綜藝。阿偉在tvb_kowloon廠景擔任助演／拍掌位，節奏快、通告短，適合填檔。",
+      "heroAngle": "短綜藝：把氣氛托住就功成。",
+      "diasporaHook": "粵語綜藝拍掌位是海外華人電視記憶的一部分。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "綜藝助演選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・廠景短綜",
+      "seasonWeight": 0.65,
+      "req": {
+        "charm": 18,
+        "looks": 16,
+        "stamina": 14
+      },
+      "pay": [
+        2000,
+        4000
+      ],
+      "fame": [
+        4,
+        10
+      ],
+      "popularity": [
+        10,
+        20
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.25,
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "廠內燈光強，表情要跟得上主持節奏。",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
+    },
+    {
+      "id": "gig_1992_film_13",
+      "year": 1992,
+      "season": "冬",
+      "type": "電影",
+      "title": "《獅山歲晚》群戲：殺青宴後排",
+      "loc": "film_lion",
+      "roleHint": "小成本／小配角或群戲，聽導演走位",
+      "blurb": "電影短場群戲，檔期短、鏡頭準就有糧。",
+      "synopsis": "1992年電影組在film_lion拍冬場次。阿偉演小配角／群戲，鏡頭不多，但要跟得上大隊節奏。",
+      "heroAngle": "小場也是片場紀律課。",
+      "diasporaHook": "港產片群戲是海外華院線彩蛋式的熟悉臉。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "電影群戲選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・電影短場",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 16,
+        "stamina": 20,
+        "looks": 14
+      },
+      "pay": [
+        3000,
+        6000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        8,
+        18
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "實景短場，可能日夜顛倒。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1992_film_14",
+      "year": 1992,
+      "season": "秋",
+      "type": "電影",
+      "title": "《棉廠秋單》過場：送布疋青年",
+      "loc": "film_cotton",
+      "roleHint": "小成本／小配角或群戲，聽導演走位",
+      "blurb": "電影短場群戲，檔期短、鏡頭準就有糧。",
+      "synopsis": "1992年電影組在film_cotton拍秋場次。阿偉演小配角／群戲，鏡頭不多，但要跟得上大隊節奏。",
+      "heroAngle": "小場也是片場紀律課。",
+      "diasporaHook": "港產片群戲是海外華院線彩蛋式的熟悉臉。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "電影群戲選角",
+      "boardPriority": "normal",
+      "boardNote": "秋・電影短場",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 16,
+        "stamina": 20,
+        "looks": 14
+      },
+      "pay": [
+        3000,
+        6000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        8,
+        18
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "實景短場，可能日夜顛倒。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1992_film_15",
+      "year": 1992,
+      "season": "秋",
+      "type": "電影",
+      "title": "《海港秋航》過場：送船親友",
+      "loc": "film_harbour",
+      "roleHint": "小成本／小配角或群戲，聽導演走位",
+      "blurb": "電影短場群戲，檔期短、鏡頭準就有糧。",
+      "synopsis": "1992年電影組在film_harbour拍秋場次。阿偉演小配角／群戲，鏡頭不多，但要跟得上大隊節奏。",
+      "heroAngle": "小場也是片場紀律課。",
+      "diasporaHook": "港產片群戲是海外華院線彩蛋式的熟悉臉。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "電影群戲選角",
+      "boardPriority": "normal",
+      "boardNote": "秋・電影短場",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 16,
+        "stamina": 20,
+        "looks": 14
+      },
+      "pay": [
+        3000,
+        6000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        8,
+        18
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "實景短場，可能日夜顛倒。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1992_film_16",
+      "year": 1992,
+      "season": "冬",
+      "type": "電影",
+      "title": "《海港冬霧》群戲：落雪（人造）街景",
+      "loc": "film_harbour",
+      "roleHint": "小成本／小配角或群戲，聽導演走位",
+      "blurb": "電影短場群戲，檔期短、鏡頭準就有糧。",
+      "synopsis": "1992年電影組在film_harbour拍冬場次。阿偉演小配角／群戲，鏡頭不多，但要跟得上大隊節奏。",
+      "heroAngle": "小場也是片場紀律課。",
+      "diasporaHook": "港產片群戲是海外華院線彩蛋式的熟悉臉。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "電影群戲選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・電影短場",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 16,
+        "stamina": 20,
+        "looks": 14
+      },
+      "pay": [
+        3000,
+        6000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        8,
+        18
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "實景短場，可能日夜顛倒。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1992_rec_05",
+      "year": 1992,
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "秋日單曲《落葉郵筒》和音",
+      "loc": "rec_hk",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "虛構唱片公司在rec_hk安排秋錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "秋・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1992_rec_06",
+      "year": 1992,
+      "season": "冬",
+      "type": "唱片通告",
+      "title": "冬日賀歲歌《開年》合唱",
+      "loc": "rec_hk",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "虛構唱片公司在rec_hk安排冬錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1992_rec_07",
+      "year": 1992,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "灣仔室：夏日快歌和音",
+      "loc": "rec_wanchai",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "虛構唱片公司在rec_wanchai安排夏錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1992_summer_legacy",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "夏・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1992_rec_08",
+      "year": 1992,
+      "season": "冬",
+      "type": "唱片通告",
+      "title": "灣仔室：歲晚合唱收聲",
+      "loc": "rec_wanchai",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "虛構唱片公司在rec_wanchai安排冬錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1992_rec_09",
+      "year": 1992,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "星廠夏：卡帶內頁棚拍",
+      "loc": "rec_star",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "虛構唱片公司在rec_star安排夏錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1992_summer_legacy",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "夏・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1992_rec_10",
+      "year": 1992,
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "星廠秋：打歌期和音加錄",
+      "loc": "rec_star",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "虛構唱片公司在rec_star安排秋錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "秋・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1992_rec_11",
+      "year": 1992,
+      "season": "冬",
+      "type": "唱片通告",
+      "title": "星廠冬：賀歲歌收束合唱",
+      "loc": "rec_star",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "虛構唱片公司在rec_star安排冬錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1992_ad_05",
+      "year": 1992,
+      "season": "秋",
+      "type": "廣告",
+      "title": "「中環秋裝」服裝十五秒",
+      "loc": "ad_central",
+      "roleHint": "影音廣告短鏡，表情與產品展示",
+      "blurb": "賺快錢短廣告，檔期短、鏡頭準。",
+      "synopsis": "虛構品牌在ad_central拍秋影音短廣告。阿偉出鏡數鏡，強調節奏與產品展示。",
+      "heroAngle": "短廣告：把檔期換成糧與鏡相。",
+      "diasporaHook": "港式電視廣告是海外華人共同的消費記憶。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "廣告行選角",
+      "boardPriority": "normal",
+      "boardNote": "秋・廣告短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "looks": 22,
+        "charm": 18,
+        "stamina": 12
+      },
+      "pay": [
+        4000,
+        8000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        16,
+        30
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "短鏡多take，表情要穩。",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
+    },
+    {
+      "id": "gig_1992_ad_06",
+      "year": 1992,
+      "season": "春",
+      "type": "廣告",
+      "title": "「金鐘春訊」機構形象平面",
+      "loc": "ad_adm",
+      "roleHint": "平面／雜誌封面備用，表情乾淨",
+      "blurb": "廣告行平面短拍，要乾淨利落的商業臉。",
+      "synopsis": "虛構廣告行在ad_adm拍春平面。阿偉只需穩妥表情與走位，半日到數日收工。",
+      "heroAngle": "短廣告：把檔期換成糧與鏡相。",
+      "diasporaHook": "港式電視廣告是海外華人共同的消費記憶。",
+      "eraTag": "era_1992_spring_choice",
+      "discoverNote": "廣告行選角",
+      "boardPriority": "normal",
+      "boardNote": "春・廣告短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "looks": 22,
+        "charm": 18,
+        "stamina": 12
+      },
+      "pay": [
+        4000,
+        8000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        16,
+        30
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "棚燈強，少眨眼、走位準。",
+      "roleScale": "ad_print",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
+    },
+    {
+      "id": "gig_1992_ad_07",
+      "year": 1992,
+      "season": "秋",
+      "type": "廣告",
+      "title": "「金鐘秋訊」服務短片",
+      "loc": "ad_adm",
+      "roleHint": "影音廣告短鏡，表情與產品展示",
+      "blurb": "賺快錢短廣告，檔期短、鏡頭準。",
+      "synopsis": "虛構品牌在ad_adm拍秋影音短廣告。阿偉出鏡數鏡，強調節奏與產品展示。",
+      "heroAngle": "短廣告：把檔期換成糧與鏡相。",
+      "diasporaHook": "港式電視廣告是海外華人共同的消費記憶。",
+      "eraTag": "era_1992_summer_lookback",
+      "discoverNote": "廣告行選角",
+      "boardPriority": "normal",
+      "boardNote": "秋・廣告短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "looks": 22,
+        "charm": 18,
+        "stamina": 12
+      },
+      "pay": [
+        4000,
+        8000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        16,
+        30
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "短鏡多take，表情要穩。",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
     }
-  ]
+  ],
+  "planRef": "PLAN_SHOOT_CAREER_SCHEDULE_v2",
+  "softStatus": "Soft≠PASS"
 }

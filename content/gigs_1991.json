@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1.0",
   "year": 1991,
   "locale": "zh-Hant-written-HK",
   "source": "PLOT_MASTER_PLAN_v1.4-DS §2／§2A；規格對齊 GIGS_1989_v1／GIGS_1990_v1",
@@ -20,23 +20,39 @@
     ]
   },
   "counts": {
-    "電影": 9,
-    "電視劇": 6,
-    "廣告": 5,
-    "唱片通告": 8,
-    "綜藝": 9
+    "電影": 14,
+    "電視劇": 7,
+    "廣告": 8,
+    "唱片通告": 14,
+    "綜藝": 9,
+    "total": 52,
+    "byRoleScale": {
+      "ad_av": 3,
+      "ad_print": 3,
+      "film_lead_big": 1,
+      "film_support_main": 8,
+      "film_support_small": 5,
+      "mtv": 1,
+      "photobook": 2,
+      "rec_album": 13,
+      "tv_cameo_short": 5,
+      "tv_lead_long": 1,
+      "tv_support_main": 1,
+      "variety_ep": 8,
+      "variety_special": 1
+    }
   },
   "seasonCounts": {
-    "春": 9,
-    "夏": 10,
-    "秋": 9,
-    "冬": 9
+    "春": 12,
+    "夏": 15,
+    "秋": 13,
+    "冬": 12
   },
   "highBySeason": {
-    "春": 4,
-    "夏": 4,
-    "秋": 4,
-    "冬": 4
+    "春": 0,
+    "夏": 1,
+    "秋": 3,
+    "冬": 0
   },
   "eraTagPrimary": {
     "春": [
@@ -72,7 +88,8 @@
   },
   "seasonWeightRule": "主=1.0；次=0.6；其他=0.3",
   "edits": [
-    "v1.0 初產 37 則；春家族去留→夏台慶搶位→秋打歌電台→冬賀歲輿論"
+    "v1.0 初產 37 則；春家族去留→夏台慶搶位→秋打歌電台→冬賀歲輿論",
+    "v1.1.0 A→B PLAN_SHOOT_CAREER_SCHEDULE_v2：全則補 roleScale／shootBand／抬 shootDaysHint／shootWeekdays／shootDeadlineDays；career+5；loc×season fill+10（空板 FAIL 補齊 11 loc×4 季）"
   ],
   "gigs": [
     {
@@ -108,12 +125,26 @@
         16
       ],
       "tier": "中",
-      "shootDaysHint": 3,
+      "shootDaysHint": 22,
       "shootHint": "禮服多，走位禮儀要準。",
       "hard": 0.38,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1991_film_02",
@@ -148,12 +179,26 @@
         12
       ],
       "tier": "中",
-      "shootDaysHint": 2,
+      "shootDaysHint": 22,
       "shootHint": "單人長鏡頭，連戲要穩。",
       "hard": 0.4,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1991_film_03",
@@ -188,12 +233,26 @@
         14
       ],
       "tier": "中",
-      "shootDaysHint": 2,
+      "shootDaysHint": 22,
       "shootHint": "對手戲情緒層次多。",
       "year": 1991,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.35
+      "hard": 0.35,
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1991_tv_01",
@@ -228,12 +287,26 @@
         18
       ],
       "tier": "中",
-      "shootDaysHint": 3,
+      "shootDaysHint": 15,
       "shootHint": "飯局對手戲，餐具連戲。",
       "year": 1991,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.35
+      "hard": 0.35,
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 20
     },
     {
       "id": "gig_1991_tv_02",
@@ -268,12 +341,26 @@
         12
       ],
       "tier": "初",
-      "shootDaysHint": 2,
+      "shootDaysHint": 9,
       "shootHint": "人流外景，抓拍感。",
       "year": 1991,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.35
+      "hard": 0.35,
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1991_tv_03",
@@ -308,12 +395,26 @@
         11
       ],
       "tier": "初",
-      "shootDaysHint": 2,
+      "shootDaysHint": 9,
       "shootHint": "多人對手，聽場記。",
       "year": 1991,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.35
+      "hard": 0.35,
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1991_ad_01",
@@ -348,12 +449,22 @@
         22
       ],
       "tier": "中",
-      "shootDaysHint": 1,
+      "shootDaysHint": 3,
       "shootHint": "電話亭近鏡。",
       "stressDeltaHint": "低",
       "hard": 0.28,
       "year": 1991,
-      "seasonWeight": 1.0
+      "seasonWeight": 1.0,
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1991_ad_02",
@@ -388,12 +499,22 @@
         20
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 3,
       "shootHint": "餐桌連戲，袖口小心。",
       "hard": 0.24,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "ad_print",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1991_rec_01",
@@ -428,12 +549,22 @@
         18
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 12,
       "shootHint": "隔音室，補水。",
       "stressDeltaHint": "低",
       "hard": 0.26,
       "year": 1991,
-      "seasonWeight": 0.6
+      "seasonWeight": 0.6,
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 44
     },
     {
       "id": "gig_1991_var_01",
@@ -473,7 +604,21 @@
       "hard": 0.55,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "variety_special",
+      "shootBand": [
+        4,
+        7
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 9
     },
     {
       "id": "gig_1991_var_02",
@@ -508,12 +653,22 @@
         20
       ],
       "tier": "中",
-      "shootDaysHint": 1,
+      "shootDaysHint": 2,
       "shootHint": "正裝，坐姿長。",
       "hard": 0.36,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 9
     },
     {
       "id": "gig_1991_var_03",
@@ -548,12 +703,25 @@
         16
       ],
       "tier": "中",
-      "shootDaysHint": 5,
+      "shootDaysHint": 2,
       "shootHint": "負重，護腰。",
       "hard": 0.58,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1991_var_04",
@@ -593,7 +761,20 @@
       "year": 1991,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.35
+      "hard": 0.35,
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1991_var_05",
@@ -633,7 +814,20 @@
       "hard": 0.32,
       "year": 1991,
       "seasonWeight": 0.6,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1991_film_04",
@@ -668,12 +862,26 @@
         14
       ],
       "tier": "中",
-      "shootDaysHint": 2,
+      "shootDaysHint": 22,
       "shootHint": "正裝，文件連戲。",
       "hard": 0.36,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1991_film_05",
@@ -708,12 +916,26 @@
         12
       ],
       "tier": "中",
-      "shootDaysHint": 3,
+      "shootDaysHint": 22,
       "shootHint": "多次重拍，控表情。",
       "year": 1991,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.35
+      "hard": 0.35,
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1991_tv_04",
@@ -748,12 +970,26 @@
         15
       ],
       "tier": "初",
-      "shootDaysHint": 2,
+      "shootDaysHint": 9,
       "shootHint": "等候長，保持狀態。",
       "year": 1991,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.35
+      "hard": 0.35,
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1991_tv_05",
@@ -788,12 +1024,26 @@
         8
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 9,
       "shootHint": "走位勿擋主鏡頭。",
       "stressDeltaHint": "低",
       "hard": 0.2,
       "year": 1991,
-      "seasonWeight": 1.0
+      "seasonWeight": 1.0,
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
     },
     {
       "id": "gig_1991_ad_03",
@@ -828,12 +1078,25 @@
         20
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 3,
       "shootHint": "閃光密集。",
       "hard": 0.24,
       "year": 1991,
       "seasonWeight": 0.6,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "ad_print",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1991_rec_02",
@@ -868,12 +1131,25 @@
         32
       ],
       "tier": "高",
-      "shootDaysHint": 1,
+      "shootDaysHint": 10,
       "shootHint": "直播無重來。",
       "hard": 0.42,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 16
     },
     {
       "id": "gig_1991_rec_03",
@@ -908,12 +1184,25 @@
         28
       ],
       "tier": "中",
-      "shootDaysHint": 3,
+      "shootDaysHint": 12,
       "shootHint": "站立久，聲線保護。",
       "hard": 0.4,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
     },
     {
       "id": "gig_1991_rec_04",
@@ -948,12 +1237,25 @@
         30
       ],
       "tier": "中",
-      "shootDaysHint": 2,
+      "shootDaysHint": 12,
       "shootHint": "對口型與眼神。",
       "year": 1991,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.35
+      "hard": 0.35,
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
     },
     {
       "id": "gig_1991_rec_05",
@@ -988,12 +1290,25 @@
         26
       ],
       "tier": "中",
-      "shootDaysHint": 1,
+      "shootDaysHint": 10,
       "shootHint": "深夜交通自理。",
       "hard": 0.34,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 16
     },
     {
       "id": "gig_1991_rec_06",
@@ -1028,12 +1343,25 @@
         20
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 10,
       "shootHint": "攝影燈熱。",
       "hard": 0.26,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 16
     },
     {
       "id": "gig_1991_var_06",
@@ -1068,12 +1396,25 @@
         24
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 2,
       "shootHint": "直播感錄影。",
       "year": 1991,
       "seasonWeight": 0.6,
       "stressDeltaHint": "中",
-      "hard": 0.35
+      "hard": 0.35,
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1991_var_07",
@@ -1113,7 +1454,20 @@
       "hard": 0.36,
       "year": 1991,
       "seasonWeight": 0.6,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1991_ad_04",
@@ -1148,12 +1502,25 @@
         26
       ],
       "tier": "中",
-      "shootDaysHint": 1,
+      "shootDaysHint": 3,
       "shootHint": "街頭抓拍。",
       "stressDeltaHint": "低",
       "hard": 0.28,
       "year": 1991,
-      "seasonWeight": 1.0
+      "seasonWeight": 1.0,
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1991_ad_05",
@@ -1188,12 +1555,25 @@
         16
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 3,
       "shootHint": "口播一次過。",
       "hard": 0.22,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     },
     {
       "id": "gig_1991_film_06",
@@ -1228,12 +1608,26 @@
         22
       ],
       "tier": "中",
-      "shootDaysHint": 1,
+      "shootDaysHint": 22,
       "shootHint": "閃光強，勿直視。",
       "hard": 0.34,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1991_film_07",
@@ -1268,12 +1662,26 @@
         18
       ],
       "tier": "中",
-      "shootDaysHint": 2,
+      "shootDaysHint": 22,
       "shootHint": "提問密，情緒控。",
       "hard": 0.42,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1991_film_08",
@@ -1308,12 +1716,26 @@
         14
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 13,
       "shootHint": "人流安全第一。",
       "hard": 0.3,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
     },
     {
       "id": "gig_1991_film_09",
@@ -1348,12 +1770,26 @@
         15
       ],
       "tier": "中",
-      "shootDaysHint": 2,
+      "shootDaysHint": 22,
       "shootHint": "電話戲多take。",
       "hard": 0.4,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
     },
     {
       "id": "gig_1991_var_08",
@@ -1388,12 +1824,25 @@
         28
       ],
       "tier": "中",
-      "shootDaysHint": 1,
+      "shootDaysHint": 2,
       "shootHint": "護具齊。",
       "year": 1991,
       "seasonWeight": 1.0,
       "stressDeltaHint": "中",
-      "hard": 0.35
+      "hard": 0.35,
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1991_var_09",
@@ -1428,12 +1877,25 @@
         20
       ],
       "tier": "中",
-      "shootDaysHint": 1,
+      "shootDaysHint": 2,
       "shootHint": "節奏快。",
       "hard": 0.38,
       "year": 1991,
       "seasonWeight": 0.6,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
     },
     {
       "id": "gig_1991_rec_07",
@@ -1468,12 +1930,25 @@
         22
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 12,
       "shootHint": "多人錄音。",
       "stressDeltaHint": "低",
       "hard": 0.24,
       "year": 1991,
-      "seasonWeight": 1.0
+      "seasonWeight": 1.0,
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
     },
     {
       "id": "gig_1991_rec_08",
@@ -1508,12 +1983,25 @@
         16
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 10,
       "shootHint": "對咪。",
       "hard": 0.2,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 16
     },
     {
       "id": "gig_1991_tv_06",
@@ -1548,12 +2036,824 @@
         14
       ],
       "tier": "初",
-      "shootDaysHint": 1,
+      "shootDaysHint": 9,
       "shootHint": "車速慢，注意安全。",
       "hard": 0.28,
       "year": 1991,
       "seasonWeight": 1.0,
-      "stressDeltaHint": "中"
+      "stressDeltaHint": "中",
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1991_photo_01",
+      "year": 1991,
+      "season": "夏",
+      "type": "廣告",
+      "title": "「家書影室」寫真集《門閘內外》",
+      "loc": "ad_adm",
+      "roleHint": "擔任寫真集封面與內頁主角，以自然光便服入鏡",
+      "blurb": "虛構寫真工作室徵求有生活感的面孔，街景連拍成冊上架書店。",
+      "synopsis": "虛構寫真品牌為1991年冊頁線選角。阿偉需在街巷、天台與室內窗邊連拍數日，以自然光呈現年代質感，寫真集隨書展與唱片舖聯展上架。",
+      "heroAngle": "未修飾的街坊氣質，正是寫真想留住的臉。",
+      "diasporaHook": "街燈、天台與窗邊是海外華人共同的城市記憶。",
+      "eraTag": "era_1991_summer_anniversary",
+      "discoverNote": "寫真工作室公開海選",
+      "boardPriority": "normal",
+      "boardNote": "寫真集書店線",
+      "seasonWeight": 0.8,
+      "req": {
+        "looks": 28,
+        "charm": 24,
+        "stamina": 18
+      },
+      "pay": [
+        5000,
+        9500
+      ],
+      "fame": [
+        8,
+        18
+      ],
+      "popularity": [
+        22,
+        42
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.34,
+      "tier": "初",
+      "shootDaysHint": 6,
+      "shootHint": "連日自然光拍攝，注意換景體力。",
+      "roleScale": "photobook",
+      "shootBand": [
+        5,
+        7
+      ],
+      "shootWeekdays": [
+        5,
+        6,
+        7
+      ],
+      "shootDeadlineDays": 16
+    },
+    {
+      "id": "gig_1991_photo_02",
+      "year": 1991,
+      "season": "冬",
+      "type": "廣告",
+      "title": "「渡海影集」寫真集《兩岸同款外套》",
+      "loc": "ad_central",
+      "roleHint": "擔任冬／秋裝寫真主角，大衣與城市夜景對比",
+      "blurb": "影像品牌季節寫真線，要能撐起書店櫥窗的面孔。",
+      "synopsis": "1991年季節寫真。阿偉以大衣、街燈與碼頭／商場為背景連拍，強調層次與情緒，而非時裝走秀。",
+      "heroAngle": "大衣一裹，城市夜色便有了主角。",
+      "diasporaHook": "季節大衣與街景易勾起外地華人的鄉愁。",
+      "eraTag": "era_1991_winter_festive",
+      "discoverNote": "季節寫真選角",
+      "boardPriority": "normal",
+      "boardNote": "季節寫真櫥窗",
+      "seasonWeight": 0.85,
+      "req": {
+        "looks": 32,
+        "charm": 26,
+        "stamina": 20
+      },
+      "pay": [
+        7000,
+        12000
+      ],
+      "fame": [
+        12,
+        22
+      ],
+      "popularity": [
+        28,
+        48
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.38,
+      "tier": "中",
+      "shootDaysHint": 6,
+      "shootHint": "夜景連拍，注意保暖與連續換景。",
+      "roleScale": "photobook",
+      "shootBand": [
+        5,
+        7
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 11
+    },
+    {
+      "id": "gig_1991_mtv_01",
+      "year": 1991,
+      "season": "春",
+      "type": "唱片通告",
+      "title": "打歌快歌《門閘外》MTV 男主角",
+      "loc": "rec_wanchai",
+      "roleHint": "飾演跟得上剪接節奏的都市青年，對嘴與簡單走位",
+      "blurb": "卡帶／影碟主打 MTV，需要能在霓虹與天橋上跟節奏的面孔！",
+      "synopsis": "虛構唱片公司1991年主打 MTV。阿偉在行人天橋、碼頭倉庫與夜巴上層連拍趕路、對嘴與簡單群舞，畫面跟卡拉 OK 字幕一併發行。",
+      "heroAngle": "節奏推著往前跑，鏡頭才跟得上城市。",
+      "diasporaHook": "卡拉 OK MTV 是海外華人週末派對常見畫面。",
+      "eraTag": "era_1991_spring_family",
+      "discoverNote": "唱片公司 MTV 選角",
+      "boardPriority": "normal",
+      "boardNote": "主打 MTV",
+      "seasonWeight": 0.7,
+      "req": {
+        "looks": 24,
+        "charm": 22,
+        "dance": 16
+      },
+      "pay": [
+        3500,
+        6500
+      ],
+      "fame": [
+        10,
+        22
+      ],
+      "popularity": [
+        28,
+        48
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.4,
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "週末趕拍，對嘴與走位要準。",
+      "roleScale": "mtv",
+      "shootBand": [
+        2,
+        3
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1991_film_10",
+      "year": 1991,
+      "season": "秋",
+      "type": "電影",
+      "title": "《門閘之內》拒聯姻的長子阿傑",
+      "loc": "film_lion",
+      "roleHint": "飾演家族壓力下拒絕聯姻的長子阿傑",
+      "blurb": "大製作長檔男主角！實景多、對手戲重，檔期要鎖死整段季節。",
+      "synopsis": "家族文藝大片。阿偉飾演長子「阿傑」，在宴會、客廳與月台之間拒絕被安排的人生，對手戲重、檔期長。",
+      "heroAngle": "長檔主角：把整季檔期押在一張通告上。",
+      "diasporaHook": "港產大片男主是海外華院線熟悉的面孔記憶。",
+      "eraTag": "era_1991_autumn_music",
+      "discoverNote": "大製作男主試鏡",
+      "boardPriority": "high",
+      "boardNote": "季節主推・電影男主",
+      "seasonWeight": 1.0,
+      "req": {
+        "acting": 38,
+        "stamina": 32,
+        "charm": 24
+      },
+      "pay": [
+        28000,
+        48000
+      ],
+      "fame": [
+        65,
+        95
+      ],
+      "popularity": [
+        75,
+        110
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.7,
+      "tier": "高",
+      "shootDaysHint": 29,
+      "shootHint": "長檔實景，對手戲與連續日戲夜戲交替。",
+      "roleScale": "film_lead_big",
+      "shootBand": [
+        28,
+        30
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 36
+    },
+    {
+      "id": "gig_1991_tv_07",
+      "year": 1991,
+      "season": "秋",
+      "type": "電視劇",
+      "title": "《家事簿》拒聯姻長子阿傑",
+      "loc": "tvb_harbour",
+      "roleHint": "飾演貫穿整季的主線男主角，廠景與外景並重",
+      "blurb": "星河長篇正劇男主！整季貫穿，廠期與外景都要鎖。",
+      "synopsis": "星河電視台長篇。阿偉飾演長子「阿傑」，家族會議、月台送行與拒聯姻的抉擇拉成整季主線。",
+      "heroAngle": "長劇男主：檔期就是半條演藝命。",
+      "diasporaHook": "粵語長劇男主是海外華人晚餐時光的共同記憶。",
+      "eraTag": "era_1991_autumn_music",
+      "discoverNote": "長劇男主試鏡",
+      "boardPriority": "high",
+      "boardNote": "季節主推・長劇男主",
+      "seasonWeight": 1.0,
+      "req": {
+        "acting": 36,
+        "charm": 28,
+        "stamina": 30
+      },
+      "pay": [
+        16000,
+        28000
+      ],
+      "fame": [
+        55,
+        85
+      ],
+      "popularity": [
+        65,
+        95
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.65,
+      "tier": "高",
+      "shootDaysHint": 22,
+      "shootHint": "長駐廠，外景與廠景交替，對白量大。",
+      "roleScale": "tv_lead_long",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
+    },
+    {
+      "id": "gig_1991_film_11",
+      "year": 1991,
+      "season": "秋",
+      "type": "電影",
+      "title": "《棉廠秋單》過場：送布疋青年",
+      "loc": "film_cotton",
+      "roleHint": "小成本／小配角或群戲，聽導演走位",
+      "blurb": "電影短場群戲，檔期短、鏡頭準就有糧。",
+      "synopsis": "1991年電影組在film_cotton拍秋場次。阿偉演小配角／群戲，鏡頭不多，但要跟得上大隊節奏。",
+      "heroAngle": "小場也是片場紀律課。",
+      "diasporaHook": "港產片群戲是海外華院線彩蛋式的熟悉臉。",
+      "eraTag": "era_1991_autumn_music",
+      "discoverNote": "電影群戲選角",
+      "boardPriority": "normal",
+      "boardNote": "秋・電影短場",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 16,
+        "stamina": 20,
+        "looks": 14
+      },
+      "pay": [
+        3000,
+        6000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        8,
+        18
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "實景短場，可能日夜顛倒。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1991_film_12",
+      "year": 1991,
+      "season": "春",
+      "type": "電影",
+      "title": "《海港春潮》過場：碼頭腳夫",
+      "loc": "film_harbour",
+      "roleHint": "小成本／小配角或群戲，聽導演走位",
+      "blurb": "電影短場群戲，檔期短、鏡頭準就有糧。",
+      "synopsis": "1991年電影組在film_harbour拍春場次。阿偉演小配角／群戲，鏡頭不多，但要跟得上大隊節奏。",
+      "heroAngle": "小場也是片場紀律課。",
+      "diasporaHook": "港產片群戲是海外華院線彩蛋式的熟悉臉。",
+      "eraTag": "era_1991_spring_family",
+      "discoverNote": "電影群戲選角",
+      "boardPriority": "normal",
+      "boardNote": "春・電影短場",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 16,
+        "stamina": 20,
+        "looks": 14
+      },
+      "pay": [
+        3000,
+        6000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        8,
+        18
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "實景短場，可能日夜顛倒。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1991_film_13",
+      "year": 1991,
+      "season": "夏",
+      "type": "電影",
+      "title": "《海港夏雷》群戲：避雨路人",
+      "loc": "film_harbour",
+      "roleHint": "小成本／小配角或群戲，聽導演走位",
+      "blurb": "電影短場群戲，檔期短、鏡頭準就有糧。",
+      "synopsis": "1991年電影組在film_harbour拍夏場次。阿偉演小配角／群戲，鏡頭不多，但要跟得上大隊節奏。",
+      "heroAngle": "小場也是片場紀律課。",
+      "diasporaHook": "港產片群戲是海外華院線彩蛋式的熟悉臉。",
+      "eraTag": "era_1991_summer_anniversary",
+      "discoverNote": "電影群戲選角",
+      "boardPriority": "normal",
+      "boardNote": "夏・電影短場",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 16,
+        "stamina": 20,
+        "looks": 14
+      },
+      "pay": [
+        3000,
+        6000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        8,
+        18
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "實景短場，可能日夜顛倒。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1991_film_14",
+      "year": 1991,
+      "season": "秋",
+      "type": "電影",
+      "title": "《海港秋航》過場：送船親友",
+      "loc": "film_harbour",
+      "roleHint": "小成本／小配角或群戲，聽導演走位",
+      "blurb": "電影短場群戲，檔期短、鏡頭準就有糧。",
+      "synopsis": "1991年電影組在film_harbour拍秋場次。阿偉演小配角／群戲，鏡頭不多，但要跟得上大隊節奏。",
+      "heroAngle": "小場也是片場紀律課。",
+      "diasporaHook": "港產片群戲是海外華院線彩蛋式的熟悉臉。",
+      "eraTag": "era_1991_autumn_music",
+      "discoverNote": "電影群戲選角",
+      "boardPriority": "normal",
+      "boardNote": "秋・電影短場",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 16,
+        "stamina": 20,
+        "looks": 14
+      },
+      "pay": [
+        3000,
+        6000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        8,
+        18
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "實景短場，可能日夜顛倒。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1991_rec_09",
+      "year": 1991,
+      "season": "春",
+      "type": "唱片通告",
+      "title": "春日合唱單曲《開閘》和音",
+      "loc": "rec_hk",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "虛構唱片公司在rec_hk安排春錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1991_spring_family",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "春・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1991_rec_10",
+      "year": 1991,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "夏日專輯《熱浪》和音錄音",
+      "loc": "rec_hk",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "虛構唱片公司在rec_hk安排夏錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1991_summer_anniversary",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "夏・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1991_rec_11",
+      "year": 1991,
+      "season": "冬",
+      "type": "唱片通告",
+      "title": "冬日賀歲歌《開年》合唱",
+      "loc": "rec_hk",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "虛構唱片公司在rec_hk安排冬錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1991_winter_festive",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1991_rec_12",
+      "year": 1991,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "灣仔室：夏日快歌和音",
+      "loc": "rec_wanchai",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "虛構唱片公司在rec_wanchai安排夏錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1991_summer_anniversary",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "夏・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1991_rec_13",
+      "year": 1991,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "星廠夏：卡帶內頁棚拍",
+      "loc": "rec_star",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "虛構唱片公司在rec_star安排夏錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1991_summer_anniversary",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "夏・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1991_ad_06",
+      "year": 1991,
+      "season": "冬",
+      "type": "廣告",
+      "title": "「金鐘冬封」賀歲平面",
+      "loc": "ad_adm",
+      "roleHint": "平面／雜誌封面備用，表情乾淨",
+      "blurb": "廣告行平面短拍，要乾淨利落的商業臉。",
+      "synopsis": "虛構廣告行在ad_adm拍冬平面。阿偉只需穩妥表情與走位，半日到數日收工。",
+      "heroAngle": "短廣告：把檔期換成糧與鏡相。",
+      "diasporaHook": "港式電視廣告是海外華人共同的消費記憶。",
+      "eraTag": "era_1991_winter_festive",
+      "discoverNote": "廣告行選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・廣告短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "looks": 22,
+        "charm": 18,
+        "stamina": 12
+      },
+      "pay": [
+        4000,
+        8000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        16,
+        30
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "棚燈強，少眨眼、走位準。",
+      "roleScale": "ad_print",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
     }
-  ]
+  ],
+  "planRef": "PLAN_SHOOT_CAREER_SCHEDULE_v2",
+  "softStatus": "Soft≠PASS"
 }
