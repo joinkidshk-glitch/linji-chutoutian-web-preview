@@ -32,6 +32,6 @@ Brand：`gig_1988_rec_star_spring`／summer — 「星途」→**天星**（見 
 ## Ship
 
 - Feature SHA：
-- Tip／NOTES SHA：*(下一 commit)*
+- Tip／NOTES SHA：
 
 Soft≠PASS。
