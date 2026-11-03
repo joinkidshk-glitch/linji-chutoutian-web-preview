@@ -30,7 +30,7 @@
 
 ## Ship
 
-- feature commit：（填）
-- tip／NOTES：（填）
+- feature commit：`cf6dff29fa7d` (`cf6dff29fa7d8b0a1c6bdc97cd5ac9356c34b1ee`)
+- tip／NOTES：（stamp after tip commit）
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18m
 - Soft≠PASS · 全量出圖 HOLD
