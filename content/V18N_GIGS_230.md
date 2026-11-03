@@ -27,5 +27,7 @@
 
 ## Ship
 
+- feature commit：`660f3a8b010c` (`660f3a8b010c9ea36b4920e6aa1ea8b95d6054bb`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18n
+- gigs 2.3.0 · sha16 `c58ccfa828e8ecf5` · n=52
 - Soft≠PASS · 全量出圖 HOLD
