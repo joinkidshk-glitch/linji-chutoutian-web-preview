@@ -31,7 +31,8 @@ Brand：`gig_1988_rec_star_spring`／summer — 「星途」→**天星**（見 
 
 ## Ship
 
-- Feature SHA：
-- Tip／NOTES SHA：
+- feature commit：`8785aecdd707` (`8785aecdd7079c4f639c410e17d1dbdaa5d90049`)
+- tip／NOTES：`702e8604193f` (`702e8604193fa82489666a2b50afe3f08e100d57`)
+- URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18s
 
 Soft≠PASS。
