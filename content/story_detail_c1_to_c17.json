@@ -1,5 +1,5 @@
 {
-  "version": "1.2.4",
+  "version": "1.2.5",
   "locale": "zh-Hant-written-HK",
   "source": "merge phase1–5 detail JSON; C16–C17 appended 2026-11-02; wiring openConditions v1.1 2026-11-02; C1–C5 map hint／loc／C5 thresh=2 BOARD_DECISIONS_v1 2026-11-03",
   "nodes": [
@@ -471,7 +471,7 @@
       "playerOffer": true,
       "playerHint": "片場邊有小訪位，筆記本已經打開。",
       "lockedHint": "約第9週起先輪到呢幕。采兒／台慶未登場前：可喺片場或多露面同周采兒混個面（好感約到2），或捱到初夏台慶籌備季（約夏初、台慶前）；兩樣中一樣就得。未到週數就照常跑通告，唔使估下一步。",
-      "nextHint": "主線呢段告一段落——繼續跑通告、見人，留意之後會嚟嘅新事態。",
+      "nextHint": "下一幕「首次正式約會對象」——約第12週起、隔一日之後；仲要同 Vera／林曉晴／周采兒其中一位夠熟（好感大約到3）。未到就照常跑通告、見人。",
       "beats": [
         {
           "speaker": "周采兒",
@@ -744,10 +744,10 @@
       ],
       "openConditionsNote": "方向性／playtest：至少一條可攻略線達約會門檻；可平行未確定。門檻數值 playtest。；FLOW_v1.2.3：pacing.weekMin=12＋minDaysAfterPrev=1（禁同日連播）",
       "thresholds": {
-        "rel_vera_threshold": null,
-        "rel_hiu_threshold": null,
-        "rel_choi_threshold": null,
-        "thresholds_note": "playtest 可調；UNLOCK 未給精確值"
+        "rel_vera_threshold": 3,
+        "rel_hiu_threshold": 3,
+        "rel_choi_threshold": 3,
+        "thresholds_note": "2026-11-03 填實：正式約會刻度＝3（C5 小訪＝2）；playtest 可調"
       },
       "artId": "story_c6",
       "conflict": null,
@@ -756,7 +756,12 @@
         "minDaysAfterPrev": 1,
         "when": "1988秋 / W12-14",
         "prevMain": "C5"
-      }
+      },
+      "locId": "tvb_longmen",
+      "playerOffer": true,
+      "playerHint": "收工走廊有人等你——今晚只能約一個。",
+      "lockedHint": "約第12週起，且隔一日之後；仲要同 Vera／林曉晴／周采兒其中一位關係夠熟（好感大約到3）先開。未到就照常跑通告、見人；開咗再返星河廠景走廊。",
+      "nextHint": "下一幕「拒雷勁式苛刻合約」——約第14週起、隔一日之後；開咗先留意茶餐廳／片場廂房那邊嘅約。"
     },
     {
       "id": "C7",
@@ -874,7 +879,12 @@
         "minDaysAfterPrev": 1,
         "when": "1988秋冬 / W14-16",
         "prevMain": "C6"
-      }
+      },
+      "locId": "ad_central",
+      "playerOffer": true,
+      "playerHint": "茶餐廳廂房有人攤咗份約——何生坐喺側邊。",
+      "lockedHint": "約第14週起，且隔一日之後先開。未到唔使估合約局——先照常跑通告；開咗再去中環一帶（茶餐廳／片場廂房）見雷勁。",
+      "nextHint": "下一幕「商業片 vs 文藝線」——約第20週起、隔一日之後；開咗先返星河會議室同獨立片廠兩邊睇。"
     },
     {
       "id": "C8",
@@ -994,7 +1004,12 @@
         "minDaysAfterPrev": 1,
         "when": "1989春 / W20-24",
         "prevMain": "C7"
-      }
+      },
+      "locId": "tvb_longmen",
+      "playerOffer": true,
+      "playerHint": "同一個下晝：會議室一份商業約，茶水間又有文藝磨戲邀。",
+      "lockedHint": "約第20週起，且隔一日之後先開。未到唔使兩邊跑——先照常開工；開咗再去星河電視台會議室（同獨立片廠茶水間會撞期）。",
+      "nextHint": "下一幕「藍若曦擋狗仔後」——約第28週起；仲要先同藍若曦見過面（地圖撞見再開）。"
     },
     {
       "id": "C9",
@@ -1132,7 +1147,12 @@
         "minDaysAfterPrev": 1,
         "when": "1989夏秋 / W28-32",
         "prevMain": "C8"
-      }
+      },
+      "locId": "rec_star",
+      "playerOffer": true,
+      "playerHint": "停車場後巷狗仔剛散——車上要定調。",
+      "lockedHint": "約第28週起，且隔一日之後；仲要先同藍若曦見過面。未識面就先喺唱片／宣傳場多露面；開咗再處理狗仔後嘅定調。",
+      "nextHint": "下一幕「台慶位 vs 陪伴」——約第40週起、隔一日之後；開咗去星河台慶後台。"
     },
     {
       "id": "C10",
@@ -1247,7 +1267,7 @@
         "week_min:40",
         "days_after_prev:1"
       ],
-      "openConditionsNote": "台慶季＋高俊傑競爭位（方向性）；衝突 T2。可與 A_ko_crisis／A_ko_push2 雙軌。；FLOW_v1.2.3：pacing.weekMin=40＋minDaysAfterPrev=1（禁同日連播）",
+      "openConditionsNote": "台慶季＋高俊傑競爭位（方向性）；衝突 T2。可與 A_ko_crisis／A_ko_push2 雙軌。；FLOW_v1.2.3：pacing.weekMin=40＋minDaysAfterPrev=1（禁同日連播）；UNLOCK 提及當前約會線：本輪只文案／hint 提醒；ANY／thresh 另票。",
       "artId": "story_c10",
       "conflict": "T2",
       "pacing": {
@@ -1255,7 +1275,12 @@
         "minDaysAfterPrev": 1,
         "when": "1989冬 / W40-44",
         "prevMain": "C9"
-      }
+      },
+      "locId": "tvb_longmen",
+      "playerOffer": true,
+      "playerHint": "台慶後台黃金時段位同約會撞期——高俊傑喺走廊。",
+      "lockedHint": "約第40週起，且隔一日之後先開。未到台慶季就照常跑通告、顧住而家嘅感情線；開咗再返星河台慶後台。",
+      "nextHint": "主線去到下一階段——繼續跑通告、見人，留意之後會嚟嘅新事態（曝光定層次）。"
     },
     {
       "id": "C11",
@@ -2502,6 +2527,17 @@
       "status": "json_1.2.4",
       "no_fake_meet": true,
       "c1_when": "W1-2"
+    },
+    "hint_c6c10": {
+      "status": "json_1.2.5",
+      "c6_thresh": 3,
+      "locs": {
+        "C6": "tvb_longmen",
+        "C7": "ad_central",
+        "C8": "tvb_longmen",
+        "C9": "rec_star",
+        "C10": "tvb_longmen"
+      }
     }
   },
   "conditionSchema": {
@@ -2535,6 +2571,11 @@
       "id": "HINT_PACING_P0_v1",
       "at": "2026-11-03",
       "note": "tester 玩家角度偏硬：C1 when→W1-2；C2–C4 lockedHint 寫實 week_min＋隔日、行動降級；C1 next 單一；C5 lockedHint 約第9週＋台慶時機；唔加假見面節。"
+    },
+    {
+      "id": "HINT_C6C10_v1",
+      "at": "2026-11-03",
+      "note": "C6–C10 locId／playerOffer／hints；C6 thresholds=3；跟 HANDOFF_C6PLUS＋HINT_PACING 閘先口吻"
     }
   ]
 }
