@@ -33,6 +33,6 @@
 ## Ship
 
 - feature commit： ()`TBD`
-- tip／NOTES：`TBD`
+- tip／NOTES： ()`TBD`
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18o
 - Soft≠PASS · 全量出圖 HOLD
