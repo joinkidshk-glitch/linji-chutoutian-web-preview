@@ -32,5 +32,6 @@
 
 ## Ship
 
+- feature：`bc49d5e95e00` (`bc49d5e95e000fe625362588f3c68bfec14dba3a`)
 - URL：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=18k
 - Soft≠PASS · 全量出圖 HOLD
