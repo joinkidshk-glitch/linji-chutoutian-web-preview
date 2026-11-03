@@ -1,5 +1,5 @@
 {
-  "version": "2.2.0",
+  "version": "2.3.0",
   "year": 1988,
   "source": "user Prompt 4",
   "edits": [
@@ -8,28 +8,29 @@
     "film synopsis 公司名改用中文（獅子山／紅棉）",
     "§2A 標註 v1：eraTag 詞表化＋boardPriority／boardNote／seasonWeight；synopsis 未改",
     "v2.1 修好：季節口吻＋星河顯示名；pay／id 未改",
-    "v2.2.0 A→B PLAN_SHOOT_CAREER_SCHEDULE_v2：全則補 roleScale／shootBand／抬 shootDaysHint／shootWeekdays／shootDeadlineDays；+5（photo×2／mtv_02／film_07／tv_08）"
+    "v2.2.0 A→B PLAN_SHOOT_CAREER_SCHEDULE_v2：全則補 roleScale／shootBand／抬 shootDaysHint／shootWeekdays／shootDeadlineDays；+5（photo×2／mtv_02／film_07／tv_08）",
+    "v2.3.0 loc×季節填縫：+17（每缺口一則；優先 tvb_harbour 春）；全則仍含 roleScale／shootBand／shootWeekdays／shootDeadlineDays"
   ],
   "counts": {
     "廣告": 10,
-    "綜藝": 5,
-    "電視劇": 8,
-    "電影": 7,
-    "唱片通告": 5,
-    "total": 35,
+    "綜藝": 7,
+    "電視劇": 10,
+    "電影": 13,
+    "唱片通告": 12,
+    "total": 52,
     "byRoleScale": {
       "ad_av": 6,
       "ad_print": 2,
       "film_lead_big": 3,
-      "film_support_main": 2,
-      "film_support_small": 2,
-      "mtv": 2,
+      "film_support_main": 4,
+      "film_support_small": 6,
+      "mtv": 4,
       "photobook": 2,
-      "rec_album": 3,
-      "tv_cameo_short": 2,
+      "rec_album": 8,
+      "tv_cameo_short": 3,
       "tv_lead_long": 3,
-      "tv_support_main": 3,
-      "variety_ep": 4,
+      "tv_support_main": 4,
+      "variety_ep": 6,
       "variety_special": 1
     }
   },
@@ -1885,6 +1886,903 @@
         5
       ],
       "shootDeadlineDays": 11
+    },
+    {
+      "id": "gig_1988_fill_harbour_spring",
+      "season": "春",
+      "type": "電視劇",
+      "title": "《海港春潮》碼頭倉庫夜班少年",
+      "loc": "tvb_harbour",
+      "roleHint": "飾演海港貨倉夜班搬運少年，捲入走私線的目擊證人",
+      "blurb": "海港台春檔單元劇加場！碼頭夜班少年撞見走私換貨，一句對白也要站住場。",
+      "synopsis": "虛構海港廣播春檔單元劇《海港春潮》，以維港貨運碼頭為背景。阿偉飾演夜班搬運少年，在換班途中撞見走私換貨，被迫在貨倉鐵閘前與調查員對峙。全劇強調海風、貨櫃與霓虹倒影。",
+      "heroAngle": "阿偉對碼頭氣味與夜班節奏熟悉，演底層目擊證人時眼神自然帶著提防與倔強。",
+      "diasporaHook": "維港貨櫃與夜班碼頭，是海外華人回憶八十年代香港海運繁華的共同畫面。",
+      "eraTag": "era_1988_spring_alley",
+      "discoverNote": "海港台錄影廠春檔補位招募",
+      "boardNote": "海港春檔填縫・優先上板",
+      "req": {
+        "stamina": 28,
+        "acting": 22,
+        "iq": 18
+      },
+      "pay": [
+        1200,
+        2200
+      ],
+      "fame": [
+        4,
+        9
+      ],
+      "popularity": [
+        10,
+        18
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "shootDaysHint": 9,
+      "shootBand": [
+        8,
+        10
+      ],
+      "roleScale": "tv_cameo_short",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootHint": "夜戲為主，需在人造海風與貨櫃景下對白清晰、動作乾淨。",
+      "shootDeadlineDays": 13,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_fill_harbour_autumn",
+      "season": "秋",
+      "type": "綜藝",
+      "title": "《海港夜話》秋日碼頭點歌短劇",
+      "loc": "tvb_harbour",
+      "roleHint": "飾演碼頭工人點歌環節的對手戲短劇角色",
+      "blurb": "海港台秋日綜藝外景！在碼頭倉庫唱錯歌名也要接得住觀眾笑聲。",
+      "synopsis": "虛構海港廣播秋季綜藝《海港夜話》外景環節，邀請觀眾在碼頭點歌，並穿插短劇。阿偉飾演被點錯歌仍硬著頭皮唱下去的碼頭工人，現場即興與主持互損。",
+      "heroAngle": "阿偉街頭反應快，短劇即興能把尷尬變成笑點。",
+      "diasporaHook": "碼頭點歌與秋夜海風，喚起海外華人對港台夜綜藝的集體記憶。",
+      "eraTag": "era_1988_autumn_studio",
+      "discoverNote": "海港台秋檔外景臨時招募",
+      "boardNote": "海港秋檔綜藝填縫",
+      "req": {
+        "charm": 26,
+        "iq": 24,
+        "acting": 20
+      },
+      "pay": [
+        1600,
+        2800
+      ],
+      "fame": [
+        6,
+        12
+      ],
+      "popularity": [
+        18,
+        30
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.4,
+      "tier": "中",
+      "shootDaysHint": 3,
+      "shootBand": [
+        2,
+        4
+      ],
+      "roleScale": "variety_ep",
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootHint": "外景麥克風與海風雜訊並存，講錯要即興補救。",
+      "shootDeadlineDays": 13,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_tv_kowloon_autumn",
+      "season": "秋",
+      "type": "電視劇",
+      "title": "《九龍夜市》魚蛋檔少東",
+      "loc": "tvb_kowloon",
+      "roleHint": "飾演九龍夜市魚蛋檔少東，夾在家族與街坊之間",
+      "blurb": "九龍台秋檔市井劇！魚蛋檔少東要在街坊糾紛裡站穩一句公道話。",
+      "synopsis": "虛構九龍廣播秋檔市井劇《九龍夜市》，以廟街與油麻地夜市為舞台。阿偉飾演魚蛋檔少東，一邊顧檔一邊調停街坊糾紛，台詞少但眼神戲重。",
+      "heroAngle": "阿偉懂夜市節奏與街坊人情，演少東時自然帶著討價還價的伶俐。",
+      "diasporaHook": "魚蛋檔與夜市燈火，是海外華人記憶中最濃的香港煙火氣。",
+      "eraTag": "era_1988_autumn_unitdrama",
+      "discoverNote": "九龍台秋檔配角試鏡",
+      "boardNote": "九龍秋檔市井填縫",
+      "req": {
+        "acting": 28,
+        "charm": 24,
+        "iq": 22
+      },
+      "pay": [
+        2200,
+        3800
+      ],
+      "fame": [
+        8,
+        14
+      ],
+      "popularity": [
+        16,
+        28
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.42,
+      "tier": "中",
+      "shootDaysHint": 15,
+      "shootBand": [
+        14,
+        16
+      ],
+      "roleScale": "tv_support_main",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootHint": "夜戲為主，要在油煙與人潮嘈雜中對白清楚。",
+      "shootDeadlineDays": 20,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_tv_kowloon_winter",
+      "season": "冬",
+      "type": "綜藝",
+      "title": "《冬夜歡樂坊》賀歲街坊趣味賽",
+      "loc": "tvb_kowloon",
+      "roleHint": "擔任賀歲趣味賽嘉賓，與街坊同台闖關",
+      "blurb": "九龍台冬檔賀歲綜藝！趣味賽嘉賓要肯出醜、肯笑、肯跟街坊起哄。",
+      "synopsis": "虛構九龍廣播冬檔賀歲綜藝《冬夜歡樂坊》，以街坊趣味賽為主軸。阿偉作為新晉嘉賓參與闖關遊戲，需與街坊搭檔完成默契題。",
+      "heroAngle": "阿偉不怕出醜，跟街坊起哄自然，適合賀歲氣氛。",
+      "diasporaHook": "冬夜賀歲綜藝是全球華人圍爐收看的固定儀式感。",
+      "eraTag": "era_1988_winter_festive",
+      "discoverNote": "九龍台冬檔嘉賓名單補位",
+      "boardNote": "九龍冬檔賀歲填縫",
+      "req": {
+        "charm": 28,
+        "stamina": 24,
+        "iq": 18
+      },
+      "pay": [
+        1800,
+        3000
+      ],
+      "fame": [
+        7,
+        13
+      ],
+      "popularity": [
+        20,
+        32
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootBand": [
+        2,
+        4
+      ],
+      "roleScale": "variety_ep",
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootHint": "現場遊戲節奏快，跌倒也要笑著起來。",
+      "shootDeadlineDays": 13,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_film_lion_autumn",
+      "season": "秋",
+      "type": "電影",
+      "title": "《秋刀江湖》茶樓跑堂",
+      "loc": "film_lion",
+      "roleHint": "飾演茶樓跑堂，目睹一場江湖談判後被捲入追殺",
+      "blurb": "獅子山秋檔武俠片！茶樓跑堂只有幾場戲，但要在飛椅與碎碗裡站得住。",
+      "synopsis": "虛構獅子山製片秋檔武俠片《秋刀江湖》。阿偉飾演茶樓跑堂，在一場江湖談判中端茶撞見殺機，隨後被雙方追殺。動作場面以碎碗、飛椅與窄梯為主。",
+      "heroAngle": "阿偉身手靈活，演跑堂逃命時身體語言真實。",
+      "diasporaHook": "茶樓江湖與秋刀名義，延續全球華人熟悉的港產武俠符號。",
+      "eraTag": "era_1988_autumn_board",
+      "discoverNote": "獅子山製片秋檔小配角試鏡",
+      "boardNote": "獅子山秋檔填縫",
+      "req": {
+        "stamina": 32,
+        "acting": 22,
+        "iq": 18
+      },
+      "pay": [
+        2800,
+        4800
+      ],
+      "fame": [
+        6,
+        12
+      ],
+      "popularity": [
+        12,
+        22
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.38,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootBand": [
+        12,
+        15
+      ],
+      "roleScale": "film_support_small",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootHint": "茶樓打戲需配合飛椅與碎瓷安全落點。",
+      "shootDeadlineDays": 18,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_film_cotton_spring",
+      "season": "春",
+      "type": "電影",
+      "title": "《棉廠春雨》縫紉女工弟弟",
+      "loc": "film_cotton",
+      "roleHint": "飾演棉紡廠女工的弟弟，為姐姐送飯時捲入勞資衝突",
+      "blurb": "棉花廠春檔寫實片！送飯少年要在工廠鐵閘前把恐懼演成倔強。",
+      "synopsis": "虛構棉花廠影業春檔寫實電影《棉廠春雨》，以紡織廠女工生活為主線。阿偉飾演女工弟弟，為姐姐送飯盒時撞見勞資糾紛，成為旁觀又被捲入的少年。",
+      "heroAngle": "阿偉懂工廠區節奏，演送飯少年時眼神有生活感。",
+      "diasporaHook": "棉紡廠與送飯盒，是海外華人對香港工業年代的共同記憶。",
+      "eraTag": "era_1988_spring_factory",
+      "discoverNote": "棉花廠影業春檔配角招募",
+      "boardNote": "棉花廠春檔填縫",
+      "req": {
+        "acting": 26,
+        "stamina": 24,
+        "iq": 20
+      },
+      "pay": [
+        2600,
+        4500
+      ],
+      "fame": [
+        5,
+        11
+      ],
+      "popularity": [
+        10,
+        20
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 14,
+      "shootBand": [
+        12,
+        15
+      ],
+      "roleScale": "film_support_small",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootHint": "廠房戲多煙塵，對白要壓過機器噪音但不喊破。",
+      "shootDeadlineDays": 19,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_film_cotton_autumn",
+      "season": "秋",
+      "type": "電影",
+      "title": "《金秋棉途》廠區執勤警察",
+      "loc": "film_cotton",
+      "roleHint": "飾演廠區執勤警察，追查一批失踪原料",
+      "blurb": "棉花廠秋檔警匪片！廠區警察戲份集中，要站得住審訊與夜巡兩場。",
+      "synopsis": "虛構棉花廠影業秋檔警匪片《金秋棉途》。阿偉飾演廠區執勤警察，追查失踪棉紗原料，在夜巡與倉庫對峙中完成主要配角弧線。",
+      "heroAngle": "阿偉能把青年警察的生澀與責任感演得可信。",
+      "diasporaHook": "廠區警匪與原料走私，延續海外華人熟悉的港產犯罪片節奏。",
+      "eraTag": "era_1988_autumn_board",
+      "discoverNote": "棉花廠影業秋檔主要配角試鏡",
+      "boardNote": "棉花廠秋檔填縫",
+      "req": {
+        "acting": 32,
+        "stamina": 28,
+        "iq": 26
+      },
+      "pay": [
+        4500,
+        7500
+      ],
+      "fame": [
+        12,
+        20
+      ],
+      "popularity": [
+        18,
+        30
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.48,
+      "tier": "中",
+      "shootDaysHint": 22,
+      "shootBand": [
+        20,
+        24
+      ],
+      "roleScale": "film_support_main",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootHint": "夜巡長鏡頭多，體力與眼神要撐得住。",
+      "shootDeadlineDays": 28,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_film_harbour_spring",
+      "season": "春",
+      "type": "電影",
+      "title": "《春潮貨櫃》碼頭報關員",
+      "loc": "film_harbour",
+      "roleHint": "飾演海港片廠碼頭報關員，發現貨櫃夾帶違禁品",
+      "blurb": "海港片廠春檔！報關員小配角要在貨櫃場把驚慌壓成冷靜。",
+      "synopsis": "虛構海港片廠春檔犯罪片《春潮貨櫃》。阿偉飾演碼頭報關員，例行檢查時發現貨櫃夾帶違禁品，成為整段追查的第一個線索人物。",
+      "heroAngle": "阿偉能把文書小人物的驚惶與責任感演得細緻。",
+      "diasporaHook": "貨櫃與報關，是海外華人理解香港港口經濟的經典入口。",
+      "eraTag": "era_1988_spring_alley",
+      "discoverNote": "海港片廠春檔小配角公開試鏡",
+      "boardNote": "海港片廠春檔填縫",
+      "req": {
+        "acting": 24,
+        "iq": 26,
+        "stamina": 20
+      },
+      "pay": [
+        2400,
+        4200
+      ],
+      "fame": [
+        5,
+        10
+      ],
+      "popularity": [
+        10,
+        18
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.33,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootBand": [
+        12,
+        15
+      ],
+      "roleScale": "film_support_small",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootHint": "貨櫃場外景風大，對白收音要配合擋風。",
+      "shootDeadlineDays": 19,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_film_harbour_summer",
+      "season": "夏",
+      "type": "電影",
+      "title": "《盛夏海關》緝私隊新丁",
+      "loc": "film_harbour",
+      "roleHint": "飾演緝私隊新丁，首次執行夜間登船檢查",
+      "blurb": "海港片廠夏檔動作片！緝私新丁要在晃船甲板上把害怕演成真。",
+      "synopsis": "虛構海港片廠夏檔動作片《盛夏海關》。阿偉飾演緝私隊新丁，首次夜間登船檢查，在晃動甲板與強光手電筒下完成緊張對手戲。",
+      "heroAngle": "阿偉的生澀與衝勁適合演新丁第一次上場。",
+      "diasporaHook": "緝私登船是海外華人印象中港產警匪片的高燃場面。",
+      "eraTag": "era_1988_summer_mall",
+      "discoverNote": "海港片廠夏檔配角試鏡",
+      "boardNote": "海港片廠夏檔填縫",
+      "req": {
+        "stamina": 34,
+        "acting": 26,
+        "iq": 22
+      },
+      "pay": [
+        4200,
+        7000
+      ],
+      "fame": [
+        10,
+        18
+      ],
+      "popularity": [
+        16,
+        28
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.5,
+      "tier": "中",
+      "shootDaysHint": 21,
+      "shootBand": [
+        20,
+        24
+      ],
+      "roleScale": "film_support_main",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootHint": "甲板戲需適應晃動與煙霧，注意防滑。",
+      "shootDeadlineDays": 27,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_film_harbour_winter",
+      "season": "冬",
+      "type": "電影",
+      "title": "《寒夜碼頭》船務公司秘書",
+      "loc": "film_harbour",
+      "roleHint": "飾演船務公司年輕秘書，掌握一份關鍵船期表",
+      "blurb": "海港片廠冬檔懸疑片！秘書戲份不多，但船期表一場要演得心虛又硬撐。",
+      "synopsis": "虛構海港片廠冬檔懸疑片《寒夜碼頭》。阿偉飾演船務公司年輕秘書，被雙方勢力追問船期表下落，在辦公室與碼頭倉庫各有關鍵對手戲。",
+      "heroAngle": "阿偉能把小職員被逼到牆角時的顫抖與倔強演出來。",
+      "diasporaHook": "寒夜碼頭與船期表，延續海外華人熟悉的港口懸疑氛圍。",
+      "eraTag": "era_1988_winter_recruit",
+      "discoverNote": "海港片廠冬檔小配角補位",
+      "boardNote": "海港片廠冬檔填縫",
+      "req": {
+        "acting": 28,
+        "iq": 28,
+        "charm": 18
+      },
+      "pay": [
+        2600,
+        4600
+      ],
+      "fame": [
+        6,
+        12
+      ],
+      "popularity": [
+        12,
+        20
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.4,
+      "tier": "初",
+      "shootDaysHint": 14,
+      "shootBand": [
+        12,
+        15
+      ],
+      "roleScale": "film_support_small",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootHint": "室內對手戲要求眼神層次，忌過度喊戲。",
+      "shootDeadlineDays": 19,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_rec_hk_summer",
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "夏日單曲《碼頭汽水》和聲錄音",
+      "loc": "rec_hk",
+      "roleHint": "擔任夏日清涼單曲的和聲與對唱段落",
+      "blurb": "香江唱片夏檔！汽水主題單曲要唱出碼頭午後的甜與熱。",
+      "synopsis": "虛構香江唱片夏檔單曲《碼頭汽水》，主打清涼情歌。阿偉負責和聲與一段對唱，需在模擬錄音室把熱氣與甜感唱出來。",
+      "heroAngle": "阿偉嗓音帶街頭氣息，和聲能托住主唱又不搶戲。",
+      "diasporaHook": "夏日汽水歌是海外華人回憶香港炎夏的輕快符號。",
+      "eraTag": "era_1988_summer_karaoke",
+      "discoverNote": "香江唱片夏檔和聲試音",
+      "boardNote": "香江夏檔錄音填縫",
+      "req": {
+        "stage": 28,
+        "charm": 24,
+        "acting": 18
+      },
+      "pay": [
+        2200,
+        4000
+      ],
+      "fame": [
+        5,
+        11
+      ],
+      "popularity": [
+        14,
+        26
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.3,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootBand": [
+        10,
+        14
+      ],
+      "roleScale": "rec_album",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootHint": "和聲對準主唱氣口，忌搶拍。",
+      "shootDeadlineDays": 19,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_rec_hk_autumn",
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "秋季專輯《九龍雨巷》主唱錄音",
+      "loc": "rec_hk",
+      "roleHint": "擔任敘事民謠專輯主唱段落錄音",
+      "blurb": "香江唱片秋檔！雨巷民謠要唱出濕冷與倔強，忌油腔。",
+      "synopsis": "虛構香江唱片秋檔專輯《九龍雨巷》，以舊區雨夜為主題。阿偉擔任主唱段落錄音，需以微沙嗓音演譯雨巷故事。",
+      "heroAngle": "阿偉嗓音有生活磨礪，適合雨巷敘事。",
+      "diasporaHook": "雨巷民謠能勾起海外華人對舊區香港的鄉愁。",
+      "eraTag": "era_1988_autumn_studio",
+      "discoverNote": "香江唱片秋檔主唱試音",
+      "boardNote": "香江秋檔錄音填縫",
+      "req": {
+        "stage": 32,
+        "charm": 26,
+        "acting": 22
+      },
+      "pay": [
+        2800,
+        5000
+      ],
+      "fame": [
+        8,
+        15
+      ],
+      "popularity": [
+        18,
+        30
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.4,
+      "tier": "中",
+      "shootDaysHint": 13,
+      "shootBand": [
+        12,
+        14
+      ],
+      "roleScale": "rec_album",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootHint": "長錄音日需護嗓，忌連續嘶吼。",
+      "shootDeadlineDays": 21,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_rec_hk_winter",
+      "season": "冬",
+      "type": "唱片通告",
+      "title": "賀歲合唱《圍爐》錄音",
+      "loc": "rec_hk",
+      "roleHint": "擔任賀歲合唱中段主歌之一",
+      "blurb": "香江唱片冬檔賀歲歌！圍爐合唱要溫暖、要齊、要聽到街坊感。",
+      "synopsis": "虛構香江唱片冬檔賀歲合唱《圍爐》。阿偉擔任中段主歌之一，與多位歌手輪唱，強調溫暖與街坊感。",
+      "heroAngle": "阿偉唱賀歲歌不虛假，能把市井溫暖唱出來。",
+      "diasporaHook": "賀歲圍爐合唱是全球華人過年的聲音記憶。",
+      "eraTag": "era_1988_winter_record",
+      "discoverNote": "香江唱片冬檔合唱補位",
+      "boardNote": "香江冬檔錄音填縫",
+      "req": {
+        "stage": 30,
+        "charm": 28,
+        "iq": 16
+      },
+      "pay": [
+        2500,
+        4500
+      ],
+      "fame": [
+        7,
+        13
+      ],
+      "popularity": [
+        20,
+        34
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootBand": [
+        10,
+        14
+      ],
+      "roleScale": "rec_album",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootHint": "合唱對齊拍點，個人段要穩。",
+      "shootDeadlineDays": 19,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_mtv_wanchai_spring",
+      "season": "春",
+      "type": "唱片通告",
+      "title": "春日 MTV《電車窗外》群演",
+      "loc": "rec_wanchai",
+      "roleHint": "飾演電車車廂內的年輕乘客群演，有特寫鏡頭",
+      "blurb": "灣仔錄影廠春檔 MTV！電車車廂特寫，表情要自然不要望鏡。",
+      "synopsis": "虛構灣仔錄影廠春檔 MTV《電車窗外》。阿偉作為車廂乘客群演，有兩段特寫：望出窗外與被主唱擦肩。",
+      "heroAngle": "阿偉鏡頭感自然，適合不搶主角的群演特寫。",
+      "diasporaHook": "電車車廂是海外華人對香港街頭的經典印象。",
+      "eraTag": "era_1988_spring_alley",
+      "discoverNote": "灣仔錄影廠春檔 MTV 群演招募",
+      "boardNote": "灣仔春檔 MTV 填縫",
+      "req": {
+        "looks": 22,
+        "charm": 20,
+        "acting": 16
+      },
+      "pay": [
+        1500,
+        2800
+      ],
+      "fame": [
+        3,
+        8
+      ],
+      "popularity": [
+        12,
+        22
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.25,
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootBand": [
+        2,
+        3
+      ],
+      "roleScale": "mtv",
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootHint": "車廂燈光強，忌眨眼過多與望鏡頭。",
+      "shootDeadlineDays": 9,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_mtv_wanchai_winter",
+      "season": "冬",
+      "type": "唱片通告",
+      "title": "冬夜 MTV《霓虹未眠》酒吧侍應",
+      "loc": "rec_wanchai",
+      "roleHint": "飾演酒吧侍應，在主唱段落端酒走過",
+      "blurb": "灣仔錄影廠冬檔 MTV！酒吧侍應鏡頭短，但步伐與眼神要跟音樂。",
+      "synopsis": "虛構灣仔錄影廠冬檔 MTV《霓虹未眠》。阿偉飾演酒吧侍應，在主唱段落端酒走過，需對準節拍完成走位。",
+      "heroAngle": "阿偉節奏感好，走位能貼音樂。",
+      "diasporaHook": "霓虹酒吧是海外華人記憶中的香港夜生活符號。",
+      "eraTag": "era_1988_winter_record",
+      "discoverNote": "灣仔錄影廠冬檔 MTV 補位",
+      "boardNote": "灣仔冬檔 MTV 填縫",
+      "req": {
+        "looks": 24,
+        "stage": 22,
+        "acting": 18
+      },
+      "pay": [
+        1600,
+        3000
+      ],
+      "fame": [
+        4,
+        9
+      ],
+      "popularity": [
+        14,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootBand": [
+        2,
+        3
+      ],
+      "roleScale": "mtv",
+      "shootWeekdays": [
+        5,
+        6,
+        7
+      ],
+      "shootHint": "端酒走位要跟鼓點，忌潑灑道具酒。",
+      "shootDeadlineDays": 9,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_rec_star_spring",
+      "season": "春",
+      "type": "唱片通告",
+      "title": "春檔專輯《星途序曲》合唱錄音",
+      "loc": "rec_star",
+      "roleHint": "擔任新晉專輯合唱與對唱段落",
+      "blurb": "星途唱片春檔！新晉專輯合唱要亮、要齊，忌搶主唱。",
+      "synopsis": "虛構星途唱片春檔專輯《星途序曲》。阿偉擔任合唱與一段對唱，錄音室要求音色乾淨、情緒向上。",
+      "heroAngle": "阿偉能把草根嗓音磨成乾淨合唱，不搶主唱。",
+      "diasporaHook": "春檔新星專輯是海外華人追港樂的入門儀式。",
+      "eraTag": "era_1988_spring_grassroot",
+      "discoverNote": "星途唱片春檔合唱試音",
+      "boardNote": "星途春檔錄音填縫",
+      "req": {
+        "stage": 30,
+        "charm": 26,
+        "acting": 20
+      },
+      "pay": [
+        3000,
+        5200
+      ],
+      "fame": [
+        8,
+        14
+      ],
+      "popularity": [
+        18,
+        30
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.38,
+      "tier": "中",
+      "shootDaysHint": 13,
+      "shootBand": [
+        12,
+        14
+      ],
+      "roleScale": "rec_album",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootHint": "多軌疊錄，耳機監聽要穩。",
+      "shootDeadlineDays": 21,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
+    },
+    {
+      "id": "gig_1988_rec_star_summer",
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "夏日單曲《泳池邊》主唱試音錄音",
+      "loc": "rec_star",
+      "roleHint": "擔任夏日單曲主唱試音與正式錄音",
+      "blurb": "星途唱片夏檔！泳池主題單曲要唱得輕快，忌用力過猛。",
+      "synopsis": "虛構星途唱片夏檔單曲《泳池邊》。阿偉先試音後正式錄音，需唱出夏日輕快與一點青澀。",
+      "heroAngle": "阿偉唱輕快歌時仍有市井真實感，不易假甜。",
+      "diasporaHook": "夏日泳池情歌是八十年代華語流行的共同回憶。",
+      "eraTag": "era_1988_summer_karaoke",
+      "discoverNote": "星途唱片夏檔主唱試音",
+      "boardNote": "星途夏檔錄音填縫",
+      "req": {
+        "stage": 28,
+        "charm": 28,
+        "looks": 20
+      },
+      "pay": [
+        2600,
+        4800
+      ],
+      "fame": [
+        7,
+        13
+      ],
+      "popularity": [
+        16,
+        28
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootBand": [
+        10,
+        14
+      ],
+      "roleScale": "rec_album",
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootHint": "試音與正式兩輪，護嗓優先。",
+      "shootDeadlineDays": 19,
+      "year": 1988,
+      "boardPriority": "high",
+      "seasonWeight": 1.0
     }
   ],
   "planRef": "PLAN_SHOOT_CAREER_SCHEDULE_v2",
