@@ -2218,7 +2218,7 @@ body.day-res-open #mask.day-res{
   background:#E6D2A8;
   border:2px solid #C9A227;
   border-radius:10px;
-  padding:10px 10px 20px;
+  padding:10px 10px 28px;
   color:#1A1410;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.45);
   /* phone: vertical stack only; poster_wall optional collapsed by default */
@@ -2320,7 +2320,11 @@ body.day-res-open #mask.day-res{
   display:flex; justify-content:flex-start; align-items:flex-start; gap:4px;
   margin:0 0 5px; line-height:1.35;
 }
-.cn-kv .k{ color:#5a4a38; font-weight:700; flex:0 0 2.2em; }
+.cn-kv .k{
+  color:#5a4a38; font-weight:700;
+  flex:0 0 auto; min-width:3em;
+  white-space:nowrap; word-break:keep-all; line-break:strict;
+}
 .cn-kv .v{
   color:#1A1410; font-weight:800; text-align:right;
   word-break:keep-all; line-break:strict; overflow-wrap:normal;
@@ -2335,7 +2339,7 @@ body.day-res-open #mask.day-res{
 .cn-kv-weekly .cn-kv-top{
   display:flex; justify-content:flex-start; gap:4px; width:100%;
 }
-.cn-kv-weekly .cn-kv-top .k{ flex:0 0 2.2em; }
+.cn-kv-weekly .cn-kv-top .k{ flex:0 0 auto; min-width:3em; white-space:nowrap; word-break:keep-all; }
 .cn-kv-weekly .cn-kv-top .v{ margin-left:auto; text-align:right; }
 .cn-wd-sub{
   font-size:.7rem; font-weight:700; color:#6b5a48;
@@ -2362,10 +2366,7 @@ body.day-res-open #mask.day-res{
   flex:0 0 auto;
   margin-bottom:4px; font-weight:900; color:#3a6ea5; font-size:.72rem; letter-spacing:.04em;
 }
-.notice_synopsis_frame p{
-  margin:0; font-size:.78rem; line-height:1.5; color:#2a2118;
-  white-space:pre-wrap;
-  word-break:keep-all; line-break:strict;
+.notice_synopsis_frame .cn-syn-scroll{
   flex:1 1 auto;
   min-height:0;
   overflow-x:hidden;
@@ -2373,16 +2374,21 @@ body.day-res-open #mask.day-res{
   -webkit-overflow-scrolling:touch;
   overscroll-behavior:contain;
 }
+.notice_synopsis_frame p{
+  margin:0; font-size:.78rem; line-height:1.5; color:#2a2118;
+  white-space:pre-wrap;
+  word-break:keep-all; line-break:strict;
+}
 .notice_synopsis_frame .cn-role-note{
-  flex:0 0 auto;
   margin:8px 0 0; font-size:.74rem; color:#6b4e2e; line-height:1.4;
   word-break:keep-all; line-break:strict;
 }
 .cn-role-note{ margin:8px 0 0; font-size:.74rem; color:#6b4e2e; line-height:1.4; word-break:keep-all; line-break:strict; }
 /* v18w: scroll past synopsis — pad above sticky #modal-btns sibling */
 #mask.casting-sheet-on #modal-inner{
-  padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)) !important;
-  scroll-padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  /* v19d: clear sticky #modal-btns (19c QA: role/synopsis tail y≈706 covered) */
+  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+  scroll-padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
 }
 /* sticky CTA 用 #modal-btns（已 pin）；btn_leave 對齊 wire */
 #mask:not(.tut-on) #modal-btns button.btn_leave,
@@ -2432,7 +2438,7 @@ body.day-res-open #mask.day-res{
 .cn-role-line .k{ flex:0 0 auto; font-weight:900; color:#3a6ea5; }
 .cn-role-line .v{ flex:1 1 auto; font-weight:700; color:#1A1410; min-width:0; }
 .cn-kv.cn-limits{ align-items:flex-start; }
-.cn-kv.cn-limits .k{ flex:0 0 4.2em; }
+.cn-kv.cn-limits .k{ flex:0 0 auto; min-width:4.2em; white-space:nowrap; word-break:keep-all; }
 .cn-kv.cn-limits .v{
   text-align:left; margin-left:0; font-weight:700; color:#6a4020;
   white-space:normal; word-break:keep-all; line-break:strict;
@@ -6917,7 +6923,10 @@ function castingNoticeDetailHtml(g){
     <div class="notice_period_bar"><b>通告期間：</b>${period}</div>
     <div class="notice_synopsis_frame">
       <div class="cn-lab">劇情簡介</div>
-      <p>${syn}</p>
+      <div class="cn-syn-scroll">
+        <p>${syn}</p>
+        ${(g.roleLabel && g.roleHint) ? (`<div class="cn-role-note">角色：${String(g.roleHint)}</div>`) : ""}
+      </div>
     </div>
   </div>`;
 }

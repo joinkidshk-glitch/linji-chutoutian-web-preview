@@ -42,6 +42,12 @@ Detail 欄位精神／順序：
 
 ---
 
+
+### 19c QA nits（併入本 tip）
+
+1. `.cn-kv .k`：`white-space:nowrap`＋`flex:0 0 auto; min-width:3em`——禁「違約／金」斷字。  
+2. casting-sheet `#modal-inner` 底 padding／scroll-padding 加大；`roleHint` 詳細若與 `roleLabel` 並存，放入 `.notice_synopsis_frame .cn-syn-scroll` 內滾——滾盡見、唔被 sticky `#modal-btns` 蓋。
+
 ## 鏡射／部署
 
 `sv-phone-preview` → `/tmp/linji-chutoutian-web-preview` push `main`（no force）。
