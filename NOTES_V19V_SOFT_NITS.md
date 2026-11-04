@@ -17,6 +17,8 @@ Phone web preview tip. Soft nits only, after v19u browser PASS. Parent tip stays
 
 9. `bg_loc_agency_ho.jpg` 換 cork 輕改稿，SHA256 `43acc91f4cfd0851480a12185346929facb37cf50f81bfcc9d53d3acf7270369`，720×1280。路徑同 `?v=19v`，SAVE 不變。未接 era_stars。
 
-C1–C5 閘、硬鎖、看板分級未改。89–92 HOLD。
+10. Phase 3 Soft（mock）：四人遠觀純文字＋音（`luk_baakyin`／`liu_bingxing`／`ngai_wingnaam`／`yip_manji`），唔掛剪影。通告卡只 ready「可接通告／接通告」或 locked「暫未能報＋離開」。未合條件撳掣會 shake，toast「條件未合」加副行。`isSoftTryGig` 恆 false。唔改 `canAudition` 門檻、唔改 gigs JSON。無 era_stars 檔可抄。
+
+C1–C5 閘、硬鎖門檻、看板分級邏輯未改。89–92 HOLD。gigs 仍 **3.2.4-soft**。
 
 Soft≠PASS. 出圖 HOLD. 唔 publish. 唔 merge.

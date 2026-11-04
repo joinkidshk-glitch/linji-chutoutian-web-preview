@@ -1,0 +1,158 @@
+{
+  "meta": {
+    "version": "v1",
+    "softStatus": "≠PASS",
+    "note": "閘未驗＝Mock only、出圖 HOLD、唔 tip LIVE、89–92 HOLD、已殺條件外試投、唔交 iOS Soft",
+    "model": "qwen3.7-max",
+    "alignedPlans": [
+      "PLAN_UI",
+      "PLAN_STORY_FULL",
+      "PLAN_ERA",
+      "PLAN_UI_PHASE3_COPY_HOOKS"
+    ],
+    "date": "2026-11-04",
+    "sightingMode": "text_plus_sfx",
+    "abLocked": {
+      "sighting": "B",
+      "toast": "A",
+      "fifthStar": "B"
+    },
+    "stubRev": "v1.1-starId-align-leave"
+  },
+  "starSightings": [
+    {
+      "starId": "luk_baakyin",
+      "displayName": "陸柏言",
+      "silhouetteDesc": "陸柏言身穿深色闊膊西裝配高領冷衫，喺走廊行過，身邊有保鑣跟隨。",
+      "distanceLine": "保鑣將你隔開，只能喺遠處望住佢哋行過，無法埋身。",
+      "locHint": "片場走廊",
+      "rumorTeaser": "聽講佢最近接咗套大製作，對劇本極之挑剔。",
+      "actionLabel": "遠觀",
+      "resultToast": "已遠觀陸柏言。"
+    },
+    {
+      "starId": "liu_bingxing",
+      "displayName": "廖炳星",
+      "silhouetteDesc": "廖炳星着住格仔恤衫，坐喺片場梳化度，淨係見到背影。",
+      "distanceLine": "佢正喺度專心度橋，只能遠望佢個背影，唔好行埋去阻住佢。",
+      "locHint": "金龍茶餐廳",
+      "rumorTeaser": "圈內傳聞佢套新戲嚴重超支，前幾日仲喺茶餐廳同人嗌交。",
+      "actionLabel": "遠觀",
+      "resultToast": "已遠觀廖炳星。"
+    },
+    {
+      "starId": "ngai_wingnaam",
+      "displayName": "魏詠男",
+      "silhouetteDesc": "魏詠男着住運動外套配功夫衫，企喺後巷半明半暗嘅陰影入面。",
+      "distanceLine": "佢散發住一股英氣，生人勿近，你只能喺後巷遠處靜靜望住佢。",
+      "locHint": "片場後巷",
+      "rumorTeaser": "有傳佢準備轉型做幕後，又或者會接拍高難度武打戲。",
+      "actionLabel": "遠觀",
+      "resultToast": "已遠觀魏詠男。"
+    },
+    {
+      "starId": "yip_manji",
+      "displayName": "葉敏芝",
+      "silhouetteDesc": "葉敏芝着住針織衫配短裙，喺訓練班鏡前練舞。",
+      "distanceLine": "佢喺鏡前專心練舞，競爭壓力極大，你只能喺遠處觀望，唔好打擾。",
+      "locHint": "訓練班排練室",
+      "rumorTeaser": "聽聞呢批新人為咗爭上位，暗地裏爭奪公司資源爭得好犀利。",
+      "actionLabel": "遠觀",
+      "resultToast": "已遠觀葉敏芝。"
+    }
+  ],
+  "castingCta": {
+    "canCast": {
+      "buttonLabel": "接通告",
+      "styleNote": "主 CTA 實心",
+      "successToast": "劇組通知：接通告成功！"
+    },
+    "cannotCast": {
+      "buttonLabel": "暫未能報",
+      "styleNote": "Disabled 灰底",
+      "tapFeedback": "shake",
+      "toast": "條件未合",
+      "subLine": "試鏡表現未夠火候，建議先跟班觀摩再作安排。",
+      "leaveActionLabel": "離開",
+      "hardLockNote": "條件未合＝暫未能報＋離開（禁 soft-try）"
+    }
+  },
+  "boardCardStates": [
+    {
+      "stateKey": "locked",
+      "boardTag": "暫未能報 · 條件未合",
+      "detailSub": "角色已鎖定，暫未能報；可選擇離開。",
+      "secondaryAction": "離開"
+    },
+    {
+      "stateKey": "ready",
+      "boardTag": "可接通告",
+      "detailSub": "條件符合，可接通告。"
+    }
+  ],
+  "devAppendix": {
+    "chai_chunhoi": "齊鎮海後輪可選；首輪唔入 starSightings／唔強掛地圖"
+  },
+  "toasts": {
+    "sightingNoted": "已記下紅星蹤影。",
+    "castAccepted": "劇組通知：接通告成功！",
+    "castBlocked": "條件未合",
+    "rumorHint": "聽到啲業界傳聞。"
+  },
+  "hooks": [
+    {
+      "hookId": "hook_star_luk_corridor",
+      "playerLine": "保鑣將你隔開，只能喺遠處望住佢哋行過，無法埋身。",
+      "surface": "map",
+      "alignNote": "陸柏言遠觀佔位"
+    },
+    {
+      "hookId": "hook_star_luk_rumour",
+      "playerLine": "聽講佢最近接咗套大製作，對劇本極之挑剔。",
+      "surface": "notebook",
+      "alignNote": "陸柏言噂碎片"
+    },
+    {
+      "hookId": "hook_star_liu_cafe",
+      "playerLine": "佢正喺度專心度橋，只能遠望佢個背影，唔好行埋去阻住佢。",
+      "surface": "map",
+      "alignNote": "廖炳星遠觀佔位"
+    },
+    {
+      "hookId": "hook_star_liu_rumour",
+      "playerLine": "圈內傳聞佢套新戲嚴重超支，前幾日仲喺茶餐廳同人嗌交。",
+      "surface": "notebook",
+      "alignNote": "廖炳星噂碎片"
+    },
+    {
+      "hookId": "hook_star_ngai_alley",
+      "playerLine": "佢散發住一股英氣，生人勿近，你只能喺後巷遠處靜靜望住佢。",
+      "surface": "map",
+      "alignNote": "魏詠男遠觀佔位"
+    },
+    {
+      "hookId": "hook_star_yip_mirror",
+      "playerLine": "佢喺鏡前專心練舞，競爭壓力極大，你只能喺遠處觀望，唔好打擾。",
+      "surface": "map",
+      "alignNote": "葉敏芝遠觀佔位"
+    },
+    {
+      "hookId": "hook_casting_success",
+      "playerLine": "劇組通知：接通告成功！",
+      "surface": "casting",
+      "alignNote": "接通告成功 Toast"
+    },
+    {
+      "hookId": "hook_casting_fail_toast",
+      "playerLine": "試鏡表現未夠火候，建議先跟班觀摩再作安排。",
+      "surface": "casting",
+      "alignNote": "暫未能報副行"
+    },
+    {
+      "hookId": "hook_ho_advice_soft",
+      "playerLine": "何生提醒：練好基本功，條件未合就暫未能報，唔好硬闖。",
+      "surface": "notebook",
+      "alignNote": "何生條件提醒"
+    }
+  ]
+}

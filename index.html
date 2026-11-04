@@ -2720,6 +2720,36 @@ body.day-res-open #mask.day-res{
   flex:0 0 auto;
 }
 #loc-sheet.has-loc-bg .loc-bg{ display:block; }
+.toast.has-sub{
+  max-height:148px !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  gap:2px;
+}
+.toast .toast-sub{
+  display:-webkit-box !important;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+  font-size:.68rem;
+  font-weight:700;
+  line-height:1.3;
+  text-align:center;
+}
+#modal-btns button.cast-locked{
+  background:#d9d3c6 !important;
+  color:#6a645c !important;
+  border:2px solid #b7b0a4 !important;
+}
+#modal-btns button.is-shake{ animation:castShake .36s linear; }
+@keyframes castShake{
+  0%,100%{ transform:translateX(0); }
+  20%{ transform:translateX(-7px); }
+  40%{ transform:translateX(7px); }
+  60%{ transform:translateX(-4px); }
+  80%{ transform:translateX(4px); }
+}
+.cn-board-sub{ margin:0 0 8px; font-size:.78rem; font-weight:700; color:#5a4328; }
 
 </style>
 </head>
@@ -6665,9 +6695,16 @@ function toast(m, opts){
   span.className="toast-msg";
   // keep CJK pairs; soft-trim long toasts to ~2 lines worth
   let msg=String(m||"");
-  if(msg.length>42) msg=msg.slice(0,40)+"…";
+  const sub=opts.sub ? String(opts.sub) : "";
+  if(!sub && msg.length>42) msg=msg.slice(0,40)+"…";
   span.textContent=msg;
   t.appendChild(span);
+  if(sub){
+    const subEl=document.createElement("span");
+    subEl.className="toast-sub";
+    subEl.textContent=sub;
+    t.appendChild(subEl);
+  }
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
@@ -6677,6 +6714,7 @@ function toast(m, opts){
     t.appendChild(img);
   }
   t.classList.toggle("has-stamp", stampWanted);
+  t.classList.toggle("has-sub", !!sub);
   t.classList.add("on");
   if(app){
     app.classList.add("toast-up");
@@ -6684,7 +6722,7 @@ function toast(m, opts){
   }
   clearTimeout(toast._t);
   toast._t=setTimeout(()=>{
-    t.classList.remove("on","has-stamp");
+    t.classList.remove("on","has-stamp","has-sub");
     if(app) app.classList.remove("toast-up","keep-sheet");
   },1800);
 }
@@ -6860,14 +6898,9 @@ function canAudition(gig){
   return {ok:true, softTry:false};
 }
 /** v18a／v18t：門檻未齊但 canAudition 仍放行＝可搏一搏 */
-function isSoftTryGig(gig){
-  try{
-    const gate = canAudition(gig);
-    if(!gate.ok) return false;
-    if(gate.softTry) return true;
-    const {keys, missing}=reqGap(gig);
-    return !!(keys && missing>0);
-  }catch(_e){ return false; }
+function isSoftTryGig(){
+  /* v19v Phase3：條件未合只係暫未能報＋離開。soft-try／搏一搏唔再放行。 */
+  return false;
 }
 /** Success probability in [0,1]; UI % = Math.round(chance(g)*100). Roll: Math.random() < chance(g). */
 function chance(gig){
@@ -7017,7 +7050,7 @@ function gigCardHtml(g, opts){
   /* PLAN §2.1 板面短標 */
   const rate = !gate.ok
     ? `🔒 暫未能報 · 條件未合`
-    : `可報名試鏡 · <b class="gold">${p}%</b>`; /* v19m：無 soft-try 支線 */
+    : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
   const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=16`;
@@ -7116,6 +7149,13 @@ function gigRecruitStatus(g){
   }catch(_e){}
   return {label:"招募中", alt:false};
 }
+function gigBoardCardState(g){
+  /* ready｜locked。跟現有 canAudition，唔改門檻。已殺青／製作中唔當第三個 CTA。 */
+  try{
+    if(typeof canAudition==="function" && g && !canAudition(g).ok) return "locked";
+  }catch(_e){}
+  return "ready";
+}
 function gigDirectorLabel(g){
   if(g && g.director) return String(g.director);
   return "組製未公開";
@@ -7201,11 +7241,13 @@ function gigBoardTeaserHtml(g){
   let days="";
   try{ days=`${verb}約 ${effectiveShootDays(g)} 日`; }catch(_e){}
   const meta=[pay, days].filter(Boolean).join(" · ");
-  const badgeCls = st.alt ? "gt-badge done" : "gt-badge";
-  return `<div class="gig-teaser" data-gid="${g.id}" role="button" tabindex="0">
+  const boardState = (st.label==="已殺青" || st.label==="製作中") ? "" : gigBoardCardState(g);
+  const badgeText = boardState==="locked" ? "暫未能報 · 條件未合" : (boardState==="ready" ? "可接通告" : st.label);
+  const badgeCls = (st.alt || boardState==="locked") ? "gt-badge done" : "gt-badge";
+  return `<div class="gig-teaser" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
     <img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}"/>
     <div class="gt-title">${work}</div>
-    <div class="gt-row"><span class="gt-pill">${genre}</span><span class="${badgeCls}">${st.label}</span></div>
+    <div class="gt-row"><span class="gt-pill">${genre}</span><span class="${badgeCls}">${badgeText}</span></div>
     ${meta?`<div class="gt-meta">${meta}</div>`:""}
     <div class="gt-hint">點開查看通告</div>
   </div>`;
@@ -7350,7 +7392,12 @@ function castingNoticeDetailHtml(g){
   const roleLine = gigRoleLineHtml(g);
   const limitsHtml = gigSpecialLimitsHtml(g);
   const producerLine = gigProducerLineHtml(g);
-  const statusCls = st.alt ? "notice_tag_recruiting alt" : "notice_tag_recruiting";
+  const boardState = (st.label==="已殺青" || st.label==="製作中") ? "" : gigBoardCardState(g);
+  const stateLabel = boardState==="locked" ? "暫未能報 · 條件未合" : (boardState==="ready" ? "可接通告" : st.label);
+  const stateSub = boardState==="locked"
+    ? "角色已鎖定，暫未能報；可選擇離開。"
+    : (boardState==="ready" ? "條件符合，可接通告。" : "");
+  const statusCls = (st.alt || boardState==="locked") ? "notice_tag_recruiting alt" : "notice_tag_recruiting";
   let starHtml="";
   for(let i=1;i<=5;i++){
     starHtml += i<=stars.n
@@ -7369,8 +7416,9 @@ function castingNoticeDetailHtml(g){
     <div class="notice_sheet_body">
     <div class="cn-pills">
       ${gigGenrePillsHtml(g)}
-      <span class="${statusCls}">${st.label}</span>
+      <span class="${statusCls}" data-board-state="${boardState}">${stateLabel}</span>
     </div>
+    ${stateSub?`<p class="cn-board-sub">${stateSub}</p>`:""}
     <div class="cn-stars-row"><span class="cn-lab-inline">難易度</span><span class="cn-stars">${starHtml}</span></div>
     ${roleLine}
     <div class="notice_table_frame">
@@ -7404,22 +7452,19 @@ function castingNoticeDetailHtml(g){
 function openCastingNoticeDetail(g, L){
   if(!g) return;
   const gate=canAudition(g);
-  const soft = gate.ok && isSoftTryGig(g);
   const body = castingNoticeDetailHtml(g);
   const btns=[];
-  /* CASTING_DETAIL_WIRE v19i：sticky #modal-btns；只留即場試鏡＋離開；唔開約試鏡／promptAudition */
+  /* v19v Phase3：ready＝接通告；locked＝暫未能報＋離開。無 soft-try／搏一搏。 */
   if(gate.ok){
-    const audLab = "即場試鏡（+1日）"; /* v19m：殺 soft-try 標 */
-    btns.push({label:audLab, role:"p", on:()=>{ doAudition(g, L); }});
+    btns.push({label:"接通告", role:"p", on:()=>{ doAudition(g, L); }});
   } else {
-    btns.push({label:"暫未能報 · 條件未合", role:"g", on:()=>{
-      S.flags=S.flags||{};
-      if(!S.flags.sawTutAudLock){
-        maybeShowTutToast("sawTutAudLock","TUT_AUD_LOCK", ()=>openCastingNoticeDetail(g,L));
-      } else {
-        toast(gateShortReason(g)||"這張通告暫時未能報名。");
-        openCastingNoticeDetail(g,L);
+    btns.push({label:"暫未能報", role:"g", cls:"cast-locked", stay:true, on:(btn)=>{
+      if(btn){
+        btn.classList.remove("is-shake");
+        void btn.offsetWidth;
+        btn.classList.add("is-shake");
       }
+      toast("條件未合", { sub:"試鏡表現未夠火候，建議先跟班觀摩再作安排。" });
     }});
   }
   btns.push({label:"離開", role:"g", cls:"btn_leave", on:()=>{ if(L) doScout(L); }});
@@ -8258,7 +8303,7 @@ function renderNotebook(){
   const selLocked=dayPlanLocked(planDraft[planSelDay]);
   let items = planCat==="work" ? workItems() : (planCat==="train" ? enrolledTrainItems() : (PLAN_ITEMS[planCat]||[]));
   if(planCat==="work" && !items.length){
-    list.innerHTML=`<div class="act-empty">未有待試鏡通告。<br>去地圖通告欄揀通告；達標後可即場試鏡。</div>`;
+    list.innerHTML=`<div class="act-empty">未有待試鏡通告。<br>去地圖通告欄揀通告；達標後可接通告。</div>`;
   } else if(planCat==="train" && !items.length){
     list.innerHTML=`<div class="act-empty">未報名任何訓練。<br>去地圖公司報名課程，解鎖後可排入手帳。</div>
       <button type="button" class="act-cta" id="btn-goto-enroll">去可報名公司</button>`;
@@ -9125,7 +9170,10 @@ function modal(html, buttons, opts){
     if(b.cls) cls+=" "+b.cls;
     btn.className=cls;
     btn.textContent=b.label;
-    btn.onclick=()=>{ _modalDismiss=null; closeModal(); if(b.on) b.on(); };
+    btn.onclick=()=>{
+      if(b.stay){ if(b.on) b.on(btn); return; }
+      _modalDismiss=null; closeModal(); if(b.on) b.on();
+    };
     row.appendChild(btn);
   });
   const maskEl=document.getElementById("mask");
@@ -9565,6 +9613,83 @@ try{
   };
 }catch(_e){}
 
+const STAR_SIGHTINGS = [
+  { starId:"luk_baakyin", displayName:"陸柏言", locs:["film_lion"],
+    silhouetteDesc:"陸柏言身穿深色闊膊西裝配高領冷衫，喺走廊行過，身邊有保鑣跟隨。",
+    distanceLine:"保鑣將你隔開，只能喺遠處望住佢哋行過，無法埋身。",
+    locHint:"片場走廊", rumorTeaser:"聽講佢最近接咗套大製作，對劇本極之挑剔。",
+    resultToast:"已遠觀陸柏言。" },
+  { starId:"liu_bingxing", displayName:"廖炳星", locs:["cafe_cha"],
+    silhouetteDesc:"廖炳星着住格仔恤衫，坐喺片場梳化度，淨係見到背影。",
+    distanceLine:"佢正喺度專心度橋，只能遠望佢個背影，唔好行埋去阻住佢。",
+    locHint:"金龍茶餐廳", rumorTeaser:"圈內傳聞佢套新戲嚴重超支，前幾日仲喺茶餐廳同人嗌交。",
+    resultToast:"已遠觀廖炳星。" },
+  { starId:"ngai_wingnaam", displayName:"魏詠男", locs:["film_harbour"],
+    silhouetteDesc:"魏詠男着住運動外套配功夫衫，企喺後巷半明半暗嘅陰影入面。",
+    distanceLine:"佢散發住一股英氣，生人勿近，你只能喺後巷遠處靜靜望住佢。",
+    locHint:"片場後巷", rumorTeaser:"有傳佢準備轉型做幕後，又或者會接拍高難度武打戲。",
+    resultToast:"已遠觀魏詠男。" },
+  { starId:"yip_manji", displayName:"葉敏芝", locs:["rec_hk"],
+    silhouetteDesc:"葉敏芝着住針織衫配短裙，喺訓練班鏡前練舞。",
+    distanceLine:"佢喺鏡前專心練舞，競爭壓力極大，你只能喺遠處觀望，唔好打擾。",
+    locHint:"訓練班排練室", rumorTeaser:"聽聞呢批新人為咗爭上位，暗地裏爭奪公司資源爭得好犀利。",
+    resultToast:"已遠觀葉敏芝。" },
+];
+function starAtLoc(locId){
+  return STAR_SIGHTINGS.find(s=>s.locs.indexOf(locId)>=0) || null;
+}
+function playSightChime(){
+  try{
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if(!Ctx) return false;
+    const ctx = playSightChime._ctx || (playSightChime._ctx = new Ctx());
+    const now = ctx.currentTime;
+    [523, 330].forEach((freq, i)=>{
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = i ? "triangle" : "sine";
+      o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime(i ? 0.04 : 0.07, now+0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, now+0.55);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(now); o.stop(now+0.58);
+    });
+    return true;
+  }catch(_e){ return false; }
+}
+function openStarSighting(star){
+  if(!star) return { ok:false };
+  const heard = playSightChime();
+  try{
+    ensureMockJournal();
+    const rid = "sight:"+star.starId;
+    if(!(S.mockRumors||[]).some(r=>r && r.id===rid)){
+      S.mockRumors.unshift({
+        id:rid, source:star.locHint, title:star.displayName, text:star.rumorTeaser, state:"normal", season:"",
+      });
+      syncNotebookMirror();
+      try{ saveQ(); }catch(_e){}
+    }
+  }catch(_e){}
+  modal(`<h3>遠觀 · ${journalText(star.displayName)}</h3><p>${journalText(star.silhouetteDesc)}</p><p>${journalText(star.distanceLine)}</p><p class="sub">${journalText(star.rumorTeaser)}</p><p class="sub">${journalText(star.locHint)}</p>`, [
+    {label:"離開", role:"g"},
+  ]);
+  toast(star.resultToast);
+  return { ok:true, starId:star.starId, heard:heard };
+}
+function addStarSighting(locId, add){
+  const star = starAtLoc(locId);
+  if(!star || typeof add!=="function") return;
+  add(`遠觀：${star.displayName}`, star.distanceLine, "無", ()=>openStarSighting(star), "act-priority act-ask");
+}
+try{
+  window.__phase3 = {
+    stars: function(){ return STAR_SIGHTINGS.map(s=>s.starId); },
+    sight: function(id){ return openStarSighting(STAR_SIGHTINGS.find(s=>s.starId===id)); },
+    boardState: function(g){ return gigBoardCardState(g); },
+  };
+}catch(_e){}
 function openLoc(id){
   if(todayIsForcedDay()){
     closeSheet();
@@ -9657,6 +9782,10 @@ function openLoc(id){
   }catch(_e){}
 
   // v19u：茶餐廳／事務所只出打聽 Mock，唔走上板、訓練、休息（唔過日）
+  addStarSighting(L.id, add);
+  if(L.id==="agency_ho"){
+    document.getElementById("loc-who").textContent = "何生提醒：練好基本功，條件未合就暫未能報，唔好硬闖。";
+  }
   if(mockAskDefs(L.id)){
     mockAskDefs(L.id).forEach(def=>{
       add(def.title, def.hint, def.cost, ()=>{
@@ -9695,11 +9824,11 @@ function openLoc(id){
     const gig=GIGS.find(g=>g.id===gid); if(!gig) return;
     const gate=canAudition(gig);
     if(!gate.ok){
-      add(`🔒 ${gig.title}`, gate.reason,"未開放", ()=>toast(gate.reason));
+      add(`暫未能報：${gig.title}`, "條件未合","未開放", ()=>openCastingNoticeDetail(gig, L));
       return;
     }
     const p=Math.round(chance(gig)*100);
-    add(`試鏡：${gig.title}`, `${gig.type} · ${p}%`,"+1日", ()=>promptAudition(gig,L)); /* v19m：無搏一搏 */
+    add(`接通告：${gig.title}`, `${gig.type} · ${p}%`,"+1日", ()=>openCastingNoticeDetail(gig, L));
   });
   const tr=TRAIN_BY_TYPE[L.type];
   if(tr){
@@ -9792,8 +9921,8 @@ function doScout(L){
     const anyOk = shown.some(g=>canAudition(g).ok);
     const anyHard = shown.some(g=>!canAudition(g).ok);
     let lead;
-    if(anyOk) lead = `免費查看通告 · 達標可即場試鏡（耗一日）。`;
-    else lead = `免費查看通告 · 有通告暫未能報（條件未合）。`; /* v19m：無搏一搏 lead */
+    if(anyOk) lead = `免費查看通告 · 達標可接通告（耗一日）。`;
+    else lead = `免費查看通告 · 有通告暫未能報（條件未合）。`;
     if(anyOk && anyHard) lead += `<br><span class="board-lead-mix">有啲通告條件未合；可點開查看詳情。</span>`;
     body=`<p class="board-lead">${lead}</p>`;
     /* v18v: 通告欄短卡 → 點開招募單 Detail（PLAN §4） */
@@ -10071,6 +10200,7 @@ function doAudition(gig, L){
         const cont=()=>{ if(ended) enterHome(summary, true); else enterHome(null, false); };
         maybeShowTutToast("sawTutShoot","TUT_SHOOT", cont);
       };
+      toast("劇組通知：接通告成功！");
       modal(`<h3>${title} ${gig.title}</h3>
         <p>成功率約 ${Math.round(p*100)}%</p>
         <div>${notes.join("<br>")}</div>
@@ -10425,7 +10555,7 @@ function showTutBoardStage(){
   let anyOk=false;
   try{ anyOk=shown.some(g=>typeof canAudition==="function" && canAudition(g).ok); }catch(_e){ anyOk=false; }
   const lead = anyOk
-    ? "免費查看通告 · 達標可即場試鏡（耗一日）。"
+    ? "免費查看通告 · 達標可接通告（耗一日）。"
     : "免費查看通告 · 有通告暫未能報（條件未合）。";
   const where = L ? `${L.name}${L.area?(" · "+L.area):""}` : "通告欄";
   const cards = shown.map(g=>{
