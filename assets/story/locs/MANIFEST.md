@@ -26,4 +26,6 @@
 
 Preview（`?v=19w`）`spBgImageCandidates` 先 probe `assets/story/locs/{key}.jpg`。
 
-Soft≠PASS。
+`LOC_SHEET_BG` 掛齊有 `bg_loc_{locId}.jpg` 嘅 loc（含 `rec_wanchai`）。Query 仍 `?v=19w`。
+
+Soft≠PASS。唔 tip LIVE。89–92 HOLD。
