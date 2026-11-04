@@ -16,7 +16,7 @@
 
 何生表情（唔喺 core 目錄）：`assets/story/c1/char_ho_bust_{frown,smile}.png` 同 `assets/dialog/` 鏡像。皺眉 bak：`assets/story/c1/char_ho_bust_frown_pre_fix_bak.png`。
 
-阿偉 `raise_brow` 新稿：`assets/story/c1/char_hero_bust_raise_brow.png` 同 `assets/dialog/`（同 MD5）。舊 `assets/npc/`、`assets/story/` 副本未覆蓋；StoryPlay 先 probe c1／dialog。
+阿偉 `raise_brow` style-lock（2026-11-05）：`char_hero_bust_raise_brow.png` 四路同 MD5 `63670d1b` — `assets/story/c1/`、`assets/story/`、`assets/dialog/`、`assets/npc/`。bak：`assets/story/c1/char_hero_bust_raise_brow_pre_style_lock_bak.png`（舊半寫實 `e99f2dd3`）。StoryPlay 仍先 probe c1／dialog。Soft≠PASS。唔 tip LIVE。
 
 StoryPlay 會先搵 `assets/story/core/{id}_bust_{expr}.png?v=19w`（林曉晴、周采兒、高俊傑、鄧麗萍、雷勁、Vera）。
 

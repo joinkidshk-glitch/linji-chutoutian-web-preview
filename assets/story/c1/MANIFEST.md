@@ -27,7 +27,7 @@
 | `char_hero_bust_default.png` | `default` | neutral／tense→default (beat 8) | 輕微笑 |
 | `char_hero_bust_eyes_down.png` | `eyes_down` | **worried** (beat 4) | 垂眼手頭緊 |
 | `char_hero_bust_frown.png` | `frown` | tense／worried alt | 皺眉繃緊 |
-| `char_hero_bust_raise_brow.png` | `raise_brow` | **firm** (beat 10「我選」) | Soft QC 2026-11-04：閉嘴、單側挑眉峰＋額紋；dialog 同 bytes |
+| `char_hero_bust_raise_brow.png` | `raise_brow` | **firm** (beat 10「我選」) | **2026-11-05 style-lock**：對齊 `hero_awi.jpg`／default 平面動畫 cel-shade（換走半寫實 e99f2dd3）；MD5 `63670d1b`；bak `*_pre_style_lock_bak`；Soft：單側挑眉峰仍可再加強 |
 
 ### char_ho（何生／ho_sang）— ref `assets/npc_ho.jpg`
 
@@ -69,9 +69,25 @@
 
 - [x] 無烘焙亂碼中文／商標
 - [x] 人臉大致跟 ref（awi 髮／外套；ho 眼鏡灰西裝；cheung 高領＋聽筒）
-- Soft notes: ho `frown` 表情差可再 sharpen。hero `raise_brow` 本輪 Soft QC 過（nits 不擋）。Soft≠PASS。唔 tip LIVE。
+- Soft notes: hero `raise_brow` **style-lock 2026-11-05**（動畫風；挑眉 Soft nit）；ho `frown` Soft OK；Soft≠PASS（整體）
 - 未產 lan／藍若曦（用戶＋tester 確認）
 
 ## Pack
 
 `/workspace/star-volunteer-web-c1-art.tar.gz` → `assets/story/c1/`（＋本 MANIFEST）
+
+## HOLD redo pack (2026-11-04)
+
+`/workspace/star-volunteer-web-hold-redo-hero-vera.tar.gz` — hero raise_brow（＋dialog）＋core Vera×3＋MANIFESTs。Soft≠PASS。
+
+## HOLD redo 2026-11-04 late
+- `char_hero_bust_raise_brow.png`：v3 HOLD-redo **PASS**（單側挑眉＋額紋；閉嘴嚴肅）；dialog MD5 `e99f2dd3`；bak 保留。整體 Soft≠PASS；唔 tip LIVE。
+
+
+## Style-lock redo 2026-11-05 (Asia/Hong_Kong)
+用戶點名對話 bust 偏寫實、同 HUD `hero_awi.jpg` 唔同風。
+- 準繩：`assets/hero_awi.jpg`＋`char_hero_bust_default.png`（平面動畫 cel-shade）
+- 已換：`char_hero_bust_raise_brow.png` MD5 `63670d1b`（c1／story／dialog／npc 同 MD5）
+- bak：`char_hero_bust_raise_brow_pre_style_lock_bak.png`（舊半寫實 e99f2dd3）
+- Soft：單側挑眉可再加強；Fal／Krea 餘額 0，未做 edit 強化
+- Soft≠PASS｜唔 tip LIVE｜89–92 HOLD｜剪影後掛
