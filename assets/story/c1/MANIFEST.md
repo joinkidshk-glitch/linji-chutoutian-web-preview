@@ -27,7 +27,7 @@
 | `char_hero_bust_default.png` | `default` | neutral／tense→default (beat 8) | 輕微笑 |
 | `char_hero_bust_eyes_down.png` | `eyes_down` | **worried** (beat 4) | 垂眼手頭緊 |
 | `char_hero_bust_frown.png` | `frown` | tense／worried alt | 皺眉繃緊 |
-| `char_hero_bust_raise_brow.png` | `raise_brow` | **firm** (beat 10「我選」) | Soft：表情偏自信微笑，可後輪加強眉峰 |
+| `char_hero_bust_raise_brow.png` | `raise_brow` | **firm** (beat 10「我選」) | Soft QC 2026-11-04：閉嘴、單側挑眉峰＋額紋；dialog 同 bytes |
 
 ### char_ho（何生／ho_sang）— ref `assets/npc_ho.jpg`
 
@@ -69,7 +69,7 @@
 
 - [x] 無烘焙亂碼中文／商標
 - [x] 人臉大致跟 ref（awi 髮／外套；ho 眼鏡灰西裝；cheung 高領＋聽筒）
-- Soft notes: hero `raise_brow`、ho `frown` 表情差可再 sharpen；Soft≠PASS
+- Soft notes: ho `frown` 表情差可再 sharpen。hero `raise_brow` 本輪 Soft QC 過（nits 不擋）。Soft≠PASS。唔 tip LIVE。
 - 未產 lan／藍若曦（用戶＋tester 確認）
 
 ## Pack

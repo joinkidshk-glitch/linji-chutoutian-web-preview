@@ -2707,13 +2707,13 @@ body.day-res-open #mask.day-res{
   flex:0 0 auto !important;
   white-space:nowrap !important;
 }
-/* v19v: cafe_cha／agency_ho loc sheet shows bg_loc_* above the cream actions */
+/* v19w soft: taller banner so cork／booth survive the cover crop. ?v stays 19w. */
 #loc-sheet .loc-bg{
   display:none;
-  height:92px;
+  height:188px;
   margin:2px 0 6px;
   border-radius:10px;
-  background:#1a1410 center 42% / cover no-repeat;
+  background:#1a1410 center 44% / cover no-repeat;
   border:1px solid rgba(107,78,46,.4);
   flex:0 0 auto;
 }
@@ -2939,7 +2939,7 @@ body.day-res-open #mask.day-res{
   <div id="modal-inner"></div>
   <div class="btnrow" id="modal-btns" style="margin-top:12px;justify-content:flex-end"></div>
 </div></div>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" aria-hidden="true"></div>
 </div>
 
 <script>
@@ -6020,13 +6020,14 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems already Soft-mounted. Vera and hero raise_brow redo stay HOLD. */
+  /** v19w core stems. Vera busts Soft-mounted; cache query stays ?v=19w. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
     ko_chunkit:"ko_chunkit",
     tang_laiping:"tang_laiping",
     lui_ging:"lui_ging",
+    vera:"vera",
   };
   /** expression-aware bust paths tried at runtime; missing files → PORTRAITS → 剪影 */
   const SP_BUST_PROBE = Object.create(null); /* url -> true/false */
@@ -6110,6 +6111,11 @@ const StoryPlay = (()=>{
       push("assets/story/core/"+core+"_bust_"+expr+".png");
       if(expr!=="default") push("assets/story/core/"+core+"_bust_default.png");
     }
+    /* Soft: new raise_brow lives in c1+dialog (same bytes). Probe those before the older npc／story copies. */
+    if(artId==="char_hero" && expr==="raise_brow"){
+      push("assets/story/c1/char_hero_bust_raise_brow.png");
+      push("assets/dialog/char_hero_bust_raise_brow.png");
+    }
     if(artId && artId!=="generic_crew"){
       ["png","jpg","webp"].forEach(ext=>{
         push("assets/npc/"+artId+"_bust_"+expr+"."+ext);
@@ -6140,10 +6146,14 @@ const StoryPlay = (()=>{
   function spBustUrl(speakerId, expression){
     if(!speakerId || speakerId==="generic_crew" || speakerId==="extra_unknown") return "";
     const cands = spBustCandidates(speakerId, expression);
-    for(const u of cands){
-      if(String(u).indexOf("data:")===0) return u;
+    const expr = spNormExpression(expression);
+    /* Soft files win for Vera busts and the hero raise_brow redo. Other faces stay on the embedded portrait. */
+    const preferFile = speakerId==="vera" || (speakerId==="awi" && expr==="raise_brow");
+    if(!preferFile){
+      for(const u of cands){
+        if(String(u).indexOf("data:")===0) return u;
+      }
     }
-    // Prefer drop-in GD slots first (browser will 404→onerror fallback chain via data-sp-bust-fallbacks)
     for(const u of cands){
       if(String(u).indexOf("data:")!==0) return u;
     }
@@ -7733,6 +7743,7 @@ function toast(m, opts){
   t.classList.toggle("has-stamp", stampWanted);
   t.classList.toggle("has-sub", !!sub);
   t.classList.add("on");
+  t.setAttribute("aria-hidden","false");
   if(app){
     app.classList.add("toast-up");
     app.classList.toggle("keep-sheet", keepSheet);
@@ -7740,6 +7751,8 @@ function toast(m, opts){
   clearTimeout(toast._t);
   toast._t=setTimeout(()=>{
     t.classList.remove("on","has-stamp","has-sub");
+    t.replaceChildren();
+    t.setAttribute("aria-hidden","true");
     if(app) app.classList.remove("toast-up","keep-sheet");
   },1800);
 }
@@ -10905,9 +10918,21 @@ function openLoc(id){
   scrollMapPinIntoView(id);
   if(id==="agency_ho") playPushDoor();
 }
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19w. */
 const LOC_SHEET_BG = {
   cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19w",
   agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19w",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19w",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19w",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19w",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19w",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19w",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19w",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19w",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19w",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19w",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19w",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19w",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");

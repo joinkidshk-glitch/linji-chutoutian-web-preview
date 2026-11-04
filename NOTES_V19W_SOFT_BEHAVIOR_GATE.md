@@ -59,8 +59,12 @@ __dengLine.openGate({ ctx:{ atLoc:"agency_ho", favor:1, done:{ C5:true } } })
 
 已合：10 張公司 `bg_loc_*`（九龍／海港、獅子山／紅棉／維港、中環／金鐘、香江／灣仔／天星）、`so_jiyan` bust×3、何生 `char_ho_bust_frown`／`smile`（c1＋dialog；皺眉 bak 保留）、林曉晴／周采兒／高俊傑／鄧麗萍／雷勁各 bust×3。`rec_wanchai` Soft OK。已 tip 嘅茶餐廳、事務所、星河廠、茶餐廳 beat 圖冇覆蓋。
 
-HOLD 唔加：`char_hero_bust_raise_brow*` 新稿（c1／dialog）、`vera_bust_*` 三檔。
+Soft 已合（唔 tip）：`vera_bust_*` 三檔、`char_hero_bust_raise_brow`（c1＋dialog，同 MD5）。89–92 仍然 HOLD。
 
 ## 19v nits
 
 票根 toast 抬高，開住地點表時壓低過底掣；視窗彈層時 toast 唔再蓋住底掣。劇情簡介滾區底部加留白。印章 cache `?v=19w`。刪咗冇人用嘅 `.soft-try-note`。`isSoftTryGig` 維持 false。遠觀文案欄叫 `distanceLook`。
+
+Soft 跟進（仍係 `?v=19w`、唔 tip）：`LOC_SHEET_BG` 掛齊 13 個有 `bg_loc_*` 嘅 loc；地點 banner 188px、`center 44% / cover`；遠觀 toast 收起後清空文字並 `aria-hidden`。
+
+Soft 進度種子（flag 先開）：`?softBehaviorGate=1&softSeed=` `seed_c3_ready`｜`seed_c4_ready`｜`seed_c5_ready`｜`seed_deng_meet_ready`｜`seed_chain_shortest`。`dayIndex=(week-1)*7`。季節由 `calendarSeason()` Soft 覆蓋（C5／鄧係秋，唔會停喺春天）。冇 flag 就唔注入、唔改 week-gate。
