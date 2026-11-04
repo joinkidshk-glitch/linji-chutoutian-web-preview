@@ -2707,13 +2707,13 @@ body.day-res-open #mask.day-res{
   flex:0 0 auto !important;
   white-space:nowrap !important;
 }
-/* v19v: cafe_cha／agency_ho loc sheet shows bg_loc_* above the cream actions */
+/* v19w soft: taller banner so cork／booth survive the cover crop. ?v stays 19w. */
 #loc-sheet .loc-bg{
   display:none;
-  height:92px;
+  height:188px;
   margin:2px 0 6px;
   border-radius:10px;
-  background:#1a1410 center 42% / cover no-repeat;
+  background:#1a1410 center 44% / cover no-repeat;
   border:1px solid rgba(107,78,46,.4);
   flex:0 0 auto;
 }
@@ -2939,7 +2939,7 @@ body.day-res-open #mask.day-res{
   <div id="modal-inner"></div>
   <div class="btnrow" id="modal-btns" style="margin-top:12px;justify-content:flex-end"></div>
 </div></div>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" aria-hidden="true"></div>
 </div>
 
 <script>
@@ -5835,13 +5835,14 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems already Soft-mounted. Vera and hero raise_brow redo stay HOLD. */
+  /** v19w core stems. Vera busts Soft-mounted; cache query stays ?v=19w. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
     ko_chunkit:"ko_chunkit",
     tang_laiping:"tang_laiping",
     lui_ging:"lui_ging",
+    vera:"vera",
   };
   /** expression-aware bust paths tried at runtime; missing files → PORTRAITS → 剪影 */
   const SP_BUST_PROBE = Object.create(null); /* url -> true/false */
@@ -5925,6 +5926,11 @@ const StoryPlay = (()=>{
       push("assets/story/core/"+core+"_bust_"+expr+".png");
       if(expr!=="default") push("assets/story/core/"+core+"_bust_default.png");
     }
+    /* Soft: new raise_brow lives in c1+dialog (same bytes). Probe those before the older npc／story copies. */
+    if(artId==="char_hero" && expr==="raise_brow"){
+      push("assets/story/c1/char_hero_bust_raise_brow.png");
+      push("assets/dialog/char_hero_bust_raise_brow.png");
+    }
     if(artId && artId!=="generic_crew"){
       ["png","jpg","webp"].forEach(ext=>{
         push("assets/npc/"+artId+"_bust_"+expr+"."+ext);
@@ -5955,10 +5961,14 @@ const StoryPlay = (()=>{
   function spBustUrl(speakerId, expression){
     if(!speakerId || speakerId==="generic_crew" || speakerId==="extra_unknown") return "";
     const cands = spBustCandidates(speakerId, expression);
-    for(const u of cands){
-      if(String(u).indexOf("data:")===0) return u;
+    const expr = spNormExpression(expression);
+    /* Soft files win for Vera busts and the hero raise_brow redo. Other faces stay on the embedded portrait. */
+    const preferFile = speakerId==="vera" || (speakerId==="awi" && expr==="raise_brow");
+    if(!preferFile){
+      for(const u of cands){
+        if(String(u).indexOf("data:")===0) return u;
+      }
     }
-    // Prefer drop-in GD slots first (browser will 404→onerror fallback chain via data-sp-bust-fallbacks)
     for(const u of cands){
       if(String(u).indexOf("data:")!==0) return u;
     }
@@ -6530,7 +6540,12 @@ function shootDayLine(sh){
   if(typed && typed.length) return fillTpl(pick(typed), vars);
   return eventLine("SHOOT_DAY", vars) || `拍攝第 ${sh.doneDays}/${sh.totalDays} 日`;
 }
+let softCalendarSeason = null;
 function calendarSeason(){
+  /* Soft seed only. Flag off keeps the real calendar, even if a seed string exists. */
+  if(softCalendarSeason && typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview()){
+    return softCalendarSeason;
+  }
   const dt=new Date(START.y, START.m-1, START.d + ((S&&S.dayIndex)||0));
   const m=dt.getMonth()+1; // 1-12
   if(m>=3 && m<=5) return "春";
@@ -6616,6 +6631,102 @@ function pickNpcLine(npcId, opts){
 function weekNumNow(){
   return Math.floor(((S&&S.dayIndex)||0)/7)+1;
 }
+const SOFT_SEED_IDS = ["seed_c3_ready","seed_c4_ready","seed_c5_ready","seed_deng_meet_ready","seed_chain_shortest"];
+const SOFT_SEASON_ZH = { spring:"春", summer:"夏", autumn:"秋", winter:"冬", "春":"春", "夏":"夏", "秋":"秋", "冬":"冬" };
+let softSeedPack = null;
+function softSeedIdFromUrl(){
+  try{
+    const q = new URLSearchParams(String(location.search||""));
+    return String(q.get("softSeed")||"");
+  }catch(_e){ return ""; }
+}
+function softSeedRequested(){
+  if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()) return false;
+  return SOFT_SEED_IDS.indexOf(softSeedIdFromUrl())>=0;
+}
+function applySoftSeedState(seed){
+  if(!S || !seed || !seed.state) return { ok:false, reason:"no_state" };
+  if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()){
+    softCalendarSeason = null;
+    return { ok:false, reason:"flag_off" };
+  }
+  const st = seed.state;
+  const week = Number(st.week)||1;
+  S.dayIndex = (week - 1) * 7;
+  S.fame = Number(st.fame)||0;
+  try{ syncDualTracks(S); }catch(_e){}
+  if(!S.story || typeof S.story!=="object") S.story = {};
+  const done = {};
+  (st.beatsDone||[]).forEach(id=>{ if(id) done[id] = true; });
+  S.story.done = done;
+  S.story.favor = Object.assign({}, st.favor||{});
+  S.story.gigCount = Number(st.gigCount)||0;
+  S.story.rumors = (st.rumors||[]).map(String);
+  S.story.rel = Object.assign({}, S.story.rel||{}, st.rel||{});
+  S.story.flags = Object.assign({}, S.story.flags||{}, st.flags||{});
+  S.story.lastMainDoneDay = Math.max(0, S.dayIndex - 1);
+  const seasonZh = SOFT_SEASON_ZH[st.season] || null;
+  softCalendarSeason = seasonZh;
+  try{ ensureMockJournal(); }catch(_e){}
+  if(!Array.isArray(S.mockRumors)) S.mockRumors = [];
+  S.story.rumors.forEach(id=>{
+    if(!S.mockRumors.some(r=>r && (r.id===id || r.key===id))){
+      S.mockRumors.unshift({ id:id, key:id, source:"Soft", title:id, text:id, state:"normal", season:seasonZh||"" });
+    }
+  });
+  try{ syncNotebookMirror(); }catch(_e){}
+  if(!S.weekPlan || S.weekPlan.length!==7) S.weekPlan = defaultWeekPlan();
+  S.homeEditable = false;
+  S.flags = S.flags || {};
+  S.flags.tutorialDone = true;
+  S.flags.sawB01 = true;
+  atLoc = null;
+  try{ saveQ(); }catch(_e){}
+  return {
+    ok:true,
+    id:seed.id,
+    locId: st.locId || "",
+    week: weekNumNow(),
+    dayIndex: S.dayIndex,
+    season: calendarSeason(),
+    fame: S.fame,
+  };
+}
+async function loadSoftSeedPack(){
+  if(softSeedPack && Array.isArray(softSeedPack.seeds)) return softSeedPack;
+  const bust = encodeURIComponent(typeof SAVE!=="undefined" ? SAVE : "19w");
+  try{
+    const r = await fetch("content/SOFT_PROGRESS_SEED_C3_C5_DENG_v1.json?v="+bust);
+    if(!r.ok) return null;
+    softSeedPack = await r.json();
+  }catch(_e){ return null; }
+  return softSeedPack;
+}
+async function maybeApplySoftSeed(opts){
+  opts = opts || {};
+  if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()){
+    softCalendarSeason = null;
+    return { ok:false, reason:"flag_off" };
+  }
+  const id = opts.id || softSeedIdFromUrl();
+  if(!id) return { ok:false, reason:"no_seed" };
+  if(SOFT_SEED_IDS.indexOf(id)<0) return { ok:false, reason:"unknown_id" };
+  for(let i=0;i<40 && !(STORY_WIRE && STORY_WIRE.loaded); i++){
+    await new Promise(res=>setTimeout(res, 100));
+  }
+  const pack = await loadSoftSeedPack();
+  const seed = pack && (pack.seeds||[]).find(s=>s && s.id===id);
+  if(!seed) return { ok:false, reason:"missing" };
+  if(!S){ S = fresh(); try{ syncDualTracks(S); }catch(_e){} }
+  return applySoftSeedState(seed);
+}
+try{
+  window.__softSeed = {
+    ids: SOFT_SEED_IDS.slice(),
+    apply: (id)=> maybeApplySoftSeed({ id: id || softSeedIdFromUrl() }),
+    season: ()=> calendarSeason(),
+  };
+}catch(_e){}
 function chapterIdForWeek(w){
   if(w<=2) return "Ch1";
   if(w<=5) return "Ch2";
@@ -7368,6 +7479,7 @@ function toast(m, opts){
   t.classList.toggle("has-stamp", stampWanted);
   t.classList.toggle("has-sub", !!sub);
   t.classList.add("on");
+  t.setAttribute("aria-hidden","false");
   if(app){
     app.classList.add("toast-up");
     app.classList.toggle("keep-sheet", keepSheet);
@@ -7375,6 +7487,8 @@ function toast(m, opts){
   clearTimeout(toast._t);
   toast._t=setTimeout(()=>{
     t.classList.remove("on","has-stamp","has-sub");
+    t.replaceChildren();
+    t.setAttribute("aria-hidden","true");
     if(app) app.classList.remove("toast-up","keep-sheet");
   },1800);
 }
@@ -10529,9 +10643,21 @@ function openLoc(id){
   scrollMapPinIntoView(id);
   if(id==="agency_ho") playPushDoor();
 }
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19w. */
 const LOC_SHEET_BG = {
   cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19w",
   agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19w",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19w",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19w",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19w",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19w",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19w",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19w",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19w",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19w",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19w",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19w",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19w",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -11466,6 +11592,17 @@ function startNew(){
   if(hasSave() && !confirm("開新遊戲會覆蓋存檔，確定？")) return;
   S=fresh(); syncDualTracks(S); refreshNpc(); atLoc=null; saveQ();
   closeSheet();
+  if(softSeedRequested()){
+    maybeApplySoftSeed({ silent:true }).then(res=>{
+      show("v-map");
+      try{ paintBar(); drawMap(); }catch(_e){}
+      if(res && res.ok){
+        const loc = (LOCS.find(l=>l.id===res.locId)||{}).name || res.locId || "";
+        toast(loc ? ("Soft 種子已寫入 · 去"+loc) : "Soft 種子已寫入");
+      }
+    });
+    return;
+  }
   enterHome(null, true);
   // Decision B: short tutorial first; B01 after DONE/skip (once via sawB01)
   S.flags = S.flags||{};
@@ -11501,6 +11638,17 @@ function cont(){
   ensureMockJournal();
   syncDualTracks(S);
   atLoc=null;
+  if(softSeedRequested()){
+    maybeApplySoftSeed({ silent:true }).then(res=>{
+      show("v-map");
+      try{ paintBar(); drawMap(); }catch(_e){}
+      if(res && res.ok){
+        const loc = (LOCS.find(l=>l.id===res.locId)||{}).name || res.locId || "";
+        toast(loc ? ("Soft 種子已寫入 · 去"+loc) : "Soft 種子已寫入");
+      }
+    });
+    return;
+  }
   // leave title screen so map/home/modal are not stacked over #v-start
   show("v-map");
   paintBar();
