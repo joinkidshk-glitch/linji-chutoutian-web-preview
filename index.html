@@ -7804,6 +7804,7 @@ try{
 }catch(_e){}
 
 async function refreshCopyPacksFromDisk(){
+  try{ if(typeof loadPhase3Mock==="function") loadPhase3Mock(); }catch(_p3){}
   const base = "content/";
   const bust = encodeURIComponent(typeof SAVE!=="undefined"?SAVE:Date.now());
   const get = (name)=> fetch(base+name+"?v="+bust).then(r=>r.ok?r.json():null).catch(()=>null);
@@ -8743,7 +8744,8 @@ function gigBoardTeaserHtml(g){
   try{ days=`${verb}約 ${effectiveShootDays(g)} 日`; }catch(_e){}
   const meta=[pay, days].filter(Boolean).join(" · ");
   const boardState = (st.label==="已殺青" || st.label==="製作中") ? "" : gigBoardCardState(g);
-  const badgeText = boardState==="locked" ? "暫未能報 · 條件未合" : (boardState==="ready" ? "可接通告" : st.label);
+  const castCopy = phase3CastCopy();
+  const badgeText = boardState==="locked" ? castCopy.lockedTag : (boardState==="ready" ? castCopy.readyTag : st.label);
   const badgeCls = (st.alt || boardState==="locked") ? "gt-badge done" : "gt-badge";
   return `<div class="gig-teaser" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
     <img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}"/>
@@ -8894,10 +8896,11 @@ function castingNoticeDetailHtml(g){
   const limitsHtml = gigSpecialLimitsHtml(g);
   const producerLine = gigProducerLineHtml(g);
   const boardState = (st.label==="已殺青" || st.label==="製作中") ? "" : gigBoardCardState(g);
-  const stateLabel = boardState==="locked" ? "暫未能報 · 條件未合" : (boardState==="ready" ? "可接通告" : st.label);
+  const castCopy = phase3CastCopy();
+  const stateLabel = boardState==="locked" ? castCopy.lockedTag : (boardState==="ready" ? castCopy.readyTag : st.label);
   const stateSub = boardState==="locked"
-    ? "角色已鎖定，暫未能報；可選擇離開。"
-    : (boardState==="ready" ? "條件符合，可接通告。" : "");
+    ? castCopy.lockedSub
+    : (boardState==="ready" ? castCopy.readySub : "");
   const statusCls = (st.alt || boardState==="locked") ? "notice_tag_recruiting alt" : "notice_tag_recruiting";
   let starHtml="";
   for(let i=1;i<=5;i++){
@@ -8955,20 +8958,23 @@ function openCastingNoticeDetail(g, L){
   const gate=canAudition(g);
   const body = castingNoticeDetailHtml(g);
   const btns=[];
-  /* v19v Phase3：ready＝接通告；locked＝暫未能報＋離開。無 soft-try／搏一搏。 */
+  const copy = phase3CastCopy();
+  /* Soft／LIVE Detail：只 ready｜locked。唔讀 isSoftTryGig，禁 soft-try／搏一搏／第三態試投。 */
   if(gate.ok){
-    btns.push({label:"接通告", role:"p", on:()=>{ doAudition(g, L); }});
+    btns.push({label:copy.readyLabel, role:"p", on:()=>{ doAudition(g, L); }});
   } else {
-    btns.push({label:"暫未能報", role:"g", cls:"cast-locked", stay:true, on:(btn)=>{
-      if(btn){
+    const lockedBtn = {label:copy.lockedLabel, role:"g", cls:"cast-locked", stay:true, on:(btn)=>{
+      if(copy.shake && btn){
         btn.classList.remove("is-shake");
         void btn.offsetWidth;
         btn.classList.add("is-shake");
       }
-      toast("條件未合", { sub:"試鏡表現未夠火候，建議先跟班觀摩再作安排。" });
-    }});
+      toast(copy.lockedToast, { sub: copy.subLine });
+    }};
+    if(phase3SoftOn()) lockedBtn.ariaDisabled = true;
+    btns.push(lockedBtn);
   }
-  btns.push({label:"離開", role:"g", cls:"btn_leave", on:()=>{ if(L) doScout(L); }});
+  btns.push({label:copy.leaveLabel, role:"g", cls:"btn_leave", on:()=>{ if(L) doScout(L); }});
   modal(body, btns, {
     onDismiss: L ? ()=>doScout(L) : null,
     castingSheet: true
@@ -10683,6 +10689,7 @@ function modal(html, buttons, opts){
     if(b.cls) cls+=" "+b.cls;
     btn.className=cls;
     btn.textContent=b.label;
+    if(b.ariaDisabled) btn.setAttribute("aria-disabled","true");
     btn.onclick=()=>{
       if(b.stay){ if(b.on) b.on(btn); return; }
       _modalDismiss=null; closeModal(); if(b.on) b.on();
@@ -11126,6 +11133,7 @@ try{
   };
 }catch(_e){}
 
+/* LIVE inline far-observe. Soft path overlays copy from MOCK_UI_PHASE3 (fetch, else this inline). Loc ids stay here — the mock has no map pins. 齊鎮海唔入。 */
 const STAR_SIGHTINGS = [
   { starId:"luk_baakyin", displayName:"陸柏言", locs:["film_lion"],
     distanceLook:"陸柏言身穿深色闊膊西裝配高領冷衫，喺走廊行過，身邊有保鑣跟隨。",
@@ -11148,8 +11156,132 @@ const STAR_SIGHTINGS = [
     locHint:"訓練班排練室", rumorTeaser:"聽聞呢批新人為咗爭上位，暗地裏爭奪公司資源爭得好犀利。",
     resultToast:"已遠觀葉敏芝。" },
 ];
+const PHASE3_STAR_ORDER = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji"];
+let PHASE3_MOCK = null;
+let PHASE3_MOCK_SRC = "live";
+let PHASE3_LOAD = null;
+function phase3SoftOn(){
+  try{
+    return typeof BehaviorGate!=="undefined" && typeof BehaviorGate.gatePath==="function" && BehaviorGate.gatePath()==="soft";
+  }catch(_e){ return false; }
+}
+function phase3InlineMock(){
+  return {
+    meta:{ version:"v1", softStatus:"≠PASS", sightingMode:"text_plus_sfx" },
+    starSightings: STAR_SIGHTINGS.map(s=>({
+      starId:s.starId, displayName:s.displayName, silhouetteDesc:s.distanceLook,
+      distanceLine:s.distanceLine, locHint:s.locHint, rumorTeaser:s.rumorTeaser,
+      actionLabel:"遠觀", resultToast:s.resultToast,
+    })),
+    castingCta:{
+      canCast:{ buttonLabel:"接通告", successToast:"劇組通知：接通告成功！" },
+      cannotCast:{
+        buttonLabel:"暫未能報", tapFeedback:"shake", toast:"條件未合",
+        subLine:"試鏡表現未夠火候，建議先跟班觀摩再作安排。",
+        leaveActionLabel:"離開",
+      },
+    },
+    boardCardStates:[
+      { stateKey:"locked", boardTag:"暫未能報 · 條件未合", detailSub:"角色已鎖定，暫未能報；可選擇離開。", secondaryAction:"離開" },
+      { stateKey:"ready", boardTag:"可接通告", detailSub:"條件符合，可接通告。" },
+    ],
+    devAppendix:{ chai_chunhoi:"齊鎮海後輪可選；首輪唔入 starSightings／唔強掛地圖" },
+    toasts:{ sightingNoted:"已記下紅星蹤影。", castAccepted:"劇組通知：接通告成功！", castBlocked:"條件未合" },
+  };
+}
+function phase3ApplyMock(data, src){
+  if(!data || !Array.isArray(data.starSightings)) return false;
+  const ids = data.starSightings.map(s=>s && s.starId).filter(Boolean);
+  if(!PHASE3_STAR_ORDER.every(id=>ids.indexOf(id)>=0)) return false;
+  if(ids.indexOf("chai_chunhoi")>=0) return false;
+  PHASE3_MOCK = data;
+  PHASE3_MOCK_SRC = src || "inline";
+  return true;
+}
+function loadPhase3Mock(){
+  if(PHASE3_LOAD) return PHASE3_LOAD;
+  if(!phase3SoftOn()){
+    PHASE3_MOCK = null;
+    PHASE3_MOCK_SRC = "live";
+    PHASE3_LOAD = Promise.resolve(null);
+    return PHASE3_LOAD;
+  }
+  phase3ApplyMock(phase3InlineMock(), "inline");
+  const bust = encodeURIComponent(typeof SAVE!=="undefined" ? SAVE : "19w");
+  PHASE3_LOAD = fetch("content/MOCK_UI_PHASE3_STAR_CASTING_v1.json?v="+bust)
+    .then(r=> r.ok ? r.json() : null)
+    .then(data=>{
+      if(!phase3SoftOn()) return null;
+      if(data) phase3ApplyMock(data, "fetch");
+      return PHASE3_MOCK;
+    })
+    .catch(()=> PHASE3_MOCK);
+  return PHASE3_LOAD;
+}
+function phase3Stars(){
+  if(!phase3SoftOn() || !PHASE3_MOCK || !Array.isArray(PHASE3_MOCK.starSightings)) return STAR_SIGHTINGS;
+  const byId = {};
+  PHASE3_MOCK.starSightings.forEach(s=>{
+    if(s && s.starId && PHASE3_STAR_ORDER.indexOf(s.starId)>=0) byId[s.starId]=s;
+  });
+  return PHASE3_STAR_ORDER.map(id=>{
+    const base = STAR_SIGHTINGS.find(s=>s.starId===id);
+    const m = byId[id];
+    if(!base) return null;
+    if(!m) return base;
+    return {
+      starId:id,
+      displayName:m.displayName || base.displayName,
+      locs: base.locs.slice(),
+      distanceLook: m.silhouetteDesc || base.distanceLook,
+      distanceLine: m.distanceLine || base.distanceLine,
+      locHint: m.locHint || base.locHint,
+      rumorTeaser: m.rumorTeaser || base.rumorTeaser,
+      actionLabel: m.actionLabel || "遠觀",
+      resultToast: m.resultToast || base.resultToast,
+    };
+  }).filter(Boolean);
+}
+function phase3CastCopy(){
+  const live = {
+    readyLabel:"接通告",
+    successToast:"劇組通知：接通告成功！",
+    lockedLabel:"暫未能報",
+    lockedToast:"條件未合",
+    subLine:"試鏡表現未夠火候，建議先跟班觀摩再作安排。",
+    leaveLabel:"離開",
+    lockedTag:"暫未能報 · 條件未合",
+    lockedSub:"角色已鎖定，暫未能報；可選擇離開。",
+    readyTag:"可接通告",
+    readySub:"條件符合，可接通告。",
+    shake:true,
+  };
+  if(!phase3SoftOn()) return live;
+  const mock = PHASE3_MOCK || phase3InlineMock();
+  const cta = mock.castingCta || {};
+  const can = cta.canCast || {};
+  const cant = cta.cannotCast || {};
+  const states = Array.isArray(mock.boardCardStates) ? mock.boardCardStates : [];
+  const locked = states.find(s=>s && s.stateKey==="locked") || {};
+  const ready = states.find(s=>s && s.stateKey==="ready") || {};
+  const extra = states.filter(s=>s && s.stateKey!=="locked" && s.stateKey!=="ready");
+  return {
+    readyLabel: can.buttonLabel || live.readyLabel,
+    successToast: can.successToast || (mock.toasts && mock.toasts.castAccepted) || live.successToast,
+    lockedLabel: cant.buttonLabel || live.lockedLabel,
+    lockedToast: cant.toast || (mock.toasts && mock.toasts.castBlocked) || live.lockedToast,
+    subLine: cant.subLine || live.subLine,
+    leaveLabel: cant.leaveActionLabel || locked.secondaryAction || live.leaveLabel,
+    lockedTag: locked.boardTag || live.lockedTag,
+    lockedSub: locked.detailSub || live.lockedSub,
+    readyTag: ready.boardTag || live.readyTag,
+    readySub: ready.detailSub || live.readySub,
+    shake: cant.tapFeedback ? cant.tapFeedback==="shake" : true,
+    thirdState: extra.length>0,
+  };
+}
 function starAtLoc(locId){
-  return STAR_SIGHTINGS.find(s=>s.locs.indexOf(locId)>=0) || null;
+  return phase3Stars().find(s=>s.locs && s.locs.indexOf(locId)>=0) || null;
 }
 function playSightChime(){
   try{
@@ -11194,13 +11326,38 @@ function openStarSighting(star){
 function addStarSighting(locId, add){
   const star = starAtLoc(locId);
   if(!star || typeof add!=="function") return;
-  add(`遠觀：${star.displayName}`, star.distanceLine, "無", ()=>openStarSighting(star), "act-priority act-ask");
+  const verb = star.actionLabel || "遠觀";
+  add(`${verb}：${star.displayName}`, star.distanceLine, "無", ()=>openStarSighting(star), "act-priority act-ask");
 }
 try{
   window.__phase3 = {
-    stars: function(){ return STAR_SIGHTINGS.map(s=>s.starId); },
-    sight: function(id){ return openStarSighting(STAR_SIGHTINGS.find(s=>s.starId===id)); },
+    stars: function(){ return phase3Stars().map(s=>s.starId); },
+    sight: function(id){ return openStarSighting(phase3Stars().find(s=>s.starId===id)); },
     boardState: function(g){ return gigBoardCardState(g); },
+    source: function(){ return phase3SoftOn() ? PHASE3_MOCK_SRC : "live"; },
+    mock: function(){ return phase3SoftOn() ? (PHASE3_MOCK || phase3InlineMock()) : null; },
+    cta: function(){ return phase3CastCopy(); },
+    load: function(){ return loadPhase3Mock(); },
+    soft: phase3SoftOn,
+    check: function(){
+      const fails = [];
+      if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
+      try{ if(typeof BehaviorGate!=="undefined" && BehaviorGate.liveWeekGateStillActive()!==true) fails.push("live_fn"); }catch(_e){ fails.push("live_fn"); }
+      const stars = phase3Stars();
+      if(stars.length!==4) fails.push("count");
+      if(stars.some(s=>s.starId==="chai_chunhoi")) fails.push("chai");
+      PHASE3_STAR_ORDER.forEach(id=>{ if(!stars.some(s=>s.starId===id)) fails.push("missing:"+id); });
+      const c = phase3CastCopy();
+      if(c.thirdState) fails.push("third_state");
+      if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
+      if(phase3SoftOn() && PHASE3_MOCK && PHASE3_MOCK.castingCta){
+        const cant = PHASE3_MOCK.castingCta.cannotCast || {};
+        const can = PHASE3_MOCK.castingCta.canCast || {};
+        if(cant.buttonLabel && c.lockedLabel!==cant.buttonLabel) fails.push("locked_label");
+        if(can.buttonLabel && c.readyLabel!==can.buttonLabel) fails.push("ready_label");
+      }
+      return { ok:fails.length===0, fails:fails, source:PHASE3_MOCK_SRC, soft:phase3SoftOn() };
+    },
   };
 }catch(_e){}
 function openLoc(id){
@@ -11373,12 +11530,13 @@ function openLoc(id){
   (S.board[L.id]||[]).forEach(gid=>{
     const gig=GIGS.find(g=>g.id===gid); if(!gig) return;
     const gate=canAudition(gig);
+    const castCopy = phase3CastCopy();
     if(!gate.ok){
-      add(`暫未能報：${gig.title}`, "條件未合","未開放", ()=>openCastingNoticeDetail(gig, L));
+      add(`${castCopy.lockedLabel}：${gig.title}`, "條件未合","未開放", ()=>openCastingNoticeDetail(gig, L));
       return;
     }
     const p=Math.round(chance(gig)*100);
-    add(`接通告：${gig.title}`, `${gig.type} · ${p}%`,"+1日", ()=>openCastingNoticeDetail(gig, L));
+    add(`${castCopy.readyLabel}：${gig.title}`, `${gig.type} · ${p}%`,"+1日", ()=>openCastingNoticeDetail(gig, L));
   });
   const tr=TRAIN_BY_TYPE[L.type];
   if(tr){
@@ -11767,7 +11925,7 @@ function doAudition(gig, L){
         const cont=()=>{ if(ended) enterHome(summary, true); else enterHome(null, false); };
         maybeShowTutToast("sawTutShoot","TUT_SHOOT", cont);
       };
-      toast("劇組通知：接通告成功！");
+      toast(phase3CastCopy().successToast);
       modal(`<h3>${title} ${gig.title}</h3>
         <p>成功率約 ${Math.round(p*100)}%</p>
         <div>${notes.join("<br>")}</div>

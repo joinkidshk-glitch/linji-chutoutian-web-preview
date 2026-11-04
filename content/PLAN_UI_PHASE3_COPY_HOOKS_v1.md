@@ -132,3 +132,18 @@ board 狀態只 `ready`｜`locked`。
 - starId 對齊 LOOKS／era_stars：`liu_bingxing`／`ngai_wingnaam`／`yip_manji`（唔再用 liu_bingsing／ngai_wingnam／yip_manchi）
 - 條件未合 Detail：除「暫未能報」外保留 **「離開」**（用戶硬鎖）
 - Mock SHA8 `2a531f10`
+
+## 11. Web Soft 接線
+
+狀態：**Done Soft**（web）。Soft≠PASS。唔 tip LIVE。唔交 iOS Soft。
+
+`?v=19w&softBehaviorGate=1`（`BehaviorGate.gatePath()==="soft"`）先讀 `content/MOCK_UI_PHASE3_STAR_CASTING_v1.json`。Fetch 失敗先用與 Mock 同文的 inline。無關旗時遠觀同 Casting 字串保持原本 LIVE inline，唔讀該 JSON。
+
+- [x] Soft 四星遠觀：displayName、distanceLine、rumor teaser；silhouetteDesc 只作文案；toast＝`resultToast`；音用既有 chime
+- [x] 地圖只掛四人（陸柏言／廖炳星／魏詠男／葉敏芝）。齊鎮海留 DEV 附錄
+- [x] Casting Detail：ready 主鈕「接通告」；locked 主鈕「暫未能報」（灰、shake、toast「條件未合」、副行、次鈕「離開」）
+- [x] board 只 ready｜locked；Detail 唔讀 `isSoftTryGig`，無第三態
+- [ ] 出圖／剪影圖（HOLD）
+- [ ] LIVE tip、抬 `?v=`、改 SAVE、`liveWeekGateStillActive()`→false（HOLD）
+
+抽樣見 `content/NOTES_SOFT_UI_PHASE3_STAR_CASTING.md`。
