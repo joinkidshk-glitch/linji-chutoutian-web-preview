@@ -25,3 +25,11 @@
 - Refs：`hero_awi.jpg`＋`story/c1/char_hero_bust_default.png`（＋npc identity when present）
 - 本 Soft tip 只合 live 18 PNG（bak 省略，GD 允許）；`?v=` 仍 `19w`
 - Soft≠PASS；唔 tip LIVE；89–92 HOLD；silhouettes 後掛
+
+## Style-lock Cheung pair（2026-11-05 Asia/Hong_Kong）
+
+- 已 redo：`char_cheung_bust_default.png` MD5 `920321c6`、`char_cheung_bust_raise_brow.png` MD5 `5224f3dc`（c1／story／dialog／npc 四路同 MD5）
+- LOOKS：粗黑框眼鏡、卡其多口袋攝影背心、洗水牛仔恤、聽筒。準繩仍係 `hero_awi.jpg`＋`char_hero_bust_default.png`
+- bak：`assets/story/c1/char_cheung_bust_{default,raise_brow}_pre_style_lock_bak.png`（舊高領半寫實）
+- 身份 jpg `assets/npc_cheung.jpg` 仍係高領較年長記帳，本輪唔改
+- Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD；silhouettes 後掛

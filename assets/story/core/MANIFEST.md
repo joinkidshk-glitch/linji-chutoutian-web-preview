@@ -6,7 +6,7 @@
 > **Style lock（HARD · 用戶 2026-11-05）：** 平面 2D anime／VN cel-shade；清黑線；大眼高光；硬邊陰影；禁半寫實／相片膚／細密髮絲／softbox  
 > **狀態：** CORE 六角 **style-lock redo**（default＋smile＋frown ×6＝18 PNG）已安裝；**Soft≠PASS**；唔 tip LIVE；**1989–1992 HOLD**；silhouettes 後掛  
 > **本輪：** 只合 live 18（bak 省略，GD 允許）。`?v=` 仍 `19w`。SAVE `starVolunteer_map_v19w`。  
-> StoryPlay 先 probe `assets/story/core/{id}_bust_{expr}.png?v=19w`；六個 core stem 優先用檔案 bust（張子駿等其餘臉仍用內嵌肖像）。
+> StoryPlay 先 probe `assets/story/core/{id}_bust_{expr}.png?v=19w`；六個 core stem 優先用檔案 bust。張子駿 `default`／`raise_brow` 亦優先用 `char_cheung_bust_*.png?v=19w`（四路同 MD5）。其餘臉仍用內嵌肖像。
 
 ## Style-lock MD5（2026-11-05）
 

@@ -43,8 +43,8 @@
 
 | file | expression | emotion map | notes |
 |---|---|---|---|
-| `char_cheung_bust_default.png` | `default` | firm phone (beat 7) | 聽筒＋側光 |
-| `char_cheung_bust_raise_brow.png` | `raise_brow` | firm phone 加強 | 聽筒＋揚眉嚴峻 |
+| `char_cheung_bust_default.png` | `default` | firm phone (beat 7) | **2026-11-05 style-lock**：對齊 `hero_awi`／default 平面 cel；LOOKS 背心＋黑框眼鏡＋牛仔恤＋聽筒；MD5 `920321c6`；bak `*_pre_style_lock_bak` |
+| `char_cheung_bust_raise_brow.png` | `raise_brow` | firm phone 加強 | **2026-11-05 style-lock**：同上身份／服裝；單側挑眉＋額紋；MD5 `5224f3dc`；四路同 MD5；Soft：挑眉峰仍可再加強 |
 
 `firm` 臉 → 用 `raise_brow`（或 `default`）
 
@@ -68,7 +68,7 @@
 ## QC
 
 - [x] 無烘焙亂碼中文／商標
-- [x] 人臉大致跟 ref（awi 髮／外套；ho 眼鏡灰西裝；cheung 高領＋聽筒）
+- [x] 人臉大致跟 ref（awi 髮／外套；ho 眼鏡灰西裝；cheung LOOKS 背心／眼鏡／牛仔＋聽筒（style-lock 換走高領半寫實））
 - Soft notes: hero `raise_brow` **style-lock 2026-11-05**（動畫風；挑眉 Soft nit）；ho `frown` Soft OK；Soft≠PASS（整體）
 - 未產 lan／藍若曦（用戶＋tester 確認）
 
@@ -91,3 +91,13 @@
 - bak：`char_hero_bust_raise_brow_pre_style_lock_bak.png`（舊半寫實 e99f2dd3）
 - Soft：單側挑眉可再加強；Fal／Krea 餘額 0，未做 edit 強化
 - Soft≠PASS｜唔 tip LIVE｜89–92 HOLD｜剪影後掛
+
+## Style-lock Cheung pair 2026-11-05 (Asia/Hong_Kong)
+- `char_cheung_bust_default.png` MD5 `920321c6`（c1／story／dialog／npc 同 MD5）
+- `char_cheung_bust_raise_brow.png` MD5 `5224f3dc`（同上四路）
+- LOOKS：~32；粗黑框眼鏡；卡其多口袋攝影背心；洗水牛仔恤袖口捲；原子筆；聽筒（C1 電話戲）
+- 準繩：`hero_awi.jpg`＋`char_hero_bust_default.png`；換走 DRIFT_REAL 高領半寫實 bak
+- Soft：單側挑眉仍可再加強；原子筆數量偏 1 支；略偏 modern polished anime 線（仍平面 2D）
+- 身份 jpg `assets/npc_cheung.jpg` 仍係高領較年長記帳，本輪唔改、唔再開圖
+- Soft≠PASS｜唔 tip LIVE｜唔 wake iOS｜89–92 HOLD｜剪影後掛
+- Pack：`/workspace/star-volunteer-web-style-lock-cheung.tar.gz`
