@@ -2,6 +2,8 @@
 >
 > **Soft A 鎖（寫死）：** ①開線＝C5 完成＋`agency_ho` favorMin≥1（與 C4 favor∧loc 咬合）＋threshold｜②MVP Soft 可 Mock meet（只 meet；push1+ HOLD）｜③`rel_tang_threshold`**=2**
 
+> **push1+ Soft 另見** `PLAN_STORY_DENG_LINE_PUSH_SOFT_v1.md`（Mock SHA8 `9e5751a4`；沿 Soft A；唔 tip）。
+
 # PLAN_STORY_DENG_LINE_SOFT_v1.md（鄧麗萍可選攻略線 Soft 計劃）
 
 ## 1. 範圍與定位

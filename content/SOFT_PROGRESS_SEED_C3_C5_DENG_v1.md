@@ -10,7 +10,8 @@ Soft≠PASS｜唔 tip｜唔改 LIVE week-gate｜89–92 HOLD｜出圖 HOLD
 - C3：needDone C2; weekMin=6; loc tvb_longmen; rumor gao_steal_spotlight; fame>15（fameMin=16, fameCompare='>', tag fameMin_16）；禁誤寫 fame>16
 - C4：needDone C3; weekMin=8; loc=agency_ho; favorMin≥1 @ agency_ho AND（favorTarget=agency_ho, softLogic=AND）
 - C5：needDone C4; weekMin=9; loc cafe_cha|tvb_longmen; seasonAny autumn|winter; rumorSoftPriority; rumorAny choi_recent_news,hau_ching_recent_news
-- 鄧 R_tang_meet：needDone C5 + favorMin>=1 @agency_ho; Mock meet only; rel_tang_threshold=2; push+ HOLD
+- 鄧 R_tang_meet：needDone C5 + favorMin>=1 @agency_ho; Mock meet only; rel_tang_threshold=2
+- 鄧 push+：flag_tang_open ∧ rel_tang≥2；Soft flag 先換 Mock 四 beat；LIVE JSON／week-gate 唔改
 
 # 種子說明
 ## seed_c3_ready
@@ -37,6 +38,13 @@ Soft≠PASS｜唔 tip｜唔改 LIVE week-gate｜89–92 HOLD｜出圖 HOLD
 - 期望結果：可開 Mock meet
 - 負例：缺 C5 會 FAIL
 
+## seed_deng_push_ready
+- 目標：鄧 R_tang_push1（以及同一閘的 push2／crisis／ending）觸發就緒
+- 注入 state：C5＋R_tang_meet done，flag_tang_open，rel_tang=2，loc=agency_ho，season=winter
+- 期望結果：可開 Mock push1；chrome「主線 · 1988冬」；其後三 beat 跟春／秋／冬
+- 負例：rel_tang=1 或未有 flag_tang_open 會 FAIL
+- 網址：`?softBehaviorGate=1&softSeed=seed_deng_push_ready`（唔抬 ?v=）
+
 ## seed_chain_shortest
 - 目標：最短路徑累積
 - 注入 state：由 week1 累積至 week10 鄧 meet
@@ -56,9 +64,9 @@ Soft≠PASS｜唔 tip｜唔改 LIVE week-gate｜89–92 HOLD｜出圖 HOLD
 - 改 week-gate 預設
 - 89–92 時代線
 - 出圖
-- 鄧 push+
+- 鄧 push+ LIVE tip（Soft flag 先開 Mock）
 
 # 文末註
-本版經 qwen3.7-max。
-refs SHA8：stub `cba0e877`｜engine PLAN `8450130d`｜鄧 PLAN `043a70ff`｜鄧 Mock `f5986e81`。
-Blocker：Soft≠PASS｜唔 tip｜唔改 LIVE week-gate｜89–92 HOLD｜出圖 HOLD｜鄧 push+ HOLD。
+本版經 qwen3.7-max。push 種子係 Soft 抽樣加註。
+refs SHA8：stub `cba0e877`｜engine PLAN `8450130d`｜鄧 PLAN `ab90d1b7`｜鄧 meet `8a80d7b9`｜鄧 push Mock `9e5751a4`。
+Blocker：Soft≠PASS｜唔 tip｜唔改 LIVE week-gate｜89–92 HOLD｜出圖 HOLD。

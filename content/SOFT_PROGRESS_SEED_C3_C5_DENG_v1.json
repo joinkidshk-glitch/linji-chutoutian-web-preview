@@ -7,7 +7,7 @@
     "tipForbidden": true,
     "artHold": true,
     "eraDeep8992Hold": true,
-    "purpose": "Soft／瀏覽器 QA 抽樣 C3–C5＋鄧 meet",
+    "purpose": "Soft／瀏覽器 QA 抽樣 C3–C5＋鄧 meet／鄧 push1+",
     "softPathNote": "本種子只供 Soft／瀏覽器 QA；LIVE week-gate 仍 active、唔改預設",
     "date": "2026-11-04",
     "refs": {
@@ -16,9 +16,11 @@
       "enginePlan": "PLAN_STORY_BEHAVIOR_GATE_ENGINE_SLICE_v1.md",
       "enginePlanSha8": "8450130d",
       "dengPlan": "PLAN_STORY_DENG_LINE_SOFT_v1.md",
-      "dengPlanSha8": "043a70ff",
-      "dengMock": "MOCK_STORY_DENG_LINE_MEET_SOFT_v1.json",
-      "dengMockSha8": "f5986e81"
+      "dengPlanSha8": "ab90d1b7",
+      "dengMock": "MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json",
+      "dengMockSha8": "8a80d7b9",
+      "dengPushMock": "MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json",
+      "dengPushMockSha8": "9e5751a4"
     },
     "softALock": {
       "C1": "loc=cafe_cha; weekMin floor=1",
@@ -26,7 +28,8 @@
       "C3": "needDone C2; weekMin=6; loc tvb_longmen; rumor gao_steal_spotlight; fame>15 (fameMin=16, fameCompare='>', tag fameMin_16)",
       "C4": "needDone C3; weekMin=8; loc=agency_ho; favorMin>=1 @ agency_ho AND (favorTarget=agency_ho, softLogic=AND)",
       "C5": "needDone C4; weekMin=9; loc cafe_cha|tvb_longmen; seasonAny autumn|winter; rumorSoftPriority; rumorAny choi_recent_news,hau_ching_recent_news; rival_gao 唔混入 C5",
-      "deng_R_tang_meet": "needDone C5 + favorMin>=1 @agency_ho; Mock meet only; rel_tang_threshold=2; push+ HOLD"
+      "deng_R_tang_meet": "needDone C5 + favorMin>=1 @agency_ho; Mock meet only; rel_tang_threshold=2; push+ 另見 push mock",
+      "deng_R_tang_push": "flag_tang_open ∧ rel_tang>=2; Mock R_tang_push1/push2/crisis/ending under soft flag; threshold=2; LIVE JSON／week-gate unchanged"
     }
   },
   "negativeChecks": [
@@ -85,6 +88,20 @@
       },
       "expect": "FAIL",
       "reason": "缺 C5 done，無法觸發 R_tang_meet"
+    },
+    {
+      "id": "neg_deng_push_rel_1",
+      "beat": "R_tang_push1",
+      "state": {
+        "flags": {
+          "flag_tang_open": true
+        },
+        "rel": {
+          "rel_tang": 1
+        }
+      },
+      "expect": "FAIL",
+      "reason": "rel_tang=1 唔滿足 rel_tang_threshold=2"
     }
   ],
   "seeds": [
@@ -205,8 +222,44 @@
           "rel_tang": 0
         }
       },
-      "expect": "可開 R_tang_meet（Mock）；push+ HOLD；rel_tang_threshold=2 今次唔測",
+      "expect": "可開 R_tang_meet（Mock）；本種子 rel_tang=0，push+ 唔開；rel_tang_threshold=2",
       "howToUse": "注入 state 後驗證 R_tang_meet Mock 觸發。確保 C5 已完成且 favor.agency_ho >= 1。"
+    },
+    {
+      "id": "seed_deng_push_ready",
+      "title": "鄧 R_tang_push1 觸發就緒種子 (Mock push+)",
+      "targetBeat": "R_tang_push1",
+      "state": {
+        "week": 10,
+        "day": 1,
+        "locId": "agency_ho",
+        "fame": 30,
+        "favor": {
+          "agency_ho": 2
+        },
+        "rumors": [
+          "choi_recent_news",
+          "hau_ching_recent_news"
+        ],
+        "season": "winter",
+        "beatsDone": [
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5",
+          "R_tang_meet"
+        ],
+        "flags": {
+          "flag_tang_open": true
+        },
+        "gigCount": 10,
+        "rel": {
+          "rel_tang": 2
+        }
+      },
+      "expect": "可開 R_tang_push1 Mock；chrome 主線 · 1988冬；flag_tang_open ∧ rel_tang>=2；唔改 LIVE JSON",
+      "howToUse": "?softBehaviorGate=1&softSeed=seed_deng_push_ready。其餘三 beat 同一閘，事務所行動表可開。"
     },
     {
       "id": "seed_chain_shortest",
