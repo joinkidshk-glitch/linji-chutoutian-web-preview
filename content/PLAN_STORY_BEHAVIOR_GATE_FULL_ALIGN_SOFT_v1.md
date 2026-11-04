@@ -17,13 +17,13 @@
 | C5 | needDone C4；weekMin=9；loc cafe_cha\|tvb_longmen；seasonAny autumn\|winter；rumorSoftPriority；rumorAny choi_recent_news,hau_ching_recent_news | 同左，**rival_gao 唔混入 C5** | 無偏差 | Soft 準 | engine slice `8450130d` |
 
 ## §3 tip 前 checklist
-- [ ] feature flag 合流（Soft preview vs LIVE week-gate；現況＝缺口）
+- [x] feature flag 合流：Soft 開關模型已對齊（`featureFlag_softBehaviorGatePreview`＝Soft 行為閘 opt-in，唯一 query／localStorage 解析；`gatePath()` 只呼叫呢個旗，回 `"soft"`｜`"live"`。Soft on：C1–C5 同既有 Deng／雙女／seed／chrome 守衛只行 stub trigger／evalOrder。Soft off／非 Soft：只行 week-gate，softSeed 唔注入）。LIVE week-gate 退休仍 HOLD／`tipForbidden`。唔等於 tip LIVE。ENGINE_SLICE §6「tip 前唔合流」仍指唔退休 LIVE 週數閘。
 - [ ] evalOrder 一字對齊 engine slice（needDone → minDaysAfterPrev → weekMin_floor → locIdAny → favor_AND_loc → fameCompare → gigCountMin → seasonAny → rumorSoftPriority → tagAny → relAny）
 - [ ] C1 cafe_cha／C3 fameMin16／C4 AND favor≥1@agency_ho／C5 rumor soft＋秋冬
 - [ ] rival_gao 唔入 C5
 - [ ] 禁工程詞／禁 Ho 哥／禁真藝名／玩家面「何生」
 - [ ] nextHint 藏（#15 已 tip Soft 先返回；持續驗）
-- [ ] LIVE week-gate 仍 active（liveWeekGateStillActive）
+- [ ] LIVE week-gate 仍 active（`liveWeekGateStillActive()` runtime 仍 true；stub／slice 同旗仍 true）
 - [ ] tipForbidden 直至 tester OK＋明示 tip
 - [ ] Soft≠PASS
 
@@ -47,7 +47,7 @@
 5. C5 season=summer FAIL，autumn/winter PASS。
 6. C5 `rival_gao` 唔觸發，rumorSoftPriority 順序正確。
 7. evalOrder 嚴格按 engine slice `8450130d` 順序執行。
-8. feature flag 缺口已標記，LIVE week-gate 仍 active，Soft≠PASS。
+8. feature flag 合流 Soft 已交付（開關模型對齊；`gatePath` 只跟 `featureFlag_softBehaviorGatePreview`）。LIVE week-gate 退休仍 HOLD（`liveWeekGateStillActive` 仍 active、`tipForbidden` 仍 true）。Soft≠PASS。唔 tip LIVE。
 
 ## §7 Acceptance／Out of scope
 - **Acceptance**：Soft A 行為閘 C1-C5 邏輯完全對齊 engine slice `8450130d` 及 stub `cba0e877`，FULL 舊表偏差已修正並以 Soft 拍板為準，玩家面用語合規。

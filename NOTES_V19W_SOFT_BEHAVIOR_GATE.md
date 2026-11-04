@@ -2,6 +2,10 @@
 
 預覽 `?v=19w`。SAVE `starVolunteer_map_v19w`。LIVE 預設仍係 week-gate。Soft preview 要自己開 flag。唔 merge。出圖 HOLD。89–92 HOLD。
 
+## 開關合流（Soft only）
+
+同一套開關，唔再開第二個 query／localStorage 解析。`featureFlag_softBehaviorGatePreview`＝Soft 行為閘 opt-in（`?softBehaviorGate=1`／`?softPreview=1`／`localStorage starVolunteer_softBehaviorGatePreview=1`）。`gatePath()` 只呼叫呢個旗：開＝`"soft"`（C1–C5 stub trigger／evalOrder，同既有 Deng／雙女／seed／chrome）；關＝`"live"`（只行 week-gate，softSeed 唔注入）。`liveWeekGateStillActive()` 係 LIVE 週數閘哨兵，runtime 仍 `true`，直至明示 tip LIVE。本包唔把呢個函式改 false，stub／slice `tipForbidden` 仍 true。Soft≠PASS。tip 仍只可以 Soft，唔 tip LIVE。見 `content/NOTES_SOFT_FEATURE_FLAG_CONFLUENCE.md`。
+
 ## 權威檔 SHA256
 
 | 檔 | SHA8 | SHA256 |
