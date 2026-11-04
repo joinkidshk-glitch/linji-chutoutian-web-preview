@@ -5321,18 +5321,20 @@ const BehaviorGate = (function(){
     if(trig.weekMin==null || trig.weekMin==="") return true;
     return Number(ctx.week) >= Number(trig.weekMin);
   }
-  function stepLoc(trig, ctx){
+  function stepLoc(trig, ctx, opts){
+    /* HUD／chip 唔跟當前 loc sheet。真正開播仍然查地點。 */
+    if(opts && opts.ignoreSheetLoc) return true;
     const locs = trig.locIdAny||[];
     if(!locs.length) return true;
     return locs.indexOf(ctx.atLoc)>=0;
   }
-  function stepFavor(trig, ctx){
+  function stepFavor(trig, ctx, opts){
     /* favor∧loc when softLogic is AND. Never OR. */
     const min = Number(trig.favorMin)||0;
     if(!trig.softLogic && !trig.favorTarget && min<=0) return true;
     const favorOk = favorValue(trig.favorTarget||"agency_ho", ctx) >= min;
     const locs = trig.locIdAny||[];
-    const locOk = !locs.length || locs.indexOf(ctx.atLoc)>=0;
+    const locOk = (opts && opts.ignoreSheetLoc) || !locs.length || locs.indexOf(ctx.atLoc)>=0;
     if(trig.softLogic==="AND") return !!(favorOk && locOk);
     if(trig.favorTarget) return !!(favorOk && locOk);
     return !!favorOk;
@@ -5419,7 +5421,7 @@ const BehaviorGate = (function(){
     for(let i=0;i<order.length;i++){
       const step = order[i];
       const fn = STEP[step];
-      const pass = !!(fn && fn(trig, ctx));
+      const pass = !!(fn && fn(trig, ctx, opts||{}));
       checks.push({ token:step, ok:pass, reason: pass ? "ok" : "fail" });
       if(!pass){ ok = false; break; }
     }
@@ -5618,9 +5620,14 @@ const DengLine = (function(){
     if(!mock) bad("mock_missing");
     const face = JSON.stringify({ beats: mock && mock.beats, holdBeats: mock && mock.holdBeats });
     ["關海媚","陳淑芬","施南生","Ho哥"].forEach(w=>{ if(face.indexOf(w)>=0) bad("banned:"+w); });
-    if(mock && String(mock.meta.note||"").indexOf("曉晴")<0) bad("dual_note");
-    if(mock && String(mock.meta.note||"").indexOf("關海媚")<0) bad("kwan_note");
+    const dev = (mock && mock.devAppendix) || {};
+    const note = String((mock && mock.meta && mock.meta.note) || "");
+    /* v1.1 note 不再寫角色名；雙女主／關海媚禁令改讀 devAppendix（v1 正文 note 仍算過） */
+    if(note.indexOf("曉晴")<0 && dev.mvpDualHeroineProtected!==true) bad("dual_note");
+    if(note.indexOf("關海媚")<0 && dev.guanHaimeiUpgradeForbidden!==true) bad("kwan_note");
+    if(!mock || mock.meta.version!=="v1.1") bad("mock_version");
     const beat = mock && mock.beats[0];
+    if(!beat || beat.playerMeta!=="主線 · 1988秋" || beat.chromeSeason!=="autumn") bad("chrome_fields");
     if(!beat || beat.playerOffer!==false) bad("playerOffer");
     if(!beat || beat.artHold!==true) bad("artHold");
     const cast = (beat && beat.cast || []).join("|");
@@ -5640,6 +5647,20 @@ const DengLine = (function(){
     if(openGate({ ctx: Object.assign({}, gateBase, { favor:0 }) }).ok!==false) bad("gate_favor");
     if(openGate({ ctx: Object.assign({}, gateBase, { atLoc:"cafe_cha" }) }).ok!==false) bad("gate_loc");
     if(beat && (beat.choices||[]).some(c=>JSON.stringify(c).indexOf("rival_gao")>=0)) bad("rival_in_meet");
+    try{
+      if(typeof StoryPlay!=="undefined" && StoryPlay.spPlayerMeta_softSeasonSelfCheck){
+        const chk = StoryPlay.spPlayerMeta_softSeasonSelfCheck();
+        if(!chk.ok) (chk.fails||[]).forEach(f=>bad("season:"+f));
+      }
+      if(typeof StoryPlay!=="undefined" && StoryPlay.spPlayerMeta && beat){
+        const shown = StoryPlay.spPlayerMeta(beat);
+        if(featureFlagOn()){
+          if(shown!=="主線 · 1988秋") bad("soft_chrome");
+        } else if(shown==="主線 · 1988秋"){
+          bad("live_chrome");
+        }
+      }
+    }catch(_chrome){ bad("chrome_throw"); }
     return { ok: fails.length===0, fails: fails };
   }
   return {
@@ -5664,6 +5685,162 @@ try{
     window.__dengLine = DengLine;
   }
 }catch(_w){}
+
+/* Soft dual-heroine meet thicken. Flag off → LIVE romance JSON unchanged. Depth A (light) is the loaded mock. */
+const DualMeet = (function(){
+  let mock = null;
+  const IDS = ["R_hiu_meet","R_choi_meet"];
+  function featureFlagOn(){
+    return typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview();
+  }
+  function loadMock(data){
+    if(!data || !data.meta || data.meta.scope!=="dual_meet_thicken_soft_a_light") return { ok:false, reason:"scope" };
+    if(data.meta.tipForbidden!==true || data.meta.artHold!==true || data.meta.eraDeep8992Hold!==true || data.meta.dengPushHold!==true) return { ok:false, reason:"hold" };
+    if(!Array.isArray(data.beats) || data.beats.length!==2) return { ok:false, reason:"beats" };
+    const ids = data.beats.map(b=>b && b.id);
+    if(ids.join()!==IDS.join()) return { ok:false, reason:"ids" };
+    for(let i=0;i<data.beats.length;i++){
+      const b = data.beats[i];
+      if(!b || !Array.isArray(b.beats) || b.beats.length!==6) return { ok:false, reason:"thick" };
+      if(b.playerOffer!==false || b.artHold!==true) return { ok:false, reason:"offer" };
+    }
+    mock = data;
+    return { ok:true, scope:data.meta.scope };
+  }
+  function idOf(node){
+    if(!node) return "";
+    if(typeof node==="string") return node;
+    return String(node.id || node.beatId || "");
+  }
+  function isMeet(node){ return IDS.indexOf(idOf(node))>=0; }
+  function nodeById(id){
+    if(!mock) return null;
+    for(let i=0;i<mock.beats.length;i++){ if(mock.beats[i] && mock.beats[i].id===id) return mock.beats[i]; }
+    return null;
+  }
+  function locsFor(id){
+    try{
+      const row = (typeof STORY_MEET_SOFT!=="undefined") ? STORY_MEET_SOFT[id] : null;
+      if(row && Array.isArray(row.locs) && row.locs.length) return row.locs.slice();
+    }catch(_e){}
+    return [];
+  }
+  function openGate(id, opts){
+    const node = nodeById(idOf(id));
+    const spec = (node && node.openGate) || ((mock && mock.meta && mock.meta.openGates) || {})[idOf(id)] || {};
+    const need = spec.needDone || [];
+    const ctx = (typeof BehaviorGate!=="undefined") ? BehaviorGate.readCtx(opts||{}) : { done:null };
+    const doneOk = need.every(x=> typeof BehaviorGate!=="undefined" && BehaviorGate.done(x, ctx));
+    return { ok: !!(need.length && doneOk), needDone:need.slice(), doneOk:doneOk };
+  }
+  function meetNode(id){
+    const src = nodeById(idOf(id));
+    if(!src) return null;
+    const node = JSON.parse(JSON.stringify(src));
+    node.dev_only = true;
+    node.dual_meet_soft = true;
+    node.playerOffer = false;
+    node.artHold = true;
+    return node;
+  }
+  function meetAvailable(id){
+    if(!featureFlagOn() || !nodeById(id)) return false;
+    try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(id)) return false; }catch(_e){}
+    return !!openGate(id).ok;
+  }
+  function actionsAt(locId){
+    if(!featureFlagOn()) return [];
+    const out = [];
+    IDS.forEach(id=>{
+      if(!meetAvailable(id)) return;
+      if(locsFor(id).indexOf(locId)<0) return;
+      const n = nodeById(id);
+      out.push({ id:id, title:(n&&n.title)||id, hint:(n&&n.synopsis)||"" });
+    });
+    return out;
+  }
+  function play(id){
+    if(!featureFlagOn()) return { ok:false, reason:"preview_off" };
+    const gate = openGate(id);
+    if(!gate.ok){
+      if(typeof BehaviorGate!=="undefined") BehaviorGate["leaveWhenLocked_暫未能報_離開"]();
+      return { ok:false, gate:gate };
+    }
+    try{
+      if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(id)){
+        if(typeof toast==="function") toast("這幕已完成");
+        return { ok:false, done:true };
+      }
+    }catch(_e){}
+    const node = meetNode(id);
+    if(!node || typeof StoryPlay==="undefined" || !StoryPlay.start) return { ok:false, reason:"no_play" };
+    return { ok: !!StoryPlay.start(node, { force:true }), gate:gate };
+  }
+  function selfCheck(){
+    const fails = [];
+    const bad = (m)=>{ fails.push(m); };
+    if(!mock) bad("mock_missing");
+    const hiu = nodeById("R_hiu_meet");
+    const choi = nodeById("R_choi_meet");
+    if(!hiu || hiu.beats.length!==6 || hiu.playerMeta!=="主線 · 1988春" || hiu.chromeSeason!=="spring") bad("hiu");
+    if(!choi || choi.beats.length!==6 || choi.playerMeta!=="主線 · 1988夏" || choi.chromeSeason!=="summer") bad("choi");
+    const hiuIds = (hiu && hiu.choices || []).map(c=>c.id+"|"+((c.effects&&c.effects.flags)||[]).join(","));
+    const choiIds = (choi && choi.choices || []).map(c=>c.id+"|"+((c.effects&&c.effects.flags)||[]).join(","));
+    if(hiuIds.join(";")!=="C_hiu_meet_a|flag_hiu_meet_exchange;C_hiu_meet_b|flag_hiu_meet_distant") bad("hiu_flags");
+    if(choiIds.join(";")!=="C_choi_meet_a|flag_choi_meet_honest;C_choi_meet_b|flag_choi_meet_official") bad("choi_flags");
+    if((hiu && hiu.openGate && hiu.openGate.needDone || []).join()!=="C3") bad("hiu_gate");
+    if((choi && choi.openGate && choi.openGate.needDone || []).join()!=="C4") bad("choi_gate");
+    const face = JSON.stringify(mock && mock.beats);
+    ["關海媚","陳淑芬","施南生","Ho哥","Ho 哥"].forEach(w=>{ if(face.indexOf(w)>=0) bad("banned:"+w); });
+    if(openGate("R_hiu_meet", { ctx:{ done:{ C3:true } } }).ok!==true) bad("hiu_pass");
+    if(openGate("R_hiu_meet", { ctx:{ done:{ C3:false } } }).ok!==false) bad("hiu_block");
+    if(openGate("R_choi_meet", { ctx:{ done:{ C4:true } } }).ok!==true) bad("choi_pass");
+    if(openGate("R_choi_meet", { ctx:{ done:{ C3:true } } }).ok!==false) bad("choi_need_c4");
+    return { ok: fails.length===0, fails: fails };
+  }
+  return {
+    loadMock:loadMock, featureFlagOn:featureFlagOn, isMeet:isMeet, openGate:openGate,
+    meetNode:meetNode, meetAvailable:meetAvailable, actionsAt:actionsAt, play:play, selfCheck:selfCheck,
+  };
+})();
+try{ if(typeof window!=="undefined"){ window.DualMeet = DualMeet; window.__dualMeet = DualMeet; } }catch(_w){}
+
+/* Soft chrome season. Flag off → these readers stay empty and LIVE spPlayerMeta is unchanged. */
+const SOFT_SEED_IDS = ["seed_c3_ready","seed_c4_ready","seed_c5_ready","seed_deng_meet_ready","seed_chain_shortest"];
+const SOFT_SEED_SEASON = {
+  seed_c3_ready:"spring",
+  seed_c4_ready:"summer",
+  seed_c5_ready:"autumn",
+  seed_deng_meet_ready:"autumn",
+  seed_chain_shortest:"autumn"
+};
+function softSeedIdFromUrl(){
+  try{
+    const q = String((typeof location!=="undefined" && location && location.search) || "");
+    const m = q.match(/(?:\?|&)softSeed=([A-Za-z0-9_]+)(?:&|$)/);
+    return m ? m[1] : "";
+  }catch(_e){ return ""; }
+}
+function softSeedRecord(){
+  try{
+    if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()) return null;
+    const id = softSeedIdFromUrl();
+    if(SOFT_SEED_IDS.indexOf(id)<0) return null;
+    return { id:id, season: SOFT_SEED_SEASON[id] || "" };
+  }catch(_e){}
+  return null;
+}
+function softSeedRequested(){
+  return !!softSeedRecord();
+}
+function softCalendarSeason(){
+  /* Optional override only. Do not fall through to calendarSeason() — a spring clock must not hide chromeSeason / when. */
+  try{
+    if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()) return "";
+    if(typeof S!=="undefined" && S && S.softSeasonOverride) return String(S.softSeasonOverride);
+  }catch(_e){}
+  return "";
+}
 /* BEHAVIOR_GATE_END */
 
 /* v18i: apply StoryPlay bg photos + bust fallbacks (were referenced but undefined on v18h) */
@@ -5748,6 +5925,14 @@ const StoryPlay = (()=>{
           }
           const swapped = DengLine.meetNode();
           if(swapped) node = swapped;
+        }
+        if(typeof DualMeet!=="undefined" && DualMeet.isMeet(node)){
+          if(!DualMeet.openGate(node).ok){
+            BehaviorGate["leaveWhenLocked_暫未能報_離開"](node);
+            return false;
+          }
+          const thickened = DualMeet.meetNode(node);
+          if(thickened) node = thickened;
         }
       }
     }catch(_dg){}
@@ -5999,6 +6184,8 @@ const StoryPlay = (()=>{
   }
   function spBgImageCandidates(bgKey){
     const key = bgKey || "bg_generic_interior";
+    /* No file for the interior fallback. Probing it 404s on the Deng／dual Soft path. */
+    if(key==="bg_generic_interior") return [];
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
@@ -6020,10 +6207,76 @@ const StoryPlay = (()=>{
     if(_sess && _sess.forced) return true;
     return false;
   }
+  function spSoftSeasonChar(raw){
+    const s = String(raw==null?"":raw).trim();
+    if(!s) return "";
+    const low = s.toLowerCase();
+    const table = [
+      ["autumn","秋"],["fall","秋"],["winter","冬"],["summer","夏"],["spring","春"],
+      ["秋","秋"],["冬","冬"],["夏","夏"],["春","春"]
+    ];
+    let best = null;
+    for(let i=0;i<table.length;i++){
+      const key = table[i][0];
+      const at = low.indexOf(String(key).toLowerCase());
+      if(at<0) continue;
+      if(!best || at<best.at || (at===best.at && key.length>best.len)) best = { at:at, ch:table[i][1], len:key.length };
+    }
+    return best ? best.ch : "";
+  }
+  function spSoftSeasonLine(ch){
+    return ch ? ("主線 · 1988"+ch) : "";
+  }
+  /** Soft only. Caller is spPlayerMeta when ?softBehaviorGate=1. Priority: playerMeta → seed / softCalendarSeason / chromeSeason → when / eraTag → 1988春. */
+  function spPlayerMeta_softSeasonFrom(node, src){
+    node = node || {};
+    src = src || {};
+    const explicit = String(node.playerMeta||"").trim();
+    if(explicit) return explicit;
+    let ch = "";
+    if(src.seedSeason) ch = spSoftSeasonChar(src.seedSeason);
+    if(!ch && src.calendarSeason) ch = spSoftSeasonChar(src.calendarSeason);
+    if(!ch && node.chromeSeason) ch = spSoftSeasonChar(node.chromeSeason);
+    if(ch) return spSoftSeasonLine(ch);
+    ch = spSoftSeasonChar(String(node.when||"")+" "+String(node.eraTag||""));
+    if(ch) return spSoftSeasonLine(ch);
+    return "主線 · 1988春";
+  }
+  function spPlayerMeta_softSeason(node, pack, label){
+    let seedSeason = "";
+    let calendarSeasonSoft = "";
+    try{
+      const seed = (typeof softSeedRecord==="function") ? softSeedRecord() : null;
+      if(seed && seed.season) seedSeason = seed.season;
+    }catch(_e){}
+    try{
+      if(typeof softCalendarSeason==="function") calendarSeasonSoft = softCalendarSeason() || "";
+    }catch(_e){}
+    return spPlayerMeta_softSeasonFrom(node, { seedSeason:seedSeason, calendarSeason:calendarSeasonSoft });
+  }
+  function spPlayerMeta_softSeasonSelfCheck(){
+    const fails = [];
+    const eq = (name, got, want)=>{ if(got!==want) fails.push(name+"="+got); };
+    const line = spSoftSeasonLine;
+    const from = spPlayerMeta_softSeasonFrom;
+    eq("p1", from({ playerMeta:line("秋"), chromeSeason:"winter", when:"1988春" }, { seedSeason:"spring" }), line("秋"));
+    eq("p2seed", from({ chromeSeason:"winter", when:"1988春" }, { seedSeason:"autumn" }), line("秋"));
+    eq("p2cal", from({ chromeSeason:"winter", when:"1988春" }, { calendarSeason:"summer" }), line("夏"));
+    eq("p2chrome", from({ chromeSeason:"autumn", when:"1988春" }, {}), line("秋"));
+    eq("p3when", from({ when:"1988年後院線季節｜初秋午後", eraTag:"era_cinema_generic_post1988" }, {}), line("秋"));
+    eq("p3era", from({ eraTag:"era_1988_winter_quiet" }, {}), line("冬"));
+    eq("p4", from({ id:"X", eraTag:"era_cinema_generic_post1988" }, {}), line("春"));
+    return { ok:fails.length===0, fails:fails };
+  }
   function spPlayerMeta(node, pack, label){
+    try{
+      if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview()){
+        return spPlayerMeta_softSeason(node, pack, label);
+      }
+    }catch(_e){}
     node = node || {};
     const id = String(node.id||"");
-    /* USER-approved C1 / opening label (spaces around ·) */
+    /* USER-approved C1 / opening label (spaces around ·). LIVE default — Soft flag does not enter here. */
     if(id==="C1" || spIsForcedStory(node, pack, label)) return "主線 · 1988春";
     const soft = String(node.eraTag||node.when||"").trim();
     if(soft){
@@ -6173,7 +6426,7 @@ const StoryPlay = (()=>{
     if(typeof StoryOC==="undefined") return [];
     try{
       StoryOC.ensure();
-      const oc = StoryOC.listOpen({ checkNodePhase:true, player:true });
+      const oc = StoryOC.listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true });
       return (oc.open||[]).filter(r=>r && r.id && r.id!==doneId);
     }catch(_e){ return []; }
   }
@@ -6386,7 +6639,7 @@ const StoryPlay = (()=>{
   function playOpenPicker(){
     if(typeof StoryOC==="undefined"){ toast("事態尚未載入"); return; }
     StoryOC.ensure();
-    const oc = StoryOC.listOpen({ checkNodePhase:true, player:true });
+    const oc = StoryOC.listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true });
     const open = oc.open||[];
     const done = oc.done||[];
     /* v17z：即將可出 — 主線 C* 一律列出（含采兒／台慶等非 need_done 閘）；理由只用 lockedHint */
@@ -6500,7 +6753,7 @@ const StoryPlay = (()=>{
     try{ if(typeof paintStoryEntryHints==="function") paintStoryEntryHints(); }catch(_e){}
   }
 
-  const api = { start, abort, advance, skipToChoices, pickChoice, playOpenPicker, get session(){ return _sess; } };
+  const api = { start, abort, advance, skipToChoices, pickChoice, playOpenPicker, spPlayerMeta, spPlayerMeta_softSeason, spPlayerMeta_softSeasonSelfCheck, get session(){ return _sess; } };
   try{ window.StoryPlay = api; }catch(_w){}
   return api;
 })();
@@ -6540,12 +6793,15 @@ function shootDayLine(sh){
   if(typed && typed.length) return fillTpl(pick(typed), vars);
   return eventLine("SHOOT_DAY", vars) || `拍攝第 ${sh.doneDays}/${sh.totalDays} 日`;
 }
-let softCalendarSeason = null;
 function calendarSeason(){
-  /* Soft seed only. Flag off keeps the real calendar, even if a seed string exists. */
-  if(softCalendarSeason && typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview()){
-    return softCalendarSeason;
-  }
+  /* Soft seed season covers the clock. Flag off keeps the real month, even if an override string is sitting on the save. */
+  try{
+    if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview() && typeof softCalendarSeason==="function"){
+      const raw = String(softCalendarSeason()||"").trim();
+      const zh = { spring:"春", summer:"夏", autumn:"秋", winter:"冬", "春":"春", "夏":"夏", "秋":"秋", "冬":"冬" }[raw];
+      if(zh) return zh;
+    }
+  }catch(_e){}
   const dt=new Date(START.y, START.m-1, START.d + ((S&&S.dayIndex)||0));
   const m=dt.getMonth()+1; // 1-12
   if(m>=3 && m<=5) return "春";
@@ -6631,102 +6887,6 @@ function pickNpcLine(npcId, opts){
 function weekNumNow(){
   return Math.floor(((S&&S.dayIndex)||0)/7)+1;
 }
-const SOFT_SEED_IDS = ["seed_c3_ready","seed_c4_ready","seed_c5_ready","seed_deng_meet_ready","seed_chain_shortest"];
-const SOFT_SEASON_ZH = { spring:"春", summer:"夏", autumn:"秋", winter:"冬", "春":"春", "夏":"夏", "秋":"秋", "冬":"冬" };
-let softSeedPack = null;
-function softSeedIdFromUrl(){
-  try{
-    const q = new URLSearchParams(String(location.search||""));
-    return String(q.get("softSeed")||"");
-  }catch(_e){ return ""; }
-}
-function softSeedRequested(){
-  if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()) return false;
-  return SOFT_SEED_IDS.indexOf(softSeedIdFromUrl())>=0;
-}
-function applySoftSeedState(seed){
-  if(!S || !seed || !seed.state) return { ok:false, reason:"no_state" };
-  if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()){
-    softCalendarSeason = null;
-    return { ok:false, reason:"flag_off" };
-  }
-  const st = seed.state;
-  const week = Number(st.week)||1;
-  S.dayIndex = (week - 1) * 7;
-  S.fame = Number(st.fame)||0;
-  try{ syncDualTracks(S); }catch(_e){}
-  if(!S.story || typeof S.story!=="object") S.story = {};
-  const done = {};
-  (st.beatsDone||[]).forEach(id=>{ if(id) done[id] = true; });
-  S.story.done = done;
-  S.story.favor = Object.assign({}, st.favor||{});
-  S.story.gigCount = Number(st.gigCount)||0;
-  S.story.rumors = (st.rumors||[]).map(String);
-  S.story.rel = Object.assign({}, S.story.rel||{}, st.rel||{});
-  S.story.flags = Object.assign({}, S.story.flags||{}, st.flags||{});
-  S.story.lastMainDoneDay = Math.max(0, S.dayIndex - 1);
-  const seasonZh = SOFT_SEASON_ZH[st.season] || null;
-  softCalendarSeason = seasonZh;
-  try{ ensureMockJournal(); }catch(_e){}
-  if(!Array.isArray(S.mockRumors)) S.mockRumors = [];
-  S.story.rumors.forEach(id=>{
-    if(!S.mockRumors.some(r=>r && (r.id===id || r.key===id))){
-      S.mockRumors.unshift({ id:id, key:id, source:"Soft", title:id, text:id, state:"normal", season:seasonZh||"" });
-    }
-  });
-  try{ syncNotebookMirror(); }catch(_e){}
-  if(!S.weekPlan || S.weekPlan.length!==7) S.weekPlan = defaultWeekPlan();
-  S.homeEditable = false;
-  S.flags = S.flags || {};
-  S.flags.tutorialDone = true;
-  S.flags.sawB01 = true;
-  atLoc = null;
-  try{ saveQ(); }catch(_e){}
-  return {
-    ok:true,
-    id:seed.id,
-    locId: st.locId || "",
-    week: weekNumNow(),
-    dayIndex: S.dayIndex,
-    season: calendarSeason(),
-    fame: S.fame,
-  };
-}
-async function loadSoftSeedPack(){
-  if(softSeedPack && Array.isArray(softSeedPack.seeds)) return softSeedPack;
-  const bust = encodeURIComponent(typeof SAVE!=="undefined" ? SAVE : "19w");
-  try{
-    const r = await fetch("content/SOFT_PROGRESS_SEED_C3_C5_DENG_v1.json?v="+bust);
-    if(!r.ok) return null;
-    softSeedPack = await r.json();
-  }catch(_e){ return null; }
-  return softSeedPack;
-}
-async function maybeApplySoftSeed(opts){
-  opts = opts || {};
-  if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()){
-    softCalendarSeason = null;
-    return { ok:false, reason:"flag_off" };
-  }
-  const id = opts.id || softSeedIdFromUrl();
-  if(!id) return { ok:false, reason:"no_seed" };
-  if(SOFT_SEED_IDS.indexOf(id)<0) return { ok:false, reason:"unknown_id" };
-  for(let i=0;i<40 && !(STORY_WIRE && STORY_WIRE.loaded); i++){
-    await new Promise(res=>setTimeout(res, 100));
-  }
-  const pack = await loadSoftSeedPack();
-  const seed = pack && (pack.seeds||[]).find(s=>s && s.id===id);
-  if(!seed) return { ok:false, reason:"missing" };
-  if(!S){ S = fresh(); try{ syncDualTracks(S); }catch(_e){} }
-  return applySoftSeedState(seed);
-}
-try{
-  window.__softSeed = {
-    ids: SOFT_SEED_IDS.slice(),
-    apply: (id)=> maybeApplySoftSeed({ id: id || softSeedIdFromUrl() }),
-    season: ()=> calendarSeason(),
-  };
-}catch(_e){}
 function chapterIdForWeek(w){
   if(w<=2) return "Ch1";
   if(w<=5) return "Ch2";
@@ -7093,12 +7253,113 @@ const GiftShop = (function(){
   };
 })();
 
+/** Soft progress seeds. Flag off does nothing. LIVE week-gate stays. */
+let softSeedPack = null;
+let _softSeedJob = null;
+function applySoftSeedState(seed){
+  if(!seed || !seed.state) return { ok:false, reason:"no_state" };
+  if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()) return { ok:false, reason:"flag_off" };
+  if(!S){ S = fresh(); }
+  try{ syncDualTracks(S); }catch(_e){}
+  try{ if(typeof StoryOC!=="undefined") StoryOC.ensure(); }catch(_e){}
+  const st = seed.state;
+  const week = Number(st.week)||1;
+  S.dayIndex = (week - 1) * 7;
+  S.fame = Number(st.fame)||0;
+  try{ syncDualTracks(S); }catch(_e){}
+  if(!S.story || typeof S.story!=="object") S.story = {};
+  const done = {};
+  (st.beatsDone||[]).forEach(id=>{ if(id) done[id] = true; });
+  S.story.done = done;
+  S.story.favor = Object.assign({}, st.favor||{});
+  S.story.gigCount = Number(st.gigCount)||0;
+  S.story.rumors = (st.rumors||[]).map(String);
+  S.story.rel = Object.assign({}, S.story.rel||{}, st.rel||{});
+  S.story.flags = Object.assign({}, S.story.flags||{});
+  S.story.rumors.forEach(id=>{ S.story.flags[id] = true; });
+  S.story.lastMainDoneDay = Math.max(0, S.dayIndex - 1);
+  S.flags = S.flags || {};
+  S.story.rumors.forEach(id=>{ S.flags[id] = true; });
+  Object.keys(st.flags||{}).forEach(k=>{ S.flags[k] = st.flags[k]; S.story.flags[k] = st.flags[k]; });
+  const seasonKey = (st.season && String(st.season)) || (SOFT_SEED_SEASON[seed.id] || "");
+  S.softSeasonOverride = seasonKey;
+  if(!S.weekPlan || S.weekPlan.length!==7){
+    try{ S.weekPlan = defaultWeekPlan(); }catch(_e){ S.weekPlan = S.weekPlan || []; }
+  }
+  S.homeEditable = false;
+  S.flags.tutorialDone = true;
+  S.flags.sawB01 = true;
+  try{ saveQ(); }catch(_e){}
+  return {
+    ok:true,
+    id:seed.id,
+    locId: st.locId || "",
+    week: (typeof weekNumNow==="function") ? weekNumNow() : week,
+    dayIndex: S.dayIndex,
+    season: (typeof calendarSeason==="function") ? calendarSeason() : "",
+    fame: S.fame,
+  };
+}
+async function loadSoftSeedPack(){
+  if(softSeedPack && Array.isArray(softSeedPack.seeds)) return softSeedPack;
+  const bust = encodeURIComponent(typeof SAVE!=="undefined" ? SAVE : "19w");
+  try{
+    const r = await fetch("content/SOFT_PROGRESS_SEED_C3_C5_DENG_v1.json?v="+bust);
+    if(!r.ok) return null;
+    softSeedPack = await r.json();
+  }catch(_e){ return null; }
+  return softSeedPack;
+}
+function announceSoftSeed(res){
+  if(!res || !res.ok) return;
+  let loc = "";
+  try{ loc = (LOCS.find(l=>l.id===res.locId)||{}).name || ""; }catch(_e){}
+  const msg = loc ? ("Soft 種子已寫入 · 去"+loc) : "Soft 種子已寫入";
+  try{ if(typeof toast==="function") toast(msg); }catch(_e){}
+  try{ if(typeof console!=="undefined" && console.info) console.info("[SOFT]", res.id, true); }catch(_e){}
+  try{ window.__softSeedLast = { id:res.id, toast:msg, week:res.week, season:res.season, locId:res.locId }; }catch(_e){}
+}
+function presentSoftSeed(res){
+  if(!res || !res.ok) return res;
+  try{ show("v-map"); }catch(_e){}
+  try{ paintBar(); drawMap(); }catch(_e){}
+  announceSoftSeed(res);
+  if(res.id==="seed_deng_meet_ready" || res.id==="seed_chain_shortest"){
+    atLoc = res.locId || "agency_ho";
+    try{ if(typeof DengLine!=="undefined" && DengLine.playMeet) DengLine.playMeet(); }catch(_e){}
+  }
+  return res;
+}
+async function maybeApplySoftSeed(){
+  if(_softSeedJob) return _softSeedJob;
+  _softSeedJob = (async ()=>{
+    const rec = (typeof softSeedRecord==="function") ? softSeedRecord() : null;
+    if(!rec) return { ok:false, reason:"no_seed" };
+    for(let i=0;i<40 && !(typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.loaded); i++){
+      await new Promise(res=>setTimeout(res, 100));
+    }
+    const pack = await loadSoftSeedPack();
+    const seed = pack && (pack.seeds||[]).find(s=>s && s.id===rec.id);
+    if(!seed) return { ok:false, reason:"missing" };
+    const res = applySoftSeedState(seed);
+    return presentSoftSeed(res);
+  })().finally(()=>{ _softSeedJob = null; });
+  return _softSeedJob;
+}
+try{
+  window.__softSeed = {
+    ids: SOFT_SEED_IDS.slice(),
+    apply: ()=> maybeApplySoftSeed(),
+    record: ()=> softSeedRecord(),
+  };
+}catch(_e){}
+
 async function refreshCopyPacksFromDisk(){
   const base = "content/";
   const bust = encodeURIComponent(typeof SAVE!=="undefined"?SAVE:Date.now());
   const get = (name)=> fetch(base+name+"?v="+bust).then(r=>r.ok?r.json():null).catch(()=>null);
   try{
-    const [a,b,c,d, gigsPack, gigs1989, gigs1990, gigs1991, gigs1992, main, rom1, rom2, romTang, rival, giftItems, giftShops, giftPrefs, giftReact, gateStub, dengMock] = await Promise.all([
+    const [a,b,c,d, gigsPack, gigs1989, gigs1990, gigs1991, gigs1992, main, rom1, rom2, romTang, rival, giftItems, giftShops, giftPrefs, giftReact, gateStub, dengMock, dualMock] = await Promise.all([
       get("npc_lines_core.json"),
       get("events_zh_HK.json"),
       get("story_beats_phase1.json"),
@@ -7118,7 +7379,8 @@ async function refreshCopyPacksFromDisk(){
       get("gift_prefs.json"),
       get("gift_react_copy.json"),
       get("SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json"),
-      get("MOCK_STORY_DENG_LINE_MEET_SOFT_v1.json"),
+      get("MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json"),
+      get("MOCK_STORY_DUAL_MEET_THICKEN_SOFT_v1.json"),
     ]);
     if(a) NPC_LINES = a;
     if(b) EVENTS = b;
@@ -7166,6 +7428,7 @@ async function refreshCopyPacksFromDisk(){
     try{
       if(gateStub && typeof BehaviorGate!=="undefined") BehaviorGate.loadStub_nodes_trigger(gateStub);
       if(dengMock && typeof DengLine!=="undefined") DengLine.loadMock(dengMock);
+      if(dualMock && typeof DualMeet!=="undefined") DualMeet.loadMock(dualMock);
     }catch(_sg){}
     if(!main) STORY_WIRE.errors.push("story_detail_c1_to_c17.json 未載入");
     if(!rom1) STORY_WIRE.errors.push("romance vera/hiu/choi 未載入");
@@ -7174,6 +7437,7 @@ async function refreshCopyPacksFromDisk(){
     if(!rival) STORY_WIRE.errors.push("rival_mentor 未載入");
     STORY_WIRE.loaded = true;
     STORY_WIRE.fetchedAt = new Date().toISOString();
+    try{ maybeApplySoftSeed(); }catch(_seed){}
     try{ window.STORY_WIRE = STORY_WIRE; window.GIGS = GIGS; window.gigsByYear = STORY_WIRE.gigsByYear; if(typeof exposePreviewDebug==="function") exposePreviewDebug(); }catch(_w){}
     if(typeof console !== "undefined" && console.info){
       const high = (GIGS||[]).filter(g=>g.boardPriority==="high").length;
@@ -9585,7 +9849,8 @@ function storyOpenSnapshot(){
   if(typeof StoryOC==="undefined" || !S) return { open:[], done:[], locked:[], n:0 };
   try{
     StoryOC.ensure();
-    const oc = StoryOC.listOpen({ checkNodePhase:true, player:true }) || {};
+    /* ignoreSheetLoc：頂欄 chip／地圖「有事態」唔跟當前 loc sheet（灣仔瀏覽唔好清走茶餐廳未播 C5） */
+    const oc = StoryOC.listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true }) || {};
     const open = oc.open||[];
     return { open, done: oc.done||[], locked: oc.locked||[], n: open.length, phase: oc.phase };
   }catch(_e){
@@ -9812,7 +10077,7 @@ function refreshStoryMapTips(){
   if(typeof StoryOC==="undefined") return;
   try{
     StoryOC.ensure();
-    const oc = StoryOC.listOpen({ checkNodePhase:true, player:true }) || {};
+    const oc = StoryOC.listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true }) || {};
     const byLoc = {};
     (oc.open||[]).forEach(r=>{
       if(!r || !r.id) return;
@@ -10580,6 +10845,16 @@ function openLoc(id){
       }, "act-priority act-story");
     }
   }catch(_e){}
+  try{
+    if(typeof DualMeet!=="undefined" && DualMeet.actionsAt){
+      DualMeet.actionsAt(L.id).forEach(act=>{
+        add(act.title, act.hint, "免費", ()=>{
+          closeSheet();
+          try{ DualMeet.play(act.id); }catch(_e){ toast("暫時去不成"); }
+        }, "act-priority act-story");
+      });
+    }
+  }catch(_e){}
   if(mockAskDefs(L.id)){
     mockAskDefs(L.id).forEach(def=>{
       add(def.title, def.hint, def.cost, ()=>{
@@ -10681,6 +10956,11 @@ function closeSheet(){
   const wrap=mapWrapEl();
   if(wrap) wrap.classList.remove("sheet-open");
   restoreMapScroll();
+  /* Chip／「有事態」用 ignoreSheetLoc，唔跟當前 sheet。atLoc 留低，關 sheet 再開播先過到地點閘。 */
+  if(closeSheet._painting) return;
+  closeSheet._painting = true;
+  try{ if(typeof paintBar==="function") paintBar(); }catch(_e){}
+  closeSheet._painting = false;
 }
 
 /** v19l：某一地點、某一季嘅通告欄名單。
@@ -11593,14 +11873,7 @@ function startNew(){
   S=fresh(); syncDualTracks(S); refreshNpc(); atLoc=null; saveQ();
   closeSheet();
   if(softSeedRequested()){
-    maybeApplySoftSeed({ silent:true }).then(res=>{
-      show("v-map");
-      try{ paintBar(); drawMap(); }catch(_e){}
-      if(res && res.ok){
-        const loc = (LOCS.find(l=>l.id===res.locId)||{}).name || res.locId || "";
-        toast(loc ? ("Soft 種子已寫入 · 去"+loc) : "Soft 種子已寫入");
-      }
-    });
+    maybeApplySoftSeed();
     return;
   }
   enterHome(null, true);
@@ -11639,14 +11912,7 @@ function cont(){
   syncDualTracks(S);
   atLoc=null;
   if(softSeedRequested()){
-    maybeApplySoftSeed({ silent:true }).then(res=>{
-      show("v-map");
-      try{ paintBar(); drawMap(); }catch(_e){}
-      if(res && res.ok){
-        const loc = (LOCS.find(l=>l.id===res.locId)||{}).name || res.locId || "";
-        toast(loc ? ("Soft 種子已寫入 · 去"+loc) : "Soft 種子已寫入");
-      }
-    });
+    maybeApplySoftSeed();
     return;
   }
   // leave title screen so map/home/modal are not stacked over #v-start

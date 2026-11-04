@@ -1,0 +1,298 @@
+{
+  "meta": {
+    "version": "v1",
+    "softStatus": "≠PASS",
+    "softBoard": "Soft A pending depth A/B",
+    "models": {
+      "plan": "qwen3.7-max",
+      "dialogue": "deepseek-chat"
+    },
+    "scope": "dual_meet_thicken_soft_a_light",
+    "planRef": "PLAN_STORY_DUAL_MEET_THICKEN_SOFT_v1.md",
+    "date": "2026-11-04",
+    "note": "Soft≠PASS｜嚴格綁 C3/C4｜對白經 DeepSeek 香港書面語｜出圖 HOLD｜唔 tip LIVE｜鄧 push1+ HOLD｜89–92 HOLD",
+    "openGates": {
+      "R_hiu_meet": {
+        "needDone": [
+          "C3"
+        ],
+        "note": "FULL Soft A 曉晴 meet 掛 C3 後"
+      },
+      "R_choi_meet": {
+        "needDone": [
+          "C4"
+        ],
+        "note": "FULL Soft A 采兒 meet 掛 C4 後"
+      }
+    },
+    "softAB": {
+      "depth": {
+        "A": "輕加厚（+1–2 beat）",
+        "B": "重加厚（+3–4 beat＋衝突軸）",
+        "suggest": "A"
+      },
+      "boarded": false,
+      "needSoftAB": true,
+      "question": "加厚深度 A 輕／B 重？建議 A"
+    },
+    "sandboxStopReason": "舊 sandbox 加厚未跟 FULL／行為閘 Soft（門檻鬆、未綁 C3/C4）→ 本票重開跟 FULL Soft A",
+    "tipForbidden": true,
+    "artHold": true,
+    "eraDeep8992Hold": true,
+    "dengPushHold": true,
+    "bannedScanHits": []
+  },
+  "beats": [
+    {
+      "id": "R_hiu_meet",
+      "softId": "R_hiu_meet_thicken",
+      "arcBeat": "meet",
+      "romanceLine": "hiu",
+      "characterId": "lin_hiu",
+      "title": "廠景休息角",
+      "when": "1988春｜下午廠景休息時段",
+      "setting": "電視台廠景外的休息角，幾張摺椅，一杯凍檸茶。",
+      "eraTag": "era_1988_spring_grassroot",
+      "cast": [
+        "阿偉",
+        "林曉晴"
+      ],
+      "speakers": [
+        "旁白",
+        "林曉晴"
+      ],
+      "pcSilent": true,
+      "conflict": "曉晴想試探阿偉對通告安排的看法，阿偉要決定是否交底。",
+      "synopsis": "阿偉在休息角遇到林曉晴，她主動提起何生安排的通告，語氣像在交換情報。",
+      "beats": [
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉趁換景空檔走到休息角，林曉晴已經坐在那裡。",
+            "她手上拿著一份通告紙，神情比平時認真。"
+          ]
+        },
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "何生剛跟我說，下星期有兩組戲要人。",
+            "他問我有沒有相熟的臨記可以介紹。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉聽出她話裡有話，似乎想看他反應。",
+            "休息角人來人往，但這一刻好像只剩他們兩個。"
+          ]
+        },
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "你最近跟何生談過嗎？他好像對你印象不錯。",
+            "如果你有消息，不妨跟我說一聲。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉心裡盤算，這算是交換情報，還是客氣試探。",
+            "他想起何生提過，有些安排不宜太早張揚。"
+          ]
+        },
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "我不是要打聽什麼，只是想知道自己有冇機會。",
+            "你明白的，這種事早一步知道，早一步準備。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_hiu_meet_a",
+          "label": "交換情報",
+          "effects": {
+            "flags": [
+              "flag_hiu_meet_exchange"
+            ],
+            "stats": {
+              "rel_hiu": 1
+            }
+          },
+          "playerFacingNote": "把何生提過的通告風聲告訴曉晴，換取她的消息。"
+        },
+        {
+          "id": "C_hiu_meet_b",
+          "label": "客氣疏離",
+          "effects": {
+            "flags": [
+              "flag_hiu_meet_distant"
+            ],
+            "stats": {
+              "rel_hiu": 0
+            }
+          },
+          "playerFacingNote": "點到即止，不透露太多，保持禮貌距離。"
+        }
+      ],
+      "flags_written": [
+        "flag_hiu_meet_exchange",
+        "flag_hiu_meet_distant"
+      ],
+      "openConditions": [],
+      "openConditionsNote": "meet 節拍 openConditions=[]；線上開線閘見 meta.openGates／本節 openGate（C3）",
+      "artId": "rom_hiu_meet_thicken_soft",
+      "artHold": true,
+      "parallelOk": true,
+      "playerOffer": false,
+      "chromeSeason": "spring",
+      "playerMeta": "主線 · 1988春",
+      "openGate": {
+        "needDone": [
+          "C3"
+        ],
+        "note": "FULL Soft A：曉晴 meet 掛 C3 後"
+      },
+      "pendingDeepSeek": false,
+      "deepSeekModel": "deepseek-chat",
+      "thicken": {
+        "depthSuggest": "A",
+        "baselineBeats": 5,
+        "softABeats": 6
+      }
+    },
+    {
+      "id": "R_choi_meet",
+      "softId": "R_choi_meet_thicken",
+      "arcBeat": "meet",
+      "romanceLine": "choi",
+      "characterId": "chow_choiyi",
+      "title": "周刊小訪",
+      "when": "1988春｜傍晚廠景外走廊",
+      "setting": "電視台走廊一角，《星訊周刊》記者周采兒拿著錄音機。",
+      "eraTag": "era_1988_summer_anni",
+      "cast": [
+        "阿偉",
+        "周采兒"
+      ],
+      "speakers": [
+        "旁白",
+        "周采兒"
+      ],
+      "pcSilent": true,
+      "conflict": "采兒想聽真話，阿偉擔心說錯話影響工作。",
+      "synopsis": "周采兒為周刊做一個關於臨記生活的小訪，阿偉要決定坦誠還是官腔。",
+      "beats": [
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉收工時被周采兒截住，她自稱是《星訊周刊》記者。",
+            "她說想做一個關於臨記生活的小專訪，只佔幾分鐘。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "你好，我是周采兒，想問你幾條簡單問題。",
+            "做臨記最辛苦的是什麼？"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉想起何生提過，記者有時會寫得誇張。",
+            "但采兒的眼神看來真誠，不像要挖苦人。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "你不用緊張，我只是想寫得真實一點。",
+            "讀者喜歡聽真話，不是官腔。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉猶豫，說真話可能得罪人，說官腔又覺得沒意思。",
+            "走廊遠處有工作人員經過，氣氛稍為鬆動。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "例如，你們等埋位的時候，通常會做什麼？",
+            "有沒有試過被導演罵？"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_choi_meet_a",
+          "label": "坦誠",
+          "effects": {
+            "flags": [
+              "flag_choi_meet_honest"
+            ],
+            "stats": {
+              "rel_choi": 1,
+              "fame": 1
+            }
+          },
+          "playerFacingNote": "說出臨記的苦與樂，讓采兒寫得真實。"
+        },
+        {
+          "id": "C_choi_meet_b",
+          "label": "官腔",
+          "effects": {
+            "flags": [
+              "flag_choi_meet_official"
+            ],
+            "stats": {
+              "rel_choi": 0,
+              "fame": 0
+            }
+          },
+          "playerFacingNote": "只說安全答案，不得罪任何人。"
+        }
+      ],
+      "flags_written": [
+        "flag_choi_meet_honest",
+        "flag_choi_meet_official"
+      ],
+      "openConditions": [],
+      "openConditionsNote": "meet 節拍 openConditions=[]；線上開線閘見 meta.openGates／本節 openGate（C4）",
+      "artId": "rom_choi_meet_thicken_soft",
+      "artHold": true,
+      "parallelOk": true,
+      "playerOffer": false,
+      "chromeSeason": "summer",
+      "playerMeta": "主線 · 1988夏",
+      "openGate": {
+        "needDone": [
+          "C4"
+        ],
+        "note": "FULL Soft A：采兒 meet 掛 C4 後"
+      },
+      "pendingDeepSeek": false,
+      "deepSeekModel": "deepseek-chat",
+      "thicken": {
+        "depthSuggest": "A",
+        "baselineBeats": 5,
+        "softABeats": 6
+      }
+    }
+  ],
+  "devAppendix": {
+    "alignLiveIds": [
+      "R_hiu_meet",
+      "R_choi_meet"
+    ],
+    "choiceCompat": "旗名相容既有 story_detail_romance_vera_hiu_choi.json",
+    "chromeSoftA": {
+      "A1": "主線 · 1988{季}",
+      "A2": "seed.season／softSeasonOverride 優先"
+    }
+  }
+}
