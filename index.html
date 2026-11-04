@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
 <title>臨記出頭天 · 阿偉</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232E2A26'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23C9A227'/%3E%3C/svg%3E" />
 <style>
 /* v18j: iPhone Safari — kill double-tap zoom on buttons / planner taps */
 html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, input, select, textarea {
@@ -4423,11 +4424,16 @@ function storyHintPack(node){
         if(face) pack.playerHint = face;
         pack.lockedHint = BehaviorGate.lockedCopy_noEngineeringTerms(node);
       }
-      if(typeof DengLine!=="undefined" && (DengLine.isMeet(node) || DengLine.isHeld(node))){
+      if(typeof DengLine!=="undefined" && (DengLine.isMeet(node) || DengLine.isHeld(node) || (DengLine.isPush && DengLine.isPush(node)))){
         pack.lockedHint = BehaviorGate.lockedCopy_noEngineeringTerms(node);
         if(DengLine.isMeet(node)){
           const face = DengLine.playerFace();
           if(face) pack.playerHint = face;
+        }
+        if(DengLine.isPush && DengLine.isPush(node) && !DengLine.isHeld(node)){
+          const swapped = DengLine.pushNode(node);
+          if(swapped && swapped.synopsis) pack.playerHint = swapped.synopsis;
+          if(DengLine.pushGate(node).ok) pack.lockedHint = "";
         }
       }
     }
@@ -4691,6 +4697,10 @@ const StoryOC = (()=>{
     /* Soft preview only. Flag off falls through to the LIVE week-gate below. */
     try{
       if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview()){
+        if(typeof DengLine!=="undefined" && DengLine.isPush && DengLine.isPush(node)){
+          if(DengLine.isHeld(node) || !DengLine.pushGate(node).ok) return BehaviorGate.heldEval(node);
+          return { ok:true, openable:true, and:[], any:null, phaseSoft:null, reasons:[], skippedThresholds:[], softBehavior:true, dengPush:true };
+        }
         if(typeof DengLine!=="undefined" && DengLine.isHeld(node)) return BehaviorGate.heldEval(node);
         if(typeof DengLine!=="undefined" && DengLine.isMeet(node) && !DengLine.openGate().ok){
           return BehaviorGate.heldEval(node);
@@ -5541,7 +5551,14 @@ const BehaviorGate = (function(){
 
 const DengLine = (function(){
   let mock = null;
+  let pushMock = null;
   const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis","R_tang_ending"];
+  const PUSH_CHROME = {
+    R_tang_push1: { chromeSeason:"winter", playerMeta:"主線 · 1988冬" },
+    R_tang_push2: { chromeSeason:"spring", playerMeta:"主線 · 1988春" },
+    R_tang_crisis: { chromeSeason:"autumn", playerMeta:"主線 · 1988秋" },
+    R_tang_ending: { chromeSeason:"winter", playerMeta:"主線 · 1988冬" }
+  };
   function featureFlagOn(){
     return typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview();
   }
@@ -5558,15 +5575,38 @@ const DengLine = (function(){
     mock = data;
     return { ok:true, scope:data.meta.scope };
   }
+  /* Soft flag only. LIVE romance JSON stays; this mock is swapped in at play time. */
+  function loadPushMock(data){
+    if(!data || !data.meta || data.meta.scope!=="push1_plus") return { ok:false, reason:"scope" };
+    if(data.meta.playerFacingName!=="鄧麗萍" || data.meta.characterId!=="tang_laiping") return { ok:false, reason:"name" };
+    if(data.meta.rel_tang_threshold!==2 || data.meta.parentSha8!=="8a80d7b9") return { ok:false, reason:"threshold" };
+    if(data.meta.tipForbidden!==true || data.meta.artHold!==true || data.meta.eraDeep8992Hold!==true) return { ok:false, reason:"hold" };
+    const lock = data.meta.softALocked || {};
+    if(lock.rel_tang_threshold!==2 || lock.needSoftAB!==false) return { ok:false, reason:"softA" };
+    if(!data.meetRef || data.meetRef.status!=="REFERENCE_ONLY" || data.meetRef.parentSha8!=="8a80d7b9") return { ok:false, reason:"meetRef" };
+    if(!Array.isArray(data.beats) || data.beats.length!==HELD.length) return { ok:false, reason:"beats" };
+    for(let i=0;i<HELD.length;i++){
+      const b = data.beats[i];
+      const want = PUSH_CHROME[HELD[i]];
+      if(!b || b.id!==HELD[i] || b.chromeSeason!==want.chromeSeason || b.playerMeta!==want.playerMeta) return { ok:false, reason:"chrome" };
+      if(b.artHold!==true || b.playerOffer!==false || b.pcSilent!==true) return { ok:false, reason:"offer" };
+      if((b.openConditions||[]).join(",")!=="flag_tang_open,rel_tang_threshold") return { ok:false, reason:"oc" };
+    }
+    pushMock = data;
+    return { ok:true, scope:data.meta.scope };
+  }
   function idOf(node){
     if(!node) return "";
     if(typeof node==="string") return node;
     return String(node.id || node.beatId || "");
   }
   function isMeet(node){ return idOf(node)==="R_tang_meet"; }
+  function isPush(node){ return HELD.indexOf(idOf(node))>=0; }
   function isHeld(node){
-    const id = idOf(node);
-    return HELD.indexOf(id)>=0;
+    /* Flag off, or push mock not accepted: push+ stays HELD. Meet is never held. */
+    if(!isPush(node)) return false;
+    if(!featureFlagOn() || !pushMock) return true;
+    return false;
   }
   function lockedThreshold(){ return mock ? 2 : null; }
   function meetNode(){
@@ -5614,6 +5654,80 @@ const DengLine = (function(){
     if(!node || typeof StoryPlay==="undefined" || !StoryPlay.start) return { ok:false, reason:"no_play" };
     return { ok: !!StoryPlay.start(node, { force:true }), gate:gate };
   }
+  function pushSrc(id){
+    if(!pushMock) return null;
+    const want = idOf(id);
+    for(let i=0;i<pushMock.beats.length;i++){
+      if(pushMock.beats[i] && pushMock.beats[i].id===want) return pushMock.beats[i];
+    }
+    return null;
+  }
+  function pushNode(id){
+    const src = pushSrc(id);
+    if(!src) return null;
+    const node = JSON.parse(JSON.stringify(src));
+    node.dev_only = true;
+    node.deng_line_soft_push = true;
+    node.playerOffer = false;
+    node.artHold = true;
+    return node;
+  }
+  function pushRel(explicit){
+    if(explicit){
+      if(typeof explicit.rel_tang==="number") return explicit.rel_tang;
+      if(explicit.rel && typeof explicit.rel.rel_tang==="number") return explicit.rel.rel_tang;
+      return 0;
+    }
+    try{ if(typeof StoryOC!=="undefined" && StoryOC.getRel) return StoryOC.getRel("rel_tang"); }catch(_e){}
+    return 0;
+  }
+  function pushFlag(explicit){
+    if(explicit) return !!(explicit.flags && explicit.flags.flag_tang_open);
+    try{ if(typeof StoryOC!=="undefined" && StoryOC.getFlag) return !!StoryOC.getFlag("flag_tang_open"); }catch(_e){}
+    return false;
+  }
+  function pushGate(node, opts){
+    const explicit = (opts && opts.ctx) ? opts.ctx : null;
+    const flagOk = pushFlag(explicit);
+    const rel = pushRel(explicit);
+    const relOk = rel >= 2;
+    return { ok: !!(flagOk && relOk), flagOk:flagOk, relOk:relOk, rel:rel, threshold:2, id:idOf(node) };
+  }
+  function nextPushId(){
+    for(let i=0;i<HELD.length;i++){
+      const id = HELD[i];
+      try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(id)) continue; }catch(_e){}
+      return id;
+    }
+    return "";
+  }
+  function pushAvailable(id){
+    if(!featureFlagOn() || !pushMock) return false;
+    const beatId = id ? idOf(id) : nextPushId();
+    if(!isPush(beatId)) return false;
+    try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(beatId)) return false; }catch(_e){}
+    return !!pushGate(beatId).ok;
+  }
+  function playPush(id){
+    if(!featureFlagOn()) return { ok:false, reason:"preview_off" };
+    if(!pushMock) return { ok:false, reason:"held" };
+    const beatId = id ? idOf(id) : nextPushId();
+    if(!isPush(beatId)) return { ok:false, reason:"id" };
+    const gate = pushGate(beatId);
+    if(!gate.ok){
+      BehaviorGate["leaveWhenLocked_暫未能報_離開"]();
+      return { ok:false, gate:gate };
+    }
+    try{
+      if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(beatId)){
+        if(typeof toast==="function") toast("這幕已完成");
+        return { ok:false, done:true };
+      }
+    }catch(_e){}
+    const node = pushNode(beatId);
+    if(!node || typeof StoryPlay==="undefined" || !StoryPlay.start) return { ok:false, reason:"no_play" };
+    return { ok: !!StoryPlay.start(node, { force:true }), gate:gate, id:beatId };
+  }
   function selfCheck(){
     const fails = [];
     const bad = (m)=>{ fails.push(m); };
@@ -5639,7 +5753,11 @@ const DengLine = (function(){
     if(!data || (data.effects.flags||[]).indexOf("flag_tang_open")<0) bad("flag_open");
     if(!wait || (wait.effects.flags||[]).indexOf("flag_tang_met_wait")<0) bad("flag_wait");
     if(wait && (wait.effects.flags||[]).indexOf("flag_tang_open")>=0) bad("wait_opens");
-    if(isHeld("R_tang_push1")!==true || isHeld("R_tang_meet")!==false) bad("hold");
+    if(isHeld("R_tang_meet")!==false) bad("hold");
+    if(!pushMock || !featureFlagOn()){
+      if(isHeld("R_tang_push1")!==true) bad("hold");
+    } else if(isHeld("R_tang_push1")!==false) bad("push_still_held");
+    if(featureFlagOn() && !pushMock) bad("push_mock_missing");
     if(lockedThreshold()!==2) bad("threshold");
     const gateBase = { atLoc:"agency_ho", favor:1, done:{ C5:true } };
     if(openGate({ ctx: gateBase }).ok!==true) bad("gate_pass");
@@ -5661,19 +5779,68 @@ const DengLine = (function(){
         }
       }
     }catch(_chrome){ bad("chrome_throw"); }
+    if(pushMock){
+      const facePush = JSON.stringify(pushMock.beats);
+      ["關海媚","陳淑芬","施南生","Ho哥","Ho 哥","nextHint"].forEach(w=>{ if(facePush.indexOf(w)>=0) bad("push_banned:"+w); });
+      if(/1989|1990|1991|1992/.test(facePush)) bad("push_era");
+      if(pushMock.meta.parentSha8!=="8a80d7b9" || pushMock.meetRef.id!=="R_tang_meet") bad("push_parent");
+      const sig = {
+        R_tang_push1: "C_tang_push1_exchange|flag_tang_push1_exchange|1;C_tang_push1_prove|flag_tang_push1_prove|1",
+        R_tang_push2: "C_tang_push2_business|flag_tang_push2_business|1;C_tang_push2_private|flag_tang_push2_private|1",
+        R_tang_crisis: "C_tang_crisis_data|flag_tang_crisis_data|1;C_tang_crisis_favor|flag_tang_crisis_favor|1;C_tang_crisis_middle|flag_tang_crisis_middle|1",
+        R_tang_ending: "C_tang_ending_he|flag_tang_commit,flag_tang_he|3;C_tang_ending_be|flag_tang_be|-2"
+      };
+      HELD.forEach(id=>{
+        const b = pushSrc(id);
+        const want = PUSH_CHROME[id];
+        if(!b || b.playerMeta!==want.playerMeta || b.chromeSeason!==want.chromeSeason) bad("push_chrome:"+id);
+        const got = (b && b.choices || []).map(c=>{
+          const flags = ((c.effects && c.effects.flags) || []).join(",");
+          const rel = c.effects && c.effects.stats ? c.effects.stats.rel_tang : "";
+          return c.id+"|"+flags+"|"+rel;
+        }).join(";");
+        if(got!==sig[id]) bad("push_choice:"+id);
+        if(b && JSON.stringify(b).indexOf("rival_gao")>=0) bad("push_rival:"+id);
+      });
+      const he = (pushSrc("R_tang_ending").choices||[]).filter(c=>c.id==="C_tang_ending_he")[0];
+      if(!he || !he.effects || !he.effects.stats || he.effects.stats.standing!==1) bad("push_standing");
+      if(pushGate("R_tang_push1", { ctx:{ flags:{ flag_tang_open:true }, rel_tang:2 } }).ok!==true) bad("push_gate_pass");
+      if(pushGate("R_tang_push1", { ctx:{ flags:{ flag_tang_open:true }, rel_tang:1 } }).ok!==false) bad("push_gate_rel");
+      if(pushGate("R_tang_push1", { ctx:{ flags:{}, rel_tang:3 } }).ok!==false) bad("push_gate_flag");
+      try{
+        if(typeof StoryPlay!=="undefined" && StoryPlay.spPlayerMeta){
+          HELD.forEach(id=>{
+            const node = pushNode(id);
+            const shown = StoryPlay.spPlayerMeta(node);
+            if(featureFlagOn()){
+              if(!node || shown!==node.playerMeta) bad("push_soft_chrome:"+id+"="+shown);
+            } else if(node && shown===node.playerMeta){
+              bad("push_live_chrome:"+id);
+            }
+          });
+        }
+      }catch(_pushChrome){ bad("push_chrome_throw"); }
+    }
     return { ok: fails.length===0, fails: fails };
   }
   return {
     loadMock: loadMock,
+    loadPushMock: loadPushMock,
     featureFlagOn: featureFlagOn,
     isMeet: isMeet,
+    isPush: isPush,
     isHeld: isHeld,
     lockedThreshold: lockedThreshold,
     meetNode: meetNode,
+    pushNode: pushNode,
     openGate: openGate,
+    pushGate: pushGate,
     meetAvailable: meetAvailable,
+    pushAvailable: pushAvailable,
+    nextPushId: nextPushId,
     playerFace: playerFace,
     playMeet: playMeet,
+    playPush: playPush,
     selfCheck: selfCheck,
   };
 })();
@@ -5806,12 +5973,13 @@ const DualMeet = (function(){
 try{ if(typeof window!=="undefined"){ window.DualMeet = DualMeet; window.__dualMeet = DualMeet; } }catch(_w){}
 
 /* Soft chrome season. Flag off → these readers stay empty and LIVE spPlayerMeta is unchanged. */
-const SOFT_SEED_IDS = ["seed_c3_ready","seed_c4_ready","seed_c5_ready","seed_deng_meet_ready","seed_chain_shortest"];
+const SOFT_SEED_IDS = ["seed_c3_ready","seed_c4_ready","seed_c5_ready","seed_deng_meet_ready","seed_deng_push_ready","seed_chain_shortest"];
 const SOFT_SEED_SEASON = {
   seed_c3_ready:"spring",
   seed_c4_ready:"summer",
   seed_c5_ready:"autumn",
   seed_deng_meet_ready:"autumn",
+  seed_deng_push_ready:"winter",
   seed_chain_shortest:"autumn"
 };
 function softSeedIdFromUrl(){
@@ -5914,7 +6082,14 @@ const StoryPlay = (()=>{
     }
     try{
       if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview() && typeof DengLine!=="undefined"){
-        if(DengLine.isHeld(node)){
+        if(DengLine.isPush && DengLine.isPush(node)){
+          if(DengLine.isHeld(node) || !DengLine.pushGate(node).ok){
+            BehaviorGate["leaveWhenLocked_暫未能報_離開"](node);
+            return false;
+          }
+          const swappedPush = DengLine.pushNode(node);
+          if(swappedPush) node = swappedPush;
+        } else if(DengLine.isHeld(node)){
           BehaviorGate["leaveWhenLocked_暫未能報_離開"](node);
           return false;
         }
@@ -6714,7 +6889,7 @@ const StoryPlay = (()=>{
         else if(meta && (r.reasons||[]).some(x=>/days_after_prev:|same_day/.test(String(x)))) meta = meta+" · 隔日";
       }catch(_e){}
       try{
-        if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview() && (BehaviorGate.coversNode(node||r) || (typeof DengLine!=="undefined" && (DengLine.isMeet(node||r) || DengLine.isHeld(node||r))))){
+        if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview() && (BehaviorGate.coversNode(node||r) || (typeof DengLine!=="undefined" && (DengLine.isMeet(node||r) || DengLine.isHeld(node||r) || (DengLine.isPush && DengLine.isPush(node||r) && !DengLine.pushGate(node||r).ok))))){
           why = BehaviorGate.lockedCopy_noEngineeringTerms(node||r);
           meta = "";
         }
@@ -7328,6 +7503,10 @@ function presentSoftSeed(res){
     atLoc = res.locId || "agency_ho";
     try{ if(typeof DengLine!=="undefined" && DengLine.playMeet) DengLine.playMeet(); }catch(_e){}
   }
+  if(res.id==="seed_deng_push_ready"){
+    atLoc = res.locId || "agency_ho";
+    try{ if(typeof DengLine!=="undefined" && DengLine.playPush) DengLine.playPush("R_tang_push1"); }catch(_e){}
+  }
   return res;
 }
 async function maybeApplySoftSeed(){
@@ -7359,7 +7538,7 @@ async function refreshCopyPacksFromDisk(){
   const bust = encodeURIComponent(typeof SAVE!=="undefined"?SAVE:Date.now());
   const get = (name)=> fetch(base+name+"?v="+bust).then(r=>r.ok?r.json():null).catch(()=>null);
   try{
-    const [a,b,c,d, gigsPack, gigs1989, gigs1990, gigs1991, gigs1992, main, rom1, rom2, romTang, rival, giftItems, giftShops, giftPrefs, giftReact, gateStub, dengMock, dualMock] = await Promise.all([
+    const [a,b,c,d, gigsPack, gigs1989, gigs1990, gigs1991, gigs1992, main, rom1, rom2, romTang, rival, giftItems, giftShops, giftPrefs, giftReact, gateStub, dengMock, dengPushMock, dualMock] = await Promise.all([
       get("npc_lines_core.json"),
       get("events_zh_HK.json"),
       get("story_beats_phase1.json"),
@@ -7380,6 +7559,7 @@ async function refreshCopyPacksFromDisk(){
       get("gift_react_copy.json"),
       get("SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json"),
       get("MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json"),
+      get("MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json"),
       get("MOCK_STORY_DUAL_MEET_THICKEN_SOFT_v1.json"),
     ]);
     if(a) NPC_LINES = a;
@@ -7428,6 +7608,10 @@ async function refreshCopyPacksFromDisk(){
     try{
       if(gateStub && typeof BehaviorGate!=="undefined") BehaviorGate.loadStub_nodes_trigger(gateStub);
       if(dengMock && typeof DengLine!=="undefined") DengLine.loadMock(dengMock);
+      if(dengPushMock && typeof DengLine!=="undefined" && DengLine.loadPushMock){
+        const pushLoaded = DengLine.loadPushMock(dengPushMock);
+        if(pushLoaded && !pushLoaded.ok && typeof console!=="undefined" && console.info) console.info("[DENG] push mock", pushLoaded.reason);
+      }
       if(dualMock && typeof DualMeet!=="undefined") DualMeet.loadMock(dualMock);
     }catch(_sg){}
     if(!main) STORY_WIRE.errors.push("story_detail_c1_to_c17.json 未載入");
@@ -7660,14 +7844,31 @@ function dateObj(){
   const dt = new Date(START.y, START.m-1, START.d + ((S&&S.dayIndex)||0));
   return dt;
 }
+/* Soft display only. Week／dayIndex stay on the real clock so week-gate does not move.
+   A week-10 seed is May on the 1988-03-07 clock, while the season label is 秋／冬. */
+function displayDateObj(){
+  const dt = dateObj();
+  try{
+    if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()) return dt;
+    const ch = (typeof calendarSeason==="function") ? calendarSeason() : "";
+    const month = { "春":4, "夏":7, "秋":10, "冬":12 }[ch];
+    if(!month) return dt;
+    const clockM = dt.getMonth()+1;
+    const clockCh = (clockM>=3 && clockM<=5) ? "春" : (clockM>=6 && clockM<=8) ? "夏" : (clockM>=9 && clockM<=11) ? "秋" : "冬";
+    if(clockCh===ch) return dt;
+    const dim = new Date(dt.getFullYear(), month, 0).getDate();
+    const day = Math.min(dt.getDate(), dim);
+    return new Date(dt.getFullYear(), month-1, day);
+  }catch(_e){ return dt; }
+}
 function fmtDate(){
-  const dt=dateObj();
+  const dt=displayDateObj();
   const week=Math.floor(((S&&S.dayIndex)||0)/7)+1;
   const w=["日","一","二","三","四","五","六"][dt.getDay()];
   return `${dt.getFullYear()}年${dt.getMonth()+1}月${dt.getDate()}日（${w}）· 第${week}週`;
 }
 function fmtDateShort(){
-  const dt=dateObj();
+  const dt=displayDateObj();
   return `${dt.getFullYear()}/${dt.getMonth()+1}/${dt.getDate()}`;
 }
 
@@ -10843,6 +11044,17 @@ function openLoc(id){
         closeSheet();
         try{ DengLine.playMeet(); }catch(_e){ toast("暫時去不成"); }
       }, "act-priority act-story");
+    }
+    if(L.id==="agency_ho" && typeof DengLine!=="undefined" && DengLine.pushAvailable){
+      ["R_tang_push1","R_tang_push2","R_tang_crisis","R_tang_ending"].forEach(beatId=>{
+        if(!DengLine.pushAvailable(beatId)) return;
+        const node = DengLine.pushNode(beatId);
+        if(!node) return;
+        add(node.title || "鄧麗萍", node.synopsis || "", "免費", ()=>{
+          closeSheet();
+          try{ DengLine.playPush(beatId); }catch(_e){ toast("暫時去不成"); }
+        }, "act-priority act-story");
+      });
     }
   }catch(_e){}
   try{

@@ -1,0 +1,637 @@
+{
+  "meta": {
+    "version": "v1",
+    "softStatus": "≠PASS",
+    "softBoard": "Soft A (inherited; no new A/B)",
+    "scope": "push1_plus",
+    "models": {
+      "plan": "qwen3.7-max",
+      "skeleton": "qwen3.7-max",
+      "dialogue": "deepseek-chat"
+    },
+    "date": "2026-11-05",
+    "planRef": "PLAN_STORY_DENG_LINE_PUSH_SOFT_v1.md",
+    "parentPlanRef": "PLAN_STORY_DENG_LINE_SOFT_v1.md",
+    "parentPlanSha8": "043a70ff",
+    "parentMeetMock": "MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json",
+    "parentSha8": "8a80d7b9",
+    "parentNote": "meet 正文引用 parentSha8=8a80d7b9；本包唔重做 meet",
+    "characterId": "tang_laiping",
+    "playerFacingName": "鄧麗萍",
+    "note": "Soft≠PASS｜push1_plus｜沿 Soft A｜threshold=2｜對白 DeepSeek｜計劃 qwen3.7-max｜出圖 HOLD｜唔 tip LIVE｜89–92 HOLD｜關海媚唔升格",
+    "softALocked": {
+      "openGate": "C5_done + favorMin>=1 @ agency_ho (inherit; not reopened)",
+      "rel_tang_threshold": 2,
+      "pushOpenConditions": "flag_tang_open ∧ rel_tang≥2",
+      "needSoftAB": false,
+      "needSoftABNote": "唔使／沿 Soft A（OUTSTANDING 已標；無新決策點）"
+    },
+    "openGate": {
+      "needDone": [
+        "C5"
+      ],
+      "favorMin": 1,
+      "favorTarget": "agency_ho",
+      "alignNote": "繼承母 PLAN Soft A；本包唔重開開線閘"
+    },
+    "rel_tang_threshold": 2,
+    "rel_tang_threshold_note": "全部 push+ 要 flag_tang_open ∧ rel_tang≥2；threshold=2 不變",
+    "tipForbidden": true,
+    "artHold": true,
+    "eraDeep8992Hold": true,
+    "guanHaimeiUpgradeForbidden": true,
+    "mvpDualHeroineProtected": true,
+    "bannedScanHits": [],
+    "playerMetaLocked": true,
+    "chromeSeasonSoftAB": {
+      "A1": "A",
+      "A1_lock": "主線 · 1988{季}",
+      "A2": "A",
+      "A2_lock": "seed.season / softSeasonOverride first",
+      "boardedBy": "統籌 Soft A/B 拍板 2026-11-04（chrome Soft PR#13）"
+    },
+    "softAB": {
+      "needSoftAB": false,
+      "suggest": "唔使／沿 Soft A",
+      "reason": "門檻／threshold／開線閘已鎖；今次只加厚 push1+ 正文；OUTSTANDING 曾標唔使"
+    }
+  },
+  "beats": [
+    {
+      "id": "R_tang_push1",
+      "arcBeat": "push",
+      "romanceLine": "tang",
+      "characterId": "tang_laiping",
+      "title": "冷門檔期之賭",
+      "when": "院線通用時空（冬季）｜深夜十一點半",
+      "setting": "院線票房中控室，螢幕上跳動著各院即時入座數字，枱面有一疊未拆的午夜場報告。",
+      "eraTag": "era_cinema_generic_post1988",
+      "cast": [
+        "鄧麗萍",
+        "院線助理"
+      ],
+      "speakers": [
+        "系統",
+        "鄧麗萍",
+        "院線助理"
+      ],
+      "pcSilent": true,
+      "conflict": "冷門檔期風險 vs 數據回報",
+      "synopsis": "阿偉同鄧麗萍開始有來往，但她仍然句句帶百分比。雙方交換試映情報同冷門檔期資料，她第一次主動問阿偉這套戲在其他區的口碑走勢。",
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "票房中控室深夜十一點半，螢幕上各院即時入座數字靜靜跳動，枱面一疊未拆的午夜場報告原封不動。"
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "speakerId": "generic_cinema_asst",
+          "speaker": "院線助理",
+          "emotion": "tense",
+          "expression": "frown",
+          "lines": [
+            "冷門檔期即時入座偏軟，午夜場還有半個鐘開場，是否要縮場？"
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "speakerId": "tang_laiping",
+          "speaker": "鄧麗萍",
+          "emotion": "firm",
+          "expression": "default",
+          "lines": [
+            "先不要縮。我要看試映反應與跨區口碑走勢，入座率未跌穿警戒線之前，不要自亂陣腳。"
+          ]
+        },
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "鄧麗萍目光由螢幕移向阿偉，第一次主動開口問其他區的口碑走勢。"
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "speakerId": "tang_laiping",
+          "speaker": "鄧麗萍",
+          "emotion": "calm",
+          "expression": "raise_brow",
+          "lines": [
+            "你那邊收到的試映情報，與我手上的冷門檔資料，可以交換。又或者，你用數字證明這套戲值得賭。"
+          ]
+        },
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "中控室只剩螢幕跳動的微光，等阿偉決定：交換情報，抑或以數據證明。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tang_push1_exchange",
+          "label": "阿偉拿出試映情報，換取鄧麗萍手上的冷門檔資料。",
+          "effects": {
+            "flags": [
+              "flag_tang_push1_exchange"
+            ],
+            "stats": {
+              "rel_tang": 1
+            }
+          },
+          "playerFacingNote": "提供詳細數據以換取高層信任。"
+        },
+        {
+          "id": "C_tang_push1_prove",
+          "label": "阿偉以跨區入座走勢，證明冷門檔的短期回報。",
+          "effects": {
+            "flags": [
+              "flag_tang_push1_prove"
+            ],
+            "stats": {
+              "rel_tang": 1
+            }
+          },
+          "playerFacingNote": "強調短期票房回報以穩住陣腳。"
+        }
+      ],
+      "flags_written": [
+        "flag_tang_push1_exchange",
+        "flag_tang_push1_prove"
+      ],
+      "openConditions": [
+        "flag_tang_open",
+        "rel_tang_threshold"
+      ],
+      "openConditionsNote": "push+ 要 flag_tang_open ∧ rel_tang≥2（Soft A；threshold=2）；見 meta.rel_tang_threshold",
+      "artId": "rom_tang_push1_soft_hold",
+      "artHold": true,
+      "parallelOk": true,
+      "playerOffer": false,
+      "chromeSeason": "winter",
+      "playerMeta": "主線 · 1988冬",
+      "chromeSoftAB": {
+        "A1": "A",
+        "A2": "A"
+      }
+    },
+    {
+      "id": "R_tang_push2",
+      "arcBeat": "push",
+      "romanceLine": "tang",
+      "characterId": "tang_laiping",
+      "title": "午夜場後的試探",
+      "when": "院線通用時空（春季）｜周六深夜午夜場散場後",
+      "setting": "戲院後巷茶餐廳，枱上攤著即日票房紙，隔壁枱還有人吃著宵夜。",
+      "eraTag": "era_cinema_generic_post1988",
+      "cast": [
+        "鄧麗萍"
+      ],
+      "speakers": [
+        "系統",
+        "鄧麗萍"
+      ],
+      "pcSilent": true,
+      "conflict": "純商業計算 vs 私人情感試探",
+      "synopsis": "黃金檔試水成績出爐，鄧麗萍約阿偉在午夜場後對數。她心情比平時鬆一點，講起自己以前排過一套文藝片，蝕到要寫報告。阿偉可以選擇繼續純商業，或者問她私人那一句。",
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "午夜場散場後，戲院後巷茶餐廳仍亮著白燈。枱上攤開即日票房紙，數字一行行壓在膠枱布上。",
+            "隔壁枱有人吃著宵夜，碗筷聲與收音機聲混在一起。"
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "speakerId": "tang_laiping",
+          "speaker": "鄧麗萍",
+          "emotion": "tired",
+          "expression": "eyes_down",
+          "lines": [
+            "黃金檔試水成績在這裡。數字不差，但未算穩。",
+            "午夜場的觀眾肯留到最後，起碼證明這條線有人看。"
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "speakerId": "tang_laiping",
+          "speaker": "鄧麗萍",
+          "emotion": "warm",
+          "expression": "smile",
+          "lines": [
+            "我以前排過一套文藝片，蝕到要寫報告解釋。那時還以為自己懂觀眾。",
+            "現在看回，報告寫得再漂亮，都不及一張票房紙誠實。"
+          ]
+        },
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "阿偉可以順著票房紙繼續講商業安排，也可以問她私人那一句。",
+            "茶餐廳的吊扇慢慢轉，枱上那張紙被風掀起一角。"
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "speakerId": "tang_laiping",
+          "speaker": "鄧麗萍",
+          "emotion": "soft",
+          "expression": "look_aside",
+          "lines": [
+            "你不作聲，我大概知你在想甚麼。",
+            "不過今晚我想聽你講。"
+          ]
+        },
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "隔壁枱的宵夜聲照舊，伙記照舊喊單。",
+            "只有這一枱，忽然安靜下來。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tang_push2_business",
+          "label": "阿偉把票房紙推回她面前，只談檔期與排片。",
+          "effects": {
+            "flags": [
+              "flag_tang_push2_business"
+            ],
+            "stats": {
+              "rel_tang": 1
+            }
+          },
+          "playerFacingNote": "強調專業合作，避免情感牽絆。"
+        },
+        {
+          "id": "C_tang_push2_private",
+          "label": "阿偉問她，當年寫那份報告時，心裡最難過的是哪一點。",
+          "effects": {
+            "flags": [
+              "flag_tang_push2_private"
+            ],
+            "stats": {
+              "rel_tang": 1
+            }
+          },
+          "playerFacingNote": "表達對其個人的關心與支持。"
+        }
+      ],
+      "flags_written": [
+        "flag_tang_push2_business",
+        "flag_tang_push2_private"
+      ],
+      "openConditions": [
+        "flag_tang_open",
+        "rel_tang_threshold"
+      ],
+      "openConditionsNote": "push+ 要 flag_tang_open ∧ rel_tang≥2（Soft A；threshold=2）；見 meta.rel_tang_threshold",
+      "artId": "rom_tang_push2_soft_hold",
+      "artHold": true,
+      "parallelOk": true,
+      "playerOffer": false,
+      "chromeSeason": "spring",
+      "playerMeta": "主線 · 1988春",
+      "chromeSoftAB": {
+        "A1": "A",
+        "A2": "A"
+      }
+    },
+    {
+      "id": "R_tang_crisis",
+      "arcBeat": "crisis",
+      "romanceLine": "tang",
+      "characterId": "tang_laiping",
+      "title": "黃金檔期之爭",
+      "when": "院線通用時空（秋季）｜下午",
+      "setting": "院線總部會議室，對手片發行商剛剛離開，枱面留下兩份搶黃金檔的建議書，牆上排片表用紅筆畫到密密麻麻。",
+      "eraTag": "era_cinema_generic_post1988",
+      "cast": [
+        "鄧麗萍"
+      ],
+      "speakers": [
+        "系統",
+        "鄧麗萍"
+      ],
+      "pcSilent": true,
+      "conflict": "檔期數據 vs 人情",
+      "synopsis": "對手片用高價搶黃金檔，阿偉手上有一套帶人情和藝術傾向的片想排同一個位。鄧麗萍要阿偉在數據和人情之間揀，她自己亦被上頭壓住要交數。",
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "會議室剛散會，對手片發行商留下的兩份建議書仍攤在枱上，紅筆畫滿的排片表在牆上格外刺眼。"
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "speakerId": "tang_laiping",
+          "speaker": "鄧麗萍",
+          "emotion": "tense",
+          "expression": "frown",
+          "lines": [
+            "對手片出高價搶黃金檔，上頭要我今個星期交數。",
+            "兩份建議書擺在這裡，數字寫得很清楚。"
+          ]
+        },
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "阿偉手上亦有一套帶人情與藝術傾向的片，想排同一個黃金檔。"
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "speakerId": "tang_laiping",
+          "speaker": "鄧麗萍",
+          "emotion": "worried",
+          "expression": "eyes_down",
+          "lines": [
+            "數據上，對手片較穩，回本機會高。",
+            "但人情片有長期口碑價值，不是一時三刻計得盡。"
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "speakerId": "tang_laiping",
+          "speaker": "鄧麗萍",
+          "emotion": "firm",
+          "expression": "raise_brow",
+          "lines": [
+            "你要在數據、人情、或者折衷之間揀一條路。",
+            "我不會替你揀，但你要清楚後果。"
+          ]
+        },
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "氣氛凝住，鄧麗萍目光落在排片表上，等阿偉表態。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tang_crisis_data",
+          "label": "阿偉遵從數據決策，以票房為先",
+          "effects": {
+            "flags": [
+              "flag_tang_crisis_data"
+            ],
+            "stats": {
+              "rel_tang": 1
+            }
+          },
+          "playerFacingNote": "以票房數據為絕對依歸，放棄人情"
+        },
+        {
+          "id": "C_tang_crisis_favor",
+          "label": "阿偉力保人情網絡，承擔風險",
+          "effects": {
+            "flags": [
+              "flag_tang_crisis_favor"
+            ],
+            "stats": {
+              "rel_tang": 1
+            }
+          },
+          "playerFacingNote": "保留部分檔期給舊夥伴，承擔數據風險"
+        },
+        {
+          "id": "C_tang_crisis_middle",
+          "label": "阿偉尋求折衷方案，平衡兩邊",
+          "effects": {
+            "flags": [
+              "flag_tang_crisis_middle"
+            ],
+            "stats": {
+              "rel_tang": 1
+            }
+          },
+          "playerFacingNote": "嘗試在數據與人情間取得平衡"
+        }
+      ],
+      "flags_written": [
+        "flag_tang_crisis_data",
+        "flag_tang_crisis_favor",
+        "flag_tang_crisis_middle"
+      ],
+      "openConditions": [
+        "flag_tang_open",
+        "rel_tang_threshold"
+      ],
+      "openConditionsNote": "push+ 要 flag_tang_open ∧ rel_tang≥2（Soft A；threshold=2）；見 meta.rel_tang_threshold",
+      "artId": "rom_tang_crisis_soft_hold",
+      "artHold": true,
+      "parallelOk": true,
+      "playerOffer": false,
+      "chromeSeason": "autumn",
+      "playerMeta": "主線 · 1988秋",
+      "chromeSoftAB": {
+        "A1": "A",
+        "A2": "A"
+      }
+    },
+    {
+      "id": "R_tang_ending",
+      "arcBeat": "ending",
+      "romanceLine": "tang",
+      "characterId": "tang_laiping",
+      "title": "年終的抉擇",
+      "when": "院線通用時空（年終檢討後）｜傍晚",
+      "setting": "院線年終檢討會後，走廊燈光半暗，盡頭是一間未開場的空戲院，銀幕還未拉開。",
+      "eraTag": "era_cinema_generic_post1988",
+      "cast": [
+        "鄧麗萍"
+      ],
+      "speakers": [
+        "系統",
+        "鄧麗萍"
+      ],
+      "pcSilent": true,
+      "conflict": "商業盟友 vs 感情原則",
+      "synopsis": "年終數字出爐，阿偉這套戲全年為院線帶來實質增長。鄧麗萍在走廊叫住他，講明她認可他的號召力；但她要阿偉揀，是做一個並肩的商業盟友，還是繼續用感情挑戰她這條線。",
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "年終檢討會散場，走廊只餘半暗燈光。",
+            "盡頭那間空戲院還未開場，銀幕垂着，未拉開。"
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "speakerId": "tang_laiping",
+          "speaker": "鄧麗萍",
+          "emotion": "calm",
+          "expression": "default",
+          "lines": [
+            "阿偉，你今年這套戲，為院線帶來實質增長。",
+            "數字我看過，你的號召力，我認。"
+          ]
+        },
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "兩人停在空戲院門口，銀幕仍未拉開。",
+            "走廊靜得只剩遠處散場的腳步聲。"
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "speakerId": "tang_laiping",
+          "speaker": "鄧麗萍",
+          "emotion": "soft",
+          "expression": "look_aside",
+          "lines": [
+            "我認可你，但有些線要講清楚。",
+            "你想做並肩的商業盟友，還是繼續用感情挑戰我這條線？"
+          ]
+        },
+        {
+          "kind": "dialogue",
+          "speakerId": "tang_laiping",
+          "speaker": "鄧麗萍",
+          "emotion": "firm",
+          "expression": "default",
+          "lines": [
+            "選擇交回你手上。",
+            "並肩，我歡迎；挑戰我原則，你要有準備。"
+          ]
+        },
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "走廊靜下來。",
+            "鄧麗萍望着阿偉，等他最終答覆。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tang_ending_he",
+          "label": "阿偉選擇跨越商業界線，承諾與鄧麗萍共同面對未來。",
+          "effects": {
+            "flags": [
+              "flag_tang_commit",
+              "flag_tang_he"
+            ],
+            "stats": {
+              "rel_tang": 3,
+              "standing": 1
+            }
+          },
+          "playerFacingNote": "跨越商業界線，承諾共同面對未來。"
+        },
+        {
+          "id": "C_tang_ending_be",
+          "label": "阿偉選擇堅守專業界線，婉拒感情發展。",
+          "effects": {
+            "flags": [
+              "flag_tang_be"
+            ],
+            "stats": {
+              "rel_tang": -2
+            }
+          },
+          "playerFacingNote": "堅守專業界線，婉拒感情發展。"
+        }
+      ],
+      "flags_written": [
+        "flag_tang_commit",
+        "flag_tang_he",
+        "flag_tang_be"
+      ],
+      "openConditions": [
+        "flag_tang_open",
+        "rel_tang_threshold"
+      ],
+      "openConditionsNote": "push+ 要 flag_tang_open ∧ rel_tang≥2（Soft A；threshold=2）；見 meta.rel_tang_threshold",
+      "artId": "rom_tang_ending_soft_hold",
+      "artHold": true,
+      "parallelOk": true,
+      "playerOffer": false,
+      "chromeSeason": "winter",
+      "playerMeta": "主線 · 1988冬",
+      "chromeSoftAB": {
+        "A1": "A",
+        "A2": "A"
+      }
+    }
+  ],
+  "meetRef": {
+    "id": "R_tang_meet",
+    "status": "REFERENCE_ONLY",
+    "parentSha8": "8a80d7b9",
+    "note": "meet 正文唔入本包；見 MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json"
+  },
+  "openConditionsFile": {
+    "meet": [],
+    "pushAndAfter": [
+      "flag_tang_open",
+      "rel_tang_threshold"
+    ],
+    "rel_tang_threshold": 2
+  },
+  "devAppendix": {
+    "supersedesHoldBeats": [
+      "R_tang_push1",
+      "R_tang_push2",
+      "R_tang_crisis",
+      "R_tang_ending"
+    ],
+    "noLiveJsonEdit": true,
+    "guanHaimeiUpgradeForbidden": true,
+    "mvpDualHeroineProtected": true,
+    "deng_line_soft_push": true
+  }
+}
