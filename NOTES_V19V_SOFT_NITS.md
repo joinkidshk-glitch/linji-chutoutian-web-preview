@@ -15,6 +15,8 @@ Phone web preview tip. Soft nits only, after v19u browser PASS. Parent tip stays
 
 8. Pack B：`content/gigs_1988.json` 換成 **3.2.4-soft**，SHA256 `0f18fe14c389c42aface4c01692c4addd39657303b5c2b4ce0d9cdf80eb6e93c`，n=137，`counts.keyGigs`=66，`isKeyGig` true=66，`castWindow` 無。對照 pre 3.2.3-soft（SHA `cfc72fe8…`）只差 `genreLabel`／中階 `limits`／中階 `producer` 同 meta。pay／req／loc／season／storyKeys 等未改。Changelog：`content/CHANGELOG_GIGS_1988_3_2_4_SOFT.md`（SHA256 `d68526c8…`）。SAVE 仍 `starVolunteer_map_v19v`。
 
+9. `bg_loc_agency_ho.jpg` 換 cork 輕改稿，SHA256 `43acc91f4cfd0851480a12185346929facb37cf50f81bfcc9d53d3acf7270369`，720×1280。路徑同 `?v=19v`，SAVE 不變。未接 era_stars。
+
 C1–C5 閘、硬鎖、看板分級未改。89–92 HOLD。
 
 Soft≠PASS. 出圖 HOLD. 唔 publish. 唔 merge.

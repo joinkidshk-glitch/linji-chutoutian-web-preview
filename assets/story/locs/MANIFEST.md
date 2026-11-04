@@ -10,7 +10,7 @@
 | artId / key | file | size | dims | notes |
 |---|---|---:|---|---|
 | `bg_loc_cafe_cha` | `bg_loc_cafe_cha.jpg` | ~149 KB | 720×1280 | 金龍茶餐廳 interior；晚八〇港式茶餐廳卡座＋凍奶茶＋油煙／蒸氣；空白牌／空木框；無人臉；無商標／無水印／無烘焙中文 |
-| `bg_loc_agency_ho` | `bg_loc_agency_ho.jpg` | ~179 KB | 720×1280 | 何生事務所；煙灰缸／劇本紙堆／電話／檯燈＋螢光；香煙煙霧；無真藝人相／無商標；無人臉 |
+| `bg_loc_agency_ho` | `bg_loc_agency_ho.jpg` | ~170 KB | 720×1280 | 何生事務所；煙灰缸／劇本紙堆／電話／檯燈＋螢光；香煙煙霧；軟木板字輕改；無真藝人相／無商標；無人臉。SHA256 `43acc91f…` |
 
 ## LocId wiring (engine)
 
