@@ -4440,6 +4440,25 @@ function storyHintPack(node){
   }catch(_e){}
   return pack;
 }
+/** Player line for map tip／loc sheet／picker. playerHint or title only — pacing nextHint stays off the surface. */
+function storyFaceLine(node, row){
+  row = row || {};
+  node = node || {};
+  let hp = {};
+  try{ hp = storyHintPack(node && node.id ? node : {}) || {}; }catch(_e){}
+  let banned = "";
+  try{
+    banned = String((node && node.nextHint) || "");
+    if(!banned && node && node.id && STORY_HINT_SOFT[node.id]) banned = String(STORY_HINT_SOFT[node.id].nextHint || "");
+  }catch(_e){}
+  const cands = [hp.playerHint, row.playerHint, hp.mapTipTitle, row.title, node.title];
+  for(let i=0;i<cands.length;i++){
+    const s = String(cands[i]==null ? "" : cands[i]).trim();
+    if(!s || (banned && s===banned)) continue;
+    return s;
+  }
+  return "";
+}
 /** v19o：玩家章戳 — W4→約第4週、W4-5→約第4–5週；pacing.weekMin／week_min 維持約第N週 */
 function storyWeekStamp(node){
   if(!node) return "";
@@ -6382,6 +6401,17 @@ const StoryPlay = (()=>{
     if(_sess && _sess.forced) return true;
     return false;
   }
+  /** Soft-seed auto-open only. Real C1 tutorial stays locked even if the seed URL is on. */
+  function spSoftSeedCanDismiss(){
+    try{
+      if(!_sess || !_sess.forced) return false;
+      const id = String((_sess.node && _sess.node.id) || "");
+      if(id==="C1") return false;
+      if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()) return false;
+      if(typeof softSeedRecord!=="function" || !softSeedRecord()) return false;
+      return true;
+    }catch(_e){ return false; }
+  }
   function spSoftSeasonChar(raw){
     const s = String(raw==null?"":raw).trim();
     if(!s) return "";
@@ -6579,6 +6609,36 @@ const StoryPlay = (()=>{
     _sess = null;
   }
 
+  function relDisplayName(rawKey){
+    let k = String(rawKey||"").replace(/^rel_/, "").trim();
+    if(!k) return "";
+    try{
+      const npcs = (typeof GIFT_PREFS!=="undefined" && GIFT_PREFS && GIFT_PREFS.npcs) || null;
+      if(npcs){
+        if(npcs[k] && npcs[k].displayName) return String(npcs[k].displayName);
+        const ids = Object.keys(npcs);
+        for(let i=0;i<ids.length;i++){
+          const row = npcs[ids[i]];
+          if(!row || !row.displayName) continue;
+          if(row.relKey==="rel_"+k || row.relKey===k) return String(row.displayName);
+        }
+      }
+    }catch(_e){}
+    /* gift_prefs displayName，另加經理人。未知鍵不回傳工程 id。 */
+    const face = {
+      tang:"鄧麗萍", hiu:"林曉晴", choi:"周采兒", vera:"Vera",
+      lan:"藍若曦", xu:"徐寶珊",
+      ho:"何生", agency:"何生", agent:"何生"
+    };
+    return face[k] || "";
+  }
+  function scrubRelTokens(s){
+    if(!/rel_[A-Za-z0-9_]+/.test(s)) return s;
+    let out = String(s).replace(/rel_([A-Za-z0-9_]+)/g, (_, key)=>{
+      return relDisplayName(key) || "人情";
+    });
+    return out.replace(/\s{2,}/g, " ").replace(/[／/]{2,}/g, "／").trim();
+  }
   function playerNotes(result){
     const out = [];
     (result.notes||[]).forEach(x=>{
@@ -6587,10 +6647,21 @@ const StoryPlay = (()=>{
       // 過濾明顯工程字眼，保留玩家可讀效果／eff.notes
       if(/^(旗標|路線|soft\.|flags_written)/.test(s)) return;
       if(/^聲望\s*[+\-−－]?\d+\s*$/.test(s)) return;
-      if(/^rel_/.test(s) || /→/.test(s)){
-        // 人情變動轉一句人話
-        const m = s.match(/^(rel_\w+)\s*([+\-]\d+)/);
-        if(m){ out.push("人情 "+m[1].replace(/^rel_/,"")+" "+m[2]); return; }
+      const relLine = s.match(/^rel_([A-Za-z0-9_]+)\s*([+\-−－]\d+)(?:\s*→\s*-?\d+)?\s*$/);
+      if(relLine || (/^rel_/.test(s) && /[+\-−－]\d+/.test(s)) || (/→/.test(s) && /rel_/.test(s))){
+        const mm = s.match(/rel_([A-Za-z0-9_]+)\s*([+\-−－]\d+)/);
+        if(mm){
+          const name = relDisplayName(mm[1]);
+          const delta = mm[2].replace(/−|－/g, "-");
+          out.push(name ? ("同"+name+"的人情 "+delta) : "人情有變");
+        } else {
+          out.push("人情有變");
+        }
+        return;
+      }
+      if(/rel_[A-Za-z0-9_]+/.test(s)){
+        s = scrubRelTokens(s);
+        if(!s || /rel_[A-Za-z0-9_]+/.test(s)) { out.push("人情有變"); return; }
       }
       out.push(s);
     });
@@ -6610,34 +6681,44 @@ const StoryPlay = (()=>{
     const notes = playerNotes(result);
     const lis = notes.map(x=>`<li>${esc(x)}</li>`).join("") || "<li>選擇已記下。</li>";
     const unlocked = newlyOpenAfter(node && node.id);
-    const hp = storyHintPack(node||{});
     let nextHtml = "";
     const suppressNextHint = (typeof BehaviorGate!=="undefined") && BehaviorGate.featureFlag_softBehaviorGatePreview && BehaviorGate.featureFlag_softBehaviorGatePreview();
     if(suppressNextHint){
       try{ BehaviorGate.nextHint_neverShow(node); }catch(_nh){}
+    }
+    if(suppressNextHint){
       nextHtml = "";
     } else if(unlocked.length){
       const u0 = unlocked[0];
-      const nh = hp.nextHint || (`下一幕「${u0.title||u0.id}」已可出——可去地圖繼續，或撳下一節。`);
-      nextHtml = `<div class="sp-next-step">${esc(nh)}</div>`;
+      let face = "";
+      try{
+        const unode = (typeof StoryOC!=="undefined" && StoryOC.findNodeRaw) ? StoryOC.findNodeRaw(u0.id) : null;
+        face = (typeof storyFaceLine==="function") ? storyFaceLine(unode || {}, u0) : (u0.title || "");
+      }catch(_e){ face = u0.title || ""; }
+      const line = face ? ("有新事態：「"+face+"」可喺地圖繼續") : "有新事態可喺地圖繼續";
+      nextHtml = `<div class="sp-next-step">${esc(line)}</div>`;
       try{
         S.flags = S.flags||{};
         S.flags.storyProgressHint = u0.title || u0.id;
         S.flags.storyOpenNudge = true;
       }catch(_f){}
     } else {
-      /* (B) 下一主線仍 lock → JSON lockedHint／§4.3 */
+      /* (B) 下一主線仍 lock → JSON lockedHint／§4.3。唔用本節 nextHint。 */
       let lockedLine = "";
       try{
         const oc = StoryOC.listOpen({ checkNodePhase:true, player:true });
         const nextMain = (oc.locked||[]).find(r=>/^C\d+$/.test(r.id));
         if(nextMain){
           lockedLine = nextMain.lockedHint || (StoryOC.playerReasonFrom && StoryOC.playerReasonFrom(nextMain.reasons, StoryOC.findNodeRaw(nextMain.id))) || "";
+          try{
+            const rawNext = String((StoryOC.findNodeRaw(nextMain.id) || {}).nextHint || "");
+            if(rawNext && lockedLine === rawNext) lockedLine = "";
+          }catch(_ban){}
         } else if(!(oc.open||[]).some(r=>/^C\d+$/.test(r.id))){
           lockedLine = "主線暫時無新幕；地圖跑通告、見人就得。";
         }
       }catch(_e){}
-      const line = hp.nextHint || lockedLine || "本節已完成。可回地圖繼續訓練／查看通告；有新事態時頂欄會提示。";
+      const line = lockedLine || "本節已完成。可回地圖繼續訓練／查看通告；有新事態時頂欄會提示。";
       nextHtml = `<div class="sp-next-step">${esc(line)}</div>`;
       try{ S.flags = S.flags||{}; S.flags.storyProgressHint = (node && (node.title||node.id)) || ""; }catch(_f){}
     }
@@ -6758,7 +6839,9 @@ const StoryPlay = (()=>{
     } else {
       const choices = n.choices || [];
       const btns = choices.map(c=>{
-        const note = c.effects && c.effects.notes ? `<span class="sp-notes">${esc(c.effects.notes)}</span>` : "";
+        const rawNote = c.effects && c.effects.notes ? String(c.effects.notes) : "";
+        const cleanNote = rawNote ? playerNotes({ notes:[rawNote] }).join("") : "";
+        const note = cleanNote ? `<span class="sp-notes">${esc(cleanNote)}</span>` : "";
         return `<button type="button" class="sp-choice" data-sp-choice="${esc(c.id)}"><b>${esc(c.label||c.id)}</b>${note}</button>`;
       }).join("") || `<p>（無選項 — 將直接標記完成）</p><button type="button" class="sp-next" data-sp="finish-empty">完成這一節</button>`;
       const bgClass = spChoiceBgClass(n);
@@ -6780,9 +6863,16 @@ const StoryPlay = (()=>{
     }
     try{ document.getElementById("mask").classList.add("story-play-on"); }catch(_e){}
     const forcedChrome = spIsForcedStory(n, _sess.pack, _sess.label);
-    const modalBtns = forcedChrome ? [] : [{ label:"先返回", role:"g", on:()=>{ abort(); try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){} try{ if(typeof paintStoryEntryHints==="function") paintStoryEntryHints(); }catch(_e){} } }];
-    const dismissOpts = forcedChrome
-      ? { onDismiss:()=>{ /* forced: outside tap 唔可走；重開畫面 */ try{ render(); }catch(_e){} } }
+    const seedDismiss = !!(forcedChrome && spSoftSeedCanDismiss());
+    const lockedForced = forcedChrome && !seedDismiss;
+    const leaveStory = ()=>{
+      abort();
+      try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
+      try{ if(typeof paintStoryEntryHints==="function") paintStoryEntryHints(); }catch(_e){}
+    };
+    const modalBtns = lockedForced ? [] : [{ label:"先返回", role:"g", on: leaveStory }];
+    const dismissOpts = lockedForced
+      ? { onDismiss:()=>{ /* C1／非種子 forced：outside tap 唔可走；重開畫面 */ try{ render(); }catch(_e){} } }
       : { onDismiss:()=>{ abort(); try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){} } };
     modal(inner, modalBtns, dismissOpts);
     try{
@@ -6883,6 +6973,10 @@ const StoryPlay = (()=>{
         }catch(_e){}
       }
       if(!why || /need_done:/.test(why)) why = "時機未到，先照常跑通告、見人。";
+      try{
+        const rawNext = String((node && node.nextHint) || "");
+        if(rawNext && why===rawNext) why = (node && node.lockedHint) || "時機未到，先照常跑通告、見人。";
+      }catch(_nh){}
       let meta = r.weekStamp || "";
       try{
         if(!meta && typeof storyLockMeta==="function") meta = storyLockMeta(node||{}, r.reasons);
@@ -10107,10 +10201,8 @@ function storyMapHintHtml(){
   let label = "";
   try{
     const node = (typeof StoryOC!=="undefined" && StoryOC.findNodeRaw) ? StoryOC.findNodeRaw(row.id) : null;
-    const hp = storyHintPack(node||row||{});
-    /* 同 tip／pin：優先 playerHint，其次 mapTipTitle／title */
-    const softPrev = (typeof BehaviorGate!=="undefined") && BehaviorGate.featureFlag_softBehaviorGatePreview && BehaviorGate.featureFlag_softBehaviorGatePreview();
-    label = hp.playerHint || row.playerHint || hp.mapTipTitle || (softPrev ? "" : (row.nextHint || hp.nextHint)) || row.title || row.id || "";
+    /* 同 tip／pin：playerHint／title。唔跌去 nextHint。 */
+    label = (typeof storyFaceLine==="function" ? storyFaceLine(node, row) : "") || row.playerHint || row.title || row.id || "";
   }catch(_e){
     label = row.playerHint || row.title || row.id || "";
   }
@@ -11005,7 +11097,8 @@ function openLoc(id){
       const node = hit && hit.node;
       const hp = storyHintPack(node||{});
       const title = (node && (node.title||node.id)) || tipHere.nodeId;
-      add(`播事態：${title}`, hp.playerHint || tipHere.title || "","免費", ()=>{
+      const face = (typeof storyFaceLine==="function") ? storyFaceLine(node, { playerHint: hp.playerHint, title: tipHere.title }) : (hp.playerHint || "");
+      add(`播事態：${title}`, face,"免費", ()=>{
         closeSheet();
         try{ StoryPlay.start(tipHere.nodeId); }catch(_e){ toast("無法開事態"); }
       }, "act-priority act-story");
@@ -11024,8 +11117,8 @@ function openLoc(id){
       });
       if(here){
         const n = StoryOC.findNodeRaw(here.id);
-        const hp = storyHintPack(n||{});
-        add(`播事態：${here.title||here.id}`, hp.playerHint||"","免費", ()=>{
+        const face = (typeof storyFaceLine==="function") ? storyFaceLine(n||{}, here) : (here.playerHint || here.title || "");
+        add(`播事態：${here.title||here.id}`, face,"免費", ()=>{
           closeSheet();
           try{ StoryPlay.start(here.id); }catch(_e){ toast("無法開事態"); }
         }, "act-priority act-story");
