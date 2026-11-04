@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
 <title>臨記出頭天 · 阿偉</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232E2A26'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23C9A227'/%3E%3C/svg%3E" />
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <style>
 /* v18j: iPhone Safari — kill double-tap zoom on buttons / planner taps */
 html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, input, select, textarea {
@@ -6012,8 +6012,22 @@ const DualMeet = (function(){
     node.artHold = true;
     return node;
   }
+  /* Single-target soft seeds hide the other heroine's unused door.
+     seed_choi_meet_ready marks C3 done, so the C3 gate alone would still list 廠景休息角.
+     A target that names both ids (seed_dual_chain_shortest) keeps both.
+     No seed, or flag off (softSeedRecord is null), does not hide anything. */
+  function seedOffersThisMeet(id){
+    try{
+      const seed = (typeof softSeedRecord==="function") ? softSeedRecord() : null;
+      if(!seed) return true;
+      const target = String(seed.targetBeat||"");
+      if(!target) return true;
+      return target.indexOf(idOf(id))>=0;
+    }catch(_e){ return true; }
+  }
   function meetAvailable(id){
     if(!featureFlagOn() || !nodeById(id)) return false;
+    if(!seedOffersThisMeet(id)) return false;
     try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(id)) return false; }catch(_e){}
     return !!openGate(id).ok;
   }
@@ -6030,6 +6044,7 @@ const DualMeet = (function(){
   }
   function play(id){
     if(!featureFlagOn()) return { ok:false, reason:"preview_off" };
+    if(!seedOffersThisMeet(id)) return { ok:false, reason:"other_seed" };
     const gate = openGate(id);
     if(!gate.ok){
       if(typeof BehaviorGate!=="undefined") BehaviorGate["leaveWhenLocked_暫未能報_離開"]();
@@ -6067,6 +6082,16 @@ const DualMeet = (function(){
     if(openGate("R_choi_meet", { ctx:{ done:{ C3:true } } }).ok!==false) bad("choi_need_c4");
     if(locsFor("R_hiu_meet").indexOf("tvb_longmen")<0 || locsFor("R_hiu_meet").indexOf("agency_ho")<0) bad("hiu_doors");
     if(locsFor("R_choi_meet").indexOf("cafe_cha")<0 || locsFor("R_choi_meet").indexOf("agency_ho")<0) bad("choi_doors");
+    try{
+      if(typeof SOFT_SEED_TARGET!=="undefined"){
+        const choiT = String(SOFT_SEED_TARGET.seed_choi_meet_ready||"");
+        const hiuT = String(SOFT_SEED_TARGET.seed_hiu_meet_ready||"");
+        const bothT = String(SOFT_SEED_TARGET.seed_dual_chain_shortest||"");
+        if(choiT.indexOf("R_choi_meet")<0 || choiT.indexOf("R_hiu_meet")>=0) bad("choi_seed_target");
+        if(hiuT.indexOf("R_hiu_meet")<0 || hiuT.indexOf("R_choi_meet")>=0) bad("hiu_seed_target");
+        if(bothT.indexOf("R_hiu_meet")<0 || bothT.indexOf("R_choi_meet")<0) bad("dual_seed_target");
+      }
+    }catch(_seedIso){ bad("seed_iso"); }
     try{
       if(typeof StoryPlay!=="undefined" && StoryPlay.spPlayerMeta_softSeasonFrom){
         const hiuLine = StoryPlay.spPlayerMeta_softSeasonFrom(hiu, { seedSeason:"spring", preferSeedSeason:true });
