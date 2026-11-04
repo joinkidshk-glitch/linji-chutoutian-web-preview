@@ -1,0 +1,183 @@
+{
+  "meta": {
+    "softStatus": "≠PASS",
+    "source": "qwen3.7-max",
+    "softBoard": "Soft A locked",
+    "liveWeekGateStillActive": true,
+    "tipForbidden": true,
+    "artHold": true,
+    "eraDeep8992Hold": true,
+    "purpose": "Soft／瀏覽器 QA 雙女加厚 R_hiu_meet／R_choi_meet",
+    "softPathNote": "本種子只供 Soft／瀏覽器 QA；LIVE week-gate 仍 active、唔改預設",
+    "date": "2026-11-05",
+    "parentMock": "MOCK_STORY_DUAL_MEET_THICKEN_SOFT_v1.json",
+    "parentMockSha8": "d4e23624",
+    "parentPlan": "PLAN_STORY_DUAL_MEET_THICKEN_SOFT_v1.md",
+    "parentPlanSha8": "832f25ed",
+    "styleSeedRef": "SOFT_PROGRESS_SEED_C3_C5_DENG_v1.json",
+    "styleSeedSha8": "bd86ed8c",
+    "softALock": {
+      "C3": "fame>15 (fameMin=16, fameCompare='>'); R_hiu_meet needDone C3",
+      "C4": "favorMin>=1 @agency_ho AND loc softLogic; R_choi_meet needDone C4",
+      "R_hiu_meet": "needDone C3",
+      "R_choi_meet": "needDone C4",
+      "C5_note": "rival_gao 唔混入 C5（本包雙女 meet 唔測 C5）",
+      "chrome": "主線 · 1988{季}；seed.season 優先"
+    },
+    "depthBeats": 6,
+    "tipForbiddenNote": "唔 tip LIVE；SAVE/?v= 仍 19w"
+  },
+  "negativeChecks": [
+    {
+      "id": "neg_hiu_missing_c3",
+      "beat": "R_hiu_meet",
+      "state": {
+        "beatsDone": [
+          "C1",
+          "C2"
+        ],
+        "fame": 16
+      },
+      "expect": "BLOCKED",
+      "reason": "C3 not in beatsDone, R_hiu_meet requires needDone C3"
+    },
+    {
+      "id": "neg_choi_missing_c4",
+      "beat": "R_choi_meet",
+      "state": {
+        "beatsDone": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "favor": {
+          "agency_ho": 1
+        }
+      },
+      "expect": "BLOCKED",
+      "reason": "C4 not in beatsDone, R_choi_meet requires needDone C4"
+    },
+    {
+      "id": "neg_forbid_ho_ge",
+      "beat": "C4",
+      "state": {
+        "favor": {
+          "agency_ge": 1
+        }
+      },
+      "expect": "BLOCKED",
+      "reason": "C4 requires favorMin>=1 @agency_ho, agency_ge is forbidden/insufficient"
+    },
+    {
+      "id": "neg_choi_favor_0",
+      "beat": "C4",
+      "state": {
+        "beatsDone": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "favor": {
+          "agency_ho": 0
+        }
+      },
+      "expect": "BLOCKED",
+      "reason": "C4 requires favorMin>=1 @agency_ho, current is 0"
+    }
+  ],
+  "seeds": [
+    {
+      "id": "seed_hiu_meet_ready",
+      "title": "曉晴 meet 就緒（C3 done）",
+      "targetBeat": "R_hiu_meet",
+      "state": {
+        "week": 6,
+        "day": 1,
+        "locId": "tvb_longmen",
+        "fame": 16,
+        "favor": {
+          "agency_ho": 0
+        },
+        "rumors": [
+          "tvb_rules_gossip"
+        ],
+        "season": "spring",
+        "beatsDone": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "flags": {},
+        "gigCount": 3,
+        "rel": {}
+      },
+      "expect": "Ready to trigger R_hiu_meet. Makeup room context handled in narrative, locId remains tvb_longmen.",
+      "howToUse": "注入 state 後驗證 R_hiu_meet 可開；缺 C3 必須唔開。chrome 讀 seed.season；主線·1988{季}。"
+    },
+    {
+      "id": "seed_choi_meet_ready",
+      "title": "采兒 meet 就緒（C4 done）",
+      "targetBeat": "R_choi_meet",
+      "state": {
+        "week": 8,
+        "day": 3,
+        "locId": "cafe_cha",
+        "fame": 18,
+        "favor": {
+          "agency_ho": 1
+        },
+        "rumors": [
+          "choi_recent_news"
+        ],
+        "season": "spring",
+        "beatsDone": [
+          "C1",
+          "C2",
+          "C3",
+          "C4"
+        ],
+        "flags": {},
+        "gigCount": 5,
+        "rel": {}
+      },
+      "expect": "Ready to trigger R_choi_meet. Makeup room encounter described in text, locId is cafe_cha.",
+      "howToUse": "注入 state 後驗證 R_choi_meet 可開；缺 C4 或 favor.agency_ho<1 必須唔開。化妝間僅敘事，locId 保持既有。"
+    },
+    {
+      "id": "seed_dual_chain_shortest",
+      "title": "雙女最短鏈就緒（C1–C4）",
+      "targetBeat": "R_hiu_meet+R_choi_meet",
+      "state": {
+        "week": 8,
+        "day": 5,
+        "locId": "tvb_longmen",
+        "fame": 20,
+        "favor": {
+          "agency_ho": 2
+        },
+        "rumors": [
+          "gao_steal_spotlight",
+          "hau_ching_recent_news"
+        ],
+        "season": "spring",
+        "beatsDone": [
+          "C1",
+          "C2",
+          "C3",
+          "C4"
+        ],
+        "flags": {},
+        "gigCount": 6,
+        "rel": {},
+        "milestones": [
+          "C1@week1 cafe_cha",
+          "C2@week4",
+          "C3@week6 fame=16 → R_hiu_meet ready",
+          "C4@week8 favor>=1@agency_ho → R_choi_meet ready"
+        ]
+      },
+      "expect": "Both R_hiu_meet and R_choi_meet are ready to open. Shortest path to dual chain thickening.",
+      "howToUse": "端到端抽樣：C1→C4 後兩邊 meet 就緒可開；唔預設已完成 meet；LIVE week-gate 仍 active、唔改。"
+    }
+  ]
+}

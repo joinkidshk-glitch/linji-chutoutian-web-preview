@@ -328,7 +328,7 @@ button.g{
 .tut-card .tut-line{margin:0 0 8px;color:#3a2e22;font-size:.9rem;line-height:1.45}
 .tut-card .tut-line:last-child{margin-bottom:0}
 #mask.tut-on{align-items:center;padding:16px}
-#mask.tut-on .modal{background:transparent;border:0;padding:0;max-height:none;overflow:visible;box-shadow:none}
+#mask.tut-on .modal{background:transparent;border:0;padding:0;max-height:min(88dvh,760px);overflow:hidden;box-shadow:none}
 /* v19r: one column, same order every step — 下一步／我知道了 then 跳過教學 */
 #mask.tut-on #modal-btns{justify-content:stretch;gap:8px;flex-wrap:nowrap;flex-direction:column;align-items:stretch;margin-top:10px}
 #mask.tut-on #modal-btns button{flex:0 0 auto;width:100%;min-height:44px;font-size:.92rem;font-weight:700}
@@ -1037,7 +1037,9 @@ button.g, .start button.g{
   row-gap: 8px;
 }
 #mask.tut-on .modal{
-  overflow: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
   max-height: min(88dvh, 760px) !important;
 }
 #mask.tut-on .tut-card{
@@ -1299,7 +1301,8 @@ button.g, .start button.g{
 }
 #modal-btns{
   flex: 0 0 auto;
-  position: relative;
+  position: sticky; /* v17w: CTA stays at the bottom of the plate */
+  bottom: 0;
   z-index: 6;
   margin-top: 8px !important;
   padding: 8px 0 2px;
@@ -1360,23 +1363,32 @@ button.g, .start button.g{
   font-size: .78rem !important;
   line-height: 1.35 !important;
 }
-/* tut：唔用 cream sticky bar；內容自管高度 */
+/* Soft modal scroll: tutorial plate stays capped. Inner scrolls; skip stays under 下一步. Step 5/6 art remains HOLD. */
 #mask.tut-on .modal{
   display: flex !important;
   flex-direction: column !important;
-  overflow: visible !important;
-  max-height: none !important;
+  overflow: hidden !important;
+  max-height: min(88dvh, 760px) !important;
 }
 #mask.tut-on #modal-inner{
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+#mask.tut-on .tut-card{
+  max-height: none !important;
   overflow: visible !important;
-  flex: 0 1 auto !important;
-  min-height: 0;
 }
 #mask.tut-on #modal-btns{
   background: transparent !important;
   border-top: 0 !important;
   box-shadow: none !important;
   padding-top: 0;
+  flex: 0 0 auto !important;
+  position: sticky !important;
+  bottom: 0 !important;
   flex-direction: column !important;
   flex-wrap: nowrap !important;
 }
@@ -2504,6 +2516,24 @@ body.day-res-open #mask.day-res{
   #mask.casting-sheet-on #modal-btns button{
     flex:1 1 100%;
   }
+}
+/* Soft: long status／StoryPlay plates scroll inside #modal-inner; #modal-btns stays pinned.
+   Casting keeps its own .notice_sheet_body scroller. ?v stays 19w. */
+#mask:not(.tut-on) .modal{
+  overflow: hidden !important;
+  max-height: min(78dvh, 720px) !important;
+}
+#mask:not(.tut-on):not(.casting-sheet-on) #modal-inner{
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+#mask:not(.tut-on) #modal-btns{
+  flex: 0 0 auto !important;
+  position: sticky !important;
+  bottom: 0 !important;
 }
 
 .notice_tag_genre{
@@ -5181,8 +5211,12 @@ const BehaviorGate = (function(){
   const byId = Object.create(null);
   const ENG = /trigger|fameMin|weekMin|locId|softLogic|need_done|needDone|rumorSoft|favorMin|favorTarget|openConditions|rel_tang|flag_/i;
 
+  function liveWeekGateStillActive(){
+    /* Merge gap: Soft preview does not retire LIVE week-gate. Flag off still reads openConditions / pacing.weekMin. */
+    return true;
+  }
   function featureFlag_softBehaviorGatePreview(){
-    /* Default off. LIVE path stays week-gate until a later tip. Opt in: ?softBehaviorGate=1 */
+    /* Default off. ?softBehaviorGate=1 swaps C1–C5 to the stub. LIVE week-gate stays in evalNode below the flag. */
     try{
       if(typeof location!=="undefined" && location && /(?:\?|&)(?:softBehaviorGate|softPreview)=1(?:&|$)/.test(String(location.search||""))) return true;
       if(typeof localStorage!=="undefined" && localStorage.getItem("starVolunteer_softBehaviorGatePreview")==="1") return true;
@@ -5543,6 +5577,21 @@ const BehaviorGate = (function(){
     });
     if(stub.engineSlice.flags.change89to92!==false) bad("89");
     if(stub.liveWeekGateStillActive!==true || stub.tipForbidden!==true) bad("live_still");
+    if(liveWeekGateStillActive()!==true) bad("live_fn");
+    const order = ((stub.engineSlice && stub.engineSlice.evalOrder) || []).join(">");
+    if(order!=="needDone>minDaysAfterPrev>weekMin_floor>locIdAny>favor_AND_loc>fameCompare>gigCountMin>seasonAny>rumorSoftPriority>tagAny>relAny") bad("eval_order");
+    if(sample("C1", Object.assign({}, base, { week:1, atLoc:"agency_ho" })).ok!==false) bad("c1_old_agency");
+    const fame15 = sample("C3", Object.assign({}, c3base, { fame:15 }));
+    if(fame15.ok!==false || (fame15.reasons||[])[0]!=="fameCompare") bad("c3_fame15_step");
+    if(sample("C4", Object.assign({}, c4base, { atLoc:"agency_ho", favor:1, done:{ C2:true } })).ok!==false) bad("c4_skip_c3");
+    if((c5.trigger.rumorAny||[]).some(r=>String(r).indexOf("rival_gao")>=0)) bad("c5_rival_in_rumorAny");
+    if(sample("C5", Object.assign({}, c5base, { atLoc:"cafe_cha", season:"秋", rumors:["rival_gao"] })).ok!==false) bad("c5_rival_gao");
+    if(sample("C5", Object.assign({}, c5base, { atLoc:"cafe_cha", season:"winter", rumors:["rival_gao_hard"] })).ok!==false) bad("c5_rival_flag_rumor");
+    ["C1","C2","C3","C4","C5"].forEach(id=>{
+      const face = String(byId[id].playerFaceLine||"");
+      if(/Ho\s*哥|關海媚|陳淑芬|施南生/.test(face)) bad("face_banned:"+id);
+    });
+    if(String(byId.C4.playerFaceLine||"").indexOf("何生")<0) bad("c4_ho_sang");
     return { ok: fails.length===0, fails: fails };
   }
 
@@ -5550,6 +5599,7 @@ const BehaviorGate = (function(){
     loadStub_nodes_trigger: loadStub_nodes_trigger,
     evalTrigger_AND_softRumor: evalTrigger_AND_softRumor,
     featureFlag_softBehaviorGatePreview: featureFlag_softBehaviorGatePreview,
+    liveWeekGateStillActive: liveWeekGateStillActive,
     lockedCopy_noEngineeringTerms: lockedCopy_noEngineeringTerms,
     nextHint_neverShow: nextHint_neverShow,
     rivalGao_onlyC3ChoiceFlags: rivalGao_onlyC3ChoiceFlags,
@@ -5905,11 +5955,22 @@ const DualMeet = (function(){
     return null;
   }
   function locsFor(id){
+    const out = [];
+    const push = (x)=>{ if(x && out.indexOf(x)<0) out.push(String(x)); };
     try{
       const row = (typeof STORY_MEET_SOFT!=="undefined") ? STORY_MEET_SOFT[id] : null;
-      if(row && Array.isArray(row.locs) && row.locs.length) return row.locs.slice();
+      if(row && Array.isArray(row.locs)) row.locs.forEach(push);
     }catch(_e){}
-    return [];
+    /* Soft doors only. Flag off never lists these actions. 事務所 + seed loc, so QA can open the meet from the map. */
+    push("agency_ho");
+    if(id==="R_hiu_meet") push("tvb_longmen");
+    if(id==="R_choi_meet") push("cafe_cha");
+    try{
+      const seed = (typeof softSeedRecord==="function") ? softSeedRecord() : null;
+      const target = seed ? String(seed.targetBeat||"") : "";
+      if(seed && seed.locId && (!target || target.indexOf(id)>=0)) push(seed.locId);
+    }catch(_e){}
+    return out;
   }
   function openGate(id, opts){
     const node = nodeById(idOf(id));
@@ -5982,6 +6043,16 @@ const DualMeet = (function(){
     if(openGate("R_hiu_meet", { ctx:{ done:{ C3:false } } }).ok!==false) bad("hiu_block");
     if(openGate("R_choi_meet", { ctx:{ done:{ C4:true } } }).ok!==true) bad("choi_pass");
     if(openGate("R_choi_meet", { ctx:{ done:{ C3:true } } }).ok!==false) bad("choi_need_c4");
+    if(locsFor("R_hiu_meet").indexOf("tvb_longmen")<0 || locsFor("R_hiu_meet").indexOf("agency_ho")<0) bad("hiu_doors");
+    if(locsFor("R_choi_meet").indexOf("cafe_cha")<0 || locsFor("R_choi_meet").indexOf("agency_ho")<0) bad("choi_doors");
+    try{
+      if(typeof StoryPlay!=="undefined" && StoryPlay.spPlayerMeta_softSeasonFrom){
+        const hiuLine = StoryPlay.spPlayerMeta_softSeasonFrom(hiu, { seedSeason:"spring", preferSeedSeason:true });
+        const choiLine = StoryPlay.spPlayerMeta_softSeasonFrom(choi, { seedSeason:"spring", preferSeedSeason:true });
+        if(hiuLine!=="主線 · 1988春") bad("hiu_seed_chrome");
+        if(choiLine!=="主線 · 1988春") bad("choi_seed_chrome");
+      }
+    }catch(_chrome){ bad("chrome_throw"); }
     return { ok: fails.length===0, fails: fails };
   }
   return {
@@ -5992,14 +6063,27 @@ const DualMeet = (function(){
 try{ if(typeof window!=="undefined"){ window.DualMeet = DualMeet; window.__dualMeet = DualMeet; } }catch(_w){}
 
 /* Soft chrome season. Flag off → these readers stay empty and LIVE spPlayerMeta is unchanged. */
-const SOFT_SEED_IDS = ["seed_c3_ready","seed_c4_ready","seed_c5_ready","seed_deng_meet_ready","seed_deng_push_ready","seed_chain_shortest"];
+const SOFT_SEED_IDS = ["seed_c3_ready","seed_c4_ready","seed_c5_ready","seed_deng_meet_ready","seed_deng_push_ready","seed_chain_shortest","seed_hiu_meet_ready","seed_choi_meet_ready","seed_dual_chain_shortest"];
 const SOFT_SEED_SEASON = {
   seed_c3_ready:"spring",
   seed_c4_ready:"summer",
   seed_c5_ready:"autumn",
   seed_deng_meet_ready:"autumn",
   seed_deng_push_ready:"winter",
-  seed_chain_shortest:"autumn"
+  seed_chain_shortest:"autumn",
+  seed_hiu_meet_ready:"spring",
+  seed_choi_meet_ready:"spring",
+  seed_dual_chain_shortest:"spring"
+};
+const SOFT_SEED_LOC = {
+  seed_hiu_meet_ready:"tvb_longmen",
+  seed_choi_meet_ready:"cafe_cha",
+  seed_dual_chain_shortest:"tvb_longmen"
+};
+const SOFT_SEED_TARGET = {
+  seed_hiu_meet_ready:"R_hiu_meet",
+  seed_choi_meet_ready:"R_choi_meet",
+  seed_dual_chain_shortest:"R_hiu_meet+R_choi_meet"
 };
 function softSeedIdFromUrl(){
   try{
@@ -6013,7 +6097,17 @@ function softSeedRecord(){
     if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()) return null;
     const id = softSeedIdFromUrl();
     if(SOFT_SEED_IDS.indexOf(id)<0) return null;
-    return { id:id, season: SOFT_SEED_SEASON[id] || "" };
+    let season = SOFT_SEED_SEASON[id] || "";
+    let locId = SOFT_SEED_LOC[id] || "";
+    let targetBeat = SOFT_SEED_TARGET[id] || "";
+    try{
+      const pack = (typeof softSeedPack!=="undefined") ? softSeedPack : null;
+      const seed = pack && (pack.seeds||[]).find(s=>s && s.id===id);
+      if(seed && seed.state && seed.state.season) season = String(seed.state.season);
+      if(seed && seed.state && seed.state.locId) locId = String(seed.state.locId);
+      if(seed && seed.targetBeat) targetBeat = String(seed.targetBeat);
+    }catch(_e){}
+    return { id:id, season:season, locId:locId, targetBeat:targetBeat };
   }catch(_e){}
   return null;
 }
@@ -6432,10 +6526,17 @@ const StoryPlay = (()=>{
   function spSoftSeasonLine(ch){
     return ch ? ("主線 · 1988"+ch) : "";
   }
-  /** Soft only. Caller is spPlayerMeta when ?softBehaviorGate=1. Priority: playerMeta → seed / softCalendarSeason / chromeSeason → when / eraTag → 1988春. */
+  /** Soft only. Default order stays playerMeta → seed / softCalendarSeason / chromeSeason → when / eraTag → 1988春.
+      Dual meet sets preferSeedSeason so seed.season wins over the baked playerMeta (采兒 mock is 夏; a spring seed shows 春). */
   function spPlayerMeta_softSeasonFrom(node, src){
     node = node || {};
     src = src || {};
+    if(src.preferSeedSeason){
+      let seeded = "";
+      if(src.seedSeason) seeded = spSoftSeasonChar(src.seedSeason);
+      if(!seeded && src.calendarSeason) seeded = spSoftSeasonChar(src.calendarSeason);
+      if(seeded) return spSoftSeasonLine(seeded);
+    }
     const explicit = String(node.playerMeta||"").trim();
     if(explicit) return explicit;
     let ch = "";
@@ -6447,6 +6548,10 @@ const StoryPlay = (()=>{
     if(ch) return spSoftSeasonLine(ch);
     return "主線 · 1988春";
   }
+  function dualMeetChromePrefersSeed(node){
+    const id = String((node && (node.id || node.beatId)) || "");
+    return id==="R_hiu_meet" || id==="R_choi_meet";
+  }
   function spPlayerMeta_softSeason(node, pack, label){
     let seedSeason = "";
     let calendarSeasonSoft = "";
@@ -6457,7 +6562,11 @@ const StoryPlay = (()=>{
     try{
       if(typeof softCalendarSeason==="function") calendarSeasonSoft = softCalendarSeason() || "";
     }catch(_e){}
-    return spPlayerMeta_softSeasonFrom(node, { seedSeason:seedSeason, calendarSeason:calendarSeasonSoft });
+    return spPlayerMeta_softSeasonFrom(node, {
+      seedSeason:seedSeason,
+      calendarSeason:calendarSeasonSoft,
+      preferSeedSeason: dualMeetChromePrefersSeed(node)
+    });
   }
   function spPlayerMeta_softSeasonSelfCheck(){
     const fails = [];
@@ -6465,6 +6574,8 @@ const StoryPlay = (()=>{
     const line = spSoftSeasonLine;
     const from = spPlayerMeta_softSeasonFrom;
     eq("p1", from({ playerMeta:line("秋"), chromeSeason:"winter", when:"1988春" }, { seedSeason:"spring" }), line("秋"));
+    eq("dualSeedChrome", from({ id:"R_choi_meet", playerMeta:line("夏"), chromeSeason:"summer", when:"1988夏" }, { seedSeason:"spring", preferSeedSeason:true }), line("春"));
+    eq("dualNoSeed", from({ id:"R_choi_meet", playerMeta:line("夏"), chromeSeason:"summer" }, { preferSeedSeason:true }), line("夏"));
     eq("p2seed", from({ chromeSeason:"winter", when:"1988春" }, { seedSeason:"autumn" }), line("秋"));
     eq("p2cal", from({ chromeSeason:"winter", when:"1988春" }, { calendarSeason:"summer" }), line("夏"));
     eq("p2chrome", from({ chromeSeason:"autumn", when:"1988春" }, {}), line("秋"));
@@ -7022,7 +7133,7 @@ const StoryPlay = (()=>{
     try{ if(typeof paintStoryEntryHints==="function") paintStoryEntryHints(); }catch(_e){}
   }
 
-  const api = { start, abort, advance, skipToChoices, pickChoice, playOpenPicker, spPlayerMeta, spPlayerMeta_softSeason, spPlayerMeta_softSeasonSelfCheck, get session(){ return _sess; } };
+  const api = { start, abort, advance, skipToChoices, pickChoice, playOpenPicker, spPlayerMeta, spPlayerMeta_softSeason, spPlayerMeta_softSeasonFrom, spPlayerMeta_softSeasonSelfCheck, get session(){ return _sess; } };
   try{ window.StoryPlay = api; }catch(_w){}
   return api;
 })();
@@ -7031,6 +7142,15 @@ const StoryPlay = (()=>{
 const TUTORIAL_ZH_HK = {"version":2,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上的地點，就是你可以去的地方。","先點地點，才會看到可做的行動。"],"bodyAlt":["所有行動都從地圖進入。","點選地點後，才能選擇行動。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可先免費查看，不耗日。","條件未合時顯示暫未能報；達標後可即場試鏡。"],"bodyAlt":["先看通告欄，再決定是否試鏡。","見到暫未能報，即條件未合；達標後才可即場試鏡。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練解鎖試鏡","body":["到對應地點報名訓練，提升能力來解鎖試鏡門檻。","訓練次數累計夠之後，社交課和觀察課就會開放。"],"bodyAlt":["能力不夠，先到合適地點報名訓練。","訓練累計夠，社交與觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"傾談耗一日","body":["和人傾談會耗一日，可能得到情報或提醒。","形象和對手壓力，也可能從對話中來。"],"bodyAlt":["傾談佔一日，不一定每次有用。","情報、形象、對手壓力，都可能從對話中來。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到這裡，之後可在選單撳「重看教學」。","建議先去訓練、看通告欄，或打開選單「事態」。"],"bodyAlt":["教學結束了，選單裡可以重看教學。","下一步建議：先訓練、看通告欄，或打開「事態」。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["本次未獲聘，且不可再參加本場。","可去訓練，或另選通告。"],"bodyAlt":["這一場未獲聘，本場不再開放。","回去訓練，或另找合適通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘後，製作日已排進行程。","開工前看手帳和行程，跟進度。"],"bodyAlt":["已獲聘，拍攝日記在行程。","按行程開工，手帳可看進度。"],"buttons":["我知道了"]}},"filterPass":"2026-11-04"};
 let TUTORIAL = TUTORIAL_ZH_HK;
 const TUT_MAIN_IDS = ["TUT_WELCOME","TUT_MAP","TUT_BOARD","TUT_TRAIN","TUT_NPC","TUT_NOTEBOOK","TUT_DONE"];
+/* PLAN 5ba79338: step 5 drag-guide and step 6 merge FX have no art. Mark the nit; do not fake sprites. Modal scroll is separate. Tutorial stays off the behavior gate. */
+const TUTORIAL_PHASE2_SOFT_NITS = {
+  step5_drag_guide: "HOLD",
+  step6_merge_fx: "HOLD",
+  behaviorGate: "unwired",
+  modalScroll: "soft",
+  artHold: true,
+};
+try{ window.__tutorialSoftNits = TUTORIAL_PHASE2_SOFT_NITS; }catch(_e){}
 
 
 function fillTpl(s, vars){
@@ -7253,6 +7373,9 @@ function exposePreviewDebug(){
     window.previewJumpCalendarYear = previewJumpCalendarYear;
     window.scheduleStoryMapRedraw = scheduleStoryMapRedraw;
     window.refreshMapHintStory = refreshMapHintStory;
+    window.storyNodeLocId = storyNodeLocId;
+    window.storyHintPack = storyHintPack;
+    window.calendarSeason = calendarSeason;
     window.GiftShop = GiftShop;
     window.GIFT_ITEMS = GIFT_ITEMS;
     window.GIFT_SHOPS = GIFT_SHOPS;
@@ -7570,13 +7693,30 @@ function applySoftSeedState(seed){
   };
 }
 async function loadSoftSeedPack(){
-  if(softSeedPack && Array.isArray(softSeedPack.seeds)) return softSeedPack;
+  if(softSeedPack && softSeedPack._mergedDual && Array.isArray(softSeedPack.seeds)) return softSeedPack;
   const bust = encodeURIComponent(typeof SAVE!=="undefined" ? SAVE : "19w");
-  try{
-    const r = await fetch("content/SOFT_PROGRESS_SEED_C3_C5_DENG_v1.json?v="+bust);
-    if(!r.ok) return null;
-    softSeedPack = await r.json();
-  }catch(_e){ return null; }
+  const names = [
+    "content/SOFT_PROGRESS_SEED_C3_C5_DENG_v1.json",
+    "content/SOFT_PROGRESS_SEED_DUAL_MEET_THICKEN_v1.json"
+  ];
+  const packs = [];
+  for(let i=0;i<names.length;i++){
+    try{
+      const r = await fetch(names[i]+"?v="+bust);
+      if(r.ok) packs.push(await r.json());
+    }catch(_e){}
+  }
+  if(!packs.length) return null;
+  const seeds = [];
+  const seen = Object.create(null);
+  packs.forEach(p=>{
+    (p.seeds||[]).forEach(s=>{
+      if(!s || !s.id || seen[s.id]) return;
+      seen[s.id] = 1;
+      seeds.push(s);
+    });
+  });
+  softSeedPack = Object.assign({}, packs[0], { seeds:seeds, _mergedDual:true });
   return softSeedPack;
 }
 function announceSoftSeed(res){
@@ -7601,6 +7741,10 @@ function presentSoftSeed(res){
     atLoc = res.locId || "agency_ho";
     try{ if(typeof DengLine!=="undefined" && DengLine.playPush) DengLine.playPush("R_tang_push1"); }catch(_e){}
   }
+  if(res.id==="seed_hiu_meet_ready" || res.id==="seed_choi_meet_ready" || res.id==="seed_dual_chain_shortest"){
+    atLoc = res.locId || (res.id==="seed_choi_meet_ready" ? "cafe_cha" : "tvb_longmen");
+    try{ if(typeof openLoc==="function") openLoc(atLoc); }catch(_e){}
+  }
   return res;
 }
 async function maybeApplySoftSeed(){
@@ -7624,6 +7768,15 @@ try{
     ids: SOFT_SEED_IDS.slice(),
     apply: ()=> maybeApplySoftSeed(),
     record: ()=> softSeedRecord(),
+    check: ()=>{
+      const fails = [];
+      ["seed_c3_ready","seed_c4_ready","seed_c5_ready","seed_deng_meet_ready","seed_deng_push_ready","seed_chain_shortest","seed_hiu_meet_ready","seed_choi_meet_ready","seed_dual_chain_shortest"].forEach(id=>{
+        if(SOFT_SEED_IDS.indexOf(id)<0) fails.push("missing:"+id);
+      });
+      if(SOFT_SEED_SEASON.seed_hiu_meet_ready!=="spring" || SOFT_SEED_SEASON.seed_choi_meet_ready!=="spring" || SOFT_SEED_SEASON.seed_dual_chain_shortest!=="spring") fails.push("dual_season");
+      if(SOFT_SEED_SEASON.seed_c5_ready!=="autumn" || SOFT_SEED_SEASON.seed_deng_push_ready!=="winter") fails.push("legacy_season");
+      return { ok:fails.length===0, fails:fails };
+    },
   };
 }catch(_e){}
 
