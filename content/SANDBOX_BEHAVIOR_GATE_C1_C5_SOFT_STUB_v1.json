@@ -1,0 +1,272 @@
+{
+  "softStatus": "≠PASS",
+  "source": "qwen3.7-max",
+  "liveWeekGateStillActive": true,
+  "nodes": [
+    {
+      "beatId": "C1",
+      "optional": false,
+      "locId": "cafe_cha",
+      "trigger": {
+        "needDone": [],
+        "minDaysAfterPrev": 0,
+        "weekMin": 1,
+        "locIdAny": [
+          "cafe_cha"
+        ],
+        "rumorAny": [],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [],
+        "gigCountMin": 0,
+        "relAny": []
+      },
+      "flags": {
+        "onChoice": {
+          "C1_a": [
+            "route_tv"
+          ],
+          "C1_b": [
+            "route_film"
+          ]
+        }
+      },
+      "playerFaceLine": "金龍茶餐廳阿姐提起近排片場／電視台都喺度搵新人，不如去轉一轉？",
+      "redStarHook": "無／可陸柏言遠觀",
+      "legacyWeekMin": 1,
+      "relockNotes": "Soft板：開場 loc=cafe_cha；weekMin 保留下限",
+      "nextHint": ""
+    },
+    {
+      "beatId": "C2",
+      "optional": false,
+      "locId": "tvb_longmen",
+      "trigger": {
+        "needDone": [
+          "C1"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 4,
+        "locIdAny": [
+          "tvb_longmen",
+          "cafe_cha"
+        ],
+        "rumorAny": [
+          "tvb_rules_gossip"
+        ],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [],
+        "gigCountMin": 3,
+        "relAny": []
+      },
+      "flags": {
+        "onChoice": {
+          "C2_a": [
+            "flag_network_stay"
+          ],
+          "C2_b": [
+            "flag_hustle_board"
+          ]
+        }
+      },
+      "playerFaceLine": "片場老細話最近有套新劇開工，問你想唔想跟組學下野。",
+      "redStarHook": "大明星捱出嚟噂；廖炳星綠葉可",
+      "legacyWeekMin": 4,
+      "relockNotes": "Soft板：weekMin 保留下限；情報＋gigCount",
+      "nextHint": ""
+    },
+    {
+      "beatId": "C3",
+      "optional": false,
+      "locId": "tvb_longmen",
+      "trigger": {
+        "needDone": [
+          "C2"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 6,
+        "locIdAny": [
+          "tvb_longmen"
+        ],
+        "rumorAny": [
+          "gao_steal_spotlight"
+        ],
+        "favorMin": 0,
+        "tagAny": [
+          "fameMin_16"
+        ],
+        "seasonAny": [],
+        "gigCountMin": 0,
+        "relAny": [],
+        "fameMin": 16,
+        "fameCompare": ">"
+      },
+      "flags": {
+        "onChoice": {
+          "C3_a": [
+            "rival_gao_hard"
+          ],
+          "C3_b": [
+            "rival_gao_endure"
+          ]
+        }
+      },
+      "playerFaceLine": "聽講高仔喺上個騷搶咗風頭，導演對你哋呢批新人有微言。",
+      "redStarHook": "齊鎮海遠觀",
+      "legacyWeekMin": 6,
+      "relockNotes": "Soft板：聲量>15（fameMin=16）；weekMin 保留；rival 旗留 C3 選擇（唔混入 C5）",
+      "nextHint": ""
+    },
+    {
+      "beatId": "C4",
+      "optional": false,
+      "locId": "agency_ho",
+      "trigger": {
+        "needDone": [
+          "C3"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 8,
+        "locIdAny": [
+          "agency_ho"
+        ],
+        "rumorAny": [],
+        "favorMin": 1,
+        "tagAny": [],
+        "seasonAny": [],
+        "gigCountMin": 0,
+        "relAny": [],
+        "favorTarget": "agency_ho",
+        "softLogic": "AND"
+      },
+      "flags": {
+        "onChoice": {
+          "C4_a": [
+            "flag_refuse_gig_with_ho"
+          ],
+          "C4_b": [
+            "flag_take_harsh_gig"
+          ]
+        }
+      },
+      "playerFaceLine": "何生傳話有筆數要結清，吩咐你親身去事務所走一趟。",
+      "redStarHook": "無",
+      "legacyWeekMin": 8,
+      "relockNotes": "Soft板：favorMin≥1 @ agency_ho 死鎖（AND）；唔一開始 OR 放寬催數旗；vs FULL OR 記 nit",
+      "nextHint": ""
+    },
+    {
+      "beatId": "C5",
+      "optional": false,
+      "locId": "cafe_cha",
+      "trigger": {
+        "needDone": [
+          "C4"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 9,
+        "locIdAny": [
+          "cafe_cha",
+          "tvb_longmen"
+        ],
+        "rumorAny": [
+          "choi_recent_news",
+          "hau_ching_recent_news"
+        ],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [
+          "autumn",
+          "winter"
+        ],
+        "gigCountMin": 0,
+        "relAny": [],
+        "rumorSoftPriority": true,
+        "rumorSeedsRequired": true
+      },
+      "flags": {
+        "onChoice": {
+          "C5_a": [
+            "choi_honest"
+          ],
+          "C5_b": [
+            "choi_spin"
+          ],
+          "C5_c": [
+            "choi_dodge"
+          ]
+        }
+      },
+      "playerFaceLine": "秋風起，茶餐廳個爐頭暖下，順便聽下圈內近況。",
+      "redStarHook": "駱家聲後巷輕鉤",
+      "legacyWeekMin": 9,
+      "relockNotes": "Soft板：季節＋loc；rumor 軟優先（要有種子）；rival_gao HOLD 唔混 C5",
+      "nextHint": ""
+    }
+  ],
+  "tipForbidden": true,
+  "planRef": "PLAN_STORY_BEHAVIOR_GATE_SOFT_C1_C5_v1.md",
+  "softBoard": {
+    "date": "2026-11-04",
+    "by": "星途志願tester及manager Soft A/B",
+    "decisions": {
+      "C1_loc": "cafe_cha",
+      "weekMin": "keep_floor",
+      "C3_fame": ">15 (fameMin=16)",
+      "C4": "favorMin>=1 AND loc=agency_ho (deadlock before催數旗; no OR loosen)",
+      "C5": "season+loc; rumor soft-priority with seeds; rival_gao HOLD (do not mix into C5)"
+    },
+    "nit": "C4 Soft favor∧loc vs FULL OR — Soft strict first; align FULL before LIVE tip",
+    "engineSlice": {
+      "date": "2026-11-04",
+      "plan": "PLAN_STORY_BEHAVIOR_GATE_ENGINE_SLICE_v1.md",
+      "planSha8": "8450130d",
+      "stubRev": "v1.2.0-engine-slice"
+    }
+  },
+  "stubRev": "v1.2.0-engine-slice",
+  "enginePlanRef": "PLAN_STORY_BEHAVIOR_GATE_ENGINE_SLICE_v1.md",
+  "enginePlanSha8": "8450130d",
+  "engineSlice": {
+    "rev": "v1",
+    "purpose": "iOS Soft wiring for behavior-gate Soft preview; LIVE remains week-gate until tip",
+    "evalOrder": [
+      "needDone",
+      "minDaysAfterPrev",
+      "weekMin_floor",
+      "locIdAny",
+      "favor_AND_loc",
+      "fameCompare",
+      "gigCountMin",
+      "seasonAny",
+      "rumorSoftPriority",
+      "tagAny",
+      "relAny"
+    ],
+    "iosSoftHooks": [
+      "loadStub_nodes_trigger",
+      "evalTrigger_AND_softRumor",
+      "featureFlag_softBehaviorGatePreview",
+      "lockedCopy_noEngineeringTerms",
+      "leaveWhenLocked_暫未能報_離開",
+      "nextHint_neverShow",
+      "rivalGao_onlyC3ChoiceFlags"
+    ],
+    "liveParallelNote": "LIVE path: week-gate only (openConditions/pacing.weekMin). Soft preview path: read this stub triggers behind feature flag. Do not merge to LIVE until tester OK + tip.",
+    "flags": {
+      "liveWeekGateStillActive": true,
+      "tipForbidden": true,
+      "softBehaviorGatePreview": true,
+      "rivalGaoMixC5": false,
+      "change89to92": false
+    },
+    "abLock": {
+      "C1_loc": "cafe_cha",
+      "weekMin": "keep_floor",
+      "C3_fame": ">15 (fameMin=16, fameCompare='>')",
+      "C4": "favorMin>=1 AND loc=agency_ho (favorTarget=agency_ho, softLogic=AND)",
+      "C5": "season+loc+rumor soft (rumorSoftPriority); rival_gao HOLD out of C5"
+    }
+  }
+}
