@@ -4743,9 +4743,12 @@ const StoryOC = (()=>{
     opts = opts || {};
     ensure();
     if(!node) return { ok:false, openable:false, reasons:["no_node"] };
-    /* Soft preview only. Flag off falls through to the LIVE week-gate below. */
+    /* One switch. gatePath() calls featureFlag_softBehaviorGatePreview only — no second query/localStorage parse.
+       "soft": C1–C5 stub trigger/evalOrder, plus the existing Deng guards in this block.
+       "live" (flag off, or BehaviorGate missing): fall through to the LIVE week-gate below (openConditions / pacing.weekMin).
+       liveWeekGateStillActive() stays true on both paths until an explicit LIVE tip. Soft off does not inject softSeed. */
     try{
-      if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview()){
+      if(typeof BehaviorGate!=="undefined" && BehaviorGate.gatePath()==="soft"){
         if(typeof DengLine!=="undefined" && DengLine.isPush && DengLine.isPush(node)){
           if(DengLine.isHeld(node) || !DengLine.pushGate(node).ok) return BehaviorGate.heldEval(node);
           return { ok:true, openable:true, and:[], any:null, phaseSoft:null, reasons:[], skippedThresholds:[], softBehavior:true, dengPush:true };
@@ -5205,23 +5208,37 @@ const StoryOC = (()=>{
   return api;
 })();
 
-/* BEHAVIOR_GATE_START v19w — Soft preview only. LIVE week-gate stays unless ?softBehaviorGate=1. Hooks follow stub engineSlice.iosSoftHooks, not PLAN §7 names. */
+/* BEHAVIOR_GATE_START v19w — One switch model. Soft≠PASS. Do not tip LIVE. ?v= stays 19w. SAVE stays starVolunteer_map_v19w.
+   featureFlag_softBehaviorGatePreview = Soft behavior-gate path (opt-in). Sole parser of ?softBehaviorGate=1 / ?softPreview=1 / localStorage starVolunteer_softBehaviorGatePreview=1.
+   liveWeekGateStillActive = LIVE week-gate sentinel. Default authority until an explicit LIVE tip. This Soft tip does not retire it; the function stays true.
+   gatePath() → "soft"|"live" by calling that flag only. Soft on: C1–C5 and the existing Deng/dual/seed/chrome guards use stub trigger/evalOrder. Soft off / non-Soft: week-gate only; softSeed must not inject.
+   Hooks follow stub engineSlice.iosSoftHooks, not PLAN §7 names. */
 const BehaviorGate = (function(){
   let stub = null;
   const byId = Object.create(null);
   const ENG = /trigger|fameMin|weekMin|locId|softLogic|need_done|needDone|rumorSoft|favorMin|favorTarget|openConditions|rel_tang|flag_/i;
 
   function liveWeekGateStillActive(){
-    /* Merge gap: Soft preview does not retire LIVE week-gate. Flag off still reads openConditions / pacing.weekMin. */
+    /* LIVE week-gate sentinel. Stays true until an explicit LIVE tip. Soft preview does not retire it.
+       Flag off still reads openConditions / pacing.weekMin. selfCheck live_fn requires === true.
+       Stub and slice liveWeekGateStillActive / tipForbidden stay true. */
     return true;
   }
   function featureFlag_softBehaviorGatePreview(){
-    /* Default off. ?softBehaviorGate=1 swaps C1–C5 to the stub. LIVE week-gate stays in evalNode below the flag. */
+    /* Soft behavior-gate path, opt-in, default off. This is the only query/localStorage parser for the switch.
+       ?softBehaviorGate=1 or ?softPreview=1, or localStorage starVolunteer_softBehaviorGatePreview==="1".
+       gatePath() and every Soft guard must call this. Do not add a second parser. */
     try{
       if(typeof location!=="undefined" && location && /(?:\?|&)(?:softBehaviorGate|softPreview)=1(?:&|$)/.test(String(location.search||""))) return true;
       if(typeof localStorage!=="undefined" && localStorage.getItem("starVolunteer_softBehaviorGatePreview")==="1") return true;
     }catch(_e){}
     return false;
+  }
+  function gatePath(){
+    /* Shared name for Soft now and a future LIVE tip. Does not read the URL or localStorage itself.
+       "soft" = featureFlag_softBehaviorGatePreview() (stub trigger / evalOrder).
+       "live" = LIVE week-gate. liveWeekGateStillActive() remains true on both paths. */
+    return featureFlag_softBehaviorGatePreview() ? "soft" : "live";
   }
 
   function loadStub_nodes_trigger(data){
@@ -5578,6 +5595,10 @@ const BehaviorGate = (function(){
     if(stub.engineSlice.flags.change89to92!==false) bad("89");
     if(stub.liveWeekGateStillActive!==true || stub.tipForbidden!==true) bad("live_still");
     if(liveWeekGateStillActive()!==true) bad("live_fn");
+    /* Confluence: path follows the one flag. "soft" must not flip the LIVE sentinel. */
+    if(gatePath()!==(featureFlag_softBehaviorGatePreview() ? "soft" : "live")) bad("gate_path");
+    if(gatePath()!=="soft" && gatePath()!=="live") bad("gate_path_value");
+    if(liveWeekGateStillActive()!==true) bad("soft_retires_live");
     const order = ((stub.engineSlice && stub.engineSlice.evalOrder) || []).join(">");
     if(order!=="needDone>minDaysAfterPrev>weekMin_floor>locIdAny>favor_AND_loc>fameCompare>gigCountMin>seasonAny>rumorSoftPriority>tagAny>relAny") bad("eval_order");
     if(sample("C1", Object.assign({}, base, { week:1, atLoc:"agency_ho" })).ok!==false) bad("c1_old_agency");
@@ -5600,6 +5621,7 @@ const BehaviorGate = (function(){
     evalTrigger_AND_softRumor: evalTrigger_AND_softRumor,
     featureFlag_softBehaviorGatePreview: featureFlag_softBehaviorGatePreview,
     liveWeekGateStillActive: liveWeekGateStillActive,
+    gatePath: gatePath,
     lockedCopy_noEngineeringTerms: lockedCopy_noEngineeringTerms,
     nextHint_neverShow: nextHint_neverShow,
     rivalGao_onlyC3ChoiceFlags: rivalGao_onlyC3ChoiceFlags,
@@ -6093,8 +6115,9 @@ function softSeedIdFromUrl(){
   }catch(_e){ return ""; }
 }
 function softSeedRecord(){
+  /* Inject only when gatePath()==="soft". gatePath calls featureFlag_softBehaviorGatePreview; this function does not parse the flag. Flag off / "live" returns null. */
   try{
-    if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview()) return null;
+    if(typeof BehaviorGate==="undefined" || BehaviorGate.gatePath()!=="soft") return null;
     const id = softSeedIdFromUrl();
     if(SOFT_SEED_IDS.indexOf(id)<0) return null;
     let season = SOFT_SEED_SEASON[id] || "";

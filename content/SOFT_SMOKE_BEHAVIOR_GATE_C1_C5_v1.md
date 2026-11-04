@@ -16,5 +16,5 @@ Soft≠PASS｜唔 tip LIVE｜出圖 HOLD｜89–92 HOLD｜禁「Ho 哥」→「�
 6. [正測] 逐步推進：seed → loc → fame → favor → season → rumor，確認狀態機無斷層。
 7. [負測] 越級觸發：未完成 C3 直接推 C4 條件，確認 C4 保持鎖定。
 8. [合規] 玩家面無「Ho 哥」／真藝名／工程詞；經理人顯示「何生」；nextHint 唔顯示。
-9. [隔離] LIVE week-gate 仍 active；feature flag 合流仍缺口；Soft≠PASS；唔 tip LIVE；?v=19w。
+9. [隔離] Soft 開關模型已對齊（`gatePath` 只跟 feature flag）。LIVE week-gate 仍 active（退休 HOLD／`tipForbidden`）。Soft≠PASS；唔 tip LIVE；?v=19w。
 10. Soft A/B：唔使（沿 Soft A 已鎖）。
