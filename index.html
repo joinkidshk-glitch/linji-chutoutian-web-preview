@@ -2545,6 +2545,7 @@ body.day-res-open #mask.day-res{
 .gig-board-list{ display:flex; flex-direction:column; gap:0; }
 
 /* v19u Phase 2：手帳三頁、傳聞卡、人情債條、新 pin 色塊。出圖 HOLD，無新圖。 */
+.pin.cafe .plab,.pin.agency .plab{ max-width:108px; font-size:10px; overflow:hidden; text-overflow:ellipsis }
 .pin.cafe .plab{ border-color:#c4a574; background:#6b4e2e; color:#fff8e8 }
 .pin.agency .plab{ border-color:#8a7355; background:#1e3d4a; color:#f2ebd8 }
 .home-tabs{
@@ -2583,15 +2584,26 @@ body.day-res-open #mask.day-res{
   box-shadow:0 2px 0 rgba(26,20,16,.12);
   padding:12px 14px; margin:0 0 10px;
 }
-.debt-row .debt-who{ margin:0 0 8px; font-weight:800; font-size:.86rem }
-.debt-bar{
-  height:8px; border-radius:4px; background:#d9d0c4; overflow:hidden;
-}
-.debt-bar > span{
-  display:block; height:100%; border-radius:4px;
-  background:linear-gradient(90deg,#e07060,#C43C2A);
-}
+.debt-row .debt-who{ margin:0 0 4px; font-weight:800; font-size:.86rem }
+.debt-row .debt-title{ margin:0; font-weight:900; font-size:.9rem }
 .debt-row .debt-meta,.debt-row .debt-note{ margin:6px 0 0; font-size:.75rem; line-height:1.4; color:#5a4328 }
+.debt-status,.rumor-state{
+  display:inline-block; margin-top:8px; padding:2px 8px; border-radius:999px;
+  font-size:.72rem; font-weight:800; line-height:1.4;
+}
+.rumor-state{ background:#fff8e8; color:#6b4e2e }
+.debt-status[data-tone="未到期"]{ background:#e5f0ea; color:#1f7a5c }
+.debt-status[data-tone="就嚟到期"]{ background:#f3e0a8; color:#6b4e2e }
+.debt-status[data-tone="已逾期"]{ background:#f3d0c8; color:#8a2a22 }
+.rumor-card .rumor-title{ margin:0 0 4px; font-weight:900 }
+.rumor-card.is-picked{ outline:2px solid #6b4e2e; background:#f3d48a }
+.rumor-card.can-pick{ cursor:pointer }
+.rumor-merge{ position:sticky; top:0; z-index:1; margin:0 0 8px }
+.rumor-merge button{
+  width:100%; min-height:44px; border:0; border-radius:12px; cursor:pointer;
+  background:#6b4e2e; color:#fff8e8; font:inherit; font-weight:800;
+}
+.rumor-hint{ margin:0 0 8px; font-size:.75rem; font-weight:700; color:#6b4e2e }
 .debt-empty,.rumor-empty{ text-align:center }
 .debt-stamp{
   width:76px; height:76px; margin:16px auto 8px; border-radius:50%;
@@ -2599,8 +2611,33 @@ body.day-res-open #mask.day-res{
   display:flex; align-items:center; justify-content:center;
   font-weight:900; letter-spacing:.12em; transform:rotate(-8deg);
 }
+#home-pane-rumor.on .journal-scroll,
+#home-pane-debt.on .journal-scroll{ animation:mockFadeIn .8s ease }
+@keyframes mockFadeIn{ from{ opacity:0 } to{ opacity:1 } }
+.push-door{
+  position:absolute; left:10%; right:10%; top:16%; height:30%;
+  z-index:45; pointer-events:none; opacity:0;
+}
+.push-door.on{ animation:pushDoor .7s ease forwards }
+.push-door-slab{
+  position:absolute; inset:0 18% 12% 0;
+  background:linear-gradient(90deg,#2a2118,#6b4e2e 55%,#1a1410);
+  border-radius:6px;
+  box-shadow:inset -14px 0 0 rgba(0,0,0,.28);
+}
+.push-door-bell{
+  position:absolute; right:8%; top:18%; margin:0; width:32px; height:32px; border-radius:50%;
+  background:#C9A227; color:#1A1410; font-weight:900; font-size:.85rem;
+  display:flex; align-items:center; justify-content:center;
+}
+@keyframes pushDoor{
+  0%{ opacity:1; transform:translateX(0) }
+  68%{ opacity:1; transform:translateX(70%) }
+  100%{ opacity:0; transform:translateX(86%) }
+}
 #loc-sheet .act.act-ask .n{ color:#1A1410 }
 #loc-sheet .act.act-ask{ background:#fff6df }
+#loc-sheet .act .h{ white-space:normal }
 
 </style>
 </head>
@@ -2845,10 +2882,10 @@ const LOCS = [
     desc:"灣仔錄音室林立，歌手通告多。" },
   { id:"rec_star", name:"天星音樂", area:"銅鑼灣", type:"music", region:"island", x:75, y:68, emoji:"⭐",
     desc:"銅鑼灣潮流廠牌，MV 同宣傳活動。" },
-  { id:"cafe_cha", name:"茶餐廳", area:"油麻地", type:"cafe", region:"kln", x:26, y:32, emoji:"☕", lab:"lab-up",
-    desc:"午後人聲鼎沸，煙霧彌漫，八卦都在這裡轉。" },
+  { id:"cafe_cha", name:"金龍茶餐廳", area:"油麻地", type:"cafe", region:"kln", x:26, y:32, emoji:"☕", lab:"lab-up",
+    desc:"人聲鼎沸，卡座隱密，後巷煙霧彌漫，係劇組收工後吹水食花生嘅聖地。" },
   { id:"agency_ho", name:"何生事務所", area:"中環", type:"agency", region:"island", x:38, y:80, emoji:"🏢", lab:"lab-down",
-    desc:"何生／事務所。櫃面走數，順便聽兩句行內行情。" },
+    desc:"煙灰缸滿瀉，枱面疊住劇本同通告單，電話響過不停，充滿江湖味同壓迫感。" },
 ];
 
 const NPCS = {
@@ -9022,60 +9059,136 @@ function closeModal(){
   restoreMapScroll();
 }
 
-/* v19u Phase 2：loc-sheet 打聽 Mock。只寫手帳傳聞／人情債，唔過日、唔改 fame／週數閘／硬鎖／通告庫。 */
+/* v19u Phase 2：手帳 Mock 跟 MOCK_UI_PHASE2。唔過日、唔改銀碼／fame／週數閘／硬鎖／通告庫。 */
+const MOCK_TOAST = {
+  rumorGained:"聽到新八卦，快啲記落手帳！",
+  debtAdded:"欠落人情債，記住搵機會還。",
+  debtCleared:"人情還清，無債一身輕。",
+  mergeSuccess:"碎料拼埋一齊，真相呼之欲出。",
+  seasonCollectHint:"轉季啦，啲數記住清，唔好等債主上門。",
+};
+const MOCK_EMPTY = {
+  rumors:"茶餐廳冇乜聲氣，去飲杯茶聽下八卦啦。",
+  debts:"人情清晒，行路都輕啲。",
+};
+const RUMOR_STATE_ZH = {
+  normal:"剛聽聞", fresh:"剛聽聞", heard:"剛聽聞", new:"剛聽聞",
+  teased:"已知", known:"已知", partial:"已知",
+  merged:"已拼合", combined:"已拼合",
+};
+function rumorStateLabel(state){
+  return RUMOR_STATE_ZH[String(state||"normal")] || "剛聽聞";
+}
+function debtStatusLabel(status){
+  return ({ "未到期":1, "就嚟到期":1, "已逾期":1 })[status] ? status : "未到期";
+}
+const MOCK_RUMOR_SEEDS = [
+  { id:"rumor_luk_arrogant_spring", source:"金龍茶餐廳", title:"陸柏言嫌飯盒難食", text:"聽講陸柏言嫌劇組飯盒，當眾掟落垃圾桶，副導嚇到不敢出聲。", state:"normal", season:"春（開年大戲）" },
+  { id:"rumor_liu_heatstroke_summer", source:"片場休息區", title:"廖炳星外景中暑", text:"廖炳星夏天拍古裝穿住厚甲，中咗暑入醫院，劇組要改期。", state:"teased", season:"夏（酷熱外景）" },
+  { id:"rumor_mak_stealrole_autumn", source:"何生事務所", title:"麥震東暗搶角色", text:"麥震東請監製食海鮮，第二日原本定咗嘅男二就換咗佢做。", state:"normal", season:"秋（海鮮當造）" },
+  { id:"rumor_chai_drunk_winter", source:"金龍茶餐廳", title:"齊鎮海飲酒誤事", text:"齊鎮海昨晚去蘭桂坊飲大咗，今朝早通告遲到兩個鐘，導演鬧爆佢。", state:"merged", season:"冬（聖誕派對）" },
+  { id:"rumor_lok_secretlove_spring", source:"金龍茶餐廳後巷", title:"駱家聲秘戀新花旦", text:"駱家聲收工成日接蘇芷茵放工，兩人去咗大埔食糖水，有說有笑。", state:"teased", season:"春（春心蕩漾）" },
+  { id:"rumor_yip_plasticsurgery_summer", source:"片場化妝間", title:"葉敏芝整容爆煲", text:"葉敏芝個鼻透光，化妝姐話佢去韓國執過，叫大家唔好講出去。", state:"normal", season:"夏（強光拍攝）" },
+  { id:"rumor_ngai_argue_autumn", source:"何生事務所", title:"魏詠男同監製嗌交", text:"魏詠男嫌劇本改得太多，同監製喺房嗌交，聽到掟嘢聲。", state:"teased", season:"秋（度期衝突）" },
+  { id:"rumor_pang_gambling_winter", source:"金龍茶餐廳", title:"彭少祺賭錢輸身家", text:"彭少祺去澳門賭大細輸咗幾十萬，要問何生借周轉，何生無好面色。", state:"normal", season:"冬（年尾賭風）" },
+  { id:"rumor_chung_invest_spring", source:"何生事務所", title:"鍾楚凝帶資進組", text:"鍾楚凝阿爸係地產商，投資咗套新戲，條件係要阿女做女一。", state:"merged", season:"春（新戲開鏡）" },
+  { id:"rumor_ku_overwork_summer", source:"金龍茶餐廳", title:"顧明輝軋戲爆煲", text:"顧明輝一日軋三組戲，喺車房瞓著咗錯過通告，幾邊導演都嬲。", state:"normal", season:"夏（拍攝旺季）" },
+];
+const MOCK_DEBT_SEEDS = [
+  { id:"debt_ho_spring_intro", creditor:"何生", title:"介紹大製作試鏡", weight:"大恩大德", season:"年尾清數，何生實搵你飲茶。", status:"未到期" },
+  { id:"debt_cheung_summer_prop", creditor:"道具組老張", title:"借出珍藏道具", weight:"普通交情", season:"夏天外景多，老張實催你還道具。", status:"就嚟到期" },
+  { id:"debt_piu_autumn_cover", creditor:"副導阿標", title:"幫忙頂更挨夜", weight:"大恩大德", season:"秋天開工密，阿標會叫你還更。", status:"未到期" },
+  { id:"debt_may_winter_makeup", creditor:"化妝姐 May", title:"借出名牌化妝品", weight:"舉手之勞", season:"冬天乾燥，May 會提你買返支潤膚膏。", status:"已逾期" },
+  { id:"debt_ho_spring_pr", creditor:"何生", title:"壓下負面新聞", weight:"大恩大德", season:"春天雜誌出街，何生會要你加倍還。", status:"就嚟到期" },
+];
 const MOCK_ASK = {
   cafe_cha:[
-    { id:"tea", title:"請飲茶", hint:"記低傳聞 · 唔過日", cost:"$20", kind:"rumor",
-      rumor:{ source:"茶餐廳", text:"聽講陸柏言下部戲想搵個樣衰啲嘅做反派，導演好睇重「捱得」。" } },
-    { id:"smoke", title:"食煙聽八卦", hint:"後門聽兩句 · 唔過日", cost:"1 小時", kind:"rumor",
-      rumor:{ source:"茶餐廳", text:"聽講何生事務所呢排只幫準時嘅人走數，幕前未紅都有人肯等。" } },
-    { id:"help", title:"幫手執漏", hint:"欠樓面一筆 · 唔過日", cost:"人情", kind:"debt",
-      debt:{ creditor:"茶餐廳樓面", value:40, season:"夏季外景", note:"樓面話夏天外景忙，記低你欠一個人情。" } },
+    { id:"act_cha_hall_tea", title:"大堂飲茶聽八卦", hint:"隔離枱講緊某當紅小生嘅軼事⋯⋯", cost:"$15 茶錢", toast:"聽到啲碎料，似乎有搞作。", source:"金龍茶餐廳" },
+    { id:"act_cha_alley_smoke", title:"後巷食煙搭訕", hint:"煙霧間聽到劇組換角嘅風聲⋯⋯", cost:"請食煙", toast:"煙仔換來內幕，副導口風鬆咗。", source:"金龍茶餐廳後巷" },
+    { id:"act_cha_help_clear", title:"幫手執漏換情報", hint:"老闆娘話頭牌花旦今日無嚟飲茶⋯⋯", cost:"消耗體力", toast:"執完枱老闆娘笑住爆啲料。", source:"金龍茶餐廳" },
   ],
   agency_ho:[
-    { id:"settle", title:"同何生走數", hint:"櫃面記低 · 唔過日", cost:"免費", kind:"rumor",
-      rumor:{ source:"何生／事務所", text:"何生提過，行內而家睇重準時。聲量未夠，仍可以先把數走清。" } },
-    { id:"ask", title:"打聽行內行情", hint:"欠何生一筆 · 唔過日", cost:"人情", kind:"debt",
-      debt:{ creditor:"何生", value:60, season:"年尾清貨", note:"何生應承年尾清貨前同你對一次數。" } },
-    { id:"tea", title:"請飲茶", hint:"樓下茶檔 · 唔過日", cost:"$20", kind:"rumor",
-      rumor:{ source:"何生／事務所", text:"樓下茶檔有人講，陸柏言新戲揀角，想搵捱得嘅綠葉。" } },
+    { id:"act_ho_greet", title:"入去打招呼", hint:"何生枱面放住份大製作嘅演員表⋯⋯", cost:"無", toast:"何生點咗點頭，叫你坐低。", source:"何生事務所" },
+    { id:"act_ho_repay", title:"還人情 / 送禮", hint:"何生心情好咗，提咗句年尾有筍盤。", cost:"禮物／現金", toast:"何生收低，話「大家自己人」。", source:"何生事務所", repay:true },
+    { id:"act_ho_rumor", title:"聽通告風聲", hint:"何生話有個大導嘅戲就嚟開鏡⋯⋯", cost:"無", toast:"何生隨口講咗兩句下週安排。", source:"何生事務所" },
   ],
 };
+let mockMergePick = [];
 function mockAskDefs(locId){
   return MOCK_ASK[locId] || null;
 }
+function journalText(s){
+  return String(s==null?"":s).replace(/[&<>"']/g, ch=>({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[ch]));
+}
 function ensureMockJournal(){
   if(!S) return;
+  if(!S.mockJournalSeeded){
+    S.mockRumors = MOCK_RUMOR_SEEDS.map(r=>Object.assign({}, r));
+    S.mockDebts = MOCK_DEBT_SEEDS.map(d=>Object.assign({}, d));
+    S.mockJournalSeeded = true;
+  }
   if(!Array.isArray(S.mockRumors)) S.mockRumors=[];
   if(!Array.isArray(S.mockDebts)) S.mockDebts=[];
 }
-function journalText(s){
-  return String(s==null?"":s).replace(/[&<>"']/g, ch=>({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[ch]));
+function mockIntelHits(actionKey){
+  /* 情報刷新 B：跟週數同未清人情債搖，唔係次次有新料。唔改日／銀碼／閘。 */
+  const week = (typeof weekNumNow==="function") ? weekNumNow() : 1;
+  const debts = (S.mockDebts||[]).length;
+  S.mockAskNonce = (Number(S.mockAskNonce)||0) + 1;
+  const mix = (week * 5 + debts * 3 + S.mockAskNonce * 7 + String(actionKey||"").length) % 5;
+  return mix <= 1;
 }
 function applyMockAsk(locId, actionId){
   ensureMockJournal();
   const def = (mockAskDefs(locId)||[]).find(a=>a.id===actionId);
   if(!def) return { ok:false, toast:"沒有這個行動" };
-  const key = locId+":"+def.id;
-  if(def.kind==="debt" && def.debt){
-    const already = S.mockDebts.some(d=>d.id===key);
-    if(!already){
-      const value = Math.max(0, Math.min(100, Number(def.debt.value)||0));
-      S.mockDebts.push({
-        id:key, locId, creditor:def.debt.creditor, value, season:def.debt.season, note:def.debt.note||"",
-      });
-      try{ saveQ(); }catch(_e){}
+  let added=false, cleared=false;
+  if(def.repay){
+    const idx = (S.mockDebts||[]).findIndex(d=>d && d.creditor==="何生");
+    if(idx>=0){
+      S.mockDebts.splice(idx, 1);
+      cleared = true;
     }
-    return { ok:true, kind:"debt", id:key, added:!already, toast: already ? "這筆人情已經記低" : "人情債已記低" };
   }
-  const already = S.mockRumors.some(r=>r.id===key);
-  if(!already && def.rumor){
+  const unlockId = "hint:"+def.id;
+  if(def.hint && mockIntelHits(def.id) && !(S.mockRumors||[]).some(r=>r.id===unlockId)){
     S.mockRumors.push({
-      id:key, locId, source:def.rumor.source, text:def.rumor.text,
+      id:unlockId, source:def.source||"", title:def.title, text:def.hint, state:"normal", season:"",
     });
-    try{ saveQ(); }catch(_e){}
+    added = true;
   }
-  return { ok:true, kind:"rumor", id:key, added:!already, toast: already ? "這則傳聞已經記低" : "已記低一則傳聞" };
+  try{ saveQ(); }catch(_e){}
+  const toastMsg = cleared ? MOCK_TOAST.debtCleared : (added ? MOCK_TOAST.rumorGained : def.toast);
+  return { ok:true, added, cleared, toast:toastMsg };
+}
+function toggleRumorPick(id){
+  ensureMockJournal();
+  const row = (S.mockRumors||[]).find(r=>r && r.id===id);
+  if(!row || rumorStateLabel(row.state)!=="剛聽聞") return;
+  const i = mockMergePick.indexOf(id);
+  if(i>=0) mockMergePick.splice(i, 1);
+  else {
+    if(mockMergePick.length>=2) mockMergePick.shift();
+    mockMergePick.push(id);
+  }
+  renderRumorPane();
+}
+function mergePickedRumors(){
+  ensureMockJournal();
+  const ids = mockMergePick.filter(id=>{
+    const row = (S.mockRumors||[]).find(r=>r && r.id===id);
+    return row && rumorStateLabel(row.state)==="剛聽聞";
+  });
+  if(ids.length<2) return { ok:false };
+  ids.forEach(id=>{
+    const row = S.mockRumors.find(r=>r && r.id===id);
+    if(row) row.state = "merged";
+  });
+  mockMergePick = [];
+  try{ saveQ(); }catch(_e){}
+  renderRumorPane();
+  toast(MOCK_TOAST.mergeSuccess);
+  return { ok:true, toast:MOCK_TOAST.mergeSuccess };
 }
 function renderRumorPane(){
   const box=document.getElementById("rumor-list");
@@ -9083,10 +9196,25 @@ function renderRumorPane(){
   ensureMockJournal();
   const rows=S.mockRumors||[];
   if(!rows.length){
-    box.innerHTML=`<article class="rumor-card rumor-empty"><p class="rumor-src">傳聞</p><p>茶餐廳冇乜聲氣，去飲杯茶聽下八卦啦。</p></article>`;
+    box.innerHTML=`<article class="rumor-card rumor-empty"><p class="rumor-src">傳聞</p><p>${journalText(MOCK_EMPTY.rumors)}</p></article>`;
     return;
   }
-  box.innerHTML=rows.map(r=>`<article class="rumor-card" data-rumor-id="${journalText(r.id)}"><p class="rumor-src">來源：${journalText(r.source)}</p><p>${journalText(r.text)}</p></article>`).join("");
+  const heard = rows.filter(r=>rumorStateLabel(r.state)==="剛聽聞");
+  const mergeOn = mockMergePick.length>=2;
+  const hint = heard.length>=2 ? `<p class="rumor-hint">點兩張剛聽聞，再拼合。</p>` : "";
+  const merge = mergeOn ? `<div class="rumor-merge"><button type="button" id="rumor-merge-btn">拼合</button></div>` : "";
+  box.innerHTML = hint + merge + rows.map(r=>{
+    const label = rumorStateLabel(r.state);
+    const picked = mockMergePick.indexOf(r.id)>=0;
+    const can = label==="剛聽聞";
+    return `<article class="rumor-card${picked?" is-picked":""}${can?" can-pick":""}" data-rumor-id="${journalText(r.id)}"><p class="rumor-src">來源：${journalText(r.source)}</p><p class="rumor-title">${journalText(r.title)}</p><p>${journalText(r.text)}</p><span class="rumor-state">${journalText(label)}</span>${r.season?`<p class="debt-note">${journalText(r.season)}</p>`:""}</article>`;
+  }).join("");
+  box.querySelectorAll(".rumor-card.can-pick").forEach(el=>{
+    const id = el.getAttribute("data-rumor-id");
+    el.addEventListener("click", ()=>toggleRumorPick(id));
+  });
+  const mergeBtn=document.getElementById("rumor-merge-btn");
+  if(mergeBtn) mergeBtn.onclick=()=>mergePickedRumors();
 }
 function renderDebtPane(){
   const box=document.getElementById("debt-list");
@@ -9094,13 +9222,30 @@ function renderDebtPane(){
   ensureMockJournal();
   const rows=S.mockDebts||[];
   if(!rows.length){
-    box.innerHTML=`<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>人情清晒，行路都輕啲。</p></div>`;
+    box.innerHTML=`<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p></div>`;
     return;
   }
   box.innerHTML=rows.map(d=>{
-    const value=Math.max(0, Math.min(100, Number(d.value)||0));
-    return `<article class="debt-row" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(d.creditor)}</p><div class="debt-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${value}"><span style="width:${value}%"></span></div><p class="debt-meta">人情值 ${value} · 催收季節：${journalText(d.season)}</p>${d.note?`<p class="debt-note">${journalText(d.note)}</p>`:""}</article>`;
+    const status = debtStatusLabel(d.status);
+    return `<article class="debt-row" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(d.creditor)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">人情：${journalText(d.weight)}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-note">${journalText(d.season)}</p></article>`;
   }).join("");
+}
+function playPushDoor(){
+  const host=document.getElementById("v-map");
+  if(!host) return;
+  let door=document.getElementById("push-door");
+  if(!door){
+    door=document.createElement("div");
+    door.id="push-door";
+    door.className="push-door";
+    door.innerHTML='<div class="push-door-slab" aria-hidden="true"></div><p class="push-door-bell">叮</p>';
+    host.appendChild(door);
+  }
+  door.classList.remove("on");
+  void door.offsetWidth;
+  door.classList.add("on");
+  clearTimeout(playPushDoor._t);
+  playPushDoor._t=setTimeout(()=>{ door.classList.remove("on"); }, 720);
 }
 function setHomeTab(tab){
   const allow={ plan:1, rumor:1, debt:1 };
@@ -9147,6 +9292,8 @@ try{
     enterHome: function(){ enterHome(null, false); },
     setTab: function(tab){ setHomeTab(tab); },
     ask: function(locId, actionId){ return applyMockAsk(locId, actionId); },
+    stateLabel: function(state){ return rumorStateLabel(state); },
+    merge: function(){ return mergePickedRumors(); },
     fingerprint: phase2GateFingerprint,
     gigs: function(){ return { version: STORY_WIRE && STORY_WIRE.gigsVersion, n:(GIGS||[]).length }; },
   };
@@ -9172,15 +9319,20 @@ function openLoc(id){
     return true;
   });
   document.getElementById("loc-title").textContent=`${L.emoji} ${L.name}`;
-  const descShort=(L.desc||"").length>28 ? (L.desc.slice(0,28)+"…") : (L.desc||"");
-  document.getElementById("loc-desc").textContent=`${L.area} · ${descShort}`;
+  const hub = !!mockAskDefs(L.id);
+  if(hub){
+    document.getElementById("loc-desc").textContent = L.desc||"";
+  } else {
+    const descShort=(L.desc||"").length>28 ? (L.desc.slice(0,28)+"…") : (L.desc||"");
+    document.getElementById("loc-desc").textContent=`${L.area} · ${descShort}`;
+  }
   const npcId=S.locNpc[id];
   try{ refreshStoryMapTips(); }catch(_e){}
   const tipHere=(S.mapTips||{})[L.id];
-  let who = mockAskDefs(L.id)
-    ? "可以打聽。記低之後去手帳睇。"
+  let who = hub
+    ? ""
     : (npcId ? `在場：${NPCS[npcId].name}（${NPCS[npcId].role}）` : "暫時未見熟人");
-  if(tipHere){
+  if(!hub && tipHere){
     if(tipHere.kind==="story") who += ` · 事態「${tipHere.title}」`;
     else who += ` · 💡情報「${tipHere.title}」`;
   }
@@ -9299,6 +9451,7 @@ function openLoc(id){
   // After redraw, keep map from jumping; nudge pin into visible band above sheet
   restoreMapScroll();
   scrollMapPinIntoView(id);
+  if(id==="agency_ho") playPushDoor();
 }
 function closeSheet(){
   const sheet=document.getElementById("loc-sheet");
