@@ -6356,7 +6356,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Vera busts Soft-mounted; cache query stays ?v=19w. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19w. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -6483,8 +6483,8 @@ const StoryPlay = (()=>{
     if(!speakerId || speakerId==="generic_crew" || speakerId==="extra_unknown") return "";
     const cands = spBustCandidates(speakerId, expression);
     const expr = spNormExpression(expression);
-    /* Soft files win for Vera busts and the hero raise_brow redo. Other faces stay on the embedded portrait. */
-    const preferFile = speakerId==="vera" || (speakerId==="awi" && expr==="raise_brow");
+    /* Soft files win for the six core style-lock busts and the hero raise_brow redo. Cheung and other faces stay on the embedded portrait. */
+    const preferFile = !!SP_CORE_STEM[speakerId] || (speakerId==="awi" && expr==="raise_brow");
     if(!preferFile){
       for(const u of cands){
         if(String(u).indexOf("data:")===0) return u;

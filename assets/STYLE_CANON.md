@@ -18,3 +18,10 @@
 4. 之後新圖／logo／標題字一律用 **臨記出頭天**，畫風跟阿偉立繪
 
 誤修備份：`_style_bak/`
+
+## Style-lock CORE redo（2026-11-05 Asia/Hong_Kong）
+
+- 已 redo：`story/core/{vera,chow_choiyi,ko_chunkit,tang_laiping,lin_hiu,lui_ging}_bust_{default,smile,frown}.png`（18）
+- Refs：`hero_awi.jpg`＋`story/c1/char_hero_bust_default.png`（＋npc identity when present）
+- 本 Soft tip 只合 live 18 PNG（bak 省略，GD 允許）；`?v=` 仍 `19w`
+- Soft≠PASS；唔 tip LIVE；89–92 HOLD；silhouettes 後掛
