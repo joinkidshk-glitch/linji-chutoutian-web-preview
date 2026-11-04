@@ -1,0 +1,190 @@
+{
+  "meta": {
+    "version": "v1.1",
+    "softStatus": "≠PASS",
+    "softBoard": "Soft A",
+    "scope": "meet_only",
+    "model": "qwen3.7-max",
+    "date": "2026-11-04",
+    "planRef": "PLAN_STORY_DENG_LINE_SOFT_v1.md",
+    "characterId": "tang_laiping",
+    "playerFacingName": "鄧麗萍",
+    "note": "Soft≠PASS｜Mock meet only｜chrome Soft A 已鎖｜playerMeta 升格｜push1+ HOLD｜出圖 HOLD｜唔 tip LIVE｜89–92 HOLD｜經 qwen3.7-max",
+    "softALocked": {
+      "openGate": "C5_done + favorMin>=1 @ agency_ho (align C4 favor)",
+      "mvpSoftMockMeet": true,
+      "meetOnly": true,
+      "pushPlusHold": true,
+      "rel_tang_threshold": 2
+    },
+    "openGate": {
+      "needDone": [
+        "C5"
+      ],
+      "favorMin": 1,
+      "favorTarget": "agency_ho",
+      "alignNote": "與行為閘 C4 favor≥1@agency_ho 咬合；鄧線再開線要求 C5 完成後仍達 favorMin≥1"
+    },
+    "rel_tang_threshold": 2,
+    "rel_tang_threshold_note": "push1+ 用；meet 寫 flag_tang_open；push+ 要 flag_tang_open ∧ rel_tang≥2",
+    "tipForbidden": true,
+    "artHold": true,
+    "eraDeep8992Hold": true,
+    "bannedScanHits": [],
+    "softChromeSeasonNit": true,
+    "parentSha8": "f5986e81",
+    "parentNote": "parent Mock v1 SHA8 f5986e81；本版 chrome nit only，對白／choices 零改",
+    "chromeNit": {
+      "reason": "劇情頭 chrome 硬碼「主線 · 1988春」未跟 Soft 秋覆蓋",
+      "softRuleRef": "PLAN_SOFT_STORY_CHROME_SEASON_v1.md",
+      "pendingSoftAB": [
+        "A1_chrome_line_label",
+        "A2_soft_season_source"
+      ],
+      "suggestedSoftA": {
+        "A1": "主線 · 1988{季}",
+        "A2": "seed.season / softSeasonOverride 優先"
+      }
+    },
+    "chromeSeasonSoftAB": {
+      "A1": "A",
+      "A1_lock": "主線 · 1988{季}",
+      "A2": "A",
+      "A2_lock": "seed.season / softSeasonOverride (softCalendarSeason) first",
+      "boardedBy": "統籌 Soft A/B 拍板 2026-11-04",
+      "parentSha8": "f5986e81"
+    },
+    "playerMetaLocked": true
+  },
+  "beats": [
+    {
+      "id": "R_tang_meet",
+      "arcBeat": "meet",
+      "romanceLine": "tang",
+      "characterId": "tang_laiping",
+      "title": "排片室的冷酷算盤",
+      "when": "1988年後院線季節｜初秋午後",
+      "setting": "龍頭院線排片部會議室，桌上堆滿各區戲院的入座率報表與午夜場數據。",
+      "eraTag": "era_cinema_generic_post1988",
+      "cast": [
+        "鄧麗萍",
+        "院線助理"
+      ],
+      "speakers": [
+        "鄧麗萍",
+        "院線助理"
+      ],
+      "pcSilent": true,
+      "conflict": "新片爭檔期 vs 院線數據門檻",
+      "synopsis": "阿偉帶著新片計劃步入排片部，面對以數據說話的鄧麗萍，必須證明電影的賣座潛力。",
+      "beats": [
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "何生推薦的計劃我看了。劇本算紮實，但院線不是慈善機構，我要看的是實在的賣座潛力。"
+          ]
+        },
+        {
+          "speaker": "院線助理",
+          "lines": [
+            "鄧小姐，這是上季同類型電影的午夜場入座率報表，基準線已經標出來了。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "阿偉，新片陣容不算頂尖，要拿黃金檔期，午夜場預估入座率必須跨過這條紅線。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "今天帶了詳細的市場數據來，還是想先了解我們的排片準則再作補充？"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tang_meet_data",
+          "label": "阿偉直接遞上預先準備好的詳細市場數據與票房預測報表。",
+          "effects": {
+            "flags": [
+              "flag_tang_open"
+            ],
+            "stats": {
+              "rel_tang": 1
+            }
+          },
+          "playerFacingNote": "以充足的數據實力爭取對方即時放行。"
+        },
+        {
+          "id": "C_tang_meet_wait",
+          "label": "阿偉先請教院線的具體排片準則，再針對要求補充數據。",
+          "effects": {
+            "flags": [
+              "flag_tang_met_wait"
+            ],
+            "stats": {
+              "rel_tang": 0
+            }
+          },
+          "playerFacingNote": "摸清對方底線，確保提交的數據能切中要求。"
+        }
+      ],
+      "flags_written": [
+        "flag_tang_open",
+        "flag_tang_met_wait"
+      ],
+      "openConditions": [],
+      "openConditionsNote": "meet 節拍 openConditions=[]，可寫入 flag_tang_open；線上開線閘見 meta.openGate（C5＋favorMin≥1@agency_ho）",
+      "artId": "rom_tang_meet_soft_hold",
+      "artHold": true,
+      "parallelOk": true,
+      "playerOffer": false,
+      "chromeSeason": "autumn",
+      "playerMetaNote": "暫用 Soft A 建議「主線 · 1988秋」；等統籌拍 A1（主線 vs 支線）。A1 拍後可升格為 playerMeta。",
+      "playerMeta": "主線 · 1988秋",
+      "chromeSoftAB": {
+        "A1": "A",
+        "A2": "A"
+      }
+    }
+  ],
+  "holdBeats": [
+    {
+      "id": "R_tang_push1",
+      "status": "HOLD",
+      "reason": "push1+ 後做；唔入今次 Mock"
+    },
+    {
+      "id": "R_tang_push2",
+      "status": "HOLD",
+      "reason": "push1+ 後做；唔入今次 Mock"
+    },
+    {
+      "id": "R_tang_crisis",
+      "status": "HOLD",
+      "reason": "push1+ 後做；唔入今次 Mock"
+    },
+    {
+      "id": "R_tang_ending",
+      "status": "HOLD",
+      "reason": "push1+ 後做；唔入今次 Mock"
+    }
+  ],
+  "openConditionsFile": {
+    "meet": [],
+    "pushAndAfter": [
+      "flag_tang_open",
+      "rel_tang_threshold"
+    ],
+    "rel_tang_threshold": 2
+  },
+  "devAppendix": {
+    "supersedes": "R_tang_meet_stub",
+    "oldRomanceRef": "PLOT_DETAIL_ROMANCE_TANG_v1.md / story_detail_romance_tang.json",
+    "noLiveJsonEdit": true,
+    "guanHaimeiUpgradeForbidden": true,
+    "mvpDualHeroineProtected": true
+  }
+}

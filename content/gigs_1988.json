@@ -1,5 +1,5 @@
 {
-  "version": "3.2.4-soft",
+  "version": "3.2.5-soft",
   "year": 1988,
   "source": "MATRIX_GIG_ERA_1988_v1 + PLAN_GIG_1988_FAVOR_RUMOR_FILL_v1 + qwen3.7-max Soft favor/rumor fill; Decision1A junior+15; Decision2B agency_ho only; player manager label 何生 (ho_sang); Soft≠PASS",
   "planRef": "PLAN_GIG_1988_PACK_B_MV3_v1.md",
@@ -49,9 +49,9 @@
     "total": 137,
     "fillAdded": 65,
     "withStoryKeys": 137,
-    "withRumorKeys": 116,
+    "withRumorKeys": 137,
     "keyGigs": 66,
-    "withFavorDelta": 116,
+    "withFavorDelta": 137,
     "uniqueRumorKeys": 16,
     "agencyHoTargets": 19,
     "boardHookMode": {
@@ -66,9 +66,15 @@
     "2026-11-04（Asia/Hong_Kong）｜3.2.0-soft：qwen3.7-max 全面重寫玩家面文案；合併 matrix storyKeys／tagOnComplete／rumorKeys／starHint／favorDelta／seasonHook／boardHookMode；A/B＝storyKeys 為主、紅星噂為主、1988 全文案重寫留 id、標籤混合、breach 跟 Detail；Soft≠PASS；唔改 LIVE；89–92 HOLD；出圖 HOLD；唔推 tip",
     "2026-11-04（Asia/Hong_Kong）｜3.2.1-soft：qwen3.7-max QC 驅動全量修（繁體香港書面語、簡體殘餘、真名／貼牌、synopsis 串戲、內娛腔）；結構欄未改；Soft≠PASS；唔推 tip",
     "2026-11-04 18:04（Asia/Hong_Kong）｜3.2.2-soft：Pack A favorDelta／rumorKeys 補密（qwen3.7-max）；初選填15留21空；中全填25；agency_ho×19（唔含 ho_manager；玩家面稱何生／事務所）；rumor 獨特 8→16；hook normal124／teased10／hidden3；結構欄／文案未改；Soft≠PASS；唔推 tip",
-    "2026-11-04 20:50（Asia/Hong_Kong）｜3.2.4-soft Pack B（qwen3.7-max）：genreLabel OOV→ALIGN§3 詞庫（目標 OOV=0）；中階 limits 補 20；中階 producer 新補 16（合計≥14）；counts.keyGigs→66；0 新槽；castWindow HOLD；Soft≠PASS；唔 tip LIVE"
+    "2026-11-04 20:50（Asia/Hong_Kong）｜3.2.4-soft Pack B（qwen3.7-max）：genreLabel OOV→ALIGN§3 詞庫（目標 OOV=0）；中階 limits 補 20；中階 producer 新補 16（合計≥14）；counts.keyGigs→66；0 新槽；castWindow HOLD；Soft≠PASS；唔 tip LIVE",
+    {
+      "version": "3.2.5-soft",
+      "at": "2026-11-04+08:00",
+      "by": "qwen3.7-max+script",
+      "change": "fill remain21 beginner favorDelta+rumorKeys; n nonempty 116→137; uniqueRumor>=16; no beginner agency_ho"
+    }
   ],
-  "notes": "Soft≠PASS；唔 publish；唔改 LIVE；89–92 HOLD；出圖 HOLD；唔推 tip；3.2.4-soft Pack B：OOV remap＋中階 limits／producer＋keyGigs meta 66；經理人玩家面「何生」；favor target 單一 agency_ho；0 新槽 n=137",
+  "notes": "Soft≠PASS；唔 publish；唔改 LIVE；89–92 HOLD；出圖 HOLD；唔推 tip；3.2.4-soft Pack B：OOV remap＋中階 limits／producer＋keyGigs meta 66；經理人玩家面「何生」；favor target 單一 agency_ho；0 新槽 n=137｜3.2.5-soft：選填收齊餘 21 初階 favorDelta＋rumorKeys（Soft≠PASS｜唔 tip）",
   "gigs": [
     {
       "id": "gig_1988_ad_01",
@@ -4227,9 +4233,16 @@
       "tagOnComplete": [
         "舞台走位"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_ngai_wing_naam_88_summer"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_rec_hk",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "summer"
       ],
@@ -4479,9 +4492,16 @@
       "tagOnComplete": [
         "舞台走位"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_liu_bing_sing_88_spring"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_rec_wanchai",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "spring"
       ],
@@ -4554,9 +4574,16 @@
       "tagOnComplete": [
         "舞台走位"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_pang_siu_kei_88_winter"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_rec_wanchai",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "winter"
       ],
@@ -4723,9 +4750,16 @@
       "tagOnComplete": [
         "舞台走位"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_chai_chun_hoi_88_summer"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_rec_star",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "summer"
       ],
@@ -6072,9 +6106,16 @@
       "tagOnComplete": [
         "儀態"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_yip_man_chi_88_autumn"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_ad_central",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "autumn"
       ],
@@ -7047,9 +7088,16 @@
       "tagOnComplete": [
         "儀態"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_luk_pak_yin_88_winter"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_ad_adm",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "winter"
       ],
@@ -7221,9 +7269,16 @@
       "tagOnComplete": [
         "儀態"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_env_chai_chun_hoi"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_ad_central",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "summer"
       ],
@@ -7498,9 +7553,16 @@
       "tagOnComplete": [
         "儀態"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_env_pang_siu_kei"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_ad_central",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "winter"
       ],
@@ -7772,9 +7834,16 @@
       "tagOnComplete": [
         "捱得"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_lok_ka_sing_88_autumn"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_film_cotton",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "autumn"
       ],
@@ -8215,9 +8284,16 @@
       "tagOnComplete": [
         "捱得"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_env_ngai_wing_naam"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_film_harbour",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "summer"
       ],
@@ -8387,9 +8463,16 @@
       "tagOnComplete": [
         "捱得"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_env_yip_man_chi"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_film_harbour",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "autumn"
       ],
@@ -8838,9 +8921,16 @@
       "tagOnComplete": [
         "捱得"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_env_liu_bing_sing"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_film_lion",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "summer"
       ],
@@ -9125,9 +9215,16 @@
       "tagOnComplete": [
         "捱得"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_env_luk_pak_yin"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_film_lion",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "winter"
       ],
@@ -9834,9 +9931,16 @@
       "tagOnComplete": [
         "舞台走位"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_mak_chun_tung_88_spring"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_rec_star",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "spring"
       ],
@@ -10105,9 +10209,16 @@
       "tagOnComplete": [
         "舞台走位"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_env_lok_ka_sing"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_rec_star",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "autumn"
       ],
@@ -10276,9 +10387,16 @@
       "tagOnComplete": [
         "舞台走位"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_env_lok_ka_sing"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_rec_star",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "winter"
       ],
@@ -11000,9 +11118,16 @@
       "tagOnComplete": [
         "節奏感"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_ngai_wing_naam_88_summer"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_tvb_harbour",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "summer"
       ],
@@ -11362,9 +11487,16 @@
       "tagOnComplete": [
         "節奏感"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_pang_siu_kei_88_winter"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_tvb_harbour",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "winter"
       ],
@@ -11721,9 +11853,16 @@
       "tagOnComplete": [
         "懂走位"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_env_pang_siu_kei"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_tvb_kowloon",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "autumn"
       ],
@@ -12083,9 +12222,16 @@
       "tagOnComplete": [
         "節奏感"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_chai_chun_hoi_88_summer"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_tvb_longmen",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "summer"
       ],
@@ -12262,9 +12408,16 @@
       "tagOnComplete": [
         "懂走位"
       ],
-      "rumorKeys": [],
+      "rumorKeys": [
+        "rumor_yip_man_chi_88_autumn"
+      ],
       "starHint": null,
-      "favorDelta": [],
+      "favorDelta": [
+        {
+          "target": "crew_tvb_longmen",
+          "value": 1
+        }
+      ],
       "seasonHook": [
         "autumn"
       ],
@@ -12357,5 +12510,5 @@
     }
   ],
   "matrixRef": "MATRIX_GIG_ERA_1988_v1",
-  "changelogHint": "Pack B Soft：OOV genreLabel→ALIGN§3；中階 limits≥15／producer≥30%；counts.keyGigs 76→66；0 新槽；castWindow HOLD；Soft≠PASS"
+  "changelogHint": "CHANGELOG_GIGS_1988_3_2_5_SOFT.md"
 }
