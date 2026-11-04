@@ -1,8 +1,8 @@
 {
-  "version": "3.2.3-soft",
+  "version": "3.2.4-soft",
   "year": 1988,
   "source": "MATRIX_GIG_ERA_1988_v1 + PLAN_GIG_1988_FAVOR_RUMOR_FILL_v1 + qwen3.7-max Soft favor/rumor fill; Decision1A junior+15; Decision2B agency_ho only; player manager label 何生 (ho_sang); Soft≠PASS",
-  "planRef": "PLAN_GIG_1988_FAVOR_RUMOR_FILL_v1",
+  "planRef": "PLAN_GIG_1988_PACK_B_MV3_v1.md",
   "softStatus": "≠PASS",
   "counts": {
     "gigs": 137,
@@ -65,9 +65,10 @@
     "2026-11-03 23:34（Asia/Hong_Kong）｜3.1.0 補槽：MATRIX loc×季三級＋65 則（DeepSeek 生成＋DeepSeek 書面語核對）；保留 3.0.0 全 72；n=137；Soft≠PASS；89–92 HOLD；出圖 HOLD；唔 publish；唔推 tip",
     "2026-11-04（Asia/Hong_Kong）｜3.2.0-soft：qwen3.7-max 全面重寫玩家面文案；合併 matrix storyKeys／tagOnComplete／rumorKeys／starHint／favorDelta／seasonHook／boardHookMode；A/B＝storyKeys 為主、紅星噂為主、1988 全文案重寫留 id、標籤混合、breach 跟 Detail；Soft≠PASS；唔改 LIVE；89–92 HOLD；出圖 HOLD；唔推 tip",
     "2026-11-04（Asia/Hong_Kong）｜3.2.1-soft：qwen3.7-max QC 驅動全量修（繁體香港書面語、簡體殘餘、真名／貼牌、synopsis 串戲、內娛腔）；結構欄未改；Soft≠PASS；唔推 tip",
-    "2026-11-04 18:04（Asia/Hong_Kong）｜3.2.2-soft：Pack A favorDelta／rumorKeys 補密（qwen3.7-max）；初選填15留21空；中全填25；agency_ho×19（唔含 ho_manager；玩家面稱何生／事務所）；rumor 獨特 8→16；hook normal124／teased10／hidden3；結構欄／文案未改；Soft≠PASS；唔推 tip"
+    "2026-11-04 18:04（Asia/Hong_Kong）｜3.2.2-soft：Pack A favorDelta／rumorKeys 補密（qwen3.7-max）；初選填15留21空；中全填25；agency_ho×19（唔含 ho_manager；玩家面稱何生／事務所）；rumor 獨特 8→16；hook normal124／teased10／hidden3；結構欄／文案未改；Soft≠PASS；唔推 tip",
+    "2026-11-04 20:50（Asia/Hong_Kong）｜3.2.4-soft Pack B（qwen3.7-max）：genreLabel OOV→ALIGN§3 詞庫（目標 OOV=0）；中階 limits 補 20；中階 producer 新補 16（合計≥14）；counts.keyGigs→66；0 新槽；castWindow HOLD；Soft≠PASS；唔 tip LIVE"
   ],
-  "notes": "Soft≠PASS；唔 publish；唔改 LIVE；89–92 HOLD；出圖 HOLD；唔推 tip；3.2.2-soft Pack A 人情／噂補密；經理人玩家面「何生」；favor target 單一 agency_ho",
+  "notes": "Soft≠PASS；唔 publish；唔改 LIVE；89–92 HOLD；出圖 HOLD；唔推 tip；3.2.4-soft Pack B：OOV remap＋中階 limits／producer＋keyGigs meta 66；經理人玩家面「何生」；favor target 單一 agency_ho；0 新槽 n=137",
   "gigs": [
     {
       "id": "gig_1988_ad_01",
@@ -77,7 +78,7 @@
       "title": "《夜街冰飲驚魂步》街頭路人",
       "loc": "ad_central",
       "workTitle": "夜街冰飲驚魂步",
-      "genreLabel": "靈異廣告",
+      "genreLabel": "影視廣告",
       "roleLabel": "街頭路人",
       "director": "陳達志",
       "roleHint": "戴住耳機行街，步點要跟住鼓點，表情自然唔好望鏡頭。",
@@ -329,7 +330,18 @@
         "summer"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受烈日下戶外拍攝"
+        ]
+      },
+      "producer": "劉建國"
     },
     {
       "id": "gig_1988_ad_04",
@@ -499,7 +511,17 @@
         "autumn"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受誇張髮型造型"
+        ]
+      }
     },
     {
       "id": "gig_1988_ad_06",
@@ -585,7 +607,18 @@
         "autumn"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受指定制服造型"
+        ]
+      },
+      "producer": "趙志偉"
     },
     {
       "id": "gig_1988_ad_07",
@@ -775,7 +808,17 @@
         "winter"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受機場實景拍攝"
+        ]
+      }
     },
     {
       "id": "gig_1988_var_01",
@@ -941,7 +984,18 @@
         "summer"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受高溫戶外拍攝"
+        ]
+      },
+      "producer": "孫國強"
     },
     {
       "id": "gig_1988_var_03",
@@ -1034,7 +1088,7 @@
       "title": "《樂壇新星選拔夜》伴舞演員",
       "loc": "tvb_longmen",
       "workTitle": "樂壇新星選拔夜",
-      "genreLabel": "音樂節目",
+      "genreLabel": "歌唱節目",
       "roleLabel": "伴舞演員",
       "director": "林偉明",
       "roleHint": "配合新人歌手在台上伴舞及舉牌，需要記熟走位。",
@@ -1107,7 +1161,18 @@
         "autumn"
       ],
       "boardHookMode": "teased",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須懂基本舞步走位及現場應變"
+        ]
+      },
+      "producer": "楊偉業"
     },
     {
       "id": "gig_1988_var_05",
@@ -1117,7 +1182,7 @@
       "title": "《瑞氣盈門賀新歲》過場演員",
       "loc": "tvb_longmen",
       "workTitle": "瑞氣盈門賀新歲",
-      "genreLabel": "賀歲晚會",
+      "genreLabel": "晚會",
       "roleLabel": "過場演員",
       "director": "何偉龍",
       "roleHint": "參與過場歌舞及短劇，遠處可見大牌藝人排練。",
@@ -1221,7 +1286,7 @@
       "title": "《靈異屋邨夜話》街坊群戲",
       "loc": "tvb_longmen",
       "workTitle": "靈異屋邨夜話",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "處境喜劇",
       "roleLabel": "街坊群戲",
       "director": "張建華",
       "roleHint": "飾演夜更街坊及路人，配合主角在夜戲中走避及搞笑。",
@@ -1314,7 +1379,7 @@
       "title": "《幽林魅影夜追逐》動作替身",
       "loc": "tvb_kowloon",
       "workTitle": "幽林魅影夜追逐",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "單元劇",
       "roleLabel": "動作替身",
       "director": "陳嘉明",
       "roleHint": "戴面具代替主角在竹林追逐，需要完成翻滾及落地動作。",
@@ -1395,7 +1460,7 @@
       "title": "《飛天劍影決雌雄》武打配角",
       "loc": "tvb_longmen",
       "workTitle": "飛天劍影決雌雄",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "時代劇",
       "roleLabel": "武打配角",
       "director": "程小明",
       "roleHint": "飾演武林門派弟子，參與廠景武打及吊威也場面。",
@@ -1467,7 +1532,18 @@
         "summer"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受吊威也及兵器對打訓練"
+        ]
+      },
+      "producer": "朱志剛"
     },
     {
       "id": "gig_1988_tv_04",
@@ -1477,7 +1553,7 @@
       "title": "《龍門劍影夜決戰》武打配角",
       "loc": "tvb_kowloon",
       "workTitle": "龍門劍影夜決戰",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "時代劇",
       "roleLabel": "武打配角",
       "director": "袁和明",
       "roleHint": "飾演客棧江湖客，參與雨夜廠景武打及吊威也場面。",
@@ -1550,7 +1626,17 @@
         "summer"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受人工降雨及濕滑環境拍攝"
+        ]
+      }
     },
     {
       "id": "gig_1988_tv_05",
@@ -1560,7 +1646,7 @@
       "title": "《青春樂壇大匯演》伴舞演員",
       "loc": "tvb_longmen",
       "workTitle": "青春樂壇大匯演",
-      "genreLabel": "音樂特輯",
+      "genreLabel": "時裝劇",
       "roleLabel": "伴舞演員",
       "director": "王家明",
       "roleHint": "在音樂特輯中擔任伴舞，配合新人歌手演出，需記熟複雜走位。",
@@ -1632,7 +1718,18 @@
         "autumn"
       ],
       "boardHookMode": "teased",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須懂基本舞步走位"
+        ]
+      },
+      "producer": "郭振華"
     },
     {
       "id": "gig_1988_tv_06",
@@ -1642,7 +1739,7 @@
       "title": "《賀歲喜劇笑滿堂》替身雜務",
       "loc": "tvb_longmen",
       "workTitle": "賀歲喜劇笑滿堂",
-      "genreLabel": "賀歲喜劇",
+      "genreLabel": "處境喜劇",
       "roleLabel": "替身雜務",
       "director": "高志明",
       "roleHint": "擔任大堆頭喜劇的替身及雜務，遠處可見大牌藝人正在度期。",
@@ -1741,7 +1838,7 @@
       "title": "《賀歲喜劇樂融融》替身雜務",
       "loc": "tvb_harbour",
       "workTitle": "賀歲喜劇樂融融",
-      "genreLabel": "賀歲喜劇",
+      "genreLabel": "處境喜劇",
       "roleLabel": "替身雜務",
       "director": "杜琪明",
       "roleHint": "擔任大堆頭喜劇的替身及雜務，遠處可見大牌藝人正在對稿。",
@@ -1837,7 +1934,7 @@
       "title": "《霓虹星夢錄》伴舞臨記",
       "loc": "tvb_longmen",
       "workTitle": "霓虹星夢錄",
-      "genreLabel": "時裝長劇",
+      "genreLabel": "時裝劇",
       "roleLabel": "伴舞臨記",
       "director": "陳耀明",
       "roleHint": "遠處可見當紅歌手在後台準備，你只需做好伴舞本份。",
@@ -1931,7 +2028,7 @@
       "title": "《陰陽夜更》動作替身",
       "loc": "film_lion",
       "workTitle": "陰陽夜更",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "動作替身",
       "director": "林偉強",
       "roleHint": "戴上鬼怪面具頂替主角，在煙霧中完成高難度滾翻。",
@@ -2020,7 +2117,7 @@
       "title": "《孤劍破陣》武師群戲",
       "loc": "film_cotton",
       "workTitle": "孤劍破陣",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "江湖動作片",
       "roleLabel": "武師群戲",
       "director": "黃志偉",
       "roleHint": "飾演門派弟子，在雨水特效中參與密集的刀劍對打。",
@@ -2102,7 +2199,7 @@
       "title": "《神探闖天關》武師配角",
       "loc": "film_lion",
       "workTitle": "神探闖天關",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "江湖動作片",
       "roleLabel": "武師配角",
       "director": "李志強",
       "roleHint": "飾演客棧檔長，在飛簷走壁中配合搞笑節奏。",
@@ -2177,7 +2274,19 @@
         "summer"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受吊威也特技訓練",
+          "須懂基本武打走位"
+        ]
+      },
+      "producer": "胡漢文"
     },
     {
       "id": "gig_1988_film_04",
@@ -2187,7 +2296,7 @@
       "title": "《霓虹星途》伴舞臨記",
       "loc": "film_harbour",
       "workTitle": "霓虹星途",
-      "genreLabel": "青春歌舞",
+      "genreLabel": "青春片",
       "roleLabel": "伴舞臨記",
       "director": "王家明",
       "roleHint": "飾演伴舞臨記，在後台穿梭並保持整齊動作。",
@@ -2263,7 +2372,18 @@
         "autumn"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須懂基本舞步走位"
+        ]
+      },
+      "producer": "高志遠"
     },
     {
       "id": "gig_1988_film_05",
@@ -2273,7 +2393,7 @@
       "title": "《新春大吉》男主角",
       "loc": "film_cotton",
       "workTitle": "新春大吉",
-      "genreLabel": "賀歲喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "男主角",
       "director": "高志威",
       "roleHint": "遠處可見大明星在房車休息，你需在貨倉頂住壓力拍戲。",
@@ -2375,7 +2495,7 @@
       "title": "《歲歲平安》男主角",
       "loc": "film_lion",
       "workTitle": "歲歲平安",
-      "genreLabel": "賀歲喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "男主角",
       "director": "張堅偉",
       "roleHint": "遠處可見大明星在監視器旁，你需在長鏡頭中演好隊長。",
@@ -2477,7 +2597,7 @@
       "title": "《歡樂年年》男主角",
       "loc": "film_lion",
       "workTitle": "歡樂年年",
-      "genreLabel": "賀歲喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "男主角",
       "director": "杜明峰",
       "roleHint": "遠處可見大明星在房車對戲，你需在黃昏中演好預科生。",
@@ -2572,7 +2692,7 @@
       "title": "《夜更和音》和音歌手",
       "loc": "rec_hk",
       "workTitle": "夜更和音",
-      "genreLabel": "合唱和音",
+      "genreLabel": "合唱",
       "roleLabel": "和音歌手",
       "director": "顧家明",
       "roleHint": "擔任和音歌手，在舞台上注意走位並對齊聲部。",
@@ -2813,7 +2933,18 @@
         "autumn"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受錄音室長時間重錄"
+        ]
+      },
+      "producer": "麥家輝"
     },
     {
       "id": "gig_1988_rec_04",
@@ -2823,7 +2954,7 @@
       "title": "《冬日暖歌賀歲合唱》合唱嘉賓",
       "loc": "rec_star",
       "workTitle": "冬日暖歌賀歲合唱",
-      "genreLabel": "賀歲流行",
+      "genreLabel": "合唱",
       "roleLabel": "合唱嘉賓",
       "director": "王福良",
       "roleHint": "紅館級彩排走位與燈光半秒都不能差，偶爾能瞥見遠處大牌歌手走過的背影。",
@@ -2921,7 +3052,7 @@
       "title": "《古裝刀劍海報拍攝》武打替身",
       "loc": "ad_adm",
       "workTitle": "古裝刀劍海報拍攝",
-      "genreLabel": "劇照寫真",
+      "genreLabel": "個人寫真",
       "roleLabel": "武打替身",
       "director": "劉偉明",
       "roleHint": "吊威也擺出武打姿勢，要求眼神凌厲，動作要配合攝影師的快門節奏。",
@@ -3173,7 +3304,7 @@
       "title": "《夜半驚魂靈異單元》客串途人",
       "loc": "tvb_harbour",
       "workTitle": "夜半驚魂靈異單元",
-      "genreLabel": "靈異單元劇",
+      "genreLabel": "單元劇",
       "roleLabel": "客串途人",
       "director": "吳啟泰",
       "roleHint": "客串途人目擊車禍後指證，站路邊向探員落口供，幾句對白成為破案關鍵。",
@@ -3254,7 +3385,7 @@
       "title": "《深夜音樂訪談節目》訪談嘉賓",
       "loc": "tvb_harbour",
       "workTitle": "深夜音樂訪談節目",
-      "genreLabel": "音樂訪談",
+      "genreLabel": "訪談節目",
       "roleLabel": "訪談嘉賓",
       "director": "吳天水",
       "roleHint": "深夜訪談細談入行趣事與舊歌來歷，三段錄影一氣呵成，配合鏡頭推近。",
@@ -3327,7 +3458,18 @@
         "autumn"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受深夜錄影及長時間對談"
+        ]
+      },
+      "producer": "蕭偉強"
     },
     {
       "id": "gig_1988_tv_kowloon_autumn",
@@ -3410,7 +3552,17 @@
         "autumn"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受日夜顛倒之廠景拍攝"
+        ]
+      }
     },
     {
       "id": "gig_1988_tv_kowloon_winter",
@@ -3420,7 +3572,7 @@
       "title": "《智醒大挑戰》遊戲嘉賓",
       "loc": "tvb_kowloon",
       "workTitle": "智醒大挑戰",
-      "genreLabel": "益智遊戲",
+      "genreLabel": "遊戲節目",
       "roleLabel": "遊戲嘉賓",
       "director": "張家偉",
       "roleHint": "按鈴回答本地冷知識，答錯即場接受小懲罰，配合主持活躍氣氛。",
@@ -3502,7 +3654,7 @@
       "title": "《鐵橋武館》圍觀臨記",
       "loc": "film_lion",
       "workTitle": "鐵橋武館",
-      "genreLabel": "江湖動作",
+      "genreLabel": "江湖動作片",
       "roleLabel": "圍觀臨記",
       "director": "趙國華",
       "roleHint": "武館門口踢館對峙，客串圍觀者，無對白近景靠眼神與站位撐住氣氛。",
@@ -3586,7 +3738,7 @@
       "title": "《紗廠猛鬼夜》特約演員",
       "loc": "film_cotton",
       "workTitle": "紗廠猛鬼夜",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "特約演員",
       "director": "陳志達",
       "roleHint": "飾演夜班工人，在機器旁被嚇到跌倒，需要配合反應。",
@@ -3668,7 +3820,7 @@
       "title": "《樂壇新星夢》重要配角",
       "loc": "film_cotton",
       "workTitle": "樂壇新星夢",
-      "genreLabel": "青春喜劇",
+      "genreLabel": "青春片",
       "roleLabel": "重要配角",
       "director": "林偉強",
       "roleHint": "飾演參賽新人的助手，在後台幫忙拿道具和走位，有幾場群戲。",
@@ -3741,7 +3893,18 @@
         "autumn"
       ],
       "boardHookMode": "teased",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受後台繁雜環境及搬運道具"
+        ]
+      },
+      "producer": "盧國華"
     },
     {
       "id": "gig_1988_film_harbour_spring",
@@ -3751,7 +3914,7 @@
       "title": "《夜半貨櫃場》特約演員",
       "loc": "film_harbour",
       "workTitle": "夜半貨櫃場",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "特約演員",
       "director": "黃家輝",
       "roleHint": "飾演夜更保安員，在貨櫃場巡邏時遇到怪事，需要表現出害怕。",
@@ -3832,7 +3995,7 @@
       "title": "《決戰碼頭》重要配角",
       "loc": "film_harbour",
       "workTitle": "決戰碼頭",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "江湖動作片",
       "roleLabel": "重要配角",
       "director": "張偉明",
       "roleHint": "飾演武林門派弟子，在碼頭有武打群戲，需要配合吊威也演員。",
@@ -3904,7 +4067,17 @@
         "summer"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受烈日下穿著厚重古裝拍攝"
+        ]
+      }
     },
     {
       "id": "gig_1988_film_harbour_winter",
@@ -3914,7 +4087,7 @@
       "title": "《賀歲大龍鳳》特約演員",
       "loc": "film_harbour",
       "workTitle": "賀歲大龍鳳",
-      "genreLabel": "賀歲喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "特約演員",
       "director": "李國強",
       "roleHint": "飾演茶樓食客，在賀歲大堆頭群戲中做背景，偶爾有反應鏡頭。",
@@ -3997,7 +4170,7 @@
       "title": "《江湖夜雨》和音歌手",
       "loc": "rec_hk",
       "workTitle": "江湖夜雨",
-      "genreLabel": "武俠金曲",
+      "genreLabel": "粵語流行",
       "roleLabel": "和音歌手",
       "director": "趙文傑",
       "roleHint": "為武俠劇主題曲唱和音，需要配合主唱的節奏，疊聲要齊。",
@@ -4144,7 +4317,17 @@
         "autumn"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受錄音室長時間重錄"
+        ]
+      }
     },
     {
       "id": "gig_1988_rec_hk_winter",
@@ -4154,7 +4337,7 @@
       "title": "《新春大合唱》和音歌手",
       "loc": "rec_hk",
       "workTitle": "新春大合唱",
-      "genreLabel": "賀歲合唱",
+      "genreLabel": "合唱",
       "roleLabel": "和音歌手",
       "director": "孫偉明",
       "roleHint": "參與賀歲合唱歌曲錄音，負責三聲部和音，要與主唱配合默契。",
@@ -4388,7 +4571,7 @@
       "title": "《鬼馬夜更和音》和音歌手",
       "loc": "rec_star",
       "workTitle": "鬼馬夜更和音",
-      "genreLabel": "鬼片和音",
+      "genreLabel": "合唱",
       "roleLabel": "和音歌手",
       "director": "林兆聲",
       "roleHint": "在錄音棚配唱鬼馬和音，需配合主唱節奏，演繹出笑中帶嚇的詭異感。",
@@ -4462,7 +4645,18 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受日夜顛倒之錄音安排"
+        ]
+      },
+      "producer": "袁志文"
     },
     {
       "id": "gig_1988_rec_star_summer",
@@ -4472,7 +4666,7 @@
       "title": "《江湖兒女情歌》主唱歌手",
       "loc": "rec_star",
       "workTitle": "江湖兒女情歌",
-      "genreLabel": "武俠情歌",
+      "genreLabel": "情歌",
       "roleLabel": "主唱歌手",
       "director": "趙文龍",
       "roleHint": "主唱古裝武俠劇主題曲，在咪前拿捏溫柔力度，副歌收放要留白。",
@@ -4546,7 +4740,7 @@
       "title": "《金錶冬日特寫》廣告模特兒",
       "loc": "ad_adm",
       "workTitle": "金錶冬日特寫",
-      "genreLabel": "鐘錶廣告",
+      "genreLabel": "平面廣告",
       "roleLabel": "廣告模特兒",
       "director": "王嘉明",
       "roleHint": "拍攝名錶特寫硬照，遠處可見大明星在度期，自己需頂住長鏡頭壓力。",
@@ -4648,7 +4842,7 @@
       "title": "《夜海鎗火》特約男主",
       "loc": "film_harbour",
       "workTitle": "夜海鎗火",
-      "genreLabel": "動作警匪",
+      "genreLabel": "警匪片",
       "roleLabel": "特約男主",
       "director": "何家輝",
       "roleHint": "貨櫃場夜戲拍攝，遠處可見巨星背影，自己需完成高難度走位與槍戰動作。",
@@ -4750,7 +4944,7 @@
       "title": "《歲晚金曲大排練》領唱特約",
       "loc": "rec_hk",
       "workTitle": "歲晚金曲大排練",
-      "genreLabel": "賀歲金曲",
+      "genreLabel": "合唱",
       "roleLabel": "領唱特約",
       "director": "林家傑",
       "roleHint": "紅館前哨大合唱排練，遠處可見大明星度期，自己需頂住長鏡頭壓力帶動氣氛。",
@@ -4847,7 +5041,7 @@
       "title": "《天台結他快歌》MV男主",
       "loc": "rec_wanchai",
       "workTitle": "天台結他快歌",
-      "genreLabel": "快歌MV",
+      "genreLabel": "音樂錄像",
       "roleLabel": "MV男主",
       "director": "徐天華",
       "roleHint": "夏日天台拍快歌MV，領唱兼簡單編舞，結他Live感分鏡要一氣呵成。",
@@ -4924,7 +5118,18 @@
         "summer"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受吊威也特技及戶外拍攝"
+        ]
+      },
+      "producer": "丁長發"
     },
     {
       "id": "gig_1988_rec_wanchai_winter_high",
@@ -4934,7 +5139,7 @@
       "title": "《冬夜情歌通宵錄》主唱臨記",
       "loc": "rec_wanchai",
       "workTitle": "冬夜情歌通宵錄",
-      "genreLabel": "冬日主打",
+      "genreLabel": "情歌",
       "roleLabel": "主唱臨記",
       "director": "黃家傑",
       "roleHint": "通宵錄製冬日主打歌，遠處可見大明星在度期，自己需保持狀態唱到最後。",
@@ -5032,7 +5237,7 @@
       "title": "《九龍警網》臨記男主",
       "loc": "tvb_kowloon",
       "workTitle": "九龍警網",
-      "genreLabel": "動作警匪",
+      "genreLabel": "警匪劇",
       "roleLabel": "臨記男主",
       "director": "何偉龍",
       "roleHint": "參與二十集警匪劇拍攝，遠處可見主角在準備，自己需頂住長鏡頭壓力帶隊。",
@@ -5134,7 +5339,7 @@
       "title": "《春季喜餅宣傳片》廣告模特兒",
       "loc": "ad_adm",
       "workTitle": "春季喜餅宣傳片",
-      "genreLabel": "喜餅廣告",
+      "genreLabel": "影視廣告",
       "roleLabel": "廣告模特兒",
       "director": "何家明",
       "roleHint": "拍攝喜餅春季廣告版，與對手新人對望遞上鐵盒，交出體面而自然的喜氣。",
@@ -5210,7 +5415,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "producer": "曹國輝"
     },
     {
       "id": "gig_1988_ad_central_spring_mid",
@@ -5220,7 +5426,7 @@
       "title": "《街頭耳機宣傳片》臨記路人",
       "loc": "ad_central",
       "workTitle": "街頭耳機宣傳片",
-      "genreLabel": "街頭廣告",
+      "genreLabel": "街頭宣傳",
       "roleLabel": "臨記路人",
       "director": "陳子健",
       "roleHint": "街頭宣傳片中段，在行人路接過耳機，隨拍檔步伐自然接力前行，交出輕鬆笑容。",
@@ -5296,7 +5502,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "producer": "許家傑"
     },
     {
       "id": "gig_1988_film_cotton_summer_mid",
@@ -5306,7 +5513,7 @@
       "title": "《飛沙劍影錄》武行演員",
       "loc": "film_cotton",
       "workTitle": "飛沙劍影錄",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "江湖動作片",
       "roleLabel": "武行演員",
       "director": "陳大龍",
       "roleHint": "飾演被大俠擊飛的蒙面殺手，需配合吊威也完成後空翻動作。",
@@ -5378,7 +5585,8 @@
         "summer"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "producer": "關偉倫"
     },
     {
       "id": "gig_1988_film_lion_autumn_mid",
@@ -5388,7 +5596,7 @@
       "title": "《星光新秀夜》伴舞演員",
       "loc": "film_lion",
       "workTitle": "星光新秀夜",
-      "genreLabel": "音樂劇情",
+      "genreLabel": "青春片",
       "roleLabel": "伴舞演員",
       "director": "林偉業",
       "roleHint": "飾演選拔賽後台伴舞，需在狹窄走廊配合走位，展現人來人往、手忙腳亂的氛圍。",
@@ -5471,7 +5679,7 @@
       "title": "《俠骨柔情曲》伴舞演員",
       "loc": "rec_hk",
       "workTitle": "俠骨柔情曲",
-      "genreLabel": "唱片宣傳",
+      "genreLabel": "音樂錄像",
       "roleLabel": "伴舞演員",
       "director": "黃志豪",
       "roleHint": "飾演武俠主題曲宣傳短片中的持劍舞者，需配合鼓點擺出武打姿勢。",
@@ -5553,7 +5761,7 @@
       "title": "《迷離警署夜》警員臨記",
       "loc": "tvb_harbour",
       "workTitle": "迷離警署夜",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "單元劇",
       "roleLabel": "警員臨記",
       "director": "吳偉強",
       "roleHint": "飾演值夜班的軍裝警員，需在陰森警署走廊巡邏，表現出疑神疑鬼的神態。",
@@ -5636,7 +5844,7 @@
       "title": "《幽靈大廈怪談》住客臨記",
       "loc": "tvb_kowloon",
       "workTitle": "幽靈大廈怪談",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "單元劇",
       "roleLabel": "住客臨記",
       "director": "鄭家明",
       "roleHint": "飾演舊樓住客，在夜半停電的走廊手持電筒照來照去，神情驚慌失措。",
@@ -5719,7 +5927,7 @@
       "title": "《陰陽界捉鬼記》道士徒弟",
       "loc": "tvb_longmen",
       "workTitle": "陰陽界捉鬼記",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "處境喜劇",
       "roleLabel": "道士徒弟",
       "director": "王國輝",
       "roleHint": "飾演道士徒弟，在夜戲中協助師傅佈陣，需在陰暗環境中準確遞上法器。",
@@ -5881,7 +6089,7 @@
       "title": "《猛鬼碼頭夜話》搬運工人",
       "loc": "film_harbour",
       "workTitle": "猛鬼碼頭夜話",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "搬運工人",
       "director": "陳耀明",
       "roleHint": "飾演碼頭搬運工人，在夜半海傍卸貨時撞見靈異事件，需表現出極度驚恐。",
@@ -6139,7 +6347,7 @@
       "title": "《喜氣洋洋聚一堂》現場嘉賓",
       "loc": "tvb_longmen",
       "workTitle": "喜氣洋洋聚一堂",
-      "genreLabel": "綜藝節目",
+      "genreLabel": "晚會",
       "roleLabel": "現場嘉賓",
       "director": "李國輝",
       "roleHint": "配合主持互動，展現喜慶笑容。",
@@ -6213,7 +6421,17 @@
         "winter"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受長時間排練及等候"
+        ]
+      }
     },
     {
       "id": "gig_1988_film_cotton_spring_mid",
@@ -6223,7 +6441,7 @@
       "title": "《凶樓夜半怪談》重要配角",
       "loc": "film_cotton",
       "workTitle": "凶樓夜半怪談",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "驚慄片",
       "roleLabel": "重要配角",
       "director": "林偉明",
       "roleHint": "演繹受驚神情，配合夜戲氣氛。",
@@ -6404,7 +6622,7 @@
       "title": "《夏日冰飲宣傳篇》廣告模特兒",
       "loc": "ad_adm",
       "workTitle": "夏日冰飲宣傳篇",
-      "genreLabel": "電視廣告",
+      "genreLabel": "影視廣告",
       "roleLabel": "廣告模特兒",
       "director": "李國明",
       "roleHint": "展現清涼暢快感，動作需一次到位。",
@@ -6672,7 +6890,7 @@
       "title": "《秋裝潮流封面輯》封面模特兒",
       "loc": "ad_adm",
       "workTitle": "秋裝潮流封面輯",
-      "genreLabel": "雜誌封面",
+      "genreLabel": "平面廣告",
       "roleLabel": "封面模特兒",
       "director": "劉偉華",
       "roleHint": "演繹秋冬新裝儀態，遠處可見歌手背影。",
@@ -7020,7 +7238,7 @@
       "title": "《飛俠雪條廣告》廣告模特",
       "loc": "ad_central",
       "workTitle": "飛俠雪條廣告",
-      "genreLabel": "古裝廣告",
+      "genreLabel": "產品代言",
       "roleLabel": "廣告模特",
       "director": "陳志輝",
       "roleHint": "廠景吊威也拍攝，遠處可見武打巨星背影，需保持良好儀態。",
@@ -7119,7 +7337,7 @@
       "title": "《星聲伴舞宣傳》宣傳模特",
       "loc": "ad_central",
       "workTitle": "星聲伴舞宣傳",
-      "genreLabel": "唱片宣傳",
+      "genreLabel": "平面廣告",
       "roleLabel": "宣傳模特",
       "director": "林偉強",
       "roleHint": "後台兵荒馬亂，遠處可見當紅歌手背影，需配合宣傳走位。",
@@ -7297,7 +7515,7 @@
       "title": "《詭校夜話》男主角",
       "loc": "film_cotton",
       "workTitle": "詭校夜話",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "男主角",
       "director": "陳耀明",
       "roleHint": "片場日夜顛倒，遠處可見喜劇巨星背影，需應付大量夜戲排練。",
@@ -7395,7 +7613,7 @@
       "title": "《霜刃寒光》男主角",
       "loc": "film_cotton",
       "workTitle": "霜刃寒光",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "江湖動作片",
       "roleLabel": "男主角",
       "director": "李志遠",
       "roleHint": "廠景武打拍攝，遠處可見武俠巨星背影，需親身上陣吊威也排練。",
@@ -7674,7 +7892,7 @@
       "title": "《歲晚街頭》客串演員",
       "loc": "film_cotton",
       "workTitle": "歲晚街頭",
-      "genreLabel": "賀歲喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "客串演員",
       "director": "孫國榮",
       "roleHint": "客串演出街頭賣藝人，於群戲中與女主角短暫交談，需配合寒夜外景燈光。",
@@ -7759,7 +7977,7 @@
       "title": "《賀歲家宴》男配角",
       "loc": "film_cotton",
       "workTitle": "賀歲家宴",
-      "genreLabel": "賀歲喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "男配角",
       "director": "周家明",
       "roleHint": "飾演主角的舅父，在團年飯群戲中連番鬥嘴，需配合走位帶出笑料。",
@@ -7841,7 +8059,7 @@
       "title": "《海傍詭影》男主角",
       "loc": "film_harbour",
       "workTitle": "海傍詭影",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "男主角",
       "director": "梁家明",
       "roleHint": "片場日夜顛倒，遠處可見喜劇巨星背影，需應付大量夜戲與動作排練。",
@@ -7939,7 +8157,7 @@
       "title": "《劍影迷蹤》特約武師",
       "loc": "film_harbour",
       "workTitle": "劍影迷蹤",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "江湖動作片",
       "roleLabel": "特約武師",
       "director": "林耀宗",
       "roleHint": "負責遠景翻騰及挨打鏡頭，需配合武術指導排練走位。",
@@ -8014,7 +8232,7 @@
       "title": "《狂劍震江湖》動作特約",
       "loc": "film_harbour",
       "workTitle": "狂劍震江湖",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "江湖動作片",
       "roleLabel": "動作特約",
       "director": "鄭偉明",
       "roleHint": "負責近景高難度武打，遠處可見男主角練劍背影。",
@@ -8112,7 +8330,7 @@
       "title": "《霓虹星夢》背景伴舞",
       "loc": "film_harbour",
       "workTitle": "霓虹星夢",
-      "genreLabel": "青春歌舞",
+      "genreLabel": "青春片",
       "roleLabel": "背景伴舞",
       "director": "梁志誠",
       "roleHint": "擔任選拔節目背景伴舞，需配合燈光走位及舉牌。",
@@ -8186,7 +8404,7 @@
       "title": "《招財進寶》動作替身",
       "loc": "film_harbour",
       "workTitle": "招財進寶",
-      "genreLabel": "賀歲喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "動作替身",
       "director": "黃兆基",
       "roleHint": "擔任主要角色動作替身，兼顧片場雜務及度期協調。",
@@ -8269,7 +8487,7 @@
       "title": "《財神賀歲》主要替身",
       "loc": "film_harbour",
       "workTitle": "財神賀歲",
-      "genreLabel": "賀歲喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "主要替身",
       "director": "高志強",
       "roleHint": "擔任男主角主要替身，遠處可見其試裝背影。",
@@ -8372,7 +8590,7 @@
       "title": "《詭異夜班》特約演員",
       "loc": "film_lion",
       "workTitle": "詭異夜班",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "特約演員",
       "director": "趙家明",
       "roleHint": "飾演夜更保安，需掌握喜劇節奏及夜戲氣氛。",
@@ -8457,7 +8675,7 @@
       "title": "《幽靈夜巡隊》主要配角",
       "loc": "film_lion",
       "workTitle": "幽靈夜巡隊",
-      "genreLabel": "靈異喜劇",
+      "genreLabel": "喜劇片",
       "roleLabel": "主要配角",
       "director": "黃偉倫",
       "roleHint": "飾演捉鬼隊隊長，需完成夜戲動作場面。",
@@ -8555,7 +8773,7 @@
       "title": "《星影遊俠》臨時武師",
       "loc": "film_lion",
       "workTitle": "星影遊俠",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "江湖動作片",
       "roleLabel": "臨時武師",
       "director": "吳家輝",
       "roleHint": "負責遠景翻騰及挨打鏡頭，需配合武指排練。",
@@ -8637,7 +8855,7 @@
       "title": "《雲海劍訣》主要武師",
       "loc": "film_lion",
       "workTitle": "雲海劍訣",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "江湖動作片",
       "roleLabel": "主要武師",
       "director": "周文傑",
       "roleHint": "負責近景高難度武打，需配合攝影機走位。",
@@ -8739,7 +8957,7 @@
       "title": "《幻彩舞影》主要伴舞",
       "loc": "film_lion",
       "workTitle": "幻彩舞影",
-      "genreLabel": "青春歌舞",
+      "genreLabel": "青春片",
       "roleLabel": "主要伴舞",
       "director": "李慕華",
       "roleHint": "擔任新秀選拔主要伴舞，需配合舞台燈光走位。",
@@ -8842,7 +9060,7 @@
       "title": "《雪嶺福星》動作替身",
       "loc": "film_lion",
       "workTitle": "雪嶺福星",
-      "genreLabel": "賀歲動作",
+      "genreLabel": "喜劇片",
       "roleLabel": "動作替身",
       "director": "鄭漢雄",
       "roleHint": "負責代替主角完成高難度翻滾及撞牆鏡頭，須聽從武指指示。",
@@ -8924,7 +9142,7 @@
       "title": "《福星神探》男配角",
       "loc": "film_lion",
       "workTitle": "福星神探",
-      "genreLabel": "賀歲警匪",
+      "genreLabel": "警匪片",
       "roleLabel": "男配角",
       "director": "李志強",
       "roleHint": "飾演警隊內鬼，需準確走位配合鏡頭調度，完成審訊室及貨倉兩場重頭戲。",
@@ -9095,7 +9313,7 @@
       "title": "《春日艷陽》唱片主唱",
       "loc": "rec_hk",
       "workTitle": "春日艷陽",
-      "genreLabel": "抒情流行",
+      "genreLabel": "情歌",
       "roleLabel": "唱片主唱",
       "director": "何志光",
       "roleHint": "擔綱春季重點大碟，錄音期長。間中瞥見知名男歌手在遠處走廊與監製傾談。",
@@ -9193,7 +9411,7 @@
       "title": "《熱浪之夏》唱片主唱",
       "loc": "rec_hk",
       "workTitle": "熱浪之夏",
-      "genreLabel": "動感快歌",
+      "genreLabel": "快歌",
       "roleLabel": "唱片主唱",
       "director": "張德輝",
       "roleHint": "負責暑期快歌錄音及MV拍攝。休息時偶見當紅武打巨星在遠處片場吊威也。",
@@ -9291,7 +9509,7 @@
       "title": "《暮秋伴唱》和音歌手",
       "loc": "rec_hk",
       "workTitle": "暮秋伴唱",
-      "genreLabel": "動感快歌",
+      "genreLabel": "快歌",
       "roleLabel": "和音歌手",
       "director": "李伯良",
       "roleHint": "負責秋季快歌副歌部分的和聲錄音，需按編曲要求準確入拍及反覆試唱。",
@@ -9474,7 +9692,7 @@
       "title": "《嚴冬暖歌》唱片主唱",
       "loc": "rec_hk",
       "workTitle": "嚴冬暖歌",
-      "genreLabel": "抒情流行",
+      "genreLabel": "情歌",
       "roleLabel": "唱片主唱",
       "director": "陳啟文",
       "roleHint": "負責年終賀歲合輯抒情主打錄音，需配合監製完成混音調整及特備節目演出。",
@@ -9559,7 +9777,7 @@
       "title": "《早春和聲》和音歌手",
       "loc": "rec_star",
       "workTitle": "早春和聲",
-      "genreLabel": "合唱歌曲",
+      "genreLabel": "合唱",
       "roleLabel": "和音歌手",
       "director": "陳子揚",
       "roleHint": "參與新季開棚的合唱錄音，需於副歌部分疊聲配合，全程按拍子記號入位。",
@@ -9633,7 +9851,7 @@
       "title": "《早春戀曲》唱片主唱",
       "loc": "rec_star",
       "workTitle": "早春戀曲",
-      "genreLabel": "抒情流行",
+      "genreLabel": "情歌",
       "roleLabel": "唱片主唱",
       "director": "黃肇文",
       "roleHint": "擔綱本地碟春季主打情歌。在錄音室外，偶然瞥見當紅男歌手在遠處與監製傾談。",
@@ -9731,7 +9949,7 @@
       "title": "《俠影劍蹤主題曲》主唱",
       "loc": "rec_star",
       "workTitle": "俠影劍蹤主題曲",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "粵語流行",
       "roleLabel": "主唱",
       "director": "林柏堅",
       "roleHint": "錄音室走廊偶爾瞥見遠處武打巨星吊威也的背影，切勿上前打擾。",
@@ -9829,7 +10047,7 @@
       "title": "《新星選拔賽和音》和音",
       "loc": "rec_star",
       "workTitle": "新星選拔賽和音",
-      "genreLabel": "流行快歌",
+      "genreLabel": "快歌",
       "roleLabel": "和音",
       "director": "張偉強",
       "roleHint": "和音組需集中處理副歌部分，按編曲指示分聲部入咪，保持節奏感。",
@@ -10002,7 +10220,7 @@
       "title": "《賀歲喜劇合唱和聲》和音",
       "loc": "rec_star",
       "workTitle": "賀歲喜劇合唱和聲",
-      "genreLabel": "賀歲合唱",
+      "genreLabel": "合唱",
       "roleLabel": "和音",
       "director": "王家輝",
       "roleHint": "和音組須與主唱聲線對齊，於副歌層補上和應，逐句重唱至整齊。",
@@ -10342,7 +10560,7 @@
       "title": "《武俠重拍劇集插曲》主唱",
       "loc": "rec_wanchai",
       "workTitle": "武俠重拍劇集插曲",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "粵語流行",
       "roleLabel": "主唱",
       "director": "吳家輝",
       "roleHint": "廠景錄音時偶爾瞥見遠處武打巨星吊威也的背影，切勿上前打擾。",
@@ -10624,7 +10842,7 @@
       "title": "《靈異搞笑大派對》固定班底",
       "loc": "tvb_harbour",
       "workTitle": "靈異搞笑大派對",
-      "genreLabel": "靈異綜藝",
+      "genreLabel": "遊戲節目",
       "roleLabel": "固定班底",
       "director": "陳志達",
       "roleHint": "偶爾瞥見當紅小生在遠處對稿，未有埋位交流的機會。",
@@ -10724,7 +10942,7 @@
       "title": "《武林搞笑大擂台》遊戲嘉賓",
       "loc": "tvb_harbour",
       "workTitle": "武林搞笑大擂台",
-      "genreLabel": "武俠綜藝",
+      "genreLabel": "遊戲節目",
       "roleLabel": "遊戲嘉賓",
       "director": "林偉強",
       "roleHint": "只需跟足指示做動作，不用太多對白。",
@@ -10799,7 +11017,7 @@
       "title": "《傲劍狂刀震江湖》跟組特約",
       "loc": "tvb_harbour",
       "workTitle": "傲劍狂刀震江湖",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "時代劇",
       "roleLabel": "跟組特約",
       "director": "黃建明",
       "roleHint": "偶爾在片場遠處看見當紅武打小生練劍，未有對手戲。",
@@ -10898,7 +11116,7 @@
       "title": "《樂壇新秀大舞台》舉牌助手",
       "loc": "tvb_harbour",
       "workTitle": "樂壇新秀大舞台",
-      "genreLabel": "音樂綜藝",
+      "genreLabel": "歌唱節目",
       "roleLabel": "舉牌助手",
       "director": "蘇偉文",
       "roleHint": "只需在後台協助舉牌及帶動氣氛，不用出鏡。",
@@ -10984,7 +11202,7 @@
       "title": "《霓虹燈下的歌聲》跟組特約",
       "loc": "tvb_harbour",
       "workTitle": "霓虹燈下的歌聲",
-      "genreLabel": "樂壇劇情",
+      "genreLabel": "時代劇",
       "roleLabel": "跟組特約",
       "director": "李國輝",
       "roleHint": "間中在走廊遠處瞥見當紅歌手度稿，未有埋位交流。",
@@ -11086,7 +11304,7 @@
       "title": "《歲晚遊戲大派對》遊戲嘉賓",
       "loc": "tvb_harbour",
       "workTitle": "歲晚遊戲大派對",
-      "genreLabel": "賀歲綜藝",
+      "genreLabel": "遊戲節目",
       "roleLabel": "遊戲嘉賓",
       "director": "張志強",
       "roleHint": "只需跟足指示玩遊戲，不用太多對白。",
@@ -11161,7 +11379,7 @@
       "title": "《迎春接福大闖關》遊戲嘉賓",
       "loc": "tvb_harbour",
       "workTitle": "迎春接福大闖關",
-      "genreLabel": "賀歲綜藝",
+      "genreLabel": "遊戲節目",
       "roleLabel": "遊戲嘉賓",
       "director": "陳建國",
       "roleHint": "需與主持隊分組對賽，反應要夠快。",
@@ -11246,7 +11464,7 @@
       "title": "《夜半靈異大匯演》固定班底",
       "loc": "tvb_kowloon",
       "workTitle": "夜半靈異大匯演",
-      "genreLabel": "靈異綜藝",
+      "genreLabel": "晚會",
       "roleLabel": "固定班底",
       "director": "王家明",
       "roleHint": "偶爾在片場遠處看見當紅小生對稿，未有埋位交流。",
@@ -11346,7 +11564,7 @@
       "title": "《雲海劍俠傳》跟組特約",
       "loc": "tvb_kowloon",
       "workTitle": "雲海劍俠傳",
-      "genreLabel": "古裝武俠",
+      "genreLabel": "時代劇",
       "roleLabel": "跟組特約",
       "director": "方浩源",
       "roleHint": "間中在片場遠處瞥見當紅武打小生練劍，暫無對手戲。",
@@ -11520,7 +11738,7 @@
       "title": "《星輝金曲爭霸戰》伴舞臨記",
       "loc": "tvb_kowloon",
       "workTitle": "星輝金曲爭霸戰",
-      "genreLabel": "音樂綜藝",
+      "genreLabel": "歌唱節目",
       "roleLabel": "伴舞臨記",
       "director": "林柏生",
       "roleHint": "在後台通道遠觀駱家聲背影，負責舉牌及伴舞走位。",
@@ -11623,7 +11841,7 @@
       "title": "《賀歲遊戲大比拼》遊戲嘉賓",
       "loc": "tvb_kowloon",
       "workTitle": "賀歲遊戲大比拼",
-      "genreLabel": "遊戲綜藝",
+      "genreLabel": "遊戲節目",
       "roleLabel": "遊戲嘉賓",
       "director": "張偉強",
       "roleHint": "參與分組體能關卡，負責搶答及帶動現場氣氛，需配合主持搞笑。",
@@ -11707,7 +11925,7 @@
       "title": "《靈幻喜劇迎春夜》固定班底",
       "loc": "tvb_longmen",
       "workTitle": "靈幻喜劇迎春夜",
-      "genreLabel": "靈異綜藝",
+      "genreLabel": "晚會",
       "roleLabel": "固定班底",
       "director": "黃志鳴",
       "roleHint": "在片場遠處遠觀麥震東排練，負責夜戲氣氛營造及大合唱走位。",
@@ -11882,7 +12100,7 @@
       "title": "《盛夏武俠群星夜》固定班底",
       "loc": "tvb_longmen",
       "workTitle": "盛夏武俠群星夜",
-      "genreLabel": "武俠綜藝",
+      "genreLabel": "晚會",
       "roleLabel": "固定班底",
       "director": "程智東",
       "roleHint": "在廠景遠處遠觀齊鎮海吊威也，負責歌舞開場及競技環節走位。",
@@ -12061,7 +12279,7 @@
       "title": "《鴻運當頭笑住過》替身雜務",
       "loc": "tvb_longmen",
       "workTitle": "鴻運當頭笑住過",
-      "genreLabel": "賀歲喜劇",
+      "genreLabel": "處境喜劇",
       "roleLabel": "替身雜務",
       "director": "林柏堅",
       "roleHint": "擔任大牌藝人替身及片場雜務，於賀歲喜劇前期籌備中協助走位及處理雜務。",
@@ -12139,5 +12357,5 @@
     }
   ],
   "matrixRef": "MATRIX_GIG_ERA_1988_v1",
-  "changelogHint": "Bug1: 10 junior isKeyGig→false; favor/rumor/hooks/agency_ho unchanged"
+  "changelogHint": "Pack B Soft：OOV genreLabel→ALIGN§3；中階 limits≥15／producer≥30%；counts.keyGigs 76→66；0 新槽；castWindow HOLD；Soft≠PASS"
 }
