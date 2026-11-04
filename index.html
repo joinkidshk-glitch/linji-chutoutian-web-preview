@@ -22,9 +22,9 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=16");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19v");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=16");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19v");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
   --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=17e");
@@ -2668,6 +2668,17 @@ body.day-res-open #mask.day-res{
   flex:0 0 auto !important;
   white-space:nowrap !important;
 }
+/* v19v: cafe_cha／agency_ho loc sheet shows bg_loc_* above the cream actions */
+#loc-sheet .loc-bg{
+  display:none;
+  height:92px;
+  margin:2px 0 6px;
+  border-radius:10px;
+  background:#1a1410 center 42% / cover no-repeat;
+  border:1px solid rgba(107,78,46,.4);
+  flex:0 0 auto;
+}
+#loc-sheet.has-loc-bg .loc-bg{ display:block; }
 
 </style>
 </head>
@@ -2747,6 +2758,7 @@ body.day-res-open #mask.day-res{
     <!-- v17y: sheet is sibling of map-wrap so absolute bottom pins to #v-map, not mid flex/scroll -->
     <div class="sheet" id="loc-sheet">
       <div class="grab"></div>
+      <div class="loc-bg" id="loc-bg" hidden></div>
       <h2 id="loc-title">地點</h2>
       <p class="sub" id="loc-desc"></p>
       <p class="sub" id="loc-who"></p>
@@ -5130,7 +5142,8 @@ const StoryPlay = (()=>{
   };
   const SP_KNOWN_LOCS = {
     tvb_longmen:1, tvb_kowloon:1, tvb_harbour:1, film_lion:1, film_cotton:1, film_harbour:1,
-    ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1
+    ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
+    cafe_cha:1, agency_ho:1
   };
   /** expression-aware bust paths tried at runtime; missing files → PORTRAITS → 剪影 */
   const SP_BUST_PROBE = Object.create(null); /* url -> true/false */
@@ -5272,6 +5285,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
+      out.push("assets/story/locs/"+key+"."+ext+"?v=19v");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -9386,6 +9400,7 @@ function openLoc(id){
     return true;
   });
   document.getElementById("loc-title").textContent=`${L.emoji} ${L.name}`;
+  applyLocSheetBg(L.id);
   const hub = !!mockAskDefs(L.id);
   if(hub){
     document.getElementById("loc-desc").textContent = L.desc||"";
@@ -9520,9 +9535,29 @@ function openLoc(id){
   scrollMapPinIntoView(id);
   if(id==="agency_ho") playPushDoor();
 }
+const LOC_SHEET_BG = {
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19v",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19v",
+};
+function applyLocSheetBg(locId){
+  const sheet=document.getElementById("loc-sheet");
+  const bg=document.getElementById("loc-bg");
+  const url=LOC_SHEET_BG[locId];
+  if(!sheet || !bg) return;
+  if(url){
+    bg.style.backgroundImage='url("'+url+'")';
+    bg.hidden=false;
+    sheet.classList.add("has-loc-bg");
+  } else {
+    bg.style.backgroundImage="";
+    bg.hidden=true;
+    sheet.classList.remove("has-loc-bg");
+  }
+}
 function closeSheet(){
   const sheet=document.getElementById("loc-sheet");
   if(sheet) sheet.classList.remove("on");
+  try{ applyLocSheetBg(""); }catch(_e){}
   const wrap=mapWrapEl();
   if(wrap) wrap.classList.remove("sheet-open");
   restoreMapScroll();

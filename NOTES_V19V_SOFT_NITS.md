@@ -9,6 +9,8 @@ Phone web preview tip. Soft nits only, after v19u browser PASS. Parent tip stays
 5. 地圖／loc toast 唔再因為身在地圖就 `closeSheet()`。只有呼叫方傳 `closeSheet:true` 先收 sheet。地圖上 sheet 開住時，票根 toast 移到分區掣下面，茶餐廳／事務所三個行動同「返地圖」保持可見。
 6. Modal 豎滾選擇列：小賣／送禮 `.act` 喺 `#modal-inner` 內，右掣 `min-width:0`＋唔縮，避免尾掣被橫向裁走。Casting sheet 底掣仍喺 `#modal-btns`，未改。
 
-C1–C5 閘、硬鎖、看板分級、通告 JSON 內容（除 keyGigs 數字）未改。無新圖。
+6. Soft-PASS 圖：`assets/story/locs/bg_loc_cafe_cha.jpg`、`bg_loc_agency_ho.jpg` 掛上對應 Loc sheet（`?v=19v`），故事背景候選亦先搵 `assets/story/locs/`。HUD `hud_shell_bar` 同拍立得 `map_polaroid_frame` 換輕量檔，CSS `?v=16` → `?v=19v`。相井透明。無 C 閘／通告正文改動。
+
+C1–C5 閘、硬鎖、看板分級、通告 JSON 內容（除 keyGigs 數字）未改。
 
 Soft≠PASS. 出圖 HOLD. 唔 publish. 唔 merge.
