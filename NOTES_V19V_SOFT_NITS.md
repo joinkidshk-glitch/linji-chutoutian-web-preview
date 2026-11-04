@@ -11,6 +11,8 @@ Phone web preview tip. Soft nits only, after v19u browser PASS. Parent tip stays
 
 6. Soft-PASS 圖：`assets/story/locs/bg_loc_cafe_cha.jpg`、`bg_loc_agency_ho.jpg` 掛上對應 Loc sheet（`?v=19v`），故事背景候選亦先搵 `assets/story/locs/`。HUD `hud_shell_bar` 同拍立得 `map_polaroid_frame` 換輕量檔，CSS `?v=16` → `?v=19v`。相井透明。無 C 閘／通告正文改動。
 
+7. Phase 2 deepen Soft（mock only）：手動拼合三對（確認對話；對得上先出合成卡同「啪！蓋個印…」；對唔上「牛頭唔搭馬嘴」）。今季催收卡＋模糊債語。罰只係 toast 同「人情壓力」顯示，唔寫壓力閘、唔鎖通告。弱標籤係手帳暗紋約 8%（捱得／識做等），唔出標籤列表、唔出工程 id。債主維持 **化妝姐美兒**。A/B 仍係金龍｜手動｜模糊債｜淡入｜推門｜刷新 B。
+
 C1–C5 閘、硬鎖、看板分級、通告 JSON 內容（除 keyGigs 數字）未改。
 
 Soft≠PASS. 出圖 HOLD. 唔 publish. 唔 merge.

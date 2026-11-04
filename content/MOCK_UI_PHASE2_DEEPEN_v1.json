@@ -1,0 +1,248 @@
+{
+  "meta": {
+    "version": "v1",
+    "softStatus": "≠PASS",
+    "note": "Soft≠PASS｜經 qwen3.7-max｜對齊 A/B Soft 預設｜唔 tip；唔改 LIVE 行為閘；出圖 HOLD；89–92 HOLD。",
+    "model": "qwen3.7-max",
+    "alignedPlans": [
+      "PLAN_UI_PHASE2_DEEPEN",
+      "PLAN_UI_PHASE2_COPY_HOOKS",
+      "PLAN_UI",
+      "PLAN_STORY_FULL"
+    ],
+    "abSoftDefaults": [
+      "金龍茶餐廳",
+      "手動拼合",
+      "模糊債",
+      "淡入季節",
+      "推門入場",
+      "情報刷新B隨機"
+    ]
+  },
+  "mergeFlow": {
+    "emptyState": "本仔靜雞雞，去金龍茶餐廳飲杯茶聽下風啦。",
+    "noPairHint": "呢兩單嘢牛頭唔搭馬嘴，夾硬嚟都冇用。",
+    "failToast": "諗到一半斷咗思路，遲啲再算。",
+    "successStampLine": "啪！蓋個印，呢單嘢有頭緒喇。",
+    "confirmLabel": "確認拼合",
+    "cancelLabel": "取消"
+  },
+  "mergePairs": [
+    {
+      "pairId": "pair_lu_baiyan_breakdown",
+      "fragA": {
+        "title": "陸柏言片場發脾氣",
+        "body": "陸柏言喺片場無端端發火，鬧到成個場靜晒。",
+        "sourceLabel": "場務八卦"
+      },
+      "fragB": {
+        "title": "陸柏言深夜買醉",
+        "body": "有人見到陸柏言半夜喺蘭桂坊飲到爛醉。",
+        "sourceLabel": "酒保閒聊"
+      },
+      "merged": {
+        "title": "陸柏言情緒失控疑雲",
+        "body": "陸柏言喺片場發完脾氣，夜晚又去買醉，睇嚟佢最近頂住好大壓力，隨時會爆鑊。"
+      },
+      "stampLine": "啪！蓋個印，呢單嘢有頭緒喇。"
+    },
+    {
+      "pairId": "pair_liao_bingxing_money",
+      "fragA": {
+        "title": "廖炳星同導演密談",
+        "body": "廖炳星同導演喺房傾咗成個鐘，出嚟個個面色古怪。",
+        "sourceLabel": "茶水姐傳聞"
+      },
+      "fragB": {
+        "title": "劇組突然換角",
+        "body": "原本定咗嘅男二突然換人，聽講係帶資入組。",
+        "sourceLabel": "選角導演漏口風"
+      },
+      "merged": {
+        "title": "廖炳星帶錢入組傳聞",
+        "body": "廖炳星同導演密談完就突然換角，圈內都傳佢係帶住資金入組，難怪咁巴閉。"
+      },
+      "stampLine": "啪！蓋個印，呢單嘢有頭緒喇。"
+    },
+    {
+      "pairId": "pair_mai_zhendong_hide_injury",
+      "fragA": {
+        "title": "麥震東片場整親",
+        "body": "麥震東拍動作戲跌親，行路一拐一拐。",
+        "sourceLabel": "武師目擊"
+      },
+      "fragB": {
+        "title": "麥震東拒睇醫生",
+        "body": "製片叫麥震東去醫院，佢死都唔肯，話唔想耽誤進度。",
+        "sourceLabel": "製片助理抱怨"
+      },
+      "merged": {
+        "title": "麥震東隱瞞傷情搏上位",
+        "body": "麥震東喺片場整親又死都唔肯睇醫生，明顯係想隱瞞傷情搏表現，真係夠狠。"
+      },
+      "stampLine": "啪！蓋個印，呢單嘢有頭緒喇。"
+    }
+  ],
+  "seasonCollectCards": [
+    {
+      "id": "card_ho_spring",
+      "season": "春",
+      "creditorLabel": "何生",
+      "title": "何生春季數",
+      "collectLine": "春天萬物生長，你欠我嗰筆數都係時候發下芽，清一清啦。",
+      "statusLabel": "就嚟到期",
+      "fadeInHint": "轉季喇，天氣變咗，啲數都係時候清一清。"
+    },
+    {
+      "id": "card_zhang_spring",
+      "season": "春",
+      "creditorLabel": "道具組老張",
+      "title": "老張開春器材數",
+      "collectLine": "開春大吉，劇組要添置新道具，你之前借咗嗰啲器材錢，係時候還返。",
+      "statusLabel": "未到期",
+      "fadeInHint": "轉季喇，天氣變咗，啲數都係時候清一清。"
+    },
+    {
+      "id": "card_biao_summer",
+      "season": "夏",
+      "creditorLabel": "副導阿標",
+      "title": "阿標夏季人情數",
+      "collectLine": "天氣熱，大家火氣都大啲。你欠我嗰個人情，趁未鬧交前快啲還咗佢。",
+      "statusLabel": "已逾期",
+      "fadeInHint": "轉季喇，天氣變咗，啲數都係時候清一清。"
+    },
+    {
+      "id": "card_may_summer",
+      "season": "夏",
+      "creditorLabel": "化妝姐美兒",
+      "title": "化妝姐美兒化妝品數",
+      "collectLine": "夏天出外景溶妝好煩，你之前話幫我搞掂嗰批化妝品，記得跟進返。",
+      "statusLabel": "就嚟到期",
+      "fadeInHint": "轉季喇，天氣變咗，啲數都係時候清一清。"
+    },
+    {
+      "id": "card_ho_autumn",
+      "season": "秋",
+      "creditorLabel": "何生",
+      "title": "何生秋季數",
+      "collectLine": "秋風起，食臘味。你欠我嗰筆數，唔好等過年先還，早啲清咗大家好過冬。",
+      "statusLabel": "就嚟到期",
+      "fadeInHint": "轉季喇，天氣變咗，啲數都係時候清一清。"
+    },
+    {
+      "id": "card_zhang_autumn",
+      "season": "秋",
+      "creditorLabel": "道具組老張",
+      "title": "老張秋季佈景數",
+      "collectLine": "秋季轉景多，倉庫要執一執。你之前借走嗰批佈景板，快啲還返嚟。",
+      "statusLabel": "未到期",
+      "fadeInHint": "轉季喇，天氣變咗，啲數都係時候清一清。"
+    },
+    {
+      "id": "card_biao_winter",
+      "season": "冬",
+      "creditorLabel": "副導阿標",
+      "title": "阿標冬季人情數",
+      "collectLine": "就快過年，大家都要數。你欠我嗰個人情，唔好帶住過年，快啲清咗佢。",
+      "statusLabel": "已逾期",
+      "fadeInHint": "轉季喇，天氣變咗，啲數都係時候清一清。"
+    },
+    {
+      "id": "card_may_winter",
+      "season": "冬",
+      "creditorLabel": "化妝姐美兒",
+      "title": "化妝姐美兒護膚品數",
+      "collectLine": "冬天皮膚乾，買護膚品好貴。你之前應承幫我買嗰支精華液，記得找數。",
+      "statusLabel": "就嚟到期",
+      "fadeInHint": "轉季喇，天氣變咗，啲數都係時候清一清。"
+    }
+  ],
+  "weakLabels": [
+    {
+      "labelId": "label_hardwork",
+      "playerName": "捱得",
+      "watermarkHint": "手帳內頁出現極淡嘅撕紙水印「捱得」",
+      "npcHint": "呢個臨記真係捱得，連拍三個大夜都頂得住，後生仔可造之材。",
+      "hideNote": "隱藏為主；弱顯示 only"
+    },
+    {
+      "labelId": "label_smart",
+      "playerName": "識做",
+      "watermarkHint": "手帳內頁出現極淡嘅撕紙水印「識做」",
+      "npcHint": "佢做人好識做，導演未出聲佢已經遞咗支水過去，難怪咁多人錫佢。",
+      "hideNote": "隱藏為主；弱顯示 only"
+    },
+    {
+      "labelId": "label_diva",
+      "playerName": "大牌",
+      "watermarkHint": "手帳內頁出現極淡嘅撕紙水印「大牌」",
+      "npcHint": "未紅先大牌，遲到仲要人服侍，呢種人喺圈內行唔遠。",
+      "hideNote": "隱藏為主；弱顯示 only"
+    },
+    {
+      "labelId": "label_rough",
+      "playerName": "爛仔",
+      "watermarkHint": "手帳內頁出現極淡嘅撕紙水印「爛仔」",
+      "npcHint": "佢做事有啲爛仔作風，講數嗰陣好惡，不過對兄弟都算夠義氣。",
+      "hideNote": "隱藏為主；弱顯示 only"
+    },
+    {
+      "labelId": "label_tight_lipped",
+      "playerName": "守口如瓶",
+      "watermarkHint": "手帳內頁出現極淡嘅撕紙水印「守口如瓶」",
+      "npcHint": "呢個女仔守口如瓶，片場啲八卦問佢一定唔會講，信得過。",
+      "hideNote": "隱藏為主；弱顯示 only"
+    },
+    {
+      "labelId": "label_show_off",
+      "playerName": "搏出位",
+      "watermarkHint": "手帳內頁出現極淡嘅撕紙水印「搏出位」",
+      "npcHint": "佢好搏出位，就算做個死屍都要加戲，有野心係好事，但小心過火。",
+      "hideNote": "隱藏為主；弱顯示 only"
+    }
+  ],
+  "toasts": {
+    "seasonFadeIn": "轉季喇，天氣變咗，啲數都係時候清一清。",
+    "debtCollectNudge": "又過一季，人情數目記心頭。",
+    "mergeGlow": "兩張卡拉埋，邊緣泛起微光。",
+    "randomRefreshHint": "情報刷新，去金龍茶餐廳聽下新風聲。"
+  },
+  "hooks": [
+    {
+      "hookId": "hook_merge_lu",
+      "playerLine": "陸柏言最近情緒咁差，一定有內情。",
+      "kind": "merge",
+      "alignNote": "DEV 計劃層"
+    },
+    {
+      "hookId": "hook_merge_liao",
+      "playerLine": "帶錢入組？難怪廖炳星喺片場咁惡死。",
+      "kind": "merge",
+      "alignNote": "DEV 計劃層"
+    },
+    {
+      "hookId": "hook_merge_mai",
+      "playerLine": "麥震東連傷都唔睇，真係搏到盡。",
+      "kind": "merge",
+      "alignNote": "DEV 計劃層"
+    },
+    {
+      "hookId": "hook_collect_ho",
+      "playerLine": "何生又嚟催數，要快啲搵錢填氹先得。",
+      "kind": "collect",
+      "alignNote": "DEV 計劃層"
+    },
+    {
+      "hookId": "hook_collect_zhang",
+      "playerLine": "老張催緊器材數，要想辦法還返佢。",
+      "kind": "collect",
+      "alignNote": "DEV 計劃層"
+    },
+    {
+      "hookId": "hook_weak_hardwork",
+      "playerLine": "只要捱得，總會有出頭天。",
+      "kind": "weakLabel",
+      "alignNote": "DEV 計劃層"
+    }
+  ]
+}
