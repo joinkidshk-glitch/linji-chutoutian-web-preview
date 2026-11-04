@@ -33,3 +33,11 @@
 - bak：`assets/story/c1/char_cheung_bust_{default,raise_brow}_pre_style_lock_bak.png`（舊高領半寫實）
 - 身份 jpg `assets/npc_cheung.jpg` 仍係高領較年長記帳，本輪唔改
 - Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD；silhouettes 後掛
+
+## Style-lock ERA_STARS redo（2026-11-05 Asia/Hong_Kong）
+
+- 已 redo：`story/era_stars/{luk_baakyin,yip_manji,so_jiyan,liu_bingxing,ngai_wingnaam}_bust_{default,smile,frown}.png`（15）
+- Refs：`hero_awi.jpg`＋`story/c1/char_hero_bust_default.png`
+- 本 Soft tip 只合 live 15 PNG（bak 留盤、唔入本 PR）
+- silhouettes **未動**（本 repo 無 `*_silhouette_*`，亦唔加）。遠觀仍純文字
+- Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD
