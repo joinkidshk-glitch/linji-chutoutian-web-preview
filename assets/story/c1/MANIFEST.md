@@ -27,7 +27,7 @@
 | `char_hero_bust_default.png` | `default` | neutral／tense→default (beat 8) | 輕微笑 |
 | `char_hero_bust_eyes_down.png` | `eyes_down` | **worried** (beat 4) | 垂眼手頭緊 |
 | `char_hero_bust_frown.png` | `frown` | tense／worried alt | 皺眉繃緊 |
-| `char_hero_bust_raise_brow.png` | `raise_brow` | **firm** (beat 10「我選」) | **2026-11-05 style-lock**：對齊 `hero_awi.jpg`／default 平面動畫 cel-shade（換走半寫實 e99f2dd3）；MD5 `63670d1b`；bak `*_pre_style_lock_bak`；Soft：單側挑眉峰仍可再加強 |
+| `char_hero_bust_raise_brow.png` | `raise_brow` | **firm** (beat 10「我選」) | **2026-11-05 Soft nit**：單側挑眉＋額上橫紋（對開 frown／default）；MD5 `59dab337`；四路同 MD5；bak `bak_pre_raise_brow_soft_nit_20261105/`（唔入本 PR）；cel-shade 鎖 `hero_awi`／default |
 
 ### char_ho（何生／ho_sang）— ref `assets/npc_ho.jpg`
 
@@ -44,7 +44,7 @@
 | file | expression | emotion map | notes |
 |---|---|---|---|
 | `char_cheung_bust_default.png` | `default` | firm phone (beat 7) | **2026-11-05 style-lock**：對齊 `hero_awi`／default 平面 cel；LOOKS 背心＋黑框眼鏡＋牛仔恤＋聽筒；MD5 `920321c6`；bak `*_pre_style_lock_bak` |
-| `char_cheung_bust_raise_brow.png` | `raise_brow` | firm phone 加強 | **2026-11-05 style-lock**：同上身份／服裝；單側挑眉＋額紋；MD5 `5224f3dc`；四路同 MD5；Soft：挑眉峰仍可再加強 |
+| `char_cheung_bust_raise_brow.png` | `raise_brow` | firm phone 加強 | **2026-11-05 Soft nit**：單側挑眉＋額上橫紋（對開 live 皺眉）；MD5 `8a8d01a9`；四路同 MD5；bak `bak_pre_raise_brow_soft_nit_20261105/`（唔入本 PR）；身份／聽筒不變 |
 
 `firm` 臉 → 用 `raise_brow`（或 `default`）
 
@@ -69,7 +69,7 @@
 
 - [x] 無烘焙亂碼中文／商標
 - [x] 人臉大致跟 ref（awi 髮／外套；ho 眼鏡灰西裝；cheung LOOKS 背心／眼鏡／牛仔＋聽筒（style-lock 換走高領半寫實））
-- Soft notes: hero `raise_brow` **style-lock 2026-11-05**（動畫風；挑眉 Soft nit）；ho `frown` Soft OK；Soft≠PASS（整體）
+- Soft notes: hero／Cheung `raise_brow` **Soft nit 2026-11-05**（單側挑眉可讀；唔 tip LIVE）；ho `frown` Soft OK；Soft≠PASS（整體）
 - 未產 lan／藍若曦（用戶＋tester 確認）
 
 ## Pack
@@ -101,3 +101,12 @@
 - 身份 jpg `assets/npc_cheung.jpg` 仍係高領較年長記帳，本輪唔改、唔再開圖
 - Soft≠PASS｜唔 tip LIVE｜唔 wake iOS｜89–92 HOLD｜剪影後掛
 - Pack：`/workspace/star-volunteer-web-style-lock-cheung.tar.gz`
+
+## Soft nit raise_brow 2026-11-05 (Asia/Hong_Kong)
+- 問題：style-lock 後 hero／Cheung `raise_brow` 仍弱／讀成皺眉（對開 frown）
+- 已換：`char_hero_bust_raise_brow.png` MD5 `59dab337`；`char_cheung_bust_raise_brow.png` MD5 `8a8d01a9`（c1／story／dialog／npc 同 MD5）
+- bak：`bak_pre_raise_brow_soft_nit_20261105/`（舊 `63670d1b`／`5224f3dc`；留盤、唔入本 PR）
+- Pipeline：GenerateImage（mark-guide＋hero_awi／default refs）；Fal balance_exhausted；Dashscope key InvalidApiKey
+- Soft nits（唔擋 Soft tip）：額上橫紋偏強；Cheung 挑眉峰仍可再抬
+- Soft≠PASS｜唔 tip LIVE｜唔抬 ?v=｜89–92 HOLD｜parent tip only
+- Pack：`/workspace/star-volunteer-web-raise-brow-soft-nit.tar.gz`
