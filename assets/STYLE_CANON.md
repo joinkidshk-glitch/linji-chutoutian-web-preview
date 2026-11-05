@@ -57,7 +57,9 @@
 
 - 2026-11-05 Soft nits expr：`so_jiyan_bust_smile`＋`luk_baakyin_bust_smile`＋`ngai_wingnaam` bust×3；GenerateImage；bak `era_stars/bak_pre_soft_nits_expr_20261105/` 留盤、唔入本 PR；挑眉 `char_hero_bust_raise_brow` 未入本 pack、唔動；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
 
-- 2026-11-05 era sil Soft polish×3：`{yip_manji,so_jiyan,luk_baakyin}_silhouette_far.png` redo（露肩／bare-arm、肘外＋手前、quiff↑）；`liu`／`ngai` sil 未動；GenerateImage 彩色全身→Pillow RGBA 近黑 `(18,18,20)`；bak `era_stars/bak_pre_silhouette_soft_polish_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-era-sil-soft-polish.tar.gz`；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
+- 2026-11-05 era sil Soft polish×3：`{yip_manji,so_jiyan,luk_baakyin}_silhouette_far.png` redo（露肩／bare-arm、肘外＋手前、quiff↑）；`liu`／`ngai` sil 當時未動；GenerateImage 彩色全身→Pillow RGBA 近黑 `(18,18,20)`；bak `era_stars/bak_pre_silhouette_soft_polish_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-era-sil-soft-polish.tar.gz`；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
+
+- 2026-11-05 ngai zip sil Soft nit：只換 `ngai_wingnaam_silhouette_far.png` MD5 `899c7f7d`（對 v2 `31555755`：高領 zip／低馬尾／理領）；liu／yip／so／luk sil 未動；864×1152 RGBA 近黑 `(18,18,20)`、無五官；bak `era_stars/bak_pre_ngai_zip_sil_soft_nit_20261105/` 留盤、唔入本 PR；遠觀 wire 仍 `?v=19w`、唔改 `index.html`；Soft nits（唔擋）：遠距可讀成連帽；理領空隙弱；無光邊；Soft≠PASS；唔 tip LIVE；89–92 HOLD。
 
 ## raise_brow Soft nit（2026-11-05 Asia/Hong_Kong）
 
@@ -103,3 +105,14 @@
 - Soft nits（唔擋 Soft tip）：luk 理領手遠距弱、quiff 可比 bust 再尖；so 遠距手位可歧義讀手背後；yip 肩凹、無光邊；全套無淡場景光邊；ngai zip sil 未做；liu 未動
 - Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-era-sil-soft-polish.tar.gz`
+
+## ngai zip sil Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/ngai_wingnaam_silhouette_far.png` MD5 `899c7f7df3567566f018115a82d89662`（864×1152 RGBA）
+- 唔動：`liu_bingxing_silhouette_far.png` `1238929c`；`yip_manji_silhouette_far.png` `41ef7a1f`；`so_jiyan_silhouette_far.png` `720e3473`；`luk_baakyin_silhouette_far.png` `194f29f2`。bust×15、core sil、`index.html`、gigs 未動
+- 對開 v2 `3155575564277cee4ced9ec00c557a48`。近黑 fill `(18,18,20)`、無五官。bak `era_stars/bak_pre_ngai_zip_sil_soft_nit_20261105/` 留盤、唔入本 PR
+- 目標：對齊 live bust zip／高領／低馬尾／理領
+- Soft 遠觀仍掛 `eraSilhouetteFarSrc` → `assets/story/era_stars/{id}_silhouette_far.png?v=19w`（本輪唔改碼、唔抬 `?v=`）
+- Soft nits（唔擋 Soft tip）：遠距可讀成連帽；理領空隙弱；無光邊
+- QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-ngai-zip-sil-soft-nit.tar.gz` MD5 `35e00f8052a144e2283b43e2d584db44`
