@@ -64,3 +64,11 @@
 - Soft nits（唔擋 Soft tip）：額上橫紋偏強（尤其 hero）；Cheung 挑眉峰仍可再抬
 - Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-raise-brow-soft-nit.tar.gz`
+
+## luk frown Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/luk_baakyin_bust_frown.png` MD5 `d379b322`。default `f0bc02d8`／smile `202a6200` 唔動（smile 來自 Soft tip #24）
+- 對開舊 frown `9e134222`。bak `era_stars/bak_pre_luk_frown_soft_nit_20261105/` 留盤、唔入本 PR
+- Soft nits（唔擋 Soft tip）：怒氣線可再強；眉峰 V 可再銳
+- Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-luk-frown-soft-nit.tar.gz`

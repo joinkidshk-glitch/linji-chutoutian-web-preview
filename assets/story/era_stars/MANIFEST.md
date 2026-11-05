@@ -14,7 +14,7 @@
 | `liu_bingxing_bust_frown.png` | `11582108cabd5d8b7cd53be13788b962` |
 | `liu_bingxing_bust_smile.png` | `9429f734da9f95a6ef172ffeb5fdda6d` |
 | `luk_baakyin_bust_default.png` | `f0bc02d8db898c1d6799b8cabed342c7` |
-| `luk_baakyin_bust_frown.png` | `9e1342229fc79f1aa85ebecb318821d0` |
+| `luk_baakyin_bust_frown.png` | `d379b32269a427c4695399c46c553b3a` |
 | `luk_baakyin_bust_smile.png` | `202a6200b9a7bf019d63d8e5c1dd440c` |
 | `ngai_wingnaam_bust_default.png` | `1729ee30129632fd13ed3bad8a297537` |
 | `ngai_wingnaam_bust_frown.png` | `8a4ef50ea433990fb77dcba4db6d90d4` |
@@ -30,7 +30,7 @@
 
 | id | display | files | dims | notes |
 |---|---|---|---|---|
-| `luk_baakyin` | 陸柏言 | `*_bust_{default,smile,frown}.png` + `*_silhouette_far.png`（**sil v2**） | 864×1152 | **leather v5b**＋**smile Soft nit 2026-11-05**（露齒酒窩）。bak `bak_pre_luk_leather_v5/`＋`bak_pre_soft_nits_expr_20261105/` 留盤，唔入本 PR |
+| `luk_baakyin` | 陸柏言 | `*_bust_{default,smile,frown}.png` + `*_silhouette_far.png`（**sil v2**） | 864×1152 | **leather v5b**＋**smile Soft nit 2026-11-05**（露齒酒窩）＋**frown Soft nit 2026-11-05**（深 V 皺眉＋下撇嘴；MD5 `d379b322`）。default `f0bc02d8`／smile `202a6200` 唔動。bak `bak_pre_luk_leather_v5/`＋`bak_pre_soft_nits_expr_20261105/`＋`bak_pre_luk_frown_soft_nit_20261105/` 留盤，唔入本 PR |
 | `yip_manji` | 葉敏芝 | bust×3 + sil **v2** | 864×1152 | **starlet-v3 2026-11-05**：露肩 dusty-rose；邱淑貞／張敏氣質（禁抄臉）；GenerateImage。bak `bak_pre_yip_starlet_v3/` 留盤，唔入本 PR |
 | `so_jiyan` | 蘇芷茵 | bust×3 + `*_silhouette_far.png`（**sil v2 新建**） | 864×1152 | **jade-v4**＋**smile Soft nit 2026-11-05**（暖笑露齒提示）。bak `bak_pre_so_jade_v4/`＋`bak_pre_soft_nits_expr_20261105/` 留盤，唔入本 PR |
 | `liu_bingxing` | 廖炳星 | bust×3 + sil **v2** | 864×1152 | **chow-vibe v10 2026-11-05**：花恤衫正面；周星馳氣質（禁抄臉）；GenerateImage。bak `bak_pre_liu_chow_v10/` 留盤，唔入本 PR |
@@ -51,7 +51,7 @@
 
 ## Soft nits（唔擋；Soft≠PASS）
 
-1. `luk_baakyin` smile Soft nit **2026-11-05 已換**（露齒＋酒窩；MD5 `202a6200`）；frown↔default 眉差仍可再拉開（本輪未動 frown）  
+1. `luk_baakyin` smile Soft nit **2026-11-05 已換**（露齒＋酒窩；MD5 `202a6200`）；**frown Soft nit 2026-11-05 已換**（深 V 皺眉＋鼻樑壓＋下撇嘴；MD5 `d379b322`；對開 default smirk／smile 露齒）。Soft nits（唔擋）：怒氣線可再強；眉峰 V 可再銳  
 2. `so_jiyan` smile Soft nit **2026-11-05 已換**（暖笑露齒提示；MD5 `0b819961`）；能量仍可再推  
 3. `ngai_wingnaam` Soft nits expr **2026-11-05 已換×3**（default／smile／frown MD5 `1729ee30`／`fea5a476`／`8a4ef50e`）；**年齡仍偏嫩**（~38 未清）。kara-v2 已由 v5 取代，唔再係 live  
 4. `yip_manji` starlet-v3：咬唇／眨眼能量仍可再推；default↔smile 差可再拉開  
@@ -87,9 +87,19 @@ Soft≠PASS｜唔 tip LIVE｜唔 wake iOS｜89–92 HOLD｜silhouettes v2 Soft t
 
 `/workspace/star-volunteer-web-era-soft-nits-expr.tar.gz`（so smile＋luk smile＋ngai×3 live；`bak_pre_soft_nits_expr_20261105/` 留盤，唔入本 PR）
 
+`/workspace/star-volunteer-web-luk-frown-soft-nit.tar.gz`（只換 live `luk_baakyin_bust_frown.png`；bak／`_qc_refs`／QA composite 唔入本 PR）
+
 ## Related
 
 - Prior MVP：`/workspace/star-volunteer-web-era-stars-mvp.tar.gz`；ngai fix `/workspace/star-volunteer-web-era-ngai-cork-fix.tar.gz`
 - Core style-lock：`/workspace/star-volunteer-web-style-lock-core-busts.tar.gz`
 - Cheung style-lock：`/workspace/star-volunteer-web-style-lock-cheung.tar.gz`
 - QA：`/workspace/qa-gd-style-lock-era-20261105.md`
+
+## luk frown Soft nit 2026-11-05 (Asia/Hong_Kong)
+- 只換 live：`luk_baakyin_bust_frown.png` MD5 `d379b32269a427c4695399c46c553b3a`
+- 唔動：default `f0bc02d8db898c1d6799b8cabed342c7`；smile `202a6200b9a7bf019d63d8e5c1dd440c`（Soft tip #24）
+- 對開舊 frown：`9e1342229fc79f1aa85ebecb318821d0`。bak `bak_pre_luk_frown_soft_nit_20261105/` 留盤、唔入本 PR
+- Soft nits（唔擋 Soft tip）：怒氣線可再強；眉峰 V 可再銳
+- Soft≠PASS｜唔 tip LIVE｜唔抬 ?v=｜89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-luk-frown-soft-nit.tar.gz`
