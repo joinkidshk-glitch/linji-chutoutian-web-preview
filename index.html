@@ -2674,6 +2674,14 @@ body.day-res-open #mask.day-res{
   background:#6b4e2e; color:#fff8e8; font:inherit; font-weight:800;
 }
 .rumor-hint{ margin:0 0 8px; font-size:.75rem; font-weight:700; color:#6b4e2e }
+/* Soft Phase2 steps 5–6 coach plate. Copy only; no drag FX or merge VFX. */
+.tut-phase2-coach{
+  background:#fff8e8; color:#1A1410; border-radius:12px;
+  border:1px solid rgba(107,78,46,.45);
+  padding:10px 12px; margin:0 0 8px;
+}
+.tut-phase2-coach p{ margin:0 0 4px; font-size:.78rem; font-weight:700; line-height:1.4; color:#5a4328 }
+.tut-phase2-coach p:last-child{ margin:0 }
 .debt-empty,.rumor-empty{ text-align:center }
 .debt-stamp{
   width:76px; height:76px; margin:16px auto 8px; border-radius:50%;
@@ -7200,6 +7208,110 @@ const TUTORIAL_PHASE2_SOFT_NITS = {
 };
 try{ window.__tutorialSoftNits = TUTORIAL_PHASE2_SOFT_NITS; }catch(_e){}
 
+/* Soft tutorial Phase2 steps 5–6 copy overlay. Soft≠PASS.
+   Prefer content/MOCK_TUTORIAL_PHASE2_STEPS_5_6_COPY_SOFT_v1.json (same bust as other content fetches; page ?v= stays 19w).
+   Player strings apply only when gatePath()==="soft". Never writes TUTORIAL or tutorial_zh_HK.json.
+   Step 5/6 drag FX and merge VFX stay HOLD on TUTORIAL_PHASE2_SOFT_NITS. */
+const TUTORIAL_PHASE2_STEPS56_FILE = "MOCK_TUTORIAL_PHASE2_STEPS_5_6_COPY_SOFT_v1.json";
+let TUTORIAL_PHASE2_STEPS56_OVERLAY = null;
+function tutorialPhase2Steps56SoftOn(){
+  try{
+    return typeof BehaviorGate!=="undefined" && BehaviorGate.gatePath()==="soft";
+  }catch(_e){ return false; }
+}
+function phase2Steps56PlayerLine(raw){
+  const s = String(raw==null ? "" : raw).trim();
+  if(!s) return "";
+  if(/Ho哥|Ho 哥|locId|reqKey|overlayOnly|phase2_step|softBehaviorGate|tutorial_zh_HK/i.test(s)) return "";
+  return s;
+}
+function phase2Steps56Copy(){
+  if(!tutorialPhase2Steps56SoftOn()) return null;
+  const pack = TUTORIAL_PHASE2_STEPS56_OVERLAY;
+  if(!pack || !pack.meta || pack.meta.overlayOnly!==true || pack.meta.softStatus!=="≠PASS") return null;
+  if(!pack.step5 || !pack.step6) return null;
+  return pack;
+}
+function phase2Steps56Line(stepKey, field, fallback){
+  const pack = phase2Steps56Copy();
+  if(!pack) return fallback;
+  const line = phase2Steps56PlayerLine(pack[stepKey] && pack[stepKey][field]);
+  return line || fallback;
+}
+function applyPhase2Steps56TabLabel(){
+  const label = phase2Steps56Line("step5", "tabHint", "傳聞");
+  const btn = document.getElementById("htab-rumor");
+  const list = document.getElementById("rumor-list");
+  if(btn) btn.textContent = label;
+  if(list) list.setAttribute("aria-label", label);
+}
+function phase2Steps56CoachHtml(mergeOn){
+  const pack = phase2Steps56Copy();
+  if(!pack || !pack.step5) return "";
+  const slotKey = mergeOn ? "slotHintReady" : "slotHintEmpty";
+  const bits = ["coachOpen","coachDragHint",slotKey].map(k=>phase2Steps56PlayerLine(pack.step5[k])).filter(Boolean);
+  if(!bits.length) return "";
+  return `<div class="tut-phase2-coach">${bits.map(t=>`<p>${journalText(t)}</p>`).join("")}</div>`;
+}
+function loadTutorialPhase2Steps56Overlay(pack){
+  if(!pack || typeof pack!=="object") return { ok:false, reason:"file" };
+  if(!pack.meta || pack.meta.overlayOnly!==true) return { ok:false, reason:"overlayOnly" };
+  if(pack.meta.softStatus!=="≠PASS") return { ok:false, reason:"softStatus" };
+  if(!pack.step5 || !pack.step6) return { ok:false, reason:"steps" };
+  TUTORIAL_PHASE2_STEPS56_OVERLAY = pack;
+  try{ applyPhase2Steps56TabLabel(); }catch(_e){}
+  try{
+    const pane = document.getElementById("home-pane-rumor");
+    if(pane && pane.classList.contains("on") && typeof renderRumorPane==="function") renderRumorPane();
+  }catch(_e){}
+  return { ok:true, file:TUTORIAL_PHASE2_STEPS56_FILE, overlayOnly:true };
+}
+async function preferFileTutorialPhase2Steps56(){
+  const bust = encodeURIComponent(typeof SAVE!=="undefined" ? SAVE : "19w");
+  try{
+    const r = await fetch("content/"+TUTORIAL_PHASE2_STEPS56_FILE+"?v="+bust);
+    if(!r.ok) return loadTutorialPhase2Steps56Overlay(null);
+    return loadTutorialPhase2Steps56Overlay(await r.json());
+  }catch(_e){
+    return { ok:false, reason:"fetch" };
+  }
+}
+function tutorialPhase2Steps56SelfCheck(){
+  const fails = [];
+  const pack = TUTORIAL_PHASE2_STEPS56_OVERLAY;
+  if(!pack) fails.push("file");
+  else {
+    if(!pack.meta || pack.meta.overlayOnly!==true) fails.push("overlayOnly");
+    if(!pack.meta || pack.meta.softStatus!=="≠PASS") fails.push("softStatus");
+    ["coachOpen","coachDragHint","slotHintEmpty","slotHintReady","tabHint"].forEach(k=>{
+      if(!phase2Steps56PlayerLine(pack.step5 && pack.step5[k])) fails.push("step5."+k);
+    });
+    ["confirmTitle","confirmBody","confirmLabel","cancelLabel","successStampLine","failToast","noPairHint","mergeGlowHint","favorDebtSettleLine","closeSettleLabel"].forEach(k=>{
+      if(!phase2Steps56PlayerLine(pack.step6 && pack.step6[k])) fails.push("step6."+k);
+    });
+    const face = JSON.stringify({ step5:pack.step5, step6:pack.step6, buttons:pack.buttons||null });
+    if(/Ho哥|Ho 哥/.test(face)) fails.push("ho_title");
+    if(String(pack.step6 && pack.step6.favorDebtSettleLine||"").indexOf("何生")<0) fails.push("ho_name");
+  }
+  if(typeof BehaviorGate!=="undefined" && BehaviorGate.liveWeekGateStillActive()!==true) fails.push("live_fn");
+  if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_TRAIN,TUT_NPC,TUT_NOTEBOOK,TUT_DONE") fails.push("main_ids");
+  if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
+  if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="HOLD" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="HOLD") fails.push("fx_hold");
+  if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
+  return { ok:fails.length===0, fails:fails, soft:tutorialPhase2Steps56SoftOn(), overlayOnly:true };
+}
+try{
+  window.__tutorialPhase2Steps56 = {
+    file: TUTORIAL_PHASE2_STEPS56_FILE,
+    overlayOnly: true,
+    softOn: tutorialPhase2Steps56SoftOn,
+    pack: function(){ return TUTORIAL_PHASE2_STEPS56_OVERLAY; },
+    copy: phase2Steps56Copy,
+    preferFile: preferFileTutorialPhase2Steps56,
+    selfCheck: tutorialPhase2Steps56SelfCheck,
+  };
+}catch(_e){}
+
 
 function fillTpl(s, vars){
   // Strip outer 《》 from values when the template already wraps {key} in book-title marks,
@@ -7931,6 +8043,7 @@ async function refreshCopyPacksFromDisk(){
     STORY_WIRE.errors.push(String(_e && _e.message || _e));
     /* file:// 或離線：保留內嵌 snapshots */
   }
+  try{ await preferFileTutorialPhase2Steps56(); }catch(_s56){}
 }
 
 
@@ -10965,15 +11078,17 @@ function mergePickedRumors(){
   ensureMockJournal();
   const ids = heardPickIds();
   if(ids.length<2){
-    toast(MERGE_FLOW.failToast);
-    return { ok:false, toast:MERGE_FLOW.failToast };
+    const fail = phase2Steps56Line("step6", "failToast", MERGE_FLOW.failToast);
+    toast(fail);
+    return { ok:false, toast:fail };
   }
   const pair = findMergePair(ids[0], ids[1]);
   if(!pair){
     mockMergePick = [];
     renderRumorPane();
-    toast(MERGE_FLOW.noPairHint);
-    return { ok:false, toast:MERGE_FLOW.noPairHint };
+    const miss = phase2Steps56Line("step6", "noPairHint", MERGE_FLOW.noPairHint);
+    toast(miss);
+    return { ok:false, toast:miss };
   }
   ids.forEach(id=>{
     const row = S.mockRumors.find(r=>r && r.id===id);
@@ -10988,42 +11103,56 @@ function mergePickedRumors(){
   syncNotebookMirror();
   try{ saveQ(); }catch(_e){}
   renderRumorPane();
-  toast(MERGE_FLOW.successStampLine);
-  return { ok:true, toast:MERGE_FLOW.successStampLine, merged:pair.merged };
+  const stamp = phase2Steps56Line("step6", "successStampLine", MERGE_FLOW.successStampLine);
+  toast(stamp);
+  const settle = phase2Steps56Copy() ? phase2Steps56Line("step6", "favorDebtSettleLine", "") : "";
+  if(settle){
+    const closeLabel = phase2Steps56Line("step6", "closeSettleLabel", "知道了");
+    modal(`<p>${journalText(settle)}</p>`, [{ label:closeLabel, role:"p" }]);
+  }
+  return { ok:true, toast:stamp, merged:pair.merged, settle:!!settle };
 }
 function requestMergeConfirm(){
   ensureMockJournal();
   const ids = heardPickIds();
   if(ids.length<2){
-    toast(MERGE_FLOW.failToast);
-    return { ok:false };
+    const fail = phase2Steps56Line("step6", "failToast", MERGE_FLOW.failToast);
+    toast(fail);
+    return { ok:false, toast:fail };
   }
   const rows = ids.map(id=>S.mockRumors.find(r=>r && r.id===id));
-  modal(`<h3>確認拼合</h3><p>${journalText(rows[0]&&rows[0].title)}</p><p>${journalText(rows[1]&&rows[1].title)}</p>`, [
-    { label:MERGE_FLOW.cancelLabel, role:"g" },
-    { label:MERGE_FLOW.confirmLabel, role:"p", on:()=>mergePickedRumors() },
+  const title = phase2Steps56Line("step6", "confirmTitle", "確認拼合");
+  const body = phase2Steps56Copy() ? phase2Steps56Line("step6", "confirmBody", "") : "";
+  const bodyHtml = body ? `<p>${journalText(body)}</p>` : "";
+  const cancel = phase2Steps56Line("step6", "cancelLabel", MERGE_FLOW.cancelLabel);
+  const confirm = phase2Steps56Line("step6", "confirmLabel", MERGE_FLOW.confirmLabel);
+  modal(`<h3>${journalText(title)}</h3>${bodyHtml}<p>${journalText(rows[0]&&rows[0].title)}</p><p>${journalText(rows[1]&&rows[1].title)}</p>`, [
+    { label:cancel, role:"g" },
+    { label:confirm, role:"p", on:()=>mergePickedRumors() },
   ]);
   return { ok:true, pending:true };
 }
 function renderRumorPane(){
   const box=document.getElementById("rumor-list");
   if(!box) return;
+  applyPhase2Steps56TabLabel();
   ensureMockJournal();
   const rows=S.mockRumors||[];
   if(!rows.length){
-    box.innerHTML=`<article class="rumor-card rumor-empty"><p class="rumor-src">傳聞</p><p>${journalText(MOCK_EMPTY.rumors)}</p></article>`;
+    box.innerHTML=phase2Steps56CoachHtml(false)+`<article class="rumor-card rumor-empty"><p class="rumor-src">傳聞</p><p>${journalText(MOCK_EMPTY.rumors)}</p></article>`;
     return;
   }
   ensureWeakSeals();
   const heard = rows.filter(r=>rumorStateLabel(r.state)==="剛聽聞");
   const picks = heardPickIds();
   const mergeOn = picks.length>=2;
+  const softCopy = phase2Steps56Copy();
   const hint = mergeOn
-    ? `<p class="rumor-hint">${journalText(MERGE_FLOW.glow)}</p>`
-    : (heard.length>=2 ? `<p class="rumor-hint">點兩張剛聽聞，拉埋再確認。</p>` : "");
-  const merge = mergeOn ? `<div class="rumor-merge"><button type="button" id="rumor-merge-btn">${journalText(MERGE_FLOW.confirmLabel)}</button></div>` : "";
+    ? `<p class="rumor-hint">${journalText(phase2Steps56Line("step6", "mergeGlowHint", MERGE_FLOW.glow))}</p>`
+    : (heard.length>=2 && !softCopy ? `<p class="rumor-hint">點兩張剛聽聞，拉埋再確認。</p>` : "");
+  const merge = mergeOn ? `<div class="rumor-merge"><button type="button" id="rumor-merge-btn">${journalText(phase2Steps56Line("step6", "confirmLabel", MERGE_FLOW.confirmLabel))}</button></div>` : "";
   const whisper = `<p class="weak-whisper">${journalText(WEAK_WHISPER)}</p>`;
-  box.innerHTML = hint + merge + rows.map(r=>{
+  box.innerHTML = phase2Steps56CoachHtml(mergeOn) + hint + merge + rows.map(r=>{
     const label = rumorStateLabel(r.state);
     const picked = picks.indexOf(r.id)>=0;
     const can = label==="剛聽聞";
@@ -11100,6 +11229,7 @@ function playPushDoor(){
 function setHomeTab(tab){
   const allow={ plan:1, rumor:1, debt:1 };
   if(!allow[tab]) tab="plan";
+  applyPhase2Steps56TabLabel();
   document.querySelectorAll("#home-tabs .home-tab").forEach(b=>{
     const on=b.getAttribute("data-htab")===tab;
     b.classList.toggle("on", on);
