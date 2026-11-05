@@ -82,3 +82,12 @@
 - Soft nits（唔擋 Soft tip）：default 嘴角仍偏親切微笑（可選再收、專推眼閃）；modern polish 線密度；default NEW RGB vs bak RGBA（記帳 only）
 - Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-so-energy-soft-nit.tar.gz`
+
+## ngai age Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/ngai_wingnaam_bust_default.png` MD5 `09f79211`；`ngai_wingnaam_bust_smile.png` MD5 `8f1abdaf`；`ngai_wingnaam_bust_frown.png` MD5 `5df4f5fa`
+- kara-v5 lock：低馬尾＋navy zip track＋理領／黑 tee；cel-shade lock `hero_awi`。Pipeline：GenerateImage → 864×1152 RGB。唔改 era／core silhouette
+- 對開舊 default `1729ee30`／smile `fea5a476`／frown `8a4ef50e`。bak `era_stars/bak_pre_ngai_age_soft_nit_20261105/` 留盤、唔入本 PR
+- Soft nits（唔擋 Soft tip）：smile 年齡線略重；default 可讀略過 38；髮絲 modern polish；zip vs brief sil（本輪未改 sil）
+- Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-ngai-age-soft-nit.tar.gz`
