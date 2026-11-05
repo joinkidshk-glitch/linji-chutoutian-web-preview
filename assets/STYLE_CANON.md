@@ -57,6 +57,8 @@
 
 - 2026-11-05 Soft nits expr：`so_jiyan_bust_smile`＋`luk_baakyin_bust_smile`＋`ngai_wingnaam` bust×3；GenerateImage；bak `era_stars/bak_pre_soft_nits_expr_20261105/` 留盤、唔入本 PR；挑眉 `char_hero_bust_raise_brow` 未入本 pack、唔動；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
 
+- 2026-11-05 era sil Soft polish×3：`{yip_manji,so_jiyan,luk_baakyin}_silhouette_far.png` redo（露肩／bare-arm、肘外＋手前、quiff↑）；`liu`／`ngai` sil 未動；GenerateImage 彩色全身→Pillow RGBA 近黑 `(18,18,20)`；bak `era_stars/bak_pre_silhouette_soft_polish_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-era-sil-soft-polish.tar.gz`；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
+
 ## raise_brow Soft nit（2026-11-05 Asia/Hong_Kong）
 
 - 已換：`char_hero_bust_raise_brow.png` MD5 `59dab337`；`char_cheung_bust_raise_brow.png` MD5 `8a8d01a9`（c1／story／dialog／npc 四路同 MD5）
@@ -91,3 +93,13 @@
 - Soft nits（唔擋 Soft tip）：smile 年齡線略重；default 可讀略過 38；髮絲 modern polish；zip vs brief sil（本輪未改 sil）
 - Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-ngai-age-soft-nit.tar.gz`
+
+## era sil Soft polish×3（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/yip_manji_silhouette_far.png` MD5 `41ef7a1f`；`so_jiyan_silhouette_far.png` MD5 `720e3473`；`luk_baakyin_silhouette_far.png` MD5 `194f29f2`
+- 唔動：`liu_bingxing_silhouette_far.png` `1238929c`；`ngai_wingnaam_silhouette_far.png` `31555755`。bust、core sil、`index.html` 未動
+- 對開 v2：yip `b606c5a1`／so `e37e095a`／luk `03fdc270`。864×1152 RGBA 透明底近黑 `(18,18,20)`、無五官。bak `era_stars/bak_pre_silhouette_soft_polish_20261105/` 留盤、唔入本 PR
+- Soft 遠觀仍掛 `eraSilhouetteFarSrc` → `assets/story/era_stars/{id}_silhouette_far.png?v=19w`（Soft tip #24／#26 wire；本輪唔改碼、唔抬 `?v=`）
+- Soft nits（唔擋 Soft tip）：luk 理領手遠距弱、quiff 可比 bust 再尖；so 遠距手位可歧義讀手背後；yip 肩凹、無光邊；全套無淡場景光邊；ngai zip sil 未做；liu 未動
+- Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-era-sil-soft-polish.tar.gz`
