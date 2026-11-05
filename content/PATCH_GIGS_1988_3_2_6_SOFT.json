@@ -1,0 +1,870 @@
+{
+  "version_from": "3.2.5-soft",
+  "version_to": "3.2.6-soft",
+  "d3_skipped_schema_nits": [
+    "gig_1988_ad_07",
+    "gig_1988_film_05",
+    "gig_1988_film_harbour_spring_high",
+    "gig_1988_rec_hk_spring_high"
+  ],
+  "d3_high_qa_patches": [
+    {
+      "id": "gig_1988_tv_07",
+      "severity": "missing",
+      "field": "limits",
+      "detail": "limits 欄位為 null，缺失所有限制條件",
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受高危拍攝場面及熬夜趕通告"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tv_08",
+      "severity": "missing",
+      "field": "limits",
+      "detail": "limits 欄位為 null，缺失所有限制條件",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受高強度舞蹈排練及熬夜"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_film_07",
+      "severity": "missing",
+      "field": "limits",
+      "detail": "limits 欄位為 null，缺失所有限制條件",
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受夜戲拍攝及情緒演繹"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_ad_adm_winter_high",
+      "severity": "missing",
+      "field": "producer",
+      "detail": "producer 欄位為 null，缺失製作人資訊",
+      "producer": "陳志強"
+    },
+    {
+      "id": "gig_1988_film_harbour_high",
+      "severity": "missing",
+      "field": "producer",
+      "detail": "producer 欄位為 null，缺失製作人資訊",
+      "producer": "黃國輝"
+    },
+    {
+      "id": "gig_1988_rec_hk_winter_high",
+      "severity": "missing",
+      "field": "producer",
+      "detail": "producer 欄位為 null，缺失製作人資訊",
+      "producer": "李淑儀"
+    },
+    {
+      "id": "gig_1988_rec_wanchai_winter_high",
+      "severity": "missing",
+      "field": "producer",
+      "detail": "producer 欄位為 null，缺失製作人資訊",
+      "producer": "張志偉"
+    },
+    {
+      "id": "gig_1988_tv_kowloon_winter_high",
+      "severity": "missing",
+      "field": "producer",
+      "detail": "producer 欄位為 null，缺失製作人資訊",
+      "producer": "劉志華"
+    },
+    {
+      "id": "gig_1988_film_harbour_summer_high",
+      "severity": "mismatch",
+      "field": "limits",
+      "detail": "notes 提及『須接受槍戰場面』，但 synopsis 為古裝武俠劇，時代背景矛盾。",
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受高難度武打及吊威也場面"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_film_lion_summer_high",
+      "severity": "mismatch",
+      "field": "limits",
+      "detail": "notes 提及『須接受槍戰場面』，但 synopsis 為古裝武俠劇，時代背景矛盾。",
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受高難度武打及吊威也場面"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_film_harbour_winter_high",
+      "severity": "mismatch",
+      "field": "limits",
+      "detail": "notes 提及『須接受槍戰場面』，但 synopsis 為賀歲喜劇，內容不符，疑為複製貼上錯誤。",
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受高難度動作排練",
+          "須接受通宵綵排"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tvb_kowloon_autumn_high",
+      "severity": "mismatch",
+      "field": "limits",
+      "detail": "gender 設為 any，但 synopsis 明確要求飾演『舉牌女郎』，應限為 female。",
+      "limits": {
+        "gender": "female",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受高壓檔期安排"
+        ]
+      }
+    }
+  ],
+  "d1_densify_ids": [
+    "gig_1988_ad_03",
+    "gig_1988_ad_05",
+    "gig_1988_ad_06",
+    "gig_1988_ad_08",
+    "gig_1988_ad_adm_spring_mid",
+    "gig_1988_ad_adm_summer_mid",
+    "gig_1988_ad_central_spring_mid",
+    "gig_1988_fill_harbour_autumn",
+    "gig_1988_photo_02",
+    "gig_1988_tv_03",
+    "gig_1988_tv_04",
+    "gig_1988_tv_05",
+    "gig_1988_tv_harbour_spring_mid",
+    "gig_1988_tv_kowloon_autumn",
+    "gig_1988_tv_kowloon_spring_mid",
+    "gig_1988_tv_longmen_spring_mid",
+    "gig_1988_tvb_harbour_winter_mid",
+    "gig_1988_tvb_kowloon_winter_mid",
+    "gig_1988_var_02",
+    "gig_1988_var_04",
+    "gig_1988_var_longmen_winter_mid"
+  ],
+  "d1_copy": [
+    {
+      "id": "gig_1988_ad_03",
+      "synopsis_len": [
+        62,
+        116
+      ],
+      "blurb_len": [
+        40,
+        42
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote",
+        "discoverNote"
+      ]
+    },
+    {
+      "id": "gig_1988_ad_05",
+      "synopsis_len": [
+        64,
+        106
+      ],
+      "blurb_len": [
+        42,
+        42
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote",
+        "discoverNote"
+      ]
+    },
+    {
+      "id": "gig_1988_ad_06",
+      "synopsis_len": [
+        59,
+        109
+      ],
+      "blurb_len": [
+        41,
+        38
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote",
+        "discoverNote"
+      ]
+    },
+    {
+      "id": "gig_1988_ad_08",
+      "synopsis_len": [
+        68,
+        111
+      ],
+      "blurb_len": [
+        42,
+        44
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote"
+      ]
+    },
+    {
+      "id": "gig_1988_var_02",
+      "synopsis_len": [
+        70,
+        96
+      ],
+      "blurb_len": [
+        46,
+        38
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote"
+      ]
+    },
+    {
+      "id": "gig_1988_var_04",
+      "synopsis_len": [
+        105,
+        104
+      ],
+      "blurb_len": [
+        46,
+        41
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote"
+      ]
+    },
+    {
+      "id": "gig_1988_tv_03",
+      "synopsis_len": [
+        107,
+        102
+      ],
+      "blurb_len": [
+        43,
+        40
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote"
+      ]
+    },
+    {
+      "id": "gig_1988_tv_04",
+      "synopsis_len": [
+        108,
+        134
+      ],
+      "blurb_len": [
+        43,
+        43
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote",
+        "discoverNote"
+      ]
+    },
+    {
+      "id": "gig_1988_tv_05",
+      "synopsis_len": [
+        103,
+        114
+      ],
+      "blurb_len": [
+        43,
+        40
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote",
+        "discoverNote"
+      ]
+    },
+    {
+      "id": "gig_1988_photo_02",
+      "synopsis_len": [
+        91,
+        120
+      ],
+      "blurb_len": [
+        52,
+        39
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote",
+        "discoverNote"
+      ]
+    },
+    {
+      "id": "gig_1988_fill_harbour_autumn",
+      "synopsis_len": [
+        97,
+        117
+      ],
+      "blurb_len": [
+        49,
+        44
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote",
+        "discoverNote"
+      ]
+    },
+    {
+      "id": "gig_1988_tv_kowloon_autumn",
+      "synopsis_len": [
+        74,
+        110
+      ],
+      "blurb_len": [
+        46,
+        41
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote",
+        "discoverNote"
+      ]
+    },
+    {
+      "id": "gig_1988_ad_adm_spring_mid",
+      "synopsis_len": [
+        83,
+        115
+      ],
+      "blurb_len": [
+        41,
+        38
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote",
+        "discoverNote"
+      ]
+    },
+    {
+      "id": "gig_1988_ad_central_spring_mid",
+      "synopsis_len": [
+        82,
+        102
+      ],
+      "blurb_len": [
+        41,
+        38
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote",
+        "discoverNote"
+      ]
+    },
+    {
+      "id": "gig_1988_tv_harbour_spring_mid",
+      "synopsis_len": [
+        125,
+        123
+      ],
+      "blurb_len": [
+        53,
+        53
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote"
+      ]
+    },
+    {
+      "id": "gig_1988_tv_kowloon_spring_mid",
+      "synopsis_len": [
+        139,
+        123
+      ],
+      "blurb_len": [
+        51,
+        49
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote"
+      ]
+    },
+    {
+      "id": "gig_1988_tv_longmen_spring_mid",
+      "synopsis_len": [
+        133,
+        117
+      ],
+      "blurb_len": [
+        49,
+        46
+      ],
+      "changed_fields": [
+        "synopsis",
+        "blurb",
+        "boardNote"
+      ]
+    },
+    {
+      "id": "gig_1988_var_longmen_winter_mid",
+      "synopsis_len": [
+        90,
+        116
+      ],
+      "blurb_len": [
+        40,
+        40
+      ],
+      "changed_fields": [
+        "synopsis",
+        "boardNote"
+      ]
+    },
+    {
+      "id": "gig_1988_ad_adm_summer_mid",
+      "synopsis_len": [
+        90,
+        101
+      ],
+      "blurb_len": [
+        48,
+        48
+      ],
+      "changed_fields": [
+        "synopsis",
+        "boardNote"
+      ]
+    },
+    {
+      "id": "gig_1988_tvb_harbour_winter_mid",
+      "synopsis_len": [
+        73,
+        104
+      ],
+      "blurb_len": [
+        44,
+        44
+      ],
+      "changed_fields": [
+        "synopsis",
+        "boardNote"
+      ]
+    },
+    {
+      "id": "gig_1988_tvb_kowloon_winter_mid",
+      "synopsis_len": [
+        87,
+        114
+      ],
+      "blurb_len": [
+        43,
+        43
+      ],
+      "changed_fields": [
+        "synopsis",
+        "boardNote"
+      ]
+    }
+  ],
+  "d1_limits": [
+    {
+      "id": "gig_1988_ad_03",
+      "action": "enrich_notes",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須自備防曬用品及毛巾",
+          "走位需配合主角飲茶節奏"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_ad_05",
+      "action": "enrich_notes",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "拍攝前需配合髮型師進行誇張造型",
+          "強光下需保持眼神聚焦不眨眼"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_ad_06",
+      "action": "enrich_notes",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受指定制服造型及髮型",
+          "遞托盤時需注意手部穩定與笑容自然"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_ad_08",
+      "action": "enrich_notes",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受機場實景或廠景拍攝",
+          "走位需配合主角情緒，切勿搶鏡"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_var_02",
+      "action": "enrich_notes",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受高溫戶外拍攝及體力勞動",
+          "自備防曬及補水用品"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_var_04",
+      "action": "enrich_notes",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須懂基本舞步走位及現場應變",
+          "後台通道狹窄，留意不要撞到佈景"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tv_03",
+      "action": "enrich_notes",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受吊威也及兵器對打訓練",
+          "對打時留意兵器距離，避免誤傷"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tv_04",
+      "action": "enrich_notes",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受人工降雨及濕滑環境拍攝。",
+          "雨戲地面濕滑，須穿著防滑武打鞋。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tv_05",
+      "action": "enrich_notes",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須懂基本舞步走位及快歌節奏。",
+          "留意舞台邊緣，避免跌落樂池。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_photo_02",
+      "action": "fill",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受寒夜冷雨戶外拍攝。",
+          "淺景深拍攝需保持身體靜止。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_fill_harbour_autumn",
+      "action": "enrich_notes",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受深夜錄影及長時間對談。",
+          "沙發位置固定，身體不要過度前傾。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tv_kowloon_autumn",
+      "action": "enrich_notes",
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受日夜顛倒之廠景拍攝。",
+          "小食檔場景狹窄，注意避開熱湯與道具。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_ad_adm_spring_mid",
+      "action": "fill",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受日夜顛倒之廠景拍攝。",
+          "遞鐵盒手勢需自然，眼神需有戲。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_ad_central_spring_mid",
+      "action": "fill",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受街頭實景拍攝及日夜顛倒。",
+          "街頭跟拍需注意安全，保持穩定節奏。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tv_harbour_spring_mid",
+      "action": "fill",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受日夜顛倒及昏暗燈光環境拍攝。",
+          "夜戲走位需準確，切勿在黑暗中絆倒。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tv_kowloon_spring_mid",
+      "action": "fill",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受日夜顛倒及狹窄走廊場景拍攝。",
+          "電筒光線勿直射鏡頭，注意不要撞到佈景。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tv_longmen_spring_mid",
+      "action": "fill",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受日夜顛倒及低光源環境拍攝。",
+          "熟記法器傳遞順序，低光源下勿出錯。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_var_longmen_winter_mid",
+      "action": "enrich_notes",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受長時間排練及等候。",
+          "現場調動頻繁，需耐心等候並保持笑容。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_ad_adm_summer_mid",
+      "action": "fill",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受戶外烈日拍攝及反覆重拍。",
+          "戶外拍攝需注意防曬及補水。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tvb_harbour_winter_mid",
+      "action": "fill",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受長時間錄影及體能關卡。",
+          "拍攝可能延誤，需有耐性等候。"
+        ]
+      }
+    },
+    {
+      "id": "gig_1988_tvb_kowloon_winter_mid",
+      "action": "fill",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受多次重拍及體能關卡。",
+          "體能關卡需注意安全，搶答要夠誇張。"
+        ]
+      }
+    }
+  ],
+  "d1_producer": [
+    {
+      "id": "gig_1988_tv_harbour_spring_mid",
+      "producer": "麥家輝"
+    },
+    {
+      "id": "gig_1988_tv_kowloon_spring_mid",
+      "producer": "鍾志文"
+    },
+    {
+      "id": "gig_1988_tv_longmen_spring_mid",
+      "producer": "林柏豪"
+    },
+    {
+      "id": "gig_1988_var_longmen_winter_mid",
+      "producer": "黃偉誠"
+    },
+    {
+      "id": "gig_1988_ad_adm_summer_mid",
+      "producer": "張家樂"
+    },
+    {
+      "id": "gig_1988_tvb_kowloon_winter_mid",
+      "producer": "陳柏謙"
+    }
+  ]
+}
