@@ -67,6 +67,8 @@
 
 - 2026-11-05 yip energy Soft nit：`yip_manji_bust_{default,smile}` 嬌俏眨眼／咬唇能量＋smile 更暖露齒眼閃↑（starlet-v3 露肩 dusty-rose／cel-shade lock；frown `9d7e2b8e` 未動；對開 tip #30 default `b338280b`／smile `6e7b1a2b`；live MD5 `08384068`／`f1688fb4`）；GenerateImage；bak `era_stars/bak_pre_yip_energy_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-yip-energy-soft-nit.tar.gz` MD5 `77ab9fa9`；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
 
+- 2026-11-05 so／yip frown Soft nit：`so_jiyan_bust_frown`＋`yip_manji_bust_frown`（夾眉下撇不高興／雙目睜下撇咬唇；jade-v4／starlet-v3 wardrobe／cel-shade lock；default／smile 未動；live MD5 `dbe0ce32`／`d50275e8`；舊 `f0c0347e`／`9d7e2b8e`）；GenerateImage；bak `era_stars/bak_pre_so_yip_frown_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-so-yip-frown-soft-nit.tar.gz`；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
+
 ## raise_brow Soft nit（2026-11-05 Asia/Hong_Kong）
 
 - 已換：`char_hero_bust_raise_brow.png` MD5 `59dab337`；`char_cheung_bust_raise_brow.png` MD5 `8a8d01a9`（c1／story／dialog／npc 四路同 MD5）
@@ -163,3 +165,13 @@
 - Soft nits（唔擋 Soft tip）：cream／亮底 rim 近隱形（暗場可讀係設計目標）；rim 呈連續薄邊、可再漫射；outer halo 可再淡／再闊。prior sil shape nits 未本輪處理：yip 肩凹；so 手前遠距歧義；luk 理領遠距弱；ngai zip vs 連帽歧義
 - QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-sil-light-edge-soft-polish.tar.gz` MD5 `a615445f89fa9c0d8f6b89372af63e16`
+
+## so／yip frown Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/so_jiyan_bust_frown.png` MD5 `dbe0ce32`；`yip_manji_bust_frown.png` MD5 `d50275e8`（864×1152 RGB）
+- 唔動：so default `2cc1a570`／smile `e57ab12a`；yip default `08384068`／smile `f1688fb4`。唔改 liu／ngai／luk bust、silhouettes、`index.html`、gigs。jade-v4／starlet-v3 wardrobe／cel-shade lock。Pipeline：GenerateImage → 864×1152 RGB
+- 對開舊 frown：so `f0c0347e`／yip `9d7e2b8e`（prior RGBA）。bak `era_stars/bak_pre_so_yip_frown_soft_nit_20261105/` 留盤、唔入本 PR。preferFile 仍未加 era_stars bust path
+- 目標：so 夾眉下撇不高興，對開 energy default／smile；yip 雙目睜下撇／咬唇，對開 wink default／露齒 smile
+- Soft nits（唔擋 Soft tip）：so 可選再收眉粗／怒感 5%；yip 可選再推咬唇若 pout 仍偏 glare；NEW RGB vs prior RGBA（記帳 only）
+- QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-so-yip-frown-soft-nit.tar.gz`（live-only 入本 PR；bak／qa 唔入）
