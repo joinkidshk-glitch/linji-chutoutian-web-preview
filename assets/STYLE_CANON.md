@@ -73,3 +73,12 @@
 - Soft nits（唔擋 Soft tip）：怒氣線可再強；眉峰 V 可再銳
 - Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-luk-frown-soft-nit.tar.gz`
+
+## so energy Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/so_jiyan_bust_default.png` MD5 `2cc1a570`；`so_jiyan_bust_smile.png` MD5 `e57ab12a`。frown `f0c0347e` 唔動（jade-v4 lock）
+- jade-v4 wardrobe／正面／cel-shade lock（奶油開襟＋碎花）。Pipeline：GenerateImage → 864×1152 RGB
+- 對開舊 default `912b8dc5`／smile `0b819961`。bak `era_stars/bak_pre_so_energy_soft_nit_20261105/` 留盤、唔入本 PR
+- Soft nits（唔擋 Soft tip）：default 嘴角仍偏親切微笑（可選再收、專推眼閃）；modern polish 線密度；default NEW RGB vs bak RGBA（記帳 only）
+- Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-so-energy-soft-nit.tar.gz`
