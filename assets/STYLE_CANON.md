@@ -75,6 +75,8 @@
 
 - 2026-11-05 sil shape Soft nit：`{yip_manji,so_jiyan,luk_baakyin,ngai_wingnaam}_silhouette_far.png` redo shape（yip 肩凹清／so 叉腰手前可讀／luk quiff↑／ngai 高領 zip；live MD5 `ba8ad339`／`2602dda9`／`022489bc`／`c0f0d41e`；prior 光邊 `b29c5efc`／`30fec574`／`45d03628`／`79f2e144`）；`liu` `4bbf6e7f`／core／bust 未動；GenerateImage 彩色全身→Pillow RGBA 近黑 `(18,18,20)`＋tip#32 soft warm rim／halo；唔做 C cream-rim big redo；bak `era_stars/bak_pre_sil_shape_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-sil-shape-soft-nit.tar.gz`；Soft nits（唔擋）：luk／ngai 理領空隙；ngai 連帽遠距；QC：統籌 Style PASS with nits；Soft≠PASS；唔 tip LIVE；唔抬 `?v=`；89–92 HOLD。
 
+- 2026-11-05 sil rim／halo Soft polish：era×5＋core×6 `*_silhouette_far.png`（對 tip#32 Soft nits：cream rim／漫射／halo；唔改 shape／wardrobe）。Era live MD5 `483cec70`／`523f0c91`／`855f00f5`／`526c01f5`／`359acd81`（prior shape `ba8ad339`／`2602dda9`／`022489bc`／`c0f0d41e`；liu prior 光邊 `4bbf6e7f`）。Core live MD5 `fe35b9c7`／`abd30eb1`／`e5426266`／`22e421fc`／`df71baa7`／`3aa128c0`（prior 光邊 `2345fa2b`／`c808e004`／`2e44ff61`／`5a808447`／`54910d1f`／`4c3d1f0f`）。Pillow／scipy EDT 更深環境漫射 rim（depth 2.5→4.8、strength 0.34→0.42、RIM≈122,116,104）＋更闊更淡 outer halo（radius 6→11、α peak 52→26；soft_max≤92）；深心 fill `(18,18,20)` exact；solid Jaccard 1.0。bust／gigs／index Soft UI CSS／`?v=`／SAVE／`liveWeekGateStillActive` 未動。bak `era_stars|core/bak_pre_sil_rim_halo_soft_polish_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-sil-rim-halo-soft-polish.tar.gz`；Soft nits（唔擋）：cream rim Soft A 後清；ngai／luk Soft A zip 進行中（GD）；QC：統籌 Style PASS with nits；Soft≠PASS；唔 tip LIVE；唔抬 `?v=`；89–92 HOLD。本 PR 唔併 #38／bust／CSS。
+
 ## raise_brow Soft nit（2026-11-05 Asia/Hong_Kong）
 
 - 已換：`char_hero_bust_raise_brow.png` MD5 `59dab337`；`char_cheung_bust_raise_brow.png` MD5 `8a8d01a9`（c1／story／dialog／npc 四路同 MD5）
@@ -211,3 +213,14 @@
 - Soft nits（唔擋 Soft tip）：luk／ngai 理領空隙；ngai 連帽遠距
 - QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-sil-shape-soft-nit.tar.gz`（live-only 入本 PR；bak／qa 唔入）
+
+## sil rim／halo Soft polish（era×5＋core×6）（2026-11-05 Asia/Hong_Kong）
+
+- 只換 live `*_silhouette_far.png` ×11（era×5＋core×6）。864×1152 RGBA。唔改 bust／gigs／index Soft UI CSS／其他 assets。遠觀 wire 仍 `eraSilhouetteFarSrc`／`coreSilhouetteFarSrc` → `?v=19w`（本輪唔改碼、唔抬 `?v=`）。SAVE 仍 `starVolunteer_map_v19w`。`liveWeekGateStillActive` 未動。本 PR 唔併 #38／bust／CSS
+- Era：`yip_manji` `483cec70`（prior shape `ba8ad339`）；`so_jiyan` `523f0c91`（prior `2602dda9`）；`luk_baakyin` `855f00f5`（prior `022489bc`）；`ngai_wingnaam` `526c01f5`（prior `c0f0d41e`）；`liu_bingxing` `359acd81`（prior 光邊 `4bbf6e7f`；shape 未 redo）
+- Core：`lin_hiu` `fe35b9c7`（prior `2345fa2b`）；`chow_choiyi` `abd30eb1`（prior `c808e004`）；`vera` `e5426266`（prior `2e44ff61`）；`ko_chunkit` `22e421fc`（prior `5a808447`）；`tang_laiping` `df71baa7`（prior `54910d1f`）；`lui_ging` `3aa128c0`（prior `4c3d1f0f`）
+- Pipeline：Pillow／scipy EDT。對 tip#32 Soft nits（cream rim／漫射／halo）。更深環境漫射 rim（depth 2.5→4.8、strength 0.34→0.42、RIM≈122,116,104）＋更闊更淡 outer halo（radius 6→11、α peak 52→26；soft_max≤92）。深心 fill exact `(18,18,20)`；solid Jaccard 1.0（唔改 shape／wardrobe）；無五官
+- bak `era_stars|core/bak_pre_sil_rim_halo_soft_polish_20261105/` 留盤、唔入本 PR。compare／QA md／REPORT 唔入本 PR
+- Soft nits（唔擋 Soft tip）：cream rim Soft A 後清；ngai／luk Soft A zip 進行中（GD）。prior shape nits（luk／ngai 理領空隙；ngai 連帽遠距）唔喺本 PR 改 shape
+- QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-sil-rim-halo-soft-polish.tar.gz`（live-only 入本 PR；bak／qa 唔入）
