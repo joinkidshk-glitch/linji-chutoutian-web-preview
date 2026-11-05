@@ -34,3 +34,7 @@ ENGINE_SLICE §6「tip 前唔合流」仍然成立：指**唔退休** LIVE week-
 `?v=19w&softBehaviorGate=1`（可加 `&softSeed=seed_hiu_meet_ready`）。無關旗：`?v=19w` 仍行 week-gate。主控台 `__behaviorGate.selfCheck()` 應 OK，而且 `liveWeekGateStillActive()` 仍 true。
 
 對照：`PLAN_OUTSTANDING_SOFT_NEXT_v2.md` #8、`PLAN_STORY_BEHAVIOR_GATE_FULL_ALIGN_SOFT_v1.md` §3。
+
+## 教學 Phase2 `behaviorGate` 標記（唔係合流缺口）
+
+`TUTORIAL_PHASE2_SOFT_NITS.behaviorGate`＝`"not_bound"`：教學 Phase2 Soft 唔強制綁 BehaviorGate C stubs，亦唔把教學步接到 C 閘。呢個字串唔係 feature-flag 合流未做（合流已 Done Soft，#17 `5ebf08c4`；`gatePath()` 仍單開關）。教學步 5–6 已 Done Soft：copy #23 `8a63e477`、FX #24 `ff1d5eed`（`artHold:false`）。Soft≠PASS｜唔 tip LIVE。

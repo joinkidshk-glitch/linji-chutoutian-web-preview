@@ -1,3 +1,5 @@
+> 狀態更正：本規格嘅 FX→GD 移交已由 #24 收口。教學步 5–6 copy Done Soft（#23 `8a63e477`）；FX assets＋wire Done Soft（#24 `ff1d5eed`，`artHold:false`）。下文「缺 FX／交 GD」係 copy 規格當時範圍，唔再當 FX HOLD。Soft≠PASS｜唔 tip LIVE｜`?v=` 仍 19w。
+
 Soft≠PASS｜教學 Phase2 步5–6 Soft overlay｜經 qwen3.7-max｜唔 tip LIVE｜出圖 HOLD｜89–92 HOLD｜FX→GD｜唔改 tutorial_zh_HK.json 主教學1–7（另線 Phase2 overlay）
 
 # PLAN_TUTORIAL_PHASE2_STEPS_5_6_COPY_SOFT_v1
