@@ -19064,7 +19064,7 @@ function affProgressHtml(aff, gained){
     ? ` <span class="good">（+${gained}）</span>` : "";
   let nextBit="";
   if(next){
-    nextBit=`<span class="aff-next">人情：再差 ${next.need} 點好感 → 解鎖「${next.label}」（門檻 ${next.at}）</span>`;
+    nextBit=`<span class="aff-next">人情：再加 ${next.need} 點好感 → 解鎖「${next.label}」（門檻 ${next.at}）</span>`;
   } else {
     nextBit=`<span class="aff-next">人情：對白池已全開（好感 ${total}／100）</span>`;
   }
@@ -21323,7 +21323,7 @@ function settleWeek(){
   // High stress week-end event (based on week-end stress before soft recovery)
   if(stressAtEnd>=75){
     const sick = stressAtEnd>=90;
-    notes.push(...apply({stamina: sick?-12:-6, stress: sick?-25:-15, popularity: sick?-2:0}));
+    notes.push(...apply({stress: sick?-25:-15, popularity: sick?-2:0}));
     if(sick){
       S.flags.missGigChance = true;
       notes.push(`<span class="bad">${eventLine("WEEK_STRESS90",{weekNum:w})||"壓力過高，下週試鏡狀態打折。"}</span>`);
@@ -23818,7 +23818,7 @@ function tipGig(npc){
 
 function doTalk(npcId, L){
   const npc=NPCS[npcId];
-  apply({stamina:-2, stress:R(1,3)});
+  apply({stress:R(1,3)});
   writeTodayPlan("cafe_gig"); // mark day spent socially on map
   closeSheet();
   const gained=bumpNpc(npcId, 3+R(0,4));
@@ -23837,7 +23837,7 @@ function doTalk(npcId, L){
     const loc=LOCS.find(x=>x.id===tip.loc);
     const gap=reqGap(tip);
     const nearNote = (!canAudition(tip).ok && gap.totalShort>0 && gap.totalShort<=10)
-      ? `（差 ${gap.totalShort} 點能力就接近可試）` : "";
+      ? `（再練一下就接近可試）` : "";
     extra=`<p class="gold">情報：請到「${loc.name}」查看「${tip.title}」${nearNote}——地圖已用 💡 藍框標出本週推薦地點。</p>`;
   } else extra=`<p>這次沒有具體通告，但關係更近了一步。</p>`;
   if(npcId==="rival" && Math.random()<0.22){ apply({fame:-1}); extra+=`<p class="bad">他當眾調侃你一句，聲望微跌。</p>`; }
@@ -24110,7 +24110,7 @@ function showPeople(){
     const h="♥".repeat(Math.round(v/20))+"♡".repeat(5-Math.round(v/20));
     const next=affNextUnlock(v);
     const nextLine = next
-      ? `<div class="people-next">人情：差 ${next.need} →「${next.label}」（${next.at}）</div>`
+      ? `<div class="people-next">人情：再加 ${next.need} →「${next.label}」（${next.at}）</div>`
       : `<div class="people-next">人情：對白池已全開</div>`;
     return `<p style="margin:8px 0;display:flex;gap:8px;align-items:center"><img src="${PORTRAITS[n.face]}" alt="" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/><span><b>${n.name}</b> · ${n.role}<br><span class="gold">${h} ${v}／100</span>${nextLine}</span></p>`;
   }).join("");
