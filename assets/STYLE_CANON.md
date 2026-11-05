@@ -38,6 +38,14 @@
 
 - 已 redo：`story/era_stars/{luk_baakyin,yip_manji,so_jiyan,liu_bingxing,ngai_wingnaam}_bust_{default,smile,frown}.png`（15）
 - Refs：`hero_awi.jpg`＋`story/c1/char_hero_bust_default.png`
-- 本 Soft tip 只合 live 15 PNG（bak 留盤、唔入本 PR）
-- silhouettes **未動**（本 repo 無 `*_silhouette_*`，亦唔加）。遠觀仍純文字
+- 本 Soft tip 只合 live bust PNG（bak 留盤、唔入本 PR）
+- silhouettes **未動**（本 repo 無 `*_silhouette_*`，亦唔加）。遠觀仍純文字。preferFile 未加 era_stars path
 - Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD
+
+- 2026-11-05 luk leather v5b：`luk_baakyin` bust×3 改黑皮褸＋白 Tee＋正面理領（對開阿偉西裝白恤）；GenerateImage；bak `era_stars/bak_pre_luk_leather_v5/` 留盤、唔入本 PR；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
+
+- 2026-11-05 liu chow-vibe v10：`liu_bingxing` bust×3 花恤衫正面；周星馳／吳孟達 LOOKS 氣質（禁一比一抄臉）；GenerateImage；bak `bak_pre_liu_chow_v10/` 留盤、唔入本 PR；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
+
+- 2026-11-05 yip starlet-v3：`yip_manji` bust×3 露肩 dusty-rose；邱淑貞／張敏 LOOKS 氣質（禁抄臉）；GenerateImage；bak `bak_pre_yip_starlet_v3/` 留盤、唔入本 PR；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
+
+- 2026-11-05 ngai kara-v2：`ngai_wingnaam` bust×3 navy 外套＋黑背心；惠英紅 LOOKS 氣質（禁抄臉）；低馬尾統一；GenerateImage；bak `bak_pre_ngai_kara_v2/` 留盤、唔入本 PR；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
