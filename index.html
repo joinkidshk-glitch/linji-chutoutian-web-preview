@@ -11627,11 +11627,43 @@ function eraSilhouetteFarSrc(starId){
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
   return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19w";
 }
-function eraSilhouetteFarHtml(star){
+const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
+const CORE_SIL_SIGHT = {
+  lin_hiu:{ displayName:"林曉晴", distanceLook:"林曉晴身穿粉藍針織同裙裝，肩髮垂落，雙手喺身前。" },
+  chow_choiyi:{ displayName:"周采兒", distanceLook:"周采兒着住長風褸同長靴，一手插袋。" },
+  vera:{ displayName:"Vera", distanceLook:"Vera短捲齊耳，黑墊肩西裝配長褲靴，手靠近腰側。" },
+  ko_chunkit:{ displayName:"高俊傑", distanceLook:"高俊傑亂髮，紅皮褸，一手插袋。" },
+  tang_laiping:{ displayName:"鄧麗萍", distanceLook:"鄧麗萍低馬尾，抱臂套裝配膝裙。" },
+  lui_ging:{ displayName:"雷勁", distanceLook:"雷勁抱胸，恤衫領，身形壯碩。" },
+};
+function coreSilhouetteFarSrc(starId){
+  const id = String(starId||"");
+  if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=19w";
+}
+/* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
+function softSilhouetteFarSrc(starId){
+  return eraSilhouetteFarSrc(starId) || coreSilhouetteFarSrc(starId);
+}
+function softSilhouetteFarHtml(star){
   if(!phase3SoftOn() || !star) return "";
-  const src = eraSilhouetteFarSrc(star.starId);
+  const src = softSilhouetteFarSrc(star.starId);
   if(!src) return "";
   return `<img class="era-sil-far" src="${journalText(src)}" alt="" draggable="false">`;
+}
+function coreSilSightStar(id){
+  const row = CORE_SIL_SIGHT[id];
+  if(!row) return null;
+  return {
+    starId:id,
+    displayName:row.displayName,
+    distanceLook:row.distanceLook,
+    distanceLine:"",
+    locHint:"",
+    rumorTeaser:"",
+    resultToast:"已遠觀"+row.displayName+"。",
+    actionLabel:"遠觀",
+  };
 }
 function eraSightParagraphs(star){
   return [
@@ -11655,11 +11687,11 @@ function openStarSighting(star){
       try{ saveQ(); }catch(_e){}
     }
   }catch(_e){}
-  modal(`<h3>遠觀 · ${journalText(star.displayName)}</h3>${eraSilhouetteFarHtml(star)}${eraSightParagraphs(star)}`, [
+  modal(`<h3>遠觀 · ${journalText(star.displayName)}</h3>${softSilhouetteFarHtml(star)}${eraSightParagraphs(star)}`, [
     {label:"離開", role:"g"},
   ]);
   toast(star.resultToast);
-  return { ok:true, starId:star.starId, heard:heard, silhouette: phase3SoftOn() ? eraSilhouetteFarSrc(star.starId) : "" };
+  return { ok:true, starId:star.starId, heard:heard, silhouette: phase3SoftOn() ? softSilhouetteFarSrc(star.starId) : "" };
 }
 function addStarSighting(locId, add){
   const star = starAtLoc(locId);
@@ -11679,9 +11711,10 @@ try{
           resultToast:"已遠觀蘇芷茵。", actionLabel:"遠觀",
         };
       }
+      if(!star && phase3SoftOn()) star = coreSilSightStar(id);
       return openStarSighting(star);
     },
-    silhouette: function(id){ return phase3SoftOn() ? eraSilhouetteFarSrc(id) : ""; },
+    silhouette: function(id){ return phase3SoftOn() ? softSilhouetteFarSrc(id) : ""; },
     boardState: function(g){ return gigBoardCardState(g); },
     source: function(){ return phase3SoftOn() ? PHASE3_MOCK_SRC : "live"; },
     mock: function(){ return phase3SoftOn() ? (PHASE3_MOCK || phase3InlineMock()) : null; },
@@ -11702,6 +11735,15 @@ try{
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
           if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19w") fails.push("sil:"+id);
+          if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
+        });
+        CORE_SIL_FAR_IDS.forEach(id=>{
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19w") fails.push("sil:"+id);
+          if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
+        });
+      }else{
+        ERA_SIL_FAR_IDS.concat(CORE_SIL_FAR_IDS).forEach(id=>{
+          if(__phase3.silhouette(id)) fails.push("sil_live:"+id);
         });
       }
       if(phase3SoftOn() && PHASE3_MOCK && PHASE3_MOCK.castingCta){
