@@ -4,7 +4,7 @@
 > **Brief：** `content/ART_BRIEF_MVP_ERA_STARS_v1.md`  
 > **LOOKS：** `content/PLAN_CHAR_LOOKS_REF_v1.md` §C  
 > **Pipeline：** cursor **GenerateImage**（refs `hero_awi.jpg`＋`char_hero_bust_default.png`）→ Pillow cover-crop **864×1152** PNG  
-> **狀態：** **Soft tip 2026-11-05** — **luk leather v5b**＋**liu chow-vibe v10**＋**yip starlet-v3**＋**so jade-v4**＋**ngai kara-v5**（各 bust×3）。5 人 ×3 表情＝15 live bust。ngai kara-v2 已由 kara-v5 取代，唔再係 live。**Soft nits expr** 已換 so smile／luk smile／ngai×3（bak `bak_pre_soft_nits_expr_20261105/` 唔入本 PR）。**so energy Soft nit** 已換 default＋smile（frown 未動；bak 唔入本 PR）。**ngai age Soft nit** 已換×3（kara-v5 低馬尾＋navy zip 鎖；bak 唔入本 PR）。**silhouettes v2** 5／5 `*_silhouette_far.png` 已入 Soft（bak 唔入本 PR）。挑眉 `raise_brow` 後排、唔動。Soft≠PASS；**唔 tip LIVE**；**1989–1992 HOLD**；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`
+> **狀態：** **Soft tip 2026-11-05** — **luk leather v5b**＋**liu chow-vibe v10**＋**yip starlet-v3**＋**so jade-v4**＋**ngai kara-v5**（各 bust×3）。5 人 ×3 表情＝15 live bust。ngai kara-v2 已由 kara-v5 取代，唔再係 live。**Soft nits expr** 已換 so smile／luk smile／ngai×3（bak `bak_pre_soft_nits_expr_20261105/` 唔入本 PR）。**so energy Soft nit** 已換 default＋smile（frown 未動；bak 唔入本 PR）。**ngai age Soft nit** 已換×3（kara-v5 低馬尾＋navy zip 鎖；bak 唔入本 PR）。**silhouettes v2** 5／5 `*_silhouette_far.png` 已入 Soft（bak 唔入本 PR）。**sil Soft polish×3** 已換 yip／so／luk `*_silhouette_far.png`（liu／ngai sil 未動；bak `bak_pre_silhouette_soft_polish_20261105/` 唔入本 PR）。挑眉 `raise_brow` 後排、唔動。Soft≠PASS；**唔 tip LIVE**；**1989–1992 HOLD**；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`
 
 ## Style-lock MD5（installed live）
 
@@ -30,9 +30,9 @@
 
 | id | display | files | dims | notes |
 |---|---|---|---|---|
-| `luk_baakyin` | 陸柏言 | `*_bust_{default,smile,frown}.png` + `*_silhouette_far.png`（**sil v2**） | 864×1152 | **leather v5b**＋**smile Soft nit 2026-11-05**（露齒酒窩）＋**frown Soft nit 2026-11-05**（深 V 皺眉＋下撇嘴；MD5 `d379b322`）。default `f0bc02d8`／smile `202a6200` 唔動。bak `bak_pre_luk_leather_v5/`＋`bak_pre_soft_nits_expr_20261105/`＋`bak_pre_luk_frown_soft_nit_20261105/` 留盤，唔入本 PR |
-| `yip_manji` | 葉敏芝 | bust×3 + sil **v2** | 864×1152 | **starlet-v3 2026-11-05**：露肩 dusty-rose；邱淑貞／張敏氣質（禁抄臉）；GenerateImage。bak `bak_pre_yip_starlet_v3/` 留盤，唔入本 PR |
-| `so_jiyan` | 蘇芷茵 | bust×3 + `*_silhouette_far.png`（**sil v2 新建**） | 864×1152 | **jade-v4**＋**energy Soft nit 2026-11-05**（default＋smile 更有精神／眼閃；MD5 `2cc1a570`／`e57ab12a`）。frown `f0c0347e` 未動。bak `bak_pre_so_jade_v4/`＋`bak_pre_soft_nits_expr_20261105/`＋`bak_pre_so_energy_soft_nit_20261105/` 留盤，唔入本 PR |
+| `luk_baakyin` | 陸柏言 | `*_bust_{default,smile,frown}.png` + `*_silhouette_far.png`（**sil Soft polish**） | 864×1152 | **leather v5b**＋**smile Soft nit 2026-11-05**（露齒酒窩）＋**frown Soft nit 2026-11-05**（深 V 皺眉＋下撇嘴；MD5 `d379b322`）。default `f0bc02d8`／smile `202a6200` 唔動。sil Soft polish（quiff↑；MD5 `194f29f2`）。bak `bak_pre_luk_leather_v5/`＋`bak_pre_soft_nits_expr_20261105/`＋`bak_pre_luk_frown_soft_nit_20261105/` 留盤，唔入本 PR |
+| `yip_manji` | 葉敏芝 | bust×3 + sil **Soft polish** | 864×1152 | **starlet-v3 2026-11-05**：露肩 dusty-rose；邱淑貞／張敏氣質（禁抄臉）；GenerateImage。sil Soft polish（露肩／bare-arm；MD5 `41ef7a1f`）。bak `bak_pre_yip_starlet_v3/` 留盤，唔入本 PR |
+| `so_jiyan` | 蘇芷茵 | bust×3 + `*_silhouette_far.png`（**sil Soft polish**） | 864×1152 | **jade-v4**＋**energy Soft nit 2026-11-05**（default＋smile 更有精神／眼閃；MD5 `2cc1a570`／`e57ab12a`）。frown `f0c0347e` 未動。sil Soft polish（肘外＋手前；MD5 `720e3473`）。bak `bak_pre_so_jade_v4/`＋`bak_pre_soft_nits_expr_20261105/`＋`bak_pre_so_energy_soft_nit_20261105/` 留盤，唔入本 PR |
 | `liu_bingxing` | 廖炳星 | bust×3 + sil **v2** | 864×1152 | **chow-vibe v10 2026-11-05**：花恤衫正面；周星馳氣質（禁抄臉）；GenerateImage。bak `bak_pre_liu_chow_v10/` 留盤，唔入本 PR |
 | `ngai_wingnaam` | 魏詠男 | bust×3 + sil **v2** | 864×1152 | **kara-v5**＋**age Soft nit 2026-11-05×3**（晚三十讀齡↑；低馬尾＋navy zip 統一；MD5 `09f79211`／`8f1abdaf`／`5df4f5fa`）。kara-v2 唔再係 live。bak `bak_pre_ngai_kara_v5/`＋`bak_pre_soft_nits_expr_20261105/`＋`bak_pre_ngai_age_soft_nit_20261105/` 留盤，唔入本 PR |
 
@@ -41,13 +41,15 @@
 **bak：** 舊稿留盤，未入本 PR。`bak_pre_silhouette_v2/` 同 `bak_pre_soft_nits_expr_20261105/` **唔入**本 PR。  
 **Silhouette v2（2026-11-05 Asia/Hong_Kong）：** 5／5 `*_silhouette_far.png` GenerateImage→Pillow 864×1152 RGBA 透明底近黑 fill；wardrobe 跟 live bust。`?v=` 仍 `19w`。SAVE `starVolunteer_map_v19w`。
 
-| file | MD5 |
-|---|---|
-| `luk_baakyin_silhouette_far.png` | `03fdc270f7936a065d6ab51df3f0d6c6` |
-| `liu_bingxing_silhouette_far.png` | `1238929c711bbdf4fd7252be441554c1` |
-| `ngai_wingnaam_silhouette_far.png` | `3155575564277cee4ced9ec00c557a48` |
-| `yip_manji_silhouette_far.png` | `b606c5a1615b27173041bb22f2a10b0b` |
-| `so_jiyan_silhouette_far.png` | `e37e095a42f41367d8043948762b2ae9` |
+**Silhouette Soft polish（2026-11-05 Asia/Hong_Kong）：** 只換 live `yip_manji`／`so_jiyan`／`luk_baakyin` `*_silhouette_far.png`（對 v2 Soft nits：露肩／bare-arm、肘外＋手前、quiff 體積↑）。`liu_bingxing`／`ngai_wingnaam` silhouette_far **未動**。GenerateImage 彩色全身→Pillow mask RGBA 近黑 `(18,18,20)`、無五官。遠觀 wire 仍係 Soft gate `eraSilhouetteFarSrc` → `assets/story/era_stars/{id}_silhouette_far.png?v=19w`（本 PR 唔改 `index.html`）。bak `bak_pre_silhouette_soft_polish_20261105/`、pngs／preview／bust_refs／QA md／composites **唔入**本 PR。`?v=` 仍 `19w`。SAVE `starVolunteer_map_v19w`。
+
+| file | MD5 | note |
+|---|---|---|
+| `luk_baakyin_silhouette_far.png` | `194f29f24122d612682a1478a22c7d32` | Soft polish（quiff↑）；v2 `03fdc270` |
+| `liu_bingxing_silhouette_far.png` | `1238929c711bbdf4fd7252be441554c1` | untouched v2 |
+| `ngai_wingnaam_silhouette_far.png` | `3155575564277cee4ced9ec00c557a48` | untouched v2（zip vs brief Soft nit 記帳） |
+| `yip_manji_silhouette_far.png` | `41ef7a1fa81d67023a1b15723075d957` | Soft polish（露肩／bare-arm）；v2 `b606c5a1` |
+| `so_jiyan_silhouette_far.png` | `720e34732d52ad85dba179cfd136302b` | Soft polish（肘外＋手前）；v2 `e37e095a` |
 
 ## Soft nits（唔擋；Soft≠PASS）
 
@@ -59,15 +61,15 @@
 6. 整體略 modern polished anime／manhwa 線密度（同 core Soft nit），仍係平面 2D 家族——非先前半寫實漂移  
 7. Prompt 禁真藝名；LOOKS 靈感只作氣質／wardrobe  
 8. `char_hero_bust_raise_brow` 挑眉 Soft nit **未入本 pack**、後排、唔動  
-9. **sil v2（唔擋）** `yip_manji`：袖線讀成長袖貼身，對開 bust 露肩 dusty-rose  
-10. **sil v2（唔擋）** `so_jiyan`：手位偏身前輕握／身側  
-11. **sil v2（唔擋）** `luk_baakyin`：髮頂體積可比 bust 再推  
-12. **sil v2（唔擋）** 全套無淡場景光邊（純透明底近黑形）  
-13. **sil v2（唔擋）** `ngai_wingnaam`：跟 live bust 高領 zip，唔跟舊 brief「短打」字面
+9. **sil v2（已由 Soft polish×3 接）** `yip_manji` 袖線長袖 → 露肩／bare-arm（MD5 `41ef7a1f`）。殘餘 Soft nit（唔擋）：肩凹；無光邊  
+10. **sil v2（已由 Soft polish×3 接）** `so_jiyan` 手藏背後 → 肘外＋手前（MD5 `720e3473`）。殘餘 Soft nit（唔擋）：遠距手位可歧義讀手背後  
+11. **sil v2（已由 Soft polish×3 接）** `luk_baakyin` quiff 體積↑（MD5 `194f29f2`）。殘餘 Soft nit（唔擋）：理領手遠距弱；quiff 可比 bust 再尖  
+12. **sil（唔擋）** 全套無淡場景光邊（純透明底近黑形；同 v2；yip 肩亦無光邊）  
+13. **sil v2（唔擋）** `ngai_wingnaam` zip vs brief sil **未做**（跟 live bust 高領 zip，唔跟舊 brief「短打」字面）；`liu_bingxing` sil 本輪未動
 
 ## Gates
 
-Soft≠PASS｜唔 tip LIVE｜唔 wake iOS｜89–92 HOLD｜silhouettes v2 Soft tip（遠觀只限 Soft gate）｜expr nits Soft tip｜so energy Soft nit（default＋smile；frown 未動）｜ngai age Soft nit×3｜raise_brow 後排｜`?v=` 仍 `19w`｜SAVE `starVolunteer_map_v19w`
+Soft≠PASS｜唔 tip LIVE｜唔 wake iOS｜89–92 HOLD｜silhouettes v2 Soft tip（遠觀只限 Soft gate）｜sil Soft polish×3（yip／so／luk；liu／ngai sil 未動）｜expr nits Soft tip｜so energy Soft nit（default＋smile；frown 未動）｜ngai age Soft nit×3｜raise_brow 後排｜`?v=` 仍 `19w`｜SAVE `starVolunteer_map_v19w`
 
 ## Pack
 
@@ -92,6 +94,8 @@ Soft≠PASS｜唔 tip LIVE｜唔 wake iOS｜89–92 HOLD｜silhouettes v2 Soft t
 `/workspace/star-volunteer-web-so-energy-soft-nit.tar.gz`（只換 live `so_jiyan_bust_default.png`＋`so_jiyan_bust_smile.png`；bak／QA composite／QA md 唔入本 PR）
 
 `/workspace/star-volunteer-web-ngai-age-soft-nit.tar.gz`（只換 live `ngai_wingnaam` bust×3；bak／QA md 唔入本 PR）
+
+`/workspace/star-volunteer-web-era-sil-soft-polish.tar.gz`（只換 live yip／so／luk `*_silhouette_far.png`；`bak_pre_silhouette_soft_polish_20261105/`、pngs／preview／bust_refs／QA md／composites 唔入本 PR）
 
 ## Related
 
@@ -123,3 +127,12 @@ Soft≠PASS｜唔 tip LIVE｜唔 wake iOS｜89–92 HOLD｜silhouettes v2 Soft t
 - Soft nits（唔擋 Soft tip）：smile 年齡線略重；default 可讀略過 38；髮絲 modern polish；zip vs brief sil
 - Soft≠PASS｜唔 tip LIVE｜唔抬 ?v=｜89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-ngai-age-soft-nit.tar.gz`
+
+## era sil Soft polish×3 2026-11-05 (Asia/Hong_Kong)
+- 只換 live：`yip_manji_silhouette_far.png` MD5 `41ef7a1fa81d67023a1b15723075d957`；`so_jiyan_silhouette_far.png` MD5 `720e34732d52ad85dba179cfd136302b`；`luk_baakyin_silhouette_far.png` MD5 `194f29f24122d612682a1478a22c7d32`（864×1152 RGBA）
+- 唔動：`liu_bingxing_silhouette_far.png` `1238929c711bbdf4fd7252be441554c1`；`ngai_wingnaam_silhouette_far.png` `3155575564277cee4ced9ec00c557a48`。bust×15、core sil、`index.html`、SAVE／`?v=` 未動
+- 對開 v2：yip `b606c5a1615b27173041bb22f2a10b0b`；so `e37e095a42f41367d8043948762b2ae9`；luk `03fdc270f7936a065d6ab51df3f0d6c6`。bak `bak_pre_silhouette_soft_polish_20261105/` 留盤、唔入本 PR
+- 目標：yip 袖線長袖 → 露肩／bare-arm；so 手藏背後 → 肘外＋手前；luk quiff 體積↑
+- Soft nits（唔擋 Soft tip）：luk 理領手遠距弱、quiff 可比 bust 再尖；so 遠距手位可歧義讀手背後；yip 肩凹、無光邊；全套無淡場景光邊；ngai zip sil 未做；liu 未動
+- QC：統籌 Style PASS with nits。Soft≠PASS｜唔 tip LIVE｜唔抬 ?v=｜89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-era-sil-soft-polish.tar.gz` MD5 `98e924eceddf948a0e3478a64f49958c`
