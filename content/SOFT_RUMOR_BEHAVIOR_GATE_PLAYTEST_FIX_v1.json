@@ -1,0 +1,168 @@
+{
+  "doc": "SOFT_RUMOR_BEHAVIOR_GATE_PLAYTEST_FIX_v1",
+  "softStatus": "≠PASS",
+  "gates": "唔 tip LIVE｜唔抬 ?v=｜89–92 HOLD",
+  "diagnosis": {
+    "blocker": "C2 Soft 行為閘 rumorAny 要 tvb_rules_gossip，但 MOCK_RUMOR_SEEDS／MERGE_FRAGS／applyMockAsk 只發紅星八卦或 hint:act_* id，永遠唔會有 tvb_rules_gossip → C2 鎖死",
+    "evidenceShot": "/workspace/playtest-shots/27-rumors-journal.png",
+    "alsoMissingForLater": [
+      "gao_steal_spotlight",
+      "choi_recent_news",
+      "hau_ching_recent_news"
+    ],
+    "liveRumorsSources": [
+      "S.mockRumors[].id",
+      "notebook.rumors",
+      "story.rumors",
+      "flags"
+    ],
+    "gigRumorKeys": "Soft pages 未讀 rumorKeys（0 refs）——單改 gigs 唔夠解 C2；必須 Soft mock／ask 發正確 id"
+  },
+  "iosWire": {
+    "must": [
+      "MOCK_RUMOR_SEEDS 加入本檔 rumors[]（id 必須原樣）",
+      "MOCK_ASK 加入 mockAskAdds[]",
+      "applyMockAsk：若 def.grantsRumorId 存在，入手帳 id＝grantsRumorId（唔用 hint:act_*），title/text/source 跟 rumors 目錄或 def",
+      "金龍第一筆 forceCafe 仍可保留；tvb_rules 行動 hit 時必須落到 tvb_rules_gossip"
+    ],
+    "softTip": "合入後交統籌抽樣；唔 tip LIVE"
+  },
+  "copySource": "qwen3.7-max 產 → DeepSeek 香港書面語潤（角色名采兒／曉晴／高仔／何生）",
+  "rumors": [
+    {
+      "id": "tvb_rules_gossip",
+      "source": "金龍茶餐廳",
+      "title": "電視城廠景生存守則",
+      "text": "聽聞入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。",
+      "grant": {
+        "locs": [
+          "cafe_cha",
+          "agency_ho"
+        ],
+        "askIds": [
+          "act_cha_tvb_rules",
+          "act_ho_tvb_rules"
+        ],
+        "note": "金龍打聽或何生聽風可入手帳"
+      }
+    },
+    {
+      "id": "gao_steal_spotlight",
+      "source": "片場休息區",
+      "title": "高仔片場搶鏡",
+      "text": "高仔昨日拍戲時擅自加戲搶鏡，遭導演當場斥責。",
+      "grant": {
+        "locs": [
+          "cafe_cha"
+        ],
+        "askIds": [
+          "act_cha_gao_spotlight"
+        ],
+        "note": "茶餐廳打聽可入手帳"
+      }
+    },
+    {
+      "id": "choi_recent_news",
+      "source": "何生事務所",
+      "title": "采兒近期動向",
+      "text": "采兒最近密密接拍賀歲片，據聞更想物色新臨記做替身。",
+      "grant": {
+        "locs": [
+          "agency_ho"
+        ],
+        "askIds": [
+          "act_ho_choi_news"
+        ],
+        "note": "何生聽風可入手帳"
+      }
+    },
+    {
+      "id": "hau_ching_recent_news",
+      "source": "金龍茶餐廳",
+      "title": "曉晴近期動向",
+      "text": "曉晴剛拍畢古裝劇，近期轉接時裝喜劇，急需反應敏捷的臨記。",
+      "grant": {
+        "locs": [
+          "cafe_cha"
+        ],
+        "askIds": [
+          "act_cha_hiu_news"
+        ],
+        "note": "茶餐廳打聽可入手帳"
+      }
+    }
+  ],
+  "mockAskAdds": [
+    {
+      "locId": "cafe_cha",
+      "id": "act_cha_tvb_rules",
+      "title": "打聽電視城規矩",
+      "hint": "向茶餐廳伙記打聽入廠禁忌",
+      "cost": "一杯凍檸茶",
+      "toast": "伙記低聲透露廠景潛規則。",
+      "source": "金龍茶餐廳",
+      "grantsRumorId": "tvb_rules_gossip"
+    },
+    {
+      "locId": "agency_ho",
+      "id": "act_ho_tvb_rules",
+      "title": "請教何生入廠守則",
+      "hint": "向經理人請教電視台規矩",
+      "cost": "一包萬寶路",
+      "toast": "何生提點數招廠景生存之道。",
+      "source": "何生事務所",
+      "grantsRumorId": "tvb_rules_gossip"
+    },
+    {
+      "locId": "cafe_cha",
+      "id": "act_cha_gao_spotlight",
+      "title": "打聽高仔搶鏡事",
+      "hint": "向茶客打聽高仔片場八卦",
+      "cost": "一碟西多士",
+      "toast": "鄰桌燈光師爆料高仔所為。",
+      "source": "金龍茶餐廳",
+      "grantsRumorId": "gao_steal_spotlight"
+    },
+    {
+      "locId": "agency_ho",
+      "id": "act_ho_choi_news",
+      "title": "詢問采兒近況",
+      "hint": "向何生打聽采兒最新動向",
+      "cost": "免費",
+      "toast": "何生透露采兒正籌備新戲。",
+      "source": "何生事務所",
+      "grantsRumorId": "choi_recent_news"
+    },
+    {
+      "locId": "cafe_cha",
+      "id": "act_cha_hiu_news",
+      "title": "打聽曉晴近況",
+      "hint": "向化妝師打聽曉晴動向",
+      "cost": "一杯咖啡",
+      "toast": "化妝師指曉晴轉拍時裝喜劇。",
+      "source": "金龍茶餐廳",
+      "grantsRumorId": "hau_ching_recent_news"
+    }
+  ],
+  "limitsNotesFix": [
+    {
+      "id": "gig_1988_tv_01",
+      "from": "須接受槍戰場面",
+      "to": "須接受夜戲摸黑走位",
+      "reason": "處境喜劇／靈異喜劇唔應槍戰"
+    },
+    {
+      "id": "gig_1988_film_01",
+      "from": "須接受槍戰場面",
+      "to": "須接受誇張肢體搞笑動作",
+      "reason": "動作喜劇以搞笑為主，唔應有真槍戰"
+    },
+    {
+      "id": "gig_1988_film_05",
+      "from": "須接受槍戰場面",
+      "to": "須接受槍戰場面",
+      "reason": "保留：賀歲戲中戲有舉槍對決",
+      "action": "skip"
+    }
+  ]
+}
