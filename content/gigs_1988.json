@@ -1,5 +1,5 @@
 {
-  "version": "3.2.8-soft",
+  "version": "3.2.9-soft",
   "year": 1988,
   "source": "MATRIX_GIG_ERA_1988_v1 + PLAN_GIG_1988_FAVOR_RUMOR_FILL_v1 + qwen3.7-max Soft favor/rumor fill; Decision1A junior+15; Decision2B agency_ho only; player manager label 何生 (ho_sang); Soft≠PASS",
   "planRef": "PLAN_GIG_1988_PACK_CD_BOARD_v1.md",
@@ -99,9 +99,19 @@
       "ids": [
         "gig_1988_tvb_kowloon_autumn_high"
       ]
+    },
+    {
+      "version": "3.2.9-soft",
+      "date": "2026-11-05",
+      "summary": "comedy/ghost limits.notes 槍戰→夜戲／搞笑動作",
+      "preSha": "1d7108ab",
+      "ids": [
+        "gig_1988_tv_01",
+        "gig_1988_film_01"
+      ]
     }
   ],
-  "notes": "Soft≠PASS；唔 publish；唔改 LIVE；89–92 HOLD；出圖 HOLD；唔推 tip；3.2.4-soft Pack B：OOV remap＋中階 limits／producer＋keyGigs meta 66；經理人玩家面「何生」；favor target 單一 agency_ho；0 新槽 n=137｜3.2.5-soft：選填收齊餘 21 初階 favorDelta＋rumorKeys（Soft≠PASS｜唔 tip）｜3.2.6-soft Pack CD：D1B 0新槽 densify 中階綜藝/電視劇/廣告＋D3A 高階 limits/producer QA patch（Soft≠PASS｜唔 tip｜castWindow HOLD｜roles[] HOLD｜89–92 HOLD）｜3.2.7-soft Soft nits：film_cotton_summer_high 槍戰notes→武打吊威也；tvb_kowloon_autumn_high roleLabel→舉牌女郎；planRef→Pack CD（Soft≠PASS｜唔 tip LIVE）｜3.2.8-soft title Soft nit",
+  "notes": "Soft≠PASS；唔 publish；唔改 LIVE；89–92 HOLD；出圖 HOLD；唔推 tip；3.2.4-soft Pack B：OOV remap＋中階 limits／producer＋keyGigs meta 66；經理人玩家面「何生」；favor target 單一 agency_ho；0 新槽 n=137｜3.2.5-soft：選填收齊餘 21 初階 favorDelta＋rumorKeys（Soft≠PASS｜唔 tip）｜3.2.6-soft Pack CD：D1B 0新槽 densify 中階綜藝/電視劇/廣告＋D3A 高階 limits/producer QA patch（Soft≠PASS｜唔 tip｜castWindow HOLD｜roles[] HOLD｜89–92 HOLD）｜3.2.7-soft Soft nits：film_cotton_summer_high 槍戰notes→武打吊威也；tvb_kowloon_autumn_high roleLabel→舉牌女郎；planRef→Pack CD（Soft≠PASS｜唔 tip LIVE）｜3.2.8-soft title Soft nit｜3.2.9-soft comedy gunfight notes｜3.2.9-soft playtest：春季初階 req 上限 99（能力硬頂 100）；ad_01／ad_02／var_01 開局可即場試鏡。切片底 fe70d5c1。",
   "gigs": [
     {
       "id": "gig_1988_ad_01",
@@ -123,9 +133,9 @@
       "boardNote": "夜戲街拍，考驗節奏感。",
       "seasonWeight": 0.6,
       "req": {
-        "looks": 90,
-        "charm": 100,
-        "stamina": 120
+        "looks": 20,
+        "charm": 14,
+        "stamina": 70
       },
       "pay": [
         3600,
@@ -216,9 +226,9 @@
       "boardNote": "新郎造型，笑容要喜氣。",
       "seasonWeight": 0.6,
       "req": {
-        "looks": 105,
-        "charm": 90,
-        "acting": 65
+        "looks": 20,
+        "charm": 14,
+        "acting": 16
       },
       "pay": [
         2900,
@@ -877,9 +887,9 @@
       "boardNote": "即興答謎，配合搞氣氛。",
       "seasonWeight": 0.6,
       "req": {
-        "charm": 105,
-        "iq": 120,
-        "acting": 85
+        "charm": 14,
+        "iq": 18,
+        "acting": 16
       },
       "pay": [
         1800,
@@ -1338,7 +1348,7 @@
       "seasonWeight": 0.6,
       "req": {
         "acting": 90,
-        "stamina": 110,
+        "stamina": 99,
         "iq": 75
       },
       "pay": [
@@ -1381,7 +1391,7 @@
         "licenses": [],
         "groupOnly": false,
         "notes": [
-          "須接受槍戰場面"
+          "須接受夜戲摸黑走位"
         ]
       },
       "storyKeys": [
@@ -1430,7 +1440,7 @@
       "boardNote": "帶備跌打酒及膠布",
       "seasonWeight": 0.6,
       "req": {
-        "stamina": 145,
+        "stamina": 99,
         "acting": 80,
         "iq": 95
       },
@@ -2102,7 +2112,7 @@
       "boardNote": "需捱得夜戲，聽從指導。",
       "seasonWeight": 0.6,
       "req": {
-        "stamina": 165,
+        "stamina": 99,
         "acting": 95,
         "iq": 85
       },
@@ -2145,7 +2155,7 @@
         "licenses": [],
         "groupOnly": false,
         "notes": [
-          "須接受槍戰場面"
+          "須接受誇張肢體搞笑動作"
         ]
       },
       "storyKeys": [
@@ -2776,8 +2786,8 @@
       "boardNote": "需舞台走位，準時開工。",
       "seasonWeight": 0.6,
       "req": {
-        "stage": 120,
-        "charm": 100
+        "stage": 99,
+        "charm": 99
       },
       "pay": [
         2700,
@@ -3400,7 +3410,7 @@
       "seasonWeight": 0.6,
       "req": {
         "acting": 95,
-        "stamina": 110,
+        "stamina": 99,
         "iq": 75
       },
       "pay": [
@@ -3835,7 +3845,7 @@
       "boardNote": "夜戲提神，注意安全。",
       "seasonWeight": 0.6,
       "req": {
-        "acting": 110,
+        "acting": 99,
         "looks": 95,
         "iq": 85
       },
@@ -4011,7 +4021,7 @@
       "boardNote": "夜戲陰冷，帶件外套。",
       "seasonWeight": 0.6,
       "req": {
-        "acting": 100,
+        "acting": 99,
         "stamina": 95,
         "iq": 80
       },
@@ -4524,9 +4534,9 @@
       "boardNote": "夜戲有雨，帶毛巾擦乾。",
       "seasonWeight": 0.6,
       "req": {
-        "stage": 105,
-        "looks": 115,
-        "charm": 120,
+        "stage": 99,
+        "looks": 99,
+        "charm": 99,
         "stamina": 95
       },
       "pay": [
@@ -10048,8 +10058,8 @@
       "boardNote": "練耳定調，準確入位",
       "seasonWeight": 0.6,
       "req": {
-        "stage": 120,
-        "charm": 110
+        "stage": 99,
+        "charm": 99
       },
       "pay": [
         3100,
