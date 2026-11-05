@@ -4,7 +4,7 @@
 > **Brief：** `content/ART_BRIEF_MVP_ERA_STARS_v1.md`  
 > **LOOKS：** `content/PLAN_CHAR_LOOKS_REF_v1.md` §C  
 > **Pipeline：** cursor **GenerateImage**（refs `hero_awi.jpg`＋`char_hero_bust_default.png`）→ Pillow cover-crop **864×1152** PNG  
-> **狀態：** **Soft tip 2026-11-05** — **luk leather v5b**＋**liu chow-vibe v10**＋**yip starlet-v3**＋**so jade-v4**＋**ngai kara-v5**（各 bust×3）。5 人 ×3 表情＝15 live bust。ngai kara-v2 已由 kara-v5 取代，唔再係 live。**Soft nits expr** 已換 so smile／luk smile／ngai×3（bak `bak_pre_soft_nits_expr_20261105/` 唔入本 PR）。**so energy Soft nit** 已換 default＋smile（frown 未動；bak 唔入本 PR）。**ngai age Soft nit** 已換×3（kara-v5 低馬尾＋navy zip 鎖；bak 唔入本 PR）。**silhouettes v2** 5／5 `*_silhouette_far.png` 已入 Soft（bak 唔入本 PR）。**sil Soft polish×3** 已換 yip／so／luk `*_silhouette_far.png`（liu sil 未動；ngai sil 當時未動；bak `bak_pre_silhouette_soft_polish_20261105/` 唔入本 PR）。**ngai zip sil Soft nit** 已換 `ngai_wingnaam_silhouette_far.png`（高領 zip／低馬尾／理領；bak `bak_pre_ngai_zip_sil_soft_nit_20261105/` 唔入本 PR）。**yip／liu smile↔default Soft nit** 已換 yip／liu bust default＋smile（yip frown 未動；bak `bak_pre_yip_liu_smile_default_soft_nit_20261105/` 唔入本 PR）。**liu frown Soft nit** 已換 `liu_bingxing_bust_frown.png`（舊 `11582108`；bak `bak_pre_liu_frown_soft_nit_20261105/` 唔入本 PR）。挑眉 `raise_brow` 後排、唔動。Soft≠PASS；**唔 tip LIVE**；**1989–1992 HOLD**；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`
+> **狀態：** **Soft tip 2026-11-05** — **luk leather v5b**＋**liu chow-vibe v10**＋**yip starlet-v3**＋**so jade-v4**＋**ngai kara-v5**（各 bust×3）。5 人 ×3 表情＝15 live bust。ngai kara-v2 已由 kara-v5 取代，唔再係 live。**Soft nits expr** 已換 so smile／luk smile／ngai×3（bak `bak_pre_soft_nits_expr_20261105/` 唔入本 PR）。**so energy Soft nit** 已換 default＋smile（frown 未動；bak 唔入本 PR）。**ngai age Soft nit** 已換×3（kara-v5 低馬尾＋navy zip 鎖；bak 唔入本 PR）。**silhouettes v2** 5／5 `*_silhouette_far.png` 已入 Soft（bak 唔入本 PR）。**sil Soft polish×3** 已換 yip／so／luk `*_silhouette_far.png`（liu sil 未動；ngai sil 當時未動；bak `bak_pre_silhouette_soft_polish_20261105/` 唔入本 PR）。**ngai zip sil Soft nit** 已換 `ngai_wingnaam_silhouette_far.png`（高領 zip／低馬尾／理領；bak `bak_pre_ngai_zip_sil_soft_nit_20261105/` 唔入本 PR）。**yip／liu smile↔default Soft nit** 已換 yip／liu bust default＋smile（yip frown 未動；bak `bak_pre_yip_liu_smile_default_soft_nit_20261105/` 唔入本 PR）。**liu frown Soft nit** 已換 `liu_bingxing_bust_frown.png`（舊 `11582108`；bak `bak_pre_liu_frown_soft_nit_20261105/` 唔入本 PR）。**yip energy Soft nit** 已換 `yip_manji` bust default＋smile（frown `9d7e2b8e` 未動；bak `bak_pre_yip_energy_soft_nit_20261105/` 唔入本 PR）。挑眉 `raise_brow` 後排、唔動。Soft≠PASS；**唔 tip LIVE**；**1989–1992 HOLD**；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`
 
 ## Style-lock MD5（installed live）
 
@@ -22,16 +22,16 @@
 | `so_jiyan_bust_default.png` | `2cc1a57050e1bf20d847d87938d1c1d0` |
 | `so_jiyan_bust_frown.png` | `f0c0347ebfb54d00993428404ab2e231` |
 | `so_jiyan_bust_smile.png` | `e57ab12a1329850c0b544a92fdd2ea46` |
-| `yip_manji_bust_default.png` | `b338280bdf931f14477ec89eaf0d8fa8` |
+| `yip_manji_bust_default.png` | `0838406843ff27e2d1e82aa83672a4d4` |
 | `yip_manji_bust_frown.png` | `9d7e2b8ea12a6cd8bfcf92972cba34d9` |
-| `yip_manji_bust_smile.png` | `6e7b1a2b373e7518617e6bd5b21e51b1` |
+| `yip_manji_bust_smile.png` | `f1688fb4b42020a58532f3bf38de8dc2` |
 
 ## Inventory
 
 | id | display | files | dims | notes |
 |---|---|---|---|---|
 | `luk_baakyin` | 陸柏言 | `*_bust_{default,smile,frown}.png` + `*_silhouette_far.png`（**sil Soft polish**） | 864×1152 | **leather v5b**＋**smile Soft nit 2026-11-05**（露齒酒窩）＋**frown Soft nit 2026-11-05**（深 V 皺眉＋下撇嘴；MD5 `d379b322`）。default `f0bc02d8`／smile `202a6200` 唔動。sil Soft polish（quiff↑；MD5 `194f29f2`）。bak `bak_pre_luk_leather_v5/`＋`bak_pre_soft_nits_expr_20261105/`＋`bak_pre_luk_frown_soft_nit_20261105/` 留盤，唔入本 PR |
-| `yip_manji` | 葉敏芝 | bust×3 + sil **Soft polish** | 864×1152 | **starlet-v3 2026-11-05**：露肩 dusty-rose；邱淑貞／張敏氣質（禁抄臉）；GenerateImage。**smile↔default Soft nit 2026-11-05**（default 更中性閉唇 MD5 `b338280b`／smile 露齒 MD5 `6e7b1a2b`；frown `9d7e2b8e` 未動）。sil Soft polish（露肩／bare-arm；MD5 `41ef7a1f`）。bak `bak_pre_yip_starlet_v3/`＋`bak_pre_yip_liu_smile_default_soft_nit_20261105/` 留盤，唔入本 PR |
+| `yip_manji` | 葉敏芝 | bust×3 + sil **Soft polish** | 864×1152 | **starlet-v3 2026-11-05**：露肩 dusty-rose；邱淑貞／張敏氣質（禁抄臉）；GenerateImage。**smile↔default Soft nit 2026-11-05**（當時 default `b338280b`／smile `6e7b1a2b`）。**energy Soft nit 2026-11-05**（default 嬌俏眨眼＋閉唇嘴形清晰 MD5 `08384068`／smile 露齒眼閃↑ MD5 `f1688fb4`；frown `9d7e2b8e` 未動）。sil Soft polish（露肩／bare-arm；MD5 `41ef7a1f`）。bak `bak_pre_yip_starlet_v3/`＋`bak_pre_yip_liu_smile_default_soft_nit_20261105/`＋`bak_pre_yip_energy_soft_nit_20261105/` 留盤，唔入本 PR |
 | `so_jiyan` | 蘇芷茵 | bust×3 + `*_silhouette_far.png`（**sil Soft polish**） | 864×1152 | **jade-v4**＋**energy Soft nit 2026-11-05**（default＋smile 更有精神／眼閃；MD5 `2cc1a570`／`e57ab12a`）。frown `f0c0347e` 未動。sil Soft polish（肘外＋手前；MD5 `720e3473`）。bak `bak_pre_so_jade_v4/`＋`bak_pre_soft_nits_expr_20261105/`＋`bak_pre_so_energy_soft_nit_20261105/` 留盤，唔入本 PR |
 | `liu_bingxing` | 廖炳星 | bust×3 + sil **v2** | 864×1152 | **chow-vibe v10 2026-11-05**：花恤衫正面；周星馳氣質（禁抄臉）；GenerateImage。**smile↔default Soft nit 2026-11-05**（default 閉唇微翹 MD5 `f39379d5`／smile 露齒壞笑 MD5 `3b3c7fb4`）。**frown Soft nit 2026-11-05**（吃癟下撇＋夾眉；MD5 `82edc37f`；舊 `11582108`）。bak `bak_pre_liu_chow_v10/`＋`bak_pre_yip_liu_smile_default_soft_nit_20261105/`＋`bak_pre_liu_frown_soft_nit_20261105/` 留盤，唔入本 PR |
 | `ngai_wingnaam` | 魏詠男 | bust×3 + sil **zip Soft nit** | 864×1152 | **kara-v5**＋**age Soft nit 2026-11-05×3**（晚三十讀齡↑；低馬尾＋navy zip 統一；MD5 `09f79211`／`8f1abdaf`／`5df4f5fa`）。kara-v2 唔再係 live。sil zip Soft nit（高領 zip／低馬尾／理領；MD5 `899c7f7d`；v2 `31555755`）。bak `bak_pre_ngai_kara_v5/`＋`bak_pre_soft_nits_expr_20261105/`＋`bak_pre_ngai_age_soft_nit_20261105/`＋`bak_pre_ngai_zip_sil_soft_nit_20261105/` 留盤，唔入本 PR |
@@ -58,7 +58,7 @@
 1. `luk_baakyin` smile Soft nit **2026-11-05 已換**（露齒＋酒窩；MD5 `202a6200`）；**frown Soft nit 2026-11-05 已換**（深 V 皺眉＋鼻樑壓＋下撇嘴；MD5 `d379b322`；對開 default smirk／smile 露齒）。Soft nits（唔擋）：怒氣線可再強；眉峰 V 可再銳  
 2. `so_jiyan` **energy Soft nit 2026-11-05 已換** default＋smile（MD5 `2cc1a570`／`e57ab12a`；閉唇淺笑＋眼神／smile 露齒眼閃；frown `f0c0347e` 未動）。Soft nits（唔擋）：default 嘴角仍偏親切微笑（可選再收、專推眼閃）；modern polish 線密度；default NEW RGB vs bak RGBA（尺寸／構圖 OK，記帳 only）  
 3. `ngai_wingnaam` **age Soft nit 2026-11-05 已換×3**（default／smile／frown MD5 `09f79211`／`8f1abdaf`／`5df4f5fa`；晚三十 cel 紋／顎線；kara-v5 低馬尾＋navy zip）。kara-v2 唔再係 live。Soft nits（唔擋）：smile 年齡線略重；default 可讀略過 38；髮絲 modern polish；zip vs brief sil（本輪未改 sil）  
-4. `yip_manji` **smile↔default Soft nit 2026-11-05 已換** default＋smile（MD5 `b338280b`／`6e7b1a2b`；default 更中性閉唇、smile 露齒更開；frown `9d7e2b8e` 未動）。starlet-v3 露肩 dusty-rose 鎖。Soft nits（唔擋）：default 仍可讀極淡嘴角（可選再收至完全中性／咬唇眨眼能量）  
+4. `yip_manji` **smile↔default Soft nit 2026-11-05 已換**（當時 MD5 `b338280b`／`6e7b1a2b`；default 更中性閉唇、smile 露齒更開）。**energy Soft nit 2026-11-05 已換** default＋smile（MD5 `08384068`／`f1688fb4`；default 嬌俏眨眼＋閉唇嘴形清晰／咬唇－微 smirk；smile 更開／更暖露齒＋眼閃↑；frown `9d7e2b8e` 未動；對開 tip #30 `b338280b`／`6e7b1a2b`）。starlet-v3 露肩 dusty-rose 鎖。Soft nits（唔擋）：wink 可偏強；微 smirk；線密度／modern polish  
 5. `liu_bingxing` **smile↔default Soft nit 2026-11-05 已換** default＋smile（MD5 `f39379d5`／`3b3c7fb4`；default 閉唇微翹、唔再露齒 smirk；smile 露齒壞笑）。**frown Soft nit 2026-11-05 已換**（MD5 `82edc37f`；吃癟下撇＋夾眉；對開 default 微翹／smile 露齒；舊 `11582108`）。chow-vibe v10 花恤衫鎖。yip frown `9d7e2b8e` 未動。Soft nits（唔擋）：下巴 hatch；吃癟弧略誇；線密度／modern polish  
 6. 整體略 modern polished anime／manhwa 線密度（同 core Soft nit），仍係平面 2D 家族——非先前半寫實漂移  
 7. Prompt 禁真藝名；LOOKS 靈感只作氣質／wardrobe  
@@ -72,7 +72,7 @@
 
 ## Gates
 
-Soft≠PASS｜唔 tip LIVE｜唔 wake iOS｜89–92 HOLD｜silhouettes v2 Soft tip（遠觀只限 Soft gate）｜sil Soft polish×3（yip／so／luk）｜ngai zip sil Soft nit（liu／yip／so／luk sil 未動）｜expr nits Soft tip｜so energy Soft nit（default＋smile；frown 未動）｜ngai age Soft nit×3｜yip／liu smile↔default Soft nit（default＋smile；yip frown 未動）｜liu frown Soft nit｜raise_brow 後排｜`?v=` 仍 `19w`｜SAVE `starVolunteer_map_v19w`
+Soft≠PASS｜唔 tip LIVE｜唔 wake iOS｜89–92 HOLD｜silhouettes v2 Soft tip（遠觀只限 Soft gate）｜sil Soft polish×3（yip／so／luk）｜ngai zip sil Soft nit（liu／yip／so／luk sil 未動）｜expr nits Soft tip｜so energy Soft nit（default＋smile；frown 未動）｜ngai age Soft nit×3｜yip／liu smile↔default Soft nit（default＋smile；yip frown 未動）｜liu frown Soft nit｜yip energy Soft nit（default＋smile；frown 未動）｜raise_brow 後排｜`?v=` 仍 `19w`｜SAVE `starVolunteer_map_v19w`
 
 ## Pack
 
@@ -105,6 +105,8 @@ Soft≠PASS｜唔 tip LIVE｜唔 wake iOS｜89–92 HOLD｜silhouettes v2 Soft t
 `/workspace/star-volunteer-web-yip-liu-smile-default-soft-nit.tar.gz`（只換 live `yip_manji`／`liu_bingxing` bust default＋smile；`bak_pre_yip_liu_smile_default_soft_nit_20261105/`、QA composite／QA md 唔入本 PR）
 
 `/workspace/star-volunteer-web-liu-frown-soft-nit.tar.gz`（只換 live `liu_bingxing_bust_frown.png`；`bak_pre_liu_frown_soft_nit_20261105/`、QA composite／QA md 唔入本 PR）
+
+`/workspace/star-volunteer-web-yip-energy-soft-nit.tar.gz`（只換 live `yip_manji_bust_default.png`＋`yip_manji_bust_smile.png`；`bak_pre_yip_energy_soft_nit_20261105/`、QA composite／QA md 唔入本 PR）
 
 ## Related
 
@@ -173,3 +175,12 @@ Soft≠PASS｜唔 tip LIVE｜唔 wake iOS｜89–92 HOLD｜silhouettes v2 Soft t
 - Soft nits（唔擋 Soft tip）：下巴 hatch；吃癟弧略誇；線密度／modern polish。連同既有：yip default 極淡嘴角；modern polish；sil light-edge 後排
 - QC：統籌 Style PASS with nits。Soft≠PASS｜唔 tip LIVE｜唔抬 ?v=｜89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-liu-frown-soft-nit.tar.gz` MD5 `95ac38ba3579afe88c63a6a1d186deb7`
+
+## yip energy Soft nit 2026-11-05 (Asia/Hong_Kong)
+- 只換 live：`yip_manji_bust_default.png` MD5 `0838406843ff27e2d1e82aa83672a4d4`；`yip_manji_bust_smile.png` MD5 `f1688fb4b42020a58532f3bf38de8dc2`（864×1152 RGB）
+- 唔動：frown `9d7e2b8ea12a6cd8bfcf92972cba34d9`。唔改 liu／so／ngai／luk bust、silhouettes、`index.html`、gigs
+- 對開 tip #30：default `b338280bdf931f14477ec89eaf0d8fa8`；smile `6e7b1a2b373e7518617e6bd5b21e51b1`。bak `bak_pre_yip_energy_soft_nit_20261105/` 留盤、唔入本 PR
+- 目標：default 嬌俏眨眼＋閉唇嘴形更清晰／咬唇－微 smirk 能量；smile 更開／更暖露齒＋眼閃↑。starlet-v3 露肩 dusty-rose／cel／identity 鎖。≠so／ngai
+- Soft nits（唔擋 Soft tip）：wink 可偏強；微 smirk；線密度／modern polish
+- QC：統籌 Style PASS with nits。Soft≠PASS｜唔 tip LIVE｜唔抬 ?v=｜89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-yip-energy-soft-nit.tar.gz` MD5 `77ab9fa9c12e29f7af3b25b16a82ed82`

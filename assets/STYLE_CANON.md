@@ -65,6 +65,8 @@
 
 - 2026-11-05 liu frown Soft nit：`liu_bingxing_bust_frown` 吃癟下撇對開 default／smile（chow-vibe v10 wardrobe／cel-shade lock；default `f39379d5`／smile `3b3c7fb4` 未動；yip frown `9d7e2b8e` 未動）；GenerateImage；bak `era_stars/bak_pre_liu_frown_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-liu-frown-soft-nit.tar.gz`；併入同一 Soft tip；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
 
+- 2026-11-05 yip energy Soft nit：`yip_manji_bust_{default,smile}` 嬌俏眨眼／咬唇能量＋smile 更暖露齒眼閃↑（starlet-v3 露肩 dusty-rose／cel-shade lock；frown `9d7e2b8e` 未動；對開 tip #30 default `b338280b`／smile `6e7b1a2b`；live MD5 `08384068`／`f1688fb4`）；GenerateImage；bak `era_stars/bak_pre_yip_energy_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-yip-energy-soft-nit.tar.gz` MD5 `77ab9fa9`；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
+
 ## raise_brow Soft nit（2026-11-05 Asia/Hong_Kong）
 
 - 已換：`char_hero_bust_raise_brow.png` MD5 `59dab337`；`char_cheung_bust_raise_brow.png` MD5 `8a8d01a9`（c1／story／dialog／npc 四路同 MD5）
@@ -140,3 +142,13 @@
 - Soft nits（唔擋 Soft tip）：下巴 hatch；吃癟弧略誇；線密度／modern polish。連同既有：yip default 極淡嘴角；modern polish；sil light-edge 後排
 - Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-liu-frown-soft-nit.tar.gz` MD5 `95ac38ba3579afe88c63a6a1d186deb7`
+
+## yip energy Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/yip_manji_bust_default.png` MD5 `08384068`；`yip_manji_bust_smile.png` MD5 `f1688fb4`（864×1152 RGB）
+- 唔動：frown `9d7e2b8e`。唔改 liu／so／ngai／luk bust、silhouettes、`index.html`、gigs。starlet-v3 露肩 dusty-rose／cel-shade lock。Pipeline：GenerateImage → 864×1152 RGB
+- 對開 tip #30：default `b338280b`／smile `6e7b1a2b`。bak `era_stars/bak_pre_yip_energy_soft_nit_20261105/` 留盤、唔入本 PR
+- 目標：default 嬌俏眨眼＋閉唇嘴形更清晰／咬唇－微 smirk 能量；smile 更開／更暖露齒＋眼閃↑。≠so／ngai
+- Soft nits（唔擋 Soft tip）：wink 可偏強；微 smirk；線密度／modern polish
+- QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-yip-energy-soft-nit.tar.gz` MD5 `77ab9fa9c12e29f7af3b25b16a82ed82`
