@@ -1838,7 +1838,7 @@ body.day-res-open #mask.day-res{
   z-index: 1 !important;
 }
 
-/* 4) Gig board: 即場試鏡／約試鏡日 ≥44 */
+/* 4) Gig board: 接通告／約試鏡日 ≥44 */
 .gig-actions{
   gap: 8px !important;
 }
@@ -3128,7 +3128,7 @@ const UI_ASSETS = {
   corner_music_senior: "data:image/svg+xml;charset=utf-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%20%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2228%22%20height%3D%2228%22%20viewBox%3D%220%200%2028%2028%22%20fill%3D%22none%22%3E%20%3Cpath%20d%3D%22M0%200h28L0%2028V0z%22%20fill%3D%22%23c084fc%22/%3E%20%3Ctext%20x%3D%228%22%20y%3D%2212%22%20text-anchor%3D%22middle%22%20transform%3D%22rotate%28-45%209%2011%29%22%20font-family%3D%22PingFang%20HK%2C%20Noto%20Sans%20TC%2C%20sans-serif%22%20font-size%3D%229%22%20font-weight%3D%22800%22%20fill%3D%22%230a1424%22%3E%E9%AB%98%3C/text%3E%20%3C/svg%3E"
 };
 
-const STAT_MAX = 100;
+const STAT_MAX = 999; // Soft: 能力硬上限（演技／台風／外貌／體力／智商／魅力）。apply() 一併夾 fame／popularity／stress，因為共用此常數。Soft≠PASS。唔 tip LIVE。
 const START = { y:1988, m:3, d:7 }; // 1988-03-07
 
 const LOCS = [
@@ -4450,7 +4450,7 @@ function pick(a){return a[Math.floor(Math.random()*a.length)]}
 /* Phase1 copy packs — embedded (matches GIGS pattern for file://); fetch may refresh */
 const NPC_LINES_CORE = {"agent":{"name":"何生","greet":["阿偉，通告要自己追，我只會在旁邊推你一把","來了就好，先看通告欄還有沒有空位。","今天狀態還行，別浪費在等電話","我不會替你跑，路線你自己記牢","新人期很短，動作要快過猶豫","先報到，再談條件，次序別亂"],"chat":["中環廣告的要求高，但報酬確實好看","九龍電視廠那邊通告很密，競爭也密","你狀態不錯，去幾間電視台看看通告欄。","電影組工時長，但入鏡機會很實在","唱片那邊偶爾有散工，留意臨時招募","我不會替你挑，功課要自己做","上週出勤一般，這週補回來","被拒是常態，別把一次回絕當結論"],"advice":["先顧好出勤紀錄，再談角色大小","試鏡前把對白讀順，別臨場才想","片場早到十分鐘，印象分就是這樣累積的","接不到就換區，別在同一個通告欄前發呆。","體力要留，通宵後別硬接早班","每次殺青都留聯絡，班底會再找你"],"intel":["中環那邊有廣告組在補臨記，要求不低","九龍電視廠近期廠景多，通告貼得密","電影組在附近搭景，散工需求不穩定","唱片那邊有拍攝散活，消息還不算穩定","聽說廣告客戶偏好生面孔，你可以試試","各區通告欄更新很快，早晚各看一次。"],"pressure":["這週出勤偏低，週評時不好看","再挑下去，位置就給別人了","跑通告要勤，別等電話響才動。","撐不住就講，硬撐只會兩頭輸"]},"stylist":{"name":"Vera","greet":["阿偉，今天的髮型總算聽話","先整理衣領，鏡頭前不能鬆散","你面色偏淡，待會補一層底妝","通告前先照全身鏡，確認比例","我留了一套剪裁乾淨的衣服給你試","新人也要有記憶點，從外表開始"],"chat":["金鐘那邊的短片案，外貌條件佔很重","中環品牌偏好乾淨面孔，妝容要克制","我可以幫你修造型，入鏡會更順","唱片宣傳造型講究統一，不要每場都變","廣告試鏡先看整體氣質，再看細節","你的肩線不錯，穿合身外套會加分","近期品牌偏好自然感，不必過度修飾","拍板前十分鐘，記得檢查髮際與袖口"],"advice":["底妝薄一層就夠，鏡頭會放大厚度","領口保持乾淨，近鏡最容易出賣細節","髮型先定輪廓，再談風格","試鏡服裝以合身素色為主，減少干擾","拍照前先練兩個角度，別臨場才找","造型統一，導演才記得你的樣子"],"intel":["金鐘有短片案，品牌方重視外貌條件","中環那邊偏好清爽面孔，妝感要輕","唱片公司近期在找有辨識度的新面孔","廣告短片試鏡多數先看整體形象照","品牌活動喜歡乾淨線條，不要戴太多飾物","有唱片宣傳造型案在談，要求統一風格"],"pressure":["經理人那邊催進度，造型照什麼時候能交？","對手已經在試鏡，你的形象照還沒定","記者問什麼時候有曝光，先給我一張可用照片","這髮型再拖，鏡頭前會顯得不夠精神"]},"colleague":{"name":"林曉晴","greet":["阿偉，今天在星河電視台廠房碰到你，真巧","早晨，今天有通告嗎？我剛收到一份班底名單","你也在這邊等開工？一起對一下場次吧","好久不見，最近跑哪個片場比較多？","阿偉，吃過飯沒有？下午那場要撐住","你也來這區？我記得你上次在這邊入鏡"],"chat":["我這星期跟一個單元劇班底，場記人很好","聽說紅磡那邊招人很快，你可以去打探","今天服裝間很忙，臨記要早點報到","我上次試鏡遲到五分鐘，角色就沒有了","跑通告雖然辛苦，但入鏡機會比較多。","有前輩教我，等燈光時要記住走位","班底名單通常前一晚才發，要留意電話","我最近在練反應，導演臨時改詞也不怕"],"advice":["高俊傑搶通告很積極，你要早一步回覆","接到通告先確認地點與時間，免得出錯","在片場少談是非，多留意班底怎樣運作","試鏡前把對白讀順，語氣自然最重要","遇到臨時換角不要灰心，當作累積經驗","記得帶齊服裝與證件，臨記也要專業"],"intel":["星河電視台那邊缺班底，你可以去打探一下","紅磡的單元劇招人很快，消息通常當天流傳","聽說九龍那邊有劇組在找年輕臨記","電視台班底近來流動大，補位機會不少","有單元劇下週開工，名額可能還有剩","碼頭那邊偶爾有外景，需要人手充場面"],"pressure":["高俊傑動作很快，你再慢一步就沒有位了","這份通告很多人爭，你要盡快回覆","別只等何生安排，自己也要主動跑通告。","記者那邊催曝光，你要把握入鏡機會"]},"director":{"name":"張子駿","greet":["你來了，先坐一會，我想看你安靜下來的樣子","維港那邊風很大，你還是來了，這份誠意我記住","今天不趕戲，我只想聽你講講自己的事","棉登徑的片場比較小，你別嫌這裡簡陋","你的眼神很穩，這種定力在片場很少見","先別只想入鏡，先想清楚角色在做什麼"],"chat":["我想拍一個話不多的男人，你有沒有興趣來維港試鏡？","沙田外景很辛苦，但鏡頭不會幫你掩飾","你跑龍套的日子，其實都在累積觀察力","獨立製作資源不多，每一格底片都要花得值得","我選角不看名氣，只看你能否在鏡頭前誠實","你跟何生的班底不同，來我這邊要重新適應節奏","收工後留下來看毛片，對你會有幫助","演戲不是把情緒演出來，是讓它在對的時刻出現"],"advice":["不要急著紅，演技才是你能帶走的東西","先把台詞讀到不用想，再談設計小動作","每一次試鏡，都當作正式拍攝去準備","名氣會過，底子不會過期。","少看自己的剪輯，多看別人的完整演出","若覺得角色太輕，先問自己有沒有演滿"],"intel":["維港那邊有個外景試鏡，適合你這種新人去見識","我聽說棉登徑的片場在找臨時演員，你可以去試","有位副導在留意你的鏡頭感，別鬆懈","近期電影外景多，跑龍套的人手很缺","試鏡的評審重視即興反應，你要有準備","有人說你台詞穩，這種評價在行內不容易得到"],"pressure":["這條戲我還要再拍一次，標準不能降","你狀態不夠集中，先休息再回來","經理人那邊催進度，我這邊只催質素","記者問起，就說我們在"]},"rival":{"name":"高俊傑","greet":["新人仔也懂得來公司打卡，倒是難得","喲，阿偉，今天又跑哪一組通告？","在片場見你出現的次數，快趕上我了","早上好，今天沒有遲到吧？","你也在這層等通告？真巧","看來何生給你的通告不少。"],"chat":["上次試鏡我贏了，下次再來一場","你連走位都未站穩，就急著搶鏡頭","聽說你最近接了不少小角色，恭喜","臨記這行，耐力比運氣重要","我入行時比你更拼，你還要加把勁","你那份劇本做滿了筆記，看得出來很緊張","有空一起對戲，我不會手下留情","片場的規矩，多看幾次就明白"],"advice":["試鏡前先讀熟劇本，別靠臨場發揮","等通告時別只顧聊天，留意助導的手勢","入鏡前先確認機位，免得擋住主角","被導演喊停時，先應一聲再調整","跑龍套要準時，遲到一次就少一次機會","收工後檢討自己的走位，比抱怨有用"],"intel":["聽說九龍那邊有廣告試鏡，名額不多","電視城下週有場大製作選角，競爭很激烈","有人說中央那組廣告在找新面孔","片場那邊有部戲缺幾個背景角色","我收到消息，某導演喜歡用生面孔試戲","這期通告很搶手，手快才有位"],"pressure":["你連台詞都背不順，還想搶主角？","這次試鏡你最好別再輸得難看","新人搶通告可以，但別擋住別人的路","你再不加把勁，位置很快被人頂上"]},"reporter":{"name":"周采兒","greet":["阿偉，又見面了，今天有甚麼可以寫進版面的？","你近來在片場跑得不錯，有沒有新消息給我？","別緊張，我只是來看看新人臨記的狀態","你若想見報，先讓我知道你最近在忙甚麼","我在等一單好料，你手上可有半句消息？","來，打個招呼就好，鏡頭前後都要有存在感"],"chat":["唱片宣傳最近很旺，記者會一場接一場","銅鑼灣那邊常有宣傳活動，記者都愛去","低調不是消失，偶爾也要讓人記得你","新人最怕沒有名字，先讓人記住你的臉","我寫人一向留餘地，好看的話自然會多寫","片場消息傳得快，真假要自己分清楚","你跑龍套跑得勤，記者自然會多看你一眼","有曝光機會時，別只站在最邊的位置"],"advice":["想見報，先準備一句講得清楚的自我介紹","記者會上主動遞名片，比等人來問有效","宣傳期內多露面，版面才會記得你","被問到不懂的事，微笑帶過比亂答安全","與其等通告，不如先做好每次入鏡的細節","保持準時與禮貌，記者最記得誰好合作"],"intel":["聽說那邊有唱片宣傳在物色新面孔，你可以留意","某個記者會正缺臨記撐場，消息不算張揚","港島那邊的宣傳活動最近多，時機不錯","有班底在找新人試鏡，條件不算高","片場有人提起你，說你跑龍套夠穩","下週可能有一場低調的見面會，值得打聽"],"pressure":["你近來曝光太少，記者快把你忘了","再沒有新料給我，版面就要留給別人了","低調也要有底線，至少讓我寫你一句","你若一直不開口，我怎樣幫你寫好？"]},"version":"1.2","edits":[{"when":"2026-11-02","note":"SOFT_NITS_FIX_v1: 龍門→星河"}],"filterPass":"2026-11-03"};
 const EVENTS_ZH_HK = {"AUD_PASS":["{title}試鏡通過，我獲聘入組，通告期 {shootDays} 日。","收到通知，{title}取錄了我，{shootDays} 日後開工。","{title}試鏡有結果，我被取錄，拍攝 {shootDays} 日。","劇組來電，{title}用我，計 {shootDays} 日通告。"],"AUD_FAIL":["{title}沒有回音，我繼續等下一張通告。","{title}未獲聘，記下這次經驗，下次再試其他通告。","{title}落選，回去練好基本功。","{title}沒成，明天照樣去開工。"],"AUD_STRESS70":["壓力偏高，試鏡成功率已打折，先把狀態穩住。","精神負擔重，評分受影響，這陣子少接試鏡比較好。"],"SHOOT_DAY":["{title}今日通告：第{done}場，共{total}場。","{title}拍到第{done}場，全片{total}場，進度照表。","廣告通告：{title}完成{done}/{total}場，導演收貨。","劇集外景：{title}第{done}場過關，餘{total}場。","{title}劇組趕戲，{done}/{total}場，夜班照開。","{title}今日做到第{done}場，全片共{total}場。"],"SHOOT_WRAP":["{title}殺青，片酬{pay}入袋，聲望{fame}，人氣{popularity}。","{title}拍完。收{pay}，聲望{fame}，人氣{popularity}。","{title}殺青。片酬{pay}，聲望{fame}，人氣{popularity}。","{title}完工。片酬{pay}，聲望{fame}，人氣{popularity}。"],"SHOOT_HINT_ECHO":["{shootHint}，照做。","記住：{shootHint}。"],"WEEK_OK":["第{weekNum}週收工。何生說這週通告排得順。","第{weekNum}週完。數一數，龍套也跑了幾場。","第{weekNum}週過去，沒出岔子，算好。"],"WEEK_STRESS75":["第{weekNum}週完。何生叫你休息，別硬撐。","第{weekNum}週收工，何生看你臉色，叫你緩兩天。","第{weekNum}週過去。何生說：錢賺不完，先睡。"],"WEEK_STRESS90":["第{weekNum}週，你病倒了。下週試鏡，狀態打折。","第{weekNum}週撐不住，躺了兩天。下週試鏡吃虧。","第{weekNum}週收場是診所。下週試鏡，別指望滿分。"],"WEEK_RECOVER":["總算緩過來。下週通告，不用再擔心缺席。","身體好多了。下週通告，暫時不用擔心缺席。"],"WEEK_LOW_STA":["體力快沒了。這週別接太重的通告。","體力不足，開工前先睡夠。"],"WEEKEND_SOFT":["週末。睡到自然醒，體力慢慢回來。","兩日假期，可以什麼都不做，先把體力養回來。"],"TRAIN_RESULT_acting":["演技訓練完結，導師記下你的走位。","電視台排練結束，你記住鏡頭位置。","電影組收工，你留下一條可用片段。"],"TRAIN_RESULT_stage":["台風課完結，你練完一輪出場。","音樂室排練結束，拍子總算跟上。","舞台導師示範一次，你照做。"],"TRAIN_RESULT_looks":["形象課結束，攝影師替你試光。","廣告試鏡前，你按指示調整站姿。","造型師看過相片，指出可以改的地方。"],"TRAIN_RESULT_charm":["社交課完結，你練完一輪對答。","魅力課結束，導師提醒你放慢語速。","課堂散去，你記下幾句開場話。"],"TRAIN_RESULT_iq":["觀察課完結，你抄下幾條筆記。","智商課結束，題目比上次順手。","導師收起教材，你留下練習紙。"],"UNLOCK_CHARM":["訓練累計夠數，魅力課開放報名。","新課程解鎖：魅力課可以報名。"],"UNLOCK_IQ":["訓練再進一步，觀察課開放報名。","新課程解鎖：觀察課可以報名。"],"ENROLL_OK":["報名成功，按時到場。","訓練已報名，記住上課地點。","名額確認，準時出席。"]};
-const STORY_BEATS_PHASE1 = {"version":1,"phase":"Phase1","locale":"zh-Hant-written","source":"Prompt D-modern-v4 (P1 audit)","chapters":[{"id":"Ch1","title":"記數簿與名片冊","open":["1988 年春，阿偉在黃大仙屋邨起步。","手上有記數簿和名片冊，開始跑通告。"],"close":["頭兩週過去，他學會看通告欄，也學會等。","還不算站穩，但已經開始自己跑通告。"]},{"id":"Ch2","title":"第一次試鏡","open":["第三週起，何生把試鏡日和即場的分別講清楚。","阿偉自己跑通告，記下地址和時間。"],"close":["第一單通告殺青，記數簿記下這筆收入。","穩定收入還早，不過這次有實際入帳。"]},{"id":"Ch3","title":"人脈與對手","open":["通告變多，片場人事也更複雜。","誰給情報、誰給臉色，他開始分得清。"],"close":["人脈要看關鍵時刻有沒有人幫你。","對手也要記得。"]},{"id":"Ch4","title":"春夏小結","open":["春夏交接，通告還在繼續。","離穩定收入還差一段，先做一次小結。"],"close":["評語寫完了，之後還是自己跑。","下一季再看成績。"]}],"beats":[{"id":"B01","when":"W1","speaker":"何生","lines":["記數簿用來記數，名片冊用來記人。兩樣都別弄丟。","我不會替你跑每一場。你自己去試。","有不懂，先問，再記。"]},{"id":"B02","when":"W1-2","speaker":"系統","lines":["通告欄可先免費查看；條件未合會顯示暫未能報。","先看日期與地點，再決定是否即場試鏡。","達標後才可即場試鏡，耗一日。"]},{"id":"B03","when":"W2-3","speaker":"阿偉","lines":["第一次報名訓練，手續比想像中多。","導師只看動作，不看解釋。","結算後，記數簿多了一行訓練紀錄。"]},{"id":"B04","when":"W3-4","speaker":"系統","lines":["訓練滿兩次，社交課就會開放。","社交課可以提升臨場應對。","要不要報名，由你決定。"]},{"id":"B05","when":"W4-5","speaker":"何生","lines":["第一次試鏡，成敗都算經驗。","壓力會有。照本子做，別加戲。","出來後告訴我，好壞都要說。"]},{"id":"B06","when":"W5-7","speaker":"阿偉","lines":["連日拍攝，早出晚歸。","殺青時場務收工，大家散開。","記數簿多了一筆收入，數目不大。"]},{"id":"B07","when":"W6-8","speaker":"系統","lines":["林曉晴傳來一則通告情報，來源可靠。","Vera 提醒形象要一致，造型和說話別打架。","張子駿說：先把通告做穩，別急著成名。"]},{"id":"B08","when":"W8-9","speaker":"阿偉","lines":["高俊傑當眾笑我走位太慢。","轉頭他先一步報了那張通告。","我記住位置，也記下這件事。"]},{"id":"B09","when":"W9-10","speaker":"系統","lines":["周采兒在場邊多看了兩眼，好感夠了。","她約了一段小訪，只問片場日常。","幾天後見報，名字第一次印在版面上。"]},{"id":"B10","when":"W10-12","speaker":"何生","lines":["（未達）穩定收入還差一步，別停，通告要接密一點。","（已達）總算做到有穩定收入。先維持住，再談下一步。"]}],"filterPass":"2026-11-03"};
+const STORY_BEATS_PHASE1 = {"version":1,"phase":"Phase1","locale":"zh-Hant-written","source":"Prompt D-modern-v4 (P1 audit)","chapters":[{"id":"Ch1","title":"記數簿與名片冊","open":["1988 年春，阿偉在黃大仙屋邨起步。","手上有記數簿和名片冊，開始跑通告。"],"close":["頭兩週過去，他學會看通告欄，也學會等。","還不算站穩，但已經開始自己跑通告。"]},{"id":"Ch2","title":"第一次試鏡","open":["第三週起，何生把試鏡日和即場的分別講清楚。","阿偉自己跑通告，記下地址和時間。"],"close":["第一單通告殺青，記數簿記下這筆收入。","穩定收入還早，不過這次有實際入帳。"]},{"id":"Ch3","title":"人脈與對手","open":["通告變多，片場人事也更複雜。","誰給情報、誰給臉色，他開始分得清。"],"close":["人脈要看關鍵時刻有沒有人幫你。","對手也要記得。"]},{"id":"Ch4","title":"春夏小結","open":["春夏交接，通告還在繼續。","離穩定收入還差一段，先做一次小結。"],"close":["評語寫完了，之後還是自己跑。","下一季再看成績。"]}],"beats":[{"id":"B01","when":"W1","speaker":"何生","lines":["記數簿用來記數，名片冊用來記人。兩樣都別弄丟。","我不會替你跑每一場。你自己去試。","有不懂，先問，再記。"]},{"id":"B02","when":"W1-2","speaker":"系統","lines":["通告欄可先免費查看；條件未合會顯示暫未能報。","先看日期與地點，再決定是否接通告。","達標後才可接通告，耗一日。"]},{"id":"B03","when":"W2-3","speaker":"阿偉","lines":["第一次報名訓練，手續比想像中多。","導師只看動作，不看解釋。","結算後，記數簿多了一行訓練紀錄。"]},{"id":"B04","when":"W3-4","speaker":"系統","lines":["訓練滿兩次，社交課就會開放。","社交課可以提升臨場應對。","要不要報名，由你決定。"]},{"id":"B05","when":"W4-5","speaker":"何生","lines":["第一次試鏡，成敗都算經驗。","壓力會有。照本子做，別加戲。","出來後告訴我，好壞都要說。"]},{"id":"B06","when":"W5-7","speaker":"阿偉","lines":["連日拍攝，早出晚歸。","殺青時場務收工，大家散開。","記數簿多了一筆收入，數目不大。"]},{"id":"B07","when":"W6-8","speaker":"系統","lines":["林曉晴傳來一則通告情報，來源可靠。","Vera 提醒形象要一致，造型和說話別打架。","張子駿說：先把通告做穩，別急著成名。"]},{"id":"B08","when":"W8-9","speaker":"阿偉","lines":["高俊傑當眾笑我走位太慢。","轉頭他先一步報了那張通告。","我記住位置，也記下這件事。"]},{"id":"B09","when":"W9-10","speaker":"系統","lines":["周采兒在場邊多看了兩眼，好感夠了。","她約了一段小訪，只問片場日常。","幾天後見報，名字第一次印在版面上。"]},{"id":"B10","when":"W10-12","speaker":"何生","lines":["（未達）穩定收入還差一步，別停，通告要接密一點。","（已達）總算做到有穩定收入。先維持住，再談下一步。"]}],"filterPass":"2026-11-03"};
 let NPC_LINES = NPC_LINES_CORE;
 let EVENTS = EVENTS_ZH_HK;
 /* v17h: shoot day lines by gig type — avoid 電影班底 on TV */
@@ -5408,7 +5408,7 @@ const BehaviorGate = (function(){
     if(!stepWeek(trig, ctx)) bits.push("未到第 "+Number(trig.weekMin)+" 週（現第 "+ctx.week+" 週）");
     if(!stepLoc(trig, ctx, {})){
       const names = (trig.locIdAny||[]).map(locPlayerName);
-      if(names.length) bits.push("人要在"+names.join("或"));
+      if(names.length) bits.push("先到"+names.join("或")+"，先可以播這幕");
     }
     if((Number(trig.favorMin)||0) > 0){
       const have = favorValue(trig.favorTarget||"agency_ho", ctx);
@@ -6736,7 +6736,8 @@ const StoryPlay = (()=>{
     return ch ? ("主線 · 1988"+ch) : "";
   }
   /** Soft only. Default order stays playerMeta → seed / softCalendarSeason / chromeSeason → when / eraTag → 1988春.
-      Dual meet sets preferSeedSeason so seed.season wins over the baked playerMeta (采兒 mock is 夏; a spring seed shows 春). */
+      Dual meet sets preferSeedSeason so seed, then the live calendar, wins over the baked playerMeta
+      (周刊／采兒 mock is 夏; 春播顯示春、秋開顯示秋). */
   function spPlayerMeta_softSeasonFrom(node, src){
     node = node || {};
     src = src || {};
@@ -6771,9 +6772,14 @@ const StoryPlay = (()=>{
     try{
       if(typeof softCalendarSeason==="function") calendarSeasonSoft = softCalendarSeason() || "";
     }catch(_e){}
+    /* 周刊小訪／采兒：季標跟日曆，唔跟寫死嘅 1988夏。種子檔期仍然優先。 */
+    let liveCal = "";
+    if(dualMeetChromePrefersSeed(node)){
+      try{ if(typeof calendarSeason==="function") liveCal = calendarSeason() || ""; }catch(_e){}
+    }
     return spPlayerMeta_softSeasonFrom(node, {
       seedSeason:seedSeason,
-      calendarSeason:calendarSeasonSoft,
+      calendarSeason: calendarSeasonSoft || liveCal,
       preferSeedSeason: dualMeetChromePrefersSeed(node)
     });
   }
@@ -6785,6 +6791,8 @@ const StoryPlay = (()=>{
     eq("p1", from({ playerMeta:line("秋"), chromeSeason:"winter", when:"1988春" }, { seedSeason:"spring" }), line("秋"));
     eq("dualSeedChrome", from({ id:"R_choi_meet", playerMeta:line("夏"), chromeSeason:"summer", when:"1988夏" }, { seedSeason:"spring", preferSeedSeason:true }), line("春"));
     eq("dualNoSeed", from({ id:"R_choi_meet", playerMeta:line("夏"), chromeSeason:"summer" }, { preferSeedSeason:true }), line("夏"));
+    eq("choiSpringCal", from({ id:"R_choi_meet", playerMeta:line("夏"), chromeSeason:"summer", when:"1988春" }, { calendarSeason:"spring", preferSeedSeason:true }), line("春"));
+    eq("choiAutumnCal", from({ id:"R_choi_meet", playerMeta:line("夏"), chromeSeason:"summer", when:"1988夏" }, { calendarSeason:"autumn", preferSeedSeason:true }), line("秋"));
     eq("p2seed", from({ chromeSeason:"winter", when:"1988春" }, { seedSeason:"autumn" }), line("秋"));
     eq("p2cal", from({ chromeSeason:"winter", when:"1988春" }, { calendarSeason:"summer" }), line("夏"));
     eq("p2chrome", from({ chromeSeason:"autumn", when:"1988春" }, {}), line("秋"));
@@ -7256,6 +7264,23 @@ const StoryPlay = (()=>{
       return " · "+esc(tail);
     }
 
+    function pickerHereBlock(r){
+      /* 列表用 ignoreSheetLoc 先見到事態；真正開播仍查地點。唔在場就唔寫「可立即播放」。 */
+      let node = null;
+      try{ node = StoryOC.findNodeRaw && StoryOC.findNodeRaw(r && r.id); }catch(_e){}
+      let ev = null;
+      try{ ev = StoryOC.evalNode(node, { checkNodePhase:true, player:true }); }catch(_e){}
+      if(ev && ev.ok) return "";
+      try{
+        if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview() && BehaviorGate.coversNode(node||r)){
+          return BehaviorGate.lockedCopy_noEngineeringTerms(node||r);
+        }
+      }catch(_e){}
+      try{
+        if(StoryOC.playerReasonFrom) return StoryOC.playerReasonFrom((ev && ev.reasons) || (r && r.reasons) || [], node);
+      }catch(_e){}
+      return "先到場，先可以播這幕。";
+    }
     const openRows = open.map(r=>{
       let stamp = r.weekStamp || "";
       try{
@@ -7263,10 +7288,11 @@ const StoryPlay = (()=>{
       }catch(_e){}
       const whenBit = pickerWhenBit(stamp, r.when);
       const meta = pickerPlayerMeta(r);
+      const hereBlock = pickerHereBlock(r);
       const bits = [];
       if(meta) bits.push(esc(meta));
       if(whenBit) bits.push(whenBit.replace(/^ · /, ""));
-      bits.push("可立即播放");
+      bits.push(hereBlock ? esc(hereBlock) : "可立即播放");
       return `<div class="sp-row" data-play="${esc(r.id)}">
       <div class="sp-row-txt"><b>${esc(r.title||r.id)}</b><span>${bits.join(" · ")}</span></div>
       <button type="button" class="sp-play" data-play="${esc(r.id)}">播放</button>
@@ -7313,8 +7339,11 @@ const StoryPlay = (()=>{
     }).join("");
 
     const c1Done = done.some(d=>d && d.id==="C1") || (typeof StoryOC.isDone==="function" && StoryOC.isDone("C1"));
+    const firstBlock = open.length ? pickerHereBlock(open[0]) : "";
     const lead = open.length
-      ? `現有 <b>${open.length}</b> 宗事態。可播「${esc(open[0].title||open[0].id)}」。`
+      ? (firstBlock
+          ? `現有 <b>${open.length}</b> 宗事態。未在場，暫不能播「${esc(open[0].title||open[0].id)}」。`
+          : `現有 <b>${open.length}</b> 宗事態。可播「${esc(open[0].title||open[0].id)}」。`)
       : (c1Done ? "已播過的節會留在下方；下一幕未開原因見「即將可出」。" : "教學後可從這裡進入開局事態。");
 
     const body = `<div class="story-picker" id="story-picker-root">
@@ -7348,7 +7377,7 @@ const StoryPlay = (()=>{
 })();
 
 
-const TUTORIAL_ZH_HK = {"version":2,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上的地點，就是你可以去的地方。","先點地點，才會看到可做的行動。"],"bodyAlt":["所有行動都從地圖進入。","點選地點後，才能選擇行動。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可先免費查看，不耗日。","條件未合時顯示暫未能報；達標後可即場試鏡。"],"bodyAlt":["先看通告欄，再決定是否試鏡。","見到暫未能報，即條件未合；達標後才可即場試鏡。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練解鎖試鏡","body":["到對應地點報名訓練，提升能力來解鎖試鏡門檻。","訓練次數累計夠之後，社交課和觀察課就會開放。"],"bodyAlt":["能力不夠，先到合適地點報名訓練。","訓練累計夠，社交與觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"傾談耗一日","body":["和人傾談會耗一日，可能得到情報或提醒。","形象和對手壓力，也可能從對話中來。"],"bodyAlt":["傾談佔一日，不一定每次有用。","情報、形象、對手壓力，都可能從對話中來。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到這裡，之後可在選單撳「重看教學」。","建議先去訓練、看通告欄，或打開選單「事態」。"],"bodyAlt":["教學結束了，選單裡可以重看教學。","下一步建議：先訓練、看通告欄，或打開「事態」。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["本次未獲聘，且不可再參加本場。","可去訓練，或另選通告。"],"bodyAlt":["這一場未獲聘，本場不再開放。","回去訓練，或另找合適通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘後，製作日已排進行程。","開工前看手帳和行程，跟進度。"],"bodyAlt":["已獲聘，拍攝日記在行程。","按行程開工，手帳可看進度。"],"buttons":["我知道了"]}},"filterPass":"2026-11-04"};
+const TUTORIAL_ZH_HK = {"version":2,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上的地點，就是你可以去的地方。","先點地點，才會看到可做的行動。"],"bodyAlt":["所有行動都從地圖進入。","點選地點後，才能選擇行動。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可先免費查看，不耗日。","條件未合時顯示暫未能報；達標後可接通告。"],"bodyAlt":["先看通告欄，再決定是否試鏡。","見到暫未能報，即條件未合；達標後才可接通告。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練解鎖試鏡","body":["到對應地點報名訓練，提升能力來解鎖試鏡門檻。","訓練次數累計夠之後，社交課和觀察課就會開放。"],"bodyAlt":["能力不夠，先到合適地點報名訓練。","訓練累計夠，社交與觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"打聽不耗日","body":["打聽不耗一日，傳聞會記入手帳。","和人傾談先會耗一日。"],"bodyAlt":["茶餐廳打聽免費，不耗日。","傾談佔一日；打聽只是問一句。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到這裡，之後可在選單撳「重看教學」。","建議先去訓練、看通告欄，或打開選單「事態」。"],"bodyAlt":["教學結束了，選單裡可以重看教學。","下一步建議：先訓練、看通告欄，或打開「事態」。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["本次未獲聘，且不可再參加本場。","可去訓練，或另選通告。"],"bodyAlt":["這一場未獲聘，本場不再開放。","回去訓練，或另找合適通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘後，製作日已排進行程。","開工前看手帳和行程，跟進度。"],"bodyAlt":["已獲聘，拍攝日記在行程。","按行程開工，手帳可看進度。"],"buttons":["我知道了"]}},"filterPass":"2026-11-04"};
 let TUTORIAL = TUTORIAL_ZH_HK;
 const TUT_MAIN_IDS = ["TUT_WELCOME","TUT_MAP","TUT_BOARD","TUT_TRAIN","TUT_NPC","TUT_NOTEBOOK","TUT_DONE"];
 /* PLAN 5ba79338: step 5 drag-guide and step 6 merge FX. Soft tip mounts tutorial-fx PNGs only when gatePath()==="soft". Modal scroll is separate. No new Soft flag. Soft≠PASS. Do not tip LIVE. ?v= stays 19w.
@@ -8631,7 +8660,7 @@ function writeDualTrack(which, value){
   if(typeof S==="undefined" || !S) return null;
   const n = Math.max(0, Math.round(Number(value)||0));
   if(which==="stageVolume" || which==="幕前聲量"){
-    S.fame = clamp(n, 0, (typeof STAT_MAX==="number" ? STAT_MAX : 100));
+    S.fame = clamp(n, 0, (typeof STAT_MAX==="number" ? STAT_MAX : 999));
     return syncDualTracks(S);
   }
   if(which==="industryCredit" || which==="業內信用"){
@@ -8822,18 +8851,18 @@ function gateShortReason(gig){
   return "這張通告暫時未能報名。";
 }
 function reqHtml(gig){
-  /* v18z PLAN_GIG_CASTING_REQ_NUM_COPY_v1.1 — 名：>N；色標；禁差N／你X／≥ */
+  /* Soft: 條件文案對齊判定 have≥need，同鎖因「需要 N」。唔再用 >N。 */
   const parts=Object.entries(gig.req||{}).map(([k,v])=>{
     const cur=Number(S[k])||0;
     const ok=cur>=v;
     const lab=STAT_LABEL[k]||k;
-    return `<span class="${ok?"ok":"no"}">${lab}：>${v}</span>`;
+    return `<span class="${ok?"ok":"no"}">${lab}：需要 ${v}</span>`;
   });
   const floor=fameFloor(gig);
   if(floor>0){
     const cur=Number(S.fame)||0;
     const ok=cur>=floor;
-    parts.unshift(`<span class="${ok?"ok":"no"}">聲望：>${floor}</span>`);
+    parts.unshift(`<span class="${ok?"ok":"no"}">聲望：需要 ${floor}</span>`);
   }
   return parts.join("<br>");
 }
@@ -9270,13 +9299,13 @@ function castingNoticeDetailHtml(g){
     const cur=Number(S.fame)||0;
     const v=floor;
     const ok=cur>=v;
-    condParts.push(`<div class="cn-cond-row"><span class="${ok?"ok":"no"}">聲望：>${v}</span></div>`);
+    condParts.push(`<div class="cn-cond-row"><span class="${ok?"ok":"no"}">聲望：需要 ${v}</span></div>`);
   }
   Object.entries(g.req||{}).forEach(([k,v])=>{
     const cur=Number(S[k])||0;
     const ok=cur>=v;
     const lab=STAT_LABEL[k]||k;
-    condParts.push(`<div class="cn-cond-row"><span class="${ok?"ok":"no"}">${lab}：>${v}</span></div>`);
+    condParts.push(`<div class="cn-cond-row"><span class="${ok?"ok":"no"}">${lab}：需要 ${v}</span></div>`);
   });
   if(!condParts.length) condParts.push(`<div class="cn-cond-row">組製暫無額外能力條件</div>`);
   const syn = g.synopsis ? String(g.synopsis) : "（組製未附劇情簡介）";
@@ -12655,7 +12684,13 @@ function showInventory(){
 
 function showStats(){
   const keys=["acting","stage","looks","stamina","iq","charm","fame","popularity","stress"];
-  const grid=keys.map(k=>`<div class="stat"><div class="l">${STAT_LABEL[k]}</div><div class="v">${S[k]||0}</div><div class="barline"><i style="width:${clamp(S[k]||0,0,100)}%;background:${k==="stress"?"linear-gradient(90deg,var(--bad),#f0a070)":""}"></i></div></div>`).join("");
+  const cap=(typeof STAT_MAX==="number" ? STAT_MAX : 999);
+  const grid=keys.map(k=>{
+    const n=Number(S[k])||0;
+    const pct=clamp(cap>0 ? (n/cap)*100 : 0, 0, 100);
+    const bg=k==="stress"?"linear-gradient(90deg,var(--bad),#f0a070)":"";
+    return `<div class="stat"><div class="l">${STAT_LABEL[k]}</div><div class="v">${n}／${cap}</div><div class="barline"><i style="width:${pct}%;background:${bg}"></i></div></div>`;
+  }).join("");
   const en=Object.keys(S.enrolled||{}).filter(k=>S.enrolled[k]).map(k=>(COURSE_DEFS[k]||{}).name||k);
   modal(`<h3>狀態</h3><p>${fmtDate()}</p><div class="stats-grid">${grid}</div>
     <p>存款 <b class="gold">$ ${S.money.toLocaleString()}</b></p>
@@ -12873,7 +12908,7 @@ function showTutLocStage(kind){
   const train = kind==="train";
   const html = train
     ? `<h3 class="tut-board-h">星河電視台 · 九龍塘</h3><p class="board-lead">到片場報名訓練。報名之後，按鈕會改成「進行演技訓練」。</p><div class="act" style="pointer-events:none;margin-top:8px"><div><div class="n">報名：旁聽對戲／綵排</div><div class="h">解鎖手帳「演技訓練」</div></div><div class="cost">+1日</div></div>`
-    : `<h3 class="tut-board-h">金龍茶餐廳 · 油麻地</h3><p class="board-lead">和人傾談會耗一日。打聽電視城規矩後，傳聞會記入手帳。</p><div class="act" style="pointer-events:none;margin-top:8px"><div><div class="n">打聽電視城規矩</div><div class="h">向茶餐廳伙記打聽入廠禁忌</div></div><div class="cost">一杯凍檸茶</div></div>`;
+    : `<h3 class="tut-board-h">金龍茶餐廳 · 油麻地</h3><p class="board-lead">打聽不耗日。打聽電視城規矩後，傳聞會記入手帳。</p><div class="act" style="pointer-events:none;margin-top:8px"><div><div class="n">打聽電視城規矩</div><div class="h">向茶餐廳伙記打聽入廠禁忌</div></div><div class="cost">一杯凍檸茶</div></div>`;
   el.innerHTML=html;
   el.classList.add("on");
   el.setAttribute("aria-hidden","true");
