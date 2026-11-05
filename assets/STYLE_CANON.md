@@ -81,6 +81,8 @@
 
 - 2026-11-05 Soft A② sil cream 略深 rim／對比 Soft polish：era×5＋core×6 `*_silhouette_far.png`（對 C Soft polish 殘餘：cream 底 rim 近隱形；暗場優先已接受；唔永久放棄 cream；唔改 shape／wardrobe）。Era live MD5 `68c78473`／`aa4b7a65`／`55495916`／`884a6812`／`bfc8ef4c`（prior：yip rim／halo `483cec70`；so `523f0c91`；luk Soft A① `e3dcc24c`；ngai Soft A① `3eab83b2`；liu rim／halo `359acd81`）。Core live MD5 `6a0f9985`／`638e4f2d`／`dc9baf9f`／`ad22b50e`／`595d9c95`／`ec62dea1`（prior rim／halo `fe35b9c7`／`abd30eb1`／`e5426266`／`22e421fc`／`df71baa7`／`3aa128c0`）。Pillow／scipy EDT 略加深 warm RIM RGB `[122,116,104]→[178,162,140]`／rim_strength 0.42→0.66／depth 4.8→5.5；halo 保持淡（α peak 26→20；唔回 tip#32）；AA fringe warm bias；soft_max≤92；深心 fill `(18,18,20)` exact；solid Jaccard 1.0。bust／gigs／index Soft UI CSS／`?v=`／SAVE／`liveWeekGateStillActive` 未動。bak `era_stars|core/bak_pre_sil_cream_rim_soft_polish_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-sil-cream-rim-soft-polish.tar.gz` MD5 `088cb66cbd7f7e1cd34bf302fe968a44`；QC：統籌 Style PASS with nits；Soft≠PASS；唔 tip LIVE；唔抬 `?v=`；89–92 HOLD。本 PR 唔併 #40／bust／CSS／Soft A③。
 
+- 2026-11-05 Soft A③ so frown 微加夾眉 Soft nit：只換 `so_jiyan_bust_frown`（live MD5 `9105f75b`；prior frown polish `4e9d521c`）。夾眉↑／眉心陰影略深／下撇保留（怒感↑約一檔；唔猙獰）。jade-v4 wardrobe／pose／cel-shade lock。default `2cc1a570`／smile `e57ab12a`／sil `aa4b7a65`（Soft A② cream）／yip frown `33152c22`／其他 bust／sil **未動**。GenerateImage＋Pillow 864×1152 RGB。bak `era_stars/bak_pre_so_frown_anger_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-so-frown-anger-soft-nit.tar.gz`（live tip `so-frown-a3-soft-tip-live.tar.gz`）；Soft nits（唔擋）：線密度家族；唔再追半檔眉心；Soft A 鏈 ①②③ 收口；QC：統籌 Style PASS with nits；Soft≠PASS；唔 tip LIVE；唔抬 `?v=`；89–92 HOLD。
+
 ## raise_brow Soft nit（2026-11-05 Asia/Hong_Kong）
 
 - 已換：`char_hero_bust_raise_brow.png` MD5 `59dab337`；`char_cheung_bust_raise_brow.png` MD5 `8a8d01a9`（c1／story／dialog／npc 四路同 MD5）
@@ -248,3 +250,13 @@
 - bak `era_stars|core/bak_pre_sil_cream_rim_soft_polish_20261105/` 留盤、唔入本 PR。compare／qa／REPORT 唔入本 PR
 - QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-sil-cream-rim-soft-polish.tar.gz` MD5 `088cb66cbd7f7e1cd34bf302fe968a44`（live-only 入本 PR；bak／qa 唔入）
+
+## Soft A③ so frown 微加夾眉 Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/so_jiyan_bust_frown.png` MD5 `9105f75bbd43bc3659156f3f9ffbb0be`（864×1152 RGB）
+- 唔動：so default `2cc1a570`／smile `e57ab12a`；so silhouette `aa4b7a65`（Soft A② cream）。yip frown `33152c22` 未動。其他 bust、sil PNG、`index.html`、gigs、index Soft UI CSS 未動。`?v=` 仍 `19w`（本輪唔改碼、唔抬 `?v=`）。SAVE 仍 `starVolunteer_map_v19w`。`liveWeekGateStillActive` 未動（hard `true`）
+- 對開 frown polish Soft tip：`4e9d521c`。bak `era_stars/bak_pre_so_frown_anger_soft_nit_20261105/` 留盤、唔入本 PR
+- 目標：微加夾眉（夾眉↑／眉心陰影略深／下撇保留；怒感↑約一檔；唔猙獰）。jade-v4 wardrobe／pose／cel-shade lock。GenerateImage＋Pillow 864×1152 RGB
+- Soft nits（唔擋 Soft tip）：線密度家族；唔再追半檔眉心；Soft A 鏈 ①②③ 收口
+- QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-so-frown-anger-soft-nit.tar.gz`（live tip `so-frown-a3-soft-tip-live.tar.gz`；live-only 入本 PR；bak／qa／compare 唔入）
