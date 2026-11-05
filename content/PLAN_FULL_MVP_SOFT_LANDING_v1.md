@@ -1,4 +1,4 @@
-> Soft≠PASS｜唔 tip LIVE｜唔抬 `?v=`／SAVE（仍 **19w**／`starVolunteer_map_v19w`）｜`liveWeekGateStillActive()` 仍 true｜89–92 HOLD｜出圖 HOLD｜禁 soft-try｜禁假造教學 5–6 FX
+> Soft≠PASS｜唔 tip LIVE｜唔抬 `?v=`／SAVE（仍 **19w**／`starVolunteer_map_v19w`）｜`liveWeekGateStillActive()` 仍 true｜89–92 HOLD｜出圖 HOLD｜禁 soft-try｜教學 5–6 FX Done Soft（#23／#24；產品仍 Soft≠PASS）
 
 # PLAN_FULL_MVP_SOFT_LANDING_v1
 
@@ -28,7 +28,7 @@
 | 行為閘 Soft | Done Soft（#16 `b1d43d0c`、#17 `5ebf08c4`） | `content/NOTES_SOFT_FEATURE_FLAG_CONFLUENCE.md`；`content/PLAN_STORY_BEHAVIOR_GATE_FULL_ALIGN_SOFT_v1.md` |
 | UI Phase3 Soft | Done Soft（#18 `717f9007`） | `content/NOTES_SOFT_UI_PHASE3_STAR_CASTING.md`；`content/MOCK_UI_PHASE3_STAR_CASTING_v1.json` |
 
-近期 Soft tip：#14 `2d5002da`、#15 `f4c5cac3`、#16 `b1d43d0c`、#17 `5ebf08c4`、#18 `717f9007`。
+近期 Soft tip：#14 `2d5002da`、#15 `f4c5cac3`、#16 `b1d43d0c`、#17 `5ebf08c4`、#18 `717f9007`。教學 Phase2：copy #23 `8a63e477`、FX #24 `ff1d5eed`（`artHold:false`）。
 
 ## 驗收（總驗時）
 
@@ -46,7 +46,7 @@
 | A10 | Casting「接通告／暫未能報」；無第三掣 | PASS |
 | S1 | Pack B／MV3 階 C–D／Casting 補庫 | SKIP＋HOLD |
 | S2 | 出圖／bust／Vera | SKIP＋HOLD |
-| S3 | 教學步序 5–6 FX | SKIP＋HOLD（唔假造） |
+| S3 | 教學步序 5–6 FX | Done Soft（copy #23 `8a63e477`；FX assets＋wire #24 `ff1d5eed`，`artHold:false`）。產品仍 Soft≠PASS；唔再 SKIP＋HOLD |
 | S4 | 鄧線 | SKIP＋附錄（唔入本體必經 C1–C5） |
 | S5 | LIVE tip／抬 `?v=`／SAVE／week-gate 退休 | SKIP＋HOLD |
 | S6 | UI Phase4／Romance 非 MVP／Gift shop | SKIP |
@@ -82,8 +82,9 @@
 - LIVE tip、抬 `?v=`／SAVE、`liveWeekGateStillActive()`→false
 - 出圖／bust
 - 89–92
-- 教學 5–6 FX（唔假造）
 - Pack B／MV3 階 C–D／Casting 補庫
 - UI Phase4／Romance 非 MVP／Gift shop
+
+教學步序 5–6 FX 已 Done Soft（#23／#24），唔再列入 HOLD。視覺 nits polish 可選、唔擋；本檔唔開工。
 
 **Footer：** Soft≠PASS｜89–92 HOLD｜出圖 HOLD｜唔 tip LIVE｜唔抬 `?v=`（19w）｜`liveWeekGateStillActive===true`｜禁 soft-try

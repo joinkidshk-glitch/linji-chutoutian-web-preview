@@ -1,3 +1,5 @@
+> 狀態更正：modal 豎滾 Done Soft（#16 `b1d43d0c`）。步序 5–6 FX Done Soft（copy #23 `8a63e477`、FX #24 `ff1d5eed`，`artHold:false`）。下文「缺拖曳／缺拼合／未接行為閘」係開規格當時缺口，唔再當 FX HOLD。`behaviorGate:"not_bound"`＝唔強制綁 BehaviorGate C stubs，唔等於 flag 合流未做。Soft≠PASS｜唔 tip LIVE｜`?v=` 仍 19w。
+
 Soft≠PASS｜唔 tip LIVE｜出圖 HOLD｜89–92 HOLD｜禁「Ho 哥」→「何生」／favor `agency_ho`｜經 qwen3.7-max｜玩家面禁真藝名／禁工程詞
 
 # PLAN_TUTORIAL_PHASE2_NITS_MODAL_SCROLL_SOFT_v1

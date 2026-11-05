@@ -1,3 +1,5 @@
+> 狀態更正：步序 5–6 FX 已 Done Soft（copy #23 `8a63e477`、FX #24 `ff1d5eed`，`artHold:false`）。下文「缺／未實裝／未接行為閘」係走查當時記錄，唔再當 outstanding。`behaviorGate:"not_bound"`＝教學 Phase2 Soft 唔強制綁 BehaviorGate C stubs，唔等於 flag 合流未做。Soft≠PASS｜唔 tip LIVE｜`?v=` 仍 19w。
+
 Soft≠PASS｜教學 Phase2 走查｜未接行為閘｜經 qwen3.7-max｜唔 tip LIVE｜出圖 HOLD｜89–92 HOLD｜鄧 push1+ HOLD｜Soft A/B 唔使
 
 經 Qwen qwen3.7-max 處理
