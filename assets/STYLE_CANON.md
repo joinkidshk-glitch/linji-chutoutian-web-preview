@@ -69,6 +69,8 @@
 
 - 2026-11-05 so／yip frown Soft nit：`so_jiyan_bust_frown`＋`yip_manji_bust_frown`（夾眉下撇不高興／雙目睜下撇咬唇；jade-v4／starlet-v3 wardrobe／cel-shade lock；default／smile 未動；live MD5 `dbe0ce32`／`d50275e8`；舊 `f0c0347e`／`9d7e2b8e`）；GenerateImage；bak `era_stars/bak_pre_so_yip_frown_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-so-yip-frown-soft-nit.tar.gz`；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
 
+- 2026-11-05 yip wink Soft nit：`yip_manji_bust_{default,smile}` 雙目睜＋閉唇微 smirk（收斂 energy 強 wink）／smile 露齒暖笑＋眼閃（starlet-v3 露肩 dusty-rose／cel-shade lock；frown `d50275e8` 未動；對開 energy Soft tip default `08384068`／smile `f1688fb4`；live MD5 `fe28eb9b`／`86a75894`）；GenerateImage；bak `era_stars/bak_pre_yip_wink_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-yip-wink-soft-nit.tar.gz`；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
+
 ## raise_brow Soft nit（2026-11-05 Asia/Hong_Kong）
 
 - 已換：`char_hero_bust_raise_brow.png` MD5 `59dab337`；`char_cheung_bust_raise_brow.png` MD5 `8a8d01a9`（c1／story／dialog／npc 四路同 MD5）
@@ -175,3 +177,13 @@
 - Soft nits（唔擋 Soft tip）：so 可選再收眉粗／怒感 5%；yip 可選再推咬唇若 pout 仍偏 glare；NEW RGB vs prior RGBA（記帳 only）
 - QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-so-yip-frown-soft-nit.tar.gz`（live-only 入本 PR；bak／qa 唔入）
+
+## yip wink Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/yip_manji_bust_default.png` MD5 `fe28eb9b`；`yip_manji_bust_smile.png` MD5 `86a75894`（864×1152 RGB）
+- 唔動：frown `d50275e8`。唔改 so／liu／ngai／luk bust、silhouettes、`index.html`、gigs。starlet-v3 露肩 dusty-rose／cel-shade lock。Pipeline：GenerateImage → 864×1152 RGB
+- 對開 energy Soft tip：default `08384068`／smile `f1688fb4`。bak `era_stars/bak_pre_yip_wink_soft_nit_20261105/` 留盤、唔入本 PR。preferFile 仍未加 era_stars bust path（同 #30／#31／#34）
+- 目標：default 雙目睜＋閉唇微 smirk，收斂強 wink；smile 露齒暖笑＋眼閃。frown 雙目睜下撇／咬唇 lock
+- Soft nits（唔擋 Soft tip）：線密度／modern polish residual；可選再推 default 輕咬唇能量／再近阿偉 cel
+- QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-yip-wink-soft-nit.tar.gz`（live-only 入本 PR；bak／qa 唔入）
