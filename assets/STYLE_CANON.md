@@ -28,7 +28,7 @@
 
 ## Style-lock Cheung pair（2026-11-05 Asia/Hong_Kong）
 
-- 已 redo：`char_cheung_bust_default.png` MD5 `920321c6`、`char_cheung_bust_raise_brow.png` MD5 `5224f3dc`（c1／story／dialog／npc 四路同 MD5）
+- 已 redo：`char_cheung_bust_default.png` MD5 `920321c6`（c1／story／dialog／npc 四路同 MD5）。`char_cheung_bust_raise_brow.png` style-lock 當時 `5224f3dc`；live 見下方 Soft nit `8a8d01a9`
 - LOOKS：粗黑框眼鏡、卡其多口袋攝影背心、洗水牛仔恤、聽筒。準繩仍係 `hero_awi.jpg`＋`char_hero_bust_default.png`
 - bak：`assets/story/c1/char_cheung_bust_{default,raise_brow}_pre_style_lock_bak.png`（舊高領半寫實）
 - 身份 jpg `assets/npc_cheung.jpg` 仍係高領較年長記帳，本輪唔改
@@ -55,3 +55,12 @@
 - 2026-11-05 era silhouettes v2：`{luk_baakyin,liu_bingxing,ngai_wingnaam,yip_manji,so_jiyan}_silhouette_far.png`；GenerateImage＋RGBA 透明底；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
 
 - 2026-11-05 Soft nits expr：`so_jiyan_bust_smile`＋`luk_baakyin_bust_smile`＋`ngai_wingnaam` bust×3；GenerateImage；bak `era_stars/bak_pre_soft_nits_expr_20261105/` 留盤、唔入本 PR；挑眉 `char_hero_bust_raise_brow` 未入本 pack、唔動；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
+
+## raise_brow Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 已換：`char_hero_bust_raise_brow.png` MD5 `59dab337`；`char_cheung_bust_raise_brow.png` MD5 `8a8d01a9`（c1／story／dialog／npc 四路同 MD5）
+- 對開 style-lock：hero `63670d1b`、Cheung `5224f3dc`。bak `story/c1/bak_pre_raise_brow_soft_nit_20261105/` 留盤、唔入本 PR
+- Pipeline：GenerateImage（mark-guide＋`hero_awi`／default refs）
+- Soft nits（唔擋 Soft tip）：額上橫紋偏強（尤其 hero）；Cheung 挑眉峰仍可再抬
+- Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-raise-brow-soft-nit.tar.gz`
