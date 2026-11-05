@@ -61,6 +61,10 @@
 
 - 2026-11-05 ngai zip sil Soft nit：只換 `ngai_wingnaam_silhouette_far.png` MD5 `899c7f7d`（對 v2 `31555755`：高領 zip／低馬尾／理領）；liu／yip／so／luk sil 未動；864×1152 RGBA 近黑 `(18,18,20)`、無五官；bak `era_stars/bak_pre_ngai_zip_sil_soft_nit_20261105/` 留盤、唔入本 PR；遠觀 wire 仍 `?v=19w`、唔改 `index.html`；Soft nits（唔擋）：遠距可讀成連帽；理領空隙弱；無光邊；Soft≠PASS；唔 tip LIVE；89–92 HOLD。
 
+- 2026-11-05 yip／liu smile↔default Soft nit：`yip_manji`＋`liu_bingxing` bust_{default,smile}；GenerateImage；bak `era_stars/bak_pre_yip_liu_smile_default_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-yip-liu-smile-default-soft-nit.tar.gz`；yip frown 未動；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
+
+- 2026-11-05 liu frown Soft nit：`liu_bingxing_bust_frown` 吃癟下撇對開 default／smile（chow-vibe v10 wardrobe／cel-shade lock；default `f39379d5`／smile `3b3c7fb4` 未動；yip frown `9d7e2b8e` 未動）；GenerateImage；bak `era_stars/bak_pre_liu_frown_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-liu-frown-soft-nit.tar.gz`；併入同一 Soft tip；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
+
 ## raise_brow Soft nit（2026-11-05 Asia/Hong_Kong）
 
 - 已換：`char_hero_bust_raise_brow.png` MD5 `59dab337`；`char_cheung_bust_raise_brow.png` MD5 `8a8d01a9`（c1／story／dialog／npc 四路同 MD5）
@@ -116,3 +120,23 @@
 - Soft nits（唔擋 Soft tip）：遠距可讀成連帽；理領空隙弱；無光邊
 - QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-ngai-zip-sil-soft-nit.tar.gz` MD5 `35e00f8052a144e2283b43e2d584db44`
+
+## yip／liu smile↔default Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/yip_manji_bust_default.png` MD5 `b338280b`；`yip_manji_bust_smile.png` MD5 `6e7b1a2b`；`liu_bingxing_bust_default.png` MD5 `f39379d5`；`liu_bingxing_bust_smile.png` MD5 `3b3c7fb4`
+- 唔動：yip frown `9d7e2b8e`。liu frown 見下一節。唔改 sil／ngai／so／luk bust／`index.html`／gigs。starlet-v3 露肩 dusty-rose 與 chow-vibe v10 花恤衫 wardrobe／cel-shade lock。Pipeline：GenerateImage → 864×1152 RGB
+- 對開舊：yip default `247b7569`／smile `d40c3dd7`；liu default `a3005d45`／smile `9429f734`。bak `era_stars/bak_pre_yip_liu_smile_default_soft_nit_20261105/` 留盤、唔入本 PR
+- 目標：default 更中性閉唇；smile 露齒更明顯（liu default 唔再露齒 smirk）
+- Soft nits（唔擋 Soft tip）：yip default 仍極淡嘴角；modern polish 線密度；sil light-edge 後排
+- Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-yip-liu-smile-default-soft-nit.tar.gz` MD5 `f4b3107521e91d1cf4329ed7e13f58b9`
+
+## liu frown Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/liu_bingxing_bust_frown.png` MD5 `82edc37f`。併入 yip／liu smile↔default 同一 Soft tip，唔另開
+- 唔動：default `f39379d5`；smile `3b3c7fb4`；yip default `b338280b`；yip smile `6e7b1a2b`；yip frown `9d7e2b8e`。唔改 sil／ngai／so／luk bust／`index.html`／gigs。chow-vibe v10 花恤衫／cel-shade lock。Pipeline：GenerateImage → 864×1152 RGB
+- 對開舊 frown `11582108`。bak `era_stars/bak_pre_liu_frown_soft_nit_20261105/` 留盤、唔入本 PR
+- 目標：吃癟下撇＋夾眉，對開 default 閉唇微翹／smile 露齒
+- Soft nits（唔擋 Soft tip）：下巴 hatch；吃癟弧略誇；線密度／modern polish。連同既有：yip default 極淡嘴角；modern polish；sil light-edge 後排
+- Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-liu-frown-soft-nit.tar.gz` MD5 `95ac38ba3579afe88c63a6a1d186deb7`
