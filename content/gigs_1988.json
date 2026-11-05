@@ -1,8 +1,8 @@
 {
-  "version": "3.2.5-soft",
+  "version": "3.2.7-soft",
   "year": 1988,
   "source": "MATRIX_GIG_ERA_1988_v1 + PLAN_GIG_1988_FAVOR_RUMOR_FILL_v1 + qwen3.7-max Soft favor/rumor fill; Decision1A junior+15; Decision2B agency_ho only; player manager label 何生 (ho_sang); Soft≠PASS",
-  "planRef": "PLAN_GIG_1988_PACK_B_MV3_v1.md",
+  "planRef": "PLAN_GIG_1988_PACK_CD_BOARD_v1.md",
   "softStatus": "≠PASS",
   "counts": {
     "gigs": 137,
@@ -72,9 +72,24 @@
       "at": "2026-11-04+08:00",
       "by": "qwen3.7-max+script",
       "change": "fill remain21 beginner favorDelta+rumorKeys; n nonempty 116→137; uniqueRumor>=16; no beginner agency_ho"
+    },
+    {
+      "version": "3.2.6-soft",
+      "at": "2026-11-05+08:00",
+      "by": "qwen3.7-max+deepseek-chat+script",
+      "change": "Pack CD D1B densify mid 綜藝/電視劇/廣告 (0 new slots) + D3A high limits/producer QA patches; n=137; castWindow HOLD; roles HOLD"
+    },
+    {
+      "at": "2026-11-05T08:30:00+08:00",
+      "by": "script",
+      "what": "3.2.7-soft Pack CD Soft nits after 統籌 PASS with nits",
+      "ids": [
+        "gig_1988_film_cotton_summer_high",
+        "gig_1988_tvb_kowloon_autumn_high"
+      ]
     }
   ],
-  "notes": "Soft≠PASS；唔 publish；唔改 LIVE；89–92 HOLD；出圖 HOLD；唔推 tip；3.2.4-soft Pack B：OOV remap＋中階 limits／producer＋keyGigs meta 66；經理人玩家面「何生」；favor target 單一 agency_ho；0 新槽 n=137｜3.2.5-soft：選填收齊餘 21 初階 favorDelta＋rumorKeys（Soft≠PASS｜唔 tip）",
+  "notes": "Soft≠PASS；唔 publish；唔改 LIVE；89–92 HOLD；出圖 HOLD；唔推 tip；3.2.4-soft Pack B：OOV remap＋中階 limits／producer＋keyGigs meta 66；經理人玩家面「何生」；favor target 單一 agency_ho；0 新槽 n=137｜3.2.5-soft：選填收齊餘 21 初階 favorDelta＋rumorKeys（Soft≠PASS｜唔 tip）｜3.2.6-soft Pack CD：D1B 0新槽 densify 中階綜藝/電視劇/廣告＋D3A 高階 limits/producer QA patch（Soft≠PASS｜唔 tip｜castWindow HOLD｜roles[] HOLD｜89–92 HOLD）｜3.2.7-soft Soft nits：film_cotton_summer_high 槍戰notes→武打吊威也；tvb_kowloon_autumn_high roleLabel→舉牌女郎；planRef→Pack CD（Soft≠PASS｜唔 tip LIVE）",
   "gigs": [
     {
       "id": "gig_1988_ad_01",
@@ -264,12 +279,12 @@
       "roleLabel": "碼頭臨記",
       "director": "黃家明",
       "roleHint": "投入碼頭工人群戲，表現炎熱下飲冰茶嘅爽快感覺。",
-      "blurb": "烈日下碼頭工人休息，一罐冰茶開蓋，水珠特寫接跳切海傍追逐嬉水，帶出夏日爽快氣氛。",
-      "synopsis": "烈日下碼頭工人休息，一罐冰凍檸檬茶開蓋，水珠特寫接跳切海傍追逐嬉水。臨記要投入群戲，帶出夏日爽快氣氛，配合廠景誇張動作走位。",
+      "blurb": "烈日碼頭群戲，冰茶開蓋水珠特寫接海傍嬉水，臨記頂住日曬做誇張走位，帶出夏日爽快反差。",
+      "synopsis": "八十年代碼頭，正午太陽曬得甲板發燙，工人汗流浹背。一罐冰凍檸檬茶開蓋，水珠沿罐身滑落，特寫接跳切海傍追逐嬉水。臨記要頂住烈日投入群戲，跟隨主角飲茶節奏做出誇張反應與走位，在汗味與冰涼之間帶出夏日爽快氣氛，同時應付導演要求嘅體力消耗。",
       "eraTag": "era_1988_summer_ad",
-      "discoverNote": "外景日曬體力消耗大，記得帶備防曬用品。",
+      "discoverNote": "外景日曬猛烈，記得帶備防曬用品與毛巾。",
       "boardPriority": "normal",
-      "boardNote": "外景群戲，需配合走位。",
+      "boardNote": "注意防曬補水，走位跟實主角飲茶節奏。",
       "seasonWeight": 0.7,
       "req": {
         "looks": 340,
@@ -344,7 +359,8 @@
         "minAge": null,
         "maxAge": null,
         "notes": [
-          "須接受烈日下戶外拍攝"
+          "須自備防曬用品及毛巾",
+          "走位需配合主角飲茶節奏"
         ]
       },
       "producer": "劉建國"
@@ -444,12 +460,12 @@
       "roleLabel": "平面模特",
       "director": "李啟泰",
       "roleHint": "鏡頭前交出自信一笑，造型同眼神都要夠硬淨。",
-      "blurb": "的士高射燈下男模搽完定型水後風吹不亂，鏡頭跟隨髮絲切至梳妝鏡，模特兒要交出自信一笑。",
-      "synopsis": "的士高射燈下男模搽完定型水後風吹不亂，鏡頭跟隨髮絲切至梳妝鏡。模特兒要交出自信一笑，造型與眼神均要夠硬淨，帶出八十年代型格感覺。",
+      "blurb": "的士高射燈下定型水特寫，風吹髮絲不亂，臨記保持硬淨眼神與自信笑容，盡顯八十年代型格。",
+      "synopsis": "的士高射燈掃過乾冰煙霧，男模搽完定型水，強風吹過髮絲紋風不動，鏡頭一路跟隨切至梳妝鏡。臨記要在迷幻強光下保持頭部姿勢穩定，交出自信一笑與硬淨眼神，帶出八十年代型格感覺；髮型特寫角度一錯便要重來，定格挑戰極考耐性。",
       "eraTag": "era_1988_autumn_ad",
-      "discoverNote": "拍攝著重髮型特寫，保持頭部姿勢穩定。",
+      "discoverNote": "強光下拍攝，記得保持眼神聚焦。",
       "boardPriority": "normal",
-      "boardNote": "髮型特寫，眼神要硬淨。",
+      "boardNote": "頭部姿勢要穩，切勿破壞髮型特寫角度。",
       "seasonWeight": 0.7,
       "req": {
         "looks": 380,
@@ -525,7 +541,8 @@
         "minAge": null,
         "maxAge": null,
         "notes": [
-          "須接受誇張髮型造型"
+          "拍攝前需配合髮型師進行誇張造型",
+          "強光下需保持眼神聚焦不眨眼"
         ]
       }
     },
@@ -541,12 +558,12 @@
       "roleLabel": "代言模特",
       "director": "王天樂",
       "roleHint": "穿上制服微笑遞上托盤，氣氛要溫馨，笑容要自然親切。",
-      "blurb": "連鎖快餐秋日家庭套餐，代言模特兒穿制服微笑遞上托盤，切家長與小孩碰面，氣氛要溫馨。",
-      "synopsis": "連鎖快餐秋日家庭套餐，代言模特兒穿制服微笑遞上托盤，切家長與小孩碰面。氣氛要溫馨，笑容要自然夠親切，帶出家庭溫馨感覺。",
+      "blurb": "快餐店秋日家庭套餐，臨記穿制服遞托盤，以親切笑容與穩定手勢帶出溫馨家庭感覺。",
+      "synopsis": "八十年代連鎖快餐店燈光明亮，秋日家庭套餐宣傳。代言模特兒穿上整齊制服，面帶職業笑容遞上托盤，鏡頭切至家長與小孩碰面。臨記要維持親切自然嘅笑容與穩定手勢，帶出家庭溫馨感；同一鏡頭反覆重拍，面部肌肉難免疲勞，仍要笑得真誠。",
       "eraTag": "era_1988_autumn_ad",
-      "discoverNote": "笑容係重點，拍攝前記得放鬆面部肌肉。",
+      "discoverNote": "笑容係重點，拍攝前記得放鬆面部。",
       "boardPriority": "normal",
-      "boardNote": "親切笑容，帶出溫馨感。",
+      "boardNote": "放鬆面部肌肉，保持自然親切嘅職業笑容。",
       "seasonWeight": 0.7,
       "req": {
         "looks": 320,
@@ -621,7 +638,8 @@
         "minAge": null,
         "maxAge": null,
         "notes": [
-          "須接受指定制服造型"
+          "須接受指定制服造型及髮型",
+          "遞托盤時需注意手部穩定與笑容自然"
         ]
       },
       "producer": "趙志偉"
@@ -741,12 +759,12 @@
       "roleLabel": "機場臨記",
       "director": "許家強",
       "roleHint": "扮演航空顧問遞上小冊子，走位要自然，唔好搶鏡。",
-      "blurb": "離境大堂內一家三口拖行李走位，臨記扮演航空顧問遞上小冊子，男主角在登機閘前眼神猶豫。",
-      "synopsis": "離境大堂內一家三口拖行李走位，臨記扮演航空顧問遞上小冊子，男主角在登機閘前眼神猶豫，鏡頭最後定格於他手上那封未寄出的信，帶出濃厚人情味。",
+      "blurb": "啟德機場離境大堂，臨記扮航空顧問專業遞小冊子，襯托男主角登機前猶豫與未寄出信件嘅人情味。",
+      "synopsis": "八十年代啟德機場離境大堂，廣播聲與人潮交織，一家三口拖行李走位。臨記扮演航空顧問，神態專業地遞上小冊子，男主角在登機閘前眼神猶豫，鏡頭最後定格於他手上那封未寄出的信。臨記走位要避開主角鏡頭，以自然背景板神態襯托濃厚人情味。",
       "eraTag": "era_1988_winter_ad",
       "discoverNote": "機場實景或廠景拍攝，注意現場收音。",
       "boardPriority": "normal",
-      "boardNote": "機場走位，配合主角。",
+      "boardNote": "走位避開主角鏡頭，保持專業自然神態。",
       "seasonWeight": 0.7999999999999999,
       "req": {
         "looks": 300,
@@ -822,7 +840,8 @@
         "minAge": null,
         "maxAge": null,
         "notes": [
-          "須接受機場實景拍攝"
+          "須接受機場實景或廠景拍攝",
+          "走位需配合主角情緒，切勿搶鏡"
         ]
       }
     },
@@ -920,12 +939,12 @@
       "roleLabel": "外景嘉賓",
       "director": "洪家輝",
       "roleHint": "伴舞兼搬道具，高溫下連續走位三次，笑容要保持不減。",
-      "blurb": "選美外景日，男嘉賓伴舞兼搬道具，海傍高溫下連續走位三次，導演要求笑容不減，鏡頭前後一樣精神。",
-      "synopsis": "選美外景日，男嘉賓伴舞兼搬道具，海傍高溫下連續走位三次，導演要求笑容不減，鏡頭前後一樣精神。臨記要捱得日曬，配合節目所需嘅體力活同走位要求。",
+      "blurb": "選美海傍外景高溫，臨記伴舞兼搬道具連續走位，汗流浹背仍要保持不減笑容與精神。",
+      "synopsis": "八十年代選美外景，海傍熱浪逼人，沙灘反光刺眼。男嘉賓既要伴舞又要搬道具，高溫下連續走位三次，導演要求笑容不減，鏡頭前後一樣精神。臨記要捱得日曬，兼顧體力活與走位要求，汗流浹背仍要交出敬業表現。",
       "eraTag": "era_1988_summer_var",
       "discoverNote": "外景日曬體力消耗大，記得補充水分。",
       "boardPriority": "normal",
-      "boardNote": "高溫走位，保持精神。",
+      "boardNote": "補充水分，鏡頭前後保持精神活力。",
       "seasonWeight": 0.7,
       "req": {
         "charm": 320,
@@ -998,7 +1017,8 @@
         "minAge": null,
         "maxAge": null,
         "notes": [
-          "須接受高溫戶外拍攝"
+          "須接受高溫戶外拍攝及體力勞動",
+          "自備防曬及補水用品"
         ]
       },
       "producer": "孫國強"
@@ -1098,12 +1118,12 @@
       "roleLabel": "伴舞演員",
       "director": "林偉明",
       "roleHint": "配合新人歌手在台上伴舞及舉牌，需要記熟走位。",
-      "blurb": "樂壇新人選拔特備節目，嘉賓需在台上配合新人歌手伴舞及舉牌，後台兵荒馬亂，考驗臨場反應與走位。",
-      "synopsis": "唱片公司聯合電視台舉辦嘅樂壇新人選拔晚會。臨記主要擔任台上伴舞及舉牌和唱嘅角色，配合新人歌手演出。由於是現場直播，後台調度非常混亂，歌手隨時會行錯位或忘記歌詞，臨記需要時刻保持醒目，靈活走位補救，確保畫面流暢。",
+      "blurb": "樂壇新人選拔直播夜，臨記伴舞舉牌和唱，後台兵荒馬亂，靠臨場應變與靈活走位補救畫面。",
+      "synopsis": "唱片公司聯合電視台舉辦樂壇新人選拔晚會，現場直播。臨記擔任台上伴舞及舉牌和唱，配合新人歌手演出。後台調度混亂，歌手隨時行錯位或忘記歌詞，臨記要時刻保持醒目，靈活走位補救，確保畫面流暢，考驗臨場反應與專業素養。",
       "eraTag": "era_1988_autumn_var",
       "discoverNote": "後台通道狹窄，留意不要撞到佈景。",
       "boardPriority": "normal",
-      "boardNote": "記熟每首歌嘅走位",
+      "boardNote": "記熟每首歌走位，時刻留意歌手動向。",
       "seasonWeight": 0.7,
       "req": {
         "charm": 300,
@@ -1175,7 +1195,8 @@
         "minAge": null,
         "maxAge": null,
         "notes": [
-          "須懂基本舞步走位及現場應變"
+          "須懂基本舞步走位及現場應變",
+          "後台通道狹窄，留意不要撞到佈景"
         ]
       },
       "producer": "楊偉業"
@@ -1470,12 +1491,12 @@
       "roleLabel": "武打配角",
       "director": "程小明",
       "roleHint": "飾演武林門派弟子，參與廠景武打及吊威也場面。",
-      "blurb": "古裝武俠劇廠景武打，臨記飾演門派弟子，參與吊威也及兵器對打，意外頻生，極考體力與走位。",
-      "synopsis": "電視台重拍嘅經典古裝武俠劇，主打廠景武打及吊威也場面。臨記飾演武林門派弟子，需要穿上厚重戲服參與兵器對打及半空飛躍。由於威也設備老舊且操作頻繁，片場意外頻生，臨記必須時刻注意安全，同時記住複雜嘅武打走位，極考體力。",
+      "blurb": "古裝武俠廠景，臨記穿厚重戲服吊威也、兵器對打，設備老舊意外頻生，極考體力與走位。",
+      "synopsis": "電視台重拍經典古裝武俠劇，主打廠景武打及吊威也。臨記飾演武林門派弟子，穿上厚重戲服參與兵器對打與半空飛躍。威也設備老舊且操作頻繁，片場意外頻生，臨記必須時刻注意安全，同時記住複雜武打走位，極考體力與膽量。",
       "eraTag": "era_1988_summer_tv",
       "discoverNote": "吊威也前檢查扣環，聽從武指指示。",
       "boardPriority": "normal",
-      "boardNote": "熟記武打走位及招式",
+      "boardNote": "熟記武打走位，吊威也前檢查扣環。",
       "seasonWeight": 0.7,
       "req": {
         "acting": 340,
@@ -1546,7 +1567,8 @@
         "minAge": null,
         "maxAge": null,
         "notes": [
-          "須接受吊威也及兵器對打訓練"
+          "須接受吊威也及兵器對打訓練",
+          "對打時留意兵器距離，避免誤傷"
         ]
       },
       "producer": "朱志剛"
@@ -1563,12 +1585,12 @@
       "roleLabel": "武打配角",
       "director": "袁和明",
       "roleHint": "飾演客棧江湖客，參與雨夜廠景武打及吊威也場面。",
-      "blurb": "古裝武俠劇雨夜廠景武打，臨記飾演客棧江湖客，參與吊威也及濕身對打，環境惡劣，極考體力。",
-      "synopsis": "古裝武俠劇中的重頭戲，臨記飾演客棧內的江湖客，參與一場雨夜廠景武打。片場需要製造人工降雨，臨記必須在濕滑的地面上完成吊威也及兵器對打。濕透的衣衫加上沉重的道具，令體力消耗極大，但畫面極具殺氣，是展現武打功底的好機會。",
+      "blurb": "古裝武俠劇雨夜廠景，臨記飾客棧江湖客，人工降雨下吊威也、濕身對打，地面濕滑，極考體力。",
+      "synopsis": "古裝武俠劇的重頭夜戲，臨記飾演客棧內的江湖客，參與一場雨夜廠景武打。廠內以人工降雨營造雨勢，地面濕滑反光，臨記要在水窪之間完成吊威也與兵器對打。濕透的衣衫加上沉重道具，體力消耗極大，走位稍有偏差便會滑倒；但鏡頭一開，雨幕與刀光交錯，殺氣撲面，正是展現武打功底的好機會。",
       "eraTag": "era_1988_summer_tv",
-      "discoverNote": "雨戲地面濕滑，穿著防滑武打鞋。",
+      "discoverNote": "雨戲地面濕滑，落腳前先看清位置。",
       "boardPriority": "normal",
-      "boardNote": "帶備大毛巾及乾爽衣物",
+      "boardNote": "帶備大毛巾及乾爽衣物，並穿防滑武打鞋。",
       "seasonWeight": 0.7,
       "req": {
         "acting": 300,
@@ -1640,7 +1662,8 @@
         "minAge": null,
         "maxAge": null,
         "notes": [
-          "須接受人工降雨及濕滑環境拍攝"
+          "須接受人工降雨及濕滑環境拍攝。",
+          "雨戲地面濕滑，須穿著防滑武打鞋。"
         ]
       }
     },
@@ -1656,12 +1679,12 @@
       "roleLabel": "伴舞演員",
       "director": "王家明",
       "roleHint": "在音樂特輯中擔任伴舞，配合新人歌手演出，需記熟複雜走位。",
-      "blurb": "樂壇新人音樂特輯，臨記擔任伴舞及舉牌，配合歌手演出，後台兵荒馬亂，考驗臨場反應與走位。",
-      "synopsis": "唱片公司為新人歌手拍攝的音樂特輯，主打青春活力風格。臨記主要擔任台上伴舞及舉牌和唱，配合歌手演出多首快歌。由於拍攝時間緊迫，後台調度混亂，臨記需要保持醒目，靈活走位補救，確保畫面流暢，表現佳者可獲長期聘用。",
+      "blurb": "樂壇新人音樂特輯，臨記伴舞舉牌，配合連場快歌，後台調度混亂，考驗臨場反應與走位。",
+      "synopsis": "唱片公司為新人歌手拍攝音樂特輯，主打青春活力。臨記擔任台上伴舞及舉牌和唱，配合歌手連場快歌演出。廠內燈光閃爍，後台調度卻一片混亂，臨記要時刻保持醒目，靈活走位補救，確保畫面流暢。節奏一亂便容易甩拍，表現穩定者更有機會獲長期聘用。",
       "eraTag": "era_1988_autumn_tv",
-      "discoverNote": "留意舞台邊緣，避免跌落樂池。",
+      "discoverNote": "舞台邊緣燈暗，走位時避免跌落樂池。",
       "boardPriority": "normal",
-      "boardNote": "記熟每首快歌的舞步",
+      "boardNote": "記熟每首快歌的舞步，留意舞台邊緣。",
       "seasonWeight": 0.7,
       "req": {
         "acting": 320,
@@ -1732,7 +1755,8 @@
         "minAge": null,
         "maxAge": null,
         "notes": [
-          "須懂基本舞步走位"
+          "須懂基本舞步走位及快歌節奏。",
+          "留意舞台邊緣，避免跌落樂池。"
         ]
       },
       "producer": "郭振華"
@@ -1930,7 +1954,17 @@
         "winter"
       ],
       "boardHookMode": "teased",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受高危拍攝場面及熬夜趕通告"
+        ]
+      }
     },
     {
       "id": "gig_1988_tv_08",
@@ -2024,7 +2058,17 @@
         "autumn"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受高強度舞蹈排練及熬夜"
+        ]
+      }
     },
     {
       "id": "gig_1988_film_01",
@@ -2688,7 +2732,17 @@
         "winter"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "male",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受夜戲拍攝及情緒演繹"
+        ]
+      }
     },
     {
       "id": "gig_1988_rec_01",
@@ -3227,12 +3281,12 @@
       "roleLabel": "封面模特",
       "director": "陳鏡鋒",
       "roleHint": "穿上長大衣站在街燈下，以雨後冷調淺景深連拍兩套造型，要求眼神帶三分冷傲。",
-      "blurb": "冬裝雜誌封面拍攝，封面模特穿上長大衣站在街燈下。攝影師以雨後冷調淺景深連拍兩套造型，要求眼神帶三分冷傲。",
-      "synopsis": "冬裝雜誌封面拍攝，封面模特穿上長大衣站在街燈下。攝影師以雨後冷調淺景深連拍兩套造型，要求眼神帶三分冷傲。雜誌社為趕及出街不斷壓縮時間，模特兒要在冷雨中保持儀態，展現出最型格的時尚感。",
+      "blurb": "冬裝雜誌封面，模特兒穿長大衣站街燈下，冷雨淺景深連拍，眼神三分冷傲，儀態要穩。",
+      "synopsis": "冬裝雜誌封面拍攝，封面模特穿上長大衣站在街燈下。攝影師以雨後冷調淺景深連拍兩套造型，要求眼神帶三分冷傲。雜誌社為趕及出街不斷壓縮時間，模特兒要在冷雨中保持儀態，身體稍一晃動便會脫焦。濕冷街頭與閃爍燈影之間，最型格的時尚感全靠一份靜止的定力。",
       "eraTag": "era_1988_winter_ad",
-      "discoverNote": "冷雨天氣容易感冒，拍攝前飲點薑茶，保持嘴唇血色。",
+      "discoverNote": "冷雨易感冒，拍攝前飲點薑茶，保持嘴唇血色。",
       "boardPriority": "normal",
-      "boardNote": "街頭冷雨，儀態要穩。",
+      "boardNote": "街頭冷雨，儀態要穩，身體保持靜止。",
       "seasonWeight": 0.7999999999999999,
       "req": {
         "looks": 380,
@@ -3300,7 +3354,18 @@
         "winter"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受寒夜冷雨戶外拍攝。",
+          "淺景深拍攝需保持身體靜止。"
+        ]
+      }
     },
     {
       "id": "gig_1988_fill_harbour_spring",
@@ -3395,12 +3460,12 @@
       "roleLabel": "訪談嘉賓",
       "director": "吳天水",
       "roleHint": "深夜訪談細談入行趣事與舊歌來歷，三段錄影一氣呵成，配合鏡頭推近。",
-      "blurb": "深夜訪談沙發環節，訪談嘉賓細談入行趣事與一首舊歌的來歷。三段錄影一氣呵成，主持遞茶時鏡頭慢慢推近。",
-      "synopsis": "深夜訪談沙發環節，訪談嘉賓細談入行趣事與一首舊歌的來歷。三段錄影一氣呵成，主持遞茶時鏡頭慢慢推近。錄影廠內燈光灼熱，製作組為趕流程不斷壓縮時間，你要在鏡頭前保持從容，展現出最自然的談吐與節奏感。",
+      "blurb": "深夜訪談沙發環節，嘉賓細談入行趣事與舊歌來歷，三段錄影一氣呵成，燈光灼熱，考驗從容談吐。",
+      "synopsis": "深夜訪談沙發環節，訪談嘉賓細談入行趣事與一首舊歌的來歷。三段錄影一氣呵成，主持遞茶時鏡頭慢慢推近。錄影廠內燈光灼熱，製作組為趕流程不斷壓縮時間，臨記要在鏡頭前保持從容，談吐自然、節奏分明，並留意主持的眼神暗示才開口，展現最真誠的一面。",
       "eraTag": "era_1988_autumn_var",
-      "discoverNote": "訪談節目切忌搶話，留意主持的眼神暗示再開口。",
+      "discoverNote": "訪談切忌搶話，等主持示意才接上。",
       "boardPriority": "normal",
-      "boardNote": "深夜訪談，談吐自然。",
+      "boardNote": "談吐自然，留意主持眼神暗示再開口。",
       "seasonWeight": 0.7,
       "req": {
         "charm": 320,
@@ -3472,7 +3537,8 @@
         "minAge": null,
         "maxAge": null,
         "notes": [
-          "須接受深夜錄影及長時間對談"
+          "須接受深夜錄影及長時間對談。",
+          "沙發位置固定，身體不要過度前傾。"
         ]
       },
       "producer": "蕭偉強"
@@ -3489,12 +3555,12 @@
       "roleLabel": "搞笑男配",
       "director": "周偉強",
       "roleHint": "飾演慳錢表哥在小食檔幫忙，為節省一毫子而搞出連串笑話，精打細算令街坊啼笑皆非。",
-      "blurb": "搞笑男配飾演慳錢表哥，在小食檔幫忙。每集為節省一毫子而搞出連串笑話，精打細算令街坊啼笑皆非。",
-      "synopsis": "搞笑男配飾演慳錢表哥，在小食檔幫忙。每集為節省一毫子而搞出連串笑話，精打細算令街坊啼笑皆非。廠景拍攝日夜顛倒，演員需在密集的對白中準確掌握喜劇節奏。",
+      "blurb": "處境喜劇小食檔，搞笑男配飾慳錢表哥，為慳一毫子搞出連串笑話，密集對白考驗喜劇節奏。",
+      "synopsis": "搞笑男配飾演慳錢表哥，在屋邨小食檔幫忙。每集為節省一毫子而搞出連串笑話，精打細算令街坊啼笑皆非。廠景拍攝日夜顛倒，小食檔場景狹窄，熱湯與道具就在手邊，演員需在密集對白中準確掌握喜劇節奏，走位與語氣一拍即合，笑料才見效果。",
       "eraTag": "era_1988_autumn_tv",
-      "discoverNote": "處境喜劇對白密集，需熟記劇本上的走位與對白節奏。",
+      "discoverNote": "小食檔場景狹窄，轉身前先看清手邊道具。",
       "boardPriority": "normal",
-      "boardNote": "處境喜劇，節奏需準確。",
+      "boardNote": "熟記對白與走位，注意避開熱湯道具。",
       "seasonWeight": 0.7,
       "req": {
         "acting": 270,
@@ -3566,7 +3632,8 @@
         "minAge": null,
         "maxAge": null,
         "notes": [
-          "須接受日夜顛倒之廠景拍攝"
+          "須接受日夜顛倒之廠景拍攝。",
+          "小食檔場景狹窄，注意避開熱湯與道具。"
         ]
       }
     },
@@ -4866,7 +4933,8 @@
         "winter"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "producer": "陳志強"
     },
     {
       "id": "gig_1988_film_harbour_high",
@@ -4968,7 +5036,8 @@
         "autumn"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "producer": "黃國輝"
     },
     {
       "id": "gig_1988_rec_hk_winter_high",
@@ -5065,7 +5134,8 @@
         "winter"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "producer": "李淑儀"
     },
     {
       "id": "gig_1988_mtv_wanchai_summer_mid",
@@ -5261,7 +5331,8 @@
         "winter"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "producer": "張志偉"
     },
     {
       "id": "gig_1988_tv_kowloon_winter_high",
@@ -5363,7 +5434,8 @@
         "winter"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "producer": "劉志華"
     },
     {
       "id": "gig_1988_ad_adm_spring_mid",
@@ -5377,12 +5449,12 @@
       "roleLabel": "廣告模特兒",
       "director": "何家明",
       "roleHint": "拍攝喜餅春季廣告版，與對手新人對望遞上鐵盒，交出體面而自然的喜氣。",
-      "blurb": "喜餅品牌春季廣告版，模特兒與對手新人對望遞上鐵盒，接喜宴跳切，眼神與手勢均須有戲。",
-      "synopsis": "喜餅品牌春季廣告，廣告模特兒與對手新人對望遞上鐵盒，接喜宴跳切。要交出體面而自然的喜氣，眼神與手勢均須有戲。片場日夜顛倒，氣氛輕鬆但需保持專業，留意導演對喜氣的要求。",
+      "blurb": "喜餅品牌春季廣告，模特兒與對手新人對望遞鐵盒，接喜宴跳切，眼神手勢均須有戲。",
+      "synopsis": "喜餅品牌春季廣告，廣告模特兒與對手新人對望，遞上鐵盒，接喜宴跳切。要交出體面而自然的喜氣，眼神與手勢均須有戲。片場日夜顛倒，氣氛輕鬆但需保持專業，遞盒的力度與節奏要與對手配合，留意導演對喜氣的要求，一take接一take做到最好。",
       "eraTag": "era_1988_spring_ad",
-      "discoverNote": "留意對手眼神交流，遞鐵盒手勢要自然。",
+      "discoverNote": "遞鐵盒手勢要自然，與對手眼神對上才開口。",
       "boardPriority": "normal",
-      "boardNote": "記熟遞鐵盒動作與眼神。",
+      "boardNote": "記熟遞鐵盒動作與眼神交流。",
       "seasonWeight": 0.7,
       "req": {
         "looks": 340,
@@ -5450,7 +5522,18 @@
       ],
       "boardHookMode": "normal",
       "isKeyGig": true,
-      "producer": "曹國輝"
+      "producer": "曹國輝",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受日夜顛倒之廠景拍攝。",
+          "遞鐵盒手勢需自然，眼神需有戲。"
+        ]
+      }
     },
     {
       "id": "gig_1988_ad_central_spring_mid",
@@ -5464,12 +5547,12 @@
       "roleLabel": "臨記路人",
       "director": "陳子健",
       "roleHint": "街頭宣傳片中段，在行人路接過耳機，隨拍檔步伐自然接力前行，交出輕鬆笑容。",
-      "blurb": "街頭宣傳片中段，路人演員在行人路上接過耳機，隨拍檔步伐自然接力前行，鏡頭貼身跟拍。",
-      "synopsis": "街頭耳機宣傳片拍攝，臨記路人在行人路上接過耳機，隨拍檔步伐自然接力前行。鏡頭貼身跟拍，要交出輕鬆笑容與穩定節奏。片場日夜顛倒，需保持體力與耐性，留意跟拍鏡頭的走位。",
+      "blurb": "街頭耳機宣傳片，臨記路人接過耳機隨拍檔接力前行，貼身跟拍考驗笑容與穩定節奏。",
+      "synopsis": "街頭耳機宣傳片拍攝，臨記路人在行人路上接過耳機，隨拍檔步伐自然接力前行。鏡頭貼身跟拍，要交出輕鬆笑容與穩定節奏。片場日夜顛倒，需保持體力與耐性，留意跟拍鏡頭的走位，步伐一亂便會出鏡，全程要與拍檔默契配合。",
       "eraTag": "era_1988_spring_ad",
-      "discoverNote": "留意拍檔步伐，保持輕鬆笑容與穩定節奏。",
+      "discoverNote": "街頭實景人多車多，跟拍時注意安全。",
       "boardPriority": "normal",
-      "boardNote": "記熟接力走位與步伐。",
+      "boardNote": "記熟接力走位與步伐，留意拍檔節奏。",
       "seasonWeight": 0.7,
       "req": {
         "looks": 320,
@@ -5537,7 +5620,18 @@
       ],
       "boardHookMode": "normal",
       "isKeyGig": true,
-      "producer": "許家傑"
+      "producer": "許家傑",
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受街頭實景拍攝及日夜顛倒。",
+          "街頭跟拍需注意安全，保持穩定節奏。"
+        ]
+      }
     },
     {
       "id": "gig_1988_film_cotton_summer_mid",
@@ -5799,12 +5893,12 @@
       "roleLabel": "警員臨記",
       "director": "吳偉強",
       "roleHint": "飾演值夜班的軍裝警員，需在陰森警署走廊巡邏，表現出疑神疑鬼的神態。",
-      "blurb": "靈異喜劇夜戲，臨記飾演值夜班的軍裝警員，在陰森警署走廊巡邏，神態要疑神疑鬼，配合突發驚嚇情節作出誇張反應。",
-      "synopsis": "電影公司掀起靈異喜劇開鏡潮，本片主打笑中帶嚇的夜戲氣氛。臨記飾演值夜班的軍裝警員，主要戲份在陰森警署走廊巡邏。演員需表現出疑神疑鬼的神態，並配合突發驚嚇情節作出誇張但合理的反應。片場日夜顛倒，排練時要適應昏暗燈光環境，確保走位準確，避免在黑暗中絆倒。",
+      "blurb": "靈異喜劇夜戲，臨記飾演值夜班軍裝警員，在陰森警署走廊巡邏，神態疑神疑鬼，配合突發驚嚇作出誇張但合理的反應。",
+      "synopsis": "靈異喜劇開鏡潮下，本劇以夜班警署為舞台，主打笑中帶嚇。你飾演值夜班的軍裝警員，主要戲份在陰森走廊巡邏，昏暗燈光配突發驚嚇，神態要疑神疑鬼。反應須誇張但合理，切勿笑場；排練時要適應低光源環境，走位準確，避免在黑暗中絆倒。片場日夜顛倒，收工往往天光。",
       "eraTag": "era_1988_spring_tv",
       "discoverNote": "反應要誇張但合理，切勿笑場。",
       "boardPriority": "normal",
-      "boardNote": "夜戲走位需準確",
+      "boardNote": "夜戲走位要準，聽到音效提示即時交反應。",
       "seasonWeight": 0.7,
       "req": {
         "acting": 320,
@@ -5868,7 +5962,19 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受日夜顛倒及昏暗燈光環境拍攝。",
+          "夜戲走位需準確，切勿在黑暗中絆倒。"
+        ]
+      },
+      "producer": "麥家輝"
     },
     {
       "id": "gig_1988_tv_kowloon_spring_mid",
@@ -5882,12 +5988,12 @@
       "roleLabel": "住客臨記",
       "director": "鄭家明",
       "roleHint": "飾演舊樓住客，在夜半停電的走廊手持電筒照來照去，神情驚慌失措。",
-      "blurb": "靈異喜劇處境劇，你演舊樓住客，在夜半停電的走廊手持電筒照來照去，神情驚慌，與鄰居的互動要帶點黑色幽默。",
-      "synopsis": "靈異喜劇開鏡潮下，本劇以舊樓為背景，融合鬼片笑中帶嚇的元素。你飾演舊樓住客，主要場景是夜半停電的走廊。你需要手持電筒四處照射，神情驚慌失措，並與害怕的鄰居產生互動。對白與動作要帶點黑色幽默，排練時要掌握好電筒光線角度，確保臉部表情能被攝影機清晰捕捉，同時適應日夜顛倒的拍攝節奏。",
+      "blurb": "靈異喜劇處境劇，你演舊樓住客，夜半停電的走廊手持電筒照來照去，神情驚慌，與鄰居互動要帶點黑色幽默。",
+      "synopsis": "靈異喜劇開鏡潮下，本劇以舊樓為背景，鬼片元素笑中帶嚇。你飾演舊樓住客，主場景是夜半停電的狹窄走廊，手持電筒四處照射，神情驚慌失措，與害怕的鄰居互動要帶點黑色幽默。排練時須掌握電筒光線角度，確保臉部表情被攝影機清晰捕捉，同時適應日夜顛倒的拍攝節奏。",
       "eraTag": "era_1988_spring_tv",
       "discoverNote": "電筒光線勿直射鏡頭，表情要生動。",
       "boardPriority": "normal",
-      "boardNote": "掌握電筒光線角度",
+      "boardNote": "掌握電筒光線角度，勿直射鏡頭。",
       "seasonWeight": 0.7,
       "req": {
         "acting": 300,
@@ -5951,7 +6057,19 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受日夜顛倒及狹窄走廊場景拍攝。",
+          "電筒光線勿直射鏡頭，注意不要撞到佈景。"
+        ]
+      },
+      "producer": "鍾志文"
     },
     {
       "id": "gig_1988_tv_longmen_spring_mid",
@@ -5965,12 +6083,12 @@
       "roleLabel": "道士徒弟",
       "director": "王國輝",
       "roleHint": "飾演道士徒弟，在夜戲中協助師傅佈陣，需在陰暗環境中準確遞上法器。",
-      "blurb": "靈異喜劇長劇夜戲，你演道士徒弟，協助師傅在陰暗環境中佈陣，遞法器要準確，神情要帶點怯懦但故作鎮定。",
-      "synopsis": "電視台靈異喜劇長劇開拍，片場日夜顛倒。你飾演道士徒弟，主要戲份集中在夜間捉鬼佈陣場景。你需要在陰暗環境中協助師傅，準確遞上各種法器，神情要帶點怯懦但又故作鎮定，製造笑中帶嚇的效果。排練時要熟記法器傳遞順序與走位，確保在低光源下不會出錯，並隨時準備配合突發的驚嚇橋段。",
+      "blurb": "靈異喜劇長劇夜戲，你演道士徒弟，協助師傅在陰暗環境中佈陣，遞法器要準確，神情怯懦但故作鎮定。",
+      "synopsis": "電視台靈異喜劇長劇開拍，片場日夜顛倒。你飾演道士徒弟，戲份集中在夜間捉鬼佈陣，於陰暗環境中協助師傅，準確遞上各種法器，神情怯懦但故作鎮定，製造笑中帶嚇的效果。排練時要熟記法器傳遞順序與走位，確保低光源下不出錯，並隨時配合突發驚嚇橋段。",
       "eraTag": "era_1988_spring_tv",
       "discoverNote": "熟記法器順序，低光源下勿出錯。",
       "boardPriority": "normal",
-      "boardNote": "夜戲走位需熟練",
+      "boardNote": "熟記法器順序，低光源下勿出錯。",
       "seasonWeight": 0.7,
       "req": {
         "acting": 340,
@@ -6037,7 +6155,19 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": true
+      "isKeyGig": true,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受日夜顛倒及低光源環境拍攝。",
+          "熟記法器傳遞順序，低光源下勿出錯。"
+        ]
+      },
+      "producer": "林柏豪"
     },
     {
       "id": "gig_1988_ad_central_autumn_low",
@@ -6393,11 +6523,11 @@
       "director": "李國輝",
       "roleHint": "配合主持互動，展現喜慶笑容。",
       "blurb": "歲晚大型綜藝錄影，嘉賓需配合主持互動及遊戲環節，現場樂隊伴奏，排練至深夜方收工。",
-      "synopsis": "電視台錄影歲晚大型綜藝節目，現場佈置充滿節日氣氛。嘉賓需配合主持進行遊戲互動，並於樂隊伴奏下完成指定表演環節。由於大牌藝人檔期相撞，現場調動頻繁，排練時間較長，需具備足夠耐性等候。",
+      "synopsis": "電視台錄影歲晚大型綜藝，現場佈置充滿節日氣氛。嘉賓需配合主持進行遊戲互動，並於樂隊伴奏下完成指定表演環節，臉上要時刻掛住喜慶笑容。大牌藝人檔期相撞，現場調動頻繁，排練時間較長，需具備足夠耐性等候，聽從工作人員指示補位，收工往往夜深。",
       "eraTag": "era_1988_winter_var",
       "discoverNote": "現場調動頻繁，需耐心等候。",
       "boardPriority": "normal",
-      "boardNote": "需具耐性，配合度高。",
+      "boardNote": "需具耐性，配合度高，保持喜慶笑容。",
       "seasonWeight": 0.7999999999999999,
       "req": {
         "charm": 340,
@@ -6470,9 +6600,11 @@
         "minAge": null,
         "maxAge": null,
         "notes": [
-          "須接受長時間排練及等候"
+          "須接受長時間排練及等候。",
+          "現場調動頻繁，需耐心等候並保持笑容。"
         ]
-      }
+      },
+      "producer": "黃偉誠"
     },
     {
       "id": "gig_1988_film_cotton_spring_mid",
@@ -6668,11 +6800,11 @@
       "director": "李國明",
       "roleHint": "展現清涼暢快感，動作需一次到位。",
       "blurb": "夏日飲品電視廣告外景拍攝，模特兒需在烈日下示範飲用動作，表情與走位須精準到位，配合導演要求重拍。",
-      "synopsis": "夏日清涼飲品電視廣告於戶外取景拍攝。模特兒擔任產品主畫面，需在烈日當空下展現暢飲的清涼快感。由於陽光猛烈且機位多變，表情與示範動作必須一次到位，若效果未達標需配合導演要求反覆重拍。",
+      "synopsis": "夏日清涼飲品電視廣告於戶外取景拍攝。模特兒擔任產品主畫面，需在烈日當空下展現暢飲的清涼快感，笑容與動作要一次到位。陽光猛烈、機位多變，效果未達標須配合導演反覆重拍，並注意防曬補水，保持狀態應付連場拍攝。",
       "eraTag": "era_1988_summer_ad",
       "discoverNote": "戶外烈日拍攝，需反覆重拍。",
       "boardPriority": "normal",
-      "boardNote": "捱得日曬，動作利落。",
+      "boardNote": "捱得日曬，動作利落，笑容要清涼。",
       "seasonWeight": 0.7,
       "req": {
         "looks": 340,
@@ -6736,7 +6868,19 @@
         "summer"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受戶外烈日拍攝及反覆重拍。",
+          "戶外拍攝需注意防曬及補水。"
+        ]
+      },
+      "producer": "張家樂"
     },
     {
       "id": "gig_1988_ad_adm_summer_high",
@@ -7732,7 +7876,7 @@
         "licenses": [],
         "groupOnly": false,
         "notes": [
-          "須接受槍戰場面"
+          "須接受武打與吊威也場面"
         ]
       },
       "storyKeys": [
@@ -8364,8 +8508,10 @@
         "gender": "male",
         "licenses": [],
         "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
         "notes": [
-          "須接受槍戰場面"
+          "須接受高難度武打及吊威也場面"
         ]
       },
       "storyKeys": [
@@ -8626,8 +8772,10 @@
         "gender": "male",
         "licenses": [],
         "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
         "notes": [
-          "須接受槍戰場面",
+          "須接受高難度動作排練",
           "須接受通宵綵排"
         ]
       },
@@ -9001,8 +9149,10 @@
         "gender": "male",
         "licenses": [],
         "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
         "notes": [
-          "須接受槍戰場面"
+          "須接受高難度武打及吊威也場面"
         ]
       },
       "storyKeys": [
@@ -11516,11 +11666,11 @@
       "director": "陳建國",
       "roleHint": "需與主持隊分組對賽，反應要夠快。",
       "blurb": "年終大型遊戲節目，嘉賓與主持隊分組對賽，負責搶答及體能關卡，並在壓軸大抽獎環節帶動氣氛。",
-      "synopsis": "賀歲前期大型綜藝，臨記作為遊戲嘉賓與主持隊分組對賽。需應付多輪搶答及體力關卡，現場大明星度期撞期導致拍攝延誤，需有耐性等候，並在壓軸環節帶動氣氛。",
+      "synopsis": "賀歲前期大型綜藝，臨記作為遊戲嘉賓與主持隊分組對賽。需應付多輪搶答及體力關卡，反應要快、落力完成，壓軸環節更要帶動全場氣氛。現場大明星度期撞期，拍攝不時延誤，需有耐性等候，聽從導演指示補位重拍，收工往往夜深。",
       "eraTag": "era_1988_winter_var",
       "discoverNote": "拍攝可能延誤，需有耐性等候。",
       "boardPriority": "normal",
-      "boardNote": "需捱得，懂走位。",
+      "boardNote": "需捱得，懂走位，搶答要夠快。",
       "seasonWeight": 0.7999999999999999,
       "req": {
         "charm": 330,
@@ -11586,7 +11736,18 @@
         "winter"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受長時間錄影及體能關卡。",
+          "拍攝可能延誤，需有耐性等候。"
+        ]
+      }
     },
     {
       "id": "gig_1988_tvb_kowloon_spring_high",
@@ -11878,9 +12039,9 @@
       "loc": "tvb_kowloon",
       "workTitle": "星輝金曲爭霸戰",
       "genreLabel": "歌唱節目",
-      "roleLabel": "伴舞臨記",
+      "roleLabel": "舉牌女郎",
       "director": "林柏生",
-      "roleHint": "在後台通道遠觀駱家聲背影，負責舉牌及伴舞走位。",
+      "roleHint": "特備歌唱節目伴舞及舉牌女郎，跟台位與大合唱節奏。",
       "blurb": "大型音樂選拔綜藝，臨記負責開場伴舞及中段舉牌，需應付後台兵荒馬亂的走位轉換。",
       "synopsis": "秋季特備音樂選拔節目，後台調度極為混亂。臨記主要擔任伴舞及舉牌女郎，需熟記多輪台位轉換，並在壓軸環節配合大合唱營造氣氛，極度考驗臨場反應與節奏感。",
       "eraTag": "era_1988_autumn_var",
@@ -11930,9 +12091,11 @@
       "shootDeadlineDays": 14,
       "producer": "謝俊傑",
       "limits": {
-        "gender": "any",
+        "gender": "female",
         "licenses": [],
         "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
         "notes": [
           "須接受高壓檔期安排"
         ]
@@ -11985,11 +12148,11 @@
       "director": "張偉強",
       "roleHint": "參與分組體能關卡，負責搶答及帶動現場氣氛，需配合主持搞笑。",
       "blurb": "冬季賀歲遊戲節目，臨記化身遊戲嘉賓與主持隊分組對賽，負責搶答及體能關卡，帶動全場氣氛。",
-      "synopsis": "電視台冬季賀歲綜藝，現場佈置充滿節日氣氛。臨記以遊戲嘉賓身份參與，需與主持隊分組對賽，完成搶答及多項體能關卡，並在壓軸環節帶動全場觀眾互動，拍攝過程需多次重拍以捕捉最佳反應。",
+      "synopsis": "電視台冬季賀歲綜藝，現場佈置充滿節日氣氛。臨記以遊戲嘉賓身份參與，與主持隊分組對賽，完成搶答及多項體能關卡，反應要誇張惹笑；壓軸環節更要帶動全場觀眾互動。拍攝過程需多次重拍以捕捉最佳反應，體能關卡亦要注意安全，聽從現場導演指示。",
       "eraTag": "era_1988_winter_var",
       "discoverNote": "體能關卡需注意安全，搶答要夠誇張。",
       "boardPriority": "normal",
-      "boardNote": "聽從現場導演，放膽去玩。",
+      "boardNote": "聽從現場導演，放膽去玩，注意安全。",
       "seasonWeight": 0.7999999999999999,
       "req": {
         "charm": 330,
@@ -12054,7 +12217,19 @@
         "winter"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "minAge": null,
+        "maxAge": null,
+        "notes": [
+          "須接受多次重拍及體能關卡。",
+          "體能關卡需注意安全，搶答要夠誇張。"
+        ]
+      },
+      "producer": "陳柏謙"
     },
     {
       "id": "gig_1988_tvb_longmen_spring_high",
@@ -12510,5 +12685,5 @@
     }
   ],
   "matrixRef": "MATRIX_GIG_ERA_1988_v1",
-  "changelogHint": "CHANGELOG_GIGS_1988_3_2_5_SOFT.md"
+  "changelogHint": "CHANGELOG_GIGS_1988_3_2_7_SOFT.md"
 }
