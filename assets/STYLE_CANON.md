@@ -73,6 +73,8 @@
 
 - 2026-11-05 so／yip frown polish Soft nit：`so_jiyan_bust_frown`＋`yip_manji_bust_frown`（夾眉下撇保留、眉薄／怒感收約 5–10%；雙目睜＋咬唇嬌俏敗興↑；jade-v4／starlet-v3 wardrobe／cel-shade lock；default／smile 未動；live MD5 `4e9d521c`／`33152c22`；舊 Soft tip `dbe0ce32`／`d50275e8`；yip default／smile wink `fe28eb9b`／`86a75894` 未動）；GenerateImage；bak `era_stars/bak_pre_so_yip_frown_polish_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-so-yip-frown-polish-soft-nit.tar.gz`；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
 
+- 2026-11-05 sil shape Soft nit：`{yip_manji,so_jiyan,luk_baakyin,ngai_wingnaam}_silhouette_far.png` redo shape（yip 肩凹清／so 叉腰手前可讀／luk quiff↑／ngai 高領 zip；live MD5 `ba8ad339`／`2602dda9`／`022489bc`／`c0f0d41e`；prior 光邊 `b29c5efc`／`30fec574`／`45d03628`／`79f2e144`）；`liu` `4bbf6e7f`／core／bust 未動；GenerateImage 彩色全身→Pillow RGBA 近黑 `(18,18,20)`＋tip#32 soft warm rim／halo；唔做 C cream-rim big redo；bak `era_stars/bak_pre_sil_shape_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-sil-shape-soft-nit.tar.gz`；Soft nits（唔擋）：luk／ngai 理領空隙；ngai 連帽遠距；QC：統籌 Style PASS with nits；Soft≠PASS；唔 tip LIVE；唔抬 `?v=`；89–92 HOLD。
+
 ## raise_brow Soft nit（2026-11-05 Asia/Hong_Kong）
 
 - 已換：`char_hero_bust_raise_brow.png` MD5 `59dab337`；`char_cheung_bust_raise_brow.png` MD5 `8a8d01a9`（c1／story／dialog／npc 四路同 MD5）
@@ -199,3 +201,13 @@
 - Soft nits（唔擋 Soft tip）：線密度仍偏 modern polish；so 怒感若過收／過軟可回微加夾眉；yip 咬唇角度／牙齒露出量可再微調
 - QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-so-yip-frown-polish-soft-nit.tar.gz`（live-only 入本 PR；bak／qa 唔入）
+
+## sil shape Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/yip_manji_silhouette_far.png` MD5 `ba8ad339`；`so_jiyan_silhouette_far.png` MD5 `2602dda9`；`luk_baakyin_silhouette_far.png` MD5 `022489bc`；`ngai_wingnaam_silhouette_far.png` MD5 `c0f0d41e`（864×1152 RGBA）
+- 唔動：`liu_bingxing_silhouette_far.png` `4bbf6e7f`。core×6 sil、bust×15、`index.html`、gigs 未動。遠觀 wire 仍 `eraSilhouetteFarSrc` → `?v=19w`（本輪唔改碼、唔抬 `?v=`）。唔做 C cream-rim big redo
+- 對開光邊 Soft tip：yip `b29c5efc`／so `30fec574`／luk `45d03628`／ngai `79f2e144`。近黑 fill `(18,18,20)`、無五官；tip#32 soft warm rim／halo 重套。bak `era_stars/bak_pre_sil_shape_soft_nit_20261105/` 留盤、唔入本 PR
+- 目標：yip 肩凹清；so 叉腰手前可讀；luk quiff↑；ngai 高領 zip
+- Soft nits（唔擋 Soft tip）：luk／ngai 理領空隙；ngai 連帽遠距
+- QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-sil-shape-soft-nit.tar.gz`（live-only 入本 PR；bak／qa 唔入）
