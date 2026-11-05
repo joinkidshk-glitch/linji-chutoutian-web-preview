@@ -77,6 +77,8 @@
 
 - 2026-11-05 sil rim／halo Soft polish：era×5＋core×6 `*_silhouette_far.png`（對 tip#32 Soft nits：cream rim／漫射／halo；唔改 shape／wardrobe）。Era live MD5 `483cec70`／`523f0c91`／`855f00f5`／`526c01f5`／`359acd81`（prior shape `ba8ad339`／`2602dda9`／`022489bc`／`c0f0d41e`；liu prior 光邊 `4bbf6e7f`）。Core live MD5 `fe35b9c7`／`abd30eb1`／`e5426266`／`22e421fc`／`df71baa7`／`3aa128c0`（prior 光邊 `2345fa2b`／`c808e004`／`2e44ff61`／`5a808447`／`54910d1f`／`4c3d1f0f`）。Pillow／scipy EDT 更深環境漫射 rim（depth 2.5→4.8、strength 0.34→0.42、RIM≈122,116,104）＋更闊更淡 outer halo（radius 6→11、α peak 52→26；soft_max≤92）；深心 fill `(18,18,20)` exact；solid Jaccard 1.0。bust／gigs／index Soft UI CSS／`?v=`／SAVE／`liveWeekGateStillActive` 未動。bak `era_stars|core/bak_pre_sil_rim_halo_soft_polish_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-sil-rim-halo-soft-polish.tar.gz`；Soft nits（唔擋）：cream rim Soft A 後清；ngai／luk Soft A zip 進行中（GD）；QC：統籌 Style PASS with nits；Soft≠PASS；唔 tip LIVE；唔抬 `?v=`；89–92 HOLD。本 PR 唔併 #38／bust／CSS。
 
+- 2026-11-05 Soft A① sil zip／領口 Soft nit：只換 `{ngai_wingnaam,luk_baakyin}_silhouette_far.png`（live MD5 `3eab83b2`／`e3dcc24c`；prior rim／halo `526c01f5`／`855f00f5`）。ngai 輕內部 zip 線＋領口負空間↑（低馬尾／高領 zip 跟 live bust kara；**唔做**更誇張側馬尾）；luk 理領／領口負空間↑。yip `483cec70`／so `523f0c91`／liu `359acd81`／core／bust **未動**。GenerateImage 彩色全身→Pillow mask＋輕鑿 zip／領口負空間→重套 C rim／halo（rim_depth 4.8／strength 0.42／halo_r 11／halo_a_peak 26／RIM≈122,116,104／soft_max≤92）。bak `era_stars/bak_pre_sil_zip_collar_soft_nit_20261105/` 留盤、唔入本 PR；pack `/workspace/star-volunteer-web-sil-zip-collar-soft-nit.tar.gz`；Soft nits（唔擋）：ngai 遠距帽歧義殘；luk 圖示化縫；cream Soft A② 進行中（GD）；QC：統籌 Style PASS with nits；Soft≠PASS；唔 tip LIVE；唔抬 `?v=`；89–92 HOLD。本 PR 唔併 #39／bust／CSS。
+
 ## raise_brow Soft nit（2026-11-05 Asia/Hong_Kong）
 
 - 已換：`char_hero_bust_raise_brow.png` MD5 `59dab337`；`char_cheung_bust_raise_brow.png` MD5 `8a8d01a9`（c1／story／dialog／npc 四路同 MD5）
@@ -224,3 +226,13 @@
 - Soft nits（唔擋 Soft tip）：cream rim Soft A 後清；ngai／luk Soft A zip 進行中（GD）。prior shape nits（luk／ngai 理領空隙；ngai 連帽遠距）唔喺本 PR 改 shape
 - QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-sil-rim-halo-soft-polish.tar.gz`（live-only 入本 PR；bak／qa 唔入）
+
+## Soft A① sil zip／領口 Soft nit（2026-11-05 Asia/Hong_Kong）
+
+- 只換：`story/era_stars/ngai_wingnaam_silhouette_far.png` MD5 `3eab83b254b51d2e4c44b84d46955284`；`luk_baakyin_silhouette_far.png` MD5 `e3dcc24cce494d40ee9c1c5d9c126ff2`（864×1152 RGBA）
+- 唔動：`yip_manji_silhouette_far.png` `483cec70`；`so_jiyan_silhouette_far.png` `523f0c91`；`liu_bingxing_silhouette_far.png` `359acd81`。core×6 sil、bust×15、`index.html`、gigs、index Soft UI CSS 未動。遠觀 wire 仍 `eraSilhouetteFarSrc` → `?v=19w`（本輪唔改碼、唔抬 `?v=`）。SAVE 仍 `starVolunteer_map_v19w`。`liveWeekGateStillActive` 未動。本 PR 唔併 #39／bust／CSS
+- 對開 rim／halo Soft tip：ngai `526c01f5`／luk `855f00f5`。近黑 fill 重套 C rim／halo。bak `era_stars/bak_pre_sil_zip_collar_soft_nit_20261105/` 留盤、唔入本 PR
+- 目標：ngai 輕內部 zip 線＋領口負空間↑（低馬尾／高領 zip 跟 live bust kara；**唔做**更誇張側馬尾）；luk 理領／領口負空間↑。GenerateImage 彩色全身→Pillow mask＋輕鑿 zip／領口負空間→重套 C rim／halo（rim_depth 4.8／strength 0.42／halo_r 11／halo_a_peak 26／RIM≈122,116,104／soft_max≤92）
+- Soft nits（唔擋 Soft tip）：ngai 遠距帽歧義殘；luk 圖示化縫；cream Soft A② 進行中（GD）
+- QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-sil-zip-collar-soft-nit.tar.gz`（live-only 入本 PR；bak／qa 唔入）
