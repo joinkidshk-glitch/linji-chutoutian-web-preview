@@ -2600,6 +2600,7 @@ body.day-res-open #mask.day-res{
   -webkit-overflow-scrolling:touch;
 }
 .rumor-card{
+  position:relative;
   background:#f6e2aa; color:#1A1410; border-radius:12px;
   border:1px dashed rgba(107,78,46,.55);
   box-shadow:0 2px 0 rgba(26,20,16,.16);
@@ -2674,14 +2675,79 @@ body.day-res-open #mask.day-res{
   background:#6b4e2e; color:#fff8e8; font:inherit; font-weight:800;
 }
 .rumor-hint{ margin:0 0 8px; font-size:.75rem; font-weight:700; color:#6b4e2e }
-/* Soft Phase2 steps 5–6 coach plate. Copy only; no drag FX or merge VFX. */
+/* Soft Phase2 steps 5–6. Coach copy always; FX images only when the Soft gate mounts them. */
 .tut-phase2-coach{
+  position:relative;
   background:#fff8e8; color:#1A1410; border-radius:12px;
   border:1px solid rgba(107,78,46,.45);
   padding:10px 12px; margin:0 0 8px;
 }
+.tut-phase2-coach:has(.tut-fx-pulse){ padding-left:34px; }
 .tut-phase2-coach p{ margin:0 0 4px; font-size:.78rem; font-weight:700; line-height:1.4; color:#5a4328 }
 .tut-phase2-coach p:last-child{ margin:0 }
+.tut-phase2-coach .tut-fx-pulse{
+  position:absolute; left:8px; top:8px; width:22px; height:22px;
+  object-fit:contain; pointer-events:none;
+  animation:tutFxPulse 1.1s ease-in-out infinite;
+}
+.tut-fx-drag{
+  position:relative; height:86px; margin:0 0 8px; pointer-events:none;
+}
+.tut-fx-drag .tut-fx-path{
+  position:absolute; left:8%; top:8px; width:62%; height:70px; object-fit:contain;
+}
+.tut-fx-drag .tut-fx-finger{
+  position:absolute; left:0; top:6px; width:72px; height:72px; object-fit:contain;
+  animation:tutFxFinger 1.1s ease-in-out infinite;
+}
+.rumor-card .tut-fx-slot,
+.rumor-card .tut-fx-edge{
+  position:absolute; inset:-6px; width:auto; height:auto;
+  object-fit:fill; pointer-events:none; z-index:2;
+}
+.rumor-card .tut-fx-lift{
+  display:none; position:absolute; left:10%; right:10%; bottom:-4px; height:16px;
+  object-fit:fill; pointer-events:none; z-index:0;
+}
+.rumor-card.is-picked .tut-fx-lift,
+.rumor-card.is-lifting .tut-fx-lift{ display:block; }
+#home-pane-rumor{ position:relative; }
+.tut-fx-merge{
+  display:none; position:absolute; left:50%; top:22%; width:168px; height:168px;
+  margin-left:-84px; z-index:4; pointer-events:none;
+}
+.tut-fx-merge.on{ display:block; }
+.tut-fx-merge img{ width:100%; height:100%; object-fit:contain; }
+.tut-fx-merge-inline{ position:relative; height:148px; margin:0 0 8px; }
+.tut-fx-merge-inline .tut-fx-burst,
+.tut-fx-merge-inline .tut-fx-stamp{
+  position:absolute; left:50%; top:0; width:140px; height:140px;
+  margin-left:-70px; object-fit:contain; pointer-events:none;
+}
+.tut-fx-merge-inline .tut-fx-burst{ animation:tutFxBurst .72s ease forwards; }
+.tut-fx-merge-inline .tut-fx-stamp{ opacity:0; animation:tutFxStamp .4s ease .72s forwards; }
+.era-sil-far{
+  display:block; width:min(180px, 52vw); max-height:42vh; height:auto;
+  object-fit:contain; margin:2px auto 10px; background:transparent; pointer-events:none;
+}
+@keyframes tutFxFinger{
+  0%{ transform:translate(6px,12px); }
+  50%{ transform:translate(112px,-2px); }
+  100%{ transform:translate(6px,12px); }
+}
+@keyframes tutFxPulse{
+  0%,100%{ opacity:.4; transform:scale(.86); }
+  50%{ opacity:1; transform:scale(1.12); }
+}
+@keyframes tutFxBurst{
+  0%{ opacity:0; transform:scale(.72); }
+  20%{ opacity:1; transform:scale(1); }
+  100%{ opacity:0; transform:scale(1.08); }
+}
+@keyframes tutFxStamp{
+  0%{ opacity:0; transform:scale(.8) rotate(-8deg); }
+  100%{ opacity:1; transform:scale(1) rotate(-8deg); }
+}
 .debt-empty,.rumor-empty{ text-align:center }
 .debt-stamp{
   width:76px; height:76px; margin:16px auto 8px; border-radius:50%;
@@ -7198,20 +7264,78 @@ const StoryPlay = (()=>{
 const TUTORIAL_ZH_HK = {"version":2,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上的地點，就是你可以去的地方。","先點地點，才會看到可做的行動。"],"bodyAlt":["所有行動都從地圖進入。","點選地點後，才能選擇行動。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可先免費查看，不耗日。","條件未合時顯示暫未能報；達標後可即場試鏡。"],"bodyAlt":["先看通告欄，再決定是否試鏡。","見到暫未能報，即條件未合；達標後才可即場試鏡。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練解鎖試鏡","body":["到對應地點報名訓練，提升能力來解鎖試鏡門檻。","訓練次數累計夠之後，社交課和觀察課就會開放。"],"bodyAlt":["能力不夠，先到合適地點報名訓練。","訓練累計夠，社交與觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"傾談耗一日","body":["和人傾談會耗一日，可能得到情報或提醒。","形象和對手壓力，也可能從對話中來。"],"bodyAlt":["傾談佔一日，不一定每次有用。","情報、形象、對手壓力，都可能從對話中來。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到這裡，之後可在選單撳「重看教學」。","建議先去訓練、看通告欄，或打開選單「事態」。"],"bodyAlt":["教學結束了，選單裡可以重看教學。","下一步建議：先訓練、看通告欄，或打開「事態」。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["本次未獲聘，且不可再參加本場。","可去訓練，或另選通告。"],"bodyAlt":["這一場未獲聘，本場不再開放。","回去訓練，或另找合適通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘後，製作日已排進行程。","開工前看手帳和行程，跟進度。"],"bodyAlt":["已獲聘，拍攝日記在行程。","按行程開工，手帳可看進度。"],"buttons":["我知道了"]}},"filterPass":"2026-11-04"};
 let TUTORIAL = TUTORIAL_ZH_HK;
 const TUT_MAIN_IDS = ["TUT_WELCOME","TUT_MAP","TUT_BOARD","TUT_TRAIN","TUT_NPC","TUT_NOTEBOOK","TUT_DONE"];
-/* PLAN 5ba79338: step 5 drag-guide and step 6 merge FX have no art. Mark the nit; do not fake sprites. Modal scroll is separate. Tutorial stays off the behavior gate. */
+/* PLAN 5ba79338: step 5 drag-guide and step 6 merge FX. Soft tip mounts tutorial-fx PNGs only when gatePath()==="soft". Modal scroll is separate. No new Soft flag. Soft≠PASS. Do not tip LIVE. ?v= stays 19w. */
 const TUTORIAL_PHASE2_SOFT_NITS = {
-  step5_drag_guide: "HOLD",
-  step6_merge_fx: "HOLD",
+  step5_drag_guide: "soft",
+  step6_merge_fx: "soft",
   behaviorGate: "unwired",
   modalScroll: "soft",
-  artHold: true,
+  artHold: false,
+  fxNits: "finger略偏HUD；proc抽象只備；lift shadow淡；pulse jagged",
 };
 try{ window.__tutorialSoftNits = TUTORIAL_PHASE2_SOFT_NITS; }catch(_e){}
+
+/* Soft tutorial Phase2 FX. Same gate as the steps 5–6 copy overlay. Soft off / LIVE mounts nothing. ?v= stays 19w. */
+function tutorialPhase2FxOn(){
+  try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
+}
+function tutorialFxUrl(file){
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=19w";
+}
+function tutorialFxFingerErr(img){
+  const fb = img && img.getAttribute("data-fx-fallback");
+  if(!fb || String(img.getAttribute("src")||"").indexOf("fx_drag_finger_proc.png")>=0) return;
+  img.src = fb;
+}
+function tutorialFxImg(cls, file){
+  const src = journalText(tutorialFxUrl(file));
+  const extra = file==="fx_drag_finger.png"
+    ? ` data-fx-fallback="${journalText(tutorialFxUrl("fx_drag_finger_proc.png"))}" onerror="tutorialFxFingerErr(this)"`
+    : "";
+  return `<img class="${cls}" src="${src}" alt="" draggable="false"${extra}>`;
+}
+function tutorialPhase2DragGuideHtml(){
+  if(!tutorialPhase2FxOn()) return "";
+  return `<div class="tut-fx-drag" data-fx="step5" aria-hidden="true">${tutorialFxImg("tut-fx-path","fx_drag_path_arrow.png")}${tutorialFxImg("tut-fx-finger","fx_drag_finger.png")}</div>`;
+}
+function tutorialMergeFxHtml(kind){
+  if(!tutorialPhase2FxOn() || kind!=="ok") return "";
+  return `<div class="tut-fx-merge-inline" data-fx="step6-ok" aria-hidden="true">${tutorialFxImg("tut-fx-burst","fx_merge_burst.png")}${tutorialFxImg("tut-fx-stamp","fx_merge_stamp_ok.png")}</div>`;
+}
+function playTutorialPhase2MergeFx(kind){
+  if(!tutorialPhase2FxOn()) return;
+  const host = document.getElementById("home-pane-rumor") || document.getElementById("v-home");
+  if(!host) return;
+  let layer = document.getElementById("tut-fx-merge");
+  if(!layer){
+    layer = document.createElement("div");
+    layer.id = "tut-fx-merge";
+    layer.className = "tut-fx-merge";
+    layer.setAttribute("aria-hidden","true");
+    host.appendChild(layer);
+  }
+  clearTimeout(playTutorialPhase2MergeFx._t);
+  clearTimeout(playTutorialPhase2MergeFx._t2);
+  const paint = (file, cls)=>{
+    layer.className = "tut-fx-merge on "+cls;
+    layer.innerHTML = tutorialFxImg("tut-fx-merge-art", file);
+  };
+  if(kind==="ok"){
+    paint("fx_merge_burst.png","is-burst");
+    playTutorialPhase2MergeFx._t = setTimeout(()=>{
+      paint("fx_merge_stamp_ok.png","is-stamp");
+      playTutorialPhase2MergeFx._t2 = setTimeout(()=>{ layer.className = "tut-fx-merge"; layer.innerHTML = ""; }, 900);
+    }, 720);
+  } else {
+    paint("fx_merge_fail_mark.png","is-fail");
+    playTutorialPhase2MergeFx._t = setTimeout(()=>{ layer.className = "tut-fx-merge"; layer.innerHTML = ""; }, 900);
+  }
+}
 
 /* Soft tutorial Phase2 steps 5–6 copy overlay. Soft≠PASS.
    Prefer content/MOCK_TUTORIAL_PHASE2_STEPS_5_6_COPY_SOFT_v1.json (same bust as other content fetches; page ?v= stays 19w).
    Player strings apply only when gatePath()==="soft". Never writes TUTORIAL or tutorial_zh_HK.json.
-   Step 5/6 drag FX and merge VFX stay HOLD on TUTORIAL_PHASE2_SOFT_NITS. */
+   Step 5/6 FX use that same Soft gate. Default finger is fx_drag_finger.png; proc is the onerror fallback only. */
 const TUTORIAL_PHASE2_STEPS56_FILE = "MOCK_TUTORIAL_PHASE2_STEPS_5_6_COPY_SOFT_v1.json";
 let TUTORIAL_PHASE2_STEPS56_OVERLAY = null;
 function tutorialPhase2Steps56SoftOn(){
@@ -7251,7 +7375,8 @@ function phase2Steps56CoachHtml(mergeOn){
   const slotKey = mergeOn ? "slotHintReady" : "slotHintEmpty";
   const bits = ["coachOpen","coachDragHint",slotKey].map(k=>phase2Steps56PlayerLine(pack.step5[k])).filter(Boolean);
   if(!bits.length) return "";
-  return `<div class="tut-phase2-coach">${bits.map(t=>`<p>${journalText(t)}</p>`).join("")}</div>`;
+  const pulse = tutorialPhase2FxOn() ? tutorialFxImg("tut-fx-pulse","fx_coach_pulse_dot.png") : "";
+  return `<div class="tut-phase2-coach">${pulse}${bits.map(t=>`<p>${journalText(t)}</p>`).join("")}</div>`;
 }
 function loadTutorialPhase2Steps56Overlay(pack){
   if(!pack || typeof pack!=="object") return { ok:false, reason:"file" };
@@ -7296,7 +7421,13 @@ function tutorialPhase2Steps56SelfCheck(){
   if(typeof BehaviorGate!=="undefined" && BehaviorGate.liveWeekGateStillActive()!==true) fails.push("live_fn");
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_TRAIN,TUT_NPC,TUT_NOTEBOOK,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
-  if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="HOLD" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="HOLD") fails.push("fx_hold");
+  if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19w") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19w") fails.push("fx_proc");
+  ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19w") fails.push("fx_file");
+  });
+  if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
   return { ok:fails.length===0, fails:fails, soft:tutorialPhase2Steps56SoftOn(), overlayOnly:true };
 }
@@ -7309,6 +7440,8 @@ try{
     copy: phase2Steps56Copy,
     preferFile: preferFileTutorialPhase2Steps56,
     selfCheck: tutorialPhase2Steps56SelfCheck,
+    fxOn: tutorialPhase2FxOn,
+    fxUrl: tutorialFxUrl,
   };
 }catch(_e){}
 
@@ -11080,6 +11213,7 @@ function mergePickedRumors(){
   if(ids.length<2){
     const fail = phase2Steps56Line("step6", "failToast", MERGE_FLOW.failToast);
     toast(fail);
+    playTutorialPhase2MergeFx("fail");
     return { ok:false, toast:fail };
   }
   const pair = findMergePair(ids[0], ids[1]);
@@ -11088,6 +11222,7 @@ function mergePickedRumors(){
     renderRumorPane();
     const miss = phase2Steps56Line("step6", "noPairHint", MERGE_FLOW.noPairHint);
     toast(miss);
+    playTutorialPhase2MergeFx("fail");
     return { ok:false, toast:miss };
   }
   ids.forEach(id=>{
@@ -11105,10 +11240,11 @@ function mergePickedRumors(){
   renderRumorPane();
   const stamp = phase2Steps56Line("step6", "successStampLine", MERGE_FLOW.successStampLine);
   toast(stamp);
+  playTutorialPhase2MergeFx("ok");
   const settle = phase2Steps56Copy() ? phase2Steps56Line("step6", "favorDebtSettleLine", "") : "";
   if(settle){
     const closeLabel = phase2Steps56Line("step6", "closeSettleLabel", "知道了");
-    modal(`<p>${journalText(settle)}</p>`, [{ label:closeLabel, role:"p" }]);
+    modal(`${tutorialMergeFxHtml("ok")}<p>${journalText(settle)}</p>`, [{ label:closeLabel, role:"p" }]);
   }
   return { ok:true, toast:stamp, merged:pair.merged, settle:!!settle };
 }
@@ -11118,6 +11254,7 @@ function requestMergeConfirm(){
   if(ids.length<2){
     const fail = phase2Steps56Line("step6", "failToast", MERGE_FLOW.failToast);
     toast(fail);
+    playTutorialPhase2MergeFx("fail");
     return { ok:false, toast:fail };
   }
   const rows = ids.map(id=>S.mockRumors.find(r=>r && r.id===id));
@@ -11152,22 +11289,48 @@ function renderRumorPane(){
     : (heard.length>=2 && !softCopy ? `<p class="rumor-hint">點兩張剛聽聞，拉埋再確認。</p>` : "");
   const merge = mergeOn ? `<div class="rumor-merge"><button type="button" id="rumor-merge-btn">${journalText(phase2Steps56Line("step6", "confirmLabel", MERGE_FLOW.confirmLabel))}</button></div>` : "";
   const whisper = `<p class="weak-whisper">${journalText(WEAK_WHISPER)}</p>`;
-  box.innerHTML = phase2Steps56CoachHtml(mergeOn) + hint + merge + rows.map(r=>{
+  const fxOn = tutorialPhase2FxOn();
+  const slotRow = (!mergeOn && fxOn) ? (heard.find(r=>picks.indexOf(r.id)<0) || heard[0] || null) : null;
+  const slotId = slotRow ? slotRow.id : "";
+  const drag = (fxOn && !mergeOn && heard.length) ? tutorialPhase2DragGuideHtml() : "";
+  box.innerHTML = phase2Steps56CoachHtml(mergeOn) + drag + hint + merge + rows.map(r=>{
     const label = rumorStateLabel(r.state);
     const picked = picks.indexOf(r.id)>=0;
     const can = label==="剛聽聞";
     const glow = mergeOn && picked ? " is-glow" : "";
     const stamp = r.stamp ? `<span class="rumor-stamp" aria-hidden="true">有頭緒</span>` : "";
-    return `<article class="rumor-card${picked?" is-picked":""}${glow}${can?" can-pick":""}${r.stamp?" is-stamped":""}" data-rumor-id="${journalText(r.id)}"><p class="rumor-src">來源：${journalText(r.source)}</p><p class="rumor-title">${journalText(r.title)}</p><p>${journalText(r.text)}</p><span class="rumor-state">${journalText(label)}</span>${r.season?`<p class="debt-note">${journalText(r.season)}</p>`:""}${stamp}</article>`;
+    let fx = "";
+    if(fxOn && can){
+      fx += tutorialFxImg("tut-fx-lift","fx_card_lift_shadow.png");
+      if(r.id===slotId) fx += tutorialFxImg("tut-fx-slot","fx_slot_highlight.png");
+      if(glow) fx += tutorialFxImg("tut-fx-edge","fx_merge_edge_glow.png");
+    }
+    return `<article class="rumor-card${picked?" is-picked":""}${glow}${can?" can-pick":""}${r.stamp?" is-stamped":""}" data-rumor-id="${journalText(r.id)}"><p class="rumor-src">來源：${journalText(r.source)}</p><p class="rumor-title">${journalText(r.title)}</p><p>${journalText(r.text)}</p><span class="rumor-state">${journalText(label)}</span>${r.season?`<p class="debt-note">${journalText(r.season)}</p>`:""}${stamp}${fx}</article>`;
   }).join("") + whisper;
   box.querySelectorAll(".rumor-card.can-pick").forEach(el=>{
     const id = el.getAttribute("data-rumor-id");
     let hold=0;
     el.addEventListener("pointerdown", ()=>{
       clearTimeout(hold);
-      hold=setTimeout(()=>{ el.classList.add("is-near"); }, 420);
+      el.classList.add("is-lifting");
+      hold=setTimeout(()=>{
+        el.classList.add("is-near");
+        if(tutorialPhase2FxOn() && !el.querySelector(".tut-fx-edge")){
+          el.insertAdjacentHTML("beforeend", tutorialFxImg("tut-fx-edge","fx_merge_edge_glow.png"));
+        }
+      }, 420);
     });
-    const clearHold=()=>{ clearTimeout(hold); };
+    const clearHold=()=>{
+      clearTimeout(hold);
+      el.classList.remove("is-lifting");
+      if(el.classList.contains("is-near")){
+        el.classList.remove("is-near");
+        if(!el.classList.contains("is-glow")){
+          const edge = el.querySelector(".tut-fx-edge");
+          if(edge) edge.remove();
+        }
+      }
+    };
     el.addEventListener("pointerup", clearHold);
     el.addEventListener("pointercancel", clearHold);
     el.addEventListener("pointerleave", clearHold);
@@ -11458,13 +11621,33 @@ function playSightChime(){
     return true;
   }catch(_e){ return false; }
 }
+const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji","so_jiyan"];
+function eraSilhouetteFarSrc(starId){
+  const id = String(starId||"");
+  if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19w";
+}
+function eraSilhouetteFarHtml(star){
+  if(!phase3SoftOn() || !star) return "";
+  const src = eraSilhouetteFarSrc(star.starId);
+  if(!src) return "";
+  return `<img class="era-sil-far" src="${journalText(src)}" alt="" draggable="false">`;
+}
+function eraSightParagraphs(star){
+  return [
+    [star && star.distanceLook, ""],
+    [star && star.distanceLine, ""],
+    [star && star.rumorTeaser, ' class="sub"'],
+    [star && star.locHint, ' class="sub"'],
+  ].filter(row=>String(row[0]||"").trim()).map(row=>`<p${row[1]}>${journalText(row[0])}</p>`).join("");
+}
 function openStarSighting(star){
   if(!star) return { ok:false };
   const heard = playSightChime();
   try{
     ensureMockJournal();
     const rid = "sight:"+star.starId;
-    if(!(S.mockRumors||[]).some(r=>r && r.id===rid)){
+    if(star.rumorTeaser && !(S.mockRumors||[]).some(r=>r && r.id===rid)){
       S.mockRumors.unshift({
         id:rid, source:star.locHint, title:star.displayName, text:star.rumorTeaser, state:"normal", season:"",
       });
@@ -11472,11 +11655,11 @@ function openStarSighting(star){
       try{ saveQ(); }catch(_e){}
     }
   }catch(_e){}
-  modal(`<h3>遠觀 · ${journalText(star.displayName)}</h3><p>${journalText(star.distanceLook)}</p><p>${journalText(star.distanceLine)}</p><p class="sub">${journalText(star.rumorTeaser)}</p><p class="sub">${journalText(star.locHint)}</p>`, [
+  modal(`<h3>遠觀 · ${journalText(star.displayName)}</h3>${eraSilhouetteFarHtml(star)}${eraSightParagraphs(star)}`, [
     {label:"離開", role:"g"},
   ]);
   toast(star.resultToast);
-  return { ok:true, starId:star.starId, heard:heard };
+  return { ok:true, starId:star.starId, heard:heard, silhouette: phase3SoftOn() ? eraSilhouetteFarSrc(star.starId) : "" };
 }
 function addStarSighting(locId, add){
   const star = starAtLoc(locId);
@@ -11487,7 +11670,18 @@ function addStarSighting(locId, add){
 try{
   window.__phase3 = {
     stars: function(){ return phase3Stars().map(s=>s.starId); },
-    sight: function(id){ return openStarSighting(phase3Stars().find(s=>s.starId===id)); },
+    sight: function(id){
+      let star = phase3Stars().find(s=>s.starId===id);
+      if(!star && phase3SoftOn() && id==="so_jiyan"){
+        star = {
+          starId:"so_jiyan", displayName:"蘇芷茵",
+          distanceLook:"", distanceLine:"", locHint:"", rumorTeaser:"",
+          resultToast:"已遠觀蘇芷茵。", actionLabel:"遠觀",
+        };
+      }
+      return openStarSighting(star);
+    },
+    silhouette: function(id){ return phase3SoftOn() ? eraSilhouetteFarSrc(id) : ""; },
     boardState: function(g){ return gigBoardCardState(g); },
     source: function(){ return phase3SoftOn() ? PHASE3_MOCK_SRC : "live"; },
     mock: function(){ return phase3SoftOn() ? (PHASE3_MOCK || phase3InlineMock()) : null; },
@@ -11505,6 +11699,11 @@ try{
       const c = phase3CastCopy();
       if(c.thirdState) fails.push("third_state");
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
+      if(phase3SoftOn()){
+        ERA_SIL_FAR_IDS.forEach(id=>{
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19w") fails.push("sil:"+id);
+        });
+      }
       if(phase3SoftOn() && PHASE3_MOCK && PHASE3_MOCK.castingCta){
         const cant = PHASE3_MOCK.castingCta.cannotCast || {};
         const can = PHASE3_MOCK.castingCta.canCast || {};

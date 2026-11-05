@@ -39,7 +39,7 @@
 - 已 redo：`story/era_stars/{luk_baakyin,yip_manji,so_jiyan,liu_bingxing,ngai_wingnaam}_bust_{default,smile,frown}.png`（15）
 - Refs：`hero_awi.jpg`＋`story/c1/char_hero_bust_default.png`
 - 本 Soft tip 只合 live bust PNG（bak 留盤、唔入本 PR）
-- silhouettes **未動**（本 repo 無 `*_silhouette_*`，亦唔加）。遠觀仍純文字。preferFile 未加 era_stars path
+- silhouettes **v2 2026-11-05**：5／5 `*_silhouette_far.png` 已入 Soft。Soft gate 遠觀先顯示剪影；Soft off／LIVE 仍文字＋音。preferFile 未加 era_stars bust path。`bak_pre_silhouette_v2/` 唔入本 PR
 - Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD
 
 - 2026-11-05 luk leather v5b：`luk_baakyin` bust×3 改黑皮褸＋白 Tee＋正面理領（對開阿偉西裝白恤）；GenerateImage；bak `era_stars/bak_pre_luk_leather_v5/` 留盤、唔入本 PR；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
@@ -51,3 +51,7 @@
 - 2026-11-05 so jade-v4：`so_jiyan` bust×3 正面開襟＋碎花；周慧敏氣質（禁抄臉）；阿偉 cel-shade；GenerateImage；bak `bak_pre_so_jade_v4/` 留盤、唔入本 PR；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
 
 - 2026-11-05 ngai kara-v5：`ngai_wingnaam` bust×3 正面理領＋navy；惠英紅氣質；低馬尾統一；style 鎖阿偉；style＋pose redo（替 kara-v2，v2 唔再係 live）；GenerateImage；bak `bak_pre_ngai_kara_v5/` 留盤、唔入本 PR；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
+
+- 2026-11-05 era silhouettes v2：`{luk_baakyin,liu_bingxing,ngai_wingnaam,yip_manji,so_jiyan}_silhouette_far.png`；GenerateImage＋RGBA 透明底；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
+
+- 2026-11-05 Soft nits expr：`so_jiyan_bust_smile`＋`luk_baakyin_bust_smile`＋`ngai_wingnaam` bust×3；GenerateImage；bak `era_stars/bak_pre_soft_nits_expr_20261105/` 留盤、唔入本 PR；挑眉 `char_hero_bust_raise_brow` 未入本 pack、唔動；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；89–92 HOLD。
