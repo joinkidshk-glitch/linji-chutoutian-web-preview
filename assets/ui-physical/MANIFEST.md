@@ -23,6 +23,17 @@ v1 備份：`_v1_bak/`
 | map-frame/map_leader_line.png | 金 leader line |
 | toast/ticket_stub.jpg\|png | **空白**票根（齒孔／撕邊；無結果字） |
 | toast/stamp_complete.png | 「完成」印（Noto，透明獨立層） |
+| tutorial-fx/fx_drag_finger.png | 教學步5拖曳手指（Soft；主） |
+| tutorial-fx/fx_drag_finger_proc.png | 教學步5拖曳手指 procedural 備 |
+| tutorial-fx/fx_drag_path_arrow.png | 教學步5拖曳路徑箭頭 |
+| tutorial-fx/fx_slot_highlight.png | 教學步5目標槽高亮 |
+| tutorial-fx/fx_card_lift_shadow.png | 教學步5卡片提起陰影 |
+| tutorial-fx/fx_coach_pulse_dot.png | 教學 coach 脈衝點 |
+| tutorial-fx/fx_merge_edge_glow.png | 教學步6拼合邊緣金光 |
+| tutorial-fx/fx_merge_burst.png | 教學步6拼合成功 burst |
+| tutorial-fx/fx_merge_stamp_ok.png | 教學步6成功「合」印（Noto） |
+| tutorial-fx/fx_merge_fail_mark.png | 教學步6失敗標 |
+| tutorial-fx/README.md | Soft FX 說明＋MD5 |
 
 出品名：**臨記出頭天**。NPC 唔改。立繪：`../hero_awi.jpg`。  
 中文一律本機 Noto；禁止 AI 漢字。用戶批後先叫 iOS 套。
