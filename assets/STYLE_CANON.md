@@ -48,4 +48,6 @@
 
 - 2026-11-05 yip starlet-v3：`yip_manji` bust×3 露肩 dusty-rose；邱淑貞／張敏 LOOKS 氣質（禁抄臉）；GenerateImage；bak `bak_pre_yip_starlet_v3/` 留盤、唔入本 PR；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
 
-- 2026-11-05 ngai kara-v2：`ngai_wingnaam` bust×3 navy 外套＋黑背心；惠英紅 LOOKS 氣質（禁抄臉）；低馬尾統一；GenerateImage；bak `bak_pre_ngai_kara_v2/` 留盤、唔入本 PR；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
+- 2026-11-05 so jade-v4：`so_jiyan` bust×3 正面開襟＋碎花；周慧敏氣質（禁抄臉）；阿偉 cel-shade；GenerateImage；bak `bak_pre_so_jade_v4/` 留盤、唔入本 PR；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
+
+- 2026-11-05 ngai kara-v5：`ngai_wingnaam` bust×3 正面理領＋navy；惠英紅氣質；低馬尾統一；style 鎖阿偉；style＋pose redo（替 kara-v2，v2 唔再係 live）；GenerateImage；bak `bak_pre_ngai_kara_v5/` 留盤、唔入本 PR；Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`。
