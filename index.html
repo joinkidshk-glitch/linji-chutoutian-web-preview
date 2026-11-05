@@ -18145,8 +18145,8 @@ const StoryPlay = (()=>{
     return ch ? ("主線 · 1988"+ch) : "";
   }
   /** Soft only. Default order stays playerMeta → seed / softCalendarSeason / chromeSeason → when / eraTag → 1988春.
-      Dual meet sets preferSeedSeason so seed, then the live calendar, wins over the baked playerMeta
-      (周刊／采兒 mock is 夏; 春播顯示春、秋開顯示秋). */
+      Dual meet and C5「采兒小訪題」set preferSeedSeason so seed, then the live calendar, wins over the baked playerMeta
+      (周刊／采兒／C5 mock is 夏; 春播顯示春、秋開顯示秋). */
   function spPlayerMeta_softSeasonFrom(node, src){
     node = node || {};
     src = src || {};
@@ -18167,9 +18167,10 @@ const StoryPlay = (()=>{
     if(ch) return spSoftSeasonLine(ch);
     return "主線 · 1988春";
   }
+  /* C5「采兒小訪題」shares the dual-meet calendar prefer. Name kept so callers stay put. */
   function dualMeetChromePrefersSeed(node){
     const id = String((node && (node.id || node.beatId)) || "");
-    return id==="R_hiu_meet" || id==="R_choi_meet";
+    return id==="R_hiu_meet" || id==="R_choi_meet" || id==="C5";
   }
   function spPlayerMeta_softSeason(node, pack, label){
     let seedSeason = "";
@@ -18181,7 +18182,7 @@ const StoryPlay = (()=>{
     try{
       if(typeof softCalendarSeason==="function") calendarSeasonSoft = softCalendarSeason() || "";
     }catch(_e){}
-    /* 周刊小訪／采兒：季標跟日曆，唔跟寫死嘅 1988夏。種子檔期仍然優先。 */
+    /* 周刊小訪／采兒／C5 采兒小訪題：季標跟日曆，唔跟寫死嘅 1988夏。種子檔期仍然優先。 */
     let liveCal = "";
     if(dualMeetChromePrefersSeed(node)){
       try{ if(typeof calendarSeason==="function") liveCal = calendarSeason() || ""; }catch(_e){}
@@ -18202,6 +18203,12 @@ const StoryPlay = (()=>{
     eq("dualNoSeed", from({ id:"R_choi_meet", playerMeta:line("夏"), chromeSeason:"summer" }, { preferSeedSeason:true }), line("夏"));
     eq("choiSpringCal", from({ id:"R_choi_meet", playerMeta:line("夏"), chromeSeason:"summer", when:"1988春" }, { calendarSeason:"spring", preferSeedSeason:true }), line("春"));
     eq("choiAutumnCal", from({ id:"R_choi_meet", playerMeta:line("夏"), chromeSeason:"summer", when:"1988夏" }, { calendarSeason:"autumn", preferSeedSeason:true }), line("秋"));
+    eq("c5SeedSpring", from({ id:"C5", playerMeta:line("夏"), chromeSeason:"summer", when:"1988夏" }, { seedSeason:"spring", preferSeedSeason:true }), line("春"));
+    eq("c5SpringCal", from({ id:"C5", playerMeta:line("夏"), chromeSeason:"summer", when:"1988夏" }, { calendarSeason:"spring", preferSeedSeason:true }), line("春"));
+    eq("c5AutumnCal", from({ id:"C5", playerMeta:line("夏"), chromeSeason:"summer", when:"1988夏" }, { calendarSeason:"autumn", preferSeedSeason:true }), line("秋"));
+    eq("c5Prefer", dualMeetChromePrefersSeed({ id:"C5" }), true);
+    eq("hiuPrefer", dualMeetChromePrefersSeed({ id:"R_hiu_meet" }), true);
+    eq("choiPrefer", dualMeetChromePrefersSeed({ id:"R_choi_meet" }), true);
     eq("p2seed", from({ chromeSeason:"winter", when:"1988春" }, { seedSeason:"autumn" }), line("秋"));
     eq("p2cal", from({ chromeSeason:"winter", when:"1988春" }, { calendarSeason:"summer" }), line("夏"));
     eq("p2chrome", from({ chromeSeason:"autumn", when:"1988春" }, {}), line("秋"));
