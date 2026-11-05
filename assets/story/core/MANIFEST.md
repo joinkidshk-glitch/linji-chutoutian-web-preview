@@ -4,7 +4,7 @@
 > **LOOKS：** `content/PLAN_CHAR_LOOKS_REF_v1.md`  
 > **Pipeline：** cursor GenerateImage（refs=`hero_awi.jpg`＋`c1/char_hero_bust_default.png`＋npc identity when present）→ Pillow **864×1152** PNG；cream studio  
 > **Style lock（HARD · 用戶 2026-11-05）：** 平面 2D anime／VN cel-shade；清黑線；大眼高光；硬邊陰影；禁半寫實／相片膚／細密髮絲／softbox  
-> **狀態：** CORE 六角 **style-lock redo**（default＋smile＋frown ×6＝18 PNG）已安裝；**core／romance silhouette_far Soft×6**（2026-11-05）已裝，Soft 遠觀先掛；**Soft≠PASS**；唔 tip LIVE；**1989–1992 HOLD**  
+> **狀態：** CORE 六角 **style-lock redo**（default＋smile＋frown ×6＝18 PNG）已安裝；**core／romance silhouette_far Soft×6**（2026-11-05）已裝，Soft 遠觀先掛；**sil 光邊 Soft polish**（2026-11-05）已換 core×6 `*_silhouette_far.png`（同 era×5；淡暖 rim＋淡 halo；bak `bak_pre_sil_light_edge_soft_polish_20261105/` 唔入本 PR）；**Soft≠PASS**；唔 tip LIVE；**1989–1992 HOLD**  
 > **本輪：** bust live 18（bak 省略，GD 允許）＋新建 `*_silhouette_far.png` ×6（無舊 sil bak）。`?v=` 仍 `19w`。SAVE `starVolunteer_map_v19w`。  
 > StoryPlay 先 probe `assets/story/core/{id}_bust_{expr}.png?v=19w`；六個 core stem 優先用檔案 bust。張子駿 `default`／`raise_brow` 亦優先用 `char_cheung_bust_*.png?v=19w`（四路同 MD5）。其餘臉仍用內嵌肖像。遠觀剪影唔入 bust probe；Soft gate 先掛 `assets/story/core/{id}_silhouette_far.png?v=19w`。唔改 era_stars 剪影。
 
@@ -35,22 +35,22 @@
 
 | id | display | files | dims | notes |
 |---|---|---|---|---|
-| `lin_hiu` | 林曉晴 | `lin_hiu_bust_{default,smile,frown}.png`＋`lin_hiu_silhouette_far.png` | 864×1152 | style-lock anime；粉藍針織＋白蕾絲娃娃領＋絲巾；親切／露齒／委屈。sil＝裙裝雙手身前（Soft 新建） |
-| `chow_choiyi` | 周采兒 | `chow_choiyi_bust_{default,smile,frown}.png`＋`chow_choiyi_silhouette_far.png` | 864×1152 | style-lock anime；駝風褸＋千鳥格＋空白記者證；銳利／壞笑／質疑。sil＝長風褸＋靴＋手插袋（Soft 新建） |
+| `lin_hiu` | 林曉晴 | `lin_hiu_bust_{default,smile,frown}.png`＋`lin_hiu_silhouette_far.png` | 864×1152 | style-lock anime；粉藍針織＋白蕾絲娃娃領＋絲巾；親切／露齒／委屈。sil＝裙裝雙手身前（Soft 新建）＋**光邊 Soft polish**（MD5 `2345fa2b`；prior `bcc3601d`） |
+| `chow_choiyi` | 周采兒 | `chow_choiyi_bust_{default,smile,frown}.png`＋`chow_choiyi_silhouette_far.png` | 864×1152 | style-lock anime；駝風褸＋千鳥格＋空白記者證；銳利／壞笑／質疑。sil＝長風褸＋靴＋手插袋（Soft 新建）＋**光邊 Soft polish**（MD5 `c808e004`；prior `4fbe5b19`） |
 
 ## Core
 
 | id | display | files | dims | notes |
 |---|---|---|---|---|
-| `vera` | Vera | `vera_bust_{default,smile,frown}.png`＋`vera_silhouette_far.png` | 864×1152 | style-lock anime；短捲齊耳、煙燻＋暗紅唇、黑墊肩＋**blank 軟尺**（無刻度字）＋大金環；咬筆／挑眉自信／撇嘴。sil＝墊肩西裝＋手近腰（Soft 新建） |
-| `ko_chunkit` | 高俊傑 | `ko_chunkit_bust_{default,smile,frown}.png`＋`ko_chunkit_silhouette_far.png` | 864×1152 | style-lock anime；紅皮褸＋黑 tee＋粗銀鏈；囂張／冷笑／不耐。sil＝biker 皮褸＋一手插袋（Soft 新建） |
+| `vera` | Vera | `vera_bust_{default,smile,frown}.png`＋`vera_silhouette_far.png` | 864×1152 | style-lock anime；短捲齊耳、煙燻＋暗紅唇、黑墊肩＋**blank 軟尺**（無刻度字）＋大金環；咬筆／挑眉自信／撇嘴。sil＝墊肩西裝＋手近腰（Soft 新建）＋**光邊 Soft polish**（MD5 `2e44ff61`；prior `7240595e`） |
+| `ko_chunkit` | 高俊傑 | `ko_chunkit_bust_{default,smile,frown}.png`＋`ko_chunkit_silhouette_far.png` | 864×1152 | style-lock anime；紅皮褸＋黑 tee＋粗銀鏈；囂張／冷笑／不耐。sil＝biker 皮褸＋一手插袋（Soft 新建）＋**光邊 Soft polish**（MD5 `5a808447`；prior `34c47352`） |
 
 ## cast_main
 
 | id | display | files | dims | notes |
 |---|---|---|---|---|
-| `tang_laiping` | 鄧麗萍 | `tang_laiping_bust_{default,smile,frown}.png`＋`tang_laiping_silhouette_far.png` | 864×1152 | style-lock anime；黑墊肩＋白飄帶領＋眼鏡、低馬尾；冷酷／薄笑／審視。sil＝抱臂套裝＋低馬尾＋飄帶領結（Soft 新建） |
-| `lui_ging` | 雷勁 | `lui_ging_bust_{default,smile,frown}.png`＋`lui_ging_silhouette_far.png` | 864×1152 | style-lock anime；花恤衫敞開＋粗金鏈、大背頭、眉骨舊疤；抱胸／冷笑／兇狠。sil＝抱胸壯碩＋恤衫領（Soft 新建） |
+| `tang_laiping` | 鄧麗萍 | `tang_laiping_bust_{default,smile,frown}.png`＋`tang_laiping_silhouette_far.png` | 864×1152 | style-lock anime；黑墊肩＋白飄帶領＋眼鏡、低馬尾；冷酷／薄笑／審視。sil＝抱臂套裝＋低馬尾＋飄帶領結（Soft 新建）＋**光邊 Soft polish**（MD5 `54910d1f`；prior `0e8943c2`） |
+| `lui_ging` | 雷勁 | `lui_ging_bust_{default,smile,frown}.png`＋`lui_ging_silhouette_far.png` | 864×1152 | style-lock anime；花恤衫敞開＋粗金鏈、大背頭、眉骨舊疤；抱胸／冷笑／兇狠。sil＝抱胸壯碩＋恤衫領（Soft 新建）＋**光邊 Soft polish**（MD5 `4c3d1f0f`；prior `991d7f0e`） |
 
 ## C1 expression wave（沿用）
 
@@ -66,18 +66,19 @@
 
 - Prompt 禁真藝名；original fictional only。
 - Soft≠PASS；唔 tip LIVE；89–92 HOLD。`?v=` 仍 `19w`。SAVE `starVolunteer_map_v19w`。
-- **silhouette_far Soft×6（2026-11-05 Asia/Hong_Kong）：** `{lin_hiu,chow_choiyi,vera,ko_chunkit,tang_laiping,lui_ging}_silhouette_far.png`；864×1152 RGBA 透明底近黑 fill；GenerateImage→Pillow；**新建**（無舊檔 bak）。Soft gate 開先喺遠觀顯示 `assets/story/core/{id}_silhouette_far.png?v=19w`；Soft 關／LIVE 仍係文字＋chime，唔強制出圖。唔改 era_stars 剪影。
+- **silhouette_far Soft×6（2026-11-05 Asia/Hong_Kong）：** `{lin_hiu,chow_choiyi,vera,ko_chunkit,tang_laiping,lui_ging}_silhouette_far.png`；864×1152 RGBA 透明底近黑 fill；GenerateImage→Pillow；**新建**（無舊檔 bak）。Soft gate 開先喺遠觀顯示 `assets/story/core/{id}_silhouette_far.png?v=19w`；Soft 關／LIVE 仍係文字＋chime，唔強制出圖。當時唔改 era_stars 剪影。
+- **silhouette 光邊 Soft polish（2026-11-05 Asia/Hong_Kong）：** 同上 core×6 Pillow／scipy EDT 淡場景光邊（深心 fill `(18,18,20)` 保留；soft warm rim＋淡 halo；無五官）。同 PR 換 era×5。遠觀 wire 仍 `coreSilhouetteFarSrc` → `?v=19w`（本 PR 唔改 `index.html`、唔抬 `?v=`）。bak `bak_pre_sil_light_edge_soft_polish_20261105/`、compare／QA md／REPORT **唔入**本 PR。
 
-| file | MD5 |
-|---|---|
-| `lin_hiu_silhouette_far.png` | `bcc3601dff02c5183f582074ee9a86c8` |
-| `chow_choiyi_silhouette_far.png` | `4fbe5b19a5b0980d5f9ed131f165b1e2` |
-| `vera_silhouette_far.png` | `7240595e20484256f9f2967907ace770` |
-| `ko_chunkit_silhouette_far.png` | `34c4735252ee938943770fa8ced31ff6` |
-| `tang_laiping_silhouette_far.png` | `0e8943c2d3e6128d4aa14f36773acb02` |
-| `lui_ging_silhouette_far.png` | `991d7f0ec90792d7a21e5d7251164c4b` |
+| file | MD5 | note |
+|---|---|---|
+| `lin_hiu_silhouette_far.png` | `2345fa2b11fdad426bd1e7d381042f2d` | 光邊 Soft polish；prior Soft×6 `bcc3601d` |
+| `chow_choiyi_silhouette_far.png` | `c808e00485eb321005e9641db7e26b41` | 光邊 Soft polish；prior Soft×6 `4fbe5b19` |
+| `vera_silhouette_far.png` | `2e44ff61c96caa02f475bae2947ce979` | 光邊 Soft polish；prior Soft×6 `7240595e` |
+| `ko_chunkit_silhouette_far.png` | `5a808447df7f49002b98fa975d702606` | 光邊 Soft polish；prior Soft×6 `34c47352` |
+| `tang_laiping_silhouette_far.png` | `54910d1f7d2639e69ce56e22b5ac6692` | 光邊 Soft polish；prior Soft×6 `0e8943c2` |
+| `lui_ging_silhouette_far.png` | `4c3d1f0f8ad236e90924016ebb915a92` | 光邊 Soft polish；prior Soft×6 `991d7f0e` |
 
-- Soft nits（silhouette，唔擋 Soft tip）：vera 軟尺／耳環／咬筆弱；ko 銀鏈弱；lui 開襟金鏈／背頭弱；lin 手握弱；chow 記者證弱；α 邊薄於 era；vera↔ko 站姿偏近。
+- Soft nits（silhouette，唔擋 Soft tip）：vera 軟尺／耳環／咬筆弱；ko 銀鏈弱；lui 開襟金鏈／背頭弱；lin 手握弱；chow 記者證弱；α 邊薄於 era；vera↔ko 站姿偏近。**光邊 Soft polish 未處理呢批 shape nits。** 本輪殘餘（唔擋）：cream／亮底 rim 近隱形；rim 可再漫射；halo 可再淡。
 - Tester style-lock **18／18 PASS**（無半寫實膚紋）。
 - Soft nits（bust，唔擋；本 PR 唔再開圖）：Vera 軟尺或有細刻度線但無數字；Ko 內搭偏 crew／中分未夠清晰；Tang 眼鏡偏細銀框而非完全無框；Lui 舊疤略明顯；整體略偏 modern polished anime／manhwa，仍係平面 2D；`lin_hiu` default≈smile。
 
@@ -88,4 +89,14 @@
 - `/workspace/star-volunteer-web-core-cast-busts.tar.gz`
 - `/workspace/star-volunteer-web-hold-redo-hero-vera.tar.gz`
 - `/workspace/star-volunteer-web-style-lock-core-busts.tar.gz` ← live 18 bust（bak 未附）
-- `/workspace/star-volunteer-web-core-silhouettes-soft.tar.gz` ← **本輪 silhouette_far Soft×6**
+- `/workspace/star-volunteer-web-core-silhouettes-soft.tar.gz` ← silhouette_far Soft×6
+- `/workspace/star-volunteer-web-sil-light-edge-soft-polish.tar.gz` MD5 `a615445f89fa9c0d8f6b89372af63e16` ← **本輪 sil 光邊 Soft polish**（core×6＋era×5；bak／compare／QA md／REPORT 唔入本 PR）
+
+## sil 光邊 Soft polish core×6 2026-11-05 (Asia/Hong_Kong)
+- 只換 live：`lin_hiu_silhouette_far.png` MD5 `2345fa2b11fdad426bd1e7d381042f2d`；`chow_choiyi_silhouette_far.png` MD5 `c808e00485eb321005e9641db7e26b41`；`vera_silhouette_far.png` MD5 `2e44ff61c96caa02f475bae2947ce979`；`ko_chunkit_silhouette_far.png` MD5 `5a808447df7f49002b98fa975d702606`；`tang_laiping_silhouette_far.png` MD5 `54910d1f7d2639e69ce56e22b5ac6692`；`lui_ging_silhouette_far.png` MD5 `4c3d1f0f8ad236e90924016ebb915a92`（864×1152 RGBA）。同 PR 換 era×5
+- 唔動：bust×18、`index.html`、gigs、其他 assets。遠觀 wire 仍 `coreSilhouetteFarSrc` → `assets/story/core/{id}_silhouette_far.png?v=19w`
+- 對開 prior Soft×6：lin `bcc3601dff02c5183f582074ee9a86c8`；chow `4fbe5b19a5b0980d5f9ed131f165b1e2`；vera `7240595e20484256f9f2967907ace770`；ko `34c4735252ee938943770fa8ced31ff6`；tang `0e8943c2d3e6128d4aa14f36773acb02`；lui `991d7f0ec90792d7a21e5d7251164c4b`。bak `bak_pre_sil_light_edge_soft_polish_20261105/` 留盤、唔入本 PR
+- 目標：淡場景光邊。深心 fill exact `(18,18,20)`；soft warm rim＋淡 halo；soft_max RGB 92／88／82；無五官；wardrobe Jaccard 1.000
+- Soft nits（唔擋 Soft tip）：cream／亮底 rim 近隱形；rim 可再漫射；halo 可再淡。prior sil shape nits 未本輪處理（軟尺／銀鏈／金鏈／手握／記者證／vera↔ko 站姿）
+- QC：統籌 Style PASS with nits。Soft≠PASS｜唔 tip LIVE｜唔抬 ?v=｜SAVE `starVolunteer_map_v19w`｜89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-sil-light-edge-soft-polish.tar.gz` MD5 `a615445f89fa9c0d8f6b89372af63e16`

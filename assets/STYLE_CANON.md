@@ -152,3 +152,14 @@
 - Soft nits（唔擋 Soft tip）：wink 可偏強；微 smirk；線密度／modern polish
 - QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-yip-energy-soft-nit.tar.gz` MD5 `77ab9fa9c12e29f7af3b25b16a82ed82`
+
+## sil 光邊 Soft polish（era×5＋core×6）（2026-11-05 Asia/Hong_Kong）
+
+- 只換 live `*_silhouette_far.png` ×11（era×5＋core×6）。864×1152 RGBA。唔改 bust／index／gigs／其他 assets。遠觀 wire 仍 `eraSilhouetteFarSrc`／`coreSilhouetteFarSrc` → `?v=19w`（本輪唔改碼、唔抬 `?v=`）
+- Era：`yip_manji` `b29c5efc`（prior Soft polish `41ef7a1f`）；`so_jiyan` `30fec574`（prior `720e3473`）；`luk_baakyin` `45d03628`（prior `194f29f2`）；`ngai_wingnaam` `79f2e144`（prior zip `899c7f7d`）；`liu_bingxing` `4bbf6e7f`（prior v2 `1238929c`）
+- Core：`lin_hiu` `2345fa2b`（prior `bcc3601d`）；`chow_choiyi` `c808e004`（prior `4fbe5b19`）；`vera` `2e44ff61`（prior `7240595e`）；`ko_chunkit` `5a808447`（prior `34c47352`）；`tang_laiping` `54910d1f`（prior `0e8943c2`）；`lui_ging` `4c3d1f0f`（prior `991d7f0e`）
+- Pipeline：Pillow／scipy EDT 淡場景光邊。深心 fill 仍 exact `(18,18,20)`；外緣 soft warm rim＋淡 halo；soft_max RGB 92／88／82；無五官；wardrobe Jaccard 1.000
+- bak `era_stars|core/bak_pre_sil_light_edge_soft_polish_20261105/` 留盤、唔入本 PR。compare／QA md／REPORT 唔入本 PR
+- Soft nits（唔擋 Soft tip）：cream／亮底 rim 近隱形（暗場可讀係設計目標）；rim 呈連續薄邊、可再漫射；outer halo 可再淡／再闊。prior sil shape nits 未本輪處理：yip 肩凹；so 手前遠距歧義；luk 理領遠距弱；ngai zip vs 連帽歧義
+- QC：統籌 Style PASS with nits。Soft≠PASS；唔 tip LIVE；`?v=` 仍 `19w`；SAVE `starVolunteer_map_v19w`；89–92 HOLD
+- Pack：`/workspace/star-volunteer-web-sil-light-edge-soft-polish.tar.gz` MD5 `a615445f89fa9c0d8f6b89372af63e16`
