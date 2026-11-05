@@ -1,0 +1,179 @@
+{
+  "id": "PLAN_SOFT_PHASE_D_VOCAL_v1",
+  "sha8": "2cae816e",
+  "softStatus": "Soft tip-ready｜gigs 3.2.10-soft Phase D 已交（vocal 映射＋體能文案）｜Soft≠PASS｜唔 tip LIVE",
+  "gates": {
+    "softPass": false,
+    "tipLive": false,
+    "bumpV": false,
+    "saveSchemaBump": false,
+    "v": "19w",
+    "hold89_92": true,
+    "artHold": true,
+    "speechDance": "HOLD"
+  },
+  "stat": {
+    "key": "vocal",
+    "label": "歌藝",
+    "cap": 999,
+    "openFormula": 14,
+    "migrateMissing": "write opening 14 (not copy stage current)",
+    "capSplit": {
+      "abilityCap": 999,
+      "abilityKeys": [
+        "acting",
+        "stage",
+        "looks",
+        "iq",
+        "charm",
+        "vocal",
+        "stamina",
+        "fame",
+        "popularity"
+      ],
+      "staminaCap": 999,
+      "staminaIsAbility": true,
+      "staminaPlayerLabel": "體能",
+      "stressCap": 100,
+      "stressIsAbility": false,
+      "note": "stamina／體能＝人物能力 cap999；stress／壓力唔算能力 cap100；唔夾 stamina req"
+    }
+  },
+  "display": {
+    "vocalReq": "歌藝：需要 N",
+    "otherStats": "名：>N",
+    "forbidLabels": [
+      "speech",
+      "dance",
+      "口才欄",
+      "動感欄"
+    ],
+    "staminaLabel": "體能",
+    "staminaKey": "stamina",
+    "stressLabel": "壓力"
+  },
+  "train": {
+    "locs": [
+      {
+        "id": "rec_hk",
+        "name": "香江唱片",
+        "type": "music",
+        "enroll": "報名：練歌／錄音室",
+        "courseId": "train_vocal",
+        "courseName": "歌藝訓練"
+      },
+      {
+        "id": "rec_wanchai",
+        "name": "灣仔唱片",
+        "type": "music",
+        "enroll": "報名：練歌／錄音室",
+        "courseId": "train_vocal",
+        "courseName": "歌藝訓練"
+      },
+      {
+        "id": "rec_star",
+        "name": "天星音樂",
+        "type": "music",
+        "enroll": "報名：練歌／錄音室",
+        "courseId": "train_vocal",
+        "courseName": "歌藝訓練"
+      }
+    ],
+    "TRAIN_BY_TYPE_music": "train_vocal",
+    "keep": "train_stage 仍保留（非音樂台風／走位）"
+  },
+  "reqMap": [
+    {
+      "scope": "唱片通告（全部 genre）",
+      "primary": "vocal",
+      "secondary": [
+        "stage",
+        "charm",
+        "stamina",
+        "looks"
+      ],
+      "note": "原 stage 主→vocal；stage 改輔"
+    },
+    {
+      "scope": "音樂錄像／MTV",
+      "primary": "vocal",
+      "secondary": [
+        "stage",
+        "looks",
+        "stamina",
+        "charm"
+      ],
+      "note": "歌藝系"
+    },
+    {
+      "scope": "合唱（唱片）",
+      "primary": "vocal",
+      "secondary": [
+        "stage",
+        "charm"
+      ],
+      "note": "vocal＋stage 可並列"
+    },
+    {
+      "scope": "綜藝·歌唱節目",
+      "primary": "vocal",
+      "secondary": [
+        "stage",
+        "charm"
+      ],
+      "note": "可並列 stage"
+    },
+    {
+      "scope": "綜藝·晚會",
+      "primary": "charm",
+      "secondary": [
+        "vocal",
+        "stage",
+        "stamina"
+      ],
+      "note": "歌唱位可 vocal＋stage 並列；非純歌藝主"
+    },
+    {
+      "scope": "電影／電視劇／廣告／寫真／非歌唱綜藝",
+      "primary": "(不變)",
+      "secondary": "(不變)",
+      "note": "唔加 vocal 硬閘"
+    }
+  ],
+  "semanticsKeep": {
+    "looks": "儀態／鏡頭樣",
+    "charm": "臨場親和／自信／口才感",
+    "stage": "台風／走位／鏡頭舞台感（唔再單獨頂歌藝）"
+  },
+  "gigsBase": "gigs_1988_3.2.9-soft.json",
+  "nextContent": "Soft 另開 gigs patch（stage→vocal 主鍵）經抽樣後先 Soft tip；今包只鎖 PLAN／映射",
+  "mapSha8": "abc62726",
+  "planSha8": "12929786",
+  "planPath": "content/PLAN_SOFT_PHASE_D_VOCAL_v1.md",
+  "planPathStore": "/cursor/stores/store-cbdfa415-74f6-4e12-8fbd-513ef31077be/PLAN_SOFT_PHASE_D_VOCAL_v1.md",
+  "staminaReq": {
+    "clamp": false,
+    "cap": 999,
+    "note": "用戶改口：唔夾 stamina req；體能＝能力"
+  },
+  "playerFacing": {
+    "stamina": "體能",
+    "vocal": "歌藝",
+    "note": "key 仍 stamina；cap 999（能力）；條件文案唔寫體力"
+  },
+  "stressReq": {
+    "clamp": true,
+    "max": 100
+  },
+  "settlement": {
+    "trainWorkGig": "只加壓力（stress）；唔扣 stamina",
+    "rest": "恢復可照舊",
+    "owner": "iOS Soft tip（本包唔改引擎）"
+  },
+  "gigsPatch": {
+    "version": "3.2.10-soft",
+    "sha8": "35895f4e",
+    "path": "content/gigs_1988_3.2.10-soft.json",
+    "changelog": "CHANGELOG_GIGS_1988_3_2_10_SOFT.md"
+  }
+}
