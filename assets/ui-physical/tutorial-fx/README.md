@@ -33,6 +33,15 @@
 - 步6：is-near／is-glow 疊 `fx_merge_edge_glow`；成功 burst→stamp_ok；失敗 fail_mark。
 - **唔改** `tutorial_zh_HK.json`；**唔 tip LIVE**；Soft off／LIVE 唔強制 FX。`TUTORIAL_PHASE2_SOFT_NITS.artHold` 已清。Soft nits：finger 略偏 HUD；proc 抽象；lift shadow 淡；pulse jagged。
 
+## CSS polish（Soft mount only，2026-11-05）
+
+唔換 PNG。節點只喺 `gatePath()==="soft"` 先掛。
+
+- finger 略偏 HUD：`.tut-fx-finger` 下移、收短向上位移（`transform-origin` 近指尖）。
+- lift shadow 淡：`.tut-fx-lift` `mix-blend-mode:multiply`＋`contrast`／`brightness`，用現有 `fx_card_lift_shadow.png`。
+- pulse jagged：`.tut-fx-pulse` 收細 scale，加輕 `blur`。
+- **needs GD pack：** `fx_drag_finger_proc.png` 仍然抽象，只係 onerror 備。本輪唔造假手指。
+
 ## MD5
 
 - `fx_card_lift_shadow.png` `f593eae9de9012468d1c9b007174a79b` (8609 B)

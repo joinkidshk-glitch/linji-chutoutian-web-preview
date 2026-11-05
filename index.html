@@ -2535,6 +2535,23 @@ body.day-res-open #mask.day-res{
   position: sticky !important;
   bottom: 0 !important;
 }
+/* Soft leave-only: one dismiss 「離開」 (far-view and the same pattern).
+   Class is added only when gatePath()==="soft". LIVE does not get .soft-leave-only.
+   Drop the top rule and up-shadow so the sticky row is the same plate cream, not a separate strip.
+   Button, sticky pin, and 44px target stay. */
+#mask:not(.tut-on) #modal-btns.soft-leave-only{
+  background: #F2EBD8;
+  border-top: 0;
+  box-shadow: none;
+  margin-top: 0 !important;
+  padding-bottom: calc(2px + env(safe-area-inset-bottom, 0px));
+}
+/* v17g #app.toast-up::after is an 88px dim slab (z 510) meant to cover the map hint.
+   Far-view closes the loc sheet, then toasts, so the slab lands on 「離開」 for 1.8s and reads as a gray footer.
+   Hide it only while a Soft leave-only row is up. LIVE toasts still get the slab. */
+#app.toast-up:has(#modal-btns.soft-leave-only)::after{
+  display: none !important;
+}
 
 .notice_tag_genre{
   display:inline-block; padding:3px 10px; border-radius:999px;
@@ -2685,10 +2702,15 @@ body.day-res-open #mask.day-res{
 .tut-phase2-coach:has(.tut-fx-pulse){ padding-left:34px; }
 .tut-phase2-coach p{ margin:0 0 4px; font-size:.78rem; font-weight:700; line-height:1.4; color:#5a4328 }
 .tut-phase2-coach p:last-child{ margin:0 }
+/* Soft FX polish only. These nodes mount when gatePath()==="soft" (tutorialPhase2FxOn). No new PNG.
+   finger: sit lower so the sprite is not biased up toward the HUD. lift: existing shadow PNG was faint (max alpha ~90).
+   pulse: smaller scale swing + light blur so the hard ring does not read jagged.
+   needs GD pack: fx_drag_finger_proc.png stays the abstract onerror spare. Do not fake a replacement. */
 .tut-phase2-coach .tut-fx-pulse{
   position:absolute; left:8px; top:8px; width:22px; height:22px;
   object-fit:contain; pointer-events:none;
-  animation:tutFxPulse 1.1s ease-in-out infinite;
+  filter:blur(.45px);
+  animation:tutFxPulse 1.35s ease-in-out infinite;
 }
 .tut-fx-drag{
   position:relative; height:86px; margin:0 0 8px; pointer-events:none;
@@ -2697,7 +2719,8 @@ body.day-res-open #mask.day-res{
   position:absolute; left:8%; top:8px; width:62%; height:70px; object-fit:contain;
 }
 .tut-fx-drag .tut-fx-finger{
-  position:absolute; left:0; top:6px; width:72px; height:72px; object-fit:contain;
+  position:absolute; left:4px; top:10px; width:68px; height:68px; object-fit:contain;
+  transform-origin:22% 78%;
   animation:tutFxFinger 1.1s ease-in-out infinite;
 }
 .rumor-card .tut-fx-slot,
@@ -2706,8 +2729,10 @@ body.day-res-open #mask.day-res{
   object-fit:fill; pointer-events:none; z-index:2;
 }
 .rumor-card .tut-fx-lift{
-  display:none; position:absolute; left:10%; right:10%; bottom:-4px; height:16px;
+  display:none; position:absolute; left:8%; right:8%; bottom:-6px; height:20px;
   object-fit:fill; pointer-events:none; z-index:0;
+  mix-blend-mode:multiply;
+  filter:contrast(1.45) brightness(.62);
 }
 .rumor-card.is-picked .tut-fx-lift,
 .rumor-card.is-lifting .tut-fx-lift{ display:block; }
@@ -2731,13 +2756,13 @@ body.day-res-open #mask.day-res{
   object-fit:contain; margin:2px auto 10px; background:transparent; pointer-events:none;
 }
 @keyframes tutFxFinger{
-  0%{ transform:translate(6px,12px); }
-  50%{ transform:translate(112px,-2px); }
-  100%{ transform:translate(6px,12px); }
+  0%{ transform:translate(8px,8px); }
+  50%{ transform:translate(104px,2px); }
+  100%{ transform:translate(8px,8px); }
 }
 @keyframes tutFxPulse{
-  0%,100%{ opacity:.4; transform:scale(.86); }
-  50%{ opacity:1; transform:scale(1.12); }
+  0%,100%{ opacity:.62; transform:scale(.94); filter:blur(.6px); }
+  50%{ opacity:1; transform:scale(1.04); filter:blur(.25px); }
 }
 @keyframes tutFxBurst{
   0%{ opacity:0; transform:scale(.72); }
@@ -7273,6 +7298,8 @@ const TUTORIAL_PHASE2_SOFT_NITS = {
   modalScroll: "soft",
   artHold: false,
   fxNits: "finger略偏HUD；proc抽象只備；lift shadow淡；pulse jagged",
+  /* CSS polish on the existing Soft FX mount: finger position, lift multiply/contrast, pulse blur + smaller scale.
+     proc抽象只備 still needs GD pack (fx_drag_finger_proc.png). No stand-in asset. */
 };
 try{ window.__tutorialSoftNits = TUTORIAL_PHASE2_SOFT_NITS; }catch(_e){}
 
@@ -10945,6 +10972,15 @@ function scrollMapPinIntoView(locId){
   wrap.scrollTop=target;
   _mapScrollSave=wrap.scrollTop;
 }
+function softLeaveOnlyButtons(buttons){
+  /* Single dismiss 「離開」. Soft gate only — LIVE keeps the cream CTA bar. */
+  if(!buttons || buttons.length!==1) return false;
+  const b = buttons[0] || {};
+  if(b.role!=="g" || String(b.label||"").trim()!=="離開") return false;
+  try{
+    return typeof BehaviorGate!=="undefined" && BehaviorGate.gatePath()==="soft";
+  }catch(_e){ return false; }
+}
 function modal(html, buttons, opts){
   opts=opts||{};
   // v17l: settlement/result modal open → close loc-sheet so 休息室／返地圖 not stacked under cream plate
@@ -10954,6 +10990,7 @@ function modal(html, buttons, opts){
   document.getElementById("modal-inner").innerHTML=html;
   wireGigCardSynToggles(document.getElementById("modal-inner"));
   const row=document.getElementById("modal-btns");
+  row.classList.toggle("soft-leave-only", softLeaveOnlyButtons(buttons));
   row.innerHTML="";
   (buttons||[{label:"好",role:"p"}]).forEach(b=>{
     const btn=document.createElement("button");
@@ -10976,6 +11013,7 @@ function modal(html, buttons, opts){
   restoreMapScroll();
 }
 function closeModal(){
+  try{ document.getElementById("modal-btns").classList.remove("soft-leave-only"); }catch(_e){}
   try{ document.getElementById("mask").classList.remove("casting-sheet-on"); }catch(_e){}
   document.getElementById("mask").classList.remove("on");
   try{ document.getElementById("mask").classList.remove("day-res"); document.body.classList.remove("day-res-open"); }catch(_e){}
