@@ -24,7 +24,8 @@
 - 已 redo：`story/core/{vera,chow_choiyi,ko_chunkit,tang_laiping,lin_hiu,lui_ging}_bust_{default,smile,frown}.png`（18）
 - Refs：`hero_awi.jpg`＋`story/c1/char_hero_bust_default.png`（＋npc identity when present）
 - 本 Soft tip 只合 live 18 PNG（bak 省略，GD 允許）；`?v=` 仍 `19w`
-- Soft≠PASS；唔 tip LIVE；89–92 HOLD；silhouettes 後掛
+- Soft≠PASS；唔 tip LIVE；89–92 HOLD
+- 2026-11-05 core／romance silhouette_far Soft×6：`story/core/{lin_hiu,chow_choiyi,vera,ko_chunkit,tang_laiping,lui_ging}_silhouette_far.png`；864×1152 RGBA 透明底近黑；Soft 遠觀先掛（`?v=19w`）；新建無 bak。唔改 era_stars 剪影。Soft≠PASS；唔 tip LIVE；89–92 HOLD
 
 ## Style-lock Cheung pair（2026-11-05 Asia/Hong_Kong）
 
