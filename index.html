@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z16");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z17");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z16");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z17");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z16");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z17");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -2307,6 +2307,61 @@ body.day-res-open #mask.day-res{
 /* curl-verify marker */
 .pin.v18c-pin-marks-hug .pin-head .marks{ --v18c-pin-badge-hug:1; }
 
+
+/* ===== v19z17: map UX — no region tabs; focus「有事做」pins ===== */
+.region-tabs{ display:none !important; }
+.map-focus-bar{
+  position:sticky; top:0; z-index:12;
+  display:flex; justify-content:flex-end; align-items:center;
+  gap:6px; padding:4px 8px 2px;
+  background:linear-gradient(180deg,rgba(58,53,48,.92),rgba(58,53,48,.55));
+  pointer-events:auto;
+}
+.map-focus-bar button{
+  appearance:none; border:1px solid #8a7355; background:rgba(36,40,48,.88);
+  color:var(--cream); border-radius:999px; padding:5px 10px;
+  font:inherit; font-size:.66rem; font-weight:700; cursor:pointer;
+  min-height:32px; box-sizing:border-box;
+}
+.map-focus-bar button[aria-pressed="true"]{
+  background:#243656; border-color:var(--gold-seal); color:#FFE7A0;
+}
+.map-legend{ top:36px !important; }
+/* smaller base pins */
+.pin .pin-img{
+  width:24px !important;
+}
+.pin.has-board .pin-img,
+.pin.has-tip .pin-img,
+.pin.has-npc .pin-img{
+  width:26px !important;
+}
+.pin.idle{
+  opacity:.38; filter:grayscale(.55);
+  z-index:1;
+}
+.pin.idle .plab{
+  max-width:56px; font-size:9px; opacity:.85;
+  background:rgba(26,20,16,.55);
+}
+.pin.idle .pin-img{
+  width:20px !important;
+  filter:none;
+  transform:none;
+}
+.pin.has-action{
+  z-index:4;
+  opacity:1; filter:none;
+}
+.pin.has-action .plab{ font-weight:800; }
+.map-area-list button.has-action{
+  border-color:var(--gold-seal); color:#FFE7A0; background:rgba(40,28,12,.92); font-weight:800;
+}
+.map-area-list button.idle-loc{ opacity:.55; }
+.map-wrap.show-all-locs .pin.idle{ opacity:.85; filter:none; }
+.map-wrap.show-all-locs .pin.idle .pin-img{ width:22px !important; }
+.map-wrap.show-all-locs .map-area-list button.idle-loc{ opacity:1; }
+
 /* ===== v18p: map free-scout + contrast zero-tol Soft≠PASS ===== */
 .region-tabs button{
   color: var(--cream) !important;
@@ -3233,11 +3288,8 @@ body.day-res-open .day-row{
       <button type="button" data-m="new">新遊戲</button>
     </div>
     <div class="map-wrap">
-      <div class="region-tabs" id="region-tabs">
-        <button type="button" data-r="all" class="on">全部</button>
-        <button type="button" data-r="nt">新界</button>
-        <button type="button" data-r="kln">九龍</button>
-        <button type="button" data-r="island">港島</button>
+      <div class="map-focus-bar" id="map-focus-bar">
+        <button type="button" id="map-show-all-locs" aria-pressed="false" title="閒置地點預設淡化；打開後全部等亮">顯示全部地點</button>
       </div>
       <div class="map-legend" id="map-legend">
         <span class="lg"><img id="lg-board" alt=""/>有通告</span>
@@ -16635,7 +16687,8 @@ function enrolledCourseCta(courseId){
   return stem ? `進行${stem}訓練` : "進行訓練";
 }
 
-let S=null, atLoc=null, mapRegion="all";
+let S=null, atLoc=null, mapRegion="all"; /* v19z17: region filter retired; always all */
+let mapShowAllLocs=false; /* v19z17: idle pins dimmed unless true */
 
 function R(a,b){return a+Math.floor(Math.random()*(b-a+1))}
 function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v))}
@@ -18730,7 +18783,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z16. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z17. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -18813,7 +18866,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z16";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z17";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -18899,7 +18952,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=19z16");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=19z17");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -19704,7 +19757,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z16";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z17";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -19874,10 +19927,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z16") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z16") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z17") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z17") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z16") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z17") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -21331,7 +21384,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z16";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z17";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -21776,7 +21829,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z16`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z17`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -21946,7 +21999,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z16`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z17`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -23709,9 +23762,8 @@ function regionLabel(r){
 function nudgeRegionForToday(){
   const id=todayPlanId();
   if(!isMapDay(id) && id!=="scout_all" && id!=="scout_nt" && id!=="scout_kln" && id!=="scout_island") return;
-  // v18p: default view filter to 全部 when entering from 到處逛逛
+  // v19z17: region tabs removed — map always shows all districts
   mapRegion="all";
-  document.querySelectorAll("#region-tabs button").forEach(b=>b.classList.toggle("on", b.dataset.r===mapRegion));
 }
 
 function todayIsForcedDay(){
@@ -23810,8 +23862,7 @@ function goEnrollableCompany(){
   if(!L){ toast("地圖暫未有可報名公司"); return; }
   S.homeEditable=false;
   show("v-map");
-  mapRegion = L.region||"all";
-  document.querySelectorAll("#region-tabs button").forEach(b=>b.classList.toggle("on", b.dataset.r===mapRegion));
+  mapRegion = "all"; /* v19z17: no region filter */
   paintBar(); drawMap();
   setTimeout(()=>openLoc(L.id), 60);
   toast(`去「${L.name}」報名訓練`);
@@ -24600,24 +24651,58 @@ function drawMap(){
     box.style.pointerEvents = "none";
   }
   pruneMapTips();
-  const showAll = mapRegion==="all";
   box.innerHTML="";
-  /* v19z3：同區近針扇形錯開，避免星河被海港擋住 */
-  const visible = LOCS.filter(L=> showAll || L.region===mapRegion);
+  /* v19z17：永遠顯示全區；閒置針淡化（除非「顯示全部地點」） */
+  const wrapEl = document.querySelector(".map-wrap");
+  if(wrapEl) wrapEl.classList.toggle("show-all-locs", !!mapShowAllLocs);
+  const showAllBtn = document.getElementById("map-show-all-locs");
+  if(showAllBtn){
+    showAllBtn.setAttribute("aria-pressed", mapShowAllLocs ? "true" : "false");
+    showAllBtn.textContent = mapShowAllLocs ? "只亮有事做" : "顯示全部地點";
+  }
+  /* helper：地點有冇通告／事態／熟人 */
+  function locActionFlags(L){
+    const hasNpc=!!(S.locNpc && S.locNpc[L.id]);
+    let boardList = [];
+    try{
+      boardList = (typeof gigsForLocSeasonBoard==="function")
+        ? (gigsForLocSeasonBoard(L.id, calendarSeason())||[])
+        : [];
+    }catch(_e){ boardList = []; }
+    if(!boardList.length){
+      boardList = ((S.board&&S.board[L.id])||[]).map(gid=> (GIGS||[]).find(g=>g&&g.id===gid)).filter(Boolean);
+    }
+    const boardN = boardList.length;
+    let canBoardN = 0;
+    try{ canBoardN = boardList.filter(g=>g && typeof canAudition==="function" && canAudition(g).ok).length; }catch(_e){}
+    const tip=(S.mapTips||{})[L.id];
+    const hasTip=!!tip;
+    const isStoryTip = !!(tip && tip.kind==="story");
+    const hasBoard = boardN>0;
+    const hasAction = hasBoard || hasTip || hasNpc;
+    return { hasNpc, boardList, boardN, canBoardN, tip, hasTip, isStoryTip, hasBoard, hasAction };
+  }
+  /* v19z3／v19z17：近針扇形錯開（略加大半徑減重疊） */
+  const visible = LOCS.slice();
   const placed = visible.map(L=>({ L, x:Number(L.x)||0, y:Number(L.y)||0 }));
-  const CLUSTER = 7; /* % distance */
+  const CLUSTER = 7.5; /* % distance */
+  const claimed = new Set();
   for(let i=0;i<placed.length;i++){
+    if(claimed.has(i)) continue;
     const cluster=[placed[i]];
+    const idxs=[i];
     for(let j=i+1;j<placed.length;j++){
+      if(claimed.has(j)) continue;
       const dx=placed[i].x-placed[j].x, dy=placed[i].y-placed[j].y;
-      if(Math.hypot(dx,dy) < CLUSTER) cluster.push(placed[j]);
+      if(Math.hypot(dx,dy) < CLUSTER){ cluster.push(placed[j]); idxs.push(j); }
     }
     if(cluster.length>1){
+      idxs.forEach(ix=>claimed.add(ix));
       const cx = cluster.reduce((s,p)=>s+p.x,0)/cluster.length;
       const cy = cluster.reduce((s,p)=>s+p.y,0)/cluster.length;
       cluster.forEach((p,idx)=>{
         const ang = (-Math.PI/2) + (idx * (2*Math.PI/cluster.length));
-        const rad = 3.2 + Math.min(2, cluster.length*0.4);
+        const rad = 3.8 + Math.min(2.6, cluster.length*0.5);
         p.x = cx + Math.cos(ang)*rad;
         p.y = cy + Math.sin(ang)*rad;
       });
@@ -24626,31 +24711,23 @@ function drawMap(){
   const pinPos = {};
   placed.forEach(p=>{ pinPos[p.L.id] = { x:p.x, y:p.y }; });
   drawMap._pinPos = pinPos;
-  placed.forEach(p=>{
+  const actionById = {};
+  placed.forEach(p=>{ actionById[p.L.id] = locActionFlags(p.L); });
+  /* 有事做先畫（較高 z），再畫閒置 */
+  const drawOrder = placed.slice().sort((a,b)=>{
+    const aa=actionById[a.L.id].hasAction?1:0, bb=actionById[b.L.id].hasAction?1:0;
+    return aa-bb; /* idle first under action */
+  });
+  drawOrder.forEach(p=>{
     const L=p.L;
-    const hasNpc=!!S.locNpc[L.id];
-    /* v19z10：針上則數同通告欄同一來源（可接／全部） */
-    let boardList = [];
-    try{
-      boardList = (typeof gigsForLocSeasonBoard==="function")
-        ? (gigsForLocSeasonBoard(L.id, calendarSeason())||[])
-        : [];
-    }catch(_e){ boardList = []; }
-    if(!boardList.length){
-      boardList = (S.board[L.id]||[]).map(gid=> (GIGS||[]).find(g=>g&&g.id===gid)).filter(Boolean);
-    }
-    const boardN = boardList.length;
-    let canBoardN = 0;
-    try{ canBoardN = boardList.filter(g=>g && typeof canAudition==="function" && canAudition(g).ok).length; }catch(_e){}
-    const hasBoard = boardN>0;
-    const tip=(S.mapTips||{})[L.id];
-    const hasTip=!!tip;
+    const flags=actionById[L.id];
+    const { hasNpc, boardN, canBoardN, hasTip, isStoryTip, hasBoard, hasAction } = flags;
     const btn=document.createElement("button");
     btn.type="button";
     btn.dataset.loc=L.id;
-    const isStoryTip = !!(tip && tip.kind==="story");
-    /* v19z3：熟人針只喺真係有在場 NPC 先亮 */
-    btn.className=`pin v18c-pin-marks-hug ${L.type}${hasBoard?" has-board":""}${hasNpc?" has-npc":""}${hasTip?" has-tip":""}${isStoryTip?" has-story-tip":""}${L.lab?(" "+L.lab):""}`;
+    /* v19z3：熟人針只喺真係有在場 NPC 先亮；v19z17：idle／has-action */
+    const idleCls = hasAction ? " has-action" : " idle dim";
+    btn.className=`pin v18c-pin-marks-hug ${L.type}${hasBoard?" has-board":""}${hasNpc?" has-npc":""}${hasTip?" has-tip":""}${isStoryTip?" has-story-tip":""}${idleCls}${L.lab?(" "+L.lab):""}`;
     btn.style.left=p.x+"%";
     btn.style.top=p.y+"%";
     const markImgs=[];
@@ -24669,22 +24746,25 @@ function drawMap(){
           ? ` · 通告欄 可接 ${canBoardN}／共 ${boardN} 則`
           : ` · 通告欄 ${boardN} 則`)
       : "";
-    btn.setAttribute("aria-label", `${L.name}（${L.area}）${boardAria}${isStoryTip?" · 事態":(hasTip?" · 情報":"")}${hasNpc?" · 熟人":""}`);
+    btn.setAttribute("aria-label", `${L.name}（${L.area}）${boardAria}${isStoryTip?" · 事態":(hasTip?" · 情報":"")}${hasNpc?" · 熟人":""}${hasAction?"":" · 閒置"}`);
     btn.style.pointerEvents="auto";
     btn.innerHTML=`<span class="pin-head"><span class="marks">${marks}</span><img class="pin-img" src="assets/ui-physical/map-frame/map_pin.png?v=16" alt="" draggable="false"/></span><span class="plab">${L.name}</span>`;
     const goPin=(ev)=>{
       if(ev){ try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){} }
-      /* nearest-pin among visible if click near several */
+      /* nearest-pin among visible if click near several — prefer 有事做 */
       try{
         if(ev && box && pinPos){
           const rect = box.getBoundingClientRect();
           const cx = ((ev.clientX - rect.left) / Math.max(1, rect.width)) * 100;
           const cy = ((ev.clientY - rect.top) / Math.max(1, rect.height)) * 100;
-          let best=null, bestD=1e9;
+          let best=null, bestD=1e9, bestAction=-1;
           Object.keys(pinPos).forEach(id=>{
             const pp=pinPos[id];
             const d=Math.hypot(pp.x-cx, pp.y-cy);
-            if(d<bestD){ bestD=d; best=id; }
+            const act = (actionById[id]&&actionById[id].hasAction)?1:0;
+            if(d<bestD-0.15 || (Math.abs(d-bestD)<=0.15 && act>bestAction)){
+              bestD=d; best=id; bestAction=act;
+            }
           });
           if(best && bestD <= 10){ openLoc(best); return; }
         }
@@ -24695,7 +24775,7 @@ function drawMap(){
     btn.querySelectorAll(".plab,.pin-img").forEach(el=>{ el.addEventListener("click", goPin); });
     box.appendChild(btn);
   });
-  /* 本區地點列表（手機備選入口） */
+  /* 底欄快捷：預設只列「有事做」；顯示全部時列齊（有事做排前） */
   try{
     let list = document.getElementById("map-area-list");
     const host = document.getElementById("map-hint");
@@ -24706,8 +24786,19 @@ function drawMap(){
         list.className = "map-area-list";
         host.parentNode.insertBefore(list, host.nextSibling);
       }
-      const regionLocs = visible.slice().sort((a,b)=> String(a.name).localeCompare(String(b.name),"zh-Hant"));
-      list.innerHTML = regionLocs.map(L=>`<button type="button" data-loc="${L.id}">${L.emoji||""} ${L.name}</button>`).join("");
+      let regionLocs = visible.slice().sort((a,b)=>{
+        const aa=actionById[a.id].hasAction?1:0, bb=actionById[b.id].hasAction?1:0;
+        if(aa!==bb) return bb-aa;
+        return String(a.name).localeCompare(String(b.name),"zh-Hant");
+      });
+      if(!mapShowAllLocs){
+        const active = regionLocs.filter(L=>actionById[L.id].hasAction);
+        if(active.length) regionLocs = active;
+      }
+      list.innerHTML = regionLocs.map(L=>{
+        const act=actionById[L.id].hasAction;
+        return `<button type="button" data-loc="${L.id}" class="${act?"has-action":"idle-loc"}">${L.emoji||""} ${L.name}</button>`;
+      }).join("");
       list.querySelectorAll("button").forEach(b=>{
         b.onclick=(ev)=>{ ev.stopPropagation(); openLoc(b.getAttribute("data-loc")); };
       });
@@ -25796,7 +25887,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z16";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z17";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -25810,7 +25901,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=19z16";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=19z17";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -25909,11 +26000,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z16") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z17") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z16") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z17") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -26358,21 +26449,21 @@ function openLoc(id, opts){
   scrollMapPinIntoView(id);
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z16. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z17. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z16",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z16",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z16",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z16",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z16",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z16",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z16",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z16",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z16",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z16",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z16",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z16",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z16",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z17",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z17",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z17",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z17",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z17",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z17",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z17",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z17",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z17",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z17",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z17",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z17",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z17",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -27487,7 +27578,7 @@ function applyTutSpotlight(stepId){
   try{
     const nodes = document.querySelectorAll(sel);
     if(nodes.length) nodes[0].classList.add("tut-spotlight-target");
-    else document.querySelectorAll("#region-tabs").forEach(el=>el.classList.add("tut-spotlight-target"));
+    else document.querySelectorAll("#map-focus-bar, #map-legend, #map-polaroid").forEach(el=>el.classList.add("tut-spotlight-target"));
   }catch(e){}
 }
 /** Which phone surface the player should be looking at for this tutorial step. */
@@ -27865,19 +27956,16 @@ function cont(){
 }
 
 
-document.getElementById("region-tabs").onclick=e=>{
-  const btn=e.target.closest("button[data-r]"); if(!btn) return;
-  // v18p: optional view/scroll filter only — never locks travel
-  mapRegion=btn.dataset.r;
-  document.querySelectorAll("#region-tabs button").forEach(b=>b.classList.toggle("on", b.dataset.r===mapRegion));
-  drawMap();
-  // scroll map to region band
-  const wrap=document.querySelector(".map-wrap");
-  const stage=document.getElementById("map-stage");
-  const h=stage?stage.scrollHeight:wrap.scrollHeight;
-  const y={all:0,nt:0,kln:h*0.32,island:h*0.58}[mapRegion]||0;
-  wrap.scrollTo({top:y, behavior:"smooth"});
-};
+/* v19z17: region tabs removed — toggle idle-pin visibility */
+(function wireMapShowAllLocs(){
+  const btn=document.getElementById("map-show-all-locs");
+  if(!btn) return;
+  btn.onclick=()=>{
+    mapShowAllLocs = !mapShowAllLocs;
+    drawMap();
+    try{ toast(mapShowAllLocs ? "已顯示全部地點" : "只亮有通告／事態／熟人嘅地點", {closeSheet:false}); }catch(_e){}
+  };
+})();
 
 document.getElementById("home-tabs").onclick=e=>{
   const btn=e.target.closest("button[data-htab]"); if(!btn) return;
