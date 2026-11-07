@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "v20a1-stub",
+    "version": "v20a2-stub",
     "softStatus": "≠PASS",
-    "note": "C1–C5 Freeplay slots — CONTENT AUTHORITY for dialogue. Triggers synced to SANDBOX_BEHAVIOR_GATE richer ecology (Soft gate reads these when slots loaded). Fill playerFaceLine / beats.lines / choice labels only. Keep nextHint \"\". Soft≠PASS.",
+    "note": "C1–C17 Freeplay slots — CONTENT AUTHORITY for dialogue. C1–C5 triggers synced to Soft sandbox ecology; C6–C17 Soft shells from this file (sandbox may only hold C1–C5). Fill playerFaceLine / beats.lines / choice labels only. Keep nextHint \"\". Soft≠PASS. Framework owns triggers unless re-boarded.",
     "contentContract": "docs/CONTENT_CONTRACT.md",
     "lockedFlags": [
       "route_tv",
@@ -15,10 +15,56 @@
       "flag_take_harsh_gig",
       "choi_honest",
       "spin",
-      "dodge"
+      "dodge",
+      "date_vera_1",
+      "date_hiu_1",
+      "date_choi_1",
+      "flag_anti_lei",
+      "flag_lei_delay",
+      "flag_lei_signed",
+      "route_commercial",
+      "route_indie",
+      "flag_public_romance",
+      "lan_blur",
+      "lan_confess",
+      "lan_cut",
+      "anni_mediate",
+      "anni_seize",
+      "anni_yield",
+      "choose_exposure",
+      "choose_depth",
+      "anni91_seize",
+      "anni91_tend",
+      "love_crisis",
+      "gossip_admit",
+      "gossip_deny",
+      "gossip_vague",
+      "flag_bao_respect",
+      "flag_bao_depend",
+      "flag_bao_refuse",
+      "flag_family_help",
+      "flag_family_yield",
+      "flag_family_standby",
+      "flag_family_marriage",
+      "flag_legacy_film",
+      "flag_legacy_refuse",
+      "ending_e01",
+      "ending_e02",
+      "ending_e03",
+      "ending_e04",
+      "ending_e05",
+      "ending_e06",
+      "ending_e07",
+      "ending_e08",
+      "ending_e09",
+      "ending_e10",
+      "career_lock"
     ],
     "triggerAuthority": "slots_synced_from_sandbox_ecology",
-    "softGateOverlay": true
+    "softGateOverlay": true,
+    "scope": "C1-C17",
+    "c6c17Authority": "slots_for_soft_gate",
+    "lockedFlagsNote": "C1–C5 live; C6–C17 reserved flag ids from story_detail — content bot may set via choices.effects.flags only when filling dialogue."
   },
   "nodes": [
     {
@@ -355,6 +401,907 @@
           "effects": {
             "flags": [
               "dodge"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "beatId": "C6",
+      "optional": false,
+      "locId": "tvb_longmen",
+      "playerFaceLine": "",
+      "redStarHook": "",
+      "nextHint": "",
+      "trigger": {
+        "needDone": [
+          "C5"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 12,
+        "locIdAny": [
+          "tvb_longmen"
+        ],
+        "rumorAny": [],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [
+          "autumn"
+        ],
+        "gigCountMin": 0,
+        "relAny": []
+      },
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "（C6 對白待補）"
+          ],
+          "locId": "tvb_longmen",
+          "bg": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "C6_a",
+          "label": "（選項待補：約 Vera）",
+          "effects": {
+            "flags": [
+              "date_vera_1"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C6_b",
+          "label": "（選項待補：約曉晴）",
+          "effects": {
+            "flags": [
+              "date_hiu_1"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C6_c",
+          "label": "（選項待補：約采兒）",
+          "effects": {
+            "flags": [
+              "date_choi_1"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "beatId": "C7",
+      "optional": false,
+      "locId": "ad_central",
+      "playerFaceLine": "",
+      "redStarHook": "",
+      "nextHint": "",
+      "trigger": {
+        "needDone": [
+          "C6"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 14,
+        "locIdAny": [
+          "ad_central",
+          "cafe_cha"
+        ],
+        "rumorAny": [],
+        "favorMin": 1,
+        "tagAny": [],
+        "seasonAny": [],
+        "gigCountMin": 0,
+        "relAny": [],
+        "favorTarget": "agency_ho",
+        "softLogic": "AND"
+      },
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "（C7 對白待補）"
+          ],
+          "locId": "ad_central",
+          "bg": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "C7_a",
+          "label": "（選項待補：拒苛刻）",
+          "effects": {
+            "flags": [
+              "flag_anti_lei"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C7_b",
+          "label": "（選項待補：拖一拖）",
+          "effects": {
+            "flags": [
+              "flag_lei_delay"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C7_c",
+          "label": "（選項待補：簽）",
+          "effects": {
+            "flags": [
+              "flag_lei_signed"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "beatId": "C8",
+      "optional": false,
+      "locId": "tvb_longmen",
+      "playerFaceLine": "",
+      "redStarHook": "",
+      "nextHint": "",
+      "trigger": {
+        "needDone": [
+          "C7"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 20,
+        "locIdAny": [
+          "tvb_longmen",
+          "film_lion"
+        ],
+        "rumorAny": [],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [],
+        "gigCountMin": 5,
+        "relAny": []
+      },
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "（C8 對白待補）"
+          ],
+          "locId": "tvb_longmen",
+          "bg": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "C8_a",
+          "label": "（選項待補：商業）",
+          "effects": {
+            "flags": [
+              "route_commercial"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C8_b",
+          "label": "（選項待補：文藝）",
+          "effects": {
+            "flags": [
+              "route_indie"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "beatId": "C9",
+      "optional": false,
+      "locId": "rec_star",
+      "playerFaceLine": "",
+      "redStarHook": "",
+      "nextHint": "",
+      "trigger": {
+        "needDone": [
+          "C8"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 28,
+        "locIdAny": [
+          "rec_star",
+          "rec_hk"
+        ],
+        "rumorAny": [],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [
+          "summer",
+          "autumn"
+        ],
+        "gigCountMin": 0,
+        "relAny": [
+          "flag_lan_met_warm",
+          "flag_lan_met_cool"
+        ]
+      },
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "（C9 對白待補）"
+          ],
+          "locId": "rec_star",
+          "bg": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "C9_a",
+          "label": "（選項待補：公開）",
+          "effects": {
+            "flags": [
+              "flag_public_romance"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C9_b",
+          "label": "（選項待補：模糊）",
+          "effects": {
+            "flags": [
+              "lan_blur"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C9_c",
+          "label": "（選項待補：坦白）",
+          "effects": {
+            "flags": [
+              "lan_confess"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C9_d",
+          "label": "（選項待補：切斷）",
+          "effects": {
+            "flags": [
+              "lan_cut"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "beatId": "C10",
+      "optional": false,
+      "locId": "tvb_longmen",
+      "playerFaceLine": "",
+      "redStarHook": "",
+      "nextHint": "",
+      "trigger": {
+        "needDone": [
+          "C9"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 40,
+        "locIdAny": [
+          "tvb_longmen"
+        ],
+        "rumorAny": [],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [
+          "winter"
+        ],
+        "gigCountMin": 0,
+        "relAny": []
+      },
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "（C10 對白待補）"
+          ],
+          "locId": "tvb_longmen",
+          "bg": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "C10_a",
+          "label": "（選項待補：調停）",
+          "effects": {
+            "flags": [
+              "anni_mediate"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C10_b",
+          "label": "（選項待補：搶位）",
+          "effects": {
+            "flags": [
+              "anni_seize"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C10_c",
+          "label": "（選項待補：讓）",
+          "effects": {
+            "flags": [
+              "anni_yield"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "beatId": "C11",
+      "optional": true,
+      "locId": "film_lion",
+      "playerFaceLine": "",
+      "redStarHook": "",
+      "nextHint": "",
+      "trigger": {
+        "needDone": [
+          "C10"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 60,
+        "locIdAny": [
+          "film_lion",
+          "tvb_longmen"
+        ],
+        "rumorAny": [],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [],
+        "gigCountMin": 0,
+        "relAny": [
+          "route_indie",
+          "flag_tsijun_met_stay",
+          "flag_tsijun_push1_grind",
+          "flag_tsijun_push2_film"
+        ]
+      },
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "（C11 對白待補）"
+          ],
+          "locId": "film_lion",
+          "bg": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "C11_a",
+          "label": "（選項待補：曝光）",
+          "effects": {
+            "flags": [
+              "choose_exposure"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C11_b",
+          "label": "（選項待補：層次）",
+          "effects": {
+            "flags": [
+              "choose_depth"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "beatId": "C12",
+      "optional": true,
+      "locId": "tvb_longmen",
+      "playerFaceLine": "",
+      "redStarHook": "",
+      "nextHint": "",
+      "trigger": {
+        "needDone": [
+          "C11"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 80,
+        "locIdAny": [
+          "tvb_longmen"
+        ],
+        "rumorAny": [],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [
+          "summer"
+        ],
+        "gigCountMin": 0,
+        "relAny": []
+      },
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "（C12 對白待補）"
+          ],
+          "locId": "tvb_longmen",
+          "bg": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "C12_a",
+          "label": "（選項待補：搶位）",
+          "effects": {
+            "flags": [
+              "anni91_seize"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C12_b",
+          "label": "（選項待補：顧關係）",
+          "effects": {
+            "flags": [
+              "anni91_tend"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C12_c",
+          "label": "（選項待補：危機）",
+          "effects": {
+            "flags": [
+              "love_crisis"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "beatId": "C13",
+      "optional": true,
+      "locId": "cafe_cha",
+      "playerFaceLine": "",
+      "redStarHook": "",
+      "nextHint": "",
+      "trigger": {
+        "needDone": [
+          "C11"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 92,
+        "locIdAny": [
+          "cafe_cha",
+          "tvb_longmen"
+        ],
+        "rumorAny": [
+          "choi_recent_news"
+        ],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [
+          "winter"
+        ],
+        "gigCountMin": 0,
+        "relAny": []
+      },
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "（C13 對白待補）"
+          ],
+          "locId": "cafe_cha",
+          "bg": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "C13_a",
+          "label": "（選項待補：認）",
+          "effects": {
+            "flags": [
+              "gossip_admit"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C13_b",
+          "label": "（選項待補：否認）",
+          "effects": {
+            "flags": [
+              "gossip_deny"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C13_c",
+          "label": "（選項待補：含糊）",
+          "effects": {
+            "flags": [
+              "gossip_vague"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "beatId": "C14",
+      "optional": true,
+      "locId": "ad_central",
+      "playerFaceLine": "",
+      "redStarHook": "",
+      "nextHint": "",
+      "trigger": {
+        "needDone": [
+          "C11"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 88,
+        "locIdAny": [
+          "ad_central",
+          "agency_ho"
+        ],
+        "rumorAny": [],
+        "favorMin": 1,
+        "tagAny": [],
+        "seasonAny": [],
+        "gigCountMin": 0,
+        "relAny": [
+          "flag_xu_met_polite",
+          "flag_xu_met_distance",
+          "flag_xu_coop_talk"
+        ],
+        "favorTarget": "agency_ho"
+      },
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "（C14 對白待補）"
+          ],
+          "locId": "ad_central",
+          "bg": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "C14_a",
+          "label": "（選項待補：尊重）",
+          "effects": {
+            "flags": [
+              "flag_bao_respect"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C14_b",
+          "label": "（選項待補：依賴）",
+          "effects": {
+            "flags": [
+              "flag_bao_depend"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C14_c",
+          "label": "（選項待補：拒）",
+          "effects": {
+            "flags": [
+              "flag_bao_refuse"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "beatId": "C15",
+      "optional": true,
+      "locId": "rec_star",
+      "playerFaceLine": "",
+      "redStarHook": "",
+      "nextHint": "",
+      "trigger": {
+        "needDone": [
+          "C11"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 72,
+        "locIdAny": [
+          "rec_star",
+          "rec_hk"
+        ],
+        "rumorAny": [],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [
+          "spring"
+        ],
+        "gigCountMin": 0,
+        "relAny": [
+          "flag_lan_sang_together",
+          "flag_lan_protected",
+          "flag_lan_met_warm"
+        ]
+      },
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "（C15 對白待補）"
+          ],
+          "locId": "rec_star",
+          "bg": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "C15_a",
+          "label": "（選項待補：幫）",
+          "effects": {
+            "flags": [
+              "flag_family_help"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C15_b",
+          "label": "（選項待補：讓）",
+          "effects": {
+            "flags": [
+              "flag_family_yield"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C15_c",
+          "label": "（選項待補：旁觀）",
+          "effects": {
+            "flags": [
+              "flag_family_standby"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C15_d",
+          "label": "（選項待補：聯姻）",
+          "effects": {
+            "flags": [
+              "flag_family_marriage"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "beatId": "C16",
+      "optional": true,
+      "locId": "film_harbour",
+      "playerFaceLine": "",
+      "redStarHook": "",
+      "nextHint": "",
+      "trigger": {
+        "needDone": [
+          "C11"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 100,
+        "locIdAny": [
+          "film_harbour",
+          "film_lion"
+        ],
+        "rumorAny": [],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [
+          "summer"
+        ],
+        "gigCountMin": 0,
+        "relAny": []
+      },
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "（C16 對白待補）"
+          ],
+          "locId": "film_harbour",
+          "bg": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "C16_a",
+          "label": "（選項待補：交底片）",
+          "effects": {
+            "flags": [
+              "flag_legacy_film"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C16_b",
+          "label": "（選項待補：拒）",
+          "effects": {
+            "flags": [
+              "flag_legacy_refuse"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "beatId": "C17",
+      "optional": true,
+      "locId": "agency_ho",
+      "playerFaceLine": "",
+      "redStarHook": "",
+      "nextHint": "",
+      "trigger": {
+        "needDone": [
+          "C16"
+        ],
+        "minDaysAfterPrev": 1,
+        "weekMin": 105,
+        "locIdAny": [
+          "agency_ho",
+          "cafe_cha"
+        ],
+        "rumorAny": [],
+        "favorMin": 0,
+        "tagAny": [],
+        "seasonAny": [],
+        "gigCountMin": 0,
+        "relAny": []
+      },
+      "beats": [
+        {
+          "kind": "system",
+          "speakerId": null,
+          "speaker": "系統",
+          "emotion": null,
+          "expression": null,
+          "lines": [
+            "（C17 對白待補）"
+          ],
+          "locId": "agency_ho",
+          "bg": null
+        }
+      ],
+      "choices": [
+        {
+          "id": "C17_a",
+          "label": "（選項待補：結局甲）",
+          "effects": {
+            "flags": [
+              "ending_e01",
+              "career_lock"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C17_b",
+          "label": "（選項待補：結局乙）",
+          "effects": {
+            "flags": [
+              "ending_e02",
+              "career_lock"
             ],
             "stats": {},
             "tags": []

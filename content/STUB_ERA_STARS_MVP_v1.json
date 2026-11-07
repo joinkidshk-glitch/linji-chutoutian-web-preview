@@ -1,59 +1,214 @@
 {
   "meta": {
-    "version": "v20a0-stub",
+    "version": "v20a2-stub",
     "softStatus": "≠PASS",
-    "note": "Far-view stubs only. Content bot may shorten/replace silhouetteDesc/distanceLine/rumorTeaser. No long dialogue. Soft≠PASS.",
-    "canonicalIds": ["luk_baakyin", "liu_bingxing", "ngai_wingnaam", "yip_manji"],
-    "alias": { "yip_manzi": "yip_manji" }
+    "note": "Far-view stubs only (MVP4 + roster expansion except chai_zanhoi HOLD / placeholder_era_08 schema-only). Content bot may shorten/replace silhouetteDesc/distanceLine/rumorTeaser. No long dialogue. Soft≠PASS.",
+    "canonicalIds": [
+      "luk_baakyin",
+      "liu_bingxing",
+      "ngai_wingnaam",
+      "yip_manji"
+    ],
+    "alias": {
+      "yip_manzi": "yip_manji"
+    },
+    "mapIds": [
+      "luk_baakyin",
+      "liu_bingxing",
+      "ngai_wingnaam",
+      "yip_manji",
+      "mak_zhendong",
+      "lok_gasing",
+      "pang_siuki",
+      "chung_choning",
+      "gu_mingfai",
+      "so_jiyan"
+    ],
+    "holdOffMap": [
+      "chai_zanhoi",
+      "placeholder_era_08"
+    ]
   },
   "stars": [
     {
       "starId": "luk_baakyin",
       "displayName": "陸柏言",
-      "locs": ["film_lion"],
+      "locs": [
+        "film_lion"
+      ],
       "actionLabel": "遠觀",
       "silhouetteDesc": "（文案待補）走廊遠影。",
       "distanceLine": "只能遠望，時機未到唔好行埋。",
       "locHint": "片場走廊",
       "rumorTeaser": "",
       "resultToast": "已遠觀陸柏言。",
-      "devOnly": { "inspiration": "DEV_ONLY_HOLD" }
+      "devOnly": {
+        "inspiration": "DEV_ONLY_HOLD"
+      },
+      "preferFile": {
+        "bust": true,
+        "silhouette": true
+      }
     },
     {
       "starId": "liu_bingxing",
       "displayName": "廖炳星",
-      "locs": ["cafe_cha"],
+      "locs": [
+        "cafe_cha"
+      ],
       "actionLabel": "遠觀",
       "silhouetteDesc": "（文案待補）茶餐廳背影。",
       "distanceLine": "只能遠望，時機未到唔好行埋。",
       "locHint": "金龍茶餐廳",
       "rumorTeaser": "",
       "resultToast": "已遠觀廖炳星。",
-      "devOnly": { "inspiration": "DEV_ONLY_HOLD" }
+      "devOnly": {
+        "inspiration": "DEV_ONLY_HOLD"
+      },
+      "preferFile": {
+        "bust": true,
+        "silhouette": true
+      }
     },
     {
       "starId": "ngai_wingnaam",
       "displayName": "魏詠男",
-      "locs": ["film_harbour"],
+      "locs": [
+        "film_harbour"
+      ],
       "actionLabel": "遠觀",
       "silhouetteDesc": "（文案待補）後巷半影。",
       "distanceLine": "只能遠望，時機未到唔好行埋。",
       "locHint": "片場後巷",
       "rumorTeaser": "",
       "resultToast": "已遠觀魏詠男。",
-      "devOnly": { "inspiration": "DEV_ONLY_HOLD" }
+      "devOnly": {
+        "inspiration": "DEV_ONLY_HOLD"
+      },
+      "preferFile": {
+        "bust": true,
+        "silhouette": true
+      }
     },
     {
       "starId": "yip_manji",
       "displayName": "葉敏芝",
-      "locs": ["rec_hk"],
+      "locs": [
+        "rec_hk"
+      ],
       "actionLabel": "遠觀",
       "silhouetteDesc": "（文案待補）排練室鏡前。",
       "distanceLine": "只能遠望，時機未到唔好行埋。",
       "locHint": "訓練班排練室",
       "rumorTeaser": "",
       "resultToast": "已遠觀葉敏芝。",
-      "devOnly": { "inspiration": "DEV_ONLY_HOLD" }
+      "devOnly": {
+        "inspiration": "DEV_ONLY_HOLD"
+      },
+      "preferFile": {
+        "bust": true,
+        "silhouette": true
+      }
+    },
+    {
+      "starId": "mak_zhendong",
+      "displayName": "麥震東",
+      "locs": [
+        "film_cotton"
+      ],
+      "actionLabel": "遠觀",
+      "silhouetteDesc": "（文案待補）片場邊遠影。",
+      "distanceLine": "只能遠望，時機未到唔好行埋。",
+      "locHint": "紅棉片場",
+      "rumorTeaser": "",
+      "resultToast": "已遠觀麥震東。",
+      "devOnly": {
+        "inspiration": "DEV_ONLY_HOLD"
+      }
+    },
+    {
+      "starId": "lok_gasing",
+      "displayName": "駱家聲",
+      "locs": [
+        "tvb_longmen"
+      ],
+      "actionLabel": "遠觀",
+      "silhouetteDesc": "（文案待補）廠景走廊遠影。",
+      "distanceLine": "只能遠望，時機未到唔好行埋。",
+      "locHint": "星河電視台",
+      "rumorTeaser": "",
+      "resultToast": "已遠觀駱家聲。",
+      "devOnly": {
+        "inspiration": "DEV_ONLY_HOLD"
+      }
+    },
+    {
+      "starId": "pang_siuki",
+      "displayName": "彭少祺",
+      "locs": [
+        "ad_central"
+      ],
+      "actionLabel": "遠觀",
+      "silhouetteDesc": "（文案待補）廣告樓大堂遠影。",
+      "distanceLine": "只能遠望，時機未到唔好行埋。",
+      "locHint": "中環廣告",
+      "rumorTeaser": "",
+      "resultToast": "已遠觀彭少祺。",
+      "devOnly": {
+        "inspiration": "DEV_ONLY_HOLD"
+      }
+    },
+    {
+      "starId": "chung_choning",
+      "displayName": "鍾楚凝",
+      "locs": [
+        "rec_star"
+      ],
+      "actionLabel": "遠觀",
+      "silhouetteDesc": "（文案待補）唱片公司梯間遠影。",
+      "distanceLine": "只能遠望，時機未到唔好行埋。",
+      "locHint": "天星音樂",
+      "rumorTeaser": "",
+      "resultToast": "已遠觀鍾楚凝。",
+      "devOnly": {
+        "inspiration": "DEV_ONLY_HOLD"
+      }
+    },
+    {
+      "starId": "gu_mingfai",
+      "displayName": "顧明輝",
+      "locs": [
+        "tvb_harbour"
+      ],
+      "actionLabel": "遠觀",
+      "silhouetteDesc": "（文案待補）海港台外遠影。",
+      "distanceLine": "只能遠望，時機未到唔好行埋。",
+      "locHint": "海港台",
+      "rumorTeaser": "",
+      "resultToast": "已遠觀顧明輝。",
+      "devOnly": {
+        "inspiration": "DEV_ONLY_HOLD"
+      }
+    },
+    {
+      "starId": "so_jiyan",
+      "displayName": "蘇芷茵",
+      "locs": [
+        "rec_wanchai"
+      ],
+      "actionLabel": "遠觀",
+      "silhouetteDesc": "（文案待補）灣仔唱片樓遠影。",
+      "distanceLine": "只能遠望，時機未到唔好行埋。",
+      "locHint": "灣仔唱片",
+      "rumorTeaser": "",
+      "resultToast": "已遠觀蘇芷茵。",
+      "preferFile": {
+        "bust": true,
+        "silhouette": true
+      },
+      "devOnly": {
+        "inspiration": "DEV_ONLY_HOLD"
+      }
     }
   ]
 }
