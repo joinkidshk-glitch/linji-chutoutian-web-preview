@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z2");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z3");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z2");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z3");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z2");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z3");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -2534,6 +2534,34 @@ body.day-res-open #mask.day-res{
     flex:1 1 100%;
   }
 }
+
+/* v19z3 playtest: story-play locks map/loc chrome */
+#mask.story-play-on ~ #app .pin,
+#app.story-play-lock .pin,
+#app.story-play-lock #loc-acts,
+#app.story-play-lock #loc-sheet .act,
+#app.story-play-lock #map-pins{
+  pointer-events:none !important;
+}
+#app.story-play-lock #loc-sheet{ opacity:.55; }
+/* larger pin hit + cluster fan */
+.pin{ min-width:44px; min-height:44px; }
+.pin .pin-img{ pointer-events:auto !important; padding:8px; margin:-8px; box-sizing:content-box; }
+.pin .plab{ pointer-events:auto !important; }
+.settle-net{font-size:1.35rem;font-weight:800;margin:4px 0 8px;letter-spacing:.02em}
+.settle-net.pos{color:#1a7a3c}
+.settle-net.neg{color:#b33a2b}
+.settle-net.zero{color:#5a4328}
+.settle-sub{font-size:.82rem;color:var(--muted);margin:2px 0}
+.debt-repay-btn{display:inline-block;margin-top:6px;padding:6px 12px;border-radius:8px;border:1px solid #8a7355;background:#2a4a3a;color:#f2ebd8;font-weight:700;cursor:pointer;font-size:.78rem}
+.debt-amt{font-size:.78rem;color:#5a4328;margin:2px 0}
+.loc-empty-hint{color:#5a4328;font-size:.85rem;padding:8px 4px;margin:0}
+.gap-ok{color:#1a7a3c}
+.gap-no{color:#b33a2b;font-weight:700}
+.soft-cap-hint{font-size:.72rem;color:#5a4328}
+.map-area-list{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 0;padding:0}
+.map-area-list button{font-size:.72rem;padding:4px 8px;border-radius:8px;border:1px solid rgba(90,143,191,.45);background:rgba(20,36,56,.85);color:#cfe9ff;cursor:pointer}
+
 /* Soft: long status／StoryPlay plates scroll inside #modal-inner; #modal-btns stays pinned.
    Casting keeps its own .notice_sheet_body scroller. ?v stays 19w. */
 #mask:not(.tut-on) .modal{
@@ -3001,6 +3029,8 @@ body.day-res-open #mask.day-res{
       <button type="button" data-m="people">人脈</button>
       <button type="button" data-m="inv">庫存</button>
       <button type="button" data-m="jobs">拍攝簿</button>
+      <button type="button" data-m="rumors">傳聞</button>
+      <button type="button" data-m="debts">人情債</button>
       <button type="button" data-m="story-play" class="menu-story">事態 <span class="menu-badge" id="menu-story-badge" hidden>0</span></button>
       <button type="button" data-m="home">返屋企</button>
       <button type="button" data-m="replay-tut">重看教學</button>
@@ -3189,11 +3219,11 @@ const LOCS = [
     desc:"沙田外景組同動作片重鎮。" },
   { id:"rec_hk", name:"香江唱片", area:"旺角", type:"music", region:"kln", x:40, y:36, emoji:"🎵",
     desc:"旺角民生唱片行樓上，新人試音多。" },
-  { id:"tvb_longmen", name:"星河電視台", area:"九龍塘", type:"tv", region:"kln", x:78, y:40, emoji:"📺", lab:"lab-up lab-left",
+  { id:"tvb_longmen", name:"星河電視台", area:"九龍塘", type:"tv", region:"kln", x:74, y:36, emoji:"📺", lab:"lab-up lab-left",
     desc:"九龍塘廠房，處境劇同綜藝多。" },
   { id:"tvb_kowloon", name:"九龍電視台", area:"紅磡", type:"tv", region:"kln", x:64, y:46, emoji:"📻", lab:"lab-down lab-left",
     desc:"紅磡碼頭邊，新聞同單元劇為主。" },
-  { id:"tvb_harbour", name:"海港廣播", area:"清水灣", type:"tv", region:"kln", x:86, y:48, emoji:"📡", lab:"lab-up lab-right",
+  { id:"tvb_harbour", name:"海港廣播", area:"清水灣", type:"tv", region:"kln", x:90, y:52, emoji:"📡", lab:"lab-up lab-right",
     desc:"清水灣舊台址氣場強，劇組出入頻密。" },
   { id:"film_cotton", name:"紅棉影業", area:"尖沙咀", type:"film", region:"kln", x:48, y:54, emoji:"🎬",
     desc:"尖沙咀商廈入面嘅院線片公司。" },
@@ -3742,7 +3772,7 @@ const ENTRY_GIGS_1988 = [
   "boardHookMode": "normal",
   "isKeyGig": false
 }];
-/* 內嵌通告＝fallback（與 content/gigs_1988.json 3.2.10-soft 同步）；refreshCopyPacksFromDisk 優先以該檔覆寫。Soft≠PASS。唔 tip LIVE。?v= 19z2。入場六張見 ENTRY_GIGS_1988，boot 時 merge。 */
+/* 內嵌通告＝fallback（與 content/gigs_1988.json 3.2.10-soft 同步）；refreshCopyPacksFromDisk 優先以該檔覆寫。Soft≠PASS。唔 tip LIVE。?v= 19z3。入場六張見 ENTRY_GIGS_1988，boot 時 merge。 */
 let GIGS = [
   {
     "id": "gig_1988_ad_01",
@@ -17093,6 +17123,13 @@ const StoryOC = (()=>{
       if(typeof scheduleStoryMapRedraw==="function") scheduleStoryMapRedraw("markDone:"+id);
       else if(typeof refreshStoryMapTips==="function") refreshStoryMapTips();
     }catch(_e){}
+    try{
+      /* v19z3：完成後同一 tick 刷新地點列 → 灰態事態已完成 */
+      if(typeof atLoc!=="undefined" && atLoc && typeof openLoc==="function"){
+        const locSnap = atLoc;
+        setTimeout(()=>{ try{ if(!isStoryPlayActive || !isStoryPlayActive()){ if(atLoc===locSnap) openLoc(locSnap); } }catch(_e){} }, 0);
+      }
+    }catch(_e){}
     try{ saveQ(); }catch(_e){}
     return true;
   }
@@ -18488,7 +18525,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z2. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z3. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -18571,7 +18608,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z2";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z3";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -18657,7 +18694,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=19z2");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=19z3");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -19186,16 +19223,19 @@ const StoryPlay = (()=>{
       </div>`;
     }
     try{ document.getElementById("mask").classList.add("story-play-on"); }catch(_e){}
+    try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(true); }catch(_e){}
     const forcedChrome = spIsForcedStory(n, _sess.pack, _sess.label);
     const seedDismiss = !!(forcedChrome && spSoftSeedCanDismiss());
     const lockedForced = forcedChrome && !seedDismiss;
     const leaveStory = ()=>{
       abort();
       try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
+      try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
       try{ document.getElementById("app").classList.remove("mask-up"); }catch(_e){}
       try{ if(typeof paintStoryEntryHints==="function") paintStoryEntryHints(); }catch(_e){}
       try{ if(typeof paintBar==="function") paintBar(); }catch(_e){}
       try{ if(typeof drawMap==="function") drawMap(); }catch(_e){}
+      try{ if(typeof atLoc!=="undefined" && atLoc && typeof openLoc==="function") openLoc(atLoc); }catch(_e){}
     };
     const modalBtns = lockedForced ? [] : [{ label:"先返回", role:"g", on: leaveStory }];
     const dismissOpts = lockedForced
@@ -19404,7 +19444,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z2";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z3";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -19574,10 +19614,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_TRAIN,TUT_NPC,TUT_NOTEBOOK,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z2") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z2") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z3") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z3") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z2") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z3") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -19916,11 +19956,16 @@ const GiftShop = (function(){
       if(typeof StoryOC!=="undefined"){
         StoryOC.ensure();
         if(any.length) okFlag = any.some(f=>StoryOC.getFlag(f));
+        /* v19z3：傾談成功寫入 flag_*_talk_met */
+        if(!okFlag && StoryOC.getFlag("flag_"+npcKey+"_talk_met")) okFlag = true;
         if(!okFlag && doneAny.length) okFlag = doneAny.some(id=>StoryOC.isDone(id));
       } else {
         okFlag = true; /* preview fallback */
       }
     }catch(_e){ okFlag = false; }
+    try{
+      if(!okFlag && S && S.flags && S.flags["gift_met_"+npcKey]) okFlag = true;
+    }catch(_e2){}
     return !!okFlag;
   }
   function canGive(npcKey){
@@ -19930,7 +19975,9 @@ const GiftShop = (function(){
     if(!pref) return { ok:false, reason:"此線暫未開放送禮" };
     if(!flagOk(npcKey)){
       if(npcKey==="tang") return { ok:false, reason:sys.tangLocked||"院線那邊，還未到送禮的時候。" };
-      return { ok:false, reason:sys.unmet||"你們還沒真正打過照面，現在送禮太突兀了。" };
+      /* v19z3：講明門檻，唔再用「沒打過照面」唬弄已傾談玩家 */
+      const need = (pref.requireFlagsAny||[]).length ? "需要先完成對應相遇事態，或成功傾談一次" : "尚未解鎖送禮";
+      return { ok:false, reason: need + "。"};
     }
     const relKey = pref.relKey || ("rel_"+npcKey);
     const last = (S.giftMeta.lastGiveDay||{})[relKey];
@@ -20591,6 +20638,7 @@ function fresh(){
     visited:{},
     weekPlan: defaultWeekPlan(),
     weekEarn: 0,
+    wrapHistory: [],
     weekGigsDone: 0,
     weekTrainDone: 0,
     booked:[], // accepted gigs waiting to schedule {gigId,title,type}
@@ -20645,7 +20693,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z2";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z3";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -20831,19 +20879,52 @@ function gateTrainHint(gig){
   return `暫時未能試鏡。可先報名訓練，再來接這檔。`;
 }
 /** Hard gate: early most gigs locked until stats/fame grow (MV育成感). */
-/** v18k: 已殺青或拍攝中 → 唔再可約／上板 */
-function isGigConsumed(g){
+/** v19z3: wrapped＝已殺青；in-production＝已獲聘／拍攝中；consumed＝兩者皆不可再約 */
+function isGigWrapped(g){
   const id = (g && typeof g==="object") ? g.id : g;
   if(!id) return false;
-  if(S.flags && S.flags["done_"+id]) return true;
-  if((S.shoots||[]).some(sh=>sh && sh.gigId===id)) return true;
-  return false;
+  return !!(S.flags && S.flags["done_"+id]);
+}
+function gigActiveShoot(g){
+  const id = (g && typeof g==="object") ? g.id : g;
+  if(!id) return null;
+  return (S.shoots||[]).find(sh=>sh && sh.gigId===id) || null;
+}
+function isGigInProduction(g){
+  return !!gigActiveShoot(g);
+}
+function isGigConsumed(g){
+  return isGigWrapped(g) || isGigInProduction(g);
+}
+function gigLifecycleStatus(g){
+  /* hired → shooting → wrapped */
+  if(!g) return { key:"none", label:"招募中", alt:false };
+  if(isGigWrapped(g)){
+    const failed = S.flags && S.flags["fail_shoot_"+g.id];
+    return { key:"wrapped", label: failed ? "已取消" : "已殺青", alt:true };
+  }
+  const sh = gigActiveShoot(g);
+  if(sh){
+    const done = Number(sh.doneDays)||0;
+    if(done>0) return { key:"shooting", label:"拍攝中", alt:true, shoot:sh };
+    return { key:"hired", label:"已獲聘", alt:true, shoot:sh };
+  }
+  try{
+    if((S.booked||[]).some(b=>b && b.gigId===g.id)){
+      return { key:"booked", label:"待試鏡", alt:false };
+    }
+  }catch(_e){}
+  return { key:"open", label:"招募中", alt:false };
 }
 function canAudition(gig){
   if(!gig) return {ok:false, reason:"通告已下架。"};
-  if(isGigConsumed(gig)){
+  if(isGigWrapped(gig)){
     const failed = S.flags && S.flags["fail_shoot_"+gig.id];
     return {ok:false, reason: failed ? "限期內未完成拍攝，組製已取消你的檔期。" : "本單已殺青。"};
+  }
+  if(isGigInProduction(gig)){
+    const st = gigLifecycleStatus(gig);
+    return {ok:false, reason: st.key==="shooting" ? "本單拍攝中，請睇手帳檔期。" : "本單已獲聘，請睇手帳檔期。"};
   }
   const floor=fameFloor(gig);
   if((S.fame||0)<floor) return {ok:false, reason:"組製暫未考慮你的檔——聲望未合這檔要求。"};
@@ -21008,7 +21089,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z2`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z3`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -21085,22 +21166,11 @@ function gigGenreLabel(g){
   return t || "通告";
 }
 function gigRecruitStatus(g){
-  /* PLAN §3.3 — 上板可報／條件未合仍顯示招募中；consumed→已殺青／已取消 */
+  /* v19z3：已獲聘／拍攝中／已殺青三態分離；禁在 hired 顯示殺青 */
   if(!g) return {label:"招募中", alt:false};
   try{
-    if(typeof isGigConsumed==="function" && isGigConsumed(g)){
-      return {label:"已殺青", alt:true};
-    }
-  }catch(_e){}
-  try{
-    if((S.shoots||[]).some(sh=>sh && sh.gigId===g.id && (sh.doneDays||0)<(sh.totalDays||0))){
-      return {label:"製作中", alt:true};
-    }
-  }catch(_e){}
-  try{
-    if((S.booked||[]).some(b=>b && b.gigId===g.id)){
-      return {label:"製作中", alt:false}; /* 已約仍可當招募流程中；標製作中偏早——改：仍招募中 */
-    }
+    const st = gigLifecycleStatus(g);
+    return { label: st.label, alt: !!st.alt, key: st.key };
   }catch(_e){}
   return {label:"招募中", alt:false};
 }
@@ -21149,7 +21219,10 @@ function gigCastPeriodLine(g){
   const bits=[`${year}年${season}`];
   if(ddl) bits.push(`獲聘後 ${ddl} 日內完成`);
   if(ed) bits.push(`約 ${ed} 個工作天`);
-  return withApply(bits.join(" · "));
+  /* v19z3：工作天同報名截止唔黏埋 */
+  if(!apply) return bits.join(" · ");
+  if(!bits.length) return apply;
+  return bits.join(" · ") + "<br>" + apply;
 }
 function gigDifficultyStars(g){
   /* PLAN §3.6 */
@@ -21186,7 +21259,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z2`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z3`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -21196,7 +21269,8 @@ function gigBoardTeaserHtml(g){
   let days="";
   try{ days=`${verb}約 ${effectiveShootDays(g)} 日`; }catch(_e){}
   const meta=[pay, days].filter(Boolean).join(" · ");
-  const boardState = (st.label==="已殺青" || st.label==="製作中") ? "" : gigBoardCardState(g);
+  const lifeKey = st.key || ((st.label==="已殺青"||st.label==="已取消")?"wrapped":(st.label==="拍攝中"?"shooting":(st.label==="已獲聘"?"hired":"")));
+  const boardState = (lifeKey==="wrapped" || lifeKey==="shooting" || lifeKey==="hired" || st.label==="已殺青" || st.label==="製作中" || st.label==="已獲聘" || st.label==="拍攝中") ? "" : gigBoardCardState(g);
   const castCopy = phase3CastCopy();
   const badgeText = boardState==="locked" ? castCopy.lockedTag : (boardState==="ready" ? castCopy.readyTag : st.label);
   const badgeCls = (st.alt || boardState==="locked") ? "gt-badge done" : "gt-badge";
@@ -21364,7 +21438,7 @@ function castingNoticeDetailHtml(g){
   const roleLine = gigRoleLineHtml(g);
   const limitsHtml = gigSpecialLimitsHtml(g);
   const producerLine = gigProducerLineHtml(g);
-  const boardState = (st.label==="已殺青" || st.label==="製作中") ? "" : gigBoardCardState(g);
+  const boardState = (st.label==="已殺青" || st.label==="已取消" || st.label==="製作中" || st.label==="已獲聘" || st.label==="拍攝中" || st.label==="待試鏡") ? "" : gigBoardCardState(g);
   const castCopy = phase3CastCopy();
   const stateLabel = boardState==="locked" ? castCopy.lockedTag : (boardState==="ready" ? castCopy.readyTag : st.label);
   const stateSub = boardState==="locked"
@@ -21528,6 +21602,18 @@ function jumpToTrainForGig(g){
 }
 
 function openCastingNoticeDetail(g, L){
+  try{
+    const life = gigLifecycleStatus(g);
+    if(life && (life.key==="hired" || life.key==="shooting" || life.key==="wrapped")){
+      const body = `<h3>${g.title||"通告"}</h3><p class="gold">${life.label}</p><p>${life.key==="wrapped"?"本單已殺青，可喺拍攝簿睇履歷。":"已排檔期，請入手帳睇拍攝日。"}</p>`;
+      modal(body, [
+        {label:"查看檔期／拍攝簿", role:"p", on:()=>{ try{ showJobs(); }catch(_e){} }},
+        {label:"離開", role:"g", on:()=>{ if(L) doScout(L); }}
+      ]);
+      return;
+    }
+  }catch(_e){}
+
   if(!g) return;
   const gate=canAudition(g);
   let body = castingNoticeDetailHtml(g);
@@ -21554,19 +21640,25 @@ function openCastingNoticeDetail(g, L){
     if(!consumed){
       let gapLines = "";
       let ctaLabel = "去訓練／手帳";
-      if(plan && plan.gaps && plan.gaps.length){
-        gapLines = plan.gaps.slice(0,3).map(x=>`${x.label}差 ${x.gap}（現 ${x.cur}／要 ${x.need}）`).join("；");
-        ctaLabel = "去訓練／手帳 · "+(plan.gap && plan.gap.label ? ("練"+plan.gap.label) : "手帳");
+      try{
+        const bits=[];
+        const floor = (typeof fameFloor==="function") ? fameFloor(g) : 0;
+        const curF = Number(S && S.fame)||0;
+        if(floor>0){
+          if(curF>=floor) bits.push(`<span class="gap-ok">✓ 聲望 ${curF}／${floor}</span>`);
+          else bits.push(`<span class="gap-no">✗ 聲望差 ${floor-curF}（現 ${curF}／要 ${floor}）</span>`);
+        }
+        Object.entries((g && g.req)||{}).forEach(([k,v])=>{
+          const need=Number(v)||0, cur=Number(S && S[k])||0;
+          const lab=(STAT_LABEL&&STAT_LABEL[k])||k;
+          if(cur>=need) bits.push(`<span class="gap-ok">✓ ${lab} ${cur}／${need}</span>`);
+          else bits.push(`<span class="gap-no">✗ ${lab}差 ${need-cur}（現 ${cur}／要 ${need}）</span>`);
+        });
+        gapLines = bits.join("<br>") || "條件未合，先去訓練或入手帳安排。";
+      }catch(_e2){ gapLines = "條件未合，先去訓練或入手帳安排。"; }
+      if(plan && plan.gap && plan.gap.label){
+        ctaLabel = "去訓練／手帳 · 練"+plan.gap.label;
         if(plan.enrolled) ctaLabel = "去訓練／手帳 · 入手帳排課";
-      } else {
-        try{
-          const bits = [];
-          Object.entries((g && g.req)||{}).forEach(([k,v])=>{
-            const cur=Number(S && S[k])||0, need=Number(v)||0;
-            if(cur<need) bits.push((STAT_LABEL[k]||k)+"差 "+(need-cur));
-          });
-          gapLines = bits.slice(0,3).join("；") || "條件未合，先去訓練或入手帳安排。";
-        }catch(_e2){ gapLines = "條件未合，先去訓練或入手帳安排。"; }
       }
       body += `<div class="cn-train-jump" role="note"><p class="cn-train-jump-title">差幾多達標</p><p class="cn-train-jump-gaps">${gapLines}</p><p class="cn-train-jump-cta-hint">撳下面「去訓練／手帳」直達最佳訓練地或手帳。</p></div>`;
       btns.push({label:ctaLabel, role:"p", cls:"btn_train_jump", on:()=>{
@@ -21983,7 +22075,35 @@ function isMapDay(id){
   return !!id && (id==="scout_all" || id==="scout_nt" || id==="scout_kln" || id==="scout_island");
 }
 function defaultWeekPlan(){
-  return ["scout_all","rest","scout_all","scout_all","street","cafe_gig","rest"];
+  /* v19z3：第2週起按欠債／訓練缺口／上週行為輕微差異化 */
+  const base = ["scout_all","rest","scout_all","scout_all","street","cafe_gig","rest"];
+  try{
+    const w = (typeof weekNumNow==="function") ? weekNumNow() : (Math.floor(((S&&S.dayIndex)||0)/7)+1);
+    if(w<=1) return base;
+    const en = (S && S.enrolled) || {};
+    const tc = (S && S.trainCount) || {};
+    const debts = ((S && S.mockDebts) || []).length;
+    const plan = base.slice();
+    const actingN = Number(tc.train_acting)||0;
+    if(!en.train_acting || actingN<2){
+      plan[1] = "train_acting";
+      plan[3] = "scout_all";
+    } else if((Number(tc.train_looks)||0)<1 && en.train_looks){
+      plan[1] = "train_looks";
+    } else {
+      plan[1] = "scout_all";
+      plan[2] = "street";
+    }
+    if(debts>0){
+      plan[4] = "scout_all"; /* 留空位去事務所還人情 */
+      plan[5] = "cafe_gig";
+    } else {
+      plan[4] = "cafe_gig";
+      plan[5] = "street";
+    }
+    plan[6] = "rest";
+    return plan;
+  }catch(_e){ return base; }
 }
 function enrolledTrainItems(){
   const items=[];
@@ -22099,7 +22219,9 @@ function settleWeek(){
   notes.push(...apply({money:-paid}));
   const bal=earned - living;
   const balTxt=(bal>=0?`+$${bal.toLocaleString()}`:`−$${Math.abs(bal).toLocaleString()}`);
-  notes.push(`收入 $${earned.toLocaleString()} − 生活費 $${living.toLocaleString()} ＝ 結餘 ${balTxt}（現款 $${(S.money||0).toLocaleString()}）`);
+  const balCls = bal>0 ? "pos" : (bal<0 ? "neg" : "zero");
+  /* v19z3：主數字＝本週淨結餘；生活費／收入次行 */
+  notes.unshift(`<div class="settle-net ${balCls}">本週淨結餘 ${balTxt}</div><div class="settle-sub">通告收入 $${earned.toLocaleString()}</div><div class="settle-sub">生活費 −$${living.toLocaleString()}（實扣 $${paid.toLocaleString()}）</div><div class="settle-sub">現款 $${(S.money||0).toLocaleString()}</div>`);
   S.weekEarn=0;
   const w = Math.floor((S.dayIndex-1)/7)+1;
   // High stress week-end event (based on week-end stress before soft recovery)
@@ -22488,9 +22610,15 @@ function enterHome(summary, editable){
   planSelDay = weekdayIdx(S.dayIndex);
   planCat = "browse";
   if(editable){
-    // New week / new game: fresh defaultWeekPlan, then lock remaining shoots (don't carry scrambled week1)
+    // v19z3：過週清空 audition:/wrap: 殘留，只讀新手帳格
     planDraft = lockShootsIntoDraft(defaultWeekPlan());
+    planDraft = planDraft.map(x=>{
+      const s=String(x||"");
+      if(s.startsWith("audition:") || s.startsWith("wrap:")) return "scout_all";
+      return x||"scout_all";
+    });
     S.weekPlan = planDraft.slice();
+    try{ if(S.mapTips){ /* keep story tips; no audition lock strings in hint */ } }catch(_e){}
   } else {
     S.weekPlan = scrubStaleJobs(S.weekPlan||defaultWeekPlan());
     planDraft = S.weekPlan.slice();
@@ -22655,7 +22783,25 @@ function confirmPlan(){
 
 function todayPlanId(){
   if(!S.weekPlan || !S.weekPlan.length) return null;
-  return S.weekPlan[weekdayIdx(S.dayIndex)] || null;
+  const raw = S.weekPlan[weekdayIdx(S.dayIndex)] || null;
+  if(!raw) return null;
+  const s=String(raw);
+  /* v19z3：歷史 audition:/wrap: 唔當「今日計劃」可執行項——顯示自由／已耗紀錄另算 */
+  if(s.startsWith("audition:")){
+    /* 當日試鏡已耗：仍顯示試鏡紀錄；但若該通告已殺青且唔係同一試鏡日語境，改自由 */
+    try{
+      const gid=s.slice(9);
+      if(typeof isGigWrapped==="function" && isGigWrapped(gid) && !(S.homeEditable)){
+        /* 過週後殘留 → 當自由 */
+        const wd=weekdayIdx(S.dayIndex);
+        if(S.weekPlan[wd]===raw && (S.dayIndex%7===0 || S.homeEditable)){
+          S.weekPlan[wd]="scout_all";
+          return "scout_all";
+        }
+      }
+    }catch(_e){}
+  }
+  return raw;
 }
 function scoutRegionLock(){
   // v18p: user UX — 到處逛逛 never locks by district
@@ -22769,6 +22915,16 @@ function resolvePlannedDay(id){
         S.weekGigsDone = (Number(S.weekGigsDone)||0) + 1;
         if((S.flags["done_"+sh.gigId]||0)>=1 && sh.type==="電視劇") S.flags.resume_tv=true;
         if(sh.type==="電影") S.flags.resume_film=true;
+        try{
+          S.wrapHistory = S.wrapHistory || [];
+          S.wrapHistory.unshift({
+            gigId: sh.gigId, title: sh.title, type: sh.type||"",
+            totalDays: sh.totalDays||0, pay: sh.pay||0, fame: sh.fame||0,
+            popularity: sh.popularity!=null?sh.popularity:0,
+            wrappedDay: S.dayIndex|0, rating: (sh.pay||0)>=2000?"表現穩妥":"順利殺青"
+          });
+          if(S.wrapHistory.length>20) S.wrapHistory.length=20;
+        }catch(_wh){}
         S.shoots=(S.shoots||[]).filter(x=>x.id!==sid);
         S.booked=(S.booked||[]).filter(b=>b.gigId!==sh.gigId);
         const wrapMark="wrap:"+encodeURIComponent(sh.title||"");
@@ -22793,16 +22949,18 @@ function resolvePlannedDay(id){
   else if(id==="train_iq"){ notes=apply({iq:3+R(0,2), acting:1, stress:4+R(0,2)}); S.trainCount=S.trainCount||{}; S.trainCount.train_iq=(S.trainCount.train_iq||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_iq")); }
   else if(id==="train_acting_mid"){ notes=apply({acting:6+R(0,2), stage:2, stress:10+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_acting_mid=(S.trainCount.train_acting_mid||0)+1; }
   else if(id==="train_stage_mid"){ notes=apply({stage:6+R(0,2), charm:2, stress:10+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stage_mid=(S.trainCount.train_stage_mid||0)+1; }
-  else if(id==="rest") notes=apply({stamina:20+R(0,8), stress:-(18+R(0,8))});
-  else if(id==="home_chore") notes=apply({stamina:8+R(0,4), money:R(0,200), stress:-(6+R(0,4))});
+  else if(id==="rest"){ notes=apply({stamina:20+R(0,8), stress:-(18+R(0,8))}); title = `休息（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
+  else if(id==="home_chore"){ notes=apply({stamina:8+R(0,4), money:R(0,200), stress:-(6+R(0,4))}); title = `收拾房間（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
   else if(id==="street"){
     let pay=R(300,1200);
     const st=Number(S.stress)||0;
     if(st>=90){ pay=Math.max(50, Math.round(pay*0.2)); }
     else if(st>=70){ pay=Math.max(80, Math.round(pay*0.5)); }
     notes=apply({stage:2, charm:1, fame:R(0,1), popularity:1+R(0,2), money:pay, stress:6+R(0,4)});
+    notes.unshift(`<span class="gold">街頭表演日結 · 週${weekdayName(weekdayIdx(S.dayIndex))}</span>`);
     if(st>=90) notes.push(`<span class="bad">壓力爆表：街頭失常，酬勞大幅縮水。</span>`);
     else if(st>=70) notes.push(`<span class="bad">壓力偏高：表現一般，收入打折。</span>`);
+    title = `街頭表演（週${weekdayName(weekdayIdx(S.dayIndex))}）`;
   }
   else if(id==="cafe_gig"){
     let pay=R(500,1500);
@@ -22810,8 +22968,10 @@ function resolvePlannedDay(id){
     if(st>=90){ pay=Math.max(50, Math.round(pay*0.2)); }
     else if(st>=70){ pay=Math.max(80, Math.round(pay*0.5)); }
     notes=apply({charm:2, stage:1, money:pay, fame:R(0,1), popularity:R(0,2), stress:5+R(0,3)});
+    notes.unshift(`<span class="gold">咖啡店駐場日結 · 週${weekdayName(weekdayIdx(S.dayIndex))}</span>`);
     if(st>=90) notes.push(`<span class="bad">壓力爆表：Cafe 演出失手，小費大減。</span>`);
     else if(st>=70) notes.push(`<span class="bad">壓力偏高：觀眾反應淡，收入打折。</span>`);
+    title = `咖啡店駐場（週${weekdayName(weekdayIdx(S.dayIndex))}）`;
   }
   else if(id.startsWith("job:")){
     // 手帳「約試鏡日」——當日先過門檻＋擲成功率；失敗則不開拍、唔入拍攝簿
@@ -23156,9 +23316,9 @@ function paintBar(){
     (()=>{
       const storyLine = (typeof storyMapHintHtml==="function") ? storyMapHintHtml() : "";
       const helpSoft = (typeof softPreviewOn==="function" && softPreviewOn())
-        ? "有通告／情報／「劇」事態見圖例 · 通告欄／打聽／傾談／送禮免費 · 訓練／試鏡／休息／行程表演 +1日"
-        : "有通告／情報／「劇」事態見圖例 · 通告欄／打聽免費 · 傾談／送禮／訓練／試鏡／休息 +1日";
-      return `<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span><span class="map-hint-help">${helpSoft}</span>${storyLine}`;
+        ? "通告欄／打聽／傾談／送禮免費 · 訓練／試鏡／休息／表演 +1日"
+        : "通告欄／打聽免費 · 傾談／送禮／訓練／試鏡／休息 +1日";
+      return `<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span><span class="map-hint-help" title="有通告／情報／「劇」事態見圖例">${helpSoft}</span>${storyLine}`;
     })();
   try{ paintStoryEntryHints(); }catch(_e){}
   try{ exposePreviewDebug(); }catch(_e){}
@@ -23251,20 +23411,42 @@ function drawMap(){
   if(img && !img.src) img.src = (typeof MAP_IMG!=="undefined" && MAP_IMG) ? MAP_IMG : "assets/hk_map.jpg";
   const box=document.getElementById("map-pins");
   if(!box) return;
-  // Pin % must track the bitmap box, not a stretched stage taller than the image.
   if(img){
-    // v17h: map fills well; pins overlay the covered image box
     const well = img.parentElement;
     const h = (well && well.clientHeight) || img.clientHeight || 0;
     box.style.width = "100%";
     box.style.height = h ? (h + "px") : "100%";
-    box.style.pointerEvents = "none"; // children re-enable
+    box.style.pointerEvents = "none";
   }
   pruneMapTips();
   const showAll = mapRegion==="all";
   box.innerHTML="";
-  LOCS.forEach(L=>{
-    if(!showAll && L.region!==mapRegion) return;
+  /* v19z3：同區近針扇形錯開，避免星河被海港擋住 */
+  const visible = LOCS.filter(L=> showAll || L.region===mapRegion);
+  const placed = visible.map(L=>({ L, x:Number(L.x)||0, y:Number(L.y)||0 }));
+  const CLUSTER = 7; /* % distance */
+  for(let i=0;i<placed.length;i++){
+    const cluster=[placed[i]];
+    for(let j=i+1;j<placed.length;j++){
+      const dx=placed[i].x-placed[j].x, dy=placed[i].y-placed[j].y;
+      if(Math.hypot(dx,dy) < CLUSTER) cluster.push(placed[j]);
+    }
+    if(cluster.length>1){
+      const cx = cluster.reduce((s,p)=>s+p.x,0)/cluster.length;
+      const cy = cluster.reduce((s,p)=>s+p.y,0)/cluster.length;
+      cluster.forEach((p,idx)=>{
+        const ang = (-Math.PI/2) + (idx * (2*Math.PI/cluster.length));
+        const rad = 3.2 + Math.min(2, cluster.length*0.4);
+        p.x = cx + Math.cos(ang)*rad;
+        p.y = cy + Math.sin(ang)*rad;
+      });
+    }
+  }
+  const pinPos = {};
+  placed.forEach(p=>{ pinPos[p.L.id] = { x:p.x, y:p.y }; });
+  drawMap._pinPos = pinPos;
+  placed.forEach(p=>{
+    const L=p.L;
     const hasNpc=!!S.locNpc[L.id];
     const hasBoard=(S.board[L.id]||[]).length>0;
     const tip=(S.mapTips||{})[L.id];
@@ -23273,9 +23455,10 @@ function drawMap(){
     btn.type="button";
     btn.dataset.loc=L.id;
     const isStoryTip = !!(tip && tip.kind==="story");
+    /* v19z3：熟人針只喺真係有在場 NPC 先亮 */
     btn.className=`pin v18c-pin-marks-hug ${L.type}${hasBoard?" has-board":""}${hasNpc?" has-npc":""}${hasTip?" has-tip":""}${isStoryTip?" has-story-tip":""}${L.lab?(" "+L.lab):""}`;
-    btn.style.left=L.x+"%";
-    btn.style.top=L.y+"%";
+    btn.style.left=p.x+"%";
+    btn.style.top=p.y+"%";
     const boardN=(S.board[L.id]||[]).length;
     const markImgs=[];
     if(hasBoard && uiIcon("legend_board")) markImgs.push(`<img src="${uiIcon("legend_board")}" alt="通告"/>`);
@@ -23288,17 +23471,50 @@ function drawMap(){
     if(hasNpc && uiIcon("legend_acquaintance")) markImgs.push(`<img src="${uiIcon("legend_acquaintance")}" alt="熟人"/>`);
     else if(hasNpc) markImgs.push("👤");
     const marks=markImgs.join("");
-    btn.setAttribute("aria-label", `${L.name}（${L.area}）${hasBoard?` · 通告欄 ${boardN} 則`:""}${isStoryTip?" · 事態":(hasTip?" · 情報":"")}`);
+    btn.setAttribute("aria-label", `${L.name}（${L.area}）${hasBoard?` · 通告欄 ${boardN} 則`:""}${isStoryTip?" · 事態":(hasTip?" · 情報":"")}${hasNpc?" · 熟人":""}`);
     btn.style.pointerEvents="auto";
     btn.innerHTML=`<span class="pin-head"><span class="marks">${marks}</span><img class="pin-img" src="assets/ui-physical/map-frame/map_pin.png?v=16" alt="" draggable="false"/></span><span class="plab">${L.name}</span>`;
-    const goPin=()=>{
+    const goPin=(ev)=>{
+      if(ev){ try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){} }
+      /* nearest-pin among visible if click near several */
+      try{
+        if(ev && box && pinPos){
+          const rect = box.getBoundingClientRect();
+          const cx = ((ev.clientX - rect.left) / Math.max(1, rect.width)) * 100;
+          const cy = ((ev.clientY - rect.top) / Math.max(1, rect.height)) * 100;
+          let best=null, bestD=1e9;
+          Object.keys(pinPos).forEach(id=>{
+            const pp=pinPos[id];
+            const d=Math.hypot(pp.x-cx, pp.y-cy);
+            if(d<bestD){ bestD=d; best=id; }
+          });
+          if(best && bestD <= 10){ openLoc(best); return; }
+        }
+      }catch(_e){}
       openLoc(L.id);
     };
     btn.onclick=goPin;
-    // label + pin image both fire (hit target includes .plab text)
-    btn.querySelectorAll(".plab,.pin-img").forEach(el=>{ el.addEventListener("click", ev=>{ ev.stopPropagation(); goPin(); }); });
+    btn.querySelectorAll(".plab,.pin-img").forEach(el=>{ el.addEventListener("click", goPin); });
     box.appendChild(btn);
   });
+  /* 本區地點列表（手機備選入口） */
+  try{
+    let list = document.getElementById("map-area-list");
+    const host = document.getElementById("map-hint");
+    if(host){
+      if(!list){
+        list = document.createElement("div");
+        list.id = "map-area-list";
+        list.className = "map-area-list";
+        host.parentNode.insertBefore(list, host.nextSibling);
+      }
+      const regionLocs = visible.slice().sort((a,b)=> String(a.name).localeCompare(String(b.name),"zh-Hant"));
+      list.innerHTML = regionLocs.map(L=>`<button type="button" data-loc="${L.id}">${L.emoji||""} ${L.name}</button>`).join("");
+      list.querySelectorAll("button").forEach(b=>{
+        b.onclick=(ev)=>{ ev.stopPropagation(); openLoc(b.getAttribute("data-loc")); };
+      });
+    }
+  }catch(_e){}
 }
 
 let _modalDismiss=null;
@@ -23369,8 +23585,9 @@ function modal(html, buttons, opts){
 function closeModal(){
   try{ document.getElementById("modal-btns").classList.remove("soft-leave-only"); }catch(_e){}
   try{ document.getElementById("mask").classList.remove("casting-sheet-on"); }catch(_e){}
-  /* v19z2：清 story-play-on + 清空 #modal-inner，避免劇情結算 HTML／mask 殘留 */
+  /* v19z3：清 story-play-on + 清空 #modal-inner，避免劇情結算 HTML／mask 殘留 */
   try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
+  try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
   try{
     const mi=document.getElementById("modal-inner");
     if(mi) mi.innerHTML="";
@@ -23496,7 +23713,7 @@ const MOCK_ASK = {
     { id:"act_cha_hiu_news", title:"打聽曉晴近況", hint:"向化妝師打聽曉晴動向", cost:"一杯咖啡", toast:"化妝師指曉晴轉拍時裝喜劇。", source:"金龍茶餐廳", grantsRumorId:"hau_ching_recent_news" },
   ],
   agency_ho:[
-    { id:"act_ho_greet", title:"入去打招呼", hint:"何生枱面放住份大製作嘅演員表⋯⋯", cost:"無", toast:"何生點咗點頭，叫你坐低。", source:"何生事務所" },
+    { id:"act_ho_greet", title:"入去打招呼", hint:"同何生打個招呼，睇下佢今日心情點。", choiceHint:"同何生打個招呼，睇下佢今日心情點。", cost:"無", toast:"何生點咗點頭，叫你坐低。", source:"何生事務所" },
     { id:"act_ho_tvb_rules", title:"請教何生入廠守則", hint:"向經理人請教電視台規矩", cost:"一包萬寶路", toast:"何生提點數招廠景生存之道。", source:"何生事務所", grantsRumorId:"tvb_rules_gossip" },
     { id:"act_ho_choi_news", title:"詢問采兒近況", hint:"向何生打聽采兒最新動向", cost:"免費", toast:"何生透露采兒正籌備新戲。", source:"何生事務所", grantsRumorId:"choi_recent_news" },
     { id:"act_ho_repay", title:"還人情 / 送禮", hint:"揀一筆何生人情債，用現金或庫存禮物還。", choiceHint:"揀一筆何生人情債，用現金或庫存禮物還。", cost:"禮物／現金", toast:"何生收低，話「大家自己人」。", resultHint:"何生心情好咗，提咗句年尾有筍盤。", source:"何生事務所", repay:true },
@@ -23644,11 +23861,21 @@ function canRepayHoDebt(){
   return { ok:true, debts, cashOk, giftId, softFree };
 }
 function applyMockAsk(locId, actionId, repayOpt){
+  /* v19z3：事態播放中禁止扣茶錢／背景行動 */
+  if(typeof isStoryPlayActive==="function" && isStoryPlayActive()){
+    return { ok:false, toast:"事態進行中，請先完成對白。" };
+  }
   ensureMockJournal();
   const def = (mockAskDefs(locId)||[]).find(a=>a.id===actionId);
   if(!def) return { ok:false, toast:"沒有這個行動" };
   let added=false, updated=false, cleared=false;
   let payNote="";
+  if(!def.repay && softPreviewOn()){
+    const kind = (def.id && String(def.id).indexOf("greet")>=0) ? "greet" : "ask";
+    const cap = softSocialDailyCap(kind);
+    if(!cap.ok) return { ok:false, toast:cap.reason };
+    softSocialDailyUse(kind);
+  }
   const moneyCost = Number(def.moneyCost)||0;
   if(moneyCost>0){
     const softFree = (typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview && BehaviorGate.featureFlag_softBehaviorGatePreview() && (Number(S.money)||0)<moneyCost);
@@ -23740,6 +23967,10 @@ function applyMockAsk(locId, actionId, repayOpt){
   if(payNote) toastMsg = payNote + (toastMsg ? " "+toastMsg : "");
   if(favorNote) toastMsg = favorNote + (toastMsg ? " "+toastMsg : "");
   if(added && def.resultHint && def.id==="act_cha_hall_tea") toastMsg = (payNote?payNote+" ":"") + def.resultHint + "（已記入手帳）";
+  /* v19z3：傳聞 toast 帶短標題 */
+  if((added||updated) && rumorTitle){
+    toastMsg = `傳聞「${rumorTitle}」——快啲記落手帳` + (payNote ? " · "+payNote : "");
+  }
   return { ok:true, added, updated, cleared, toast:toastMsg, rumorId: (added||updated) ? unlockId : (existing&&hit ? unlockId : null) };
 }
 function openHoRepaySheet(L){
@@ -23945,18 +24176,39 @@ function renderDebtPane(){
   const clearedSeason = ensureSeasonDebtClearedBag();
   const cards=SEASON_COLLECT.filter(c=>c.season===season && !(c && c.id && clearedSeason[c.id]));
   const banner=`<p class="season-banner"><span class="season-mark">${journalText(season)}</span>又過一季，人情數目記心頭。</p><p class="favor-pressure" data-level="${journalText(pressure.label)}">人情壓力　${journalText(pressure.label)}</p>`;
+  const repayBtn = (id, isSeason)=>{
+    return `<button type="button" class="debt-repay-btn" data-repay-id="${journalText(id)}" data-season="${isSeason?"1":"0"}">去還</button>`;
+  };
   const cardHtml=cards.map(c=>{
     const status=debtStatusLabel(c.status);
     const who=debtCreditorName(c);
-    return `<article class="debt-row season-card" data-collect-id="${journalText(c.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(c.title)}</p><p class="collect-line">${journalText(c.line)}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p></article>`;
+    const amt = (c.amount!=null) ? ("金額約 $"+Number(c.amount).toLocaleString()) : (status==="已逾期"?"已逾期 · 建議禮物或現金 $200":"建議禮物或現金 $200");
+    return `<article class="debt-row season-card" data-collect-id="${journalText(c.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(c.title)}</p><p class="collect-line">${journalText(c.line)}</p><p class="debt-amt">${journalText(amt)} · ${journalText(status)}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${repayBtn(c.id,true)}</article>`;
   }).join("");
   const rows=S.mockDebts||[];
   const debtHtml=rows.length ? rows.map(d=>{
     const status = debtStatusLabel(d.status);
     const who=debtCreditorName(d);
-    return `<article class="debt-row" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">人情：${journalText(d.weight)}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p><p class="debt-note">${journalText(d.season)}</p></article>`;
+    const amt = (d.amount!=null) ? ("金額約 $"+Number(d.amount).toLocaleString()) : ("人情："+journalText(d.weight)+" · 建議 $200／禮物");
+    return `<article class="debt-row" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p><p class="debt-note">${journalText(d.season)}</p>${repayBtn(d.id,false)}</article>`;
   }).join("") : (cardHtml ? "" : `<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p></div>`);
   box.innerHTML=banner+cardHtml+debtHtml;
+  box.querySelectorAll(".debt-repay-btn").forEach(btn=>{
+    btn.onclick=(ev)=>{
+      try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){}
+      try{
+        show("v-map");
+        mapRegion = "island";
+        document.querySelectorAll("#region-tabs button").forEach(b=>b.classList.toggle("on", b.dataset.r===mapRegion));
+        paintBar(); drawMap();
+        setTimeout(()=>{
+          openLoc("agency_ho");
+          setTimeout(()=>{ try{ openHoRepaySheet(LOCS.find(x=>x.id==="agency_ho")); }catch(_e){} }, 80);
+        }, 60);
+        toast("去何生事務所還人情");
+      }catch(_e){ toast("無法跳轉還款"); }
+    };
+  });
 }
 function playPushDoor(){
   const host=document.getElementById("v-map");
@@ -24231,7 +24483,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z2";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z3";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -24245,7 +24497,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=19z2";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=19z3";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -24340,11 +24592,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z2") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z3") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z2") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z3") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -24362,7 +24614,32 @@ try{
     },
   };
 }catch(_e){}
+function isStoryPlayActive(){
+  try{
+    const m = document.getElementById("mask");
+    if(m && m.classList.contains("story-play-on") && m.classList.contains("on")) return true;
+  }catch(_e){}
+  try{
+    const app = document.getElementById("app");
+    if(app && app.classList.contains("story-play-lock")) return true;
+  }catch(_e){}
+  return false;
+}
+function setStoryPlayLock(on){
+  try{
+    const app = document.getElementById("app");
+    if(app) app.classList.toggle("story-play-lock", !!on);
+  }catch(_e){}
+  try{
+    const m = document.getElementById("mask");
+    if(m){
+      if(on) m.classList.add("story-play-on");
+      /* remove only via closeModal / leaveStory */
+    }
+  }catch(_e){}
+}
 function openLoc(id){
+  if(isStoryPlayActive()){ toast("事態進行中，請先完成對白。"); return; }
   if(todayIsForcedDay()){
     closeSheet();
     kickScheduleIfNeeded();
@@ -24420,7 +24697,7 @@ function openLoc(id){
     if(tipHere.kind==="story"){
       if(tipDoneWho){
         try{ if(S.mapTips && S.mapTips[L.id] && S.mapTips[L.id].nodeId===tipHere.nodeId) delete S.mapTips[L.id]; }catch(_p){}
-        /* v19z2：已完成事態唔再喺 who 行標「事態」 */
+        /* v19z3：已完成事態唔再喺 who 行標「事態」 */
       } else {
         who += (who?" · ":"") + `事態「${tipHere.title}」`;
       }
@@ -24428,8 +24705,14 @@ function openLoc(id){
       who += (who?" · ":"") + `💡情報「${tipHere.title}」`;
     }
   }
-  if(!hub && !who) who = "暫時未見熟人";
+  if(!hub && !who){
+    who = tipHere ? "今日有情報／事態，點下面行動" : "暫時未見熟人（地圖熟人標＝在場時先亮）";
+  }
   document.getElementById("loc-who").textContent = who;
+  try{
+    const titleEl=document.getElementById("loc-title");
+    if(titleEl && !L){ /* noop */ }
+  }catch(_e){}
   /* script-lock：首次入 loc → meet offer（omit=true 節） */
   try{
     if(typeof StoryOC!=="undefined"){
@@ -24454,7 +24737,7 @@ function openLoc(id){
     b.onclick=fn; acts.appendChild(b);
   };
 
-  // (A) v19z2：此地可播事態。已完成 → 永不顯示「播事態：…／免費」；可選灰態「事態已完成」。
+  // (A) v19z3：此地可播事態。已完成 → 永不顯示「播事態：…／免費」；可選灰態「事態已完成」。
   try{
     const locStoryIsDone = (id)=>{
       if(!id) return false;
@@ -24619,6 +24902,14 @@ function openLoc(id){
   add("只查看通告欄","","免費", ()=>doScout(L), "act-priority");
   (S.board[L.id]||[]).forEach(gid=>{
     const gig=GIGS.find(g=>g.id===gid); if(!gig) return;
+    const life = (typeof gigLifecycleStatus==="function") ? gigLifecycleStatus(gig) : null;
+    if(life && (life.key==="hired" || life.key==="shooting" || life.key==="wrapped")){
+      /* v19z3：已接／拍攝／殺青 → 查看檔期，唔再接通告 */
+      add(`查看檔期：${gig.title}`, life.label, "—", ()=>{
+        try{ showJobs(); }catch(_e){ openCastingNoticeDetail(gig, L); }
+      });
+      return;
+    }
     const gate=canAudition(gig);
     const castCopy = phase3CastCopy();
     if(!gate.ok){
@@ -24626,8 +24917,18 @@ function openLoc(id){
       return;
     }
     const p=Math.round(chance(gig)*100);
-    add(`${castCopy.readyLabel}：${gig.title}`, `${gig.type} · ${p}%`,"+1日", ()=>openCastingNoticeDetail(gig, L));
+    const genre = (typeof gigGenreLabel==="function") ? gigGenreLabel(gig) : (gig.type||"通告");
+    const coarse = (typeof gigTypeCoarse==="function") ? gigTypeCoarse(gig) : "";
+    const sub = (coarse && coarse!==genre) ? `${genre}／${coarse}` : genre;
+    add(`${castCopy.readyLabel}：${gig.title}`, `${sub} · 成功率 ${p}%`,"+1日", ()=>openCastingNoticeDetail(gig, L));
   });
+  /* 亦列出此地進行中拍攝（即使已踢出 board） */
+  try{
+    (S.shoots||[]).filter(sh=>sh && sh.locId===L.id).forEach(sh=>{
+      const rem = (typeof shootRemain==="function") ? shootRemain(sh) : Math.max(0,(sh.totalDays||0)-(sh.doneDays||0));
+      add(`查看檔期：${sh.title}`, (sh.doneDays>0?"拍攝中":"已獲聘")+` · 剩 ${rem} 日`, "—", ()=>{ try{ showJobs(); }catch(_e){} });
+    });
+  }catch(_e){}
   const tr=TRAIN_BY_TYPE[L.type];
   if(tr){
     const trained=((S.trainCount||{})[tr.courseId]||0)>0;
@@ -24651,21 +24952,21 @@ function openLoc(id){
   scrollMapPinIntoView(id);
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z2. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z3. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z2",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z2",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z2",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z2",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z2",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z2",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z2",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z2",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z2",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z2",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z2",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z2",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z2",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z3",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z3",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z3",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z3",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z3",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z3",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z3",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z3",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z3",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z3",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z3",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z3",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z3",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -24686,6 +24987,16 @@ function closeSheet(){
   const sheet=document.getElementById("loc-sheet");
   if(sheet) sheet.classList.remove("on");
   try{ applyLocSheetBg(""); }catch(_e){}
+  try{
+    const t=document.getElementById("loc-title");
+    const d=document.getElementById("loc-desc");
+    const w=document.getElementById("loc-who");
+    const a=document.getElementById("loc-acts");
+    if(t) t.textContent="地點";
+    if(d) d.textContent="點地圖針或下方本區列表選擇地點";
+    if(w) w.textContent="";
+    if(a) a.innerHTML=`<p class="loc-empty-hint">點地圖針選擇地點</p>`;
+  }catch(_e){}
   const wrap=mapWrapEl();
   if(wrap) wrap.classList.remove("sheet-open");
   restoreMapScroll();
@@ -25031,7 +25342,7 @@ function ensureEntryTierBoardFill(){
     const need = 2;
     let have = countApplyableEntryOnBoard();
     if(have >= need) return { ok:true, have, injected:0 };
-    const pool = entryGigPoolLive();
+    const pool = entryGigPoolLive().filter(g=> g && !isGigConsumed(g));
     const applyable = pool.filter(g=>canAudition(g).ok);
     const rest = pool.filter(g=>!canAudition(g).ok);
     const ordered = applyable.concat(rest);
@@ -25057,6 +25368,33 @@ function ensureEntryTierBoardFill(){
   }
 }
 
+function softSocialDailyState(){
+  S.flags = S.flags||{};
+  const day = S.dayIndex|0;
+  if(!S.flags.softSocialDay || S.flags.softSocialDay !== day){
+    S.flags.softSocialDay = day;
+    S.flags.softTalkUsed = 0;
+    S.flags.softAskUsed = 0;
+    S.flags.softGreetUsed = 0;
+  }
+  return S.flags;
+}
+function softSocialDailyCap(kind){
+  /* soft 閘免費社交每日上限，防刷好感／情報 */
+  const lim = { talk:3, ask:5, greet:3 };
+  const max = lim[kind] != null ? lim[kind] : 3;
+  const st = softSocialDailyState();
+  const key = kind==="talk" ? "softTalkUsed" : (kind==="ask" ? "softAskUsed" : "softGreetUsed");
+  const used = Number(st[key])||0;
+  if(used >= max) return { ok:false, reason:`今日免費${kind==="talk"?"傾談":(kind==="ask"?"打聽":"打招呼")}已用晒（${max} 次）。`, used, max, left:0 };
+  return { ok:true, used, max, left: max-used };
+}
+function softSocialDailyUse(kind){
+  const st = softSocialDailyState();
+  const key = kind==="talk" ? "softTalkUsed" : (kind==="ask" ? "softAskUsed" : "softGreetUsed");
+  st[key] = (Number(st[key])||0) + 1;
+  return softSocialDailyCap(kind);
+}
 function softPreviewOn(){
   try{ return typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview && BehaviorGate.featureFlag_softBehaviorGatePreview(); }catch(_e){ return false; }
 }
@@ -25084,14 +25422,33 @@ function giftHintLabel(ok, reason){
   return softSocialCostsDay() ? "會用去 1 日／今日額度" : "試玩閘：送禮不耗日";
 }
 function talkHintLabel(){
-  return softTalkCostsDay() ? "可能有情報 · 耗一日" : "可能有情報 · 試玩不耗日";
+  if(softTalkCostsDay()) return "寒暄一下 · 耗一日";
+  try{
+    const cap = softSocialDailyCap("talk");
+    return `寒暄一下 · 試玩不耗日（今日剩 ${cap.left} 次）`;
+  }catch(_e){ return "寒暄一下 · 試玩不耗日"; }
 }
 function doTalk(npcId, L){
   const npc=NPCS[npcId];
+  /* v19z3 soft：每日免費傾談上限 */
+  if(!softTalkCostsDay()){
+    const cap = softSocialDailyCap("talk");
+    if(!cap.ok){ toast(cap.reason); return; }
+    softSocialDailyUse("talk");
+  }
   apply({stress:R(1,3)});
   const spendDay = softTalkCostsDay();
   if(spendDay) writeTodayPlan("cafe_gig"); // live：社交耗日；soft：唔寫行程
   closeSheet();
+  /* v19z3：傾談成功 → 解鎖送禮 met */
+  try{
+    const rk = (typeof GiftShop!=="undefined" && GiftShop.romanceKeyFromMapNpc) ? GiftShop.romanceKeyFromMapNpc(npcId) : null;
+    if(rk){
+      S.flags = S.flags||{};
+      S.flags["gift_met_"+rk] = true;
+      try{ if(typeof StoryOC!=="undefined" && StoryOC.setFlag){ StoryOC.ensure(); StoryOC.setFlag("flag_"+rk+"_talk_met", true); } }catch(_e){}
+    }
+  }catch(_e){}
   const gained=bumpNpc(npcId, 3+R(0,4));
   const tip=tipGig(npc);
   let text;
@@ -25481,19 +25838,21 @@ function showJobs(){
     if(shootRemain(sh)>0) return true;
     return (S.weekPlan||[]).some(p=>p===("shoot:"+sh.id));
   });
-  if(!booked.length && !shoots.length){
-    modal(`<h3>拍攝簿</h3><p>而家未有拍攝中／待試鏡。<br>達標後去通告欄試鏡；只有獲聘先會開拍。</p>`,[{label:"關閉",role:"g"}]);
+  const hist = (S.wrapHistory || []).slice(0, 12);
+  if(!booked.length && !shoots.length && !hist.length){
+    modal(`<h3>拍攝簿</h3><p>而家未有拍攝中／待試鏡／殺青紀錄。<br>達標後去通告欄試鏡；只有獲聘先會開拍。</p>`,[{label:"關閉",role:"g"}]);
     return;
   }
   let body="";
   if(shoots.length){
-    body += `<p class="gold" style="margin:0 0 6px">拍攝中</p>`;
+    body += `<p class="gold" style="margin:0 0 6px">拍攝中／已獲聘</p>`;
     shoots.forEach(sh=>{
       const L=LOCS.find(x=>x.id===sh.locId);
       const rem=shootRemain(sh);
       const hud = (typeof shootDeadlineHud==="function") ? shootDeadlineHud(sh) : "";
+      const stLab = (sh.doneDays>0) ? "拍攝中" : "已獲聘";
       body += `<div class="req" style="margin-bottom:8px">
-        <b>🎥 ${sh.title}</b> · ${sh.type||""}
+        <b>🎥 ${sh.title}</b> · ${sh.type||""} · <span class="gold">${stLab}</span>
         <div style="font-size:.78rem;color:var(--muted);margin-top:4px">${L?L.name+" · ":""}進度 ${sh.doneDays||0}/${sh.totalDays} · 剩餘 ${rem} 日</div>
         ${hud?`<div style="font-size:.72rem;color:var(--gold,#c9a227);margin-top:2px">拍攝限期：${hud}</div>`:""}
         <div style="font-size:.72rem;color:var(--muted)">完成約酬 $ ${(sh.pay||0).toLocaleString()} · 聲望 +${sh.fame||0} · 人氣 +${sh.popularity!=null?sh.popularity:0}</div>
@@ -25510,6 +25869,16 @@ function showJobs(){
       } else {
         body += `<div class="req" style="margin-bottom:8px"><b>🎬 ${b.title}</b> · ${b.type||"通告"}</div>`;
       }
+    });
+  }
+  if(hist.length){
+    body += `<p class="gold" style="margin:10px 0 6px">已殺青履歷</p>`;
+    hist.forEach(h=>{
+      body += `<div class="req" style="margin-bottom:8px">
+        <b>✅ ${h.title||"通告"}</b> · ${h.type||""}
+        <div style="font-size:.78rem;color:var(--muted);margin-top:4px">${h.totalDays||0} 日 · 片酬 $ ${(h.pay||0).toLocaleString()} · 聲望 +${h.fame||0}</div>
+        <div style="font-size:.72rem;color:var(--muted)">評價：${h.rating||"已殺青"}</div>
+      </div>`;
     });
   }
   modal(`<h3>拍攝簿</h3>${body}`,[{label:"關閉",role:"g"}]);
@@ -25542,10 +25911,16 @@ function applyTutSpotlight(stepId){
   // TUT_BOARD's stage stays under the mask (do not spotlight the whole plate — z-index would cover the card).
   let sel=null;
   if(stepId==="TUT_WELCOME" || stepId==="TUT_NOTEBOOK") sel="#btn-confirm-plan";
-  else if(stepId==="TUT_MAP") sel="#region-tabs, .pin";
+  else if(stepId==="TUT_MAP"){
+    /* v19z3：教學只高亮單一焦點（星河或第一支可見針） */
+    sel = '.pin[data-loc="tvb_longmen"]';
+    if(!document.querySelector(sel)) sel = ".pin:not(.dim)";
+  }
   if(!sel) return;
   try{
-    document.querySelectorAll(sel).forEach((el,i)=>{ if(i<3) el.classList.add("tut-spotlight-target"); });
+    const nodes = document.querySelectorAll(sel);
+    if(nodes.length) nodes[0].classList.add("tut-spotlight-target");
+    else document.querySelectorAll("#region-tabs").forEach(el=>el.classList.add("tut-spotlight-target"));
   }catch(e){}
 }
 /** Which phone surface the player should be looking at for this tutorial step. */
@@ -25953,6 +26328,16 @@ document.getElementById("menu").onclick=e=>{
   if(m==="people")showPeople();
   if(m==="inv")showInventory();
   if(m==="jobs")showJobs();
+  if(m==="rumors"){
+    if(kickScheduleIfNeeded()) return;
+    enterHome(null, false);
+    setTimeout(()=>{ try{ setHomeTab("rumor"); }catch(_e){} }, 40);
+  }
+  if(m==="debts"){
+    if(kickScheduleIfNeeded()) return;
+    enterHome(null, false);
+    setTimeout(()=>{ try{ setHomeTab("debt"); }catch(_e){} }, 40);
+  }
   if(m==="home"){
     if(kickScheduleIfNeeded()) return;
     enterHome(null, false);
