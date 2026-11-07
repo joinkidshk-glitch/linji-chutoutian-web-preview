@@ -1,22 +1,108 @@
 {
   "meta": {
-    "version": "v20a0-stub",
+    "version": "v20a1-stub",
     "softStatus": "≠PASS",
     "note": "Casting-tag registry + dual-track hooks. Content bot may add labels/copy; keep ids stable. Soft≠PASS.",
     "stateKey": "S.castingTags",
-    "uiPane": "home-pane-tags"
+    "uiPane": "weak-seals (player) / home-pane-tags (?devTags=1)",
+    "playerDisplay": "weak-seals (~8% opacity) from earned S.castingTags; home-pane-tags is DEV-only",
+    "gigGateFields": [
+      "requiresCastingTagAny",
+      "blocksCastingTagAny"
+    ],
+    "gigGateNote": "Soft canAudition reads these fields ON THE GIG (not the tag row). Tag rows keep empty arrays as schema docs."
   },
   "tags": [
-    { "id": "tag_follow_set", "label": "識跟場", "hidden": false, "stageVolumeDelta": 0, "industryCreditDelta": 1, "requiresCastingTagAny": [], "blocksCastingTagAny": [] },
-    { "id": "tag_posture", "label": "儀態", "hidden": false, "stageVolumeDelta": 1, "industryCreditDelta": 0, "requiresCastingTagAny": [], "blocksCastingTagAny": [] },
-    { "id": "tag_endure", "label": "捱得", "hidden": false, "stageVolumeDelta": 0, "industryCreditDelta": 2, "requiresCastingTagAny": [], "blocksCastingTagAny": [] },
-    { "id": "tag_blocking", "label": "懂走位", "hidden": false, "stageVolumeDelta": 1, "industryCreditDelta": 1, "requiresCastingTagAny": [], "blocksCastingTagAny": [] },
-    { "id": "tag_rhythm", "label": "節奏感", "hidden": false, "stageVolumeDelta": 1, "industryCreditDelta": 0, "requiresCastingTagAny": [], "blocksCastingTagAny": [] },
-    { "id": "tag_diva", "label": "大牌", "hidden": false, "stageVolumeDelta": 2, "industryCreditDelta": -2, "requiresCastingTagAny": [], "blocksCastingTagAny": [] },
-    { "id": "tag_street", "label": "爛仔", "hidden": true, "stageVolumeDelta": 2, "industryCreditDelta": -3, "requiresCastingTagAny": [], "blocksCastingTagAny": [] },
-    { "id": "tag_reliable", "label": "穩重", "hidden": false, "stageVolumeDelta": 0, "industryCreditDelta": 2, "requiresCastingTagAny": [], "blocksCastingTagAny": [] },
-    { "id": "tag_comedy", "label": "喜劇細胞", "hidden": false, "stageVolumeDelta": 1, "industryCreditDelta": 0, "requiresCastingTagAny": [], "blocksCastingTagAny": [] },
-    { "id": "tag_action", "label": "動作演員", "hidden": false, "stageVolumeDelta": 1, "industryCreditDelta": 1, "requiresCastingTagAny": [], "blocksCastingTagAny": [] }
+    {
+      "id": "tag_follow_set",
+      "label": "識跟場",
+      "hidden": false,
+      "stageVolumeDelta": 0,
+      "industryCreditDelta": 1,
+      "requiresCastingTagAny": [],
+      "blocksCastingTagAny": []
+    },
+    {
+      "id": "tag_posture",
+      "label": "儀態",
+      "hidden": false,
+      "stageVolumeDelta": 1,
+      "industryCreditDelta": 0,
+      "requiresCastingTagAny": [],
+      "blocksCastingTagAny": []
+    },
+    {
+      "id": "tag_endure",
+      "label": "捱得",
+      "hidden": false,
+      "stageVolumeDelta": 0,
+      "industryCreditDelta": 2,
+      "requiresCastingTagAny": [],
+      "blocksCastingTagAny": []
+    },
+    {
+      "id": "tag_blocking",
+      "label": "懂走位",
+      "hidden": false,
+      "stageVolumeDelta": 1,
+      "industryCreditDelta": 1,
+      "requiresCastingTagAny": [],
+      "blocksCastingTagAny": []
+    },
+    {
+      "id": "tag_rhythm",
+      "label": "節奏感",
+      "hidden": false,
+      "stageVolumeDelta": 1,
+      "industryCreditDelta": 0,
+      "requiresCastingTagAny": [],
+      "blocksCastingTagAny": []
+    },
+    {
+      "id": "tag_diva",
+      "label": "大牌",
+      "hidden": false,
+      "stageVolumeDelta": 2,
+      "industryCreditDelta": -2,
+      "requiresCastingTagAny": [],
+      "blocksCastingTagAny": []
+    },
+    {
+      "id": "tag_street",
+      "label": "爛仔",
+      "hidden": true,
+      "stageVolumeDelta": 2,
+      "industryCreditDelta": -3,
+      "requiresCastingTagAny": [],
+      "blocksCastingTagAny": []
+    },
+    {
+      "id": "tag_reliable",
+      "label": "穩重",
+      "hidden": false,
+      "stageVolumeDelta": 0,
+      "industryCreditDelta": 2,
+      "requiresCastingTagAny": [],
+      "blocksCastingTagAny": []
+    },
+    {
+      "id": "tag_comedy",
+      "label": "喜劇細胞",
+      "hidden": false,
+      "stageVolumeDelta": 1,
+      "industryCreditDelta": 0,
+      "requiresCastingTagAny": [],
+      "blocksCastingTagAny": []
+    },
+    {
+      "id": "tag_action",
+      "label": "動作演員",
+      "hidden": false,
+      "stageVolumeDelta": 1,
+      "industryCreditDelta": 1,
+      "requiresCastingTagAny": [],
+      "blocksCastingTagAny": []
+    }
   ],
   "labelToId": {
     "識跟場": "tag_follow_set",

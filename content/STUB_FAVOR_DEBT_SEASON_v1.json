@@ -1,9 +1,10 @@
 {
   "meta": {
-    "version": "v20a0-stub",
+    "version": "v20a1-stub",
     "softStatus": "≠PASS",
-    "note": "Favor-debt × season hook shells. Content bot fills line/title. Soft≠PASS.",
-    "uiPane": "home-pane-debt"
+    "note": "Favor-debt × season. Content bot fills line/title. Engine seeds into debt pane via seedFreeplayFavorDebt (single source with SEASON_COLLECT overlay). Soft≠PASS.",
+    "uiPane": "home-pane-debt",
+    "engineSeed": "seedFreeplayFavorDebt"
   },
   "hooks": [
     {
@@ -48,7 +49,7 @@
       "line": "",
       "season": "冬",
       "amount": 200,
-      "status": "未催",
+      "status": "未到期",
       "locHint": "agency_ho"
     },
     {
@@ -59,7 +60,7 @@
       "line": "",
       "season": "夏",
       "amount": null,
-      "status": "未催",
+      "status": "未到期",
       "locHint": "agency_ho"
     }
   ]

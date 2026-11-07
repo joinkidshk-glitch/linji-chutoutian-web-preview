@@ -1,3 +1,5 @@
+> **Superseded for infra:** see `NOTES_V20A1_INFRA.md` (v20a1). This file remains the v20a0 shell record.
+
 # v20a0 — Freeplay PROGRAM FRAMEWORK（schema／stub／UI 殼）
 
 Branch `feat/freeplay-framework-v20a0`. Follows merged `v19z31` (`4d89f46` / #81).

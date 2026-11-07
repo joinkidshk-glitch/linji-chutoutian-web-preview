@@ -1,16 +1,24 @@
 {
   "meta": {
-    "version": "v20a0-stub",
+    "version": "v20a1-stub",
     "softStatus": "≠PASS",
-    "note": "C1–C5 Freeplay slots for content bot. Fill playerFaceLine / beats.lines / choice labels. Keep nextHint \"\". Do not invent long arcs here. Soft≠PASS.",
+    "note": "C1–C5 Freeplay slots — CONTENT AUTHORITY for dialogue. Triggers synced to SANDBOX_BEHAVIOR_GATE richer ecology (Soft gate reads these when slots loaded). Fill playerFaceLine / beats.lines / choice labels only. Keep nextHint \"\". Soft≠PASS.",
     "contentContract": "docs/CONTENT_CONTRACT.md",
     "lockedFlags": [
-      "route_tv", "route_film",
-      "flag_network_stay", "flag_hustle_board",
-      "rival_gao_hard", "rival_gao_endure",
-      "flag_refuse_gig_with_ho", "flag_take_harsh_gig",
-      "choi_honest", "spin", "dodge"
-    ]
+      "route_tv",
+      "route_film",
+      "flag_network_stay",
+      "flag_hustle_board",
+      "rival_gao_hard",
+      "rival_gao_endure",
+      "flag_refuse_gig_with_ho",
+      "flag_take_harsh_gig",
+      "choi_honest",
+      "spin",
+      "dodge"
+    ],
+    "triggerAuthority": "slots_synced_from_sandbox_ecology",
+    "softGateOverlay": true
   },
   "nodes": [
     {
@@ -22,13 +30,17 @@
       "nextHint": "",
       "trigger": {
         "needDone": [],
+        "minDaysAfterPrev": 0,
         "weekMin": 1,
-        "locIdAny": ["cafe_cha"],
+        "locIdAny": [
+          "cafe_cha"
+        ],
         "rumorAny": [],
         "favorMin": 0,
         "tagAny": [],
         "seasonAny": [],
-        "gigCountMin": 0
+        "gigCountMin": 0,
+        "relAny": []
       },
       "beats": [
         {
@@ -37,14 +49,36 @@
           "speaker": "系統",
           "emotion": null,
           "expression": null,
-          "lines": ["（C1 對白待補）"],
+          "lines": [
+            "（C1 對白待補）"
+          ],
           "locId": "cafe_cha",
           "bg": null
         }
       ],
       "choices": [
-        { "id": "C1_a", "label": "（選項待補：電視台）", "effects": { "flags": ["route_tv"], "stats": {}, "tags": [] } },
-        { "id": "C1_b", "label": "（選項待補：電影）", "effects": { "flags": ["route_film"], "stats": {}, "tags": [] } }
+        {
+          "id": "C1_a",
+          "label": "（選項待補：電視台）",
+          "effects": {
+            "flags": [
+              "route_tv"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C1_b",
+          "label": "（選項待補：電影）",
+          "effects": {
+            "flags": [
+              "route_film"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
       ]
     },
     {
@@ -55,14 +89,23 @@
       "redStarHook": "",
       "nextHint": "",
       "trigger": {
-        "needDone": ["C1"],
+        "needDone": [
+          "C1"
+        ],
+        "minDaysAfterPrev": 1,
         "weekMin": 4,
-        "locIdAny": ["tvb_longmen", "cafe_cha"],
-        "rumorAny": ["tvb_rules_gossip"],
+        "locIdAny": [
+          "tvb_longmen",
+          "cafe_cha"
+        ],
+        "rumorAny": [
+          "tvb_rules_gossip"
+        ],
         "favorMin": 0,
         "tagAny": [],
         "seasonAny": [],
-        "gigCountMin": 3
+        "gigCountMin": 3,
+        "relAny": []
       },
       "beats": [
         {
@@ -71,14 +114,36 @@
           "speaker": "系統",
           "emotion": null,
           "expression": null,
-          "lines": ["（C2 對白待補）"],
+          "lines": [
+            "（C2 對白待補）"
+          ],
           "locId": "tvb_longmen",
           "bg": null
         }
       ],
       "choices": [
-        { "id": "C2_a", "label": "（選項待補：留人脈）", "effects": { "flags": ["flag_network_stay"], "stats": {}, "tags": [] } },
-        { "id": "C2_b", "label": "（選項待補：趕通告）", "effects": { "flags": ["flag_hustle_board"], "stats": {}, "tags": [] } }
+        {
+          "id": "C2_a",
+          "label": "（選項待補：留人脈）",
+          "effects": {
+            "flags": [
+              "flag_network_stay"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C2_b",
+          "label": "（選項待補：趕通告）",
+          "effects": {
+            "flags": [
+              "flag_hustle_board"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
       ]
     },
     {
@@ -89,14 +154,26 @@
       "redStarHook": "",
       "nextHint": "",
       "trigger": {
-        "needDone": ["C2"],
+        "needDone": [
+          "C2"
+        ],
+        "minDaysAfterPrev": 1,
         "weekMin": 6,
-        "locIdAny": ["tvb_longmen"],
-        "rumorAny": [],
+        "locIdAny": [
+          "tvb_longmen"
+        ],
+        "rumorAny": [
+          "gao_steal_spotlight"
+        ],
         "favorMin": 0,
-        "tagAny": [],
+        "tagAny": [
+          "fameMin_16"
+        ],
         "seasonAny": [],
-        "gigCountMin": 0
+        "gigCountMin": 0,
+        "relAny": [],
+        "fameMin": 16,
+        "fameCompare": ">"
       },
       "beats": [
         {
@@ -105,14 +182,36 @@
           "speaker": "系統",
           "emotion": null,
           "expression": null,
-          "lines": ["（C3 對白待補）"],
+          "lines": [
+            "（C3 對白待補）"
+          ],
           "locId": "tvb_longmen",
           "bg": null
         }
       ],
       "choices": [
-        { "id": "C3_a", "label": "（選項待補：硬）", "effects": { "flags": ["rival_gao_hard"], "stats": {}, "tags": [] } },
-        { "id": "C3_b", "label": "（選項待補：忍）", "effects": { "flags": ["rival_gao_endure"], "stats": {}, "tags": [] } }
+        {
+          "id": "C3_a",
+          "label": "（選項待補：硬）",
+          "effects": {
+            "flags": [
+              "rival_gao_hard"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C3_b",
+          "label": "（選項待補：忍）",
+          "effects": {
+            "flags": [
+              "rival_gao_endure"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
       ]
     },
     {
@@ -123,14 +222,22 @@
       "redStarHook": "",
       "nextHint": "",
       "trigger": {
-        "needDone": ["C3"],
+        "needDone": [
+          "C3"
+        ],
+        "minDaysAfterPrev": 1,
         "weekMin": 8,
-        "locIdAny": ["agency_ho", "ad_central"],
+        "locIdAny": [
+          "agency_ho"
+        ],
         "rumorAny": [],
-        "favorMin": 0,
+        "favorMin": 1,
         "tagAny": [],
         "seasonAny": [],
-        "gigCountMin": 0
+        "gigCountMin": 0,
+        "relAny": [],
+        "favorTarget": "agency_ho",
+        "softLogic": "AND"
       },
       "beats": [
         {
@@ -139,14 +246,38 @@
           "speaker": "系統",
           "emotion": null,
           "expression": null,
-          "lines": ["（C4 對白待補）"],
+          "lines": [
+            "（C4 對白待補）"
+          ],
           "locId": "agency_ho",
           "bg": null
         }
       ],
       "choices": [
-        { "id": "C4_a", "label": "（選項待補：拒）", "effects": { "flags": ["flag_refuse_gig_with_ho"], "stats": {}, "tags": [] } },
-        { "id": "C4_b", "label": "（選項待補：接苛刻）", "effects": { "flags": ["flag_take_harsh_gig"], "stats": {}, "tags": ["tag_endure"] } }
+        {
+          "id": "C4_a",
+          "label": "（選項待補：拒）",
+          "effects": {
+            "flags": [
+              "flag_refuse_gig_with_ho"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C4_b",
+          "label": "（選項待補：接苛刻）",
+          "effects": {
+            "flags": [
+              "flag_take_harsh_gig"
+            ],
+            "stats": {},
+            "tags": [
+              "tag_endure"
+            ]
+          }
+        }
       ]
     },
     {
@@ -157,14 +288,29 @@
       "redStarHook": "",
       "nextHint": "",
       "trigger": {
-        "needDone": ["C4"],
+        "needDone": [
+          "C4"
+        ],
+        "minDaysAfterPrev": 1,
         "weekMin": 9,
-        "locIdAny": ["cafe_cha", "tvb_longmen"],
-        "rumorAny": [],
+        "locIdAny": [
+          "cafe_cha",
+          "tvb_longmen"
+        ],
+        "rumorAny": [
+          "choi_recent_news",
+          "hau_ching_recent_news"
+        ],
         "favorMin": 0,
         "tagAny": [],
-        "seasonAny": ["秋", "冬"],
-        "gigCountMin": 0
+        "seasonAny": [
+          "autumn",
+          "winter"
+        ],
+        "gigCountMin": 0,
+        "relAny": [],
+        "rumorSoftPriority": true,
+        "rumorSeedsRequired": true
       },
       "beats": [
         {
@@ -173,15 +319,47 @@
           "speaker": "系統",
           "emotion": null,
           "expression": null,
-          "lines": ["（C5 對白待補）"],
+          "lines": [
+            "（C5 對白待補）"
+          ],
           "locId": "cafe_cha",
           "bg": null
         }
       ],
       "choices": [
-        { "id": "C5_a", "label": "（選項待補：老實）", "effects": { "flags": ["choi_honest"], "stats": {}, "tags": [] } },
-        { "id": "C5_b", "label": "（選項待補：圓場）", "effects": { "flags": ["spin"], "stats": {}, "tags": [] } },
-        { "id": "C5_c", "label": "（選項待補：避）", "effects": { "flags": ["dodge"], "stats": {}, "tags": [] } }
+        {
+          "id": "C5_a",
+          "label": "（選項待補：老實）",
+          "effects": {
+            "flags": [
+              "choi_honest"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C5_b",
+          "label": "（選項待補：圓場）",
+          "effects": {
+            "flags": [
+              "spin"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        },
+        {
+          "id": "C5_c",
+          "label": "（選項待補：避）",
+          "effects": {
+            "flags": [
+              "dodge"
+            ],
+            "stats": {},
+            "tags": []
+          }
+        }
       ]
     }
   ]

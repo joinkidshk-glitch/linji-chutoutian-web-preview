@@ -1,9 +1,23 @@
 {
   "meta": {
-    "version": "v20a0-stub",
+    "version": "v20a1-stub",
     "softStatus": "≠PASS",
-    "note": "Empty/placeholder rumor fragments. Content bot fills text. Soft≠PASS.",
-    "uiPane": "home-pane-rumor"
+    "note": "Rumor fragment shells. Content bot fills text. mergeGroup aligned to Phase2 MERGE_PAIRS where possible. Empty text = no auto-seed. Soft≠PASS.",
+    "uiPane": "home-pane-rumor",
+    "phase2MergePairMap": {
+      "pair_lu_baiyan_breakdown": [
+        "rumor_lu_baiyan_angry",
+        "rumor_lu_baiyan_drunk"
+      ],
+      "pair_liao_bingxing_money": [
+        "rumor_liao_bingxing_talk",
+        "rumor_liao_bingxing_recast"
+      ],
+      "pair_mai_zhendong_hide_injury": [
+        "rumor_mai_zhendong_hurt",
+        "rumor_mai_zhendong_refuse_doc"
+      ]
+    }
   },
   "fragments": [
     {
@@ -12,7 +26,9 @@
       "title": "（噂槽）茶餐廳吹水",
       "text": "",
       "seasonAny": [],
-      "locIdAny": ["cafe_cha"],
+      "locIdAny": [
+        "cafe_cha"
+      ],
       "starId": null,
       "mergeGroup": "cafe_cha_early",
       "state": "seed"
@@ -23,7 +39,9 @@
       "title": "（噂槽）事務所白板",
       "text": "",
       "seasonAny": [],
-      "locIdAny": ["agency_ho"],
+      "locIdAny": [
+        "agency_ho"
+      ],
       "starId": null,
       "mergeGroup": "agency_early",
       "state": "seed"
@@ -33,43 +51,158 @@
       "source": "片場走廊",
       "title": "（噂槽）陸柏言蹤影",
       "text": "",
-      "seasonAny": ["冬"],
-      "locIdAny": ["film_lion"],
+      "seasonAny": [
+        "冬"
+      ],
+      "locIdAny": [
+        "film_lion"
+      ],
       "starId": "luk_baakyin",
-      "mergeGroup": "star_luk",
-      "state": "seed"
+      "mergeGroup": "pair_lu_baiyan_breakdown",
+      "state": "seed",
+      "phase2PairId": "pair_lu_baiyan_breakdown",
+      "mapsToPhase2": [
+        "rumor_lu_baiyan_angry",
+        "rumor_lu_baiyan_drunk"
+      ]
     },
     {
       "id": "rumor_slot_star_liu_01",
       "source": "金龍茶餐廳",
       "title": "（噂槽）廖炳星蹤影",
       "text": "",
-      "seasonAny": ["春"],
-      "locIdAny": ["cafe_cha"],
+      "seasonAny": [
+        "春"
+      ],
+      "locIdAny": [
+        "cafe_cha"
+      ],
       "starId": "liu_bingxing",
-      "mergeGroup": "star_liu",
-      "state": "seed"
+      "mergeGroup": "pair_liao_bingxing_money",
+      "state": "seed",
+      "phase2PairId": "pair_liao_bingxing_money",
+      "mapsToPhase2": [
+        "rumor_liao_bingxing_talk",
+        "rumor_liao_bingxing_recast"
+      ]
     },
     {
       "id": "rumor_slot_star_ngai_01",
       "source": "片場後巷",
       "title": "（噂槽）魏詠男蹤影",
       "text": "",
-      "seasonAny": ["夏"],
-      "locIdAny": ["film_harbour", "agency_ho"],
+      "seasonAny": [
+        "夏"
+      ],
+      "locIdAny": [
+        "film_harbour",
+        "agency_ho"
+      ],
       "starId": "ngai_wingnaam",
       "mergeGroup": "star_ngai",
-      "state": "seed"
+      "state": "seed",
+      "phase2PairId": null
     },
     {
       "id": "rumor_slot_star_yip_01",
       "source": "訓練班",
       "title": "（噂槽）葉敏芝蹤影",
       "text": "",
-      "seasonAny": ["秋"],
-      "locIdAny": ["rec_hk"],
+      "seasonAny": [
+        "秋"
+      ],
+      "locIdAny": [
+        "rec_hk"
+      ],
       "starId": "yip_manji",
       "mergeGroup": "star_yip",
+      "state": "seed",
+      "phase2PairId": null
+    },
+    {
+      "id": "rumor_lu_baiyan_angry",
+      "source": "場務八卦",
+      "title": "陸柏言片場發脾氣",
+      "text": "",
+      "seasonAny": [],
+      "locIdAny": [
+        "film_lion"
+      ],
+      "starId": "luk_baakyin",
+      "mergeGroup": "pair_lu_baiyan_breakdown",
+      "phase2PairId": "pair_lu_baiyan_breakdown",
+      "state": "seed"
+    },
+    {
+      "id": "rumor_lu_baiyan_drunk",
+      "source": "酒保閒聊",
+      "title": "陸柏言深夜買醉",
+      "text": "",
+      "seasonAny": [],
+      "locIdAny": [
+        "cafe_cha"
+      ],
+      "starId": "luk_baakyin",
+      "mergeGroup": "pair_lu_baiyan_breakdown",
+      "phase2PairId": "pair_lu_baiyan_breakdown",
+      "state": "seed"
+    },
+    {
+      "id": "rumor_liao_bingxing_talk",
+      "source": "茶水姐傳聞",
+      "title": "廖炳星同導演密談",
+      "text": "",
+      "seasonAny": [],
+      "locIdAny": [
+        "cafe_cha",
+        "film_lion"
+      ],
+      "starId": "liu_bingxing",
+      "mergeGroup": "pair_liao_bingxing_money",
+      "phase2PairId": "pair_liao_bingxing_money",
+      "state": "seed"
+    },
+    {
+      "id": "rumor_liao_bingxing_recast",
+      "source": "選角導演漏口風",
+      "title": "劇組突然換角",
+      "text": "",
+      "seasonAny": [],
+      "locIdAny": [
+        "agency_ho",
+        "film_lion"
+      ],
+      "starId": "liu_bingxing",
+      "mergeGroup": "pair_liao_bingxing_money",
+      "phase2PairId": "pair_liao_bingxing_money",
+      "state": "seed"
+    },
+    {
+      "id": "rumor_mai_zhendong_hurt",
+      "source": "武師目擊",
+      "title": "麥震東片場整親",
+      "text": "",
+      "seasonAny": [],
+      "locIdAny": [
+        "film_harbour"
+      ],
+      "starId": null,
+      "mergeGroup": "pair_mai_zhendong_hide_injury",
+      "phase2PairId": "pair_mai_zhendong_hide_injury",
+      "state": "seed"
+    },
+    {
+      "id": "rumor_mai_zhendong_refuse_doc",
+      "source": "製片助理抱怨",
+      "title": "麥震東拒睇醫生",
+      "text": "",
+      "seasonAny": [],
+      "locIdAny": [
+        "agency_ho"
+      ],
+      "starId": null,
+      "mergeGroup": "pair_mai_zhendong_hide_injury",
+      "phase2PairId": "pair_mai_zhendong_hide_injury",
       "state": "seed"
     }
   ]
