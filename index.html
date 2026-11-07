@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z7");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z8");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z7");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z8");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z7");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z8");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -49,6 +49,54 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
     box-shadow:0 16px 48px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04);
   }
 }
+/* v19z8: desktop ≥900px — larger phone frame + side rail hints (mobile 390 untouched) */
+@media (min-width:900px){
+  body{
+    gap:22px;
+    padding:18px 24px;
+    align-items:center;
+    justify-content:center;
+  }
+  #desktop-rail{
+    display:block;
+    width:min(220px,22vw);
+    max-width:240px;
+    flex:0 0 auto;
+    align-self:center;
+    padding:14px 14px 16px;
+    border-radius:14px;
+    background:rgba(26,20,16,.55);
+    border:1px solid rgba(201,162,39,.35);
+    color:#F2EBD8;
+    font-size:.78rem;
+    line-height:1.45;
+  }
+  #desktop-rail h2{
+    margin:0 0 8px;font-size:.88rem;color:#C9A227;font-weight:800;
+  }
+  #desktop-rail ul{margin:0;padding-left:1.1em}
+  #desktop-rail li{margin:0 0 6px}
+  #app{
+    width:min(468px,100%);
+    max-width:468px;
+    height:min(960px,calc(100dvh - 36px));
+    border-radius:32px;
+  }
+}
+#desktop-rail{ display:none; }
+.cn-detail-toggle{
+  display:block;width:100%;margin:8px 0 4px;padding:8px 10px;
+  border-radius:10px;border:1px dashed rgba(138,90,32,.45);
+  background:rgba(230,210,168,.25);color:#5a4328;font-weight:800;
+  font-size:.78rem;cursor:pointer;text-align:center;
+}
+.cn-detail[hidden]{ display:none !important; }
+.cn-summary .cn-sum-row{display:flex;justify-content:space-between;gap:8px;margin:4px 0;font-size:.82rem}
+.cn-summary .cn-sum-row .k{color:#6B5340;font-weight:700}
+.cn-summary .cn-sum-row .v{font-weight:800;color:#1A1410;text-align:right}
+.cn-sum-gaps{margin:6px 0 0;font-size:.78rem;line-height:1.4}
+.week-accel-hint{font-size:.72rem;color:var(--muted);margin:4px 0 0}
+
 .view{display:none;flex:1;min-height:0;flex-direction:column}
 .view.on{display:flex}
 .bar{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(10,20,36,.94);border-bottom:1px solid var(--line);z-index:5}
@@ -3034,6 +3082,15 @@ body.day-res-open .day-row{
 </style>
 </head>
 <body>
+<aside id="desktop-rail" class="desktop-rail" aria-label="桌面操作提示">
+  <h2>操作提示</h2>
+  <ul>
+    <li>地圖：通告欄／打聽／訓練</li>
+    <li>手帳：排拍攝同加練</li>
+    <li>試玩閘：傾談／送禮不耗日</li>
+    <li>日結可撳「加速本週剩餘」</li>
+  </ul>
+</aside>
 <div id="app">
   <section id="v-start" class="view on">
     <div class="start">
@@ -18573,7 +18630,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z7. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z8. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -18656,7 +18713,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z7";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z8";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -18742,7 +18799,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=19z7");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=19z8");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -19498,7 +19555,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z7";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z8";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -19668,10 +19725,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_TRAIN,TUT_NPC,TUT_NOTEBOOK,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z7") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z7") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z8") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z8") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z7") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z8") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -20771,7 +20828,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z7";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z8";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -21119,6 +21176,23 @@ function wireGigCardSynToggles(root){
       btn.setAttribute("aria-expanded", wasClamped ? "true" : "false");
     });
   });
+  /* v19z8：通告摘要／詳細兩段 */
+  root.querySelectorAll("[data-cn-toggle]").forEach(btn=>{
+    if(btn.dataset.wired) return;
+    btn.dataset.wired="1";
+    btn.addEventListener("click", ev=>{
+      ev.preventDefault();
+      ev.stopPropagation();
+      const frame = btn.closest(".notice_sheet_frame") || btn.parentElement;
+      const detail = frame ? frame.querySelector(".cn-detail") : null;
+      if(!detail) return;
+      const open = detail.hasAttribute("hidden");
+      if(open) detail.removeAttribute("hidden");
+      else detail.setAttribute("hidden","");
+      btn.textContent = open ? "收起詳細 ▴" : "顯示詳細 ▾";
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  });
 }
 function gigCardHtml(g, opts){
   opts=opts||{};
@@ -21167,7 +21241,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z7`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z8`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -21337,7 +21411,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z7`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z8`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -21534,19 +21608,40 @@ function castingNoticeDetailHtml(g){
           ${weekdayHint?`<div class="cn-wd-sub">${weekdayHint}</div>`:""}
           ${(total < weekly) ? `<div class="cn-wd-sub">實際只需通告 ${total} 日（唔係每週做滿）</div>` : ""}
         </div>`;
+  /* v19z8：預設摘要（片酬／日數／差幾多）；詳細摺叠 */
+  let sumGaps = "";
+  try{
+    const gaps = (typeof gigMissingReqGaps==="function") ? gigMissingReqGaps(g) : [];
+    if(gaps && gaps.length){
+      sumGaps = `<div class="cn-sum-gaps">` + gaps.slice(0,4).map(x=>{
+        const lab = x.label || x.key;
+        return `<span class="gap-no">✗ ${lab} 差 ${x.gap}（現 ${x.cur}／要 ${x.need}）</span>`;
+      }).join("<br>") + `</div>`;
+    } else if(boardState==="ready" || (typeof canAudition==="function" && canAudition(g).ok)){
+      sumGaps = `<div class="cn-sum-gaps"><span class="gap-ok">✓ 條件已達標，可接通告</span></div>`;
+    }
+  }catch(_e){}
   return `<div class="notice_sheet_frame" data-gid="${g.id}">
     <div class="notice_poster_wall" aria-hidden="true"></div>
     <div class="notice_header_orange">
       <h2 class="cn-work">${work}</h2>
     </div>
     <div class="notice_sheet_body">
-    <div class="cn-pills">
-      ${gigGenrePillsHtml(g)}
-      <span class="${statusCls}" data-board-state="${boardState}">${stateLabel}</span>
+    <div class="cn-summary">
+      <div class="cn-pills">
+        ${gigGenrePillsHtml(g)}
+        <span class="${statusCls}" data-board-state="${boardState}">${stateLabel}</span>
+      </div>
+      ${stateSub?`<p class="cn-board-sub">${stateSub}</p>`:""}
+      <div class="cn-stars-row"><span class="cn-lab-inline">難易度</span><span class="cn-stars">${starHtml}</span></div>
+      ${roleLine}
+      <div class="cn-sum-row"><span class="k">片酬</span><span class="v">${payStr}</span></div>
+      <div class="cn-sum-row"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
+      <div class="cn-sum-row"><span class="k">通告期間</span><span class="v">${period}</span></div>
+      ${sumGaps}
     </div>
-    ${stateSub?`<p class="cn-board-sub">${stateSub}</p>`:""}
-    <div class="cn-stars-row"><span class="cn-lab-inline">難易度</span><span class="cn-stars">${starHtml}</span></div>
-    ${roleLine}
+    <button type="button" class="cn-detail-toggle" data-cn-toggle aria-expanded="false">顯示詳細 ▾</button>
+    <div class="cn-detail" hidden>
     <div class="notice_table_frame">
       <div class="notice_table_cell cond">
         <div class="cn-lab">條件</div>
@@ -21570,6 +21665,7 @@ function castingNoticeDetailHtml(g){
         <p>${syn}</p>
         ${(g.roleLabel && g.roleHint) ? (`<div class="cn-role-note">角色：${String(g.roleHint)}</div>`) : ""}
       </div>
+    </div>
     </div>
     </div>
   </div>`;
@@ -22536,9 +22632,25 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
   try{ document.body.classList.add("day-res-open"); }catch(_e){}
   const dropBits = takeShootDropNotes();
   const dropHtml = dropBits.length ? `<div style="margin:6px 0">${dropBits.join("<br>")}</div>` : "";
-  modal(`<h3>${title}</h3>${dropHtml}${resultHtml}${extra}${dayLine}`,[
-    {label: ended?"回家結算":"繼續", role:"p", on:go}
-  ], {onDismiss: go});
+  const btns = [];
+  try{
+    if(Array.isArray(opts.extraBtns)) opts.extraBtns.forEach(b=>btns.push(b));
+  }catch(_e){}
+  try{
+    const rem = (!ended) ? countRemainingAutoDays() : 0;
+    if(rem>0){
+      btns.push({
+        label:"加速本週剩餘",
+        role:"g",
+        on:()=>{
+          beginWeekAccel({ title, blurb: String(title||"") });
+          go();
+        }
+      });
+    }
+  }catch(_e){}
+  btns.push({label: ended?"回家結算":"繼續", role:"p", on:go});
+  modal(`<h3>${title}</h3>${dropHtml}${resultHtml}${extra}${dayLine}${(!ended && btns.length>1)?`<p class="week-accel-hint">可合併後面非關鍵日；殺青／試鏡會停。</p>`:""}`, btns, {onDismiss: go});
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   saveQ();
 }
@@ -23126,9 +23238,89 @@ function goToMapForBrowse(){
   toast(`今日：${meta.name}`, {closeSheet:true});
 }
 
+/* v19z8：週日結加速 — 合併非關鍵自動日，殺青／試鏡／事態仍停 */
+let _weekAccel = false;
+let _weekAccelBuf = [];
+function planDayWouldWrap(id){
+  try{
+    if(!String(id||"").startsWith("shoot:")) return false;
+    const sid=String(id).slice(6);
+    const sh=(S.shoots||[]).find(x=>x && x.id===sid);
+    if(!sh) return false;
+    return ((sh.doneDays||0)+1) >= (sh.totalDays||0);
+  }catch(_e){ return false; }
+}
+function isCriticalPlanDay(id, shootFinished){
+  const s=String(id||"");
+  if(!s) return false;
+  if(s.startsWith("wrap:") || s.startsWith("audition:") || s.startsWith("job:")) return true;
+  if(shootFinished) return true;
+  if(planDayWouldWrap(s)) return true;
+  try{
+    if(typeof storyOpenSnapshot==="function"){
+      const snap=storyOpenSnapshot();
+      /* 有可播事態時唔加速掠過（玩家應見到提示）——只喺加速過程中若事態新開則停 */
+    }
+  }catch(_e){}
+  return false;
+}
+function countRemainingAutoDays(){
+  if(!S || !S.weekPlan) return 0;
+  let n=0;
+  const start = (S.dayIndex|0);
+  /* 由「而家」起計本週剩餘（含今日若仍係強制日） */
+  for(let d=start; d<start+7; d++){
+    const wd = weekdayIdx(d);
+    /* 過咗星期日就停（下一週） */
+    if(d>start && wd===0) break;
+    const id = (d===start) ? todayPlanId() : (S.weekPlan[wd]||null);
+    if(!id || isMapDay(id)) break;
+    if(String(id).startsWith("wrap:") || String(id).startsWith("audition:")) break;
+    if(d===start) continue; /* 今日正在結算，計後面 */
+    if(isCriticalPlanDay(id, false) && planDayWouldWrap(id)) { n++; break; }
+    n++;
+    if(n>=6) break;
+  }
+  return n;
+}
+function beginWeekAccel(seedLine){
+  _weekAccel = true;
+  _weekAccelBuf = seedLine ? [seedLine] : [];
+  try{ toast("加速本週剩餘日程…", { sub:"殺青／試鏡日會停下" }); }catch(_e){}
+}
+function flushWeekAccelSummary(finalTitle, finalBody, ended, summary, contFn){
+  const buf = _weekAccelBuf.slice();
+  _weekAccel = false;
+  _weekAccelBuf = [];
+  const list = buf.map((row,i)=>`<p style="margin:4px 0"><b>${i+1}. ${row.title||"日程"}</b> — ${(row.blurb||"").slice(0,48)}</p>`).join("");
+  const head = buf.length>1
+    ? `<h3>本週加速摘要</h3><p class="sub">已合併 ${buf.length} 個非關鍵日。</p>${list}`
+    : `<h3>${finalTitle||"日程"}</h3>`;
+  const extra = ended ? `<p class="gold">一週完結 → 回家結算</p>` : "";
+  modal(`${head}${finalBody||""}${extra}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
+    {label: ended?"回家結算":"繼續", role:"p", on:contFn}
+  ], {onDismiss: contFn});
+}
+function resolveWeekRemaining(opts){
+  opts = opts || {};
+  beginWeekAccel(opts.seedLine||null);
+  try{ runScheduleFromToday(); }catch(_e){ _weekAccel=false; }
+  return { ok:true };
+}
 function runScheduleFromToday(){
   const id=todayPlanId();
   if(!id || isMapDay(id) || String(id).startsWith("wrap:") || String(id).startsWith("audition:")){
+    if(_weekAccel){
+      const buf=_weekAccelBuf.slice();
+      _weekAccel=false; _weekAccelBuf=[];
+      if(buf.length){
+        const list = buf.map((row,i)=>`<p style="margin:4px 0"><b>${i+1}. ${row.title||"日程"}</b></p>`).join("");
+        modal(`<h3>本週加速完成</h3><p class="sub">已處理 ${buf.length} 日，而家可自由行動。</p>${list}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
+          {label:"返回地圖", role:"p", on:()=>goToMapForBrowse()}
+        ], {onDismiss:()=>goToMapForBrowse()});
+        return;
+      }
+    }
     goToMapForBrowse();
     return;
   }
@@ -23325,10 +23517,40 @@ function resolvePlannedDay(id){
   const dayLine = isRestCard
     ? `<p style="font-size:.75rem;color:var(--muted)">完成日：${dayDone} → 而家 ${fmtDate()}</p>`
     : `<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`;
+  const critical = !!isCriticalPlanDay(id, shootFinished);
+  const blurb = String((notes||[]).map(x=>String(x).replace(/<[^>]+>/g,"")).join(" · ")).slice(0,56);
+  /* 加速中：非關鍵日靜默合併，殺青／試鏡／週結停下 */
+  if(_weekAccel && !critical && !ended){
+    _weekAccelBuf.push({ title, blurb });
+    try{ syncDateChrome(); }catch(_e){}
+    saveQ();
+    setTimeout(()=>{ try{ runScheduleFromToday(); }catch(_e){} }, 0);
+    return;
+  }
+  if(_weekAccel && (critical || ended)){
+    _weekAccelBuf.push({ title, blurb });
+    const cont = nextNb;
+    flushWeekAccelSummary(title, body+(ended?`<p class="gold">一週完結 → 回家結算</p>`:""), ended, summary, cont);
+    if(isRestCard){ try{ document.body.classList.add("day-res-open"); const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){} }
+    saveQ();
+    return;
+  }
   if(isRestCard){ try{ document.body.classList.add("day-res-open"); }catch(_e){} }
-  modal(`<h3>${title}</h3>${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${dayLine}`,[
-    {label: ended?"回家結算":"繼續", role:"p", on:nextNb}
-  ], {onDismiss: nextNb});
+  const btns = [{label: ended?"回家結算":"繼續", role:"p", on:nextNb}];
+  try{
+    const rem = (!ended && !critical) ? countRemainingAutoDays() : 0;
+    if(rem>0){
+      btns.unshift({
+        label:"加速本週剩餘",
+        role:"g",
+        on:()=>{
+          beginWeekAccel({ title, blurb });
+          nextNb();
+        }
+      });
+    }
+  }catch(_e){}
+  modal(`<h3>${title}</h3>${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${dayLine}${(!ended && btns.length>1)?`<p class="week-accel-hint">可合併休息／表演／訓練日；殺青同試鏡仍會停。</p>`:""}`, btns, {onDismiss: nextNb});
   if(isRestCard){ try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){} }
   saveQ();
 }
@@ -24495,16 +24717,10 @@ function renderDebtPane(){
     btn.onclick=(ev)=>{
       try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){}
       try{
-        show("v-map");
-        mapRegion = "island";
-        document.querySelectorAll("#region-tabs button").forEach(b=>b.classList.toggle("on", b.dataset.r===mapRegion));
-        paintBar(); drawMap();
-        setTimeout(()=>{
-          openLoc("agency_ho");
-          setTimeout(()=>{ try{ openHoRepaySheet(LOCS.find(x=>x.id==="agency_ho")); }catch(_e){} }, 80);
-        }, 60);
-        toast("去何生事務所還人情");
-      }catch(_e){ toast("無法跳轉還款"); }
+        /* v19z8：一鍵直達還款 UI，唔使先跳地圖再開 sheet */
+        const L = (typeof LOCS!=="undefined") ? LOCS.find(x=>x.id==="agency_ho") : null;
+        openHoRepaySheet(L || { id:"agency_ho", name:"何生事務所" });
+      }catch(_e){ toast("無法開啟還款"); }
     };
   });
 }
@@ -24781,7 +24997,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z7";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z8";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -24795,7 +25011,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=19z7";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=19z8";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -24853,7 +25069,7 @@ function addStarSighting(locId, add){
   const star = starAtLoc(locId);
   if(!star || typeof add!=="function") return;
   const verb = star.actionLabel || "遠觀";
-  add(`${verb}：${star.displayName}`, star.distanceLine, "無", ()=>openStarSighting(star), "act-priority act-ask");
+  add(`${verb}：${star.displayName}`, star.distanceLine || "遠處張望", "僅遠望 · 無互動", ()=>openStarSighting(star), "act-priority act-ask");
 }
 try{
   window.__phase3 = {
@@ -24890,11 +25106,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z7") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z8") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z7") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z8") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -25334,21 +25550,21 @@ function openLoc(id){
   scrollMapPinIntoView(id);
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z7. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z8. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z7",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z7",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z7",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z7",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z7",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z7",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z7",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z7",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z7",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z7",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z7",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z7",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z7",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z8",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z8",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z8",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z8",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z8",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z8",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z8",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z8",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z8",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z8",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z8",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z8",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z8",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -25551,8 +25767,25 @@ function doEnrollRun(L, tr){
   const cname=(COURSE_DEFS[tr.courseId]||{}).name || tr.name;
   /* v19q：第一堂／已解鎖只留首次報名。加練標題用課名，唔再寫「（第一堂）」，正文唔再重複已解鎖。 */
   const title = newly ? (tr.name+"（第一堂）") : (`加練：${cname}`);
-  const foot = newly ? `<p class="gold">手帳「訓練」已解鎖，之後可再排加練。</p>` : "";
-  afterDayModal(`<p>${L.name}</p>${formatResultNotes(notes)}${foot}`, title, L, ended, summary);
+  const foot = newly
+    ? `<p class="gold">手帳「訓練」已解鎖，之後可再排加練。</p><p class="sub">建議本週再排 1–2 日加練（手帳 → 訓練）。</p>`
+    : "";
+  const extraBtns = newly ? [{
+    label:"入手帳排加練",
+    role:"g",
+    on:()=>{
+      try{
+        enterHome(null, true);
+        setTimeout(()=>{
+          try{ planCat="train"; }catch(_e){}
+          try{ if(typeof setHomeTab==="function") setHomeTab("plan"); }catch(_e){}
+          try{ renderNotebook(); }catch(_e){}
+          toast("已解鎖訓練——喺手帳揀日子排加練。");
+        }, 40);
+      }catch(_e){}
+    }
+  }] : [];
+  afterDayModal(`<p>${L.name}</p>${formatResultNotes(notes)}${foot}`, title, L, ended, summary, { extraBtns });
   try{ if(typeof renderNotebook==="function") renderNotebook(); }catch(_nb){}
 }
 
@@ -26710,12 +26943,12 @@ function showB01HomeModal(){
 }
 
 
-function startNew(){
-  if(hasSave() && !confirm("開新遊戲會覆蓋存檔，確定？")) return;
+function startNewFresh(){
   S=fresh(); syncDualTracks(S); refreshNpc(); atLoc=null;
   try{ ensureEntryTierBoardFill(); }catch(_ef){}
   saveQ();
   closeSheet();
+  try{ closeModal(); }catch(_e){}
   if(softSeedRequested()){
     maybeApplySoftSeed();
     return;
@@ -26735,6 +26968,28 @@ function startNew(){
     }catch(_e){}
     showB01HomeModal();
   }
+}
+function startNew(){
+  /* v19z8：應用內確認，取代原生 confirm；顯示存檔摘要 */
+  if(hasSave()){
+    let prev=null;
+    try{ prev=load(); }catch(_e){ prev=null; }
+    const dayIndex = (prev && prev.dayIndex!=null) ? (prev.dayIndex|0) : 0;
+    const week = Math.floor(dayIndex/7)+1;
+    const money = (prev && prev.money!=null) ? Number(prev.money)||0 : 0;
+    const fame = (prev && prev.fame!=null) ? Number(prev.fame)||0 : 0;
+    const dual = (prev && typeof readDualTracks==="function") ? readDualTracks(prev) : null;
+    const stage = dual ? dual.stageVolume : fame;
+    modal(`<h3>開新遊戲</h3>
+      <p>會覆蓋而家存檔：</p>
+      <p class="sub">第 <b>${week}</b> 週 · 存款 <b>$${money.toLocaleString()}</b> · 幕前聲量 <b>${stage}</b></p>
+      <p>確定覆蓋開新局？</p>`,[
+      {label:"取消", role:"g"},
+      {label:"覆蓋開新局", role:"d", on:()=>startNewFresh()}
+    ]);
+    return;
+  }
+  startNewFresh();
 }
 function cont(){
   S=load(); if(!S) return startNew();
