@@ -3670,6 +3670,35 @@ body.day-res-open .day-row{
 .psr-dual{ margin:6px 0 0; }
 .psr-foot{ margin:8px 0 0; font-size:.68rem; }
 .awd-sheet .psr-eyebrow{ letter-spacing:.14em; }
+/* v20a9：休息睡覺 8-bit FX overlay（高過 #mask，唔吞 Soft CTA） */
+#rest-sleep-fx{
+  position:fixed; inset:0; z-index:800;
+  display:none; align-items:center; justify-content:center;
+  flex-direction:column; gap:10px;
+  background:#0a0810;
+  padding:16px;
+  box-sizing:border-box;
+}
+#rest-sleep-fx.on{ display:flex; }
+#rest-sleep-fx video{
+  width:min(92vw, 420px); max-height:min(70dvh, 520px);
+  height:auto; background:#000;
+  image-rendering:pixelated; image-rendering:crisp-edges;
+  border:2px solid rgba(255,220,160,.28); border-radius:8px;
+  box-shadow:0 8px 28px rgba(0,0,0,.55);
+}
+#rest-sleep-fx .rest-sleep-cap{
+  margin:0; color:#e8dcc6; font-size:.85rem; font-weight:700; letter-spacing:.04em;
+}
+#rest-sleep-fx .rest-sleep-skip{
+  position:absolute; top:14px; right:14px;
+  min-height:36px; padding:6px 14px;
+  font-size:.85rem; font-weight:700;
+  background:rgba(255,248,230,.94); color:#3a2e22;
+  border:1px solid rgba(60,40,20,.25); border-radius:8px;
+  cursor:pointer; z-index:2;
+}
+
 </style>
 </head>
 <body>
@@ -3855,6 +3884,13 @@ body.day-res-open .day-row{
   <div class="btnrow" id="modal-btns" style="margin-top:12px;justify-content:flex-end"></div>
 </div></div>
 <div class="toast" id="toast" aria-hidden="true"></div>
+
+<div id="rest-sleep-fx" aria-hidden="true">
+  <button type="button" class="rest-sleep-skip" id="rest-sleep-skip">略過</button>
+  <video id="rest-sleep-video" playsinline muted preload="auto"></video>
+  <p class="rest-sleep-cap">休息睡覺</p>
+</div>
+
 </div>
 
 <script>
@@ -24753,7 +24789,7 @@ function endBrowseDayGoHome(){
   const dayDone = fmtDate();
   const notes = apply({stamina:6+R(0,4), stress:-(4+R(0,4))});
   const {ended, summary}=tickDay();
-  afterDayModal(
+  const showEarlyRest = ()=> afterDayModal(
     `<p>提早返屋企休息，今日完。</p>${formatResultNotes(notes)}`,
     "回家結算",
     null,
@@ -24761,6 +24797,7 @@ function endBrowseDayGoHome(){
     summary,
     {dayDone}
   );
+  try{ playRestSleepFx(showEarlyRest); }catch(_e5){ showEarlyRest(); }
 }
 function goJournalFromMenu(){
   closeSheet();
@@ -25319,9 +25356,17 @@ function resolvePlannedDay(id){
   }catch(_e){}
   const liveHint2 = livingCostDayEndHint();
   const dismissNb = ended ? nextNbReward : ()=> afterDayRes(()=>{ try{ goToMapForBrowse(); }catch(_e){} });
-  modal(`<h3>${title}</h3>${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}${dayLine}${(!ended && btns.some(b=>String(b.label||"").indexOf("加速")>=0))?`<p class="week-accel-hint">加速需二次確認並列出將跳過日子。</p>`:""}`, btns, {onDismiss: dismissNb});
-  if(isRestCard){ try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){} }
-  saveQ();
+  const showPlanDayRes = ()=>{
+    modal(`<h3>${title}</h3>${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}${dayLine}${(!ended && btns.some(b=>String(b.label||"").indexOf("加速")>=0))?`<p class="week-accel-hint">加速需二次確認並列出將跳過日子。</p>`:""}`, btns, {onDismiss: dismissNb});
+    if(isRestCard){ try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){} }
+    saveQ();
+  };
+  /* v20a9：休息睡覺播 8-bit clip；週加速靜默合併唔播；唔擋 Soft CTA restore */
+  if(id==="rest" && !_weekAccel){
+    try{ playRestSleepFx(showPlanDayRes); }catch(_e){ showPlanDayRes(); }
+  } else {
+    showPlanDayRes();
+  }
 }
 
 
@@ -26918,7 +26963,7 @@ try{
 
 /* ===== v20a6 FREEPLAY — awards ceremony four tracks + Soft journal; Soft≠PASS ===== */
 const FREEPLAY_FW = {
-  version: "v20a8",
+  version: "v20a9",
   schema: null,
   eraStars: null,
   rumorFrags: null,
@@ -27460,7 +27505,7 @@ function postShootRewardCheck(){
     if(/《《/.test(html)) fails.push("title_double");
     if(/短訊可換/.test(html)) fails.push("stub_tip_visible");
   }catch(_e){ fails.push("build_err"); }
-  return { ok:!fails.length, fails:fails, version:"v20a8", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, version:"v20a9", softStatus:"≠PASS" };
 }
 try{
   window.__reward = {
@@ -28021,7 +28066,7 @@ function awardsCheck(){
     if(/金像|十大中文金曲|廣告公會|TVB.*大獎/.test(html)) fails.push("real_award_name");
     if(/nextHint/.test(html) && /待補 nextHint/.test(html)) fails.push("nextHint");
   }catch(_e){ fails.push("build_err"); }
-  return { ok:!fails.length, fails:fails, version:"v20a8", softStatus:"≠PASS", ceremonies:have.slice() };
+  return { ok:!fails.length, fails:fails, version:"v20a9", softStatus:"≠PASS", ceremonies:have.slice() };
 }
 function awardsPreview(opts){
   return buildAwardResultPack(opts||{});
@@ -28124,7 +28169,7 @@ try{
     },
     check: function(){
       const fails=[];
-      if(FREEPLAY_FW.version!=="v20a6") fails.push("ver");
+      if(FREEPLAY_FW.version!=="v20a9") fails.push("ver");
       const ids=["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji"];
       ids.forEach(id=>{ if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId===id)) fails.push("star:"+id); });
       if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan")) fails.push("so_jiyan_sighting");
@@ -28198,8 +28243,12 @@ try{
         const ac = awardsCheck();
         if(!ac.ok) fails.push.apply(fails, (ac.fails||[]).map(f=>"awards:"+f));
       }catch(_e){ fails.push("awards_check"); }
+      try{
+        const rfc = restSleepFxCheck();
+        if(!rfc.ok) fails.push.apply(fails, (rfc.fails||[]).map(f=>"restFx:"+f));
+      }catch(_e){ fails.push("restFx_check"); }
       return {
-        ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a8",
+        ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a9",
         slotsCount: ((FREEPLAY_FW.storySlots&&FREEPLAY_FW.storySlots.nodes)||[]).length,
         soJiyan: typeof STAR_SIGHTINGS!=="undefined" && STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan"),
         creditGate: typeof softIndustryCreditGate==="function",
@@ -28207,6 +28256,7 @@ try{
         postShootReward: typeof queuePostShootRewardOnWrap==="function",
         awardsCeremony: typeof queueAwardsOnSeasonWindow==="function",
         awardsIds: (typeof awardsCeremonies==="function") ? awardsCeremonies().map(c=>c&&c.id).filter(Boolean) : [],
+        restSleepFx: typeof playRestSleepFx==="function",
       };
     }
   };
@@ -29340,6 +29390,84 @@ function doEnrollRun(L, tr){
   try{ if(typeof renderNotebook==="function") renderNotebook(); }catch(_nb){}
 }
 
+
+/* ===== v20a9 REST SLEEP FX — 8-bit home rest clip; Soft≠PASS; no tip LIVE; SAVE unchanged ===== */
+const REST_SLEEP_FX_SRC = "assets/fx/awei-rest-sleep.mp4";
+let _restSleepFxBusy = false;
+function playRestSleepFx(thenFn){
+  const cont = (typeof thenFn==="function") ? thenFn : function(){};
+  if(_restSleepFxBusy){ try{ cont(); }catch(_e){} return false; }
+  let done = false;
+  const finish = ()=>{
+    if(done) return;
+    done = true;
+    _restSleepFxBusy = false;
+    try{
+      const root = document.getElementById("rest-sleep-fx");
+      const vid = document.getElementById("rest-sleep-video");
+      if(vid){
+        try{ vid.onended = null; vid.onerror = null; }catch(_e0){}
+        try{ vid.pause(); }catch(_e1){}
+        try{ vid.removeAttribute("src"); vid.load(); }catch(_e2){}
+      }
+      if(root){
+        root.classList.remove("on");
+        root.setAttribute("aria-hidden","true");
+        try{ root.onclick = null; }catch(_e3){}
+      }
+      const skip = document.getElementById("rest-sleep-skip");
+      if(skip){ try{ skip.onclick = null; }catch(_e4){} }
+    }catch(_e){}
+    try{ cont(); }catch(_e5){}
+  };
+  try{
+    const root = document.getElementById("rest-sleep-fx");
+    const vid = document.getElementById("rest-sleep-video");
+    const skip = document.getElementById("rest-sleep-skip");
+    if(!root || !vid){ cont(); return false; }
+    _restSleepFxBusy = true;
+    try{ vid.muted = true; vid.playsInline = true; }catch(_e6){}
+    try{ vid.setAttribute("playsinline",""); vid.setAttribute("muted",""); }catch(_e7){}
+    vid.src = REST_SLEEP_FX_SRC + ((/\?/.test(REST_SLEEP_FX_SRC)?"&":"?") + "v=20a9");
+    try{ vid.currentTime = 0; }catch(_e8){}
+    vid.onended = ()=> finish();
+    vid.onerror = ()=> finish();
+    if(skip){
+      skip.onclick = (ev)=>{ try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e9){} finish(); };
+    }
+    root.onclick = (ev)=>{
+      try{
+        if(ev && ev.target && (ev.target.id==="rest-sleep-skip" || (ev.target.closest && ev.target.closest("#rest-sleep-skip")))) return;
+      }catch(_e10){}
+      finish();
+    };
+    root.classList.add("on");
+    root.setAttribute("aria-hidden","false");
+    const p = vid.play();
+    if(p && typeof p.catch==="function"){
+      p.catch(()=>{ finish(); });
+    }
+    setTimeout(()=>{ if(!done) finish(); }, 5200);
+    return true;
+  }catch(_e){ finish(); return false; }
+}
+function restSleepFxCheck(){
+  const fails=[];
+  if(!document.getElementById("rest-sleep-fx")) fails.push("dom");
+  if(!document.getElementById("rest-sleep-video")) fails.push("video");
+  if(typeof playRestSleepFx!=="function") fails.push("play");
+  if(typeof REST_SLEEP_FX_SRC==="undefined" || String(REST_SLEEP_FX_SRC).indexOf("awei-rest-sleep.mp4")<0) fails.push("src");
+  try{ if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save"); }catch(_e){ fails.push("save"); }
+  return { ok:!fails.length, fails:fails, version:"v20a9", softStatus:"≠PASS", src: (typeof REST_SLEEP_FX_SRC!=="undefined"?REST_SLEEP_FX_SRC:"") };
+}
+try{
+  window.__restFx = {
+    play: playRestSleepFx,
+    check: restSleepFxCheck,
+    src: function(){ return REST_SLEEP_FX_SRC; }
+  };
+}catch(_e){}
+
 function doRest(L){
   confirmSpendDay("休息室歇陣", ()=>{
     const notes=apply({stamina:16+R(0,8), stress:-(14+R(0,8))});
@@ -29347,7 +29475,8 @@ function doRest(L){
     closeSheet();
     const dayDone = fmtDate();
     const {ended, summary}=tickDay();
-    afterDayModal(`<p>喺${L.name}歇咗一日。</p>${formatResultNotes(notes)}`, "休息", L, ended, summary, {dayDone});
+    const show = ()=> afterDayModal(`<p>喺${L.name}歇咗一日。</p>${formatResultNotes(notes)}`, "休息", L, ended, summary, {dayDone});
+    try{ playRestSleepFx(show); }catch(_e){ show(); }
   });
 }
 
