@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z30");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z31");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z30");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z31");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z30");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z31");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -3475,6 +3475,13 @@ body.day-res-open .day-row{
 }
 
 
+/* ===== v19z31: playtest closeout — people/jobs/debt CTAs ===== */
+.people-go, .debt-empty .debt-repay-btn{
+  margin-top:6px; min-height:36px; padding:6px 12px; border-radius:10px;
+  border:1px solid rgba(201,162,39,.55); background:rgba(201,162,39,.12);
+  color:var(--gold,#c9a227); font-weight:700; font-size:.78rem; cursor:pointer;
+}
+.people-go:active, .debt-empty .debt-repay-btn:active{ transform:scale(.98); }
 /* ===== v19z30: map chrome polish — compact legend · story strip · pin/HUD harden ===== */
 /* 1) Legend: one short row, less vertical space on phone */
 #map-legend.map-legend,
@@ -18126,9 +18133,14 @@ const BehaviorGate = (function(){
   }
   function liveGigCount(){
     try{
-      if(typeof S!=="undefined" && S && S.story && typeof S.story.gigCount==="number") return S.story.gigCount;
       const flags = (typeof S!=="undefined" && S && S.flags) || {};
-      return Object.keys(flags).filter(k=>k.indexOf("done_")===0 && flags[k]).length;
+      const fromFlags = Object.keys(flags).filter(k=>k.indexOf("done_")===0 && flags[k]).length;
+      let fromStory = 0;
+      if(typeof S!=="undefined" && S && S.story && typeof S.story.gigCount==="number"){
+        fromStory = Math.max(0, Number(S.story.gigCount)||0);
+      }
+      /* v19z31：取 max，避免 soft seed 寫死 0／未增量令 C2 gigCountMin 永遠唔達 */
+      return Math.max(fromStory, fromFlags);
     }catch(_e){ return 0; }
   }
   function liveRumors(){
@@ -19198,7 +19210,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z30. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z31. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -19281,7 +19293,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z30";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z31";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -19367,7 +19379,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=19z30");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=19z31");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -20177,7 +20189,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z30";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z31";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -20347,10 +20359,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z30") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z30") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z31") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z31") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z30") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z31") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -21804,7 +21816,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z30";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z31";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -22104,6 +22116,13 @@ function chance(gig){
   if(tier==="中") p *= 0.9;
   if(tier==="高") p *= 0.82;
   const floor = (keys && matched===keys) ? 0.06 : 0.02;
+  /* v19z31 soft：入場通告試鏡保底，確保頭幾週可湊齊通告 3／3 → C2 */
+  try{
+    if(typeof softPreviewOn==="function" && softPreviewOn() && gig && gig.entryTier){
+      p = Math.max(p, 0.78);
+      return clamp(p, 0.72, 0.92);
+    }
+  }catch(_e){}
   return clamp(p, floor, 0.88);
 }
 /** Concise lock reason for card / toast (no long train essay). */
@@ -22249,7 +22268,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z30`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z31`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -22419,7 +22438,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z30`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z31`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -24612,7 +24631,18 @@ function resolvePlannedDay(id){
         if(sh.type==="廣告") bumpNpc("stylist",2);
         S.flags["done_"+sh.gigId]=(S.flags["done_"+sh.gigId]||0)+1;
         S.weekGigsDone = (Number(S.weekGigsDone)||0) + 1;
+        try{
+          if(!S.story || typeof S.story!=="object") S.story = {};
+          S.story.gigCount = Math.max(0, Number(S.story.gigCount)||0) + 1;
+        }catch(_gc){}
         try{ noteWeekHighlight("gig", sh.title||sh.gigId); }catch(_wh){}
+        try{
+          if(typeof softPreviewOn==="function" && softPreviewOn()){
+            const flagsN = Object.keys(S.flags||{}).filter(k=>k.indexOf("done_")==0 && S.flags[k]).length;
+            const n = Math.max(Number(S.story.gigCount)||0, flagsN);
+            if(n>0 && n<=3) toast("通告進度 "+Math.min(n,3)+"／3"+(n>=3?" · 第2幕條件接近":""));
+          }
+        }catch(_tg){}
         if((S.flags["done_"+sh.gigId]||0)>=1 && sh.type==="電視劇") S.flags.resume_tv=true;
         if(sh.type==="電影") S.flags.resume_film=true;
         try{
@@ -24643,10 +24673,10 @@ function resolvePlannedDay(id){
     }
   }
   else if(id==="train_acting"){ notes=apply({acting:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_acting=(S.trainCount.train_acting||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_acting")); }
-  else if(id==="train_stage"){ notes=apply({stage:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stage=(S.trainCount.train_stage||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stage")); }
-  else if(id==="train_vocal"){ notes=apply({vocal:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_vocal=(S.trainCount.train_vocal||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_vocal")); }  else if(id==="train_looks"){ notes=apply({looks:3+R(0,2), charm:1, money:-Math.min(800,S.money), stress:6+R(0,3)}); S.trainCount=S.trainCount||{}; S.trainCount.train_looks=(S.trainCount.train_looks||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_looks")); }
-  else if(id==="train_charm"){ notes=apply({charm:3+R(0,2), stress:5+R(0,3)}); S.trainCount=S.trainCount||{}; S.trainCount.train_charm=(S.trainCount.train_charm||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_charm")); }
-  else if(id==="train_iq"){ notes=apply({iq:3+R(0,2), acting:1, stress:4+R(0,2)}); S.trainCount=S.trainCount||{}; S.trainCount.train_iq=(S.trainCount.train_iq||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_iq")); }
+  else if(id==="train_stage"){ notes=apply({stage:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stage=(S.trainCount.train_stage||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stage")); }
+  else if(id==="train_vocal"){ notes=apply({vocal:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_vocal=(S.trainCount.train_vocal||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_vocal")); }  else if(id==="train_looks"){ notes=apply({looks:3+R(0,2), charm:1, money:-Math.min(800,S.money), stress:6+R(0,3)}); S.trainCount=S.trainCount||{}; S.trainCount.train_looks=(S.trainCount.train_looks||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_looks")); }
+  else if(id==="train_charm"){ notes=apply({charm:3+R(0,2), stress:5+R(0,3)}); S.trainCount=S.trainCount||{}; S.trainCount.train_charm=(S.trainCount.train_charm||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_charm")); }
+  else if(id==="train_iq"){ notes=apply({iq:3+R(0,2), acting:1, stress:4+R(0,2)}); S.trainCount=S.trainCount||{}; S.trainCount.train_iq=(S.trainCount.train_iq||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_iq")); }
   else if(id==="train_acting_mid"){ notes=apply({acting:6+R(0,2), stage:2, stress:10+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_acting_mid=(S.trainCount.train_acting_mid||0)+1; }
   else if(id==="train_stage_mid"){ notes=apply({stage:6+R(0,2), charm:2, stress:10+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stage_mid=(S.trainCount.train_stage_mid||0)+1; }
   else if(id==="rest"){ notes=apply({stamina:20+R(0,8), stress:-(18+R(0,8))}); title = `休息（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
@@ -24926,7 +24956,8 @@ function storyMainProgressLine(){
     if(gigNeed==null){
       try{
         const haveFlags = Object.keys((S && S.flags)||{}).filter(k=>k.indexOf("done_")===0 && S.flags[k]).length;
-        gigHave = (S.story && typeof S.story.gigCount==="number") ? Number(S.story.gigCount) : haveFlags;
+        const fromStory = (S.story && typeof S.story.gigCount==="number") ? Number(S.story.gigCount)||0 : 0;
+        gigHave = Math.max(fromStory, haveFlags);
       }catch(_e){ gigHave = 0; }
       /* soft C2 預設門檻；live 無 gigCountMin 時仍顯示已完成通告數 */
       gigNeed = (id==="C2") ? 3 : 0;
@@ -26158,6 +26189,21 @@ function renderDebtPane(){
   if(!box) return;
   ensureMockJournal();
   ensureWeakSeals();
+  /* v19z31：soft／早期若無人情債，種教學債，令「去還」唔係死 stub */
+  try{
+    const soft = (typeof softPreviewOn==="function" && softPreviewOn());
+    const empty = !(S.mockDebts||[]).length;
+    const dayOk = (S.dayIndex|0) >= 2;
+    let c1 = false;
+    try{ c1 = !!(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone("C1")); }catch(_e){}
+    if(empty && (soft || c1 || dayOk) && typeof MOCK_DEBT_TUTORIAL!=="undefined"){
+      if(!(S.mockDebts||[]).some(d=>d && d.id===MOCK_DEBT_TUTORIAL.id)){
+        S.mockDebts = S.mockDebts || [];
+        S.mockDebts.unshift(Object.assign({}, MOCK_DEBT_TUTORIAL));
+        try{ syncNotebookMirror(); }catch(_e){}
+      }
+    }
+  }catch(_e){}
   const season=(typeof calendarSeason==="function") ? calendarSeason() : "春";
   const pressure=favorPressure();
   const clearedSeason = ensureSeasonDebtClearedBag();
@@ -26178,7 +26224,7 @@ function renderDebtPane(){
     const who=debtCreditorName(d);
     const amt = (d.amount!=null) ? ("金額約 $"+Number(d.amount).toLocaleString()) : ("人情："+journalText(d.weight)+" · 建議 $200／禮物");
     return `<article class="debt-row" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p><p class="debt-note">${journalText(d.season)}</p>${repayBtn(d.id,false)}</article>`;
-  }).join("") : (cardHtml ? "" : `<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p></div>`);
+  }).join("") : (cardHtml ? "" : `<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p><p class="sub" style="margin-top:8px"><button type="button" class="debt-repay-btn" data-repay-id="__goto_agency__" data-season="0">去何生事務所</button></p></div>`);
   box.innerHTML=banner+cardHtml+debtHtml;
   /* v19z11：委派點擊；debtId 必須嚟自該卡，永唔走 openHoRepaySheet／何生 fallback */
   box.onclick=(ev)=>{
@@ -26192,6 +26238,11 @@ function renderDebtPane(){
         || (card && (card.getAttribute("data-debt-id") || card.getAttribute("data-collect-id")))
         || "").trim();
       if(!debtId){ toast("搵唔到呢筆人情債。"); return; }
+      if(debtId==="__goto_agency__"){
+        try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
+        setTimeout(()=>{ try{ openLoc("agency_ho"); }catch(_e){} }, 60);
+        return;
+      }
       openDebtRepaySheet(debtId, null, { fromJournal:true });
     }catch(_e){ toast("無法開啟還款"); }
   };
@@ -26469,7 +26520,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z30";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z31";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -26483,7 +26534,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=19z30";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=19z31";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -26582,11 +26633,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z30") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z31") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z30") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z31") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -26711,6 +26762,25 @@ function openLoc(id, opts){
       }
     }
   }
+  /* v19z31 soft：通往 C2 缺 tvb_rules_gossip 時提示可打聽／請教 */
+  try{
+    if(typeof softPreviewOn==="function" && softPreviewOn() && (id==="cafe_cha" || id==="agency_ho")){
+      const w = (typeof weekNumNow==="function") ? weekNumNow() : 1;
+      let c1=false; try{ c1=!!(StoryOC && StoryOC.isDone && StoryOC.isDone("C1")); }catch(_e){}
+      let hasR=false;
+      try{
+        if(typeof BehaviorGate!=="undefined" && BehaviorGate.readCtx){
+          const rum = BehaviorGate.readCtx({}).rumors || [];
+          hasR = rum.indexOf("tvb_rules_gossip")>=0;
+        }
+        if(!hasR) hasR = !!(S.flags && S.flags.tvb_rules_gossip);
+      }catch(_e){}
+      if(c1 && w>=3 && !hasR && !S.flags._hintedTvbRules){
+        S.flags._hintedTvbRules = true;
+        toast(id==="cafe_cha" ? "可「打聽電視城規矩」→ 解鎖第2幕情報" : "可「請教何生入廠守則」→ 解鎖第2幕情報");
+      }
+    }
+  }catch(_e){}
   // Scrub stale board rows from current S only (done / shooting / missing)
   S.board[L.id]=(S.board[L.id]||[]).filter(gid=>{
     const gig=GIGS.find(g=>g.id===gid);
@@ -27094,21 +27164,21 @@ function openLoc(id, opts){
   }catch(_e){}
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z30. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z31. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z30",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z30",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z30",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z30",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z30",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z30",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z30",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z30",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z30",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z30",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z30",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z30",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z30",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z31",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z31",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z31",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z31",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z31",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z31",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z31",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z31",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z31",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z31",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z31",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z31",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z31",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -27520,7 +27590,24 @@ function ensureEntryTierBoardFill(){
     if(!needsEntryBoardFill()) return { ok:true, skipped:true, have:countApplyableEntryOnBoard() };
     S.board = S.board || {};
     S.known = S.known || {};
-    const need = 2;
+    /* v19z31：soft 通往 C2（gigCountMin=3）時板面保底 3 張可報入場 */
+    let need = 2;
+    try{
+      const soft = (typeof softPreviewOn==="function" && softPreviewOn());
+      let c2done = false;
+      try{ c2done = !!(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone("C2")); }catch(_e){}
+      let gigHave = 0;
+      try{
+        if(typeof BehaviorGate!=="undefined" && BehaviorGate.readCtx){
+          const ctx = BehaviorGate.readCtx({});
+          gigHave = ctx.gigCount!=null ? Number(ctx.gigCount) : 0;
+        }
+        if(!gigHave && S.story && typeof S.story.gigCount==="number") gigHave = Number(S.story.gigCount)||0;
+        const flagsN = Object.keys(S.flags||{}).filter(k=>k.indexOf("done_")==0 && S.flags[k]).length;
+        gigHave = Math.max(gigHave, flagsN);
+      }catch(_e){}
+      if(soft && !c2done && gigHave < 3) need = 3;
+    }catch(_e){}
     let have = countApplyableEntryOnBoard();
     if(have >= need) return { ok:true, have, injected:0 };
     const pool = entryGigPoolLive().filter(g=> g && !isGigConsumed(g));
@@ -28076,6 +28163,11 @@ function showInventory(){
   try{ GiftShop.ensureSave(); }catch(_e){}
   const list = (typeof GiftShop!=="undefined") ? GiftShop.inventoryList() : [];
   let body;
+  const goShop = ()=>{
+    try{ closeModal(); }catch(_e){}
+    try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
+    setTimeout(()=>{ try{ openLoc("rec_hk"); }catch(_e){ toast("請去旺角香江唱片"); } }, 60);
+  };
   if(!list.length){
     body = `<p class="sub">庫存空空。去旺角「香江唱片」地點選單撳「小賣／禮品」買入；送禮要喺已認識嘅熟人／可培養對象面前。</p>`;
   } else {
@@ -28084,7 +28176,10 @@ function showInventory(){
     ).join("");
     body += `<p class="sub" style="margin-top:10px">送禮：地圖遇到 Vera／林曉晴／周采兒 →「送禮」（${softSocialCostsDay()?"耗 1 日":"試玩不耗日"}）。</p>`;
   }
-  modal(`<h3>庫存</h3><p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>${body}`,[{label:"關閉",role:"g"}]);
+  const btns = list.length
+    ? [{label:"關閉",role:"g"}]
+    : [{label:"去香江唱片小賣", role:"p", on:goShop},{label:"關閉",role:"g"}];
+  modal(`<h3>庫存</h3><p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>${body}`, btns);
 }
 
 function showStats(){
@@ -28109,9 +28204,30 @@ function showPeople(){
     const nextLine = next
       ? `<div class="people-next">人情：再加 ${next.need} →「${next.label}」（${next.at}）</div>`
       : `<div class="people-next">人情：對白池已全開</div>`;
-    return `<p style="margin:8px 0;display:flex;gap:8px;align-items:center"><img src="${PORTRAITS[n.face]}" alt="" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/><span><b>${n.name}</b> · ${n.role}<br><span class="gold">${h} ${v}／100</span>${nextLine}</span></p>`;
+    const home = (n.id==="agent") ? "agency_ho" : ((n.homes && n.homes[0]) || "");
+    const homeName = (()=>{ try{ const L=LOCS.find(x=>x.id===home); return L?L.name:""; }catch(_e){ return ""; } })();
+    const goBit = home
+      ? `<div class="people-next"><button type="button" class="people-go" data-npc="${n.id}" data-loc="${home}">去找 · ${homeName||"地圖"}</button></div>`
+      : "";
+    return `<div class="people-row" style="margin:8px 0;display:flex;gap:8px;align-items:flex-start"><img src="${PORTRAITS[n.face]}" alt="" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/><span style="flex:1"><b>${n.name}</b> · ${n.role}<br><span class="gold">${h} ${v}／100</span>${nextLine}${goBit}</span></div>`;
   }).join("");
-  modal(`<h3>人脈</h3><p class="people-next">好感解鎖：寒暄0 · 閒談10 · 忠告25 · 情報對白40</p>${html}`,[{label:"關閉",role:"g"}]);
+  modal(`<h3>人脈</h3><p class="people-next">好感解鎖：寒暄0 · 閒談10 · 忠告25 · 情報對白40</p><p class="sub" style="font-size:.75rem">撳「去找」會打開對方常出沒地點，可傾談／送禮。</p>${html}`,[{label:"關閉",role:"g"}]);
+  try{
+    setTimeout(()=>{
+      const inner = document.getElementById("modal-inner");
+      if(!inner) return;
+      inner.querySelectorAll(".people-go").forEach(btn=>{
+        btn.onclick = (ev)=>{
+          try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){}
+          const loc = btn.getAttribute("data-loc");
+          if(!loc){ toast("暫時唔知對方喺邊。"); return; }
+          try{ closeModal(); }catch(_e){}
+          try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
+          setTimeout(()=>{ try{ openLoc(loc); }catch(_e){ toast("未能打開地點"); } }, 60);
+        };
+      });
+    }, 0);
+  }catch(_e){}
 }
 function shootRemain(sh){
   return Math.max(0, (sh.totalDays||0) - (sh.doneDays||0));
@@ -28212,7 +28328,33 @@ function showJobs(){
   });
   const hist = (S.wrapHistory || []).slice(0, 12);
   if(!booked.length && !shoots.length && !hist.length){
-    modal(`<h3>拍攝簿</h3><p>而家未有拍攝中／待試鏡／殺青紀錄。<br>達標後去通告欄試鏡；只有獲聘先會開拍。</p>`,[{label:"關閉",role:"g"}]);
+    const goBoard = ()=>{
+      try{ closeModal(); }catch(_e){}
+      try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
+      setTimeout(()=>{
+        try{
+          let target = "ad_central";
+          try{ ensureEntryTierBoardFill(); }catch(_ef){}
+          if(S && S.board){
+            for(const loc of Object.keys(S.board)){
+              const ids = S.board[loc]||[];
+              const hit = ids.some(gid=>{
+                const g=(GIGS||[]).find(x=>x&&x.id===gid);
+                return g && g.entryTier && typeof canAudition==="function" && canAudition(g).ok;
+              });
+              if(hit){ target = loc; break; }
+            }
+          }
+          const L = LOCS.find(x=>x.id===target) || { id:target };
+          openLoc(target);
+          setTimeout(()=>{ try{ if(typeof doScout==="function") doScout(L); }catch(_e){} }, 100);
+        }catch(_e){ toast("去通告欄失敗——請喺地圖撳有通告嘅地點。"); }
+      }, 60);
+    };
+    modal(`<h3>拍攝簿</h3><p>而家未有拍攝中／待試鏡／殺青紀錄。<br>達標後去通告欄試鏡；只有獲聘先會開拍。</p><p class="sub" style="font-size:.75rem;margin-top:8px">早期入場通告喺中環廣告／星河等地——撳下面可直達。</p>`,[
+      {label:"去通告欄", role:"p", on:goBoard},
+      {label:"關閉", role:"g"}
+    ]);
     return;
   }
   let body="";
@@ -28253,7 +28395,25 @@ function showJobs(){
       </div>`;
     });
   }
-  modal(`<h3>拍攝簿</h3>${body}`,[{label:"關閉",role:"g"}]);
+  const goBoard2 = ()=>{
+    try{ closeModal(); }catch(_e){}
+    try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
+    setTimeout(()=>{
+      try{
+        let target="tvb_longmen";
+        if(shoots[0] && shoots[0].locId) target = shoots[0].locId;
+        else if(booked[0]){
+          const g=GIGS.find(x=>x&&x.id===booked[0].gigId);
+          if(g && g.loc) target=g.loc;
+        }
+        openLoc(target);
+      }catch(_e){}
+    }, 60);
+  };
+  modal(`<h3>拍攝簿</h3>${body}`,[
+    {label:"去相關地點", role:"p", on:goBoard2},
+    {label:"關閉",role:"g"}
+  ]);
 }
 
 
