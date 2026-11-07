@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "v20a0",
+    "version": "v20a1",
     "softStatus": "≠PASS",
     "role": "program_framework",
     "date": "2026-11-07",
@@ -14,45 +14,118 @@
     ]
   },
   "locs": {
-    "cafe_cha": { "name": "金龍茶餐廳", "role": "gossip_hub" },
-    "agency_ho": { "name": "何生事務所", "role": "favor_debt_hub" }
+    "cafe_cha": {
+      "name": "金龍茶餐廳",
+      "role": "gossip_hub"
+    },
+    "agency_ho": {
+      "name": "何生事務所",
+      "role": "favor_debt_hub"
+    }
   },
   "dualTracks": {
-    "stageVolume": { "mirror": "fame", "label": "幕前聲量" },
-    "industryCredit": { "store": "S.industryCreditDelta", "label": "業內信用" }
+    "stageVolume": {
+      "mirror": "fame",
+      "label": "幕前聲量"
+    },
+    "industryCredit": {
+      "store": "S.industryCreditDelta",
+      "label": "業內信用"
+    }
   },
   "castingTags": {
     "stateKey": "S.castingTags",
     "registryFile": "content/STUB_CASTING_TAGS_v1.json",
-    "gigField": "tagOnComplete"
+    "gigField": "tagOnComplete",
+    "playerDisplay": "weak-seals from S.castingTags; tags tab DEV-only (?devTags=1)"
   },
   "rumorFragments": {
     "stubFile": "content/STUB_RUMOR_FRAGMENTS_v1.json",
     "uiPane": "home-pane-rumor",
-    "emptyOk": true
+    "emptyOk": true,
+    "phase2Merge": "mergeGroup / phase2PairId map to MERGE_PAIRS"
   },
   "favorDebtSeason": {
     "stubFile": "content/STUB_FAVOR_DEBT_SEASON_v1.json",
     "uiPane": "home-pane-debt",
-    "emptyOk": true
+    "emptyOk": true,
+    "engineSeed": "seedFreeplayFavorDebt",
+    "singleSource": "stub overlays SEASON_COLLECT; content fills stub line/title"
   },
   "eraStarsMvp": {
     "stubFile": "content/STUB_ERA_STARS_MVP_v1.json",
-    "ids": ["luk_baakyin", "liu_bingxing", "ngai_wingnaam", "yip_manji"],
-    "alias": { "yip_manzi": "yip_manji" },
+    "ids": [
+      "luk_baakyin",
+      "liu_bingxing",
+      "ngai_wingnaam",
+      "yip_manji"
+    ],
+    "alias": {
+      "yip_manzi": "yip_manji"
+    },
     "contactUnit": "far_view_only",
-    "noLongDialogue": true
+    "noLongDialogue": true,
+    "rosterPlanned": [
+      {
+        "starId": "mak_zhendong",
+        "displayName": "麥震東",
+        "note": "rumor MOCK; no map pin yet"
+      },
+      {
+        "starId": "lok_gasing",
+        "displayName": "駱家聲",
+        "note": "rumor MOCK; no map pin yet"
+      },
+      {
+        "starId": "pang_siuki",
+        "displayName": "彭少祺",
+        "note": "rumor MOCK; no map pin yet"
+      },
+      {
+        "starId": "chung_choning",
+        "displayName": "鍾楚凝",
+        "note": "rumor MOCK; no map pin yet"
+      },
+      {
+        "starId": "gu_mingfai",
+        "displayName": "顧明輝",
+        "note": "rumor MOCK; no map pin yet"
+      },
+      {
+        "starId": "so_jiyan",
+        "displayName": "蘇芷茵",
+        "note": "art assets exist (bust+sil); intentional HOLD — no map pin"
+      },
+      {
+        "starId": "chai_zanhoi",
+        "displayName": "齊鎮海",
+        "note": "DEV appendix only; HOLD off map"
+      },
+      {
+        "starId": "placeholder_era_08",
+        "displayName": "（名冊預留）",
+        "note": "12th roster slot reserved; id stable for schema only"
+      }
+    ],
+    "rosterNote": "MVP4 on map. rosterPlanned = remaining era-star ids (fictional). so_jiyan has art, no pin — HOLD."
   },
   "storyBeatSlots": {
     "stubFile": "content/STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json",
     "fillBy": "content_bot",
     "lockedFlagsC1C5": [
-      "route_tv", "route_film",
-      "flag_network_stay", "flag_hustle_board",
-      "rival_gao_hard", "rival_gao_endure",
-      "flag_refuse_gig_with_ho", "flag_take_harsh_gig",
-      "choi_honest", "spin", "dodge"
-    ]
+      "route_tv",
+      "route_film",
+      "flag_network_stay",
+      "flag_hustle_board",
+      "rival_gao_hard",
+      "rival_gao_endure",
+      "flag_refuse_gig_with_ho",
+      "flag_take_harsh_gig",
+      "choi_honest",
+      "spin",
+      "dodge"
+    ],
+    "triggerAuthority": "STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json (synced ecology); sandbox = DEV mirror/fallback"
   },
   "contentContract": "docs/CONTENT_CONTRACT.md"
 }

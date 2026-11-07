@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=20a0");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=20a1");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=20a0");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=20a1");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=20a0");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=20a1");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -18471,8 +18471,32 @@ const BehaviorGate = (function(){
     };
   }
 
+  function applyFreeplaySlots(slotsPack){
+    /* Overlay Freeplay slots triggers (+ filled face) onto Soft gate nodes. Soft≠PASS. */
+    if(!slotsPack || !Array.isArray(slotsPack.nodes)) return { ok:false, reason:"nodes" };
+    if(!stub) return { ok:false, reason:"no_stub" };
+    let n=0, faces=0;
+    slotsPack.nodes.forEach(slot=>{
+      if(!slot || !slot.beatId) return;
+      const id=String(slot.beatId);
+      const held=byId[id];
+      if(!held) return;
+      if(slot.trigger && typeof slot.trigger==="object"){
+        held.trigger = Object.assign({}, held.trigger||{}, slot.trigger);
+        n++;
+      }
+      if(slot.locId) held.locId = slot.locId;
+      const face=String(slot.playerFaceLine||"").trim();
+      if(face && face.indexOf("待補")<0){ held.playerFaceLine = face; faces++; }
+      if(slot.redStarHook) held.redStarHook = slot.redStarHook;
+      held.nextHint = "";
+    });
+    return { ok:true, n:n, faces:faces };
+  }
   const api = {
     loadStub_nodes_trigger: loadStub_nodes_trigger,
+    applyFreeplaySlots: applyFreeplaySlots,
+    stubNode: stubNode,
     evalTrigger_AND_softRumor: evalTrigger_AND_softRumor,
     featureFlag_softBehaviorGatePreview: featureFlag_softBehaviorGatePreview,
     liveWeekGateStillActive: liveWeekGateStillActive,
@@ -19220,7 +19244,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=20a0. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=20a1. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -19303,7 +19327,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=20a0";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=20a1";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -19389,7 +19413,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=20a0");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=20a1");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -20199,7 +20223,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=20a0";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=20a1";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -20369,10 +20393,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=20a0") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=20a0") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=20a1") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=20a1") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=20a0") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=20a1") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -21135,6 +21159,17 @@ async function refreshCopyPacksFromDisk(){
     STORY_WIRE.rival = rival;
     try{
       if(gateStub && typeof BehaviorGate!=="undefined") BehaviorGate.loadStub_nodes_trigger(gateStub);
+      try{
+        if(typeof loadFreeplayFramework==="function"){
+          Promise.resolve(loadFreeplayFramework()).then(function(){
+            try{ applyFreeplaySlotsToSoftGate(); }catch(_e){}
+            try{ seedFreeplayFavorDebt(); }catch(_e){}
+            try{ seedFreeplayRumorShells(); }catch(_e){}
+          });
+        } else if(typeof applyFreeplaySlotsToSoftGate==="function"){
+          applyFreeplaySlotsToSoftGate();
+        }
+      }catch(_e){}
       if(dengMock && typeof DengLine!=="undefined") DengLine.loadMock(dengMock);
       if(dengPushMock && typeof DengLine!=="undefined" && DengLine.loadPushMock){
         const pushLoaded = DengLine.loadPushMock(dengPushMock);
@@ -21829,7 +21864,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=20a0";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=20a1";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -22084,6 +22119,42 @@ function gigLifecycleStatus(g){
   }catch(_e){}
   return { key:"open", label:"招募中", alt:false };
 }
+function softCastingTagGate(gig){
+  /* Soft-only. Reads requiresCastingTagAny / blocksCastingTagAny on the gig. LIVE unchanged. */
+  try{
+    if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview || !BehaviorGate.featureFlag_softBehaviorGatePreview()){
+      return {ok:true};
+    }
+  }catch(_e){ return {ok:true}; }
+  if(!gig) return {ok:true};
+  const have = [];
+  try{
+    (ensureCastingTagsState()||[]).forEach(t=>{
+      if(!t) return;
+      have.push(String(t.id||""));
+      have.push(String(t.label||""));
+      try{
+        const m = castingTagMeta(t.id||t.label);
+        if(m){ have.push(String(m.id||"")); have.push(String(m.label||"")); }
+      }catch(_e){}
+    });
+  }catch(_e){}
+  const hasAny = (arr)=> (Array.isArray(arr)?arr:[]).some(x=>{
+    const s=String(x||"");
+    if(!s) return false;
+    if(have.indexOf(s)>=0) return true;
+    try{ const id=castingTagLabelToId(s); return have.indexOf(id)>=0; }catch(_e){ return false; }
+  });
+  const req = gig.requiresCastingTagAny;
+  if(Array.isArray(req) && req.length && !hasAny(req)){
+    return {ok:false, reason:"組製想睇你有冇相關口碑——暫時未合這檔印象。"};
+  }
+  const blk = gig.blocksCastingTagAny;
+  if(Array.isArray(blk) && blk.length && hasAny(blk)){
+    return {ok:false, reason:"這檔組製忌某類口碑，暫時未考慮你的檔。"};
+  }
+  return {ok:true};
+}
 function canAudition(gig){
   if(!gig) return {ok:false, reason:"通告已下架。"};
   if(isGigWrapped(gig)){
@@ -22099,6 +22170,10 @@ function canAudition(gig){
   const {keys, matched, missing, totalShort}=reqGap(gig);
   /* v19m USER 2026-11-03：條件未齊＝硬鎖暫未能報；唔放寬 soft-try／搏一搏（各級一律） */
   if(keys && missing>0) return {ok:false, reason:gateTrainHint(gig)};
+  try{
+    const tagGate = softCastingTagGate(gig);
+    if(tagGate && tagGate.ok===false) return tagGate;
+  }catch(_e){}
   return {ok:true, softTry:false};
 }
 /** v18a／v18t：門檻未齊但 canAudition 仍放行＝可搏一搏 */
@@ -22281,7 +22356,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a0`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a1`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -22451,7 +22526,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a0`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a1`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -25722,15 +25797,58 @@ function favorPressure(){
   const label=n<=0?"輕":(n===1?"緊":"頂住");
   return { n, label, season };
 }
+function freeplayDevTagsOn(){
+  try{
+    if(typeof location!=="undefined" && location && /(?:\?|&)devTags=1(?:&|$)/.test(String(location.search||""))) return true;
+    if(typeof localStorage!=="undefined" && localStorage.getItem("starVolunteer_devTags")==="1") return true;
+  }catch(_e){}
+  return false;
+}
+function castingTagsEarnedLabels(){
+  const out=[];
+  const seen=Object.create(null);
+  try{
+    (ensureCastingTagsState()||[]).forEach(t=>{
+      if(!t) return;
+      const m = (typeof castingTagMeta==="function") ? castingTagMeta(t.id||t.label) : null;
+      if(m && m.hidden) return;
+      const lab = String((m && m.label) || t.label || t.id || "").trim();
+      if(!lab || seen[lab]) return;
+      seen[lab]=1;
+      out.push(lab);
+    });
+  }catch(_e){}
+  return out;
+}
+/** Player-facing tags = faint planner seals driven by earned S.castingTags (~8% opacity). */
 function ensureWeakSeals(){
   const home=document.querySelector("#v-home .home");
-  if(!home || document.getElementById("weak-seals")) return;
-  const el=document.createElement("div");
-  el.id="weak-seals";
-  el.className="weak-seals";
-  el.setAttribute("aria-hidden","true");
-  el.innerHTML=WEAK_MARKS.map(name=>`<span>${journalText(name)}</span>`).join("");
-  home.appendChild(el);
+  if(!home) return;
+  let el=document.getElementById("weak-seals");
+  if(!el){
+    el=document.createElement("div");
+    el.id="weak-seals";
+    el.className="weak-seals";
+    el.setAttribute("aria-hidden","true");
+    home.appendChild(el);
+  }
+  const earned = castingTagsEarnedLabels();
+  const marks = earned.length ? earned.slice(0, 8) : [];
+  el.innerHTML = marks.map(name=>`<span>${journalText(name)}</span>`).join("");
+  try{ syncDevTagsTabVisibility(); }catch(_e){}
+}
+function syncDevTagsTabVisibility(){
+  const tab=document.getElementById("htab-tags");
+  const pane=document.getElementById("home-pane-tags");
+  const show = freeplayDevTagsOn();
+  if(tab){
+    tab.hidden = !show;
+    tab.style.display = show ? "" : "none";
+    tab.setAttribute("aria-hidden", show ? "false" : "true");
+  }
+  if(pane && !show){
+    pane.classList.remove("on");
+  }
 }
 function mockIntelHits(actionKey){
   /* 情報刷新 B：跟週數同未清人情債搖，唔係次次有新料。唔改日／銀碼／閘。 */
@@ -26305,6 +26423,7 @@ function playPushDoor(){
 }
 function setHomeTab(tab){
   const allow={ plan:1, rumor:1, debt:1, tags:1 };
+  if(tab==="tags" && typeof freeplayDevTagsOn==="function" && !freeplayDevTagsOn()) tab="plan";
   if(!allow[tab]) tab="plan";
   applyPhase2Steps56TabLabel();
   document.querySelectorAll("#home-tabs .home-tab").forEach(b=>{
@@ -26368,9 +26487,9 @@ try{
   };
 }catch(_e){}
 
-/* ===== v20a0 FREEPLAY FRAMEWORK — schema/stubs/UI shells; Soft≠PASS; content bot fills prose ===== */
+/* ===== v20a1 FREEPLAY INFRA — slots↔Soft gate, favorDebt seed, weak-seals tags, Soft casting gates; Soft≠PASS ===== */
 const FREEPLAY_FW = {
-  version: "v20a0",
+  version: "v20a1",
   schema: null,
   eraStars: null,
   rumorFrags: null,
@@ -26427,6 +26546,9 @@ function applyCastingTags(tags, opts){
       }catch(_e){}
     }
   });
+  if(added.length){
+    try{ ensureWeakSeals(); }catch(_e){}
+  }
   return added;
 }
 function applyGigTagOnComplete(gigId){
@@ -26440,25 +26562,39 @@ function applyGigTagOnComplete(gigId){
 function renderCastingTagsPane(){
   const box = document.getElementById("tags-list");
   if(!box) return;
+  /* Player default: no engineering tag spreadsheet. DEV (?devTags=1) may list earned tags. */
+  if(!freeplayDevTagsOn()){
+    box.innerHTML = `<div class="tags-empty debt-empty"><p>選角印象會以手帳淡印顯示，唔會列出工程標籤表。</p><p class="sub" style="margin-top:8px">接通告殺青或事態之後，暗紋會慢慢浮現。</p></div>`;
+    return;
+  }
   const list = ensureCastingTagsState();
   const visible = list.filter(t=>{
     const m = castingTagMeta(t && (t.id||t.label));
     return !(m && m.hidden);
   });
   if(!visible.length){
-    box.innerHTML = `<div class="tags-empty debt-empty"><p>選角筆記仍空——接通告、訓練或事態之後，標籤會沉澱喺呢度。</p><p class="sub" style="margin-top:8px">幕前聲量／業內信用雙軌已接線；內容 bot 可填 STUB_CASTING_TAGS。</p></div>`;
+    box.innerHTML = `<div class="tags-empty debt-empty"><p>[DEV] 選角標籤仍空。</p><p class="sub" style="margin-top:8px">內容 bot 填 STUB_CASTING_TAGS；玩家面只見 weak-seals。</p></div>`;
     return;
   }
   box.innerHTML = visible.map(t=>{
     const m = castingTagMeta(t.id||t.label);
     const lab = journalText(m.label || t.label || t.id);
-    return `<article class="debt-row"><p class="debt-title">${lab}</p><p class="debt-meta sub">選角標籤</p></article>`;
+    return `<article class="debt-row"><p class="debt-title">${lab}</p><p class="debt-meta sub">[DEV] 選角標籤</p></article>`;
   }).join("");
 }
 function freeplayRumorPlaceholderText(frag){
   const t = frag && String(frag.text||"").trim();
   if(t) return t;
   return "（文案待補）聽講圈內有風聲——內容稍後補。";
+}
+function freeplaySeasonAllows(seasonAny){
+  const list = Array.isArray(seasonAny) ? seasonAny : [];
+  if(!list.length) return true;
+  let cur = "春";
+  try{ if(typeof calendarSeason==="function") cur = calendarSeason(); }catch(_e){}
+  const KEY = { "春":"spring","夏":"summer","秋":"autumn","冬":"winter", spring:"spring", summer:"summer", autumn:"autumn", winter:"winter" };
+  const curK = KEY[cur] || "";
+  return list.some(s=> (KEY[s]||"") === curK);
 }
 function seedFreeplayRumorShells(){
   try{
@@ -26470,16 +26606,148 @@ function seedFreeplayRumorShells(){
     frags.forEach(f=>{
       if(!f || !f.id) return;
       if((S.mockRumors||[]).some(r=>r && r.id===f.id)) return;
-      /* 只種空殼標題；唔自動灌長文——內容 bot 填 text 後可再 sync */
-      if(String(f.text||"").trim()){
-        S.mockRumors.push({
-          id:f.id, source:f.source||"傳聞", title:f.title||f.id,
-          text: freeplayRumorPlaceholderText(f), state:f.state||"seed", season:(f.seasonAny&&f.seasonAny[0])||""
-        });
-      }
+      /* Empty text = no auto-seed (anti spam). Non-empty + season allows → journal. */
+      if(!String(f.text||"").trim()) return;
+      if(!freeplaySeasonAllows(f.seasonAny)) return;
+      S.mockRumors.push({
+        id:f.id, source:f.source||"傳聞", title:f.title||f.id,
+        text: freeplayRumorPlaceholderText(f), state:f.state||"seed",
+        season:(f.seasonAny&&f.seasonAny[0])||"",
+        mergeGroup:f.mergeGroup||"", phase2PairId:f.phase2PairId||""
+      });
     });
     try{ syncNotebookMirror(); }catch(_e){}
   }catch(_e){}
+}
+function mapFreeplayDebtStatus(st){
+  const s = String(st||"");
+  if(s==="已逾期" || s==="就嚟到期" || s==="未到期" || s==="已清") return s;
+  if(s==="催收中") return "就嚟到期";
+  if(s==="未催") return "未到期";
+  return "未到期";
+}
+/** Single source: stub debts/hooks overlay into mockDebts for matching season; SEASON_COLLECT stays playable. */
+function seedFreeplayFavorDebt(){
+  try{
+    if(!S) return;
+    ensureMockJournal();
+    const pack = FREEPLAY_FW.favorDebt;
+    if(!pack) return;
+    FREEPLAY_FW._debtRegistry = FREEPLAY_FW._debtRegistry || Object.create(null);
+    const season = (typeof calendarSeason==="function") ? calendarSeason() : "春";
+    S.mockDebts = S.mockDebts || [];
+    const pushDebt = (d, kind)=>{
+      if(!d || !d.id) return;
+      FREEPLAY_FW._debtRegistry[d.id] = d;
+      if((S.mockDebts||[]).some(x=>x && x.id===d.id)) return;
+      if(String(d.season||"") && String(d.season)!==String(season)) return;
+      const title = String(d.title||"").trim() || "（債槽）";
+      const line = String(d.line||"").trim();
+      const row = {
+        id: d.id,
+        creditor: d.creditorName || d.creditor || d.creditorId || "（債主）",
+        title: title,
+        weight: line || "（文案待補）",
+        season: line || (d.season ? (String(d.season)+"｜內容稍後補") : "（文案待補）"),
+        status: mapFreeplayDebtStatus(d.status),
+        amount: (d.amount!=null && d.amount!=="") ? Number(d.amount) : null,
+        locHint: d.locHint || "agency_ho",
+        fromFreeplayStub: true,
+        stubKind: kind || "debt"
+      };
+      S.mockDebts.push(row);
+    };
+    (pack.debts||[]).forEach(d=>pushDebt(d, "debt"));
+    (pack.hooks||[]).forEach(h=>{
+      if(!h || !h.id) return;
+      FREEPLAY_FW._debtRegistry[h.id] = h;
+      /* hooks with playable line surface as season cards via mockDebts; empty line = registry only */
+      if(!String(h.line||"").trim()) return;
+      pushDebt({
+        id: h.id,
+        creditorName: "季節催收",
+        title: h.title || "（季節鉤）",
+        line: h.line,
+        season: h.season,
+        status: "就嚟到期",
+        amount: null,
+        locHint: h.locHint || "agency_ho"
+      }, "hook");
+    });
+    try{ syncNotebookMirror(); }catch(_e){}
+  }catch(_e){}
+}
+function freeplayIsPlaceholderLine(s){
+  const t = String(s||"").trim();
+  if(!t) return true;
+  return /待補|文案待補|選項待補/.test(t);
+}
+function freeplaySlotHasPlayableBeats(slot){
+  const beats = (slot && slot.beats) || [];
+  if(!beats.length) return false;
+  return beats.some(b=> Array.isArray(b && b.lines) && b.lines.some(ln=>!freeplayIsPlaceholderLine(ln)));
+}
+/** Soft gate + story play: prefer Freeplay slot triggers; dialogue from slots when filled, else Soft stub / story_detail. */
+function applyFreeplaySlotsToSoftGate(){
+  try{
+    const slots = FREEPLAY_FW.storySlots;
+    if(!slots || !Array.isArray(slots.nodes) || !slots.nodes.length) return { ok:false, reason:"no_slots" };
+    let nTrig=0, nFace=0, nStory=0;
+    try{
+      if(typeof BehaviorGate!=="undefined" && BehaviorGate.applyFreeplaySlots){
+        const r = BehaviorGate.applyFreeplaySlots(slots);
+        if(r && r.ok){ nTrig = Number(r.n)||0; nFace = Number(r.faces)||0; }
+      } else if(typeof BehaviorGate!=="undefined" && BehaviorGate.stubNode){
+        slots.nodes.forEach(slot=>{
+          if(!slot || !slot.beatId) return;
+          const held = BehaviorGate.stubNode(slot.beatId);
+          if(!held || !slot.trigger) return;
+          held.trigger = Object.assign({}, held.trigger||{}, slot.trigger);
+          if(slot.locId) held.locId = slot.locId;
+          nTrig++;
+          const face = String(slot.playerFaceLine||"").trim();
+          if(face && !freeplayIsPlaceholderLine(face)){ held.playerFaceLine = face; nFace++; }
+          held.nextHint = "";
+        });
+      }
+    }catch(_e){}
+    /* Overlay playable dialogue onto STORY_WIRE.main when content bot filled slots */
+    slots.nodes.forEach(slot=>{
+      if(!slot || !slot.beatId) return;
+      const id = String(slot.beatId);
+      try{
+        const main = (typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.main) ? STORY_WIRE.main : null;
+        const nodes = main && Array.isArray(main.nodes) ? main.nodes : null;
+        if(!nodes) return;
+        const storyNode = nodes.find(n=>n && (n.id===id || n.beatId===id));
+        if(!storyNode) return;
+        if(freeplaySlotHasPlayableBeats(slot)){
+          storyNode.beats = slot.beats.slice();
+          nStory++;
+        }
+        if(Array.isArray(slot.choices) && slot.choices.length){
+          const byC = Object.create(null);
+          (storyNode.choices||[]).forEach(c=>{ if(c&&c.id) byC[c.id]=c; });
+          slot.choices.forEach(sc=>{
+            if(!sc || !sc.id || freeplayIsPlaceholderLine(sc.label)) return;
+            if(byC[sc.id]){
+              byC[sc.id].label = sc.label;
+              if(sc.effects) byC[sc.id].effects = Object.assign({}, byC[sc.id].effects||{}, sc.effects);
+            } else {
+              storyNode.choices = storyNode.choices || [];
+              storyNode.choices.push(sc);
+            }
+          });
+        }
+        const face = String(slot.playerFaceLine||"").trim();
+        if(face && !freeplayIsPlaceholderLine(face)) storyNode.playerFaceLine = face;
+      }catch(_e){}
+    });
+    FREEPLAY_FW._slotsWired = { nTrig:nTrig, nFace:nFace, nStory:nStory, at:Date.now() };
+    return { ok:true, nTrig:nTrig, nFace:nFace, nStory:nStory };
+  }catch(e){
+    return { ok:false, reason:String(e&&e.message||e) };
+  }
 }
 function freeplayApplyEraStarStubOverlay(){
   try{
@@ -26504,7 +26772,7 @@ function freeplayApplyEraStarStubOverlay(){
 }
 async function loadFreeplayFramework(){
   if(FREEPLAY_FW.loaded) return FREEPLAY_FW;
-  const bust = "20a0";
+  const bust = "20a1";
   const files = {
     schema: "SCHEMA_FREEPLAY_FRAMEWORK_v1.json",
     eraStars: "STUB_ERA_STARS_MVP_v1.json",
@@ -26522,6 +26790,10 @@ async function loadFreeplayFramework(){
   FREEPLAY_FW.loaded = true;
   try{ freeplayApplyEraStarStubOverlay(); }catch(_e){}
   try{ seedFreeplayRumorShells(); }catch(_e){}
+  try{ seedFreeplayFavorDebt(); }catch(_e){}
+  try{ applyFreeplaySlotsToSoftGate(); }catch(_e){}
+  try{ ensureWeakSeals(); }catch(_e){}
+  try{ syncDevTagsTabVisibility(); }catch(_e){}
   return FREEPLAY_FW;
 }
 try{
@@ -26530,15 +26802,23 @@ try{
     load: loadFreeplayFramework,
     tags: function(){ return ensureCastingTagsState().slice(); },
     applyTags: applyCastingTags,
+    softCastingTagGate: softCastingTagGate,
+    seedFavorDebt: seedFreeplayFavorDebt,
+    wireSlots: applyFreeplaySlotsToSoftGate,
     stars: function(){ return ((FREEPLAY_FW.eraStars&&FREEPLAY_FW.eraStars.stars)||[]).map(s=>freeplayNormalizeStarId(s.starId)); },
     slots: function(){ return FREEPLAY_FW.storySlots; },
+    favorDebt: function(){ return FREEPLAY_FW.favorDebt; },
+    rumorFrags: function(){ return FREEPLAY_FW.rumorFrags; },
+    rosterPlanned: function(){
+      try{ return ((FREEPLAY_FW.schema&&FREEPLAY_FW.schema.eraStarsMvp&&FREEPLAY_FW.schema.eraStarsMvp.rosterPlanned)||[]).slice(); }catch(_e){ return []; }
+    },
     contract: function(){ return "docs/CONTENT_CONTRACT.md"; },
     nextHintHidden: function(){
       try{ return typeof BehaviorGate!=="undefined" && BehaviorGate.nextHint_neverShow()===""; }catch(_e){ return true; }
     },
     check: function(){
       const fails=[];
-      if(FREEPLAY_FW.version!=="v20a0") fails.push("ver");
+      if(FREEPLAY_FW.version!=="v20a1") fails.push("ver");
       const ids=["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji"];
       ids.forEach(id=>{ if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId===id)) fails.push("star:"+id); });
       if(typeof LOCS!=="undefined"){
@@ -26549,7 +26829,42 @@ try{
       if(!document.getElementById("home-pane-rumor")) fails.push("ui:rumor");
       if(!document.getElementById("home-pane-debt")) fails.push("ui:debt");
       try{ if(typeof BehaviorGate!=="undefined" && BehaviorGate.nextHint_neverShow()!=="") fails.push("nextHint"); }catch(_e){ fails.push("nextHint"); }
-      return { ok: !fails.length, fails:fails, softStatus:"≠PASS" };
+      /* v20a1 infra checks */
+      try{
+        const wired = FREEPLAY_FW._slotsWired;
+        if(!(wired && wired.nTrig>=5) && !(FREEPLAY_FW.storySlots && FREEPLAY_FW.storySlots.nodes && FREEPLAY_FW.storySlots.nodes.length>=5)){
+          fails.push("slots_wire");
+        }
+        /* If Soft gate loaded, triggers should match slots for C3 rumor ecology */
+        if(typeof BehaviorGate!=="undefined" && BehaviorGate.stubNode){
+          const c3 = BehaviorGate.stubNode("C3");
+          const slotC3 = ((FREEPLAY_FW.storySlots&&FREEPLAY_FW.storySlots.nodes)||[]).find(n=>n&&n.beatId==="C3");
+          if(c3 && slotC3 && slotC3.trigger){
+            const a = JSON.stringify(c3.trigger.rumorAny||[]);
+            const b = JSON.stringify(slotC3.trigger.rumorAny||[]);
+            if(a!==b) fails.push("slots_gate_sync:C3");
+          }
+        }
+      }catch(_e){ fails.push("slots_wire"); }
+      try{
+        if(typeof seedFreeplayFavorDebt!=="function") fails.push("favorDebt_seed");
+        if(!(FREEPLAY_FW.favorDebt && (FREEPLAY_FW.favorDebt.debts||FREEPLAY_FW.favorDebt.hooks))) fails.push("favorDebt_pack");
+      }catch(_e){ fails.push("favorDebt_seed"); }
+      try{
+        if(typeof ensureWeakSeals!=="function" || typeof castingTagsEarnedLabels!=="function") fails.push("weak_seals_tags");
+        const src = String(ensureWeakSeals);
+        if(src.indexOf("castingTagsEarnedLabels")<0 && src.indexOf("earned")<0) fails.push("weak_seals_tags");
+      }catch(_e){ fails.push("weak_seals_tags"); }
+      try{
+        if(typeof softCastingTagGate!=="function") fails.push("soft_tag_gate");
+      }catch(_e){ fails.push("soft_tag_gate"); }
+      try{
+        const planned = (FREEPLAY_FW.schema && FREEPLAY_FW.schema.eraStarsMvp && FREEPLAY_FW.schema.eraStarsMvp.rosterPlanned) || [];
+        const mvp = (FREEPLAY_FW.schema && FREEPLAY_FW.schema.eraStarsMvp && FREEPLAY_FW.schema.eraStarsMvp.ids) || ids;
+        if(planned.length < 8) fails.push("rosterPlanned");
+        if((mvp.length + planned.length) < 12) fails.push("roster_total_12");
+      }catch(_e){ fails.push("rosterPlanned"); }
+      return { ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a1" };
     }
   };
 }catch(_e){}
@@ -26729,7 +27044,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=20a0";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=20a1";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -26743,7 +27058,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=20a0";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=20a1";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -26842,11 +27157,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=20a0") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=20a1") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=20a0") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=20a1") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -27373,21 +27688,21 @@ function openLoc(id, opts){
   }catch(_e){}
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=20a0. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=20a1. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a0",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a0",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a0",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a0",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a0",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a0",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a0",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a0",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a0",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a0",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a0",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a0",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a0",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a1",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a1",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a1",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a1",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a1",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a1",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a1",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a1",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a1",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a1",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a1",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a1",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a1",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
