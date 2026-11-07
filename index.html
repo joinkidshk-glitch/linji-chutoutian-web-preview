@@ -3670,33 +3670,22 @@ body.day-res-open .day-row{
 .psr-dual{ margin:6px 0 0; }
 .psr-foot{ margin:8px 0 0; font-size:.68rem; }
 .awd-sheet .psr-eyebrow{ letter-spacing:.14em; }
-/* v20a9：休息睡覺 8-bit FX overlay（高過 #mask，唔吞 Soft CTA） */
-#rest-sleep-fx{
-  position:fixed; inset:0; z-index:800;
-  display:none; align-items:center; justify-content:center;
-  flex-direction:column; gap:10px;
-  background:#0a0810;
-  padding:16px;
-  box-sizing:border-box;
+/* v20a10：休息睡覺 8-bit 嵌喺日結板面（唔用全螢幕 overlay） */
+.rest-sleep-inline{
+  margin:0 0 8px; display:flex; justify-content:center;
 }
-#rest-sleep-fx.on{ display:flex; }
-#rest-sleep-fx video{
-  width:min(92vw, 420px); max-height:min(70dvh, 520px);
-  height:auto; background:#000;
+.rest-sleep-inline video{
+  width:100%; max-width:280px; max-height:min(36dvh, 240px);
+  height:auto; background:#1a1210; display:block;
   image-rendering:pixelated; image-rendering:crisp-edges;
-  border:2px solid rgba(255,220,160,.28); border-radius:8px;
-  box-shadow:0 8px 28px rgba(0,0,0,.55);
+  border:1px solid rgba(60,40,20,.22); border-radius:8px;
 }
-#rest-sleep-fx .rest-sleep-cap{
-  margin:0; color:#e8dcc6; font-size:.85rem; font-weight:700; letter-spacing:.04em;
+.rest-sleep-inline .rest-sleep-cap{ display:none; }
+#mask:not(.tut-on) .modal .rest-sleep-deltas{
+  margin:4px 0 0; display:flex; flex-direction:column; gap:2px;
 }
-#rest-sleep-fx .rest-sleep-skip{
-  position:absolute; top:14px; right:14px;
-  min-height:36px; padding:6px 14px;
-  font-size:.85rem; font-weight:700;
-  background:rgba(255,248,230,.94); color:#3a2e22;
-  border:1px solid rgba(60,40,20,.25); border-radius:8px;
-  cursor:pointer; z-index:2;
+#mask:not(.tut-on) .modal .rest-sleep-deltas .result-line{
+  font-size:.92rem; font-weight:700; line-height:1.35;
 }
 
 </style>
@@ -3885,11 +3874,6 @@ body.day-res-open .day-row{
 </div></div>
 <div class="toast" id="toast" aria-hidden="true"></div>
 
-<div id="rest-sleep-fx" aria-hidden="true">
-  <button type="button" class="rest-sleep-skip" id="rest-sleep-skip">略過</button>
-  <video id="rest-sleep-video" playsinline muted preload="auto"></video>
-  <p class="rest-sleep-cap">休息睡覺</p>
-</div>
 
 </div>
 
@@ -24786,18 +24770,17 @@ function endBrowseDayGoHome(){
   try{ closeModal(); }catch(_e3){}
   atLoc=null;
   try{ writeTodayPlan("rest"); }catch(_e4){}
-  const dayDone = fmtDate();
+  const wd = weekdayName(weekdayIdx(S.dayIndex));
   const notes = apply({stamina:6+R(0,4), stress:-(4+R(0,4))});
   const {ended, summary}=tickDay();
-  const showEarlyRest = ()=> afterDayModal(
-    `<p>提早返屋企休息，今日完。</p>${formatResultNotes(notes)}`,
-    "回家結算",
-    null,
-    ended,
-    summary,
-    {dayDone}
-  );
-  try{ playRestSleepFx(showEarlyRest); }catch(_e5){ showEarlyRest(); }
+  try{
+    presentRestSleepDayEnd({
+      title: `休息（週${wd}）`,
+      notes, ended, summary
+    });
+  }catch(_e5){
+    afterDayModal(formatRestSleepDeltas(notes), `休息（週${wd}）`, null, ended, summary, {});
+  }
 }
 function goJournalFromMenu(){
   closeSheet();
@@ -25356,16 +25339,26 @@ function resolvePlannedDay(id){
   }catch(_e){}
   const liveHint2 = livingCostDayEndHint();
   const dismissNb = ended ? nextNbReward : ()=> afterDayRes(()=>{ try{ goToMapForBrowse(); }catch(_e){} });
-  const showPlanDayRes = ()=>{
+  /* v20a10：休息睡覺 — 片嵌日結板；文案只留數值；週加速靜默合併唔播 */
+  if(id==="rest" && !_weekAccel){
+    try{
+      presentRestSleepDayEnd({
+        title,
+        notes,
+        ended,
+        summary,
+        onMap: ()=> afterDayRes(()=>{ try{ goToMapForBrowse(); }catch(_e){} }),
+        onSchedule: nextNbReward
+      });
+    }catch(_e){
+      modal(`<h3>${title}</h3>${formatRestSleepDeltas(notes)}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}`, btns, {onDismiss: dismissNb});
+      if(isRestCard){ try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e2){} }
+      saveQ();
+    }
+  } else {
     modal(`<h3>${title}</h3>${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}${dayLine}${(!ended && btns.some(b=>String(b.label||"").indexOf("加速")>=0))?`<p class="week-accel-hint">加速需二次確認並列出將跳過日子。</p>`:""}`, btns, {onDismiss: dismissNb});
     if(isRestCard){ try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){} }
     saveQ();
-  };
-  /* v20a9：休息睡覺播 8-bit clip；週加速靜默合併唔播；唔擋 Soft CTA restore */
-  if(id==="rest" && !_weekAccel){
-    try{ playRestSleepFx(showPlanDayRes); }catch(_e){ showPlanDayRes(); }
-  } else {
-    showPlanDayRes();
   }
 }
 
@@ -26961,9 +26954,9 @@ try{
   };
 }catch(_e){}
 
-/* ===== v20a6 FREEPLAY — awards ceremony four tracks + Soft journal; Soft≠PASS ===== */
+/* ===== v20a10 FREEPLAY — rest sleep in-panel + awards/ Soft journal; Soft≠PASS ===== */
 const FREEPLAY_FW = {
-  version: "v20a9",
+  version: "v20a10",
   schema: null,
   eraStars: null,
   rumorFrags: null,
@@ -27505,7 +27498,7 @@ function postShootRewardCheck(){
     if(/《《/.test(html)) fails.push("title_double");
     if(/短訊可換/.test(html)) fails.push("stub_tip_visible");
   }catch(_e){ fails.push("build_err"); }
-  return { ok:!fails.length, fails:fails, version:"v20a9", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, version:"v20a10", softStatus:"≠PASS" };
 }
 try{
   window.__reward = {
@@ -28066,7 +28059,7 @@ function awardsCheck(){
     if(/金像|十大中文金曲|廣告公會|TVB.*大獎/.test(html)) fails.push("real_award_name");
     if(/nextHint/.test(html) && /待補 nextHint/.test(html)) fails.push("nextHint");
   }catch(_e){ fails.push("build_err"); }
-  return { ok:!fails.length, fails:fails, version:"v20a9", softStatus:"≠PASS", ceremonies:have.slice() };
+  return { ok:!fails.length, fails:fails, version:"v20a10", softStatus:"≠PASS", ceremonies:have.slice() };
 }
 function awardsPreview(opts){
   return buildAwardResultPack(opts||{});
@@ -28169,7 +28162,7 @@ try{
     },
     check: function(){
       const fails=[];
-      if(FREEPLAY_FW.version!=="v20a9") fails.push("ver");
+      if(FREEPLAY_FW.version!=="v20a10") fails.push("ver");
       const ids=["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji"];
       ids.forEach(id=>{ if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId===id)) fails.push("star:"+id); });
       if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan")) fails.push("so_jiyan_sighting");
@@ -28248,7 +28241,7 @@ try{
         if(!rfc.ok) fails.push.apply(fails, (rfc.fails||[]).map(f=>"restFx:"+f));
       }catch(_e){ fails.push("restFx_check"); }
       return {
-        ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a9",
+        ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a10",
         slotsCount: ((FREEPLAY_FW.storySlots&&FREEPLAY_FW.storySlots.nodes)||[]).length,
         soJiyan: typeof STAR_SIGHTINGS!=="undefined" && STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan"),
         creditGate: typeof softIndustryCreditGate==="function",
@@ -29391,92 +29384,162 @@ function doEnrollRun(L, tr){
 }
 
 
-/* ===== v20a9 REST SLEEP FX — 8-bit home rest clip; Soft≠PASS; no tip LIVE; SAVE unchanged ===== */
+/* ===== v20a10 REST SLEEP FX — 8-bit clip inside rest day-end panel; Soft≠PASS; no tip LIVE; SAVE unchanged ===== */
 const REST_SLEEP_FX_SRC = "assets/fx/awei-rest-sleep.mp4";
-let _restSleepFxBusy = false;
-function playRestSleepFx(thenFn){
-  const cont = (typeof thenFn==="function") ? thenFn : function(){};
-  if(_restSleepFxBusy){ try{ cont(); }catch(_e){} return false; }
-  let done = false;
-  const finish = ()=>{
-    if(done) return;
-    done = true;
-    _restSleepFxBusy = false;
-    try{
-      const root = document.getElementById("rest-sleep-fx");
-      const vid = document.getElementById("rest-sleep-video");
-      if(vid){
-        try{ vid.onended = null; vid.onerror = null; }catch(_e0){}
-        try{ vid.pause(); }catch(_e1){}
-        try{ vid.removeAttribute("src"); vid.load(); }catch(_e2){}
-      }
-      if(root){
-        root.classList.remove("on");
-        root.setAttribute("aria-hidden","true");
-        try{ root.onclick = null; }catch(_e3){}
-      }
-      const skip = document.getElementById("rest-sleep-skip");
-      if(skip){ try{ skip.onclick = null; }catch(_e4){} }
-    }catch(_e){}
-    try{ cont(); }catch(_e5){}
-  };
+let _restSleepFxArmed = false;
+function restSleepFxHtml(){
+  const src = REST_SLEEP_FX_SRC + ((/\?/.test(REST_SLEEP_FX_SRC)?"&":"?") + "v=20a10");
+  return `<div class="rest-sleep-inline" id="rest-sleep-inline">`+
+    `<video id="rest-sleep-video" playsinline muted preload="auto" src="${src}"></video>`+
+    `</div>`;
+}
+function formatRestSleepDeltas(notes){
+  const arr = (notes||[]).filter(x=>x!=null && String(x).trim()!=="");
+  if(!arr.length) return `<div class="result-notes rest-sleep-deltas"><span class="result-line">—</span></div>`;
+  return `<div class="result-notes rest-sleep-deltas">${arr.map(x=>`<div class="result-line">${x}</div>`).join("")}</div>`;
+}
+function stopRestSleepFxInModal(){
+  _restSleepFxArmed = false;
   try{
-    const root = document.getElementById("rest-sleep-fx");
     const vid = document.getElementById("rest-sleep-video");
-    const skip = document.getElementById("rest-sleep-skip");
-    if(!root || !vid){ cont(); return false; }
-    _restSleepFxBusy = true;
+    if(vid){
+      try{ vid.onended = null; vid.onerror = null; }catch(_e0){}
+      try{ vid.pause(); }catch(_e1){}
+    }
+  }catch(_e){}
+}
+function armRestSleepFxInModal(){
+  stopRestSleepFxInModal();
+  try{
+    const vid = document.getElementById("rest-sleep-video");
+    if(!vid) return false;
+    _restSleepFxArmed = true;
     try{ vid.muted = true; vid.playsInline = true; }catch(_e6){}
     try{ vid.setAttribute("playsinline",""); vid.setAttribute("muted",""); }catch(_e7){}
-    vid.src = REST_SLEEP_FX_SRC + ((/\?/.test(REST_SLEEP_FX_SRC)?"&":"?") + "v=20a9");
     try{ vid.currentTime = 0; }catch(_e8){}
-    vid.onended = ()=> finish();
-    vid.onerror = ()=> finish();
-    if(skip){
-      skip.onclick = (ev)=>{ try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e9){} finish(); };
-    }
-    root.onclick = (ev)=>{
-      try{
-        if(ev && ev.target && (ev.target.id==="rest-sleep-skip" || (ev.target.closest && ev.target.closest("#rest-sleep-skip")))) return;
-      }catch(_e10){}
-      finish();
-    };
-    root.classList.add("on");
-    root.setAttribute("aria-hidden","false");
+    vid.onended = ()=>{ /* leave last frame; panel stays until 返回地圖 */ };
+    vid.onerror = ()=>{};
     const p = vid.play();
-    if(p && typeof p.catch==="function"){
-      p.catch(()=>{ finish(); });
-    }
-    setTimeout(()=>{ if(!done) finish(); }, 5200);
+    if(p && typeof p.catch==="function"){ p.catch(()=>{}); }
     return true;
-  }catch(_e){ finish(); return false; }
+  }catch(_e){ return false; }
+}
+/** Compact rest day-end: title + in-panel video + numeric deltas only + CTA. */
+function presentRestSleepDayEnd(opts){
+  opts = opts || {};
+  const title = opts.title || "休息";
+  const notes = opts.notes || [];
+  const ended = !!opts.ended;
+  const summary = opts.summary;
+  const onMap = (typeof opts.onMap==="function") ? opts.onMap : null;
+  const onSchedule = (typeof opts.onSchedule==="function") ? opts.onSchedule : null;
+  try{ syncDateChrome(); }catch(_e){ try{ paintBar(); }catch(_e2){} }
+  try{ drawMap(); }catch(_e){}
+  const clearDayRes = ()=>{ try{ document.body.classList.remove("day-res-open"); const m=document.getElementById("mask"); if(m) m.classList.remove("day-res"); }catch(_e){} };
+  let advanced = false;
+  const finish = (fn)=>{
+    if(advanced) return;
+    advanced = true;
+    stopRestSleepFxInModal();
+    clearDayRes();
+    try{ if(typeof fn==="function") fn(); }catch(_e){}
+  };
+  const goSchedule = ()=> finish(()=>{
+    if(onSchedule){ onSchedule(); return; }
+    if(ended){ try{ enterHome(summary, true); }catch(_e){} return; }
+    try{ runScheduleFromToday(); }catch(_e){}
+  });
+  const goMap = ()=> finish(()=>{
+    if(onMap){ onMap(); return; }
+    try{ goToMapForBrowse(); }catch(_e){}
+  });
+  try{ document.body.classList.add("day-res-open"); }catch(_e){}
+  let btns = [];
+  try{
+    btns = dayEndContinueButtons(ended, goSchedule);
+  }catch(_e){
+    btns = [{label: ended?"回家結算":"返回地圖", role:"p", on: ended?goSchedule:goMap}];
+  }
+  try{
+    btns = (btns||[]).map(b=>{
+      if(!b || b.stay) return b;
+      const lab = String(b.label||"");
+      if(lab.indexOf("加速")>=0){
+        const orig = b.on;
+        return Object.assign({}, b, { on: ()=>{
+          stopRestSleepFxInModal();
+          clearDayRes();
+          try{ (typeof orig==="function" ? orig : goSchedule)(); }catch(_e){}
+        }});
+      }
+      if(lab.indexOf("返回地圖")>=0) return Object.assign({}, b, { on: goMap });
+      if(lab.indexOf("回家結算")>=0 || lab.indexOf("開始今日")>=0) return Object.assign({}, b, { on: goSchedule });
+      const orig = b.on;
+      return Object.assign({}, b, { on: ()=> finish(typeof orig==="function" ? orig : goMap) });
+    });
+  }catch(_e){}
+  const body = restSleepFxHtml() + formatRestSleepDeltas(notes);
+  const gold = ended ? `<p class="gold">一週完結 → 回家結算</p>` : "";
+  const dismissFn = ended ? goSchedule : goMap;
+  modal(`<h3>${title}</h3>${body}${gold}`, btns, {onDismiss: dismissFn});
+  try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
+  armRestSleepFxInModal();
+  saveQ();
+  return true;
+}
+/** Console / legacy: open compact rest panel (or arm video if already in modal). */
+function playRestSleepFx(thenFn){
+  const cont = (typeof thenFn==="function") ? thenFn : null;
+  if(document.getElementById("rest-sleep-video") && document.getElementById("mask") && document.getElementById("mask").classList.contains("on")){
+    armRestSleepFxInModal();
+    if(cont) try{ cont(); }catch(_e){}
+    return true;
+  }
+  presentRestSleepDayEnd({
+    title: "休息",
+    notes: [],
+    ended: false,
+    onMap: cont || undefined,
+    onSchedule: cont || undefined
+  });
+  return true;
 }
 function restSleepFxCheck(){
   const fails=[];
-  if(!document.getElementById("rest-sleep-fx")) fails.push("dom");
-  if(!document.getElementById("rest-sleep-video")) fails.push("video");
-  if(typeof playRestSleepFx!=="function") fails.push("play");
+  if(typeof restSleepFxHtml!=="function") fails.push("html");
+  if(typeof armRestSleepFxInModal!=="function") fails.push("arm");
+  if(typeof presentRestSleepDayEnd!=="function") fails.push("present");
   if(typeof REST_SLEEP_FX_SRC==="undefined" || String(REST_SLEEP_FX_SRC).indexOf("awei-rest-sleep.mp4")<0) fails.push("src");
   try{ if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save"); }catch(_e){ fails.push("save"); }
-  return { ok:!fails.length, fails:fails, version:"v20a9", softStatus:"≠PASS", src: (typeof REST_SLEEP_FX_SRC!=="undefined"?REST_SLEEP_FX_SRC:"") };
+  return { ok:!fails.length, fails:fails, version:"v20a10", softStatus:"≠PASS", mode:"in-panel", src: (typeof REST_SLEEP_FX_SRC!=="undefined"?REST_SLEEP_FX_SRC:"") };
 }
 try{
   window.__restFx = {
     play: playRestSleepFx,
+    present: presentRestSleepDayEnd,
+    arm: armRestSleepFxInModal,
+    stop: stopRestSleepFxInModal,
     check: restSleepFxCheck,
-    src: function(){ return REST_SLEEP_FX_SRC; }
+    src: function(){ return REST_SLEEP_FX_SRC; },
+    html: restSleepFxHtml
   };
 }catch(_e){}
 
 function doRest(L){
   confirmSpendDay("休息室歇陣", ()=>{
+    const wd = weekdayName(weekdayIdx(S.dayIndex));
     const notes=apply({stamina:16+R(0,8), stress:-(14+R(0,8))});
     writeTodayPlan("rest");
     closeSheet();
-    const dayDone = fmtDate();
     const {ended, summary}=tickDay();
-    const show = ()=> afterDayModal(`<p>喺${L.name}歇咗一日。</p>${formatResultNotes(notes)}`, "休息", L, ended, summary, {dayDone});
-    try{ playRestSleepFx(show); }catch(_e){ show(); }
+    try{
+      presentRestSleepDayEnd({
+        title: `休息（週${wd}）`,
+        notes, ended, summary
+      });
+    }catch(_e){
+      afterDayModal(formatRestSleepDeltas(notes), `休息（週${wd}）`, L, ended, summary, {});
+    }
   });
 }
 

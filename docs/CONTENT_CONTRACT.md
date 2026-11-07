@@ -44,6 +44,7 @@
 | `NOTES_V20A7_AWARDS_CEREMONY_DESIGN.md` | v20a7 設計拍板 | 是 |
 | `NOTES_V20A8_PLAYTEST_ECONOMY_WEEK_C2.md` | v20a8 經濟／週確認／C2 餘件 | 是 |
 | `NOTES_V20A9_REST_SLEEP_FX.md` | v20a9 休息睡覺 8-bit FX | 是 |
+| `NOTES_V20A10_REST_SLEEP_IN_PANEL.md` | v20a10 休息片嵌日結板＋精簡數值 | 是 |
 
 ---
 
