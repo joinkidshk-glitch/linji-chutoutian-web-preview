@@ -1,9 +1,9 @@
-# CONTENT CONTRACT｜Freeplay 框架 v20a8
+# CONTENT CONTRACT｜Freeplay 框架 v20a9
 
 > **對象：** 之後負責豐富劇情／對白／噂文案嘅 bot（或作者）  
 > **時間：** 2026-11-07（Asia/Hong_Kong）  
 > **狀態：** Soft≠PASS；結構殼齊＋殺青獎勵／傳媒反響＋**定期頒獎禮（四媒介）**；**唔發明長篇粵語劇情弧**；玩家面**禁真藝名**  
-> **預覽：** `?v=20a7&softBehaviorGate=1`  
+> **預覽：** `?v=20a9&softBehaviorGate=1`  
 > **基建筆記：** `NOTES_V20A7_AWARDS_CEREMONY.md`（亦見 `NOTES_V20A7_AWARDS_CEREMONY_DESIGN.md`／`NOTES_V20A6_PLAYTEST_LEDGER_TIP.md`）
 
 本約定義：**引擎已就緒嘅欄位**，同 **內容 bot 應填／唔應改** 嘅邊界。
@@ -43,6 +43,7 @@
 | `NOTES_V20A7_AWARDS_CEREMONY.md` | v20a7 頒獎禮落地／verify | 是 |
 | `NOTES_V20A7_AWARDS_CEREMONY_DESIGN.md` | v20a7 設計拍板 | 是 |
 | `NOTES_V20A8_PLAYTEST_ECONOMY_WEEK_C2.md` | v20a8 經濟／週確認／C2 餘件 | 是 |
+| `NOTES_V20A9_REST_SLEEP_FX.md` | v20a9 休息睡覺 8-bit FX | 是 |
 
 ---
 
@@ -150,7 +151,7 @@ __freeplay.softIndustryCreditGate({ industryCreditMin: 1 });
 __freeplay.softOverdueFavorDebtLock({});
 ```
 
-預覽：`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a7&softBehaviorGate=1`
+預覽：`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a9&softBehaviorGate=1`
 
 ---
 
