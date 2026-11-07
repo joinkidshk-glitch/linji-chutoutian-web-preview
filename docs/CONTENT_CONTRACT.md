@@ -1,4 +1,4 @@
-# CONTENT CONTRACT｜Freeplay 框架 v20a7
+# CONTENT CONTRACT｜Freeplay 框架 v20a8
 
 > **對象：** 之後負責豐富劇情／對白／噂文案嘅 bot（或作者）  
 > **時間：** 2026-11-07（Asia/Hong_Kong）  
@@ -42,6 +42,7 @@
 | `content/STUB_AWARDS_CEREMONY_v1.json` | 頒獎禮文案 stub（placeholder 名可改） | **頒獎文案權威** |
 | `NOTES_V20A7_AWARDS_CEREMONY.md` | v20a7 頒獎禮落地／verify | 是 |
 | `NOTES_V20A7_AWARDS_CEREMONY_DESIGN.md` | v20a7 設計拍板 | 是 |
+| `NOTES_V20A8_PLAYTEST_ECONOMY_WEEK_C2.md` | v20a8 經濟／週確認／C2 餘件 | 是 |
 
 ---
 
