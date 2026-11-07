@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z29");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z30");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z29");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z30");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z29");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z30");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -108,7 +108,7 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
 .bar .who{font-weight:800;font-size:.88rem}
 .chips{margin-left:auto;display:flex;flex-wrap:nowrap;gap:4px;justify-content:flex-end;align-items:center;max-width:72%}
 .chip{font-size:.58rem;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:3px 6px;color:var(--muted);white-space:nowrap}
-/* v19z29: 兩行頂欄 — 主列 左 名｜$；右 事態｜☰；次列 聲量N · 年份季節 · 信用N ＋「全部地點」入頂欄右緣 */
+/* v19z30: 兩行頂欄 — 主列 左 名｜$；右 事態｜☰；次列 聲量N · 年份季節 · 信用N ＋「全部地點」入頂欄右緣 */
 .bar-primary{display:flex;align-items:center;gap:4px;min-width:0;width:100%}
 .bar-primary .dual-money{margin-left:0;flex:0 0 auto}
 .bar-primary .bar-tools{margin-left:auto;flex:0 0 auto}
@@ -810,7 +810,7 @@ button.g, .start button.g{
 }
 .chip b{ color:var(--gold-seal) !important }
 
-/* v19z29: 頂 HUD — 主列 左 阿偉｜$；右 事態｜☰；次列 muted 聲量N · 年季 · 信用N ＋「全部地點」入頂欄右緣 */
+/* v19z30: 頂 HUD — 主列 左 阿偉｜$；右 事態｜☰；次列 muted 聲量N · 年季 · 信用N ＋「全部地點」入頂欄右緣 */
 .bar{
   padding:6px 10px 5px 10px !important;
   gap:2px !important;
@@ -877,7 +877,7 @@ button.g, .start button.g{
 .bar .bar-tools,
 .bar .bar-primary .bar-tools{
   flex:0 0 auto !important;
-  margin-left:auto !important; /* v19z29: cluster 事態｜☰ hard-right; never 0 */
+  margin-left:auto !important; /* v19z30: cluster 事態｜☰ hard-right; never 0 */
   margin-right:0 !important;
   gap:4px;
   align-items:center;
@@ -903,7 +903,7 @@ button.g, .start button.g{
   box-shadow:none !important;
   color:var(--cream) !important;
 }
-/* v19z29: always show; muted when no pending (.on off) */
+/* v19z30: always show; muted when no pending (.on off) */
 .bar .bar-primary .chip-story{
   display:inline-flex !important;
   gap:4px;
@@ -934,7 +934,7 @@ button.g, .start button.g{
 .bar .bar-primary .chip-story.on .chip-story-n:not(:empty){
   display:inline-block;
 }
-/* v19z29: row2 = one muted mid-dot line (left/center) + 「全部地點」hard-right under ☰ */
+/* v19z30: row2 = one muted mid-dot line (left/center) + 「全部地點」hard-right under ☰ */
 .bar .bar-secondary.dual-hud{
   width:100%;
   flex:0 0 auto !important;
@@ -2520,7 +2520,7 @@ body.day-res-open #mask.day-res{
 
 /* ===== v19z20: map UX — no region tabs; focus「有事做」pins ===== */
 .region-tabs{ display:none !important; }
-/* v19z29: 「全部地點」moved into #map-bar; empty map-focus-bar hidden */
+/* v19z30: 「全部地點」moved into #map-bar; empty map-focus-bar hidden */
 .map-focus-bar{
   display:none !important;
 }
@@ -3472,6 +3472,140 @@ body.day-res-open .day-row{
 }
 .notice_synopsis_frame p{
   padding-bottom: 8px;
+}
+
+
+/* ===== v19z30: map chrome polish — compact legend · story strip · pin/HUD harden ===== */
+/* 1) Legend: one short row, less vertical space on phone */
+#map-legend.map-legend,
+.map-legend{
+  margin: 2px 8px 0 !important;
+  padding: 1px 6px !important;
+  font-size: .46rem !important;
+  line-height: 1.05 !important;
+  gap: 2px 5px !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  max-height: 20px !important;
+  overflow: hidden !important;
+  border-radius: 7px !important;
+  box-sizing: border-box !important;
+}
+.map-legend .lg{
+  gap: 2px !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+}
+.map-legend .lg img{
+  width: 9px !important;
+  height: 9px !important;
+}
+#map-legend .lg-story .mark-story,
+.map-legend .lg-story .mark-story{
+  min-width: 9px !important;
+  height: 9px !important;
+  font-size: 6.5px !important;
+  padding: 0 1px !important;
+  line-height: 9px !important;
+}
+
+/* 2) Story progress strip: gold accent plate, readable without clutter */
+.map-hint-story{
+  display: block !important;
+  margin-top: 5px !important;
+  padding: 5px 8px !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(201,162,39,.55) !important;
+  border-left: 3px solid #c48a2a !important;
+  background: rgba(36,26,12,.62) !important;
+  color: #FFE7A0 !important;
+  font-weight: 800 !important;
+  font-size: .72rem !important;
+  line-height: 1.35 !important;
+  letter-spacing: .01em;
+  box-shadow: 0 1px 0 rgba(0,0,0,.18);
+}
+.map-hint:has(.map-hint-story) .map-hint-help{
+  opacity: .5 !important;
+  font-size: .56rem !important;
+  margin-top: 1px !important;
+}
+.map-hint:has(.map-hint-story) .map-hint-date,
+.map-hint:has(.map-hint-story) .map-hint-plan{
+  opacity: .92;
+}
+
+/* 3) HUD nit: 事態 chip never clipped beside ☰ */
+.bar .bar-primary{
+  overflow: visible !important;
+}
+.bar .bar-tools,
+.bar .bar-primary .bar-tools{
+  overflow: visible !important;
+  flex-shrink: 0 !important;
+  z-index: 2;
+}
+.bar .bar-primary .chip-story{
+  flex-shrink: 0 !important;
+  visibility: visible !important;
+  white-space: nowrap !important;
+}
+.bar .bar-primary .iconbtn{
+  flex-shrink: 0 !important;
+}
+
+/* 4) Dialogue: sole「下一句」in #modal-btns; harden hide inner CTAs */
+.story-play .sp-actions,
+.story-play .sp-actions .sp-next,
+.story-play .sp-actions .sp-skip{
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+}
+/* Story lock: map chrome fully non-interactive while dialogue runs */
+#app.story-play-lock #map-polaroid,
+#app.story-play-lock .map-stage,
+#app.story-play-lock .map-well,
+#app.story-play-lock .map-img,
+#app.story-play-lock .map-legend,
+#app.story-play-lock #map-legend,
+#app.story-play-lock #map-hint,
+#app.story-play-lock .map-hint,
+#app.story-play-lock #map-focus-bar,
+#app.story-play-lock #map-stress-tip{
+  pointer-events: none !important;
+}
+
+/* 5) Idle pins quieter by default; show-all still quieter than action pins */
+.pin.idle,
+.pin.idle.dim,
+.pin.dim.idle{
+  opacity: .14 !important;
+  filter: grayscale(.85) brightness(.88) !important;
+  z-index: 1 !important;
+}
+.pin.idle .pin-img{
+  width: 16px !important;
+}
+.map-wrap.show-all-locs .pin.idle,
+.map-wrap.show-all-locs .pin.idle.dim{
+  opacity: .52 !important;
+  filter: grayscale(.4) brightness(.95) !important;
+}
+.map-wrap.show-all-locs .pin.idle .pin-img{
+  width: 20px !important;
+}
+.pin.has-action,
+.pin.has-action.dim{
+  opacity: 1 !important;
+  filter: none !important;
+  z-index: 4 !important;
 }
 
 </style>
@@ -19064,7 +19198,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z29. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z30. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -19147,7 +19281,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z29";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z30";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -19233,7 +19367,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=19z29");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=19z30");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -20043,7 +20177,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z29";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z30";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -20213,10 +20347,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z29") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z29") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z30") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z30") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z29") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z30") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -21670,7 +21804,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z29";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z30";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -22115,7 +22249,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z29`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z30`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -22285,7 +22419,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z29`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z30`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -24733,7 +24867,7 @@ function paintStoryEntryHints(){
   if(chip){
     const show = n>0;
     chip.classList.toggle("on", show);
-    /* v19z29: chip 常駐；無未讀淡顯示，唔再 aria-hidden */
+    /* v19z30: chip 常駐；無未讀淡顯示，唔再 aria-hidden */
     chip.setAttribute("aria-hidden", "false");
     chip.title = show ? ("有可播事態 · "+n) : "事態（暫無可播）";
     if(chipN) chipN.textContent = show ? String(n) : "";
@@ -24826,7 +24960,7 @@ function storyMapHintHtml(){
     }
     if(!label) label = "新節";
     const progBit = progress ? ` · ${progress}` : "";
-    return `<span class="map-hint-story">有事態 · ${label}${progBit}（金框／「劇」針 · 頂欄「事態」）</span>`;
+    return `<span class="map-hint-story">有事態 · ${label}${progBit}</span>`;
   }
   /* v19z20：無開放事態時仍常駐下一幕進度，避免「斷崖消失」 */
   if(progress){
@@ -24949,7 +25083,7 @@ function paintBar(){
   const era=document.getElementById("c-era");
   if(era){
     const dt=dateObj();
-    era.textContent = dt.getFullYear()+calendarSeason(); /* v19z29 compact: 1988春 */
+    era.textContent = dt.getFullYear()+calendarSeason(); /* v19z30 compact: 1988春 */
   }
   const dateEl=document.getElementById("c-date"); if(dateEl) dateEl.textContent = fmtDateShort();
   const staEl=document.getElementById("c-sta"); if(staEl) staEl.textContent = S.stamina;
@@ -26335,7 +26469,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z29";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z30";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -26349,7 +26483,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=19z29";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=19z30";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -26448,11 +26582,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z29") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z30") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z29") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z30") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -26519,13 +26653,18 @@ function setStoryPlayLock(on){
     /* v19z24：事態播放時背景地圖針唔搶點 */
     const pins = document.getElementById("map-pins");
     if(pins){
-      pins.style.pointerEvents = "none";
+      /* v19z30: restore map pin hits when unlock; was stuck pointer-events:none */
+      pins.style.pointerEvents = on ? "none" : "";
       pins.querySelectorAll(".pin,.pin-img,.plab").forEach(el=>{
         try{ el.style.pointerEvents = on ? "none" : ""; }catch(_e){}
       });
     }
     const area = document.getElementById("map-area-list");
     if(area) area.style.pointerEvents = on ? "none" : "";
+    const polaroid = document.getElementById("map-polaroid");
+    if(polaroid) polaroid.style.pointerEvents = on ? "none" : "";
+    const showAll = document.getElementById("map-show-all-locs");
+    if(showAll) showAll.style.pointerEvents = on ? "none" : "";
   }catch(_e){}
 }
 function refreshLocAfterStory(){
@@ -26955,21 +27094,21 @@ function openLoc(id, opts){
   }catch(_e){}
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z29. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z30. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z29",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z29",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z29",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z29",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z29",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z29",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z29",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z29",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z29",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z29",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z29",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z29",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z29",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z30",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z30",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z30",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z30",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z30",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z30",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z30",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z30",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z30",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z30",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z30",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z30",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z30",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
