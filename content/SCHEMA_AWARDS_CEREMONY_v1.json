@@ -1,0 +1,388 @@
+{
+  "meta": {
+    "version": "v20a7",
+    "softStatus": "≠PASS",
+    "role": "awards_ceremony_schema",
+    "date": "2026-11-07",
+    "tz": "Asia/Hong_Kong",
+    "implemented": true,
+    "designNote": "NOTES_V20A7_AWARDS_CEREMONY_DESIGN.md",
+    "trigger": "season_window_once_per_year_per_ceremony",
+    "playerFacingRealCelebs": false,
+    "playerFacingRealAwardNames": false,
+    "nextHintPolicy": "never_show_player",
+    "saveKeyUnchanged": "starVolunteer_map_v19w",
+    "note": "FOUR medium tracks (music/TV/film/ad), staggered seasons. Soft MVP all four lightly (shared invite+result shell). Aligns with post-shoot metrics. Soft≠PASS; no tip LIVE. Placeholder displayNames — content bot renames later."
+  },
+  "state": {
+    "logKey": "S.awardsLog",
+    "flagsKey": "S.awardsFlags",
+    "pendingKey": "FREEPLAY_FW._pendingAward",
+    "pendingQueueKey": "FREEPLAY_FW._awardQueue",
+    "maxLog": 24,
+    "maxPendingSimultaneous": 1
+  },
+  "postShootAlignment": {
+    "sourceSchema": "content/SCHEMA_POST_SHOOT_REWARD_v1.json",
+    "kindByGigType": {
+      "電影": "boxOffice",
+      "電視劇": "ratings",
+      "綜藝": "ratings",
+      "唱片通告": "sales",
+      "廣告": "attention",
+      "_fallback": "attention"
+    },
+    "note": "yearRelevantWraps counted from S.postShootRewards / wrap log by matchTypes; metricEcho on result cards mirrors kind."
+  },
+  "ceremonies": [
+    {
+      "id": "award_harbour_ad",
+      "medium": "ad",
+      "displayName": "維港街招・年度廣告賞",
+      "season": "春",
+      "cadence": "once_per_calendar_year",
+      "weekMinSoft": 6,
+      "locHint": "ad_central",
+      "matchTypes": [
+        "廣告"
+      ],
+      "metricEcho": "attention",
+      "mvp": true,
+      "phase": "MVP"
+    },
+    {
+      "id": "award_golddisc_music",
+      "medium": "music",
+      "displayName": "星河金碟夜",
+      "season": "夏",
+      "cadence": "once_per_calendar_year",
+      "weekMinSoft": 16,
+      "locHint": "rec_star",
+      "matchTypes": [
+        "唱片通告"
+      ],
+      "metricEcho": "sales",
+      "mvp": true,
+      "phase": "MVP"
+    },
+    {
+      "id": "award_harbour_film",
+      "medium": "film",
+      "displayName": "維港影藝獎",
+      "season": "秋",
+      "cadence": "once_per_calendar_year",
+      "weekMinSoft": 28,
+      "locHint": "film_harbour",
+      "matchTypes": [
+        "電影"
+      ],
+      "metricEcho": "boxOffice",
+      "mvp": true,
+      "phase": "MVP"
+    },
+    {
+      "id": "award_singho_tv",
+      "medium": "tv",
+      "displayName": "星河台慶・年度頒獎夜",
+      "season": "冬",
+      "cadence": "once_per_calendar_year",
+      "weekMinSoft": 40,
+      "locHint": "tvb_longmen",
+      "matchTypes": [
+        "電視劇",
+        "綜藝"
+      ],
+      "metricEcho": "ratings",
+      "mvp": true,
+      "phase": "MVP",
+      "parallelWithC10": "soft_parallel_dedupe_modal"
+    }
+  ],
+  "deprecatedOrDeferred": [
+    {
+      "id": "award_street_poll",
+      "displayName": "街坊人氣票",
+      "phase": "P2",
+      "reason": "Cross-medium popularity folded into per-track popular categories for MVP; optional light card later."
+    }
+  ],
+  "tiers": [
+    {
+      "id": "gallery",
+      "label": "旁聽席",
+      "mvp": true,
+      "requires": {
+        "anyOf": [
+          {
+            "yearMediumWrapsMin": 1
+          },
+          {
+            "gigCountMin": 2,
+            "anyOf": [
+              {
+                "stageVolumeMin": 5
+              },
+              {
+                "industryCreditMin": 8
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "nominee",
+      "label": "入圍／提名",
+      "mvp": true,
+      "requires": {
+        "yearMediumWrapsMin": 2,
+        "yearMediumWrapsMinByMedium": {
+          "ad": 1,
+          "music": 1,
+          "film": 2,
+          "tv": 2
+        },
+        "anyOf": [
+          {
+            "stageVolumeMin": 10
+          },
+          {
+            "industryCreditMin": 12
+          }
+        ]
+      }
+    },
+    {
+      "id": "contender",
+      "label": "熱門",
+      "mvp": false,
+      "phase": "P1"
+    },
+    {
+      "id": "presenter",
+      "label": "頒獎／助演上鏡",
+      "mvp": false,
+      "phase": "P2"
+    }
+  ],
+  "categories": {
+    "award_harbour_ad": [
+      {
+        "id": "cat_newcomer_ad",
+        "label": "年度廣告新面孔",
+        "primaryTrack": "industryCredit",
+        "matchTypes": [
+          "廣告"
+        ],
+        "metricEcho": "attention",
+        "mvp": true
+      },
+      {
+        "id": "cat_street_recall",
+        "label": "街外最記得住嘅一鏡",
+        "primaryTrack": "stageVolume",
+        "matchTypes": [
+          "廣告"
+        ],
+        "metricEcho": "attention",
+        "mvp": true
+      }
+    ],
+    "award_golddisc_music": [
+      {
+        "id": "cat_newcomer_disc",
+        "label": "年度新人碟緣（臨記組）",
+        "primaryTrack": "industryCredit",
+        "matchTypes": [
+          "唱片通告"
+        ],
+        "metricEcho": "sales",
+        "mvp": true
+      },
+      {
+        "id": "cat_popular_voice",
+        "label": "最受歡迎出鏡嗓／面孔",
+        "primaryTrack": "stageVolume",
+        "matchTypes": [
+          "唱片通告"
+        ],
+        "metricEcho": "sales",
+        "mvp": true
+      }
+    ],
+    "award_harbour_film": [
+      {
+        "id": "cat_newcomer_film",
+        "label": "影壇新面孔（臨記組）",
+        "primaryTrack": "industryCredit",
+        "matchTypes": [
+          "電影"
+        ],
+        "metricEcho": "boxOffice",
+        "mvp": true
+      },
+      {
+        "id": "cat_box_talk",
+        "label": "年度票房話題綠葉",
+        "primaryTrack": "stageVolume",
+        "matchTypes": [
+          "電影"
+        ],
+        "metricEcho": "boxOffice",
+        "mvp": true
+      }
+    ],
+    "award_singho_tv": [
+      {
+        "id": "cat_newcomer_tv",
+        "label": "最佳電視新人（臨記組）",
+        "primaryTrack": "industryCredit",
+        "matchTypes": [
+          "電視劇",
+          "綜藝"
+        ],
+        "metricEcho": "ratings",
+        "mvp": true
+      },
+      {
+        "id": "cat_popular_face",
+        "label": "最受歡迎螢幕面孔",
+        "primaryTrack": "stageVolume",
+        "matchTypes": [
+          "電視劇",
+          "綜藝"
+        ],
+        "metricEcho": "ratings",
+        "mvp": true
+      },
+      {
+        "id": "cat_variety_spark",
+        "label": "綜藝閃光綠葉",
+        "primaryTrack": "stageVolume",
+        "matchTypes": [
+          "綜藝"
+        ],
+        "metricEcho": "ratings",
+        "mvp": false,
+        "phase": "P1"
+      },
+      {
+        "id": "cat_ensemble",
+        "label": "最佳班底／群戲",
+        "primaryTrack": "industryCredit",
+        "matchTypes": [
+          "電視劇",
+          "綜藝"
+        ],
+        "metricEcho": "ratings",
+        "tagBonusAny": [
+          "tag_follow_set",
+          "tag_reliable",
+          "tag_endure"
+        ],
+        "mvp": false,
+        "phase": "P1"
+      }
+    ]
+  },
+  "flow": {
+    "mvpSteps": [
+      "invite",
+      "result_with_press"
+    ],
+    "p1Steps": [
+      "invite",
+      "redCarpetOptional",
+      "nominations",
+      "result",
+      "press"
+    ],
+    "skipPolicy": "once_per_ceremony_per_year_no_reinvite",
+    "queuePolicy": "single_pending_fifo_across_ceremonies",
+    "firstYearSoftBias": "gallery_or_nominated_over_won"
+  },
+  "dualTrackRewards": {
+    "gallery": {
+      "stageVolume": [
+        0,
+        1
+      ],
+      "industryCredit": [
+        0,
+        0
+      ]
+    },
+    "nominated": {
+      "stageVolume": [
+        0,
+        1
+      ],
+      "industryCredit": [
+        1,
+        2
+      ]
+    },
+    "won": {
+      "stageVolume": [
+        1,
+        3
+      ],
+      "industryCredit": [
+        2,
+        4
+      ]
+    },
+    "lost": {
+      "stageVolume": [
+        0,
+        1
+      ],
+      "industryCredit": [
+        0,
+        1
+      ]
+    }
+  },
+  "contentBotEdits": [
+    "ceremonies[].displayName",
+    "ceremonies[].inviteTitle",
+    "ceremonies[].inviteDek",
+    "tiers[].label",
+    "categories.*.label",
+    "categories.*.winLine",
+    "categories.*.loseLine",
+    "categories.*.galleryLine",
+    "pressTemplates.*",
+    "newsTemplates.*",
+    "redCarpet.lines",
+    "redCarpet.choices[].label"
+  ],
+  "contentBotMustNot": [
+    "change ceremony ids, medium, cadence, or matchTypes without re-board",
+    "drop a medium track or collapse to TV-only",
+    "change tier thresholds without re-board",
+    "tip LIVE or change SAVE key",
+    "use real award names or real celeb names player-facing",
+    "invent long romance / long ceremony story arcs",
+    "alter BehaviorGate parsers",
+    "non-empty nextHint for player face"
+  ],
+  "stubFile": "content/STUB_AWARDS_CEREMONY_v1.json",
+  "engineApiProposed": [
+    "queueAwardInviteOnSeasonWindow",
+    "presentPendingAward",
+    "buildAwardResultPack",
+    "countYearMediumWraps",
+    "__awards.check",
+    "__awards.preview",
+    "__awards.debugForceSeasonWindow",
+    "__freeplay.awards"
+  ],
+  "integration": {
+    "postShootReward": "sibling press/news; separate pending; score reads wrap log by matchTypes; result may echo metricKind",
+    "favorDebtSeasonHook": "hook_autumn_award remains separate flavor",
+    "journal": "行程置頂事件；記數按媒介小計 P1",
+    "softCtaRestore": "sheet close must restore location CTAs (v20a4 lesson)",
+    "c10": "only award_singho_tv soft-parallel dedupe"
+  }
+}
