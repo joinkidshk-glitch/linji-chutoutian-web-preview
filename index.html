@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z12");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z13");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z12");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z13");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z12");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z13");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -49,7 +49,7 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
     box-shadow:0 16px 48px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04);
   }
 }
-/* v19z12: desktop rail default hidden; ≥900px shows beside phone frame */
+/* v19z13: desktop rail default hidden; ≥900px shows beside phone frame */
 #desktop-rail{ display:none; }
 @media (min-width:900px){
   body{
@@ -18730,7 +18730,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z12. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z13. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -18813,7 +18813,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z12";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z13";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -18899,7 +18899,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=19z12");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=19z13");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -19704,7 +19704,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z12";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z13";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -19874,10 +19874,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z12") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z12") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z13") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z13") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z12") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z13") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -20950,7 +20950,7 @@ function saveKeyForSlot(slot){
   return n===1 ? SAVE : (SAVE+"_slot"+n);
 }
 function defaultPrefs(){
-  return { bgmMuted:false, sfxMuted:false, volume:70, textSpeed:"fast", reduceMotion:false, familySafeContent:false, activeSlot:1, lastSlot:1 };
+  return { bgmMuted:false, sfxMuted:false, volume:70, textSpeed:"fast", reduceMotion:false, familySafeContent:null, activeSlot:1, lastSlot:1 };
 }
 function loadPrefs(){
   try{
@@ -21114,6 +21114,7 @@ function openSaveSlotsModal(mode){
   });
 }
 function contentFilterOn(){
+  /* v19z13：true 強制開、false 強制關、null／未設定 → 跟 soft gate（唔再俾 default false 短路） */
   try{
     const p=loadPrefs();
     if(p && p.familySafeContent===true) return true;
@@ -21121,6 +21122,9 @@ function contentFilterOn(){
   }catch(_e){}
   try{
     if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview()) return true;
+  }catch(_e){}
+  try{
+    if(typeof softPreviewOn==="function" && softPreviewOn()) return true;
   }catch(_e){}
   return false;
 }
@@ -21194,6 +21198,7 @@ function openSettingsModal(){
         <label><input type="checkbox" id="set-family" ${familyOn?"checked":""}/> 開啟</label></div>
     </div>`,[
     {label:"完成", role:"p", on:()=>{
+      /* v19z13：必須喺 closeModal 清 DOM 前讀表單（modal 改為先 on 再 close） */
       const next=loadPrefs();
       const bgm=document.getElementById("set-bgm");
       const sfx=document.getElementById("set-sfx");
@@ -21204,7 +21209,13 @@ function openSettingsModal(){
       if(sfx) next.sfxMuted=!!sfx.checked;
       if(spd) next.textSpeed=spd.value||"fast";
       if(mot) next.reduceMotion=!!mot.checked;
-      if(fam) next.familySafeContent=!!fam.checked;
+      if(fam){
+        const want=!!fam.checked;
+        let softOn=false;
+        try{ softOn=typeof softPreviewOn==="function" && softPreviewOn(); }catch(_e){}
+        /* 勾選同 soft 預設一致 → 存 null（跟 gate）；否則顯式 true／false */
+        next.familySafeContent = (want===softOn) ? null : want;
+      }
       savePrefs(next);
       toast("設定已儲存");
     }}
@@ -21312,7 +21323,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z12";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z13";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -21757,7 +21768,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z12`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z13`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -21927,7 +21938,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z12`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z13`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -23037,12 +23048,8 @@ function syncDateChrome(){
       const rows = days.querySelectorAll(".day-row");
       rows.forEach((btn,i)=>{
         btn.classList.toggle("is-today", i===today);
-        /* keep selection if user editing; else nudge highlight to today */
-        if(!S.homeEditable){
-          btn.classList.toggle("on", i===today);
-        }
+        /* v19z13：.on／planSelDay 交俾 renderNotebook／用戶點選；唔再強制鎖返今日（修中週點日仍顯示週一） */
       });
-      if(!S.homeEditable && typeof planSelDay!=="undefined") planSelDay = today;
     }
     const range=document.getElementById("nb-range");
     if(range && typeof weekRangeLabel==="function") range.textContent = weekRangeLabel();
@@ -24700,8 +24707,10 @@ function softLeaveOnlyButtons(buttons){
     return typeof BehaviorGate!=="undefined" && BehaviorGate.gatePath()==="soft";
   }catch(_e){ return false; }
 }
+let _modalGen=0;
 function modal(html, buttons, opts){
   opts=opts||{};
+  _modalGen++;
   // v17l: settlement/result modal open → close loc-sheet so 休息室／返地圖 not stacked under cream plate
   // v19z11：keepSheetContent 時只收起 sheet、唔掏空（通告欄關閉可還原）
   try{
@@ -24722,9 +24731,13 @@ function modal(html, buttons, opts){
     btn.className=cls;
     btn.textContent=b.label;
     if(b.ariaDisabled) btn.setAttribute("aria-disabled","true");
+    const gen=_modalGen;
     btn.onclick=()=>{
       if(b.stay){ if(b.on) b.on(btn); return; }
-      _modalDismiss=null; closeModal(); if(b.on) b.on();
+      _modalDismiss=null;
+      /* v19z13：先 on()（表單仍在 DOM），再 close；若 on 開咗新 modal 就唔 close */
+      if(b.on) b.on();
+      if(gen===_modalGen) closeModal();
     };
     row.appendChild(btn);
   });
@@ -25741,7 +25754,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z12";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z13";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -25755,7 +25768,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=19z12";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=19z13";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -25854,11 +25867,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z12") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z13") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z12") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z13") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -26300,21 +26313,21 @@ function openLoc(id, opts){
   scrollMapPinIntoView(id);
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z12. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z13. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z12",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z12",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z12",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z12",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z12",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z12",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z12",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z12",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z12",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z12",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z12",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z12",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z12",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z13",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z13",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z13",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z13",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z13",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z13",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z13",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z13",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z13",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z13",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z13",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z13",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z13",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
