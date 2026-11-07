@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=20a5");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=20a6");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=20a5");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=20a6");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=20a5");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=20a6");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -3616,9 +3616,15 @@ body.day-res-open .day-row{
 }
 
 
-/* v20a5 post-shoot reward sheet + journal ledger */
+/* v20a6 Soft journal ledger + post-shoot tip strip */
 .mark-star{ display:inline-flex; align-items:center; justify-content:center; min-width:14px; height:14px; padding:0 3px; border-radius:999px; background:#6b4e2e; color:#fff8e8; font-size:9px; font-weight:800; line-height:1; border:1px solid #C9A227; }
 .lg-star .mark-star{ margin-right:2px; }
+#home-tabs .home-tab{ flex:1 1 0; min-width:3.2em; }
+#htab-ledger{ order:2; }
+#htab-plan{ order:1; }
+#htab-rumor{ order:3; }
+#htab-debt{ order:4; }
+#htab-tags{ order:5; }
 #home-pane-ledger .ledger-wrap{ flex:1 1 auto; min-height:0; overflow:auto; padding:4px 2px 16px; -webkit-overflow-scrolling:touch; }
 #home-pane-ledger .ledger-head{ margin:0 0 8px; }
 #home-pane-ledger .ledger-head h3{ margin:0 0 4px; font-size:.95rem; }
@@ -19297,7 +19303,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=20a5. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=20a6. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -19389,7 +19395,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=20a5";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=20a6";
       if(out.indexOf(u)<0) out.push(u);
     };
     const era = SP_ERA_STEM[speakerId] || (speakerId==="yip_manzi" ? "yip_manji" : "");
@@ -19480,7 +19486,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=20a5");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=20a6");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -20290,7 +20296,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=20a5";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=20a6";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -20460,10 +20466,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=20a5") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=20a5") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=20a6") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=20a6") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=20a5") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=20a6") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -21934,7 +21940,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=20a5";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=20a6";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -22502,7 +22508,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a5`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a6`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -22672,7 +22678,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a5`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a6`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -24234,7 +24240,7 @@ function renderNotebook(){
   }
 }
 
-function enterHome(summary, editable){
+function enterHome(summary, editable, initialTab){
   closeSheet(); closeModal();
   // v18l: surface overdue drops queued during tickDay
   try{
@@ -24352,7 +24358,9 @@ function enterHome(summary, editable){
     if(summary && summary.html){ S.flags=S.flags||{}; S.flags.settleSeen=true; }
   }
   ensureMockJournal();
-  setHomeTab("plan");
+  /* v20a6：允許呼叫方指定初始分頁（選單「狀態」→記數），避免先 plan 再 setTimeout 搶跑 */
+  const _homeTab = (initialTab && typeof initialTab==="string") ? initialTab : "plan";
+  setHomeTab(_homeTab);
   renderNotebook();
   try{ wireHomeStoryHint(); paintStoryEntryHints(); }catch(_e){}
   paintBar(); // Monday chips reflect post-weekend recovery before map return
@@ -26667,6 +26675,7 @@ try{
     closeSheet: function(){ closeSheet(); },
     enterHome: function(){ enterHome(null, false); },
     setTab: function(tab){ setHomeTab(tab); },
+    openLedger: function(){ try{ showStats(); }catch(_e){} },
     ask: function(locId, actionId){ return applyMockAsk(locId, actionId); },
     journal: function(){ ensureMockJournal(); return { rumors:(S.notebook&&S.notebook.rumors)||[], debts:(S.notebook&&S.notebook.debts)||[] }; },
     sheetOpen: function(){ const s=document.getElementById("loc-sheet"); return !!(s&&s.classList.contains("on")); },
@@ -26680,9 +26689,9 @@ try{
   };
 }catch(_e){}
 
-/* ===== v20a5 FREEPLAY — so_jiyan map star pin + journal 記數 tab + post-shoot polish; Soft≠PASS ===== */
+/* ===== v20a6 FREEPLAY — Soft journal 記數 path + stub tip strip; Soft≠PASS ===== */
 const FREEPLAY_FW = {
-  version: "v20a5",
+  version: "v20a6",
   schema: null,
   eraStars: null,
   rumorFrags: null,
@@ -27166,10 +27175,14 @@ function renderPostShootRewardHtml(pack){
     </article>`;
   }).join("");
   const faceTitle = postShootDisplayTitle({ title: pack.title, workTitle: pack.workTitle });
-  /* Soft player UI：唔顯示內容 bot／stub 工程提示（只留 NOTES／contract）。 */
-  const foot = (typeof freeplayDevTagsOn==="function" && freeplayDevTagsOn())
-    ? `<p class="psr-foot sub">短訊可換；內容 bot 改 STUB_POST_SHOOT_REWARDS。</p>`
-    : "";
+  /* v20a6 Soft player sheet：永遠唔出 stub 工程 foot。
+     只喺 URL ?devTags=1 先注入（唔讀 localStorage，免 Soft 玩測誤開）。NOTES／contract 保留說明。 */
+  let foot = "";
+  try{
+    if(typeof location!=="undefined" && location && /(?:\?|&)devTags=1(?:&|$)/.test(String(location.search||""))){
+      foot = `<p class="psr-foot sub">短訊可換；內容 bot 改 STUB_POST_SHOOT_REWARDS。</p>`;
+    }
+  }catch(_e){ foot = ""; }
   return `<div class="psr-sheet">
     <p class="psr-eyebrow">殺青獎勵</p>
     <h3 class="psr-h">傳媒・街外・成績</h3>
@@ -27216,7 +27229,7 @@ function postShootRewardCheck(){
     if(/《《/.test(html)) fails.push("title_double");
     if(/短訊可換/.test(html)) fails.push("stub_tip_visible");
   }catch(_e){ fails.push("build_err"); }
-  return { ok:!fails.length, fails:fails, version:"v20a5", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, version:"v20a6", softStatus:"≠PASS" };
 }
 try{
   window.__reward = {
@@ -27231,7 +27244,7 @@ try{
 
 async function loadFreeplayFramework(){
   if(FREEPLAY_FW.loaded) return FREEPLAY_FW;
-  const bust = "20a4";
+  const bust = "20a6";
   const files = {
     schema: "SCHEMA_FREEPLAY_FRAMEWORK_v1.json",
     eraStars: "STUB_ERA_STARS_MVP_v1.json",
@@ -27285,7 +27298,7 @@ try{
     },
     check: function(){
       const fails=[];
-      if(FREEPLAY_FW.version!=="v20a5") fails.push("ver");
+      if(FREEPLAY_FW.version!=="v20a6") fails.push("ver");
       const ids=["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji"];
       ids.forEach(id=>{ if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId===id)) fails.push("star:"+id); });
       if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan")) fails.push("so_jiyan_sighting");
@@ -27297,6 +27310,13 @@ try{
       if(!document.getElementById("home-pane-tags")) fails.push("ui:tags");
       if(!document.getElementById("home-pane-ledger")) fails.push("ui:ledger");
       if(!document.getElementById("htab-ledger")) fails.push("ui:htab_ledger");
+      try{
+        const tab = document.getElementById("htab-ledger");
+        if(tab && (tab.hidden || getComputedStyle(tab).display==="none")) fails.push("ui:htab_ledger_hidden");
+        const src = Function.prototype.toString.call(showStats);
+        if(/<h3>狀態<\/h3>/.test(src) || /modal\(`<h3>狀態/.test(src)) fails.push("ui:stats_modal_status");
+        if(!/enterHome\([^)]*"ledger"/.test(src) && src.indexOf('"ledger"')<0) fails.push("ui:stats_not_ledger");
+      }catch(_e){ fails.push("ui:stats_probe"); }
       if(!document.getElementById("home-pane-rumor")) fails.push("ui:rumor");
       if(!document.getElementById("home-pane-debt")) fails.push("ui:debt");
       try{
@@ -27349,7 +27369,7 @@ try{
         if(!rc.ok) fails.push.apply(fails, (rc.fails||[]).map(f=>"reward:"+f));
       }catch(_e){ fails.push("reward_check"); }
       return {
-        ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a5",
+        ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a6",
         slotsCount: ((FREEPLAY_FW.storySlots&&FREEPLAY_FW.storySlots.nodes)||[]).length,
         soJiyan: typeof STAR_SIGHTINGS!=="undefined" && STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan"),
         creditGate: typeof softIndustryCreditGate==="function",
@@ -27571,7 +27591,7 @@ try{ window.__eraBustPreferFile = ["luk_baakyin","liu_bingxing","ngai_wingnaam",
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=20a5";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=20a6";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -27585,7 +27605,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=20a5";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=20a6";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -27690,11 +27710,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=20a5") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=20a6") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=20a5") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=20a6") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -28226,21 +28246,21 @@ function openLoc(id, opts){
   }catch(_e){}
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=20a5. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=20a6. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a5",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a5",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a5",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a5",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a5",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a5",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a5",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a5",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a5",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a5",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a5",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a5",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a5",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a6",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a6",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a6",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a6",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a6",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a6",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a6",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a6",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a6",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a6",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a6",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a6",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a6",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -29254,7 +29274,7 @@ function showInventory(){
   modal(`<h3>庫存</h3><p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>${body}`, btns);
 }
 
-/** v20a5：記數簿／狀態共用同一套數字 UI（手帳「記數」tab；選單「狀態」跳去同一頁，唔另開第二套）。 */
+/** v20a6：記數簿／狀態共用同一套數字 UI（手帳「記數」tab；選單「狀態」跳去同一頁，唔另開第二套／唔開「狀態」modal）。 */
 function ledgerStatsParts(){
   const keys=["acting","stage","vocal","looks","stamina","iq","charm","fame","popularity","stress"];
   const grid=keys.map(k=>{
@@ -29289,21 +29309,36 @@ function renderLedgerPane(){
   try{ box.innerHTML = ledgerStatsHtml(); }catch(_e){ box.innerHTML = "<p class=\"sub\">記數簿暫時睇唔到。</p>"; }
 }
 function showStats(){
-  /* 單一記數 UI：入手帳「記數」分頁；若手帳未就緒先保底 modal（同內容）。 */
+  /* v20a6：選單「狀態」＝手帳「記數」同一頁。唔再開獨立「狀態」modal。 */
   try{
     if(typeof kickScheduleIfNeeded==="function" && kickScheduleIfNeeded()) return;
   }catch(_e){}
   try{
+    if(typeof S==="undefined" || !S){
+      if(typeof fresh==="function"){ S = fresh(); try{ syncDualTracks(S); }catch(_e){} }
+    }
+  }catch(_e){}
+  try{
     if(typeof enterHome==="function"){
-      enterHome(null, false);
-      setTimeout(()=>{ try{ setHomeTab("ledger"); }catch(_e){} }, 40);
+      enterHome(null, false, "ledger");
+      try{ setHomeTab("ledger"); renderLedgerPane(); }catch(_e){}
       return;
     }
   }catch(_e){}
-  const p = ledgerStatsParts();
-  modal(`<h3>記數簿</h3><p>${p.dateLine}</p><div class="stats-grid">${p.grid}</div>
-    <p>存款 <b class="gold">$ ${p.money.toLocaleString()}</b></p>
-    <p style="font-size:.78rem;color:var(--muted)">已報名訓練：${p.enrollLine}</p>`,[{label:"關閉",role:"g"}]);
+  try{
+    if(typeof show==="function") show("v-home");
+    setHomeTab("ledger");
+    renderLedgerPane();
+    return;
+  }catch(_e){}
+  /* 最後保底：仍用記數簿標題（永遠唔用「狀態」modal 標題） */
+  try{
+    const p = ledgerStatsParts();
+    modal(`<h3>記數簿</h3><p>${p.dateLine}</p><div class="stats-grid">${p.grid}</div>
+      <p class="sub">幕前聲量 <b>${p.stageVolume}</b> · 業內信用 <b>${p.industryCredit}</b></p>
+      <p>存款 <b class="gold">$ ${p.money.toLocaleString()}</b></p>
+      <p style="font-size:.78rem;color:var(--muted)">已報名訓練：${p.enrollLine}</p>`,[{label:"關閉",role:"g"}]);
+  }catch(_e2){}
 }
 function showPeople(){
   const html=Object.values(NPCS).map(n=>{
