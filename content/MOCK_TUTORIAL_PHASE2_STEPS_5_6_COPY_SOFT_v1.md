@@ -28,7 +28,7 @@ Soft≠PASS｜經 DeepSeek｜香港書面語｜對齊 PLAN_TUTORIAL_PHASE2_STEPS
 | `failToast` | 今次未成功，再試一次。 |
 | `noPairHint` | 暫時搵唔到可以配對嘅卡，睇多一次先。 |
 | `mergeGlowHint` | 兩張卡啱位就會發光，見到光就可以放低。 |
-| `favorDebtSettleLine` | 何生話：呢筆人情債記低，稍後再算。 |
+| `favorDebtSettleLine` | （教學備註）何生早前記低嘅人情債——唔係拼合生出嚟；稍後可去事務所還。 |
 | `closeSettleLabel` | 知道了 |
 
 ## 按鈕
