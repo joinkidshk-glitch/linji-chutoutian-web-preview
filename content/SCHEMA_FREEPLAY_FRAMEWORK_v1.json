@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "v20a6",
+    "version": "v20a7",
     "softStatus": "≠PASS",
     "role": "program_framework",
     "date": "2026-11-07",
@@ -21,6 +21,26 @@
         "__reward.check",
         "__freeplay.rewards"
       ]
+    },
+    "awardsCeremony": {
+      "schemaFile": "content/SCHEMA_AWARDS_CEREMONY_v1.json",
+      "stubFile": "content/STUB_AWARDS_CEREMONY_v1.json",
+      "stateKey": "S.awardsLog",
+      "flagsKey": "S.awardsFlags",
+      "trigger": "season_window_once_per_year_per_ceremony",
+      "api": [
+        "__awards.check",
+        "__awards.preview",
+        "__awards.debugForceSeasonWindow",
+        "__freeplay.awards"
+      ],
+      "tracks": [
+        "award_harbour_ad",
+        "award_golddisc_music",
+        "award_harbour_film",
+        "award_singho_tv"
+      ],
+      "cadence": "春廣告／夏唱片／秋電影／冬電視"
     }
   },
   "locs": {

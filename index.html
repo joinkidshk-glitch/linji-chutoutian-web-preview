@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=20a6");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=20a7");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=20a6");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=20a7");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=20a6");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=20a7");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -3649,6 +3649,7 @@ body.day-res-open .day-row{
 .psr-body{ margin:0; font-size:.8rem; color:#4a3b28; line-height:1.4; }
 .psr-dual{ margin:6px 0 0; }
 .psr-foot{ margin:8px 0 0; font-size:.68rem; }
+.awd-sheet .psr-eyebrow{ letter-spacing:.14em; }
 </style>
 </head>
 <body>
@@ -19303,7 +19304,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=20a6. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=20a7. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -19395,7 +19396,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=20a6";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=20a7";
       if(out.indexOf(u)<0) out.push(u);
     };
     const era = SP_ERA_STEM[speakerId] || (speakerId==="yip_manzi" ? "yip_manji" : "");
@@ -19486,7 +19487,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=20a6");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=20a7");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -20296,7 +20297,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=20a6";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=20a7";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -20466,10 +20467,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=20a6") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=20a6") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=20a7") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=20a7") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=20a6") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=20a7") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -21546,6 +21547,9 @@ function fresh(){
     castingTags:[],
     /* v20a4：殺青獎勵／傳媒反響履歷 */
     postShootRewards:[],
+    /* v20a7：定期頒獎禮 log／flags */
+    awardsLog:[],
+    awardsFlags:{},
   };
 }
 
@@ -21599,6 +21603,8 @@ function normalizeSaveObj(o){
   if(Number(o.stress)>STRESS_MAX) o.stress=STRESS_MAX;
   if(!Array.isArray(o.castingTags)) o.castingTags=[];
   if(!Array.isArray(o.postShootRewards)) o.postShootRewards=[];
+  if(!Array.isArray(o.awardsLog)) o.awardsLog=[];
+  if(!o.awardsFlags || typeof o.awardsFlags!=="object") o.awardsFlags={};
   try{ syncDualTracks(o); }catch(_e){}
   return o;
 }
@@ -21940,7 +21946,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=20a6";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=20a7";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -22508,7 +22514,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a6`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a7`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -22678,7 +22684,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a6`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a7`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -24612,6 +24618,14 @@ function goToMapForBrowse(){
       return;
     }
   }catch(_psrMap){}
+  /* v20a7：季節窗頒獎請柬（同殺青分 pending；關 sheet 後還原地圖 CTA） */
+  try{
+    if(typeof queueAwardsOnSeasonWindow==="function") queueAwardsOnSeasonWindow();
+    if(typeof presentPendingAward==="function" && FREEPLAY_FW && FREEPLAY_FW._pendingAward){
+      presentPendingAward(()=>{ try{ goToMapForBrowse(); }catch(_e3){} });
+      return;
+    }
+  }catch(_awdMap){}
   if(kickScheduleIfNeeded()) return;
   nudgeRegionForToday();
   try{ closeSheet(); }catch(_e){}
@@ -26689,9 +26703,9 @@ try{
   };
 }catch(_e){}
 
-/* ===== v20a6 FREEPLAY — Soft journal 記數 path + stub tip strip; Soft≠PASS ===== */
+/* ===== v20a6 FREEPLAY — awards ceremony four tracks + Soft journal; Soft≠PASS ===== */
 const FREEPLAY_FW = {
-  version: "v20a6",
+  version: "v20a7",
   schema: null,
   eraStars: null,
   rumorFrags: null,
@@ -26701,6 +26715,10 @@ const FREEPLAY_FW = {
   postShootRewards: null,
   postShootSchema: null,
   _pendingPostShootReward: null,
+  awardsSchema: null,
+  awardsStub: null,
+  _pendingAward: null,
+  _awardQueue: null,
   loaded: false,
 };
 function freeplayNormalizeStarId(id){
@@ -27229,7 +27247,7 @@ function postShootRewardCheck(){
     if(/《《/.test(html)) fails.push("title_double");
     if(/短訊可換/.test(html)) fails.push("stub_tip_visible");
   }catch(_e){ fails.push("build_err"); }
-  return { ok:!fails.length, fails:fails, version:"v20a6", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, version:"v20a7", softStatus:"≠PASS" };
 }
 try{
   window.__reward = {
@@ -27242,9 +27260,597 @@ try{
   };
 }catch(_e){}
 
+/* ===== v20a7 AWARDS CEREMONY — four medium tracks; Soft≠PASS; no tip LIVE ===== */
+function ensureAwardsLog(){
+  if(!S || typeof S!=="object") return [];
+  if(!Array.isArray(S.awardsLog)) S.awardsLog = [];
+  return S.awardsLog;
+}
+function ensureAwardsFlags(){
+  if(!S || typeof S!=="object") return {};
+  if(!S.awardsFlags || typeof S.awardsFlags!=="object") S.awardsFlags = {};
+  return S.awardsFlags;
+}
+function awardsSoftOn(){
+  try{
+    if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview){
+      return !!BehaviorGate.featureFlag_softBehaviorGatePreview();
+    }
+  }catch(_e){}
+  return false;
+}
+function awardsCalendarYear(dayIndex){
+  const di = (dayIndex!=null) ? (dayIndex|0) : ((S && (S.dayIndex|0)) || 0);
+  try{
+    const dt = new Date(START.y, START.m-1, START.d + di);
+    return dt.getFullYear();
+  }catch(_e){ return START.y; }
+}
+function awardsCeremonies(){
+  const schema = FREEPLAY_FW.awardsSchema;
+  const stub = FREEPLAY_FW.awardsStub;
+  const fromSchema = (schema && Array.isArray(schema.ceremonies)) ? schema.ceremonies.filter(c=>c && c.mvp!==false) : [];
+  if(fromSchema.length) return fromSchema;
+  const fromStub = (stub && Array.isArray(stub.ceremonies)) ? stub.ceremonies : [];
+  return fromStub;
+}
+function awardsCeremonyById(id){
+  return awardsCeremonies().find(c=>c && c.id===id) || null;
+}
+function awardsStubCeremony(id){
+  const stub = FREEPLAY_FW.awardsStub;
+  const list = (stub && Array.isArray(stub.ceremonies)) ? stub.ceremonies : [];
+  return list.find(c=>c && c.id===id) || null;
+}
+function awardsCopyLine(v, fallback){
+  const s = String(v==null?"":v).trim();
+  if(!s || /待補|文案待補/.test(s)) return fallback || "";
+  return s;
+}
+function awardsFlagKey(year, ceremonyId){
+  return String(year)+"/"+String(ceremonyId);
+}
+function awardsGetFlag(year, ceremonyId){
+  const f = ensureAwardsFlags();
+  return f[awardsFlagKey(year, ceremonyId)] || "";
+}
+function awardsSetFlag(year, ceremonyId, status){
+  const f = ensureAwardsFlags();
+  f[awardsFlagKey(year, ceremonyId)] = status;
+}
+function awardsYearFromDay(dayIndex){
+  return awardsCalendarYear(dayIndex);
+}
+function countYearMediumWraps(matchTypes, year){
+  const types = Array.isArray(matchTypes) ? matchTypes : [];
+  const typeSet = {};
+  types.forEach(t=>{ if(t) typeSet[String(t)] = true; });
+  let nHist = 0, nPsr = 0;
+  try{
+    (S.wrapHistory||[]).forEach(h=>{
+      if(!h) return;
+      const y = awardsYearFromDay(h.wrappedDay!=null ? h.wrappedDay : h.dayIndex);
+      if(year!=null && y!==year) return;
+      if(typeSet[String(h.type||"")]) nHist++;
+    });
+  }catch(_e){}
+  try{
+    const log = (typeof ensurePostShootRewardLog==="function") ? ensurePostShootRewardLog() : (S.postShootRewards||[]);
+    (log||[]).forEach(r=>{
+      if(!r) return;
+      const y = awardsYearFromDay(r.dayIndex);
+      if(year!=null && y!==year) return;
+      if(typeSet[String(r.gigType||"")]) nPsr++;
+    });
+  }catch(_e2){}
+  /* Prefer max — wrapHistory and postShootRewards often mirror the same wraps. */
+  return Math.max(nHist, nPsr);
+}
+function awardsGigCount(){
+  try{
+    if(S && S.story && typeof S.story.gigCount==="number") return Math.max(0, Number(S.story.gigCount)||0);
+  }catch(_e){}
+  try{ return (S.wrapHistory||[]).length; }catch(_e2){ return 0; }
+}
+function awardsDual(){
+  try{
+    if(typeof readDualTracks==="function") return readDualTracks(S);
+  }catch(_e){}
+  return { stageVolume: Number(S&&S.fame)||0, industryCredit: 10 + (Number(S&&S.industryCreditDelta)||0) };
+}
+function awardsSchemaTiers(){
+  const schema = FREEPLAY_FW.awardsSchema;
+  return (schema && Array.isArray(schema.tiers)) ? schema.tiers : [];
+}
+function awardsEvalTier(ceremony, year, forceTier){
+  if(forceTier==="gallery" || forceTier==="nominee") return forceTier;
+  const medium = ceremony.medium || "";
+  const wraps = countYearMediumWraps(ceremony.matchTypes||[], year);
+  const dual = awardsDual();
+  const gigCount = awardsGigCount();
+  const tiers = awardsSchemaTiers();
+  const gallery = tiers.find(t=>t && t.id==="gallery") || { requires:{ anyOf:[{yearMediumWrapsMin:1},{gigCountMin:2}] } };
+  const nominee = tiers.find(t=>t && t.id==="nominee") || { requires:{ yearMediumWrapsMin:2 } };
+  /* nominee first */
+  try{
+    const req = nominee.requires || {};
+    let wrapMin = Number(req.yearMediumWrapsMin)||2;
+    if(req.yearMediumWrapsMinByMedium && req.yearMediumWrapsMinByMedium[medium]!=null){
+      wrapMin = Number(req.yearMediumWrapsMinByMedium[medium]);
+    }
+    const dualOk = (Array.isArray(req.anyOf) ? req.anyOf : [{stageVolumeMin:10},{industryCreditMin:12}]).some(c=>{
+      if(c.stageVolumeMin!=null && dual.stageVolume >= Number(c.stageVolumeMin)) return true;
+      if(c.industryCreditMin!=null && dual.industryCredit >= Number(c.industryCreditMin)) return true;
+      return false;
+    });
+    if(wraps >= wrapMin && dualOk) return "nominee";
+  }catch(_e){}
+  /* gallery */
+  try{
+    const req = gallery.requires || {};
+    const anyOf = Array.isArray(req.anyOf) ? req.anyOf : [{yearMediumWrapsMin:1}];
+    const ok = anyOf.some(c=>{
+      if(c.yearMediumWrapsMin!=null && wraps >= Number(c.yearMediumWrapsMin)) return true;
+      if(c.gigCountMin!=null && gigCount >= Number(c.gigCountMin)){
+        const nested = Array.isArray(c.anyOf) ? c.anyOf : null;
+        if(!nested) return true;
+        return nested.some(n=>{
+          if(n.stageVolumeMin!=null && dual.stageVolume >= Number(n.stageVolumeMin)) return true;
+          if(n.industryCreditMin!=null && dual.industryCredit >= Number(n.industryCreditMin)) return true;
+          return false;
+        });
+      }
+      return false;
+    });
+    if(ok) return "gallery";
+  }catch(_e2){}
+  /* Soft guarantee: once season window opens, still offer gallery if player has any gig */
+  if(gigCount >= 1 || wraps >= 1) return "gallery";
+  return "gallery";
+}
+function awardsMvpCategories(ceremonyId){
+  const schema = FREEPLAY_FW.awardsSchema;
+  const stub = FREEPLAY_FW.awardsStub;
+  let list = [];
+  if(schema && schema.categories && Array.isArray(schema.categories[ceremonyId])){
+    list = schema.categories[ceremonyId].filter(c=>c && c.mvp!==false);
+  }
+  if(!list.length && stub && stub.categories && Array.isArray(stub.categories[ceremonyId])){
+    list = stub.categories[ceremonyId].slice(0, 2);
+  }
+  return list.slice(0, 2);
+}
+function awardsStubCategory(ceremonyId, catId){
+  const stub = FREEPLAY_FW.awardsStub;
+  const list = (stub && stub.categories && stub.categories[ceremonyId]) || [];
+  return list.find(c=>c && c.id===catId) || null;
+}
+function awardsPickPressNews(medium){
+  const stub = FREEPLAY_FW.awardsStub || {};
+  const fb = stub.fallbacks || {};
+  const pressList = (Array.isArray(stub.pressTemplates) ? stub.pressTemplates : []).filter(p=>!p.medium || p.medium===medium);
+  const newsList = (Array.isArray(stub.newsTemplates) ? stub.newsTemplates : []).filter(p=>!p.medium || p.medium===medium);
+  const press = pressList.length ? pressList[Math.floor(Math.random()*pressList.length)] : {};
+  const news = newsList.length ? newsList[Math.floor(Math.random()*newsList.length)] : {};
+  return {
+    press: {
+      paperName: awardsCopyLine(press.paperName, "娛樂快報"),
+      headline: awardsCopyLine(press.headline, "頒獎夜，版面多一行"),
+      dek: awardsCopyLine(press.dek, "典禮散場，側記多一個名。")
+    },
+    news: {
+      outlet: awardsCopyLine(news.outlet, "晚間娛樂快訊"),
+      line: awardsCopyLine(news.line, "頒獎夜散場：臨記席都有鏡頭掃過。")
+    },
+    fallbacks: fb
+  };
+}
+function awardsMetricEchoLabel(kind){
+  const map = { attention:"街外關注度", sales:"銷量／碟市", boxOffice:"票房話題", ratings:"收視餘溫" };
+  return map[kind] || "話題餘韻";
+}
+function awardsDualRewardForOutcome(outcome){
+  const schema = FREEPLAY_FW.awardsSchema;
+  const table = (schema && schema.dualTrackRewards) || {};
+  const key = outcome==="won" ? "won" : (outcome==="nominated" || outcome==="lost" ? (outcome==="nominated"?"nominated":"lost") : "gallery");
+  const row = table[key] || table.gallery || { stageVolume:[0,1], industryCredit:[0,0] };
+  const pick = (arr)=>{
+    const a = Array.isArray(arr) ? arr : [0,0];
+    const lo = Number(a[0])||0, hi = Number(a[1]!=null?a[1]:a[0])||0;
+    if(hi<=lo) return lo;
+    return lo + Math.floor(Math.random()*(hi-lo+1));
+  };
+  return { stageVolume: pick(row.stageVolume), industryCredit: pick(row.industryCredit) };
+}
+function awardsScoreCategory(cat, ceremony, year, tier){
+  const dual = awardsDual();
+  const wraps = countYearMediumWraps(ceremony.matchTypes||[], year);
+  const primary = cat.primaryTrack==="industryCredit" ? dual.industryCredit : dual.stageVolume;
+  const normPrimary = Math.min(1, Math.max(0, primary / 40));
+  const wrapW = Math.min(1, wraps / 4);
+  let tagBonus = 0;
+  try{
+    const tags = ensureCastingTagsState();
+    const want = cat.tagBonusAny || [];
+    if(want.length && tags.some(t=> want.indexOf(t)>=0 || want.indexOf((t&&t.id)||t)>=0)) tagBonus = 0.15;
+  }catch(_e){}
+  const rng = Math.random() * 0.12;
+  let score = 0.45*normPrimary + 0.40*wrapW + tagBonus + rng;
+  /* Year-1 Soft bias: gallery/nominate over win */
+  if(year <= START.y || (FREEPLAY_FW.awardsSchema && FREEPLAY_FW.awardsSchema.flow && FREEPLAY_FW.awardsSchema.flow.firstYearSoftBias)){
+    score *= 0.72;
+  }
+  if(tier==="gallery") return { score, outcome:"gallery" };
+  if(score >= 0.78 && Math.random() < 0.18) return { score, outcome:"won" };
+  if(score >= 0.42) return { score, outcome:"nominated" };
+  return { score, outcome:"nominated" }; /* MVP nominee rarely "lost" — show as nominated */
+}
+function buildAwardResultPack(opts){
+  opts = opts || {};
+  const ceremonyId = opts.ceremonyId || "award_harbour_ad";
+  const ceremony = awardsCeremonyById(ceremonyId) || { id:ceremonyId, medium:"ad", displayName:"頒獎夜", matchTypes:[], metricEcho:"attention", season:"春" };
+  const stubC = awardsStubCeremony(ceremonyId) || {};
+  const year = opts.year!=null ? opts.year : awardsCalendarYear();
+  const week = opts.week!=null ? opts.week : (typeof weekNumNow==="function" ? weekNumNow() : 1);
+  const tier = awardsEvalTier(ceremony, year, opts.forceTier);
+  const cats = awardsMvpCategories(ceremonyId);
+  const pickN = Math.min(cats.length, 1 + (Math.random()<0.45 && cats.length>1 ? 1 : 0));
+  const shuffled = cats.slice();
+  for(let i=shuffled.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    const t = shuffled[i]; shuffled[i]=shuffled[j]; shuffled[j]=t;
+  }
+  const chosen = shuffled.slice(0, Math.max(1, pickN));
+  const fb = (FREEPLAY_FW.awardsStub && FREEPLAY_FW.awardsStub.fallbacks) || {};
+  const categories = chosen.map(cat=>{
+    const stubCat = awardsStubCategory(ceremonyId, cat.id) || {};
+    const scored = awardsScoreCategory(cat, ceremony, year, tier);
+    let line = "";
+    if(scored.outcome==="won") line = awardsCopyLine(stubCat.winLine, fb.winLine||"台上念到你。");
+    else if(scored.outcome==="gallery") line = awardsCopyLine(stubCat.galleryLine, fb.galleryLine||"你坐喺席上，記住呢晚嘅掌聲。");
+    else line = awardsCopyLine(stubCat.loseLine, fb.loseLine||"入圍未得獎。");
+    return {
+      id: cat.id,
+      label: awardsCopyLine(stubCat.label || cat.label, cat.id),
+      outcome: scored.outcome,
+      score: scored.score,
+      line: line,
+      primaryTrack: cat.primaryTrack||"",
+      metricEcho: cat.metricEcho || ceremony.metricEcho || ""
+    };
+  });
+  const bestOutcome = categories.some(c=>c.outcome==="won") ? "won"
+    : (categories.some(c=>c.outcome==="nominated") ? "nominated" : "gallery");
+  const rewards = awardsDualRewardForOutcome(tier==="gallery" ? "gallery" : bestOutcome);
+  const pn = awardsPickPressNews(ceremony.medium||"ad");
+  const metricEcho = ceremony.metricEcho || "";
+  const displayName = awardsCopyLine(stubC.displayName || ceremony.displayName, "頒獎夜");
+  const inviteTitle = awardsCopyLine(stubC.inviteTitle, fb.inviteTitle||"頒獎夜請柬");
+  const inviteDek = awardsCopyLine(stubC.inviteDek, fb.inviteDek||"你收到一張典禮相關信件。");
+  const tierLabel = (()=>{
+    const stub = FREEPLAY_FW.awardsStub;
+    const t = ((stub && stub.tiers)||[]).find(x=>x && x.id===tier);
+    return (t && t.label) || (tier==="nominee"?"入圍／提名":"旁聽席");
+  })();
+  return {
+    id: "aw_"+year+"_"+String(ceremonyId).replace(/^award_/,""),
+    ceremonyId: ceremonyId,
+    medium: ceremony.medium||"",
+    year: year,
+    season: ceremony.season || "",
+    week: week,
+    dayIndex: (S && (S.dayIndex|0)) || 0,
+    tier: tier,
+    tierLabel: tierLabel,
+    displayName: displayName,
+    inviteTitle: inviteTitle,
+    inviteDek: inviteDek,
+    locHint: stubC.locHint || ceremony.locHint || "",
+    categories: categories,
+    bestOutcome: bestOutcome,
+    rewardsApplied: { stageVolume: rewards.stageVolume, industryCredit: rewards.industryCredit, money:0, tags:[] },
+    metricEcho: metricEcho,
+    metricEchoLabel: awardsMetricEchoLabel(metricEcho),
+    press: pn.press,
+    news: pn.news,
+    skipped: false,
+    dualApplied: false
+  };
+}
+function applyAwardDual(pack){
+  if(!pack || pack.dualApplied) return pack;
+  const r = pack.rewardsApplied || {};
+  const sv = Number(r.stageVolume)||0;
+  const ic = Number(r.industryCredit)||0;
+  try{
+    if(sv){ S.fame = (Number(S.fame)||0) + sv; }
+    if(ic){ S.industryCreditDelta = (Number(S.industryCreditDelta)||0) + ic; }
+    if(typeof syncDualTracks==="function") syncDualTracks(S);
+  }catch(_e){}
+  pack.dualApplied = true;
+  return pack;
+}
+function commitAwardToLog(pack){
+  if(!pack) return;
+  const log = ensureAwardsLog();
+  const entry = {
+    id: pack.id,
+    ceremonyId: pack.ceremonyId,
+    medium: pack.medium,
+    year: pack.year,
+    season: pack.season,
+    week: pack.week,
+    tier: pack.tier,
+    categories: (pack.categories||[]).map(c=>({ id:c.id, outcome:c.outcome })),
+    rewardsApplied: Object.assign({}, pack.rewardsApplied||{}),
+    metricEcho: pack.metricEcho||"",
+    skipped: !!pack.skipped,
+    dayIndex: pack.dayIndex|0
+  };
+  log.unshift(entry);
+  if(log.length > 24) log.length = 24;
+  awardsSetFlag(pack.year, pack.ceremonyId, pack.skipped ? "skipped" : "done");
+}
+function softC10WindowActive(){
+  try{
+    const week = (typeof weekNumNow==="function") ? weekNumNow() : 0;
+    if(week < 40 || week > 43) return false;
+    const done = (S && S.flags) || {};
+    if(done.C10 || done.done_C10 || done["story_C10"]) return false;
+    /* Heuristic: C9 done or week>=40 without C10 flag → TV anti-stack */
+    if(done.C9 || done.done_C9 || week>=40) return true;
+  }catch(_e){}
+  return false;
+}
+function awardsSeasonMatches(ceremony){
+  try{
+    const cur = (typeof calendarSeason==="function") ? calendarSeason() : "";
+    return !ceremony.season || ceremony.season===cur;
+  }catch(_e){ return true; }
+}
+function awardsWeekOk(ceremony){
+  const week = (typeof weekNumNow==="function") ? weekNumNow() : 1;
+  const min = Number(ceremony.weekMinSoft)||0;
+  return week >= min;
+}
+function ensureAwardQueue(){
+  if(!FREEPLAY_FW._awardQueue) FREEPLAY_FW._awardQueue = [];
+  return FREEPLAY_FW._awardQueue;
+}
+function queueAwardInvite(pack){
+  if(!pack) return null;
+  if(FREEPLAY_FW._pendingAward){
+    const q = ensureAwardQueue();
+    if(!q.some(p=>p && p.ceremonyId===pack.ceremonyId && p.year===pack.year)){
+      q.push(pack);
+    }
+    awardsSetFlag(pack.year, pack.ceremonyId, "pending");
+    return pack;
+  }
+  FREEPLAY_FW._pendingAward = pack;
+  awardsSetFlag(pack.year, pack.ceremonyId, "invited");
+  return pack;
+}
+function promoteAwardQueue(){
+  if(FREEPLAY_FW._pendingAward) return FREEPLAY_FW._pendingAward;
+  const q = ensureAwardQueue();
+  if(!q.length) return null;
+  const next = q.shift();
+  FREEPLAY_FW._pendingAward = next;
+  if(next) awardsSetFlag(next.year, next.ceremonyId, "invited");
+  return next;
+}
+function queueAwardsOnSeasonWindow(opts){
+  opts = opts || {};
+  if(!awardsSoftOn() && !opts.force) return [];
+  if(!(FREEPLAY_FW.awardsSchema || FREEPLAY_FW.awardsStub)) return [];
+  const year = awardsCalendarYear();
+  const queued = [];
+  awardsCeremonies().forEach(ceremony=>{
+    if(!ceremony || !ceremony.id) return;
+    if(!opts.forceCeremonyId && !awardsSeasonMatches(ceremony)) return;
+    if(!opts.forceCeremonyId && !awardsWeekOk(ceremony)) return;
+    if(opts.forceCeremonyId && ceremony.id!==opts.forceCeremonyId) return;
+    const st = awardsGetFlag(year, ceremony.id);
+    if(st==="done" || st==="skipped" || st==="invited" || st==="pending") return;
+    /* C10 anti-stack: TV only */
+    if(ceremony.id==="award_singho_tv" && softC10WindowActive() && !opts.ignoreC10){
+      return; /* defer — will retry later days */
+    }
+    const pack = buildAwardResultPack({
+      ceremonyId: ceremony.id,
+      year: year,
+      forceTier: opts.forceTier
+    });
+    queueAwardInvite(pack);
+    queued.push(pack);
+  });
+  return queued;
+}
+function renderAwardInviteHtml(pack){
+  pack = pack || {};
+  const tierBit = pack.tierLabel ? `<p class="psr-sub">席位：${pack.tierLabel}</p>` : "";
+  return `<div class="psr-sheet awd-sheet">
+    <p class="psr-eyebrow">定期頒獎</p>
+    <h3 class="psr-h">${pack.inviteTitle||"頒獎夜請柬"}</h3>
+    <p class="psr-sub">${pack.displayName||""} · ${pack.season||""}${pack.year?(" "+pack.year):""}</p>
+    <p class="psr-body">${pack.inviteDek||""}</p>
+    ${tierBit}
+  </div>`;
+}
+function renderAwardResultHtml(pack){
+  pack = pack || {};
+  const cats = Array.isArray(pack.categories) ? pack.categories : [];
+  const catsHtml = cats.map(c=>{
+    const badge = c.outcome==="won" ? "得獎" : (c.outcome==="gallery" ? "觀禮" : "入圍");
+    return `<article class="psr-card psr-metrics">
+      <div class="psr-kicker"><span class="psr-icon">🏆</span> ${badge} · ${c.label||""}</div>
+      <h4 class="psr-title">${c.line||""}</h4>
+    </article>`;
+  }).join("");
+  const press = pack.press || {};
+  const news = pack.news || {};
+  const metricLine = pack.metricEcho
+    ? `<article class="psr-card psr-metrics">
+        <div class="psr-kicker"><span class="psr-icon">✨</span> ${pack.metricEchoLabel||"餘韻"}</div>
+        <h4 class="psr-title">${pack.metricEchoLabel||""}——典禮後仍有人提起。</h4>
+      </article>` : "";
+  const dual = pack.rewardsApplied || {};
+  const dualLine = (dual.stageVolume || dual.industryCredit)
+    ? `<p class="psr-dual var-note">幕前聲量 ${dual.stageVolume?("+"+dual.stageVolume):""}${(dual.stageVolume&&dual.industryCredit)?" · ":""}${dual.industryCredit?("業內信用 +"+dual.industryCredit):""}</p>`
+    : "";
+  return `<div class="psr-sheet awd-sheet">
+    <p class="psr-eyebrow">頒獎結果</p>
+    <h3 class="psr-h">${pack.displayName||"頒獎夜"}・結果</h3>
+    <p class="psr-sub">${pack.tierLabel||""}${pack.year?(" · "+pack.year):""}</p>
+    <div class="psr-cards">
+      ${catsHtml}
+      <article class="psr-card psr-press">
+        <div class="psr-kicker"><span class="psr-icon">📰</span> ${press.paperName||"娛樂快報"}</div>
+        <h4 class="psr-title">${press.headline||""}</h4>
+        <p class="psr-body">${press.dek||""}</p>
+      </article>
+      <article class="psr-card psr-news">
+        <div class="psr-kicker"><span class="psr-icon">📻</span> ${news.outlet||"娛樂快訊"}</div>
+        <h4 class="psr-title">${news.line||""}</h4>
+      </article>
+      ${metricLine}
+    </div>
+    ${dualLine}
+  </div>`;
+}
+function presentAwardResult(pack, thenFn){
+  const cont = (typeof thenFn==="function") ? thenFn : function(){};
+  if(!pack){ cont(); return false; }
+  try{
+    applyAwardDual(pack);
+    commitAwardToLog(pack);
+    modal(renderAwardResultHtml(pack), [
+      { label: "收下這晚", role: "p", on: cont }
+    ], { onDismiss: cont, keepSheetContent:true });
+    try{ toast((pack.displayName||"頒獎夜")+"・結果", { sub: pack.tierLabel||"", stamp:true }); }catch(_e){}
+    return true;
+  }catch(_e){ cont(); return false; }
+}
+function presentAwardInvite(pack, thenFn){
+  const cont = (typeof thenFn==="function") ? thenFn : function(){};
+  if(!pack){ cont(); return false; }
+  const attend = ()=>{
+    FREEPLAY_FW._pendingAward = null;
+    presentAwardResult(pack, cont);
+  };
+  const skip = ()=>{
+    FREEPLAY_FW._pendingAward = null;
+    pack.skipped = true;
+    pack.rewardsApplied = { stageVolume:0, industryCredit:0, money:0, tags:[] };
+    commitAwardToLog(pack);
+    try{ toast("已推辞席位", { sub: pack.displayName||"" }); }catch(_e){}
+    cont();
+  };
+  const later = ()=>{
+    /* keep pending; snooze until day advances so goToMapForBrowse 唔即刻再弹 */
+    awardsSetFlag(pack.year, pack.ceremonyId, "invited");
+    FREEPLAY_FW._awardSnoozed = true;
+    FREEPLAY_FW._awardSnoozeDay = (S && (S.dayIndex|0)) || 0;
+    cont();
+  };
+  try{
+    modal(renderAwardInviteHtml(pack), [
+      { label: "出席", role: "p", on: attend },
+      { label: "推辞", role: "g", on: skip },
+      { label: "稍後", role: "g", on: later }
+    ], { onDismiss: later, keepSheetContent:true });
+    return true;
+  }catch(_e){ cont(); return false; }
+}
+function presentPendingAward(thenFn){
+  const cont = (typeof thenFn==="function") ? thenFn : function(){};
+  try{ queueAwardsOnSeasonWindow(); }catch(_e){}
+  promoteAwardQueue();
+  const pack = FREEPLAY_FW._pendingAward;
+  if(!pack){ cont(); return false; }
+  try{
+    const day = (S && (S.dayIndex|0)) || 0;
+    if(FREEPLAY_FW._awardSnoozed && (FREEPLAY_FW._awardSnoozeDay|0)===day){
+      cont();
+      return false;
+    }
+    if(FREEPLAY_FW._awardSnoozed && (FREEPLAY_FW._awardSnoozeDay|0)!==day){
+      FREEPLAY_FW._awardSnoozed = false;
+    }
+  }catch(_sn){}
+  return presentAwardInvite(pack, cont);
+}
+function awardsCheck(){
+  const fails=[];
+  if(!(FREEPLAY_FW.awardsSchema && Array.isArray(FREEPLAY_FW.awardsSchema.ceremonies))) fails.push("schema");
+  if(!(FREEPLAY_FW.awardsStub && Array.isArray(FREEPLAY_FW.awardsStub.ceremonies))) fails.push("stub");
+  const ids = ["award_harbour_ad","award_golddisc_music","award_harbour_film","award_singho_tv"];
+  const have = awardsCeremonies().map(c=>c&&c.id);
+  ids.forEach(id=>{ if(have.indexOf(id)<0) fails.push("missing:"+id); });
+  if(typeof buildAwardResultPack!=="function") fails.push("build");
+  if(typeof queueAwardsOnSeasonWindow!=="function") fails.push("queue");
+  if(typeof presentPendingAward!=="function") fails.push("present");
+  try{
+    if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
+  }catch(_e){ fails.push("save"); }
+  try{
+    const p = buildAwardResultPack({ ceremonyId:"award_harbour_ad", year:1988, forceTier:"gallery" });
+    if(!p || p.tier!=="gallery" || !p.inviteTitle) fails.push("preview_gallery");
+    if(p.metricEcho!=="attention") fails.push("metric_ad");
+    const m = buildAwardResultPack({ ceremonyId:"award_golddisc_music", year:1988, forceTier:"nominee" });
+    if(!m || m.metricEcho!=="sales") fails.push("metric_music");
+    const f = buildAwardResultPack({ ceremonyId:"award_harbour_film", year:1988, forceTier:"nominee" });
+    if(!f || f.metricEcho!=="boxOffice") fails.push("metric_film");
+    const t = buildAwardResultPack({ ceremonyId:"award_singho_tv", year:1988, forceTier:"nominee" });
+    if(!t || t.metricEcho!=="ratings") fails.push("metric_tv");
+    const html = renderAwardInviteHtml(p) + renderAwardResultHtml(p);
+    if(/金像|十大中文金曲|廣告公會|TVB.*大獎/.test(html)) fails.push("real_award_name");
+    if(/nextHint/.test(html) && /待補 nextHint/.test(html)) fails.push("nextHint");
+  }catch(_e){ fails.push("build_err"); }
+  return { ok:!fails.length, fails:fails, version:"v20a7", softStatus:"≠PASS", ceremonies:have.slice() };
+}
+function awardsPreview(opts){
+  return buildAwardResultPack(opts||{});
+}
+function awardsDebugForceSeasonWindow(ceremonyId, opts){
+  opts = opts || {};
+  const id = ceremonyId || "award_harbour_ad";
+  const year = awardsCalendarYear();
+  /* clear flag so it can re-queue */
+  try{
+    const f = ensureAwardsFlags();
+    delete f[awardsFlagKey(year, id)];
+  }catch(_e){}
+  FREEPLAY_FW._pendingAward = null;
+  FREEPLAY_FW._awardSnoozed = false;
+  const packs = queueAwardsOnSeasonWindow({
+    force: true,
+    forceCeremonyId: id,
+    forceTier: opts.forceTier,
+    ignoreC10: true
+  });
+  return packs[0] || FREEPLAY_FW._pendingAward;
+}
+try{
+  window.__awards = {
+    check: awardsCheck,
+    preview: awardsPreview,
+    build: buildAwardResultPack,
+    queue: queueAwardsOnSeasonWindow,
+    present: presentPendingAward,
+    pending: function(){ return FREEPLAY_FW._pendingAward; },
+    log: function(){ return ensureAwardsLog().slice(); },
+    flags: function(){ return Object.assign({}, ensureAwardsFlags()); },
+    debugForceSeasonWindow: awardsDebugForceSeasonWindow,
+    countWraps: countYearMediumWraps
+  };
+}catch(_e){}
+
+
 async function loadFreeplayFramework(){
   if(FREEPLAY_FW.loaded) return FREEPLAY_FW;
-  const bust = "20a6";
+  const bust = "20a7";
   const files = {
     schema: "SCHEMA_FREEPLAY_FRAMEWORK_v1.json",
     eraStars: "STUB_ERA_STARS_MVP_v1.json",
@@ -27254,6 +27860,8 @@ async function loadFreeplayFramework(){
     storySlots: "STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json",
     postShootRewards: "STUB_POST_SHOOT_REWARDS_v1.json",
     postShootSchema: "SCHEMA_POST_SHOOT_REWARD_v1.json",
+    awardsSchema: "SCHEMA_AWARDS_CEREMONY_v1.json",
+    awardsStub: "STUB_AWARDS_CEREMONY_v1.json",
   };
   await Promise.all(Object.keys(files).map(async k=>{
     try{
@@ -27268,6 +27876,7 @@ async function loadFreeplayFramework(){
   try{ applyFreeplaySlotsToSoftGate(); }catch(_e){}
   try{ ensureWeakSeals(); }catch(_e){}
   try{ syncDevTagsTabVisibility(); }catch(_e){}
+  try{ ensureAwardsLog(); ensureAwardsFlags(); }catch(_e){}
   return FREEPLAY_FW;
 }
 try{
@@ -27293,6 +27902,10 @@ try{
     rewardCheck: function(){ return postShootRewardCheck(); },
     queueReward: queuePostShootRewardOnWrap,
     presentReward: presentPendingPostShootReward,
+    awards: function(){ return ensureAwardsLog().slice(); },
+    awardsCheck: function(){ return awardsCheck(); },
+    queueAwards: queueAwardsOnSeasonWindow,
+    presentAward: presentPendingAward,
     nextHintHidden: function(){
       try{ return typeof BehaviorGate!=="undefined" && BehaviorGate.nextHint_neverShow()===""; }catch(_e){ return true; }
     },
@@ -27368,13 +27981,19 @@ try{
         const rc = postShootRewardCheck();
         if(!rc.ok) fails.push.apply(fails, (rc.fails||[]).map(f=>"reward:"+f));
       }catch(_e){ fails.push("reward_check"); }
+      try{
+        const ac = awardsCheck();
+        if(!ac.ok) fails.push.apply(fails, (ac.fails||[]).map(f=>"awards:"+f));
+      }catch(_e){ fails.push("awards_check"); }
       return {
-        ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a6",
+        ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a7",
         slotsCount: ((FREEPLAY_FW.storySlots&&FREEPLAY_FW.storySlots.nodes)||[]).length,
         soJiyan: typeof STAR_SIGHTINGS!=="undefined" && STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan"),
         creditGate: typeof softIndustryCreditGate==="function",
         debtLock: typeof softOverdueFavorDebtLock==="function",
         postShootReward: typeof queuePostShootRewardOnWrap==="function",
+        awardsCeremony: typeof queueAwardsOnSeasonWindow==="function",
+        awardsIds: (typeof awardsCeremonies==="function") ? awardsCeremonies().map(c=>c&&c.id).filter(Boolean) : [],
       };
     }
   };
@@ -27591,7 +28210,7 @@ try{ window.__eraBustPreferFile = ["luk_baakyin","liu_bingxing","ngai_wingnaam",
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=20a6";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=20a7";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -27605,7 +28224,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=20a6";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=20a7";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -27710,11 +28329,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=20a6") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=20a7") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=20a6") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=20a7") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -28246,21 +28865,21 @@ function openLoc(id, opts){
   }catch(_e){}
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=20a6. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=20a7. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a6",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a6",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a6",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a6",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a6",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a6",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a6",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a6",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a6",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a6",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a6",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a6",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a6",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a7",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a7",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a7",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a7",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a7",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a7",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a7",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a7",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a7",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a7",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a7",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a7",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a7",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");

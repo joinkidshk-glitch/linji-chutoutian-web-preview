@@ -1,0 +1,209 @@
+{
+  "meta": {
+    "version": "v20a7",
+    "softStatus": "≠PASS",
+    "implemented": true,
+    "note": "Awards ceremony copy stubs — four mediums. Content bot fills/renames displayNames later. Empty = engine fallback. Soft≠PASS; no real award/celeb names. Soft player sheet never shows stub tip.",
+    "schemaFile": "content/SCHEMA_AWARDS_CEREMONY_v1.json",
+    "designNote": "NOTES_V20A7_AWARDS_CEREMONY_DESIGN.md"
+  },
+  "ceremonies": [
+    {
+      "id": "award_harbour_ad",
+      "medium": "ad",
+      "displayName": "維港街招・年度廣告賞",
+      "inviteTitle": "街招年賞請柬",
+      "inviteDek": "廣告圈年賞將至。你收到一張旁聽／入圍席位信——去定推辞，隨你。",
+      "locHint": "ad_central"
+    },
+    {
+      "id": "award_golddisc_music",
+      "medium": "music",
+      "displayName": "星河金碟夜",
+      "inviteTitle": "金碟夜請柬",
+      "inviteDek": "唱片年終有金碟夜。你收到一張席位信——碟市邊個上鏡，席上見。",
+      "locHint": "rec_star"
+    },
+    {
+      "id": "award_harbour_film",
+      "medium": "film",
+      "displayName": "維港影藝獎",
+      "inviteTitle": "影藝獎請柬",
+      "inviteDek": "影圈年獎將至。你收到一張旁聽／入圍席位信——票房餘溫同台下掌聲，你揀。",
+      "locHint": "film_harbour"
+    },
+    {
+      "id": "award_singho_tv",
+      "medium": "tv",
+      "displayName": "星河台慶・年度頒獎夜",
+      "inviteTitle": "台慶頒獎夜請柬",
+      "inviteDek": "星河台慶夜有頒獎環節。你收到一張旁聽／入圍席位信——去定推辞，隨你。",
+      "locHint": "tvb_longmen"
+    }
+  ],
+  "tiers": [
+    {
+      "id": "gallery",
+      "label": "旁聽席"
+    },
+    {
+      "id": "nominee",
+      "label": "入圍／提名"
+    },
+    {
+      "id": "contender",
+      "label": "熱門"
+    },
+    {
+      "id": "presenter",
+      "label": "頒獎助演"
+    }
+  ],
+  "categories": {
+    "award_harbour_ad": [
+      {
+        "id": "cat_newcomer_ad",
+        "label": "年度廣告新面孔",
+        "winLine": "品牌席拍掌。你個名第一次同「街招」一齊被念出嚟。",
+        "loseLine": "入圍名單有你——盃未到，街外已經有人記得你個樣。",
+        "galleryLine": "你坐後排，睇人上台領獎。廣告燈好白，你記住呢種掌聲。"
+      },
+      {
+        "id": "cat_street_recall",
+        "label": "街外最記得住嘅一鏡",
+        "winLine": "台上念到你。",
+        "loseLine": "入圍未得獎。",
+        "galleryLine": "你坐喺席上，記住呢晚嘅掌聲。"
+      }
+    ],
+    "award_golddisc_music": [
+      {
+        "id": "cat_newcomer_disc",
+        "label": "年度新人碟緣（臨記組）",
+        "winLine": "台上念到你。金碟反光好刺，你聽得見心跳同掌聲一齊嚟。",
+        "loseLine": "名單滑過你個名——入圍咗，未抱碟。錄音室仲有下一更。",
+        "galleryLine": "你坐席上，聽人謝唱片公司。你記住碟市點樣叫人名。"
+      },
+      {
+        "id": "cat_popular_voice",
+        "label": "最受歡迎出鏡嗓／面孔",
+        "winLine": "台上念到你。",
+        "loseLine": "入圍未得獎。",
+        "galleryLine": "你坐喺席上，記住呢晚嘅掌聲。"
+      }
+    ],
+    "award_harbour_film": [
+      {
+        "id": "cat_newcomer_film",
+        "label": "影壇新面孔（臨記組）",
+        "winLine": "影藝獎台上念到你。燈光好光，你聽得見自己心跳。",
+        "loseLine": "入圍咗，未抱盃。票房數字會過去，你仲有下一場戲。",
+        "galleryLine": "你坐後排，睇大銀幕片段。你記住影圈點樣鼓掌。"
+      },
+      {
+        "id": "cat_box_talk",
+        "label": "年度票房話題綠葉",
+        "winLine": "台上念到你。",
+        "loseLine": "入圍未得獎。",
+        "galleryLine": "你坐喺席上，記住呢晚嘅掌聲。"
+      }
+    ],
+    "award_singho_tv": [
+      {
+        "id": "cat_newcomer_tv",
+        "label": "最佳電視新人（臨記組）",
+        "winLine": "台上念到你個名。燈光好光，你聽得見自己心跳。",
+        "loseLine": "名單滑過你個名——入圍咗，未抱盃。還有下一場。",
+        "galleryLine": "你坐後排，聽得見掌聲。呢晚你記住行內點樣叫人名。"
+      },
+      {
+        "id": "cat_popular_face",
+        "label": "最受歡迎螢幕面孔",
+        "winLine": "台上念到你。",
+        "loseLine": "入圍未得獎。",
+        "galleryLine": "你坐喺席上，記住呢晚嘅掌聲。"
+      },
+      {
+        "id": "cat_variety_spark",
+        "label": "綜藝閃光綠葉",
+        "winLine": "台上念到你。",
+        "loseLine": "入圍未得獎。",
+        "galleryLine": "你坐喺席上，記住呢晚嘅掌聲。"
+      },
+      {
+        "id": "cat_ensemble",
+        "label": "最佳班底／群戲",
+        "winLine": "台上念到你。",
+        "loseLine": "入圍未得獎。",
+        "galleryLine": "你坐喺席上，記住呢晚嘅掌聲。"
+      }
+    ]
+  },
+  "pressTemplates": [
+    {
+      "id": "press_award_ad_01",
+      "medium": "ad",
+      "paperName": "娛樂快報",
+      "headline": "街招年賞，版面多一行",
+      "dek": "廣告年賞散場。有新人名第一次印喺品牌側記。"
+    },
+    {
+      "id": "press_award_music_01",
+      "medium": "music",
+      "paperName": "娛樂快報",
+      "headline": "金碟夜，碟市多個名",
+      "dek": "星河金碟夜結束。有臨記席名字第一次出現喺典禮側記。"
+    },
+    {
+      "id": "press_award_film_01",
+      "medium": "film",
+      "paperName": "娛樂快報",
+      "headline": "影藝獎夜，銀幕外多一行",
+      "dek": "維港影藝獎散場。票房話題以外，亦有新人入圍消息。"
+    },
+    {
+      "id": "press_award_tv_01",
+      "medium": "tv",
+      "paperName": "娛樂快報",
+      "headline": "台慶頒獎夜，版面多一行",
+      "dek": "星河台慶夜頒獎環節結束。有新人名第一次印喺典禮側記。"
+    }
+  ],
+  "newsTemplates": [
+    {
+      "id": "news_award_ad_01",
+      "medium": "ad",
+      "outlet": "晚間娛樂快訊",
+      "line": "街招年賞散場：廣告席都有鏡頭掃過。"
+    },
+    {
+      "id": "news_award_music_01",
+      "medium": "music",
+      "outlet": "晚間娛樂快訊",
+      "line": "金碟夜散場：碟市掌聲未完。"
+    },
+    {
+      "id": "news_award_film_01",
+      "medium": "film",
+      "outlet": "晚間娛樂快訊",
+      "line": "影藝獎散場：票房餘溫同入圍名單一齊出街。"
+    },
+    {
+      "id": "news_award_tv_01",
+      "medium": "tv",
+      "outlet": "晚間娛樂快訊",
+      "line": "台慶頒獎夜散場：臨記席都有鏡頭掃過。"
+    }
+  ],
+  "redCarpet": {
+    "lines": [],
+    "choices": []
+  },
+  "fallbacks": {
+    "inviteTitle": "頒獎夜請柬",
+    "inviteDek": "你收到一張典禮相關信件。",
+    "winLine": "台上念到你。",
+    "loseLine": "入圍未得獎。",
+    "galleryLine": "你坐喺席上，記住呢晚嘅掌聲。"
+  }
+}
