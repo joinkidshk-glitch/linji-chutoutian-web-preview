@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z8");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z9");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z8");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z9");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z8");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z9");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -49,7 +49,7 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
     box-shadow:0 16px 48px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04);
   }
 }
-/* v19z8: desktop ≥900px — larger phone frame + side rail hints (mobile 390 untouched) */
+/* v19z9: desktop ≥900px — larger phone frame + side rail hints (mobile 390 untouched) */
 @media (min-width:900px){
   body{
     gap:22px;
@@ -360,6 +360,32 @@ button.g{
 /* .toast bottom superseded by v15b 34px safe */
 .menu{position:absolute;top:48px;right:8px;z-index:45;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px;display:none;flex-direction:column;min-width:130px}
 .menu.on{display:flex}
+
+/* v19z9: settings / save slots / text reveal / reduce motion */
+.slot-list{display:grid;gap:8px;margin:8px 0 4px}
+.slot-row{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;color:var(--text);font:inherit;cursor:pointer}
+.slot-row:hover{border-color:var(--cyan)}
+.slot-row.is-active{border-color:rgba(232,184,109,.65)}
+.slot-row.is-empty{opacity:.85}
+.slot-row .slot-title{font-weight:700;font-size:.88rem}
+.slot-row .slot-meta{font-size:.72rem;color:var(--muted)}
+.slot-row .slot-tag{font-size:.66rem;color:var(--gold-seal,#e8b86d)}
+.settings-list{display:grid;gap:10px;margin:8px 0}
+.settings-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;background:var(--panel2);border:1px solid var(--line);border-radius:10px}
+.settings-row .lab{font-size:.84rem;font-weight:600}
+.settings-row .hint{font-size:.68rem;color:var(--muted);margin-top:2px}
+.settings-row select,.settings-row input[type="range"]{font:inherit;max-width:140px}
+.var-note{font-size:.72rem;color:var(--muted);line-height:1.4;margin:4px 0 0}
+.sp-line.sp-revealing{min-height:1.2em}
+html.reduce-motion *, body.reduce-motion *,
+html.reduce-motion *::before, body.reduce-motion *::before,
+html.reduce-motion *::after, body.reduce-motion *::after{
+  animation-duration:0.01ms !important;
+  animation-iteration-count:1 !important;
+  transition-duration:0.01ms !important;
+  scroll-behavior:auto !important;
+}
+
 .menu button{appearance:none;border:0;background:transparent;color:var(--text);text-align:left;padding:9px 12px;font:inherit;cursor:pointer;border-radius:8px}
 .menu button:hover{background:var(--panel2)}
 .mask{position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:50;display:none;align-items:flex-end;justify-content:center;padding:10px}
@@ -3103,6 +3129,7 @@ body.day-res-open .day-row{
       <div class="btnrow">
         <button class="p" id="btn-new">新遊戲</button>
         <button class="g" id="btn-cont" style="display:none">繼續</button>
+        <button class="g" id="btn-load" style="display:none">讀檔</button>
       </div>
     </div>
   </section>
@@ -3138,8 +3165,10 @@ body.day-res-open .day-row{
       <button type="button" data-m="story-play" class="menu-story">事態 <span class="menu-badge" id="menu-story-badge" hidden>0</span></button>
       <button type="button" data-m="home">返屋企</button>
       <button type="button" data-m="replay-tut">重看教學</button>
+      <button type="button" data-m="settings">設定</button>
       <button type="button" data-m="wire" id="menu-wire" hidden>接線／年份</button>
       <button type="button" data-m="save">存檔</button>
+      <button type="button" data-m="load">讀檔</button>
       <button type="button" data-m="new">新遊戲</button>
     </div>
     <div class="map-wrap">
@@ -18630,7 +18659,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z8. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z9. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -18713,7 +18742,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z8";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z9";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -18799,7 +18828,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=19z8");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=19z9");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -19357,19 +19386,25 @@ const StoryPlay = (()=>{
       const root = document.getElementById("story-play-root");
       if(!root) return;
       try{ if(window.__spApplyBgPhotos) window.__spApplyBgPhotos(root); }catch(_bg){}
+      try{ if(typeof spApplyTextReveal==="function") spApplyTextReveal(root); }catch(_rev){}
       root.addEventListener("click", (e)=>{
         const t = e.target.closest("[data-sp],[data-sp-choice]");
         if(!t) return;
         e.preventDefault();
         e.stopPropagation();
         if(t.hasAttribute("data-sp-choice")){
+          try{ if(typeof spRevealCancel==="function") spRevealCancel(); }catch(_e){}
           pickChoice(t.getAttribute("data-sp-choice"));
           return;
         }
         const act = t.getAttribute("data-sp");
-        if(act==="next") advance();
-        else if(act==="skip") skipToChoices();
+        if(act==="next"){
+          try{ if(typeof spRevealSkipOrDone==="function" && !spRevealSkipOrDone()) return; }catch(_e){}
+          advance();
+        }
+        else if(act==="skip"){ try{ if(typeof spRevealCancel==="function") spRevealCancel(); }catch(_e){} skipToChoices(); }
         else if(act==="finish-empty"){
+          try{ if(typeof spRevealCancel==="function") spRevealCancel(); }catch(_e){}
           const fake = { id:"auto", label:"（無選項）", effects:{ flags:[], stats:{}, notes:"" } };
           const result = StoryOC.applyChoice(_sess.node, fake);
           showResult(_sess.node, fake, result);
@@ -19533,9 +19568,9 @@ const StoryPlay = (()=>{
 })();
 
 
-const TUTORIAL_ZH_HK = {"version":2,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上的地點，就是你可以去的地方。","先點地點，才會看到可做的行動。"],"bodyAlt":["所有行動都從地圖進入。","點選地點後，才能選擇行動。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可先免費查看，不耗日。","條件未合時顯示暫未能報；達標後可接通告。"],"bodyAlt":["先看通告欄，再決定是否試鏡。","見到暫未能報，即條件未合；達標後才可接通告。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練解鎖試鏡","body":["到對應地點報名訓練，提升能力來解鎖試鏡門檻。","訓練次數累計夠之後，社交課和觀察課就會開放。"],"bodyAlt":["能力不夠，先到合適地點報名訓練。","訓練累計夠，社交與觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"打聽不耗日","body":["茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。","正式版同熟人「傾談／送禮」耗一日；試玩閘（softBehaviorGate）下傾談／送禮不耗日（茶錢仍可能扣費；訓練／試鏡／休息／行程表演仍耗日）。"],"bodyAlt":["打聽免費，不耗日。","打聽免費。正式版傾談／送禮佔一日；試玩閘下亦不耗日。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到這裡，之後可在選單撳「重看教學」。","建議先去訓練、看通告欄，或打開選單「事態」。"],"bodyAlt":["教學結束了，選單裡可以重看教學。","下一步建議：先訓練、看通告欄，或打開「事態」。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["本次未獲聘，且不可再參加本場。","可去訓練，或另選通告。"],"bodyAlt":["這一場未獲聘，本場不再開放。","回去訓練，或另找合適通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘後，製作日已排進行程。","開工前看手帳和行程，跟進度。"],"bodyAlt":["已獲聘，拍攝日記在行程。","按行程開工，手帳可看進度。"],"buttons":["我知道了"]}},"filterPass":"2026-11-04"};
+const TUTORIAL_ZH_HK = {"version":3,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口 + v19z9 short tut ≤4","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上的地點，就是你可以去的地方；先點地點才看到行動。","能力不夠就去報名訓練；茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。"],"bodyAlt":["所有行動都從地圖進入。","訓練解鎖試鏡；打聽免費不耗日（試玩閘下傾談／送禮亦不耗日）。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可先免費查看；條件未合顯示暫未能報，達標後可接通告（耗一日）。","記數簿記收支；行程記拍攝與本週安排——開工前先看手帳。"],"bodyAlt":["先看通告欄再決定是否試鏡。","數目與行程都在手帳；達標後才接通告。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練解鎖試鏡","body":["到對應地點報名訓練，提升能力來解鎖試鏡門檻。","訓練次數累計夠之後，社交課和觀察課就會開放。"],"bodyAlt":["能力不夠，先到合適地點報名訓練。","訓練累計夠，社交與觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"打聽不耗日","body":["茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。","正式版同熟人「傾談／送禮」耗一日；試玩閘（softBehaviorGate）下傾談／送禮不耗日（茶錢仍可能扣費；訓練／試鏡／休息／行程表演仍耗日）。"],"bodyAlt":["打聽免費，不耗日。","打聽免費。正式版傾談／送禮佔一日；試玩閘下亦不耗日。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到這裡（可跳過；選單可重看）。","建議：先訓練或看通告欄，再打開選單「事態」——第一段故事會接著出現。"],"bodyAlt":["教學結束了，選單裡可以重看。","下一步：訓練／通告欄／事態。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["本次未獲聘，且不可再參加本場。","可去訓練，或另選通告。"],"bodyAlt":["這一場未獲聘，本場不再開放。","回去訓練，或另找合適通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘後，製作日已排進行程。","開工前看手帳和行程，跟進度。"],"bodyAlt":["已獲聘，拍攝日記在行程。","按行程開工，手帳可看進度。"],"buttons":["我知道了"]}},"filterPass":"2026-11-07"};
 let TUTORIAL = TUTORIAL_ZH_HK;
-const TUT_MAIN_IDS = ["TUT_WELCOME","TUT_MAP","TUT_BOARD","TUT_TRAIN","TUT_NPC","TUT_NOTEBOOK","TUT_DONE"];
+const TUT_MAIN_IDS = ["TUT_WELCOME","TUT_MAP","TUT_BOARD","TUT_DONE"]; /* v19z9：≤4 核心步；TRAIN／NPC／NOTEBOOK 併入文案 */
 /* PLAN 5ba79338: step 5 drag-guide and step 6 merge FX. Soft tip mounts tutorial-fx PNGs only when gatePath()==="soft". Modal scroll is separate. No new Soft flag. Soft≠PASS. Do not tip LIVE. ?v= stays 19w.
    behaviorGate "not_bound": tutorial Phase2 Soft does not force-bind BehaviorGate C stubs. Not a feature-flag confluence gap (#17). Do not wire teaching steps to C stubs. */
 const TUTORIAL_PHASE2_SOFT_NITS = {
@@ -19555,7 +19590,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z8";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z9";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -19722,13 +19757,13 @@ function tutorialPhase2Steps56SelfCheck(){
     if(String(pack.step6 && pack.step6.favorDebtSettleLine||"").indexOf("何生")<0) fails.push("ho_name");
   }
   if(typeof BehaviorGate!=="undefined" && BehaviorGate.liveWeekGateStillActive()!==true) fails.push("live_fn");
-  if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_TRAIN,TUT_NPC,TUT_NOTEBOOK,TUT_DONE") fails.push("main_ids");
+  if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z8") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z8") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z9") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z9") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z8") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z9") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -20792,10 +20827,285 @@ function fresh(){
   };
 }
 
-function save(){try{localStorage.setItem(SAVE,JSON.stringify(S));toast("已存檔")}catch{toast("存檔失敗")}}
-function saveQ(){try{localStorage.setItem(SAVE,JSON.stringify(S))}catch{}}
-function load(){try{const r=localStorage.getItem(SAVE);if(!r)return null;const o=JSON.parse(r);if(o&&typeof o==="object"){if(!o.inventory||typeof o.inventory!=="object")o.inventory={};if(!o.giftMeta||typeof o.giftMeta!=="object")o.giftMeta={lastGiveDay:{},weekGiftGain:{},givenCount:{},shopStock:{},shopWeek:0};if(!Array.isArray(o.wrapHistory))o.wrapHistory=[];if(typeof o.vocal!=="number"||!isFinite(o.vocal))o.vocal=14;/* Soft: 壓力硬上限 100。舊檔高過 100 要夾落。體能係能力，跟 STAT_MAX，唔夾 100。 */if(Number(o.stress)>STRESS_MAX) o.stress=STRESS_MAX;try{ syncDualTracks(o); }catch(_e){}}return o}catch{return null}}
-function hasSave(){return!!localStorage.getItem(SAVE)}
+/* ===== v19z9 prefs + multi-save slots（槽1＝既有 SAVE key，相容舊檔） ===== */
+const SAVE_SLOT_COUNT = 3;
+const PREFS_KEY = "starVolunteer_prefs_v19z9";
+function saveKeyForSlot(slot){
+  const n = Math.max(1, Math.min(SAVE_SLOT_COUNT, Number(slot)||1));
+  return n===1 ? SAVE : (SAVE+"_slot"+n);
+}
+function defaultPrefs(){
+  return { bgmMuted:false, sfxMuted:false, volume:70, textSpeed:"normal", reduceMotion:false, activeSlot:1, lastSlot:1 };
+}
+function loadPrefs(){
+  try{
+    const r=localStorage.getItem(PREFS_KEY);
+    if(!r) return defaultPrefs();
+    const o=JSON.parse(r);
+    return Object.assign(defaultPrefs(), (o&&typeof o==="object")?o:{});
+  }catch(_e){ return defaultPrefs(); }
+}
+function savePrefs(p){
+  try{ localStorage.setItem(PREFS_KEY, JSON.stringify(p||loadPrefs())); }catch(_e){}
+  try{ applyPrefsChrome(); }catch(_e){}
+}
+function setPref(k,v){ const p=loadPrefs(); p[k]=v; savePrefs(p); return p; }
+function applyPrefsChrome(){
+  const p=loadPrefs();
+  try{
+    document.documentElement.classList.toggle("reduce-motion", !!p.reduceMotion);
+    document.body.classList.toggle("reduce-motion", !!p.reduceMotion);
+  }catch(_e){}
+  /* Audio stubs：暫無 BGM/SFX 節點；prefs 持久化供日後接線 */
+  try{
+    window.__audioPrefs = { bgmMuted:!!p.bgmMuted, sfxMuted:!!p.sfxMuted, volume:Number(p.volume)||70 };
+  }catch(_e){}
+}
+function normalizeSaveObj(o){
+  if(!o||typeof o!=="object") return null;
+  if(!o.inventory||typeof o.inventory!=="object")o.inventory={};
+  if(!o.giftMeta||typeof o.giftMeta!=="object")o.giftMeta={lastGiveDay:{},weekGiftGain:{},givenCount:{},shopStock:{},shopWeek:0};
+  if(!Array.isArray(o.wrapHistory))o.wrapHistory=[];
+  if(typeof o.vocal!=="number"||!isFinite(o.vocal))o.vocal=14;
+  /* Soft: 壓力硬上限 100。舊檔高過 100 要夾落。體能係能力，跟 STAT_MAX，唔夾 100。 */
+  if(Number(o.stress)>STRESS_MAX) o.stress=STRESS_MAX;
+  try{ syncDualTracks(o); }catch(_e){}
+  return o;
+}
+function saveSummaryFrom(o){
+  if(!o||typeof o!=="object") return null;
+  const dayIndex = o.dayIndex!=null ? (o.dayIndex|0) : 0;
+  const week = Math.floor(dayIndex/7)+1;
+  const money = Number(o.money)||0;
+  const fame = Number(o.fame)||0;
+  let stage = fame;
+  try{ if(typeof readDualTracks==="function"){ const d=readDualTracks(o); if(d&&d.stageVolume!=null) stage=d.stageVolume; } }catch(_e){}
+  return { week, money, fame, stage, dayIndex };
+}
+function readSlotRaw(slot){
+  try{
+    const r=localStorage.getItem(saveKeyForSlot(slot));
+    if(!r) return null;
+    const o=JSON.parse(r);
+    return (o&&typeof o==="object") ? o : null;
+  }catch(_e){ return null; }
+}
+function listSaveSlots(){
+  const out=[];
+  for(let i=1;i<=SAVE_SLOT_COUNT;i++){
+    const raw=readSlotRaw(i);
+    const summary=saveSummaryFrom(raw);
+    out.push({ slot:i, empty:!summary, summary, key:saveKeyForSlot(i) });
+  }
+  return out;
+}
+function slotLabel(slot, summary, empty){
+  if(empty||!summary) return `槽 ${slot} · 空白`;
+  return `槽 ${slot} · 第 ${summary.week} 週 · $${Number(summary.money).toLocaleString()} · 聲量 ${summary.stage}`;
+}
+function hasSave(){ return listSaveSlots().some(s=>!s.empty); }
+function saveToSlot(slot, opts){
+  opts=opts||{};
+  const n=Math.max(1, Math.min(SAVE_SLOT_COUNT, Number(slot)||1));
+  try{
+    localStorage.setItem(saveKeyForSlot(n), JSON.stringify(S));
+    const p=loadPrefs(); p.activeSlot=n; p.lastSlot=n; savePrefs(p);
+    if(!opts.quiet) toast("已存檔 · 槽 "+n);
+    return true;
+  }catch(_e){ if(!opts.quiet) toast("存檔失敗"); return false; }
+}
+function save(){ return saveToSlot((loadPrefs().activeSlot)||1); }
+function saveQ(){
+  try{ localStorage.setItem(saveKeyForSlot((loadPrefs().activeSlot)||1), JSON.stringify(S)); }catch(_e){}
+}
+function loadFromSlot(slot){
+  try{
+    const r=localStorage.getItem(saveKeyForSlot(slot));
+    if(!r) return null;
+    return normalizeSaveObj(JSON.parse(r));
+  }catch(_e){ return null; }
+}
+function load(){
+  const p=loadPrefs();
+  return loadFromSlot(p.activeSlot||1) || loadFromSlot(1);
+}
+function openSaveSlotsModal(mode){
+  /* mode: save | load | new */
+  mode = mode||"load";
+  const prefs=loadPrefs();
+  const slots=listSaveSlots();
+  const titles={ save:"存檔槽", load:"讀檔", new:"開新遊戲 · 揀槽" };
+  const rows=slots.map(s=>{
+    const active = (prefs.activeSlot|0)===(s.slot|0);
+    const meta = s.empty ? "空白槽" : `第 ${s.summary.week} 週 · 存款 $${Number(s.summary.money).toLocaleString()} · 幕前聲量 ${s.summary.stage}`;
+    const tag = active ? `<span class="slot-tag">使用中</span>` : (s.empty?`<span class="slot-tag">可寫入</span>`:`<span class="slot-tag">有進度</span>`);
+    return `<button type="button" class="slot-row ${s.empty?"is-empty":""} ${active?"is-active":""}" data-slot="${s.slot}">
+      <span class="slot-title">槽 ${s.slot}</span>
+      <span class="slot-meta">${meta}</span>
+      ${tag}
+    </button>`;
+  }).join("");
+  modal(`<h3>${titles[mode]||"存檔"}</h3>
+    <p class="sub">槽 1 沿用舊存檔鍵（自動相容）。共 ${SAVE_SLOT_COUNT} 格。</p>
+    <div class="slot-list" id="slot-list">${rows}</div>`,[
+    {label:"關閉", role:"g"}
+  ]);
+  const box=document.getElementById("slot-list");
+  if(!box) return;
+  box.querySelectorAll("[data-slot]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const slot = Number(btn.getAttribute("data-slot"))||1;
+      const info = slots.find(x=>x.slot===slot) || {empty:true};
+      if(mode==="save"){
+        if(!S){ toast("未有進行中進度"); return; }
+        const doSave=()=>{ saveToSlot(slot); closeModal(); };
+        if(!info.empty){
+          modal(`<h3>覆蓋槽 ${slot}？</h3><p class="sub">${slotLabel(slot, info.summary, false)}</p><p>會用而家進度蓋過此槽。</p>`,[
+            {label:"取消", role:"g", on:()=>openSaveSlotsModal("save")},
+            {label:"覆蓋存檔", role:"d", on:doSave}
+          ]);
+        } else doSave();
+        return;
+      }
+      if(mode==="load"){
+        if(info.empty){ toast("此槽空白"); return; }
+        const go=()=>{
+          const p=loadPrefs(); p.activeSlot=slot; p.lastSlot=slot; savePrefs(p);
+          closeModal();
+          contFromSlot(slot);
+        };
+        if(S && typeof S.dayIndex==="number"){
+          modal(`<h3>讀取槽 ${slot}？</h3><p class="sub">${slotLabel(slot, info.summary, false)}</p><p>未手動存檔嘅而家進度可能丟失。</p>`,[
+            {label:"取消", role:"g", on:()=>openSaveSlotsModal("load")},
+            {label:"讀取", role:"p", on:go}
+          ]);
+        } else go();
+        return;
+      }
+      if(mode==="new"){
+        const go=()=>{
+          const p=loadPrefs(); p.activeSlot=slot; p.lastSlot=slot; savePrefs(p);
+          closeModal();
+          startNewFresh();
+        };
+        if(!info.empty){
+          modal(`<h3>覆蓋槽 ${slot} 開新局？</h3><p class="sub">${slotLabel(slot, info.summary, false)}</p>`,[
+            {label:"取消", role:"g", on:()=>openSaveSlotsModal("new")},
+            {label:"覆蓋開新局", role:"d", on:go}
+          ]);
+        } else go();
+      }
+    });
+  });
+}
+function openSettingsModal(){
+  const p=loadPrefs();
+  const speed=p.textSpeed||"normal";
+  modal(`<h3>設定</h3>
+    <div class="settings-list">
+      <div class="settings-row"><div><div class="lab">BGM</div><div class="hint">暫無配樂 · 偏好會記住</div></div>
+        <label><input type="checkbox" id="set-bgm" ${p.bgmMuted?"checked":""}/> 靜音</label></div>
+      <div class="settings-row"><div><div class="lab">音效</div><div class="hint">暫無音效 · 偏好會記住</div></div>
+        <label><input type="checkbox" id="set-sfx" ${p.sfxMuted?"checked":""}/> 靜音</label></div>
+      <div class="settings-row"><div><div class="lab">音量</div><div class="hint">預留給日後 BGM／SFX</div></div>
+        <input type="range" id="set-vol" min="0" max="100" value="${Number(p.volume)||70}"/></div>
+      <div class="settings-row"><div><div class="lab">對白速度</div><div class="hint">事態「下一句」逐字顯示</div></div>
+        <select id="set-speed">
+          <option value="slow" ${speed==="slow"?"selected":""}>慢</option>
+          <option value="normal" ${speed==="normal"?"selected":""}>中</option>
+          <option value="fast" ${speed==="fast"?"selected":""}>快</option>
+          <option value="instant" ${speed==="instant"?"selected":""}>即出</option>
+        </select></div>
+      <div class="settings-row"><div><div class="lab">減少動態</div><div class="hint">關閉過場動畫／縮短過場</div></div>
+        <label><input type="checkbox" id="set-motion" ${p.reduceMotion?"checked":""}/> 開啟</label></div>
+    </div>`,[
+    {label:"完成", role:"p", on:()=>{
+      const next=loadPrefs();
+      const bgm=document.getElementById("set-bgm");
+      const sfx=document.getElementById("set-sfx");
+      const vol=document.getElementById("set-vol");
+      const spd=document.getElementById("set-speed");
+      const mot=document.getElementById("set-motion");
+      if(bgm) next.bgmMuted=!!bgm.checked;
+      if(sfx) next.sfxMuted=!!sfx.checked;
+      if(vol) next.volume=Number(vol.value)||70;
+      if(spd) next.textSpeed=spd.value||"normal";
+      if(mot) next.reduceMotion=!!mot.checked;
+      savePrefs(next);
+      toast("設定已儲存");
+    }}
+  ]);
+}
+function textSpeedMsPerChar(){
+  const sp=(loadPrefs().textSpeed)||"normal";
+  if((loadPrefs().reduceMotion) || sp==="instant") return 0;
+  if(sp==="fast") return 10;
+  if(sp==="slow") return 40;
+  return 20;
+}
+let _spReveal={ timer:null, full:"", el:null, done:true };
+function spRevealCancel(){
+  try{ if(_spReveal.timer) clearInterval(_spReveal.timer); }catch(_e){}
+  _spReveal.timer=null; _spReveal.done=true; _spReveal.el=null; _spReveal.full="";
+}
+function spApplyTextReveal(root){
+  spRevealCancel();
+  if(!root) return;
+  const el=root.querySelector(".sp-line");
+  if(!el) return;
+  const full=String(el.textContent||"");
+  const ms=textSpeedMsPerChar();
+  if(!full || ms<=0){ _spReveal.done=true; return; }
+  _spReveal.el=el; _spReveal.full=full; _spReveal.done=false;
+  el.classList.add("sp-revealing");
+  el.textContent="";
+  let i=0;
+  _spReveal.timer=setInterval(()=>{
+    i++;
+    el.textContent=full.slice(0,i);
+    if(i>=full.length){
+      try{ clearInterval(_spReveal.timer); }catch(_e){}
+      _spReveal.timer=null; _spReveal.done=true;
+      el.classList.remove("sp-revealing");
+    }
+  }, ms);
+}
+function spRevealSkipOrDone(){
+  if(_spReveal.done) return true;
+  if(_spReveal.el){ _spReveal.el.textContent=_spReveal.full; _spReveal.el.classList.remove("sp-revealing"); }
+  try{ if(_spReveal.timer) clearInterval(_spReveal.timer); }catch(_e){}
+  _spReveal.timer=null; _spReveal.done=true;
+  return false;
+}
+function chanceVarianceNote(gig){
+  const bits=[];
+  const st=Number(S&&S.stress)||0;
+  const sta=Number(S&&S.stamina)||0;
+  let matched=0, keys=0;
+  for(const [k,v] of Object.entries((gig&&gig.req)||{})){
+    keys++; if((Number(S[k])||0)>=v) matched++;
+  }
+  if(keys && matched===keys) bits.push("能力達標有加成");
+  else if(keys) bits.push("未齊條件會拉低成功率");
+  if(st>=70) bits.push("壓力偏高");
+  else if(st>=40) bits.push("表現／壓力影響擲骰");
+  if(sta<25) bits.push("體能不足");
+  const credit=((S&&S.npcs&&((S.npcs.director||0)+(S.npcs.agent||0)))||0);
+  if(credit>0) bits.push("信用／人脈微幅加分");
+  if(!bits.length) bits.push("表現、壓力、信用令％浮動");
+  return bits.slice(0,2).join("；")+"。";
+}
+function payContractNote(gig, lockedPay){
+  const lo=(gig&&Array.isArray(gig.pay))?gig.pay[0]:lockedPay;
+  const hi=(gig&&Array.isArray(gig.pay))?gig.pay[1]:lockedPay;
+  const lock=Number(lockedPay)||0;
+  return `合約鎖定 $${lock.toLocaleString()}（約酬區間 $${Number(lo).toLocaleString()}–$${Number(hi).toLocaleString()}）；殺青實收按此入帳。`;
+}
+function payWrapNote(sh){
+  const pay=Number(sh&&sh.pay)||0;
+  return `實收 $${pay.toLocaleString()}（獲聘時合約鎖定額；非通告牌面區間即時重擲）。`;
+}
+
 
 function toast(m, opts){
   opts=opts||{};
@@ -20828,7 +21138,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z8";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z9";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -21241,7 +21551,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z8`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z9`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -21411,7 +21721,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z8`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z9`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -21639,6 +21949,7 @@ function castingNoticeDetailHtml(g){
       <div class="cn-sum-row"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
       <div class="cn-sum-row"><span class="k">通告期間</span><span class="v">${period}</span></div>
       ${sumGaps}
+      <p class="var-note">成功率受表現／壓力／信用影響；片酬牌面為約酬區間，獲聘時鎖定合約，殺青按合約實收。</p>
     </div>
     <button type="button" class="cn-detail-toggle" data-cn-toggle aria-expanded="false">顯示詳細 ▾</button>
     <div class="cn-detail" hidden>
@@ -23362,6 +23673,7 @@ function resolvePlannedDay(id){
           fame:"+"+(sh.fame||0),
           popularity:"+"+pop
         })||"殺青：酬勞入帳，聲望／人氣結算。"}</span>`);
+        try{ notes.push(`<span class="var-note">${payWrapNote(sh)}</span>`); }catch(_e){}
         if(sh.type==="電影") bumpNpc("director",4+R(0,3));
         if(sh.type==="電視劇"||sh.type==="綜藝") bumpNpc("colleague",3+R(0,2));
         if(sh.type==="廣告") bumpNpc("stylist",2);
@@ -23447,12 +23759,14 @@ function resolvePlannedDay(id){
         const ok=roll<p;
         notes=apply({stress:7+R(0,4), acting:R(0,1)});
         notes.push(`成功率約 ${Math.round(p*100)}%`);
+        try{ notes.push(`<span class="var-note">${chanceVarianceNote(gig)}</span>`); }catch(_e){}
         if(ok){
           const pay=R(gig.pay[0],gig.pay[1]);
           const fame=R(gig.fame[0],gig.fame[1]);
           const pop = gig.popularity ? R(gig.popularity[0], gig.popularity[1]) : Math.max(1, Math.round(fame*0.7)+R(0,2));
           const shoot=scheduleShoot(gig, pay, fame, pop);
           notes.push(`<span class="good">${eventLine("AUD_PASS",{title:gig.title, shootDays:shoot.totalDays})||("獲聘，拍攝約 "+shoot.totalDays+" 日")}</span>`);
+          try{ notes.push(`<span class="var-note">${payContractNote(gig, pay)}</span>`); }catch(_e){}
           title=`獲聘：${gig.title}`;
           writeTodayPlan("audition:"+gig.id);
           const {ended, summary}=tickDay();
@@ -24997,7 +25311,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z8";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z9";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -25011,7 +25325,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=19z8";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=19z9";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -25106,11 +25420,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z8") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z9") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z8") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z9") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -25550,21 +25864,21 @@ function openLoc(id){
   scrollMapPinIntoView(id);
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z8. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z9. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z8",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z8",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z8",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z8",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z8",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z8",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z8",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z8",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z8",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z8",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z8",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z8",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z8",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z9",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z9",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z9",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z9",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z9",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z9",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z9",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z9",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z9",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z9",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z9",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z9",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z9",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -26279,6 +26593,8 @@ function doAudition(gig, L){
     title="獲聘！";
     notes.push(`<span class="good">${eventLine("AUD_PASS",{title:gig.title, shootDays:days})||("試鏡通過，拍攝 "+days+" 日")}</span>`);
     notes.push(`完成後約酬 $ ${pay.toLocaleString()} · ${(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲量"} +${fame} · ${(STAT_LABEL&&STAT_LABEL.popularity)||"人氣"} +${pop}`);
+    try{ notes.push(`<span class="var-note">${chanceVarianceNote(gig)}</span>`); }catch(_e){}
+    try{ notes.push(`<span class="var-note">${payContractNote(gig, pay)}</span>`); }catch(_e){}
     const {ended, summary}=tickDay();
     const finishHire=()=>{
       paintBar(); drawMap();
@@ -26290,6 +26606,7 @@ function doAudition(gig, L){
       toast(phase3CastCopy().successToast);
       modal(`<h3>${title} ${gig.title}</h3>
         <p>成功率約 ${Math.round(p*100)}%</p>
+        <p class="var-note">${(()=>{ try{ return chanceVarianceNote(gig); }catch(_e){ return "成功率受表現／壓力／信用影響。"; } })()}</p>
         ${formatResultNotes(notes)}
         <p class="gold">已鎖拍攝日——返手帳睇行程，再開工。</p>
         ${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}
@@ -26319,7 +26636,7 @@ function doAudition(gig, L){
     saveQ();
     return;
   }
-  modal(`<h3>未獲錄用</h3><p><b>${gig.title}</b> · 成功率約 ${Math.round(p*100)}%</p>${formatResultNotes(notes)}${ended?`<p class="gold" style="margin-top:8px">一週完結 → 回家結算，計劃下週行程</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
+  modal(`<h3>未獲錄用</h3><p><b>${gig.title}</b> · 成功率約 ${Math.round(p*100)}%</p><p class="var-note">${(()=>{ try{ return chanceVarianceNote(gig); }catch(_e){ return "成功率受表現／壓力／信用影響。"; } })()}</p>${formatResultNotes(notes)}${ended?`<p class="gold" style="margin-top:8px">一週完結 → 回家結算，計劃下週行程</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
     {label: ended?"回家結算":"繼續", role:"p", on:contFail}
   ], {onDismiss: contFail});
   saveQ();
@@ -26970,29 +27287,20 @@ function startNewFresh(){
   }
 }
 function startNew(){
-  /* v19z8：應用內確認，取代原生 confirm；顯示存檔摘要 */
+  /* v19z9：多存檔槽 — 開新局先揀槽（空白直開；有檔要確認覆蓋） */
   if(hasSave()){
-    let prev=null;
-    try{ prev=load(); }catch(_e){ prev=null; }
-    const dayIndex = (prev && prev.dayIndex!=null) ? (prev.dayIndex|0) : 0;
-    const week = Math.floor(dayIndex/7)+1;
-    const money = (prev && prev.money!=null) ? Number(prev.money)||0 : 0;
-    const fame = (prev && prev.fame!=null) ? Number(prev.fame)||0 : 0;
-    const dual = (prev && typeof readDualTracks==="function") ? readDualTracks(prev) : null;
-    const stage = dual ? dual.stageVolume : fame;
-    modal(`<h3>開新遊戲</h3>
-      <p>會覆蓋而家存檔：</p>
-      <p class="sub">第 <b>${week}</b> 週 · 存款 <b>$${money.toLocaleString()}</b> · 幕前聲量 <b>${stage}</b></p>
-      <p>確定覆蓋開新局？</p>`,[
-      {label:"取消", role:"g"},
-      {label:"覆蓋開新局", role:"d", on:()=>startNewFresh()}
-    ]);
+    openSaveSlotsModal("new");
     return;
   }
+  try{
+    const p=loadPrefs(); p.activeSlot=1; p.lastSlot=1; savePrefs(p);
+  }catch(_e){}
   startNewFresh();
 }
-function cont(){
-  S=load(); if(!S) return startNew();
+function contFromSlot(slot){
+  const n=Math.max(1, Math.min(SAVE_SLOT_COUNT, Number(slot)||1));
+  try{ const p=loadPrefs(); p.activeSlot=n; p.lastSlot=n; savePrefs(p); }catch(_e){}
+  S=loadFromSlot(n); if(!S) return startNew();
   if(S.dayIndex==null)S.dayIndex=0;
   if(typeof StoryOC!=="undefined") StoryOC.ensure();
   if(!S.locNpc)refreshNpc();
@@ -27022,6 +27330,17 @@ function cont(){
   const tid=todayPlanId();
   if(tid && String(tid).startsWith("shoot:")) toast("接返上次進度：拍攝日");
   runScheduleFromToday();
+}
+function cont(){
+  /* 繼續＝上次使用槽；多檔時仍可撳「讀檔」揀 */
+  const p=loadPrefs();
+  const slot = p.lastSlot || p.activeSlot || 1;
+  if(!loadFromSlot(slot)){
+    const filled=listSaveSlots().find(s=>!s.empty);
+    if(filled) return contFromSlot(filled.slot);
+    return startNew();
+  }
+  contFromSlot(slot);
 }
 
 
@@ -27110,9 +27429,11 @@ document.getElementById("menu").onclick=e=>{
     goHomeFromMenu();
   }
   if(m==="replay-tut")replayTutorial();
+  if(m==="settings")openSettingsModal();
   if(m==="wire")showWireDebug();
   if(m==="story-play" && typeof StoryPlay!=="undefined")StoryPlay.playOpenPicker();
-  if(m==="save")save();
+  if(m==="save")openSaveSlotsModal("save");
+  if(m==="load")openSaveSlotsModal("load");
   if(m==="new")startNew();
 };
 document.getElementById("mask").addEventListener("click",e=>{
@@ -27129,7 +27450,13 @@ document.getElementById("mask").addEventListener("click",e=>{
 wireUiAssets();
 const _sh=document.getElementById("start-hero"); if(_sh && PORTRAITS.hero_awi) _sh.src=PORTRAITS.hero_awi;
 const _mi=document.getElementById("map-img"); if(_mi){ _mi.onload=()=>{ try{ drawMap(); }catch(e){} }; _mi.src = (typeof MAP_IMG!=="undefined"&&MAP_IMG)?MAP_IMG:"assets/hk_map.jpg"; }
-if(hasSave()) document.getElementById("btn-cont").style.display="inline-block";
+try{ applyPrefsChrome(); }catch(_e){}
+if(hasSave()){
+  const bc=document.getElementById("btn-cont"); if(bc) bc.style.display="inline-block";
+  const bl=document.getElementById("btn-load"); if(bl) bl.style.display="inline-block";
+}
+const _btnLoad=document.getElementById("btn-load");
+if(_btnLoad) _btnLoad.onclick=()=>openSaveSlotsModal("load");
 /* 先正規化內嵌通告欄位，再嘗試以檔案覆寫 */
 try{ GIGS = (GIGS||[]).map(normalizeGigRecord); }catch(_n){}
 try{ mergeEntryGigsIntoPool(); }catch(_me){}
