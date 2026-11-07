@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19y");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19y");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19y");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -2948,7 +2948,7 @@ body.day-res-open #mask.day-res{
       <img class="guideimg" id="start-guide" alt="何生引導阿偉" hidden />
       <img class="heroimg" id="start-hero" alt="阿偉" hidden />
       <h1 class="sr-only">臨記出頭天</h1>
-      <p>1988 · 港產新人<strong>陳偉翔（阿偉）</strong><br>自己去電視台、片廠、唱片同廣告公司搵通告。<br>通告欄／打聽免費；訓練／試鏡／休息耗一日。試玩閘下傾談不耗日。</p>
+      <p>1988 · 港產新人<strong>陳偉翔（阿偉）</strong><br>自己去電視台、片廠、唱片同廣告公司搵通告。<br>通告欄／打聽免費；訓練／試鏡／休息耗一日。試玩閘下傾談／送禮不耗日。</p>
       <div class="btnrow">
         <button class="p" id="btn-new">新遊戲</button>
         <button class="g" id="btn-cont" style="display:none">繼續</button>
@@ -3011,7 +3011,7 @@ body.day-res-open #mask.day-res{
           </div>
         </div>
       </div>
-      <div class="map-hint" id="map-hint"><b>點地點</b>：通告欄／打聽免費；訓練／試鏡／休息 +1 日（試玩閘傾談不耗日）</div>
+      <div class="map-hint" id="map-hint"><b>點地點</b>：通告欄／打聽免費；訓練／試鏡／休息 +1 日（試玩閘傾談／送禮不耗日）</div>
       <div id="map-stress-tip" role="status" aria-live="polite"></div>
     </div>
     <!-- v17y: sheet is sibling of map-wrap so absolute bottom pins to #v-map, not mid flex/scroll -->
@@ -3467,8 +3467,263 @@ const ENTRY_GIGS_1988 = [
     "boardHookMode": "normal",
     "isKeyGig": false
   }
-];
-/* 內嵌通告＝fallback（與 content/gigs_1988.json 3.2.10-soft 同步）；refreshCopyPacksFromDisk 優先以該檔覆寫。Soft≠PASS。唔 tip LIVE。?v= 19y。入場三張見 ENTRY_GIGS_1988，boot 時 merge。 */
+,
+{
+  "id": "gig_1988_entry_ferry_crowd",
+  "year": 1988,
+  "season": "春",
+  "type": "電視劇",
+  "title": "《天星碼頭》過海人潮",
+  "loc": "tvb_kowloon",
+  "workTitle": "天星碼頭",
+  "genreLabel": "日常",
+  "roleLabel": "過海路人",
+  "director": "外景場記",
+  "roleHint": "跟人群過閘，唔使對白。",
+  "blurb": "入門外景：天星碼頭過海人潮，跟指示企位。",
+  "synopsis": "劇組喺天星碼頭拍過海人潮。臨記只需跟人群過閘同企位，門檻極低，適合第一週搵感覺。",
+  "eraTag": "era_1988_spring_entry",
+  "discoverNote": "入門外景：跟人群即可。",
+  "boardPriority": "high",
+  "boardNote": "入門／臨記",
+  "seasonWeight": 1.0,
+  "req": {
+    "acting": 12
+  },
+  "pay": [
+    400,
+    580
+  ],
+  "payExact": 480,
+  "breachFee": 80,
+  "fame": [
+    0,
+    2
+  ],
+  "popularity": [
+    1,
+    4
+  ],
+  "stressDeltaHint": "低",
+  "hard": 0.1,
+  "tier": "初",
+  "entryTier": true,
+  "stars": 1,
+  "applyDeadlineDays": 6,
+  "shootDaysHint": 1,
+  "shootHint": "跟人流，唔好望鏡。",
+  "roleScale": "tv_extra_day",
+  "shootBand": [
+    1,
+    1
+  ],
+  "shootWeekdays": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "shootDeadlineDays": 10,
+  "limits": {
+    "gender": "any",
+    "licenses": [],
+    "groupOnly": false,
+    "notes": [
+      "入門外景"
+    ]
+  },
+  "storyKeys": [
+    "season_88_spring",
+    "entry_pool"
+  ],
+  "tagOnComplete": [
+    "識跟場"
+  ],
+  "rumorKeys": [],
+  "favorDelta": [
+    {
+      "target": "crew_tvb_kowloon",
+      "value": 1
+    }
+  ],
+  "seasonHook": [
+    "spring"
+  ],
+  "boardHookMode": "normal",
+  "isKeyGig": false
+},
+{
+  "id": "gig_1988_entry_print_hand",
+  "year": 1988,
+  "season": "春",
+  "type": "廣告",
+  "title": "《報紙夾頁》手模半日",
+  "loc": "ad_adm",
+  "workTitle": "報紙夾頁",
+  "genreLabel": "平面廣告",
+  "roleLabel": "手模／半身",
+  "director": "平面攝影師阿忠",
+  "roleHint": "揸住汽水罐，聽指示擺手勢。",
+  "blurb": "入門平面：報紙夾頁手模，半日收工。",
+  "synopsis": "報紙夾頁廣告要一對手入鏡。主要係擺姿勢同聽攝影師指示，外貌達基本線就得，適合新人試廣告場。",
+  "eraTag": "era_1988_spring_entry",
+  "discoverNote": "入門平面：半日手模。",
+  "boardPriority": "high",
+  "boardNote": "入門／臨記",
+  "seasonWeight": 1.0,
+  "req": {
+    "looks": 20
+  },
+  "pay": [
+    600,
+    900
+  ],
+  "payExact": 750,
+  "breachFee": 120,
+  "fame": [
+    1,
+    3
+  ],
+  "popularity": [
+    2,
+    5
+  ],
+  "stressDeltaHint": "低",
+  "hard": 0.12,
+  "tier": "初",
+  "entryTier": true,
+  "stars": 1,
+  "applyDeadlineDays": 5,
+  "shootDaysHint": 1,
+  "shootHint": "手要穩，表情放鬆。",
+  "roleScale": "ad_extra_day",
+  "shootBand": [
+    1,
+    1
+  ],
+  "shootWeekdays": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "shootDeadlineDays": 8,
+  "limits": {
+    "gender": "any",
+    "licenses": [],
+    "groupOnly": false,
+    "notes": [
+      "入門平面"
+    ]
+  },
+  "storyKeys": [
+    "season_88_spring",
+    "entry_pool"
+  ],
+  "tagOnComplete": [
+    "識跟場"
+  ],
+  "rumorKeys": [],
+  "favorDelta": [
+    {
+      "target": "crew_ad_adm",
+      "value": 1
+    }
+  ],
+  "seasonHook": [
+    "spring"
+  ],
+  "boardHookMode": "normal",
+  "isKeyGig": false
+},
+{
+  "id": "gig_1988_entry_rec_clap",
+  "year": 1988,
+  "season": "春",
+  "type": "唱片通告",
+  "title": "《錄音室》拍板助手",
+  "loc": "rec_hk",
+  "workTitle": "錄音室拍板",
+  "genreLabel": "幕後",
+  "roleLabel": "拍板／遞水助手",
+  "director": "錄音室助導",
+  "roleHint": "拍板、遞水、唔入鏡。",
+  "blurb": "入門唱片幕後：錄音室雜務，學氣氛兼賺少少。",
+  "synopsis": "旺角錄音室缺人手拍板同遞水。唔使唱歌入鏡，主要聽指示做雜務，適合認識唱片場環境。",
+  "eraTag": "era_1988_spring_entry",
+  "discoverNote": "入門幕後：無歌藝門檻。",
+  "boardPriority": "high",
+  "boardNote": "入門／臨記",
+  "seasonWeight": 1.0,
+  "req": {},
+  "pay": [
+    380,
+    520
+  ],
+  "payExact": 450,
+  "breachFee": 70,
+  "fame": [
+    0,
+    2
+  ],
+  "popularity": [
+    1,
+    3
+  ],
+  "stressDeltaHint": "低",
+  "hard": 0.08,
+  "tier": "初",
+  "entryTier": true,
+  "stars": 1,
+  "applyDeadlineDays": 7,
+  "shootDaysHint": 1,
+  "shootHint": "安靜同快手就得。",
+  "roleScale": "mtv",
+  "shootBand": [
+    1,
+    1
+  ],
+  "shootWeekdays": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "shootDeadlineDays": 10,
+  "limits": {
+    "gender": "any",
+    "licenses": [],
+    "groupOnly": false,
+    "notes": [
+      "入門幕後"
+    ]
+  },
+  "storyKeys": [
+    "season_88_spring",
+    "entry_pool"
+  ],
+  "tagOnComplete": [
+    "識跟場"
+  ],
+  "rumorKeys": [],
+  "favorDelta": [
+    {
+      "target": "crew_rec_hk",
+      "value": 1
+    }
+  ],
+  "seasonHook": [
+    "spring"
+  ],
+  "boardHookMode": "normal",
+  "isKeyGig": false
+}];
+/* 內嵌通告＝fallback（與 content/gigs_1988.json 3.2.10-soft 同步）；refreshCopyPacksFromDisk 優先以該檔覆寫。Soft≠PASS。唔 tip LIVE。?v= 19z。入場六張見 ENTRY_GIGS_1988，boot 時 merge。 */
 let GIGS = [
   {
     "id": "gig_1988_ad_01",
@@ -18214,7 +18469,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19y. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -18297,7 +18552,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19y";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -18383,7 +18638,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=19y");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=19z");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -19087,7 +19342,7 @@ const StoryPlay = (()=>{
 })();
 
 
-const TUTORIAL_ZH_HK = {"version":2,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上的地點，就是你可以去的地方。","先點地點，才會看到可做的行動。"],"bodyAlt":["所有行動都從地圖進入。","點選地點後，才能選擇行動。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可先免費查看，不耗日。","條件未合時顯示暫未能報；達標後可接通告。"],"bodyAlt":["先看通告欄，再決定是否試鏡。","見到暫未能報，即條件未合；達標後才可接通告。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練解鎖試鏡","body":["到對應地點報名訓練，提升能力來解鎖試鏡門檻。","訓練次數累計夠之後，社交課和觀察課就會開放。"],"bodyAlt":["能力不夠，先到合適地點報名訓練。","訓練累計夠，社交與觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"打聽不耗日","body":["茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。","正式版同熟人「傾談」耗一日；試玩閘（softBehaviorGate）下傾談不耗日。"],"bodyAlt":["打聽免費，不耗日。","打聽免費。正式版傾談佔一日；試玩閘下傾談亦不耗日。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到這裡，之後可在選單撳「重看教學」。","建議先去訓練、看通告欄，或打開選單「事態」。"],"bodyAlt":["教學結束了，選單裡可以重看教學。","下一步建議：先訓練、看通告欄，或打開「事態」。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["本次未獲聘，且不可再參加本場。","可去訓練，或另選通告。"],"bodyAlt":["這一場未獲聘，本場不再開放。","回去訓練，或另找合適通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘後，製作日已排進行程。","開工前看手帳和行程，跟進度。"],"bodyAlt":["已獲聘，拍攝日記在行程。","按行程開工，手帳可看進度。"],"buttons":["我知道了"]}},"filterPass":"2026-11-04"};
+const TUTORIAL_ZH_HK = {"version":2,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上的地點，就是你可以去的地方。","先點地點，才會看到可做的行動。"],"bodyAlt":["所有行動都從地圖進入。","點選地點後，才能選擇行動。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可先免費查看，不耗日。","條件未合時顯示暫未能報；達標後可接通告。"],"bodyAlt":["先看通告欄，再決定是否試鏡。","見到暫未能報，即條件未合；達標後才可接通告。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練解鎖試鏡","body":["到對應地點報名訓練，提升能力來解鎖試鏡門檻。","訓練次數累計夠之後，社交課和觀察課就會開放。"],"bodyAlt":["能力不夠，先到合適地點報名訓練。","訓練累計夠，社交與觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"打聽不耗日","body":["茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。","正式版同熟人「傾談／送禮」耗一日；試玩閘（softBehaviorGate）下傾談／送禮不耗日（茶錢仍可能扣費；訓練／試鏡／休息／行程表演仍耗日）。"],"bodyAlt":["打聽免費，不耗日。","打聽免費。正式版傾談／送禮佔一日；試玩閘下亦不耗日。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到這裡，之後可在選單撳「重看教學」。","建議先去訓練、看通告欄，或打開選單「事態」。"],"bodyAlt":["教學結束了，選單裡可以重看教學。","下一步建議：先訓練、看通告欄，或打開「事態」。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["本次未獲聘，且不可再參加本場。","可去訓練，或另選通告。"],"bodyAlt":["這一場未獲聘，本場不再開放。","回去訓練，或另找合適通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘後，製作日已排進行程。","開工前看手帳和行程，跟進度。"],"bodyAlt":["已獲聘，拍攝日記在行程。","按行程開工，手帳可看進度。"],"buttons":["我知道了"]}},"filterPass":"2026-11-04"};
 let TUTORIAL = TUTORIAL_ZH_HK;
 const TUT_MAIN_IDS = ["TUT_WELCOME","TUT_MAP","TUT_BOARD","TUT_TRAIN","TUT_NPC","TUT_NOTEBOOK","TUT_DONE"];
 /* PLAN 5ba79338: step 5 drag-guide and step 6 merge FX. Soft tip mounts tutorial-fx PNGs only when gatePath()==="soft". Modal scroll is separate. No new Soft flag. Soft≠PASS. Do not tip LIVE. ?v= stays 19w.
@@ -19109,7 +19364,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=19y";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -19279,10 +19534,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_TRAIN,TUT_NPC,TUT_NOTEBOOK,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19y") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19y") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19y") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -19529,6 +19784,8 @@ function exposePreviewDebug(){
     window.storyHintPack = storyHintPack;
     window.calendarSeason = calendarSeason;
     window.mergeEntryGigsIntoPool = mergeEntryGigsIntoPool;
+    window.softSocialCostsDay = softSocialCostsDay;
+    window.bestTrainJumpForGig = bestTrainJumpForGig;
     window.ensureEntryTierBoardFill = ensureEntryTierBoardFill;
     window.ENTRY_GIGS_1988 = (typeof ENTRY_GIGS_1988!=="undefined") ? ENTRY_GIGS_1988 : null;
     window.GiftShop = GiftShop;
@@ -20003,6 +20260,7 @@ async function refreshCopyPacksFromDisk(){
       STORY_WIRE.errors.push("gigs_1992.json 未載入（跨年後仍可用較早年庫 fallback）");
     }
     syncGigsForCalendarYear(true);
+    try{ mergeEntryGigsIntoPool(); }catch(_me){} /* v19z：disk 成功／失敗都再夾入場池 */
     STORY_WIRE.main = main;
     STORY_WIRE.romance.veraHiuChoi = rom1;
     STORY_WIRE.romance.lanXu = rom2;
@@ -20346,7 +20604,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=19y";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -20709,7 +20967,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19y`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -20887,7 +21145,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19y`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -21124,10 +21382,114 @@ function castingNoticeDetailHtml(g){
   </div>`;
 }
 
+
+/** v19z：暫未能報 → 差幾多達標／去訓練捷徑 */
+function gigMissingReqGaps(g){
+  const gaps=[];
+  if(!g) return gaps;
+  try{
+    const floor = (typeof fameFloor==="function") ? fameFloor(g) : 0;
+    const curF = Number(S && S.fame)||0;
+    if(floor>0 && curF<floor) gaps.push({ key:"fame", label:(STAT_LABEL&&STAT_LABEL.fame)||"聲望", need:floor, cur:curF, gap:floor-curF });
+  }catch(_e){}
+  Object.entries((g && g.req)||{}).forEach(([k,v])=>{
+    const need=Number(v)||0;
+    const cur=Number(S && S[k])||0;
+    if(cur<need) gaps.push({ key:k, label:(STAT_LABEL&&STAT_LABEL[k])||k, need, cur, gap:need-cur });
+  });
+  gaps.sort((a,b)=> (b.gap-a.gap) || String(a.key).localeCompare(String(b.key)));
+  return gaps;
+}
+function courseForStatKey(stat){
+  const map = {
+    acting:"train_acting", stage:"train_stage", vocal:"train_vocal",
+    looks:"train_looks", charm:"train_charm", iq:"train_iq",
+    stamina:"rest", fame:null, popularity:null, stress:"rest"
+  };
+  return (stat in map) ? map[stat] : "train_acting";
+}
+function preferredLocForTrainTarget(stat, courseId){
+  /* 回傳 {locId, courseId, mode:"train"|"rest"|"planner"|"map"} */
+  const LO = (typeof LOCS!=="undefined" && LOCS) ? LOCS : [];
+  const pick = (pred, fallbackId)=>{
+    const hit = LO.find(pred);
+    return (hit && hit.id) || fallbackId;
+  };
+  if(stat==="stamina" || stat==="stress" || courseId==="rest"){
+    return { locId: pick(l=>l.type==="tv"||l.type==="film","tvb_longmen"), courseId:"rest", mode:"rest" };
+  }
+  if(stat==="fame" || stat==="popularity" || !courseId){
+    return { locId: pick(l=>l.type==="tv","tvb_longmen"), courseId:null, mode:"map" };
+  }
+  if(courseId==="train_acting" || courseId==="train_stage"){
+    return { locId: pick(l=>l.type==="tv","tvb_longmen"), courseId: courseId==="train_stage"?"train_acting":courseId, mode:"train" };
+  }
+  if(courseId==="train_vocal"){
+    return { locId: pick(l=>l.type==="music","rec_hk"), courseId, mode:"train" };
+  }
+  if(courseId==="train_looks"){
+    return { locId: pick(l=>l.type==="ad","ad_central"), courseId, mode:"train" };
+  }
+  if(courseId==="train_charm"){
+    /* 魅力多作 tv／music／ad 報名附帶課；優先已開班地 */
+    return { locId: pick(l=>l.type==="tv","tvb_longmen"), courseId, mode:"train" };
+  }
+  if(courseId==="train_iq"){
+    return { locId: pick(l=>l.type==="film","film_cotton"), courseId, mode:"train" };
+  }
+  return { locId: pick(l=>l.type==="tv","tvb_longmen"), courseId: courseId||"train_acting", mode:"train" };
+}
+function bestTrainJumpForGig(g){
+  const gaps = gigMissingReqGaps(g);
+  if(!gaps.length) return null;
+  const top = gaps[0];
+  const courseId = courseForStatKey(top.key);
+  const target = preferredLocForTrainTarget(top.key, courseId);
+  const enrolled = !!(S && S.enrolled && target.courseId && S.enrolled[target.courseId]);
+  const loc = (typeof LOCS!=="undefined" && LOCS) ? LOCS.find(l=>l.id===target.locId) : null;
+  const locName = loc ? loc.name : (target.locId||"地圖");
+  let label;
+  if(target.mode==="rest") label = `去休息回復（${locName}）`;
+  else if(target.mode==="map") label = `去地圖接單攞聲望（${locName}）`;
+  else if(enrolled) label = `入手帳排「${(COURSE_DEFS[target.courseId]||{}).name||"訓練"}」`;
+  else label = `去練${top.label}（差 ${top.gap}｜${locName}）`;
+  return { gap: top, target, enrolled, locName, label, gaps };
+}
+function jumpToTrainForGig(g){
+  const plan = bestTrainJumpForGig(g);
+  if(!plan){ toast("條件已合，可直接報名。"); return; }
+  try{ closeModal(); }catch(_e){}
+  try{ closeSheet(); }catch(_e){}
+  const { target, enrolled, gap } = plan;
+  if(enrolled && target.courseId && target.mode==="train"){
+    try{ show("v-home"); }catch(_e){}
+    try{ enterHome(null, true); }catch(_e){}
+    try{
+      const tabs = document.getElementById("home-tabs");
+      if(tabs){
+        const btn = tabs.querySelector('[data-tab="train"],[data-cat="train"],button[data-id="train"]');
+        if(btn) btn.click();
+      }
+      /* fallback：點「訓練」分頁文字 */
+      document.querySelectorAll("#home-tabs button, #home-tabs .tab").forEach(b=>{
+        if(/訓練/.test(String(b.textContent||""))) b.click();
+      });
+    }catch(_e){}
+    toast(`手帳可排「${(COURSE_DEFS[target.courseId]||{}).name||"訓練"}」· 還差 ${gap.label} ${gap.gap}`);
+    return;
+  }
+  try{ show("v-map"); }catch(_e){}
+  try{ paintBar(); drawMap(); }catch(_e){}
+  if(target.locId){
+    try{ openLoc(target.locId); }catch(_e){}
+  }
+  toast(plan.label);
+}
+
 function openCastingNoticeDetail(g, L){
   if(!g) return;
   const gate=canAudition(g);
-  const body = castingNoticeDetailHtml(g);
+  let body = castingNoticeDetailHtml(g);
   const btns=[];
   const copy = phase3CastCopy();
   /* Soft／LIVE Detail：只 ready｜locked。唔讀 isSoftTryGig，禁 soft-try／搏一搏／第三態試投。 */
@@ -21144,6 +21506,12 @@ function openCastingNoticeDetail(g, L){
     }};
     if(phase3SoftOn()) lockedBtn.ariaDisabled = true;
     btns.push(lockedBtn);
+    const plan = bestTrainJumpForGig(g);
+    if(plan){
+      const gapLines = plan.gaps.slice(0,3).map(x=>`${x.label}差 ${x.gap}（現 ${x.cur}／要 ${x.need}）`).join("；");
+      body += `<div class="cn-train-jump" role="note"><p class="cn-train-jump-title">差幾多達標</p><p class="cn-train-jump-gaps">${gapLines||plan.gap.label+"差 "+plan.gap.gap}</p></div>`;
+      btns.push({label:plan.label, role:"p", cls:"btn_train_jump", on:()=>{ jumpToTrainForGig(g); }});
+    }
   }
   btns.push({label:copy.leaveLabel, role:"g", cls:"btn_leave", on:()=>{ if(L) doScout(L); }});
   modal(body, btns, {
@@ -22721,8 +23089,8 @@ function paintBar(){
     (()=>{
       const storyLine = (typeof storyMapHintHtml==="function") ? storyMapHintHtml() : "";
       const helpSoft = (typeof softPreviewOn==="function" && softPreviewOn())
-        ? "有通告／情報／「劇」事態見圖例 · 通告欄／打聽／傾談免費 · 訓練／試鏡／休息 +1日"
-        : "有通告／情報／「劇」事態見圖例 · 通告欄／打聽免費 · 傾談／訓練／試鏡／休息 +1日";
+        ? "有通告／情報／「劇」事態見圖例 · 通告欄／打聽／傾談／送禮免費 · 訓練／試鏡／休息／行程表演 +1日"
+        : "有通告／情報／「劇」事態見圖例 · 通告欄／打聽免費 · 傾談／送禮／訓練／試鏡／休息 +1日";
       return `<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span><span class="map-hint-help">${helpSoft}</span>${storyLine}`;
     })();
   try{ paintStoryEntryHints(); }catch(_e){}
@@ -23698,7 +24066,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19y";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -23712,7 +24080,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=19y";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=19z";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -23807,11 +24175,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19y") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19y") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -24008,14 +24376,14 @@ function openLoc(id){
   } else {
   // 人物／情報置頂，減少要滾先撳
   if(npcId) add(`同${NPCS[npcId].name}傾談`, talkHintLabel(), talkCostLabel(), ()=>doTalk(npcId,L), "act-priority");
-  /* v18d：romance 送禮（耗 1 日） */
+  /* v18d／v19z：romance 送禮；soft 閘不耗日，live +1日 */
   try{
     if(npcId && typeof GiftShop!=="undefined"){
       const rk = GiftShop.romanceKeyFromMapNpc(npcId);
       if(rk){
         const gate = GiftShop.canGive(rk);
-        const hint = gate.ok ? "會用去 1 日／今日額度" : (gate.reason||"暫不可送");
-        add(`送禮：${NPCS[npcId].name}`, hint, gate.ok?"+1日":"未開放", ()=>{
+        const hint = giftHintLabel(gate.ok, gate.reason);
+        add(`送禮：${NPCS[npcId].name}`, hint, gate.ok?giftCostLabel():"未開放", ()=>{
           if(!gate.ok){ toast(gate.reason||"暫不可送"); return; }
           openGiftPick(rk, L);
         }, gate.ok?"act-priority":"");
@@ -24066,21 +24434,21 @@ function openLoc(id){
   scrollMapPinIntoView(id);
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19y. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19y",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19y",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19y",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19y",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19y",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19y",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19y",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19y",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19y",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19y",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19y",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19y",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19y",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -24355,7 +24723,21 @@ function tipGig(npc){
 }
 
 
-/** v19y：入場臨記池（disk／內嵌共用）。缺則由 ENTRY_GIGS_1988 補入 GIGS。 */
+/** v19z：入場臨記池（disk／內嵌共用）。缺則由 ENTRY_GIGS_1988 補入；已存在則夾低 req 至模板上限。 */
+function clampEntryReqToTemplate(curReq, tplReq){
+  const out = Object.assign({}, curReq||{});
+  const tpl = tplReq || {};
+  /* 模板無鍵 → 清走該鍵（入場應更易報）；模板有鍵 → 取較低 need */
+  Object.keys(out).forEach(k=>{
+    if(!(k in tpl)) delete out[k];
+  });
+  Object.keys(tpl).forEach(k=>{
+    const want = Number(tpl[k])||0;
+    const have = (k in out) ? Number(out[k]) : want;
+    out[k] = Math.min(have, want);
+  });
+  return out;
+}
 function mergeEntryGigsIntoPool(){
   try{
     const pool = (typeof ENTRY_GIGS_1988!=="undefined" && Array.isArray(ENTRY_GIGS_1988)) ? ENTRY_GIGS_1988 : [];
@@ -24365,16 +24747,23 @@ function mergeEntryGigsIntoPool(){
     pool.forEach(raw=>{
       if(!raw || !raw.id) return;
       const i = GIGS.findIndex(g=>g && g.id===raw.id);
-      const norm = normalizeGigRecord(Object.assign({ entryTier:true, boardPriority:"high" }, raw));
-      if(i<0){ GIGS.push(norm); n++; }
-      else {
-        /* 保 entryTier／低門檻；唔整份覆蓋以免踩扁 disk 其他欄 */
+      const tplReq = (raw.req && typeof raw.req==="object") ? raw.req : {};
+      if(i<0){
+        const norm = normalizeGigRecord(Object.assign({}, raw, { entryTier:true, boardPriority:"high", boardNote: raw.boardNote || "入門／臨記" }));
+        GIGS.push(norm); n++;
+      } else {
         const cur = GIGS[i] || {};
+        const mergedReq = clampEntryReqToTemplate(cur.req, tplReq);
         GIGS[i] = normalizeGigRecord(Object.assign({}, cur, {
           entryTier: true,
-          boardPriority: cur.boardPriority || "high",
-          req: (raw.req!=null ? raw.req : cur.req),
-          boardNote: cur.boardNote || raw.boardNote || "入門／臨記"
+          boardPriority: "high",
+          req: mergedReq,
+          boardNote: cur.boardNote || raw.boardNote || "入門／臨記",
+          title: cur.title || raw.title,
+          loc: cur.loc || raw.loc,
+          type: cur.type || raw.type,
+          tier: cur.tier || raw.tier || "初",
+          stars: (cur.stars!=null?cur.stars:(raw.stars!=null?raw.stars:1))
         }));
       }
     });
@@ -24456,15 +24845,26 @@ function softPreviewOn(){
 }
 function dayCostLabel(costsDay){
   if(!costsDay) return softPreviewOn() ? "免費（試玩）" : "免費";
-  /* 訓練／休息／試鏡：soft／live 都耗日 */
+  /* 訓練／休息／試鏡／行程表演：soft／live 都耗日 */
   return "+1日";
 }
-/** soft 閘傾談：不耗日；live：+1日 */
-function softTalkCostsDay(){
+/** soft 閘社交（傾談／送禮）：不耗日；live：+1日。茶錢仍可能扣費；行程 cafe_gig／訓練／試鏡／休息仍耗日。 */
+function softSocialCostsDay(){
   return !softPreviewOn();
+}
+/** alias：舊呼叫點 */
+function softTalkCostsDay(){
+  return softSocialCostsDay();
 }
 function talkCostLabel(){
   return softTalkCostsDay() ? "+1日" : "免費（不耗日）";
+}
+function giftCostLabel(){
+  return softSocialCostsDay() ? "+1日" : "免費（不耗日）";
+}
+function giftHintLabel(ok, reason){
+  if(!ok) return reason||"暫不可送";
+  return softSocialCostsDay() ? "會用去 1 日／今日額度" : "試玩閘：送禮不耗日";
 }
 function talkHintLabel(){
   return softTalkCostsDay() ? "可能有情報 · 耗一日" : "可能有情報 · 試玩不耗日";
@@ -24723,16 +25123,26 @@ function openGiftPick(npcKey, L){
 function doGiveGift(npcKey, itemId, L){
   const res = GiftShop.giveGift(npcKey, itemId);
   if(!res.ok){ toast(res.reason||"送唔成"); if(L) openLoc(L.id); return; }
-  try{ writeTodayPlan("cafe_gig"); }catch(_e){}
-  const {ended, summary} = tickDay();
+  const spendDay = softSocialCostsDay();
+  let ended=false, summary=null;
+  if(spendDay){
+    try{ writeTodayPlan("cafe_gig"); }catch(_e){}
+    const t = tickDay();
+    ended = !!t.ended; summary = t.summary;
+  }
   paintBar(); drawMap();
   const deltaTxt = res.softcap ? "本週心領（+0）" : (res.delta>0?`好感 +${res.delta}`:(res.delta<0?`好感 ${res.delta}`:"好感 ±0"));
-  const go = ()=>{ if(ended) enterHome(summary, true); else runScheduleFromToday(); };
+  const go = ()=>{
+    if(ended) enterHome(summary, true);
+    else if(spendDay) runScheduleFromToday();
+    else if(L) openLoc(L.id);
+  };
   const lineHtml = /<p[\s>]/.test(String(res.line||"")) ? String(res.line) : `<p>${res.line||""}</p>`;
+  const dayNote = spendDay ? `${fmtDate()} · 送禮耗一日` : `${fmtDate()} · 試玩閘：送禮不耗日`;
   modal(`<h3>送禮結果</h3>
     ${lineHtml}
     <p class="gold">${deltaTxt}${res.relKey?` · ${res.relKey}`:""}</p>
-    <p class="sub">${fmtDate()} · 送禮耗一日</p>
+    <p class="sub">${dayNote}</p>
     ${ended?`<p class="gold">一週完結 → 返屋企計劃下週</p>`:""}`,[
     {label: ended?"返屋企":"離開", role: ended?"p":"g", on:go}
   ], {onDismiss: go});
@@ -24748,7 +25158,7 @@ function showInventory(){
     body = list.map(({itemId, count, item})=>
       `<p style="margin:6px 0">${item.emoji||"🎁"} <b>${item.name}</b> ×${count} <span class="sub">· ${rarityLabelZh(item.rarity)} · $${(item.price||0).toLocaleString()}</span></p>`
     ).join("");
-    body += `<p class="sub" style="margin-top:10px">送禮：地圖遇到 Vera／林曉晴／周采兒 →「送禮」（耗 1 日）。</p>`;
+    body += `<p class="sub" style="margin-top:10px">送禮：地圖遇到 Vera／林曉晴／周采兒 →「送禮」（${softSocialCostsDay()?"耗 1 日":"試玩不耗日"}）。</p>`;
   }
   modal(`<h3>庫存</h3><p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>${body}`,[{label:"關閉",role:"g"}]);
 }

@@ -5,9 +5,9 @@
   "planRef": "PLAN_SOFT_PHASE_D_VOCAL_v1.md",
   "softStatus": "≠PASS",
   "counts": {
-    "gigs": 140,
+    "gigs": 143,
     "byTier": {
-      "初": 46,
+      "初": 49,
       "中": 45,
       "高": 46
     },
@@ -120,6 +120,10 @@
     {
       "when": "2026-11-07",
       "note": "playtest remediation v19w: entry gigs + spring 初 req soften"
+    },
+    {
+      "when": "2026-11-07",
+      "note": "v19z playtest closeout: +3 entry variants (ferry/print/rec_clap)"
     }
   ],
   "notes": "Soft≠PASS；唔 publish；唔改 LIVE；89–92 HOLD；出圖 HOLD；唔推 tip；3.2.4-soft Pack B：OOV remap＋中階 limits／producer＋keyGigs meta 66；經理人玩家面「何生」；favor target 單一 agency_ho；0 新槽 n=137｜3.2.5-soft：選填收齊餘 21 初階 favorDelta＋rumorKeys（Soft≠PASS｜唔 tip）｜3.2.6-soft Pack CD：D1B 0新槽 densify 中階綜藝/電視劇/廣告＋D3A 高階 limits/producer QA patch（Soft≠PASS｜唔 tip｜castWindow HOLD｜roles[] HOLD｜89–92 HOLD）｜3.2.7-soft Soft nits：film_cotton_summer_high 槍戰notes→武打吊威也；tvb_kowloon_autumn_high roleLabel→舉牌女郎；planRef→Pack CD（Soft≠PASS｜唔 tip LIVE）｜3.2.8-soft title Soft nit｜3.2.9-soft comedy gunfight notes｜3.2.10-soft Phase D vocal：主鍵映射＋體能文案；stamina req 不變（能力999）；stress cap100；訓練／打工／通告結算只加壓力唔扣體能（引擎 iOS Soft）；Soft≠PASS｜唔 tip LIVE｜19w",
@@ -371,6 +375,261 @@
       "favorDelta": [
         {
           "target": "crew_tvb_longmen",
+          "value": 1
+        }
+      ],
+      "seasonHook": [
+        "spring"
+      ],
+      "boardHookMode": "normal",
+      "isKeyGig": false
+    },
+    {
+      "id": "gig_1988_entry_ferry_crowd",
+      "year": 1988,
+      "season": "春",
+      "type": "電視劇",
+      "title": "《天星碼頭》過海人潮",
+      "loc": "tvb_kowloon",
+      "workTitle": "天星碼頭",
+      "genreLabel": "日常",
+      "roleLabel": "過海路人",
+      "director": "外景場記",
+      "roleHint": "跟人群過閘，唔使對白。",
+      "blurb": "入門外景：天星碼頭過海人潮，跟指示企位。",
+      "synopsis": "劇組喺天星碼頭拍過海人潮。臨記只需跟人群過閘同企位，門檻極低，適合第一週搵感覺。",
+      "eraTag": "era_1988_spring_entry",
+      "discoverNote": "入門外景：跟人群即可。",
+      "boardPriority": "high",
+      "boardNote": "入門／臨記",
+      "seasonWeight": 1.0,
+      "req": {
+        "acting": 12
+      },
+      "pay": [
+        400,
+        580
+      ],
+      "payExact": 480,
+      "breachFee": 80,
+      "fame": [
+        0,
+        2
+      ],
+      "popularity": [
+        1,
+        4
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.1,
+      "tier": "初",
+      "entryTier": true,
+      "stars": 1,
+      "applyDeadlineDays": 6,
+      "shootDaysHint": 1,
+      "shootHint": "跟人流，唔好望鏡。",
+      "roleScale": "tv_extra_day",
+      "shootBand": [
+        1,
+        1
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 10,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "入門外景"
+        ]
+      },
+      "storyKeys": [
+        "season_88_spring",
+        "entry_pool"
+      ],
+      "tagOnComplete": [
+        "識跟場"
+      ],
+      "rumorKeys": [],
+      "favorDelta": [
+        {
+          "target": "crew_tvb_kowloon",
+          "value": 1
+        }
+      ],
+      "seasonHook": [
+        "spring"
+      ],
+      "boardHookMode": "normal",
+      "isKeyGig": false
+    },
+    {
+      "id": "gig_1988_entry_print_hand",
+      "year": 1988,
+      "season": "春",
+      "type": "廣告",
+      "title": "《報紙夾頁》手模半日",
+      "loc": "ad_adm",
+      "workTitle": "報紙夾頁",
+      "genreLabel": "平面廣告",
+      "roleLabel": "手模／半身",
+      "director": "平面攝影師阿忠",
+      "roleHint": "揸住汽水罐，聽指示擺手勢。",
+      "blurb": "入門平面：報紙夾頁手模，半日收工。",
+      "synopsis": "報紙夾頁廣告要一對手入鏡。主要係擺姿勢同聽攝影師指示，外貌達基本線就得，適合新人試廣告場。",
+      "eraTag": "era_1988_spring_entry",
+      "discoverNote": "入門平面：半日手模。",
+      "boardPriority": "high",
+      "boardNote": "入門／臨記",
+      "seasonWeight": 1.0,
+      "req": {
+        "looks": 20
+      },
+      "pay": [
+        600,
+        900
+      ],
+      "payExact": 750,
+      "breachFee": 120,
+      "fame": [
+        1,
+        3
+      ],
+      "popularity": [
+        2,
+        5
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.12,
+      "tier": "初",
+      "entryTier": true,
+      "stars": 1,
+      "applyDeadlineDays": 5,
+      "shootDaysHint": 1,
+      "shootHint": "手要穩，表情放鬆。",
+      "roleScale": "ad_extra_day",
+      "shootBand": [
+        1,
+        1
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 8,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "入門平面"
+        ]
+      },
+      "storyKeys": [
+        "season_88_spring",
+        "entry_pool"
+      ],
+      "tagOnComplete": [
+        "識跟場"
+      ],
+      "rumorKeys": [],
+      "favorDelta": [
+        {
+          "target": "crew_ad_adm",
+          "value": 1
+        }
+      ],
+      "seasonHook": [
+        "spring"
+      ],
+      "boardHookMode": "normal",
+      "isKeyGig": false
+    },
+    {
+      "id": "gig_1988_entry_rec_clap",
+      "year": 1988,
+      "season": "春",
+      "type": "唱片通告",
+      "title": "《錄音室》拍板助手",
+      "loc": "rec_hk",
+      "workTitle": "錄音室拍板",
+      "genreLabel": "幕後",
+      "roleLabel": "拍板／遞水助手",
+      "director": "錄音室助導",
+      "roleHint": "拍板、遞水、唔入鏡。",
+      "blurb": "入門唱片幕後：錄音室雜務，學氣氛兼賺少少。",
+      "synopsis": "旺角錄音室缺人手拍板同遞水。唔使唱歌入鏡，主要聽指示做雜務，適合認識唱片場環境。",
+      "eraTag": "era_1988_spring_entry",
+      "discoverNote": "入門幕後：無歌藝門檻。",
+      "boardPriority": "high",
+      "boardNote": "入門／臨記",
+      "seasonWeight": 1.0,
+      "req": {},
+      "pay": [
+        380,
+        520
+      ],
+      "payExact": 450,
+      "breachFee": 70,
+      "fame": [
+        0,
+        2
+      ],
+      "popularity": [
+        1,
+        3
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.08,
+      "tier": "初",
+      "entryTier": true,
+      "stars": 1,
+      "applyDeadlineDays": 7,
+      "shootDaysHint": 1,
+      "shootHint": "安靜同快手就得。",
+      "roleScale": "mtv",
+      "shootBand": [
+        1,
+        1
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 10,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "入門幕後"
+        ]
+      },
+      "storyKeys": [
+        "season_88_spring",
+        "entry_pool"
+      ],
+      "tagOnComplete": [
+        "識跟場"
+      ],
+      "rumorKeys": [],
+      "favorDelta": [
+        {
+          "target": "crew_rec_hk",
           "value": 1
         }
       ],
