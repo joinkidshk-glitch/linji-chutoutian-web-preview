@@ -1,10 +1,10 @@
-# CONTENT CONTRACT｜Freeplay 框架 v20a3
+# CONTENT CONTRACT｜Freeplay 框架 v20a4
 
 > **對象：** 之後負責豐富劇情／對白／噂文案嘅 bot（或作者）  
 > **時間：** 2026-11-07（Asia/Hong_Kong）  
 > **狀態：** Soft≠PASS；結構殼齊＋**殺青獎勵／傳媒反響**；**唔發明長篇粵語劇情弧**；玩家面**禁真藝名**  
-> **預覽：** `?v=20a3&softBehaviorGate=1`  
-> **基建筆記：** `NOTES_V20A3_POST_SHOOT_REWARD.md`（亦見 `NOTES_V20A2_STRUCTURE.md`）
+> **預覽：** `?v=20a4&softBehaviorGate=1`  
+> **基建筆記：** `NOTES_V20A4_PLAYTEST_REWARD_CTA.md`（亦見 `NOTES_V20A3_POST_SHOOT_REWARD.md`／`NOTES_V20A2_STRUCTURE.md`）
 
 本約定義：**引擎已就緒嘅欄位**，同 **內容 bot 應填／唔應改** 嘅邊界。
 
@@ -34,6 +34,7 @@
 | `content/STUB_ERA_STARS_MVP_v1.json` | 紅星遠觀 stub（MVP4＋6 擴展） | 遠觀短句 |
 | `content/SCHEMA_POST_SHOOT_REWARD_v1.json` | 殺青獎勵 schema | 是 |
 | `content/STUB_POST_SHOOT_REWARDS_v1.json` | 殺青獎勵文案 stub | **獎勵文案權威** |
+| `NOTES_V20A4_PLAYTEST_REWARD_CTA.md` | v20a4 玩測修（獎勵 sheet＋地點 CTA） | 是 |
 | `NOTES_V20A3_POST_SHOOT_REWARD.md` | v20a3 獎勵落地／verify | 是 |
 
 ---
@@ -82,7 +83,7 @@
 | `industryCreditMin` | Soft 業內信用下限；**缺欄＝唔閘** |
 
 
-### 3.5 殺青獎勵／傳媒反響（v20a3）
+### 3.5 殺青獎勵／傳媒反響（v20a3／v20a4）
 
 **觸發：** 拍攝成功殺青（`finished`）一次一包。  
 **填：** `content/STUB_POST_SHOOT_REWARDS_v1.json`
@@ -110,14 +111,14 @@ bust preferFile（引擎）：`assets/story/era_stars/{id}_bust_*.png`＋silhoue
 
 ```js
 await __freeplay.load();
-__freeplay.check();          // ok:true；infra:"v20a3"；slotsCount:17；postShootReward:true
+__freeplay.check();          // ok:true；infra:"v20a4"；slotsCount:17；postShootReward:true
 __reward.check();            // ok:true
 __freeplay.slots().nodes.length; // 17
 __freeplay.softIndustryCreditGate({ industryCreditMin: 1 });
 __freeplay.softOverdueFavorDebtLock({});
 ```
 
-預覽：`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a3&softBehaviorGate=1`
+預覽：`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a4&softBehaviorGate=1`
 
 ---
 
