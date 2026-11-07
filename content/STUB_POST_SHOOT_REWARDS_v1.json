@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "version": "v20a3-stub",
+    "softStatus": "≠PASS",
+    "note": "Post-shoot reward copy stubs. Content bot fills short 粵語／書面 punch lines. Empty string = engine uses short fallback. Soft≠PASS; no real celeb names.",
+    "ui": "postShootRewardModal",
+    "engine": "queuePostShootRewardOnWrap"
+  },
+  "metricKindLabels": {
+    "boxOffice": "票房關注",
+    "ratings": "收視關注",
+    "sales": "銷量關注",
+    "attention": "關注度"
+  },
+  "templates": {
+    "press": [
+      {
+        "id": "press_film_01",
+        "matchTypes": ["電影"],
+        "paperName": "娛樂快報",
+        "headline": "新人臨記殺青，版面留低一格",
+        "dek": "影圈消息：有新面孔完成電影通告，街坊開始有人問名。"
+      },
+      {
+        "id": "press_tv_01",
+        "matchTypes": ["電視劇", "綜藝"],
+        "paperName": "電視週刊",
+        "headline": "廠景殺青，娛樂版順手記一筆",
+        "dek": "電視台組製收工，臨記名字第一次印喺內頁。"
+      },
+      {
+        "id": "press_rec_01",
+        "matchTypes": ["唱片通告"],
+        "paperName": "樂壇速遞",
+        "headline": "錄音室散場，樂版一句帶過",
+        "dek": "唱片通告完成，街外開始有人認樣。"
+      },
+      {
+        "id": "press_ad_01",
+        "matchTypes": ["廣告"],
+        "paperName": "消費情報",
+        "headline": "廣告殺青，報紙夾頁有你一眼",
+        "dek": "品牌短片收工，路人位都算曝光。"
+      },
+      {
+        "id": "press_any_01",
+        "matchTypes": [],
+        "paperName": "星河娛樂版",
+        "headline": "通告殺青，娛樂版留低一行",
+        "dek": "又完成一單。版面唔大，但有人記得你。"
+      }
+    ],
+    "news": [
+      {
+        "id": "news_film_01",
+        "matchTypes": ["電影"],
+        "outlet": "電台娛樂一秒",
+        "line": "電影組殺青消息：有新人臨記入鏡完成。"
+      },
+      {
+        "id": "news_tv_01",
+        "matchTypes": ["電視劇", "綜藝"],
+        "outlet": "晚間娛樂快訊",
+        "line": "電視台組製收工，臨記檔期順利殺青。"
+      },
+      {
+        "id": "news_rec_01",
+        "matchTypes": ["唱片通告"],
+        "outlet": "音樂台一句",
+        "line": "錄音室散場，唱片通告順利完成。"
+      },
+      {
+        "id": "news_any_01",
+        "matchTypes": [],
+        "outlet": "城中娛樂一句",
+        "line": "通告殺青：新人又過一關。"
+      }
+    ],
+    "streetFans": [
+      {
+        "id": "fans_01",
+        "matchTypes": [],
+        "place": "旺角街頭",
+        "line": "轉角突然幾個人圍住問：「係咪啱啱拍完嗰個？」",
+        "stageVolumeDelta": 1
+      },
+      {
+        "id": "fans_02",
+        "matchTypes": ["電影", "電視劇"],
+        "place": "尖沙咀碼頭",
+        "line": "有人遞紙筆過嚟，話喺通告欄見過你個名。",
+        "stageVolumeDelta": 1
+      },
+      {
+        "id": "fans_03",
+        "matchTypes": ["唱片通告", "廣告"],
+        "place": "銅鑼灣路口",
+        "line": "等燈時有人拍你膊頭： 「喂，廣告／唱片係你嚟？」",
+        "stageVolumeDelta": 1
+      }
+    ],
+    "metrics": [
+      {
+        "id": "metric_box_01",
+        "metricKind": "boxOffice",
+        "matchTypes": ["電影"],
+        "label": "票房關注",
+        "valueLine": "首輪口碑：街坊開始問檔期",
+        "blurb": "未夠大銀幕位置，但殺青後有人記得你喺邊場。"
+      },
+      {
+        "id": "metric_rate_01",
+        "metricKind": "ratings",
+        "matchTypes": ["電視劇", "綜藝"],
+        "label": "收視關注",
+        "valueLine": "同檔時段：有觀眾問邊個臨記",
+        "blurb": "收視唔係你一個人，但入鏡位開始有人留意。"
+      },
+      {
+        "id": "metric_sales_01",
+        "metricKind": "sales",
+        "matchTypes": ["唱片通告"],
+        "label": "銷量關注",
+        "valueLine": "舖頭返貨：有人問封面邊個",
+        "blurb": "銷量同宣傳綁埋；你呢單至少唔係隱形。"
+      },
+      {
+        "id": "metric_att_01",
+        "metricKind": "attention",
+        "matchTypes": ["廣告"],
+        "label": "關注度",
+        "valueLine": "品牌回訪：造型照有人截圖",
+        "blurb": "廣告曝光快，街外認樣慢熱——已經開始。"
+      },
+      {
+        "id": "metric_any_01",
+        "metricKind": "attention",
+        "matchTypes": [],
+        "label": "關注度",
+        "valueLine": "本單完成後關注度微升",
+        "blurb": "殺青本身就係獎勵：又多一筆履歷。"
+      }
+    ]
+  },
+  "fallbacks": {
+    "press": { "paperName": "娛樂版", "headline": "通告殺青", "dek": "又完成一單拍攝。" },
+    "news": { "outlet": "娛樂快訊", "line": "殺青完成。" },
+    "streetFans": { "place": "街上", "line": "有人多望你兩眼。", "stageVolumeDelta": 0 },
+    "metrics": { "label": "關注度", "valueLine": "關注度＋", "blurb": "履歷又多一筆。" }
+  }
+}

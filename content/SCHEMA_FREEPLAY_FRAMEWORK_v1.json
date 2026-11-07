@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "v20a2",
+    "version": "v20a3",
     "softStatus": "≠PASS",
     "role": "program_framework",
     "date": "2026-11-07",
@@ -11,7 +11,17 @@
       "PLAN_STORY_QWEN37_FULL_FREEPLAY",
       "PLAN_ERA_STAR_TARGETS_v1",
       "PLAN_UI_SYSTEM_v1"
-    ]
+    ],
+    "postShootReward": {
+      "schemaFile": "content/SCHEMA_POST_SHOOT_REWARD_v1.json",
+      "stubFile": "content/STUB_POST_SHOOT_REWARDS_v1.json",
+      "stateKey": "S.postShootRewards",
+      "trigger": "gig_wrap_success",
+      "api": [
+        "__reward.check",
+        "__freeplay.rewards"
+      ]
+    }
   },
   "locs": {
     "cafe_cha": {
