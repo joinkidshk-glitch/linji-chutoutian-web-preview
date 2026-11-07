@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z4");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z5");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z4");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z5");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z4");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z5");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -2559,6 +2559,8 @@ body.day-res-open #mask.day-res{
 .settle-net.zero{color:#5a4328}
 .settle-net .settle-net-label{display:block;font-size:.72rem;font-weight:700;letter-spacing:.04em;opacity:.85;margin-bottom:2px}
 .settle-sub{font-size:.82rem;color:var(--muted);margin:2px 0}
+.settle-flavor{margin-top:12px;padding-top:10px;border-top:1px dashed rgba(138,90,32,.35)}
+.settle-flavor-line{font-size:.84rem;line-height:1.45;margin:4px 0;color:#2a2118}
 #home-summary .settle-block .bad,#home-summary .settle-block .good{font-size:.82rem;font-weight:600}
 #home-summary .settle-block > .bad:first-child,#home-summary .settle-block > .good:first-child{font-size:inherit}
 .debt-repay-btn{display:inline-block !important;visibility:visible !important;margin-top:8px;padding:8px 14px;border-radius:8px;border:1px solid #8a7355;background:#2a4a3a;color:#f2ebd8;font-weight:800;cursor:pointer;font-size:.82rem;min-height:36px}
@@ -3780,7 +3782,7 @@ const ENTRY_GIGS_1988 = [
   "boardHookMode": "normal",
   "isKeyGig": false
 }];
-/* 內嵌通告＝fallback（與 content/gigs_1988.json 3.2.10-soft 同步）；refreshCopyPacksFromDisk 優先以該檔覆寫。Soft≠PASS。唔 tip LIVE。?v= 19z4。入場六張見 ENTRY_GIGS_1988，boot 時 merge。 */
+/* 內嵌通告＝fallback（與 content/gigs_1988.json 3.2.10-soft 同步）；refreshCopyPacksFromDisk 優先以該檔覆寫。Soft≠PASS。唔 tip LIVE。?v= 19z5。入場六張見 ENTRY_GIGS_1988，boot 時 merge。 */
 let GIGS = [
   {
     "id": "gig_1988_ad_01",
@@ -18534,7 +18536,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z4. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z5. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -18617,7 +18619,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z4";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z5";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -18703,7 +18705,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=19z4");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=19z5");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -19459,7 +19461,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z4";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z5";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -19629,10 +19631,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_TRAIN,TUT_NPC,TUT_NOTEBOOK,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z4") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z4") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z5") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z5") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z4") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z5") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -20732,7 +20734,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z4";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z5";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -21128,7 +21130,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z4`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z5`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -21298,7 +21300,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z4`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z5`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -22257,33 +22259,53 @@ function advanceDay(){
   return S.dayIndex>0 && weekdayIdx(S.dayIndex)===0;
 }
 
+function stripSettleMoneyNoise(html){
+  /* v19z5：旁白唔准黏住 apply() 嘅 ±$ 大字（例如「−$ 2,120第1週完…」） */
+  let s = String(html==null?"":html);
+  if(!s) return "";
+  s = s.replace(/<span\s+class="(?:bad|good)"\s*>\s*[+＋\-−–]?\s*\$\s*[\d,]+\s*<\/span>/gi, "");
+  s = s.replace(/(?:^|[\s>])[+＋\-−–]?\s*\$\s*[\d,]{3,}(?=\s*[第週]|$)/g, (m)=>{
+    /* 只清「金額黏住旁白」前綴，保留正常句子入面嘅 $ */
+    return m.charAt(0)===">" || /\s/.test(m.charAt(0)) ? m.charAt(0) : "";
+  });
+  s = s.replace(/^[\s\u00a0]*[+＋\-−–]?\s*\$\s*[\d,]+\s*/, "");
+  return s.trim();
+}
 function settleWeek(){
-  const notes=[];
+  const flavor=[];
   S.flags = S.flags||{};
   const stressAtEnd = S.stress||0; // evaluate BEFORE weekend recovery
   const living=2000+R(0,800);
   const earned=Math.max(0, Number(S.weekEarn)||0);
   const paid=Math.min(living, S.money);
-  /* v19z4：扣生活費但唔把 apply() 的 −$ 大字塞入結算 HTML（避免誤讀成淨虧） */
+  /* v19z4／v19z5：扣生活費但永唔把 apply() 的 −$ 大字塞入結算 HTML */
   apply({money:-paid});
   const bal=earned - living;
   const balTxt=(bal>=0?`+$${bal.toLocaleString()}`:`−$${Math.abs(bal).toLocaleString()}`);
   const balCls = bal>0 ? "pos" : (bal<0 ? "neg" : "zero");
   const equation = `收入 $${earned.toLocaleString()} − 生活費 $${living.toLocaleString()} ＝ 結餘 ${balTxt}`;
-  /* 主數字＝本週淨結餘；收入／生活費只做次行 */
-  notes.unshift(`<div class="settle-block"><div class="settle-net ${balCls}"><span class="settle-net-label">本週淨結餘</span>${balTxt}</div><div class="settle-sub">${equation}</div><div class="settle-sub">通告收入 $${earned.toLocaleString()}</div><div class="settle-sub">生活費 −$${living.toLocaleString()}（實扣 $${paid.toLocaleString()}）</div><div class="settle-sub">結算後現款 $${(S.money||0).toLocaleString()}</div></div>`);
+  /* 主數字＝本週淨結餘；收入／生活費只做 settle-block 次行；旁白另欄 */
+  const settleBlock=`<div class="settle-block"><div class="settle-net ${balCls}"><span class="settle-net-label">本週淨結餘</span>${balTxt}</div><div class="settle-sub">${equation}</div><div class="settle-sub">通告收入 $${earned.toLocaleString()}</div><div class="settle-sub">生活費 −$${living.toLocaleString()}（實扣 $${paid.toLocaleString()}）</div><div class="settle-sub">結算後現款 $${(S.money||0).toLocaleString()}</div></div>`;
   S.weekEarn=0;
   const w = Math.floor((S.dayIndex-1)/7)+1;
+  const pushFlavor = (bits)=>{
+    (Array.isArray(bits)?bits:[bits]).forEach(x=>{
+      if(x==null) return;
+      const cleaned = stripSettleMoneyNoise(x);
+      if(cleaned) flavor.push(cleaned);
+    });
+  };
   // High stress week-end event (based on week-end stress before soft recovery)
   if(stressAtEnd>=75){
     const sick = stressAtEnd>=90;
-    notes.push(...apply({stress: sick?-25:-15, popularity: sick?-2:0}));
+    /* 統計變動入旁白，但 strip 掉任何誤入嘅金額 span */
+    pushFlavor(apply({stress: sick?-25:-15, popularity: sick?-2:0}));
     if(sick){
       S.flags.missGigChance = true;
-      notes.push(`<span class="bad">${eventLine("WEEK_STRESS90",{weekNum:w})||"壓力過高，下週試鏡狀態打折。"}</span>`);
+      pushFlavor(`<span class="bad">${eventLine("WEEK_STRESS90",{weekNum:w})||"壓力過高，下週試鏡狀態打折。"}</span>`);
     } else {
       S.flags.forceRestHint = true;
-      notes.push(`<span class="bad">${eventLine("WEEK_STRESS75",{weekNum:w})||"壓力偏高，宜多休息。"}</span>`);
+      pushFlavor(`<span class="bad">${eventLine("WEEK_STRESS75",{weekNum:w})||"壓力偏高，宜多休息。"}</span>`);
     }
   } else {
     const gigsDone = Math.max(0, Number(S.weekGigsDone)||0);
@@ -22297,35 +22319,40 @@ function settleWeek(){
     } else {
       weekLine = eventLine("WEEK_OK",{weekNum:w})||`第${w}週完結。`;
     }
-    notes.push(weekLine);
+    pushFlavor(weekLine);
     S.weekGigsDone = 0;
     S.weekTrainDone = 0;
     if(S.flags.missGigChance){
       S.flags.missGigChance=false;
-      notes.push(`<span class="good">${eventLine("WEEK_RECOVER")||"身體回穩，試鏡減益解除。"}</span>`);
+      pushFlavor(`<span class="good">${eventLine("WEEK_RECOVER")||"身體回穩，試鏡減益解除。"}</span>`);
     } else if(S.flags.forceRestHint){
       S.flags.forceRestHint=false;
     }
   }
   if(S.stamina<12){
-    notes.push(...apply({fame:-2, stamina:5, stress:5}));
-    notes.push(`<span class="bad">${eventLine("WEEK_LOW_STA")||"體能見底，宜減輕通告。"}</span>`);
+    pushFlavor(apply({fame:-2, stamina:5, stress:5}));
+    pushFlavor(`<span class="bad">${eventLine("WEEK_LOW_STA")||"體能見底，宜減輕通告。"}</span>`);
   } else if(stressAtEnd<75){
     // Weekend soft recovery (體能+8 壓力−6) — must land in S before Monday paintBar
-    notes.push(...apply({stamina:8, stress:-6}));
-    notes.push(`<span class="good">${eventLine("WEEKEND_SOFT")||"週末休息，體能回升。"}</span>`);
+    pushFlavor(apply({stamina:8, stress:-6}));
+    pushFlavor(`<span class="good">${eventLine("WEEKEND_SOFT")||"週末休息，體能回升。"}</span>`);
   } else {
-    notes.push(...apply({stamina:4}));
-    notes.push(`週末稍歇，壓力後遺仍在。`);
+    pushFlavor(apply({stamina:4}));
+    pushFlavor(`週末稍歇，壓力後遺仍在。`);
   }
-  if(S.fame>=50 && !S.flags.mid){ S.flags.mid=true; notes.push(...apply({money:5000,charm:2,popularity:3})); notes.push(`<span class="good">聲望破 50：雜誌想訪問你。</span>`); }
-  if(S.fame>=80 && !S.flags.high){ S.flags.high=true; bumpNpc("director",8); notes.push(...apply({popularity:5})); notes.push(`<span class="good">你成了城中熱話。</span>`); }
-  if((S.popularity||0)>=50 && !S.flags.popMid){ S.flags.popMid=true; notes.push(...apply({fame:3})); notes.push(`<span class="good">人氣破 50：街知巷聞多了。</span>`); }
+  if(S.fame>=50 && !S.flags.mid){
+    S.flags.mid=true;
+    /* 里程碑獎金要入帳；金額大字由 stripSettleMoneyNoise 清走 */
+    pushFlavor(apply({money:5000,charm:2,popularity:3}));
+    pushFlavor(`<span class="good">聲望破 50：雜誌想訪問你。（獎金已入袋）</span>`);
+  }
+  if(S.fame>=80 && !S.flags.high){ S.flags.high=true; bumpNpc("director",8); pushFlavor(apply({popularity:5})); pushFlavor(`<span class="good">你成了城中熱話。</span>`); }
+  if((S.popularity||0)>=50 && !S.flags.popMid){ S.flags.popMid=true; pushFlavor(apply({fame:3})); pushFlavor(`<span class="good">人氣破 50：街知巷聞多了。</span>`); }
   // B10 light hook at W10–12 settle
   if(w>=10 && w<=12 && !S.flags.b10Shown){
     S.flags.b10Shown = true;
     const line = b10Line();
-    if(line) notes.push(`<span class="gold">何生：${line}</span>`);
+    if(line) pushFlavor(`<span class="gold">何生：${line}</span>`);
   }
   try{
     if(typeof GiftShop!=="undefined"){
@@ -22333,11 +22360,14 @@ function settleWeek(){
       /* 週末結算後視為新一週：刷新 common/uncommon 庫存、重置週禮物淨好感 */
       S.giftMeta.shopWeek = -1;
       GiftShop.restockIfNeeded();
-      notes.push("街頭小賣換了一批貨；人情週額度也重置了。");
+      pushFlavor("街頭小賣換了一批貨；人情週額度也重置了。");
     }
   }catch(_gs){}
   saveQ(); // persist post-rest stats so Monday header / reload match summary card
-  return { weekNum:w, html: notes.filter(Boolean).join("<br>"), stressEvent:(S.stress||0)>=75 };
+  const flavorHtml = flavor.length
+    ? `<div class="settle-flavor">${flavor.map(x=>`<div class="settle-flavor-line">${x}</div>`).join("")}</div>`
+    : "";
+  return { weekNum:w, html: settleBlock + flavorHtml, stressEvent:(S.stress||0)>=75 };
 }
 
 function tickDay(){
@@ -22876,6 +22906,55 @@ function todayIsForcedDay(){
   return true;
 }
 /** If today still has auto schedule (拍攝／訓練等), run it instead of idling on map. */
+/** v19z5：選單「返屋企」——地圖自由日會完日（等同休息／+1日路徑），唔再只切畫面唔過日 */
+function endBrowseDayGoHome(){
+  try{
+    if(typeof isStoryPlayActive==="function" && isStoryPlayActive()){
+      toast("事態進行中，完結後再返屋企");
+      return;
+    }
+  }catch(_e){}
+  try{ if(typeof _storyPlayLocked!=="undefined" && _storyPlayLocked){ toast("事態進行中，完結後再返屋企"); return; } }catch(_e2){}
+  closeSheet();
+  try{ closeModal(); }catch(_e3){}
+  atLoc=null;
+  try{ writeTodayPlan("rest"); }catch(_e4){}
+  const dayDone = fmtDate();
+  const notes = apply({stamina:6+R(0,4), stress:-(4+R(0,4))});
+  const {ended, summary}=tickDay();
+  afterDayModal(
+    `<p>返屋企歇一日。</p>${formatResultNotes(notes)}`,
+    "返屋企",
+    null,
+    ended,
+    summary,
+    {dayDone}
+  );
+}
+function goHomeFromMenu(){
+  if(kickScheduleIfNeeded()) return;
+  if(S && S.homeEditable){
+    enterHome(null, true);
+    return;
+  }
+  let homeOn=false, mapOn=false;
+  try{ homeOn = !!(document.getElementById("v-home")&&document.getElementById("v-home").classList.contains("on")); }catch(_e){}
+  try{ mapOn = !!(document.getElementById("v-map")&&document.getElementById("v-map").classList.contains("on")); }catch(_e){}
+  const planId = (typeof todayPlanId==="function") ? todayPlanId() : null;
+  /* 只有地圖自由日（到處逛逛等）先完日；wrap／audition 紀錄日只切屋企 */
+  const freeDay = !planId || (typeof isMapDay==="function" && isMapDay(planId));
+  /* 已在手帳 → 只刷新屋企，唔重複過日 */
+  if(homeOn && !atLoc){
+    enterHome(null, false);
+    return;
+  }
+  /* 地圖／地點 sheet 上的自由日：完日再返屋企（同休息路徑） */
+  if((mapOn || atLoc) && freeDay){
+    endBrowseDayGoHome();
+    return;
+  }
+  enterHome(null, false);
+}
 function kickScheduleIfNeeded(){
   if(!todayIsForcedDay()) return false;
   const id=todayPlanId();
@@ -24533,7 +24612,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z4";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z5";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -24547,7 +24626,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=19z4";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=19z5";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -24642,11 +24721,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z4") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z5") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z4") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z5") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -24978,11 +25057,12 @@ function openLoc(id){
       if(rk){
         const gate = GiftShop.canGive(rk);
         const hint = giftHintLabel(gate.ok, gate.reason);
-        add(`送禮：${NPCS[npcId].name}`, hint, gate.ok?giftCostLabel():"未開放", ()=>{
+        /* 傾談已解鎖但庫存空：badge=庫存空，唔再標「未開放」 */
+        add(`送禮：${NPCS[npcId].name}`, hint, giftGateBadge(gate), ()=>{
           const live = GiftShop.canGive(rk);
           if(!live.ok){ toast(live.reason||"暫不可送"); return; }
           openGiftPick(rk, L);
-        }, gate.ok?"act-priority":"");
+        }, (gate.ok || (/庫存|今天|今日|人情急/.test(String(gate.reason||""))))?"act-priority":"");
       }
     }
   }catch(_gf){}
@@ -25048,21 +25128,21 @@ function openLoc(id){
   scrollMapPinIntoView(id);
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z4. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z5. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z4",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z4",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z4",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z4",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z4",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z4",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z4",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z4",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z4",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z4",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z4",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z4",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z4",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z5",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z5",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z5",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z5",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z5",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z5",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z5",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z5",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z5",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z5",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z5",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z5",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z5",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -25512,6 +25592,14 @@ function talkCostLabel(){
 }
 function giftCostLabel(){
   return softSocialCostsDay() ? "+1日" : "免費（不耗日）";
+}
+/** v19z5：庫存空／今日已送 ≠「未開放」；未開放只用於真正未解鎖 */
+function giftGateBadge(gate){
+  if(gate && gate.ok) return giftCostLabel();
+  const r = String((gate && gate.reason) || "");
+  if(/庫存/.test(r)) return "庫存空";
+  if(/今天|今日|人情急|先到這裡/.test(r)) return "今日已送";
+  return "未開放";
 }
 function giftHintLabel(ok, reason){
   if(!ok) return reason||"暫不可送";
@@ -26462,8 +26550,7 @@ document.getElementById("menu").onclick=e=>{
     setTimeout(()=>{ try{ setHomeTab("debt"); }catch(_e){} }, 40);
   }
   if(m==="home"){
-    if(kickScheduleIfNeeded()) return;
-    enterHome(null, false);
+    goHomeFromMenu();
   }
   if(m==="replay-tut")replayTutorial();
   if(m==="wire")showWireDebug();
