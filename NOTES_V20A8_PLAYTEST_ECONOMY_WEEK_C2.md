@@ -50,3 +50,10 @@
 - `content/SCHEMA_FREEPLAY_FRAMEWORK_v1.json` — meta v20a8  
 - `docs/CONTENT_CONTRACT.md` — 框架標 v20a8  
 - `NOTES_V20A8_PLAYTEST_ECONOMY_WEEK_C2.md` — 本檔
+
+## Retest（合埋後）
+
+- Merge：`be9da6c`（PR #90）
+- GH Pages HTML 已含 `?v=20a8`×31、`livingCostBand`、`moneyThreatLevel`、`nb-plan-mode`、確定鍵鎖定文案
+- 單元抽樣：Soft W5／W9 緩坡帶正確；LIVE W5 仍 full $2k–2.8k；$0→broke、$500→critical
+- Soft≠PASS；唔 tip LIVE；SAVE 未抬
