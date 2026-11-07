@@ -1,10 +1,10 @@
-# CONTENT CONTRACT｜Freeplay 框架 v20a4
+# CONTENT CONTRACT｜Freeplay 框架 v20a5
 
 > **對象：** 之後負責豐富劇情／對白／噂文案嘅 bot（或作者）  
 > **時間：** 2026-11-07（Asia/Hong_Kong）  
 > **狀態：** Soft≠PASS；結構殼齊＋**殺青獎勵／傳媒反響**；**唔發明長篇粵語劇情弧**；玩家面**禁真藝名**  
-> **預覽：** `?v=20a4&softBehaviorGate=1`  
-> **基建筆記：** `NOTES_V20A4_PLAYTEST_REWARD_CTA.md`（亦見 `NOTES_V20A3_POST_SHOOT_REWARD.md`／`NOTES_V20A2_STRUCTURE.md`）
+> **預覽：** `?v=20a5&softBehaviorGate=1`  
+> **基建筆記：** `NOTES_V20A5_PLAYTEST_SOFT_GAPS.md`（亦見 `NOTES_V20A4_PLAYTEST_REWARD_CTA.md`／`NOTES_V20A3_POST_SHOOT_REWARD.md`）
 
 本約定義：**引擎已就緒嘅欄位**，同 **內容 bot 應填／唔應改** 嘅邊界。
 
@@ -36,6 +36,7 @@
 | `content/STUB_POST_SHOOT_REWARDS_v1.json` | 殺青獎勵文案 stub | **獎勵文案權威** |
 | `NOTES_V20A4_PLAYTEST_REWARD_CTA.md` | v20a4 玩測修（獎勵 sheet＋地點 CTA） | 是 |
 | `NOTES_V20A3_POST_SHOOT_REWARD.md` | v20a3 獎勵落地／verify | 是 |
+| `NOTES_V20A5_PLAYTEST_SOFT_GAPS.md` | v20a5 Soft 玩測缺口（蘇芷茵針／記數／獎勵 polish） | 是 |
 
 ---
 
@@ -70,10 +71,12 @@
 
 占位對白（含「待補」）→ **唔覆蓋**既有 Soft stub／`story_detail`（遊戲唔崩）。
 
-### 3.2 噂／人情債／標籤
+### 3.2 噂／人情債／標籤／記數
 
 同 v20a1：噂填 `text`（空＝唔自動種）；債填 `line`／`title`；標籤表見 `STUB_CASTING_TAGS`。  
 **催收罰鎖：** 只有狀態 **`已逾期`** 會 Soft 鎖「接通告」；清數後放行。教學債保持 `未到期`。
+
+**手帳分頁（玩家面）：** 行程／**記數**／傳聞／人情債；（`?devTags=1` 先見「標籤」）。記數＝能力／存款／雙軌數字，同選單「狀態」同一套 UI。
 
 ### 3.3 Soft 通告欄（內容／數據可選）
 
@@ -83,7 +86,7 @@
 | `industryCreditMin` | Soft 業內信用下限；**缺欄＝唔閘** |
 
 
-### 3.5 殺青獎勵／傳媒反響（v20a3／v20a4）
+### 3.5 殺青獎勵／傳媒反響（v20a3–v20a5）
 
 **觸發：** 拍攝成功殺青（`finished`）一次一包。  
 **填：** `content/STUB_POST_SHOOT_REWARDS_v1.json`
@@ -96,11 +99,12 @@
 | `metrics` | `label`／`valueLine`／`blurb` | 電影→票房；電視／綜藝→收視；唱片→銷量；其他→關注度 |
 
 空字或「待補」→ 引擎用 fallback 短句（遊戲唔崩）。  
-**唔改** matchTypes／metricKind 映射除非 re-board。玩家面禁真藝名。
+**唔改** matchTypes／metricKind 映射除非 re-board。玩家面禁真藝名。  
+標題外層只包一次 `《》`（`workTitle` 優先；自動剝巢狀書名號）。**短訊可換／STUB…** 工程提示只留 NOTES／contract／`?devTags=1`，唔入 Soft 玩家 sheet。
 
 ### 3.4 時代紅星遠觀
 
-地圖遠觀 id：`luk_baakyin`／`liu_bingxing`／`ngai_wingnaam`／`yip_manji`／`mak_zhendong`／`lok_gasing`／`pang_siuki`／`chung_choning`／`gu_mingfai`／**`so_jiyan`**。  
+地圖遠觀 id：`luk_baakyin`／`liu_bingxing`／`ngai_wingnaam`／`yip_manji`／`mak_zhendong`／`lok_gasing`／`pang_siuki`／`chung_choning`／`gu_mingfai`／**`so_jiyan`**（灣仔唱片 `rec_wanchai`；地圖針計入「有事做」＋「星」標記）。  
 內容 bot 可改 stub 短句（`silhouetteDesc`／`distanceLine`／`rumorTeaser`）。**唔寫長互動樹。**
 
 bust preferFile（引擎）：`assets/story/era_stars/{id}_bust_*.png`＋silhouette（MVP4＋so_jiyan）。
@@ -111,14 +115,14 @@ bust preferFile（引擎）：`assets/story/era_stars/{id}_bust_*.png`＋silhoue
 
 ```js
 await __freeplay.load();
-__freeplay.check();          // ok:true；infra:"v20a4"；slotsCount:17；postShootReward:true
+__freeplay.check();          // ok:true；infra:"v20a5"；slotsCount:17；postShootReward:true
 __reward.check();            // ok:true
 __freeplay.slots().nodes.length; // 17
 __freeplay.softIndustryCreditGate({ industryCreditMin: 1 });
 __freeplay.softOverdueFavorDebtLock({});
 ```
 
-預覽：`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a4&softBehaviorGate=1`
+預覽：`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a5&softBehaviorGate=1`
 
 ---
 
