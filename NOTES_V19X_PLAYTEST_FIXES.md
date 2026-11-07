@@ -21,18 +21,19 @@
 | 14 | 空「叮」toast | `toast` 拒空白／純「叮」。 |
 | 15 | Day1 人情債 | 開局 `mockDebts=[]`；教學完成後可記 `MOCK_DEBT_TUTORIAL`。 |
 
-## Deferred / partial
+## Deferred / partial → 本輪補完
 
 | # | 狀態 |
 |---|------|
-| 9 訓練結算換行 | 加咗 `.settle-notes` pre-line CSS；未逐一改所有結算 modal HTML。 |
-| 16 鎖定事態「播放」文案 | 未獨立改 locked chip copy。 |
-| 17 行程日格黏連 | day-row `small` 改 `white-space:normal`（部分）。 |
-| 18 自動推進跳過結算卡 | 未改 auto-advance 狀態機。 |
-| 19 「已練 N 次」即時更新 | 未做 reactive 重繪。 |
-| 20 空白地點側欄 skeleton | 未做。 |
-| 21 Day1「剛從廠景收工」對白 | 未改 NPC seed 文案。 |
-| 22 softBehaviorGate 教學一致性 | 未統一耗日教學；茶錢 soft 免費屬有意預覽行為。 |
+| 9 訓練結算換行 | **Fixed**：`formatResultNotes()` 每條屬性／壓力／金錢獨立一行。 |
+| 16 鎖定事態「播放」 | **Fixed**：未解鎖改灰鈕「事態未解鎖」＋🔒；leave modal 唔再用通告「暫未能報」。 |
+| 17 行程日格黏連 | **Fixed**：主行動／hint 分行（`.plan-main`／`.plan-hint`）。 |
+| 18 自動推進吞結算 | **Fixed**：`afterDayModal`／`resolvePlannedDay` 一次推進閘，撳「繼續」先跑下一日。 |
+| 19 「已練 N 次」 | **Fixed**：地點鈕／結算／手帳報名後即時更新次數。 |
+| 20 空白地點側欄 | **Fixed**：`loc-hydrating` skeleton，acts 填完先揭。 |
+| 21 Day1 廠景收工對白 | **Fixed**：C1 synopsis／開場線改「才剛起步／剛入行未幾」。 |
+| 22 soft 閘 vs 傾談耗日 | **Fixed**：教學／地圖 hint／傾談＋打聽 cost 標籤對齊；打聽標不耗日。 |
+| 壓力提示 | **Fixed**：≥60 地圖 tip；≥70 全日訓練確認。 |
 
 ## Key files
 
