@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "version": "v20a3",
+    "softStatus": "≠PASS",
+    "role": "post_shoot_reward_schema",
+    "date": "2026-11-07",
+    "tz": "Asia/Hong_Kong",
+    "trigger": "gig_wrap_success",
+    "oncePerCompletion": true,
+    "playerFacingRealCelebs": false,
+    "nextHintPolicy": "never_show_player",
+    "note": "Kill-green reward / achievement press shell. Content bot edits stub copy fields only. Soft≠PASS; no tip LIVE."
+  },
+  "state": {
+    "logKey": "S.postShootRewards",
+    "pendingKey": "FREEPLAY_FW._pendingPostShootReward",
+    "maxLog": 30
+  },
+  "channels": {
+    "press": {
+      "label": "報紙娛樂版",
+      "ui": "card",
+      "fields": ["headline", "dek", "paperName"]
+    },
+    "news": {
+      "label": "電視／電台一句",
+      "ui": "card",
+      "fields": ["line", "outlet"]
+    },
+    "streetFans": {
+      "label": "街上突發 fans 包圍",
+      "ui": "card_or_toast",
+      "fields": ["line", "place"],
+      "optionalDual": ["stageVolumeDelta"]
+    },
+    "metrics": {
+      "label": "票房／銷量／收視／關注度",
+      "ui": "card",
+      "fields": ["metricKind", "label", "valueLine", "blurb"],
+      "kindByGigType": {
+        "電影": "boxOffice",
+        "電視劇": "ratings",
+        "綜藝": "ratings",
+        "唱片通告": "sales",
+        "廣告": "attention",
+        "_fallback": "attention"
+      }
+    }
+  },
+  "packRules": {
+    "cardsPerWrap": { "min": 1, "max": 3 },
+    "alwaysTry": ["metrics"],
+    "pickPool": ["press", "news", "streetFans"],
+    "dedupeByGigIdDay": true
+  },
+  "contentBotEdits": [
+    "templates.*.headline",
+    "templates.*.dek",
+    "templates.*.line",
+    "templates.*.blurb",
+    "templates.*.valueLine",
+    "templates.*.paperName",
+    "templates.*.outlet",
+    "templates.*.place"
+  ],
+  "contentBotMustNot": [
+    "change trigger to tip LIVE",
+    "invent long story arcs",
+    "use real celeb names player-facing",
+    "change SAVE key",
+    "alter BehaviorGate parsers"
+  ],
+  "stubFile": "content/STUB_POST_SHOOT_REWARDS_v1.json",
+  "engineApi": ["buildPostShootRewardPack", "presentPostShootReward", "queuePostShootRewardOnWrap", "__reward.check", "__freeplay.rewards"]
+}
