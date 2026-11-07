@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z10");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z11");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z10");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z11");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z10");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z11");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -1190,10 +1190,12 @@ button.g, .start button.g{
   font-size: .82rem; color: #2a2118;
 }
 .home-money{ color: var(--gold-seal,#C9A227); font-weight: 800; }
-/* v19z10: map HUD 存款與狀態／手帳同步 */
-.dual-track.dual-money{ color:#C9A227; font-weight:800; }
+/* v19z11: map HUD 存款與狀態／手帳同步；存款常駐可見 */
+.dual-track.dual-money{ color:#C9A227; font-weight:800; flex:0 0 auto; }
 .dual-track.dual-money .dual-lab{ opacity:.85; }
 .dual-track.dual-money b{ color:#C9A227; }
+#c-money-wrap{ display:inline-flex !important; visibility:visible !important; }
+.dual-hud .dual-stage,.dual-hud .dual-credit{ min-width:0; overflow:hidden; text-overflow:ellipsis; }
 
 
 
@@ -3173,7 +3175,8 @@ body.day-res-open .day-row{
       <button type="button" data-m="rumors">傳聞</button>
       <button type="button" data-m="debts">人情債</button>
       <button type="button" data-m="story-play" class="menu-story">事態 <span class="menu-badge" id="menu-story-badge" hidden>0</span></button>
-      <button type="button" data-m="home">返屋企／手帳</button>
+      <button type="button" data-m="journal">返手帳</button>
+      <button type="button" data-m="rest-early">提早休息／+1日</button>
       <button type="button" data-m="replay-tut">重看教學</button>
       <button type="button" data-m="settings">設定</button>
       <button type="button" data-m="wire" id="menu-wire" hidden>接線／年份</button>
@@ -18669,7 +18672,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z10. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z11. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -18752,7 +18755,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z10";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z11";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -18838,7 +18841,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=19z10");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=19z11");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -19600,7 +19603,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z10";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z11";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -19770,10 +19773,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z10") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z10") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z11") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z11") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z10") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z11") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -21149,7 +21152,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z10";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z11";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -21275,17 +21278,32 @@ function formatResultNotes(notes){
   if(!arr.length) return `<div class="result-notes"><span class="result-line">—</span></div>`;
   return `<div class="result-notes">${arr.map(x=>`<div class="result-line">${x}</div>`).join("")}</div>`;
 }
-/** v19z10：統一存款顯示——地圖頂／手帳頂／狀態同一 S.money */
+/** v19z11：統一存款顯示——地圖頂／手帳頂／所有 .home-money／#c-money */
 function refreshMoneyHud(){
   try{
     if(!S) return;
     const amt = (Number(S.money)||0).toLocaleString();
     const moneyEl=document.getElementById("c-money");
     if(moneyEl) moneyEl.textContent = amt;
+    const wrap=document.getElementById("c-money-wrap");
+    if(wrap){
+      wrap.hidden = false;
+      wrap.style.display = "";
+      wrap.setAttribute("aria-hidden","false");
+    }
+    /* 手帳／任何殘留 .home-money 一齊刷（唔只 #home-stats 底下第一個） */
+    document.querySelectorAll(".home-money").forEach(el=>{
+      try{ el.textContent = "$ "+amt; }catch(_e){}
+    });
     const hs=document.getElementById("home-stats");
-    if(hs){
-      const el=hs.querySelector(".home-money");
-      if(el) el.textContent = "$ "+amt;
+    if(hs && !hs.querySelector(".home-money")){
+      /* enterHome 未建好時保底插一行 */
+      try{
+        const span=document.createElement("span");
+        span.className="hs-i home-money";
+        span.textContent="$ "+amt;
+        hs.insertBefore(span, hs.firstChild);
+      }catch(_e){}
     }
   }catch(_e){}
 }
@@ -21579,7 +21597,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z10`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z11`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -21749,7 +21767,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z10`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z11`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -23501,7 +23519,7 @@ function todayIsForcedDay(){
   return true;
 }
 /** If today still has auto schedule (拍攝／訓練等), run it instead of idling on map. */
-/** v19z10：提早休息（+1日）——要二次確認 */
+/** v19z11：提早休息（+1日）——選單獨立掣＋二次確認 */
 function endBrowseDayGoHome(){
   try{
     if(typeof isStoryPlayActive==="function" && isStoryPlayActive()){
@@ -23532,39 +23550,24 @@ function goJournalFromMenu(){
   atLoc=null;
   enterHome(null, false);
 }
-function goHomeFromMenu(){
+/** v19z11：選單「提早休息／+1日」——一定二次確認，唔會一撳即過日 */
+function confirmEarlyRestFromMenu(){
+  try{
+    if(typeof isStoryPlayActive==="function" && isStoryPlayActive()){
+      toast("事態進行中，完結後再返屋企");
+      return;
+    }
+  }catch(_e){}
+  try{ if(typeof _storyPlayLocked!=="undefined" && _storyPlayLocked){ toast("事態進行中，完結後再返屋企"); return; } }catch(_e2){}
   if(kickScheduleIfNeeded()) return;
-  if(S && S.homeEditable){
-    enterHome(null, true);
-    return;
-  }
-  let homeOn=false, mapOn=false;
-  try{ homeOn = !!(document.getElementById("v-home")&&document.getElementById("v-home").classList.contains("on")); }catch(_e){}
-  try{ mapOn = !!(document.getElementById("v-map")&&document.getElementById("v-map").classList.contains("on")); }catch(_e){}
-  const planId = (typeof todayPlanId==="function") ? todayPlanId() : null;
-  const freeDay = !planId || (typeof isMapDay==="function" && isMapDay(planId));
-  /* 已在手帳 → 只刷新 */
-  if(homeOn && !atLoc){
-    enterHome(null, false);
-    return;
-  }
-  /* 地圖／地點自由日：拆「返手帳」／「提早休息+1日」 */
-  if((mapOn || atLoc) && freeDay){
-    modal(`<h3>返屋企</h3>
-      <p><b>返手帳</b>：不耗日，只切去行程／傳聞／人情債。</p>
-      <p><b>今日提早休息</b>：等同休息，<span class="bad">會過一日</span>。</p>`,[
-      { label:"返手帳（不耗日）", role:"p", on:()=>goJournalFromMenu() },
-      { label:"今日提早休息（+1日）", role:"d", on:()=>{
-        modal(`<h3>確認提早休息？</h3><p>今日會完結並進入下一日。確定？</p>`,[
-          { label:"確定休息 +1日", role:"d", on:()=>endBrowseDayGoHome() },
-          { label:"取消", role:"g" }
-        ]);
-      }},
-      { label:"取消", role:"g" }
-    ]);
-    return;
-  }
-  enterHome(null, false);
+  modal(`<h3>確認提早休息？</h3><p>今日會完結並進入下一日（等同休息）。確定？</p>`,[
+    { label:"確定休息 +1日", role:"d", on:()=>endBrowseDayGoHome() },
+    { label:"取消", role:"g" }
+  ]);
+}
+function goHomeFromMenu(){
+  /* 相容舊呼叫：改為只返手帳（不耗日）。耗日請走 confirmEarlyRestFromMenu。 */
+  goJournalFromMenu();
 }
 function kickScheduleIfNeeded(){
   if(!todayIsForcedDay()) return false;
@@ -24443,7 +24446,11 @@ function softLeaveOnlyButtons(buttons){
 function modal(html, buttons, opts){
   opts=opts||{};
   // v17l: settlement/result modal open → close loc-sheet so 休息室／返地圖 not stacked under cream plate
-  try{ closeSheet(); }catch(e){}
+  // v19z11：keepSheetContent 時只收起 sheet、唔掏空（通告欄關閉可還原）
+  try{
+    if(opts.keepSheetContent) closeSheet({ preserveContent:true });
+    else closeSheet();
+  }catch(e){}
   preserveMapScroll();
   _modalDismiss = typeof opts.onDismiss==="function" ? opts.onDismiss : null;
   document.getElementById("modal-inner").innerHTML=html;
@@ -24934,7 +24941,9 @@ function openDebtRepaySheet(debtId, L, opts){
   opts = opts || {};
   const fromJournal = !!opts.fromJournal || !L;
   ensureMockJournal();
-  const gate = canRepayDebtById(debtId);
+  const id = String(debtId||"").trim();
+  if(!id){ toast("搵唔到呢筆人情債。"); return; }
+  const gate = canRepayDebtById(id);
   if(!gate.ok){ toast(gate.reason); return; }
   const d = gate.debt;
   const who = debtCreditorName(d) || "債主";
@@ -25180,17 +25189,21 @@ function renderDebtPane(){
     return `<article class="debt-row" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p><p class="debt-note">${journalText(d.season)}</p>${repayBtn(d.id,false)}</article>`;
   }).join("") : (cardHtml ? "" : `<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p></div>`);
   box.innerHTML=banner+cardHtml+debtHtml;
-  box.querySelectorAll(".debt-repay-btn").forEach(btn=>{
-    btn.onclick=(ev)=>{
+  /* v19z11：委派點擊；debtId 必須嚟自該卡，永唔走 openHoRepaySheet／何生 fallback */
+  box.onclick=(ev)=>{
+    try{
+      const t = ev.target;
+      const btn = t && t.closest ? t.closest(".debt-repay-btn") : null;
+      if(!btn || !box.contains(btn)) return;
       try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){}
-      try{
-        /* v19z10：帶該筆 debtId；唔 fallback 已清何生 */
-        const debtId = btn.getAttribute("data-repay-id") || "";
-        if(!debtId){ toast("搵唔到呢筆人情債。"); return; }
-        openDebtRepaySheet(debtId, null, { fromJournal:true });
-      }catch(_e){ toast("無法開啟還款"); }
-    };
-  });
+      const card = btn.closest(".debt-row");
+      const debtId = (btn.getAttribute("data-repay-id")
+        || (card && (card.getAttribute("data-debt-id") || card.getAttribute("data-collect-id")))
+        || "").trim();
+      if(!debtId){ toast("搵唔到呢筆人情債。"); return; }
+      openDebtRepaySheet(debtId, null, { fromJournal:true });
+    }catch(_e){ toast("無法開啟還款"); }
+  };
 }
 function playPushDoor(){
   const host=document.getElementById("v-map");
@@ -25465,7 +25478,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z10";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z11";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -25479,7 +25492,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=19z10";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=19z11";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -25574,11 +25587,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z10") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z11") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z10") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z11") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -25662,9 +25675,10 @@ function refreshLocAfterStory(){
     }, 50);
   }catch(_e){}
 }
-function openLoc(id){
-  if(isStoryPlayActive()){ toast("事態進行中，請先完成對白。"); return; }
-  if(todayIsForcedDay()){
+function openLoc(id, opts){
+  opts = opts || {};
+  if(isStoryPlayActive() && !opts.forceRestore){ toast("事態進行中，請先完成對白。"); return; }
+  if(!opts.forceRestore && todayIsForcedDay()){
     closeSheet();
     kickScheduleIfNeeded();
     return;
@@ -26019,21 +26033,21 @@ function openLoc(id){
   scrollMapPinIntoView(id);
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z10. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z11. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z10",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z10",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z10",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z10",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z10",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z10",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z10",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z10",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z10",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z10",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z10",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z10",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z10",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z11",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z11",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z11",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z11",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z11",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z11",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z11",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z11",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z11",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z11",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z11",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z11",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z11",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -26050,20 +26064,23 @@ function applyLocSheetBg(locId){
     sheet.classList.remove("has-loc-bg");
   }
 }
-function closeSheet(){
+function closeSheet(opts){
+  opts = opts || {};
   const sheet=document.getElementById("loc-sheet");
   if(sheet) sheet.classList.remove("on");
-  try{ applyLocSheetBg(""); }catch(_e){}
-  try{
-    const t=document.getElementById("loc-title");
-    const d=document.getElementById("loc-desc");
-    const w=document.getElementById("loc-who");
-    const a=document.getElementById("loc-acts");
-    if(t) t.textContent="地點";
-    if(d) d.textContent="點地圖針或下方本區列表選擇地點";
-    if(w) w.textContent="";
-    if(a) a.innerHTML=`<p class="loc-empty-hint">點地圖針選擇地點</p>`;
-  }catch(_e){}
+  if(!opts.preserveContent){
+    try{ applyLocSheetBg(""); }catch(_e){}
+    try{
+      const t=document.getElementById("loc-title");
+      const d=document.getElementById("loc-desc");
+      const w=document.getElementById("loc-who");
+      const a=document.getElementById("loc-acts");
+      if(t) t.textContent="地點";
+      if(d) d.textContent="點地圖針或下方本區列表選擇地點";
+      if(w) w.textContent="";
+      if(a) a.innerHTML=`<p class="loc-empty-hint">點地圖針選擇地點</p>`;
+    }catch(_e){}
+  }
   const wrap=mapWrapEl();
   if(wrap) wrap.classList.remove("sheet-open");
   restoreMapScroll();
@@ -26132,11 +26149,12 @@ function doScout(L){
   }
   if((S.stress||0)>=70) body+=`<p class="bad">壓力偏高時，試鏡把握會較低。</p>`;
   paintBar(); drawMap();
-  const reopenLoc = ()=>{ try{ if(L) openLoc(L.id); }catch(_e){} };
+  /* v19z11：關閉／返地點選單／dismiss 一律 forceRestore；keepSheetContent 防掏空 */
+  const reopenLoc = ()=>{ try{ if(L) openLoc(L.id, { forceRestore:true }); }catch(_e){} };
   modal(`<h3>只查看通告欄 · ${L.name}</h3>${body}`,[
     {label:"返地點選單",role:"g",on:reopenLoc},
     {label:"關閉",role:"g",on:reopenLoc}
-  ], { onDismiss: reopenLoc });
+  ], { onDismiss: reopenLoc, keepSheetContent: true });
   document.getElementById("modal-inner").querySelectorAll(".gig-teaser").forEach(card=>{
     const open=()=>{
       const gid=card.dataset.gid;
@@ -27588,8 +27606,12 @@ document.getElementById("menu").onclick=e=>{
     enterHome(null, false);
     setTimeout(()=>{ try{ setHomeTab("debt"); }catch(_e){} }, 40);
   }
-  if(m==="home"){
-    goHomeFromMenu();
+  if(m==="home" || m==="journal"){
+    if(kickScheduleIfNeeded()) return;
+    goJournalFromMenu();
+  }
+  if(m==="rest-early"){
+    confirmEarlyRestFromMenu();
   }
   if(m==="replay-tut")replayTutorial();
   if(m==="settings")openSettingsModal();
