@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "version": "v20a0-stub",
+    "softStatus": "≠PASS",
+    "note": "Favor-debt × season hook shells. Content bot fills line/title. Soft≠PASS.",
+    "uiPane": "home-pane-debt"
+  },
+  "hooks": [
+    {
+      "id": "hook_summer_shelter",
+      "season": "夏",
+      "title": "（季節鉤）外景避雨",
+      "line": "",
+      "locHint": "film_harbour",
+      "favorMin": 1
+    },
+    {
+      "id": "hook_winter_collect",
+      "season": "冬",
+      "title": "（季節鉤）年尾清貨",
+      "line": "",
+      "locHint": "agency_ho",
+      "favorMin": 1
+    },
+    {
+      "id": "hook_spring_board",
+      "season": "春",
+      "title": "（季節鉤）開年人情",
+      "line": "",
+      "locHint": "cafe_cha",
+      "favorMin": 0
+    },
+    {
+      "id": "hook_autumn_award",
+      "season": "秋",
+      "title": "（季節鉤）台慶前後",
+      "line": "",
+      "locHint": "tvb_longmen",
+      "favorMin": 0
+    }
+  ],
+  "debts": [
+    {
+      "id": "debt_slot_ho_01",
+      "creditorId": "agent",
+      "creditorName": "何生",
+      "title": "（債槽）事務所人情",
+      "line": "",
+      "season": "冬",
+      "amount": 200,
+      "status": "未催",
+      "locHint": "agency_ho"
+    },
+    {
+      "id": "debt_slot_ngai_01",
+      "creditorId": "ngai_wingnaam",
+      "creditorName": "魏詠男",
+      "title": "（債槽）過氣人情雛形",
+      "line": "",
+      "season": "夏",
+      "amount": null,
+      "status": "未催",
+      "locHint": "agency_ho"
+    }
+  ]
+}

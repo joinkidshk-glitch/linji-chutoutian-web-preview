@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "version": "v20a0",
+    "softStatus": "≠PASS",
+    "role": "program_framework",
+    "date": "2026-11-07",
+    "tz": "Asia/Hong_Kong",
+    "nextHintPolicy": "never_show_player",
+    "realCelebNamesPlayerFace": false,
+    "alignedPlans": [
+      "PLAN_STORY_QWEN37_FULL_FREEPLAY",
+      "PLAN_ERA_STAR_TARGETS_v1",
+      "PLAN_UI_SYSTEM_v1"
+    ]
+  },
+  "locs": {
+    "cafe_cha": { "name": "金龍茶餐廳", "role": "gossip_hub" },
+    "agency_ho": { "name": "何生事務所", "role": "favor_debt_hub" }
+  },
+  "dualTracks": {
+    "stageVolume": { "mirror": "fame", "label": "幕前聲量" },
+    "industryCredit": { "store": "S.industryCreditDelta", "label": "業內信用" }
+  },
+  "castingTags": {
+    "stateKey": "S.castingTags",
+    "registryFile": "content/STUB_CASTING_TAGS_v1.json",
+    "gigField": "tagOnComplete"
+  },
+  "rumorFragments": {
+    "stubFile": "content/STUB_RUMOR_FRAGMENTS_v1.json",
+    "uiPane": "home-pane-rumor",
+    "emptyOk": true
+  },
+  "favorDebtSeason": {
+    "stubFile": "content/STUB_FAVOR_DEBT_SEASON_v1.json",
+    "uiPane": "home-pane-debt",
+    "emptyOk": true
+  },
+  "eraStarsMvp": {
+    "stubFile": "content/STUB_ERA_STARS_MVP_v1.json",
+    "ids": ["luk_baakyin", "liu_bingxing", "ngai_wingnaam", "yip_manji"],
+    "alias": { "yip_manzi": "yip_manji" },
+    "contactUnit": "far_view_only",
+    "noLongDialogue": true
+  },
+  "storyBeatSlots": {
+    "stubFile": "content/STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json",
+    "fillBy": "content_bot",
+    "lockedFlagsC1C5": [
+      "route_tv", "route_film",
+      "flag_network_stay", "flag_hustle_board",
+      "rival_gao_hard", "rival_gao_endure",
+      "flag_refuse_gig_with_ho", "flag_take_harsh_gig",
+      "choi_honest", "spin", "dodge"
+    ]
+  },
+  "contentContract": "docs/CONTENT_CONTRACT.md"
+}
