@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z31");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=20a0");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z31");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=20a0");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z31");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=20a0");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -3321,7 +3321,7 @@ body.day-res-open .day-row{
   0%{ opacity:0; transform:scale(.8) rotate(-8deg); }
   100%{ opacity:1; transform:scale(1) rotate(-8deg); }
 }
-.debt-empty,.rumor-empty{ text-align:center }
+.debt-empty,.rumor-empty,.tags-empty{ text-align:center }
 .debt-stamp{
   width:76px; height:76px; margin:16px auto 8px; border-radius:50%;
   border:4px solid #4A8F7A; color:#1f7a5c; background:rgba(74,143,122,.12);
@@ -3732,6 +3732,7 @@ body.day-res-open .day-row{
         <button type="button" class="home-tab on" id="htab-plan" role="tab" aria-selected="true" data-htab="plan">行程</button>
         <button type="button" class="home-tab" id="htab-rumor" role="tab" aria-selected="false" data-htab="rumor">傳聞</button>
         <button type="button" class="home-tab" id="htab-debt" role="tab" aria-selected="false" data-htab="debt">人情債</button>
+        <button type="button" class="home-tab" id="htab-tags" role="tab" aria-selected="false" data-htab="tags">標籤</button>
       </div>
       <div class="home-pane on" id="home-pane-plan">
       <div class="home-card settle-collapsible collapsed" id="home-summary-card" style="display:none">
@@ -3780,6 +3781,9 @@ body.day-res-open .day-row{
       </div>
       <div class="home-pane" id="home-pane-debt">
         <div class="journal-scroll" id="debt-list" aria-label="人情債"></div>
+      </div>
+      <div class="home-pane" id="home-pane-tags">
+        <div class="journal-scroll" id="tags-list" aria-label="選角標籤"></div>
       </div>
     </div>
   </section>
@@ -17945,6 +17949,12 @@ const StoryOC = (()=>{
       notes.push("結局標記 "+choice.endingId);
     }
     if(eff.notes) notes.push(String(eff.notes));
+    try{
+      if(Array.isArray(eff.tags) && eff.tags.length && typeof applyCastingTags==="function"){
+        const tagged = applyCastingTags(eff.tags, { from:"story:"+String(node.id||""), applyDual:true });
+        if(tagged && tagged.length) notes.push("選角標籤 "+tagged.map(t=>t.label||t.id).join("、"));
+      }
+    }catch(_tg3){}
 
     markDone(node.id);
     try{ saveQ(); }catch(_e){}
@@ -19210,7 +19220,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z31. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=20a0. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -19293,7 +19303,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z31";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=20a0";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -19379,7 +19389,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=19z31");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=20a0");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -20189,7 +20199,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z31";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=20a0";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -20359,10 +20369,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z31") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z31") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=20a0") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=20a0") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z31") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=20a0") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -21424,6 +21434,8 @@ function fresh(){
     mockRumors:[],
     mockDebts:[],
     mockSeasonCleared:{},
+    /* v20a0 Freeplay：選角標籤沉澱（label 或 id） */
+    castingTags:[],
   };
 }
 
@@ -21475,6 +21487,7 @@ function normalizeSaveObj(o){
   if(typeof o.vocal!=="number"||!isFinite(o.vocal))o.vocal=14;
   /* Soft: 壓力硬上限 100。舊檔高過 100 要夾落。體能係能力，跟 STAT_MAX，唔夾 100。 */
   if(Number(o.stress)>STRESS_MAX) o.stress=STRESS_MAX;
+  if(!Array.isArray(o.castingTags)) o.castingTags=[];
   try{ syncDualTracks(o); }catch(_e){}
   return o;
 }
@@ -21816,7 +21829,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z31";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=20a0";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -22268,7 +22281,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z31`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a0`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -22438,7 +22451,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z31`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a0`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -24635,6 +24648,12 @@ function resolvePlannedDay(id){
           if(!S.story || typeof S.story!=="object") S.story = {};
           S.story.gigCount = Math.max(0, Number(S.story.gigCount)||0) + 1;
         }catch(_gc){}
+        try{
+          const tagged = (typeof applyGigTagOnComplete==="function") ? applyGigTagOnComplete(sh.gigId) : [];
+          if(tagged && tagged.length){
+            notes.push('<span class="var-note">選角標籤：'+tagged.map(t=>journalText(t.label||t.id)).join("、")+'</span>');
+          }
+        }catch(_tg2){}
         try{ noteWeekHighlight("gig", sh.title||sh.gigId); }catch(_wh){}
         try{
           if(typeof softPreviewOn==="function" && softPreviewOn()){
@@ -26285,7 +26304,7 @@ function playPushDoor(){
   }, 820);
 }
 function setHomeTab(tab){
-  const allow={ plan:1, rumor:1, debt:1 };
+  const allow={ plan:1, rumor:1, debt:1, tags:1 };
   if(!allow[tab]) tab="plan";
   applyPhase2Steps56TabLabel();
   document.querySelectorAll("#home-tabs .home-tab").forEach(b=>{
@@ -26293,7 +26312,7 @@ function setHomeTab(tab){
     b.classList.toggle("on", on);
     b.setAttribute("aria-selected", on?"true":"false");
   });
-  ["plan","rumor","debt"].forEach(id=>{
+  ["plan","rumor","debt","tags"].forEach(id=>{
     const pane=document.getElementById("home-pane-"+id);
     if(pane) pane.classList.toggle("on", id===tab);
   });
@@ -26302,6 +26321,9 @@ function setHomeTab(tab){
   if(tab==="debt"){
     renderDebtPane();
     seasonCollectToast();
+  }
+  if(tab==="tags"){
+    try{ renderCastingTagsPane(); }catch(_e){}
   }
 }
 function phase2GateFingerprint(){
@@ -26345,6 +26367,193 @@ try{
     gigs: function(){ return { version: STORY_WIRE && STORY_WIRE.gigsVersion, n:(GIGS||[]).length }; },
   };
 }catch(_e){}
+
+/* ===== v20a0 FREEPLAY FRAMEWORK — schema/stubs/UI shells; Soft≠PASS; content bot fills prose ===== */
+const FREEPLAY_FW = {
+  version: "v20a0",
+  schema: null,
+  eraStars: null,
+  rumorFrags: null,
+  favorDebt: null,
+  castingTagsReg: null,
+  storySlots: null,
+  loaded: false,
+};
+function freeplayNormalizeStarId(id){
+  const s = String(id||"");
+  if(s==="yip_manzi") return "yip_manji";
+  return s;
+}
+function ensureCastingTagsState(){
+  if(!S || typeof S!=="object") return [];
+  if(!Array.isArray(S.castingTags)) S.castingTags = [];
+  return S.castingTags;
+}
+function castingTagRegistry(){
+  return (FREEPLAY_FW.castingTagsReg && Array.isArray(FREEPLAY_FW.castingTagsReg.tags))
+    ? FREEPLAY_FW.castingTagsReg.tags : [];
+}
+function castingTagLabelToId(label){
+  const map = (FREEPLAY_FW.castingTagsReg && FREEPLAY_FW.castingTagsReg.labelToId) || {};
+  if(map[label]) return map[label];
+  const hit = castingTagRegistry().find(t=>t && (t.label===label || t.id===label));
+  return hit ? hit.id : String(label||"");
+}
+function castingTagMeta(idOrLabel){
+  const id = castingTagLabelToId(idOrLabel);
+  return castingTagRegistry().find(t=>t && (t.id===id || t.label===idOrLabel)) || { id:id, label:String(idOrLabel||id), hidden:false };
+}
+/** Sink：殺青／事態可寫入選角標籤；雙軌 delta 可選套用一次。 */
+function applyCastingTags(tags, opts){
+  opts = opts || {};
+  const list = ensureCastingTagsState();
+  const added = [];
+  (Array.isArray(tags) ? tags : []).forEach(raw=>{
+    if(!raw) return;
+    const meta = castingTagMeta(raw);
+    const id = meta.id || castingTagLabelToId(raw);
+    const label = meta.label || String(raw);
+    if(list.some(t=>t && (t.id===id || t.label===label))) return;
+    const row = { id:id, label:label, at: Date.now(), from: opts.from||"" };
+    list.push(row);
+    added.push(row);
+    if(opts.applyDual !== false && meta){
+      try{
+        const sv = Number(meta.stageVolumeDelta)||0;
+        const ic = Number(meta.industryCreditDelta)||0;
+        if(sv){ S.fame = (Number(S.fame)||0) + sv; }
+        if(ic){ S.industryCreditDelta = (Number(S.industryCreditDelta)||0) + ic; }
+        if(typeof syncDualTracks==="function") syncDualTracks(S);
+      }catch(_e){}
+    }
+  });
+  return added;
+}
+function applyGigTagOnComplete(gigId){
+  try{
+    const g = (typeof GIGS!=="undefined" && GIGS) ? GIGS.find(x=>x && x.id===gigId) : null;
+    const tags = g && Array.isArray(g.tagOnComplete) ? g.tagOnComplete : [];
+    if(!tags.length) return [];
+    return applyCastingTags(tags, { from: "gig:"+String(gigId||""), applyDual:true });
+  }catch(_e){ return []; }
+}
+function renderCastingTagsPane(){
+  const box = document.getElementById("tags-list");
+  if(!box) return;
+  const list = ensureCastingTagsState();
+  const visible = list.filter(t=>{
+    const m = castingTagMeta(t && (t.id||t.label));
+    return !(m && m.hidden);
+  });
+  if(!visible.length){
+    box.innerHTML = `<div class="tags-empty debt-empty"><p>選角筆記仍空——接通告、訓練或事態之後，標籤會沉澱喺呢度。</p><p class="sub" style="margin-top:8px">幕前聲量／業內信用雙軌已接線；內容 bot 可填 STUB_CASTING_TAGS。</p></div>`;
+    return;
+  }
+  box.innerHTML = visible.map(t=>{
+    const m = castingTagMeta(t.id||t.label);
+    const lab = journalText(m.label || t.label || t.id);
+    return `<article class="debt-row"><p class="debt-title">${lab}</p><p class="debt-meta sub">選角標籤</p></article>`;
+  }).join("");
+}
+function freeplayRumorPlaceholderText(frag){
+  const t = frag && String(frag.text||"").trim();
+  if(t) return t;
+  return "（文案待補）聽講圈內有風聲——內容稍後補。";
+}
+function seedFreeplayRumorShells(){
+  try{
+    if(!S) return;
+    ensureMockJournal();
+    const frags = (FREEPLAY_FW.rumorFrags && FREEPLAY_FW.rumorFrags.fragments) || [];
+    if(!frags.length) return;
+    S.mockRumors = S.mockRumors || [];
+    frags.forEach(f=>{
+      if(!f || !f.id) return;
+      if((S.mockRumors||[]).some(r=>r && r.id===f.id)) return;
+      /* 只種空殼標題；唔自動灌長文——內容 bot 填 text 後可再 sync */
+      if(String(f.text||"").trim()){
+        S.mockRumors.push({
+          id:f.id, source:f.source||"傳聞", title:f.title||f.id,
+          text: freeplayRumorPlaceholderText(f), state:f.state||"seed", season:(f.seasonAny&&f.seasonAny[0])||""
+        });
+      }
+    });
+    try{ syncNotebookMirror(); }catch(_e){}
+  }catch(_e){}
+}
+function freeplayApplyEraStarStubOverlay(){
+  try{
+    const pack = FREEPLAY_FW.eraStars;
+    if(!pack || !Array.isArray(pack.stars) || typeof STAR_SIGHTINGS==="undefined") return;
+    pack.stars.forEach(st=>{
+      if(!st || !st.starId) return;
+      const id = freeplayNormalizeStarId(st.starId);
+      const row = STAR_SIGHTINGS.find(s=>s.starId===id);
+      if(!row) return;
+      /* stub 文案若仍係佔位／空，保留既有 LIVE 遠觀句；有實文先覆寫 */
+      const sil = String(st.silhouetteDesc||"");
+      const line = String(st.distanceLine||"");
+      const rum = String(st.rumorTeaser||"");
+      if(sil && sil.indexOf("文案待補")<0) row.distanceLook = sil;
+      if(line && line.indexOf("文案待補")<0 && line.indexOf("只能遠望")<0) row.distanceLine = line;
+      if(rum) row.rumorTeaser = rum;
+      if(st.locHint) row.locHint = st.locHint;
+      if(Array.isArray(st.locs) && st.locs.length) row.locs = st.locs.slice();
+    });
+  }catch(_e){}
+}
+async function loadFreeplayFramework(){
+  if(FREEPLAY_FW.loaded) return FREEPLAY_FW;
+  const bust = "20a0";
+  const files = {
+    schema: "SCHEMA_FREEPLAY_FRAMEWORK_v1.json",
+    eraStars: "STUB_ERA_STARS_MVP_v1.json",
+    rumorFrags: "STUB_RUMOR_FRAGMENTS_v1.json",
+    favorDebt: "STUB_FAVOR_DEBT_SEASON_v1.json",
+    castingTagsReg: "STUB_CASTING_TAGS_v1.json",
+    storySlots: "STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json",
+  };
+  await Promise.all(Object.keys(files).map(async k=>{
+    try{
+      const r = await fetch("content/"+files[k]+"?v="+bust);
+      if(r && r.ok) FREEPLAY_FW[k] = await r.json();
+    }catch(_e){ FREEPLAY_FW[k] = FREEPLAY_FW[k] || null; }
+  }));
+  FREEPLAY_FW.loaded = true;
+  try{ freeplayApplyEraStarStubOverlay(); }catch(_e){}
+  try{ seedFreeplayRumorShells(); }catch(_e){}
+  return FREEPLAY_FW;
+}
+try{
+  window.__freeplay = {
+    version: function(){ return FREEPLAY_FW.version; },
+    load: loadFreeplayFramework,
+    tags: function(){ return ensureCastingTagsState().slice(); },
+    applyTags: applyCastingTags,
+    stars: function(){ return ((FREEPLAY_FW.eraStars&&FREEPLAY_FW.eraStars.stars)||[]).map(s=>freeplayNormalizeStarId(s.starId)); },
+    slots: function(){ return FREEPLAY_FW.storySlots; },
+    contract: function(){ return "docs/CONTENT_CONTRACT.md"; },
+    nextHintHidden: function(){
+      try{ return typeof BehaviorGate!=="undefined" && BehaviorGate.nextHint_neverShow()===""; }catch(_e){ return true; }
+    },
+    check: function(){
+      const fails=[];
+      if(FREEPLAY_FW.version!=="v20a0") fails.push("ver");
+      const ids=["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji"];
+      ids.forEach(id=>{ if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId===id)) fails.push("star:"+id); });
+      if(typeof LOCS!=="undefined"){
+        if(!LOCS.some(l=>l.id==="cafe_cha")) fails.push("loc:cafe_cha");
+        if(!LOCS.some(l=>l.id==="agency_ho")) fails.push("loc:agency_ho");
+      }
+      if(!document.getElementById("home-pane-tags")) fails.push("ui:tags");
+      if(!document.getElementById("home-pane-rumor")) fails.push("ui:rumor");
+      if(!document.getElementById("home-pane-debt")) fails.push("ui:debt");
+      try{ if(typeof BehaviorGate!=="undefined" && BehaviorGate.nextHint_neverShow()!=="") fails.push("nextHint"); }catch(_e){ fails.push("nextHint"); }
+      return { ok: !fails.length, fails:fails, softStatus:"≠PASS" };
+    }
+  };
+}catch(_e){}
+try{ loadFreeplayFramework(); }catch(_e){}
 
 /* LIVE inline far-observe. Soft path overlays copy from MOCK_UI_PHASE3 (fetch, else this inline). Loc ids stay here — the mock has no map pins. 齊鎮海唔入。 */
 const STAR_SIGHTINGS = [
@@ -26520,7 +26729,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z31";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=20a0";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -26534,7 +26743,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=19z31";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=20a0";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -26633,11 +26842,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z31") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=20a0") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z31") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=20a0") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -27164,21 +27373,21 @@ function openLoc(id, opts){
   }catch(_e){}
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z31. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=20a0. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z31",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z31",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z31",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z31",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z31",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z31",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z31",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z31",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z31",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z31",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z31",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z31",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z31",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a0",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a0",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a0",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a0",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a0",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a0",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a0",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a0",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a0",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a0",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a0",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a0",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a0",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
