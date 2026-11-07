@@ -5,7 +5,7 @@
   "planRef": "PLAN_SOFT_PHASE_D_VOCAL_v1.md",
   "softStatus": "≠PASS",
   "counts": {
-    "gigs": 137,
+    "gigs": 140,
     "byTier": {
       "初": 46,
       "中": 45,
@@ -116,10 +116,270 @@
         "gig_1988_film_01"
       ]
     },
-    "2026-11-05（Asia/Hong_Kong）｜3.2.10-soft Phase D：唱片／MTV／歌唱節目 req 主 stage→vocal（stage 保留輔）；合唱／晚會（有 stage）vocal＋stage 並列；玩家面「體力」→「體能」；唔夾 stamina（體能＝能力 cap999）；stress>100 可夾（本包 0）；結算唔扣 stamina（iOS Soft tip）；Soft≠PASS｜唔 tip LIVE｜19w｜89–92 HOLD｜speech／dance HOLD"
+    "2026-11-05（Asia/Hong_Kong）｜3.2.10-soft Phase D：唱片／MTV／歌唱節目 req 主 stage→vocal（stage 保留輔）；合唱／晚會（有 stage）vocal＋stage 並列；玩家面「體力」→「體能」；唔夾 stamina（體能＝能力 cap999）；stress>100 可夾（本包 0）；結算唔扣 stamina（iOS Soft tip）；Soft≠PASS｜唔 tip LIVE｜19w｜89–92 HOLD｜speech／dance HOLD",
+    {
+      "when": "2026-11-07",
+      "note": "playtest remediation v19w: entry gigs + spring 初 req soften"
+    }
   ],
   "notes": "Soft≠PASS；唔 publish；唔改 LIVE；89–92 HOLD；出圖 HOLD；唔推 tip；3.2.4-soft Pack B：OOV remap＋中階 limits／producer＋keyGigs meta 66；經理人玩家面「何生」；favor target 單一 agency_ho；0 新槽 n=137｜3.2.5-soft：選填收齊餘 21 初階 favorDelta＋rumorKeys（Soft≠PASS｜唔 tip）｜3.2.6-soft Pack CD：D1B 0新槽 densify 中階綜藝/電視劇/廣告＋D3A 高階 limits/producer QA patch（Soft≠PASS｜唔 tip｜castWindow HOLD｜roles[] HOLD｜89–92 HOLD）｜3.2.7-soft Soft nits：film_cotton_summer_high 槍戰notes→武打吊威也；tvb_kowloon_autumn_high roleLabel→舉牌女郎；planRef→Pack CD（Soft≠PASS｜唔 tip LIVE）｜3.2.8-soft title Soft nit｜3.2.9-soft comedy gunfight notes｜3.2.10-soft Phase D vocal：主鍵映射＋體能文案；stamina req 不變（能力999）；stress cap100；訓練／打工／通告結算只加壓力唔扣體能（引擎 iOS Soft）；Soft≠PASS｜唔 tip LIVE｜19w",
   "gigs": [
+    {
+      "id": "gig_1988_entry_ad_passerby",
+      "year": 1988,
+      "season": "春",
+      "type": "廣告",
+      "title": "《便利店短片》廣告路人 B",
+      "loc": "ad_central",
+      "workTitle": "便利店短片",
+      "genreLabel": "廣告",
+      "roleLabel": "廣告路人 B",
+      "director": "廣告助導",
+      "roleHint": "行過鏡頭兩次，表情自然。",
+      "blurb": "入門廣告路人：門檻遠低於品牌街拍。",
+      "synopsis": "便利店短片需要路人入鏡兩次。只要外貌／魅力達基本線，跟指示行過鏡頭即可。",
+      "eraTag": "era_1988_spring_entry",
+      "discoverNote": "入門廣告：外貌／魅力門檻低。",
+      "boardPriority": "high",
+      "boardNote": "入門／臨記",
+      "seasonWeight": 1.0,
+      "req": {
+        "looks": 30,
+        "charm": 28
+      },
+      "pay": [
+        800,
+        1100
+      ],
+      "payExact": 950,
+      "breachFee": 150,
+      "fame": [
+        1,
+        4
+      ],
+      "popularity": [
+        3,
+        6
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.15,
+      "tier": "初",
+      "entryTier": true,
+      "stars": 1,
+      "applyDeadlineDays": 5,
+      "shootDaysHint": 1,
+      "shootHint": "行路過要自然，唔好望鏡。",
+      "roleScale": "ad_extra_day",
+      "shootBand": [
+        1,
+        1
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 10,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "入門廣告"
+        ]
+      },
+      "storyKeys": [
+        "season_88_spring",
+        "entry_pool"
+      ],
+      "tagOnComplete": [
+        "識跟場"
+      ],
+      "rumorKeys": [],
+      "favorDelta": [
+        {
+          "target": "crew_ad_central",
+          "value": 1
+        }
+      ],
+      "seasonHook": [
+        "spring"
+      ],
+      "boardHookMode": "normal",
+      "isKeyGig": false
+    },
+    {
+      "id": "gig_1988_entry_crew_assist",
+      "year": 1988,
+      "season": "春",
+      "type": "電視劇",
+      "title": "《跟組雜務》場務助手",
+      "loc": "tvb_harbour",
+      "workTitle": "跟組雜務",
+      "genreLabel": "幕後",
+      "roleLabel": "場務助手",
+      "director": "副導阿標",
+      "roleHint": "搬道具、遞水、跟場，學環境。",
+      "blurb": "入門跟組雜務：唔使入鏡，學片場規矩兼賺少少。",
+      "synopsis": "劇組缺人手搬道具同跟場。唔使入鏡，主要聽指示做雜務，可學片場運作，適合第一週認識環境。",
+      "eraTag": "era_1988_spring_entry",
+      "discoverNote": "入門雜務：無演技門檻。",
+      "boardPriority": "high",
+      "boardNote": "入門／臨記",
+      "seasonWeight": 1.0,
+      "req": {},
+      "pay": [
+        350,
+        500
+      ],
+      "payExact": 420,
+      "breachFee": 80,
+      "fame": [
+        0,
+        2
+      ],
+      "popularity": [
+        1,
+        3
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.08,
+      "tier": "初",
+      "entryTier": true,
+      "stars": 1,
+      "applyDeadlineDays": 7,
+      "shootDaysHint": 1,
+      "shootHint": "聽話同快手就得。",
+      "roleScale": "tv_extra_day",
+      "shootBand": [
+        1,
+        1
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 10,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "入門雜務"
+        ]
+      },
+      "storyKeys": [
+        "season_88_spring",
+        "entry_pool"
+      ],
+      "tagOnComplete": [
+        "識跟場"
+      ],
+      "rumorKeys": [],
+      "favorDelta": [
+        {
+          "target": "crew_tvb_harbour",
+          "value": 1
+        }
+      ],
+      "seasonHook": [
+        "spring"
+      ],
+      "boardHookMode": "normal",
+      "isKeyGig": false
+    },
+    {
+      "id": "gig_1988_entry_street_extra",
+      "year": 1988,
+      "season": "春",
+      "type": "電視劇",
+      "title": "《街景臨記》臨時群演",
+      "loc": "tvb_longmen",
+      "workTitle": "街景臨記",
+      "genreLabel": "日常",
+      "roleLabel": "臨時群演",
+      "director": "場務阿強",
+      "roleHint": "跟場務走位，充場面，無需對白。",
+      "blurb": "入門臨記散工：街景群演，跟指示企位同走過鏡頭。",
+      "synopsis": "電視廠街景需要臨記充場面。工作簡單，主要聽場務指示企位、走過鏡頭，唔使對白，適合新人起步。",
+      "eraTag": "era_1988_spring_entry",
+      "discoverNote": "入門臨記：條件極低，適合第一週起步。",
+      "boardPriority": "high",
+      "boardNote": "入門／臨記",
+      "seasonWeight": 1.0,
+      "req": {
+        "acting": 20
+      },
+      "pay": [
+        450,
+        650
+      ],
+      "payExact": 550,
+      "breachFee": 100,
+      "fame": [
+        1,
+        3
+      ],
+      "popularity": [
+        2,
+        5
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.12,
+      "tier": "初",
+      "entryTier": true,
+      "stars": 1,
+      "applyDeadlineDays": 7,
+      "shootDaysHint": 1,
+      "shootHint": "企定同跟走位就得，唔使加戲。",
+      "roleScale": "tv_extra_day",
+      "shootBand": [
+        1,
+        1
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 10,
+      "limits": {
+        "gender": "any",
+        "licenses": [],
+        "groupOnly": false,
+        "notes": [
+          "入門臨記"
+        ]
+      },
+      "storyKeys": [
+        "season_88_spring",
+        "entry_pool"
+      ],
+      "tagOnComplete": [
+        "識跟場"
+      ],
+      "rumorKeys": [],
+      "favorDelta": [
+        {
+          "target": "crew_tvb_longmen",
+          "value": 1
+        }
+      ],
+      "seasonHook": [
+        "spring"
+      ],
+      "boardHookMode": "normal",
+      "isKeyGig": false
+    },
     {
       "id": "gig_1988_ad_01",
       "year": 1988,
@@ -140,9 +400,9 @@
       "boardNote": "夜戲街拍，考驗節奏感。",
       "seasonWeight": 0.6,
       "req": {
-        "looks": 90,
-        "charm": 100,
-        "stamina": 120
+        "looks": 40,
+        "charm": 35,
+        "stamina": 50
       },
       "pay": [
         3600,
@@ -211,7 +471,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_ad_02",
@@ -233,9 +494,9 @@
       "boardNote": "新郎造型，笑容要喜氣。",
       "seasonWeight": 0.6,
       "req": {
-        "looks": 105,
-        "charm": 90,
-        "acting": 65
+        "looks": 45,
+        "charm": 38,
+        "acting": 30
       },
       "pay": [
         2900,
@@ -294,7 +555,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_ad_03",
@@ -894,9 +1156,9 @@
       "boardNote": "即興答謎，配合搞氣氛。",
       "seasonWeight": 0.6,
       "req": {
-        "charm": 105,
-        "iq": 120,
-        "acting": 85
+        "charm": 40,
+        "iq": 35,
+        "acting": 35
       },
       "pay": [
         1800,
@@ -954,7 +1216,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_var_02",
@@ -1356,9 +1619,9 @@
       "boardNote": "夜戲需自備提神飲料",
       "seasonWeight": 0.6,
       "req": {
-        "acting": 90,
-        "stamina": 110,
-        "iq": 75
+        "acting": 45,
+        "stamina": 40,
+        "iq": 25
       },
       "pay": [
         1050,
@@ -1427,7 +1690,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_tv_02",
@@ -1449,9 +1713,9 @@
       "boardNote": "帶備跌打酒及膠布",
       "seasonWeight": 0.6,
       "req": {
-        "stamina": 145,
-        "acting": 80,
-        "iq": 95
+        "stamina": 60,
+        "acting": 35,
+        "iq": 30
       },
       "pay": [
         1800,
@@ -1508,7 +1772,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_tv_03",
@@ -2121,9 +2386,9 @@
       "boardNote": "需捱得夜戲，聽從指導。",
       "seasonWeight": 0.6,
       "req": {
-        "stamina": 165,
-        "acting": 95,
-        "iq": 85
+        "stamina": 65,
+        "acting": 40,
+        "iq": 28
       },
       "pay": [
         3150,
@@ -2188,7 +2453,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_film_02",
@@ -2795,9 +3061,9 @@
       "boardNote": "需舞台走位，準時開工。",
       "seasonWeight": 0.6,
       "req": {
-        "vocal": 120,
-        "stage": 120,
-        "charm": 100
+        "vocal": 40,
+        "stage": 35,
+        "charm": 30
       },
       "pay": [
         2700,
@@ -2855,7 +3121,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_rec_02",
@@ -3423,9 +3690,9 @@
       "boardNote": "靈異夜戲，走位要準。",
       "seasonWeight": 0.6,
       "req": {
-        "acting": 95,
-        "stamina": 110,
-        "iq": 75
+        "acting": 42,
+        "stamina": 45,
+        "iq": 25
       },
       "pay": [
         1550,
@@ -3482,7 +3749,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_fill_harbour_autumn",
@@ -3859,9 +4127,9 @@
       "boardNote": "夜戲提神，注意安全。",
       "seasonWeight": 0.6,
       "req": {
-        "acting": 110,
-        "looks": 95,
-        "iq": 85
+        "acting": 48,
+        "looks": 40,
+        "iq": 28
       },
       "pay": [
         3200,
@@ -3919,7 +4187,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_film_cotton_autumn",
@@ -4035,9 +4304,9 @@
       "boardNote": "夜戲陰冷，帶件外套。",
       "seasonWeight": 0.6,
       "req": {
-        "acting": 100,
-        "stamina": 95,
-        "iq": 80
+        "acting": 45,
+        "stamina": 50,
+        "iq": 28
       },
       "pay": [
         2950,
@@ -4094,7 +4363,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_film_harbour_summer",
@@ -4551,11 +4821,11 @@
       "boardNote": "夜戲有雨，帶毛巾擦乾。",
       "seasonWeight": 0.6,
       "req": {
-        "vocal": 105,
-        "stage": 105,
-        "charm": 120,
-        "looks": 115,
-        "stamina": 95
+        "vocal": 35,
+        "stage": 35,
+        "charm": 38,
+        "looks": 40,
+        "stamina": 45
       },
       "pay": [
         1950,
@@ -4613,7 +4883,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_mtv_wanchai_winter",
@@ -7701,9 +7972,9 @@
       "boardNote": "聽從場務指示走位。",
       "seasonWeight": 0.7,
       "req": {
-        "looks": 95,
-        "charm": 100,
-        "stamina": 90
+        "looks": 42,
+        "charm": 38,
+        "stamina": 40
       },
       "pay": [
         2650,
@@ -7761,7 +8032,8 @@
         "winter"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_film_cotton_spring_high",
@@ -10092,9 +10364,9 @@
       "boardNote": "練耳定調，準確入位",
       "seasonWeight": 0.6,
       "req": {
-        "vocal": 120,
-        "stage": 120,
-        "charm": 110
+        "vocal": 42,
+        "stage": 38,
+        "charm": 32
       },
       "pay": [
         3100,
@@ -10152,7 +10424,8 @@
         "spring"
       ],
       "boardHookMode": "normal",
-      "isKeyGig": false
+      "isKeyGig": false,
+      "entrySoftened": true
     },
     {
       "id": "gig_1988_rec_star_spring_high",

@@ -437,7 +437,7 @@ button.g{
 .day-row .wd{width:36px;font-weight:800;font-size:.88rem;color:#6b4e2e}
 .day-row .ic{font-size:1.2rem;width:1.4em;text-align:center}
 .day-row .nm{flex:1;font-size:.88rem;font-weight:700;line-height:1.25}
-.day-row .nm small{display:block;font-weight:600;color:#8a7355;font-size:.72rem}
+.day-row .nm small{display:block;font-weight:600;color:#8a7355;font-size:.72rem;white-space:normal;overflow:visible;text-overflow:clip}
 .cat-tabs{display:flex;gap:4px;flex-wrap:nowrap;margin-bottom:8px;overflow:hidden;flex:0 0 auto;padding-bottom:0;width:100%}
 .cat-tab{
   appearance:none;border:1px solid #c4a574;background:#fff8e8;color:#5a4328;
@@ -2703,6 +2703,33 @@ body.day-res-open #mask.day-res{
 .tut-phase2-coach:has(.tut-fx-pulse){ padding-left:34px; }
 .tut-phase2-coach p{ margin:0 0 4px; font-size:.78rem; font-weight:700; line-height:1.4; color:#5a4328 }
 .tut-phase2-coach p:last-child{ margin:0 }
+.tut-skip-row{ margin-top:8px !important }
+.tut-skip-btn{
+  appearance:none; border:1px solid #c4a574; background:#fff8e8; color:#5a4328;
+  border-radius:999px; padding:4px 12px; font-size:.72rem; font-weight:800; cursor:pointer;
+}
+.tut-skip-btn:active{ transform:scale(.98) }
+.act-story-done{ opacity:.72 }
+.act-story-done .n{ color:#6b5a40 }
+.settle-notes, #settle-body, .train-result-notes{ white-space:pre-line; line-height:1.45 }
+.result-notes{ margin:6px 0 0; display:flex; flex-direction:column; gap:4px }
+.result-notes .result-line{ display:block; line-height:1.45; font-size:.88rem }
+.day-row .nm .plan-hint{ display:block; font-weight:600; color:#8a7355; font-size:.68rem; margin-top:2px; white-space:normal; opacity:.85 }
+.day-row .nm .plan-main{ display:block }
+.sp-row.locked-play{ opacity:.72 }
+.sp-row.locked-play .sp-play{ pointer-events:none; opacity:.55; background:#d8cbb0; color:#5a4a32; border-color:#c4b090 }
+.sp-lock-ico{ margin-right:4px }
+#loc-sheet.loc-hydrating .acts::before{
+  content:"載入地點…"; display:block; padding:10px 4px; color:#8a7355; font-size:.8rem; font-weight:700;
+}
+#loc-sheet.loc-hydrating .acts > *{ visibility:hidden }
+#map-stress-tip{
+  display:none; margin:6px 10px 0; padding:6px 10px; border-radius:10px;
+  background:rgba(180,60,40,.12); border:1px solid rgba(180,60,40,.35);
+  color:#6a2a1a; font-size:.74rem; font-weight:700; line-height:1.35;
+}
+#map-stress-tip.on{ display:block }
+#map-stress-tip.warn{ background:rgba(180,100,20,.14); border-color:rgba(180,100,20,.4); color:#6a4010 }
 /* Soft FX polish only. These nodes mount when gatePath()==="soft" (tutorialPhase2FxOn). No new PNG.
    finger: sit lower so the sprite is not biased up toward the HUD. lift: existing shadow PNG was faint (max alpha ~90).
    pulse: smaller scale swing + light blur so the hard ring does not read jagged.
@@ -2921,7 +2948,7 @@ body.day-res-open #mask.day-res{
       <img class="guideimg" id="start-guide" alt="何生引導阿偉" hidden />
       <img class="heroimg" id="start-hero" alt="阿偉" hidden />
       <h1 class="sr-only">臨記出頭天</h1>
-      <p>1988 · 港產新人<strong>陳偉翔（阿偉）</strong><br>自己去電視台、片廠、唱片同廣告公司搵通告。<br>只查看通告欄免費；入場訓練／傾談／試鏡／休息耗一日。</p>
+      <p>1988 · 港產新人<strong>陳偉翔（阿偉）</strong><br>自己去電視台、片廠、唱片同廣告公司搵通告。<br>通告欄／打聽免費；訓練／傾談／試鏡／休息耗一日。</p>
       <div class="btnrow">
         <button class="p" id="btn-new">新遊戲</button>
         <button class="g" id="btn-cont" style="display:none">繼續</button>
@@ -2984,7 +3011,8 @@ body.day-res-open #mask.day-res{
           </div>
         </div>
       </div>
-      <div class="map-hint" id="map-hint"><b>點地點</b>：只查看通告欄免費；入場訓練／傾談／試鏡／休息 +1 日</div>
+      <div class="map-hint" id="map-hint"><b>點地點</b>：通告欄／打聽免費；訓練／傾談／試鏡／休息 +1 日</div>
+      <div id="map-stress-tip" role="status" aria-live="polite"></div>
     </div>
     <!-- v17y: sheet is sibling of map-wrap so absolute bottom pins to #v-map, not mid flex/scroll -->
     <div class="sheet" id="loc-sheet">
@@ -3143,7 +3171,7 @@ const LOCS = [
   { id:"rec_hk", name:"香江唱片", area:"旺角", type:"music", region:"kln", x:40, y:36, emoji:"🎵",
     desc:"旺角民生唱片行樓上，新人試音多。" },
   { id:"tvb_longmen", name:"星河電視台", area:"九龍塘", type:"tv", region:"kln", x:78, y:40, emoji:"📺", lab:"lab-up lab-left",
-    desc:"將軍澳新廠房，處境劇同綜藝多。" },
+    desc:"九龍塘廠房，處境劇同綜藝多。" },
   { id:"tvb_kowloon", name:"九龍電視台", area:"紅磡", type:"tv", region:"kln", x:64, y:46, emoji:"📻", lab:"lab-down lab-left",
     desc:"紅磡碼頭邊，新聞同單元劇為主。" },
   { id:"tvb_harbour", name:"海港廣播", area:"清水灣", type:"tv", region:"kln", x:86, y:48, emoji:"📡", lab:"lab-up lab-right",
@@ -3204,9 +3232,9 @@ let GIGS = [
     "boardNote": "夜戲街拍，考驗節奏感。",
     "seasonWeight": 0.6,
     "req": {
-      "looks": 90,
-      "charm": 100,
-      "stamina": 120
+      "looks": 40,
+      "charm": 35,
+      "stamina": 50
     },
     "pay": [
       3600,
@@ -4420,9 +4448,9 @@ let GIGS = [
     "boardNote": "夜戲需自備提神飲料",
     "seasonWeight": 0.6,
     "req": {
-      "acting": 90,
-      "stamina": 110,
-      "iq": 75
+      "acting": 45,
+      "stamina": 40,
+      "iq": 25
     },
     "pay": [
       1050,
@@ -15859,7 +15887,7 @@ function pick(a){return a[Math.floor(Math.random()*a.length)]}
 
 /* Phase1 copy packs — embedded (matches GIGS pattern for file://); fetch may refresh */
 const NPC_LINES_CORE = {"agent":{"name":"何生","greet":["阿偉，通告要自己追，我只會在旁邊推你一把","來了就好，先看通告欄還有沒有空位。","今天狀態還行，別浪費在等電話","我不會替你跑，路線你自己記牢","新人期很短，動作要快過猶豫","先報到，再談條件，次序別亂"],"chat":["中環廣告的要求高，但報酬確實好看","九龍電視廠那邊通告很密，競爭也密","你狀態不錯，去幾間電視台看看通告欄。","電影組工時長，但入鏡機會很實在","唱片那邊偶爾有散工，留意臨時招募","我不會替你挑，功課要自己做","上週出勤一般，這週補回來","被拒是常態，別把一次回絕當結論"],"advice":["先顧好出勤紀錄，再談角色大小","試鏡前把對白讀順，別臨場才想","片場早到十分鐘，印象分就是這樣累積的","接不到就換區，別在同一個通告欄前發呆。","體能要留，通宵後別硬接早班","每次殺青都留聯絡，班底會再找你"],"intel":["中環那邊有廣告組在補臨記，要求不低","九龍電視廠近期廠景多，通告貼得密","電影組在附近搭景，散工需求不穩定","唱片那邊有拍攝散活，消息還不算穩定","聽說廣告客戶偏好生面孔，你可以試試","各區通告欄更新很快，早晚各看一次。"],"pressure":["這週出勤偏低，週評時不好看","再挑下去，位置就給別人了","跑通告要勤，別等電話響才動。","撐不住就講，硬撐只會兩頭輸"]},"stylist":{"name":"Vera","greet":["阿偉，今天的髮型總算聽話","先整理衣領，鏡頭前不能鬆散","你面色偏淡，待會補一層底妝","通告前先照全身鏡，確認比例","我留了一套剪裁乾淨的衣服給你試","新人也要有記憶點，從外表開始"],"chat":["金鐘那邊的短片案，外貌條件佔很重","中環品牌偏好乾淨面孔，妝容要克制","我可以幫你修造型，入鏡會更順","唱片宣傳造型講究統一，不要每場都變","廣告試鏡先看整體氣質，再看細節","你的肩線不錯，穿合身外套會加分","近期品牌偏好自然感，不必過度修飾","拍板前十分鐘，記得檢查髮際與袖口"],"advice":["底妝薄一層就夠，鏡頭會放大厚度","領口保持乾淨，近鏡最容易出賣細節","髮型先定輪廓，再談風格","試鏡服裝以合身素色為主，減少干擾","拍照前先練兩個角度，別臨場才找","造型統一，導演才記得你的樣子"],"intel":["金鐘有短片案，品牌方重視外貌條件","中環那邊偏好清爽面孔，妝感要輕","唱片公司近期在找有辨識度的新面孔","廣告短片試鏡多數先看整體形象照","品牌活動喜歡乾淨線條，不要戴太多飾物","有唱片宣傳造型案在談，要求統一風格"],"pressure":["經理人那邊催進度，造型照什麼時候能交？","對手已經在試鏡，你的形象照還沒定","記者問什麼時候有曝光，先給我一張可用照片","這髮型再拖，鏡頭前會顯得不夠精神"]},"colleague":{"name":"林曉晴","greet":["阿偉，今天在星河電視台廠房碰到你，真巧","早晨，今天有通告嗎？我剛收到一份班底名單","你也在這邊等開工？一起對一下場次吧","好久不見，最近跑哪個片場比較多？","阿偉，吃過飯沒有？下午那場要撐住","你也來這區？我記得你上次在這邊入鏡"],"chat":["我這星期跟一個單元劇班底，場記人很好","聽說紅磡那邊招人很快，你可以去打探","今天服裝間很忙，臨記要早點報到","我上次試鏡遲到五分鐘，角色就沒有了","跑通告雖然辛苦，但入鏡機會比較多。","有前輩教我，等燈光時要記住走位","班底名單通常前一晚才發，要留意電話","我最近在練反應，導演臨時改詞也不怕"],"advice":["高俊傑搶通告很積極，你要早一步回覆","接到通告先確認地點與時間，免得出錯","在片場少談是非，多留意班底怎樣運作","試鏡前把對白讀順，語氣自然最重要","遇到臨時換角不要灰心，當作累積經驗","記得帶齊服裝與證件，臨記也要專業"],"intel":["星河電視台那邊缺班底，你可以去打探一下","紅磡的單元劇招人很快，消息通常當天流傳","聽說九龍那邊有劇組在找年輕臨記","電視台班底近來流動大，補位機會不少","有單元劇下週開工，名額可能還有剩","碼頭那邊偶爾有外景，需要人手充場面"],"pressure":["高俊傑動作很快，你再慢一步就沒有位了","這份通告很多人爭，你要盡快回覆","別只等何生安排，自己也要主動跑通告。","記者那邊催曝光，你要把握入鏡機會"]},"director":{"name":"張子駿","greet":["你來了，先坐一會，我想看你安靜下來的樣子","維港那邊風很大，你還是來了，這份誠意我記住","今天不趕戲，我只想聽你講講自己的事","棉登徑的片場比較小，你別嫌這裡簡陋","你的眼神很穩，這種定力在片場很少見","先別只想入鏡，先想清楚角色在做什麼"],"chat":["我想拍一個話不多的男人，你有沒有興趣來維港試鏡？","沙田外景很辛苦，但鏡頭不會幫你掩飾","你跑龍套的日子，其實都在累積觀察力","獨立製作資源不多，每一格底片都要花得值得","我選角不看名氣，只看你能否在鏡頭前誠實","你跟何生的班底不同，來我這邊要重新適應節奏","收工後留下來看毛片，對你會有幫助","演戲不是把情緒演出來，是讓它在對的時刻出現"],"advice":["不要急著紅，演技才是你能帶走的東西","先把台詞讀到不用想，再談設計小動作","每一次試鏡，都當作正式拍攝去準備","名氣會過，底子不會過期。","少看自己的剪輯，多看別人的完整演出","若覺得角色太輕，先問自己有沒有演滿"],"intel":["維港那邊有個外景試鏡，適合你這種新人去見識","我聽說棉登徑的片場在找臨時演員，你可以去試","有位副導在留意你的鏡頭感，別鬆懈","近期電影外景多，跑龍套的人手很缺","試鏡的評審重視即興反應，你要有準備","有人說你台詞穩，這種評價在行內不容易得到"],"pressure":["這條戲我還要再拍一次，標準不能降","你狀態不夠集中，先休息再回來","經理人那邊催進度，我這邊只催質素","記者問起，就說我們在"]},"rival":{"name":"高俊傑","greet":["新人仔也懂得來公司打卡，倒是難得","喲，阿偉，今天又跑哪一組通告？","在片場見你出現的次數，快趕上我了","早上好，今天沒有遲到吧？","你也在這層等通告？真巧","看來何生給你的通告不少。"],"chat":["上次試鏡我贏了，下次再來一場","你連走位都未站穩，就急著搶鏡頭","聽說你最近接了不少小角色，恭喜","臨記這行，耐力比運氣重要","我入行時比你更拼，你還要加把勁","你那份劇本做滿了筆記，看得出來很緊張","有空一起對戲，我不會手下留情","片場的規矩，多看幾次就明白"],"advice":["試鏡前先讀熟劇本，別靠臨場發揮","等通告時別只顧聊天，留意助導的手勢","入鏡前先確認機位，免得擋住主角","被導演喊停時，先應一聲再調整","跑龍套要準時，遲到一次就少一次機會","收工後檢討自己的走位，比抱怨有用"],"intel":["聽說九龍那邊有廣告試鏡，名額不多","電視城下週有場大製作選角，競爭很激烈","有人說中央那組廣告在找新面孔","片場那邊有部戲缺幾個背景角色","我收到消息，某導演喜歡用生面孔試戲","這期通告很搶手，手快才有位"],"pressure":["你連台詞都背不順，還想搶主角？","這次試鏡你最好別再輸得難看","新人搶通告可以，但別擋住別人的路","你再不加把勁，位置很快被人頂上"]},"reporter":{"name":"周采兒","greet":["阿偉，又見面了，今天有甚麼可以寫進版面的？","你近來在片場跑得不錯，有沒有新消息給我？","別緊張，我只是來看看新人臨記的狀態","你若想見報，先讓我知道你最近在忙甚麼","我在等一單好料，你手上可有半句消息？","來，打個招呼就好，鏡頭前後都要有存在感"],"chat":["唱片宣傳最近很旺，記者會一場接一場","銅鑼灣那邊常有宣傳活動，記者都愛去","低調不是消失，偶爾也要讓人記得你","新人最怕沒有名字，先讓人記住你的臉","我寫人一向留餘地，好看的話自然會多寫","片場消息傳得快，真假要自己分清楚","你跑龍套跑得勤，記者自然會多看你一眼","有曝光機會時，別只站在最邊的位置"],"advice":["想見報，先準備一句講得清楚的自我介紹","記者會上主動遞名片，比等人來問有效","宣傳期內多露面，版面才會記得你","被問到不懂的事，微笑帶過比亂答安全","與其等通告，不如先做好每次入鏡的細節","保持準時與禮貌，記者最記得誰好合作"],"intel":["聽說那邊有唱片宣傳在物色新面孔，你可以留意","某個記者會正缺臨記撐場，消息不算張揚","港島那邊的宣傳活動最近多，時機不錯","有班底在找新人試鏡，條件不算高","片場有人提起你，說你跑龍套夠穩","下週可能有一場低調的見面會，值得打聽"],"pressure":["你近來曝光太少，記者快把你忘了","再沒有新料給我，版面就要留給別人了","低調也要有底線，至少讓我寫你一句","你若一直不開口，我怎樣幫你寫好？"]},"version":"1.2","edits":[{"when":"2026-11-02","note":"SOFT_NITS_FIX_v1: 龍門→星河"}],"filterPass":"2026-11-03"};
-const EVENTS_ZH_HK = {"AUD_PASS":["{title}試鏡通過，我獲聘入組，通告期 {shootDays} 日。","收到通知，{title}取錄了我，{shootDays} 日後開工。","{title}試鏡有結果，我被取錄，拍攝 {shootDays} 日。","劇組來電，{title}用我，計 {shootDays} 日通告。"],"AUD_FAIL":["{title}沒有回音，我繼續等下一張通告。","{title}未獲聘，記下這次經驗，下次再試其他通告。","{title}落選，回去練好基本功。","{title}沒成，明天照樣去開工。"],"AUD_STRESS70":["壓力偏高，試鏡成功率已打折，先把狀態穩住。","精神負擔重，評分受影響，這陣子少接試鏡比較好。"],"SHOOT_DAY":["{title}今日通告：第{done}場，共{total}場。","{title}拍到第{done}場，全片{total}場，進度照表。","廣告通告：{title}完成{done}/{total}場，導演收貨。","劇集外景：{title}第{done}場過關，餘{total}場。","{title}劇組趕戲，{done}/{total}場，夜班照開。","{title}今日做到第{done}場，全片共{total}場。"],"SHOOT_WRAP":["{title}殺青，片酬{pay}入袋，聲望{fame}，人氣{popularity}。","{title}拍完。收{pay}，聲望{fame}，人氣{popularity}。","{title}殺青。片酬{pay}，聲望{fame}，人氣{popularity}。","{title}完工。片酬{pay}，聲望{fame}，人氣{popularity}。"],"SHOOT_HINT_ECHO":["{shootHint}，照做。","記住：{shootHint}。"],"WEEK_OK":["第{weekNum}週收工。何生說這週通告排得順。","第{weekNum}週完。數一數，龍套也跑了幾場。","第{weekNum}週過去，沒出岔子，算好。"],"WEEK_STRESS75":["第{weekNum}週完。何生叫你休息，別硬撐。","第{weekNum}週收工，何生看你臉色，叫你緩兩天。","第{weekNum}週過去。何生說：錢賺不完，先睡。"],"WEEK_STRESS90":["第{weekNum}週，你病倒了。下週試鏡，狀態打折。","第{weekNum}週撐不住，躺了兩天。下週試鏡吃虧。","第{weekNum}週收場是診所。下週試鏡，別指望滿分。"],"WEEK_RECOVER":["總算緩過來。下週通告，不用再擔心缺席。","身體好多了。下週通告，暫時不用擔心缺席。"],"WEEK_LOW_STA":["體能快沒了。這週別接太重的通告。","體能不足，開工前先睡夠。"],"WEEKEND_SOFT":["週末。睡到自然醒，體能慢慢回來。","兩日假期，可以什麼都不做，先把體能養回來。"],"TRAIN_RESULT_acting":["演技訓練完結，導師記下你的走位。","電視台排練結束，你記住鏡頭位置。","電影組收工，你留下一條可用片段。"],"TRAIN_RESULT_stage":["台風課完結，你練完一輪出場。","音樂室排練結束，拍子總算跟上。","舞台導師示範一次，你照做。"],"TRAIN_RESULT_vocal":["歌藝課完結，你練完一輪發聲。","錄音室跟唱結束，音準總算跟上。","聲樂導師示範一次，你照做。"],"TRAIN_RESULT_looks":["形象課結束，攝影師替你試光。","廣告試鏡前，你按指示調整站姿。","造型師看過相片，指出可以改的地方。"],"TRAIN_RESULT_charm":["社交課完結，你練完一輪對答。","魅力課結束，導師提醒你放慢語速。","課堂散去，你記下幾句開場話。"],"TRAIN_RESULT_iq":["觀察課完結，你抄下幾條筆記。","智商課結束，題目比上次順手。","導師收起教材，你留下練習紙。"],"UNLOCK_CHARM":["訓練累計夠數，魅力課開放報名。","新課程解鎖：魅力課可以報名。"],"UNLOCK_IQ":["訓練再進一步，觀察課開放報名。","新課程解鎖：觀察課可以報名。"],"ENROLL_OK":["報名成功，按時到場。","訓練已報名，記住上課地點。","名額確認，準時出席。"]};const STORY_BEATS_PHASE1 = {"version":1,"phase":"Phase1","locale":"zh-Hant-written","source":"Prompt D-modern-v4 (P1 audit)","chapters":[{"id":"Ch1","title":"記數簿與名片冊","open":["1988 年春，阿偉在黃大仙屋邨起步。","手上有記數簿和名片冊，開始跑通告。"],"close":["頭兩週過去，他學會看通告欄，也學會等。","還不算站穩，但已經開始自己跑通告。"]},{"id":"Ch2","title":"第一次試鏡","open":["第三週起，何生把試鏡日和即場的分別講清楚。","阿偉自己跑通告，記下地址和時間。"],"close":["第一單通告殺青，記數簿記下這筆收入。","穩定收入還早，不過這次有實際入帳。"]},{"id":"Ch3","title":"人脈與對手","open":["通告變多，片場人事也更複雜。","誰給情報、誰給臉色，他開始分得清。"],"close":["人脈要看關鍵時刻有沒有人幫你。","對手也要記得。"]},{"id":"Ch4","title":"春夏小結","open":["春夏交接，通告還在繼續。","離穩定收入還差一段，先做一次小結。"],"close":["評語寫完了，之後還是自己跑。","下一季再看成績。"]}],"beats":[{"id":"B01","when":"W1","speaker":"何生","lines":["記數簿用來記數，名片冊用來記人。兩樣都別弄丟。","我不會替你跑每一場。你自己去試。","有不懂，先問，再記。"]},{"id":"B02","when":"W1-2","speaker":"系統","lines":["通告欄可先免費查看；條件未合會顯示暫未能報。","先看日期與地點，再決定是否接通告。","達標後才可接通告，耗一日。"]},{"id":"B03","when":"W2-3","speaker":"阿偉","lines":["第一次報名訓練，手續比想像中多。","導師只看動作，不看解釋。","結算後，記數簿多了一行訓練紀錄。"]},{"id":"B04","when":"W3-4","speaker":"系統","lines":["訓練滿兩次，社交課就會開放。","社交課可以提升臨場應對。","要不要報名，由你決定。"]},{"id":"B05","when":"W4-5","speaker":"何生","lines":["第一次試鏡，成敗都算經驗。","壓力會有。照本子做，別加戲。","出來後告訴我，好壞都要說。"]},{"id":"B06","when":"W5-7","speaker":"阿偉","lines":["連日拍攝，早出晚歸。","殺青時場務收工，大家散開。","記數簿多了一筆收入，數目不大。"]},{"id":"B07","when":"W6-8","speaker":"系統","lines":["林曉晴傳來一則通告情報，來源可靠。","Vera 提醒形象要一致，造型和說話別打架。","張子駿說：先把通告做穩，別急著成名。"]},{"id":"B08","when":"W8-9","speaker":"阿偉","lines":["高俊傑當眾笑我走位太慢。","轉頭他先一步報了那張通告。","我記住位置，也記下這件事。"]},{"id":"B09","when":"W9-10","speaker":"系統","lines":["周采兒在場邊多看了兩眼，好感夠了。","她約了一段小訪，只問片場日常。","幾天後見報，名字第一次印在版面上。"]},{"id":"B10","when":"W10-12","speaker":"何生","lines":["（未達）穩定收入還差一步，別停，通告要接密一點。","（已達）總算做到有穩定收入。先維持住，再談下一步。"]}],"filterPass":"2026-11-03"};
+const EVENTS_ZH_HK = {"AUD_PASS":["{title}試鏡通過，我獲聘入組，通告期 {shootDays} 日。","收到通知，{title}取錄了我，{shootDays} 日後開工。","{title}試鏡有結果，我被取錄，拍攝 {shootDays} 日。","劇組來電，{title}用我，計 {shootDays} 日通告。"],"AUD_FAIL":["{title}沒有回音，我繼續等下一張通告。","{title}未獲聘，記下這次經驗，下次再試其他通告。","{title}落選，回去練好基本功。","{title}沒成，明天照樣去開工。"],"AUD_STRESS70":["壓力偏高，試鏡成功率已打折，先把狀態穩住。","精神負擔重，評分受影響，這陣子少接試鏡比較好。"],"SHOOT_DAY":["{title}今日通告：第{done}場，共{total}場。","{title}拍到第{done}場，全片{total}場，進度照表。","廣告通告：{title}完成{done}/{total}場，導演收貨。","劇集外景：{title}第{done}場過關，餘{total}場。","{title}劇組趕戲，{done}/{total}場，夜班照開。","{title}今日做到第{done}場，全片共{total}場。"],"SHOOT_WRAP":["{title}殺青，片酬{pay}入袋，聲望{fame}，人氣{popularity}。","{title}拍完。收{pay}，聲望{fame}，人氣{popularity}。","{title}殺青。片酬{pay}，聲望{fame}，人氣{popularity}。","{title}完工。片酬{pay}，聲望{fame}，人氣{popularity}。"],"SHOOT_HINT_ECHO":["{shootHint}，照做。","記住：{shootHint}。"],"WEEK_OK":["第{weekNum}週收工。何生說這週通告排得順。","第{weekNum}週完。數一數，龍套也跑了幾場。","第{weekNum}週過去，沒出岔子，算好。"],"WEEK_IDLE":["第{weekNum}週收工。何生睇住記數簿，話這週未接成通告，下週要勤啲。","第{weekNum}週完。通告欄仍係空白，先練好再衝。","第{weekNum}週過去。未入組也好，至少基本功有練。"],"WEEK_TRAIN_HEAVY":["第{weekNum}週收工。何生話你練得多、接得少——門檻夠咗就報。","第{weekNum}週完。訓練簿寫滿，通告欄仍等你。"],"WEEK_STRESS75":["第{weekNum}週完。何生叫你休息，別硬撐。","第{weekNum}週收工，何生看你臉色，叫你緩兩天。","第{weekNum}週過去。何生說：錢賺不完，先睡。"],"WEEK_STRESS90":["第{weekNum}週，你病倒了。下週試鏡，狀態打折。","第{weekNum}週撐不住，躺了兩天。下週試鏡吃虧。","第{weekNum}週收場是診所。下週試鏡，別指望滿分。"],"WEEK_RECOVER":["總算緩過來。下週通告，不用再擔心缺席。","身體好多了。下週通告，暫時不用擔心缺席。"],"WEEK_LOW_STA":["體能快沒了。這週別接太重的通告。","體能不足，開工前先睡夠。"],"WEEKEND_SOFT":["週末。睡到自然醒，體能慢慢回來。","兩日假期，可以什麼都不做，先把體能養回來。"],"TRAIN_RESULT_acting":["演技訓練完結，導師記下你的走位。","電視台排練結束，你記住鏡頭位置。","電影組收工，你留下一條可用片段。"],"TRAIN_RESULT_stage":["台風課完結，你練完一輪出場。","音樂室排練結束，拍子總算跟上。","舞台導師示範一次，你照做。"],"TRAIN_RESULT_vocal":["歌藝課完結，你練完一輪發聲。","錄音室跟唱結束，音準總算跟上。","聲樂導師示範一次，你照做。"],"TRAIN_RESULT_looks":["形象課結束，攝影師替你試光。","廣告試鏡前，你按指示調整站姿。","造型師看過相片，指出可以改的地方。"],"TRAIN_RESULT_charm":["社交課完結，你練完一輪對答。","魅力課結束，導師提醒你放慢語速。","課堂散去，你記下幾句開場話。"],"TRAIN_RESULT_iq":["觀察課完結，你抄下幾條筆記。","智商課結束，題目比上次順手。","導師收起教材，你留下練習紙。"],"UNLOCK_CHARM":["訓練累計夠數，魅力課開放報名。","新課程解鎖：魅力課可以報名。"],"UNLOCK_IQ":["訓練再進一步，觀察課開放報名。","新課程解鎖：觀察課可以報名。"],"ENROLL_OK":["報名成功，按時到場。","訓練已報名，記住上課地點。","名額確認，準時出席。"]};const STORY_BEATS_PHASE1 = {"version":1,"phase":"Phase1","locale":"zh-Hant-written","source":"Prompt D-modern-v4 (P1 audit)","chapters":[{"id":"Ch1","title":"記數簿與名片冊","open":["1988 年春，阿偉在黃大仙屋邨起步。","手上有記數簿和名片冊，開始跑通告。"],"close":["頭兩週過去，他學會看通告欄，也學會等。","還不算站穩，但已經開始自己跑通告。"]},{"id":"Ch2","title":"第一次試鏡","open":["第三週起，何生把試鏡日和即場的分別講清楚。","阿偉自己跑通告，記下地址和時間。"],"close":["第一單通告殺青，記數簿記下這筆收入。","穩定收入還早，不過這次有實際入帳。"]},{"id":"Ch3","title":"人脈與對手","open":["通告變多，片場人事也更複雜。","誰給情報、誰給臉色，他開始分得清。"],"close":["人脈要看關鍵時刻有沒有人幫你。","對手也要記得。"]},{"id":"Ch4","title":"春夏小結","open":["春夏交接，通告還在繼續。","離穩定收入還差一段，先做一次小結。"],"close":["評語寫完了，之後還是自己跑。","下一季再看成績。"]}],"beats":[{"id":"B01","when":"W1","speaker":"何生","lines":["記數簿用來記數，名片冊用來記人。兩樣都別弄丟。","我不會替你跑每一場。你自己去試。","有不懂，先問，再記。"]},{"id":"B02","when":"W1-2","speaker":"系統","lines":["通告欄可先免費查看；條件未合會顯示暫未能報。","先看日期與地點，再決定是否接通告。","達標後才可接通告，耗一日。"]},{"id":"B03","when":"W2-3","speaker":"阿偉","lines":["第一次報名訓練，手續比想像中多。","導師只看動作，不看解釋。","結算後，記數簿多了一行訓練紀錄。"]},{"id":"B04","when":"W3-4","speaker":"系統","lines":["訓練滿兩次，社交課就會開放。","社交課可以提升臨場應對。","要不要報名，由你決定。"]},{"id":"B05","when":"W4-5","speaker":"何生","lines":["第一次試鏡，成敗都算經驗。","壓力會有。照本子做，別加戲。","出來後告訴我，好壞都要說。"]},{"id":"B06","when":"W5-7","speaker":"阿偉","lines":["連日拍攝，早出晚歸。","殺青時場務收工，大家散開。","記數簿多了一筆收入，數目不大。"]},{"id":"B07","when":"W6-8","speaker":"系統","lines":["林曉晴傳來一則通告情報，來源可靠。","Vera 提醒形象要一致，造型和說話別打架。","張子駿說：先把通告做穩，別急著成名。"]},{"id":"B08","when":"W8-9","speaker":"阿偉","lines":["高俊傑當眾笑我走位太慢。","轉頭他先一步報了那張通告。","我記住位置，也記下這件事。"]},{"id":"B09","when":"W9-10","speaker":"系統","lines":["周采兒在場邊多看了兩眼，好感夠了。","她約了一段小訪，只問片場日常。","幾天後見報，名字第一次印在版面上。"]},{"id":"B10","when":"W10-12","speaker":"何生","lines":["（未達）穩定收入還差一步，別停，通告要接密一點。","（已達）總算做到有穩定收入。先維持住，再談下一步。"]}],"filterPass":"2026-11-03"};
 let NPC_LINES = NPC_LINES_CORE;
 let EVENTS = EVENTS_ZH_HK;
 /* v17h: shoot day lines by gig type — avoid 電影班底 on TV */
@@ -16836,7 +16864,7 @@ const BehaviorGate = (function(){
       if(titles.length) bits.push("未聽聞"+titles.join("或"));
     }
     if(!bits.length) return "";
-    return "暫未能報："+bits.join("；")+"。";
+    return "事態未解鎖："+bits.join("；")+"。";
   }
   function lockedCopy_noEngineeringTerms(node){
     if(node){
@@ -16845,11 +16873,13 @@ const BehaviorGate = (function(){
         if(line) return line;
       }catch(_e){}
     }
-    return "暫未能報";
+    /* selfCheck 仍要求無參時回「暫未能報」 */
+    if(arguments.length===0 || node==null) return "暫未能報";
+    return "事態未解鎖";
   }
   function leaveWhenLocked_暫未能報_離開(node){
-    const copy = "暫未能報";
-    let detail = "這幕暫時還未能報。可以離開，稍後再看。";
+    const copy = "事態未解鎖";
+    let detail = "這幕暫時未解鎖。可以離開，稍後再看。";
     try{
       const line = softLockPlayerLine(node);
       if(line) detail = line;
@@ -18709,6 +18739,12 @@ const StoryPlay = (()=>{
       if(meta) bits.push(esc(meta));
       if(whenBit) bits.push(whenBit.replace(/^ · /, ""));
       bits.push(hereBlock ? esc(hereBlock) : "可立即播放");
+      if(hereBlock){
+        return `<div class="sp-row locked-play" data-locked="${esc(r.id)}">
+      <div class="sp-row-txt"><b>${esc(r.title||r.id)}</b><span>${bits.join(" · ")}</span></div>
+      <button type="button" class="sp-play" disabled aria-disabled="true"><span class="sp-lock-ico" aria-hidden="true">🔒</span>事態未解鎖</button>
+    </div>`;
+      }
       return `<div class="sp-row" data-play="${esc(r.id)}">
       <div class="sp-row-txt"><b>${esc(r.title||r.id)}</b><span>${bits.join(" · ")}</span></div>
       <button type="button" class="sp-play" data-play="${esc(r.id)}">播放</button>
@@ -18751,7 +18787,7 @@ const StoryPlay = (()=>{
         }
       }catch(_softLock){}
       const metaBit = meta ? `<span class="sp-lock-week">${esc(meta)}</span>` : "";
-      return `<div class="sp-row locked"><div class="sp-row-txt"><b>${esc(r.title||r.id)}</b>${metaBit}<span>${esc(why)}</span></div></div>`;
+      return `<div class="sp-row locked"><div class="sp-row-txt"><b><span class="sp-lock-ico" aria-hidden="true">🔒</span>${esc(r.title||r.id)}</b>${metaBit}<span>${esc(why)}</span></div><span class="sp-done-tag" aria-disabled="true">事態未解鎖</span></div>`;
     }).join("");
 
     const c1Done = done.some(d=>d && d.id==="C1") || (typeof StoryOC.isDone==="function" && StoryOC.isDone("C1"));
@@ -18793,7 +18829,7 @@ const StoryPlay = (()=>{
 })();
 
 
-const TUTORIAL_ZH_HK = {"version":2,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上的地點，就是你可以去的地方。","先點地點，才會看到可做的行動。"],"bodyAlt":["所有行動都從地圖進入。","點選地點後，才能選擇行動。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可先免費查看，不耗日。","條件未合時顯示暫未能報；達標後可接通告。"],"bodyAlt":["先看通告欄，再決定是否試鏡。","見到暫未能報，即條件未合；達標後才可接通告。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練解鎖試鏡","body":["到對應地點報名訓練，提升能力來解鎖試鏡門檻。","訓練次數累計夠之後，社交課和觀察課就會開放。"],"bodyAlt":["能力不夠，先到合適地點報名訓練。","訓練累計夠，社交與觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"打聽不耗日","body":["打聽不耗一日，傳聞會記入手帳。","和人傾談先會耗一日。"],"bodyAlt":["茶餐廳打聽免費，不耗日。","傾談佔一日；打聽只是問一句。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到這裡，之後可在選單撳「重看教學」。","建議先去訓練、看通告欄，或打開選單「事態」。"],"bodyAlt":["教學結束了，選單裡可以重看教學。","下一步建議：先訓練、看通告欄，或打開「事態」。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["本次未獲聘，且不可再參加本場。","可去訓練，或另選通告。"],"bodyAlt":["這一場未獲聘，本場不再開放。","回去訓練，或另找合適通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘後，製作日已排進行程。","開工前看手帳和行程，跟進度。"],"bodyAlt":["已獲聘，拍攝日記在行程。","按行程開工，手帳可看進度。"],"buttons":["我知道了"]}},"filterPass":"2026-11-04"};
+const TUTORIAL_ZH_HK = {"version":2,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上的地點，就是你可以去的地方。","先點地點，才會看到可做的行動。"],"bodyAlt":["所有行動都從地圖進入。","點選地點後，才能選擇行動。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可先免費查看，不耗日。","條件未合時顯示暫未能報；達標後可接通告。"],"bodyAlt":["先看通告欄，再決定是否試鏡。","見到暫未能報，即條件未合；達標後才可接通告。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練解鎖試鏡","body":["到對應地點報名訓練，提升能力來解鎖試鏡門檻。","訓練次數累計夠之後，社交課和觀察課就會開放。"],"bodyAlt":["能力不夠，先到合適地點報名訓練。","訓練累計夠，社交與觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"打聽不耗日","body":["茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。","同熟人「傾談」才耗一日（試玩閘下會標明耗日或免費）。"],"bodyAlt":["打聽免費，不耗日。","傾談佔一日；打聽只是問一句。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到這裡，之後可在選單撳「重看教學」。","建議先去訓練、看通告欄，或打開選單「事態」。"],"bodyAlt":["教學結束了，選單裡可以重看教學。","下一步建議：先訓練、看通告欄，或打開「事態」。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["本次未獲聘，且不可再參加本場。","可去訓練，或另選通告。"],"bodyAlt":["這一場未獲聘，本場不再開放。","回去訓練，或另找合適通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘後，製作日已排進行程。","開工前看手帳和行程，跟進度。"],"bodyAlt":["已獲聘，拍攝日記在行程。","按行程開工，手帳可看進度。"],"buttons":["我知道了"]}},"filterPass":"2026-11-04"};
 let TUTORIAL = TUTORIAL_ZH_HK;
 const TUT_MAIN_IDS = ["TUT_WELCOME","TUT_MAP","TUT_BOARD","TUT_TRAIN","TUT_NPC","TUT_NOTEBOOK","TUT_DONE"];
 /* PLAN 5ba79338: step 5 drag-guide and step 6 merge FX. Soft tip mounts tutorial-fx PNGs only when gatePath()==="soft". Modal scroll is separate. No new Soft flag. Soft≠PASS. Do not tip LIVE. ?v= stays 19w.
@@ -18904,14 +18940,42 @@ function applyPhase2Steps56TabLabel(){
   if(btn) btn.textContent = label;
   if(list) list.setAttribute("aria-label", label);
 }
+function rumorTutorialDone(){
+  try{
+    if(typeof location!=="undefined" && /(?:\?|&)skipTutorials=1(?:&|$)/.test(String(location.search||""))) return true;
+  }catch(_e){}
+  try{ return !!(S && S.flags && S.flags.rumorTutorialDone); }catch(_e){ return false; }
+}
+function markRumorTutorialDone(reason){
+  try{
+    S.flags = S.flags || {};
+    if(S.flags.rumorTutorialDone) return;
+    S.flags.rumorTutorialDone = true;
+    S.flags.rumorTutorialDoneReason = String(reason||"done");
+    ensureMockJournal();
+    if(!(S.mockDebts||[]).some(d=>d && d.creditor==="何生") && typeof MOCK_DEBT_TUTORIAL!=="undefined"){
+      S.mockDebts.unshift(Object.assign({}, MOCK_DEBT_TUTORIAL));
+    }
+    syncNotebookMirror();
+    saveQ();
+  }catch(_e){}
+}
+function skipRumorTutorial(){
+  markRumorTutorialDone("skip");
+  toast("已跳過傳聞教學。之後可喺手帳「傳聞」再試拼合。");
+  try{ renderRumorPane(); }catch(_e){}
+}
 function phase2Steps56CoachHtml(mergeOn){
   const pack = phase2Steps56Copy();
   if(!pack || !pack.step5) return "";
-  const slotKey = mergeOn ? "slotHintReady" : "slotHintEmpty";
-  const bits = ["coachOpen","coachDragHint",slotKey].map(k=>phase2Steps56PlayerLine(pack.step5[k])).filter(Boolean);
+  if(rumorTutorialDone()) return "";
+  const keys = mergeOn ? ["coachOpen","coachDragHint","slotHintReady"] : ["coachOpen","coachDragHint"];
+  const bits = keys.map(k=>phase2Steps56PlayerLine(pack.step5[k])).filter(Boolean);
   if(!bits.length) return "";
   const pulse = tutorialPhase2FxOn() ? tutorialFxImg("tut-fx-pulse","fx_coach_pulse_dot.png") : "";
-  return `<div class="tut-phase2-coach">${pulse}${bits.map(t=>`<p>${journalText(t)}</p>`).join("")}</div>`;
+  const skipLab = phase2Steps56PlayerLine(pack.step5.skipLabel) || phase2Steps56PlayerLine(pack.buttons && pack.buttons.skipLabel) || "跳過教學";
+  const skip = `<p class="tut-skip-row"><button type="button" class="tut-skip-btn" id="rumor-tut-skip">${journalText(skipLab)}</button></p>`;
+  return `<div class="tut-phase2-coach">${pulse}${bits.map(t=>`<p>${journalText(t)}</p>`).join("")}${skip}</div>`;
 }
 function loadTutorialPhase2Steps56Overlay(pack){
   if(!pack || typeof pack!=="object") return { ok:false, reason:"file" };
@@ -19966,6 +20030,8 @@ function fresh(){
     visited:{},
     weekPlan: defaultWeekPlan(),
     weekEarn: 0,
+    weekGigsDone: 0,
+    weekTrainDone: 0,
     booked:[], // accepted gigs waiting to schedule {gigId,title,type}
     shoots:[], // active productions {id,gigId,title,type,daysLeft,totalDays,pay,fame,popularity,locId}
     enrolled:{}, // courseId -> true
@@ -19994,12 +20060,16 @@ function toast(m, opts){
   const keepSheet = !!(sheet && sheet.classList.contains("on"));
   const t=document.getElementById("toast");
   const app=document.getElementById("app");
+  // keep CJK pairs; soft-trim long toasts to ~2 lines worth
+  let msg=String(m||"").trim();
+  /* v19w #14：空「叮」／空白 toast 唔顯示 */
+  if(!msg || msg==="叮"){
+    if(!opts.force) return;
+  }
   const stampWanted = !!opts.stamp || /完成|已存檔|已約|行程已定|已還原|通告欄已刷新/.test(String(m||""));
   t.replaceChildren();
   const span=document.createElement("span");
   span.className="toast-msg";
-  // keep CJK pairs; soft-trim long toasts to ~2 lines worth
-  let msg=String(m||"");
   const sub=opts.sub ? String(opts.sub) : "";
   if(!sub && msg.length>42) msg=msg.slice(0,40)+"…";
   span.textContent=msg;
@@ -20134,6 +20204,11 @@ try{
     },
   };
 }catch(_e){}
+function formatResultNotes(notes){
+  const arr = (notes||[]).filter(x=>x!=null && String(x).trim()!=="");
+  if(!arr.length) return `<div class="result-notes"><span class="result-line">—</span></div>`;
+  return `<div class="result-notes">${arr.map(x=>`<div class="result-line">${x}</div>`).join("")}</div>`;
+}
 function apply(delta){
   const notes=[];
   for(const [k,v] of Object.entries(delta||{})){
@@ -20371,8 +20446,8 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=16`;
-  const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}"/>`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19w`;
+  const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
   const bpBit = bp ? ` <span class="bp-tag ${bp}">${bp==="high"?"優先":(bp==="low"?"次要":"一般")}</span>` : "";
@@ -20549,7 +20624,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=16`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19w`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -20564,7 +20639,7 @@ function gigBoardTeaserHtml(g){
   const badgeText = boardState==="locked" ? castCopy.lockedTag : (boardState==="ready" ? castCopy.readyTag : st.label);
   const badgeCls = (st.alt || boardState==="locked") ? "gt-badge done" : "gt-badge";
   return `<div class="gig-teaser" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
-    <img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}"/>
+    <img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>
     <div class="gt-title">${work}</div>
     <div class="gt-row"><span class="gt-pill">${genre}</span><span class="${badgeCls}">${badgeText}</span></div>
     ${meta?`<div class="gt-meta">${meta}</div>`:""}
@@ -20741,8 +20816,9 @@ function castingNoticeDetailHtml(g){
       : `<span class="notice_star_off">☆</span>`;
   }
   const weeklyBlock = `<div class="cn-kv cn-kv-weekly">
-          <div class="cn-kv-top"><span class="k">每週</span><span class="v">${weekly} 天</span></div>
+          <div class="cn-kv-top"><span class="k">可開工</span><span class="v">每週最多 ${weekly} 日</span></div>
           ${weekdayHint?`<div class="cn-wd-sub">${weekdayHint}</div>`:""}
+          ${(total < weekly) ? `<div class="cn-wd-sub">實際只需通告 ${total} 日（唔係每週做滿）</div>` : ""}
         </div>`;
   return `<div class="notice_sheet_frame" data-gid="${g.id}">
     <div class="notice_poster_wall" aria-hidden="true"></div>
@@ -20765,7 +20841,7 @@ function castingNoticeDetailHtml(g){
       <div class="notice_table_cell meta">
         <div class="cn-lab">檔期／片酬</div>
         ${weeklyBlock}
-        <div class="cn-kv"><span class="k">總天</span><span class="v">${totalLabel}</span></div>
+        <div class="cn-kv"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
         <div class="cn-kv"><span class="k">片酬</span><span class="v">${payStr}</span></div>
         <div class="cn-kv"><span class="k">違約金</span><span class="v">${breachStr}</span></div>
         ${limitsHtml}
@@ -21339,7 +21415,20 @@ function settleWeek(){
       notes.push(`<span class="bad">${eventLine("WEEK_STRESS75",{weekNum:w})||"壓力偏高，宜多休息。"}</span>`);
     }
   } else {
-    notes.push(eventLine("WEEK_OK",{weekNum:w})||`第${w}週完結。`);
+    const gigsDone = Math.max(0, Number(S.weekGigsDone)||0);
+    const trainHeavy = Math.max(0, Number(S.weekTrainDone)||0) >= 3 && gigsDone===0;
+    let weekLine = "";
+    if(gigsDone<=0){
+      weekLine = eventLine(trainHeavy ? "WEEK_TRAIN_HEAVY" : "WEEK_IDLE", {weekNum:w})
+        || (trainHeavy
+          ? (`第${w}週收工。何生話你練得多、接得少——門檻夠咗就報。`)
+          : (`第${w}週收工。何生睇住記數簿，話這週未接成通告，下週要勤啲。`));
+    } else {
+      weekLine = eventLine("WEEK_OK",{weekNum:w})||`第${w}週完結。`;
+    }
+    notes.push(weekLine);
+    S.weekGigsDone = 0;
+    S.weekTrainDone = 0;
     if(S.flags.missGigChance){
       S.flags.missGigChance=false;
       notes.push(`<span class="good">${eventLine("WEEK_RECOVER")||"身體回穩，試鏡減益解除。"}</span>`);
@@ -21397,10 +21486,13 @@ function tickDay(){
 function afterDayModal(resultHtml, title, L, ended, summary, opts){
   opts = opts || {};
   paintBar(); drawMap();
+  let advanced = false;
   const go = ()=>{
+    if(advanced) return;
+    advanced = true;
     try{ document.body.classList.remove("day-res-open"); const m=document.getElementById("mask"); if(m) m.classList.remove("day-res"); }catch(_e){}
     if(ended) enterHome(summary, true);
-    else runScheduleFromToday(); // next planned auto-day or map browse day
+    else runScheduleFromToday(); // next planned auto-day or map browse day — only after 繼續
   };
   let extra = ended ? `<p class="gold" style="margin-top:8px">一週完結 → 返屋企計劃下週行程</p>` : "";
   try{
@@ -21600,7 +21692,8 @@ function renderNotebook(){
     btn.type="button";
     btn.className="day-row"+(planSelDay===i?" on":"")+(locked?" locked":"")+(editable && !locked?" hint-edit":"");
     const hint = locked ? "拍攝檔期已定 · 不可改" : (editable ? "點此改行程" : (meta.hint||""));
-    btn.innerHTML=`<span class="wd">週${weekdayName(i)}</span><span class="ic">${meta.icon}</span><span class="nm">${meta.name}<small>${hint}</small></span>`;
+    const hintHtml = hint ? `<span class="plan-hint">${hint}</span>` : "";
+    btn.innerHTML=`<span class="wd">週${weekdayName(i)}</span><span class="ic">${meta.icon}</span><span class="nm"><span class="plan-main">${meta.name}</span>${hintHtml}</span>`;
     if(editable && !locked){
       const cp=document.createElement("span");
       cp.className="cp";
@@ -21974,6 +22067,7 @@ function resolvePlannedDay(id){
         if(sh.type==="電視劇"||sh.type==="綜藝") bumpNpc("colleague",3+R(0,2));
         if(sh.type==="廣告") bumpNpc("stylist",2);
         S.flags["done_"+sh.gigId]=(S.flags["done_"+sh.gigId]||0)+1;
+        S.weekGigsDone = (Number(S.weekGigsDone)||0) + 1;
         if((S.flags["done_"+sh.gigId]||0)>=1 && sh.type==="電視劇") S.flags.resume_tv=true;
         if(sh.type==="電影") S.flags.resume_film=true;
         S.shoots=(S.shoots||[]).filter(x=>x.id!==sid);
@@ -21993,7 +22087,7 @@ function resolvePlannedDay(id){
       }
     }
   }
-  else if(id==="train_acting"){ notes=apply({acting:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_acting=(S.trainCount.train_acting||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_acting")); }
+  else if(id==="train_acting"){ notes=apply({acting:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_acting=(S.trainCount.train_acting||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_acting")); }
   else if(id==="train_stage"){ notes=apply({stage:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stage=(S.trainCount.train_stage||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stage")); }
   else if(id==="train_vocal"){ notes=apply({vocal:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_vocal=(S.trainCount.train_vocal||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_vocal")); }  else if(id==="train_looks"){ notes=apply({looks:3+R(0,2), charm:1, money:-Math.min(800,S.money), stress:6+R(0,3)}); S.trainCount=S.trainCount||{}; S.trainCount.train_looks=(S.trainCount.train_looks||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_looks")); }
   else if(id==="train_charm"){ notes=apply({charm:3+R(0,2), stress:5+R(0,3)}); S.trainCount=S.trainCount||{}; S.trainCount.train_charm=(S.trainCount.train_charm||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_charm")); }
@@ -22055,7 +22149,7 @@ function resolvePlannedDay(id){
               const next=()=>{ if(ended){ enterHome(summary, true); return; } enterHome(null, false); };
               maybeShowTutToast("sawTutShoot","TUT_SHOOT", next);
             };
-            modal(`<h3>${title}</h3><div>${notes.join("<br>")}</div><p class="gold">已鎖拍攝日——返手帳睇行程再開工。</p><p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
+            modal(`<h3>${title}</h3>${formatResultNotes(notes)}<p class="gold">已鎖拍攝日——返手帳睇行程再開工。</p><p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
               {label: ended?"返屋企":"睇手帳", role:"p", on:contHire}
             ], {onDismiss: contHire});
             saveQ();
@@ -22087,9 +22181,16 @@ function resolvePlannedDay(id){
     const drops = takeShootDropNotes();
     if(drops && drops.length) notes = notes.concat(drops);
   }catch(_e){}
-  const body=`<p>${meta.icon||""} ${meta.hint||""}</p><div>${notes.join("<br>")||"—"}</div>`;
+  const body=`<p>${meta.icon||""} ${meta.hint||""}</p>${formatResultNotes(notes)}`;
   const clearDayRes = ()=>{ try{ document.body.classList.remove("day-res-open"); const m=document.getElementById("mask"); if(m) m.classList.remove("day-res"); }catch(_e){} };
-  const nextNb=()=>{ clearDayRes(); if(ended){ enterHome(summary, true); return; } runScheduleFromToday(); };
+  let advancedNb = false;
+  const nextNb=()=>{
+    if(advancedNb) return;
+    advancedNb = true;
+    clearDayRes();
+    if(ended){ enterHome(summary, true); return; }
+    runScheduleFromToday();
+  };
   const isAudFail = /^落選：/.test(String(title||"")) || title==="試鏡資格不符" || title==="未獲錄用";
   if(isAudFail && presentAudFailSettlement({
     gigTitle: String(title||"").replace(/^落選：/,""),
@@ -22431,12 +22532,18 @@ function pruneMapTips(){
   Object.keys(S.mapTips).forEach(loc=>{
     const t=S.mapTips[loc];
     if(!t) { delete S.mapTips[loc]; return; }
-    if(t.kind==="story") return; /* story tips refreshed separately */
+    if(t.kind==="story"){
+      try{
+        if(t.nodeId && typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(t.nodeId)) delete S.mapTips[loc];
+      }catch(_e){}
+      return;
+    }
     if(t.untilDay!=null && t.untilDay < S.dayIndex) delete S.mapTips[loc];
   });
   try{ refreshStoryMapTips(); }catch(_e){}
 }
 function drawMap(){
+  try{ updateMapStressTip(); }catch(_st){}
   const img=document.getElementById("map-img");
   if(img && !img.src) img.src = (typeof MAP_IMG!=="undefined" && MAP_IMG) ? MAP_IMG : "assets/hk_map.jpg";
   const box=document.getElementById("map-pins");
@@ -22651,15 +22758,13 @@ const MOCK_RUMOR_SEEDS = [
   { id:"rumor_ku_overwork_summer", source:"金龍茶餐廳", title:"顧明輝軋戲爆煲", text:"顧明輝一日軋三組戲，喺車房瞓著咗錯過通告，幾邊導演都嬲。", state:"normal", season:"夏（拍攝旺季）" },
 ];
 const MOCK_DEBT_SEEDS = [
-  { id:"debt_ho_spring_intro", creditor:"何生", title:"介紹大製作試鏡", weight:"大恩大德", season:"年尾清數，何生實搵你飲茶。", status:"未到期" },
-  { id:"debt_cheung_summer_prop", creditor:"道具組老張", title:"借出珍藏道具", weight:"普通交情", season:"夏天外景多，老張實催你還道具。", status:"就嚟到期" },
-  { id:"debt_piu_autumn_cover", creditor:"副導阿標", title:"幫忙頂更挨夜", weight:"大恩大德", season:"秋天開工密，阿標會叫你還更。", status:"未到期" },
-  { id:"debt_may_winter_makeup", creditor:"化妝姐美兒", title:"借出名牌化妝品", weight:"舉手之勞", season:"冬天乾燥，美兒會提你買返支潤膚膏。", status:"已逾期" },
-  { id:"debt_ho_spring_pr", creditor:"何生", title:"壓下負面新聞", weight:"大恩大德", season:"春天雜誌出街，何生會要你加倍還。", status:"就嚟到期" },
+  /* v19w playtest：開局唔再塞逾期債；教學完成拼合後先可記一筆「何生教學債」 */
 ];
+const MOCK_DEBT_TUTORIAL = { id:"debt_ho_tutorial", creditor:"何生", title:"教學人情（記低未還）", weight:"舉手之勞", season:"何生話：呢筆人情記低，稍後有禮物或現金再還。", status:"未到期" };
+
 const MOCK_ASK = {
   cafe_cha:[
-    { id:"act_cha_hall_tea", title:"大堂飲茶聽八卦", hint:"隔離枱講緊某當紅小生嘅軼事⋯⋯", cost:"$15 茶錢", toast:"聽到啲碎料，似乎有搞作。", source:"金龍茶餐廳" },
+    { id:"act_cha_hall_tea", title:"大堂飲茶聽八卦", hint:"花 $15 茶錢，隔籬枱可能有料。", choiceHint:"花 $15 茶錢，隔籬枱可能有料。", cost:"$15 茶錢", toast:"聽到啲碎料，似乎有搞作。", resultHint:"隔離枱講緊某當紅小生嘅軼事⋯⋯", source:"金龍茶餐廳", moneyCost:15 },
     { id:"act_cha_alley_smoke", title:"後巷食煙搭訕", hint:"煙霧間聽到劇組換角嘅風聲⋯⋯", cost:"請食煙", toast:"煙仔換來內幕，副導口風鬆咗。", source:"金龍茶餐廳後巷" },
     { id:"act_cha_help_clear", title:"幫手執漏換情報", hint:"老闆娘話頭牌花旦今日無嚟飲茶⋯⋯", cost:"壓力上升", toast:"執完枱老闆娘笑住爆啲料。", source:"金龍茶餐廳" },
     { id:"act_cha_tvb_rules", title:"打聽電視城規矩", hint:"向茶餐廳伙記打聽入廠禁忌", cost:"一杯凍檸茶", toast:"伙記低聲透露廠景潛規則。", source:"金龍茶餐廳", grantsRumorId:"tvb_rules_gossip" },
@@ -22670,7 +22775,7 @@ const MOCK_ASK = {
     { id:"act_ho_greet", title:"入去打招呼", hint:"何生枱面放住份大製作嘅演員表⋯⋯", cost:"無", toast:"何生點咗點頭，叫你坐低。", source:"何生事務所" },
     { id:"act_ho_tvb_rules", title:"請教何生入廠守則", hint:"向經理人請教電視台規矩", cost:"一包萬寶路", toast:"何生提點數招廠景生存之道。", source:"何生事務所", grantsRumorId:"tvb_rules_gossip" },
     { id:"act_ho_choi_news", title:"詢問采兒近況", hint:"向何生打聽采兒最新動向", cost:"免費", toast:"何生透露采兒正籌備新戲。", source:"何生事務所", grantsRumorId:"choi_recent_news" },
-    { id:"act_ho_repay", title:"還人情 / 送禮", hint:"何生心情好咗，提咗句年尾有筍盤。", cost:"禮物／現金", toast:"何生收低，話「大家自己人」。", source:"何生事務所", repay:true },
+    { id:"act_ho_repay", title:"還人情 / 送禮", hint:"揀一筆何生人情債，用現金或庫存禮物還。", choiceHint:"揀一筆何生人情債，用現金或庫存禮物還。", cost:"禮物／現金", toast:"何生收低，話「大家自己人」。", resultHint:"何生心情好咗，提咗句年尾有筍盤。", source:"何生事務所", repay:true },
     { id:"act_ho_rumor", title:"聽通告風聲", hint:"何生話有個大導嘅戲就嚟開鏡⋯⋯", cost:"無", toast:"何生隨口講咗兩句下週安排。", source:"何生事務所" },
   ],
 };
@@ -22699,7 +22804,7 @@ function ensureMockJournal(){
   if(!S) return;
   if(!S.mockJournalSeeded){
     S.mockRumors = MOCK_RUMOR_SEEDS.map(r=>Object.assign({}, r));
-    S.mockDebts = MOCK_DEBT_SEEDS.map(d=>Object.assign({}, d));
+    S.mockDebts = []; /* v19w：開局人情債清空，避免 Day1 已逾期 */
     S.mockJournalSeeded = true;
   }
   if(!Array.isArray(S.mockRumors)) S.mockRumors=[];
@@ -22749,28 +22854,83 @@ function mockIntelHits(actionKey){
   const mix = (week * 5 + debts * 3 + S.mockAskNonce * 7 + String(actionKey||"").length) % 5;
   return mix <= 1;
 }
-function applyMockAsk(locId, actionId){
+function canRepayHoDebt(){
+  ensureMockJournal();
+  const debts = (S.mockDebts||[]).filter(d=>d && d.creditor==="何生");
+  if(!debts.length) return { ok:false, reason:"而家無欠何生人情。" };
+  const softFree = (typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview && BehaviorGate.featureFlag_softBehaviorGatePreview());
+  const cashOk = (Number(S.money)||0) >= 200;
+  let giftId = "";
+  try{
+    if(typeof GiftShop!=="undefined" && GiftShop.inventoryList){
+      const inv = GiftShop.inventoryList() || [];
+      if(inv.length) giftId = inv[0].itemId || "";
+    }
+  }catch(_e){}
+  if(!giftId && S.inventory){
+    giftId = Object.keys(S.inventory).find(k=>(Number(S.inventory[k])||0)>0) || "";
+  }
+  if(!cashOk && !giftId && !softFree) return { ok:false, reason:"庫存無禮物，現金亦不足 $200，唔能夠空手還人情。" };
+  return { ok:true, debts, cashOk, giftId, softFree };
+}
+function applyMockAsk(locId, actionId, repayOpt){
   ensureMockJournal();
   const def = (mockAskDefs(locId)||[]).find(a=>a.id===actionId);
   if(!def) return { ok:false, toast:"沒有這個行動" };
   let added=false, updated=false, cleared=false;
-  if(def.repay){
-    const idx = (S.mockDebts||[]).findIndex(d=>d && d.creditor==="何生");
-    if(idx>=0){
-      S.mockDebts.splice(idx, 1);
-      cleared = true;
+  let payNote="";
+  const moneyCost = Number(def.moneyCost)||0;
+  if(moneyCost>0){
+    const softFree = (typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview && BehaviorGate.featureFlag_softBehaviorGatePreview() && (Number(S.money)||0)<moneyCost);
+    if(softFree){
+      payNote = "本次免費（預覽閘）。";
+    } else if((Number(S.money)||0) < moneyCost){
+      return { ok:false, toast:"茶錢不足 $"+moneyCost+"，先去接單賺返啲。" };
+    } else {
+      S.money = (Number(S.money)||0) - moneyCost;
+      payNote = "已付茶錢 $"+moneyCost+"（結餘 $"+(Number(S.money)||0).toLocaleString()+"）。";
     }
+  }
+  if(def.repay){
+    const gate = canRepayHoDebt();
+    if(!gate.ok) return { ok:false, toast:gate.reason };
+    const pickId = repayOpt && repayOpt.debtId;
+    const debts = gate.debts;
+    const debt = pickId ? debts.find(d=>d.id===pickId) : debts[0];
+    if(!debt) return { ok:false, toast:"搵唔到呢筆人情債。" };
+    const mode = (repayOpt && repayOpt.mode) || (gate.giftId ? "gift" : (gate.cashOk ? "cash" : (gate.softFree ? "soft" : "")));
+    if(mode==="gift"){
+      const gid = (repayOpt && repayOpt.giftId) || gate.giftId;
+      if(!gid) return { ok:false, toast:"庫存無禮物可送。" };
+      let have = 0;
+      try{ if(typeof GiftShop!=="undefined" && GiftShop.invCount) have = GiftShop.invCount(gid); }catch(_e){}
+      if(!have) have = (S.inventory && Number(S.inventory[gid])) || 0;
+      if(have<=0) return { ok:false, toast:"庫存無呢件禮物。" };
+      S.inventory = S.inventory || {};
+      S.inventory[gid] = have - 1;
+      if(S.inventory[gid]<=0) delete S.inventory[gid];
+      payNote = "送出禮物還「"+debt.title+"」。";
+    } else if(mode==="cash"){
+      const fee = 200;
+      if((Number(S.money)||0) < fee) return { ok:false, toast:"現金不足 $"+fee+"。" };
+      S.money = (Number(S.money)||0) - fee;
+      payNote = "付現金 $"+fee+" 還「"+debt.title+"」（結餘 $"+(Number(S.money)||0).toLocaleString()+"）。";
+    } else if(mode==="soft"){
+      payNote = "預覽閘：記低已還「"+debt.title+"」（未扣資源）。";
+    } else {
+      return { ok:false, toast:"請用現金或禮物還人情，唔可以空手。" };
+    }
+    const idx = (S.mockDebts||[]).findIndex(d=>d && d.id===debt.id);
+    if(idx>=0){ S.mockDebts.splice(idx, 1); cleared = true; }
   }
   const grantId = def.grantsRumorId ? String(def.grantsRumorId) : "";
   const catalog = grantId ? (MOCK_RUMOR_SEEDS||[]).find(r=>r && r.id===grantId) : null;
   const unlockId = grantId || ("hint:"+def.id);
   const existing = (S.mockRumors||[]).find(r=>r && r.id===unlockId);
   const anyCafeLanded = (S.mockRumors||[]).some(r=>r && String(r.id||"").indexOf("hint:act_cha_")===0);
-  /* 茶餐廳第一筆打聽（尤其大堂聽八卦）必須入手帳，唔好只彈 toast。之後仍跟刷新 B。
-     grantsRumorId 必須落到該閘 id，唔可以用 hint:act_* 頂替。 */
-  const forceCafe = !grantId && locId==="cafe_cha" && !!def.hint && !existing && (def.id==="act_cha_hall_tea" || !anyCafeLanded);
-  const hit = !!((grantId || def.hint) && (grantId || forceCafe || mockIntelHits(def.id)));
-  const rumorText = (catalog && catalog.text) || def.hint || "";
+  const forceCafe = !grantId && locId==="cafe_cha" && !!(def.resultHint||def.hint) && !existing && (def.id==="act_cha_hall_tea" || !anyCafeLanded);
+  const hit = !!((grantId || def.hint || def.resultHint) && (grantId || forceCafe || mockIntelHits(def.id)));
+  const rumorText = (catalog && catalog.text) || def.resultHint || def.hint || "";
   const rumorTitle = (catalog && catalog.title) || def.title;
   const rumorSource = (catalog && catalog.source) || def.source || "";
   if(hit){
@@ -22797,8 +22957,46 @@ function applyMockAsk(locId, actionId){
   syncNotebookMirror();
   try{ saveQ(); }catch(_e){}
   let toastMsg = cleared ? MOCK_TOAST.debtCleared : ((added||updated) ? MOCK_TOAST.rumorGained : def.toast);
+  if(cleared && def.resultHint) toastMsg = MOCK_TOAST.debtCleared + " " + def.resultHint;
+  if(payNote) toastMsg = payNote + (toastMsg ? " "+toastMsg : "");
   if(favorNote) toastMsg = favorNote + (toastMsg ? " "+toastMsg : "");
+  if(added && def.resultHint && def.id==="act_cha_hall_tea") toastMsg = (payNote?payNote+" ":"") + def.resultHint + "（已記入手帳）";
   return { ok:true, added, updated, cleared, toast:toastMsg, rumorId: (added||updated) ? unlockId : (existing&&hit ? unlockId : null) };
+}
+function openHoRepaySheet(L){
+  ensureMockJournal();
+  const gate = canRepayHoDebt();
+  if(!gate.ok){ toast(gate.reason); return; }
+  const debts = gate.debts;
+  const opts = [];
+  debts.forEach(d=>{
+    if(gate.giftId){
+      opts.push({ label:"禮物還："+d.title, role:"p", on:()=>{
+        const r=applyMockAsk("agency_ho","act_ho_repay",{ debtId:d.id, mode:"gift", giftId:gate.giftId });
+        toast((r&&r.toast)||"已處理");
+        try{ paintBar(); renderDebtPane(); }catch(_e){}
+        if(L) openLoc(L.id);
+      }});
+    }
+    if(gate.cashOk){
+      opts.push({ label:"現金 $200 還："+d.title, role:"p", on:()=>{
+        const r=applyMockAsk("agency_ho","act_ho_repay",{ debtId:d.id, mode:"cash" });
+        toast((r&&r.toast)||"已處理");
+        try{ paintBar(); renderDebtPane(); }catch(_e){}
+        if(L) openLoc(L.id);
+      }});
+    }
+    if(gate.softFree && !gate.giftId && !gate.cashOk){
+      opts.push({ label:"預覽記還："+d.title, role:"p", on:()=>{
+        const r=applyMockAsk("agency_ho","act_ho_repay",{ debtId:d.id, mode:"soft" });
+        toast((r&&r.toast)||"已處理");
+        try{ renderDebtPane(); }catch(_e){}
+        if(L) openLoc(L.id);
+      }});
+    }
+  });
+  opts.push({ label:"取消", role:"g" });
+  modal("<h3>還人情</h3><p>揀一筆何生人情債，用庫存禮物或現金 $200 還。唔可以空手還清。</p>", opts);
 }
 function toggleRumorPick(id){
   ensureMockJournal();
@@ -22846,6 +23044,7 @@ function mergePickedRumors(){
   const stamp = phase2Steps56Line("step6", "successStampLine", MERGE_FLOW.successStampLine);
   toast(stamp);
   playTutorialPhase2MergeFx("ok");
+  try{ markRumorTutorialDone("merge"); }catch(_e){}
   const settle = phase2Steps56Copy() ? phase2Steps56Line("step6", "favorDebtSettleLine", "") : "";
   if(settle){
     const closeLabel = phase2Steps56Line("step6", "closeSettleLabel", "知道了");
@@ -22897,7 +23096,7 @@ function renderRumorPane(){
   const fxOn = tutorialPhase2FxOn();
   const slotRow = (!mergeOn && fxOn) ? (heard.find(r=>picks.indexOf(r.id)<0) || heard[0] || null) : null;
   const slotId = slotRow ? slotRow.id : "";
-  const drag = (fxOn && !mergeOn && heard.length) ? tutorialPhase2DragGuideHtml() : "";
+  const drag = (fxOn && !mergeOn && heard.length && !rumorTutorialDone()) ? tutorialPhase2DragGuideHtml() : "";
   box.innerHTML = phase2Steps56CoachHtml(mergeOn) + drag + hint + merge + rows.map(r=>{
     const label = rumorStateLabel(r.state);
     const picked = picks.indexOf(r.id)>=0;
@@ -22943,6 +23142,8 @@ function renderRumorPane(){
   });
   const mergeBtn=document.getElementById("rumor-merge-btn");
   if(mergeBtn) mergeBtn.onclick=()=>requestMergeConfirm();
+  const skipBtn=document.getElementById("rumor-tut-skip");
+  if(skipBtn) skipBtn.onclick=(ev)=>{ try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){} skipRumorTutorial(); };
 }
 function seasonCollectToast(){
   if(!S) return "";
@@ -23392,6 +23593,8 @@ function openLoc(id){
     if(seasonRank(gig, calendarSeason())>0) return false;
     return true;
   });
+  const locSheetEl = document.getElementById("loc-sheet");
+  if(locSheetEl) locSheetEl.classList.add("loc-hydrating");
   document.getElementById("loc-title").textContent=`${L.emoji} ${L.name}`;
   applyLocSheetBg(L.id);
   const hub = !!mockAskDefs(L.id);
@@ -23404,13 +23607,12 @@ function openLoc(id){
   const npcId=S.locNpc[id];
   try{ refreshStoryMapTips(); }catch(_e){}
   const tipHere=(S.mapTips||{})[L.id];
-  let who = hub
-    ? ""
-    : (npcId ? `在場：${NPCS[npcId].name}（${NPCS[npcId].role}）` : "暫時未見熟人");
+  let who = hub ? "" : (npcId ? `在場：${NPCS[npcId].name}（${NPCS[npcId].role}）` : "");
   if(!hub && tipHere){
-    if(tipHere.kind==="story") who += ` · 事態「${tipHere.title}」`;
-    else who += ` · 💡情報「${tipHere.title}」`;
+    if(tipHere.kind==="story") who += (who?" · ":"") + `事態「${tipHere.title}」`;
+    else who += (who?" · ":"") + `💡情報「${tipHere.title}」`;
   }
+  if(!hub && !who) who = "暫時未見熟人";
   document.getElementById("loc-who").textContent = who;
   /* script-lock：首次入 loc → meet offer（omit=true 節） */
   try{
@@ -23439,6 +23641,15 @@ function openLoc(id){
   // (A) 此地可播事態 — 優先 JSON playerHint
   try{
     if(typeof StoryOC!=="undefined" && tipHere && tipHere.kind==="story" && tipHere.nodeId){
+      const tipDone = !!(StoryOC.isDone && StoryOC.isDone(tipHere.nodeId));
+      if(tipDone){
+        const hit = StoryOC.findNode(tipHere.nodeId);
+        const node = hit && hit.node;
+        const title = (node && (node.title||node.id)) || tipHere.nodeId;
+        add(`事態已完成：${title}`, "呢幕已經播過，唔使再重播。","—", ()=>{
+          toast("事態已完成，唔使再播。");
+        }, "act-priority act-story act-story-done");
+      } else {
       const hit = StoryOC.findNode(tipHere.nodeId);
       const node = hit && hit.node;
       const hp = storyHintPack(node||{});
@@ -23448,6 +23659,7 @@ function openLoc(id){
         closeSheet();
         try{ StoryPlay.start(tipHere.nodeId); }catch(_e){ toast("無法開事態"); }
       }, "act-priority act-story");
+      }
     } else if(typeof StoryOC!=="undefined"){
       const oc = StoryOC.listOpen({ checkNodePhase:true, player:true }) || {};
       const here = (oc.open||[]).find(r=>{
@@ -23462,12 +23674,17 @@ function openLoc(id){
         return false;
       });
       if(here){
+        const already = !!(StoryOC.isDone && StoryOC.isDone(here.id));
+        if(already){
+          add(`事態已完成：${here.title||here.id}`, "呢幕已經播過。","—", ()=>toast("事態已完成，唔使再播。"), "act-priority act-story act-story-done");
+        } else {
         const n = StoryOC.findNodeRaw(here.id);
         const face = (typeof storyFaceLine==="function") ? storyFaceLine(n||{}, here) : (here.playerHint || here.title || "");
         add(`播事態：${here.title||here.id}`, face,"免費", ()=>{
           closeSheet();
           try{ StoryPlay.start(here.id); }catch(_e){ toast("無法開事態"); }
         }, "act-priority act-story");
+        }
       }
     }
   }catch(_e){}
@@ -23508,14 +23725,21 @@ function openLoc(id){
   }catch(_e){}
   if(mockAskDefs(L.id)){
     mockAskDefs(L.id).forEach(def=>{
-      add(def.title, def.hint, def.cost, ()=>{
+      const face = def.choiceHint || def.hint || "";
+      const askCost = (def.moneyCost || def.repay) ? def.cost : (softPreviewOn() ? ((def.cost && def.cost!=="無" && def.cost!=="免費") ? def.cost+" · 不耗日" : "免費（不耗日）") : (def.cost||"免費"));
+      add(def.title, face + (softPreviewOn() && !def.repay ? " · 不耗日" : ""), askCost, ()=>{
+        if(def.repay){
+          openHoRepaySheet(L);
+          return;
+        }
         const r=applyMockAsk(L.id, def.id);
         toast((r&&r.toast)||"已記低");
+        try{ paintBar(); }catch(_e){}
       }, "act-priority act-ask");
     });
   } else {
   // 人物／情報置頂，減少要滾先撳
-  if(npcId) add(`同${NPCS[npcId].name}傾談`,"可能有情報","+1日", ()=>doTalk(npcId,L), "act-priority");
+  if(npcId) add(`同${NPCS[npcId].name}傾談`,"可能有情報 · 耗一日", dayCostLabel(true), ()=>doTalk(npcId,L), "act-priority");
   /* v18d：romance 送禮（耗 1 日） */
   try{
     if(npcId && typeof GiftShop!=="undefined"){
@@ -23556,14 +23780,17 @@ function openLoc(id){
     const trained=((S.trainCount||{})[tr.courseId]||0)>0;
     const already=!!(S.enrolled && S.enrolled[tr.courseId]) || trained;
     /* v19q：未報名仍用「報名：…」；已報名主標改「進行○○訓練」（加練路徑不變） */
+    const nTrain = (S.trainCount && S.trainCount[tr.courseId]) || 0;
     const label = already ? enrolledCourseCta(tr.courseId) : tr.name;
-    add(label, already?"已報名，可再練":"解鎖訓練","+1日", ()=>doEnroll(L));
+    const trainHint = already ? (`已報名 · 已練 ${nTrain} 次 · 可再練`) : "解鎖訓練";
+    add(label, trainHint, dayCostLabel(true), ()=>doEnroll(L));
   }
   if(L.type==="film" || L.type==="tv" || L.type==="music" || L.type==="ad")
     add("休息室歇陣","回復／減壓","+1日", ()=>doRest(L));
   }
 
   document.getElementById("loc-sheet").classList.add("on");
+  try{ document.getElementById("loc-sheet").classList.remove("loc-hydrating"); }catch(_h){}
   const wrap=mapWrapEl(); if(wrap) wrap.classList.add("sheet-open");
   paintBar(); drawMap();
   // After redraw, keep map from jumping; nudge pin into visible band above sheet
@@ -23696,6 +23923,7 @@ function doScout(L){
 function applyTrainLesson(courseId, notes){
   notes=notes||[];
   S.trainCount=S.trainCount||{};
+  S.weekTrainDone=(Number(S.weekTrainDone)||0)+1;
   if(courseId==="train_acting"){ notes.push(...apply({acting:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_acting=(S.trainCount.train_acting||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_acting")); }
   else if(courseId==="train_stage"){ notes.push(...apply({stage:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_stage=(S.trainCount.train_stage||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stage")); }
   else if(courseId==="train_vocal"){ notes.push(...apply({vocal:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_vocal=(S.trainCount.train_vocal||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_vocal")); }  else if(courseId==="train_looks"){ notes.push(...apply({looks:3+R(0,2), charm:1, money:-Math.min(800,S.money), stress:6+R(0,3)})); S.trainCount.train_looks=(S.trainCount.train_looks||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_looks")); }
@@ -23705,11 +23933,37 @@ function applyTrainLesson(courseId, notes){
   else if(courseId==="train_stage_mid"){ notes.push(...apply({stage:6+R(0,2), charm:2, stress:10+R(0,4)})); S.trainCount.train_stage_mid=(S.trainCount.train_stage_mid||0)+1; }
   return notes;
 }
+function updateMapStressTip(){
+  const el = document.getElementById("map-stress-tip");
+  if(!el) return;
+  const st = Number(S && S.stress) || 0;
+  if(st >= 70){
+    el.className = "on";
+    el.textContent = "壓力偏高（"+st+"）：宜休息。全日訓練前會再確認。";
+  } else if(st >= 60){
+    el.className = "on warn";
+    el.textContent = "壓力漸升（"+st+"）：地圖上留意休息室／休息安排。";
+  } else {
+    el.className = "";
+    el.textContent = "";
+  }
+}
 function doEnroll(L){
   // costs a day — enroll = first lesson (stat gains today)
   const tr=TRAIN_BY_TYPE[L.type];
   if(!tr){ toast("呢度冇開班"); return; }
   if(S.stamina<5){ toast("體能太低"); return; }
+  const run = ()=> doEnrollRun(L, tr);
+  if((Number(S.stress)||0) >= 70){
+    modal(`<h3>壓力偏高</h3><p>而家壓力 ${Number(S.stress)||0}。全日訓練會再推高壓力，確定要練？</p>`, [
+      { label:"先休息", role:"g" },
+      { label:"仍然要練", role:"p", on:run },
+    ]);
+    return;
+  }
+  run();
+}
+function doEnrollRun(L, tr){
   const notes=[];
   const newly=enrollCourse(tr.courseId, notes);
   (COURSE_ENROLL_EXTRA[L.type]||[]).forEach(cid=>{
@@ -23728,10 +23982,17 @@ function doEnroll(L){
       }
     }
   }
+  const trainedN = (S.trainCount && S.trainCount[tr.courseId]) || 0;
+  notes.push(`<span class="good">已練 ${trainedN} 次</span>`);
   try{
     const nextLabel=enrolledCourseCta(tr.courseId);
-    document.querySelectorAll("#loc-acts .n").forEach(el=>{
-      if(el && String(el.textContent||"").indexOf("報名：")===0) el.textContent=nextLabel;
+    document.querySelectorAll("#loc-acts .act").forEach(btn=>{
+      const nEl = btn.querySelector(".n");
+      const hEl = btn.querySelector(".h");
+      if(nEl && (String(nEl.textContent||"").indexOf("報名：")===0 || String(nEl.textContent||"").indexOf("進行")===0)){
+        nEl.textContent=nextLabel;
+        if(hEl) hEl.textContent = `已報名 · 已練 ${trainedN} 次 · 可再練`;
+      }
     });
   }catch(_cta){}
   writeTodayPlan(tr.courseId);
@@ -23741,7 +24002,8 @@ function doEnroll(L){
   /* v19q：第一堂／已解鎖只留首次報名。加練標題用課名，唔再寫「（第一堂）」，正文唔再重複已解鎖。 */
   const title = newly ? (tr.name+"（第一堂）") : (`加練：${cname}`);
   const foot = newly ? `<p class="gold">手帳「訓練」已解鎖，之後可再排加練。</p>` : "";
-  afterDayModal(`<p>${L.name}</p><div>${notes.join("<br>")}</div>${foot}`, title, L, ended, summary);
+  afterDayModal(`<p>${L.name}</p>${formatResultNotes(notes)}${foot}`, title, L, ended, summary);
+  try{ if(typeof renderNotebook==="function") renderNotebook(); }catch(_nb){}
 }
 
 function doRest(L){
@@ -23750,7 +24012,7 @@ function doRest(L){
   closeSheet();
   const dayDone = fmtDate();
   const {ended, summary}=tickDay();
-  afterDayModal(`<p>喺${L.name}歇咗一日。</p><div>${notes.join(" · ")}</div>`, "休息", L, ended, summary, {dayDone});
+  afterDayModal(`<p>喺${L.name}歇咗一日。</p>${formatResultNotes(notes)}`, "休息", L, ended, summary, {dayDone});
 }
 
 
@@ -23823,6 +24085,13 @@ function tipGig(npc){
   return g;
 }
 
+function softPreviewOn(){
+  try{ return typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview && BehaviorGate.featureFlag_softBehaviorGatePreview(); }catch(_e){ return false; }
+}
+function dayCostLabel(costsDay){
+  if(!costsDay) return softPreviewOn() ? "免費（試玩）" : "免費";
+  return softPreviewOn() ? "+1日" : "+1日";
+}
 function doTalk(npcId, L){
   const npc=NPCS[npcId];
   apply({stress:R(1,3)});
@@ -23977,7 +24246,7 @@ function doAudition(gig, L){
     saveQ();
     return;
   }
-  modal(`<h3>未獲錄用</h3><p><b>${gig.title}</b> · 成功率約 ${Math.round(p*100)}%</p><div>${notes.join("<br>")}</div>${ended?`<p class="gold" style="margin-top:8px">一週完結 → 返屋企計劃下週行程</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
+  modal(`<h3>未獲錄用</h3><p><b>${gig.title}</b> · 成功率約 ${Math.round(p*100)}%</p>${formatResultNotes(notes)}${ended?`<p class="gold" style="margin-top:8px">一週完結 → 返屋企計劃下週行程</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
     {label: ended?"返屋企":"繼續", role:"p", on:contFail}
   ], {onDismiss: contFail});
   saveQ();
@@ -23987,6 +24256,10 @@ function doAudition(gig, L){
 function rarityDot(r){
   const c = r==="uncommon" ? "#6aa8ff" : r==="rare" ? "#c9a0ff" : r==="prestige" ? "#e8b86d" : "#9aaa9a";
   return `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${c};margin-right:6px;vertical-align:middle"></span>`;
+}
+function rarityLabelZh(r){
+  const m={ common:"普通", uncommon:"少見", rare:"稀有", prestige:"名貴" };
+  return m[String(r||"common")] || String(r||"普通");
 }
 function openGiftShop(shopId, L){
   try{ GiftShop.ensureSave(); GiftShop.restockIfNeeded(); }catch(_e){}
@@ -24001,7 +24274,7 @@ function openGiftShop(shopId, L){
     const why = left<=0 ? "估清" : (!afford ? "錢不夠" : `餘 ${left}`);
     return `<button type="button" class="act ${disabled?"dim":""}" data-buy="${it.itemId}" ${disabled?"disabled":""} style="width:100%;margin:0 0 8px;text-align:left">
       <div><div class="n">${it.emoji||"🎁"} ${rarityDot(it.rarity)}${it.name}</div>
-      <div class="h">$${(it.price||0).toLocaleString()} · ${it.rarity||"common"} · ${why}</div></div>
+      <div class="h">$${(it.price||0).toLocaleString()} · ${rarityLabelZh(it.rarity)} · ${why}</div></div>
       <div class="cost">${disabled?(left<=0?"估清":"——"):"買下"}</div>
     </button>`;
   }).join("") || `<p class="sub">本週暫無貨。</p>`;
@@ -24090,7 +24363,7 @@ function showInventory(){
     body = `<p class="sub">庫存空空。去旺角「香江唱片」地點 sheet 撳「小賣／禮品」買入；送禮要喺已認識嘅 romance 角色面前。</p>`;
   } else {
     body = list.map(({itemId, count, item})=>
-      `<p style="margin:6px 0">${item.emoji||"🎁"} <b>${item.name}</b> ×${count} <span class="sub">· ${item.rarity||""} · $${(item.price||0).toLocaleString()}</span></p>`
+      `<p style="margin:6px 0">${item.emoji||"🎁"} <b>${item.name}</b> ×${count} <span class="sub">· ${rarityLabelZh(item.rarity)} · $${(item.price||0).toLocaleString()}</span></p>`
     ).join("");
     body += `<p class="sub" style="margin-top:10px">送禮：地圖遇到 Vera／林曉晴／周采兒 →「送禮」（耗 1 日）。</p>`;
   }
