@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z27");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=19z28");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z27");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=19z28");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z27");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=19z28");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -108,11 +108,11 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
 .bar .who{font-weight:800;font-size:.88rem}
 .chips{margin-left:auto;display:flex;flex-wrap:nowrap;gap:4px;justify-content:flex-end;align-items:center;max-width:72%}
 .chip{font-size:.58rem;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:3px 6px;color:var(--muted);white-space:nowrap}
-/* v19z27: 兩行頂欄 — 主列 左 名｜$金額；右 事態｜☰（事態無未讀淡顯示；margin-left:auto !important）；次列 聲量｜季節｜信用；扁平 */
+/* v19z28: 兩行頂欄 — 主列 左 名｜$金額；右 事態｜☰；次列合併 聲量N · 年份季節 · 信用N；顯示全部地點右緣對齊頂欄 */
 .bar-primary{display:flex;align-items:center;gap:4px;min-width:0;width:100%}
 .bar-primary .dual-money{margin-left:0;flex:0 0 auto}
 .bar-primary .bar-tools{margin-left:auto;flex:0 0 auto}
-.bar-secondary.dual-hud,.dual-hud.bar-secondary{flex:0 0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;gap:4px;min-width:0;padding:1px 0 0;border-top:1px solid rgba(201,162,39,.22);opacity:.92}
+.bar-secondary.dual-hud,.dual-hud.bar-secondary{flex:0 0 auto;width:100%;display:flex;align-items:center;justify-content:center;gap:0;min-width:0;padding:1px 0 0;border-top:1px solid rgba(201,162,39,.18);opacity:.88}
 /* v19t Phase 1：雙軌 HUD。色塊佔位，出圖 HOLD。 */
 .dual-hud{flex:1 1 auto;display:flex;align-items:center;justify-content:space-between;gap:4px;min-width:0;overflow:hidden}
 .dual-track{display:inline-flex;align-items:center;gap:3px;min-width:0;font-size:.62rem;font-weight:800;color:var(--cream);line-height:1.15;white-space:nowrap}
@@ -810,7 +810,7 @@ button.g, .start button.g{
 }
 .chip b{ color:var(--gold-seal) !important }
 
-/* v19z27: 頂 HUD 兩行扁平 — 左 阿偉｜$金額；右 事態｜☰；事態無未讀淡、有未讀亮；強制 bar-tools margin-left:auto；共用底無灰板 */
+/* v19z28: 頂 HUD — 主列 左 阿偉｜$；右 事態｜☰；次列一行 聲量N · 年份季節 · 信用N；顯示全部地點右緣對齊 */
 .bar{
   padding:6px 10px 5px 10px !important;
   gap:2px !important;
@@ -877,7 +877,7 @@ button.g, .start button.g{
 .bar .bar-tools,
 .bar .bar-primary .bar-tools{
   flex:0 0 auto !important;
-  margin-left:auto !important; /* v19z27: cluster 事態｜☰ hard-right; never 0 */
+  margin-left:auto !important; /* v19z28: cluster 事態｜☰ hard-right; never 0 */
   margin-right:0 !important;
   gap:4px;
   align-items:center;
@@ -903,7 +903,7 @@ button.g, .start button.g{
   box-shadow:none !important;
   color:var(--cream) !important;
 }
-/* v19z27: always show; muted when no pending (.on off) */
+/* v19z28: always show; muted when no pending (.on off) */
 .bar .bar-primary .chip-story{
   display:inline-flex !important;
   gap:4px;
@@ -939,64 +939,59 @@ button.g, .start button.g{
   flex:0 0 auto !important;
   display:flex !important;
   align-items:center;
-  justify-content:space-between;
-  gap:4px;
+  justify-content:center;
+  gap:0;
   min-width:0;
   overflow:hidden;
-  height:18px;
-  padding:2px 0 0;
-  border-top:1px solid rgba(201,162,39,.22);
-  opacity:.9;
+  height:16px;
+  padding:1px 0 0;
+  border-top:1px solid rgba(201,162,39,.18);
+  opacity:.88;
   background:transparent !important;
 }
-.bar .bar-secondary .dual-track,
-.bar .bar-secondary .dual-mid{
+.bar .bar-secondary .dual-compact{
   display:inline-flex !important;
   align-items:center;
-  gap:3px;
-  height:16px;
-  line-height:16px;
-  font-size:.6rem !important;
+  justify-content:center;
+  gap:0;
+  min-width:0;
+  height:14px;
+  line-height:14px;
+  font-size:.58rem !important;
   font-weight:800 !important;
   letter-spacing:.01em;
   white-space:nowrap;
-  min-width:0;
+  color:rgba(245,230,192,.78);
 }
-.bar .bar-secondary .dual-mid{
-  flex:0 0 auto;
-  justify-content:center;
-  color:var(--gold) !important;
-}
-.bar .bar-secondary .dual-track{
-  flex:1 1 0;
-  min-width:0;
-}
-.bar .bar-secondary .dual-track.dual-stage{
-  justify-content:flex-start;
-}
-.bar .bar-secondary .dual-track.dual-credit{
-  justify-content:flex-end;
-}
-.bar .bar-secondary .dual-lab{
-  overflow:visible;
-  text-overflow:clip;
-  max-width:none;
-  font-size:.6rem !important;
+.bar .bar-secondary .dual-compact .dual-lab{
+  font-size:.58rem !important;
   font-weight:700 !important;
-  line-height:16px;
+  line-height:14px;
+  color:rgba(245,230,192,.62);
 }
-.bar .bar-secondary .dual-track b,
-.bar .bar-secondary .dual-mid b{
-  font-size:.6rem !important;
+.bar .bar-secondary .dual-compact b{
+  font-size:.58rem !important;
   font-weight:900 !important;
-  line-height:16px;
+  line-height:14px;
   font-variant-numeric:tabular-nums;
+  color:rgba(245,230,192,.92);
+  margin-left:1px;
 }
-.bar .bar-secondary .dual-swatch{
-  width:7px;
-  height:10px;
+.bar .bar-secondary .dual-compact .dual-mid{
+  display:inline !important;
   flex:0 0 auto;
+  color:var(--gold) !important;
+  font-size:.58rem !important;
+  font-weight:800 !important;
+  line-height:14px;
 }
+.bar .bar-secondary .dual-compact .dual-sep{
+  display:inline-block;
+  margin:0 5px;
+  color:rgba(201,162,39,.55);
+  font-weight:700;
+}
+.bar .bar-secondary .dual-swatch{ display:none !important; }
 .bar .chips{
   margin-left:auto;
   max-width:none;
@@ -2495,23 +2490,31 @@ body.day-res-open #mask.day-res{
 
 /* ===== v19z20: map UX — no region tabs; focus「有事做」pins ===== */
 .region-tabs{ display:none !important; }
+/* v19z28: 「顯示全部地點」右緣對齊頂欄 padding 10px；淡邊／透底減浮掣感 */
 .map-focus-bar{
   position:sticky; top:0; z-index:12;
   display:flex; justify-content:flex-end; align-items:center;
-  gap:6px; padding:4px 8px 2px;
-  background:linear-gradient(180deg,rgba(58,53,48,.92),rgba(58,53,48,.55));
+  gap:6px; padding:2px 10px 0; /* match .bar horizontal 10px */
+  background:transparent;
   pointer-events:auto;
 }
 .map-focus-bar button{
-  appearance:none; border:1px solid #8a7355; background:rgba(36,40,48,.88);
-  color:var(--cream); border-radius:999px; padding:5px 10px;
-  font:inherit; font-size:.66rem; font-weight:700; cursor:pointer;
-  min-height:32px; box-sizing:border-box;
+  appearance:none;
+  border:1px solid rgba(201,162,39,.32);
+  background:rgba(46,42,38,.55);
+  color:rgba(245,230,192,.82);
+  border-radius:999px;
+  padding:3px 9px;
+  font:inherit; font-size:.58rem; font-weight:700; cursor:pointer;
+  min-height:24px; box-sizing:border-box;
+  box-shadow:none;
 }
 .map-focus-bar button[aria-pressed="true"]{
-  background:#243656; border-color:var(--gold-seal); color:#FFE7A0;
+  background:rgba(36,54,86,.72);
+  border-color:rgba(201,162,39,.65);
+  color:#FFE7A0;
 }
-.map-legend{ top:36px !important; }
+.map-legend{ top:28px !important; }
 /* smaller base pins */
 .pin .pin-img{
   width:24px !important;
@@ -3503,16 +3506,12 @@ body.day-res-open .day-row{
         </div>
       </div>
       <div class="dual-hud bar-secondary" id="map-dual-hud" aria-label="幕前聲量、季節與業內信用">
-        <span class="dual-track dual-stage" title="幕前聲量：觀眾認你幾多">
-          <i class="dual-swatch dual-swatch-stage" aria-hidden="true"></i>
-          <span class="dual-lab">幕前聲量</span>
-          <b id="c-stage-volume">0</b>
-        </span>
-        <span class="dual-mid" id="c-era">1988 春</span>
-        <span class="dual-track dual-credit" title="業內信用：準時、聽話">
-          <i class="dual-swatch dual-swatch-credit" aria-hidden="true"></i>
-          <span class="dual-lab">業內信用</span>
-          <b id="c-industry-credit">0</b>
+        <span class="dual-compact" title="幕前聲量 · 季節 · 業內信用">
+          <span class="dual-lab dual-lab-stage">聲量</span><b id="c-stage-volume">0</b>
+          <span class="dual-sep" aria-hidden="true">·</span>
+          <span class="dual-mid" id="c-era">1988春</span>
+          <span class="dual-sep" aria-hidden="true">·</span>
+          <span class="dual-lab dual-lab-credit">信用</span><b id="c-industry-credit">0</b>
         </span>
       </div>
     </div>
@@ -19056,7 +19055,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z27. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=19z28. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -19139,7 +19138,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z27";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=19z28";
       if(out.indexOf(u)<0) out.push(u);
     };
     const core = SP_CORE_STEM[speakerId];
@@ -19225,7 +19224,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=19z27");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=19z28");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -20035,7 +20034,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z27";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=19z28";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -20205,10 +20204,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z27") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z27") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=19z28") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=19z28") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z27") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=19z28") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -21662,7 +21661,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z27";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=19z28";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -22107,7 +22106,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z27`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z28`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -22277,7 +22276,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z27`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=19z28`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -24725,7 +24724,7 @@ function paintStoryEntryHints(){
   if(chip){
     const show = n>0;
     chip.classList.toggle("on", show);
-    /* v19z27: chip 常駐；無未讀淡顯示，唔再 aria-hidden */
+    /* v19z28: chip 常駐；無未讀淡顯示，唔再 aria-hidden */
     chip.setAttribute("aria-hidden", "false");
     chip.title = show ? ("有可播事態 · "+n) : "事態（暫無可播）";
     if(chipN) chipN.textContent = show ? String(n) : "";
@@ -24941,7 +24940,7 @@ function paintBar(){
   const era=document.getElementById("c-era");
   if(era){
     const dt=dateObj();
-    era.textContent = dt.getFullYear()+" "+calendarSeason();
+    era.textContent = dt.getFullYear()+calendarSeason(); /* v19z28 compact: 1988春 */
   }
   const dateEl=document.getElementById("c-date"); if(dateEl) dateEl.textContent = fmtDateShort();
   const staEl=document.getElementById("c-sta"); if(staEl) staEl.textContent = S.stamina;
@@ -26327,7 +26326,7 @@ const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z27";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=19z28";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -26341,7 +26340,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=19z27";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=19z28";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -26440,11 +26439,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z27") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=19z28") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z27") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=19z28") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -26947,21 +26946,21 @@ function openLoc(id, opts){
   }catch(_e){}
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z27. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=19z28. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z27",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z27",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z27",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z27",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z27",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z27",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z27",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z27",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z27",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z27",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z27",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z27",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z27",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=19z28",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=19z28",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=19z28",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=19z28",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=19z28",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=19z28",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=19z28",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=19z28",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=19z28",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=19z28",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=19z28",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=19z28",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=19z28",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
