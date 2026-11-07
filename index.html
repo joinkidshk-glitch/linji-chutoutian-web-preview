@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=20a4");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=20a5");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=20a4");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=20a5");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=20a4");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=20a5");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -3616,7 +3616,17 @@ body.day-res-open .day-row{
 }
 
 
-/* v20a4 post-shoot reward sheet */
+/* v20a5 post-shoot reward sheet + journal ledger */
+.mark-star{ display:inline-flex; align-items:center; justify-content:center; min-width:14px; height:14px; padding:0 3px; border-radius:999px; background:#6b4e2e; color:#fff8e8; font-size:9px; font-weight:800; line-height:1; border:1px solid #C9A227; }
+.lg-star .mark-star{ margin-right:2px; }
+#home-pane-ledger .ledger-wrap{ flex:1 1 auto; min-height:0; overflow:auto; padding:4px 2px 16px; -webkit-overflow-scrolling:touch; }
+#home-pane-ledger .ledger-head{ margin:0 0 8px; }
+#home-pane-ledger .ledger-head h3{ margin:0 0 4px; font-size:.95rem; }
+#home-pane-ledger .stats-grid .stat{ background:#fff8e8; border-color:#c4a574; }
+#home-pane-ledger .stats-grid .stat .l{ color:#6b4e2e; }
+#home-pane-ledger .stats-grid .stat .v{ color:#1A1410; }
+#home-pane-ledger .ledger-money{ margin:10px 0 6px; font-weight:800; }
+#home-pane-ledger .ledger-enroll{ font-size:.78rem; color:var(--muted); margin:0; }
 .psr-sheet{ text-align:left; }
 .psr-eyebrow{ font-size:.7rem; letter-spacing:.12em; color:var(--muted); margin:0 0 4px; text-transform:uppercase; }
 .psr-h{ margin:0 0 4px; font-size:1.05rem; }
@@ -3709,6 +3719,7 @@ body.day-res-open .day-row{
         <span class="lg"><img id="lg-intel" alt=""/>情報</span>
         <span class="lg lg-story"><span class="mark-story" aria-hidden="true">劇</span>事態</span>
         <span class="lg"><img id="lg-npc" alt=""/>熟人</span>
+        <span class="lg lg-star"><span class="mark-star" aria-hidden="true">星</span>遠觀</span>
         <span class="lg lg-out" hidden><img id="lg-out" alt=""/>非本區</span>
       </div>
       <div class="map-polaroid" id="map-polaroid">
@@ -3748,6 +3759,7 @@ body.day-res-open .day-row{
       </div>
       <div class="home-tabs" id="home-tabs" role="tablist" aria-label="手帳分頁">
         <button type="button" class="home-tab on" id="htab-plan" role="tab" aria-selected="true" data-htab="plan">行程</button>
+        <button type="button" class="home-tab" id="htab-ledger" role="tab" aria-selected="false" data-htab="ledger">記數</button>
         <button type="button" class="home-tab" id="htab-rumor" role="tab" aria-selected="false" data-htab="rumor">傳聞</button>
         <button type="button" class="home-tab" id="htab-debt" role="tab" aria-selected="false" data-htab="debt">人情債</button>
         <button type="button" class="home-tab" id="htab-tags" role="tab" aria-selected="false" data-htab="tags">標籤</button>
@@ -3793,6 +3805,9 @@ body.day-res-open .day-row{
         <button class="paper" type="button" id="btn-reset-plan">還原</button>
         <button class="ink" type="button" id="btn-confirm-plan">確定</button>
       </div>
+      </div>
+      <div class="home-pane" id="home-pane-ledger">
+        <div class="ledger-wrap journal-scroll" id="ledger-list" aria-label="記數簿"></div>
       </div>
       <div class="home-pane" id="home-pane-rumor">
         <div class="journal-scroll" id="rumor-list" aria-label="傳聞"></div>
@@ -19282,7 +19297,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=20a4. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=20a5. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -19374,7 +19389,7 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=20a4";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=20a5";
       if(out.indexOf(u)<0) out.push(u);
     };
     const era = SP_ERA_STEM[speakerId] || (speakerId==="yip_manzi" ? "yip_manji" : "");
@@ -19465,7 +19480,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=20a4");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=20a5");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -20275,7 +20290,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=20a4";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=20a5";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -20445,10 +20460,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=20a4") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=20a4") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=20a5") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=20a5") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=20a4") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=20a5") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -21919,7 +21934,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=20a4";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=20a5";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -22487,7 +22502,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a4`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a5`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -22657,7 +22672,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a4`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a5`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -25528,7 +25543,7 @@ function drawMap(){
     showAllBtn.setAttribute("aria-pressed", mapShowAllLocs ? "true" : "false");
     showAllBtn.textContent = mapShowAllLocs ? "只亮有事" : "全部地點";
   }
-  /* helper：地點有冇通告／事態／熟人 */
+  /* helper：地點有冇通告／事態／熟人／紅星遠觀（v20a5：遠觀亦算有事，免蘇芷茵針被淡化藏起） */
   function locActionFlags(L){
     const hasNpc=!!(S.locNpc && S.locNpc[L.id]);
     let boardList = [];
@@ -25547,8 +25562,12 @@ function drawMap(){
     const hasTip=!!tip;
     const isStoryTip = !!(tip && tip.kind==="story");
     const hasBoard = boardN>0;
-    const hasAction = hasBoard || hasTip || hasNpc;
-    return { hasNpc, boardList, boardN, canBoardN, tip, hasTip, isStoryTip, hasBoard, hasAction };
+    let star = null;
+    try{ if(typeof starAtLoc==="function") star = starAtLoc(L.id); }catch(_e){ star=null; }
+    const hasStar = !!star;
+    const starName = star && star.displayName ? String(star.displayName) : "";
+    const hasAction = hasBoard || hasTip || hasNpc || hasStar;
+    return { hasNpc, boardList, boardN, canBoardN, tip, hasTip, isStoryTip, hasBoard, hasStar, starName, hasAction };
   }
   /* v19z3／v19z20：近針扇形錯開（略加大半徑減重疊） */
   const visible = LOCS.slice();
@@ -25589,13 +25608,13 @@ function drawMap(){
   drawOrder.forEach(p=>{
     const L=p.L;
     const flags=actionById[L.id];
-    const { hasNpc, boardN, canBoardN, hasTip, isStoryTip, hasBoard, hasAction } = flags;
+    const { hasNpc, boardN, canBoardN, hasTip, isStoryTip, hasBoard, hasStar, starName, hasAction } = flags;
     const btn=document.createElement("button");
     btn.type="button";
     btn.dataset.loc=L.id;
-    /* v19z3：熟人針只喺真係有在場 NPC 先亮；v19z20：idle／has-action */
+    /* v19z3：熟人針只喺真係有在場 NPC 先亮；v19z20：idle／has-action；v20a5：遠觀紅星亦 has-action */
     const idleCls = hasAction ? " has-action" : " idle dim";
-    btn.className=`pin v18c-pin-marks-hug ${L.type}${hasBoard?" has-board":""}${hasNpc?" has-npc":""}${hasTip?" has-tip":""}${isStoryTip?" has-story-tip":""}${idleCls}${L.lab?(" "+L.lab):""}`;
+    btn.className=`pin v18c-pin-marks-hug ${L.type}${hasBoard?" has-board":""}${hasNpc?" has-npc":""}${hasTip?" has-tip":""}${isStoryTip?" has-story-tip":""}${hasStar?" has-star":""}${idleCls}${L.lab?(" "+L.lab):""}`;
     btn.style.left=p.x+"%";
     btn.style.top=p.y+"%";
     const markImgs=[];
@@ -25608,13 +25627,15 @@ function drawMap(){
     }
     if(hasNpc && uiIcon("legend_acquaintance")) markImgs.push(`<img src="${uiIcon("legend_acquaintance")}" alt="熟人"/>`);
     else if(hasNpc) markImgs.push("👤");
+    if(hasStar) markImgs.push(`<span class="mark-star" aria-hidden="true">星</span>`);
     const marks=markImgs.join("");
     const boardAria = hasBoard
       ? (canBoardN>0 && canBoardN<boardN
           ? ` · 通告欄 可接 ${canBoardN}／共 ${boardN} 則`
           : ` · 通告欄 ${boardN} 則`)
       : "";
-    btn.setAttribute("aria-label", `${L.name}（${L.area}）${boardAria}${isStoryTip?" · 事態":(hasTip?" · 情報":"")}${hasNpc?" · 熟人":""}${hasAction?"":" · 閒置"}`);
+    const starAria = hasStar ? (` · 遠觀`+(starName?(" "+starName):"")) : "";
+    btn.setAttribute("aria-label", `${L.name}（${L.area}）${boardAria}${isStoryTip?" · 事態":(hasTip?" · 情報":"")}${hasNpc?" · 熟人":""}${starAria}${hasAction?"":" · 閒置"}`);
     btn.style.pointerEvents="auto";
     btn.innerHTML=`<span class="pin-head"><span class="marks">${marks}</span><img class="pin-img" src="assets/ui-physical/map-frame/map_pin.png?v=16" alt="" draggable="false"/></span><span class="plab">${L.name}</span>`;
     const goPin=(ev)=>{
@@ -26591,7 +26612,7 @@ function playPushDoor(){
   }, 820);
 }
 function setHomeTab(tab){
-  const allow={ plan:1, rumor:1, debt:1, tags:1 };
+  const allow={ plan:1, ledger:1, rumor:1, debt:1, tags:1 };
   if(tab==="tags" && typeof freeplayDevTagsOn==="function" && !freeplayDevTagsOn()) tab="plan";
   if(!allow[tab]) tab="plan";
   applyPhase2Steps56TabLabel();
@@ -26600,11 +26621,14 @@ function setHomeTab(tab){
     b.classList.toggle("on", on);
     b.setAttribute("aria-selected", on?"true":"false");
   });
-  ["plan","rumor","debt","tags"].forEach(id=>{
+  ["plan","ledger","rumor","debt","tags"].forEach(id=>{
     const pane=document.getElementById("home-pane-"+id);
     if(pane) pane.classList.toggle("on", id===tab);
   });
   ensureWeakSeals();
+  if(tab==="ledger"){
+    try{ renderLedgerPane(); }catch(_e){}
+  }
   if(tab==="rumor") renderRumorPane();
   if(tab==="debt"){
     renderDebtPane();
@@ -26656,9 +26680,9 @@ try{
   };
 }catch(_e){}
 
-/* ===== v20a4 FREEPLAY + POST-SHOOT REWARD — fix reward sheet after wrap + loc CTA board-modal-open; Soft≠PASS ===== */
+/* ===== v20a5 FREEPLAY — so_jiyan map star pin + journal 記數 tab + post-shoot polish; Soft≠PASS ===== */
 const FREEPLAY_FW = {
-  version: "v20a4",
+  version: "v20a5",
   schema: null,
   eraStars: null,
   rumorFrags: null,
@@ -26961,7 +26985,7 @@ function freeplayApplyEraStarStubOverlay(){
     });
   }catch(_e){}
 }
-/* ===== v20a4 POST-SHOOT REWARD / ACHIEVEMENT PRESS ===== */
+/* ===== v20a5 POST-SHOOT REWARD / ACHIEVEMENT PRESS ===== */
 function ensurePostShootRewardLog(){
   if(!S || typeof S!=="object") return [];
   if(!Array.isArray(S.postShootRewards)) S.postShootRewards = [];
@@ -26996,11 +27020,26 @@ function postShootCopyLine(v, fallback){
   if(!s || /待補|文案待補/.test(s)) return fallback;
   return s;
 }
+/** Strip nested 《》 so reward sheet never shows 《《作品》…》. Prefer workTitle. */
+function postShootDisplayTitle(sh){
+  sh = sh || {};
+  let raw = String(sh.workTitle || sh.title || "通告").trim();
+  if(!raw) raw = "通告";
+  /* unwrap repeated outer book-title brackets */
+  for(let i=0;i<3;i++){
+    const m = raw.match(/^《([^》]+)》(.*)$/);
+    if(!m) break;
+    const rest = String(m[2]||"").trim();
+    raw = rest ? (m[1] + (rest.startsWith("·")||rest.startsWith("：")||rest.startsWith(":") ? rest : (" · "+rest))) : m[1];
+  }
+  raw = raw.replace(/^《+|》+$/g, "").trim() || "通告";
+  return raw;
+}
 function buildPostShootRewardPack(sh){
   sh = sh || {};
   const gigType = sh.type || "";
   const gigId = sh.gigId || sh.id || "";
-  const title = sh.title || "通告";
+  const title = postShootDisplayTitle(sh);
   const day = (S && (S.dayIndex|0)) || 0;
   const metricKind = postShootMetricKindForType(gigType);
   const pressT = postShootPickTemplate("press", gigType);
@@ -27126,13 +27165,18 @@ function renderPostShootRewardHtml(pack){
       ${body}
     </article>`;
   }).join("");
+  const faceTitle = postShootDisplayTitle({ title: pack.title, workTitle: pack.workTitle });
+  /* Soft player UI：唔顯示內容 bot／stub 工程提示（只留 NOTES／contract）。 */
+  const foot = (typeof freeplayDevTagsOn==="function" && freeplayDevTagsOn())
+    ? `<p class="psr-foot sub">短訊可換；內容 bot 改 STUB_POST_SHOOT_REWARDS。</p>`
+    : "";
   return `<div class="psr-sheet">
     <p class="psr-eyebrow">殺青獎勵</p>
     <h3 class="psr-h">傳媒・街外・成績</h3>
-    <p class="psr-sub">《${String(pack.title||"通告")}》殺青之後——</p>
+    <p class="psr-sub">《${faceTitle}》殺青之後——</p>
     <div class="psr-cards">${cardsHtml}</div>
     ${dualLine}
-    <p class="psr-foot sub">短訊可換；內容 bot 改 STUB_POST_SHOOT_REWARDS。</p>
+    ${foot}
   </div>`;
 }
 function presentPostShootReward(pack, thenFn){
@@ -27166,8 +27210,13 @@ function postShootRewardCheck(){
     if(tv.metricKind!=="ratings") fails.push("metric_tv");
     const rec = buildPostShootRewardPack({ title:"碟", type:"唱片通告", gigId:"__check_rec__" });
     if(rec.metricKind!=="sales") fails.push("metric_rec");
+    const nested = buildPostShootRewardPack({ title:"《便利店短片》廣告路人 B", workTitle:"便利店短片", type:"廣告", gigId:"__check_title__" });
+    if(String(nested.title||"").indexOf("《")>=0 || String(nested.title||"").indexOf("》")>=0) fails.push("title_nested");
+    const html = renderPostShootRewardHtml(nested);
+    if(/《《/.test(html)) fails.push("title_double");
+    if(/短訊可換/.test(html)) fails.push("stub_tip_visible");
   }catch(_e){ fails.push("build_err"); }
-  return { ok:!fails.length, fails:fails, version:"v20a4", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, version:"v20a5", softStatus:"≠PASS" };
 }
 try{
   window.__reward = {
@@ -27236,7 +27285,7 @@ try{
     },
     check: function(){
       const fails=[];
-      if(FREEPLAY_FW.version!=="v20a4") fails.push("ver");
+      if(FREEPLAY_FW.version!=="v20a5") fails.push("ver");
       const ids=["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji"];
       ids.forEach(id=>{ if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId===id)) fails.push("star:"+id); });
       if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan")) fails.push("so_jiyan_sighting");
@@ -27246,8 +27295,14 @@ try{
         if(!LOCS.some(l=>l.id==="rec_wanchai")) fails.push("loc:rec_wanchai");
       }
       if(!document.getElementById("home-pane-tags")) fails.push("ui:tags");
+      if(!document.getElementById("home-pane-ledger")) fails.push("ui:ledger");
+      if(!document.getElementById("htab-ledger")) fails.push("ui:htab_ledger");
       if(!document.getElementById("home-pane-rumor")) fails.push("ui:rumor");
       if(!document.getElementById("home-pane-debt")) fails.push("ui:debt");
+      try{
+        if(typeof phase3Stars==="function" && !phase3Stars().some(s=>s&&s.starId==="so_jiyan")) fails.push("so_jiyan_phase3");
+        if(typeof starAtLoc==="function" && !(starAtLoc("rec_wanchai")&&starAtLoc("rec_wanchai").starId==="so_jiyan")) fails.push("so_jiyan_loc");
+      }catch(_e){ fails.push("so_jiyan_phase3"); }
       try{ if(typeof BehaviorGate!=="undefined" && BehaviorGate.nextHint_neverShow()!=="") fails.push("nextHint"); }catch(_e){ fails.push("nextHint"); }
       try{
         const nodes = (FREEPLAY_FW.storySlots && FREEPLAY_FW.storySlots.nodes) || [];
@@ -27294,7 +27349,7 @@ try{
         if(!rc.ok) fails.push.apply(fails, (rc.fails||[]).map(f=>"reward:"+f));
       }catch(_e){ fails.push("reward_check"); }
       return {
-        ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a4",
+        ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a5",
         slotsCount: ((FREEPLAY_FW.storySlots&&FREEPLAY_FW.storySlots.nodes)||[]).length,
         soJiyan: typeof STAR_SIGHTINGS!=="undefined" && STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan"),
         creditGate: typeof softIndustryCreditGate==="function",
@@ -27516,7 +27571,7 @@ try{ window.__eraBustPreferFile = ["luk_baakyin","liu_bingxing","ngai_wingnaam",
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=20a4";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=20a5";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -27530,7 +27585,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=20a4";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=20a5";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -27623,6 +27678,11 @@ try{
       const stars = phase3Stars();
       if(stars.length<4) fails.push("count");
       if(!STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan")) fails.push("so_jiyan_pin");
+      if(!stars.some(s=>s.starId==="so_jiyan")) fails.push("so_jiyan_active");
+      try{
+        const sj = stars.find(s=>s.starId==="so_jiyan");
+        if(!(sj && Array.isArray(sj.locs) && sj.locs.indexOf("rec_wanchai")>=0)) fails.push("so_jiyan_loc");
+      }catch(_e){ fails.push("so_jiyan_loc"); }
       if(stars.some(s=>s.starId==="chai_chunhoi")) fails.push("chai");
       PHASE3_STAR_ORDER.forEach(id=>{ if(!stars.some(s=>s.starId===id)) fails.push("missing:"+id); });
       const c = phase3CastCopy();
@@ -27630,11 +27690,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=20a4") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=20a5") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=20a4") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=20a5") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -28166,21 +28226,21 @@ function openLoc(id, opts){
   }catch(_e){}
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=20a4. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=20a5. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a4",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a4",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a4",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a4",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a4",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a4",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a4",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a4",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a4",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a4",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a4",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a4",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a4",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a5",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a5",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a5",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a5",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a5",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a5",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a5",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a5",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a5",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a5",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a5",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a5",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a5",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -29194,7 +29254,8 @@ function showInventory(){
   modal(`<h3>庫存</h3><p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>${body}`, btns);
 }
 
-function showStats(){
+/** v20a5：記數簿／狀態共用同一套數字 UI（手帳「記數」tab；選單「狀態」跳去同一頁，唔另開第二套）。 */
+function ledgerStatsParts(){
   const keys=["acting","stage","vocal","looks","stamina","iq","charm","fame","popularity","stress"];
   const grid=keys.map(k=>{
     const n=Number(S[k])||0;
@@ -29204,9 +29265,45 @@ function showStats(){
     return `<div class="stat"><div class="l">${STAT_LABEL[k]}</div><div class="v">${n}／${cap}</div><div class="barline"><i style="width:${pct}%;background:${bg}"></i></div></div>`;
   }).join("");
   const en=Object.keys(S.enrolled||{}).filter(k=>S.enrolled[k]).map(k=>(COURSE_DEFS[k]||{}).name||k);
-  modal(`<h3>狀態</h3><p>${fmtDate()}</p><div class="stats-grid">${grid}</div>
-    <p>存款 <b class="gold">$ ${S.money.toLocaleString()}</b></p>
-    <p style="font-size:.78rem;color:var(--muted)">已報名訓練：${en.length?en.join("、"):"未有（去地圖公司報名）"}</p>`,[{label:"關閉",role:"g"}]);
+  const dual = (typeof readDualTracks==="function") ? readDualTracks(S) : { stageVolume:Number(S.fame)||0, industryCredit:0 };
+  return {
+    dateLine: (typeof fmtDate==="function") ? fmtDate() : "",
+    grid: grid,
+    money: Number(S.money)||0,
+    enrollLine: en.length?en.join("、"):"未有（去地圖公司報名）",
+    stageVolume: dual.stageVolume|0,
+    industryCredit: dual.industryCredit|0,
+  };
+}
+function ledgerStatsHtml(){
+  const p = ledgerStatsParts();
+  return `<div class="ledger-head"><h3>記數簿</h3><p class="sub">${p.dateLine}</p>
+    <p class="sub">幕前聲量 <b>${p.stageVolume}</b> · 業內信用 <b>${p.industryCredit}</b></p></div>
+    <div class="stats-grid">${p.grid}</div>
+    <p class="ledger-money">存款 <b class="gold">$ ${p.money.toLocaleString()}</b></p>
+    <p class="ledger-enroll">已報名訓練：${p.enrollLine}</p>`;
+}
+function renderLedgerPane(){
+  const box = document.getElementById("ledger-list");
+  if(!box) return;
+  try{ box.innerHTML = ledgerStatsHtml(); }catch(_e){ box.innerHTML = "<p class=\"sub\">記數簿暫時睇唔到。</p>"; }
+}
+function showStats(){
+  /* 單一記數 UI：入手帳「記數」分頁；若手帳未就緒先保底 modal（同內容）。 */
+  try{
+    if(typeof kickScheduleIfNeeded==="function" && kickScheduleIfNeeded()) return;
+  }catch(_e){}
+  try{
+    if(typeof enterHome==="function"){
+      enterHome(null, false);
+      setTimeout(()=>{ try{ setHomeTab("ledger"); }catch(_e){} }, 40);
+      return;
+    }
+  }catch(_e){}
+  const p = ledgerStatsParts();
+  modal(`<h3>記數簿</h3><p>${p.dateLine}</p><div class="stats-grid">${p.grid}</div>
+    <p>存款 <b class="gold">$ ${p.money.toLocaleString()}</b></p>
+    <p style="font-size:.78rem;color:var(--muted)">已報名訓練：${p.enrollLine}</p>`,[{label:"關閉",role:"g"}]);
 }
 function showPeople(){
   const html=Object.values(NPCS).map(n=>{
