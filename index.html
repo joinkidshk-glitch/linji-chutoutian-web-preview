@@ -23,12 +23,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --shell:#C8BDB0; --shell-dark:#2E2A26;
   --phys-notice:url("assets/ui-physical/notice/notice_paper.png?v=16");
   --phys-notebook:url("assets/ui-physical/notebook/notebook_spread.png?v=16d");
-  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=20a1");
+  --phys-polaroid:url("assets/ui-physical/map-frame/map_polaroid_frame.png?v=20a2");
   --phys-toast:url("assets/ui-physical/toast/ticket_stub.png?v=16d");
-  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=20a1");
+  --phys-hud-bar:url("assets/ui-physical/hud/hud_shell_bar.png?v=20a2");
   --phys-start-card:url("assets/ui-physical/brand/start_title_card.png?v=16");
   --phys-map-pin:url("assets/ui-physical/map-frame/map_pin.png?v=16");
-  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=20a1");
+  --phys-stamp:url("assets/ui-physical/toast/stamp_complete.png?v=20a2");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -18029,7 +18029,8 @@ const BehaviorGate = (function(){
   }
   function coversNode(node){
     const id = nodeId(node);
-    return /^C[1-5]$/.test(id) && !!byId[id];
+    /* v20a2: C1–C17 Soft shells; C6–C17 may come from Freeplay slots only */
+    return /^C([1-9]|1[0-7])$/.test(id) && !!byId[id];
   }
   function softLocId(node){
     const n = byId[nodeId(node)];
@@ -18472,26 +18473,45 @@ const BehaviorGate = (function(){
   }
 
   function applyFreeplaySlots(slotsPack){
-    /* Overlay Freeplay slots triggers (+ filled face) onto Soft gate nodes. Soft≠PASS. */
+    /* Overlay Freeplay slots triggers (+ filled face) onto Soft gate nodes.
+       v20a2: create C6–C17 shells when sandbox only has C1–C5. Soft≠PASS. */
     if(!slotsPack || !Array.isArray(slotsPack.nodes)) return { ok:false, reason:"nodes" };
-    if(!stub) return { ok:false, reason:"no_stub" };
-    let n=0, faces=0;
+    if(!stub){
+      stub = { nodes:[], stubRev:"freeplay-slots", softStatus:"≠PASS" };
+    }
+    if(!Array.isArray(stub.nodes)) stub.nodes = [];
+    let n=0, faces=0, created=0;
     slotsPack.nodes.forEach(slot=>{
       if(!slot || !slot.beatId) return;
       const id=String(slot.beatId);
-      const held=byId[id];
-      if(!held) return;
-      if(slot.trigger && typeof slot.trigger==="object"){
+      let held=byId[id];
+      if(!held){
+        held = {
+          beatId:id,
+          optional: !!slot.optional,
+          locId: slot.locId || null,
+          playerFaceLine: "",
+          redStarHook: "",
+          nextHint: "",
+          trigger: Object.assign({}, slot.trigger||{}),
+          fromFreeplaySlot: true,
+        };
+        byId[id] = held;
+        stub.nodes.push(held);
+        created++;
+        n++;
+      } else if(slot.trigger && typeof slot.trigger==="object"){
         held.trigger = Object.assign({}, held.trigger||{}, slot.trigger);
         n++;
       }
       if(slot.locId) held.locId = slot.locId;
+      if(typeof slot.optional==="boolean") held.optional = slot.optional;
       const face=String(slot.playerFaceLine||"").trim();
       if(face && face.indexOf("待補")<0){ held.playerFaceLine = face; faces++; }
       if(slot.redStarHook) held.redStarHook = slot.redStarHook;
       held.nextHint = "";
     });
-    return { ok:true, n:n, faces:faces };
+    return { ok:true, n:n, faces:faces, created:created };
   }
   const api = {
     loadStub_nodes_trigger: loadStub_nodes_trigger,
@@ -19244,7 +19264,7 @@ const StoryPlay = (()=>{
     ad_central:1, ad_adm:1, rec_star:1, rec_wanchai:1, rec_hk:1,
     cafe_cha:1, agency_ho:1
   };
-  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=20a1. */
+  /** v19w core stems. Style-lock busts Soft-mounted; cache query stays ?v=20a2. */
   const SP_CORE_STEM = {
     lin_hiu:"lin_hiu",
     chow_choiyi:"chow_choiyi",
@@ -19253,6 +19273,15 @@ const StoryPlay = (()=>{
     lui_ging:"lui_ging",
     vera:"vera",
   };
+  /** v20a2 era_stars bust preferFile (MVP4 + so_jiyan on disk). */
+  const SP_ERA_STEM = {
+    luk_baakyin:"luk_baakyin",
+    liu_bingxing:"liu_bingxing",
+    ngai_wingnaam:"ngai_wingnaam",
+    yip_manji:"yip_manji",
+    so_jiyan:"so_jiyan",
+  };
+  try{ window.__eraBustPreferFile = Object.keys(SP_ERA_STEM); }catch(_e){}
   /** expression-aware bust paths tried at runtime; missing files → PORTRAITS → 剪影 */
   const SP_BUST_PROBE = Object.create(null); /* url -> true/false */
   const SP_BG_PROBE = Object.create(null);
@@ -19327,9 +19356,14 @@ const StoryPlay = (()=>{
     const out = [];
     const push = (u)=>{
       if(!u) return;
-      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=20a1";
+      if(String(u).indexOf("assets/")===0 && String(u).indexOf("?")<0) u = u+"?v=20a2";
       if(out.indexOf(u)<0) out.push(u);
     };
+    const era = SP_ERA_STEM[speakerId] || (speakerId==="yip_manzi" ? "yip_manji" : "");
+    if(era){
+      push("assets/story/era_stars/"+era+"_bust_"+expr+".png");
+      if(expr!=="default") push("assets/story/era_stars/"+era+"_bust_default.png");
+    }
     const core = SP_CORE_STEM[speakerId];
     if(core){
       push("assets/story/core/"+core+"_bust_"+expr+".png");
@@ -19372,7 +19406,7 @@ const StoryPlay = (()=>{
     const cands = spBustCandidates(speakerId, expression);
     const expr = spNormExpression(expression);
     /* Soft files win for core style-lock busts, the Cheung pair, and the hero raise_brow redo. Other faces stay on the embedded portrait. */
-    const preferFile = !!SP_CORE_STEM[speakerId] || speakerId==="cheung_tsijun" || (speakerId==="awi" && expr==="raise_brow");
+    const preferFile = !!SP_CORE_STEM[speakerId] || !!SP_ERA_STEM[speakerId] || speakerId==="yip_manzi" || speakerId==="cheung_tsijun" || (speakerId==="awi" && expr==="raise_brow");
     if(!preferFile){
       for(const u of cands){
         if(String(u).indexOf("data:")===0) return u;
@@ -19413,7 +19447,7 @@ const StoryPlay = (()=>{
     const out = [];
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=20a1");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=20a2");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -20223,7 +20257,7 @@ function tutorialPhase2FxOn(){
   try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
 }
 function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=20a1";
+  return "assets/ui-physical/tutorial-fx/"+file+"?v=20a2";
 }
 function tutorialFxFingerErr(img){
   const fb = img && img.getAttribute("data-fx-fallback");
@@ -20393,10 +20427,10 @@ function tutorialPhase2Steps56SelfCheck(){
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=20a1") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=20a1") fails.push("fx_proc");
+  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=20a2") fails.push("fx_finger");
+  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=20a2") fails.push("fx_proc");
   ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=20a1") fails.push("fx_file");
+    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=20a2") fails.push("fx_file");
   });
   if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
   if(TUTORIAL && TUTORIAL!==TUTORIAL_ZH_HK && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
@@ -21864,7 +21898,7 @@ function toast(m, opts){
   if(stampWanted){
     const img=document.createElement("img");
     img.className="toast-stamp";
-    img.src="assets/ui-physical/toast/stamp_complete.png?v=20a1";
+    img.src="assets/ui-physical/toast/stamp_complete.png?v=20a2";
     img.alt="";
     img.draggable=false;
     t.appendChild(img);
@@ -22119,6 +22153,50 @@ function gigLifecycleStatus(g){
   }catch(_e){}
   return { key:"open", label:"招募中", alt:false };
 }
+function softIndustryCreditGate(gig){
+  /* Soft-only. industryCreditMin on gig → compare dual-track industryCredit. Absent = no-op. Soft≠PASS; no LIVE tip. */
+  try{
+    if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview || !BehaviorGate.featureFlag_softBehaviorGatePreview()){
+      return {ok:true};
+    }
+  }catch(_e){ return {ok:true}; }
+  if(!gig || gig.industryCreditMin==null || gig.industryCreditMin==="") return {ok:true};
+  const need = Number(gig.industryCreditMin);
+  if(!(need>0)) return {ok:true};
+  let have = 0;
+  try{
+    const dual = (typeof readDualTracks==="function") ? readDualTracks(S) : (typeof dualTrackNumbers==="function" ? dualTrackNumbers(S) : null);
+    have = dual ? Number(dual.industryCredit)||0 : (Number(S && S.industryCredit)||0);
+  }catch(_e){ have = Number(S && S.industryCredit)||0; }
+  if(have < need){
+    return {ok:false, reason:"組製睇業內信用——暫時未合這檔要求。", industryCredit:have, industryCreditMin:need};
+  }
+  return {ok:true, industryCredit:have, industryCreditMin:need};
+}
+function softOverdueFavorDebtLock(gig){
+  /* Soft-only. 已逾期人情債鎖「接通告」；清數／非逾期（含教學未到期）唔鎖。Soft≠PASS. */
+  try{
+    if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview || !BehaviorGate.featureFlag_softBehaviorGatePreview()){
+      return {ok:true};
+    }
+  }catch(_e){ return {ok:true}; }
+  let overdue = [];
+  try{
+    const list = (typeof S!=="undefined" && S && Array.isArray(S.mockDebts)) ? S.mockDebts : [];
+    overdue = list.filter(d=>{
+      if(!d) return false;
+      const st = (typeof debtStatusLabel==="function") ? debtStatusLabel(d.status) : String(d.status||"");
+      return st==="已逾期";
+    });
+  }catch(_e){ overdue = []; }
+  if(!overdue.length) return {ok:true};
+  const who = overdue.slice(0,2).map(d=>d.creditor||d.title||"債主").join("、");
+  return {
+    ok:false,
+    reason:"有人情債已逾期（"+who+"）——先去事務所／手帳清數，再接通告。",
+    overdueIds: overdue.map(d=>d.id).filter(Boolean),
+  };
+}
 function softCastingTagGate(gig){
   /* Soft-only. Reads requiresCastingTagAny / blocksCastingTagAny on the gig. LIVE unchanged. */
   try{
@@ -22174,6 +22252,14 @@ function canAudition(gig){
     const tagGate = softCastingTagGate(gig);
     if(tagGate && tagGate.ok===false) return tagGate;
   }catch(_e){}
+  try{
+    const creditGate = softIndustryCreditGate(gig);
+    if(creditGate && creditGate.ok===false) return creditGate;
+  }catch(_e){}
+  try{
+    const debtGate = softOverdueFavorDebtLock(gig);
+    if(debtGate && debtGate.ok===false) return debtGate;
+  }catch(_e){}
   return {ok:true, softTry:false};
 }
 /** v18a／v18t：門檻未齊但 canAudition 仍放行＝可搏一搏 */
@@ -22217,6 +22303,18 @@ function chance(gig){
 function gateShortReason(gig){
   /* PLAN_GIG_CARD_PLAYER_COPY_v1 §2.1 — 能力名列表，唔帶數字 */
   if(!gig) return "這張通告暫時未能報名。";
+  try{
+    const debtGate = softOverdueFavorDebtLock(gig);
+    if(debtGate && debtGate.ok===false) return debtGate.reason;
+  }catch(_e){}
+  try{
+    const creditGate = softIndustryCreditGate(gig);
+    if(creditGate && creditGate.ok===false) return creditGate.reason;
+  }catch(_e){}
+  try{
+    const tagGate = softCastingTagGate(gig);
+    if(tagGate && tagGate.ok===false) return tagGate.reason;
+  }catch(_e){}
   const floor=fameFloor(gig);
   const fameShort=(Number(S.fame)||0)<floor;
   const stats=[];
@@ -22247,6 +22345,18 @@ function reqHtml(gig){
     const ok=cur>=floor;
     parts.unshift(`<span class="${ok?"ok":"no"}">${(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲量"}：需要 ${floor}</span>`);
   }
+  try{
+    if(gig.industryCreditMin!=null && gig.industryCreditMin!=="" && Number(gig.industryCreditMin)>0){
+      const need=Number(gig.industryCreditMin);
+      let cur=0;
+      try{
+        const dual=(typeof readDualTracks==="function")?readDualTracks(S):null;
+        cur=dual?Number(dual.industryCredit)||0:(Number(S.industryCredit)||0);
+      }catch(_e){ cur=Number(S.industryCredit)||0; }
+      const ok=cur>=need;
+      parts.push(`<span class="${ok?"ok":"no"}">業內信用：需要 ${need}</span>`);
+    }
+  }catch(_e){}
   return parts.join("<br>");
 }
 
@@ -22356,7 +22466,7 @@ function gigCardHtml(g, opts){
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a1`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a2`;
   const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
@@ -22526,7 +22636,7 @@ function gigBoardTeaserHtml(g){
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
-  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a1`;
+  const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a2`;
   let pay="";
   {
     const payTxt=gigPayExactText(g);
@@ -26487,9 +26597,9 @@ try{
   };
 }catch(_e){}
 
-/* ===== v20a1 FREEPLAY INFRA — slots↔Soft gate, favorDebt seed, weak-seals tags, Soft casting gates; Soft≠PASS ===== */
+/* ===== v20a2 FREEPLAY STRUCTURE — C1–C17 slots, roster far-view, credit/debt Soft gates, era bust preferFile; Soft≠PASS ===== */
 const FREEPLAY_FW = {
-  version: "v20a1",
+  version: "v20a2",
   schema: null,
   eraStars: null,
   rumorFrags: null,
@@ -26753,26 +26863,45 @@ function freeplayApplyEraStarStubOverlay(){
   try{
     const pack = FREEPLAY_FW.eraStars;
     if(!pack || !Array.isArray(pack.stars) || typeof STAR_SIGHTINGS==="undefined") return;
+    const HOLD_OFF = { chai_zanhoi:1, placeholder_era_08:1, chai_chunhoi:1 };
     pack.stars.forEach(st=>{
       if(!st || !st.starId) return;
       const id = freeplayNormalizeStarId(st.starId);
-      const row = STAR_SIGHTINGS.find(s=>s.starId===id);
-      if(!row) return;
-      /* stub 文案若仍係佔位／空，保留既有 LIVE 遠觀句；有實文先覆寫 */
-      const sil = String(st.silhouetteDesc||"");
-      const line = String(st.distanceLine||"");
-      const rum = String(st.rumorTeaser||"");
-      if(sil && sil.indexOf("文案待補")<0) row.distanceLook = sil;
-      if(line && line.indexOf("文案待補")<0 && line.indexOf("只能遠望")<0) row.distanceLine = line;
-      if(rum) row.rumorTeaser = rum;
-      if(st.locHint) row.locHint = st.locHint;
-      if(Array.isArray(st.locs) && st.locs.length) row.locs = st.locs.slice();
+      if(HOLD_OFF[id]) return;
+      let row = STAR_SIGHTINGS.find(s=>s.starId===id);
+      if(!row){
+        row = {
+          starId:id,
+          displayName: st.displayName || id,
+          locs: Array.isArray(st.locs) ? st.locs.slice() : [],
+          distanceLook: st.silhouetteDesc || "（遠影）",
+          distanceLine: st.distanceLine || "只能遠望，時機未到唔好行埋。",
+          locHint: st.locHint || "",
+          rumorTeaser: st.rumorTeaser || "",
+          resultToast: st.resultToast || ("已遠觀"+(st.displayName||"")+"。"),
+          actionLabel: st.actionLabel || "遠觀",
+          fromFreeplayStub: true,
+        };
+        STAR_SIGHTINGS.push(row);
+      } else {
+        const sil = String(st.silhouetteDesc||"");
+        const line = String(st.distanceLine||"");
+        const rum = String(st.rumorTeaser||"");
+        if(sil && sil.indexOf("文案待補")<0) row.distanceLook = sil;
+        if(line && line.indexOf("文案待補")<0 && line.indexOf("只能遠望")<0) row.distanceLine = line;
+        if(rum) row.rumorTeaser = rum;
+        if(st.locHint) row.locHint = st.locHint;
+        if(Array.isArray(st.locs) && st.locs.length) row.locs = st.locs.slice();
+        if(st.actionLabel) row.actionLabel = st.actionLabel;
+        if(st.resultToast) row.resultToast = st.resultToast;
+        if(st.displayName) row.displayName = st.displayName;
+      }
     });
   }catch(_e){}
 }
 async function loadFreeplayFramework(){
   if(FREEPLAY_FW.loaded) return FREEPLAY_FW;
-  const bust = "20a1";
+  const bust = "20a2";
   const files = {
     schema: "SCHEMA_FREEPLAY_FRAMEWORK_v1.json",
     eraStars: "STUB_ERA_STARS_MVP_v1.json",
@@ -26803,6 +26932,8 @@ try{
     tags: function(){ return ensureCastingTagsState().slice(); },
     applyTags: applyCastingTags,
     softCastingTagGate: softCastingTagGate,
+    softIndustryCreditGate: softIndustryCreditGate,
+    softOverdueFavorDebtLock: softOverdueFavorDebtLock,
     seedFavorDebt: seedFreeplayFavorDebt,
     wireSlots: applyFreeplaySlotsToSoftGate,
     stars: function(){ return ((FREEPLAY_FW.eraStars&&FREEPLAY_FW.eraStars.stars)||[]).map(s=>freeplayNormalizeStarId(s.starId)); },
@@ -26818,27 +26949,29 @@ try{
     },
     check: function(){
       const fails=[];
-      if(FREEPLAY_FW.version!=="v20a1") fails.push("ver");
+      if(FREEPLAY_FW.version!=="v20a2") fails.push("ver");
       const ids=["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji"];
       ids.forEach(id=>{ if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId===id)) fails.push("star:"+id); });
+      if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan")) fails.push("so_jiyan_sighting");
       if(typeof LOCS!=="undefined"){
         if(!LOCS.some(l=>l.id==="cafe_cha")) fails.push("loc:cafe_cha");
         if(!LOCS.some(l=>l.id==="agency_ho")) fails.push("loc:agency_ho");
+        if(!LOCS.some(l=>l.id==="rec_wanchai")) fails.push("loc:rec_wanchai");
       }
       if(!document.getElementById("home-pane-tags")) fails.push("ui:tags");
       if(!document.getElementById("home-pane-rumor")) fails.push("ui:rumor");
       if(!document.getElementById("home-pane-debt")) fails.push("ui:debt");
       try{ if(typeof BehaviorGate!=="undefined" && BehaviorGate.nextHint_neverShow()!=="") fails.push("nextHint"); }catch(_e){ fails.push("nextHint"); }
-      /* v20a1 infra checks */
       try{
+        const nodes = (FREEPLAY_FW.storySlots && FREEPLAY_FW.storySlots.nodes) || [];
+        const ids17 = nodes.map(n=>n&&n.beatId).filter(Boolean);
+        if(ids17.length < 17) fails.push("slots_c1_c17");
+        ["C6","C12","C17"].forEach(id=>{ if(ids17.indexOf(id)<0) fails.push("slot:"+id); });
         const wired = FREEPLAY_FW._slotsWired;
-        if(!(wired && wired.nTrig>=5) && !(FREEPLAY_FW.storySlots && FREEPLAY_FW.storySlots.nodes && FREEPLAY_FW.storySlots.nodes.length>=5)){
-          fails.push("slots_wire");
-        }
-        /* If Soft gate loaded, triggers should match slots for C3 rumor ecology */
+        if(!(wired && wired.nTrig>=5) && ids17.length<5) fails.push("slots_wire");
         if(typeof BehaviorGate!=="undefined" && BehaviorGate.stubNode){
           const c3 = BehaviorGate.stubNode("C3");
-          const slotC3 = ((FREEPLAY_FW.storySlots&&FREEPLAY_FW.storySlots.nodes)||[]).find(n=>n&&n.beatId==="C3");
+          const slotC3 = nodes.find(n=>n&&n.beatId==="C3");
           if(c3 && slotC3 && slotC3.trigger){
             const a = JSON.stringify(c3.trigger.rumorAny||[]);
             const b = JSON.stringify(slotC3.trigger.rumorAny||[]);
@@ -26852,19 +26985,30 @@ try{
       }catch(_e){ fails.push("favorDebt_seed"); }
       try{
         if(typeof ensureWeakSeals!=="function" || typeof castingTagsEarnedLabels!=="function") fails.push("weak_seals_tags");
-        const src = String(ensureWeakSeals);
-        if(src.indexOf("castingTagsEarnedLabels")<0 && src.indexOf("earned")<0) fails.push("weak_seals_tags");
       }catch(_e){ fails.push("weak_seals_tags"); }
       try{
         if(typeof softCastingTagGate!=="function") fails.push("soft_tag_gate");
-      }catch(_e){ fails.push("soft_tag_gate"); }
+        if(typeof softIndustryCreditGate!=="function") fails.push("credit_gate");
+        if(typeof softOverdueFavorDebtLock!=="function") fails.push("debt_lock");
+      }catch(_e){ fails.push("soft_gates"); }
+      try{
+        const sil = (typeof eraSilhouetteFarSrc==="function") ? eraSilhouetteFarSrc("so_jiyan") : "";
+        if(!sil || sil.indexOf("era_stars/so_jiyan_silhouette_far")<0) fails.push("era_sil");
+        if(!window.__eraBustPreferFile || window.__eraBustPreferFile.indexOf("so_jiyan")<0) fails.push("era_bust_prefer");
+      }catch(_e){ fails.push("era_bust_prefer"); }
       try{
         const planned = (FREEPLAY_FW.schema && FREEPLAY_FW.schema.eraStarsMvp && FREEPLAY_FW.schema.eraStarsMvp.rosterPlanned) || [];
         const mvp = (FREEPLAY_FW.schema && FREEPLAY_FW.schema.eraStarsMvp && FREEPLAY_FW.schema.eraStarsMvp.ids) || ids;
         if(planned.length < 8) fails.push("rosterPlanned");
         if((mvp.length + planned.length) < 12) fails.push("roster_total_12");
       }catch(_e){ fails.push("rosterPlanned"); }
-      return { ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a1" };
+      return {
+        ok: !fails.length, fails:fails, softStatus:"≠PASS", infra:"v20a2",
+        slotsCount: ((FREEPLAY_FW.storySlots&&FREEPLAY_FW.storySlots.nodes)||[]).length,
+        soJiyan: typeof STAR_SIGHTINGS!=="undefined" && STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan"),
+        creditGate: typeof softIndustryCreditGate==="function",
+        debtLock: typeof softOverdueFavorDebtLock==="function",
+      };
     }
   };
 }catch(_e){}
@@ -26892,6 +27036,37 @@ const STAR_SIGHTINGS = [
     distanceLine:"佢喺鏡前專心練舞，競爭壓力極大，你只能喺遠處觀望，唔好打擾。",
     locHint:"訓練班排練室", rumorTeaser:"聽聞呢批新人為咗爭上位，暗地裏爭奪公司資源爭得好犀利。",
     resultToast:"已遠觀葉敏芝。" },
+  /* v20a2 roster far-view shells — unique existing locs; chai_zanhoi HOLD */
+  { starId:"mak_zhendong", displayName:"麥震東", locs:["film_cotton"],
+    distanceLook:"（文案待補）片場邊遠影。",
+    distanceLine:"只能遠望，時機未到唔好行埋。",
+    locHint:"紅棉片場", rumorTeaser:"",
+    resultToast:"已遠觀麥震東。" },
+  { starId:"lok_gasing", displayName:"駱家聲", locs:["tvb_longmen"],
+    distanceLook:"（文案待補）廠景走廊遠影。",
+    distanceLine:"只能遠望，時機未到唔好行埋。",
+    locHint:"星河電視台", rumorTeaser:"",
+    resultToast:"已遠觀駱家聲。" },
+  { starId:"pang_siuki", displayName:"彭少祺", locs:["ad_central"],
+    distanceLook:"（文案待補）廣告樓大堂遠影。",
+    distanceLine:"只能遠望，時機未到唔好行埋。",
+    locHint:"中環廣告", rumorTeaser:"",
+    resultToast:"已遠觀彭少祺。" },
+  { starId:"chung_choning", displayName:"鍾楚凝", locs:["rec_star"],
+    distanceLook:"（文案待補）唱片公司梯間遠影。",
+    distanceLine:"只能遠望，時機未到唔好行埋。",
+    locHint:"天星音樂", rumorTeaser:"",
+    resultToast:"已遠觀鍾楚凝。" },
+  { starId:"gu_mingfai", displayName:"顧明輝", locs:["tvb_harbour"],
+    distanceLook:"（文案待補）海港台外遠影。",
+    distanceLine:"只能遠望，時機未到唔好行埋。",
+    locHint:"海港台", rumorTeaser:"",
+    resultToast:"已遠觀顧明輝。" },
+  { starId:"so_jiyan", displayName:"蘇芷茵", locs:["rec_wanchai"],
+    distanceLook:"（文案待補）灣仔唱片樓遠影。",
+    distanceLine:"只能遠望，時機未到唔好行埋。",
+    locHint:"灣仔唱片", rumorTeaser:"",
+    resultToast:"已遠觀蘇芷茵。" },
 ];
 const PHASE3_STAR_ORDER = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji"];
 let PHASE3_MOCK = null;
@@ -26956,12 +27131,15 @@ function loadPhase3Mock(){
   return PHASE3_LOAD;
 }
 function phase3Stars(){
-  if(!phase3SoftOn() || !PHASE3_MOCK || !Array.isArray(PHASE3_MOCK.starSightings)) return STAR_SIGHTINGS;
+  const extras = ()=> STAR_SIGHTINGS.filter(s=>s && PHASE3_STAR_ORDER.indexOf(s.starId)<0 && s.starId!=="chai_zanhoi" && s.starId!=="chai_chunhoi" && s.starId!=="placeholder_era_08");
+  if(!phase3SoftOn() || !PHASE3_MOCK || !Array.isArray(PHASE3_MOCK.starSightings)){
+    return STAR_SIGHTINGS.filter(s=>s && s.starId!=="chai_zanhoi" && s.starId!=="chai_chunhoi" && s.starId!=="placeholder_era_08");
+  }
   const byId = {};
   PHASE3_MOCK.starSightings.forEach(s=>{
     if(s && s.starId && PHASE3_STAR_ORDER.indexOf(s.starId)>=0) byId[s.starId]=s;
   });
-  return PHASE3_STAR_ORDER.map(id=>{
+  const mvp = PHASE3_STAR_ORDER.map(id=>{
     const base = STAR_SIGHTINGS.find(s=>s.starId===id);
     const m = byId[id];
     if(!base) return null;
@@ -26978,6 +27156,7 @@ function phase3Stars(){
       resultToast: m.resultToast || base.resultToast,
     };
   }).filter(Boolean);
+  return mvp.concat(extras());
 }
 function phase3CastCopy(){
   const live = {
@@ -27041,10 +27220,11 @@ function playSightChime(){
   }catch(_e){ return false; }
 }
 const ERA_SIL_FAR_IDS = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji","so_jiyan"];
+try{ window.__eraBustPreferFile = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji","so_jiyan"]; }catch(_e){}
 function eraSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(ERA_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=20a1";
+  return "assets/story/era_stars/"+id+"_silhouette_far.png?v=20a2";
 }
 const CORE_SIL_FAR_IDS = ["lin_hiu","chow_choiyi","vera","ko_chunkit","tang_laiping","lui_ging"];
 const CORE_SIL_SIGHT = {
@@ -27058,7 +27238,7 @@ const CORE_SIL_SIGHT = {
 function coreSilhouetteFarSrc(starId){
   const id = String(starId||"");
   if(CORE_SIL_FAR_IDS.indexOf(id)<0) return "";
-  return "assets/story/core/"+id+"_silhouette_far.png?v=20a1";
+  return "assets/story/core/"+id+"_silhouette_far.png?v=20a2";
 }
 /* Soft gate. Try era_stars, then core. Callers still hide the image when Soft is off. */
 function softSilhouetteFarSrc(starId){
@@ -27149,7 +27329,8 @@ try{
       if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
       try{ if(typeof BehaviorGate!=="undefined" && BehaviorGate.liveWeekGateStillActive()!==true) fails.push("live_fn"); }catch(_e){ fails.push("live_fn"); }
       const stars = phase3Stars();
-      if(stars.length!==4) fails.push("count");
+      if(stars.length<4) fails.push("count");
+      if(!STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan")) fails.push("so_jiyan_pin");
       if(stars.some(s=>s.starId==="chai_chunhoi")) fails.push("chai");
       PHASE3_STAR_ORDER.forEach(id=>{ if(!stars.some(s=>s.starId===id)) fails.push("missing:"+id); });
       const c = phase3CastCopy();
@@ -27157,11 +27338,11 @@ try{
       if(/搏一搏|試下報名|soft-try/.test([c.readyLabel,c.lockedLabel,c.leaveLabel,c.lockedToast].join(" "))) fails.push("soft_try_label");
       if(phase3SoftOn()){
         ERA_SIL_FAR_IDS.forEach(id=>{
-          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=20a1") fails.push("sil:"+id);
+          if(eraSilhouetteFarSrc(id)!=="assets/story/era_stars/"+id+"_silhouette_far.png?v=20a2") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==eraSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
         CORE_SIL_FAR_IDS.forEach(id=>{
-          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=20a1") fails.push("sil:"+id);
+          if(coreSilhouetteFarSrc(id)!=="assets/story/core/"+id+"_silhouette_far.png?v=20a2") fails.push("sil:"+id);
           if(__phase3.silhouette(id)!==coreSilhouetteFarSrc(id)) fails.push("sil_gate:"+id);
         });
       }else{
@@ -27688,21 +27869,21 @@ function openLoc(id, opts){
   }catch(_e){}
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=20a1. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=20a2. */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a1",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a1",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a1",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a1",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a1",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a1",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a1",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a1",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a1",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a1",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a1",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a1",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a1",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a2",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a2",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a2",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a2",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a2",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a2",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a2",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a2",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a2",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a2",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a2",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a2",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a2",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");

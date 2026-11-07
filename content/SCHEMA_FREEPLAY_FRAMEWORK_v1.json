@@ -1,6 +1,6 @@
 {
   "meta": {
-    "version": "v20a1",
+    "version": "v20a2",
     "softStatus": "≠PASS",
     "role": "program_framework",
     "date": "2026-11-07",
@@ -30,7 +30,9 @@
     },
     "industryCredit": {
       "store": "S.industryCreditDelta",
-      "label": "業內信用"
+      "label": "業內信用",
+      "softGigField": "industryCreditMin",
+      "softGate": "canAudition soft path; absent field = no-op"
     }
   },
   "castingTags": {
@@ -50,7 +52,8 @@
     "uiPane": "home-pane-debt",
     "emptyOk": true,
     "engineSeed": "seedFreeplayFavorDebt",
-    "singleSource": "stub overlays SEASON_COLLECT; content fills stub line/title"
+    "singleSource": "stub overlays SEASON_COLLECT; content fills stub line/title",
+    "overdueSoftLock": "softOverdueFavorDebtLock — 已逾期 blocks 接通告; tutorial 未到期 OK"
   },
   "eraStarsMvp": {
     "stubFile": "content/STUB_ERA_STARS_MVP_v1.json",
@@ -69,32 +72,32 @@
       {
         "starId": "mak_zhendong",
         "displayName": "麥震東",
-        "note": "rumor MOCK; no map pin yet"
+        "note": "far-view map shell (v20a2); no long dialogue"
       },
       {
         "starId": "lok_gasing",
         "displayName": "駱家聲",
-        "note": "rumor MOCK; no map pin yet"
+        "note": "far-view map shell (v20a2); no long dialogue"
       },
       {
         "starId": "pang_siuki",
         "displayName": "彭少祺",
-        "note": "rumor MOCK; no map pin yet"
+        "note": "far-view map shell (v20a2); no long dialogue"
       },
       {
         "starId": "chung_choning",
         "displayName": "鍾楚凝",
-        "note": "rumor MOCK; no map pin yet"
+        "note": "far-view map shell (v20a2); no long dialogue"
       },
       {
         "starId": "gu_mingfai",
         "displayName": "顧明輝",
-        "note": "rumor MOCK; no map pin yet"
+        "note": "far-view map shell (v20a2); no long dialogue"
       },
       {
         "starId": "so_jiyan",
         "displayName": "蘇芷茵",
-        "note": "art assets exist (bust+sil); intentional HOLD — no map pin"
+        "note": "art assets exist; map far-view pin at rec_wanchai (v20a2)"
       },
       {
         "starId": "chai_zanhoi",
@@ -104,10 +107,33 @@
       {
         "starId": "placeholder_era_08",
         "displayName": "（名冊預留）",
-        "note": "12th roster slot reserved; id stable for schema only"
+        "note": "12th roster slot reserved; schema only; no pin"
       }
     ],
-    "rosterNote": "MVP4 on map. rosterPlanned = remaining era-star ids (fictional). so_jiyan has art, no pin — HOLD."
+    "rosterNote": "MVP4 + 6 far-view map shells (so_jiyan pin ON). chai_zanhoi + placeholder_era_08 HOLD off map.",
+    "mapIds": [
+      "luk_baakyin",
+      "liu_bingxing",
+      "ngai_wingnaam",
+      "yip_manji",
+      "mak_zhendong",
+      "lok_gasing",
+      "pang_siuki",
+      "chung_choning",
+      "gu_mingfai",
+      "so_jiyan"
+    ],
+    "holdOffMap": [
+      "chai_zanhoi",
+      "placeholder_era_08"
+    ],
+    "bustPreferFile": [
+      "luk_baakyin",
+      "liu_bingxing",
+      "ngai_wingnaam",
+      "yip_manji",
+      "so_jiyan"
+    ]
   },
   "storyBeatSlots": {
     "stubFile": "content/STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json",
@@ -125,7 +151,54 @@
       "spin",
       "dodge"
     ],
-    "triggerAuthority": "STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json (synced ecology); sandbox = DEV mirror/fallback"
+    "triggerAuthority": "STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json (synced ecology); sandbox = DEV mirror/fallback",
+    "scope": "C1-C17",
+    "c6c17SoftAuthority": "slots_create_stub_nodes_when_sandbox_missing",
+    "lockedFlagsC6C17Reserved": [
+      "date_vera_1",
+      "date_hiu_1",
+      "date_choi_1",
+      "flag_anti_lei",
+      "flag_lei_delay",
+      "flag_lei_signed",
+      "route_commercial",
+      "route_indie",
+      "flag_public_romance",
+      "lan_blur",
+      "lan_confess",
+      "lan_cut",
+      "anni_mediate",
+      "anni_seize",
+      "anni_yield",
+      "choose_exposure",
+      "choose_depth",
+      "anni91_seize",
+      "anni91_tend",
+      "love_crisis",
+      "gossip_admit",
+      "gossip_deny",
+      "gossip_vague",
+      "flag_bao_respect",
+      "flag_bao_depend",
+      "flag_bao_refuse",
+      "flag_family_help",
+      "flag_family_yield",
+      "flag_family_standby",
+      "flag_family_marriage",
+      "flag_legacy_film",
+      "flag_legacy_refuse",
+      "ending_e01",
+      "ending_e02",
+      "ending_e03",
+      "ending_e04",
+      "ending_e05",
+      "ending_e06",
+      "ending_e07",
+      "ending_e08",
+      "ending_e09",
+      "ending_e10",
+      "career_lock"
+    ]
   },
   "contentContract": "docs/CONTENT_CONTRACT.md"
 }
