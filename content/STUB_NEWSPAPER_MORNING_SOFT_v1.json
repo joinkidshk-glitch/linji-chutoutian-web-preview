@@ -1,0 +1,363 @@
+{
+  "meta": {
+    "version": "v1",
+    "softStatus": "≠PASS",
+    "planRef": "PLAN_NEWSPAPER_AND_FAME_RENAME_SOFT.md",
+    "playerStatLabel": "聲望",
+    "fameKey": "fame",
+    "timing": "enqueue_on_event__popup_next_calendar_morning",
+    "fameDeltaGuide": {
+      "wrap_success": "+1～+3",
+      "award_nominee": "+2～+4",
+      "award_win": "+4～+8",
+      "note": "數值可調；玩家面用「聲望」，禁「聲量」。內部 key 仍 fameDelta。"
+    },
+    "note": "報紙＝公開娛樂版；傳聞另冊。Soft tip 種子；唔 tip LIVE。條件達成入佇列→第二日朝早彈出。 合入 nit：np_wrap_film_03／np_win_tv_02／np_win_ad_02／np_nom_music_01／np_nom_ad_01 的 headline／dek／clipLabel 改書面語；rumorEcho 口語保留。原 sha8 51e207bf。",
+    "source": "qwen3.7-max",
+    "date": "2026-11-08",
+    "tz": "Asia/Hong_Kong",
+    "pressNit": "written_zh_on_press_fields"
+  },
+  "papers": [
+    {
+      "id": "yfkb",
+      "displayName": "娛樂快報"
+    },
+    {
+      "id": "dszk",
+      "displayName": "電視週刊"
+    },
+    {
+      "id": "xhylb",
+      "displayName": "星河娛樂版"
+    },
+    {
+      "id": "ltsd",
+      "displayName": "樂壇速遞"
+    },
+    {
+      "id": "xfqb",
+      "displayName": "消費情報"
+    }
+  ],
+  "templates": {
+    "wrap_success": [
+      {
+        "id": "np_wrap_film_01",
+        "eventKey": "wrap_success.film",
+        "medium": "film",
+        "paperName": "娛樂快報",
+        "headline": "港產動作片殺青 臨記表現穩陣",
+        "dek": "港產動作片正式殺青，群戲中臨記阿偉走位準確，獲副導讚賞。",
+        "fameDelta": 1,
+        "clipLabel": "娛樂快報・影圈動態",
+        "rumorEcho": "聽講個副導已經記低咗佢個名，下部戲繼續用。"
+      },
+      {
+        "id": "np_wrap_film_02",
+        "eventKey": "wrap_success.film",
+        "medium": "film",
+        "paperName": "星河娛樂版",
+        "headline": "廠景連拍三十個鐘 臨記捱得",
+        "dek": "賀歲片廠景散場，阿偉等一眾臨記捱更抵夜，導演親自切燒肉慰勞。",
+        "fameDelta": 2,
+        "clipLabel": "星河娛樂版・幕後側記",
+        "rumorEcho": "場務話阿偉好勤力，收工仲幫手執道具。"
+      },
+      {
+        "id": "np_wrap_film_03",
+        "eventKey": "wrap_success.film",
+        "medium": "film",
+        "paperName": "娛樂快報",
+        "headline": "殺青飯局搶鏡 街坊認得那個臨記",
+        "dek": "懸疑片殺青宴，阿偉因戲中亮眼造型被茶樓伙記認出，幕前聲望急升。",
+        "fameDelta": 3,
+        "clipLabel": "娛樂快報・八卦側寫",
+        "rumorEcho": "連隔離枱阿伯都問：「你係咪嗰個做卧底嗰個？」"
+      },
+      {
+        "id": "np_wrap_tv_01",
+        "eventKey": "wrap_success.tv",
+        "medium": "tv",
+        "paperName": "電視週刊",
+        "headline": "星河處境劇殺青 臨記融入度高",
+        "dek": "長篇處境劇煞科，阿偉飾演茶客對白自然，無甩鏈。",
+        "fameDelta": 1,
+        "clipLabel": "電視週刊・劇集情報",
+        "rumorEcho": "監製話呢批臨記質素唔錯，唔使成日換人。"
+      },
+      {
+        "id": "np_wrap_tv_02",
+        "eventKey": "wrap_success.tv",
+        "medium": "tv",
+        "paperName": "星河娛樂版",
+        "headline": "電視城廠景煞科 臨記獲派大利是",
+        "dek": "星河電視台重頭劇殺青，阿偉等臨記齊齊收利是，廠景內外氣氛熱烈。",
+        "fameDelta": 2,
+        "clipLabel": "星河娛樂版・電視城直擊",
+        "rumorEcho": "聽講阿偉嗰組臨記最準時，導演特登加厚利是。"
+      },
+      {
+        "id": "np_wrap_tv_03",
+        "eventKey": "wrap_success.tv",
+        "medium": "tv",
+        "paperName": "電視週刊",
+        "headline": "劇集煞科街訪 師奶追問臨記名字",
+        "dek": "家族劇殺青，阿偉因飾演不孝子太入戲，去街市買餸被師奶指指點點。",
+        "fameDelta": 3,
+        "clipLabel": "電視週刊・人氣熱話",
+        "rumorEcho": "菜檔阿姐話：「你個衰仔，昨晚做乜氣到你阿媽！」"
+      },
+      {
+        "id": "np_wrap_music_01",
+        "eventKey": "wrap_success.music",
+        "medium": "music",
+        "paperName": "樂壇速遞",
+        "headline": "新人MV殺青 臨記演繹暗戀者",
+        "dek": "樂壇新人拍攝首支派台歌MV，阿偉飾演背景中的暗戀者，表情到位。",
+        "fameDelta": 1,
+        "clipLabel": "樂壇速遞・MV直擊",
+        "rumorEcho": "導演話佢個眼神幾有戲，唔似一般木獨臨記。"
+      },
+      {
+        "id": "np_wrap_music_02",
+        "eventKey": "wrap_success.music",
+        "medium": "music",
+        "paperName": "娛樂快報",
+        "headline": "錄音室外景殺青 臨記冒雨演出",
+        "dek": "樂隊新歌MV於大雨中殺青，阿偉等臨記敬業樂業，渾身濕透仍保持狀態。",
+        "fameDelta": 2,
+        "clipLabel": "娛樂快報・樂壇側記",
+        "rumorEcho": "樂隊主音請咗成班臨記飲熱嘢，話佢哋好專業。"
+      },
+      {
+        "id": "np_wrap_music_03",
+        "eventKey": "wrap_success.music",
+        "medium": "music",
+        "paperName": "樂壇速遞",
+        "headline": "MV首播惹熱議 街坊追問男臨記",
+        "dek": "冠軍歌MV播出，阿偉因一段搶鏡獨舞被茶餐廳街坊認出，幕前聲望大漲。",
+        "fameDelta": 3,
+        "clipLabel": "樂壇速遞・街坊熱話",
+        "rumorEcho": "有讀者去信娛樂版問：「嗰個跳舞嗰個係咪新人？想簽佢！」"
+      },
+      {
+        "id": "np_wrap_ad_01",
+        "eventKey": "wrap_success.ad",
+        "medium": "ad",
+        "paperName": "消費情報",
+        "headline": "保險廣告殺青 臨記笑容親切",
+        "dek": "知名保險公司拍攝年度廣告，阿偉飾演家庭聚會中的親戚，笑容自然。",
+        "fameDelta": 1,
+        "clipLabel": "消費情報・廣告動態",
+        "rumorEcho": "廣告公司casting導演話佢個樣夠親切，啱晒做街坊。"
+      },
+      {
+        "id": "np_wrap_ad_02",
+        "eventKey": "wrap_success.ad",
+        "medium": "ad",
+        "paperName": "娛樂快報",
+        "headline": "連鎖超市廣告煞科 臨記狂掃道具",
+        "dek": "超市大減價廣告殺青，阿偉等臨記獲准帶走部分道具零食，廠景一片歡樂。",
+        "fameDelta": 2,
+        "clipLabel": "娛樂快報・幕後花絮",
+        "rumorEcho": "場務笑言阿偉掃貨最狠，連膠袋都摺好帶走。"
+      },
+      {
+        "id": "np_wrap_ad_03",
+        "eventKey": "wrap_success.ad",
+        "medium": "ad",
+        "paperName": "消費情報",
+        "headline": "賀年廣告出街 臨記金句街知巷聞",
+        "dek": "連鎖店賀年廣告首播，阿偉一句「食得是福」成金句，去茶樓被伙記搭訕。",
+        "fameDelta": 3,
+        "clipLabel": "消費情報・人氣廣告",
+        "rumorEcho": "連阿媽打麻將都問：「電視機嗰個後生仔係咪你呀？」"
+      },
+      {
+        "id": "np_wrap_any_01",
+        "eventKey": "wrap_success.any",
+        "medium": "any",
+        "paperName": "星河娛樂版",
+        "headline": "獨立短片殺青 臨記演活打工仔",
+        "dek": "本地獨立短片完成拍攝，阿偉飾演加班打工仔，引發街坊共鳴。",
+        "fameDelta": 1,
+        "clipLabel": "星河娛樂版・獨立影圈",
+        "rumorEcho": "導演話預算有限，但呢個臨記完全交足功課。"
+      },
+      {
+        "id": "np_wrap_any_02",
+        "eventKey": "wrap_success.any",
+        "medium": "any",
+        "paperName": "娛樂快報",
+        "headline": "實景拍攝殺青 臨記安撫街坊",
+        "dek": "劇組於深水埗實景殺青，阿偉主動協助安撫受拍攝影響的街坊，獲導演讚賞。",
+        "fameDelta": 2,
+        "clipLabel": "娛樂快報・片場側記",
+        "rumorEcho": "街坊話呢個後生仔好有禮貌，派咗好多生果。"
+      },
+      {
+        "id": "np_wrap_any_03",
+        "eventKey": "wrap_success.any",
+        "medium": "any",
+        "paperName": "星河娛樂版",
+        "headline": "綜藝短劇殺青 臨記扮嘢神似爆紅",
+        "dek": "搞笑綜藝短劇殺青，阿偉模仿巨星惟妙惟肖，電視播出後幕前聲望飆升。",
+        "fameDelta": 3,
+        "clipLabel": "星河娛樂版・綜藝熱話",
+        "rumorEcho": "連原唱歌手睇完電視都打電話嚟問：「呢個係咪我失散多年嘅弟弟？」"
+      }
+    ],
+    "award_win": [
+      {
+        "id": "np_win_film_01",
+        "eventKey": "award_win.film",
+        "medium": "film",
+        "paperName": "娛樂快報",
+        "headline": "維港影藝獎揭曉 {playerName} 奪影壇新面孔",
+        "dek": "臨記組跑出！阿偉憑三句對白搶鏡，評審讚其眼神有戲，幕前聲望穩步上揚。",
+        "fameDelta": 5,
+        "clipLabel": "影壇新面孔（臨記組）",
+        "rumorEcho": "聽說導演組已將佢列入下套江湖片跟班名單。"
+      },
+      {
+        "id": "np_win_film_02",
+        "eventKey": "award_win.film",
+        "medium": "film",
+        "paperName": "星河娛樂版",
+        "headline": "票房話題綠葉出爐 阿偉茶餐廳食面戲封王",
+        "dek": "維港影藝獎側記：年度票房話題綠葉由{playerName}奪得，街坊笑言個樣好抵死，臨記生涯添履歷。",
+        "fameDelta": 6,
+        "clipLabel": "年度票房話題綠葉",
+        "rumorEcho": "場務爆料佢拍完那場戲連吞三碗牛腩麵，極度敬業。"
+      },
+      {
+        "id": "np_win_tv_01",
+        "eventKey": "award_win.tv",
+        "medium": "tv",
+        "paperName": "電視週刊",
+        "headline": "星河台慶夜 最佳電視新人（臨記組）爆冷由{playerName}奪得",
+        "dek": "廠景熬出頭！阿偉獲獎時多謝監製不殺之恩，幕前聲望漸獲電視城高層留意。",
+        "fameDelta": 5,
+        "clipLabel": "最佳電視新人（臨記組）",
+        "rumorEcho": "據指頒獎後台有編劇遞名片，邀約下齣處境劇客串。"
+      },
+      {
+        "id": "np_win_tv_02",
+        "eventKey": "award_win.tv",
+        "medium": "tv",
+        "paperName": "娛樂快報",
+        "headline": "最受歡迎螢幕面孔 阿偉靠一句收工了贏街坊票",
+        "dek": "星河台慶・年度頒獎夜側記：{playerName}拿下最受歡迎螢幕面孔，綠葉光芒蓋不住，聲望再下一城。",
+        "fameDelta": 7,
+        "clipLabel": "最受歡迎螢幕面孔",
+        "rumorEcho": "電視城飯堂阿姐話最近幾日成班臨記都學佢講呢句對白。"
+      },
+      {
+        "id": "np_win_music_01",
+        "eventKey": "award_win.music",
+        "medium": "music",
+        "paperName": "樂壇速遞",
+        "headline": "星河金碟夜 年度新人碟緣（臨記組）歸{playerName}",
+        "dek": "錄音室和音熬出頭！阿偉憑合唱單曲獲獎，評審指其聲線有市井煙火味，幕前聲望穩中求勝。",
+        "fameDelta": 4,
+        "clipLabel": "年度新人碟緣（臨記組）",
+        "rumorEcho": "唱片公司宣傳部話考慮幫佢接多兩首電視劇插曲和音。"
+      },
+      {
+        "id": "np_win_music_02",
+        "eventKey": "award_win.music",
+        "medium": "music",
+        "paperName": "消費情報",
+        "headline": "最受歡迎出鏡嗓 阿偉奪獎 樂壇多把靚綠葉",
+        "dek": "星河金碟夜側記：{playerName}以MV男配角身份奪最受歡迎出鏡嗓，街坊話聽聲就認得，聲望悄然提升。",
+        "fameDelta": 6,
+        "clipLabel": "最受歡迎出鏡嗓",
+        "rumorEcho": "有DJ在電台節目笑言，把聲夠滄桑，適合唱深夜失戀歌。"
+      },
+      {
+        "id": "np_win_ad_01",
+        "eventKey": "award_win.ad",
+        "medium": "ad",
+        "paperName": "消費情報",
+        "headline": "維港街招賞 年度廣告新面孔 {playerName} 跑出",
+        "dek": "靠一支涼茶廣告突圍！阿偉獲評夠接地氣，臨記組奪獎殊不容易，幕前聲望添磚加瓦。",
+        "fameDelta": 5,
+        "clipLabel": "年度廣告新面孔",
+        "rumorEcho": "廣告導演透露，原本只想要個背景板，點知佢飲茶個樣太搶鏡。"
+      },
+      {
+        "id": "np_win_ad_02",
+        "eventKey": "award_win.ad",
+        "medium": "ad",
+        "paperName": "星河娛樂版",
+        "headline": "街外最記得住的一鏡 阿偉憑跌低眼鏡贏掌聲",
+        "dek": "維港街招・年度廣告賞側記：{playerName}奪得此特別獎，綠葉也有春天，聲望穩步上揚，商戶開始留意。",
+        "fameDelta": 8,
+        "clipLabel": "街外最記得住的一鏡",
+        "rumorEcho": "聽說有連鎖超市正度緊橋，想搵佢拍新一輯特價海報廣告。"
+      }
+    ],
+    "award_nominee": [
+      {
+        "id": "np_nom_film_01",
+        "eventKey": "award_nominee.film",
+        "medium": "film",
+        "paperName": "娛樂快報",
+        "headline": "維港影藝獎揭入圍 阿偉憑實力突圍",
+        "dek": "新一屆維港影藝獎入圍名單出爐，{playerName} 成功躋身提名之列，幕前聲望穩步上揚。",
+        "fameDelta": 3,
+        "clipLabel": "維港影藝獎入圍名單公布",
+        "rumorEcho": "圈內人話佢今次提名絕對係實至名歸，唔係靠大台力捧。"
+      },
+      {
+        "id": "np_nom_tv_01",
+        "eventKey": "award_nominee.tv",
+        "medium": "tv",
+        "paperName": "電視週刊",
+        "headline": "星河台慶頒獎夜 阿偉獲提名肯定",
+        "dek": "星河台慶・年度頒獎夜公佈候選名單，{playerName} 憑廠景劇集表現獲提名，臨記歲月終見回報。",
+        "fameDelta": 2,
+        "clipLabel": "星河台慶年度頒獎夜候選名單",
+        "rumorEcho": "聽講大台高層有留意佢套劇，明年應該有重頭戲通告。"
+      },
+      {
+        "id": "np_nom_music_01",
+        "eventKey": "award_nominee.music",
+        "medium": "music",
+        "paperName": "樂壇速遞",
+        "headline": "星河金碟夜入圍 阿偉音樂路獲認同",
+        "dek": "星河金碟夜入圍名單正式公開，{playerName} 獲得獎項提名，錄音室的汗水無白流。",
+        "fameDelta": 4,
+        "clipLabel": "星河金碟夜入圍名單出爐",
+        "rumorEcho": "唱片公司內部話佢隻歌碟市成績好，頒獎禮當晚可能會安排特別環節。"
+      },
+      {
+        "id": "np_nom_ad_01",
+        "eventKey": "award_nominee.ad",
+        "medium": "ad",
+        "paperName": "消費情報",
+        "headline": "維港街招廣告賞 阿偉演繹獲提名",
+        "dek": "維港街招・年度廣告賞公佈入圍名單，{playerName} 參演的廣告成功突圍，商業價值備受肯定。",
+        "fameDelta": 2,
+        "clipLabel": "維港街招年度廣告賞入圍",
+        "rumorEcho": "廣告代理商圈子傳聞，有幾個大客戶睇完入圍名單後主動問佢期。"
+      }
+    ]
+  },
+  "qa": {
+    "bannedPlayerFacing": [
+      "聲量",
+      "幕前聲量"
+    ],
+    "bannedRealCelebs": true,
+    "bannedRealPapersLongArc": true,
+    "counts": {
+      "wrap_success": 15,
+      "award_win": 8,
+      "award_nominee": 4
+    },
+    "qcOrthographyFixes": 4,
+    "issues": []
+  }
+}
