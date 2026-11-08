@@ -11,11 +11,11 @@
    GitHub Pages caches HTML for max-age=600, and the playtest box keeps a persistent cache
    keyed by the full URL. ?v=20a10&softBehaviorGate=1 therefore kept executing the pre-#99
    document (去金龍／主線) even after Pages origin sha was e4b43926.
-   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s103
-   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s103
+   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s104
+   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s104
    Bump SOFT_REV when the next Soft tip changes index.html. Do not bump ?v=. */
 (function(){
-  var SOFT_REV = "s103";
+  var SOFT_REV = "s104";
   try { document.documentElement.setAttribute("data-soft-rev", SOFT_REV); } catch (e0) {}
   try {
     var q = new URLSearchParams(location.search || "");
@@ -28722,6 +28722,30 @@ function newspaperWrapFaceLines(subject){
     : ("聽講"+book+"殺青，場記話阿偉跟得齊。");
   return { headline: headline, dek: dek, rumor: rumor, medium: medium, work: work };
 }
+/** 男主角／男一／男星敘事。跟組、班底、路人、臨記呢類本角名稱唔算。 */
+function newspaperWrapLeadRelation(text){
+  return /男主角|男一|男星|男主/.test(String(text||""));
+}
+/** 淡紙仍用 #103 FaceLines，但角色改回本角（臨記／路人／班底），唔寫同男主角的關係。 */
+function newspaperWrapFadeSubject(subject){
+  subject = subject || {};
+  let work = String(subject.work||"").replace(/[·・\s]*(?:跟)?[^《》·・]{0,16}男(?:主角|一號|一|星|主)/g, "").replace(/[·・\s]+$/g, "").trim();
+  if(!work || newspaperWrapLeadRelation(work)) work = "通告";
+  let role = String(subject.role||"").trim();
+  if(newspaperWrapLeadRelation(role)){
+    if(role.indexOf("路人")>=0) role = "路人";
+    else if(role.indexOf("班底")>=0) role = "班底";
+    else if(role.indexOf("臨記")>=0 && role.indexOf("男")<0) role = "臨記";
+    else role = "";
+  }
+  return { gigId: subject.gigId, work: work, role: role, type: subject.type };
+}
+function newspaperWrapFadeLines(subject){
+  const faded = newspaperWrapFaceLines(newspaperWrapFadeSubject(subject));
+  const blob = (faded.headline||"")+(faded.dek||"")+(faded.rumor||"");
+  if(!newspaperWrapLeadRelation(blob)) return faded;
+  return newspaperWrapFaceLines({ gigId: subject && subject.gigId, work: "通告", role: "", type: subject && subject.type });
+}
 function enqueueNewspaperFromWrap(sh, pack, opts){
   sh = sh || {};
   pack = pack || {};
@@ -28744,7 +28768,16 @@ function enqueueNewspaperFromWrap(sh, pack, opts){
     medium: face.medium
   });
   const fameN = Number(chrome.fameDelta);
-  const fameDelta = (fameN>=1 && fameN<=3) ? fameN : 1;
+  let fameDelta = (fameN>=1 && fameN<=3) ? fameN : 1;
+  let lines = face;
+  /* #104：臨記段淡紙。C3 劇情閘係 fame>15（15 分不過、16 先過），
+     但用戶鎖幕前聲望 ≥15 仍出 wrap 正紙，所以淡紙只限 fame < 15。
+     仍然入佇列、次日朝早整張報、剪報照留；fameDelta=0。
+     報紙名／欄目仍來自 wrap_success。文案沿 #103，唔寫跟男主角。 */
+  if((Number(S && S.fame)||0) < 15){
+    fameDelta = 0;
+    lines = newspaperWrapFadeLines(subject);
+  }
   return enqueueNewspaperItem({
     eventKey: "wrap:"+subject.gigId+":"+shootDay,
     source: "wrap",
@@ -28752,14 +28785,14 @@ function enqueueNewspaperFromWrap(sh, pack, opts){
     publishDay: publishDay,
     fameDelta: fameDelta,
     paperName: chrome.paperName || "娛樂版",
-    headline: face.headline,
-    dek: face.dek,
+    headline: lines.headline,
+    dek: lines.dek,
     clipLabel: chrome.clipLabel || ((chrome.paperName||"娛樂版")+"・殺青"),
-    rumorEcho: face.rumor,
+    rumorEcho: lines.rumor,
     templateId: chrome.templateId,
-    templateEventKey: chrome.templateEventKey || ("wrap_success."+face.medium),
-    medium: face.medium || chrome.medium || "",
-    workTitle: face.work
+    templateEventKey: chrome.templateEventKey || ("wrap_success."+(lines.medium||face.medium)),
+    medium: lines.medium || face.medium || chrome.medium || "",
+    workTitle: lines.work
   }, opts);
 }
 function enqueueNewspaperFromAward(pack, opts){
@@ -29283,7 +29316,8 @@ function newspaperCheck(){
       const wrapped = enqueueNewspaperFromWrap({ gigId:"seedg", type:"電影", title:"試片" }, { dayIndex:0, gigType:"電影", title:"試片" }, { persist:false });
       if(!wrapped || !wrapped.templateId) fails.push("seed_wrap");
       else {
-        if(!(wrapped.fameDelta>=1 && wrapped.fameDelta<=3)) fails.push("seed_fame");
+        if((Number(S.fame)||0) >= 15) fails.push("seed_fame_setup");
+        if(wrapped.fameDelta!==0) fails.push("seed_fame");
         if((wrapped.enqueuedDay|0)!==1 || (wrapped.publishDay|0)!==2) fails.push("seed_pub");
         if((wrapped.headline+wrapped.dek).indexOf("試片")<0) fails.push("seed_gig");
         if((wrapped.headline+wrapped.dek).indexOf("星河處境劇")>=0) fails.push("seed_mismatch");
@@ -29406,6 +29440,7 @@ function newspaperCheck(){
     const ferry = enqueueNewspaperFromWrap(ferrySh, ferryBuilt, { persist:false });
     if(!ferry || ferry.eventKey!=="wrap:gig_1988_entry_ferry_crowd:2" || ferry.source!=="wrap") fails.push("ferry_key");
     if(!ferry || (ferry.enqueuedDay|0)!==3 || (ferry.publishDay|0)!==4) fails.push("ferry_when");
+    if(!ferry || ferry.fameDelta!==0) fails.push("ferry_fade");
     if(ferry && ferry.templateEventKey!=="wrap_success.tv") fails.push("ferry_bucket");
     const ferryFace = ferry ? ((ferry.headline||"")+(ferry.dek||"")) : "";
     if(ferryFace.indexOf("天星碼頭")<0 || ferryFace.indexOf("過海路人")<0) fails.push("ferry_gig");
@@ -29431,13 +29466,89 @@ function newspaperCheck(){
     commitMorningPaper(edFerry, { persist:false });
     if((Number(S.fame)||0)!==fameFerry+(Number(edFerry&&edFerry.fameDelta)||0)) fails.push("ferry_fame_twice");
     if(pullDueNewspaperEdition()) fails.push("ferry_left");
+    /* #104：fame<15 淡紙 fameDelta=0、文案無男主角；fame≥15 正紙 +1～+3。 */
+    const leadNarr = (s)=> /男主角|男一|男星|男主/.test(String(s||""));
+    const faceOf = (it)=> it ? [(it.headline||""),(it.dek||""),(it.rumorEcho||""),(it.clipLabel||""),(it.paperName||"")].join("\n") : "";
+    S.newspaperQueue = [];
+    S.newspaperClippings = [];
+    S.pendingMorningPaper = null;
+    S.newspaperLastPresentedDay = null;
+    S.mockRumors = [];
+    S.dayIndex = 2;
+    S.fame = 14;
+    const fadePack = { dayIndex:2, gigType:"電影", pressSeed:{ paperName:"娛樂快報" } };
+    const fadeLead = enqueueNewspaperFromWrap(
+      { gigId:"gig_fade_lead", type:"電影", title:"《新春大吉》男主角", workTitle:"新春大吉 · 男主角", roleLabel:"跟男主角" },
+      fadePack,
+      { persist:false }
+    );
+    const fadeFace = faceOf(fadeLead);
+    if(!fadeLead || fadeLead.fameDelta!==0) fails.push("fade14_delta");
+    if(!fadeLead || (fadeLead.enqueuedDay|0)!==3 || (fadeLead.publishDay|0)!==4) fails.push("fade14_when");
+    if(!fadeLead || fadeLead.templateEventKey!=="wrap_success.film") fails.push("fade14_bucket");
+    if(!fadeLead || !fadeLead.paperName || leadNarr(fadeLead.paperName)) fails.push("fade14_paper");
+    if(fadeFace.indexOf("新春大吉")<0 || fadeFace.indexOf("臨記")<0) fails.push("fade14_gig");
+    if(leadNarr(fadeFace) || fadeFace.indexOf("跟男")>=0) fails.push("fade14_lead");
+    S.fame = 0;
+    const fadeExtra = enqueueNewspaperFromWrap(
+      { gigId:"gig_fade_extra", type:"電視劇", workTitle:"天星碼頭", roleLabel:"過海路人", title:"《天星碼頭》過海人潮" },
+      { dayIndex:2, gigType:"電視劇" },
+      { persist:false }
+    );
+    const extraFace = faceOf(fadeExtra);
+    if(!fadeExtra || fadeExtra.fameDelta!==0) fails.push("fade0_delta");
+    if(extraFace.indexOf("天星碼頭")<0 || extraFace.indexOf("過海路人")<0) fails.push("fade0_role");
+    if(leadNarr(extraFace)) fails.push("fade0_lead");
+    S.fame = 5;
+    const fadeCrew = enqueueNewspaperFromWrap(
+      { gigId:"gig_fade_crew", type:"電視劇", workTitle:"傲劍狂刀震江湖", roleLabel:"跟組特約", title:"跟組特約" },
+      { dayIndex:2, gigType:"電視劇" },
+      { persist:false }
+    );
+    const crewFace = faceOf(fadeCrew);
+    if(!fadeCrew || fadeCrew.fameDelta!==0) fails.push("fade_crew_delta");
+    if(crewFace.indexOf("跟組特約")<0 || crewFace.indexOf("傲劍狂刀震江湖")<0) fails.push("fade_crew_role");
+    if(leadNarr(crewFace)) fails.push("fade_crew_lead");
+    const fameFlat = Number(S.fame)||0;
+    S.dayIndex = 4;
+    const edFade = pullDueNewspaperEdition();
+    if(!edFade || edFade.fameDelta!==0 || String(edFade.headline||"").indexOf("新春大吉")<0) fails.push("fade_edition");
+    const htmlFade = renderMorningPaperHtml(edFade||{});
+    if(htmlFade.indexOf("這則未再改聲望")<0 || htmlFade.indexOf("聲望 +")>=0) fails.push("fade_html");
+    if(leadNarr(htmlFade)) fails.push("fade_html_lead");
+    commitMorningPaper(edFade, { persist:false });
+    if((Number(S.fame)||0)!==fameFlat) fails.push("fade_commit");
+    if(!(S.newspaperClippings||[]).some(c=> c && String(c.headline||"").indexOf("新春大吉")>=0 && (Number(c.fameDelta)||0)===0)) fails.push("fade_clip");
+    S.newspaperQueue = [];
+    S.newspaperClippings = [];
+    S.pendingMorningPaper = null;
+    S.fame = 15;
+    S.dayIndex = 2;
+    const hi = enqueueNewspaperFromWrap(
+      { gigId:"gig_wrap_hi", type:"電影", workTitle:"試片", roleLabel:"過海路人", title:"試片" },
+      { dayIndex:2, gigType:"電影", title:"試片" },
+      { persist:false }
+    );
+    const hiFace = faceOf(hi);
+    if(!hi || !(hi.fameDelta>=1 && hi.fameDelta<=3)) fails.push("hi15_delta");
+    if(!hi || (hi.enqueuedDay|0)!==3 || (hi.publishDay|0)!==4) fails.push("hi15_when");
+    if(!hi || hi.templateEventKey!=="wrap_success.film") fails.push("hi15_bucket");
+    if(hiFace.indexOf("試片")<0 || hiFace.indexOf("過海路人")<0) fails.push("hi15_gig");
+    S.fame = 16;
+    const hiLead = enqueueNewspaperFromWrap(
+      { gigId:"gig_wrap_lead_hi", type:"電影", workTitle:"新春大吉", roleLabel:"男主角", title:"新春大吉" },
+      { dayIndex:2, gigType:"電影" },
+      { persist:false }
+    );
+    if(!hiLead || !(hiLead.fameDelta>=1 && hiLead.fameDelta<=3)) fails.push("hi16_delta");
+    if(faceOf(hiLead).indexOf("新春大吉")<0 || faceOf(hiLead).indexOf("男主角")<0) fails.push("hi16_gig");
   }catch(_err){ fails.push("throw:"+(_err&&_err.message||_err)); }
   finally{
     S = prev;
     try{ window.S = S; }catch(_e){}
     try{ if(S && typeof paintBar==="function") paintBar(); }catch(_e){}
   }
-  return { ok:!fails.length, fails:fails, softRev:"s103", version:"v20a10", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, softRev:"s104", version:"v20a10", softStatus:"≠PASS" };
 }
 try{
   window.__newspaper = {
@@ -32883,10 +32994,10 @@ function runSoftP0Checks(){
     if(/金龍/.test(scrub.setting||"") || /金龍/.test((scrub.beats[0].lines||[])[0]||"")) bad("c1_scrub_copy");
     if(typeof c1PlayLocId==="function" && c1PlayLocId()!=="agency_ho") bad("c1_play_loc");
     if(showB01HomeModal.toString().indexOf("openLoc(\"cafe_cha\")")>=0 || showB01HomeModal.toString().indexOf("去金龍")>=0) bad("tut_cafe");
-    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s103") bad("soft_rev_attr");
+    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s104") bad("soft_rev_attr");
     try{
       var sq = String((typeof location!=="undefined" && location && location.search) || "");
-      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s103(?:&|$)/.test(sq)) bad("soft_rev_url");
+      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s104(?:&|$)/.test(sq)) bad("soft_rev_url");
       if(/(?:\?|&)v=20a1[1-9](?:&|$)/.test(sq)) bad("v_bumped");
     }catch(_rev){ bad("soft_rev_throw"); }
     if(typeof storyMainProgressLine==="function"){
@@ -32936,8 +33047,8 @@ try{ exposePreviewDebug(); }catch(_e){}
 try{
   if(typeof softPreviewOn==="function" && softPreviewOn()){
     var tip = document.getElementById("start-soft-tip");
-    if(tip && tip.textContent.indexOf("s103")<0){
-      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s103。");
+    if(tip && tip.textContent.indexOf("s104")<0){
+      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s104。");
     }
   }
 }catch(_revTip){}
