@@ -3198,12 +3198,14 @@ body.day-res-open .day-row{
 }
 .rumor-card{
   position:relative;
+  /* P0-3（v20a11）：改用文件流直向排版，來源／標題／內文逐層落，唔再靠疊位就位。 */
+  display:flex; flex-direction:column;
   background:#f6e2aa; color:#1A1410; border-radius:12px;
   border:1px dashed rgba(107,78,46,.55);
   box-shadow:0 2px 0 rgba(26,20,16,.16);
   padding:12px 14px; margin:0 0 10px;
 }
-.rumor-card .rumor-src{ margin:0 0 6px; font-size:.72rem; font-weight:800; color:#6b4e2e }
+.rumor-card .rumor-src{ margin:0 0 6px; font-size:.72rem; font-weight:800; color:#6b4e2e; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
 .rumor-seed-tag{ display:inline-block; margin-left:6px; padding:1px 6px; border-radius:999px; background:#e8d4a8; color:#5a4018; font-size:.65rem; font-weight:800; }
 .rumor-card p{ margin:0; font-size:.84rem; line-height:1.45; font-weight:700 }
 .debt-row{
@@ -3223,13 +3225,13 @@ body.day-res-open .day-row{
 .debt-status[data-tone="未到期"]{ background:#e5f0ea; color:#1f7a5c }
 .debt-status[data-tone="就嚟到期"]{ background:#f3e0a8; color:#6b4e2e }
 .debt-status[data-tone="已逾期"]{ background:#f3d0c8; color:#8a2a22 }
-.rumor-card .rumor-title{ margin:0 0 4px; font-weight:900 }
+.rumor-card .rumor-title{ margin:0 0 4px; font-weight:900; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden }
 .rumor-card.is-picked{ outline:2px solid #6b4e2e; background:#f3d48a }
 .rumor-card.is-glow,.rumor-card.is-near{
   box-shadow:0 0 0 2px #C9A227, 0 0 14px rgba(201,162,39,.72);
 }
 .rumor-card.can-pick{ cursor:pointer }
-.rumor-card.is-stamped{ position:relative }
+.rumor-card.is-stamped{ position:relative; padding-right:86px }
 .rumor-stamp{
   position:absolute; right:8px; bottom:8px; width:68px; height:68px; border-radius:50%;
   border:3px solid #C43C2A; color:#C43C2A; background:rgba(255,248,232,.72);
@@ -3520,6 +3522,15 @@ body.day-res-open .day-row{
   top: 64px !important; /* v19z24: tighter 2-row HUD */
   bottom: auto !important;
   z-index: 18 !important; /* under #loc-sheet (40) so 返地圖 and actions stay tappable */
+}
+/* P0-4（v20a11）：無 sheet 嗰陣 toast 舊位置係 bottom:42px，成張票壓住地圖底部快捷列，
+   加埋 #app.toast-up::after 嗰塊 88px 暗影，底部掣成日畀嘢蓋住。
+   地圖上一律改去頂（同 keep-sheet 嗰陣嘅 64px 對齊），暗影 slab 喺地圖上唔再出。 */
+#app.toast-up:has(#v-map.view.on)::after{ display:none !important; }
+#app.toast-up:not(.keep-sheet):has(#v-map.view.on) .toast{
+  top: 64px !important;
+  bottom: auto !important;
+  z-index: 18 !important;
 }
 #app.toast-up.keep-sheet #loc-sheet.sheet,
 #app.toast-up.keep-sheet #v-map #loc-sheet.sheet{
@@ -22256,14 +22267,30 @@ function chanceVarianceNote(gig){
   if(!bits.length) bits.push("表現、壓力、信用令％浮動");
   return bits.slice(0,2).join("；")+"。";
 }
-function payContractNote(gig, lockedPay){
+function payContractNote(gig, lockedPay, roll){
   const lo=(gig&&Array.isArray(gig.pay))?gig.pay[0]:lockedPay;
   const hi=(gig&&Array.isArray(gig.pay))?gig.pay[1]:lockedPay;
   const lock=Number(lockedPay)||0;
+  /* P0-1（v20a11）：有加成嗰陣要拆開講明，唔准合約額靜靜超出約酬區間上限。
+     basePay＋bonusPay 必須等於 lockedPay（rollAuditionPay 保證）。 */
+  if(roll && Number(roll.bonusPay)){
+    const base=Number(roll.basePay)||0;
+    const bonus=Number(roll.bonusPay)||0;
+    const sign=bonus>0?"+":"−";
+    return `合約鎖定 $${lock.toLocaleString()}（約酬區間 $${Number(lo).toLocaleString()}–$${Number(hi).toLocaleString()}；牌面擲出 $${base.toLocaleString()} ${sign} ${roll.bonusLabel||"加成"} $${Math.abs(bonus).toLocaleString()} ＝ $${lock.toLocaleString()}）；殺青實收按此入帳。`;
+  }
   return `合約鎖定 $${lock.toLocaleString()}（約酬區間 $${Number(lo).toLocaleString()}–$${Number(hi).toLocaleString()}）；殺青實收按此入帳。`;
 }
 function payWrapNote(sh){
   const pay=Number(sh&&sh.pay)||0;
+  /* P0-1（v20a11）：殺青結算同合約拆法一致：牌面擲出＋加成＝實收，加總要對得返。
+     舊檔無 payBase／payBonus 欄位就用返原句，唔好出錯數。 */
+  if(sh && Number(sh.payBonus)){
+    const base=Number(sh.payBase)||0;
+    const bonus=Number(sh.payBonus)||0;
+    const sign=bonus>0?"+":"−";
+    return `實收 $${pay.toLocaleString()}（牌面擲出 $${base.toLocaleString()} ${sign} ${sh.payBonusLabel||"加成"} $${Math.abs(bonus).toLocaleString()} ＝ $${pay.toLocaleString()}；獲聘時合約鎖定額）。`;
+  }
   return `實收 $${pay.toLocaleString()}（獲聘時合約鎖定額；非通告牌面區間即時重擲）。`;
 }
 
@@ -22283,6 +22310,14 @@ function toast(m, opts){
     if(!opts.force) return;
   }
   const stampWanted = !!opts.stamp || /完成|已存檔|已約|行程已定|已還原|通告欄已刷新/.test(String(m||""));
+  /* P0-4（v20a11）：同一句提示喺顯示期間（1.8 秒）重複觸發唔好重置計時器。
+     連環入地圖／過日會不停重出「今日：…」嗰句，舊寫法每次都由頭計 1.8 秒，睇落久久唔散。 */
+  {
+    const _subKey = opts.sub ? String(opts.sub) : "";
+    const _nowMs = Date.now();
+    if(toast._msg===msg && toast._subKey===_subKey && toast._until && _nowMs < toast._until) return;
+    toast._msg = msg; toast._subKey = _subKey; toast._until = _nowMs + 1800;
+  }
   t.replaceChildren();
   const span=document.createElement("span");
   span.className="toast-msg";
@@ -22929,7 +22964,14 @@ function gigPayExact(g){
 }
 function gigPayExactText(g){
   const n=gigPayExact(g);
-  return n==null ? null : ("$"+n.toLocaleString());
+  if(n==null) return null;
+  /* P0-1（v20a11）：牌面唔好只出 payExact 一個數，會同約酬區間打架（見 NOTES_V20A11）。
+     有區間嗰陣同框列埋區間；列表／詳情共用呢度，唔再各寫各的。 */
+  if(g && Array.isArray(g.pay) && g.pay.length>1){
+    const lo=Number(g.pay[0]), hi=Number(g.pay[1]);
+    if(Number.isFinite(lo) && Number.isFinite(hi) && hi>lo) return "$"+n.toLocaleString()+"（約酬 $"+lo.toLocaleString()+"–$"+hi.toLocaleString()+"）";
+  }
+  return "$"+n.toLocaleString();
 }
 function gigPayExactHtml(g){
   const t=gigPayExactText(g);
@@ -23867,7 +23909,7 @@ function confirmPlaceShoot(shoot, fromWeekday, thenFn){
   ]);
 }
 
-function scheduleShoot(gig, pay, fame, popularity){
+function scheduleShoot(gig, pay, fame, popularity, payBreak){
   const days = shootSpanFor(gig); // effectiveShootDays / band clamp
   const weekdays = effectiveShootWeekdays(gig);
   const deadlineDays = effectiveShootDeadlineDays(gig, days);
@@ -23884,6 +23926,10 @@ function scheduleShoot(gig, pay, fame, popularity){
     daysLeft: days,
     totalDays: days,
     pay, fame,
+    /* P0-1（v20a11）：保存拆數，殺青結算先至對得返合約。新增欄位，舊檔缺值當無加成。 */
+    payBase: (payBreak && payBreak.basePay!=null) ? Number(payBreak.basePay) : null,
+    payBonus: (payBreak && payBreak.bonusPay) ? Number(payBreak.bonusPay) : 0,
+    payBonusLabel: (payBreak && payBreak.bonusLabel) ? String(payBreak.bonusLabel) : "",
     popularity: popularity!=null ? popularity : Math.max(1, Math.round(fame*0.7)+R(0,2)),
     locId: gig.loc,
     doneDays: 0,
@@ -24115,10 +24161,11 @@ function isEarlyLivingCostWeekSoftExt(w){
   try{ soft = typeof softPreviewOn==="function" && softPreviewOn(); }catch(_e){}
   return soft && week>=1 && week<=12;
 }
-/** 實際週末扣款（帶隨機） */
+/** 實際週末扣款。P0-5（v20a11）：改用生活費帶中位數，同 livingCostEstimate 同一個數。
+   舊版喺 $1,400–$1,800 之間隨機擲（擲出 $1,420），但預覽／日結提示寫中位數 $1,600，
+   玩家會見到兩個數打架；而家預告幾多就扣幾多。期望值同舊隨機區間中點一致，唔改經濟平衡。 */
 function livingCostRoll(w){
-  const b = livingCostBand(w);
-  return b.lo + R(0, Math.max(0, b.hi - b.lo));
+  return livingCostBand(w).mid;
 }
 /** 預估中位（預覽用） */
 function livingCostEstimate(w){
@@ -24172,8 +24219,11 @@ function settleWeek(){
   const balTxt=(bal>=0?`+$${bal.toLocaleString()}`:`−$${Math.abs(bal).toLocaleString()}`);
   const balCls = bal>0 ? "pos" : (bal<0 ? "neg" : "zero");
   const equation = `收入 $${earned.toLocaleString()} − 生活費 $${living.toLocaleString()} ＝ 結餘 ${balTxt}`;
+  /* P0-5（v20a11）：存款唔夠畀足生活費嗰陣，要喺卡面講明只扣到幾多、餘額唔追，
+     唔好等玩家自己發現存款同等式對唔返。 */
+  const shortNote = paid<living ? `<div class="settle-sub">存款不足：生活費只扣到 $${paid.toLocaleString()}，餘下 $${(living-paid).toLocaleString()} 未扣（不會扣到負數）</div>` : "";
   /* 主數字＝本週淨結餘；收入／生活費只做 settle-block 次行；旁白另欄 */
-  const settleBlock=`<div class="settle-block"><div class="settle-net ${balCls}"><span class="settle-net-label">本週淨結餘</span>${balTxt}</div><div class="settle-sub">${equation}</div><div class="settle-sub">通告收入 $${earned.toLocaleString()}</div><div class="settle-sub">生活費 −$${living.toLocaleString()}（實扣 $${paid.toLocaleString()}）</div><div class="settle-sub">結算後現款 $${(S.money||0).toLocaleString()}</div></div>`;
+  const settleBlock=`<div class="settle-block"><div class="settle-net ${balCls}"><span class="settle-net-label">本週淨結餘</span>${balTxt}</div><div class="settle-sub">${equation}</div><div class="settle-sub">通告收入 $${earned.toLocaleString()}</div><div class="settle-sub">生活費 −$${living.toLocaleString()}（實扣 $${paid.toLocaleString()}）</div><div class="settle-sub">結算後現款 $${(S.money||0).toLocaleString()}</div>${shortNote}</div>`;
   S.weekEarn=0;
   const w = Math.floor((S.dayIndex-1)/7)+1;
   const pushFlavor = (bits)=>{
@@ -24961,7 +25011,7 @@ function showStressPreviewModal(pv, go){
     <p>確定前估吓壓力：而家 <b>${pv.start}</b> → 週末累計約 <b>${pv.end}</b></p>
     ${risk}${lowNote}
     <div class="stress-preview">${rows}</div>
-    <p>生活費預覽：週末約扣 <b>$${livingEst.toLocaleString()}</b>（實際 ${livingRange}）。而家存款 <b>$${(S.money||0).toLocaleString()}</b></p>
+    <p>生活費預覽：週末扣 <b>$${livingEst.toLocaleString()}</b>（定額，週結算照此數扣）。而家存款 <b>$${(S.money||0).toLocaleString()}</b></p>
     ${(()=>{ try{
       const m=Math.max(0,Number(S.money)||0);
       if(m<=0) return `<p class="bad">口袋見底——確定後仍可玩，但請先排通告日翻身。</p><p class="var-note">${moneyRecoveryHint()}</p>`;
@@ -25092,10 +25142,10 @@ function endBrowseDayGoHome(){
       afterDayModal(formatRestSleepDeltas(notes), `休息（週${wd}）`, null, ended, summary, {});
     }
   };
-  /* 提早休息已經踏入下一曆日。逾期淡紙要先於休息結算出現。 */
-  try{
-    if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(showRest)) return;
-  }catch(_npRest){}
+  /* P0-5（v20a11）：次序同正常日程睇齊——先出當日（休息）結算，翌日報紙留返之後。
+     舊寫法喺 tickDay 入咗下一曆日之後即刻先彈報紙，玩家會見到 3/11 份報早過 3/10 休息結算，次序倒轉。
+     唔會漏派：休息卡收尾會行 runScheduleFromToday（非地圖日會先出報紙）或者
+     goToMapForBrowse（入地圖前會出報紙），兩條路都會喺恰當時機派返。 */
   showRest();
 }
 function goJournalFromMenu(){
@@ -25314,7 +25364,7 @@ function livingCostDayEndHint(){
     if(wd!==5 && wd!==6) return "";
     const est = livingCostEstimate();
     const range = livingCostRangeLabel();
-    return `<p class="gold" style="margin-top:6px">本週結束將扣生活費預估 <b>−$${est.toLocaleString()}</b>（實際 ${range}）。</p>`;
+    return `<p class="gold" style="margin-top:6px">本週結束將扣生活費 <b>−$${est.toLocaleString()}</b>（定額，週結算照此數扣）。</p>`;
   }catch(_e){ return ""; }
 }
 function dayEndContinueButtons(ended, goRunSchedule, opts){
@@ -25556,9 +25606,9 @@ function resolvePlannedDay(id){
           const pay=payRoll.pay;
           const fame=R(gig.fame[0],gig.fame[1]);
           const pop = gig.popularity ? R(gig.popularity[0], gig.popularity[1]) : Math.max(1, Math.round(fame*0.7)+R(0,2));
-          const shoot=scheduleShoot(gig, pay, fame, pop);
+          const shoot=scheduleShoot(gig, pay, fame, pop, payRoll);
           notes.push(`<span class="good">${eventLine("AUD_PASS",{title:gig.title, shootDays:shoot.totalDays})||("獲聘，拍攝約 "+shoot.totalDays+" 日")}</span>`);
-          try{ notes.push(`<span class="var-note">${payContractNote(gig, pay)}</span>`); }catch(_e){}
+          try{ notes.push(`<span class="var-note">${payContractNote(gig, pay, payRoll)}</span>`); }catch(_e){}
           if(payRoll.note) notes.push(`<span class="var-note">${payRoll.note}</span>`);
           title=`獲聘：${gig.title}`;
           writeTodayPlan("audition:"+gig.id);
@@ -26495,7 +26545,7 @@ const MERGE_FLOW = {
 };
 const MERGE_PAIRS = [
   { pairId:"pair_lu_baiyan_breakdown", a:"rumor_lu_baiyan_angry", b:"rumor_lu_baiyan_drunk", merged:"rumor_lu_baiyan_breakdown",
-    title:"陸柏言情緒失控疑雲", text:"陸柏言喺片場發完脾氣，夜晚又去買醉，睇嚟佢最近頂住好大壓力，隨時會爆鑊。" },
+    title:"陸柏言情緒失控疑雲", text:"陸柏言喺片場發完脾氣，半夜又喺蘭桂坊飲到爛醉，睇嚟佢最近頂住好大壓力，隨時會爆鑊。" },
   { pairId:"pair_liao_bingxing_money", a:"rumor_liao_bingxing_talk", b:"rumor_liao_bingxing_recast", merged:"rumor_liao_bingxing_money",
     title:"廖炳星帶錢入組傳聞", text:"廖炳星同導演密談完就突然換角，圈內都傳佢係帶住資金入組，難怪咁巴閉。" },
   { pairId:"pair_mai_zhendong_hide_injury", a:"rumor_mai_zhendong_hurt", b:"rumor_mai_zhendong_refuse_doc", merged:"rumor_mai_zhendong_hide_injury",
@@ -27044,11 +27094,14 @@ function mergePickedRumors(){
   mockMergePick = [];
   syncNotebookMirror();
   try{ saveQ(); }catch(_e){}
+  /* P0-4（v20a11）：先標記教學完成，先至重繪傳聞頁。
+     舊順序 render 嗰陣 rumorTutorialDone 仲係 false，Step-5 拖曳教學（手指＋虛線箭咀）
+     同目標卡高亮會重新掛上，之後無人再 render，殘留喺卡面遮住內容。 */
+  try{ markRumorTutorialDone("merge"); }catch(_e){}
   renderRumorPane();
   const stamp = phase2Steps56Line("step6", "successStampLine", MERGE_FLOW.successStampLine);
   toast(stamp);
   playTutorialPhase2MergeFx("ok");
-  try{ markRumorTutorialDone("merge"); }catch(_e){}
   const settle = phase2Steps56Copy() ? phase2Steps56Line("step6", "favorDebtSettleLine", "") : "";
   if(settle){
     const closeLabel = phase2Steps56Line("step6", "closeSettleLabel", "知道了");
@@ -28600,6 +28653,19 @@ function newspaperEventSeen(eventKey){
   if(ensureNewspaperClippings().some(c=>c && Array.isArray(c.eventKeys) && c.eventKeys.indexOf(key)>=0)) return true;
   const pend = S.pendingMorningPaper;
   if(pend && Array.isArray(pend.eventKeys) && pend.eventKeys.indexOf(key)>=0) return true;
+  /* P0-2（v20a11）：殺青報嘅標題／內文只由通告本身決定，同工換日再殺青會出返一模一樣嘅報，
+     但 eventKey 帶住拍攝日（wrap:<gigId>:<day>），換咗日就繞過上面嘅 exact-key 去重，當新報再派。
+     所以 wrap 報以「每隻通告一份」為準：queue／剪報／待出之中已有同 gigId 嘅 wrap 紀錄就當見過。 */
+  if(key.indexOf("wrap:")===0){
+    const gigPart = key.split(":")[1] || "";
+    if(gigPart){
+      const seenKeys = [];
+      ensureNewspaperQueue().forEach(it=>{ if(it && it.eventKey) seenKeys.push(it.eventKey); });
+      ensureNewspaperClippings().forEach(c=>{ ((c && c.eventKeys) || []).forEach(k=>seenKeys.push(k)); });
+      if(pend && Array.isArray(pend.eventKeys)) pend.eventKeys.forEach(k=>seenKeys.push(k));
+      if(seenKeys.some(k=>String(k).indexOf("wrap:"+gigPart+":")===0)) return true;
+    }
+  }
   return false;
 }
 function enqueueNewspaperItem(raw, opts){
@@ -29137,7 +29203,7 @@ function renderMorningPaperHtml(edition){
   const fame = Number(e.fameDelta)||0;
   const fameLine = fame
     ? `<p class="paper-fame">聲望 ${fame>0?"+":""}${fame}</p>`
-    : `<p class="paper-fame paper-fame-flat">這則未再改聲望。</p>`;
+    : `<p class="paper-fame paper-fame-flat">聲望未有變動。</p>`;
   const shorts = (e.shorts||[]).map(s=>`<article class="paper-short">
       <p class="paper-kicker">${newspaperEsc(s.paperName||"")}</p>
       <h4>${newspaperEsc(s.headline||"")}</h4>
@@ -29275,7 +29341,7 @@ function renderClippingsPane(){
   }
   box.innerHTML = rows.map(c=>{
     const fame = Number(c.fameDelta)||0;
-    const fameBit = fame ? `聲望 ${fame>0?"+":""}${fame}` : "聲望未再改";
+    const fameBit = fame ? `聲望 ${fame>0?"+":""}${fame}` : "聲望未有變動";
     const extra = (c.shorts&&c.shorts.length) ? `<p>同版還有 ${c.shorts.length} 則短訊。</p>` : "";
     const lab = c.clipLabel ? ` · ${newspaperEsc(c.clipLabel)}` : "";
     return `<article class="clip-card"><p class="clip-date">${newspaperEsc(c.dateLabel||"")} · ${newspaperEsc(c.paperName||"娛樂版")}${lab}</p><h4>${newspaperEsc(c.headline||"")}</h4><p>${newspaperEsc(c.dek||"")}</p>${extra}<p>${fameBit}</p></article>`;
@@ -29553,7 +29619,7 @@ function newspaperCheck(){
     const edFade = pullDueNewspaperEdition();
     if(!edFade || edFade.fameDelta!==0 || String(edFade.headline||"").indexOf("新春大吉")<0) fails.push("fade_edition");
     const htmlFade = renderMorningPaperHtml(edFade||{});
-    if(htmlFade.indexOf("這則未再改聲望")<0 || htmlFade.indexOf("聲望 +")>=0) fails.push("fade_html");
+    if(htmlFade.indexOf("聲望未有變動")<0 || htmlFade.indexOf("聲望 +")>=0) fails.push("fade_html");
     if(leadNarr(htmlFade)) fails.push("fade_html_lead");
     commitMorningPaper(edFade, { persist:false });
     if((Number(S.fame)||0)!==fameFlat) fails.push("fade_commit");
@@ -29624,7 +29690,7 @@ function newspaperCheck(){
         _opened105 = !!showed105;
         if(!showed105) fails.push("story_c5_accel_present");
         const modal105 = ((document.getElementById("modal-inner")||{}).innerText||"");
-        if(modal105.indexOf("避談敏感話題")<0 || modal105.indexOf("這則未再改聲望")<0) fails.push("story_c5_modal");
+        if(modal105.indexOf("避談敏感話題")<0 || modal105.indexOf("聲望未有變動")<0) fails.push("story_c5_modal");
         if(modal105.indexOf("聲量")>=0 || modal105.indexOf("噂")>=0) fails.push("story_c5_face");
         const btn105 = ((document.getElementById("modal-btns")||{}).innerText||"");
         if(showed105 && btn105.indexOf("收下這份剪報")<0) fails.push("story_c5_btn");
@@ -31554,21 +31620,33 @@ function rollAuditionPay(gig){
   const lo = (gig && gig.pay && gig.pay[0]!=null) ? Number(gig.pay[0]) : 0;
   const hi = (gig && gig.pay && gig.pay[1]!=null) ? Number(gig.pay[1]) : lo;
   let pay = (typeof R==="function") ? R(lo, hi) : lo;
+  /* P0-1（v20a11）：記低拆數。舊版入門通告喺 soft 模式靜靜 ×1.35，
+     合約額可以去到 $747 但牌面只寫 $450–$650，又無解釋——就係試玩報告嗰單。
+     而家回傳 basePay／bonusPay／bonusLabel，合約同殺青結算都要拆開列明；
+     金額計法本身（×1.35／補場 $800）一概唔改，唔郁經濟平衡。 */
+  const basePay = pay;
+  let bonusPay = 0;
+  let bonusLabel = "";
   let note = "";
   try{
     if(typeof softPreviewOn==="function" && softPreviewOn()){
       if(gig && gig.softBridge){
         const adj = takeSoftBridgePay(pay);
         pay = adj.pay;
+        bonusPay = pay - basePay;
+        bonusLabel = adj.stipend ? "補場片酬調整" : "";
         note = adj.stipend
           ? "本週初階臨記正薪已有一單，這張是補場，片酬較低。"
           : "初階臨記正薪：殺青先入帳，大約夠一週生活費，另有少少結餘。";
       } else if(gig && gig.entryTier){
         pay = Math.round(pay * 1.35);
+        bonusPay = pay - basePay;
+        bonusLabel = "入門加成（+35%）";
+        note = "入門加成：牌面擲出後再加 35%，合約額可以高過牌面約酬區間；合約行會拆開列明，加總對得返。";
       }
     }
   }catch(_e){}
-  return { pay:pay, note:note };
+  return { pay:pay, note:note, basePay:basePay, bonusPay:bonusPay, bonusLabel:bonusLabel };
 }
 
 /** v19z：入場臨記池（disk／內嵌共用）。缺則由 ENTRY_GIGS_1988 補入；已存在則夾低 req 至模板上限。 */
@@ -32070,13 +32148,13 @@ function doAudition(gig, L){
     const pop = gig.popularity ? R(gig.popularity[0], gig.popularity[1]) : Math.max(1, Math.round(fame*0.7)+R(0,2));
     const days=shootSpanFor(gig);
     notes=apply({acting:R(0,1), stress:8+R(0,4)});
-    const shoot=scheduleShoot(gig, pay, fame, pop);
+    const shoot=scheduleShoot(gig, pay, fame, pop, payRoll);
     title="獲聘！";
     notes.push(`<span class="good">${eventLine("AUD_PASS",{title:gig.title, shootDays:days})||("試鏡通過，拍攝 "+days+" 日")}</span>`);
     notes.push(`完成後約酬 $ ${pay.toLocaleString()} · ${(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲望"} +${fame} · ${(STAT_LABEL&&STAT_LABEL.popularity)||"人氣"} +${pop}`);
     if(payRoll.note) notes.push(`<span class="var-note">${payRoll.note}</span>`);
     try{ notes.push(`<span class="var-note">${chanceVarianceNote(gig)}</span>`); }catch(_e){}
-    try{ notes.push(`<span class="var-note">${payContractNote(gig, pay)}</span>`); }catch(_e){}
+    try{ notes.push(`<span class="var-note">${payContractNote(gig, pay, payRoll)}</span>`); }catch(_e){}
     const {ended, summary}=tickDay();
     const finishHire=()=>{
       paintBar(); drawMap();
