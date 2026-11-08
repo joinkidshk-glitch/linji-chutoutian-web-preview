@@ -65,3 +65,9 @@
 - `tests/test_p0_static.py`：27 項全 PASS（含 SAVE key／s107／v20a10 字串出現次數同原版一致）。
 - 未能跑：檔案內建嘅瀏覽器 self-check（如 `newspaperCheck`）需要 DOM，本地無 jsdom，只更新咗佢哋引用嘅字串斷言，建議入 repo 後喺瀏覽器行一次 `__newspaper.check()` 等檢查確認。
 - Diff（對原版 s107）：+105 行／−27 行，淨 +78 行（33,262 → 33,340 行）。
+
+---
+
+## 部署紀錄（2026-11-09）
+
+- PR #108 合併（e029214）後，Pages run #230 嘅 deploy job 兩次「Timeout reached, aborting!」，新版未有出街。本 commit 只喺本 NOTES 尾加呢段紀錄，目的係重新觸發 Pages 部署，遊戲內容無任何改動。
