@@ -557,6 +557,10 @@ html.reduce-motion *::after, body.reduce-motion *::after{
   border:1px solid #4a351e;background:linear-gradient(135deg,#e8b86d,#d4924a);color:#1a1208;
 }
 .nb-actions button.g{flex:0.7}
+/* Soft tip: 記數／傳聞／人情債／標籤 同用行程頁嘅離開掣，唔使先切返行程 */
+#home-tab-exit{ flex:0 0 auto; }
+#home-tab-exit[hidden]{ display:none !important; }
+#home-tab-exit button.g{ flex:1 1 auto; }
 
 /* Map with photo */
 .map-wrap{flex:1;min-height:0;position:relative;overflow:auto;background:#0a1424;-webkit-overflow-scrolling:touch}
@@ -2408,6 +2412,9 @@ body.day-res-open #mask.day-res{
   font-weight:800;font-size:.82rem;cursor:pointer;
 }
 .story-picker .sp-empty{margin:8px 0;color:#6b5a48;font-size:.8rem}
+.story-picker .sp-empty.sp-load-err,
+.story-picker .sp-lead.sp-load-err{color:#8a2a22;font-weight:800}
+.story-picker .sp-empty.sp-load-err-qa{font-size:.72rem;color:#6b4e2e;font-weight:700}
 /* v17o HUD／選單入口 */
 .chip-story{
   display:inline-flex;align-items:center;gap:4px;cursor:pointer;
@@ -2417,6 +2424,11 @@ body.day-res-open #mask.day-res{
   opacity:.42;
 }
 .chip-story.on{display:inline-flex;opacity:1}
+.chip-story.is-load-err{
+  opacity:1 !important;
+  border-color:rgba(224,112,96,.85) !important;
+  background:rgba(160,48,32,.45) !important;
+}
 .chip-story .chip-story-n{
   display:inline-block;min-width:1.1em;padding:0 4px;border-radius:999px;
   background:#c48a2a;color:#1a1208;font-size:.62rem;font-weight:900;line-height:1.4;text-align:center;
@@ -2449,6 +2461,10 @@ body.day-res-open #mask.day-res{
   margin-top:6px;min-height:44px;width:100%;border-radius:10px;
   border:1px solid rgba(120,80,20,.35);background:#e8d4a8;color:#2a2118;
   font-weight:800;font-size:.86rem;cursor:pointer;
+}
+.home-story-hint.home-story-hint-err{
+  background:rgba(196,60,42,.16);border-color:rgba(138,42,34,.45);
+  color:#8a2a22;font-weight:800;
 }
 .gig-card .season-tag{
   display: inline-block;
@@ -3552,6 +3568,12 @@ body.day-res-open .day-row{
   letter-spacing: .01em;
   box-shadow: 0 1px 0 rgba(0,0,0,.18);
 }
+.map-hint-story.map-hint-story-err{
+  border-color: rgba(224,140,120,.75) !important;
+  border-left-color: #e07060 !important;
+  background: rgba(80,24,16,.62) !important;
+  color: #ffd2c8 !important;
+}
 .map-hint:has(.map-hint-story) .map-hint-help{
   opacity: .5 !important;
   font-size: .56rem !important;
@@ -3864,6 +3886,9 @@ body.day-res-open .day-row{
       </div>
       <div class="home-pane" id="home-pane-tags">
         <div class="journal-scroll" id="tags-list" aria-label="選角標籤"></div>
+      </div>
+      <div class="nb-actions home-tab-exit" id="home-tab-exit" hidden>
+        <button class="g" type="button" id="home-back-map-tabs">返回地圖</button>
       </div>
     </div>
   </section>
@@ -17203,6 +17228,8 @@ let STORY_WIRE = {
   rival: null,
   errors: [],
   fetchedAt: null,
+  contentPhase: "idle", /* idle | loading | done | error — empty gate ≠ load failure */
+  softStubOk: true,
 };
 
 /* v17o PLAN_MAP + script-lock：loc soft／meet offer／lockedHint 後備（JSON 合稿前代碼表） */
@@ -20240,6 +20267,9 @@ const StoryPlay = (()=>{
       }catch(_e){}
       return "先到場，先可以播這幕。";
     }
+    const fault = (typeof storyWireContentFault==="function") ? storyWireContentFault() : null;
+    const faultFailed = !!(fault && fault.kind==="failed");
+    const faultPending = !!(fault && fault.kind==="pending");
     const openRows = open.map(r=>{
       let stamp = r.weekStamp || "";
       try{
@@ -20262,7 +20292,16 @@ const StoryPlay = (()=>{
       <div class="sp-row-txt"><b>${esc(r.title||r.id)}</b><span>${bits.join(" · ")}</span></div>
       <button type="button" class="sp-play" data-play="${esc(r.id)}">播放</button>
     </div>`;
-    }).join("") || `<p class="sp-empty">暫時沒有事態可播。繼續訓練、傾談或查看通告，有新幕時會在頂欄提示。</p>`;
+    }).join("");
+    const emptyGate = `<p class="sp-empty">暫時沒有事態可播。繼續訓練、傾談或查看通告，有新幕時會在頂欄提示。</p>`;
+    let openBlock = openRows;
+    if(faultFailed){
+      openBlock = `<p class="sp-empty sp-load-err-qa" role="status">${esc(fault.detail)}</p>` + openRows;
+    } else if(!openRows && faultPending){
+      openBlock = `<p class="sp-empty sp-load-pending">劇情內容載入中，請稍候再打開事態。</p>`;
+    } else if(!openRows){
+      openBlock = emptyGate;
+    }
 
     const doneRows = done.slice(-5).reverse().map(r=>{
       const meta = pickerPlayerMeta(r);
@@ -20305,16 +20344,20 @@ const StoryPlay = (()=>{
 
     const c1Done = done.some(d=>d && d.id==="C1") || (typeof StoryOC.isDone==="function" && StoryOC.isDone("C1"));
     const firstBlock = open.length ? pickerHereBlock(open[0]) : "";
-    const lead = open.length
+    const lead = faultFailed
+      ? esc(fault.player)
+      : (open.length
       ? (firstBlock
           ? `現有 <b>${open.length}</b> 宗事態。未在場，暫不能播「${esc(open[0].title||open[0].id)}」。`
           : `現有 <b>${open.length}</b> 宗事態。可播「${esc(open[0].title||open[0].id)}」。`)
-      : (c1Done ? "已播過的節會留在下方；下一幕未開原因見「即將可出」。" : "教學後可從這裡進入開局事態。");
+      : (faultPending
+          ? "劇情內容載入中，請稍候。"
+          : (c1Done ? "已播過的節會留在下方；下一幕未開原因見「即將可出」。" : "教學後可從這裡進入開局事態。")));
 
     const body = `<div class="story-picker" id="story-picker-root">
-      <p class="sp-lead">${lead}</p>
+      <p class="sp-lead${faultFailed ? " sp-load-err" : ""}"${faultFailed ? " role=\"alert\"" : ""}>${lead}</p>
       <div class="sp-sec">可播事態</div>
-      ${openRows}
+      ${openBlock}
       ${doneRows?`<div class="sp-sec">最近完成</div>${doneRows}`:""}
       ${lockRows?`<div class="sp-sec">即將可出</div>${lockRows}`:""}
     </div>`;
@@ -21226,6 +21269,7 @@ try{
 
 async function refreshCopyPacksFromDisk(){
   try{ if(typeof loadPhase3Mock==="function") loadPhase3Mock(); }catch(_p3){}
+  STORY_WIRE.contentPhase = "loading";
   const base = "content/";
   const bust = encodeURIComponent(typeof SAVE!=="undefined"?SAVE:Date.now());
   const get = (name)=> fetch(base+name+"?v="+bust).then(r=>r.ok?r.json():null).catch(()=>null);
@@ -21298,8 +21342,9 @@ async function refreshCopyPacksFromDisk(){
     STORY_WIRE.romance.lanXu = rom2;
     STORY_WIRE.romance.tang = romTang;
     STORY_WIRE.rival = rival;
+    let _softStubRes = null;
     try{
-      if(gateStub && typeof BehaviorGate!=="undefined") BehaviorGate.loadStub_nodes_trigger(gateStub);
+      if(gateStub && typeof BehaviorGate!=="undefined") _softStubRes = BehaviorGate.loadStub_nodes_trigger(gateStub);
       try{
         if(typeof loadFreeplayFramework==="function"){
           Promise.resolve(loadFreeplayFramework()).then(function(){
@@ -21323,7 +21368,17 @@ async function refreshCopyPacksFromDisk(){
     if(!rom2) STORY_WIRE.errors.push("romance lan/xu 未載入");
     if(!romTang) STORY_WIRE.errors.push("romance tang 未載入");
     if(!rival) STORY_WIRE.errors.push("rival_mentor 未載入");
+    STORY_WIRE.softStubOk = true;
+    try{
+      if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview()){
+        STORY_WIRE.softStubOk = !!(_softStubRes && _softStubRes.ok);
+        if(!STORY_WIRE.softStubOk && STORY_WIRE.errors.indexOf("SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json 未載入")<0){
+          STORY_WIRE.errors.push("SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json 未載入");
+        }
+      }
+    }catch(_softStubFlag){}
     STORY_WIRE.loaded = true;
+    STORY_WIRE.contentPhase = "done";
     STORY_WIRE.fetchedAt = new Date().toISOString();
     try{ maybeApplySoftSeed(); }catch(_seed){}
     try{ window.STORY_WIRE = STORY_WIRE; window.GIGS = GIGS; window.gigsByYear = STORY_WIRE.gigsByYear; if(typeof exposePreviewDebug==="function") exposePreviewDebug(); }catch(_w){}
@@ -21336,10 +21391,15 @@ async function refreshCopyPacksFromDisk(){
         STORY_WIRE.errors.length? STORY_WIRE.errors : "ok");
     }
   }catch(_e){
+    STORY_WIRE.errors = STORY_WIRE.errors || [];
     STORY_WIRE.errors.push(String(_e && _e.message || _e));
+    STORY_WIRE.contentPhase = "error";
     /* file:// 或離線：保留內嵌 snapshots */
   }
   try{ await preferFileTutorialPhase2Steps56(); }catch(_s56){}
+  try{
+    if(typeof S!=="undefined" && S && typeof paintBar==="function") paintBar();
+  }catch(_paintFault){}
 }
 
 
@@ -24435,6 +24495,7 @@ function renderNotebook(){
       hbm.setAttribute("data-mode", forced ? "continue" : (soft ? "start-today" : "map"));
     }catch(_e){ hbm.textContent = "返回地圖"; }
   }
+  try{ syncHomeTabExit(); }catch(_exit){}
   updateLiveStressStrip();
   if(editable){
     const wrap=document.getElementById("nb-copy-wrap");
@@ -25408,6 +25469,31 @@ function postTutorialEntry(){
   }, 160);
 }
 
+/* v20a10 Soft tip: load／網絡／parse 失敗唔好扮成「冇事態」。空閘文案只喺載入成功而且真係冇得播先出。Soft≠PASS。唔改 SAVE／?v=。 */
+function storyFaultText(s){
+  return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function storyWireContentFault(){
+  const w = (typeof STORY_WIRE!=="undefined") ? STORY_WIRE : null;
+  const player = "劇情內容未載入／網絡失敗，請刷新後再試。";
+  if(!w) return { kind:"failed", player:player, detail:"STORY_WIRE 不存在" };
+  const phase = String(w.contentPhase||"idle");
+  if(phase==="idle" || phase==="loading") return { kind:"pending", player:"劇情內容載入中，請稍候。", detail:"" };
+  const mainMissing = !(w.main && Array.isArray(w.main.nodes));
+  if(!mainMissing) return null;
+  const detail = [];
+  const push = (s)=>{
+    s = String(s==null?"":s).trim();
+    if(!s || detail.indexOf(s)>=0) return;
+    if(/^gigs_19\d\d\.json/.test(s)) return;
+    detail.push(s);
+  };
+  push("story_detail_c1_to_c17.json 未載入");
+  try{ (w.errors||[]).forEach(push); }catch(_e){}
+  if(w.softStubOk===false) push("SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json 未載入");
+  return { kind:"failed", player:player, detail: detail.join("；") || "story_detail_c1_to_c17.json 未載入" };
+}
+try{ window.storyWireContentFault = storyWireContentFault; }catch(_e){}
 function storyOpenSnapshot(){
   if(typeof StoryOC==="undefined" || !S) return { open:[], done:[], locked:[], n:0 };
   try{
@@ -25432,12 +25518,17 @@ function paintStoryEntryHints(){
   const n = snap.n||0;
   const chip = document.getElementById("chip-story");
   const chipN = document.getElementById("chip-story-n");
+  const fault = (typeof storyWireContentFault==="function") ? storyWireContentFault() : null;
   if(chip){
     const show = n>0;
-    chip.classList.toggle("on", show);
+    const failed = !!(fault && fault.kind==="failed");
+    chip.classList.toggle("on", show || failed);
+    chip.classList.toggle("is-load-err", failed);
     /* v19z30: chip 常駐；無未讀淡顯示，唔再 aria-hidden */
     chip.setAttribute("aria-hidden", "false");
-    chip.title = show ? ("有可播事態 · "+n) : "事態（暫無可播）";
+    chip.title = failed
+      ? (fault.player || "劇情內容未載入，請刷新")
+      : (show ? ("有可播事態 · "+n) : ((fault && fault.kind==="pending") ? "劇情內容載入中" : "事態（暫無可播）"));
     if(chipN) chipN.textContent = show ? String(n) : "";
   }
   const badge = document.getElementById("menu-story-badge");
@@ -25519,6 +25610,10 @@ function storyMainProgressLine(){
   }catch(_e){ return ""; }
 }
 function storyMapHintHtml(){
+  const fault = (typeof storyWireContentFault==="function") ? storyWireContentFault() : null;
+  if(fault && fault.kind==="failed"){
+    return `<span class="map-hint-story map-hint-story-err">${storyFaultText(fault.player)}</span>`;
+  }
   const snap = storyOpenSnapshot();
   let rows = (snap.open||[]).slice();
   try{
@@ -25542,6 +25637,9 @@ function storyMapHintHtml(){
   /* v19z20：無開放事態時仍常駐下一幕進度，避免「斷崖消失」 */
   if(progress){
     return `<span class="map-hint-story">${progress}</span>`;
+  }
+  if(fault && fault.kind==="pending"){
+    return `<span class="map-hint-story">劇情內容載入中，請稍候。</span>`;
   }
   return "";
 }
@@ -25578,6 +25676,13 @@ function storyHomeHintHtml(){
       if(loc && loc.name) locBit = ` · 地圖去「${loc.name}」`;
     }catch(_e){}
     return `<div class="home-story-hint" id="home-story-hint">有事態：「${title}」等 ${openRows.length} 宗${locBit}（到現場先可播）。<button type="button" id="home-story-open">去現場播事態</button></div>`;
+  }
+  const fault = (typeof storyWireContentFault==="function") ? storyWireContentFault() : null;
+  if(fault && fault.kind==="failed"){
+    return `<div class="home-story-hint home-story-hint-err" id="home-story-hint" role="alert">${storyFaultText(fault.player)}</div>`;
+  }
+  if(fault && fault.kind==="pending"){
+    return `<div class="home-story-hint" id="home-story-hint">劇情內容載入中，請稍候。</div>`;
   }
   /* PLAN_MAP (B)：open 空但下一主線仍 lock → 手帳一句 lockedHint（地圖日常接地） */
   try{
@@ -26910,6 +27015,26 @@ function setHomeTab(tab){
   if(tab==="tags"){
     try{ renderCastingTagsPane(); }catch(_e){}
   }
+  try{ syncHomeTabExit(tab); }catch(_exit){}
+}
+function syncHomeTabExit(tab){
+  const exit = document.getElementById("home-tab-exit");
+  const src = document.getElementById("home-back-map");
+  const btn = document.getElementById("home-back-map-tabs");
+  if(!exit || !btn) return;
+  if(!tab){
+    const on = document.querySelector("#home-tabs .home-tab.on");
+    tab = (on && on.getAttribute("data-htab")) || "plan";
+  }
+  const journalTab = tab==="ledger" || tab==="rumor" || tab==="debt" || tab==="tags";
+  const srcShown = !!(src && src.style.display && src.style.display!=="none");
+  if(!journalTab || !srcShown){
+    exit.hidden = true;
+    return;
+  }
+  btn.textContent = String(src.textContent||"返回地圖").trim() || "返回地圖";
+  btn.setAttribute("data-mode", src.getAttribute("data-mode") || "map");
+  exit.hidden = false;
 }
 function phase2GateFingerprint(){
   if(!S) return "";
@@ -30870,7 +30995,7 @@ function showB01HomeModal(){
   const chOpen = maybeChapterOpenHtml(1);
   S.flags = S.flags||{}; S.flags.sawB01 = true;
   setTutMask(false);
-  let storyLine = `<p class="gold" style="margin-top:8px">另外：頂欄／選單有「事態」。想先播開局主線 →「去金龍播事態（會用預設行程）」；想自己改行程 →「開始寫手帳」。主線「先學做動作戲／先賺」只播一次——播完就唔使返去重播。</p>`;
+  let storyLine = `<p class="gold" style="margin-top:8px">另外：頂欄／選單有「事態」。去金龍睇開局主線（入到金龍先至播）→「去金龍睇事態（會用預設行程）」；想自己改行程 →「開始寫手帳」。主線「先學做動作戲／先賺」只播一次——播完就唔使返去重播。</p>`;
   try{
     if(typeof StoryOC!=="undefined" && StoryOC.isDone("C1")){
       let nextTitle = "";
@@ -30900,7 +31025,7 @@ function showB01HomeModal(){
         let c1done=false;
         try{ c1done = typeof StoryOC!=="undefined" && StoryOC.isDone("C1"); }catch(_e){}
         if(c1done) return [];
-        return [{label:"去金龍播事態（會用預設行程）", role:"g", on:()=>{
+        return [{label:"去金龍睇事態（會用預設行程）", role:"g", on:()=>{
           S.flags.pendingStoryNudge=false;
           try{
             /* v19z15 B2／v19z16 B1：若仍喺手帳編輯態，先靜默確定預設行程再去金龍（唔燒週程） */
@@ -31042,9 +31167,8 @@ document.getElementById("btn-reset-plan").onclick=resetPlanDraft;
     showStressPreviewModal(pv, ()=>commitPlanAndGo());
   };
 })();
-document.getElementById("home-back-map").onclick=()=>{
-  /* v19z12：強制日繼續；soft 行程開始今日；自由日返地圖 */
-  const mode = (document.getElementById("home-back-map")||{}).getAttribute("data-mode")||"";
+function leaveHomeFromNotebook(mode){
+  /* v19z12：強制日繼續；soft 行程開始今日；自由日返地圖。記數／傳聞／人情債用同一掣。 */
   if(mode==="start-today"){
     try{ startTodayScheduleFromMap(); }catch(_e){}
     return;
@@ -31053,6 +31177,14 @@ document.getElementById("home-back-map").onclick=()=>{
   try{ closeSheet(); }catch(_e){}
   atLoc=null;
   show("v-map"); paintBar(); drawMap();
+}
+document.getElementById("home-back-map").onclick=()=>{
+  const mode = (document.getElementById("home-back-map")||{}).getAttribute("data-mode")||"";
+  leaveHomeFromNotebook(mode);
+};
+const _homeTabExitBtn = document.getElementById("home-back-map-tabs");
+if(_homeTabExitBtn) _homeTabExitBtn.onclick=()=>{
+  leaveHomeFromNotebook(_homeTabExitBtn.getAttribute("data-mode")||"");
 };
 document.getElementById("btn-new").onclick=startNew;
 document.getElementById("btn-cont").onclick=cont;
