@@ -11,11 +11,11 @@
    GitHub Pages caches HTML for max-age=600, and the playtest box keeps a persistent cache
    keyed by the full URL. ?v=20a10&softBehaviorGate=1 therefore kept executing the pre-#99
    document (去金龍／主線) even after Pages origin sha was e4b43926.
-   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s104
-   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s104
+   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s105
+   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s105
    Bump SOFT_REV when the next Soft tip changes index.html. Do not bump ?v=. */
 (function(){
-  var SOFT_REV = "s104";
+  var SOFT_REV = "s105";
   try { document.documentElement.setAttribute("data-soft-rev", SOFT_REV); } catch (e0) {}
   try {
     var q = new URLSearchParams(location.search || "");
@@ -25070,14 +25070,21 @@ function endBrowseDayGoHome(){
   const wd = weekdayName(weekdayIdx(S.dayIndex));
   const notes = apply({stamina:6+R(0,4), stress:-(4+R(0,4))});
   const {ended, summary}=tickDay();
+  const showRest = ()=>{
+    try{
+      presentRestSleepDayEnd({
+        title: `休息（週${wd}）`,
+        notes, ended, summary
+      });
+    }catch(_e5){
+      afterDayModal(formatRestSleepDeltas(notes), `休息（週${wd}）`, null, ended, summary, {});
+    }
+  };
+  /* 提早休息已經踏入下一曆日。逾期淡紙要先於休息結算出現。 */
   try{
-    presentRestSleepDayEnd({
-      title: `休息（週${wd}）`,
-      notes, ended, summary
-    });
-  }catch(_e5){
-    afterDayModal(formatRestSleepDeltas(notes), `休息（週${wd}）`, null, ended, summary, {});
-  }
+    if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(showRest)) return;
+  }catch(_npRest){}
+  showRest();
 }
 function goJournalFromMenu(){
   closeSheet();
@@ -25143,10 +25150,8 @@ function goToMapForBrowse(){
   /* v20a8：季節窗頒獎請柬（同殺青分 pending；關 sheet 後還原地圖 CTA） */
   try{
     if(typeof queueAwardsOnSeasonWindow==="function") queueAwardsOnSeasonWindow();
-    if(typeof presentPendingAward==="function" && FREEPLAY_FW && FREEPLAY_FW._pendingAward){
-      presentPendingAward(()=>{ try{ goToMapForBrowse(); }catch(_e3){} });
-      return;
-    }
+    /* 請柬真係彈出先截住。當日「稍後」唔好再入嚟，否則會遞迴，淡紙永遠留喺佇列。 */
+    if(typeof presentPendingAward==="function" && presentPendingAward(()=>{ try{ goToMapForBrowse(); }catch(_e3){} })) return;
   }catch(_awdMap){}
   /* Soft tip #101：次日朝早報紙。殺青短卡同頒獎請柬先出，正式報紙跟住。 */
   try{
@@ -25362,8 +25367,9 @@ function resolveWeekRemaining(opts){
 function runScheduleFromToday(){
   const id=todayPlanId();
   const mapish = !id || (typeof isMapDay==="function" && isMapDay(id)) || String(id).startsWith("wrap:") || String(id).startsWith("audition:");
-  /* 下一曆日若已有報紙，先彈朝早版，再耗今日。加速途中唔打斷。 */
-  if(!mapish && !_weekAccel){
+  /* 下一曆日若已有報紙，先彈朝早版，再耗今日。
+     加速本週剩餘亦然：唔好靜默吞掉逾期淡紙（C5 迴避 fameDelta=0 會永遠留喺佇列）。 */
+  if(!mapish){
     try{
       if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(()=>{ try{ runScheduleFromToday(); }catch(_e){} })) return;
     }catch(_npDay){}
@@ -28480,13 +28486,11 @@ function presentPendingAward(thenFn){
   try{ queueAwardsOnSeasonWindow(); }catch(_e){}
   promoteAwardQueue();
   const pack = FREEPLAY_FW._pendingAward;
-  if(!pack){ cont(); return false; }
+  /* 冇請柬、或今日已揀「稍後」：交返呼叫方繼續（朝早報紙）。唔好再 call cont，否則同 goToMapForBrowse 對撞到爆棧，淡紙唔會出。 */
+  if(!pack) return false;
   try{
     const day = (S && (S.dayIndex|0)) || 0;
-    if(FREEPLAY_FW._awardSnoozed && (FREEPLAY_FW._awardSnoozeDay|0)===day){
-      cont();
-      return false;
-    }
+    if(FREEPLAY_FW._awardSnoozed && (FREEPLAY_FW._awardSnoozeDay|0)===day) return false;
     if(FREEPLAY_FW._awardSnoozed && (FREEPLAY_FW._awardSnoozeDay|0)!==day){
       FREEPLAY_FW._awardSnoozed = false;
     }
@@ -29205,7 +29209,8 @@ function commitMorningPaper(edition, opts){
 function presentDueMorningPaper(thenFn){
   const cont = (typeof thenFn==="function") ? thenFn : function(){};
   if(!S) return false;
-  try{ if(typeof _weekAccel!=="undefined" && _weekAccel) return false; }catch(_e){}
+  try{ flushPendingStoryPapers(); }catch(_e){}
+  /* 加速途中都要出逾期紙。靜默吞日之前由 runScheduleFromToday 先彈，再續加速。 */
   if(FREEPLAY_FW && FREEPLAY_FW._paperShowing) return true;
   if(newspaperHoldForToday()) return false;
   const edition = pullDueNewspaperEdition();
@@ -29542,13 +29547,93 @@ function newspaperCheck(){
     );
     if(!hiLead || !(hiLead.fameDelta>=1 && hiLead.fameDelta<=3)) fails.push("hi16_delta");
     if(faceOf(hiLead).indexOf("新春大吉")<0 || faceOf(hiLead).indexOf("男主角")<0) fails.push("hi16_gig");
+    /* #105：真實載入嘅 C5／C5_c（唔係合成 choice）→ 當日唔彈 → 加速都要出淡紙 → 收下聲望唔變 → 剪報。 */
+    const _saveQ105 = saveQ;
+    const _accel105 = _weekAccel;
+    let _opened105 = false;
+    saveQ = function(){};
+    try{
+      const node105 = (typeof StoryOC!=="undefined" && StoryOC.findNodeRaw) ? StoryOC.findNodeRaw("C5") : null;
+      const choice105 = node105 && (node105.choices||[]).find(c=>c && c.id==="C5_c");
+      const flags105 = (choice105 && choice105.effects && choice105.effects.flags) || [];
+      if(!node105 || !choice105 || flags105.indexOf("choi_dodge")<0 || String(choice105.label||"").indexOf("藉故迴避")<0) fails.push("story_c5_real");
+      else {
+        if(typeof BehaviorGate!=="undefined" && BehaviorGate.rivalGao_onlyC3ChoiceFlags){
+          const kept105 = BehaviorGate.rivalGao_onlyC3ChoiceFlags(node105, choice105, flags105.slice());
+          if(kept105.indexOf("choi_dodge")<0) fails.push("story_c5_strip");
+        }
+        S.newspaperQueue = [];
+        S.newspaperClippings = [];
+        S.pendingMorningPaper = null;
+        S.newspaperLastPresentedDay = null;
+        S.mockRumors = [];
+        S.dayIndex = 189;
+        S.fame = 73;
+        S.story = S.story || { done:{}, flags:{}, rel:{}, routes:{}, phase:"P1" };
+        S.story.done = S.story.done || {};
+        delete S.story.done.C5;
+        S.story.flags = S.story.flags || {};
+        delete S.story.flags.choi_dodge;
+        try{ if(FREEPLAY_FW){ FREEPLAY_FW._paperShowing = false; FREEPLAY_FW._storyPaperPend = []; } }catch(_ps105){}
+        const fame105 = Number(S.fame)||0;
+        const day105 = S.dayIndex|0;
+        const applied105 = StoryOC.applyChoice(node105, choice105);
+        if(!applied105 || (applied105.flags||[]).indexOf("choi_dodge")<0) fails.push("story_c5_apply");
+        const q105 = (S.newspaperQueue||[]).find(it=>it && it.eventKey==="story:C5:dodge");
+        if(!q105 || q105.source!=="story" || q105.fameDelta!==0 || (q105.enqueuedDay|0)!==day105 || (q105.publishDay|0)!==day105+1) fails.push("story_c5_queue");
+        if(!q105 || q105.templateId!=="np_story_c5_dodge_01" || String(q105.headline||"").indexOf("避談敏感話題")<0) fails.push("story_c5_head");
+        if(presentDueMorningPaper(function(){})) fails.push("story_c5_same_day");
+        if((Number(S.fame)||0)!==fame105) fails.push("story_c5_fame_now");
+        S.dayIndex = day105+1;
+        _weekAccel = true;
+        const showed105 = presentDueMorningPaper(function(){});
+        _opened105 = !!showed105;
+        if(!showed105) fails.push("story_c5_accel_present");
+        const modal105 = ((document.getElementById("modal-inner")||{}).innerText||"");
+        if(modal105.indexOf("避談敏感話題")<0 || modal105.indexOf("這則未再改聲望")<0) fails.push("story_c5_modal");
+        if(modal105.indexOf("聲量")>=0 || modal105.indexOf("噂")>=0) fails.push("story_c5_face");
+        const btn105 = ((document.getElementById("modal-btns")||{}).innerText||"");
+        if(showed105 && btn105.indexOf("收下這份剪報")<0) fails.push("story_c5_btn");
+        const ed105 = S.pendingMorningPaper;
+        try{ closeModal(); }catch(_cm105){}
+        try{ if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = false; }catch(_ps105b){}
+        _opened105 = false;
+        commitMorningPaper(ed105, { persist:false });
+        if((Number(S.fame)||0)!==fame105) fails.push("story_c5_commit_fame");
+        if(!(S.newspaperClippings||[]).some(c=>c && (c.eventKeys||[]).indexOf("story:C5:dodge")>=0 && (Number(c.fameDelta)||0)===0 && String(c.headline||"").indexOf("避談敏感話題")>=0)) fails.push("story_c5_clip");
+        if((S.newspaperQueue||[]).some(it=>it && it.eventKey==="story:C5:dodge")) fails.push("story_c5_left");
+        const prevAward = FREEPLAY_FW && FREEPLAY_FW._pendingAward;
+        const prevSn = FREEPLAY_FW && FREEPLAY_FW._awardSnoozed;
+        const prevSnDay = FREEPLAY_FW && FREEPLAY_FW._awardSnoozeDay;
+        const prevQ105 = FREEPLAY_FW && (FREEPLAY_FW._awardQueue||[]).slice();
+        if(FREEPLAY_FW){
+          S.awardsFlags = { "1988/award_harbour_film":"done", "1988/award_harbour_ad":"done", "1988/award_golddisc_music":"done", "1988/award_singho_tv":"done" };
+          FREEPLAY_FW._pendingAward = { year:1988, ceremonyId:"award_test_snooze", displayName:"測試請柬" };
+          FREEPLAY_FW._awardSnoozed = true;
+          FREEPLAY_FW._awardSnoozeDay = S.dayIndex|0;
+          let cont105 = false;
+          const blocked105 = presentPendingAward(function(){ cont105 = true; });
+          if(blocked105 || cont105) fails.push("award_snooze_block");
+          FREEPLAY_FW._pendingAward = prevAward || null;
+          FREEPLAY_FW._awardSnoozed = !!prevSn;
+          FREEPLAY_FW._awardSnoozeDay = prevSnDay;
+          FREEPLAY_FW._awardQueue = prevQ105 || [];
+        }
+      }
+    }catch(_c105){ fails.push("story_c5_throw:"+(_c105&&_c105.message||_c105)); }
+    finally{
+      saveQ = _saveQ105;
+      _weekAccel = _accel105;
+      try{ if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = false; }catch(_ps105c){}
+      if(_opened105){ try{ closeModal(); }catch(_cm105b){} }
+    }
   }catch(_err){ fails.push("throw:"+(_err&&_err.message||_err)); }
   finally{
     S = prev;
     try{ window.S = S; }catch(_e){}
     try{ if(S && typeof paintBar==="function") paintBar(); }catch(_e){}
   }
-  return { ok:!fails.length, fails:fails, softRev:"s104", version:"v20a10", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, softRev:"s105", version:"v20a10", softStatus:"≠PASS" };
 }
 try{
   window.__newspaper = {
@@ -31037,14 +31122,20 @@ function doRest(L){
     writeTodayPlan("rest");
     closeSheet();
     const {ended, summary}=tickDay();
+    const showRest = ()=>{
+      try{
+        presentRestSleepDayEnd({
+          title: `休息（週${wd}）`,
+          notes, ended, summary
+        });
+      }catch(_e){
+        afterDayModal(formatRestSleepDeltas(notes), `休息（週${wd}）`, L, ended, summary, {});
+      }
+    };
     try{
-      presentRestSleepDayEnd({
-        title: `休息（週${wd}）`,
-        notes, ended, summary
-      });
-    }catch(_e){
-      afterDayModal(formatRestSleepDeltas(notes), `休息（週${wd}）`, L, ended, summary, {});
-    }
+      if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(showRest)) return;
+    }catch(_npRest){}
+    showRest();
   });
 }
 
@@ -32994,10 +33085,10 @@ function runSoftP0Checks(){
     if(/金龍/.test(scrub.setting||"") || /金龍/.test((scrub.beats[0].lines||[])[0]||"")) bad("c1_scrub_copy");
     if(typeof c1PlayLocId==="function" && c1PlayLocId()!=="agency_ho") bad("c1_play_loc");
     if(showB01HomeModal.toString().indexOf("openLoc(\"cafe_cha\")")>=0 || showB01HomeModal.toString().indexOf("去金龍")>=0) bad("tut_cafe");
-    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s104") bad("soft_rev_attr");
+    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s105") bad("soft_rev_attr");
     try{
       var sq = String((typeof location!=="undefined" && location && location.search) || "");
-      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s104(?:&|$)/.test(sq)) bad("soft_rev_url");
+      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s105(?:&|$)/.test(sq)) bad("soft_rev_url");
       if(/(?:\?|&)v=20a1[1-9](?:&|$)/.test(sq)) bad("v_bumped");
     }catch(_rev){ bad("soft_rev_throw"); }
     if(typeof storyMainProgressLine==="function"){
@@ -33047,8 +33138,8 @@ try{ exposePreviewDebug(); }catch(_e){}
 try{
   if(typeof softPreviewOn==="function" && softPreviewOn()){
     var tip = document.getElementById("start-soft-tip");
-    if(tip && tip.textContent.indexOf("s104")<0){
-      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s104。");
+    if(tip && tip.textContent.indexOf("s105")<0){
+      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s105。");
     }
   }
 }catch(_revTip){}
