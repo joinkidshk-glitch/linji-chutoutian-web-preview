@@ -11,11 +11,11 @@
    GitHub Pages caches HTML for max-age=600, and the playtest box keeps a persistent cache
    keyed by the full URL. ?v=20a10&softBehaviorGate=1 therefore kept executing the pre-#99
    document (去金龍／主線) even after Pages origin sha was e4b43926.
-   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s100
-   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s100
+   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s101
+   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s101
    Bump SOFT_REV when the next Soft tip changes index.html. Do not bump ?v=. */
 (function(){
-  var SOFT_REV = "s100";
+  var SOFT_REV = "s101";
   try { document.documentElement.setAttribute("data-soft-rev", SOFT_REV); } catch (e0) {}
   try {
     var q = new URLSearchParams(location.search || "");
@@ -132,7 +132,7 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
 .bar .who{font-weight:800;font-size:.88rem}
 .chips{margin-left:auto;display:flex;flex-wrap:nowrap;gap:4px;justify-content:flex-end;align-items:center;max-width:72%}
 .chip{font-size:.58rem;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:3px 6px;color:var(--muted);white-space:nowrap}
-/* v19z30: 兩行頂欄 — 主列 左 名｜$；右 事態｜☰；次列 聲量N · 年份季節 · 信用N ＋「全部地點」入頂欄右緣 */
+/* v19z30: 兩行頂欄 — 主列 左 名｜$；右 事態｜☰；次列 聲望N · 年份季節 · 信用N ＋「全部地點」入頂欄右緣 */
 .bar-primary{display:flex;align-items:center;gap:4px;min-width:0;width:100%}
 .bar-primary .dual-money{margin-left:0;flex:0 0 auto}
 .bar-primary .bar-tools{margin-left:auto;flex:0 0 auto}
@@ -838,7 +838,7 @@ button.g, .start button.g{
 }
 .chip b{ color:var(--gold-seal) !important }
 
-/* v19z30: 頂 HUD — 主列 左 阿偉｜$；右 事態｜☰；次列 muted 聲量N · 年季 · 信用N ＋「全部地點」入頂欄右緣 */
+/* v19z30: 頂 HUD — 主列 左 阿偉｜$；右 事態｜☰；次列 muted 聲望N · 年季 · 信用N ＋「全部地點」入頂欄右緣 */
 .bar{
   padding:6px 10px 5px 10px !important;
   gap:2px !important;
@@ -3716,6 +3716,35 @@ body.day-res-open .day-row{
 .psr-dual{ margin:6px 0 0; }
 .psr-foot{ margin:8px 0 0; font-size:.68rem; }
 .awd-sheet .psr-eyebrow{ letter-spacing:.14em; }
+/* Soft tip #101：朝早報紙（公開版面）同剪報。唔出圖。 */
+.paper-sheet{
+  text-align:left; background:#f4efe4; color:#1a1410;
+  border:1px solid #2a241c; box-shadow:inset 0 0 0 4px #f7f3ea, inset 0 0 0 5px #2a241c;
+  padding:12px 14px 10px; border-radius:2px;
+}
+.paper-mast{ margin:0; font-weight:800; letter-spacing:.18em; font-size:.72rem; color:#6b4e2e; }
+.paper-date{ margin:2px 0 8px; font-size:.72rem; color:#6b5344; }
+.paper-headline{ margin:0 0 6px; font-size:1.12rem; line-height:1.35; font-weight:800; }
+.paper-dek{ margin:0 0 10px; font-size:.84rem; line-height:1.45; }
+.paper-shorts{ border-top:1px solid rgba(42,36,28,.35); margin-top:4px; }
+.paper-short{ padding:8px 0 0; margin:8px 0 0; border-top:1px solid rgba(42,36,28,.18); }
+.paper-short:first-child{ border-top:0; margin-top:0; }
+.paper-kicker{ margin:0 0 2px; font-size:.68rem; letter-spacing:.08em; color:#6b4e2e; font-weight:800; }
+.paper-short h4{ margin:0 0 2px; font-size:.86rem; line-height:1.35; }
+.paper-short p{ margin:0; font-size:.78rem; line-height:1.4; color:#3d3428; }
+.paper-fame{ margin:10px 0 0; font-weight:800; color:#1f7a5c; }
+.paper-fame-flat{ color:#6b5344; font-weight:700; }
+.paper-note{ margin:8px 0 0; font-size:.72rem; color:#6b5344; }
+.clip-card{
+  background:#f7f1e4; color:#1A1410; border:1px solid rgba(42,36,28,.45);
+  border-radius:2px; padding:10px 12px; margin:0 0 8px;
+}
+.clip-card .clip-date{ margin:0 0 4px; font-size:.72rem; color:#6b4e2e; font-weight:800; }
+.clip-card h4{ margin:0 0 4px; font-size:.9rem; }
+.clip-card p{ margin:0; font-size:.8rem; line-height:1.4; }
+#htab-clippings{ order:4; }
+#htab-debt{ order:5; }
+#htab-tags{ order:6; }
 /* v20a10：休息睡覺 8-bit 嵌喺日結板面（唔用全螢幕 overlay） */
 .rest-sleep-inline{
   margin:0 0 8px; display:flex; justify-content:center;
@@ -3775,9 +3804,9 @@ body.day-res-open .day-row{
           <button class="iconbtn" id="btn-menu" type="button" aria-label="選單">☰</button>
         </div>
       </div>
-      <div class="dual-hud bar-secondary" id="map-dual-hud" aria-label="幕前聲量、季節、業內信用與地點顯示">
-        <span class="dual-compact" title="幕前聲量 · 季節 · 業內信用">
-          <span class="dual-lab dual-lab-stage">聲量</span><b id="c-stage-volume">0</b>
+      <div class="dual-hud bar-secondary" id="map-dual-hud" aria-label="幕前聲望、季節、業內信用與地點顯示">
+        <span class="dual-compact" title="幕前聲望 · 季節 · 業內信用">
+          <span class="dual-lab dual-lab-stage">聲望</span><b id="c-stage-volume">0</b>
           <span class="dual-sep" aria-hidden="true">·</span>
           <span class="dual-mid" id="c-era">1988春</span>
           <span class="dual-sep" aria-hidden="true">·</span>
@@ -3846,13 +3875,14 @@ body.day-res-open .day-row{
         <div class="txt">
           <h2>阿偉的家 · 行程手帳</h2>
           <p id="home-date" class="home-date-line">—</p>
-          <p id="home-stats" class="home-stats-line" aria-label="幕前聲量與業內信用"></p>
+          <p id="home-stats" class="home-stats-line" aria-label="幕前聲望與業內信用"></p>
         </div>
       </div>
       <div class="home-tabs" id="home-tabs" role="tablist" aria-label="手帳分頁">
         <button type="button" class="home-tab on" id="htab-plan" role="tab" aria-selected="true" data-htab="plan">行程</button>
         <button type="button" class="home-tab" id="htab-ledger" role="tab" aria-selected="false" data-htab="ledger">記數</button>
         <button type="button" class="home-tab" id="htab-rumor" role="tab" aria-selected="false" data-htab="rumor">傳聞</button>
+        <button type="button" class="home-tab" id="htab-clippings" role="tab" aria-selected="false" data-htab="clippings">剪報</button>
         <button type="button" class="home-tab" id="htab-debt" role="tab" aria-selected="false" data-htab="debt">人情債</button>
         <button type="button" class="home-tab" id="htab-tags" role="tab" aria-selected="false" data-htab="tags">標籤</button>
       </div>
@@ -3904,6 +3934,9 @@ body.day-res-open .day-row{
       </div>
       <div class="home-pane" id="home-pane-rumor">
         <div class="journal-scroll" id="rumor-list" aria-label="傳聞"></div>
+      </div>
+      <div class="home-pane" id="home-pane-clippings">
+        <div class="journal-scroll" id="clippings-list" aria-label="剪報"></div>
       </div>
       <div class="home-pane" id="home-pane-debt">
         <div class="journal-scroll" id="debt-list" aria-label="人情債"></div>
@@ -4034,7 +4067,7 @@ const NPCS = {
     homes:["ad_central","tvb_kowloon","film_cotton","rec_wanchai"] },
 };
 
-const STAT_LABEL = {acting:"演技",stage:"台風",vocal:"歌藝",looks:"外貌",stamina:"體能",iq:"智商",charm:"魅力",fame:"幕前聲量",popularity:"人氣",stress:"壓力"};
+const STAT_LABEL = {acting:"演技",stage:"台風",vocal:"歌藝",looks:"外貌",stamina:"體能",iq:"智商",charm:"魅力",fame:"幕前聲望",popularity:"人氣",stress:"壓力"};
 const ENTRY_GIGS_1988 = [
   {
     "id": "gig_1988_entry_ad_passerby",
@@ -18025,7 +18058,7 @@ const StoryOC = (()=>{
         notes.push((k.startsWith("rel_")?k:"rel_"+k)+" "+(v>0?"+":"")+v+" → "+next);
         return;
       }
-      /* 抽象 stats → 現有原型欄位（最小映射）。雙軌：幕前聲量鏡像 fame；業內信用只記 delta，唔改閘。 */
+      /* 抽象 stats → 現有原型欄位（最小映射）。雙軌：幕前聲望鏡像 fame；業內信用只記 delta，唔改閘。 */
       if(k==="fame"){ gameDelta.fame = (gameDelta.fame||0)+v; statsApplied.fame=v; }
       else if(k==="stageVolume"){
         gameDelta.fame = (gameDelta.fame||0)+v;
@@ -18455,7 +18488,7 @@ const BehaviorGate = (function(){
     const op = String(trig.fameCompare||"");
     const fame = Number(ctx.fame)||0;
     const tags = trig.tagAny||[];
-    /* fameMin 16 with compare '>' means 聲量大於 15。16 分過，15 分唔過。唔好把門檻寫成再高一檔。 */
+    /* fameMin 16 with compare '>' means 聲望大於 15。16 分過，15 分唔過。唔好把門檻寫成再高一檔。 */
     if(min===16 || tags.indexOf("fameMin_16")>=0){
       if(tags.indexOf("fameMin_16")<0) return false;
       if(min!==16 || op!==">") return false;
@@ -21845,6 +21878,11 @@ function fresh(){
     /* v20a8：定期頒獎禮 log／flags */
     awardsLog:[],
     awardsFlags:{},
+    /* Soft tip #101：報紙佇列／剪報。唔改 SAVE key。 */
+    newspaperQueue:[],
+    newspaperClippings:[],
+    pendingMorningPaper:null,
+    newspaperLastPresentedDay:null,
   };
 }
 
@@ -21900,6 +21938,9 @@ function normalizeSaveObj(o){
   if(!Array.isArray(o.postShootRewards)) o.postShootRewards=[];
   if(!Array.isArray(o.awardsLog)) o.awardsLog=[];
   if(!o.awardsFlags || typeof o.awardsFlags!=="object") o.awardsFlags={};
+  if(!Array.isArray(o.newspaperQueue)) o.newspaperQueue=[];
+  if(!Array.isArray(o.newspaperClippings)) o.newspaperClippings=[];
+  if(o.pendingMorningPaper && typeof o.pendingMorningPaper!=="object") o.pendingMorningPaper=null;
   try{ syncDualTracks(o); }catch(_e){}
   return o;
 }
@@ -21932,7 +21973,7 @@ function listSaveSlots(){
 }
 function slotLabel(slot, summary, empty){
   if(empty||!summary) return `槽 ${slot} · 空白`;
-  return `槽 ${slot} · 第 ${summary.week} 週 · $${Number(summary.money).toLocaleString()} · 聲量 ${summary.stage}`;
+  return `槽 ${slot} · 第 ${summary.week} 週 · $${Number(summary.money).toLocaleString()} · 聲望 ${summary.stage}`;
 }
 function hasSave(){ return listSaveSlots().some(s=>!s.empty); }
 function saveToSlot(slot, opts){
@@ -21968,7 +22009,7 @@ function openSaveSlotsModal(mode){
   const titles={ save:"存檔槽", load:"讀檔", new:"開新遊戲 · 揀槽" };
   const rows=slots.map(s=>{
     const active = (prefs.activeSlot|0)===(s.slot|0);
-    const meta = s.empty ? "空白槽" : `第 ${s.summary.week} 週 · 存款 $${Number(s.summary.money).toLocaleString()} · 幕前聲量 ${s.summary.stage}`;
+    const meta = s.empty ? "空白槽" : `第 ${s.summary.week} 週 · 存款 $${Number(s.summary.money).toLocaleString()} · 幕前聲望 ${s.summary.stage}`;
     const tag = active ? `<span class="slot-tag">使用中</span>` : (s.empty?`<span class="slot-tag">可寫入</span>`:`<span class="slot-tag">有進度</span>`);
     return `<button type="button" class="slot-row ${s.empty?"is-empty":""} ${active?"is-active":""}" data-slot="${s.slot}">
       <span class="slot-title">槽 ${s.slot}</span>
@@ -22275,7 +22316,7 @@ function refreshNpc(){
 }
 /**
  * v19t Phase 1 雙軌。閘門仍讀 S.fame。
- * 幕前聲量 = fame（觀眾認受）。
+ * 幕前聲望 = fame（觀眾認受）。
  * 業內信用 = fame 加現有台風／演技／壓力的前端映射；industryCreditDelta 讓直接寫入留低，唔反向改閘。
  */
 function dualTrackNumbers(s){
@@ -22303,7 +22344,7 @@ function syncDualTracks(s){
 function writeDualTrack(which, value){
   if(typeof S==="undefined" || !S) return null;
   const n = Math.max(0, Math.round(Number(value)||0));
-  if(which==="stageVolume" || which==="幕前聲量"){
+  if(which==="stageVolume" || which==="幕前聲望" || which==="幕前聲量" || which==="聲望"){
     S.fame = clamp(n, 0, (typeof STAT_MAX==="number" ? STAT_MAX : 999));
     return syncDualTracks(S);
   }
@@ -22326,7 +22367,7 @@ function dualResultHtml(dual){
   const sv = d.stageVolume!=null ? d.stageVolume : live.stageVolume;
   const ic = d.industryCredit!=null ? d.industryCredit : live.industryCredit;
   return `<div class="sp-dual" aria-label="雙軌數值">
-      <span class="sp-dual-track"><i class="dual-swatch dual-swatch-stage" aria-hidden="true"></i>幕前聲量 <b class="sp-stage-volume">${sv}</b>${dualDeltaBit(d.dStage)}</span>
+      <span class="sp-dual-track"><i class="dual-swatch dual-swatch-stage" aria-hidden="true"></i>幕前聲望 <b class="sp-stage-volume">${sv}</b>${dualDeltaBit(d.dStage)}</span>
       <span class="sp-dual-track"><i class="dual-swatch dual-swatch-credit" aria-hidden="true"></i>業內信用 <b class="sp-industry-credit">${ic}</b>${dualDeltaBit(d.dCredit)}</span>
     </div>`;
 }
@@ -22616,7 +22657,7 @@ function canAudition(gig){
     return {ok:false, reason: st.key==="shooting" ? "本單拍攝中，請睇手帳檔期。" : "本單已獲聘，請睇手帳檔期。"};
   }
   const floor=fameFloor(gig);
-  if((S.fame||0)<floor) return {ok:false, reason:"組製暫未考慮你的檔——幕前聲量未合這檔要求。"};
+  if((S.fame||0)<floor) return {ok:false, reason:"組製暫未考慮你的檔——幕前聲望未合這檔要求。"};
   const {keys, matched, missing, totalShort}=reqGap(gig);
   /* v19m USER 2026-11-03：條件未齊＝硬鎖暫未能報；唔放寬 soft-try／搏一搏（各級一律） */
   if(keys && missing>0) return {ok:false, reason:gateTrainHint(gig)};
@@ -22693,13 +22734,13 @@ function gateShortReason(gig){
   for(const [k,v] of Object.entries(gig.req||{})){
     if((Number(S[k])||0)<v) stats.push(STAT_LABEL[k]||k);
   }
-  if(fameShort && !stats.length) return "組製暫未考慮你的檔——幕前聲量未合這檔要求。";
+  if(fameShort && !stats.length) return "組製暫未考慮你的檔——幕前聲望未合這檔要求。";
   if(!fameShort && stats.length){
     if(stats.length<=2) return `試鏡條件未合：${stats.join("、")}。可先安排訓練再報。`;
     return `試鏡條件未合：${stats.slice(0,2).join("、")}等。可先安排訓練再報。`;
   }
   if(fameShort && stats.length){
-    return `組製檔與試鏡條件都未合——幕前聲量與${stats[0]}等尚需再練。`;
+    return `組製檔與試鏡條件都未合——幕前聲望與${stats[0]}等尚需再練。`;
   }
   return "這張通告暫時未能報名。";
 }
@@ -22715,7 +22756,7 @@ function reqHtml(gig){
   if(floor>0){
     const cur=Number(S.fame)||0;
     const ok=cur>=floor;
-    parts.unshift(`<span class="${ok?"ok":"no"}">${(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲量"}：需要 ${floor}</span>`);
+    parts.unshift(`<span class="${ok?"ok":"no"}">${(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲望"}：需要 ${floor}</span>`);
   }
   try{
     if(gig.industryCreditMin!=null && gig.industryCreditMin!=="" && Number(gig.industryCreditMin)>0){
@@ -23174,7 +23215,7 @@ function castingNoticeDetailHtml(g){
     const cur=Number(S.fame)||0;
     const v=floor;
     const ok=cur>=v;
-    condParts.push(`<div class="cn-cond-row"><span class="${ok?"ok":"no"}">${(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲量"}：需要 ${v}</span></div>`);
+    condParts.push(`<div class="cn-cond-row"><span class="${ok?"ok":"no"}">${(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲望"}：需要 ${v}</span></div>`);
   }
   Object.entries(g.req||{}).forEach(([k,v])=>{
     const cur=Number(S[k])||0;
@@ -23337,7 +23378,7 @@ function bestTrainJumpForGig(g){
   const locName = loc ? loc.name : (target.locId||"地圖");
   let label;
   if(target.mode==="rest") label = `去休息回復（${locName}）`;
-  else if(target.mode==="map") label = `去地圖接單攞幕前聲量（${locName}）`;
+  else if(target.mode==="map") label = `去地圖接單攞幕前聲望（${locName}）`;
   else if(enrolled) label = `入手帳排「${(COURSE_DEFS[target.courseId]||{}).name||"訓練"}」`;
   else label = `去練${top.label}（差 ${top.gap}｜${locName}）`;
   return { gap: top, target, enrolled, locName, label, gaps };
@@ -23425,7 +23466,7 @@ function openCastingNoticeDetail(g, L){
         const floor = (typeof fameFloor==="function") ? fameFloor(g) : 0;
         const curF = Number(S && S.fame)||0;
         if(floor>0){
-          const fameLab=(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲量";
+          const fameLab=(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲望";
           if(curF>=floor) bits.push(`<span class="gap-ok">✓ ${fameLab} ${curF}／${floor}</span>`);
           else bits.push(`<span class="gap-no">✗ ${fameLab} 差 ${floor-curF}（現 ${curF}／要 ${floor}）</span>`);
         }
@@ -24735,7 +24776,7 @@ function enterHome(summary, editable, initialTab){
   const hs = document.getElementById("home-stats");
   if(hs){
     const dual = syncDualTracks(S);
-    hs.innerHTML = `<span class="hs-i home-money">$ ${(S.money||0).toLocaleString()}</span><span class="hs-i hs-stage"><i class="dual-swatch dual-swatch-stage" aria-hidden="true"></i>幕前聲量 <b id="h-stage-volume">${dual.stageVolume}</b></span><span class="hs-i hs-credit"><i class="dual-swatch dual-swatch-credit" aria-hidden="true"></i>業內信用 <b id="h-industry-credit">${dual.industryCredit}</b></span>`;
+    hs.innerHTML = `<span class="hs-i home-money">$ ${(S.money||0).toLocaleString()}</span><span class="hs-i hs-stage"><i class="dual-swatch dual-swatch-stage" aria-hidden="true"></i>幕前聲望 <b id="h-stage-volume">${dual.stageVolume}</b></span><span class="hs-i hs-credit"><i class="dual-swatch dual-swatch-credit" aria-hidden="true"></i>業內信用 <b id="h-industry-credit">${dual.industryCredit}</b></span>`;
   }
   const card=document.getElementById("home-summary-card");
   const sum=document.getElementById("home-summary");
@@ -25100,6 +25141,10 @@ function goToMapForBrowse(){
       return;
     }
   }catch(_awdMap){}
+  /* Soft tip #101：次日朝早報紙。殺青短卡同頒獎請柬先出，正式報紙跟住。 */
+  try{
+    if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(()=>{ try{ goToMapForBrowse(); }catch(_e4){} })) return;
+  }catch(_npMap){}
   if(kickScheduleIfNeeded()) return;
   nudgeRegionForToday();
   try{ closeSheet(); }catch(_e){}
@@ -25309,7 +25354,14 @@ function resolveWeekRemaining(opts){
 }
 function runScheduleFromToday(){
   const id=todayPlanId();
-  if(!id || isMapDay(id) || String(id).startsWith("wrap:") || String(id).startsWith("audition:")){
+  const mapish = !id || (typeof isMapDay==="function" && isMapDay(id)) || String(id).startsWith("wrap:") || String(id).startsWith("audition:");
+  /* 下一曆日若已有報紙，先彈朝早版，再耗今日。加速途中唔打斷。 */
+  if(!mapish && !_weekAccel){
+    try{
+      if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(()=>{ try{ runScheduleFromToday(); }catch(_e){} })) return;
+    }catch(_npDay){}
+  }
+  if(mapish){
     if(_weekAccel){
       const buf=_weekAccelBuf.slice();
       _weekAccel=false; _weekAccelBuf=[];
@@ -27189,7 +27241,7 @@ function playPushDoor(){
   }, 820);
 }
 function setHomeTab(tab){
-  const allow={ plan:1, ledger:1, rumor:1, debt:1, tags:1 };
+  const allow={ plan:1, ledger:1, rumor:1, clippings:1, debt:1, tags:1 };
   if(tab==="tags" && typeof freeplayDevTagsOn==="function" && !freeplayDevTagsOn()) tab="plan";
   if(!allow[tab]) tab="plan";
   applyPhase2Steps56TabLabel();
@@ -27198,7 +27250,7 @@ function setHomeTab(tab){
     b.classList.toggle("on", on);
     b.setAttribute("aria-selected", on?"true":"false");
   });
-  ["plan","ledger","rumor","debt","tags"].forEach(id=>{
+  ["plan","ledger","rumor","clippings","debt","tags"].forEach(id=>{
     const pane=document.getElementById("home-pane-"+id);
     if(pane) pane.classList.toggle("on", id===tab);
   });
@@ -27207,6 +27259,9 @@ function setHomeTab(tab){
     try{ renderLedgerPane(); }catch(_e){}
   }
   if(tab==="rumor") renderRumorPane();
+  if(tab==="clippings"){
+    try{ renderClippingsPane(); }catch(_e){}
+  }
   if(tab==="debt"){
     renderDebtPane();
     seasonCollectToast();
@@ -27225,7 +27280,7 @@ function syncHomeTabExit(tab){
     const on = document.querySelector("#home-tabs .home-tab.on");
     tab = (on && on.getAttribute("data-htab")) || "plan";
   }
-  const journalTab = tab==="ledger" || tab==="rumor" || tab==="debt" || tab==="tags";
+  const journalTab = tab==="ledger" || tab==="rumor" || tab==="clippings" || tab==="debt" || tab==="tags";
   const srcShown = !!(src && src.style.display && src.style.display!=="none");
   if(!journalTab || !srcShown){
     exit.hidden = true;
@@ -27294,6 +27349,7 @@ const FREEPLAY_FW = {
   awardsStub: null,
   _pendingAward: null,
   _awardQueue: null,
+  _paperShowing: false,
   loaded: false,
 };
 function freeplayNormalizeStarId(id){
@@ -27778,6 +27834,11 @@ function buildPostShootRewardPack(sh){
     gigType: gigType,
     metricKind: metricKind,
     cards: cards.slice(0, 3),
+    pressSeed: {
+      paperName: postShootCopyLine(pressT.paperName, "娛樂版"),
+      headline: postShootCopyLine(pressT.headline, "通告殺青"),
+      dek: postShootCopyLine(pressT.dek, "阿偉完成一單，娛樂版留了一行。")
+    },
     dualApplied: false
   };
 }
@@ -27815,6 +27876,7 @@ function queuePostShootRewardOnWrap(sh){
     log.unshift(pack);
     if(log.length>30) log.length = 30;
     FREEPLAY_FW._pendingPostShootReward = pack;
+    try{ enqueueNewspaperFromWrap(sh, pack); }catch(_np){}
     return pack;
   }catch(_e){ return null; }
 }
@@ -27823,7 +27885,7 @@ function renderPostShootRewardHtml(pack){
   const cards = Array.isArray(pack.cards) ? pack.cards : [];
   const dual = pack.dualDelta || {};
   const dualLine = (dual.stageVolume || dual.industryCredit)
-    ? `<p class="psr-dual var-note">幕前聲量 ${dual.stageVolume?("+"+dual.stageVolume):""}${(dual.stageVolume&&dual.industryCredit)?" · ":""}${dual.industryCredit?("業內信用 +"+dual.industryCredit):""}</p>`
+    ? `<p class="psr-dual var-note">幕前聲望 ${dual.stageVolume?("+"+dual.stageVolume):""}${(dual.stageVolume&&dual.industryCredit)?" · ":""}${dual.industryCredit?("業內信用 +"+dual.industryCredit):""}</p>`
     : "";
   const cardsHtml = cards.map(c=>{
     const body = c.body ? `<p class="psr-body">${String(c.body)}</p>` : "";
@@ -28338,7 +28400,7 @@ function renderAwardResultHtml(pack){
       </article>` : "";
   const dual = pack.rewardsApplied || {};
   const dualLine = (dual.stageVolume || dual.industryCredit)
-    ? `<p class="psr-dual var-note">幕前聲量 ${dual.stageVolume?("+"+dual.stageVolume):""}${(dual.stageVolume&&dual.industryCredit)?" · ":""}${dual.industryCredit?("業內信用 +"+dual.industryCredit):""}</p>`
+    ? `<p class="psr-dual var-note">幕前聲望 ${dual.stageVolume?("+"+dual.stageVolume):""}${(dual.stageVolume&&dual.industryCredit)?" · ":""}${dual.industryCredit?("業內信用 +"+dual.industryCredit):""}</p>`
     : "";
   return `<div class="psr-sheet awd-sheet">
     <p class="psr-eyebrow">頒獎結果</p>
@@ -28366,6 +28428,7 @@ function presentAwardResult(pack, thenFn){
   try{
     applyAwardDual(pack);
     commitAwardToLog(pack);
+    try{ enqueueNewspaperFromAward(pack); }catch(_np){}
     modal(renderAwardResultHtml(pack), [
       { label: "收下這晚", role: "p", on: cont }
     ], { onDismiss: cont, keepSheetContent:true });
@@ -28489,6 +28552,487 @@ try{
 }catch(_e){}
 
 
+/* ===== Soft tip #101 NEWSPAPER — next-morning public press. Soft≠PASS. No tip LIVE. SAVE stays v19w. ===== */
+function ensureNewspaperQueue(){
+  if(!S || typeof S!=="object") return [];
+  if(!Array.isArray(S.newspaperQueue)) S.newspaperQueue = [];
+  return S.newspaperQueue;
+}
+function ensureNewspaperClippings(){
+  if(!S || typeof S!=="object") return [];
+  if(!Array.isArray(S.newspaperClippings)) S.newspaperClippings = [];
+  return S.newspaperClippings;
+}
+function newspaperEsc(s){
+  try{ if(typeof journalText==="function") return journalText(s); }catch(_e){}
+  return String(s==null?"":s).replace(/[&<>"']/g, ch=>({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[ch]));
+}
+function newspaperEventSeen(eventKey){
+  const key = String(eventKey||"");
+  if(!key || !S) return true;
+  if(ensureNewspaperQueue().some(it=>it && it.eventKey===key)) return true;
+  if(ensureNewspaperClippings().some(c=>c && Array.isArray(c.eventKeys) && c.eventKeys.indexOf(key)>=0)) return true;
+  const pend = S.pendingMorningPaper;
+  if(pend && Array.isArray(pend.eventKeys) && pend.eventKeys.indexOf(key)>=0) return true;
+  return false;
+}
+function enqueueNewspaperItem(raw, opts){
+  opts = opts || {};
+  if(!S || !raw) return null;
+  const eventKey = String(raw.eventKey||"").trim();
+  if(!eventKey || newspaperEventSeen(eventKey)) return null;
+  const day = (raw.enqueuedDay!=null) ? (raw.enqueuedDay|0) : ((S.dayIndex|0)||0);
+  const item = {
+    eventKey: eventKey,
+    source: raw.source==="award" ? "award" : "wrap",
+    enqueuedDay: day,
+    publishDay: (raw.publishDay!=null) ? (raw.publishDay|0) : (day+1),
+    fameDelta: Number(raw.fameDelta)||0,
+    paperName: String(raw.paperName||"娛樂版").trim() || "娛樂版",
+    headline: String(raw.headline||"通告見報").trim() || "通告見報",
+    dek: String(raw.dek||"").trim(),
+    clipLabel: String(raw.clipLabel||"").trim(),
+    rumorEcho: String(raw.rumorEcho||"").trim(),
+    templateId: String(raw.templateId||"").trim(),
+    templateEventKey: String(raw.templateEventKey||"").trim(),
+    medium: String(raw.medium||"").trim(),
+    workTitle: String(raw.workTitle||"").trim()
+  };
+  ensureNewspaperQueue().push(item);
+  if(opts.persist!==false){ try{ saveQ(); }catch(_e){} }
+  return item;
+}
+function newspaperFillPlayer(s){
+  return String(s==null?"":s).replace(/\{playerName\}/g, "阿偉");
+}
+function newspaperMediumFromGigType(type){
+  const t = String(type||"");
+  if(t.indexOf("電影")>=0) return "film";
+  if(t.indexOf("電視")>=0 || t.indexOf("綜藝")>=0) return "tv";
+  if(t.indexOf("唱片")>=0 || t.indexOf("音樂")>=0) return "music";
+  if(t.indexOf("廣告")>=0) return "ad";
+  return "any";
+}
+function newspaperMediumFromAward(pack){
+  const m = String((pack && pack.medium) || "");
+  if(m==="film" || m==="tv" || m==="music" || m==="ad" || m==="any") return m;
+  const id = String((pack && pack.ceremonyId) || "");
+  if(id.indexOf("film")>=0) return "film";
+  if(id.indexOf("tv")>=0 || id.indexOf("singho")>=0) return "tv";
+  if(id.indexOf("music")>=0 || id.indexOf("golddisc")>=0) return "music";
+  if(id.indexOf("ad")>=0) return "ad";
+  return "any";
+}
+function newspaperPickTemplate(bucket, medium){
+  const stub = FREEPLAY_FW && FREEPLAY_FW.newspaperStub;
+  const list = (stub && stub.templates && Array.isArray(stub.templates[bucket])) ? stub.templates[bucket] : [];
+  const med = medium || "any";
+  let pool = list.filter(t=> t && (t.medium===med || t.eventKey===(bucket+"."+med)));
+  if(!pool.length && med!=="any"){
+    pool = list.filter(t=> t && (t.medium==="any" || t.eventKey===(bucket+".any")));
+  }
+  if(!pool.length) return null;
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+function newspaperCopyFromTemplate(tmpl, fallback){
+  fallback = fallback || {};
+  if(!tmpl) return fallback;
+  return {
+    paperName: newspaperFillPlayer(tmpl.paperName) || fallback.paperName || "娛樂版",
+    headline: newspaperFillPlayer(tmpl.headline) || fallback.headline || "通告見報",
+    dek: newspaperFillPlayer(tmpl.dek) || fallback.dek || "",
+    fameDelta: (tmpl.fameDelta!=null && tmpl.fameDelta!=="") ? (Number(tmpl.fameDelta)||0) : (Number(fallback.fameDelta)||0),
+    clipLabel: newspaperFillPlayer(tmpl.clipLabel||""),
+    rumorEcho: newspaperFillPlayer(tmpl.rumorEcho||""),
+    templateId: tmpl.id||"",
+    templateEventKey: tmpl.eventKey||"",
+    medium: tmpl.medium||""
+  };
+}
+function enqueueNewspaperFromWrap(sh, pack, opts){
+  sh = sh || {};
+  pack = pack || {};
+  const seed = pack.pressSeed || {};
+  const gigId = sh.gigId || sh.id || pack.gigId || "gig";
+  const day = (pack.dayIndex!=null) ? (pack.dayIndex|0) : ((S && (S.dayIndex|0)) || 0);
+  const title = pack.title || sh.title || "";
+  const medium = newspaperMediumFromGigType(sh.type || pack.gigType || "");
+  const tmpl = newspaperPickTemplate("wrap_success", medium);
+  const copy = newspaperCopyFromTemplate(tmpl, {
+    paperName: seed.paperName || "娛樂版",
+    headline: seed.headline || (title ? (title+"殺青") : "通告殺青"),
+    dek: seed.dek || "阿偉完成一單，娛樂版留了一行。",
+    fameDelta: 1,
+    medium: medium
+  });
+  return enqueueNewspaperItem({
+    eventKey: "wrap:"+gigId+":"+day,
+    source: "wrap",
+    enqueuedDay: day,
+    publishDay: day+1,
+    fameDelta: copy.fameDelta,
+    paperName: copy.paperName,
+    headline: copy.headline,
+    dek: copy.dek,
+    clipLabel: copy.clipLabel,
+    rumorEcho: copy.rumorEcho,
+    templateId: copy.templateId,
+    templateEventKey: copy.templateEventKey || ("wrap_success."+medium),
+    medium: copy.medium || medium,
+    workTitle: title
+  }, opts);
+}
+function enqueueNewspaperFromAward(pack, opts){
+  if(!pack || pack.skipped) return null;
+  let bucket = "";
+  if(pack.bestOutcome==="won") bucket = "award_win";
+  else if(pack.bestOutcome==="nominated" || pack.bestOutcome==="lost") bucket = "award_nominee";
+  else return null;
+  const press = pack.press || {};
+  const year = pack.year!=null ? pack.year : "";
+  const ceremonyId = pack.ceremonyId || "award";
+  const name = pack.displayName || "頒獎夜";
+  const day = (S && (S.dayIndex|0)) || 0;
+  const medium = newspaperMediumFromAward(pack);
+  const tmpl = newspaperPickTemplate(bucket, medium);
+  const copy = newspaperCopyFromTemplate(tmpl, {
+    paperName: press.paperName || "娛樂快報",
+    headline: press.headline || (name+"見報"),
+    dek: press.dek || ("阿偉出席"+name+"，娛樂版記了一筆。"),
+    fameDelta: bucket==="award_win" ? 5 : 2,
+    medium: medium
+  });
+  return enqueueNewspaperItem({
+    eventKey: "award:"+year+":"+ceremonyId,
+    source: "award",
+    enqueuedDay: day,
+    publishDay: day+1,
+    fameDelta: copy.fameDelta,
+    paperName: copy.paperName,
+    headline: copy.headline,
+    dek: copy.dek,
+    clipLabel: copy.clipLabel,
+    rumorEcho: copy.rumorEcho,
+    templateId: copy.templateId,
+    templateEventKey: copy.templateEventKey || (bucket+"."+medium),
+    medium: copy.medium || medium,
+    workTitle: name
+  }, opts);
+}
+function newspaperDueItems(day){
+  const today = day|0;
+  return ensureNewspaperQueue().filter(it=>it && (it.publishDay|0) <= today);
+}
+function buildNewspaperEdition(batch, day){
+  const ranked = batch.slice().sort((a,b)=>{
+    const fa = Math.abs(Number(a && a.fameDelta)||0);
+    const fb = Math.abs(Number(b && b.fameDelta)||0);
+    if(fb!==fa) return fb-fa;
+    const aa = a && a.source==="award" ? 1 : 0;
+    const bb = b && b.source==="award" ? 1 : 0;
+    if(bb!==aa) return bb-aa;
+    return 0;
+  });
+  const head = ranked[0] || {};
+  const rest = ranked.slice(1);
+  const shorts = rest.slice(0, 3).map(it=>({
+    eventKey: it.eventKey,
+    paperName: it.paperName,
+    headline: it.headline,
+    dek: it.dek,
+    clipLabel: it.clipLabel||"",
+    fameDelta: Number(it.fameDelta)||0,
+    source: it.source
+  }));
+  const overflow = rest.slice(3);
+  if(overflow.length){
+    shorts.push({
+      eventKey: "",
+      paperName: "版面",
+      headline: "同日還有 "+overflow.length+" 則",
+      dek: "版面有限，其餘從略。",
+      fameDelta: 0,
+      source: "summary"
+    });
+  }
+  const fameDelta = ranked.reduce((n,it)=> n + (Number(it && it.fameDelta)||0), 0);
+  const eventKeys = ranked.map(it=>it && it.eventKey).filter(Boolean);
+  return {
+    id: "np_"+(day|0)+"_"+(head.enqueuedDay|0)+"_"+(eventKeys[0]||"x"),
+    dayIndex: day|0,
+    dateLabel: (typeof fmtDateShort==="function") ? fmtDateShort() : "",
+    paperName: head.paperName || "娛樂版",
+    headline: head.headline || "通告見報",
+    dek: head.dek || "",
+    clipLabel: head.clipLabel || "",
+    rumorEcho: head.rumorEcho || "",
+    templateId: head.templateId || "",
+    shorts: shorts,
+    fameDelta: fameDelta,
+    eventKeys: eventKeys,
+    fameApplied: false,
+    source: head.source || "wrap"
+  };
+}
+function pullDueNewspaperEdition(){
+  if(!S) return null;
+  if(S.pendingMorningPaper && S.pendingMorningPaper.fameApplied!==true) return S.pendingMorningPaper;
+  const day = S.dayIndex|0;
+  const due = newspaperDueItems(day);
+  if(!due.length) return null;
+  let earliest = due[0].enqueuedDay|0;
+  due.forEach(it=>{ if((it.enqueuedDay|0) < earliest) earliest = it.enqueuedDay|0; });
+  const batch = due.filter(it=> (it.enqueuedDay|0)===earliest);
+  const keys = {};
+  batch.forEach(it=>{ if(it && it.eventKey) keys[it.eventKey] = true; });
+  S.newspaperQueue = ensureNewspaperQueue().filter(it=> !(it && keys[it.eventKey]));
+  const edition = buildNewspaperEdition(batch, day);
+  S.pendingMorningPaper = edition;
+  return edition;
+}
+function newspaperHoldForToday(){
+  if(!S) return true;
+  if(S.pendingMorningPaper && S.pendingMorningPaper.fameApplied!==true) return false;
+  if(S.newspaperLastPresentedDay==null) return false;
+  return (S.newspaperLastPresentedDay|0)===(S.dayIndex|0);
+}
+function renderMorningPaperHtml(edition){
+  const e = edition || {};
+  const fame = Number(e.fameDelta)||0;
+  const fameLine = fame
+    ? `<p class="paper-fame">聲望 ${fame>0?"+":""}${fame}</p>`
+    : `<p class="paper-fame paper-fame-flat">這則未再改聲望。</p>`;
+  const shorts = (e.shorts||[]).map(s=>`<article class="paper-short">
+      <p class="paper-kicker">${newspaperEsc(s.paperName||"")}</p>
+      <h4>${newspaperEsc(s.headline||"")}</h4>
+      ${s.dek?`<p>${newspaperEsc(s.dek)}</p>`:""}
+    </article>`).join("");
+  const clip = e.clipLabel ? `<p class="paper-kicker">${newspaperEsc(e.clipLabel)}</p>` : "";
+  return `<div class="paper-sheet" role="document" aria-label="今日報紙">
+    <p class="paper-mast">${newspaperEsc(e.paperName||"娛樂版")}</p>
+    <p class="paper-date">${newspaperEsc(e.dateLabel||"今早")}</p>
+    ${clip}
+    <h3 class="paper-headline">${newspaperEsc(e.headline||"")}</h3>
+    ${e.dek?`<p class="paper-dek">${newspaperEsc(e.dek)}</p>`:""}
+    ${shorts?`<div class="paper-shorts">${shorts}</div>`:""}
+    ${fameLine}
+    <p class="paper-note">公開報紙。圈內耳語仍在手帳「傳聞」。</p>
+  </div>`;
+}
+function pushNewspaperRumor(edition){
+  if(!S || !edition) return;
+  try{ ensureMockJournal(); }catch(_e){}
+  S.mockRumors = S.mockRumors || [];
+  const id = "paper_"+String(edition.id||"");
+  if(S.mockRumors.some(r=>r && r.id===id)) return;
+  const head = edition.headline || "一則娛樂版";
+  const echo = String(edition.rumorEcho||"").trim();
+  const text = echo || ("街外報紙寫道：「"+head+"」。茶餐廳有人照著念。這是公開版面，不是圈內耳語。");
+  S.mockRumors.unshift({
+    id: id,
+    source: "報紙",
+    title: "報紙都寫了",
+    text: text,
+    state: "teased",
+    season: "",
+    fromPaper: true
+  });
+  try{ syncNotebookMirror(); }catch(_e){}
+}
+function commitMorningPaper(edition, opts){
+  opts = opts || {};
+  if(!S || !edition) return;
+  if(edition.fameApplied===true){
+    S.newspaperLastPresentedDay = S.dayIndex|0;
+    S.pendingMorningPaper = null;
+    return;
+  }
+  const d = Number(edition.fameDelta)||0;
+  if(d){
+    S.fame = Math.max(0, (Number(S.fame)||0) + d);
+    try{ if(typeof syncDualTracks==="function") syncDualTracks(S); }catch(_e){}
+    try{ if(typeof paintBar==="function") paintBar(); }catch(_e){}
+    try{
+      const hs = document.getElementById("h-stage-volume");
+      if(hs && typeof readDualTracks==="function") hs.textContent = String(readDualTracks(S).stageVolume);
+    }catch(_e){}
+  }
+  edition.fameApplied = true;
+  const clips = ensureNewspaperClippings();
+  if(!clips.some(c=>c && c.id===edition.id)){
+    clips.unshift({
+      id: edition.id,
+      dayIndex: S.dayIndex|0,
+      dateLabel: edition.dateLabel || ((typeof fmtDateShort==="function") ? fmtDateShort() : ""),
+      paperName: edition.paperName,
+      headline: edition.headline,
+      dek: edition.dek,
+      clipLabel: edition.clipLabel||"",
+      rumorEcho: edition.rumorEcho||"",
+      shorts: edition.shorts||[],
+      fameDelta: d,
+      eventKeys: edition.eventKeys||[],
+      source: edition.source||""
+    });
+    if(clips.length>40) clips.length = 40;
+  }
+  try{ pushNewspaperRumor(edition); }catch(_e){}
+  S.pendingMorningPaper = null;
+  S.newspaperLastPresentedDay = S.dayIndex|0;
+  if(opts.persist!==false){ try{ saveQ(); }catch(_e){} }
+  try{
+    const pane = document.getElementById("home-pane-clippings");
+    if(pane && pane.classList.contains("on")) renderClippingsPane();
+  }catch(_e){}
+}
+function presentDueMorningPaper(thenFn){
+  const cont = (typeof thenFn==="function") ? thenFn : function(){};
+  if(!S) return false;
+  try{ if(typeof _weekAccel!=="undefined" && _weekAccel) return false; }catch(_e){}
+  if(FREEPLAY_FW && FREEPLAY_FW._paperShowing) return true;
+  if(newspaperHoldForToday()) return false;
+  const edition = pullDueNewspaperEdition();
+  if(!edition) return false;
+  if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = true;
+  const done = ()=>{
+    try{ commitMorningPaper(edition); }catch(_e){}
+    if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = false;
+    cont();
+  };
+  try{
+    modal(renderMorningPaperHtml(edition), [
+      { label:"收下這份剪報", role:"p", on: done }
+    ], { onDismiss: done });
+    return true;
+  }catch(_e){
+    if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = false;
+    return false;
+  }
+}
+function renderClippingsPane(){
+  const box = document.getElementById("clippings-list");
+  if(!box) return;
+  const rows = ensureNewspaperClippings();
+  if(!rows.length){
+    box.innerHTML = `<article class="clip-card"><p class="clip-date">剪報</p><h4>未有剪報</h4><p>殺青或頒獎之後，下一朝的報紙會留在這裡。傳聞仍是圈內耳語，跟這疊公開剪報分開。</p></article>`;
+    return;
+  }
+  box.innerHTML = rows.map(c=>{
+    const fame = Number(c.fameDelta)||0;
+    const fameBit = fame ? `聲望 ${fame>0?"+":""}${fame}` : "聲望未再改";
+    const extra = (c.shorts&&c.shorts.length) ? `<p>同版還有 ${c.shorts.length} 則短訊。</p>` : "";
+    const lab = c.clipLabel ? ` · ${newspaperEsc(c.clipLabel)}` : "";
+    return `<article class="clip-card"><p class="clip-date">${newspaperEsc(c.dateLabel||"")} · ${newspaperEsc(c.paperName||"娛樂版")}${lab}</p><h4>${newspaperEsc(c.headline||"")}</h4><p>${newspaperEsc(c.dek||"")}</p>${extra}<p>${fameBit}</p></article>`;
+  }).join("");
+}
+function newspaperCheck(){
+  const fails = [];
+  try{ if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save"); }catch(_e){ fails.push("save"); }
+  if(!STAT_LABEL || STAT_LABEL.fame!=="幕前聲望") fails.push("fame_label");
+  try{
+    const lab = document.querySelector(".dual-lab-stage");
+    if(!lab || lab.textContent.indexOf("聲望")<0 || lab.textContent.indexOf("聲量")>=0) fails.push("hud_label");
+  }catch(_e){ fails.push("hud_label"); }
+  const prev = (typeof S!=="undefined") ? S : null;
+  try{
+    S = fresh();
+    try{ window.S = S; }catch(_e){}
+    const a = enqueueNewspaperItem({ eventKey:"wrap:g1:0", source:"wrap", enqueuedDay:0, publishDay:1, fameDelta:1, paperName:"娛樂快報", headline:"甲殺青", dek:"一行" }, { persist:false });
+    const dup = enqueueNewspaperItem({ eventKey:"wrap:g1:0", source:"wrap", enqueuedDay:0, publishDay:1, fameDelta:1, paperName:"娛樂快報", headline:"甲殺青", dek:"一行" }, { persist:false });
+    if(!a || dup) fails.push("dedupe");
+    enqueueNewspaperItem({ eventKey:"wrap:g2:0", source:"wrap", enqueuedDay:0, publishDay:1, fameDelta:1, paperName:"電視週刊", headline:"乙", dek:"二" }, { persist:false });
+    enqueueNewspaperItem({ eventKey:"award:1988:award_harbour_ad", source:"award", enqueuedDay:0, publishDay:1, fameDelta:2, paperName:"娛樂快報", headline:"頒獎見報", dek:"三" }, { persist:false });
+    if(newspaperDueItems(0).length) fails.push("early");
+    if(presentDueMorningPaper(function(){})) fails.push("early_modal");
+    S.dayIndex = 1;
+    const ed = pullDueNewspaperEdition();
+    if(!ed || ed.headline!=="頒獎見報") fails.push("headline");
+    if(!ed || !ed.shorts || ed.shorts.length<2) fails.push("shorts");
+    if((S.newspaperQueue||[]).length) fails.push("queue_left");
+    const fame0 = Number(S.fame)||0;
+    commitMorningPaper(ed, { persist:false });
+    if((Number(S.fame)||0) !== fame0 + (Number(ed && ed.fameDelta)||0)) fails.push("fame");
+    if(!(S.newspaperClippings||[]).length) fails.push("clip");
+    commitMorningPaper(ed, { persist:false });
+    if((Number(S.fame)||0) !== fame0 + (Number(ed && ed.fameDelta)||0)) fails.push("fame_twice");
+    const html = renderMorningPaperHtml(ed);
+    if(html.indexOf("聲量")>=0) fails.push("copy_volume");
+    if(html.indexOf("聲望")<0) fails.push("copy_fame");
+    if(!(S.mockRumors||[]).some(r=>r && r.source==="報紙" && r.state==="teased")) fails.push("rumor_hook");
+    enqueueNewspaperItem({ eventKey:"wrap:g3:1", source:"wrap", enqueuedDay:1, publishDay:2, fameDelta:1, paperName:"娛樂版", headline:"丁", dek:"四" }, { persist:false });
+    if(pullDueNewspaperEdition()) fails.push("not_due");
+    S.dayIndex = 0;
+    S.newspaperQueue = [];
+    const many = [];
+    for(let i=0;i<6;i++){
+      many.push(enqueueNewspaperItem({ eventKey:"wrap:m"+i+":3", source:"wrap", enqueuedDay:3, publishDay:4, fameDelta:1, paperName:"娛樂版", headline:"則"+i, dek:"短" }, { persist:false }));
+    }
+    if(many.some(x=>!x)) fails.push("many_enqueue");
+    S.dayIndex = 4;
+    S.pendingMorningPaper = null;
+    const big = pullDueNewspaperEdition();
+    const summary = big && (big.shorts||[]).some(s=>s && s.source==="summary");
+    if(!big || (big.shorts||[]).length>4 || !summary) fails.push("merge_cap");
+    const stub = FREEPLAY_FW && FREEPLAY_FW.newspaperStub;
+    const ts = stub && stub.templates;
+    if(FREEPLAY_FW && FREEPLAY_FW.loaded && !ts) fails.push("stub");
+    if(ts){
+      if((ts.wrap_success||[]).length!==15) fails.push("wrap_n");
+      if((ts.award_win||[]).length!==8) fails.push("win_n");
+      if((ts.award_nominee||[]).length!==4) fails.push("nom_n");
+      const pressBits = [];
+      ["wrap_success","award_win","award_nominee"].forEach(bucket=>{
+        (ts[bucket]||[]).forEach(t=>{
+          if(!t) return;
+          const press = [t.headline, t.dek, t.paperName, t.clipLabel].join("");
+          const face = press + (t.rumorEcho||"");
+          pressBits.push(press);
+          if(face.indexOf("聲量")>=0) fails.push("stub_volume:"+t.id);
+        });
+      });
+      if(/[嗰啦嘅]/.test(pressBits.join(""))) fails.push("press_colloquial");
+      S.newspaperQueue = [];
+      S.newspaperClippings = [];
+      S.pendingMorningPaper = null;
+      S.newspaperLastPresentedDay = null;
+      S.dayIndex = 0;
+      const wrapped = enqueueNewspaperFromWrap({ gigId:"seedg", type:"電影", title:"試片" }, { dayIndex:0, gigType:"電影", title:"試片" }, { persist:false });
+      if(!wrapped || !wrapped.templateId) fails.push("seed_wrap");
+      else {
+        if(!(wrapped.fameDelta>=1 && wrapped.fameDelta<=3)) fails.push("seed_fame");
+        if((wrapped.publishDay|0)!==1) fails.push("seed_pub");
+        if((wrapped.headline+wrapped.dek).indexOf("聲量")>=0) fails.push("seed_face");
+        if(wrapped.templateEventKey!=="wrap_success.film") fails.push("seed_key");
+      }
+      const again = enqueueNewspaperFromWrap({ gigId:"seedg", type:"電影", title:"試片" }, { dayIndex:0, gigType:"電影", title:"試片" }, { persist:false });
+      if(again) fails.push("seed_dedupe");
+      if(enqueueNewspaperFromAward({ skipped:false, bestOutcome:"gallery", year:1988, ceremonyId:"award_harbour_film", medium:"film" }, { persist:false })) fails.push("gallery_paper");
+      const win = enqueueNewspaperFromAward({ skipped:false, bestOutcome:"won", year:1988, ceremonyId:"award_harbour_ad", medium:"ad", displayName:"維港街招", press:{} }, { persist:false });
+      if(!win || !(win.fameDelta>=4 && win.fameDelta<=8)) fails.push("seed_win");
+      if(win && win.eventKey!=="award:1988:award_harbour_ad") fails.push("award_key");
+      if(win && (win.headline+win.dek).indexOf("{playerName}")>=0) fails.push("player_token");
+    }
+  }catch(_err){ fails.push("throw:"+(_err&&_err.message||_err)); }
+  finally{
+    S = prev;
+    try{ window.S = S; }catch(_e){}
+    try{ if(S && typeof paintBar==="function") paintBar(); }catch(_e){}
+  }
+  return { ok:!fails.length, fails:fails, softRev:"s101", version:"v20a10", softStatus:"≠PASS" };
+}
+try{
+  window.__newspaper = {
+    check: newspaperCheck,
+    enqueue: enqueueNewspaperItem,
+    fromWrap: enqueueNewspaperFromWrap,
+    fromAward: enqueueNewspaperFromAward,
+    present: presentDueMorningPaper,
+    queue: function(){ return ensureNewspaperQueue().slice(); },
+    clippings: function(){ return ensureNewspaperClippings().slice(); },
+    pending: function(){ return S && S.pendingMorningPaper; }
+  };
+}catch(_e){}
+
 async function loadFreeplayFramework(){
   if(FREEPLAY_FW.loaded) return FREEPLAY_FW;
   const bust = "20a7";
@@ -28503,6 +29047,8 @@ async function loadFreeplayFramework(){
     postShootSchema: "SCHEMA_POST_SHOOT_REWARD_v1.json",
     awardsSchema: "SCHEMA_AWARDS_CEREMONY_v1.json",
     awardsStub: "STUB_AWARDS_CEREMONY_v1.json",
+    newspaperStub: "STUB_NEWSPAPER_MORNING_SOFT_v1.json",
+    newspaperSchema: "SCHEMA_NEWSPAPER_MORNING_SOFT_v1.json",
   };
   await Promise.all(Object.keys(files).map(async k=>{
     try{
@@ -28547,6 +29093,8 @@ try{
     awardsCheck: function(){ return awardsCheck(); },
     queueAwards: queueAwardsOnSeasonWindow,
     presentAward: presentPendingAward,
+    newspaper: function(){ return (typeof newspaperCheck==="function") ? newspaperCheck() : { ok:false, fails:["missing"] }; },
+    newspaperQueue: function(){ return (typeof ensureNewspaperQueue==="function") ? ensureNewspaperQueue().slice() : []; },
     nextHintHidden: function(){
       try{ return typeof BehaviorGate!=="undefined" && BehaviorGate.nextHint_neverShow()===""; }catch(_e){ return true; }
     },
@@ -28572,6 +29120,8 @@ try{
         if(!/enterHome\([^)]*"ledger"/.test(src) && src.indexOf('"ledger"')<0) fails.push("ui:stats_not_ledger");
       }catch(_e){ fails.push("ui:stats_probe"); }
       if(!document.getElementById("home-pane-rumor")) fails.push("ui:rumor");
+      if(!document.getElementById("home-pane-clippings")) fails.push("ui:clippings");
+      if(!document.getElementById("htab-clippings")) fails.push("ui:htab_clippings");
       if(!document.getElementById("home-pane-debt")) fails.push("ui:debt");
       try{
         if(typeof phase3Stars==="function" && !phase3Stars().some(s=>s&&s.starId==="so_jiyan")) fails.push("so_jiyan_phase3");
@@ -28627,6 +29177,10 @@ try{
         if(!ac.ok) fails.push.apply(fails, (ac.fails||[]).map(f=>"awards:"+f));
       }catch(_e){ fails.push("awards_check"); }
       try{
+        const nc = newspaperCheck();
+        if(!nc.ok) fails.push.apply(fails, (nc.fails||[]).map(f=>"paper:"+f));
+      }catch(_e){ fails.push("paper_check"); }
+      try{
         const rfc = restSleepFxCheck();
         if(!rfc.ok) fails.push.apply(fails, (rfc.fails||[]).map(f=>"restFx:"+f));
       }catch(_e){ fails.push("restFx_check"); }
@@ -28638,6 +29192,7 @@ try{
         debtLock: typeof softOverdueFavorDebtLock==="function",
         postShootReward: typeof queuePostShootRewardOnWrap==="function",
         awardsCeremony: typeof queueAwardsOnSeasonWindow==="function",
+        newspaper: typeof presentDueMorningPaper==="function",
         awardsIds: (typeof awardsCeremonies==="function") ? awardsCeremonies().map(c=>c&&c.id).filter(Boolean) : [],
         restSleepFx: typeof playRestSleepFx==="function",
       };
@@ -30782,7 +31337,7 @@ function doAudition(gig, L){
     const shoot=scheduleShoot(gig, pay, fame, pop);
     title="獲聘！";
     notes.push(`<span class="good">${eventLine("AUD_PASS",{title:gig.title, shootDays:days})||("試鏡通過，拍攝 "+days+" 日")}</span>`);
-    notes.push(`完成後約酬 $ ${pay.toLocaleString()} · ${(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲量"} +${fame} · ${(STAT_LABEL&&STAT_LABEL.popularity)||"人氣"} +${pop}`);
+    notes.push(`完成後約酬 $ ${pay.toLocaleString()} · ${(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲望"} +${fame} · ${(STAT_LABEL&&STAT_LABEL.popularity)||"人氣"} +${pop}`);
     if(payRoll.note) notes.push(`<span class="var-note">${payRoll.note}</span>`);
     try{ notes.push(`<span class="var-note">${chanceVarianceNote(gig)}</span>`); }catch(_e){}
     try{ notes.push(`<span class="var-note">${payContractNote(gig, pay)}</span>`); }catch(_e){}
@@ -30995,7 +31550,7 @@ function ledgerStatsParts(){
 function ledgerStatsHtml(){
   const p = ledgerStatsParts();
   return `<div class="ledger-head"><h3>記數簿</h3><p class="sub">${p.dateLine}</p>
-    <p class="sub">幕前聲量 <b>${p.stageVolume}</b> · 業內信用 <b>${p.industryCredit}</b></p></div>
+    <p class="sub">幕前聲望 <b>${p.stageVolume}</b> · 業內信用 <b>${p.industryCredit}</b></p></div>
     <div class="stats-grid">${p.grid}</div>
     <p class="ledger-money">存款 <b class="gold">$ ${p.money.toLocaleString()}</b></p>
     <p class="ledger-enroll">已報名訓練：${p.enrollLine}</p>`;
@@ -31032,7 +31587,7 @@ function showStats(){
   try{
     const p = ledgerStatsParts();
     modal(`<h3>記數簿</h3><p>${p.dateLine}</p><div class="stats-grid">${p.grid}</div>
-      <p class="sub">幕前聲量 <b>${p.stageVolume}</b> · 業內信用 <b>${p.industryCredit}</b></p>
+      <p class="sub">幕前聲望 <b>${p.stageVolume}</b> · 業內信用 <b>${p.industryCredit}</b></p>
       <p>存款 <b class="gold">$ ${p.money.toLocaleString()}</b></p>
       <p style="font-size:.78rem;color:var(--muted)">已報名訓練：${p.enrollLine}</p>`,[{label:"關閉",role:"g"}]);
   }catch(_e2){}
@@ -31905,10 +32460,10 @@ function runSoftP0Checks(){
     if(/金龍/.test(scrub.setting||"") || /金龍/.test((scrub.beats[0].lines||[])[0]||"")) bad("c1_scrub_copy");
     if(typeof c1PlayLocId==="function" && c1PlayLocId()!=="agency_ho") bad("c1_play_loc");
     if(showB01HomeModal.toString().indexOf("openLoc(\"cafe_cha\")")>=0 || showB01HomeModal.toString().indexOf("去金龍")>=0) bad("tut_cafe");
-    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s100") bad("soft_rev_attr");
+    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s101") bad("soft_rev_attr");
     try{
       var sq = String((typeof location!=="undefined" && location && location.search) || "");
-      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s100(?:&|$)/.test(sq)) bad("soft_rev_url");
+      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s101(?:&|$)/.test(sq)) bad("soft_rev_url");
       if(/(?:\?|&)v=20a1[1-9](?:&|$)/.test(sq)) bad("v_bumped");
     }catch(_rev){ bad("soft_rev_throw"); }
     if(typeof storyMainProgressLine==="function"){
@@ -31958,8 +32513,8 @@ try{ exposePreviewDebug(); }catch(_e){}
 try{
   if(typeof softPreviewOn==="function" && softPreviewOn()){
     var tip = document.getElementById("start-soft-tip");
-    if(tip && tip.textContent.indexOf("s100")<0){
-      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s100。");
+    if(tip && tip.textContent.indexOf("s101")<0){
+      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s101。");
     }
   }
 }catch(_revTip){}
