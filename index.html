@@ -17234,7 +17234,7 @@ let STORY_WIRE = {
 
 /* v17o PLAN_MAP + script-lock：loc soft／meet offer／lockedHint 後備（JSON 合稿前代碼表） */
 const STORY_LOC_SOFT = {
-  C1: "tvb_longmen",
+  C1: "agency_ho",
   C2: "tvb_longmen",
   C3: "tvb_longmen",
   C4: "ad_central",
@@ -17247,7 +17247,7 @@ const STORY_LOC_SOFT = {
 };
 const STORY_HINT_SOFT = {
   /* fallback only — JSON 1.2.8 / C1 UI-test beat annotate + HINT_C6C10 優先 */
-  C1: { playerHint: "開局事態：星河電視台廠景有幕等你——先學做動作戲定先賺。", lockedHint: "開局主線喺星河電視台廠景——通告欄旁有幕等你揀。", nextHint: "下一幕只有「留人脈／趕通告」——約第4週起，而且要隔一日先開；未到就照常跑通告，唔使返去重播「先學做動作戲／先賺」。" },
+  C1: { playerHint: "開局事態：何生事務所有幕等你——先學做動作戲定先賺。", lockedHint: "開局主線喺何生事務所——入到事務所先可以播這幕。", nextHint: "下一幕只有「留人脈／趕通告」——約第4週起，而且要隔一日先開；未到就照常跑通告，唔使返去重播「先學做動作戲／先賺」。" },
   C2: { playerHint: "星河片場後巷有人約飯；通告欄又貼咗新單。", lockedHint: "約第4週起，且隔一日之後先開。未到唔使專程蹲後巷——先照常跑通告；開咗再去星河片場後巷。", nextHint: "下一幕「對對手硬／忍」——約第6週起、隔一日之後；開咗先留意星河電影組通告欄。" },
   C3: { playerHint: "星河電影組通告欄前氣氛緊，有人睇住你嘅名牌。", lockedHint: "約第6週起，且隔一日之後先開。未到唔使專登去盯通告欄——先照常開工；開咗再去星河電影組通告欄。", nextHint: "下一幕「何生拒單」——約第8週起、隔一日之後；開咗先去中環廣告。" },
   C4: { playerHint: "何生檯面有份通告紙等你表態。", lockedHint: "約第8週起，且隔一日之後先開。未到唔使專程跑中環——先照常跑通告；開咗再去中環廣告聽何生講。", nextHint: "下一幕「采兒小訪題」——約第9週起；仲要同周采兒處好關係，或捱到夏台慶籌備季。" },
@@ -17720,6 +17720,8 @@ const StoryOC = (()=>{
     if(!node) return false;
     if(node.playerOffer === false) return false;
     if(node.playerOffer === true) return true;
+    /* #98 把 C1–C5 開場句寫入 playerOffer 字串。字串＝玩家可入，唔好當成未發 offer。 */
+    if(typeof node.playerOffer==="string" && node.playerOffer.trim()) return true;
     const offers = ensureOffers() || {};
     if(offers[node.id]) return true;
     return false;
@@ -18127,6 +18129,7 @@ const BehaviorGate = (function(){
     stub = data;
     Object.keys(byId).forEach(k=>{ delete byId[k]; });
     data.nodes.forEach(n=>{ if(n && n.beatId) byId[n.beatId] = n; });
+    try{ if(byId.C1 && typeof softCanonC1Face==="function") softCanonC1Face(byId.C1); }catch(_c1){}
     return { ok:true, n:data.nodes.length, stubRev:data.stubRev, planSha8:data.enginePlanSha8||"" };
   }
 
@@ -18141,11 +18144,22 @@ const BehaviorGate = (function(){
     /* v20a2: C1–C17 Soft shells; C6–C17 may come from Freeplay slots only */
     return /^C([1-9]|1[0-7])$/.test(id) && !!byId[id];
   }
+  function healC1Loc(node){
+    /* C1 播點係事務所。過期 slots／快取寫返 cafe_cha 都唔可以再開金龍。 */
+    if(nodeId(node)!=="C1") return;
+    const held = byId.C1;
+    if(!held) return;
+    held.locId = "agency_ho";
+    held.trigger = held.trigger || {};
+    held.trigger.locIdAny = ["agency_ho"];
+  }
   function softLocId(node){
+    if(nodeId(node)==="C1") return "agency_ho";
     const n = byId[nodeId(node)];
     return (n && n.locId) || null;
   }
   function locIdAny(node){
+    if(nodeId(node)==="C1") return ["agency_ho"];
     const n = byId[nodeId(node)];
     const list = n && n.trigger && n.trigger.locIdAny;
     return Array.isArray(list) ? list.slice() : [];
@@ -18166,7 +18180,7 @@ const BehaviorGate = (function(){
   /* 主線 C5 鎖因：秋或冬＋同支線小訪分開。唔好只寫「檔期未到該季」。 */
   function c5SeasonLockLine(season){
     const now = season ? ("目前是"+season+"。") : "";
-    return "主線《采兒小訪題》要到秋或冬。"+now+"支線《片場採訪角的小訪》同《周刊小訪》唔計入這幕";
+    return "主線《采兒小訪題》要到秋或冬。"+now+"支線《周刊小訪》唔計入這幕";
   }
   function locPlayerName(id){
     try{
@@ -18178,6 +18192,7 @@ const BehaviorGate = (function(){
   /* Player line for a locked C1–C5 stub. No-arg locked copy stays「暫未能報」for selfCheck. */
   function softLockPlayerLine(node){
     const id = nodeId(node);
+    try{ healC1Loc(node); }catch(_c1){}
     const held = byId[id];
     const trig = held && held.trigger;
     if(!trig) return "";
@@ -18480,6 +18495,7 @@ const BehaviorGate = (function(){
 
   function evalTrigger_AND_softRumor(nodeOrId, opts){
     const id = nodeId(nodeOrId);
+    try{ healC1Loc(id); }catch(_c1){}
     const node = byId[id];
     if(!node || !node.trigger || !stub){
       return { ok:false, openable:false, and:[], any:null, phaseSoft:null, reasons:["no_stub"], skippedThresholds:[], softBehavior:true };
@@ -18578,7 +18594,8 @@ const BehaviorGate = (function(){
     if(sample("C5", Object.assign({}, c5base, { atLoc:"tvb_longmen", season:"winter", rumors:["hau_ching_recent_news"] })).ok!==true) bad("c5_winter");
     if(sample("C5", Object.assign({}, c5base, { atLoc:"cafe_cha", season:"夏" })).ok!==false) bad("c5_summer");
     const c5lock = c5SeasonLockLine("夏");
-    if(c5lock.indexOf("采兒小訪題")<0 || c5lock.indexOf("秋或冬")<0 || c5lock.indexOf("片場採訪角的小訪")<0 || c5lock.indexOf("周刊小訪")<0) bad("c5_lock_names");
+    if(c5lock.indexOf("采兒小訪題")<0 || c5lock.indexOf("秋或冬")<0 || c5lock.indexOf("周刊小訪")<0) bad("c5_lock_names");
+    if(c5lock.indexOf("片場採訪角")>=0) bad("c5_old_side_title");
     if(c5lock.indexOf("噂")>=0 || c5lock.indexOf("檔期未到該季")>=0) bad("c5_lock_vague");
     if(ENG.test(c5lock)) bad("c5_lock_eng");
     if(sample("C5", Object.assign({}, c5base, { atLoc:"cafe_cha", season:"秋", rumors:[] })).ok!==false) bad("c5_need_seed");
@@ -18619,6 +18636,7 @@ const BehaviorGate = (function(){
   /** v19z20／v20a8：玩家可讀進度（通告／週／傳聞／地點／人情／聲望），唔洩漏 nextHint pacing 長文 */
   function progressToward(node){
     const id = nodeId(node);
+    try{ healC1Loc(node); }catch(_c1){}
     const held = byId[id];
     const trig = held && held.trigger;
     if(!trig) return null;
@@ -18722,6 +18740,8 @@ const BehaviorGate = (function(){
       if(slot.redStarHook) held.redStarHook = slot.redStarHook;
       held.nextHint = "";
     });
+    /* Slots fetch can still be a stale cafe body. C1 play loc stays 何生事務所. */
+    try{ if(byId.C1 && typeof softCanonC1Face==="function") softCanonC1Face(byId.C1); }catch(_c1){}
     return { ok:true, n:n, faces:faces, created:created };
   }
   const api = {
@@ -19075,6 +19095,14 @@ const DualMeet = (function(){
       if(b.playerOffer!==false || b.artHold!==true) return { ok:false, reason:"offer" };
     }
     mock = data;
+    try{
+      (mock.beats||[]).forEach(b=>{
+        if(!b) return;
+        if(typeof b.playerMeta==="string") b.playerMeta = b.playerMeta.replace(/^主線/, "支線");
+        if(b.id==="R_choi_meet") b.title = "周刊小訪";
+      });
+    }catch(_lane){}
+    try{ if(typeof dualMeetSyncWire==="function") dualMeetSyncWire(); }catch(_wire){}
     return { ok:true, scope:data.meta.scope };
   }
   function idOf(node){
@@ -19153,8 +19181,8 @@ const DualMeet = (function(){
       let title = (n&&n.title)||id;
       let hint = (n&&n.synopsis)||"";
       if(id==="R_choi_meet"){
-        title = "支線：片場採訪角的小訪";
-        hint = "即《周刊小訪》。唔等於主線《采兒小訪題》。主線要到秋或冬，仲要聽過采兒或曉晴傳聞。";
+        title = "支線：周刊小訪";
+        hint = "支線《周刊小訪》。唔等於主線《采兒小訪題》。主線要到秋或冬，仲要聽過采兒或曉晴傳聞。";
       } else if(id==="R_hiu_meet"){
         title = "支線："+((n&&n.title)||"廠景休息角");
         hint = ((n&&n.synopsis) ? (n.synopsis+" ") : "")+"這是支線，唔係主線。";
@@ -19418,6 +19446,7 @@ const StoryPlay = (()=>{
         return false;
       }
     }
+    try{ if(node && (node.id==="C1" || node.beatId==="C1") && typeof softCanonC1Face==="function") node = softCanonC1Face(node); }catch(_c1){}
     try{ node = applyFamilySafeToNode(node) || node; }catch(_fs){}
     _sess = {
       node, pack, label,
@@ -19717,6 +19746,8 @@ const StoryPlay = (()=>{
   function spSoftLane(node){
     const id = String((node && (node.id || node.beatId)) || "");
     if(id==="R_hiu_meet" || id==="R_choi_meet") return "支線";
+    const title = String((node && node.title) || "");
+    if(title.indexOf("周刊小訪")>=0 || title.indexOf("廠景休息角")>=0) return "支線";
     return "主線";
   }
   function spSoftSeasonLine(ch, node){
@@ -19737,6 +19768,7 @@ const StoryPlay = (()=>{
     let explicit = String(node.playerMeta||"").trim();
     if(explicit){
       if(spSoftLane(node)==="支線") explicit = explicit.replace(/^主線/, "支線");
+      else if(/^支線/.test(explicit) && spSoftLane(node)==="主線") explicit = explicit.replace(/^支線/, "主線");
       return explicit;
     }
     let ch = "";
@@ -19801,7 +19833,10 @@ const StoryPlay = (()=>{
   function spPlayerMeta(node, pack, label){
     try{
       if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview()){
-        return spPlayerMeta_softSeason(node, pack, label);
+        let line = spPlayerMeta_softSeason(node, pack, label);
+        if(spSoftLane(node)==="支線") line = String(line||"").replace(/^主線/, "支線");
+        else if(String((node&&node.id)||"")==="C5") line = String(line||"").replace(/^支線/, "主線");
+        return line;
       }
     }catch(_e){}
     node = node || {};
@@ -19834,13 +19869,14 @@ const StoryPlay = (()=>{
     const id = String(node.id||"");
     const beat = spChoiceBgBeat(node);
     let key = spResolveBgKey(beat, node);
-    /* C1 choice happens in tea restaurant — prefer tea bg when loc-only would be longmen */
+    /* C1 開場喺何生事務所。舊茶餐廳底只喺節點仍寫死金龍時先用。 */
     if(id==="C1"){
-      if(!(beat && beat.bg && String(beat.bg).trim())){
+      const loc = String((node && node.locId) || (beat && beat.locId) || "");
+      const setting = String((node && node.setting) || "");
+      if(loc==="agency_ho" || setting.indexOf("何生事務所")>=0 || setting.indexOf("金龍")<0){
+        key = "bg_loc_agency_ho";
+      } else if(!(beat && beat.bg && String(beat.bg).trim())){
         key = "bg_c1_tea_restaurant";
-      } else if(String(beat.bg).trim()==="bg_loc_tvb_longmen" && !beat.locId){
-        /* keep beat.bg if explicit; else tea — last C1 beat already tea */
-        key = spBgClass(beat, node);
       }
     }
     if(/^bg_loc_/.test(key) || key==="bg_generic_interior" || /^bg_c1_/.test(key)) return key;
@@ -20401,12 +20437,15 @@ const StoryPlay = (()=>{
 
     const doneRows = done.slice(-5).reverse().map(r=>{
       const meta = pickerPlayerMeta(r);
+      let title = (r && (r.title||r.id)) || "";
+      if(r && r.id==="R_choi_meet") title = "周刊小訪";
+      else if(r && r.id==="R_hiu_meet") title = "廠景休息角";
       let sub = meta ? (esc(meta)+" · 已完成") : "已完成";
       if(r && r.id==="R_choi_meet"){
         sub = (meta ? (esc(meta)+" · ") : "支線 · ")+"周刊小訪 · 已完成 · 唔等於主線《采兒小訪題》";
       }
       return `<div class="sp-row done">
-      <div class="sp-row-txt"><b>${esc(r.title||r.id)}</b><span>${sub}</span></div>
+      <div class="sp-row-txt"><b>${esc(title)}</b><span>${sub}</span></div>
       <span class="sp-done-tag" aria-disabled="true">已完成</span>
     </div>`;
     }).join("");
@@ -20645,10 +20684,16 @@ function loadTutorialPhase2Steps56Overlay(pack){
   }catch(_e){}
   return { ok:true, file:TUTORIAL_PHASE2_STEPS56_FILE, overlayOnly:true };
 }
+/* 頁面 ?v= 同 SAVE key 唔郁。rev 只係令 CDN 唔再交 #98 之前嘅 JSON（金龍 C1／主線 chrome）。 */
+function contentFetchUrl(url){
+  const u = String(url||"");
+  if(!u || /(?:\?|&)rev=s99(?:&|$)/.test(u)) return u;
+  return u + (u.indexOf("?")>=0 ? "&" : "?") + "rev=s99";
+}
 async function preferFileTutorialPhase2Steps56(){
   const bust = encodeURIComponent(typeof SAVE!=="undefined" ? SAVE : "19w");
   try{
-    const r = await fetch("content/"+TUTORIAL_PHASE2_STEPS56_FILE+"?v="+bust);
+    const r = await fetch(contentFetchUrl("content/"+TUTORIAL_PHASE2_STEPS56_FILE+"?v="+bust));
     if(!r.ok) return loadTutorialPhase2Steps56Overlay(null);
     return loadTutorialPhase2Steps56Overlay(await r.json());
   }catch(_e){
@@ -21288,7 +21333,7 @@ async function loadSoftSeedPack(){
   const packs = [];
   for(let i=0;i<names.length;i++){
     try{
-      const r = await fetch(names[i]+"?v="+bust);
+      const r = await fetch(contentFetchUrl(names[i]+"?v="+bust));
       if(r.ok) packs.push(await r.json());
     }catch(_e){}
   }
@@ -21371,7 +21416,7 @@ async function refreshCopyPacksFromDisk(){
   STORY_WIRE.contentPhase = "loading";
   const base = "content/";
   const bust = encodeURIComponent(typeof SAVE!=="undefined"?SAVE:Date.now());
-  const get = (name)=> fetch(base+name+"?v="+bust).then(r=>r.ok?r.json():null).catch(()=>null);
+  const get = (name)=> fetch(contentFetchUrl(base+name+"?v="+bust)).then(r=>r.ok?r.json():null).catch(()=>null);
   try{
     const [a,b,c,d, gigsPack, gigs1989, gigs1990, gigs1991, gigs1992, main, rom1, rom2, romTang, rival, giftItems, giftShops, giftPrefs, giftReact, gateStub, dengMock, dengPushMock, dualMock] = await Promise.all([
       get("npc_lines_core.json"),
@@ -23931,6 +23976,11 @@ function advanceDay(){
     });
   }
   try{ ensureEntryTierBoardFill(); }catch(_ef){}
+  try{
+    if(typeof pinSoftBridgeOnBoard==="function" && typeof LOCS!=="undefined"){
+      LOCS.forEach(L=>{ if(L && L.id) pinSoftBridgeOnBoard(L.id); });
+    }
+  }catch(_pin){}
   // Ad board refresh ~every 14 days — same loc×季 pick as 通告欄（唔再聲望過濾／1–2 張上限）
   if(S.dayIndex>0 && S.dayIndex % 14 === 0){
     LOCS.filter(L=>L.type==="ad").forEach(L=>{
@@ -24018,7 +24068,7 @@ function moneyRecoveryHint(){
 }
 function moneyThreatPlayerLine(){
   const lv = moneyThreatLevel();
-  if(lv==="broke") return "口袋見底（$0）——週末生活費扣唔到，先接短期通告翻身。";
+  if(lv==="broke") return "口袋見底（$0）——週末生活費扣唔到，先接初階臨記通告翻身。";
   if(lv==="critical") return "存款低過下週生活費預估——再空轉一週會見底。";
   if(lv==="warn") return "存款偏緊，宜接多一兩張通告。";
   return "";
@@ -24054,7 +24104,7 @@ function settleWeek(){
     const cashNow = Math.max(0, Number(S.money)||0);
     const nextEst = (typeof livingCostEstimate==="function") ? livingCostEstimate(w+1) : 2400;
     if(cashNow<=0){
-      pushFlavor(`<span class="bad">口袋見底（$0）。週末生活費已盡量扣，但再無餘錢——先接短期通告翻身。</span>`);
+      pushFlavor(`<span class="bad">口袋見底（$0）。週末生活費已盡量扣，但再無餘錢——先接初階臨記通告翻身。</span>`);
       pushFlavor(`<span class="var-note">${(typeof moneyRecoveryHint==="function")?moneyRecoveryHint():"去通告欄接入場工。"}</span>`);
       S.flags = S.flags||{}; S.flags.cashBrokeTelegraph = true;
     } else if(cashNow < nextEst){
@@ -27401,6 +27451,66 @@ function seedFreeplayFavorDebt(){
     try{ syncNotebookMirror(); }catch(_e){}
   }catch(_e){}
 }
+/** C1 玩家面跟事務所。舊 Soft／過期快取仍然寫金龍時，播點、鎖因同對白一併改返。 */
+function softCanonC1Face(node){
+  if(!node) return node;
+  const id = String(node.id || node.beatId || "");
+  if(id!=="C1") return node;
+  node.locId = "agency_ho";
+  if(node.trigger && typeof node.trigger==="object") node.trigger.locIdAny = ["agency_ho"];
+  const agencySet = "何生事務所；兩份通告攤喺檯面，窗外可見走廊";
+  const agencyLine = "何生事務所檯面攤開兩份通告，阿偉要為自己揀第一條路。";
+  const agencyFace = "喺何生事務所，兩條路擺喺眼前，我必須為自己嘅演藝生涯行出第一步。";
+  if(typeof node.setting==="string" && /金龍/.test(node.setting)) node.setting = agencySet;
+  if(!node.setting) node.setting = agencySet;
+  if(typeof node.playerFaceLine==="string" && (!node.playerFaceLine || /金龍/.test(node.playerFaceLine))) node.playerFaceLine = agencyFace;
+  (node.beats||[]).forEach(b=>{
+    if(!b) return;
+    if(b.locId==="cafe_cha") b.locId = "agency_ho";
+    if(Array.isArray(b.lines)){
+      b.lines = b.lines.map(ln=> /金龍/.test(String(ln||"")) ? agencyLine : ln);
+    }
+  });
+  (node.choices||[]).forEach(c=>{
+    ((c && c.resultBeats)||[]).forEach(b=>{
+      if(!b || !Array.isArray(b.lines)) return;
+      b.lines = b.lines.map(ln=> /金龍茶餐廳/.test(String(ln||"")) ? agencyLine : ln);
+    });
+  });
+  return node;
+}
+function c1PlayLocId(){ return "agency_ho"; }
+function c1PlayLocName(){
+  try{
+    const L = (typeof LOCS!=="undefined") && LOCS.find(x=>x && x.id==="agency_ho");
+    if(L && L.name) return L.name;
+  }catch(_e){}
+  return "何生事務所";
+}
+function dualMeetSyncWire(){
+  try{
+    const rom = (typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.romance && STORY_WIRE.romance.veraHiuChoi) || null;
+    const nodes = rom && Array.isArray(rom.nodes) ? rom.nodes : null;
+    if(!nodes) return;
+    nodes.forEach(n=>{
+      if(!n) return;
+      if(n.id==="R_choi_meet"){
+        n.title = "周刊小訪";
+        if(typeof n.playerMeta==="string") n.playerMeta = n.playerMeta.replace(/^主線/, "支線");
+        else n.playerMeta = "支線 · 1988夏";
+      } else if(n.id==="R_hiu_meet"){
+        if(!n.title) n.title = "廠景休息角";
+        if(typeof n.playerMeta==="string") n.playerMeta = n.playerMeta.replace(/^主線/, "支線");
+        else n.playerMeta = "支線 · 1988春";
+      }
+    });
+    const main = (typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.main && Array.isArray(STORY_WIRE.main.nodes)) ? STORY_WIRE.main.nodes : null;
+    if(main){
+      const c1 = main.find(n=>n && n.id==="C1");
+      if(c1) softCanonC1Face(c1);
+    }
+  }catch(_e){}
+}
 function freeplayIsPlaceholderLine(s){
   const t = String(s||"").trim();
   if(!t) return true;
@@ -27465,8 +27575,14 @@ function applyFreeplaySlotsToSoftGate(){
         }
         const face = String(slot.playerFaceLine||"").trim();
         if(face && !freeplayIsPlaceholderLine(face)) storyNode.playerFaceLine = face;
+        if(id==="C1"){
+          if(slot.locId) storyNode.locId = slot.locId;
+          softCanonC1Face(storyNode);
+        }
       }catch(_e){}
     });
+    try{ if(typeof BehaviorGate!=="undefined" && BehaviorGate.stubNode) softCanonC1Face(BehaviorGate.stubNode("C1")); }catch(_c1){}
+    try{ dualMeetSyncWire(); }catch(_wire){}
     FREEPLAY_FW._slotsWired = { nTrig:nTrig, nFace:nFace, nStory:nStory, at:Date.now() };
     return { ok:true, nTrig:nTrig, nFace:nFace, nStory:nStory };
   }catch(e){
@@ -28245,7 +28361,7 @@ function presentAwardInvite(pack, thenFn){
     pack.skipped = true;
     pack.rewardsApplied = { stageVolume:0, industryCredit:0, money:0, tags:[] };
     commitAwardToLog(pack);
-    try{ toast("已推辞席位", { sub: pack.displayName||"" }); }catch(_e){}
+    try{ toast("已推辭席位", { sub: pack.displayName||"" }); }catch(_e){}
     cont();
   };
   const later = ()=>{
@@ -28258,7 +28374,7 @@ function presentAwardInvite(pack, thenFn){
   try{
     modal(renderAwardInviteHtml(pack), [
       { label: "出席", role: "p", on: attend },
-      { label: "推辞", role: "g", on: skip },
+      { label: "推辭", role: "g", on: skip },
       { label: "稍後", role: "g", on: later }
     ], { onDismiss: later, keepSheetContent:true });
     return true;
@@ -28366,7 +28482,7 @@ async function loadFreeplayFramework(){
   };
   await Promise.all(Object.keys(files).map(async k=>{
     try{
-      const r = await fetch("content/"+files[k]+"?v="+bust);
+      const r = await fetch(contentFetchUrl("content/"+files[k]+"?v="+bust));
       if(r && r.ok) FREEPLAY_FW[k] = await r.json();
     }catch(_e){ FREEPLAY_FW[k] = FREEPLAY_FW[k] || null; }
   }));
@@ -28612,7 +28728,7 @@ function loadPhase3Mock(){
   }
   phase3ApplyMock(phase3InlineMock(), "inline");
   const bust = encodeURIComponent(typeof SAVE!=="undefined" ? SAVE : "19w");
-  PHASE3_LOAD = fetch("content/MOCK_UI_PHASE3_STAR_CASTING_v1.json?v="+bust)
+  PHASE3_LOAD = fetch(contentFetchUrl("content/MOCK_UI_PHASE3_STAR_CASTING_v1.json?v="+bust))
     .then(r=> r.ok ? r.json() : null)
     .then(data=>{
       if(!phase3SoftOn()) return null;
@@ -29306,6 +29422,22 @@ function openLoc(id, opts){
     }
   }catch(_gs){}
   add("只查看通告欄","","免費", ()=>doScout(L), "act-priority");
+  const bridgeShown = {};
+  try{
+    if(typeof softPreviewOn==="function" && softPreviewOn() && typeof pinSoftBridgeOnBoard==="function"){
+      pinSoftBridgeOnBoard(L.id);
+      const curS = (typeof calendarSeason==="function") ? calendarSeason() : "";
+      (GIGS||[]).forEach(g=>{
+        if(!g || !g.softBridge || g.loc!==L.id) return;
+        if(typeof seasonRank==="function" && seasonRank(g, curS)>0) return;
+        if(typeof isGigConsumed==="function" && isGigConsumed(g)) return;
+        if(typeof canAudition==="function" && !canAudition(g).ok) return;
+        bridgeShown[g.id] = 1;
+        const face = g.workTitle || g.title || "初階臨記";
+        add(`試鏡入口：${face}`, "初階臨記 · 一日殺青 · 正薪夠生活費 · 打開不耗日。未獲聘不入帳；殺青先有片酬。", "不耗日", ()=>openCastingNoticeDetail(g, L), "act-priority act-bridge");
+      });
+    }
+  }catch(_br){}
   /* v19z20：報名／休息室釘喺通告列表前（首屏可點），避免被多張通告壓到 fold 下 */
   const tr=TRAIN_BY_TYPE[L.type];
   if(tr){
@@ -29319,6 +29451,7 @@ function openLoc(id, opts){
   if(L.type==="film" || L.type==="tv" || L.type==="music" || L.type==="ad")
     add("休息室歇陣","回復／減壓","+1日", ()=>doRest(L), "act-priority");
   (S.board[L.id]||[]).forEach(gid=>{
+    if(bridgeShown[gid]) return;
     const gig=GIGS.find(g=>g.id===gid); if(!gig) return;
     const life = (typeof gigLifecycleStatus==="function") ? gigLifecycleStatus(gig) : null;
     if(life && (life.key==="hired" || life.key==="shooting" || life.key==="wrapped")){
@@ -29443,6 +29576,7 @@ function closeSheet(opts){
  *  唔再以聲望、req.fame、fameFloor 硬藏「高」或任何級——條件未齊仍上板，Detail 硬鎖「暫未能報」。
  *  保證：庫存有該 loc×季的初／中／高，就先各留排序最好的一張；其餘同季卡無 take 上限一併上板。 */
 function gigsForLocSeasonBoard(locId, curSeason){
+  try{ if(typeof mergeSoftBridgeGigs==="function") mergeSoftBridgeGigs(); }catch(_br){}
   curSeason = curSeason || calendarSeason();
   const byBoard=(a,b)=> boardSortCompare(a,b,curSeason);
   const pool=(GIGS||[]).filter(g=>{
@@ -29462,6 +29596,8 @@ function gigsForLocSeasonBoard(locId, curSeason){
   });
   const rank=t=>{ const i=tierOrder.indexOf(t||"初"); return i<0?9:i; };
   shown.sort((a,b)=>{
+    const br = (b && b.softBridge ? 1 : 0) - (a && a.softBridge ? 1 : 0);
+    if(br) return br;
     const tr=rank(a.tier)-rank(b.tier);
     if(tr) return tr;
     return byBoard(a,b);
@@ -29975,6 +30111,61 @@ const SOFT_BRIDGE_GIGS_1988 = [
     blurb:"秋季外景初階過路人。體能夠行一段路就得，一日殺青。",
     synopsis:"海傍外景要過路人。行完指定路線就殺青，片酬按初階正薪。",
     eraTag:"era_1988_autumn_bridge", req:{ stamina:40 }, roleScale:"film_support_small",
+    storyKeys:["season_88_autumn","soft_bridge"]
+  }),
+  /* 自然試玩會開嘅夏板：金鐘／九龍／星河。門檻貼新局（外貌 22／魅力 16／演技 18 或無門檻）。 */
+  softBridgeGig({
+    id:"gig_1988_soft_bridge_summer_adm", season:"夏", seasonHook:["summer"], type:"廣告", loc:"ad_adm",
+    workTitle:"暑期街招", roleLabel:"背景路人", title:"《暑期街招》背景路人",
+    roleHint:"企喺街招後面，唔使講對白。",
+    blurb:"金鐘暑期初階街招。外貌同魅力跟新人起步線，一日殺青。",
+    synopsis:"金鐘街招要幾個背景路人。跟指示企位就收工，片酬按初階正薪。",
+    eraTag:"era_1988_summer_bridge", req:{ looks:22, charm:16 }, roleScale:"ad_extra_day",
+    storyKeys:["season_88_summer","soft_bridge"]
+  }),
+  softBridgeGig({
+    id:"gig_1988_soft_bridge_summer_kln", season:"夏", seasonHook:["summer"], type:"電視劇", loc:"tvb_kowloon",
+    workTitle:"暑期跟組", roleLabel:"場務助手", title:"《暑期跟組》場務助手",
+    roleHint:"遞水、執場，聽場記指示。",
+    blurb:"九龍暑期初階跟組。唔使入鏡，聽指示做雜務，一日收工。",
+    synopsis:"九龍廠缺人跟場。做完當日雜務就殺青。",
+    eraTag:"era_1988_summer_bridge", req:{}, roleScale:"tv_cameo_short",
+    storyKeys:["season_88_summer","soft_bridge"]
+  }),
+  softBridgeGig({
+    id:"gig_1988_soft_bridge_summer_star", season:"夏", seasonHook:["summer"], type:"電視劇", loc:"tvb_longmen",
+    workTitle:"廠景臨記", roleLabel:"後景行人", title:"《廠景臨記》後景行人",
+    roleHint:"喺廠景行過，唔好望鏡。",
+    blurb:"星河暑期初階臨記。演技跟新人起步線，一日殺青。",
+    synopsis:"星河廠景要後景行人。行過指定位置就收，片酬按初階正薪。",
+    eraTag:"era_1988_summer_bridge", req:{ acting:18 }, roleScale:"tv_cameo_short",
+    storyKeys:["season_88_summer","soft_bridge"]
+  }),
+  softBridgeGig({
+    id:"gig_1988_soft_bridge_autumn_central", season:"秋", seasonHook:["autumn"], type:"廣告", loc:"ad_central",
+    workTitle:"秋日街招", roleLabel:"廣告路人", title:"《秋日街招》廣告路人",
+    roleHint:"行過鏡頭兩次，表情自然。",
+    blurb:"中環秋季初階街招。外貌同魅力跟新人起步線，一日殺青。",
+    synopsis:"中環秋日街招要路人入鏡。跟指示行過就收工。",
+    eraTag:"era_1988_autumn_bridge", req:{ looks:22, charm:16 }, roleScale:"ad_extra_day",
+    storyKeys:["season_88_autumn","soft_bridge"]
+  }),
+  softBridgeGig({
+    id:"gig_1988_soft_bridge_autumn_harbour", season:"秋", seasonHook:["autumn"], type:"電視劇", loc:"tvb_harbour",
+    workTitle:"秋季跟組", roleLabel:"場務助手", title:"《秋季跟組》場務助手",
+    roleHint:"搬道具、跟場。",
+    blurb:"海港秋季初階跟組。唔使入鏡，聽指示做雜務，一日收工。",
+    synopsis:"海港劇組缺人跟場。做完當日雜務就殺青。",
+    eraTag:"era_1988_autumn_bridge", req:{}, roleScale:"tv_cameo_short",
+    storyKeys:["season_88_autumn","soft_bridge"]
+  }),
+  softBridgeGig({
+    id:"gig_1988_soft_bridge_autumn_kln", season:"秋", seasonHook:["autumn"], type:"電視劇", loc:"tvb_kowloon",
+    workTitle:"秋季群演", roleLabel:"臨時演員", title:"《秋季群演》臨時演員",
+    roleHint:"站在人叢裡，跟副導手勢。",
+    blurb:"九龍秋季初階群演。演技同魅力跟新人起步線，一日殺青。",
+    synopsis:"九龍廠要臨時演員填後景。跟手勢做完就收工。",
+    eraTag:"era_1988_autumn_bridge", req:{ acting:18, charm:16 }, roleScale:"tv_cameo_short",
     storyKeys:["season_88_autumn","soft_bridge"]
   })
 ];
@@ -31322,7 +31513,8 @@ function showB01HomeModal(){
   const chOpen = maybeChapterOpenHtml(1);
   S.flags = S.flags||{}; S.flags.sawB01 = true;
   setTutMask(false);
-  let storyLine = `<p class="gold" style="margin-top:8px">另外：頂欄／選單有「事態」。去金龍睇開局主線（入到金龍先至播）→「去金龍睇事態（會用預設行程）」；想自己改行程 →「開始寫手帳」。主線「先學做動作戲／先賺」只播一次——播完就唔使返去重播。</p>`;
+  const c1Where = (typeof c1PlayLocName==="function") ? c1PlayLocName() : "何生事務所";
+  let storyLine = `<p class="gold" style="margin-top:8px">另外：頂欄／選單有「事態」。去${c1Where}睇開局主線（入到事務所先至播）→「去${c1Where}睇事態（會用預設行程）」；想自己改行程 →「開始寫手帳」。主線「先學做動作戲／先賺」只播一次——播完就唔使返去重播。</p>`;
   try{
     if(typeof StoryOC!=="undefined" && StoryOC.isDone("C1")){
       let nextTitle = "";
@@ -31352,16 +31544,17 @@ function showB01HomeModal(){
         let c1done=false;
         try{ c1done = typeof StoryOC!=="undefined" && StoryOC.isDone("C1"); }catch(_e){}
         if(c1done) return [];
-        return [{label:"去金龍睇事態（會用預設行程）", role:"g", on:()=>{
+        return [{label:"去"+c1Where+"睇事態（會用預設行程）", role:"g", on:()=>{
           S.flags.pendingStoryNudge=false;
           try{
-            /* v19z15 B2／v19z16 B1：若仍喺手帳編輯態，先靜默確定預設行程再去金龍（唔燒週程） */
+            /* 開局主線喺何生事務所。手帳未確定就先靜默提交預設行程（唔燒週程）。 */
             const committed = (typeof ensureWeekPlanCommittedForStory==="function")
               ? !!ensureWeekPlanCommittedForStory() : false;
+            const locId = (typeof c1PlayLocId==="function") ? c1PlayLocId() : "agency_ho";
             show("v-map"); paintBar(); drawMap();
             setTimeout(()=>{ try{
-              openLoc("cafe_cha");
-              toast(committed ? "已用預設行程 · 到金龍可播開局事態" : "到金龍茶餐廳先可播開局事態");
+              openLoc(locId);
+              toast(committed ? ("已用預設行程 · 到"+c1Where+"可播開局事態") : ("到"+c1Where+"先可播開局事態"));
             }catch(_e){} }, 80);
           }catch(_e){}
         }}];
@@ -31600,10 +31793,16 @@ function runSoftP0Checks(){
     S.looks = 25; S.charm = 48; S.acting = 20; S.fame = 28; S.money = 26;
     mergeSoftBridgeGigs();
     const bridges = (GIGS||[]).filter(g=>g && g.softBridge);
-    if(bridges.length!==6) bad("bridge_n:"+bridges.length);
+    if(bridges.length!==12) bad("bridge_n:"+bridges.length);
     const summer = bridges.filter(g=>g.season==="夏");
     const autumn = bridges.filter(g=>g.season==="秋");
-    if(summer.length<3 || autumn.length<3) bad("bridge_seasons");
+    if(summer.length<6 || autumn.length<6) bad("bridge_seasons");
+    ["ad_central","ad_adm","tvb_harbour","tvb_kowloon","tvb_longmen"].forEach(loc=>{
+      ["夏","秋"].forEach(season=>{
+        const hit = bridges.filter(g=>g.loc===loc && g.season===season);
+        if(!hit.length) bad("bridge_loc:"+loc+season);
+      });
+    });
     bridges.forEach(g=>{
       if(!(g.pay && g.pay[0]>=3400 && g.pay[0]>2800)) bad("pay:"+g.id);
       if(g.shootDaysHint!==1) bad("days:"+g.id);
@@ -31634,7 +31833,8 @@ function runSoftP0Checks(){
     if(S.flags["done_"+bridges[0].id]) bad("renew_flag");
     if(renewed<1) bad("renew_n");
     const lock = BehaviorGate.lockedCopy_noEngineeringTerms({ id:"C5" });
-    if(lock.indexOf("采兒小訪題")<0 || lock.indexOf("秋或冬")<0 || lock.indexOf("片場採訪角的小訪")<0) bad("c5_lock:"+lock);
+    if(lock.indexOf("采兒小訪題")<0 || lock.indexOf("秋或冬")<0 || lock.indexOf("周刊小訪")<0) bad("c5_lock:"+lock);
+    if(lock.indexOf("片場採訪角")>=0) bad("c5_old_side_title");
     if(lock.indexOf("檔期未到該季")>=0 || lock.indexOf("噂")>=0) bad("c5_vague");
     try{
       show("v-map");
@@ -31648,9 +31848,10 @@ function runSoftP0Checks(){
         if(row.innerText.indexOf("接通告")>=0) bad("ui_cast");
       }
       const prog = storyMainProgressLine();
-      if(prog.indexOf("采兒小訪題")<0 || prog.indexOf("秋或冬")<0 || prog.indexOf("片場採訪角的小訪")<0) bad("ui_prog:"+prog);
+      if(prog.indexOf("采兒小訪題")<0 || prog.indexOf("秋或冬")<0 || prog.indexOf("周刊小訪")<0) bad("ui_prog:"+prog);
+      if(prog.indexOf("片場採訪角")>=0) bad("ui_prog_old");
       const choi = (DualMeet.actionsAt("agency_ho")||[]).find(a=>a.id==="R_choi_meet");
-      if(!choi || choi.title.indexOf("支線：片場採訪角的小訪")<0) bad("ui_door:"+(choi&&choi.title));
+      if(!choi || choi.title.indexOf("支線：周刊小訪")<0) bad("ui_door:"+(choi&&choi.title));
       if(!choi || choi.hint.indexOf("周刊小訪")<0 || choi.hint.indexOf("采兒小訪題")<0) bad("ui_hint");
       const bridge = (GIGS||[]).find(g=>g && g.softBridge && g.loc==="ad_central" && g.season==="夏");
       openCastingNoticeDetail(bridge, {id:"ad_central", name:"中環"});
@@ -31675,6 +31876,11 @@ function runSoftP0Checks(){
     if(meta!=="支線 · 1988夏") bad("choi_meta:"+meta);
     const c5meta = StoryPlay.spPlayerMeta_softSeasonFrom({ id:"C5", playerMeta:"主線 · 1988夏" }, { calendarSeason:"autumn", preferSeedSeason:true });
     if(c5meta!=="主線 · 1988秋") bad("c5_meta:"+c5meta);
+    const scrub = softCanonC1Face({ id:"C1", locId:"cafe_cha", setting:"金龍茶餐廳；臨記聚腳、通告情報口風", trigger:{ locIdAny:["cafe_cha"] }, beats:[{ locId:"cafe_cha", lines:["金龍茶餐廳人聲嘈雜，伙計端著奶茶穿梭其間。"] }] });
+    if(!scrub || scrub.locId!=="agency_ho" || (scrub.trigger.locIdAny||[]).join()!=="agency_ho") bad("c1_scrub_loc");
+    if(/金龍/.test(scrub.setting||"") || /金龍/.test((scrub.beats[0].lines||[])[0]||"")) bad("c1_scrub_copy");
+    if(typeof c1PlayLocId==="function" && c1PlayLocId()!=="agency_ho") bad("c1_play_loc");
+    if(showB01HomeModal.toString().indexOf("openLoc(\"cafe_cha\")")>=0 || showB01HomeModal.toString().indexOf("去金龍")>=0) bad("tut_cafe");
     if(typeof storyMainProgressLine==="function"){
       const prog = storyMainProgressLine();
       if(String(prog).indexOf("采兒小訪題")>=0 && String(prog).indexOf("秋或冬")>=0) bad("c5_progress_ghost:"+prog);
@@ -31687,7 +31893,7 @@ function runSoftP0Checks(){
   }
   return { ok:fails.length===0, fails:fails };
 }
-try{ window.runSoftP0Checks = runSoftP0Checks; }catch(_w){}
+try{ window.runSoftP0Checks = runSoftP0Checks; window.softCanonC1Face = softCanonC1Face; }catch(_w){}
 wireUiAssets();
 const _sh=document.getElementById("start-hero"); if(_sh && PORTRAITS.hero_awi) _sh.src=PORTRAITS.hero_awi;
 const _mi=document.getElementById("map-img"); if(_mi){ _mi.onload=()=>{ try{ drawMap(); }catch(e){} }; _mi.src = (typeof MAP_IMG!=="undefined"&&MAP_IMG)?MAP_IMG:"assets/hk_map.jpg"; }
