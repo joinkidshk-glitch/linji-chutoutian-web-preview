@@ -1,0 +1,89 @@
+{
+  "meta": {
+    "version": "v1",
+    "softStatus": "≠PASS",
+    "role": "newspaper_story_soft_schema",
+    "date": "2026-11-08",
+    "tz": "Asia/Hong_Kong",
+    "planRef": "PLAN_STORY_NEWSPAPER_LOOP_SOFT.md",
+    "softTip": 102,
+    "stubFile": "content/STUB_NEWSPAPER_STORY_SOFT_v1.json",
+    "note": "欄位描述 only。劇情選擇後 enqueue→次日朝早彈出。Soft tip 種子；唔 tip LIVE。沿 morning schema＋storyBeatId／choiceFlag／tone／boardScentTag。"
+  },
+  "timing": {
+    "enqueueOn": [
+      "story_choice_markDone",
+      "dualMeet_complete"
+    ],
+    "popup": "next_calendar_morning",
+    "stateKeysSuggested": [
+      "newspaperQueue",
+      "newspaperClippings",
+      "pendingMorningPaper"
+    ],
+    "engineHook": "enqueueNewspaperFromStory（iOS Soft tip；非本包）"
+  },
+  "papers": {
+    "fields": [
+      "id",
+      "displayName"
+    ]
+  },
+  "templateFields": {
+    "required": [
+      "id",
+      "eventKey",
+      "storyBeatId",
+      "choiceFlag",
+      "tone",
+      "paperName",
+      "headline",
+      "dek",
+      "fameDelta"
+    ],
+    "optional": [
+      "clipLabel",
+      "rumorEcho",
+      "boardScentTag"
+    ],
+    "toneEnum": [
+      "pos",
+      "mixed",
+      "neg"
+    ],
+    "fameDeltaGuide": {
+      "story_highlight": "見 PLAN §4.1／§4.2",
+      "story_mixed": "見 PLAN §4.1／§4.2；C5 dodge=0；C3 hard 可−1"
+    },
+    "playerStatLabel": "聲望",
+    "fameKey": "fame",
+    "bannedPlayerFacing": [
+      "聲量",
+      "幕前聲量",
+      "噂"
+    ]
+  },
+  "templateBuckets": [
+    "story_highlight",
+    "story_mixed"
+  ],
+  "contentBotEdits": [
+    "templates.*.headline",
+    "templates.*.dek",
+    "templates.*.paperName",
+    "templates.*.clipLabel",
+    "templates.*.rumorEcho",
+    "templates.*.fameDelta",
+    "templates.*.boardScentTag"
+  ],
+  "contentBotMustNot": [
+    "tip LIVE",
+    "raise product ?v= or SAVE",
+    "use 聲量 player-facing",
+    "use 噂 player-facing",
+    "real celeb names",
+    "real newspaper long-arc names",
+    "write engine enqueue",
+    "template for R_hiu distant"
+  ]
+}
