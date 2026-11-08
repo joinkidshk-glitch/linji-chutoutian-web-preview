@@ -3,7 +3,31 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
 <title>臨記出頭天 · 阿偉</title>
+<script>
+/* Soft index bust. Product ?v= stays 20a10. SAVE stays starVolunteer_map_v19w. Do not tip LIVE.
+   GitHub Pages caches HTML for max-age=600, and the playtest box keeps a persistent cache
+   keyed by the full URL. ?v=20a10&softBehaviorGate=1 therefore kept executing the pre-#99
+   document (去金龍／主線) even after Pages origin sha was e4b43926.
+   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s100
+   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s100
+   Bump SOFT_REV when the next Soft tip changes index.html. Do not bump ?v=. */
+(function(){
+  var SOFT_REV = "s100";
+  try { document.documentElement.setAttribute("data-soft-rev", SOFT_REV); } catch (e0) {}
+  try {
+    var q = new URLSearchParams(location.search || "");
+    var soft = q.get("softBehaviorGate") === "1" || q.get("softPreview") === "1";
+    if (!soft || q.get("softRev") === SOFT_REV) return;
+    q.set("softRev", SOFT_REV);
+    if (!q.get("v")) q.set("v", "20a10");
+    var next = location.pathname + "?" + q.toString() + (location.hash || "");
+    location.replace(next);
+  } catch (e2) {}
+})();
+</script>
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
 <style>
 /* v18j: iPhone Safari — kill double-tap zoom on buttons / planner taps */
@@ -31881,6 +31905,12 @@ function runSoftP0Checks(){
     if(/金龍/.test(scrub.setting||"") || /金龍/.test((scrub.beats[0].lines||[])[0]||"")) bad("c1_scrub_copy");
     if(typeof c1PlayLocId==="function" && c1PlayLocId()!=="agency_ho") bad("c1_play_loc");
     if(showB01HomeModal.toString().indexOf("openLoc(\"cafe_cha\")")>=0 || showB01HomeModal.toString().indexOf("去金龍")>=0) bad("tut_cafe");
+    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s100") bad("soft_rev_attr");
+    try{
+      var sq = String((typeof location!=="undefined" && location && location.search) || "");
+      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s100(?:&|$)/.test(sq)) bad("soft_rev_url");
+      if(/(?:\?|&)v=20a1[1-9](?:&|$)/.test(sq)) bad("v_bumped");
+    }catch(_rev){ bad("soft_rev_throw"); }
     if(typeof storyMainProgressLine==="function"){
       const prog = storyMainProgressLine();
       if(String(prog).indexOf("采兒小訪題")>=0 && String(prog).indexOf("秋或冬")>=0) bad("c5_progress_ghost:"+prog);
@@ -31925,6 +31955,14 @@ if(_btnLoad) _btnLoad.onclick=()=>openSaveSlotsModal("load");
 try{ GIGS = (GIGS||[]).map(normalizeGigRecord); }catch(_n){}
 try{ mergeEntryGigsIntoPool(); }catch(_me){}
 try{ exposePreviewDebug(); }catch(_e){}
+try{
+  if(typeof softPreviewOn==="function" && softPreviewOn()){
+    var tip = document.getElementById("start-soft-tip");
+    if(tip && tip.textContent.indexOf("s100")<0){
+      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s100。");
+    }
+  }
+}catch(_revTip){}
 refreshCopyPacksFromDisk();
 })();
 
