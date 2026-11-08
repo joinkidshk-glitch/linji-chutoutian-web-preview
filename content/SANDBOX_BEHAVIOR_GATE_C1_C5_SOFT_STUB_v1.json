@@ -6,13 +6,13 @@
     {
       "beatId": "C1",
       "optional": false,
-      "locId": "cafe_cha",
+      "locId": "agency_ho",
       "trigger": {
         "needDone": [],
         "minDaysAfterPrev": 0,
         "weekMin": 1,
         "locIdAny": [
-          "cafe_cha"
+          "agency_ho"
         ],
         "rumorAny": [],
         "favorMin": 0,
@@ -31,11 +31,12 @@
           ]
         }
       },
-      "playerFaceLine": "金龍茶餐廳阿姐提起近排片場／電視台都喺度搵新人，不如去轉一轉？",
-      "redStarHook": "無／可陸柏言遠觀",
+      "playerFaceLine": "喺何生事務所，兩條路擺喺眼前，我必須為自己嘅演藝生涯行出第一步。",
+      "redStarHook": "可遠觀陸柏言",
       "legacyWeekMin": 1,
-      "relockNotes": "Soft板：開場 loc=cafe_cha；weekMin 保留下限",
-      "nextHint": ""
+      "relockNotes": "FULL字面 2026-11-08：loc=agency_ho 事務所開場（舊 Soft cafe_cha 拍板作廢）；weekMin 地板保留",
+      "nextHint": "",
+      "nodeRipple": "初期活動地圖＋基礎數值傾斜"
     },
     {
       "beatId": "C2",
@@ -70,11 +71,12 @@
           ]
         }
       },
-      "playerFaceLine": "片場老細話最近有套新劇開工，問你想唔想跟組學下野。",
-      "redStarHook": "大明星捱出嚟傳聞；廖炳星綠葉可",
+      "playerFaceLine": "聽完星河電視台啲傳聞，我諗住係咪留低聽多兩句，定係趕住去報到。",
+      "redStarHook": "聽聞大明星都係咁捱出嚟，廖炳星隨時可以提點兩句。",
       "legacyWeekMin": 4,
-      "relockNotes": "Soft板：weekMin 保留下限；情報＋gigCount",
-      "nextHint": ""
+      "relockNotes": "FULL字面：needDone C1；gig≥3；rumor tvb_rules；標籤沉澱 電視城乖仔／片場老油條",
+      "nextHint": "",
+      "nodeRipple": "沉澱標籤：電視城乖仔／片場老油條"
     },
     {
       "beatId": "C3",
@@ -112,11 +114,12 @@
           ]
         }
       },
-      "playerFaceLine": "聽講高仔喺上個騷搶咗風頭，導演對你哋呢批新人有微言。",
-      "redStarHook": "齊鎮海遠觀",
+      "playerFaceLine": "高仔又埋嚟想搶我個好位，我到底要唔要當眾同佢嗌交？",
+      "redStarHook": "齊鎮海喺不遠處嘅監視器後邊，靜靜雞望住呢邊。",
       "legacyWeekMin": 6,
-      "relockNotes": "Soft板：聲量>15（fameMin=16）；weekMin 保留；rival 旗留 C3 選擇（唔混入 C5）",
-      "nextHint": ""
+      "relockNotes": "FULL字面：fame>15；高仔搶鏡傳聞；業內信用／對手態度 ripple；rival 旗留 C3",
+      "nextHint": "",
+      "nodeRipple": "業內信用同對手態度因呢次衝突產生微妙變化。"
     },
     {
       "beatId": "C4",
@@ -133,12 +136,13 @@
         ],
         "rumorAny": [],
         "favorMin": 1,
+        "debtMin": 1,
         "tagAny": [],
         "seasonAny": [],
         "gigCountMin": 0,
         "relAny": [],
         "favorTarget": "agency_ho",
-        "softLogic": "AND"
+        "softLogic": "OR"
       },
       "flags": {
         "onChoice": {
@@ -150,16 +154,17 @@
           ]
         }
       },
-      "playerFaceLine": "何生傳話有筆數要結清，吩咐你親身去事務所走一趟。",
+      "playerFaceLine": "何生攤開記數簿催數，呢單通宵通告條件咁苛刻，我究竟頂唔頂得順？",
       "redStarHook": "無",
       "legacyWeekMin": 8,
-      "relockNotes": "Soft板：favorMin≥1 @ agency_ho 死鎖（AND）；唔一開始 OR 放寬催數旗；vs FULL OR 記 nit",
-      "nextHint": ""
+      "relockNotes": "FULL字面 2026-11-08：softLogic=OR；debtMin=1 或 favorMin=1 或 loc=agency_ho；何生催數；舊 Soft AND 拍板作廢",
+      "nextHint": "",
+      "nodeRipple": "拒單欠落人情債兼跌信用；接單換個捱得標籤但爆壓力傷健康。"
     },
     {
       "beatId": "C5",
       "optional": false,
-      "locId": "cafe_cha",
+      "locId": "tvb_longmen",
       "trigger": {
         "needDone": [
           "C4"
@@ -198,39 +203,48 @@
           ]
         }
       },
-      "playerFaceLine": "秋風起，茶餐廳個爐頭暖下，順便聽下圈內近況。",
-      "redStarHook": "駱家聲後巷輕鉤",
+      "playerFaceLine": "秋日下午片場小訪，采兒拋出送命題，我點答都好影響我哋嘅交情同情報網。",
+      "redStarHook": "駱家聲 Band 房後巷嗰晚嘅動靜，似乎牽涉到星河電視台嘅高層。",
       "legacyWeekMin": 9,
-      "relockNotes": "Soft板：季節＋loc；rumor 軟優先（要有種子）；rival_gao HOLD 唔混 C5",
-      "nextHint": ""
+      "relockNotes": "FULL字面：秋|冬；choi_*；羈絆／情報共享 ripple；紅星駱家聲；rival_gao 唔混",
+      "nextHint": "",
+      "nodeRipple": "羈絆深度視乎坦誠度，情報共享級別隨答法而升降。"
     }
   ],
   "tipForbidden": true,
   "planRef": "PLAN_STORY_BEHAVIOR_GATE_SOFT_C1_C5_v1.md",
   "softBoard": {
-    "date": "2026-11-04",
-    "by": "星途志願tester及manager Soft A/B",
+    "date": "2026-11-08",
+    "by": "用戶 full_literal_including_gates（t380u／t380s1780）",
     "decisions": {
-      "C1_loc": "cafe_cha",
+      "C1_loc": "agency_ho",
       "weekMin": "keep_floor",
       "C3_fame": ">15 (fameMin=16)",
-      "C4": "favorMin>=1 AND loc=agency_ho (deadlock before催數旗; no OR loosen)",
-      "C5": "season+loc; rumor soft-priority with seeds; rival_gao HOLD (do not mix into C5)"
+      "C4": "softLogic=OR; debtMin=1 OR favorMin>=1 OR loc=agency_ho",
+      "C5": "season+loc; rumor soft-priority with seeds; rival_gao HOLD (do not mix into C5); flags choi_*"
     },
-    "nit": "C4 Soft favor∧loc vs FULL OR — Soft strict first; align FULL before LIVE tip",
-    "engineSlice": {
+    "supersedes": {
       "date": "2026-11-04",
-      "plan": "PLAN_STORY_BEHAVIOR_GATE_ENGINE_SLICE_v1.md",
-      "planSha8": "8450130d",
-      "stubRev": "v1.2.0-engine-slice"
+      "old": {
+        "C1_loc": "cafe_cha",
+        "C4": "favorMin>=1 AND loc=agency_ho"
+      },
+      "note": "舊 Soft 拍板作廢；跟 FULL 字面"
+    },
+    "nit": "favorMin 作人情債左肢可玩近似；真 gate 優先 debtCount(mockDebts)≥debtMin",
+    "engineSlice": {
+      "date": "2026-11-08",
+      "plan": "PLAN_STORY_BEHAVIOR_GATE_FULL_ALIGN_SOFT_v1.md",
+      "stubRev": "v1.3.0-full-literal-or",
+      "previewEngine": "index.html softLogic OR + debtCount"
     }
   },
-  "stubRev": "v1.2.0-engine-slice",
+  "stubRev": "v1.3.0-full-literal-or",
   "enginePlanRef": "PLAN_STORY_BEHAVIOR_GATE_ENGINE_SLICE_v1.md",
   "enginePlanSha8": "8450130d",
   "engineSlice": {
-    "rev": "v1",
-    "purpose": "iOS Soft wiring for behavior-gate Soft preview; LIVE remains week-gate until tip",
+    "rev": "v1.3.0-full-literal-or",
+    "purpose": "iOS Soft wiring for behavior-gate Soft preview; LIVE remains week-gate until tip｜FULL literal OR/debt 2026-11-08",
     "evalOrder": [
       "needDone",
       "minDaysAfterPrev",
@@ -262,11 +276,15 @@
       "change89to92": false
     },
     "abLock": {
-      "C1_loc": "cafe_cha",
+      "C1_loc": "agency_ho",
       "weekMin": "keep_floor",
       "C3_fame": ">15 (fameMin=16, fameCompare='>')",
-      "C4": "favorMin>=1 AND loc=agency_ho (favorTarget=agency_ho, softLogic=AND)",
+      "C4": "softLogic=OR; debtMin=1 OR favorMin>=1 OR loc=agency_ho",
       "C5": "season+loc+rumor soft (rumorSoftPriority); rival_gao HOLD out of C5"
-    }
-  }
+    },
+    "fullLiteralOr": true,
+    "c4SoftLogic": "OR",
+    "c4DebtMin": 1
+  },
+  "alignNote": "2026-11-08 用戶 full_literal_including_gates：C1→agency_ho；C4→OR(debt|favor|loc)；舊 Soft cafe_cha/AND 拍板作廢。Soft≠PASS｜唔 tip LIVE。"
 }

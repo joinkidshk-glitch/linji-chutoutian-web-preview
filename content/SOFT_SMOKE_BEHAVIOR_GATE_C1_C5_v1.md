@@ -1,20 +1,21 @@
 Soft≠PASS｜唔 tip LIVE｜出圖 HOLD｜89–92 HOLD｜禁「Ho 哥」→「何生」／favor `agency_ho`｜經 qwen3.7-max｜玩家面禁真藝名／禁工程詞
 
-# SOFT_SMOKE_BEHAVIOR_GATE_C1_C5_v1
+# SOFT_SMOKE_BEHAVIOR_GATE_C1_C5_v1（FULL literal 改口後）
 
-## 概述
-短驗點表，供瀏覽器／iOS Soft 驗證 C1 至 C5 行為閘鎖。
-- Refs: stub `cba0e877` / engine `8450130d` / soft PLAN `126c2434` / 對齊 PLAN `PLAN_STORY_BEHAVIOR_GATE_FULL_ALIGN_SOFT_v1.md`（本包）
-- Soft A/B：唔使
+> 2026-11-08：用戶 `full_literal_including_gates`——C1→`agency_ho`；C4→`softLogic=OR`（debt｜favor｜loc）。舊 cafe_cha／AND 正測作廢。
 
-## Checklist
-1. [正測] C1 `cafe_cha` 觸發：seed 載入後，loc 設為 `cafe_cha`，確認事件正常觸發。
-2. [正測] C3 `fameMin16`：fame 調至 16，確認 C3 閘鎖解鎖；fame=15 時確認鎖定（負測）。
-3. [正測] C4 `agency_ho` favor：設定 `favor` 中 `agency_ho` ≥ 1，確認 C4 解鎖；`agency_ho` = 0 時確認鎖定（負測）。
-4. [正測] C5 `autumn|winter` + rumor：season 設為 `autumn` 或 `winter`，並觸發 soft rumor，確認 C5 解鎖。
-5. [負測] C5 `rival_gao` 隔離：確認 `rival_gao` 相關 rumor 唔會觸發 C5。
-6. [正測] 逐步推進：seed → loc → fame → favor → season → rumor，確認狀態機無斷層。
-7. [負測] 越級觸發：未完成 C3 直接推 C4 條件，確認 C4 保持鎖定。
-8. [合規] 玩家面無「Ho 哥」／真藝名／工程詞；經理人顯示「何生」；nextHint 唔顯示。
-9. [隔離] Soft 開關模型已對齊（`gatePath` 只跟 feature flag）。LIVE week-gate 仍 active（退休 HOLD／`tipForbidden`）。Soft≠PASS；唔 tip LIVE；?v=19w。
-10. Soft A/B：唔使（沿 Soft A 已鎖）。
+## 正／負測
+1. [正測] C1 `agency_ho` 觸發；[負測] `cafe_cha`／`tvb_longmen` 唔開 C1。
+2. [正測] C2：C1 done＋gig≥3＋`tvb_rules_gossip`＋片場|茶餐廳。
+3. [正測] C3：fame>15（fameMin16）＋`gao_steal_spotlight`；[負測] fame=15。
+4. [正測] C4 OR：
+   - loc=`agency_ho`（favor0／debt0）→ 開
+   - debt≥1（他處）→ 開
+   - favor≥1 @ agency_ho 目標（他處）→ 開（Soft 近似左肢）
+   - [負測] cafe_cha＋favor0＋debt0 → 鎖
+5. [正測] C5 秋／冬＋傳聞種子；[負測] 夏；[負測] rival_gao 唔開 C5。
+6. nextHint 玩家面唔顯示；Face 禁工程詞／Ho哥／噂。
+
+## 引擎
+- Soft 預覽 `index.html`：`stepFavor` 認 `softLogic:"OR"`＋`debtMin`；`stepLoc` 喺 OR 時 defer。
+- `debtCount` 讀 `ctx.debt` 或 `S.mockDebts.length`（接 `STUB_FAVOR_DEBT_SEASON_v1`／`FREEPLAY_FW.favorDebt`）。

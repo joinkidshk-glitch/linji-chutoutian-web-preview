@@ -7,212 +7,164 @@
       "id": "C1",
       "phase": "P1",
       "title": "先學做動作戲／先賺",
-      "when": "1988春 / W1-2",
-      "setting": "金龍茶餐廳；臨記聚腳、通告情報口風",
-      "locId": "tvb_longmen",
+      "when": "1988春 / W1-4",
+      "setting": "何生事務所；兩份通告攤喺檯面，窗外可見走廊",
+      "locId": "agency_ho",
       "eraTag": "era_1988_spring_grassroot",
       "cast": [
         "何生",
         "阿偉",
         "張子駿"
       ],
-      "synopsis": "阿偉剛入行跑散工，手頭緊。何生喺金龍茶餐廳攤開兩條路：跟張子駿班底學做動作戲（較穩、錢慢），定係接電影散工（錢快、人脈易散）。張子駿來電留位，今日要答。阿偉得先揀一邊，唔想兩頭不到岸。",
-      "playerOffer": true,
-      "playerHint": "開局事態：金龍茶餐廳裡何生擺兩條路——先學做動作戲，定先賺錢接散工。你仲係開工表上有名、少人記得樣嘅臨記。",
-      "lockedHint": "開局主線喺金龍茶餐廳——通告欄旁有幕等你揀。感情線／大咖牆／送禮先鎖住；而家只推呢一幕。",
-      "nextHint": "無論你揀邊邊，何生月底都會再搵你；開工群組開始有人記得你個名。下一幕「留人脈／接散工」約第4週起，而且要隔一日先開——未到就照常跑散工同訓練，唔使返去重播呢幕。",
+      "synopsis": "阿偉初入行，何生喺事務所攤開兩份通告俾佢揀。一條路係跟張子駿學動作戲，另一條路係去電影片場做散工賺快錢。",
+      "playerOffer": "睇清楚兩份通告嘅利弊再作決定。",
+      "playerHint": "選擇初期發展路線，影響後續地圖與數值傾斜。",
+      "lockedHint": "未解鎖",
+      "nextHint": "",
       "beats": [
         {
           "speaker": "系統",
-          "lines": [
-            "下午三點幾，剛跑完通告的阿偉推開金龍茶餐廳的玻璃門，裡頭人聲鼎沸，盡是臨記聚腳吹水、交換通告情報的口風。",
-            "阿偉剛入行未幾，袖口仲算乾淨。何生已經霸咗個卡座，招手叫佢過去。"
-          ],
           "kind": "system",
-          "speakerId": null,
-          "bg": "bg_loc_tvb_longmen"
-        },
-        {
-          "speaker": "系統",
           "lines": [
-            "金龍茶餐廳冷氣唔夠，油煙同奶茶味溝埋一齊。阿偉面前嗰杯凍奶茶啲冰就快融晒。",
-            "交完今個月租，戶口剩返嗰啲錢只夠撐到月中。佢本來想叫嘢食，睇過價錢又放低餐牌。"
-          ],
-          "kind": "system",
-          "speakerId": null,
-          "bg": "bg_c1_tea_restaurant"
+            "何生事務所嘅冷氣夠凍，檯面攤開兩份通告。",
+            "窗外走廊間中有人行過，帶住幾分星河電視城特有嘅急促。"
+          ]
         },
         {
           "speaker": "何生",
+          "kind": "npc",
           "lines": [
-            "今日做咗幾組？",
-            "你跟我入行差不多大半年。我帶你，唔係因為你特別——你準時，少無故甩底，叫你重拍你就重拍。",
-            "行規係咁，肯做嘅人，我帶路。"
-          ],
-          "kind": "dialogue",
-          "speakerId": "ho_sang",
-          "emotion": "firm",
-          "expression": "default",
-          "bg": "bg_c1_tea_restaurant"
-        },
-        {
-          "speaker": "何生",
-          "lines": [
-            "而家擺喺你面前有兩條路，你自己揀一條行。",
-            "第一條，跟張子駿個班底學做動作戲。佢嗰邊唔係武館，係班底——鏡頭前點打、點跌、點走位，戲會慢慢磨出嚟。",
-            "另一邊，通告欄啱啱貼出嚟，有電影散工，即日就有錢收。你自己睇。"
-          ],
-          "kind": "dialogue",
-          "speakerId": "ho_sang",
-          "emotion": "firm",
-          "expression": "raise_brow",
-          "bg": "bg_c1_tea_restaurant"
+            "阿偉，你入行第一單嘢，我幫你睇咗兩條路。",
+            "一份係跟張子駿個班底學做動作戲，勝在穩陣，不過人工就真係慢熱。",
+            "另一份係去電影片場做散工，錢就快，但人脈隨時散水。"
+          ]
         },
         {
           "speaker": "阿偉",
+          "kind": "player",
           "lines": [
-            "學做動作戲要學幾耐先見到成果？",
-            "接散工又會幾密？"
-          ],
-          "kind": "dialogue",
-          "speakerId": "awi",
-          "emotion": "worried",
-          "expression": "eyes_down",
-          "bg": "bg_c1_tea_restaurant"
+            "學動作戲聽落紮實啲，不過去片場做散工又可以快啲見錢。",
+            "呢兩條路真係各有千秋，要諗清楚先好決定。"
+          ]
         },
         {
           "speaker": "何生",
+          "kind": "npc",
           "lines": [
-            "學做動作戲，進度慢，收入亦少。有人磨半年先企得穩一個位，你想快，快唔嚟。",
-            "接散工，錢嚟得快，但班底容易散。今日呢組、聽日嗰組，識嘅人多，卻未必有人記得你叫咩名。",
-            "你想做演員，定係想做個連名都冇嘅臨記？"
-          ],
-          "kind": "dialogue",
-          "speakerId": "ho_sang",
-          "emotion": "firm",
-          "expression": "frown",
-          "bg": "bg_c1_tea_restaurant"
-        },
-        {
-          "speaker": "系統",
-          "lines": [
-            "茶餐廳電話響。伙計嗌：偉哥，電話。",
-            "何生揚一揚下巴，示意佢去聽。"
-          ],
-          "kind": "system",
-          "speakerId": null,
-          "bg": "bg_c1_tea_restaurant"
+            "張子駿嗰邊主力喺星河電視城，學到嘢但捱得耐。",
+            "片場嗰邊就周圍飛，現金快但無人當你係自己友。你自己諗清楚想點行先。"
+          ]
         },
         {
           "speaker": "張子駿",
+          "kind": "npc",
           "lines": [
-            "（電話）我班底下星期開課。",
-            "你肯嚟，我留位畀你。唔嚟，個位就留畀第二個。",
-            "咁就今日答。我唔會打第二次。"
-          ],
-          "kind": "dialogue",
-          "speakerId": "cheung_tsijun",
-          "emotion": "firm",
-          "expression": "default",
-          "bg": "bg_c1_tea_restaurant"
-        },
-        {
-          "speaker": "阿偉",
-          "lines": [
-            "我知。今日就要答覆。"
-          ],
-          "kind": "dialogue",
-          "speakerId": "awi",
-          "emotion": "tense",
-          "expression": "default",
-          "bg": "bg_c1_tea_restaurant"
+            "（電話聲）何生，你嗰個新仔幾點到呀？",
+            "我哋就快開鏡，等住佢埋位㗎！"
+          ]
         },
         {
           "speaker": "何生",
+          "kind": "npc",
           "lines": [
-            "答之前諗清楚。學做動作戲唔會即刻見到錢。接散工唔會等你。",
-            "兩邊都做，兩邊都做唔好。張子駿最憎人遲到，亦最憎人趕到排練場一副未睡醒嘅樣。"
-          ],
-          "kind": "dialogue",
-          "speakerId": "ho_sang",
-          "emotion": "firm",
-          "expression": "frown",
-          "bg": "bg_c1_tea_restaurant"
+            "（對住電話）得啦得啦，一陣就叫佢過去。",
+            "（掛線）你聽到啦，張子駿催緊人。快啲揀啦，唔好阻住地球轉。"
+          ]
         },
         {
           "speaker": "阿偉",
+          "kind": "player",
           "lines": [
-            "我揀。唔想兩頭不到岸。"
-          ],
-          "kind": "dialogue",
-          "speakerId": "awi",
-          "emotion": "firm",
-          "expression": "raise_brow",
-          "bg": "bg_c1_tea_restaurant"
+            "我明白，呢個決定會影響我之後嘅發展。",
+            "我諗好喇，就揀呢份。"
+          ]
+        },
+        {
+          "speaker": "系統",
+          "kind": "system",
+          "lines": [
+            "兩份通告擺喺眼前，阿偉必須為自己做出一個抉擇。"
+          ]
         }
       ],
       "choices": [
         {
           "id": "C1_a",
-          "label": "先跟班底學做動作戲：跟張子駿磨戲",
+          "label": "跟張子駿班底學動作戲",
           "effects": {
             "flags": [
               "route_tv"
             ],
-            "stats": {
-              "craft": 1,
-              "wealth": 0
-            },
-            "notes": "你攞走班底地址嗰張紙。何生只講：下星期一準時，遲到一次佢唔會留位。錢會慢，但你開始知道腳步該落喺邊。"
+            "stats": {},
+            "tags": [],
+            "notes": "阿偉決定跟張子駿學動作戲，初期活動將偏向星河電視城，穩紮穩打。",
+            "ripple": {
+              "tag": "電視城起步",
+              "creditDelta": 0,
+              "rivalAttitude": "neutral",
+              "debtDelta": 0,
+              "stressDelta": 0,
+              "healthDelta": 0,
+              "bondDepth": "initial",
+              "intelShare": "low",
+              "mapTilt": "電視城／動作組",
+              "statTilt": "穩紮根基偏訓練"
+            }
           },
           "resultBeats": [
             {
-              "speaker": "系統",
+              "speaker": "何生",
               "lines": [
-                "你將電影散工嗰張紙推返畀何生，攞起寫住張子駿班底地址嗰張。",
-                "紙邊有啲皺。你摺好放入外套內袋，按咗兩下先按實。"
+                "好，我即刻覆張子駿。",
+                "你聽日準時去電視城動作組報到，唔好遲到呀！"
               ]
             },
             {
-              "speaker": "何生",
+              "speaker": "阿偉",
               "lines": [
-                "下星期一，準時。遲到一次，佢唔會留位。"
+                "知道，我一定會準時到，唔會丟何生你塊面。"
               ]
             }
-          ],
-          "resultBeatsOptional": true,
-          "resultBeatsNote": "若引擎未讀 resultBeats，只播 effects.notes 即可；optional。"
+          ]
         },
         {
           "id": "C1_b",
-          "label": "先賺錢、接散工：做電影散工臨記",
+          "label": "接電影散工賺快錢",
           "effects": {
             "flags": [
               "route_film"
             ],
-            "stats": {
-              "wealth": 1,
-              "craft": 0
-            },
-            "notes": "何生替你填散工登記表，邊寫邊講：你自己決定，之後唔好話我冇提過。錢會快，班底卻容易散。"
+            "stats": {},
+            "tags": [],
+            "notes": "阿偉選擇接電影散工賺快錢，初期活動將偏向電影片場，現金流快但人脈較散。",
+            "ripple": {
+              "tag": "片場散工起步",
+              "creditDelta": 0,
+              "rivalAttitude": "neutral",
+              "debtDelta": 0,
+              "stressDelta": 0,
+              "healthDelta": 0,
+              "bondDepth": "initial",
+              "intelShare": "low",
+              "mapTilt": "電影片場散工",
+              "statTilt": "現金快、人脈易散"
+            }
           },
           "resultBeats": [
             {
-              "speaker": "系統",
+              "speaker": "何生",
               "lines": [
-                "你將張子駿嗰張紙推返去，攞起電影散工嘅登記表。",
-                "表格最底有一行細字：現金即日，自備服裝。"
+                "既然你想快啲見錢，咁就去片場做散工啦。",
+                "記住自己執生，嗰邊無人湊你㗎。"
               ]
             },
             {
-              "speaker": "何生",
+              "speaker": "阿偉",
               "lines": [
-                "你自己決定，之後唔好話我冇提過。"
+                "明白，我會自己睇住個頭，有錢賺就得。"
               ]
             }
-          ],
-          "resultBeatsOptional": true,
-          "resultBeatsNote": "若引擎未讀 resultBeats，只播 effects.notes 即可；optional。"
+          ]
         }
       ],
       "conflict": "T1",
@@ -221,113 +173,150 @@
         "route_film"
       ],
       "openConditions": [],
-      "openConditionsNote": "開局／教學後首次重要通告選擇時觸發（方向性）。phase=P1；衝突 T1。引擎亦可掛首次重要通告事件。；FLOW hint P0：章戳 W1-2 對齊開局週；nextHint 單一指向 C2。；C1 fusion LIVE merge 2026-11-03：11 beats；choice id／flags／stats／open／pacing／locId／playerOffer 不變。",
+      "openConditionsNote": "FULL：loc=agency_ho；Week1–4；初始",
       "artId": "story_c1",
       "pacing": {
         "weekMin": 1,
         "minDaysAfterPrev": 0,
         "note": "開局可播；章戳跟遊戲第1–2週；唔受日耗"
       },
-      "aftermathHint": "播完返地圖：開工表／訓練照跑。張子駿班底同電影散工兩條線仍然並存——你只係先站穩一邊。月底何生會再搵你；下一主線要等週數同隔日。",
-      "journalCandidate": "金龍茶餐廳兩張紙。我揀咗一邊。開工群組開始有人記得我個名——起碼我咁同自己講。"
+      "aftermathHint": "決定好路線，準備迎接新嘅挑戰。",
+      "journalCandidate": "入行第一日，何生俾咗兩條路我揀，呢個決定會影響我之後嘅發展。",
+      "redStarHook": "可遠觀陸柏言",
+      "nodeRipple": "初期活動地圖＋基礎數值傾斜"
     },
     {
       "id": "C2",
       "phase": "P1",
       "title": "留人脈／趕通告",
       "when": "1988春 / W4-5",
-      "setting": "片場後巷，附近茶餐廳",
+      "setting": "片場後巷／附近茶餐廳；老臨記講星河規矩傳聞",
       "locId": "tvb_longmen",
       "eraTag": "era_1988_spring_alley",
       "cast": [
-        "何生",
         "阿偉",
-        "林曉晴"
+        "老臨記"
       ],
-      "synopsis": "一場戲殺青，後巷有人約飯、交換名片。同一時間，下一輪通告欄剛貼出。阿偉要決定留下應酬，還是趕去接下一張通告。",
-      "playerOffer": true,
-      "playerHint": "星河片場後巷有人約飯；通告欄又貼咗新單。",
-      "lockedHint": "約第4週起，且隔一日之後先開。未到唔使專程蹲後巷——先照常跑通告；開咗再去星河片場後巷。",
-      "nextHint": "下一幕「對對手硬／忍」——約第6週起、隔一日之後；開咗先留意星河電影組通告欄。",
+      "synopsis": "片場後巷煙霧彌漫，老臨記講起星河電視台嘅暗規矩。阿偉面臨抉擇，係留低聽多兩句人脈秘辛，定係趕去電視城跑通告。",
+      "playerOffer": "聽下老臨記點講。",
+      "playerHint": "時間就嚟唔夠，要揀留低定走人。",
+      "lockedHint": "未解鎖",
+      "nextHint": "",
       "beats": [
         {
-          "speaker": "林曉晴",
+          "speaker": "系統",
+          "kind": "system",
           "lines": [
-            "剛才那組人說要約吃飯，說想多認識幾個臨記。",
-            "他們還問你去不去，你要不要一起來？"
+            "片場後巷充滿住煙味同茶記嘅油煙味，幾個老臨記圍埋一齊吹水。",
+            "你啱啱聽完關於星河電視台嘅傳聞 tvb_rules_gossip，心入面有好多問號。"
+          ]
+        },
+        {
+          "speaker": "老臨記",
+          "kind": "npc",
+          "lines": [
+            "後生仔，星河電視台啲規矩，書本邊會寫㗎。",
+            "你以為做臨記淨係企下度？識做人先至有得做。"
           ]
         },
         {
           "speaker": "阿偉",
+          "kind": "player",
           "lines": [
-            "吃飯是幾點？通告欄什麼時候貼出來？",
-            "我想先搞清楚時間再決定。"
+            "咁又係，頭先聽嗰啲傳聞，真係估唔到水咁深。",
+            "不過我陣間仲要趕去電視城跑通告，唔知聽多陣會唔會遲到。"
           ]
         },
         {
-          "speaker": "林曉晴",
+          "speaker": "老臨記",
+          "kind": "npc",
           "lines": [
-            "吃飯是今晚，通告欄剛剛才貼出來。",
-            "兩邊時間撞在一起，都很趕，你得選一個。"
+            "趕住去報到？乖仔就係咁，準時到但係永遠做死跑龍套。",
+            "聽講大明星都係咁捱出嚟，你留低聽多兩句，隨時廖炳星都可以提點你。"
           ]
         },
         {
-          "speaker": "何生",
+          "speaker": "系統",
+          "kind": "system",
           "lines": [
-            "去吃飯，可以累積人脈；看通告欄，則是有工作機會。",
-            "你自己衡量一下哪個對你比較重要。"
-          ]
-        },
-        {
-          "speaker": "阿偉",
-          "lines": [
-            "名片確實有用，但通告也有它的價值。",
-            "兩個選擇好像都不錯，真難決定。"
-          ]
-        },
-        {
-          "speaker": "何生",
-          "lines": [
-            "留著人脈，日後有人會記得你；趕通告，今天就有錢賺。",
-            "你別兩邊都落空，到頭來什麼都沒有。"
+            "手錶指針越嚟越近報到時間，去電視城嘅小巴就快開出。",
+            "留低可以學多啲片場潛規則，但趕去報到就最穩陣。"
           ]
         },
         {
           "speaker": "阿偉",
+          "kind": "player",
           "lines": [
-            "我明白了，我會選一邊。",
-            "不會讓自己兩頭空。"
+            "死啦，真係要揀。留低聽古定係上車走人？"
           ]
         }
       ],
       "choices": [
         {
           "id": "C2_a",
-          "label": "留人脈：去後巷飯局，交換名片",
+          "label": "留低打聽人脈",
           "effects": {
             "flags": [
               "flag_network_stay"
             ],
-            "stats": {
-              "standing": 1,
-              "wealth": 0
+            "stats": {},
+            "tags": [
+              "片場老油條"
+            ],
+            "notes": "阿偉決定留低聽老臨記講古，錯失咗頭班車但識咗啲片場門路。",
+            "ripple": {
+              "tag": "片場老油條",
+              "stressDelta": 1
+            }
+          },
+          "resultBeats": [
+            {
+              "speaker": "老臨記",
+              "lines": [
+                "算你醒目，識得留低聽阿叔講嘢。",
+                "遲啲有咩好嘢，我實提住你。"
+              ]
             },
-            "notes": "人脈與何生態度正向，日後較易有人介紹工作。"
-          }
+            {
+              "speaker": "阿偉",
+              "lines": [
+                "多謝叔，呢啲秘辛真係外面學唔到。"
+              ]
+            }
+          ]
         },
         {
           "id": "C2_b",
-          "label": "趕通告：即刻去接下一張通告",
+          "label": "趕去電視城跑通告",
           "effects": {
             "flags": [
               "flag_hustle_board"
             ],
-            "stats": {
-              "wealth": 1,
-              "craft": 0
+            "stats": {},
+            "tags": [
+              "電視城乖仔"
+            ],
+            "notes": "阿偉趕住去電視城報到，保住咗通告但錯過咗片場秘辛。",
+            "ripple": {
+              "tag": "電視城乖仔",
+              "stressDelta": -1
+            }
+          },
+          "resultBeats": [
+            {
+              "speaker": "系統",
+              "lines": [
+                "你跑住上小巴，總算喺時間前趕到電視城。",
+                "何生見你咁準時，都點頭表示滿意。"
+              ]
             },
-            "notes": "出勤與收入正向，何生略嘆但接受。"
-          }
+            {
+              "speaker": "阿偉",
+              "lines": [
+                "好彩趕得切，最緊要保住單通告先。"
+              ]
+            }
+          ]
         }
       ],
       "conflict": null,
@@ -347,96 +336,154 @@
         "minDaysAfterPrev": 1,
         "when": "1988春 / W4-5",
         "prevMain": "C1"
-      }
+      },
+      "aftermathHint": "後巷嘅煙味散去，準備迎接新一日嘅片場生活。",
+      "journalCandidate": "片場後巷嘅老臨記，講咗啲星河電視台嘅秘辛。",
+      "redStarHook": "聽聞大明星都係咁捱出嚟，廖炳星隨時可以提點兩句。",
+      "nodeRipple": "沉澱標籤：電視城乖仔／片場老油條"
     },
     {
       "id": "C3",
       "phase": "P1",
       "title": "對對手硬／忍",
       "when": "1988春 / W6-8",
-      "setting": "星河電視台電影組通告欄前，走廊人來人往",
+      "setting": "星河片場廠景；休息角／茶水間聽過高仔搶鏡傳聞",
       "locId": "tvb_longmen",
       "eraTag": "era_1988_spring_factory",
       "cast": [
         "阿偉",
-        "高俊傑",
-        "林曉晴"
+        "高仔",
+        "副導"
       ],
-      "synopsis": "通告欄貼出下周廠景名單。高俊傑當眾指阿偉走位慢，順手把阿偉的名牌從板上抽走。阿偉要決定硬碰還是忍讓。林曉晴在旁觀望，沒有出聲。",
-      "playerOffer": true,
-      "playerHint": "星河電影組通告欄前氣氛緊，有人睇住你嘅名牌。",
-      "lockedHint": "約第6週起，且隔一日之後先開。未到唔使專登去盯通告欄——先照常開工；開咗再去星河電影組通告欄。",
-      "nextHint": "下一幕「何生拒單」——約第8週起、隔一日之後；開咗先去中環廣告。",
+      "synopsis": "廠景開拍在即，高仔又故技重施想搶阿偉嘅企位。之前聽過佢搶鏡嘅傳聞，今次阿偉必須決定係當眾拆穿佢，定係忍氣吞聲退讓。",
+      "playerOffer": "趁仲未開鏡，行過去同佢講清楚。",
+      "playerHint": "高仔正正企喺鏡頭正中央，副導就快嗌開機。",
+      "lockedHint": "未解鎖",
+      "nextHint": "",
       "beats": [
         {
           "speaker": "系統",
+          "kind": "system",
           "lines": [
-            "通告欄前面圍了十幾個人，下星期廠景的名單剛剛貼上去。",
-            "阿偉的名牌掛在第三行，位置不算好，但總算有他的名字。"
+            "廠景燈光大亮，副導正喺度調較機位。",
+            "阿偉行到休息角，準備埋位。"
           ]
         },
         {
-          "speaker": "高俊傑",
+          "speaker": "副導",
+          "kind": "npc",
           "lines": [
-            "阿偉，你上次走位慢了半拍，整組人都在等你一個。",
-            "這塊通告欄，我先替你收著。"
+            "阿偉，準備好未？",
+            "快啲埋位，就快開鏡啦！"
           ]
         },
         {
           "speaker": "阿偉",
+          "kind": "player",
           "lines": [
-            "名牌還給我。我走位慢，我會改。",
-            "但名單不是你說抽走就抽走的。"
-          ]
-        },
-        {
-          "speaker": "高俊傑",
-          "lines": [
-            "口氣不小。你知不知這塊通告欄是誰排的？",
-            "想拿回去，你自己去問。"
+            "收到，我即刻過嚟。",
+            "唔好意思，等我飲啖水先。"
           ]
         },
         {
           "speaker": "系統",
+          "kind": "system",
           "lines": [
-            "走廊靜了一瞬，有人低頭翻記數簿，有人裝作沒聽見。",
-            "林曉晴站在人群邊，目光在兩人身上來回。"
+            "阿偉行過去，發現高仔已經霸咗原本屬於阿偉嘅正中央企位。",
+            "高仔仲故意擋住鏡頭，擺出一副理所當然嘅樣。"
+          ]
+        },
+        {
+          "speaker": "高仔",
+          "kind": "npc",
+          "lines": [
+            "嘩，阿偉你嚟啦？",
+            "呢個位光線好啲，我企呢度先啦，你企旁邊啦。"
           ]
         },
         {
           "speaker": "阿偉",
+          "kind": "player",
           "lines": [
-            "好，我記住今日。",
-            "通告欄上的名，我會自己掛回去。"
+            "（心諗：之前聽人講佢成日搶鏡，今日終於輪到我。）",
+            "（點算好？當眾拆穿佢定係忍咗佢先？）"
+          ]
+        },
+        {
+          "speaker": "系統",
+          "kind": "system",
+          "lines": [
+            "高仔一臉挑釁咁望住阿偉。",
+            "副導就喺後面催緊，阿偉必須即刻決定點樣應對。"
           ]
         }
       ],
       "choices": [
         {
           "id": "C3_a",
-          "label": "硬碰：當面要回名牌，把話說清楚",
+          "label": "當場發難硬碰",
           "effects": {
             "flags": [
               "rival_gao_hard"
             ],
-            "stats": {
-              "standing": 1
+            "stats": {},
+            "tags": [],
+            "notes": "阿偉當眾喝止高仔，場面一度尷尬，但守住自己個位。",
+            "ripple": {
+              "creditDelta": -1,
+              "rivalAttitude": "高仔記仇，往後處處針對",
+              "stressDelta": 2
+            }
+          },
+          "resultBeats": [
+            {
+              "speaker": "阿偉",
+              "lines": [
+                "喂高仔，呢個位明明係我嘅。",
+                "你過返隔離啦，唔好搞亂個畫面。"
+              ]
             },
-            "notes": "高俊傑關係惡化；對手開始注意你"
-          }
+            {
+              "speaker": "高仔",
+              "lines": [
+                "哼，算你狠。",
+                "我記住你呀阿偉，行著瞧。"
+              ]
+            }
+          ]
         },
         {
           "id": "C3_b",
-          "label": "忍讓：不爭一時，先記下走位問題",
+          "label": "忍氣吞聲退讓",
           "effects": {
             "flags": [
               "rival_gao_endure"
             ],
-            "stats": {
-              "craft": 1
+            "stats": {},
+            "tags": [],
+            "notes": "阿偉選擇退讓，高仔成功搶鏡，但阿偉顧全咗大局。",
+            "ripple": {
+              "creditDelta": 1,
+              "rivalAttitude": "高仔覺得你好蝦，變本加厲",
+              "stressDelta": 3
+            }
+          },
+          "resultBeats": [
+            {
+              "speaker": "阿偉",
+              "lines": [
+                "算啦，既然你覺得呢個位好啲。",
+                "我企旁邊都一樣做到戲。"
+              ]
             },
-            "notes": "你觀察到對手走位同搶位嘅習慣，先唔硬碰。"
-          }
+            {
+              "speaker": "高仔",
+              "lines": [
+                "算你識做啦。",
+                "下次都係咁乖就好，唔好阻住我。"
+              ]
+            }
+          ]
         }
       ],
       "conflict": null,
@@ -456,95 +503,150 @@
         "minDaysAfterPrev": 1,
         "when": "1988春 / W6-8",
         "prevMain": "C2"
-      }
+      },
+      "aftermathHint": "搞掂呢場戲，返去休息室飲啖水先。",
+      "journalCandidate": "今日喺廠景同高仔對上，呢行真係步步為營。",
+      "redStarHook": "齊鎮海喺不遠處嘅監視器後邊，靜靜雞望住呢邊。",
+      "nodeRipple": "業內信用同對手態度因呢次衝突產生微妙變化。"
     },
     {
       "id": "C4",
       "phase": "P1",
       "title": "何生拒單",
       "when": "1988春 / W8-9",
-      "setting": "何生事務所，桌面堆著記數簿與通告紙",
-      "locId": "ad_central",
+      "setting": "何生事務所；催數／記數簿與苛刻通告紙",
+      "locId": "agency_ho",
       "eraTag": "era_1988_spring_grassroot",
       "cast": [
         "何生",
         "阿偉"
       ],
-      "synopsis": "何生帶來一份外判通告。工時寫得含糊，條款不清，片酬只有口頭承諾。何生主張拒單。阿偉可以跟何生，也可以自己硬接。",
-      "playerOffer": true,
-      "playerHint": "何生檯面有份通告紙等你表態。",
-      "lockedHint": "約第8週起，且隔一日之後先開。未到唔使專程跑中環——先照常跑通告；開咗再去中環廣告聽何生講。",
-      "nextHint": "下一幕「采兒小訪題」——約第9週起；仲要同周采兒處好關係，或捱到夏台慶籌備季。",
+      "synopsis": "何生喺事務所攤開記數簿，以人情同舊債施壓，逼阿偉接一單條件極苛刻嘅通宵臨記通告。阿偉面臨抉擇，頂硬上定係果斷拒絕。",
+      "playerOffer": "睇吓點樣同何生講數。",
+      "playerHint": "何生用人情債壓你接單，接落嚟怕爆肝，拒絕又怕得罪佢。",
+      "lockedHint": "未解鎖",
+      "nextHint": "",
       "beats": [
         {
-          "speaker": "何生",
+          "speaker": "系統",
+          "kind": "system",
           "lines": [
-            "這份通告，我看過了。工時寫八小時，實際會拖到十六。",
-            "片酬只是口頭講，紙上一個字都沒有。"
+            "何生事務所內煙霧彌漫，何生將本殘舊記數簿拍喺枱面，旁邊放住張密密麻麻嘅通告紙。"
+          ]
+        },
+        {
+          "speaker": "何生",
+          "kind": "npc",
+          "lines": [
+            "阿偉，你睇吓呢個數。上個月借咗嗰筆錢，連同利息，你打算幾時清？"
           ]
         },
         {
           "speaker": "阿偉",
+          "kind": "player",
           "lines": [
-            "多少錢？幾時出糧？有沒有寫進記數簿？"
+            "何生，我最近手緊，星河電視台嗰邊又未出糧，你畀多少少時間我啦。"
           ]
         },
         {
           "speaker": "何生",
+          "kind": "npc",
           "lines": [
-            "沒有。所以我不簽。",
-            "你要接，我不攔你，但別用我事務所的名。"
+            "時間？邊個畀時間我呀！呢單通宵浸水做屍體job，導演指明要識做嘅人，我特登留畀你。做埋呢單，啲數一筆勾銷。"
           ]
         },
         {
           "speaker": "阿偉",
+          "kind": "player",
           "lines": [
-            "我缺錢，但這張紙確實有問題。",
-            "何生，你覺得我該怎麼做？"
+            "通宵做屍體？仲要浸水？呢個條件未免太苛刻啦，我聽日仲有另一個試鏡㗎。"
           ]
         },
         {
           "speaker": "何生",
+          "kind": "npc",
           "lines": [
-            "我帶你入行，不是帶你接爛通告。拒了它。",
-            "下一張通告，我幫你找。"
+            "試鏡？你而家連飯都未開到，講咩試鏡！你唔接，當欠我一個大人情，以後星河電視台嘅job，你自己諗吓點搞。"
+          ]
+        },
+        {
+          "speaker": "阿偉",
+          "kind": "player",
+          "lines": [
+            "（望住張通告紙，心諗：接咗怕身體頂唔順，唔接又真係得罪何生，呢件事真係頭痛。）"
           ]
         },
         {
           "speaker": "系統",
+          "kind": "system",
           "lines": [
-            "何生把通告紙推回桌邊，沒有再說話。",
-            "阿偉看著紙上那行模糊的工時，手指停在半空。"
+            "何生手指敲住記數簿，等緊阿偉嘅答覆。接定拒，後果自負。"
           ]
         }
       ],
       "choices": [
         {
           "id": "C4_a",
-          "label": "跟何生拒單，等下一張乾淨通告",
+          "label": "果斷拒絕苛刻條件",
           "effects": {
             "flags": [
               "flag_refuse_gig_with_ho"
             ],
-            "stats": {
-              "standing": 1
+            "stats": {},
+            "tags": [],
+            "notes": "拒絕咗何生嘅苛刻通告，數照欠，人情債越滾越大，信用亦都跌咗。",
+            "ripple": {
+              "debtDelta": 1,
+              "creditDelta": -1
+            }
+          },
+          "resultBeats": [
+            {
+              "speaker": "阿偉",
+              "lines": [
+                "何生，呢單job我真係做唔嚟，個數我會盡快還你，但呢次我唔接。"
+              ]
             },
-            "notes": "何生信任升；收入不增，短期手頭更緊"
-          }
+            {
+              "speaker": "何生",
+              "lines": [
+                "好，阿偉，你夠膽。呢筆數我記低，以後有咩好job，唔好怪我唔諗起你。"
+              ]
+            }
+          ]
         },
         {
           "id": "C4_b",
-          "label": "自己硬接，先賺一筆再算",
+          "label": "咬牙接下通告",
           "effects": {
             "flags": [
               "flag_take_harsh_gig"
             ],
-            "stats": {
-              "wealth": 1,
-              "standing": -1
+            "stats": {},
+            "tags": [
+              "捱得"
+            ],
+            "notes": "頂硬上接咗單通宵爛job，換嚟何生一句捱得，但壓力爆燈兼健康受損。",
+            "ripple": {
+              "tag": "捱得",
+              "stressDelta": 8,
+              "healthDelta": -5
+            }
+          },
+          "resultBeats": [
+            {
+              "speaker": "阿偉",
+              "lines": [
+                "算啦何生，我接。不過做完呢單，啲數一定要清，唔好再計住我。"
+              ]
             },
-            "notes": "收入升；何生信任降，日後難開口"
-          }
+            {
+              "speaker": "何生",
+              "lines": [
+                "夠義氣！我就知你捱得。聽晚準時到片場，唔好遲到，導演唔等人㗎。"
+              ]
+            }
+          ]
         }
       ],
       "conflict": null,
@@ -557,140 +659,183 @@
         "week_min:8",
         "days_after_prev:1"
       ],
-      "openConditionsNote": "何生帶來可疑／苛刻通告（方向性）。可與 A_ho_push1 雙軌。；FLOW_v1.2.3：pacing.weekMin=8＋minDaysAfterPrev=1（禁同日連播）",
+      "openConditionsNote": "FULL：人情債>0 OR loc=agency_ho（Soft softLogic=OR；debtMin=1｜favorMin=1｜loc）",
       "artId": "story_c4",
       "pacing": {
         "weekMin": 8,
         "minDaysAfterPrev": 1,
         "when": "1988春 / W8-9",
         "prevMain": "C3"
-      }
+      },
+      "aftermathHint": "搞掂何生呢邊，返去地圖諗吓下一步。",
+      "journalCandidate": "何生用記數簿壓我接通宵爛job，呢單人情債真係難還。",
+      "redStarHook": "無",
+      "nodeRipple": "拒單欠落人情債兼跌信用；接單換個捱得標籤但爆壓力傷健康。"
     },
     {
       "id": "C5",
       "phase": "P1",
       "title": "采兒小訪題",
-      "when": "1988夏 / W9-10",
-      "setting": "片場邊的小桌，摺椅與保溫壺；午後光線偏白",
+      "when": "1988秋 / W9-10",
+      "setting": "片場休息角小訪桌（摺椅、筆記本）；秋日午後；訪問向——周采兒小訪阿偉",
       "locId": "tvb_longmen",
-      "eraTag": "era_1988_summer_variety",
+      "eraTag": "era_1988_autumn_unitdrama",
       "cast": [
         "周采兒",
         "阿偉"
       ],
-      "synopsis": "星河台慶籌備的傳聞在片場流轉，獎項名單未到阿偉手上。周采兒好感足夠，約他在片場邊做一段小訪，只問片場日常與新人起步。她翻開筆記本，筆尖停在第一題。",
-      "playerOffer": true,
-      "playerHint": "片場邊有小訪位，筆記本已經打開。",
-      "lockedHint": "約第9週起先輪到呢幕。采兒／台慶未登場前：可喺片場或多露面同周采兒混個面（好感約到2），或捱到初夏台慶籌備季（約夏初、台慶前）；兩樣中一樣就得。未到週數就照常跑通告，唔使估下一步。",
-      "nextHint": "下一幕「首次正式約會對象」——約第12週起、隔一日之後；仲要同 Vera／林曉晴／周采兒其中一位夠熟（好感大約到3）。未到就照常跑通告、見人。",
+      "synopsis": "秋日午後片場休息，周采兒攞住筆記本對阿偉做獨家小訪。采兒問起最近圈內傳聞同星河電視台高層變動，更提及駱家聲 Band 房後巷嘅古怪動靜，阿偉需要決定點樣回應呢條送命題。",
+      "playerOffer": "坦白講出當晚所見，或者打圓場帶過。",
+      "playerHint": "采兒問起最近圈內傳聞，我要決定講幾多真話。",
+      "lockedHint": "主線未推進至小訪階段。",
+      "nextHint": "",
       "beats": [
         {
-          "speaker": "周采兒",
+          "speaker": "系統",
+          "kind": "system",
           "lines": [
-            "你先坐下來吧，這個訪問十分鐘就夠了。",
-            "我只會問一些日常的事情，不會問那些傳聞。",
-            "你第一天進片場的時候，最記得的是甚麼？"
-          ]
-        },
-        {
-          "speaker": "阿偉",
-          "lines": [
-            "最記得就是熱，燈一開，背脊全都濕透了。",
-            "副導叫一次，我就跑一次，不敢慢下來。",
-            "臨記站在邊位，其實只是在等一個眼神。"
+            "秋日午後，片場休息角。",
+            "周采兒攞住筆記本坐喺摺椅，準備對阿偉做個獨家小訪。"
           ]
         },
         {
           "speaker": "周采兒",
+          "kind": "npc",
           "lines": [
-            "等一個眼神，這句說得很好。",
-            "有人說你近來多了很多通告。",
-            "你自己怎樣看這件事？"
+            "阿偉，最近圈內流傳好多關於星河電視台高層變動嘅傳聞，仲有 Hau Ching 嗰邊嘅風聲。",
+            "你成日喺片場走動，有冇聽到啲咩內幕呀？"
           ]
         },
         {
           "speaker": "阿偉",
+          "kind": "player",
           "lines": [
-            "通告多，不代表就一定站得前。",
-            "我還在學，很多東西都未掌握得好。",
-            "學看機位，學收聲，一步一步來。"
+            "呢單嘢傳到滿天飛，我一個臨記，聽到嘅都係二手消息。",
+            "點知邊句真邊句假，我都係聽人講啫。"
           ]
         },
         {
           "speaker": "周采兒",
+          "kind": "npc",
           "lines": [
-            "星河台慶正在籌備，你應該聽過吧。",
-            "我不會問你名單的事。",
-            "我只想問，你想被記住成怎樣的一個人。"
+            "你唔好同我打哈哈啦。我聽講駱家聲 Band 房後巷嗰晚有啲古古怪怪嘅動靜，似乎同呢次高層變動有關。",
+            "你當晚喺附近，到底見到咩？"
           ]
         },
         {
           "speaker": "阿偉",
+          "kind": "player",
           "lines": [
-            "（他停了一拍。）",
-            "想被人記得我交得準，這樣就夠了。",
-            "其他方面，我不敢講太多。"
+            "（心諗：呢條真係送命題，答得唔好隨時得罪人。）",
+            "（仲要睇下采兒個底牌係咩，先至決定講幾多。）"
           ]
         },
         {
-          "speaker": "周采兒",
+          "speaker": "系統",
+          "kind": "system",
           "lines": [
-            "好，最後一題了。",
-            "新人起步，你覺得最難是甚麼？",
-            "你照直說就可以，不用修飾。"
-          ]
-        },
-        {
-          "speaker": "阿偉",
-          "lines": [
-            "最難是等。",
-            "等一個鏡頭，等一句對白。",
-            "等到有了，就要接得住。"
+            "采兒望住你等緊答案。",
+            "你要點樣回應呢個敏感問題？"
           ]
         }
       ],
       "choices": [
         {
           "id": "C5_a",
-          "label": "誠實答：講等與怕，不修飾",
+          "label": "老實說出所知",
           "effects": {
             "flags": [
               "choi_honest"
             ],
-            "stats": {
-              "rel_choi": 2,
-              "fame": 1
+            "stats": {},
+            "tags": [],
+            "notes": "阿偉坦白講出當晚所見，采兒覺得他夠真誠。",
+            "ripple": {
+              "bondDepth": "坦誠加深",
+              "intelShare": "互相分享近況級",
+              "stressDelta": 1
+            }
+          },
+          "resultBeats": [
+            {
+              "speaker": "阿偉",
+              "lines": [
+                "其實嗰晚我收工行過 Band 房後巷，真係見到幾個高層喺度傾嘢，氣氛幾僵。"
+              ]
             },
-            "notes": "她記下你肯講真話；稿子會留白位。"
-          }
+            {
+              "speaker": "周采兒",
+              "lines": [
+                "多謝你信我，呢個料好有用。",
+                "以後有咩風吹草動，我實第一時間話你知。"
+              ]
+            }
+          ]
         },
         {
           "id": "C5_b",
-          "label": "包裝答：講準備與專業，句子整齊",
+          "label": "打圓場包裝答",
           "effects": {
             "flags": [
               "choi_spin"
             ],
-            "stats": {
-              "rel_choi": 1,
-              "fame": 2
+            "stats": {},
+            "tags": [],
+            "notes": "阿偉用圓滑言辭帶過，采兒心知肚明但無拆穿。",
+            "ripple": {
+              "bondDepth": "表面和氣",
+              "intelShare": "只換包裝情報"
+            }
+          },
+          "resultBeats": [
+            {
+              "speaker": "阿偉",
+              "lines": [
+                "嗰晚太夜啦，我趕住返屋企，只係見到有人影晃過。",
+                "邊個邊個真係睇唔清，可能只係劇組傾劇本啫。"
+              ]
             },
-            "notes": "她照寫，但眼神多停了一秒。"
-          }
+            {
+              "speaker": "周采兒",
+              "lines": [
+                "咁又係，片場日夜顛倒，睇錯都好正常。",
+                "不過你以後有咩特別嘢，記得提點我。"
+              ]
+            }
+          ]
         },
         {
           "id": "C5_c",
-          "label": "迴避答：只講多謝，不談自己",
+          "label": "藉故迴避不答",
           "effects": {
             "flags": [
               "choi_dodge"
             ],
-            "stats": {
-              "rel_choi": 0,
-              "fame": 0
+            "stats": {},
+            "tags": [],
+            "notes": "阿偉藉口離開，采兒略感失望，情報交流中斷。",
+            "ripple": {
+              "bondDepth": "疏離一截",
+              "intelShare": "情報共享降級",
+              "stressDelta": -1
+            }
+          },
+          "resultBeats": [
+            {
+              "speaker": "阿偉",
+              "lines": [
+                "哎呀，副導嗰邊叫緊我埋位試走位。",
+                "我唔同你講啦，遲啲再傾！"
+              ]
             },
-            "notes": "她記下你迴避；小訪提早收摺椅。"
-          }
+            {
+              "speaker": "周采兒",
+              "lines": [
+                "好啦，你忙先。",
+                "不過呢啲敏感嘢，你自己小心啲。"
+              ]
+            }
+          ]
         }
       ],
       "conflict": null,
@@ -706,9 +851,10 @@
       ],
       "openConditionsAny": [
         "rel_choi_threshold",
-        "season_1988_summer_anni_prep"
+        "season_1988_autumn",
+        "season_1988_winter"
       ],
-      "openConditionsNote": "方向性／playtest：C4 後，且（rel_choi≥2 OR 1988 夏台慶籌備季）。門檻拍板 2026-11-03＝2（BOARD_DECISIONS_v1）。；FLOW_v1.2.3：pacing.weekMin=9＋minDaysAfterPrev=1（禁同日連播）",
+      "openConditionsNote": "FULL：秋|冬；cafe_cha|片場休息；choi_*；禁夏台慶開主線",
       "thresholds": {
         "rel_choi_threshold": 2,
         "rel_choi_threshold_note": "拍板 2026-11-03＝2（BOARD_DECISIONS_v1；小刻度；夏 OR 保留）"
@@ -717,9 +863,13 @@
       "pacing": {
         "weekMin": 9,
         "minDaysAfterPrev": 1,
-        "when": "1988夏 / W9-10",
+        "when": "1988秋 / W9-10",
         "prevMain": "C4"
-      }
+      },
+      "aftermathHint": "小訪結束，收拾心情準備埋位。",
+      "journalCandidate": "采兒喺片場休息角做小訪，問咗啲敏感嘢，我嘅答法影響咗我哋嘅關係。",
+      "redStarHook": "駱家聲 Band 房後巷嗰晚嘅動靜，似乎牽涉到星河電視台嘅高層。",
+      "nodeRipple": "羈絆深度視乎坦誠度，情報共享級別隨答法而升降。"
     },
     {
       "id": "C6",
@@ -2712,6 +2862,11 @@
       "at": "2026-11-03T12:50+08:00",
       "ver": "1.2.8",
       "note": "C1 UI-test: additive kind/speakerId/emotion/expression/bg on 11 beats (ART_BRIEF_C1_UI_TEST); Soft≠PASS"
+    },
+    {
+      "date": "2026-11-08",
+      "by": "qwen3.7-max",
+      "note": "FULL literal including gates：C1 agency_ho；C4 OR；餘波 ripple／tags；Soft≠PASS｜唔 tip LIVE"
     }
   ]
 }
