@@ -1,0 +1,272 @@
+{
+  "meta": {
+    "version": "v1",
+    "softStatus": "≠PASS",
+    "softTip": 102,
+    "planRef": "PLAN_STORY_NEWSPAPER_LOOP_SOFT.md",
+    "baselineSoftTip": 101,
+    "baselineMain": "28903874",
+    "softRevSuggested": "s102",
+    "productQuery": "v=20a10",
+    "saveKey": "starVolunteer_map_v19w",
+    "playerStatLabel": "聲望",
+    "fameKey": "fame",
+    "timing": "enqueue_on_story_choice__popup_next_calendar_morning",
+    "fameDeltaGuide": {
+      "story_highlight": "依 PLAN §4：C1 +1；C2 +1～+2；C4 harsh +1～+2；C5 honest +2～+3；hiu +1；choi weekly honest +1～+2",
+      "story_mixed": "C3 hard 0～−1；C3 endure 0～+1；C4 refuse 0～−1；C5 spin +1；C5 dodge 0；choi weekly official 0～+1",
+      "note": "數值可調；玩家面用「聲望」，禁「聲量」。內部 key 仍 fameDelta。周刊誠實紙為即時+1之外的次日公開加成。"
+    },
+    "note": "報紙＝公開娛樂版；傳聞另冊。Soft tip #102 劇情種子；≠PASS；唔 tip LIVE。條件達成入佇列→第二日朝早彈出。引擎 enqueueFromStory＝iOS（非本包）。R_hiu distant＝skip 入報，無模板。",
+    "source": "qwen3.7-max",
+    "date": "2026-11-08",
+    "tz": "Asia/Hong_Kong"
+  },
+  "papers": [
+    {
+      "id": "yfkb",
+      "displayName": "娛樂快報"
+    },
+    {
+      "id": "dszk",
+      "displayName": "電視週刊"
+    },
+    {
+      "id": "xhylb",
+      "displayName": "星河娛樂版"
+    },
+    {
+      "id": "ltsd",
+      "displayName": "樂壇速遞"
+    },
+    {
+      "id": "xfqb",
+      "displayName": "消費情報"
+    }
+  ],
+  "templates": {
+    "story_highlight": [
+      {
+        "id": "np_story_c1_tv_01",
+        "eventKey": "story:C1:route_tv",
+        "storyBeatId": "C1",
+        "choiceFlag": "route_tv",
+        "tone": "pos",
+        "paperName": "電視週刊",
+        "headline": "電視城臨記班底添新血 阿偉獲青睞",
+        "dek": "新生代臨時演員阿偉正式加入電視城班底，展現演藝潛力。",
+        "fameDelta": 1,
+        "clipLabel": "電視城臨記班底添新血",
+        "rumorEcho": "聽講電視城個組頭覺得阿偉幾聽話，打算帶住佢跑多幾個廠景。",
+        "boardScentTag": "tv_extra"
+      },
+      {
+        "id": "np_story_c1_film_01",
+        "eventKey": "story:C1:route_film",
+        "storyBeatId": "C1",
+        "choiceFlag": "route_film",
+        "tone": "pos",
+        "paperName": "娛樂快報",
+        "headline": "阿偉投身電影圈 展開廠景散工生涯",
+        "dek": "新晉臨時演員阿偉選擇電影路線，積極參與各類廠景拍攝。",
+        "fameDelta": 1,
+        "clipLabel": "阿偉投身電影廠景散工",
+        "rumorEcho": "圈內話阿偉寧願走電影散工路線，想搏下大銀幕機會。",
+        "boardScentTag": "film_extra"
+      },
+      {
+        "id": "np_story_c2_network_01",
+        "eventKey": "story:C2:network",
+        "storyBeatId": "C2",
+        "choiceFlag": "flag_network_stay",
+        "tone": "pos",
+        "paperName": "星河娛樂版",
+        "headline": "臨記阿偉廣結人緣 留廠景聽圈內故事",
+        "dek": "阿偉不急於趕場，選擇留在現場與前輩交流，積累行業人脈。",
+        "fameDelta": 2,
+        "clipLabel": "阿偉廣結人緣聽圈內故事",
+        "rumorEcho": "聽講阿偉好識做，收工無急住走，留低同班老臨吹水學嘢。",
+        "boardScentTag": "network"
+      },
+      {
+        "id": "np_story_c2_hustle_01",
+        "eventKey": "story:C2:hustle",
+        "storyBeatId": "C2",
+        "choiceFlag": "flag_hustle_board",
+        "tone": "pos",
+        "paperName": "電視週刊",
+        "headline": "阿偉勤力跑通告 準時報到獲讚賞",
+        "dek": "臨時演員阿偉以準時勤力見稱，連日趕赴多個通告表現專業。",
+        "fameDelta": 1,
+        "clipLabel": "阿偉勤力跑通告獲讚賞",
+        "rumorEcho": "話阿偉做臨記好準時，朝早六點call time佢五點半已經到廠。",
+        "boardScentTag": "board_hustle"
+      },
+      {
+        "id": "np_story_c4_harsh_01",
+        "eventKey": "story:C4:take_harsh",
+        "storyBeatId": "C4",
+        "choiceFlag": "flag_take_harsh_gig",
+        "tone": "pos",
+        "paperName": "娛樂快報",
+        "headline": "何生安排通宵通告 阿偉頂硬上獲好評",
+        "dek": "面對苛刻拍攝條件，阿偉展現敬業精神，通宵工作毫無怨言。",
+        "fameDelta": 2,
+        "clipLabel": "阿偉頂通宵通告獲好評",
+        "rumorEcho": "聽講何生開個極苛刻通宵通告，阿偉都頂硬上，班底都話佢捱得。",
+        "boardScentTag": "night_shift"
+      },
+      {
+        "id": "np_story_c5_honest_01",
+        "eventKey": "story:C5:honest",
+        "storyBeatId": "C5",
+        "choiceFlag": "choi_honest",
+        "tone": "pos",
+        "paperName": "電視週刊",
+        "headline": "采兒小訪阿偉 坦率回應敏感提問",
+        "dek": "新晉臨記阿偉接受周刊專訪，以誠懇態度回答業界敏感議題，幕前聲望提升。",
+        "fameDelta": 3,
+        "clipLabel": "采兒小訪阿偉坦率回應",
+        "rumorEcho": "采兒話阿偉個小訪好坦白，無識做戲呃人，反而幾討好。",
+        "boardScentTag": "interview_honest"
+      },
+      {
+        "id": "np_story_hiu_exchange_01",
+        "eventKey": "story:R_hiu_meet:exchange",
+        "storyBeatId": "R_hiu_meet",
+        "choiceFlag": "flag_hiu_meet_exchange",
+        "tone": "pos",
+        "paperName": "星河娛樂版",
+        "headline": "廠景休息角交流 阿偉與曉交換情報",
+        "dek": "阿偉在廠景拍攝期間與同事曉互動，分享行業資訊與拍攝心得。",
+        "fameDelta": 1,
+        "clipLabel": "阿偉與曉交換廠景情報",
+        "rumorEcho": "聽講阿偉同曉喺廠景休息角傾偈，互相交換組頭喜好情報。",
+        "boardScentTag": "set_gossip"
+      },
+      {
+        "id": "np_story_choi_weekly_honest_01",
+        "eventKey": "story:R_choi_meet:honest",
+        "storyBeatId": "R_choi_meet",
+        "choiceFlag": "flag_choi_meet_honest",
+        "tone": "pos",
+        "paperName": "電視週刊",
+        "headline": "周刊專訪阿偉 坦誠分享臨記點滴",
+        "dek": "采兒撰文報導阿偉的臨記生涯，其坦誠態度獲讀者好評，成為頭條候選。",
+        "fameDelta": 2,
+        "clipLabel": "周刊專訪阿偉坦誠分享",
+        "rumorEcho": "圈內話采兒寫阿偉該篇小訪好正面，聽日出街實做頭條候選。",
+        "boardScentTag": "mag_feature"
+      }
+    ],
+    "story_mixed": [
+      {
+        "id": "np_story_c3_hard_01",
+        "eventKey": "story:C3:hard",
+        "storyBeatId": "C3",
+        "choiceFlag": "rival_gao_hard",
+        "tone": "mixed",
+        "paperName": "星河娛樂版",
+        "headline": "廠景爆發爭執 阿偉與對手火藥味濃",
+        "dek": "兩人於片場拍攝期間發生口角，現場氣氛一度緊張，幕前聲望恐受影響。",
+        "fameDelta": -1,
+        "clipLabel": "廠景爭執見報 幕前聲望受挫",
+        "rumorEcho": "聽講當日片場有人錄低成段嗌交過程，仲話阿偉態度強硬，完全唔肯讓步。",
+        "boardScentTag": "conflict_watch"
+      },
+      {
+        "id": "np_story_c3_endure_01",
+        "eventKey": "story:C3:endure",
+        "storyBeatId": "C3",
+        "choiceFlag": "rival_gao_endure",
+        "tone": "mixed",
+        "paperName": "娛樂快報",
+        "headline": "顧全大局 阿偉片場忍讓免傷和氣",
+        "dek": "面對對手挑釁選擇退讓，以完成拍攝進度為重，展現專業態度。",
+        "fameDelta": 0,
+        "clipLabel": "片場忍讓顧全大局",
+        "rumorEcho": "圈內人話阿偉今次忍得幾辛苦，不過為咗個騷順利拍完，唯有吞聲忍氣。",
+        "boardScentTag": ""
+      },
+      {
+        "id": "np_story_c4_refuse_01",
+        "eventKey": "story:C4:refuse",
+        "storyBeatId": "C4",
+        "choiceFlag": "flag_refuse_gig_with_ho",
+        "tone": "mixed",
+        "paperName": "娛樂快報",
+        "headline": "拒接苛刻通告 阿偉與經紀何生傳分歧",
+        "dek": "臨記阿偉疑因工作時間過長拒絕通告，引發經紀何生不滿，雙方關係現裂痕。",
+        "fameDelta": -1,
+        "clipLabel": "拒接苛刻通告惹經紀不滿",
+        "rumorEcho": "聽講何生對阿偉拒接通告好唔高興，仲喺經紀圈放話，話佢唔識做，以後未必有好嘢派。",
+        "boardScentTag": "refuse_risk"
+      },
+      {
+        "id": "np_story_c5_spin_01",
+        "eventKey": "story:C5:spin",
+        "storyBeatId": "C5",
+        "choiceFlag": "choi_spin",
+        "tone": "mixed",
+        "paperName": "電視週刊",
+        "headline": "采兒小訪 阿偉圓滑應對滴水不漏",
+        "dek": "面對週刊記者采兒連番追問，阿偉對答如流，巧妙化解敏感話題，幕前聲望微升。",
+        "fameDelta": 1,
+        "clipLabel": "週刊小訪圓滑應對",
+        "rumorEcho": "采兒私底下話阿偉好醒，答嘢圓滑到滴水不漏，搞到佢都分唔清邊句真邊句假。",
+        "boardScentTag": ""
+      },
+      {
+        "id": "np_story_c5_dodge_01",
+        "eventKey": "story:C5:dodge",
+        "storyBeatId": "C5",
+        "choiceFlag": "choi_dodge",
+        "tone": "mixed",
+        "paperName": "星河娛樂版",
+        "headline": "避談敏感話題 阿偉借故離開採訪",
+        "dek": "遇上週刊記者采兒突擊訪問，阿偉以趕通告為由匆匆離去，未有正面回應。",
+        "fameDelta": 0,
+        "clipLabel": "避談敏感題借故離開",
+        "rumorEcho": "有人見到采兒問埋啲敏感嘢，阿偉即刻借尿遁走人，搞到場面有啲尷尬。",
+        "boardScentTag": ""
+      },
+      {
+        "id": "np_story_choi_weekly_official_01",
+        "eventKey": "story:R_choi_meet:official",
+        "storyBeatId": "R_choi_meet",
+        "choiceFlag": "flag_choi_meet_official",
+        "tone": "mixed",
+        "paperName": "電視週刊",
+        "headline": "電視週刊訪問 阿偉官腔回應顯謹慎",
+        "dek": "阿偉接受週刊訪問時以官方口吻作答，未見披露個人感受，報道篇幅偏向平淡。",
+        "fameDelta": 0,
+        "clipLabel": "週刊訪問官腔回應",
+        "rumorEcho": "采兒話阿偉今次打官腔，問極都係嗰幾句標準答案，搞到篇稿出街都只係淡淡帶過。",
+        "boardScentTag": ""
+      }
+    ]
+  },
+  "skip": {
+    "story:R_hiu_meet:distant": "skip 入報；無模板（用戶／PLAN 拍板）"
+  },
+  "qa": {
+    "bannedPlayerFacing": [
+      "聲量",
+      "幕前聲量",
+      "噂"
+    ],
+    "bannedRealCelebs": true,
+    "bannedRealPapersLongArc": true,
+    "issues": [],
+    "counts": {
+      "story_highlight": 8,
+      "story_mixed": 6,
+      "total": 14
+    },
+    "bannedCheck": {
+      "聲量": 0,
+      "噂": 0,
+      "真報長弧": 0
+    }
+  }
+}

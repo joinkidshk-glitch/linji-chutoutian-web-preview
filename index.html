@@ -11,11 +11,11 @@
    GitHub Pages caches HTML for max-age=600, and the playtest box keeps a persistent cache
    keyed by the full URL. ?v=20a10&softBehaviorGate=1 therefore kept executing the pre-#99
    document (去金龍／主線) even after Pages origin sha was e4b43926.
-   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s101
-   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s101
+   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s102
+   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s102
    Bump SOFT_REV when the next Soft tip changes index.html. Do not bump ?v=. */
 (function(){
-  var SOFT_REV = "s101";
+  var SOFT_REV = "s102";
   try { document.documentElement.setAttribute("data-soft-rev", SOFT_REV); } catch (e0) {}
   try {
     var q = new URLSearchParams(location.search || "");
@@ -18125,6 +18125,11 @@ const StoryOC = (()=>{
     }catch(_tg3){}
 
     markDone(node.id);
+    /* Soft tip #102：選擇已寫入後只掛一次。DualMeet 亦經 applyChoice，唔再喺 pickChoice 加第二掛。
+       R_hiu distant 無模板，enqueue 會跳過。報紙唔加 favor。 */
+    try{
+      if(typeof enqueueNewspaperFromStory==="function") enqueueNewspaperFromStory(node, choice);
+    }catch(_npStory){}
     try{ saveQ(); }catch(_e){}
     return { notes, flags:flagsApplied, rel:relApplied, stats:statsApplied, choiceId:choice.id, label:choice.label||"", dual };
   }
@@ -28582,9 +28587,11 @@ function enqueueNewspaperItem(raw, opts){
   const eventKey = String(raw.eventKey||"").trim();
   if(!eventKey || newspaperEventSeen(eventKey)) return null;
   const day = (raw.enqueuedDay!=null) ? (raw.enqueuedDay|0) : ((S.dayIndex|0)||0);
+  const srcRaw = String(raw.source||"");
+  const source = srcRaw==="award" ? "award" : (srcRaw==="story" ? "story" : "wrap");
   const item = {
     eventKey: eventKey,
-    source: raw.source==="award" ? "award" : "wrap",
+    source: source,
     enqueuedDay: day,
     publishDay: (raw.publishDay!=null) ? (raw.publishDay|0) : (day+1),
     fameDelta: Number(raw.fameDelta)||0,
@@ -28596,7 +28603,13 @@ function enqueueNewspaperItem(raw, opts){
     templateId: String(raw.templateId||"").trim(),
     templateEventKey: String(raw.templateEventKey||"").trim(),
     medium: String(raw.medium||"").trim(),
-    workTitle: String(raw.workTitle||"").trim()
+    workTitle: String(raw.workTitle||"").trim(),
+    tone: String(raw.tone||"").trim(),
+    /* P1 HOLD：只隨種子留下，本票唔做通告板氣味演算法。 */
+    boardScentTag: String(raw.boardScentTag||"").trim(),
+    storyBeatId: String(raw.storyBeatId||"").trim(),
+    choiceFlag: String(raw.choiceFlag||"").trim(),
+    gated: raw.gated ? String(raw.gated) : ""
   };
   ensureNewspaperQueue().push(item);
   if(opts.persist!==false){ try{ saveQ(); }catch(_e){} }
@@ -28717,6 +28730,210 @@ function enqueueNewspaperFromAward(pack, opts){
     templateEventKey: copy.templateEventKey || (bucket+"."+medium),
     medium: copy.medium || medium,
     workTitle: name
+  }, opts);
+}
+/* Soft tip #102：劇情選擇 → 次日朝早報。唔加 favor。boardScentTag 只存，演算法 P1 HOLD。
+   C6–C17／鄧線唔入。R_hiu distant 無模板，跳過。 */
+const STORY_FLAG_EVENT = {
+  route_tv: "story:C1:route_tv",
+  route_film: "story:C1:route_film",
+  flag_network_stay: "story:C2:network",
+  flag_hustle_board: "story:C2:hustle",
+  rival_gao_hard: "story:C3:hard",
+  rival_gao_endure: "story:C3:endure",
+  flag_refuse_gig_with_ho: "story:C4:refuse",
+  flag_take_harsh_gig: "story:C4:take_harsh",
+  choi_honest: "story:C5:honest",
+  choi_spin: "story:C5:spin",
+  choi_dodge: "story:C5:dodge",
+  flag_hiu_meet_exchange: "story:R_hiu_meet:exchange",
+  flag_hiu_meet_distant: "story:R_hiu_meet:distant",
+  flag_choi_meet_honest: "story:R_choi_meet:honest",
+  flag_choi_meet_official: "story:R_choi_meet:official"
+};
+const STORY_PAPER_SKIP = { "story:R_hiu_meet:distant": true };
+function newspaperStoryLists(){
+  const stub = FREEPLAY_FW && FREEPLAY_FW.newspaperStoryStub;
+  const t = stub && stub.templates;
+  if(!t) return [];
+  return [].concat(t.story_highlight||[], t.story_mixed||[]);
+}
+function newspaperStoryReady(){
+  const lists = newspaperStoryLists();
+  return lists.length>=14;
+}
+function newspaperStoryFavor(target){
+  try{
+    if(!S) return 0;
+    const t = target || "agency_ho";
+    const bag = (S.story && S.story.favor) || {};
+    if(typeof bag[t]==="number") return bag[t];
+    if(t==="agency_ho"){
+      const rel = (S.story && S.story.rel) || {};
+      if(typeof rel.rel_ho==="number") return rel.rel_ho;
+      if(typeof rel.rel_agent==="number") return rel.rel_agent;
+      return Number(S.npcs && S.npcs.agent)||0;
+    }
+    return Number(bag[t])||0;
+  }catch(_e){ return 0; }
+}
+function newspaperStoryRel(key){
+  try{
+    if(typeof StoryOC!=="undefined" && StoryOC.getRel) return Number(StoryOC.getRel(key))||0;
+  }catch(_e){}
+  try{
+    const rel = (S && S.story && S.story.rel) || {};
+    const k = String(key||"");
+    const kk = k.startsWith("rel_") ? k : ("rel_"+k);
+    return Number(rel[kk])||0;
+  }catch(_e2){ return 0; }
+  return 0;
+}
+function newspaperStoryFlag(key){
+  try{
+    if(typeof StoryOC!=="undefined" && StoryOC.getFlag) return !!StoryOC.getFlag(key);
+  }catch(_e){}
+  try{ return !!(S && S.story && S.story.flags && S.story.flags[key]); }catch(_e2){ return false; }
+  return false;
+}
+function newspaperStoryResolve(node, choice){
+  const flags = [];
+  const eff = choice && choice.effects;
+  if(eff && Array.isArray(eff.flags)) eff.flags.forEach(f=>{ if(f) flags.push(String(f)); });
+  if(choice && choice.flag) flags.push(String(choice.flag));
+  let eventKey = "";
+  let flag = "";
+  for(let i=0;i<flags.length;i++){
+    if(STORY_FLAG_EVENT[flags[i]]){ eventKey = STORY_FLAG_EVENT[flags[i]]; flag = flags[i]; break; }
+  }
+  if(!eventKey){
+    const all = newspaperStoryLists();
+    for(let i=0;i<flags.length && !eventKey;i++){
+      const hit = all.find(t=>t && t.choiceFlag===flags[i]);
+      if(hit && hit.eventKey){ eventKey = String(hit.eventKey); flag = flags[i]; }
+    }
+  }
+  if(!eventKey) return null;
+  const skipBag = (FREEPLAY_FW && FREEPLAY_FW.newspaperStoryStub && FREEPLAY_FW.newspaperStoryStub.skip) || {};
+  if(STORY_PAPER_SKIP[eventKey] || skipBag[eventKey]) return { skip:true, eventKey:eventKey, flag:flag };
+  return { skip:false, eventKey:eventKey, flag:flag };
+}
+function newspaperStoryFind(eventKey, flag){
+  const all = newspaperStoryLists();
+  return all.find(t=>t && t.eventKey===eventKey) || all.find(t=>t && flag && t.choiceFlag===flag) || null;
+}
+/** 正面稿：人情／好感未夠就降 mixed（或模板寫明 skip）。唔寫 favor、唔加 rel。 */
+function newspaperStoryApplyGate(tmpl, eventKey){
+  if(!tmpl) return null;
+  const out = {
+    id: tmpl.id||"",
+    eventKey: eventKey,
+    storyBeatId: tmpl.storyBeatId||"",
+    choiceFlag: tmpl.choiceFlag||"",
+    tone: tmpl.tone || "mixed",
+    paperName: tmpl.paperName,
+    headline: tmpl.headline,
+    dek: tmpl.dek,
+    fameDelta: (tmpl.fameDelta!=null && tmpl.fameDelta!=="") ? (Number(tmpl.fameDelta)||0) : 0,
+    clipLabel: tmpl.clipLabel,
+    rumorEcho: tmpl.rumorEcho,
+    boardScentTag: tmpl.boardScentTag || "",
+    gated: ""
+  };
+  if(eventKey==="story:C5:honest" && out.tone==="pos"){
+    const rel = newspaperStoryRel("rel_choi");
+    const weekly = newspaperStoryFlag("flag_choi_meet_honest");
+    if(!(rel>=1 || weekly)){
+      out.tone = "mixed";
+      out.fameDelta = 1;
+      out.gated = "rel_choi";
+    }
+  }
+  if(eventKey==="story:C4:refuse" && out.tone==="pos" && newspaperStoryFavor("agency_ho")<1){
+    out.tone = "mixed";
+    if(out.fameDelta>0) out.fameDelta = 0;
+    out.gated = "favor_ho";
+  }
+  if(out.tone==="pos" && tmpl.relGate && typeof tmpl.relGate==="object"){
+    const key = tmpl.relGate.key || "rel_choi";
+    const min = Number(tmpl.relGate.min)||1;
+    if(newspaperStoryRel(key) < min){
+      if(tmpl.relGate.else==="skip") return { skip:true };
+      out.tone = "mixed";
+      if(out.fameDelta>1) out.fameDelta = 1;
+      if(!out.gated) out.gated = "rel";
+    }
+  }
+  if(out.tone==="pos" && tmpl.favorGate && typeof tmpl.favorGate==="object"){
+    const min = Number(tmpl.favorGate.min)||1;
+    const target = tmpl.favorGate.target || "agency_ho";
+    if(newspaperStoryFavor(target) < min){
+      if(tmpl.favorGate.else==="skip") return { skip:true };
+      out.tone = "mixed";
+      if(out.fameDelta>0) out.fameDelta = 0;
+      if(!out.gated) out.gated = "favor";
+    }
+  }
+  return out;
+}
+function newspaperPendStory(node, choice, opts){
+  if(!FREEPLAY_FW) return;
+  const eff = (choice && choice.effects) || {};
+  const flags = Array.isArray(eff.flags) ? eff.flags.slice() : [];
+  const day = (S && (S.dayIndex|0)) || 0;
+  FREEPLAY_FW._storyPaperPend = FREEPLAY_FW._storyPaperPend || [];
+  FREEPLAY_FW._storyPaperPend.push({
+    node: { id: (node && (node.id || node.beatId)) || "" },
+    choice: { id: (choice && choice.id) || "", effects: { flags: flags } },
+    opts: { persist: !(opts && opts.persist===false), enqueuedDay: day, publishDay: day+1, noPend:true }
+  });
+}
+function flushPendingStoryPapers(){
+  const pend = (FREEPLAY_FW && FREEPLAY_FW._storyPaperPend) || [];
+  if(!pend.length || !newspaperStoryReady()) return;
+  FREEPLAY_FW._storyPaperPend = [];
+  pend.forEach(job=>{
+    try{ enqueueNewspaperFromStory(job.node, job.choice, job.opts||{ noPend:true }); }catch(_e){}
+  });
+}
+function enqueueNewspaperFromStory(node, choice, opts){
+  opts = opts || {};
+  const resolved = newspaperStoryResolve(node, choice);
+  if(!resolved || resolved.skip) return null;
+  if(!newspaperStoryReady()){
+    if(opts.persist===false || opts.noPend) return null;
+    newspaperPendStory(node, choice, opts);
+    return { pending:true, eventKey: resolved.eventKey };
+  }
+  const tmpl = newspaperStoryFind(resolved.eventKey, resolved.flag);
+  if(!tmpl) return null;
+  const gated = newspaperStoryApplyGate(tmpl, resolved.eventKey);
+  if(!gated || gated.skip) return null;
+  const day = (opts.enqueuedDay!=null) ? (opts.enqueuedDay|0) : ((S && (S.dayIndex|0)) || 0);
+  const copy = newspaperCopyFromTemplate(gated, {
+    paperName: "娛樂版",
+    headline: "事態見報",
+    dek: "",
+    fameDelta: Number(gated.fameDelta)||0
+  });
+  return enqueueNewspaperItem({
+    eventKey: resolved.eventKey,
+    source: "story",
+    enqueuedDay: day,
+    publishDay: (opts.publishDay!=null) ? (opts.publishDay|0) : (day+1),
+    fameDelta: copy.fameDelta,
+    paperName: copy.paperName,
+    headline: copy.headline,
+    dek: copy.dek,
+    clipLabel: copy.clipLabel,
+    rumorEcho: copy.rumorEcho,
+    templateId: copy.templateId || gated.id || "",
+    templateEventKey: resolved.eventKey,
+    tone: gated.tone || "",
+    boardScentTag: gated.boardScentTag || "",
+    storyBeatId: gated.storyBeatId || ((node && (node.id||node.beatId)) || ""),
+    choiceFlag: gated.choiceFlag || resolved.flag || "",
+    gated: gated.gated || ""
   }, opts);
 }
 function newspaperDueItems(day){
@@ -28914,7 +29131,7 @@ function renderClippingsPane(){
   if(!box) return;
   const rows = ensureNewspaperClippings();
   if(!rows.length){
-    box.innerHTML = `<article class="clip-card"><p class="clip-date">剪報</p><h4>未有剪報</h4><p>殺青或頒獎之後，下一朝的報紙會留在這裡。傳聞仍是圈內耳語，跟這疊公開剪報分開。</p></article>`;
+    box.innerHTML = `<article class="clip-card"><p class="clip-date">剪報</p><h4>未有剪報</h4><p>殺青、頒獎或事態見報之後，下一朝的報紙會留在這裡。傳聞仍是圈內耳語，跟這疊公開剪報分開。</p></article>`;
     return;
   }
   box.innerHTML = rows.map(c=>{
@@ -29012,13 +29229,104 @@ function newspaperCheck(){
       if(win && win.eventKey!=="award:1988:award_harbour_ad") fails.push("award_key");
       if(win && (win.headline+win.dek).indexOf("{playerName}")>=0) fails.push("player_token");
     }
+    const storyStub = FREEPLAY_FW && FREEPLAY_FW.newspaperStoryStub;
+    if(FREEPLAY_FW && FREEPLAY_FW.loaded && !storyStub) fails.push("story_stub");
+    if(FREEPLAY_FW && FREEPLAY_FW.loaded && !FREEPLAY_FW.newspaperStorySchema) fails.push("story_schema");
+    if(storyStub && storyStub.templates){
+      const hi = storyStub.templates.story_highlight||[];
+      const mx = storyStub.templates.story_mixed||[];
+      if(hi.length!==8) fails.push("story_hi_n");
+      if(mx.length!==6) fails.push("story_mx_n");
+      if(!storyStub.skip || !storyStub.skip["story:R_hiu_meet:distant"]) fails.push("story_skip");
+      const byTid = {};
+      hi.concat(mx).forEach(t=>{
+        if(!t) return;
+        byTid[t.id] = t;
+        const face = [t.headline, t.dek, t.paperName, t.clipLabel, t.rumorEcho].join("");
+        if(face.indexOf("聲量")>=0 || face.indexOf("噂")>=0) fails.push("story_banned:"+t.id);
+        if(t.eventKey==="story:R_hiu_meet:distant" || t.choiceFlag==="flag_hiu_meet_distant") fails.push("story_distant_tmpl");
+      });
+      if(!byTid.np_story_choi_weekly_honest_01 || byTid.np_story_choi_weekly_honest_01.fameDelta!==2) fails.push("story_q1");
+      if(!byTid.np_story_c5_dodge_01 || byTid.np_story_c5_dodge_01.fameDelta!==0) fails.push("story_q2");
+      if(!byTid.np_story_c3_hard_01 || byTid.np_story_c3_hard_01.fameDelta!==-1) fails.push("story_q3");
+      try{
+        const hookSrc = (typeof StoryOC!=="undefined" && StoryOC.applyChoice) ? StoryOC.applyChoice.toString() : "";
+        if(hookSrc.split("enqueueNewspaperFromStory(").length!==2) fails.push("story_hook");
+      }catch(_hk){ fails.push("story_hook"); }
+      S.newspaperQueue = [];
+      S.newspaperClippings = [];
+      S.pendingMorningPaper = null;
+      S.newspaperLastPresentedDay = null;
+      S.dayIndex = 0;
+      S.story = S.story || { done:{}, flags:{}, rel:{}, routes:{}, phase:"P1" };
+      S.story.flags = {};
+      S.story.rel = { rel_choi:1 };
+      S.story.favor = { agency_ho:0 };
+      const favor0 = newspaperStoryFavor("agency_ho");
+      const fameBefore = Number(S.fame)||0;
+      const honest = enqueueNewspaperFromStory({ id:"C5" }, { id:"C5_a", effects:{ flags:["choi_honest"] } }, { persist:false });
+      if(!honest || honest.pending || honest.eventKey!=="story:C5:honest" || honest.source!=="story") fails.push("story_c5_key");
+      if(!honest || (honest.publishDay|0)!==1 || honest.fameDelta!==3 || honest.tone!=="pos") fails.push("story_c5_fame");
+      if(newspaperDueItems(0).length) fails.push("story_early");
+      if(presentDueMorningPaper(function(){})) fails.push("story_early_modal");
+      if((Number(S.fame)||0)!==fameBefore) fails.push("story_fame_now");
+      if(newspaperStoryFavor("agency_ho")!==favor0) fails.push("story_favor");
+      if((S.story.rel.rel_choi|0)!==1) fails.push("story_rel");
+      if(enqueueNewspaperFromStory({ id:"C5" }, { id:"C5_a", effects:{ flags:["choi_honest"] } }, { persist:false })) fails.push("story_dedupe");
+      S.mockRumors = [];
+      S.dayIndex = 1;
+      const edStory = pullDueNewspaperEdition();
+      if(!edStory || edStory.headline.indexOf("坦率")<0) fails.push("story_edition");
+      const htmlStory = renderMorningPaperHtml(edStory||{});
+      if(htmlStory.indexOf("聲量")>=0 || htmlStory.indexOf("噂")>=0 || htmlStory.indexOf("聲望")<0) fails.push("story_face");
+      commitMorningPaper(edStory, { persist:false });
+      if((Number(S.fame)||0)!==fameBefore+3) fails.push("story_commit_fame");
+      if(!(S.newspaperClippings||[]).length) fails.push("story_clip");
+      if(!(S.mockRumors||[]).some(r=>r && r.source==="報紙" && r.state==="teased" && String(r.text||"").indexOf("坦白")>=0)) fails.push("story_rumor");
+      commitMorningPaper(edStory, { persist:false });
+      if((Number(S.fame)||0)!==fameBefore+3) fails.push("story_commit_twice");
+      S.newspaperQueue = [];
+      S.newspaperClippings = [];
+      S.pendingMorningPaper = null;
+      S.mockRumors = [];
+      S.dayIndex = 0;
+      const dodge = enqueueNewspaperFromStory({ id:"C5" }, { id:"C5_c", effects:{ flags:["choi_dodge"] } }, { persist:false });
+      if(!dodge || dodge.eventKey!=="story:C5:dodge" || dodge.fameDelta!==0) fails.push("story_dodge");
+      const distant = enqueueNewspaperFromStory({ id:"R_hiu_meet" }, { id:"C_hiu_meet_b", effects:{ flags:["flag_hiu_meet_distant"] } }, { persist:false });
+      if(distant) fails.push("story_distant");
+      const hard = enqueueNewspaperFromStory({ id:"C3" }, { id:"x", effects:{ flags:["rival_gao_hard"] } }, { persist:false });
+      if(!hard || hard.fameDelta!==-1 || hard.tone!=="mixed" || hard.eventKey!=="story:C3:hard") fails.push("story_hard");
+      S.newspaperQueue = [];
+      S.newspaperClippings = [];
+      S.pendingMorningPaper = null;
+      S.story.rel = { rel_choi:0 };
+      S.story.flags = {};
+      const low = enqueueNewspaperFromStory({ id:"C5" }, { id:"C5_a", effects:{ flags:["choi_honest"] } }, { persist:false });
+      if(!low || low.eventKey!=="story:C5:honest" || low.fameDelta!==1 || low.tone!=="mixed" || low.gated!=="rel_choi") fails.push("story_gate");
+      S.newspaperQueue = [];
+      S.newspaperClippings = [];
+      S.pendingMorningPaper = null;
+      S.npcs = S.npcs || {};
+      const agentWas = S.npcs.agent;
+      S.npcs.agent = 0;
+      S.story.favor = { agency_ho:0 };
+      const washed = newspaperStoryApplyGate({ id:"wash", tone:"pos", fameDelta:2, headline:"洗白", dek:"一行", paperName:"娛樂版" }, "story:C4:refuse");
+      if(!washed || washed.skip || washed.tone!=="mixed" || washed.fameDelta!==0) fails.push("story_favor_gate");
+      if(newspaperStoryFavor("agency_ho")!==0) fails.push("story_favor_write");
+      S.npcs.agent = agentWas;
+      S.story.favor = { agency_ho:1 };
+      const weekly = enqueueNewspaperFromStory({ id:"R_choi_meet" }, { id:"C_choi_meet_a", effects:{ flags:["flag_choi_meet_honest"], stats:{ fame:1, rel_choi:1 } } }, { persist:false });
+      if(!weekly || weekly.eventKey!=="story:R_choi_meet:honest" || weekly.fameDelta!==2 || weekly.source!=="story") fails.push("story_weekly");
+      if((Number(S.fame)||0)!==fameBefore+3) fails.push("story_weekly_fame_now");
+      if(newspaperStoryFavor("agency_ho")!==1) fails.push("story_weekly_favor");
+    }
   }catch(_err){ fails.push("throw:"+(_err&&_err.message||_err)); }
   finally{
     S = prev;
     try{ window.S = S; }catch(_e){}
     try{ if(S && typeof paintBar==="function") paintBar(); }catch(_e){}
   }
-  return { ok:!fails.length, fails:fails, softRev:"s101", version:"v20a10", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, softRev:"s102", version:"v20a10", softStatus:"≠PASS" };
 }
 try{
   window.__newspaper = {
@@ -29026,6 +29334,7 @@ try{
     enqueue: enqueueNewspaperItem,
     fromWrap: enqueueNewspaperFromWrap,
     fromAward: enqueueNewspaperFromAward,
+    fromStory: enqueueNewspaperFromStory,
     present: presentDueMorningPaper,
     queue: function(){ return ensureNewspaperQueue().slice(); },
     clippings: function(){ return ensureNewspaperClippings().slice(); },
@@ -29049,6 +29358,8 @@ async function loadFreeplayFramework(){
     awardsStub: "STUB_AWARDS_CEREMONY_v1.json",
     newspaperStub: "STUB_NEWSPAPER_MORNING_SOFT_v1.json",
     newspaperSchema: "SCHEMA_NEWSPAPER_MORNING_SOFT_v1.json",
+    newspaperStoryStub: "STUB_NEWSPAPER_STORY_SOFT_v1.json",
+    newspaperStorySchema: "SCHEMA_NEWSPAPER_STORY_SOFT_v1.json",
   };
   await Promise.all(Object.keys(files).map(async k=>{
     try{
@@ -29064,6 +29375,7 @@ async function loadFreeplayFramework(){
   try{ ensureWeakSeals(); }catch(_e){}
   try{ syncDevTagsTabVisibility(); }catch(_e){}
   try{ ensureAwardsLog(); ensureAwardsFlags(); }catch(_e){}
+  try{ flushPendingStoryPapers(); }catch(_e){}
   return FREEPLAY_FW;
 }
 try{
@@ -32460,10 +32772,10 @@ function runSoftP0Checks(){
     if(/金龍/.test(scrub.setting||"") || /金龍/.test((scrub.beats[0].lines||[])[0]||"")) bad("c1_scrub_copy");
     if(typeof c1PlayLocId==="function" && c1PlayLocId()!=="agency_ho") bad("c1_play_loc");
     if(showB01HomeModal.toString().indexOf("openLoc(\"cafe_cha\")")>=0 || showB01HomeModal.toString().indexOf("去金龍")>=0) bad("tut_cafe");
-    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s101") bad("soft_rev_attr");
+    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s102") bad("soft_rev_attr");
     try{
       var sq = String((typeof location!=="undefined" && location && location.search) || "");
-      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s101(?:&|$)/.test(sq)) bad("soft_rev_url");
+      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s102(?:&|$)/.test(sq)) bad("soft_rev_url");
       if(/(?:\?|&)v=20a1[1-9](?:&|$)/.test(sq)) bad("v_bumped");
     }catch(_rev){ bad("soft_rev_throw"); }
     if(typeof storyMainProgressLine==="function"){
@@ -32513,8 +32825,8 @@ try{ exposePreviewDebug(); }catch(_e){}
 try{
   if(typeof softPreviewOn==="function" && softPreviewOn()){
     var tip = document.getElementById("start-soft-tip");
-    if(tip && tip.textContent.indexOf("s101")<0){
-      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s101。");
+    if(tip && tip.textContent.indexOf("s102")<0){
+      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s102。");
     }
   }
 }catch(_revTip){}
