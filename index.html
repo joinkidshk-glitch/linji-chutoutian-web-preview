@@ -11,11 +11,11 @@
    GitHub Pages caches HTML for max-age=600, and the playtest box keeps a persistent cache
    keyed by the full URL. ?v=20a10&softBehaviorGate=1 therefore kept executing the pre-#99
    document (去金龍／主線) even after Pages origin sha was e4b43926.
-   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s105
-   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s105
+   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s106
+   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s106
    Bump SOFT_REV when the next Soft tip changes index.html. Do not bump ?v=. */
 (function(){
-  var SOFT_REV = "s105";
+  var SOFT_REV = "s106";
   try { document.documentElement.setAttribute("data-soft-rev", SOFT_REV); } catch (e0) {}
   try {
     var q = new URLSearchParams(location.search || "");
@@ -29063,7 +29063,8 @@ function buildNewspaperEdition(batch, day){
     dek: it.dek,
     clipLabel: it.clipLabel||"",
     fameDelta: Number(it.fameDelta)||0,
-    source: it.source
+    source: it.source,
+    rumorEcho: it.rumorEcho||""
   }));
   const overflow = rest.slice(3);
   if(overflow.length){
@@ -29144,21 +29145,40 @@ function pushNewspaperRumor(edition){
   if(!S || !edition) return;
   try{ ensureMockJournal(); }catch(_e){}
   S.mockRumors = S.mockRumors || [];
-  const id = "paper_"+String(edition.id||"");
-  if(S.mockRumors.some(r=>r && r.id===id)) return;
-  const head = edition.headline || "一則娛樂版";
-  const echo = String(edition.rumorEcho||"").trim();
-  const text = echo || ("街外報紙寫道：「"+head+"」。茶餐廳有人照著念。這是公開版面，不是圈內耳語。");
-  S.mockRumors.unshift({
-    id: id,
-    source: "報紙",
-    title: "報紙都寫了",
-    text: text,
-    state: "teased",
-    season: "",
-    fromPaper: true
+  /* #106：頭條 id 照舊。短訊另計，summary「同日還有 N 則」唔入傳聞。空 echo 用現有後備句。 */
+  const base = "paper_"+String(edition.id||"");
+  const rows = [{
+    id: base,
+    headline: edition.headline || "一則娛樂版",
+    rumorEcho: edition.rumorEcho || ""
+  }];
+  (edition.shorts||[]).forEach((s, i)=>{
+    if(!s || s.source==="summary") return;
+    const key = String(s.eventKey||"").trim() || ("s"+i);
+    rows.push({
+      id: base+"_"+key,
+      headline: s.headline || "一則娛樂版",
+      rumorEcho: s.rumorEcho || ""
+    });
   });
-  try{ syncNotebookMirror(); }catch(_e){}
+  let added = false;
+  rows.forEach(row=>{
+    if(S.mockRumors.some(r=>r && r.id===row.id)) return;
+    const head = row.headline || "一則娛樂版";
+    const echo = String(row.rumorEcho||"").trim();
+    const text = echo || ("街外報紙寫道：「"+head+"」。茶餐廳有人照著念。這是公開版面，不是圈內耳語。");
+    S.mockRumors.unshift({
+      id: row.id,
+      source: "報紙",
+      title: "報紙都寫了",
+      text: text,
+      state: "teased",
+      season: "",
+      fromPaper: true
+    });
+    added = true;
+  });
+  if(added){ try{ syncNotebookMirror(); }catch(_e){} }
 }
 function commitMorningPaper(edition, opts){
   opts = opts || {};
@@ -29627,13 +29647,90 @@ function newspaperCheck(){
       try{ if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = false; }catch(_ps105c){}
       if(_opened105){ try{ closeModal(); }catch(_cm105b){} }
     }
+    /* #106：合版年賞頭條＋C3 爭執＋廠景交換。一次收下要三則報紙傳聞，重收唔再加。 */
+    if(storyStub && storyStub.templates){
+      S.newspaperQueue = [];
+      S.newspaperClippings = [];
+      S.pendingMorningPaper = null;
+      S.newspaperLastPresentedDay = null;
+      S.mockRumors = [];
+      S.dayIndex = 10;
+      S.story = S.story || { done:{}, flags:{}, rel:{}, routes:{}, phase:"P1" };
+      const favor106 = newspaperStoryFavor("agency_ho");
+      const rel106 = (S.story.rel && (S.story.rel.rel_choi|0)) || 0;
+      const award106 = enqueueNewspaperFromAward({ skipped:false, bestOutcome:"won", year:1988, ceremonyId:"award_combo_106", medium:"ad", displayName:"維港街招年賞", press:{} }, { persist:false });
+      const hard106 = enqueueNewspaperFromStory({ id:"C3" }, { id:"x", effects:{ flags:["rival_gao_hard"] } }, { persist:false });
+      const hiu106 = enqueueNewspaperFromStory({ id:"R_hiu_meet" }, { id:"C_hiu_meet_a", effects:{ flags:["flag_hiu_meet_exchange"] } }, { persist:false });
+      if(!award106 || award106.source!=="award" || !(Math.abs(Number(award106.fameDelta)||0) > 1)) fails.push("combo_award");
+      if(!hard106 || hard106.eventKey!=="story:C3:hard" || String(hard106.rumorEcho||"").indexOf("嗌交")<0) fails.push("combo_c3");
+      if(!hiu106 || hiu106.eventKey!=="story:R_hiu_meet:exchange" || String(hiu106.rumorEcho||"").indexOf("休息角")<0) fails.push("combo_hiu");
+      if(newspaperStoryFavor("agency_ho")!==favor106) fails.push("combo_favor");
+      if(((S.story.rel && (S.story.rel.rel_choi|0)) || 0)!==rel106) fails.push("combo_rel");
+      if((award106 && (award106.publishDay|0)!==11) || (hard106 && (hard106.publishDay|0)!==11) || (hiu106 && (hiu106.publishDay|0)!==11)) fails.push("combo_pub");
+      if(newspaperDueItems(10).length) fails.push("combo_early");
+      S.dayIndex = 11;
+      const ed106 = pullDueNewspaperEdition();
+      const shorts106 = (ed106 && ed106.shorts) || [];
+      const shortC3 = shorts106.find(s=>s && s.eventKey==="story:C3:hard");
+      const shortHiu = shorts106.find(s=>s && s.eventKey==="story:R_hiu_meet:exchange");
+      if(!ed106 || ed106.source!=="award") fails.push("combo_head");
+      if(ed106 && (String(ed106.headline||"").indexOf("爭執")>=0 || String(ed106.headline||"").indexOf("休息角")>=0)) fails.push("combo_head_story");
+      if(!String(ed106 && ed106.rumorEcho || "").trim()) fails.push("combo_head_echo");
+      if(!shortC3 || String(shortC3.rumorEcho||"").indexOf("嗌交")<0) fails.push("combo_short_c3");
+      if(!shortHiu || String(shortHiu.rumorEcho||"").indexOf("休息角")<0) fails.push("combo_short_hiu");
+      if(shorts106.some(s=>s && s.source==="summary")) fails.push("combo_summary");
+      const echoText106 = (echo, headline)=>{
+        const e = String(echo||"").trim();
+        const h = headline || "一則娛樂版";
+        return e || ("街外報紙寫道：「"+h+"」。茶餐廳有人照著念。這是公開版面，不是圈內耳語。");
+      };
+      const paperRumors106 = ()=> (S.mockRumors||[]).filter(r=>r && r.source==="報紙" && r.state==="teased");
+      const fame106 = Number(S.fame)||0;
+      commitMorningPaper(ed106, { persist:false });
+      const rows106 = paperRumors106();
+      if(rows106.length!==3) fails.push("combo_rumor_n");
+      const texts106 = rows106.map(r=>String(r.text||""));
+      const want106 = [
+        echoText106(ed106 && ed106.rumorEcho, ed106 && ed106.headline),
+        echoText106(shortC3 && shortC3.rumorEcho, shortC3 && shortC3.headline),
+        echoText106(shortHiu && shortHiu.rumorEcho, shortHiu && shortHiu.headline)
+      ];
+      want106.forEach((w,i)=>{ if(texts106.indexOf(w)<0) fails.push("combo_echo_"+i); });
+      if(texts106.join("").indexOf("嗌交")<0 || texts106.join("").indexOf("休息角")<0) fails.push("combo_echo_bits");
+      const ids106 = rows106.map(r=>r.id);
+      if(ids106.length!==(new Set(ids106)).size) fails.push("combo_ids");
+      if(!ed106 || ids106.indexOf("paper_"+ed106.id)<0) fails.push("combo_head_id");
+      if(!ed106 || ids106.indexOf("paper_"+ed106.id+"_story:C3:hard")<0) fails.push("combo_c3_id");
+      if(!ed106 || ids106.indexOf("paper_"+ed106.id+"_story:R_hiu_meet:exchange")<0) fails.push("combo_hiu_id");
+      commitMorningPaper(ed106, { persist:false });
+      if(paperRumors106().length!==3) fails.push("combo_rumor_twice");
+      try{ pushNewspaperRumor(ed106); }catch(_pr106){ fails.push("combo_push_twice"); }
+      if(paperRumors106().length!==3) fails.push("combo_rumor_push_twice");
+      if((Number(S.fame)||0)!==fame106+(Number(ed106&&ed106.fameDelta)||0)) fails.push("combo_fame");
+      if(newspaperStoryFavor("agency_ho")!==favor106) fails.push("combo_favor_after");
+      S.mockRumors = [];
+      pushNewspaperRumor({
+        id: "np_fallback_106",
+        headline: "通告見報",
+        rumorEcho: "",
+        shorts: [
+          { eventKey:"", headline:"事態見報", rumorEcho:"", source:"story", fameDelta:0 },
+          { headline:"同日還有 2 則", source:"summary", fameDelta:0 }
+        ]
+      });
+      const fb106 = (S.mockRumors||[]).filter(r=>r && r.source==="報紙" && r.state==="teased");
+      if(fb106.length!==2) fails.push("combo_fallback_n");
+      if(!fb106.some(r=>r && r.id==="paper_np_fallback_106" && String(r.text||"").indexOf("街外報紙寫道：「通告見報」")===0)) fails.push("combo_fallback_head");
+      if(!fb106.some(r=>r && r.id==="paper_np_fallback_106_s0" && String(r.text||"").indexOf("街外報紙寫道：「事態見報」")===0)) fails.push("combo_fallback_short");
+      if(fb106.some(r=>r && String(r.text||"").indexOf("同日還有")>=0)) fails.push("combo_fallback_summary");
+    }
   }catch(_err){ fails.push("throw:"+(_err&&_err.message||_err)); }
   finally{
     S = prev;
     try{ window.S = S; }catch(_e){}
     try{ if(S && typeof paintBar==="function") paintBar(); }catch(_e){}
   }
-  return { ok:!fails.length, fails:fails, softRev:"s105", version:"v20a10", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, softRev:"s106", version:"v20a10", softStatus:"≠PASS" };
 }
 try{
   window.__newspaper = {
@@ -33085,10 +33182,10 @@ function runSoftP0Checks(){
     if(/金龍/.test(scrub.setting||"") || /金龍/.test((scrub.beats[0].lines||[])[0]||"")) bad("c1_scrub_copy");
     if(typeof c1PlayLocId==="function" && c1PlayLocId()!=="agency_ho") bad("c1_play_loc");
     if(showB01HomeModal.toString().indexOf("openLoc(\"cafe_cha\")")>=0 || showB01HomeModal.toString().indexOf("去金龍")>=0) bad("tut_cafe");
-    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s105") bad("soft_rev_attr");
+    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s106") bad("soft_rev_attr");
     try{
       var sq = String((typeof location!=="undefined" && location && location.search) || "");
-      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s105(?:&|$)/.test(sq)) bad("soft_rev_url");
+      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s106(?:&|$)/.test(sq)) bad("soft_rev_url");
       if(/(?:\?|&)v=20a1[1-9](?:&|$)/.test(sq)) bad("v_bumped");
     }catch(_rev){ bad("soft_rev_throw"); }
     if(typeof storyMainProgressLine==="function"){
@@ -33138,8 +33235,8 @@ try{ exposePreviewDebug(); }catch(_e){}
 try{
   if(typeof softPreviewOn==="function" && softPreviewOn()){
     var tip = document.getElementById("start-soft-tip");
-    if(tip && tip.textContent.indexOf("s105")<0){
-      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s105。");
+    if(tip && tip.textContent.indexOf("s106")<0){
+      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s106。");
     }
   }
 }catch(_revTip){}
