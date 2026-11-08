@@ -11,11 +11,11 @@
    GitHub Pages caches HTML for max-age=600, and the playtest box keeps a persistent cache
    keyed by the full URL. ?v=20a10&softBehaviorGate=1 therefore kept executing the pre-#99
    document (去金龍／主線) even after Pages origin sha was e4b43926.
-   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s106
-   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s106
+   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s107
+   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s107
    Bump SOFT_REV when the next Soft tip changes index.html. Do not bump ?v=. */
 (function(){
-  var SOFT_REV = "s106";
+  var SOFT_REV = "s107";
   try { document.documentElement.setAttribute("data-soft-rev", SOFT_REV); } catch (e0) {}
   try {
     var q = new URLSearchParams(location.search || "");
@@ -3331,10 +3331,22 @@ body.day-res-open .day-row{
   transform-origin:22% 78%;
   animation:tutFxFinger 1.1s ease-in-out infinite;
 }
+/* Replaced <img>: width/height auto keeps the PNG intrinsic box (slot 360×200,
+   edge 420×280) and drops the over-constrained inset edge, so the frame
+   overflows onto the next card. Explicit size stretches the same PNG to the
+   card ±6px. No new asset. */
 .rumor-card .tut-fx-slot,
 .rumor-card .tut-fx-edge{
-  position:absolute; inset:-6px; width:auto; height:auto;
-  object-fit:fill; pointer-events:none; z-index:2;
+  position:absolute;
+  left:-6px; right:-6px; top:-6px; bottom:-6px;
+  width:calc(100% + 12px);
+  height:calc(100% + 12px);
+  max-width:none;
+  max-height:none;
+  box-sizing:border-box;
+  object-fit:fill;
+  pointer-events:none;
+  z-index:2;
 }
 .rumor-card .tut-fx-lift{
   display:none; position:absolute; left:8%; right:8%; bottom:-6px; height:20px;
@@ -27089,7 +27101,9 @@ function renderRumorPane(){
   const merge = mergeOn ? `<div class="rumor-merge"><button type="button" id="rumor-merge-btn">${journalText(phase2Steps56Line("step6", "confirmLabel", MERGE_FLOW.confirmLabel))}</button></div>` : "";
   const whisper = `<p class="weak-whisper">${journalText(WEAK_WHISPER)}</p>`;
   const fxOn = tutorialPhase2FxOn();
-  const slotRow = (!mergeOn && fxOn) ? (heard.find(r=>picks.indexOf(r.id)<0) || heard[0] || null) : null;
+  /* Step-5 target slot, same lifetime as the drag guide. Still mounts while
+     Phase2 teaching is open; skip/merge (rumorTutorialDone) drops it. Edge glow is separate. */
+  const slotRow = (!mergeOn && fxOn && !rumorTutorialDone()) ? (heard.find(r=>picks.indexOf(r.id)<0) || heard[0] || null) : null;
   const slotId = slotRow ? slotRow.id : "";
   const drag = (fxOn && !mergeOn && heard.length && !rumorTutorialDone()) ? tutorialPhase2DragGuideHtml() : "";
   box.innerHTML = phase2Steps56CoachHtml(mergeOn) + drag + hint + merge + rows.map(raw=>{
@@ -29730,7 +29744,7 @@ function newspaperCheck(){
     try{ window.S = S; }catch(_e){}
     try{ if(S && typeof paintBar==="function") paintBar(); }catch(_e){}
   }
-  return { ok:!fails.length, fails:fails, softRev:"s106", version:"v20a10", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, softRev:"s107", version:"v20a10", softStatus:"≠PASS" };
 }
 try{
   window.__newspaper = {
@@ -33182,10 +33196,10 @@ function runSoftP0Checks(){
     if(/金龍/.test(scrub.setting||"") || /金龍/.test((scrub.beats[0].lines||[])[0]||"")) bad("c1_scrub_copy");
     if(typeof c1PlayLocId==="function" && c1PlayLocId()!=="agency_ho") bad("c1_play_loc");
     if(showB01HomeModal.toString().indexOf("openLoc(\"cafe_cha\")")>=0 || showB01HomeModal.toString().indexOf("去金龍")>=0) bad("tut_cafe");
-    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s106") bad("soft_rev_attr");
+    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s107") bad("soft_rev_attr");
     try{
       var sq = String((typeof location!=="undefined" && location && location.search) || "");
-      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s106(?:&|$)/.test(sq)) bad("soft_rev_url");
+      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s107(?:&|$)/.test(sq)) bad("soft_rev_url");
       if(/(?:\?|&)v=20a1[1-9](?:&|$)/.test(sq)) bad("v_bumped");
     }catch(_rev){ bad("soft_rev_throw"); }
     if(typeof storyMainProgressLine==="function"){
@@ -33235,8 +33249,8 @@ try{ exposePreviewDebug(); }catch(_e){}
 try{
   if(typeof softPreviewOn==="function" && softPreviewOn()){
     var tip = document.getElementById("start-soft-tip");
-    if(tip && tip.textContent.indexOf("s106")<0){
-      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s106。");
+    if(tip && tip.textContent.indexOf("s107")<0){
+      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s107。");
     }
   }
 }catch(_revTip){}
