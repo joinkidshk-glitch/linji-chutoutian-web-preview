@@ -18117,7 +18117,7 @@ const BehaviorGate = (function(){
 
   function loadStub_nodes_trigger(data){
     if(!data || !Array.isArray(data.nodes)) return { ok:false, reason:"nodes" };
-    if(data.stubRev!=="v1.2.0-engine-slice") return { ok:false, reason:"stubRev" };
+    if(data.stubRev!=="v1.3.0-full-literal-or") return { ok:false, reason:"stubRev" };
     if(data.liveWeekGateStillActive!==true || data.tipForbidden!==true) return { ok:false, reason:"flags" };
     const slice = data.engineSlice || {};
     const flags = slice.flags || {};
@@ -18187,14 +18187,31 @@ const BehaviorGate = (function(){
     if(!stepNeed(trig, ctx)) bits.push("先完成上一幕");
     if(!stepDays(trig, ctx)) bits.push("距上一幕再隔一日");
     if(!stepWeek(trig, ctx)) bits.push("未到第 "+Number(trig.weekMin)+" 週（現第 "+ctx.week+" 週）");
-    if(!stepLoc(trig, ctx, {})){
-      const names = (trig.locIdAny||[]).map(locPlayerName);
-      if(names.length) bits.push("先到"+names.join("或")+"，先可以播這幕");
-    }
-    if((Number(trig.favorMin)||0) > 0){
-      const have = favorValue(trig.favorTarget||"agency_ho", ctx);
+    if(trig.softLogic==="OR"){
       const min = Number(trig.favorMin)||0;
-      if(have < min) bits.push("何生人情未夠（現 "+have+"／需要 "+min+"）");
+      const dmin = Number(trig.debtMin)||0;
+      const have = favorValue(trig.favorTarget||"agency_ho", ctx);
+      const debt = debtCount(ctx);
+      const leftOk = (min>0 && have>=min) || (dmin>0 && debt>=dmin);
+      const locs = trig.locIdAny||[];
+      const locOk = !locs.length || locs.indexOf(ctx.atLoc)>=0;
+      if(!leftOk && !locOk){
+        const orBits = [];
+        if(dmin>0) orBits.push("人情債 "+debt+"／"+dmin);
+        if(min>0) orBits.push("何生人情 "+have+"／"+min);
+        if(locs.length) orBits.push("或到"+locs.map(locPlayerName).join("或"));
+        if(orBits.length) bits.push(orBits.join("／"));
+      }
+    } else {
+      if(!stepLoc(trig, ctx, {})){
+        const names = (trig.locIdAny||[]).map(locPlayerName);
+        if(names.length) bits.push("先到"+names.join("或")+"，先可以播這幕");
+      }
+      if((Number(trig.favorMin)||0) > 0){
+        const have = favorValue(trig.favorTarget||"agency_ho", ctx);
+        const min = Number(trig.favorMin)||0;
+        if(have < min) bits.push("何生人情未夠（現 "+have+"／需要 "+min+"）");
+      }
     }
     if(!stepFame(trig, ctx)) bits.push("聲望未夠（現 "+(Number(ctx.fame)||0)+"／需要多於 15）");
     if(!stepGig(trig, ctx)){
@@ -18317,6 +18334,14 @@ const BehaviorGate = (function(){
       return Number(bag[t])||0;
     }catch(_e){ return 0; }
   }
+  /** Soft FULL-literal C4：人情債數（mockDebts／ctx.debt）。debtMin>0 時作 softLogic OR 左肢。 */
+  function debtCount(ctx){
+    if(ctx && ctx.debt!=null) return Number(ctx.debt)||0;
+    try{
+      if(typeof S!=="undefined" && S && Array.isArray(S.mockDebts)) return S.mockDebts.length;
+    }catch(_e){}
+    return 0;
+  }
   function readCtx(opts){
     const has = !!(opts && opts.ctx);
     const raw = has ? opts.ctx : {};
@@ -18327,6 +18352,7 @@ const BehaviorGate = (function(){
       atLoc: raw.atLoc!==undefined ? raw.atLoc : (has ? null : liveAt()),
       fame: raw.fame!=null ? Number(raw.fame) : (has ? 0 : liveFame()),
       favor: raw.favor!=null ? Number(raw.favor) : null,
+      debt: raw.debt!=null ? Number(raw.debt) : null,
       gigCount: raw.gigCount!=null ? Number(raw.gigCount) : null,
       season: raw.season!=null ? raw.season : (has ? "" : liveSeason()),
       rumors: Array.isArray(raw.rumors) ? raw.rumors.slice() : (has ? [] : liveRumors()),
@@ -18355,22 +18381,34 @@ const BehaviorGate = (function(){
     return Number(ctx.week) >= Number(trig.weekMin);
   }
   function stepLoc(trig, ctx, opts){
-    /* HUD／chip 唔跟當前 loc sheet。真正開播仍然查地點。 */
+    /* HUD／chip 唔跟當前 loc sheet。真正開播仍然查地點。
+       softLogic OR：loc 係右肢，交 stepFavor 判，呢步唔硬卡。 */
     if(opts && opts.ignoreSheetLoc) return true;
+    if(trig && trig.softLogic==="OR") return true;
     const locs = trig.locIdAny||[];
     if(!locs.length) return true;
     return locs.indexOf(ctx.atLoc)>=0;
   }
   function stepFavor(trig, ctx, opts){
-    /* favor∧loc when softLogic is AND. Never OR. */
+    /* favor∧loc when softLogic is AND.
+       softLogic OR（FULL C4 字面）：左肢＝debtMin>0 嘅人情債 或 favorMin；右肢＝loc。
+       2026-11-08 用戶 full_literal_including_gates：C4 用 OR。 */
     const min = Number(trig.favorMin)||0;
-    if(!trig.softLogic && !trig.favorTarget && min<=0) return true;
-    const favorOk = favorValue(trig.favorTarget||"agency_ho", ctx) >= min;
+    const debtMin = Number(trig.debtMin)||0;
+    if(!trig.softLogic && !trig.favorTarget && min<=0 && debtMin<=0) return true;
+    const favorOk = min>0 ? (favorValue(trig.favorTarget||"agency_ho", ctx) >= min) : false;
+    const debtOk = debtMin>0 ? (debtCount(ctx) >= debtMin) : false;
     const locs = trig.locIdAny||[];
     const locOk = (opts && opts.ignoreSheetLoc) || !locs.length || locs.indexOf(ctx.atLoc)>=0;
-    if(trig.softLogic==="AND") return !!(favorOk && locOk);
+    if(trig.softLogic==="OR"){
+      /* FULL：人情債>0（或 favor 近似）OR loc */
+      const anyLeft = (debtMin>0 || min>0) ? !!(favorOk || debtOk) : false;
+      if(debtMin>0 || min>0) return !!(anyLeft || locOk);
+      return !!locOk;
+    }
+    if(trig.softLogic==="AND") return !!( (min>0 ? favorOk : true) && (debtMin>0 ? debtOk : true) && locOk );
     if(trig.favorTarget) return !!(favorOk && locOk);
-    return !!favorOk;
+    return min>0 ? !!favorOk : true;
   }
   function stepFame(trig, ctx){
     if(trig.fameMin==null && !trig.fameCompare) return true;
@@ -18504,10 +18542,11 @@ const BehaviorGate = (function(){
       if(!n || Number(n.trigger.weekMin)!==floors[id]) bad("week_floor:"+id);
     });
     const c1 = byId.C1;
-    if(!c1 || c1.locId!=="cafe_cha" || (c1.trigger.locIdAny||[]).join()!=="cafe_cha") bad("c1_loc");
-    const base = { dayIndex:40, lastMainDoneDay:10, gigCount:0, fame:0, favor:0, rumors:[], season:"春" };
-    if(sample("C1", Object.assign({}, base, { week:1, atLoc:"cafe_cha" })).ok!==true) bad("c1_pass");
-    if(sample("C1", Object.assign({}, base, { week:1, atLoc:"tvb_longmen" })).ok!==false) bad("c1_wrong_loc");
+    if(!c1 || c1.locId!=="agency_ho" || (c1.trigger.locIdAny||[]).join()!=="agency_ho") bad("c1_loc");
+    const base = { dayIndex:40, lastMainDoneDay:10, gigCount:0, fame:0, favor:0, debt:0, rumors:[], season:"春" };
+    if(sample("C1", Object.assign({}, base, { week:1, atLoc:"agency_ho" })).ok!==true) bad("c1_pass");
+    if(sample("C1", Object.assign({}, base, { week:1, atLoc:"cafe_cha" })).ok!==false) bad("c1_wrong_loc");
+    if(sample("C1", Object.assign({}, base, { week:1, atLoc:"tvb_longmen" })).ok!==false) bad("c1_wrong_loc_tvb");
     const c2ok = { week:4, atLoc:"cafe_cha", done:{ C1:true }, gigCount:3, rumors:["tvb_rules_gossip"], dayIndex:20, lastMainDoneDay:10 };
     if(sample("C2", c2ok).ok!==true) bad("c2_pass");
     if(sample("C2", Object.assign({}, c2ok, { gigCount:2 })).ok!==false) bad("c2_gigs");
@@ -18521,11 +18560,14 @@ const BehaviorGate = (function(){
     if(sample("C3", Object.assign({}, c3base, { fame:17 })).ok!==true) bad("c3_fame17");
     const c3flags = JSON.stringify((c3&&c3.flags)||{});
     if(c3flags.indexOf("rival_gao_hard")<0 || c3flags.indexOf("rival_gao_endure")<0) bad("c3_rival_flags");
-    const c4base = { week:8, done:{ C3:true }, dayIndex:40, lastMainDoneDay:30 };
-    if(byId.C4.trigger.softLogic!=="AND" || byId.C4.trigger.favorTarget!=="agency_ho" || byId.C4.trigger.favorMin!==1) bad("c4_contract");
-    if(sample("C4", Object.assign({}, c4base, { atLoc:"agency_ho", favor:1 })).ok!==true) bad("c4_pass");
-    if(sample("C4", Object.assign({}, c4base, { atLoc:"agency_ho", favor:0 })).ok!==false) bad("c4_favor0");
-    if(sample("C4", Object.assign({}, c4base, { atLoc:"cafe_cha", favor:5 })).ok!==false) bad("c4_or_forbidden");
+    const c4base = { week:8, done:{ C3:true }, dayIndex:40, lastMainDoneDay:30, debt:0 };
+    if(byId.C4.trigger.softLogic!=="OR" || byId.C4.trigger.favorTarget!=="agency_ho" || byId.C4.trigger.favorMin!==1 || Number(byId.C4.trigger.debtMin)!==1) bad("c4_contract");
+    /* FULL OR：loc=agency_ho 單獨可開；或 debt≥1；或 favor≥1（Soft 近似左肢） */
+    if(sample("C4", Object.assign({}, c4base, { atLoc:"agency_ho", favor:0, debt:0 })).ok!==true) bad("c4_loc_only");
+    if(sample("C4", Object.assign({}, c4base, { atLoc:"cafe_cha", favor:0, debt:1 })).ok!==true) bad("c4_debt_only");
+    if(sample("C4", Object.assign({}, c4base, { atLoc:"cafe_cha", favor:1, debt:0 })).ok!==true) bad("c4_favor_approx");
+    if(sample("C4", Object.assign({}, c4base, { atLoc:"cafe_cha", favor:0, debt:0 })).ok!==false) bad("c4_neither");
+    if(sample("C4", Object.assign({}, c4base, { atLoc:"agency_ho", favor:1, debt:0 })).ok!==true) bad("c4_pass");
     const c5 = byId.C5;
     const c5flags = JSON.stringify((c5&&c5.flags)||{});
     if(c5flags.indexOf("rival_gao")>=0) bad("c5_rival_mix");
@@ -18558,7 +18600,7 @@ const BehaviorGate = (function(){
     if(liveWeekGateStillActive()!==true) bad("soft_retires_live");
     const order = ((stub.engineSlice && stub.engineSlice.evalOrder) || []).join(">");
     if(order!=="needDone>minDaysAfterPrev>weekMin_floor>locIdAny>favor_AND_loc>fameCompare>gigCountMin>seasonAny>rumorSoftPriority>tagAny>relAny") bad("eval_order");
-    if(sample("C1", Object.assign({}, base, { week:1, atLoc:"agency_ho" })).ok!==false) bad("c1_old_agency");
+    if(sample("C1", Object.assign({}, base, { week:1, atLoc:"cafe_cha" })).ok!==false) bad("c1_old_cafe");
     const fame15 = sample("C3", Object.assign({}, c3base, { fame:15 }));
     if(fame15.ok!==false || (fame15.reasons||[])[0]!=="fameCompare") bad("c3_fame15_step");
     if(sample("C4", Object.assign({}, c4base, { atLoc:"agency_ho", favor:1, done:{ C2:true } })).ok!==false) bad("c4_skip_c3");
@@ -18603,7 +18645,22 @@ const BehaviorGate = (function(){
         const names = (trig.locIdAny||[]).map(locPlayerName);
         if(names.length) remain.push("到"+names.join("或"));
       }
-      if((Number(trig.favorMin)||0)>0){
+      if(trig.softLogic==="OR"){
+        const min = Number(trig.favorMin)||0;
+        const dmin = Number(trig.debtMin)||0;
+        const have = favorValue(trig.favorTarget||"agency_ho", ctx);
+        const debt = debtCount(ctx);
+        const leftOk = (min>0 && have>=min) || (dmin>0 && debt>=dmin);
+        const locs = trig.locIdAny||[];
+        const locOk = !locs.length || locs.indexOf(ctx.atLoc)>=0;
+        if(!leftOk && !locOk){
+          const bits = [];
+          if(dmin>0) bits.push("人情債 "+debt+"／"+dmin);
+          if(min>0) bits.push("何生人情 "+have+"／"+min);
+          if(locs.length) bits.push("或到"+locs.map(locPlayerName).join("或"));
+          if(bits.length) remain.push(bits.join("／"));
+        }
+      } else if((Number(trig.favorMin)||0)>0){
         const have = favorValue(trig.favorTarget||"agency_ho", ctx);
         const min = Number(trig.favorMin)||0;
         if(have < min) remain.push("何生人情 "+have+"／"+min);
@@ -18685,6 +18742,7 @@ const BehaviorGate = (function(){
     readCtx: readCtx,
     done: done,
     favorValue: favorValue,
+    debtCount: debtCount,
     heldEval: heldEval,
     sample: sample,
     selfCheck: selfCheck,
@@ -19129,8 +19187,8 @@ const DualMeet = (function(){
     if(!mock) bad("mock_missing");
     const hiu = nodeById("R_hiu_meet");
     const choi = nodeById("R_choi_meet");
-    if(!hiu || hiu.beats.length!==6 || hiu.playerMeta!=="主線 · 1988春" || hiu.chromeSeason!=="spring") bad("hiu");
-    if(!choi || choi.beats.length!==6 || choi.playerMeta!=="主線 · 1988夏" || choi.chromeSeason!=="summer") bad("choi");
+    if(!hiu || hiu.beats.length!==6 || hiu.playerMeta!=="支線 · 1988春" || hiu.chromeSeason!=="spring") bad("hiu");
+    if(!choi || choi.beats.length!==6 || choi.playerMeta!=="支線 · 1988夏" || choi.chromeSeason!=="summer") bad("choi");
     const hiuIds = (hiu && hiu.choices || []).map(c=>c.id+"|"+((c.effects&&c.effects.flags)||[]).join(","));
     const choiIds = (choi && choi.choices || []).map(c=>c.id+"|"+((c.effects&&c.effects.flags)||[]).join(","));
     if(hiuIds.join(";")!=="C_hiu_meet_a|flag_hiu_meet_exchange;C_hiu_meet_b|flag_hiu_meet_distant") bad("hiu_flags");
