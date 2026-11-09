@@ -125,6 +125,14 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
   border:1px solid #C9A227;background:#C9A227;color:#1A1410;font-weight:800;
   font-size:.72rem;cursor:pointer;
 }
+/* v20a34 引導包：通告卡差額／頁面白話說明／債來歷／雙軌解釋／壓力後果 */
+.gt-gap{margin-top:4px;font-size:.74rem;font-weight:700;color:#8a5a12}
+.gt-closest{display:inline-block;margin-left:6px;padding:0 6px;border-radius:999px;background:#C9A227;color:#1A1410;font-size:.68rem;font-weight:800}
+.req-gap{font-weight:700;color:#8a5a12}
+.pane-intro{margin:0 0 8px;font-size:.78rem;line-height:1.5;color:#5a4328;background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.35);border-radius:8px;padding:6px 8px}
+.debt-row .debt-origin{margin:6px 0 0;font-size:.75rem;line-height:1.4;color:#6b4e2e}
+.sp-dual-explain{margin:8px 0 0;font-size:.8rem;line-height:1.55;color:#5a4328;background:rgba(201,162,39,.12);border-radius:8px;padding:6px 8px}
+.stress-impact{font-size:.8rem;line-height:1.5}
 
 .view{display:none;flex:1;min-height:0;flex-direction:column}
 .view.on{display:flex}
@@ -19008,6 +19016,29 @@ const BehaviorGate = (function(){
     };
     return map[id] || "相關傳聞";
   }
+  /* v20a34 引導包 P0-3：傳聞「去邊度聽」提示——由 MOCK_ASK 邊啲行動 grantsRumorId
+     真係派呢塊傳聞反推地點＋行動名，唔靠手寫對照，免再出現「叫人去星河電視台
+     聽守則、但嗰度冇打聽掣」呢種死路（電視城守則只有茶餐廳「打聽電視城規矩」同
+     事務所「請教何生入廠守則」派到）。full=連行動名（鎖定說明用）；短版只列地點
+     ＋「打聽」（底欄空間有限）。無行動派到就回 ""（呼叫方維持舊文案）。 */
+  function rumorHearHint(rid, full){
+    try{
+      if(typeof MOCK_ASK==="undefined" || !MOCK_ASK || !rid) return "";
+      const fullParts=[], locNames=[];
+      Object.keys(MOCK_ASK).forEach(locId=>{
+        (MOCK_ASK[locId]||[]).forEach(a=>{
+          if(a && a.grantsRumorId===rid){
+            const nm = locPlayerName(locId);
+            if(locNames.indexOf(nm)<0) locNames.push(nm);
+            fullParts.push("去"+nm+"「"+(a.title||"打聽")+"」");
+          }
+        });
+      });
+      if(!locNames.length) return "";
+      if(full) return fullParts.join("或");
+      return "去"+locNames.join("或")+"打聽";
+    }catch(_e){ return ""; }
+  }
   /* 主線 C5 鎖因：秋或冬＋同支線小訪分開。唔好只寫「檔期未到該季」。 */
   function c5SeasonLockLine(season){
     const now = season ? ("目前是"+season+"。") : "";
@@ -19071,7 +19102,11 @@ const BehaviorGate = (function(){
     }
     if(!stepRumor(trig, ctx)){
       const titles = (trig.rumorAny||[]).map(rumorPlayerTitle);
-      if(titles.length) bits.push("未聽聞"+titles.join("或"));
+      if(titles.length){
+        /* v20a34 引導包 P0-3：補埋去邊度聽（跟 rumorHearHint 真行動），唔好淨叫人「未聽聞」又唔講去邊聽 */
+        const hint = rumorHearHint((trig.rumorAny||[])[0], true);
+        bits.push("未聽聞"+titles.join("或")+(hint ? "（"+hint+"）" : ""));
+      }
     }
     if(!bits.length) return "";
     return "事態未解鎖："+bits.join("；")+"。";
@@ -19595,11 +19630,16 @@ const BehaviorGate = (function(){
       else if(gigNeed>0) remain.push("通告 "+Math.min(gigHave,gigNeed)+"／"+gigNeed+"✓");
       if(!stepRumor(trig, ctx)){
         const titles = (trig.rumorAny||[]).map(rumorPlayerTitle);
-        if(titles.length) remain.push("未聽聞"+titles.join("或"));
+        if(titles.length){
+          /* v20a34 引導包 P0-3：底欄補短版「去邊度打聽」，同播幕地點分開寫，免誤讀做去電視台聽守則 */
+          const hint = rumorHearHint((trig.rumorAny||[])[0], false);
+          remain.push("未聽聞"+titles.join("或")+(hint ? "（"+hint+"）" : ""));
+        }
       }
       if(!stepLoc(trig, ctx, {})){
         const names = (trig.locIdAny||[]).map(locPlayerName);
-        if(names.length) remain.push("到"+names.join("或"));
+        /* v20a34 引導包 P0-3：呢啲係「播呢幕」嘅地點，加「播」字同聽傳聞嘅地點分返開 */
+        if(names.length) remain.push("到"+names.join("或")+"播");
       }
       if(trig.softLogic==="OR"){
         const min = Number(trig.favorMin)||0;
@@ -21024,10 +21064,12 @@ const StoryPlay = (()=>{
       try{ S.flags = S.flags||{}; S.flags.storyProgressHint = (node && (node.title||node.id)) || ""; }catch(_f){}
     }
     const dualHtml = (typeof dualResultHtml==="function") ? dualResultHtml(result && result.dual) : "";
+    /* v20a34 引導包 P1-1(b)：第一次畀雙軌嗰陣補一句白話解釋（只出一次） */
+    const dualExplain34 = (typeof dualTrackExplainHtml34==="function") ? dualTrackExplainHtml34(result) : "";
     const body = `<div class="story-play sp-result">
       <p>已完成「${esc(node.title||node.id)}」<span class="sp-done-tag">進度 +1</span></p>
       <p>你的選擇：<b>${esc(choice.label||choice.id)}</b></p>
-      ${dualHtml}
+      ${dualHtml}${dualExplain34}
       <p>影響：</p><ul>${lis}</ul>
       ${nextHtml}
     </div>`;
@@ -24012,6 +24054,22 @@ function dualResultHtml(dual){
       <span class="sp-dual-track"><i class="dual-swatch dual-swatch-credit" aria-hidden="true"></i>業內信用 <b class="sp-industry-credit">${ic}</b>${dualDeltaBit(d.dCredit)}</span>
     </div>`;
 }
+/* v20a34 引導包 P1-1(b)：雙軌白話解釋——只喺「事態結算第一次真係畀咗聲望／信用」
+   （result.dual 有正 delta）嗰陣出一次，之後靠 S.flags 記住唔再彈。
+   刻度跟真門檻：報紙點名 newspaperNameTier——聲望 15 起點名（named）、40 起
+   「人氣新人」（titled）；信用係之後節點／通告入場嘅隱形門檻（例：1989 救場要信用夠班）。 */
+function dualTrackExplainHtml34(result){
+  try{
+    if(typeof S==="undefined" || !S) return "";
+    S.flags = S.flags || {};
+    if(S.flags.guidanceDualExplained34) return "";
+    const d = result && result.dual;
+    if(!d || !((Number(d.dStage)||0)>0 || (Number(d.dCredit)||0)>0)) return "";
+    S.flags.guidanceDualExplained34 = true;
+    try{ if(typeof saveQ==="function") saveQ(); }catch(_e){}
+    return `<p class="sp-dual-explain">何生提你：聲望＝觀眾識唔識你——去到 15，報紙開始寫你個名；去到 40，就當你係「人氣新人」。信用＝行內人信唔信你交到戲——越高，越有人肯畀大單你、嗌你救場。兩條一齊升，先企得穩。</p>`;
+  }catch(_e){ return ""; }
+}
 try{
   window.__dualHud = {
     read: function(){ return readDualTracks(S); },
@@ -24519,8 +24577,9 @@ function gigCardHtml(g, opts){
   }catch(_e){}
   const meta = metaBits.length ? `<div class="meta">${metaBits.join(" · ")}</div>` : "";
   /* PLAN §2.1 板面短標 */
+  /* v20a34 引導包 P0-1：鎖定卡直接寫埋欠幾多（差額計法喺 gigGapLine34，同詳情頁同一套） */
   const rate = !gate.ok
-    ? `🔒 暫未能報 · 條件未合`
+    ? `🔒 暫未能報 · 條件未合${(()=>{ try{ const gl=(typeof gigGapLine34==="function")?gigGapLine34(g):""; return gl?`<br><span class="req-gap">${gl}</span>`:""; }catch(_e){ return ""; } })()}`
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
@@ -24694,7 +24753,34 @@ function gigTotalWorkDays(g){
     return (g && g.shootDaysHint) || 1;
   }
 }
-function gigBoardTeaserHtml(g){
+/* ===== v20a34 引導包 P0-1：通告卡面差額。
+   計法同詳情頁（castingNoticeDetailHtml／gigLockReasonLine）完全同一套：
+   聲望行 fameFloor(g) 對 S.fame；其餘逐項 g.req 對 S[k]，用 STAT_LABEL 命名。
+   只計「現值 < 需要值」嘅項，唔郁 canAudition／門檻／排序。 ===== */
+function gigGapBits34(g){
+  const bits=[];
+  try{
+    if(!g) return bits;
+    const floor=(typeof fameFloor==="function") ? fameFloor(g) : 0;
+    const curF=Number(S && S.fame)||0;
+    if(floor>0 && curF<floor) bits.push({ label:"聲望", gap:floor-curF });
+    Object.entries(g.req||{}).forEach(([k,v])=>{
+      const need=Number(v)||0, cur=Number(S && S[k])||0;
+      if(cur<need) bits.push({ label:(typeof STAT_LABEL!=="undefined" && STAT_LABEL[k]) || k, gap:need-cur });
+    });
+  }catch(_e){}
+  return bits;
+}
+function gigGapTotal34(g){
+  return gigGapBits34(g).reduce((acc,b)=>acc+(Number(b.gap)||0),0);
+}
+function gigGapLine34(g){
+  const bits=gigGapBits34(g);
+  if(!bits.length) return "";
+  return "欠："+bits.map(b=>b.label+" "+b.gap).join("／");
+}
+function gigBoardTeaserHtml(g, opts){
+  opts=opts||{};
   /* 通告欄短卡；點開先出招募單 Detail */
   const work=gigWorkTitle(g);
   const genre=(g && g.genreLabel) ? String(g.genreLabel) : gigTypeCoarse(g);
@@ -24719,12 +24805,22 @@ function gigBoardTeaserHtml(g){
   /* Weave 修復（v20a22）：短卡只出輕量標記，成句情報留返詳情頁／gigCardHtml，先唔好塞爆短卡。 */
   let intelMark = "";
   try{ if(typeof intelLineForGig==="function" && intelLineForGig(g)) intelMark = `<div class="gt-intel">💡 有情報</div>`; }catch(_e){}
+  /* v20a34 引導包 P0-1：鎖定短卡直接列差額，唔使逐張點入詳情先知欠幾多；
+     齊條件（ready）卡唔加字。opts.closest 由 doScout 計（全板差額最少嗰張）先傳入。 */
+  let gapHtml = "";
+  if(boardState==="locked"){
+    try{
+      const gl = gigGapLine34(g);
+      if(gl) gapHtml = `<div class="gt-gap">${gl}${opts.closest?`<span class="gt-closest">最接近</span>`:""}</div>`;
+    }catch(_e){}
+  }
   return `<div class="gig-teaser" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
     <img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>
     <div class="gt-title">${work}</div>
     <div class="gt-row"><span class="gt-pill">${genre}</span><span class="${badgeCls}">${badgeText}</span></div>
     ${meta?`<div class="gt-meta">${meta}</div>`:""}
     ${intelMark}
+    ${gapHtml}
     <div class="gt-hint">點開查看通告</div>
   </div>`;
 }
@@ -26610,6 +26706,25 @@ function commitPlanAndGo(){
   toast("行程已定");
   runScheduleFromToday();
 }
+/* ===== v20a34 引導包 P1-1(a)：壓力後果白話——數字必須同真碼分支一致：
+   打工收入（resolvePlannedDay 嘅 street／cafe_gig）：壓力 >=90 → pay×0.2（下限 $50）；
+   >=70 → pay×0.5（下限 $80）；<70 唔打折。
+   試鏡成功率（chance()）：>=70 → p×0.78；>=90 → 再 p×0.7（兩段累乘＝×0.546）。 ===== */
+function stressImpact34(s){
+  s = Number(s)||0;
+  let income = 1, audition = 1;
+  if(s>=70){ income = 0.5; audition = 0.78; }
+  if(s>=90){ income = 0.2; audition = 0.78*0.7; }
+  return { stress:s, income, audition };
+}
+function stressImpactLine34(s){
+  const im = stressImpact34(s);
+  const pct = (m)=> Math.round(m*100)+"%";
+  if(im.stress>=90) return `後果講明：壓力 ${im.stress} 嗰陣去打工（街頭表演／咖啡店駐場），收入只得返約 ${pct(im.income)}；試鏡成功率打到約 ${pct(im.audition)}。唔好硬頂——先排休息回氣。`;
+  if(im.stress>=70) return `後果講明：壓力 ${im.stress} 嗰陣去打工（街頭表演／咖啡店駐場），收入只得返約 ${pct(im.income)}；試鏡成功率亦打到約 ${pct(im.audition)}。`;
+  if(im.stress>=52) return `後果講明：壓力 ${im.stress} 未到打折線——去到 70 先開始扣打工收入同試鏡成功率。而家排多日休息，仲嚟得切。`;
+  return `後果講明：壓力 ${im.stress} 健康——70 以下唔影響打工收入同試鏡成功率，照衝都得。`;
+}
 function showStressPreviewModal(pv, go){
   const risk = pv.peak>=90 ? `<p class="warn">本週壓力高峰約 ${pv.peak}（易爆表，試鏡易飛）——建議加休息。</p>`
     : (pv.peak>=70 ? `<p class="bad">本週壓力高峰約 ${pv.peak}，偏高。</p>`
@@ -26624,7 +26739,7 @@ function showStressPreviewModal(pv, go){
     ? `<p class="good" style="font-size:.78rem">呢週屬低風險／全日休息都得——撳「確定出發」就會落實行程。</p>` : "";
   modal(`<h3>本週壓力預覽</h3>
     <p>確定前估吓壓力：而家 <b>${pv.start}</b> → 週末累計約 <b>${pv.end}</b></p>
-    ${risk}${lowNote}
+    ${risk}<p class="stress-impact">${stressImpactLine34(pv.peak)}</p>${lowNote}
     <div class="stress-preview">${rows}</div>
     <p>生活費預覽：週末扣 <b>$${livingEst.toLocaleString()}</b>（定額，週結算照此數扣）。而家存款 <b>$${(S.money||0).toLocaleString()}</b></p>
     ${(()=>{ try{
@@ -27749,12 +27864,23 @@ function paintBar(){
         if(typeof todayHasSoftSchedule==="function" && todayHasSoftSchedule()){
           startToday = `<button type="button" class="map-start-today" id="map-start-today">開始今日行程</button>`;
         }
+        /* v20a34 引導包 P0-4：逛逛日（到處逛逛）冇「開始今日行程」掣，新玩家會困喺同一日。
+           喺同一個位補「過一日」掣——撳落去行現有 confirmEarlyRestFromMenu（二次確認→
+           endBrowseDayGoHome 完結日路徑），唔寫新結算；有安排活動嘅日子唔出呢個掣。 */
+        if(!startToday && typeof todayPlanId==="function" && typeof isMapDay==="function"
+          && isMapDay(todayPlanId()) && !(S && S.homeEditable)){
+          startToday = `<button type="button" class="map-start-today" id="map-end-day" title="今日係自由逛逛：周圍行、打聽、睇通告欄都唔耗日；逛完撳呢個掣返屋企瞓，過到下一日">逛完・過一日</button>`;
+        }
       }catch(_st){}
       return `<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${startToday}<span class="map-hint-help" title="有通告／情報／「劇」事態見圖例">${helpSoft}</span>${storyLine}`;
     })();
   try{
     const stBtn=document.getElementById("map-start-today");
     if(stBtn) stBtn.onclick=(ev)=>{ ev.preventDefault(); ev.stopPropagation(); try{ startTodayScheduleFromMap(); }catch(_e){} };
+  }catch(_e){}
+  try{
+    const edBtn=document.getElementById("map-end-day");
+    if(edBtn) edBtn.onclick=(ev)=>{ ev.preventDefault(); ev.stopPropagation(); try{ confirmEarlyRestFromMenu(); }catch(_e){} };
   }catch(_e){}
   try{ paintStoryEntryHints(); }catch(_e){}
   try{ exposePreviewDebug(); }catch(_e){}
@@ -30138,9 +30264,11 @@ function renderRumorPane(){
   if(!box) return;
   applyPhase2Steps56TabLabel();
   ensureMockJournal();
+  /* v20a34 引導包 P0-5(c)：傳聞頁白話總說明（教學 coach 係步驟指示，唔係頁面用途說明，兩者唔重複） */
+  const intro34=`<p class="pane-intro">呢頁係你聽返嚟嘅傳聞碎片：每張都寫明喺邊度聽返嚟。揀兩張相關嘅可以拼合成情報——情報幫你開到隱藏通告，重要場面識點應對。</p>`;
   const rows=S.mockRumors||[];
   if(!rows.length){
-    box.innerHTML=phase2Steps56CoachHtml(false)+`<article class="rumor-card rumor-empty"><p class="rumor-src">傳聞</p><p>${journalText(MOCK_EMPTY.rumors)}</p></article>`;
+    box.innerHTML=intro34+phase2Steps56CoachHtml(false)+`<article class="rumor-card rumor-empty"><p class="rumor-src">傳聞</p><p>${journalText(MOCK_EMPTY.rumors)}</p></article>`;
     return;
   }
   ensureWeakSeals();
@@ -30159,7 +30287,7 @@ function renderRumorPane(){
   const slotRow = (!mergeOn && fxOn && !rumorTutorialDone()) ? (heard.find(r=>picks.indexOf(r.id)<0) || heard[0] || null) : null;
   const slotId = slotRow ? slotRow.id : "";
   const drag = (fxOn && !mergeOn && heard.length && !rumorTutorialDone()) ? tutorialPhase2DragGuideHtml() : "";
-  box.innerHTML = phase2Steps56CoachHtml(mergeOn) + drag + hint + merge + rows.map(raw=>{
+  box.innerHTML = intro34 + phase2Steps56CoachHtml(mergeOn) + drag + hint + merge + rows.map(raw=>{
     const r = displayRumor(raw) || raw;
     const label = rumorStateLabel(r.state);
     const picked = picks.indexOf(r.id)>=0;
@@ -30173,7 +30301,10 @@ function renderRumorPane(){
       if(glow) fx += tutorialFxImg("tut-fx-edge","fx_merge_edge_glow.png");
     }
     const seedTag = (r.tutorialSeed || r.seeded) ? `<span class="rumor-seed-tag">街坊傳聞</span>` : "";
-    return `<article class="rumor-card${picked?" is-picked":""}${glow}${can?" can-pick":""}${r.stamp?" is-stamped":""}" data-rumor-id="${journalText(r.id)}"><p class="rumor-src">來源：${journalText(r.source)}${seedTag}</p><p class="rumor-title">${journalText(r.title)}</p><p>${journalText(r.text)}</p><span class="rumor-state">${journalText(label)}</span>${r.season?`<p class="debt-note">${journalText(r.season)}</p>`:""}${stamp}${fx}</article>`;
+    /* v20a34 引導包 P0-5(a)：來源一律顯示——跟返張卡實際 source 欄；冇 source 嘅
+       報紙碎片用返佢嘅出處「報紙花邊」，其餘用中性預設「街坊傳聞」，唔亂作來源。 */
+    const src34 = r.source || (r.paperFrag ? "報紙花邊" : "街坊傳聞");
+    return `<article class="rumor-card${picked?" is-picked":""}${glow}${can?" can-pick":""}${r.stamp?" is-stamped":""}" data-rumor-id="${journalText(r.id)}"><p class="rumor-src">來源：${journalText(src34)}${seedTag}</p><p class="rumor-title">${journalText(r.title)}</p><p>${journalText(r.text)}</p><span class="rumor-state">${journalText(label)}</span>${r.season?`<p class="debt-note">${journalText(r.season)}</p>`:""}${stamp}${fx}</article>`;
   }).join("") + whisper;
   box.querySelectorAll(".rumor-card.can-pick").forEach(el=>{
     const id = el.getAttribute("data-rumor-id");
@@ -30220,9 +30351,20 @@ function seasonCollectToast(){
   toast(line);
   return line;
 }
+/* v20a34 引導包 P0-5(b)：開局四筆債嘅「來歷」顯示文案（純顯示對照表，唔改債嘅數據結構）。
+   開局玩家會見到：屋企家用（debt_family_home）、何生春季數（card_ho_spring 季節卡）、
+   道具組老張器材數（card_zhang_spring 季節卡）、教學人情（debt_ho_tutorial）。 */
+const DEBT_ORIGIN_LINES34 = {
+  debt_family_home: "你出嚟做臨記嗰陣應承屋企嘅：嗰份家用照交——屋企唔催，只係一直記住。",
+  card_ho_spring: "入行嗰陣何生幫你打點墊支嗰筆，佢記喺數簿，講明有工開先慢慢還。",
+  card_zhang_spring: "早前你借過道具組嘅器材嚟用，嗰筆器材數老張一直記住，未清。",
+  debt_ho_tutorial: "何生手把手教你入行規矩嗰份人情——唔係錢，係記低第日要還返嘅人情。"
+};
 function renderDebtPane(){
   const box=document.getElementById("debt-list");
   if(!box) return;
+  /* v20a34：來歷對照表以 typeof 守衛讀取（跟全檔慣例；抽函數測試 sandbox 無此 const 都唔好爆） */
+  const ORIGIN34 = (typeof DEBT_ORIGIN_LINES34!=="undefined") ? DEBT_ORIGIN_LINES34 : {};
   ensureMockJournal();
   try{ if(typeof ensureFavorDue==="function") ensureFavorDue(); }catch(_e){}
   ensureWeakSeals();
@@ -30249,7 +30391,9 @@ function renderDebtPane(){
   const pressure=favorPressure();
   const clearedSeason = ensureSeasonDebtClearedBag();
   const cards=SEASON_COLLECT.filter(c=>c.season===season && !(c && c.id && clearedSeason[c.id]));
-  const banner=`<p class="season-banner"><span class="season-mark">${journalText(season)}</span>又過一季，人情數目記心頭。</p><p class="favor-pressure" data-level="${journalText(pressure.label)}">人情壓力　${journalText(pressure.label)}</p>`;
+  const banner=`<p class="season-banner"><span class="season-mark">${journalText(season)}</span>又過一季，人情數目記心頭。</p><p class="favor-pressure" data-level="${journalText(pressure.label)}">人情壓力　${journalText(pressure.label)}</p>`
+    /* v20a34 引導包 P0-5(c)：人情頁白話總說明（季節橫額只講時節，唔係頁面用途說明） */
+    +`<p class="pane-intro">呢頁記住邊個欠你、你欠邊個：你欠人嘅要還（有啲會到期，到期前會有幫忙通告畀你清）；人哋欠你嘅係債權，留住第日有用。</p>`;
   const repayBtn = (id, isSeason)=>{
     return `<div class="debt-cta-wrap"><button type="button" class="debt-repay-btn" data-repay-id="${journalText(id)}" data-season="${isSeason?"1":"0"}">去還</button></div>`;
   };
@@ -30257,7 +30401,9 @@ function renderDebtPane(){
     const status=debtStatusLabel(c.status);
     const who=debtCreditorName(c);
     const amt = (c.amount!=null) ? ("金額約 $"+Number(c.amount).toLocaleString()) : (status==="已逾期"?"已逾期 · 建議禮物或現金 $200":"建議禮物或現金 $200");
-    return `<article class="debt-row season-card" data-collect-id="${journalText(c.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(c.title)}</p><p class="collect-line">${journalText(c.line)}</p><p class="debt-amt">${journalText(amt)} · ${journalText(status)}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${repayBtn(c.id,true)}</article>`;
+    /* v20a34 引導包 P0-5(b)：開局季節卡補「來歷」一行（DEBT_ORIGIN_LINES34 對照） */
+    const origin34 = ORIGIN34[c.id] ? `<p class="debt-origin">來歷：${journalText(ORIGIN34[c.id])}</p>` : "";
+    return `<article class="debt-row season-card" data-collect-id="${journalText(c.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(c.title)}</p><p class="collect-line">${journalText(c.line)}</p>${origin34}<p class="debt-amt">${journalText(amt)} · ${journalText(status)}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${repayBtn(c.id,true)}</article>`;
   }).join("");
   /* v20a25：債權段（人哋欠玩家，S.mockCredits）；絕響＝灰階＋「人已不在香港」，無還款／收取掣 */
   const creditHtml=(S.mockCredits||[]).map(c=>{
@@ -30276,7 +30422,9 @@ function renderDebtPane(){
     const famLine = (d.id==="debt_family_home" && typeof familyAttitudeLine==="function") ? familyAttitudeLine() : "";
     /* v20a27：鏈 G 第 2 拍——首次點名後屋企回音字條（觸發後常駐，同態度字條分開一行） */
     const famEcho = (d.id==="debt_family_home" && typeof familyEchoNoteText==="function") ? familyEchoNoteText() : "";
-    return { id:d.id, html:`<article class="debt-row${ex?" debt-exodus":""}" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${dueLine?`<p class="debt-meta">${journalText(dueLine)}</p>`:""}<p class="debt-note">${journalText(d.season)}</p>${famLine?`<p class="debt-note family-attitude">${journalText(famLine)}</p>`:""}${famEcho?`<p class="debt-note family-echo">${journalText(famEcho)}</p>`:""}${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:repayBtn(d.id,false)}</article>` };
+    /* v20a34 引導包 P0-5(b)：開局 mockDebts 補「來歷」一行（DEBT_ORIGIN_LINES34 對照，純顯示） */
+    const origin34 = ORIGIN34[d.id] ? `<p class="debt-origin">來歷：${journalText(ORIGIN34[d.id])}</p>` : "";
+    return { id:d.id, html:`<article class="debt-row${ex?" debt-exodus":""}" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p>${origin34}<p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${dueLine?`<p class="debt-meta">${journalText(dueLine)}</p>`:""}<p class="debt-note">${journalText(d.season)}</p>${famLine?`<p class="debt-note family-attitude">${journalText(famLine)}</p>`:""}${famEcho?`<p class="debt-note family-echo">${journalText(famEcho)}</p>`:""}${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:repayBtn(d.id,false)}</article>` };
   });
   /* v20a27（4-3 覆檢跟進）：只改顯示次序——屋企債卡抽出嚟排全頁最前（鏈 G 第 1 拍原意：
      開局手帳第一筆唔係圈內債，係屋企）；季節卡／債權／其餘圈內債保持現有相對次序。
@@ -34349,8 +34497,18 @@ function doScout(L){
     body=`<p class="board-lead">${lead}</p>`;
     /* v18v: 通告欄短卡 → 點開招募單 Detail（PLAN §4） */
     body+=`<div class="gig-board-list" id="gig-board-list">`;
+    /* v20a34 引導包 P0-1：全板鎖定卡入面差額總和最少嗰張標「最接近」（只標記，唔改排序） */
+    let closest34 = null, closestGap34 = Infinity;
+    try{
+      shown.forEach((g)=>{
+        if(g && !canAudition(g).ok){
+          const t = gigGapTotal34(g);
+          if(t>0 && t<closestGap34){ closestGap34 = t; closest34 = g.id; }
+        }
+      });
+    }catch(_e){ closest34 = null; }
     shown.forEach((g)=>{
-      body+=gigBoardTeaserHtml(g);
+      body+=gigBoardTeaserHtml(g, { closest: !!(closest34 && g && g.id===closest34) });
     });
     body+=`</div>`;
   }
