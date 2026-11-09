@@ -48,7 +48,7 @@ ok('dek variant helper present', 'const _dekV35 = ' in html)
 
 # ---- 紅線：SAVE key／softRev／?v=／pack JSON 冇郁 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
-ok('softRev unchanged', 's109' in html)
+ok('softRev unchanged', 's110' in html)
 ok('no new content pack fetch', html.count('postShootRewards: "STUB_POST_SHOOT_REWARDS_v1.json"') == 1)
 
 print('\n' + ('FAILED: ' + ' | '.join(fails) if fails else 'ALL PASS'))

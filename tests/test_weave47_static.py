@@ -99,7 +99,7 @@ for w in ['張國榮', '陳百強', '梅艷芳', '周潤發', '劉德華', '關�
 
 # ---- 慣例不變 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
-ok('softRev unchanged', 'softRev=s109' in html)
+ok('softRev unchanged', 'softRev=s110' in html)
 ok('version marker v20a30', 'v20a30' in html)
 ok('NOTES file present', bool(notes))
 

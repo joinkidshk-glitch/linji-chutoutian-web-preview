@@ -56,7 +56,7 @@ ok('player ref stays 阿偉；全名只留標題畫面＋口徑註解（共 2 �
 
 # 慣例不變＋玩家面守則
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
-ok('softRev unchanged', 's109' in html)
+ok('softRev unchanged', 's110' in html)
 echo_block = html.split('const FAMILY_ECHO_TOAST_MAIN')[1].split('function familyPaperEchoTick')[0] if 'const FAMILY_ECHO_TOAST_MAIN' in html else ''
 ok('no real artist names in echo copy', all(x not in echo_block for x in ['張國榮','陳百強','梅艷芳','周潤發','劉德華']))
 ok('echo copy does not use full name 陳偉翔', '陳偉翔' not in echo_block)
