@@ -2,7 +2,7 @@
 // (1) fellows 衍生：嗰年嗰媒介 pack 通告＋LEADSTAR59 主演，按片酬序、每星一部、唔用冇 sprite 嘅主演（彭兆基）。
 // (2) 玩家自己殺青過嘅作品唔會變對手；年份唔串。
 // (3) 冇主演數據（1989）→ 紅星池按媒介兜底：確定性、唔重複、唔出程天諾（1988 零出場紅線，池內根本冇佢）。
-// (4) beats：入圍揭曉唱出得主星名＋作品；得獎＋有海報先有 glamour beat；冇海報得獎維持 8–9 秒。
+// (4) beats：入圍揭曉唱出得主星名＋作品；得獎＋有海報先有 glamour beat；冇海報得獎維持 9–10 秒（v64 enter 走路入場後基線）。
 // (5) focus cat 揀啱（won 優先 won cat、nominated 揀 nominated cat）。
 // 反證：對 v20a62 index 行 → AWARDS63 函數唔存在 → FAIL。
 // 用法：node tests/test_awards63_logic.js [path-to-index.html]
@@ -139,7 +139,7 @@ const packWonNoPoster = { displayName:'維港影藝獎', bestOutcome:'won', repW
   categories:[{ label:'最佳電影', outcome:'won', repWorkTitle:'陰陽夜更', fellows63:[], winner63:null }] };
 const beatsWN = awards62CeremonyBeats(packWonNoPoster);
 const totalWN = beatsWN.reduce((a,b)=>a+b.ms,0);
-ok('得獎＋冇海報 → 冇 glamour、全長維持 8–9 秒', !beatsWN.some(b=>b.id==='glamour') && totalWN >= 8000 && totalWN <= 9000);
+ok('得獎＋冇海報 → 冇 glamour、全長維持 9–10 秒', !beatsWN.some(b=>b.id==='glamour') && totalWN >= 9000 && totalWN <= 10000);
 
 const beatsGal = awards62CeremonyBeats({ displayName:'海港廣告獎', bestOutcome:'gallery', categories:[] });
 ok('旁聽：冇 names/suspense/reveal、有 pan 群星鏡頭且較短', !beatsGal.some(b=>b.id==='names'||b.id==='suspense'||b.id==='reveal') && beatsGal.some(b=>b.id==='pan') && beatsGal.reduce((a,b)=>a+b.ms,0) < totalWN);
