@@ -51,7 +51,7 @@ for banned in ['張國榮', '陳百強', '梅艷芳', '周潤發', '劉德華', 
 # 慣例不變
 ok('name tier thresholds unchanged', 'PAPER_NAME_TIER_NAMED = 15' in html and 'PAPER_NAME_TIER_TITLED = 40' in html)
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
-ok('softRev unchanged', 's108' in html)
+ok('softRev unchanged', 's109' in html)
 
 print('\nFAILED: '+' | '.join(fails) if fails else '\nALL PASS')
 sys.exit(1 if fails else 0)

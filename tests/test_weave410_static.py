@@ -91,7 +91,7 @@ ok('三段差一步唔共用範本（各有專屬場景函數分支）',
 # ---- 慣例不變 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
 ok('version marker v20a33', 'v20a33' in html)
-ok('softRev unchanged s108', 's108' in html)
+ok('softRev unchanged s109', 's109' in html)
 ok('no content pack edit markers (overrides only)', 'applyStorySpineOverrides410' in html)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')
