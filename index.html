@@ -3418,7 +3418,8 @@ body.day-res-open .day-row{
 @keyframes mockFadeIn{ from{ opacity:0 } to{ opacity:1 } }
 .push-door{
   position:absolute; left:10%; right:10%; top:16%; height:30%;
-  z-index:45; pointer-events:none; opacity:0; visibility:hidden;
+  /* v20a51：z-index 45→15——低過地點 sheet（z-20），門板唔再蓋住同時開啟嘅 sheet／場景相 */
+  z-index:15; pointer-events:none; opacity:0; visibility:hidden;
 }
 .push-door.on{ animation:pushDoor .7s ease forwards; visibility:visible; }
 .push-door.done{ opacity:0 !important; visibility:hidden !important; }
@@ -3429,7 +3430,8 @@ body.day-res-open .day-row{
   box-shadow:inset -14px 0 0 rgba(0,0,0,.28);
 }
 .push-door-bell{
-  position:absolute; right:8%; top:18%; margin:0; width:32px; height:32px; border-radius:50%;
+  /* v20a51：right:8%→left:6%——舊位令門鈴滑行約 20% 後即出畫面，之後成塊板冇門樣；改黐板左側全程可見 */
+  position:absolute; left:6%; top:18%; margin:0; width:32px; height:32px; border-radius:50%;
   background:#C9A227; color:#1A1410; font-weight:900; font-size:.85rem;
   display:flex; align-items:center; justify-content:center;
 }
@@ -31357,17 +31359,25 @@ function playPushDoor(){
   void door.offsetWidth;
   door.classList.add("on");
   clearTimeout(playPushDoor._t);
+  clearTimeout(playPushDoor._tDone);
   clearTimeout(playPushDoor._t2);
   /* v19z1：SFX 完（~0.55s）即藏鈴；0.8s 後徹底移除，唔留殘「叮」 */
   playPushDoor._t=setTimeout(()=>{
+    try{
+      if(bell){ bell.textContent = ""; bell.style.visibility = "hidden"; }
+    }catch(_e){}
+  }, 560);
+  /* v20a51：舊版喺 560ms 就成隻門硬隱藏，但 pushDoor 動畫係 700ms、嗰陣仲係近乎
+     全不透明嘅淡出中段 → 門板「啪」一聲消失（玩家見到嘅閃爍主因之一）。
+     改為等動畫自己行完（700ms、100% keyframe 已係 opacity:0）先落 done 收尾。 */
+  playPushDoor._tDone=setTimeout(()=>{
     try{
       door.classList.remove("on");
       door.classList.add("done");
       door.style.opacity = "0";
       door.style.visibility = "hidden";
-      if(bell){ bell.textContent = ""; bell.style.visibility = "hidden"; }
     }catch(_e){}
-  }, 560);
+  }, 700);
   playPushDoor._t2=setTimeout(()=>{
     try{
       if(door && door.parentNode) door.parentNode.removeChild(door);
