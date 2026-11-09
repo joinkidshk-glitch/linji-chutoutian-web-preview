@@ -27277,6 +27277,8 @@ function resolvePlannedDay(id){
       } else {
         notes=apply(daily);
         notes.push(shootDayLine(sh));
+        /* v20a35 節奏包 P1-6：長工拍攝日輕量抉擇（嵌日結算板，唔揀＝無後果） */
+        try{ if(typeof setChoiceOffer35==="function"){ const _ch35 = setChoiceOffer35(sh); if(_ch35) notes.push(_ch35); } }catch(_sc35){}
         title = `拍攝中：${sh.title}`;
       }
     }
@@ -27368,6 +27370,11 @@ function resolvePlannedDay(id){
   } else {
     notes=apply({stress:R(0,2)});
     title = meta.name;
+  }
+
+  /* v20a35 節奏包 P0-2(b)：手帳排程訓練日嘅微事件（即場堂喺 applyTrainLesson 接） */
+  if(String(id||"").indexOf("train_")===0){
+    try{ if(typeof maybeTrainEvent35==="function") maybeTrainEvent35(notes, id); }catch(_te35){}
   }
 
   if((S.stress||0)>=85 && id!=="rest" && !String(id).startsWith("shoot:")){
@@ -27467,6 +27474,8 @@ function resolvePlannedDay(id){
     }
   } else {
     modal(`<h3>${title}</h3>${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}${dayLine}${(!ended && btns.some(b=>String(b.label||"").indexOf("加速")>=0))?`<p class="week-accel-hint">加速需二次確認並列出將跳過日子。</p>`:""}`, btns, {onDismiss: dismissNb});
+    /* v20a35 節奏包 P1-6：日結算板入面嘅片場抉擇掣接線（冇抉擇嗰日 no-op） */
+    try{ if(typeof wireSetChoice35==="function") wireSetChoice35(); }catch(_wc35){}
     if(isRestCard){ try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){} }
     saveQ();
   }
@@ -30992,6 +31001,75 @@ function postShootMetricKindForType(gigType){
   if(t==="唱片通告") return "sales";
   return map._fallback || "attention";
 }
+/* ===== v20a35 節奏包 P0-6：殺青反響文案池擴充（index 側增補，唔改 pack JSON） =====
+   試玩實證：pack 每 channel 每類型得 1 張 typed 模板——電視工永遠係
+   「廠景殺青，娛樂版順手記一筆」＋「電視台組製收工…」，fans 卡標題仲係寫死。
+   做法：framework 載入後將 PSR_EXTRA_TEMPLATES_35 併入 FREEPLAY_FW.postShootRewards.templates
+   （冪等、以 id 去重）；抽模板加「唔好同上次重複」嘅輕量防重（psrPickNoRepeat35）；
+   fans 卡標題改行模板 title 欄（舊模板冇呢欄 → 行返原本寫死句，零回歸）。 */
+const PSR_EXTRA_TEMPLATES_35 = {
+  press: [
+    { id:"psr35_press_tv_02", matchTypes:["電視劇","綜藝"], paperName:"電視週刊", headline:"夜班廠景收工，新面孔企到尾", dek:"嗰組夜班趕工，臨記企足全程冇甩拖，場記收工嗰陣點頭讚咗句。" },
+    { id:"psr35_press_tv_03", matchTypes:["電視劇","綜藝"], paperName:"娛樂版", headline:"單元劇殺青，後生臨記俾人問名", dek:"殺青影合照嗰陣，有記者順口問企邊嗰個後生叫咩名，副導代佢答咗。" },
+    { id:"psr35_press_film_02", matchTypes:["電影"], paperName:"影畫版", headline:"外景煞科，新人臨記跟足全程", dek:"嗰場外景曬足成日，臨記冇嗌過一聲攰，武指收工請佢飲咗支汽水。" },
+    { id:"psr35_press_film_03", matchTypes:["電影"], paperName:"娛樂版", headline:"電影組收工，臨記仔上咗鏡", dek:"煞科嗰場混戰戲，新人企位啱啱入到鏡，導演冇嗌 cut，留用咗嗰 take。" },
+    { id:"psr35_press_ad_02", matchTypes:["廣告"], paperName:"廣告版", headline:"街招拍完，路人嗰格俾人截圖", dek:"嗰張街招出街之後，有人剪低路人入鏡嗰格，話個樣幾上鏡。" },
+    { id:"psr35_press_rec_02", matchTypes:["唱片通告"], paperName:"樂版", headline:"錄音室收工，和音嗰把聲俾人提起", dek:"嗰晚錄到半夜，監製臨走講咗句：和音嗰個，下次再叫佢。" },
+    { id:"psr35_press_any_02", matchTypes:[], paperName:"娛樂版", headline:"又一單殺青，記數簿多一行", dek:"唔係頭條，唔係花邊，係實實在在做完一單——行內人就係咁樣記人。" }
+  ],
+  news: [
+    { id:"psr35_news_tv_02", matchTypes:["電視劇","綜藝"], outlet:"娛樂快訊", line:"電視台嗰組煞科，場記話今輯臨記班底齊人又準時，難得。" },
+    { id:"psr35_news_tv_03", matchTypes:["電視劇","綜藝"], outlet:"電視台通訊", line:"單元劇殺青宴散場，副導同幾個臨記握手，講明下輯再合作。" },
+    { id:"psr35_news_film_02", matchTypes:["電影"], outlet:"影壇快訊", line:"電影組外景煞科，武指點名讚新人跟得上節奏，冇拖慢進度。" },
+    { id:"psr35_news_film_03", matchTypes:["電影"], outlet:"娛樂快訊", line:"嗰部戲煞科酒散場，有臨記幫手執埋器材先走，劇務睇喺眼裏。" },
+    { id:"psr35_news_ad_02", matchTypes:["廣告"], outlet:"廣告界消息", line:"嗰支廣告拍完，客戶睇毛片嗰陣指住路人嗰格問：呢個邊個嚟？" },
+    { id:"psr35_news_rec_02", matchTypes:["唱片通告"], outlet:"樂壇消息", line:"錄音室嗰晚收工，監製將嗰段和音留低，話混音嗰陣可能用得著。" },
+    { id:"psr35_news_any_02", matchTypes:[], outlet:"娛樂快訊", line:"通告殺青：又一個新人做完一單，冇遲到，冇早退，冇投訴。" }
+  ],
+  streetFans: [
+    { id:"psr35_fans_04", matchTypes:[], place:"廠門口", title:"突發：俾人認出", line:"出廠嗰陣，賣魚蛋嘅阿姐指住你：『你咪嗰個成日喺電視出嚟嗰個？』", stageVolumeDelta:1 },
+    { id:"psr35_fans_05", matchTypes:[], place:"巴士站", title:"突發：等車俾人搭訕", line:"等巴士嗰陣，隔籬個師奶細細聲問：『後生仔，你係咪拍戲嗰啲呀？』", stageVolumeDelta:0 },
+    { id:"psr35_fans_06", matchTypes:[], place:"茶餐廳", title:"突發：食飯俾人認出", line:"入茶餐廳坐低，伙記笑住講：『今日見你喺電視嗰度出現咗兩秒，幾威呀。』", stageVolumeDelta:1 },
+    { id:"psr35_fans_07", matchTypes:["電影","電視劇"], place:"街口", title:"突發：細路仔圍住問", line:"幾個細路仔圍住你問係咪明星，你笑住搖頭，佢哋照樣好開心咁走開。", stageVolumeDelta:0 },
+    { id:"psr35_fans_08", matchTypes:[], place:"電車上", title:"突發：俾人搭訕", line:"電車上有個阿伯拍你膊頭：『你個樣好熟口面，係咪邊套劇嗰個？』", stageVolumeDelta:0 }
+  ],
+  metrics: [
+    { id:"psr35_metric_rate_02", matchTypes:["電視劇","綜藝"], metricKind:"ratings", valueLine:"嗰集出街嗰晚，茶餐廳有人講起你嗰場", blurb:"收視未爆，但有人記得嗰一幕，已經係臨記嘅第一步。" },
+    { id:"psr35_metric_box_02", matchTypes:["電影"], metricKind:"boxOffice", valueLine:"散場嗰陣，有觀眾問嗰場戲喺邊度拍", blurb:"票房係成隊人嘅事，你嗰份冇俾人忘記。" },
+    { id:"psr35_metric_sales_02", matchTypes:["唱片通告"], metricKind:"sales", valueLine:"唱片舖播嗰陣，有客人企定聽完成段", blurb:"銷量慢慢嚟，嗰把聲開始有人認得。" },
+    { id:"psr35_metric_att_02", matchTypes:["廣告"], metricKind:"attention", valueLine:"嗰格畫面出街之後，俾人提起多咗", blurb:"關注度唔聲唔聲咁升，造型嗰邊都留意到。" }
+  ]
+};
+const _psrLastPick35 = {};
+function psrPickNoRepeat35(channel, pool){
+  if(!Array.isArray(pool) || !pool.length) return null;
+  if(pool.length===1) return pool[0];
+  const lastId = _psrLastPick35[channel] || "";
+  let cand = pool[Math.floor(Math.random()*pool.length)];
+  if(cand && cand.id && cand.id===lastId){
+    cand = pool[Math.floor(Math.random()*pool.length)];
+    if(cand && cand.id===lastId) cand = pool.find(x=>x && x.id!==lastId) || cand;
+  }
+  if(cand && cand.id) _psrLastPick35[channel] = cand.id;
+  return cand;
+}
+function augmentPostShootRewards35(){
+  try{
+    const pack = (typeof FREEPLAY_FW!=="undefined") ? FREEPLAY_FW.postShootRewards : null;
+    if(!pack || !pack.templates) return 0;
+    let n = 0;
+    Object.keys(PSR_EXTRA_TEMPLATES_35).forEach(ch=>{
+      if(!Array.isArray(pack.templates[ch])) pack.templates[ch] = [];
+      (PSR_EXTRA_TEMPLATES_35[ch]||[]).forEach(t=>{
+        if(t && t.id && !pack.templates[ch].some(x=>x && x.id===t.id)){
+          pack.templates[ch].push(Object.assign({}, t));
+          n++;
+        }
+      });
+    });
+    return n;
+  }catch(_e){ return 0; }
+}
 function postShootPickTemplate(channel, gigType){
   const pack = FREEPLAY_FW.postShootRewards;
   const list = (pack && pack.templates && Array.isArray(pack.templates[channel])) ? pack.templates[channel] : [];
@@ -31002,6 +31080,10 @@ function postShootPickTemplate(channel, gigType){
   if(!pool.length){
     const fb = (pack && pack.fallbacks && pack.fallbacks[channel]) || {};
     return Object.assign({ id: channel+"_fallback", matchTypes:[] }, fb);
+  }
+  if(typeof psrPickNoRepeat35==="function"){
+    const picked = psrPickNoRepeat35(channel, pool);
+    if(picked) return picked;
   }
   return pool[Math.floor(Math.random()*pool.length)];
 }
@@ -31041,7 +31123,7 @@ function buildPostShootRewardPack(sh){
     const pack = FREEPLAY_FW.postShootRewards;
     const list = (pack && pack.templates && pack.templates.metrics) || [];
     const hit = list.filter(x=> x && x.metricKind===metricKind && (!x.matchTypes || !x.matchTypes.length || x.matchTypes.indexOf(gigType)>=0));
-    if(hit.length) metricT = hit[Math.floor(Math.random()*hit.length)];
+    if(hit.length) metricT = (typeof psrPickNoRepeat35==="function" && psrPickNoRepeat35("metrics", hit)) || hit[Math.floor(Math.random()*hit.length)];
   }catch(_e){}
   const kindLabels = (FREEPLAY_FW.postShootRewards && FREEPLAY_FW.postShootRewards.metricKindLabels) || {};
   const metricLabel = postShootCopyLine(metricT.label, kindLabels[metricKind] || "關注度");
@@ -31076,7 +31158,8 @@ function buildPostShootRewardPack(sh){
       channel: "streetFans",
       icon: "👥",
       kicker: postShootCopyLine(fansT.place, "街上"),
-      title: "突發：被 fans 包圍",
+      /* v20a35：fans 卡標題行模板 title 欄（增補模板有唔同標題；舊模板冇欄 → 行返原本句） */
+      title: postShootCopyLine(fansT.title, "突發：被 fans 包圍"),
       body: postShootCopyLine(fansT.line, "有人多望你兩眼。"),
       meta: {
         templateId: fansT.id||"",
@@ -32007,40 +32090,44 @@ function newspaperWrapFaceLines(subject, angle){
   const headWho = (nameTier==="anon") ? "臨記" : ref;
   const rumorRef = (nameTier==="anon") ? "有個臨記" : "阿偉";
   const headline = role ? (book+"殺青 "+headWho+"飾演"+role) : (book+"殺青 "+headWho+"入鏡");
+  /* v20a35 節奏包 P0-6：dek 尾句變體池——以「作品＋角色」做種子定版（同一作品每次同版、
+     唔同作品唔同講法），避免每張通告殺青都係同一句。只換尾句：
+     headline／rumor／稱呼／角度語義（不搶戲／搶眼／記住／點名等關鍵字）全部保留。 */
+  const _dekV35 = (arr)=>{ try{ let h=0; const s=String(work||"")+"|"+String(role||""); for(let i=0;i<s.length;i++){ h=((h*31)+s.charCodeAt(i))>>>0; } return arr[h%arr.length]; }catch(_e){ return arr[0]; } };
   let dek = role
-    ? ("通告殺青，"+ref+"於"+book+"飾演"+role+"，順利收工。")
-    : ("通告殺青，"+ref+"完成"+book+"，娛樂版留了一行。");
+    ? ("通告殺青，"+ref+"於"+book+"飾演"+role+"，"+_dekV35(["順利收工。","嗰日做足全程，冇甩漏。"]))
+    : ("通告殺青，"+ref+"完成"+book+"，"+_dekV35(["娛樂版留了一行。","報紙角落記咗一句。"]));
   if(medium==="tv"){
     dek = role
-      ? ("電視劇組殺青，"+ref+"於"+book+"飾演"+role+"，走位穩妥。")
-      : ("電視劇組殺青，"+ref+"完成"+book+"，"+(nameTier==="anon" ? "娛樂版留了一行。" : "名字見諸內頁。"));
+      ? ("電視劇組殺青，"+ref+"於"+book+"飾演"+role+"，"+_dekV35(["嗰場企位俾場記讚咗一句。","走位穩妥。","臨收工俾副導點名話跟得足。"]))
+      : ("電視劇組殺青，"+ref+"完成"+book+"，"+(nameTier==="anon" ? _dekV35(["娛樂版留了一行。","報紙角落提咗一句。","娛樂版細細格記低。"]) : _dekV35(["娛樂版留咗一格畀佢。","名字見諸內頁。","片尾字幕行過佢個名。"])));
   } else if(medium==="film"){
     dek = role
-      ? ("電影組殺青，"+ref+"於"+book+"飾演"+role+"，鏡頭前不搶戲。")
-      : ("電影組殺青，"+ref+"完成"+book+"，娛樂版記了一筆。");
+      ? ("電影組殺青，"+ref+"於"+book+"飾演"+role+"，"+_dekV35(["嗰場戲一次過，導演冇嗌 cut。","企位啱啱好，唔出位又唔怯場。","嗰鏡走咗兩次就收貨，收工快過隔籬組。","鏡頭前不搶戲。"]))
+      : ("電影組殺青，"+ref+"完成"+book+"，"+_dekV35(["娛樂版記了一筆。","影評欄邊提咗一句。","海報角落有佢個影。"]));
   } else if(medium==="music"){
     dek = role
-      ? ("唱片通告殺青，"+ref+"於"+book+"擔任"+role+"，順利收工。")
-      : ("唱片通告殺青，"+ref+"完成"+book+"，樂版留了一行。");
+      ? ("唱片通告殺青，"+ref+"於"+book+"擔任"+role+"，"+_dekV35(["順利收工。","嗰段錄到尾，監製點晒頭。","嗰晚冇穿冇爛，監製幾滿意。"]))
+      : ("唱片通告殺青，"+ref+"完成"+book+"，"+_dekV35(["樂版留了一行。","樂版角落記咗一句。","樂版細細格提咗下。"]));
   } else if(medium==="ad"){
     dek = role
-      ? ("廣告殺青，"+ref+"於"+book+"擔任"+role+"，曝光留影。")
-      : ("廣告殺青，"+ref+"完成"+book+"，夾頁留了一眼。");
+      ? ("廣告殺青，"+ref+"於"+book+"擔任"+role+"，"+_dekV35(["曝光留影。","嗰格相俾客戶點名話好。","企姿俾攝影師讚咗句。"]))
+      : ("廣告殺青，"+ref+"完成"+book+"，"+_dekV35(["夾頁留了一眼。","出街嗰日俾人多望咗眼。","夾頁嗰格幾入眼。"]));
   }
   let rumor = role
     ? ("聽講"+book+"殺青，"+rumorRef+"做"+role+"，場記話佢跟得齊。")
     : ("聽講"+book+"殺青，場記話"+rumorRef+"跟得齊。");
   if(angle==="spotlight"){
     if(medium==="tv"){
-      dek = role ? ("電視劇組殺青，"+ref+"於"+book+"飾演"+role+"，嗰場戲俾人記住。") : ("電視劇組殺青，"+ref+"完成"+book+"，嗰場戲俾人記住"+(nameTier==="anon" ? "。" : "，名字上了內頁。"));
+      dek = role ? ("電視劇組殺青，"+ref+"於"+book+"飾演"+role+"，"+_dekV35(["嗰場戲俾場記翻嚟覆去咁講。","嗰場戲俾人記住。","收工嗰陣有人問佢攞簽名。"])) : ("電視劇組殺青，"+ref+"完成"+book+"，"+_dekV35(["嗰場戲俾人記住","嗰場戲俾人翻嚟覆去咁講"])+(nameTier==="anon" ? "。" : "，名字上了內頁。"));
     } else if(medium==="film"){
-      dek = role ? ("電影組殺青，"+ref+"於"+book+"飾演"+role+"，鏡頭前搶眼，"+(nameTier==="anon" ? "惹來不少議論。" : "副導記低咗佢個名。")) : ("電影組殺青，"+ref+"完成"+book+"，鏡頭前搶眼，"+(nameTier==="anon" ? "惹來不少議論。" : "副導記低咗佢個名。"));
+      dek = role ? ("電影組殺青，"+ref+"於"+book+"飾演"+role+"，"+_dekV35(["鏡頭前幾搶眼，","鏡頭前搶眼，"])+(nameTier==="anon" ? "惹來不少議論。" : "副導記低咗佢個名。")) : ("電影組殺青，"+ref+"完成"+book+"，"+_dekV35(["鏡頭前幾搶眼，","鏡頭前搶眼，"])+(nameTier==="anon" ? "惹來不少議論。" : "副導記低咗佢個名。"));
     } else if(medium==="music"){
-      dek = role ? ("唱片通告殺青，"+ref+"於"+book+"擔任"+role+"，嗰段演出俾人點名提起。") : ("唱片通告殺青，"+ref+"完成"+book+"，嗰段演出俾人點名提起。");
+      dek = role ? ("唱片通告殺青，"+ref+"於"+book+"擔任"+role+"，"+_dekV35(["嗰晚唱到尾，俾人記住把聲。","嗰段演出俾人點名提起。","嗰段和音俾監製讚咗句。"])) : ("唱片通告殺青，"+ref+"完成"+book+"，"+_dekV35(["嗰晚唱到尾，俾人記住把聲。","嗰段演出俾人點名提起。","嗰段和音俾監製讚咗句。"]));
     } else if(medium==="ad"){
-      dek = role ? ("廣告殺青，"+ref+"於"+book+"擔任"+role+"，出鏡嗰下俾人記住個樣。") : ("廣告殺青，"+ref+"完成"+book+"，出鏡嗰下俾人記住個樣。");
+      dek = role ? ("廣告殺青，"+ref+"於"+book+"擔任"+role+"，"+_dekV35(["出鏡嗰下俾人記住個樣。","嗰格硬照俾人剪低留起。","嗰下出鏡，街坊都話認得。"])) : ("廣告殺青，"+ref+"完成"+book+"，"+_dekV35(["出鏡嗰下俾人記住個樣。","嗰格硬照俾人剪低留起。","嗰下出鏡，街坊都話認得。"]));
     } else {
-      dek = role ? ("通告殺青，"+ref+"於"+book+"飾演"+role+"，表現搶眼，娛樂版特登留了一行。") : ("通告殺青，"+ref+"完成"+book+"，表現搶眼，娛樂版特登留了一行。");
+      dek = role ? ("通告殺青，"+ref+"於"+book+"飾演"+role+"，"+_dekV35(["表現搶眼，娛樂版特登留了一行。","嗰場俾人提起，娛樂版留了一行。"])) : ("通告殺青，"+ref+"完成"+book+"，"+_dekV35(["表現搶眼，娛樂版特登留了一行。","嗰場俾人提起，娛樂版留了一行。"]));
     }
     rumor = role
       ? ("聽講"+book+"殺青，"+rumorRef+"做"+role+"嗰場俾場記提起，話佢幾搶眼。")
@@ -33265,6 +33352,7 @@ async function loadFreeplayFramework(){
   }));
   FREEPLAY_FW.loaded = true;
   try{ freeplayApplyEraStarStubOverlay(); }catch(_e){}
+  try{ if(typeof augmentPostShootRewards35==="function") augmentPostShootRewards35(); }catch(_e){}
   try{ seedFreeplayRumorShells(); }catch(_e){}
   try{ seedFreeplayFavorDebt(); }catch(_e){}
   try{ applyFreeplaySlotsToSoftGate(); }catch(_e){}
@@ -34438,6 +34526,257 @@ function closeSheet(opts){
   closeSheet._painting = false;
 }
 
+/* ===== v20a35 節奏包（試玩報告 P0-2／P0-6／P1-6）=====
+   P0-2 審計（詳 NOTES_V20A35）：1988 春通告板（板面只出當季、全單一次性）嘅演技階梯係
+   入門 12–18 →《靈異屋邨夜話》45 → 80／95 → 300+；演技 19–44 呢段除咗《靈異》本身之外
+   **一張都冇**——第 3–4 週練功死區嘅結構成因。落藥：(c) 中階通告兩張（本段）＋
+   (b) 訓練微事件（本段）；(a) 降《靈異》門檻唔做（中階填到，保留第 4 週達標嘅成就感）。
+   P1-6：長工（≥4 日）拍攝日輕量抉擇（本段 SET_CHOICES_35）。P0-6 文案池喺
+   augmentPostShootRewards35＋newspaperWrapFaceLines 變體（各自位置）。 ===== */
+
+/* --- P0-2(c)：1988 春中階通告（mergeMidGigs35，跟 mergeIntelGigs 同一條件注入模式） ---
+   門檻坐演技 32／38（入門 15 與《靈異》45 之間）、酬勞 $950／$1,060（入門 $550–$950 與
+   《靈異》$1,150 之間）、拍攝 3 日／2 日（短過《靈異》9 日）。只限 1988 年注入：
+   跨年後 GIGS 換年庫，呢兩張唔好喺 1989 春板面翻生。 */
+const MID_GIGS_1988_35 = [
+  {
+    id:"gig_1988_mid35_longmen_night",
+    year:1988, season:"春", type:"電視劇", genreLabel:"電視劇",
+    loc:"tvb_longmen",
+    workTitle:"夜班廠景", title:"《夜班廠景》街坊鄰居", roleLabel:"街坊鄰居",
+    director:"副導阿標",
+    roleHint:"夜班廠景連續劇，你做街坊鄰居，有兩句對白，企位要跟上一場接得返。",
+    blurb:"中階電視通告：夜班廠景要一個企得穩、有兩句對白嘅街坊鄰居，拍三晚。",
+    synopsis:"星河電視台連續劇夜班廠景，街坊鄰居呢個位要有兩句對白，唔再係企後景嗰種。副導講明：演技夠跟得上對手戲就得，拍三晚收工，唔使捱九日咁長。",
+    eraTag:"era_1988_tv",
+    discoverNote:"中階通告：演技夠 32 就報得，係入門同大製作之間嗰級。",
+    boardPriority:"normal", boardNote:"夜班廠景 · 三晚", seasonWeight:0.9,
+    req:{ acting:32, stamina:50 },
+    pay:[880, 1020], payExact:950, breachFee:150,
+    fame:[2, 5], popularity:[4, 8],
+    stressDeltaHint:"中", hard:0.22, tier:"初", stars:1,
+    applyDeadlineDays:7, shootDaysHint:3,
+    shootHint:"兩句對白記熟，企位跟上一場接返，唔好臨場改詞。",
+    roleScale:"tv_cameo_short", shootBand:[3, 3], shootWeekdays:[1, 2, 3, 4, 5, 6],
+    shootDeadlineDays:12,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["夜班廠景，三晚拍完"] },
+    storyKeys:["season_88_spring","mid35"],
+    tagOnComplete:["識跟場"],
+    rumorKeys:[], favorDelta:[],
+    seasonHook:["spring"], boardHookMode:"normal", isKeyGig:false
+  },
+  {
+    id:"gig_1988_mid35_lion_chase",
+    year:1988, season:"春", type:"電影", genreLabel:"電影",
+    loc:"film_lion",
+    workTitle:"外景追逐", title:"《外景追逐》群戲演員", roleLabel:"群戲演員",
+    director:"武指領班",
+    roleHint:"外景追逐群戲，要跟住主角跑一段，跌低嗰下要跌得安全又好睇。",
+    blurb:"中階電影通告：外景追逐群戲，跑位同反應都要跟得上，拍兩日。",
+    synopsis:"獅子山製片外景追逐戲，群戲演員要跟主角跑過兩條街，反應同走位都要跟得上節奏。武指領班話：唔使你做替身咁搏，但要跑得似、跌得穩，兩日拍完。",
+    eraTag:"era_1988_film",
+    discoverNote:"中階通告：演技夠 38、體能夠跑就報得，兩日拍完出糧快。",
+    boardPriority:"normal", boardNote:"外景追逐 · 兩日", seasonWeight:0.9,
+    req:{ acting:38, stamina:80 },
+    pay:[1000, 1120], payExact:1060, breachFee:180,
+    fame:[3, 6], popularity:[5, 9],
+    stressDeltaHint:"中", hard:0.24, tier:"初", stars:1,
+    applyDeadlineDays:7, shootDaysHint:2,
+    shootHint:"跑位跟住領班口令，跌低嗰下護住頭，唔好硬撼。",
+    roleScale:"film_support_small", shootBand:[2, 2], shootWeekdays:[1, 2, 3, 4, 5, 6],
+    shootDeadlineDays:12,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["外景追逐，兩日拍完"] },
+    storyKeys:["season_88_spring","mid35"],
+    tagOnComplete:["識跟場"],
+    rumorKeys:[], favorDelta:[],
+    seasonHook:["spring"], boardHookMode:"normal", isKeyGig:false
+  }
+];
+function mergeMidGigs35(){
+  try{
+    if(typeof GIGS==="undefined" || !Array.isArray(GIGS)) return 0;
+    const ids = {};
+    (MID_GIGS_1988_35||[]).forEach(g=>{ if(g && g.id) ids[g.id] = 1; });
+    let inYear = false;
+    try{ inYear = (typeof dateObj==="function") ? (dateObj().getFullYear()===1988) : true; }catch(_e){ inYear = true; }
+    if(!inYear){
+      const before = GIGS.length;
+      GIGS = GIGS.filter(g=>!(g && ids[g.id]));
+      if(GIGS.length!==before){ try{ window.GIGS = GIGS; }catch(_w){} }
+      return 0;
+    }
+    let n = 0;
+    (MID_GIGS_1988_35||[]).forEach(raw=>{
+      if(!raw || !raw.id) return;
+      const norm = normalizeGigRecord(Object.assign({}, raw, { midGig35:true }));
+      const i = GIGS.findIndex(g=>g && g.id===raw.id);
+      if(i<0){ GIGS.push(norm); n++; }
+      else GIGS[i] = norm;
+    });
+    try{ window.GIGS = GIGS; }catch(_w){}
+    return n;
+  }catch(_e){ return 0; }
+}
+
+/* --- P0-2(b)：訓練微事件池（TRAIN_EVENTS_35） ---
+   觸發：每個訓練日最多一則；節奏約每 2–3 個訓練日一則（since 計數＋45% 擲骰，
+   since≥3 保底觸發）。後果要細：屬性 ±1–3／人氣 +1／壓力 ±3／情報碎片一張（只送一次）。
+   兩個訓練入口共用：applyTrainLesson（即場報名堂）＋resolvePlannedDay（手帳排程堂）。 */
+const TRAIN_EVENTS_35 = [
+  { id:"train35_gossip_gao", line:"落堂嗰陣，同班嘅臨記阿昌挨埋嚟講：『你知唔知高仔嗰單嘢……』——原來片場休息區早排先有人爆過料。",
+    fragId:"gao_steal_spotlight", fragFallback:{ popularity:1 }, fragFallbackLine:"嗰單料你一早聽過，不過阿昌講得眉飛色舞，你都俾面聽晒，人緣好咗啲。" },
+  { id:"train35_demo", line:"導師忽然點你名，叫你出去示範一次走位。你硬住頭皮做晒成段——收尾嗰下，佢難得點咗下頭。",
+    delta:{ acting:1 } },
+  { id:"train35_partner", line:"今日同你對戲嗰個拍檔好入戲，你俾佢帶住，成場順咗好多，落堂嗰陣仲交換咗 Call 機號碼。",
+    delta:{ stage:1, stress:-2 } },
+  { id:"train35_grind", line:"你唔忿氣，加練到肩膊都痠埋。不過嗰段身段，總算練到唔使諗都做得出。",
+    delta:{ acting:1, stress:3 } },
+  { id:"train35_snack", line:"班裡有人請食菠蘿包，休息嗰陣成班臨記交換邊度有工開、邊個副導好相與，呢啲消息有時仲值錢過堂上學嘅嘢。",
+    delta:{ popularity:1 } },
+  { id:"train35_notes", line:"你偷偷抄低導師點評隔籬位嗰幾句，返到屋企睇返，句句都啱自己用。",
+    delta:{ iq:1 } },
+  { id:"train35_rain", line:"落堂嗰陣落起大雨，成班人逼喺廠門口等雨停，傾多咗成粒鐘偈——原來大家都係咁樣一邊捱一邊等機會。",
+    delta:{ stress:-3 } },
+  { id:"train35_pager", line:"休息嗰陣 Call 機響——何生留言：『有工會搵你，唔好走遠。』冇下文，不過你成個人即刻醒神晒。",
+    delta:{ popularity:1, stress:-2 } }
+];
+function maybeTrainEvent35(notes, courseId){
+  try{
+    if(!S || !Array.isArray(notes)) return false;
+    S.flags = S.flags || {};
+    if(S.flags.trainEvDay35 === S.dayIndex) return false; /* 同一日唔出兩次 */
+    const since = (typeof S.flags.trainEvSince35==="number") ? S.flags.trainEvSince35 : 1;
+    if(since<3 && Math.random()>=0.45){ S.flags.trainEvSince35 = since+1; return false; }
+    let ev = null;
+    for(let tries=0; tries<3; tries++){
+      const cand = TRAIN_EVENTS_35[Math.floor(Math.random()*TRAIN_EVENTS_35.length)];
+      if(cand && cand.id!==S.flags.trainEvLastId35){ ev = cand; break; }
+      ev = cand;
+    }
+    if(!ev) return false;
+    S.flags.trainEvSince35 = 0;
+    S.flags.trainEvDay35 = S.dayIndex;
+    S.flags.trainEvLastId35 = ev.id;
+    notes.push(`<span class="gold">課堂小插曲：</span>${ev.line}`);
+    if(ev.fragId){
+      let granted = false;
+      try{
+        if(Array.isArray(S.mockRumors) && !S.mockRumors.some(r=>r && r.id===ev.fragId)){
+          const seed = (typeof MOCK_RUMOR_SEEDS!=="undefined" ? MOCK_RUMOR_SEEDS : []).find(r=>r && r.id===ev.fragId);
+          if(seed){
+            S.mockRumors.unshift({ id:seed.id, source:seed.source, title:seed.title, text:seed.text, state:"normal", season:seed.season||"", seeded:true, fromTrain35:true });
+            granted = true;
+            notes.push(`<span class="var-note">手帳多咗一張傳聞碎片：「${seed.title}」——去手帳睇下拼唔拼得埋。</span>`);
+          }
+        }
+      }catch(_fe){}
+      if(!granted){
+        if(ev.fragFallbackLine) notes.push(`<span class="var-note">${ev.fragFallbackLine}</span>`);
+        if(ev.fragFallback) notes.push(...apply(ev.fragFallback));
+      }
+    }
+    if(ev.delta) notes.push(...apply(ev.delta));
+    return true;
+  }catch(_e){ return false; }
+}
+
+/* --- P1-6：長工片場輕量抉擇（SET_CHOICES_35） ---
+   長拍攝（totalDays≥4）嘅非殺青拍攝日，約隔日出一個 30 秒兩揀一；後果細
+   （現金 ≤$80、人情 ≤+3、壓力 ≤±6）。抉擇直接嵌喺日結算板，唔揀＝安全預設（冇後果），
+   唔阻主流程；揀完即時落帳＋存檔，同日唔會重出（flags 記 offered／done）。
+   週加速（_weekAccel）靜默合併日子唔出，避免抉擇混入合併摘要。 */
+const SET_CHOICES_35 = [
+  { id:"set35_supper", scene:"收工嗰陣，天都黑齊，場務阿標問你去唔去大排檔食宵夜，話嗰度啲人成日有料爆。",
+    options:[
+      { label:"去食宵夜", result:"你跟住去坐咗陣，聽咗一晚片場經，返到屋企個人鬆晒。", delta:{ money:-60, stress:-6 }, npc:{ id:"colleague", d:2 } },
+      { label:"早啲返去瞓", result:"你婉拒咗，早啲返屋企沖涼瞓覺，聽朝開工精神啲。", delta:{ stress:-3, stamina:4 } }
+    ] },
+  { id:"set35_carry", scene:"轉景嗰陣器材唔夠人搬，副導周圍望，睇下有冇人肯搭把手。",
+    options:[
+      { label:"上前幫手搬", result:"你幫手搬咗兩轉，副導收工嗰陣特登行過嚟拍你膊頭：『呢個後生仔得。』", delta:{ stress:4 }, npc:{ id:"director", d:2 } },
+      { label:"企返自己個位", result:"你企返埋自己個位等埋位，冇出事，亦冇人特別記得你。", delta:{ stress:-2 } }
+    ] },
+  { id:"set35_lunch", scene:"放飯嗰陣，老臨記根叔招手叫你過去一齊食，話有啲廠內規矩後生仔要知。",
+    options:[
+      { label:"埋去同根叔食", result:"根叔邊食邊講，邊啲位唔好亂企、邊個場記唔好得罪，你一一記低。", delta:{ iq:1, stress:-3 } },
+      { label:"自己食，快啲抖下", result:"你自己坐埋一邊食完，趁空檔瞇咗陣，下午開工冇咁攰。", delta:{ stamina:3, stress:-2 } }
+    ] },
+  { id:"set35_pa", scene:"後生 PA 阿 May 埋嚟細細聲問你借 $30 食飯，話出糧即還，樣子幾狼狽。",
+    options:[
+      { label:"借俾佢，請埋汽水", result:"你借咗 $30 俾阿 May，佢千多謝萬多謝，成組人都睇到你好人。", delta:{ money:-30, popularity:1 } },
+      { label:"婉拒，話自己都緊", result:"你婉拒咗，阿 May笑笑口話唔緊要，轉頭去問第二個。冇傷和氣。", delta:{} }
+    ] },
+  { id:"set35_shout", scene:"導演鬧緊一個新嚟嘅臨記，鬧到成個場靜晒，新人眼濕濕就快喊出嚟。",
+    options:[
+      { label:"行埋去緩頰", result:"你行埋去幫手執返好啲道具，順勢打咗個圓場。導演望你一眼，冇再鬧落去。", delta:{ stress:5 }, npc:{ id:"director", d:3 } },
+      { label:"唔好出聲，企埋邊", result:"你企埋一邊唔出聲，等導演鬧完。心入面記低：呢啲位，唔好亂企。", delta:{ acting:1, stress:1 } }
+    ] },
+  { id:"set35_night", scene:"夜班拍到凌晨，成組人都冇晒電，你都眼瞓到就嚟企住瞓著。",
+    options:[
+      { label:"買罐咖啡頂住", result:"你去自動販賣機買咗罐咖啡，一啖灌落去，成個人醒返，嗰場夜戲順利過關。", delta:{ money:-20, stamina:5 } },
+      { label:"趁空檔瞇一陣", result:"你趁轉景嗰陣喺道具箱邊瞇咗十分鐘，醒返嗰陣精神返唔少。", delta:{ stress:-4 } }
+    ] }
+];
+function setChoiceOffer35(sh){
+  try{
+    if(!S || !sh) return "";
+    if((Number(sh.totalDays)||0)<4) return ""; /* 短工唔出 */
+    if(typeof _weekAccel!=="undefined" && _weekAccel) return "";
+    S.flags = S.flags || {};
+    const key = String(sh.id||"")+"_"+(Number(sh.doneDays)||0);
+    if(S.flags["setChoice35_"+key]) return ""; /* 同一日（重讀）唔重出 */
+    const last = (typeof S.flags.setEvLastDay35==="number") ? S.flags.setEvLastDay35 : null;
+    if(last!=null && (S.dayIndex - last)<2) return ""; /* 約隔日 */
+    if(Math.random()>=0.6) return "";
+    const n = (typeof S.flags.setEvCount35==="number") ? S.flags.setEvCount35 : 0;
+    const ev = SET_CHOICES_35[n % SET_CHOICES_35.length];
+    if(!ev) return "";
+    S.flags.setEvCount35 = n+1;
+    S.flags.setEvLastDay35 = S.dayIndex;
+    S.flags["setChoice35_"+key] = "offered";
+    S.flags["setChoiceEv35_"+key] = ev.id;
+    const btns = (ev.options||[]).map((op, i)=>
+      `<button type="button" class="set-choice35-btn" data-sckey="${key}" data-scidx="${i}">${op.label}</button>`
+    ).join(" ");
+    return `<div class="set-choice35" id="setchoice35box"><p class="gold">片場小事</p><p>${ev.scene}</p><p>${btns}</p></div>`;
+  }catch(_e){ return ""; }
+}
+function applySetChoice35(key, idx){
+  try{
+    if(!S) return null;
+    S.flags = S.flags || {};
+    if(S.flags["setChoice35_"+key]!=="offered") return null;
+    const ev = SET_CHOICES_35.find(e=>e && e.id===S.flags["setChoiceEv35_"+key]);
+    if(!ev) return null;
+    const op = (ev.options||[])[Number(idx)||0];
+    if(!op) return null;
+    S.flags["setChoice35_"+key] = "done";
+    let deltaNotes = [];
+    if(op.delta && Object.keys(op.delta).length) deltaNotes = apply(op.delta);
+    if(op.npc && op.npc.id){ try{ bumpNpc(op.npc.id, op.npc.d||0); }catch(_ne){} }
+    try{ saveQ(); }catch(_se){}
+    try{ paintBar(); }catch(_pe){}
+    return { eventId: ev.id, result: op.result || "", deltaNotes: deltaNotes };
+  }catch(_e){ return null; }
+}
+function wireSetChoice35(){
+  try{
+    const box = document.getElementById("setchoice35box");
+    if(!box) return 0;
+    let n = 0;
+    box.querySelectorAll(".set-choice35-btn").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const r = applySetChoice35(btn.dataset.sckey, btn.dataset.scidx);
+        if(!r) return;
+        const deltas = (r.deltaNotes||[]).join(" ");
+        box.innerHTML = `<p class="gold">片場小事</p><p>${r.result}</p>` + (deltas ? `<p>${deltas}</p>` : "");
+      });
+      n++;
+    });
+    return n;
+  }catch(_e){ return 0; }
+}
+
 /** v19l：某一地點、某一季嘅通告欄名單。
  *  錯季（seasonRank>0）同已殺青／拍攝中仍然硬藏。
  *  唔再以聲望、req.fame、fameFloor 硬藏「高」或任何級——條件未齊仍上板，Detail 硬鎖「暫未能報」。
@@ -34448,6 +34787,7 @@ function gigsForLocSeasonBoard(locId, curSeason){
   try{ if(typeof mergeFavorGigs==="function") mergeFavorGigs(); }catch(_fg){}
   try{ if(typeof mergeRivalGigs==="function") mergeRivalGigs(); }catch(_rg){}
   try{ if(typeof mergeExodusGigs==="function") mergeExodusGigs(); }catch(_xg){}
+  try{ if(typeof mergeMidGigs35==="function") mergeMidGigs35(); }catch(_m35){}
   curSeason = curSeason || calendarSeason();
   const byBoard=(a,b)=> boardSortCompare(a,b,curSeason);
   const pool=(GIGS||[]).filter(g=>{
@@ -34561,6 +34901,8 @@ function applyTrainLesson(courseId, notes){
   else if(courseId==="train_iq"){ notes.push(...apply({iq:3+R(0,2), acting:1, stress:4+R(0,2)})); S.trainCount.train_iq=(S.trainCount.train_iq||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_iq")); }
   else if(courseId==="train_acting_mid"){ notes.push(...apply({acting:6+R(0,2), stage:2, stress:10+R(0,4)})); S.trainCount.train_acting_mid=(S.trainCount.train_acting_mid||0)+1; }
   else if(courseId==="train_stage_mid"){ notes.push(...apply({stage:6+R(0,2), charm:2, stress:10+R(0,4)})); S.trainCount.train_stage_mid=(S.trainCount.train_stage_mid||0)+1; }
+  /* v20a35 節奏包 P0-2(b)：訓練微事件（即場堂入口；手帳排程堂喺 resolvePlannedDay 接） */
+  try{ if(typeof maybeTrainEvent35==="function") maybeTrainEvent35(notes, courseId); }catch(_te35){}
   return notes;
 }
 function updateMapStressTip(){
