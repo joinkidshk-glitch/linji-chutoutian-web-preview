@@ -22900,7 +22900,8 @@ function wrapTrajNotePool49(){
    避免 backfill 寫入破壞純函數深等）；生產路徑兩者數值一致（測試有交叉對照）。 ===== */
 const ENDING410_CAREER_NAMES = {
   E1: "天王接班", E2: "甘草王", E3: "幕後之路", E4: "泡沫偶像",
-  E5: "江湖撈家", E6: "退圈", E0: "浮沉未定"
+  E5: "江湖撈家", E6: "退圈", E0: "浮沉未定",
+  E7: "未紅先收" /* v20a61 CONSEQ61-1：強制收場（年終評核唔過／破產寬限期滿）；唔經 resolveEnding410 判定表，由 conseq61PresentForcedEnding 寫入 */
 };
 const ENDING410_T = {
   e1Fame: 60, e1Credit: 55, e1Dual: 125, e1NegMax: 1,       /* E1 天王接班（專檔 §2） */
@@ -23237,6 +23238,17 @@ function endingCareerScene410(rec){
       return "<p>頒獎禮嗰晚，你冇入場。你返咗屋企，阿媽煲咗湯，電視播住頒獎禮，你坐喺梳化，飲湯。</p>"
         + "<p>表叔嗰份銀行文職，下個禮拜一上工：月月有糧出，年尾雙糧。唔使再等通告，唔使再驚邊個沉邊個浮。阿媽嗰句講得最啱——做邊行都好，唔好餓親自己。</p>"
         + "<p>三年臨記，唔係白過。你識咗一班人，行過一轉別人成世都入唔到嘅世界。夠喇。</p>";
+    case "E7": {
+      if(v==="bankrupt") return "<p>寬限期最後一日，你返到事務所，何生已經幫你執好咗個位——其實都冇咩好執：一叠通告紙、一個用咗成年嘅水杯。</p>"
+        + "<p>「我保你，保到呢度。」何生講，「唔係你冇本事，係個荷包唔等你。呢行有幾多人，唔係輸喺唔夠叻，係輸喺未紅之前，先冇咗糧。」佢塞咗兩封介紹信俾你：一份去屋企人嗰邊嘅公司，一份去茶餐廳連鎖做經理。唔體面，但係出路。</p>"
+        + "<p>你行出事務所嗰陣，樓下有組人拍緊外景。你企住睇咗一陣——嗰啲位，你企過；嗰啲燈，你捱過。未紅先收，四個字唔好聽，但你嗰段日子，冇白過。</p>";
+      if(v==="review1989") return "<p>第二年年尾，事務所會議室。何生攞住你兩年嘅記數簿，揭咗好耐，先開口：「阿偉，唔係一年，係兩年喇。」</p>"
+        + "<p>聲望同信用，加埋離公司肯留人嗰條線，仲差一截。呢行唔係冇等過你——兩年，幾多張通告、幾多場戲，機會嚟過，你冇捉得實。何生冇鬧你，只係歎氣：「有啲人，係要遲啲先開竅——但公司，唔可以陪你等到嗰陣。」</p>"
+        + "<p>你執個位嗰陣，牆上仲貼住今年賀歲片張海報。你個名，冇喺上面。未紅先收，唔係邊個判你死刑，係時間同數字，一齊講咗句：到此為止。</p>";
+      return "<p>第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，加埋離公司肯留人嗰條線，仲差一截。</p>"
+        + "<p>「你唔係冇嚟開工，」何生講，「係開嚟開去，都未開出一條路。呢行好現實：畀咗成年你，冇起色，就要換第二個嚟試。」佢語氣唔差，甚至有點可惜——但合約就係合約，年尾唔續，就係唔續。</p>"
+        + "<p>你行返出去嗰陣，走廊有個新臨記喺度等面試，緊張到手心出汗——好似年初嗰個你。未紅先收。你嗰盞燈，未著過，就要熄。</p>";
+    }
     default: return "<p>頒獎禮嗰晚，你坐喺中間嗰幾行——唔係最前，亦唔係最後。台上頒嘅獎，暫時未有你份；台下坐住嘅，亦唔止你一個臨記出身。</p>"
       + "<p>三年，你冇沉落去，亦未浮到上水面。何生臨走嗰句最中肯：「你仲喺呢行，仲有下一個通告——咁就未算輸。」</p>"
       + "<p>散場嗰陣，人群入面，嗰位當紅花旦同你擦身而過，微微點咗下頭。只係一下——你連佢係咪認得你都唔肯定。但你笑咗笑，行返出去，截的士，返屋企瞓覺。聽朝，仲有工開。</p>";
@@ -23321,7 +23333,8 @@ const ENDING410_ADJ_RUMOR = {
   E4: "聽講如果你嗰陣留返一兩份人情唔好用盡，出事嗰陣，可能有人拉你一把。",
   E5: "聽講如果你嗰陣唔好咁講義氣，而家，可能已經企咗上台攞獎。",
   E6: "聽講如果你嗰陣冇收山，今屆頒獎禮，可能有你份。",
-  E0: "聽講如果你嗰陣肯企出嚟爭一次，故事，可能係另一種講法。"
+  E0: "聽講如果你嗰陣肯企出嚟爭一次，故事，可能係另一種講法。",
+  E7: "聽講如果你嗰陣捱得住、谷得起，而家，可能仲喺片場等緊你嗰場戲。"
 };
 function endingSummaryHtml410(){
   const rec = (typeof S!=="undefined" && S && S.ending410) || null;
@@ -23335,7 +23348,11 @@ function endingSummaryHtml410(){
     : (rec.romanceKind==="almost" ? "有一段，差一步" : "一個人收科，唔代表一個人收尾");
   const exoLine = rec.exodus==="leave" ? "走——啟德上機，遠走" : (rec.exodus==="stay" ? "留——扎根香港，1991 繼續開工" : "未表態——留白");
   const rumor = ENDING410_ADJ_RUMOR[rec.career] || "";
-  return "<h3>三年收科・手帳總結</h3>"
+  /* v20a61 CONSEQ61-1：E7 提早收科標題跟返收場原因，唔扮三年收科 */
+  const head410 = (rec.career==="E7")
+    ? (((rec.earlyEnd && rec.earlyEnd.kind==="review") ? ((rec.earlyEnd.year||"") + " 年尾評核") : "寬限期滿") + "・提早收科・手帳總結")
+    : "三年收科・手帳總結";
+  return "<h3>" + head410 + "</h3>"
     + "<div class=\"ending410-title-card\"><p class=\"sub\">你的稱號</p><p class=\"ending410-title\">" + endingEsc410(rec.title || "") + "</p>"
     + "<p>事業結局：<b>" + endingEsc410(ENDING410_CAREER_NAMES[rec.career] || rec.career) + "</b>"
     + (rec.careerVariant ? "（" + endingEsc410(rec.careerVariant) + "版）" : "") + "</p></div>"
@@ -23345,7 +23362,9 @@ function endingSummaryHtml410(){
     + "<p><b>感情：</b>" + endingEsc410(romLine) + "</p>"
     + "<p><b>去留：</b>" + endingEsc410(exoLine) + "</p>"
     + (rumor ? "<p class=\"sub\">茶餐廳嗰邊有人講：「" + endingEsc410(rumor) + "」——聽下就算，唔好當真。</p>" : "")
-    + "<p class=\"sub\">結局已記入手帳。收科之後，你照樣可以繼續跑通告過日子——呢頁，隨時返嚟重睇。</p>";
+    + (rec.career==="E7"
+      ? "<p class=\"sub\">結局已記入手帳。呢次收場，唔係你揀嘅，係數字同荷包揀嘅。（遊戲唔鎖檔：你可以繼續過日子，當係另一條時間線；又或者開新一局——下次，唔好等何生出聲先嚟急。）</p>"
+      : "<p class=\"sub\">結局已記入手帳。收科之後，你照樣可以繼續跑通告過日子——呢頁，隨時返嚟重睇。</p>");
 }
 function showEndingSummary410(){
   try{ modal(endingSummaryHtml410(), [{ label: "關閉", role: "p" }]); }catch(_e){}
@@ -25054,6 +25073,8 @@ function normalizeSaveObj(o){
   try{ syncDualTracks(o); }catch(_e){}
   /* v20a60 CALIB60-3：舊檔靜靜補登已漏節點入「回憶」（唔彈提示、唔出結算行）；新登記只會喺週結發生 */
   try{ if(typeof calib60MissedScan==="function") calib60MissedScan(o); }catch(_e){}
+  /* v20a61 CONSEQ61-1：舊檔已過評核年份→靜靜標記已過，永不追溯收場；病倒連續日由 0 起計，唔會讀檔即病 */
+  try{ if(typeof conseq61LegacyMark==="function") conseq61LegacyMark(o); }catch(_e){}
   return o;
 }
 function saveSummaryFrom(o){
@@ -25805,6 +25826,306 @@ function renderMemoryPane60(){
   }).sort((a,b)=> (a.week-b.week) || a.id.localeCompare(b.id));
   el.innerHTML = '<div class="mem-head60"><h3>回憶</h3><p class="dim">以下主線已經過咗時窗，嗰陣冇遇到。唔會影響你繼續行落去，只係嗰段故事，留返喺回憶度。</p></div>'
     + rows.map(r=>'<div class="mem-item60"><span class="mem-title60">《'+r.title+'》</span><span class="mem-when60">'+r.whenLabel+'</span><span class="dim">第'+(r.week||"—")+'週記低</span></div>').join("");
+}
+
+/* ===== v20a61 CONSEQ61：後果包——早期差結局「未紅先收」＋壓力爆煲強制病倒 =====
+   用戶 2026-11-10 拍板（模仿《明星志願》：玩得太差提早收場＋壓力太多強制生病）；
+   哲學＝有警告、有寬限、唔一嘢判死。地板全部用 v20a60 回放數據推導（見 NOTES_V20A61_CONSEQ.md）：
+   校準後慢弧（Arc A）1988 年尾 dual 70／1989 年尾 183；全程 hea（數值凍結＋輕微漂移）dual ≤31。
+   唔改 resolveEnding410 門檻／E6 自願規則／CALIB60 參數／STORY_GATE_3Y；E7 係新結局格，
+   呈現行返 ending410 架構（S.ending410 相容、剪報頁重睇、手帳總結頁、稱號卡）。 */
+const CONSEQ61_REVIEWS = {
+  /* boundaryWeek＝嗰年最後一個週結（calib60YearOfWeek(w)=Y 而 w+1 已入 Y+1 年） */
+  1988: { floor: 45,  warnLine: 65,  boundaryWeek: 43 },
+  1989: { floor: 100, warnLine: 130, boundaryWeek: 95 }
+};
+const CONSEQ61_CFG = {
+  graceWeeks: 4,        /* 破產寬限：4 個週結；期間有戲拍緊暫停倒數；存款返到夠冚下週生活費即解除 */
+  sickStreak: 2,        /* 連續 2 日「收市」壓力 ≥90 先病倒（觸發喺 advanceDay、用翻日前壓力） */
+  sickWarnStreak: 2,    /* 連續 2 日 ≥80：地圖壓力提示升級做身體警號 */
+  sickRelief: 35,       /* 病癒嗰日壓力 −35 */
+  sickCooldownDays: 14, /* 病癒後 14 日冷卻：唔儲連鎖觸發，唔會病完即刻再病 */
+  sickCreditPerDay: 2,  /* 拍攝告假一日：業內信用 −2（經 industryCreditDelta 敘事扣減，唔經 CALIB60 縮放） */
+  sickCreditCap: 6      /* 一次病最多扣 6 點信用 */
+};
+function conseq61State(st){
+  const s = st || (typeof S!=="undefined" ? S : null);
+  if(!s || typeof s!=="object") return null;
+  if(!s.conseq61 || typeof s.conseq61!=="object" || Array.isArray(s.conseq61)) s.conseq61 = {};
+  const c = s.conseq61;
+  if(!c.reviews || typeof c.reviews!=="object" || Array.isArray(c.reviews)) c.reviews = {};
+  if(typeof c.streak90!=="number") c.streak90 = 0;
+  if(typeof c.streak80!=="number") c.streak80 = 0;
+  if(typeof c.peak90!=="number") c.peak90 = 0;
+  if(typeof c.cooldownUntil!=="number") c.cooldownUntil = 0;
+  if(!("grace" in c)) c.grace = null;
+  if(!("sick" in c)) c.sick = null;
+  if(!("pendingEnding" in c)) c.pendingEnding = null;
+  return c;
+}
+function conseq61DualOf(st){
+  const d = (typeof endingDual410==="function") ? endingDual410(st || {})
+    : { stageVolume: Number((st||{}).fame)||0, industryCredit: Number((st||{}).industryCredit)||0 };
+  const fame = Number(d.stageVolume)||0, credit = Number(d.industryCredit)||0;
+  return { fame: fame, credit: credit, dual: fame + credit };
+}
+/* 舊檔安全：已過評核年份（或已收科）→ 靜靜標記評核已過，永不追溯收場。讀檔（normalizeSaveObj）呼叫。 */
+function conseq61LegacyMark(st){
+  try{
+    if(!st || typeof st!=="object") return;
+    const c = conseq61State(st);
+    if(!c) return;
+    const dt = new Date(START.y, START.m-1, START.d + (Number(st.dayIndex)||0));
+    const curYear = dt.getFullYear();
+    Object.keys(CONSEQ61_REVIEWS).forEach(yKey=>{
+      const Y = Number(yKey);
+      if(!c.reviews[Y] && (curYear > Y || st.ending410)){
+        c.reviews[Y] = { passed: true, legacy: true, dual: null, floor: CONSEQ61_REVIEWS[yKey].floor, week: 0 };
+      }
+    });
+  }catch(_e){}
+}
+/* 週結評估（settleWeek 喺 saveQ 前呼叫）：評核警告（前 4 個週結、貼線先出聲）→ 年終評核 → 破產寬限。
+   只登記狀態＋回傳結算旁白行；真收場寫 pendingEnding，交 enterHome 之後嘅 conseq61PresentForcedEnding 呈現。
+   已收科（S.ending410）就全數跳過。 */
+function conseq61SettleEval(st, weekJustEnded){
+  const lines = [];
+  try{
+    const s = st;
+    if(!s || typeof s!=="object") return lines;
+    const c = conseq61State(s);
+    if(!c || s.ending410) return lines;
+    const w = Number(weekJustEnded)||0;
+    /* --- 評核警告：距離邊界週結 1–4 週、雙軌貼近地板（warnLine 以下）先出聲 --- */
+    Object.keys(CONSEQ61_REVIEWS).forEach(yKey=>{
+      const Y = Number(yKey), R = CONSEQ61_REVIEWS[yKey];
+      if(c.reviews[Y]) return;
+      if((typeof calib60YearOfWeek==="function") && calib60YearOfWeek(R.boundaryWeek)!==Y) return; /* 日曆對唔返就唔好亂嗌 */
+      const dist = R.boundaryWeek - w;
+      if(dist<1 || dist>4) return;
+      const d = conseq61DualOf(s);
+      if(d.dual >= R.warnLine) return;
+      if(dist<=1){
+        lines.push(`<span class="bad">何生把聲沉晒：「下週就係 ${Y} 年尾評核。你而家聲望＋信用得 ${d.dual}，離事務所肯留人嗰條線（${R.floor}）仲差 ${Math.max(0, R.floor-d.dual)}。呢個禮拜唔好再 hea——接工、開鏡，谷返上去。」</span>`);
+      } else {
+        lines.push(`<span class="var-note">何生提你：${Y} 年尾事務所要做評核，睇聲望＋信用。仲有 ${dist} 週，你而家 ${d.dual}，貼住條線（${R.floor}）——唔好等到年尾先嚟急。</span>`);
+      }
+    });
+    /* --- 年終評核：邊界週結即判 --- */
+    let endedNow = false;
+    Object.keys(CONSEQ61_REVIEWS).forEach(yKey=>{
+      const Y = Number(yKey), R = CONSEQ61_REVIEWS[yKey];
+      if(endedNow) return;
+      if(w !== R.boundaryWeek || c.reviews[Y]) return;
+      if((typeof calib60YearOfWeek==="function") && calib60YearOfWeek(w)!==Y) return;
+      const d = conseq61DualOf(s);
+      c.reviews[Y] = { dual: d.dual, floor: R.floor, passed: d.dual >= R.floor, week: w };
+      if(d.dual < R.floor){
+        c.pendingEnding = { kind: "review", year: Y, dual: d.dual, floor: R.floor };
+        endedNow = true;
+        lines.push(`<span class="bad">${Y} 年尾評核結果出咗。何生約你聽朝返事務所——唔係傾新工，係傾去留。</span>`);
+      } else {
+        lines.push(`<span class="good">${Y} 年尾評核：聲望＋信用 ${d.dual}，過咗事務所條線（${R.floor}）。何生續你約：新一年，繼續做。</span>`);
+      }
+    });
+    if(endedNow) return lines; /* 已判收場，唔再評寬限 */
+    /* --- 破產寬限：存款 ≤0 起計 4 個週結；有戲拍緊暫停；返到夠冚下週生活費即解除 --- */
+    const money = Number(s.money)||0;
+    const clearLine = (typeof livingCostEstimate==="function") ? livingCostEstimate(w+1) : 2400;
+    if(c.grace){
+      if(money >= clearLine){
+        c.grace = null;
+        lines.push(`<span class="good">存款返到 $${money.toLocaleString()}，夠冚下週生活費——寬限警報解除。呢鑊，捱過咗。</span>`);
+      } else {
+        const hasShoot = Array.isArray(s.shoots) && s.shoots.some(sh=>sh && (typeof shootRemain==="function" ? shootRemain(sh)>0 : true));
+        if(hasShoot){
+          lines.push(`<span class="var-note">寬限期暫停倒數：你仲有戲拍緊，殺青有糧出，何生知你有工開，唔催你住。（存款 $${money.toLocaleString()}）</span>`);
+        } else {
+          c.grace.weeksLeft = (Number(c.grace.weeksLeft)||0) - 1;
+          if(c.grace.weeksLeft <= 0){
+            c.pendingEnding = { kind: "bankrupt", dual: conseq61DualOf(s).dual };
+            c.grace = null;
+            lines.push(`<span class="bad">寬限期到咗，存款仍然見底。何生今次幫你唔到——聽朝，返事務所收拾你個位。</span>`);
+          } else {
+            lines.push(`<span class="bad">寬限期仲有 ${c.grace.weeksLeft} 週：存款 $${money.toLocaleString()}，未夠冚下週生活費（$${clearLine.toLocaleString()}）。有散工就接，唔好等運到。</span>`);
+          }
+        }
+      }
+    } else if(money <= 0){
+      c.grace = { weeksLeft: CONSEQ61_CFG.graceWeeks, startedWeek: w };
+      lines.push(`<span class="bad">存款見底。何生打嚟：「我同事務所講，畀你 ${CONSEQ61_CFG.graceWeeks} 週寬限——接散工、翻上水，就當冇事發生；寬限一到仲係咁，我保你唔住。」（期間有戲拍緊，倒數會暫停）</span>`);
+    }
+  }catch(_e){}
+  return lines;
+}
+function conseq61ExodusWord(exodus){
+  return exodus==="leave" ? "遠走的人" : (exodus==="stay" ? "留下來的人" : "未說出口的人");
+}
+/* 強制收場呈現：行返 ending410 全套（事業場景→感情→去留→個人化插入→手帳總結頁），
+   結果寫 S.ending410（career "E7"），同正常收科一樣喺剪報頁隨時重睇。冪等：冇 pending 或已收科即返回 false。 */
+function conseq61PresentForcedEnding(){
+  try{
+    if(typeof S==="undefined" || !S) return false;
+    const c = conseq61State(S);
+    if(!c || !c.pendingEnding) return false;
+    const pend = c.pendingEnding;
+    c.pendingEnding = null;
+    if(S.ending410){ try{ saveQ(); }catch(_s){} return false; }
+    const res = resolveEnding410(S); /* 只攞快照／感情／去留；事業軸由 E7 覆蓋，唔郁原判定門檻 */
+    const favor = endingFavor410(S);
+    const variant = (pend.kind==="review") ? ("review" + pend.year) : "bankrupt";
+    const earlyEnd = { kind: pend.kind, year: pend.year||0, dual: pend.dual||0, floor: pend.floor||0, week: (typeof weekNumNow==="function" ? weekNumNow() : 0) };
+    S.ending410 = {
+      career: "E7", careerVariant: variant,
+      romanceLine: res.romance.line || "", romanceKind: res.romance.kind || "solo",
+      exodus: res.exodus, title: "未紅先收・" + conseq61ExodusWord(res.exodus),
+      eveKey: "forced_" + pend.kind, day: (S.dayIndex|0),
+      fame: res.snapshot.fame, credit: res.snapshot.credit, dual: res.snapshot.dual,
+      settled: res.snapshot.settled, creditsHeld: res.snapshot.creditsHeld,
+      exodusNames: res.snapshot.exodusNames.slice(),
+      earlyEnd: earlyEnd
+    };
+    try{ saveQ(); }catch(_s){}
+    const rec = { career: "E7", careerVariant: variant, romance: res.romance, exodus: res.exodus, earlyEnd: earlyEnd };
+    const inserts = endingInserts410(rec, favor);
+    const page1 = "<h3>" + (pend.kind==="review" ? (pend.year + " 年尾 · 事務所評核") : "寬限期滿 · 荷包見底") + "</h3>" + endingCareerScene410(rec);
+    const page2 = "<h3>收場之後</h3>" + endingRomanceScene410(rec) + endingExodusScene410(rec, favor)
+      + (inserts.length ? ("<p class=\"sub\">——呢段日子——</p>" + inserts.map(t=>"<p>"+endingEsc410(t)+"</p>").join("")) : "");
+    modal(page1, [{ label: "下一頁", role: "p", on: ()=>{
+      modal(page2, [{ label: "睇手帳總結", role: "p", on: ()=>{ showEndingSummary410(); } }]);
+    } }]);
+    return true;
+  }catch(_e){ return false; }
+}
+/* ===== CONSEQ61-2：壓力爆煲強制病倒 =====
+   警告層：收市壓力 ≥80 連續 2 日 → 身體警號（地圖壓力提示升級＋週結旁白）。
+   病倒：收市壓力 ≥90 連續 2 日（advanceDay 翻日嗰刻、用翻日前嘅收市壓力計）→ 翌日開始病，
+   長 2–4 日（跟連續日數同峰值）；期間行程作廢，拍攝日行告假（唔 fail 部戲、限期順延、信用小扣有上限）。
+   病癒嗰日壓力 −35；之後 14 日冷卻，唔會連鎖再病。病假期間生活費照週結扣（冇額外扣錢，蝕嘅係行程同收入）。 */
+function conseq61DailyTick(){
+  try{
+    const s = (typeof S!=="undefined" ? S : null);
+    if(!s) return;
+    const c = conseq61State(s);
+    if(!c) return;
+    const today = Number(s.dayIndex)||0;
+    const st = Number(s.stress)||0; /* advanceDay 剛翻日：呢個係剛過去嗰日嘅收市壓力（未經週結回復） */
+    if(c.sick) return;              /* 病緊：唔計連續日，唔會疊病 */
+    if(today < c.cooldownUntil){ c.streak90 = 0; c.peak90 = 0; }  /* 冷卻期：唔儲觸發 */
+    else if(st >= 90){ c.streak90++; if(st > c.peak90) c.peak90 = st; }
+    else { c.streak90 = 0; c.peak90 = 0; }
+    if(st >= 80) c.streak80++; else c.streak80 = 0;
+    if(c.streak90 >= CONSEQ61_CFG.sickStreak && today >= c.cooldownUntil){
+      const days = Math.max(2, Math.min(4, 2 + (c.streak90>=3 ? 1 : 0) + (c.peak90>=99 ? 1 : 0)));
+      c.sick = { from: today, to: today + days - 1, days: days, creditLost: 0, done: {}, peak: c.peak90, streak: c.streak90 };
+      c.streak90 = 0; c.peak90 = 0;
+    }
+  }catch(_e){}
+}
+function conseq61IsSickDay(st, dayIdx){
+  try{
+    const s = st || (typeof S!=="undefined" ? S : null);
+    if(!s) return false;
+    const c = conseq61State(s);
+    if(!c || !c.sick) return false;
+    const d = (dayIdx!=null) ? (Number(dayIdx)||0) : (Number(s.dayIndex)||0);
+    return d >= c.sick.from && d <= c.sick.to;
+  }catch(_e){ return false; }
+}
+function conseq61IsSickToday(){
+  return conseq61IsSickDay(null, null);
+}
+/* 病日結算：作廢今日行程並耗日。回 true＝已接管（呼叫方唔好再行正常日程）。
+   接線：resolvePlannedDay 開頭／goToMapForBrowse 入地圖前／endBrowseDayGoHome 開頭。 */
+function conseq61ResolveSickDay(id){
+  try{
+    if(typeof S==="undefined" || !S) return false;
+    const c = conseq61State(S);
+    if(!c || !c.sick) return false;
+    const today = Number(S.dayIndex)||0;
+    if(today < c.sick.from || today > c.sick.to) return false;
+    c.sick.done = (c.sick.done && typeof c.sick.done==="object") ? c.sick.done : {};
+    if(c.sick.done[today]) return false;
+    c.sick.done[today] = true;
+    const dayNo = Object.keys(c.sick.done).length;
+    const lastDay = today >= c.sick.to;
+    const sid = String(id||"");
+    const isShoot = sid.startsWith("shoot:");
+    const notes = [];
+    /* 今日格改寫做病假（手帳睇得返嗰日點解空咗） */
+    try{
+      const wd = weekdayIdx(today);
+      if(Array.isArray(S.weekPlan) && S.weekPlan[wd] != null) S.weekPlan[wd] = "sick61";
+    }catch(_e){}
+    if(dayNo===1){
+      notes.push(`<span class="bad">朝早起身嗰陣成身骨痛、頭重到抬唔起，探熱針一睇——燒到三十九度。唔係攰，係真病。醫生紙寫明：要唞 ${c.sick.days} 日。</span>`);
+    }
+    if(isShoot){
+      const shid = sid.slice(6);
+      const sh = (S.shoots||[]).find(x=>x && x.id===shid);
+      if(sh){
+        if(typeof sh.deadlineDay==="number") sh.deadlineDay += 1; /* 告假順延限期：唔觸發逾期取消／違約金 */
+        let pen = 0;
+        const lost = Number(c.sick.creditLost)||0;
+        if(lost < CONSEQ61_CFG.sickCreditCap){
+          pen = Math.min(CONSEQ61_CFG.sickCreditPerDay, CONSEQ61_CFG.sickCreditCap - lost);
+          c.sick.creditLost = lost + pen;
+          S.industryCreditDelta = (Number(S.industryCreditDelta)||0) - pen;
+          try{ syncDualTracks(S); }catch(_e){}
+        }
+        notes.push(`<span class="bad">拍攝告假：《${sh.title}》今日冇你嗰份。你喺電話度咳到講唔成句，製片歎氣：「搵人頂你嗰位先，限期順延一日，你好返先嚟。」——部戲唔會因為你病一日就散，但嗰日嘅進度，唔等你。</span>`);
+        notes.push(pen>0
+          ? `<span class="bad">業內信用 −${pen}：開天窗要人執手尾，呢啲，行內會記住。（今次病假累計扣 ${c.sick.creditLost}／上限 ${CONSEQ61_CFG.sickCreditCap}）</span>`
+          : `<span class="var-note">今次病假嘅信用扣分已經到上限，今日唔再扣——專心養病。</span>`);
+        notes.push(`<span class="var-note">冇嗰日糧：嗰日冇開工，拍攝日嘅得著唔計今日嗰份。</span>`);
+      } else {
+        notes.push(`<span class="bad">嗰單拍攝已經唔喺度——無論點，你今日都只可以瞓。</span>`);
+      }
+    } else if(sid.startsWith("job:")){
+      const gid = sid.slice(4);
+      try{
+        const b = (S.booked||[]).find(x=>x.gigId===gid);
+        S.booked = (S.booked||[]).filter(x=>x.gigId!==gid);
+        if(typeof clearJobFromPlans==="function") clearJobFromPlans(gid);
+        notes.push(`<span class="bad">試鏡告假：${b ? ("《"+b.title+"》") : "嗰個試鏡"}你去唔到。打電話去嗰陣，對方聽到你把聲就講：「唔使嚟喇，養好先。」——張通告返返去通告欄，第日再試過。</span>`);
+      }catch(_e){}
+    } else if(sid && sid!=="rest" && !(typeof isMapDay==="function" && isMapDay(sid))){
+      notes.push(`<span class="bad">今日排好嗰啲，全部作廢——你成日留喺屋企，食藥、瞓覺、再食藥。</span>`);
+    } else {
+      notes.push(`<span class="bad">你成日留喺屋企，食藥、瞓覺、再食藥。窗外有組人開工嗰啲聲，傳到入嚟，好遠。</span>`);
+    }
+    const title = `病倒休養（第 ${dayNo} 日）`;
+    if(lastDay){
+      notes.push(...apply({ stress: -CONSEQ61_CFG.sickRelief }));
+      notes.push(`<span class="good">病咗 ${c.sick.days} 日，總算退燒企得返起身——個人清晒，壓力大減。記住今次：壓力爆到盡，身體真係會冧，冧嗰陣，排咩都冇用。</span>`);
+      c.cooldownUntil = today + CONSEQ61_CFG.sickCooldownDays;
+      c.sick = null;
+      c.streak80 = 0;
+    } else {
+      notes.push(`<span class="var-note">休養中（仲有 ${c.sick.to - today} 日）：唔好諗住偷走去開工，唞唔足，好易翻發。</span>`);
+    }
+    try{ saveQ(); }catch(_e){}
+    const dayDone = (typeof fmtDate==="function") ? fmtDate() : "";
+    const { ended, summary } = tickDay();
+    try{ paintBar(); }catch(_e){}
+    /* 週加速：非拍攝病日靜默合併；拍攝告假日／週結要停低出卡（同主流程 critical 慣例） */
+    if(typeof _weekAccel!=="undefined" && _weekAccel){
+      const blurb = "病倒休養，行程作廢";
+      _weekAccelBuf.push({ title: title, blurb: blurb });
+      if(isShoot || ended){
+        const cont = ()=>{ if(ended){ try{ enterHome(summary, true); }catch(_e){} } else { try{ runScheduleFromToday(); }catch(_e){} } };
+        try{ flushWeekAccelSummary(title, formatResultNotes(notes) + (ended ? `<p class="gold">一週完結 → 回家結算</p>` : ""), ended, summary, cont); }
+        catch(_e){ afterDayModal(formatResultNotes(notes), title, null, ended, summary, { dayDone: dayDone }); }
+      } else {
+        try{ syncDateChrome(); }catch(_e){}
+        try{ saveQ(); }catch(_e){}
+        setTimeout(()=>{ try{ runScheduleFromToday(); }catch(_e){} }, 0);
+      }
+      return true;
+    }
+    afterDayModal(formatResultNotes(notes), title, null, ended, summary, { dayDone: dayDone });
+    return true;
+  }catch(_e){ return false; }
 }
 function bumpNpc(id,d){
   const b=S.npcs[id]||0; S.npcs[id]=clamp(b+d,0,100);
@@ -26952,6 +27273,7 @@ function allPlanDefs(){
 }
 function planMeta(id){
   if(!id) return { icon:"·", name:"未安排", hint:"" };
+  if(id==="sick61") return { icon:"🤒", name:"病假", hint:"嗰日病到起唔到身——行程作廢，喺屋企休養", locked:true };
   if(id.startsWith("shoot:")){
     const sid=id.slice(6);
     const sh=(S.shoots||[]).find(x=>x.id===sid);
@@ -27527,6 +27849,8 @@ function advanceDay(){
   try{ if(typeof story46SettleTick==="function") story46SettleTick(); }catch(_s46){}
   try{ if(typeof story48SettleTick==="function") story48SettleTick(); }catch(_s48){}
   try{ if(typeof ensureFamilyHomeDebt==="function") ensureFamilyHomeDebt(); }catch(_fh){}
+  /* v20a61 CONSEQ61-2：翻日嗰刻用「剛過去嗰日收市壓力」計病倒連續日／觸發病倒（喺週結回復之前） */
+  try{ if(typeof conseq61DailyTick==="function") conseq61DailyTick(); }catch(_c61){}
   return S.dayIndex>0 && weekdayIdx(S.dayIndex)===0;
 }
 
@@ -27760,6 +28084,17 @@ function settleWeek(){
       pushFlavor(`<span class="var-note">錯過了：《${m.title}》（${m.whenLabel}）嘅時窗過咗——手帳「回憶」頁記低咗。</span>`);
     });
   }catch(_m60){}
+  /* v20a61 CONSEQ61-2 警告層：週結收市壓力 ≥80（未病）→ 身體警號旁白 */
+  try{
+    if(stressAtEnd>=80 && !(S.conseq61 && S.conseq61.sick)){
+      pushFlavor(`<span class="bad">身體警號：呢排瞓得差、胃口又冇，成個人燶晒——壓力去到呢個位，再谷落去真係會病倒。病倒嗰陣，排咗嘅行程會全部作廢，撞正拍攝仲要告假扣信用。</span>`);
+    }
+  }catch(_bw61){}
+  /* v20a61 CONSEQ61-1：年終評核警告／評核／破產寬限（登記趕喺 saveQ 前；收場呈現交 enterHome 後嘅 hook） */
+  try{
+    const cq61 = (typeof conseq61SettleEval==="function") ? conseq61SettleEval(S, w) : [];
+    (cq61||[]).forEach(line=>pushFlavor(line));
+  }catch(_cq61){}
   saveQ(); // persist post-rest stats so Monday header / reload match summary card
   const flavorHtml = flavor.length
     ? `<div class="settle-flavor">${flavor.map(x=>`<div class="settle-flavor-line">${x}</div>`).join("")}</div>`
@@ -28380,6 +28715,12 @@ function enterHome(summary, editable, initialTab){
     if(summary && summary.html){ S.flags=S.flags||{}; S.flags.settleSeen=true; }
   }
   ensureMockJournal();
+  /* v20a61 CONSEQ61-1：週結判咗強制收場（評核唔過／寬限期滿）→ 結算卡出完之後呈現結局全套 */
+  try{
+    if(typeof S!=="undefined" && S && S.conseq61 && S.conseq61.pendingEnding && !S.ending410 && typeof conseq61PresentForcedEnding==="function"){
+      setTimeout(()=>{ try{ conseq61PresentForcedEnding(); }catch(_e){} }, 90);
+    }
+  }catch(_pe61){}
   /* v20a6：允許呼叫方指定初始分頁（選單「狀態」→記數），避免先 plan 再 setTimeout 搶跑 */
   const _homeTab = (initialTab && typeof initialTab==="string") ? initialTab : "plan";
   setHomeTab(_homeTab);
@@ -28605,6 +28946,8 @@ function endBrowseDayGoHome(){
     }
   }catch(_e){}
   try{ if(typeof _storyPlayLocked!=="undefined" && _storyPlayLocked){ toast("劇情進行中，完結後再返屋企"); return; } }catch(_e2){}
+  /* v20a61 CONSEQ61-2：病日唔當普通休息日過——行病假結算（作廢行程／告假） */
+  try{ if(typeof conseq61IsSickToday==="function" && conseq61IsSickToday() && typeof conseq61ResolveSickDay==="function" && conseq61ResolveSickDay((typeof todayPlanId==="function") ? todayPlanId() : null)) return; }catch(_sk61h){}
   closeSheet();
   try{ closeModal(); }catch(_e3){}
   atLoc=null;
@@ -28700,6 +29043,14 @@ function goToMapForBrowse(){
   try{
     if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(()=>{ try{ goToMapForBrowse(); }catch(_e4){} })) return;
   }catch(_npMap){}
+  /* v20a61 CONSEQ61-2：病日唔入地圖——先行病假結算（劇情進行中唔截，費事打斷播片） */
+  try{
+    let storyOn = false;
+    try{ storyOn = (typeof isStoryPlayActive==="function" && isStoryPlayActive()) || (typeof _storyPlayLocked!=="undefined" && !!_storyPlayLocked); }catch(_e){}
+    if(!storyOn && typeof conseq61IsSickToday==="function" && conseq61IsSickToday() && typeof conseq61ResolveSickDay==="function"){
+      if(conseq61ResolveSickDay((typeof todayPlanId==="function") ? todayPlanId() : null)) return;
+    }
+  }catch(_sk61m){}
   if(kickScheduleIfNeeded()) return;
   nudgeRegionForToday();
   try{ closeSheet(); }catch(_e){}
@@ -28939,6 +29290,8 @@ function runScheduleFromToday(){
 }
 
 function resolvePlannedDay(id){
+  /* v20a61 CONSEQ61-2：病日——行程作廢，行病假結算（拍攝告假／試鏡改期），唔行正常日程 */
+  try{ if(typeof conseq61IsSickToday==="function" && conseq61IsSickToday() && typeof conseq61ResolveSickDay==="function" && conseq61ResolveSickDay(id)) return; }catch(_sk61){}
   const applyGain60 = (typeof applyCalib60==="function") ? applyCalib60 : apply; /* v20a60：抽函數測試沙盒冇 applyCalib60 時退回 apply */
   let meta=planMeta(id);
   let notes=[];
@@ -34905,7 +35258,13 @@ function renderClippingsPane(){
   let endingCard = "";
   try{
     if(typeof S!=="undefined" && S && S.ending410){
-      endingCard = `<article class="clip-card ending410-card"><p class="clip-date">1990 年冬 · 三年收科</p><h4>${endingEsc410(S.ending410.title||"三年收科")}</h4><p>事業結局：${endingEsc410(ENDING410_CAREER_NAMES[S.ending410.career]||S.ending410.career||"")}。呢三年的總帳，記喺一度。</p><p><button type="button" id="ending410-review-btn" class="act act-priority">重睇結局總結</button></p></article>`;
+      /* v20a61 CONSEQ61-1：E7 提早收場嘅卡面日期／字眼跟返收場原因，唔寫「三年收科」 */
+      const e7card = (S.ending410.career==="E7");
+      const clipDate410 = e7card
+        ? ((S.ending410.earlyEnd && S.ending410.earlyEnd.kind==="review") ? ((S.ending410.earlyEnd.year||"") + " 年尾 · 年終評核") : "寬限期滿 · 提早收場")
+        : "1990 年冬 · 三年收科";
+      const clipSpan410 = e7card ? "呢段日子" : "呢三年";
+      endingCard = `<article class="clip-card ending410-card"><p class="clip-date">${clipDate410}</p><h4>${endingEsc410(S.ending410.title||"三年收科")}</h4><p>事業結局：${endingEsc410(ENDING410_CAREER_NAMES[S.ending410.career]||S.ending410.career||"")}。${clipSpan410}的總帳，記喺一度。</p><p><button type="button" id="ending410-review-btn" class="act act-priority">重睇結局總結</button></p></article>`;
     }
   }catch(_e410){}
   const wireEndingBtn = ()=>{
@@ -37601,6 +37960,14 @@ function updateMapStressTip(){
   const el = document.getElementById("map-stress-tip");
   if(!el) return;
   const st = Number(S && S.stress) || 0;
+  /* v20a61 CONSEQ61-2 警告層：連續 2 日收市 ≥80 又仍然高壓 → 身體警號（行將病倒） */
+  try{
+    if(st >= 80 && S && S.conseq61 && (Number(S.conseq61.streak80)||0) >= 2 && !S.conseq61.sick){
+      el.className = "on";
+      el.textContent = "身體警號：連續多日高壓（"+st+"），個人開始燶——再谷落去會病倒，病倒嗰幾日行程會全部作廢。";
+      return;
+    }
+  }catch(_e){}
   if(st >= 70){
     el.className = "on";
     el.textContent = "壓力偏高（"+st+"）：宜休息。全日訓練前會再確認。";
