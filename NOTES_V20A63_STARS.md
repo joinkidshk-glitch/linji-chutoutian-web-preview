@@ -90,3 +90,6 @@ beats（awards62CeremonyBeats 改版）：
 
 ## 六、硬規則確認
 冇改 SAVE key／softRev／?v=／pack JSON；冇郁 v60 CALIB60、v61 後果包、v62 A 部分評分公式（WIN_LINE 0.82／awards62ScoreParts 原封）；awardsLog 只加欄位；newspaper/press 串連冇郁。
+
+---
+部署記錄：PR #162 合併後首次 Pages 部署（run 42705619849）deploy 步驟失敗（本 repo 部署超時嘅已知間歇問題），以本 commit 重觸發部署。
