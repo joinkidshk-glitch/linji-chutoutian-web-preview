@@ -114,3 +114,5 @@ StoryPlay 側：`bg_loc_*` 對應同上表；另 `bg_c1_tea_restaurant`（C1 茶
 事故記錄：替換常數時尾項 luk_baakyin 嘅字串收尾引號一度脫落（只剩開引號），`node --check` 即時捉到（SyntaxError），已單點補回並逐項覆核全部 15 項素材 entry 均為恰好 2 個引號＋base64 可解碼，先至重行全套驗證。
 
 壓縮後重驗（全部 PASS）：`node --check` 兩段 OK；hook 功能測試 15/15（見 §7）；repo 測試 30/30（副本根目錄傳 index.html 路徑行 static）；15 項素材解碼 MD5 同新處理檔逐項一致；紅線 grep 三項在位；同初版 scrub-diff 核對，差異只限 UI40_SCENE／UI40_STAND 兩常數塊（data URI 內容＋4 行剔除＋尾逗號）。
+
+<!-- 部署重觸發註記：前一 run（5f9c494）deploy 步驟長時間未完成，推此小修訂重新觸發部署；內容無變更。 -->
