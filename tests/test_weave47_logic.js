@@ -481,12 +481,12 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   // 1990 秋：注入兩份，各自上返所屬地點板
   S = freshS(dayIndexOf(1990, 10, 15)); GIGS = [];
   const n = mergeExodusGigs();
-  ok('seg4 1990 autumn: merge injects 2', n === 2 && GIGS.length === 2);
+  ok('seg4 1990 autumn: merge injects 5 (v20a36 F7: exodus 2->5)', n === 5 && GIGS.length === 5);
   ok('seg4 1990 autumn: tv gig on tvb_longmen board', boardIds('tvb_longmen').indexOf('gig_exodus_tv_senior') >= 0);
   ok('seg4 1990 autumn: film gig on film_harbour board', boardIds('film_harbour').indexOf('gig_exodus_film_hand') >= 0);
   ok('seg4 1990 autumn: gigs not cross-posted',
      boardIds('tvb_longmen').indexOf('gig_exodus_film_hand') < 0 && boardIds('film_harbour').indexOf('gig_exodus_tv_senior') < 0);
-  ok('seg4 merge idempotent: second merge keeps 2', mergeExodusGigs() >= 0 && GIGS.filter(g => /^gig_exodus_/.test(g.id)).length === 2);
+  ok('seg4 merge idempotent: second merge keeps 5', mergeExodusGigs() >= 0 && GIGS.filter(g => /^gig_exodus_/.test(g.id)).length === 5);
 
   // 數值校準：中級、定額喺 pay 範圍內、同隱藏通告 $3,100 同量級
   const tv = GIGS.find(g => g.id === 'gig_exodus_tv_senior');
@@ -519,7 +519,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
 
   // 1990 冬（過秋）仍然注入（過季唔鎖死）
   S = freshS(dayIndexOf(1990, 12, 15)); GIGS = [];
-  ok('seg4 1990 winter: still injected', mergeExodusGigs() === 2);
+  ok('seg4 1990 winter: still injected', mergeExodusGigs() === 5);
 })();
 
 console.log(fails.length ? ('\nFAILED: ' + fails.length + ' -> ' + fails.join(' | ')) : '\nALL PASS (weave47)');

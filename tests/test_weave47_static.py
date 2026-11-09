@@ -85,7 +85,7 @@ for gid, loc, pay in [('gig_exodus_tv_senior', 'tvb_longmen', 'payExact:3300'),
     ok('gig ' + gid + ' loc ' + loc, ('loc:"' + loc + '"') in gigs)
     ok('gig ' + gid + ' ' + pay, pay in gigs)
     ok('gig id in NOTES list: ' + gid, gid in notes)
-ok('both gigs tier 中', gigs.count('tier:"中"') == 2)
+ok('all five gigs tier 中 (v20a36 F7: exodus 2->5)', gigs.count('tier:"中"') == 5)
 ok('gig copy: 移民空位 framing', '移民' in gigs and '移民空位' in gigs)
 ok('gig tv copy: 原班兩個移民', '原班兩個資深臨記一齊移民' in gigs)
 ok('gig film copy: 武師移民加拿大', '移民去咗加拿大' in gigs)

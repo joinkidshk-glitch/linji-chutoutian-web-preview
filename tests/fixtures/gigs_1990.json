@@ -1,0 +1,2912 @@
+{
+  "version": "1.1.1",
+  "year": 1990,
+  "locale": "zh-Hant-written-HK",
+  "source": "PLOT_MASTER_PLAN_v1.4-DS §2／§2A；規格對齊 GIGS_1989_v1",
+  "displayRules": {
+    "tvStationName": "星河電視台",
+    "locIdRetained": [
+      "tvb_longmen",
+      "tvb_kowloon",
+      "tvb_harbour"
+    ],
+    "banned": [
+      "政治口號",
+      "真實抗爭",
+      "真人藝名",
+      "真實商標全名",
+      "真實報刊名"
+    ]
+  },
+  "counts": {
+    "廣告": 11,
+    "綜藝": 6,
+    "電視劇": 10,
+    "電影": 14,
+    "唱片通告": 12,
+    "total": 53,
+    "byRoleScale": {
+      "ad_av": 6,
+      "ad_print": 3,
+      "film_lead_big": 1,
+      "film_support_main": 6,
+      "film_support_small": 7,
+      "mtv": 1,
+      "photobook": 2,
+      "rec_album": 11,
+      "tv_cameo_short": 6,
+      "tv_lead_long": 1,
+      "tv_support_main": 3,
+      "variety_ep": 6
+    }
+  },
+  "seasonCounts": {
+    "春": 14,
+    "夏": 13,
+    "秋": 13,
+    "冬": 13
+  },
+  "highBySeason": {
+    "春": 0,
+    "夏": 0,
+    "秋": 2,
+    "冬": 0
+  },
+  "eraTagPrimary": {
+    "春": [
+      "era_1990_spring_commercial",
+      "era_1990_spring_mall"
+    ],
+    "夏": [
+      "era_1990_summer_action",
+      "era_1990_summer_stunt"
+    ],
+    "秋": [
+      "era_1990_autumn_festival",
+      "era_1990_autumn_literary"
+    ],
+    "冬": [
+      "era_1990_winter_pressure",
+      "era_1990_winter_scandal"
+    ]
+  },
+  "eraTagSecondary": {
+    "春": [
+      "era_1990_spring_variety"
+    ],
+    "夏": [
+      "era_1990_summer_tv"
+    ],
+    "秋": [
+      "era_1990_autumn_tv"
+    ],
+    "冬": [
+      "era_1990_winter_festive"
+    ]
+  },
+  "seasonWeightRule": "主=1.0；次=0.6；其他=0.3",
+  "edits": [
+    "v1.0 初產 37 則；春廣告商業→夏動作外銷→秋影展文藝→冬台慶／緋聞壓力",
+    "v1.1.0 A→B PLAN_SHOOT_CAREER_SCHEDULE_v2：全則補 roleScale／shootBand／抬 shootDaysHint／shootWeekdays／shootDeadlineDays；career+5；loc×season fill+11（空板 FAIL 補齊 11 loc×4 季）"
+  ],
+  "gigs": [
+    {
+      "id": "gig_1990_ad_01",
+      "season": "春",
+      "type": "廣告",
+      "title": "「金時鐘」手錶商場快閃廣告",
+      "loc": "ad_central",
+      "roleHint": "飾演商場快閃展示手錶的都市青年",
+      "blurb": "虛構手錶品牌春檔商場快閃，要乾淨利落的商業臉。",
+      "synopsis": "虛構品牌「金時鐘」在大型商場拍快閃廣告。你戴上手錶走過中庭、對鏡校時間、轉身離去。創意只要「錢可以買時間」的消費節奏，不出現真實商標，也不要現代叫賣口播腔。",
+      "heroAngle": "錢可以買時間：商業機會裡的節奏感。",
+      "diasporaHook": "商場中庭快閃是九十年代初消費風景。",
+      "eraTag": "era_1990_spring_mall",
+      "discoverNote": "中環廣告行商場檔選角",
+      "boardPriority": "high",
+      "boardNote": "春主推・商場快閃",
+      "req": {
+        "looks": 22,
+        "charm": 20,
+        "stamina": 14
+      },
+      "pay": [
+        8000,
+        14000
+      ],
+      "fame": [
+        8,
+        14
+      ],
+      "popularity": [
+        18,
+        28
+      ],
+      "tier": "中",
+      "shootDaysHint": 3,
+      "shootHint": "商場人流多，走位要準。",
+      "stressDeltaHint": "低",
+      "hard": 0.3,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1990_ad_02",
+      "season": "春",
+      "type": "廣告",
+      "title": "「星匯信用卡」尊貴形象十五秒",
+      "loc": "ad_adm",
+      "roleHint": "飾演刷卡結帳的年輕專業人士",
+      "blurb": "虛構信用卡春檔，要有分寸的尊貴感，不要囂張。",
+      "synopsis": "虛構「星匯信用卡」拍十五秒形象片。你在餐廳刷卡、簽名、點頭致謝。導演強調尊嚴與商業的拉扯：笑容收、動作穩，不要現代帶貨式喊麥。",
+      "heroAngle": "商業誘惑下仍保持分寸。",
+      "diasporaHook": "信用卡與簽名單是都會生活符號。",
+      "eraTag": "era_1990_spring_commercial",
+      "discoverNote": "廣告公司信用卡檔試鏡",
+      "boardPriority": "high",
+      "boardNote": "春主推・信用卡",
+      "req": {
+        "looks": 24,
+        "charm": 22,
+        "acting": 12
+      },
+      "pay": [
+        10000,
+        18000
+      ],
+      "fame": [
+        10,
+        16
+      ],
+      "popularity": [
+        20,
+        30
+      ],
+      "tier": "中",
+      "shootDaysHint": 3,
+      "shootHint": "近鏡多，手部動作要乾淨。",
+      "hard": 0.32,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1990_ad_03",
+      "season": "春",
+      "type": "廣告",
+      "title": "「百匯」百貨春裝型錄男模",
+      "loc": "ad_central",
+      "roleHint": "型錄男模，試穿春裝走簡單步序",
+      "blurb": "虛構百貨春裝型錄，要親切不冷艷的男模。",
+      "synopsis": "虛構百貨「百匯」拍春裝型錄。你換三套便服，在中庭樓梯走兩步。攝影師不要時尚大片的疏離，只要「買得起的春天」。",
+      "heroAngle": "消費季：被看見的日常臉。",
+      "diasporaHook": "百貨型錄是家庭翻閱的共同記憶。",
+      "eraTag": "era_1990_spring_mall",
+      "discoverNote": "百貨春裝型錄召集",
+      "boardPriority": "high",
+      "boardNote": "春主推・百貨型錄",
+      "req": {
+        "looks": 26,
+        "charm": 18,
+        "stamina": 12
+      },
+      "pay": [
+        6000,
+        11000
+      ],
+      "fame": [
+        6,
+        11
+      ],
+      "popularity": [
+        16,
+        26
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "換裝多次，注意衣物保養。",
+      "stressDeltaHint": "低",
+      "hard": 0.28,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "roleScale": "ad_print",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 9
+    },
+    {
+      "id": "gig_1990_ad_04",
+      "season": "春",
+      "type": "廣告",
+      "title": "「快達」即食麵家庭餐桌廣告",
+      "loc": "ad_adm",
+      "roleHint": "飾演回家吃即食麵的加班青年",
+      "blurb": "虛構食品廣告，要生活感，不要誇張開胃演技。",
+      "synopsis": "虛構品牌「快達」即食麵拍家庭餐桌廣告。你加班回家，沖麵、坐下、吃第一口。旁白短，重點是市道興旺下的小確幸，不是奢華。",
+      "heroAngle": "商業日常：小消費也有戲。",
+      "diasporaHook": "即食麵夜宵是華人加班共通記憶。",
+      "eraTag": "era_1990_spring_commercial",
+      "discoverNote": "食品廣告內部短名單",
+      "boardPriority": "normal",
+      "boardNote": "春食品廣告",
+      "req": {
+        "charm": 16,
+        "looks": 14,
+        "acting": 14
+      },
+      "pay": [
+        5000,
+        9000
+      ],
+      "fame": [
+        5,
+        9
+      ],
+      "popularity": [
+        12,
+        20
+      ],
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "熱氣鏡頭，注意安全。",
+      "hard": 0.26,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1990_var_01",
+      "season": "春",
+      "type": "綜藝",
+      "title": "《星河消費情報》商場遊戲助演",
+      "loc": "tvb_longmen",
+      "roleHint": "商場遊戲助演，遞獎品與帶位",
+      "blurb": "星河消費資訊節目要懂帶位的助演。",
+      "synopsis": "星河綜藝《星河消費情報》在商場錄遊戲環節。你負責遞獎品、帶嘉賓入場。氣氛偏商業多元，不要搶主持鏡。",
+      "heroAngle": "商業季綜藝：助演把場撑住。",
+      "diasporaHook": "商場綜藝外景是九十年代電視常見形式。",
+      "eraTag": "era_1990_spring_variety",
+      "discoverNote": "星河綜藝商場外景臨記",
+      "boardPriority": "normal",
+      "boardNote": "春綜藝助演",
+      "req": {
+        "stamina": 18,
+        "charm": 14,
+        "looks": 12
+      },
+      "pay": [
+        2500,
+        4500
+      ],
+      "fame": [
+        4,
+        8
+      ],
+      "popularity": [
+        10,
+        16
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "外景站立久，聽場務。",
+      "stressDeltaHint": "低",
+      "hard": 0.24,
+      "year": 1990,
+      "seasonWeight": 0.6,
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
+    },
+    {
+      "id": "gig_1990_var_02",
+      "season": "春",
+      "type": "綜藝",
+      "title": "《週末拍賣夜》模特展示位",
+      "loc": "tvb_kowloon",
+      "roleHint": "展示家電／時裝的固定模特",
+      "blurb": "拍賣節目要穩陣展示模特，笑容收着。",
+      "synopsis": "星河《週末拍賣夜》需要展示模特。你把商品拿到鏡頭前，轉半圈。這是春檔商業綜藝的入門曝光，era 用次標。",
+      "heroAngle": "多元曝光：展示即工作。",
+      "diasporaHook": "電視購物／拍賣展示是時代符號。",
+      "eraTag": "era_1990_spring_variety",
+      "discoverNote": "九龍廠景拍賣節目模特",
+      "boardPriority": "low",
+      "boardNote": "春拍賣展示",
+      "req": {
+        "looks": 18,
+        "charm": 14,
+        "stamina": 12
+      },
+      "pay": [
+        2000,
+        3800
+      ],
+      "fame": [
+        3,
+        6
+      ],
+      "popularity": [
+        8,
+        14
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "燈光熱，補水。",
+      "hard": 0.22,
+      "year": 1990,
+      "seasonWeight": 0.6,
+      "stressDeltaHint": "中",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
+    },
+    {
+      "id": "gig_1990_tv_01",
+      "season": "春",
+      "type": "電視劇",
+      "title": "《商場風雲》單元：假日促銷店員",
+      "loc": "tvb_longmen",
+      "roleHint": "飾演百貨促銷店員，應對刁鑽客人",
+      "blurb": "星河單元劇要會「做生意又不失尊嚴」的店員。",
+      "synopsis": "單元劇《商場風雲》寫百貨促銷日。你是店員，客人殺價、換貨、投訴，你要穩。劇本談商業與尊嚴，不談政治。",
+      "heroAngle": "錢可以買時間：服務業也有抉擇。",
+      "diasporaHook": "百貨促銷喧嘩是都會共同記憶。",
+      "eraTag": "era_1990_spring_mall",
+      "discoverNote": "星河單元劇商場戲試鏡",
+      "boardPriority": "high",
+      "boardNote": "春主推・商場劇",
+      "req": {
+        "acting": 24,
+        "charm": 18,
+        "iq": 16
+      },
+      "pay": [
+        4000,
+        7500
+      ],
+      "fame": [
+        10,
+        16
+      ],
+      "popularity": [
+        12,
+        18
+      ],
+      "tier": "中",
+      "shootDaysHint": 15,
+      "shootHint": "對手戲多，台詞密。",
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 20
+    },
+    {
+      "id": "gig_1990_tv_02",
+      "season": "春",
+      "type": "電視劇",
+      "title": "《廣告人》客串：試鏡室內的新人",
+      "loc": "tvb_harbour",
+      "roleHint": "飾演廣告試鏡室內排隊的新人",
+      "blurb": "行業劇客串，要懂排隊焦慮又不搶戲。",
+      "synopsis": "劇集《廣告人》有一場試鏡室戲。你是排隊新人之一，聽號、進房、讀兩句、出來。氣氛寫商業興旺下的競爭，不含真實品牌名。",
+      "heroAngle": "商業生態：試鏡室裡的呼吸。",
+      "diasporaHook": "廣告試鏡排隊是入行共通經驗。",
+      "eraTag": "era_1990_spring_commercial",
+      "discoverNote": "海傍錄影廠行業劇客串",
+      "boardPriority": "normal",
+      "boardNote": "春行業劇客串",
+      "req": {
+        "acting": 18,
+        "looks": 16,
+        "charm": 14
+      },
+      "pay": [
+        3200,
+        5800
+      ],
+      "fame": [
+        7,
+        12
+      ],
+      "popularity": [
+        8,
+        14
+      ],
+      "tier": "初",
+      "shootDaysHint": 9,
+      "shootHint": "等候長，保持狀態。",
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1990_film_01",
+      "season": "春",
+      "type": "電影",
+      "title": "《櫥窗》過場：櫥窗換裝模特",
+      "loc": "film_lion",
+      "roleHint": "飾演夜半櫥窗換裝的模特",
+      "blurb": "文藝／都會片過場，要安靜的身體戲。",
+      "synopsis": "電影《櫥窗》有一場夜半換裝過場。你在商場關門後的櫥窗裡換季服，幾乎無對白。屬春檔次類型電影，服務商業季氛圍。",
+      "heroAngle": "消費城市的夜景一角。",
+      "diasporaHook": "百貨櫥窗夜景是城市記憶。",
+      "eraTag": "era_1990_spring_mall",
+      "discoverNote": "獅子山製片櫥窗戲",
+      "boardPriority": "low",
+      "boardNote": "春櫥窗過場",
+      "req": {
+        "looks": 20,
+        "acting": 14,
+        "stamina": 12
+      },
+      "pay": [
+        4500,
+        8000
+      ],
+      "fame": [
+        5,
+        9
+      ],
+      "popularity": [
+        6,
+        11
+      ],
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "玻璃反光多，聽燈光指示。",
+      "hard": 0.3,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1990_film_02",
+      "season": "夏",
+      "type": "電影",
+      "title": "《虎門夜襲》外銷動作：碼頭追擊替身",
+      "loc": "film_harbour",
+      "roleHint": "碼頭追擊替身，跑跳翻滾基礎",
+      "blurb": "外銷動作片要敢跑、聽武指的替身。",
+      "synopsis": "外銷動作片《虎門夜襲》拍碼頭追擊。你是替身，沿貨櫃跑、翻墊、落地。武指強調安全第一，不要自己加血腥。兄弟班底氣氛濃。",
+      "heroAngle": "用命換：動作班底的搏命感。",
+      "diasporaHook": "碼頭貨櫃追擊是港產動作片經典畫面。",
+      "eraTag": "era_1990_summer_stunt",
+      "discoverNote": "海傍片場替身召集",
+      "boardPriority": "high",
+      "boardNote": "夏主推・碼頭替身",
+      "req": {
+        "stamina": 34,
+        "looks": 12,
+        "acting": 8
+      },
+      "pay": [
+        9000,
+        16000
+      ],
+      "fame": [
+        12,
+        20
+      ],
+      "popularity": [
+        8,
+        14
+      ],
+      "tier": "中",
+      "shootDaysHint": 22,
+      "shootHint": "高強度，護具齊全。",
+      "hard": 0.55,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
+    },
+    {
+      "id": "gig_1990_film_03",
+      "season": "夏",
+      "type": "電影",
+      "title": "《東南風》外銷：東南亞夜市群戲打手",
+      "loc": "film_lion",
+      "roleHint": "夜市群戲打手，被主角一腳踢開",
+      "blurb": "外銷片夜市群戲，要摔得準的打手。",
+      "synopsis": "《東南風》為外銷市場拍夜市群戲。你是打手之一，走位、挨打、倒下。製片說今年夏檔外銷旺，群戲也要齊。禁止獵奇受傷鏡頭。",
+      "heroAngle": "外銷高峰：群戲也是拼搏。",
+      "diasporaHook": "夜市動作群戲是華語動作片共同記憶。",
+      "eraTag": "era_1990_summer_action",
+      "discoverNote": "獅子山外銷組群戲",
+      "boardPriority": "high",
+      "boardNote": "夏主推・夜市群戲",
+      "req": {
+        "stamina": 30,
+        "acting": 10,
+        "looks": 12
+      },
+      "pay": [
+        7000,
+        12000
+      ],
+      "fame": [
+        10,
+        16
+      ],
+      "popularity": [
+        7,
+        12
+      ],
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "多次重拍，注意關節。",
+      "hard": 0.5,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1990_film_04",
+      "season": "夏",
+      "type": "電影",
+      "title": "《鐵橋》武師棚：橋面對打練習生",
+      "loc": "film_cotton",
+      "roleHint": "武師棚練習生，學橋面對打組合",
+      "blurb": "武師棚長期缺練習生，要肯挨、肯學。",
+      "synopsis": "紅棉影業武師棚為《鐵橋》練橋面對打。你是練習生，反覆練同一組動作。方小龍那類前輩會盯節奏——你先把組合做穩。不寫血腥細節。",
+      "heroAngle": "用命換：棚裡先熬。",
+      "diasporaHook": "武師棚練功是港產動作工業核心。",
+      "eraTag": "era_1990_summer_stunt",
+      "discoverNote": "紅棉武師棚練習生",
+      "boardPriority": "high",
+      "boardNote": "夏主推・武師棚",
+      "req": {
+        "stamina": 36,
+        "acting": 8,
+        "looks": 10
+      },
+      "pay": [
+        5500,
+        9500
+      ],
+      "fame": [
+        8,
+        14
+      ],
+      "popularity": [
+        5,
+        9
+      ],
+      "tier": "中",
+      "shootDaysHint": 22,
+      "shootHint": "日晒與重覆勞動，防中暑。",
+      "hard": 0.58,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
+    },
+    {
+      "id": "gig_1990_film_05",
+      "season": "夏",
+      "type": "電影",
+      "title": "《霹靂快遞》飛車戲乘客替身",
+      "loc": "film_harbour",
+      "roleHint": "飛車戲乘客替身，綁安全帶聽指揮",
+      "blurb": "飛車戲要冷静的乘客替身。",
+      "synopsis": "動作片《霹靂快遞》有飛車段落。你是乘客替身，坐副駕，表情驚惶但身體固定。車組安全規程嚴，禁止自行解帶。",
+      "heroAngle": "搏命：坐穩也是專業。",
+      "diasporaHook": "飛車戲是九十年代外銷動作標配。",
+      "eraTag": "era_1990_summer_action",
+      "discoverNote": "海傍車組替身缺額",
+      "boardPriority": "high",
+      "boardNote": "夏主推・飛車替身",
+      "req": {
+        "stamina": 24,
+        "looks": 13,
+        "acting": 12
+      },
+      "pay": [
+        8000,
+        14000
+      ],
+      "fame": [
+        11,
+        17
+      ],
+      "popularity": [
+        6,
+        11
+      ],
+      "tier": "中",
+      "shootDaysHint": 22,
+      "shootHint": "暈動風險，聽醫務。",
+      "hard": 0.52,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
+    },
+    {
+      "id": "gig_1990_tv_03",
+      "season": "夏",
+      "type": "電視劇",
+      "title": "《龍虎道》警匪單元：夜巷追兇臨記",
+      "loc": "tvb_longmen",
+      "roleHint": "夜巷群眾／小偷臨記，跑兩段",
+      "blurb": "星河警匪單元要跑得動的夜巷臨記。",
+      "synopsis": "星河《龍虎道》拍夜巷追兇。你飾演逃跑的小偷或圍觀群眾。動作參考電影班底，但電視節奏更快。屬夏檔電視劇對齊動作季。",
+      "heroAngle": "動作季滲透電視：夜巷也要拼。",
+      "diasporaHook": "夜巷追兇是華語警匪劇常見橋段。",
+      "eraTag": "era_1990_summer_tv",
+      "discoverNote": "星河警匪組夜戲臨記",
+      "boardPriority": "normal",
+      "boardNote": "夏警匪臨記",
+      "req": {
+        "stamina": 26,
+        "acting": 12,
+        "looks": 11
+      },
+      "pay": [
+        2800,
+        5000
+      ],
+      "fame": [
+        6,
+        11
+      ],
+      "popularity": [
+        6,
+        10
+      ],
+      "tier": "初",
+      "shootDaysHint": 9,
+      "shootHint": "夜戲路面滑，穿防滑鞋。",
+      "hard": 0.4,
+      "year": 1990,
+      "seasonWeight": 0.6,
+      "stressDeltaHint": "中",
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1990_tv_04",
+      "season": "夏",
+      "type": "電視劇",
+      "title": "《武館少年》配角：新入門師弟",
+      "loc": "tvb_kowloon",
+      "roleHint": "飾演武館新師弟，練基本拳",
+      "blurb": "武館題材劇要肯出汗的新師弟。",
+      "synopsis": "劇集《武館少年》寫新師弟入門。你練馬步、挨打、鞠躬。語氣寫兄弟情與紀律，不獵奇受傷。",
+      "heroAngle": "兄弟班底：從馬步開始。",
+      "diasporaHook": "武館師門是港人熟悉的類型設定。",
+      "eraTag": "era_1990_summer_tv",
+      "discoverNote": "九龍廠景武館劇試鏡",
+      "boardPriority": "normal",
+      "boardNote": "夏武館配角",
+      "req": {
+        "stamina": 28,
+        "acting": 16,
+        "looks": 14
+      },
+      "pay": [
+        3500,
+        6500
+      ],
+      "fame": [
+        8,
+        13
+      ],
+      "popularity": [
+        9,
+        15
+      ],
+      "tier": "初",
+      "shootDaysHint": 9,
+      "shootHint": "練功戲連拍，注意拉傷。",
+      "year": 1990,
+      "seasonWeight": 0.6,
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1990_tv_05",
+      "season": "夏",
+      "type": "電視劇",
+      "title": "《碼頭故事》工友群戲",
+      "loc": "tvb_harbour",
+      "roleHint": "碼頭工友群戲，搬箱呼喊",
+      "blurb": "碼頭群戲要體力，對白少。",
+      "synopsis": "單元《碼頭故事》要工友群戲。你搬箱、喊號子、讓路給動作組。夏檔電視也借動作外銷的體力感。",
+      "heroAngle": "體力通告：碼頭上的呼吸。",
+      "diasporaHook": "碼頭苦力群像是港產劇常見風景。",
+      "eraTag": "era_1990_summer_tv",
+      "discoverNote": "海傍碼頭戲群演",
+      "boardPriority": "low",
+      "boardNote": "夏碼頭群戲",
+      "req": {
+        "stamina": 30,
+        "acting": 8,
+        "looks": 10
+      },
+      "pay": [
+        2200,
+        4000
+      ],
+      "fame": [
+        3,
+        7
+      ],
+      "popularity": [
+        4,
+        8
+      ],
+      "tier": "初",
+      "shootDaysHint": 9,
+      "shootHint": "重物，跟安全員指示。",
+      "hard": 0.42,
+      "year": 1990,
+      "seasonWeight": 0.6,
+      "stressDeltaHint": "中",
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1990_ad_05",
+      "season": "夏",
+      "type": "廣告",
+      "title": "「勁步」運動鞋公園奔跑廣告",
+      "loc": "ad_central",
+      "roleHint": "飾演公園奔跑的年輕男性",
+      "blurb": "虛構運動鞋廣告，要真跑，不要只擺拍。",
+      "synopsis": "虛構「勁步」運動鞋拍公園奔跑。你衝刺、急停、喝水。動作季外圍的商業通告，忌真實品牌名。",
+      "heroAngle": "動作季的商業外延：跑起來。",
+      "diasporaHook": "公園晨跑廣告是健康消費符號。",
+      "eraTag": "era_1990_summer_action",
+      "discoverNote": "運動鞋夏檔選角",
+      "boardPriority": "normal",
+      "boardNote": "夏跑鞋廣告",
+      "req": {
+        "stamina": 28,
+        "looks": 18,
+        "charm": 14
+      },
+      "pay": [
+        7000,
+        12000
+      ],
+      "fame": [
+        7,
+        12
+      ],
+      "popularity": [
+        15,
+        24
+      ],
+      "tier": "中",
+      "shootDaysHint": 3,
+      "shootHint": "高溫外景，防中暑。",
+      "hard": 0.36,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
+    },
+    {
+      "id": "gig_1990_ad_06",
+      "season": "夏",
+      "type": "廣告",
+      "title": "「冰峰」汽水沙灘群演",
+      "loc": "ad_adm",
+      "roleHint": "沙灘群演，舉瓶一瞬",
+      "blurb": "汽水沙灘廣告群演，半天收工。",
+      "synopsis": "虛構汽水「冰峰」沙灘群演。你舉瓶、笑一下、入水。夏檔廣告次級曝光。",
+      "heroAngle": "夏日消費群像。",
+      "diasporaHook": "沙灘汽水廣告是季節性集體記憶。",
+      "eraTag": "era_1990_summer_action",
+      "discoverNote": "沙灘廣告群演召集",
+      "boardPriority": "low",
+      "boardNote": "夏汽水群演",
+      "req": {
+        "looks": 14,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        2,
+        5
+      ],
+      "popularity": [
+        10,
+        16
+      ],
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "日晒，塗防曬。",
+      "stressDeltaHint": "低",
+      "hard": 0.25,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
+    },
+    {
+      "id": "gig_1990_rec_01",
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "動作片主題曲和音錄音",
+      "loc": "rec_star",
+      "roleHint": "主題曲和音，錄副歌強拍",
+      "blurb": "外銷片主題曲要有力的和音。",
+      "synopsis": "為外銷動作片錄主題曲和音。你跟強拍、喊兩句襯詞。歌曲與片名皆虛構，不抄真實作品。",
+      "heroAngle": "外銷聲帶：聲音也要拼。",
+      "diasporaHook": "動作片主題曲是卡拉OK常客。",
+      "eraTag": "era_1990_summer_action",
+      "discoverNote": "星軌錄音室主題曲和音",
+      "boardPriority": "normal",
+      "boardNote": "夏主題曲和音",
+      "req": {
+        "charm": 18,
+        "stamina": 14,
+        "looks": 12
+      },
+      "pay": [
+        4000,
+        7500
+      ],
+      "fame": [
+        6,
+        11
+      ],
+      "popularity": [
+        12,
+        20
+      ],
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "大聲錄製，保護嗓子。",
+      "hard": 0.3,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1990_film_06",
+      "season": "秋",
+      "type": "電影",
+      "title": "《評委席下》影展向：安靜的觀眾席角色",
+      "loc": "film_lion",
+      "roleHint": "飾演影展放映廳觀眾， 眼神克制",
+      "blurb": "影展向文藝片要「看得進戲」的觀眾臉。",
+      "synopsis": "文藝片《評委席下》有一場放映廳戲。你是觀眾，燈光暗下，只靠側臉與呼吸。導演說影展唔係靠人氣，要層次。不出現真實影展名稱。",
+      "heroAngle": "影展唔係靠人氣：安靜也是演出。",
+      "diasporaHook": "放映廳黑暗中的側臉是影迷記憶。",
+      "eraTag": "era_1990_autumn_festival",
+      "discoverNote": "獅子山影展向選角",
+      "boardPriority": "high",
+      "boardNote": "秋主推・影展觀眾",
+      "req": {
+        "acting": 28,
+        "looks": 16,
+        "iq": 18
+      },
+      "pay": [
+        6000,
+        11000
+      ],
+      "fame": [
+        12,
+        18
+      ],
+      "popularity": [
+        6,
+        11
+      ],
+      "tier": "中",
+      "shootDaysHint": 22,
+      "shootHint": "長時間靜坐，勿睡着。",
+      "hard": 0.34,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
+    },
+    {
+      "id": "gig_1990_film_07",
+      "season": "秋",
+      "type": "電影",
+      "title": "《海報裡的人》文藝：畫海報的助手",
+      "loc": "film_cotton",
+      "roleHint": "飾演手繪電影海報的助手",
+      "blurb": "文藝片要手繪海報場景的安靜助手。",
+      "synopsis": "《海報裡的人》寫手繪海報時代。你替師傅研顏料、貼金箔、看顏色。對白少，層次靠動作。忌說教式台詞。",
+      "heroAngle": "評價與手工：海報也有尊嚴。",
+      "diasporaHook": "手繪電影海報是港產工業遺產。",
+      "eraTag": "era_1990_autumn_literary",
+      "discoverNote": "紅棉文藝組海報戲",
+      "boardPriority": "high",
+      "boardNote": "秋主推・海報文藝",
+      "req": {
+        "acting": 24,
+        "iq": 20,
+        "looks": 14
+      },
+      "pay": [
+        5500,
+        10000
+      ],
+      "fame": [
+        10,
+        16
+      ],
+      "popularity": [
+        5,
+        10
+      ],
+      "tier": "中",
+      "shootDaysHint": 22,
+      "shootHint": "顏料味重，通風。",
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
+    },
+    {
+      "id": "gig_1990_film_08",
+      "season": "秋",
+      "type": "電影",
+      "title": "《短片週》聯合放映：短片男主角",
+      "loc": "film_lion",
+      "roleHint": "獨立短片男主角，一場獨白",
+      "blurb": "短片聯合放映徵男主角，要扛得住靜態鏡頭。",
+      "synopsis": "獨立短片參加虛構「港灣短片週」。你有一場窗邊獨白，談創作與取捨，不談政治口號。影展季的入門高光。",
+      "heroAngle": "層次：短片也要站得住。",
+      "diasporaHook": "短片週放映是影迷圈共同活動。",
+      "eraTag": "era_1990_autumn_festival",
+      "discoverNote": "短片組公開試鏡",
+      "boardPriority": "high",
+      "boardNote": "秋主推・短片男主",
+      "req": {
+        "acting": 32,
+        "looks": 17,
+        "charm": 15
+      },
+      "pay": [
+        4000,
+        8000
+      ],
+      "fame": [
+        14,
+        22
+      ],
+      "popularity": [
+        8,
+        14
+      ],
+      "tier": "中",
+      "shootDaysHint": 22,
+      "shootHint": "獨白多take，記詞。",
+      "hard": 0.4,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_main",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
+    },
+    {
+      "id": "gig_1990_tv_06",
+      "season": "秋",
+      "type": "電視劇",
+      "title": "《劇評人》客串：被點名的年輕演員",
+      "loc": "tvb_longmen",
+      "roleHint": "飾演被劇評點名的年輕演員",
+      "blurb": "行業戲要接得住「好與不好」的臉。",
+      "synopsis": "劇集《劇評人》有一場：你飾演剛被報紙點名的年輕演員，在茶餐廳聽人讀評論。重點是評價與人氣的拉扯，刊名虛構。",
+      "heroAngle": "評價 vs 人氣：聽得進批評。",
+      "diasporaHook": "茶餐廳讀報是港人日常。",
+      "eraTag": "era_1990_autumn_tv",
+      "discoverNote": "星河行業劇客串",
+      "boardPriority": "normal",
+      "boardNote": "秋劇評客串",
+      "req": {
+        "acting": 26,
+        "charm": 14,
+        "iq": 16
+      },
+      "pay": [
+        3800,
+        7000
+      ],
+      "fame": [
+        9,
+        15
+      ],
+      "popularity": [
+        7,
+        12
+      ],
+      "tier": "中",
+      "shootDaysHint": 15,
+      "shootHint": "情緒收放要準。",
+      "year": 1990,
+      "seasonWeight": 0.6,
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 20
+    },
+    {
+      "id": "gig_1990_tv_07",
+      "season": "秋",
+      "type": "電視劇",
+      "title": "《夜班剪接室》助理剪接客串",
+      "loc": "tvb_harbour",
+      "roleHint": "飾演夜班剪接助理，聽指示貼片頭",
+      "blurb": "幕後題材要细心、少說話的助理。",
+      "synopsis": "單元寫夜班剪接室。你是助理，捲片、記時間碼、倒茶。影展季氛圍滲入電視幕後戲，era 用次標。",
+      "heroAngle": "層次在幕後：時間碼比名氣準。",
+      "diasporaHook": "剪接室紅燈是電視工業符號。",
+      "eraTag": "era_1990_autumn_tv",
+      "discoverNote": "海傍幕後戲臨記",
+      "boardPriority": "low",
+      "boardNote": "秋剪接助理",
+      "req": {
+        "iq": 20,
+        "acting": 12,
+        "stamina": 14
+      },
+      "pay": [
+        2400,
+        4200
+      ],
+      "fame": [
+        4,
+        8
+      ],
+      "popularity": [
+        3,
+        7
+      ],
+      "tier": "初",
+      "shootDaysHint": 9,
+      "shootHint": "夜更，眼睛易累。",
+      "hard": 0.28,
+      "year": 1990,
+      "seasonWeight": 0.6,
+      "stressDeltaHint": "中",
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1990_rec_02",
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "影展主題歌鋼琴版錄音",
+      "loc": "rec_star",
+      "roleHint": "清唱主題歌鋼琴版一段",
+      "blurb": "影展向主題歌要克制的清唱。",
+      "synopsis": "為影展向影片錄鋼琴版主題歌。你清唱一段，聲線收、情感準。歌名虛構，不抄真實歌手。",
+      "heroAngle": "評價季的聲音：少即是多。",
+      "diasporaHook": "鋼琴版主題歌是影展宣傳常見。",
+      "eraTag": "era_1990_autumn_festival",
+      "discoverNote": "星軌影展歌試音",
+      "boardPriority": "high",
+      "boardNote": "秋主推・影展歌",
+      "req": {
+        "charm": 24,
+        "acting": 14,
+        "looks": 16
+      },
+      "pay": [
+        5500,
+        10000
+      ],
+      "fame": [
+        10,
+        16
+      ],
+      "popularity": [
+        14,
+        22
+      ],
+      "tier": "中",
+      "shootDaysHint": 12,
+      "shootHint": "隔音室長錄，補水。",
+      "hard": 0.33,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1990_rec_03",
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "文藝專輯《側影》概念照男配",
+      "loc": "rec_wanchai",
+      "roleHint": "概念照男配，站窗邊",
+      "blurb": "文藝專輯概念照要側臉有故事的人。",
+      "synopsis": "虛構專輯《側影》拍概念照。你站窗邊，光只打半邊臉。秋檔文藝視覺通告。",
+      "heroAngle": "文藝視覺：側影勝過多話。",
+      "diasporaHook": "專輯概念照是實體唱片年代美學。",
+      "eraTag": "era_1990_autumn_literary",
+      "discoverNote": "灣仔概念照棚拍",
+      "boardPriority": "normal",
+      "boardNote": "秋概念照",
+      "req": {
+        "looks": 22,
+        "charm": 16,
+        "acting": 10
+      },
+      "pay": [
+        3500,
+        6500
+      ],
+      "fame": [
+        5,
+        9
+      ],
+      "popularity": [
+        12,
+        20
+      ],
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "長時間擺姿勢。",
+      "stressDeltaHint": "低",
+      "hard": 0.24,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1990_rec_04",
+      "season": "秋",
+      "type": "唱片通告",
+      "title": "電台《影迷夜話》電話連線配音",
+      "loc": "rec_hk",
+      "roleHint": "電話連線聽眾配音，讀兩句觀後感",
+      "blurb": "電台影迷環節要自然的電話聲線。",
+      "synopsis": "虛構電台節目《影迷夜話》要電話連線配音。你讀兩句觀後感，談層次不談罵戰。",
+      "heroAngle": "影展季廣播：用聲音評。",
+      "diasporaHook": "深夜電台連線是聽覺記憶。",
+      "eraTag": "era_1990_autumn_festival",
+      "discoverNote": "電台配音臨記",
+      "boardPriority": "normal",
+      "boardNote": "秋電台連線",
+      "req": {
+        "charm": 18,
+        "iq": 16,
+        "acting": 12
+      },
+      "pay": [
+        2000,
+        3800
+      ],
+      "fame": [
+        4,
+        8
+      ],
+      "popularity": [
+        10,
+        16
+      ],
+      "tier": "初",
+      "shootDaysHint": 10,
+      "shootHint": "對咪距離固定。",
+      "hard": 0.22,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 16
+    },
+    {
+      "id": "gig_1990_ad_07",
+      "season": "秋",
+      "type": "廣告",
+      "title": "「文藝月刊」訂戶形象平面",
+      "loc": "ad_central",
+      "roleHint": "平面廣告讀雜誌的青年",
+      "blurb": "虛構文藝月刊要安靜讀書的臉。",
+      "synopsis": "虛構《港灣文藝月刊》拍訂戶形象。你在咖啡座讀書頁，不看鏡頭。秋檔文藝消費向廣告。",
+      "heroAngle": "層次消費：閱讀的姿勢。",
+      "diasporaHook": "文藝月刊訂戶是小眾共同想像。",
+      "eraTag": "era_1990_autumn_literary",
+      "discoverNote": "平面廣告讀書臉選角",
+      "boardPriority": "low",
+      "boardNote": "秋文藝平面",
+      "req": {
+        "looks": 18,
+        "iq": 16,
+        "charm": 12
+      },
+      "pay": [
+        4000,
+        7500
+      ],
+      "fame": [
+        3,
+        7
+      ],
+      "popularity": [
+        8,
+        14
+      ],
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "靜態，眨眼要少。",
+      "stressDeltaHint": "低",
+      "hard": 0.2,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "roleScale": "ad_print",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
+    },
+    {
+      "id": "gig_1990_var_03",
+      "season": "冬",
+      "type": "綜藝",
+      "title": "《星河台慶》搶位綵排男群",
+      "loc": "tvb_longmen",
+      "roleHint": "台慶綵排男群，爭前排走位",
+      "blurb": "台慶綵排氣氛緊張，要跟得上又守規矩。",
+      "synopsis": "星河台慶進入密集綵排。你是男群，走位被改三次。監製說位置有限——壓力來自律動，不來自黑幕細節。",
+      "heroAngle": "頭條係雙刃之前：先扛綵排壓力。",
+      "diasporaHook": "台慶綵排壓力是行業集體記憶。",
+      "eraTag": "era_1990_winter_pressure",
+      "discoverNote": "星河台慶男群複試",
+      "boardPriority": "high",
+      "boardNote": "冬主推・台慶綵排",
+      "req": {
+        "stamina": 30,
+        "looks": 16,
+        "charm": 16
+      },
+      "pay": [
+        5000,
+        9000
+      ],
+      "fame": [
+        12,
+        18
+      ],
+      "popularity": [
+        14,
+        24
+      ],
+      "tier": "中",
+      "shootDaysHint": 2,
+      "shootHint": "高強度重覆，防傷。",
+      "hard": 0.5,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
+    },
+    {
+      "id": "gig_1990_var_04",
+      "season": "冬",
+      "type": "綜藝",
+      "title": "《鏡前真相》公關答問模擬環節",
+      "loc": "tvb_kowloon",
+      "roleHint": "模擬記者會被問的藝人練習生",
+      "blurb": "節目模擬記者會，要接得住尖銳問題的臉。",
+      "synopsis": "星河節目《鏡前真相》設公關答問模擬。你扮演被追問檔期與緋聞的藝人練習生，回答要穩、不低俗、不涉真實事件。刊名與問題皆虛構。",
+      "heroAngle": "頭條係雙刃：真假之間的呼吸。",
+      "diasporaHook": "記者會答問是華語娛樂工業符號。",
+      "eraTag": "era_1990_winter_scandal",
+      "discoverNote": "九龍廠景公關模擬選角",
+      "boardPriority": "high",
+      "boardNote": "冬主推・公關模擬",
+      "req": {
+        "acting": 28,
+        "charm": 20,
+        "iq": 18
+      },
+      "pay": [
+        4500,
+        8000
+      ],
+      "fame": [
+        11,
+        17
+      ],
+      "popularity": [
+        16,
+        26
+      ],
+      "tier": "中",
+      "shootDaysHint": 2,
+      "shootHint": "提問快，臨場反應。",
+      "hard": 0.42,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
+    },
+    {
+      "id": "gig_1990_var_05",
+      "season": "冬",
+      "type": "綜藝",
+      "title": "《賀歲夜前哨》遊戲高壓環節",
+      "loc": "tvb_harbour",
+      "roleHint": "遊戲環節挑戰者，連續三關",
+      "blurb": "賀歲前哨節目要扛得住起哄的挑戰者。",
+      "synopsis": "《賀歲夜前哨》設高壓遊戲關。你連續三關，觀眾起哄。氣氛寫壓力與搶位，不是羞辱。",
+      "heroAngle": "搶位前哨：起哄中站穩。",
+      "diasporaHook": "賀歲遊戲起哄是家庭節目記憶。",
+      "eraTag": "era_1990_winter_pressure",
+      "discoverNote": "海傍賀歲前哨挑戰者",
+      "boardPriority": "high",
+      "boardNote": "冬主推・賀歲遊戲",
+      "req": {
+        "stamina": 26,
+        "charm": 22,
+        "looks": 16
+      },
+      "pay": [
+        4000,
+        7500
+      ],
+      "fame": [
+        9,
+        15
+      ],
+      "popularity": [
+        18,
+        28
+      ],
+      "tier": "中",
+      "shootDaysHint": 2,
+      "shootHint": "肢體關注意護具。",
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
+    },
+    {
+      "id": "gig_1990_var_06",
+      "season": "冬",
+      "type": "綜藝",
+      "title": "台慶後台新聞短採訪擋鏡",
+      "loc": "tvb_longmen",
+      "roleHint": "後台被短採訪的群演，答一句「多謝支持」",
+      "blurb": "後台短採訪擋鏡，要自然不慌。",
+      "synopsis": "台慶後台安排虛構娛樂刊物短採訪。你擋鏡答一句「多謝支持」。緋聞季氛圍在，但內容保持乾淨。",
+      "heroAngle": "壓力場邊：一句多謝也要穩。",
+      "diasporaHook": "後台採訪咪是娛樂新聞符號。",
+      "eraTag": "era_1990_winter_scandal",
+      "discoverNote": "星河後台短訪臨記",
+      "boardPriority": "normal",
+      "boardNote": "冬後台短訪",
+      "req": {
+        "charm": 16,
+        "looks": 14,
+        "acting": 10
+      },
+      "pay": [
+        2200,
+        4000
+      ],
+      "fame": [
+        4,
+        8
+      ],
+      "popularity": [
+        10,
+        16
+      ],
+      "tier": "初",
+      "shootDaysHint": 2,
+      "shootHint": "嘈雜環境，發音清楚。",
+      "hard": 0.28,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "variety_ep",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 5
+    },
+    {
+      "id": "gig_1990_film_09",
+      "season": "冬",
+      "type": "電影",
+      "title": "《頭條》賀歲：記者會群演舉手",
+      "loc": "film_cotton",
+      "roleHint": "記者會群演，舉手問虛構問題",
+      "blurb": "賀歲片記者會戲，要敢舉手、不低俗。",
+      "synopsis": "賀歲片《頭條》拍虛構記者會。你舉手問「檔期會否對撼」。刊名、藝名皆虛構，不寫低俗緋聞細節。",
+      "heroAngle": "緋聞文化入戲：問題要有分寸。",
+      "diasporaHook": "記者會舉手是賀歲片常見橋段。",
+      "eraTag": "era_1990_winter_scandal",
+      "discoverNote": "紅棉賀歲記者會群演",
+      "boardPriority": "high",
+      "boardNote": "冬主推・記者會戲",
+      "req": {
+        "acting": 16,
+        "charm": 14,
+        "looks": 12
+      },
+      "pay": [
+        4000,
+        7500
+      ],
+      "fame": [
+        7,
+        12
+      ],
+      "popularity": [
+        8,
+        14
+      ],
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "閃光燈，勿直視。",
+      "hard": 0.3,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1990_ad_08",
+      "season": "冬",
+      "type": "廣告",
+      "title": "「鏡報週刊」虛構娛樂刊形象廣告",
+      "loc": "ad_central",
+      "roleHint": "飾演買雜誌看封面的路人",
+      "blurb": "虛構娛樂週刊形象廣告，點到即止。",
+      "synopsis": "虛構刊物《鏡報週刊》拍形象廣告。你在報攤拿起刊物看封面標題，表情複雜一下又放回。不出現真實報刊，不寫低俗標題內容。",
+      "heroAngle": "頭條係雙刃：看與不看的一秒。",
+      "diasporaHook": "報攤娛樂週刊是九十年代街頭風景。",
+      "eraTag": "era_1990_winter_scandal",
+      "discoverNote": "報刊形象廣告選角",
+      "boardPriority": "normal",
+      "boardNote": "冬刊物廣告",
+      "req": {
+        "acting": 18,
+        "looks": 16,
+        "charm": 14
+      },
+      "pay": [
+        5500,
+        9500
+      ],
+      "fame": [
+        6,
+        10
+      ],
+      "popularity": [
+        12,
+        20
+      ],
+      "tier": "中",
+      "shootDaysHint": 3,
+      "shootHint": "街頭人流，抓拍感。",
+      "hard": 0.3,
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "roleScale": "ad_print",
+      "shootBand": [
+        2,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
+    },
+    {
+      "id": "gig_1990_ad_09",
+      "season": "冬",
+      "type": "廣告",
+      "title": "「團年禮盒」賀歲食品廣告家庭角",
+      "loc": "ad_adm",
+      "roleHint": "飾演回家提禮盒的遊子",
+      "blurb": "賀歲食品廣告要溫暖收斂的遊子臉。",
+      "synopsis": "虛構「團年禮盒」拍賀歲廣告。你提盒進門、鞠躬、笑。屬冬檔次標 festive 溫情向，對沖壓力季。",
+      "heroAngle": "壓力季裡的溫情出口。",
+      "diasporaHook": "賀歲禮盒是華人年節符號。",
+      "eraTag": "era_1990_winter_festive",
+      "discoverNote": "賀歲食品廣告家庭角",
+      "boardPriority": "low",
+      "boardNote": "冬禮盒廣告",
+      "req": {
+        "charm": 20,
+        "looks": 16,
+        "acting": 12
+      },
+      "pay": [
+        6000,
+        11000
+      ],
+      "fame": [
+        5,
+        9
+      ],
+      "popularity": [
+        14,
+        22
+      ],
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "室內溫馨光，表情收。",
+      "stressDeltaHint": "低",
+      "hard": 0.24,
+      "year": 1990,
+      "seasonWeight": 0.6,
+      "roleScale": "ad_av",
+      "shootBand": [
+        3,
+        4
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 7
+    },
+    {
+      "id": "gig_1990_tv_08",
+      "season": "冬",
+      "type": "電視劇",
+      "title": "《公關課》單元：練習鞠躬的藝人",
+      "loc": "tvb_longmen",
+      "roleHint": "飾演公關課上練習鞠躬道歉的藝人",
+      "blurb": "公關題材單元，要演得出「練習」的生硬。",
+      "synopsis": "單元劇《公關課》寫藝人學鞠躬道歉。你反覆練習角度與語氣。談真假與壓力，不寫具體醜聞內容。",
+      "heroAngle": "壓力訓練：鞠躬也是演技。",
+      "diasporaHook": "公關道歉課是娛樂工業後設題材。",
+      "eraTag": "era_1990_winter_pressure",
+      "discoverNote": "星河公關單元試鏡",
+      "boardPriority": "normal",
+      "boardNote": "冬公關單元",
+      "req": {
+        "acting": 26,
+        "charm": 16,
+        "iq": 16
+      },
+      "pay": [
+        3600,
+        6800
+      ],
+      "fame": [
+        9,
+        14
+      ],
+      "popularity": [
+        10,
+        16
+      ],
+      "tier": "中",
+      "shootDaysHint": 15,
+      "shootHint": "重覆動作，頸肩放鬆。",
+      "year": 1990,
+      "seasonWeight": 1.0,
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "roleScale": "tv_support_main",
+      "shootBand": [
+        14,
+        16
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 20
+    },
+    {
+      "id": "gig_1990_rec_05",
+      "season": "冬",
+      "type": "唱片通告",
+      "title": "賀歲歌《開閘》合唱錄音",
+      "loc": "rec_hk",
+      "roleHint": "賀歲歌合唱席，錄副歌",
+      "blurb": "賀歲歌合唱要齊、要喜慶，不要搶領唱。",
+      "synopsis": "虛構賀歲歌《開閘》合唱錄音。你在合唱席跟拍子。冬檔 festive 次標，氣氛喜慶。",
+      "heroAngle": "賀歲聲帶：齊比炫技重要。",
+      "diasporaHook": "賀歲歌合唱是年節電視常客。",
+      "eraTag": "era_1990_winter_festive",
+      "discoverNote": "海港音像賀歲歌合唱",
+      "boardPriority": "low",
+      "boardNote": "冬賀歲合唱",
+      "req": {
+        "charm": 16,
+        "stamina": 12,
+        "looks": 12
+      },
+      "pay": [
+        2800,
+        5000
+      ],
+      "fame": [
+        4,
+        8
+      ],
+      "popularity": [
+        12,
+        20
+      ],
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "多人錄音，聽指揮。",
+      "stressDeltaHint": "低",
+      "hard": 0.22,
+      "year": 1990,
+      "seasonWeight": 0.6,
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1990_photo_01",
+      "year": 1990,
+      "season": "夏",
+      "type": "廣告",
+      "title": "「鏡海」夏日寫真集《商場中庭的風》",
+      "loc": "ad_adm",
+      "roleHint": "擔任寫真集封面與內頁主角，以自然光便服入鏡",
+      "blurb": "虛構寫真工作室徵求有生活感的面孔，街景連拍成冊上架書店。",
+      "synopsis": "虛構寫真品牌為1990年冊頁線選角。阿偉需在街巷、天台與室內窗邊連拍數日，以自然光呈現年代質感，寫真集隨書展與唱片舖聯展上架。",
+      "heroAngle": "未修飾的街坊氣質，正是寫真想留住的臉。",
+      "diasporaHook": "街燈、天台與窗邊是海外華人共同的城市記憶。",
+      "eraTag": "era_1990_summer_action",
+      "discoverNote": "寫真工作室公開海選",
+      "boardPriority": "normal",
+      "boardNote": "寫真集書店線",
+      "seasonWeight": 0.8,
+      "req": {
+        "looks": 28,
+        "charm": 24,
+        "stamina": 18
+      },
+      "pay": [
+        5000,
+        9500
+      ],
+      "fame": [
+        8,
+        18
+      ],
+      "popularity": [
+        22,
+        42
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.34,
+      "tier": "初",
+      "shootDaysHint": 6,
+      "shootHint": "連日自然光拍攝，注意換景體力。",
+      "roleScale": "photobook",
+      "shootBand": [
+        5,
+        7
+      ],
+      "shootWeekdays": [
+        5,
+        6,
+        7
+      ],
+      "shootDeadlineDays": 16
+    },
+    {
+      "id": "gig_1990_photo_02",
+      "year": 1990,
+      "season": "秋",
+      "type": "廣告",
+      "title": "「金廊映像」秋日寫真集《櫥窗少年》",
+      "loc": "ad_adm",
+      "roleHint": "擔任冬／秋裝寫真主角，大衣與城市夜景對比",
+      "blurb": "影像品牌季節寫真線，要能撐起書店櫥窗的面孔。",
+      "synopsis": "1990年季節寫真。阿偉以大衣、街燈與碼頭／商場為背景連拍，強調層次與情緒，而非時裝走秀。",
+      "heroAngle": "大衣一裹，城市夜色便有了主角。",
+      "diasporaHook": "季節大衣與街景易勾起外地華人的鄉愁。",
+      "eraTag": "era_1990_autumn_festival",
+      "discoverNote": "季節寫真選角",
+      "boardPriority": "normal",
+      "boardNote": "季節寫真櫥窗",
+      "seasonWeight": 0.85,
+      "req": {
+        "looks": 32,
+        "charm": 26,
+        "stamina": 20
+      },
+      "pay": [
+        7000,
+        12000
+      ],
+      "fame": [
+        12,
+        22
+      ],
+      "popularity": [
+        28,
+        48
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.38,
+      "tier": "中",
+      "shootDaysHint": 6,
+      "shootHint": "夜景連拍，注意保暖與連續換景。",
+      "roleScale": "photobook",
+      "shootBand": [
+        5,
+        7
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 11
+    },
+    {
+      "id": "gig_1990_mtv_01",
+      "year": 1990,
+      "season": "春",
+      "type": "唱片通告",
+      "title": "新晉歌手「南風」主打 MTV 男主角",
+      "loc": "rec_star",
+      "roleHint": "飾演跟得上剪接節奏的都市青年，對嘴與簡單走位",
+      "blurb": "卡帶／影碟主打 MTV，需要能在霓虹與天橋上跟節奏的面孔！",
+      "synopsis": "虛構唱片公司1990年主打 MTV。阿偉在行人天橋、碼頭倉庫與夜巴上層連拍趕路、對嘴與簡單群舞，畫面跟卡拉 OK 字幕一併發行。",
+      "heroAngle": "節奏推著往前跑，鏡頭才跟得上城市。",
+      "diasporaHook": "卡拉 OK MTV 是海外華人週末派對常見畫面。",
+      "eraTag": "era_1990_spring_commercial",
+      "discoverNote": "唱片公司 MTV 選角",
+      "boardPriority": "normal",
+      "boardNote": "主打 MTV",
+      "seasonWeight": 0.7,
+      "req": {
+        "looks": 24,
+        "charm": 22,
+        "dance": 16
+      },
+      "pay": [
+        3500,
+        6500
+      ],
+      "fame": [
+        10,
+        22
+      ],
+      "popularity": [
+        28,
+        48
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.4,
+      "tier": "初",
+      "shootDaysHint": 3,
+      "shootHint": "週末趕拍，對嘴與走位要準。",
+      "roleScale": "mtv",
+      "shootBand": [
+        2,
+        3
+      ],
+      "shootWeekdays": [
+        6,
+        7
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1990_film_10",
+      "year": 1990,
+      "season": "秋",
+      "type": "電影",
+      "title": "《鐵橋風雲》熱血拳手阿龍",
+      "loc": "film_harbour",
+      "roleHint": "飾演外銷動作片男主角、碼頭與鐵橋連場對打的阿龍",
+      "blurb": "大製作長檔男主角！實景多、對手戲重，檔期要鎖死整段季節。",
+      "synopsis": "外銷動作大片。阿偉擔正「阿龍」，碼頭追擊、鐵橋對打與東南亞夜市群戲貫穿全片，是一張要排滿月餘的動作主角檔。",
+      "heroAngle": "長檔主角：把整季檔期押在一張通告上。",
+      "diasporaHook": "港產大片男主是海外華院線熟悉的面孔記憶。",
+      "eraTag": "era_1990_autumn_festival",
+      "discoverNote": "大製作男主試鏡",
+      "boardPriority": "high",
+      "boardNote": "季節主推・電影男主",
+      "seasonWeight": 1.0,
+      "req": {
+        "acting": 38,
+        "stamina": 32,
+        "charm": 24
+      },
+      "pay": [
+        28000,
+        48000
+      ],
+      "fame": [
+        65,
+        95
+      ],
+      "popularity": [
+        75,
+        110
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.7,
+      "tier": "高",
+      "shootDaysHint": 29,
+      "shootHint": "長檔實景，對手戲與連續日戲夜戲交替。",
+      "roleScale": "film_lead_big",
+      "shootBand": [
+        28,
+        30
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 36
+    },
+    {
+      "id": "gig_1990_tv_09",
+      "year": 1990,
+      "season": "秋",
+      "type": "電視劇",
+      "title": "《商場歲月》百貨少掌櫃阿邦",
+      "loc": "tvb_harbour",
+      "roleHint": "飾演貫穿整季的主線男主角，廠景與外景並重",
+      "blurb": "星河長篇正劇男主！整季貫穿，廠期與外景都要鎖。",
+      "synopsis": "星河電視台長篇。阿偉飾演百貨少掌櫃「阿邦」，商場促銷、家族生意與年輕人去留貫穿整季。",
+      "heroAngle": "長劇男主：檔期就是半條演藝命。",
+      "diasporaHook": "粵語長劇男主是海外華人晚餐時光的共同記憶。",
+      "eraTag": "era_1990_autumn_festival",
+      "discoverNote": "長劇男主試鏡",
+      "boardPriority": "high",
+      "boardNote": "季節主推・長劇男主",
+      "seasonWeight": 1.0,
+      "req": {
+        "acting": 36,
+        "charm": 28,
+        "stamina": 30
+      },
+      "pay": [
+        16000,
+        28000
+      ],
+      "fame": [
+        55,
+        85
+      ],
+      "popularity": [
+        65,
+        95
+      ],
+      "stressDeltaHint": "高",
+      "hard": 0.65,
+      "tier": "高",
+      "shootDaysHint": 22,
+      "shootHint": "長駐廠，外景與廠景交替，對白量大。",
+      "roleScale": "tv_lead_long",
+      "shootBand": [
+        20,
+        24
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 28
+    },
+    {
+      "id": "gig_1990_tv_10",
+      "year": 1990,
+      "season": "秋",
+      "type": "電視劇",
+      "title": "《九龍秋雨》單元：撐傘路人",
+      "loc": "tvb_kowloon",
+      "roleHint": "客串數場，少對白多神態",
+      "blurb": "單元劇短客串，要穩、要快、要聽場記。",
+      "synopsis": "星河電視台秋單元在九龍電視台開拍。阿偉客串一兩場，對白不多，重在準時與神態。",
+      "heroAngle": "客串也是履歷上的一筆。",
+      "diasporaHook": "粵語單元劇客串是海外觀眾熟悉的面孔輪替。",
+      "eraTag": "era_1990_autumn_festival",
+      "discoverNote": "單元客串選角",
+      "boardPriority": "normal",
+      "boardNote": "秋・電視客串",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        2500,
+        5000
+      ],
+      "fame": [
+        6,
+        12
+      ],
+      "popularity": [
+        8,
+        16
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.3,
+      "tier": "初",
+      "shootDaysHint": 9,
+      "shootHint": "廠景／外景短場，聽場記口令。",
+      "roleScale": "tv_cameo_short",
+      "shootBand": [
+        8,
+        10
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 13
+    },
+    {
+      "id": "gig_1990_film_11",
+      "year": 1990,
+      "season": "冬",
+      "type": "電影",
+      "title": "《獅山歲晚》群戲：殺青宴後排",
+      "loc": "film_lion",
+      "roleHint": "小成本／小配角或群戲，聽導演走位",
+      "blurb": "電影短場群戲，檔期短、鏡頭準就有糧。",
+      "synopsis": "1990年電影組在獅子山製片拍冬場次。阿偉演小配角／群戲，鏡頭不多，但要跟得上大隊節奏。",
+      "heroAngle": "小場也是片場紀律課。",
+      "diasporaHook": "港產片群戲是海外華院線彩蛋式的熟悉臉。",
+      "eraTag": "era_1990_winter_pressure",
+      "discoverNote": "電影群戲選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・電影短場",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 16,
+        "stamina": 20,
+        "looks": 14
+      },
+      "pay": [
+        3000,
+        6000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        8,
+        18
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "實景短場，可能日夜顛倒。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1990_film_12",
+      "year": 1990,
+      "season": "春",
+      "type": "電影",
+      "title": "《棉廠春班》群戲：車間學徒",
+      "loc": "film_cotton",
+      "roleHint": "小成本／小配角或群戲，聽導演走位",
+      "blurb": "電影短場群戲，檔期短、鏡頭準就有糧。",
+      "synopsis": "1990年電影組在紅棉影業拍春場次。阿偉演小配角／群戲，鏡頭不多，但要跟得上大隊節奏。",
+      "heroAngle": "小場也是片場紀律課。",
+      "diasporaHook": "港產片群戲是海外華院線彩蛋式的熟悉臉。",
+      "eraTag": "era_1990_spring_commercial",
+      "discoverNote": "電影群戲選角",
+      "boardPriority": "normal",
+      "boardNote": "春・電影短場",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 16,
+        "stamina": 20,
+        "looks": 14
+      },
+      "pay": [
+        3000,
+        6000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        8,
+        18
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "實景短場，可能日夜顛倒。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1990_film_13",
+      "year": 1990,
+      "season": "春",
+      "type": "電影",
+      "title": "《海港春潮》過場：碼頭腳夫",
+      "loc": "film_harbour",
+      "roleHint": "小成本／小配角或群戲，聽導演走位",
+      "blurb": "電影短場群戲，檔期短、鏡頭準就有糧。",
+      "synopsis": "1990年電影組在維港電影拍春場次。阿偉演小配角／群戲，鏡頭不多，但要跟得上大隊節奏。",
+      "heroAngle": "小場也是片場紀律課。",
+      "diasporaHook": "港產片群戲是海外華院線彩蛋式的熟悉臉。",
+      "eraTag": "era_1990_spring_commercial",
+      "discoverNote": "電影群戲選角",
+      "boardPriority": "normal",
+      "boardNote": "春・電影短場",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 16,
+        "stamina": 20,
+        "looks": 14
+      },
+      "pay": [
+        3000,
+        6000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        8,
+        18
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "實景短場，可能日夜顛倒。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1990_film_14",
+      "year": 1990,
+      "season": "冬",
+      "type": "電影",
+      "title": "《海港冬霧》群戲：落雪（人造）街景",
+      "loc": "film_harbour",
+      "roleHint": "小成本／小配角或群戲，聽導演走位",
+      "blurb": "電影短場群戲，檔期短、鏡頭準就有糧。",
+      "synopsis": "1990年電影組在維港電影拍冬場次。阿偉演小配角／群戲，鏡頭不多，但要跟得上大隊節奏。",
+      "heroAngle": "小場也是片場紀律課。",
+      "diasporaHook": "港產片群戲是海外華院線彩蛋式的熟悉臉。",
+      "eraTag": "era_1990_winter_pressure",
+      "discoverNote": "電影群戲選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・電影短場",
+      "seasonWeight": 0.65,
+      "req": {
+        "acting": 16,
+        "stamina": 20,
+        "looks": 14
+      },
+      "pay": [
+        3000,
+        6000
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        8,
+        18
+      ],
+      "stressDeltaHint": "中",
+      "hard": 0.35,
+      "tier": "初",
+      "shootDaysHint": 13,
+      "shootHint": "實景短場，可能日夜顛倒。",
+      "roleScale": "film_support_small",
+      "shootBand": [
+        12,
+        15
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "shootDeadlineDays": 18
+    },
+    {
+      "id": "gig_1990_rec_06",
+      "year": 1990,
+      "season": "春",
+      "type": "唱片通告",
+      "title": "春日合唱單曲《開閘》和音",
+      "loc": "rec_hk",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "香江唱片安排春錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1990_spring_commercial",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "春・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1990_rec_07",
+      "year": 1990,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "夏日專輯《熱浪》和音錄音",
+      "loc": "rec_hk",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "香江唱片安排夏錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1990_summer_action",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "夏・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1990_rec_08",
+      "year": 1990,
+      "season": "春",
+      "type": "唱片通告",
+      "title": "灣仔室：春日口白試音",
+      "loc": "rec_wanchai",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "灣仔唱片安排春錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1990_spring_commercial",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "春・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1990_rec_09",
+      "year": 1990,
+      "season": "夏",
+      "type": "唱片通告",
+      "title": "灣仔室：夏日快歌和音",
+      "loc": "rec_wanchai",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "灣仔唱片安排夏錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1990_summer_action",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "夏・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1990_rec_10",
+      "year": 1990,
+      "season": "冬",
+      "type": "唱片通告",
+      "title": "灣仔室：歲晚合唱收聲",
+      "loc": "rec_wanchai",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "灣仔唱片安排冬錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1990_winter_pressure",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    },
+    {
+      "id": "gig_1990_rec_11",
+      "year": 1990,
+      "season": "冬",
+      "type": "唱片通告",
+      "title": "星廠冬：賀歲歌收束合唱",
+      "loc": "rec_star",
+      "roleHint": "錄音室和音／口白，準時入咪",
+      "blurb": "唱片公司短錄音通告，要穩、要準、少說話多聽指示。",
+      "synopsis": "天星音樂安排冬錄音。阿偉負責和音或口白，連續幾個夜更把聲線磨穩。",
+      "heroAngle": "錄音室裡的耐心，比高音更值錢。",
+      "diasporaHook": "卡帶內頁與合唱名單是海外華人唱片記憶。",
+      "eraTag": "era_1990_winter_pressure",
+      "discoverNote": "錄音室選角",
+      "boardPriority": "normal",
+      "boardNote": "冬・錄音短檔",
+      "seasonWeight": 0.65,
+      "req": {
+        "sing": 18,
+        "stamina": 16,
+        "charm": 12
+      },
+      "pay": [
+        3000,
+        5500
+      ],
+      "fame": [
+        6,
+        14
+      ],
+      "popularity": [
+        12,
+        24
+      ],
+      "stressDeltaHint": "低",
+      "hard": 0.32,
+      "tier": "初",
+      "shootDaysHint": 12,
+      "shootHint": "夜更錄音為主，護喉。",
+      "roleScale": "rec_album",
+      "shootBand": [
+        10,
+        14
+      ],
+      "shootWeekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "shootDeadlineDays": 19
+    }
+  ],
+  "planRef": "PLAN_SHOOT_CAREER_SCHEDULE_v2",
+  "softStatus": "Soft≠PASS"
+}
