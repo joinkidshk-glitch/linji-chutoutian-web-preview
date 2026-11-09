@@ -21816,12 +21816,19 @@ const NPC_TIER_LINES = {
   }
 };
 function npcTierPool(npcId, aff){
-  const out = { daily:[], insider:[] };
+  const out = { daily:[], insider:[], traj:[] };
   const pack = (typeof NPC_TIER_LINES!=="undefined" && NPC_TIER_LINES) ? NPC_TIER_LINES[npcId] : null;
-  if(!pack) return out;
   const a = Number(aff)||0;
-  if(a >= NPC_AFF_TIERS.dailyAt) out.daily = (pack.daily||[]).slice();
-  if(a >= NPC_AFF_TIERS.insiderAt) out.insider = (pack.insider||[]).slice();
+  if(pack){
+    if(a >= NPC_AFF_TIERS.dailyAt) out.daily = (pack.daily||[]).slice();
+    if(a >= NPC_AFF_TIERS.insiderAt) out.insider = (pack.insider||[]).slice();
+  }
+  /* Weave Phase 4-9（v20a32）：何生介紹語（軌跡句）——只綁 agent、熟絡（rel≥dailyAt）＋軌跡定型先條件附加；
+     未定型唔出，唔污染現有對白池。npcIntelPool 唔讀 traj 桶（介紹語唔係情報，唔入 tipGig 情報池）。 */
+  if(npcId==="agent" && a >= NPC_AFF_TIERS.dailyAt && typeof hoIntroLine49==="function"){
+    const hl = hoIntroLine49();
+    if(hl) out.traj.push(hl);
+  }
   return out;
 }
 function npcNextTierHint(npcId, aff){
@@ -21840,6 +21847,117 @@ function npcIntelPool(npcId){
   const tp = npcTierPool(npcId, aff);
   pool = pool.concat(tp.daily, tp.insider);
   return pool;
+}
+
+/* ===== Weave Phase 4-9（v20a32）：預兆系統——軌跡分類＋三渠道呈現（結局設計 §6）。
+   核心邊界：預兆只改呈現用字，絕對唔改任何數值、唔改結局判定。
+   trajectoryOf49 係唯讀函數（唔寫 S、唔派獎、唔落旗）；結局判定（設計檔 §2 判定表）
+   留 Phase 4-10 另行實作，唔好直接攞軌跡分類當結局——軌跡只係畀個世界「暗示」玩家行緊邊條路。
+   三個呈現位：報紙稱呼（newspaperWrapFaceLines 經 newspaperTrajRef49 疊加風味）、
+   何生介紹語（npcTierPool 條件附加 traj 桶，經 pickNpcLine 入池）、
+   殺青評語（FaceLines rumor 尾附加選角筆記句，池 wrapTrajNotePool49）。
+   未定型（null）嗰陣三處全部行返舊行為，零回歸。 ===== */
+const TRAJ49_IDOL_GAP = 15;    /* 聲量領先信用 ≥15 先算「聲量主導」（偶像軌） */
+const TRAJ49_IDOL_FAME = 30;   /* 偶像軌最低聲量（低過呢個數未算成勢） */
+const TRAJ49_CREDIT_GAP = 10;  /* 信用領先聲量 ≥10 ＋甘草向標籤 ≥1 → 甘草軌 */
+const TRAJ49_TAG_LEAD = 2;     /* 標籤軌主導門檻：同組標籤 ≥2 */
+const TRAJ49_SUPER_FAME = 55;  /* 雙高定型（近 E1 區）：先於標籤軌 */
+const TRAJ49_SUPER_CREDIT = 50;
+const TRAJ49_CRAFT_FAME = 40;  /* 實力軌（雙軌齊高且接近） */
+const TRAJ49_CRAFT_CREDIT = 35;
+const TRAJ49_CRAFT_GAP = 15;
+const TRAJ49_DIRECTOR_REL = 60; /* 幕後組：張子駿 rel ≥60 計 +2（鏡像 §2 E3 閘） */
+/* 標籤組：對 S.castingTags 每個標籤嘅 id／label 字串做子串命中（逐標籤計一次）。
+   registry（STUB_CASTING_TAGS_v1）現有 10 標籤：可靠組 tag_reliable 穩重／tag_endure 捱得／
+   tag_follow_set 識跟場 歸甘草；tag_street 爛仔（hidden）歸江湖；registry 暫時冇幕後類標籤，
+   幕後組先備關鍵字（幕後／後期／編劇…），內容日後加呢類標籤即生效，另加上面 director rel 鏡像條件。 */
+const TRAJ49_TAG_SETS = {
+  support: ["tag_reliable", "tag_endure", "tag_follow_set", "穩重", "捱得", "識跟場", "守口如瓶", "綠葉", "甘草", "老戲骨", "配角", "穩陣", "片場老油條", "電視城乖仔"],
+  backstage: ["幕後", "後期", "製作", "編劇", "剪接", "場記", "副導", "統籌"],
+  jianghu: ["tag_street", "爛仔", "江湖", "古惑", "義氣", "識做", "執生", "大佬", "撈家", "搏命", "武行"]
+};
+function trajTagCounts49(st){
+  const counts = { support:0, backstage:0, jianghu:0 };
+  const list = (st && Array.isArray(st.castingTags)) ? st.castingTags : [];
+  list.forEach(t=>{
+    if(t==null) return;
+    const strs = (typeof t==="string") ? [String(t)]
+      : [t.id, t.label].filter(x=> x!=null && String(x)!=="").map(x=> String(x));
+    if(!strs.length) return;
+    Object.keys(TRAJ49_TAG_SETS).forEach(k=>{
+      const keys = TRAJ49_TAG_SETS[k];
+      if(strs.some(x=> keys.some(key=> x.indexOf(key)>=0))) counts[k]++;
+    });
+  });
+  try{
+    const dRel = (st && st.npcs) ? (Number(st.npcs.director)||0) : 0;
+    if(dRel >= TRAJ49_DIRECTOR_REL) counts.backstage += 2;
+  }catch(_e){}
+  return counts;
+}
+/* 軌跡分類（唯讀、無副作用）：回傳 "idol"|"craft"|"support"|"backstage"|"jianghu"|null（未定型）。
+   優先序：①雙高定型（實力）——近 E1 區，數字已經講完身份，唔畀標籤蓋過；
+   ②標籤主導（≥2 同組）——標籤係玩家喺節點親手揀返嚟嘅身分，先於漸進累積嘅數字；
+   同分 tie-break 固定序：幕後＞江湖＞甘草（職業方向＞人脈風味＞角色類型）。
+   ③雙軌齊高且接近（實力）；④聲量主導（偶像）；⑤信用主導＋甘草標籤（甘草）；
+   ⑥其餘未定型——早期／太平均唔夾硬分類，呈現層用返舊文案。
+   數值校準按 LIVE 信用公式（dualTrackNumbers：信用 ≈ 0.5×聲量＋0.3×台風＋0.2×演技＋delta）：
+   齋追聲量唔練功嘅人信用會落後 15+（入偶像軌）；兩邊齊練嘅人差距細而雙高（入實力軌）。 */
+function trajectoryOf49(s){
+  const st = s || (typeof S!=="undefined" ? S : null) || {};
+  const dual = (typeof readDualTracks==="function") ? readDualTracks(st)
+    : { stageVolume: Number(st.fame)||0, industryCredit: Number(st.industryCredit)||0 };
+  const fame = Number(dual.stageVolume)||0;
+  const credit = Number(dual.industryCredit)||0;
+  const counts = trajTagCounts49(st);
+  if(fame>=TRAJ49_SUPER_FAME && credit>=TRAJ49_SUPER_CREDIT) return "craft";
+  let lead = null, leadN = 0;
+  ["backstage","jianghu","support"].forEach(k=>{ if(counts[k]>leadN){ lead = k; leadN = counts[k]; } });
+  if(lead && leadN>=TRAJ49_TAG_LEAD) return lead;
+  if(fame>=TRAJ49_CRAFT_FAME && credit>=TRAJ49_CRAFT_CREDIT && Math.abs(fame-credit)<=TRAJ49_CRAFT_GAP) return "craft";
+  if(fame>=TRAJ49_IDOL_FAME && fame-credit>=TRAJ49_IDOL_GAP) return "idol";
+  if(credit-fame>=TRAJ49_CREDIT_GAP && counts.support>=1) return "support";
+  return null;
+}
+/* 報紙稱呼軌跡表（結局設計 §6 報紙行）：named／titled 兩級風味；anon 唔用（維持泛稱）。
+   偶像／實力兩軌嘅定型門檻本身已過 titled 聲量（40），named 級實際主要由標籤軌行到；
+   表格照備齊兩級，日後門檻點調都唔使改表。 */
+const TRAJ_PAPER_REF49 = {
+  idol:      { named: "話題新人阿偉", titled: "人氣偶像阿偉" },
+  craft:     { named: "新晉小生阿偉", titled: "當紅小生阿偉" },
+  support:   { named: "穩陣綠葉阿偉", titled: "金牌甘草阿偉" },
+  backstage: { named: "幕後幫手阿偉", titled: "幕後能手阿偉" },
+  jianghu:   { named: "江湖氣阿偉", titled: "江湖味阿偉" }
+};
+function newspaperTrajRef49(traj, tier){
+  if(!traj || tier==="anon") return null;
+  const row = TRAJ_PAPER_REF49[traj];
+  return row ? (row[tier] || null) : null;
+}
+/* 何生介紹語（§6 何生行原句為骨）：何生同行家介紹阿偉嗰句——只經 npcTierPool 條件附加入傾談池，唔入情報池。 */
+const HO_INTRO_LINES49 = {
+  craft: "頭先有個監製問起你，我係咁答佢嘅：「呢個後生仔，第時唔得了。」——佢即刻叫我留低你個名。",
+  support: "有人問我邊個最穩陣，我次次都答：「搵佢，實冇死。」——呢句而家喺行內，講緊嘅係你。",
+  idol: "我同人介紹你嗰陣，例牌要補多句：「佢紅係紅，你小心啲用。」——紅得起，都要有人識得用佢嗰陣火。",
+  backstage: "我同個導演提過你：「佢唔止企到鏡頭前，成套戲點行，佢心入面有數。」——幕後嗰邊，而家對你另眼相看。",
+  jianghu: "尋日有人問我，阿偉班底點解咁齊心。我笑住答：「阿偉嘅人脈，而家貴過我。」——你啲人緣，已經做到價。"
+};
+function hoIntroLine49(){
+  const t = (typeof trajectoryOf49==="function") ? trajectoryOf49() : null;
+  return t ? (HO_INTRO_LINES49[t] || null) : null;
+}
+/* 殺青評語（選角筆記）軌跡詞（§6 選角筆記行關鍵字為骨）：實力 主角相／扛得起；甘草 唔使睇住／交畀佢；
+   偶像 有火／難控制；江湖 識做人／邊度都食得開；幕後按其性質補（睇戲眼光／似幕後人）。 */
+const TRAJ_WRAP_NOTES49 = {
+  craft: ["場記喺選角筆記寫低：有主角相，扛得起成場戲。", "副導喺筆記度圈咗佢個名，話大場面交畀佢都得。"],
+  support: ["選角筆記寫：唔使睇住，交畀佢就搞掂。", "場記話：邊場缺人第一時間諗起佢，穩陣到好似班底咁。"],
+  idol: ["選角筆記寫：有火，鏡頭鍾意佢——係難控制啲。", "場記話：佢一企埋位，成組人嘅眼光都跟住佢走。"],
+  backstage: ["選角筆記寫：佢睇戲嘅眼光，比企喺鏡頭前嗰陣更準。", "場記話：佢收工仲留低幫手執位，似幕後人多過似臨記。"],
+  jianghu: ["選角筆記寫：識做人，邊度都食得開。", "場記話：由武師到茶水都同佢有講有笑，呢份人緣唔係假嘅。"]
+};
+function wrapTrajNotePool49(){
+  const t = (typeof trajectoryOf49==="function") ? trajectoryOf49() : null;
+  return t ? (TRAJ_WRAP_NOTES49[t] || []).slice() : [];
 }
 
 function pickNpcLine(npcId, opts){
@@ -21865,6 +21983,8 @@ function pickNpcLine(npcId, opts){
     const tp = npcTierPool(npcId, aff);
     if(tp.daily.length) add(tp.daily, opts.wantIntel ? 4 : 2.5);
     if(tp.insider.length) add(tp.insider, opts.wantIntel ? 5 : 3.5);
+    /* Weave 4-9（v20a32）：何生軌跡介紹句——tp.traj 只喺軌跡定型嗰陣非空，未定型唔入池。 */
+    if(tp.traj && tp.traj.length) add(tp.traj, opts.wantIntel ? 4 : 3);
   }
   if(!weighted.length) add(pack.greet, 1);
   if(!weighted.length) return "……";
@@ -31200,7 +31320,14 @@ function newspaperWrapFaceLines(subject, angle){
   const book = "《"+work+"》";
   const medium = newspaperMediumFromGigType(subject.type);
   const nameTier = (typeof newspaperNameTier==="function") ? newspaperNameTier() : "named";
-  const ref = (typeof newspaperPlayerRef==="function") ? newspaperPlayerRef(nameTier) : "阿偉";
+  let ref = (typeof newspaperPlayerRef==="function") ? newspaperPlayerRef(nameTier) : "阿偉";
+  /* Weave Phase 4-9（v20a32）：預兆·報紙稱呼——軌跡定型嗰陣，named/titled 稱呼疊加軌跡風味
+     （結局設計 §6 報紙行軌跡表 newspaperTrajRef49）。anon 維持泛稱；未定型行返原稱呼，零回歸。
+     只改用字：點名門檻（Phase 3-1）、角度判定、數值一律唔郁。 */
+  if(typeof trajectoryOf49==="function" && typeof newspaperTrajRef49==="function"){
+    const trajRef49 = newspaperTrajRef49(trajectoryOf49(), nameTier);
+    if(trajRef49) ref = trajRef49;
+  }
   const headWho = (nameTier==="anon") ? "臨記" : ref;
   const rumorRef = (nameTier==="anon") ? "有個臨記" : "阿偉";
   const headline = role ? (book+"殺青 "+headWho+"飾演"+role) : (book+"殺青 "+headWho+"入鏡");
@@ -31242,6 +31369,13 @@ function newspaperWrapFaceLines(subject, angle){
     rumor = role
       ? ("聽講"+book+"殺青，"+rumorRef+"做"+role+"嗰場俾場記提起，話佢幾搶眼。")
       : ("聽講"+book+"殺青，場記話"+rumorRef+"嗰場幾搶眼，俾人提起。");
+  }
+  /* Weave Phase 4-9（v20a32）：預兆·殺青評語——軌跡定型＋已點名（named/titled）先喺 rumor 尾
+     附加一句選角筆記（wrapTrajNotePool49，軌跡吻合先入池）；未定型／anon（淡紙）唔加，
+     rumor 同舊行為逐字一致。只改呈現，唔改任何結算。 */
+  if(nameTier!=="anon" && typeof wrapTrajNotePool49==="function"){
+    const notePool49 = wrapTrajNotePool49();
+    if(notePool49.length) rumor += notePool49[Math.floor(Math.random()*notePool49.length)];
   }
   return { headline: headline, dek: dek, rumor: rumor, medium: medium, work: work, angle: (angle==="spotlight" ? "spotlight" : "steady"), nameTier: nameTier };
 }
