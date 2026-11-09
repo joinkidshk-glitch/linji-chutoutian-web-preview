@@ -1,6 +1,8 @@
 # v20a63 頒獎禮群星版 static tests:
 # (1) 舊手繪 pixel map 全撤（PAL62／SPR_STAND／SPR_HOLD／DrawSprite／紅呔格 WWRRWW 一律唔准返嚟）。
-# (2) 新 sprite 資產：AWARDS63_SPRITES 齊 12 張（阿偉企姿＋捧杯＋10 紅星）、base64 總量 ≤120KB、來源標記在位。
+# (2) sprite 資產：v63 原 AWARDS63_SPRITES（寫實 12 張）；v20a64 起成套換做 AWARDS64_SPRITES
+#     Q 版 34 張（企姿 12＋捧杯 1 含喺企姿數＋行 A/B 22，實際＝企姿 11＋捧杯 1＋行 22）、base64 總量 ≤130KB。
+#     本測試嘅 sprite 帳目已按 v64 更新基線（2026-11-10 整合時註明）。
 # (3) 紅星池冇程天諾（1988 零出場紅線）。
 # (4) fellows 接線齊：build pack／log／請柬／結果卡／獎項頁／play（作品卡＋glamour＋對手捧杯）。
 # (5) 海報唔重複編碼：POSTER59_DATA 只得一份 const；新 code 只經 poster59Path 重用。
@@ -46,16 +48,18 @@ def slice_const(name):
 
 # --- (2) 資產本體 ---
 chk('AWARDS63 區塊標記在位', 'v20a63 AWARDS63' in src)
-chk('AWARDS63_SPRITES 在位', 'const AWARDS63_SPRITES' in src)
+chk('AWARDS64_SPRITES 在位（v64 Q 版取代）', 'const AWARDS64_SPRITES' in src)
+chk('AWARDS63_SPRITES 舊寫實資產已撤', 'const AWARDS63_SPRITES' not in src)
 chk('AWARDS63_POOL 在位', 'const AWARDS63_POOL' in src)
 chk('fellows 函數在位', 'function awards63Fellows(ceremony, year)' in src)
 chk('focus 函數在位', 'function awards63FocusCat(pack)' in src)
-spr = slice_const('AWARDS63_SPRITES')
+spr = slice_const('AWARDS64_SPRITES')
 SPR_KEYS = ['awei', 'awei_hold', 'luk_baakyin', 'liu_bingxing', 'chai_zanhoi', 'mak_zhendong',
             'lok_gasing', 'chung_choning', 'so_jiyan', 'ngai_wingnaam', 'gu_mingfai', 'yip_manji']
-chk('sprite 齊 12 張（阿偉×2＋紅星×10）', all(('"'+k+'":') in spr for k in SPR_KEYS) and spr.count('data:image/png;base64') == 12)
+WALK_KEYS = [k + suf for k in ['awei'] + SPR_KEYS[2:] for suf in ('_walkA', '_walkB')]
+chk('sprite 齊 34 張（企姿 11＋捧杯 1＋行幀 22）', all(('"'+k+'":') in spr for k in SPR_KEYS + WALK_KEYS) and spr.count('data:image/png;base64') == 34)
 b64len = sum(len(m) for m in re.findall(r'data:image/png;base64,([A-Za-z0-9+/=]+)', spr))
-chk('sprite base64 總量 ≤120KB（實際約 84KB）', 0 < b64len <= 120 * 1024)
+chk('sprite base64 總量 ≤130KB（v64 實際約 28KB）', 0 < b64len <= 130 * 1024)
 
 # --- (1) 舊手繪 map 全撤 ---
 chk('舊 PAL62 已撤', 'AWARDS62_PAL62' not in src)
@@ -83,7 +87,7 @@ chk('結果卡有同屆提名行', 'awards63FellowsHtml' in result_fn)
 pane_fn = slice_fn('renderAwardsPane62')
 chk('獎項頁顯示同屆提名', 'fellowsTxt' in pane_fn and 'fellows63' in pane_fn)
 play_fn = slice_fn('awards62PlayCeremony')
-chk('動畫載 sprite 圖（AWARDS63_SPRITES）', 'AWARDS63_SPRITES' in play_fn and 'loadSpr' in play_fn)
+chk('動畫載 sprite 圖（AWARDS64_SPRITES）', 'AWARDS64_SPRITES' in play_fn and 'loadSpr' in play_fn)
 chk('動畫有剪影降級', 'drawSpr' in play_fn and '剪影降級' in play_fn)
 chk('唱名作品卡列（DOM）', 'awd63-cards' in play_fn and 'awd63-card' in play_fn)
 chk('玩家卡有金框「你」標記 CSS', '.awd63-card.me' in src and 'content:"你"' in src)

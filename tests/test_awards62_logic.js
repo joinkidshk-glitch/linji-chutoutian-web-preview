@@ -4,7 +4,7 @@
 // (3) 冇第一年隱形壓分：同參數下 1988 同 1990 年 base 分完全一樣。
 // (4) 代表作＝嗰年嗰媒介最高質嗰部；請柬門檻行；結果弱瓣「差啲咩」。
 // (5) standing 差額（入圍差幾部／贏線差幾多）；季前提示觸發／靜默（含冬→春跨年跳過）。
-// (6) beats 純資料：得獎全長 8–9 秒、旁聽較短、唱名行掛代表作。
+// (6) beats 純資料：得獎全長 9–10 秒（v64 起 enter 改真走路入場 1750ms，基線由 8–9 秒更新）、旁聽較短、唱名行掛代表作。
 // (7) 獎項頁 render：新記錄（displayName＋repTitle）同舊記錄（乜都冇）都顯示到，唔崩。
 // (8) buildAwardResultPack 端到端：categories 掛 repWorkTitle／weakHint62、pack 有 standing62。
 // 反證：對 v20a61 index 行 → AWARDS62 函數唔存在 → FAIL。
@@ -222,7 +222,7 @@ const wonPack = { displayName:'星河電視獎', bestOutcome:'won', repWork62:'�
   categories:[{ label:'最佳男主角', outcome:'won', repWorkTitle:'長篇劇' }] };
 const beatsWon = awards62CeremonyBeats(wonPack);
 const totalWon = beatsWon.reduce((a,b)=>a+b.ms, 0);
-ok('得獎 beats 全長 8–9 秒', totalWon >= 8000 && totalWon <= 9000);
+ok('得獎 beats 全長 9–10 秒', totalWon >= 9000 && totalWon <= 10000);
 ok('beats 有齊 open/enter/names/suspense/reveal/out', ['open','enter','names','suspense','reveal','out'].every(id=>beatsWon.some(b=>b.id===id)));
 const namesBeat = beatsWon.find(b=>b.id==='names');
 ok('唱名行掛代表作', !!namesBeat && namesBeat.lines.some(l=>/《長篇劇》/.test(l)));
