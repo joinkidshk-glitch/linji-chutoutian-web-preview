@@ -3920,6 +3920,16 @@ body.day-res-open .day-row{
 .story-play .sp-choice{background:linear-gradient(180deg,#f8f2e2,#efe3c8);border-color:rgba(146,110,44,.45)}
 /* === v20a40 皮膚層完 === */
 /* === v20a41 新 UI 皮膚層（二期補修：StoryPlay 全屏分層版面） ===
+   v20a42 補修（同段內，根因見 NOTES_V20A42_UI_P2FIX2.md）：
+   (a) 舞台底部漏光——行 3121 舊規則 #mask:not(.tut-on) #modal-btns{position:sticky !important}
+       令本層 :has() 嘅 position:absolute（冇 !important）失效，掣欄留喺流程入面食咗約 80–90px，
+       #modal-inner／舞台跟住矮咗一截；嗰截得返 :has 規則嘅透明漸變掣欄＋ #mask.on 嘅
+       rgba(0,0,0,.72) !important 半透明幕（本層 background:#0a0705 冇 !important 輸咗），
+       地圖底部地點列咪透出嚟。修：:has 掣欄加 !important、#mask 同 .modal 底色改不透明 !important。
+   (b) 企立唔夠高——唔係 % 參照盒問題（企立 containing block 係 .sp-stage 全高），係 max-width:58%
+       撞限：企立源圖高 500、闊 325–416（比例 0.65–0.83），高 70% 需要闊 46–58% 畫面高，
+       喺手機框闊高比約 0.55 下即 83–106% 舞台闊，58% 上限迫高度縮到 41–49%。
+       修：max-width 放寬到 94%、height 70%→72%（最闊嗰兩張 0.83 比例受幾何所限約 62%，已申報）。 */
    目標：《明星志願》式全屏分層——場景圖全屏做底＋企立圖企左下＋米紙對話牌壓底＋標題收做頂部半透明條。
    突破容器方法（純 CSS，零模板/邏輯改動）：#mask 本身係 #app 直接子元素、position:absolute;inset:0
    已覆蓋成個遊戲框；祖先鏈 #app／.modal／#modal-inner 全部冇 transform/filter/backdrop-filter，
@@ -3931,12 +3941,12 @@ body.day-res-open .day-row{
    底部漸變 overlay 貼住牌底；選擇模式按鈕較多，保留喺流程底欄（:has 區分，唔支援 :has 時
    安全退回：全部模式都行底欄＋全屏場景，唔會爛版）。 */
 /* --- 容器：modal 拉做框內全屏 --- */
-#mask.story-play-on{padding:0;align-items:stretch;background:#0a0705}
+#mask.story-play-on{padding:0;align-items:stretch;background:#0a0705 !important}
 #mask.story-play-on .modal{
   position:relative;height:100%;width:100%;
   max-height:none !important;padding:0;
   border:0 !important;border-radius:0;
-  background:transparent !important;box-shadow:none !important;
+  background:#0a0705 !important;box-shadow:none !important;
 }
 #mask.story-play-on #modal-inner{overflow:hidden !important;padding:0}
 /* --- 主根：全高、做疊層定位原點 --- */
@@ -3976,7 +3986,7 @@ body.day-res-open .day-row{
 }
 /* --- 企立圖：左下、全高約七成、貼底、輕影（情緒 filter 逐組鏡像補回 drop-shadow） --- */
 #mask.story-play-on .story-play .sp-bust.sp-bust-stand{
-  left:0;bottom:0;height:70%;max-height:70%;width:auto;max-width:58%;
+  left:0;bottom:0;height:72%;max-height:72%;width:auto;max-width:94%;
   filter:drop-shadow(3px 5px 9px rgba(0,0,0,.45));
 }
 #mask.story-play-on .story-play .sp-bust.sp-bust-stand[data-emotion="tense"],
@@ -4015,7 +4025,7 @@ body.day-res-open .day-row{
 /* 對白／旁白模式：按鈕改做底部漸變 overlay，貼住對話牌底（:has 唔支援時退回上面底欄） */
 #mask.story-play-on:has(.sp-mode-dialogue) #modal-btns,
 #mask.story-play-on:has(.sp-mode-narration) #modal-btns{
-  position:absolute;left:0;right:0;bottom:0;z-index:8;
+  position:absolute !important;left:0;right:0;bottom:0;z-index:8;
   background:linear-gradient(180deg,rgba(12,8,4,0) 0%,rgba(12,8,4,.52) 55%,rgba(12,8,4,.72) 100%);
   border-top:0;
 }
