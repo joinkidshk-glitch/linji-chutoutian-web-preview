@@ -74,7 +74,7 @@ chk('setHomeTab 接 awards 頁', 'awards' in tab_fn and 'renderAwardsPane62' in 
 m = re.search(r'const AWARDS62_STAGE_PX = "data:image/webp;base64,([A-Za-z0-9+/=]+)"', src)
 chk('像素舞台底圖在位（WebP data URI）', m is not None)
 chk('底圖 base64 ≤150KB 目標（實際約 25KB）', m is not None and len(m.group(1)) <= 150 * 1024)
-chk('阿偉精靈圖 STAND/HOLD 在位', 'const AWARDS62_SPR_STAND' in src and 'const AWARDS62_SPR_HOLD' in src)
+chk('阿偉精靈圖（v63 起改真立繪像素化 AWARDS63_SPRITES；舊手繪 map 已撤）', 'const AWARDS62_SPR_STAND' not in src and 'const AWARDS63_SPRITES' in src)
 chk('canvas 像素呈現（pixelated）', 'image-rendering:pixelated' in src and 'awd62-canvas' in src)
 chk('跳過掣存在', 'awd62-skip' in src and '跳過' in src)
 chk('撳畫面推進存在', 'addEventListener("click"' in slice_fn('awards62PlayCeremony'))
