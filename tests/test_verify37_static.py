@@ -33,7 +33,7 @@ ok('item2a headline pool has >=6 variants per branch', face_seg.count('book+') +
 # ---- item 2b：metrics 單抽 ----
 bps_seg = seg('function buildPostShootRewardPack(', 'function queuePostShootRewardOnWrap')
 ok('item2b metrics single-draw (no double postShootPickTemplate for metrics)',
-   bps_seg.count('postShootPickTemplate("metrics"') == 1 and 'if(!metricT) metricT = postShootPickTemplate("metrics", gigType);' in bps_seg)
+   bps_seg.count('postShootPickTemplate("metrics"') == 1 and 'if(!metricT) metricT = postShootPickTemplate("metrics", gigType, scene38);' in bps_seg)  # v20a38：fallback 呼叫加 scene38 參數，單抽不變量不變
 
 # ---- item 2c：增補池冇具名作品 ----
 pool_seg = seg('const PSR_EXTRA_TEMPLATES_35', 'const _psrLastPick35')

@@ -254,8 +254,11 @@ function makeEl(){
   eval(extractConst('PSR_EXTRA_TEMPLATES_35').replace('const PSR_EXTRA_TEMPLATES_35', 'var PSR_EXTRA_TEMPLATES_35'));
   eval(extractConst('_psrLastPick35').replace('const _psrLastPick35', 'var _psrLastPick35'));
   const FNS = ['psrPickNoRepeat35','augmentPostShootRewards35','postShootPickTemplate',
-    'postShootCopyLine','postShootDisplayTitle','postShootMetricKindForType','buildPostShootRewardPack'];
+    'postShootCopyLine','postShootDisplayTitle','postShootMetricKindForType','buildPostShootRewardPack',
+    /* v20a38：跨次記憶＋場景適配新函數，一併抽真 */
+    'psrRecent38','psrSceneForShoot38','psrSceneFilter38'];
   for(let i = 0; i < FNS.length; i++) eval(extractFn('function ' + FNS[i]));
+  eval(extractConst('PSR_SCENE_TAGS38').replace('const PSR_SCENE_TAGS38', 'var PSR_SCENE_TAGS38'));
   eval(extractConst('PAPER_NAME_TIER_NAMED').replace('const PAPER_NAME_TIER_NAMED', 'var PAPER_NAME_TIER_NAMED'));
   eval(extractConst('PAPER_NAME_TIER_TITLED').replace('const PAPER_NAME_TIER_TITLED', 'var PAPER_NAME_TIER_TITLED'));
   const NFNS = ['newspaperNameTier','newspaperPlayerRef','newspaperMediumFromGigType','newspaperWrapFaceLines'];
@@ -278,18 +281,29 @@ function makeEl(){
   ok('seg2 收視關注冇連續兩份相同', !consecSame);
   ok('seg2 收視關注標題有變化', new Set(metricTitles).size >= 2);
 
-  /* (c) 《天星碼頭》殺青反響唔准寫錯第二套劇名；改好嗰張要入到輪替 */
-  let sawFixedCard = false, sawWrongWork = false;
+  /* (c) 《天星碼頭》殺青反響唔准寫錯第二套劇名。
+     v20a38 更新：改好嗰張「深宵廠景煞科」加咗場景標籤（night+studio）——
+     《天星碼頭》係碼頭日間外景，呢張由「要入輪替」改為「永不出現先啱」；
+     張卡本身唔係封殺：夜晚廠景工仍然要抽得中（細節驗證喺 test_wrap38）。 */
+  let sawSceneCard = false, sawWrongWork = false;
   for(let i = 0; i < 60; i++){
     const pack = buildPostShootRewardPack({ gigId: 'ferry_' + i, type: '電視劇', workTitle: '天星碼頭', title: '《天星碼頭》水手' });
     (pack.cards || []).forEach(c => {
       const blob = String(c.title || '') + ' ' + String(c.body || '');
       if(blob.indexOf('夜班廠景') >= 0) sawWrongWork = true;
-      if(blob.indexOf('深宵廠景煞科') >= 0) sawFixedCard = true;
+      if(blob.indexOf('深宵廠景煞科') >= 0) sawSceneCard = true;
     });
   }
   ok('seg2 《天星碼頭》反響冇寫錯劇名（冇「夜班廠景」）', !sawWrongWork);
-  ok('seg2 改好嗰張（深宵廠景煞科）有入輪替', sawFixedCard);
+  ok('seg2 v20a38：碼頭外景唔再抽中「深宵廠景煞科」（場景適配）', !sawSceneCard);
+  let sawNightStudio = false;
+  for(let i = 0; i < 60 && !sawNightStudio; i++){
+    const pack = buildPostShootRewardPack({ gigId: 'ns_' + i, type: '電視劇', workTitle: '深宵疑雲', title: '《深宵疑雲》廠景群演' });
+    (pack.cards || []).forEach(c => {
+      if((String(c.title || '') + ' ' + String(c.body || '')).indexOf('深宵廠景煞科') >= 0) sawNightStudio = true;
+    });
+  }
+  ok('seg2 v20a38：夜晚廠景工仍然抽得中「深宵廠景煞科」（唔係一刀切封殺）', sawNightStudio);
 
   /* (a) 報紙頭條：同作品定版、跨作品有變化、每款都帶作品＋角色 */
   const works = [
