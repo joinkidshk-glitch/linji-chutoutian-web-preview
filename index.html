@@ -4030,6 +4030,74 @@ body.day-res-open .day-row{
   border-top:0;
 }
 /* === v20a41 皮膚層完 === */
+/* === v20a43 新 UI 皮膚層（大地圖：刪底部快捷列＋地圖放大＋釘改隱形熱區） ===
+   用戶 2026-11-09 指示：(1) 地圖下面地點快捷列成行刪走；(2) 地圖再大啲；
+   (3) 地圖上嘅釘太醜，成個唔要——改隱形熱區，篤建築本身入地點。
+   全部純 CSS 隱藏／尺寸覆寫，唔刪 DOM、唔改 drawMap 邏輯同綁定（回滾＝成段刪走）。
+   細節同尺寸推算見 NOTES_V20A43_MAP_BIGGER.md。 */
+
+/* --- (1) 底部地點快捷列：drawMap 每次動態生成 #map-area-list（插喺 #map-hint 之後、
+       每個掣 onclick→openLoc，全程喺 try/catch 入面）。display:none 令佢唔佔位、
+       唔顯示；JS 照寫入照綁定，零報錯。連帶好處：v20a41 對話舞台底部漏光透出嘅
+       正是呢條列，隱藏後漏光源頭本身消失（story-play-on 段冇郁）。 --- */
+#app #map-area-list{ display:none !important; }
+
+/* --- (1b) 圖例 #map-legend 一併隱藏：佢淨係解釋釘上面嘅徽章（有通告／情報／
+       事態／熟人／遠觀），釘同徽章冇咗之後圖例變成誤導兼食位；JS 只係 set 入面
+       幾張 icon 嘅 src，隱藏零影響。騰出約 26px 高畀地圖。 --- */
+#app #map-legend{ display:none !important; }
+
+/* --- (2) 地圖放大：舊制 .map-img 係 object-fit:cover 填滿 flex 舞台（行 1510），
+       舞台闊高比同圖（1080×1432）唔同嗰陣會裁走圖邊，釘位百分比對位靠彩數。
+       新制：舞台高度改跟圖自然比例（闊÷0.7542），成張圖完整顯示、永不裁圖；
+       .map-pins 本來就 inset:0 貼住舞台（行 1474），舞台＝圖框，熱區百分比
+       同建築天然對齊。polaroid 左右邊距 6px→2px，舞台闊 +8px；
+       騰出嘅高度由 polaroid flex 食晒，舞台喺入面垂直置中。 --- */
+#app .map-polaroid{
+  margin:2px 2px 4px !important;
+  justify-content:center !important;
+}
+#app .map-well{
+  flex:0 1 auto !important;
+  height:auto !important;
+}
+#app .map-stage{
+  width:100% !important;
+  height:auto !important;
+}
+#app .map-img{
+  width:100% !important;
+  height:auto !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+}
+
+/* --- (3) 釘改隱形熱區：.pin 掣本體保留（dataset.loc、btn.onclick=goPin、
+       最近釘解析、aria-label 全部照舊），淨係熄視覺——
+       .pin-head（入面 .marks 徽章列＋.pin-img 釘圖）、.plab 地點名牌、.dot 全隱藏。
+       .marks 入面包含「熟人」NPC 徽章（drawMap 喺 hasNpc 時 push 入 marks，
+       legend_acquaintance 圖／👤），所以 NPC 徽章跟釘一齊消失，唔會浮空；
+       邊個 NPC 喺嗰度，入到地點 sheet（loc-who／傾談）照樣見到，派位邏輯冇郁。
+       熱區：64×64px 正方，以 LOCS 座標為中心（舊 transform 係 -50%,-92% 遷就
+       釘尖，新制改 -50%,-50% 置中）；≥44px 好篤；鄰近熱區重疊嗰陣 goPin 本身
+       有最近釘解析（10% 內揀最近兼優先有事做），唔會亂開地點。 --- */
+#app .map-pins .pin{
+  width:64px !important;
+  height:64px !important;
+  transform:translate(-50%,-50%) !important;
+  filter:none !important;
+  background:transparent !important;
+  opacity:1 !important;
+  -webkit-tap-highlight-color:transparent;
+}
+#app .map-pins .pin .pin-head,
+#app .map-pins .pin .pin-img,
+#app .map-pins .pin .plab,
+#app .map-pins .pin .marks,
+#app .map-pins .pin .dot{
+  display:none !important;
+}
+/* === v20a43 皮膚層完 === */
 </style>
 </head>
 <body>
