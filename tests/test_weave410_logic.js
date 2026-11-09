@@ -355,7 +355,7 @@ function eveKeys(over){
   modalPages410[1].buttons[0].on();
   const sum = modalPages410[modalPages410.length - 1].html;
   ok('總結頁五元素齊：稱號卡／雙軌／人情總帳／走咗名單（芬姐）／感情＋去留行',
-     sum.includes('甘草王・留下來的人') && sum.includes('幕前聲量') && sum.includes('人情總帳') && sum.includes('邊啲人走咗') && sum.includes('副導演芬姐') && sum.includes('感情') && sum.includes('去留'));
+     sum.includes('甘草王・留下來的人') && sum.includes('幕前聲望') && sum.includes('人情總帳') && sum.includes('邊啲人走咗') && sum.includes('副導演芬姐') && sum.includes('感情') && sum.includes('去留'));
   ok('總結頁：差啲嗰條路傳聞句在場', sum.includes('聽講'));
   const pagesBefore = modalPages410.length;
   const again = ending410AfterEveChoice(eve, natural, result);

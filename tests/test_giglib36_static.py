@@ -38,7 +38,7 @@ ok('credit gates = 3 total (89x2 + 90x1)',
    len(re.findall(r'industryCreditMin:(30|40|50)', html)) == 3)
 ok('tag gates present (comedy x2 + action x1)',
    html.count('requiresCastingTagAny:["tag_comedy", "喜劇細胞"]') == 2 and
-   html.count('requiresCastingTagAny:["tag_action", "動作演員"]') == 1)
+   html.count('requiresCastingTagAny:["tag_action", "身手好"]') == 1)
 
 # ---- 內容標準：通用工名禁用清單（新增通告 title 唔准命中） ----
 block_start = html.index('/* ===== v20a36')
