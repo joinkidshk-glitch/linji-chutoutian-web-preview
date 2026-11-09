@@ -4118,6 +4118,146 @@ body.day-res-open .day-row{
   display:none !important;
 }
 /* === v20a43 皮膚層完 === */
+/* === v20a47 新 UI 皮膚層（三期：報紙實物化＋剪報／開始畫面／手帳收尾） ===
+   做法（跟偵察 §5 建議）：唔改報紙模板組版同內容邏輯——朝早報紙呈現嗰刻
+   modal() 按 opts.paperSheet 畀 #mask 加 .paper-on 情境 class（presentDueMorningPaper
+   傳入；該函數簽名／回傳語義不變），closeModal 清除，唔會污染其他彈窗。
+   本段只喺 .paper-on 作用域內將 .paper-sheet 由「米紙彈窗內容」變「一份實物報紙」：
+   modal 牌面透明化、遮罩減暗透返背後場景、報紙斜放＋疊紙邊＋投影＋CSS 紙紋
+   （多層漸變造纖維感，唔內嵌圖，零體積增幅）。
+   剪報頁 .clip-card 同一語言：同款紙紋＋膠紙貼＋交錯輕斜，好似黐喺剪報簿上面。
+   開始畫面／手帳只做輕量統一（紙紋底／卡面紙感），唔郁結構同佈局。 */
+
+/* --- (1) 情境：遮罩減暗透出背後場面；modal 牌面隱形，報紙本體做主角 --- */
+#mask.on.paper-on{
+  background:rgba(24,15,6,.48) !important;
+}
+#mask.paper-on:not(.tut-on) .modal{
+  background:transparent !important;
+  border-color:transparent !important;
+  box-shadow:none !important;
+}
+#mask.paper-on #modal-btns{
+  background:transparent;
+  border-top:0;
+  box-shadow:none;
+}
+
+/* --- (2) 報紙本體：紙紋＋斜放＋疊紙邊＋投影 --- */
+#mask.paper-on .paper-sheet{
+  position:relative;
+  transform:rotate(-1.1deg);
+  background:
+    repeating-linear-gradient(93deg, rgba(122,96,54,.030) 0 2px, rgba(122,96,54,0) 2px 5px),
+    repeating-linear-gradient(177deg, rgba(122,96,54,.022) 0 1px, rgba(122,96,54,0) 1px 4px),
+    radial-gradient(130% 95% at 50% 0%, #fbf6e9 0%, #f5eedb 58%, #ebdfc2 100%);
+  border:1px solid #d9cba4;
+  border-radius:3px;
+  /* 首兩層硬偏移陰影＝底下墊住嘅第二張紙喺右下露出紙面同紙邊線；
+     唔用 ::before+z-index:-1——.paper-sheet 有 transform（stacking context），
+     負 z 偽元素會畫喺紙面背景之上遮住紙紋，次序唔啱。 */
+  box-shadow:
+    5px 7px 0 -1px #e9dfc4,
+    5px 7px 0 0 #c9b98f,
+    0 26px 50px rgba(0,0,0,.52),
+    0 5px 12px rgba(0,0,0,.38),
+    inset 0 0 44px rgba(146,118,62,.15);
+  padding:18px 20px 14px;
+}
+
+/* --- (3) 報頭：大字置中＋粗幼雙線，報紙格式 --- */
+#mask.paper-on .paper-mast{
+  margin:0;
+  font-size:1.45rem; font-weight:900;
+  letter-spacing:.32em; text-indent:.32em;
+  text-align:center; color:#221809;
+  border-top:3px solid #2a2118;
+  border-bottom:4px double #2a2118;
+  padding:9px 0 7px;
+}
+#mask.paper-on .paper-date{
+  margin:0 0 10px; padding:5px 0 6px;
+  text-align:center; font-size:.74rem; letter-spacing:.14em; color:#5d4a33;
+  border-bottom:1px solid rgba(42,33,24,.45);
+}
+#mask.paper-on .paper-kicker{ text-align:center; }
+#mask.paper-on .paper-headline{
+  margin:0 0 8px; font-size:1.5rem; line-height:1.32; font-weight:900;
+  text-align:center; color:#1d1409;
+}
+#mask.paper-on .paper-dek{
+  margin:0 0 12px; font-size:.88rem; line-height:1.55;
+  text-align:center; color:#3d3122;
+}
+
+/* --- (4) 短訊欄：粗線開欄＋欄線分隔；夠闊嗰陣行報紙雙欄 --- */
+#mask.paper-on .paper-shorts{
+  border-top:2px solid #2a2118;
+  margin-top:2px; padding-top:4px;
+}
+@media (min-width:430px){
+  #mask.paper-on .paper-shorts{
+    column-count:2; column-gap:20px;
+    column-rule:1px solid rgba(42,33,24,.30);
+  }
+  #mask.paper-on .paper-short{ break-inside:avoid; }
+}
+#mask.paper-on .paper-short .paper-kicker{ text-align:left; }
+
+/* --- (5) 頁腳：聲望行＋附註置中收尾 --- */
+#mask.paper-on .paper-fame{
+  margin:12px 0 0; padding-top:9px;
+  border-top:1px solid rgba(42,33,24,.4);
+  text-align:center;
+}
+#mask.paper-on .paper-note{ text-align:center; margin-top:6px; }
+
+/* --- (6) 剪報頁：同款紙紋＋膠紙貼＋交錯輕斜，黐喺剪報簿上面嘅語言 --- */
+#app .clip-card{
+  background:
+    repeating-linear-gradient(93deg, rgba(122,96,54,.026) 0 2px, rgba(122,96,54,0) 2px 5px),
+    radial-gradient(130% 95% at 50% 0%, #faf4e4 0%, #f3ead2 60%, #e9dcba 100%);
+  border:1px solid #d5c49c;
+  border-radius:3px;
+  box-shadow:0 7px 16px rgba(24,15,4,.30), inset 0 0 30px rgba(146,118,62,.10);
+  position:relative;
+  margin-top:12px;
+}
+#app #clippings-list .clip-card:nth-child(odd){ transform:rotate(-.55deg); }
+#app #clippings-list .clip-card:nth-child(even){ transform:rotate(.5deg); }
+#app .clip-card::before{
+  content:"";
+  position:absolute; top:-10px; left:50%;
+  width:78px; height:19px;
+  transform:translateX(-50%) rotate(-2deg);
+  background:rgba(233,216,163,.78);
+  border-left:1px dashed rgba(122,96,54,.4);
+  border-right:1px dashed rgba(122,96,54,.4);
+  box-shadow:0 1px 3px rgba(0,0,0,.20);
+  pointer-events:none;
+}
+
+/* --- (7) 收尾統一：開始畫面紙紋底＋標題卡投影；手帳卡換同款紙面 --- */
+#app #v-start .start{
+  background:
+    repeating-linear-gradient(93deg, rgba(122,96,54,.022) 0 2px, rgba(122,96,54,0) 2px 5px),
+    radial-gradient(120% 80% at 50% 0%, #f8f0dd 0%, #f2ebd8 72%),
+    linear-gradient(#f2ebd8, #f2ebd8) !important;
+}
+#app #v-start .start-brand{
+  filter:drop-shadow(0 10px 18px rgba(24,15,4,.35));
+}
+#app .home-card{
+  background:
+    repeating-linear-gradient(93deg, rgba(122,96,54,.020) 0 2px, rgba(122,96,54,0) 2px 5px),
+    linear-gradient(180deg, #f6efdc, #efe4c8);
+  border:1px solid rgba(160,128,62,.5);
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(24,15,4,.18), inset 0 1px 0 rgba(255,255,255,.5);
+  color:var(--ink);
+}
+#app .home-card h3{ color:#8a5a20; }
+/* === v20a47 皮膚層完 === */
 </style>
 </head>
 <body>
@@ -28728,6 +28868,8 @@ function modal(html, buttons, opts){
   });
   const maskEl=document.getElementById("mask");
   maskEl.classList.toggle("casting-sheet-on", !!opts.castingSheet);
+  /* v20a47：opts.paperSheet → #mask.paper-on（報紙實物化情境 class，純呈現；closeModal 清除） */
+  maskEl.classList.toggle("paper-on", !!opts.paperSheet);
   maskEl.classList.add("on");
   document.getElementById("app").classList.add("mask-up");
   try{ const sh=document.getElementById("loc-sheet"); if(sh) sh.classList.remove("sheet-live"); }catch(_e){}
@@ -28742,6 +28884,7 @@ function modal(html, buttons, opts){
 function closeModal(){
   try{ document.getElementById("modal-btns").classList.remove("soft-leave-only"); }catch(_e){}
   try{ document.getElementById("mask").classList.remove("casting-sheet-on"); }catch(_e){}
+  try{ document.getElementById("mask").classList.remove("paper-on"); }catch(_e){}
   /* v19z3：清 story-play-on + 清空 #modal-inner，避免劇情結算 HTML／mask 殘留 */
   try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
   try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
@@ -33574,7 +33717,7 @@ function presentDueMorningPaper(thenFn){
   try{
     modal(renderMorningPaperHtml(edition), [
       { label:"收下這份剪報", role:"p", on: done }
-    ], { onDismiss: done });
+    ], { onDismiss: done, paperSheet: true });
     return true;
   }catch(_e){
     if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = false;
