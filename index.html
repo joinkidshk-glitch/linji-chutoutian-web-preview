@@ -26630,6 +26630,14 @@ const MERGE_PAIRS = [
     title:"廖炳星帶錢入組傳聞", text:"廖炳星同導演密談完就突然換角，圈內都傳佢係帶住資金入組，難怪咁巴閉。" },
   { pairId:"pair_mai_zhendong_hide_injury", a:"rumor_mai_zhendong_hurt", b:"rumor_mai_zhendong_refuse_doc", merged:"rumor_mai_zhendong_hide_injury",
     title:"麥震東隱瞞傷情搏上位", text:"麥震東喺片場整親又死都唔肯睇醫生，明顯係想隱瞞傷情搏表現，真係夠狠。" },
+  /* Weave Phase 3-2（v20a20）：跨系統對——報紙碎片（報載）× 聽聞碎片 → 同一條 merged 情報。
+     merged id 同經典對一致，拼到照樣行 setIntelFlag／情報使用點；文案按報載證據改寫。 */
+  { pairId:"pair_paper_lu_concert", a:"paperfrag_lu_concert", b:"rumor_lu_baiyan_angry", merged:"rumor_lu_baiyan_breakdown",
+    title:"陸柏言情緒失控疑雲", text:"陸柏言喺片場發完脾氣，報紙又寫佢紅館開唱迫在眉睫、黃牛飛炒起，睇嚟佢頂住好大壓力，隨時會爆鑊。" },
+  { pairId:"pair_paper_liao_newfilm", a:"paperfrag_liao_newfilm", b:"rumor_liao_bingxing_talk", merged:"rumor_liao_bingxing_money",
+    title:"廖炳星帶錢入組傳聞", text:"廖炳星同導演密談完，報紙就寫佢新片喺清水灣開鏡、影迷塞爆閘口，圈內都傳佢係帶住資金入組，難怪咁巴閉。" },
+  { pairId:"pair_paper_mak_wrap", a:"paperfrag_mak_wrap", b:"rumor_mai_zhendong_hurt", merged:"rumor_mai_zhendong_hide_injury",
+    title:"麥震東隱瞞傷情搏上位", text:"麥震東喺片場整親，報紙又寫佢連煞科宴都缺席、劇組只肯講佢唔舒服，明顯係想隱瞞傷情搏表現，真係夠狠。" },
 ];
 /* ===== Weave Phase 1-3（v20a15）：拼合情報「使用點」——拼完唔再係死資訊。
    零新狀態：直接讀手帳入面 state:"merged" 嗰行拼合傳聞（Phase 2 先至正式化 intel_* 旗）。
@@ -29592,11 +29600,12 @@ function newspaperDueItems(day){
   return ensureNewspaperQueue().filter(it=>it && (it.publishDay|0) <= today);
 }
 /* ===== Weave Phase 1-1（v20a13）：報紙「花邊短訊」——唔關阿偉事嘅時代花邊，純靜態輪替。
-   來源：串聯規劃鏈 D 上半＋§4.5 地名／質地碎片庫。Phase 1 只顯示，唔入傳聞池（入池留 Phase 3）。
+   來源：串聯規劃鏈 D 上半＋§4.5 地名／質地碎片庫。Phase 1 只顯示；入傳聞池已喺 Phase 3-2（v20a20）落地：
+   有 id 並登記 SIDE_PAPER_FRAGS 嗰三則（陸柏言／廖炳星／麥震東線）見報後入池做報紙碎片，其餘維持唔入池。
    文案守則：虛構紅星名＋真地名＋日常質地；唔用真藝名；家庭友善用字。 ===== */
 const PAPER_SIDE_ITEMS = [
-  { h:"陸柏言紅磡開唱未公佈，黃牛飛已經炒起", d:"歌迷連夜喺紅磡體育館外排隊，場外士多話呢幾日絲襪奶茶都賣多咗。" },
-  { h:"廖炳星新片清水灣開鏡，影迷塞爆片場閘口", d:"電視城外小巴站排長龍，茶水阿姐話今朝多咗三倍人買菠蘿油。" },
+  { id:"side_lu_concert", h:"陸柏言紅磡開唱未公佈，黃牛飛已經炒起", d:"歌迷連夜喺紅磡體育館外排隊，場外士多話呢幾日絲襪奶茶都賣多咗。" },
+  { id:"side_liao_newfilm", h:"廖炳星新片清水灣開鏡，影迷塞爆片場閘口", d:"電視城外小巴站排長龍，茶水阿姐話今朝多咗三倍人買菠蘿油。" },
   { h:"魏詠男深水埗開武館，街坊排隊拜師", d:"過氣武打女星親自紮馬示範，圍觀街坊拍爛手掌，隔籬涼茶舖生意旺到加枱。" },
   { h:"葉敏芝寫真集再加印，書報攤老闆笑到見牙唔見眼", d:"旺角一帶書報攤話，後生仔放學必經，有人一次買三本話要嚟「收藏」。" },
   { h:"廟街夜市有劇組取景，煲仔飯檔被圍到水洩不通", d:"檔主話拍戲嗰陣最旺，臨記食客一邊食一邊望鏡頭，唔知入唔入到鏡。" },
@@ -29610,7 +29619,8 @@ const PAPER_SIDE_ITEMS = [
   { h:"酒樓散席飯訂枱急升，經理話做到手軟", d:"有經理話近排啲圍餐十居其九係送行宴，食到尾總有人眼濕濕。", fromYear:1989 },
   { h:"程天諾接拍汽水廣告，新人王氣勢逼人", d:"廣告商話就係睇中佢後生夠活力，廣告未出街，學校門口已經貼滿佢啲相。", fromYear:1990 },
   { h:"啟德機場送機大堂日日人山人海", d:"有送機嘅人話，而家去機場唔係旅行，係送親戚，一送就唔知幾時先再見。", fromYear:1990 },
-  { h:"賀歲片搶檔期傳到熱哄哄，院線排片傷腦筋", d:"邊套賀歲、邊套押後，戲院經理話排到聖誕都未排得晒，年尾有排煩。" }
+  { h:"賀歲片搶檔期傳到熱哄哄，院線排片傷腦筋", d:"邊套賀歲、邊套押後，戲院經理話排到聖誕都未排得晒，年尾有排煩。" },
+  { id:"side_mak_wrap", h:"麥震東新片煞科宴缺席，劇組話佢唔舒服", d:"監製話佢拍到煞科嗰日都仲吊緊威也，係咪唔舒服，就無人肯講多句。" }
 ];
 function paperSideItemForDay(day){
   let year = 1988;
@@ -29619,7 +29629,32 @@ function paperSideItemForDay(day){
   if(!pool.length) return null;
   const it = pool[Math.abs(day|0) % pool.length];
   if(!it) return null;
-  return { eventKey:"", paperName:"花邊短訊", headline:it.h, dek:it.d, clipLabel:"", fameDelta:0, source:"side", rumorEcho:"" };
+  return { eventKey:"", paperName:"花邊短訊", headline:it.h, dek:it.d, clipLabel:"", fameDelta:0, source:"side", rumorEcho:"", sideId:it.id||"" };
+}
+/* ===== Weave Phase 3-2（v20a20）：報紙花邊入傳聞池——跨系統拼合（串聯規劃鏈 D）。
+   花邊池入面只有同現有情報線有關聯嘅三則（有 id 並喺 SIDE_PAPER_FRAGS 登記）先入池：
+   見報後喺 pushNewspaperRumor 生成一塊「報紙碎片」入 S.mockRumors（來源「報紙花邊」、
+   state normal＝剛聽聞、可揀選），標題／內文照剪報紙原文，玩家可以留起份報紙嚟拼。
+   碎片 id 固定（唔跟 edition id），同一則花邊重複見報都只入池一次（跟報紙去重口徑）。
+   拼合行現有 MERGE_PAIRS 跨系統對：報紙碎片 × 指定聽聞碎片 → 同一條 merged 情報、照樣置情報旗。
+   其餘花邊無登記，一律維持 Phase 1 口徑：純 flavor、唔入池，唔塞爆傳聞頁。 ===== */
+const SIDE_PAPER_FRAGS = {
+  side_lu_concert: "paperfrag_lu_concert",
+  side_liao_newfilm: "paperfrag_liao_newfilm",
+  side_mak_wrap: "paperfrag_mak_wrap",
+};
+function paperSideFragmentFor(s){
+  if(!s || s.source!=="side") return null;
+  const fragId = SIDE_PAPER_FRAGS[String(s.sideId||"")];
+  if(!fragId) return null;
+  const head = String(s.headline||"").trim();
+  if(!head) return null;
+  return {
+    id: fragId,
+    paperFrag: true,
+    headline: head,
+    dek: String(s.dek||"").trim() || ("報紙花邊寫道：「"+head+"」。")
+  };
 }
 /* ===== Weave Phase 3-1（v20a19）：報紙連載口吻——報紙記得上一份自己寫過嘅主話題。
    關聯鍵（topicKey）優先序：①劇情 C3 高俊傑競爭線（eventKey story:C3:*）②通告 starHint 紅星名
@@ -29697,7 +29732,8 @@ function buildNewspaperEdition(batch, day){
       source: "summary"
     });
   }
-  /* Weave Phase 1-1：每份報紙尾加一則花邊短訊（靜態輪替，唔計聲望、唔入傳聞池）。 */
+  /* Weave Phase 1-1：每份報紙尾加一則花邊短訊（靜態輪替，唔計聲望）。
+     Phase 3-2 起：有關聯嘅三則花邊會喺 pushNewspaperRumor 入傳聞池做報紙碎片。 */
   const sideItem = (typeof paperSideItemForDay==="function") ? paperSideItemForDay(day) : null;
   if(sideItem) shorts.push(sideItem);
   const fameDelta = ranked.reduce((n,it)=> n + (Number(it && it.fameDelta)||0), 0);
@@ -29784,7 +29820,14 @@ function pushNewspaperRumor(edition){
     rumorEcho: edition.rumorEcho || ""
   }];
   (edition.shorts||[]).forEach((s, i)=>{
-    if(!s || s.source==="summary" || s.source==="side") return;
+    if(!s || s.source==="summary") return;
+    if(s.source==="side"){
+      /* Weave Phase 3-2（v20a20）：有關聯嘅花邊（SIDE_PAPER_FRAGS 有登記）入池做報紙碎片；
+         無關聯花邊維持唔入池。碎片唔計聲望（fameDelta 0 不變）、唔行 echo 後備句。 */
+      const frag = (typeof paperSideFragmentFor==="function") ? paperSideFragmentFor(s) : null;
+      if(frag) rows.push(frag);
+      return;
+    }
     const key = String(s.eventKey||"").trim() || ("s"+i);
     rows.push({
       id: base+"_"+key,
@@ -29795,6 +29838,22 @@ function pushNewspaperRumor(edition){
   let added = false;
   rows.forEach(row=>{
     if(S.mockRumors.some(r=>r && r.id===row.id)) return;
+    if(row.paperFrag){
+      /* 報紙碎片：標明來源係報紙，state normal＝剛聽聞（可揀嚟同聽聞碎片跨系統拼合）。
+         顯示一律經 renderRumorPane／確認彈窗嘅 displayRumor 過濾（守 P0-3）。 */
+      S.mockRumors.unshift({
+        id: row.id,
+        source: "報紙花邊",
+        title: row.headline,
+        text: row.dek,
+        state: "normal",
+        season: "",
+        fromPaper: true,
+        paperFrag: true
+      });
+      added = true;
+      return;
+    }
     const head = row.headline || "一則娛樂版";
     const echo = String(row.rumorEcho||"").trim();
     const text = echo || ("街外報紙寫道：「"+head+"」。茶餐廳有人照著念。這是公開版面，不是圈內耳語。");
