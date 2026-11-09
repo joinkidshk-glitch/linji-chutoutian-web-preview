@@ -27970,6 +27970,278 @@ function mergeRivalGigs(){
     return n;
   }catch(_e){ return 0; }
 }
+/* ===== Weave Phase 4-7（v20a30）：1990 抉擇三連——鏈 F 第 4 拍「走定留」＋鏈 G 第 4 拍「屋企穩陣工」
+   ＋鏈 F 第 5 拍「移民潮空位通告」。設計總則（串聯規劃鏈 F／鏈 G、結局專檔 §2／§4.2）：
+   三樣都只係畀 4-10 結局系統回收嘅「餌」，唔即時改結局／數值（通告本身正常結算除外）。
+   ・兩個微節點只寫一次性旗入 S.story.flags（同主幹旗網同源，經真 StoryOC.applyChoice 落旗＋markDone）：
+     去留軸讀 flag_stay_mind／flag_leave_mind／flag_undecided_mind；E6 退圈入口之一讀
+     flag_family_job_accept（decline 旗同記，畀結局軸分「主動留低」同「從未被問過」）。
+   ・旗只寫一次：可用性以「任一答案旗已寫」＋「節點已 done」雙重把關，答完 offer／行動卡即消失；
+     choice47Play 入口再驗可用性，重播唔會覆寫。
+   ・時間閘用 yearSeasonNow＋季節序（yearMin／seasonMin 語義）：到季先出現，過季、過年都仲問得，
+     唔會錯過一季就永久鎖死；1990 前唔出現。
+   ・呈現渠道（決定記錄，詳見 NOTES_V20A30）：何生節點跟 DualMeet／DengLine meet 先例，喺事務所
+     openLoc 行動清單加 act-priority 一條（唔用隨機對白池，保證玩家入事務所真係俾人問到）；
+     屋企節點喺手帳人情頁 renderDebtPane 屋企卡之後加「屋企有話同你講」行動卡，
+     撳掣經該頁委派 onclick 行真 StoryPlay。 ===== */
+const CHOICE47_SEASON_IDX = { "春":0, "夏":1, "秋":2, "冬":3 };
+function choice47SeasonReached(minYear, minSeason){
+  try{
+    if(typeof yearSeasonNow!=="function") return false;
+    const ys = yearSeasonNow();
+    if(!ys) return false;
+    if(ys.year > minYear) return true;
+    if(ys.year < minYear) return false;
+    const cur = CHOICE47_SEASON_IDX[ys.season];
+    const want = CHOICE47_SEASON_IDX[minSeason];
+    if(cur==null || want==null) return false;
+    return cur >= want;
+  }catch(_e){ return false; }
+}
+function choice47StoryFlag(key){
+  try{
+    if(typeof StoryOC!=="undefined" && StoryOC.getFlag) return !!StoryOC.getFlag(key);
+  }catch(_e){}
+  try{ return !!(S && S.story && S.story.flags && S.story.flags[key]); }catch(_e2){ return false; }
+}
+function choice47StoryDone(nodeId){
+  try{
+    if(typeof StoryOC!=="undefined" && StoryOC.isDone) return !!StoryOC.isDone(nodeId);
+  }catch(_e){}
+  try{ return !!(S && S.story && S.story.done && S.story.done[nodeId]); }catch(_e2){ return false; }
+}
+const CHOICE47_NODES = {
+  F4_stay_mind: {
+    id:"F4_stay_mind", title:"何生問：走定留", when:"1990夏起", locId:"agency_ho",
+    setting:"何生事務所；1990 年夏天，黃昏收工時分",
+    synopsis:"1990 年夏天，移民顧問公司門口日日排長龍。收工前，何生叫阿偉坐低，唔講通告，講去留。",
+    playerOffer:"何生叫你留低一陣，有句說話想問你。",
+    beats:[
+      { speakerId:"", speaker:"", kind:"system", text:"1990 年夏天。事務所樓下嗰間移民顧問公司，朝朝排隊排到出街口；茶餐廳電視日日講，邊個邊個又走咗。" },
+      { speakerId:"agent", speaker:"何生", kind:"npc", text:"阿偉，坐陣。今日唔講通告——講啲遠啲嘅嘢。" },
+      { speakerId:"agent", speaker:"何生", kind:"npc", text:"呢排成日有人嚟問我攞主意：走，定唔走。我做呢行廿幾年，清水灣未起電視城嗰陣，我已經喺度。你呢——你有冇諗過走？" },
+      { speakerId:"player", speaker:"阿偉", kind:"player", text:"（走，定留。呢個問題，成個香港呢兩年都喺度問……何生係第一個當面問我嘅人。）" }
+    ],
+    choices:[
+      { id:"F4_a", label:"「何生，我唔走。呢度先係我嘅地方。」",
+        effects:{ flags:["flag_stay_mind"], notes:"你答咗何生：留低。呢句說話，佢記住咗。" },
+        resultBeats:[
+          { speakerId:"agent", speaker:"何生", kind:"npc", text:"好。留低嘅人，先有資格講將來。" },
+          { speakerId:"agent", speaker:"何生", kind:"npc", text:"你放心去闖，你嗰份工，我會睇實。" }
+        ] },
+      { id:"F4_b", label:"「老實講……我有諗過走。」",
+        effects:{ flags:["flag_leave_mind"], notes:"你同何生講咗真話：有諗過走。佢冇留你，亦冇趕你。" },
+        resultBeats:[
+          { speakerId:"agent", speaker:"何生", kind:"npc", text:"諗過，唔出奇。而家人人櫃桶都有一本外國護照傍身。" },
+          { speakerId:"agent", speaker:"何生", kind:"npc", text:"諗還諗——戲，一日未拍完，一日都要照拍。去啦，收工。" }
+        ] },
+      { id:"F4_c", label:"「我真係未諗過呢啲嘢。」",
+        effects:{ flags:["flag_undecided_mind"], notes:"你冇畀到答案何生——或者，呢個就係你而家嘅答案。" },
+        resultBeats:[
+          { speakerId:"agent", speaker:"何生", kind:"npc", text:"未諗過，都係一種答法。" },
+          { speakerId:"agent", speaker:"何生", kind:"npc", text:"後生仔，戲一日未拍完，都未使諗散場。去啦。" }
+        ] }
+    ],
+    flags_written:["flag_stay_mind","flag_leave_mind","flag_undecided_mind"]
+  },
+  G4_family_job: {
+    id:"G4_family_job", title:"屋企有話同你講", when:"1990冬起", locId:"",
+    setting:"屋企飯枱；1990 年年尾",
+    synopsis:"阿媽煲咗湯，成餐飯心不在焉——表叔喺銀行嗰邊，薦到一份文職，月月有糧出。佢想聽你親口講。",
+    playerOffer:"阿媽有件事，想當面同你商量。",
+    beats:[
+      { speakerId:"", speaker:"", kind:"system", text:"1990 年年尾，阿偉返屋企食飯。阿媽煲咗老火湯，湯面浮住一層油——佢今晚有話要講，成餐飯都心不在焉。" },
+      { speakerId:"", speaker:"阿媽", kind:"npc", text:"阿偉，有件事同你商量。你表叔喺銀行做，佢話可以薦你入去做文職——月月有糧出，年尾有雙糧，唔使日曬雨淋。" },
+      { speakerId:"", speaker:"阿媽", kind:"npc", text:"我唔係嫌你做戲唔好。你上過報紙，我有威返俾鄰居睇㗎。只係呢行有一餐冇一餐，我驚你捱壞身子。" },
+      { speakerId:"player", speaker:"阿偉", kind:"player", text:"（一份穩陣工。一條未行完嘅路。阿媽望住我，等我出聲。）" }
+    ],
+    choices:[
+      { id:"G4_a", label:"「好，我去見下嗰份工。」",
+        effects:{ flags:["flag_family_job_accept"], notes:"你應承咗屋企，去見嗰份穩陣工。呢個決定，去到年尾先正式算數。" },
+        resultBeats:[
+          { speakerId:"", speaker:"阿媽", kind:"npc", text:"真嘅？咁……咁就好喇。" },
+          { speakerId:"", speaker:"", kind:"system", text:"佢起身添多碗湯，手有啲震。嗰種放心，唔知點解，有啲酸。" }
+        ] },
+      { id:"G4_b", label:"「阿媽，我想繼續做落去。」",
+        effects:{ flags:["flag_family_job_decline"], notes:"你同屋企講清楚：繼續行呢行。阿媽冇再勸——佢轉身入廚房，洗多咗一隻碗。" },
+        resultBeats:[
+          { speakerId:"", speaker:"阿媽", kind:"npc", text:"……" },
+          { speakerId:"", speaker:"阿媽", kind:"npc", text:"咁就食多啲。做邊行都好，唔好餓親自己。" },
+          { speakerId:"", speaker:"", kind:"system", text:"佢夾咗嚿雞髀落你碗度，冇再出聲。" }
+        ] }
+    ],
+    flags_written:["flag_family_job_accept","flag_family_job_decline"]
+  }
+};
+const CHOICE47_DEFS = {
+  F4_stay_mind: { year:1990, season:"夏", loc:"agency_ho",
+    flags:["flag_stay_mind","flag_leave_mind","flag_undecided_mind"],
+    actTitle:"何生有句說話想同你講",
+    actHint:"收工時分，何生叫你坐低一陣——唔係講通告，係講去留。" },
+  G4_family_job: { year:1990, season:"冬", loc:"",
+    flags:["flag_family_job_accept","flag_family_job_decline"] }
+};
+function choice47Answered(id){
+  const def = CHOICE47_DEFS[id];
+  if(!def) return true;
+  if(choice47StoryDone(id)) return true;
+  return (def.flags||[]).some(f=>choice47StoryFlag(f));
+}
+function choice47Available(id){
+  const def = CHOICE47_DEFS[id];
+  if(!def || !CHOICE47_NODES[id]) return false;
+  if(choice47Answered(id)) return false;
+  return choice47SeasonReached(def.year, def.season);
+}
+function choice47ActionsAt(locId){
+  const out = [];
+  Object.keys(CHOICE47_DEFS).forEach(id=>{
+    const def = CHOICE47_DEFS[id];
+    if(!def || def.loc !== locId) return;
+    if(!choice47Available(id)) return;
+    out.push({ id:id, title:def.actTitle || (CHOICE47_NODES[id] && CHOICE47_NODES[id].title) || id, hint:def.actHint || "" });
+  });
+  return out;
+}
+function choice47Play(id){
+  try{
+    if(!choice47Available(id)) return false;
+    const node = CHOICE47_NODES[id];
+    if(!node || typeof StoryPlay==="undefined" || !StoryPlay.start) return false;
+    return !!StoryPlay.start(node, { force:true });
+  }catch(_e){ return false; }
+}
+function choice47FamilyCardHtml(){
+  try{
+    if(!choice47Available("G4_family_job")) return "";
+    return `<article class="debt-row family-choice47" data-choice47-card="G4_family_job"><p class="debt-who">屋企／阿媽</p><p class="debt-title">屋企有話同你講</p><p class="debt-note">阿媽託鄰居傳話：表叔喺銀行嗰邊薦到一份文職，月月有糧出。佢話唔急，你返去食餐飯，當面慢慢講。</p><p class="debt-cta-wrap" style="margin-top:8px"><button type="button" class="debt-repay-btn" data-choice47="G4_family_job">返屋企講清楚</button></p></article>`;
+  }catch(_e){ return ""; }
+}
+/* ===== Weave Phase 4-7（v20a30）：鏈 F 第 5 拍——移民潮空位通告（1990 秋起）。
+   mergeExodusGigs 跟 mergeIntelGigs／mergeFavorGigs／mergeRivalGigs 同一條件注入模式，
+   掛喺 gigsForLocSeasonBoard 同一呼叫點；閘＝choice47SeasonReached(1990, "秋")。
+   數值校準（詳見 NOTES_V20A30）：兩份都係「中」級、定額各 $3,300／$2,900——同 2-1 隱藏通告
+   $3,100 同量級，畀到「資深臨記頂位」嘅上位感，但只高過同級一般通告少少；聲量／人氣
+   回報 [2,3] 略高於常規，hard 唔加辣，唔破壞經濟平衡。殺青行現有 wrap 路徑（isGigConsumed
+   食 wrapHistory），唔使專屬結算邏輯；一年換庫（syncGigsForCalendarYear）唔影響，
+   因為每次開板都重新注入。 ===== */
+const EXODUS_GIGS = [
+  {
+    id:"gig_exodus_tv_senior",
+    year:1990,
+    season:"不限",
+    type:"電視劇",
+    genreLabel:"電視劇",
+    loc:"tvb_longmen",
+    workTitle:"燈火人家",
+    title:"《燈火人家》資深臨記頂位（急聘）",
+    roleLabel:"資深臨記（連戲位）",
+    director:"監製",
+    roleHint:"頂連戲位；要記得晒上一集企位同對白尾",
+    blurb:"原班兩個資深臨記一齊移民，連戲位冇人接。監製放話：邊個頂到呢個月，之後有戲優先預佢。",
+    synopsis:"移民潮殺到埋身：長篇劇《燈火人家》兩個資深臨記先後移民，成組連戲位斷晒。副導演逐個打電話搵熟手——肯即刻埋位頂連戲，人工照資深價計，監製仲講明之後優先留位。",
+    eraTag:"era_1990_tv",
+    discoverNote:"移民空位：1990 年秋先出現",
+    boardPriority:"high",
+    boardNote:"移民空位 · 急聘",
+    seasonWeight:1,
+    req:{},
+    pay:[3000, 3600],
+    payExact:3300,
+    breachFee:300,
+    fame:[2, 3],
+    popularity:[2, 3],
+    stressDeltaHint:6,
+    hard:0.2,
+    tier:"中",
+    stars:1,
+    applyDeadlineDays:7,
+    shootDaysHint:2,
+    shootHint:"連戲位要記位記對白，唔好走樣，監製會親自睇頭一日。",
+    roleScale:"tv_regular_extra",
+    shootBand:[2, 2],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:21,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["資深臨記頂位，移民空缺"] },
+    storyKeys:["exodus_tv_senior"],
+    tagOnComplete:["識頂位"],
+    rumorKeys:[],
+    favorDelta:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  },
+  {
+    id:"gig_exodus_film_hand",
+    year:1990,
+    season:"不限",
+    type:"電影",
+    genreLabel:"電影",
+    loc:"film_harbour",
+    workTitle:"江邊小鎮",
+    title:"《江邊小鎮》動作組熟手（急聘）",
+    roleLabel:"動作組熟手臨記",
+    director:"武術指導",
+    roleHint:"跟武師班底埋位；跌打損傷自己小心",
+    blurb:"武師班底走咗兩個去加拿大，動作組缺熟手頂上。肯跟操肯捱，呢套拍完，下套優先嗌你。",
+    synopsis:"《江邊小鎮》動作組原本班底，兩個武師移民去咗加拿大，開鏡在即缺熟手。武術指導要識跟操、唔怕跌嘅人頂位——呢次頂得住，以後呢班人開工會先嗌你。",
+    eraTag:"era_1990_film",
+    discoverNote:"移民空位：1990 年秋先出現",
+    boardPriority:"high",
+    boardNote:"移民空位 · 急聘",
+    seasonWeight:1,
+    req:{},
+    pay:[2600, 3200],
+    payExact:2900,
+    breachFee:300,
+    fame:[1, 2],
+    popularity:[2, 3],
+    stressDeltaHint:8,
+    hard:0.25,
+    tier:"中",
+    stars:1,
+    applyDeadlineDays:7,
+    shootDaysHint:2,
+    shootHint:"跟操唔好硬頂，武指睇重肯學肯捱，唔睇重出位。",
+    roleScale:"film_action_extra",
+    shootBand:[2, 2],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:21,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["動作組熟手頂位，移民空缺"] },
+    storyKeys:["exodus_film_hand"],
+    tagOnComplete:[],
+    rumorKeys:[],
+    favorDelta:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  }
+];
+function mergeExodusGigs(){
+  try{
+    if(typeof GIGS==="undefined" || !Array.isArray(GIGS)) return 0;
+    const ids = {};
+    (EXODUS_GIGS||[]).forEach(g=>{ if(g && g.id) ids[g.id] = 1; });
+    let open = false;
+    try{ open = choice47SeasonReached(1990, "秋"); }catch(_e){}
+    if(!open){
+      const before = GIGS.length;
+      GIGS = GIGS.filter(g=>!(g && ids[g.id]));
+      if(GIGS.length!==before){ try{ window.GIGS = GIGS; }catch(_w){} }
+      return 0;
+    }
+    let n = 0;
+    (EXODUS_GIGS||[]).forEach(raw=>{
+      if(!raw || !raw.id) return;
+      const norm = normalizeGigRecord(Object.assign({}, raw, { exodusGig:true }));
+      const i = GIGS.findIndex(g=>g && g.id===raw.id);
+      if(i<0){ GIGS.push(norm); n++; }
+      else GIGS[i] = norm;
+    });
+    try{ window.GIGS = GIGS; }catch(_w){}
+    return n;
+  }catch(_e){ return 0; }
+}
 const MERGE_FRAGS = [
   { id:"rumor_lu_baiyan_angry", source:"場務八卦", title:"陸柏言片場發脾氣", text:"陸柏言喺片場無端端發火，鬧到成個場靜晒。" },
   { id:"rumor_lu_baiyan_drunk", source:"酒保閒聊", title:"陸柏言深夜買醉", text:"有人見到陸柏言半夜喺蘭桂坊飲到爛醉。" },
@@ -28759,13 +29031,28 @@ function renderDebtPane(){
      開局手帳第一筆唔係圈內債，係屋企）；季節卡／債權／其餘圈內債保持現有相對次序。
      S.mockDebts 陣列本身唔郁，免影響還款、壓力等其他邏輯。 */
   const famCardsHtml=debtCards.filter(c=>c.id==="debt_family_home").map(c=>c.html).join("");
+  /* v20a30（Phase 4-7）：鏈 G 第 4 拍「屋企穩陣工」行動卡——緊貼屋企卡之後出（1990 冬起、
+     未答先有）；可用性／旗把關喺 choice47FamilyCardHtml 內，答完即消失。 */
+  const choice47Html=(typeof choice47FamilyCardHtml==="function") ? choice47FamilyCardHtml() : "";
   const debtHtml=debtCards.filter(c=>c.id!=="debt_family_home").map(c=>c.html).join("");
   const emptyHtml=(!rows.length && !cardHtml && !creditHtml) ? `<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p><p class="sub" style="margin-top:8px"><button type="button" class="debt-repay-btn" data-repay-id="__goto_agency__" data-season="0">去何生事務所</button></p></div>` : "";
-  box.innerHTML=banner+famCardsHtml+cardHtml+creditHtml+debtHtml+emptyHtml;
+  box.innerHTML=banner+famCardsHtml+choice47Html+cardHtml+creditHtml+debtHtml+emptyHtml;
   /* v19z11：委派點擊；debtId 必須嚟自該卡，永唔走 openHoRepaySheet／何生 fallback */
   box.onclick=(ev)=>{
     try{
       const t = ev.target;
+      /* v20a30（Phase 4-7）：屋企「穩陣工」行動卡掣——行真 StoryPlay 微節點，唔經還款路徑。 */
+      const c47btn = t && t.closest ? t.closest("[data-choice47]") : null;
+      if(c47btn && box.contains(c47btn)){
+        try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){}
+        const nid = String(c47btn.getAttribute("data-choice47")||"");
+        if(nid && typeof choice47Play==="function" && choice47Play(nid)){
+          try{ renderDebtPane(); }catch(_r){}
+        } else {
+          toast("暫時去唔成——遲啲再返嚟睇。");
+        }
+        return;
+      }
       const btn = t && t.closest ? t.closest(".debt-repay-btn") : null;
       if(!btn || !box.contains(btn)) return;
       try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){}
@@ -32515,6 +32802,18 @@ function openLoc(id, opts){
       });
     }
   }catch(_e){}
+  /* v20a30（Phase 4-7）：1990 抉擇微節點 offer（何生「走定留」等）——跟 meet 同一呈現模式，
+     一次性、答完即消失；可用性／旗把關喺 choice47ActionsAt／choice47Play 內。 */
+  try{
+    if(typeof choice47ActionsAt==="function"){
+      choice47ActionsAt(L.id).forEach(act=>{
+        add(act.title, act.hint, "免費", ()=>{
+          closeSheet();
+          try{ if(!choice47Play(act.id)) toast("暫時去不成"); }catch(_e){ toast("暫時去不成"); }
+        }, "act-priority act-story");
+      });
+    }
+  }catch(_e){}
   if(mockAskDefs(L.id)){
     mockAskDefs(L.id).forEach(def=>{
       const face = def.choiceHint || def.hint || "";
@@ -32703,6 +33002,7 @@ function gigsForLocSeasonBoard(locId, curSeason){
   try{ if(typeof mergeIntelGigs==="function") mergeIntelGigs(); }catch(_ig){}
   try{ if(typeof mergeFavorGigs==="function") mergeFavorGigs(); }catch(_fg){}
   try{ if(typeof mergeRivalGigs==="function") mergeRivalGigs(); }catch(_rg){}
+  try{ if(typeof mergeExodusGigs==="function") mergeExodusGigs(); }catch(_xg){}
   curSeason = curSeason || calendarSeason();
   const byBoard=(a,b)=> boardSortCompare(a,b,curSeason);
   const pool=(GIGS||[]).filter(g=>{

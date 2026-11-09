@@ -45,7 +45,9 @@ ok('render: echo after attitude in card template',
 # 4-3 覆檢跟進：顯示排序（只改顯示、唔郁數據）
 ok('order: family cards extracted for front placement', 'famCardsHtml' in html and 'debtCards.filter(c=>c.id==="debt_family_home")' in html)
 ok('order: family html placed before season/credit/debt html',
-   'box.innerHTML=banner+famCardsHtml+cardHtml+creditHtml+debtHtml+emptyHtml;' in html)
+   # v20a30（Phase 4-7）拼合串更新：屋企卡後加 choice47Html 行動卡（鏈 G 第 4 拍），
+   # 屋企卡仍然排喺季節／債權／其餘債卡之前，本斷言嘅語義不變，只同步新拼合串。
+   'box.innerHTML=banner+famCardsHtml+choice47Html+cardHtml+creditHtml+debtHtml+emptyHtml;' in html)
 ok('order: render builds card objects (data array untouched)', 'const debtCards=rows.map(d=>' in html)
 
 # 唔好改嘅嘢：點名三級本體不變
