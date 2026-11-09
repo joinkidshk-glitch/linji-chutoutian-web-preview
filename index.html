@@ -20922,7 +20922,9 @@ function affProgressHtml(aff, gained){
   if(next){
     nextBit=`<span class="aff-next">人情：再加 ${next.need} 點好感 → 解鎖「${next.label}」（門檻 ${next.at}）</span>`;
   } else {
-    nextBit=`<span class="aff-next">人情：對白池已全開（好感 ${total}／100）</span>`;
+    /* v20a22：通用池開晒唔好寫「已全開」——何生／采兒仲有情報階梯（內幕情報 60 先開），
+       階梯資訊由 doTalk 附加嘅「關係階梯」句負責，呢度只講通用池，唔好打架。 */
+    nextBit=`<span class="aff-next">人情：通用對白池已開晒（好感 ${total}／100）</span>`;
   }
   return `<span class="good">好感 ${total}／100</span>${gainBit}${nextBit}`;
 }
@@ -21010,10 +21012,12 @@ function pickNpcLine(npcId, opts){
   if(unlocked.has("intel")) add(pack.intel, opts.wantIntel ? 3.5 : 1.2);
   else if(opts.wantIntel && unlocked.has("chat")) add(pack.chat, 1.2); // soft fallback before intel gate
   // Weave 2-3（v20a18）：好感階梯對白（何生／采兒）——未到階唔入池，低階池保留
+  // v20a22：權重上調（daily 1.6→2.5、insider 2.2→3.5），過階之後要抽得到、有感；
+  // 唔加跨階保證旗（留下一票），只靠權重。
   if(typeof npcTierPool==="function"){
     const tp = npcTierPool(npcId, aff);
-    if(tp.daily.length) add(tp.daily, opts.wantIntel ? 3 : 1.6);
-    if(tp.insider.length) add(tp.insider, opts.wantIntel ? 4 : 2.2);
+    if(tp.daily.length) add(tp.daily, opts.wantIntel ? 4 : 2.5);
+    if(tp.insider.length) add(tp.insider, opts.wantIntel ? 5 : 3.5);
   }
   if(!weighted.length) add(pack.greet, 1);
   if(!weighted.length) return "……";
@@ -23200,11 +23204,15 @@ function gigBoardTeaserHtml(g){
   const castCopy = phase3CastCopy();
   const badgeText = boardState==="locked" ? castCopy.lockedTag : (boardState==="ready" ? castCopy.readyTag : st.label);
   const badgeCls = (st.alt || boardState==="locked") ? "gt-badge done" : "gt-badge";
+  /* Weave 修復（v20a22）：短卡只出輕量標記，成句情報留返詳情頁／gigCardHtml，先唔好塞爆短卡。 */
+  let intelMark = "";
+  try{ if(typeof intelLineForGig==="function" && intelLineForGig(g)) intelMark = `<div class="gt-intel">💡 有情報</div>`; }catch(_e){}
   return `<div class="gig-teaser" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
     <img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>
     <div class="gt-title">${work}</div>
     <div class="gt-row"><span class="gt-pill">${genre}</span><span class="${badgeCls}">${badgeText}</span></div>
     ${meta?`<div class="gt-meta">${meta}</div>`:""}
+    ${intelMark}
     <div class="gt-hint">點開查看通告</div>
   </div>`;
 }
@@ -23395,6 +23403,10 @@ function castingNoticeDetailHtml(g){
       sumGaps = `<div class="cn-sum-gaps"><span class="gap-ok">✓ 條件已達標，可接通告</span></div>`;
     }
   }catch(_e){}
+  /* Weave 修復（v20a22）：詳情頁係玩家實際會開嚟睇嘅模板，摘要區要同 gigCardHtml 一樣出情報行，
+     否則 Phase 1-3 拼合情報喺詳情頁隱形（試玩斷鏈）。有情報先出，無就完全唔顯示。 */
+  let intelHtml = "";
+  try{ const il = (typeof intelLineForGig==="function") ? intelLineForGig(g) : ""; if(il) intelHtml = `<div class="discover-note">情報：${il}</div>`; }catch(_e){}
   return `<div class="notice_sheet_frame" data-gid="${g.id}">
     <div class="notice_poster_wall" aria-hidden="true"></div>
     <div class="notice_header_orange">
@@ -23413,6 +23425,7 @@ function castingNoticeDetailHtml(g){
       <div class="cn-sum-row"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
       <div class="cn-sum-row"><span class="k">通告期間</span><span class="v">${period}</span></div>
       ${sumGaps}
+      ${intelHtml}
       <p class="var-note">成功率受表現／壓力／信用影響；片酬牌面為約酬區間，獲聘時鎖定合約，殺青按合約實收。</p>
     </div>
     <button type="button" class="cn-detail-toggle" data-cn-toggle aria-expanded="false">顯示詳細 ▾</button>
@@ -26903,7 +26916,8 @@ function favorDueTick(){
         d.favorState = "called";
         d.favorGigDay = today;
         d.status = "就嚟到期";
-        try{ toast("何生 Call 機留言：「阿偉，嗰筆人情到期喇。事務所通告板有張幫忙通告，你去幫我頂一單，"+FAVOR_DUE_CFG.windowDays+" 日內做完，筆數就咁清咗。」"); }catch(_t){}
+        /* v20a22：長句改 toast 兩段式（主句 ≤40 字＋sub 指示），避開 toast() 無 sub 時嘅 40 字截斷 */
+        try{ toast("何生 Call 機留言：阿偉，嗰筆人情到期喇。", { sub:"事務所通告板有張幫忙通告，"+FAVOR_DUE_CFG.windowDays+" 日內做完，筆數就清咗。" }); }catch(_t){}
         try{ saveQ(); }catch(_s){}
       } else if((Number(d.dueDay)||0) - today <= 2){
         if(d.status!=="就嚟到期") d.status = "就嚟到期";
@@ -26927,7 +26941,7 @@ function favorDueTick(){
         S.mockDebts = S.mockDebts.filter(x=>x!==d);
         settled[d.id] = { result:"void_expired", day:today };
         try{ bumpNpc("agent", -3); }catch(_b){}
-        try{ toast("何生嗰張幫忙通告過咗期都無人做——嗰筆人情就咁作廢，何生面色唔多好，同你嘅交情都淡咗啲。"); }catch(_t){}
+        try{ toast("幫忙通告過期無人做，嗰筆人情作廢。", { sub:"何生面色唔多好，同你嘅交情都淡咗啲。" }); }catch(_t){}
         try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
         try{ saveQ(); }catch(_s){}
       }
@@ -27559,7 +27573,17 @@ function applyMockAsk(locId, actionId, repayOpt){
     }
     /* 扣款／送禮成功之後先清債 */
     const idx = (S.mockDebts||[]).findIndex(d=>d && d.id===debt.id);
-    if(idx>=0){ S.mockDebts.splice(idx, 1); cleared = true; }
+    if(idx>=0){
+      S.mockDebts.splice(idx, 1); cleared = true;
+      /* v20a22：教學債用現金／禮物還清嗰陣即刻落結算紀錄，唔好淨靠 favorDueTick 第二日兜底，
+         否則補種守衛未見紀錄會將筆債種返出嚟。 */
+      try{
+        if(typeof FAVOR_DUE_CFG!=="undefined" && debt.id===FAVOR_DUE_CFG.debtId && typeof ensureFavorDueSettled==="function"){
+          const st = ensureFavorDueSettled();
+          if(!st[debt.id]) st[debt.id] = { result:"closed_other", day:(S.dayIndex|0) };
+        }
+      }catch(_e){}
+    }
     else if(debt && debt._seasonCard){
       ensureSeasonDebtClearedBag()[debt.id] = true;
       cleared = true;
@@ -27881,7 +27905,11 @@ function renderDebtPane(){
     const dayOk = (S.dayIndex|0) >= 2;
     let c1 = false;
     try{ c1 = !!(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone("C1")); }catch(_e){}
-    if(empty && (soft || c1 || dayOk) && typeof MOCK_DEBT_TUTORIAL!=="undefined"){
+    /* v20a22：教學債已經結算過（還清／作廢／幫忙結清）就唔好再補種返出嚟，
+       否則作廢後人情頁會「復活」一筆顯示未到期嘅舊債（試玩斷鏈）。 */
+    let favorSettled = false;
+    try{ favorSettled = !!(typeof ensureFavorDueSettled==="function" && typeof FAVOR_DUE_CFG!=="undefined" && ensureFavorDueSettled()[FAVOR_DUE_CFG.debtId]); }catch(_e){}
+    if(empty && !favorSettled && (soft || c1 || dayOk) && typeof MOCK_DEBT_TUTORIAL!=="undefined"){
       if(!(S.mockDebts||[]).some(d=>d && d.id===MOCK_DEBT_TUTORIAL.id)){
         S.mockDebts = S.mockDebts || [];
         S.mockDebts.unshift(Object.assign({}, MOCK_DEBT_TUTORIAL));
@@ -29523,11 +29551,13 @@ function newspaperWrapFadeSubject(subject){
   }
   return { gigId: subject.gigId, work: work, role: role, type: subject.type };
 }
-function newspaperWrapFadeLines(subject){
-  const faded = newspaperWrapFaceLines(newspaperWrapFadeSubject(subject));
+function newspaperWrapFadeLines(subject, angle){
+  /* Weave 修復（v20a22）：淡紙只收窄稱呼／角色（#103/#104），唔好食埋殺青角度——
+     Phase 1-2 嘅搶眼 dek 要穿透淡紙，否則 fame<15 嗰陣有街坊反響都出穩陣版（試玩斷鏈）。 */
+  const faded = newspaperWrapFaceLines(newspaperWrapFadeSubject(subject), angle);
   const blob = (faded.headline||"")+(faded.dek||"")+(faded.rumor||"");
   if(!newspaperWrapLeadRelation(blob)) return faded;
-  return newspaperWrapFaceLines({ gigId: subject && subject.gigId, work: "通告", role: "", type: subject && subject.type });
+  return newspaperWrapFaceLines({ gigId: subject && subject.gigId, work: "通告", role: "", type: subject && subject.type }, angle);
 }
 function enqueueNewspaperFromWrap(sh, pack, opts){
   sh = sh || {};
@@ -29560,7 +29590,7 @@ function enqueueNewspaperFromWrap(sh, pack, opts){
      報紙名／欄目仍來自 wrap_success。文案沿 #103，唔寫跟男主角。 */
   if((Number(S && S.fame)||0) < 15){
     fameDelta = 0;
-    lines = newspaperWrapFadeLines(subject);
+    lines = newspaperWrapFadeLines(subject, wrapAngle);
   }
   return enqueueNewspaperItem({
     eventKey: "wrap:"+subject.gigId+":"+shootDay,
@@ -31271,6 +31301,86 @@ function refreshLocAfterStory(){
     }, 50);
   }catch(_e){}
 }
+/* ===== v20a22：地點面板共用掣 helper（openLoc hub／非 hub 兩邊共用，唔好再分家）。
+   背景：v19u 起 hub 地點（agency_ho／cafe_cha，有 MOCK_ASK）只行 if 分支，通告板入口、
+   逐 gig 試鏡同傾談掣全部喺 else 分支，hub 永遠行唔到——人情幫忙通告注入咗事務所
+   都無板開、傾談行唔到 pickNpcLine（試玩斷鏈）。抽共用 helper 之後兩邊同一套渲染。 ===== */
+function addLocTalkGiftActs(add, L, npcId){
+  // 人物／情報置頂，減少要滾先撳
+  if(npcId) add(`同${NPCS[npcId].name}傾談`, talkHintLabel(), talkCostLabel(), ()=>doTalk(npcId,L), "act-priority");
+  /* v18d／v19z：romance 送禮；soft 閘不耗日，live +1日 */
+  try{
+    if(npcId && typeof GiftShop!=="undefined"){
+      const rk = GiftShop.romanceKeyFromMapNpc(npcId);
+      if(rk){
+        const gate = GiftShop.canGive(rk);
+        const hint = giftHintLabel(gate.ok, gate.reason);
+        /* 傾談已解鎖但庫存空：badge=庫存空，唔再標「未開放」 */
+        add(`送禮：${NPCS[npcId].name}`, hint, giftGateBadge(gate), ()=>{
+          const live = GiftShop.canGive(rk);
+          if(!live.ok){ toast(live.reason||"暫不可送"); return; }
+          openGiftPick(rk, L);
+        }, (gate.ok || (/庫存|今天|今日|人情急/.test(String(gate.reason||""))))?"act-priority":"");
+      }
+    }
+  }catch(_gf){}
+}
+function addLocBridgeActs(add, L){
+  const bridgeShown = {};
+  try{
+    if(typeof softPreviewOn==="function" && softPreviewOn() && typeof pinSoftBridgeOnBoard==="function"){
+      pinSoftBridgeOnBoard(L.id);
+      const curS = (typeof calendarSeason==="function") ? calendarSeason() : "";
+      (GIGS||[]).forEach(g=>{
+        if(!g || !g.softBridge || g.loc!==L.id) return;
+        if(typeof seasonRank==="function" && seasonRank(g, curS)>0) return;
+        if(typeof isGigConsumed==="function" && isGigConsumed(g)) return;
+        if(typeof canAudition==="function" && !canAudition(g).ok) return;
+        bridgeShown[g.id] = 1;
+        const face = g.workTitle || g.title || "初階臨記";
+        add(`試鏡入口：${face}`, "初階臨記 · 一日殺青 · 正薪夠生活費 · 打開不耗日。未獲聘不入帳；殺青先有片酬。", "不耗日", ()=>openCastingNoticeDetail(g, L), "act-priority act-bridge");
+      });
+    }
+  }catch(_br){}
+  return bridgeShown;
+}
+function addLocGigActs(add, L, gigs, bridgeShown){
+  bridgeShown = bridgeShown || {};
+  (gigs||[]).forEach(gig=>{
+    if(!gig) return;
+    if(bridgeShown[gig.id]) return;
+    const life = (typeof gigLifecycleStatus==="function") ? gigLifecycleStatus(gig) : null;
+    if(life && (life.key==="hired" || life.key==="shooting" || life.key==="wrapped")){
+      /* v19z3：已接／拍攝／殺青 → 查看檔期，唔再接通告 */
+      add(`查看檔期：${gig.title}`, life.label, "—", ()=>{
+        try{ showJobs(); }catch(_e){ openCastingNoticeDetail(gig, L); }
+      });
+      return;
+    }
+    const gate=canAudition(gig);
+    const castCopy = phase3CastCopy();
+    if(!gate.ok){
+      add(`${castCopy.lockedLabel}：${gig.title}`, "條件未合","未開放", ()=>openCastingNoticeDetail(gig, L));
+      return;
+    }
+    const p=Math.round(chance(gig)*100);
+    const genre = (typeof gigGenreLabel==="function") ? gigGenreLabel(gig) : (gig.type||"通告");
+    const coarse = (typeof gigTypeCoarse==="function") ? gigTypeCoarse(gig) : "";
+    const sub = (coarse && coarse!==genre) ? `${genre}／${coarse}` : genre;
+    if(typeof softPreviewOn==="function" && softPreviewOn()){
+      add(`試鏡入口：${gig.title}`, `${sub} · 成功率 ${p}% · 打開不耗日。未獲聘不入帳；殺青先有片酬。`, "不耗日", ()=>openCastingNoticeDetail(gig, L));
+    } else {
+      add(`${castCopy.readyLabel}：${gig.title}`, `${sub} · 成功率 ${p}%`,"+1日", ()=>openCastingNoticeDetail(gig, L));
+    }
+  });
+  /* 亦列出此地進行中拍攝（即使已踢出 board） */
+  try{
+    (S.shoots||[]).filter(sh=>sh && sh.locId===L.id).forEach(sh=>{
+      const rem = (typeof shootRemain==="function") ? shootRemain(sh) : Math.max(0,(sh.totalDays||0)-(sh.doneDays||0));
+      add(`查看檔期：${sh.title}`, (sh.doneDays>0?"拍攝中":"已獲聘")+` · 剩 ${rem} 日`, "—", ()=>{ try{ showJobs(); }catch(_e){} });
+    });
+  }catch(_e){}
+}
 function openLoc(id, opts){
   opts = opts || {};
   if(isStoryPlayActive() && !opts.forceRestore){ toast("事態進行中，請先完成對白。"); return; }
@@ -31608,25 +31718,22 @@ function openLoc(id, opts){
         }
       }, heard ? "act-ask act-ask-heard" : "act-priority act-ask");
     });
-  } else {
-  // 人物／情報置頂，減少要滾先撳
-  if(npcId) add(`同${NPCS[npcId].name}傾談`, talkHintLabel(), talkCostLabel(), ()=>doTalk(npcId,L), "act-priority");
-  /* v18d／v19z：romance 送禮；soft 閘不耗日，live +1日 */
-  try{
-    if(npcId && typeof GiftShop!=="undefined"){
-      const rk = GiftShop.romanceKeyFromMapNpc(npcId);
-      if(rk){
-        const gate = GiftShop.canGive(rk);
-        const hint = giftHintLabel(gate.ok, gate.reason);
-        /* 傾談已解鎖但庫存空：badge=庫存空，唔再標「未開放」 */
-        add(`送禮：${NPCS[npcId].name}`, hint, giftGateBadge(gate), ()=>{
-          const live = GiftShop.canGive(rk);
-          if(!live.ok){ toast(live.reason||"暫不可送"); return; }
-          openGiftPick(rk, L);
-        }, (gate.ok || (/庫存|今天|今日|人情急/.test(String(gate.reason||""))))?"act-priority":"");
+    /* v20a22：hub 地點補返傾談／送禮（同非 hub 共用 helper）＋通告入口。
+       MOCK_ASK 係「打聽」，傾談掣係「同X傾談」，文案本身分得清，兩者並存。
+       通告入口唔 hardcode 地點：用 gigsForLocSeasonBoard 判斷，有 gig 先出——
+       cafe_cha 平時無 gig 就自動唔顯示；事務所一有幫忙通告（人情到期注入）即刻有板開。 */
+    addLocTalkGiftActs(add, L, npcId);
+    try{
+      const hubGigs = (typeof gigsForLocSeasonBoard==="function") ? gigsForLocSeasonBoard(L.id, calendarSeason()) : [];
+      if(hubGigs && hubGigs.length){
+        add("只查看通告欄","","免費", ()=>doScout(L), "act-priority");
+        const hubBridgeShown = addLocBridgeActs(add, L);
+        addLocGigActs(add, L, hubGigs, hubBridgeShown);
       }
-    }
-  }catch(_gf){}
+    }catch(_hb){}
+  } else {
+  /* v20a22：傾談／送禮抽咗做共用 helper（hub 分支共用同一套） */
+  addLocTalkGiftActs(add, L, npcId);
   /* v18d：rec_hk 附設小賣 */
   try{
     if(typeof GiftShop!=="undefined"){
@@ -31637,22 +31744,7 @@ function openLoc(id, opts){
     }
   }catch(_gs){}
   add("只查看通告欄","","免費", ()=>doScout(L), "act-priority");
-  const bridgeShown = {};
-  try{
-    if(typeof softPreviewOn==="function" && softPreviewOn() && typeof pinSoftBridgeOnBoard==="function"){
-      pinSoftBridgeOnBoard(L.id);
-      const curS = (typeof calendarSeason==="function") ? calendarSeason() : "";
-      (GIGS||[]).forEach(g=>{
-        if(!g || !g.softBridge || g.loc!==L.id) return;
-        if(typeof seasonRank==="function" && seasonRank(g, curS)>0) return;
-        if(typeof isGigConsumed==="function" && isGigConsumed(g)) return;
-        if(typeof canAudition==="function" && !canAudition(g).ok) return;
-        bridgeShown[g.id] = 1;
-        const face = g.workTitle || g.title || "初階臨記";
-        add(`試鏡入口：${face}`, "初階臨記 · 一日殺青 · 正薪夠生活費 · 打開不耗日。未獲聘不入帳；殺青先有片酬。", "不耗日", ()=>openCastingNoticeDetail(g, L), "act-priority act-bridge");
-      });
-    }
-  }catch(_br){}
+  const bridgeShown = addLocBridgeActs(add, L);
   /* v19z20：報名／休息室釘喺通告列表前（首屏可點），避免被多張通告壓到 fold 下 */
   const tr=TRAIN_BY_TYPE[L.type];
   if(tr){
@@ -31665,40 +31757,7 @@ function openLoc(id, opts){
   }
   if(L.type==="film" || L.type==="tv" || L.type==="music" || L.type==="ad")
     add("休息室歇陣","回復／減壓","+1日", ()=>doRest(L), "act-priority");
-  (S.board[L.id]||[]).forEach(gid=>{
-    if(bridgeShown[gid]) return;
-    const gig=GIGS.find(g=>g.id===gid); if(!gig) return;
-    const life = (typeof gigLifecycleStatus==="function") ? gigLifecycleStatus(gig) : null;
-    if(life && (life.key==="hired" || life.key==="shooting" || life.key==="wrapped")){
-      /* v19z3：已接／拍攝／殺青 → 查看檔期，唔再接通告 */
-      add(`查看檔期：${gig.title}`, life.label, "—", ()=>{
-        try{ showJobs(); }catch(_e){ openCastingNoticeDetail(gig, L); }
-      });
-      return;
-    }
-    const gate=canAudition(gig);
-    const castCopy = phase3CastCopy();
-    if(!gate.ok){
-      add(`${castCopy.lockedLabel}：${gig.title}`, "條件未合","未開放", ()=>openCastingNoticeDetail(gig, L));
-      return;
-    }
-    const p=Math.round(chance(gig)*100);
-    const genre = (typeof gigGenreLabel==="function") ? gigGenreLabel(gig) : (gig.type||"通告");
-    const coarse = (typeof gigTypeCoarse==="function") ? gigTypeCoarse(gig) : "";
-    const sub = (coarse && coarse!==genre) ? `${genre}／${coarse}` : genre;
-    if(typeof softPreviewOn==="function" && softPreviewOn()){
-      add(`試鏡入口：${gig.title}`, `${sub} · 成功率 ${p}% · 打開不耗日。未獲聘不入帳；殺青先有片酬。`, "不耗日", ()=>openCastingNoticeDetail(gig, L));
-    } else {
-      add(`${castCopy.readyLabel}：${gig.title}`, `${sub} · 成功率 ${p}%`,"+1日", ()=>openCastingNoticeDetail(gig, L));
-    }
-  });
-  /* 亦列出此地進行中拍攝（即使已踢出 board） */
-  try{
-    (S.shoots||[]).filter(sh=>sh && sh.locId===L.id).forEach(sh=>{
-      const rem = (typeof shootRemain==="function") ? shootRemain(sh) : Math.max(0,(sh.totalDays||0)-(sh.doneDays||0));
-      add(`查看檔期：${sh.title}`, (sh.doneDays>0?"拍攝中":"已獲聘")+` · 剩 ${rem} 日`, "—", ()=>{ try{ showJobs(); }catch(_e){} });
-    });
-  }catch(_e){}
+  addLocGigActs(add, L, (S.board[L.id]||[]).map(gid=>GIGS.find(g=>g.id===gid)).filter(Boolean), bridgeShown);
   }
 
   document.getElementById("loc-sheet").classList.add("on");
@@ -33258,9 +33317,18 @@ function showPeople(){
     const v=S.npcs[n.id]||0;
     const h="♥".repeat(Math.round(v/20))+"♡".repeat(5-Math.round(v/20));
     const next=affNextUnlock(v);
-    const nextLine = next
-      ? `<div class="people-next">人情：再加 ${next.need} →「${next.label}」（${next.at}）</div>`
-      : `<div class="people-next">人情：對白池已全開</div>`;
+    let nextLine;
+    if(next){
+      nextLine = `<div class="people-next">人情：再加 ${next.need} →「${next.label}」（${next.at}）</div>`;
+    } else {
+      /* v20a22：通用池全開唔等於無嘢再開——何生／采兒仲有情報階梯（日常 25／內幕 60）。
+         未過階梯就顯示下一階；過晒（或本身無階梯）先寫全開，唔好同新階梯顯示打架。 */
+      const tierNext = (typeof npcNextTierHint==="function") ? npcNextTierHint(n.id, v) : null;
+      const hasTier = !!((typeof NPC_TIER_LINES!=="undefined" && NPC_TIER_LINES) && NPC_TIER_LINES[n.id]);
+      nextLine = tierNext
+        ? `<div class="people-next">人情：對白池已開晒 · 關係階梯：再加 ${tierNext.need} →「${tierNext.label}」（${tierNext.at}）</div>`
+        : `<div class="people-next">人情：${hasTier ? "對白池同情報階梯已全開" : "對白池已全開"}</div>`;
+    }
     const home = (n.id==="agent") ? "agency_ho" : ((n.homes && n.homes[0]) || "");
     const homeName = (()=>{ try{ const L=LOCS.find(x=>x.id===home); return L?L.name:""; }catch(_e){ return ""; } })();
     const goBit = home
