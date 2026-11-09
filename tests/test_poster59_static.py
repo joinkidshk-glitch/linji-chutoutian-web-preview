@@ -77,7 +77,8 @@ chk('POSTER59_DATA entries decode to WebP RIFF', len(entries) == 10 and all(webp
 blk59 = src[a:src.find('function normalizeGigRecord', a)] if a >= 0 else ''
 chk('poster59 block embeds exactly 10 poster data URIs', blk59.count('data:image/webp;base64,') == 10)
 # baseline 本身有 10 處 data:image/webp（舊 UI 內嵌圖）＋海報 10 條 = 20
-chk('webp data URI count = baseline 10 + posters 10', src.count('data:image/webp') == 20)
+# v20a62：+1 頒獎像素舞台底圖 AWARDS62_STAGE_PX（24,872 base64 字元，NOTES_V20A62 有帳）= 21
+chk('webp data URI count = baseline 10 + posters 10 + stage62 1', src.count('data:image/webp') == 21)
 expected = ['poster-1988-ad_central_spring_high.webp', 'poster-1988-film_03.webp',
             'poster-1988-film_cotton_autumn_low.webp', 'poster-1988-film_cotton_spring_high.webp',
             'poster-1988-film_harbour_high.webp', 'poster-1988-film_lion_summer_high.webp',
