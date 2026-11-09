@@ -29201,53 +29201,75 @@ function newspaperWrapAngle(sh, pack){
   if((Number(sh.fame)||0) >= 3) return "spotlight";
   return "steady";
 }
+/* ===== Weave Phase 3-1（v20a19）：報紙點名門檻——按幕前聲望（S.fame，即幕前聲量）分級稱呼。
+   anon（fame<15，同 #104 淡紙門檻一致）：泛稱「一名臨記」，唔點名；
+   named（15≤fame<40）：開始點名「阿偉」；titled（fame≥40）：稱號式「人氣新人阿偉」。
+   只改稱呼層：角度（Phase 1-2）判定同觸發條件不變。無 S 環境（單元測試）預設 named，保持舊文案。 ===== */
+const PAPER_NAME_TIER_NAMED = 15;
+const PAPER_NAME_TIER_TITLED = 40;
+function newspaperNameTier(fame){
+  const f = (fame!=null) ? (Number(fame)||0)
+    : ((typeof S!=="undefined" && S && S.fame!=null) ? (Number(S.fame)||0) : PAPER_NAME_TIER_NAMED);
+  if(f < PAPER_NAME_TIER_NAMED) return "anon";
+  if(f >= PAPER_NAME_TIER_TITLED) return "titled";
+  return "named";
+}
+function newspaperPlayerRef(tier){
+  if(tier==="anon") return "一名臨記";
+  if(tier==="titled") return "人氣新人阿偉";
+  return "阿偉";
+}
 function newspaperWrapFaceLines(subject, angle){
   subject = subject || {};
   const work = subject.work || "通告";
   const role = subject.role || "";
   const book = "《"+work+"》";
   const medium = newspaperMediumFromGigType(subject.type);
-  const headline = role ? (book+"殺青 臨記飾演"+role) : (book+"殺青 臨記入鏡");
+  const nameTier = (typeof newspaperNameTier==="function") ? newspaperNameTier() : "named";
+  const ref = (typeof newspaperPlayerRef==="function") ? newspaperPlayerRef(nameTier) : "阿偉";
+  const headWho = (nameTier==="anon") ? "臨記" : ref;
+  const rumorRef = (nameTier==="anon") ? "有個臨記" : "阿偉";
+  const headline = role ? (book+"殺青 "+headWho+"飾演"+role) : (book+"殺青 "+headWho+"入鏡");
   let dek = role
-    ? ("通告殺青，阿偉於"+book+"飾演"+role+"，順利收工。")
-    : ("通告殺青，阿偉完成"+book+"，娛樂版留了一行。");
+    ? ("通告殺青，"+ref+"於"+book+"飾演"+role+"，順利收工。")
+    : ("通告殺青，"+ref+"完成"+book+"，娛樂版留了一行。");
   if(medium==="tv"){
     dek = role
-      ? ("電視劇組殺青，阿偉於"+book+"飾演"+role+"，走位穩妥。")
-      : ("電視劇組殺青，阿偉完成"+book+"，名字見諸內頁。");
+      ? ("電視劇組殺青，"+ref+"於"+book+"飾演"+role+"，走位穩妥。")
+      : ("電視劇組殺青，"+ref+"完成"+book+"，"+(nameTier==="anon" ? "娛樂版留了一行。" : "名字見諸內頁。"));
   } else if(medium==="film"){
     dek = role
-      ? ("電影組殺青，阿偉於"+book+"飾演"+role+"，鏡頭前不搶戲。")
-      : ("電影組殺青，阿偉完成"+book+"，娛樂版記了一筆。");
+      ? ("電影組殺青，"+ref+"於"+book+"飾演"+role+"，鏡頭前不搶戲。")
+      : ("電影組殺青，"+ref+"完成"+book+"，娛樂版記了一筆。");
   } else if(medium==="music"){
     dek = role
-      ? ("唱片通告殺青，阿偉於"+book+"擔任"+role+"，順利收工。")
-      : ("唱片通告殺青，阿偉完成"+book+"，樂版留了一行。");
+      ? ("唱片通告殺青，"+ref+"於"+book+"擔任"+role+"，順利收工。")
+      : ("唱片通告殺青，"+ref+"完成"+book+"，樂版留了一行。");
   } else if(medium==="ad"){
     dek = role
-      ? ("廣告殺青，阿偉於"+book+"擔任"+role+"，曝光留影。")
-      : ("廣告殺青，阿偉完成"+book+"，夾頁留了一眼。");
+      ? ("廣告殺青，"+ref+"於"+book+"擔任"+role+"，曝光留影。")
+      : ("廣告殺青，"+ref+"完成"+book+"，夾頁留了一眼。");
   }
   let rumor = role
-    ? ("聽講"+book+"殺青，阿偉做"+role+"，場記話佢跟得齊。")
-    : ("聽講"+book+"殺青，場記話阿偉跟得齊。");
+    ? ("聽講"+book+"殺青，"+rumorRef+"做"+role+"，場記話佢跟得齊。")
+    : ("聽講"+book+"殺青，場記話"+rumorRef+"跟得齊。");
   if(angle==="spotlight"){
     if(medium==="tv"){
-      dek = role ? ("電視劇組殺青，阿偉於"+book+"飾演"+role+"，嗰場戲俾人記住。") : ("電視劇組殺青，阿偉完成"+book+"，嗰場戲俾人記住，名字上了內頁。");
+      dek = role ? ("電視劇組殺青，"+ref+"於"+book+"飾演"+role+"，嗰場戲俾人記住。") : ("電視劇組殺青，"+ref+"完成"+book+"，嗰場戲俾人記住"+(nameTier==="anon" ? "。" : "，名字上了內頁。"));
     } else if(medium==="film"){
-      dek = role ? ("電影組殺青，阿偉於"+book+"飾演"+role+"，鏡頭前搶眼，副導記低咗佢個名。") : ("電影組殺青，阿偉完成"+book+"，鏡頭前搶眼，副導記低咗佢個名。");
+      dek = role ? ("電影組殺青，"+ref+"於"+book+"飾演"+role+"，鏡頭前搶眼，"+(nameTier==="anon" ? "惹來不少議論。" : "副導記低咗佢個名。")) : ("電影組殺青，"+ref+"完成"+book+"，鏡頭前搶眼，"+(nameTier==="anon" ? "惹來不少議論。" : "副導記低咗佢個名。"));
     } else if(medium==="music"){
-      dek = role ? ("唱片通告殺青，阿偉於"+book+"擔任"+role+"，嗰段演出俾人點名提起。") : ("唱片通告殺青，阿偉完成"+book+"，嗰段演出俾人點名提起。");
+      dek = role ? ("唱片通告殺青，"+ref+"於"+book+"擔任"+role+"，嗰段演出俾人點名提起。") : ("唱片通告殺青，"+ref+"完成"+book+"，嗰段演出俾人點名提起。");
     } else if(medium==="ad"){
-      dek = role ? ("廣告殺青，阿偉於"+book+"擔任"+role+"，出鏡嗰下俾人記住個樣。") : ("廣告殺青，阿偉完成"+book+"，出鏡嗰下俾人記住個樣。");
+      dek = role ? ("廣告殺青，"+ref+"於"+book+"擔任"+role+"，出鏡嗰下俾人記住個樣。") : ("廣告殺青，"+ref+"完成"+book+"，出鏡嗰下俾人記住個樣。");
     } else {
-      dek = role ? ("通告殺青，阿偉於"+book+"飾演"+role+"，表現搶眼，娛樂版特登留了一行。") : ("通告殺青，阿偉完成"+book+"，表現搶眼，娛樂版特登留了一行。");
+      dek = role ? ("通告殺青，"+ref+"於"+book+"飾演"+role+"，表現搶眼，娛樂版特登留了一行。") : ("通告殺青，"+ref+"完成"+book+"，表現搶眼，娛樂版特登留了一行。");
     }
     rumor = role
-      ? ("聽講"+book+"殺青，阿偉做"+role+"嗰場俾場記提起，話佢幾搶眼。")
-      : ("聽講"+book+"殺青，場記話阿偉嗰場幾搶眼，俾人提起。");
+      ? ("聽講"+book+"殺青，"+rumorRef+"做"+role+"嗰場俾場記提起，話佢幾搶眼。")
+      : ("聽講"+book+"殺青，場記話"+rumorRef+"嗰場幾搶眼，俾人提起。");
   }
-  return { headline: headline, dek: dek, rumor: rumor, medium: medium, work: work, angle: (angle==="spotlight" ? "spotlight" : "steady") };
+  return { headline: headline, dek: dek, rumor: rumor, medium: medium, work: work, angle: (angle==="spotlight" ? "spotlight" : "steady"), nameTier: nameTier };
 }
 /** 男主角／男一／男星敘事。跟組、班底、路人、臨記呢類本角名稱唔算。 */
 function newspaperWrapLeadRelation(text){
@@ -29599,6 +29621,49 @@ function paperSideItemForDay(day){
   if(!it) return null;
   return { eventKey:"", paperName:"花邊短訊", headline:it.h, dek:it.d, clipLabel:"", fameDelta:0, source:"side", rumorEcho:"" };
 }
+/* ===== Weave Phase 3-1（v20a19）：報紙連載口吻——報紙記得上一份自己寫過嘅主話題。
+   關聯鍵（topicKey）優先序：①劇情 C3 高俊傑競爭線（eventKey story:C3:*）②通告 starHint 紅星名
+   ③標題／dek／作品名出現嘅紅星名 ④作品名（work:*）。今期主新聞同上一份剪報同鍵，先喺 dek 加跟進句；
+   無關聯唔加，唔硬砌。上一份嘅鍵存喺剪報 topicKey 欄；舊檔剪報無此欄，就由 eventKeys／標題／dek 即場推斷。 ===== */
+const PAPER_TOPIC_STARS = ["陸柏言","麥震東","高俊傑","廖炳星","葉敏芝","魏詠男","程天諾","蘇芷茵"];
+function newspaperTopicKey(item){
+  item = item || {};
+  const ek = String(item.eventKey || (Array.isArray(item.eventKeys) ? item.eventKeys[0] : "") || "");
+  if(ek.indexOf("story:C3")===0) return "rival:gao";
+  let gigId = String(item.gigId || "");
+  if(!gigId && ek.indexOf("wrap:")===0) gigId = ek.slice(5).replace(/:\d+$/, "");
+  if(gigId && typeof newspaperLookupGig==="function"){
+    try{
+      const gig = newspaperLookupGig(gigId);
+      const nm = gig && gig.starHint && gig.starHint.name;
+      if(nm) return "star:"+String(nm);
+    }catch(_e){}
+  }
+  const blob = String(item.headline||"")+" "+String(item.dek||"")+" "+String(item.workTitle||"");
+  for(let i=0;i<PAPER_TOPIC_STARS.length;i++){
+    if(blob.indexOf(PAPER_TOPIC_STARS[i])>=0) return "star:"+PAPER_TOPIC_STARS[i];
+  }
+  const work = String(item.workTitle||"").trim();
+  if(work) return "work:"+work;
+  return "";
+}
+function newspaperPrevTopicKey(){
+  try{
+    if(typeof ensureNewspaperClippings!=="function") return "";
+    const clips = ensureNewspaperClippings();
+    const last = clips && clips[0];
+    if(!last) return "";
+    if(last.topicKey) return String(last.topicKey);
+    return newspaperTopicKey(last);
+  }catch(_e){ return ""; }
+}
+function newspaperSerialLine(topicKey){
+  if(!topicKey) return "";
+  if(topicKey.indexOf("star:")===0) return "本報早前曾報道"+topicKey.slice(5)+"的消息，今期再有跟進，讀者可對照前文。";
+  if(topicKey==="rival:gao") return "本報早前報道的新人爭位，今期再有進展，鹿死誰手尚未分曉。";
+  if(topicKey.indexOf("work:")===0) return "本報早前曾報道《"+topicKey.slice(5)+"》，今期續訊，再報最新進展。";
+  return "";
+}
 function buildNewspaperEdition(batch, day){
   const ranked = batch.slice().sort((a,b)=>{
     const fa = Math.abs(Number(a && a.fameDelta)||0);
@@ -29637,13 +29702,21 @@ function buildNewspaperEdition(batch, day){
   if(sideItem) shorts.push(sideItem);
   const fameDelta = ranked.reduce((n,it)=> n + (Number(it && it.fameDelta)||0), 0);
   const eventKeys = ranked.map(it=>it && it.eventKey).filter(Boolean);
+  /* Weave Phase 3-1：連載口吻——今期主話題同上一份報紙同鍵，先喺主新聞 dek 加跟進句。 */
+  const topicKey = (typeof newspaperTopicKey==="function") ? newspaperTopicKey(head) : "";
+  let headDek = head.dek || "";
+  if(topicKey && topicKey===((typeof newspaperPrevTopicKey==="function") ? newspaperPrevTopicKey() : "")){
+    const serial = (typeof newspaperSerialLine==="function") ? newspaperSerialLine(topicKey) : "";
+    if(serial && headDek.indexOf("本報早前")<0) headDek = headDek ? (headDek + serial) : serial;
+  }
   return {
     id: "np_"+(day|0)+"_"+(head.enqueuedDay|0)+"_"+(eventKeys[0]||"x"),
     dayIndex: day|0,
     dateLabel: (typeof fmtDateShort==="function") ? fmtDateShort() : "",
     paperName: head.paperName || "娛樂版",
     headline: head.headline || "通告見報",
-    dek: head.dek || "",
+    dek: headDek,
+    topicKey: topicKey,
     clipLabel: head.clipLabel || "",
     rumorEcho: head.rumorEcho || "",
     templateId: head.templateId || "",
@@ -29771,6 +29844,7 @@ function commitMorningPaper(edition, opts){
       shorts: edition.shorts||[],
       fameDelta: d,
       eventKeys: edition.eventKeys||[],
+      topicKey: edition.topicKey||"",
       source: edition.source||""
     });
     if(clips.length>40) clips.length = 40;
