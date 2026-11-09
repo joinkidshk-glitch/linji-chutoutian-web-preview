@@ -29131,6 +29131,36 @@ function newspaperDueItems(day){
   const today = day|0;
   return ensureNewspaperQueue().filter(it=>it && (it.publishDay|0) <= today);
 }
+/* ===== Weave Phase 1-1（v20a13）：報紙「花邊短訊」——唔關阿偉事嘅時代花邊，純靜態輪替。
+   來源：串聯規劃鏈 D 上半＋§4.5 地名／質地碎片庫。Phase 1 只顯示，唔入傳聞池（入池留 Phase 3）。
+   文案守則：虛構紅星名＋真地名＋日常質地；唔用真藝名；家庭友善用字。 ===== */
+const PAPER_SIDE_ITEMS = [
+  { h:"陸柏言紅磡開唱未公佈，黃牛飛已經炒起", d:"歌迷連夜喺紅磡體育館外排隊，場外士多話呢幾日絲襪奶茶都賣多咗。" },
+  { h:"廖炳星新片清水灣開鏡，影迷塞爆片場閘口", d:"電視城外小巴站排長龍，茶水阿姐話今朝多咗三倍人買菠蘿油。" },
+  { h:"魏詠男深水埗開武館，街坊排隊拜師", d:"過氣武打女星親自紮馬示範，圍觀街坊拍爛手掌，隔籬涼茶舖生意旺到加枱。" },
+  { h:"葉敏芝寫真集再加印，書報攤老闆笑到見牙唔見眼", d:"旺角一帶書報攤話，後生仔放學必經，有人一次買三本話要嚟「收藏」。" },
+  { h:"廟街夜市有劇組取景，煲仔飯檔被圍到水洩不通", d:"檔主話拍戲嗰陣最旺，臨記食客一邊食一邊望鏡頭，唔知入唔入到鏡。" },
+  { h:"電視城飯堂加價一毫，臨記們怨聲四起", d:"有臨記話，飯堂加一毫唔緊要，最緊要唔好cut咗嗰杯免費例湯。" },
+  { h:"重慶大廈又有外景隊開工，電梯口逼到落唔到樓", d:"住客話見慣唔怪，仲有人即場被副導演拉去做路人，收工多一份車馬費。" },
+  { h:"跑馬地夜馬人頭湧湧，明星馬主成焦點", d:"馬迷話入場唔係為賭馬，係想撞下有冇星出現，順便買份馬經研究下期。" },
+  { h:"蘇芷茵新歌派台，唱片舖門口貼滿海報", d:"電台 DJ 話點唱率日日升，唱片舖老闆已經入定多兩箱貨等上架。" },
+  { h:"大排檔宵夜檔成片場後台，收工人潮傾到天光", d:"檔主話邊組收工、邊個俾導演鬧，坐低食碗雲吞麵就聽得七七八八。" },
+  { h:"卡拉 OK 新店佐敦開張，後生仔女排隊試唱", d:"老闆話房間裝修跟足日本款，有成班後生訂房訂到下個月。", fromYear:1989 },
+  { h:"移民講座場場爆滿，顧問公司廣告登到上副刊", d:"茶餐廳入面十枱有三枱講移民，有人話唔係想走，係買個保險。", fromYear:1989 },
+  { h:"酒樓散席飯訂枱急升，經理話做到手軟", d:"有經理話近排啲圍餐十居其九係送行宴，食到尾總有人眼濕濕。", fromYear:1989 },
+  { h:"程天諾接拍汽水廣告，新人王氣勢逼人", d:"廣告商話就係睇中佢後生夠活力，廣告未出街，學校門口已經貼滿佢啲相。", fromYear:1990 },
+  { h:"啟德機場送機大堂日日人山人海", d:"有送機嘅人話，而家去機場唔係旅行，係送親戚，一送就唔知幾時先再見。", fromYear:1990 },
+  { h:"賀歲片搶檔期傳到熱哄哄，院線排片傷腦筋", d:"邊套賀歲、邊套押後，戲院經理話排到聖誕都未排得晒，年尾有排煩。" }
+];
+function paperSideItemForDay(day){
+  let year = 1988;
+  try{ const dt = (typeof displayDateObj==="function") ? displayDateObj() : null; if(dt) year = dt.getFullYear()|0; }catch(_e){}
+  const pool = PAPER_SIDE_ITEMS.filter(it=> !it.fromYear || year >= (it.fromYear|0));
+  if(!pool.length) return null;
+  const it = pool[Math.abs(day|0) % pool.length];
+  if(!it) return null;
+  return { eventKey:"", paperName:"花邊短訊", headline:it.h, dek:it.d, clipLabel:"", fameDelta:0, source:"side", rumorEcho:"" };
+}
 function buildNewspaperEdition(batch, day){
   const ranked = batch.slice().sort((a,b)=>{
     const fa = Math.abs(Number(a && a.fameDelta)||0);
@@ -29164,6 +29194,9 @@ function buildNewspaperEdition(batch, day){
       source: "summary"
     });
   }
+  /* Weave Phase 1-1：每份報紙尾加一則花邊短訊（靜態輪替，唔計聲望、唔入傳聞池）。 */
+  const sideItem = (typeof paperSideItemForDay==="function") ? paperSideItemForDay(day) : null;
+  if(sideItem) shorts.push(sideItem);
   const fameDelta = ranked.reduce((n,it)=> n + (Number(it && it.fameDelta)||0), 0);
   const eventKeys = ranked.map(it=>it && it.eventKey).filter(Boolean);
   return {
@@ -29240,7 +29273,7 @@ function pushNewspaperRumor(edition){
     rumorEcho: edition.rumorEcho || ""
   }];
   (edition.shorts||[]).forEach((s, i)=>{
-    if(!s || s.source==="summary") return;
+    if(!s || s.source==="summary" || s.source==="side") return;
     const key = String(s.eventKey||"").trim() || ("s"+i);
     rows.push({
       id: base+"_"+key,
