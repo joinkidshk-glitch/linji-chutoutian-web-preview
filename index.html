@@ -21899,6 +21899,8 @@ function fresh(){
     mockRumors:[],
     mockDebts:[],
     mockSeasonCleared:{},
+    /* v20a16 Weave Phase 2-1：情報旗（拼合情報正式化）；舊存檔由 ensureIntelFlags() 回填，唔改 SAVE key */
+    intelFlags:{},
     /* v20a0 Freeplay：選角標籤沉澱（label 或 id） */
     castingTags:[],
     /* v20a4：殺青獎勵／傳媒反響履歷 */
@@ -26570,7 +26572,46 @@ const INTEL_USE_POINTS = {
     gigLine:"麥震東有傷在身又死頂，呢組動作戲嘅風險可能俾人低估咗——接之前，諗清楚自己頂唔頂得住。",
     sightLine:"你知佢有傷。再望住佢企得咁直，你先發現——佢連企，都喺度死頂。" }
 };
+/* ===== Weave Phase 2-1（v20a16）：情報旗正式化。
+   拼合情報由「即場掃 merged 行」升級為有命名旗，存 S.intelFlags（新存檔 fresh() 預設 {}，
+   舊存檔由 ensureIntelFlags() 按已拼合行回填，唔改 SAVE key）。
+   hasMergedIntel 改行旗＋保留掃行 fallback，Phase 1-3 嘅使用點介面唔變。 ===== */
+const INTEL_FLAGS = {
+  rumor_lu_baiyan_breakdown: "intel_lu_burst",
+  rumor_liao_bingxing_money: "intel_liao_money",
+  rumor_mai_zhendong_hide_injury: "intel_mak_injury",
+};
+function ensureIntelFlags(){
+  if(typeof S==="undefined" || !S) return {};
+  if(!S.intelFlags || typeof S.intelFlags!=="object" || Array.isArray(S.intelFlags)) S.intelFlags = {};
+  /* 舊存檔回填：升級前已經拼合咗嘅情報，照樣置旗（值記低取得日同回填標記） */
+  try{
+    const rows = Array.isArray(S.mockRumors) ? S.mockRumors : [];
+    for(const mid in INTEL_FLAGS){
+      const fname = INTEL_FLAGS[mid];
+      if(!S.intelFlags[fname] && rows.some(r=> r && r.id===mid && r.state==="merged")){
+        S.intelFlags[fname] = { day:(typeof S.dayIndex==="number" ? S.dayIndex : 0), backfilled:true };
+      }
+    }
+  }catch(_e){}
+  return S.intelFlags;
+}
+function setIntelFlag(mergedId){
+  const fname = INTEL_FLAGS[mergedId];
+  if(!fname || typeof S==="undefined" || !S) return false;
+  const flags = ensureIntelFlags();
+  if(!flags[fname]) flags[fname] = { day:(typeof S.dayIndex==="number" ? S.dayIndex : 0) };
+  return true;
+}
+function hasIntelFlag(flagName){
+  try{ return !!ensureIntelFlags()[flagName]; }catch(_e){ return false; }
+}
 function hasMergedIntel(mergedId){
+  /* v20a16：先睇情報旗（ensureIntelFlags 會順手回填舊存檔），再 fallback 掃 merged 行 */
+  try{
+    const fname = INTEL_FLAGS[mergedId];
+    if(fname && ensureIntelFlags()[fname]) return true;
+  }catch(_e){}
   try{ if(typeof ensureMockJournal==="function") ensureMockJournal(); }catch(_e){}
   const rows = (typeof S!=="undefined" && S && S.mockRumors) || [];
   return rows.some(r=> r && r.id===mergedId && r.state==="merged");
@@ -26589,6 +26630,83 @@ function intelSightLineFor(starId){
     if(up && up.sightLine && up.starId===starId && hasMergedIntel(id)) return up.sightLine;
   }
   return "";
+}
+/* ===== Weave Phase 2-1（v20a16）：鏈 A 隱藏通告。
+   跟 mergeSoftBridgeGigs 同一注入模式：mergeIntelGigs() 喺 gigsForLocSeasonBoard 開頭呼叫，
+   持有 intel_lu_burst 先將替工通告注入 GIGS（上板／試鏡／拍攝／殺青全部行現有管線），
+   無旗就移除，確保平時完全唔顯示。通告命名平實，唔劇透拼合內容。 ===== */
+const INTEL_HIDDEN_GIGS = [
+  {
+    id:"gig_intel_lu_standin",
+    year:1988,
+    season:"不限",
+    type:"電視劇",
+    genreLabel:"電視劇",
+    loc:"tvb_longmen",
+    workTitle:"星夜迷離",
+    title:"《星夜迷離》臨時替工",
+    roleLabel:"臨時替工",
+    director:"副導",
+    roleHint:"頂住缺口嘅企位同行位，聽副導指示做，唔好多問。",
+    blurb:"場務私下放出嚟嘅頂位通告，唔公開招募：嗰組今晚缺人，要一個即刻開工、唔多問嘅臨記頂一晚。",
+    synopsis:"星河電視台時裝劇《星夜迷離》今晚開夜班，臨時缺咗個企位臨記。場務唔想聲張，私下放風搵人即日頂位——跟副導手勢行位，鏡頭過咗就收工，酬金即晚結算。",
+    eraTag:"era_1988_tv",
+    discoverNote:"唔公開招募嘅頂位通告，係你拼到內情先見到。",
+    boardPriority:"high",
+    boardNote:"臨時頂位",
+    seasonWeight:1,
+    req:{},
+    pay:[2800, 3400],
+    payExact:3100,
+    breachFee:200,
+    fame:[1, 2],
+    popularity:[1, 2],
+    stressDeltaHint:"中",
+    hard:0.15,
+    tier:"初",
+    stars:1,
+    applyDeadlineDays:6,
+    shootDaysHint:1,
+    shootHint:"跟副導手勢頂位，唔好搶鏡，鏡頭過咗就收工。",
+    roleScale:"tv_cameo_short",
+    shootBand:[1, 1],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:14,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["臨時替位，即日開工"] },
+    storyKeys:["intel_lu_standin"],
+    tagOnComplete:["識頂位"],
+    rumorKeys:[],
+    starHint:{ name:"陸柏言", adjacency:"far" },
+    favorDelta:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  }
+];
+function mergeIntelGigs(){
+  try{
+    if(typeof GIGS==="undefined" || !Array.isArray(GIGS)) return 0;
+    const ids = {};
+    (INTEL_HIDDEN_GIGS||[]).forEach(g=>{ if(g && g.id) ids[g.id] = 1; });
+    let held = false;
+    try{ held = hasIntelFlag("intel_lu_burst"); }catch(_e){}
+    if(!held){
+      const before = GIGS.length;
+      GIGS = GIGS.filter(g=>!(g && ids[g.id]));
+      if(GIGS.length!==before){ try{ window.GIGS = GIGS; }catch(_w){} }
+      return 0;
+    }
+    let n = 0;
+    (INTEL_HIDDEN_GIGS||[]).forEach(raw=>{
+      if(!raw || !raw.id) return;
+      const norm = normalizeGigRecord(Object.assign({}, raw, { intelGig:true }));
+      const i = GIGS.findIndex(g=>g && g.id===raw.id);
+      if(i<0){ GIGS.push(norm); n++; }
+      else GIGS[i] = norm;
+    });
+    try{ window.GIGS = GIGS; }catch(_w){}
+    return n;
+  }catch(_e){ return 0; }
 }
 const MERGE_FRAGS = [
   { id:"rumor_lu_baiyan_angry", source:"場務八卦", title:"陸柏言片場發脾氣", text:"陸柏言喺片場無端端發火，鬧到成個場靜晒。" },
@@ -27132,6 +27250,8 @@ function mergePickedRumors(){
       id:pair.merged, source:"手帳", title:pair.title, text:pair.text, state:"merged", season:"", stamp:true,
     });
   }
+  /* v20a16：拼合完成即置情報旗（鏈 A 隱藏通告等使用點行旗，唔再淨靠掃行） */
+  try{ setIntelFlag(pair.merged); }catch(_e){}
   mockMergePick = [];
   syncNotebookMirror();
   try{ saveQ(); }catch(_e){}
@@ -31061,6 +31181,7 @@ function closeSheet(opts){
  *  保證：庫存有該 loc×季的初／中／高，就先各留排序最好的一張；其餘同季卡無 take 上限一併上板。 */
 function gigsForLocSeasonBoard(locId, curSeason){
   try{ if(typeof mergeSoftBridgeGigs==="function") mergeSoftBridgeGigs(); }catch(_br){}
+  try{ if(typeof mergeIntelGigs==="function") mergeIntelGigs(); }catch(_ig){}
   curSeason = curSeason || calendarSeason();
   const byBoard=(a,b)=> boardSortCompare(a,b,curSeason);
   const pool=(GIGS||[]).filter(g=>{
