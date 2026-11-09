@@ -4305,6 +4305,24 @@ body.day-res-open .day-row{
   border-color:rgba(201,162,39,.65);
 }
 /* === v20a48 打磨完 === */
+/* === v20a49 傳聞頁提示行對比 ===
+   .rumor-hint base 規則（主 style 段）只有深啡字 #6b4e2e、冇 background——
+   同 v20a48 修嘅 .pane-intro 同類病，仲要連半透明金底都冇：全透明底直接
+   透出 #v-home 深色底（#2a1f1a→#0a1424），深啡字配深啡底讀唔到（實機
+   驗收附帶發現：「點兩張剛聽聞，拉埋再確認。」放大先勉强睇清）。
+   .rumor-hint 全檔只喺 renderRumorPane 兩個分支出現（揀齊兩張時嘅
+   glow 提示＋未揀齊時嘅操作提示），兩處都入 #rumor-list，即傳聞頁內，
+   其他頁冇用呢個 class。修法同 v20a48 .pane-intro 同一語言：只限傳聞頁
+   換實色米紙底＋深字＋金邊，幾何（padding／radius）跟返 .pane-intro base，
+   hint 本身嘅 margin／字款由 base 規則保留。 */
+#home-pane-rumor .rumor-hint{
+  background:#fff8e8;
+  color:#3a2a18;
+  border:1px solid rgba(201,162,39,.65);
+  border-radius:8px;
+  padding:6px 8px;
+}
+/* === v20a49 完 === */
 </style>
 </head>
 <body>
