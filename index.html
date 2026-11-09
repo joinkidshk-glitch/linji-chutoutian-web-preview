@@ -22743,6 +22743,7 @@ function softOverdueFavorDebtLock(gig){
     const list = (typeof S!=="undefined" && S && Array.isArray(S.mockDebts)) ? S.mockDebts : [];
     overdue = list.filter(d=>{
       if(!d) return false;
+      if(d.id==="debt_family_home") return false; /* v20a26：屋企債永不入逾期鎖（屋企唔會鎖你接通告） */
       const st = (typeof debtStatusLabel==="function") ? debtStatusLabel(d.status) : String(d.status||"");
       return st==="已逾期";
     });
@@ -24229,6 +24230,7 @@ function advanceDay(){
   try{ if(typeof favorDueTick==="function") favorDueTick(); }catch(_fd){}
   try{ if(typeof rivalryTick==="function") rivalryTick(); }catch(_rv){}
   try{ if(typeof exodusFenTick==="function") exodusFenTick(); }catch(_ex){}
+  try{ if(typeof ensureFamilyHomeDebt==="function") ensureFamilyHomeDebt(); }catch(_fh){}
   return S.dayIndex>0 && weekdayIdx(S.dayIndex)===0;
 }
 
@@ -24341,6 +24343,13 @@ function settleWeek(){
       if(cleaned) flavor.push(cleaned);
     });
   };
+  /* Weave Phase 4-3（v20a26）：鏈 G 屋企線週結 flavor——只喺播種嗰週／還清嗰週出一行（一次性消費，唔會週週提）。 */
+  try{
+    if(typeof familyHomeSettleLines==="function"){
+      const famLines = familyHomeSettleLines();
+      if(famLines && famLines.length) pushFlavor(famLines);
+    }
+  }catch(_fh){}
   /* v20a8：週結現金電報＋翻身提示（唔 tip LIVE） */
   try{
     const cashNow = Math.max(0, Number(S.money)||0);
@@ -27079,8 +27088,91 @@ function favorLedgerCounts(){
   let held = 0;
   try{ held = (Array.isArray(S.mockCredits) ? S.mockCredits : []).filter(c=>c && c.status!=="絕響").length; }catch(_e){}
   let open = 0;
-  try{ open = (Array.isArray(S.mockDebts) ? S.mockDebts : []).filter(d=>d && d.status!=="絕響").length; }catch(_e){}
+  /* v20a26：屋企債唔入人情帳本讀口——openDebts 只計圈內債，免結局判定計錯屋企嗰筆 */
+  try{ open = (Array.isArray(S.mockDebts) ? S.mockDebts : []).filter(d=>d && d.id!=="debt_family_home" && d.status!=="絕響").length; }catch(_e){}
   return { settled:(L.settled|0), credits:(L.credits|0), creditsHeld:held, openDebts:open, exodus:(L.exodus||[]).slice() };
+}
+/* ===== Weave Phase 4-3（v20a26）：鏈 G 阿偉屋企線第 1＋3 拍——屋企恆常債＋家人態度字條。
+   定位：屋企唔係圈內人情。屋企債 debt_family_home 借 mockDebts 渲染／還款入口，但：
+   - 永不入 S.favorLedger（結局判定唔計屋企數）：applyMockAsk 結清嗰陣改行 noteFamilyHomePaid 記月份，唔 note settled；
+     favorLedgerCounts 嘅 openDebts 亦排除佢。
+   - 永不逾期：status 恆「未到期」、無 dueDay（唔入 favorDue 流程）；favorPressure 同 softOverdueFavorDebtLock
+     兩處計算都明確排除（跟 4-2 絕響排除 pattern，唔靠 status 巧合）。
+   - 恆常補種：還清唔會消失——跨月（dateObj 月份變化）自動補下一期；未還唔補、還清當月唔補。
+     狀態存 S.familyHome = { cycle, monthKey, seedDay, paidDay, seedFlavorDay, paidFlavorDay }，冪等＋舊檔安全。
+   - 第 3 拍家人態度：債卡附一行「屋企字條」，跟報紙點名三級 newspaperNameTier 切換（anon/named/titled），唔另計數。
+   - 週結算 flavor：只喺「新一期播種嗰週」或「還清嗰週」出一行（settleWeek 經 familyHomeSettleLines 消費一次性標記）。 ===== */
+const FAMILY_HOME_DEBT_ID = "debt_family_home";
+const FAMILY_HOME_CYCLES = [
+  { title:"今個月家用", amount:600, season:"阿媽話：屋企水電租食乜都要使，你嗰份家用有心就得，唔使同人比，遲幾日都唔緊要。" },
+  { title:"今期幫補交租", amount:800, season:"包租婆又嚟拍門。阿媽話：租嗰份你幫補到幾多就幾多，唔好死頂——屋企點都要有個瓦遮頭。" },
+  { title:"阿媽覆診藥費", amount:450, season:"阿媽膝頭痛去覆診，藥費嗰筆佢話自己搞得掂。你知佢份人，講「搞得掂」嗰陣，即係想你幫輕下。" },
+  { title:"屋企換雪櫃嗰份", amount:700, season:"雪櫃壞到漏水，阿爸話齋用住先。阿媽偷偷留字條：有餘錢就夾份換咗佢，唔好俾阿爸知係你出嗰份。" },
+];
+const FAMILY_HOME_SEED_FLAVOR = "屋企嗰邊：月頭到，阿媽冇打電話嚟催，只係將新一期嗰筆記入手帳——屋企人催數，從來唔出聲。";
+const FAMILY_HOME_PAID_FLAVOR = "屋企嗰邊：今個月嗰筆交咗。阿媽冇多講，只係嗰晚煲多咗個湯——屋企人嘅放心，從來唔係用口講嘅。";
+function ensureFamilyHomeState(){
+  if(typeof S==="undefined" || !S) return { cycle:0, monthKey:"", seedDay:-1, paidDay:-1, seedFlavorDay:-1, paidFlavorDay:-1 };
+  let st = S.familyHome;
+  if(!st || typeof st!=="object" || Array.isArray(st)) st = S.familyHome = { cycle:0, monthKey:"", seedDay:-1, paidDay:-1, seedFlavorDay:-1, paidFlavorDay:-1 };
+  if(typeof st.cycle!=="number" || !(st.cycle>=0)) st.cycle = 0;
+  if(typeof st.monthKey!=="string") st.monthKey = "";
+  ["seedDay","paidDay","seedFlavorDay","paidFlavorDay"].forEach(k=>{ if(typeof st[k]!=="number") st[k] = -1; });
+  return st;
+}
+function familyMonthKey(){
+  try{ const dt = dateObj(); return dt.getFullYear()+"-"+(dt.getMonth()+1); }catch(_e){ return ""; }
+}
+function isFamilyHomeDebt(d){ return !!(d && d.id===FAMILY_HOME_DEBT_ID); }
+/* 播種／跨月補種。回 true＝今次種咗新一期。冪等：有債在帳唔補；還清當月（monthKey=當月）唔補。 */
+function ensureFamilyHomeDebt(){
+  try{
+    if(typeof S==="undefined" || !S) return false;
+    if(!Array.isArray(S.mockDebts)) S.mockDebts = [];
+    const st = ensureFamilyHomeState();
+    if(S.mockDebts.some(d=>isFamilyHomeDebt(d))) return false;
+    const mk = familyMonthKey();
+    if(!mk || st.monthKey===mk) return false;
+    const def = FAMILY_HOME_CYCLES[st.cycle % FAMILY_HOME_CYCLES.length];
+    S.mockDebts.push({ id:FAMILY_HOME_DEBT_ID, creditor:"屋企／阿媽", title:def.title, amount:def.amount, weight:"屋企嗰份", season:def.season, status:"未到期", familyHome:true, cycle:st.cycle });
+    st.monthKey = mk;
+    st.seedDay = (S.dayIndex|0);
+    st.cycle++;
+    try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
+    return true;
+  }catch(_e){ return false; }
+}
+/* 還清屋企債嗰陣記低：當月唔再補種（下個月先返嚟），並標記還清日畀週結算 flavor 用。
+   注意：呢筆唔入 favorLedger——屋企唔係圈內人情，結局判定唔計。 */
+function noteFamilyHomePaid(){
+  try{
+    if(typeof S==="undefined" || !S) return;
+    const st = ensureFamilyHomeState();
+    st.paidDay = (S.dayIndex|0);
+    st.monthKey = familyMonthKey();
+  }catch(_e){}
+}
+/* 週結算 flavor（一次性消費）：播種嗰週／還清嗰週各出一行，其他週唔出。 */
+function familyHomeSettleLines(){
+  const out = [];
+  try{
+    if(typeof S==="undefined" || !S) return out;
+    const st = ensureFamilyHomeState();
+    const di = (S.dayIndex|0);
+    /* settleWeek 喺星期一（dayIndex 已跳到新週）先行，所以窗口用到 <=7：事件日同結算日最多差 7 日 */
+    if(st.seedDay>=0 && di-st.seedDay>=0 && di-st.seedDay<=7 && st.seedFlavorDay!==st.seedDay){ st.seedFlavorDay = st.seedDay; out.push(FAMILY_HOME_SEED_FLAVOR); }
+    if(st.paidDay>=0 && di-st.paidDay>=0 && di-st.paidDay<=7 && st.paidFlavorDay!==st.paidDay){ st.paidFlavorDay = st.paidDay; out.push(FAMILY_HOME_PAID_FLAVOR); }
+  }catch(_e){}
+  return out;
+}
+/* 第 3 拍：家人態度字條，跟報紙點名三級行（anon 擔心／named 半信半疑／titled 有面子）。 */
+function familyAttitudeLine(){
+  try{
+    const tier = (typeof newspaperNameTier==="function") ? newspaperNameTier() : "anon";
+    if(tier==="titled") return "屋企字條：阿媽話，鄰居問起你做邊行，佢而家會答：「我個仔上報紙，做戲嗰個。」講嗰陣，腰骨都直啲。";
+    if(tier==="named") return "屋企字條：阿媽話，聽講報紙有寫你個名？真定假㗎……唔好俾人呃先好，糧期到就追實啲，屋企等住你嗰份開飯。";
+    return "屋企字條：阿媽話——做臨記唔係辦法，隔離陳師奶個仔做文員，月月有糧出幾穩陣。你自己諗下啦，仲有，記得食飯。";
+  }catch(_e){ return ""; }
 }
 /* ===== 鏈 F 第 2 拍：副導演芬姐（extra_ad_fen，演講者級數次要角色；債主欄自由字串直接掛）離港。
    1989 春播種一對：玩家欠佢一筆細債（頂更）＋佢欠玩家一筆債權（救場），兩條分支都可達；
@@ -27521,6 +27613,8 @@ function ensureMockJournal(){
   /* Weave Phase 4-2（v20a25）：人情帳本確保＋舊檔回填；鏈 F 第 2 拍芬姐人情對 1989 年起播種（冪等）。 */
   try{ if(typeof ensureFavorLedger==="function") ensureFavorLedger(); }catch(_e){}
   try{ if(typeof seedExodusFenPair==="function") seedExodusFenPair(); }catch(_e){}
+  /* Weave Phase 4-3（v20a26）：鏈 G 屋企恆常債播種（新檔／舊檔首次載入都經呢度；跨月補種另有 advanceDay 入口，冪等）。 */
+  try{ if(typeof ensureFamilyHomeDebt==="function") ensureFamilyHomeDebt(); }catch(_e){}
   syncNotebookMirror();
 }
 function findMergePair(idA, idB){
@@ -27536,7 +27630,8 @@ function favorPressure(){
   /* 顯示用。唔寫 S.stress、唔鎖通告、唔改閘。 */
   const season=(typeof calendarSeason==="function") ? calendarSeason() : "春";
   const cards=SEASON_COLLECT.filter(c=>c.season===season && c.status==="已逾期").length;
-  const debts=(S.mockDebts||[]).filter(d=>d && d.status!=="絕響" && debtStatusLabel(d.status)==="已逾期").length;
+  /* v20a26：屋企債唔係圈內人情壓力，明確排除（佢亦永不逾期，雙重保險） */
+  const debts=(S.mockDebts||[]).filter(d=>d && d.id!=="debt_family_home" && d.status!=="絕響" && debtStatusLabel(d.status)==="已逾期").length;
   const n=cards+debts;
   const label=n<=0?"輕":(n===1?"緊":"頂住");
   return { n, label, season };
@@ -27790,8 +27885,11 @@ function applyMockAsk(locId, actionId, repayOpt){
       return { ok:false, toast:"扣咗款但搵唔到債項紀錄——請截圖回報。" };
     }
     /* v20a25：清債成功先入人情帳本（冪等，唔會同 favorDueTick 兜底雙計）。
-       教學債經此路徑還＝closed_other；季節卡還清＝repay_season（實際語義係玩家欠債主，計 settled）。 */
-    if(cleared && debt && debt.id){
+       教學債經此路徑還＝closed_other；季節卡還清＝repay_season（實際語義係玩家欠債主，計 settled）。
+       v20a26：屋企債除外——屋企唔係圈內人情，唔入帳本；改記還清月份，等下個月先補種下一期。 */
+    if(cleared && debt && debt.id==="debt_family_home"){
+      try{ if(typeof noteFamilyHomePaid==="function") noteFamilyHomePaid(); }catch(_fh){}
+    } else if(cleared && debt && debt.id){
       try{
         const isTutorial = (typeof FAVOR_DUE_CFG!=="undefined" && debt.id===FAVOR_DUE_CFG.debtId);
         const isSeason = !!(debt._seasonCard || (SEASON_COLLECT||[]).some(c=>c && c.id===debt.id));
@@ -28149,7 +28247,9 @@ function renderDebtPane(){
     const amt = (d.amount!=null) ? ("金額約 $"+Number(d.amount).toLocaleString()) : ("人情："+journalText(d.weight)+" · 建議 $200／禮物");
     const dueLine = (d.dueDay!=null && typeof favorDueHintText==="function") ? favorDueHintText(d) : "";
     const ex = d.status==="絕響";
-    return `<article class="debt-row${ex?" debt-exodus":""}" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${dueLine?`<p class="debt-meta">${journalText(dueLine)}</p>`:""}<p class="debt-note">${journalText(d.season)}</p>${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:repayBtn(d.id,false)}</article>`;
+    /* v20a26：鏈 G 第 3 拍——屋企債卡附家人態度字條（跟聲望三級），同卡渲染，唔另開頁 */
+    const famLine = (d.id==="debt_family_home" && typeof familyAttitudeLine==="function") ? familyAttitudeLine() : "";
+    return `<article class="debt-row${ex?" debt-exodus":""}" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${dueLine?`<p class="debt-meta">${journalText(dueLine)}</p>`:""}<p class="debt-note">${journalText(d.season)}</p>${famLine?`<p class="debt-note family-attitude">${journalText(famLine)}</p>`:""}${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:repayBtn(d.id,false)}</article>`;
   }).join("") : ((cardHtml || creditHtml) ? "" : `<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p><p class="sub" style="margin-top:8px"><button type="button" class="debt-repay-btn" data-repay-id="__goto_agency__" data-season="0">去何生事務所</button></p></div>`);
   box.innerHTML=banner+cardHtml+creditHtml+debtHtml;
   /* v19z11：委派點擊；debtId 必須嚟自該卡，永唔走 openHoRepaySheet／何生 fallback */
