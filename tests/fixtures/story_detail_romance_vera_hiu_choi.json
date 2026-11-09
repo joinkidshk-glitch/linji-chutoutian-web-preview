@@ -1,0 +1,1536 @@
+{
+  "version": "1.3.1",
+  "locale": "zh-Hant-written-HK",
+  "source": "DeepSeek romance Vera/Hiu/Choi; UNLOCK§4 + MASTER§5–6 + HK_LEXICON; parallel until commit",
+  "romanceLines": [
+    "vera",
+    "hiu",
+    "choi"
+  ],
+  "nodes": [
+    {
+      "id": "R_vera_meet",
+      "phase": "P1",
+      "title": "造型間初遇",
+      "when": "1988春夏",
+      "setting": "星河電視台造型間／試裝",
+      "eraTag": "era_1988_spring_grassroot",
+      "cast": [
+        "阿偉",
+        "Vera"
+      ],
+      "synopsis": "阿偉第一次到星河電視台試造型，Vera 是當值的造型師。她一眼看出阿偉的草根氣質，語氣帶點挑剔，卻又忍不住給了一句忠告，留下一個小鉤子。",
+      "beats": [
+        {
+          "speaker": "Vera",
+          "lines": [
+            "你就是新來的臨記？這件襯衫顏色太鮮，鏡頭前會搶戲，換一件素色的。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉說自己第一次來試造型，不太懂規矩，請她直接告訴他怎樣穿就好。"
+          ]
+        },
+        {
+          "speaker": "Vera",
+          "lines": [
+            "規矩就是：你站在鏡頭前，觀眾第一眼看到的是整體感覺，不是你的演技。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉問她，這身打扮給她的第一感覺是什麼。"
+          ]
+        },
+        {
+          "speaker": "Vera",
+          "lines": [
+            "很草根，但眼神有火。這種矛盾，用得好就是你的特色。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉多謝她肯講真話，並說會記住這句。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_vera_meet_warm",
+          "label": "暖場：多謝提點，虛心請教",
+          "effects": {
+            "flags": [
+              "flag_vera_met_warm"
+            ],
+            "stats": {
+              "rel_vera": 1,
+              "craft": 1
+            },
+            "notes": ""
+          }
+        },
+        {
+          "id": "C_vera_meet_cold",
+          "label": "冷淡：點頭就走，趕下一個通告",
+          "effects": {
+            "flags": [
+              "flag_vera_met_cold"
+            ],
+            "stats": {
+              "rel_vera": 0,
+              "fame": 1
+            },
+            "notes": ""
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_vera_met_cold",
+        "flag_vera_met_warm"
+      ],
+      "openConditions": [],
+      "openConditionsNote": "vera 認識節；phase 見節點。無額外旗閘。",
+      "artId": "rom_vera_meet",
+      "conflict": null,
+      "romanceLine": "vera",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "playerOffer": false
+    },
+    {
+      "id": "R_vera_push1",
+      "phase": "P1.5",
+      "title": "形象會議",
+      "when": "1988秋",
+      "setting": "星河電視台形象會議室／試造型",
+      "eraTag": "era_1988_autumn_unit",
+      "cast": [
+        "阿偉",
+        "Vera"
+      ],
+      "synopsis": "電視台為阿偉安排形象改造，Vera 負責主導。兩人在會議上討論風格方向，阿偉的投入程度影響 Vera 對他的觀感。",
+      "beats": [
+        {
+          "speaker": "Vera",
+          "lines": [
+            "這次形象改造，我想保留你的草根味，但加一點都市感，你覺得怎樣？"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉說信她的眼光，不過不想變成另一個人，觀眾認得他才重要。"
+          ]
+        },
+        {
+          "speaker": "Vera",
+          "lines": [
+            "放心，我只是幫你整理，不是要你扮高級。你肯不肯花時間試多幾套？"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉答應，請她約時間，他會盡量配合。"
+          ]
+        },
+        {
+          "speaker": "Vera",
+          "lines": [
+            "好，那我們下星期再試一次，到時我會準備幾套不同的配搭。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_vera_push1_cooperate",
+          "label": "認真配合：花時間試造型",
+          "effects": {
+            "flags": [
+              "flag_vera_cooperate"
+            ],
+            "stats": {
+              "rel_vera": 2,
+              "craft": 1
+            },
+            "notes": ""
+          }
+        },
+        {
+          "id": "C_vera_push1_perfunctory",
+          "label": "敷衍：隨便試一套就算",
+          "effects": {
+            "flags": [
+              "flag_vera_perfunctory"
+            ],
+            "stats": {
+              "rel_vera": 0,
+              "fame": 1
+            },
+            "notes": ""
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_vera_cooperate",
+        "flag_vera_perfunctory"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_vera_met_warm",
+        "flag_vera_met_cold"
+      ],
+      "openConditionsNote": "vera 推進1：meet 任一結果旗後（OR）。",
+      "artId": "rom_vera_push1",
+      "conflict": null,
+      "romanceLine": "vera",
+      "arcBeat": "push",
+      "parallelOk": true
+    },
+    {
+      "id": "R_vera_push2",
+      "phase": "P2",
+      "title": "茶餐廳小聚",
+      "when": "1989",
+      "setting": "茶餐廳小聚",
+      "eraTag": "era_1989_spring",
+      "cast": [
+        "阿偉",
+        "Vera"
+      ],
+      "synopsis": "阿偉與 Vera 在茶餐廳偶遇，難得坐下來閒聊。Vera 問起阿偉的過去，阿偉可以選擇坦白心事，還是只談工作。",
+      "beats": [
+        {
+          "speaker": "Vera",
+          "lines": [
+            "很少見你一個人來茶餐廳，今天不用趕通告嗎？"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉說剛剛拍完一場戲，趁有空檔來吃個下午茶，並反問她近況。"
+          ]
+        },
+        {
+          "speaker": "Vera",
+          "lines": [
+            "我剛從服裝間出來，順便來買杯奶茶。你近來好像很搏命。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉說不搏命不行，機會不是經常有的。"
+          ]
+        },
+        {
+          "speaker": "Vera",
+          "lines": [
+            "除了工作，你有沒有其他想做的事？"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_vera_push2_honest",
+          "label": "坦白心事：講自己的過去與夢想",
+          "effects": {
+            "flags": [
+              "flag_vera_honest"
+            ],
+            "stats": {
+              "rel_vera": 2,
+              "craft": 1
+            },
+            "notes": ""
+          }
+        },
+        {
+          "id": "C_vera_push2_work",
+          "label": "只談工作：保持專業距離",
+          "effects": {
+            "flags": [
+              "flag_vera_worktalk"
+            ],
+            "stats": {
+              "rel_vera": 1,
+              "fame": 1
+            },
+            "notes": ""
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_vera_honest",
+        "flag_vera_worktalk"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_vera_cooperate",
+        "flag_vera_perfunctory"
+      ],
+      "openConditionsNote": "vera 推進2：push1 任一結果旗後（OR）。",
+      "artId": "rom_vera_push2",
+      "conflict": null,
+      "romanceLine": "vera",
+      "arcBeat": "push",
+      "parallelOk": true
+    },
+    {
+      "id": "R_vera_crisis",
+      "phase": "P4",
+      "title": "打歌後台的抉擇",
+      "when": "1991秋",
+      "setting": "打歌現場後台／電台",
+      "eraTag": "era_1991_autumn_promo",
+      "cast": [
+        "阿偉",
+        "Vera"
+      ],
+      "synopsis": "阿偉在電台打歌，Vera 在後台等他。她問阿偉幾時得閒見面，阿偉要在陪伴她與趕下一個通告之間作出選擇。",
+      "beats": [
+        {
+          "speaker": "Vera",
+          "lines": [
+            "你今晚打歌之後，還要趕下一個通告嗎？"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉說本來有約，但如果她有事，他可以推遲。"
+          ]
+        },
+        {
+          "speaker": "Vera",
+          "lines": [
+            "你幾時得閒見我？我們好像很久沒有好好坐下來說話了。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉說知道最近真的太忙，但不是故意冷落她。"
+          ]
+        },
+        {
+          "speaker": "Vera",
+          "lines": [
+            "我明白你的事業重要，但有時候我也需要你在我身邊。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_vera_crisis_stay",
+          "label": "陪她：推遲通告，留下來陪 Vera",
+          "effects": {
+            "flags": [
+              "flag_vera_stay"
+            ],
+            "stats": {
+              "rel_vera": 2,
+              "trust": 1
+            },
+            "notes": "T5 選陪伴；rel_vera／trust 升。"
+          }
+        },
+        {
+          "id": "C_vera_crisis_work",
+          "label": "趕通告：先顧打歌與形象",
+          "effects": {
+            "flags": [
+              "flag_vera_workfirst"
+            ],
+            "stats": {
+              "music": 1,
+              "rel_vera": -2
+            },
+            "notes": "T5 選事業；music 升，rel_vera 跌。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_vera_stay",
+        "flag_vera_workfirst"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_vera_honest",
+        "flag_vera_worktalk"
+      ],
+      "openConditionsNote": "Vera 危機：push2 後；衝突 T5（打歌期陪伴邊界）。",
+      "artId": "rom_vera_crisis",
+      "conflict": "T5",
+      "romanceLine": "vera",
+      "arcBeat": "crisis",
+      "parallelOk": true
+    },
+    {
+      "id": "R_vera_ending",
+      "phase": "P5",
+      "title": "造型間收工",
+      "when": "1992",
+      "setting": "造型間收工",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "阿偉",
+        "Vera"
+      ],
+      "synopsis": "阿偉與 Vera 在造型間收工後獨處。兩人回望過去幾年的點滴，阿偉可以選擇確定關係，還是保持現狀。",
+      "beats": [
+        {
+          "speaker": "Vera",
+          "lines": [
+            "今天收工了，你還要趕下場嗎？"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉說不趕了，今晚留下來陪她。"
+          ]
+        },
+        {
+          "speaker": "Vera",
+          "lines": [
+            "這幾年看著你由臨記走到這裡，我其實很替你高興。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉說如果沒有她幫忙整理形象，他可能還是那個草根臨記。"
+          ]
+        },
+        {
+          "speaker": "Vera",
+          "lines": [
+            "那你自己？有沒有想過我們之間是什麼關係？"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_vera_ending_he",
+          "label": "確定關係：與 Vera 一起走下去",
+          "effects": {
+            "flags": [
+              "flag_vera_he",
+              "flag_vera_commit"
+            ],
+            "stats": {
+              "rel_vera": 3
+            },
+            "notes": "HE：信任形象夥伴；可與事業結局並存。"
+          }
+        },
+        {
+          "id": "C_vera_ending_be",
+          "label": "保持距離：專注事業，感情隨緣",
+          "effects": {
+            "flags": [
+              "flag_vera_be"
+            ],
+            "stats": {
+              "rel_vera": -2
+            },
+            "notes": "BE：工具化／疏離；可與事業結局並存。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_vera_be",
+        "flag_vera_commit",
+        "flag_vera_he"
+      ],
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_vera_stay",
+        "flag_vera_workfirst",
+        "flag_vera_honest",
+        "flag_vera_worktalk"
+      ],
+      "openConditionsNote": "Vera 結局：P5；建議危機或 push2 後。HE＝flag_vera_he＋flag_vera_commit；BE＝flag_vera_be。",
+      "artId": "rom_vera_ending",
+      "conflict": null,
+      "romanceLine": "vera",
+      "arcBeat": "ending",
+      "parallelOk": false
+    },
+    {
+      "id": "R_hiu_meet",
+      "phase": "P1",
+      "title": "廠景休息角初遇",
+      "when": "1988春",
+      "setting": "廠景休息角",
+      "eraTag": "era_1988_spring_grassroot",
+      "cast": [
+        "阿偉",
+        "林曉晴"
+      ],
+      "synopsis": "在廠景休息角，阿偉與同期臨記林曉晴初次碰面。她主動搭話，透露一些通告情報，似乎想交換消息。",
+      "beats": [
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "你也是今天才來這個廠景嗎？我剛才聽到助導說，下午那場戲需要多幾個臨記。",
+            "如果你有興趣，我可以幫你問問，不過你要快點決定，不然名額很快就被其他人搶走。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉謝謝林曉晴的情報，表示自己確實想多接通告，並反問她是否也這樣到處打聽。",
+            "他提議交換情報：她告知哪裡有機會，他也幫她留意其他廠景的需求。"
+          ]
+        },
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "好啊，我平時就是靠這樣互相通報，才接到比較多工作。",
+            "不過你要記住，有些助導比較挑剔，你要先打聽清楚他們的喜好，免得白走一趟。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉點頭說會小心，並稱讚她願意分享。",
+            "他答應以後有消息也會第一時間告訴她，大家互相幫忙。"
+          ]
+        },
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "那就這麼說定了。對了，你叫什麼名字？我以後怎麼找你？",
+            "我通常會在通告欄附近等消息，你可以來那裡找我。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_hiu_meet_a",
+          "label": "交換情報",
+          "effects": {
+            "flags": [
+              "flag_hiu_meet_exchange"
+            ],
+            "stats": {
+              "rel_hiu": 1
+            },
+            "notes": ""
+          }
+        },
+        {
+          "id": "C_hiu_meet_b",
+          "label": "客氣疏離",
+          "effects": {
+            "flags": [
+              "flag_hiu_meet_distant"
+            ],
+            "stats": {
+              "rel_hiu": 0
+            },
+            "notes": ""
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_hiu_meet_distant",
+        "flag_hiu_meet_exchange"
+      ],
+      "openConditions": [],
+      "openConditionsNote": "林曉晴認識節；廠景同期。無額外旗閘。",
+      "artId": "rom_hiu_meet",
+      "conflict": null,
+      "romanceLine": "hiu",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "playerOffer": false
+    },
+    {
+      "id": "R_hiu_push1",
+      "phase": "P1.5",
+      "title": "茶餐廳互相帶通告",
+      "when": "1988秋",
+      "setting": "茶餐廳／廠景後門",
+      "eraTag": "era_1988_autumn_unit",
+      "cast": [
+        "阿偉",
+        "林曉晴"
+      ],
+      "synopsis": "阿偉與林曉晴在茶餐廳碰面，互相分享通告情報。她提到一個試鏡機會，但名額有限，阿偉們之間出現微妙的競爭。",
+      "beats": [
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "我聽說下星期有個試鏡，是星河電視台的新劇，需要幾個年輕臨記。",
+            "我已經報了名，但如果你也想去，我們可以一起準備，不過名額好像只剩兩個。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉謝謝她的情報，覺得機會難得，並問她覺得應該怎樣準備。",
+            "他提到如果只有兩個名額，其中一個可能選不上，問她會否介意。"
+          ]
+        },
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "介意是一定有一點，但我們是朋友，總不能因為這樣就翻臉。",
+            "不如我們各自準備，到時看誰表現好，輸了的那個就幫對方慶祝。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉同意公平競爭，表示會好好準備，也希望她成功。",
+            "他再問這個角色需要什麼特質，提議互相給意見。"
+          ]
+        },
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "我覺得他們想要一個比較自然、不造作的臨記，所以我們要放鬆一點。",
+            "還有，記得穿得樸素一些，不要太花枝招展，免得搶了主角的風頭。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_hiu_push1_a",
+          "label": "幫她讓位／報料",
+          "effects": {
+            "flags": [
+              "flag_hiu_push1_help"
+            ],
+            "stats": {
+              "rel_hiu": 2
+            },
+            "notes": ""
+          }
+        },
+        {
+          "id": "C_hiu_push1_b",
+          "label": "自己先搶",
+          "effects": {
+            "flags": [
+              "flag_hiu_push1_self"
+            ],
+            "stats": {
+              "rel_hiu": -1,
+              "standing": 1
+            },
+            "notes": ""
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_hiu_push1_help",
+        "flag_hiu_push1_self"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_hiu_meet_exchange",
+        "flag_hiu_meet_distant"
+      ],
+      "openConditionsNote": "曉晴推進1：meet 後（已正式 flag_ 前綴；見 qa.flagAlias 遷移註）。",
+      "artId": "rom_hiu_push1",
+      "conflict": null,
+      "romanceLine": "hiu",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true
+    },
+    {
+      "id": "R_hiu_push2",
+      "phase": "P2",
+      "title": "夜班殺青後",
+      "when": "1989",
+      "setting": "夜班殺青後",
+      "eraTag": "era_1989_summer",
+      "cast": [
+        "阿偉",
+        "林曉晴"
+      ],
+      "synopsis": "夜班殺青後，阿偉與林曉晴一起收拾東西，氣氛輕鬆。她主動聊起私人生活，關係似乎可以更進一步。",
+      "beats": [
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "今晚的夜班真的很累，不過總算殺青了。你接下來有什麼打算？",
+            "我聽說附近有間糖水店開到很晚，要不要一起去吃點東西？"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉也覺得有點餓，並笑問她平時不是急着回家嗎。",
+            "他說如果不趕時間，可以慢慢聊，順便交換最近聽到的消息。"
+          ]
+        },
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "今天難得不用趕回家，可以放鬆一下。而且我有些心事想找人聊聊。",
+            "最近家裡有點事，讓我覺得壓力很大，不知道跟誰說比較好。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉說如果她願意講，自己可以聽；未必幫得上忙，但至少可以陪她聊聊。",
+            "他提議邊走邊說，糖水店應該還開着。"
+          ]
+        },
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "謝謝你，你人真的很好。其實也沒什麼大事，只是家人不太支持我做這行。",
+            "他們覺得做臨記不穩定，又辛苦，但我真的很喜歡演戲。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_hiu_push2_a",
+          "label": "約下次",
+          "effects": {
+            "flags": [
+              "flag_hiu_push2_date"
+            ],
+            "stats": {
+              "rel_hiu": 2
+            },
+            "notes": ""
+          }
+        },
+        {
+          "id": "C_hiu_push2_b",
+          "label": "只當同期",
+          "effects": {
+            "flags": [
+              "flag_hiu_push2_friend"
+            ],
+            "stats": {
+              "rel_hiu": 0
+            },
+            "notes": ""
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_hiu_push2_date",
+        "flag_hiu_push2_friend"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_hiu_push1_help",
+        "flag_hiu_push1_self"
+      ],
+      "openConditionsNote": "曉晴推進2：push1 後。",
+      "artId": "rom_hiu_push2",
+      "conflict": null,
+      "romanceLine": "hiu",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true
+    },
+    {
+      "id": "R_hiu_crisis",
+      "phase": "P4",
+      "title": "同場搶通告",
+      "when": "1991",
+      "setting": "同場搶通告／試鏡廊",
+      "eraTag": "era_1991_summer_anni",
+      "cast": [
+        "阿偉",
+        "林曉晴"
+      ],
+      "synopsis": "在試鏡廊，阿偉與林曉晴同時爭取一個重要的角色。兩人面對直接競爭，關係受到考驗。",
+      "beats": [
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "沒有想到我們會在這裡碰面，這個角色對我很重要，我已經準備了很久。",
+            "我知道你也想要這個機會，但我們只能有一個被選中，你會怎樣做？"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉表示明白她的心情，這個角色確實難得，但兩人都是專業的，應該公平競爭。",
+            "無論結果如何，他希望不會因為這件事影響關係。"
+          ]
+        },
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "你說得對，我們應該公平競爭。不過我真的很需要這個角色，希望你能理解。",
+            "如果我輸了，我可能會很難過，但我不會怪你。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉表示理解，自己也會盡力；無論誰被選中，都應該為對方高興。",
+            "他提議先專心準備，把最好的一面表現出來。"
+          ]
+        },
+        {
+          "speaker": "助導",
+          "lines": [
+            "兩位，準備進去了。記住，進去之後不要緊張，自然一點就好。",
+            "評審會看你們的臨場反應，所以放鬆心情，當作平常演戲就可以。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_hiu_crisis_a",
+          "label": "成全她",
+          "effects": {
+            "flags": [
+              "flag_hiu_crisis_yield"
+            ],
+            "stats": {
+              "rel_hiu": 2,
+              "standing": -1
+            },
+            "notes": ""
+          }
+        },
+        {
+          "id": "C_hiu_crisis_b",
+          "label": "硬搶同場",
+          "effects": {
+            "flags": [
+              "flag_hiu_crisis_fight"
+            ],
+            "stats": {
+              "rel_hiu": -2,
+              "standing": 2
+            },
+            "notes": ""
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_hiu_crisis_fight",
+        "flag_hiu_crisis_yield"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_hiu_push2_date",
+        "flag_hiu_push2_friend"
+      ],
+      "openConditionsNote": "曉晴危機：同場搶通告；push2 後。",
+      "artId": "rom_hiu_crisis",
+      "conflict": null,
+      "romanceLine": "hiu",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "pcSilent": true
+    },
+    {
+      "id": "R_hiu_ending",
+      "phase": "P5",
+      "title": "廠景天台",
+      "when": "1992",
+      "setting": "廠景天台",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "阿偉",
+        "林曉晴"
+      ],
+      "synopsis": "在廠景天台，阿偉與林曉晴回顧過去幾年的點滴，決定是否要確立關係。",
+      "beats": [
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "這幾年我們一起經歷了很多，從臨記到現在，大家都有了不少改變。",
+            "我不知道你有沒有想過，我們之間的關係可以走到哪裡？"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉說當然有想過，她一直是很重要的夥伴，也是他很在意的人。",
+            "如果她願意，他想兩人嘗試一起走下去，無論事業怎樣都互相支持。"
+          ]
+        },
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "聽到你這樣說，我很開心。其實我也一直很在意你，只是不敢開口。",
+            "不過我們都要想清楚，拍拖會不會影響工作？這行競爭很大，我怕兼顧不來。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉明白她的擔心，但覺得只要互相體諒，應該可以找到平衡。",
+            "而且有她在身邊支持，他反而更有動力去爭取機會。"
+          ]
+        },
+        {
+          "speaker": "林曉晴",
+          "lines": [
+            "你說得對，我們可以一起面對。那我們就試試看吧。",
+            "不過你要答應我，無論將來誰的事業發展得更好，都不要嫌棄對方。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_hiu_ending_he",
+          "label": "確定關係：同行情侶",
+          "effects": {
+            "flags": [
+              "flag_hiu_he",
+              "flag_hiu_commit"
+            ],
+            "stats": {
+              "rel_hiu": 3
+            },
+            "notes": "HE：互相成就；可與事業結局並存。"
+          }
+        },
+        {
+          "id": "C_hiu_ending_be",
+          "label": "保持距離：漸行漸遠",
+          "effects": {
+            "flags": [
+              "flag_hiu_be"
+            ],
+            "stats": {
+              "rel_hiu": -2
+            },
+            "notes": "BE：競爭撕破或淡友；可與事業結局並存。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_hiu_be",
+        "flag_hiu_commit",
+        "flag_hiu_he"
+      ],
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_hiu_crisis_fight",
+        "flag_hiu_crisis_yield",
+        "flag_hiu_push2_date",
+        "flag_hiu_push2_friend"
+      ],
+      "openConditionsNote": "曉晴結局：P5。HE／BE＋flag_hiu_commit。已正式 flag_ 前綴。",
+      "artId": "rom_hiu_ending",
+      "conflict": null,
+      "romanceLine": "hiu",
+      "arcBeat": "ending",
+      "parallelOk": false,
+      "pcSilent": true
+    },
+    {
+      "id": "R_choi_meet",
+      "phase": "P1",
+      "title": "片場採訪角的小訪",
+      "when": "1988夏",
+      "setting": "片場採訪角（C5小訪前後）",
+      "eraTag": "era_1988_summer_anni",
+      "cast": [
+        "阿偉",
+        "周采兒"
+      ],
+      "synopsis": "在片場採訪角，記者周采兒初次訪問阿偉。她問得直接，阿偉選擇坦誠回答還是官腔回應，影響她對阿偉的印象。",
+      "beats": [
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "你好，我是《星訊周刊》的記者周采兒，想問你幾條關於這套戲的問題，方便嗎？",
+            "聽說你在片場經常主動幫手，甚至會留下來看別人演戲，是為了偷師嗎？"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉解釋每個崗位都有值得學習的地方，留在現場可以觀察整個製作流程。",
+            "他補充導演有時會即興改劇本，想第一時間知道變化，免得跟不上。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "你這樣說，好像真的對演戲很有熱誠，不是隨便應付而已。",
+            "不過我採訪過很多新人，他們都說自己很努力，但真正做得到的沒有幾個。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉不敢說自己很努力，只是覺得既然入了這行，就想認真做好每一件事。",
+            "片場裡有很多前輩，經驗寶貴，他不想錯過學習的機會。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "你說話很坦白，我喜歡這種受訪者，至少不用我猜來猜去。",
+            "好，今天的訪問就到這裡，謝謝你接受我的採訪。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_choi_meet_a",
+          "label": "坦誠回答：分享真實想法",
+          "effects": {
+            "flags": [
+              "flag_choi_meet_honest"
+            ],
+            "stats": {
+              "rel_choi": 1,
+              "fame": 1
+            },
+            "notes": ""
+          }
+        },
+        {
+          "id": "C_choi_meet_b",
+          "label": "官腔保護：只說標準答案",
+          "effects": {
+            "flags": [
+              "flag_choi_meet_official"
+            ],
+            "stats": {
+              "rel_choi": 0,
+              "fame": 0
+            },
+            "notes": ""
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_choi_meet_honest",
+        "flag_choi_meet_official"
+      ],
+      "openConditions": [],
+      "openConditionsNote": "采兒認識節；可與 C5 交錯（方向性）。",
+      "artId": "rom_choi_meet",
+      "conflict": null,
+      "romanceLine": "choi",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "playerOffer": false
+    },
+    {
+      "id": "R_choi_push1",
+      "phase": "P1.5",
+      "title": "茶記的爆料交換",
+      "when": "1989",
+      "setting": "茶記／報館附近",
+      "eraTag": "era_1989_spring",
+      "cast": [
+        "阿偉",
+        "周采兒"
+      ],
+      "synopsis": "周采兒約阿偉在茶記見面，希望阿偉提供一些獨家消息。阿偉可以在不傷害他人的前提下給她方向，或拒絕提供。",
+      "beats": [
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "最近有傳聞說某劇組內部不和，你身在現場，有沒有聽到什麼風聲？",
+            "我不需要你指名道姓，只要給我一個方向，我自己會去查證。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉明白她想拿到獨家，但有些事牽涉別人的飯碗，不能亂說。",
+            "他可以指出問題不在演員身上，建議她從製作部門那邊打聽。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "你這樣說，我大概知道方向了，謝謝你願意相信我。",
+            "其實我也不想亂寫，但報館那邊催得很緊，有時候真的很難做。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉明白記者的壓力，但有些線真的不能越過。",
+            "他答應將來有適合的消息會通知她，前提是不傷害任何人。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "好，一言為定，我就等你這個獨家。",
+            "不過你也要小心，劇組裡面的人不一定個個都像你這樣想。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_choi_push1_a",
+          "label": "給她獨家方向：在不傷害人的前提下提供線索",
+          "effects": {
+            "flags": [
+              "flag_choi_give_tip"
+            ],
+            "stats": {
+              "rel_choi": 2,
+              "fame": 1
+            },
+            "notes": ""
+          }
+        },
+        {
+          "id": "C_choi_push1_b",
+          "label": "拒絕提供：保護劇組聲譽",
+          "effects": {
+            "flags": [
+              "flag_choi_refuse_tip"
+            ],
+            "stats": {
+              "rel_choi": 0,
+              "standing": 1
+            },
+            "notes": ""
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_choi_give_tip",
+        "flag_choi_refuse_tip"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_choi_meet_honest",
+        "flag_choi_meet_official",
+        "flag_choi_honest",
+        "flag_choi_spin",
+        "flag_choi_dodge"
+      ],
+      "openConditionsNote": "采兒推進1：meet 或主線 C5 采兒旗後（OR；含 C5 遷移旗 flag_choi_honest／spin／dodge，主線仍可能寫裸名，wiring 讀 alias）。",
+      "artId": "rom_choi_push1",
+      "conflict": null,
+      "romanceLine": "choi",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true
+    },
+    {
+      "id": "R_choi_push2",
+      "phase": "P2",
+      "title": "私下晚餐的試探",
+      "when": "1989",
+      "setting": "私下晚餐",
+      "eraTag": "era_1989_autumn",
+      "cast": [
+        "阿偉",
+        "周采兒"
+      ],
+      "synopsis": "周采兒約阿偉私下晚餐，氣氛曖昧。阿偉可以把這次當作真正的約會，或者當作採訪的延續。",
+      "beats": [
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "今晚不談工作，純粹吃飯，可以嗎？",
+            "其實我很少跟採訪對象單獨吃飯，你是第一個。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉半开玩笑說豈不是要覺得榮幸，又坦言很少跟記者私下見面。",
+            "既然不談工作，他提議聊聊生活。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "好啊，那你先說，你平常不用開工的時候會做什麼？",
+            "我猜你不是看電影就是看劇本，對不對？"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉說她猜對了一半：自己確實喜歡看電影，也喜歡去茶記坐坐、聽人聊天。",
+            "有時候在茶記聽到的對話，比劇本寫的還要真實。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "看來你真的很喜歡觀察人，這對演戲應該很有幫助。",
+            "不過今晚我們不談演戲，就談談你自己吧。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_choi_push2_a",
+          "label": "當真約會：放下記者與受訪者的身份",
+          "effects": {
+            "flags": [
+              "flag_choi_real_date"
+            ],
+            "stats": {
+              "rel_choi": 2
+            },
+            "notes": ""
+          }
+        },
+        {
+          "id": "C_choi_push2_b",
+          "label": "當採訪延續：保持專業距離",
+          "effects": {
+            "flags": [
+              "flag_choi_keep_professional"
+            ],
+            "stats": {
+              "rel_choi": 0
+            },
+            "notes": ""
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_choi_keep_professional",
+        "flag_choi_real_date"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_choi_give_tip",
+        "flag_choi_refuse_tip"
+      ],
+      "openConditionsNote": "采兒推進2：push1 後。",
+      "artId": "rom_choi_push2",
+      "conflict": null,
+      "romanceLine": "choi",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true
+    },
+    {
+      "id": "R_choi_crisis",
+      "phase": "P4",
+      "title": "周刊會議室的抉擇",
+      "when": "1991冬",
+      "setting": "周刊會議室（對齊C13真假緋聞）",
+      "eraTag": "era_1991_winter_gossip",
+      "cast": [
+        "阿偉",
+        "周采兒",
+        "周刊編輯"
+      ],
+      "synopsis": "周刊收到緋聞消息，編輯要求周采兒表態。阿偉必須決定公開真情還是公關切割，影響阿偉與她的關係及公眾形象。",
+      "beats": [
+        {
+          "speaker": "周刊編輯",
+          "lines": [
+            "采兒，現在有兩條路：一是你公開承認跟他的關係，我們做一個深情專訪；二是你否認，我們就寫成誤會一場。",
+            "你要想清楚，這關乎你的前途。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "我……我不想說謊，但也不想因為私事影響工作。",
+            "你覺得我們應該怎樣做？"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉不想她因為自己為難；如果她覺得否認比較好，自己可以配合。",
+            "但如果她選擇公開，他也會站在她身邊，不會讓她一個人面對。"
+          ]
+        },
+        {
+          "speaker": "周刊編輯",
+          "lines": [
+            "你們兩個要盡快決定，報館那邊明天就要交稿了。",
+            "采兒，你是我們報館的得力記者，我不想你因為這件事影響前途。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "多謝你這樣說，但我真的需要時間想一想。",
+            "我不想草率決定，畢竟這關乎我們兩個人的將來。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_choi_crisis_a",
+          "label": "公開真情：承認關係，共同面對",
+          "effects": {
+            "flags": [
+              "flag_public_romance"
+            ],
+            "stats": {
+              "rel_choi": 2,
+              "fame": 1
+            },
+            "notes": ""
+          }
+        },
+        {
+          "id": "C_choi_crisis_b",
+          "label": "公關切割：否認關係，保護事業",
+          "effects": {
+            "flags": [
+              "flag_choi_deny_romance"
+            ],
+            "stats": {
+              "rel_choi": -2,
+              "fame": 0
+            },
+            "notes": ""
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_choi_deny_romance",
+        "flag_public_romance"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_choi_real_date",
+        "flag_choi_keep_professional"
+      ],
+      "openConditionsNote": "采兒危機：push2 後；linksMain=C13（已有）。可與 C13 同步。",
+      "artId": "rom_choi_crisis",
+      "conflict": null,
+      "romanceLine": "choi",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "linksMain": [
+        "C13"
+      ],
+      "conflictNote": "SOFT_NITS: C13 進 linksMain（無 T 碼）",
+      "pcSilent": true
+    },
+    {
+      "id": "R_choi_ending",
+      "phase": "P5",
+      "title": "報館後巷的結局",
+      "when": "1992",
+      "setting": "報館後巷",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "阿偉",
+        "周采兒"
+      ],
+      "synopsis": "在報館後巷，阿偉與周采兒的關係迎來結局。可以選擇承諾未來，或分道揚鑣。",
+      "beats": [
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "經過這麼多事，我發現自己越來越難只把你當成採訪對象。",
+            "但我們的路，好像越來越難走在一起。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉知道這條路不容易，但如果兩人都願意堅持，總會有辦法。",
+            "他問她願不願意一起走下去。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "我當然想跟你一起走下去，但我怕我的工作會影響到你。",
+            "你也知道，記者這個行業，有時候真的身不由己。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉明白她的顧慮，但兩人可以一起想辦法，不一定要放棄其中一樣。",
+            "他從來沒有想過要她放棄工作。"
+          ]
+        },
+        {
+          "speaker": "周采兒",
+          "lines": [
+            "你真的這樣想？不會覺得我太自私？",
+            "其實我最怕的就是你覺得我不夠重視你。"
+          ]
+        },
+        {
+          "speaker": "旁白",
+          "lines": [
+            "阿偉說認識她的時候，她就是一個對工作認真的人，這也是他欣賞的地方。",
+            "只要坦誠相對，他相信沒有解決不了的問題。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_choi_ending_he",
+          "label": "承諾未來：低調真情",
+          "effects": {
+            "flags": [
+              "flag_choi_he",
+              "flag_choi_commit"
+            ],
+            "stats": {
+              "rel_choi": 3
+            },
+            "notes": "HE：公開或低調真情；可與事業結局並存。"
+          }
+        },
+        {
+          "id": "C_choi_ending_be",
+          "label": "分道揚鑣：公關犧牲感情",
+          "effects": {
+            "flags": [
+              "flag_choi_be"
+            ],
+            "stats": {
+              "rel_choi": -2
+            },
+            "notes": "BE：頭條換關係失敗；可與事業結局並存。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_choi_be",
+        "flag_choi_commit",
+        "flag_choi_he"
+      ],
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_public_romance",
+        "flag_choi_deny_romance",
+        "flag_choi_real_date",
+        "flag_choi_keep_professional"
+      ],
+      "openConditionsNote": "采兒結局：P5。HE／BE＋flag_choi_commit。",
+      "artId": "rom_choi_ending",
+      "conflict": null,
+      "romanceLine": "choi",
+      "arcBeat": "ending",
+      "parallelOk": false,
+      "pcSilent": true
+    }
+  ],
+  "qa": {
+    "banned_scan_body": "pass",
+    "oral_leftover": [],
+    "deepseek_calls": 5,
+    "models": {
+      "vera": "deepseek-chat",
+      "hiu": "deepseek-chat",
+      "choi": "deepseek-chat",
+      "expand_hiu": "deepseek-chat",
+      "expand_choi": "deepseek-chat"
+    },
+    "lexicon": "COPY_STYLE_HK_LEXICON.md",
+    "avg_line_len": 26.1,
+    "node_count": 15,
+    "lines": {
+      "vera": 5,
+      "hiu": 5,
+      "choi": 5
+    },
+    "arc": "meet→push×2→crisis→ending(HE/BE); parallelOk until ending",
+    "effects_note": "all choices have flags + stats with rel_*",
+    "soft_nits_fix": "v2",
+    "flagAlias": {
+      "choi_deny_romance": "flag_choi_deny_romance",
+      "choi_dodge": "flag_choi_dodge",
+      "choi_give_tip": "flag_choi_give_tip",
+      "choi_honest": "flag_choi_honest",
+      "choi_keep_professional": "flag_choi_keep_professional",
+      "choi_meet_honest": "flag_choi_meet_honest",
+      "choi_meet_official": "flag_choi_meet_official",
+      "choi_real_date": "flag_choi_real_date",
+      "choi_refuse_tip": "flag_choi_refuse_tip",
+      "choi_spin": "flag_choi_spin",
+      "hiu_crisis_fight": "flag_hiu_crisis_fight",
+      "hiu_crisis_yield": "flag_hiu_crisis_yield",
+      "hiu_meet_distant": "flag_hiu_meet_distant",
+      "hiu_meet_exchange": "flag_hiu_meet_exchange",
+      "hiu_push1_help": "flag_hiu_push1_help",
+      "hiu_push1_self": "flag_hiu_push1_self",
+      "hiu_push2_date": "flag_hiu_push2_date",
+      "hiu_push2_friend": "flag_hiu_push2_friend"
+    },
+    "flagAliasNote": "SOFT_NITS_FIX_v2：nodes 內 effects／flags_written／openConditionsAny 已全部改為 flag_ 前綴；本表留舊→新遷移對照（含 C5 讀閘 choi_honest／spin／dodge）。主線 C5 仍可能寫裸名，wiring 須讀 alias。",
+    "choi_choice_id_renames": {
+      "R_choi_meet_a": "C_choi_meet_a",
+      "R_choi_meet_b": "C_choi_meet_b",
+      "R_choi_push1_a": "C_choi_push1_a",
+      "R_choi_push1_b": "C_choi_push1_b",
+      "R_choi_push2_a": "C_choi_push2_a",
+      "R_choi_push2_b": "C_choi_push2_b",
+      "R_choi_crisis_a": "C_choi_crisis_a",
+      "R_choi_crisis_b": "C_choi_crisis_b"
+    },
+    "choi_crisis_linksMain": [
+      "C13"
+    ],
+    "pcSilent_hiu_choi": true,
+    "player_beats": "speaker「我」→旁白（第三人稱阿偉）",
+    "wiring_openConditions": {
+      "version": "v2",
+      "nodesWithOC": 15,
+      "softHoldCleared": [
+        "裸前綴 flags",
+        "Vera speaker 阿偉對白"
+      ],
+      "softHoldRemain": [
+        "鄧節序並放（他包）",
+        "出圖"
+      ]
+    },
+    "pcSilent_vera": "speaker「阿偉」→旁白（第三人稱敘；pcSilent 維持原值）"
+  },
+  "models": {
+    "vera": "deepseek-chat",
+    "hiu": "deepseek-chat",
+    "choi": "deepseek-chat",
+    "expand_hiu": "deepseek-chat",
+    "expand_choi": "deepseek-chat"
+  },
+  "finish_reasons": {
+    "vera": "stop",
+    "hiu": "stop",
+    "choi": "stop",
+    "expand_hiu": "stop",
+    "expand_choi": "stop"
+  },
+  "rule": "確定關係前可平行；ending 寫 flag_*_commit／HE／BE，愛情與事業結局並存。",
+  "conditionSchema": {
+    "version": 1,
+    "semantics": "openConditions＝AND 清單（全過才開）；空 []＝無額外閘（仍受 phase／when 約束）。openConditionsAny＝可選 OR 清單：若有，須至少中一項，並與 openConditions 同時成立。tokens：C*／R_*／A_*＝該節完成；flag_*／裸前綴／route_*＝旗標真；rel_*_threshold＝關係數值達門檻（見 thresholds 或檔級，playtest）；phase_P*＝當前 phase 已達；era_*／season_*＝季節／時代軟匹配。與 Tang 陣列 schema 相容；Tang push 仍只用 openConditions AND。",
+    "flagAlias": "qa.flagAlias：裸前綴↔flag_*；本輪不 rename flags_written"
+  },
+  "edits": [
+    "v1.2 wiring：15 節補 openConditions／Any／Note；對白與裸前綴旗未改（Soft HOLD）",
+    "v1.3 SOFT_NITS_FIX_v2：hiu／choi 裸旗→flag_；Vera speaker 阿偉→旁白第三人稱；qa.flagAlias 改遷移註",
+    "v1.3.1 PLAYER_OFFER_MEET_v1：R_vera/hiu/choi_meet playerOffer=false（平行 meet 唔自動推）"
+  ]
+}

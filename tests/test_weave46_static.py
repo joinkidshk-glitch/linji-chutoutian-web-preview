@@ -79,15 +79,25 @@ hints = hm.group(1) if hm else ''
 ok('STORY_HINT_SOFT extractable (comments stripped)', bool(hints))
 seg_start = hints.index('C7: { playerHint: "黑雨殺到') if 'C7: { playerHint: "黑雨殺到' in hints else -1
 seg = hints[seg_start:] if seg_start >= 0 else ''
+# v20a31（Phase 4-8）申報：STORY_HINT_SOFT 之後加咗 C12–C16 entry，其中 C12／C16 係樂壇節點，
+# 提示正當地引用「唱片公司」場地（陸柏言／程天諾本業，唔關藍事）。呢段斷言嘅原意係驗
+# C7–C11 段冇藍歌手向殘留，所以範圍收窄到 C15 entry 之前，語義不變。
+seg_end = seg.index('C15: { playerHint:') if 'C15: { playerHint:' in seg else len(seg)
+seg = seg[:seg_end]
 ok('hint C7-C11 segment found', bool(seg))
 ok('hint segment has C11 entry', 'C11: { playerHint:' in seg)
 for stale in ['藍若曦', '擋狗仔', '狗仔', '雷勁', '唱片', '台慶', '文藝']:
     ok('hint C7-C11 free of singer-era text: '+stale, stale not in seg)
 
-# ---- 藍若曦全檔核實（去註解後）：只准剩引擎基建出現處，唔准帶歌手向字眼 ----
+# ---- 藍若曦全檔核實（去註解後）：引擎基建＋v20a31 PA 線內容（ROMANCE_LAN_PA_OVERRIDES）之外唔准出現，全部唔准帶歌手向字眼 ----
+# v20a31 申報：藍感情線已按拍板 PA 版上線，佢個名正當地出現喺 PA 覆寫內容入面（場記身份）；
+# 原斷言「只准引擎基建」按新現實放寬到「基建＋PA 覆寫表」，「零歌手向」嗰半保留不變。
+_lan_i = nocomment.find('const ROMANCE_LAN_PA_OVERRIDES = {')
+_lan_j = nocomment.find('function applyStorySpineOverrides48', _lan_i) if _lan_i >= 0 else -1
+lan_block = nocomment[_lan_i:_lan_j] if (_lan_i >= 0 and _lan_j > _lan_i) else ''
 lan_lines = [ln for ln in nocomment.splitlines() if '藍若曦' in ln]
-ok('藍若曦 remaining occurrences are engine infra only',
-   all(('lan_ruoxi' in ln) or ('lan:"藍若曦"' in ln) for ln in lan_lines) and len(lan_lines) <= 4)
+ok('藍若曦 remaining occurrences are engine infra or PA-line content (v20a31)',
+   all(('lan_ruoxi' in ln) or ('lan:"藍若曦"' in ln) or (ln in lan_block) for ln in lan_lines))
 ok('藍若曦 occurrences carry no singer framing',
    all(not any(w in ln for w in ['歌手', '唱片', '狗仔', '宣傳場', '玉女']) for ln in lan_lines))
 
