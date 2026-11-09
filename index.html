@@ -4504,6 +4504,37 @@ body.day-res-open .day-row{
 }
 .slot-list .slot-row .slot-meta{ color:#dccba6; }
 /* === v20a53 完 === */
+/* === v20a54 新 UI 皮膚層（大地圖紙面填充＋入圖空白兜底） ===
+   用戶 2026-11-09 實機：高身手機入地圖，幅圖（自然比例 contain、闊度-bound）
+   填唔滿可用高度，.map-polaroid 透明、.map-well 又啱啱等於舞台大細，
+   剩低嘅面積全部透出 .map-wrap 嘅深色底 #2a2622（v19z20），下方成截深色
+   虛空（實測截圖：圖 19.9%→74.0% 之後到瀏覽器欄都係深色，約 18–28% 畫面）。
+   修法（跟已拍板設計語言：地圖＝一張實物紙本地圖）：純油漆層——
+   (1) .map-wrap 底改成同幅圖本身紙色（#F8EAD0）一致嘅紙面（纖維紋＋
+       漸變＋下方淡淡羅盤玫瑰＋「香江 · 一九八八」SVG 印字），所有透出
+       嚟嘅面積即刻變成同一張紙，唔再係深色虛空；
+   (2) .map-polaroid 加內框（紙邊＋啡線），成張紙有印刷邊界；
+   (3) .map-well／.map-stage／.map-img 底改紙色——幅圖未 paint 嗰陣
+       舞台係紙，唔係深藍黑（配合 boot 預解碼，見主 script v20a54 接線）。
+   紅線：全部只改 background／box-shadow 呢類油漆屬性，唔郁任何
+   margin／padding／flex／width／height／position——舞台幾何同 v20a43
+   定案逐像素一致，13 個熱區百分比對位零偏移。細節見 NOTES_V20A54_MAP_FILL.md。 */
+#app .map-wrap{
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='168' viewBox='0 0 150 168'%3E%3Cg fill='none' stroke='%237a6036' stroke-opacity='.5'%3E%3Ccircle cx='75' cy='58' r='46' stroke-width='1.5'/%3E%3Ccircle cx='75' cy='58' r='37' stroke-width='.75'/%3E%3C/g%3E%3Cpath d='M75 12 L83.5 49.5 L112 58 L83.5 66.5 L75 104 L66.5 66.5 L38 58 L66.5 49.5 Z' fill='%237a6036' fill-opacity='.48'/%3E%3Cpath d='M75 30 L80.5 52.5 L103 58 L80.5 63.5 L75 86 L69.5 63.5 L47 58 L69.5 52.5 Z' fill='%237a6036' fill-opacity='.3' transform='rotate(45 75 58)'/%3E%3Ccircle cx='75' cy='58' r='3' fill='%237a6036' fill-opacity='.55'/%3E%3Cpath d='M45 124 H105' stroke='%237a6036' stroke-opacity='.45' stroke-width='.75'/%3E%3Ctext x='75' y='148' text-anchor='middle' font-family='serif' font-size='15' letter-spacing='4' fill='%237a6036' fill-opacity='.68'%3E香江 · 一九八八%3C/text%3E%3C/svg%3E") center 88% / 150px 168px no-repeat,
+    repeating-linear-gradient(93deg, rgba(122,96,54,.030) 0 2px, rgba(122,96,54,0) 2px 5px),
+    repeating-linear-gradient(177deg, rgba(122,96,54,.022) 0 1px, rgba(122,96,54,0) 1px 4px),
+    radial-gradient(135% 100% at 50% 0%, #faf1da 0%, #f6ead2 55%, #eee0c0 100%) !important;
+}
+#app .map-polaroid{
+  box-shadow:
+    inset 0 0 0 6px rgba(246,234,210,.92),
+    inset 0 0 0 7px rgba(122,96,54,.42) !important;
+}
+#app .map-well{ background:#f3e7c9 !important; }
+#app .map-stage{ background:#f3e7c9 !important; }
+#app .map-img{ background:#f3e7c9; }
+/* === v20a54 完 === */
 </style>
 </head>
 <body>
@@ -38999,6 +39030,12 @@ const _sh=document.getElementById("start-hero"); if(_sh && PORTRAITS.hero_awi) _
 const _sbg52=document.getElementById("start-bg"); if(_sbg52 && typeof UI40_SCENE!=="undefined" && UI40_SCENE.studio) _sbg52.src=UI40_SCENE.studio;
 const _sst52=document.getElementById("start-standee"); if(_sst52 && typeof UI40_STAND!=="undefined" && UI40_STAND.awi) _sst52.src=UI40_STAND.awi;
 const _mi=document.getElementById("map-img"); if(_mi){ _mi.onload=()=>{ try{ drawMap(); }catch(e){} }; _mi.src = (typeof MAP_IMG!=="undefined"&&MAP_IMG)?MAP_IMG:"assets/hk_map.jpg"; }
+/* v20a54：開始畫面階段就預解碼幅地圖圖——#v-map 隱藏嗰陣瀏覽器（尤其 WebKit）
+   唔會 decode 定 display:none 入面嘅圖，切入地圖先至即場解碼＋raster，
+   就係用戶見到「banner（toast）已出、地圖下面空白幾秒」嗰個 gap。
+   喺 boot 呢度對真身 #map-img 同一個 detached Image 各呼叫 decode()，
+   等 bitmap 喺玩家仲喺開始畫面嗰陣已經 ready；純呈現接線，唔掂任何邏輯。 */
+try{ if(_mi && _mi.decode) _mi.decode().catch(()=>{}); if(_mi && _mi.src){ const _pm=new Image(); _pm.src=_mi.src; if(_pm.decode) _pm.decode().catch(()=>{}); } }catch(_e){}
 try{ applyPrefsChrome(); }catch(_e){}
 (function paintTitleSaveBtns(){
   const has = hasSave();

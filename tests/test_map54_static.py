@@ -1,0 +1,71 @@
+# v20a54 大地圖紙面填充＋預解碼 靜態測試。
+# 用法：python3 tests/test_map54_static.py [path-to-index.html]
+import sys
+
+path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
+html = open(path, encoding='utf-8').read()
+fails = []
+def ok(name, cond):
+    print(('PASS ' if cond else 'FAIL ') + name)
+    if not cond:
+        fails.append(name)
+
+def seg(start, end=None, src=None):
+    src = html if src is None else src
+    try:
+        i = src.index(start)
+    except ValueError:
+        return ''
+    try:
+        j = src.index(end, i) if end else len(src)
+    except ValueError:
+        j = len(src)
+    return src[i:j]
+
+v54 = seg('/* === v20a54 新 UI 皮膚層', '/* === v20a54 完 === */')
+ok('v54 segment present', bool(v54))
+try:
+    _tail = html[html.index('</style>') - 2500:html.index('</style>')]
+    _last = 'v20a54 完' in _tail and html.index('/* === v20a54 完 === */') < html.index('</style>')
+except ValueError:
+    _last = False
+ok('v54 segment is last skin before </style>', _last)
+
+# ---- 1. 紙面填充（只准油漆屬性） ----
+wrap = seg('#app .map-wrap{', '}', v54)
+ok('wrap paper rule inside v54', bool(wrap))
+ok('wrap has compass SVG layer', "data:image/svg+xml" in wrap and '香江' in wrap)
+ok('wrap has fiber gradients + cream radial', 'repeating-linear-gradient(93deg' in wrap and 'radial-gradient(' in wrap and '#f6ead2' in wrap)
+ok('wrap rule is background-only (no layout props)', not any(k in wrap for k in ('margin:', 'padding:', 'flex:', 'height:', 'width:', 'position:', 'display:')))
+pol = seg('#app .map-polaroid{', '}', v54)
+ok('polaroid inner frame is box-shadow only', 'box-shadow' in pol and 'inset 0 0 0 6px' in pol and not any(k in pol for k in ('margin:', 'padding:', 'flex:', 'height:', 'width:')))
+ok('well paper backing', '#app .map-well{ background:#f3e7c9 !important; }' in v54)
+ok('stage paper backing', '#app .map-stage{ background:#f3e7c9 !important; }' in v54)
+ok('img paper backing', '#app .map-img{ background:#f3e7c9; }' in v54)
+
+# ---- 2. v20a43 舞台幾何定案原封（紅線） ----
+v43 = seg('/* === v20a43 新 UI 皮膚層', '/* === v20a43 皮膚層完 === */')
+ok('v43 segment present', bool(v43))
+ok('v43 stage width/height auto intact', '#app .map-stage{\n  width:100% !important;\n  height:auto !important;\n}' in v43)
+ok('v43 img contain intact', 'object-fit:contain !important' in v43 and 'height:auto !important' in v43)
+ok('v43 hotzone 52px intact', 'width:52px !important' in v43 and 'height:52px !important' in v43)
+ok('v43 area list still hidden (no resurrection)', '#app #map-area-list{ display:none !important; }' in v43)
+ok('v43 legend still hidden', '#app #map-legend{ display:none !important; }' in v43)
+ok('v54 adds no map-area-list resurrection', 'map-area-list' not in v54)
+
+# ---- 3. 預解碼接線 ----
+wire = seg('/* v20a54：開始畫面階段就預解碼', 'catch(_e){}')
+ok('predecode wiring present', bool(wire))
+ok('predecode calls decode on #map-img', '_mi.decode().catch(()=>{})' in wire)
+ok('predecode detached Image too', 'new Image()' in wire and '_pm.decode().catch(()=>{})' in wire)
+ok('boot img src wiring intact', 'const _mi=document.getElementById("map-img"); if(_mi){ _mi.onload=' in html)
+
+# ---- 4. 紅線守護（承前版） ----
+ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
+ok('push-door z-15 intact (v51)', '.push-door{' in html)
+ok('studio scene embedded (v53)', 'studio:"data:image/jpeg;base64,' in html)
+ok('new title present', '<title>臨記埋位' in html)
+ok('old name absent player-facing', '臨記出頭天' not in seg('<title>', '</title>'))
+
+print('TOTAL FAILS:', len(fails))
+sys.exit(1 if fails else 0)
