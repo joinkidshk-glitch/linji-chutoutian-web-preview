@@ -3959,19 +3959,28 @@ body.day-res-open .day-row{
    CJK 字頂筆劃貼住畫面頂緣似被裁；meta 細字同標題同行並排、只得 75% 不透明米色
    壓喺漸變最淺處，實機幾乎睇唔到（驗收描述為「被標題遮住」）；.sp-progress 同病。
    改：meta／h3／progress 逐行 block 疊排、頂距 12px＋safe-area、h3 line-height:1.4、
-   細字不透明度提到 .92／.95 兼加文字陰影補對比、漸變頂端略加深。詳見 NOTES_V20A44。 */
+   細字不透明度提到 .92／.95 兼加文字陰影補對比、漸變頂端略加深。詳見 NOTES_V20A44。
+   v20a46 根因更正（見 NOTES_V20A46_HEAD_FIX.md）：v20a44 改嘅排版唔係主因——真兇係
+   行 1755／1759 兩條通用 modal 排版規則帶 !important 強制深色：
+   #mask:not(.tut-on) .modal h3{color:#1A1A2E !important}、
+   #mask:not(.tut-on) .modal p{color:#3a2e22 !important}。
+   .sp-head 嘅 h3／p（meta／progress）顏色被佢哋壓死，本層淺色（冇 !important）從來冇生效過；
+   只有 .sp-setting 係 div、唔中招，顏色正常——正係實機「得描述行睇得清」嘅對照組。
+   v20a44 嘅對比/不透明度調整因此注定冇效。修：本層三條 color 加 !important（特異度
+   (1,3,1)／(1,4,0) 高過對方 (1,2,1)，同為 !important 時本層勝）、漸變加深加厚到
+   progress 行都有底色、頂距 12→18px 畀字頂真緩衝。 */
 #mask.story-play-on .story-play .sp-head{
   position:absolute;top:0;left:0;right:0;z-index:6;pointer-events:none;
-  padding:calc(12px + env(safe-area-inset-top,0px)) 12px 18px;
-  background:linear-gradient(180deg,rgba(12,8,4,.66) 0%,rgba(12,8,4,.3) 62%,rgba(12,8,4,0) 100%);
+  padding:calc(18px + env(safe-area-inset-top,0px)) 12px 18px;
+  background:linear-gradient(180deg,rgba(10,6,3,.84) 0%,rgba(10,6,3,.6) 52%,rgba(10,6,3,.34) 78%,rgba(10,6,3,0) 100%);
   color:#f5ead2;
 }
 #mask.story-play-on .story-play .sp-head .sp-meta{
-  display:block;margin:0 0 2px;font-size:.66rem;color:rgba(245,234,210,.92);
+  display:block;margin:0 0 2px;font-size:.66rem;color:rgba(245,234,210,.92) !important;
   text-shadow:0 1px 2px rgba(0,0,0,.6);
 }
 #mask.story-play-on .story-play .sp-head h3{
-  display:block;margin:0;font-size:.92rem;line-height:1.4;color:#f8efdb;text-shadow:0 1px 3px rgba(0,0,0,.5);
+  display:block;margin:0;font-size:.92rem;line-height:1.4;color:#f8efdb !important;text-shadow:0 1px 3px rgba(0,0,0,.5);
 }
 #mask.story-play-on .story-play .sp-head .sp-setting{
   margin:3px 0 0;padding:3px 7px;font-size:.68rem;line-height:1.35;color:rgba(248,239,219,.92);
@@ -3979,7 +3988,7 @@ body.day-res-open .day-row{
   max-height:2.7em;overflow:hidden;
 }
 #mask.story-play-on .story-play .sp-progress{
-  display:block;margin:2px 0 0;font-size:.66rem;color:rgba(245,234,210,.95);
+  display:block;margin:2px 0 0;font-size:.66rem;color:rgba(245,234,210,.95) !important;
   text-shadow:0 1px 2px rgba(0,0,0,.6);
 }
 /* --- 舞台：全屏底層 --- */
