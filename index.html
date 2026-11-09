@@ -21914,6 +21914,13 @@ function dateObj(){
   const dt = new Date(START.y, START.m-1, START.d + ((S&&S.dayIndex)||0));
   return dt;
 }
+/* Weave Phase 4-1（v20a24）：年份閘基建——真日曆年份（dateObj，唔經 soft display 改月份）
+   ＋現行季節標籤（calendarSeason）。跨年內容（鏈 F 移民潮等）以此判斷年份；
+   唔好用 displayDateObj：soft 預覽會改月份，年份閘會失真。 */
+function yearSeasonNow(){
+  const dt = dateObj();
+  return { year: dt.getFullYear(), season: (typeof calendarSeason==="function") ? calendarSeason() : "" };
+}
 /* Soft display only. Week／dayIndex stay on the real clock so week-gate does not move.
    A week-10 seed is May on the 1988-03-07 clock, while the season label is 秋／冬. */
 function displayDateObj(){
@@ -27258,6 +27265,18 @@ const MOCK_RUMOR_SEEDS = [
   { id:"rumor_chung_invest_spring", source:"何生事務所", title:"鍾楚凝帶資進組", text:"鍾楚凝阿爸係地產商，投資咗套新戲，條件係要阿女做女一。", state:"merged", season:"春（新戲開鏡）" },
   { id:"rumor_ku_overwork_summer", source:"金龍茶餐廳", title:"顧明輝軋戲爆煲", text:"顧明輝一日軋三組戲，喺車房瞓著咗錯過通告，幾邊導演都嬲。", state:"normal", season:"夏（拍攝旺季）" },
 ];
+/* ===== Weave Phase 4-1（v20a24）：鏈 F 移民潮第 1 拍——1989 年起茶餐廳氛圍碎片。
+   純襯底：唔入 MERGE_PAIRS、唔置任何情報旗、無 fameDelta（跟一般種子形狀）。
+   由 ensureMockJournal 喺 yearSeasonNow().year>=1989 時補種（固定 id 去重，只入一次，舊檔唔重複）。
+   文案守則：市井口吻＋泛稱／虛構人物；唔用真藝名；顯示經 displayRumor（家庭友善過濾一致）。 ===== */
+const EXODUS_RUMOR_SEEDS = [
+  { id:"rumor_exodus_setdresser_van", source:"金龍茶餐廳", title:"場記全家去溫哥華", text:"聽講隔離組個場記全家去咗溫哥華，臨走嗰晚成組人喺廟街大排檔同佢食咗餐送行飯。", state:"normal", season:"" },
+  { id:"rumor_exodus_sell_flat", source:"金龍茶餐廳", title:"邊個賣咗層樓", text:"鄰枱個燈光師話，佢表哥賣咗層樓，攞住筆錢一家大細過去加拿大重新嚟過，話層樓唔賣唔夠錢落地。", state:"normal", season:"" },
+  { id:"rumor_exodus_cha_keeper", source:"金龍茶餐廳", title:"阿成做到月底就走", text:"金龍伙記阿成話做到月底就唔做，表姐喺多倫多幫佢搵到位，老闆娘愁住去邊度搵人頂佢嗰更。", state:"normal", season:"" },
+  { id:"rumor_exodus_airport_runs", source:"金龍茶餐廳", title:"夜晚車人去送機", text:"的士佬吹水話，近排夜晚成日車人去啟德送機，一個月車咗四五轉，個個上車都眼濕濕，落車就講「第日過去探你」。", state:"normal", season:"" },
+  { id:"rumor_exodus_crew_shortage", source:"金龍茶餐廳", title:"片場開始唔夠人", text:"副導嚟飲茶呻，兩個武師一個場務都話年尾走，開新戲要周圍借人，話而家人手一日少過一日。", state:"normal", season:"" },
+  { id:"rumor_exodus_passport_talk", source:"金龍茶餐廳", title:"人人研究入籍", text:"茶客講移民講到口水花噴噴，有人話唔係想走，係買個保險，攞住本外國護照，瞓覺都安樂啲。", state:"normal", season:"" },
+];
 const MOCK_DEBT_SEEDS = [
   /* v19w playtest：開局唔再塞逾期債；教學完成拼合後先可記一筆「何生教學債」 */
 ];
@@ -27324,6 +27343,15 @@ function ensureMockJournal(){
     const frag=MERGE_FRAGS[i];
     if(!S.mockRumors.some(r=>r && r.id===frag.id)){
       S.mockRumors.unshift({ id:frag.id, source:frag.source, title:frag.title, text:frag.text, state:"normal", season:"", seeded:true, tutorialSeed:true });
+    }
+  }
+  /* Weave Phase 4-1（v20a24）：鏈 F 第 1 拍——1989 年起補種移民潮氛圍碎片。
+     年份閘行真日曆（yearSeasonNow）；1988 年完全唔入池。固定 id 去重，舊檔跨年後只補一次。 */
+  if(typeof yearSeasonNow==="function" && typeof EXODUS_RUMOR_SEEDS!=="undefined" && yearSeasonNow().year>=1989){
+    for(const seed of EXODUS_RUMOR_SEEDS){
+      if(seed && !S.mockRumors.some(r=>r && r.id===seed.id)){
+        S.mockRumors.push({ id:seed.id, source:seed.source, title:seed.title, text:seed.text, state:"normal", season:"", seeded:true });
+      }
     }
   }
   syncNotebookMirror();
@@ -29873,6 +29901,7 @@ const PAPER_SIDE_ITEMS = [
   { h:"卡拉 OK 新店佐敦開張，後生仔女排隊試唱", d:"老闆話房間裝修跟足日本款，有成班後生訂房訂到下個月。", fromYear:1989 },
   { h:"移民講座場場爆滿，顧問公司廣告登到上副刊", d:"茶餐廳入面十枱有三枱講移民，有人話唔係想走，係買個保險。", fromYear:1989 },
   { h:"酒樓散席飯訂枱急升，經理話做到手軟", d:"有經理話近排啲圍餐十居其九係送行宴，食到尾總有人眼濕濕。", fromYear:1989 },
+  { h:"某武師舉家移民，劇組筵開三席送行", d:"監製話佢嗰身功夫唔係咁易搵人替，嗰晚成班武師輪住嚟敬佢，話去到外國都要記住清水灣呢班兄弟。", fromYear:1989 },
   { h:"程天諾接拍汽水廣告，新人王氣勢逼人", d:"廣告商話就係睇中佢後生夠活力，廣告未出街，學校門口已經貼滿佢啲相。", fromYear:1990 },
   { h:"啟德機場送機大堂日日人山人海", d:"有送機嘅人話，而家去機場唔係旅行，係送親戚，一送就唔知幾時先再見。", fromYear:1990 },
   { h:"賀歲片搶檔期傳到熱哄哄，院線排片傷腦筋", d:"邊套賀歲、邊套押後，戲院經理話排到聖誕都未排得晒，年尾有排煩。" },
