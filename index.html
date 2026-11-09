@@ -26298,6 +26298,22 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
   saveQ();
 }
 
+/* v20a38 收尾修復 3：手帳拍攝中卡嘅「殺青後入帳」標示。
+   v20a37 將標示加咗落拍攝簿（showJobs）張卡，但玩家日常喺手帳行程編排見到嗰張
+   拍攝中卡係 workItems 出嘅（檔期／進度／限期／違約金），嗰張冇呢行。
+   數字用返 shoot record 已存嘅 pay／fame／popularity（同 showJobs 同源）；
+   舊 record 缺數 → 只出定性版「殺青後入帳」，唔出 NaN。 */
+function shootPendingLine38(sh){
+  if(!sh) return "";
+  const num = v => (typeof v==="number" && Number.isFinite(v)) ? v : null;
+  const pay = num(sh.pay), fame = num(sh.fame), pop = num(sh.popularity);
+  if(pay==null && fame==null && pop==null) return "殺青後入帳";
+  const bits = [];
+  if(pay!=null) bits.push(`約酬 $${pay.toLocaleString()}`);
+  if(fame!=null) bits.push(`聲望 +${fame}`);
+  if(pop!=null) bits.push(`人氣 +${pop}`);
+  return "殺青後入帳：" + bits.join(" · ");
+}
 function workItems(){
   const items=(S.booked||[]).map(b=>({
     id:"job:"+b.gigId, icon:"🎬", name:b.title,
@@ -26306,9 +26322,10 @@ function workItems(){
   // shoots are locked on calendar; show as info-only rows with disabled assign via id shoot
   (S.shoots||[]).forEach(sh=>{
     const hud = (typeof shootDeadlineHud==="function") ? shootDeadlineHud(sh) : "";
+    const pend = (typeof shootPendingLine38==="function") ? shootPendingLine38(sh) : "";
     items.push({
       id:"shoot:"+sh.id, icon:"🎥", name:`拍攝中：${sh.title}`,
-      hint:`檔期已定：共 ${sh.totalDays} 日製作 · 進度 ${sh.doneDays||0}/${sh.totalDays} · 剩餘 ${Math.max(0,(sh.totalDays||0)-(sh.doneDays||0))} 日`+(hud?` · ${hud}`:""),
+      hint:`檔期已定：共 ${sh.totalDays} 日製作 · 進度 ${sh.doneDays||0}/${sh.totalDays} · 剩餘 ${Math.max(0,(sh.totalDays||0)-(sh.doneDays||0))} 日`+(hud?` · ${hud}`:"")+(pend?` · ${pend}`:""),
       locked:true
     });
   });
@@ -31304,17 +31321,88 @@ const PSR_EXTRA_TEMPLATES_35 = {
   ]
 };
 const _psrLastPick35 = {};
+/* ===== v20a38 收尾修復 1：殺青反響跨次記憶 =====
+   v20a35/37 嘅防重複只有 session 內 _psrLastPick35（記最近 1 張、唔入存檔），
+   跨殺青實機仍然出現第 1、3 次逐字相同（收視關注／電視週刊各中一次）。
+   改法：S.psrRecent38[channel] 存最近 3 張出過嘅卡 id（入存檔、跨 session 有效）；
+   抽選嗰陣排除最近 min(3, 池大細-1) 張——保證至少留返 1 張候選；池太細嗰陣
+   自動逐級放寬（排除 2、1、0 張），永不死鎖。舊檔冇呢欄 → 當空清單，
+   行為退化返「唔連續重複」嘅舊保證，唔爆、唔改 SAVE key。 */
+function psrRecent38(channel){
+  try{
+    if(typeof S==="undefined" || !S || typeof S!=="object") return null;
+    if(!S.psrRecent38 || typeof S.psrRecent38!=="object") S.psrRecent38 = {};
+    if(!Array.isArray(S.psrRecent38[channel])) S.psrRecent38[channel] = [];
+    return S.psrRecent38[channel];
+  }catch(_e){ return null; }
+}
 function psrPickNoRepeat35(channel, pool){
   if(!Array.isArray(pool) || !pool.length) return null;
-  if(pool.length===1) return pool[0];
-  const lastId = _psrLastPick35[channel] || "";
-  let cand = pool[Math.floor(Math.random()*pool.length)];
-  if(cand && cand.id && cand.id===lastId){
-    cand = pool[Math.floor(Math.random()*pool.length)];
-    if(cand && cand.id===lastId) cand = pool.find(x=>x && x.id!==lastId) || cand;
+  const recent = (typeof psrRecent38==="function") ? psrRecent38(channel) : null;
+  const mem = recent ? recent.slice(0, 3)
+    : (_psrLastPick35[channel] ? [_psrLastPick35[channel]] : []);
+  let picked = null;
+  if(pool.length===1){
+    picked = pool[0];
+  } else {
+    let exclN = Math.min(3, pool.length-1);
+    let cand = [];
+    while(true){
+      const excl = {};
+      mem.slice(0, exclN).forEach(id=>{ if(id) excl[id] = 1; });
+      cand = pool.filter(x=> !(x && x.id && excl[x.id]));
+      if(cand.length || exclN<=0) break;
+      exclN--;
+    }
+    if(!cand.length) cand = pool;
+    picked = cand[Math.floor(Math.random()*cand.length)];
   }
-  if(cand && cand.id) _psrLastPick35[channel] = cand.id;
-  return cand;
+  if(picked && picked.id){
+    _psrLastPick35[channel] = picked.id;
+    if(recent){
+      recent.unshift(picked.id);
+      if(recent.length>3) recent.length = 3;
+    }
+  }
+  return picked;
+}
+/* ===== v20a38 收尾修復 2：殺青反響場景適配 =====
+   實機：《天星碼頭》（碼頭日間外景、電視劇）抽中「深宵廠景煞科，新面孔企到尾」，
+   深宵＋廠景明顯只啱夜晚廠景工。反響池大部分卡係通用文案（任何工都啱），
+   只有少數場景味強。改法：只標明顯場景綁定嗰 3 張（下列清單），通用卡唔標、
+   永遠合資格；抽選嗰陣用當前工嘅真欄位（標題／workTitle＋pack 工嘅
+   blurb／synopsis／roleHint）保守推導場景——推唔出就唔過濾，過濾到空就回退全池。 */
+const PSR_SCENE_TAGS38 = {
+  psr35_press_tv_02: ["night", "studio"],  /* 深宵廠景煞科，新面孔企到尾（＋dek 趕夜班） */
+  psr35_press_film_02: ["outdoor", "day"], /* 外景煞科，新人臨記跟足全程（dek：曬足成日） */
+  psr35_news_film_02: ["outdoor"]          /* 電影組外景煞科，武指點名讚新人（夜景外景都得） */
+};
+function psrSceneForShoot38(sh){
+  try{
+    sh = sh || {};
+    let gig = null;
+    try{ if(typeof GIGS!=="undefined") gig = (GIGS||[]).find(x=>x && x.id===(sh.gigId || sh.id)) || null; }catch(_e){}
+    const txt = [sh.workTitle, sh.title,
+      gig && gig.workTitle, gig && gig.title, gig && gig.blurb, gig && gig.synopsis, gig && gig.roleHint
+    ].map(x=>String(x || "")).join(" ");
+    if(!txt.trim()) return null;
+    const night = /夜|深宵|夜半|夜景|晚間/.test(txt);
+    const outdoor = /外景|碼頭|海傍|海邊|街景|街頭|天台|沙灘|郊野|公園|廣場|渡口|海港|橋底/.test(txt);
+    const set = {};
+    if(night) set.night = 1;
+    if(outdoor){ set.outdoor = 1; if(!night) set.day = 1; }
+    else if(/廠景|廠內|片廠|攝影棚|錄音室|錄影廠/.test(txt)) set.studio = 1;
+    return Object.keys(set).length ? set : null;
+  }catch(_e){ return null; }
+}
+function psrSceneFilter38(pool, scene){
+  if(!Array.isArray(pool) || !pool.length || !scene) return pool;
+  const kept = pool.filter(t=>{
+    const tags = (t && t.id && typeof PSR_SCENE_TAGS38!=="undefined") ? PSR_SCENE_TAGS38[t.id] : null;
+    if(!tags || !tags.length) return true;
+    return tags.every(tag=> !!scene[tag]);
+  });
+  return kept.length ? kept : pool;
 }
 function augmentPostShootRewards35(){
   try{
@@ -31333,13 +31421,15 @@ function augmentPostShootRewards35(){
     return n;
   }catch(_e){ return 0; }
 }
-function postShootPickTemplate(channel, gigType){
+function postShootPickTemplate(channel, gigType, scene38){
   const pack = FREEPLAY_FW.postShootRewards;
   const list = (pack && pack.templates && Array.isArray(pack.templates[channel])) ? pack.templates[channel] : [];
   const t = String(gigType||"");
   const typed = list.filter(x=> Array.isArray(x.matchTypes) && x.matchTypes.length && x.matchTypes.indexOf(t)>=0);
   const any = list.filter(x=> !x.matchTypes || !x.matchTypes.length);
-  const pool = typed.length ? typed : any;
+  let pool = typed.length ? typed : any;
+  /* v20a38：場景適配——唔合當前工場景嘅標籤卡唔入抽選池（推唔出／濾到空 → 原池） */
+  if(scene38 && typeof psrSceneFilter38==="function") pool = psrSceneFilter38(pool, scene38);
   if(!pool.length){
     const fb = (pack && pack.fallbacks && pack.fallbacks[channel]) || {};
     return Object.assign({ id: channel+"_fallback", matchTypes:[] }, fb);
@@ -31377,9 +31467,22 @@ function buildPostShootRewardPack(sh){
   const title = postShootDisplayTitle(sh);
   const day = (S && (S.dayIndex|0)) || 0;
   const metricKind = postShootMetricKindForType(gigType);
-  const pressT = postShootPickTemplate("press", gigType);
-  const newsT = postShootPickTemplate("news", gigType);
-  const fansT = postShootPickTemplate("streetFans", gigType);
+  /* v20a38：先推導今次殺青嘅場景，四個 channel 抽選共用（推唔出＝null＝唔過濾） */
+  const scene38 = (typeof psrSceneForShoot38==="function") ? psrSceneForShoot38(sh) : null;
+  const pressT = postShootPickTemplate("press", gigType, scene38);
+  /* v20a38：news／fans 改做「入選先抽」。舊碼每份 pack 抽齊三個 channel 再 shuffle
+     揀 1–2 張入卡——冇入卡嗰啲抽選一樣消耗跨次記憶（兼夾走輪替），顯示出嚟嗰啲卡
+     仍然可以近距離重複。改做先定入選名單、先抽入選嗰啲，記憶記嘅就係「出過」嘅卡。
+     press 因為 pressSeed（報紙種子）每份都要用，照每份抽。 */
+  const extraOrder = ["press", "news", "streetFans"];
+  for(let i=extraOrder.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    const tmp = extraOrder[i]; extraOrder[i]=extraOrder[j]; extraOrder[j]=tmp;
+  }
+  const extraN = 1 + (Math.random()<0.55 ? 1 : 0);
+  const extraChosen = extraOrder.slice(0, extraN);
+  const newsT = extraChosen.indexOf("news")>=0 ? postShootPickTemplate("news", gigType, scene38) : null;
+  const fansT = extraChosen.indexOf("streetFans")>=0 ? postShootPickTemplate("streetFans", gigType, scene38) : null;
   /* v20a37 驗證修復（必修 2b）：metrics 每份 pack 只准抽一次。
      舊碼先 postShootPickTemplate（內部已行 psrPickNoRepeat35）再用 metricKind 池重抽，
      兩次抽選共用 _psrLastPick35["metrics"]：第一次抽 X（記 X）、第二次被迫抽 ≠X 嘅 Y（記 Y）；
@@ -31390,10 +31493,11 @@ function buildPostShootRewardPack(sh){
   try{
     const pack = FREEPLAY_FW.postShootRewards;
     const list = (pack && pack.templates && pack.templates.metrics) || [];
-    const hit = list.filter(x=> x && x.metricKind===metricKind && (!x.matchTypes || !x.matchTypes.length || x.matchTypes.indexOf(gigType)>=0));
+    const hitRaw = list.filter(x=> x && x.metricKind===metricKind && (!x.matchTypes || !x.matchTypes.length || x.matchTypes.indexOf(gigType)>=0));
+    const hit = (scene38 && typeof psrSceneFilter38==="function") ? psrSceneFilter38(hitRaw, scene38) : hitRaw;
     if(hit.length) metricT = (typeof psrPickNoRepeat35==="function" && psrPickNoRepeat35("metrics", hit)) || hit[Math.floor(Math.random()*hit.length)];
   }catch(_e){}
-  if(!metricT) metricT = postShootPickTemplate("metrics", gigType);
+  if(!metricT) metricT = postShootPickTemplate("metrics", gigType, scene38);
   const kindLabels = (FREEPLAY_FW.postShootRewards && FREEPLAY_FW.postShootRewards.metricKindLabels) || {};
   const metricLabel = postShootCopyLine(metricT.label, kindLabels[metricKind] || "關注度");
   const cards = [];
@@ -31406,43 +31510,43 @@ function buildPostShootRewardPack(sh){
     body: postShootCopyLine(metricT.blurb, "殺青後履歷又多一筆。"),
     meta: { metricKind: metricKind, templateId: metricT.id||"" }
   });
-  const pool = [
-    {
-      channel: "press",
-      icon: "📰",
-      kicker: postShootCopyLine(pressT.paperName, "娛樂版"),
-      title: postShootCopyLine(pressT.headline, "通告殺青"),
-      body: postShootCopyLine(pressT.dek, "又完成一單拍攝。"),
-      meta: { templateId: pressT.id||"" }
-    },
-    {
-      channel: "news",
-      icon: "📻",
-      kicker: postShootCopyLine(newsT.outlet, "娛樂快訊"),
-      title: postShootCopyLine(newsT.line, "殺青完成。"),
-      body: "",
-      meta: { templateId: newsT.id||"" }
-    },
-    {
-      channel: "streetFans",
-      icon: "👥",
-      kicker: postShootCopyLine(fansT.place, "街上"),
-      /* v20a35：fans 卡標題行模板 title 欄（增補模板有唔同標題；舊模板冇欄 → 行返原本句） */
-      title: postShootCopyLine(fansT.title, "突發：被 fans 包圍"),
-      body: postShootCopyLine(fansT.line, "有人多望你兩眼。"),
-      meta: {
-        templateId: fansT.id||"",
-        stageVolumeDelta: Number(fansT.stageVolumeDelta)||0
-      }
+  /* 入選名單（extraChosen，次序已 shuffle）逐個組卡；總卡數 = 1(metrics) + 1..2 */
+  const pool = [];
+  extraChosen.forEach(ch=>{
+    if(ch==="press"){
+      pool.push({
+        channel: "press",
+        icon: "📰",
+        kicker: postShootCopyLine(pressT.paperName, "娛樂版"),
+        title: postShootCopyLine(pressT.headline, "通告殺青"),
+        body: postShootCopyLine(pressT.dek, "又完成一單拍攝。"),
+        meta: { templateId: pressT.id||"" }
+      });
+    } else if(ch==="news" && newsT){
+      pool.push({
+        channel: "news",
+        icon: "📻",
+        kicker: postShootCopyLine(newsT.outlet, "娛樂快訊"),
+        title: postShootCopyLine(newsT.line, "殺青完成。"),
+        body: "",
+        meta: { templateId: newsT.id||"" }
+      });
+    } else if(ch==="streetFans" && fansT){
+      pool.push({
+        channel: "streetFans",
+        icon: "👥",
+        kicker: postShootCopyLine(fansT.place, "街上"),
+        /* v20a35：fans 卡標題行模板 title 欄（增補模板有唔同標題；舊模板冇欄 → 行返原本句） */
+        title: postShootCopyLine(fansT.title, "突發：被 fans 包圍"),
+        body: postShootCopyLine(fansT.line, "有人多望你兩眼。"),
+        meta: {
+          templateId: fansT.id||"",
+          stageVolumeDelta: Number(fansT.stageVolumeDelta)||0
+        }
+      });
     }
-  ];
-  /* shuffle pick 1–2 extras so total cards = 2..3 */
-  for(let i=pool.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    const tmp = pool[i]; pool[i]=pool[j]; pool[j]=tmp;
-  }
-  const extraN = 1 + (Math.random()<0.55 ? 1 : 0);
-  cards.push.apply(cards, pool.slice(0, extraN));
+  });
+  cards.push.apply(cards, pool);
   return {
     id: "psr_"+gigId+"_"+day+"_"+Date.now().toString(36),
     at: Date.now(),
