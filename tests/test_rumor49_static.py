@@ -46,7 +46,7 @@ ok('v48 pane-intro fix still in place', '#home-pane-rumor .pane-intro' in html)
 # ---- 紅線 ----
 ok('SAVE key intact', html.count('starVolunteer_map_v19w') == 10)
 ok('product ?v= intact', html.count('"v20a10"') == 7)
-ok('softRev marker intact', 's109' in html)
+ok('softRev marker intact', 's110' in html)
 style = html.split('<style', 1)[1].split('</style>', 1)[0]
 ok('style braces balanced', style.count('{') == style.count('}'))
 

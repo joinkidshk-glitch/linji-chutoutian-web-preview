@@ -44,7 +44,7 @@ ok('paid flavor copy', '煲多咗個湯' in html)
 
 # 慣例不變＋玩家面守則
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
-ok('softRev unchanged', 's109' in html)
+ok('softRev unchanged', 's110' in html)
 fam_block = html.split('const FAMILY_HOME_CYCLES')[1].split('];')[0] if 'const FAMILY_HOME_CYCLES' in html else ''
 ok('no real artist names in family copy', all(x not in fam_block for x in ['張國榮','陳百強','梅艷芳','周潤發','劉德華']))
 

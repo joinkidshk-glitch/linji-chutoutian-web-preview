@@ -11,11 +11,11 @@
    GitHub Pages caches HTML for max-age=600, and the playtest box keeps a persistent cache
    keyed by the full URL. ?v=20a10&softBehaviorGate=1 therefore kept executing the pre-#99
    document (去金龍／主線) even after Pages origin sha was e4b43926.
-   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s109
-   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s109
+   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s110
+   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s110
    Bump SOFT_REV when the next Soft tip changes index.html. Do not bump ?v=. */
 (function(){
-  var SOFT_REV = "s109";
+  var SOFT_REV = "s110";
   try { document.documentElement.setAttribute("data-soft-rev", SOFT_REV); } catch (e0) {}
   try {
     var q = new URLSearchParams(location.search || "");
@@ -29222,13 +29222,7 @@ function drawMap(){
   pruneMapTips();
   box.innerHTML="";
   /* v19z20：永遠顯示全區；閒置針淡化（除非「顯示全部地點」） */
-  const wrapEl = document.querySelector(".map-wrap");
-  if(wrapEl) wrapEl.classList.toggle("show-all-locs", !!mapShowAllLocs);
-  const showAllBtn = document.getElementById("map-show-all-locs");
-  if(showAllBtn){
-    showAllBtn.setAttribute("aria-pressed", mapShowAllLocs ? "true" : "false");
-    showAllBtn.textContent = mapShowAllLocs ? "只亮有事" : "全部地點";
-  }
+  try{ applyMapShowAllLocs(mapShowAllLocs); }catch(_e){}
   /* helper：地點有冇通告／事態／熟人／紅星遠觀（v20a5：遠觀亦算有事，免蘇芷茵針被淡化藏起） */
   function locActionFlags(L){
     const hasNpc=!!(S.locNpc && S.locNpc[L.id]);
@@ -34831,7 +34825,7 @@ function newspaperCheck(){
     try{ window.S = S; }catch(_e){}
     try{ if(S && typeof paintBar==="function") paintBar(); }catch(_e){}
   }
-  return { ok:!fails.length, fails:fails, softRev:"s109", version:"v20a10", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, softRev:"s110", version:"v20a10", softStatus:"≠PASS" };
 }
 try{
   window.__newspaper = {
@@ -39214,19 +39208,38 @@ function cont(){
 }
 
 
-/* v19z18: region tabs removed — toggle idle-pin visibility
-   s109: toast names the mode AFTER the flip, not the button (button is the next command).
-   true → 全部亮起「已顯示全部地點」；false → 只亮有事「只亮有事做嘅地點」.
-   Snapshot before drawMap, and still toast if redraw throws, so the previous sentence
-   cannot stay on screen and read as the opposite mode. */
+/* v19z18: region tabs removed — toggle idle-pin visibility.
+   Button label is the NEXT command (true → 「只亮有事」). Toast names the mode AFTER one flip.
+   s110: a second click in the same gesture flipped the flag back, so the toast named the
+   mode the player started on (the opposite of the command they pressed). Ignore that echo. */
+function mapFilterToastText(showAll){
+  /* Post-toggle map mode. true = show-all-locs (idle pins lit). false = events-only. */
+  return showAll ? "已顯示全部地點" : "只亮有事做嘅地點";
+}
+function applyMapShowAllLocs(showAll){
+  const on = !!showAll;
+  const wrapEl = document.querySelector(".map-wrap");
+  if(wrapEl) wrapEl.classList.toggle("show-all-locs", on);
+  const showAllBtn = document.getElementById("map-show-all-locs");
+  if(showAllBtn){
+    showAllBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    showAllBtn.textContent = on ? "只亮有事" : "全部地點";
+  }
+}
 (function wireMapShowAllLocs(){
   const btn=document.getElementById("map-show-all-locs");
   if(!btn) return;
-  btn.onclick=()=>{
+  let lastFlip = 0;
+  btn.onclick=(ev)=>{
+    const now = Date.now();
+    if((ev && ev.detail > 1) || (now - lastFlip) < 500) return;
+    lastFlip = now;
     mapShowAllLocs = !mapShowAllLocs;
     const showAllNow = !!mapShowAllLocs;
+    try{ applyMapShowAllLocs(showAllNow); }catch(_e){}
     try{ drawMap(); }catch(_e){}
-    try{ toast(showAllNow ? "已顯示全部地點" : "只亮有事做嘅地點", {closeSheet:false}); }catch(_e){}
+    try{ applyMapShowAllLocs(showAllNow); }catch(_e){}
+    try{ toast(mapFilterToastText(showAllNow), {closeSheet:false}); }catch(_e){}
   };
 })();
 
@@ -39462,10 +39475,10 @@ function runSoftP0Checks(){
     if(/金龍/.test(scrub.setting||"") || /金龍/.test((scrub.beats[0].lines||[])[0]||"")) bad("c1_scrub_copy");
     if(typeof c1PlayLocId==="function" && c1PlayLocId()!=="agency_ho") bad("c1_play_loc");
     if(showB01HomeModal.toString().indexOf("openLoc(\"cafe_cha\")")>=0 || showB01HomeModal.toString().indexOf("去金龍")>=0) bad("tut_cafe");
-    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s109") bad("soft_rev_attr");
+    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s110") bad("soft_rev_attr");
     try{
       var sq = String((typeof location!=="undefined" && location && location.search) || "");
-      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s109(?:&|$)/.test(sq)) bad("soft_rev_url");
+      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s110(?:&|$)/.test(sq)) bad("soft_rev_url");
       if(/(?:\?|&)v=20a1[1-9](?:&|$)/.test(sq)) bad("v_bumped");
     }catch(_rev){ bad("soft_rev_throw"); }
     if(typeof storyMainProgressLine==="function"){
@@ -39524,8 +39537,8 @@ try{ exposePreviewDebug(); }catch(_e){}
 try{
   if(typeof softPreviewOn==="function" && softPreviewOn()){
     var tip = document.getElementById("start-soft-tip");
-    if(tip && tip.textContent.indexOf("s109")<0){
-      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s109。");
+    if(tip && tip.textContent.indexOf("s110")<0){
+      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s110。");
     }
   }
 }catch(_revTip){}
