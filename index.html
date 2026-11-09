@@ -3252,6 +3252,9 @@ body.day-res-open .day-row{
 }
 .favor-pressure[data-level="輕"]{ color:#1f7a5c }
 .season-card .collect-line{ margin:6px 0 0; font-size:.8rem; font-weight:700; line-height:1.4 }
+.debt-row.debt-exodus{ opacity:.55; filter:grayscale(1) }
+.debt-status[data-tone="絕響"]{ background:#d8d2c4; color:#5c5648 }
+.credit-row{ border-color:rgba(90,110,80,.45) }
 .debt-fuzzy{ margin:4px 0 0; font-size:.75rem; font-weight:700; color:#6b4e2e }
 #v-home .home{ position:relative; }
 .weak-seals{ position:absolute; inset:0; pointer-events:none; z-index:3; overflow:hidden }
@@ -21982,6 +21985,11 @@ function fresh(){
     mockRumors:[],
     mockDebts:[],
     mockSeasonCleared:{},
+    /* v20a25 Weave Phase 4-2：債權（人哋欠玩家）清單＋人情總帳；舊存檔由 ensureFavorLedger() 回填，唔改 SAVE key */
+    mockCredits:[],
+    favorLedger:{ settled:0, credits:0, exodus:[], counted:{} },
+    exodusFenSeeded:false,
+    exodusFenFired:false,
     /* v20a16 Weave Phase 2-1：情報旗（拼合情報正式化）；舊存檔由 ensureIntelFlags() 回填，唔改 SAVE key */
     intelFlags:{},
     /* v20a0 Freeplay：選角標籤沉澱（label 或 id） */
@@ -24220,6 +24228,7 @@ function advanceDay(){
   }
   try{ if(typeof favorDueTick==="function") favorDueTick(); }catch(_fd){}
   try{ if(typeof rivalryTick==="function") rivalryTick(); }catch(_rv){}
+  try{ if(typeof exodusFenTick==="function") exodusFenTick(); }catch(_ex){}
   return S.dayIndex>0 && weekdayIdx(S.dayIndex)===0;
 }
 
@@ -26912,6 +26921,8 @@ function favorDueTick(){
       /* 債唔見咗又未有結算紀錄（例如到期前用現金／禮物還咗）：靜靜記低，唔再觸發 */
       if(S.favorDueArmed && !settled[FAVOR_DUE_CFG.debtId]){
         settled[FAVOR_DUE_CFG.debtId] = { result:"closed_other", day:(S.dayIndex|0) };
+        /* v20a25：玩家確係還咗（ tick 兜底記帳），帳本照計 settled；同還款路徑同 id 冪等，唔會雙計 */
+        try{ favorLedgerNoteSettled(FAVOR_DUE_CFG.debtId, "closed_other"); }catch(_fl){}
       }
       return;
     }
@@ -26938,6 +26949,7 @@ function favorDueTick(){
       if(wrapped){
         S.mockDebts = S.mockDebts.filter(x=>x!==d);
         settled[d.id] = { result:"repaid_help", day:today };
+        try{ favorLedgerNoteSettled(d.id, "repaid_help"); }catch(_fl){}
         try{ bumpNpc("agent", 2); }catch(_b){}
         try{ toast("幫何生頂完嗰單，嗰筆人情還清晒。何生拍拍你膊頭：「好，呢筆數清咗，以後有好嘢益你。」"); }catch(_t){}
         try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
@@ -26947,6 +26959,7 @@ function favorDueTick(){
       if(today > (Number(d.favorGigDay)||today) + FAVOR_DUE_CFG.windowDays){
         S.mockDebts = S.mockDebts.filter(x=>x!==d);
         settled[d.id] = { result:"void_expired", day:today };
+        /* v20a25：作廢唔計入帳本 settled——唔係「清」，係失約，唔好呃結局判定（決定見 NOTES v20a25） */
         try{ bumpNpc("agent", -3); }catch(_b){}
         try{ toast("幫忙通告過期無人做，嗰筆人情作廢。", { sub:"何生面色唔多好，同你嘅交情都淡咗啲。" }); }catch(_t){}
         try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
@@ -26987,6 +27000,156 @@ function mergeFavorGigs(){
     try{ window.GIGS = GIGS; }catch(_w){}
     return n;
   }catch(_e){ return 0; }
+}
+/* ===== Weave Phase 4-2（v20a25）：人情帳本 S.favorLedger＋鏈 F 第 2 拍（副導演芬姐離港／人情絕響）。
+   背景：mockDebts 係單向「玩家欠人」模型，債清咗就移除、無持久總帳；favorDueSettled 只記教學債、
+   mockSeasonCleared 只記季節卡 id——結局判定（E4 未用債權 ≥2、E5 已清債＋債權 ≥6）計唔出。
+   今票補帳本：S.favorLedger = { settled, credits, exodus:[], counted:{} }。
+   - settled：已清債總數（一般還款現金／禮物、教學債幫忙結清、提早還 closed_other、季節卡還清、
+     芬姐離港勾銷）。**過期作廢（void_expired）唔計**——嗰個唔係「清」，係賴咗／失約，計入會呃結局判定。
+   - credits：曾獲債權（人哋欠玩家）總數。今票唯一來源係芬姐債權種子；日後其他債權來源照 note 入帳。
+     特別講明：SEASON_COLLECT 喺程式實際語義係「玩家欠債主」嘅季節債（卡面原文「你欠我嗰筆數」、
+     仲款掣係玩家畀 $200／禮物），所以季節卡還清計 settled，唔計 credits。
+   - counted{}：冪等登記（id → {kind, source, day}），每筆只計一次，任何路徑重行都唔會雙計。
+   - 舊檔回填：ledger 首次建立嗰陣（__bf 未置）按現有紀錄推斷——favorDueSettled 嘅 repaid_help／
+     closed_other → settled、mockSeasonCleared 嘅 id → settled；void_expired 跳過；推斷唔到嘅由 0 起。
+   債權清單 S.mockCredits（人哋欠玩家）：今票得芬姐一筆（1989 春播種）；renderDebtPane 獨立一段渲染。 ===== */
+function ensureFavorLedger(){
+  if(typeof S==="undefined" || !S) return { settled:0, credits:0, exodus:[], counted:{} };
+  let L = S.favorLedger;
+  if(!L || typeof L!=="object" || Array.isArray(L)) L = S.favorLedger = { settled:0, credits:0, exodus:[], counted:{} };
+  if(typeof L.settled!=="number" || !(L.settled>=0)) L.settled = 0;
+  if(typeof L.credits!=="number" || !(L.credits>=0)) L.credits = 0;
+  if(!Array.isArray(L.exodus)) L.exodus = [];
+  if(!L.counted || typeof L.counted!=="object" || Array.isArray(L.counted)) L.counted = {};
+  if(!L.__bf){
+    L.__bf = 1;
+    /* 舊檔回填（只行一次）：由既有結算紀錄推斷已清數，推斷唔到由 0 起 */
+    try{
+      const st = (S.favorDueSettled && typeof S.favorDueSettled==="object" && !Array.isArray(S.favorDueSettled)) ? S.favorDueSettled : {};
+      Object.keys(st).forEach(id=>{
+        const r = st[id] && st[id].result;
+        if((r==="repaid_help" || r==="closed_other") && !L.counted[id]){
+          L.counted[id] = { kind:"settled", source:"backfill_"+r, day:(S.dayIndex|0) };
+          L.settled++;
+        }
+      });
+      const sc = (S.mockSeasonCleared && typeof S.mockSeasonCleared==="object" && !Array.isArray(S.mockSeasonCleared)) ? S.mockSeasonCleared : {};
+      Object.keys(sc).forEach(id=>{
+        if(sc[id] && !L.counted[id]){
+          L.counted[id] = { kind:"settled", source:"backfill_season", day:(S.dayIndex|0) };
+          L.settled++;
+        }
+      });
+    }catch(_e){}
+  }
+  return L;
+}
+function favorLedgerNoteSettled(id, source){
+  try{
+    if(!id) return false;
+    const L = ensureFavorLedger();
+    if(L.counted[id]){
+      /* 回填同真結清同一 session 撞車嗰陣（結清寫入先於首次 ensure）：數唔加，
+         但來源以真路徑為準，唔好留低 backfill_* 嘅推斷來源。 */
+      if(L.counted[id].kind==="settled" && String(L.counted[id].source||"").indexOf("backfill_")===0) L.counted[id].source = String(source||"repay");
+      return false;
+    }
+    L.counted[id] = { kind:"settled", source:String(source||"repay"), day:((typeof S!=="undefined" && S && S.dayIndex)|0) };
+    L.settled++;
+    return true;
+  }catch(_e){ return false; }
+}
+function favorLedgerNoteCredit(id, source){
+  try{
+    if(!id) return false;
+    const L = ensureFavorLedger();
+    if(L.counted[id]){
+      if(L.counted[id].kind==="credit" && String(L.counted[id].source||"").indexOf("backfill_")===0) L.counted[id].source = String(source||"gain");
+      return false;
+    }
+    L.counted[id] = { kind:"credit", source:String(source||"gain"), day:((typeof S!=="undefined" && S && S.dayIndex)|0) };
+    L.credits++;
+    return true;
+  }catch(_e){ return false; }
+}
+/* 結局判定用讀取口：settled＝已清債總數、credits＝曾獲債權總數、creditsHeld＝手上未絕響債權數 */
+function favorLedgerCounts(){
+  const L = ensureFavorLedger();
+  let held = 0;
+  try{ held = (Array.isArray(S.mockCredits) ? S.mockCredits : []).filter(c=>c && c.status!=="絕響").length; }catch(_e){}
+  let open = 0;
+  try{ open = (Array.isArray(S.mockDebts) ? S.mockDebts : []).filter(d=>d && d.status!=="絕響").length; }catch(_e){}
+  return { settled:(L.settled|0), credits:(L.credits|0), creditsHeld:held, openDebts:open, exodus:(L.exodus||[]).slice() };
+}
+/* ===== 鏈 F 第 2 拍：副導演芬姐（extra_ad_fen，演講者級數次要角色；債主欄自由字串直接掛）離港。
+   1989 春播種一對：玩家欠佢一筆細債（頂更）＋佢欠玩家一筆債權（救場），兩條分支都可達；
+   1989 夏事件一次性觸發：未清嗰筆債「一筆勾銷」兼送一句情報；未收債權變「人情絕響」。
+   播種跟年閘行 ensureMockJournal＋事件 tick 雙入口，固定 id＋旗冪等；存檔若已過 1989（更新前已跨年），
+   事件 tick 會先補種再即時觸發（catch-up），唔會靜默錯過。 ===== */
+const EXODUS_FEN_DEBT = { id:"debt_fen_standin", creditor:"副導演芬姐", title:"芬姐頂更人情", weight:"頂更一晚", season:"芬姐話：嗰晚你病到面青，唔係我幫你頂咗嗰更，你嗰日份人工同印象都無晒。呢筆記住先，唔使急住還。", status:"未到期" };
+const EXODUS_FEN_CREDIT = { id:"credit_fen_rescue", debtor:"副導演芬姐", title:"芬姐欠你嗰次救場", line:"清水灣外景嗰日亂到七彩，你二話不說落手幫我頂到收工。呢個人情我記住，遲啲還返你。", status:"未收" };
+const EXODUS_FEN_INTEL = { id:"rumor_fen_exodus_tip", source:"副導演芬姐", title:"芬姐臨走嘅口風", text:"芬姐臨上機前講：清水灣新廠嗰邊開棚唔夠人，副導四圍借臨記，呢排有經驗嘅臨記唔愁無工開，叫你醒目啲，睇實通告板。", state:"normal", season:"" };
+function seedExodusFenPair(){
+  try{
+    if(typeof S==="undefined" || !S) return false;
+    if(S.exodusFenSeeded || S.exodusFenFired) return false;
+    if(typeof yearSeasonNow!=="function" || yearSeasonNow().year < 1989) return false;
+    S.exodusFenSeeded = true;
+    if(!Array.isArray(S.mockDebts)) S.mockDebts = [];
+    if(!Array.isArray(S.mockCredits)) S.mockCredits = [];
+    const L = ensureFavorLedger();
+    if(!S.mockDebts.some(d=>d && d.id===EXODUS_FEN_DEBT.id) && !L.counted[EXODUS_FEN_DEBT.id]){
+      S.mockDebts.push(Object.assign({}, EXODUS_FEN_DEBT));
+    }
+    if(!S.mockCredits.some(c=>c && c.id===EXODUS_FEN_CREDIT.id) && !L.counted[EXODUS_FEN_CREDIT.id]){
+      S.mockCredits.push(Object.assign({}, EXODUS_FEN_CREDIT));
+      favorLedgerNoteCredit(EXODUS_FEN_CREDIT.id, "seed_fen_pair");
+    }
+    try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
+    return true;
+  }catch(_e){ return false; }
+}
+function exodusFenTick(){
+  try{
+    if(typeof S==="undefined" || !S || S.exodusFenFired) return;
+    if(typeof yearSeasonNow!=="function") return;
+    const ys = yearSeasonNow();
+    if(ys.year < 1989) return;
+    seedExodusFenPair();
+    const due = (ys.year===1989 && ys.season==="夏") || ys.year>=1990;
+    if(!due) return;
+    S.exodusFenFired = true;
+    const L = ensureFavorLedger();
+    let wroteOff = false, exodused = false;
+    if(Array.isArray(S.mockDebts)){
+      const d = S.mockDebts.find(x=>x && x.id===EXODUS_FEN_DEBT.id);
+      if(d){
+        S.mockDebts = S.mockDebts.filter(x=>x!==d);
+        favorLedgerNoteSettled(EXODUS_FEN_DEBT.id, "exodus_writeoff");
+        wroteOff = true;
+      }
+    }
+    if(Array.isArray(S.mockCredits)){
+      const c = S.mockCredits.find(x=>x && x.id===EXODUS_FEN_CREDIT.id);
+      if(c && c.status!=="絕響"){
+        c.status = "絕響";
+        if(L.exodus.indexOf(c.id)<0) L.exodus.push(c.id);
+        exodused = true;
+      }
+    }
+    if(Array.isArray(S.mockRumors) && !S.mockRumors.some(r=>r && r.id===EXODUS_FEN_INTEL.id)){
+      S.mockRumors.push(Object.assign({}, EXODUS_FEN_INTEL, { seeded:true }));
+    }
+    let main, sub = "臨走佢漏咗句片場口風畀你，已記入手帳傳聞。";
+    if(wroteOff && exodused){ main = "副導演芬姐移民溫哥華，臨走將你嗰筆人情一筆勾銷。"; sub = "佢欠你嗰筆亦成絕響（人已不在香港）；"+sub; }
+    else if(wroteOff){ main = "副導演芬姐移民溫哥華，臨走將你嗰筆人情一筆勾銷。"; }
+    else if(exodused){ main = "副導演芬姐移民溫哥華，佢欠你嗰筆人情成咗絕響。"; }
+    else { main = "副導演芬姐移民溫哥華，成組人去啟德送佢機。"; }
+    try{ toast(main, { sub:sub }); }catch(_t){}
+    try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
+    try{ saveQ(); }catch(_s){}
+  }catch(_e){}
 }
 /* ===== Weave Phase 3-3（v20a21）：高俊傑競爭線收割（鏈 E，串聯規劃最後一步）。
    建基於現有足跡，唔另起爐灶：高俊傑係現有 core NPC（NPC_LINES_CORE.rival／S.npcs.rival）；
@@ -27235,6 +27398,7 @@ const DEBT_FUZZY = {
   "未到期":"筆數仲有時間慢慢還，唔使太急。",
   "就嚟到期":"筆數就嚟到期，係時候諗下點填氹。",
   "已逾期":"筆數過咗期，人哋隨時會上門追數。",
+  "絕響":"人已不在香港，呢筆人情收唔返，亦唔使再記掛。",
 };
 const WEAK_MARKS = ["捱得","識做","大牌","爛仔","守口如瓶","搏出位"];
 const WEAK_WHISPER = "呢個臨記真係捱得，連拍三個大夜都頂得住，後生仔可造之材。";
@@ -27247,7 +27411,7 @@ function rumorStateLabel(state){
   return RUMOR_STATE_ZH[String(state||"normal")] || "剛聽聞";
 }
 function debtStatusLabel(status){
-  return ({ "未到期":1, "就嚟到期":1, "已逾期":1 })[status] ? status : "未到期";
+  return ({ "未到期":1, "就嚟到期":1, "已逾期":1, "絕響":1 })[status] ? status : "未到期";
 }
 const MOCK_RUMOR_SEEDS = [
   { id:"tvb_rules_gossip", source:"金龍茶餐廳", title:"電視城廠景生存守則", text:"聽聞入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。", state:"normal", season:"" },
@@ -27354,6 +27518,9 @@ function ensureMockJournal(){
       }
     }
   }
+  /* Weave Phase 4-2（v20a25）：人情帳本確保＋舊檔回填；鏈 F 第 2 拍芬姐人情對 1989 年起播種（冪等）。 */
+  try{ if(typeof ensureFavorLedger==="function") ensureFavorLedger(); }catch(_e){}
+  try{ if(typeof seedExodusFenPair==="function") seedExodusFenPair(); }catch(_e){}
   syncNotebookMirror();
 }
 function findMergePair(idA, idB){
@@ -27369,7 +27536,7 @@ function favorPressure(){
   /* 顯示用。唔寫 S.stress、唔鎖通告、唔改閘。 */
   const season=(typeof calendarSeason==="function") ? calendarSeason() : "春";
   const cards=SEASON_COLLECT.filter(c=>c.season===season && c.status==="已逾期").length;
-  const debts=(S.mockDebts||[]).filter(d=>debtStatusLabel(d.status)==="已逾期").length;
+  const debts=(S.mockDebts||[]).filter(d=>d && d.status!=="絕響" && debtStatusLabel(d.status)==="已逾期").length;
   const n=cards+debts;
   const label=n<=0?"輕":(n===1?"緊":"頂住");
   return { n, label, season };
@@ -27456,6 +27623,7 @@ function allDebtsForRepay(){
   const seen = Object.create(null);
   (S.mockDebts||[]).forEach(d=>{
     if(!d) return;
+    if(d.status==="絕響") return; /* v20a25：絕響項唔入還款入口（人已不在香港，還唔到） */
     const id = String(d.id||"");
     if(id && seen[id]) return;
     if(id) seen[id] = true;
@@ -27620,6 +27788,15 @@ function applyMockAsk(locId, actionId, repayOpt){
       cleared = true;
     } else {
       return { ok:false, toast:"扣咗款但搵唔到債項紀錄——請截圖回報。" };
+    }
+    /* v20a25：清債成功先入人情帳本（冪等，唔會同 favorDueTick 兜底雙計）。
+       教學債經此路徑還＝closed_other；季節卡還清＝repay_season（實際語義係玩家欠債主，計 settled）。 */
+    if(cleared && debt && debt.id){
+      try{
+        const isTutorial = (typeof FAVOR_DUE_CFG!=="undefined" && debt.id===FAVOR_DUE_CFG.debtId);
+        const isSeason = !!(debt._seasonCard || (SEASON_COLLECT||[]).some(c=>c && c.id===debt.id));
+        favorLedgerNoteSettled(debt.id, isTutorial ? "closed_other" : (isSeason ? "repay_season" : ("repay_"+mode)));
+      }catch(_fl){}
     }
     try{ refreshMoneyHud(); }catch(_e){}
   }
@@ -27959,15 +28136,22 @@ function renderDebtPane(){
     const amt = (c.amount!=null) ? ("金額約 $"+Number(c.amount).toLocaleString()) : (status==="已逾期"?"已逾期 · 建議禮物或現金 $200":"建議禮物或現金 $200");
     return `<article class="debt-row season-card" data-collect-id="${journalText(c.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(c.title)}</p><p class="collect-line">${journalText(c.line)}</p><p class="debt-amt">${journalText(amt)} · ${journalText(status)}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${repayBtn(c.id,true)}</article>`;
   }).join("");
+  /* v20a25：債權段（人哋欠玩家，S.mockCredits）；絕響＝灰階＋「人已不在香港」，無還款／收取掣 */
+  const creditHtml=(S.mockCredits||[]).map(c=>{
+    if(!c) return "";
+    const ex = c.status==="絕響";
+    return `<article class="debt-row credit-row${ex?" debt-exodus":""}" data-credit-id="${journalText(c.id)}"><p class="debt-who">欠你人情：${journalText(c.debtor||"")}</p><p class="debt-title">${journalText(c.title||"")}</p><p class="collect-line">${journalText(c.line||"")}</p><span class="debt-status" data-tone="${journalText(ex?"絕響":"未收")}">${ex?"絕響":"未收"}</span>${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:""}</article>`;
+  }).join("");
   const rows=S.mockDebts||[];
   const debtHtml=rows.length ? rows.map(d=>{
     const status = debtStatusLabel(d.status);
     const who=debtCreditorName(d);
     const amt = (d.amount!=null) ? ("金額約 $"+Number(d.amount).toLocaleString()) : ("人情："+journalText(d.weight)+" · 建議 $200／禮物");
     const dueLine = (d.dueDay!=null && typeof favorDueHintText==="function") ? favorDueHintText(d) : "";
-    return `<article class="debt-row" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${dueLine?`<p class="debt-meta">${journalText(dueLine)}</p>`:""}<p class="debt-note">${journalText(d.season)}</p>${repayBtn(d.id,false)}</article>`;
-  }).join("") : (cardHtml ? "" : `<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p><p class="sub" style="margin-top:8px"><button type="button" class="debt-repay-btn" data-repay-id="__goto_agency__" data-season="0">去何生事務所</button></p></div>`);
-  box.innerHTML=banner+cardHtml+debtHtml;
+    const ex = d.status==="絕響";
+    return `<article class="debt-row${ex?" debt-exodus":""}" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${dueLine?`<p class="debt-meta">${journalText(dueLine)}</p>`:""}<p class="debt-note">${journalText(d.season)}</p>${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:repayBtn(d.id,false)}</article>`;
+  }).join("") : ((cardHtml || creditHtml) ? "" : `<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p><p class="sub" style="margin-top:8px"><button type="button" class="debt-repay-btn" data-repay-id="__goto_agency__" data-season="0">去何生事務所</button></p></div>`);
+  box.innerHTML=banner+cardHtml+creditHtml+debtHtml;
   /* v19z11：委派點擊；debtId 必須嚟自該卡，永唔走 openHoRepaySheet／何生 fallback */
   box.onclick=(ev)=>{
     try{
