@@ -35,8 +35,11 @@ for w in ['第時唔得了', '實冇死', '小心啲用', '人脈，而家貴過
 for w in ['主角相', '唔使睇住', '有火', '邊度都食得開']:
     ok('wrap note keyword: '+w, w in html)
 
-# 邊界：今步唔寫結局判定函數
-ok('no ending resolver in this step', 'function resolveEnding' not in html)
+# 邊界：今步（4-9）唔寫結局判定函數——判定留畀 4-10。
+# v20a33 申報：4-10 已按規劃落地 resolveEnding410（喺 4-10 區塊，唔喺 4-9 區塊），
+# 原斷言「全檔冇 resolver」按新現實收窄到「4-9 區塊內冇 resolver」，邊界語義（預兆≠判定）保留不變。
+_m49 = re.search(r'Weave Phase 4-9.*?Weave Phase 4-10', html, re.S)
+ok('no ending resolver in this step', 'function resolveEnding' not in (_m49.group(0) if _m49 else ''))
 
 # 4-9 區塊內唔准真藝名（玩家面永禁；靈感對照只限 DEV 內部）
 m = re.search(r'Weave Phase 4-9.*?function pickNpcLine', html, re.S)

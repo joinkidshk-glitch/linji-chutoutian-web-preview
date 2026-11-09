@@ -3725,6 +3725,8 @@ body.day-res-open .day-row{
 #home-pane-ledger .stats-grid .stat .v{ color:#1A1410; }
 #home-pane-ledger .ledger-money{ margin:10px 0 6px; font-weight:800; }
 #home-pane-ledger .ledger-enroll{ font-size:.78rem; color:var(--muted); margin:0; }
+.ending410-title-card{ background:#fff8e8; border:1px solid #c4a574; border-radius:10px; padding:10px 12px; margin:8px 0; }
+.ending410-title{ font-size:1.25rem; font-weight:900; margin:2px 0 6px; }
 .psr-sheet{ text-align:left; }
 .psr-eyebrow{ font-size:.7rem; letter-spacing:.12em; color:var(--muted); margin:0 0 4px; text-transform:uppercase; }
 .psr-h{ margin:0 0 4px; font-size:1.05rem; }
@@ -17336,6 +17338,8 @@ const STORY_LOC_SOFT = {
   C14: "tvb_longmen",
   C15: "film_harbour",
   C16: "rec_star",
+  /* v20a33 WEAVE_PHASE4_10：C17 結局前夕喺星河電視台頒獎禮後台（覆寫節點本身有 locId，呢張表只係後備，兩邊一致） */
+  C17: "tvb_longmen",
 };
 const STORY_HINT_SOFT = {
   /* fallback only — JSON 1.2.8 / C1 UI-test beat annotate + HINT_C6C10 優先 */
@@ -17360,6 +17364,8 @@ const STORY_HINT_SOFT = {
   C12: { playerHint: "唱片公司大堂有班歌迷聚集，陸柏言就嚟到——你企邊邊？", lockedHint: "1990 年秋先開，仲要做完站隊、聲量夠高。未到就照常跑通告；開咗去天星音樂大堂。", nextHint: "下一幕「偶像實力之爭」——1990 年秋末，做完樂壇前哨、雙軌總和夠數先開；開咗去天星音樂舞蹈室。" },
   C16: { playerHint: "舞蹈室嗰邊試音試到夜，程天諾就喺隔籬練舞。", lockedHint: "1990 年秋末先開，仲要做完樂壇前哨、雙軌總和夠數。未到就照常跑通告；開咗去天星音樂舞蹈室。", nextHint: "下一幕「賀歲片」——1990 年冬，廖炳星嗰組賀歲片飛紙仔滿天飛；開咗去紅棉影業片場。" },
   C13: { playerHint: "賀歲片趕住煞科，炳星同導演鬧到停機——你要執生，定跟足劇本？", lockedHint: "1990 年冬先開（賀歲片趕工季）。未到就照常跑通告；開咗去紅棉影業片場。", nextHint: "主線去到尾聲——1990 年冬末頒獎禮季，三年就嚟收科。" },
+  /* v20a33 WEAVE_PHASE4_10：C17 前夕場景提示 */
+  C17: { playerHint: "頒獎禮前夕，何生喺後台等你——三年，係時候收科。", lockedHint: "1990 年冬、賀歲片煞科之後先到呢一晚。未到就照常跑通告；到咗去星河電視台後台。", nextHint: "" },
 };
 const STORY_TITLE_SOFT = {
   C1: "先學做動作戲／先賺", C2: "留人脈／趕通告", C3: "對對手硬／忍", C4: "何生拒單", C5: "采兒小訪題",
@@ -17368,6 +17374,8 @@ const STORY_TITLE_SOFT = {
   C7: "暴雨救場", C8: "茶餐廳度橋", C9: "年尾追數", C10: "戲路定型", C11: "選美後台",
   /* v20a31：C12–C16 標題跟三年版主幹 */
   C12: "樂壇前哨", C13: "賀歲片", C14: "站隊", C15: "高危替身", C16: "偶像實力之爭",
+  /* v20a33：C17 舊名「最終定位／結算」（十檔任揀）由「三年收科」取代 */
+  C17: "三年收科",
 };
 /* v20a28 WEAVE_PHASE4_5：三年版主幹覆寫閘（1988–1990；主幹 §2 表＋§4 縮放表為準）。
    content pack 嘅 openConditions／phase 係五年版節奏（例：C16 week_min:100、C17 phase:"P5"＋1992），
@@ -20379,6 +20387,8 @@ const StoryPlay = (()=>{
       }
     }
     try{ if(node && (node.id==="C1" || node.beatId==="C1") && typeof softCanonC1Face==="function") node = softCanonC1Face(node); }catch(_c1){}
+    /* v20a33 WEAVE_PHASE4_10：C17 前夕節點按當下狀態重建（beats 加料＋choices 行相鄰規則生成） */
+    try{ if(node && node.id==="C17" && typeof ending410EveNode==="function") node = ending410EveNode(node) || node; }catch(_e410s){}
     try{ node = applyFamilySafeToNode(node) || node; }catch(_fs){}
     _sess = {
       node, pack, label,
@@ -20898,6 +20908,13 @@ const StoryPlay = (()=>{
     if(!choice && /^\d+$/.test(String(choiceId))) choice = (n.choices||[])[Number(choiceId)];
     if(!choice){ toast("無效選項"); return; }
     const result = StoryOC.applyChoice(n, choice);
+    /* v20a33 WEAVE_PHASE4_10：C17 前夕抉擇唔行通用結算——直接入結局呈現組裝（寫 S.ending410＋逐頁呈現） */
+    try{
+      if(n && n.id==="C17" && typeof ending410AfterEveChoice==="function" && ending410AfterEveChoice(n, choice, result)){
+        _sess = null;
+        return;
+      }
+    }catch(_e410p){}
     showResult(n, choice, result);
     _sess = null;
   }
@@ -21960,6 +21977,515 @@ function wrapTrajNotePool49(){
   return t ? (TRAJ_WRAP_NOTES49[t] || []).slice() : [];
 }
 
+/* ===== Weave Phase 4-10（v20a33）：結局系統——三軸總帳制（結局設計專檔 linji-endings-design.md）。
+   架構：resolveEnding410(S, opts) 純函數按專檔 §2 判定表上而下計事業軸（E6 只認 opts 主動入口）；
+   感情軸（commit 旗／半線差一步素材）＋去留軸（鏈 F 旗）做修飾；前夕場景（C17 覆寫節點）嘅
+   選項由 endingEveOptions410 按狀態生成，只准相鄰行一格（專檔 §3）；揀完由
+   ending410AfterEveChoice 組裝呈現（事業場景→感情→去留→個人化插入→手帳總結頁），
+   結果寫入 S.ending410 持久保存，C17 done 之後唔再重複觸發，總結頁喺手帳剪報頁隨時重睇。
+   判定唔用 trajectoryOf49（嗰個係 4-9 呈現分類）；軌跡只准用喺稱號／報紙稱呼呢類呈現銜接。
+   純函數內嘅 favor／romance 讀數係唯讀鏡像（唔經 ensureFavorLedger／endingRomanceState48，
+   避免 backfill 寫入破壞純函數深等）；生產路徑兩者數值一致（測試有交叉對照）。 ===== */
+const ENDING410_CAREER_NAMES = {
+  E1: "天王接班", E2: "甘草王", E3: "幕後之路", E4: "泡沫偶像",
+  E5: "江湖撈家", E6: "退圈", E0: "浮沉未定"
+};
+const ENDING410_T = {
+  e1Fame: 60, e1Credit: 55, e1Dual: 125, e1NegMax: 1,       /* E1 天王接班（專檔 §2） */
+  e4Fame: 50, e4CreditBelow: 30, e4RescueCredits: 2,        /* E4 泡沫偶像＋沉唔死版債權門檻（用戶拍板唔放寬） */
+  e2Credit: 42, e2Fame: 35,                                 /* E2 甘草王 */
+  e3Credit: 42, e3BackstageTags: 2, e3DirectorRel: 60,      /* E3 幕後之路（導演 rel 或幕後標籤，鏡像 4-9 定義） */
+  e5FavorTotal: 6, e5AgentRel: 60,                          /* E5 江湖撈家：已清債＋持有債權 ≥6＋何生 rel 高 */
+  backstageCloseTags: 1, backstageCloseDirectorRel: 40,     /* E4→E3 前夕「差少少」：幕後標籤 ≥1 或導演 rel ≥40 */
+  almostRelMin: 4                                           /* 半線／未 commit 線「差一步」素材門檻（rel 滿 7） */
+};
+/* 負標籤清單（專檔 §2「大牌／八卦／爛片類」對照實際標籤集）：
+   -「八卦」：C11 選美後台爆料抉擇嘅標籤（同 flag_miss_leak 同源，標籤缺席時以旗兜底計一次）；
+   -「高冷」：C12 避開狂熱粉抉擇嘅標籤（大牌類：難親近嘅形象印）；
+   -「大牌」「爛片」：專檔原詞，現行內容未有同名標籤（大牌只喺 WEAK_MARKS 耳語池），先入清單，
+     日後內容加同名標籤即刻生效。計數以標籤 label／id 精確命中，避免子串誤傷。 */
+const ENDING_NEG_TAGS410 = ["八卦", "大牌", "高冷", "爛片"];
+/* 幕後向標籤關鍵字：同 4-9 TRAJ49_TAG_SETS.backstage 同表（registry 暫無幕後類標籤，行關鍵字＋導演 rel 鏡像）。 */
+const ENDING410_BACKSTAGE_KEYS = ["幕後", "後期", "製作", "編劇", "剪接", "場記", "副導", "統籌"];
+const ENDING410_EXODUS_NAME_FALLBACK = { credit_fen_rescue: "副導演芬姐" };
+const ENDING410_NPC_NAMES = { agent: "何生", director: "張子駿", colleague: "林曉晴", reporter: "周采兒", stylist: "Vera", rival: "高俊傑" };
+
+function endingFlag410(st, key){
+  if(!st) return false;
+  try{ if(st.story && st.story.flags && st.story.flags[key]) return true; }catch(_e){}
+  try{ if(st.flags && st.flags[key]) return true; }catch(_e){}
+  try{ if(st.story && st.story.routes && st.story.routes[key]) return true; }catch(_e){}
+  return false;
+}
+function endingDual410(st){
+  if(typeof readDualTracks==="function"){ try{ return readDualTracks(st || {}); }catch(_e){} }
+  const s = st || {};
+  return { stageVolume: Math.max(0, Math.round(Number(s.fame)||0)), industryCredit: Math.max(0, Math.round(Number(s.industryCredit)||0)) };
+}
+function endingNegTagCount410(st){
+  const s = st || {};
+  const list = Array.isArray(s.castingTags) ? s.castingTags : [];
+  const hit = {};
+  list.forEach(t=>{
+    if(t==null) return;
+    const strs = (typeof t==="string") ? [String(t)] : [t.id, t.label].filter(x=>x!=null && String(x)!=="").map(x=>String(x));
+    ENDING_NEG_TAGS410.forEach(nk=>{ if(strs.indexOf(nk)>=0) hit[nk] = 1; });
+  });
+  let n = Object.keys(hit).length;
+  /* flag_miss_leak 同「八卦」標籤同源（同一抉擇寫入）；標籤唔喺度嗰陣以旗兜底，唔雙計。 */
+  if(!hit["八卦"] && endingFlag410(s, "flag_miss_leak")) n++;
+  return n;
+}
+function endingBackstageTagCount410(st){
+  const s = st || {};
+  const list = Array.isArray(s.castingTags) ? s.castingTags : [];
+  let n = 0;
+  list.forEach(t=>{
+    if(t==null) return;
+    const strs = (typeof t==="string") ? [String(t)] : [t.id, t.label].filter(x=>x!=null && String(x)!=="").map(x=>String(x));
+    if(strs.some(x=> ENDING410_BACKSTAGE_KEYS.some(k=> x.indexOf(k)>=0))) n++;
+  });
+  return n;
+}
+/* 唯讀鏡像 favorLedgerCounts()：settled／exodus 讀 st.favorLedger、creditsHeld 數 st.mockCredits 未絕響數。
+   唔用 ensure（嗰個會 backfill 寫入）；生產環境 ledger 早已被日常 tick ensure 過，數值一致。 */
+function endingFavor410(st){
+  const s = st || {};
+  const L = (s.favorLedger && typeof s.favorLedger==="object" && !Array.isArray(s.favorLedger)) ? s.favorLedger : null;
+  const credits = Array.isArray(s.mockCredits) ? s.mockCredits : [];
+  const held = credits.filter(c=>c && c.status!=="絕響");
+  const exodusIds = (L && Array.isArray(L.exodus)) ? L.exodus.slice() : [];
+  const exodusNames = exodusIds.map(id=>{
+    const c = credits.find(x=>x && x.id===id);
+    if(c && c.debtor) return String(c.debtor);
+    return ENDING410_EXODUS_NAME_FALLBACK[id] || String(id||"");
+  }).filter(x=>x);
+  const debts = (Array.isArray(s.mockDebts) ? s.mockDebts : []).filter(d=>d && d.id!=="debt_family_home" && d.status!=="絕響");
+  return {
+    settled: L ? (L.settled|0) : 0,
+    creditsTotal: L ? (L.credits|0) : 0,
+    creditsHeld: held.length,
+    heldList: held,
+    openDebts: debts,
+    exodusIds: exodusIds,
+    exodusNames: exodusNames
+  };
+}
+/* 唯讀鏡像 endingRomanceState48()：同一批來源（S.story.done／rel／flags），唔寫狀態。 */
+function endingRomance410(st){
+  const s = st || {};
+  const done = (s.story && s.story.done) || {};
+  const rel = (s.story && s.story.rel) || {};
+  const line = (meetId, relKey, crisisId, commitFlag)=>({
+    met: !!done[meetId],
+    rel: (typeof rel[relKey]==="number") ? rel[relKey] : 0,
+    crisisDone: !!done[crisisId],
+    committed: endingFlag410(s, commitFlag)
+  });
+  return {
+    hiu:  line("R_hiu_meet",  "rel_hiu",  "R_hiu_crisis",  "flag_hiu_commit"),
+    choi: line("R_choi_meet", "rel_choi", "R_choi_crisis", "flag_choi_commit"),
+    vera: line("R_vera_meet", "rel_vera", "R_vera_crisis", "flag_vera_commit"),
+    lan:  line("R_lan_meet",  "rel_lan",  "R_lan_crisis",  "flag_lan_commit"),
+    xu:   line("R_xu_meet",   "rel_xu",   "R_xu_crisis",   "flag_xu_commit")
+  };
+}
+function endingE2Eligible410(st){
+  const d = endingDual410(st);
+  return (Number(d.industryCredit)||0) >= ENDING410_T.e2Credit && (Number(d.stageVolume)||0) >= ENDING410_T.e2Fame;
+}
+function endingE3Eligible410(st){
+  const d = endingDual410(st);
+  if((Number(d.industryCredit)||0) < ENDING410_T.e3Credit) return false;
+  const dirRel = (st && st.npcs) ? (Number(st.npcs.director)||0) : 0;
+  return endingBackstageTagCount410(st) >= ENDING410_T.e3BackstageTags || dirRel >= ENDING410_T.e3DirectorRel;
+}
+function endingBackstageClose410(st){
+  const dirRel = (st && st.npcs) ? (Number(st.npcs.director)||0) : 0;
+  return endingBackstageTagCount410(st) >= ENDING410_T.backstageCloseTags || dirRel >= ENDING410_T.backstageCloseDirectorRel;
+}
+/* 結局判定（純函數、唯讀、無副作用）：按專檔 §2 上而下 E1→E4→E2→E3→E5→E0；
+   E6 只認 opts.quit（"job"｜"leave"）主動入口，旗本身唔會令純函數自己入 E6。
+   opts.exodus 可由前夕抉擇覆寫去留軸（"leave"）。回傳 {career, careerVariant, romance, exodus, title, reasons, snapshot}。 */
+function resolveEnding410(st, opts){
+  const s = st || (typeof S!=="undefined" ? S : null) || {};
+  opts = opts || {};
+  const T = ENDING410_T;
+  const dual = endingDual410(s);
+  const fame = Number(dual.stageVolume)||0;
+  const credit = Number(dual.industryCredit)||0;
+  const sum = fame + credit;
+  const neg = endingNegTagCount410(s);
+  const favor = endingFavor410(s);
+  const rom = endingRomance410(s);
+  const agentRel = s.npcs ? (Number(s.npcs.agent)||0) : 0;
+  const directorRel = s.npcs ? (Number(s.npcs.director)||0) : 0;
+  const reasons = [];
+  let career = "E0", variant = "";
+  if(fame>=T.e1Fame && credit>=T.e1Credit && sum>=T.e1Dual && neg<=T.e1NegMax){
+    career = "E1"; reasons.push("E1：聲量 "+fame+"≥"+T.e1Fame+"、信用 "+credit+"≥"+T.e1Credit+"、雙軌 "+sum+"≥"+T.e1Dual+"、負標籤 "+neg+"≤"+T.e1NegMax);
+  } else if(fame>=T.e4Fame && credit<T.e4CreditBelow){
+    career = "E4";
+    variant = (favor.creditsHeld>=T.e4RescueCredits) ? "rescued" : "sunk";
+    reasons.push("E4：聲量 "+fame+"≥"+T.e4Fame+"、信用 "+credit+"<"+T.e4CreditBelow+"；債權持有 "+favor.creditsHeld+" → "+(variant==="rescued"?"沉唔死版":"真沉版"));
+  } else if(credit>=T.e2Credit && fame>=T.e2Fame){
+    career = "E2"; reasons.push("E2：信用 "+credit+"≥"+T.e2Credit+"、聲量 "+fame+"≥"+T.e2Fame);
+  } else if(endingE3Eligible410(s)){
+    career = "E3"; reasons.push("E3：信用 "+credit+"≥"+T.e3Credit+"、幕後標籤 "+endingBackstageTagCount410(s)+"／導演 rel "+directorRel);
+  } else if((favor.settled + favor.creditsHeld)>=T.e5FavorTotal && agentRel>=T.e5AgentRel){
+    career = "E5"; reasons.push("E5：已清債 "+favor.settled+"＋持有債權 "+favor.creditsHeld+"≥"+T.e5FavorTotal+"、何生 rel "+agentRel+"≥"+T.e5AgentRel);
+  } else {
+    reasons.push("E0：以上皆不合，浮沉未定（預設）");
+  }
+  const baseCareer = career, baseVariant = variant;
+  if(opts.quit){
+    career = "E6";
+    variant = (opts.quit==="leave") ? "遠走" : ((baseCareer==="E4") ? "心灰" : "安穩");
+    reasons.push("E6：玩家主動入口（"+(opts.quit==="leave"?"移民離場":"接屋企穩陣工")+"）覆蓋原判定 "+baseCareer);
+  }
+  /* 感情軸：完整線 commit 優先；半線（Vera／藍／徐）就算 pack ending 寫過同名旗，
+     按專檔定性唔入 commit，只做差一步素材（見 4-8 NOTES）。 */
+  let romance = { line: null, kind: "solo", rel: 0 };
+  if(rom.hiu.committed) romance = { line: "hiu", kind: "commit", rel: rom.hiu.rel };
+  else if(rom.choi.committed) romance = { line: "choi", kind: "commit", rel: rom.choi.rel };
+  else {
+    const order = ["hiu", "choi", "vera", "lan", "xu"];
+    let best = null;
+    order.forEach(k=>{
+      const L = rom[k];
+      if(L && L.met && L.rel>=T.almostRelMin && (!best || L.rel>best.rel)) best = { line: k, kind: "almost", rel: L.rel };
+    });
+    if(best) romance = best;
+  }
+  /* 去留軸：前夕確認先算數；鏈 F 第 4 拍揀走但未喺前夕確認 → 未表態（留白）。 */
+  let exodus = "undecided";
+  if(opts.quit==="leave" || opts.exodus==="leave") exodus = "leave";
+  else if(opts.quit==="job" || opts.exodus==="stay") exodus = "stay";
+  else if(endingFlag410(s, "flag_stay_mind")) exodus = "stay";
+  const exodusWord = (exodus==="leave") ? "遠走的人" : (exodus==="stay") ? "留下來的人" : "未說出口的人";
+  const title = (ENDING410_CAREER_NAMES[career] || career) + "・" + exodusWord;
+  return {
+    career: career, careerVariant: variant, baseCareer: baseCareer, baseVariant: baseVariant,
+    romance: romance, exodus: exodus, title: title, reasons: reasons,
+    snapshot: {
+      fame: fame, credit: credit, dual: sum, negTags: neg,
+      settled: favor.settled, creditsTotal: favor.creditsTotal, creditsHeld: favor.creditsHeld,
+      exodusNames: favor.exodusNames.slice(), agentRel: agentRel, directorRel: directorRel,
+      backstageTags: endingBackstageTagCount410(s)
+    }
+  };
+}
+/* 前夕抉擇選項生成（專檔 §3 相鄰規則）：集合按狀態生成，唔寫死。
+   - natural：順其自然（原判定），永遠有；
+   - quit_job：接屋企穩陣工 → E6（玩家主動入口，永遠有，文案寫明後果）；
+   - quit_leave：移民離場 → E6 遠走版（只限鏈 F 第 4 拍諗過走嘅人）；
+   - to_backstage：E4＋債權<2＋幕後條件差少少 → 行一格去 E3；或 E2 同時合 E3 資格 → 前夕分流去 E3；
+   - to_support：E3 同時合 E2 資格 → 行一格返 E2（爭男配）；
+   - leave_follow：flag_leave_mind＋原判定 E0／E2 → 事業不變，去留軸轉移民版。
+   任何選項都唔會令事業結局跳多過一格（quit 係專檔明文嘅主動離場，唔受格數限）。 */
+function endingEveOptions410(st, baseRes){
+  const s = st || (typeof S!=="undefined" ? S : null) || {};
+  const base = baseRes || resolveEnding410(s);
+  const favor = endingFavor410(s);
+  const out = [];
+  out.push({ key: "natural", label: "順其自然：照呢三年嘅路，行到邊度就邊度", note: "唔強求，唔回頭——頒獎禮開場，你企返你企慣嗰個位。" });
+  if(endingFlag410(s, "flag_family_job_accept")){
+    out.push({ key: "quit_job", label: "收山：屋企嗰份穩陣工仲等緊你——接咗佢，唔再做呢行", note: "講明先：揀呢個，今晚之後你就唔再係呢行嘅人。（退圈・安穩）" });
+  } else {
+    out.push({ key: "quit_job", label: "收山諗諗：接屋企嗰份穩陣工，唔再做呢行", note: "講明先：揀呢個，今晚之後你就唔再係呢行嘅人。（退圈・安穩）" });
+  }
+  if(endingFlag410(s, "flag_leave_mind")){
+    out.push({ key: "quit_leave", label: "走：移民離場——放棄今晚，唔再返呢行", note: "講明先：揀呢個，你會喺啟德上機，呢行嘅事，留返喺香港。（退圈・遠走）" });
+  }
+  if(base.career==="E4" && favor.creditsHeld<ENDING410_T.e4RescueCredits && endingBackstageClose410(s)){
+    out.push({ key: "to_backstage", label: "轉幕後重新嚟過：唔企幕前，入班底由頭學起", note: "沉就沉一半——唔爭返幕前嗰格，只行去隔籬嗰格：幕後。" });
+  } else if(base.career==="E2" && endingE3Eligible410(s)){
+    out.push({ key: "to_backstage", label: "轉幕後：唔爭幕前嗰格，入去做班底", note: "你有幕後嘅本錢——企前定企後，今晚揀一次。" });
+  }
+  if(base.career==="E3" && endingE2Eligible410(s)){
+    out.push({ key: "to_support", label: "爭返幕前：企返去鏡頭前，爭個男配位", note: "幕後企得穩，幕前亦未試盡——行返一格，企返出去。" });
+  }
+  if(endingFlag410(s, "flag_leave_mind") && (base.career==="E0" || base.career==="E2")){
+    out.push({ key: "leave_follow", label: "跟住去：戲照收科，但年尾你會上機走", note: "事業點收尾都好，去留嗰題，今晚答埋佢：走。" });
+  }
+  return out;
+}
+/* ===== C17 覆寫：舊「E01–E10 十檔任揀」由前夕場景取代（覆寫方法跟 4-6／4-8）。
+   靜態節點只係骨架＋保底選項（natural／quit_job）；真正播出嗰陣 StoryPlay.start 嘅
+   C17 hook 會用 ending410EveNode 按當下狀態重建 beats／choices（選項集合＝相鄰規則）。
+   舊存檔若已 done C17（舊十檔路徑揀過），節點照樣 done，唔會重播、唔會 crash。 ===== */
+const ENDING410_CHOICE_IDS = ["C17_410_a", "C17_410_b", "C17_410_c", "C17_410_d", "C17_410_e", "C17_410_f"];
+const STORY_SPINE_NODE_C17_410 = {
+  id: "C17", phase: "P5", title: "三年收科", when: "1990冬",
+  setting: "星河電視台頒獎禮後台化妝間；1990 年冬末，三年前嗰個臨記，企喺頒獎禮門口",
+  locId: "tvb_longmen", eraTag: "era_1990_winter_finale",
+  cast: ["阿偉", "何生", "張子駿"],
+  synopsis: "1990 年冬末，台慶頒獎禮前夕。三年——由茶餐廳聽人講邊個紅邊個沉，到自己企喺化妝間，等人叫名。何生攞住流程表入嚟，有啲說話，要喺開場之前同你講清楚。",
+  playerOffer: "頒獎禮前夕，何生喺後台等你——三年，係時候收科。",
+  playerHint: "頒獎禮前夕，何生喺後台等你——三年，係時候收科。",
+  lockedHint: "1990 年冬、賀歲片煞科之後先到呢一晚。未到就照常跑通告；到咗去星河電視台後台。",
+  nextHint: "",
+  beats: [
+    { speaker: "系統", kind: "system", lines: ["1990 年冬末，星河電視台頒獎禮後台。化妝鏡一排燈泡熱到出煙，走廊盡頭已經聽到司儀試咪。", "三年前，你喺茶餐廳聽人講邊個紅、邊個沉；今晚，流程表上面，有你個名。"] },
+    { speaker: "何生", kind: "npc", lines: ["阿偉，坐陣。今晚之後，你喺行內點定位，唔再係我講，係你呢三年做過嘅嘢講。", "我唔同你講大道理——你自己諗清楚：企前，定企後？留低，定走？呢啲，今晚之前答自己一次就夠。"] },
+    { speaker: "張子駿", kind: "npc", lines: ["我睇住你由企唔穩做到企得穩。記住，邊個位都好——唔好丟咗當初捱通宵嗰份心。"] },
+    { speaker: "阿偉", kind: "player", lines: ["（三年。人哋點睇我，報紙點寫我，我幫過邊個、欠邊個——原來到咗今晚，全部都要埋單。）"] },
+    { speaker: "系統", kind: "system", lines: ["司儀喺台上試最後一次咪。何生企起身，拍拍你膊頭，留返最後一句：", "「諗清楚，就行出去。」"] }
+  ],
+  choices: [
+    { id: "C17_410_a", ending410Key: "natural", label: "順其自然：照呢三年嘅路，行到邊度就邊度",
+      effects: { flags: ["flag_ending410_natural"], stats: {}, tags: [], notes: "唔強求，唔回頭——頒獎禮開場，你企返你企慣嗰個位。" } },
+    { id: "C17_410_b", ending410Key: "quit_job", label: "收山諗諗：接屋企嗰份穩陣工，唔再做呢行",
+      effects: { flags: ["flag_ending410_quit_job"], stats: {}, tags: [], notes: "講明先：揀呢個，今晚之後你就唔再係呢行嘅人。（退圈・安穩）" } }
+  ],
+  conflict: null,
+  flags_written: ["flag_ending410_natural", "flag_ending410_quit_job", "flag_ending410_quit_leave", "flag_ending410_to_backstage", "flag_ending410_to_support", "flag_ending410_leave_follow"],
+  openConditions: ["C13"], openConditionsAny: null,
+  openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（C13 done＋1990 冬，事件閘）；此欄只作 legacy 對照。",
+  thresholds: {},
+  pacing: { weekMin: 140, minDaysAfterPrev: 1, when: "1990冬", prevMain: "C13" },
+  aftermathHint: "今晚之後，手帳會多一頁「三年收科」——你嘅結局，記喺嗰度。",
+  journalCandidate: "頒獎禮嗰晚，我點答自己。",
+  redStarHook: "全體紅星喺頒獎禮外圍——三年收科，個個都到齊。",
+  nodeRipple: "結局唔係揀出嚟，係呢三年計出嚟；前夕只准行相鄰一格。"
+};
+function applyStorySpineOverrides410(){
+  const out = { ok: true, main: 0 };
+  try{
+    if(typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.main && Array.isArray(STORY_WIRE.main.nodes)){
+      STORY_WIRE.main.nodes.forEach((node, i)=>{
+        if(node && node.id==="C17"){ STORY_WIRE.main.nodes[i] = STORY_SPINE_NODE_C17_410; out.main++; }
+      });
+    }
+  }catch(_e){ out.ok = false; }
+  return out;
+}
+/* 前夕節點動態重建：beats 按原判定加料（E4 插形象危機拍），choices 由 endingEveOptions410 生成。
+   每個 choice 帶 ending410Key，畀 ending410AfterEveChoice 對照玩家揀咗邊格。 */
+function ending410EveNode(baseNode){
+  try{
+    const node = Object.assign({}, baseNode || STORY_SPINE_NODE_C17_410);
+    const base = resolveEnding410(S);
+    const beats = (node.beats || []).slice();
+    if(base.career==="E4"){
+      const crisis = { speaker: "系統", kind: "system", lines: ["（化妝間門口，何生啱啱接完個電話，面色唔多好：有本周刊聽日出頭版，寫嘅，係你呢排嗰啲風風雨雨。", "聲量有幾高，跌落嚟嗰下就有幾痛——呢一晚，成行都睇住你點收科。）"] };
+      beats.splice(Math.max(0, beats.length-1), 0, crisis);
+    }
+    node.beats = beats;
+    const opts = endingEveOptions410(S, base);
+    node.choices = opts.map((o, i)=>({
+      id: ENDING410_CHOICE_IDS[i] || ("C17_410_" + o.key),
+      ending410Key: o.key,
+      label: o.label,
+      effects: { flags: ["flag_ending410_" + o.key], stats: {}, tags: [], notes: o.note }
+    }));
+    node.__ending410Base = base.career;
+    return node;
+  }catch(_e){ return baseNode || STORY_SPINE_NODE_C17_410; }
+}
+function endingEsc410(x){
+  return String(x==null?"":x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+/* ===== 呈現組裝文案（專檔 §5 順序：場景→事業→感情→去留→個人化插入→手帳總結） ===== */
+function endingCareerScene410(rec){
+  const c = rec.career, v = rec.careerVariant;
+  const filmSide = endingFlag410(S, "flag_side_film") || endingFlag410(S, "route_film");
+  const hall = filmSide ? "電影頒獎禮" : "電視台頒獎禮";
+  let rival = "";
+  if(c==="E1" || c==="E2"){
+    if(endingFlag410(S, "rival_gao_hard")) rival = "<p>高俊傑坐喺隔籬行——嗰個當年同你爭位爭到面紅耳赤嘅人，今晚向你舉咗下杯。對手還對手，佢認你。</p>";
+    else if(endingFlag410(S, "rival_gao_endure")) rival = "<p>高俊傑行過嚟同你握手。當年你忍佢嗰啲，今晚佢逐樣還返俾你——唔係錢，係一句「嗰陣，我唔啱」。</p>";
+  }
+  switch(c){
+    case "E1": return "<p>司儀叫到你個名嗰下，成個"+hall+"靜咗一靜，先至爆出掌聲。最佳男配角——三年前嗰個喺茶餐廳聽人講邊個紅邊個沉嘅臨記，捧住個獎企喺台中間。</p>"
+      + "<p>何生喺台下第一行，眼眶有啲紅。佢當年講過「呢個後生仔，第時唔得了」——今晚，成行都知佢冇睇錯人。聲量同信用，你兩樣都企得穩，負面嗰啲印，你冇乜點沾過。</p>"
+      + "<p>隔住幾排人，嗰位當紅花旦向你微微點咗下頭。只係一下，好遠，好輕——但你知，嗰個距離，已經係佢畀過最近嘅一次。</p>" + rival
+      + "<p>獎座唔重。重嘅，係你行過嚟嗰三年。</p>";
+    case "E2": return "<p>"+hall+"，「最佳男配角」——唔係最搶眼嗰個位，但評審致辭嗰陣講咗句：「冇佢，成套戲企唔穩。」全場識笑，嗰啲笑，係認同。</p>"
+      + "<p>你唔係企喺最前嗰個，但邊組開戲都想先問你有冇期。由臨記做到金牌甘草，你靠嘅唔係邊一場爆發，係邊一場都唔甩轆嗰種穩。</p>" + rival
+      + "<p>何生拍你膊頭：「甘草先係長做長有。呢行，紅嘅人換得快，企得穩嘅，走唔甩。」</p>";
+    case "E3": return "<p>頒獎禮嗰晚，你冇坐喺台下等叫名——你企喺控制台隔籬，手入面係成晚嘅流程同機位表。套戲攞獎嗰陣，導演上台，第一句多謝嘅，係幕後班底。</p>"
+      + "<p>鏡頭掃過嚟嗰一秒，你下意識擰轉面。企咗三年幕前，你最後揀咗企喺鏡頭後面——唔係企唔起，係你發現，成套戲點行，你睇得比企喺前面嗰陣更清楚。</p>"
+      + "<p>張子駿收工嗰陣講：「第日你開戲，記得預我一個位——我俾你嗌。」嗰句，抵過好多獎。</p>";
+    case "E4":
+      if(v==="rescued") return "<p>頭版出街嗰朝，你以為自己沉硬——聲量衝得太高，信用跟唔上，周刊啲字，一句比一句狠。</p>"
+        + "<p>但嗰日下晝開始，電話一個一個打嚟：你以前幫過嘅人、你救過場嘅組，一個一個企返出嚟講你嗰句好話。人情呢樣嘢，平時唔覺，到你就嚟沉嗰陣，先知佢浮得起你。</p>"
+        + "<p>你冇沉落去。但你自己知，嗰種紅法，唔玩得第二次。頒獎禮嗰晚你坐喺後排，望住台上，眼神同三年前嗰個臨記，唔同咗。</p>";
+      return "<p>頭版出街嗰朝，電話靜到唔正常。聲量衝得太高，信用太薄——周刊啲字寫完，通告就一張一張咁消失。</p>"
+        + "<p>你企喺化妝間，望住鏡入面嗰個紅過一排嘅自己。冇人踩你，只係冇人再打嚟。呢行起身嘅人多，沉落去嗰陣，通常都係咁靜。</p>"
+        + "<p>不過，1991 年先啱啱開始。有啲人沉一沉，先學識點浮——呢句，唔係安慰，係呢行嘅老規矩。你嗰頁，仲未寫完。</p>";
+    case "E5": return "<p>頒獎禮嗰晚，你坐嘅唔係演員席——你坐喺經理人嗰排。台上頒緊獎，你手底下兩個新人，一個入圍，一個攞咗新人獎。</p>"
+      + "<p>由臨記做到開竇做經理人，你靠嘅從來唔係邊一場戲，係全行都知：阿偉講得出，做得到；佢欠人嘅會還，人哋欠佢嘅，佢記得清清楚楚。</p>"
+      + "<p>何生嗰晚同你飲咗杯：「我嗰陣教你認人，你而家啲人脈，貴過我當年。」——江湖撈家呢四個字，唔係貶，係你用三年人情換返嚟嘅招牌。</p>";
+    case "E6":
+      if(v==="遠走") return "<p>你冇去頒獎禮。嗰晚你喺屋企執行李，阿媽喺廳嗰邊，一路摺衫一路講：「去到嗰邊，記得打電話返嚟。」</p>"
+        + "<p>三年嘅通告紙、人情數、報紙剪報，摺好，入箱。臨記出頭天——你嗰本帳，唔喺香港收科。啟德嗰邊，飛機等緊。</p>";
+      if(v==="心灰") return "<p>頭版嗰鑊，你捱過咗，但心都淡埋。屋企嗰份穩陣工——表叔講嗰份銀行文職——你打咗個電話去，話：我嚟見工。</p>"
+        + "<p>唔係邊個趕你走，係你自己企喺化妝間，望住鏡，第一次覺得攰得嚟唔想再等下一個通告。收山呢兩個字，你講出口嗰陣，好平靜。</p>";
+      return "<p>頒獎禮嗰晚，你冇入場。你返咗屋企，阿媽煲咗湯，電視播住頒獎禮，你坐喺梳化，飲湯。</p>"
+        + "<p>表叔嗰份銀行文職，下個禮拜一上工：月月有糧出，年尾雙糧。唔使再等通告，唔使再驚邊個沉邊個浮。阿媽嗰句講得最啱——做邊行都好，唔好餓親自己。</p>"
+        + "<p>三年臨記，唔係白過。你識咗一班人，行過一轉別人成世都入唔到嘅世界。夠喇。</p>";
+    default: return "<p>頒獎禮嗰晚，你坐喺中間嗰幾行——唔係最前，亦唔係最後。台上頒嘅獎，暫時未有你份；台下坐住嘅，亦唔止你一個臨記出身。</p>"
+      + "<p>三年，你冇沉落去，亦未浮到上水面。何生臨走嗰句最中肯：「你仲喺呢行，仲有下一個通告——咁就未算輸。」</p>"
+      + "<p>散場嗰陣，人群入面，嗰位當紅花旦同你擦身而過，微微點咗下頭。只係一下——你連佢係咪認得你都唔肯定。但你笑咗笑，行返出去，截的士，返屋企瞓覺。聽朝，仲有工開。</p>";
+  }
+}
+function endingRomanceScene410(rec){
+  const r = rec.romance || { line: null, kind: "solo" };
+  const highCareer = (rec.career==="E1" || rec.career==="E2");
+  if(r.kind==="commit" && r.line==="hiu")
+    return "<p>後台走廊，林曉晴收緊個獎座——" + (highCareer ? "今晚，你哋兩個一個攞獎、一個入圍，企出嚟嗰陣，記者支咪都唔知遞俾邊個先。" : "佢嗰套戲入咗圍，你全晚喺側邊幫手睇位、遞水——唔出聲嗰種企法，佢全部記得。")
+      + "佢望住你笑：「由片場嗰杯涼茶開始，我就知你唔同。」三年喇，嗰一步，你哋就行到。</p>";
+  if(r.kind==="commit" && r.line==="choi")
+    return "<p>收科嗰晚，你哋冇去咩大地方——金龍茶餐廳，你哋坐慣嗰張枱。周采兒收起記者證，嗰晚佢唔係嚟訪問你，係嚟陪你食餐飯。</p><p>「我寫過咁多人沉浮，」佢講，「寫到你嗰陣，我先知咩叫唔捨得落筆。」成個故事由茶餐廳開始，喺茶餐廳收尾——啱數。</p>";
+  if(r.kind==="almost" && r.line==="vera")
+    return "<p>頒獎禮後台，Vera幫你整理領口同妝髮——套衫係佢今晚親手幫你揀嘅。佢隻手停喺你領口，冇即刻收返。司儀喺台上叫你個名，佢先鬆開手，推你一把：「去啦，唔好失禮人。」——嗰一步，兩個人都冇行。做造型嘅同做演員嘅，有些距離，近到咁上下，就要停。</p>";
+  if(r.kind==="almost" && r.line==="lan")
+    return "<p>收尾嗰場加班戲，藍若曦照舊幫你撳住個通告牌——三年嚟，你邊場幾點埋位，佢記得比你更清楚。臨走佢講：「第日你唔使我撳牌嗰陣，請返我食飯。」係約定，唔係關係。太熟喇，熟到嗰一步，邊個都唔敢行先。</p>";
+  if(r.kind==="almost" && r.line==="xu")
+    return "<p>徐寶珊送咗份禮物嚟後台——貴到你唔敢即刻拆。你諗起你曾經幫佢擋過一次記者，嗰次，你咩都冇要。佢送你一件你買唔起嘅嘢，你回佢一件佢買唔到嘅嘢——扯平。但你哋兩個都知，有啲嘢，唔係扯平就算，係門嗰邊，同門呢邊，企嘅位置唔同。</p>";
+  if(r.kind==="almost" && r.line==="hiu")
+    return "<p>後台走廊，林曉晴趕住上台，你趕住去開工——嗰餐講咗成年嘅飯，又約唔成。佢回頭笑：「下次啦。」你點頭。呢個年代就係咁，大家都忙，各有各撈，嗰一步，成日差少少。</p>";
+  if(r.kind==="almost" && r.line==="choi")
+    return "<p>金龍茶餐廳，周采兒坐喺隔籬枱趕稿，你坐喺呢邊等通告電話。佢寫完嗰版，抬頭同你點咗下頭，先至走。訪問就做得多喇——有一句說話，你哋兩個都冇講出口。唔係唔想，係一講出口，就唔再係而家咁舒服。</p>";
+  return "<p>嗰晚收工，你一個人行去搭車。冇邊個喺度等你——但你望住手上嗰張通告紙，覺得咁都唔算差。呢三年你對自己，總算有個交代。感情嗰格空住，唔代表嗰度冇嘢，只係未到時候寫落去。</p>";
+}
+function endingExodusScene410(rec, favor){
+  let h = "";
+  if(rec.exodus==="leave"){
+    h += "<p>走嗰日，你先返咗金龍茶餐廳，坐你坐慣嗰張枱，食最後一餐。老闆娘冇問你去邊，只係杯茶，冇收你錢。</p><p>啟德機場，大堂嗰塊航班牌反嚟覆去。你拖住個篋企喺度，望住「離港」兩個字——三年嘅戲，喺香港收科；你個人生嗰套，先啱啱開鏡。</p>";
+  } else if(rec.exodus==="stay"){
+    h += "<p>你冇走。1991 年，第一張通告寄到事務所嗰日，何生拆開，笑笑口遞俾你：「新一年，開工大吉。」——畫面冇字，但你知，你嗰套戲，仲有得拍。</p>";
+  } else {
+    h += "<p>走定留，你到嗰晚都冇答自己。茶餐廳嗰班人走嘅走、留嘅留，你坐喺中間，嗰杯茶飲到凍。唔答，都係一種答法——起碼你人仲喺度，戲仲喺度。</p>";
+  }
+  if(rec.exodus!=="leave" && favor && favor.exodusNames && favor.exodusNames.length){
+    h += "<p>臨近年尾，你去咗一次啟德——唔係自己走，係送人。芬姐嗰班機，你企到佢入閘嗰陣，佢回頭揮手。嗰啲人情，隨住嗰班機飛走咗，成絕響——但你記得，咁就夠。</p>";
+  }
+  return h;
+}
+function endingInserts410(rec, favor){
+  const out = [];
+  try{
+    const npcs = (typeof S!=="undefined" && S && S.npcs) || {};
+    let topId = null, topV = -1;
+    Object.keys(ENDING410_NPC_NAMES).forEach(id=>{ const v = Number(npcs[id])||0; if(v>topV){ topV = v; topId = id; } });
+    if(topId && topV>0) out.push("呢三年，同你最有交情嗰個，係" + ENDING410_NPC_NAMES[topId] + "——好多嘢唔使講出口，嗰晚一個眼神，大家明晒。");
+  }catch(_e){}
+  try{
+    const debts = (favor && favor.openDebts) || [];
+    if(debts.length){
+      const big = debts.slice().sort((a,b)=>(Number(b.amount)||0)-(Number(a.amount)||0))[0];
+      out.push("人情帳上，你仲欠" + (big.creditor||"人") + "一筆《" + (big.title||"人情") + "》未清——結局還結局，筆數仲喺度，第日慢慢還。");
+    } else if(favor && favor.heldList && favor.heldList.length){
+      const c0 = favor.heldList[0];
+      out.push("人情帳上，" + (c0.debtor||"有人") + "欠你一份《" + (c0.title||"人情") + "》未收——呢份，係你第日嘅本錢。");
+    }
+  }catch(_e){}
+  try{
+    if(favor && (favor.exodusNames||[]).some(n=>String(n).indexOf("芬姐")>=0)){
+      out.push("芬姐走嗰日，你嗰筆人情一筆勾銷；佢欠你嗰份，就成咗絕響——人已不在香港，嗰句「第日還」，收唔返，亦唔使再記掛。");
+    }
+  }catch(_e){}
+  try{
+    if(endingFlag410(S, "flag_family_job_accept")) out.push("屋企嗰邊，阿媽嗰句你記到今晚：「做邊行都好，唔好餓親自己。」");
+    else if(S && S.familyHome && S.familyHome.echoNote) out.push("屋企嗰邊，阿媽將你上報嗰版剪咗落嚟，夾喺本電話簿入面——" + String(S.familyHome.echoNote));
+    else out.push("屋企嗰邊，阿媽嗰晚煲咗湯，留返俾你收工返嚟飲。");
+  }catch(_e){}
+  try{
+    const tier = (typeof newspaperNameTier==="function") ? newspaperNameTier((S && S.fame)||0) : "anon";
+    const traj = (typeof trajectoryOf49==="function") ? trajectoryOf49(S) : null;
+    const ref = (typeof newspaperTrajRef49==="function") ? newspaperTrajRef49(traj, tier) : null;
+    if(ref) out.push("報紙最後一次點你名，係叫你做「" + ref + "」——嗰個稱呼點嚟，呢三年嘅你，最清楚。");
+    else if(tier==="named") out.push("報紙寫你嗰陣，已經直呼你做「阿偉」——由「一名臨記」到有個名，你行咗三年。");
+    else out.push("報紙寫你嗰陣，仲係叫你做「一名臨記」——唔緊要，名呢家嘢，慢慢嚟。");
+  }catch(_e){}
+  return out;
+}
+const ENDING410_ADJ_RUMOR = {
+  E1: "聽講如果你嗰陣冇咁搏命，而家，可能安安穩穩喺幕後嗌人埋位。",
+  E2: "聽講如果你嗰陣轉咗幕後，嗰啲獎，可能有一半係你嗌出嚟嘅。",
+  E3: "聽講如果你嗰陣企返出去爭男配，今屆嗰個名，可能係你。",
+  E4: "聽講如果你嗰陣留返一兩份人情唔好用盡，出事嗰陣，可能有人拉你一把。",
+  E5: "聽講如果你嗰陣唔好咁講義氣，而家，可能已經企咗上台攞獎。",
+  E6: "聽講如果你嗰陣冇收山，今屆頒獎禮，可能有你份。",
+  E0: "聽講如果你嗰陣肯企出嚟爭一次，故事，可能係另一種講法。"
+};
+function endingSummaryHtml410(){
+  const rec = (typeof S!=="undefined" && S && S.ending410) || null;
+  if(!rec) return "<h3>三年收科</h3><p>未收科——去到 1990 年冬、賀歲片煞科之後，頒獎禮前夕嗰晚，先係埋單嗰陣。</p>";
+  const favorLine = "已清人情 " + (rec.settled|0) + " 筆 · 持有債權 " + (rec.creditsHeld|0) + " 份"
+    + ((rec.exodusNames && rec.exodusNames.length) ? " · 絕響 " + rec.exodusNames.length + " 筆" : "");
+  const goneLine = (rec.exodusNames && rec.exodusNames.length)
+    ? ("<p><b>邊啲人走咗：</b>" + rec.exodusNames.map(endingEsc410).join("、") + "——人已不在香港，人情成絕響。</p>")
+    : "<p><b>邊啲人走咗：</b>你嗰班人，暫時仲齊齊整整喺香港。</p>";
+  const romLine = rec.romanceKind==="commit" ? ("同" + (rec.romanceLine==="hiu" ? "林曉晴" : "周采兒") + "行到埋一齊")
+    : (rec.romanceKind==="almost" ? "有一段，差一步" : "一個人收科，唔代表一個人收尾");
+  const exoLine = rec.exodus==="leave" ? "走——啟德上機，遠走" : (rec.exodus==="stay" ? "留——扎根香港，1991 繼續開工" : "未表態——留白");
+  const rumor = ENDING410_ADJ_RUMOR[rec.career] || "";
+  return "<h3>三年收科・手帳總結</h3>"
+    + "<div class=\"ending410-title-card\"><p class=\"sub\">你的稱號</p><p class=\"ending410-title\">" + endingEsc410(rec.title || "") + "</p>"
+    + "<p>事業結局：<b>" + endingEsc410(ENDING410_CAREER_NAMES[rec.career] || rec.career) + "</b>"
+    + (rec.careerVariant ? "（" + endingEsc410(rec.careerVariant) + "版）" : "") + "</p></div>"
+    + "<p>幕前聲量 <b>" + (rec.fame|0) + "</b> · 業內信用 <b>" + (rec.credit|0) + "</b> · 雙軌總和 <b>" + (rec.dual|0) + "</b></p>"
+    + "<p><b>人情總帳：</b>" + endingEsc410(favorLine) + "</p>"
+    + goneLine
+    + "<p><b>感情：</b>" + endingEsc410(romLine) + "</p>"
+    + "<p><b>去留：</b>" + endingEsc410(exoLine) + "</p>"
+    + (rumor ? "<p class=\"sub\">茶餐廳嗰邊有人講：「" + endingEsc410(rumor) + "」——聽下就算，唔好當真。</p>" : "")
+    + "<p class=\"sub\">結局已記入手帳。收科之後，你照樣可以繼續跑通告過日子——呢頁，隨時返嚟重睇。</p>";
+}
+function showEndingSummary410(){
+  try{ modal(endingSummaryHtml410(), [{ label: "關閉", role: "p" }]); }catch(_e){}
+}
+/* 前夕抉擇之後嘅流程（由 StoryPlay.pickChoice 嘅 C17 hook 呼叫；回 true＝已接管呈現，唔行通用結算）：
+   按玩家揀嗰格計最終結局（相鄰覆寫喺呢度套用）→ 寫 S.ending410 → 逐頁呈現。冪等：已有
+   S.ending410 嗰陣只重開總結頁，唔重複成個流程。 */
+function ending410AfterEveChoice(node, choice, result){
+  try{
+    if(typeof S==="undefined" || !S || !choice) return false;
+    if(S.ending410){ showEndingSummary410(); return true; }
+    const key = choice.ending410Key || "";
+    if(!key) return false;
+    const base = resolveEnding410(S);
+    let opts = {};
+    if(key==="quit_job") opts = { quit: "job" };
+    else if(key==="quit_leave") opts = { quit: "leave" };
+    else if(key==="leave_follow") opts = { exodus: "leave" };
+    const res = resolveEnding410(S, opts);
+    if(key==="to_backstage" && res.career!=="E6"){
+      res.career = "E3";
+      res.careerVariant = (base.career==="E4") ? "由泡沫轉幕後" : "前夕轉幕後";
+      res.reasons.push("前夕抉擇：由 " + base.career + " 相鄰行一格 → E3（幕後）");
+      res.title = (ENDING410_CAREER_NAMES.E3) + "・" + (res.exodus==="leave" ? "遠走的人" : (res.exodus==="stay" ? "留下來的人" : "未說出口的人"));
+    } else if(key==="to_support" && res.career!=="E6"){
+      res.career = "E2";
+      res.careerVariant = "前夕爭男配";
+      res.reasons.push("前夕抉擇：由 " + base.career + " 相鄰行一格 → E2（甘草）");
+      res.title = (ENDING410_CAREER_NAMES.E2) + "・" + (res.exodus==="leave" ? "遠走的人" : (res.exodus==="stay" ? "留下來的人" : "未說出口的人"));
+    }
+    const favor = endingFavor410(S);
+    S.ending410 = {
+      career: res.career, careerVariant: res.careerVariant || "",
+      romanceLine: res.romance.line || "", romanceKind: res.romance.kind || "solo",
+      exodus: res.exodus, title: res.title, eveKey: key,
+      day: (S.dayIndex|0),
+      fame: res.snapshot.fame, credit: res.snapshot.credit, dual: res.snapshot.dual,
+      settled: res.snapshot.settled, creditsHeld: res.snapshot.creditsHeld,
+      exodusNames: res.snapshot.exodusNames.slice()
+    };
+    try{ saveQ(); }catch(_s){}
+    const inserts = endingInserts410(res, favor);
+    const page1 = "<h3>三年收科</h3>" + endingCareerScene410(res);
+    const page2 = "<h3>收科之後</h3>" + endingRomanceScene410(res) + endingExodusScene410(res, favor)
+      + (inserts.length ? ("<p class=\"sub\">——呢三年——</p>" + inserts.map(t=>"<p>"+endingEsc410(t)+"</p>").join("")) : "");
+    modal(page1, [{ label: "下一頁", role: "p", on: ()=>{
+      modal(page2, [{ label: "睇手帳總結", role: "p", on: ()=>{ showEndingSummary410(); } }]);
+    } }]);
+    return true;
+  }catch(_e){ return false; }
+}
+
 function pickNpcLine(npcId, opts){
   opts = opts || {};
   const pack = (NPC_LINES && NPC_LINES[npcId]) || (NPC_LINES_CORE && NPC_LINES_CORE[npcId]);
@@ -22618,6 +23144,8 @@ async function refreshCopyPacksFromDisk(){
     STORY_WIRE.rival = rival;
     /* v20a31：套主幹 1990 節點＋C6 對齊＋藍 PA 化覆寫（main 同 lanXu 都賦值完先行） */
     try{ applyStorySpineOverrides48(); }catch(_sp48){}
+    /* v20a33：套 C17 結局前夕覆寫（取代舊 E01–E10 十檔任揀節點） */
+    try{ applyStorySpineOverrides410(); }catch(_sp410){}
     let _softStubRes = null;
     try{
       if(gateStub && typeof BehaviorGate!=="undefined") _softStubRes = BehaviorGate.loadStub_nodes_trigger(gateStub);
@@ -32056,17 +32584,32 @@ function renderClippingsPane(){
   const box = document.getElementById("clippings-list");
   if(!box) return;
   const rows = ensureNewspaperClippings();
+  /* v20a33 WEAVE_PHASE4_10：已收科嗰陣，剪報頁頂加「三年收科」卡——結局總結隨時重睇 */
+  let endingCard = "";
+  try{
+    if(typeof S!=="undefined" && S && S.ending410){
+      endingCard = `<article class="clip-card ending410-card"><p class="clip-date">1990 年冬 · 三年收科</p><h4>${endingEsc410(S.ending410.title||"三年收科")}</h4><p>事業結局：${endingEsc410(ENDING410_CAREER_NAMES[S.ending410.career]||S.ending410.career||"")}。呢三年的總帳，記喺一度。</p><p><button type="button" id="ending410-review-btn" class="act act-priority">重睇結局總結</button></p></article>`;
+    }
+  }catch(_e410){}
+  const wireEndingBtn = ()=>{
+    try{
+      const b = document.getElementById("ending410-review-btn");
+      if(b) b.onclick = ()=>{ try{ showEndingSummary410(); }catch(_e){} };
+    }catch(_e){}
+  };
   if(!rows.length){
-    box.innerHTML = `<article class="clip-card"><p class="clip-date">剪報</p><h4>未有剪報</h4><p>殺青、頒獎或事態見報之後，下一朝的報紙會留在這裡。傳聞仍是圈內耳語，跟這疊公開剪報分開。</p></article>`;
+    box.innerHTML = endingCard + `<article class="clip-card"><p class="clip-date">剪報</p><h4>未有剪報</h4><p>殺青、頒獎或事態見報之後，下一朝的報紙會留在這裡。傳聞仍是圈內耳語，跟這疊公開剪報分開。</p></article>`;
+    wireEndingBtn();
     return;
   }
-  box.innerHTML = rows.map(c=>{
+  box.innerHTML = endingCard + rows.map(c=>{
     const fame = Number(c.fameDelta)||0;
     const fameBit = fame ? `聲望 ${fame>0?"+":""}${fame}` : "聲望未有變動";
     const extra = (c.shorts&&c.shorts.length) ? `<p>同版還有 ${c.shorts.length} 則短訊。</p>` : "";
     const lab = c.clipLabel ? ` · ${newspaperEsc(c.clipLabel)}` : "";
     return `<article class="clip-card"><p class="clip-date">${newspaperEsc(c.dateLabel||"")} · ${newspaperEsc(c.paperName||"娛樂版")}${lab}</p><h4>${newspaperEsc(c.headline||"")}</h4><p>${newspaperEsc(c.dek||"")}</p>${extra}<p>${fameBit}</p></article>`;
   }).join("");
+  wireEndingBtn();
 }
 function newspaperCheck(){
   const fails = [];
