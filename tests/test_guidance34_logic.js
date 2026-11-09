@@ -422,29 +422,32 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
 })();
 
 /* ================================================================
-   段六 (f)：P1-1(b)——真 dualTrackExplainHtml34：第一次畀雙軌先出、只出一次、
-   冇雙軌增益唔出亦唔燒旗。
+   段六 (f)：P1-1(b)——真 dualTrackExplainHtml34。
+   v20a37 改約：舊約「有正 delta 先出」經實機證實喺真路徑永不觸發
+   （C1／C2 揀嘅 effects.stats 全空、delta 永遠 0）；新約係第一次事態
+   結算展示雙軌面板（result 帶 dual 物件）就出、只出一次；冇 result／
+   冇 dual 物件唔出亦唔燒旗。真路徑覆核喺 test_verify37_logic.js 段一。
    ================================================================ */
 (function(){
   var saveCalls = 0;
   var saveQ = ()=>{ saveCalls++; };
   var S = { flags:{} };
   eval(extractFn('dualTrackExplainHtml34'));
-  const r0 = dualTrackExplainHtml34({ dual:{ dStage:0, dCredit:0 } });
-  ok('f1 no dual gain: no explainer, flag untouched', r0 === '' && !S.flags.guidanceDualExplained34);
   const rN = dualTrackExplainHtml34(null);
-  ok('f2 null result: no explainer', rN === '' && !S.flags.guidanceDualExplained34);
-  const r1 = dualTrackExplainHtml34({ dual:{ dStage:2, dCredit:0 } });
-  ok('f3 first dual gain: explainer shown with grounded scale',
-     r1.indexOf('聲望＝觀眾識唔識你') >= 0 && r1.indexOf('15') >= 0 && r1.indexOf('40') >= 0
-     && r1.indexOf('信用＝行內人信唔信你') >= 0);
+  ok('f1 null result: no explainer, flag untouched', rN === '' && !S.flags.guidanceDualExplained34);
+  const rE = dualTrackExplainHtml34({});
+  ok('f2 result without dual object: no explainer, flag untouched', rE === '' && !S.flags.guidanceDualExplained34);
+  const r0 = dualTrackExplainHtml34({ dual:{ dStage:0, dCredit:0 } });
+  ok('f3 first real settle (zero delta, C1/C2 shape): explainer shown with grounded scale',
+     r0.indexOf('聲望＝觀眾識唔識你') >= 0 && r0.indexOf('15') >= 0 && r0.indexOf('40') >= 0
+     && r0.indexOf('信用＝行內人信唔信你') >= 0);
   ok('f4 flag set after showing', S.flags.guidanceDualExplained34 === true);
   const r2 = dualTrackExplainHtml34({ dual:{ dStage:1, dCredit:1 } });
   ok('f5 second settlement: explainer NOT repeated', r2 === '');
   var S2 = { flags:{} };
   S = S2;
-  const r3 = dualTrackExplainHtml34({ dual:{ dStage:0, dCredit:3 } });
-  ok('f6 credit-only gain also triggers (fresh save)', r3.indexOf('何生提你') >= 0 && S2.flags.guidanceDualExplained34 === true);
+  const r3 = dualTrackExplainHtml34({ dual:{ dStage:2, dCredit:0 } });
+  ok('f6 positive gain also triggers (fresh save)', r3.indexOf('何生提你') >= 0 && S2.flags.guidanceDualExplained34 === true);
 })();
 
 console.log(fails.length ? ('\nGUIDANCE34 LOGIC: '+fails.length+' FAIL') : '\nGUIDANCE34 LOGIC: ALL PASS');
