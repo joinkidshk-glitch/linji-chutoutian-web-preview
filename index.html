@@ -25328,8 +25328,10 @@ function ensureWeekHighlight(){
 function noteWeekHighlight(kind, label){
   try{
     const h = ensureWeekHighlight();
-    const s = String(label||"").replace(/<[^>]+>/g,"").trim();
+    let s = String(label||"").replace(/<[^>]+>/g,"").trim();
     if(!s) return;
+    /* P0-3（v20a12）：週回顧顯示嘅傳聞標題同卡面一致，存入前先行 displayRumor 過濾。 */
+    if(kind==="rumor"){ try{ const d = displayRumor({title:s}); if(d && d.title) s = String(d.title); }catch(_e){} }
     if(kind==="rumor") h.rumor = s.slice(0,28);
     else if(kind==="talk") h.talk = s.slice(0,20);
     else if(kind==="gig") h.gig = s.slice(0,28);
@@ -26974,7 +26976,9 @@ function applyMockAsk(locId, actionId, repayOpt){
   if(added && def.resultHint && def.id==="act_cha_hall_tea") toastMsg = (payNote?payNote+" ":"") + def.resultHint + "（已記入手帳）";
   /* v19z3：傳聞 toast 帶短標題 */
   if((added||updated) && rumorTitle){
-    toastMsg = `傳聞「${rumorTitle}」——快啲記落手帳` + (payNote ? " · "+payNote : "");
+    /* P0-3（v20a12）：toast 短標題同卡面一致，行 displayRumor 過濾，唔好一邊原文一邊軟化。 */
+    const safeRumorTitle = (function(){ try{ const d = displayRumor({title:rumorTitle}); return (d && d.title) || rumorTitle; }catch(_e){ return rumorTitle; } })();
+    toastMsg = `傳聞「${safeRumorTitle}」——快啲記落手帳` + (payNote ? " · "+payNote : "");
   }
   /* v19z6：成功先計入每日上限（失敗／已聽過唔扣次數） */
   try{
@@ -27122,12 +27126,15 @@ function requestMergeConfirm(){
     return { ok:false, toast:fail };
   }
   const rows = ids.map(id=>S.mockRumors.find(r=>r && r.id===id));
+  /* P0-3（v20a12）：確認彈窗標題要行返 displayRumor（家庭友善過濾），同卡面一致。
+     舊寫法直接用原文 rows[i].title，過濾開時會出現彈窗「深夜買醉」vs 卡面「深夜夜歸散心」嘅不一致。 */
+  const dRows = rows.map(r=>{ try{ return r ? (displayRumor(r)||r) : r; }catch(_e){ return r; } });
   const title = phase2Steps56Line("step6", "confirmTitle", "確認拼合");
   const body = phase2Steps56Copy() ? phase2Steps56Line("step6", "confirmBody", "") : "";
   const bodyHtml = body ? `<p>${journalText(body)}</p>` : "";
   const cancel = phase2Steps56Line("step6", "cancelLabel", MERGE_FLOW.cancelLabel);
   const confirm = phase2Steps56Line("step6", "confirmLabel", MERGE_FLOW.confirmLabel);
-  modal(`<h3>${journalText(title)}</h3>${bodyHtml}<p>${journalText(rows[0]&&rows[0].title)}</p><p>${journalText(rows[1]&&rows[1].title)}</p>`, [
+  modal(`<h3>${journalText(title)}</h3>${bodyHtml}<p>${journalText(dRows[0]&&dRows[0].title)}</p><p>${journalText(dRows[1]&&dRows[1].title)}</p>`, [
     { label:cancel, role:"g" },
     { label:confirm, role:"p", on:()=>mergePickedRumors() },
   ]);
