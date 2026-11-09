@@ -59,7 +59,7 @@ ok('no sing/dance in new gig reqs', 'sing' not in keys and 'dance' not in keys)
 
 # ---- 紅線：SAVE key／softRev／?v=／1988 階梯冇郁 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
-ok('softRev unchanged', 'softRev=s107' in html or '"s107"' in html)
+ok('softRev unchanged', 'softRev=s108' in html or '"s108"' in html)
 ok('lingyi threshold untouched (acting 45)', '"acting": 45' in html or 'acting:45' in html)
 ok('mid35 gigs untouched', 'gig_1988_mid35_longmen_night' in html and 'gig_1988_mid35_lion_chase' in html)
 

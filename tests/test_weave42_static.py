@@ -53,7 +53,7 @@ ok('allDebtsForRepay excludes 絕響', 'if(d.status==="絕響") return;' in html
 
 # 慣例不變
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
-ok('softRev unchanged', 's107' in html)
+ok('softRev unchanged', 's108' in html)
 ok('no real artist names in new copy', all(x not in html.split('EXODUS_FEN_INTEL')[1].split('};')[0] for x in ['張國榮','陳百強','梅艷芳','周潤發']))
 
 print('\nFAILED: ' + ' | '.join(fails) if fails else '\nALL PASS')

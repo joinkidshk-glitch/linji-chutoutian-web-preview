@@ -74,7 +74,7 @@ ok('item9 rumor source prefers action source', 'const rumorSource = def.source |
 
 # ---- 紅線：SAVE key／softRev／?v= 冇郁 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
-ok('softRev unchanged', 's107' in html)
+ok('softRev unchanged', 's108' in html)
 
 # ---- NOTES ----
 notes_path = os.path.join(os.path.dirname(os.path.abspath(path)), 'NOTES_V20A37_VERIFY_FIXES.md')
