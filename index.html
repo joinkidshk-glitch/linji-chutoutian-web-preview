@@ -3919,6 +3919,107 @@ body.day-res-open .day-row{
 .story-play .sp-plate .sp-speaker{color:#7a4416;letter-spacing:.05em}
 .story-play .sp-choice{background:linear-gradient(180deg,#f8f2e2,#efe3c8);border-color:rgba(146,110,44,.45)}
 /* === v20a40 皮膚層完 === */
+/* === v20a41 新 UI 皮膚層（二期補修：StoryPlay 全屏分層版面） ===
+   目標：《明星志願》式全屏分層——場景圖全屏做底＋企立圖企左下＋米紙對話牌壓底＋標題收做頂部半透明條。
+   突破容器方法（純 CSS，零模板/邏輯改動）：#mask 本身係 #app 直接子元素、position:absolute;inset:0
+   已覆蓋成個遊戲框；祖先鏈 #app／.modal／#modal-inner 全部冇 transform/filter/backdrop-filter，
+   所以唔使 position:fixed（fixed 反而會喺桌面版逃出手機框）——只要喺 #mask.story-play-on 作用域內
+   將 .modal 拉滿高、去框去底色，.sp-stage 改 absolute inset:0 做全屏底，內容層疊上去即可。
+   作用域安全：story-play-on 只喺對白/選項播放期間存在；showResult 結算會主動移除佢、
+   事態列表 modal 唔帶呢個 class，兩者版面零影響。功能按鈕（下一句/跳至選項/選擇）
+   實際喺 #modal-btns（模板內 .sp-actions 自 v19z24 起硬隱藏）——對白/旁白模式將佢改做
+   底部漸變 overlay 貼住牌底；選擇模式按鈕較多，保留喺流程底欄（:has 區分，唔支援 :has 時
+   安全退回：全部模式都行底欄＋全屏場景，唔會爛版）。 */
+/* --- 容器：modal 拉做框內全屏 --- */
+#mask.story-play-on{padding:0;align-items:stretch;background:#0a0705}
+#mask.story-play-on .modal{
+  position:relative;height:100%;width:100%;
+  max-height:none !important;padding:0;
+  border:0 !important;border-radius:0;
+  background:transparent !important;box-shadow:none !important;
+}
+#mask.story-play-on #modal-inner{overflow:hidden !important;padding:0}
+/* --- 主根：全高、做疊層定位原點 --- */
+#mask.story-play-on .story-play{
+  position:relative;height:100%;max-height:none;gap:0;overflow:hidden;
+}
+/* --- 標題：收做頂部半透明漸變條，唔遮場景主體、唔攔截點擊 --- */
+#mask.story-play-on .story-play .sp-head{
+  position:absolute;top:0;left:0;right:0;z-index:6;pointer-events:none;
+  padding:calc(6px + env(safe-area-inset-top,0px)) 12px 16px;
+  background:linear-gradient(180deg,rgba(12,8,4,.58) 0%,rgba(12,8,4,.28) 62%,rgba(12,8,4,0) 100%);
+  color:#f5ead2;
+}
+#mask.story-play-on .story-play .sp-head .sp-meta{
+  display:inline-block;margin:0 8px 0 0;font-size:.66rem;color:rgba(245,234,210,.75);
+}
+#mask.story-play-on .story-play .sp-head h3{
+  display:inline;margin:0;font-size:.92rem;color:#f8efdb;text-shadow:0 1px 3px rgba(0,0,0,.5);
+}
+#mask.story-play-on .story-play .sp-head .sp-setting{
+  margin:3px 0 0;padding:3px 7px;font-size:.68rem;line-height:1.35;color:rgba(248,239,219,.92);
+  background:rgba(12,8,4,.32);border-radius:6px;
+  max-height:2.7em;overflow:hidden;
+}
+#mask.story-play-on .story-play .sp-progress{
+  display:inline-block;margin:0;font-size:.66rem;color:rgba(245,234,210,.75);
+}
+/* --- 舞台：全屏底層 --- */
+#mask.story-play-on .story-play .sp-stage{
+  position:absolute;inset:0;z-index:0;
+  height:auto;min-height:0;max-height:none;
+  border:0;border-radius:0;
+}
+#mask.story-play-on .story-play .sp-stage-inner{
+  height:100%;box-sizing:border-box;
+  padding:10px 12px calc(66px + env(safe-area-inset-bottom,0px));
+}
+/* --- 企立圖：左下、全高約七成、貼底、輕影（情緒 filter 逐組鏡像補回 drop-shadow） --- */
+#mask.story-play-on .story-play .sp-bust.sp-bust-stand{
+  left:0;bottom:0;height:70%;max-height:70%;width:auto;max-width:58%;
+  filter:drop-shadow(3px 5px 9px rgba(0,0,0,.45));
+}
+#mask.story-play-on .story-play .sp-bust.sp-bust-stand[data-emotion="tense"],
+#mask.story-play-on .story-play .sp-bust.sp-bust-stand[data-emotion="worried"]{filter:drop-shadow(3px 5px 9px rgba(0,0,0,.45)) saturate(.88) contrast(1.05)}
+#mask.story-play-on .story-play .sp-bust.sp-bust-stand[data-emotion="angry"]{filter:drop-shadow(3px 5px 9px rgba(0,0,0,.45)) sepia(.12) saturate(1.15)}
+#mask.story-play-on .story-play .sp-bust.sp-bust-stand[data-emotion="warm"],
+#mask.story-play-on .story-play .sp-bust.sp-bust-stand[data-emotion="soft"]{filter:drop-shadow(3px 5px 9px rgba(0,0,0,.45)) brightness(1.04) saturate(1.06)}
+#mask.story-play-on .story-play .sp-bust.sp-bust-stand[data-emotion="tired"]{filter:drop-shadow(3px 5px 9px rgba(0,0,0,.45)) brightness(.92) saturate(.85)}
+#mask.story-play-on .story-play .sp-bust.sp-bust-stand[data-emotion="smirk"]{filter:drop-shadow(3px 5px 9px rgba(0,0,0,.45)) contrast(1.06) saturate(1.05)}
+#mask.story-play-on .story-play .sp-bust.sp-bust-stand[data-emotion="calm"],
+#mask.story-play-on .story-play .sp-bust.sp-bust-stand[data-emotion="firm"],
+#mask.story-play-on .story-play .sp-bust.sp-bust-stand[data-emotion="neutral"]{filter:drop-shadow(3px 5px 9px rgba(0,0,0,.45))}
+/* --- 未覆蓋企立嘅舊 bust／剪影：維持原 bust 框尺寸，企喺牌左邊（流程內、貼底），唔拉伸唔變形 --- */
+#mask.story-play-on .story-play .sp-stage-inner .sp-bust:not(.sp-bust-stand){
+  align-self:flex-end;box-shadow:0 6px 18px rgba(0,0,0,.4);
+}
+/* --- 對話牌：壓底全闊（企立喺牌後面，由牌嘅不透明米紙遮住下段＝VN 構圖）；長文安全閥 --- */
+#mask.story-play-on .story-play .sp-stage-inner .sp-plate{
+  max-height:56%;overflow-y:auto;-webkit-overflow-scrolling:touch;
+}
+#mask.story-play-on .story-play .sp-plate.sp-plate-center{max-width:88%}
+/* --- 選擇畫面：選項紙條列喺下半部（場景已全屏做底）；牌底留位畀功能按鈕欄 --- */
+#mask.story-play-on .story-play.sp-choices-layout .sp-choices{
+  position:relative;z-index:4;margin-top:auto;
+  padding:0 12px calc(10px + env(safe-area-inset-bottom,0px));
+  gap:8px;
+}
+#mask.story-play-on .story-play.sp-choices-layout .sp-choice{
+  box-shadow:0 3px 10px rgba(0,0,0,.3);
+}
+/* --- 功能按鈕（#modal-btns）：預設＝流程底欄（深色，貼住全屏場景底部） --- */
+#mask.story-play-on #modal-btns{
+  margin:0 !important;padding:8px 10px calc(9px + env(safe-area-inset-bottom,0px));
+  background:#17100a;border-top:1px solid rgba(201,162,39,.35);box-shadow:none;
+}
+/* 對白／旁白模式：按鈕改做底部漸變 overlay，貼住對話牌底（:has 唔支援時退回上面底欄） */
+#mask.story-play-on:has(.sp-mode-dialogue) #modal-btns,
+#mask.story-play-on:has(.sp-mode-narration) #modal-btns{
+  position:absolute;left:0;right:0;bottom:0;z-index:8;
+  background:linear-gradient(180deg,rgba(12,8,4,0) 0%,rgba(12,8,4,.52) 55%,rgba(12,8,4,.72) 100%);
+  border-top:0;
+}
+/* === v20a41 皮膚層完 === */
 </style>
 </head>
 <body>
