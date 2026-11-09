@@ -27100,6 +27100,7 @@ function favorLedgerCounts(){
      兩處計算都明確排除（跟 4-2 絕響排除 pattern，唔靠 status 巧合）。
    - 恆常補種：還清唔會消失——跨月（dateObj 月份變化）自動補下一期；未還唔補、還清當月唔補。
      狀態存 S.familyHome = { cycle, monthKey, seedDay, paidDay, seedFlavorDay, paidFlavorDay }，冪等＋舊檔安全。
+     （v20a27 Phase 4-4 追加 paperTier／echoNote／echoDay 三欄，同一個 state 物件，見 familyPaperEchoTick。）
    - 第 3 拍家人態度：債卡附一行「屋企字條」，跟報紙點名三級 newspaperNameTier 切換（anon/named/titled），唔另計數。
    - 週結算 flavor：只喺「新一期播種嗰週」或「還清嗰週」出一行（settleWeek 經 familyHomeSettleLines 消費一次性標記）。 ===== */
 const FAMILY_HOME_DEBT_ID = "debt_family_home";
@@ -27112,12 +27113,16 @@ const FAMILY_HOME_CYCLES = [
 const FAMILY_HOME_SEED_FLAVOR = "屋企嗰邊：月頭到，阿媽冇打電話嚟催，只係將新一期嗰筆記入手帳——屋企人催數，從來唔出聲。";
 const FAMILY_HOME_PAID_FLAVOR = "屋企嗰邊：今個月嗰筆交咗。阿媽冇多講，只係嗰晚煲多咗個湯——屋企人嘅放心，從來唔係用口講嘅。";
 function ensureFamilyHomeState(){
-  if(typeof S==="undefined" || !S) return { cycle:0, monthKey:"", seedDay:-1, paidDay:-1, seedFlavorDay:-1, paidFlavorDay:-1 };
+  if(typeof S==="undefined" || !S) return { cycle:0, monthKey:"", seedDay:-1, paidDay:-1, seedFlavorDay:-1, paidFlavorDay:-1, paperTier:"", echoNote:"", echoDay:-1 };
   let st = S.familyHome;
-  if(!st || typeof st!=="object" || Array.isArray(st)) st = S.familyHome = { cycle:0, monthKey:"", seedDay:-1, paidDay:-1, seedFlavorDay:-1, paidFlavorDay:-1 };
+  if(!st || typeof st!=="object" || Array.isArray(st)) st = S.familyHome = { cycle:0, monthKey:"", seedDay:-1, paidDay:-1, seedFlavorDay:-1, paidFlavorDay:-1, paperTier:"", echoNote:"", echoDay:-1 };
   if(typeof st.cycle!=="number" || !(st.cycle>=0)) st.cycle = 0;
   if(typeof st.monthKey!=="string") st.monthKey = "";
   ["seedDay","paidDay","seedFlavorDay","paidFlavorDay"].forEach(k=>{ if(typeof st[k]!=="number") st[k] = -1; });
+  /* v20a27（Phase 4-4）：報紙點名級別紀錄＋屋企回音狀態。paperTier ""＝未觀察過（首次只初始化、唔觸發）。 */
+  if(typeof st.paperTier!=="string") st.paperTier = "";
+  if(typeof st.echoNote!=="string") st.echoNote = "";
+  if(typeof st.echoDay!=="number") st.echoDay = -1;
   return st;
 }
 function familyMonthKey(){
@@ -27172,6 +27177,43 @@ function familyAttitudeLine(){
     if(tier==="titled") return "屋企字條：阿媽話，鄰居問起你做邊行，佢而家會答：「我個仔上報紙，做戲嗰個。」講嗰陣，腰骨都直啲。";
     if(tier==="named") return "屋企字條：阿媽話，聽講報紙有寫你個名？真定假㗎……唔好俾人呃先好，糧期到就追實啲，屋企等住你嗰份開飯。";
     return "屋企字條：阿媽話——做臨記唔係辦法，隔離陳師奶個仔做文員，月月有糧出幾穩陣。你自己諗下啦，仲有，記得食飯。";
+  }catch(_e){ return ""; }
+}
+/* ===== Weave Phase 4-4（v20a27）：鏈 G 第 2 拍——報紙首次點名 → 屋企回音。
+   偵測掛喺 commitMorningPaper 主流程尾（saveQ 之前）：每期報紙 commit 計一次 newspaperNameTier，
+   同 S.familyHome.paperTier 對比：
+   - paperTier 未記（""）嗰期只係初始化，永不觸發——舊檔就算 fame 已過門檻都唔補觸發，
+     因為事件屬於「第一次見報紙寫你名嗰一刻」，過咗就唔扮返；
+   - 首次 anon→named、或 anon→titled 直跳嗰期先觸發；named→titled 唔算首次跨級，唔觸發；
+   - 一次性：echoNote 寫入後常駐，之後任何跨級都唔再觸發。
+   呈現三樣：兩段式 toast（茶餐廳留言，避 40 字截斷）＋屋企卡常駐「屋企回音」字條（echoNote，
+   同態度字條分開一行）＋toast 尾句提示剪報頁睇返嗰期報紙。
+   文案口徑：規劃原文寫全名「陳偉翔」，但 LIVE 點名一律用「阿偉」（newspaperPlayerRef），跟 LIVE 唔改口徑。 ===== */
+const FAMILY_ECHO_TOAST_MAIN = "茶餐廳伙記轉告：你阿媽打嚟，話喺報紙見到你個名。";
+const FAMILY_ECHO_TOAST_SUB = "佢問嗰個係咪真係你，又囑你記得食飯。嗰版報紙佢剪低收好咗——手帳剪報頁有得睇返。";
+const FAMILY_ECHO_NOTE = "屋企回音：阿媽將嗰版寫住你名嘅報紙剪咗落嚟，夾喺本電話簿入面，摺得整整齊齊。嗰句冇講出口嘅驕傲，佢用把較剪講晒。";
+function familyPaperEchoTick(){
+  try{
+    if(typeof S==="undefined" || !S) return false;
+    if(typeof newspaperNameTier!=="function") return false;
+    const st = ensureFamilyHomeState();
+    const tier = newspaperNameTier();
+    if(!st.paperTier){ st.paperTier = tier; return false; }
+    const crossed = (st.paperTier==="anon" && (tier==="named" || tier==="titled") && !st.echoNote);
+    st.paperTier = tier;
+    if(!crossed) return false;
+    st.echoNote = FAMILY_ECHO_NOTE;
+    st.echoDay = (S.dayIndex|0);
+    try{ toast(FAMILY_ECHO_TOAST_MAIN, { sub:FAMILY_ECHO_TOAST_SUB }); }catch(_t){}
+    try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
+    return true;
+  }catch(_e){ return false; }
+}
+function familyEchoNoteText(){
+  try{
+    if(typeof S==="undefined" || !S) return "";
+    const st = ensureFamilyHomeState();
+    return st.echoNote ? String(st.echoNote) : "";
   }catch(_e){ return ""; }
 }
 /* ===== 鏈 F 第 2 拍：副導演芬姐（extra_ad_fen，演講者級數次要角色；債主欄自由字串直接掛）離港。
@@ -28241,7 +28283,7 @@ function renderDebtPane(){
     return `<article class="debt-row credit-row${ex?" debt-exodus":""}" data-credit-id="${journalText(c.id)}"><p class="debt-who">欠你人情：${journalText(c.debtor||"")}</p><p class="debt-title">${journalText(c.title||"")}</p><p class="collect-line">${journalText(c.line||"")}</p><span class="debt-status" data-tone="${journalText(ex?"絕響":"未收")}">${ex?"絕響":"未收"}</span>${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:""}</article>`;
   }).join("");
   const rows=S.mockDebts||[];
-  const debtHtml=rows.length ? rows.map(d=>{
+  const debtCards=rows.map(d=>{
     const status = debtStatusLabel(d.status);
     const who=debtCreditorName(d);
     const amt = (d.amount!=null) ? ("金額約 $"+Number(d.amount).toLocaleString()) : ("人情："+journalText(d.weight)+" · 建議 $200／禮物");
@@ -28249,9 +28291,17 @@ function renderDebtPane(){
     const ex = d.status==="絕響";
     /* v20a26：鏈 G 第 3 拍——屋企債卡附家人態度字條（跟聲望三級），同卡渲染，唔另開頁 */
     const famLine = (d.id==="debt_family_home" && typeof familyAttitudeLine==="function") ? familyAttitudeLine() : "";
-    return `<article class="debt-row${ex?" debt-exodus":""}" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${dueLine?`<p class="debt-meta">${journalText(dueLine)}</p>`:""}<p class="debt-note">${journalText(d.season)}</p>${famLine?`<p class="debt-note family-attitude">${journalText(famLine)}</p>`:""}${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:repayBtn(d.id,false)}</article>`;
-  }).join("") : ((cardHtml || creditHtml) ? "" : `<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p><p class="sub" style="margin-top:8px"><button type="button" class="debt-repay-btn" data-repay-id="__goto_agency__" data-season="0">去何生事務所</button></p></div>`);
-  box.innerHTML=banner+cardHtml+creditHtml+debtHtml;
+    /* v20a27：鏈 G 第 2 拍——首次點名後屋企回音字條（觸發後常駐，同態度字條分開一行） */
+    const famEcho = (d.id==="debt_family_home" && typeof familyEchoNoteText==="function") ? familyEchoNoteText() : "";
+    return { id:d.id, html:`<article class="debt-row${ex?" debt-exodus":""}" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${dueLine?`<p class="debt-meta">${journalText(dueLine)}</p>`:""}<p class="debt-note">${journalText(d.season)}</p>${famLine?`<p class="debt-note family-attitude">${journalText(famLine)}</p>`:""}${famEcho?`<p class="debt-note family-echo">${journalText(famEcho)}</p>`:""}${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:repayBtn(d.id,false)}</article>` };
+  });
+  /* v20a27（4-3 覆檢跟進）：只改顯示次序——屋企債卡抽出嚟排全頁最前（鏈 G 第 1 拍原意：
+     開局手帳第一筆唔係圈內債，係屋企）；季節卡／債權／其餘圈內債保持現有相對次序。
+     S.mockDebts 陣列本身唔郁，免影響還款、壓力等其他邏輯。 */
+  const famCardsHtml=debtCards.filter(c=>c.id==="debt_family_home").map(c=>c.html).join("");
+  const debtHtml=debtCards.filter(c=>c.id!=="debt_family_home").map(c=>c.html).join("");
+  const emptyHtml=(!rows.length && !cardHtml && !creditHtml) ? `<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p><p class="sub" style="margin-top:8px"><button type="button" class="debt-repay-btn" data-repay-id="__goto_agency__" data-season="0">去何生事務所</button></p></div>` : "";
+  box.innerHTML=banner+famCardsHtml+cardHtml+creditHtml+debtHtml+emptyHtml;
   /* v19z11：委派點擊；debtId 必須嚟自該卡，永唔走 openHoRepaySheet／何生 fallback */
   box.onclick=(ev)=>{
     try{
@@ -30480,6 +30530,9 @@ function commitMorningPaper(edition, opts){
   try{ pushNewspaperRumor(edition); }catch(_e){}
   S.pendingMorningPaper = null;
   S.newspaperLastPresentedDay = S.dayIndex|0;
+  /* v20a27：鏈 G 第 2 拍——報紙點名跨級偵測（屋企回音），趕喺 saveQ 之前行，
+     paperTier／echoNote 狀態同今期剪報同一次落盤。fameApplied 重入路徑唔行到呢度，唔會重複計。 */
+  try{ if(typeof familyPaperEchoTick==="function") familyPaperEchoTick(); }catch(_e){}
   if(opts.persist!==false){ try{ saveQ(); }catch(_e){} }
   try{
     const pane = document.getElementById("home-pane-clippings");
