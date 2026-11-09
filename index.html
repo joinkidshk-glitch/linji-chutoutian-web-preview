@@ -727,6 +727,16 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .works-note59{font-size:.78rem;color:var(--muted-ink);line-height:1.5;margin:12px 2px 2px}
 .works-empty59{padding:10px 4px;line-height:1.6}
 .works-empty59 h3{margin:0 0 6px;color:var(--navy)}
+/* v20a60 CALIB60：手帳「回憶」頁＋聲樂凍結提示（跟紙面語言） */
+.mem-empty60{padding:10px 4px;line-height:1.6}
+.mem-empty60 h3{margin:0 0 6px;color:var(--navy)}
+.mem-head60{padding:6px 4px 2px;line-height:1.55}
+.mem-head60 h3{margin:0 0 4px;color:var(--navy)}
+.mem-item60{display:flex;gap:10px;align-items:baseline;background:linear-gradient(180deg,#fbf2da,#f3e5c3);border:1px solid #d9c491;border-radius:4px;padding:8px 10px;margin:8px 2px;box-shadow:0 2px 6px rgba(74,56,28,.15)}
+.mem-title60{font-weight:800;color:var(--navy);letter-spacing:.02em}
+.mem-when60{color:#6b4e2e;font-weight:700;font-size:.8rem;white-space:nowrap}
+.mem-item60 .dim{opacity:.7;font-size:.74rem;margin-left:auto;white-space:nowrap}
+.cn-train-jump-frozen60{margin:8px 0 2px;padding:8px 10px;background:#fdf3d8;border:1px dashed #b98c4a;border-radius:4px;color:#6b4e2e;font-size:.82rem;line-height:1.5}
 .bar{
   background:linear-gradient(180deg,#4a433c,#3a3530) !important;
   border-bottom:1px solid #6a5e52 !important;
@@ -4705,6 +4715,7 @@ body.day-res-open .day-row{
         <button type="button" class="home-tab" id="htab-debt" role="tab" aria-selected="false" data-htab="debt">人情債</button>
         <button type="button" class="home-tab" id="htab-tags" role="tab" aria-selected="false" data-htab="tags">標籤</button>
         <button type="button" class="home-tab" id="htab-works" role="tab" aria-selected="false" data-htab="works">作品</button>
+        <button type="button" class="home-tab" id="htab-memory" role="tab" aria-selected="false" data-htab="memory">回憶</button>
       </div>
       <div class="home-pane on" id="home-pane-plan">
       <div class="home-card settle-collapsible collapsed" id="home-summary-card" style="display:none">
@@ -4766,6 +4777,9 @@ body.day-res-open .day-row{
       </div>
       <div class="home-pane" id="home-pane-works">
         <div class="journal-scroll" id="works-list" aria-label="作品牆"></div>
+      </div>
+      <div class="home-pane" id="home-pane-memory">
+        <div class="journal-scroll" id="memory-list" aria-label="回憶"></div>
       </div>
       <div class="nb-actions home-tab-exit" id="home-tab-exit" hidden>
         <button class="g" type="button" id="home-back-map-tabs">返回地圖</button>
@@ -22384,6 +22398,10 @@ function tutorialFxFingerErr(img){
   if(!fb || String(img.getAttribute("src")||"").indexOf("fx_drag_finger_proc.png")>=0) return;
   img.src = fb;
 }
+/* v20a60 CALIB60-5：inline onerror 係全域查找——全弧 Arc C 實測出 `tutorialFxFingerErr is not defined`
+   （手指圖 404 嗰陣 handler 未掛上全域）。顯式發布去 window，保證幾時觸發都搵到；
+   其餘圖嘅 onerror 一律用 self-contained 寫法（this.style…），只有呢個係具名函數，要特別照顧。 */
+try{ window.tutorialFxFingerErr = tutorialFxFingerErr; }catch(_e){}
 function tutorialFxImg(cls, file){
   const src = journalText(tutorialFxUrl(file));
   const extra = file==="fx_drag_finger.png"
@@ -25034,6 +25052,8 @@ function normalizeSaveObj(o){
   if(!Array.isArray(o.newspaperClippings)) o.newspaperClippings=[];
   if(o.pendingMorningPaper && typeof o.pendingMorningPaper!=="object") o.pendingMorningPaper=null;
   try{ syncDualTracks(o); }catch(_e){}
+  /* v20a60 CALIB60-3：舊檔靜靜補登已漏節點入「回憶」（唔彈提示、唔出結算行）；新登記只會喺週結發生 */
+  try{ if(typeof calib60MissedScan==="function") calib60MissedScan(o); }catch(_e){}
   return o;
 }
 function saveSummaryFrom(o){
@@ -25626,6 +25646,165 @@ function apply(delta){
   try{ if(S) syncDualTracks(S); }catch(_e){}
   if(moneyTouched){ try{ refreshMoneyHud(); }catch(_e){} }
   return notes;
+}
+/* ===== v20a60 CALIB60-1：恆常增益遞減／軟頂 =====
+   全弧報告 §6.2.1：拍攝日逐日＋殺青＋訓練等恆常來源冇遞減，令雙軌門檻（fame 60／credit 55／dual 125）
+   喺第 23 週就過晒、結局膨脹到門檻 8–10 倍。而家恆常來源嘅正增益按「現值」分帶遞減：
+   fame／popularity 行 FAME 帶、六主屬性（演技／台風／歌藝／外貌／魅力／智商）行 ATTR 帶；
+   小數餘額入 S.calib60Bank 累積（+1 級數嘅逐日增益唔會被食晒，係延後兌現）。
+   信用係派生值（fame×0.5＋stage×0.3＋acting×0.2＋industryCreditDelta），三個入力遞減即自動拖慢，唔使另改公式；
+   industryCreditDelta 嘅一次性加成（劇情抉擇／對手／殺青反響）屬敘事獎勵，唔經呢度、唔縮。
+   劇情抉擇、里程碑、社交微增益同樣唔經呢度（唔用 applyCalib60 就唔受影響）；負增益永不遞減。
+   只經 applyCalib60／calib60FameGain 嘅呼叫點先生效：resolvePlannedDay 拍攝日＋殺青、訓練鏈（兩路徑）、
+   街頭／咖啡駐場、applyTrainLesson、殺青反響包嘅直接 fame 寫入（3 處）。
+   參數校準：test_calib60_logic 以 Arc A（慢速）＋Arc C×0.75（穩定）逐週真數據回放驗證——
+   dual 125 到達週由 23／18 推遲到 66／57（中位 ~61.5，連同未建模嘅通告入場回饋只會更遲），
+   1990 年尾 dual 仍有 260／204（門檻 2.1／1.6 倍），E1 三門檻全部有餘裕。詳見 NOTES_V20A60_CALIB.md。 */
+const CALIB60_FAME_BANDS = [[5,1],[14,0.30],[28,0.22],[50,0.17],[85,0.14],[140,0.12],[230,0.10],[Infinity,0.08]];
+const CALIB60_ATTR_BANDS = [[28,1],[55,0.36],[110,0.25],[190,0.19],[Infinity,0.14]];
+const CALIB60_SCALED_KEYS = { fame:1, popularity:1, acting:1, stage:1, vocal:1, looks:1, charm:1, iq:1 };
+function calib60BandScale(bands, x){
+  const v = Number(x)||0;
+  for(let i=0;i<bands.length;i++){ if(v < bands[i][0]) return bands[i][1]; }
+  return bands[bands.length-1][1];
+}
+function calib60ScaleFor(key, cur){
+  if(key==="fame" || key==="popularity") return calib60BandScale(CALIB60_FAME_BANDS, cur);
+  if(CALIB60_SCALED_KEYS[key]) return calib60BandScale(CALIB60_ATTR_BANDS, cur);
+  return 1;
+}
+function calib60BankedGain(key, v, cur){
+  v = Number(v)||0;
+  if(v<=0) return v;
+  const s = calib60ScaleFor(key, Number(cur)||0);
+  if(s>=1) return v;
+  try{
+    if(typeof S!=="undefined" && S){
+      S.calib60Bank = (S.calib60Bank && typeof S.calib60Bank==="object" && !Array.isArray(S.calib60Bank)) ? S.calib60Bank : {};
+      /* bank 四捨五入到 1e-6，殺浮點累積漂移（25×0.08 要準確等於 2） */
+      const banked = Math.round(((Number(S.calib60Bank[key])||0) + v*s) * 1e6) / 1e6;
+      const whole = Math.floor(banked);
+      S.calib60Bank[key] = banked - whole;
+      return whole;
+    }
+  }catch(_e){}
+  return Math.floor(v*s);
+}
+function calib60FameGain(v){
+  v = Number(v)||0;
+  if(v<=0) return v;
+  return calib60BankedGain("fame", v, (typeof S!=="undefined" && S) ? (Number(S.fame)||0) : 0);
+}
+function calib60ScaleDelta(delta){
+  const out = {};
+  for(const [k,v] of Object.entries(delta||{})){
+    if(typeof v==="number" && v>0 && CALIB60_SCALED_KEYS[k]){
+      out[k] = calib60BankedGain(k, v, (typeof S!=="undefined" && S) ? (Number(S[k])||0) : 0);
+    } else out[k] = v;
+  }
+  return out;
+}
+function applyCalib60(delta){
+  return apply(calib60ScaleDelta(delta));
+}
+/* v20a60 CALIB60-2 輔助：週數 → 真日曆年份（生活費年份遞增用；週以 START 1988-03-07 起計，每週第一日定年） */
+function calib60YearOfWeek(w){
+  const wk = Math.max(1, Number(w)||1);
+  try{
+    const dt = new Date(START.y, START.m-1, START.d + (wk-1)*7);
+    return dt.getFullYear();
+  }catch(_e){ return 1988; }
+}
+/* ===== v20a60 CALIB60-3：主線節點漏失提示＋手帳「回憶」 =====
+   全弧報告 §6.1.4：gate-on 節點有時窗＋條件，過窗未觸發係無聲無息（Arc C 漏咗成批都冇提示，
+   漏嘅仲有感情線前置）。而家：節點過咗主幹編排時窗仍未完成 → 登記入 S.calib60Missed，
+   嗰週結算出一行提示，手帳新頁「回憶」長期列住（只列名＋時期，唔劇透內容）。
+   時窗表跟 STORY_GATE_3Y＋三年版主幹編排（gate 本身 yearMin 容許遲一年同季補觸發，
+   所以「回憶」語義＝已過編排時窗；若其後補回完成，掃描會自動除名，唔會留假紀錄）。
+   唔改 STORY_GATE_3Y／任何觸發條件／門檻；舊存檔經 normalizeSaveObj 靜靜補登（唔彈提示）。 */
+const CALIB60_NODE_WINDOWS = {
+  C6:  { year:1988, seasons:["春","夏","秋","冬"], whenLabel:"1988 年" },
+  C7:  { year:1989, seasons:["夏"], whenLabel:"1989 年夏" },
+  C11: { year:1989, seasons:["夏","秋"], whenLabel:"1989 年夏／秋" },
+  C8:  { year:1989, seasons:["秋"], whenLabel:"1989 年秋" },
+  C9:  { year:1989, seasons:["冬"], whenLabel:"1989 年冬" },
+  C10: { year:1989, seasons:["冬"], whenLabel:"1989 年冬" },
+  C15: { year:1990, seasons:["春"], whenLabel:"1990 年春" },
+  C14: { year:1990, seasons:["夏"], whenLabel:"1990 年夏" },
+  C12: { year:1990, seasons:["秋"], whenLabel:"1990 年秋" },
+  C16: { year:1990, seasons:["秋"], whenLabel:"1990 年秋" },
+  C13: { year:1990, seasons:["冬"], whenLabel:"1990 年冬" },
+  C17: { year:1990, seasons:["冬"], whenLabel:"1990 年冬" }
+};
+const CALIB60_NODE_TITLES = {
+  C6:"飯堂閒角", C7:"暴雨救場", C11:"選美後台", C8:"茶餐廳度橋", C9:"年尾追數", C10:"戲路定型",
+  C15:"高危替身", C14:"站隊", C12:"樂壇前哨", C16:"偶像實力之爭", C13:"賀歲片", C17:"三年收科"
+};
+function calib60SeasonIdx(year, season){
+  const rank = { "春":0, "夏":1, "秋":2, "冬":3 }[season];
+  return (Number(year)||1988)*4 + (rank==null ? 0 : rank);
+}
+function calib60NowSeasonIdx(dayIndex){
+  try{
+    const dt = new Date(START.y, START.m-1, START.d + (Number(dayIndex)||0));
+    const m = dt.getMonth()+1;
+    const season = (m>=3 && m<=5) ? "春" : (m>=6 && m<=8) ? "夏" : (m>=9 && m<=11) ? "秋" : "冬";
+    return calib60SeasonIdx(dt.getFullYear(), season);
+  }catch(_e){ return 0; }
+}
+function calib60NodeTitle(id){
+  try{
+    const sp = (typeof STORY_SPINE_NODES_1989!=="undefined" && STORY_SPINE_NODES_1989 && STORY_SPINE_NODES_1989[id])
+      || (typeof STORY_SPINE_NODES_1990!=="undefined" && STORY_SPINE_NODES_1990 && STORY_SPINE_NODES_1990[id]);
+    if(sp && sp.title) return String(sp.title);
+  }catch(_e){}
+  return CALIB60_NODE_TITLES[id] || String(id||"");
+}
+/* 掃描：已完成 → 除名；過窗未完成 → 登記（新登記清單回傳，畀結算出提示）。全防禦，唔會拋錯。 */
+function calib60MissedScan(st){
+  const newly = [];
+  try{
+    if(!st || typeof st!=="object") return newly;
+    st.calib60Missed = (st.calib60Missed && typeof st.calib60Missed==="object" && !Array.isArray(st.calib60Missed)) ? st.calib60Missed : {};
+    const done = (st.story && st.story.done) || {};
+    const nowIdx = calib60NowSeasonIdx(st.dayIndex);
+    const wk = Math.floor((Number(st.dayIndex)||0)/7)+1;
+    Object.keys(CALIB60_NODE_WINDOWS).forEach(id=>{
+      if(done[id]){ if(st.calib60Missed[id]) delete st.calib60Missed[id]; return; }
+      if(st.calib60Missed[id]) return;
+      if(id==="C17" && st.ending410) return; /* 已收科：唔好再話人錯過收科 */
+      const win = CALIB60_NODE_WINDOWS[id];
+      const endIdx = Math.max.apply(null, win.seasons.map(s=>calib60SeasonIdx(win.year, s)));
+      if(nowIdx > endIdx){
+        const rec = { title: calib60NodeTitle(id), whenLabel: win.whenLabel, week: wk };
+        st.calib60Missed[id] = rec;
+        newly.push({ id:id, title:rec.title, whenLabel:rec.whenLabel, week:wk });
+      }
+    });
+  }catch(_e){}
+  return newly;
+}
+function renderMemoryPane60(){
+  const el = document.getElementById("memory-list");
+  if(!el) return;
+  /* 渲染只除名已完成嘅，唔喺度登記新漏失——登記要經週結，嗰行提示先唔會被手帳搶先食咗 */
+  try{
+    if(typeof S!=="undefined" && S && S.calib60Missed && S.story && S.story.done){
+      Object.keys(S.calib60Missed).forEach(id=>{ if(S.story.done[id]) delete S.calib60Missed[id]; });
+    }
+  }catch(_e){}
+  const missed = (typeof S!=="undefined" && S && S.calib60Missed) || {};
+  const ids = Object.keys(missed);
+  if(!ids.length){
+    el.innerHTML = '<div class="mem-empty60"><h3>回憶</h3><p>暫時冇錯過嘅主線。啲重要嘅相遇都有時窗——過咗嗰陣仲未遇到嘅，會記低喺呢頁，提你嗰段日子過咗啲咩。</p></div>';
+    return;
+  }
+  const rows = ids.map(id=>{
+    const m = missed[id] || {};
+    return { id:id, title:String(m.title||id), whenLabel:String(m.whenLabel||""), week:Number(m.week)||0 };
+  }).sort((a,b)=> (a.week-b.week) || a.id.localeCompare(b.id));
+  el.innerHTML = '<div class="mem-head60"><h3>回憶</h3><p class="dim">以下主線已經過咗時窗，嗰陣冇遇到。唔會影響你繼續行落去，只係嗰段故事，留返喺回憶度。</p></div>'
+    + rows.map(r=>'<div class="mem-item60"><span class="mem-title60">《'+r.title+'》</span><span class="mem-when60">'+r.whenLabel+'</span><span class="dim">第'+(r.week||"—")+'週記低</span></div>').join("");
 }
 function bumpNpc(id,d){
   const b=S.npcs[id]||0; S.npcs[id]=clamp(b+d,0,100);
@@ -26609,7 +26788,10 @@ function bestTrainJumpForGig(g){
   else if(target.mode==="map") label = (top.key==="fame"||top.key==="popularity") ? `去地圖接單攞幕前聲望（${locName}）` : `去地圖接單（${locName}）`;
   else if(enrolled) label = `入手帳排「${(COURSE_DEFS[target.courseId]||{}).name||"訓練"}」`;
   else label = `去練${top.label}（差 ${top.gap}｜${locName}）`;
-  return { gap: top, target, enrolled, locName, label, gaps };
+  /* v20a60 CALIB60-4：聲樂凍結偵測——最大缺口係歌藝而玩家從未練過（trainCount 0），
+     詳情頁要明示「音樂通告會一直欠呢一項」，唔好等玩家自己估（全弧報告 §6.2.3）。 */
+  const frozenVocal60 = top.key==="vocal" && ((S && S.trainCount && Number(S.trainCount.train_vocal))||0)===0;
+  return { gap: top, target, enrolled, locName, label, gaps, frozenVocal: !!frozenVocal60 };
 }
 function jumpToTrainForGig(g){
   const plan = bestTrainJumpForGig(g);
@@ -26711,6 +26893,10 @@ function openCastingNoticeDetail(g, L){
         if(plan.enrolled) ctaLabel = "去訓練／手帳 · 入手帳排課";
       }
       body += `<div class="cn-train-jump" role="note"><p class="cn-train-jump-title">差幾多達標</p><p class="cn-train-jump-gaps">${gapLines}</p><p class="cn-train-jump-cta-hint">撳下面「去訓練／手帳」直達最佳訓練地或手帳。</p></div>`;
+      /* v20a60 CALIB60-4：聲樂凍結明示（最大缺口係歌藝＋從未練過先出） */
+      if(plan && plan.frozenVocal){
+        body += `<p class="cn-train-jump-frozen60">你從未練過歌藝——唱片／音樂通告會一直欠呢一項。去唱片公司報「歌藝訓練」；手帳預設計劃而家會輪住排歌藝堂。</p>`;
+      }
       btns.push({label:ctaLabel, role:"p", cls:"btn_train_jump", on:()=>{
         if(plan) jumpToTrainForGig(g);
         else {
@@ -27168,6 +27354,12 @@ function defaultWeekPlan(){
     if(!en.train_acting || actingN<2){
       plan[1] = "train_acting";
       plan[3] = "scout_all";
+    } else if(en.train_vocal && (Number(tc.train_vocal)||0)<2){
+      /* v20a60 CALIB60-4：歌藝輪替——全弧報告 §6.2.3：舊預設計劃成世唔排歌藝堂，
+         跟預設行嘅玩家聲樂凍結、唱片／音樂線靜靜鎖死而唔知點解。
+         演技夠 2 堂之後，星期二訓練位先輪畀歌藝（夠 2 堂為止），次序同其他主屬性睇齊；
+         未報名歌藝嗰陣唔排（排咗都上唔到堂），保持舊行為。 */
+      plan[1] = "train_vocal";
     } else if((Number(tc.train_looks)||0)<1 && en.train_looks){
       plan[1] = "train_looks";
     } else {
@@ -27364,10 +27556,29 @@ function livingCostBand(w){
   const week = (w!=null) ? Number(w) : livingCostWeekNum();
   let soft = false;
   try{ soft = typeof softPreviewOn==="function" && softPreviewOn(); }catch(_e){}
-  if(week>=1 && week<=4) return { lo:1400, hi:1800, mid:1600, label:"$1,400–1,800（頭4週優惠）", tier:"early" };
-  if(soft && week>=5 && week<=8) return { lo:1600, hi:2200, mid:1900, label:"$1,600–2,200（試玩緩坡）", tier:"soft_mid" };
-  if(soft && week>=9 && week<=12) return { lo:1800, hi:2400, mid:2100, label:"$1,800–2,400（試玩緩坡）", tier:"soft_late" };
-  return { lo:2000, hi:2800, mid:2400, label:"$2,000–2,800", tier:"full" };
+  let band;
+  if(week>=1 && week<=4) band = { lo:1400, hi:1800, mid:1600, label:"$1,400–1,800（頭4週優惠）", tier:"early" };
+  else if(soft && week>=5 && week<=8) band = { lo:1600, hi:2200, mid:1900, label:"$1,600–2,200（試玩緩坡）", tier:"soft_mid" };
+  else if(soft && week>=9 && week<=12) band = { lo:1800, hi:2400, mid:2100, label:"$1,800–2,400（試玩緩坡）", tier:"soft_late" };
+  else band = { lo:2000, hi:2800, mid:2400, label:"$2,000–2,800", tier:"full" };
+  /* v20a60 CALIB60-2：生活費隨年份＋名氣遞增（全弧報告 §6.2.5——gate-on 錢全程唔構成決策）。
+     只限 1989 年起：1989 +$300／1990 +$600；同年 fame≥120 再 +$200、fame≥250 再 +$400（取高嗰級，唔疊加）。
+     1988 年（新人期）完全唔經呢段——同 v20a59 逐蚊一致，守住「唔好餓死新人」紅線（gate-off 弧試過 $0 死局）。
+     年份以嗰週第一日嘅真日曆計（calib60YearOfWeek），預覽下週（w+1）同實際扣款同一個數。 */
+  try{
+    const yr = (typeof calib60YearOfWeek==="function") ? calib60YearOfWeek(week) : 1988;
+    if(yr>=1989){
+      let up = (yr>=1990) ? 600 : 300;
+      const f = Number((typeof S!=="undefined" && S) ? S.fame : 0)||0;
+      if(f>=250) up += 400; else if(f>=120) up += 200;
+      if(up>0){
+        const lo = band.lo+up, hi = band.hi+up;
+        band = { lo:lo, hi:hi, mid:band.mid+up, tier:band.tier+"_cal60",
+          label:"$"+lo.toLocaleString()+"–"+hi.toLocaleString()+"（"+yr+" 年物價"+(f>=120?"・成名開支":"")+"）" };
+      }
+    }
+  }catch(_e){}
+  return band;
 }
 function isEarlyLivingCostWeekSoftExt(w){
   const week = (w!=null) ? Number(w) : livingCostWeekNum();
@@ -27542,6 +27753,13 @@ function settleWeek(){
     S.flags = S.flags||{};
     S.flags.weekHighlight = { week: (typeof weekNumNow==="function"?weekNumNow():1)+1, rumor:"", talk:"", gig:"", story:"" };
   }catch(_wh){}
+  /* v20a60 CALIB60-3：主線節點過窗未觸發 → 登記回憶＋結算出一行（唔改觸發條件；登記趕喺 saveQ 前入檔） */
+  try{
+    const missed60 = (typeof calib60MissedScan==="function") ? calib60MissedScan(S) : [];
+    (missed60||[]).slice(0,3).forEach(m=>{
+      pushFlavor(`<span class="var-note">錯過了：《${m.title}》（${m.whenLabel}）嘅時窗過咗——手帳「回憶」頁記低咗。</span>`);
+    });
+  }catch(_m60){}
   saveQ(); // persist post-rest stats so Monday header / reload match summary card
   const flavorHtml = flavor.length
     ? `<div class="settle-flavor">${flavor.map(x=>`<div class="settle-flavor-line">${x}</div>`).join("")}</div>`
@@ -28721,6 +28939,7 @@ function runScheduleFromToday(){
 }
 
 function resolvePlannedDay(id){
+  const applyGain60 = (typeof applyCalib60==="function") ? applyCalib60 : apply; /* v20a60：抽函數測試沙盒冇 applyCalib60 時退回 apply */
   let meta=planMeta(id);
   let notes=[];
   let title=meta.name;
@@ -28747,7 +28966,7 @@ function resolvePlannedDay(id){
         daily.fame=(daily.fame||0)+(sh.fame||0);
         daily.popularity=(daily.popularity||0)+pop;
         daily.stress=(daily.stress||0)+5;
-        notes=apply(daily);
+        notes=applyGain60(daily); /* v20a60 CALIB60-1：拍攝日＋殺青增益行遞減帶 */
         notes.push(shootDayLine(sh));
         notes.push(`<span class="good">${eventLine("SHOOT_WRAP",{
           title:sh.title,
@@ -28826,14 +29045,14 @@ function resolvePlannedDay(id){
       }
     }
   }
-  else if(id==="train_acting"){ notes=apply({acting:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_acting=(S.trainCount.train_acting||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_acting")); }
-  else if(id==="train_stage"){ notes=apply({stage:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stage=(S.trainCount.train_stage||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stage")); }
-  else if(id==="train_vocal"){ notes=apply({vocal:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_vocal=(S.trainCount.train_vocal||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_vocal")); }  else if(id==="train_looks"){ notes=apply({looks:3+R(0,2), charm:1, money:-Math.min(800,S.money), stress:6+R(0,3)}); S.trainCount=S.trainCount||{}; S.trainCount.train_looks=(S.trainCount.train_looks||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_looks")); }
-  else if(id==="train_charm"){ notes=apply({charm:3+R(0,2), stress:5+R(0,3)}); S.trainCount=S.trainCount||{}; S.trainCount.train_charm=(S.trainCount.train_charm||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_charm")); }
-  else if(id==="train_iq"){ notes=apply({iq:3+R(0,2), acting:1, stress:4+R(0,2)}); S.trainCount=S.trainCount||{}; S.trainCount.train_iq=(S.trainCount.train_iq||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_iq")); }
-  else if(id==="train_stamina"){ notes=apply({stamina:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stamina=(S.trainCount.train_stamina||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stamina")); }
-  else if(id==="train_acting_mid"){ notes=apply({acting:6+R(0,2), stage:2, stress:10+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_acting_mid=(S.trainCount.train_acting_mid||0)+1; }
-  else if(id==="train_stage_mid"){ notes=apply({stage:6+R(0,2), charm:2, stress:10+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stage_mid=(S.trainCount.train_stage_mid||0)+1; }
+  else if(id==="train_acting"){ notes=applyGain60({acting:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_acting=(S.trainCount.train_acting||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_acting")); }
+  else if(id==="train_stage"){ notes=applyGain60({stage:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stage=(S.trainCount.train_stage||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stage")); }
+  else if(id==="train_vocal"){ notes=applyGain60({vocal:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_vocal=(S.trainCount.train_vocal||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_vocal")); }  else if(id==="train_looks"){ notes=applyGain60({looks:3+R(0,2), charm:1, money:-Math.min(800,S.money), stress:6+R(0,3)}); S.trainCount=S.trainCount||{}; S.trainCount.train_looks=(S.trainCount.train_looks||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_looks")); }
+  else if(id==="train_charm"){ notes=applyGain60({charm:3+R(0,2), stress:5+R(0,3)}); S.trainCount=S.trainCount||{}; S.trainCount.train_charm=(S.trainCount.train_charm||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_charm")); }
+  else if(id==="train_iq"){ notes=applyGain60({iq:3+R(0,2), acting:1, stress:4+R(0,2)}); S.trainCount=S.trainCount||{}; S.trainCount.train_iq=(S.trainCount.train_iq||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_iq")); }
+  else if(id==="train_stamina"){ notes=applyGain60({stamina:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stamina=(S.trainCount.train_stamina||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stamina")); }
+  else if(id==="train_acting_mid"){ notes=applyGain60({acting:6+R(0,2), stage:2, stress:10+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_acting_mid=(S.trainCount.train_acting_mid||0)+1; }
+  else if(id==="train_stage_mid"){ notes=applyGain60({stage:6+R(0,2), charm:2, stress:10+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stage_mid=(S.trainCount.train_stage_mid||0)+1; }
   else if(id==="rest"){ notes=apply({stress:-(18+R(0,8))}); title = `休息（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
   else if(id==="home_chore"){ notes=apply({money:R(0,200), stress:-(6+R(0,4))}); title = `收拾房間（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
   else if(id==="street"){
@@ -28841,7 +29060,7 @@ function resolvePlannedDay(id){
     const st=Number(S.stress)||0;
     if(st>=90){ pay=Math.max(50, Math.round(pay*0.2)); }
     else if(st>=70){ pay=Math.max(80, Math.round(pay*0.5)); }
-    notes=apply({stage:2, charm:1, fame:R(0,1), popularity:1+R(0,2), money:pay, stress:6+R(0,4)});
+    notes=applyGain60({stage:2, charm:1, fame:R(0,1), popularity:1+R(0,2), money:pay, stress:6+R(0,4)});
     notes.unshift(`<span class="gold">街頭表演日結 · 週${weekdayName(weekdayIdx(S.dayIndex))}</span>`);
     if(st>=90) notes.push(`<span class="bad">壓力爆表：街頭失常，酬勞大幅縮水。</span>`);
     else if(st>=70) notes.push(`<span class="bad">壓力偏高：表現一般，收入打折。</span>`);
@@ -28852,7 +29071,7 @@ function resolvePlannedDay(id){
     const st=Number(S.stress)||0;
     if(st>=90){ pay=Math.max(50, Math.round(pay*0.2)); }
     else if(st>=70){ pay=Math.max(80, Math.round(pay*0.5)); }
-    notes=apply({charm:2, stage:1, money:pay, fame:R(0,1), popularity:R(0,2), stress:5+R(0,3)});
+    notes=applyGain60({charm:2, stage:1, money:pay, fame:R(0,1), popularity:R(0,2), stress:5+R(0,3)});
     notes.unshift(`<span class="gold">咖啡店駐場日結 · 週${weekdayName(weekdayIdx(S.dayIndex))}</span>`);
     if(st>=90) notes.push(`<span class="bad">壓力爆表：Cafe 演出失手，小費大減。</span>`);
     else if(st>=70) notes.push(`<span class="bad">壓力偏高：觀眾反應淡，收入打折。</span>`);
@@ -32238,7 +32457,7 @@ function playPushDoor(){
   }, 820);
 }
 function setHomeTab(tab){
-  const allow={ plan:1, ledger:1, rumor:1, clippings:1, debt:1, tags:1, works:1 };
+  const allow={ plan:1, ledger:1, rumor:1, clippings:1, debt:1, tags:1, works:1, memory:1 }; /* v20a60 CALIB60-3：加「回憶」頁 */
   if(tab==="tags" && typeof freeplayDevTagsOn==="function" && !freeplayDevTagsOn()) tab="plan";
   if(!allow[tab]) tab="plan";
   applyPhase2Steps56TabLabel();
@@ -32247,7 +32466,7 @@ function setHomeTab(tab){
     b.classList.toggle("on", on);
     b.setAttribute("aria-selected", on?"true":"false");
   });
-  ["plan","ledger","rumor","clippings","debt","tags","works"].forEach(id=>{
+  ["plan","ledger","rumor","clippings","debt","tags","works","memory"].forEach(id=>{
     const pane=document.getElementById("home-pane-"+id);
     if(pane) pane.classList.toggle("on", id===tab);
   });
@@ -32269,6 +32488,9 @@ function setHomeTab(tab){
   if(tab==="works"){
     try{ renderWorksPane(); }catch(_e){}
   }
+  if(tab==="memory"){
+    try{ renderMemoryPane60(); }catch(_e){}
+  }
   try{ syncHomeTabExit(tab); }catch(_exit){}
 }
 function syncHomeTabExit(tab){
@@ -32280,7 +32502,7 @@ function syncHomeTabExit(tab){
     const on = document.querySelector("#home-tabs .home-tab.on");
     tab = (on && on.getAttribute("data-htab")) || "plan";
   }
-  const journalTab = tab==="ledger" || tab==="rumor" || tab==="clippings" || tab==="debt" || tab==="tags" || tab==="works";
+  const journalTab = tab==="ledger" || tab==="rumor" || tab==="clippings" || tab==="debt" || tab==="tags" || tab==="works" || tab==="memory";
   const srcShown = !!(src && src.style.display && src.style.display!=="none");
   if(!journalTab || !srcShown){
     exit.hidden = true;
@@ -32404,7 +32626,7 @@ function applyCastingTags(tags, opts){
       try{
         const sv = Number(meta.stageVolumeDelta)||0;
         const ic = Number(meta.industryCreditDelta)||0;
-        if(sv){ S.fame = (Number(S.fame)||0) + sv; }
+        if(sv){ S.fame = (Number(S.fame)||0) + calib60FameGain(sv); /* v20a60 CALIB60-1：殺青反響 fame 行遞減帶 */ }
         if(ic){ S.industryCreditDelta = (Number(S.industryCreditDelta)||0) + ic; }
         if(typeof syncDualTracks==="function") syncDualTracks(S);
       }catch(_e){}
@@ -33030,7 +33252,7 @@ function applyPostShootRewardDual(pack){
   /* Small baseline achievement ping on wrap */
   sv += 1;
   try{
-    if(sv){ S.fame = (Number(S.fame)||0) + sv; }
+    if(sv){ S.fame = (Number(S.fame)||0) + calib60FameGain(sv); /* v20a60 CALIB60-1：殺青反響 fame 行遞減帶 */ }
     if(ic){ S.industryCreditDelta = (Number(S.industryCreditDelta)||0) + ic; }
     if(typeof syncDualTracks==="function") syncDualTracks(S);
   }catch(_e){}
@@ -33444,7 +33666,7 @@ function applyAwardDual(pack){
   const sv = Number(r.stageVolume)||0;
   const ic = Number(r.industryCredit)||0;
   try{
-    if(sv){ S.fame = (Number(S.fame)||0) + sv; }
+    if(sv){ S.fame = (Number(S.fame)||0) + calib60FameGain(sv); /* v20a60 CALIB60-1：殺青反響 fame 行遞減帶 */ }
     if(ic){ S.industryCreditDelta = (Number(S.industryCreditDelta)||0) + ic; }
     if(typeof syncDualTracks==="function") syncDualTracks(S);
   }catch(_e){}
@@ -37359,17 +37581,18 @@ function doScout(L){
 }
 
 function applyTrainLesson(courseId, notes){
+  const applyGain60 = (typeof applyCalib60==="function") ? applyCalib60 : apply; /* v20a60：抽函數測試沙盒冇 applyCalib60 時退回 apply */
   notes=notes||[];
   S.trainCount=S.trainCount||{};
   S.weekTrainDone=(Number(S.weekTrainDone)||0)+1;
-  if(courseId==="train_acting"){ notes.push(...apply({acting:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_acting=(S.trainCount.train_acting||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_acting")); }
-  else if(courseId==="train_stage"){ notes.push(...apply({stage:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_stage=(S.trainCount.train_stage||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stage")); }
-  else if(courseId==="train_vocal"){ notes.push(...apply({vocal:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_vocal=(S.trainCount.train_vocal||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_vocal")); }  else if(courseId==="train_looks"){ notes.push(...apply({looks:3+R(0,2), charm:1, money:-Math.min(800,S.money), stress:6+R(0,3)})); S.trainCount.train_looks=(S.trainCount.train_looks||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_looks")); }
-  else if(courseId==="train_charm"){ notes.push(...apply({charm:3+R(0,2), stress:5+R(0,3)})); S.trainCount.train_charm=(S.trainCount.train_charm||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_charm")); }
-  else if(courseId==="train_iq"){ notes.push(...apply({iq:3+R(0,2), acting:1, stress:4+R(0,2)})); S.trainCount.train_iq=(S.trainCount.train_iq||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_iq")); }
-  else if(courseId==="train_stamina"){ notes.push(...apply({stamina:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_stamina=(S.trainCount.train_stamina||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stamina")); }
-  else if(courseId==="train_acting_mid"){ notes.push(...apply({acting:6+R(0,2), stage:2, stress:10+R(0,4)})); S.trainCount.train_acting_mid=(S.trainCount.train_acting_mid||0)+1; }
-  else if(courseId==="train_stage_mid"){ notes.push(...apply({stage:6+R(0,2), charm:2, stress:10+R(0,4)})); S.trainCount.train_stage_mid=(S.trainCount.train_stage_mid||0)+1; }
+  if(courseId==="train_acting"){ notes.push(...applyGain60({acting:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_acting=(S.trainCount.train_acting||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_acting")); }
+  else if(courseId==="train_stage"){ notes.push(...applyGain60({stage:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_stage=(S.trainCount.train_stage||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stage")); }
+  else if(courseId==="train_vocal"){ notes.push(...applyGain60({vocal:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_vocal=(S.trainCount.train_vocal||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_vocal")); }  else if(courseId==="train_looks"){ notes.push(...applyGain60({looks:3+R(0,2), charm:1, money:-Math.min(800,S.money), stress:6+R(0,3)})); S.trainCount.train_looks=(S.trainCount.train_looks||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_looks")); }
+  else if(courseId==="train_charm"){ notes.push(...applyGain60({charm:3+R(0,2), stress:5+R(0,3)})); S.trainCount.train_charm=(S.trainCount.train_charm||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_charm")); }
+  else if(courseId==="train_iq"){ notes.push(...applyGain60({iq:3+R(0,2), acting:1, stress:4+R(0,2)})); S.trainCount.train_iq=(S.trainCount.train_iq||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_iq")); }
+  else if(courseId==="train_stamina"){ notes.push(...applyGain60({stamina:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_stamina=(S.trainCount.train_stamina||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stamina")); }
+  else if(courseId==="train_acting_mid"){ notes.push(...applyGain60({acting:6+R(0,2), stage:2, stress:10+R(0,4)})); S.trainCount.train_acting_mid=(S.trainCount.train_acting_mid||0)+1; }
+  else if(courseId==="train_stage_mid"){ notes.push(...applyGain60({stage:6+R(0,2), charm:2, stress:10+R(0,4)})); S.trainCount.train_stage_mid=(S.trainCount.train_stage_mid||0)+1; }
   /* v20a35 節奏包 P0-2(b)：訓練微事件（即場堂入口；手帳排程堂喺 resolvePlannedDay 接） */
   try{ if(typeof maybeTrainEvent35==="function") maybeTrainEvent35(notes, courseId); }catch(_te35){}
   return notes;
@@ -38088,7 +38311,14 @@ function takeSoftBridgePay(basePay){
     return { pay:800, stipend:true };
   }
   S.flags.softBridgeFullWeek = week;
-  return { pay:basePay, stipend:false };
+  /* v20a60 CALIB60-2：散工正薪後期遞減——fame≥200 嘅成名演員仲靠初階散工正薪出糧唔合理，
+     正薪 ×0.75；補場 $800 不變。新人（fame 低）完全唔受影響，保命線原封。 */
+  let pay = basePay;
+  try{
+    const f = Number((typeof S!=="undefined" && S) ? S.fame : 0)||0;
+    if(f>=200) pay = Math.round((Number(basePay)||0)*0.75);
+  }catch(_e){}
+  return { pay:pay, stipend:false };
 }
 function rollAuditionPay(gig){
   const lo = (gig && gig.pay && gig.pay[0]!=null) ? Number(gig.pay[0]) : 0;
