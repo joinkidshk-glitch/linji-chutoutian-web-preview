@@ -20927,6 +20927,72 @@ function affProgressHtml(aff, gained){
   return `<span class="good">好感 ${total}／100</span>${gainBit}${nextBit}`;
 }
 
+/* ===== Weave Phase 2-3（v20a18）：好感階梯——日常情報／內幕情報（先做何生＋采兒）。
+   現有 AFF_DIALOGUE_GATES 係通用對白池解鎖（寒暄0／閒談10／忠告25／情報對白40，rel 0–100）。
+   呢層喺上面再加 per-NPC 情報階梯（串聯規劃 §4「好感度做情報階梯」）：
+   ・低（公事）rel<25：只出原有 greet／chat，唔出階梯對白；
+   ・中（熟絡）rel>=25（同忠告閘對齊）：加「日常情報」——行內貼士／邊度有工開，同遊戲系統有關；
+   ・高（自己人）rel>=60：加「內幕情報」——可操作提示，指去現有系統（情報旗隱藏通告、人情到期、通告情報行），唔劇透主線。
+   只綁 agent（何生，通告內幕渠道）同 reporter（周采兒，市井八卦渠道）；其他 NPC 唔受影響。
+   傾談有 tipGig 嗰陣，情報池（npcIntelPool）同樣按階梯擴充。 ===== */
+const NPC_AFF_TIERS = { dailyAt:25, insiderAt:60 };
+const NPC_TIER_LINES = {
+  agent: {
+    daily: [
+      "行內貼士同你講：通告欄一日轉幾轉，朝早同收工前各睇一次，蝕底嘅係只睇一次嗰啲。",
+      "廣告工出價高啲，要求都高；電視廠景密，勝在穩陣。新人唔好淨係睇錢，要睇邊份工畀到入鏡機會你。",
+      "殺青嗰陣同場務、副導打聲招呼，留個聯絡。班底再開工，第一時間諗起嘅就係呢啲人。",
+      "聽到啲傳聞唔好齋聽，返去手帳拼下先。拼得埋嘅情報，先至值錢。"
+    ],
+    insider: [
+      "講你知一件內幕：陸柏言嗰邊近排狀態唔穩，佢啲通告隨時要人臨時頂位。你若果拼到相關情報，通告欄有機會多一張替工通告，錢唔差嘅。",
+      "麥震東嗰組，武師個個都知佢瞞住傷嚟開工。你接親佢啲通告，先睇清楚通告卡嘅情報行寫乜，唔好人哋出事你先知。",
+      "邊份工有水份，我教你點睇：出價高過行情、又寫到含含糊糊嗰啲，多數有古怪。寫明定額、邊個台邊個廠，嗰啲先係正經工。",
+      "人情呢家嘢，唔好拖。邊個幫過你，手帳有記就趁早還——拖到人哋開口追，就唔係人情，係債。"
+    ]
+  },
+  reporter: {
+    daily: [
+      "茶餐廳啲伙記先係消息最靈通嗰班——邊個劇組尋晚收幾點，佢哋聽茶客講兩句就知。你跑片場嗰陣食飯唔好齋食，豎起耳仔。",
+      "同你講個貼士：報紙花邊嗰欄唔好睇小佢，有時一則唔關事嘅短訊，拼返去傳聞度，先知邊單先係真。",
+      "記者會嗰啲撐場工，錢唔多，但係畀行內人認臉嘅好機會。你想人記得你，就唔好企到最後排。",
+      "邊度有工開，我通常快過通告欄半步——片場茶水間、電視城飯堂，嗰啲地方嘅風聲最準。"
+    ],
+    insider: [
+      "俾條私人料你，唔好周圍講：陸柏言夜歸散心嗰單嘢，我聽返嚟唔止表面咁簡單。你手帳若果有相關碎片，試下拼埋——拼得成，隨時有好工等住你。",
+      "麥震東瞞傷嗰單，我寫唔出紙，但行內傳到沸沸揚揚。你若果同佢同組，醒定啲——通告卡有情報行會提你，唔好冇睇就接。",
+      "講你知點樣先拎到好料：同一個人唔好淨係見一次。見多幾次、熟咗，人哋先會將唔出街嗰啲講你聽——我做記者，都係咁儲料返嚟。",
+      "高俊傑嗰邊最近密密接工，版面又成日有佢。你唔想俾佢壓住，就要比佢早一步睇通告欄——佢快，你要快過佢。"
+    ]
+  }
+};
+function npcTierPool(npcId, aff){
+  const out = { daily:[], insider:[] };
+  const pack = (typeof NPC_TIER_LINES!=="undefined" && NPC_TIER_LINES) ? NPC_TIER_LINES[npcId] : null;
+  if(!pack) return out;
+  const a = Number(aff)||0;
+  if(a >= NPC_AFF_TIERS.dailyAt) out.daily = (pack.daily||[]).slice();
+  if(a >= NPC_AFF_TIERS.insiderAt) out.insider = (pack.insider||[]).slice();
+  return out;
+}
+function npcNextTierHint(npcId, aff){
+  const pack = (typeof NPC_TIER_LINES!=="undefined" && NPC_TIER_LINES) ? NPC_TIER_LINES[npcId] : null;
+  if(!pack) return null;
+  const a = Number(aff)||0;
+  if(a < NPC_AFF_TIERS.dailyAt) return { label:"日常情報", at:NPC_AFF_TIERS.dailyAt, need:NPC_AFF_TIERS.dailyAt-a };
+  if(a < NPC_AFF_TIERS.insiderAt) return { label:"內幕情報", at:NPC_AFF_TIERS.insiderAt, need:NPC_AFF_TIERS.insiderAt-a };
+  return null;
+}
+function npcIntelPool(npcId){
+  const pack = (typeof NPC_LINES!=="undefined" && NPC_LINES && NPC_LINES[npcId])
+    || (typeof NPC_LINES_CORE!=="undefined" && NPC_LINES_CORE && NPC_LINES_CORE[npcId]) || {};
+  const aff = (typeof S!=="undefined" && S && S.npcs && S.npcs[npcId]) || 0;
+  let pool = Array.isArray(pack.intel) ? pack.intel.slice() : [];
+  const tp = npcTierPool(npcId, aff);
+  pool = pool.concat(tp.daily, tp.insider);
+  return pool;
+}
+
 function pickNpcLine(npcId, opts){
   opts = opts || {};
   const pack = (NPC_LINES && NPC_LINES[npcId]) || (NPC_LINES_CORE && NPC_LINES_CORE[npcId]);
@@ -20943,6 +21009,12 @@ function pickNpcLine(npcId, opts){
   // intel: only when unlocked (or explicit tipGig wantIntel with gate)
   if(unlocked.has("intel")) add(pack.intel, opts.wantIntel ? 3.5 : 1.2);
   else if(opts.wantIntel && unlocked.has("chat")) add(pack.chat, 1.2); // soft fallback before intel gate
+  // Weave 2-3（v20a18）：好感階梯對白（何生／采兒）——未到階唔入池，低階池保留
+  if(typeof npcTierPool==="function"){
+    const tp = npcTierPool(npcId, aff);
+    if(tp.daily.length) add(tp.daily, opts.wantIntel ? 3 : 1.6);
+    if(tp.insider.length) add(tp.insider, opts.wantIntel ? 4 : 2.2);
+  }
   if(!weighted.length) add(pack.greet, 1);
   if(!weighted.length) return "……";
   const total = weighted.reduce((a,b)=>a+b.w, 0);
@@ -32392,13 +32464,17 @@ function doTalk(npcId, L){
   const tip=tipGig(npc);
   let text;
   if(tip){
-    const intelPool=((NPC_LINES[npcId]||NPC_LINES_CORE[npcId]||{}).intel)||[];
+    const intelPool=(typeof npcIntelPool==="function") ? npcIntelPool(npcId) : (((NPC_LINES[npcId]||NPC_LINES_CORE[npcId]||{}).intel)||[]);
     text = intelPool.length ? pick(intelPool) : pickNpcLine(npcId, {wantIntel:true});
   } else {
     text = pickNpcLine(npcId, {forcePressure: npcId==="rival" && Math.random()<0.35});
   }
   const affTotal=S.npcs[npcId]||0;
   let aff=affProgressHtml(affTotal, gained);
+  try{
+    const nt = (typeof npcNextTierHint==="function") ? npcNextTierHint(npcId, affTotal) : null;
+    if(nt) aff += `<span class="aff-next">關係階梯：再加 ${nt.need} 點好感 → 解鎖「${nt.label}」（門檻 ${nt.at}）</span>`;
+  }catch(_nt){}
   let extra="";
   if(tip){
     const loc=LOCS.find(x=>x.id===tip.loc);
