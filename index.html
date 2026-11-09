@@ -24126,6 +24126,7 @@ function advanceDay(){
     S.flags = S.flags||{};
     S.flags.adBoardToast = true;
   }
+  try{ if(typeof favorDueTick==="function") favorDueTick(); }catch(_fd){}
   return S.dayIndex>0 && weekdayIdx(S.dayIndex)===0;
 }
 
@@ -26708,6 +26709,183 @@ function mergeIntelGigs(){
     return n;
   }catch(_e){ return 0; }
 }
+/* ===== Weave Phase 2-2（v20a17）：人情到期觸發（幫忙通告型，先做一筆）。
+   揀現有數據最齊嗰筆：教學債 debt_ho_tutorial（債主何生；拼合教學完成即記債；
+   手帳人情頁有顯示、本身有現金／禮物還款路徑；何生有完整好感系統 S.npcs.agent＋bumpNpc）。
+   做法：畀呢筆債加 dueDay（成立後 7 日）＋kind:"help_gig"；到期嗰日何生開一張「幫忙通告」
+   （mergeFavorGigs 條件注入，行現有通告管線）；4 日內殺青＝人情結清（何生好感 +2）；
+   過期未做＝人情作廢（何生好感 -3，toast 文案講明）。呢筆債永不設「已逾期」狀態，
+   避免 soft 逾期鎖（softOverdueFavorDebtLock）誤鎖幫忙通告本身。
+   舊存檔兼容：dueDay 喺 favorDueTick／手帳渲染首次見到嗰日回填（當日 +7），唔會一讀檔即到期；
+   結清／作廢／用其他方法清走（例如現金還）都會記入 S.favorDueSettled，教學債日後被補種都唔會重行到期流程。 ===== */
+const FAVOR_DUE_CFG = { debtId:"debt_ho_tutorial", gigId:"gig_favor_ho_errand", dueDays:7, windowDays:4 };
+const FAVOR_DUE_GIGS = [
+  {
+    id:"gig_favor_ho_errand",
+    year:1988,
+    season:"不限",
+    type:"電視劇",
+    genreLabel:"電視劇",
+    loc:"agency_ho",
+    workTitle:"晨光劇場",
+    title:"幫忙通告：《晨光劇場》臨時人手",
+    roleLabel:"幫忙頂位",
+    director:"何生",
+    roleHint:"何生個客嗰組臨時唔夠人，你去頂一更，聽場務安排做嘢就得。",
+    blurb:"何生留畀你嘅幫忙通告：唔係派工，係還人情。佢個客嗰組今晚唔夠人手，你去頂一更，做完嗰筆人情就清咗。",
+    synopsis:"何生事務所轉介嘅電視台單元劇《晨光劇場》今晚開廠，臨時唔夠臨記企位。何生第一時間諗起你——唔使試鏡，去到報何生個名，聽場務指示頂一更，收工即結。",
+    eraTag:"era_1988_tv",
+    discoverNote:"何生留畀你還人情嘅幫忙通告，做完即清嗰筆人情債。",
+    boardPriority:"high",
+    boardNote:"還人情",
+    seasonWeight:1,
+    req:{},
+    pay:[450, 550],
+    payExact:500,
+    breachFee:0,
+    fame:[0, 0],
+    popularity:[0, 1],
+    stressDeltaHint:"低",
+    hard:0.1,
+    tier:"初",
+    stars:1,
+    applyDeadlineDays:4,
+    shootDaysHint:1,
+    shootHint:"報何生個名入廠，聽場務安排頂位，做完一更就收工。",
+    roleScale:"tv_cameo_short",
+    shootBand:[1, 1],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:7,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["還人情幫忙，即日開工"] },
+    storyKeys:["favor_ho_errand"],
+    tagOnComplete:[],
+    rumorKeys:[],
+    favorDelta:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  }
+];
+function favorDueDebt(){
+  try{
+    if(typeof S==="undefined" || !S || !Array.isArray(S.mockDebts)) return null;
+    return S.mockDebts.find(d=>d && d.id===FAVOR_DUE_CFG.debtId) || null;
+  }catch(_e){ return null; }
+}
+function ensureFavorDueSettled(){
+  if(typeof S==="undefined" || !S) return {};
+  if(!S.favorDueSettled || typeof S.favorDueSettled!=="object" || Array.isArray(S.favorDueSettled)) S.favorDueSettled = {};
+  return S.favorDueSettled;
+}
+function ensureFavorDue(){
+  const d = favorDueDebt();
+  if(!d) return null;
+  const settled = ensureFavorDueSettled();
+  if(settled[d.id]) return d; /* 已結清／作廢過：補種返嚟嗰筆當普通債，唔重行到期流程 */
+  if(d.kind==null) d.kind = "help_gig";
+  if(d.favorState==null) d.favorState = "pending";
+  if(d.dueDay==null){
+    const today = (typeof S.dayIndex==="number") ? S.dayIndex : 0;
+    d.dueDay = today + FAVOR_DUE_CFG.dueDays;
+  }
+  return d;
+}
+function favorDueHintText(d){
+  if(!d || d.dueDay==null) return "";
+  const today = (typeof S!=="undefined" && S && typeof S.dayIndex==="number") ? S.dayIndex : 0;
+  if(d.favorState==="called"){
+    const left = Math.max(0, (Number(d.favorGigDay)||today) + FAVOR_DUE_CFG.windowDays - today);
+    return "到期喇：何生喺事務所通告板留咗張幫忙通告，仲有 "+left+" 日——去做完佢，呢筆人情就還清。";
+  }
+  const left = Math.max(0, (Number(d.dueDay)||0) - today);
+  if(left<=0) return "到期喇：何生就嚟會搵你幫手，幫完即算還清。";
+  return "約 "+left+" 日後到期：到期何生會開張幫忙通告畀你，幫手做完即算還清，唔使另外畀錢。";
+}
+function favorDueTick(){
+  try{
+    if(typeof S==="undefined" || !S) return;
+    if(typeof ensureMockJournal==="function") ensureMockJournal();
+    const settled = ensureFavorDueSettled();
+    const d = ensureFavorDue();
+    if(!d){
+      /* 債唔見咗又未有結算紀錄（例如到期前用現金／禮物還咗）：靜靜記低，唔再觸發 */
+      if(S.favorDueArmed && !settled[FAVOR_DUE_CFG.debtId]){
+        settled[FAVOR_DUE_CFG.debtId] = { result:"closed_other", day:(S.dayIndex|0) };
+      }
+      return;
+    }
+    if(d.kind!=="help_gig" || settled[d.id]) return;
+    S.favorDueArmed = true;
+    const today = S.dayIndex|0;
+    if(d.favorState==="pending"){
+      if(today >= (Number(d.dueDay)||0)){
+        d.favorState = "called";
+        d.favorGigDay = today;
+        d.status = "就嚟到期";
+        try{ toast("何生 Call 機留言：「阿偉，嗰筆人情到期喇。事務所通告板有張幫忙通告，你去幫我頂一單，"+FAVOR_DUE_CFG.windowDays+" 日內做完，筆數就咁清咗。」"); }catch(_t){}
+        try{ saveQ(); }catch(_s){}
+      } else if((Number(d.dueDay)||0) - today <= 2){
+        if(d.status!=="就嚟到期") d.status = "就嚟到期";
+      }
+      return;
+    }
+    if(d.favorState==="called"){
+      let wrapped = false;
+      try{ wrapped = (S.wrapHistory||[]).some(w=>w && w.gigId===FAVOR_DUE_CFG.gigId); }catch(_w){}
+      if(!wrapped && S.flags && S.flags["done_"+FAVOR_DUE_CFG.gigId]) wrapped = true;
+      if(wrapped){
+        S.mockDebts = S.mockDebts.filter(x=>x!==d);
+        settled[d.id] = { result:"repaid_help", day:today };
+        try{ bumpNpc("agent", 2); }catch(_b){}
+        try{ toast("幫何生頂完嗰單，嗰筆人情還清晒。何生拍拍你膊頭：「好，呢筆數清咗，以後有好嘢益你。」"); }catch(_t){}
+        try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
+        try{ saveQ(); }catch(_s){}
+        return;
+      }
+      if(today > (Number(d.favorGigDay)||today) + FAVOR_DUE_CFG.windowDays){
+        S.mockDebts = S.mockDebts.filter(x=>x!==d);
+        settled[d.id] = { result:"void_expired", day:today };
+        try{ bumpNpc("agent", -3); }catch(_b){}
+        try{ toast("何生嗰張幫忙通告過咗期都無人做——嗰筆人情就咁作廢，何生面色唔多好，同你嘅交情都淡咗啲。"); }catch(_t){}
+        try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
+        try{ saveQ(); }catch(_s){}
+      }
+    }
+  }catch(_e){}
+}
+/* 跟 mergeIntelGigs 同一注入模式：favorState==="called" 且喺窗口內先將幫忙通告注入 GIGS，
+   其餘時間移除，確保平時完全唔顯示；殺青後 isGigConsumed 亦會自然落板。 */
+function mergeFavorGigs(){
+  try{
+    if(typeof GIGS==="undefined" || !Array.isArray(GIGS)) return 0;
+    const ids = {};
+    (FAVOR_DUE_GIGS||[]).forEach(g=>{ if(g && g.id) ids[g.id] = 1; });
+    let active = false;
+    try{
+      const d = favorDueDebt();
+      if(d && d.kind==="help_gig" && d.favorState==="called"){
+        const today = (typeof S!=="undefined" && S && S.dayIndex) ? (S.dayIndex|0) : 0;
+        active = today <= (Number(d.favorGigDay)||today) + FAVOR_DUE_CFG.windowDays;
+      }
+    }catch(_e){}
+    if(!active){
+      const before = GIGS.length;
+      GIGS = GIGS.filter(g=>!(g && ids[g.id]));
+      if(GIGS.length!==before){ try{ window.GIGS = GIGS; }catch(_w){} }
+      return 0;
+    }
+    let n = 0;
+    (FAVOR_DUE_GIGS||[]).forEach(raw=>{
+      if(!raw || !raw.id) return;
+      const norm = normalizeGigRecord(Object.assign({}, raw, { favorDueGig:true }));
+      const i = GIGS.findIndex(g=>g && g.id===raw.id);
+      if(i<0){ GIGS.push(norm); n++; }
+      else GIGS[i] = norm;
+    });
+    try{ window.GIGS = GIGS; }catch(_w){}
+    return n;
+  }catch(_e){ return 0; }
+}
 const MERGE_FRAGS = [
   { id:"rumor_lu_baiyan_angry", source:"場務八卦", title:"陸柏言片場發脾氣", text:"陸柏言喺片場無端端發火，鬧到成個場靜晒。" },
   { id:"rumor_lu_baiyan_drunk", source:"酒保閒聊", title:"陸柏言深夜買醉", text:"有人見到陸柏言半夜喺蘭桂坊飲到爛醉。" },
@@ -27388,6 +27566,7 @@ function renderDebtPane(){
   const box=document.getElementById("debt-list");
   if(!box) return;
   ensureMockJournal();
+  try{ if(typeof ensureFavorDue==="function") ensureFavorDue(); }catch(_e){}
   ensureWeakSeals();
   /* v19z31：soft／早期若無人情債，種教學債，令「去還」唔係死 stub */
   try{
@@ -27423,7 +27602,8 @@ function renderDebtPane(){
     const status = debtStatusLabel(d.status);
     const who=debtCreditorName(d);
     const amt = (d.amount!=null) ? ("金額約 $"+Number(d.amount).toLocaleString()) : ("人情："+journalText(d.weight)+" · 建議 $200／禮物");
-    return `<article class="debt-row" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p><p class="debt-note">${journalText(d.season)}</p>${repayBtn(d.id,false)}</article>`;
+    const dueLine = (d.dueDay!=null && typeof favorDueHintText==="function") ? favorDueHintText(d) : "";
+    return `<article class="debt-row" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p><p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${dueLine?`<p class="debt-meta">${journalText(dueLine)}</p>`:""}<p class="debt-note">${journalText(d.season)}</p>${repayBtn(d.id,false)}</article>`;
   }).join("") : (cardHtml ? "" : `<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p><p class="sub" style="margin-top:8px"><button type="button" class="debt-repay-btn" data-repay-id="__goto_agency__" data-season="0">去何生事務所</button></p></div>`);
   box.innerHTML=banner+cardHtml+debtHtml;
   /* v19z11：委派點擊；debtId 必須嚟自該卡，永唔走 openHoRepaySheet／何生 fallback */
@@ -31182,6 +31362,7 @@ function closeSheet(opts){
 function gigsForLocSeasonBoard(locId, curSeason){
   try{ if(typeof mergeSoftBridgeGigs==="function") mergeSoftBridgeGigs(); }catch(_br){}
   try{ if(typeof mergeIntelGigs==="function") mergeIntelGigs(); }catch(_ig){}
+  try{ if(typeof mergeFavorGigs==="function") mergeFavorGigs(); }catch(_fg){}
   curSeason = curSeason || calendarSeason();
   const byBoard=(a,b)=> boardSortCompare(a,b,curSeason);
   const pool=(GIGS||[]).filter(g=>{
