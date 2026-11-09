@@ -697,6 +697,8 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .gig-card .req .ok{color:var(--jade) !important}
 .gig-card .req .no{color:var(--stamp-red) !important}
 .gig-card .gold, .gig-card .req .gold{color:#8a5a20 !important}
+.gig-card .bridge-tag{display:inline-block;background:#6b4e2e;color:#f7ead2 !important;border-radius:3px;padding:0 5px;margin-left:4px;font-size:.68rem;font-weight:800;letter-spacing:.04em;vertical-align:1px}
+.gig-card .bridge-note{color:#6b4e2e !important;font-size:.72rem;font-weight:700;margin:2px 0 4px;line-height:1.4}
 .bar{
   background:linear-gradient(180deg,#4a433c,#3a3530) !important;
   border-bottom:1px solid #6a5e52 !important;
@@ -24332,6 +24334,8 @@ function normalizeGigRecord(g){
   const o = Object.assign({}, g);
   /* v20a55 TEXTFIX：通告玩家面文字清洗（時代詞／政策句／台帳口吻） */
   try{ textfix55GigRecord(o); }catch(_t55){}
+  /* v20a56：散工變體輪換＋跨年同名改名（定義喺 softBridge 段；冪等、只認 id） */
+  try{ if(typeof bridge56NormalizeGig==="function") bridge56NormalizeGig(o); }catch(_b56){}
   /* v20a36 F1：年庫 pack（1989／1990／1991）有批唱片／MTV 工嘅 req 用錯 key——
      sing／dance 唔係真屬性（真屬性係 vocal 歌藝／stage 台風），reqGap 讀 S.sing
      永遠係 0，嗰批工點玩都開唔到（死卡）。所有年份 pack 入池都必經呢度
@@ -25660,7 +25664,10 @@ function gigCardHtml(g, opts){
   /* 同 discover 重覆嘅 boardNote 唔再另開一行 */
   if(eraTxt && discRaw && eraTxt === discRaw) eraTxt = "";
   const era = eraTxt ? `<div class="era-tag">${eraTxt}</div>` : "";
-  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+g.tier):""}${seasonBit}${bpBit}</div><b class="g-title">${g.title}</b><div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}</div>`;
+  /* v20a56 明碼化：softBridge 卡面標明常駐散工，同一次性製作分級 */
+  const bridgeBit = g.softBridge ? ` <span class="bridge-tag">常駐散工</span>` : "";
+  const bridgeNote = g.softBridge ? `<div class="bridge-note">常駐散工 · 每週有工開：做完一單，隔一排會再開，組名可能唔同。</div>` : "";
+  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+g.tier):""}${seasonBit}${bpBit}${bridgeBit}</div><b class="g-title">${g.title}</b>${bridgeNote}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}</div>`;
 }
 
 /* ===== v19c PLAN_GIG_PAY_EXACT_v1 + PLAN_GIG_BREACH_FEE_v1（顯示派生；引擎逾期可掛） ===== */
@@ -28364,6 +28371,12 @@ function resolvePlannedDay(id){
           popularity:"+"+pop
         })||"殺青：酬勞入帳，聲望／人氣結算。"}</span>`);
         try{ notes.push(`<span class="var-note">${payWrapNote(sh)}</span>`); }catch(_e){}
+        try{
+          const _bg56 = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
+          if(_bg56 && _bg56.softBridge){
+            notes.push(`<span class="var-note">常駐散工收工：呢單糧已入帳，唔當一部作品殺青。呢個崗位隔一排會再開工，到時可能換個組名貼出嚟。</span>`);
+          }
+        }catch(_b56w){}
         if(sh.type==="電影") bumpNpc("director",4+R(0,3));
         if(sh.type==="電視劇"||sh.type==="綜藝") bumpNpc("colleague",3+R(0,2));
         if(sh.type==="廣告") bumpNpc("stylist",2);
@@ -28413,8 +28426,9 @@ function resolvePlannedDay(id){
           if(x===("job:"+sh.gigId)) return "scout_all";
           return x;
         });
-        title = (tot<=1) ? `拍攝日→殺青：${sh.title}` : `殺青：${sh.title}`;
-        meta={icon:"✅", name:title, hint:`進度 ${tot}/${tot} · 拍攝完成並殺青`};
+        const _brg56 = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
+        title = (_brg56 && _brg56.softBridge) ? `散工收工：${sh.title}` : ((tot<=1) ? `拍攝日→殺青：${sh.title}` : `殺青：${sh.title}`);
+        meta={icon:"✅", name:title, hint:(_brg56 && _brg56.softBridge) ? `常駐散工 · 一單收工，片酬入帳` : `進度 ${tot}/${tot} · 拍攝完成並殺青`};
       } else {
         notes=apply(daily);
         notes.push(shootDayLine(sh));
@@ -37441,16 +37455,16 @@ const SOFT_BRIDGE_GIGS_1988 = [
   /* 自然試玩會開嘅夏板：金鐘／九龍／星河。門檻貼新局（外貌 22／魅力 16／演技 18 或無門檻）。 */
   softBridgeGig({
     id:"gig_1988_soft_bridge_summer_adm", season:"夏", seasonHook:["summer"], type:"廣告", loc:"ad_adm",
-    workTitle:"暑期街招", roleLabel:"背景路人", title:"《暑期街招》背景路人",
-    roleHint:"企喺街招後面，唔使講對白。",
-    blurb:"金鐘暑期初階街招。外貌同魅力跟新人起步線，一日殺青。",
-    synopsis:"金鐘街招要幾個背景路人。跟指示企位就收工，片酬按初階正薪。",
+    workTitle:"暑期招牌", roleLabel:"背景路人", title:"《暑期招牌》背景路人",
+    roleHint:"企喺招牌牆前面，唔使講對白。",
+    blurb:"金鐘暑期初階招牌位。外貌同魅力跟新人起步線，一日殺青。",
+    synopsis:"金鐘招牌牆要幾個背景路人。跟指示企位就收工，片酬按初階正薪。",
     eraTag:"era_1988_summer_bridge", req:{ looks:22, charm:16 }, roleScale:"ad_extra_day",
     storyKeys:["season_88_summer","soft_bridge"]
   }),
   softBridgeGig({
     id:"gig_1988_soft_bridge_summer_kln", season:"夏", seasonHook:["summer"], type:"電視劇", loc:"tvb_kowloon",
-    workTitle:"暑期跟組", roleLabel:"場務助手", title:"《暑期跟組》場務助手",
+    workTitle:"暑期棚景組", roleLabel:"場務助手", title:"《暑期棚景組》場務助手",
     roleHint:"遞水、執場，聽場記指示。",
     blurb:"九龍暑期初階跟組。唔使入鏡，聽指示做雜務，一日收工。",
     synopsis:"九龍廠缺人跟場。做完當日雜務就殺青。",
@@ -37468,10 +37482,10 @@ const SOFT_BRIDGE_GIGS_1988 = [
   }),
   softBridgeGig({
     id:"gig_1988_soft_bridge_autumn_central", season:"秋", seasonHook:["autumn"], type:"廣告", loc:"ad_central",
-    workTitle:"秋日街招", roleLabel:"廣告路人", title:"《秋日街招》廣告路人",
+    workTitle:"中環秋日招", roleLabel:"廣告路人", title:"《中環秋日招》廣告路人",
     roleHint:"行過鏡頭兩次，表情自然。",
-    blurb:"中環秋季初階街招。外貌同魅力跟新人起步線，一日殺青。",
-    synopsis:"中環秋日街招要路人入鏡。跟指示行過就收工。",
+    blurb:"中環秋季初階招牌工。外貌同魅力跟新人起步線，一日殺青。",
+    synopsis:"中環秋日招牌要路人入鏡。跟指示行過就收工。",
     eraTag:"era_1988_autumn_bridge", req:{ looks:22, charm:16 }, roleScale:"ad_extra_day",
     storyKeys:["season_88_autumn","soft_bridge"]
   }),
@@ -37538,16 +37552,129 @@ function pinSoftBridgeOnBoard(locId){
     return n;
   }catch(_e){ return 0; }
 }
+/* ===== v20a56 散工修復：明碼化＋冷卻＋換名變體＋拆同名複本 =====
+   背景（診斷 linji-gig-repeat-diagnosis.md）：softBridge 續航散工原本每週結算即刪
+   done/fail 旗標、原名原樣返板，扮成一次性製作，玩家覺得怪。用戶拍板修法：
+   (1) 卡面明碼「常駐散工」；(2) 完成/甩期後冷卻 2 週先返板；(3) 返板輪換標題/
+   劇組變體；(4) 同名複本拆開。經濟（首單正薪＋$800 補場）同主線通告一概唔郁。
+   新狀態全部寄居 S.flags（bcool_<id>=可返板週數、bvar_<id>=已輪換次數）：
+   舊存檔冇呢啲欄位一律當 0/未設，行為等同冷卻未開始，向後相容。 */
+/* 冷卻週數：殺青嗰週結算起計，之後 2 個完整星期唔上板，第 3 週返板（見 NOTES 數學）。 */
+const BRIDGE56_COOLDOWN_WEEKS = 2;
+/* 每張 bridge 卡嘅變體（[workTitle, title] ×2）：返板時按 bvar 輪換，唔再原名返板。
+   字串守 v20a55 時代詞彙標準（冇快閃/截圖/送命題/帶貨/喊麥/粉絲嗰類詞）。 */
+const BRIDGE56_VARIANTS = {
+  "gig_1988_soft_bridge_summer_ad": [["夏日涼茶招","《夏日涼茶招》廣告路人"],["暑期汽水招","《暑期汽水招》廣告路人"]],
+  "gig_1988_soft_bridge_summer_crew": [["暑期外景組","《暑期外景組》場務助手"],["暑期廠景組","《暑期廠景組》場務助手"]],
+  "gig_1988_soft_bridge_summer_extra": [["盛夏外景","《盛夏外景》背景行人"],["海邊外景","《海邊外景》背景行人"]],
+  "gig_1988_soft_bridge_summer_adm": [["金鐘招牌牆","《金鐘招牌牆》背景路人"],["暑期橫額","《暑期橫額》背景路人"]],
+  "gig_1988_soft_bridge_summer_kln": [["暑期夜班組","《暑期夜班組》場務助手"],["暑期補景組","《暑期補景組》場務助手"]],
+  "gig_1988_soft_bridge_summer_star": [["廠景夜戲","《廠景夜戲》後景行人"],["盛夏廠景","《盛夏廠景》後景行人"]],
+  "gig_1988_soft_bridge_autumn_ad": [["秋日月餅招","《秋日月餅招》手模半日"],["秋日文具招","《秋日文具招》手模半日"]],
+  "gig_1988_soft_bridge_autumn_tv": [["台慶綵排","《台慶綵排》臨時演員"],["秋日單元群演","《秋日單元群演》臨時演員"]],
+  "gig_1988_soft_bridge_autumn_film": [["海傍秋景","《海傍秋景》過路人"],["秋風外景","《秋風外景》過路人"]],
+  "gig_1988_soft_bridge_autumn_central": [["秋日涼茶招","《秋日涼茶招》廣告路人"],["中環秋招","《中環秋招》廣告路人"]],
+  "gig_1988_soft_bridge_autumn_harbour": [["秋季外景組","《秋季外景組》場務助手"],["秋季夜班組","《秋季夜班組》場務助手"]],
+  "gig_1988_soft_bridge_autumn_kln": [["九龍群演","《九龍群演》臨時演員"],["秋日廠景群演","《秋日廠景群演》臨時演員"]],
+  "g36_89_brg_spr_kowloon": [["紅磡廠夜班","《紅磡廠夜班》跟組熟手"],["九龍廠日班","《九龍廠日班》跟組熟手"]],
+  "g36_89_brg_spr_longmen": [["廠景補戲位","《廠景補戲位》星河頂位熟手"],["星河連戲班","《星河連戲班》星河頂位熟手"]],
+  "g36_89_brg_spr_filmharbour": [["西環貨倉","《西環貨倉》外景熟手"],["堅尼地城外景","《堅尼地城外景》外景熟手"]],
+  "g36_89_brg_spr_adm": [["金鐘橫額","《金鐘橫額》春季熟手路人"],["金鐘燈箱招","《金鐘燈箱招》春季熟手路人"]],
+  "g36_89_brg_spr_wanchai": [["灣仔合唱班","《灣仔合唱班》常駐和音"],["灣仔錄音班","《灣仔錄音班》常駐和音"]],
+  "g36_89_brg_win_longmen": [["歲晚補景","《歲晚補景》星河連戲熟手"],["年尾廠景","《年尾廠景》星河連戲熟手"]],
+  "g36_89_brg_win_kowloon": [["年尾廠景劇","《年尾廠景劇》九龍跟組熟手"],["歲晚跟組班","《歲晚跟組班》九龍跟組熟手"]],
+  "g36_89_brg_win_lion": [["江湖片跟班","《江湖片跟班》獅子山外景熟手"],["梟雄片外景班","《梟雄片外景班》獅子山外景熟手"]],
+  "g36_89_brg_win_central": [["聖誕燈飾檔","《聖誕燈飾檔》中環廣告熟手"],["冬日商場檔","《冬日商場檔》中環廣告熟手"]],
+  "g36_89_brg_win_recstar": [["賀歲歌合唱班","《賀歲歌合唱班》天星常駐和音"],["新春歌和音班","《新春歌和音班》天星常駐和音"]],
+  "g36_90_brg_spr_longmen": [["黃金線補戲位","《黃金線補戲位》星河頂位熟手"],["星河黃金班","《星河黃金班》星河頂位熟手"]],
+  "g36_90_brg_spr_lion": [["武館外景班","《武館外景班》獅子山外景熟手"],["拳館跟班","《拳館跟班》獅子山外景熟手"]],
+  "g36_90_brg_spr_central": [["中環趕拍檔","《中環趕拍檔》廣告熟手"],["中環硬照檔","《中環硬照檔》廣告熟手"]],
+  "g36_90_brg_spr_wanchai": [["灣仔合唱新班","《灣仔合唱新班》常駐和音"],["灣仔口白班","《灣仔口白班》常駐和音"]],
+  "g36_90_brg_win_kowloon": [["歲晚廠景班","《歲晚廠景班》九龍熟手"],["年尾劇跟組","《年尾劇跟組》九龍熟手"]],
+  "g36_90_brg_win_cotton": [["賀歲片群戲班","《賀歲片群戲班》紅棉熟手"],["紅棉賀歲班","《紅棉賀歲班》紅棉熟手"]],
+  "g36_90_brg_win_adm": [["年貨燈箱檔","《年貨燈箱檔》金鐘廣告熟手"],["辦年貨大檔","《辦年貨大檔》金鐘廣告熟手"]],
+  "g36_90_brg_win_recstar": [["新春歌錄音班","《新春歌錄音班》天星常駐和音"],["賀歲歌收尾班","《賀歲歌收尾班》天星常駐和音"]]
+};
+/* 跨年同名拆複本：1990 嗰份改名做另一齣作品（id 對照，喺 normalize 一處生效；
+   唔改 pack JSON——同 v20a36/v20a55 既有正規化慣例一致）。 */
+const BRIDGE56_CROSSYEAR_RENAME = {
+  "gig_1990_film_13": { title:"《霧港夜航》過場：碼頭腳夫" },
+  "gig_1990_rec_06": { title:"春日合唱單曲《起錨》和音" },
+  "gig_1990_rec_07": { title:"夏日專輯《涼風》和音錄音" },
+  "gig_1990_rec_08": { title:"灣仔錄音室：夏日口白試音" },
+  "gig_1990_rec_10": { title:"灣仔錄音室：年終合唱收聲" },
+  "gig_1990_rec_11": { title:"賀歲歌合唱：灣仔錄音室" },
+  "g36_90_brg_spr_wanchai": { workTitle:"灣仔和音新班", title:"《灣仔和音新班》常駐和音" },
+  "g36_90_brg_win_recstar": { workTitle:"賀歲歌錄音班", title:"《賀歲歌錄音班》天星常駐和音" }
+};
+function bridge56NormalizeGig(o){
+  if(!o || !o.id) return o;
+  const rn = BRIDGE56_CROSSYEAR_RENAME[o.id];
+  if(rn){
+    if(rn.title) o.title = rn.title;
+    if(rn.workTitle && typeof o.workTitle==="string" && o.workTitle) o.workTitle = rn.workTitle;
+  }
+  if(o.softBridge){
+    const vs = BRIDGE56_VARIANTS[o.id];
+    if(vs && vs.length){
+      let slot = 0;
+      try{ if(typeof S!=="undefined" && S && S.flags) slot = Number(S.flags["bvar_"+o.id])||0; }catch(_e){}
+      if(slot>0){
+        const v = vs[(slot-1)%vs.length];
+        if(v){
+          if(v[0] && typeof o.workTitle==="string" && o.workTitle) o.workTitle = v[0];
+          if(v[1]) o.title = v[1];
+        }
+      }
+    }
+  }
+  return o;
+}
+/* 保底閥：若當季 bridge 全部處於完成/冷卻（玩家會冇散工開），提早放返最快到期嗰張。
+   只喺「成季零張可接」先觸發；有任何一張未完成（含拍攝中）就唔郁。 */
+function bridge56StarvationValve(){
+  if(typeof calendarSeason!=="function") return 0;
+  const cur = calendarSeason();
+  const seasonGigs = (GIGS||[]).filter(g=>g && g.softBridge && g.id && g.season===cur);
+  if(!seasonGigs.length) return 0;
+  const anyFree = seasonGigs.some(g=>!(S.flags["done_"+g.id] || S.flags["fail_shoot_"+g.id]));
+  if(anyFree) return 0;
+  let best = null, bestUntil = Infinity;
+  seasonGigs.forEach(g=>{
+    const u = Number(S.flags["bcool_"+g.id])||0;
+    if(u && u<bestUntil){ bestUntil = u; best = g; }
+  });
+  if(!best) return 0;
+  delete S.flags["done_"+best.id];
+  delete S.flags["fail_shoot_"+best.id];
+  delete S.flags["bcool_"+best.id];
+  S.flags["bvar_"+best.id] = (Number(S.flags["bvar_"+best.id])||0) + 1;
+  return 1;
+}
 function renewSoftBridgeGigs(){
   try{
     if(!S || !S.flags || typeof softPreviewOn!=="function" || !softPreviewOn()) return 0;
+    const wk = (typeof weekNumNow==="function") ? weekNumNow() : 1;
     let n = 0;
     (GIGS||[]).forEach(g=>{
       if(!g || !g.softBridge || !g.id) return;
       if(typeof isGigInProduction==="function" && isGigInProduction(g)) return;
-      if(S.flags["done_"+g.id]){ delete S.flags["done_"+g.id]; n++; }
-      if(S.flags["fail_shoot_"+g.id]) delete S.flags["fail_shoot_"+g.id];
+      if(!(S.flags["done_"+g.id] || S.flags["fail_shoot_"+g.id])) return;
+      const until = Number(S.flags["bcool_"+g.id])||0;
+      if(!until){
+        /* 首次見到完成旗：唔再即刪，改為起冷卻（done 旗保留＝繼續落板） */
+        S.flags["bcool_"+g.id] = wk + BRIDGE56_COOLDOWN_WEEKS;
+        return;
+      }
+      if(wk >= until){
+        delete S.flags["done_"+g.id];
+        delete S.flags["fail_shoot_"+g.id];
+        delete S.flags["bcool_"+g.id];
+        S.flags["bvar_"+g.id] = (Number(S.flags["bvar_"+g.id])||0) + 1;
+        n++;
+      }
     });
+    try{ n += bridge56StarvationValve(); }catch(_v){}
     return n;
   }catch(_e){ return 0; }
 }
@@ -39184,9 +39311,20 @@ function runSoftP0Checks(){
     if(!(stip.pay===800 && stip.stipend===true)) bad("stipend");
     S.flags["done_"+bridges[0].id] = 1;
     if(!isGigConsumed(bridges[0])) bad("consumed_same_week");
+    /* v20a56：renew 改冷卻制——首次結算起冷卻（done 旗保留、唔返板），
+       滿 2 週先刪旗返板兼輪換變體（bvar+1）。 */
+    renewSoftBridgeGigs();
+    if(!S.flags["done_"+bridges[0].id]) bad("cool_flag_gone");
+    if(!(Number(S.flags["bcool_"+bridges[0].id]) > (typeof weekNumNow==="function" ? weekNumNow() : 0))) bad("cool_until");
+    S.dayIndex += 7;
+    renewSoftBridgeGigs();
+    if(!S.flags["done_"+bridges[0].id]) bad("cool_flag_gone_w2");
+    S.dayIndex += 7;
     const renewed = renewSoftBridgeGigs();
     if(S.flags["done_"+bridges[0].id]) bad("renew_flag");
     if(renewed<1) bad("renew_n");
+    if(!(Number(S.flags["bvar_"+bridges[0].id])>=1)) bad("renew_variant");
+    S.dayIndex -= 14;
     const lock = BehaviorGate.lockedCopy_noEngineeringTerms({ id:"C5" });
     if(lock.indexOf("采兒小訪題")<0 || lock.indexOf("秋或冬")<0 || lock.indexOf("周刊小訪")<0) bad("c5_lock:"+lock);
     if(lock.indexOf("片場採訪角")>=0) bad("c5_old_side_title");
