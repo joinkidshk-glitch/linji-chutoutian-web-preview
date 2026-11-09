@@ -89,7 +89,7 @@ ok('career = "E6"' in res or 'career="E6"' in res or '"E6"' in res, "E6 自願�
 
 # --- 硬規則字串冇變 ---
 ok("starVolunteer_map_v19w" in src, "SAVE key 冇變")
-ok("s107" in src, "softRev s107 仍在")
+ok('var SOFT_REV = "s111"' in src, "softRev s111")
 
 if fails:
     print("conseq61 static: FAIL")

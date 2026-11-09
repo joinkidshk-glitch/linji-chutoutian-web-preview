@@ -135,7 +135,7 @@ for w in ['關海媚', '陳淑芬', '施南生', 'Ho哥', 'Ho 哥']:
 # ---- 慣例不變 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
 ok('version marker v20a31', 'v20a31' in html)
-ok('softRev unchanged s110', 's110' in html)
+ok('softRev unchanged s111', 's111' in html)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')
 sys.exit(1 if fails else 0)
