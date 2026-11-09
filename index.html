@@ -4071,7 +4071,7 @@ const LOCS = [
     desc:"銅鑼灣潮流廠牌，MV 同宣傳活動。" },
   { id:"cafe_cha", name:"金龍茶餐廳", area:"油麻地", type:"cafe", region:"kln", x:26, y:32, emoji:"☕", lab:"lab-up",
     desc:"人聲鼎沸，卡座隱密，後巷煙霧彌漫，係劇組收工後吹水食花生嘅聖地。" },
-  { id:"agency_ho", name:"何生事務所", area:"中環", type:"agency", region:"island", x:16, y:90, emoji:"🏢", lab:"lab-up lab-left",
+  { id:"agency_ho", name:"何生事務所", area:"中環", type:"agency", region:"island", x:16, y:90, emoji:"🏢", lab:"lab-up lab-left", residentNpc:"agent",
     desc:"煙灰缸滿瀉，枱面疊住劇本同通告單，電話響過不停，充滿江湖味同壓迫感。" },
 ];
 
@@ -31305,6 +31305,27 @@ function refreshLocAfterStory(){
    背景：v19u 起 hub 地點（agency_ho／cafe_cha，有 MOCK_ASK）只行 if 分支，通告板入口、
    逐 gig 試鏡同傾談掣全部喺 else 分支，hub 永遠行唔到——人情幫忙通告注入咗事務所
    都無板開、傾談行唔到 pickNpcLine（試玩斷鏈）。抽共用 helper 之後兩邊同一套渲染。 ===== */
+/* ===== v20a23：駐場 NPC（residentNpc）——hub 地點傾談掣斷鏈修復。
+   根因：refreshNpc() 只按 NPCS.homes 派位，而 agency_ho／cafe_cha 唔喺任何 NPC 嘅
+   homes 入面，S.locNpc[hub] 永遠係 undefined；v20a22 hub 分支攞 locNpc 傳傾談
+   helper，條件實機永遠唔成立（測試人手 set 假 locNpc 先至「通過」）。
+   修法：駐場關係寫入 LOCS 數據（residentNpc 欄，同 NPCS.homes 同一哲學），
+   面板 NPC 先攞當日派位（locNpc），無先攞駐場——派位層唔郁，駐場只係兜底。
+   而家只有 agency_ho 設咗 residentNpc:"agent"（何生：地點以佢命名、入場每日
+   +2 好感、who 行硬寫佢提醒、C1 播點）；cafe_cha 現有數據無駐場核心 NPC
+   （采兒 homes／meet 地點都唔包茶餐廳，茶餐廳社交層係 MOCK_ASK 無名伙記／
+   老闆娘），唔擅自指派——日後要加邊個駐邊度，只改 LOCS 一行數據即可。 ===== */
+function locResidentNpcId(L){
+  try{
+    const rid = L && L.residentNpc;
+    return (rid && typeof NPCS!=="undefined" && NPCS[rid]) ? rid : null;
+  }catch(_e){ return null; }
+}
+function locPanelNpcId(L){
+  if(!L) return null;
+  const roam = (typeof S!=="undefined" && S && S.locNpc) ? S.locNpc[L.id] : null;
+  return roam || locResidentNpcId(L);
+}
 function addLocTalkGiftActs(add, L, npcId){
   // 人物／情報置頂，減少要滾先撳
   if(npcId) add(`同${NPCS[npcId].name}傾談`, talkHintLabel(), talkCostLabel(), ()=>doTalk(npcId,L), "act-priority");
@@ -31454,7 +31475,9 @@ function openLoc(id, opts){
     const descShort=(L.desc||"").length>28 ? (L.desc.slice(0,28)+"…") : (L.desc||"");
     document.getElementById("loc-desc").textContent=`${L.area} · ${descShort}`;
   }
-  const npcId=S.locNpc[id];
+  /* v20a23：面板 NPC = 當日派位（locNpc）優先，無派位攞駐場（residentNpc）。
+     淨攞 locNpc 嗰陣 hub 地點（agency_ho）永遠 undefined → 傾談掣唔出。 */
+  const npcId=locPanelNpcId(L);
   try{ refreshStoryMapTips(); }catch(_e){}
   const tipHere=(S.mapTips||{})[L.id];
   let who = hub ? "" : (npcId ? `在場：${NPCS[npcId].name}（${NPCS[npcId].role}）` : "");
