@@ -1,0 +1,968 @@
+{
+  "version": "2.3.2",
+  "locale": "zh-Hant-written-HK",
+  "source": "DeepSeek romance Lan/Xu Pack2 rev; cast_main; pcSilent; UNLOCK§4; links C9/C14/C15/T6; tang stub→supersededBy R_tang_meet",
+  "romanceLines": [
+    "lan",
+    "xu",
+    "tang"
+  ],
+  "nodes": [
+    {
+      "id": "R_lan_meet",
+      "phase": "P2",
+      "title": "唱片店外的傘",
+      "when": "1989",
+      "setting": "旺角唱片店門外，突然下起大雨，狗仔隊在對街守候。",
+      "eraTag": "era_1989_spring",
+      "cast": [
+        "藍若曦"
+      ],
+      "synopsis": "阿偉為避雨衝入唱片店，撞見藍若曦被狗仔隊追訪。她情急之下躲到他傘下，阿偉順勢掩護她離開。後來台慶合唱綵排的機會，要等到下一次再遇上她。",
+      "beats": [
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "不好意思，可以借你的傘擋一擋嗎？對面那幾個記者已經跟了我整條街。"
+          ]
+        },
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "多謝你，我叫藍若曦，今日真的麻煩你了。"
+          ]
+        },
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "習慣了。不過今日遇到你，總算沒有那麼狼狽。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_lan_meet_warm",
+          "label": "溫柔接住：護她離開鏡頭",
+          "effects": {
+            "flags": [
+              "flag_lan_met_warm"
+            ],
+            "stats": {
+              "rel_lan": 1
+            },
+            "notes": "初遇加分。"
+          }
+        },
+        {
+          "id": "C_lan_meet_cool",
+          "label": "客氣疏離：只盡同事本分",
+          "effects": {
+            "flags": [
+              "flag_lan_met_cool"
+            ],
+            "stats": {
+              "rel_lan": 0
+            },
+            "notes": "保持距離。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_lan_met_cool",
+        "flag_lan_met_warm"
+      ],
+      "openConditions": [
+        "phase_P2"
+      ],
+      "openConditionsNote": "藍若曦認識：P2 預告／合唱接觸季（方向性）。",
+      "artId": "rom_lan_meet",
+      "conflict": null,
+      "romanceLine": "lan",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "playerOffer": false
+    },
+    {
+      "id": "R_lan_push1",
+      "phase": "P2",
+      "title": "錄音室的半首歌",
+      "when": "1989秋",
+      "setting": "星河電視台錄音室，兩人為台慶合唱環節綵排。",
+      "eraTag": "era_1989_autumn",
+      "cast": [
+        "藍若曦"
+      ],
+      "synopsis": "監製要求兩人合唱半首歌，阿偉緊張走音，藍若曦耐心教他咬字。",
+      "beats": [
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "你這句『約定』唱得太用力，放輕一點，當作和朋友講心事就可以。"
+          ]
+        },
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "我沒有笑你，我第一次入錄音室都緊張到震，你已經算淡定。"
+          ]
+        },
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "好，我們由副歌開始，你望著我唱，就不會那麼容易出錯。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_lan_push1_serious",
+          "label": "認真合唱：投入感情",
+          "effects": {
+            "flags": [
+              "flag_lan_sang_together"
+            ],
+            "stats": {
+              "rel_lan": 2,
+              "music": 1
+            },
+            "notes": "合唱推進。"
+          }
+        },
+        {
+          "id": "C_lan_push1_work",
+          "label": "只當工作：唱完即止",
+          "effects": {
+            "flags": [
+              "flag_lan_work_only"
+            ],
+            "stats": {
+              "rel_lan": 0,
+              "music": 0
+            },
+            "notes": "工作界線。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_lan_sang_together",
+        "flag_lan_work_only"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_lan_met_warm",
+        "flag_lan_met_cool"
+      ],
+      "openConditionsNote": "藍推進1：meet 後。",
+      "artId": "rom_lan_push1",
+      "conflict": null,
+      "romanceLine": "lan",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true
+    },
+    {
+      "id": "R_lan_push2",
+      "phase": "P2",
+      "title": "假戲與真話",
+      "when": "1989",
+      "setting": "電視台化妝間外走廊，狗仔隊收到風聲指兩人緋聞。",
+      "eraTag": "era_1989_gossip",
+      "cast": [
+        "藍若曦"
+      ],
+      "synopsis": "公司建議兩人以情侶檔姿態出席活動，藍若曦猶豫，阿偉要決定是否護她。",
+      "beats": [
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "公司想我們認拍拖來宣傳新劇，但我怕認了之後，以後分手會更難看。"
+          ]
+        },
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "你這樣說，記者只會更加追住你不放，你頂得住嗎？"
+          ]
+        },
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "你這樣講，我反而不知道怎樣答你。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_lan_push2_protect",
+          "label": "護她：願意扛公開壓力（連 C9）",
+          "effects": {
+            "flags": [
+              "flag_lan_protected"
+            ],
+            "stats": {
+              "rel_lan": 2,
+              "fame": -1
+            },
+            "notes": "假戲／狗仔後護航。"
+          }
+        },
+        {
+          "id": "C_lan_push2_distance",
+          "label": "劃清同事：不認曖昧（連 C9）",
+          "effects": {
+            "flags": [
+              "flag_lan_colleague"
+            ],
+            "stats": {
+              "rel_lan": 0
+            },
+            "notes": "劃清界線。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_lan_colleague",
+        "flag_lan_protected"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_lan_sang_together",
+        "flag_lan_work_only"
+      ],
+      "openConditionsNote": "藍推進2：push1 後；linksMain=C9。",
+      "artId": "rom_lan_push2",
+      "conflict": null,
+      "romanceLine": "lan",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true,
+      "linksMain": [
+        "C9"
+      ],
+      "conflictNote": "SOFT_NITS: T碼進 conflict；C碼進 linksMain → C9 僅 linksMain"
+    },
+    {
+      "id": "R_lan_crisis",
+      "phase": "P4",
+      "title": "豪門側廳的條件",
+      "when": "1991春",
+      "setting": "豪門宴會側廳，藍父與聯姻對象在場。",
+      "eraTag": "era_1991_spring_family",
+      "cast": [
+        "藍若曦",
+        "藍父"
+      ],
+      "synopsis": "藍父要求藍若曦與豪門子弟訂婚，以換取家族生意支持。藍若曦向阿偉求助。",
+      "beats": [
+        {
+          "speaker": "藍父",
+          "lines": [
+            "若曦，你和陳家公子訂婚，對你事業和屋企都有好處，你不要再和那個臨記糾纏。"
+          ]
+        },
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "爸，我自己的事我自己決定，我不想用婚姻來換生意。"
+          ]
+        },
+        {
+          "speaker": "藍父",
+          "lines": [
+            "你識什麼？你以為做明星可以紅一世？陳家可以給你穩定。"
+          ]
+        },
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "阿偉，你不用和我爸講這些，我自己的路我自己會行。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_lan_crisis_help",
+          "label": "助抗：陪她面對家族（連 C15）",
+          "effects": {
+            "flags": [
+              "flag_lan_help",
+              "flag_family_help",
+              "flag_family_marriage"
+            ],
+            "stats": {
+              "rel_lan": 2,
+              "fame": -1
+            },
+            "notes": "助抗聯姻。"
+          }
+        },
+        {
+          "id": "C_lan_crisis_stepback",
+          "label": "成全／退讓：勸她考慮家族（連 C15）",
+          "effects": {
+            "flags": [
+              "flag_lan_stepback",
+              "flag_family_marriage"
+            ],
+            "stats": {
+              "rel_lan": -1
+            },
+            "notes": "成全退讓。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_family_help",
+        "flag_family_marriage",
+        "flag_lan_help",
+        "flag_lan_stepback"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_lan_protected",
+        "flag_lan_colleague",
+        "flag_lan_sang_together"
+      ],
+      "openConditionsNote": "藍危機：推進後；linksMain=C15；家族壓（方向性／playtest 高好感）。",
+      "artId": "rom_lan_crisis",
+      "conflict": null,
+      "romanceLine": "lan",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "pcSilent": true,
+      "linksMain": [
+        "C15"
+      ],
+      "conflictNote": "SOFT_NITS: C15 僅 linksMain"
+    },
+    {
+      "id": "R_lan_ending",
+      "phase": "P5",
+      "title": "晨光與登機證",
+      "when": "1992",
+      "setting": "片場晨光，或機場離境大堂。",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "藍若曦"
+      ],
+      "synopsis": "藍若曦決定是否為愛情留下，還是退圈離開。阿偉要作出最後表態。",
+      "beats": [
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "我已經推了陳家的婚事，公司說要雪藏我，你可能會被我連累。"
+          ]
+        },
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "如果我話我想離開香港，你會不會跟我走？"
+          ]
+        },
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "有你這句，我已經知道點選。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_lan_ending_he",
+          "label": "HE：抗聯姻，一起走下去",
+          "effects": {
+            "flags": [
+              "flag_lan_he",
+              "flag_lan_commit"
+            ],
+            "stats": {
+              "rel_lan": 3
+            },
+            "notes": "可與事業結局並存。"
+          }
+        },
+        {
+          "id": "C_lan_ending_be",
+          "label": "BE：成全離開或疏離",
+          "effects": {
+            "flags": [
+              "flag_lan_be"
+            ],
+            "stats": {
+              "rel_lan": -2
+            },
+            "notes": "可與事業結局並存。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_lan_be",
+        "flag_lan_commit",
+        "flag_lan_he"
+      ],
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_lan_help",
+        "flag_lan_stepback",
+        "flag_family_help",
+        "flag_family_yield",
+        "flag_family_standby",
+        "flag_lan_protected"
+      ],
+      "openConditionsNote": "藍結局：P5。HE／BE＋flag_lan_commit。",
+      "artId": "rom_lan_ending",
+      "conflict": null,
+      "romanceLine": "lan",
+      "arcBeat": "ending",
+      "parallelOk": false,
+      "pcSilent": true
+    },
+    {
+      "id": "R_xu_meet",
+      "phase": "P3",
+      "title": "春茗初遇",
+      "when": "1990春",
+      "setting": "星河電視台春茗酒會，廣告客戶雲集，阿偉以臨時演員身份在場協助佈景。",
+      "eraTag": "era_1990_spring_ad",
+      "cast": [
+        "徐寶珊"
+      ],
+      "synopsis": "阿偉在春茗酒會搬運道具時，不慎撞到剛好經過的徐寶珊。徐寶珊是廣告界有名的女強人，正與客戶應酬。阿偉連忙道歉，徐寶珊見他手腳勤快，順口提點幾句。",
+      "beats": [
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "後生仔，你搬東西要看路，這裡紅酒一跌就幾千元，你賠得起嗎？"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "你認識我？我好像沒見過你，你是哪個部門的臨時演員？"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "挺機靈。做臨時演員也要有記性，記住誰是客人、誰是老闆，你才有機會站前一點。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_xu_meet_polite",
+          "label": "有禮接招：不卑不亢",
+          "effects": {
+            "flags": [
+              "flag_xu_met_polite"
+            ],
+            "stats": {
+              "rel_xu": 1,
+              "craft": 1
+            },
+            "notes": "初遇加分。"
+          }
+        },
+        {
+          "id": "C_xu_meet_distance",
+          "label": "保持距離：不攀談",
+          "effects": {
+            "flags": [
+              "flag_xu_met_distance"
+            ],
+            "stats": {
+              "rel_xu": 0,
+              "standing": 1
+            },
+            "notes": "保持距離。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_xu_met_distance",
+        "flag_xu_met_polite"
+      ],
+      "openConditions": [
+        "phase_P3"
+      ],
+      "openConditionsNote": "徐寶珊認識：P3 廣告／春茗（方向性）。徐 tier Soft HOLD。",
+      "artId": "rom_xu_meet",
+      "conflict": null,
+      "romanceLine": "xu",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "playerOffer": false
+    },
+    {
+      "id": "R_xu_push1",
+      "phase": "P3",
+      "title": "商場活動的試探",
+      "when": "1990",
+      "setting": "大型商場廣告活動，徐寶珊的公司是主要贊助商，阿偉獲派做現場臨時演員統籌。",
+      "eraTag": "era_1990_spring_ad",
+      "cast": [
+        "徐寶珊"
+      ],
+      "synopsis": "活動結束後，徐寶珊主動找阿偉，讚他現場應變快，並暗示可以投資幫他開設製作公司，條件是阿偉要跟她合作。",
+      "beats": [
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "今天活動這麼多突發事，你都可以處理好，證明你不止做臨時演員這麼簡單。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "我看人很準。你有沒有想過自己開一間製作公司？我可以幫你搭路，資金方面也可以商量。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "我不開玩笑。你出人脈和執行力，我出資金和客戶網絡，賺到錢大家分，你考慮一下。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_xu_push1_accept",
+          "label": "願意談合作：聽金援條件",
+          "effects": {
+            "flags": [
+              "flag_xu_coop_talk"
+            ],
+            "stats": {
+              "rel_xu": 2,
+              "wealth": 1
+            },
+            "notes": "金援推進。"
+          }
+        },
+        {
+          "id": "C_xu_push1_decline",
+          "label": "婉拒口風：想先靠自己",
+          "effects": {
+            "flags": [
+              "flag_xu_coop_decline"
+            ],
+            "stats": {
+              "rel_xu": 0,
+              "standing": 1
+            },
+            "notes": "婉拒金援口風。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_xu_coop_decline",
+        "flag_xu_coop_talk"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_xu_met_polite",
+        "flag_xu_met_distance"
+      ],
+      "openConditionsNote": "徐推進1：meet 後。",
+      "artId": "rom_xu_push1",
+      "conflict": null,
+      "romanceLine": "xu",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true
+    },
+    {
+      "id": "R_xu_push2",
+      "phase": "P4",
+      "title": "私人飯局的距離",
+      "when": "1991",
+      "setting": "高級私人會所飯局，徐寶珊約阿偉單獨見面，說要介紹幾位重要客戶給他認識。",
+      "eraTag": "era_1991_autumn_capital",
+      "cast": [
+        "徐寶珊"
+      ],
+      "synopsis": "飯局上徐寶珊談笑風生，介紹人脈之餘，也問起阿偉的私生活。阿偉察覺徐寶珊對自己不止公事上的興趣。",
+      "beats": [
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "剛才那位陳老闆，他公司每年廣告預算過千萬，你懂得和他打交道，以後不怕沒工作。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "你不用這麼緊張，我在這裡看著你。你平時下班之後有什麼消遣？有沒有女朋友？"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "我離婚好幾年了，生意就是我的伴侶。不過最近覺得，有個人聊聊天也不錯。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_xu_push2_open",
+          "label": "打開私人一面",
+          "effects": {
+            "flags": [
+              "flag_xu_personal_open"
+            ],
+            "stats": {
+              "rel_xu": 2
+            },
+            "notes": "私人推進。"
+          }
+        },
+        {
+          "id": "C_xu_push2_business",
+          "label": "只談生意",
+          "effects": {
+            "flags": [
+              "flag_xu_business_only"
+            ],
+            "stats": {
+              "rel_xu": 1,
+              "standing": 1
+            },
+            "notes": "公事界線。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_xu_business_only",
+        "flag_xu_personal_open"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_xu_coop_talk",
+        "flag_xu_coop_decline"
+      ],
+      "openConditionsNote": "徐推進2：push1 後。",
+      "artId": "rom_xu_push2",
+      "conflict": null,
+      "romanceLine": "xu",
+      "arcBeat": "push",
+      "parallelOk": true,
+      "pcSilent": true
+    },
+    {
+      "id": "R_xu_crisis",
+      "phase": "P4",
+      "title": "包廂裡的條件",
+      "when": "1991",
+      "setting": "資本場私人包廂，徐寶珊約阿偉見面，直接提出更緊密的合作條件，暗示可以包起他的事業。",
+      "eraTag": "era_1991_autumn_capital",
+      "cast": [
+        "徐寶珊"
+      ],
+      "synopsis": "徐寶珊開門見山，說可以全力支持阿偉的事業，但條件是他要成為她的人。阿偉要決定接受尊重合作，還是依賴這條捷徑。",
+      "beats": [
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "我不想轉彎抹角。你跟我，我擔保你三年內有自己的製作公司，不用再做臨時演員。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "你是聰明人，應該明白我的意思。我欣賞你，想將你留在我身邊，就是這麼簡單。"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "行內哪個不是這樣？你以為單靠實力就行？我當年也是這樣捱過來。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_xu_crisis_respect",
+          "label": "尊重合作（連 C14／T6）",
+          "effects": {
+            "flags": [
+              "flag_xu_respect",
+              "flag_bao_respect"
+            ],
+            "stats": {
+              "rel_xu": 2,
+              "wealth": 1,
+              "standing": 1
+            },
+            "notes": "對等合作。"
+          }
+        },
+        {
+          "id": "C_xu_crisis_depend",
+          "label": "依賴結構（連 C14／T6）",
+          "effects": {
+            "flags": [
+              "flag_xu_depend",
+              "flag_bao_depend"
+            ],
+            "stats": {
+              "rel_xu": 1,
+              "wealth": 3,
+              "standing": -1
+            },
+            "notes": "金援依賴。"
+          }
+        },
+        {
+          "id": "C_xu_crisis_refuse",
+          "label": "拒絕（連 C14／T6）",
+          "effects": {
+            "flags": [
+              "flag_xu_refuse",
+              "flag_bao_refuse"
+            ],
+            "stats": {
+              "rel_xu": -1,
+              "standing": 1
+            },
+            "notes": "拒絕依附。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_bao_depend",
+        "flag_bao_refuse",
+        "flag_bao_respect",
+        "flag_xu_depend",
+        "flag_xu_refuse",
+        "flag_xu_respect"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_xu_personal_open",
+        "flag_xu_business_only",
+        "flag_xu_coop_talk"
+      ],
+      "openConditionsNote": "徐危機：push2 後；conflict=T6；linksMain=C14。",
+      "artId": "rom_xu_crisis",
+      "conflict": "T6",
+      "romanceLine": "xu",
+      "arcBeat": "crisis",
+      "parallelOk": true,
+      "pcSilent": true,
+      "linksMain": [
+        "C14"
+      ],
+      "conflictNote": "SOFT_NITS: T6→conflict；C14→linksMain"
+    },
+    {
+      "id": "R_xu_ending",
+      "phase": "P5",
+      "title": "燈光之後的抉擇",
+      "when": "1992",
+      "setting": "資本場合大型晚宴結束後，後台走廊只剩阿偉與徐寶珊，兩人終於要面對關係的定局。",
+      "eraTag": "era_1992_finale",
+      "cast": [
+        "徐寶珊"
+      ],
+      "synopsis": "晚宴曲終人散，徐寶珊問阿偉接下來的路想怎樣走。阿偉要決定是否與她建立平等伴侶關係，還是讓這段關係走向決裂或冷淡。",
+      "beats": [
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "今晚之後，我就要飛去外國談一單大生意，可能幾個月都不在香港。你有什麼想跟我說？"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "我不需要你記住我幫過你，我想知道你當我是什麼人。合作夥伴？還是其他？"
+          ]
+        },
+        {
+          "speaker": "徐寶珊",
+          "lines": [
+            "平等？我從來沒有試過和別人平等相處。不過你是第一個令我覺得值得試的人。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_xu_ending_he",
+          "label": "HE：平等伴侶",
+          "effects": {
+            "flags": [
+              "flag_xu_he",
+              "flag_xu_commit"
+            ],
+            "stats": {
+              "rel_xu": 3,
+              "standing": 1
+            },
+            "notes": "可與事業結局並存。"
+          }
+        },
+        {
+          "id": "C_xu_ending_be",
+          "label": "BE：依賴決裂或冷淡",
+          "effects": {
+            "flags": [
+              "flag_xu_be"
+            ],
+            "stats": {
+              "rel_xu": -2,
+              "wealth": -1
+            },
+            "notes": "可與事業結局並存。"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_xu_be",
+        "flag_xu_commit",
+        "flag_xu_he"
+      ],
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_xu_respect",
+        "flag_xu_depend",
+        "flag_xu_refuse",
+        "flag_bao_respect",
+        "flag_bao_depend",
+        "flag_bao_refuse"
+      ],
+      "openConditionsNote": "徐結局：P5。HE／BE＋flag_xu_commit。",
+      "artId": "rom_xu_ending",
+      "conflict": null,
+      "romanceLine": "xu",
+      "arcBeat": "ending",
+      "parallelOk": false,
+      "pcSilent": true
+    },
+    {
+      "id": "R_tang_meet_stub",
+      "phase": "P4",
+      "title": "公關公司偶遇鄧麗萍",
+      "when": "1991",
+      "setting": "公關公司會議室",
+      "eraTag": "era_1991_autumn_capital",
+      "cast": [
+        "鄧麗萍"
+      ],
+      "synopsis": "阿偉到公關公司洽談臨記工作，在會議室遇見鄧麗萍。二人短暫交談，交換聯絡與否，將影響日後感情線能否正式開啟。此節為佔位短認識，正式開線需同時滿足 flag_tang_open 及 rel_tang 達到門檻。",
+      "beats": [
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "你就是星河電視台派來的臨記代表？我是鄧麗萍，負責這次活動的客戶對接。",
+            "待會兒開會前，有幾樣現場安排想先跟你對一對。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "你做事都算有準備。我最怕臨記臨場才問東問西，浪費大家時間。",
+            "這樣吧，開會前我們先交換電話，之後有改動可以直接聯絡。"
+          ]
+        },
+        {
+          "speaker": "鄧麗萍",
+          "lines": [
+            "明白，做這行時間難遷就。你留低號碼，我這邊有消息就通知你。",
+            "希望今次合作順利，之後陸續有來。"
+          ]
+        }
+      ],
+      "choices": [
+        {
+          "id": "C_tang_meet_keep_contact",
+          "label": "留下聯絡：寫入 flag_tang_met（不開正式閘）",
+          "effects": {
+            "flags": [
+              "flag_tang_met"
+            ],
+            "stats": {
+              "rel_tang": 1
+            },
+            "notes": "偶遇建檔；正式開閘見 R_tang_meet（排片談判）"
+          }
+        },
+        {
+          "id": "C_tang_meet_hold_back",
+          "label": "先不深交",
+          "effects": {
+            "flags": [],
+            "stats": {
+              "rel_tang": 0
+            },
+            "notes": "不深交；不寫 flag_tang_open"
+          }
+        }
+      ],
+      "flags_written": [
+        "flag_tang_met"
+      ],
+      "openConditions": [],
+      "openConditionsNote": "偶遇 stub：無雙閘。choice 寫 flag_tang_met；正式 open 見 R_tang_meet。SOFT_NITS_FIX_v2：flags_written 已對齊 choice＝flag_tang_met；偶遇不寫 flag_tang_open；正式線 R_tang_meet 才開閘",
+      "artId": "rom_tang_meet_stub",
+      "conflict": null,
+      "romanceLine": "tang",
+      "arcBeat": "meet",
+      "parallelOk": true,
+      "pcSilent": true,
+      "stub": true,
+      "supersededBy": "R_tang_meet",
+      "supersededByFile": "story_detail_romance_tang.json",
+      "notes": "偶遇只寫 flag_tang_met＋rel_tang；flag_tang_open 由正式線 R_tang_meet 寫入；push1+ 另需 rel_tang_threshold=2。",
+      "playerOffer": false
+    }
+  ],
+  "qa": {
+    "banned_scan_body": "pass",
+    "oral_leftover": [],
+    "aw_first_person_lines": 0,
+    "deepseek_calls": "prior+rev_lan/xu/tang_steer",
+    "steer": "cast_main persona; flag_<line>_*; no 阿偉「我」beats; C_* ids; links C9/C14/C15/T6",
+    "avg_line_len": 29.0,
+    "node_count": 11,
+    "lexicon": "COPY_STYLE_HK_LEXICON.md",
+    "notes_tang": "R_tang_meet_stub supersededBy R_tang_meet；正式 Pack 見 story_detail_romance_tang.json",
+    "soft_nits_fix": "v1",
+    "conflict_convention": "T→conflict；C→linksMain",
+    "tang_stub": "flag_tang_met only；open 留給 R_tang_meet",
+    "wiring_openConditions": {
+      "version": "v1",
+      "nodesWithOC": 11,
+      "softHold": [],
+      "softHoldCleared": {
+        "at": "2026-11-03",
+        "cleared": [
+          "R_tang_meet_stub.flags_written 含 flag_tang_open",
+          "徐 tier"
+        ],
+        "note": "SOFT_NITS_FIX_v2 已修 stub flags_written＋徐 cast tier；本欄清空。鄧節序／出圖／C5 裸旗仍全局 HOLD（非本 pack softHold）。"
+      }
+    },
+    "soft_nits_fix_v2_stub_flags": "flags_written=[flag_tang_met]"
+  },
+  "rule": "玩家=阿偉，對白不寫阿偉「我」；確定前可平行；HE／BE 與事業並存；關海媚無 HE；鄧麗萍 stub 已 supersededBy R_tang_meet（見 story_detail_romance_tang.json）。",
+  "conditionSchema": {
+    "version": 1,
+    "semantics": "openConditions＝AND 清單（全過才開）；空 []＝無額外閘（仍受 phase／when 約束）。openConditionsAny＝可選 OR 清單：若有，須至少中一項，並與 openConditions 同時成立。tokens：C*／R_*／A_*＝該節完成；flag_*／裸前綴／route_*＝旗標真；rel_*_threshold＝關係數值達門檻（見 thresholds 或檔級，playtest）；phase_P*＝當前 phase 已達；era_*／season_*＝季節／時代軟匹配。與 Tang 陣列 schema 相容；Tang push 仍只用 openConditions AND。",
+    "conflictConvention": "T→conflict；C→linksMain（Soft）"
+  },
+  "edits": [
+    "v2.2 wiring：lan／xu／stub 補 openConditions；Tang stub Soft HOLD flags_written；對白未改",
+    "v2.3 SOFT_NITS_FIX_v2：R_tang_meet_stub.flags_written 對齊 choice＝[flag_tang_met]",
+    {
+      "at": "2026-11-03",
+      "note": "qa.wiring_openConditions.softHold 清零（對齊 SOFT_NITS_FIX_v2／QA_SOFT_NITS_FIX_v2 nit）"
+    },
+    "v2.3.2 PLAYER_OFFER_MEET_v1：R_lan/xu_meet＋R_tang_meet_stub playerOffer=false"
+  ]
+}

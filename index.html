@@ -17330,6 +17330,12 @@ const STORY_LOC_SOFT = {
   C9: "tvb_harbour",
   C10: "tvb_longmen",
   C11: "tvb_longmen",
+  /* v20a31 WEAVE_PHASE4_8：C12–C16 改跟三年版主幹 §2 地標（覆寫節點本身有 locId，呢張表只係後備，兩邊一致） */
+  C12: "rec_star",
+  C13: "film_cotton",
+  C14: "tvb_longmen",
+  C15: "film_harbour",
+  C16: "rec_star",
 };
 const STORY_HINT_SOFT = {
   /* fallback only — JSON 1.2.8 / C1 UI-test beat annotate + HINT_C6C10 優先 */
@@ -17337,8 +17343,10 @@ const STORY_HINT_SOFT = {
   C2: { playerHint: "星河片場後巷有人約飯；通告欄又貼咗新單。", lockedHint: "約第4週起，且隔一日之後先開。未到唔使專程蹲後巷——先照常跑通告；開咗再去星河片場後巷。", nextHint: "下一幕「對對手硬／忍」——約第6週起、隔一日之後；開咗先留意星河電影組通告欄。" },
   C3: { playerHint: "星河電影組通告欄前氣氛緊，有人睇住你嘅名牌。", lockedHint: "約第6週起，且隔一日之後先開。未到唔使專登去盯通告欄——先照常開工；開咗再去星河電影組通告欄。", nextHint: "下一幕「何生拒單」——約第8週起、隔一日之後；開咗先去中環廣告。" },
   C4: { playerHint: "何生檯面有份通告紙等你表態。", lockedHint: "約第8週起，且隔一日之後先開。未到唔使專程跑中環——先照常跑通告；開咗再去中環廣告聽何生講。", nextHint: "下一幕「采兒小訪題」——約第9週起；仲要同周采兒處好關係，或捱到夏台慶籌備季。" },
-  C5: { playerHint: "片場邊有小訪位，筆記本已經打開。", lockedHint: "約第9週起先輪到呢幕。采兒／台慶未登場前：可喺片場或多露面同周采兒混個面（好感約到2），或捱到初夏台慶籌備季（約夏初、台慶前）；兩樣中一樣就得。未到週數就照常跑通告，唔使估下一步。", nextHint: "下一幕「首次正式約會對象」——約第12週起、隔一日之後；仲要同 Vera／林曉晴／周采兒其中一位夠熟（好感大約到3）。未到就照常跑通告、見人。" },
-  C6: { playerHint: "收工走廊有人等你——今晚只能約一個。", lockedHint: "約第12週起，且隔一日之後；仲要同 Vera／林曉晴／周采兒其中一位關係夠熟（好感大約到3）先開。未到就照常跑通告、見人；開咗再返星河廠景走廊。", nextHint: "下一幕「拒雷勁式苛刻合約」——約第14週起、隔一日之後；開咗先留意茶餐廳／片場廂房那邊嘅約。" },
+  C5: { playerHint: "片場邊有小訪位，筆記本已經打開。", lockedHint: "約第9週起先輪到呢幕。采兒／台慶未登場前：可喺片場或多露面同周采兒混個面（好感約到2），或捱到初夏台慶籌備季（約夏初、台慶前）；兩樣中一樣就得。未到週數就照常跑通告，唔使估下一步。", nextHint: "下一幕「飯堂閒角」——第15週起、行電視線先有；係處境劇班底嘅固定閒角，熬唔熬由你話事。未到就照常跑通告。" },
+  /* v20a31 WEAVE_PHASE4_8：C6 內容對齊 Qwen 原案（電視城飯堂閒角：熬日子／走人），唔再係 pack 自創約會線；
+     舊約會版嘅 date_* 旗／rel 加成隨覆寫移除（commit 門檻已按新 rel 經濟校準，見 NOTES_V20A31）。 */
+  C6: { playerHint: "飯堂嗰邊，處境劇班底想搵個固定閒角——冇台詞嗰種。", lockedHint: "第15週起、行電視線（route_tv）先開。未到就照常跑通告；開咗去星河電視台飯堂嗰邊睇下。", nextHint: "下一幕「暴雨救場」——1989 年夏，業內信用夠班先有人嗌你落手救場；開咗去維港電影外景場。" },
   /* v20a29 WEAVE_PHASE4_6：C7–C11 提示改跟三年版主幹 §2（舊 C7–C10 提示屬 pack 自創線，已由覆寫節點取代）。
      藍若曦舊線（擋狗仔／唱片場）全數移除——藍身份已拍板係電視台 PA／場記，唔再出歌手向提示。 */
   C7: { playerHint: "黑雨殺到，外景場亂成一團，副導嗌人救場。", lockedHint: "1989 年夏天先有呢場暴雨外景，仲要做完采兒小訪、業內信用夠班先有人嗌你埋手。未到就照常跑通告；開咗去維港電影外景場。", nextHint: "下一幕「茶餐廳度橋」——1989 年秋，聲量夠、有喜劇或動作標籤先觸發；開咗去金龍茶餐廳。" },
@@ -17346,12 +17354,20 @@ const STORY_HINT_SOFT = {
   C9: { playerHint: "老式酒廊入面，何生等你揀：追數，定出頭。", lockedHint: "1989 年冬年尾清貨期先開。未到就照常跑通告、顧住手頭人情；開咗去海港台附近嗰間老式酒廊見何生。", nextHint: "下一幕「戲路定型」——1989 年冬末，做完追數、雙軌夠數先開；開咗去星河電視台慈善秀後台。" },
   C10: { playerHint: "慈善秀後台，彭兆基啱啱講多咗句；隔壁房梟雄片選角等緊你試兩段。", lockedHint: "1989 年冬末先開，仲要做完年尾追數、雙軌總和夠數。未到就照常跑通告；開咗去星河電視台慈善秀後台。", nextHint: "主線去到下一階段——1990 年先有新事態，繼續跑通告、見人。" },
   C11: { playerHint: "選美後台人多眼雜——帶份見面禮（例如淡香氛樣品瓶）埋佳麗身邊，成件事會順好多。", lockedHint: "1989 年夏末到秋先開（選美綵排季）。未到就照常跑通告；開咗去星河電視台綜藝廠後台。", nextHint: "下一幕——1989 年冬年尾清貨期，留意何生嗰邊嘅消息。" },
+  /* v20a31 WEAVE_PHASE4_8：C12–C16 提示跟三年版主幹 §2（pack 自創線提示隨覆寫取代） */
+  C15: { playerHint: "動作片片場有人受傷，武指嗌人頂個高危鏡頭。", lockedHint: "1990 年春先開，仲要有動作標籤傍身先有人諗起你。未到就照常跑通告；開咗去維港電影動作片片場。", nextHint: "下一幕「站隊」——1990 年夏，做完戲路定型、業內信用夠高，先有人出嚟挖你角。" },
+  C14: { playerHint: "齊鎮海約你打波——波就其次，佢有說話想同你講。", lockedHint: "1990 年夏先開，仲要做完戲路定型、業內信用夠班。未到就照常跑通告；開咗去星河電視台嗰邊等齊鎮海約。", nextHint: "下一幕「樂壇前哨」——1990 年秋，做完站隊、聲量夠高，先會喺唱片公司大堂撞到嗰場風波。" },
+  C12: { playerHint: "唱片公司大堂有班歌迷聚集，陸柏言就嚟到——你企邊邊？", lockedHint: "1990 年秋先開，仲要做完站隊、聲量夠高。未到就照常跑通告；開咗去天星音樂大堂。", nextHint: "下一幕「偶像實力之爭」——1990 年秋末，做完樂壇前哨、雙軌總和夠數先開；開咗去天星音樂舞蹈室。" },
+  C16: { playerHint: "舞蹈室嗰邊試音試到夜，程天諾就喺隔籬練舞。", lockedHint: "1990 年秋末先開，仲要做完樂壇前哨、雙軌總和夠數。未到就照常跑通告；開咗去天星音樂舞蹈室。", nextHint: "下一幕「賀歲片」——1990 年冬，廖炳星嗰組賀歲片飛紙仔滿天飛；開咗去紅棉影業片場。" },
+  C13: { playerHint: "賀歲片趕住煞科，炳星同導演鬧到停機——你要執生，定跟足劇本？", lockedHint: "1990 年冬先開（賀歲片趕工季）。未到就照常跑通告；開咗去紅棉影業片場。", nextHint: "主線去到尾聲——1990 年冬末頒獎禮季，三年就嚟收科。" },
 };
 const STORY_TITLE_SOFT = {
   C1: "先學做動作戲／先賺", C2: "留人脈／趕通告", C3: "對對手硬／忍", C4: "何生拒單", C5: "采兒小訪題",
-  C6: "首次正式約會對象",
+  C6: "飯堂閒角",
   /* v20a29：C7–C11 標題改跟三年版主幹（覆寫節點 title 為準，呢度係 need_done 提示等後備用字） */
   C7: "暴雨救場", C8: "茶餐廳度橋", C9: "年尾追數", C10: "戲路定型", C11: "選美後台",
+  /* v20a31：C12–C16 標題跟三年版主幹 */
+  C12: "樂壇前哨", C13: "賀歲片", C14: "站隊", C15: "高危替身", C16: "偶像實力之爭",
 };
 /* v20a28 WEAVE_PHASE4_5：三年版主幹覆寫閘（1988–1990；主幹 §2 表＋§4 縮放表為準）。
    content pack 嘅 openConditions／phase 係五年版節奏（例：C16 week_min:100、C17 phase:"P5"＋1992），
@@ -17630,6 +17646,424 @@ function applyStorySpineOverrides46(){
     });
     return { ok:true, replaced:replaced };
   }catch(_e){ return { ok:false, reason:"err" }; }
+}
+/* v20a31 WEAVE_PHASE4_8：主幹 1990 收束節點覆寫（N12–N16）＋ C6 內容對齊。
+   定界對照（pack／Qwen 原規劃／三年版主幹 §2）結論延續 4-6：pack C12–C16 係預覽自創線
+   （賀歲搶位vs關係危機／緋聞公關／徐寶珊包養／藍若曦聯姻／金九舊底片），同主幹大方向唔一致；
+   C16 主幹版係樂壇線（程天諾），pack 係舊底片傳承，成個取代。跟主幹 §2（＝Qwen 原案）寫覆寫節點，
+   載入後由 applyStorySpineOverrides48 按 id 替換；唔直接改 content pack JSON（守 repo 慣例）。
+   閘沿用 STORY_GATE_3Y（4-5 已定，今步唔改門檻）；呈現行返 C1–C5 全鏈。
+   C6：Qwen 原案有明確定義（loc=電視城飯堂；熬日子 Grind／走人 Quit；微量金錢＋電視台資歷；
+   無實質劇情推進），pack 現行係自創約會線——按任務規則覆寫對齊 Qwen。連帶影響：舊 C6 約會
+   choice 嘅 rel +2 來源消失，感情 commit 門檻按新 rel 經濟重新校準（見 COMMIT48／NOTES_V20A31）。
+   紅星 speakerId：廖炳星有 era 資產（liu_bingxing）照用；麥震東／齊鎮海／陸柏言／程天諾未有
+   era speaker 資產，跟 4-6 顧明輝／彭兆基先例用 speaker 顯示名（通用剪影＋名照出）。 */
+const STORY_SPINE_NODES_1990 = {
+  /* N12＝C15（1990 春・高危替身）：做高危替身／拒接；麥震東（動作片片場） */
+  C15: {
+    id: "C15", phase: "P3", title: "高危替身", when: "1990春",
+    setting: "維港電影動作片片場；1990 年春，武打片熱潮，高危鏡頭一個接一個",
+    locId: "film_harbour", eraTag: "era_1990_spring_action",
+    cast: ["阿偉", "麥震東", "武指"],
+    synopsis: "武打片熱潮殺到，麥震東拍一場飛簷跳樓戲嗰陣落地扭傷，成組停晒。武指四圍搵身形似佢嘅人頂嗰個高危鏡頭——搵到阿偉頭上。做，搏命揚名；唔做，冇人會怪你。",
+    playerOffer: "武指嗌你頂麥震東嗰個高危鏡頭——跳，定唔跳？",
+    playerHint: "動作片片場有人受傷，武指嗌人頂個高危鏡頭。",
+    lockedHint: "1990 年春先開，仲要有動作標籤傍身先有人諗起你。未到就照常跑通告；開咗去維港電影動作片片場。",
+    nextHint: "",
+    beats: [
+      { speaker: "系統", kind: "system", lines: ["1990 年春，維港電影動作片片場。威也、爆破位全部準備好，嗰場跳樓戲就差臨門一腳。", "麥震東落地嗰下扭親腳踝，坐喺旁邊敷冰——成組人企晒喺度，等一個人頂上。"] },
+      { speaker: "武指", kind: "npc", lines: ["阿偉，你身形同東哥最似，套戲服啱啱好。", "嗰個鏡頭唔使露樣，跳落嚟就得——你敢唔敢？"] },
+      { speaker: "麥震東", kind: "npc", emotion: "tired", lines: ["後生仔，呢行食呢行飯，邊個未跌過。", "不過我同你講真：唔好為咗一格菲林，賠咗成世。你自己諗清楚。"] },
+      { speaker: "阿偉", kind: "player", lines: ["（嗰個高度，我望上去都腳軟。跳——成行會記住我嗰一躍。唔跳——都冇人會怪我。）"] },
+      { speaker: "系統", kind: "system", lines: ["成個片場靜晒，等你一句。"] }
+    ],
+    choices: [
+      { id: "C15_a", label: "做高危替身：著起東哥套戲服，跳",
+        effects: { flags: ["flag_stunt_double"], stats: { fame: 3 }, tags: ["搏命"], notes: "你跳咗嗰一躍。落地嗰下成組人嗌出聲——呢一格菲林，成行都會知係邊個跳。" },
+        resultBeats: [
+          { speaker: "武指", lines: ["好嘢！一 take 過！阿偉，呢份人情，成個動作組記住你。"] },
+          { speaker: "麥震東", lines: ["跌得起、爬得返，先係呢行嘅人。你嗰躍，我認。"] }
+        ] },
+      { id: "C15_b", label: "拒接：老實講，呢個高度我未到",
+        effects: { flags: ["flag_stunt_refuse"], stats: { industryCredit: 1 }, tags: ["惜身"], notes: "你冇俾英雄主義推上威也。武指拍拍你膊頭：識分寸嘅人，先做得耐呢行。" },
+        resultBeats: [
+          { speaker: "武指", lines: ["唔緊要，唔識唔好扮識——嗰啲先累死成組。你去幫手睇住啲墊啦。"] },
+          { speaker: "麥震東", lines: ["識惜身，好事。呢行路，長行長有。"] }
+        ] }
+    ],
+    conflict: null,
+    flags_written: ["flag_stunt_double", "flag_stunt_refuse"],
+    openConditions: ["tag_action"], openConditionsAny: null,
+    openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（動作標籤＋1990 春）；此欄只作 legacy 對照。",
+    thresholds: {},
+    pacing: { weekMin: 105, minDaysAfterPrev: 1, when: "1990春", prevMain: "C10" },
+    aftermathHint: "嗰一躍跳定唔跳，動作組嗰邊好快傳開；之後啲武打通告點睇你，睇呢度。",
+    journalCandidate: "麥震東傷咗嗰日，我揀咗跳，定揀咗惜身。",
+    redStarHook: "麥震東喺動作片片場：巨星拍高危鏡頭受傷，成組等一個人頂上。",
+    nodeRipple: "做替身揚聲量兼令動作組欠你一份人情（債權）；拒接就沉「惜身」口碑——兩條路，兩種演員。"
+  },
+  /* N13＝C14（1990 夏・站隊）：站隊電視台／站隊電影公司；齊鎮海（高爾夫球場挖角） */
+  C14: {
+    id: "C14", phase: "P3", title: "站隊", when: "1990夏",
+    setting: "電視台附近高爾夫球會所；1990 年夏，兩台收視戰打到出面，挖角傳聞滿天飛",
+    locId: "tvb_longmen", eraTag: "era_1990_summer_war",
+    cast: ["阿偉", "齊鎮海", "何生"],
+    synopsis: "收視戰白熱化，一哥齊鎮海約阿偉打波，明示暗示：電影公司嗰邊嚟緊有大製作，缺個企得穩嘅人；星河呢邊，就係阿偉由臨記捱出頭嘅地方。去到呢個位，企邊邊唔再係「有工就開」咁簡單。",
+    playerOffer: "齊鎮海約你打波——佢有說話想同你講。",
+    playerHint: "齊鎮海約你打波——波就其次，佢有說話想同你講。",
+    lockedHint: "1990 年夏先開，仲要做完戲路定型、業內信用夠班。未到就照常跑通告；開咗去星河電視台嗰邊等齊鎮海約。",
+    nextHint: "",
+    beats: [
+      { speaker: "系統", kind: "system", lines: ["1990 年夏，高爾夫球會所。綠草如茵，同電視台入面嗰種趕工空氣，完全兩個世界。", "齊鎮海一身白衫，揮桿姿勢仲瀟灑過佢啲劇——佢約你嚟，唔係為咗打波。"] },
+      { speaker: "齊鎮海", kind: "npc", emotion: "calm", lines: ["阿偉，你呢兩年點捱上嚟，我睇喺眼。電影公司嗰邊嚟緊有大製作，我同佢哋提過你。", "電視台係困身啲，不過穩陣；電影就搏啲，不過天花板高。你自己揀——企邊邊，將來啲資源就向邊邊斜。"] },
+      { speaker: "何生", kind: "npc", lines: ["（嚟之前，何生喺事務所提過你一句：企邊邊都好，先諗清楚你啲人情數企喺邊——邊邊嘅人記得你，邊邊就係你嘅本錢。）"] },
+      { speaker: "阿偉", kind: "player", lines: ["（由臨記做到有人出嚟挖角，原來係呢種感覺。呢一步企錯，唔係冇咗一份工，係冇咗一班人。）"] },
+      { speaker: "系統", kind: "system", lines: ["齊鎮海將支桿遞俾你，等你開波——亦等你嗰句。"] }
+    ],
+    choices: [
+      { id: "C14_a", label: "站隊電視台：留喺星河，我喺呢度捱出頭",
+        effects: { flags: ["flag_side_tv"], stats: { industryCredit: 2 }, tags: [], notes: "你留喺星河。齊鎮海笑住同你握手——企得穩，都係一種答案；台入面嗰班人，會記住你冇喺收視戰嗰陣跳船。" },
+        resultBeats: [
+          { speaker: "齊鎮海", lines: ["好，有情有義。我嗰邊道門唔會閂埋，不過你呢句，我記住。"] },
+          { speaker: "系統", lines: ["嗰日場波打成點冇人記得——你企咗邊邊，就全行都知。"] }
+        ] },
+      { id: "C14_b", label: "站隊電影公司：跟齊鎮海嗰邊行，大銀幕大製作",
+        effects: { flags: ["flag_side_film"], stats: { fame: 2 }, tags: [], notes: "你跟咗電影嗰邊。消息傳返電視台嗰陣，有人話你醒，有人話你變節——邊樣啱，要睇你之後行成點。" },
+        resultBeats: [
+          { speaker: "齊鎮海", lines: ["識揀。呢行最怕唔係揀錯，係唔敢揀。"] },
+          { speaker: "系統", lines: ["收工返到電視台，茶水間嗰啲眼神，已經唔同咗。"] }
+        ] }
+    ],
+    conflict: null,
+    flags_written: ["flag_side_tv", "flag_side_film"],
+    openConditions: ["C10"], openConditionsAny: null,
+    openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（C10 done＋信用>42＋1990 夏）；「人情債結算」以何生提點喺內容層呈現，唔入閘。",
+    thresholds: {},
+    pacing: { weekMin: 118, minDaysAfterPrev: 1, when: "1990夏", prevMain: "C10" },
+    aftermathHint: "你企咗邊邊，兩邊都會好快知；之後嚟嘅資源，會開始向嗰邊斜。",
+    journalCandidate: "齊鎮海支桿遞到我手嗰日，我揀咗留，定揀咗走出去。",
+    redStarHook: "齊鎮海喺高爾夫球場：一哥俾對台高價挖角傳聞纏身，佢自己先嚟挖你角。",
+    nodeRipple: "站電視台沉信用（班底記情）；站電影公司揚聲量（大製作入場券）。"
+  },
+  /* N14＝C12（1990 秋・樂壇前哨）：幫粉絲應援／避開狂熱粉；陸柏言（唱片公司大堂） */
+  C12: {
+    id: "C12", phase: "P3", title: "樂壇前哨", when: "1990秋",
+    setting: "天星音樂大堂；1990 年秋，樂壇頒獎禮前哨戰，緋聞滿天飛",
+    locId: "rec_star", eraTag: "era_1990_autumn_music",
+    cast: ["阿偉", "陸柏言", "唱片公司職員"],
+    synopsis: "陸柏言俾緋聞纏身，一班忠實歌迷聚集喺唱片公司大堂，話要聲援偶像、趕走守候嘅記者，保安就嚟控制唔到場面。阿偉嚟交帶嗰陣撞正——幫手應援定行後門避開，你企邊邊即刻俾人睇穿。",
+    playerOffer: "大堂有班歌迷聚集，陸柏言就嚟到——你企邊邊？",
+    playerHint: "唱片公司大堂有班歌迷聚集，陸柏言就嚟到——你企邊邊？",
+    lockedHint: "1990 年秋先開，仲要做完站隊、聲量夠高。未到就照常跑通告；開咗去天星音樂大堂。",
+    nextHint: "",
+    beats: [
+      { speaker: "系統", kind: "system", lines: ["1990 年秋，天星音樂大堂。橫額、花牌、人頭湧湧——陸柏言嘅忠實歌迷嚟聲援偶像，順便趕走門口嗰班守候多日嘅記者。", "保安就嚟頂唔住，唱片公司職員喺人群入面，一眼就望到你。"] },
+      { speaker: "唱片公司職員", kind: "npc", lines: ["阿偉？你嚟得啱啦——幫手企一企、派下水都好，班細路淨係聽『自己人』講。", "唔想惹麻煩就行後門啦，我唔怪你，呢啲場面避得就避。"] },
+      { speaker: "陸柏言", kind: "npc", emotion: "tired", lines: ["唔好意思，連累你哋。做呢行，俾人愛同俾人鬧，有時係同一班人。", "你唔使企我嗰邊——你企你自己嗰邊就得。"] },
+      { speaker: "阿偉", kind: "player", lines: ["（留低，我就係『企出嚟嗰個臨記』；行後門，今日就乜事都冇。兩樣都有代價。）"] },
+      { speaker: "系統", kind: "system", lines: ["大堂嘅聲浪一浪高過一浪，陸柏言架車就嚟到門口。"] }
+    ],
+    choices: [
+      { id: "C12_a", label: "幫粉絲應援：留低派水安撫，企到佢上車",
+        effects: { flags: ["flag_fans_support"], stats: { fame: 2 }, tags: ["親和力"], notes: "你留低幫手安撫歌迷，企到陸柏言安全上車。歌迷記住咗你呢張面——親和，係買唔到嘅宣傳。" },
+        resultBeats: [
+          { speaker: "陸柏言", lines: ["多謝。今日肯企出嚟嘅人，我記得邊幾個。"] },
+          { speaker: "系統", lines: ["嗰晚娛樂版嗰格細相，企喺陸柏言側邊嗰個，係你。"] }
+        ] },
+      { id: "C12_b", label: "避開狂熱粉：行後門，唔捲入場風波",
+        effects: { flags: ["flag_fans_avoid"], stats: { industryCredit: 1 }, tags: ["高冷"], notes: "你由後門走，冇捲入嗰場風波。唱片公司職員點頭：識避風頭嘅，先企得耐個台。" },
+        resultBeats: [
+          { speaker: "唱片公司職員", lines: ["醒。呢啲時候企錯位，幾多功夫都補唔返。"] },
+          { speaker: "系統", lines: ["大堂嘅聲浪漸漸遠——你嗰日，乾乾淨淨咁走咗。"] }
+        ] }
+    ],
+    conflict: null,
+    flags_written: ["flag_fans_support", "flag_fans_avoid"],
+    openConditions: ["C14"], openConditionsAny: null,
+    openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（C14 done＋聲量>50＋1990 秋）；此欄只作 legacy 對照。",
+    thresholds: {},
+    pacing: { weekMin: 131, minDaysAfterPrev: 1, when: "1990秋", prevMain: "C14" },
+    aftermathHint: "嗰日你企邊邊，娛樂版同唱片公司嗰邊都記低咗。",
+    journalCandidate: "陸柏言架車到門口嗰陣，我企咗喺人群前面，定行咗後門。",
+    redStarHook: "陸柏言喺唱片公司大堂：天王俾緋聞纏身，歌迷聚集聲援，前哨戰味濃。",
+    nodeRipple: "應援揚聲量兼得「親和力」；避開沉信用兼得「高冷」——代言嗰邊會記住。"
+  },
+  /* N15＝C16（1990 秋末・偶像實力之爭）：靠修音／苦練唱功；程天諾（舞蹈室） */
+  C16: {
+    id: "C16", phase: "P3", title: "偶像實力之爭", when: "1990秋末",
+    setting: "天星音樂舞蹈室；夜晚，隔籬錄音室仲開緊工",
+    locId: "rec_star", eraTag: "era_1990_autumn_idol",
+    cast: ["阿偉", "程天諾", "監製"],
+    synopsis: "樂壇洗牌，跳唱新人程天諾俾實力派公開批評「靠修音先見得人」，成行等睇佢點接招。唱片公司嗰晚試錄示範帶，監製拉阿偉去和音試唱一小段——點唱，係姿態：靠修音快靚正，定落苦功練真功夫，先至企出嚟。",
+    playerOffer: "監製拉你試唱一小段——靠修音，定練真功夫？",
+    playerHint: "舞蹈室嗰邊試音試到夜，程天諾就喺隔籬練舞。",
+    lockedHint: "1990 年秋末先開，仲要做完樂壇前哨、雙軌總和夠數。未到就照常跑通告；開咗去天星音樂舞蹈室。",
+    nextHint: "",
+    beats: [
+      { speaker: "系統", kind: "system", lines: ["1990 年秋末，天星音樂舞蹈室。鏡牆前面，程天諾練舞練到成身汗，數住拍子，一下都冇停。", "報紙嗰句「靠修音先見得人」，貼咗喺錄音室門口成個禮拜——成行都等睇呢個後生仔點接招。"] },
+      { speaker: "程天諾", kind: "npc", emotion: "firm", lines: ["人哋話我靠修音。我冇出聲鬧返轉頭——我每日喺呢間房跳到半夜，就係想有一日，唔使靠嗰部機。", "你嗰段和音，監製嗌你試。點唱，你自己揀——我唔會笑你，邊條路都唔易行。"] },
+      { speaker: "監製", kind: "npc", lines: ["阿偉，試一段啦。嗱，兩條路：一係入去唱一次，我嗰邊修到順滑，聽朝就交到帶；一係你自己練到準先錄，慢係慢啲，不過係真功夫。"] },
+      { speaker: "阿偉", kind: "player", lines: ["（一格菲林可以靠替身，一段歌呢？靠修音，我今晚就收工；練真功夫，就要喺呢間房，同隔籬嗰個後生仔一齊捱。）"] },
+      { speaker: "系統", kind: "system", lines: ["錄音室盞紅燈，等緊你嗰句。"] }
+    ],
+    choices: [
+      { id: "C16_a", label: "靠修音：唱一次，修到順滑交帶",
+        effects: { flags: ["flag_vocal_polish"], stats: { fame: 2 }, tags: ["偶像派"], notes: "你揀咗快嗰條路：修音修到順滑，監製即場點頭。見得人，先講得通——呢個年代，包裝都係實力嘅一種。" },
+        resultBeats: [
+          { speaker: "監製", lines: ["得，交到帶。呢個年代，識用部機嘅，都係醒目仔。"] },
+          { speaker: "程天諾", lines: ["（佢喺鏡入面望咗你一陣，冇出聲，轉身繼續數拍子。）"] }
+        ] },
+      { id: "C16_b", label: "苦練唱功：一句一句練到準先錄",
+        effects: { flags: ["flag_vocal_train"], stats: { industryCredit: 2 }, tags: ["實力派"], notes: "你揀咗慢嗰條路：一句一句練到準先收工。程天諾喺鏡入面望住你，點咗下頭——肯捱嘅人，唔多。" },
+        resultBeats: [
+          { speaker: "監製", lines: ["慢係慢啲……不過呢段帶，十年後攞返出嚟都唔使縮。"] },
+          { speaker: "程天諾", lines: ["原來唔止我一個，肯喺呢間房捱到半夜。"] }
+        ] }
+    ],
+    conflict: null,
+    flags_written: ["flag_vocal_polish", "flag_vocal_train"],
+    openConditions: ["C12"], openConditionsAny: null,
+    openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（C12 done＋雙軌>125＋1990 秋）；此欄只作 legacy 對照。",
+    thresholds: {},
+    pacing: { weekMin: 139, minDaysAfterPrev: 1, when: "1990秋末", prevMain: "C12" },
+    aftermathHint: "嗰晚你點唱，錄音室嗰邊會記好耐；業內點樣標籤你，由嗰段帶開始分。",
+    journalCandidate: "程天諾喺隔籬練舞嗰晚，我嗰段歌，係修出嚟，定練出嚟。",
+    redStarHook: "程天諾喺天星音樂舞蹈室：跳唱新人俾實力派公開批評，佢用半夜嘅汗嚟答。",
+    nodeRipple: "靠修音得「偶像派」揚聲量；苦練得「實力派」沉信用——終局口碑標籤，喺呢度落釘。"
+  },
+  /* N16＝C13（1990 冬・賀歲片）：臨場爆肚／死背劇本；廖炳星（片場鬧翻） */
+  C13: {
+    id: "C13", phase: "P3", title: "賀歲片", when: "1990冬",
+    setting: "紅棉影業片場；1990 年冬，賀歲片趕住年初一上畫，飛紙仔滿天飛",
+    locId: "film_cotton", eraTag: "era_1990_winter_newyear",
+    cast: ["阿偉", "廖炳星", "導演"],
+    synopsis: "賀歲片趕工，結局點拍，廖炳星同導演喺片場鬧翻，成組停機等運到。飛紙仔啱啱派到阿偉手上——嗰場戲得兩句對白：死背劇本穩穩陣陣，定臨場爆肚接住炳星嗰股戲癮，一念之差。",
+    playerOffer: "炳星同導演鬧到停機，你嗰場就嚟開拍——爆肚，定背書？",
+    playerHint: "賀歲片趕住煞科，炳星同導演鬧到停機——你要執生，定跟足劇本？",
+    lockedHint: "1990 年冬先開（賀歲片趕工季）。未到就照常跑通告；開咗去紅棉影業片場。",
+    nextHint: "",
+    beats: [
+      { speaker: "系統", kind: "system", lines: ["1990 年冬，紅棉影業片場。賀歲片仲有三日煞科，結局嗰場點拍——廖炳星同導演喺佈景中間鬧到面紅耳赤，成組停機。", "副導將張飛紙仔塞到你手上：你嗰場排喺下一組，兩句對白，而家全組人嘅眼都望住嗰兩句。"] },
+      { speaker: "導演", kind: "npc", emotion: "angry", lines: ["跟劇本！一個字都唔准改！賀歲片要嘅係穩陣，唔係邊個即興勁！", "邊個接得住下一場——照紙讀，唔好自作聰明！"] },
+      { speaker: "廖炳星", speakerId: "liu_bingxing", kind: "npc", emotion: "smirk", lines: ["賀歲片呀，最緊要觀眾睇得開心！劇本寫嗰個結局，悶到我瞓著——你哋信我，爆肚先有嗰陣年味。", "後生仔，你嗰兩句，死背係死嘅；接住我嗰句嚟爆，先有戲。驚唔驚？"] },
+      { speaker: "阿偉", kind: "player", lines: ["（一個話跟紙，一個話爆肚。停機嗰陣，全組人嘅飯碗都停喺我嗰兩句上面。）"] },
+      { speaker: "系統", kind: "system", lines: ["場記舉起塊板——你嗰場，開拍。"] }
+    ],
+    choices: [
+      { id: "C13_a", label: "臨場爆肚：接住炳星嗰句，即場爆落去",
+        effects: { flags: ["flag_newyear_improv"], stats: { fame: 2 }, tags: ["執生"], notes: "你接住炳星嗰句即場爆肚，成組笑到停唔到，導演黑住面都笑埋。嗰場戲，後嚟成咗成套賀歲片最多人講嘅一幕——成組人嗰日開到工，你有份。" },
+        resultBeats: [
+          { speaker: "廖炳星", speakerId: "liu_bingxing", lines: ["好嘢！呢啲先叫戲！嗰兩句邊有咁好笑㗎——你爆得好！"] },
+          { speaker: "導演", lines: ["……收貨。唔好俾我知你下次又嚟。（佢轉身嗰陣，嘴角係翹起嘅。）"] }
+        ] },
+      { id: "C13_b", label: "死背劇本：一字不差跟足飛紙仔",
+        effects: { flags: ["flag_newyear_script"], stats: { industryCredit: 2 }, tags: [], notes: "你將飛紙仔兩句背到一字不差，穩穩陣陣交貨，嗰場準時煞科。炳星收工嗰陣拍你膊頭：穩陣，都有穩陣嘅好。" },
+        resultBeats: [
+          { speaker: "導演", lines: ["好，準時煞科。呢啲先叫專業。"] },
+          { speaker: "廖炳星", speakerId: "liu_bingxing", lines: ["後生仔，背書背到咁穩，都係功夫嚟嘅——唔好睇小自己。"] }
+        ] }
+    ],
+    conflict: null,
+    flags_written: ["flag_newyear_improv", "flag_newyear_script"],
+    openConditions: ["season_winter"], openConditionsAny: null,
+    openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（1990 冬）；此欄只作 legacy 對照。",
+    thresholds: {},
+    pacing: { weekMin: 144, minDaysAfterPrev: 1, when: "1990冬", prevMain: "C16" },
+    aftermathHint: "賀歲片年初一上畫，嗰場戲點收科，觀眾會話你知；成組人嗰日點睇你，就一早定咗。",
+    journalCandidate: "賀歲片停機嗰日，我嗰兩句，係爆出嚟，定背出嚟。",
+    redStarHook: "廖炳星喺賀歲片片場：笑匠同導演為結局鬧翻，全組停機等嗰兩句對白點落。",
+    nodeRipple: "爆肚揚聲量兼令成組人欠你一份人情（債權）；背書沉信用——賀歲片點收科，睇呢度。"
+  }
+};
+/* C6 覆寫（Qwen 原案・電視城飯堂閒角）：見 STORY_SPINE_NODES_1990 頭註。 */
+const STORY_SPINE_NODES_C6 = {
+  C6: {
+    id: "C6", phase: "P1.5", title: "飯堂閒角", when: "1988",
+    setting: "星河電視台飯堂／處境劇廠景；班底趕住開飯拍下一場嗰陣",
+    locId: "tvb_longmen", eraTag: "era_1988_canteen",
+    cast: ["阿偉", "何生", "處境劇副導"],
+    synopsis: "處境劇班底長做長有，想搵個固定閒角：每集坐喺飯堂角落嗰枱食飯，冇台詞、冇近鏡，但一簽一季，月月有糧。何生問阿偉接唔接——接咗就穩陣，唔接就繼續跑通告搏機會。處境劇閒角呢份工，熬嘅唔係戲，係日子。",
+    playerOffer: "處境劇班底想簽你做固定閒角——熬日子，定走人？",
+    playerHint: "飯堂嗰邊，處境劇班底想搵個固定閒角——冇台詞嗰種。",
+    lockedHint: "第15週起、行電視線（route_tv）先開。未到就照常跑通告；開咗去星河電視台飯堂嗰邊睇下。",
+    nextHint: "",
+    beats: [
+      { speaker: "系統", kind: "system", lines: ["星河電視台飯堂。例湯嘅香氣、隔離枱嘅八卦、同永遠唔夠坐嘅櫈——處境劇嗰組，就喺呢度開飯兼圍讀。"] },
+      { speaker: "何生", kind: "npc", lines: ["阿偉，嗰邊班底想簽個固定閒角，就係每集坐喺飯堂角落嗰枱食飯嗰個。", "冇台詞，冇近鏡——不過一簽一季，月月有糧，唔使餐餐等電話。你點睇？"] },
+      { speaker: "處境劇副導", kind: "npc", lines: ["嗰個位最緊要坐得穩、唔好搶鏡。班底認得你嗰張面，觀眾慢慢都會認得——係慢工，唔係死工。"] },
+      { speaker: "阿偉", kind: "player", lines: ["（一季安穩，換嚟嘅係角落嗰張枱。唔接，我繼續跑，機會喺出面——但出面，唔係日日有工開。）"] },
+      { speaker: "系統", kind: "system", lines: ["飯堂阿姐嗌埋單。何生望住你，等你嗰句。"] }
+    ],
+    choices: [
+      { id: "C6_a", label: "熬日子：接固定閒角，一季安穩",
+        effects: { flags: ["flag_canteen_grind"], stats: { wealth: 1 }, tags: [], notes: "你接咗飯堂固定閒角：一季安穩，月月有糧。人工唔多，台資歷就一日一日咁累積——呢行，捱得住嘅先有得揀。" },
+        resultBeats: [
+          { speaker: "處境劇副導", lines: ["好，聽日準時嚟簽到。你嗰張枱，以後就係你嘅位。"] },
+          { speaker: "何生", lines: ["唔好睇小角落嗰張枱——幾多大星，都係由嗰啲位坐起。"] }
+        ] },
+      { id: "C6_b", label: "走人：唔接，繼續跑通告搏機會",
+        effects: { flags: ["flag_canteen_quit"], stats: {}, tags: [], notes: "你冇接嗰個角落位——安穩留返俾人，你繼續搏。何生冇出聲留你，只係將你嗰杯茶飲埋。" },
+        resultBeats: [
+          { speaker: "何生", lines: ["後生仔心頭高，唔怪你。出面風大雨大——唔好後悔就得。"] },
+          { speaker: "系統", lines: ["你行出飯堂嗰陣，角落嗰張枱，已經有第二個坐低咗。"] }
+        ] }
+    ],
+    conflict: null,
+    flags_written: ["flag_canteen_grind", "flag_canteen_quit"],
+    openConditions: ["route_tv", "week_min:15"], openConditionsAny: null,
+    openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（route_tv＋W15）；內容跟 Qwen 原案（飯堂閒角，可選・可長期跳過）。",
+    thresholds: {},
+    pacing: { weekMin: 15, minDaysAfterPrev: 1, when: "1988", prevMain: "C5" },
+    aftermathHint: "嗰張枱你坐定唔坐，飯堂嗰邊都會照常開飯；你嗰季點過，自己知。",
+    journalCandidate: "飯堂角落嗰張枱，我嗰陣揀咗坐低，定行返出去。",
+    nodeRipple: "熬日子換微量金錢同電視台資歷（冇劇情推進，原案如此）；走人就保持自由身搏機會。"
+  }
+};
+/* v20a31 WEAVE_PHASE4_8：藍若曦感情線 PA 化覆寫（story_detail_romance_lan_xu.json 嘅 R_lan_* 五節點）。
+   藍身份已拍板＝電視台 PA／場記（跟結局專檔 PA 版）；pack 現行係玉女歌手＋豪門聯姻版
+   （唱片店狗仔／錄音室合唱／緋聞情侶檔／豪門聯姻／退圈登機證），成條線同 PA 版撞晒。
+   處理跟 4-6 pack C9 先例：index 側覆寫成個節點嘅文字層（title／setting／synopsis／beats／choice label），
+   結構層原封不動——node id／phase／openConditions／openConditionsAny／artId／romanceLine／arcBeat／
+   choice id／effects（flags＋stats）／flags_written 全部照 pack，令狀態鏈（ocAny 旗鏈、S.story.rel.rel_lan、
+   done 標記）同 4-10 結局讀取完全唔受影響。唔直接改 content pack JSON。
+   遺留旗名說明：flag_lan_sang_together（原「合唱」）同 flag_family_marriage（原「聯姻」）係 pack 既有
+   狀態旗名，ocAny 鏈同舊存檔都引用緊，唔改名；PA 版入面佢哋只係鏈上標記，唔再代表唱歌／婚姻內容。
+   R_xu_*（徐寶珊，富豪千金）同專檔一致、無歌手向內容，唔使覆寫；R_tang_meet_stub 唔郁。 */
+const ROMANCE_LAN_PA_OVERRIDES = {
+  R_lan_meet: {
+    id: "R_lan_meet", phase: "P2", title: "通告牌下的人", when: "1989",
+    setting: "星河電視台廠景門口；趕開早班，人多車多",
+    eraTag: "era_1989_spring",
+    cast: ["藍若曦", "阿偉"],
+    synopsis: "藍若曦係星河電視台嘅場記（PA）。嗰朝早廠景門口人逼人，佢抱住成疊通告牌同流程表俾人撞到散晒一地，阿偉幫手執返、兼撳住塊牌派俾排隊嘅臨記——佢嗰句多謝同嗰個眼神，阿偉記到而家。",
+    beats: [
+      { speaker: "藍若曦", lines: ["哎呀——唔好意思，唔好意思，借過！（成疊通告牌同流程表，俾人一撞，散晒一地）"] },
+      { speaker: "藍若曦", lines: ["多謝你呀。我叫藍若曦，呢度啲人個個叫我阿藍——場記嚟㗎，專幫人撳通告牌、嗌人埋位。"] },
+      { speaker: "藍若曦", lines: ["你嗰組仲差一個位未派……嗱，我幫你留返，你晏啲嚟簽到啦。唔好同人講係我留㗎。"] }
+    ],
+    choices: [
+      { id: "C_lan_meet_warm", label: "落手幫忙：幫佢撳牌派通告",
+        effects: { flags: ["flag_lan_met_warm"], stats: { rel_lan: 1 }, notes: "初遇加分。" } },
+      { id: "C_lan_meet_cool", label: "客氣疏離：只幫手執返啲牌",
+        effects: { flags: ["flag_lan_met_cool"], stats: { rel_lan: 0 }, notes: "保持距離。" } }
+    ],
+    conflict: null,
+    flags_written: ["flag_lan_met_cool", "flag_lan_met_warm"],
+    openConditions: ["phase_P2"], openConditionsAny: null,
+    openConditionsNote: "藍若曦（電視台場記）認識：P2 電視台班底接觸季（方向性）。",
+    artId: "rom_lan_meet", romanceLine: "lan", arcBeat: "meet", parallelOk: true, pcSilent: true, playerOffer: false
+  },
+  R_lan_push1: {
+    id: "R_lan_push1", phase: "P2", title: "台慶嗰版通告牌", when: "1989秋",
+    setting: "星河電視台後台走廊；台慶大騷綵排，成版通告牌亂到七彩",
+    eraTag: "era_1989_autumn",
+    cast: ["藍若曦", "阿偉"],
+    synopsis: "台慶大騷綵排，流程改完又改，藍若曦一個人對住成版通告牌同幾十個單位嘅出場次序，忙到飯都冇時間食。阿偉嗰場排喺尾段——佢可以企喺度等自己嗰 part，亦可以埋去幫佢對位執漏。",
+    beats: [
+      { speaker: "藍若曦", lines: ["唔好意思，你嗰場要押後兩位——前面嗰組跳舞嘅超時，我成版牌要重排，你唔好行遠呀。"] },
+      { speaker: "藍若曦", lines: ["唔使陪我捱㗎，你去食飯先啦。我呢啲場記命，邊有資格準時食飯——啲人埋晒位，我先有得坐。"] },
+      { speaker: "藍若曦", lines: ["（佢笑住將一張改到花晒嘅流程表遞過嚟）你真係肯幫手？咁你幫我睇住呢幾格，我去嗌人埋位。"] }
+    ],
+    choices: [
+      { id: "C_lan_push1_serious", label: "認真幫手：陪佢對晒成版牌",
+        effects: { flags: ["flag_lan_sang_together"], stats: { rel_lan: 2, music: 1 }, notes: "一齊捱過台慶。" } },
+      { id: "C_lan_push1_work", label: "只顧自己嗰場：對完自己嗰格就走",
+        effects: { flags: ["flag_lan_work_only"], stats: { rel_lan: 0, music: 0 }, notes: "工作界線。" } }
+    ],
+    conflict: null,
+    flags_written: ["flag_lan_sang_together", "flag_lan_work_only"],
+    openConditions: [], openConditionsAny: ["flag_lan_met_warm", "flag_lan_met_cool"],
+    artId: "rom_lan_push1", romanceLine: "lan", arcBeat: "push", parallelOk: true, pcSilent: true, playerOffer: false
+  },
+  R_lan_push2: {
+    id: "R_lan_push2", phase: "P2", title: "走廊的風聲", when: "1989",
+    setting: "電視台化妝間外走廊；台慶之後，閒話開始傳",
+    eraTag: "era_1989_gossip",
+    cast: ["藍若曦", "阿偉"],
+    synopsis: "台慶之後，有人喺茶水間講：藍若曦排位嗰陣「偏幫」阿偉，先成日有好位。閒話傳到佢耳仔入面——佢冇出聲，照舊撳牌。阿偉知情嗰陣，要揀點企：企出嚟講明，定劃清界線避嫌。",
+    beats: [
+      { speaker: "藍若曦", lines: ["你都聽到嗰啲講法啦？我冇偏幫你——你嗰陣企得穩、又從來唔遲到，我先排你嗰格，係咁多。"] },
+      { speaker: "藍若曦", lines: ["你唔使出頭㗎。場記俾人講兩句，唔痛唔癢。你而家先啱啱企穩，唔好為我惹麻煩。"] },
+      { speaker: "藍若曦", lines: ["（佢望住塊通告牌，笑得有啲勉）做呢行，女人做場記，講咩都有人有意見。你明就得㗎喇。"] }
+    ],
+    choices: [
+      { id: "C_lan_push2_protect", label: "企出嚟：當住人講明係自己企得穩，唔關佢事",
+        effects: { flags: ["flag_lan_protected"], stats: { rel_lan: 2, fame: -1 }, notes: "企出嚟護佢，名聲有啲代價。" } },
+      { id: "C_lan_push2_distance", label: "劃清界線：之後少啲埋佢嗰邊",
+        effects: { flags: ["flag_lan_colleague"], stats: { rel_lan: 0 }, notes: "劃清界線。" } }
+    ],
+    conflict: null,
+    flags_written: ["flag_lan_colleague", "flag_lan_protected"],
+    openConditions: [], openConditionsAny: ["flag_lan_sang_together", "flag_lan_work_only"],
+    artId: "rom_lan_push2", romanceLine: "lan", arcBeat: "push", parallelOk: true, pcSilent: true, playerOffer: false
+  },
+  R_lan_crisis: {
+    id: "R_lan_crisis", phase: "P4", title: "調組令", when: "1990秋",
+    setting: "電視台人事部走廊；一張調組令，成層樓都知",
+    eraTag: "era_1990_autumn_transfer",
+    cast: ["藍若曦", "阿偉"],
+    synopsis: "外判製作公司高薪請藍若曦過去做製作助理——人工高啲，但要即刻離開星河，仲要簽長約；佢屋企人又日日催佢趁後生轉份穩陣文職。佢企喺人事部門口，張紙揸到皺晒。佢冇問阿偉意見，只係講咗句：你話，我係咪好傻，先會唔捨得呢度。",
+    beats: [
+      { speaker: "藍若曦", lines: ["外判嗰邊開嘅人工，多我而家一半。屋企人話，唔去就係傻——女仔做場記做到幾多歲呀，佢哋咁講。"] },
+      { speaker: "藍若曦", lines: ["但係嗰度冇呢版通告牌，冇你哋呢班人……我係咪好唔爭氣？一份工啫，我居然唔捨得成層後台。"] },
+      { speaker: "藍若曦", lines: ["你唔使答我㗎。我只係想講畀一個……會明嘅人聽。成個電視台，得你會企喺度聽我講晒。"] }
+    ],
+    choices: [
+      { id: "C_lan_crisis_help", label: "陪佢爭取：同佢一齊同上頭講，留喺星河跟大騷",
+        effects: { flags: ["flag_lan_help", "flag_family_help", "flag_family_marriage"], stats: { rel_lan: 2, fame: -1 }, notes: "企佢嗰邊，一齊爭取。" } },
+      { id: "C_lan_crisis_stepback", label: "勸佢為前途：去啦，唔好為呢度耽誤自己",
+        effects: { flags: ["flag_lan_stepback", "flag_family_marriage"], stats: { rel_lan: -1 }, notes: "勸佢行，退後一步。" } }
+    ],
+    conflict: null,
+    flags_written: ["flag_family_help", "flag_family_marriage", "flag_lan_help", "flag_lan_stepback"],
+    openConditions: [], openConditionsAny: ["flag_lan_protected", "flag_lan_colleague", "flag_lan_sang_together"],
+    artId: "rom_lan_crisis", romanceLine: "lan", arcBeat: "crisis", parallelOk: true, pcSilent: true, playerOffer: false
+  },
+  R_lan_ending: {
+    id: "R_lan_ending", phase: "P5", title: "最後一版通告牌", when: "1990冬",
+    setting: "星河電視台後台；年尾大騷煞科嗰晚",
+    eraTag: "era_1990_winter_finale",
+    cast: ["藍若曦", "阿偉"],
+    synopsis: "年尾大騷煞科。藍若曦照舊幫阿偉撳住個通告牌——由第一日喺廠景門口撞散啲牌，到今晚最後一版。散場嗰陣佢講：第日你唔使我撳牌嗰陣，請返我食飯。嗰一步，行唔行，由阿偉。",
+    beats: [
+      { speaker: "藍若曦", lines: ["嗱，最後一版牌喇。你嗰格，我排得靚靚仔仔——唔好話我偏幫你喎，係你自己企得穩。"] },
+      { speaker: "藍若曦", lines: ["第日你唔使人撳牌嗰陣……請返我食飯啦。一餐就夠，唔使山珍海味——茶餐廳都得。"] },
+      { speaker: "藍若曦", lines: ["（佢笑住轉身去嗌下一組埋位，嗰句說話，留咗喺走廊度，冇人接。）"] }
+    ],
+    choices: [
+      { id: "C_lan_ending_he", label: "講明心意：嗰餐飯，唔使等第日",
+        effects: { flags: ["flag_lan_he", "flag_lan_commit"], stats: { rel_lan: 3 }, notes: "可與事業結局並存。" } },
+      { id: "C_lan_ending_be", label: "收起嗰一步：笑笑口，當係一個約定",
+        effects: { flags: ["flag_lan_be"], stats: { rel_lan: -2 }, notes: "可與事業結局並存。" } }
+    ],
+    conflict: null,
+    flags_written: ["flag_lan_be", "flag_lan_commit", "flag_lan_he"],
+    openConditions: ["phase_P5"], openConditionsAny: ["flag_lan_help", "flag_lan_stepback", "flag_family_help", "flag_family_yield", "flag_family_standby", "flag_lan_protected"],
+    artId: "rom_lan_ending", romanceLine: "lan", arcBeat: "ending", parallelOk: false, pcSilent: true, playerOffer: false
+  }
+};
+/* 載入後套用（4-8）：主幹 1990 五節點＋C6 入 STORY_WIRE.main；藍 PA 五節點入 STORY_WIRE.romance.lanXu。
+   冪等；對應 pack 未載入就該部分 no-op。呼叫點喺 refreshCopyPacksFromDisk 賦值 romance 之後。 */
+function applyStorySpineOverrides48(){
+  const out = { ok:true, main:0, lan:0 };
+  try{
+    if(typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.main && Array.isArray(STORY_WIRE.main.nodes)){
+      STORY_WIRE.main.nodes.forEach((node, i)=>{
+        if(!node) return;
+        if(STORY_SPINE_NODES_1990[node.id]){ STORY_WIRE.main.nodes[i] = STORY_SPINE_NODES_1990[node.id]; out.main++; }
+        else if(STORY_SPINE_NODES_C6[node.id]){ STORY_WIRE.main.nodes[i] = STORY_SPINE_NODES_C6[node.id]; out.main++; }
+      });
+    }
+  }catch(_e){ out.ok = false; }
+  try{
+    const lx = (typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.romance) ? STORY_WIRE.romance.lanXu : null;
+    if(lx && Array.isArray(lx.nodes)){
+      lx.nodes.forEach((node, i)=>{
+        if(node && ROMANCE_LAN_PA_OVERRIDES[node.id]){ lx.nodes[i] = ROMANCE_LAN_PA_OVERRIDES[node.id]; out.lan++; }
+      });
+    }
+  }catch(_e){ out.ok = false; }
+  return out;
 }
 /** 平行 meet：playerOffer 預設 false；首次入 loc／傾談先開 offer */
 const STORY_MEET_SOFT = {
@@ -22062,6 +22496,8 @@ async function refreshCopyPacksFromDisk(){
     STORY_WIRE.romance.lanXu = rom2;
     STORY_WIRE.romance.tang = romTang;
     STORY_WIRE.rival = rival;
+    /* v20a31：套主幹 1990 節點＋C6 對齊＋藍 PA 化覆寫（main 同 lanXu 都賦值完先行） */
+    try{ applyStorySpineOverrides48(); }catch(_sp48){}
     let _softStubRes = null;
     try{
       if(gateStub && typeof BehaviorGate!=="undefined") _softStubRes = BehaviorGate.loadStub_nodes_trigger(gateStub);
@@ -24643,6 +25079,7 @@ function advanceDay(){
   try{ if(typeof rivalryTick==="function") rivalryTick(); }catch(_rv){}
   try{ if(typeof exodusFenTick==="function") exodusFenTick(); }catch(_ex){}
   try{ if(typeof story46SettleTick==="function") story46SettleTick(); }catch(_s46){}
+  try{ if(typeof story48SettleTick==="function") story48SettleTick(); }catch(_s48){}
   try{ if(typeof ensureFamilyHomeDebt==="function") ensureFamilyHomeDebt(); }catch(_fh){}
   return S.dayIndex>0 && weekdayIdx(S.dayIndex)===0;
 }
@@ -28117,6 +28554,172 @@ function choice47FamilyCardHtml(){
     return `<article class="debt-row family-choice47" data-choice47-card="G4_family_job"><p class="debt-who">屋企／阿媽</p><p class="debt-title">屋企有話同你講</p><p class="debt-note">阿媽託鄰居傳話：表叔喺銀行嗰邊薦到一份文職，月月有糧出。佢話唔急，你返去食餐飯，當面慢慢講。</p><p class="debt-cta-wrap" style="margin-top:8px"><button type="button" class="debt-repay-btn" data-choice47="G4_family_job">返屋企講清楚</button></p></article>`;
   }catch(_e){ return ""; }
 }
+/* ===== Weave Phase 4-8（v20a31）：感情 commit 機制（曉晴／采兒完整線收束）。
+   設計依據：結局專檔 §4.1＋主幹 §6——commit 旗喺 N15–N17 之間收束（原案 C16／C17 前夕）。
+   rel 套別（實查）：感情內容（meet／push／crisis 節點 choices）一律經 StoryOC.applyChoice 嘅
+   bumpRel 寫 S.story.rel（細整數尺度：每步 +0/+1/+2，負選項 −1/−2）；S.npcs 係傾談／送禮嗰套
+   0–100，感情節點唔寫佢。commit 門檻用 S.story.rel，唔混用兩套。
+   門檻校準：每條線 meet(1)＋push1(2)＋push2(2)＋crisis(2) 理論最高 7（未計 ending 節點 +3）；
+   門檻定 6——容許成條鏈有一次「次佳」揀法（例如 meet 揀疏離 0、其餘全取），但任何負值揀法
+   （push1 自私 −1／crisis 鬧翻 −2）都會跌出門檻，符合「認真行完條線先有資格」嘅高門檻定位。
+   （舊 pack C6 約會 choice 曾經係 +2 rel 來源，已隨 C6 對齊 Qwen 移除，唔再計入。）
+   窗口：1990 年秋起（choice47SeasonReached(1990,"秋")，即 N15 秋末至 N17 冬末；過年唔鎖死），
+   加前置：該線 crisis 節點已 done（R_hiu_crisis／R_choi_crisis），確保係行到尾段先收束。
+   旗名跟 pack 既有先例 flag_tang_commit／flag_hiu_commit／flag_choi_commit（pack R_*_ending
+   HE choice 本身都寫呢兩隻旗，兩條路徑寫入同一個旗，4-10 讀取一致）。
+   互斥：任一邊落咗 commit 旗，另一邊唔再出確認 offer。
+   「再諗下」choice 零旗零 stats：applyChoice 照樣 markDone 本微節點，但可用性唔查 done，
+   offer 會留到玩家真係確認為止（窗口內）。呈現跟 4-7 pattern：地點行動清單 offer＋StoryPlay。
+   半線（Vera／藍／徐）今步唔開 commit：佢哋嘅「已相遇＋關係程度」狀態本身齊全
+   （S.story.done[R_*_meet]／flag_*_met_*／S.story.rel.rel_*），4-10 用 endingRomanceState48 讀。 ===== */
+const COMMIT48_REL_MIN = 6;
+const COMMIT48_NODES = {
+  CMT_hiu_commit: {
+    id:"CMT_hiu_commit", title:"廠景天台", when:"1990秋起", locId:"tvb_longmen",
+    setting:"星河電視台廠景天台；1990 年秋，殺青之後",
+    synopsis:"由廠景休息角嗰次初遇，到同場搶通告嗰場——曉晴同阿偉喺呢行入面兜咗兩年幾。嗰晚殺青，佢冇跟大隊走，喺天台等你。",
+    playerOffer:"曉晴喺天台等你，話有句說話想講清楚。",
+    beats:[
+      { speakerId:"", speaker:"", kind:"system", text:"1990 年秋。嗰套劇殺青，成組人去食消夜——林曉晴冇跟，佢企喺廠景天台，望住下面仲未熄晒嘅廠景燈。" },
+      { speakerId:"lin_hiu", speaker:"林曉晴", kind:"npc", text:"阿偉，你記唔記得我哋第一次講嘢？就喺下面嗰個休息角，你嗰陣仲係企到直一直嘅新臨記。" },
+      { speakerId:"lin_hiu", speaker:"林曉晴", kind:"npc", text:"呢兩年幾，同場搶過通告、捱過夜班……我唔想再用『同事』兩個字，嚟講我哋嗰啲嘢喇。你明唔明我講咩？" },
+      { speakerId:"player", speaker:"阿偉", kind:"player", text:"（佢講到咁白。行前一步，呢行入面嗰種「見到又扮見唔到」就完；企喺度，嗰一步就可能永遠都行唔到。）" }
+    ],
+    choices:[
+      { id:"CMT_hiu_a", label:"行前一步：同佢講明，以後唔止係同事",
+        effects:{ flags:["flag_hiu_commit"], notes:"你同曉晴講明咗。天台嗰陣風好大，但嗰句說話，兩個人都聽得清清楚楚。" },
+        resultBeats:[
+          { speakerId:"lin_hiu", speaker:"林曉晴", kind:"npc", text:"……好。咁以後殺青，你唔准自己一個走——等埋我。" },
+          { speakerId:"", speaker:"", kind:"system", text:"落天台嗰陣，佢行喺你側邊，冇再避開人哋嘅眼光。" }
+        ] },
+      { id:"CMT_hiu_b", label:"再諗下：呢啲嘢，等我諗清楚先",
+        effects:{ notes:"你冇畀到答案佢。佢笑咗笑，嗰種笑，你喺片場見過好多次——演員嗰種，收得好快嘅笑。" },
+        resultBeats:[
+          { speakerId:"lin_hiu", speaker:"林曉晴", kind:"npc", text:"唔緊要。呢行，最唔缺嘅就係等——等通告、等埋位、等人諗清楚。" },
+          { speakerId:"", speaker:"", kind:"system", text:"佢自己一個落咗天台。你嗰句『諗清楚』，仲有冇機會講第二次，冇人知。" }
+        ] }
+    ],
+    flags_written:["flag_hiu_commit"]
+  },
+  CMT_choi_commit: {
+    id:"CMT_choi_commit", title:"茶餐廳老位", when:"1990秋起", locId:"cafe_cha",
+    setting:"金龍茶餐廳；1990 年秋，收工時分",
+    synopsis:"由 1988 年嗰次小訪開始，周采兒由「訪問佢嗰個臨記」，做到全行都知佢支筆。嗰晚佢坐喺茶餐廳老位，面前放住兩杯奶茶——一杯，係等你嘅。",
+    playerOffer:"采兒喺茶餐廳老位等你，檯面放住兩杯奶茶。",
+    beats:[
+      { speakerId:"", speaker:"", kind:"system", text:"1990 年秋，金龍茶餐廳。收工時分，周采兒坐喺靠牆嗰個老位，記者簿收埋咗，面前有兩杯奶茶——佢嗰杯飲咗一半，你嗰杯，仲熱。" },
+      { speakerId:"chow_choiyi", speaker:"周采兒", kind:"npc", text:"坐啦。我今日唔係嚟做訪問嘅——支筆我收埋咗，你睇下，袋都冇帶。" },
+      { speakerId:"chow_choiyi", speaker:"周采兒", kind:"npc", text:"由嗰次小訪到而家，我寫過你好多次。寫到後嚟我先發覺，有啲嘢我唔想再用記者嗰把口講……我想用我自己嗰把。你肯唔肯聽？" },
+      { speakerId:"player", speaker:"阿偉", kind:"player", text:"（成個故事，好似由呢間茶餐廳開始。而家嗰杯奶茶就喺我面前——飲唔飲，係我嘅事。）" }
+    ],
+    choices:[
+      { id:"CMT_choi_a", label:"行前一步：拎起嗰杯奶茶，同佢講明",
+        effects:{ flags:["flag_choi_commit"], notes:"你拎起嗰杯奶茶。采兒笑到眼濕濕——佢支筆寫過咁多人，嗰晚，佢咩都冇寫低。" },
+        resultBeats:[
+          { speakerId:"chow_choiyi", speaker:"周采兒", kind:"npc", text:"好。咁以後你啲新聞，我唔獨家喇——我淨係獨家你個人。" },
+          { speakerId:"", speaker:"", kind:"system", text:"茶餐廳打烊嗰陣，伙記冇催佢哋。嗰兩隻杯，最後一齊洗。" }
+        ] },
+      { id:"CMT_choi_b", label:"再諗下：杯茶，留返下次先飲",
+        effects:{ notes:"你冇拎起嗰杯茶。采兒點下頭，將嗰杯奶茶推返去水吧嗰邊——記住數都冇，笑笑口，好似咩都冇發生過。" },
+        resultBeats:[
+          { speakerId:"chow_choiyi", speaker:"周采兒", kind:"npc", text:"得，唔急。記者最叻等消息——等你嗰個答案，我等得起。" },
+          { speakerId:"", speaker:"", kind:"system", text:"佢出門嗰陣回頭望咗你一眼。嗰個位，以後仲有冇人等你，冇人知。" }
+        ] }
+    ],
+    flags_written:["flag_choi_commit"]
+  }
+};
+const COMMIT48_DEFS = {
+  CMT_hiu_commit: { loc:"tvb_longmen", relKey:"rel_hiu", crisis:"R_hiu_crisis",
+    flag:"flag_hiu_commit", otherFlag:"flag_choi_commit",
+    actTitle:"曉晴喺廠景天台等你",
+    actHint:"殺青之後佢冇跟大隊走——有句說話，佢想同你講清楚。" },
+  CMT_choi_commit: { loc:"cafe_cha", relKey:"rel_choi", crisis:"R_choi_crisis",
+    flag:"flag_choi_commit", otherFlag:"flag_hiu_commit",
+    actTitle:"采兒喺茶餐廳老位等你",
+    actHint:"佢收埋咗支筆，檯面放住兩杯奶茶——一杯係等你嘅。" }
+};
+function commit48Rel(relKey){
+  try{
+    if(typeof StoryOC!=="undefined" && StoryOC.getRel) return Number(StoryOC.getRel(relKey))||0;
+  }catch(_e){}
+  try{ return Number(S && S.story && S.story.rel && S.story.rel[relKey])||0; }catch(_e2){ return 0; }
+}
+function commit48Available(id){
+  const def = COMMIT48_DEFS[id];
+  if(!def || !COMMIT48_NODES[id]) return false;
+  if(choice47StoryFlag(def.flag)) return false;          /* 已 commit 本線 */
+  if(choice47StoryFlag(def.otherFlag)) return false;     /* 互斥：已 commit 另一線 */
+  if(!choice47StoryDone(def.crisis)) return false;       /* 未行到該線 crisis，唔好提早收束 */
+  if(commit48Rel(def.relKey) < COMMIT48_REL_MIN) return false;
+  return choice47SeasonReached(1990, "秋");              /* N15–N17 窗口：1990 秋起，過年唔鎖死 */
+}
+function commit48ActionsAt(locId){
+  const out = [];
+  Object.keys(COMMIT48_DEFS).forEach(id=>{
+    const def = COMMIT48_DEFS[id];
+    if(!def || def.loc !== locId) return;
+    if(!commit48Available(id)) return;
+    out.push({ id:id, title:def.actTitle || (COMMIT48_NODES[id] && COMMIT48_NODES[id].title) || id, hint:def.actHint || "" });
+  });
+  return out;
+}
+function commit48Play(id){
+  try{
+    if(!commit48Available(id)) return false;
+    const node = COMMIT48_NODES[id];
+    if(!node || typeof StoryPlay==="undefined" || !StoryPlay.start) return false;
+    return !!StoryPlay.start(node, { force:true });
+  }catch(_e){ return false; }
+}
+/* 4-10 結局讀取口（唯讀，唔寫任何狀態）：五條感情線嘅「已相遇＋關係程度＋進度＋commit」總覽。
+   rel 一律讀 S.story.rel（感情內容嗰套）；commit 旗：曉晴／采兒行 flag_*_commit（本機制或
+   pack R_*_ending HE 路徑寫入，兩邊一致）；半線 Vera／藍／徐嘅 pack ending 旗同名並存，
+   結局專檔定性（半線唔入 commit、只做差一步）由 4-10 判定嗰陣處理，呢度只如實回報。 */
+function endingRomanceState48(){
+  const line = (meetId, relKey, crisisId, commitFlag)=>{
+    let met = false, crisisDone = false;
+    try{ met = choice47StoryDone(meetId); }catch(_e){}
+    try{ crisisDone = choice47StoryDone(crisisId); }catch(_e){}
+    return { met:met, rel:commit48Rel(relKey), crisisDone:crisisDone, committed:choice47StoryFlag(commitFlag) };
+  };
+  return {
+    hiu:  line("R_hiu_meet",  "rel_hiu",  "R_hiu_crisis",  "flag_hiu_commit"),
+    choi: line("R_choi_meet", "rel_choi", "R_choi_crisis", "flag_choi_commit"),
+    vera: line("R_vera_meet", "rel_vera", "R_vera_crisis", "flag_vera_commit"),
+    lan:  line("R_lan_meet",  "rel_lan",  "R_lan_crisis",  "flag_lan_commit"),
+    xu:   line("R_xu_meet",   "rel_xu",   "R_xu_crisis",   "flag_xu_commit")
+  };
+}
+/* ===== Weave Phase 4-8（v20a31）：主幹節點債權結算 tick（掛 advanceDay，喺 story46SettleTick 之後）。
+   跟 4-6 pattern（mockCredits＋favorLedger 雙重冪等）：
+   1) C15 揀「做高危替身」→ 動作組／武指欠玩家一份人情：credit_c15_stunt。
+      （拒接嗰邊係「惜身」口碑，冇人欠你，唔登記，合理。）
+   2) C13 揀「臨場爆肚」→ 成組人嗰日開到工、套戲準時煞科，場務組欠玩家一份：credit_c13_newyear。
+      （死背劇本嗰邊係交貨本份，唔登記。）
+   債權來源累計：芬姐（絕響）＋C7＋C9＋C15＋C13 共 5 張；未絕響持有上限 4。E5 帳面估算見 NOTES_V20A31。 ===== */
+const STORY48_CREDIT_C15 = { id:"credit_c15_stunt", debtor:"動作組武指", title:"高危替身人情", line:"嗰日東哥傷咗，成組停晒，係你著起佢套戲服跳咗嗰一躍。呢份人情，成個動作組記住；第日有好位，第一個諗起你。", status:"未收" };
+const STORY48_CREDIT_C13 = { id:"credit_c13_newyear", debtor:"賀歲片場務組", title:"賀歲片頂場人情", line:"賀歲片停機嗰日，你嗰兩句爆肚救返成組人嗰日嘅工。呢份人情全組記住——過年嗰陣，仲有人提起。", status:"未收" };
+function story48SettleTick(){
+  try{
+    if(typeof S==="undefined" || !S || typeof StoryOC==="undefined") return;
+    StoryOC.ensure();
+    if(!Array.isArray(S.mockCredits)) S.mockCredits = [];
+    const grant = (flag, credit, source)=>{
+      if(!StoryOC.getFlag(flag)) return;
+      if(S.mockCredits.some(c=>c && c.id===credit.id)) return;
+      try{
+        const L = ensureFavorLedger();
+        if(L && L.counted && L.counted[credit.id]) return;
+      }catch(_fl0){}
+      S.mockCredits.push(Object.assign({}, credit));
+      try{ favorLedgerNoteCredit(credit.id, source); }catch(_fl){}
+      try{ syncNotebookMirror(); }catch(_m){}
+    };
+    grant("flag_stunt_double", STORY48_CREDIT_C15, "story48_c15");
+    grant("flag_newyear_improv", STORY48_CREDIT_C13, "story48_c13");
+  }catch(_e){}
+}
 /* ===== Weave Phase 4-7（v20a30）：鏈 F 第 5 拍——移民潮空位通告（1990 秋起）。
    mergeExodusGigs 跟 mergeIntelGigs／mergeFavorGigs／mergeRivalGigs 同一條件注入模式，
    掛喺 gigsForLocSeasonBoard 同一呼叫點；閘＝choice47SeasonReached(1990, "秋")。
@@ -30984,6 +31587,10 @@ const PAPER_SIDE_ITEMS = [
   { h:"酒樓散席飯訂枱急升，經理話做到手軟", d:"有經理話近排啲圍餐十居其九係送行宴，食到尾總有人眼濕濕。", fromYear:1989 },
   { h:"某武師舉家移民，劇組筵開三席送行", d:"監製話佢嗰身功夫唔係咁易搵人替，嗰晚成班武師輪住嚟敬佢，話去到外國都要記住清水灣呢班兄弟。", fromYear:1989 },
   { h:"程天諾接拍汽水廣告，新人王氣勢逼人", d:"廣告商話就係睇中佢後生夠活力，廣告未出街，學校門口已經貼滿佢啲相。", fromYear:1990 },
+  /* v20a31（Phase 4-8）：程天諾預熱（主幹 §5）——N15（C16）出場前，喺 N13–N14 期間先令佢「未見其人先聞其名」：
+     兩則 1990 花邊分別埋「跳唱／舞蹈室」同「修音爭議」兩條線，C16 開場嗰陣玩家已經聽過佢個名。 */
+  { h:"程天諾舞蹈室練到半夜，保安話成層樓都聽到佢數拍子", d:"唱片公司職員話，呢個跳唱新人唔靠樣食飯，排舞練到保安鎖門先肯走，監製睇到直點頭。", fromYear:1990 },
+  { h:"實力派前輩公開批評程天諾靠修音，樂壇口水戰開打", d:"有資深歌手受訪嗰陣話，而家啲新人入錄音室先係考場；被點名嗰位跳唱新人冇出聲回應，只係嗰晚又練到半夜。", fromYear:1990 },
   { h:"啟德機場送機大堂日日人山人海", d:"有送機嘅人話，而家去機場唔係旅行，係送親戚，一送就唔知幾時先再見。", fromYear:1990 },
   { h:"賀歲片搶檔期傳到熱哄哄，院線排片傷腦筋", d:"邊套賀歲、邊套押後，戲院經理話排到聖誕都未排得晒，年尾有排煩。" },
   { id:"side_mak_wrap", h:"麥震東新片煞科宴缺席，劇組話佢唔舒服", d:"監製話佢拍到煞科嗰日都仲吊緊威也，係咪唔舒服，就無人肯講多句。" }
@@ -32810,6 +33417,19 @@ function openLoc(id, opts){
         add(act.title, act.hint, "免費", ()=>{
           closeSheet();
           try{ if(!choice47Play(act.id)) toast("暫時去不成"); }catch(_e){ toast("暫時去不成"); }
+        }, "act-priority act-story");
+      });
+    }
+  }catch(_e){}
+  /* v20a31（Phase 4-8）：感情 commit 確認 offer（曉晴＠星河電視台／采兒＠金龍茶餐廳）——
+     跟 4-7 微節點同一呈現模式；可用性（rel 門檻＋1990 秋窗口＋crisis done＋互斥）喺
+     commit48ActionsAt／commit48Play 內把關，確認先落旗，「再諗下」唔落旗、offer 留返。 */
+  try{
+    if(typeof commit48ActionsAt==="function"){
+      commit48ActionsAt(L.id).forEach(act=>{
+        add(act.title, act.hint, "免費", ()=>{
+          closeSheet();
+          try{ if(!commit48Play(act.id)) toast("暫時去唔成"); }catch(_e){ toast("暫時去唔成"); }
         }, "act-priority act-story");
       });
     }
