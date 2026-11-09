@@ -57,8 +57,8 @@ const STUBS_SRC = `
   var BehaviorGate = { featureFlag_softBehaviorGatePreview: function(){ return true; } };
   var softPreviewOn = function(){ return true; };
   var FREEPLAY_FW = { castingTagsReg: {
-    tags: [ {id:"tag_comedy", label:"喜劇細胞"}, {id:"tag_action", label:"動作演員"} ],
-    labelToId: { "喜劇細胞":"tag_comedy", "動作演員":"tag_action" } } };
+    tags: [ {id:"tag_comedy", label:"喜劇細胞"}, {id:"tag_action", label:"身手好"} ],
+    labelToId: { "喜劇細胞":"tag_comedy", "身手好":"tag_action" } } };
 `;
 function baseState(dayIndex, stats){
   return Object.assign({ dayIndex: dayIndex, acting:30, iq:20, stamina:120, looks:26, charm:22,

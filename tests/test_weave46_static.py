@@ -55,9 +55,9 @@ gm = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)
 gate = gm.group(1) if gm else ''
 c8line = next((ln for ln in gate.splitlines() if ln.strip().startswith('C8:')), '')
 c15line = next((ln for ln in gate.splitlines() if ln.strip().startswith('C15:')), '')
-for cand in ['"tag_comedy"', '"喜劇細胞"', '"tag_action"', '"動作演員"']:
+for cand in ['"tag_comedy"', '"喜劇細胞"', '"tag_action"', '"身手好"']:
     ok('C8 tagAny candidate: '+cand, cand in c8line)
-for cand in ['"tag_action"', '"動作演員"']:
+for cand in ['"tag_action"', '"身手好"']:
     ok('C15 tagAny candidate: '+cand, cand in c15line)
 ok('gate thresholds unchanged (C7 creditGt 20 / C8 fameGt 28 / C10 dualGt 70)',
    'creditGt: 20' in gate and 'fameGt: 28' in gate and 'dualGt: 70' in gate)

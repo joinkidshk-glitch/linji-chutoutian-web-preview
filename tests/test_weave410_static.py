@@ -27,7 +27,7 @@ for frag in ['e1Fame: 60', 'e1Credit: 55', 'e1Dual: 125', 'e4Fame: 50', 'e4Credi
              'e4RescueCredits: 2', 'e2Credit: 42', 'e2Fame: 35', 'e3Credit: 42',
              'e5FavorTotal: 6', 'e5AgentRel: 60', 'almostRelMin: 4']:
     ok('threshold per design: '+frag, frag in blk)
-ok('負標籤清單（專檔：大牌／八卦／爛片類＋實際高冷）', 'const ENDING_NEG_TAGS410 = ["八卦", "大牌", "高冷", "爛片"]' in blk)
+ok('負標籤清單（專檔：耍大牌／八卦／爛片類＋實際高冷；v20a57 標籤改名）', 'const ENDING_NEG_TAGS410 = ["八卦", "耍大牌", "高冷", "爛片"]' in blk)
 ok('E4 兩版 variant（rescued/sunk）', '"rescued"' in blk and '"sunk"' in blk)
 ok('半線 commit 定性處理（romance 只認 hiu/choi committed）',
    'rom.hiu.committed' in blk and 'rom.choi.committed' in blk)
