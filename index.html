@@ -22896,6 +22896,9 @@ function gigCardHtml(g, opts){
     syn=`<div class="syn">${g.synopsis}</div>`;
   }
   const role = g.roleHint ? `<div class="role">角色：${g.roleHint}</div>` : "";
+  /* Weave Phase 1-3：持有對應拼合情報嗰陣，通告卡多一行情報提示（無情報就完全唔顯示）。 */
+  let intelHtml = "";
+  try{ const il = (typeof intelLineForGig==="function") ? intelLineForGig(g) : ""; if(il) intelHtml = `<div class="discover-note">情報：${il}</div>`; }catch(_e){}
   /* PLAN §3 meta：酬勞 · 拍攝／錄音約 N 日 · 逢週… · 獲聘後 N 日內完成 */
   const metaBits=[];
   {
@@ -22944,7 +22947,7 @@ function gigCardHtml(g, opts){
   /* 同 discover 重覆嘅 boardNote 唔再另開一行 */
   if(eraTxt && discRaw && eraTxt === discRaw) eraTxt = "";
   const era = eraTxt ? `<div class="era-tag">${eraTxt}</div>` : "";
-  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+g.tier):""}${seasonBit}${bpBit}</div><b class="g-title">${g.title}</b><div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}</div>`;
+  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+g.tier):""}${seasonBit}${bpBit}</div><b class="g-title">${g.title}</b><div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}</div>`;
 }
 
 /* ===== v19c PLAN_GIG_PAY_EXACT_v1 + PLAN_GIG_BREACH_FEE_v1（顯示派生；引擎逾期可掛） ===== */
@@ -26553,6 +26556,40 @@ const MERGE_PAIRS = [
   { pairId:"pair_mai_zhendong_hide_injury", a:"rumor_mai_zhendong_hurt", b:"rumor_mai_zhendong_refuse_doc", merged:"rumor_mai_zhendong_hide_injury",
     title:"麥震東隱瞞傷情搏上位", text:"麥震東喺片場整親又死都唔肯睇醫生，明顯係想隱瞞傷情搏表現，真係夠狠。" },
 ];
+/* ===== Weave Phase 1-3（v20a15）：拼合情報「使用點」——拼完唔再係死資訊。
+   零新狀態：直接讀手帳入面 state:"merged" 嗰行拼合傳聞（Phase 2 先至正式化 intel_* 旗）。
+   使用點有兩個現有表面：通告板卡片（跟 starHint 對位）＋紅星遠觀（對白升級）。 ===== */
+const INTEL_USE_POINTS = {
+  rumor_lu_baiyan_breakdown: { starName:"陸柏言", starId:"luk_baakyin",
+    gigLine:"陸柏言狀態唔穩，呢組隨時要人頂位——呢啲時候入組，最容易俾人記住。",
+    sightLine:"你拼到成件事之後再望佢——嗰種行路姿勢唔係大牌，係俾壓力逼到盡頭嗰種。" },
+  rumor_liao_bingxing_money: { starName:"廖炳星", starId:"liu_bingxing",
+    gigLine:"",
+    sightLine:"你知佢帶咗錢入組，再睇佢喺度度橋，嗰種專心入面，有少少「我要證明俾人睇」嘅味。" },
+  rumor_mai_zhendong_hide_injury: { starName:"麥震東", starId:"mak_zhendong",
+    gigLine:"麥震東有傷在身又死頂，呢組動作戲嘅風險可能俾人低估咗——接之前，諗清楚自己頂唔頂得住。",
+    sightLine:"你知佢有傷。再望住佢企得咁直，你先發現——佢連企，都喺度死頂。" }
+};
+function hasMergedIntel(mergedId){
+  try{ if(typeof ensureMockJournal==="function") ensureMockJournal(); }catch(_e){}
+  const rows = (typeof S!=="undefined" && S && S.mockRumors) || [];
+  return rows.some(r=> r && r.id===mergedId && r.state==="merged");
+}
+function intelLineForGig(g){
+  if(!g || !g.starHint || !g.starHint.name) return "";
+  for(const id in INTEL_USE_POINTS){
+    const up = INTEL_USE_POINTS[id];
+    if(up && up.gigLine && up.starName===g.starHint.name && hasMergedIntel(id)) return up.gigLine;
+  }
+  return "";
+}
+function intelSightLineFor(starId){
+  for(const id in INTEL_USE_POINTS){
+    const up = INTEL_USE_POINTS[id];
+    if(up && up.sightLine && up.starId===starId && hasMergedIntel(id)) return up.sightLine;
+  }
+  return "";
+}
 const MERGE_FRAGS = [
   { id:"rumor_lu_baiyan_angry", source:"場務八卦", title:"陸柏言片場發脾氣", text:"陸柏言喺片場無端端發火，鬧到成個場靜晒。" },
   { id:"rumor_lu_baiyan_drunk", source:"酒保閒聊", title:"陸柏言深夜買醉", text:"有人見到陸柏言半夜喺蘭桂坊飲到爛醉。" },
@@ -28781,7 +28818,18 @@ function newspaperWrapSubject(sh, pack){
   const type = String((gig && gig.type) || sh.type || pack.gigType || "");
   return { gigId: gigId || "gig", work: work || "通告", role: role, type: type };
 }
-function newspaperWrapFaceLines(subject){
+/* ===== Weave Phase 1-2（v20a14）：殺青報「角度」——由殺青後反響決定報紙點寫。
+   spotlight（搶眼）：殺青後反響入面街坊卡有幕前聲量加成（俾人留意到），或通告本身聲望值高。
+   steady（穩陣）：其餘情況，沿用原本寫法。淡紙路徑唔傳角度，維持低調（#104 原意）。 ===== */
+function newspaperWrapAngle(sh, pack){
+  sh = sh || {}; pack = pack || {};
+  const cards = Array.isArray(pack.cards) ? pack.cards : [];
+  const noticed = cards.some(c=> c && c.meta && (Number(c.meta.stageVolumeDelta)||0) >= 1);
+  if(noticed) return "spotlight";
+  if((Number(sh.fame)||0) >= 3) return "spotlight";
+  return "steady";
+}
+function newspaperWrapFaceLines(subject, angle){
   subject = subject || {};
   const work = subject.work || "通告";
   const role = subject.role || "";
@@ -28808,10 +28856,26 @@ function newspaperWrapFaceLines(subject){
       ? ("廣告殺青，阿偉於"+book+"擔任"+role+"，曝光留影。")
       : ("廣告殺青，阿偉完成"+book+"，夾頁留了一眼。");
   }
-  const rumor = role
+  let rumor = role
     ? ("聽講"+book+"殺青，阿偉做"+role+"，場記話佢跟得齊。")
     : ("聽講"+book+"殺青，場記話阿偉跟得齊。");
-  return { headline: headline, dek: dek, rumor: rumor, medium: medium, work: work };
+  if(angle==="spotlight"){
+    if(medium==="tv"){
+      dek = role ? ("電視劇組殺青，阿偉於"+book+"飾演"+role+"，嗰場戲俾人記住。") : ("電視劇組殺青，阿偉完成"+book+"，嗰場戲俾人記住，名字上了內頁。");
+    } else if(medium==="film"){
+      dek = role ? ("電影組殺青，阿偉於"+book+"飾演"+role+"，鏡頭前搶眼，副導記低咗佢個名。") : ("電影組殺青，阿偉完成"+book+"，鏡頭前搶眼，副導記低咗佢個名。");
+    } else if(medium==="music"){
+      dek = role ? ("唱片通告殺青，阿偉於"+book+"擔任"+role+"，嗰段演出俾人點名提起。") : ("唱片通告殺青，阿偉完成"+book+"，嗰段演出俾人點名提起。");
+    } else if(medium==="ad"){
+      dek = role ? ("廣告殺青，阿偉於"+book+"擔任"+role+"，出鏡嗰下俾人記住個樣。") : ("廣告殺青，阿偉完成"+book+"，出鏡嗰下俾人記住個樣。");
+    } else {
+      dek = role ? ("通告殺青，阿偉於"+book+"飾演"+role+"，表現搶眼，娛樂版特登留了一行。") : ("通告殺青，阿偉完成"+book+"，表現搶眼，娛樂版特登留了一行。");
+    }
+    rumor = role
+      ? ("聽講"+book+"殺青，阿偉做"+role+"嗰場俾場記提起，話佢幾搶眼。")
+      : ("聽講"+book+"殺青，場記話阿偉嗰場幾搶眼，俾人提起。");
+  }
+  return { headline: headline, dek: dek, rumor: rumor, medium: medium, work: work, angle: (angle==="spotlight" ? "spotlight" : "steady") };
 }
 /** 男主角／男一／男星敘事。跟組、班底、路人、臨記呢類本角名稱唔算。 */
 function newspaperWrapLeadRelation(text){
@@ -28842,7 +28906,8 @@ function enqueueNewspaperFromWrap(sh, pack, opts){
   pack = pack || {};
   opts = opts || {};
   const subject = newspaperWrapSubject(sh, pack);
-  const face = newspaperWrapFaceLines(subject);
+  const wrapAngle = (typeof newspaperWrapAngle==="function") ? newspaperWrapAngle(sh, pack) : "steady";
+  const face = newspaperWrapFaceLines(subject, wrapAngle);
   /* #103：生產路徑在 tickDay 之前入佇列，pack.dayIndex 係拍攝日。
      短卡出現在拍攝日的下一日（tick 之後）。若 publishDay 等於該日，
      玩家撳完「收下這份反響」就會再彈整張「收下這份剪報」。
@@ -28882,6 +28947,7 @@ function enqueueNewspaperFromWrap(sh, pack, opts){
     rumorEcho: lines.rumor,
     templateId: chrome.templateId,
     templateEventKey: chrome.templateEventKey || ("wrap_success."+(lines.medium||face.medium)),
+    tone: (lines && lines.angle) || wrapAngle || "",
     medium: lines.medium || face.medium || chrome.medium || "",
     workTitle: lines.work
   }, opts);
@@ -30310,9 +30376,12 @@ function openStarSighting(star){
     }
   }catch(_e){}
   const flavor = star.distanceLine || star.distanceLook || "只能遠望，時機未到唔好行埋。";
+  /* Weave Phase 1-3：拼到呢位紅星嘅情報之後，遠觀多一段「知內情」嘅望法。 */
+  let intelPara = "";
+  try{ const il = (typeof intelSightLineFor==="function") ? intelSightLineFor(star.starId) : ""; if(il) intelPara = `<p>${journalText(il)}</p>`; }catch(_e){}
   modal(`<h3>遠觀 · ${journalText(star.displayName)}</h3>
     <p class="sub">${journalText(flavor)}</p>
-    ${softSilhouetteFarHtml(star)}${eraSightParagraphs(star)}
+    ${softSilhouetteFarHtml(star)}${eraSightParagraphs(star)}${intelPara}
     <p class="sub">僅遠望 · 無互動（時機未到）</p>`, [
     {label:"離開", role:"g"},
   ]);
