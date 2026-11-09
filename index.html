@@ -27340,7 +27340,8 @@ function endBrowseDayGoHome(){
     try{
       presentRestSleepDayEnd({
         title: `休息（週${wd}）`,
-        notes, ended, summary
+        notes, ended, summary,
+        confirmStartSchedule: true
       });
     }catch(_e5){
       afterDayModal(formatRestSleepDeltas(notes), `休息（週${wd}）`, null, ended, summary, {});
@@ -27940,6 +27941,7 @@ function resolvePlannedDay(id){
         notes,
         ended,
         summary,
+        confirmStartSchedule: true,
         onMap: ()=> afterDayRes(()=>{ try{ goToMapForBrowse(); }catch(_e){} }),
         onSchedule: nextNbReward
       });
@@ -36399,6 +36401,34 @@ function armRestSleepFxInModal(){
     return true;
   }catch(_e){ return false; }
 }
+/** v20a45（A 方案）：日結休息卡「開始今日行程」嘅確認 modal（模式跟 confirmEarlyRestFromMenu）。
+   文案按今日計劃講明後果：休息／自動行程會即時結算埋今日（連續過日）；已排定行程就直接進行。
+   本函數只出 modal 同轉交選擇，唔掂 dayIndex／存檔——開始／返地圖都係呼叫者畀嘅結算後去向。 */
+function presentStartScheduleConfirm45(onStart, onMap){
+  const goStart = (typeof onStart==="function") ? onStart : (()=>{});
+  const goMap = (typeof onMap==="function") ? onMap : (()=>{ try{ goToMapForBrowse(); }catch(_e){} });
+  let dateTxt = "";
+  try{ dateTxt = fmtDate(); }catch(_e){}
+  let id = null;
+  try{ id = todayPlanId(); }catch(_e){}
+  const s = String(id||"");
+  let consequence;
+  if(s==="rest"){
+    consequence = "今日排咗「休息」，一開始就會即時結算埋今日（即係連續過日）。";
+  } else if(s.indexOf("shoot:")===0 || s.indexOf("job:")===0){
+    consequence = "今日有已排定嘅行程，開始後會直接進行。";
+  } else if(s && !(typeof isMapDay==="function" && isMapDay(s))){
+    let nm = s;
+    try{ nm = planLabel(s) || s; }catch(_e){}
+    consequence = `今日排咗「${nm}」（自動行程），會即時結算埋今日（即係連續過日）。`;
+  } else {
+    consequence = "如果今日排咗休息／自動行程，會即時結算埋今日（即係連續過日）。";
+  }
+  modal(`<h3>開始今日行程？</h3><p>將會開始 ${dateTxt} 嘅行程。</p><p>${consequence}</p>`,[
+    { label:"開始今日行程", role:"p", on:()=>{ try{ goStart(); }catch(_e){} } },
+    { label:"返回地圖", role:"g", on:()=>{ try{ goMap(); }catch(_e){} } }
+  ], { onDismiss: ()=>{ try{ goMap(); }catch(_e){} } });
+}
 /** Compact rest day-end: title + in-panel video + numeric deltas only + CTA. */
 function presentRestSleepDayEnd(opts){
   opts = opts || {};
@@ -36419,15 +36449,29 @@ function presentRestSleepDayEnd(opts){
     clearDayRes();
     try{ if(typeof fn==="function") fn(); }catch(_e){}
   };
-  const goSchedule = ()=> finish(()=>{
+  const proceedSchedule = ()=>{
     if(onSchedule){ onSchedule(); return; }
     if(ended){ try{ enterHome(summary, true); }catch(_e){} return; }
     try{ runScheduleFromToday(); }catch(_e){}
-  });
-  const goMap = ()=> finish(()=>{
+  };
+  const proceedMap = ()=>{
     if(onMap){ onMap(); return; }
     try{ goToMapForBrowse(); }catch(_e){}
-  });
+  };
+  const goSchedule = ()=> finish(proceedSchedule);
+  const goMap = ()=> finish(proceedMap);
+  /* v20a45（用戶拍板 A 方案）：日結休息卡「開始今日行程」先出確認，拆走「撳一次好似瞓咗兩日」嘅錯覺。
+     只限真日結呼叫者傳 confirmStartSchedule 旗標先啟用（提早休息／計劃休息／地點休息三處日結卡）；
+     確認喺 finish 清理（停 FX／除 day-res）之後另開 modal：「開始」行 proceedSchedule、
+     「返回地圖」或關閉行 proceedMap——兩邊都係結算後嘅既定去向，確認本身唔掂 dayIndex／存檔。
+     地圖／選單／朝早主動開始行程嘅路徑唔經呢度，冇加確認。 */
+  const goScheduleAsk = ()=>{
+    if(!opts.confirmStartSchedule){ goSchedule(); return; }
+    finish(()=>{
+      try{ presentStartScheduleConfirm45(proceedSchedule, proceedMap); }
+      catch(_e){ try{ proceedMap(); }catch(_e2){} }
+    });
+  };
   try{ document.body.classList.add("day-res-open"); }catch(_e){}
   let btns = [];
   try{
@@ -36448,7 +36492,8 @@ function presentRestSleepDayEnd(opts){
         }});
       }
       if(lab.indexOf("返回地圖")>=0) return Object.assign({}, b, { on: goMap });
-      if(lab.indexOf("回家結算")>=0 || lab.indexOf("開始今日")>=0) return Object.assign({}, b, { on: goSchedule });
+      if(lab.indexOf("回家結算")>=0) return Object.assign({}, b, { on: goSchedule });
+      if(lab.indexOf("開始今日")>=0) return Object.assign({}, b, { on: goScheduleAsk });
       const orig = b.on;
       return Object.assign({}, b, { on: ()=> finish(typeof orig==="function" ? orig : goMap) });
     });
@@ -36511,7 +36556,8 @@ function doRest(L){
       try{
         presentRestSleepDayEnd({
           title: `休息（週${wd}）`,
-          notes, ended, summary
+          notes, ended, summary,
+          confirmStartSchedule: true
         });
       }catch(_e){
         afterDayModal(formatRestSleepDeltas(notes), `休息（週${wd}）`, L, ended, summary, {});
