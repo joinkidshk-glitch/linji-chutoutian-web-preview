@@ -17345,6 +17345,41 @@ const STORY_TITLE_SOFT = {
   C1: "先學做動作戲／先賺", C2: "留人脈／趕通告", C3: "對對手硬／忍", C4: "何生拒單", C5: "采兒小訪題",
   C6: "首次正式約會對象", C7: "契約危機", C8: "雙線機會",
 };
+/* v20a28 WEAVE_PHASE4_5：三年版主幹覆寫閘（1988–1990；主幹 §2 表＋§4 縮放表為準）。
+   content pack 嘅 openConditions／phase 係五年版節奏（例：C16 week_min:100、C17 phase:"P5"＋1992），
+   三年版入面 P4／P5 舊晉升條件永遠唔達。StoryOC.evalNode 見到有覆寫嘅節點（C6–C17）行呢張表，
+   唔再行 pack token／node.phase；C1–C5 無覆寫，行為零變化。唔直接改 content pack JSON。
+   欄位（全部 AND）：needDone 前置節點（以 N 次序落返 C id）、route 路線旗、weekMin 週下限、
+   fameGt／creditGt／dualGt 雙軌門檻（嚴格大於，跟 §4「>」）、tagAny 持有任一選角標籤
+   （ctx.tags 已正規化，id 或 label 命中都算）、yearEq／yearMin 年份窗、seasonIn 季節窗。
+   評估器：BehaviorGate.evalGate3Y（ctx 用擴充版 readCtx：fame／credit／year／season／tags／dual）。
+   呢張表只管「開閘」；C7–C17 嘅內容呈現留待 4-6／4-8 接通，C17 結局判定留待 4-10。 */
+const STORY_GATE_3Y = {
+  /* N6＝C6（1988 全年・可選）：route_tv；W15+ */
+  C6:  { route: "route_tv", weekMin: 15 },
+  /* N7＝C7（1989 夏）：前置 N5＝C5；信用 > 20 */
+  C7:  { needDone: ["C5"], creditGt: 20, yearMin: 1989, seasonIn: ["夏"] },
+  /* N8＝C11（1989 夏末／秋・選美後台）：「攜帶特定禮物」屬內容層，4-6 對照時處理，唔入閘 */
+  C11: { yearMin: 1989, seasonIn: ["夏", "秋"] },
+  /* N9＝C8（1989 秋）：前置 N7＝C7；聲量 > 28；持有喜劇或動作標籤 */
+  C8:  { needDone: ["C7"], fameGt: 28, tagAny: ["喜劇", "comedy", "動作", "action"], yearMin: 1989, seasonIn: ["秋"] },
+  /* N10＝C9（1989 冬）：「人情債觸發」屬內容層，4-6 處理，唔入閘 */
+  C9:  { yearMin: 1989, seasonIn: ["冬"] },
+  /* N11＝C10（1989 冬末）：前置 N10＝C9；雙軌總和 > 70 */
+  C10: { needDone: ["C9"], dualGt: 70, yearMin: 1989, seasonIn: ["冬"] },
+  /* N12＝C15（1990 春）：持有動作標籤 */
+  C15: { tagAny: ["動作", "action"], yearMin: 1990, seasonIn: ["春"] },
+  /* N13＝C14（1990 夏）：前置 N11＝C10；信用 > 42 */
+  C14: { needDone: ["C10"], creditGt: 42, yearMin: 1990, seasonIn: ["夏"] },
+  /* N14＝C12（1990 秋）：前置 N13＝C14；聲量 > 50 */
+  C12: { needDone: ["C14"], fameGt: 50, yearMin: 1990, seasonIn: ["秋"] },
+  /* N15＝C16（1990 秋末）：前置 N14＝C12；雙軌總和 > 125 */
+  C16: { needDone: ["C12"], dualGt: 125, yearMin: 1990, seasonIn: ["秋"] },
+  /* N16＝C13（1990 冬・賀歲片） */
+  C13: { yearMin: 1990, seasonIn: ["冬"] },
+  /* N17＝C17（1990 冬・事件閘）：前置 N16＝C13。結局判定／呈現係 4-10，呢度只守入場閘 */
+  C17: { needDone: ["C13"], yearEq: 1990, seasonIn: ["冬"] },
+};
 /** 平行 meet：playerOffer 預設 false；首次入 loc／傾談先開 offer */
 const STORY_MEET_SOFT = {
   R_vera_meet: { npc: "stylist", locs: ["ad_central","ad_adm","rec_star","rec_wanchai"] },
@@ -17682,6 +17717,15 @@ const StoryOC = (()=>{
     opts = opts || {};
     ensure();
     if(!node) return { ok:false, openable:false, reasons:["no_node"] };
+    /* v20a28 WEAVE_PHASE4_5：三年版覆寫閘——STORY_GATE_3Y 有 entry 嘅節點（C6–C17）行覆寫，
+       唔行 pack 五年版 openConditions／node.phase，亦唔俾 freeplay slot trigger 搶先；
+       C1–C5 同其他節點無 entry，evalGate3Y 回 null，完全行返舊邏輯。 */
+    try{
+      if(typeof BehaviorGate!=="undefined" && typeof BehaviorGate.evalGate3Y==="function"){
+        const g3 = BehaviorGate.evalGate3Y(node, opts);
+        if(g3) return g3;
+      }
+    }catch(_g3){}
     /* One switch. gatePath() calls featureFlag_softBehaviorGatePreview only — no second query/localStorage parse.
        "soft": C1–C5 stub trigger/evalOrder, plus the existing Deng guards in this block.
        "live" (flag off, or BehaviorGate missing): fall through to the LIVE week-gate below (openConditions / pacing.weekMin).
@@ -17856,18 +17900,24 @@ const StoryOC = (()=>{
     if(isDone("C5")) bump("P1.5");
     if(isDone("C7")) bump("P2");
     let year = 1988;
+    let season = "";
+    let month = 3;
     try{
       const dt = (typeof dateObj==="function") ? dateObj() : null;
-      if(dt) year = dt.getFullYear();
+      if(dt){ year = dt.getFullYear(); month = dt.getMonth()+1; }
+      if(typeof calendarSeason==="function") season = calendarSeason();
     }catch(_e){}
+    /* v20a28 WEAVE_PHASE4_5 三年版 phase 對照（取代五年版：舊版 P4 要 1991、P5 要 1992，三年版永遠唔達）：
+       P1＝1988 開局；P1.5＝C5 done；P2＝1989 年到（或 C7 done）；P3＝1990 年到；
+       P4＝1990 秋（9 月起，季節標籤秋／冬）或 N13＝C14 done；P5＝1990 冬（12 月）或 N16＝C13 done。
+       季節 bump 加月份守衛：1–2 月雖然標籤係冬，屬上一季冬尾，唔當「1990 冬」以免 P4／P5 喺 1990 年頭跳級。
+       1991／1992 兩行只作完結後 freeplay 安全網，唔再係任何節點嘅前置。
+       syncPhaseFromProgress 只向上 bump：舊檔已高過嘅 phase 唔會俾呢張表拉低。 */
     if(year>=1989) bump("P2");
-    if(year>=1990 && (isDone("C10") || st.routes.route_indie || st.routes.route_commercial || st.flags.route_indie || st.flags.route_commercial)) bump("P3");
-    else if(year>=1990 && isDone("C10")) bump("P3");
-    if(year>=1990) {
-      /* 最低：有 C10 或關鍵旗先 P3；否則仍可保持 P2 */
-      if(isDone("C10") || st.routes.route_indie || st.routes.route_commercial || getFlag("route_indie") || getFlag("route_commercial") || getFlag("anni_tv") || getFlag("anni_film")) bump("P3");
-    }
-    if(year>=1991 && (isDone("C11") || rank(want)>=rank("P3"))) bump("P4");
+    if(year>=1990) bump("P3");
+    if(year>=1990 && ((month>=9 && (season==="秋" || season==="冬")) || isDone("C14"))) bump("P4");
+    if(year>=1990 && ((month>=12 && season==="冬") || isDone("C13"))) bump("P5");
+    if(year>=1991) bump("P4");
     if(year>=1992) bump("P5");
     return want;
   }
@@ -18421,6 +18471,42 @@ const BehaviorGate = (function(){
     try{ if(typeof calendarSeason==="function") return calendarSeason(); }catch(_e){}
     return "春";
   }
+  function liveCredit(){
+    /* v20a28：業內信用以 readDualTracks 派生值為準（S.industryCredit 只係 sync 鏡像，未 sync 時會舊）。 */
+    try{
+      if(typeof S!=="undefined" && S){
+        if(typeof readDualTracks==="function") return Number(readDualTracks(S).industryCredit)||0;
+        return Number(S.industryCredit)||0;
+      }
+    }catch(_e){}
+    return 0;
+  }
+  function liveYearSeason(){
+    /* v20a28：年份行真日曆 yearSeasonNow（Phase 4-1），唔經 soft display 改月份。 */
+    try{ if(typeof yearSeasonNow==="function") return yearSeasonNow(); }catch(_e){}
+    try{
+      const dt = (typeof dateObj==="function") ? dateObj() : null;
+      return { year: dt ? dt.getFullYear() : 1988, season: liveSeason() };
+    }catch(_e){}
+    return { year: 1988, season: "春" };
+  }
+  function liveTags(){
+    /* v20a28：S.castingTags 係 {id,label} 物件陣列（舊檔可能混字串）；正規化成 id＋label 字串清單，
+       畀 tagAny 用 id 或 label 命中都算。 */
+    const out = [];
+    try{
+      if(typeof S==="undefined" || !S || !Array.isArray(S.castingTags)) return out;
+      S.castingTags.forEach(t=>{
+        if(t==null) return;
+        if(typeof t==="string"){ if(out.indexOf(t)<0) out.push(t); return; }
+        const id = t.id!=null ? String(t.id) : "";
+        const lab = t.label!=null ? String(t.label) : "";
+        if(id && out.indexOf(id)<0) out.push(id);
+        if(lab && out.indexOf(lab)<0) out.push(lab);
+      });
+    }catch(_e){}
+    return out;
+  }
   function favorValue(target, ctx){
     if(ctx && typeof ctx.favor==="number") return ctx.favor;
     try{
@@ -18448,19 +18534,27 @@ const BehaviorGate = (function(){
   function readCtx(opts){
     const has = !!(opts && opts.ctx);
     const raw = has ? opts.ctx : {};
+    /* v20a28 WEAVE_PHASE4_5：ctx 擴充——credit（業內信用）、year（真日曆年份）、dual（fame＋credit 總和）；
+       tags 無 ctx 時改讀真 S.castingTags（正規化後）。原有欄位語義不變；
+       明確傳入 ctx 時，數值欄維持預設 0／year 預設 1988（＝dayIndex 預設 0 嘅年份），方便樣本對照。 */
+    const fame = raw.fame!=null ? Number(raw.fame) : (has ? 0 : liveFame());
+    const credit = raw.credit!=null ? Number(raw.credit) : (has ? 0 : liveCredit());
     return {
       week: raw.week!=null ? Number(raw.week) : liveWeek(),
       dayIndex: raw.dayIndex!=null ? Number(raw.dayIndex) : (has ? 0 : liveDay()),
       lastMainDoneDay: raw.lastMainDoneDay!==undefined ? raw.lastMainDoneDay : (has ? null : liveLast()),
       atLoc: raw.atLoc!==undefined ? raw.atLoc : (has ? null : liveAt()),
-      fame: raw.fame!=null ? Number(raw.fame) : (has ? 0 : liveFame()),
+      fame: fame,
+      credit: credit,
+      dual: raw.dual!=null ? Number(raw.dual) : fame + credit,
+      year: raw.year!=null ? Number(raw.year) : (has ? 1988 : liveYearSeason().year),
       favor: raw.favor!=null ? Number(raw.favor) : null,
       debt: raw.debt!=null ? Number(raw.debt) : null,
       gigCount: raw.gigCount!=null ? Number(raw.gigCount) : null,
       season: raw.season!=null ? raw.season : (has ? "" : liveSeason()),
       rumors: Array.isArray(raw.rumors) ? raw.rumors.slice() : (has ? [] : liveRumors()),
       done: raw.done || null,
-      tags: Array.isArray(raw.tags) ? raw.tags.slice() : [],
+      tags: Array.isArray(raw.tags) ? raw.tags.slice() : (has ? [] : liveTags()),
       rel: Array.isArray(raw.rel) ? raw.rel.slice() : [],
       flags: raw.flags || (has ? {} : liveFlags()),
     };
@@ -18613,6 +18707,69 @@ const BehaviorGate = (function(){
   }
   function heldEval(){
     return { ok:false, openable:false, and:[], any:null, phaseSoft:null, reasons:["held"], skippedThresholds:[], softBehavior:true, held:true };
+  }
+  function gate3YEntry(id){
+    try{
+      if(typeof STORY_GATE_3Y==="undefined" || !STORY_GATE_3Y) return null;
+      return STORY_GATE_3Y[String(id||"")] || null;
+    }catch(_e){ return null; }
+  }
+  function routeHeld(key, ctx){
+    if(ctx && ctx.flags && ctx.flags[key]) return true;
+    try{ if(typeof StoryOC!=="undefined" && StoryOC.getFlag) return !!StoryOC.getFlag(key); }catch(_e){}
+    try{
+      if(typeof S==="undefined" || !S) return false;
+      const st = S.story || {};
+      return !!((st.routes && st.routes[key]) || (st.flags && st.flags[key]) || (S.flags && S.flags[key]));
+    }catch(_e){ return false; }
+  }
+  /* v20a28 WEAVE_PHASE4_5：三年版覆寫閘評估。STORY_GATE_3Y 有 entry 先行呢度；無 entry 回 null（交返舊邏輯）。
+     全部條件 AND；數值門檻用嚴格 >（跟主幹 §4）。同日禁同 StoryOC v17z 口徑：當日已播完任一 C*，
+     其他 C* 唔入可播（opts.ignorePacing 可豁免）。回傳形狀同 evalNode／evalTrigger 相容。 */
+  function evalGate3Y(nodeOrId, opts){
+    const id = nodeId(nodeOrId);
+    const entry = gate3YEntry(id);
+    if(!entry) return null;
+    const ctx = readCtx(opts||{});
+    const checks = [];
+    let ok = true;
+    const step = (token, pass)=>{ checks.push({ token:token, ok:!!pass, reason: pass ? "ok" : "fail" }); if(!pass) ok = false; };
+    (Array.isArray(entry.needDone) ? entry.needDone : []).forEach(d=>{
+      step("needDone:"+d, done(d, ctx));
+    });
+    if(entry.route) step("route:"+entry.route, routeHeld(entry.route, ctx));
+    if(entry.weekMin!=null) step("weekMin:"+entry.weekMin, Number(ctx.week) >= Number(entry.weekMin));
+    if(entry.fameGt!=null) step("fameGt:"+entry.fameGt, Number(ctx.fame) > Number(entry.fameGt));
+    if(entry.creditGt!=null) step("creditGt:"+entry.creditGt, Number(ctx.credit) > Number(entry.creditGt));
+    if(entry.dualGt!=null) step("dualGt:"+entry.dualGt, Number(ctx.dual) > Number(entry.dualGt));
+    if(Array.isArray(entry.tagAny) && entry.tagAny.length){
+      const tags = ctx.tags || [];
+      step("tagAny:"+entry.tagAny.join("|"), entry.tagAny.some(t=>tags.indexOf(t)>=0));
+    }
+    if(entry.yearEq!=null) step("yearEq:"+entry.yearEq, Number(ctx.year) === Number(entry.yearEq));
+    if(entry.yearMin!=null) step("yearMin:"+entry.yearMin, Number(ctx.year) >= Number(entry.yearMin));
+    if(Array.isArray(entry.seasonIn) && entry.seasonIn.length){
+      const cur = seasonKeyOf(ctx.season);
+      step("seasonIn:"+entry.seasonIn.join("|"), !!cur && entry.seasonIn.some(s=>seasonKeyOf(s)===cur));
+    }
+    try{
+      if(!(opts && opts.ignorePacing===true) && typeof S!=="undefined" && S && S.story
+        && typeof S.story.lastMainDoneDay==="number" && S.story.lastMainDoneDay === (Number(S.dayIndex)||0)){
+        checks.push({ token:"days_after_prev:same_day", ok:false, reason:"fail" });
+        ok = false;
+      }
+    }catch(_e){}
+    return {
+      ok: ok,
+      openable: ok,
+      and: checks,
+      any: null,
+      phaseSoft: null,
+      reasons: checks.filter(c=>!c.ok).map(c=>c.token),
+      skippedThresholds: [],
+      gate3Y: true,
+      softBehavior: gatePath()==="soft",
+    };
   }
   function rivalGao_onlyC3ChoiceFlags(node, choice, flags){
     const id = nodeId(node);
@@ -18844,6 +19001,8 @@ const BehaviorGate = (function(){
     nextHint_neverShow: nextHint_neverShow,
     rivalGao_onlyC3ChoiceFlags: rivalGao_onlyC3ChoiceFlags,
     coversNode: coversNode,
+    evalGate3Y: evalGate3Y,
+    gate3YEntry: gate3YEntry,
     softLocId: softLocId,
     locIdAny: locIdAny,
     playerFace: playerFace,
