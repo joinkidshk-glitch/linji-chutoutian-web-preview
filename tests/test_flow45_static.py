@@ -54,7 +54,7 @@ ok('map proactive start untouched', 'function startTodayScheduleFromMap(' in htm
 
 # ---- 紅線＋公式 ----
 ok('redline SAVE key', 'starVolunteer_map_v19w' in html)
-ok('redline softRev', 'softRev=s108' in html or 'softRev = "s108"' in html or '"s108"' in html)
+ok('redline softRev', 'softRev=s109' in html or 'softRev = "s109"' in html or '"s109"' in html)
 ok('redline version tag', '"v20a10"' in html)
 # v20a58：休息唔再加體能係刻意修復（用戶實玩報告），公式鎖同步更新——鎖嘅係「唔好靜靜漂移」，唔係鎖死舊 bug
 ok('early-rest formula unchanged', 'apply({stress:-(4+R(0,4))})' in html and 'stamina:6+R(0,4)' not in html)

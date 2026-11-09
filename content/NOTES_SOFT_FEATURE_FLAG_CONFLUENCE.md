@@ -4,11 +4,11 @@
 
 GitHub Pages 對 HTML 送 `Cache-Control: max-age=600`。試玩箱瀏覽器又會按**完整 URL**持久快取文件。只開 `?v=20a10&softBehaviorGate=1` 會繼續執行 tip 之前嘅 `index.html`（教學去金龍、chrome 標主線），即使 origin sha 已係新檔。
 
-**每次 Soft tip 改完 index，Soft 抽樣必須用下面這條（`softRev` 跟 head 腳本 `SOFT_REV`，而家 `s108`）：**
+**每次 Soft tip 改完 index，Soft 抽樣必須用下面這條（`softRev` 跟 head 腳本 `SOFT_REV`，而家 `s109`）：**
 
-`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s108`
+`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s109`
 
-唔好改 SAVE `starVolunteer_map_v19w`。唔好把 `?v=20a10` 抬去 `20a11`。新局請開新分頁打呢條，唔好按舊分頁重新整理。`<html data-soft-rev="s108">` 先算載到今次 index。
+唔好改 SAVE `starVolunteer_map_v19w`。唔好把 `?v=20a10` 抬去 `20a11`。新局請開新分頁打呢條，唔好按舊分頁重新整理。`<html data-soft-rev="s109">` 先算載到今次 index。
 
 # Soft feature-flag 合流
 
