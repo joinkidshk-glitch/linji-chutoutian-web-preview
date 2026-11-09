@@ -4146,7 +4146,7 @@ body.day-res-open .day-row{
 /* --- (2) 報紙本體：紙紋＋斜放＋疊紙邊＋投影 --- */
 #mask.paper-on .paper-sheet{
   position:relative;
-  transform:rotate(-1.1deg);
+  transform:rotate(-2.2deg); /* v20a48：−1.1° 肉眼幾乎睇唔出，加大到 −2.2°；掃掠補償喺 v48 段 */
   background:
     repeating-linear-gradient(93deg, rgba(122,96,54,.030) 0 2px, rgba(122,96,54,0) 2px 5px),
     repeating-linear-gradient(177deg, rgba(122,96,54,.022) 0 1px, rgba(122,96,54,0) 1px 4px),
@@ -4223,8 +4223,8 @@ body.day-res-open .day-row{
   position:relative;
   margin-top:12px;
 }
-#app #clippings-list .clip-card:nth-child(odd){ transform:rotate(-.55deg); }
-#app #clippings-list .clip-card:nth-child(even){ transform:rotate(.5deg); }
+#app #clippings-list .clip-card:nth-child(odd){ transform:rotate(-1.1deg); } /* v20a48：輕斜同步略加（原 −.55°） */
+#app #clippings-list .clip-card:nth-child(even){ transform:rotate(1deg); } /* v20a48：原 .5° */
 #app .clip-card::before{
   content:"";
   position:absolute; top:-10px; left:50%;
@@ -4258,6 +4258,53 @@ body.day-res-open .day-row{
 }
 #app .home-card h3{ color:#8a5a20; }
 /* === v20a47 皮膚層完 === */
+
+/* === v20a48 打磨：報紙斜度補償＋收紙掣黐紙＋傳聞頁說明對比 ===
+   (1) 斜度補償：紙身 −2.2° 旋轉時四角掃掠量約 (高/2)·sin2.2°，
+       窄屏最壞約 13px 橫向／7px 縱向。#modal-inner 本身係捲動盒
+       （overflow-x:hidden 會喺 padding box 邊裁），畀佢橫向 16px、
+       縱向 10px padding 做掃掠緩衝，旋轉角落落喺 padding 區內唔被裁、
+       亦唔出 modal 界；.modal 底 padding 加高，畀埋掣欄旋轉掃掠位。 */
+#mask.paper-on #modal-inner{
+  padding:10px 16px 14px;
+}
+#mask.paper-on:not(.tut-on) .modal{
+  padding-bottom:20px;
+}
+/* (2) 收紙掣黐紙：#modal-btns 同紙身同一個 −2.2° 一齊斜（兩者同闊、
+       各自中心旋轉，斜向視覺一致）；margin-top 由 +8 改 −7（要 !important
+       蓋過 base 規則嗰個 8px !important），成欄上移 15px 輕疊紙底邊；
+       position/z-index 保證疊喺捲動紙面之上。作用域只限 .paper-on，
+       其他 modal 掣欄零影響。 */
+#mask.paper-on #modal-btns{
+  transform:rotate(-2.2deg);
+  margin-top:-7px !important;
+  padding-top:2px;
+  position:relative;
+  z-index:7;
+}
+/* 掣疊紙底嗰陣要疊喺紙嘅留白位，唔好壓住最底嗰行附註：
+   紙身底 padding 由 14px 加到 34px，附註行同紙底邊之間留返約 20px 紙邊。 */
+#mask.paper-on .paper-sheet{
+  padding-bottom:34px;
+}
+/* (1b) 剪報卡斜度補償：卡身橫向掃掠約 2px，journal-scroll padding 得 2px，
+        畀卡左右各留 5px margin，角落唔貼裁邊。 */
+#app #clippings-list .clip-card{
+  margin-left:5px; margin-right:5px;
+}
+/* (4) 傳聞頁說明對比：.pane-intro base 規則（行首段）係深啡字 #5a4328 配
+       半透明金底 rgba(201,162,39,.12)——嗰款式係為淺色頁面而設；但傳聞頁
+       唔喺米色 .notebook 入面，係直接坐喺 #v-home 深色底
+       （#2a1f1a→#0a1424）上面，半透明底透出深底＝深啡字配深啡底讀唔到。
+       只限傳聞頁：換實色米紙底＋深字，對比同傳聞卡（#f6e2aa）一致；
+       人情債頁同樣用 .pane-intro 但唔喺今次範圍，唔郁。 */
+#home-pane-rumor .pane-intro{
+  background:#fff8e8;
+  color:#3a2a18;
+  border-color:rgba(201,162,39,.65);
+}
+/* === v20a48 打磨完 === */
 </style>
 </head>
 <body>
@@ -33575,7 +33622,17 @@ function renderMorningPaperHtml(edition){
       <h4>${newspaperEsc(s.headline||"")}</h4>
       ${s.dek?`<p>${newspaperEsc(s.dek)}</p>`:""}
     </article>`).join("");
-  const clip = e.clipLabel ? `<p class="paper-kicker">${newspaperEsc(e.clipLabel)}</p>` : "";
+  /* v20a48：眉題去重（純呈現）——clipLabel 成日係大標題嘅頭半句
+     （例：眉題「電視城臨記班底添新血」＋標題「電視城臨記班底添新血 阿偉獲青睞」）。
+     若 kicker（去空白／原文 trim 後）係 headline 嘅前綴，就唔出眉題行；
+     唔係前綴一律原封保留。唔掂 edition 數據同內容生成。 */
+  const kickRaw = String(e.clipLabel||"");
+  const kickTrim = kickRaw.trim();
+  const kickNorm = kickRaw.replace(/\s+/g, "");
+  const headRaw = String(e.headline||"");
+  const headNorm = headRaw.replace(/\s+/g, "");
+  const kickDup = !!kickNorm && (headRaw.startsWith(kickTrim) || headNorm.startsWith(kickNorm));
+  const clip = (e.clipLabel && !kickDup) ? `<p class="paper-kicker">${newspaperEsc(e.clipLabel)}</p>` : "";
   return `<div class="paper-sheet" role="document" aria-label="今日報紙">
     <p class="paper-mast">${newspaperEsc(e.paperName||"娛樂版")}</p>
     <p class="paper-date">${newspaperEsc(e.dateLabel||"今早")}</p>
