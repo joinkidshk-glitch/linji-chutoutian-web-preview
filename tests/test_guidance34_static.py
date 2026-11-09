@@ -84,8 +84,9 @@ ok('preview modal renders consequence line from pv.peak', 'stressImpactLine34(pv
 # ---- P1-1(b)：雙軌解釋接線 ----
 ok('dual explainer helper exists', 'function dualTrackExplainHtml34(' in html)
 exp_seg = seg('function dualTrackExplainHtml34(', 'try{\n  window.__dualHud')
-ok('explainer gated on positive dual delta + once flag',
-   'guidanceDualExplained34' in exp_seg and 'dStage' in exp_seg and 'dCredit' in exp_seg)
+# v20a37 改約：正 delta 門檻經實機證實永不觸發（C1/C2 delta 恆 0）；改為「有真結算 dual 物件＋只出一次旗」
+ok('explainer gated on real settle dual object + once flag',
+   'guidanceDualExplained34' in exp_seg and 'result.dual' in exp_seg)
 ok('explainer scale matches newspaperNameTier thresholds (15 named / 40 titled)',
    '去到 15' in exp_seg and '去到 40' in exp_seg)
 sr_seg = seg('function showResult(node, choice, result){', 'function newlyOpenAfter')
