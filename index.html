@@ -3954,17 +3954,24 @@ body.day-res-open .day-row{
   position:relative;height:100%;max-height:none;gap:0;overflow:hidden;
 }
 /* --- 標題：收做頂部半透明漸變條，唔遮場景主體、唔攔截點擊 --- */
+/* v20a44 微修（同段內）：標題裁頂＋meta 被埋——v20a41 將 .sp-meta 設 inline-block、
+   h3 設 inline，三者擠喺同一行，頂距只得 6px、h3 又冇自訂行高（跟預設 normal），
+   CJK 字頂筆劃貼住畫面頂緣似被裁；meta 細字同標題同行並排、只得 75% 不透明米色
+   壓喺漸變最淺處，實機幾乎睇唔到（驗收描述為「被標題遮住」）；.sp-progress 同病。
+   改：meta／h3／progress 逐行 block 疊排、頂距 12px＋safe-area、h3 line-height:1.4、
+   細字不透明度提到 .92／.95 兼加文字陰影補對比、漸變頂端略加深。詳見 NOTES_V20A44。 */
 #mask.story-play-on .story-play .sp-head{
   position:absolute;top:0;left:0;right:0;z-index:6;pointer-events:none;
-  padding:calc(6px + env(safe-area-inset-top,0px)) 12px 16px;
-  background:linear-gradient(180deg,rgba(12,8,4,.58) 0%,rgba(12,8,4,.28) 62%,rgba(12,8,4,0) 100%);
+  padding:calc(12px + env(safe-area-inset-top,0px)) 12px 18px;
+  background:linear-gradient(180deg,rgba(12,8,4,.66) 0%,rgba(12,8,4,.3) 62%,rgba(12,8,4,0) 100%);
   color:#f5ead2;
 }
 #mask.story-play-on .story-play .sp-head .sp-meta{
-  display:inline-block;margin:0 8px 0 0;font-size:.66rem;color:rgba(245,234,210,.75);
+  display:block;margin:0 0 2px;font-size:.66rem;color:rgba(245,234,210,.92);
+  text-shadow:0 1px 2px rgba(0,0,0,.6);
 }
 #mask.story-play-on .story-play .sp-head h3{
-  display:inline;margin:0;font-size:.92rem;color:#f8efdb;text-shadow:0 1px 3px rgba(0,0,0,.5);
+  display:block;margin:0;font-size:.92rem;line-height:1.4;color:#f8efdb;text-shadow:0 1px 3px rgba(0,0,0,.5);
 }
 #mask.story-play-on .story-play .sp-head .sp-setting{
   margin:3px 0 0;padding:3px 7px;font-size:.68rem;line-height:1.35;color:rgba(248,239,219,.92);
@@ -3972,7 +3979,8 @@ body.day-res-open .day-row{
   max-height:2.7em;overflow:hidden;
 }
 #mask.story-play-on .story-play .sp-progress{
-  display:inline-block;margin:0;font-size:.66rem;color:rgba(245,234,210,.75);
+  display:block;margin:2px 0 0;font-size:.66rem;color:rgba(245,234,210,.95);
+  text-shadow:0 1px 2px rgba(0,0,0,.6);
 }
 /* --- 舞台：全屏底層 --- */
 #mask.story-play-on .story-play .sp-stage{
@@ -4080,10 +4088,13 @@ body.day-res-open .day-row{
        邊個 NPC 喺嗰度，入到地點 sheet（loc-who／傾談）照樣見到，派位邏輯冇郁。
        熱區：64×64px 正方，以 LOCS 座標為中心（舊 transform 係 -50%,-92% 遷就
        釘尖，新制改 -50%,-50% 置中）；≥44px 好篤；鄰近熱區重疊嗰陣 goPin 本身
-       有最近釘解析（10% 內揀最近兼優先有事做），唔會亂開地點。 --- */
+       有最近釘解析（10% 內揀最近兼優先有事做），唔會亂開地點。
+       v20a44 微修：實機發現最密一對（灣仔唱片↔天星音樂）64px 重疊面大、會誤開錯邊，
+       熱區縮到 52×52px（仍 ≥44px 觸控下限），最密三對重疊面積各減約六成、
+       兩對直頭冇晒重疊；逐對推算見 NOTES_V20A44_UI_TWEAKS.md。 --- */
 #app .map-pins .pin{
-  width:64px !important;
-  height:64px !important;
+  width:52px !important;
+  height:52px !important;
   transform:translate(-50%,-50%) !important;
   filter:none !important;
   background:transparent !important;
