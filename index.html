@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
-<title>臨記出頭天 · 阿偉</title>
+<title>臨記埋位 · 阿偉</title>
 <script>
 /* Soft index bust. Product ?v= stays 20a10. SAVE stays starVolunteer_map_v19w. Do not tip LIVE.
    GitHub Pages caches HTML for max-age=600, and the playtest box keeps a persistent cache
@@ -4325,6 +4325,154 @@ body.day-res-open .day-row{
   padding:6px 8px;
 }
 /* === v20a49 完 === */
+
+/* === v20a52 開始畫面重設計＋改名《臨記埋位》 ===
+   舊開始畫面＝米紙卡＋品牌圖卡＋膠囊掣，係「網頁卡片」語言；今期跟返
+   已拍板嘅遊戲化方向：全幅片場場景圖（UI40_SCENE.studio，已內嵌）做底、
+   阿偉企立（UI40_STAND.awi，已內嵌）企右下、標題「臨記埋位」HTML 大字
+   金箔排版＋紅色印章「一九八八」、選單改通告紙條（新遊戲＝大通告紙＋
+   膠紙＋「開工」印；繼續／讀檔＝兩張細紙條）。全部規則作用域限
+   #v-start .start52，其他畫面零影響；掣嘅 id／綁定／paintTitleSaveBtns
+   停用態呈現原封不動（停用紙條另外加脫色處理）。 */
+#app #v-start{ background:#17100a !important; }
+#app #v-start .start.start52{
+  position:relative; flex:1; min-height:0;
+  display:flex; flex-direction:column;
+  padding:0; overflow:hidden; text-align:center;
+  background:linear-gradient(180deg,#2a1c0e 0%,#17100a 100%) !important;
+  color:#f8efdb !important;
+}
+#app #v-start .start52 .start-bg{
+  position:absolute; inset:0; z-index:0;
+  width:100%; height:100%;
+  object-fit:cover; object-position:50% 20%;
+}
+#app #v-start .start52 .start-standee{
+  position:absolute; right:-10px; bottom:148px; z-index:1;
+  height:min(44%,372px); width:auto;
+  filter:drop-shadow(-10px 12px 20px rgba(0,0,0,.5));
+  pointer-events:none;
+}
+#app #v-start .start52 .start-scrim{
+  position:absolute; inset:0; z-index:2; pointer-events:none;
+  background:linear-gradient(180deg,
+    rgba(22,12,3,.55) 0%, rgba(22,12,3,.22) 24%, rgba(22,12,3,0) 42%,
+    rgba(22,12,3,.26) 66%, rgba(16,9,2,.72) 86%, rgba(12,6,1,.88) 100%);
+}
+#app #v-start .start52 .start-inner{
+  position:relative; z-index:3; flex:1; min-height:0;
+  display:flex; flex-direction:column;
+  padding:calc(10px + env(safe-area-inset-top, 0px)) 0 12px;
+  overflow-y:auto; scrollbar-width:none;
+}
+#app #v-start .start52 .start-inner::-webkit-scrollbar{ display:none; }
+#app #v-start .start52 .start-head{ padding:3.2dvh 20px 0; }
+#app #v-start .start52 .start-titlewrap{ position:relative; display:inline-block; }
+#app #v-start .start52 .start-title{
+  margin:0; font-weight:900; line-height:1.06; letter-spacing:.08em;
+  font-size:clamp(56px,16.5vw,78px);
+  background:linear-gradient(180deg,#fffbe9 0%,#f7e3a1 46%,#e9bc58 74%,#c9932f 100%);
+  -webkit-background-clip:text; background-clip:text;
+  color:transparent; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 2px 0 rgba(66,40,6,.6)) drop-shadow(0 14px 26px rgba(0,0,0,.55));
+}
+#app #v-start .start52 .start-title span{ display:block; }
+#app #v-start .start52 .start-stamp{
+  position:absolute; top:2px; right:-36px;
+  writing-mode:vertical-rl; text-orientation:upright;
+  font-size:.78rem; font-weight:900; letter-spacing:.24em;
+  color:#fbeed3; background:linear-gradient(180deg,#c0452c,#a02c1b);
+  border:1.5px solid rgba(251,238,211,.9); border-radius:6px;
+  padding:9px 4px 7px;
+  box-shadow:0 5px 12px rgba(0,0,0,.45), inset 0 0 0 2px rgba(160,44,27,.95), inset 0 0 0 3px rgba(251,238,211,.45);
+  transform:rotate(5deg);
+}
+#app #v-start .start52 .start-sub{
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  margin:14px 0 0; color:#f3d98b !important;
+  font-size:.86rem; font-weight:800; letter-spacing:.42em; text-indent:.42em;
+  text-shadow:0 2px 8px rgba(0,0,0,.65);
+}
+#app #v-start .start52 .start-sub::before,
+#app #v-start .start52 .start-sub::after{
+  content:""; width:36px; height:1px; flex:0 0 auto;
+}
+#app #v-start .start52 .start-sub::before{ background:linear-gradient(90deg,transparent,rgba(201,162,39,.9)); }
+#app #v-start .start52 .start-sub::after{ background:linear-gradient(90deg,rgba(201,162,39,.9),transparent); }
+#app #v-start .start52 .start-intro{
+  margin:12px auto 0; max-width:300px;
+  color:rgba(248,239,219,.94) !important;
+  font-size:.9rem; line-height:1.55;
+  text-shadow:0 1px 3px rgba(0,0,0,.75), 0 2px 12px rgba(0,0,0,.55);
+}
+#app #v-start .start52 .start-intro strong{ color:#f7e3a1; }
+/* 選單：通告紙條。margin-top:auto 將成組紙釘喺畫面下半部。 */
+#app #v-start .start52 .start-menu{
+  position:relative; margin-top:auto;
+  display:flex; flex-direction:column; gap:10px; flex-wrap:nowrap;
+  justify-content:flex-start;
+  padding:18px 20px 0;
+}
+#app #v-start .start52 #btn-new{
+  position:relative; width:100%; min-height:62px;
+  display:flex; align-items:center; gap:10px;
+  text-align:left; padding:12px 56px 12px 18px;
+  /* background／border／radius／shadow／color 要 !important：主 style 段有一條
+     全域「Physical primary buttons」規則（button.p）用 !important 鎖死金色
+     漸變＋墨邊，唔加權重今張通告紙會變返金掣（harness computed-style 實證）。 */
+  border-radius:8px !important; border:1.5px solid #2e2114 !important;
+  background:
+    repeating-linear-gradient(93deg, rgba(122,96,54,.05) 0 2px, rgba(122,96,54,0) 2px 5px),
+    linear-gradient(180deg,#faf1dc,#f0e3c2) !important;
+  color:#241708 !important;
+  box-shadow:0 3px 0 rgba(46,33,20,.9), 0 16px 30px rgba(0,0,0,.5) !important;
+  transform:rotate(-.7deg);
+}
+#app #v-start .start52 #btn-new::before{
+  content:""; position:absolute; top:-10px; left:50%;
+  width:78px; height:19px; transform:translateX(-50%) rotate(-2deg);
+  background:rgba(233,216,163,.78);
+  border-left:1px dashed rgba(122,96,54,.4);
+  border-right:1px dashed rgba(122,96,54,.4);
+  box-shadow:0 1px 3px rgba(0,0,0,.20);
+  pointer-events:none;
+}
+#app #v-start .start52 #btn-new .sn-main{ font-size:1.24rem; font-weight:900; letter-spacing:.14em; }
+#app #v-start .start52 #btn-new .sn-note{
+  margin-left:auto; text-align:right;
+  font-size:.74rem; font-weight:700; color:#7a5c2e; letter-spacing:.06em;
+}
+#app #v-start .start52 #btn-new .sn-stamp{
+  position:absolute; right:12px; top:50%;
+  transform:translateY(-50%) rotate(6deg);
+  font-size:.72rem; font-weight:900; letter-spacing:.3em; text-indent:.3em;
+  color:#a02c1b; border:1.5px solid rgba(160,44,27,.75); border-radius:5px;
+  padding:4px 3px 3px 5px; background:rgba(251,238,211,.35);
+}
+#app #v-start .start52 .start-subrow{ display:flex; gap:10px; }
+#app #v-start .start52 .start-subrow button{
+  flex:1 1 0; min-width:0; min-height:50px;
+  border-radius:8px; border:1.5px solid rgba(46,33,20,.85);
+  background:
+    repeating-linear-gradient(93deg, rgba(122,96,54,.04) 0 2px, rgba(122,96,54,0) 2px 5px),
+    linear-gradient(180deg,#f6ecd2,#eadfc0);
+  color:#2a1c0c; font-size:.94rem; font-weight:800; letter-spacing:.08em;
+  box-shadow:0 2px 0 rgba(46,33,20,.75), 0 10px 20px rgba(0,0,0,.42);
+}
+#app #v-start .start52 #btn-cont{ transform:rotate(.55deg); }
+#app #v-start .start52 #btn-load{ transform:rotate(-.5deg); }
+#app #v-start .start52 .start-subrow button:disabled{
+  filter:saturate(.55) brightness(.97); opacity:.7;
+  box-shadow:0 2px 0 rgba(46,33,20,.5), 0 6px 14px rgba(0,0,0,.3);
+}
+#app #v-start .start52 #start-soft-tip{
+  position:relative; z-index:3;
+  margin-left:22px; margin-right:22px;
+  color:rgba(248,239,219,.85) !important;
+  text-shadow:0 1px 4px rgba(0,0,0,.7);
+}
+#app #v-start .start52 #start-soft-tip strong{ color:#f7e3a1; }
+/* === v20a52 開始畫面完 === */
 </style>
 </head>
 <body>
@@ -4339,17 +4487,29 @@ body.day-res-open .day-row{
 </aside>
 <div id="app">
   <section id="v-start" class="view on">
-    <div class="start">
-      <img class="start-brand" id="start-brand" src="assets/ui-physical/brand/start_title_card.png?v=16" alt="臨記出頭天" title="臨記出頭天" />
+    <div class="start start52">
+      <img class="start-bg" id="start-bg" alt="" aria-hidden="true" />
+      <img class="start-standee" id="start-standee" alt="阿偉" />
+      <div class="start-scrim" aria-hidden="true"></div>
       <img class="guideimg" id="start-guide" alt="何生引導阿偉" hidden />
       <img class="heroimg" id="start-hero" alt="阿偉" hidden />
-      <h1 class="sr-only">臨記出頭天</h1>
-      <p>1988 · 港產新人<strong>陳偉翔（阿偉）</strong>自己跑通告，由臨記出頭天。</p>
-      <p class="sub" id="start-soft-tip" style="font-size:.78rem;margin-top:6px;opacity:.9">試玩規則：通告欄／打聽／傾談／送禮<strong>不耗日</strong>（部分需小額茶錢）；訓練／試鏡／休息／表演 <strong>+1日</strong>。</p>
-      <div class="btnrow">
-        <button class="p" id="btn-new">新遊戲</button>
-        <button class="g" id="btn-cont" style="display:none">繼續</button>
-        <button class="g" id="btn-load" style="display:none">讀檔</button>
+      <div class="start-inner">
+        <div class="start-head">
+          <div class="start-titlewrap">
+            <h1 class="start-title"><span>臨記</span><span>埋位</span></h1>
+            <div class="start-stamp" aria-hidden="true">一九八八</div>
+          </div>
+          <p class="start-sub">1988 · 片場星途</p>
+          <p class="start-intro">港產新人<strong>陳偉翔（阿偉）</strong>，自己跑通告——臨記埋位，一步一步上。</p>
+        </div>
+        <div class="btnrow start-menu">
+          <button class="p" id="btn-new"><span class="sn-main">新遊戲</span><span class="sn-note">1988 年春 · 由零開始</span><span class="sn-stamp" aria-hidden="true">開工</span></button>
+          <div class="start-subrow">
+            <button class="g" id="btn-cont" style="display:none">繼續</button>
+            <button class="g" id="btn-load" style="display:none">讀檔</button>
+          </div>
+        </div>
+        <p class="sub" id="start-soft-tip" style="font-size:.78rem;margin-top:6px;opacity:.9">試玩規則：通告欄／打聽／傾談／送禮<strong>不耗日</strong>（部分需小額茶錢）；訓練／試鏡／休息／表演 <strong>+1日</strong>。</p>
       </div>
     </div>
   </section>
@@ -22956,7 +23116,7 @@ function endingCareerScene410(rec){
       + "<p>何生嗰晚同你飲咗杯：「我嗰陣教你認人，你而家啲人脈，貴過我當年。」——江湖撈家呢四個字，唔係貶，係你用三年人情換返嚟嘅招牌。</p>";
     case "E6":
       if(v==="遠走") return "<p>你冇去頒獎禮。嗰晚你喺屋企執行李，阿媽喺廳嗰邊，一路摺衫一路講：「去到嗰邊，記得打電話返嚟。」</p>"
-        + "<p>三年嘅通告紙、人情數、報紙剪報，摺好，入箱。臨記出頭天——你嗰本帳，唔喺香港收科。啟德嗰邊，飛機等緊。</p>";
+        + "<p>三年嘅通告紙、人情數、報紙剪報，摺好，入箱。臨記埋位——你嗰本帳，唔喺香港收科。啟德嗰邊，飛機等緊。</p>";
       if(v==="心灰") return "<p>頭版嗰鑊，你捱過咗，但心都淡埋。屋企嗰份穩陣工——表叔講嗰份銀行文職——你打咗個電話去，話：我嚟見工。</p>"
         + "<p>唔係邊個趕你走，係你自己企喺化妝間，望住鏡，第一次覺得攰得嚟唔想再等下一個通告。收山呢兩個字，你講出口嗰陣，好平靜。</p>";
       return "<p>頒獎禮嗰晚，你冇入場。你返咗屋企，阿媽煲咗湯，電視播住頒獎禮，你坐喺梳化，飲湯。</p>"
@@ -38804,6 +38964,9 @@ function runSoftP0Checks(){
 try{ window.runSoftP0Checks = runSoftP0Checks; window.softCanonC1Face = softCanonC1Face; }catch(_w){}
 wireUiAssets();
 const _sh=document.getElementById("start-hero"); if(_sh && PORTRAITS.hero_awi) _sh.src=PORTRAITS.hero_awi;
+/* v20a52 開始畫面重設計接線：全幅片場底圖＋阿偉企立，用已內嵌 UI40 素材（零新增體積） */
+const _sbg52=document.getElementById("start-bg"); if(_sbg52 && typeof UI40_SCENE!=="undefined" && UI40_SCENE.studio) _sbg52.src=UI40_SCENE.studio;
+const _sst52=document.getElementById("start-standee"); if(_sst52 && typeof UI40_STAND!=="undefined" && UI40_STAND.awi) _sst52.src=UI40_STAND.awi;
 const _mi=document.getElementById("map-img"); if(_mi){ _mi.onload=()=>{ try{ drawMap(); }catch(e){} }; _mi.src = (typeof MAP_IMG!=="undefined"&&MAP_IMG)?MAP_IMG:"assets/hk_map.jpg"; }
 try{ applyPrefsChrome(); }catch(_e){}
 (function paintTitleSaveBtns(){
