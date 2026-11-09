@@ -24199,6 +24199,7 @@ function advanceDay(){
     S.flags.adBoardToast = true;
   }
   try{ if(typeof favorDueTick==="function") favorDueTick(); }catch(_fd){}
+  try{ if(typeof rivalryTick==="function") rivalryTick(); }catch(_rv){}
   return S.dayIndex>0 && weekdayIdx(S.dayIndex)===0;
 }
 
@@ -26958,6 +26959,231 @@ function mergeFavorGigs(){
     (FAVOR_DUE_GIGS||[]).forEach(raw=>{
       if(!raw || !raw.id) return;
       const norm = normalizeGigRecord(Object.assign({}, raw, { favorDueGig:true }));
+      const i = GIGS.findIndex(g=>g && g.id===raw.id);
+      if(i<0){ GIGS.push(norm); n++; }
+      else GIGS[i] = norm;
+    });
+    try{ window.GIGS = GIGS; }catch(_w){}
+    return n;
+  }catch(_e){ return 0; }
+}
+/* ===== Weave Phase 3-3（v20a21）：高俊傑競爭線收割（鏈 E，串聯規劃最後一步）。
+   建基於現有足跡，唔另起爐灶：高俊傑係現有 core NPC（NPC_LINES_CORE.rival／S.npcs.rival）；
+   傳聞種子 gao_steal_spotlight（茶餐廳 act_cha_gao_spotlight 拎到）；主線 C3 係同佢正面交鋒
+   （S.story.done.C3，揀 hard／endure 寫 S.story.flags rival_gao_hard／rival_gao_endure）；
+   C3 見報後剪報 topicKey 係 rival:gao（Phase 3-1）；采兒內幕對白早已預告呢條競爭線。
+   累積（衍生計分，唔逐次加，舊檔讀入即計返）：聽過搶鏡傳聞 +1、C3 交鋒過 +2、報紙連載寫過 +1，
+   夠 3 分開正面決戰。收割形式揀「競爭通告」：行現有通告管線＋mergeRivalGigs 條件注入
+   （同 mergeIntelGigs／mergeFavorGigs 同一模式），因為通告欄先係佢成日同你爭嘅地方，
+   而且殺青偵測（wrapHistory）有現成結算點；唔揀二選一事件，免再開一條事件通道。
+   勝負唔靠試鏡隨機 roll：殺青後由 rivalryTick 按當時雙軌（幕前聲量＋業內信用）判定——
+   門檻 40；C3 揀 hard（出盡力壓佢）佢記仇出盡力，門檻 +6；揀 endure（留一線）佢冇出盡力，門檻 −6。
+   贏：業內信用 +3（industryCreditDelta）＋報紙點名寫你贏咗（fameDelta +2、eventKey story:C3:faceoff_win
+   → topicKey rival:gao，連載接得返 C3 嗰期）＋高俊傑好感 +3（服氣）。
+   輸：人氣 −1（細懲罰，唔羞辱）＋高俊傑好感 −1＋報紙寫佢先拔頭籌但畀你留「輸得起」口碑。
+   結算後 faceoffState 落 won／lost 終態：通告落板、唔再重複觸發；報紙剪報＋手帳傳聞各留一痕。 ===== */
+const RIVAL_CFG = { gigId:"gig_rival_gao_faceoff", rumorId:"gao_steal_spotlight", resultRumorId:"rival_faceoff_result", openScore:3, winDualBase:40, hardMod:6, endureMod:-6, winCredit:3, winPaperFame:2, losePop:1 };
+const RIVAL_FACEOFF_GIGS = [
+  {
+    id:"gig_rival_gao_faceoff",
+    year:1988,
+    season:"不限",
+    type:"電視劇",
+    genreLabel:"電視劇",
+    loc:"tvb_longmen",
+    workTitle:"霓虹夜影",
+    title:"《霓虹夜影》新人爭位試演",
+    roleLabel:"爭位試演",
+    director:"監製",
+    roleHint:"同高俊傑爭同一個有台詞嘅企位，監製唔淨睇邊個大聲——聲量、台風、同行內口碑，一次過睇晒。",
+    blurb:"星河電影組新劇《霓虹夜影》有個有台詞嘅企位，監製淨係喺你同高俊傑之間揀一個。唔係普通試鏡——你哋兩個同場試演，拍晒成場，邊個企得穩、交到戲，個位就係邊個嘅。",
+    synopsis:"清水灣星河片場，《霓虹夜影》試演日。高俊傑一早到咗，紅皮褸一手插袋，笑笑口講：「又係你。」監製講明：兩個輪流同主角對一場，睇聲量、睇台風、睇行內口碑點寫你。拍完嗰日，結果自然分曉。",
+    eraTag:"era_1988_tv",
+    discoverNote:"高俊傑落咗戰書先有嘅爭位試演，殺青嗰日分勝負。",
+    boardPriority:"high",
+    boardNote:"爭位試演",
+    seasonWeight:1,
+    req:{},
+    pay:[1100, 1300],
+    payExact:1200,
+    breachFee:100,
+    fame:[1, 2],
+    popularity:[1, 2],
+    stressDeltaHint:"中",
+    hard:0.1,
+    tier:"初",
+    stars:1,
+    applyDeadlineDays:6,
+    shootDaysHint:1,
+    shootHint:"同高俊傑同場試演：企位要正、台詞要穩，唔好畀佢搶咗節奏。",
+    roleScale:"tv_cameo_short",
+    shootBand:[1, 1],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:14,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["與高俊傑同場爭位，殺青分勝負"] },
+    storyKeys:["rival_gao_faceoff"],
+    tagOnComplete:["唔怯場"],
+    rumorKeys:[],
+    favorDelta:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  }
+];
+function ensureRivalry(){
+  if(typeof S==="undefined" || !S) return null;
+  if(!S.rivalry || typeof S.rivalry!=="object" || Array.isArray(S.rivalry)){
+    S.rivalry = { score:0, faceoffState:"none", openedDay:null, settledDay:null, stance:"" };
+  }
+  if(S.rivalry.faceoffState==null) S.rivalry.faceoffState = "none";
+  if(S.rivalry.score==null) S.rivalry.score = 0;
+  return S.rivalry;
+}
+function rivalryStance(){
+  try{
+    const sf = (typeof S!=="undefined" && S && S.story && S.story.flags) || {};
+    const gf = (typeof S!=="undefined" && S && S.flags) || {};
+    if(sf.rival_gao_hard || gf.rival_gao_hard) return "hard";
+    if(sf.rival_gao_endure || gf.rival_gao_endure) return "endure";
+  }catch(_e){}
+  return "";
+}
+function rivalryScore(){
+  let n = 0;
+  try{
+    if(typeof S==="undefined" || !S) return 0;
+    if(Array.isArray(S.mockRumors) && S.mockRumors.some(r=>r && r.id===RIVAL_CFG.rumorId)) n += 1;
+    const sf = (S.story && S.story.flags) || {};
+    const done = (S.story && S.story.done) || {};
+    if(done.C3 || sf.rival_gao_hard || sf.rival_gao_endure || (S.flags && (S.flags.rival_gao_hard || S.flags.rival_gao_endure))) n += 2;
+    const clips = Array.isArray(S.newspaperClippings) ? S.newspaperClippings : [];
+    const papered = clips.some(c=>{
+      if(!c) return false;
+      if(c.topicKey==="rival:gao") return true;
+      const keys = Array.isArray(c.eventKeys) ? c.eventKeys : [c.eventKey];
+      if(keys.some(k=>String(k||"").indexOf("story:C3")===0)) return true;
+      try{ return (typeof newspaperTopicKey==="function") && newspaperTopicKey(c)==="rival:gao"; }catch(_e){ return false; }
+    });
+    if(papered) n += 1;
+  }catch(_e){}
+  return n;
+}
+function rivalryWinThreshold(stance){
+  let t = RIVAL_CFG.winDualBase;
+  if(stance==="hard") t += RIVAL_CFG.hardMod;
+  if(stance==="endure") t += RIVAL_CFG.endureMod;
+  return t;
+}
+function rivalryFaceoffPaper(win){
+  try{
+    if(typeof enqueueNewspaperItem!=="function") return null;
+    const tier = (typeof newspaperNameTier==="function") ? newspaperNameTier() : "named";
+    const ref = (typeof newspaperPlayerRef==="function") ? newspaperPlayerRef(tier) : "阿偉";
+    if(win){
+      return enqueueNewspaperItem({
+        eventKey:"story:C3:faceoff_win", source:"story", fameDelta:RIVAL_CFG.winPaperFame,
+        paperName:"娛樂版",
+        headline:"新人爭位分曉："+ref+"壓過高俊傑",
+        dek:"《霓虹夜影》爭位試演塵埃落定，"+ref+"憑走位同台風攞到嗰個有台詞嘅企位。高俊傑收工嗰陣撂低一句：「下次唔會咁易。」——講完自己都笑，似係服氣多過唔忿氣。",
+        clipLabel:"爭位試演・勝",
+        rumorEcho:"片場傳開：阿偉爭位贏咗高俊傑，嗰場試演好多人睇住。",
+        workTitle:"霓虹夜影"
+      });
+    }
+    return enqueueNewspaperItem({
+      eventKey:"story:C3:faceoff_lose", source:"story", fameDelta:0,
+      paperName:"娛樂版",
+      headline:"新人爭位：高俊傑先拔頭籌",
+      dek:"《霓虹夜影》爭位試演，高俊傑快半步攞到個位，收工仲笑笑口同場務講：「都話咗我快。」不過"+ref+"今次只係差少少，監製臨走講咗句：「嗰個後生仔，記住佢。」——輸一場唔緊要，行內最怕係冇人記得你輸過。",
+      clipLabel:"爭位試演・負",
+      rumorEcho:"片場傳開：高俊傑今次快半步，不過阿偉嗰份唔認輸，班底都睇在眼內。",
+      workTitle:"霓虹夜影"
+    });
+  }catch(_e){ return null; }
+}
+function rivalryResultRumor(win){
+  try{
+    if(typeof S==="undefined" || !S) return;
+    if(typeof ensureMockJournal==="function") ensureMockJournal();
+    if(!Array.isArray(S.mockRumors)) S.mockRumors = [];
+    if(S.mockRumors.some(r=>r && r.id===RIVAL_CFG.resultRumorId)) return;
+    S.mockRumors.unshift({
+      id:RIVAL_CFG.resultRumorId, source:"片場休息區",
+      title: win ? "爭位試演：阿偉贏咗" : "爭位試演：高仔快半步",
+      text: win
+        ? "《霓虹夜影》爭位試演，阿偉壓過高俊傑攞到個位。高俊傑撂話下次再鬥，睇得出佢服氣。"
+        : "《霓虹夜影》爭位試演，高俊傑快半步攞到位。阿偉輸得起，監製都記住咗佢個名。",
+      state:"normal", season:""
+    });
+  }catch(_e){}
+}
+function rivalryTick(){
+  try{
+    if(typeof S==="undefined" || !S) return;
+    const r = ensureRivalry();
+    if(!r) return;
+    if(r.faceoffState==="won" || r.faceoffState==="lost") return;
+    if(typeof ensureMockJournal==="function") ensureMockJournal();
+    const today = S.dayIndex|0;
+    r.score = rivalryScore();
+    if(r.faceoffState==="none"){
+      if(r.score >= RIVAL_CFG.openScore){
+        r.faceoffState = "open";
+        r.openedDay = today;
+        r.stance = rivalryStance();
+        try{ toast("高俊傑喺清水灣片場走廊截住你：「嗰次未分勝負，唔好話我冇畀機會你——《霓虹夜影》有個位，我同你一齊爭，邊個攞到就邊個企正。星河電影組通告欄見。」"); }catch(_t){}
+        try{ saveQ(); }catch(_s){}
+      }
+      return;
+    }
+    if(r.faceoffState==="open"){
+      let wrapped = false;
+      try{ wrapped = (S.wrapHistory||[]).some(w=>w && w.gigId===RIVAL_CFG.gigId); }catch(_w){}
+      if(!wrapped && S.flags && S.flags["done_"+RIVAL_CFG.gigId]) wrapped = true;
+      if(!wrapped) return;
+      const dual = (typeof readDualTracks==="function") ? readDualTracks(S) : { stageVolume:(Number(S.fame)||0), industryCredit:0 };
+      const dualSum = (Number(dual.stageVolume)||0) + (Number(dual.industryCredit)||0);
+      const stance = r.stance || rivalryStance();
+      const win = dualSum >= rivalryWinThreshold(stance);
+      r.faceoffState = win ? "won" : "lost";
+      r.settledDay = today;
+      r.settledDual = dualSum;
+      if(win){
+        S.industryCreditDelta = (Number(S.industryCreditDelta)||0) + RIVAL_CFG.winCredit;
+        try{ if(typeof syncDualTracks==="function") syncDualTracks(S); }catch(_dt){}
+        try{ bumpNpc("rival", 3); }catch(_b){}
+        try{ toast("試演結果出咗：個位係你嘅。高俊傑行過嚟伸手：「今次你贏。下次，我會企返正中間。」"); }catch(_t){}
+      } else {
+        S.popularity = Math.max(0, (Number(S.popularity)||0) - RIVAL_CFG.losePop);
+        try{ bumpNpc("rival", -1); }catch(_b){}
+        try{ toast("試演結果出咗：高俊傑快半步攞咗個位。佢笑得好得意，臨走都補咗句：「你都唔差，下次再嚟。」——輸咗一場，人氣跌少少，唔傷元氣。"); }catch(_t){}
+      }
+      try{ rivalryFaceoffPaper(win); }catch(_p){}
+      try{ rivalryResultRumor(win); }catch(_r){}
+      try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
+      try{ saveQ(); }catch(_s){}
+    }
+  }catch(_e){}
+}
+/* 跟 mergeIntelGigs／mergeFavorGigs 同一注入模式：faceoffState==="open" 先將爭位試演注入 GIGS，
+   結算後（won／lost）移除，確保唔會重複觸發；試鏡落選唔會令通告消失（未殺青就唔算消費，可再報）。 */
+function mergeRivalGigs(){
+  try{
+    if(typeof GIGS==="undefined" || !Array.isArray(GIGS)) return 0;
+    const ids = {};
+    (RIVAL_FACEOFF_GIGS||[]).forEach(g=>{ if(g && g.id) ids[g.id] = 1; });
+    let active = false;
+    try{ const r = ensureRivalry(); active = !!(r && r.faceoffState==="open"); }catch(_e){}
+    if(!active){
+      const before = GIGS.length;
+      GIGS = GIGS.filter(g=>!(g && ids[g.id]));
+      if(GIGS.length!==before){ try{ window.GIGS = GIGS; }catch(_w){} }
+      return 0;
+    }
+    let n = 0;
+    (RIVAL_FACEOFF_GIGS||[]).forEach(raw=>{
+      if(!raw || !raw.id) return;
+      const norm = normalizeGigRecord(Object.assign({}, raw, { rivalFaceoffGig:true }));
       const i = GIGS.findIndex(g=>g && g.id===raw.id);
       if(i<0){ GIGS.push(norm); n++; }
       else GIGS[i] = norm;
@@ -31568,6 +31794,7 @@ function gigsForLocSeasonBoard(locId, curSeason){
   try{ if(typeof mergeSoftBridgeGigs==="function") mergeSoftBridgeGigs(); }catch(_br){}
   try{ if(typeof mergeIntelGigs==="function") mergeIntelGigs(); }catch(_ig){}
   try{ if(typeof mergeFavorGigs==="function") mergeFavorGigs(); }catch(_fg){}
+  try{ if(typeof mergeRivalGigs==="function") mergeRivalGigs(); }catch(_rg){}
   curSeason = curSeason || calendarSeason();
   const byBoard=(a,b)=> boardSortCompare(a,b,curSeason);
   const pool=(GIGS||[]).filter(g=>{
