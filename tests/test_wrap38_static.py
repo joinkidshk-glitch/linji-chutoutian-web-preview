@@ -47,7 +47,7 @@ ok('fix3 pending line format (約酬/聲望/人氣)', '殺青後入帳：' in ht
 
 # ---- 紅線 ----
 ok('redline SAVE key untouched', 'starVolunteer_map_v19w' in html)
-ok('redline softRev s107 present', 's107' in html)
+ok('redline softRev s108 present', 's108' in html)
 ok('notes file exists', os.path.exists(os.path.join(os.path.dirname(os.path.abspath(path)), 'NOTES_V20A38_WRAP_FIXES.md')))
 
 print('')

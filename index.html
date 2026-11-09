@@ -11,11 +11,11 @@
    GitHub Pages caches HTML for max-age=600, and the playtest box keeps a persistent cache
    keyed by the full URL. ?v=20a10&softBehaviorGate=1 therefore kept executing the pre-#99
    document (去金龍／主線) even after Pages origin sha was e4b43926.
-   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s107
-   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s107
+   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s108
+   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s108
    Bump SOFT_REV when the next Soft tip changes index.html. Do not bump ?v=. */
 (function(){
-  var SOFT_REV = "s107";
+  var SOFT_REV = "s108";
   try { document.documentElement.setAttribute("data-soft-rev", SOFT_REV); } catch (e0) {}
   try {
     var q = new URLSearchParams(location.search || "");
@@ -3546,6 +3546,20 @@ body.day-res-open .day-row{
   top: 64px !important;
   bottom: auto !important;
   z-index: 18 !important;
+}
+/* s108 P0-4：:has(#v-map.view.on) 喺 Soft 實機不可靠，toast 仍企喺底部壓住快捷列。
+   toast() 喺無 sheet 且 #v-map.on 時加 .toast-on-map。舊 :has 留作雙保險。
+   後一條同 :has 規則 specificity 打和，源碼較後，class 路徑贏；z 520 唔好跌穿 HUD。 */
+#app.toast-up.toast-on-map::after{ display:none !important; }
+#app.toast-up.toast-on-map .toast{
+  top: 64px !important;
+  bottom: auto !important;
+  z-index: 520 !important; /* 保持票面可見，唔好用 18 跌穿 HUD */
+}
+#app.toast-up.toast-on-map:not(.keep-sheet) #toast.toast.on{
+  top: 64px !important;
+  bottom: auto !important;
+  z-index: 520 !important;
 }
 #app.toast-up.keep-sheet #loc-sheet.sheet,
 #app.toast-up.keep-sheet #v-map #loc-sheet.sheet{
@@ -25069,13 +25083,15 @@ function toast(m, opts){
   if(app){
     app.classList.add("toast-up");
     app.classList.toggle("keep-sheet", keepSheet);
+    const mapOn = !!(document.getElementById("v-map") && document.getElementById("v-map").classList.contains("on"));
+    app.classList.toggle("toast-on-map", !keepSheet && mapOn);
   }
   clearTimeout(toast._t);
   toast._t=setTimeout(()=>{
     t.classList.remove("on","has-stamp","has-sub");
     t.replaceChildren();
     t.setAttribute("aria-hidden","true");
-    if(app) app.classList.remove("toast-up","keep-sheet");
+    if(app) app.classList.remove("toast-up","keep-sheet","toast-on-map");
   },1800);
 }
 function show(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("on"));document.getElementById(id).classList.add("on")}
@@ -32334,12 +32350,14 @@ function freeplayApplyEraStarStubOverlay(){
       if(HOLD_OFF[id]) return;
       let row = STAR_SIGHTINGS.find(s=>s.starId===id);
       if(!row){
+        const silNew = String(st.silhouetteDesc||"");
+        const lineNew = String(st.distanceLine||"");
         row = {
           starId:id,
           displayName: st.displayName || id,
           locs: Array.isArray(st.locs) ? st.locs.slice() : [],
-          distanceLook: st.silhouetteDesc || "（遠影）",
-          distanceLine: st.distanceLine || "只能遠望，時機未到唔好行埋。",
+          distanceLook: (silNew && !eraSightIsPlaceholder(silNew)) ? silNew : "（遠影）",
+          distanceLine: (lineNew && !eraSightIsPlaceholder(lineNew)) ? lineNew : "只能遠望，時機未到唔好行埋。",
           locHint: st.locHint || "",
           rumorTeaser: st.rumorTeaser || "",
           resultToast: st.resultToast || ("已遠觀"+(st.displayName||"")+"。"),
@@ -32351,8 +32369,8 @@ function freeplayApplyEraStarStubOverlay(){
         const sil = String(st.silhouetteDesc||"");
         const line = String(st.distanceLine||"");
         const rum = String(st.rumorTeaser||"");
-        if(sil && sil.indexOf("文案待補")<0) row.distanceLook = sil;
-        if(line && line.indexOf("文案待補")<0 && line.indexOf("只能遠望")<0) row.distanceLine = line;
+        if(sil && !eraSightIsPlaceholder(sil)) row.distanceLook = sil;
+        if(line && !eraSightIsPlaceholder(line) && line.indexOf("只能遠望")<0) row.distanceLine = line;
         if(rum) row.rumorTeaser = rum;
         if(st.locHint) row.locHint = st.locHint;
         if(Array.isArray(st.locs) && st.locs.length) row.locs = st.locs.slice();
@@ -34813,7 +34831,7 @@ function newspaperCheck(){
     try{ window.S = S; }catch(_e){}
     try{ if(S && typeof paintBar==="function") paintBar(); }catch(_e){}
   }
-  return { ok:!fails.length, fails:fails, softRev:"s107", version:"v20a10", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, softRev:"s108", version:"v20a10", softStatus:"≠PASS" };
 }
 try{
   window.__newspaper = {
@@ -35134,11 +35152,16 @@ function phase3Stars(){
     const m = byId[id];
     if(!base) return null;
     if(!m) return base;
+    const silDesc = m.silhouetteDesc;
+    const baseLook = base.distanceLook;
+    const distanceLook = eraSightIsPlaceholder(silDesc)
+      ? (eraSightIsPlaceholder(baseLook) ? "" : (baseLook || ""))
+      : (silDesc || baseLook);
     return {
       starId:id,
       displayName:m.displayName || base.displayName,
       locs: base.locs.slice(),
-      distanceLook: m.silhouetteDesc || base.distanceLook,
+      distanceLook: distanceLook,
       distanceLine: m.distanceLine || base.distanceLine,
       locHint: m.locHint || base.locHint,
       rumorTeaser: m.rumorTeaser || base.rumorTeaser,
@@ -35254,13 +35277,25 @@ function coreSilSightStar(id){
     actionLabel:"遠觀",
   };
 }
+function eraSightIsPlaceholder(s){
+  if(typeof freeplayIsPlaceholderLine==="function") return freeplayIsPlaceholderLine(s);
+  const t = String(s||"").trim();
+  if(!t) return true;
+  return /待補|文案待補|選項待補/.test(t);
+}
 function eraSightParagraphs(star){
+  const flavor = String((star && (star.distanceLine || star.distanceLook)) || "").trim();
   return [
     [star && star.distanceLook, ""],
     [star && star.distanceLine, ""],
     [star && star.rumorTeaser, ' class="sub"'],
     [star && star.locHint, ' class="sub"'],
-  ].filter(row=>String(row[0]||"").trim()).map(row=>`<p${row[1]}>${journalText(row[0])}</p>`).join("");
+  ].filter(row=>{
+    const t = String(row[0]||"").trim();
+    if(eraSightIsPlaceholder(t)) return false;
+    if(flavor && t===flavor) return false;
+    return true;
+  }).map(row=>`<p${row[1]}>${journalText(row[0])}</p>`).join("");
 }
 function openStarSighting(star){
   if(!star) return { ok:false };
@@ -35276,7 +35311,8 @@ function openStarSighting(star){
       try{ saveQ(); }catch(_e){}
     }
   }catch(_e){}
-  const flavor = star.distanceLine || star.distanceLook || "只能遠望，時機未到唔好行埋。";
+  const flavorPick = String(star.distanceLine || star.distanceLook || "").trim();
+  const flavor = (flavorPick && !eraSightIsPlaceholder(flavorPick)) ? flavorPick : "只能遠望，時機未到唔好行埋。";
   /* Weave Phase 1-3：拼到呢位紅星嘅情報之後，遠觀多一段「知內情」嘅望法。 */
   let intelPara = "";
   try{ const il = (typeof intelSightLineFor==="function") ? intelSightLineFor(star.starId) : ""; if(il) intelPara = `<p>${journalText(il)}</p>`; }catch(_e){}
@@ -39421,10 +39457,10 @@ function runSoftP0Checks(){
     if(/金龍/.test(scrub.setting||"") || /金龍/.test((scrub.beats[0].lines||[])[0]||"")) bad("c1_scrub_copy");
     if(typeof c1PlayLocId==="function" && c1PlayLocId()!=="agency_ho") bad("c1_play_loc");
     if(showB01HomeModal.toString().indexOf("openLoc(\"cafe_cha\")")>=0 || showB01HomeModal.toString().indexOf("去金龍")>=0) bad("tut_cafe");
-    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s107") bad("soft_rev_attr");
+    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s108") bad("soft_rev_attr");
     try{
       var sq = String((typeof location!=="undefined" && location && location.search) || "");
-      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s107(?:&|$)/.test(sq)) bad("soft_rev_url");
+      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s108(?:&|$)/.test(sq)) bad("soft_rev_url");
       if(/(?:\?|&)v=20a1[1-9](?:&|$)/.test(sq)) bad("v_bumped");
     }catch(_rev){ bad("soft_rev_throw"); }
     if(typeof storyMainProgressLine==="function"){
@@ -39483,8 +39519,8 @@ try{ exposePreviewDebug(); }catch(_e){}
 try{
   if(typeof softPreviewOn==="function" && softPreviewOn()){
     var tip = document.getElementById("start-soft-tip");
-    if(tip && tip.textContent.indexOf("s107")<0){
-      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s107。");
+    if(tip && tip.textContent.indexOf("s108")<0){
+      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s108。");
     }
   }
 }catch(_revTip){}

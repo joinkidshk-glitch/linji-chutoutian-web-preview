@@ -55,7 +55,7 @@ ok('node removal timer kept at 820ms', '}, 820);' in fn)
 
 # ---- 紅線 ----
 ok('SAVE key untouched', 'starVolunteer_map_v19w' in html)
-ok('softRev marker present', 's107' in html)
+ok('softRev marker present', 's108' in html)
 ok('product version marker present', 'v20a10' in html)
 
 print('---')
