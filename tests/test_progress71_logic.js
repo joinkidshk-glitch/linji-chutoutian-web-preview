@@ -345,7 +345,9 @@ function sentenceChecks(tag, line){
       S = freshS(); ux68GuideStat = '';
       const p1 = train71PickerHtml('fill');
       ok('P1：有按數值 chips＋主修分組', p1.indexOf('data-gstat="acting"') >= 0 && p1.indexOf('主修 · 主升演技') >= 0);
-      ok('P1：預設開演技組＋目標入口喺頂', p1.indexOf('設「演技」為主攻目標') >= 0);
+      /* v20a74 改版：主攻目標掣隨功能移除（用戶 2026-11-10 16:06 拍板）；
+         舊斷言「目標入口喺頂」改為驗冇掣冇字樣；喺 v73 index 上行會 FAIL（反證）。 */
+      ok('P1(v74)：預設開演技組＋冇主攻掣／冇「主攻」字樣', p1.indexOf('data-gtgt') < 0 && p1.indexOf('主攻') < 0);
       ok('P1：冇已報名課程嗰陣冇排入掣', p1.indexOf('data-t71pick') < 0);
       ok('P1(v73)：未報名課只出一句純文字（課名＋未報名——去…報名）',
          p1.indexOf('train73-note') >= 0 && /「.+」未報名——去 .+ 報名。/.test(p1));
@@ -367,14 +369,15 @@ function sentenceChecks(tag, line){
       ok('P2(v73)：已報名卡冇加練跳轉（零 data-gloc／冇「加練」）',
          p2.indexOf('data-gloc') < 0 && p2.indexOf('加練') < 0);
 
-      /* P3：目標數值預設開組（prefs 設 vocal → 開歌藝組） */
-      ux68SetTargetStat('vocal');
-      ux68GuideStat = '';
+      /* P3(v74)：主攻目標成個移除（用戶 2026-11-10 16:06 拍板）——picker 預設改用
+         session 上次睇開嗰組（ux68GuideStat），唔再讀 prefs 目標。
+         （v71 舊斷言「prefs 設目標 → 預設開嗰組＋目標掣顯示已設定」隨功能移除改版；
+         喺 v73 index 上行會 FAIL，係反證。） */
+      ux68GuideStat = 'vocal';
       S = freshS();
       const p3 = train71PickerHtml('day');
-      ok('P3：預設開目標數值組（歌唱課出現）', p3.indexOf(COURSE_DEFS.train_vocal.name) >= 0 && p3.indexOf('主修 · 主升歌藝') >= 0);
-      ok('P3：目標掣顯示已設定', p3.indexOf('已設為主攻目標') >= 0);
-      ux68SetTargetStat('');
+      ok('P3(v74)：重開 picker 記住 session 上次組（歌藝組）', p3.indexOf(COURSE_DEFS.train_vocal.name) >= 0 && p3.indexOf('主修 · 主升歌藝') >= 0);
+      ok('P3(v74)：picker 冇主攻掣、冇「目標」chip 標記', p3.indexOf('data-gtgt') < 0 && p3.indexOf('guide68-tgtbtn') < 0 && p3.indexOf('class="gt"') < 0);
 
       /* P4：逐日唯讀（唔係編輯態）——已報名課都唔出排入掣 */
       ux68GuideStat = '';
