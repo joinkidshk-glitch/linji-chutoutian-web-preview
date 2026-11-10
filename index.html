@@ -4603,8 +4603,6 @@ body.day-res-open .day-row{
 .ux68-ghead-urgent{ color:#9c3d1e; border-bottom-color:rgba(180,80,40,.55); }
 .ux68-note{ font-size:.8rem; font-weight:700; color:#9c3d1e; padding:1px 2px 5px; line-height:1.45; }
 .ux68-why{ display:block; font-size:.74rem; font-weight:700; color:#9c3d1e; margin-top:3px; line-height:1.4; }
-.ux68-tgt{ display:inline-block; margin-left:6px; padding:0 6px; font-size:.68rem; font-weight:800; line-height:1.5;
-  color:#6b4e2e; background:#fbf3df; border:1px solid #b98a2f; border-radius:999px; vertical-align:1px; white-space:nowrap; }
 .ux68-locked-toggle{ width:100%; margin-top:12px; padding:9px 10px; text-align:left; cursor:pointer;
   background:transparent; border:1px dashed rgba(120,95,60,.55); border-radius:10px;
   color:#7a6248; font:inherit; font-size:.8rem; font-weight:700; }
@@ -4616,12 +4614,6 @@ body.day-res-open .day-row{
   padding:6px 11px; font:inherit; font-size:.8rem; font-weight:700; cursor:pointer; }
 .guide68-chip.on{ background:#6b4e2e; color:#fff8e8; border-color:#4a351e; }
 .guide68-chip .gv{ opacity:.72; font-weight:600; margin-left:3px; }
-.guide68-chip .gt{ color:#b98a2f; font-size:.66rem; font-weight:800; margin-left:4px; }
-.guide68-chip.on .gt{ color:#f2d492; }
-.guide68-tgtrow{ margin:0 0 10px; }
-.guide68-tgtbtn{ border:1px solid #b98a2f; background:#fbf3df; color:#6b4e2e; border-radius:999px;
-  padding:6px 12px; font:inherit; font-size:.78rem; font-weight:800; cursor:pointer; }
-.guide68-tgtbtn.is-on{ background:#b98a2f; color:#fff8e8; }
 .guide68-row{ background:#fff8e8; border:1px solid #c4a574; border-radius:12px; padding:10px 12px; margin:0 0 8px; }
 .guide68-cname{ font-weight:800; color:#43301c; }
 .guide68-gain{ color:#7a4d12; font-weight:800; margin-left:6px; white-space:nowrap; }
@@ -24858,12 +24850,12 @@ async function refreshCopyPacksFromDisk(){
        開頁時解析 applyTrainLesson 函數源碼入面每課嘅 applyGain60({...}) 字面量衍生，
        課程名／地點／附帶開放／解鎖門檻分別嚟自 COURSE_DEFS／TRAIN_BY_TYPE／
        COURSE_ENROLL_EXTRA／maybeUnlockMidCourses 同一套規則（進度即時計）。
-       每課有「前往」真跳去地點開 sheet。目標數值存 prefs（ux68TargetStat），唔入存檔。
+       每課有「前往」真跳去地點開 sheet。（目標數值功能已於 v20a74 成個移除。）
    (2) 地點 sheet 選項整理：openLoc 建完掣之後做 organizer 後處理（唔改 openLoc 本體邏輯）——
        要事置頂（訊號：可播劇情／何生人情到期 favorDue／拍攝限期 deadlineDay／
        通告季尾落欄／CALIB60 節點時窗尾）、意圖分組（接工／訓練／社交・劇情／休息・雜項，
        分類覆蓋現有全部掣型，未識別者入休息・雜項兜底，唔會漏）、
-       未開放摺疊（disabled／費用欄＝「未開放」／已完成劇情）、目標標示（▲數值名）。
+       未開放摺疊（disabled／費用欄＝「未開放」／已完成劇情）。（目標標示▲已於 v20a74 移除。）
    全部防禦式 try/catch：出錯保持原本 sheet／手帳原樣。 */
 
 /* ---------- (1a) 增益表：由 applyTrainLesson 源碼衍生 ---------- */
@@ -24985,14 +24977,8 @@ function book70SplitForStat(stat){
   prim.sort(byGain); sec.sort(byGain);
   return { prim, sec };
 }
-/* ---------- (1c) 目標數值（prefs，唔入存檔） ---------- */
-function ux68TargetStat(){
-  try{ const p = loadPrefs(); return (p && p.ux68TargetStat) ? String(p.ux68TargetStat) : ""; }
-  catch(_e){ return ""; }
-}
-function ux68SetTargetStat(stat){
-  try{ setPref("ux68TargetStat", stat || ""); }catch(_e){}
-}
+/* ---------- (1c) v20a74：目標數值功能成個移除（用戶 2026-11-10 16:06 拍板） ----------
+   讀寫 prefs 嗰兩個函數已刪；玩家舊 prefs 殘值冇程式再讀，自然失效。 */
 const UX68_GUIDE_STATS = ["acting","stage","vocal","looks","charm","iq","stamina","fame","popularity","stress"];
 let ux68GuideStat = "";
 function ux68Esc(s){
@@ -25003,15 +24989,17 @@ function ux68Esc(s){
    v68–v70 指南嘅數據衍生（增益解析／主修附帶分家／狀態／地點）全部保留同源，
    呈現改入排程選擇流程：撳「全日訓練」開本選擇器（ctx=fill）；逐日改行程揀
    「訓練」分類出同一個清單（ctx=day）。已報名先排得入；未報名／未開放出
-   狀態＋前往報名，唔可以直接排（跟返報名模型）。目標數值入口喺選擇器頂部。
+   狀態＋前往報名，唔可以直接排（跟返報名模型）。
    v20a73 PICKER73（用戶 15:16 拍板修正）：選擇器本份只係方便排訓練行程——
    未開放成課隱藏（名同條件都唔出）；未報名唔出卡唔出掣，只出一句純文字
    講明去邊報名；所有「前往」跳轉（報名／報主課／加練／去大地圖）全數刪除，
-   picker 內冇任何元素會令玩家離開手帳／排程上下文。 */
+   picker 內冇任何元素會令玩家離開手帳／排程上下文。
+   v20a74 TARGET74（用戶 16:06 拍板）：目標數值功能成個移除——設定掣、目標預設
+   分組、地點 sheet ▲標示全刪；選擇器預設改用 session 上次睇開嗰組
+   （ux68GuideStat），未揀過就開演技組。 */
 function train71Stat(){
-  const tgt = ux68TargetStat();
   if(!ux68GuideStat || UX68_GUIDE_STATS.indexOf(ux68GuideStat) < 0)
-    ux68GuideStat = (tgt && UX68_GUIDE_STATS.indexOf(tgt) >= 0) ? tgt : "acting";
+    ux68GuideStat = "acting";
   return ux68GuideStat;
 }
 function train71CanPick(ctx){
@@ -25101,7 +25089,6 @@ function train73EnrollNote(cid, stat){
 }
 function train71PickerHtml(ctx){
   const SL = (typeof STAT_LABEL !== "undefined" && STAT_LABEL) || {};
-  const tgt = ux68TargetStat();
   const stat = train71Stat();
   const editable = !!(typeof S !== "undefined" && S && S.homeEditable);
   let h = '<p class="guide68-intro">' + (ctx === "fill"
@@ -25112,12 +25099,8 @@ function train71PickerHtml(ctx){
   h += '<div class="guide68-chips">' + UX68_GUIDE_STATS.map(k=>{
     const v = (typeof S !== "undefined" && S) ? (Number(S[k]) || 0) : 0;
     return '<button type="button" class="guide68-chip' + (k === stat ? " on" : "") + '" data-gstat="' + k + '">'
-      + ux68Esc(SL[k] || k) + '<span class="gv">' + v + '</span>'
-      + (k === tgt ? '<span class="gt">目標</span>' : "") + '</button>';
+      + ux68Esc(SL[k] || k) + '<span class="gv">' + v + '</span></button>';
   }).join("") + '</div>';
-  const isTgt = (tgt === stat);
-  h += '<div class="guide68-tgtrow"><button type="button" class="guide68-tgtbtn' + (isTgt ? " is-on" : "")
-    + '" data-gtgt="' + stat + '">' + (isTgt ? "✓ 已設為主攻目標（撳取消）" : "設「" + ux68Esc(SL[stat] || stat) + "」為主攻目標") + '</button></div>';
   /* v20a73：零已報名（例如新遊戲）唔好死胡同——純文字講明玩法，picker 照關得返。 */
   const _en73 = (typeof S !== "undefined" && S && S.enrolled) || {};
   if(!Object.keys(_en73).some(k=> _en73[k]))
@@ -25189,13 +25172,6 @@ function train71HandleClick(ev, ctx){
   const chip = t.closest("[data-gstat]");
   if(chip){
     ux68GuideStat = chip.getAttribute("data-gstat") || "acting";
-    if(ctx === "fill") train71RenderPanel(); else renderNotebook();
-    return true;
-  }
-  const tg = t.closest("[data-gtgt]");
-  if(tg){
-    const s = tg.getAttribute("data-gtgt") || "";
-    ux68SetTargetStat(ux68TargetStat() === s ? "" : s);
     if(ctx === "fill") train71RenderPanel(); else renderNotebook();
     return true;
   }
@@ -25343,27 +25319,7 @@ function ux68MatchBtn(it, key){
   if(key.indexOf("gig:") === 0){ const t = key.slice(4); return it.title === t || it.title.endsWith("：" + t); }
   return false;
 }
-/* ---------- (2c) 目標標示 ---------- */
-function ux68ApplyTargetBadges(L, info){
-  const tgt = ux68TargetStat();
-  if(!tgt) return;
-  const label = ((typeof STAT_LABEL !== "undefined" && STAT_LABEL) || {})[tgt] || tgt;
-  const gains = ux68ParseGainTable();
-  const mainCid = ((typeof TRAIN_BY_TYPE !== "undefined" && TRAIN_BY_TYPE[L.type]) || {}).courseId;
-  info.forEach(it=>{
-    if(it.locked) return;
-    let hit = false;
-    if(it.group === "train" && mainCid && gains[mainCid] && gains[mainCid][tgt]) hit = true;
-    else if(it.group === "rest" && tgt === "stress" && it.title === "休息室歇陣") hit = true;
-    else if(it.group === "work" && (tgt === "fame" || tgt === "popularity")
-      && (it.title.indexOf("試鏡入口") === 0 || it.title.indexOf("接通告") === 0)) hit = true;
-    if(hit && !it.btn.querySelector(".ux68-tgt")){
-      const s = document.createElement("span");
-      s.className = "ux68-tgt"; s.textContent = "▲" + label;
-      it.btn.appendChild(s);
-    }
-  });
-}
+/* ---------- (2c) v20a74：目標標示已隨目標數值功能成個移除 ---------- */
 /* ---------- (2d) organizer 主體 ---------- */
 function ux68OrganizeLocSheet(L){
   const box = document.getElementById("loc-acts");
@@ -25386,7 +25342,6 @@ function ux68OrganizeLocSheet(L){
   const hasLocked = info.some(it=>it.locked);
   const groupSet = new Set(info.filter(it=>!it.locked && !it.urgent).map(it=>it.group));
   if(!hasUrgent && !hasLocked && groupSet.size <= 1) return;
-  ux68ApplyTargetBadges(L, info);
   const frag = document.createDocumentFragment();
   const mkHead = (txt, urgent)=>{
     const d = document.createElement("div");
