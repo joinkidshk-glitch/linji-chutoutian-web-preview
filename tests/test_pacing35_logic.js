@@ -42,18 +42,18 @@ function extractArrDecl(decl){
   }
   throw new Error('arr end not found: '+decl);
 }
-function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1988, 2, 7)) / 86400000); }
+function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1990, 2, 7)) / 86400000); }
 
 /* ================================================================
    段一 (a)：P0-2(c)——第 3 週、演技 ~35 嘅真狀態行真通告板
    中階工可報名（星河）／只差少少（獅子山）；《靈異》仍然係未達目標。
    ================================================================ */
 (function(){
-  var S = { dayIndex: dayIndexOf(1988,3,21), acting:35, iq:22, stamina:120, looks:22, charm:16,
+  var S = { dayIndex: dayIndexOf(1990,3,21), acting:35, iq:22, stamina:120, looks:22, charm:16,
     stage:14, vocal:14, fame:8, popularity:5, stress:10, money:9000,
     flags:{}, shoots:[], booked:[], board:{}, known:{}, npcs:{ director:4, agent:12, colleague:8 },
     enrolled:{}, mockDebts:[], mockRumors:[] };
-  var START = { y:1988, m:3, d:7 };
+  var START = { y:1990, m:3, d:7 };
   var GIGS;
   eval(extractArrDecl('let GIGS = [').replace('let GIGS', 'GIGS'));
   eval(extractConst('STAT_LABEL').replace('const STAT_LABEL', 'var STAT_LABEL'));
@@ -81,12 +81,12 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   ok('a5 mid gig B on lion spring board', !!midB);
   ok('a6 mid gig B near-miss: gap total = 3 (acting 35 -> 38)', !!midB && gigGapTotal34(midB)===3);
 
-  S.dayIndex = dayIndexOf(1989,3,21);
+  S.dayIndex = dayIndexOf(1991,3,21);
   mergeMidGigs35();
-  ok('a7 mid gigs removed after calendar year 1989', !GIGS.some(g=>g.id==='gig_1988_mid35_longmen_night') && !GIGS.some(g=>g.id==='gig_1988_mid35_lion_chase'));
-  S.dayIndex = dayIndexOf(1988,3,21);
+  ok('a7 mid gigs removed after calendar year 1991', !GIGS.some(g=>g.id==='gig_1988_mid35_longmen_night') && !GIGS.some(g=>g.id==='gig_1988_mid35_lion_chase'));
+  S.dayIndex = dayIndexOf(1990,3,21);
   mergeMidGigs35();
-  ok('a8 mid gigs restored back in 1988 (idempotent merge)', GIGS.filter(g=>g.id==='gig_1988_mid35_longmen_night').length===1);
+  ok('a8 mid gigs restored back in 1990 (idempotent merge)', GIGS.filter(g=>g.id==='gig_1988_mid35_longmen_night').length===1);
 })();
 
 /* ================================================================

@@ -48,7 +48,7 @@ var localStorage = { getItem: ()=>null, setItem: ()=>{}, removeItem: ()=>{} };
 var S = null;
 var refreshMoneyHud = function(){};
 var softPreviewOn = function(){ return false; };
-eval("var START = { y:1988, m:3, d:7 };");
+eval("var START = { y:1990, m:3, d:7 };");
 for(const c of ['STAT_LABEL','STAT_MAX','STRESS_MAX','LOCS','COURSE_DEFS']) eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
 for(const c of ['CALIB60_FAME_BANDS','CALIB60_ATTR_BANDS','CALIB60_SCALED_KEYS','CALIB60_NODE_WINDOWS','CALIB60_NODE_TITLES']) eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
 const FNS = ['R','clamp','statHardMax','dualTrackNumbers','syncDualTracks','apply',
@@ -144,7 +144,7 @@ ok('校準後 Arc A（慢速）dual 125 到達喺 60–75 週（實得 ' + calA.
 ok('校準後 Arc C（穩定）dual 125 到達喺 50–75 週（實得 ' + calC.crossDual + '）', calC.crossDual >= 50 && calC.crossDual <= 75);
 const med = (calA.crossDual + calC.crossDual) / 2;
 ok('校準後兩情境中位喺 60–75 週（實得 ' + med + '）', med >= 60 && med <= 75);
-ok('Arc A 1990 年尾（143 週）dual ≥ 240（實得 ' + calA.atEnd.dual + '，門檻 125）', calA.atEnd.week === 143 && calA.atEnd.dual >= 240);
+ok('Arc A 1992 年尾（143 週）dual ≥ 240（實得 ' + calA.atEnd.dual + '，門檻 125）', calA.atEnd.week === 143 && calA.atEnd.dual >= 240);
 ok('Arc A fame 60 到達 ≤ 100 週（實得 ' + calA.crossFame60 + '）', calA.crossFame60 > 0 && calA.crossFame60 <= 100);
 ok('Arc A credit 55 到達 ≤ 65 週（實得 ' + calA.crossCredit55 + '）', calA.crossCredit55 > 0 && calA.crossCredit55 <= 65);
 ok('Arc C 結局週（101）dual ≥ 180（實得 ' + calC.atEnd.dual + '）', calC.atEnd.week === 101 && calC.atEnd.dual >= 180);
@@ -168,14 +168,14 @@ for(let wk = 1; wk <= 43; wk++){
   }
 }
 softPreviewOn = function(){ return false; };
-ok('紅線（v20a65 更新）：1988（wk1–43）×soft×fame 生活費＝首年緩坡 1100/1300/1500/1700', econOk);
+ok('紅線（v20a65 更新；v20a66 年份 +2）：1990（wk1–43）×soft×fame 生活費＝首年緩坡 1100/1300/1500/1700', econOk);
 S = baseSave(); S.fame = 0;
-ok('1989 wk50 生活費 2400+300 = 2700', livingCostBand(50).mid === 2700);
-S.fame = 130; ok('1989 wk50 fame 130 → 2900（+成名 200）', livingCostBand(50).mid === 2900);
-S.fame = 300; ok('1989 wk50 fame 300 → 3100（+成名 400）', livingCostBand(50).mid === 3100);
-S.fame = 0;   ok('1990 wk100 生活費 2400+600 = 3000', livingCostBand(100).mid === 3000);
-S.fame = 260; ok('1990 wk100 fame 260 → 3400', livingCostBand(100).mid === 3400);
-S.fame = 0;   ok('1989 標籤講明物價', livingCostBand(50).label.indexOf('1989 年物價') >= 0);
+ok('1991 wk50 生活費 2400+300 = 2700', livingCostBand(50).mid === 2700);
+S.fame = 130; ok('1991 wk50 fame 130 → 2900（+成名 200）', livingCostBand(50).mid === 2900);
+S.fame = 300; ok('1991 wk50 fame 300 → 3100（+成名 400）', livingCostBand(50).mid === 3100);
+S.fame = 0;   ok('1992 wk100 生活費 2400+600 = 3000', livingCostBand(100).mid === 3000);
+S.fame = 260; ok('1992 wk100 fame 260 → 3400', livingCostBand(100).mid === 3400);
+S.fame = 0;   ok('1989 標籤講明物價', livingCostBand(50).label.indexOf('1991 年物價') >= 0);
 ok('livingCostEstimate = band mid（預覽/扣款一致）', livingCostEstimate(50) === livingCostBand(50).mid);
 
 S = baseSave(); S.dayIndex = 7 * 30; S.fame = 10;
@@ -188,30 +188,30 @@ const bp3 = takeSoftBridgePay(3600);
 ok('散工正薪：fame 250 → ×0.75 = 2700', bp3.pay === 2700 && bp3.stipend === false);
 
 /* ================= (4) 節點漏失 ================= */
-const DAY = (y, m, d)=> Math.round((Date.UTC(y, m-1, d) - Date.UTC(1988, 2, 7)) / 864e5);
+const DAY = (y, m, d)=> Math.round((Date.UTC(y, m-1, d) - Date.UTC(1990, 2, 7)) / 864e5);
 function missState(dayIndex, done){
   return { dayIndex, story: { done: done || {} }, flags: {} };
 }
-let ms = missState(DAY(1989, 10, 15));
+let ms = missState(DAY(1991, 10, 15));
 let newly = calib60MissedScan(ms);
 const newlyIds = newly.map(x => x.id).sort();
-ok('1989 秋中：C6（1988 窗）＋C7（夏窗）登記漏失', newlyIds.join() === 'C6,C7');
-ok('漏失紀錄帶標題＋時期（唔劇透）', ms.calib60Missed.C7.title === '暴雨救場' && ms.calib60Missed.C7.whenLabel === '1989 年夏');
+ok('1991 秋中：C6（1990 窗）＋C7（夏窗）登記漏失', newlyIds.join() === 'C6,C7');
+ok('漏失紀錄帶標題＋時期（唔劇透）', ms.calib60Missed.C7.title === '暴雨救場' && ms.calib60Missed.C7.whenLabel === '1991 年夏');
 ok('C11（夏／秋窗）秋未完窗唔登記', !ms.calib60Missed.C11);
 ok('C8（秋窗）身處秋季唔登記', !ms.calib60Missed.C8);
 ms.story.done.C7 = true;
 calib60MissedScan(ms);
 ok('其後完成 → 自動除名', !ms.calib60Missed.C7 && !!ms.calib60Missed.C6);
-let ms2 = missState(DAY(1989, 6, 1));
+let ms2 = missState(DAY(1991, 6, 1));
 calib60MissedScan(ms2);
-ok('1989 夏初：得 C6 過窗，C7 未', !!ms2.calib60Missed.C6 && !ms2.calib60Missed.C7);
-let ms3 = missState(DAY(1991, 3, 15)); ms3.ending410 = { kind: 'E1' };
+ok('1991 夏初：得 C6 過窗，C7 未', !!ms2.calib60Missed.C6 && !ms2.calib60Missed.C7);
+let ms3 = missState(DAY(1993, 3, 15)); ms3.ending410 = { kind: 'E1' };
 calib60MissedScan(ms3);
 ok('已收科（ending410）→ C17 唔登記', !ms3.calib60Missed.C17);
-let ms4 = missState(DAY(1991, 3, 15));
+let ms4 = missState(DAY(1993, 3, 15));
 calib60MissedScan(ms4);
-ok('未收科過 1990 冬 → C17 登記', !!ms4.calib60Missed.C17);
-const oldSave = { dayIndex: DAY(1989, 10, 15), story: { done: { C6: true } }, stress: 50, fame: 10, stage: 5, acting: 5, industryCreditDelta: 0 };
+ok('未收科過 1992 冬 → C17 登記', !!ms4.calib60Missed.C17);
+const oldSave = { dayIndex: DAY(1991, 10, 15), story: { done: { C6: true } }, stress: 50, fame: 10, stage: 5, acting: 5, industryCreditDelta: 0 };
 const normed = normalizeSaveObj(JSON.parse(JSON.stringify(oldSave)));
 ok('舊檔 normalize 靜靜補登：C7 入回憶、C6（已完成）唔入', !!normed.calib60Missed && !!normed.calib60Missed.C7 && !normed.calib60Missed.C6);
 

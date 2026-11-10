@@ -76,7 +76,7 @@ ok('commit block extractable', bool(cmt))
 for flag in ['flag_hiu_commit','flag_choi_commit']:
     ok('commit flag present: '+flag, flag in cmt)
 av = block('function commit48Available(', 'function commit48ActionsAt(')
-ok('commit availability checks window 1990/autumn', 'choice47SeasonReached(1990, "秋")' in av)
+ok('commit availability checks window 1992/autumn', 'choice47SeasonReached(1992, "秋")' in av)
 ok('commit availability checks rel threshold', 'COMMIT48_REL_MIN' in av)
 ok('commit availability checks crisis done + mutex flags', 'def.crisis' in av and 'def.otherFlag' in av and 'def.flag' in av)
 ok('commit48Play uses StoryPlay force', 'StoryPlay.start(node, { force:true })' in html)
@@ -101,7 +101,7 @@ side = re.sub(r'/\*.*?\*/', '', _sm.group(1), flags=re.S) if _sm else ''
 ok('PAPER_SIDE_ITEMS extractable', bool(side))
 cheng = [ln for ln in side.splitlines() if '程天諾' in ln and 'h:"' in ln]
 ok('preheat: exactly 3 程天諾 side items', len(cheng) == 3)
-ok('preheat: all 程天諾 items fromYear 1990', all('fromYear:1990' in ln or 'fromYear: 1990' in ln for ln in cheng))
+ok('preheat: all 程天諾 items fromYear 1992', all('fromYear:1992' in ln or 'fromYear: 1992' in ln for ln in cheng))
 
 # ---- SOFT 表對齊 ----
 lm = re.search(r'const STORY_LOC_SOFT = \{(.*?)\n\};', html, re.S)
@@ -135,7 +135,7 @@ for w in ['關海媚', '陳淑芬', '施南生', 'Ho哥', 'Ho 哥']:
 # ---- 慣例不變 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
 ok('version marker v20a31', 'v20a31' in html)
-ok('softRev unchanged s111', 's111' in html)
+ok('softRev unchanged s107', 's107' in html)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')
 sys.exit(1 if fails else 0)

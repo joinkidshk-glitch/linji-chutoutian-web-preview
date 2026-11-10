@@ -1,7 +1,7 @@
 // v20a63 頒獎禮群星版・邏輯測試：
 // (1) fellows 衍生：嗰年嗰媒介 pack 通告＋LEADSTAR59 主演，按片酬序、每星一部、唔用冇 sprite 嘅主演（彭兆基）。
 // (2) 玩家自己殺青過嘅作品唔會變對手；年份唔串。
-// (3) 冇主演數據（1989）→ 紅星池按媒介兜底：確定性、唔重複、唔出程天諾（1988 零出場紅線，池內根本冇佢）。
+// (3) 冇主演數據（1991）→ 紅星池按媒介兜底：確定性、唔重複、唔出程天諾（1990 零出場紅線，池內根本冇佢）。
 // (4) beats：入圍揭曉唱出得主星名＋作品；得獎＋有海報先有 glamour beat；冇海報得獎維持 9–10 秒（v64 enter 走路入場後基線）。
 // (5) focus cat 揀啱（won 優先 won cat、nominated 揀 nominated cat）。
 // 反證：對 v20a62 index 行 → AWARDS63 函數唔存在 → FAIL。
@@ -79,32 +79,32 @@ const CER_AD   = { id:'award_harbour_ad',   medium:'ad',   matchTypes:['廣告']
 
 /* ---- (1) 真主演衍生 ---- */
 S.wrapHistory = [];
-let fl = awards63Fellows(CER_FILM, 1988);
-ok('1988 電影 fellows 有 3 位', fl.length === 3);
+let fl = awards63Fellows(CER_FILM, 1990);
+ok('1990 電影 fellows 有 3 位', fl.length === 3);
 ok('按片酬序：陸柏言《夜海鎗火》居首', fl[0] && fl[0].star === '陸柏言' && fl[0].title === '夜海鎗火' && fl[0].starId === 'luk_baakyin');
 ok('廖炳星只出現一次（取最高 pay 嗰部《詭校夜話》）', fl.filter(f=>f.star==='廖炳星').length === 1 && fl.some(f=>f.title==='詭校夜話') && !fl.some(f=>f.title==='陰陽夜更'));
 ok('第三位係麥震東《神探闖天關》', fl[2] && fl[2].star === '麥震東');
 ok('真主演 fellows assigned=false', fl.every(f=>f.assigned === false));
 ok('有海報嘅 fellow 帶 poster（夜海鎗火係試點十部）', fl[0].poster === 'data:poster:gig_1988_film_harbour_high');
 
-let flAd = awards63Fellows(CER_AD, 1988);
+let flAd = awards63Fellows(CER_AD, 1990);
 ok('廣告 fellows 唔用冇 sprite 嘅彭兆基', !flAd.some(f=>f.gigId==='gig_1988_ad_central_winter_low') && flAd.length >= 2 && flAd.every(f=>f.starId));
 
-let flTv = awards63Fellows(CER_TV, 1988);
+let flTv = awards63Fellows(CER_TV, 1990);
 ok('電視 fellows：陸柏言＋齊鎮海', flTv.length === 2 && flTv[0].star === '陸柏言' && flTv[1].star === '齊鎮海');
 
 /* ---- (2) 自己作品唔做對手＋年份隔離 ---- */
 S.wrapHistory = [{ gigId:'gig_1988_film_harbour_high' }];
-fl = awards63Fellows(CER_FILM, 1988);
+fl = awards63Fellows(CER_FILM, 1990);
 ok('玩家殺青過嘅《夜海鎗火》唔做對手', !fl.some(f=>f.title==='夜海鎗火') && fl[0] && fl[0].star === '廖炳星');
 S.wrapHistory = [];
-const fl89 = awards63Fellows(CER_FILM, 1989);
-ok('1989 fellows 只用 1989 作品', fl89.length === 3 && fl89.every(f=>/^gig_1989_/.test(f.gigId)));
+const fl89 = awards63Fellows(CER_FILM, 1991);
+ok('1991 fellows 只用 1991 作品（gig_1989_* id 舊曆編碼，解析 +2）', fl89.length === 3 && fl89.every(f=>/^gig_1989_/.test(f.gigId)));
 
 /* ---- (3) 池兜底 ---- */
-ok('1989 fellows 全部 assigned=true（池兜底）', fl89.every(f=>f.assigned === true));
+ok('1991 fellows 全部 assigned=true（池兜底）', fl89.every(f=>f.assigned === true));
 ok('兜底星全部喺電影池內且唔重複', fl89.every(f=>AWARDS63_POOL.film.indexOf(f.starId)>=0) && new Set(fl89.map(f=>f.starId)).size === fl89.length);
-const fl89b = awards63Fellows(CER_FILM, 1989);
+const fl89b = awards63Fellows(CER_FILM, 1991);
 ok('兜底確定性（兩次呼叫結果一致）', JSON.stringify(fl89) === JSON.stringify(fl89b));
 const poolNames = Object.values(AWARDS63_POOL).flat().map(id=>awards63StarName(id));
 ok('紅星池冇程天諾（紅線）', poolNames.indexOf('程天諾') < 0 && poolNames.every(n=>n));

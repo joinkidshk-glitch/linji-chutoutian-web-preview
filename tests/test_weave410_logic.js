@@ -1,6 +1,6 @@
 // WEAVE_PHASE4_10 邏輯測試（v20a33）：結局系統。
 // 行真路徑——STORY_SPINE_NODE_C17_410 覆寫（applyStorySpineOverrides410 套落真 pack nodes）
-// → StoryOC.listOpen 真閘（STORY_GATE_3Y C17：C13 done＋1990 冬）→ ending410EveNode 動態重建
+// → StoryOC.listOpen 真閘（STORY_GATE_3Y C17：C13 done＋1992 冬）→ ending410EveNode 動態重建
 // （choices＝endingEveOptions410 相鄰規則）→ StoryOC.applyChoice 真寫入
 // → ending410AfterEveChoice 真組裝（resolveEnding410 判定＋S.ending410 落檔＋modal 逐頁呈現）。
 // resolveEnding410 判定矩陣用合成狀態逐個命中；純函數深等驗證；
@@ -75,7 +75,7 @@ var modalPages410 = [];
 var modal = function(htmlStr, buttons){ modalPages410.push({ html: htmlStr, buttons: buttons || [] }); };
 
 const SRC = [
-  "var START = { y:1988, m:3, d:7 };",
+  "var START = { y:1990, m:3, d:7 };",
   extractFn('function dateObj'),
   extractFn('function calendarSeason'),
   extractFn('function weekNumNow'),
@@ -163,10 +163,10 @@ var displayDateObj = function(){ return dateObj(); };
 
 ok('harness: 結局系統函數載入', typeof resolveEnding410 === 'function' && typeof endingEveOptions410 === 'function' && typeof applyStorySpineOverrides410 === 'function');
 
-function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1988, 2, 7)) / 86400000); }
+function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1990, 2, 7)) / 86400000); }
 function baseSave(over){
   return Object.assign({
-    dayIndex: dayIndexOf(1990, 12, 15), money: 900, fame: 20, stage: 0, acting: 8, popularity: 30,
+    dayIndex: dayIndexOf(1992, 12, 15), money: 900, fame: 20, stage: 0, acting: 8, popularity: 30,
     stress: 0, industryCredit: 0, industryCreditDelta: 0,
     flags: {}, routes: {}, mockCredits: [], mockDebts: [], mockRumors: [], inventory: {},
     castingTags: [], npcs: { agent: 0, director: 0, colleague: 0, reporter: 0, stylist: 0, rival: 0 },
@@ -286,12 +286,12 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
 
 /* ================= (b) 觸發閘＋覆寫 ================= */
 {
-  loadGame(baseSave({ dayIndex: dayIndexOf(1989, 12, 15), story: { flags: {}, rel: {}, done: { C13: true }, choices: {} } }));
-  ok('閘：1989 冬（yearEq 唔中）→ C17 唔開', !openIds().includes('C17'));
+  loadGame(baseSave({ dayIndex: dayIndexOf(1991, 12, 15), story: { flags: {}, rel: {}, done: { C13: true }, choices: {} } }));
+  ok('閘：1991 冬（yearEq 唔中）→ C17 唔開', !openIds().includes('C17'));
   loadGame(baseSave({ story: { flags: {}, rel: {}, done: {}, choices: {} } }));
-  ok('閘：1990 冬但 C13 未 done → C17 唔開', !openIds().includes('C17'));
+  ok('閘：1992 冬但 C13 未 done → C17 唔開', !openIds().includes('C17'));
   loadGame(baseSave({ story: { flags: {}, rel: {}, done: { C13: true }, choices: {} } }));
-  ok('閘：1990 冬＋C13 done → C17 開', openIds().includes('C17'));
+  ok('閘：1992 冬＋C13 done → C17 開', openIds().includes('C17'));
   const n = node('C17');
   ok('覆寫：C17 係「三年收科」＋locId tvb_longmen＋有 playerOffer', n.title === '三年收科' && n.locId === 'tvb_longmen' && !!n.playerOffer);
   ok('覆寫：舊十檔清零（冇 endingId choices／冇 E01 字串／冇 ending_e 旗）',

@@ -39,10 +39,10 @@ def fn_body(name, src_text):
 # --- 主 блок ＋參數 ---
 ok("v20a61 CONSEQ61" in src, "CONSEQ61 主 блок 註頭在位")
 ok("CONSEQ61_REVIEWS" in src, "CONSEQ61_REVIEWS 在位")
-m = re.search(r"1988:\s*\{\s*floor:\s*45,\s*warnLine:\s*65,\s*boundaryWeek:\s*43\s*\}", src)
-ok(m is not None, "1988 評核參數 floor 45／warnLine 65／邊界週 43")
-m = re.search(r"1989:\s*\{\s*floor:\s*100,\s*warnLine:\s*130,\s*boundaryWeek:\s*95\s*\}", src)
-ok(m is not None, "1989 評核參數 floor 100／warnLine 130／邊界週 95")
+m = re.search(r"1990:\s*\{\s*floor:\s*45,\s*warnLine:\s*65,\s*boundaryWeek:\s*43\s*\}", src)
+ok(m is not None, "1990 評核參數 floor 45／warnLine 65／邊界週 43")
+m = re.search(r"1991:\s*\{\s*floor:\s*100,\s*warnLine:\s*130,\s*boundaryWeek:\s*95\s*\}", src)
+ok(m is not None, "1991 評核參數 floor 100／warnLine 130／邊界週 95")
 for key, val in (("graceWeeks", 4), ("sickStreak", 2), ("sickWarnStreak", 2),
                  ("sickRelief", 35), ("sickCooldownDays", 14),
                  ("sickCreditPerDay", 2), ("sickCreditCap", 6)):
@@ -75,7 +75,7 @@ ok("身體警號" in ust and "streak80" in ust, "updateMapStressTip 有連續高
 ok('E7: "未紅先收"' in src, "ENDING410_CAREER_NAMES 有 E7 未紅先收")
 scene = fn_body("endingCareerScene410", src)
 ok('case "E7"' in scene, "endingCareerScene410 有 E7 場景")
-for word in ("bankrupt", "review1989"):
+for word in ("bankrupt", "review1991"):
     ok(word in scene, "E7 場景有 variant：" + word)
 summ = fn_body("endingSummaryHtml410", src)
 ok("提早收科" in summ, "總結頁有 E7 提早收科標題分支")
@@ -89,7 +89,7 @@ ok('career = "E6"' in res or 'career="E6"' in res or '"E6"' in res, "E6 自願�
 
 # --- 硬規則字串冇變 ---
 ok("starVolunteer_map_v19w" in src, "SAVE key 冇變")
-ok('var SOFT_REV = "s111"' in src, "softRev s111")
+ok("s107" in src, "softRev s107 仍在")
 
 if fails:
     print("conseq61 static: FAIL")

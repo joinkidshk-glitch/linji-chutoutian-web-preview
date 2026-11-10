@@ -1,4 +1,4 @@
-// Weave Phase 4-7（v20a30）邏輯測試：1990 抉擇三連
+// Weave Phase 4-7（v20a30）邏輯測試：1992 抉擇三連
 // 跟 v20a22 教訓行真路徑：段一真 openLoc（offer 呈現＋撳掣行真 choice47Play→StoryPlay 入口）；
 // 段二真 StoryOC.applyChoice 落旗（＋真 newspaperStoryResolve 證明新旗唔生報紙、真 choice47Available 把關）；
 // 段三真 renderDebtPane（屋企行動卡呈現＋委派 onclick 真撳）；
@@ -43,10 +43,10 @@ function extractIIFE(decl){
   if(end<0) throw new Error('iife end not found: '+decl);
   return html.slice(i, end) + '\n})();';
 }
-function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1988, 2, 7)) / 86400000); }
+function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1990, 2, 7)) / 86400000); }
 
 /* ================================================================
-   段一：真 openLoc——何生「走定留」offer 呈現（1990 夏起）＋撳掣真入 StoryPlay
+   段一：真 openLoc——何生「走定留」offer 呈現（1992 夏起）＋撳掣真入 StoryPlay
    ================================================================ */
 (function(){
   function fakeEl(){
@@ -153,44 +153,44 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   function actsText(){ return actsBtns().map(b=>String(b.innerHTML||'')).join('\n'); }
   const TITLE = '何生有句說話想同你講';
 
-  // 1990 春：未到夏，唔出現
-  S = freshS(dayIndexOf(1990, 4, 15)); GIGS = []; els = {}; playedNodes = [];
+  // 1992 春：未到夏，唔出現
+  S = freshS(dayIndexOf(1992, 4, 15)); GIGS = []; els = {}; playedNodes = [];
   openLoc('agency_ho');
-  ok('seg1 spring 1990: stay/leave offer NOT shown', actsText().indexOf(TITLE) < 0);
+  ok('seg1 spring 1992: stay/leave offer NOT shown', actsText().indexOf(TITLE) < 0);
 
-  // 1988：更加唔出現
-  S = freshS(dayIndexOf(1988, 7, 15)); GIGS = []; els = {};
+  // 1990：更加唔出現
+  S = freshS(dayIndexOf(1990, 7, 15)); GIGS = []; els = {};
   openLoc('agency_ho');
-  ok('seg1 1988: stay/leave offer NOT shown', actsText().indexOf(TITLE) < 0);
+  ok('seg1 1990: stay/leave offer NOT shown', actsText().indexOf(TITLE) < 0);
 
-  // 1990 夏：出現；撳掣 → 真 choice47Play → StoryPlay.start 收到 F4 節點（force）
-  S = freshS(dayIndexOf(1990, 7, 15)); GIGS = []; els = {}; playedNodes = [];
+  // 1992 夏：出現；撳掣 → 真 choice47Play → StoryPlay.start 收到 F4 節點（force）
+  S = freshS(dayIndexOf(1992, 7, 15)); GIGS = []; els = {}; playedNodes = [];
   openLoc('agency_ho');
-  ok('seg1 summer 1990: stay/leave offer shown at agency', actsText().indexOf(TITLE) >= 0);
+  ok('seg1 summer 1992: stay/leave offer shown at agency', actsText().indexOf(TITLE) >= 0);
   const btn = actsBtns().find(b=>String(b.innerHTML||'').indexOf(TITLE) >= 0);
-  ok('seg1 summer 1990: offer button found', !!btn);
+  ok('seg1 summer 1992: offer button found', !!btn);
   if(btn && btn.onclick) btn.onclick({});
   ok('seg1 click: StoryPlay.start got F4_stay_mind node', playedNodes.length === 1 && playedNodes[0].node.id === 'F4_stay_mind');
   ok('seg1 click: played with force (micro-node path)', !!(playedNodes[0] && playedNodes[0].opts && playedNodes[0].opts.force === true));
   ok('seg1 click: node asks 走定留', !!(playedNodes[0] && JSON.stringify(playedNodes[0].node).indexOf('有冇諗過走') >= 0));
 
   // 答完（旗已寫，段二證明由真 applyChoice 寫入）：再入事務所唔再問
-  S = freshS(dayIndexOf(1990, 8, 1)); S.story.flags.flag_leave_mind = true; GIGS = []; els = {};
+  S = freshS(dayIndexOf(1992, 8, 1)); S.story.flags.flag_leave_mind = true; GIGS = []; els = {};
   openLoc('agency_ho');
   ok('seg1 answered (flag set): offer gone', actsText().indexOf(TITLE) < 0);
 
   // done 把關：done 已記但旗被清（異常檔）都唔再問
-  S = freshS(dayIndexOf(1990, 8, 1)); S.story.done.F4_stay_mind = true; GIGS = []; els = {};
+  S = freshS(dayIndexOf(1992, 8, 1)); S.story.done.F4_stay_mind = true; GIGS = []; els = {};
   openLoc('agency_ho');
   ok('seg1 answered (done set): offer gone', actsText().indexOf(TITLE) < 0);
 
-  // catch-up：1991 年頭（已過 1990 冬）未答都仲問得
-  S = freshS(dayIndexOf(1991, 1, 20)); GIGS = []; els = {};
+  // catch-up：1993 年頭（已過 1992 冬）未答都仲問得
+  S = freshS(dayIndexOf(1993, 1, 20)); GIGS = []; els = {};
   openLoc('agency_ho');
-  ok('seg1 catch-up 1991 winter: offer still shown', actsText().indexOf(TITLE) >= 0);
+  ok('seg1 catch-up 1993 winter: offer still shown', actsText().indexOf(TITLE) >= 0);
 
   // 其他地點唔出呢條 offer
-  S = freshS(dayIndexOf(1990, 7, 15)); S.locNpc = {}; GIGS = []; els = {};
+  S = freshS(dayIndexOf(1992, 7, 15)); S.locNpc = {}; GIGS = []; els = {};
   openLoc('cafe_cha');
   ok('seg1 other loc: offer NOT shown at cafe', actsText().indexOf(TITLE) < 0);
 })();
@@ -212,7 +212,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   var apply = function(delta){ Object.keys(delta||{}).forEach(k=>{ S[k] = (Number(S[k])||0) + delta[k]; }); return []; };
   var applyCastingTags = function(){ return []; };
   const SRC = [
-    "var START = { y:1988, m:3, d:7 };",
+    "var START = { y:1990, m:3, d:7 };",
     extractFn('dateObj'),
     extractFn('calendarSeason'),
     extractFn('weekNumNow'),
@@ -264,7 +264,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
     ['G4_family_job', 'G4_b', 'flag_family_job_decline', ['flag_family_job_accept']],
   ];
   CASES.forEach(([nid, cid, wantFlag, notFlags]) => {
-    S = baseSave(dayIndexOf(1990, 12, 15));
+    S = baseSave(dayIndexOf(1992, 12, 15));
     StoryOC.ensure();
     const before = { money: S.money, fame: S.fame, popularity: S.popularity, stress: S.stress, stamina: S.stamina };
     const res = StoryOC.applyChoice(node(nid), choice(nid, cid));
@@ -279,30 +279,30 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   });
 
   // 可用性開關（真 StoryOC 旗倉＋真日曆）
-  S = baseSave(dayIndexOf(1990, 4, 15)); StoryOC.ensure();
-  ok('seg2 gate: F4 closed in 1990 spring', choice47Available('F4_stay_mind') === false);
-  ok('seg2 gate: G4 closed in 1990 spring', choice47Available('G4_family_job') === false);
-  S = baseSave(dayIndexOf(1990, 7, 15)); StoryOC.ensure();
-  ok('seg2 gate: F4 open in 1990 summer', choice47Available('F4_stay_mind') === true);
-  ok('seg2 gate: G4 still closed in 1990 summer', choice47Available('G4_family_job') === false);
-  S = baseSave(dayIndexOf(1990, 10, 15)); StoryOC.ensure();
-  ok('seg2 gate: G4 still closed in 1990 autumn', choice47Available('G4_family_job') === false);
-  S = baseSave(dayIndexOf(1990, 12, 15)); StoryOC.ensure();
-  ok('seg2 gate: both open in 1990 winter', choice47Available('F4_stay_mind') === true && choice47Available('G4_family_job') === true);
+  S = baseSave(dayIndexOf(1992, 4, 15)); StoryOC.ensure();
+  ok('seg2 gate: F4 closed in 1992 spring', choice47Available('F4_stay_mind') === false);
+  ok('seg2 gate: G4 closed in 1992 spring', choice47Available('G4_family_job') === false);
+  S = baseSave(dayIndexOf(1992, 7, 15)); StoryOC.ensure();
+  ok('seg2 gate: F4 open in 1992 summer', choice47Available('F4_stay_mind') === true);
+  ok('seg2 gate: G4 still closed in 1992 summer', choice47Available('G4_family_job') === false);
+  S = baseSave(dayIndexOf(1992, 10, 15)); StoryOC.ensure();
+  ok('seg2 gate: G4 still closed in 1992 autumn', choice47Available('G4_family_job') === false);
+  S = baseSave(dayIndexOf(1992, 12, 15)); StoryOC.ensure();
+  ok('seg2 gate: both open in 1992 winter', choice47Available('F4_stay_mind') === true && choice47Available('G4_family_job') === true);
   // 答完即關（經真 applyChoice）
   StoryOC.applyChoice(node('F4_stay_mind'), choice('F4_stay_mind', 'F4_a'));
   ok('seg2 gate: F4 closed after answering, G4 still open',
      choice47Available('F4_stay_mind') === false && choice47Available('G4_family_job') === true);
-  // catch-up：1991 年存檔兩個都仲開到（未答的話）
-  S = baseSave(dayIndexOf(1991, 2, 10)); StoryOC.ensure();
-  ok('seg2 catch-up: both open in 1991 save', choice47Available('F4_stay_mind') === true && choice47Available('G4_family_job') === true);
-  // 1989 全年唔開
-  S = baseSave(dayIndexOf(1989, 12, 15)); StoryOC.ensure();
-  ok('seg2 gate: both closed in 1989', choice47Available('F4_stay_mind') === false && choice47Available('G4_family_job') === false);
+  // catch-up：1993 年存檔兩個都仲開到（未答的話）
+  S = baseSave(dayIndexOf(1993, 2, 10)); StoryOC.ensure();
+  ok('seg2 catch-up: both open in 1993 save', choice47Available('F4_stay_mind') === true && choice47Available('G4_family_job') === true);
+  // 1991 全年唔開
+  S = baseSave(dayIndexOf(1991, 12, 15)); StoryOC.ensure();
+  ok('seg2 gate: both closed in 1991', choice47Available('F4_stay_mind') === false && choice47Available('G4_family_job') === false);
 })();
 
 /* ================================================================
-   段三：真 renderDebtPane——屋企「穩陣工」行動卡（1990 冬起）＋委派 onclick 真撳
+   段三：真 renderDebtPane——屋企「穩陣工」行動卡（1992 冬起）＋委派 onclick 真撳
    ================================================================ */
 (function(){
   var box = { innerHTML:'', onclick:null, contains:()=>true };
@@ -378,24 +378,24 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   eval(extractFn('choice47FamilyCardHtml'));
   eval(extractFn('renderDebtPane'));
 
-  S = { dayIndex: dayIndexOf(1990, 10, 15), fame: 5, npcs:{},
+  S = { dayIndex: dayIndexOf(1992, 10, 15), fame: 5, npcs:{},
     favorDueSettled:{ debt_ho_tutorial:{ result:'repaid_help', day:1 } },
     mockSeasonCleared:{}, mockDebts:[], mockCredits:[], mockRumors:[], newspaperClippings:[],
     story:{ done:{}, flags:{} } };
   ensureFamilyHomeDebt(); // 真播種屋企債
 
-  // 1990 秋：未到冬，行動卡唔出
+  // 1992 秋：未到冬，行動卡唔出
   renderDebtPane();
-  ok('seg3 autumn 1990: family job card NOT shown', box.innerHTML.indexOf('data-choice47') < 0);
-  ok('seg3 autumn 1990: family debt card present (context)', box.innerHTML.indexOf('data-debt-id="debt_family_home"') >= 0);
+  ok('seg3 autumn 1992: family job card NOT shown', box.innerHTML.indexOf('data-choice47') < 0);
+  ok('seg3 autumn 1992: family debt card present (context)', box.innerHTML.indexOf('data-debt-id="debt_family_home"') >= 0);
 
-  // 1990 冬：行動卡出現，排喺屋企卡之後
-  S.dayIndex = dayIndexOf(1990, 12, 15);
+  // 1992 冬：行動卡出現，排喺屋企卡之後
+  S.dayIndex = dayIndexOf(1992, 12, 15);
   renderDebtPane();
   const h = box.innerHTML;
-  ok('seg3 winter 1990: family job card shown', h.indexOf('data-choice47="G4_family_job"') >= 0);
-  ok('seg3 winter 1990: card copy has 穩陣工／表叔／文職', h.indexOf('表叔') >= 0 && h.indexOf('文職') >= 0);
-  ok('seg3 winter 1990: card sits AFTER family debt card',
+  ok('seg3 winter 1992: family job card shown', h.indexOf('data-choice47="G4_family_job"') >= 0);
+  ok('seg3 winter 1992: card copy has 穩陣工／表叔／文職', h.indexOf('表叔') >= 0 && h.indexOf('文職') >= 0);
+  ok('seg3 winter 1992: card sits AFTER family debt card',
      h.indexOf('data-debt-id="debt_family_home"') >= 0 && h.indexOf('data-choice47-card') > h.indexOf('data-debt-id="debt_family_home"'));
 
   // 真撳掣（委派 onclick）：行真 choice47Play → StoryPlay 收到 G4 節點
@@ -411,15 +411,15 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   renderDebtPane();
   ok('seg3 answered: family job card gone', box.innerHTML.indexOf('data-choice47') < 0);
 
-  // catch-up：1991 存檔未答，卡仍在
+  // catch-up：1993 存檔未答，卡仍在
   S.story.flags = {}; S.story.done = {};
-  S.dayIndex = dayIndexOf(1991, 1, 20);
+  S.dayIndex = dayIndexOf(1993, 1, 20);
   renderDebtPane();
-  ok('seg3 catch-up 1991: family job card still shown', box.innerHTML.indexOf('data-choice47="G4_family_job"') >= 0);
+  ok('seg3 catch-up 1993: family job card still shown', box.innerHTML.indexOf('data-choice47="G4_family_job"') >= 0);
 })();
 
 /* ================================================================
-   段四：真 mergeExodusGigs＋真 board——移民潮空位通告（1990 秋起）
+   段四：真 mergeExodusGigs＋真 board——移民潮空位通告（1992 秋起）
    ＋真 canAudition 接單閘＋真殺青狀態機（booked→wrapHistory→落板）
    ================================================================ */
 (function(){
@@ -466,25 +466,25 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   }
   function boardIds(loc){ return gigsForLocSeasonBoard(loc).map(g => g.id); }
 
-  // 1989 全年：唔注入
-  S = freshS(dayIndexOf(1989, 12, 15)); GIGS = [];
-  ok('seg4 1989: merge returns 0', mergeExodusGigs() === 0);
-  ok('seg4 1989: boards have no exodus gigs',
+  // 1991 全年：唔注入
+  S = freshS(dayIndexOf(1991, 12, 15)); GIGS = [];
+  ok('seg4 1991: merge returns 0', mergeExodusGigs() === 0);
+  ok('seg4 1991: boards have no exodus gigs',
      boardIds('tvb_longmen').indexOf('gig_exodus_tv_senior') < 0 && boardIds('film_harbour').indexOf('gig_exodus_film_hand') < 0);
 
-  // 1990 春／夏：唔注入
-  S = freshS(dayIndexOf(1990, 4, 15)); GIGS = [];
-  ok('seg4 1990 spring: not injected', mergeExodusGigs() === 0 && GIGS.length === 0);
-  S = freshS(dayIndexOf(1990, 7, 15)); GIGS = [];
-  ok('seg4 1990 summer: not injected', mergeExodusGigs() === 0 && GIGS.length === 0);
+  // 1992 春／夏：唔注入
+  S = freshS(dayIndexOf(1992, 4, 15)); GIGS = [];
+  ok('seg4 1992 spring: not injected', mergeExodusGigs() === 0 && GIGS.length === 0);
+  S = freshS(dayIndexOf(1992, 7, 15)); GIGS = [];
+  ok('seg4 1992 summer: not injected', mergeExodusGigs() === 0 && GIGS.length === 0);
 
-  // 1990 秋：注入兩份，各自上返所屬地點板
-  S = freshS(dayIndexOf(1990, 10, 15)); GIGS = [];
+  // 1992 秋：注入兩份，各自上返所屬地點板
+  S = freshS(dayIndexOf(1992, 10, 15)); GIGS = [];
   const n = mergeExodusGigs();
-  ok('seg4 1990 autumn: merge injects 5 (v20a36 F7: exodus 2->5)', n === 5 && GIGS.length === 5);
-  ok('seg4 1990 autumn: tv gig on tvb_longmen board', boardIds('tvb_longmen').indexOf('gig_exodus_tv_senior') >= 0);
-  ok('seg4 1990 autumn: film gig on film_harbour board', boardIds('film_harbour').indexOf('gig_exodus_film_hand') >= 0);
-  ok('seg4 1990 autumn: gigs not cross-posted',
+  ok('seg4 1992 autumn: merge injects 5 (v20a36 F7: exodus 2->5)', n === 5 && GIGS.length === 5);
+  ok('seg4 1992 autumn: tv gig on tvb_longmen board', boardIds('tvb_longmen').indexOf('gig_exodus_tv_senior') >= 0);
+  ok('seg4 1992 autumn: film gig on film_harbour board', boardIds('film_harbour').indexOf('gig_exodus_film_hand') >= 0);
+  ok('seg4 1992 autumn: gigs not cross-posted',
      boardIds('tvb_longmen').indexOf('gig_exodus_film_hand') < 0 && boardIds('film_harbour').indexOf('gig_exodus_tv_senior') < 0);
   ok('seg4 merge idempotent: second merge keeps 5', mergeExodusGigs() >= 0 && GIGS.filter(g => /^gig_exodus_/.test(g.id)).length === 5);
 
@@ -517,9 +517,9 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   ok('seg4 lifecycle: wrapped gig leaves the board', boardIds('tvb_longmen').indexOf('gig_exodus_tv_senior') < 0);
   ok('seg4 lifecycle: other exodus gig still on its board', boardIds('film_harbour').indexOf('gig_exodus_film_hand') >= 0);
 
-  // 1990 冬（過秋）仍然注入（過季唔鎖死）
-  S = freshS(dayIndexOf(1990, 12, 15)); GIGS = [];
-  ok('seg4 1990 winter: still injected', mergeExodusGigs() === 5);
+  // 1992 冬（過秋）仍然注入（過季唔鎖死）
+  S = freshS(dayIndexOf(1992, 12, 15)); GIGS = [];
+  ok('seg4 1992 winter: still injected', mergeExodusGigs() === 5);
 })();
 
 console.log(fails.length ? ('\nFAILED: ' + fails.length + ' -> ' + fails.join(' | ')) : '\nALL PASS (weave47)');
