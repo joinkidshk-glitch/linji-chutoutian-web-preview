@@ -98,7 +98,7 @@ mapimg = raw_of(r'const MAP_IMG = "data:image/jpeg;base64,([A-Za-z0-9+/=]+)')
 ok('hero_awi 已再壓縮（191,434 → <100,000）', 0 < hero < 100000)
 ok('start_guide 已再壓縮（201,839 → <160,000）', 0 < guide < 160000)
 ok('MAP_IMG 保留原圖（核心視覺唔硬減；q82 試壓冇收益）', mapimg > 370000)
-ok('主檔總量 < 5,075,000 bytes（v83 ENC83 巧遇 Phase 2 四星對白＋提攜模組有意增長至 ~5,047,816；v82 為 ~4,974,159）', len(src.encode('utf-8')) < 5075000)
+ok('主檔總量 < 5,145,000 bytes（v84 ENC84 巧遇 Phase 3 四星對白 503 句＋註冊模組有意增長至 ~5,115,599；v83 為 ~5,047,816；v82 為 ~4,974,159）', len(src.encode('utf-8')) < 5145000)
 ok('海報圖已有 loading="lazy"（v59 既有，冇倒退）', 'loading="lazy"' in src)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')
