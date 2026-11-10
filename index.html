@@ -18534,6 +18534,8 @@ const STORY_GATE_3Y = {
   C13: { yearMin: 1992, seasonIn: ["冬"] },
   /* N17＝C17（1992 冬・事件閘）：前置 N16＝C13。結局判定／呈現係 4-10，呢度只守入場閘 */
   C17: { needDone: ["C13"], yearEq: 1992, seasonIn: ["冬"] },
+  C18: { yearMin: 1990, seasonIn: ["冬"] }, /* WF1 補幕：1990冬（真空帶前段） */
+  C19: { yearMin: 1991, seasonIn: ["春"] }, /* WF1 補幕：1991春（真空帶後段） */
 };
 /* v20a29 WEAVE_PHASE4_6：主幹 1989 節點內容覆寫（N7–N11）。
    定界對照結論：content pack story_detail_c1_to_c17.json 只有 C1–C5 跟 Qwen 原規劃／三年版主幹；
@@ -18547,41 +18549,211 @@ const STORY_GATE_3Y = {
 const STORY_SPINE_NODES_1989 = {
   /* N7＝C7（1989 夏・暴雨外景）：幫手救場／躲雨保妝；魏詠男（避雨亭） */
   C7: {
-    id: "C7", phase: "P2", title: "暴雨救場", when: "1989夏",
+    id: "C7",
+    phase: "P2",
+    title: "暴雨救場",
+    when: "1989夏",
     setting: "維港電影西環外景場；盛夏午後，黑雨突襲",
-    locId: "film_harbour", eraTag: "era_1989_summer_action",
-    cast: ["阿偉", "副導演", "魏詠男"],
+    locId: "film_harbour",
+    eraTag: "era_1989_summer_action",
+    cast: [
+      "阿偉",
+      "副導演",
+      "魏詠男"
+    ],
     synopsis: "盛夏外景拍到一半，黑雨突襲：器材、戲服就嚟浸晒，副導嗌救命。過氣女打星魏詠男喺避雨亭睇住成件事——阿偉要揀：衝入雨幕幫手救場，定留喺亭入面保住自己嗰場近鏡嘅妝同戲服。",
     playerOffer: "副導嗌救命——落手救場，定保住自己嗰場近鏡？",
     playerHint: "黑雨殺到，外景場亂成一團，副導嗌人救場。",
     lockedHint: "1989 年夏天先有呢場暴雨外景，仲要做完采兒小訪、業內信用夠班先有人嗌你埋手。未到就照常跑通告；開咗去維港電影外景場。",
     nextHint: "",
     beats: [
-      { speaker: "系統", kind: "system", lines: ["1989 年盛夏，維港電影西環外景場。", "拍到下晝三點，天邊忽然黑晒——天文台改掛黑色暴雨警告。"] },
-      { speaker: "副導演", kind: "npc", lines: ["收唔切啦！器材同戲服仲喺空地，浸晒就成日白做！", "邊個得閒——過嚟幫手搬入貨倉！"] },
-      { speaker: "阿偉", kind: "player", lines: ["（我嗰場近鏡排喺收工前，套戲服同個妝一濕就接唔返。）", "（但係成組人喺度淋雨搬嘢，我企喺亭入面睇，好似唔係幾好。）"] },
-      { speaker: "魏詠男", speakerId: "ngai_wingnaam", kind: "npc", emotion: "calm", lines: ["後生仔，唔使望我——我嗰陣拍打戲，落雨咪照打，跌落水氹爬返起身嗰個先係鏡頭。", "而家啲人幸福咯，有亭有瓦遮頭。"] },
-      { speaker: "系統", kind: "system", lines: ["雨勢再大。副導嗌到聲沙；你嗰場近鏡仲有半個鐘就拍。"] }
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "1989 年盛夏，維港電影西環外景場。",
+          "拍到下晝三點，天邊忽然黑晒——天文台改掛黑色暴雨警告。"
+        ]
+      },
+      {
+        speaker: "場務",
+        kind: "npc",
+        lines: [
+          "副導！嗰箱係主角聽日嗰場嘅戲服，濕咗冇得換㗎！仲有嗰兩支燈，入水即刻報銷，賠起上嚟，成組人成個月人工都唔夠填！"
+        ]
+      },
+      {
+        speaker: "副導演",
+        kind: "npc",
+        lines: [
+          "收唔切啦！器材同戲服仲喺空地，浸晒就成日白做！",
+          "邊個得閒——過嚟幫手搬入貨倉！"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "一道橫雨掃過嚟，避雨亭頂嗰塊帆布俾風扯到啪啪聲。水已經浸過鞋面，空地嗰頭，蓋器材嗰塊膠布俾風吹起咗一角，副導撲過去壓都壓唔住。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（我嗰場近鏡排喺收工前，套戲服同個妝一濕就接唔返。）",
+          "（但係成組人喺度淋雨搬嘢，我企喺亭入面睇，好似唔係幾好。）"
+        ]
+      },
+      {
+        speaker: "魏詠男",
+        speakerId: "ngai_wingnaam",
+        kind: "npc",
+        emotion: "calm",
+        lines: [
+          "後生仔，唔使望我——我嗰陣拍打戲，落雨咪照打，跌落水氹爬返起身嗰個先係鏡頭。",
+          "而家啲人幸福咯，有亭有瓦遮頭。"
+        ]
+      },
+      {
+        speaker: "魏詠男",
+        speakerId: "ngai_wingnaam",
+        kind: "npc",
+        emotion: "calm",
+        lines: [
+          "嗰陣有一場戲，吊威也落斜坡，落住雨拍咗七次，條威也索到成條腰都瘀晒。",
+          "導演問我使唔使搵替身，我話：觀眾入場，係嚟睇我跌㗎。嗰陣邊有咁多亭俾你企？戲，就係咁拍返嚟㗎。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（佢講到「睇我跌」嗰陣，隻手不自覺摸咗摸條腰——嗰啲傷，隔咗咁多年，一落雨，會唔會仲痛？）"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "雨勢再大。副導嗌到聲沙；你嗰場近鏡仲有半個鐘就拍。"
+        ]
+      }
     ],
     choices: [
-      { id: "C7_a", label: "落手救場：衝入雨幕幫副導搬器材",
-        effects: { flags: ["flag_rain_rescue"], stats: { industryCredit: 2 }, tags: ["識做"], notes: "你幫副導救返成批器材——呢份人情，佢記低咗。" },
+      {
+        id: "C7_a",
+        label: "落手救場：衝入雨幕幫副導搬器材",
+        effects: {
+          flags: [
+            "flag_rain_rescue"
+          ],
+          stats: {
+            industryCredit: 2
+          },
+          tags: [
+            "識做"
+          ],
+          notes: "你幫副導救返成批器材——呢份人情，佢記低咗。"
+        },
         resultBeats: [
-          { speaker: "副導演", lines: ["阿偉，今日唔係你，我真係交唔到差。呢份人情我記住，第日有好位實預你。"] },
-          { speaker: "魏詠男", speakerId: "ngai_wingnaam", lines: ["肯落手嘅後生仔，唔多。"] }
-        ] },
-      { id: "C7_b", label: "躲雨保妝：留喺亭入面保住套戲服",
-        effects: { flags: ["flag_rain_shelter"], stats: { fame: 1 }, tags: [], notes: "近鏡順利拍完，但副導嗰邊，你欠落一個眼神。" },
+          {
+            speaker: "副導演",
+            lines: [
+              "阿偉，今日唔係你，我真係交唔到差。呢份人情我記住，第日有好位實預你。"
+            ]
+          },
+          {
+            speaker: "魏詠男",
+            speakerId: "ngai_wingnaam",
+            lines: [
+              "肯落手嘅後生仔，唔多。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰晚收工，副導請成組人食糖水。冇幾日，隔籬組嘅副導嚟借人，佢第一句就係：「借嗰個落雨肯搬嘢嗰個阿偉嚟用下。」人情呢樣嘢，喺片場就係咁傳開嘅。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C7_b",
+        label: "躲雨保妝：留喺亭入面保住套戲服",
+        effects: {
+          flags: [
+            "flag_rain_shelter"
+          ],
+          stats: {
+            fame: 1
+          },
+          tags: [],
+          notes: "近鏡順利拍完，但副導嗰邊，你欠落一個眼神。"
+        },
         resultBeats: [
-          { speaker: "阿偉", lines: ["（近鏡一 take 過。只是收工嗰陣，副導搬住最後一箱器材行過，冇望我。）"] }
-        ] }
+          {
+            speaker: "阿偉",
+            lines: [
+              "（近鏡一 take 過。只是收工嗰陣，副導搬住最後一箱器材行過，冇望我。）"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰場近鏡拍得靚，導演收貨。但之後嗰個禮拜，外景場再嗌人幫手，冇人再行過嚟問你——片場記性好好，尤其係記邊個嗰日企喺亭入面。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C7_c",
+        label: "兩頭兼顧：先幫手搬最貴嗰批器材，趕返嚟拍近鏡",
+        effects: {
+          flags: [
+            "flag_rain_split"
+          ],
+          stats: {
+            industryCredit: 1
+          },
+          tags: [],
+          notes: "你搬咗最緊要嗰批器材先趕返嚟——近鏡保住咗，副導亦都記得你有出過手。"
+        },
+        resultBeats: [
+          {
+            speaker: "副導演",
+            lines: [
+              "你嗰下先搬戲服嗰箱，真係救咗成組——嗰箱一濕，聽日成組開唔到工。"
+            ]
+          },
+          {
+            speaker: "阿偉",
+            lines: [
+              "（趕返到亭嗰陣，補一補妝，近鏡啱啱趕得切。兩邊都唔算滿分，但兩邊，我都交到差。）"
+            ]
+          }
+        ]
+      }
     ],
     conflict: null,
-    flags_written: ["flag_rain_rescue", "flag_rain_shelter"],
-    openConditions: ["C5", "season_summer"], openConditionsAny: null,
+    flags_written: [
+      "flag_rain_rescue",
+      "flag_rain_shelter",
+      "flag_rain_split"
+    ],
+    openConditions: [
+      "C5",
+      "season_summer"
+    ],
+    openConditionsAny: null,
     openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（C5 done＋信用>20＋1989 夏）；此欄只作 legacy 對照。",
     thresholds: {},
-    pacing: { weekMin: 66, minDaysAfterPrev: 1, when: "1989夏", prevMain: "C5" },
+    pacing: {
+      weekMin: 66,
+      minDaysAfterPrev: 1,
+      when: "1989夏",
+      prevMain: "C5"
+    },
     aftermathHint: "雨停之後，外景場照常開工；你嗰日嘅揀法，會喺組入面傳開。",
     journalCandidate: "黑雨嗰日外景場大亂，我揀咗點做人——救場定保妝，成組人都睇喺眼入面。",
     redStarHook: "魏詠男喺避雨亭講當年落雨照打嘅真功夫歲月——過氣女打星，企喺度已經係一堂課。",
@@ -18590,42 +18762,213 @@ const STORY_SPINE_NODES_1989 = {
   /* N8＝C11（1989 夏末／秋・選美後台）：掩護佳麗／爆料給記者；葉敏芝（選美後台）。
      「攜帶特定禮物」係內容層：見 story46SettleTick 嘅見面禮互動（淡香水試用裝），唔入閘。 */
   C11: {
-    id: "C11", phase: "P2", title: "選美後台", when: "1989夏末／秋",
+    id: "C11",
+    phase: "P2",
+    title: "選美後台",
+    when: "1989夏末／秋",
     setting: "星河電視台綜藝廠後台；選美綵排，鏡同燈泡一樣咁多",
-    locId: "tvb_longmen", eraTag: "era_1989_autumn_variety",
-    cast: ["阿偉", "葉敏芝", "佳麗", "週刊記者"],
+    locId: "tvb_longmen",
+    eraTag: "era_1989_autumn_variety",
+    cast: [
+      "阿偉",
+      "葉敏芝",
+      "佳麗",
+      "週刊記者"
+    ],
     synopsis: "選美綵排後台，一位佳麗俾週刊記者逼到埋牆。表演嘉賓葉敏芝向阿偉打眼色——係幫手掩護佳麗脫身，定係收記者利市爆一句料，嗰一念之間，成個後台都睇住。後台規矩：埋佳麗身邊做嘢，帶份見面禮（例如淡香水試用裝）會順好多。",
     playerOffer: "佳麗俾記者逼埋牆——掩護佢，定收利市爆料？",
     playerHint: "選美後台人多眼雜——帶份見面禮（例如淡香水試用裝）埋佳麗身邊，成件事會順好多。",
     lockedHint: "1989 年夏末到秋先開（選美綵排季）。未到就照常跑通告；開咗去星河電視台綜藝廠後台。",
     nextHint: "",
     beats: [
-      { speaker: "系統", kind: "system", lines: ["1989 年夏末，星河電視台綜藝廠後台——選美綵排，鏡、燈同人一樣多。", "阿偉今日嚟做後台幫工，順便等一個企位機會。"] },
-      { speaker: "葉敏芝", speakerId: "yip_manji", kind: "npc", lines: ["後生仔，行路睇路呀。", "呢度後台啲記者多過工作人員，一句講錯，聽日就見報。"] },
-      { speaker: "系統", kind: "system", lines: ["更衣室門口，一位佳麗俾兩個週刊記者逼到埋牆，經理人又唔喺場。葉敏芝向你打咗個眼色。"] },
-      { speaker: "週刊記者", kind: "npc", lines: ["靚仔，幫個忙——嗰位佳麗頭先同邊個喺停車場傾偈，你見到㗎可？", "一句啫，呢度有封利市，夠你食幾餐。"] },
-      { speaker: "阿偉", kind: "player", lines: ["（幫手掩護佢入更衣室，定係收利市講一句……後台啲眼，全部望住。）"] }
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "1989 年夏末，星河電視台綜藝廠後台——選美綵排，鏡、燈同人一樣多。",
+          "阿偉今日嚟做後台幫工，順便等一個企位機會。"
+        ]
+      },
+      {
+        speaker: "後台場務",
+        kind: "npc",
+        lines: [
+          "記住喇：佳麗出場前唔准自己行嚟行去，要去邊都要有人跟；司儀企正中嗰塊板，燈一熄，邊個都唔准過界。",
+          "後台冇秘密㗎，你喺度講一句，隔籬化妝間聽得一清二楚——做嘢嗰陣，帶眼帶耳，唔好帶口。"
+        ]
+      },
+      {
+        speaker: "葉敏芝",
+        speakerId: "yip_manji",
+        kind: "npc",
+        lines: [
+          "後生仔，行路睇路呀。",
+          "呢度後台啲記者多過工作人員，一句講錯，聽日就見報。"
+        ]
+      },
+      {
+        speaker: "葉敏芝",
+        speakerId: "yip_manji",
+        kind: "npc",
+        lines: [
+          "我當年選嗰陣，後台仲亂過而家。有個姐姐仔俾記者影到喊，第二日報紙寫佢『情緒失控』，嗰屆佢就咁冇咗。",
+          "所以呢度啲人，笑你都要笑住——唔係虛偽，係呢度嘅規矩。你幫到人嗰陣，人哋先會記得你。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "更衣室門口，一位佳麗俾兩個週刊記者逼到埋牆，經理人又唔喺場。葉敏芝向你打咗個眼色。"
+        ]
+      },
+      {
+        speaker: "佳麗",
+        kind: "npc",
+        lines: [
+          "我……我只係想去攞返件外套，佢哋兩個就跟到嚟，問我啲我根本冇做過嘅嘢……"
+        ]
+      },
+      {
+        speaker: "週刊記者",
+        kind: "npc",
+        lines: [
+          "靚仔，幫個忙——嗰位佳麗頭先同邊個喺停車場傾偈，你見到㗎可？",
+          "一句啫，呢度有封利市，夠你食幾餐。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（幫手掩護佢入更衣室，定係收利市講一句……後台啲眼，全部望住。）"
+        ]
+      }
     ],
     choices: [
-      { id: "C11_a", label: "掩護佳麗：擋開記者，送佢入更衣室",
-        effects: { flags: ["flag_miss_cover"], stats: { industryCredit: 1 }, tags: ["守口如瓶"], notes: "佳麗同葉敏芝都記住你嗰下。後台傳開：呢個後生仔口密。" },
+      {
+        id: "C11_a",
+        label: "掩護佳麗：擋開記者，送佢入更衣室",
+        effects: {
+          flags: [
+            "flag_miss_cover"
+          ],
+          stats: {
+            industryCredit: 1
+          },
+          tags: [
+            "守口如瓶"
+          ],
+          notes: "佳麗同葉敏芝都記住你嗰下。後台傳開：呢個後生仔口密。"
+        },
         resultBeats: [
-          { speaker: "佳麗", lines: ["多謝你……頭先真係驚到手震。"] },
-          { speaker: "葉敏芝", speakerId: "yip_manji", lines: ["做得好。呢行口密嘅人唔多——你嗰份，唔會白做。"] }
-        ] },
-      { id: "C11_b", label: "爆料給記者：收利市，講一句",
-        effects: { flags: ["flag_miss_leak"], stats: { fame: 1, wealth: 1 }, tags: ["八卦"], notes: "利市袋咗，消息聽日見報。葉敏芝嗰邊點睇你，遲啲先知。" },
+          {
+            speaker: "佳麗",
+            lines: [
+              "多謝你……頭先真係驚到手震。"
+            ]
+          },
+          {
+            speaker: "葉敏芝",
+            speakerId: "yip_manji",
+            lines: [
+              "做得好。呢行口密嘅人唔多——你嗰份，唔會白做。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰晚之後，後台啲姐姐仔見到你都會點頭。有個化妝師仲專登同人講：「嗰個後生仔口密又識做，邊個用佢都放心。」呢句說話，冇幾日就傳到去監製耳仔度。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C11_b",
+        label: "爆料給記者：收利市，講一句",
+        effects: {
+          flags: [
+            "flag_miss_leak"
+          ],
+          stats: {
+            fame: 1,
+            wealth: 1
+          },
+          tags: [
+            "八卦"
+          ],
+          notes: "利市袋咗，消息聽日見報。葉敏芝嗰邊點睇你，遲啲先知。"
+        },
         resultBeats: [
-          { speaker: "週刊記者", lines: ["合作愉快。放心，唔會寫你名。"] },
-          { speaker: "葉敏芝", speakerId: "yip_manji", emotion: "frown", lines: ["（佢望住你數利市嗰下，笑咗笑，轉身走。）"] }
-        ] }
+          {
+            speaker: "週刊記者",
+            lines: [
+              "合作愉快。放心，唔會寫你名。"
+            ]
+          },
+          {
+            speaker: "葉敏芝",
+            speakerId: "yip_manji",
+            emotion: "frown",
+            lines: [
+              "（佢望住你數利市嗰下，笑咗笑，轉身走。）"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "第二日，週刊真係出咗嗰段料，仲寫到繪形繪聲。嗰位佳麗嗰屆冇入三甲，經理人四圍打聽係邊個放嘅料——後台啲人望你嘅眼神，自此唔同咗。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C11_c",
+        label: "引開記者：扮作有急事，嗌記者去採訪司儀",
+        effects: {
+          flags: [
+            "flag_miss_deflect"
+          ],
+          stats: {
+            industryCredit: 1
+          },
+          tags: [],
+          notes: "你冇擋又冇爆，淨係將記者引開——佳麗趁嗰陣入返更衣室。"
+        },
+        resultBeats: [
+          {
+            speaker: "阿偉",
+            lines: [
+              "「兩位大哥，司儀嗰邊就嚟公佈出場次序，遲咗就冇位企啦！」兩個記者對望一眼，真係趕咗過去。"
+            ]
+          },
+          {
+            speaker: "葉敏芝",
+            speakerId: "yip_manji",
+            lines: [
+              "醒目。唔使企喺邊一邊，先至企得穩——呢招，我記低咗你。"
+            ]
+          }
+        ]
+      }
     ],
     conflict: null,
-    flags_written: ["flag_miss_cover", "flag_miss_leak"],
-    openConditions: ["season_autumn"], openConditionsAny: null,
+    flags_written: [
+      "flag_miss_cover",
+      "flag_miss_leak",
+      "flag_miss_deflect"
+    ],
+    openConditions: [
+      "season_autumn"
+    ],
+    openConditionsAny: null,
     openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（1989 夏／秋）；「攜帶特定禮物」係內容層互動，見 story46SettleTick。",
     thresholds: {},
-    pacing: { weekMin: 74, minDaysAfterPrev: 1, when: "1989夏末／秋" },
+    pacing: {
+      weekMin: 74,
+      minDaysAfterPrev: 1,
+      when: "1989夏末／秋"
+    },
     aftermathHint: "綵排照常進行；你嗰下嘅揀法，後台好快傳開。",
     journalCandidate: "選美後台嗰日，我揀咗做口密嗰個，定係做收利市嗰個。",
     redStarHook: "葉敏芝喺選美後台——佢嗰個眼色，係成幕嘅題眼。",
@@ -18633,42 +18976,183 @@ const STORY_SPINE_NODES_1989 = {
   },
   /* N9＝C8（1989 秋・茶餐廳度橋）：主動度橋／乖乖做背景；廖炳星（茶餐廳度橋） */
   C8: {
-    id: "C8", phase: "P2", title: "茶餐廳度橋", when: "1989秋",
+    id: "C8",
+    phase: "P2",
+    title: "茶餐廳度橋",
+    when: "1989秋",
     setting: "金龍茶餐廳卡座；秋日下晝，笑匠喺隔離枱",
-    locId: "cafe_cha", eraTag: "era_1989_autumn_commercial",
-    cast: ["阿偉", "廖炳星", "導演"],
+    locId: "cafe_cha",
+    eraTag: "era_1989_autumn_commercial",
+    cast: [
+      "阿偉",
+      "廖炳星",
+      "導演"
+    ],
     synopsis: "金龍茶餐廳度一場喜劇橋，度極唔好笑——隔離枱嘅廖炳星忍唔住插嘴改咗兩句，全場爆笑。導演望住阿偉：嗰兩句係人哋嘅橋，你係當場認橋請佢一齊度，定係乖乖照原稿做背景？",
     playerOffer: "星哥改嗰兩句橋——你點接？",
     playerHint: "金龍茶餐廳卡座度緊一場喜劇戲——隔離枱坐住廖炳星。",
     lockedHint: "1989 年秋先開，仲要做完暴雨救場、聲望夠、有喜劇或動作標籤。未到就照常跑通告；開咗去金龍茶餐廳卡座。",
     nextHint: "",
     beats: [
-      { speaker: "系統", kind: "system", lines: ["1989 年秋，金龍茶餐廳卡座。阿偉跟嗰場喜劇戲度橋，度極都差一口氣。"] },
-      { speaker: "導演", kind: "npc", lines: ["唔係咁演呀——笑點唔係嗌出嚟㗎。", "俾你十分鐘，度唔到就照舊稿拍。"] },
-      { speaker: "阿偉", kind: "player", lines: ["（隔離卡座嗰位阿叔，聽到我哋試橋，忍笑忍到震。）", "（嗰位咪係……廖炳星？佢真人瘦過上鏡。）"] },
-      { speaker: "廖炳星", speakerId: "liu_bingxing", kind: "npc", emotion: "smirk", lines: ["後生仔，你嗰句如果掉轉講，先講結果再講原因——成枱都會笑。", "嗱，我講多次，你聽清楚。"] },
-      { speaker: "系統", kind: "system", lines: ["成間茶餐廳笑到拍枱。導演望住你——嗰兩句橋，係隔離枱嗰位嘅。"] }
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "1989 年秋，金龍茶餐廳卡座。阿偉跟嗰場喜劇戲度橋，度極都差一口氣。"
+        ]
+      },
+      {
+        speaker: "茶餐廳伙記",
+        kind: "npc",
+        lines: [
+          "飛沙走奶一杯！嗱，呢度下晝三點最熱鬧，成行編劇導演都坐喺度度橋——邊枱爆笑，邊枱嗰場戲就掂。"
+        ]
+      },
+      {
+        speaker: "導演",
+        kind: "npc",
+        lines: [
+          "唔係咁演呀——笑點唔係嗌出嚟㗎。",
+          "俾你十分鐘，度唔到就照舊稿拍。"
+        ]
+      },
+      {
+        speaker: "編劇阿昌",
+        kind: "npc",
+        lines: [
+          "呢度啲紙仔唔好亂掉呀——上次有張度橋紙仔俾伙記當垃圾掃走，嗰場戲到而家都未度返出嚟，成組人講起都仲喺度笑。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（隔離卡座嗰位阿叔，聽到我哋試橋，忍笑忍到震。）",
+          "（嗰位咪係……廖炳星？佢真人瘦過上鏡。）"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "廖炳星喺枱面嗰張落單紙仔背面寫咗兩句，招手叫伙記：「飛過去隔離枱。」紙仔喺茶餐廳半空兜咗個圈，啱啱落喺導演杯奶茶隔籬——呢行度橋，紙仔飛嚟飛去，飛咗幾十年。"
+        ]
+      },
+      {
+        speaker: "廖炳星",
+        speakerId: "liu_bingxing",
+        kind: "npc",
+        emotion: "smirk",
+        lines: [
+          "後生仔，你嗰句如果掉轉講，先講結果再講原因——成枱都會笑。",
+          "嗱，我講多次，你聽清楚。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "成間茶餐廳笑到拍枱。導演望住你——嗰兩句橋，係隔離枱嗰位嘅。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（嗰張紙仔而家喺導演手上，佢睇咗又睇，冇出聲。星哥就喺隔離枱，慢條斯理飲啖奶茶，好似嗰兩句橋同佢冇關咁。）",
+          "（認橋，即係當住成枱人嘅面，認自己度唔到；唔認，嗰場戲就照舊稿拍，拍完就算。）"
+        ]
+      }
     ],
     choices: [
-      { id: "C8_a", label: "主動度橋：當場認橋，請星哥一齊度落去",
-        effects: { flags: ["flag_bing_bridge"], stats: { fame: 3 }, tags: [], notes: "導演青睞，成組都記得你嗰下夠大方——橋係人哋嘅，你照認。" },
+      {
+        id: "C8_a",
+        label: "主動度橋：當場認橋，請星哥一齊度落去",
+        effects: {
+          flags: [
+            "flag_bing_bridge"
+          ],
+          stats: {
+            fame: 3
+          },
+          tags: [],
+          notes: "導演青睞，成組都記得你嗰下夠大方——橋係人哋嘅，你照認。"
+        },
         resultBeats: [
-          { speaker: "廖炳星", speakerId: "liu_bingxing", lines: ["肯認橋嘅後生仔，先至學到橋。你嗰份，我睇好。"] },
-          { speaker: "導演", lines: ["就用呢稿。阿偉，你嚟試多次——今次你接。"] }
-        ] },
-      { id: "C8_b", label: "乖乖做背景：照原稿演，唔搶風頭",
-        effects: { flags: ["flag_bing_background"], stats: { industryCredit: 2 }, tags: [], notes: "嗰場戲穩穩陣陣拍完；星哥嘅橋，你冇掂，導演記得你識分寸。" },
+          {
+            speaker: "廖炳星",
+            speakerId: "liu_bingxing",
+            lines: [
+              "肯認橋嘅後生仔，先至學到橋。你嗰份，我睇好。"
+            ]
+          },
+          {
+            speaker: "導演",
+            lines: [
+              "就用呢稿。阿偉，你嚟試多次——今次你接。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰場戲正式開拍嗰日，導演用咗嗰兩句橋，一 take 全場笑到停唔到，收貨收得爽快。收工嗰陣佢拍拍你：「以後度橋，嗌埋你。」嗰張紙仔，佢仲夾喺劇本入面，冇掉。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C8_b",
+        label: "乖乖做背景：照原稿演，唔搶風頭",
+        effects: {
+          flags: [
+            "flag_bing_background"
+          ],
+          stats: {
+            industryCredit: 2
+          },
+          tags: [],
+          notes: "嗰場戲穩穩陣陣拍完；星哥嘅橋，你冇掂，導演記得你識分寸。"
+        },
         resultBeats: [
-          { speaker: "導演", lines: ["好，照舊稿，收貨。"] },
-          { speaker: "阿偉", lines: ["（星哥起身走嗰陣，拍一拍我膊頭，冇講嘢。）"] }
-        ] }
+          {
+            speaker: "導演",
+            lines: [
+              "好，照舊稿，收貨。"
+            ]
+          },
+          {
+            speaker: "阿偉",
+            lines: [
+              "（星哥起身走嗰陣，拍一拍我膊頭，冇講嘢。）"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰場戲照舊稿拍完，導演收貨嗰陣停咗一停，望咗眼隔離枱嗰個空位：「嗰兩句……算啦，拍咗就算。」成組人都知佢講緊邊兩句——嗰場戲出街之後，冇人記得嗰段對白。"
+            ]
+          }
+        ]
+      }
     ],
     conflict: null,
-    flags_written: ["flag_bing_bridge", "flag_bing_background"],
-    openConditions: ["C7", "season_autumn"], openConditionsAny: null,
+    flags_written: [
+      "flag_bing_bridge",
+      "flag_bing_background"
+    ],
+    openConditions: [
+      "C7",
+      "season_autumn"
+    ],
+    openConditionsAny: null,
     openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（C7 done＋聲望>28＋喜劇/動作標籤＋1989 秋）；此欄只作 legacy 對照。",
     thresholds: {},
-    pacing: { weekMin: 80, minDaysAfterPrev: 1, when: "1989秋", prevMain: "C7" },
+    pacing: {
+      weekMin: 80,
+      minDaysAfterPrev: 1,
+      when: "1989秋",
+      prevMain: "C7"
+    },
     aftermathHint: "嗰場喜劇戲照常開拍；你嗰下點接橋，導演記住咗。",
     journalCandidate: "茶餐廳嗰日，星哥嗰兩句橋擺喺我面前，我揀咗認，定係揀咗避。",
     redStarHook: "廖炳星喺茶餐廳偷聽隔離枱講嘢，即興改劇本——笑匠度橋，唔使綵排。",
@@ -18676,42 +19160,230 @@ const STORY_SPINE_NODES_1989 = {
   },
   /* N10＝C9（1989 冬・年尾追數）：幫何生追數／替劇組出頭；顧明輝（老式酒廊） */
   C9: {
-    id: "C9", phase: "P2", title: "年尾追數", when: "1989冬",
+    id: "C9",
+    phase: "P2",
+    title: "年尾追數",
+    when: "1989冬",
     setting: "海港台附近老式酒廊；年尾清貨期，酒廊播住舊情歌",
-    locId: "tvb_harbour", eraTag: "era_1989_winter_pressure",
-    cast: ["阿偉", "何生", "顧明輝"],
+    locId: "tvb_harbour",
+    eraTag: "era_1989_winter_pressure",
+    cast: [
+      "阿偉",
+      "何生",
+      "顧明輝"
+    ],
     synopsis: "年尾清貨，劇組俾人拖數，源頭係老式酒廊駐唱嘅過氣情歌王子顧明輝——佢財務告急，連累成組人等糧。何生俾阿偉揀：幫佢向顧明輝追數追到明，定係替劇組出頭，幫顧明輝擋一擋，等佢唱埋呢個月。",
     playerOffer: "何生等你揀——追數，定出頭？",
     playerHint: "老式酒廊入面，何生等你揀：追數，定出頭。",
     lockedHint: "1989 年冬年尾清貨期先開。未到就照常跑通告、顧住手頭人情；開咗去海港台附近嗰間老式酒廊見何生。",
     nextHint: "",
     beats: [
-      { speaker: "系統", kind: "system", lines: ["1989 年冬，年尾清貨期。海港台附近嗰間老式酒廊，播住十幾年前嘅情歌。"] },
-      { speaker: "何生", kind: "npc", lines: ["年尾啦，邊個都等錢過年。劇組有筆數拖咗三個月——源頭喺入面嗰位。", "顧明輝，駐唱嗰個。佢唔係衰人，係真係冇。"] },
-      { speaker: "顧明輝", kind: "npc", emotion: "tired", lines: ["何生……你都嚟埋？", "我知我欠邊啲。我唱埋呢個月，啲糧出咗，第一時間還。"] },
-      { speaker: "何生", kind: "npc", lines: ["阿偉，今晚你揀：一係幫我向佢追數，講到明、做到絕；一係你替劇組出頭，幫佢擋一擋出面嗰班，俾佢唱埋呢個月。"] },
-      { speaker: "阿偉", kind: "player", lines: ["（一個係何生嘅人情，一個係成組人嘅飯碗。兩邊都係江湖。）"] }
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "1989 年冬，年尾清貨期。海港台附近嗰間老式酒廊，播住十幾年前嘅情歌。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "酒廊門外，兩個劇組伙記揸住張糧單企咗成晚，見到何生嚟先散開半步。隔籬片場嗰套梟雄片啱啱開鏡，鞭炮聲傳到嚟呢邊——嗰邊風光，呢邊等錢。",
+          "年關呢兩個字，喺呢行唔係節日，係死線：租、糧、利是錢，全部排住隊嚟追人。"
+        ]
+      },
+      {
+        speaker: "何生",
+        kind: "npc",
+        lines: [
+          "年尾啦，邊個都等錢過年。劇組有筆數拖咗三個月——源頭喺入面嗰位。",
+          "顧明輝，駐唱嗰個。佢唔係衰人，係真係冇。"
+        ]
+      },
+      {
+        speaker: "何生",
+        kind: "npc",
+        lines: [
+          "唔係得佢一個難。燈光組阿成等住呢筆糧交租，茶水芬姐個仔開學要交學費——一張糧單，牽住十幾頭家。",
+          "所以我先冇即刻發火。追，又怕追死人；唔追，又對唔住成組人。"
+        ]
+      },
+      {
+        speaker: "顧明輝",
+        kind: "npc",
+        emotion: "tired",
+        lines: [
+          "何生……你都嚟埋？",
+          "我知我欠邊啲。我唱埋呢個月，啲糧出咗，第一時間還。"
+        ]
+      },
+      {
+        speaker: "顧明輝",
+        kind: "npc",
+        emotion: "tired",
+        lines: [
+          "以前我出碟嗰陣，年尾唱到除夕都未收得工，啲人排隊等我簽名。而家呢……唱足成個月，先夠還一期。",
+          "你睇吓牆上嗰張海報，嗰個係我嚟㗎。唔好笑——嗰陣我都以為，紅係一世嘅事。"
+        ]
+      },
+      {
+        speaker: "何生",
+        kind: "npc",
+        lines: [
+          "阿偉，今晚你揀：一係幫我向佢追數，講到明、做到絕；一係你替劇組出頭，幫佢擋一擋出面嗰班，俾佢唱埋呢個月。"
+        ]
+      },
+      {
+        speaker: "酒廊伙記",
+        kind: "npc",
+        lines: [
+          "顧生唱到夜晚十一點先有飯食，呢排連煙都戒埋。何生，你哋講還講，俾佢唱埋呢首先啦——台下仲有兩個客，係專登嚟聽佢嘅。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（一個係何生嘅人情，一個係成組人嘅飯碗。兩邊都係江湖。）"
+        ]
+      }
     ],
     choices: [
-      { id: "C9_a", label: "幫何生追數：把口講到明，限期還清",
-        effects: { flags: ["flag_chase_for_ho"], stats: { rel_ho: 2 }, tags: [], notes: "何生記住你肯企出嚟——呢份忠誠，佢之後會還。" },
+      {
+        id: "C9_a",
+        label: "幫何生追數：把口講到明，限期還清",
+        effects: {
+          flags: [
+            "flag_chase_for_ho"
+          ],
+          stats: {
+            rel_ho: 2
+          },
+          tags: [],
+          notes: "何生記住你肯企出嚟——呢份忠誠，佢之後會還。"
+        },
         resultBeats: [
-          { speaker: "顧明輝", lines: ["得……我寫低個期。到時冇，你嚟收我啲碟都得。"] },
-          { speaker: "何生", lines: ["做得乾淨。呢行，肯出面嘅人唔多。"] }
-        ] },
-      { id: "C9_b", label: "替劇組出頭：幫顧明輝擋住出面嗰班",
-        effects: { flags: ["flag_standup_crew"], stats: { industryCredit: 2 }, tags: [], notes: "你幫成組人擋咗一鑊——劇組上下，記你一份人情。" },
+          {
+            speaker: "顧明輝",
+            lines: [
+              "得……我寫低個期。到時冇，你嚟收我啲碟都得。"
+            ]
+          },
+          {
+            speaker: "何生",
+            lines: [
+              "做得乾淨。呢行，肯出面嘅人唔多。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "三日之後，顧明輝真係送咗第一期錢去事務所，仲夾咗張紙，寫住餘下幾期嘅日子，一個都冇走樣。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "何生收起張紙，自嗰日之後，佢派工俾你嗰陣，多咗句「呢單信得過你先俾你」。"
+            ]
+          },
+          {
+            speaker: "何生",
+            lines: [
+              "追數追到人肯自己嚟還，先算本事。呢單，我記你功。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C9_b",
+        label: "替劇組出頭：幫顧明輝擋住出面嗰班",
+        effects: {
+          flags: [
+            "flag_standup_crew"
+          ],
+          stats: {
+            industryCredit: 2
+          },
+          tags: [],
+          notes: "你幫成組人擋咗一鑊——劇組上下，記你一份人情。"
+        },
         resultBeats: [
-          { speaker: "顧明輝", lines: ["後生仔……多謝。呢首歌，我唱畀你聽。"] },
-          { speaker: "系統", lines: ["嗰晚酒廊嗰首舊歌，唱得特別耐。"] }
-        ] }
+          {
+            speaker: "顧明輝",
+            lines: [
+              "後生仔……多謝。呢首歌，我唱畀你聽。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰晚酒廊嗰首舊歌，唱得特別耐。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰個月，酒廊門口嗰班人真係冇再嚟企過。劇組啲糧遲咗幾日，終於齊數——芬姐嗰日仲專登留咗碗糖水俾你，話多得你嗰晚出聲。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "月底唱完最後一場，顧明輝將一隻舊碟塞俾你：「唔值錢㗎啦，不過……總有人記得我唱過。」"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C9_c",
+        label: "兩邊拖一拖：幫顧明輝爭取分期，先俾劇組一個交代",
+        effects: {
+          flags: [
+            "flag_mediate_gu_debt"
+          ],
+          stats: {
+            rel_ho: 1,
+            industryCredit: 1
+          },
+          tags: [],
+          notes: "你冇企死一邊，幫兩邊留咗條路——何生唔算最滿意，不過成組人有期可等。"
+        },
+        resultBeats: [
+          {
+            speaker: "何生",
+            lines: [
+              "分期……都得。醜話講晒喺前頭，白紙黑字，邊期斷咗，邊期即刻算數。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰晚冇人特別多謝你，不過糧單上面多咗個期，成組人嗰口氣，總算落返嚟。何生臨走嗰句係：「識留餘地，都係一種企邊。」"
+            ]
+          }
+        ]
+      }
     ],
     conflict: null,
-    flags_written: ["flag_chase_for_ho", "flag_standup_crew"],
-    openConditions: ["season_winter"], openConditionsAny: null,
+    flags_written: [
+      "flag_chase_for_ho",
+      "flag_standup_crew",
+      "flag_mediate_gu_debt"
+    ],
+    openConditions: [
+      "season_winter"
+    ],
+    openConditionsAny: null,
     openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（1989 冬）；「人情債觸發」以何生委託＋年尾清貨期喺內容層呈現，唔入閘。",
     thresholds: {},
-    pacing: { weekMin: 90, minDaysAfterPrev: 1, when: "1989冬", prevMain: "C8" },
+    pacing: {
+      weekMin: 90,
+      minDaysAfterPrev: 1,
+      when: "1989冬",
+      prevMain: "C8"
+    },
     aftermathHint: "年尾數點收科，成組人好快知；你企邊邊，邊邊記住。",
     journalCandidate: "年尾酒廊嗰晚，我企咗喺何生嗰邊，定係成組人嗰邊。",
     redStarHook: "顧明輝喺老式酒廊駐唱：過氣情歌王子，歌仲係嗰把聲，人就唔同晒。",
@@ -18719,42 +19391,181 @@ const STORY_SPINE_NODES_1989 = {
   },
   /* N11＝C10（1989 冬末・戲路定型）：演黑幫／演警察；彭兆基（慈善秀後台） */
   C10: {
-    id: "C10", phase: "P2", title: "戲路定型", when: "1989冬末",
+    id: "C10",
+    phase: "P2",
+    title: "戲路定型",
+    when: "1989冬末",
     setting: "星河電視台慈善秀後台；冬末，梟雄片熱潮殺到",
-    locId: "tvb_longmen", eraTag: "era_1989_winter_charity",
-    cast: ["阿偉", "彭兆基", "選角導演"],
+    locId: "tvb_longmen",
+    eraTag: "era_1989_winter_charity",
+    cast: [
+      "阿偉",
+      "彭兆基",
+      "選角導演"
+    ],
     synopsis: "慈善秀後台，金牌司儀彭兆基講多咗句幾乎闖禍，阿偉一句圓返；隔壁房梟雄片選角，要佢試黑幫同探長兩段——邊段落力試，之後成行就當佢係嗰種戲路。中期定型，就喺嗰十分鐘。",
     playerOffer: "黑幫定探長——你嗰段落力試嘅，會跟你好耐。",
     playerHint: "慈善秀後台，彭兆基啱啱講多咗句；隔壁房梟雄片選角等緊你試兩段。",
     lockedHint: "1989 年冬末先開，仲要做完年尾追數、聲望同信用總和夠數。未到就照常跑通告；開咗去星河電視台慈善秀後台。",
     nextHint: "",
     beats: [
-      { speaker: "系統", kind: "system", lines: ["1989 年冬末，星河電視台慈善秀後台。人人忙住綵排，隔壁房係梟雄片選角試鏡。"] },
-      { speaker: "彭兆基", kind: "npc", emotion: "smirk", lines: ["各位善長人翁——唉，嗰句我頭先喺台上面係咪講錯咗……", "算啦算啦，邊個記得啫，係咪？"] },
-      { speaker: "阿偉", kind: "player", lines: ["（成個後台都聽到。老闆個面黑過墨汁——我嗌咗句「彭生嗰句係特登嘅包袱」，總算圓返落去。）", "（隔壁房嗌我名：梟雄片嗰邊，要我試兩段——一段黑幫，一段探長。）"] },
-      { speaker: "選角導演", kind: "npc", lines: ["阿偉，你兩段都試吓啦。", "不過我同你講明：邊段你落力試，我之後就當你係嗰種戲路㗎啦。"] },
-      { speaker: "系統", kind: "system", lines: ["戲路呢家嘢，有時唔係你揀，係嗰十分鐘點試——試完，就定型。"] }
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "1989 年冬末，星河電視台慈善秀後台。人人忙住綵排，隔壁房係梟雄片選角試鏡。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "後台化妝枱排滿電髮鉗同粉盒，司儀稿飛到周圍都係。化妝師一邊幫彭兆基補粉一邊嗌：「出面觀眾捐錢捐到眼濕濕，你嗰句千祈唔好再喺直播度爆出嚟呀。」"
+        ]
+      },
+      {
+        speaker: "彭兆基",
+        kind: "npc",
+        emotion: "smirk",
+        lines: [
+          "各位善長人翁——唉，嗰句我頭先喺台上面係咪講錯咗……",
+          "算啦算啦，邊個記得啫，係咪？"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "隔壁試鏡房傳嚟乒乒乓乓嘅聲——有人試緊打戲，有人對住鏡頭練習點樣企先似個探長。呢排梟雄片開到成行都係，邊個身上有嗰股氣，邊個就有工開。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（成個後台都聽到。老闆個面黑過墨汁——我嗌咗句「彭生嗰句係特登嘅包袱」，總算圓返落去。）",
+          "（隔壁房嗌我名：梟雄片嗰邊，要我試兩段——一段黑幫，一段探長。）"
+        ]
+      },
+      {
+        speaker: "選角導演",
+        kind: "npc",
+        lines: [
+          "阿偉，你兩段都試吓啦。",
+          "不過我同你講明：邊段你落力試，我之後就當你係嗰種戲路㗎啦。"
+        ]
+      },
+      {
+        speaker: "服裝助手",
+        kind: "npc",
+        lines: [
+          "兩套衫，一套黑西裝連金錶鏈，一套舊風褸連證件套——著邊套企出嚟，成房人望你嗰眼神都唔同㗎。"
+        ]
+      },
+      {
+        speaker: "選角導演",
+        kind: "npc",
+        lines: [
+          "試埋行路俾我睇：黑幫嗰段要行得慢、眼神先到；探長嗰段要企得直、講嘢唔好搶。",
+          "記住，觀眾第一眼信你係邊種人，之後成套戲都唔使解釋。何生嗰邊我都問過佢意見——佢話，你肯捱，邊條路都行得遠，最怕係兩頭唔到岸。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "戲路呢家嘢，有時唔係你揀，係嗰十分鐘點試——試完，就定型。"
+        ]
+      }
     ],
     choices: [
-      { id: "C10_a", label: "演黑幫：狠嗰段落足力",
-        effects: { flags: ["flag_role_gangster"], stats: { fame: 2 }, tags: [], notes: "選角導演點頭：呢個後生仔，演江湖人有嗰股氣。" },
+      {
+        id: "C10_a",
+        label: "演黑幫：狠嗰段落足力",
+        effects: {
+          flags: [
+            "flag_role_gangster"
+          ],
+          stats: {
+            fame: 2
+          },
+          tags: [],
+          notes: "選角導演點頭：呢個後生仔，演江湖人有嗰股氣。"
+        },
         resultBeats: [
-          { speaker: "選角導演", lines: ["得，就你。呢種戲，呢兩年有排拍。"] },
-          { speaker: "彭兆基", lines: ["後生仔，台上面講錯句有你圓，台底下揀路仲準過我。"] }
-        ] },
-      { id: "C10_b", label: "演警察：正嗰段企得穩",
-        effects: { flags: ["flag_role_cop"], stats: { industryCredit: 2 }, tags: [], notes: "選角導演記低你個名：正劇探長嗰種，唔係個個臨記企得出。" },
+          {
+            speaker: "選角導演",
+            lines: [
+              "得，就你。呢種戲，呢兩年有排拍。"
+            ]
+          },
+          {
+            speaker: "彭兆基",
+            lines: [
+              "後生仔，台上面講錯句有你圓，台底下揀路仲準過我。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "唔使一星期，通告紙就開始認人——嚟親都係江湖戲：大佬身邊嗰個、茶樓講數嗰個，角色一次比一次有台詞。何生睇住嗰叠通告紙講咗句：「呢條路你行出嚟㗎，行遠啲先好回頭。」"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C10_b",
+        label: "演警察：正嗰段企得穩",
+        effects: {
+          flags: [
+            "flag_role_cop"
+          ],
+          stats: {
+            industryCredit: 2
+          },
+          tags: [],
+          notes: "選角導演記低你個名：正劇探長嗰種，唔係個個臨記企得出。"
+        },
         resultBeats: [
-          { speaker: "選角導演", lines: ["企得穩。探長嗰種戲路，長做長有。"] },
-          { speaker: "彭兆基", lines: ["穩陣好呀——唔似我，成世靠把口。"] }
-        ] }
+          {
+            speaker: "選角導演",
+            lines: [
+              "企得穩。探長嗰種戲路，長做長有。"
+            ]
+          },
+          {
+            speaker: "彭兆基",
+            lines: [
+              "穩陣好呀——唔似我，成世靠把口。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "跟住嗰排，嚟嘅通告換咗個款：查案、巡邏、企喺警局門口講對白嗰種，一單接一單。冇黑幫戲嗰種爆紅味，不過勝在穩——選角嗰邊講明：「探長後生版，我哋第一個就諗起你。」"
+            ]
+          }
+        ]
+      }
     ],
     conflict: null,
-    flags_written: ["flag_role_gangster", "flag_role_cop"],
-    openConditions: ["C9", "season_winter"], openConditionsAny: null,
+    flags_written: [
+      "flag_role_gangster",
+      "flag_role_cop"
+    ],
+    openConditions: [
+      "C9",
+      "season_winter"
+    ],
+    openConditionsAny: null,
     openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（C9 done＋雙軌>70＋1989 冬）；此欄只作 legacy 對照。",
     thresholds: {},
-    pacing: { weekMin: 94, minDaysAfterPrev: 1, when: "1989冬末", prevMain: "C9" },
+    pacing: {
+      weekMin: 94,
+      minDaysAfterPrev: 1,
+      when: "1989冬末",
+      prevMain: "C9"
+    },
     aftermathHint: "試鏡結果好快傳開；之後嚟嘅通告，會開始認你嗰種戲路。",
     journalCandidate: "慈善秀後台嗰日，我試嗰兩段戲，揀咗一條路行落去。",
     redStarHook: "彭兆基喺慈善秀後台：金牌司儀口沒遮攔，差啲得罪老闆。",
@@ -18790,42 +19601,186 @@ function applyStorySpineOverrides46(){
 const STORY_SPINE_NODES_1990 = {
   /* N12＝C15（1990 春・高危替身）：做高危替身／拒接；麥震東（動作片片場） */
   C15: {
-    id: "C15", phase: "P3", title: "高危替身", when: "1990春",
+    id: "C15",
+    phase: "P3",
+    title: "高危替身",
+    when: "1990春",
     setting: "維港電影動作片片場；1990 年春，武打片熱潮，高危鏡頭一個接一個",
-    locId: "film_harbour", eraTag: "era_1990_spring_action",
-    cast: ["阿偉", "麥震東", "武指"],
+    locId: "film_harbour",
+    eraTag: "era_1990_spring_action",
+    cast: [
+      "阿偉",
+      "麥震東",
+      "武指"
+    ],
     synopsis: "武打片熱潮殺到，麥震東拍一場飛簷跳樓戲嗰陣落地扭傷，成組停晒。武指四圍搵身形似佢嘅人頂嗰個高危鏡頭——搵到阿偉頭上。做，搏命揚名；唔做，冇人會怪你。",
     playerOffer: "武指嗌你頂麥震東嗰個高危鏡頭——跳，定唔跳？",
     playerHint: "動作片片場有人受傷，武指嗌人頂個高危鏡頭。",
     lockedHint: "1990 年春先開，仲要有動作標籤傍身先有人諗起你。未到就照常跑通告；開咗去維港電影動作片片場。",
     nextHint: "",
     beats: [
-      { speaker: "系統", kind: "system", lines: ["1990 年春，維港電影動作片片場。威也、爆破位全部準備好，嗰場跳樓戲就差臨門一腳。", "麥震東落地嗰下扭親腳踝，坐喺旁邊敷冰——成組人企晒喺度，等一個人頂上。"] },
-      { speaker: "武指", kind: "npc", lines: ["阿偉，你身形同東哥最似，套戲服啱啱好。", "嗰個鏡頭唔使露樣，跳落嚟就得——你敢唔敢？"] },
-      { speaker: "麥震東", kind: "npc", emotion: "tired", lines: ["後生仔，呢行食呢行飯，邊個未跌過。", "不過我同你講真：唔好為咗一格菲林，賠咗成世。你自己諗清楚。"] },
-      { speaker: "阿偉", kind: "player", lines: ["（嗰個高度，我望上去都腳軟。跳——成行會記住我嗰一躍。唔跳——都冇人會怪我。）"] },
-      { speaker: "系統", kind: "system", lines: ["成個片場靜晒，等你一句。"] }
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "1990 年春，維港電影動作片片場。威也、爆破位全部準備好，嗰場跳樓戲就差臨門一腳。",
+          "麥震東落地嗰下扭親腳踝，坐喺旁邊敷冰——成組人企晒喺度，等一個人頂上。"
+        ]
+      },
+      {
+        speaker: "老武師",
+        kind: "npc",
+        lines: [
+          "我哋動作組收工唔計鐘數，計邊個仲企得起。墊要自己睇過，扣要自己拉過，先好俾人吊上去——呢行冇邊個會替你小心。"
+        ]
+      },
+      {
+        speaker: "武指",
+        kind: "npc",
+        lines: [
+          "阿偉，你身形同東哥最似，套戲服啱啱好。",
+          "嗰個鏡頭唔使露樣，跳落嚟就得——你敢唔敢？"
+        ]
+      },
+      {
+        speaker: "武指",
+        kind: "npc",
+        lines: [
+          "唔好諗到咁簡單——下面四張墊，我親手排過；威也兩條，一條保險。跳之前你要行一次個位，企唔穩就即刻出聲，冇人會笑你。",
+          "呢個鏡頭一出事，唔係你一個人嘅事，係成組停工。所以我先問清楚，唔係逼你。"
+        ]
+      },
+      {
+        speaker: "麥震東",
+        kind: "npc",
+        emotion: "tired",
+        lines: [
+          "後生仔，呢行食呢行飯，邊個未跌過。",
+          "不過我同你講真：唔好為咗一格菲林，賠咗成世。你自己諗清楚。"
+        ]
+      },
+      {
+        speaker: "麥震東",
+        kind: "npc",
+        emotion: "tired",
+        lines: [
+          "我唔係唔想唞，係唔敢唞。呢部戲賣埠賣到去東南亞，期一甩，成村人冇工開。",
+          "你睇我呢啲傷，唔係勳章，係帳——遲早要還。攞多嚿冰嚟啦，我望住個鏡頭位先安樂。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（嗰個高度，我望上去都腳軟。跳——成行會記住我嗰一躍。唔跳——都冇人會怪我。）"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（我行去墊邊企咗一陣，鞋尖啱啱掂住個記號。風吹過嚟，威也扣喺度輕輕響——成組人嘅工、東哥嗰部戲、仲有我自己，嗰一刻全部吊喺嗰兩條鋼絲上面。）"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "成個片場靜晒，等你一句。"
+        ]
+      }
     ],
     choices: [
-      { id: "C15_a", label: "做高危替身：著起東哥套戲服，跳",
-        effects: { flags: ["flag_stunt_double"], stats: { fame: 3 }, tags: ["搏命"], notes: "你跳咗嗰一躍。落地嗰下成組人嗌出聲——呢一格菲林，成行都會知係邊個跳。" },
+      {
+        id: "C15_a",
+        label: "做高危替身：著起東哥套戲服，跳",
+        effects: {
+          flags: [
+            "flag_stunt_double"
+          ],
+          stats: {
+            fame: 3
+          },
+          tags: [
+            "搏命"
+          ],
+          notes: "你跳咗嗰一躍。落地嗰下成組人嗌出聲——呢一格菲林，成行都會知係邊個跳。"
+        },
         resultBeats: [
-          { speaker: "武指", lines: ["好嘢！一 take 過！阿偉，呢份人情，成個動作組記住你。"] },
-          { speaker: "麥震東", lines: ["跌得起、爬得返，先係呢行嘅人。你嗰躍，我認。"] }
-        ] },
-      { id: "C15_b", label: "拒接：老實講，呢個高度我未到",
-        effects: { flags: ["flag_stunt_refuse"], stats: { industryCredit: 1 }, tags: ["惜身"], notes: "你冇俾英雄主義推上威也。武指拍拍你膊頭：識分寸嘅人，先做得耐呢行。" },
+          {
+            speaker: "武指",
+            lines: [
+              "好嘢！一 take 過！阿偉，呢份人情，成個動作組記住你。"
+            ]
+          },
+          {
+            speaker: "麥震東",
+            lines: [
+              "跌得起、爬得返，先係呢行嘅人。你嗰躍，我認。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰一躍收工之後，茶水檔嗰邊已經傳開：「新嚟嗰個阿偉，東哥嗰格係佢跳㗎。」之後幾日，動作組啲師傅見到你都會點頭，有人仲主動教你點樣落墊先唔傷腰——喺呢行，肯教你，先算認你係自己人。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C15_b",
+        label: "拒接：老實講，呢個高度我未到",
+        effects: {
+          flags: [
+            "flag_stunt_refuse"
+          ],
+          stats: {
+            industryCredit: 1
+          },
+          tags: [
+            "惜身"
+          ],
+          notes: "你冇俾英雄主義推上威也。武指拍拍你膊頭：識分寸嘅人，先做得耐呢行。"
+        },
         resultBeats: [
-          { speaker: "武指", lines: ["唔緊要，唔識唔好扮識——嗰啲先累死成組。你去幫手睇住啲墊啦。"] },
-          { speaker: "麥震東", lines: ["識惜身，好事。呢行路，長行長有。"] }
-        ] }
+          {
+            speaker: "武指",
+            lines: [
+              "唔緊要，唔識唔好扮識——嗰啲先累死成組。你去幫手睇住啲墊啦。"
+            ]
+          },
+          {
+            speaker: "麥震東",
+            lines: [
+              "識惜身，好事。呢行路，長行長有。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "你嗰日冇跳，不過留低幫手睇墊睇到收工。過咗幾日，武指派另一單文戲入面嘅動作戲俾你，講明：「嗰日你肯講真話，我先敢俾啲要分寸嘅位你做。」組入面冇人笑你縮，師傅嗰句先係真。"
+            ]
+          }
+        ]
+      }
     ],
     conflict: null,
-    flags_written: ["flag_stunt_double", "flag_stunt_refuse"],
-    openConditions: ["tag_action"], openConditionsAny: null,
+    flags_written: [
+      "flag_stunt_double",
+      "flag_stunt_refuse"
+    ],
+    openConditions: [
+      "tag_action"
+    ],
+    openConditionsAny: null,
     openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（動作標籤＋1990 春）；此欄只作 legacy 對照。",
     thresholds: {},
-    pacing: { weekMin: 105, minDaysAfterPrev: 1, when: "1990春", prevMain: "C10" },
+    pacing: {
+      weekMin: 105,
+      minDaysAfterPrev: 1,
+      when: "1990春",
+      prevMain: "C10"
+    },
     aftermathHint: "嗰一躍跳定唔跳，動作組嗰邊好快傳開；之後啲武打通告點睇你，睇呢度。",
     journalCandidate: "麥震東傷咗嗰日，我揀咗跳，定揀咗惜身。",
     redStarHook: "麥震東喺動作片片場：巨星拍高危鏡頭受傷，成組等一個人頂上。",
@@ -18833,42 +19788,202 @@ const STORY_SPINE_NODES_1990 = {
   },
   /* N13＝C14（1990 夏・站隊）：站隊電視台／站隊電影公司；齊鎮海（高爾夫球場挖角） */
   C14: {
-    id: "C14", phase: "P3", title: "站隊", when: "1990夏",
+    id: "C14",
+    phase: "P3",
+    title: "站隊",
+    when: "1990夏",
     setting: "電視台附近高爾夫球會所；1990 年夏，兩台收視戰打到出面，挖角傳聞滿天飛",
-    locId: "tvb_longmen", eraTag: "era_1990_summer_war",
-    cast: ["阿偉", "齊鎮海", "何生"],
+    locId: "tvb_longmen",
+    eraTag: "era_1990_summer_war",
+    cast: [
+      "阿偉",
+      "齊鎮海",
+      "何生"
+    ],
     synopsis: "收視戰白熱化，一哥齊鎮海約阿偉打波，明示暗示：電影公司嗰邊嚟緊有大製作，缺個企得穩嘅人；星河呢邊，就係阿偉由臨記捱出頭嘅地方。去到呢個位，企邊邊唔再係「有工就開」咁簡單。",
     playerOffer: "齊鎮海約你打波——佢有說話想同你講。",
     playerHint: "齊鎮海約你打波——波就其次，佢有說話想同你講。",
     lockedHint: "1990 年夏先開，仲要做完戲路定型、業內信用夠班。未到就照常跑通告；開咗去星河電視台嗰邊等齊鎮海約。",
     nextHint: "",
     beats: [
-      { speaker: "系統", kind: "system", lines: ["1990 年夏，高爾夫球會所。綠草如茵，同電視台入面嗰種趕工空氣，完全兩個世界。", "齊鎮海一身白衫，揮桿姿勢仲瀟灑過佢啲劇——佢約你嚟，唔係為咗打波。"] },
-      { speaker: "齊鎮海", kind: "npc", emotion: "calm", lines: ["阿偉，你呢兩年點捱上嚟，我睇喺眼。電影公司嗰邊嚟緊有大製作，我同佢哋提過你。", "電視台係困身啲，不過穩陣；電影就搏啲，不過天花板高。你自己揀——企邊邊，將來啲資源就向邊邊斜。"] },
-      { speaker: "何生", kind: "npc", lines: ["（嚟之前，何生喺事務所提過你一句：企邊邊都好，先諗清楚你啲人情數企喺邊——邊邊嘅人記得你，邊邊就係你嘅本錢。）"] },
-      { speaker: "阿偉", kind: "player", lines: ["（由臨記做到有人出嚟挖角，原來係呢種感覺。呢一步企錯，唔係冇咗一份工，係冇咗一班人。）"] },
-      { speaker: "系統", kind: "system", lines: ["齊鎮海將支桿遞俾你，等你開波——亦等你嗰句。"] }
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "1990 年夏，高爾夫球會所。綠草如茵，同電視台入面嗰種趕工空氣，完全兩個世界。",
+          "齊鎮海一身白衫，揮桿姿勢仲瀟灑過佢啲劇——佢約你嚟，唔係為咗打波。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "呢排電視台茶水間，日日都有新傳聞：邊個俾電影公司請食飯，邊個收到對家電話，邊個嘅經理人琴晚冇返屋企食飯。收視戰打嘅唔淨係節目表，係人心。"
+        ]
+      },
+      {
+        speaker: "齊鎮海",
+        kind: "npc",
+        emotion: "calm",
+        lines: [
+          "阿偉，你呢兩年點捱上嚟，我睇喺眼。電影公司嗰邊嚟緊有大製作，我同佢哋提過你。",
+          "電視台係困身啲，不過穩陣；電影就搏啲，不過天花板高。你自己揀——企邊邊，將來啲資源就向邊邊斜。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "齊鎮海冇即刻要你答覆，只係將一張飯局卡放喺你面前：「電影公司嗰邊，禮拜五請食飯，導演同監製都會到。你嚟坐吓，聽吓人哋開咩戲，唔使應承任何嘢。」",
+          "「拉人唔使拉得咁肉酸嘅。睇過、傾過，你先知自己值幾多。」"
+        ]
+      },
+      {
+        speaker: "何生",
+        kind: "npc",
+        lines: [
+          "（嚟之前，何生喺事務所提過你一句：企邊邊都好，先諗清楚你啲人情數企喺邊——邊邊嘅人記得你，邊邊就係你嘅本錢。）"
+        ]
+      },
+      {
+        speaker: "何生",
+        kind: "npc",
+        lines: [
+          "嗰朝星河嗰邊嘅監製打嚟事務所搵你，託我傳話：下套重頭劇留咗個位俾你，只要你唔走，嚟緊半年嘅通告紙，佢親自過目。",
+          "兩邊都出聲啦——你嗰步，先值錢。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（由臨記做到有人出嚟挖角，原來係呢種感覺。呢一步企錯，唔係冇咗一份工，係冇咗一班人。）"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "齊鎮海將支桿遞俾你，等你開波——亦等你嗰句。"
+        ]
+      }
     ],
     choices: [
-      { id: "C14_a", label: "站隊電視台：留喺星河，我喺呢度捱出頭",
-        effects: { flags: ["flag_side_tv"], stats: { industryCredit: 2 }, tags: [], notes: "你留喺星河。齊鎮海笑住同你握手——企得穩，都係一種答案；台入面嗰班人，會記住你冇喺收視戰嗰陣跳船。" },
+      {
+        id: "C14_a",
+        label: "站隊電視台：留喺星河，我喺呢度捱出頭",
+        effects: {
+          flags: [
+            "flag_side_tv"
+          ],
+          stats: {
+            industryCredit: 2
+          },
+          tags: [],
+          notes: "你留喺星河。齊鎮海笑住同你握手——企得穩，都係一種答案；台入面嗰班人，會記住你冇喺收視戰嗰陣跳船。"
+        },
         resultBeats: [
-          { speaker: "齊鎮海", lines: ["好，有情有義。我嗰邊道門唔會閂埋，不過你呢句，我記住。"] },
-          { speaker: "系統", lines: ["嗰日場波打成點冇人記得——你企咗邊邊，就全行都知。"] }
-        ] },
-      { id: "C14_b", label: "站隊電影公司：跟齊鎮海嗰邊行，大銀幕大製作",
-        effects: { flags: ["flag_side_film"], stats: { fame: 2 }, tags: [], notes: "你跟咗電影嗰邊。消息傳返電視台嗰陣，有人話你醒，有人話你變節——邊樣啱，要睇你之後行成點。" },
+          {
+            speaker: "齊鎮海",
+            lines: [
+              "好，有情有義。我嗰邊道門唔會閂埋，不過你呢句，我記住。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰日場波打成點冇人記得——你企咗邊邊，就全行都知。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "消息傳得快過收視報告：第二日返電視台，監製喺走廊截住你，親手遞嚟下套重頭劇嘅通告紙；茶水間嗰班人嗌你嗰聲，都大聲咗。電影公司嗰邊就靜晒——嗰張飯局卡，冇人再提。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C14_b",
+        label: "站隊電影公司：跟齊鎮海嗰邊行，大銀幕大製作",
+        effects: {
+          flags: [
+            "flag_side_film"
+          ],
+          stats: {
+            fame: 2
+          },
+          tags: [],
+          notes: "你跟咗電影嗰邊。消息傳返電視台嗰陣，有人話你醒，有人話你變節——邊樣啱，要睇你之後行成點。"
+        },
         resultBeats: [
-          { speaker: "齊鎮海", lines: ["識揀。呢行最怕唔係揀錯，係唔敢揀。"] },
-          { speaker: "系統", lines: ["收工返到電視台，茶水間嗰啲眼神，已經唔同咗。"] }
-        ] }
+          {
+            speaker: "齊鎮海",
+            lines: [
+              "識揀。呢行最怕唔係揀錯，係唔敢揀。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "收工返到電視台，茶水間嗰啲眼神，已經唔同咗。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "飯局卡好快變成真飯局：禮拜五嗰晚，監製親自斟茶，講明新戲留咗個企得穩嘅位俾你。返電視台嗰日，星河嗰邊嘅通告紙就薄咗——有人仲笑笑口同你打招呼，不過嗰句「自己人」，冇人再講出口。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C14_c",
+        label: "兩邊都唔應死：波照打，飯照食，睇埋先算",
+        effects: {
+          flags: [
+            "flag_side_undecided"
+          ],
+          stats: {
+            industryCredit: 1
+          },
+          tags: [],
+          notes: "你冇即刻企邊——兩邊都當你仲有得傾，門開住，不過信任要之後慢慢補。"
+        },
+        resultBeats: [
+          {
+            speaker: "齊鎮海",
+            lines: [
+              "拖？都得嘅。呢行唔係買餸，企錯邊先最貴。不過阿偉，門開得耐，會自己閂㗎。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰場波之後，兩邊都冇即刻再逼你——電視台嗰邊照派工，電影公司嗰張飯局卡，你收咗喺銀包最入嗰格。"
+            ]
+          }
+        ]
+      }
     ],
     conflict: null,
-    flags_written: ["flag_side_tv", "flag_side_film"],
-    openConditions: ["C10"], openConditionsAny: null,
+    flags_written: [
+      "flag_side_tv",
+      "flag_side_film",
+      "flag_side_undecided"
+    ],
+    openConditions: [
+      "C10"
+    ],
+    openConditionsAny: null,
     openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（C10 done＋信用>42＋1990 夏）；「人情債結算」以何生提點喺內容層呈現，唔入閘。",
     thresholds: {},
-    pacing: { weekMin: 118, minDaysAfterPrev: 1, when: "1990夏", prevMain: "C10" },
+    pacing: {
+      weekMin: 118,
+      minDaysAfterPrev: 1,
+      when: "1990夏",
+      prevMain: "C10"
+    },
     aftermathHint: "你企咗邊邊，兩邊都會好快知；之後嚟嘅資源，會開始向嗰邊斜。",
     journalCandidate: "齊鎮海支桿遞到我手嗰日，我揀咗留，定揀咗走出去。",
     redStarHook: "齊鎮海喺高爾夫球場：一哥俾對台高價挖角傳聞纏身，佢自己先嚟挖你角。",
@@ -18876,42 +19991,225 @@ const STORY_SPINE_NODES_1990 = {
   },
   /* N14＝C12（1990 秋・樂壇前哨）：幫粉絲應援／避開狂熱粉；陸柏言（唱片公司大堂） */
   C12: {
-    id: "C12", phase: "P3", title: "樂壇前哨", when: "1990秋",
+    id: "C12",
+    phase: "P3",
+    title: "樂壇前哨",
+    when: "1990秋",
     setting: "天星音樂大堂；1990 年秋，樂壇頒獎禮前哨戰，緋聞滿天飛",
-    locId: "rec_star", eraTag: "era_1990_autumn_music",
-    cast: ["阿偉", "陸柏言", "唱片公司職員"],
+    locId: "rec_star",
+    eraTag: "era_1990_autumn_music",
+    cast: [
+      "阿偉",
+      "陸柏言",
+      "唱片公司職員"
+    ],
     synopsis: "陸柏言俾緋聞纏身，一班忠實歌迷聚集喺唱片公司大堂，話要聲援偶像、趕走守候嘅記者，保安就嚟控制唔到場面。阿偉嚟交帶嗰陣撞正——幫手應援定行後門避開，你企邊邊即刻俾人睇穿。",
     playerOffer: "大堂有班歌迷聚集，陸柏言就嚟到——你企邊邊？",
     playerHint: "唱片公司大堂有班歌迷聚集，陸柏言就嚟到——你企邊邊？",
     lockedHint: "1990 年秋先開，仲要做完站隊、聲望夠高。未到就照常跑通告；開咗去天星音樂大堂。",
     nextHint: "",
     beats: [
-      { speaker: "系統", kind: "system", lines: ["1990 年秋，天星音樂大堂。橫額、花牌、人頭湧湧——陸柏言嘅忠實歌迷嚟聲援偶像，順便趕走門口嗰班守候多日嘅記者。", "保安就嚟頂唔住，唱片公司職員喺人群入面，一眼就望到你。"] },
-      { speaker: "唱片公司職員", kind: "npc", lines: ["阿偉？你嚟得啱啦——幫手企一企、派下水都好，班細路淨係聽『自己人』講。", "唔想惹麻煩就行後門啦，我唔怪你，呢啲場面避得就避。"] },
-      { speaker: "陸柏言", kind: "npc", emotion: "tired", lines: ["唔好意思，連累你哋。做呢行，俾人愛同俾人鬧，有時係同一班人。", "你唔使企我嗰邊——你企你自己嗰邊就得。"] },
-      { speaker: "阿偉", kind: "player", lines: ["（留低，我就係『企出嚟嗰個臨記』；行後門，今日就乜事都冇。兩樣都有代價。）"] },
-      { speaker: "系統", kind: "system", lines: ["大堂嘅聲浪一浪高過一浪，陸柏言架車就嚟到門口。"] }
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "1990 年秋，天星音樂大堂。橫額、花牌、人頭湧湧——陸柏言嘅忠實歌迷嚟聲援偶像，順便趕走門口嗰班守候多日嘅記者。",
+          "保安就嚟頂唔住，唱片公司職員喺人群入面，一眼就望到你。"
+        ]
+      },
+      {
+        speaker: "歌迷阿妹",
+        kind: "npc",
+        lines: [
+          "我哋唔係嚟搞事㗎！應援牌、花牌、同呢幾箱水，都係歌迷會一毫子一毫子夾錢買返嚟嘅。",
+          "頒獎禮就到，電台嗰邊日日俾人打電話去點歌拉票——我哋唔出嚟企，邊個幫言哥講句公道話？"
+        ]
+      },
+      {
+        speaker: "唱片公司職員",
+        kind: "npc",
+        lines: [
+          "阿偉？你嚟得啱啦——幫手企一企、派下水都好，班細路淨係聽『自己人』講。",
+          "唔想惹麻煩就行後門啦，我唔怪你，呢啲場面避得就避。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "門口嗰幾支長鏡頭守咗三日三夜，就係等影陸柏言落車嗰下憔悴樣，返去交差。",
+          "呢個就係頒獎季嘅前哨戰喇——歌都未唱，版面先打完一仗；邊個企錯位，聽朝就俾人寫到唔似人形。"
+        ]
+      },
+      {
+        speaker: "陸柏言",
+        kind: "npc",
+        emotion: "tired",
+        lines: [
+          "唔好意思，連累你哋。做呢行，俾人愛同俾人鬧，有時係同一班人。",
+          "你唔使企我嗰邊——你企你自己嗰邊就得。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "陸柏言冇即刻入去，佢行去欄杆邊，逐個同企咗成朝嘅歌迷點頭，又叫助手買熱飲，俾門口嗰班後生女暖下手。",
+          "天王嘅日常，原來唔係企喺台上嗰幾分鐘——係呢啲冇鏡頭影住、都要企得穩陣嘅時刻。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（留低，我就係『企出嚟嗰個臨記』；行後門，今日就乜事都冇。兩樣都有代價。）"
+        ]
+      },
+      {
+        speaker: "保安",
+        kind: "npc",
+        lines: [
+          "後門嗰邊啱啱又塞咗兩個扮送花嘅記者入嚟，我哋啱啱先請返佢哋出去。",
+          "你真係要行後門，就趁而家——遲多陣，後門都未必行得通。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "大堂嘅聲浪一浪高過一浪，陸柏言架車就嚟到門口。"
+        ]
+      }
     ],
     choices: [
-      { id: "C12_a", label: "幫歌迷打點：留低派水安撫，企到佢上車",
-        effects: { flags: ["flag_fans_support"], stats: { fame: 2 }, tags: ["親和力"], notes: "你留低幫手安撫歌迷，企到陸柏言安全上車。歌迷記住咗你呢張面——親和，係買唔到嘅宣傳。" },
+      {
+        id: "C12_a",
+        label: "幫歌迷打點：留低派水安撫，企到佢上車",
+        effects: {
+          flags: [
+            "flag_fans_support"
+          ],
+          stats: {
+            fame: 2
+          },
+          tags: [
+            "親和力"
+          ],
+          notes: "你留低幫手安撫歌迷，企到陸柏言安全上車。歌迷記住咗你呢張面——親和，係買唔到嘅宣傳。"
+        },
         resultBeats: [
-          { speaker: "陸柏言", lines: ["多謝。今日肯企出嚟嘅人，我記得邊幾個。"] },
-          { speaker: "系統", lines: ["嗰晚娛樂版嗰格細相，企喺陸柏言側邊嗰個，係你。"] }
-        ] },
-      { id: "C12_b", label: "避開狂熱粉：行後門，唔捲入場風波",
-        effects: { flags: ["flag_fans_avoid"], stats: { industryCredit: 1 }, tags: ["高冷"], notes: "你由後門走，冇捲入嗰場風波。唱片公司職員點頭：識避風頭嘅，先企得耐個台。" },
+          {
+            speaker: "陸柏言",
+            lines: [
+              "多謝。今日肯企出嚟嘅人，我記得邊幾個。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰晚娛樂版嗰格細相，企喺陸柏言側邊嗰個，係你。"
+            ]
+          },
+          {
+            speaker: "歌迷阿妹",
+            lines: [
+              "你叫咩名呀？我返去同歌迷會講——今日幫我哋手嗰個，唔係淨係企喺度等影相嗰啲人。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "幾日後，歌迷會嘅拉票單張派到電台門口，相入面除咗陸柏言，仲有人用筆圈住你嗰格細相，寫住『自己人』。嗰日企過出嚟嘅人，班歌迷記得仲牢過記者。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C12_b",
+        label: "避開狂熱粉：行後門，唔捲入場風波",
+        effects: {
+          flags: [
+            "flag_fans_avoid"
+          ],
+          stats: {
+            industryCredit: 1
+          },
+          tags: [
+            "高冷"
+          ],
+          notes: "你由後門走，冇捲入嗰場風波。唱片公司職員點頭：識避風頭嘅，先企得耐個台。"
+        },
         resultBeats: [
-          { speaker: "唱片公司職員", lines: ["醒。呢啲時候企錯位，幾多功夫都補唔返。"] },
-          { speaker: "系統", lines: ["大堂嘅聲浪漸漸遠——你嗰日，乾乾淨淨咁走咗。"] }
-        ] }
+          {
+            speaker: "唱片公司職員",
+            lines: [
+              "醒。呢啲時候企錯位，幾多功夫都補唔返。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "大堂嘅聲浪漸漸遠——你嗰日，乾乾淨淨咁走咗。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "不過避得開鏡頭，避唔開閒話——第二日茶水間已經有人問：嗰日企喺陸柏言隔籬嗰班人入面，點解冇你份？職員幫你擋咗一句：『佢識分寸。』呢句說話，喺唱片公司入面，行得仲遠過嗰張相。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C12_c",
+        label: "企中間調停：勸記者退後換訪問位，叫歌迷企返入線內",
+        effects: {
+          flags: [
+            "flag_fans_mediate"
+          ],
+          stats: {
+            fame: 1,
+            industryCredit: 1
+          },
+          tags: [
+            "圓滑"
+          ],
+          notes: "你冇企死一邊，兩邊各退一步：記者有位做訪問，歌迷企返入線內，場面冇炒鑊。嗰日點收科、你點企，兩邊都記得。"
+        },
+        resultBeats: [
+          {
+            speaker: "唱片公司職員",
+            lines: [
+              "你咁樣企中間，兩邊都落到台——呢啲功夫，唔係個個臨場做得到。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "陸柏言落車嗰陣，記者影到相、歌迷嗌到口號，冇人受傷，冇人俾人鬧上版面。嗰晚職員喺記事簿寫低你個名，隔籬嗰格寫住：『識做人。』"
+            ]
+          }
+        ]
+      }
     ],
     conflict: null,
-    flags_written: ["flag_fans_support", "flag_fans_avoid"],
-    openConditions: ["C14"], openConditionsAny: null,
+    flags_written: [
+      "flag_fans_support",
+      "flag_fans_avoid",
+      "flag_fans_mediate"
+    ],
+    openConditions: [
+      "C14"
+    ],
+    openConditionsAny: null,
     openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（C14 done＋聲望>50＋1990 秋）；此欄只作 legacy 對照。",
     thresholds: {},
-    pacing: { weekMin: 131, minDaysAfterPrev: 1, when: "1990秋", prevMain: "C14" },
+    pacing: {
+      weekMin: 131,
+      minDaysAfterPrev: 1,
+      when: "1990秋",
+      prevMain: "C14"
+    },
     aftermathHint: "嗰日你企邊邊，娛樂版同唱片公司嗰邊都記低咗。",
     journalCandidate: "陸柏言架車到門口嗰陣，我企咗喺人群前面，定行咗後門。",
     redStarHook: "陸柏言喺唱片公司大堂：天王俾緋聞纏身，歌迷聚集聲援，前哨戰味濃。",
@@ -18919,42 +20217,186 @@ const STORY_SPINE_NODES_1990 = {
   },
   /* N15＝C16（1990 秋末・偶像實力之爭）：靠修音／苦練唱功；程天諾（舞蹈室） */
   C16: {
-    id: "C16", phase: "P3", title: "偶像實力之爭", when: "1990秋末",
+    id: "C16",
+    phase: "P3",
+    title: "偶像實力之爭",
+    when: "1990秋末",
     setting: "天星音樂舞蹈室；夜晚，隔籬錄音室仲開緊工",
-    locId: "rec_star", eraTag: "era_1990_autumn_idol",
-    cast: ["阿偉", "程天諾", "監製"],
+    locId: "rec_star",
+    eraTag: "era_1990_autumn_idol",
+    cast: [
+      "阿偉",
+      "程天諾",
+      "監製"
+    ],
     synopsis: "樂壇洗牌，跳唱新人程天諾俾實力派公開批評「靠修音先見得人」，成行等睇佢點接招。唱片公司嗰晚試錄示範帶，監製拉阿偉去和音試唱一小段——點唱，係姿態：靠修音快靚正，定落苦功練真功夫，先至企出嚟。",
     playerOffer: "監製拉你試唱一小段——靠修音，定練真功夫？",
     playerHint: "舞蹈室嗰邊試音試到夜，程天諾就喺隔籬練舞。",
     lockedHint: "1990 年秋末先開，仲要做完樂壇前哨、聲望同信用總和夠數。未到就照常跑通告；開咗去天星音樂舞蹈室。",
     nextHint: "",
     beats: [
-      { speaker: "系統", kind: "system", lines: ["1990 年秋末，天星音樂舞蹈室。鏡牆前面，程天諾練舞練到成身汗，數住拍子，一下都冇停。", "報紙嗰句「靠修音先見得人」，貼咗喺錄音室門口成個禮拜——成行都等睇呢個後生仔點接招。"] },
-      { speaker: "程天諾", kind: "npc", emotion: "firm", lines: ["人哋話我靠修音。我冇出聲鬧返轉頭——我每日喺呢間房跳到半夜，就係想有一日，唔使靠嗰部機。", "你嗰段和音，監製嗌你試。點唱，你自己揀——我唔會笑你，邊條路都唔易行。"] },
-      { speaker: "監製", kind: "npc", lines: ["阿偉，試一段啦。嗱，兩條路：一係入去唱一次，我嗰邊修到順滑，聽朝就交到帶；一係你自己練到準先錄，慢係慢啲，不過係真功夫。"] },
-      { speaker: "阿偉", kind: "player", lines: ["（一格菲林可以靠替身，一段歌呢？靠修音，我今晚就收工；練真功夫，就要喺呢間房，同隔籬嗰個後生仔一齊捱。）"] },
-      { speaker: "系統", kind: "system", lines: ["錄音室盞紅燈，等緊你嗰句。"] }
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "1990 年秋末，天星音樂舞蹈室。鏡牆前面，程天諾練舞練到成身汗，數住拍子，一下都冇停。",
+          "報紙嗰句「靠修音先見得人」，貼咗喺錄音室門口成個禮拜——成行都等睇呢個後生仔點接招。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "其實你之前淨係聞過佢個名——電台日日播佢首快歌，娛樂版隔幾日就拎佢出嚟講一次，程天諾三個字，紅得嚟又惹火。",
+          "真人企喺你面前嗰陣，你先發覺落差有幾大：冇化妝、冇燈光，得返一對跳到起晒水泡嘅腳，同埋一身點都唔肯停嘅汗。"
+        ]
+      },
+      {
+        speaker: "程天諾",
+        kind: "npc",
+        emotion: "firm",
+        lines: [
+          "人哋話我靠修音。我冇出聲鬧返轉頭——我每日喺呢間房跳到半夜，就係想有一日，唔使靠嗰部機。",
+          "你嗰段和音，監製嗌你試。點唱，你自己揀——我唔會笑你，邊條路都唔易行。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "隔籬錄音室傳出嚟嘅，正正係佢嗰首出事嘅歌——修過嗰版順滑到冇一粒瑕疵，監製推住推桿，一邊聽一邊皺眉。",
+          "舞蹈室呢邊就得返數拍子聲同喘氣聲。一邊係部機幫人唱到完美，一邊係個人喺鏡前面跳到腳軟，兩間房，隔住一幅牆。"
+        ]
+      },
+      {
+        speaker: "監製",
+        kind: "npc",
+        lines: [
+          "阿偉，試一段啦。嗱，兩條路：一係入去唱一次，我嗰邊修到順滑，聽朝就交到帶；一係你自己練到準先錄，慢係慢啲，不過係真功夫。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "監製行開去聽電話嗰陣，程天諾冇坐低——佢企返喺鏡前面，逐格對返頭先跳錯嗰下，細聲數完一次，又由頭嚟過。",
+          "錄音室嗰邊收咗工、燈都熄埋，呢間舞蹈室盞燈仲著住。所謂天份，喺呢度睇落，同捱唔捱得夜，冇乜分別。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（一格菲林可以靠替身，一段歌呢？靠修音，我今晚就收工；練真功夫，就要喺呢間房，同隔籬嗰個後生仔一齊捱。）"
+        ]
+      },
+      {
+        speaker: "監製",
+        kind: "npc",
+        lines: [
+          "同你講句真心話：呢行唔怕你唱得唔好，怕你唔知自己係邊樣。修音嗰啲，觀眾遲早聞得出味；真功夫嗰啲，又未必捱到俾人聽見嗰日。",
+          "所以你今晚點揀，出面嗰班人唔係淨係聽你把聲——係睇你想做邊一種人。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "錄音室盞紅燈，等緊你嗰句。"
+        ]
+      }
     ],
     choices: [
-      { id: "C16_a", label: "靠修音：唱一次，修到順滑交帶",
-        effects: { flags: ["flag_vocal_polish"], stats: { fame: 2 }, tags: ["偶像派"], notes: "你揀咗快嗰條路：修音修到順滑，監製即場點頭。見得人，先講得通——呢個年代，包裝都係實力嘅一種。" },
+      {
+        id: "C16_a",
+        label: "靠修音：唱一次，修到順滑交帶",
+        effects: {
+          flags: [
+            "flag_vocal_polish"
+          ],
+          stats: {
+            fame: 2
+          },
+          tags: [
+            "偶像派"
+          ],
+          notes: "你揀咗快嗰條路：修音修到順滑，監製即場點頭。見得人，先講得通——呢個年代，包裝都係實力嘅一種。"
+        },
         resultBeats: [
-          { speaker: "監製", lines: ["得，交到帶。呢個年代，識用部機嘅，都係醒目仔。"] },
-          { speaker: "程天諾", lines: ["（佢喺鏡入面望咗你一陣，冇出聲，轉身繼續數拍子。）"] }
-        ] },
-      { id: "C16_b", label: "苦練唱功：一句一句練到準先錄",
-        effects: { flags: ["flag_vocal_train"], stats: { industryCredit: 2 }, tags: ["實力派"], notes: "你揀咗慢嗰條路：一句一句練到準先收工。程天諾喺鏡入面望住你，點咗下頭——肯捱嘅人，唔多。" },
+          {
+            speaker: "監製",
+            lines: [
+              "得，交到帶。呢個年代，識用部機嘅，都係醒目仔。"
+            ]
+          },
+          {
+            speaker: "程天諾",
+            lines: [
+              "（佢喺鏡入面望咗你一陣，冇出聲，轉身繼續數拍子。）"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "示範帶第二日送到電台，DJ播完讚咗句『順到不得了』，點歌紙即刻多咗一疊——不過樂評嗰欄同時寫低一句：『又一個靠部機企出嚟嘅。』樂壇嗰邊點睇你，嗰晚之後，人人心入面都擺低咗個標籤。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C16_b",
+        label: "苦練唱功：一句一句練到準先錄",
+        effects: {
+          flags: [
+            "flag_vocal_train"
+          ],
+          stats: {
+            industryCredit: 2
+          },
+          tags: [
+            "實力派"
+          ],
+          notes: "你揀咗慢嗰條路：一句一句練到準先收工。程天諾喺鏡入面望住你，點咗下頭——肯捱嘅人，唔多。"
+        },
         resultBeats: [
-          { speaker: "監製", lines: ["慢係慢啲……不過呢段帶，十年後攞返出嚟都唔使縮。"] },
-          { speaker: "程天諾", lines: ["原來唔止我一個，肯喺呢間房捱到半夜。"] }
-        ] }
+          {
+            speaker: "監製",
+            lines: [
+              "慢係慢啲……不過呢段帶，十年後攞返出嚟都唔使縮。"
+            ]
+          },
+          {
+            speaker: "程天諾",
+            lines: [
+              "原來唔止我一個，肯喺呢間房捱到半夜。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰段帶錄到凌晨先收工。之後冇幾耐，程天諾排舞嗰陣主動嗌埋你一齊練氣，監製私底下同人講：嗰兩個後生仔，係用汗嚟換聲嘅。實力派嗰邊點睇你，唔使登報，你已經知答案。"
+            ]
+          }
+        ]
+      }
     ],
     conflict: null,
-    flags_written: ["flag_vocal_polish", "flag_vocal_train"],
-    openConditions: ["C12"], openConditionsAny: null,
+    flags_written: [
+      "flag_vocal_polish",
+      "flag_vocal_train"
+    ],
+    openConditions: [
+      "C12"
+    ],
+    openConditionsAny: null,
     openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（C12 done＋雙軌>125＋1990 秋）；此欄只作 legacy 對照。",
     thresholds: {},
-    pacing: { weekMin: 139, minDaysAfterPrev: 1, when: "1990秋末", prevMain: "C12" },
+    pacing: {
+      weekMin: 139,
+      minDaysAfterPrev: 1,
+      when: "1990秋末",
+      prevMain: "C12"
+    },
     aftermathHint: "嗰晚你點唱，錄音室嗰邊會記好耐；業內點樣標籤你，由嗰段帶開始分。",
     journalCandidate: "程天諾喺隔籬練舞嗰晚，我嗰段歌，係修出嚟，定練出嚟。",
     redStarHook: "程天諾喺天星音樂舞蹈室：跳唱新人俾實力派公開批評，佢用半夜嘅汗嚟答。",
@@ -18962,42 +20404,228 @@ const STORY_SPINE_NODES_1990 = {
   },
   /* N16＝C13（1990 冬・賀歲片）：臨場爆肚／死背劇本；廖炳星（片場鬧翻） */
   C13: {
-    id: "C13", phase: "P3", title: "賀歲片", when: "1990冬",
+    id: "C13",
+    phase: "P3",
+    title: "賀歲片",
+    when: "1990冬",
     setting: "紅棉影業片場；1990 年冬，賀歲片趕住年初一上畫，飛紙仔滿天飛",
-    locId: "film_cotton", eraTag: "era_1990_winter_newyear",
-    cast: ["阿偉", "廖炳星", "導演"],
+    locId: "film_cotton",
+    eraTag: "era_1990_winter_newyear",
+    cast: [
+      "阿偉",
+      "廖炳星",
+      "導演"
+    ],
     synopsis: "賀歲片趕工，結局點拍，廖炳星同導演喺片場鬧翻，成組停機等運到。飛紙仔啱啱派到阿偉手上——嗰場戲得兩句對白：死背劇本穩穩陣陣，定臨場爆肚接住炳星嗰股戲癮，一念之差。",
     playerOffer: "炳星同導演鬧到停機，你嗰場就嚟開拍——爆肚，定背書？",
     playerHint: "賀歲片趕住煞科，炳星同導演鬧到停機——你要執生，定跟足劇本？",
     lockedHint: "1990 年冬先開（賀歲片趕工季）。未到就照常跑通告；開咗去紅棉影業片場。",
     nextHint: "",
     beats: [
-      { speaker: "系統", kind: "system", lines: ["1990 年冬，紅棉影業片場。賀歲片仲有三日煞科，結局嗰場點拍——廖炳星同導演喺佈景中間鬧到面紅耳赤，成組停機。", "副導將張飛紙仔塞到你手上：你嗰場排喺下一組，兩句對白，而家全組人嘅眼都望住嗰兩句。"] },
-      { speaker: "導演", kind: "npc", emotion: "angry", lines: ["跟劇本！一個字都唔准改！賀歲片要嘅係穩陣，唔係邊個即興勁！", "邊個接得住下一場——照紙讀，唔好自作聰明！"] },
-      { speaker: "廖炳星", speakerId: "liu_bingxing", kind: "npc", emotion: "smirk", lines: ["賀歲片呀，最緊要觀眾睇得開心！劇本寫嗰個結局，悶到我瞓著——你哋信我，爆肚先有嗰陣年味。", "後生仔，你嗰兩句，死背係死嘅；接住我嗰句嚟爆，先有戲。驚唔驚？"] },
-      { speaker: "阿偉", kind: "player", lines: ["（一個話跟紙，一個話爆肚。停機嗰陣，全組人嘅飯碗都停喺我嗰兩句上面。）"] },
-      { speaker: "系統", kind: "system", lines: ["場記舉起塊板——你嗰場，開拍。"] }
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "1990 年冬，紅棉影業片場。賀歲片仲有三日煞科，結局嗰場點拍——廖炳星同導演喺佈景中間鬧到面紅耳赤，成組停機。",
+          "副導將張飛紙仔塞到你手上：你嗰場排喺下一組，兩句對白，而家全組人嘅眼都望住嗰兩句。"
+        ]
+      },
+      {
+        speaker: "場務",
+        kind: "npc",
+        lines: [
+          "成廠人開咗第三晚通宵喇，佈景啲油漆味都未散。有啲戲份朝早先寫完、晏晝先派飛紙仔、夜晚就要拍——賀歲片趕上畫，就係咁趕法。",
+          "年初一嗰檔期一早俾戲院扣實咗，遲一日煞科，就成檔冇咗；成組人個年，就係吊喺呢三日上面。"
+        ]
+      },
+      {
+        speaker: "導演",
+        kind: "npc",
+        emotion: "angry",
+        lines: [
+          "跟劇本！一個字都唔准改！賀歲片要嘅係穩陣，唔係邊個即興勁！",
+          "邊個接得住下一場——照紙讀，唔好自作聰明！"
+        ]
+      },
+      {
+        speaker: "茶水阿姐",
+        kind: "npc",
+        lines: [
+          "唉，你哋鬧還鬧，唔好餓住個肚鬧——阿姐煲咗薑茶，又訂咗幾圍盆菜，煞科嗰晚全廠一齊食，當提早團年。",
+          "做呢行，邊年唔係喺廠入面過年？食完呢餐，先有力氣鬧落去。"
+        ]
+      },
+      {
+        speaker: "廖炳星",
+        speakerId: "liu_bingxing",
+        kind: "npc",
+        emotion: "smirk",
+        lines: [
+          "賀歲片呀，最緊要觀眾睇得開心！劇本寫嗰個結局，悶到我瞓著——你哋信我，爆肚先有嗰陣年味。",
+          "後生仔，你嗰兩句，死背係死嘅；接住我嗰句嚟爆，先有戲。驚唔驚？"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "片場角落，道具組趕住黐返副揮春上牆，收音支咪吊到半空，成組人冇一個出聲——停機一分鐘，就係燒緊一分鐘嘅錢。",
+          "飛紙仔上面嗰兩句對白俾你揸到皺晒，墨都未乾透；邊個諗到，全廠今晚開唔開到工，會睇嗰兩句點落。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（一個話跟紙，一個話爆肚。停機嗰陣，全組人嘅飯碗都停喺我嗰兩句上面。）"
+        ]
+      },
+      {
+        speaker: "副導",
+        kind: "npc",
+        lines: [
+          "阿偉，定啲嚟——你嗰場一過到，成組即刻轉景，今晚先有機會準時食盆菜。",
+          "炳哥頭先塞咗張紙仔俾我，話你驚就望住佢隻眼嚟講對白……佢鬧導演嗰陣，都仲記掛住你嗰場。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "場記舉起塊板——你嗰場，開拍。"
+        ]
+      }
     ],
     choices: [
-      { id: "C13_a", label: "臨場爆肚：接住炳星嗰句，即場爆落去",
-        effects: { flags: ["flag_newyear_improv"], stats: { fame: 2 }, tags: ["執生"], notes: "你接住炳星嗰句即場爆肚，成組笑到停唔到，導演黑住面都笑埋。嗰場戲，後嚟成咗成套賀歲片最多人講嘅一幕——成組人嗰日開到工，你有份。" },
+      {
+        id: "C13_a",
+        label: "臨場爆肚：接住炳星嗰句，即場爆落去",
+        effects: {
+          flags: [
+            "flag_newyear_improv"
+          ],
+          stats: {
+            fame: 2
+          },
+          tags: [
+            "執生"
+          ],
+          notes: "你接住炳星嗰句即場爆肚，成組笑到停唔到，導演黑住面都笑埋。嗰場戲，後嚟成咗成套賀歲片最多人講嘅一幕——成組人嗰日開到工，你有份。"
+        },
         resultBeats: [
-          { speaker: "廖炳星", speakerId: "liu_bingxing", lines: ["好嘢！呢啲先叫戲！嗰兩句邊有咁好笑㗎——你爆得好！"] },
-          { speaker: "導演", lines: ["……收貨。唔好俾我知你下次又嚟。（佢轉身嗰陣，嘴角係翹起嘅。）"] }
-        ] },
-      { id: "C13_b", label: "死背劇本：一字不差跟足飛紙仔",
-        effects: { flags: ["flag_newyear_script"], stats: { industryCredit: 2 }, tags: [], notes: "你將飛紙仔兩句背到一字不差，穩穩陣陣交貨，嗰場準時煞科。炳星收工嗰陣拍你膊頭：穩陣，都有穩陣嘅好。" },
+          {
+            speaker: "廖炳星",
+            speakerId: "liu_bingxing",
+            lines: [
+              "好嘢！呢啲先叫戲！嗰兩句邊有咁好笑㗎——你爆得好！"
+            ]
+          },
+          {
+            speaker: "導演",
+            lines: [
+              "……收貨。唔好俾我知你下次又嚟。（佢轉身嗰陣，嘴角係翹起嘅。）"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "套戲年初一上畫，戲院嗰場笑聲大到隔籬院都聽到——散場嗰陣，有觀眾學住你嗰句爆肚對白嚟拜年。導演過完年打電話嚟，冇再提嗰日鬧交嗰件事，淨係話：下次有戲，預你。嗰場爆肚收唔收貨，票房已經答咗。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C13_b",
+        label: "死背劇本：一字不差跟足飛紙仔",
+        effects: {
+          flags: [
+            "flag_newyear_script"
+          ],
+          stats: {
+            industryCredit: 2
+          },
+          tags: [],
+          notes: "你將飛紙仔兩句背到一字不差，穩穩陣陣交貨，嗰場準時煞科。炳星收工嗰陣拍你膊頭：穩陣，都有穩陣嘅好。"
+        },
         resultBeats: [
-          { speaker: "導演", lines: ["好，準時煞科。呢啲先叫專業。"] },
-          { speaker: "廖炳星", speakerId: "liu_bingxing", lines: ["後生仔，背書背到咁穩，都係功夫嚟嘅——唔好睇小自己。"] }
-        ] }
+          {
+            speaker: "導演",
+            lines: [
+              "好，準時煞科。呢啲先叫專業。"
+            ]
+          },
+          {
+            speaker: "廖炳星",
+            speakerId: "liu_bingxing",
+            lines: [
+              "後生仔，背書背到咁穩，都係功夫嚟嘅——唔好睇小自己。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "套戲年初一上畫，冇邊場戲俾人拎出嚟大講，但成套戲順順利利，屋企人睇完話好意頭。導演煞科之後同製片講開，點名話你嗰組係全廠唯一一組冇超時——穩陣嗰份口碑，就係咁一場一場儲返嚟。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C13_c",
+        label: "拍兩個版本：一take跟劇本、一take爆肚，俾導演揀",
+        effects: {
+          flags: [
+            "flag_newyear_twotakes"
+          ],
+          stats: {
+            fame: 1,
+            industryCredit: 1
+          },
+          tags: [
+            "圓滑"
+          ],
+          notes: "你提議兩take都拍：跟足劇本嗰take交差，爆肚嗰take搏一搏，揀邊個由導演定奪。停機嗰場火，俾你用多一take嘅時間熄返。"
+        },
+        resultBeats: [
+          {
+            speaker: "導演",
+            lines: [
+              "……兩take。四十五分鐘，唔准超。揀邊個，我話事。"
+            ]
+          },
+          {
+            speaker: "廖炳星",
+            speakerId: "liu_bingxing",
+            lines: [
+              "後生仔，識留條後路俾人揀，先係喺呢行企得耐嘅辦法——好，我陪你拍晒兩take。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "嗰晚成組準時食到盆菜。至於最後上畫用邊take，導演冇同任何人講——淨係煞科嗰陣，佢經過你身邊，拍咗你膊頭一下，乜都冇講。"
+            ]
+          }
+        ]
+      }
     ],
     conflict: null,
-    flags_written: ["flag_newyear_improv", "flag_newyear_script"],
-    openConditions: ["season_winter"], openConditionsAny: null,
+    flags_written: [
+      "flag_newyear_improv",
+      "flag_newyear_script",
+      "flag_newyear_twotakes"
+    ],
+    openConditions: [
+      "season_winter"
+    ],
+    openConditionsAny: null,
     openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（1990 冬）；此欄只作 legacy 對照。",
     thresholds: {},
-    pacing: { weekMin: 144, minDaysAfterPrev: 1, when: "1990冬", prevMain: "C16" },
+    pacing: {
+      weekMin: 144,
+      minDaysAfterPrev: 1,
+      when: "1990冬",
+      prevMain: "C16"
+    },
     aftermathHint: "賀歲片年初一上畫，嗰場戲點收科，觀眾會話你知；成組人嗰日點睇你，就一早定咗。",
     journalCandidate: "賀歲片停機嗰日，我嗰兩句，係爆出嚟，定背出嚟。",
     redStarHook: "廖炳星喺賀歲片片場：笑匠同導演為結局鬧翻，全組停機等嗰兩句對白點落。",
@@ -19007,42 +20635,178 @@ const STORY_SPINE_NODES_1990 = {
 /* C6 覆寫（Qwen 原案・電視城飯堂閒角）：見 STORY_SPINE_NODES_1990 頭註。 */
 const STORY_SPINE_NODES_C6 = {
   C6: {
-    id: "C6", phase: "P1.5", title: "飯堂閒角", when: "1988",
+    id: "C6",
+    phase: "P1.5",
+    title: "飯堂閒角",
+    when: "1988",
     setting: "星河電視台飯堂／處境劇廠景；班底趕住開飯拍下一場嗰陣",
-    locId: "tvb_longmen", eraTag: "era_1988_canteen",
-    cast: ["阿偉", "何生", "處境劇副導"],
+    locId: "tvb_longmen",
+    eraTag: "era_1988_canteen",
+    cast: [
+      "阿偉",
+      "何生",
+      "處境劇副導"
+    ],
     synopsis: "處境劇班底長做長有，想搵個固定閒角：每集坐喺飯堂角落嗰枱食飯，冇台詞、冇近鏡，但一簽一季，月月有糧。何生問阿偉接唔接——接咗就穩陣，唔接就繼續跑通告搏機會。處境劇閒角呢份工，熬嘅唔係戲，係日子。",
     playerOffer: "處境劇班底想簽你做固定閒角——熬日子，定走人？",
     playerHint: "飯堂嗰邊，處境劇班底想搵個固定閒角——冇台詞嗰種。",
     lockedHint: "第15週起、行電視線（route_tv）先開。未到就照常跑通告；開咗去星河電視台飯堂嗰邊睇下。",
     nextHint: "",
     beats: [
-      { speaker: "系統", kind: "system", lines: ["星河電視台飯堂。例湯嘅香氣、隔離枱嘅八卦、同永遠唔夠坐嘅櫈——處境劇嗰組，就喺呢度開飯兼圍讀。"] },
-      { speaker: "何生", kind: "npc", lines: ["阿偉，嗰邊班底想簽個固定閒角，就係每集坐喺飯堂角落嗰枱食飯嗰個。", "冇台詞，冇近鏡——不過一簽一季，月月有糧，唔使餐餐等電話。你點睇？"] },
-      { speaker: "處境劇副導", kind: "npc", lines: ["嗰個位最緊要坐得穩、唔好搶鏡。班底認得你嗰張面，觀眾慢慢都會認得——係慢工，唔係死工。"] },
-      { speaker: "阿偉", kind: "player", lines: ["（一季安穩，換嚟嘅係角落嗰張枱。唔接，我繼續跑，機會喺出面——但出面，唔係日日有工開。）"] },
-      { speaker: "系統", kind: "system", lines: ["飯堂阿姐嗌埋單。何生望住你，等你嗰句。"] }
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "星河電視台飯堂。例湯嘅香氣、隔離枱嘅八卦、同永遠唔夠坐嘅櫈——處境劇嗰組，就喺呢度開飯兼圍讀。"
+        ]
+      },
+      {
+        speaker: "飯堂阿姐",
+        kind: "npc",
+        lines: [
+          "今日例湯係老火靚湯，主角嗰枱先有得添，角落嗰幾枱——唔好意思，賣晒就冇。",
+          "唔係我偏心，呢度開飯都講座次㗎，邊個坐邊、邊個食先，心裏有數，只係冇貼出嚟啫。"
+        ]
+      },
+      {
+        speaker: "何生",
+        kind: "npc",
+        lines: [
+          "阿偉，嗰邊班底想簽個固定閒角，就係每集坐喺飯堂角落嗰枱食飯嗰個。",
+          "冇台詞，冇近鏡——不過一簽一季，月月有糧，唔使餐餐等電話。你點睇？"
+        ]
+      },
+      {
+        speaker: "老臨記昌叔",
+        kind: "npc",
+        lines: [
+          "後生仔，嗰張枱我坐過。",
+          "坐嗰度唔使記對白，淨係記住一樣：主角笑，你跟住笑；主角拍枱，你唔好快過佢放低隻杯。坐得穩，副導下次第一個就諗起你。"
+        ]
+      },
+      {
+        speaker: "處境劇副導",
+        kind: "npc",
+        lines: [
+          "嗰個位最緊要坐得穩、唔好搶鏡。班底認得你嗰張面，觀眾慢慢都會認得——係慢工，唔係死工。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "你望過去：飯堂正中嗰幾枱係班底主角嘅，窗邊嗰枱留俾監製，近門口嗰枱成日換人——角落嗰張，喺柱後面，燈光最暗嗰個位。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（一季安穩，換嚟嘅係角落嗰張枱。唔接，我繼續跑，機會喺出面——但出面，唔係日日有工開。）"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（昌叔嗰張枱，坐到枱面都甩油——佢話佢等緊一個近鏡，等咗三年。）",
+          "（我驚嘅唔係冇台詞，係有一日，我會坐到唔記得自己想企起身。）"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "飯堂阿姐嗌埋單。何生望住你，等你嗰句。"
+        ]
+      }
     ],
     choices: [
-      { id: "C6_a", label: "熬日子：接固定閒角，一季安穩",
-        effects: { flags: ["flag_canteen_grind"], stats: { wealth: 1 }, tags: [], notes: "你接咗飯堂固定閒角：一季安穩，月月有糧。人工唔多，台資歷就一日一日咁累積——呢行，捱得住嘅先有得揀。" },
+      {
+        id: "C6_a",
+        label: "熬日子：接固定閒角，一季安穩",
+        effects: {
+          flags: [
+            "flag_canteen_grind"
+          ],
+          stats: {
+            wealth: 1
+          },
+          tags: [],
+          notes: "你接咗飯堂固定閒角：一季安穩，月月有糧。人工唔多，台資歷就一日一日咁累積——呢行，捱得住嘅先有得揀。"
+        },
         resultBeats: [
-          { speaker: "處境劇副導", lines: ["好，聽日準時嚟簽到。你嗰張枱，以後就係你嘅位。"] },
-          { speaker: "何生", lines: ["唔好睇小角落嗰張枱——幾多大星，都係由嗰啲位坐起。"] }
-        ] },
-      { id: "C6_b", label: "走人：唔接，繼續跑通告搏機會",
-        effects: { flags: ["flag_canteen_quit"], stats: {}, tags: [], notes: "你冇接嗰個角落位——安穩留返俾人，你繼續搏。何生冇出聲留你，只係將你嗰杯茶飲埋。" },
+          {
+            speaker: "處境劇副導",
+            lines: [
+              "好，聽日準時嚟簽到。你嗰張枱，以後就係你嘅位。"
+            ]
+          },
+          {
+            speaker: "何生",
+            lines: [
+              "唔好睇小角落嗰張枱——幾多大星，都係由嗰啲位坐起。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "跟住嗰個月，你日日準時坐低。第三個禮拜，昌叔將佢嗰碟餸撥咗一半俾你——飯堂入面，呢個就係認人；阿姐添湯嗰陣，亦都開始行埋你嗰枱。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C6_b",
+        label: "走人：唔接，繼續跑通告搏機會",
+        effects: {
+          flags: [
+            "flag_canteen_quit"
+          ],
+          stats: {},
+          tags: [],
+          notes: "你冇接嗰個角落位——安穩留返俾人，你繼續搏。何生冇出聲留你，只係將你嗰杯茶飲埋。"
+        },
         resultBeats: [
-          { speaker: "何生", lines: ["後生仔心頭高，唔怪你。出面風大雨大——唔好後悔就得。"] },
-          { speaker: "系統", lines: ["你行出飯堂嗰陣，角落嗰張枱，已經有第二個坐低咗。"] }
-        ] }
+          {
+            speaker: "何生",
+            lines: [
+              "後生仔心頭高，唔怪你。出面風大雨大——唔好後悔就得。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "你行出飯堂嗰陣，角落嗰張枱，已經有第二個坐低咗。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "之後嗰排通告有一日冇一日。有次返電視台做散工，你行過飯堂，角落嗰張枱坐住嗰個後生仔，正喺度學你嗰陣咁，望住正中嗰幾枱出神。"
+            ]
+          }
+        ]
+      }
     ],
     conflict: null,
-    flags_written: ["flag_canteen_grind", "flag_canteen_quit"],
-    openConditions: ["route_tv", "week_min:15"], openConditionsAny: null,
+    flags_written: [
+      "flag_canteen_grind",
+      "flag_canteen_quit"
+    ],
+    openConditions: [
+      "route_tv",
+      "week_min:15"
+    ],
+    openConditionsAny: null,
     openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（route_tv＋W15）；內容跟 Qwen 原案（飯堂閒角，可選・可長期跳過）。",
     thresholds: {},
-    pacing: { weekMin: 15, minDaysAfterPrev: 1, when: "1988", prevMain: "C5" },
+    pacing: {
+      weekMin: 15,
+      minDaysAfterPrev: 1,
+      when: "1988",
+      prevMain: "C5"
+    },
     aftermathHint: "嗰張枱你坐定唔坐，飯堂嗰邊都會照常開飯；你嗰季點過，自己知。",
     journalCandidate: "飯堂角落嗰張枱，我嗰陣揀咗坐低，定行返出去。",
     nodeRipple: "熬日子換微量金錢同電視台資歷（冇劇情推進，原案如此）；走人就保持自由身搏機會。"
@@ -19173,6 +20937,384 @@ const ROMANCE_LAN_PA_OVERRIDES = {
 };
 /* 載入後套用（4-8）：主幹 1990 五節點＋C6 入 STORY_WIRE.main；藍 PA 五節點入 STORY_WIRE.romance.lanXu。
    冪等；對應 pack 未載入就該部分 no-op。呼叫點喺 refreshCopyPacksFromDisk 賦值 romance 之後。 */
+/* v20a80 WF1：真空帶補幕（1990冬→1991春）。文本年份用舊標籤，YEARS66 載入時 +2；
+   gate 用真曆喺 STORY_GATE_3Y 另行登記；注入喺 spine 覆寫之後、TEXTFIX55 之前。 */
+const STORY_SPINE_NODES_WF1 = {
+  C18: {
+    id: "C18",
+    phase: "P2",
+    title: "上岸路",
+    when: "1988冬",
+    setting: "中環何生事務所；年尾，枱面攤滿來年通告紙同行程表",
+    locId: "agency_ho",
+    eraTag: "era_1988_winter_agency",
+    cast: [
+      "阿偉",
+      "何生"
+    ],
+    synopsis: "年尾，何生約阿偉返事務所傾來年安排。何生講行內新風向：開始有當紅藝人自己開製作公司、自己做老闆出品。佢提點阿偉，紅得起就要趁旺嗰陣諗上岸路——係想學多啲幕後嘢、第日自己開公司試下，定專心做演員、企穩幕前先？",
+    playerOffer: "年尾事務所，何生問你來年點行——學幕後，定專心幕前？",
+    playerHint: "何生約你返事務所傾來年安排，順手問你一句：你打算點行落去？",
+    lockedHint: "1988 年冬先開。未到就照常跑通告；開咗去中環何生事務所傾來年安排。",
+    nextHint: "",
+    beats: [
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "1988 年冬，年尾。中環何生事務所，何生將你嗰份來年行程表推到你面前。"
+        ]
+      },
+      {
+        speaker: "何生",
+        kind: "npc",
+        lines: [
+          "坐啦阿偉。今年你點行，我心入面有數；來年點排，我想聽你自己講。",
+          "呢行唔係有工開就萬事大吉——排錯一步，旺嗰陣就白白過。",
+          "唔好淨係數有幾多工——要數邊啲工，幫到你將來。"
+        ]
+      },
+      {
+        speaker: "何生",
+        kind: "npc",
+        lines: [
+          "你有冇留意，而家開始有當紅藝人自己開製作公司，自己做老闆出品？",
+          "唔係個個開得成，不過風向變緊——唔再係等人派戲嗰套咁單純。",
+          "以前紅咗就等公司安排；以後識自己諗盤數嗰個，先企得前。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "自己開公司？我而家連企穩都未企穩，聽落好似好遠咁。"
+        ]
+      },
+      {
+        speaker: "何生",
+        kind: "npc",
+        lines: [
+          "遠，先好諗。等你真係紅嗰日先諗，人哋已經行咗三年。",
+          "紅得起，就要趁旺嗰陣諗上岸路——幕前嗰碗飯，唔係食一世㗎。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（佢講「將來」兩個字，我就諗起屋企。阿媽嗰日都問：做戲呢行，到底有冇將來？）",
+          "（我嗰陣答唔出。而家何生問返我同一句，我都仲未有答案。）"
+        ]
+      },
+      {
+        speaker: "何生",
+        kind: "npc",
+        lines: [
+          "屋企人點睇，我大概估到。呢行喺佢哋眼中，始終唔似一份正經工。",
+          "所以你更加要諗清楚：你係想做一世演員，定想第日有自己嘅盤？"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "何生，你忽然咁問……係咪來年有啲咩安排，要我先表個態？",
+          "（我望住枱面嗰疊通告紙——原來每一張，都係一個選擇嚟。）"
+        ]
+      },
+      {
+        speaker: "何生",
+        kind: "npc",
+        lines: [
+          "冇逼你即刻交功課。不過你嗰句點答，我來年就點排你啲工。",
+          "想學幕後嘅，我會帶你入多啲唔同崗位睇；想專心幕前嘅，就唔好分心，一樣還一樣。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（窗外中環啲燈光，一格一格熄緊。我嗰句答案，可能就係來年嗰條路。）"
+        ]
+      }
+    ],
+    choices: [
+      {
+        id: "C18_a",
+        label: "想學幕後：第日有機會，想自己開公司試下",
+        effects: {
+          flags: [
+            "flag_wf1_studio_dream"
+          ],
+          stats: {
+            rel_ho: 1,
+            industryCredit: 1
+          },
+          tags: [],
+          notes: "你同何生講明想學幕後、想第日自己做老闆。何生冇笑你大想頭，只係將你個名寫低。"
+        },
+        resultBeats: [
+          {
+            speaker: "何生",
+            lines: [
+              "好，有呢句就夠。大想頭唔怕講，怕嘅係講完唔肯由低學起。",
+              "來年有崗位可以跟入去睇，我預你——睇人做嘢，唔好嫌悶。"
+            ]
+          },
+          {
+            speaker: "系統",
+            kind: "system",
+            lines: [
+              "嗰晚返屋企，阿偉冇講開公司嗰三個字，只係講：來年何生會排多啲嘢俾我學。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C18_b",
+        label: "專心做演員：企穩幕前先，其他第日再講",
+        effects: {
+          flags: [
+            "flag_wf1_steady_craft"
+          ],
+          stats: {
+            industryCredit: 2
+          },
+          tags: [],
+          notes: "你揀咗專心幕前。何生點頭：企穩先講上岸，都係一條路——最緊要唔好兩頭唔到岸。"
+        },
+        resultBeats: [
+          {
+            speaker: "何生",
+            lines: [
+              "都好。專心做演員，唔係冇出息——怕嘅係心多，樣樣想掂，樣樣半桶水。",
+              "來年我排啲企得穩嘅戲俾你，將幕前嗰份功夫做實佢。"
+            ]
+          },
+          {
+            speaker: "系統",
+            kind: "system",
+            lines: [
+              "嗰晚返屋企，屋企人再問將來，佢答得慢咗，但實咗：做戲，都可以係一份工嚟㗎。"
+            ]
+          }
+        ]
+      }
+    ],
+    conflict: null,
+    flags_written: [
+      "flag_wf1_studio_dream",
+      "flag_wf1_steady_craft"
+    ],
+    openConditions: [
+      "season_winter"
+    ],
+    openConditionsAny: null,
+    openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（1990 冬）；此欄只作 legacy 對照。",
+    thresholds: {},
+    pacing: {
+      weekMin: 96,
+      minDaysAfterPrev: 1,
+      when: "1988冬"
+    },
+    aftermathHint: "你嗰晚點答何生，來年啲工就會點排；屋企嗰句「有冇將來」，遲早要再答一次。",
+    journalCandidate: "年尾喺事務所，何生問我上岸路點行——我嗰句答案，係幕後，定幕前。",
+    redStarHook: "冇紅星，呢幕係何生同阿偉兩個人嘅戲：年尾事務所，一張行程表，一句將來點行。",
+    nodeRipple: "表態學幕後，何生來年會帶你睇多啲崗位；專心幕前，就換一條企穩嘅排戲路——兩條路，第日點收科唔同。"
+  },
+  C19: {
+    id: "C19",
+    phase: "P2",
+    title: "賭枱邊",
+    when: "1989春",
+    setting: "獅子山製片廠棚；趕工賭片，賭枱佈景啱啱搭好，飛紙仔滿天飛",
+    locId: "film_lion",
+    eraTag: "era_1989_spring_gamble",
+    cast: [
+      "阿偉",
+      "副導演",
+      "老臨記"
+    ],
+    synopsis: "一套賭王片爆紅之後，全行撲埋去拍賭片。阿偉俾副導拉去一套趕工賭片做臨記，企賭枱邊做賭客幫手，喺枱邊睇住成行一窩蜂趕拍。老臨記喺等埋位嗰陣，教佢呢行嘅生存規矩：邊樣旺跟邊樣，但唔好俾人記住你係嗰種戲嘅人。",
+    playerOffer: "趕工賭片開拍，你企賭枱邊——埋頭做好本份，定跟老臨記偷師？",
+    playerHint: "獅子山棚入面趕拍賭片，成行一窩蜂；老臨記喺枱邊有幾句話想教你。",
+    lockedHint: "1989 年春先開。未到就照常跑通告；開咗去獅子山製片廠棚。",
+    nextHint: "",
+    beats: [
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "1989 年春，獅子山製片廠棚。一套賭王片爆紅之後，成行撲晒去拍賭片——呢個棚今日趕嗰套，已經係今個月第三套。",
+          "棚入面熱到出煙，飛紙仔貼滿佈景板，冇人得閒理。"
+        ]
+      },
+      {
+        speaker: "副導演",
+        kind: "npc",
+        lines: [
+          "阿偉，你企賭枱邊，做賭客，順手幫荷官遞下籌碼就得，唔使出聲。",
+          "記住，枱上面嗰啲全係道具嚟——你今日嘅工，就係企得好睇。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "隔籬廠嗌開機嗰聲傳過嚟——同一個橋段，嗰邊今日已經拍緊第三次。呢邊飛紙仔仲即場度緊，編劇支筆未停過。"
+        ]
+      },
+      {
+        speaker: "老臨記",
+        kind: "npc",
+        lines: [
+          "後生仔，第一次跟賭片呀？唔使咁緊張，呢啲戲，趕嘅唔係你嗰場，係成個潮流。",
+          "主角嗰邊仲瞓喺保母車入面趕場過嚟——佢一日走三組，你企一日，人工都未夠佢一場。",
+          "我後生嗰陣武打片旺，俾人打到周身傷都仲有工開——邊樣旺，我就喺邊度。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "成行一窩蜂咁湧埋同一樣嘢度，唔驚拍到爛咩？"
+        ]
+      },
+      {
+        speaker: "老臨記",
+        kind: "npc",
+        lines: [
+          "爛唔爛，唔到我哋理。邊樣旺就跟邊樣，呢行一向係咁生存㗎啦。",
+          "不過你記住：跟潮流搵食得，唔好俾人記住你淨係「嗰種戲嘅人」——潮一退，第一個沉嘅就係嗰種人。"
+        ]
+      },
+      {
+        speaker: "副導演",
+        kind: "npc",
+        lines: [
+          "飛紙仔到——呢場加句對白俾賭客嗰邊，邊個記性好邊個講，唔好阻住開機呀！"
+        ]
+      },
+      {
+        speaker: "老臨記",
+        kind: "npc",
+        lines: [
+          "嗱，機會同陷阱，有時係同一句對白。你接得嚟又唔搶主角鏡，先叫識做。",
+          "企埋枱邊睇清楚：邊個催、邊個等、邊個嗌停——成行點運作，呢啲位先學到嘢。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（賭枱上啲籌碼係膠做嘅，但枱邊呢班人嘅生存規矩，句句都係真嘅。）",
+          "（企枱邊嗰個位，原來睇得最清楚成個局。）"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "場記舉起塊板——賭枱邊嗰場，就嚟開拍。你點企，就睇呢一take。"
+        ]
+      }
+    ],
+    choices: [
+      {
+        id: "C19_a",
+        label: "埋頭做好本份：唔出聲唔搶鏡，做個穩陣臨記",
+        effects: {
+          flags: [
+            "flag_wf1_gamble_quiet"
+          ],
+          stats: {
+            industryCredit: 2
+          },
+          tags: [],
+          notes: "你企足全日，唔搶鏡唔出聲。套戲趕住上畫嗰陣，副導喺名單上面，順手圈低你個名。"
+        },
+        resultBeats: [
+          {
+            speaker: "副導演",
+            lines: [
+              "嗰個企枱邊嗰個，成日冇出過聲又冇走過位——下次有穩陣位，嗌佢先。"
+            ]
+          },
+          {
+            speaker: "系統",
+            kind: "system",
+            lines: [
+              "套戲三個禮拜就趕住上畫，票房冇人再提；但副導本名單上面，你個名俾人圈咗一圈。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C19_b",
+        label: "跟老臨記偷師：記低成行點運作",
+        effects: {
+          flags: [
+            "flag_wf1_gamble_observe"
+          ],
+          stats: {
+            industryCredit: 1,
+            fame: 1
+          },
+          tags: [],
+          notes: "你嗰日冇白企：邊個話事、點趕場、點執生，你一一記低。老臨記收工嗰陣，專登行埋嚟拍你膊頭。"
+        },
+        resultBeats: [
+          {
+            speaker: "老臨記",
+            lines: [
+              "後生仔，你今日冇白企。識睇成個局點行嘅臨記，先有機會唔做一世臨記。",
+              "記住我嗰句就得：跟潮流，唔好俾潮流吞咗你個人。"
+            ]
+          },
+          {
+            speaker: "系統",
+            kind: "system",
+            lines: [
+              "套戲好快俾下一套跟風片蓋過，冇人記得嗰場戲；但阿偉記得嗰日學到嘅每一樣嘢。"
+            ]
+          }
+        ]
+      }
+    ],
+    conflict: null,
+    flags_written: [
+      "flag_wf1_gamble_quiet",
+      "flag_wf1_gamble_observe"
+    ],
+    openConditions: [
+      "season_spring"
+    ],
+    openConditionsAny: null,
+    openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（1991 春）；此欄只作 legacy 對照。",
+    thresholds: {},
+    pacing: {
+      weekMin: 110,
+      minDaysAfterPrev: 1,
+      when: "1989春"
+    },
+    aftermathHint: "跟風片嚟得快去得快；嗰日喺賭枱邊學到嘅規矩，會跟住你行好耐。",
+    journalCandidate: "賭枱邊嗰日，成行趕住跟風，我學到嘅唔係賭，係點喺呢行企得耐。",
+    redStarHook: "冇紅星企台，呢幕係臨記視角：主角趕場瞓保母車，枱邊嗰班人先睇得清成行點運作。",
+    nodeRipple: "穩陣企位換副導名單上一個圈；偷師就換老臨記一句受用一世嘅規矩——跟風潮入面，點企法唔同。"
+  }
+};
+function applyStoryWf1Nodes80(){
+  const out = { ok: true, main: 0 };
+  try{
+    if(typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.main && Array.isArray(STORY_WIRE.main.nodes)){
+      const have = {}; STORY_WIRE.main.nodes.forEach(n=>{ if(n && n.id) have[n.id]=1; });
+      Object.keys(STORY_SPINE_NODES_WF1).forEach(id=>{
+        if(!have[id]){ STORY_WIRE.main.nodes.push(STORY_SPINE_NODES_WF1[id]); out.main++; }
+      });
+    }
+  }catch(_e){ out.ok = false; }
+  return out;
+}
 function applyStorySpineOverrides48(){
   const out = { ok:true, main:0, lan:0 };
   try{
@@ -23439,34 +25581,152 @@ function endingEveOptions410(st, baseRes){
    舊存檔若已 done C17（舊十檔路徑揀過），節點照樣 done，唔會重播、唔會 crash。 ===== */
 const ENDING410_CHOICE_IDS = ["C17_410_a", "C17_410_b", "C17_410_c", "C17_410_d", "C17_410_e", "C17_410_f"];
 const STORY_SPINE_NODE_C17_410 = {
-  id: "C17", phase: "P5", title: "三年收科", when: "1990冬",
+  id: "C17",
+  phase: "P5",
+  title: "三年收科",
+  when: "1990冬",
   setting: "星河電視台頒獎禮後台化妝間；1990 年冬末，三年前嗰個臨記，企喺頒獎禮門口",
-  locId: "tvb_longmen", eraTag: "era_1990_winter_finale",
-  cast: ["阿偉", "何生", "張子駿"],
+  locId: "tvb_longmen",
+  eraTag: "era_1990_winter_finale",
+  cast: [
+    "阿偉",
+    "何生",
+    "張子駿"
+  ],
   synopsis: "1990 年冬末，台慶頒獎禮前夕。三年——由茶餐廳聽人講邊個紅邊個沉，到自己企喺化妝間，等人叫名。何生攞住流程表入嚟，有啲說話，要喺開場之前同你講清楚。",
   playerOffer: "頒獎禮前夕，何生喺後台等你——三年，係時候收科。",
   playerHint: "頒獎禮前夕，何生喺後台等你——三年，係時候收科。",
   lockedHint: "1990 年冬、賀歲片煞科之後先到呢一晚。未到就照常跑通告；到咗去星河電視台後台。",
   nextHint: "",
   beats: [
-    { speaker: "系統", kind: "system", lines: ["1990 年冬末，星河電視台頒獎禮後台。化妝鏡一排燈泡熱到出煙，走廊盡頭已經聽到司儀試咪。", "三年前，你喺茶餐廳聽人講邊個紅、邊個沉；今晚，流程表上面，有你個名。"] },
-    { speaker: "何生", kind: "npc", lines: ["阿偉，坐陣。今晚之後，你喺行內點定位，唔再係我講，係你呢三年做過嘅嘢講。", "我唔同你講大道理——你自己諗清楚：企前，定企後？留低，定走？呢啲，今晚之前答自己一次就夠。"] },
-    { speaker: "張子駿", kind: "npc", lines: ["我睇住你由企唔穩做到企得穩。記住，邊個位都好——唔好丟咗當初捱通宵嗰份心。"] },
-    { speaker: "阿偉", kind: "player", lines: ["（三年。人哋點睇我，報紙點寫我，我幫過邊個、欠邊個——原來到咗今晚，全部都要埋單。）"] },
-    { speaker: "系統", kind: "system", lines: ["司儀喺台上試最後一次咪。何生企起身，拍拍你膊頭，留返最後一句：", "「諗清楚，就行出去。」"] }
+    {
+      speaker: "系統",
+      kind: "system",
+      lines: [
+        "1990 年冬末，星河電視台頒獎禮後台。化妝鏡一排燈泡熱到出煙，走廊盡頭已經聽到司儀試咪。",
+        "三年前，你喺茶餐廳聽人講邊個紅、邊個沉；今晚，流程表上面，有你個名。"
+      ]
+    },
+    {
+      speaker: "系統",
+      kind: "system",
+      lines: [
+        "你係坐公司車嚟嘅。電視台門口鋪咗紅地氈，欄杆外歌迷同記者迫成兩堵牆，閃光燈閃到你眼前發白。",
+        "三年前你連後台道門喺邊都唔知，企喺門口等通告，等極都冇人叫你個名；今晚，你係行紅地氈入去嗰個。"
+      ]
+    },
+    {
+      speaker: "何生",
+      kind: "npc",
+      lines: [
+        "阿偉，坐陣。今晚之後，你喺行內點定位，唔再係我講，係你呢三年做過嘅嘢講。",
+        "我唔同你講大道理——你自己諗清楚：企前，定企後？留低，定走？呢啲，今晚之前答自己一次就夠。"
+      ]
+    },
+    {
+      speaker: "何生",
+      kind: "npc",
+      lines: [
+        "流程我同你對多次：你坐第三排邊位，司儀叫到邊一段，你先好企起身，唔好早，唔好遲。",
+        "仲有，鏡頭掃過嚟嗰陣唔好四圍望——你呢三年點行過嚟，企定定，人哋就睇得明。"
+      ]
+    },
+    {
+      speaker: "老場務",
+      kind: "npc",
+      lines: [
+        "阿偉？真係你呀！嗰陣你喺片場幫我搬燈，我仲話呢個後生仔捱唔到幾耐。",
+        "而家你企喺度，我就嚟退休喇——呢行就係咁，一代人睇住一代人企起身。你今晚坐邊呀？"
+      ]
+    },
+    {
+      speaker: "張子駿",
+      kind: "npc",
+      lines: [
+        "我睇住你由企唔穩做到企得穩。記住，邊個位都好——唔好丟咗當初捱通宵嗰份心。"
+      ]
+    },
+    {
+      speaker: "系統",
+      kind: "system",
+      lines: [
+        "走廊嗰邊，今晚到場嘅紅星陸續入座——有啲你淨係遠遠望過，有啲同你喺同一塊佈景前面企過通宵。",
+        "冇人再當你係嚟送外賣、定嚟等位嗰個臨記；化妝姐順手幫你整一整條領呔，嗌咗你一聲偉哥，你愣咗一下，先記得應佢。"
+      ]
+    },
+    {
+      speaker: "阿偉",
+      kind: "player",
+      lines: [
+        "（三年。人哋點睇我，報紙點寫我，我幫過邊個、欠邊個——原來到咗今晚，全部都要埋單。）"
+      ]
+    },
+    {
+      speaker: "阿偉",
+      kind: "player",
+      lines: [
+        "（茶餐廳嗰張長枱、片場嗰盞通宵燈、唱片公司大堂嗰班歌迷、賀歲片煞科嗰晚嘅笑聲——原來一幕一幕，都係行嚟呢度嘅路。）",
+        "（今晚點都好，我唔再係三年前嗰個企喺門口、等運到嘅人。呢一句，我答到自己。）"
+      ]
+    },
+    {
+      speaker: "系統",
+      kind: "system",
+      lines: [
+        "司儀喺台上試最後一次咪。何生企起身，拍拍你膊頭，留返最後一句：",
+        "「諗清楚，就行出去。」"
+      ]
+    }
   ],
   choices: [
-    { id: "C17_410_a", ending410Key: "natural", label: "順其自然：照呢三年嘅路，行到邊度就邊度",
-      effects: { flags: ["flag_ending410_natural"], stats: {}, tags: [], notes: "唔強求，唔回頭——頒獎禮開場，你企返你企慣嗰個位。" } },
-    { id: "C17_410_b", ending410Key: "quit_job", label: "收山諗諗：接屋企嗰份穩陣工，唔再做呢行",
-      effects: { flags: ["flag_ending410_quit_job"], stats: {}, tags: [], notes: "講明先：揀呢個，今晚之後你就唔再係呢行嘅人。（退圈・安穩）" } }
+    {
+      id: "C17_410_a",
+      ending410Key: "natural",
+      label: "順其自然：照呢三年嘅路，行到邊度就邊度",
+      effects: {
+        flags: [
+          "flag_ending410_natural"
+        ],
+        stats: {},
+        tags: [],
+        notes: "唔強求，唔回頭——頒獎禮開場，你企返你企慣嗰個位。"
+      }
+    },
+    {
+      id: "C17_410_b",
+      ending410Key: "quit_job",
+      label: "收山諗諗：接屋企嗰份穩陣工，唔再做呢行",
+      effects: {
+        flags: [
+          "flag_ending410_quit_job"
+        ],
+        stats: {},
+        tags: [],
+        notes: "講明先：揀呢個，今晚之後你就唔再係呢行嘅人。（退圈・安穩）"
+      }
+    }
   ],
   conflict: null,
-  flags_written: ["flag_ending410_natural", "flag_ending410_quit_job", "flag_ending410_quit_leave", "flag_ending410_to_backstage", "flag_ending410_to_support", "flag_ending410_leave_follow"],
-  openConditions: ["C13"], openConditionsAny: null,
+  flags_written: [
+    "flag_ending410_natural",
+    "flag_ending410_quit_job",
+    "flag_ending410_quit_leave",
+    "flag_ending410_to_backstage",
+    "flag_ending410_to_support",
+    "flag_ending410_leave_follow"
+  ],
+  openConditions: [
+    "C13"
+  ],
+  openConditionsAny: null,
   openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（C13 done＋1990 冬，事件閘）；此欄只作 legacy 對照。",
   thresholds: {},
-  pacing: { weekMin: 140, minDaysAfterPrev: 1, when: "1990冬", prevMain: "C13" },
+  pacing: {
+    weekMin: 140,
+    minDaysAfterPrev: 1,
+    when: "1990冬",
+    prevMain: "C13"
+  },
   aftermathHint: "今晚之後，手帳會多一頁「三年收科」——你嘅結局，記喺嗰度。",
   journalCandidate: "頒獎禮嗰晚，我點答自己。",
   redStarHook: "全體紅星喺頒獎禮外圍——三年收科，個個都到齊。",
@@ -24781,7 +27041,7 @@ async function refreshCopyPacksFromDisk(){
   /* v20a66 YEARS66：靜態覆寫表＋內嵌池先行 remap（覆寫喺本函數稍後套用，讀到嘅已係新曆；walker 冪等） */
   try{
     if(typeof years66Walk==="function"){
-      [STORY_SPINE_NODES_1989, STORY_SPINE_NODES_1990, STORY_SPINE_NODE_C17_410, STORY_HINT_SOFT, STORY_TITLE_SOFT, STORY_LOC_SOFT, CHOICE47_NODES, COMMIT48_NODES].forEach(t=>{ try{ years66Walk(t, null); }catch(_y66){} });
+      [STORY_SPINE_NODES_1989, STORY_SPINE_NODES_1990, STORY_SPINE_NODE_C17_410, STORY_SPINE_NODES_WF1, STORY_HINT_SOFT, STORY_TITLE_SOFT, STORY_LOC_SOFT, CHOICE47_NODES, COMMIT48_NODES].forEach(t=>{ try{ years66Walk(t, null); }catch(_y66){} });
       try{ years66Walk(NPC_LINES, null); }catch(_y66){}
       try{ years66Walk(EVENTS, null); }catch(_y66){}
       try{ years66Walk(BEATS, null); }catch(_y66){}
@@ -24890,6 +27150,7 @@ async function refreshCopyPacksFromDisk(){
     try{ applyStorySpineOverrides48(); }catch(_sp48){}
     /* v20a33：套 C17 結局前夕覆寫（取代舊 E01–E10 十檔任揀節點） */
     try{ applyStorySpineOverrides410(); }catch(_sp410){}
+    try{ applyStoryWf1Nodes80(); }catch(_wf1){}
     /* v20a55 TEXTFIX：主幹覆寫之後、其餘載入之前，清洗劇情包文字 */
     try{ textfix55StoryPack(main); textfix55StoryPack(rom1); textfix55StoryPack(rom2); textfix55StoryPack(romTang); textfix55StoryPack(rival); textfix55RivalSpeakers(rival); }catch(_t55){}
     try{ textfix55StoryPack(gateStub); textfix55StoryPack(dengMock); textfix55StoryPack(dengPushMock); textfix55StoryPack(dualMock); }catch(_t55){}
@@ -26958,11 +29219,13 @@ const CALIB60_NODE_WINDOWS = {
   C12: { year:1992, seasons:["秋"], whenLabel:"1992 年秋" },
   C16: { year:1992, seasons:["秋"], whenLabel:"1992 年秋" },
   C13: { year:1992, seasons:["冬"], whenLabel:"1992 年冬" },
-  C17: { year:1992, seasons:["冬"], whenLabel:"1992 年冬" }
+  C17: { year:1992, seasons:["冬"], whenLabel:"1992 年冬" },
+  C18: { year:1990, seasons:["冬"], whenLabel:"1990 年冬" },
+  C19: { year:1991, seasons:["春"], whenLabel:"1991 年春" }
 };
 const CALIB60_NODE_TITLES = {
   C6:"飯堂閒角", C7:"暴雨救場", C11:"選美後台", C8:"茶餐廳度橋", C9:"年尾追數", C10:"戲路定型",
-  C15:"高危替身", C14:"站隊", C12:"樂壇前哨", C16:"偶像實力之爭", C13:"賀歲片", C17:"三年收科"
+  C15:"高危替身", C14:"站隊", C12:"樂壇前哨", C16:"偶像實力之爭", C13:"賀歲片", C17:"三年收科", C18:"上岸路", C19:"賭枱邊"
 };
 function calib60SeasonIdx(year, season){
   const rank = { "春":0, "夏":1, "秋":2, "冬":3 }[season];
@@ -34356,8 +36619,9 @@ function prog71Rows(){
   (oc.done||[]).forEach(r=>{ if(r && r.id) doneSet[r.id] = r; });
   const missed = (S && S.calib60Missed) || {};
   const rows = [];
-  for(let n=1; n<=17; n++){
-    const id = "C"+n;
+  const order71 = [["C1",1],["C2",2],["C3",3],["C4",4],["C5",5],["C6",6],["C18",18],["C19",19],["C7",7],["C8",8],["C9",9],["C10",10],["C11",11],["C12",12],["C13",13],["C14",14],["C15",15],["C16",16],["C17",17]];
+  for(const pair71 of order71){
+    const id = pair71[0]; const n = pair71[1];
     let exists = false;
     try{ exists = !!(doneSet[id] || openSet[id] || (StoryOC.findNodeRaw && StoryOC.findNodeRaw(id)) || (StoryOC.isDone && StoryOC.isDone(id))); }catch(_e){}
     if(!exists){ try{ exists = !!(typeof BehaviorGate !== "undefined" && BehaviorGate.gate3YEntry && BehaviorGate.gate3YEntry(id)); }catch(_e){} }
@@ -34381,6 +36645,20 @@ function renderProgressPane71(){
     return;
   }
   let fullLeft = 2;   /* 最近兩幕未開放先列足逐項條件（防劇透） */
+  /* v20a80 WF1：逐項名額只數主線幕（C1–C17）；插入幕 C18/C19 唔佔名額，
+     但要排到入選主線幕範圍內先跟住出逐項（維持遠幕防劇透、唔遮主線條件）。 */
+  const detailSet71 = {};
+  {
+    let used71 = 0, lastDetailIdx71 = -1;
+    rows.forEach((r, i)=>{
+      if(r.state!=="locked") return;
+      if(r.id==="C18" || r.id==="C19") return;
+      if(used71 < fullLeft){ used71++; detailSet71[r.id] = 1; lastDetailIdx71 = i; }
+    });
+    rows.forEach((r, i)=>{
+      if((r.id==="C18" || r.id==="C19") && r.state==="locked" && lastDetailIdx71 >= 0 && i <= lastDetailIdx71) detailSet71[r.id] = 1;
+    });
+  }
   const html = ['<div class="prog71-wrap"><h3 class="prog71-h">主線進度</h3><p class="prog71-intro">逐幕列出開放條件同你而家嘅進度：✓ 係已達標，○ 係未達。完成一幕，之後嘅幕會逐漸揭曉。</p>'];
   rows.forEach(r=>{
     if(r.state==="done"){
@@ -34418,8 +36696,7 @@ function renderProgressPane71(){
         + '<p class="prog71-note">時窗係'+prog71Esc(wl || "較早前")+'，已經過咗。嗰段日子嘅紀錄喺「回憶」頁。</p></div>');
       return;
     }
-    if(fullLeft>0){
-      fullLeft--;
+    if(detailSet71[r.id]){
       let items = null;
       try{ items = prog71GateItems(r.id) || prog71StubItems(r.id); }catch(_e){ items = null; }
       let body;
