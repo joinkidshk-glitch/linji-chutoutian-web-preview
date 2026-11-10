@@ -98,7 +98,7 @@ mapimg = raw_of(r'const MAP_IMG = "data:image/jpeg;base64,([A-Za-z0-9+/=]+)')
 ok('hero_awi 已再壓縮（191,434 → <100,000）', 0 < hero < 100000)
 ok('start_guide 已再壓縮（201,839 → <160,000）', 0 < guide < 160000)
 ok('MAP_IMG 保留原圖（核心視覺唔硬減；q82 試壓冇收益）', mapimg > 370000)
-ok('主檔總量 < 4,850,000 bytes（v79 巧遇系統有意增長至 ~4,798,009；v67 為 4,852,951）', len(src.encode('utf-8')) < 4850000)
+ok('主檔總量 < 4,900,000 bytes（v80 WF1 劇情加厚＋補幕有意增長至 ~4,854,789；v79 為 ~4,798,020）', len(src.encode('utf-8')) < 4900000)
 ok('海報圖已有 loading="lazy"（v59 既有，冇倒退）', 'loading="lazy"' in src)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')

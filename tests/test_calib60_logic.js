@@ -195,7 +195,8 @@ function missState(dayIndex, done){
 let ms = missState(DAY(1991, 10, 15));
 let newly = calib60MissedScan(ms);
 const newlyIds = newly.map(x => x.id).sort();
-ok('1991 秋中：C6（1990 窗）＋C7（夏窗）登記漏失', newlyIds.join() === 'C6,C7');
+/* v20a80 WF1 改版：補幕 C18（1990 冬窗）／C19（1991 春窗）喺 1991 秋中同樣已過窗，一併登記漏失 */
+ok('1991 秋中：C6（1990 窗）＋C7（夏窗）＋C18／C19（WF1 補幕窗）登記漏失', newlyIds.join() === 'C18,C19,C6,C7');
 ok('漏失紀錄帶標題＋時期（唔劇透）', ms.calib60Missed.C7.title === '暴雨救場' && ms.calib60Missed.C7.whenLabel === '1991 年夏');
 ok('C11（夏／秋窗）秋未完窗唔登記', !ms.calib60Missed.C11);
 ok('C8（秋窗）身處秋季唔登記', !ms.calib60Missed.C8);
