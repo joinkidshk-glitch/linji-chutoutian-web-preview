@@ -4705,6 +4705,24 @@ body.day-res-open .day-row{
 .train71-pick:active{ transform:translateY(1px); }
 .t70-card.picked{ outline:2px solid #3e6b34; outline-offset:1px; }
 .train71-acts{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+/* === v20a72 MENU72：主選單一門原則——分隔線＋歸位子頁通用導航掣 === */
+.menu-sep{ height:1px; background:var(--line); margin:5px 6px; flex:0 0 auto; }
+/* v20a72 外觀修正一（用戶 2026-11-10 14:46）：手帳子頁掣 active 文字隱形——
+   #home-subtabs .home-tab（ID 特異性）蓋走 .home-tab.on 嘅啡底，但文字色冇
+   規則跟，.on 嘅 #fff8e8 白字落喺 #fbf3df 淺底等於唔見咗（五組共用同一
+   class，全中招）。明文畀子頁掣 active 態成套啡底白字，同大類 tab／分類
+   tab／選擇器 chips 嘅 active 語言一致。 */
+#home-subtabs .home-tab.on{ background:#6b4e2e; color:#fff8e8; border-color:#4a351e; }
+/* v20a72 外觀修正二：#app.toast-up::after 嗰塊 v17g 88px 暗影 slab 本意係
+   喺地圖 toast 嗰陣遮地圖提示；地圖側早已用 :has(#v-map.view.on) 隱藏，
+   但手帳 view 未跟——toast 一出 slab 就罩住行程頁底部掣群（還原／確定／
+   返回地圖），成粒掣俾佢洗到灰晒似 disabled。跟地圖先例：手帳 view
+   active 嗰陣唔出 slab，toast 票根本身（z520、一粒浮票）唔受影響。 */
+#app.toast-up:has(#v-home.view.on)::after{ display:none !important; }
+.pane-go72{ margin-top:10px; background:#6b4e2e; color:#fff8e8; border:0; border-radius:10px;
+  padding:8px 16px; font:inherit; font-weight:800; font-size:.82rem; cursor:pointer; }
+.jobs72-h{ margin:0 0 4px; font-size:.95rem; color:#43301c; }
+.jobs72-sec{ margin:10px 0 6px; font-weight:800; color:#8a5a20; }
 /* === v20a68 UX68 皮膚完 === */
 /* === v20a54 新 UI 皮膚層（大地圖紙面填充＋入圖空白兜底） ===
    用戶 2026-11-09 實機：高身手機入地圖，幅圖（自然比例 contain、闊度-bound）
@@ -4807,15 +4825,13 @@ body.day-res-open .day-row{
       </div>
     </div>
     <div class="menu" id="menu">
-      <button type="button" data-m="stats">狀態</button>
-      <button type="button" data-m="people">人脈</button>
-      <button type="button" data-m="inv">庫存</button>
-      <button type="button" data-m="jobs">拍攝簿</button>
-      <button type="button" data-m="rumors">傳聞</button>
-      <button type="button" data-m="debts">人情債</button>
+      <!-- v20a72 MENU72（一門原則，用戶 2026-11-10 12:54 拍板）：選單只留動作
+           （劇情／手帳／提早休息）＋分隔以下系統組；資訊頁（狀態／人脈／庫存／
+           拍攝簿／傳聞／人情債）全部歸入手帳五大類，唔再喺選單開第二度門。 -->
       <button type="button" data-m="story-play" class="menu-story">劇情 <span class="menu-badge" id="menu-story-badge" hidden>0</span></button>
-      <button type="button" data-m="journal">返手帳</button>
+      <button type="button" data-m="journal">手帳</button>
       <button type="button" data-m="rest-early">提早休息／+1日</button>
+      <div class="menu-sep" aria-hidden="true"></div>
       <button type="button" data-m="replay-tut">重看教學</button>
       <button type="button" data-m="settings">設定</button>
       <button type="button" data-m="wire" id="menu-wire" hidden>接線／年份</button>
@@ -4904,10 +4920,15 @@ body.day-res-open .day-row{
         <div class="hsub-group" data-hsubgroup="status">
           <button type="button" class="home-tab hsub" id="htab-ledger" role="tab" aria-selected="false" data-htab="ledger">記數</button>
           <button type="button" class="home-tab hsub" id="htab-tags" role="tab" aria-selected="false" data-htab="tags">標籤</button>
+          <button type="button" class="home-tab hsub" id="htab-inv" role="tab" aria-selected="false" data-htab="inv">庫存</button>
         </div>
         <div class="hsub-group" data-hsubgroup="news">
           <button type="button" class="home-tab hsub" id="htab-rumor" role="tab" aria-selected="false" data-htab="rumor">傳聞</button>
           <button type="button" class="home-tab hsub" id="htab-clippings" role="tab" aria-selected="false" data-htab="clippings">剪報</button>
+        </div>
+        <div class="hsub-group" data-hsubgroup="favor">
+          <button type="button" class="home-tab hsub" id="htab-debt" role="tab" aria-selected="false" data-htab="debt">人情債</button>
+          <button type="button" class="home-tab hsub" id="htab-people" role="tab" aria-selected="false" data-htab="people">人脈</button>
         </div>
       </div>
       <div class="home-pane on" id="home-pane-plan">
@@ -4965,8 +4986,14 @@ body.day-res-open .day-row{
       <div class="home-pane" id="home-pane-debt">
         <div class="journal-scroll" id="debt-list" aria-label="人情債"></div>
       </div>
+      <div class="home-pane" id="home-pane-people">
+        <div class="journal-scroll" id="people-list" aria-label="人脈"></div>
+      </div>
       <div class="home-pane" id="home-pane-tags">
         <div class="journal-scroll" id="tags-list" aria-label="選角標籤"></div>
+      </div>
+      <div class="home-pane" id="home-pane-inv">
+        <div class="journal-scroll" id="inv-list" aria-label="庫存"></div>
       </div>
       <div class="home-pane" id="home-pane-works">
         <div class="journal-scroll" id="works-list" aria-label="作品牆"></div>
@@ -25716,9 +25743,17 @@ function worksWallHtml59(){
     + '<p class="works-note59">殺青作品會收錄喺度。早期做臨記，海報得明星個樣；做到主角嗰日，幅圖就會有你份。</p>';
 }
 function renderWorksPane(){
+  /* v20a72 MENU72：作品頁＝拍攝簿（頂）＋作品牆（底）。拍攝簿段由
+     jobs72SectionHtml 產生（原選單「拍攝簿」modal 內容），牆維持 v59 原樣。 */
   const el = document.getElementById("works-list");
   if(!el) return;
-  el.innerHTML = worksWallHtml59();
+  let jobsHtml = "";
+  try{ jobsHtml = jobs72SectionHtml(); }catch(_e){ jobsHtml = ""; }
+  el.innerHTML = jobsHtml + worksWallHtml59();
+  const gb = el.querySelector(".jobs72-goboard");
+  if(gb) gb.onclick = ()=>{ try{ jobs72GoBoard(); }catch(_e){} };
+  const gl = el.querySelector(".jobs72-goloc");
+  if(gl) gl.onclick = ()=>{ try{ jobs72GoLoc(); }catch(_e){} };
 }
 function wrapPoster59Html(gigId){
   const src = poster59Path(gigId);
@@ -33846,9 +33881,9 @@ function playPushDoor(){
    一級只顯示五大類（行程／事業／近況／消息／人情）；子頁 id 同 pane 全部不變，
    分組只係導航層；組內記住上次開嗰個子頁（session 內）。恆常出口：唔再跟行程掣
    嘅顯示／標籤走（舊制根因見 syncHomeTabExit 註解）。 */
-const BOOK70_TAB_GROUP = { plan:"plan", train:"plan", progress:"plan", works:"career", awards:"career", memory:"career", ledger:"status", tags:"status", rumor:"news", clippings:"news", debt:"favor" };
+const BOOK70_TAB_GROUP = { plan:"plan", train:"plan", progress:"plan", works:"career", awards:"career", memory:"career", ledger:"status", tags:"status", inv:"status", rumor:"news", clippings:"news", debt:"favor", people:"favor" };
 const BOOK70_GROUP_FIRST = { plan:"plan", career:"works", status:"ledger", news:"rumor", favor:"debt" };
-const book70GroupSub = { plan:"plan", career:"works", status:"ledger", news:"rumor" };
+const book70GroupSub = { plan:"plan", career:"works", status:"ledger", news:"rumor", favor:"debt" };
 function book70SyncTabGroups(tab){
   const grp = BOOK70_TAB_GROUP[tab] || "plan";
   if(book70GroupSub[grp]) book70GroupSub[grp] = tab;
@@ -33881,14 +33916,17 @@ function setHomeTab(tab){
      book70SyncTabGroups。
      v20a71 PROGRESS71：加「進度」progress 子頁（行程組）。
      v20a71 PART3B：guide／train 舊入口只去 plan——v68 指南頁 v70 拼入行程頁
-     訓練段，v71 訓練段成段移除、訓練改入排程選擇器，唔留指向已刪段落嘅邏輯。 */
+     訓練段，v71 訓練段成段移除、訓練改入排程選擇器，唔留指向已刪段落嘅邏輯。
+     v20a72 MENU72：加「人脈」people（人情組）＋「庫存」inv（近況組）兩子頁——
+     原選單 modal 頁歸入手帳（選單一門原則）；拍攝簿併入 works 頁、狀態早於
+     v20a6 已同記數同頁，唔使加子頁。 */
   if(tab === "guide" || tab === "train"){ tab = "plan"; }
-  const allow={ plan:1, ledger:1, rumor:1, clippings:1, debt:1, tags:1, works:1, awards:1, memory:1, progress:1 }; /* v20a60 CALIB60-3：加「回憶」頁；v20a62 AWARDS62-7：加「獎項」頁；v20a71 PROGRESS71：加「進度」頁 */
+  const allow={ plan:1, ledger:1, rumor:1, clippings:1, debt:1, tags:1, works:1, awards:1, memory:1, progress:1, people:1, inv:1 }; /* v20a60 CALIB60-3：加「回憶」頁；v20a62 AWARDS62-7：加「獎項」頁；v20a71 PROGRESS71：加「進度」頁；v20a72 MENU72：加「人脈」「庫存」頁 */
   if(tab==="tags" && typeof freeplayDevTagsOn==="function" && !freeplayDevTagsOn()) tab="plan";
   if(!allow[tab]) tab="plan";
   applyPhase2Steps56TabLabel();
   try{ book70SyncTabGroups(tab); }catch(_grp){}
-  ["plan","ledger","rumor","clippings","debt","tags","works","awards","memory","progress"].forEach(id=>{
+  ["plan","ledger","rumor","clippings","debt","people","tags","inv","works","awards","memory","progress"].forEach(id=>{
     const pane=document.getElementById("home-pane-"+id);
     if(pane) pane.classList.toggle("on", id===tab);
   });
@@ -33906,6 +33944,12 @@ function setHomeTab(tab){
   if(tab==="debt"){
     renderDebtPane();
     seasonCollectToast();
+  }
+  if(tab==="people"){
+    try{ renderPeoplePane(); }catch(_e){}
+  }
+  if(tab==="inv"){
+    try{ renderInvPane(); }catch(_e){}
   }
   if(tab==="tags"){
     try{ renderCastingTagsPane(); }catch(_e){}
@@ -41565,27 +41609,53 @@ function doGiveGift(npcKey, itemId, L){
   ], {onDismiss: go});
   saveQ();
 }
-function showInventory(){
+/* v20a72 MENU72：庫存內容產生器（原選單 modal 內容原封搬入手帳近況組「庫存」
+   子頁；欄位／文案／排序不變）。空庫存嗰陣出「去香江唱片小賣」掣（class
+   inv72-goshop），由 renderInvPane 綁返同舊 modal 一樣嘅跳轉。 */
+function inv72Html(){
   try{ GiftShop.ensureSave(); }catch(_e){}
   const list = (typeof GiftShop!=="undefined") ? GiftShop.inventoryList() : [];
   let body;
-  const goShop = ()=>{
-    try{ closeModal(); }catch(_e){}
-    try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
-    setTimeout(()=>{ try{ openLoc("rec_hk"); }catch(_e){ toast("請去旺角香江唱片"); } }, 60);
-  };
   if(!list.length){
-    body = `<p class="sub">庫存空空。去旺角「香江唱片」地點選單撳「小賣／禮品」買入；送禮要喺已認識嘅熟人／可培養對象面前。</p>`;
+    body = `<p class="sub">庫存空空。去旺角「香江唱片」地點選單撳「小賣／禮品」買入；送禮要喺已認識嘅熟人／可培養對象面前。</p>`
+      + `<button type="button" class="pane-go72 inv72-goshop">去香江唱片小賣</button>`;
   } else {
     body = list.map(({itemId, count, item})=>
       `<p style="margin:6px 0">${item.emoji||"🎁"} <b>${item.name}</b> ×${count} <span class="sub">· ${rarityLabelZh(item.rarity)} · $${(item.price||0).toLocaleString()}</span></p>`
     ).join("");
     body += `<p class="sub" style="margin-top:10px">送禮：地圖遇到 Vera／林曉晴／周采兒 →「送禮」（${softSocialCostsDay()?"耗 1 日":"試玩不耗日"}）。</p>`;
   }
-  const btns = list.length
-    ? [{label:"關閉",role:"g"}]
-    : [{label:"去香江唱片小賣", role:"p", on:goShop},{label:"關閉",role:"g"}];
-  modal(`<h3>庫存</h3><p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>${body}`, btns);
+  return `<h3 class="jobs72-h">庫存</h3><p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>${body}`;
+}
+function inv72GoShop(){
+  try{ closeModal(); }catch(_e){}
+  try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
+  setTimeout(()=>{ try{ openLoc("rec_hk"); }catch(_e){ toast("請去旺角香江唱片"); } }, 60);
+}
+function renderInvPane(){
+  const box = document.getElementById("inv-list");
+  if(!box) return;
+  try{ box.innerHTML = inv72Html(); }catch(_e){ box.innerHTML = "<p class=\"sub\">庫存暫時睇唔到。</p>"; return; }
+  const btn = box.querySelector(".inv72-goshop");
+  if(btn) btn.onclick = ()=>{ try{ inv72GoShop(); }catch(_e){} };
+}
+function showInventory(){
+  /* v20a72 MENU72：選單「庫存」入口已刪，舊呼叫一律重定向去手帳近況組
+     「庫存」子頁（跟 v20a6 showStats／v70 guide 重定向先例）。 */
+  try{
+    if(typeof kickScheduleIfNeeded==="function" && kickScheduleIfNeeded()) return;
+  }catch(_e){}
+  try{
+    if(typeof enterHome==="function"){
+      enterHome(null, false, "inv");
+      try{ setHomeTab("inv"); }catch(_e){}
+      return;
+    }
+  }catch(_e){}
+  try{
+    if(typeof show==="function") show("v-home");
+    setHomeTab("inv");
+  }catch(_e){}
 }
 
 /** v20a6：記數簿／狀態共用同一套數字 UI（手帳「記數」tab；選單「狀態」跳去同一頁，唔另開第二套／唔開「狀態」modal）。 */
@@ -41654,7 +41724,9 @@ function showStats(){
       <p style="font-size:.78rem;color:var(--muted)">已報名訓練：${p.enrollLine}</p>`,[{label:"關閉",role:"g"}]);
   }catch(_e2){}
 }
-function showPeople(){
+/* v20a72 MENU72：人脈內容產生器（原選單 modal 內容原封搬入手帳人情組「人脈」
+   子頁；NPC 列／好感心／解鎖提示／「去找」掣全部保留）。 */
+function people72Html(){
   const html=Object.values(NPCS).map(n=>{
     const v=S.npcs[n.id]||0;
     const h="♥".repeat(Math.round(v/20))+"♡".repeat(5-Math.round(v/20));
@@ -41678,22 +41750,42 @@ function showPeople(){
       : "";
     return `<div class="people-row" style="margin:8px 0;display:flex;gap:8px;align-items:flex-start"><img src="${PORTRAITS[n.face]}" alt="" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/><span style="flex:1"><b>${n.name}</b> · ${n.role}<br><span class="gold">${h} ${v}／100</span>${nextLine}${goBit}</span></div>`;
   }).join("");
-  modal(`<h3>人脈</h3><p class="people-next">好感門檻：寒暄0 · 閒談10 · 忠告25 · 情報對白40</p><p class="sub" style="font-size:.75rem">撳「去找」會打開對方常出沒地點，可傾談／送禮。</p>${html}`,[{label:"關閉",role:"g"}]);
+  return `<h3 class="jobs72-h">人脈</h3><p class="people-next">好感門檻：寒暄0 · 閒談10 · 忠告25 · 情報對白40</p><p class="sub" style="font-size:.75rem">撳「去找」會打開對方常出沒地點，可傾談／送禮。</p>${html}`;
+}
+function people72GoLoc(btn){
+  const loc = btn.getAttribute("data-loc");
+  if(!loc){ toast("暫時唔知對方喺邊。"); return; }
+  try{ closeModal(); }catch(_e){}
+  try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
+  setTimeout(()=>{ try{ openLoc(loc); }catch(_e){ toast("未能打開地點"); } }, 60);
+}
+function renderPeoplePane(){
+  const box = document.getElementById("people-list");
+  if(!box) return;
+  try{ box.innerHTML = people72Html(); }catch(_e){ box.innerHTML = "<p class=\"sub\">人脈暫時睇唔到。</p>"; return; }
+  box.querySelectorAll(".people-go").forEach(btn=>{
+    btn.onclick = (ev)=>{
+      try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){}
+      try{ people72GoLoc(btn); }catch(_e){}
+    };
+  });
+}
+function showPeople(){
+  /* v20a72 MENU72：選單「人脈」入口已刪，舊呼叫一律重定向去手帳人情組
+     「人脈」子頁（跟 v20a6 showStats／v70 guide 重定向先例）。 */
   try{
-    setTimeout(()=>{
-      const inner = document.getElementById("modal-inner");
-      if(!inner) return;
-      inner.querySelectorAll(".people-go").forEach(btn=>{
-        btn.onclick = (ev)=>{
-          try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){}
-          const loc = btn.getAttribute("data-loc");
-          if(!loc){ toast("暫時唔知對方喺邊。"); return; }
-          try{ closeModal(); }catch(_e){}
-          try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
-          setTimeout(()=>{ try{ openLoc(loc); }catch(_e){ toast("未能打開地點"); } }, 60);
-        };
-      });
-    }, 0);
+    if(typeof kickScheduleIfNeeded==="function" && kickScheduleIfNeeded()) return;
+  }catch(_e){}
+  try{
+    if(typeof enterHome==="function"){
+      enterHome(null, false, "people");
+      try{ setHomeTab("people"); }catch(_e){}
+      return;
+    }
+  }catch(_e){}
+  try{
+    if(typeof show==="function") show("v-home");
+    setHomeTab("people");
   }catch(_e){}
 }
 function shootRemain(sh){
@@ -41786,7 +41878,54 @@ function ensureWrapHistoryFromFlags(){
     });
   }catch(_e){}
 }
-function showJobs(){
+/* v20a72 MENU72：拍攝簿內容產生器（原選單 modal 內容原封搬入手帳事業組
+   「作品」頁頂部；拍攝中／已獲聘、待試鏡、已殺青履歷三段＋導航掣全部保留）。
+   作品頁下半係 worksWallHtml59() 作品牆——兩者同源 wrapHistory：簿係全量
+   文字履歷（連散工＋評價），牆只收有名製作連海報；分段呈現，唔合併刪減。 */
+function jobs72GoBoard(){
+  try{ closeModal(); }catch(_e){}
+  try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
+  setTimeout(()=>{
+    try{
+      let target = "ad_central";
+      try{ ensureEntryTierBoardFill(); }catch(_ef){}
+      if(S && S.board){
+        for(const loc of Object.keys(S.board)){
+          const ids = S.board[loc]||[];
+          const hit = ids.some(gid=>{
+            const g=(GIGS||[]).find(x=>x&&x.id===gid);
+            return g && g.entryTier && typeof canAudition==="function" && canAudition(g).ok;
+          });
+          if(hit){ target = loc; break; }
+        }
+      }
+      const L = LOCS.find(x=>x.id===target) || { id:target };
+      openLoc(target);
+      setTimeout(()=>{ try{ if(typeof doScout==="function") doScout(L); }catch(_e){} }, 100);
+    }catch(_e){ toast("去通告欄失敗——請喺地圖撳有通告嘅地點。"); }
+  }, 60);
+}
+function jobs72GoLoc(){
+  const shoots72 = (S.shoots || []).filter(sh=>{
+    if(shootRemain(sh)>0) return true;
+    return (S.weekPlan||[]).some(p=>p===("shoot:"+sh.id));
+  });
+  const booked72 = S.booked || [];
+  try{ closeModal(); }catch(_e){}
+  try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
+  setTimeout(()=>{
+    try{
+      let target="tvb_longmen";
+      if(shoots72[0] && shoots72[0].locId) target = shoots72[0].locId;
+      else if(booked72[0]){
+        const g=GIGS.find(x=>x&&x.id===booked72[0].gigId);
+        if(g && g.loc) target=g.loc;
+      }
+      openLoc(target);
+    }catch(_e){}
+  }, 60);
+}
+function jobs72SectionHtml(){
   ensureWrapHistoryFromFlags();
   const booked = S.booked || [];
   const shoots = (S.shoots || []).filter(sh=>{
@@ -41795,36 +41934,9 @@ function showJobs(){
   });
   const hist = (S.wrapHistory || []).slice(0, 12);
   if(!booked.length && !shoots.length && !hist.length){
-    const goBoard = ()=>{
-      try{ closeModal(); }catch(_e){}
-      try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
-      setTimeout(()=>{
-        try{
-          let target = "ad_central";
-          try{ ensureEntryTierBoardFill(); }catch(_ef){}
-          if(S && S.board){
-            for(const loc of Object.keys(S.board)){
-              const ids = S.board[loc]||[];
-              const hit = ids.some(gid=>{
-                const g=(GIGS||[]).find(x=>x&&x.id===gid);
-                return g && g.entryTier && typeof canAudition==="function" && canAudition(g).ok;
-              });
-              if(hit){ target = loc; break; }
-            }
-          }
-          const L = LOCS.find(x=>x.id===target) || { id:target };
-          openLoc(target);
-          setTimeout(()=>{ try{ if(typeof doScout==="function") doScout(L); }catch(_e){} }, 100);
-        }catch(_e){ toast("去通告欄失敗——請喺地圖撳有通告嘅地點。"); }
-      }, 60);
-    };
-    modal(`<h3>拍攝簿</h3><p>而家未有拍攝中／待試鏡／殺青紀錄。<br>達標後去通告欄試鏡；只有獲聘先會開拍。</p><p class="sub" style="font-size:.75rem;margin-top:8px">早期入場通告喺中環廣告／星河等地——撳下面可直達。</p>`,[
-      {label:"去通告欄", role:"p", on:goBoard},
-      {label:"關閉", role:"g"}
-    ]);
-    return;
+    return `<h3 class="jobs72-h">拍攝簿</h3><p>而家未有拍攝中／待試鏡／殺青紀錄。<br>達標後去通告欄試鏡；只有獲聘先會開拍。</p><p class="sub" style="font-size:.75rem;margin-top:8px">早期入場通告喺中環廣告／星河等地——撳下面可直達。</p><button type="button" class="pane-go72 jobs72-goboard">去通告欄</button>`;
   }
-  let body="";
+  let body=`<h3 class="jobs72-h">拍攝簿</h3>`;
   if(shoots.length){
     body += `<p class="gold" style="margin:0 0 6px">拍攝中／已獲聘</p>`;
     shoots.forEach(sh=>{
@@ -41862,25 +41974,26 @@ function showJobs(){
       </div>`;
     });
   }
-  const goBoard2 = ()=>{
-    try{ closeModal(); }catch(_e){}
-    try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
-    setTimeout(()=>{
-      try{
-        let target="tvb_longmen";
-        if(shoots[0] && shoots[0].locId) target = shoots[0].locId;
-        else if(booked[0]){
-          const g=GIGS.find(x=>x&&x.id===booked[0].gigId);
-          if(g && g.loc) target=g.loc;
-        }
-        openLoc(target);
-      }catch(_e){}
-    }, 60);
-  };
-  modal(`<h3>拍攝簿</h3>${body}`,[
-    {label:"去相關地點", role:"p", on:goBoard2},
-    {label:"關閉",role:"g"}
-  ]);
+  return body + `<button type="button" class="pane-go72 jobs72-goloc">去相關地點</button>`;
+}
+function showJobs(){
+  /* v20a72 MENU72：選單「拍攝簿」入口已刪，舊呼叫（通告卡「查看檔期／拍攝簿」、
+     地點動作「查看檔期」等）一律重定向去手帳事業組「作品」頁——拍攝簿內容
+     已併入該頁頂部（renderWorksPane）。 */
+  try{
+    if(typeof kickScheduleIfNeeded==="function" && kickScheduleIfNeeded()) return;
+  }catch(_e){}
+  try{
+    if(typeof enterHome==="function"){
+      enterHome(null, false, "works");
+      try{ setHomeTab("works"); }catch(_e){}
+      return;
+    }
+  }catch(_e){}
+  try{
+    if(typeof show==="function") show("v-home");
+    setHomeTab("works");
+  }catch(_e){}
 }
 
 
@@ -42400,20 +42513,9 @@ document.body.addEventListener("click",()=>document.getElementById("menu").class
 document.getElementById("menu").onclick=e=>{
   e.stopPropagation(); const m=e.target.dataset.m; if(!m)return;
   document.getElementById("menu").classList.remove("on");
-  if(m==="stats")showStats();
-  if(m==="people")showPeople();
-  if(m==="inv")showInventory();
-  if(m==="jobs")showJobs();
-  if(m==="rumors"){
-    if(kickScheduleIfNeeded()) return;
-    enterHome(null, false);
-    setTimeout(()=>{ try{ setHomeTab("rumor"); }catch(_e){} }, 40);
-  }
-  if(m==="debts"){
-    if(kickScheduleIfNeeded()) return;
-    enterHome(null, false);
-    setTimeout(()=>{ try{ setHomeTab("debt"); }catch(_e){} }, 40);
-  }
+  /* v20a72 MENU72：stats／people／inv／jobs／rumors／debts 六個選單分支隨掣
+     一併移除（資訊頁歸入手帳）；showStats／showPeople／showInventory／
+     showJobs 函數保留做舊呼叫重定向，唔再由選單觸發。 */
   if(m==="home" || m==="journal"){
     if(kickScheduleIfNeeded()) return;
     goJournalFromMenu();
