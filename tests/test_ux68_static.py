@@ -14,22 +14,28 @@ def ok(name, cond):
 # --- 基線不變 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
 
-# --- (1) 訓練指南頁 ---
-ok('UX68 block 存在', '/* ===== v20a68 UX68' in src and 'function renderGuidePane68' in src
+# --- (1) 訓練指南／選擇器 ---
+# v20a71 PART3B 改版：renderGuidePane68（指南渲染）已隨「訓練一覽」段移除，
+# 數據衍生層保留、呈現改入排程選擇器 train71PickerHtml。本斷言跟新正確行為改。
+ok('UX68 block 存在（數據衍生層保留＋v71 選擇器）', '/* ===== v20a68 UX68' in src and 'function train71PickerHtml' in src
    and 'function ux68ParseGainTable' in src and 'function ux68OrganizeLocSheet' in src)
 # v20a70 BOOK70 改版：訓練指南取消獨立頁，拼入行程頁「訓練」段。本斷言由「有 guide tab＋pane」
 # 改為新正確行為；喺 v69 index 上行會 FAIL（嗰陣仲係獨立頁，係反證）。
 ok('手帳冇獨立「訓練指南」tab／pane（v70 拼入行程頁）',
    'data-htab="guide"' not in src and 'id="home-pane-guide"' not in src and 'id="htab-guide"' not in src and 'id="guide-list"' not in src)
-ok('訓練段喺行程頁入面（home-train70／train70-list／train70-toggle）',
-   'id="home-train70"' in src and 'id="train70-list"' in src and 'id="train70-toggle"' in src)
+# v20a71 PART3B 改版：「訓練一覽」段（home-train70）成段移除——訓練資訊改入
+# 排程選擇器 panel（nb-train71-wrap／train71-picker）。本斷言跟新正確行為改。
+ok('訓練一覽段已移除、選擇器 panel 喺行程頁（v71 PART3B）',
+   'id="home-train70"' not in src and 'id="train70-list"' not in src and 'id="train70-toggle"' not in src
+   and 'id="nb-train71-wrap"' in src and 'id="train71-picker"' in src)
 m = re.search(r'function setHomeTab\(tab\)\{(.*?)\n\}', src, re.S)
 body = m.group(1) if m else ''
-# v20a70 BOOK70 改版：guide 唔再係分頁——setHomeTab 要將舊呼叫改落 plan、allow 冇 guide、
-# plan 分支渲染訓練段（renderGuidePane68 掛 #train70-list）。喺 v69 index 上行會 FAIL（反證）。
-ok('setHomeTab v70 接線（guide 改落 plan／allow 冇 guide／plan 渲染訓練段／分組同步）',
-   'if(tab === "guide")' in body and 'guide:1' not in body and '"guide"' in body
-   and 'renderGuidePane68()' in body and 'book70SyncTabGroups(tab)' in body)
+# v20a71 PART3B 改版：guide／train 舊入口只去 plan（唔再展開已刪嘅訓練段）、
+# allow 冇 guide、唔再呼叫 renderGuidePane68；progress 分支渲染進度頁。
+ok('setHomeTab v71 接線（guide／train 改落 plan／冇已刪段呼叫／progress 渲染／分組同步）',
+   'if(tab === "guide" || tab === "train")' in body and 'guide:1' not in body
+   and 'renderGuidePane68' not in body and 'book70OpenTrainSection' not in body
+   and 'renderProgressPane71()' in body and 'book70SyncTabGroups(tab)' in body)
 # v20a70 BOOK70 改版：恆常出口——syncHomeTabExit 唔再計 journalTab、唔再睇 #home-back-map
 # 可見與否，永遠顯示＋標籤恆定。喺 v69 index 上行會 FAIL（反證）。
 ok('syncHomeTabExit v70 恆常出口（永遠顯示＋標籤恆定「返回地圖」）',

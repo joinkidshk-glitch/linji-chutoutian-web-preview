@@ -198,7 +198,9 @@ function makeEl(){
   ok('seg7 picker 列出 C2', c2RowAt >= 0);
   const c2Row = c2RowAt >= 0 ? pickerHtml.slice(c2RowAt, c2RowAt + 700) : '';
   ok('seg7 C2 行寫明第 4 週條件（軟閘真文案／週次戳）', c2Row.indexOf('未到第 4 週') >= 0 || /約第4/.test(c2Row));
-  ok('seg7 C2 行寫明開咗去星河電視台播', c2Row.indexOf('星河電視台') >= 0 && c2Row.indexOf('開咗去') >= 0);
+  /* v20a71 PROGRESS71 改版：舊斷言驗「開咗去星河電視台播」拼裝碎片——用戶評文法怪，
+     v71 改完整子句「（開咗之後，去X就會觸發）」，斷言跟新正確行為改。 */
+  ok('seg7 C2 行寫明去星河電視台觸發（v71 完整子句）', c2Row.indexOf('星河電視台') >= 0 && c2Row.indexOf('開咗之後') >= 0 && c2Row.indexOf('開咗去') < 0);
 
   /* ---- item 7(c)：主線進度行——C6（三年版閘、非軟閘覆蓋）補地點 ---- */
   loadGame(freshSave({
@@ -207,8 +209,10 @@ function makeEl(){
   }));
   S.flags = {};
   const prog = storyMainProgressLine();
-  ok('seg7 主線進度行指向下一幕', prog.indexOf('即將') >= 0);
-  ok('seg7 主線進度行補「開咗去…播」', prog.indexOf('開咗去') >= 0 && prog.indexOf('播') >= 0);
+  /* v20a71 PROGRESS71 改版：舊斷言驗「第N幕即將」碎片頭＋「開咗去…播」拼裝尾——
+     用戶評文法怪，v71 全面改完整句子，斷言跟新正確行為改（句子內容由 v71 專測覆蓋）。 */
+  ok('seg7 主線進度行指向下一幕（v71 完整句）', prog.indexOf('第 6 幕〈飯堂閒角〉') >= 0 && prog.indexOf('未開') >= 0 && prog.indexOf('即將') < 0);
+  ok('seg7 主線進度行講明去星河電視台觸發（v71）', prog.indexOf('星河電視台') >= 0 && prog.indexOf('就會觸發。') >= 0 && prog.indexOf('開咗去') < 0);
 })();
 
 /* ================================================================

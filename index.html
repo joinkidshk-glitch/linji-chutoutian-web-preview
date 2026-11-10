@@ -4672,6 +4672,39 @@ body.day-res-open .day-row{
 .t70-mgo{ margin-left:auto; border:1px solid #6b4e2e; background:#fff8e8; color:#6b4e2e;
   border-radius:8px; padding:4px 9px; font:inherit; font-size:.72rem; font-weight:800; cursor:pointer; white-space:nowrap; }
 /* === v20a70 BOOK70 皮膚完 === */
+/* === v20a71 PROGRESS71：進度子頁＋地圖提示行可撳 === */
+.map-hint-story-btn{ appearance:none; -webkit-appearance:none; width:100%; text-align:left; font:inherit; cursor:pointer; }
+.map-hint-story-btn::after{ content:" ›"; opacity:.7; }
+#home-pane-progress .journal-scroll{ flex:1 1 auto; min-height:0; overflow:auto; padding:4px 2px 16px; -webkit-overflow-scrolling:touch; }
+.prog71-wrap{ padding:2px 0 8px; }
+.prog71-h{ margin:0 0 4px; font-size:.95rem; color:#43301c; }
+.prog71-intro{ font-size:.78rem; color:#8a755a; line-height:1.6; margin:0 0 10px; }
+.prog71-row{ border:1px solid #c4a574; background:#fff8e8; border-radius:12px; padding:9px 11px; margin:0 0 8px; }
+.prog71-row.open{ border-color:#b98a2f; background:#fdf3d0; box-shadow:0 0 0 1px rgba(185,138,47,.35); }
+.prog71-row.locked{ background:#fdf6e0; }
+.prog71-row.far, .prog71-row.missed{ opacity:.62; }
+.prog71-top{ display:flex; align-items:baseline; gap:8px; }
+.prog71-act{ font-size:.74rem; font-weight:800; color:#8a5a20; white-space:nowrap; }
+.prog71-top b{ font-size:.9rem; color:#43301c; }
+.prog71-tag{ margin-left:auto; flex:0 0 auto; font-size:.68rem; font-weight:800; padding:2px 8px; border-radius:999px;
+  border:1px solid #b98a2f; color:#6b4e2e; background:#fff8e8; white-space:nowrap; }
+.prog71-tag.ok{ background:#3e6b34; border-color:#3e6b34; color:#fff8e8; }
+.prog71-tag.open{ background:#b98a2f; border-color:#b98a2f; color:#fff8e8; }
+.prog71-items{ list-style:none; margin:8px 0 0; padding:0; }
+.prog71-items li{ font-size:.8rem; line-height:1.55; color:#6b5636; }
+.prog71-items li.ok{ color:#3e6b34; font-weight:700; }
+.prog71-note{ font-size:.78rem; color:#6b5636; line-height:1.55; margin:6px 0 0; }
+.prog71-empty h3{ margin:0 0 4px; font-size:.95rem; }
+.prog71-empty p{ font-size:.8rem; color:#8a755a; line-height:1.6; }
+/* === v20a71 PART3B：訓練選擇器（全日訓練 panel＋逐日活動欄共用） === */
+.nb-quick .nb-train71-wrap{ flex:1 1 100%; margin-top:4px; border:1px solid #c4a574; background:#fff8e8; border-radius:12px; padding:10px; }
+.nb-train71-wrap[hidden]{ display:none; }
+#act-list .train71-host{ display:grid; gap:8px; }
+.train71-pick{ margin-top:8px; min-height:40px; padding:8px 14px; border-radius:10px; border:1px solid #7a4b12;
+  background:#b98a2f; color:#fff8e8; font-weight:800; font-size:.84rem; cursor:pointer; }
+.train71-pick:active{ transform:translateY(1px); }
+.t70-card.picked{ outline:2px solid #3e6b34; outline-offset:1px; }
+.train71-acts{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
 /* === v20a68 UX68 皮膚完 === */
 /* === v20a54 新 UI 皮膚層（大地圖紙面填充＋入圖空白兜底） ===
    用戶 2026-11-09 實機：高身手機入地圖，幅圖（自然比例 contain、闊度-bound）
@@ -4859,6 +4892,10 @@ body.day-res-open .day-row{
         <button type="button" class="home-tab" id="hgroup-favor" role="tab" aria-selected="false" data-hgroup="favor" data-htab="debt">人情</button>
       </div>
       <div class="home-subtabs" id="home-subtabs" aria-label="手帳分類">
+        <div class="hsub-group" data-hsubgroup="plan">
+          <button type="button" class="home-tab hsub" id="htab-plan" role="tab" aria-selected="false" data-htab="plan">行程</button>
+          <button type="button" class="home-tab hsub" id="htab-progress" role="tab" aria-selected="false" data-htab="progress">進度</button>
+        </div>
         <div class="hsub-group" data-hsubgroup="career">
           <button type="button" class="home-tab hsub" id="htab-works" role="tab" aria-selected="false" data-htab="works">作品</button>
           <button type="button" class="home-tab hsub" id="htab-awards" role="tab" aria-selected="false" data-htab="awards">獎項</button>
@@ -4874,13 +4911,8 @@ body.day-res-open .day-row{
         </div>
       </div>
       <div class="home-pane on" id="home-pane-plan">
-      <div class="home-card settle-collapsible collapsed" id="home-summary-card" style="display:none">
-        <button type="button" class="settle-toggle" id="settle-toggle" aria-expanded="false">
-          <h3 id="settle-title">本週結算</h3>
-          <span class="settle-chev" id="settle-chev">▼ 展開</span>
-        </button>
-        <div class="home-summary" id="home-summary"></div>
-      </div>
+      <!-- v20a71 PART3C：「本週結算」摺疊卡成段移除（用戶 13:33：資訊太多）。
+           寄居內容（結算重溫／本週章節／劇情提示）去向見 NOTES_V20A71＋報告 3C 節。 -->
       <div class="notebook" id="notebook">
         <div class="nb-left">
           <p class="nb-title" id="nb-plan-title">本週行程</p>
@@ -4900,6 +4932,9 @@ body.day-res-open .day-row{
                 <button type="button" class="ink" id="nb-copy-apply">套用複製</button>
               </div>
             </div>
+            <div class="nb-train71-wrap" id="nb-train71-wrap" hidden>
+              <div id="train71-picker"></div>
+            </div>
           </div>
           <div id="nb-days"></div>
           <button type="button" class="nb-live-stress" id="nb-live-stress" aria-live="polite">壓力估 —</button>
@@ -4910,16 +4945,8 @@ body.day-res-open .day-row{
           <div class="act-list" id="act-list"></div>
         </div>
       </div>
-      <div class="train70" id="home-train70">
-        <button type="button" class="train70-head" id="train70-toggle" aria-expanded="false">
-          <span class="train70-title">🎓 訓練一覽 · 按數值搵堂</span>
-          <span class="train70-hint" id="train70-hint"></span>
-          <span class="train70-chev" id="train70-chev">▼ 展開</span>
-        </button>
-        <div class="train70-body" id="train70-body" hidden>
-          <div id="train70-list"></div>
-        </div>
-      </div>
+      <!-- v20a71 PART3B：「訓練一覽」摺疊段成段移除（用戶 13:30）——訓練資訊改入
+           排程選擇流程（全日訓練選擇器 #nb-train71-wrap＋逐日活動欄訓練分類）。 -->
       <div class="nb-actions" id="nb-actions">
         <button class="g" type="button" id="home-back-map" style="display:none">返回地圖</button>
         <button class="paper" type="button" id="btn-reset-plan">還原</button>
@@ -4949,6 +4976,9 @@ body.day-res-open .day-row{
       </div>
       <div class="home-pane" id="home-pane-memory">
         <div class="journal-scroll" id="memory-list" aria-label="回憶"></div>
+      </div>
+      <div class="home-pane" id="home-pane-progress">
+        <div class="journal-scroll" id="progress-list" aria-label="主線進度"></div>
       </div>
       <div class="nb-actions home-tab-exit" id="home-tab-exit">
         <button class="g" type="button" id="home-back-map-tabs">返回地圖</button>
@@ -22489,14 +22519,15 @@ const StoryPlay = (()=>{
       }catch(_softLock){}
       /* v20a37 驗證修復（應修 7）：「即將可出」行補齊兩樣——
          (1) 軟閘覆寫食咗嘅週次 meta 用 storyLockMeta（真 when／pacing／openConditions）補返；
-         (2) why 冇提地點嗰陣補「開咗去邊度播」（storyNodeLocId 真地點）。
-         實機病徵：第 2 幕「即將」掛三週，玩家唔知幾時開、開咗去邊，以為壞咗。 */
+         (2) why 冇提地點嗰陣補觸發地點（storyNodeLocId 真地點；v71 改完整子句）。
+         實機病徵：第 2 幕「即將」掛三週，玩家唔知幾時開、去邊觸發，以為壞咗。 */
       try{
         if(!meta && typeof storyLockMeta==="function") meta = storyLockMeta(node||{}, r.reasons);
         if(why){
           const locId37 = (typeof storyNodeLocId==="function") ? storyNodeLocId(node||r) : (r && r.locId) || null;
           const locName37 = locId37 ? (((typeof LOCS!=="undefined" && LOCS.find(l=>l.id===locId37))||{}).name||"") : "";
-          if(locName37 && why.indexOf(locName37)<0) why += "（開咗去"+locName37+"播）";
+          /* v20a71 PROGRESS71：舊「去X播」拼裝尾係碎片（文法怪），改完整子句 */
+          if(locName37 && why.indexOf(locName37)<0) why += "（開咗之後，去"+locName37+"就會觸發）";
         }
       }catch(_e){}
       const metaBit = meta ? `<span class="sp-lock-week">${esc(meta)}</span>` : "";
@@ -24932,15 +24963,29 @@ function ux68TargetStat(){
 function ux68SetTargetStat(stat){
   try{ setPref("ux68TargetStat", stat || ""); }catch(_e){}
 }
-/* ---------- (1d) 訓練指南頁渲染 ---------- */
 const UX68_GUIDE_STATS = ["acting","stage","vocal","looks","charm","iq","stamina","fame","popularity","stress"];
 let ux68GuideStat = "";
 function ux68Esc(s){
   return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
-function book70CourseCard(cid, stat){
-  /* v20a70 BOOK70 主修大卡：四格關鍵數（增益／費用／耗時／壓力）＋短徽章＋一句進度；
-     地點只出首選（即「前往」目的地），全名單收落展開；前往掣寫明去邊度做咩。 */
+/* ---------- (1d) v20a71 PART3B 訓練選擇器（全日訓練＋逐日改行程共用） ----------
+   用戶 13:30：「應該利用『全日訓練』這個選項，而不是開多一個訓練一覽」——
+   v68–v70 指南嘅數據衍生（增益解析／主修附帶分家／狀態／地點）全部保留同源，
+   呈現改入排程選擇流程：撳「全日訓練」開本選擇器（ctx=fill）；逐日改行程揀
+   「訓練」分類出同一個清單（ctx=day）。已報名先排得入；未報名／未開放出
+   狀態＋前往報名，唔可以直接排（跟返報名模型）。目標數值入口喺選擇器頂部。 */
+function train71Stat(){
+  const tgt = ux68TargetStat();
+  if(!ux68GuideStat || UX68_GUIDE_STATS.indexOf(ux68GuideStat) < 0)
+    ux68GuideStat = (tgt && UX68_GUIDE_STATS.indexOf(tgt) >= 0) ? tgt : "acting";
+  return ux68GuideStat;
+}
+function train71CanPick(ctx){
+  if(ctx === "fill") return true;
+  return !!(typeof S !== "undefined" && S && S.homeEditable);
+}
+function train71CourseCard(cid, stat, ctx){
+  /* 主修大卡（同 v70 指南卡同版式／四格／徽章）：動作改排程向——排入掣取代部份前往掣 */
   const SL = (typeof STAT_LABEL !== "undefined" && STAT_LABEL) || {};
   const g = ux68ParseGainTable()[cid] || {};
   const def = ((typeof COURSE_DEFS !== "undefined" && COURSE_DEFS) || {})[cid] || {};
@@ -24958,19 +25003,23 @@ function book70CourseCard(cid, stat){
     locLine = '<div class="t70-loc">地點：' + ux68Esc(ux68LocName(goLoc))
       + (allLocs.length > 1
         ? ' <button type="button" class="t70-locmore" data-tloc="' + cid + '" data-tn="' + allLocs.length + '">（共 ' + allLocs.length + ' 處 ▸）</button>'
-          + '<span class="t70-locall" id="t70-locall-' + cid + '" hidden>' + ux68Esc(allLocs.map(ux68LocName).join("／")) + '</span>'
+          + '<span class="t70-locall" hidden>' + ux68Esc(allLocs.map(ux68LocName).join("／")) + '</span>'
         : "")
       + '</div>';
   }
-  let goBtn = "";
-  if(st.open){
-    if(locs.main.length) goBtn = '<button type="button" class="guide68-go" data-gloc="' + goLoc + '">前往 ' + ux68Esc(ux68LocName(goLoc)) + ' 加練</button>';
+  const picked = (ctx === "day" && typeof planDraft !== "undefined" && planDraft && typeof planSelDay !== "undefined" && planDraft[planSelDay] === cid);
+  let acts = "";
+  if(st.open && train71CanPick(ctx)){
+    acts = '<button type="button" class="train71-pick" data-t71pick="' + cid + '">' + (ctx === "fill" ? "全日排呢堂" : "排入呢一日") + '</button>'
+      + (locs.main.length ? '<button type="button" class="guide68-go" data-gloc="' + goLoc + '">前往 ' + ux68Esc(ux68LocName(goLoc)) + ' 加練</button>' : "");
+  } else if(st.open){
+    acts = '<span class="guide68-meta">已開放——編輯行程嗰陣排呢堂。</span>';
   } else if(locs.main.length){
-    goBtn = '<button type="button" class="guide68-go" data-gloc="' + goLoc + '">前往 ' + ux68Esc(ux68LocName(goLoc)) + ' 報名</button>';
+    acts = '<button type="button" class="guide68-go" data-gloc="' + goLoc + '">前往 ' + ux68Esc(ux68LocName(goLoc)) + ' 報名</button>';
   } else if(locs.extra.length){
-    goBtn = '<button type="button" class="guide68-go" data-gloc="' + goLoc + '">前往 ' + ux68Esc(ux68LocName(goLoc)) + ' 報主課</button>';
+    acts = '<button type="button" class="guide68-go" data-gloc="' + goLoc + '">前往 ' + ux68Esc(ux68LocName(goLoc)) + ' 報主課</button>';
   }
-  return '<div class="guide68-row t70-card">'
+  return '<div class="guide68-row t70-card' + (picked ? " picked" : "") + '">'
     + '<div class="t70-top"><span class="guide68-cname">' + ux68Esc((def.icon ? def.icon + " " : "") + (def.name || cid)) + '</span>'
     + '<span class="t70-badge ' + (st.open ? "ok" : (st.badge === "未報名" ? "mid" : "lock")) + '">' + ux68Esc(st.badge) + '</span></div>'
     + '<div class="t70-grid">'
@@ -24982,36 +25031,42 @@ function book70CourseCard(cid, stat){
     + ((others.length || n) ? '<div class="guide68-meta">' + [others.length ? ("附帶：" + ux68Esc(others.join("、"))) : "", n ? ("已練 " + n + " 次") : ""].filter(Boolean).join(" · ") + '</div>' : "")
     + (st.detail ? '<div class="guide68-status ' + (st.open ? "ok" : "lock") + '">' + ux68Esc(st.detail) + '</div>' : "")
     + locLine
-    + goBtn
-    + (st.open && !locs.main.length ? '<div class="guide68-meta">已開放——喺上面行程直接排呢堂。</div>' : "")
+    + (acts ? '<div class="train71-acts">' + acts + '</div>' : "")
     + '</div>';
 }
-function book70CourseMini(cid, stat){
-  /* v20a70 BOOK70 附帶細行：一行過（課名／本數值增益／徽章／前往），唔同主修卡同權重。 */
+function train71CourseMini(cid, stat, ctx){
+  /* 附帶細行（一行過）：已報名出細排入掣，未報名出前往 */
   const SL = (typeof STAT_LABEL !== "undefined" && STAT_LABEL) || {};
   const g = ux68ParseGainTable()[cid] || {};
   const def = ((typeof COURSE_DEFS !== "undefined" && COURSE_DEFS) || {})[cid] || {};
   const st = ux68CourseStatus(cid);
   const goLoc = ux68CourseGoLoc(cid, stat);
-  return '<div class="t70-mini">'
+  const picked = (ctx === "day" && typeof planDraft !== "undefined" && planDraft && typeof planSelDay !== "undefined" && planDraft[planSelDay] === cid);
+  let act = "";
+  if(st.open && train71CanPick(ctx)){
+    act = '<button type="button" class="t70-mgo" data-t71pick="' + cid + '">' + (ctx === "fill" ? "全日排" : "排入") + '</button>';
+  } else if(st.open){
+    act = '<span class="t70-mgain">已開放</span>';
+  } else {
+    act = '<button type="button" class="t70-mgo" data-gloc="' + goLoc + '">前往 ' + ux68Esc(ux68LocName(goLoc)) + '</button>';
+  }
+  return '<div class="t70-mini' + (picked ? " picked" : "") + '">'
     + '<span class="t70-mname">' + ux68Esc((def.icon ? def.icon + " " : "") + (def.name || cid)) + '</span>'
     + '<span class="t70-mgain">' + ux68Esc((SL[stat] || stat) + " " + ux68GainText(g[stat])) + '</span>'
     + '<span class="t70-badge sm ' + (st.open ? "ok" : (st.badge === "未報名" ? "mid" : "lock")) + '">' + ux68Esc(st.badge) + '</span>'
-    + '<button type="button" class="t70-mgo" data-gloc="' + goLoc + '">前往 ' + ux68Esc(ux68LocName(goLoc)) + '</button>'
+    + act
     + '</div>';
 }
-function renderGuidePane68(){
-  /* v20a70 BOOK70：訓練指南拼入行程頁「訓練」段（#train70-list），唔再係獨立手帳頁。
-     數據衍生來源同 v68/v69 不變（增益解析／TRAIN_BY_TYPE／COURSE_ENROLL_EXTRA／
-     ux68UnlockRule 鏡像）；呈現改主次分家＋卡面瘦身（見 book70CourseCard）。 */
-  const el = document.getElementById("train70-list");
-  if(!el) return;
+function train71PickerHtml(ctx){
   const SL = (typeof STAT_LABEL !== "undefined" && STAT_LABEL) || {};
   const tgt = ux68TargetStat();
-  if(!ux68GuideStat || UX68_GUIDE_STATS.indexOf(ux68GuideStat) < 0)
-    ux68GuideStat = (tgt && UX68_GUIDE_STATS.indexOf(tgt) >= 0) ? tgt : "acting";
-  const stat = ux68GuideStat;
-  let h = '<p class="guide68-intro">排行程嗰陣順手查：想練邊個數值就撳邊個——課程、增益同開放條件全部跟返遊戲本身設定。設咗<b>主攻目標</b>之後，去到地點，相關選項會多個 ▲ 標示。</p>';
+  const stat = train71Stat();
+  const editable = !!(typeof S !== "undefined" && S && S.homeEditable);
+  let h = '<p class="guide68-intro">' + (ctx === "fill"
+    ? "揀一堂填滿所有可改日子：先揀想練嘅數值，再揀課程。已報名嘅先排得入；未報名／未開放嘅會寫明去邊度報名。"
+    : (editable
+      ? "為呢一日揀訓練：先揀想練嘅數值，再揀課程。已報名嘅先排得入；未報名／未開放嘅會寫明去邊度報名。"
+      : "各數值嘅課程同開放狀態——開編輯行程嗰陣先排到訓練。")) + '</p>';
   h += '<div class="guide68-chips">' + UX68_GUIDE_STATS.map(k=>{
     const v = (typeof S !== "undefined" && S) ? (Number(S[k]) || 0) : 0;
     return '<button type="button" class="guide68-chip' + (k === stat ? " on" : "") + '" data-gstat="' + k + '">'
@@ -25029,7 +25084,7 @@ function renderGuidePane68(){
     let restLoc = "tvb_longmen";
     try{ const p = preferredLocForTrainTarget("stress", "rest"); if(p && p.locId) restLoc = p.locId; }catch(_e){}
     h += '<div class="guide68-row"><div class="guide68-cname">壓力靠休息減</div>'
-      + '<div class="guide68-meta">全日休息一日＝壓力清空歸零（喺上面行程排「休息」）；各大片場／台／唱片公司／廣告公司嘅「休息室歇陣」都減到壓。谷得太盡會病倒，病倒嗰幾日行程作廢——見壓高就唞。</div>'
+      + '<div class="guide68-meta">全日休息一日＝壓力清空歸零（喺行程排「休息」）；各大片場／台／唱片公司／廣告公司嘅「休息室歇陣」都減到壓。谷得太盡會病倒，病倒嗰幾日行程作廢——見壓高就唞。</div>'
       + '<button type="button" class="guide68-go" data-gloc="' + restLoc + '">前往 ' + ux68Esc(ux68LocName(restLoc)) + '</button></div>';
   } else {
     const split = book70SplitForStat(stat);
@@ -25038,18 +25093,97 @@ function renderGuidePane68(){
     }
     if(split.prim.length){
       h += '<p class="t70-group">主修 · 主升' + ux68Esc(SL[stat] || stat) + '</p>';
-      split.prim.forEach(cid=>{ h += book70CourseCard(cid, stat); });
+      split.prim.forEach(cid=>{ h += train71CourseCard(cid, stat, ctx); });
     }
     if(split.sec.length){
       h += '<button type="button" class="t70-subtoggle" data-tsub="1" aria-expanded="false">附帶幫到（' + split.sec.length + '）▸</button>'
-        + '<div class="t70-subbody" hidden>' + split.sec.map(cid=> book70CourseMini(cid, stat)).join("") + '</div>';
+        + '<div class="t70-subbody" hidden>' + split.sec.map(cid=> train71CourseMini(cid, stat, ctx)).join("") + '</div>';
     }
     h += '<p class="guide68-note">增益係每堂名義範圍；實際到手會按你而家嘅數值遞減（越練越難升，係行內規矩）。堂數累計夠數會自動開放進階課同附帶課。</p>';
   }
-  el.innerHTML = h;
-  const hint = document.getElementById("train70-hint");
-  if(hint) hint.textContent = tgt ? ("主攻目標：" + (SL[tgt] || tgt)) : "";
+  return h;
 }
+function train71RenderPanel(){
+  const host = document.getElementById("train71-picker");
+  if(host) host.innerHTML = train71PickerHtml("fill");
+}
+function train71TogglePanel(force){
+  const wrap = document.getElementById("nb-train71-wrap");
+  if(!wrap) return false;
+  const open = force != null ? !!force : !!wrap.hidden;
+  if(open) train71RenderPanel();
+  wrap.hidden = !open;
+  return open;
+}
+function train71HandleClick(ev, ctx){
+  const t = ev.target;
+  if(!t || !t.closest) return false;
+  const pick = t.closest("[data-t71pick]");
+  if(pick){
+    const cid = pick.getAttribute("data-t71pick") || "";
+    if(!cid) return true;
+    if(ctx === "fill"){
+      const def = ((typeof COURSE_DEFS !== "undefined" && COURSE_DEFS) || {})[cid] || {};
+      applyActToUnlocked(cid, "已填全日訓練（" + (def.name || cid) + "），可還原");
+      train71TogglePanel(false);
+    } else {
+      if(typeof planDraft === "undefined" || !planDraft || typeof planSelDay === "undefined") return true;
+      if(!(typeof S !== "undefined" && S && S.homeEditable)) return true;
+      if(typeof dayPlanLocked === "function" && dayPlanLocked(planDraft[planSelDay])){ toast("拍攝日檔期已定"); return true; }
+      planDraft[planSelDay] = cid;
+      renderNotebook();
+    }
+    return true;
+  }
+  const chip = t.closest("[data-gstat]");
+  if(chip){
+    ux68GuideStat = chip.getAttribute("data-gstat") || "acting";
+    if(ctx === "fill") train71RenderPanel(); else renderNotebook();
+    return true;
+  }
+  const tg = t.closest("[data-gtgt]");
+  if(tg){
+    const s = tg.getAttribute("data-gtgt") || "";
+    ux68SetTargetStat(ux68TargetStat() === s ? "" : s);
+    if(ctx === "fill") train71RenderPanel(); else renderNotebook();
+    return true;
+  }
+  const lm = t.closest("[data-tloc]");
+  if(lm){
+    const box = lm.parentElement ? lm.parentElement.querySelector(".t70-locall") : null;
+    if(box){
+      box.hidden = !box.hidden;
+      lm.textContent = "（共 " + (lm.getAttribute("data-tn") || "") + " 處 " + (box.hidden ? "▸" : "▾") + "）";
+    }
+    return true;
+  }
+  const sub = t.closest("[data-tsub]");
+  if(sub){
+    const body = sub.nextElementSibling;
+    if(body){
+      body.hidden = !body.hidden;
+      sub.setAttribute("aria-expanded", body.hidden ? "false" : "true");
+      sub.textContent = sub.textContent.replace(body.hidden ? "▾" : "▸", body.hidden ? "▸" : "▾");
+    }
+    return true;
+  }
+  const go = t.closest("[data-gloc]");
+  if(go){ ux68GoLoc(go.getAttribute("data-gloc") || ""); return true; }
+  return false;
+}
+(function train71WirePicker(){
+  if(typeof document === "undefined" || !document.getElementById) return;
+  const wrap = document.getElementById("nb-train71-wrap");
+  if(wrap && !wrap._t71Wired){
+    wrap._t71Wired = 1;
+    wrap.addEventListener("click", ev=>{ train71HandleClick(ev, "fill"); });
+  }
+  const list = document.getElementById("act-list");
+  if(list && !list._t71Wired){
+    list._t71Wired = 1;
+    list.addEventListener("click", ev=>{ if(typeof planCat !== "undefined" && planCat === "train") train71HandleClick(ev, "day"); });
+  }
+})();
 
 function ux68GoLoc(locId){
   /* v20a70 BOOK70：改用恆常出口嘅純返地圖——舊 leaveHomeFromNotebook("map") 喺
@@ -25059,47 +25193,7 @@ function ux68GoLoc(locId){
   if(locId) setTimeout(()=>{ try{ openLoc(locId); }catch(_e){} }, 60);
 }
 
-(function ux68WireGuide(){
-  if(typeof document === "undefined" || !document.getElementById) return;
-  const el = document.getElementById("train70-list");
-  if(el && !el._ux68Wired){
-    el._ux68Wired = 1;
-    el.addEventListener("click", ev=>{
-      const t = ev.target;
-      if(!t || !t.closest) return;
-      const chip = t.closest("[data-gstat]");
-      if(chip){ ux68GuideStat = chip.getAttribute("data-gstat") || "acting"; renderGuidePane68(); return; }
-      const tg = t.closest("[data-gtgt]");
-      if(tg){ const s = tg.getAttribute("data-gtgt") || ""; ux68SetTargetStat(ux68TargetStat() === s ? "" : s); renderGuidePane68(); return; }
-      const lm = t.closest("[data-tloc]");
-      if(lm){
-        const box = document.getElementById("t70-locall-" + lm.getAttribute("data-tloc"));
-        if(box){
-          box.hidden = !box.hidden;
-          lm.textContent = "（共 " + (lm.getAttribute("data-tn") || "") + " 處 " + (box.hidden ? "▸" : "▾") + "）";
-        }
-        return;
-      }
-      const sub = t.closest("[data-tsub]");
-      if(sub){
-        const body = sub.nextElementSibling;
-        if(body){
-          body.hidden = !body.hidden;
-          sub.setAttribute("aria-expanded", body.hidden ? "false" : "true");
-          sub.textContent = sub.textContent.replace(body.hidden ? "▾" : "▸", body.hidden ? "▸" : "▾");
-        }
-        return;
-      }
-      const go = t.closest("[data-gloc]");
-      if(go){ ux68GoLoc(go.getAttribute("data-gloc") || ""); }
-    });
-  }
-  const tog = document.getElementById("train70-toggle");
-  if(tog && !tog._book70Wired){
-    tog._book70Wired = 1;
-    tog.addEventListener("click", ()=>{ try{ book70OpenTrainSection(); }catch(_e){} });
-  }
-})();
+
 
 /* ---------- (2a) 地點選項分類（覆蓋現有全部掣型） ---------- */
 function ux68ClassifyAct(btn){
@@ -29302,19 +29396,15 @@ function quickFillRest(){
 }
 function quickFillTrain(){
   if(!S.homeEditable) return;
+  /* v20a71 PART3B：唔再自動用第一個課程填滿——開訓練選擇器畀玩家揀
+     （按數值清單，同逐日改行程嘅訓練分類同一套，見 train71PickerHtml）。
+     冇已報名課程嗰陣照開：卡面會寫明狀態＋去邊度報名，唔靜默失敗。 */
+  try{ toggleCopyPanel(false); }catch(_e){}
   const items=enrolledTrainItems();
-  if(!items.length){
-    modal(`<h3>未報名訓練</h3><p>手帳未有可排訓練。去地圖公司報名課程先。</p>`,[
-      {label:"去可報名公司", role:"p", on:()=>goEnrollableCompany()},
-      {label:"先算", role:"g"}
-    ]);
-    return;
+  const opened=train71TogglePanel();
+  if(opened && !items.length){
+    toast("未報名任何課程——喺清單睇邊度報名，報咗先排得入");
   }
-  const first=items[0];
-  modal(`<h3>全日訓練</h3><p>可改日子會全部改成「${first.name}」。拍攝／檔期已定之日不變。之後仍可用「還原」。</p>`,[
-    {label:"確認填入", role:"p", on:()=>{ applyActToUnlocked(first.id, `已填全日訓練（${first.name}），可還原`); }},
-    {label:"取消", role:"g"}
-  ]);
 }
 function quickClearWeek(){
   if(!S.homeEditable) return;
@@ -29455,14 +29545,14 @@ function renderNotebook(){
     ? `編輯 · 週${weekdayName(planSelDay)}`
     : `行程 · 週${weekdayName(planSelDay)}（唯讀）`;
   const selLocked=dayPlanLocked(planDraft[planSelDay]);
-  let items = planCat==="work" ? workItems() : (planCat==="train" ? enrolledTrainItems() : (PLAN_ITEMS[planCat]||[]));
-  if(planCat==="work" && !items.length){
+  let items = planCat==="work" ? workItems() : (PLAN_ITEMS[planCat]||[]);
+  if(planCat==="train"){
+    /* v20a71 PART3B：訓練分類改出按數值課程選擇器（同「全日訓練」同一套清單，
+       唔再係已報名課程平列）。已報名先排得入呢一日；未報名／未開放出狀態＋
+       去邊報名。點擊由 #act-list 上嘅 train71 委派處理（train71HandleClick）。 */
+    list.innerHTML = '<div class="train71-host">' + ((typeof train71PickerHtml === "function") ? train71PickerHtml("day") : "") + '</div>';
+  } else if(planCat==="work" && !items.length){
     list.innerHTML=`<div class="act-empty">未有待試鏡通告。<br>去地圖通告欄揀通告；達標後可接通告。</div>`;
-  } else if(planCat==="train" && !items.length){
-    list.innerHTML=`<div class="act-empty">未報名任何訓練。<br>去地圖公司報名課程，報名後可排入手帳。</div>
-      <button type="button" class="act-cta" id="btn-goto-enroll">去可報名公司</button>`;
-    const cta=document.getElementById("btn-goto-enroll");
-    if(cta) cta.onclick=()=>goEnrollableCompany();
   } else {
     items.forEach(it=>{
       const b=document.createElement("button");
@@ -29528,13 +29618,23 @@ function renderNotebook(){
   }catch(_q){}
   const hbm=document.getElementById("home-back-map");
   if(hbm){
-    hbm.style.display = editable ? "none" : "inline-block";
+    /* v20a71 PART3A：「返回地圖」去重（用戶 13:30 實玩截圖：行程頁同時有兩粒）。
+       一畫面只准一粒「返回地圖」＝恆常出口 #home-back-map-tabs；本掣只喺有日子
+       狀態工作（強制日「繼續行程」／soft 日「開始今日行程」）嗰陣先出現，
+       輪到佢只係顯示「返回地圖」嗰啲狀態（自由日／可編輯）就隱藏，交恆常出口頂上。 */
     try{
       const forced = (!editable && typeof todayIsForcedDay==="function" && todayIsForcedDay());
       const soft = (!editable && !forced && typeof todayHasSoftSchedule==="function" && todayHasSoftSchedule());
-      hbm.textContent = forced ? "繼續行程" : (soft ? "開始今日行程" : "返回地圖");
-      hbm.setAttribute("data-mode", forced ? "continue" : (soft ? "start-today" : "map"));
-    }catch(_e){ hbm.textContent = "返回地圖"; }
+      if(forced || soft){
+        hbm.style.display = "inline-block";
+        hbm.textContent = forced ? "繼續行程" : "開始今日行程";
+        hbm.setAttribute("data-mode", forced ? "continue" : "start-today");
+      } else {
+        hbm.style.display = "none";
+        hbm.textContent = "返回地圖";
+        hbm.setAttribute("data-mode", "map");
+      }
+    }catch(_e){ hbm.style.display = "none"; hbm.textContent = "返回地圖"; hbm.setAttribute("data-mode", "map"); }
   }
   try{ syncHomeTabExit(); }catch(_exit){}
   updateLiveStressStrip();
@@ -29591,79 +29691,12 @@ function enterHome(summary, editable, initialTab){
     const dual = syncDualTracks(S);
     hs.innerHTML = `<span class="hs-i home-money">$ ${(S.money||0).toLocaleString()}</span><span class="hs-i hs-stage"><i class="dual-swatch dual-swatch-stage" aria-hidden="true"></i>幕前聲望 <b id="h-stage-volume">${dual.stageVolume}</b></span><span class="hs-i hs-credit"><i class="dual-swatch dual-swatch-credit" aria-hidden="true"></i>業內信用 <b id="h-industry-credit">${dual.industryCredit}</b></span>`;
   }
-  const card=document.getElementById("home-summary-card");
-  const sum=document.getElementById("home-summary");
-  const chev=document.getElementById("settle-chev");
-  const titleEl=document.getElementById("settle-title");
-  let hasSettle=false;
-  if(summary && summary.html){
-    const wn = Number(summary.weekNum)||0;
-    const curW = (typeof weekNumNow==="function") ? weekNumNow() : wn;
-    if(curW > wn + 1){
-      /* 過咗成週就唔再掛舊結算卡 */
-      card.style.display="none";
-      sum.innerHTML="";
-    } else {
-      card.style.display="block";
-      hasSettle=true;
-      if(titleEl) titleEl.textContent="本週結算";
-      const head = (curW > wn)
-        ? `<p>第 ${wn} 週結算（參考）。而家第 ${curW} 週。</p>`
-        : `<p>第 ${wn} 週剛結束 · 進入第 ${Math.max(curW, wn+1)} 週。</p>`;
-      sum.innerHTML=head+summary.html;
-    }
-  } else {
-    card.style.display="none";
-    sum.innerHTML="";
-  }
-  // Light chapter-open hook when opening planner for a new week
-  if(editable){
-    const chHtml = maybeChapterOpenHtml(weekNumNow());
-    if(chHtml){
-      card.style.display="block";
-      hasSettle=true;
-      if(titleEl && !(summary && summary.html)) titleEl.textContent="本週章節";
-      sum.innerHTML = (sum.innerHTML||"") + chHtml;
-    }
-  }
-  // v17o/v18a: 手帳／週結可見事態（C1 完唔再推開局先練）
-  try{
-    const sh = storyHomeHintHtml();
-    if(sh){
-      card.style.display="block";
-      hasSettle=true;
-      let c1done=false;
-      try{ c1done = typeof StoryOC!=="undefined" && StoryOC.isDone("C1"); }catch(_e){}
-      if(titleEl && !(summary && summary.html)){
-        const onlyChapter = !!(sum.innerHTML||"").trim();
-        if(!onlyChapter) titleEl.textContent = c1done ? "劇情" : "劇情";
-        /* 若已有「本週章節」且 C1 已完：保持章節標題，事態作附註 */
-        if(onlyChapter && titleEl.textContent==="本週章節" && c1done){
-          /* keep 本週章節；下面附事態／鎖因，唔改返「開局可先播」 */
-        } else if(!onlyChapter){
-          titleEl.textContent="劇情";
-        }
-      }
-      sum.innerHTML = (sum.innerHTML||"") + sh;
-    }
-  }catch(_e){}
-  // v17h: collapse settle so 7 days + editor fit above fold (default collapsed while editing)
-  if(hasSettle){
-    const preferOpen = !editable && !!(summary && summary.html) && !(S.flags && S.flags.settleSeen);
-    card.classList.toggle("collapsed", !preferOpen);
-    if(chev) chev.textContent = preferOpen ? "▲ 收起" : "▼ 展開";
-    const tog=document.getElementById("settle-toggle");
-    if(tog){
-      tog.setAttribute("aria-expanded", preferOpen?"true":"false");
-      tog.onclick=()=>{
-        const open=card.classList.contains("collapsed");
-        card.classList.toggle("collapsed", !open);
-        chev.textContent = open ? "▲ 收起" : "▼ 展開";
-        tog.setAttribute("aria-expanded", open?"true":"false");
-      };
-    }
-    if(summary && summary.html){ S.flags=S.flags||{}; S.flags.settleSeen=true; }
-  }
+  /* v20a71 PART3C：「本週結算」摺疊卡成段移除（用戶 13:33：資訊太多）——
+     enterHome 唔再填充任何卡面內容：summary（週結算）只喺結算流程 modal 出完就算，
+     唔再喺行程頁重掛。連帶寄居喺同一張卡嘅「本週章節」開場 hook（maybeChapterOpenHtml）
+     同「劇情」提示（storyHomeHintHtml）一併停用——兩者去向／替代見 NOTES_V20A71
+     同 PROGRESS71 報告 3C 節（劇情進度改由地圖提示行＋手帳「進度」頁承載）。
+     summary 引數保留（呼叫方簽名不變），本函數唔再用佢做展示。 */
   ensureMockJournal();
   /* v20a61 CONSEQ61-1：週結判咗強制收場（評核唔過／寬限期滿）→ 結算卡出完之後呈現結局全套 */
   try{
@@ -30696,7 +30729,14 @@ function storyMainProgressLine(){
       if(openMain){
         const n = Number(String(openMain.id).replace(/^C/,""))||0;
         const t = (typeof STORY_TITLE_SOFT!=="undefined" && STORY_TITLE_SOFT[openMain.id]) || openMain.title || openMain.id;
-        return n ? (`可播第${n}幕 · ${t}`) : `可播 · ${t}`;
+        /* v20a71 PROGRESS71：已開放分支改完整句＋講明去邊觸發（舊「可播第N幕 · 標題」係標籤唔係句子） */
+        let openLocName = "";
+        try{
+          const L = (typeof LOCS!=="undefined" && openMain.locId) ? LOCS.find(l=>l.id===openMain.locId) : null;
+          openLocName = (L && L.name) || "";
+        }catch(_e){}
+        const openHead = n ? (`第 ${n} 幕〈${t}〉已經開咗`) : (`〈${t}〉已經開咗`);
+        return openLocName ? (openHead+`，去${openLocName}就會觸發。`) : (openHead+"。");
       }
       return "";
     }
@@ -30724,32 +30764,68 @@ function storyMainProgressLine(){
       }catch(_e){ gigHave = 0; }
       gigNeed = (id==="C2") ? 3 : 0;
     }
-    const head = [];
-    if(actN) head.push(`第${actN}幕即將`);
-    else head.push(`下一幕即將`);
-    if(title && actN) head.push(title);
-    /* Soft：優先列具體未達項（去掉已打勾「通告 x／y✓」純進度可另附） */
-    /* v20a37 驗證修復（應修 7）：進度行補「開咗去邊度播」（target 真地點）——
-       remain 已有地點字眼（例 v20a34 嘅「到X播」）就唔重複加。 */
-    const locBit37 = (()=>{
+    /* v20a71 PROGRESS71：組句全面改版（判定／數據來源冇改，只改組句）。
+       舊制用「 · 」串碎片——無謂語嘅幕數頭＋標題＋通告數＋「去邊度播」嗰截尾，
+       玩家實玩評文法怪（「播」本意係去嗰度觸發呢幕，字面讀成去電視台播嘢）。
+       新制一律完整句子：未開——仲差邊啲（差額子句，最多三項；完整清單喺
+       手帳「進度」頁）。目標句式（用戶已審）：「下一幕第 2 幕〈留人脈／趕通告〉
+       未開——通告仲差 3 張（而家 0／3）。開咗之後，去星河電視台就會觸發。」 */
+    const locNameOf71 = (locId)=>{
       try{
-        const nm = target.locId ? (((typeof LOCS!=="undefined" && LOCS.find(l=>l.id===target.locId))||{}).name||"") : "";
-        return nm ? ("開咗去"+nm+"播") : "";
+        const L = (typeof LOCS!=="undefined" && locId) ? LOCS.find(l=>l.id===locId) : null;
+        return (L && L.name) || "";
       }catch(_e){ return ""; }
-    })();
+    };
+    let locName71 = locNameOf71(target.locId);
+    const diffs71 = [];
+    let seasonLine71 = "";
+    let remainLocNames71 = "";
     if(remain && remain.length){
-      const pending = remain.filter(x=>String(x).indexOf("✓")<0);
-      const doneish = remain.filter(x=>String(x).indexOf("✓")>=0);
-      const body = (pending.length ? pending : remain).slice(0,5);
-      if(locBit37 && body.join("").indexOf(locBit37.slice(3,-1))<0) body.push(locBit37);
-      return head.concat(body).join(" · ");
+      remain.forEach(rawItem=>{
+        const s = String(rawItem||"");
+        if(!s) return;
+        if(s==="先完成上一幕"){ if(diffs71.indexOf("要先完成上一幕")<0) diffs71.push("要先完成上一幕"); return; }
+        if(s==="距上一幕再隔一日"){ diffs71.push("要同上一幕隔一日"); return; }
+        if(/^第\d+／\d+週$/.test(s)) return;            /* 週數改用結構化差額子句 */
+        if(/^通告\s*\d+／\d+/.test(s)) return;           /* 通告改用結構化差額子句 */
+        const lm71 = s.match(/^到(.+)播$/);
+        if(lm71){ remainLocNames71 = lm71[1]; return; }  /* 播點收去尾句，唔再做碎片 */
+        if(s.indexOf("未聽聞")===0){ diffs71.push("要先聽到傳聞"+s.slice(3)); return; }
+        if(s.indexOf("要到秋或冬")>=0){ seasonLine71 = s; return; }  /* C5 季節鎖本身係完整句，獨立成句 */
+        if(s==="檔期未到該季"){ diffs71.push("要等到啱嘅季節"); return; }
+        const fm71 = s.match(/^何生人情\s*(\d+)／(\d+)$/);
+        if(fm71){ diffs71.push("何生人情仲差 "+(Number(fm71[2])-Number(fm71[1]))+" 分（而家 "+fm71[1]+"／"+fm71[2]+"）"); return; }
+        if(s.indexOf("或到")>=0){ diffs71.push(s+"（任一達標即可）"); return; }
+        diffs71.push(s.replace("需多於","要多於").replace("（現 ","（而家 "));
+      });
     }
-    const bits = head.slice();
-    if(gigNeed>0) bits.push(`通告 ${Math.min(gigHave,gigNeed)}／${gigNeed}`);
-    else if(gigHave>0) bits.push(`通告 ${gigHave}`);
-    if(weekMin>0 && week!=null && week < weekMin) bits.push(`第${week}／${weekMin}週`);
-    if(locBit37) bits.push(locBit37);
-    return bits.join(" · ");
+    const headDiffs71 = [];
+    if(gigNeed>0 && gigHave!=null && Number(gigHave)<Number(gigNeed)){
+      headDiffs71.push("通告仲差 "+(Number(gigNeed)-Number(gigHave))+" 張（而家 "+Math.min(Number(gigHave),Number(gigNeed))+"／"+gigNeed+"）");
+    }
+    if(weekMin>0 && week!=null && Number(week)<Number(weekMin)){
+      headDiffs71.push("未到第 "+weekMin+" 週（而家第 "+week+" 週）");
+    }
+    const allDiffs71 = headDiffs71.concat(diffs71).slice(0,3);
+    if(!locName71 && remainLocNames71) locName71 = remainLocNames71;
+    const headTxt71 = actN ? ("下一幕第 "+actN+" 幕〈"+title+"〉") : ("下一幕〈"+title+"〉");
+    let out71;
+    let tailUsed71 = false;
+    if(allDiffs71.length){
+      out71 = headTxt71+"未開——"+allDiffs71.join("、")+"。";
+    } else if(remain && locName71){
+      /* 閘數據在手又冇差額：淨返身處播點呢類即時條件 */
+      out71 = headTxt71+"——條件已經夠晒，去"+locName71+"就會觸發。";
+      tailUsed71 = true;
+    } else if(remain){
+      out71 = headTxt71+"就快開。";
+      tailUsed71 = true;
+    } else {
+      out71 = headTxt71+"未開。";
+    }
+    if(seasonLine71) out71 += seasonLine71 + (/。$/.test(seasonLine71) ? "" : "。");
+    if(!tailUsed71 && locName71) out71 += "開咗之後，去"+locName71+"就會觸發。";
+    return out71;
   }catch(_e){ return ""; }
 }
 function storyMapHintHtml(){
@@ -30774,12 +30850,15 @@ function storyMapHintHtml(){
       label = row.playerHint || row.title || row.id || "";
     }
     if(!label) label = "新節";
-    const progBit = progress ? ` · ${progress}` : "";
-    return `<span class="map-hint-story">有劇情 · ${label}${progBit}</span>`;
+    /* v20a71 PROGRESS71：成行改做掣，撳落去開手帳「進度」頁；下一幕進度句
+       （已改完整句子）改行細字副行，唔再用「 · 」同標題串埋一截。 */
+    const progBit = progress ? `<span class="map-hint-story-remain">${progress}</span>` : "";
+    return `<button type="button" class="map-hint-story map-hint-story-btn" data-prog71="1" title="撳入睇主線進度">有劇情 · ${label}${progBit}</button>`;
   }
   /* v19z20：無開放事態時仍常駐下一幕進度，避免「斷崖消失」 */
   if(progress){
-    return `<span class="map-hint-story">${progress}</span>`;
+    /* v20a71 PROGRESS71：同上，撳得入「進度」頁 */
+    return `<button type="button" class="map-hint-story map-hint-story-btn" data-prog71="1" title="撳入睇主線進度">${progress}</button>`;
   }
   if(fault && fault.kind==="pending"){
     return `<span class="map-hint-story">劇情內容載入中，請稍候。</span>`;
@@ -33767,9 +33846,9 @@ function playPushDoor(){
    一級只顯示五大類（行程／事業／近況／消息／人情）；子頁 id 同 pane 全部不變，
    分組只係導航層；組內記住上次開嗰個子頁（session 內）。恆常出口：唔再跟行程掣
    嘅顯示／標籤走（舊制根因見 syncHomeTabExit 註解）。 */
-const BOOK70_TAB_GROUP = { plan:"plan", works:"career", awards:"career", memory:"career", ledger:"status", tags:"status", rumor:"news", clippings:"news", debt:"favor" };
+const BOOK70_TAB_GROUP = { plan:"plan", train:"plan", progress:"plan", works:"career", awards:"career", memory:"career", ledger:"status", tags:"status", rumor:"news", clippings:"news", debt:"favor" };
 const BOOK70_GROUP_FIRST = { plan:"plan", career:"works", status:"ledger", news:"rumor", favor:"debt" };
-const book70GroupSub = { career:"works", status:"ledger", news:"rumor" };
+const book70GroupSub = { plan:"plan", career:"works", status:"ledger", news:"rumor" };
 function book70SyncTabGroups(tab){
   const grp = BOOK70_TAB_GROUP[tab] || "plan";
   if(book70GroupSub[grp]) book70GroupSub[grp] = tab;
@@ -33790,17 +33869,6 @@ function book70SyncTabGroups(tab){
     b.setAttribute("aria-selected", on ? "true" : "false");
   });
 }
-function book70OpenTrainSection(force){
-  const body = document.getElementById("train70-body");
-  const tog = document.getElementById("train70-toggle");
-  const chev = document.getElementById("train70-chev");
-  if(!body) return;
-  const open = (force === true) ? true : !!body.hidden;
-  body.hidden = !open;
-  if(tog) tog.setAttribute("aria-expanded", open ? "true" : "false");
-  if(chev) chev.textContent = open ? "▲ 收起" : "▼ 展開";
-  if(open){ try{ renderGuidePane68(); }catch(_e){} }
-}
 function book70ExitHome(){
   /* 恆常出口：純粹返地圖——唔觸發強制日 kick、唔開始今日行程。
      日子狀態動作（繼續行程／開始今日行程）留返行程頁 #home-back-map 自己嗰粒掣。 */
@@ -33810,21 +33878,23 @@ function book70ExitHome(){
 }
 function setHomeTab(tab){
   /* v20a70 BOOK70：tab 參數仍係子頁 id（全部既有呼叫不變），分組顯示交
-     book70SyncTabGroups；「guide」係 v68 舊頁，已拼入行程頁訓練段——
-     舊呼叫改落 plan 並展開訓練段，唔留死連結。 */
-  if(tab === "guide"){ tab = "plan"; try{ book70OpenTrainSection(true); }catch(_e){} }
-  const allow={ plan:1, ledger:1, rumor:1, clippings:1, debt:1, tags:1, works:1, awards:1, memory:1 }; /* v20a60 CALIB60-3：加「回憶」頁；v20a62 AWARDS62-7：加「獎項」頁；v20a68 曾加「訓練指南」guide，v20a70 拼入行程頁後移除 */
+     book70SyncTabGroups。
+     v20a71 PROGRESS71：加「進度」progress 子頁（行程組）。
+     v20a71 PART3B：guide／train 舊入口只去 plan——v68 指南頁 v70 拼入行程頁
+     訓練段，v71 訓練段成段移除、訓練改入排程選擇器，唔留指向已刪段落嘅邏輯。 */
+  if(tab === "guide" || tab === "train"){ tab = "plan"; }
+  const allow={ plan:1, ledger:1, rumor:1, clippings:1, debt:1, tags:1, works:1, awards:1, memory:1, progress:1 }; /* v20a60 CALIB60-3：加「回憶」頁；v20a62 AWARDS62-7：加「獎項」頁；v20a71 PROGRESS71：加「進度」頁 */
   if(tab==="tags" && typeof freeplayDevTagsOn==="function" && !freeplayDevTagsOn()) tab="plan";
   if(!allow[tab]) tab="plan";
   applyPhase2Steps56TabLabel();
   try{ book70SyncTabGroups(tab); }catch(_grp){}
-  ["plan","ledger","rumor","clippings","debt","tags","works","awards","memory"].forEach(id=>{
+  ["plan","ledger","rumor","clippings","debt","tags","works","awards","memory","progress"].forEach(id=>{
     const pane=document.getElementById("home-pane-"+id);
     if(pane) pane.classList.toggle("on", id===tab);
   });
   ensureWeakSeals();
-  if(tab==="plan"){
-    try{ renderGuidePane68(); }catch(_e){}
+  if(tab==="progress"){
+    try{ renderProgressPane71(); }catch(_e){}
   }
   if(tab==="ledger"){
     try{ renderLedgerPane(); }catch(_e){}
@@ -33853,7 +33923,7 @@ function setHomeTab(tab){
 }
 
 function syncHomeTabExit(tab){
-  /* v20a70 BOOK70：手帳恆常出口——任何大類／子頁／日子狀態都顯示，標籤恆定「返回地圖」。
+/* v20a70 BOOK70：手帳恆常出口——任何大類／子頁／日子狀態都顯示，標籤恆定「返回地圖」。
      舊制（v19z 共用掣）根因：journal 頁出口要 #home-back-map 可見（srcShown）先出；
      排程可編輯嗰陣 #home-back-map 隱藏 → 成個手帳冇任何出口；強制／soft 日出口仲會
      跟住改名「繼續行程／開始今日行程」，撳落去唔係返地圖，玩家覺得冇掣走。 */
@@ -33863,6 +33933,198 @@ function syncHomeTabExit(tab){
   exit.hidden = false;
   btn.textContent = "返回地圖";
   btn.setAttribute("data-mode", "map");
+}
+
+/* ===== v20a71 PROGRESS71：手帳「進度」子頁（行程組）——主線收集冊 =====
+   用戶 2026-11-10 12:46 拍板：要一頁逐個 item 標示有咩條件要達成（現代收集
+   遊戲式）。頁名「進度」（唔叫主線——同「劇情」掣太似，12:50 拍板）。
+   條件只用結構化數據，唔抄 pack 散文 hint：
+   ・前置完成旗 StoryOC.isDone；C6–C17 用 STORY_GATE_3Y 逐項判定
+     （BehaviorGate.evalGate3Y 嘅 and checks，同 evalNode 實際開閘同一來源）；
+   ・C1–C5 用 BehaviorGate.progressToward（remain／gigHave／gigNeed／week／weekMin）；
+   ・節點時窗 CALIB60_NODE_WINDOWS（合併 year／season 項嘅標籤＋錯過登記）；
+   ・觸發地點 storyNodeLocId → LOCS 地點名。
+   防劇透：最近兩幕未開放先列足逐項條件；再遠嘅只出「第 N 幕」，唔出標題／條件。
+   已完成／已開放／已錯過（calib60Missed 登記）唔受防劇透限。 */
+function prog71Esc(s){
+  if(typeof esc59 === "function") return esc59(s);
+  return String(s == null ? "" : s);
+}
+function prog71Title(id){
+  try{
+    if(typeof STORY_TITLE_SOFT !== "undefined" && STORY_TITLE_SOFT[id]) return String(STORY_TITLE_SOFT[id]);
+  }catch(_e){}
+  try{
+    if(typeof calib60NodeTitle === "function"){ const t = calib60NodeTitle(id); if(t && t !== id) return String(t); }
+  }catch(_e){}
+  return String(id || "");
+}
+function prog71LocName(id){
+  try{
+    const node = (typeof StoryOC !== "undefined" && StoryOC.findNodeRaw) ? StoryOC.findNodeRaw(id) : null;
+    const locId = (typeof storyNodeLocId === "function") ? storyNodeLocId(node || { id:id }) : (node && node.locId) || null;
+    const L = (typeof LOCS !== "undefined" && locId) ? LOCS.find(l=>l.id===locId) : null;
+    return (L && L.name) || "";
+  }catch(_e){ return ""; }
+}
+function prog71GateItems(id){
+  /* C6–C17：STORY_GATE_3Y 逐項判定（evalGate3Y 全部 checks，唔會首敗即停） */
+  let ev = null;
+  try{
+    if(typeof BehaviorGate === "undefined" || !BehaviorGate.evalGate3Y) return null;
+    ev = BehaviorGate.evalGate3Y(id);
+  }catch(_e){ return null; }
+  if(!ev || !Array.isArray(ev.and) || !ev.and.length) return null;
+  const wk = Math.floor((Number((typeof S!=="undefined" && S && S.dayIndex) || 0))/7)+1;
+  const fame = Number((typeof S!=="undefined" && S && S.fame) || 0);
+  let credit = Number((typeof S!=="undefined" && S && S.industryCredit) || 0);
+  try{ const d = syncDualTracks(S); if(d && typeof d.industryCredit === "number") credit = d.industryCredit; }catch(_e){}
+  const items = [];
+  let winHas = false, winOk = true;
+  ev.and.forEach(c=>{
+    const tok = String((c && c.token) || "");
+    const ok = !!(c && c.ok);
+    if(tok.indexOf("needDone:")===0){
+      const d = tok.slice(9);
+      const dn = Number(d.replace(/^C/,""))||0;
+      items.push({ ok:ok, text:"先完成第 "+dn+" 幕〈"+prog71Title(d)+"〉" });
+      return;
+    }
+    if(tok.indexOf("route:")===0){ items.push({ ok:ok, text:"行電視線" }); return; }
+    if(tok.indexOf("weekMin:")===0){ items.push({ ok:ok, text:"到第 "+(Number(tok.slice(8))||0)+" 週（而家第 "+wk+" 週）" }); return; }
+    if(tok.indexOf("fameGt:")===0){ items.push({ ok:ok, text:"聲望多於 "+(Number(tok.slice(7))||0)+"（而家 "+fame+"）" }); return; }
+    if(tok.indexOf("creditGt:")===0){ items.push({ ok:ok, text:"業內信用多於 "+(Number(tok.slice(9))||0)+"（而家 "+credit+"）" }); return; }
+    if(tok.indexOf("dualGt:")===0){ items.push({ ok:ok, text:"聲望＋信用總和多於 "+(Number(tok.slice(7))||0)+"（而家 "+(fame+credit)+"）" }); return; }
+    if(tok.indexOf("tagAny:")===0){
+      const list = tok.slice(7).split("|");
+      const fams = [];
+      if(list.some(x=>/喜劇|tag_comedy/.test(x))) fams.push("喜劇");
+      if(list.some(x=>/動作|tag_action|身手好/.test(x))) fams.push("動作");
+      items.push({ ok:ok, text:"有"+(fams.length ? fams.join("或") : "指定")+"標籤" });
+      return;
+    }
+    if(tok.indexOf("yearEq:")===0 || tok.indexOf("yearMin:")===0 || tok.indexOf("seasonIn:")===0){
+      winHas = true; if(!ok) winOk = false; return;
+    }
+    if(tok.indexOf("days_after_prev:")===0){ items.push({ ok:ok, text:"今日已經播過一幕主線，聽日再嚟" }); return; }
+  });
+  if(winHas){
+    let wl = "";
+    try{ if(typeof CALIB60_NODE_WINDOWS !== "undefined" && CALIB60_NODE_WINDOWS[id]) wl = CALIB60_NODE_WINDOWS[id].whenLabel || ""; }catch(_e){}
+    items.push({ ok:winOk, text:"時窗："+(wl || "指定年份／季節") });
+  }
+  return items;
+}
+function prog71StubItems(id){
+  /* C1–C5：BehaviorGate.progressToward（玩家可讀進度來源，同 hint gate-on 路徑同源） */
+  let p = null;
+  try{
+    if(typeof BehaviorGate === "undefined" || !BehaviorGate.progressToward) return null;
+    p = BehaviorGate.progressToward({ id:id });
+  }catch(_e){ return null; }
+  if(!p || p.done) return null;
+  const items = [];
+  (Array.isArray(p.needDone) ? p.needDone : []).forEach(d=>{
+    let okDone = false;
+    try{ okDone = !!(typeof StoryOC !== "undefined" && StoryOC.isDone && StoryOC.isDone(d)); }catch(_e){}
+    const dn = Number(String(d).replace(/^C/,""))||0;
+    items.push({ ok:okDone, text:"先完成第 "+dn+" 幕〈"+prog71Title(d)+"〉" });
+  });
+  if(Number(p.weekMin)>0){
+    items.push({ ok:Number(p.week)>=Number(p.weekMin), text:"到第 "+p.weekMin+" 週（而家第 "+p.week+" 週）" });
+  }
+  if(Number(p.gigNeed)>0){
+    items.push({ ok:Number(p.gigHave)>=Number(p.gigNeed), text:"接通告 "+Math.min(Number(p.gigHave)||0, Number(p.gigNeed))+"／"+p.gigNeed+" 張" });
+  }
+  (Array.isArray(p.remain) ? p.remain : []).forEach(rawItem=>{
+    const s = String(rawItem||"");
+    if(!s) return;
+    if(s==="先完成上一幕") return;                       /* 前置旗項已列 */
+    if(/^第\d+／\d+週$/.test(s)) return;                 /* 週數項已列 */
+    if(/^通告\s*\d+／\d+/.test(s)) return;                /* 通告項已列 */
+    if(s==="距上一幕再隔一日"){ items.push({ ok:false, text:"同上一幕隔一日" }); return; }
+    const lm = s.match(/^到(.+)播$/);
+    if(lm){ items.push({ ok:false, text:"去"+lm[1]+"先播到呢幕" }); return; }
+    if(s.indexOf("未聽聞")===0){ items.push({ ok:false, text:"聽到傳聞："+s.slice(3) }); return; }
+    if(s.indexOf("要到秋或冬")>=0){ items.push({ ok:false, text:s.replace(/。$/,"") }); return; }
+    if(s==="檔期未到該季"){ items.push({ ok:false, text:"等到啱嘅季節" }); return; }
+    if(s.indexOf("或到")>=0){ items.push({ ok:false, text:"以下任一達標："+s }); return; }
+    items.push({ ok:false, text:s.replace("需多於","要多於").replace("（現 ","（而家 ") });
+  });
+  return items;
+}
+function prog71Rows(){
+  if(typeof StoryOC === "undefined" || !S) return [];
+  StoryOC.ensure();
+  const oc = StoryOC.listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true }) || {};
+  const openSet = {}, doneSet = {};
+  (oc.open||[]).forEach(r=>{ if(r && r.id) openSet[r.id] = r; });
+  (oc.done||[]).forEach(r=>{ if(r && r.id) doneSet[r.id] = r; });
+  const missed = (S && S.calib60Missed) || {};
+  const rows = [];
+  for(let n=1; n<=17; n++){
+    const id = "C"+n;
+    let exists = false;
+    try{ exists = !!(doneSet[id] || openSet[id] || (StoryOC.findNodeRaw && StoryOC.findNodeRaw(id)) || (StoryOC.isDone && StoryOC.isDone(id))); }catch(_e){}
+    if(!exists){ try{ exists = !!(typeof BehaviorGate !== "undefined" && BehaviorGate.gate3YEntry && BehaviorGate.gate3YEntry(id)); }catch(_e){} }
+    if(!exists){ try{ exists = !!(typeof BehaviorGate !== "undefined" && BehaviorGate.coversNode && BehaviorGate.coversNode({ id:id })); }catch(_e){} }
+    if(!exists) continue;
+    let state = "locked";
+    if(doneSet[id] || (StoryOC.isDone && StoryOC.isDone(id))) state = "done";
+    else if(openSet[id]) state = "open";
+    else if(missed[id]) state = "missed";
+    rows.push({ id:id, n:n, state:state, title:prog71Title(id), locName:prog71LocName(id) });
+  }
+  return rows;
+}
+function renderProgressPane71(){
+  const el = document.getElementById("progress-list");
+  if(!el) return;
+  let rows = [];
+  try{ rows = prog71Rows(); }catch(_e){ rows = []; }
+  if(!rows.length){
+    el.innerHTML = '<div class="prog71-empty"><h3>進度</h3><p>主線資料載入中，或者暫時未有主線紀錄。</p></div>';
+    return;
+  }
+  let fullLeft = 2;   /* 最近兩幕未開放先列足逐項條件（防劇透） */
+  const html = ['<div class="prog71-wrap"><h3 class="prog71-h">主線進度</h3><p class="prog71-intro">逐幕列出開放條件同你而家嘅進度：✓ 係已達標，○ 係未達。完成一幕，之後嘅幕會逐漸揭曉。</p>'];
+  rows.forEach(r=>{
+    if(r.state==="done"){
+      html.push('<div class="prog71-row done"><div class="prog71-top"><span class="prog71-act">第 '+r.n+' 幕</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag ok">✓ 已完成</span></div></div>');
+      return;
+    }
+    if(r.state==="open"){
+      html.push('<div class="prog71-row open"><div class="prog71-top"><span class="prog71-act">第 '+r.n+' 幕</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag open">已開放</span></div>'
+        + '<p class="prog71-note">'+(r.locName ? ("去"+prog71Esc(r.locName)+"就會觸發。") : "已經開咗——喺地圖搵「劇」針，或者開劇情列表播。")+'</p></div>');
+      return;
+    }
+    if(r.state==="missed"){
+      let wl = "";
+      try{
+        const rec = (S && S.calib60Missed && S.calib60Missed[r.id]) || {};
+        wl = rec.whenLabel || ((typeof CALIB60_NODE_WINDOWS !== "undefined" && CALIB60_NODE_WINDOWS[r.id]) ? CALIB60_NODE_WINDOWS[r.id].whenLabel : "") || "";
+      }catch(_e){}
+      html.push('<div class="prog71-row missed"><div class="prog71-top"><span class="prog71-act">第 '+r.n+' 幕</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag miss">已錯過</span></div>'
+        + '<p class="prog71-note">時窗係'+prog71Esc(wl || "較早前")+'，已經過咗。嗰段日子嘅紀錄喺「回憶」頁。</p></div>');
+      return;
+    }
+    if(fullLeft>0){
+      fullLeft--;
+      let items = null;
+      try{ items = prog71GateItems(r.id) || prog71StubItems(r.id); }catch(_e){ items = null; }
+      let body;
+      if(items && items.length){
+        body = '<ul class="prog71-items">'+items.map(it=>'<li class="'+(it.ok ? "ok" : "no")+'">'+(it.ok ? "✓ " : "○ ")+prog71Esc(it.text)+'</li>').join("")+'</ul>';
+      } else {
+        body = '<p class="prog71-note">時機未到——先照常跑通告、見人，條件夠就會開。</p>';
+      }
+      html.push('<div class="prog71-row locked"><div class="prog71-top"><span class="prog71-act">第 '+r.n+' 幕</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag lock">未開放</span></div>'+body+'</div>');
+      return;
+    }
+    html.push('<div class="prog71-row far"><div class="prog71-top"><span class="prog71-act">第 '+r.n+' 幕</span><span class="prog71-tag lock">未開放</span></div><p class="prog71-note">完成前面嘅幕之後，呢幕嘅標題同條件會逐項列出。</p></div>');
+  });
+  html.push('</div>');
+  el.innerHTML = html.join("");
 }
 
 function phase2GateFingerprint(){
@@ -42052,6 +42314,19 @@ document.getElementById("home-tabs").onclick=e=>{
   const btn=e.target.closest("button[data-htab]"); if(!btn) return;
   setHomeTab(btn.getAttribute("data-htab"));
 };
+/* v20a71 PROGRESS71：地圖劇情提示行撳得——開手帳行程組「進度」子頁。
+   委派掛喺 #map-hint 本身（paintBar 只換 innerHTML，委派唔受影響）；
+   錯誤／載入中態出嘅係普通 span（冇 data-prog71），撳落去冇反應，唔亂跳。
+   同欄其他掣（即日工作／結束今天）本身已 stopPropagation 兼冇 data-prog71，互不干擾。 */
+try{
+  const _mapHint71 = document.getElementById("map-hint");
+  if(_mapHint71) _mapHint71.addEventListener("click", (e)=>{
+    const b = (e.target && e.target.closest) ? e.target.closest("[data-prog71]") : null;
+    if(!b) return;
+    try{ enterHome(null, false, "progress"); }catch(_e){}
+  });
+}catch(_e){}
+
 const _homeSubtabsEl = document.getElementById("home-subtabs");
 if(_homeSubtabsEl) _homeSubtabsEl.onclick=e=>{
   const btn=e.target.closest("button[data-htab]"); if(!btn) return;
