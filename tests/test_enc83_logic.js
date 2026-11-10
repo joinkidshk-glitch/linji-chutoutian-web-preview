@@ -101,7 +101,8 @@ const P2 = ['ngai_wingnaam','gu_mingfai','lok_gasing','chai_zanhoi'];
 const consts = names.map(n=> asVar(extractConst(n), n)).join('\n')
   + '\n' + P1.map(sid=>{ const cn = (sid==='yip_manji') ? 'yip_manzi' : sid; return asVar(extractDlg('ENC79_DLG_' + cn), 'ENC79_DLG_' + cn) + '\nENC79_DIALOG["' + sid + '"] = ENC79_DLG_' + cn + ';'; }).join('\n')
   + '\n' + P2.map(sid=> asVar(extractDlg('ENC83_DLG_' + sid), 'ENC83_DLG_' + sid) + '\n' + asVar(extractDlg('ENC83_FRAME_' + sid), 'ENC83_FRAME_' + sid)).join('\n');
-const fns = ['ensureFavorDueSettled','enc79StarDef','enc79LocName','enc79Hash','enc79Rand','enc79EnsureStars','enc79StarState','enc79TierOf','enc79PlayerTier','enc79FavCap','enc79AddFav','enc79InWindow','enc79WhisperActive','enc79PresenceP','enc79EnsureDay','enc79PresenceAt','enc79GrantWhisper','enc79GrantFrag','enc79GrantRumorCard','enc79GrantCredit','enc79HasMerged','enc79BoardHasStar','enc79BoardHasActionGig','enc79BeatOpen','enc79AnyBeatOpen','enc79PickBeat','enc79ChoiceFx','enc79RunChoiceFx','enc79NormSeg','enc79StoryPendingAt','enc79TryIntercept','enc79DistanceLook','enc79OnWrap','enc79PaperWhisper','enc79HoTrustLine','enc79HelpAvailable','enc79MockAskBranch','enc79PayTea','enc79TeaListen','enc79HelpClear','enc79AgencyWind','enc79BuildScript'];
+/* v20a87 WF5：chai_repay 改經 enc87StoryFlag 雙 store 讀劇情旗，抽取清單補入（斷言語義不變：S.flags 有旗照開） */
+const fns = ['ensureFavorDueSettled','enc87StoryFlag','enc79StarDef','enc79LocName','enc79Hash','enc79Rand','enc79EnsureStars','enc79StarState','enc79TierOf','enc79PlayerTier','enc79FavCap','enc79AddFav','enc79InWindow','enc79WhisperActive','enc79PresenceP','enc79EnsureDay','enc79PresenceAt','enc79GrantWhisper','enc79GrantFrag','enc79GrantRumorCard','enc79GrantCredit','enc79HasMerged','enc79BoardHasStar','enc79BoardHasActionGig','enc79BeatOpen','enc79AnyBeatOpen','enc79PickBeat','enc79ChoiceFx','enc79RunChoiceFx','enc79NormSeg','enc79StoryPendingAt','enc79TryIntercept','enc79DistanceLook','enc79OnWrap','enc79PaperWhisper','enc79HoTrustLine','enc79HelpAvailable','enc79MockAskBranch','enc79PayTea','enc79TeaListen','enc79HelpClear','enc79AgencyWind','enc79BuildScript'];
 const iMod = html.indexOf('/* ===== v20a83 ENC83：紅星巧遇 Phase 2');
 const iModEnd = html.indexOf('/* ===== ENC83 模組完 ===== */', iMod);
 if(iMod < 0 || iModEnd < 0) throw new Error('ENC83 module not found');
@@ -175,6 +176,10 @@ resetS(103); setFav('chai_zanhoi', 25);
 ok('齊回收閘：未站隊唔開', enc79BeatOpen('chai_zanhoi', beatOf('chai_zanhoi','chai_repay'))===false);
 S.flags.flag_side_tv = 1;
 ok('齊回收閘：站隊旗（flag_side_tv）開', enc79BeatOpen('chai_zanhoi', beatOf('chai_zanhoi','chai_repay'))===true);
+/* v20a87 WF5：真實 play 入面 C14 抉擇旗經 StoryOC 寫入 S.story.flags（唔係 S.flags）——雙 store 都要開 */
+resetS(103); setFav('chai_zanhoi', 25);
+S.story = { flags: { flag_side_film: 1 } };
+ok('齊回收閘：站隊旗喺 story.flags（真 play store）都開', enc79BeatOpen('chai_zanhoi', beatOf('chai_zanhoi','chai_repay'))===true);
 resetS(104); setFav('ngai_wingnaam', 25);
 ok('魏還人情閘：冇大排檔債權唔開', enc79BeatOpen('ngai_wingnaam', beatOf('ngai_wingnaam','ngai_repay'))===false);
 S.mockCredits.push({ id:'credit_enc83_ngai_meal', debtor:'魏詠男' });

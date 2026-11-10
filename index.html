@@ -22682,6 +22682,157 @@ function applyRomanceWf2Overrides81(){
   return applied;
 }
 
+/* ===== v20a87 WF5：soft 變體層文本對齊（WF2 遺留）。
+   soft 行為閘模式下，曉晴／采兒 meet 走 DualMeet 層、成條鄧麗萍線走 DengLine 層——兩層自帶
+   beats 唔經 pack 節點，WF2 廣東話化嗰陣冇掂到，文本停留喺書面語，鄧麗萍收尾仲寫到似可以
+   commit（「跨越商業界線，承諾共同面對未來」），同 WF2 定版嘅半線差一步口徑（紅筆圈格＋
+   改口公事句＋「改咗把尺，佢就唔再係鄧麗萍」）打架。今包喺載入點（loadMock 之前）以覆寫表
+   對齊兩層玩家可見文本：synopsis／beats lines／choice label／notes。
+   硬約束（兩層 selfCheck 釘死，唔准掂）：beat 數同每 beat 行數、speaker 次序、choice id／
+   flags／stats、chromeSeason／playerMeta、openConditions。覆寫只換字，逐 beat 核對 speaker
+   先套用，對唔上就成節點跳過（寧可唔改，唔好改爛結構）。 ===== */
+const WF5_VARIANT_OVERRIDES87 = {
+  R_tang_meet: {
+    synopsis: "阿偉帶住新片計劃入排片部，鄧麗萍開口埋口都係數字——要攞黃金檔，先要過佢嗰條入座率紅線。",
+    beats: [
+      ["鄧麗萍", ["何生推介嗰份計劃，我睇過。劇本係紮實，但院線唔係善堂，我要睇嘅係數字——套戲賣唔賣得，先講得落去。"]],
+      ["院線助理", ["鄧小姐，上季同類型片嘅午夜場入座率表喺呢度，條基準線我標咗出嚟。"]],
+      ["鄧麗萍", ["阿偉，你呢套陣容唔算頂尖，想攞黃金檔，午夜場預估入座率要過到呢條紅線，冇得傾。"]],
+      ["鄧麗萍", ["你今日係帶齊數據嚟，定係想問清楚我哋排片嗰套準則，返去再補？"]]
+    ],
+    choiceText: {
+      C_tang_meet_data: { label: "即刻遞上做足功課嘅市場數據同票房預測", note: "用足數據，爭取佢即場放行。" },
+      C_tang_meet_wait: { label: "先問清楚排片準則，返去補啱數據先嚟", note: "摸清條紅線喺邊，補嘅數據先至入肉。" }
+    }
+  },
+  R_tang_push1: {
+    synopsis: "阿偉同鄧麗萍開始有來往，佢依然句句唔離百分比。兩個人交換試映情報同冷門檔資料，佢第一次主動問阿偉：其他區嘅口碑，走成點。",
+    beats: [
+      ["系統", ["票房中控室，深夜十一點半。各院即時入座數字喺螢幕上面靜靜跳，枱面一疊午夜場報告，仲未拆。"]],
+      ["院線助理", ["鄧小姐，冷門檔嗰邊入座偏軟，午夜場仲有半個鐘開場——縮唔縮場？"]],
+      ["鄧麗萍", ["唔好縮住。我要睇埋試映反應同跨區口碑條線點走，未跌穿警戒線之前，唔好自己亂咗陣腳。"]],
+      ["系統", ["鄧麗萍對眼離開螢幕，望向阿偉——第一次，係佢主動開口問另一區嘅口碑。"]],
+      ["鄧麗萍", ["你嗰邊收到嘅試映情報，同我手上嘅冷門檔資料，可以交換。或者，你用數字話我知，呢套戲值得賭。"]],
+      ["系統", ["中控室靜返落嚟，得返螢幕嘅微光。交換情報，定係用數字證明——等阿偉揀。"]]
+    ],
+    choiceText: {
+      C_tang_push1_exchange: { label: "攞試映情報，換佢手上嘅冷門檔資料" },
+      C_tang_push1_prove: { label: "用跨區入座走勢，證明冷門檔都有回報" }
+    }
+  },
+  R_tang_push2: {
+    synopsis: "黃金檔試水成績出咗，鄧麗萍約阿偉午夜場散場之後對數。佢嗰晚鬆咗少少，講起當年排過一套文藝片，蝕到要寫報告。今晚，阿偉可以繼續齋講商業，或者問佢嗰句私人事。",
+    beats: [
+      ["系統", ["午夜場散場，戲院後巷嗰間茶餐廳仲亮住白光燈。枱面攤住即日票房紙，數字一行行壓喺膠枱布上面。", "隔籬枱有人食緊宵夜，碗筷聲夾住收音機聲，熱鬧到好似唔關呢枱事。"]],
+      ["鄧麗萍", ["黃金檔試水嘅成績，喺呢度。數字唔差，但未算穩。", "午夜場啲觀眾肯坐到最尾，起碼證明呢條線，有人睇。"]],
+      ["鄧麗萍", ["我以前排過一套文藝片，蝕到要寫報告交代。嗰陣，我仲以為自己好懂觀眾。", "到今日我先知，報告寫得幾靚，都唔及一張票房紙咁誠實。"]],
+      ["系統", ["阿偉可以順住張票房紙，繼續講檔期點排；亦可以問佢嗰一句，唔關數字事嘅。", "茶餐廳吊扇慢慢轉，枱面張紙俾風掀起一角，又跌返落嚟。"]],
+      ["鄧麗萍", ["你唔出聲，我大概估到你諗緊咩。", "不過今晚，我想聽你講。"]],
+      ["系統", ["隔籬枱嘅宵夜聲照舊，伙記照舊嗌單。", "得返呢一枱，忽然靜晒。"]]
+    ],
+    choiceText: {
+      C_tang_push2_business: { label: "將票房紙推返去佢面前，齋講檔期同排片" },
+      C_tang_push2_private: { label: "問佢：當年寫嗰份報告嗰陣，最難過嘅係邊一忽" }
+    }
+  },
+  R_tang_crisis: {
+    synopsis: "對手片出高價搶黃金檔，阿偉手上偏偏有套講人情、講手藝嘅片想排同一個位。鄧麗萍要佢喺數據同人情之間揀——佢自己，一樣俾上頭壓住要交數。",
+    beats: [
+      ["系統", ["會議室啱啱散會，對手片發行商留低嗰兩份建議書，仲攤喺枱面。牆上張排片表，紅筆畫到密密麻麻，刺眼到唔使望第二次。"]],
+      ["鄧麗萍", ["對手片出高價搶黃金檔，上頭要我今個禮拜交數。", "兩份建議書擺晒喺度，數字點寫，你自己睇到。"]],
+      ["系統", ["阿偉手上嗰套片，講人情，講手藝，想排嘅，偏偏係同一個黃金檔。"]],
+      ["鄧麗萍", ["計數據，對手片穩陣，回本機會高，呢個我唔會呃你。", "但你嗰套，贏在口碑長尾，唔係一時三刻計得晒。"]],
+      ["鄧麗萍", ["數據、人情，定係折衷——你自己揀一條路。", "我唔會幫你揀，但揀完之後嗰啲後果，你要自己孭。"]],
+      ["系統", ["成間房靜晒。鄧麗萍對眼落返排片表上面，等阿偉出聲。"]]
+    ],
+    choiceText: {
+      C_tang_crisis_data: { label: "跟數據行：票房行先" },
+      C_tang_crisis_favor: { label: "保人情：套片我撐，風險我孭" },
+      C_tang_crisis_middle: { label: "攞折衷：兩邊各讓一步" }
+    }
+  },
+  R_tang_ending: {
+    /* 同 WF2 定版 R_tang_ending 咬合：紅筆圈格＋嗰句吞返＋改口公事句＋金句＋choiceText 逐字對齊 */
+    synopsis: "年終檢討之後，鄧麗萍喺走廊叫住阿偉，將下年嘅黃金檔排片表推畀佢睇——表上面有一格，畀佢用紅筆圈住。嗰句最接近真心嘅說話，佢講到嘴邊，最後改返做公事口吻；兩個人企返喺張排片表嘅兩邊，嗰一步，邊個都冇行。",
+    beats: [
+      ["系統", ["年終檢討會散咗，走廊盞燈半暗，盡頭嗰間未開場嘅空戲院，銀幕仲未拉開。", "鄧麗萍抱住一疊報表行喺後面，喺戲院門口嗰段路，開聲叫住阿偉。"]],
+      ["鄧麗萍", ["全年計，你呢套戲為我哋呢條線帶嚟百分之七嘅整體增長，午夜場平均上座率五成九。呢個數字，我認。", "我由第一日到今日，都用同一把尺量你。你唔止過咗把尺，仲令我諗過——改把尺。"]],
+      ["系統", ["佢將夾喺報表最底嗰張下年黃金檔排片表抽出嚟，攤開，推到阿偉面前——有一格，畀佢用紅筆圈住，圈得好用力，筆痕透到紙背。", "嗰一格，唔係成版表入面數據最好嗰格。佢望住個紅圈，有句說話去到嘴邊——呢格，係我畀你嘅——嗰一秒靜到聽到空戲院啲座椅輕輕響咗一聲，佢最後抿一抿嘴，吞返落去。"]],
+      ["鄧麗萍", ["呢格……", "呢格，我睇好你。下年呢個檔，你嗰套戲入場。數字做唔到，唔好怪我照規矩收返。"]],
+      ["鄧麗萍", ["你想講啲咩，最好講到數字，唔好講到心口咁虛。", "改咗把尺，我就唔再係鄧麗萍。呢句，你記住。"]],
+      ["系統", ["阿偉望住嗰個紅圈，嗰一步近到咁，佢冇行過去。佢伸手將張表推正少少，推返去佢嗰邊，用返佢聽得明嗰種話應佢：下年午夜場，交返五成九——交唔足，嗰格由佢自己嚟收返。", "佢笑咗一笑，收起張表，轉身行返會議室嗰邊。兩個人，一個企喺表呢邊，一個企喺表嗰邊——嗰一步，留返喺個紅圈入面。"]]
+    ],
+    choiceText: {
+      C_tang_ending_he: { label: "企返喺張表嗰邊：用一個數字，應承佢嗰格", notes: "嗰個紅圈佢冇講穿，佢就用返佢嘅言語接住——盟友以上嗰句，留返喺個圈入面。" },
+      C_tang_ending_be: { label: "數字至上：收返嗰格，各行各路", notes: "佢收返張排片表，嗰個紅圈畀下一格數字蓋過，走廊入面再冇人提過嗰一秒。" }
+    }
+  },
+  R_hiu_meet: {
+    synopsis: "阿偉喺廠景休息角識咗同期臨記林曉晴，佢主動走埋嚟講通告情報，想同阿偉交換消息，互相照應。",
+    beats: [
+      ["旁白", ["換景空檔，阿偉行去廠景休息角，林曉晴已經坐咗喺度，手上攞住份通告紙，神情比平時認真。", "佢見到阿偉，主動揚一揚手，示意佢坐埋嚟。"]],
+      ["林曉晴", ["你係咪今日先嚟呢個廠景㗎？我頭先聽助導講，下晝嗰場要多幾個臨記喎。", "何生嗰邊都放咗風，下星期有兩組戲要人——你有興趣嘅話，要快啲決定，啲位搶得好快。"]],
+      ["旁白", ["阿偉多謝佢肯報料，話自己真係想多接啲通告。", "佢聽得出，曉晴唔係客氣，係想睇下佢肯唔肯交換情報。"]],
+      ["林曉晴", ["不如咁啦，我哋交換情報——邊度有機會就話返畀對方知，大家都多條路，唔使自己一個盲摸。", "不過你要記住呀，有啲助導好揀擇，你打聽清楚佢哋鍾意啲咩先，費事白行一趟。"]],
+      ["旁白", ["阿偉點頭應承，話一有消息，第一時間話佢知。", "休息角人來人往，但嗰一刻，好似得返佢哋兩個傾緊偈。"]],
+      ["林曉晴", ["咁就咁話喇。對喇，你叫咩名呀？我之後點搵你？", "我平時多數喺通告欄附近等消息，你嚟嗰度搵我就得喇。"]]
+    ]
+  },
+  R_choi_meet: {
+    title: "週刊小訪",
+    setting: "電視台走廊一角，《星訊週刊》記者周采兒攞住部錄音機，企喺度等佢收工。",
+    synopsis: "《星訊週刊》記者周采兒親自嚟片場採訪角搵阿偉，唔靠通稿，問得直接又尖。阿偉坦白作答，佢就係鍾意呢種唔使估嘅受訪者。",
+    beats: [
+      ["旁白", ["阿偉啱啱收工，喺走廊俾周采兒截住。佢冇帶攝影師，自己攞住支筆同一本記者簿。", "佢話想做一個臨記生活嘅小專訪，唔抄通稿，親自落場問——只佔幾分鐘。"]],
+      ["周采兒", ["你好，我係《星訊週刊》記者周采兒。", "做臨記最辛苦嘅，係邊一忽？你唔使講門面話，我淨係想寫真嘢。"]],
+      ["旁白", ["阿偉諗起何生提過，記者有時會寫到誇張。", "但采兒對眼好定，唔似嚟挖苦人嗰種。"]],
+      ["周采兒", ["你唔使緊張㗎，我寫嘢有條線——唔害人。", "主編日日催我交獨家，但係嗰啲靠估靠作嘅，我唔寫。讀者要聽嘅係真話，唔係官腔。"]],
+      ["旁白", ["阿偉心入面盤算：講真話，可能得罪人；講官腔，又對唔住佢嗰份認真。", "走廊遠處有工作人員經過，氣氛鬆返少少。"]],
+      ["周采兒", ["嗱，等埋位嗰陣你哋通常做啲咩，我都想知。", "仲有——俾導演鬧嗰陣，你心入面諗緊咩？照直講就得。"]]
+    ]
+  }
+};
+function applyVariantWf5Overrides87(){
+  let applied = 0;
+  const packs = Array.prototype.slice.call(arguments);
+  for(const pack of packs){
+    if(!pack || typeof pack !== "object") continue;
+    const nodes = [].concat(Array.isArray(pack.beats) ? pack.beats : [], Array.isArray(pack.nodes) ? pack.nodes : []);
+    for(const node of nodes){
+      if(!node || typeof node !== "object" || !node.id) continue;
+      const ov = WF5_VARIANT_OVERRIDES87[node.id];
+      if(!ov) continue;
+      /* 結構核對：beat 數、每 beat speaker 同行數要同原稿逐一對得上，先至換 lines */
+      let structureOk = Array.isArray(node.beats) && node.beats.length === ov.beats.length;
+      if(structureOk){
+        for(let i = 0; i < ov.beats.length; i++){
+          const b = node.beats[i];
+          if(!b || b.speaker !== ov.beats[i][0] || !Array.isArray(b.lines) || b.lines.length !== ov.beats[i][1].length){ structureOk = false; break; }
+        }
+      }
+      if(!structureOk) continue;
+      if(typeof ov.title === "string" && ov.title) node.title = ov.title;
+      if(typeof ov.setting === "string" && ov.setting) node.setting = ov.setting;
+      if(typeof ov.synopsis === "string" && ov.synopsis) node.synopsis = ov.synopsis;
+      for(let i = 0; i < ov.beats.length; i++) node.beats[i].lines = ov.beats[i][1].slice();
+      if(ov.choiceText && Array.isArray(node.choices)){
+        for(const ch of node.choices){
+          const ct = ov.choiceText[ch.id];
+          if(!ct) continue;
+          if(typeof ct.label === "string" && ct.label) ch.label = ct.label;
+          const noteTxt = (typeof ct.notes === "string" && ct.notes) || (typeof ct.note === "string" && ct.note) || "";
+          if(noteTxt){
+            if(typeof ch.playerFacingNote === "string") ch.playerFacingNote = noteTxt;
+            else if(ch.effects && typeof ch.effects === "object") ch.effects.notes = noteTxt;
+          }
+        }
+      }
+      applied++;
+    }
+  }
+  return applied;
+}
+
 function applyStorySpineOverrides48(){
   const out = { ok:true, main:0, lan:0 };
   try{
@@ -22875,6 +23026,15 @@ const StoryOC = (()=>{
     if(st.flags[key]) return true;
     if(S && S.flags && S.flags[key]) return true;
     if(String(key).startsWith("route_") && st.routes[key]) return true;
+    /* v20a87 WF5：裸名 ↔ flag_ 前綴 alias（pack qa.flagAlias 既定對照，本來聲稱 wiring 有讀、
+       其實冇）。C5 抉擇寫裸名 choi_honest／spin／dodge，R_choi_push1 條件用 flag_ 前綴版——
+       冇 alias 嗰陣，經主線 C5 入采兒線嘅替代入口永遠唔開（WF5 觸達審計實證）。 */
+    const bare = String(key).startsWith("flag_") ? String(key).slice(5) : ("flag_" + String(key));
+    if(bare && bare !== key){
+      if(st.flags[bare]) return true;
+      if(S && S.flags && S.flags[bare]) return true;
+      if(bare.startsWith("route_") && st.routes[bare]) return true;
+    }
     return false;
   }
 
@@ -25403,7 +25563,13 @@ const StoryPlay = (()=>{
     if(!ch && node.chromeSeason) ch = spSoftSeasonChar(node.chromeSeason);
     if(ch) return spSoftSeasonLine(ch, node);
     ch = spSoftSeasonChar(String(node.when||"")+" "+String(node.eraTag||""));
-    if(ch) return spSoftSeasonLine(ch, node);
+    if(ch){
+      /* v20a87 WF5：年份跟節點 when（載入已移新曆），唔好用死 START.y——否則 1991／1992
+         節點一律顯示 1990（C9 差一年；C12–C17 差兩年）。when 冇年份先返舊路。 */
+      const ym = String(node.when||"").match(/\d{4}/);
+      if(ym) return spSoftLane(node)+" · "+ym[0]+ch;
+      return spSoftSeasonLine(ch, node);
+    }
     return spSoftSeasonLine("春", node);
   }
   /* C5「采兒小訪題」shares the dual-meet calendar prefer. Name kept so callers stay put. */
@@ -25451,7 +25617,8 @@ const StoryPlay = (()=>{
     eq("p2seed", from({ chromeSeason:"winter", when:"1988春" }, { seedSeason:"autumn" }), line("秋"));
     eq("p2cal", from({ chromeSeason:"winter", when:"1988春" }, { calendarSeason:"summer" }), line("夏"));
     eq("p2chrome", from({ chromeSeason:"autumn", when:"1988春" }, {}), line("秋"));
-    eq("p3when", from({ when:"1988年後院線季節｜初秋午後", eraTag:"era_cinema_generic_post1988" }, {}), line("秋"));
+    /* v20a87 WF5：when 分支改用節點 when 自帶年份（唔再用死 START.y）→ 期望值跟新口徑寫死 1988 */
+    eq("p3when", from({ when:"1988年後院線季節｜初秋午後", eraTag:"era_cinema_generic_post1988" }, {}), "主線 · 1988秋");
     eq("p3era", from({ eraTag:"era_1988_winter_quiet" }, {}), line("冬"));
     eq("p4", from({ id:"X", eraTag:"era_cinema_generic_post1988" }, {}), line("春"));
     return { ok:fails.length===0, fails:fails };
@@ -25468,7 +25635,10 @@ const StoryPlay = (()=>{
     node = node || {};
     const id = String(node.id||"");
     /* USER-approved C1 / opening label (spaces around ·). LIVE default — Soft flag does not enter here. */
-    if(id==="C1" || spIsForcedStory(node, pack, label)) return "主線 · "+((typeof START!=="undefined" && START && START.y) || 1990)+"春";
+    /* v20a87 WF5：原本連 spIsForcedStory（_sess.forced）一齊短路——但 force 播係進度頁「播呢幕」嘅
+       正規玩家路徑，任何節點經 force 開播都會俾人標成開局「1990春」（實駕 C9 播出 1990春 vs 內容 1991冬）。
+       標籤短路只保留 C1 本人；spIsForcedStory 本身（forced 鎖定行為）唔郁。 */
+    if(id==="C1") return "主線 · "+((typeof START!=="undefined" && START && START.y) || 1990)+"春";
     const soft = String(node.eraTag||node.when||"").trim();
     if(soft){
       /* soften engineering when/era for display; keep short */
@@ -25479,6 +25649,13 @@ const StoryPlay = (()=>{
         if(node.eraTag && typeof years66ShiftYear==="function"){
           const ym = seg.match(/\d{4}/);
           if(ym) seg = seg.replace(ym[0], String(years66ShiftYear(Number(ym[0]))));
+        }
+        /* v20a87 WF5：上面 regex 只認「年份＋春/秋」中文字——eraTag 係英文編碼（winter／summer），
+           夏／冬永遠抽唔到，C7（夏）／C9／C10／C13（冬）／C14（夏）／C18（冬）標籤得返裸年份。
+           由同一來源字串補返季節（seg 已有季節就唔重複）。 */
+        if(!/[春夏秋冬]$/.test(seg) && typeof spSoftSeasonChar==="function"){
+          const sch = spSoftSeasonChar(soft);
+          if(sch) seg += sch;
         }
         return "主線 · "+seg;
       }
@@ -28577,6 +28754,8 @@ async function refreshCopyPacksFromDisk(){
     try{ if(typeof years66Walk==="function"){ [main, rom1, rom2, romTang, rival, gateStub, dengMock, dengPushMock, dualMock].forEach(p=>{ try{ years66Walk(p, null); }catch(_y66){} }); } }catch(_y66){}
     /* v20a67 JAN67：C1 時期標籤季節對位（when「1990春」→「1990冬」，只限 C1） */
     try{ if(typeof jan67OpeningTextFix==="function") jan67OpeningTextFix(main, 0); }catch(_j67){}
+    /* v20a87 WF5：soft 變體層（DengLine／DualMeet）文本對齊——loadMock 之前套用（同 textfix55／years66 先例） */
+    try{ if(typeof applyVariantWf5Overrides87==="function") applyVariantWf5Overrides87(dengMock, dengPushMock, dualMock); }catch(_wf5v){}
     let _softStubRes = null;
     try{
       if(gateStub && typeof BehaviorGate!=="undefined") _softStubRes = BehaviorGate.loadStub_nodes_trigger(gateStub);
@@ -47893,7 +48072,7 @@ ENC79_BEATS.lok_gasing = [
 ENC79_BEATS.chai_zanhoi = [
   { id:"chai_intel", when(st){ return enc79TierOf(st.fav)>=2; }, grants(){ enc79GrantRumorCard({ id:"rumor_chai_tv_tip", source:"齊鎮海", title:"電視城人事風聲", text:"齊鎮海講：台慶爭位邊個叻唔係重點，對台嗰邊密密挖角先係真風聲。邊個會走、邊個會留，佢心入面有本數。" }); } },
   { id:"chai_choice", when(st){ const ys=yearSeasonNow(); return ys.year===1992 && enc79TierOf(st.fav)>=2; } },
-  { id:"chai_repay", when(st){ const f=(typeof S!=="undefined"&&S&&S.flags)||{}; return enc79TierOf(st.fav)>=2 && (!!f.flag_side_film || !!f.flag_side_tv || !!f.flag_side_undecided || enc83NodeDone("C14")); } },
+  { id:"chai_repay", when(st){ return enc79TierOf(st.fav)>=2 && (enc87StoryFlag("flag_side_film") || enc87StoryFlag("flag_side_tv") || enc87StoryFlag("flag_side_undecided") || enc83NodeDone("C14")); } },
   { id:"chai_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc83_chai_patron", debtor:"齊鎮海", title:"一哥引薦", line:"齊鎮海同監製打咗聲招呼：你去試鏡嗰日，提一哥個名，嗰道門會為你開。", status:"未收" }); } },
 ];
 /* ===== ENC83 模組完 ===== */
@@ -47921,6 +48100,19 @@ try{ if(typeof ENC84_FRAME_so_jiyan!=="undefined"){ ENC79_STAGEUP.so_jiyan = ENC
 try{ if(typeof ENC84_FRAME_chung_choning!=="undefined"){ ENC79_STAGEUP.chung_choning = ENC84_FRAME_chung_choning.stageup; ENC79_CAP_LINES.chung_choning = ENC84_FRAME_chung_choning.cap; ENC79_WRAP_ECHO.chung_choning = ENC84_FRAME_chung_choning.wrap; } }catch(_e){}
 try{ if(typeof ENC84_FRAME_ching_tinlok!=="undefined"){ ENC79_STAGEUP.ching_tinlok = ENC84_FRAME_ching_tinlok.stageup; ENC79_CAP_LINES.ching_tinlok = ENC84_FRAME_ching_tinlok.cap; ENC79_WRAP_ECHO.ching_tinlok = ENC84_FRAME_ching_tinlok.wrap; } }catch(_e){}
 /* ---------- Phase 3 四星鏈節拍（requires 只引用現有狀態；提攜排最尾） ---------- */
+/* v20a87 WF5：劇情抉擇旗雙 store 讀取。StoryOC.applyChoice 經 setFlag 將抉擇旗寫入
+   S.story.flags，S.flags 係系統旗嗰邊——節拍 gate 若齋讀 S.flags，劇情抉擇旗永遠讀唔到。
+   實證死內容：ching_after_train／ching_after_polish（C16 寫 flag_vocal_train／polish 入
+   story.flags，gate 讀 S.flags → 永不開啟）；chai_repay 嘅 flag_side_* 同病（靠 C14 done
+   後備路先冇死）。以後節拍讀劇情旗一律經呢度（同 endingFlag410 雙 store 口徑一致）。 */
+function enc87StoryFlag(k){
+  try{
+    if(typeof S==="undefined" || !S) return false;
+    if(S.flags && S.flags[k]) return true;
+    if(S.story && S.story.flags && S.story.flags[k]) return true;
+  }catch(_e){}
+  return false;
+}
 ENC79_BEATS.pang_siuki = [
   { id:"pang_intel", when(st){ return enc79TierOf(st.fav)>=2; }, grants(){ enc79GrantRumorCard({ id:"rumor_pang_show_tip", source:"彭少祺", title:"大騷缺人風聲", text:"彭少祺講：嚟緊個台慶大騷，後台缺個肯捱又醒目嘅助手位，監製嗰邊出名好相與，肯畀新人試。你嗰日去後台留個名，好過坐喺度等運到。" }); } },
   { id:"pang_help", when(st){ return enc79TierOf(st.fav)>=1 && enc83NodeDone("C10"); } },
@@ -47943,8 +48135,8 @@ ENC79_BEATS.chung_choning = [
 ENC79_BEATS.ching_tinlok = [
   { id:"ching_e4", when(st){ return enc79TierOf(st.fav)>=1 && enc83NewsOut("E4"); } },
   { id:"ching_rival", when(st){ return enc79TierOf(st.fav)>=1 && !enc83NodeDone("C16"); }, grants(){ enc79GrantRumorCard({ id:"rumor_ching_rehearse", source:"天星音樂", title:"程天諾半夜練唱", text:"唱片公司啲人講：程天諾俾人笑靠修音之後，晚晚喺舞蹈室練唱，練到保安鎖門。走音都唔停，由頭嚟過——呢個後生仔，唔服輸。" }); } },
-  { id:"ching_after_train", when(st){ return enc83NodeDone("C16") && !!(S.flags||{}).flag_vocal_train; } },
-  { id:"ching_after_polish", when(st){ return enc83NodeDone("C16") && !!(S.flags||{}).flag_vocal_polish; } },
+  { id:"ching_after_train", when(st){ return enc83NodeDone("C16") && enc87StoryFlag("flag_vocal_train"); } },
+  { id:"ching_after_polish", when(st){ return enc83NodeDone("C16") && enc87StoryFlag("flag_vocal_polish"); } },
   { id:"ching_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc84_ching_patron", debtor:"程天諾", title:"同輩引薦", line:"程天諾喺佢嗰組監製面前幫你講咗句好話：嗰位前輩係真材實料，畀佢試下，你唔會後悔。", status:"未收" }); } },
 ];
 /* ===== ENC84 模組完 ===== */

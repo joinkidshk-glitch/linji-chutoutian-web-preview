@@ -205,7 +205,11 @@ function makeEl(){
   /* ---- item 7(c)：主線進度行——C6（三年版閘、非軟閘覆蓋）補地點 ---- */
   loadGame(freshSave({
     dayIndex: 66,
-    story: { done: { C1: true, C2: true, C3: true, C4: true, C5: true }, flags: {}, rel: {}, routes: { tv: true }, phase: 'P2', gigCount: 9 },
+    /* v20a87 WF5 修正：routes 真 key 係 route_tv（routeHeld 以全名查 st.routes）。
+       舊 fixture 寫 { tv: true } 等於冇持有路線——本場景 dayIndex 66（第 10 週）本身未到
+       weekMin 15，route 有冇都出同一句「未開」，所以寫錯 key 一直冇被發現（測試盲點）。
+       C6 閘嘅正反驗證改由 test_wf5_87_logic.js 補齊（route＋週數齊備先開、欠 route 唔開）。 */
+    story: { done: { C1: true, C2: true, C3: true, C4: true, C5: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 9 },
   }));
   S.flags = {};
   const prog = storyMainProgressLine();
