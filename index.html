@@ -18316,8 +18316,8 @@ const COURSE_DEFS = {
   train_charm:  { icon:"😊", name:"魅力訓練", hint:"談吐社交", midOf:null },
   train_iq:     { icon:"📚", name:"智商／修養", hint:"讀書觀察", midOf:null },
   train_stamina: { icon:"🥋", name:"武師班", hint:"拳腳／體能", midOf:null },
-  train_acting_mid: { icon:"🎭", name:"進階演技", hint:"對手戲／情緒記憶", mid:true },
-  train_stage_mid:  { icon:"🎬", name:"進階台風", hint:"綜藝場控／走位", mid:true },
+  /* v20a75 LEVELS75：舊制進階課唔再係獨立課——併入母課二級（見 TRAIN75_SPEC）；
+     COURSE_DEFS 只剩 7 基礎課；舊檔嘅中課痕跡由 levels75MigrateSave 喺載入時遷移。 */
 };
 const COURSE_ENROLL_EXTRA = {
   tv: ["train_charm", "train_stage"], /* v20a69 STAGE69：台風訓練補返電視台附帶開放（原先邊度都冇接線，見 NOTES_V20A69） */
@@ -18330,7 +18330,14 @@ const COURSE_ENROLL_EXTRA = {
 function enrolledCourseCta(courseId){
   const raw = (COURSE_DEFS[courseId]||{}).name || "";
   const stem = raw.endsWith("訓練") ? raw.slice(0, -2) : raw;
-  return stem ? `進行${stem}訓練` : "進行訓練";
+  let label = stem ? `進行${stem}訓練` : "進行訓練";
+  /* v20a75 LEVELS75：上堂掣寫明級別（上堂自動上最高已開放級別，唔使逐堂揀） */
+  try{
+    if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[courseId] && typeof levels75Level === "function"
+       && typeof S !== "undefined" && S)
+      label += "・" + LEVELS75_NAMES[levels75Level(S, courseId)];
+  }catch(_e){}
+  return label;
 }
 
 let S=null, atLoc=null, mapRegion="all"; /* v19z20: region filter retired; always all */
@@ -24847,6 +24854,7 @@ async function refreshCopyPacksFromDisk(){
 /* ===== v20a68 UX68：手帳訓練指南＋地點選項整理＋地圖墨字地名 =====
    用戶 2026-11-10 實玩反饋（四部分中嘅一、二；三＝地圖墨字係 HTML/CSS 靜態層；四＝重量喺 NOTES）：
    (1) 手帳「訓練指南」頁：按數值列出所有可提升佢嘅真課程。增益表唔另寫一份——
+       （v20a75 起改由 TRAIN75_SPEC 按級數據＋玩家現級衍生，見 (1a0)；v68–v74 係
        開頁時解析 applyTrainLesson 函數源碼入面每課嘅 applyGain60({...}) 字面量衍生，
        課程名／地點／附帶開放／解鎖門檻分別嚟自 COURSE_DEFS／TRAIN_BY_TYPE／
        COURSE_ENROLL_EXTRA／maybeUnlockMidCourses 同一套規則（進度即時計）。
@@ -24858,32 +24866,86 @@ async function refreshCopyPacksFromDisk(){
        未開放摺疊（disabled／費用欄＝「未開放」／已完成劇情）。（目標標示▲已於 v20a74 移除。）
    全部防禦式 try/catch：出錯保持原本 sheet／手帳原樣。 */
 
-/* ---------- (1a) 增益表：由 applyTrainLesson 源碼衍生 ---------- */
-let _ux68GainCache = null;
+/* ---------- (1a0) v20a75 LEVELS75：課程三級制數據＋衍生（用戶 2026-11-10 16:57 提出、17:00 拍板） ----------
+   七課全部三級：一級＝現行基礎數、二級＝現行進階數、三級新訂；每級上滿 5 堂自動
+   升一級（用戶嫌 3 堂太快、親自揀 5；一課到頂 10 堂），上堂自動上最高已開放級別。
+   級別唔另存欄位——由 S.trainCount[課] 累計堂數衍生（0–4 一級／5–9 二級／10+ 三級），
+   「而家邊級、仲差幾堂升級」隨時計得返；舊進階課點遷移見 levels75MigrateSave。
+   增益規格（每課一行）：main 主數值一級 [mLo, mLo+mSpan]，二級 lo+2、三級 lo+4 且
+   span+1（主表 +4~6→+6~8→+8~11；外貌／魅力／智商一級係 +3~5 現行數，跟同一升幅
+   →+5~7→+7~10）；sub 附帶（有先算，值＝級數 +1/+2/+3；附帶邊個數值跟各課現有
+   數據——演技→台風、台風→魅力、外貌→魅力、智商→演技；歌藝／魅力／武師班現行
+   冇附帶，唔發明）；stress 壓力一級 [sLo, sLo+sSpan]，每級 lo+2（主表
+   +8~12→+10~14→+12~16，其餘課跟返自己現行壓力帶同升幅）；fee800＝外貌課
+   學費 $800（各級不變，跟現行，唔加價）。耗時維持 1 日。 */
+const LEVELS75_STEP = 5;
+const LEVELS75_MAX = 3;
+const LEVELS75_NAMES = ["", "一級", "二級", "三級"];
+const LEVELS75_MID_OF = { train_acting_mid: "train_acting", train_stage_mid: "train_stage" };
+const TRAIN75_SPEC = {
+  train_acting:  { main:"acting",  mLo:4, mSpan:2, sub:"stage",  sLo:8, sSpan:4 },
+  train_stage:   { main:"stage",   mLo:4, mSpan:2, sub:"charm",  sLo:8, sSpan:4 },
+  train_vocal:   { main:"vocal",   mLo:4, mSpan:2, sub:null,     sLo:8, sSpan:4 },
+  train_looks:   { main:"looks",   mLo:3, mSpan:2, sub:"charm",  sLo:6, sSpan:3, fee800:true },
+  train_charm:   { main:"charm",   mLo:3, mSpan:2, sub:null,     sLo:5, sSpan:3 },
+  train_iq:      { main:"iq",      mLo:3, mSpan:2, sub:"acting", sLo:4, sSpan:2 },
+  train_stamina: { main:"stamina", mLo:4, mSpan:2, sub:null,     sLo:8, sSpan:4 },
+};
+function levels75Count(o, cid){ return (o && o.trainCount && Number(o.trainCount[cid])) || 0; }
+function levels75Level(o, cid){
+  const n = levels75Count(o, cid);
+  return n >= LEVELS75_STEP * 2 ? 3 : (n >= LEVELS75_STEP ? 2 : 1);
+}
+function levels75Next(o, cid){
+  /* { lv, inLv, left, top }：inLv＝今級已練堂數；left＝仲差幾堂升級（到頂 0） */
+  const n = levels75Count(o, cid), lv = levels75Level(o, cid);
+  if(lv >= LEVELS75_MAX) return { lv:lv, inLv:n - LEVELS75_STEP * 2, left:0, top:true };
+  const inLv = n - (lv - 1) * LEVELS75_STEP;
+  return { lv:lv, inLv:inLv, left:LEVELS75_STEP - inLv, top:false };
+}
+function levels75GainRange(cid, lv){
+  /* 顯示用名義範圍：{ 主:[lo,hi], 附帶:[v,v]?, money:[-800,-800]?, stress:[lo,hi] }
+     （鍵序跟返舊字面量：主→附帶→學費→壓力，卡面「附帶」行同解析測試靠呢個形狀） */
+  const sp = (typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC) ? TRAIN75_SPEC[cid] : null;
+  if(!sp) return null;
+  lv = Math.max(1, Math.min(LEVELS75_MAX, Number(lv) || 1));
+  const out = {};
+  const mLo = sp.mLo + (lv - 1) * 2, mSpan = sp.mSpan + (lv === 3 ? 1 : 0);
+  out[sp.main] = [mLo, mLo + mSpan];
+  if(sp.sub) out[sp.sub] = [lv, lv];
+  if(sp.fee800) out.money = [-800, -800];
+  const sLo = sp.sLo + (lv - 1) * 2;
+  out.stress = [sLo, sLo + sp.sSpan];
+  return out;
+}
+function levels75GainRoll(cid, lv){
+  /* 實際上堂擲數：同 levels75GainRange 同一規格，逐項擲出實數畀 applyGain60 */
+  const sp = (typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC) ? TRAIN75_SPEC[cid] : null;
+  if(!sp) return null;
+  lv = Math.max(1, Math.min(LEVELS75_MAX, Number(lv) || 1));
+  const g = {};
+  const mLo = sp.mLo + (lv - 1) * 2, mSpan = sp.mSpan + (lv === 3 ? 1 : 0);
+  g[sp.main] = mLo + R(0, mSpan);
+  if(sp.sub) g[sp.sub] = lv;
+  if(sp.fee800) g.money = -Math.min(800, (typeof S !== "undefined" && S) ? (Number(S.money) || 0) : 0);
+  const sLo = sp.sLo + (lv - 1) * 2;
+  g.stress = sLo + R(0, sp.sSpan);
+  return g;
+}
+/* ---------- (1a) 增益表：v20a75 改由 TRAIN75_SPEC＋玩家現級衍生 ---------- */
 function ux68ParseGainTable(){
-  if(_ux68GainCache) return _ux68GainCache;
+  /* v20a75 LEVELS75：增益唔再解析 applyTrainLesson 源碼字面量（三級制後增益係
+     按級數據、兩條上堂路徑共用 train75ApplyLesson，冇字面量可解析）——改行
+     同一張 TRAIN75_SPEC，按玩家喺每課嘅現級衍生，卡面數字先同實際上堂一致。
+     回傳形狀不變：{ cid: { stat:[lo,hi], …, stress:[lo,hi], money?:[-800,-800] } }，
+     只含 7 基礎課（進階課已併入級別）。冇 cache：級別隨堂數變，逐次現計。 */
   const out = {};
   try{
-    const srcFn = (typeof applyTrainLesson === "function") ? applyTrainLesson.toString() : "";
-    Object.keys((typeof COURSE_DEFS !== "undefined" && COURSE_DEFS) || {}).forEach(cid=>{
-      const i = srcFn.indexOf('courseId==="' + cid + '"');
-      if(i < 0){ out[cid] = null; return; }
-      const seg = srcFn.slice(i, i + 420);
-      const g = seg.match(/applyGain60\(\{([^}]*)\}\)/);
-      if(!g){ out[cid] = null; return; }
-      const gains = {};
-      /* 全域逐個配對（唔好用逗號切——R(0,2) 入面都有逗號） */
-      const pairRe = /(\w+)\s*:\s*(-?\d+)(?:\s*\+\s*R\(\s*0\s*,\s*(\d+)\s*\))?/g;
-      let pm;
-      while((pm = pairRe.exec(g[1])) !== null){
-        gains[pm[1]] = [Number(pm[2]), Number(pm[2]) + (pm[3] ? Number(pm[3]) : 0)];
-      }
-      /* 外貌課學費係 money:-Math.min(800,S.money) 呢種寫法，正則攞唔到——特別標記做 gains.money */
-      if(/money\s*:\s*-Math\.min\(\s*800/.test(g[1])) gains.money = [-800, -800];
-      out[cid] = gains;
+    const oo = (typeof S !== "undefined" ? S : null);
+    Object.keys(TRAIN75_SPEC || {}).forEach(cid=>{
+      out[cid] = levels75GainRange(cid, levels75Level(oo, cid));
     });
   }catch(_e){}
-  _ux68GainCache = out;
   return out;
 }
 function ux68GainText(range){
@@ -24915,8 +24977,8 @@ function ux68UnlockRule(cid){
   const tc = (typeof S !== "undefined" && S && S.trainCount) || {};
   const total = Object.values(tc).reduce((a,b)=>a + (Number(b) || 0), 0);
   switch(cid){
-    case "train_acting_mid": return { need:"演技訓練累計 3 堂", have:Number(tc.train_acting) || 0, goal:3 };
-    case "train_stage_mid":  return { need:"台風訓練累計 3 堂", have:Number(tc.train_stage) || 0, goal:3 };
+    /* v20a75 LEVELS75：進階課已併入課程級別（levels75Level 由堂數衍生），
+       唔再係「解鎖規則」；呢度剩返開課門檻（同級別門檻分開，維持不變）。 */
     case "train_stage":      return { need:"任何訓練累計 2 堂", have:total, goal:2 };
     case "train_charm":      return { need:"任何訓練累計 2 堂", have:total, goal:2 };
     case "train_stamina":    return { need:"任何訓練累計 3 堂", have:total, goal:3 };
@@ -25007,6 +25069,8 @@ function train71CanPick(ctx){
   return !!(typeof S !== "undefined" && S && S.homeEditable);
 }
 function train71CourseCard(cid, stat, ctx){
+  /* v20a75 LEVELS75：卡面寫明級別（名・X級）＋該級增益（ux68ParseGainTable 已按
+     現級衍生）＋一行升下一級進度；級別未開放唔出未來級別卡——未來級只由進度行交代。 */
   /* 主修大卡（同 v70 指南卡同版式／四格／徽章）：v73 起只為已報名課渲染
      （未報名／未開放由 train71PickerHtml 分流，唔入呢度）；動作只有排入掣，
      冇任何跳轉掣（v73 用戶拍板：picker 唔准帶玩家離開排程上下文）。 */
@@ -25038,8 +25102,11 @@ function train71CourseCard(cid, stat, ctx){
   } else if(st.open){
     acts = '<span class="guide68-meta">已開放——編輯行程嗰陣排呢堂。</span>';
   }
+  const nx75 = levels75Next((typeof S !== "undefined" ? S : null), cid);
+  const lvText75 = LEVELS75_NAMES[nx75.lv] || "一級";
+  const prog75 = nx75.top ? "已到三級" : ("再 " + nx75.left + " 堂升" + (LEVELS75_NAMES[nx75.lv + 1] || ""));
   return '<div class="guide68-row t70-card' + (picked ? " picked" : "") + '">'
-    + '<div class="t70-top"><span class="guide68-cname">' + ux68Esc((def.icon ? def.icon + " " : "") + (def.name || cid)) + '</span>'
+    + '<div class="t70-top"><span class="guide68-cname">' + ux68Esc((def.icon ? def.icon + " " : "") + (def.name || cid) + "・" + lvText75) + '</span>'
     + '<span class="t70-badge ' + (st.open ? "ok" : (st.badge === "未報名" ? "mid" : "lock")) + '">' + ux68Esc(st.badge) + '</span></div>'
     + '<div class="t70-grid">'
     + '<div class="t70-cell"><span>增益</span><b>' + ux68Esc((SL[stat] || stat) + " " + ux68GainText(g[stat])) + '</b></div>'
@@ -25047,7 +25114,7 @@ function train71CourseCard(cid, stat, ctx){
     + '<div class="t70-cell"><span>耗時</span><b>1 日</b></div>'
     + '<div class="t70-cell"><span>壓力</span><b>' + (stressR ? ux68GainText(stressR) : "—") + '</b></div>'
     + '</div>'
-    + ((others.length || n) ? '<div class="guide68-meta">' + [others.length ? ("附帶：" + ux68Esc(others.join("、"))) : "", n ? ("已練 " + n + " 次") : ""].filter(Boolean).join(" · ") + '</div>' : "")
+    + '<div class="guide68-meta">' + [others.length ? ("附帶：" + ux68Esc(others.join("、"))) : "", n ? ("已練 " + n + " 次") : "", prog75].filter(Boolean).join(" · ") + '</div>' 
     + (st.detail ? '<div class="guide68-status ' + (st.open ? "ok" : "lock") + '">' + ux68Esc(st.detail) + '</div>' : "")
     + locLine
     + (acts ? '<div class="train71-acts">' + acts + '</div>' : "")
@@ -25068,7 +25135,7 @@ function train71CourseMini(cid, stat, ctx){
     act = '<span class="t70-mgain">已開放</span>';
   }
   return '<div class="t70-mini' + (picked ? " picked" : "") + '">'
-    + '<span class="t70-mname">' + ux68Esc((def.icon ? def.icon + " " : "") + (def.name || cid)) + '</span>'
+    + '<span class="t70-mname">' + ux68Esc((def.icon ? def.icon + " " : "") + (def.name || cid) + "・" + (LEVELS75_NAMES[levels75Level((typeof S !== "undefined" ? S : null), cid)] || "一級")) + '</span>'
     + '<span class="t70-mgain">' + ux68Esc((SL[stat] || stat) + " " + ux68GainText(g[stat])) + '</span>'
     + '<span class="t70-badge sm ' + (st.open ? "ok" : (st.badge === "未報名" ? "mid" : "lock")) + '">' + ux68Esc(st.badge) + '</span>'
     + act
@@ -25133,7 +25200,7 @@ function train71PickerHtml(ctx){
         + '<div class="t70-subbody" hidden>' + secE.map(cid=> train71CourseMini(cid, stat, ctx)).join("")
         + secU.map(cid=> train73EnrollNote(cid, stat)).join("") + '</div>';
     }
-    h += '<p class="guide68-note">增益係每堂名義範圍；實際到手會按你而家嘅數值遞減（越練越難升，係行內規矩）。堂數累計夠數會自動開放進階課同附帶課。</p>';
+    h += '<p class="guide68-note">增益係每堂名義範圍；實際到手會按你而家嘅數值遞減（越練越難升，係行內規矩）。每課上滿 5 堂升一級（最高三級），加幅跟住級別提升；堂數累計夠數亦會開放其他課程。</p>';
   }
   return h;
 }
@@ -26093,6 +26160,8 @@ function normalizeSaveObj(o){
   /* v20a67 JAN67：3 月 epoch 舊檔日數偏移遷移（dayIndex +65、絕對日戳同步、曆法日期不變；
      必須早過下面 calib60MissedScan／conseq61LegacyMark——嗰兩個用新 epoch 解讀 dayIndex） */
   try{ if(typeof jan67MigrateSave==="function") jan67MigrateSave(o); }catch(_e){}
+  /* v20a75 LEVELS75：舊檔進階課併入級別（中課報名／堂數／weekPlan id 遷移；天然冪等，唔降級） */
+  try{ if(typeof levels75MigrateSave==="function") levels75MigrateSave(o); }catch(_e){}
   /* v20a60 CALIB60-3：舊檔靜靜補登已漏節點入「回憶」（唔彈提示、唔出結算行）；新登記只會喺週結發生 */
   try{ if(typeof calib60MissedScan==="function") calib60MissedScan(o); }catch(_e){}
   /* v20a61 CONSEQ61-1：舊檔已過評核年份→靜靜標記已過，永不追溯收場；病倒連續日由 0 起計，唔會讀檔即病 */
@@ -28744,7 +28813,9 @@ function enrolledTrainItems(){
     if(!en[id]) return;
     const d=COURSE_DEFS[id];
     const n=(S.trainCount&&S.trainCount[id])||0;
-    items.push({ id, icon:d.icon, name:d.name, hint: d.mid ? `${d.hint} · 已練 ${n} 次` : `${d.hint} · 已練 ${n} 次` });
+    /* v20a75 LEVELS75：手帳訓練清單 hint 寫明級別（舊 d.mid 分支隨進階課併入級別作廢） */
+    const lvName75 = (typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]) ? LEVELS75_NAMES[levels75Level(S, id)] : "";
+    items.push({ id, icon:d.icon, name:d.name, hint: lvName75 ? `${d.hint} · ${lvName75} · 已練 ${n} 次` : `${d.hint} · 已練 ${n} 次` });
   });
   return items;
 }
@@ -28763,17 +28834,65 @@ function enrollCourse(courseId, notes, mode){
   }
   return true;
 }
+/* ===== v20a75 LEVELS75：上堂共用核心＋舊檔遷移 =====
+   train75ApplyLesson：排程（resolvePlannedDay）同地點即時（applyTrainLesson）
+   兩條上堂路徑共用單一核心——按現級攞增益（levels75GainRoll）→ applyGain60
+   （CALIB60 分段遞減照舊行）→ 計堂 → 跨級嗰陣出升級提示 → 開課門檻檢查。
+   回傳 notes 陣列（增益行＋升級行＋開課行＋堂後事件行），呼叫端自己併入 notes 流。 */
+function train75ApplyLesson(cid){
+  const applyGain60 = (typeof applyCalib60 === "function") ? applyCalib60 : apply;
+  const out = [];
+  if(!cid || typeof TRAIN75_SPEC === "undefined" || !TRAIN75_SPEC[cid]) return out;
+  S.trainCount = S.trainCount || {};
+  const lvBefore = levels75Level(S, cid);
+  const roll = levels75GainRoll(cid, lvBefore);
+  if(roll) out.push(...applyGain60(roll));
+  S.trainCount[cid] = (Number(S.trainCount[cid]) || 0) + 1;
+  const lvAfter = levels75Level(S, cid);
+  if(lvAfter > lvBefore){
+    const cname = ((typeof COURSE_DEFS !== "undefined" && COURSE_DEFS[cid]) || {}).name || cid;
+    out.push(`<span class="gold">${cname}升到${LEVELS75_NAMES[lvAfter]}——加幅大咗，之後上堂按${LEVELS75_NAMES[lvAfter]}計。</span>`);
+  }
+  maybeUnlockMidCourses(out);
+  const rl = eventLine("TRAIN_RESULT_" + String(cid).replace(/^train_/, ""));
+  if(rl) out.push(rl);
+  return out;
+}
+function levels75MigrateSave(o){
+  /* v20a75 LEVELS75 舊存檔遷移（normalizeSaveObj 載入時行；唔准降級）：
+     舊制進階課（train_acting_mid／train_stage_mid）併入母課級別——
+     已報進階＝母課至少二級（基礎堂數補到 5）；中課堂數計入二級進度；
+     基礎堂數溢出（≥5）本身已係二級，中課堂數疊埋一齊計（唔雙重計數：
+     中課堂本身就係二級堂）。weekPlan 入面嘅中課 id 改返母課，費事排程日
+     冇人認。天然冪等：行完中課鍵（trainCount／enrolled）全清，第二次載入
+     冇痕跡可遷，結果唔變，唔會再跳級。 */
+  if(!o || typeof o !== "object") return o;
+  try{
+    const tc = (o.trainCount && typeof o.trainCount === "object") ? o.trainCount : null;
+    const en = (o.enrolled && typeof o.enrolled === "object") ? o.enrolled : null;
+    Object.keys(LEVELS75_MID_OF).forEach(mid=>{
+      const base = LEVELS75_MID_OF[mid];
+      const m = tc ? (Number(tc[mid]) || 0) : 0;
+      const wasEn = !!(en && en[mid]);
+      if(wasEn && en) en[base] = true;               /* 報咗進階，母課點都算已報 */
+      if((m > 0 || wasEn) && tc)
+        tc[base] = Math.max(Number(tc[base]) || 0, LEVELS75_STEP) + m;
+      if(tc) delete tc[mid];
+      if(en) delete en[mid];
+    });
+    if(Array.isArray(o.weekPlan))
+      o.weekPlan = o.weekPlan.map(x => LEVELS75_MID_OF[x] || x);
+  }catch(_e){}
+  return o;
+}
 function maybeUnlockMidCourses(notes){
+  /* v20a75 LEVELS75：進階課已併入課程級別（升／降級由 train75ApplyLesson 計堂
+     即時衍生，唔再經呢度 enroll 進階課）；呢度剩返「開課」門檻——魅力／台風
+     （任何訓練累計 2）、武師班（3）、智商（4）——同級別門檻（每級 5 堂）係
+     兩回事，維持不變。函數名保留舊名：多個測試沙盒按名抽取本函數，
+     改名會整爛抽取；功能變化已喺呢段註解同 NOTES 交代。 */
   const tc=S.trainCount||{};
   const en=S.enrolled||{};
-  if((tc.train_acting||0)>=3 && !en.train_acting_mid){
-    enrollCourse("train_acting_mid", notes, "unlock");
-    if(notes) notes.push(`<span class="gold">進階演技課開放咗</span>`);
-  }
-  if((tc.train_stage||0)>=3 && !en.train_stage_mid){
-    enrollCourse("train_stage_mid", notes, "unlock");
-    if(notes) notes.push(`<span class="gold">進階台風課開放咗</span>`);
-  }
   // soft unlock charm/iq after any 2 train sessions total
   const total=Object.values(tc).reduce((a,b)=>a+b,0);
   if(total>=2 && !en.train_charm){
@@ -29739,10 +29858,17 @@ function stressDeltaForAct(id){
   if(!id) return 0;
   if(String(id).startsWith("shoot:")) return 10; /* v20a65 FIX65-1：拍攝日平均（含殺青攤分） */
   if(String(id).startsWith("job:")) return 9; /* v20a65 FIX65-1 */
+  /* v20a75 LEVELS75：訓練壓力預覽按現級平均入水（級別越高推得越多）；
+     抽函數沙盒冇 LEVELS75 嗰陣退回下面靜態表（一級平均，同舊值）。 */
+  if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id] && typeof levels75Level === "function"){
+    const sp75 = TRAIN75_SPEC[id];
+    const lv75 = (typeof S !== "undefined" && S) ? levels75Level(S, id) : 1;
+    return sp75.sLo + (lv75 - 1) * 2 + Math.floor(sp75.sSpan / 2);
+  }
   const table={ /* v20a65 FIX65-1：同實際 delta 平均值對齊 */
     rest:-100, /* v20a65 FIX65-1：全日休息＝清零，預覽以 -100 代表歸零 */ home_chore:-8,
     train_acting:10, train_stage:10, train_vocal:10, train_looks:7, train_charm:6, train_iq:5,
-    train_acting_mid:12, train_stage_mid:12, train_stamina:10,
+    train_stamina:10,
     street:7, cafe_gig:6,
     scout_all:0, scout_nt:0, scout_kln:0, scout_island:0,
   };
@@ -30397,14 +30523,8 @@ function resolvePlannedDay(id){
       }
     }
   }
-  else if(id==="train_acting"){ notes=applyGain60({acting:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_acting=(S.trainCount.train_acting||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_acting")); }
-  else if(id==="train_stage"){ notes=applyGain60({stage:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stage=(S.trainCount.train_stage||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stage")); }
-  else if(id==="train_vocal"){ notes=applyGain60({vocal:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_vocal=(S.trainCount.train_vocal||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_vocal")); }  else if(id==="train_looks"){ notes=applyGain60({looks:3+R(0,2), charm:1, money:-Math.min(800,S.money), stress:6+R(0,3)}); S.trainCount=S.trainCount||{}; S.trainCount.train_looks=(S.trainCount.train_looks||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_looks")); }
-  else if(id==="train_charm"){ notes=applyGain60({charm:3+R(0,2), stress:5+R(0,3)}); S.trainCount=S.trainCount||{}; S.trainCount.train_charm=(S.trainCount.train_charm||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_charm")); }
-  else if(id==="train_iq"){ notes=applyGain60({iq:3+R(0,2), acting:1, stress:4+R(0,2)}); S.trainCount=S.trainCount||{}; S.trainCount.train_iq=(S.trainCount.train_iq||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_iq")); }
-  else if(id==="train_stamina"){ notes=applyGain60({stamina:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stamina=(S.trainCount.train_stamina||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stamina")); }
-  else if(id==="train_acting_mid"){ notes=applyGain60({acting:6+R(0,2), stage:2, stress:10+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_acting_mid=(S.trainCount.train_acting_mid||0)+1; }
-  else if(id==="train_stage_mid"){ notes=applyGain60({stage:6+R(0,2), charm:2, stress:10+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stage_mid=(S.trainCount.train_stage_mid||0)+1; }
+else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75ApplyLesson(id); S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; }
+  
   else if(id==="rest"){ notes=apply({stress:-S.stress}); /* v20a65 FIX65-1（用戶 2026-11-10 拍板）：全日休息＝壓力清零（舊 −(18+R(0,8)) 平均 −22） */ title = `休息（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
   else if(id==="home_chore"){ notes=apply({money:R(0,200), stress:-(6+R(0,4))}); title = `收拾房間（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
   else if(id==="street"){
@@ -39068,7 +39188,7 @@ function openLoc(id, opts){
     const already=!!(S.enrolled && S.enrolled[tr.courseId]) || trained;
     const nTrain = (S.trainCount && S.trainCount[tr.courseId]) || 0;
     const label = already ? enrolledCourseCta(tr.courseId) : tr.name;
-    const trainHint = already ? (`已報名 · 已練 ${nTrain} 次 · 可再練`) : "報名後可練";
+    const trainHint = already ? (`已報名 · ${LEVELS75_NAMES[levels75Level(S, tr.courseId)]} · 已練 ${nTrain} 次 · 可再練`) : "報名後可練";
     add(label, trainHint, dayCostLabel(true), ()=>doEnroll(L), "act-priority");
   }
   if(L.type==="film" || L.type==="tv" || L.type==="music" || L.type==="ad")
@@ -40132,18 +40252,15 @@ function doScout(L){
 }
 
 function applyTrainLesson(courseId, notes){
-  const applyGain60 = (typeof applyCalib60==="function") ? applyCalib60 : apply; /* v20a60：抽函數測試沙盒冇 applyCalib60 時退回 apply */
+  /* v20a75 LEVELS75：增益／計堂／升級／開課檢查全部收去 train75ApplyLesson
+     共用核心（同手帳排程 resolvePlannedDay 同一核心、同一增益表，兩邊唔會再
+     唔一致）；本函數只保留地點即時堂嘅外殼：weekTrainDone 喺呢度計（排程嗰邊
+     喺 resolvePlannedDay 計）、訓練微事件喺核心之後接。 */
   notes=notes||[];
   S.trainCount=S.trainCount||{};
   S.weekTrainDone=(Number(S.weekTrainDone)||0)+1;
-  if(courseId==="train_acting"){ notes.push(...applyGain60({acting:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_acting=(S.trainCount.train_acting||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_acting")); }
-  else if(courseId==="train_stage"){ notes.push(...applyGain60({stage:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_stage=(S.trainCount.train_stage||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stage")); }
-  else if(courseId==="train_vocal"){ notes.push(...applyGain60({vocal:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_vocal=(S.trainCount.train_vocal||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_vocal")); }  else if(courseId==="train_looks"){ notes.push(...applyGain60({looks:3+R(0,2), charm:1, money:-Math.min(800,S.money), stress:6+R(0,3)})); S.trainCount.train_looks=(S.trainCount.train_looks||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_looks")); }
-  else if(courseId==="train_charm"){ notes.push(...applyGain60({charm:3+R(0,2), stress:5+R(0,3)})); S.trainCount.train_charm=(S.trainCount.train_charm||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_charm")); }
-  else if(courseId==="train_iq"){ notes.push(...applyGain60({iq:3+R(0,2), acting:1, stress:4+R(0,2)})); S.trainCount.train_iq=(S.trainCount.train_iq||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_iq")); }
-  else if(courseId==="train_stamina"){ notes.push(...applyGain60({stamina:4+R(0,2), stress:8+R(0,4)})); S.trainCount.train_stamina=(S.trainCount.train_stamina||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stamina")); }
-  else if(courseId==="train_acting_mid"){ notes.push(...applyGain60({acting:6+R(0,2), stage:2, stress:10+R(0,4)})); S.trainCount.train_acting_mid=(S.trainCount.train_acting_mid||0)+1; }
-  else if(courseId==="train_stage_mid"){ notes.push(...applyGain60({stage:6+R(0,2), charm:2, stress:10+R(0,4)})); S.trainCount.train_stage_mid=(S.trainCount.train_stage_mid||0)+1; }
+  if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[courseId])
+    notes.push(...train75ApplyLesson(courseId));
   /* v20a35 節奏包 P0-2(b)：訓練微事件（即場堂入口；手帳排程堂喺 resolvePlannedDay 接） */
   try{ if(typeof maybeTrainEvent35==="function") maybeTrainEvent35(notes, courseId); }catch(_te35){}
   return notes;
@@ -40217,7 +40334,7 @@ function doEnrollRun(L, tr){
       const hEl = btn.querySelector(".h");
       if(nEl && (String(nEl.textContent||"").indexOf("報名：")===0 || String(nEl.textContent||"").indexOf("進行")===0)){
         nEl.textContent=nextLabel;
-        if(hEl) hEl.textContent = `已報名 · 已練 ${trainedN} 次 · 可再練`;
+        if(hEl) hEl.textContent = `已報名 · ${LEVELS75_NAMES[levels75Level(S, tr.courseId)]} · 已練 ${trainedN} 次 · 可再練`;
       }
     });
   }catch(_cta){}
