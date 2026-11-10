@@ -153,8 +153,10 @@ chk('B6 zero 周刊 in player strings',
     not bad('周刊', lambda s: s == '周刊編輯'))
 
 # ---- HTML chrome (text nodes are not JS strings) ----
-chk('A1 chip label', 'title="有可播劇情">劇情<span class="chip-story-n"' in src)
-chk('A1 menu label', 'class="menu-story">劇情 <span class="menu-badge"' in src)
+# v20a77 HUB77 原位改版（用戶 2026-11-10 17:51 拍板）：chip 改名「進度」＋改指
+# 進度頁；選單「劇情」掣成粒移除。以下兩條由「標籤存在」改為 v77 新形態斷言。
+chk('A1 chip label（v77 改「進度」）', 'title="主線進度">進度<span class="chip-story-n"' in src)
+chk('A1 menu label（v77 劇情掣已移除）', 'class="menu-story"' not in src and 'data-m="story-play"' not in src)
 chk('A1 no 事態 text node', '>事態<' not in src and '>事態 <' not in src)
 
 # ---- spot outcomes ----

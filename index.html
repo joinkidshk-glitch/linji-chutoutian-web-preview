@@ -4691,6 +4691,16 @@ body.day-res-open .day-row{
 .prog71-note{ font-size:.78rem; color:#6b5636; line-height:1.55; margin:6px 0 0; }
 .prog71-empty h3{ margin:0 0 4px; font-size:.95rem; }
 .prog71-empty p{ font-size:.8rem; color:#8a755a; line-height:1.6; }
+/* === v20a77 HUB77：進度頁「播呢幕」掣＋大地圖常駐「進度」掣 === */
+.prog71-play{ margin-top:8px; min-height:40px; padding:8px 16px; border-radius:10px; border:1px solid #7a4b12;
+  background:#b98a2f; color:#fff8e8; font-weight:800; font-size:.84rem; cursor:pointer; }
+.prog71-play:active{ transform:translateY(1px); }
+#map-progress-btn{ position:absolute; top:44px; right:8px; z-index:6; padding:6px 13px; min-height:30px;
+  background:rgba(240,240,224,.94); border:1px solid var(--gold-seal); border-radius:999px;
+  color:var(--ink); font-size:.72rem; font-weight:800; line-height:1; cursor:pointer;
+  box-shadow:0 1px 4px rgba(10,16,28,.35); }
+#map-progress-btn:active{ transform:translateY(1px); }
+.map-wrap.sheet-open #map-progress-btn{ display:none; }
 /* === v20a71 PART3B：訓練選擇器（全日訓練 panel＋逐日活動欄共用） === */
 .nb-quick .nb-train71-wrap{ flex:1 1 100%; margin-top:4px; border:1px solid #c4a574; background:#fff8e8; border-radius:12px; padding:10px; }
 .nb-train71-wrap[hidden]{ display:none; }
@@ -4845,7 +4855,7 @@ body.day-res-open .day-row{
           <span class="dual-money-sym" aria-hidden="true">$</span><b id="c-money">0</b>
         </span>
         <div class="bar-tools">
-          <button type="button" class="chip chip-story" id="chip-story" title="有可播劇情">劇情<span class="chip-story-n" id="chip-story-n"></span></button>
+          <button type="button" class="chip chip-story" id="chip-story" title="主線進度">進度<span class="chip-story-n" id="chip-story-n"></span></button>
           <button class="iconbtn" id="btn-menu" type="button" aria-label="選單">☰</button>
         </div>
       </div>
@@ -4868,8 +4878,9 @@ body.day-res-open .day-row{
     <div class="menu" id="menu">
       <!-- v20a72 MENU72（一門原則，用戶 2026-11-10 12:54 拍板）：選單只留動作
            （劇情／手帳／提早休息）＋分隔以下系統組；資訊頁（狀態／人脈／庫存／
-           拍攝簿／傳聞／人情債）全部歸入手帳五大類，唔再喺選單開第二度門。 -->
-      <button type="button" data-m="story-play" class="menu-story">劇情 <span class="menu-badge" id="menu-story-badge" hidden>0</span></button>
+           拍攝簿／傳聞／人情債）全部歸入手帳五大類，唔再喺選單開第二度門。
+           v20a77 HUB77（用戶 2026-11-10 17:51 拍板）：「劇情」掣成粒移除——
+           劇情／進度統一由進度頁做門口（頂欄 chip＋地圖「進度」掣直達）。 -->
       <button type="button" data-m="journal">手帳</button>
       <button type="button" data-m="rest-early">提早休息／+1日</button>
       <div class="menu-sep" aria-hidden="true"></div>
@@ -4890,6 +4901,8 @@ body.day-res-open .day-row{
         <span class="lg lg-star"><span class="mark-star" aria-hidden="true">星</span>遠觀</span>
         <span class="lg lg-out" hidden><img id="lg-out" alt=""/>非本區</span>
       </div>
+      <!-- v20a77 HUB77：大地圖常駐「進度」掣——任何狀態都撳得，直達手帳進度頁 -->
+      <button type="button" id="map-progress-btn" aria-label="主線進度">進度</button>
       <div class="map-polaroid" id="map-polaroid">
         <div class="map-well">
           <div class="map-stage" id="map-stage">
@@ -22219,10 +22232,11 @@ const StoryPlay = (()=>{
         clearPendingB01Flag();
         try{ start(nid); }catch(_e){}
       } });
-      btns.push({ label:"劇情列表", role:"g", on:()=>{ clearPendingB01Flag(); try{ playOpenPicker(); }catch(_e){} } });
+      /* v20a77 HUB77：舊「劇情列表」掣改指手帳「進度」頁（唔再開 playOpenPicker） */
+      btns.push({ label:"進度", role:"g", on:()=>{ clearPendingB01Flag(); try{ enterHome(null, false, "progress"); }catch(_e){} } });
     } else {
-      /* 無下一可播：列表見即將可出 lockedHint；唔跳手帳 */
-      btns.push({ label:"劇情列表", role:"g", on:()=>{ clearPendingB01Flag(); try{ playOpenPicker(); }catch(_e){} } });
+      /* 無下一可播：v20a77 HUB77 改去進度頁睇未開放條件（舊版開劇情列表） */
+      btns.push({ label:"進度", role:"g", on:()=>{ clearPendingB01Flag(); try{ enterHome(null, false, "progress"); }catch(_e){} } });
     }
     btns.push({ label:"關閉", role:"g", on:()=>{
       try{ if(typeof paintStoryEntryHints==="function") paintStoryEntryHints(); }catch(_e){}
@@ -22456,6 +22470,10 @@ const StoryPlay = (()=>{
     }catch(_e){}
   }
 
+  /* v20a77 HUB77：playOpenPicker 已冇玩家入口——頂欄 chip、選單「劇情」掣、
+     播完畫面掣、劇情提示 modal、手帳提示 fallback 全部改指手帳「進度」頁。
+     本函數保留做死碼：只剩隱藏 debug 接線面板（?debug 先出）嘅「可出列表」
+     同舊測試仲引用；玩家 build 唔會撳到。唔好喺玩家流程重新接返佢。 */
   function playOpenPicker(){
     if(typeof StoryOC==="undefined"){ toast("劇情尚未載入"); return; }
     StoryOC.ensure();
@@ -22652,7 +22670,7 @@ const StoryPlay = (()=>{
 })();
 
 
-const TUTORIAL_ZH_HK = {"version":3,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口 + v19z10 short tut ≤4","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上的地點，就是你可以去的地方；先點地點才看到行動。","能力不夠就去報名訓練；茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。"],"bodyAlt":["所有行動都從地圖進入。","訓練夠先報得試鏡；打聽、傾談、送禮都唔耗日（茶錢另計）。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可先免費查看；條件未合顯示暫未能報，達標後可接通告（耗一日）。","記數簿記收支；行程記拍攝與本週安排——開工前先看手帳。"],"bodyAlt":["先看通告欄再決定是否試鏡。","數目與行程都在手帳；達標後才接通告。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練夠先報得試鏡","body":["到對應地點報名訓練，能力夠先報到試鏡門檻。","訓練次數累計夠之後，魅力課和觀察課就會開放。"],"bodyAlt":["能力不夠，先到合適地點報名訓練。","訓練累計夠，社交與觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"打聽不耗日","body":["茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。","而家同熟人傾談／送禮唔會計一日（茶錢照扣）；訓練、試鏡、休息同跟行程開工先會計日。"],"bodyAlt":["打聽不耗日（茶錢另計）。","傾談／送禮唔佔日子（茶錢另計）。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到這裡（可跳過；選單可重看）。","建議：先訓練或看通告欄，再打開選單「劇情」——第一段故事會接著出現。"],"bodyAlt":["教學結束了，選單裡可以重看。","下一步：訓練／通告欄／劇情。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["本次未獲聘，且不可再參加本場。","可去訓練，或另選通告。"],"bodyAlt":["這一場未獲聘，本場不再開放。","回去訓練，或另找合適通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘後，拍攝日已排進行程。","開工前看手帳和行程，跟進度。"],"bodyAlt":["已獲聘，拍攝日記在行程。","按行程開工，手帳可看進度。"],"buttons":["我知道了"]}},"filterPass":"2026-11-07"};
+const TUTORIAL_ZH_HK = {"version":3,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口 + v19z10 short tut ≤4","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上的地點，就是你可以去的地方；先點地點才看到行動。","能力不夠就去報名訓練；茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。"],"bodyAlt":["所有行動都從地圖進入。","訓練夠先報得試鏡；打聽、傾談、送禮都唔耗日（茶錢另計）。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可先免費查看；條件未合顯示暫未能報，達標後可接通告（耗一日）。","記數簿記收支；行程記拍攝與本週安排——開工前先看手帳。"],"bodyAlt":["先看通告欄再決定是否試鏡。","數目與行程都在手帳；達標後才接通告。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練夠先報得試鏡","body":["到對應地點報名訓練，能力夠先報到試鏡門檻。","訓練次數累計夠之後，魅力課和觀察課就會開放。"],"bodyAlt":["能力不夠，先到合適地點報名訓練。","訓練累計夠，社交與觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"打聽不耗日","body":["茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。","而家同熟人傾談／送禮唔會計一日（茶錢照扣）；訓練、試鏡、休息同跟行程開工先會計日。"],"bodyAlt":["打聽不耗日（茶錢另計）。","傾談／送禮唔佔日子（茶錢另計）。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到這裡（可跳過；選單可重看）。","建議：先訓練或看通告欄，再撳地圖上嘅「進度」掣——第一段故事會接著出現。"],"bodyAlt":["教學結束了，選單裡可以重看。","下一步：訓練／通告欄／進度。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["本次未獲聘，且不可再參加本場。","可去訓練，或另選通告。"],"bodyAlt":["這一場未獲聘，本場不再開放。","回去訓練，或另找合適通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘後，拍攝日已排進行程。","開工前看手帳和行程，跟進度。"],"bodyAlt":["已獲聘，拍攝日記在行程。","按行程開工，手帳可看進度。"],"buttons":["我知道了"]}},"filterPass":"2026-11-07"};
 let TUTORIAL = TUTORIAL_ZH_HK;
 const TUT_MAIN_IDS = ["TUT_WELCOME","TUT_MAP","TUT_BOARD","TUT_DONE"]; /* v19z10：≤4 核心步；TRAIN／NPC／NOTEBOOK 併入文案 */
 /* PLAN 5ba79338: step 5 drag-guide and step 6 merge FX. Soft tip mounts tutorial-fx PNGs only when gatePath()==="soft". Modal scroll is separate. No new Soft flag. Soft≠PASS. Do not tip LIVE. ?v= stays 19w.
@@ -29460,7 +29478,7 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
     try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone("C1")) rows = rows.filter(r=>r && r.id!=="C1"); }catch(_e){}
     if(rows.length){
       const t = (rows[0] && (rows[0].title||rows[0].id)) || "新節";
-      extra += `<p class="gold" style="margin-top:6px">有劇情：「${t}」· 頂欄「劇情」或選單可進</p>`;
+      extra += `<p class="gold" style="margin-top:6px">有劇情：「${t}」· 頂欄或地圖「進度」掣可入</p>`;
     }
   }catch(_e){}
   const dayLine = opts.dayDone
@@ -30871,11 +30889,14 @@ function paintStoryEntryHints(){
     chip.classList.toggle("is-load-err", failed);
     /* v19z30: chip 常駐；無未讀淡顯示，唔再 aria-hidden */
     chip.setAttribute("aria-hidden", "false");
+    /* v20a77 HUB77：chip 改指進度頁，title 跟目的地改講「主線進度」，唔再指向舊劇情列表 */
     chip.title = failed
-      ? (fault.player || "劇情內容載入唔到，請再開多次")
-      : (show ? ("有可播劇情 · "+n) : ((fault && fault.kind==="pending") ? "劇情內容載入中" : "劇情（暫無可播）"));
+      ? (fault.player || "主線內容載入唔到，請再開多次")
+      : (show ? ("主線進度 · 有 "+n+" 幕可播") : ((fault && fault.kind==="pending") ? "主線內容載入中" : "主線進度（暫無可播）"));
     if(chipN) chipN.textContent = show ? String(n) : "";
   }
+  /* v20a77 HUB77：#menu-story-badge 已隨選單「劇情」掣移除；呢度有 if 守衛，
+     元素唔喺度會自動跳過（安全降級），唔好再加返選單徽章元素。 */
   const badge = document.getElementById("menu-story-badge");
   if(badge){
     if(n>0){ badge.hidden=false; badge.textContent=String(n); }
@@ -31141,8 +31162,9 @@ function wireHomeStoryHint(){
         }catch(_e){} }, 80);
         return;
       }
-      if(snap.n && typeof StoryPlay!=="undefined") StoryPlay.playOpenPicker();
-      else show("v-map");
+      /* v20a77 HUB77：冇地點可跳嗰陣改去進度頁（舊版開 playOpenPicker 列表） */
+      if(snap.n){ try{ enterHome(null, false, "progress"); return; }catch(_e){} }
+      show("v-map");
     }catch(_e){ try{ show("v-map"); }catch(_e2){} }
   };
 }
@@ -31161,8 +31183,8 @@ function maybeNudgeStoryEntry(reason){
   try{ saveQ(); }catch(_e){}
   modal(`<h3>有劇情可播</h3>
     <p>地圖日常之外，還有主線劇情可播。現在可出「${title}」。</p>
-    <p class="gold">之後也可從頂欄「劇情」、或選單「劇情」進入。</p>`,[
-    { label:"打開劇情", role:"p", on:()=>{ try{ StoryPlay.playOpenPicker(); }catch(_e){} } },
+    <p class="gold">之後也可從頂欄「進度」掣，或者大地圖嘅「進度」掣，睇主線進度同開播。</p>`,[
+    { label:"睇進度", role:"p", on:()=>{ try{ enterHome(null, false, "progress"); }catch(_e){} } },
     { label:"稍後", role:"g" }
   ]);
   return true;
@@ -34287,8 +34309,24 @@ function renderProgressPane71(){
       return;
     }
     if(r.state==="open"){
+      /* v20a77 HUB77：進度頁做播放門口——在場判定用返 picker（pickerHereBlock）
+         同一套 evalNode（checkNodePhase＋player），ev.ok 先出「播呢幕」掣；
+         唔在場維持「去 X 就會觸發」文字，唔畀隔空播。 */
+      let here77 = false;
+      try{
+        const node77 = (typeof StoryOC!=="undefined" && StoryOC.findNodeRaw) ? StoryOC.findNodeRaw(r.id) : null;
+        const ev77 = (node77 && StoryOC.evalNode) ? StoryOC.evalNode(node77, { checkNodePhase:true, player:true }) : null;
+        here77 = !!(ev77 && ev77.ok);
+      }catch(_e){ here77 = false; }
+      let openBody;
+      if(here77){
+        openBody = '<p class="prog71-note">'+(r.locName ? ("你而家喺"+prog71Esc(r.locName)+"，可以即刻播呢幕。") : "你而家喺現場，可以即刻播呢幕。")+'</p>'
+          + '<button type="button" class="prog71-play" data-prog77-play="'+prog71Esc(r.id)+'">播呢幕</button>';
+      } else {
+        openBody = '<p class="prog71-note">'+(r.locName ? ("去"+prog71Esc(r.locName)+"就會觸發。") : "已經開咗——去返嗰幕嘅地點就會觸發（地圖上有「劇」針標示）。")+'</p>';
+      }
       html.push('<div class="prog71-row open"><div class="prog71-top"><span class="prog71-act">第 '+r.n+' 幕</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag open">已開放</span></div>'
-        + '<p class="prog71-note">'+(r.locName ? ("去"+prog71Esc(r.locName)+"就會觸發。") : "已經開咗——喺地圖搵「劇」針，或者開劇情列表播。")+'</p></div>');
+        + openBody + '</div>');
       return;
     }
     if(r.state==="missed"){
@@ -42423,7 +42461,7 @@ function showB01HomeModal(){
   S.flags = S.flags||{}; S.flags.sawB01 = true;
   setTutMask(false);
   const c1Where = (typeof c1PlayLocName==="function") ? c1PlayLocName() : "何生事務所";
-  let storyLine = `<p class="gold" style="margin-top:8px">另外：頂欄／選單有「劇情」。去${c1Where}睇開局主線（入到事務所先至播）→「去${c1Where}睇劇情（會用預設行程）」；想自己改行程 →「開始寫手帳」。主線「先學做動作戲／先賺」只播一次——播完就唔使返去重播。</p>`;
+  let storyLine = `<p class="gold" style="margin-top:8px">另外：頂欄同地圖有「進度」掣，可以睇主線進度。去${c1Where}睇開局主線（入到事務所先至播）→「去${c1Where}睇劇情（會用預設行程）」；想自己改行程 →「開始寫手帳」。主線「先學做動作戲／先賺」只播一次——播完就唔使返去重播。</p>`;
   try{
     if(typeof StoryOC!=="undefined" && StoryOC.isDone("C1")){
       let nextTitle = "";
@@ -42433,8 +42471,8 @@ function showB01HomeModal(){
         if(o0) nextTitle = o0.title || o0.id || "";
       }catch(_e){}
       storyLine = nextTitle
-        ? `<p class="gold" style="margin-top:8px">主線「先學做動作戲／先賺」已播完。下一宗劇情「${nextTitle}」可從頂欄「劇情」或地圖金框／「劇」針進入。</p>`
-        : `<p class="gold" style="margin-top:8px">主線「先學做動作戲／先賺」已播完。之後有新劇情時，頂欄「劇情」同地圖金框／「劇」針會提示。</p>`;
+        ? `<p class="gold" style="margin-top:8px">主線「先學做動作戲／先賺」已播完。下一宗劇情「${nextTitle}」可從頂欄／地圖「進度」掣，或地圖金框／「劇」針進入。</p>`
+        : `<p class="gold" style="margin-top:8px">主線「先學做動作戲／先賺」已播完。之後有新劇情時，頂欄／地圖「進度」掣同地圖金框／「劇」針會提示。</p>`;
     }
   }catch(_e){}
   const goPlan = ()=>{
@@ -42586,6 +42624,35 @@ try{
   });
 }catch(_e){}
 
+/* v20a77 HUB77：大地圖常駐「進度」掣——獨立於 hint 內容（hint 係 span 嗰陣
+   都撳得），直達手帳行程組「進度」子頁，同 hint 掣／chip 同一路徑。 */
+try{
+  const _mapProg77 = document.getElementById("map-progress-btn");
+  if(_mapProg77) _mapProg77.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    try{ enterHome(null, false, "progress"); }catch(_e){}
+  });
+}catch(_e){}
+
+/* v20a77 HUB77：進度頁「播呢幕」掣——委派掛喺 #progress-list（render 只換
+   innerHTML，委派唔受影響）。開播前行 ensureWeekPlanCommittedForStory，
+   再行 StoryPlay.start(id)，同地點 sheet 觸發完全同一條路徑；
+   在場判定喺 render 嗰陣已用 picker 同一套 evalNode 做咗，start 本身會再驗。 */
+try{
+  const _progList77 = document.getElementById("progress-list");
+  if(_progList77) _progList77.addEventListener("click", (e)=>{
+    const b = (e.target && e.target.closest) ? e.target.closest("[data-prog77-play]") : null;
+    if(!b) return;
+    const id = b.getAttribute("data-prog77-play");
+    if(!id) return;
+    try{ if(typeof ensureWeekPlanCommittedForStory==="function") ensureWeekPlanCommittedForStory(); }catch(_ec){}
+    try{
+      if(typeof StoryPlay!=="undefined" && StoryPlay.start) StoryPlay.start(id);
+      else toast("無法開劇情");
+    }catch(_e){ toast("無法開劇情"); }
+  });
+}catch(_e){}
+
 const _homeSubtabsEl = document.getElementById("home-subtabs");
 if(_homeSubtabsEl) _homeSubtabsEl.onclick=e=>{
   const btn=e.target.closest("button[data-htab]"); if(!btn) return;
@@ -42650,9 +42717,10 @@ document.body.addEventListener("click",()=>document.getElementById("menu").class
   if(cs) cs.addEventListener("click", e=>{
     e.stopPropagation();
     try{
-      /* v19z15 B2：chip 開事態列表前，若手帳未確定則靜默提交 */
-      if(typeof ensureWeekPlanCommittedForStory==="function") ensureWeekPlanCommittedForStory();
-      if(typeof StoryPlay!=="undefined") StoryPlay.playOpenPicker();
+      /* v20a77 HUB77：chip 改指手帳「進度」頁（唔再開 playOpenPicker 劇情列表）；
+         入手帳跟地圖 hint 掣同一路徑（enterHome progress），唔使先提交行程——
+         進度頁係手帳子頁，行程狀態由手帳自己嘅流程處理。 */
+      enterHome(null, false, "progress");
     }catch(_e){}
   });
 })();
@@ -42661,7 +42729,8 @@ document.getElementById("menu").onclick=e=>{
   document.getElementById("menu").classList.remove("on");
   /* v20a72 MENU72：stats／people／inv／jobs／rumors／debts 六個選單分支隨掣
      一併移除（資訊頁歸入手帳）；showStats／showPeople／showInventory／
-     showJobs 函數保留做舊呼叫重定向，唔再由選單觸發。 */
+     showJobs 函數保留做舊呼叫重定向，唔再由選單觸發。
+     v20a77 HUB77：story-play 分支隨「劇情」掣一併移除（進度頁做唯一門口）。 */
   if(m==="home" || m==="journal"){
     if(kickScheduleIfNeeded()) return;
     goJournalFromMenu();
@@ -42672,10 +42741,6 @@ document.getElementById("menu").onclick=e=>{
   if(m==="replay-tut")replayTutorial();
   if(m==="settings")openSettingsModal();
   if(m==="wire")showWireDebug();
-  if(m==="story-play" && typeof StoryPlay!=="undefined"){
-    try{ if(typeof ensureWeekPlanCommittedForStory==="function") ensureWeekPlanCommittedForStory(); }catch(_ec){}
-    StoryPlay.playOpenPicker();
-  }
   if(m==="save")openSaveSlotsModal("save");
   if(m==="load")openSaveSlotsModal("load");
   if(m==="new")startNew();
