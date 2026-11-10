@@ -2,6 +2,8 @@
 # v20a72 MENU72 靜態測試：主選單一門原則（選單只留動作＋系統組；資訊頁歸入
 # 手帳五大類——狀態併記數／拍攝簿併作品／人脈入人情組／庫存入近況組；
 # 傳聞／人情債選單入口刪除）＋舊呼叫重定向。
+# v20a77 HUB77 原位改版：用戶 2026-11-10 17:51 拍板刪選單「劇情」掣——
+# 選單清單／handler 期望同步移除 story-play，徽章斷言改為「已移除」。
 # 反證：喺 v20a71 index 上行會 FAIL（選單仲有 14 項、冇 people／inv 子頁、
 # showJobs／showPeople／showInventory 仲開 modal）。
 # 用法：python3 tests/test_menu72_static.py [path-to-index.html]
@@ -25,11 +27,11 @@ i_after = src.find('<div class="map-wrap">', i_menu)
 menu = src[i_menu:i_after] if 0 <= i_menu < i_after else ''
 ok('選單容器搵到', bool(menu))
 ms = re.findall(r'data-m="([^"]+)"', menu)
-ok('選單 data-m 恰好＝新清單（劇情／手帳／提早休息＋系統五項＋wire）',
-   ms == ['story-play', 'journal', 'rest-early', 'replay-tut', 'settings', 'wire', 'save', 'load', 'new'])
+ok('選單 data-m 恰好＝新清單（手帳／提早休息＋系統五項＋wire；劇情掣已於 v20a77 移除）',
+   ms == ['journal', 'rest-early', 'replay-tut', 'settings', 'wire', 'save', 'load', 'new'])
 ok('選單已冇六個資訊頁入口', all(('data-m="%s"' % m) not in menu for m in
    ['stats', 'people', 'inv', 'jobs', 'rumors', 'debts']))
-ok('劇情徽章保留（menu-story-badge）', 'id="menu-story-badge"' in menu and 'class="menu-story"' in menu)
+ok('劇情掣＋徽章已移除（v20a77 HUB77）', 'id="menu-story-badge"' not in menu and 'menu-story' not in menu)
 ok('手帳掣文案＝手帳（唔再叫返手帳）', 'data-m="journal">手帳</button>' in menu and '返手帳' not in menu)
 i_rest = menu.find('data-m="rest-early"')
 i_sep = menu.find('class="menu-sep"')
@@ -43,8 +45,9 @@ handler = src[i_h:i_h + 2200] if i_h >= 0 else ''
 ok('handler 在位', bool(handler))
 ok('handler 已刪六個資訊頁分支', all(('m==="%s"' % m) not in handler for m in
    ['stats', 'people', 'inv', 'jobs', 'rumors', 'debts']))
-ok('handler 保留全部新清單分支', all(('m==="%s"' % m) in handler for m in
-   ['journal', 'rest-early', 'replay-tut', 'settings', 'wire', 'story-play', 'save', 'load', 'new']))
+ok('handler 保留全部新清單分支（story-play 已於 v20a77 隨掣移除）', all(('m==="%s"' % m) in handler for m in
+   ['journal', 'rest-early', 'replay-tut', 'settings', 'wire', 'save', 'load', 'new'])
+   and 'm==="story-play"' not in handler)
 
 # --- (3) 手帳新子頁結構 ---
 ok('人脈 pane＋清單容器', 'id="home-pane-people"' in src and 'id="people-list"' in src)
