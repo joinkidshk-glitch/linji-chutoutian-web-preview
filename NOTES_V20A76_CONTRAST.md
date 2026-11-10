@@ -94,3 +94,5 @@ looks 10→16（Δ=6 入帶）、學費 −$800 ✓（修前修後各跑一次�
   toast/ticket_stub.png、fx/awei-rest-sleep.mp4）——傳聞頁情報拼圖相片
   位喺本地鏡像顯示破圖；serve 鏡像資產目錄同 repo 是否一致待查，
   線上版未見用戶報告，先記低。
+
+（部署重觸發：PR #176 合併後 Pages 未更新，細 commit 直推 main 重觸發。）
