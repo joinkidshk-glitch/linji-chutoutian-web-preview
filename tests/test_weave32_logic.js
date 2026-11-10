@@ -70,12 +70,15 @@ const SIDE = globalThis.PAPER_SIDE_ITEMS;
 const FRAGS = globalThis.SIDE_PAPER_FRAGS;
 
 // 1. 登記表：三條情報線各一塊報紙碎片，其餘花邊唔登記
-ok('frag map has exactly 3 entries', Object.keys(FRAGS).length===3);
+// v20a82 WF3 有意變更：鏈 D 擴充——登記表 3→12 條（加葉敏芝／顧明輝新情報線＋7 條時代花邊碎片），原位改版
+ok('frag map has exactly 12 entries (v82 WF3 鏈 D 擴充)', Object.keys(FRAGS).length===12);
+ok('frag map yip (v82)', FRAGS['side_yip_swimsuit']==='paperfrag_yip_swimsuit');
+ok('frag map ku (v82)', FRAGS['side_ku_wrap']==='paperfrag_ku_wrap');
 ok('frag map lu', FRAGS['side_lu_concert']==='paperfrag_lu_concert');
 ok('frag map liao', FRAGS['side_liao_newfilm']==='paperfrag_liao_newfilm');
 ok('frag map mak', FRAGS['side_mak_wrap']==='paperfrag_mak_wrap');
 ok('every mapped sideId exists in pool', Object.keys(FRAGS).every(id=>SIDE.some(it=>it.id===id)));
-ok('pool grew to 20 (mak wrap + v20a24 exodus farewell item + v20a31 程天諾預熱x2)', SIDE.length===20);
+ok('pool grew to 29 (v82 WF3 鏈 D 花邊擴充 +9)', SIDE.length===29);
 ok('mak side item mentions 麥震東 without banned words', (()=>{ const m = SIDE.find(it=>it.id==='side_mak_wrap'); return !!m && m.h.indexOf('麥震東')>=0 && !/買醉|爛醉|食煙|抽煙/.test(m.h+m.d); })());
 
 // 2. paperSideItemForDay 帶 sideId（1988 池 12 則：day0=陸、day1=廖、day11=麥、day2=魏無關聯）
