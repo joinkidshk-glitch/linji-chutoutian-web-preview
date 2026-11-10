@@ -49,12 +49,14 @@ ok('presentDueMorningPaper untouched (paperSheet opt kept)', 'paperSheet: true' 
 
 # ---- (4) 傳聞頁說明對比（作用域只限傳聞頁） ----
 ok('rumor intro solid bg fix', '#home-pane-rumor .pane-intro' in v48 and 'background:#fff8e8' in v48 and 'color:#3a2a18' in v48)
-ok('debt pane intro not restyled', '#home-pane-debt .pane-intro' not in html)
+# v20a76 CONTRAST76 supersede：v48 當時明文留低人情債頁唔郁；v76 全手帳普查
+# 量到該引言 1.24:1 讀唔到，用戶拍板一次修清——已加深底亮字規則，斷言跟住改。
+ok('debt pane intro restyled by v76 CONTRAST76', '#home-pane-debt .pane-intro{ color:#e6d7ae; }' in html)
 
 # ---- 紅線 ----
 ok('SAVE key intact', html.count('starVolunteer_map_v19w') == 10)
 ok('product ?v= intact', html.count('"v20a10"') == 7)
-ok('softRev marker intact', 's111' in html)
+ok('softRev marker intact', 's107' in html)
 # CSS 大括號平衡（主 style 段）
 style = html.split('<style', 1)[1].split('</style>', 1)[0]
 ok('style braces balanced', style.count('{') == style.count('}'))

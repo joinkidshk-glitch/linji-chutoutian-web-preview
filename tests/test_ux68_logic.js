@@ -77,8 +77,10 @@ const gains = ux68ParseGainTable();
    （跟用戶三級表「附帶跟級 +1/+2/+3」），期望值加 stage:[1,1]。 */
 ok('增益解析：train_acting = 演技+4~6／附帶台風+1／壓力+8~12（v75 一級）',
   JSON.stringify(gains.train_acting) === JSON.stringify({ acting:[4,6], stage:[1,1], stress:[8,12] }));
-ok('增益解析：train_iq 附帶演技+1', gains.train_iq && gains.train_iq.iq[0] === 3 && gains.train_iq.iq[1] === 5
-  && gains.train_iq.acting[0] === 1 && gains.train_iq.acting[1] === 1 && gains.train_iq.stress[0] === 4);
+/* v20a76 改版：智商課主增益／壓力統一返全表（用戶 17:28 拍板）——智商+4~6／壓力+8~12；
+   附帶演技+1 唔郁。 */
+ok('增益解析：train_iq 附帶演技+1', gains.train_iq && gains.train_iq.iq[0] === 4 && gains.train_iq.iq[1] === 6
+  && gains.train_iq.acting[0] === 1 && gains.train_iq.acting[1] === 1 && gains.train_iq.stress[0] === 8);
 /* v20a75 改版：進階演技已併入演技級別，唔再係獨立課——增益表冇 mid 鍵；
    改驗上滿 5 堂後 train_acting 增益轉二級數（同舊進階課數值一致）。 */
 ok('v75：增益表冇進階課鍵（已併入級別）', !('train_acting_mid' in gains) && !('train_stage_mid' in gains));
@@ -88,10 +90,12 @@ ok('v75：演技 5 堂後增益轉二級 = 演技+6~8／台風+2／壓力+10~14'
   gains75Lv2.train_acting.acting[0] === 6 && gains75Lv2.train_acting.acting[1] === 8
   && gains75Lv2.train_acting.stage[0] === 2 && gains75Lv2.train_acting.stress[0] === 10 && gains75Lv2.train_acting.stress[1] === 14);
 ok('增益解析：train_stage 有台風增益（解析層面）', gains.train_stage && gains.train_stage.stage[0] === 4);
-ok('增益解析：train_looks = 外貌+3~5／魅力+1／學費 $800／壓力+6~9（同行串連分支）',
-  !!gains.train_looks && gains.train_looks.looks[0] === 3 && gains.train_looks.looks[1] === 5
+/* v20a76 改版：外貌課主增益／壓力統一返全表（用戶 17:28 拍板）——外貌+4~6／壓力+8~12；
+   附帶魅力+1 同學費 $800 唔郁。 */
+ok('增益解析：train_looks = 外貌+4~6／魅力+1／學費 $800／壓力+8~12（同行串連分支）',
+  !!gains.train_looks && gains.train_looks.looks[0] === 4 && gains.train_looks.looks[1] === 6
   && gains.train_looks.charm[0] === 1 && gains.train_looks.money[0] === -800
-  && gains.train_looks.stress[0] === 6 && gains.train_looks.stress[1] === 9);
+  && gains.train_looks.stress[0] === 8 && gains.train_looks.stress[1] === 12);
 
 /* ---------- (2) 課程地點衍生 ---------- */
 const vocalLocs = ux68CourseLocs('train_vocal');
