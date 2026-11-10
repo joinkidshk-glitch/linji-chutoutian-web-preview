@@ -37,8 +37,10 @@ const tfA = html.indexOf('/* ==== v20a55 TEXTFIX');
 const tfB = html.indexOf('async function refreshCopyPacksFromDisk(){');
 if(tfA<0 || tfB<0 || tfB<=tfA){ console.log('FAIL TEXTFIX55 block not found'); process.exit(1); }
 const TF_SRC = html.slice(tfA, tfB);
-const CONSTS = ['LEADSTAR59','POSTER59_STAR_IDS','POSTER59_IDS','POSTER59_DATA','BRIDGE56_VARIANTS','BRIDGE56_CROSSYEAR_RENAME'];
-const FNS = ['poster59Path','leadStar59Apply','leadStar59Of','leadStarLine59','esc59',
+// v20a85 harness 維護：poster59Path 擴充咗 POSTER85 分支，抽取清單加 POSTER85_IDS／poster85File；
+// 本檔全部斷言（試點 10 張行為）冇改——POSTER85 覆蓋另見 test_poster85_logic.js。
+const CONSTS = ['LEADSTAR59','POSTER59_STAR_IDS','POSTER59_IDS','POSTER59_DATA','POSTER85_IDS','BRIDGE56_VARIANTS','BRIDGE56_CROSSYEAR_RENAME'];
+const FNS = ['poster59Path','poster85File','leadStar59Apply','leadStar59Of','leadStarLine59','esc59',
   'work59GigLookup','work59IsNamed','work59WorkOf','work59RoleOf','work59YearOf',
   'worksWallEntries59','workCard59Html','worksWallHtml59','wrapPoster59Html',
   'boardNotePlayerOk','looksLikeEraId','humanizeEraId','bridge56NormalizeGig','normalizeGigRecord',
