@@ -26,7 +26,9 @@ ok('TRAIN_BY_TYPE 主課冇被郁（tv/film 演技、music 歌藝、ad 外貌）
 ok('maybeUnlockMidCourses 補台風自動開放（累計 2 堂）', 'if(total>=2 && !en.train_stage)' in src
    and 'enrollCourse("train_stage", notes, "unlock")' in src)
 ok('ux68UnlockRule 鏡像補 train_stage 個案', 'case "train_stage":' in src)
-ok('進階台風原有解鎖規則保留（台風 3 堂）', 'if((tc.train_stage||0)>=3 && !en.train_stage_mid)' in src)
+# v20a75 改版：進階台風併入台風級別（3 堂開進階規則廢止）——改驗 mid 解鎖
+# 規則已清走（只剩存檔遷移參照）＋升級門檻 5 堂喺 levels75Level。
+ok('v75：進階台風獨立解鎖已廢止（併入級別）', 'en.train_stage_mid' not in src and 'LEVELS75_STEP = 5' in src)
 
 # --- (3) 通告捷徑去別名 ---
 ok('preferredLocForTrainTarget 唔再將 train_stage 別名去 train_acting',
@@ -34,8 +36,10 @@ ok('preferredLocForTrainTarget 唔再將 train_stage 別名去 train_acting',
 ok('train_stage 有獨立捷徑分支（指去電視台）', 'if(courseId==="train_stage")' in src)
 
 # --- (4) 增益／堂數本體冇被郁（接線包唔改數值） ---
-ok('台風增益表保留（stage 4+R(0,2)／壓力 8+R(0,4)，兩條結算路徑）',
-   src.count('stage:4+R(0,2), stress:8+R(0,4)') == 2)
+# v20a75 改版：增益改存 TRAIN75_SPEC（一級 stage +4~6／壓力 +8~12＝舊字面量原值），
+# 兩條路徑共用 train75ApplyLesson——改驗數據表台風行＋共用核心。
+ok('v75：台風一級增益（數據表）+4~6／壓力 +8~12＋兩路徑共用核心',
+   'main:"stage"' in src and 'sub:"charm",  sLo:8, sSpan:4' in src and src.count('train75ApplyLesson(') >= 3)
 
 print('\nFAILURES: %d' % len(fails) if fails else '\nALL PASS')
 sys.exit(1 if fails else 0)

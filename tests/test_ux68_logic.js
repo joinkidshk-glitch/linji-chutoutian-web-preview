@@ -73,13 +73,20 @@ eval(extractBlock('/* ===== v20a68 UX68', 'function looksLikeEraId(s){'));
 
 /* ---------- (1) 增益表解析（由 applyTrainLesson 源碼衍生） ---------- */
 const gains = ux68ParseGainTable();
-ok('增益解析：train_acting = 演技+4~6／壓力+8~12',
-  JSON.stringify(gains.train_acting) === JSON.stringify({ acting:[4,6], stress:[8,12] }));
+/* v20a75 改版：增益改由 TRAIN75_SPEC 按現級衍生；演技一級附帶台風 +1 由一級起
+   （跟用戶三級表「附帶跟級 +1/+2/+3」），期望值加 stage:[1,1]。 */
+ok('增益解析：train_acting = 演技+4~6／附帶台風+1／壓力+8~12（v75 一級）',
+  JSON.stringify(gains.train_acting) === JSON.stringify({ acting:[4,6], stage:[1,1], stress:[8,12] }));
 ok('增益解析：train_iq 附帶演技+1', gains.train_iq && gains.train_iq.iq[0] === 3 && gains.train_iq.iq[1] === 5
   && gains.train_iq.acting[0] === 1 && gains.train_iq.acting[1] === 1 && gains.train_iq.stress[0] === 4);
-ok('增益解析：train_acting_mid = 演技+6~8／台風+2／壓力+10~14',
-  gains.train_acting_mid && gains.train_acting_mid.acting[1] === 8 && gains.train_acting_mid.stage[0] === 2
-  && gains.train_acting_mid.stress[1] === 14);
+/* v20a75 改版：進階演技已併入演技級別，唔再係獨立課——增益表冇 mid 鍵；
+   改驗上滿 5 堂後 train_acting 增益轉二級數（同舊進階課數值一致）。 */
+ok('v75：增益表冇進階課鍵（已併入級別）', !('train_acting_mid' in gains) && !('train_stage_mid' in gains));
+S = { trainCount:{ train_acting:5 }, enrolled:{ train_acting:true }, dayIndex:0 };
+const gains75Lv2 = ux68ParseGainTable();
+ok('v75：演技 5 堂後增益轉二級 = 演技+6~8／台風+2／壓力+10~14',
+  gains75Lv2.train_acting.acting[0] === 6 && gains75Lv2.train_acting.acting[1] === 8
+  && gains75Lv2.train_acting.stage[0] === 2 && gains75Lv2.train_acting.stress[0] === 10 && gains75Lv2.train_acting.stress[1] === 14);
 ok('增益解析：train_stage 有台風增益（解析層面）', gains.train_stage && gains.train_stage.stage[0] === 4);
 ok('增益解析：train_looks = 外貌+3~5／魅力+1／學費 $800／壓力+6~9（同行串連分支）',
   !!gains.train_looks && gains.train_looks.looks[0] === 3 && gains.train_looks.looks[1] === 5
@@ -107,10 +114,12 @@ ok('狀態：未報名歌藝 → 徽章「未報名」＋無進度行＋前往�
 S.enrolled = { train_vocal:true };
 st = ux68CourseStatus('train_vocal');
 ok('狀態：已報名 → 已開放＋徽章「已開放」', st.open === true && st.badge === '已開放');
+/* v20a75 改版：進階演技個案已廢（併入級別）；未開放狀態改用智商課驗證
+   （開課門檻任何訓練累計 4 堂，v75 維持不變）。 */
 S = { trainCount:{ train_acting:1 }, enrolled:{}, dayIndex:0 };
-st = ux68CourseStatus('train_acting_mid');
-ok('狀態：進階演技未夠堂 → 徽章未開放＋條件＋進度 1／3＋差 2 堂', !st.open && st.badge === '未開放'
-  && st.text.indexOf('演技訓練累計 3 堂') >= 0 && st.text.indexOf('1／3') >= 0 && st.detail.indexOf('差 2 堂') >= 0);
+st = ux68CourseStatus('train_iq');
+ok('狀態：智商未夠堂 → 徽章未開放＋條件＋進度 1／4＋差 3 堂（v75）', !st.open && st.badge === '未開放'
+  && st.text.indexOf('任何訓練累計 4 堂') >= 0 && st.text.indexOf('1／4') >= 0 && st.detail.indexOf('差 3 堂') >= 0);
 S = { trainCount:{ train_vocal:2 }, enrolled:{}, dayIndex:0 };
 st = ux68CourseStatus('train_charm');
 ok('狀態：魅力課——徽章未開放＋任何訓練 2 堂進度＋附帶途徑', !st.open && st.badge === '未開放' && st.text.indexOf('2／2') >= 0 && st.text.indexOf('附帶開放') >= 0);

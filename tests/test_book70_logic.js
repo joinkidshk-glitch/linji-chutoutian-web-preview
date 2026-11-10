@@ -61,25 +61,26 @@ var GIGS = [];
 eval(extractBlock('/* ===== v20a68 UX68', 'function looksLikeEraId(s){'));
 
 /* ---------- (1) 主修判定（增益表 argmax 衍生，撇除壓力／學費） ---------- */
-ok('主修判定：演技＝train_acting／train_acting_mid', ux68CoursePrimaryStat('train_acting') === 'acting' && ux68CoursePrimaryStat('train_acting_mid') === 'acting');
-ok('主修判定：台風＝train_stage／train_stage_mid（唔畀附帶魅力／台風細增益搶主修）',
-  ux68CoursePrimaryStat('train_stage') === 'stage' && ux68CoursePrimaryStat('train_stage_mid') === 'stage');
+/* v20a75 改版：進階課併入母課級別，主修判定只剩 7 基礎課。 */
+ok('主修判定：演技＝train_acting（v75 進階已併入級別）', ux68CoursePrimaryStat('train_acting') === 'acting');
+ok('主修判定：台風＝train_stage（唔畀附帶魅力搶主修）',
+  ux68CoursePrimaryStat('train_stage') === 'stage');
 ok('主修判定：歌藝／外貌／魅力／智商／體能',
   ux68CoursePrimaryStat('train_vocal') === 'vocal' && ux68CoursePrimaryStat('train_looks') === 'looks'
   && ux68CoursePrimaryStat('train_charm') === 'charm' && ux68CoursePrimaryStat('train_iq') === 'iq'
   && ux68CoursePrimaryStat('train_stamina') === 'stamina');
-ok('主修判定：9 課全部有主修數值', Object.keys(COURSE_DEFS).every(cid => !!ux68CoursePrimaryStat(cid)));
+ok('主修判定：7 課全部有主修數值（v75）', Object.keys(COURSE_DEFS).length === 7 && Object.keys(COURSE_DEFS).every(cid => !!ux68CoursePrimaryStat(cid)));
 
 /* ---------- (2) 主次分家（每頁主修大卡／附帶細行） ---------- */
 let sp = book70SplitForStat('acting');
-ok('分家：演技頁主修＝[進階演技， 演技訓練]（增益大→細）、附帶＝[智商・修養]',
-  JSON.stringify(sp.prim) === JSON.stringify(['train_acting_mid','train_acting']) && JSON.stringify(sp.sec) === JSON.stringify(['train_iq']));
+ok('分家：演技頁主修＝[演技訓練]、附帶＝[智商・修養]（v75 一級現況）',
+  JSON.stringify(sp.prim) === JSON.stringify(['train_acting']) && JSON.stringify(sp.sec) === JSON.stringify(['train_iq']));
 sp = book70SplitForStat('stage');
-ok('分家：台風頁主修＝[進階台風， 台風訓練]、附帶＝[進階演技]（台風 +2 細行）',
-  JSON.stringify(sp.prim) === JSON.stringify(['train_stage_mid','train_stage']) && JSON.stringify(sp.sec) === JSON.stringify(['train_acting_mid']));
+ok('分家：台風頁主修＝[台風訓練]、附帶＝[演技訓練]（台風 +1 細行，v75）',
+  JSON.stringify(sp.prim) === JSON.stringify(['train_stage']) && JSON.stringify(sp.sec) === JSON.stringify(['train_acting']));
 sp = book70SplitForStat('charm');
-ok('分家：魅力頁主修＝[魅力訓練]、附帶＝[進階台風（+2)， 外貌・形象（+1)]',
-  JSON.stringify(sp.prim) === JSON.stringify(['train_charm']) && JSON.stringify(sp.sec) === JSON.stringify(['train_stage_mid','train_looks']));
+ok('分家：魅力頁主修＝[魅力訓練]、附帶＝[外貌・形象（+1)， 台風訓練（+1)]（v75 一級同值按課 id 序）',
+  JSON.stringify(sp.prim) === JSON.stringify(['train_charm']) && JSON.stringify(sp.sec) === JSON.stringify(['train_looks','train_stage']));
 sp = book70SplitForStat('iq');
 ok('分家：智商頁主修＝[智商・修養]、冇附帶', JSON.stringify(sp.prim) === JSON.stringify(['train_iq']) && sp.sec.length === 0);
 sp = book70SplitForStat('vocal');
@@ -98,24 +99,26 @@ ok('分家：主修同附帶唔重疊、合併＝全部有呢個數值增益嘅�
 S = { trainCount:{}, enrolled:{}, dayIndex:0 };
 let st = ux68CourseStatus('train_acting');
 ok('狀態契約：主課未報名 → badge=未報名、detail 空、text 就係徽章', st.badge === '未報名' && st.detail === '' && st.text === '未報名' && !st.open);
-st = ux68CourseStatus('train_acting_mid');
-ok('狀態契約：進階演技 → badge=未開放、detail 一句（條件＋進度＋差 3 堂）',
-  st.badge === '未開放' && st.detail.indexOf('演技訓練累計 3 堂（0／3）') >= 0 && st.detail.indexOf('差 3 堂') >= 0);
+/* v20a75 改版：進階演技個案已廢；未開放一句 detail 改用智商課（門檻 4 堂）。 */
+st = ux68CourseStatus('train_iq');
+ok('狀態契約：智商 → badge=未開放、detail 一句（條件＋進度＋差 4 堂）（v75）',
+  st.badge === '未開放' && st.detail.indexOf('任何訓練累計 4 堂（0／4）') >= 0 && st.detail.indexOf('差 4 堂') >= 0);
 st = ux68CourseStatus('train_stage');
 ok('狀態契約：台風（v69 接線）→ badge=未開放、detail 含累計 2 堂＋差 2 堂＋附帶途徑',
   st.badge === '未開放' && st.detail.indexOf('任何訓練累計 2 堂（0／2）') >= 0 && st.detail.indexOf('差 2 堂') >= 0 && st.detail.indexOf('附帶開放') >= 0);
 S = { trainCount:{}, enrolled:{ train_stage:true }, dayIndex:0 };
 st = ux68CourseStatus('train_stage');
 ok('狀態契約：已報名 → open＋badge=已開放', st.open === true && st.badge === '已開放');
-S = { trainCount:{ train_acting:3 }, enrolled:{}, dayIndex:0 };
-st = ux68CourseStatus('train_acting_mid');
-ok('狀態契約：已達標未報名 → detail 標「已達標」唔再寫差堂數',
+/* v20a75 改版：已達標個案改用魅力課（任何訓練 2 堂達標、未報名）。 */
+S = { trainCount:{ train_vocal:2 }, enrolled:{}, dayIndex:0 };
+st = ux68CourseStatus('train_charm');
+ok('狀態契約：已達標未報名 → detail 標「已達標」唔再寫差堂數（v75 魅力個案）',
   st.badge === '未開放' && st.detail.indexOf('已達標') >= 0 && st.detail.indexOf('差') < 0);
 /* 用戶診斷核心：地點名唔准喺狀態行出現（舊版「未報名——去 A／B／C…」就係咁嚟） */
 S = { trainCount:{}, enrolled:{}, dayIndex:0 };
 const locNames = LOCS.map(l => l.name);
 const dirty = Object.keys(COURSE_DEFS).filter(cid => locNames.some(n => ux68CourseStatus(cid).text.indexOf(n) >= 0));
-ok('狀態契約：全部 9 課狀態文字零地點名（地點改由前往掣交代）', dirty.length === 0);
+ok('狀態契約：全部 7 課狀態文字零地點名（v75；地點改由前往掣交代）', dirty.length === 0);
 
 console.log(fails.length ? ('FAILURES: ' + fails.join(' | ')) : 'ALL PASS');
 process.exit(fails.length ? 1 : 0);

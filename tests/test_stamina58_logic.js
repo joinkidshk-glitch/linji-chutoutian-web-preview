@@ -88,14 +88,16 @@ var pushFlavor = function(x){ __flavor.push(x); };
 var stressAtEnd = 0;
 
 eval("var START = { y:1988, m:3, d:7 };");
-const CONSTS = ['STAT_LABEL','STAT_MAX','STRESS_MAX','PLAN_ITEMS','LOCS','COURSE_DEFS','COURSE_ENROLL_EXTRA','TRAIN_BY_TYPE','EVENTS_ZH_HK'];
+const CONSTS = ['STAT_LABEL','STAT_MAX','STRESS_MAX','PLAN_ITEMS','LOCS','COURSE_DEFS','COURSE_ENROLL_EXTRA','TRAIN_BY_TYPE','EVENTS_ZH_HK','TRAIN75_SPEC','LEVELS75_NAMES','LEVELS75_STEP','LEVELS75_MAX'];
 for(const c of CONSTS) eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
 var EVENTS = EVENTS_ZH_HK;
 const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName','dateObj','fmtDate',
   'allPlanDefs','planMeta','formatResultNotes','isCriticalPlanDay','planDayWouldWrap','displayDateObj',
   'fillTpl','eventLine','enrollCourse','maybeUnlockMidCourses','applyTrainLesson','doEnrollRun','enrolledCourseCta',
   'enrolledTrainItems','gigMissingReqGaps','bestTrainJumpForGig','stressDeltaForAct',
-  'courseForStatKey','preferredLocForTrainTarget','resolvePlannedDay'];
+  'courseForStatKey','preferredLocForTrainTarget','resolvePlannedDay',
+  /* v20a75：兩條上堂路徑共用核心＋級別衍生，harness 要一併抽取先行得返 */
+  'levels75Count','levels75Level','levels75Next','levels75GainRange','levels75GainRoll','train75ApplyLesson'];
 for(const f of FNS) eval(extractFn(f));
 const weekFlavorBlock = extractWeekFlavorBlock();
 
