@@ -21479,6 +21479,15 @@ const StoryPlay = (()=>{
         return false;
       }
     }catch(_pe){}
+    /* v20a78 LOCK78：已結局唔再開播任何新劇情（C17 本身喺寫入 ending410 之前
+       已經 start 咗，唔受呢閘影響；閘只擋結局之後嘅新 start） */
+    try{
+      if(typeof ending78Locked==="function" && ending78Locked()){
+        try{ toast("呢一局已經收科——去手帳回顧，或者開新一局。"); }catch(_t){}
+        try{ showEndingSummary410(); }catch(_s){}
+        return false;
+      }
+    }catch(_pe78){}
     StoryOC.ensure();
     let node = null, pack="", label="";
     if(idOrNode && typeof idOrNode==="object" && idOrNode.id){
@@ -23637,6 +23646,28 @@ const ENDING410_ADJ_RUMOR = {
   E0: "聽講如果你嗰陣肯企出嚟爭一次，故事，可能係另一種講法。",
   E7: "聽講如果你嗰陣捱得住、谷得起，而家，可能仲喺片場等緊你嗰場戲。"
 };
+/* ===== v20a78 LOCK78：結局鎖定 =====
+   根因（全弧驗證第三輪實證，跨輪重現）：結局寫入 S.ending410（C17 前夕抉擇經
+   ending410AfterEveChoice／E7 經 conseq61PresentForcedEnding）並呈現總結之後，
+   主循環冇任何狀態擋——總結頁舊文案甚至明文寫住唔會鎖檔，關閉後 advanceDay
+   照翻日、地圖／行程／劇情照開，日子同數值繼續變。
+   修法：S.ending410 存在＝已結局。主循環入口一律經 ending78Gate 擋（advanceDay
+   硬閘＋goToMapForBrowse／resolvePlannedDay／endBrowseDayGoHome／commitPlanAndGo／
+   openLoc／StoryPlay.start），手帳只准唯讀回顧（enterHome 強制 editable=false），
+   總結頁出口只剩回顧／新局／讀檔；讀檔載入已結局存檔即入鎖定態（contFromSlot）。
+   結局判定本身（resolveEnding410 判定表／CONSEQ61 觸發條件）一概唔郁。 */
+function ending78Locked(st){
+  try{
+    const s = st || (typeof S!=="undefined" ? S : null);
+    return !!(s && s.ending410);
+  }catch(_e){ return false; }
+}
+function ending78Gate(){
+  if(!ending78Locked()) return false;
+  try{ if(typeof _weekAccel!=="undefined"){ _weekAccel = false; _weekAccelBuf = []; } }catch(_e){}
+  try{ showEndingSummary410(); }catch(_e){}
+  return true;
+}
 function endingSummaryHtml410(){
   const rec = (typeof S!=="undefined" && S && S.ending410) || null;
   if(!rec) return "<h3>三年收科</h3><p>未收科——去到 1992 年冬、賀歲片煞科之後，頒獎禮前夕嗰晚，先係埋單嗰陣。</p>";
@@ -23664,11 +23695,23 @@ function endingSummaryHtml410(){
     + "<p><b>去留：</b>" + endingEsc410(exoLine) + "</p>"
     + (rumor ? "<p class=\"sub\">茶餐廳嗰邊有人講：「" + endingEsc410(rumor) + "」——聽下就算，唔好當真。</p>" : "")
     + (rec.career==="E7"
-      ? "<p class=\"sub\">結局已記入手帳。呢次收場，唔係你揀嘅，係數字同荷包揀嘅。（遊戲唔鎖檔：你可以繼續過日子，當係另一條時間線；又或者開新一局——下次，唔好等何生出聲先嚟急。）</p>"
-      : "<p class=\"sub\">結局已記入手帳。收科之後，你照樣可以繼續跑通告過日子——呢頁，隨時返嚟重睇。</p>");
+      ? "<p class=\"sub\">結局已記入手帳。呢次收場，唔係你揀嘅，係數字同荷包揀嘅。呢一局到呢度收科——日子唔會再行落去；你可以喺手帳回顧呢段日子，或者開新一局再嚟過：下次，唔好等何生出聲先嚟急。</p>"
+      : "<p class=\"sub\">結局已記入手帳。呢一局已經收科——日子唔會再行落去。呢頁同手帳隨時返嚟重睇；想再玩，就開新一局。</p>");
 }
 function showEndingSummary410(){
-  try{ modal(endingSummaryHtml410(), [{ label: "關閉", role: "p" }]); }catch(_e){}
+  /* v20a78 LOCK78：已結局之後，總結頁出口只准回顧類（手帳唯讀）／開新一局／讀檔，
+     唔再淨係「關閉」返去可玩狀態。未收科嗰陣（冇 S.ending410）維持單掣關閉。 */
+  try{
+    if(typeof ending78Locked==="function" && ending78Locked()){
+      modal(endingSummaryHtml410(), [
+        { label: "回顧手帳", role: "p", on: ()=>{ try{ enterHome(null, false); }catch(_e){} } },
+        { label: "開新一局", role: "g", on: ()=>{ try{ startNew(); }catch(_e){} } },
+        { label: "讀檔", role: "g", on: ()=>{ try{ openSaveSlotsModal("load"); }catch(_e){} } }
+      ]);
+      return;
+    }
+    modal(endingSummaryHtml410(), [{ label: "關閉", role: "p" }]);
+  }catch(_e){}
 }
 /* 前夕抉擇之後嘅流程（由 StoryPlay.pickChoice 嘅 C17 hook 呼叫；回 true＝已接管呈現，唔行通用結算）：
    按玩家揀嗰格計最終結局（相鄰覆寫喺呢度套用）→ 寫 S.ending410 → 逐頁呈現。冪等：已有
@@ -29048,6 +29091,9 @@ function nbRangeLabel37(){
 }
 
 function advanceDay(){
+  /* v20a78 LOCK78 硬閘：已結局（S.ending410 存在）唔再翻日——無論邊條路徑
+     （行程／休息／病假／加速）嚟到 tickDay／advanceDay 都停喺結局嗰日。 */
+  if(typeof ending78Locked==="function" && ending78Locked()) return false;
   S.dayIndex += 1;
   try{ if(typeof syncGigsForCalendarYear==="function") syncGigsForCalendarYear(false); }catch(_y){}
   refreshNpc();
@@ -29445,6 +29491,8 @@ function confirmSpendDay(actionLabel, onYes, opts){
 }
 
 function tickDay(){
+  /* v20a78 LOCK78：已結局唔再行日結算（同 advanceDay 硬閘雙保險） */
+  if(typeof ending78Locked==="function" && ending78Locked()) return {ended:false, summary:null};
   // Day advance invalidates open loc sheet (stale gigs / fame / 「只限港島」 footer)
   closeSheet();
   atLoc=null;
@@ -29848,6 +29896,8 @@ function renderNotebook(){
 }
 
 function enterHome(summary, editable, initialTab){
+  /* v20a78 LOCK78：已結局嘅手帳只准唯讀回顧（作品牆／回憶／剪報），唔准再編排行程 */
+  if(typeof ending78Locked==="function" && ending78Locked()) editable = false;
   closeSheet(); closeModal();
   // v18l: surface overdue drops queued during tickDay
   try{
@@ -29979,6 +30029,8 @@ function ensureWeekPlanCommittedForStory(){
   }
 }
 function commitPlanAndGo(){
+  /* v20a78 LOCK78：已結局唔准確定行程再出發 */
+  if(typeof ending78Gate==="function" && ending78Gate()) return;
   planDraft = scrubStaleJobs(planDraft.map(x=>x||"scout_all"));
   planDraft = lockShootsIntoDraft(planDraft);
   S.weekPlan = planDraft.slice();
@@ -30131,6 +30183,8 @@ function startTodayScheduleFromMap(){
 /** If today still has auto schedule (拍攝／訓練等), run it instead of idling on map. */
 /** v19z11：提早休息（+1日）——選單獨立掣＋二次確認 */
 function endBrowseDayGoHome(){
+  /* v20a78 LOCK78：已結局唔准用「提早休息」過日 */
+  if(typeof ending78Gate==="function" && ending78Gate()) return;
   try{
     if(typeof isStoryPlayActive==="function" && isStoryPlayActive()){
       toast("劇情進行中，完結後再返屋企");
@@ -30218,6 +30272,8 @@ function goEnrollableCompany(){
   toast(`去「${L.name}」報名訓練`);
 }
 function goToMapForBrowse(){
+  /* v20a78 LOCK78：已結局唔再入地圖行動——改出結局總結（回顧／新局／讀檔） */
+  if(typeof ending78Gate==="function" && ending78Gate()) return;
   /* v20a4：若殺青獎勵仍 pending（例如舊路徑跳過 afterDayRes），先出 sheet 再返地圖 */
   try{
     if(typeof presentPendingPostShootReward==="function" && FREEPLAY_FW && FREEPLAY_FW._pendingPostShootReward){
@@ -30482,6 +30538,8 @@ function runScheduleFromToday(){
 }
 
 function resolvePlannedDay(id){
+  /* v20a78 LOCK78：已結局唔再執行任何已排日程（拍攝／訓練／打工一律擋） */
+  if(typeof ending78Gate==="function" && ending78Gate()) return;
   /* v20a61 CONSEQ61-2：病日——行程作廢，行病假結算（拍攝告假／試鏡改期），唔行正常日程 */
   try{ if(typeof conseq61IsSickToday==="function" && conseq61IsSickToday() && typeof conseq61ResolveSickDay==="function" && conseq61ResolveSickDay(id)) return; }catch(_sk61){}
   const applyGain60 = (typeof applyCalib60==="function") ? applyCalib60 : apply; /* v20a60：抽函數測試沙盒冇 applyCalib60 時退回 apply */
@@ -34076,6 +34134,9 @@ function book70SyncTabGroups(tab){
   });
 }
 function book70ExitHome(){
+  /* v20a78 LOCK78：已結局唔准經恆常出口返地圖——呢條路直出 show("v-map")、
+     唔經 goToMapForBrowse，唔加閘會漏（實駕 probe 捉到） */
+  if(typeof ending78Gate==="function" && ending78Gate()) return;
   /* 恆常出口：純粹返地圖——唔觸發強制日 kick、唔開始今日行程。
      日子狀態動作（繼續行程／開始今日行程）留返行程頁 #home-back-map 自己嗰粒掣。 */
   try{ closeSheet(); }catch(_e){}
@@ -35240,6 +35301,26 @@ function awardsCalendarYear(dayIndex){
     return dt.getFullYear();
   }catch(_e){ return START.y; }
 }
+/* v20a78 AWARDS78：屆別年份（頒獎去重鍵＋作品計數年）——唔好直接用「今日曆法年」：
+   冬季係 12–2 月、橫跨公曆年界，同一季冬喺 12 月尾（曆法年 Y）同 1 月頭（曆法年
+   Y+1）會各觸發一屆（全弧驗證第三輪實證：day 364 冬1990 入圍、day 365 冬1991
+   旁聽，連續兩日兩屆；兼夾食埋下一年 12 月嗰屆嘅旗標，典禮自此漂移去 1 月）。
+   修法：冬季屆別歸「開季嗰年」——12 月＝當年、1–2 月＝上一年；咁 12 月尾同
+   跟住嘅 1–2 月共用同一屆別鍵，旗標（S.awardsFlags 持久化）自然去重，C10 讓路
+   延期跨年都唔會變成第二屆。春（3–5月）／夏（6–8月）／秋（9–11月）唔跨年界，
+   屆別年＝曆法年，行為不變。作品本身嘅曆法年（awardsYearFromDay）唔郁。 */
+function awardsEditionYear(ceremony, dayIndex){
+  const di = (dayIndex!=null) ? (dayIndex|0) : ((S && (S.dayIndex|0)) || 0);
+  const y = awardsCalendarYear(di);
+  try{
+    if(ceremony && ceremony.season==="冬"){
+      const dt = new Date(START.y, START.m-1, START.d + di);
+      const m = dt.getMonth()+1;
+      if(m===1 || m===2) return y-1;
+    }
+  }catch(_e){}
+  return y;
+}
 function awardsCeremonies(){
   const schema = FREEPLAY_FW.awardsSchema;
   const stub = FREEPLAY_FW.awardsStub;
@@ -35613,13 +35694,15 @@ function queueAwardsOnSeasonWindow(opts){
   opts = opts || {};
   if(!awardsSoftOn() && !opts.force) return [];
   if(!(FREEPLAY_FW.awardsSchema || FREEPLAY_FW.awardsStub)) return [];
-  const year = awardsCalendarYear();
   const queued = [];
   awardsCeremonies().forEach(ceremony=>{
     if(!ceremony || !ceremony.id) return;
     if(!opts.forceCeremonyId && !awardsSeasonMatches(ceremony)) return;
     if(!opts.forceCeremonyId && !awardsWeekOk(ceremony)) return;
     if(opts.forceCeremonyId && ceremony.id!==opts.forceCeremonyId) return;
+    /* v20a78 AWARDS78：旗標鍵／作品計數年改用屆別年（冬季 1–2 月歸上一年），
+       同一季冬唔會再喺年界兩邊各開一屆 */
+    const year = awardsEditionYear(ceremony);
     const st = awardsGetFlag(year, ceremony.id);
     if(st==="done" || st==="skipped" || st==="invited" || st==="pending") return;
     /* C10 anti-stack: TV only */
@@ -36105,11 +36188,14 @@ function awards62SeasonHints(st, w){
       const d = (ti - ci + 4) % 4;
       if(d !== 0 && d !== 1) continue;
       if(ci === 3 && ti === 0) continue; /* 冬→春跨年：作品計數年份會錯位，唔出季前版 */
+      /* v20a78 AWARDS78：今季嗰台改用屆別年查旗標／計作品——冬季 1–2 月嗰陣
+         曆法年會指去未開嗰屆，提示會誤報「仲差 N 部」（同 queue 去重鍵睇齊） */
+      const yUse = (d === 0 && typeof awardsEditionYear === "function") ? awardsEditionYear(cer) : year;
       if(d === 0){
-        const flag = (typeof awardsGetFlag === "function") ? awardsGetFlag(year, cer.id) : "";
+        const flag = (typeof awardsGetFlag === "function") ? awardsGetFlag(yUse, cer.id) : "";
         if(flag === "done" || flag === "skipped" || flag === "invited" || flag === "pending") continue;
       }
-      const sd = awards62Standing(cer, year);
+      const sd = awards62Standing(cer, yUse);
       const stubC = (typeof awardsStubCeremony === "function") ? awardsStubCeremony(cer.id) : null;
       const name = awardsCopyLine((stubC && stubC.displayName) || cer.displayName, "頒獎禮");
       const med = AWARDS62_MEDIUM_LABEL[cer.medium] || "同類";
@@ -38879,6 +38965,9 @@ function addLocGigActs(add, L, gigs, bridgeShown){
 }
 function openLoc(id, opts){
   opts = opts || {};
+  /* v20a78 LOCK78：已結局唔再開地點 sheet（接通告／傾談／送禮等行動一律擋）。
+     結局係終局狀態，forceRestore 還原路徑都唔准繞過——冇合法流程要喺結局後還原 sheet。 */
+  if(typeof ending78Gate==="function" && ending78Gate()) return;
   if(isStoryPlayActive() && !opts.forceRestore){ toast("劇情進行中，請先完成對白。"); return; }
   if(!opts.forceRestore && todayIsForcedDay()){
     closeSheet();
@@ -42571,6 +42660,17 @@ function contFromSlot(slot){
   syncDualTracks(S);
   atLoc=null;
   try{ ensureEntryTierBoardFill(); }catch(_ef){}
+  /* v20a78 LOCK78：已結局存檔（S.ending410 已有記錄）——載入即入已結局狀態：
+     落手帳唯讀回顧＋出結局總結，唔行 runScheduleFromToday，日子唔會再行。
+     判斷基準＝存檔入面有冇結局記錄旗標 S.ending410；未結局嘅舊檔完全唔受影響。
+     （已結局但喺 v77 或之前被繼續玩落去嘅檔：佢嘅 S.ending410 一早寫咗，
+     載入即鎖返——結局後多行嘅日子唔追溯回滾，詳見 NOTES_V20A78。） */
+  if(typeof ending78Locked==="function" && ending78Locked()){
+    paintBar();
+    enterHome(null, false);
+    setTimeout(()=>{ try{ showEndingSummary410(); }catch(_e){} }, 60);
+    return;
+  }
   if(softSeedRequested()){
     maybeApplySoftSeed();
     return;
@@ -42682,6 +42782,8 @@ document.getElementById("btn-reset-plan").onclick=resetPlanDraft;
   };
 })();
 function leaveHomeFromNotebook(mode){
+  /* v20a78 LOCK78：已結局唔准離開手帳去地圖／開始今日（同 book70ExitHome 同閘） */
+  if(typeof ending78Gate==="function" && ending78Gate()) return;
   /* v19z12：強制日繼續；soft 行程開始今日；自由日返地圖。記數／傳聞／人情債用同一掣。 */
   if(mode==="start-today"){
     try{ startTodayScheduleFromMap(); }catch(_e){}
