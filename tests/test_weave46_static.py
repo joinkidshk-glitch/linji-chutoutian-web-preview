@@ -22,7 +22,7 @@ for cid, title, loc in [('C7','暴雨救場','film_harbour'), ('C11','選美後�
     seg = seg[:1200]
     ok('spine '+cid+' title '+title, ('title: "'+title+'"') in seg)
     ok('spine '+cid+' locId '+loc, ('locId: "'+loc+'"') in seg)
-for star in ['魏詠男', '葉敏芝', '廖炳星', '顧明輝', '彭兆基']:
+for star in ['魏詠男', '葉敏芝', '廖炳星', '顧明輝', '彭少祺']:
     ok('spine star present: '+star, star in spine)
 for flag in ['flag_rain_rescue','flag_rain_shelter','flag_miss_cover','flag_miss_leak',
              'flag_bing_bridge','flag_bing_background','flag_chase_for_ho','flag_standup_crew',

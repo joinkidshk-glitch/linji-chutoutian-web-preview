@@ -1,5 +1,5 @@
 // v20a63 頒獎禮群星版・邏輯測試：
-// (1) fellows 衍生：嗰年嗰媒介 pack 通告＋LEADSTAR59 主演，按片酬序、每星一部、唔用冇 sprite 嘅主演（彭兆基）。
+// (1) fellows 衍生：嗰年嗰媒介 pack 通告＋LEADSTAR59 主演，按片酬序、每星一部、唔用冇 sprite 嘅主演（彭少祺；v81 正名，sprite 對照仍為 null）。
 // (2) 玩家自己殺青過嘅作品唔會變對手；年份唔串。
 // (3) 冇主演數據（1991）→ 紅星池按媒介兜底：確定性、唔重複、唔出程天諾（1990 零出場紅線，池內根本冇佢）。
 // (4) beats：入圍揭曉唱出得主星名＋作品；得獎＋有海報先有 glamour beat；冇海報得獎維持 9–10 秒（v64 enter 走路入場後基線）。
@@ -45,7 +45,7 @@ var TEST_STAR = {
   gig_1988_film_cotton_spring_high: '廖炳星',
   gig_1988_film_03: '麥震東',
   gig_1988_film_01: '廖炳星',
-  gig_1988_ad_central_winter_low: '彭兆基',
+  gig_1988_ad_central_winter_low: '彭少祺',
   gig_1988_ad_02: '陸柏言',
   gig_1988_ad_05: '駱家聲',
   gig_1988_tv_06: '陸柏言',
@@ -88,7 +88,7 @@ ok('真主演 fellows assigned=false', fl.every(f=>f.assigned === false));
 ok('有海報嘅 fellow 帶 poster（夜海鎗火係試點十部）', fl[0].poster === 'data:poster:gig_1988_film_harbour_high');
 
 let flAd = awards63Fellows(CER_AD, 1990);
-ok('廣告 fellows 唔用冇 sprite 嘅彭兆基', !flAd.some(f=>f.gigId==='gig_1988_ad_central_winter_low') && flAd.length >= 2 && flAd.every(f=>f.starId));
+ok('廣告 fellows 唔用冇 sprite 嘅彭少祺', !flAd.some(f=>f.gigId==='gig_1988_ad_central_winter_low') && flAd.length >= 2 && flAd.every(f=>f.starId));
 
 let flTv = awards63Fellows(CER_TV, 1990);
 ok('電視 fellows：陸柏言＋齊鎮海', flTv.length === 2 && flTv[0].star === '陸柏言' && flTv[1].star === '齊鎮海');

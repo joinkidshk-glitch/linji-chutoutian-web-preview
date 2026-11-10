@@ -146,7 +146,7 @@ loadGame(baseSave());
 {
   const t = { C7: ['暴雨救場', 'film_harbour', '魏詠男'], C11: ['選美後台', 'tvb_longmen', '葉敏芝'],
               C8: ['茶餐廳度橋', 'cafe_cha', '廖炳星'], C9: ['年尾追數', 'tvb_harbour', '顧明輝'],
-              C10: ['戲路定型', 'tvb_longmen', '彭兆基'] };
+              C10: ['戲路定型', 'tvb_longmen', '彭少祺'] };
   let allOk = true;
   Object.keys(t).forEach(id => {
     const n = node(id);
