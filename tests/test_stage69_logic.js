@@ -71,14 +71,16 @@ ok('指南衍生：台風冇主課地點、附帶＝三間電視台',
   && sl.extra.indexOf('tvb_longmen') >= 0 && sl.extra.indexOf('tvb_kowloon') >= 0 && sl.extra.indexOf('tvb_harbour') >= 0);
 S = { trainCount:{}, enrolled:{}, dayIndex:0 };
 let st = ux68CourseStatus('train_stage');
-ok('指南狀態：未開放顯示條件＋進度 0／2＋電視台附帶途徑（唔再係「暫未有報名入口」）',
-  !st.open && st.text.indexOf('暫未有報名入口') < 0
+/* v20a70 BOOK70 改版：狀態改「短徽章＋一句進度」，地點唔再入狀態行（卡面瘦身）——
+   「星河電視台」由緊接嘅前往衍生斷言覆蓋；badge／差堂數斷言喺 v69 index 上行會 FAIL（反證）。 */
+ok('指南狀態：未開放徽章＋條件＋進度 0／2＋差 2 堂＋附帶途徑（唔再係「暫未有報名入口」）',
+  !st.open && st.badge === '未開放' && st.text.indexOf('暫未有報名入口') < 0
   && st.text.indexOf('任何訓練累計 2 堂') >= 0 && st.text.indexOf('0／2') >= 0
-  && st.text.indexOf('星河電視台') >= 0 && st.text.indexOf('附帶開放') >= 0);
+  && st.text.indexOf('差 2 堂') >= 0 && st.text.indexOf('附帶開放') >= 0);
 ok('指南前往：台風 → 星河電視台（tv 首站）', ux68CourseGoLoc('train_stage', 'stage') === 'tvb_longmen');
 S = { trainCount:{}, enrolled:{ train_stage:true }, dayIndex:0 };
 st = ux68CourseStatus('train_stage');
-ok('指南狀態：已報名 → 已開放', st.open === true);
+ok('指南狀態：已報名 → 已開放＋徽章「已開放」', st.open === true && st.badge === '已開放');
 
 /* ---------- (3) 解鎖規則：真規則同指南鏡像同步 ---------- */
 S = { trainCount:{ train_acting:1 }, enrolled:{}, dayIndex:0 };

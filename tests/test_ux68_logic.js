@@ -99,22 +99,29 @@ ok('地點衍生：武師班附帶喺 film 地點', stamLocs.main.length === 0 &
 /* ---------- (3) 開放狀態 ---------- */
 S = { trainCount:{}, enrolled:{}, dayIndex:0 };
 let st = ux68CourseStatus('train_vocal');
-ok('狀態：未報名歌藝 → 未報名＋指去唱片地點', !st.open && st.text.indexOf('未報名') === 0 && st.text.indexOf('香江唱片') >= 0);
+/* v20a70 BOOK70 改版：狀態改「短徽章＋一句進度」，地點唔再入狀態行（卡面瘦身——
+   改由卡面「前往」掣交代）；「指去唱片地點」改驗前往衍生 ux68CourseGoLoc。
+   喺 v69 index 上行會 FAIL（舊狀態冇 badge 欄，係反證）。 */
+ok('狀態：未報名歌藝 → 徽章「未報名」＋無進度行＋前往衍生去唱片地點',
+  !st.open && st.badge === '未報名' && st.detail === '' && ux68LocName(ux68CourseGoLoc('train_vocal', 'vocal')) === '香江唱片');
 S.enrolled = { train_vocal:true };
 st = ux68CourseStatus('train_vocal');
-ok('狀態：已報名 → 已開放', st.open === true);
+ok('狀態：已報名 → 已開放＋徽章「已開放」', st.open === true && st.badge === '已開放');
 S = { trainCount:{ train_acting:1 }, enrolled:{}, dayIndex:0 };
 st = ux68CourseStatus('train_acting_mid');
-ok('狀態：進階演技未夠堂 → 條件＋進度 1／3', !st.open && st.text.indexOf('演技訓練累計 3 堂') >= 0 && st.text.indexOf('1／3') >= 0);
+ok('狀態：進階演技未夠堂 → 徽章未開放＋條件＋進度 1／3＋差 2 堂', !st.open && st.badge === '未開放'
+  && st.text.indexOf('演技訓練累計 3 堂') >= 0 && st.text.indexOf('1／3') >= 0 && st.detail.indexOf('差 2 堂') >= 0);
 S = { trainCount:{ train_vocal:2 }, enrolled:{}, dayIndex:0 };
 st = ux68CourseStatus('train_charm');
-ok('狀態：魅力課——任何訓練 2 堂進度＋附帶途徑', !st.open && st.text.indexOf('2／2') >= 0 && st.text.indexOf('附帶開放') >= 0);
+ok('狀態：魅力課——徽章未開放＋任何訓練 2 堂進度＋附帶途徑', !st.open && st.badge === '未開放' && st.text.indexOf('2／2') >= 0 && st.text.indexOf('附帶開放') >= 0);
 st = ux68CourseStatus('train_stage');
 /* v20a69 STAGE69 改版：台風訓練已補返接線（電視台附帶＋累計 2 堂自動開放）——
    本斷言由「老實標暫未有報名入口」改為新正確行為；喺 v68 index 上行會 FAIL（反證）。 */
-ok('狀態：台風訓練（v69 已接線）→ 條件進度＋電視台附帶途徑，唔再標冇入口',
-  !st.open && st.text.indexOf('暫未有報名入口') < 0 && st.text.indexOf('任何訓練累計 2 堂') >= 0
-  && st.text.indexOf('星河電視台') >= 0 && st.text.indexOf('附帶開放') >= 0);
+/* v20a70 BOOK70 再改版：狀態行唔再列地點名（卡面瘦身），「星河電視台」改驗前往衍生；
+   badge 斷言喺 v69 index 上行會 FAIL（反證）。 */
+ok('狀態：台風訓練（v69 已接線）→ 徽章未開放＋條件進度＋附帶途徑，唔再標冇入口；前往衍生去星河電視台',
+  !st.open && st.badge === '未開放' && st.text.indexOf('暫未有報名入口') < 0 && st.text.indexOf('任何訓練累計 2 堂') >= 0
+  && st.text.indexOf('附帶開放') >= 0 && ux68CourseGoLoc('train_stage', 'stage') === 'tvb_longmen');
 
 /* ---------- (4) 目標數值（prefs 往返，唔入存檔） ---------- */
 S = { trainCount:{}, enrolled:{}, dayIndex:0 };

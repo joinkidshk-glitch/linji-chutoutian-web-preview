@@ -17,12 +17,23 @@ ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107'
 # --- (1) 訓練指南頁 ---
 ok('UX68 block 存在', '/* ===== v20a68 UX68' in src and 'function renderGuidePane68' in src
    and 'function ux68ParseGainTable' in src and 'function ux68OrganizeLocSheet' in src)
-ok('手帳有「訓練指南」tab＋pane', 'data-htab="guide">訓練指南</button>' in src and 'id="home-pane-guide"' in src and 'id="guide-list"' in src)
+# v20a70 BOOK70 改版：訓練指南取消獨立頁，拼入行程頁「訓練」段。本斷言由「有 guide tab＋pane」
+# 改為新正確行為；喺 v69 index 上行會 FAIL（嗰陣仲係獨立頁，係反證）。
+ok('手帳冇獨立「訓練指南」tab／pane（v70 拼入行程頁）',
+   'data-htab="guide"' not in src and 'id="home-pane-guide"' not in src and 'id="htab-guide"' not in src and 'id="guide-list"' not in src)
+ok('訓練段喺行程頁入面（home-train70／train70-list／train70-toggle）',
+   'id="home-train70"' in src and 'id="train70-list"' in src and 'id="train70-toggle"' in src)
 m = re.search(r'function setHomeTab\(tab\)\{(.*?)\n\}', src, re.S)
 body = m.group(1) if m else ''
-ok('setHomeTab 接線 guide（allow／pane／render）',
-   'guide:1' in body and '"guide"' in body and 'renderGuidePane68()' in body)
-ok('syncHomeTabExit journalTab 含 guide', '|| tab==="guide"' in src)
+# v20a70 BOOK70 改版：guide 唔再係分頁——setHomeTab 要將舊呼叫改落 plan、allow 冇 guide、
+# plan 分支渲染訓練段（renderGuidePane68 掛 #train70-list）。喺 v69 index 上行會 FAIL（反證）。
+ok('setHomeTab v70 接線（guide 改落 plan／allow 冇 guide／plan 渲染訓練段／分組同步）',
+   'if(tab === "guide")' in body and 'guide:1' not in body and '"guide"' in body
+   and 'renderGuidePane68()' in body and 'book70SyncTabGroups(tab)' in body)
+# v20a70 BOOK70 改版：恆常出口——syncHomeTabExit 唔再計 journalTab、唔再睇 #home-back-map
+# 可見與否，永遠顯示＋標籤恆定。喺 v69 index 上行會 FAIL（反證）。
+ok('syncHomeTabExit v70 恆常出口（永遠顯示＋標籤恆定「返回地圖」）',
+   '|| tab==="guide"' not in src and 'exit.hidden = false' in src and 'btn.textContent = "返回地圖"' in src)
 ok('增益表由 applyTrainLesson 源碼衍生（唔係硬編碼清單）',
    'applyTrainLesson.toString()' in src and 'applyGain60' in src)
 ok('目標數值存 prefs（ux68TargetStat），唔入存檔', 'p.ux68TargetStat' in src and 'setPref("ux68TargetStat"' in src)
