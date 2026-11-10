@@ -18212,7 +18212,7 @@ const COURSE_DEFS = {
   train_stage_mid:  { icon:"🎬", name:"進階台風", hint:"綜藝場控／走位", mid:true },
 };
 const COURSE_ENROLL_EXTRA = {
-  tv: ["train_charm"],
+  tv: ["train_charm", "train_stage"], /* v20a69 STAGE69：台風訓練補返電視台附帶開放（原先邊度都冇接線，見 NOTES_V20A69） */
   film: ["train_iq", "train_stamina"],
   music: ["train_charm"],
   ad: ["train_charm"],
@@ -24808,6 +24808,7 @@ function ux68UnlockRule(cid){
   switch(cid){
     case "train_acting_mid": return { need:"演技訓練累計 3 堂", have:Number(tc.train_acting) || 0, goal:3 };
     case "train_stage_mid":  return { need:"台風訓練累計 3 堂", have:Number(tc.train_stage) || 0, goal:3 };
+    case "train_stage":      return { need:"任何訓練累計 2 堂", have:total, goal:2 };
     case "train_charm":      return { need:"任何訓練累計 2 堂", have:total, goal:2 };
     case "train_stamina":    return { need:"任何訓練累計 3 堂", have:total, goal:3 };
     case "train_iq":         return { need:"任何訓練累計 4 堂", have:total, goal:4 };
@@ -27834,8 +27835,12 @@ function preferredLocForTrainTarget(stat, courseId){
   if(stat==="fame" || stat==="popularity" || !courseId){
     return { locId: pick(l=>l.type==="tv","tvb_longmen"), courseId:null, mode:"map" };
   }
-  if(courseId==="train_acting" || courseId==="train_stage"){
-    return { locId: pick(l=>l.type==="tv","tvb_longmen"), courseId: courseId==="train_stage"?"train_acting":courseId, mode:"train" };
+  if(courseId==="train_acting"){
+    return { locId: pick(l=>l.type==="tv","tvb_longmen"), courseId, mode:"train" };
+  }
+  if(courseId==="train_stage"){
+    /* v20a69 STAGE69：台風訓練駐電視台（COURSE_ENROLL_EXTRA tv 附帶＋累計 2 堂自動開放）；唔再借演技課代行 */
+    return { locId: pick(l=>l.type==="tv","tvb_longmen"), courseId, mode:"train" };
   }
   if(courseId==="train_vocal"){
     return { locId: pick(l=>l.type==="music","rec_hk"), courseId, mode:"train" };
@@ -28502,6 +28507,11 @@ function maybeUnlockMidCourses(notes){
   if(total>=2 && !en.train_charm){
     enrollCourse("train_charm", notes, "unlock");
     if(notes) notes.push(`<span class="gold">${eventLine("UNLOCK_CHARM")||"魅力課開放咗。"}</span>`);
+  }
+  /* v20a69 STAGE69：台風訓練補返自動開放——同魅力同級（任何訓練累計 2 堂）；電視台報主課亦可附帶開放 */
+  if(total>=2 && !en.train_stage){
+    enrollCourse("train_stage", notes, "unlock");
+    if(notes) notes.push(`<span class="gold">台風課開放咗。</span>`);
   }
   if(total>=3 && !en.train_stamina){
     enrollCourse("train_stamina", notes, "unlock");
