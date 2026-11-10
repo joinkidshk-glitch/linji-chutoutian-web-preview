@@ -48,7 +48,7 @@ chk('applyChoice 唔經校準（抉擇獎勵原額）', 'applyCalib60' not in sl
 # --- (2) 經濟 ---
 lcb = slice_fn('livingCostBand')
 chk('livingCostBand 有 CALIB60-2 年份/名氣加幅', 'CALIB60-2' in lcb and 'yr>=1989' in lcb and 'f>=250' in lcb)
-chk('livingCostBand base 帶保留（1600/1900/2100/2400）', all(x in lcb for x in ['mid:1600', 'mid:1900', 'mid:2100', 'mid:2400']))
+chk('livingCostBand base 帶（v20a65 FIX65-2 首年緩坡 1100/1300/1500/1700＋full 2400）', all(x in lcb for x in ['mid:1100', 'mid:1300', 'mid:1500', 'mid:1700', 'mid:2400']))
 tbp = slice_fn('takeSoftBridgePay')
 chk('散工正薪 fame>=200 ×0.75', 'f>=200' in tbp and '0.75' in tbp)
 chk('散工補場 $800 字面保留', 'pay:800, stipend:true' in src)

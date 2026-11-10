@@ -95,7 +95,7 @@ function baseSave(){
 S = baseSave();
 resolvePlannedDay('rest');
 ok('rest 日：stamina 不變（50）', S.stamina === 50);
-ok('rest 日：stress 有減（60→' + S.stress + '）', S.stress < 60 && S.stress >= 30);
+ok('rest 日：stress 清零（60→' + S.stress + '；v20a65 FIX65-1 用戶規則：全日休息＝清零，取代舊 −(18+R(0,8)) 斷言）', S.stress === 0);
 
 /* ---- 2) 週計劃 home_chore 日 ---- */
 S = baseSave();
@@ -107,7 +107,7 @@ ok('home_chore：stress 有減（60→' + S.stress + '）', S.stress < 60);
 S = baseSave();
 doRest({ id:'tvb_longmen', type:'tv', name:'星河電視台' });
 ok('doRest：stamina 不變（50）', S.stamina === 50);
-ok('doRest：stress 有減（60→' + S.stress + '）', S.stress < 60 && S.stress >= 30);
+ok('doRest：stress 清零（60→' + S.stress + '；v20a65 FIX65-1 用戶規則：全日休息＝清零，取代舊 −(14+R(0,8)) 斷言）', S.stress === 0);
 
 /* ---- 4) 提早休息 endBrowseDayGoHome ---- */
 S = baseSave();
