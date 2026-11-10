@@ -87,3 +87,5 @@ v65 四項修復邏輯、E1 門檻、頒獎贏線、内容包 JSON 本體。SAVE
   原生移植唔使搬。
 - LEADSTAR59 目前只回填首年（1990)137 部；1991/1992 選角表（linji-poster-casting-1990.md
   只含首年）同回填係後續批次，機制已預留。
+
+<!-- deploy retrigger: Pages 首次部署未落地，細 commit 重觸發（v20a66，2026-11-10） -->
