@@ -78,7 +78,7 @@ ok('frag map lu', FRAGS['side_lu_concert']==='paperfrag_lu_concert');
 ok('frag map liao', FRAGS['side_liao_newfilm']==='paperfrag_liao_newfilm');
 ok('frag map mak', FRAGS['side_mak_wrap']==='paperfrag_mak_wrap');
 ok('every mapped sideId exists in pool', Object.keys(FRAGS).every(id=>SIDE.some(it=>it.id===id)));
-ok('pool grew to 29 (v82 WF3 鏈 D 花邊擴充 +9)', SIDE.length===29);
+ok('pool grew to 39 (v86 WF4 花邊補完 +10；v82 WF3 鏈 D 擴充時為 29)', SIDE.length===39);
 ok('mak side item mentions 麥震東 without banned words', (()=>{ const m = SIDE.find(it=>it.id==='side_mak_wrap'); return !!m && m.h.indexOf('麥震東')>=0 && !/買醉|爛醉|食煙|抽煙/.test(m.h+m.d); })());
 
 // 2. paperSideItemForDay 帶 sideId（1988 池 12 則：day0=陸、day1=廖、day11=麥、day2=魏無關聯）
