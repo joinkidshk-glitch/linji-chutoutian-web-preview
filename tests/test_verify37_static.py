@@ -60,8 +60,12 @@ ok('item6a train cooldown present', 'since<=0' in seg('function maybeTrainEvent3
 ok('item6b set-choice force rule present', 'force37' in seg('function setChoiceOffer35(', 'function applySetChoice35('))
 
 # ---- item 7：事態預告補地點 ----
-ok('item7 picker lock rows append play location', '開咗去' in seg('function playOpenPicker(){', 'function spPlayerMeta(') or '開咗去' in html)
-ok('item7 progress line appends play location', 'locBit37' in html)
+# v20a71 PROGRESS71 改版：舊斷言驗 picker 補「開咗去X播」拼裝碎片；v71 改完整子句
+# 「（開咗之後，去X就會觸發）」，斷言跟新正確行為改——picker 段要有新子句、唔准再有舊碎片。
+ok('item7 picker lock rows append play location', '開咗之後' in seg('function playOpenPicker(){', 'function spPlayerMeta(') and '開咗去' not in seg('function playOpenPicker(){', 'function spPlayerMeta('))
+# v20a71 PROGRESS71 改版：locBit37 拼裝尾已刪，進度行改用完整尾句講明觸發地點
+# （locNameOf71 攞 LOCS 名＋「開咗之後，去X就會觸發。」），斷言跟新正確行為改。
+ok('item7 progress line appends play location', 'locNameOf71' in html and '就會觸發' in seg('function storyMainProgressLine(){', 'function storyMapHintHtml(){'))
 ok('item7 here-block names location', '先可以播這幕' in html)
 
 # ---- item 8：差額界限 ----
@@ -74,7 +78,7 @@ ok('item9 rumor source prefers action source', 'const rumorSource = def.source |
 
 # ---- 紅線：SAVE key／softRev／?v= 冇郁 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
-ok('softRev unchanged', 's111' in html)
+ok('softRev unchanged', 's107' in html)
 
 # ---- NOTES ----
 notes_path = os.path.join(os.path.dirname(os.path.abspath(path)), 'NOTES_V20A37_VERIFY_FIXES.md')
