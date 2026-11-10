@@ -4415,7 +4415,7 @@ body.day-res-open .day-row{
    舊開始畫面＝米紙卡＋品牌圖卡＋膠囊掣，係「網頁卡片」語言；今期跟返
    已拍板嘅遊戲化方向：全幅片場場景圖（UI40_SCENE.studio，已內嵌）做底、
    阿偉企立（UI40_STAND.awi，已內嵌）企右下、標題「臨記埋位」HTML 大字
-   金箔排版＋紅色印章「一九八八」、選單改通告紙條（新遊戲＝大通告紙＋
+   金箔排版＋紅色印章「一九九零」、選單改通告紙條（新遊戲＝大通告紙＋
    膠紙＋「開工」印；繼續／讀檔＝兩張細紙條）。全部規則作用域限
    #v-start .start52，其他畫面零影響；掣嘅 id／綁定／paintTitleSaveBtns
    停用態呈現原封不動（停用紙條另外加脫色處理）。 */
@@ -4596,7 +4596,7 @@ body.day-res-open .day-row{
    虛空（實測截圖：圖 19.9%→74.0% 之後到瀏覽器欄都係深色，約 18–28% 畫面）。
    修法（跟已拍板設計語言：地圖＝一張實物紙本地圖）：純油漆層——
    (1) .map-wrap 底改成同幅圖本身紙色（#F8EAD0）一致嘅紙面（纖維紋＋
-       漸變＋下方淡淡羅盤玫瑰＋「香江 · 一九八八」SVG 印字），所有透出
+       漸變＋下方淡淡羅盤玫瑰＋「香江 · 一九九零」SVG 印字），所有透出
        嚟嘅面積即刻變成同一張紙，唔再係深色虛空；
    (2) .map-polaroid 加內框（紙邊＋啡線），成張紙有印刷邊界；
    (3) .map-well／.map-stage／.map-img 底改紙色——幅圖未 paint 嗰陣
@@ -4606,7 +4606,7 @@ body.day-res-open .day-row{
    定案逐像素一致，13 個熱區百分比對位零偏移。細節見 NOTES_V20A54_MAP_FILL.md。 */
 #app .map-wrap{
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='168' viewBox='0 0 150 168'%3E%3Cg fill='none' stroke='%237a6036' stroke-opacity='.5'%3E%3Ccircle cx='75' cy='58' r='46' stroke-width='1.5'/%3E%3Ccircle cx='75' cy='58' r='37' stroke-width='.75'/%3E%3C/g%3E%3Cpath d='M75 12 L83.5 49.5 L112 58 L83.5 66.5 L75 104 L66.5 66.5 L38 58 L66.5 49.5 Z' fill='%237a6036' fill-opacity='.48'/%3E%3Cpath d='M75 30 L80.5 52.5 L103 58 L80.5 63.5 L75 86 L69.5 63.5 L47 58 L69.5 52.5 Z' fill='%237a6036' fill-opacity='.3' transform='rotate(45 75 58)'/%3E%3Ccircle cx='75' cy='58' r='3' fill='%237a6036' fill-opacity='.55'/%3E%3Cpath d='M45 124 H105' stroke='%237a6036' stroke-opacity='.45' stroke-width='.75'/%3E%3Ctext x='75' y='148' text-anchor='middle' font-family='serif' font-size='15' letter-spacing='4' fill='%237a6036' fill-opacity='.68'%3E香江 · 一九八八%3C/text%3E%3C/svg%3E") center 88% / 150px 168px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='168' viewBox='0 0 150 168'%3E%3Cg fill='none' stroke='%237a6036' stroke-opacity='.5'%3E%3Ccircle cx='75' cy='58' r='46' stroke-width='1.5'/%3E%3Ccircle cx='75' cy='58' r='37' stroke-width='.75'/%3E%3C/g%3E%3Cpath d='M75 12 L83.5 49.5 L112 58 L83.5 66.5 L75 104 L66.5 66.5 L38 58 L66.5 49.5 Z' fill='%237a6036' fill-opacity='.48'/%3E%3Cpath d='M75 30 L80.5 52.5 L103 58 L80.5 63.5 L75 86 L69.5 63.5 L47 58 L69.5 52.5 Z' fill='%237a6036' fill-opacity='.3' transform='rotate(45 75 58)'/%3E%3Ccircle cx='75' cy='58' r='3' fill='%237a6036' fill-opacity='.55'/%3E%3Cpath d='M45 124 H105' stroke='%237a6036' stroke-opacity='.45' stroke-width='.75'/%3E%3Ctext x='75' y='148' text-anchor='middle' font-family='serif' font-size='15' letter-spacing='4' fill='%237a6036' fill-opacity='.68'%3E香江 · 一九九零%3C/text%3E%3C/svg%3E") center 88% / 150px 168px no-repeat,
     repeating-linear-gradient(93deg, rgba(122,96,54,.030) 0 2px, rgba(122,96,54,0) 2px 5px),
     repeating-linear-gradient(177deg, rgba(122,96,54,.022) 0 1px, rgba(122,96,54,0) 1px 4px),
     radial-gradient(135% 100% at 50% 0%, #faf1da 0%, #f6ead2 55%, #eee0c0 100%) !important;
@@ -4644,13 +4644,13 @@ body.day-res-open .day-row{
         <div class="start-head">
           <div class="start-titlewrap">
             <h1 class="start-title"><span>臨記</span><span>埋位</span></h1>
-            <div class="start-stamp" aria-hidden="true">一九八八</div>
+            <div class="start-stamp" aria-hidden="true">一九九零</div>
           </div>
           <p class="start-sub">1990 · 片場星途</p>
           <p class="start-intro">港產新人<strong>陳偉翔（阿偉）</strong>，自己跑通告——臨記埋位，一步一步上。</p>
         </div>
         <div class="btnrow start-menu">
-          <button class="p" id="btn-new"><span class="sn-main">新遊戲</span><span class="sn-note">1990 年春 · 由零開始</span><span class="sn-stamp" aria-hidden="true">開工</span></button>
+          <button class="p" id="btn-new"><span class="sn-main">新遊戲</span><span class="sn-note">1990 年冬 · 由零開始</span><span class="sn-stamp" aria-hidden="true">開工</span></button>
           <div class="start-subrow">
             <button class="g" id="btn-cont" style="display:none">繼續</button>
             <button class="g" id="btn-load" style="display:none">讀檔</button>
@@ -4930,7 +4930,7 @@ function statHardMax(k){
   if(k==="stress") return STRESS_MAX;
   return (typeof STAT_MAX==="number" ? STAT_MAX : 999);
 }
-const START = { y:1990, m:3, d:7 }; // 1990-03-07（v20a66 YEARS66：原 1988-03-07，epoch +2）
+const START = { y:1990, m:1, d:1 }; // 1990-01-01（v20a67 JAN67：1 月開局・足 3 年；v20a66 時為 1990-03-07）
 
 const LOCS = [
   // percents relative to map image (left%, top%) — tip of pin at coord
@@ -24390,6 +24390,105 @@ function years66MigrateSave(o){
   return o;
 }
 
+/* ===== v20a67 JAN67：1 月開局＋足 3 年（用戶 2026-11-10 拍板：1990 年 1 月開局、遊戲時間足 3 年、
+   年終評核移第 52／104 週）=====
+   START 已改 1990-01-01（星期一，同原設計週一起點夾）；衍生顯示（HUD／報紙／手帳／週結／
+   calib60YearOfWeek／awardsCalendarYear）全部由 START／dateObj 衍生，自動跟移。
+   本 block 兩件事：(1) 舊存檔遷移 jan67MigrateSave；(2) 開局季節文字定點修正
+   jan67OpeningTextFix（pack 本體唔改，行 TEXTFIX55／YEARS66 載入修正先例）。
+   相對節奏（每週結構、節點相對次序、pacing weekMin 下限）一律唔郁；週錨定盤點見
+   NOTES_V20A67_JANSTART.md。 */
+/* 1990-01-01 → 1990-03-07 相差 65 日：舊檔（3 月 epoch）dayIndex +65，曆法日期原封不動。 */
+const JAN67_DAY_SHIFT = 65;
+/* 存檔入面以「絕對日數」計嘅戳：dayIndex 郁咗，呢啲唔跟住郁就會即刻打架
+   （拍攝 deadlineDay 會變成已逾期、情報／債項到期日會早 65 日、病倒日程錯位）。
+   規則：allowlist 鍵嘅數值 ≥0 一律 +65（−1 等 unset 哨兵值唔郁）；所有相對關係
+   （deadlineDay − dayIndex 等）逐一不變。複數 Days（deadlineDays／doneDays 等）係
+   「日數」唔係「日戳」，永唔入表。week 計嘅欄（startedWeek／shopWeek 等）唔郁：
+   週數只作資訊／重刷觸發，相差一截只會令商店補貨提早觸發一次，無玩法後果。 */
+const JAN67_DAY_KEYS = {
+  dayIndex:1, deadlineDay:1, hiredAtDay:1, enqueuedDay:1, publishDay:1, wrappedDay:1,
+  dueDay:1, lastMainDoneDay:1, cooldownUntil:1, untilDay:1, newspaperLastPresentedDay:1,
+  seedDay:1, paidDay:1, seedFlavorDay:1, paidFlavorDay:1, lastGiveDay:1
+};
+function jan67ShiftDayValue(v){
+  return (typeof v === "number" && isFinite(v) && v >= 0) ? v + JAN67_DAY_SHIFT : v;
+}
+function jan67ShiftDayStamps(o, depth){
+  if(!o || typeof o !== "object" || depth > 14) return;
+  if(Array.isArray(o)){ for(const it of o) jan67ShiftDayStamps(it, depth + 1); return; }
+  for(const k of Object.keys(o)){
+    const v = o[k];
+    if(JAN67_DAY_KEYS[k]){
+      if(typeof v === "number") o[k] = jan67ShiftDayValue(v);
+      else if(v && typeof v === "object" && !Array.isArray(v)){
+        /* map 形日戳欄（如 giftMeta.lastGiveDay：npcId → 日數）逐值移 */
+        for(const mk of Object.keys(v)) if(typeof v[mk] === "number") v[mk] = jan67ShiftDayValue(v[mk]);
+      }
+      continue;
+    }
+    if(v && typeof v === "object") jan67ShiftDayStamps(v, depth + 1);
+  }
+}
+/* 舊存檔遷移（epoch guard）：冇 startEpoch67 印嘅檔一律當 3 月 epoch 檔处理。
+   喺 normalizeSaveObj 入面、緊貼 years66MigrateSave 之後行（嗰步只 remap 年份鍵、
+   唔掂日數，次序點排都唔打架；但必須早過 calib60MissedScan／conseq61LegacyMark——
+   嗰兩個用新 epoch 解讀 dayIndex）。冪等：打咗印嘅檔（新檔／已遷移檔）唔會二次偏移。
+   評核防重觸：reviews 已記錄狀態原樣保留，settle 只喺直播週轉換觸發，遷移唔會補評；
+   若舊檔進度啱啱過咗新邊界週結嗰一兩日，評核會按 conseq61 一貫「永不追溯」哲學
+   之後由 legacy 標記靜靜補過（唔會補收 E7），詳見 NOTES。 */
+function jan67MigrateSave(o){
+  if(!o || typeof o !== "object" || o.startEpoch67) return o;
+  try{
+    jan67ShiftDayStamps(o, 0);
+    /* conseq61.sick 嘅 from／to 係絕對日程（鍵名太通用，唔入全域 allowlist，呢度點名移） */
+    const c = (o.conseq61 && typeof o.conseq61 === "object") ? o.conseq61 : null;
+    if(c && c.sick && typeof c.sick === "object"){
+      if(typeof c.sick.from === "number") c.sick.from = jan67ShiftDayValue(c.sick.from);
+      if(typeof c.sick.to === "number") c.sick.to = jan67ShiftDayValue(c.sick.to);
+    }
+    /* giftMeta.lastGiveDay（npcId → 日數 map）已由 jan67ShiftDayStamps 嘅 map 分支處理，唔使另行點名 */
+  }catch(_e){}
+  o.startEpoch67 = 1;
+  return o;
+}
+/* 開局季節文字定點修正：開局由春（3 月）變冬（1 月）後，兩句開場白同 C1 時期標籤
+   嘅「春」要對返。pack 本體唔改，載入後（YEARS66 walk 之後）行；內嵌 fallback 同
+   disk pack 兩條路都覆蓋。句子係全句定點對照，唔會誤傷其他春季內容（春季通告／
+   春季節點本身喺新曆法仍然存在、完全合法）。 */
+const JAN67_OPENING_TEXT_MAP = [
+  [/(?:1988|1990) 年春，阿偉在黃大仙屋邨起步/g, "1990 年初，阿偉在黃大仙屋邨起步"],
+  [/(?:1988|1990) 年春，你在黃大仙屋邨當臨記起步/g, "1990 年初，你在黃大仙屋邨當臨記起步"]
+];
+function jan67OpeningLineFix(s){
+  let nv = s;
+  for(const pair of JAN67_OPENING_TEXT_MAP) nv = nv.replace(pair[0], pair[1]);
+  return nv;
+}
+function jan67OpeningTextFix(o, depth){
+  if(!o || typeof o !== "object" || depth > 14) return;
+  if(Array.isArray(o)){
+    /* 陣列入面嘅字串元素要就地改（beats open[]／tutorial body[] 都係字串陣列；
+       初版只將元素傳入遞迴、畀 typeof 擋返，永遠改唔到——真 UI 抽驗捉到） */
+    for(let i = 0; i < o.length; i++){
+      if(typeof o[i] === "string"){ const nv = jan67OpeningLineFix(o[i]); if(nv !== o[i]) o[i] = nv; }
+      else jan67OpeningTextFix(o[i], depth + 1);
+    }
+    return;
+  }
+  /* C1 時期標籤：when 欄「1990春 / W1-4」→「1990冬 / W1-4」（只限 C1 本人） */
+  if(o.id === "C1" && typeof o.when === "string") o.when = o.when.replace(/(?:1988|1990)春/, "1990冬");
+  for(const k of Object.keys(o)){
+    const v = o[k];
+    if(typeof v === "string"){
+      const nv = jan67OpeningLineFix(v);
+      if(nv !== v) o[k] = nv;
+    } else if(v && typeof v === "object"){
+      jan67OpeningTextFix(v, depth + 1);
+    }
+  }
+}
+
 async function refreshCopyPacksFromDisk(){
   try{ if(typeof loadPhase3Mock==="function") loadPhase3Mock(); }catch(_p3){}
   /* v20a66 YEARS66：靜態覆寫表＋內嵌池先行 remap（覆寫喺本函數稍後套用，讀到嘅已係新曆；walker 冪等） */
@@ -24400,6 +24499,8 @@ async function refreshCopyPacksFromDisk(){
       try{ years66Walk(EVENTS, null); }catch(_y66){}
       try{ years66Walk(BEATS, null); }catch(_y66){}
       try{ years66Walk(TUTORIAL, null); }catch(_y66){}
+      /* v20a67 JAN67：內嵌 fallback 開局季節文字對位（1 月＝冬） */
+      try{ if(typeof jan67OpeningTextFix==="function"){ jan67OpeningTextFix(BEATS, 0); jan67OpeningTextFix(TUTORIAL, 0); } }catch(_j67){}
     }
   }catch(_y66){}
   STORY_WIRE.contentPhase = "loading";
@@ -24449,6 +24550,8 @@ async function refreshCopyPacksFromDisk(){
     try{ textfix55SimplePack(giftPrefs); }catch(_t55){}
     try{ if(giftReact) textfix55Walk(giftReact, null, null, TEXTFIX55_OPTS_GIFT); }catch(_t55){}
     try{ if(typeof years66Walk==="function"){ [a, b, c, d, giftItems, giftPrefs, giftReact].forEach(p=>{ try{ years66Walk(p, null); }catch(_y66){} }); } }catch(_y66){}
+    /* v20a67 JAN67：disk pack 開局季節文字對位（Ch1 開場白／教學歡迎卡；BEATS／TUTORIAL 已賦值） */
+    try{ if(typeof jan67OpeningTextFix==="function"){ jan67OpeningTextFix(c, 0); jan67OpeningTextFix(d, 0); } }catch(_j67){}
 
     STORY_WIRE.errors = [];
     STORY_WIRE.gigsByYear = STORY_WIRE.gigsByYear || { 1990: null, 1991: null, 1992: null, 1993: null, 1994: null };
@@ -24505,6 +24608,8 @@ async function refreshCopyPacksFromDisk(){
     try{ textfix55StoryPack(gateStub); textfix55StoryPack(dengMock); textfix55StoryPack(dengPushMock); textfix55StoryPack(dualMock); }catch(_t55){}
     /* v20a66 YEARS66：劇情包年份 remap（主幹覆寫＋TEXTFIX 之後行，覆寫注入嘅年份字眼一併 +2） */
     try{ if(typeof years66Walk==="function"){ [main, rom1, rom2, romTang, rival, gateStub, dengMock, dengPushMock, dualMock].forEach(p=>{ try{ years66Walk(p, null); }catch(_y66){} }); } }catch(_y66){}
+    /* v20a67 JAN67：C1 時期標籤季節對位（when「1990春」→「1990冬」，只限 C1） */
+    try{ if(typeof jan67OpeningTextFix==="function") jan67OpeningTextFix(main, 0); }catch(_j67){}
     let _softStubRes = null;
     try{
       if(gateStub && typeof BehaviorGate!=="undefined") _softStubRes = BehaviorGate.loadStub_nodes_trigger(gateStub);
@@ -25142,6 +25247,7 @@ function fresh(){
   return {
     dayIndex:0,
     years66Shifted:1, /* v20a66：新檔出生已係 1990 曆法，存檔遷移唔好掂 */
+    startEpoch67:1, /* v20a67：新檔出生已係 1 月 epoch，JAN67 遷移唔好掂 */
     acting:18, stage:14, vocal:14, looks:22, stamina:75,
     iq:20, charm:16, fame:5, popularity:3, stress:12, money:12000,
     stageVolume:5, industryCredit:10, industryCreditDelta:0,
@@ -25252,6 +25358,9 @@ function normalizeSaveObj(o){
   try{ syncDualTracks(o); }catch(_e){}
   /* v20a66 YEARS66：舊存檔年份遷移（epoch guard：dayIndex 不變、絕對年份鍵 remap，一次性） */
   try{ if(typeof years66MigrateSave==="function") years66MigrateSave(o); }catch(_e){}
+  /* v20a67 JAN67：3 月 epoch 舊檔日數偏移遷移（dayIndex +65、絕對日戳同步、曆法日期不變；
+     必須早過下面 calib60MissedScan／conseq61LegacyMark——嗰兩個用新 epoch 解讀 dayIndex） */
+  try{ if(typeof jan67MigrateSave==="function") jan67MigrateSave(o); }catch(_e){}
   /* v20a60 CALIB60-3：舊檔靜靜補登已漏節點入「回憶」（唔彈提示、唔出結算行）；新登記只會喺週結發生 */
   try{ if(typeof calib60MissedScan==="function") calib60MissedScan(o); }catch(_e){}
   /* v20a61 CONSEQ61-1：舊檔已過評核年份→靜靜標記已過，永不追溯收場；病倒連續日由 0 起計，唔會讀檔即病 */
@@ -25909,13 +26018,15 @@ function calib60ScaleDelta(delta){
 function applyCalib60(delta){
   return apply(calib60ScaleDelta(delta));
 }
-/* v20a60 CALIB60-2 輔助：週數 → 真日曆年份（生活費年份遞增用；週以 START 1988-03-07 起計，每週第一日定年） */
+/* v20a60 CALIB60-2 輔助：週數 → 真日曆年份（生活費年份遞增用；週以 START 起計，每週第一日定年。
+   v20a67：START 已改 1990-01-01，本函數全程由 START 衍生，唔使改邏輯；週↔年對照已重驗
+   （wk52→1990、wk54→1991、wk104→1991、wk106→1992）。 */
 function calib60YearOfWeek(w){
   const wk = Math.max(1, Number(w)||1);
   try{
     const dt = new Date(START.y, START.m-1, START.d + (wk-1)*7);
     return dt.getFullYear();
-  }catch(_e){ return 1988; }
+  }catch(_e){ return 1990; }
 }
 /* ===== v20a60 CALIB60-3：主線節點漏失提示＋手帳「回憶」 =====
    全弧報告 §6.1.4：gate-on 節點有時窗＋條件，過窗未觸發係無聲無息（Arc C 漏咗成批都冇提示，
@@ -26016,9 +26127,12 @@ function renderMemoryPane60(){
    唔改 resolveEnding410 門檻／E6 自願規則／CALIB60 參數／STORY_GATE_3Y；E7 係新結局格，
    呈現行返 ending410 架構（S.ending410 相容、剪報頁重睇、手帳總結頁、稱號卡）。 */
 const CONSEQ61_REVIEWS = {
-  /* boundaryWeek＝嗰年最後一個週結（calib60YearOfWeek(w)=Y 而 w+1 已入 Y+1 年） */
-  1990: { floor: 45,  warnLine: 65,  boundaryWeek: 43 },
-  1991: { floor: 100, warnLine: 130, boundaryWeek: 95 }
+  /* boundaryWeek＝嗰年最後一個週結。v20a67 JAN67：1 月開局後移去 wk52／wk104 對返曆法年尾
+     （wk52 週結 ≈ 1990 年 12 月尾：calib60YearOfWeek(52)=1990、(104)=1991 已驗；
+     v66 3 月 epoch 時係 wk43／wk95）。評核前警告由 boundaryWeek 距離 1–4 週自動衍生
+     → 警告週位自動跟移去 wk48–51／wk100–103，唔使另改。地板／警告線數字不變。 */
+  1990: { floor: 45,  warnLine: 65,  boundaryWeek: 52 },
+  1991: { floor: 100, warnLine: 130, boundaryWeek: 104 }
 };
 const CONSEQ61_CFG = {
   graceWeeks: 4,        /* 破產寬限：4 個週結；期間有戲拍緊暫停倒數；存款返到夠冚下週生活費、或本週入帳夠冚＋存款返正數（v20a65 FIX65-2）即解除 */
@@ -28073,7 +28187,11 @@ function livingCostBand(w){
      初級收入係 lumpy 型（乾旱週零入帳、殺青週先有糧，實測週均約 $1,000–1,400），舊表 wk13 起
      跳上 $2,400（LIVE 更係 wk5 起），「有工就做」型玩家會喺 wk14 前結構性破產，E7 評核支
      永遠到達唔到。新表首年 $1,100→$1,700 緩升；wk44+ 維持 full 帶，CALIB60 年份／聲望
-     加級照舊疊加，後期經濟不變。 */
+     加級照舊疊加，後期經濟不變。
+     v20a67 JAN67 盤點：評核已移去 wk52，但緩坡週段唔跟移——緩坡嘅用途係保開局現金流，
+     唔係同評核週對位；wk43→44 銜接（$1,700→$2,400）同 v66 時代嘅跳幅一致（v66 嗰陣
+     wk44 仲要疊 CALIB60 1991 加級、跳幅更大），1 月 epoch 下 CALIB60 年加級改由真
+     日曆年觸發（wk54 起 +$300），全年總生活費比 v66 微降，唔構成罅，金額一律唔郁。 */
   if(week>=1 && week<=4) band = { lo:950, hi:1250, mid:1100, label:"$950–1,250（開局優惠）", tier:"early" };
   else if(week>=5 && week<=12) band = { lo:1150, hi:1450, mid:1300, label:"$1,150–1,450（首年緩坡）", tier:"y1_a" };
   else if(week>=13 && week<=26) band = { lo:1350, hi:1650, mid:1500, label:"$1,350–1,650（首年緩坡）", tier:"y1_b" };
@@ -32847,12 +32965,15 @@ function seasonCollectToast(){
   return line;
 }
 /* v20a34 引導包 P0-5(b)：開局四筆債嘅「來歷」顯示文案（純顯示對照表，唔改債嘅數據結構）。
-   開局玩家會見到：屋企家用（debt_family_home）、何生春季數（card_ho_spring 季節卡）、
-   道具組老張器材數（card_zhang_spring 季節卡）、教學人情（debt_ho_tutorial）。 */
+   開局玩家會見到：屋企家用（debt_family_home）、當季季節卡兩張、教學人情（debt_ho_tutorial）。
+   v20a67 JAN67：開局季節由春改冬——開局當季卡變成冬季對（card_biao_winter／card_may_winter），
+   補返兩張冬季卡嘅來歷，令開局四筆來歷齊全；春季對來歷保留（春季到時照用）。 */
 const DEBT_ORIGIN_LINES34 = {
   debt_family_home: "你出嚟做臨記嗰陣應承屋企嘅：嗰份家用照交——屋企唔催，只係一直記住。",
   card_ho_spring: "入行嗰陣何生幫你打點墊支嗰筆，佢記喺數簿，講明有工開先慢慢還。",
   card_zhang_spring: "早前你借過道具組嘅器材嚟用，嗰筆器材數老張一直記住，未清。",
+  card_biao_winter: "早前趕戲嗰陣副導阿標幫你頂過一更，嗰份人情佢記喺心，講明唔好帶住過年。",
+  card_may_winter: "你應承過幫化妝姐美兒買嗰支精華液，仲未交到貨，佢當你欠住一筆，記喺數簿。",
   debt_ho_tutorial: "何生手把手教你入行規矩嗰份人情——唔係錢，係記低第日要還返嘅人情。"
 };
 function renderDebtPane(){
@@ -34269,11 +34390,15 @@ function commitAwardToLog(pack){
 function softC10WindowActive(){
   try{
     const week = (typeof weekNumNow==="function") ? weekNumNow() : 0;
-    if(week < 40 || week > 43) return false;
+    /* v20a67 JAN67：舊絕對週 40–43 係 3 月 epoch 下嘅「年尾」近似（≈11 月尾至 12 月）；
+       1 月開局後改用年內週對位——每年第 49–52 週（≈12 月）先算年尾窗，語義不變
+       （年尾嗰幾週 TV 頒獎禮讓路畀 C10，唔好撞期）。 */
+    const wkInYear = ((week - 1) % 52) + 1;
+    if(wkInYear < 49 || wkInYear > 52) return false;
     const done = (S && S.flags) || {};
     if(done.C10 || done.done_C10 || done["story_C10"]) return false;
-    /* Heuristic: C9 done or week>=40 without C10 flag → TV anti-stack */
-    if(done.C9 || done.done_C9 || week>=40) return true;
+    /* Heuristic: C9 done or in the year-end window without C10 flag → TV anti-stack */
+    if(done.C9 || done.done_C9 || wkInYear>=49) return true;
   }catch(_e){}
   return false;
 }
@@ -41120,7 +41245,7 @@ function showB01HomeModal(){
       setTimeout(()=>{ try{ maybeNudgeStoryEntry("post-b01"); }catch(_e){} }, 400);
     }
   };
-  modal(`<h3>1990年3月7日 · 阿偉的家</h3>
+  modal(`<h3>${(()=>{ try{ const dt = dateObj(); return dt.getFullYear()+"年"+(dt.getMonth()+1)+"月"+dt.getDate()+"日"; }catch(_e){ return "1990年1月1日"; } })()} · 阿偉的家</h3>
     ${guide?`<img class="guide-inline" src="${guide}" alt="何生引導"/>`:""}
     ${chOpen||""}
     ${b01html}
