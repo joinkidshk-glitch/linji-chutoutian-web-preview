@@ -4646,11 +4646,11 @@ body.day-res-open .day-row{
             <h1 class="start-title"><span>臨記</span><span>埋位</span></h1>
             <div class="start-stamp" aria-hidden="true">一九八八</div>
           </div>
-          <p class="start-sub">1988 · 片場星途</p>
+          <p class="start-sub">1990 · 片場星途</p>
           <p class="start-intro">港產新人<strong>陳偉翔（阿偉）</strong>，自己跑通告——臨記埋位，一步一步上。</p>
         </div>
         <div class="btnrow start-menu">
-          <button class="p" id="btn-new"><span class="sn-main">新遊戲</span><span class="sn-note">1988 年春 · 由零開始</span><span class="sn-stamp" aria-hidden="true">開工</span></button>
+          <button class="p" id="btn-new"><span class="sn-main">新遊戲</span><span class="sn-note">1990 年春 · 由零開始</span><span class="sn-stamp" aria-hidden="true">開工</span></button>
           <div class="start-subrow">
             <button class="g" id="btn-cont" style="display:none">繼續</button>
             <button class="g" id="btn-load" style="display:none">讀檔</button>
@@ -4677,7 +4677,7 @@ body.day-res-open .day-row{
         <span class="dual-compact" title="幕前聲望 · 季節 · 業內信用">
           <span class="dual-lab dual-lab-stage">聲望</span><b id="c-stage-volume">0</b>
           <span class="dual-sep" aria-hidden="true">·</span>
-          <span class="dual-mid" id="c-era">1988春</span>
+          <span class="dual-mid" id="c-era">1990春</span>
           <span class="dual-sep" aria-hidden="true">·</span>
           <span class="dual-lab dual-lab-credit">信用</span><b id="c-industry-credit">0</b>
         </span>
@@ -4930,7 +4930,7 @@ function statHardMax(k){
   if(k==="stress") return STRESS_MAX;
   return (typeof STAT_MAX==="number" ? STAT_MAX : 999);
 }
-const START = { y:1988, m:3, d:7 }; // 1988-03-07
+const START = { y:1990, m:3, d:7 }; // 1990-03-07（v20a66 YEARS66：原 1988-03-07，epoch +2）
 
 const LOCS = [
   // percents relative to map image (left%, top%) — tip of pin at coord
@@ -18190,7 +18190,7 @@ let STORY_WIRE = {
   gigsFromFile: false,
   gigsVersion: null,
   gigsYearActive: null,
-  gigsByYear: { 1988: null, 1989: null, 1990: null, 1991: null, 1992: null },
+  gigsByYear: { 1990: null, 1991: null, 1992: null, 1993: null, 1994: null },
   main: null,
   romance: { veraHiuChoi: null, lanXu: null, tang: null },
   rival: null,
@@ -18270,32 +18270,32 @@ const STORY_TITLE_SOFT = {
    評估器：BehaviorGate.evalGate3Y（ctx 用擴充版 readCtx：fame／credit／year／season／tags／dual）。
    呢張表只管「開閘」；C7–C17 嘅內容呈現留待 4-6／4-8 接通，C17 結局判定留待 4-10。 */
 const STORY_GATE_3Y = {
-  /* N6＝C6（1988 全年・可選）：route_tv；W15+ */
+  /* N6＝C6（1990 全年・可選）：route_tv；W15+ */
   C6:  { route: "route_tv", weekMin: 15 },
-  /* N7＝C7（1989 夏）：前置 N5＝C5；信用 > 20 */
-  C7:  { needDone: ["C5"], creditGt: 20, yearMin: 1989, seasonIn: ["夏"] },
-  /* N8＝C11（1989 夏末／秋・選美後台）：「攜帶特定禮物」屬內容層，4-6 對照時處理，唔入閘 */
-  C11: { yearMin: 1989, seasonIn: ["夏", "秋"] },
-  /* N9＝C8（1989 秋）：前置 N7＝C7；聲量 > 28；持有喜劇或動作標籤
+  /* N7＝C7（1991 夏）：前置 N5＝C5；信用 > 20 */
+  C7:  { needDone: ["C5"], creditGt: 20, yearMin: 1991, seasonIn: ["夏"] },
+  /* N8＝C11（1991 夏末／秋・選美後台）：「攜帶特定禮物」屬內容層，4-6 對照時處理，唔入閘 */
+  C11: { yearMin: 1991, seasonIn: ["夏", "秋"] },
+  /* N9＝C8（1991 秋）：前置 N7＝C7；聲量 > 28；持有喜劇或動作標籤
      v20a29：tagAny 補 STUB_CASTING_TAGS registry 實際 id／label（tag_comedy／喜劇細胞／tag_action／動作演員）——
      4-5 NOTES 已預告呢個 registry 對照喺 4-6 補，唔補嘅話真標籤永遠唔中候選。 */
-  C8:  { needDone: ["C7"], fameGt: 28, tagAny: ["喜劇", "comedy", "動作", "action", "tag_comedy", "喜劇細胞", "tag_action", "身手好"], yearMin: 1989, seasonIn: ["秋"] },
-  /* N10＝C9（1989 冬）：「人情債觸發」屬內容層，4-6 處理，唔入閘 */
-  C9:  { yearMin: 1989, seasonIn: ["冬"] },
-  /* N11＝C10（1989 冬末）：前置 N10＝C9；雙軌總和 > 70 */
-  C10: { needDone: ["C9"], dualGt: 70, yearMin: 1989, seasonIn: ["冬"] },
-  /* N12＝C15（1990 春）：持有動作標籤（v20a29 同 C8 一併補 registry id／label 候選） */
-  C15: { tagAny: ["動作", "action", "tag_action", "身手好"], yearMin: 1990, seasonIn: ["春"] },
-  /* N13＝C14（1990 夏）：前置 N11＝C10；信用 > 42 */
-  C14: { needDone: ["C10"], creditGt: 42, yearMin: 1990, seasonIn: ["夏"] },
-  /* N14＝C12（1990 秋）：前置 N13＝C14；聲量 > 50 */
-  C12: { needDone: ["C14"], fameGt: 50, yearMin: 1990, seasonIn: ["秋"] },
-  /* N15＝C16（1990 秋末）：前置 N14＝C12；雙軌總和 > 125 */
-  C16: { needDone: ["C12"], dualGt: 125, yearMin: 1990, seasonIn: ["秋"] },
-  /* N16＝C13（1990 冬・賀歲片） */
-  C13: { yearMin: 1990, seasonIn: ["冬"] },
-  /* N17＝C17（1990 冬・事件閘）：前置 N16＝C13。結局判定／呈現係 4-10，呢度只守入場閘 */
-  C17: { needDone: ["C13"], yearEq: 1990, seasonIn: ["冬"] },
+  C8:  { needDone: ["C7"], fameGt: 28, tagAny: ["喜劇", "comedy", "動作", "action", "tag_comedy", "喜劇細胞", "tag_action", "身手好"], yearMin: 1991, seasonIn: ["秋"] },
+  /* N10＝C9（1991 冬）：「人情債觸發」屬內容層，4-6 處理，唔入閘 */
+  C9:  { yearMin: 1991, seasonIn: ["冬"] },
+  /* N11＝C10（1991 冬末）：前置 N10＝C9；雙軌總和 > 70 */
+  C10: { needDone: ["C9"], dualGt: 70, yearMin: 1991, seasonIn: ["冬"] },
+  /* N12＝C15（1992 春）：持有動作標籤（v20a29 同 C8 一併補 registry id／label 候選） */
+  C15: { tagAny: ["動作", "action", "tag_action", "身手好"], yearMin: 1992, seasonIn: ["春"] },
+  /* N13＝C14（1992 夏）：前置 N11＝C10；信用 > 42 */
+  C14: { needDone: ["C10"], creditGt: 42, yearMin: 1992, seasonIn: ["夏"] },
+  /* N14＝C12（1992 秋）：前置 N13＝C14；聲量 > 50 */
+  C12: { needDone: ["C14"], fameGt: 50, yearMin: 1992, seasonIn: ["秋"] },
+  /* N15＝C16（1992 秋末）：前置 N14＝C12；雙軌總和 > 125 */
+  C16: { needDone: ["C12"], dualGt: 125, yearMin: 1992, seasonIn: ["秋"] },
+  /* N16＝C13（1992 冬・賀歲片） */
+  C13: { yearMin: 1992, seasonIn: ["冬"] },
+  /* N17＝C17（1992 冬・事件閘）：前置 N16＝C13。結局判定／呈現係 4-10，呢度只守入場閘 */
+  C17: { needDone: ["C13"], yearEq: 1992, seasonIn: ["冬"] },
 };
 /* v20a29 WEAVE_PHASE4_6：主幹 1989 節點內容覆寫（N7–N11）。
    定界對照結論：content pack story_detail_c1_to_c17.json 只有 C1–C5 跟 Qwen 原規劃／三年版主幹；
@@ -19197,7 +19197,7 @@ const StoryOC = (()=>{
   function seasonSoftOk(token){
     const cur = (typeof calendarSeason==="function") ? calendarSeason() : "";
     const dt = (typeof dateObj==="function") ? dateObj() : null;
-    const year = dt ? dt.getFullYear() : 1988;
+    const year = dt ? dt.getFullYear() : 1990;
     const t = String(token||"");
     let wantYear = null;
     const ym = t.match(/(\d{4})/);
@@ -19475,7 +19475,7 @@ const StoryOC = (()=>{
     const bump = (p)=>{ if(rank(p) > rank(want)) want = p; };
     if(isDone("C5")) bump("P1.5");
     if(isDone("C7")) bump("P2");
-    let year = 1988;
+    let year = 1990;
     let season = "";
     let month = 3;
     try{
@@ -19484,17 +19484,17 @@ const StoryOC = (()=>{
       if(typeof calendarSeason==="function") season = calendarSeason();
     }catch(_e){}
     /* v20a28 WEAVE_PHASE4_5 三年版 phase 對照（取代五年版：舊版 P4 要 1991、P5 要 1992，三年版永遠唔達）：
-       P1＝1988 開局；P1.5＝C5 done；P2＝1989 年到（或 C7 done）；P3＝1990 年到；
+       P1＝1990 開局；P1.5＝C5 done；P2＝1991 年到（或 C7 done）；P3＝1992 年到；
        P4＝1990 秋（9 月起，季節標籤秋／冬）或 N13＝C14 done；P5＝1990 冬（12 月）或 N16＝C13 done。
        季節 bump 加月份守衛：1–2 月雖然標籤係冬，屬上一季冬尾，唔當「1990 冬」以免 P4／P5 喺 1990 年頭跳級。
        1991／1992 兩行只作完結後 freeplay 安全網，唔再係任何節點嘅前置。
        syncPhaseFromProgress 只向上 bump：舊檔已高過嘅 phase 唔會俾呢張表拉低。 */
-    if(year>=1989) bump("P2");
-    if(year>=1990) bump("P3");
-    if(year>=1990 && ((month>=9 && (season==="秋" || season==="冬")) || isDone("C14"))) bump("P4");
-    if(year>=1990 && ((month>=12 && season==="冬") || isDone("C13"))) bump("P5");
-    if(year>=1991) bump("P4");
-    if(year>=1992) bump("P5");
+    if(year>=1991) bump("P2");
+    if(year>=1992) bump("P3");
+    if(year>=1992 && ((month>=9 && (season==="秋" || season==="冬")) || isDone("C14"))) bump("P4");
+    if(year>=1992 && ((month>=12 && season==="冬") || isDone("C13"))) bump("P5");
+    if(year>=1993) bump("P4");
+    if(year>=1994) bump("P5");
     return want;
   }
   function syncPhaseFromProgress(){
@@ -20089,9 +20089,9 @@ const BehaviorGate = (function(){
     try{ if(typeof yearSeasonNow==="function") return yearSeasonNow(); }catch(_e){}
     try{
       const dt = (typeof dateObj==="function") ? dateObj() : null;
-      return { year: dt ? dt.getFullYear() : 1988, season: liveSeason() };
+      return { year: dt ? dt.getFullYear() : 1990, season: liveSeason() };
     }catch(_e){}
-    return { year: 1988, season: "春" };
+    return { year: 1990, season: "春" };
   }
   function liveTags(){
     /* v20a28：S.castingTags 係 {id,label} 物件陣列（舊檔可能混字串）；正規化成 id＋label 字串清單，
@@ -20150,7 +20150,7 @@ const BehaviorGate = (function(){
       fame: fame,
       credit: credit,
       dual: raw.dual!=null ? Number(raw.dual) : fame + credit,
-      year: raw.year!=null ? Number(raw.year) : (has ? 1988 : liveYearSeason().year),
+      year: raw.year!=null ? Number(raw.year) : (has ? 1990 : liveYearSeason().year),
       favor: raw.favor!=null ? Number(raw.favor) : null,
       debt: raw.debt!=null ? Number(raw.debt) : null,
       gigCount: raw.gigCount!=null ? Number(raw.gigCount) : null,
@@ -20632,10 +20632,10 @@ const DengLine = (function(){
   let pushMock = null;
   const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis","R_tang_ending"];
   const PUSH_CHROME = {
-    R_tang_push1: { chromeSeason:"winter", playerMeta:"主線 · 1988冬" },
-    R_tang_push2: { chromeSeason:"spring", playerMeta:"主線 · 1988春" },
-    R_tang_crisis: { chromeSeason:"autumn", playerMeta:"主線 · 1988秋" },
-    R_tang_ending: { chromeSeason:"winter", playerMeta:"主線 · 1988冬" }
+    R_tang_push1: { chromeSeason:"winter", playerMeta:"主線 · 1990冬" },
+    R_tang_push2: { chromeSeason:"spring", playerMeta:"主線 · 1990春" },
+    R_tang_crisis: { chromeSeason:"autumn", playerMeta:"主線 · 1990秋" },
+    R_tang_ending: { chromeSeason:"winter", playerMeta:"主線 · 1990冬" }
   };
   function featureFlagOn(){
     return typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview();
@@ -21619,7 +21619,7 @@ const StoryPlay = (()=>{
     return "主線";
   }
   function spSoftSeasonLine(ch, node){
-    return ch ? (spSoftLane(node)+" · 1988"+ch) : "";
+    return ch ? (spSoftLane(node)+" · "+((typeof START!=="undefined" && START && START.y) || 1990)+ch) : "";
   }
   /** Soft only. Default order stays playerMeta → seed / softCalendarSeason / chromeSeason → when / eraTag → 1988春.
       Dual meet and C5「采兒小訪題」set preferSeedSeason so seed, then the live calendar, wins over the baked playerMeta
@@ -21710,12 +21710,20 @@ const StoryPlay = (()=>{
     node = node || {};
     const id = String(node.id||"");
     /* USER-approved C1 / opening label (spaces around ·). LIVE default — Soft flag does not enter here. */
-    if(id==="C1" || spIsForcedStory(node, pack, label)) return "主線 · 1988春";
+    if(id==="C1" || spIsForcedStory(node, pack, label)) return "主線 · "+((typeof START!=="undefined" && START && START.y) || 1990)+"春";
     const soft = String(node.eraTag||node.when||"").trim();
     if(soft){
       /* soften engineering when/era for display; keep short */
       const m = soft.match(/(\d{4}\s*春|\d{4}\s*秋|\d{4})/);
-      if(m) return "主線 · "+m[1].replace(/\s+/g,"");
+      if(m){
+        let seg = m[1].replace(/\s+/g,"");
+        /* v20a66：eraTag 係舊曆編碼（載入 walk 唔掂佢）→ 顯示前 +2；when 已俾 walk 移咗，唔好雙重移 */
+        if(node.eraTag && typeof years66ShiftYear==="function"){
+          const ym = seg.match(/\d{4}/);
+          if(ym) seg = seg.replace(ym[0], String(years66ShiftYear(Number(ym[0]))));
+        }
+        return "主線 · "+seg;
+      }
     }
     const title = String(node.title||"").trim();
     if(title) return title.length>18 ? (title.slice(0,16)+"…") : title;
@@ -23275,7 +23283,7 @@ function endingCareerScene410(rec){
         + "<p>你冇沉落去。但你自己知，嗰種紅法，唔玩得第二次。頒獎禮嗰晚你坐喺後排，望住台上，眼神同三年前嗰個臨記，唔同咗。</p>";
       return "<p>頭版出街嗰朝，電話靜到唔正常。聲望衝得太高，信用太薄——週刊啲字寫完，通告就一張一張咁消失。</p>"
         + "<p>你企喺化妝間，望住鏡入面嗰個紅過一排嘅自己。冇人踩你，只係冇人再打嚟。呢行起身嘅人多，沉落去嗰陣，通常都係咁靜。</p>"
-        + "<p>不過，1991 年先啱啱開始。有啲人沉一沉，先學識點浮——呢句，唔係安慰，係呢行嘅老規矩。你嗰頁，仲未寫完。</p>";
+        + "<p>不過，1993 年先啱啱開始。有啲人沉一沉，先學識點浮——呢句，唔係安慰，係呢行嘅老規矩。你嗰頁，仲未寫完。</p>";
     case "E5": return "<p>頒獎禮嗰晚，你坐嘅唔係演員席——你坐喺經理人嗰排。台上頒緊獎，你手底下兩個新人，一個入圍，一個攞咗新人獎。</p>"
       + "<p>由臨記做到開竇做經理人，你靠嘅從來唔係邊一場戲，係全行都知：阿偉講得出，做得到；佢欠人嘅會還，人哋欠佢嘅，佢記得清清楚楚。</p>"
       + "<p>何生嗰晚同你飲咗杯：「我嗰陣教你認人，你而家啲人脈，貴過我當年。」——江湖撈家呢四個字，唔係貶，係你用三年人情換返嚟嘅招牌。</p>";
@@ -23291,7 +23299,7 @@ function endingCareerScene410(rec){
       if(v==="bankrupt") return "<p>寬限期最後一日，你返到事務所，何生已經幫你執好咗個位——其實都冇咩好執：一叠通告紙、一個用咗成年嘅水杯。</p>"
         + "<p>「我保你，保到呢度。」何生講，「唔係你冇本事，係個荷包唔等你。呢行有幾多人，唔係輸喺唔夠叻，係輸喺未紅之前，先冇咗糧。」佢塞咗兩封介紹信俾你：一份去屋企人嗰邊嘅公司，一份去茶餐廳連鎖做經理。唔體面，但係出路。</p>"
         + "<p>你行出事務所嗰陣，樓下有組人拍緊外景。你企住睇咗一陣——嗰啲位，你企過；嗰啲燈，你捱過。未紅先收，四個字唔好聽，但你嗰段日子，冇白過。</p>";
-      if(v==="review1989") return "<p>第二年年尾，事務所會議室。何生攞住你兩年嘅記數簿，揭咗好耐，先開口：「阿偉，唔係一年，係兩年喇。」</p>"
+      if(v==="review1991") return "<p>第二年年尾，事務所會議室。何生攞住你兩年嘅記數簿，揭咗好耐，先開口：「阿偉，唔係一年，係兩年喇。」</p>"
         + "<p>聲望同信用，加埋離公司肯留人嗰條線，仲差一截。呢行唔係冇等過你——兩年，幾多張通告、幾多場戲，機會嚟過，你冇捉得實。何生冇鬧你，只係歎氣：「有啲人，係要遲啲先開竅——但公司，唔可以陪你等到嗰陣。」</p>"
         + "<p>你執個位嗰陣，牆上仲貼住今年賀歲片張海報。你個名，冇喺上面。未紅先收，唔係邊個判你死刑，係時間同數字，一齊講咗句：到此為止。</p>";
       return "<p>第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，加埋離公司肯留人嗰條線，仲差一截。</p>"
@@ -23328,7 +23336,7 @@ function endingExodusScene410(rec, favor){
   if(rec.exodus==="leave"){
     h += "<p>走嗰日，你先返咗金龍茶餐廳，坐你坐慣嗰張枱，食最後一餐。老闆娘冇問你去邊，只係杯茶，冇收你錢。</p><p>啟德機場，大堂嗰塊航班牌反嚟覆去。你拖住個篋企喺度，望住「離港」兩個字——三年嘅戲，喺香港收科；你個人生嗰套，先啱啱開鏡。</p>";
   } else if(rec.exodus==="stay"){
-    h += "<p>你冇走。1991 年，第一張通告寄到事務所嗰日，何生拆開，笑笑口遞俾你：「新一年，開工大吉。」——畫面冇字，但你知，你嗰套戲，仲有得拍。</p>";
+    h += "<p>你冇走。1993 年，第一張通告寄到事務所嗰日，何生拆開，笑笑口遞俾你：「新一年，開工大吉。」——畫面冇字，但你知，你嗰套戲，仲有得拍。</p>";
   } else {
     h += "<p>走定留，你到嗰晚都冇答自己。茶餐廳嗰班人走嘅走、留嘅留，你坐喺中間，嗰杯茶飲到凍。唔答，都係一種答法——起碼你人仲喺度，戲仲喺度。</p>";
   }
@@ -23387,7 +23395,7 @@ const ENDING410_ADJ_RUMOR = {
 };
 function endingSummaryHtml410(){
   const rec = (typeof S!=="undefined" && S && S.ending410) || null;
-  if(!rec) return "<h3>三年收科</h3><p>未收科——去到 1990 年冬、賀歲片煞科之後，頒獎禮前夕嗰晚，先係埋單嗰陣。</p>";
+  if(!rec) return "<h3>三年收科</h3><p>未收科——去到 1992 年冬、賀歲片煞科之後，頒獎禮前夕嗰晚，先係埋單嗰陣。</p>";
   const favorLine = "已清人情 " + (rec.settled|0) + " 筆 · 持有債權 " + (rec.creditsHeld|0) + " 份"
     + ((rec.exodusNames && rec.exodusNames.length) ? " · 絕響 " + rec.exodusNames.length + " 筆" : "");
   const goneLine = (rec.exodusNames && rec.exodusNames.length)
@@ -23395,7 +23403,7 @@ function endingSummaryHtml410(){
     : "<p><b>邊啲人走咗：</b>你嗰班人，暫時仲齊齊整整喺香港。</p>";
   const romLine = rec.romanceKind==="commit" ? ("同" + (rec.romanceLine==="hiu" ? "林曉晴" : "周采兒") + "行到埋一齊")
     : (rec.romanceKind==="almost" ? "有一段，差一步" : "一個人收科，唔代表一個人收尾");
-  const exoLine = rec.exodus==="leave" ? "走——啟德上機，遠走" : (rec.exodus==="stay" ? "留——扎根香港，1991 繼續開工" : "未表態——留白");
+  const exoLine = rec.exodus==="leave" ? "走——啟德上機，遠走" : (rec.exodus==="stay" ? "留——扎根香港，1993 繼續開工" : "未表態——留白");
   const rumor = ENDING410_ADJ_RUMOR[rec.career] || "";
   /* v20a61 CONSEQ61-1：E7 提早收科標題跟返收場原因，唔扮三年收科 */
   const head410 = (rec.career==="E7")
@@ -23533,14 +23541,14 @@ function b10Line(){
     || (beat.lines||[])[reached?1:0] || "";
   return String(raw).replace(/^（[^）]+）/, "");
 }
-/** 依日曆年切換 GIGS（1988／1989）；缺年庫則回退 1988／內嵌 */
+/** 依日曆年切換 GIGS；缺年庫則回退較早年庫／內嵌（v20a66：gigsByYear 鍵已 remap 至 1990–1994） */
 function syncGigsForCalendarYear(force){
-  const y = (typeof dateObj==="function" ? dateObj().getFullYear() : (START && START.y) || 1988);
+  const y = (typeof dateObj==="function" ? dateObj().getFullYear() : (START && START.y) || 1990);
   if(!force && STORY_WIRE.gigsYearActive===y && Array.isArray(GIGS) && GIGS.length) return y;
   const by = STORY_WIRE.gigsByYear || {};
   let src = null;
   const pick = (yy)=> (by[yy] && Array.isArray(by[yy].gigs) && by[yy].gigs.length) ? by[yy] : null;
-  let pack = pick(y) || pick(y-1) || pick(1989) || pick(1988);
+  let pack = pick(y) || pick(y-1) || pick(1991) || pick(1990);
   if(pack){
     GIGS = pack.gigs.map(normalizeGigRecord);
     STORY_WIRE.gigsFromFile = true;
@@ -23557,7 +23565,7 @@ function syncGigsForCalendarYear(force){
     src = "embedded-or-current";
   }
   STORY_WIRE.gigsYearActive = y;
-  try{ if(y===1988 || !y) mergeEntryGigsIntoPool(); }catch(_me){}
+  try{ if(y===1990 || !y) mergeEntryGigsIntoPool(); }catch(_me){}
   try{ window.GIGS = GIGS; window.STORY_WIRE = STORY_WIRE; window.gigsByYear = STORY_WIRE.gigsByYear; }catch(_w){}
   if(typeof console!=="undefined" && console.info){
     const high=(GIGS||[]).filter(g=>g.boardPriority==="high").length;
@@ -23568,7 +23576,7 @@ function syncGigsForCalendarYear(force){
 }
 /** Preview／console：跳到指定日曆年（改 dayIndex）並 force sync 年庫 */
 function previewJumpCalendarYear(year){
-  year = Number(year)||1988;
+  year = Number(year)||1990;
   if(!S){ toast("未開局"); return false; }
   const start = new Date(START.y, START.m-1, START.d);
   const target = new Date(year, START.m-1, START.d); /* 同月日，換年 */
@@ -24286,8 +24294,114 @@ function textfix55GigRecord(o){
 }
 
 
+
+/* ===== v20a66 YEARS66：年份推移（用戶 2026-11-10 拍板：1990 年開始、三年 1990–1992，避開 1989 年嗰個時間點）=====
+   做法：epoch START.y 1988→1990（所有衍生日期／年份閘自動跟移）；內容包／內嵌數據／靜態表嘅
+   年份標籤同玩家面年份字眼，喺載入正規化層 remap +2（唔直接改 content pack JSON；
+   先例：TEXTFIX55 清洗層、LEADSTAR59 回填、normalizeGigRecord 正規化）。
+   gig 年份只經 normalizeGigRecord 內 years66GigRemap 一處 remap；walker／remap 全部以
+   __y66w 旗冪等，同一物件唔會俾 +2 兩次。舊存檔由 years66MigrateSave 喺 normalizeSaveObj
+   一次性遷移（epoch guard：dayIndex 不變、衍生日期自動 +2、已存絕對年份鍵 remap）。 */
+const YEARS66_SHIFT = 2;
+const YEARS66_OLD_MIN = 1988, YEARS66_OLD_MAX = 1992;
+const YEARS66_TOKEN_RE = /1988|1989|1990|1991|1992/g;
+function years66ShiftYear(y){
+  const n = Number(y);
+  return (isFinite(n) && n >= YEARS66_OLD_MIN && n <= YEARS66_OLD_MAX) ? n + YEARS66_SHIFT : y;
+}
+function years66ShiftText(s){
+  return String(s).replace(YEARS66_TOKEN_RE, m => String(Number(m) + YEARS66_SHIFT));
+}
+/* 唔 remap 嘅鍵：內部 id／eraTag／旗標／座標列（值入面嘅年份係 id 一部份，郁咗會同存檔對唔返）、
+   列舉型欄（season／type 等冇年份數字）、素材欄（base64 字串唔係文字，嚴禁當年份改）。 */
+const YEARS66_SKIP_KEYS = { id:1, eraTag:1, gigId:1, speakerId:1, loc:1, locId:1, chromeSeason:1, season:1, seasonHook:1, storyKeys:1, flags:1, flag:1, key:1, eventKey:1, icon:1, img:1, src:1, poster:1, sprite:1, data:1, weekPlan:1, phase:1, kind:1, type:1, tier:1, roleScale:1, medium:1, ceremonyId:1, beatId:1, nodeId:1, route:1 };
+const YEARS66_YEAR_KEYS = { year:1, minYear:1, yearMin:1, yearEq:1, fromYear:1, unlockYear:1, gateYear:1 };
+function years66Walk(o, key){
+  if(o == null) return o;
+  if(typeof o === "string"){ return (key && YEARS66_SKIP_KEYS[key]) ? o : years66ShiftText(o); }
+  if(typeof o === "number"){ return (key && YEARS66_YEAR_KEYS[key]) ? years66ShiftYear(o) : o; }
+  if(Array.isArray(o)){
+    if(key && YEARS66_SKIP_KEYS[key]) return o;
+    if(o.__y66w) return o;
+    try{ o.__y66w = 1; }catch(_e){}
+    for(let i = 0; i < o.length; i++) o[i] = years66Walk(o[i], key);
+    return o;
+  }
+  if(typeof o === "object"){
+    if(o.__y66w) return o;
+    try{ o.__y66w = 1; }catch(_e){}
+    for(const k of Object.keys(o)){
+      if(k === "__y66w" || YEARS66_SKIP_KEYS[k]) continue;
+      o[k] = years66Walk(o[k], k);
+    }
+    return o;
+  }
+  return o;
+}
+/* gig 專用：只改 year 欄＋玩家面文字欄（同 textfix55GigRecord 同一欄表），id／eraTag 唔郁。
+   喺 normalizeGigRecord 內 textfix55GigRecord 之後呼叫；__y66w 旗保證重複 normalize 唔會再 +2。 */
+const YEARS66_GIG_TEXT_FIELDS = ["title","workTitle","roleLabel","roleHint","blurb","synopsis","boardNote","shootHint","discoverNote"];
+function years66GigRemap(o){
+  if(!o || typeof o !== "object" || o.__y66w) return o;
+  try{ o.__y66w = 1; }catch(_e){}
+  if(o.year != null) o.year = years66ShiftYear(o.year);
+  for(const f of YEARS66_GIG_TEXT_FIELDS){ if(typeof o[f] === "string") o[f] = years66ShiftText(o[f]); }
+  if(o.limits && typeof o.limits === "object" && typeof o.limits.notes === "string") o.limits.notes = years66ShiftText(o.limits.notes);
+  if(typeof o.limits === "string") o.limits = years66ShiftText(o.limits);
+  return o;
+}
+/* 舊存檔遷移（epoch guard）：v65 或更早開嘅檔冇 years66Shifted 印——dayIndex 唔郁（衍生日期
+   靠新 START 自動 +2）；已寫入存檔嘅絕對年份鍵逐項 remap：評核記錄鍵、評核 pending 年份、
+   E7 variant 名、頒獎旗鍵、wrapHistory／awardsLog 年份欄、報紙剪報／佇列入面焗住嘅年份字眼。
+   新檔喺 fresh() 出生已有印，永遠唔會俾呢度 +2。 */
+function years66MigrateSave(o){
+  if(!o || typeof o !== "object" || o.years66Shifted) return o;
+  try{
+    const c = (o.conseq61 && typeof o.conseq61 === "object") ? o.conseq61 : null;
+    if(c && c.reviews && typeof c.reviews === "object"){
+      const nr = {};
+      Object.keys(c.reviews).forEach(k => { const y = Number(k); nr[(isFinite(y) && y >= YEARS66_OLD_MIN && y <= YEARS66_OLD_MAX) ? String(y + YEARS66_SHIFT) : k] = c.reviews[k]; });
+      c.reviews = nr;
+    }
+    if(c && c.pendingEnding && typeof c.pendingEnding === "object" && c.pendingEnding.year != null) c.pendingEnding.year = years66ShiftYear(c.pendingEnding.year);
+    if(o.ending410 && typeof o.ending410 === "object"){
+      const e = o.ending410;
+      if(typeof e.careerVariant === "string"){
+        const m = e.careerVariant.match(/^review(1988|1989)$/);
+        if(m) e.careerVariant = "review" + (Number(m[1]) + YEARS66_SHIFT);
+      }
+      if(e.earlyEnd && typeof e.earlyEnd === "object" && e.earlyEnd.year != null) e.earlyEnd.year = years66ShiftYear(e.earlyEnd.year);
+    }
+    if(o.awardsFlags && typeof o.awardsFlags === "object"){
+      const nf = {};
+      Object.keys(o.awardsFlags).forEach(k => {
+        const parts = k.split("/");
+        const y = Number(parts[0]);
+        nf[(parts.length > 1 && isFinite(y) && y >= YEARS66_OLD_MIN && y <= YEARS66_OLD_MAX) ? String(y + YEARS66_SHIFT) + "/" + parts.slice(1).join("/") : k] = o.awardsFlags[k];
+      });
+      o.awardsFlags = nf;
+    }
+    if(Array.isArray(o.wrapHistory)) o.wrapHistory.forEach(h => { if(h && typeof h === "object" && h.year != null) h.year = years66ShiftYear(h.year); });
+    if(Array.isArray(o.awardsLog)) o.awardsLog.forEach(en => { if(en && typeof en === "object"){ years66Walk(en, null); } }); /* walk 已包 year 鍵 +2，唔好再 explicit set（會雙重推移） */
+    ["newspaperClippings", "newspaperQueue"].forEach(k => { if(Array.isArray(o[k])) o[k].forEach(en => years66Walk(en, null)); });
+    if(o.pendingMorningPaper && typeof o.pendingMorningPaper === "object") years66Walk(o.pendingMorningPaper, null);
+  }catch(_e){}
+  o.years66Shifted = 1;
+  return o;
+}
+
 async function refreshCopyPacksFromDisk(){
   try{ if(typeof loadPhase3Mock==="function") loadPhase3Mock(); }catch(_p3){}
+  /* v20a66 YEARS66：靜態覆寫表＋內嵌池先行 remap（覆寫喺本函數稍後套用，讀到嘅已係新曆；walker 冪等） */
+  try{
+    if(typeof years66Walk==="function"){
+      [STORY_SPINE_NODES_1989, STORY_SPINE_NODES_1990, STORY_SPINE_NODE_C17_410, STORY_HINT_SOFT, STORY_TITLE_SOFT, STORY_LOC_SOFT, CHOICE47_NODES, COMMIT48_NODES].forEach(t=>{ try{ years66Walk(t, null); }catch(_y66){} });
+      try{ years66Walk(NPC_LINES, null); }catch(_y66){}
+      try{ years66Walk(EVENTS, null); }catch(_y66){}
+      try{ years66Walk(BEATS, null); }catch(_y66){}
+      try{ years66Walk(TUTORIAL, null); }catch(_y66){}
+    }
+  }catch(_y66){}
   STORY_WIRE.contentPhase = "loading";
   const base = "content/";
   const bust = encodeURIComponent(typeof SAVE!=="undefined"?SAVE:Date.now());
@@ -24334,31 +24448,42 @@ async function refreshCopyPacksFromDisk(){
     try{ textfix55SimplePack(giftItems); }catch(_t55){}
     try{ textfix55SimplePack(giftPrefs); }catch(_t55){}
     try{ if(giftReact) textfix55Walk(giftReact, null, null, TEXTFIX55_OPTS_GIFT); }catch(_t55){}
+    try{ if(typeof years66Walk==="function"){ [a, b, c, d, giftItems, giftPrefs, giftReact].forEach(p=>{ try{ years66Walk(p, null); }catch(_y66){} }); } }catch(_y66){}
 
     STORY_WIRE.errors = [];
-    STORY_WIRE.gigsByYear = STORY_WIRE.gigsByYear || { 1988: null, 1989: null, 1990: null, 1991: null, 1992: null };
+    STORY_WIRE.gigsByYear = STORY_WIRE.gigsByYear || { 1990: null, 1991: null, 1992: null, 1993: null, 1994: null };
     if(gigsPack && Array.isArray(gigsPack.gigs) && gigsPack.gigs.length){
-      STORY_WIRE.gigsByYear[1988] = gigsPack;
+      try{ years66Walk(gigsPack, null); }catch(_y66){}
+      gigsPack.year = 1990;
+      STORY_WIRE.gigsByYear[1990] = gigsPack;
     } else {
       STORY_WIRE.errors.push("gigs_1988.json 未載入 → 使用內嵌 GIGS fallback");
     }
     if(gigs1989 && Array.isArray(gigs1989.gigs) && gigs1989.gigs.length){
-      STORY_WIRE.gigsByYear[1989] = gigs1989;
+      try{ years66Walk(gigs1989, null); }catch(_y66){}
+      gigs1989.year = 1991;
+      STORY_WIRE.gigsByYear[1991] = gigs1989;
     } else {
-      STORY_WIRE.errors.push("gigs_1989.json 未載入（跨年後仍可用 1988 fallback）");
+      STORY_WIRE.errors.push("gigs_1989.json 未載入（跨年後仍可用內嵌 fallback）");
     }
     if(gigs1990 && Array.isArray(gigs1990.gigs) && gigs1990.gigs.length){
-      STORY_WIRE.gigsByYear[1990] = gigs1990;
+      try{ years66Walk(gigs1990, null); }catch(_y66){}
+      gigs1990.year = 1992;
+      STORY_WIRE.gigsByYear[1992] = gigs1990;
     } else {
       STORY_WIRE.errors.push("gigs_1990.json 未載入（跨年後仍可用較早年庫 fallback）");
     }
     if(gigs1991 && Array.isArray(gigs1991.gigs) && gigs1991.gigs.length){
-      STORY_WIRE.gigsByYear[1991] = gigs1991;
+      try{ years66Walk(gigs1991, null); }catch(_y66){}
+      gigs1991.year = 1993;
+      STORY_WIRE.gigsByYear[1993] = gigs1991;
     } else {
       STORY_WIRE.errors.push("gigs_1991.json 未載入（跨年後仍可用較早年庫 fallback）");
     }
     if(gigs1992 && Array.isArray(gigs1992.gigs) && gigs1992.gigs.length){
-      STORY_WIRE.gigsByYear[1992] = gigs1992;
+      try{ years66Walk(gigs1992, null); }catch(_y66){}
+      gigs1992.year = 1994;
+      STORY_WIRE.gigsByYear[1994] = gigs1992;
     } else {
       STORY_WIRE.errors.push("gigs_1992.json 未載入（跨年後仍可用較早年庫 fallback）");
     }
@@ -24378,6 +24503,8 @@ async function refreshCopyPacksFromDisk(){
     /* v20a55 TEXTFIX：主幹覆寫之後、其餘載入之前，清洗劇情包文字 */
     try{ textfix55StoryPack(main); textfix55StoryPack(rom1); textfix55StoryPack(rom2); textfix55StoryPack(romTang); textfix55StoryPack(rival); textfix55RivalSpeakers(rival); }catch(_t55){}
     try{ textfix55StoryPack(gateStub); textfix55StoryPack(dengMock); textfix55StoryPack(dengPushMock); textfix55StoryPack(dualMock); }catch(_t55){}
+    /* v20a66 YEARS66：劇情包年份 remap（主幹覆寫＋TEXTFIX 之後行，覆寫注入嘅年份字眼一併 +2） */
+    try{ if(typeof years66Walk==="function"){ [main, rom1, rom2, romTang, rival, gateStub, dengMock, dengPushMock, dualMock].forEach(p=>{ try{ years66Walk(p, null); }catch(_y66){} }); } }catch(_y66){}
     let _softStubRes = null;
     try{
       if(gateStub && typeof BehaviorGate!=="undefined") _softStubRes = BehaviorGate.loadStub_nodes_trigger(gateStub);
@@ -24477,13 +24604,13 @@ function boardNotePlayerOk(s){
 }
 /* ===== v20a59 POSTER59：作品圖＋主演接入 =====
    leadStar 只經 normalizeGigRecord 一處回填（LEADSTAR59 對照表），唔改 pack JSON。
-   對照表來源：linji-poster-casting-1988.md 選角表 v1（1988 年 137 部常規製作逐部建議主演）。
+   對照表來源：linji-poster-casting-1990.md 選角表 v1（1990 年 137 部常規製作逐部建議主演）。
    值＝主演顯示名（雙主演／主持＋嘉賓以「、」連接）；null＝選角表定為素人無星
    （《秋裝街頭隨拍輯》，作品本身照入作品牆，只係冇主演欄）。
    favorDelta／rumorKeys 唔係主演（季節模板／環境關聯），永唔好攞嚟做主演顯示。
    海報：data URI 內嵌（POSTER59_DATA，340w WebP q60）——GitHub 推送通道只收 UTF-8 文字、
    binary 入唔到 repo，外部圖檔路線行唔通；600w master 保留喺工作副本 assets/posters/（原生版用）。
-   1989／1990 未回填：機制預留，嗰兩年嘅作品照入牆（主演欄留空），見 NOTES_V20A59_POSTER.md。 */
+   1991／1992 未回填：機制預留，嗰兩年嘅作品照入牆（主演欄留空），見 NOTES_V20A59_POSTER.md。 */
 const POSTER59_STAR_IDS = {
   "陸柏言": "luk_baakyin", "廖炳星": "liu_bingxing", "齊鎮海": "chai_zanhoi",
   "麥震東": "mak_zhendong", "魏詠男": "ngai_wingnaam", "鍾楚凝": "chung_choning",
@@ -24722,7 +24849,7 @@ function work59YearOf(h, g){
   if(h && h.year) return Number(h.year) || 0;
   if(g && g.year) return Number(g.year) || 0;
   const m = String((h && h.gigId) || "").match(/^gig_(\d{4})_/);
-  if(m) return Number(m[1]);
+  if(m){ const y66 = Number(m[1]); return (y66>=1988 && y66<=1992) ? y66+2 : y66; } /* v20a66：id 內嵌年份係舊曆編碼 */
   if(h && h.wrappedDay != null){
     try{ return awardsYearFromDay(h.wrappedDay) || 0; }catch(_e){}
   }
@@ -24791,6 +24918,8 @@ function normalizeGigRecord(g){
   try{ if(typeof bridge56NormalizeGig==="function") bridge56NormalizeGig(o); }catch(_b56){}
   /* v20a59 POSTER59：主演回填（LEADSTAR59 對照表；只認 id，冪等） */
   try{ if(typeof leadStar59Apply==="function") leadStar59Apply(o); }catch(_p59){}
+  /* v20a66 YEARS66：gig 年份欄＋玩家面文字 remap（+2；__y66w 冪等，唔會雙重推移） */
+  try{ years66GigRemap(o); }catch(_y66){}
   /* v20a36 F1：年庫 pack（1989／1990／1991）有批唱片／MTV 工嘅 req 用錯 key——
      sing／dance 唔係真屬性（真屬性係 vocal 歌藝／stage 台風），reqGap 讀 S.sing
      永遠係 0，嗰批工點玩都開唔到（死卡）。所有年份 pack 入池都必經呢度
@@ -24894,7 +25023,7 @@ function showWireDebug(){
     : `<p class="ok">內容包載入正常（或已用內嵌 fallback）。</p>`;
   const st = (S && S.story) || {};
   const by = w.gigsByYear || {};
-  const yearPackLine = [1988,1989,1990,1991,1992].map(yy=>{
+  const yearPackLine = [1990,1991,1992,1993,1994].map(yy=>{
     const p = by[yy];
     const n = (p && Array.isArray(p.gigs)) ? p.gigs.length : 0;
     const ok = n>0;
@@ -24910,14 +25039,14 @@ function showWireDebug(){
       ` · 當季 <b>${cur}</b> · high <b>${high.length}</b></p>
     <p>packs：${yearPackLine}</p>
     <p class="wire-actions">
-      <button type="button" class="wire-btn" data-wire="year-1989">→1989</button>
-      <button type="button" class="wire-btn" data-wire="year-1990">→1990</button>
       <button type="button" class="wire-btn" data-wire="year-1991">→1991</button>
       <button type="button" class="wire-btn" data-wire="year-1992">→1992</button>
-      <button type="button" class="wire-btn" data-wire="year-1988">→1988</button>
+      <button type="button" class="wire-btn" data-wire="year-1993">→1993</button>
+      <button type="button" class="wire-btn" data-wire="year-1994">→1994</button>
+      <button type="button" class="wire-btn" data-wire="year-1990">→1990</button>
       <button type="button" class="wire-btn" data-wire="sync-year">force sync</button>
     </p>
-    <p class="muted" style="color:var(--muted);font-size:.72rem">Console：<code>S</code>、<code>syncGigsForDay()</code>／<code>syncGigsForCalendarYear(true)</code>、<code>gigsByYear</code>、<code>previewJumpCalendarYear(1989)</code></p>
+    <p class="muted" style="color:var(--muted);font-size:.72rem">Console：<code>S</code>、<code>syncGigsForDay()</code>／<code>syncGigsForCalendarYear(true)</code>、<code>gigsByYear</code>、<code>previewJumpCalendarYear(1991)</code></p>
     <p>loc <code>tvb_longmen</code> 顯示名：<b>${locLongmen?esc(locLongmen.name):"（未找到）"}</b></p>
     <p>資料：C <b>${mainN}</b> · R <b>${rCount}</b> · A <b>${aCount}</b> · phase：<b>${esc(oc.phase)}</b></p>
     <p>進度：done <b>${(oc.done||[]).length}</b> · 可出 <b>${(oc.open||[]).length}</b> · 未開 <b>${(oc.locked||[]).length}</b>
@@ -25012,6 +25141,7 @@ function fmtDateShort(){
 function fresh(){
   return {
     dayIndex:0,
+    years66Shifted:1, /* v20a66：新檔出生已係 1990 曆法，存檔遷移唔好掂 */
     acting:18, stage:14, vocal:14, looks:22, stamina:75,
     iq:20, charm:16, fame:5, popularity:3, stress:12, money:12000,
     stageVolume:5, industryCredit:10, industryCreditDelta:0,
@@ -25120,6 +25250,8 @@ function normalizeSaveObj(o){
   if(!Array.isArray(o.newspaperClippings)) o.newspaperClippings=[];
   if(o.pendingMorningPaper && typeof o.pendingMorningPaper!=="object") o.pendingMorningPaper=null;
   try{ syncDualTracks(o); }catch(_e){}
+  /* v20a66 YEARS66：舊存檔年份遷移（epoch guard：dayIndex 不變、絕對年份鍵 remap，一次性） */
+  try{ if(typeof years66MigrateSave==="function") years66MigrateSave(o); }catch(_e){}
   /* v20a60 CALIB60-3：舊檔靜靜補登已漏節點入「回憶」（唔彈提示、唔出結算行）；新登記只會喺週結發生 */
   try{ if(typeof calib60MissedScan==="function") calib60MissedScan(o); }catch(_e){}
   /* v20a61 CONSEQ61-1：舊檔已過評核年份→靜靜標記已過，永不追溯收場；病倒連續日由 0 起計，唔會讀檔即病 */
@@ -25793,18 +25925,18 @@ function calib60YearOfWeek(w){
    所以「回憶」語義＝已過編排時窗；若其後補回完成，掃描會自動除名，唔會留假紀錄）。
    唔改 STORY_GATE_3Y／任何觸發條件／門檻；舊存檔經 normalizeSaveObj 靜靜補登（唔彈提示）。 */
 const CALIB60_NODE_WINDOWS = {
-  C6:  { year:1988, seasons:["春","夏","秋","冬"], whenLabel:"1988 年" },
-  C7:  { year:1989, seasons:["夏"], whenLabel:"1989 年夏" },
-  C11: { year:1989, seasons:["夏","秋"], whenLabel:"1989 年夏／秋" },
-  C8:  { year:1989, seasons:["秋"], whenLabel:"1989 年秋" },
-  C9:  { year:1989, seasons:["冬"], whenLabel:"1989 年冬" },
-  C10: { year:1989, seasons:["冬"], whenLabel:"1989 年冬" },
-  C15: { year:1990, seasons:["春"], whenLabel:"1990 年春" },
-  C14: { year:1990, seasons:["夏"], whenLabel:"1990 年夏" },
-  C12: { year:1990, seasons:["秋"], whenLabel:"1990 年秋" },
-  C16: { year:1990, seasons:["秋"], whenLabel:"1990 年秋" },
-  C13: { year:1990, seasons:["冬"], whenLabel:"1990 年冬" },
-  C17: { year:1990, seasons:["冬"], whenLabel:"1990 年冬" }
+  C6:  { year:1990, seasons:["春","夏","秋","冬"], whenLabel:"1990 年" },
+  C7:  { year:1991, seasons:["夏"], whenLabel:"1991 年夏" },
+  C11: { year:1991, seasons:["夏","秋"], whenLabel:"1991 年夏／秋" },
+  C8:  { year:1991, seasons:["秋"], whenLabel:"1991 年秋" },
+  C9:  { year:1991, seasons:["冬"], whenLabel:"1991 年冬" },
+  C10: { year:1991, seasons:["冬"], whenLabel:"1991 年冬" },
+  C15: { year:1992, seasons:["春"], whenLabel:"1992 年春" },
+  C14: { year:1992, seasons:["夏"], whenLabel:"1992 年夏" },
+  C12: { year:1992, seasons:["秋"], whenLabel:"1992 年秋" },
+  C16: { year:1992, seasons:["秋"], whenLabel:"1992 年秋" },
+  C13: { year:1992, seasons:["冬"], whenLabel:"1992 年冬" },
+  C17: { year:1992, seasons:["冬"], whenLabel:"1992 年冬" }
 };
 const CALIB60_NODE_TITLES = {
   C6:"飯堂閒角", C7:"暴雨救場", C11:"選美後台", C8:"茶餐廳度橋", C9:"年尾追數", C10:"戲路定型",
@@ -25885,8 +26017,8 @@ function renderMemoryPane60(){
    呈現行返 ending410 架構（S.ending410 相容、剪報頁重睇、手帳總結頁、稱號卡）。 */
 const CONSEQ61_REVIEWS = {
   /* boundaryWeek＝嗰年最後一個週結（calib60YearOfWeek(w)=Y 而 w+1 已入 Y+1 年） */
-  1988: { floor: 45,  warnLine: 65,  boundaryWeek: 43 },
-  1989: { floor: 100, warnLine: 130, boundaryWeek: 95 }
+  1990: { floor: 45,  warnLine: 65,  boundaryWeek: 43 },
+  1991: { floor: 100, warnLine: 130, boundaryWeek: 95 }
 };
 const CONSEQ61_CFG = {
   graceWeeks: 4,        /* 破產寬限：4 個週結；期間有戲拍緊暫停倒數；存款返到夠冚下週生活費、或本週入帳夠冚＋存款返正數（v20a65 FIX65-2）即解除 */
@@ -26710,7 +26842,7 @@ function gigCastPeriodLine(g){
     if(a && b) return withApply(`${a} ～ ${b}${w}`);
     if(w) return withApply(`通告檔期${w}`);
   }
-  const year=g.year || (typeof calendarYear==="function" ? calendarYear() : 1988);
+  const year=g.year || (typeof calendarYear==="function" ? calendarYear() : 1990);
   const season=g.season && g.season!=="不限" && g.season!=="全年" ? `${g.season}季檔` : "通告檔";
   let ed=null, ddl=null;
   try{ ed=effectiveShootDays(g); }catch(_e){ ed=g.shootDaysHint; }
@@ -27948,13 +28080,13 @@ function livingCostBand(w){
   else if(week>=27 && week<=43) band = { lo:1550, hi:1850, mid:1700, label:"$1,550–1,850（首年緩坡）", tier:"y1_c" };
   else band = { lo:2000, hi:2800, mid:2400, label:"$2,000–2,800", tier:"full" };
   /* v20a60 CALIB60-2：生活費隨年份＋名氣遞增（全弧報告 §6.2.5——gate-on 錢全程唔構成決策）。
-     只限 1989 年起：1989 +$300／1990 +$600；同年 fame≥120 再 +$200、fame≥250 再 +$400（取高嗰級，唔疊加）。
-     1988 年（新人期）完全唔經呢段——同 v20a59 逐蚊一致，守住「唔好餓死新人」紅線（gate-off 弧試過 $0 死局）。
+     只限 1991 年起：1991 +$300／1992 +$600；同年 fame≥120 再 +$200、fame≥250 再 +$400（取高嗰級，唔疊加）。
+     1990 年（新人期）完全唔經呢段——同 v20a59 逐蚊一致，守住「唔好餓死新人」紅線（gate-off 弧試過 $0 死局）。
      年份以嗰週第一日嘅真日曆計（calib60YearOfWeek），預覽下週（w+1）同實際扣款同一個數。 */
   try{
-    const yr = (typeof calib60YearOfWeek==="function") ? calib60YearOfWeek(week) : 1988;
-    if(yr>=1989){
-      let up = (yr>=1990) ? 600 : 300;
+    const yr = (typeof calib60YearOfWeek==="function") ? calib60YearOfWeek(week) : 1990;
+    if(yr>=1991){
+      let up = (yr>=1992) ? 600 : 300;
       const f = Number((typeof S!=="undefined" && S) ? S.fame : 0)||0;
       if(f>=250) up += 400; else if(f>=120) up += 200;
       if(up>0){
@@ -31071,7 +31203,7 @@ function seedExodusFenPair(){
   try{
     if(typeof S==="undefined" || !S) return false;
     if(S.exodusFenSeeded || S.exodusFenFired) return false;
-    if(typeof yearSeasonNow!=="function" || yearSeasonNow().year < 1989) return false;
+    if(typeof yearSeasonNow!=="function" || yearSeasonNow().year < 1991) return false;
     S.exodusFenSeeded = true;
     if(!Array.isArray(S.mockDebts)) S.mockDebts = [];
     if(!Array.isArray(S.mockCredits)) S.mockCredits = [];
@@ -31139,9 +31271,9 @@ function exodusFenTick(){
     if(typeof S==="undefined" || !S || S.exodusFenFired) return;
     if(typeof yearSeasonNow!=="function") return;
     const ys = yearSeasonNow();
-    if(ys.year < 1989) return;
+    if(ys.year < 1991) return;
     seedExodusFenPair();
-    const due = (ys.year===1989 && ys.season==="夏") || ys.year>=1990;
+    const due = (ys.year===1991 && ys.season==="夏") || ys.year>=1992;
     if(!due) return;
     S.exodusFenFired = true;
     const L = ensureFavorLedger();
@@ -31504,11 +31636,11 @@ const CHOICE47_NODES = {
   }
 };
 const CHOICE47_DEFS = {
-  F4_stay_mind: { year:1990, season:"夏", loc:"agency_ho",
+  F4_stay_mind: { year:1992, season:"夏", loc:"agency_ho",
     flags:["flag_stay_mind","flag_leave_mind","flag_undecided_mind"],
     actTitle:"何生有句說話想同你講",
     actHint:"收工時分，何生叫你坐低一陣——唔係講通告，係講去留。" },
-  G4_family_job: { year:1990, season:"冬", loc:"",
+  G4_family_job: { year:1992, season:"冬", loc:"",
     flags:["flag_family_job_accept","flag_family_job_decline"] }
 };
 function choice47Answered(id){
@@ -31645,7 +31777,7 @@ function commit48Available(id){
   if(choice47StoryFlag(def.otherFlag)) return false;     /* 互斥：已 commit 另一線 */
   if(!choice47StoryDone(def.crisis)) return false;       /* 未行到該線 crisis，唔好提早收束 */
   if(commit48Rel(def.relKey) < COMMIT48_REL_MIN) return false;
-  return choice47SeasonReached(1990, "秋");              /* N15–N17 窗口：1990 秋起，過年唔鎖死 */
+  return choice47SeasonReached(1992, "秋");              /* N15–N17 窗口：1990 秋起，過年唔鎖死 */
 }
 function commit48ActionsAt(locId){
   const out = [];
@@ -31715,7 +31847,7 @@ function story48SettleTick(){
 }
 /* ===== Weave Phase 4-7（v20a30）：鏈 F 第 5 拍——移民潮空位通告（1990 秋起）。
    mergeExodusGigs 跟 mergeIntelGigs／mergeFavorGigs／mergeRivalGigs 同一條件注入模式，
-   掛喺 gigsForLocSeasonBoard 同一呼叫點；閘＝choice47SeasonReached(1990, "秋")。
+   掛喺 gigsForLocSeasonBoard 同一呼叫點；閘＝choice47SeasonReached(1992, "秋")。
    數值校準（詳見 NOTES_V20A30）：兩份都係「中」級、定額各 $3,300／$2,900——同 2-1 隱藏通告
    $3,100 同量級，畀到「資深臨記頂位」嘅上位感，但只高過同級一般通告少少；聲量／人氣
    回報 [2,3] 略高於常規，hard 唔加辣，唔破壞經濟平衡。殺青行現有 wrap 路徑（isGigConsumed
@@ -31958,7 +32090,7 @@ function mergeExodusGigs(){
     const ids = {};
     (EXODUS_GIGS||[]).forEach(g=>{ if(g && g.id) ids[g.id] = 1; });
     let open = false;
-    try{ open = choice47SeasonReached(1990, "秋"); }catch(_e){}
+    try{ open = choice47SeasonReached(1992, "秋"); }catch(_e){}
     if(!open){
       const before = GIGS.length;
       GIGS = GIGS.filter(g=>!(g && ids[g.id]));
@@ -32032,7 +32164,7 @@ const MOCK_RUMOR_SEEDS = [
 ];
 /* ===== Weave Phase 4-1（v20a24）：鏈 F 移民潮第 1 拍——1989 年起茶餐廳氛圍碎片。
    純襯底：唔入 MERGE_PAIRS、唔置任何情報旗、無 fameDelta（跟一般種子形狀）。
-   由 ensureMockJournal 喺 yearSeasonNow().year>=1989 時補種（固定 id 去重，只入一次，舊檔唔重複）。
+   由 ensureMockJournal 喺 yearSeasonNow().year>=1991 時補種（固定 id 去重，只入一次，舊檔唔重複）。
    文案守則：市井口吻＋泛稱／虛構人物；唔用真藝名；顯示經 displayRumor（家庭友善過濾一致）。 ===== */
 const EXODUS_RUMOR_SEEDS = [
   { id:"rumor_exodus_setdresser_van", source:"金龍茶餐廳", title:"場記全家去溫哥華", text:"聽講隔離組個場記全家去咗溫哥華，臨走嗰晚成組人喺廟街大排檔同佢食咗餐送行飯。", state:"normal", season:"" },
@@ -32111,8 +32243,8 @@ function ensureMockJournal(){
     }
   }
   /* Weave Phase 4-1（v20a24）：鏈 F 第 1 拍——1989 年起補種移民潮氛圍碎片。
-     年份閘行真日曆（yearSeasonNow）；1988 年完全唔入池。固定 id 去重，舊檔跨年後只補一次。 */
-  if(typeof yearSeasonNow==="function" && typeof EXODUS_RUMOR_SEEDS!=="undefined" && yearSeasonNow().year>=1989){
+     年份閘行真日曆（yearSeasonNow）；1990 年完全唔入池。固定 id 去重，舊檔跨年後只補一次。 */
+  if(typeof yearSeasonNow==="function" && typeof EXODUS_RUMOR_SEEDS!=="undefined" && yearSeasonNow().year>=1991){
     for(const seed of EXODUS_RUMOR_SEEDS){
       if(seed && !S.mockRumors.some(r=>r && r.id===seed.id)){
         S.mockRumors.push({ id:seed.id, source:seed.source, title:seed.title, text:seed.text, state:"normal", season:"", seeded:true });
@@ -33233,11 +33365,11 @@ function dualMeetSyncWire(){
       if(n.id==="R_choi_meet"){
         n.title = "週刊小訪";
         if(typeof n.playerMeta==="string") n.playerMeta = n.playerMeta.replace(/^主線/, "支線");
-        else n.playerMeta = "支線 · 1988夏";
+        else n.playerMeta = "支線 · 1990夏";
       } else if(n.id==="R_hiu_meet"){
         if(!n.title) n.title = "廠景休息角";
         if(typeof n.playerMeta==="string") n.playerMeta = n.playerMeta.replace(/^主線/, "支線");
-        else n.playerMeta = "支線 · 1988春";
+        else n.playerMeta = "支線 · 1990春";
       }
     });
     const main = (typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.main && Array.isArray(STORY_WIRE.main.nodes)) ? STORY_WIRE.main.nodes : null;
@@ -34347,14 +34479,14 @@ function awardsCheck(){
     if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   }catch(_e){ fails.push("save"); }
   try{
-    const p = buildAwardResultPack({ ceremonyId:"award_harbour_ad", year:1988, forceTier:"gallery" });
+    const p = buildAwardResultPack({ ceremonyId:"award_harbour_ad", year:1990, forceTier:"gallery" });
     if(!p || p.tier!=="gallery" || !p.inviteTitle) fails.push("preview_gallery");
     if(p.metricEcho!=="attention") fails.push("metric_ad");
-    const m = buildAwardResultPack({ ceremonyId:"award_golddisc_music", year:1988, forceTier:"nominee" });
+    const m = buildAwardResultPack({ ceremonyId:"award_golddisc_music", year:1990, forceTier:"nominee" });
     if(!m || m.metricEcho!=="sales") fails.push("metric_music");
-    const f = buildAwardResultPack({ ceremonyId:"award_harbour_film", year:1988, forceTier:"nominee" });
+    const f = buildAwardResultPack({ ceremonyId:"award_harbour_film", year:1990, forceTier:"nominee" });
     if(!f || f.metricEcho!=="boxOffice") fails.push("metric_film");
-    const t = buildAwardResultPack({ ceremonyId:"award_singho_tv", year:1988, forceTier:"nominee" });
+    const t = buildAwardResultPack({ ceremonyId:"award_singho_tv", year:1990, forceTier:"nominee" });
     if(!t || t.metricEcho!=="ratings") fails.push("metric_tv");
     const html = renderAwardInviteHtml(p) + renderAwardResultHtml(p);
     if(/金像|十大中文金曲|廣告公會|TVB.*大獎/.test(html)) fails.push("real_award_name");
@@ -34454,7 +34586,7 @@ function awards62WorkQuality(h){
 function awards62YearOf(h){
   if(h && h.year) return Number(h.year) || 0;
   const m = String((h && h.gigId) || "").match(/(\d{4})/);
-  if(m) return Number(m[1]);
+  if(m){ const y66 = Number(m[1]); return (y66>=1988 && y66<=1992) ? y66+2 : y66; } /* v20a66：id 內嵌年份係舊曆編碼 */
   try{ if(h && h.wrappedDay != null) return awardsYearFromDay(h.wrappedDay) || 0; }catch(_e){}
   return 0;
 }
@@ -35137,7 +35269,7 @@ const AWARDS64_SPRITES = {
 /* ===== v20a63 AWARDS63：頒獎禮群星版 =====
    像素角色 v63 原用「真立繪像素化」衍生；v20a64 起成套換做 Q 版人仔（AWARDS64_SPRITES，開羅語法逐格繪製＋走路幀）：
    阿偉跟定版造型（黑碎瀏海、深藍西裝褸＋白恤衫開領、冇呔）；紅星池＝POSTER59_STAR_IDS 嗰 10 位
-   （程天諾唔喺池內——1988 零出場紅線，任何年份都唔派佢）。
+   （程天諾唔喺池內——1990 零出場紅線，任何年份都唔派佢）。
    提名對手（fellows）由嗰年嗰媒介 pack 通告＋LEADSTAR59 主演衍生；冇主演數據就按媒介喺紅星池兜底配對（確定性輪派）。
    海報利用：唱名作品卡列（DOM 層，海報縮圖／CSS 片名卡）＋得獎 glamour 全屏海報＋請柬細海報——全部重用 poster59Path 既有 data URI，唔重複編碼。 */
 const AWARDS63_POOL = {
@@ -35176,7 +35308,8 @@ function awards63GigYear(g){
   if(!g) return 0;
   if(g.year) return Number(g.year) || 0;
   const m = String(g.id || "").match(/(\d{4})/);
-  return m ? Number(m[1]) : 0;
+  if(m){ const y66 = Number(m[1]); return (y66>=1988 && y66<=1992) ? y66+2 : y66; } /* v20a66：id 內嵌年份係舊曆編碼 */
+  return 0;
 }
 function awards63GigPay(g){
   if(!g) return 0;
@@ -35874,21 +36007,21 @@ const PAPER_SIDE_ITEMS = [
   { h:"跑馬地夜馬人頭湧湧，明星馬主成焦點", d:"馬迷話入場唔係為賭馬，係想撞下有冇星出現，順便買份馬經研究下期。" },
   { h:"蘇芷茵新歌派台，唱片舖門口貼滿海報", d:"電台 DJ 話點唱率日日升，唱片舖老闆已經入定多兩箱貨等上架。" },
   { h:"大排檔宵夜檔成片場後台，收工人潮傾到天光", d:"檔主話邊組收工、邊個俾導演鬧，坐低食碗雲吞麵就聽得七七八八。" },
-  { h:"卡拉 OK 新店佐敦開張，後生仔女排隊試唱", d:"老闆話房間裝修跟足日本款，有成班後生訂房訂到下個月。", fromYear:1989 },
-  { h:"移民講座場場爆滿，顧問公司廣告登到上副刊", d:"茶餐廳入面十枱有三枱講移民，有人話唔係想走，係買個保險。", fromYear:1989 },
-  { h:"酒樓散席飯訂枱急升，經理話做到手軟", d:"有經理話近排啲圍餐十居其九係送行宴，食到尾總有人眼濕濕。", fromYear:1989 },
-  { h:"某武師舉家移民，劇組筵開三席送行", d:"監製話佢嗰身功夫唔係咁易搵人替，嗰晚成班武師輪住嚟敬佢，話去到外國都要記住清水灣呢班兄弟。", fromYear:1989 },
-  { h:"程天諾接拍汽水廣告，新人王氣勢逼人", d:"廣告商話就係睇中佢後生夠活力，廣告未出街，學校門口已經貼滿佢啲相。", fromYear:1990 },
+  { h:"卡拉 OK 新店佐敦開張，後生仔女排隊試唱", d:"老闆話房間裝修跟足日本款，有成班後生訂房訂到下個月。", fromYear:1991 },
+  { h:"移民講座場場爆滿，顧問公司廣告登到上副刊", d:"茶餐廳入面十枱有三枱講移民，有人話唔係想走，係買個保險。", fromYear:1991 },
+  { h:"酒樓散席飯訂枱急升，經理話做到手軟", d:"有經理話近排啲圍餐十居其九係送行宴，食到尾總有人眼濕濕。", fromYear:1991 },
+  { h:"某武師舉家移民，劇組筵開三席送行", d:"監製話佢嗰身功夫唔係咁易搵人替，嗰晚成班武師輪住嚟敬佢，話去到外國都要記住清水灣呢班兄弟。", fromYear:1991 },
+  { h:"程天諾接拍汽水廣告，新人王氣勢逼人", d:"廣告商話就係睇中佢後生夠活力，廣告未出街，學校門口已經貼滿佢啲相。", fromYear:1992 },
   /* v20a31（Phase 4-8）：程天諾預熱（主幹 §5）——N15（C16）出場前，喺 N13–N14 期間先令佢「未見其人先聞其名」：
      兩則 1990 花邊分別埋「跳唱／舞蹈室」同「修音爭議」兩條線，C16 開場嗰陣玩家已經聽過佢個名。 */
-  { h:"程天諾舞蹈室練到半夜，保安話成層樓都聽到佢數拍子", d:"唱片公司職員話，呢個跳唱新人唔靠樣食飯，排舞練到保安鎖門先肯走，監製睇到直點頭。", fromYear:1990 },
-  { h:"實力派前輩公開批評程天諾靠修音，樂壇口水戰開打", d:"有資深歌手受訪嗰陣話，而家啲新人入錄音室先係考場；被點名嗰位跳唱新人冇出聲回應，只係嗰晚又練到半夜。", fromYear:1990 },
-  { h:"啟德機場送機大堂日日人山人海", d:"有送機嘅人話，而家去機場唔係旅行，係送親戚，一送就唔知幾時先再見。", fromYear:1990 },
+  { h:"程天諾舞蹈室練到半夜，保安話成層樓都聽到佢數拍子", d:"唱片公司職員話，呢個跳唱新人唔靠樣食飯，排舞練到保安鎖門先肯走，監製睇到直點頭。", fromYear:1992 },
+  { h:"實力派前輩公開批評程天諾靠修音，樂壇口水戰開打", d:"有資深歌手受訪嗰陣話，而家啲新人入錄音室先係考場；被點名嗰位跳唱新人冇出聲回應，只係嗰晚又練到半夜。", fromYear:1992 },
+  { h:"啟德機場送機大堂日日人山人海", d:"有送機嘅人話，而家去機場唔係旅行，係送親戚，一送就唔知幾時先再見。", fromYear:1992 },
   { h:"賀歲片搶檔期傳到熱哄哄，院線排片傷腦筋", d:"邊套賀歲、邊套押後，戲院經理話排到聖誕都未排得晒，年尾有排煩。" },
   { id:"side_mak_wrap", h:"麥震東新片煞科宴缺席，劇組話佢唔舒服", d:"監製話佢拍到煞科嗰日都仲吊緊威也，係咪唔舒服，就無人肯講多句。" }
 ];
 function paperSideItemForDay(day){
-  let year = 1988;
+  let year = 1990;
   try{ const dt = (typeof displayDateObj==="function") ? displayDateObj() : null; if(dt) year = dt.getFullYear()|0; }catch(_e){}
   const pool = PAPER_SIDE_ITEMS.filter(it=> !it.fromYear || year >= (it.fromYear|0));
   if(!pool.length) return null;
@@ -36232,7 +36365,7 @@ function renderClippingsPane(){
       const e7card = (S.ending410.career==="E7");
       const clipDate410 = e7card
         ? ((S.ending410.earlyEnd && S.ending410.earlyEnd.kind==="review") ? ((S.ending410.earlyEnd.year||"") + " 年尾 · 年終評核") : "寬限期滿 · 提早收場")
-        : "1990 年冬 · 三年收科";
+        : "1992 年冬 · 三年收科";
       const clipSpan410 = e7card ? "呢段日子" : "呢三年";
       endingCard = `<article class="clip-card ending410-card"><p class="clip-date">${clipDate410}</p><h4>${endingEsc410(S.ending410.title||"三年收科")}</h4><p>事業結局：${endingEsc410(ENDING410_CAREER_NAMES[S.ending410.career]||S.ending410.career||"")}。${clipSpan410}的總帳，記喺一度。</p><p><button type="button" id="ending410-review-btn" class="act act-priority">重睇結局總結</button></p></article>`;
     }
@@ -36470,7 +36603,7 @@ function newspaperCheck(){
     const fameFerry = Number(S.fame)||0;
     const edFerry = pullDueNewspaperEdition();
     if(!edFerry || String(edFerry.headline||"").indexOf("天星碼頭")<0) fails.push("ferry_next");
-    if(edFerry && String(edFerry.dateLabel||"")!=="1988/3/11") fails.push("ferry_date:"+(edFerry&&edFerry.dateLabel));
+    if(edFerry && String(edFerry.dateLabel||"")!=="1990/3/11") fails.push("ferry_date:"+(edFerry&&edFerry.dateLabel));
     if(edFerry && String(edFerry.headline||"").indexOf("星河處境劇")>=0) fails.push("ferry_next_mismatch");
     const htmlFerry = renderMorningPaperHtml(edFerry||{});
     if(htmlFerry.indexOf("天星碼頭")<0 || htmlFerry.indexOf("聲望")<0 || htmlFerry.indexOf("聲量")>=0) fails.push("ferry_html");
@@ -36763,6 +36896,7 @@ async function loadFreeplayFramework(){
   }));
   FREEPLAY_FW.loaded = true;
   try{ textfix55Freeplay(FREEPLAY_FW); }catch(_t55){}
+  try{ if(typeof years66Walk==="function") years66Walk(FREEPLAY_FW, null); }catch(_y66){} /* v20a66 YEARS66 */
   try{ freeplayApplyEraStarStubOverlay(); }catch(_e){}
   try{ if(typeof augmentPostShootRewards35==="function") augmentPostShootRewards35(); }catch(_e){}
   try{ seedFreeplayRumorShells(); }catch(_e){}
@@ -37950,7 +38084,7 @@ function closeSheet(opts){
 
 /* --- P0-2(c)：1988 春中階通告（mergeMidGigs35，跟 mergeIntelGigs 同一條件注入模式） ---
    門檻坐演技 32／38（入門 15 與《靈異》45 之間）、酬勞 $950／$1,060（入門 $550–$950 與
-   《靈異》$1,150 之間）、拍攝 3 日／2 日（短過《靈異》9 日）。只限 1988 年注入：
+   《靈異》$1,150 之間）、拍攝 3 日／2 日（短過《靈異》9 日）。只限 1990 年注入：
    跨年後 GIGS 換年庫，呢兩張唔好喺 1989 春板面翻生。 */
 const MID_GIGS_1988_35 = [
   {
@@ -38012,7 +38146,7 @@ function mergeMidGigs35(){
     const ids = {};
     (MID_GIGS_1988_35||[]).forEach(g=>{ if(g && g.id) ids[g.id] = 1; });
     let inYear = false;
-    try{ inYear = (typeof dateObj==="function") ? (dateObj().getFullYear()===1988) : true; }catch(_e){ inYear = true; }
+    try{ inYear = (typeof dateObj==="function") ? (dateObj().getFullYear()===1990) : true; }catch(_e){ inYear = true; }
     if(!inYear){
       const before = GIGS.length;
       GIGS = GIGS.filter(g=>!(g && ids[g.id]));
@@ -38765,8 +38899,8 @@ const GIGS36_1990_FINALE_F7 = [
 
 /* --- 合池＋注入（跟 mergeMidGigs35／mergeExodusGigs 同一模式） --- */
 const GIGS36_BY_YEAR = {
-  1989: [].concat(GIGS36_1989_SPRING_F5, GIGS36_1989_BRIDGE, GIGS36_1989_HIGH_F2, GIGS36_1989_MID_F3),
-  1990: [].concat(GIGS36_1990_HIGH_F2, GIGS36_1990_MID_F3, GIGS36_1990_BRIDGE, GIGS36_1990_AUTUMN_F6, GIGS36_1990_FINALE_F7)
+  1991: [].concat(GIGS36_1989_SPRING_F5, GIGS36_1989_BRIDGE, GIGS36_1989_HIGH_F2, GIGS36_1989_MID_F3),
+  1992: [].concat(GIGS36_1990_HIGH_F2, GIGS36_1990_MID_F3, GIGS36_1990_BRIDGE, GIGS36_1990_AUTUMN_F6, GIGS36_1990_FINALE_F7)
 };
 const GIGS36_ALL_IDS = {};
 Object.keys(GIGS36_BY_YEAR).forEach(y=>{ (GIGS36_BY_YEAR[y]||[]).forEach(g=>{ if(g && g.id) GIGS36_ALL_IDS[g.id]=Number(y); }); });
@@ -40986,7 +41120,7 @@ function showB01HomeModal(){
       setTimeout(()=>{ try{ maybeNudgeStoryEntry("post-b01"); }catch(_e){} }, 400);
     }
   };
-  modal(`<h3>1988年3月7日 · 阿偉的家</h3>
+  modal(`<h3>1990年3月7日 · 阿偉的家</h3>
     ${guide?`<img class="guide-inline" src="${guide}" alt="何生引導"/>`:""}
     ${chOpen||""}
     ${b01html}

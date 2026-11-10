@@ -43,7 +43,7 @@ ok('applyStorySpineOverrides410 defined + wired in refreshCopyPacksFromDisk',
 ok('C17 SOFT tables aligned', 'C17: "tvb_longmen",' in html and 'C17: "三年收科",' in html and 'C17: { playerHint: "頒獎禮前夕' in html)
 gm = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)
 gate = gm.group(1) if gm else ''
-ok('C17 gate unchanged (needDone C13 + yearEq 1990 + 冬)', 'C17: { needDone: ["C13"], yearEq: 1990, seasonIn: ["冬"] }' in gate)
+ok('C17 gate unchanged (needDone C13 + yearEq 1992 + 冬)', 'C17: { needDone: ["C13"], yearEq: 1992, seasonIn: ["冬"] }' in gate)
 
 # ---- hooks ----
 ok('StoryPlay.start C17 eve-node hook', 'node.id==="C17" && typeof ending410EveNode==="function"' in html)
@@ -91,7 +91,7 @@ ok('三段差一步唔共用範本（各有專屬場景函數分支）',
 # ---- 慣例不變 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
 ok('version marker v20a33', 'v20a33' in html)
-ok('softRev unchanged s111', 's111' in html)
+ok('softRev unchanged s107', 's107' in html)
 ok('no content pack edit markers (overrides only)', 'applyStorySpineOverrides410' in html)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')

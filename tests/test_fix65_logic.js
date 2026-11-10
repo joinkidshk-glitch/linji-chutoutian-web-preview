@@ -47,7 +47,7 @@ function extractConst(name){
 /* ---------- 沙盒 stub ---------- */
 var window = {};
 var S = null;
-var START = { y: 1988, m: 3, d: 7 };
+var START = { y: 1990, m: 3, d: 7 };
 let R_MODE = "min";
 function R(a, b){ if(R_MODE === "min") return a; if(R_MODE === "max") return b; return Math.round((a + b) / 2); }
 function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
@@ -103,9 +103,9 @@ ok(livingCostBand(2).mid === 1100, "wk2 生活費 mid 1100（舊 1600）");
 ok(livingCostBand(8).mid === 1300, "wk8 生活費 mid 1300（舊 soft 1900／LIVE 2400）");
 ok(livingCostBand(20).mid === 1500, "wk20 生活費 mid 1500（舊 2400）");
 ok(livingCostBand(35).mid === 1700, "wk35 生活費 mid 1700（舊 2400）");
-ok(livingCostBand(44).mid === 2700, "wk44 已入 1989：full 帶 2400＋年份加幅 300 = 2700（後期規則冇郁）");
-ok(livingCostBand(50).mid === 2700, "1989 wk50 = 2400+300（CALIB60 加幅保留）");
-ok(livingCostBand(100).mid === 3000, "1990 wk100 = 2400+600（CALIB60 加幅保留）");
+ok(livingCostBand(44).mid === 2700, "wk44 已入 1991：full 帶 2400＋年份加幅 300 = 2700（後期規則冇郁）");
+ok(livingCostBand(50).mid === 2700, "1991 wk50 = 2400+300（CALIB60 加幅保留）");
+ok(livingCostBand(100).mid === 3000, "1992 wk100 = 2400+600（CALIB60 加幅保留）");
 SOFT = true;
 ok(livingCostBand(8).mid === 1300 && livingCostBand(35).mid === 1700, "soft 預覽同 LIVE 同一緩坡");
 SOFT = false;

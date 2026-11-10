@@ -36,8 +36,8 @@ ok('fen creditor uses LIVE display name', 'creditor:"副導演芬姐"' in html a
 ok('fen intel frag id', 'id:"rumor_fen_exodus_tip"' in html)
 ok('intel frag NOT in MERGE_PAIRS', 'rumor_fen_exodus_tip' not in html.split('const MERGE_PAIRS')[1].split('];')[0] if 'const MERGE_PAIRS' in html else False)
 ok('exodus tick defined', 'function exodusFenTick(' in html)
-ok('exodus gate: 1989 summer or catch-up', 'ys.year===1989 && ys.season==="夏") || ys.year>=1990' in html)
-ok('seed gate: year>=1989', 'yearSeasonNow().year < 1989' in html)
+ok('exodus gate: 1991 summer or catch-up', 'ys.year===1991 && ys.season==="夏") || ys.year>=1992' in html)
+ok('seed gate: year>=1991', 'yearSeasonNow().year < 1991' in html)
 ok('write-off source tag', '"exodus_writeoff"' in html)
 ok('exodus list push', 'L.exodus.indexOf(c.id)<0' in html)
 
@@ -53,7 +53,7 @@ ok('allDebtsForRepay excludes 絕響', 'if(d.status==="絕響") return;' in html
 
 # 慣例不變
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
-ok('softRev unchanged', 's111' in html)
+ok('softRev unchanged', 's107' in html)
 ok('no real artist names in new copy', all(x not in html.split('EXODUS_FEN_INTEL')[1].split('};')[0] for x in ['張國榮','陳百強','梅艷芳','周潤發']))
 
 print('\nFAILED: ' + ' | '.join(fails) if fails else '\nALL PASS')

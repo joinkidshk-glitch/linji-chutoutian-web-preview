@@ -77,7 +77,7 @@ var applyCastingTags = function(labels){
 };
 
 const SRC = [
-  "var START = { y:1988, m:3, d:7 };",
+  "var START = { y:1990, m:3, d:7 };",
   extractFn('function dateObj'),
   extractFn('function calendarSeason'),
   extractFn('function weekNumNow'),
@@ -158,10 +158,10 @@ ok('harness: StoryOC/applyStorySpineOverrides48/commit48 載入',
    typeof StoryOC === 'object' && typeof applyStorySpineOverrides48 === 'function' && typeof commit48Available === 'function');
 ok('harness: COMMIT48_REL_MIN = 6（鏈頂 7 校準）', COMMIT48_REL_MIN === 6);
 
-function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1988, 2, 7)) / 86400000); }
+function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1990, 2, 7)) / 86400000); }
 function baseSave(over){
   return Object.assign({
-    dayIndex: dayIndexOf(1990, 4, 15), money: 900, fame: 20, acting: 8, popularity: 30,
+    dayIndex: dayIndexOf(1992, 4, 15), money: 900, fame: 20, acting: 8, popularity: 30,
     industryCredit: 0, industryCreditDelta: 0,
     flags: {}, routes: {}, mockCredits: [], mockDebts: [], mockRumors: [], inventory: {},
     castingTags: [], favorLedger: null,
@@ -205,7 +205,7 @@ loadGame(baseSave());
     const n = node(id);
     if(!n || n.title !== t[id][0] || n.locId !== t[id][1] || !JSON.stringify(n).includes(t[id][2]) || !n.playerOffer) allOk = false;
   });
-  ok('覆寫完整性：1990 五節點標題／場地／紅星跟主幹', allOk);
+  ok('覆寫完整性：1992 五節點標題／場地／紅星跟主幹', allOk);
   const stale = ['賀歲搶位', '緋聞公關真假', '尊重或包養', '聯姻逼退圈', '舊底片', '金九'];
   let clean = true;
   ['C12','C13','C14','C15','C16'].forEach(id => { if(stale.some(w => JSON.stringify(node(id)).includes(w))) clean = false; });
@@ -258,18 +258,18 @@ loadGame(baseSave());
 /* ---- N12＝C15 ---- */
 function c15Save(over){
   return baseSave(Object.assign({
-    dayIndex: dayIndexOf(1990, 4, 15), fame: 20,
+    dayIndex: dayIndexOf(1992, 4, 15), fame: 20,
     castingTags: [{ id: 'tag_action', label: '動作演員' }],
   }, over || {}));
 }
 loadGame(c15Save());
-ok('C15：1990 春＋動作標籤 → offer 喺 film_harbour', !!openRow('C15') && openRow('C15').locId === 'film_harbour');
+ok('C15：1992 春＋動作標籤 → offer 喺 film_harbour', !!openRow('C15') && openRow('C15').locId === 'film_harbour');
 loadGame(c15Save({ castingTags: [] }));
 ok('C15：冇動作標籤唔出現', !openIds().includes('C15'));
-loadGame(c15Save({ dayIndex: dayIndexOf(1989, 4, 15) }));
-ok('C15：1989 唔出現', !openIds().includes('C15'));
-loadGame(c15Save({ dayIndex: dayIndexOf(1990, 7, 15) }));
-ok('C15：1990 夏（非春）唔出現', !openIds().includes('C15'));
+loadGame(c15Save({ dayIndex: dayIndexOf(1991, 4, 15) }));
+ok('C15：1991 唔出現', !openIds().includes('C15'));
+loadGame(c15Save({ dayIndex: dayIndexOf(1992, 7, 15) }));
+ok('C15：1992 夏（非春）唔出現', !openIds().includes('C15'));
 {
   const s = loadGame(c15Save());
   StoryOC.applyChoice(node('C15'), choice('C15', 'C15_a'));
@@ -292,12 +292,12 @@ ok('C15：1990 夏（非春）唔出現', !openIds().includes('C15'));
 /* ---- N13＝C14 ---- */
 function c14Save(over){
   return baseSave(Object.assign({
-    dayIndex: dayIndexOf(1990, 7, 15), fame: 30, industryCreditDelta: 30,
+    dayIndex: dayIndexOf(1992, 7, 15), fame: 30, industryCreditDelta: 30,
     story: { flags: {}, rel: {}, done: { C5: true, C7: true, C9: true, C10: true }, choices: {} },
   }, over || {}));
 }
 loadGame(c14Save());
-ok('C14：1990 夏＋C10 done＋信用 47（>42）→ offer', !!openRow('C14'));
+ok('C14：1992 夏＋C10 done＋信用 47（>42）→ offer', !!openRow('C14'));
 loadGame(c14Save({ industryCreditDelta: 25 })); /* 信用 = 17+25 = 42 */
 ok('C14：信用=42（嚴格 >42）唔出現', !openIds().includes('C14'));
 loadGame(c14Save({ story: { flags: {}, rel: {}, done: { C5: true, C7: true, C9: true }, choices: {} } }));
@@ -316,12 +316,12 @@ ok('C14：C10 未做唔出現', !openIds().includes('C14'));
 /* ---- N14＝C12 ---- */
 function c12Save(over){
   return baseSave(Object.assign({
-    dayIndex: dayIndexOf(1990, 10, 15), fame: 55,
+    dayIndex: dayIndexOf(1992, 10, 15), fame: 55,
     story: { flags: {}, rel: {}, done: { C10: true, C14: true }, choices: {} },
   }, over || {}));
 }
 loadGame(c12Save());
-ok('C12：1990 秋＋C14 done＋聲量 55 → offer 喺 rec_star', !!openRow('C12') && openRow('C12').locId === 'rec_star');
+ok('C12：1992 秋＋C14 done＋聲量 55 → offer 喺 rec_star', !!openRow('C12') && openRow('C12').locId === 'rec_star');
 loadGame(c12Save({ fame: 50 }));
 ok('C12：聲量=50（嚴格 >50）唔出現', !openIds().includes('C12'));
 loadGame(c12Save({ story: { flags: {}, rel: {}, done: { C10: true }, choices: {} } }));
@@ -341,12 +341,12 @@ ok('C12：C14 未做唔出現', !openIds().includes('C12'));
 /* ---- N15＝C16 ---- */
 function c16Save(over){
   return baseSave(Object.assign({
-    dayIndex: dayIndexOf(1990, 11, 15), fame: 60, industryCreditDelta: 38,
+    dayIndex: dayIndexOf(1992, 11, 15), fame: 60, industryCreditDelta: 38,
     story: { flags: {}, rel: {}, done: { C10: true, C14: true, C12: true }, choices: {} },
   }, over || {}));
 }
 loadGame(c16Save()); /* 雙軌 = 60 + (32+38) = 130 */
-ok('C16：1990 秋＋C12 done＋雙軌 130（>125）→ offer', !!openRow('C16'));
+ok('C16：1992 秋＋C12 done＋雙軌 130（>125）→ offer', !!openRow('C16'));
 loadGame(c16Save({ industryCreditDelta: 33 })); /* 雙軌 = 60 + 65 = 125 */
 ok('C16：雙軌=125（嚴格 >125）唔出現', !openIds().includes('C16'));
 loadGame(c16Save({ story: { flags: {}, rel: {}, done: { C10: true, C14: true }, choices: {} } }));
@@ -365,12 +365,12 @@ ok('C16：C12 未做唔出現', !openIds().includes('C16'));
 }
 
 /* ---- N16＝C13 ---- */
-loadGame(baseSave({ dayIndex: dayIndexOf(1990, 12, 15) }));
-ok('C13：1990 冬 → offer 喺 film_cotton', !!openRow('C13') && openRow('C13').locId === 'film_cotton');
-loadGame(baseSave({ dayIndex: dayIndexOf(1990, 10, 15) }));
-ok('C13：1990 秋唔出現', !openIds().includes('C13'));
+loadGame(baseSave({ dayIndex: dayIndexOf(1992, 12, 15) }));
+ok('C13：1992 冬 → offer 喺 film_cotton', !!openRow('C13') && openRow('C13').locId === 'film_cotton');
+loadGame(baseSave({ dayIndex: dayIndexOf(1992, 10, 15) }));
+ok('C13：1992 秋唔出現', !openIds().includes('C13'));
 {
-  const s = loadGame(baseSave({ dayIndex: dayIndexOf(1990, 12, 15) }));
+  const s = loadGame(baseSave({ dayIndex: dayIndexOf(1992, 12, 15) }));
   StoryOC.applyChoice(node('C13'), choice('C13', 'C13_a'));
   ok('C13_a：flag_newyear_improv＋「執生」標籤', !!StoryOC.getFlag('flag_newyear_improv') && s.castingTags.some(t => t.label === '執生'));
   story48SettleTick();
@@ -380,7 +380,7 @@ ok('C13：1990 秋唔出現', !openIds().includes('C13'));
   ok('C13_a：tick 重行唔雙計', favorLedgerCounts().credits === 1);
 }
 {
-  const s = loadGame(baseSave({ dayIndex: dayIndexOf(1990, 12, 15) }));
+  const s = loadGame(baseSave({ dayIndex: dayIndexOf(1992, 12, 15) }));
   StoryOC.applyChoice(node('C13'), choice('C13', 'C13_b'));
   story48SettleTick();
   ok('C13_b：flag_newyear_script＋tick 唔登記債權',
@@ -401,38 +401,38 @@ ok('C13：1990 秋唔出現', !openIds().includes('C13'));
 }
 loadGame(baseSave({ dayIndex: 1, fame: 5 }));
 ok('回歸：C1 開局可開', openIds().includes('C1'));
-loadGame(baseSave({ dayIndex: dayIndexOf(1989, 7, 15), story: { flags: {}, rel: {}, done: { C5: true }, choices: {} }, industryCreditDelta: 25 }));
+loadGame(baseSave({ dayIndex: dayIndexOf(1991, 7, 15), story: { flags: {}, rel: {}, done: { C5: true }, choices: {} }, industryCreditDelta: 25 }));
 ok('回歸：C7（4-6）照開', openIds().includes('C7'));
 
 /* ---- 程天諾預熱：真 paperSideItemForDay 年份閘 ---- */
 {
   const chengItems = PAPER_SIDE_ITEMS.filter(it => (it.h || '').includes('程天諾'));
-  ok('預熱：程天諾花邊共 3 則、全數 fromYear=1990', chengItems.length === 3 && chengItems.every(it => it.fromYear === 1990));
-  loadGame(baseSave({ dayIndex: dayIndexOf(1989, 6, 1) }));
+  ok('預熱：程天諾花邊共 3 則、全數 fromYear=1992', chengItems.length === 3 && chengItems.every(it => it.fromYear === 1992));
+  loadGame(baseSave({ dayIndex: dayIndexOf(1991, 6, 1) }));
   let hit89 = 0;
-  for(let d = 0; d < 365; d++){ S.dayIndex = dayIndexOf(1989, 1, 1) + d; const it = paperSideItemForDay(S.dayIndex); if(it && (it.headline || '').includes('程天諾')) hit89++; }
-  ok('預熱：1989 全年 picker 唔出程天諾', hit89 === 0);
-  loadGame(baseSave({ dayIndex: dayIndexOf(1990, 6, 1) }));
+  for(let d = 0; d < 365; d++){ S.dayIndex = dayIndexOf(1991, 1, 1) + d; const it = paperSideItemForDay(S.dayIndex); if(it && (it.headline || '').includes('程天諾')) hit89++; }
+  ok('預熱：1991 全年 picker 唔出程天諾', hit89 === 0);
+  loadGame(baseSave({ dayIndex: dayIndexOf(1992, 6, 1) }));
   const seen90 = {};
-  for(let d = 0; d < 365; d++){ S.dayIndex = dayIndexOf(1990, 1, 1) + d; const it = paperSideItemForDay(S.dayIndex); if(it && (it.headline || '').includes('程天諾')) seen90[it.headline] = true; }
-  ok('預熱：1990 全年 picker 出齊 3 則程天諾', Object.keys(seen90).length === 3);
+  for(let d = 0; d < 365; d++){ S.dayIndex = dayIndexOf(1992, 1, 1) + d; const it = paperSideItemForDay(S.dayIndex); if(it && (it.headline || '').includes('程天諾')) seen90[it.headline] = true; }
+  ok('預熱：1992 全年 picker 出齊 3 則程天諾', Object.keys(seen90).length === 3);
 }
 
 /* ---- 感情 commit 機制 ---- */
 function cmtSave(over){
   return baseSave(Object.assign({
-    dayIndex: dayIndexOf(1990, 10, 15),
+    dayIndex: dayIndexOf(1992, 10, 15),
     story: { flags: {}, rel: { rel_hiu: 7 }, done: { R_hiu_meet: true, R_hiu_crisis: true }, choices: {} },
   }, over || {}));
 }
 loadGame(cmtSave());
-ok('commit：曉晴 rel 7＋crisis done＋1990 秋 → tvb_longmen 出 offer',
+ok('commit：曉晴 rel 7＋crisis done＋1992 秋 → tvb_longmen 出 offer',
    commit48ActionsAt('tvb_longmen').some(a => a.id === 'CMT_hiu_commit'));
 ok('commit：采兒未達標 → cafe_cha 唔出 offer', commit48ActionsAt('cafe_cha').length === 0);
-loadGame(cmtSave({ dayIndex: dayIndexOf(1989, 10, 15) }));
-ok('commit：1989（窗口外）rel 達標都唔出', !commit48Available('CMT_hiu_commit'));
-loadGame(cmtSave({ dayIndex: dayIndexOf(1990, 7, 15) }));
-ok('commit：1990 夏（未入秋）唔出', !commit48Available('CMT_hiu_commit'));
+loadGame(cmtSave({ dayIndex: dayIndexOf(1991, 10, 15) }));
+ok('commit：1991（窗口外）rel 達標都唔出', !commit48Available('CMT_hiu_commit'));
+loadGame(cmtSave({ dayIndex: dayIndexOf(1992, 7, 15) }));
+ok('commit：1992 夏（未入秋）唔出', !commit48Available('CMT_hiu_commit'));
 loadGame(cmtSave({ story: { flags: {}, rel: { rel_hiu: 5 }, done: { R_hiu_meet: true, R_hiu_crisis: true }, choices: {} } }));
 ok('commit：rel 5（<6）唔出', !commit48Available('CMT_hiu_commit'));
 loadGame(cmtSave({ story: { flags: {}, rel: { rel_hiu: 6 }, done: { R_hiu_meet: true, R_hiu_crisis: true }, choices: {} } }));
@@ -458,10 +458,10 @@ ok('commit：已 commit 采兒 → 曉晴唔再出（互斥）', !commit48Availa
 }
 {
   loadGame(baseSave({
-    dayIndex: dayIndexOf(1990, 12, 1),
+    dayIndex: dayIndexOf(1992, 12, 1),
     story: { flags: {}, rel: { rel_choi: 6 }, done: { R_choi_meet: true, R_choi_crisis: true }, choices: {} },
   }));
-  ok('commit：采兒 rel 6＋crisis done＋1990 冬 → cafe_cha 出 offer',
+  ok('commit：采兒 rel 6＋crisis done＋1992 冬 → cafe_cha 出 offer',
      commit48ActionsAt('cafe_cha').some(a => a.id === 'CMT_choi_commit'));
   StoryOC.applyChoice(COMMIT48_NODES.CMT_choi_commit, COMMIT48_NODES.CMT_choi_commit.choices[1]);
   ok('commit：「再諗下」唔落旗', !StoryOC.getFlag('flag_choi_commit'));

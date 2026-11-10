@@ -65,7 +65,7 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   eval(FAM_SRC.replace(/const FAMILY_HOME_DEBT_ID/g, 'var FAMILY_HOME_DEBT_ID').replace(/const FAMILY_HOME_CYCLES/g, 'var FAMILY_HOME_CYCLES').replace(/const FAMILY_HOME_SEED_FLAVOR/g, 'var FAMILY_HOME_SEED_FLAVOR').replace(/const FAMILY_HOME_PAID_FLAVOR/g, 'var FAMILY_HOME_PAID_FLAVOR'));
   eval(extractFn('ensureMockJournal'));
 
-  // 新檔：mockJournalSeeded 未置，dayIndex 0（1988-03-07）
+  // 新檔：mockJournalSeeded 未置，dayIndex 0（1990-03-07）
   S = { dayIndex:0 };
   ensureMockJournal();
   const fam = (S.mockDebts||[]).filter(d=>d.id==='debt_family_home');
@@ -135,28 +135,28 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   ok('seed returns true first time', ensureFamilyHomeDebt()===true && famCount()===1);
   ok('seed: cycle0 = 今個月家用 $600', S.mockDebts[0].title==='今個月家用' && S.mockDebts[0].amount===600);
 
-  adv(10); // dayIndex 10，仍係 1988 年 3 月；advanceDay 每日行 ensureFamilyHomeDebt
+  adv(10); // dayIndex 10，仍係 1990 年 3 月；advanceDay 每日行 ensureFamilyHomeDebt
   ok('same month, debt present: no reseed', famCount()===1 && S.dayIndex===10);
 
   // 真還款（現金）：清債＋記月份＋唔入帳本
   curDebt = S.mockDebts.find(d=>d.id==='debt_family_home');
   const r = applyMockAsk('agency_ho', 'act_ho_repay', { debtId:'debt_family_home', mode:'cash' });
   ok('repay family debt ok', !!(r && r.ok && r.cleared) && famCount()===0);
-  ok('repay: paidDay + monthKey recorded', S.familyHome.paidDay===10 && S.familyHome.monthKey==='1988-3');
+  ok('repay: paidDay + monthKey recorded', S.familyHome.paidDay===10 && S.familyHome.monthKey==='1990-3');
   ok('repay: NOT in favorLedger (no ledger entry at all)', !S.favorLedger || !S.favorLedger.counted['debt_family_home']);
   ok('repay: ledger settled stays 0', !S.favorLedger || S.favorLedger.settled===0);
 
   adv(10); // dayIndex 20，仍係 3 月：還清當月唔補種
   ok('paid same month: no reseed for rest of month', famCount()===0 && S.dayIndex===20);
 
-  adv(5); // dayIndex 25 = 1988-04-01：跨月補種
+  adv(5); // dayIndex 25 = 1990-04-01：跨月補種
   ok('next month: reseeded exactly once', famCount()===1 && S.dayIndex===25);
   const d2 = S.mockDebts.find(d=>d.id==='debt_family_home');
   ok('next month: cycle rotated to 交租 $800', d2.title==='今期幫補交租' && d2.amount===800);
   ensureFamilyHomeDebt(); ensureFamilyHomeDebt();
   ok('reseed idempotent on repeated ensure', famCount()===1);
 
-  adv(31); // dayIndex 56 = 1988-05-03：未還就唔好跨月再種
+  adv(31); // dayIndex 56 = 1990-05-03：未還就唔好跨月再種
   ok('unpaid across another month: still the same single debt', famCount()===1 && S.mockDebts.find(d=>d.id==='debt_family_home').title==='今期幫補交租');
 })();
 
@@ -318,7 +318,7 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
 
   // 還清嗰週（種子 flavor 早已消費；day 20 還清記低，day 21 結算）
   S = baseS(0);
-  S.familyHome = { cycle:1, monthKey:'1988-3', seedDay:0, paidDay:-1, seedFlavorDay:0, paidFlavorDay:-1 };
+  S.familyHome = { cycle:1, monthKey:'1990-3', seedDay:0, paidDay:-1, seedFlavorDay:0, paidFlavorDay:-1 };
   S.dayIndex = 20;
   noteFamilyHomePaid();
   S.dayIndex = 21;
@@ -331,7 +331,7 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
 
   // 静週：無播種無還清
   S = baseS(0);
-  S.familyHome = { cycle:1, monthKey:'1988-3', seedDay:-1, paidDay:-1, seedFlavorDay:-1, paidFlavorDay:-1 };
+  S.familyHome = { cycle:1, monthKey:'1990-3', seedDay:-1, paidDay:-1, seedFlavorDay:-1, paidFlavorDay:-1 };
   S.dayIndex = 7;
   r = settleWeek();
   ok('settle quiet week: no family flavor at all', r.html.indexOf('屋企嗰邊')<0);

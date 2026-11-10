@@ -62,7 +62,7 @@ ok("FIX65-2" in src, "FIX65-2 標記在位")
 lcb = fn_body("livingCostBand")
 for m in ("mid:1100", "mid:1300", "mid:1500", "mid:1700", "mid:2400"):
     ok(m in lcb, "生活費帶含 " + m)
-ok("yr>=1990" in lcb and "f>=250" in lcb, "CALIB60 年份/聲望加級保留")
+ok("yr>=1992" in lcb and "f>=250" in lcb, "CALIB60 年份/聲望加級保留")
 se = fn_body("conseq61SettleEval")
 ok("weekEarnIn" in se, "conseq61SettleEval 收 weekEarnIn（入帳解除）")
 ok("conseq61SettleEval(S, w, earned)" in src, "settleWeek 傳 earned 入評核")

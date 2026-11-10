@@ -49,9 +49,9 @@ defs = d.group(1) if d else ''
 ok('CHOICE47_DEFS block extractable', bool(defs))
 f4line = next((ln for ln in defs.splitlines() if 'F4_stay_mind:' in ln), '')
 g4line = next((ln for ln in defs.splitlines() if 'G4_family_job:' in ln), '')
-ok('F4 gate: 1990 夏 @ agency_ho', 'year:1990' in f4line and 'season:"夏"' in f4line and 'loc:"agency_ho"' in f4line)
-ok('G4 gate: 1990 冬', 'year:1990' in g4line and 'season:"冬"' in g4line)
-ok('exodus gigs gate: 1990 秋', 'choice47SeasonReached(1990, "秋")' in html)
+ok('F4 gate: 1992 夏 @ agency_ho', 'year:1992' in f4line and 'season:"夏"' in f4line and 'loc:"agency_ho"' in f4line)
+ok('G4 gate: 1992 冬', 'year:1992' in g4line and 'season:"冬"' in g4line)
+ok('exodus gigs gate: 1992 秋', 'choice47SeasonReached(1992, "秋")' in html)
 ok('season gate via yearSeasonNow', 'yearSeasonNow()' in html[html.index('function choice47SeasonReached('):html.index('function choice47SeasonReached(') + 700])
 
 # ---- 掛點 ----
@@ -99,7 +99,7 @@ for w in ['張國榮', '陳百強', '梅艷芳', '周潤發', '劉德華', '關�
 
 # ---- 慣例不變 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
-ok('softRev unchanged', 'softRev=s111' in html)
+ok('softRev unchanged', 'softRev=s107' in html)
 ok('version marker v20a30', 'v20a30' in html)
 ok('NOTES file present', bool(notes))
 
