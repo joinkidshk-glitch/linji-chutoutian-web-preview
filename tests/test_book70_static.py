@@ -63,8 +63,15 @@ ok('主次分家部件齊（選擇器主修大卡／附帶細行／分家衍生�
    all(s in src for s in ['function train71CourseCard', 'function train71CourseMini', 'function book70SplitForStat', 'function ux68CoursePrimaryStat']))
 ok('主修卡四格關鍵數（增益／費用／耗時／壓力）',
    all(s in src for s in ['<span>增益</span>', '<span>費用</span>', '<span>耗時</span>', '<span>壓力</span>']))
-ok('前往掣兼任答案（報名／報主課／加練三種寫法齊）',
-   all(s in src for s in [' 報名</button>', ' 報主課</button>', ' 加練</button>']))
+# v20a73 改版（用戶 2026-11-10 15:16 拍板）：picker 只准排已報名課——未報名
+# 只出純文字句、未開放隱藏；三種「前往」跳轉掣（報名／報主課／加練）成批移除。
+# 本斷言跟新正確行為改（舊版斷言三種前往掣齊全，已被用戶推翻）。
+_i71a = src.find('function train71CourseCard')
+_i71b = src.find('function train71RenderPanel')
+_picker_block = src[_i71a:_i71b] if 0 <= _i71a < _i71b else ''
+ok('前往跳轉掣全數移除＋未報名改純文字句（v73）',
+   'data-gloc' not in _picker_block and '前往' not in _picker_block
+   and 'function train73EnrollNote' in src and 'function train73CourseKind' in src)
 ok('附帶組預設摺疊（data-tsub＋hidden subbody）', 'data-tsub="1"' in src and 't70-subbody" hidden' in src)
 ok('地點全名單收落展開（data-tloc／t70-locall hidden）', 'data-tloc="' in src and 't70-locall" hidden' in src)
 # 實駕教訓（v70 駕駛 P2）：.t70-locall 設咗 display:block 會蓋過 [hidden] 嘅 UA display:none，

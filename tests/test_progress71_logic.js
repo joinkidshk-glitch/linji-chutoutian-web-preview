@@ -339,14 +339,22 @@ function sentenceChecks(tag, line){
           story: { done: {}, flags: {}, rel: {}, routes: {}, phase: 'P1', gigCount: 0 },
         }, over || {});
       }
-      /* P1：新遊戲（冇報名）——清單齊、冇得排、未報名課有前往報名 */
+      /* P1：新遊戲（冇報名）——v20a73 改版（用戶 2026-11-10 15:16 拍板）：
+         未報名只出一句純文字、未開放成課隱藏、成個 picker 零跳轉。
+         （v71 舊斷言「未報名課有前往報名／未開放課出解鎖條件」已被用戶推翻，改版至此。） */
       S = freshS(); ux68GuideStat = '';
       const p1 = train71PickerHtml('fill');
       ok('P1：有按數值 chips＋主修分組', p1.indexOf('data-gstat="acting"') >= 0 && p1.indexOf('主修 · 主升演技') >= 0);
       ok('P1：預設開演技組＋目標入口喺頂', p1.indexOf('設「演技」為主攻目標') >= 0);
       ok('P1：冇已報名課程嗰陣冇排入掣', p1.indexOf('data-t71pick') < 0);
-      ok('P1：未報名課有「前往…報名」', /前往 .+ 報名/.test(p1) && p1.indexOf('data-gloc') >= 0);
-      ok('P1：未開放課出解鎖條件（演技訓練累計 3 堂）', p1.indexOf('演技訓練累計 3 堂') >= 0);
+      ok('P1(v73)：未報名課只出一句純文字（課名＋未報名——去…報名）',
+         p1.indexOf('train73-note') >= 0 && /「.+」未報名——去 .+ 報名。/.test(p1));
+      ok('P1(v73)：未報名課唔出卡身', p1.indexOf('t70-card') < 0);
+      ok('P1(v73)：成個 picker 零跳轉（冇 data-gloc／冇「前往」字眼）',
+         p1.indexOf('data-gloc') < 0 && p1.indexOf('前往') < 0);
+      ok('P1(v73)：未開放課成課隱藏（課名唔出現）', p1.indexOf(COURSE_DEFS.train_acting_mid.name) < 0);
+      ok('P1(v73)：未開放條件文字唔出現', p1.indexOf('演技訓練累計 3 堂') < 0);
+      ok('P1(v73)：零報名有純文字總說明（唔係死胡同）', p1.indexOf('你仲未報名任何課程') >= 0);
 
       /* P2：報咗演技入門 → 排入掣出現；未開放課仍然冇排入掣 */
       S = freshS({ enrolled: { train_acting: true }, trainCount: { train_acting: 2 } });
@@ -354,6 +362,10 @@ function sentenceChecks(tag, line){
       ok('P2：已報名課有排入掣（全日）', p2.indexOf('data-t71pick="train_acting"') >= 0 && p2.indexOf('全日排呢堂') >= 0);
       ok('P2：未開放課冇排入掣', p2.indexOf('data-t71pick="train_acting_mid"') < 0);
       ok('P2：已報名徽章＋已練次數', p2.indexOf('已開放') >= 0 && p2.indexOf('已練 2 次') >= 0);
+      ok('P2(v73)：有已報名就唔出零報名總說明', p2.indexOf('你仲未報名任何課程') < 0);
+      ok('P2(v73)：未開放課名仍然隱藏', p2.indexOf(COURSE_DEFS.train_acting_mid.name) < 0);
+      ok('P2(v73)：已報名卡冇加練跳轉（零 data-gloc／冇「加練」）',
+         p2.indexOf('data-gloc') < 0 && p2.indexOf('加練') < 0);
 
       /* P3：目標數值預設開組（prefs 設 vocal → 開歌藝組） */
       ux68SetTargetStat('vocal');
@@ -370,6 +382,31 @@ function sentenceChecks(tag, line){
       const p4 = train71PickerHtml('day');
       ok('P4：唯讀嗰陣冇排入掣', p4.indexOf('data-t71pick') < 0);
       ok('P4：唯讀嗰陣有說明（編輯行程嗰陣排）', p4.indexOf('編輯行程嗰陣排呢堂') >= 0);
+
+      /* P5(v73)：附帶組分流——魅力組主修（魅力訓練）未開放隱藏；附帶外貌課
+         未報名嗰陣喺摺疊入面只出純文字句；報咗名就出細排入掣 */
+      ux68GuideStat = 'charm';
+      S = freshS();
+      const p5 = train71PickerHtml('fill');
+      ok('P5(v73)：附帶未報名課只出純文字句（摺疊保留）',
+         p5.indexOf('data-tsub="1"') >= 0 && /「外貌／形象」未報名——去 .+ 報名。/.test(p5));
+      ok('P5(v73)：主修未開放嗰陣唔出主修標題、課名隱藏',
+         p5.indexOf('主修 · 主升魅力') < 0 && p5.indexOf(COURSE_DEFS.train_charm.name) < 0);
+      S = freshS({ enrolled: { train_looks: true } });
+      const p5b = train71PickerHtml('fill');
+      ok('P5(v73)：附帶已報名課有細排入掣', p5b.indexOf('data-t71pick="train_looks"') >= 0);
+
+      /* P6(v73)：成組課程全部未開放（台風組新遊戲）——唔成組消失：
+         出通用一句，課名同條件都唔出；逐日版同樣零跳轉 */
+      ux68GuideStat = 'stage';
+      S = freshS();
+      const p6 = train71PickerHtml('day');
+      ok('P6(v73)：成組未開放出通用一句、課名隱藏',
+         p6.indexOf('暫時未開放報名') >= 0
+         && p6.indexOf(COURSE_DEFS.train_stage.name) < 0
+         && p6.indexOf(COURSE_DEFS.train_stage_mid.name) < 0);
+      ok('P6(v73)：逐日版零跳轉', p6.indexOf('data-gloc') < 0 && p6.indexOf('前往') < 0);
+      ux68GuideStat = '';
     })();
   `;
   const SRC = [
