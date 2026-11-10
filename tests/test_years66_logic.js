@@ -58,21 +58,22 @@ for(const f of FNS) eval(extractFn(f));
 Math.random = function(){ return 0; };
 
 /* ================= (1) epoch ================= */
-ok('START = 1990-03-07', START.y === 1990 && START.m === 3 && START.d === 7);
+ok('START = 1990-01-01（v20a67 JAN67）', START.y === 1990 && START.m === 1 && START.d === 1);
 const d0 = dateObj(0);
-ok('dateObj(0) = 1990年3月7日', d0.getFullYear() === 1990 && d0.getMonth() === 2 && d0.getDate() === 7);
-ok('calib60YearOfWeek：wk1=1990、wk43=1990、wk44=1991、wk95=1991、wk96=1992',
-  calib60YearOfWeek(1) === 1990 && calib60YearOfWeek(43) === 1990 && calib60YearOfWeek(44) === 1991 &&
-  calib60YearOfWeek(95) === 1991 && calib60YearOfWeek(96) === 1992);
+ok('dateObj(0) = 1990年1月1日', d0.getFullYear() === 1990 && d0.getMonth() === 0 && d0.getDate() === 1);
+ok('calib60YearOfWeek：wk1=1990、wk52=1990、wk54=1991、wk104=1991、wk106=1992（v20a67）',
+  calib60YearOfWeek(1) === 1990 && calib60YearOfWeek(52) === 1990 && calib60YearOfWeek(54) === 1991 &&
+  calib60YearOfWeek(104) === 1991 && calib60YearOfWeek(106) === 1992);
 
 /* ================= (2) 評核鍵＋生活費年份閘 ================= */
 ok('CONSEQ61_REVIEWS 鍵 = 1990/1991、地板 45/100 不變',
-  CONSEQ61_REVIEWS[1990] && CONSEQ61_REVIEWS[1990].floor === 45 && CONSEQ61_REVIEWS[1990].boundaryWeek === 43 &&
-  CONSEQ61_REVIEWS[1991] && CONSEQ61_REVIEWS[1991].floor === 100 && CONSEQ61_REVIEWS[1991].boundaryWeek === 95 &&
+  CONSEQ61_REVIEWS[1990] && CONSEQ61_REVIEWS[1990].floor === 45 && CONSEQ61_REVIEWS[1990].boundaryWeek === 52 &&
+  CONSEQ61_REVIEWS[1991] && CONSEQ61_REVIEWS[1991].floor === 100 && CONSEQ61_REVIEWS[1991].boundaryWeek === 104 &&
   !CONSEQ61_REVIEWS[1988] && !CONSEQ61_REVIEWS[1989]);
 S = { fame: 0, popularity: 0, industryCreditDelta: 0 };
-ok('生活費：1991 年 wk50 = 2400+300（年份加幅跟移）', livingCostBand(50).mid === 2700);
-ok('生活費：1992 年 wk100 = 2400+600', livingCostBand(100).mid === 3000);
+ok('生活費：wk50 仍係曆法 1990 → 未加級 2400（v20a67：加級跟真日曆年）', livingCostBand(50).mid === 2400);
+ok('生活費：1991 年 wk56 = 2400+300（年份加幅跟移）', livingCostBand(56).mid === 2700);
+ok('生活費：1992 年 wk110 = 2400+600', livingCostBand(110).mid === 3000);
 S = null;
 
 /* ================= (3) gig 正規化 remap ================= */
@@ -109,7 +110,7 @@ function v65Save(){
     awardsLog: [ { year: 1989, ceremonyId: 'award_singho_tv' } ] };
 }
 const mig = normalizeSaveObj(JSON.parse(JSON.stringify(v65Save())));
-ok('遷移：dayIndex 不變', mig.dayIndex === 500);
+ok('遷移：v66 年份 remap 之後 v67 日數 +65（組裝行為；500 → 565）', mig.dayIndex === 565);
 ok('遷移：打上 years66Shifted 戳', mig.years66Shifted === 1);
 ok('遷移：reviews 鍵 1988/1989 → 1990/1991（內容保留）',
   !mig.conseq61.reviews[1988] && !mig.conseq61.reviews[1989] &&

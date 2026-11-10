@@ -322,7 +322,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   eval(extractFn('isHoCreditorDebt'));
   eval(extractFn('rumorTutorialDone'));
   eval(extractFn('markRumorTutorialDone'));
-  /* 開局第 3 日（1988-03-09，春）：跟真玩家路徑——ensureMockJournal 尾播屋企債
+  /* 開局第 3 日（1990-01-03，冬；v20a67 起 1 月開局，當季卡＝冬季對）：跟真玩家路徑——ensureMockJournal 尾播屋企債
      （呢度直接行真 ensureFamilyHomeDebt）、拼合教學完成 markRumorTutorialDone 入教學債 */
   S = { dayIndex: 2, fame: 0, npcs:{}, favorDueSettled:{}, mockSeasonCleared:{},
     mockDebts:[], mockCredits:[], mockRumors:[], newspaperClippings:[],
@@ -335,8 +335,8 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   ok('d2 family debt card present', h.indexOf('data-debt-id="debt_family_home"') >= 0);
   ok('d3 tutorial debt seeded by real tutorial-done path', h.indexOf('data-debt-id="debt_ho_tutorial"') >= 0);
   ok('d4 origin: family home', h.indexOf('來歷：你出嚟做臨記嗰陣應承屋企嘅') >= 0);
-  ok('d5 origin: Ho spring season card', h.indexOf('來歷：入行嗰陣何生幫你打點墊支嗰筆') >= 0);
-  ok('d6 origin: props Zhang spring season card', h.indexOf('來歷：早前你借過道具組嘅器材嚟用') >= 0);
+  ok('d5 origin: Biao winter season card', h.indexOf('來歷：早前趕戲嗰陣副導阿標幫你頂過一更') >= 0);
+  ok('d6 origin: May winter season card', h.indexOf('來歷：你應承過幫化妝姐美兒買嗰支精華液') >= 0);
   ok('d7 origin: tutorial debt', h.indexOf('來歷：何生手把手教你入行規矩嗰份人情') >= 0);
   ok('d8 exactly four origin lines on opening pane', (h.split('來歷：').length - 1) === 4);
 

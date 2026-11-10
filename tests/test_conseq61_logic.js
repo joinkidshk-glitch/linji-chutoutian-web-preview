@@ -1,6 +1,6 @@
 /* v20a61 CONSEQ61 後果包 — 核心邏輯回歸測試
    抽 index.html 真函數喺受控沙盒行：
-   (1) 年終評核地板推導鎖：hea 弧 dual 15/31 捉到、慢弧 70/183 有明顯餘裕；邊界週 43/95 同真日曆年份對齊
+   (1) 年終評核地板推導鎖：hea 弧 dual 15/31 捉到、慢弧 70/183 有明顯餘裕；邊界週 52/104 同真日曆年份對齊（v20a67）
    (2) 評核流程：警告先行（dist 4–1 週）→ 邊界週先判收場；慢熱弧兩個評核點都過
    (3) 破產寬限：money≤0 起 4 週寬限、拍攝中暫停倒數、翻上水解除、用盡收場
    (4) 舊檔安全：normalizeSaveObj 靜靜標記已過評核，永不追溯
@@ -155,54 +155,54 @@ const FMT = n => Math.round(n * 1000) / 1000;
 
 /* ---------- (1) 地板推導鎖 ---------- */
 console.log("[1] 地板推導＋邊界週年份");
-ok(calib60YearOfWeek(43) === 1990 && calib60YearOfWeek(44) === 1991, "wk43 係 1990 最後週結、wk44 入 1991");
-ok(calib60YearOfWeek(95) === 1991 && calib60YearOfWeek(96) === 1992, "wk95 係 1991 最後週結、wk96 入 1992");
+ok(calib60YearOfWeek(52) === 1990 && calib60YearOfWeek(54) === 1991, "wk52 週首日仍喺 1990（評核守衛對位）、wk54 入 1991");
+ok(calib60YearOfWeek(104) === 1991 && calib60YearOfWeek(106) === 1992, "wk104 週首日仍喺 1991、wk106 入 1992");
 ok(CONSEQ61_REVIEWS[1990].floor === 45 && CONSEQ61_REVIEWS[1991].floor === 100, "地板 45／100");
-ok(CONSEQ61_REVIEWS[1990].boundaryWeek === 43 && CONSEQ61_REVIEWS[1991].boundaryWeek === 95, "邊界週 43／95");
+ok(CONSEQ61_REVIEWS[1990].boundaryWeek === 52 && CONSEQ61_REVIEWS[1991].boundaryWeek === 104, "邊界週 52／104（v20a67 對返曆法年尾）");
 ok(conseq61DualOf(heaSave()).dual === 15, "hea 弧 dual=15（實際 " + JSON.stringify(conseq61DualOf(heaSave())) + "）");
 ok(conseq61DualOf(heaDriftSave()).dual === 31, "hea+輕微漂移 dual=31（實際 " + JSON.stringify(conseq61DualOf(heaDriftSave())) + "）");
 ok(15 < 45 && 31 < 45, "兩條 hea 弧都低過 1990 地板 → 會被捉");
-ok(70 >= 45 * 1.5, "慢弧 wk43 dual 70 ≥ 地板×1.5（餘裕 1.56×）");
-ok(183 >= 100 * 1.8, "慢弧 wk95 dual 183 ≥ 地板×1.8（餘裕 1.83×）");
+ok(70 >= 45 * 1.5, "慢弧首年評核點 dual 70 ≥ 地板×1.5（餘裕 1.56×）");
+ok(183 >= 100 * 1.8, "慢弧次年評核點 dual 183 ≥ 地板×1.8（餘裕 1.83×）");
 ok(CONSEQ61_REVIEWS[1990].warnLine === 65 && CONSEQ61_REVIEWS[1991].warnLine === 130, "警告線 65／130（慢弧 70／183 都高過警告線少少）");
 
 /* ---------- (2) 評核流程：警告先行 ---------- */
 console.log("[2] 評核：警告先行＋邊界判場");
 {
   S = heaSave();
-  const w40 = conseq61SettleEval(S, 40);
-  ok(w40.some(t => t.includes("評核") && t.includes("何生")) && !S.conseq61.pendingEnding, "wk40（距評核 3 週）何生警告先行，唔收場");
-  const w42 = conseq61SettleEval(S, 42);
-  ok(w42.some(t => t.includes("下週就係") && t.includes("評核")) && !S.conseq61.pendingEnding, "wk42（距評核 1 週）急版警告，仍未收場");
-  const w43 = conseq61SettleEval(S, 43);
-  ok(w43.some(t => t.includes("評核結果")), "wk43 評核出結果行");
-  ok(S.conseq61.pendingEnding && S.conseq61.pendingEnding.kind === "review" && S.conseq61.pendingEnding.year === 1990, "wk43 邊界週先判收場 review/1990");
+  const w40 = conseq61SettleEval(S, 49);
+  ok(w40.some(t => t.includes("評核") && t.includes("何生")) && !S.conseq61.pendingEnding, "wk49（距評核 3 週）何生警告先行，唔收場");
+  const w42 = conseq61SettleEval(S, 51);
+  ok(w42.some(t => t.includes("下週就係") && t.includes("評核")) && !S.conseq61.pendingEnding, "wk51（距評核 1 週）急版警告，仍未收場");
+  const w43 = conseq61SettleEval(S, 52);
+  ok(w43.some(t => t.includes("評核結果")), "wk52 評核出結果行");
+  ok(S.conseq61.pendingEnding && S.conseq61.pendingEnding.kind === "review" && S.conseq61.pendingEnding.year === 1990, "wk52 邊界週先判收場 review/1990");
   ok(S.conseq61.reviews[1990] && S.conseq61.reviews[1990].passed === false && S.conseq61.reviews[1990].dual === 15, "評核記錄 fail＋dual 快照");
-  const w44 = conseq61SettleEval(S, 44);
-  ok(!S.conseq61.reviews[1991], "判咗之後唔再重複判（wk44 冇新評核）");
+  const w44 = conseq61SettleEval(S, 53);
+  ok(!S.conseq61.reviews[1991], "判咗之後唔再重複判（wk53 冇新評核）");
 }
 {
   S = mkDual(70);
-  const w43 = conseq61SettleEval(S, 43);
+  const w43 = conseq61SettleEval(S, 52);
   ok(S.conseq61.reviews[1990].passed === true && !S.conseq61.pendingEnding, "慢弧 dual 70 過 1990 評核");
   ok(w43.some(t => t.includes("續你約")), "過關有何生續約行");
   S = mkDual(183);
-  conseq61SettleEval(S, 95);
+  conseq61SettleEval(S, 104);
   ok(S.conseq61.reviews[1991].passed === true && !S.conseq61.pendingEnding, "慢弧 dual 183 過 1991 評核");
 }
 {
   S = mkDual(50); /* 地板 45 同警告線 65 之間：警告照出、但過關 */
-  const w42 = conseq61SettleEval(S, 42);
+  const w42 = conseq61SettleEval(S, 51);
   ok(w42.some(t => t.includes("年尾評核")), "貼線弧（dual 50）評核前照有警告");
-  conseq61SettleEval(S, 43);
+  conseq61SettleEval(S, 52);
   ok(S.conseq61.reviews[1990].passed === true && !S.conseq61.pendingEnding, "貼線弧過關唔誤殺");
   S = mkDual(70); /* 警告線以上：評核前唔出警告 */
-  const w42b = conseq61SettleEval(S, 42);
+  const w42b = conseq61SettleEval(S, 51);
   ok(!w42b.some(t => t.includes("年尾評核")), "慢弧 dual 70 高過警告線 65 → 唔出無謂警告");
 }
 {
   S = heaSave(); S.ending410 = { career: "E1" };
-  conseq61SettleEval(S, 43);
+  conseq61SettleEval(S, 52);
   ok(!S.conseq61.pendingEnding && !S.conseq61.reviews[1990], "已收科存檔：評核全跳過");
 }
 
@@ -251,7 +251,7 @@ console.log("[3] 破產寬限：起／倒數／暫停／解除／用盡");
 /* ---------- (4) 舊檔安全 ---------- */
 console.log("[4] 舊檔：唔追溯收場");
 {
-  const old = baseSave(); old.dayIndex = 800; /* 1992 年中 */
+  const old = baseSave(); old.dayIndex = 800; /* 1992 年初（1 月 epoch） */
   const n = normalizeSaveObj(old);
   ok(n.conseq61.reviews[1990].legacy === true && n.conseq61.reviews[1991].legacy === true, "1992 舊檔：兩個評核點靜靜標記已過");
   S = n;
@@ -269,7 +269,7 @@ console.log("[4] 舊檔：唔追溯收場");
 console.log("[5] 呈現：E7 寫入＋總結頁＋判定表紀律");
 {
   S = heaSave(); modalCalls = [];
-  conseq61SettleEval(S, 43);
+  conseq61SettleEval(S, 52);
   ok(conseq61PresentForcedEnding() === true, "present 成功");
   ok(S.ending410 && S.ending410.career === "E7" && S.ending410.careerVariant === "review1990", "ending410 寫 E7／review1990");
   ok(S.ending410.title.indexOf("未紅先收・") === 0 && S.ending410.eveKey === "forced_review", "稱號＋eveKey");
