@@ -11,11 +11,11 @@
    GitHub Pages caches HTML for max-age=600, and the playtest box keeps a persistent cache
    keyed by the full URL. ?v=20a10&softBehaviorGate=1 therefore kept executing the pre-#99
    document (去金龍／主線) even after Pages origin sha was e4b43926.
-   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s111
-   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s111
+   Soft QA URL (required): ?v=20a10&softBehaviorGate=1&softRev=s107
+   Full: https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a10&softBehaviorGate=1&softRev=s107
    Bump SOFT_REV when the next Soft tip changes index.html. Do not bump ?v=. */
 (function(){
-  var SOFT_REV = "s111";
+  var SOFT_REV = "s107";
   try { document.documentElement.setAttribute("data-soft-rev", SOFT_REV); } catch (e0) {}
   try {
     var q = new URLSearchParams(location.search || "");
@@ -3629,20 +3629,6 @@ body.day-res-open .day-row{
   top: 64px !important;
   bottom: auto !important;
   z-index: 18 !important;
-}
-/* s108 P0-4：:has(#v-map.view.on) 喺 Soft 實機不可靠，toast 仍企喺底部壓住快捷列。
-   toast() 喺無 sheet 且 #v-map.on 時加 .toast-on-map。舊 :has 留作雙保險。
-   後一條同 :has 規則 specificity 打和，源碼較後，class 路徑贏；z 520 唔好跌穿 HUD。 */
-#app.toast-up.toast-on-map::after{ display:none !important; }
-#app.toast-up.toast-on-map .toast{
-  top: 64px !important;
-  bottom: auto !important;
-  z-index: 520 !important; /* 保持票面可見，唔好用 18 跌穿 HUD */
-}
-#app.toast-up.toast-on-map:not(.keep-sheet) #toast.toast.on{
-  top: 64px !important;
-  bottom: auto !important;
-  z-index: 520 !important;
 }
 #app.toast-up.keep-sheet #loc-sheet.sheet,
 #app.toast-up.keep-sheet #v-map #loc-sheet.sheet{
@@ -25514,15 +25500,13 @@ function toast(m, opts){
   if(app){
     app.classList.add("toast-up");
     app.classList.toggle("keep-sheet", keepSheet);
-    const mapOn = !!(document.getElementById("v-map") && document.getElementById("v-map").classList.contains("on"));
-    app.classList.toggle("toast-on-map", !keepSheet && mapOn);
   }
   clearTimeout(toast._t);
   toast._t=setTimeout(()=>{
     t.classList.remove("on","has-stamp","has-sub");
     t.replaceChildren();
     t.setAttribute("aria-hidden","true");
-    if(app) app.classList.remove("toast-up","keep-sheet","toast-on-map");
+    if(app) app.classList.remove("toast-up","keep-sheet");
   },1800);
 }
 function show(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("on"));document.getElementById(id).classList.add("on")}
@@ -25905,7 +25889,7 @@ const CONSEQ61_REVIEWS = {
   1989: { floor: 100, warnLine: 130, boundaryWeek: 95 }
 };
 const CONSEQ61_CFG = {
-  graceWeeks: 4,        /* 破產寬限：4 個週結；期間有戲拍緊暫停倒數；存款返到夠冚下週生活費即解除 */
+  graceWeeks: 4,        /* 破產寬限：4 個週結；期間有戲拍緊暫停倒數；存款返到夠冚下週生活費、或本週入帳夠冚＋存款返正數（v20a65 FIX65-2）即解除 */
   sickStreak: 2,        /* 連續 2 日「收市」壓力 ≥90 先病倒（觸發喺 advanceDay、用翻日前壓力） */
   sickWarnStreak: 2,    /* 連續 2 日 ≥80：地圖壓力提示升級做身體警號 */
   sickRelief: 35,       /* 病癒嗰日壓力 −35 */
@@ -25953,7 +25937,7 @@ function conseq61LegacyMark(st){
 /* 週結評估（settleWeek 喺 saveQ 前呼叫）：評核警告（前 4 個週結、貼線先出聲）→ 年終評核 → 破產寬限。
    只登記狀態＋回傳結算旁白行；真收場寫 pendingEnding，交 enterHome 之後嘅 conseq61PresentForcedEnding 呈現。
    已收科（S.ending410）就全數跳過。 */
-function conseq61SettleEval(st, weekJustEnded){
+function conseq61SettleEval(st, weekJustEnded, weekEarnIn){ /* v20a65 FIX65-2：第三參數＝本週入帳（settleWeek 傳入），畀寬限「入帳解除」用；舊呼叫唔傳就只行存款線 */
   const lines = [];
   try{
     const s = st;
@@ -26001,6 +25985,13 @@ function conseq61SettleEval(st, weekJustEnded){
       if(money >= clearLine){
         c.grace = null;
         lines.push(`<span class="good">存款返到 $${money.toLocaleString()}，夠冚下週生活費——寬限警報解除。呢鑊，捱過咗。</span>`);
+      } else if(typeof weekEarnIn === "number" && weekEarnIn >= clearLine && money > 0){
+        /* v20a65 FIX65-2（入帳解除）：舊制只認「結算後存款 ≥ 下週全費」，但生活費喺同一個週結
+           先扣，初級玩家入帳永遠追唔上嗰條線（全弧二輪實測：解除 0 次；day 90 持有 $2,053、
+           day 91 扣費至 $0 同時到期）。改為雙軌：本週入帳夠冚下週生活費、且結算後存款返正數，
+           即證明收入已回復，同樣解除——唔會即入即出，因為再入寬限要存款重新跌到 ≤0。 */
+        c.grace = null;
+        lines.push(`<span class="good">呢週入帳 $${weekEarnIn.toLocaleString()}，夠冚下週生活費，存款又返到正數——寬限警報解除。何生：「有工開、有糧出，就唔使驚。」</span>`);
       } else {
         const hasShoot = Array.isArray(s.shoots) && s.shoots.some(sh=>sh && (typeof shootRemain==="function" ? shootRemain(sh)>0 : true));
         if(hasShoot){
@@ -26012,7 +26003,7 @@ function conseq61SettleEval(st, weekJustEnded){
             c.grace = null;
             lines.push(`<span class="bad">寬限期到咗，存款仍然見底。何生今次幫你唔到——聽朝，返事務所收拾你個位。</span>`);
           } else {
-            lines.push(`<span class="bad">寬限期仲有 ${c.grace.weeksLeft} 週：存款 $${money.toLocaleString()}，未夠冚下週生活費（$${clearLine.toLocaleString()}）。有散工就接，唔好等運到。</span>`);
+            lines.push(`<span class="bad">寬限期仲有 ${c.grace.weeksLeft} 週：存款 $${money.toLocaleString()}。儲夠下週生活費（$${clearLine.toLocaleString()}），或者一週入帳夠冚、存款返正數，都解除到。有散工就接，唔好等運到。</span>`); /* v20a65 FIX65-2 */
           }
         }
       }
@@ -27825,7 +27816,7 @@ function writeTodayPlan(actId){
 }
 function shootDailyDelta(sh){
   const t=sh.type;
-  const d={ stress: 8+R(2,6) };
+  const d={ stress: 8+R(2,6) }; /* v20a65 FIX65-1：入水維持原值——用戶拍板改以「全日休息清零」做主槓桿（見 NOTES） */
   if(t==="廣告"){ d.looks=1+R(0,1); d.charm=R(0,1); }
   else if(t==="唱片通告"){ d.looks=R(0,1); d.stage=1+R(0,1); d.charm=R(0,1); }
   else if(t==="綜藝"){ d.charm=1+R(0,1); d.stage=1+R(0,1); d.fame=1+R(0,1); d.popularity=1+R(0,2); }
@@ -27946,9 +27937,15 @@ function livingCostBand(w){
   let soft = false;
   try{ soft = typeof softPreviewOn==="function" && softPreviewOn(); }catch(_e){}
   let band;
-  if(week>=1 && week<=4) band = { lo:1400, hi:1800, mid:1600, label:"$1,400–1,800（頭4週優惠）", tier:"early" };
-  else if(soft && week>=5 && week<=8) band = { lo:1600, hi:2200, mid:1900, label:"$1,600–2,200（試玩緩坡）", tier:"soft_mid" };
-  else if(soft && week>=9 && week<=12) band = { lo:1800, hi:2400, mid:2100, label:"$1,800–2,400（試玩緩坡）", tier:"soft_late" };
+  /* v20a65 FIX65-2：首年（wk1–43，至第一次年終評核）生活費改緩坡。全弧驗證第二輪實測：
+     初級收入係 lumpy 型（乾旱週零入帳、殺青週先有糧，實測週均約 $1,000–1,400），舊表 wk13 起
+     跳上 $2,400（LIVE 更係 wk5 起），「有工就做」型玩家會喺 wk14 前結構性破產，E7 評核支
+     永遠到達唔到。新表首年 $1,100→$1,700 緩升；wk44+ 維持 full 帶，CALIB60 年份／聲望
+     加級照舊疊加，後期經濟不變。 */
+  if(week>=1 && week<=4) band = { lo:950, hi:1250, mid:1100, label:"$950–1,250（開局優惠）", tier:"early" };
+  else if(week>=5 && week<=12) band = { lo:1150, hi:1450, mid:1300, label:"$1,150–1,450（首年緩坡）", tier:"y1_a" };
+  else if(week>=13 && week<=26) band = { lo:1350, hi:1650, mid:1500, label:"$1,350–1,650（首年緩坡）", tier:"y1_b" };
+  else if(week>=27 && week<=43) band = { lo:1550, hi:1850, mid:1700, label:"$1,550–1,850（首年緩坡）", tier:"y1_c" };
   else band = { lo:2000, hi:2800, mid:2400, label:"$2,000–2,800", tier:"full" };
   /* v20a60 CALIB60-2：生活費隨年份＋名氣遞增（全弧報告 §6.2.5——gate-on 錢全程唔構成決策）。
      只限 1989 年起：1989 +$300／1990 +$600；同年 fame≥120 再 +$200、fame≥250 再 +$400（取高嗰級，唔疊加）。
@@ -28157,7 +28154,7 @@ function settleWeek(){
   }catch(_bw61){}
   /* v20a61 CONSEQ61-1：年終評核警告／評核／破產寬限（登記趕喺 saveQ 前；收場呈現交 enterHome 後嘅 hook） */
   try{
-    const cq61 = (typeof conseq61SettleEval==="function") ? conseq61SettleEval(S, w) : [];
+    const cq61 = (typeof conseq61SettleEval==="function") ? conseq61SettleEval(S, w, earned) : []; /* v20a65 FIX65-2：傳本週入帳畀寬限入帳解除 */
     (cq61||[]).forEach(line=>pushFlavor(line));
   }catch(_cq61){}
   /* v20a62 AWARDS62-6：頒獎季前目標提示——接既有週結 pushFlavor 渠道，差少少先出聲，每週最多一行 */
@@ -28809,10 +28806,10 @@ function resetPlanDraft(){
 
 function stressDeltaForAct(id){
   if(!id) return 0;
-  if(String(id).startsWith("shoot:")) return 10;
-  if(String(id).startsWith("job:")) return 9;
-  const table={
-    rest:-20, home_chore:-8,
+  if(String(id).startsWith("shoot:")) return 10; /* v20a65 FIX65-1：拍攝日平均（含殺青攤分） */
+  if(String(id).startsWith("job:")) return 9; /* v20a65 FIX65-1 */
+  const table={ /* v20a65 FIX65-1：同實際 delta 平均值對齊 */
+    rest:-100, /* v20a65 FIX65-1：全日休息＝清零，預覽以 -100 代表歸零 */ home_chore:-8,
     train_acting:10, train_stage:10, train_vocal:10, train_looks:7, train_charm:6, train_iq:5,
     train_acting_mid:12, train_stage_mid:12, train_stamina:10,
     street:7, cafe_gig:6,
@@ -28826,7 +28823,8 @@ function previewWeekStress(plan){
   let peak=s;
   const rows=[];
   (plan||[]).forEach((id,i)=>{
-    const d=stressDeltaForAct(id);
+    let d=stressDeltaForAct(id);
+    if(id==="rest") d=-s; /* v20a65 FIX65-1：全日休息清零——預覽顯示實際清走嘅量 */
     s=clamp(s+d,0,100);
     if(s>peak) peak=s;
     const sign=d>0?`+${d}`:String(d);
@@ -29388,7 +29386,7 @@ function resolvePlannedDay(id){
         daily.money=(daily.money||0)+(sh.pay||0);
         daily.fame=(daily.fame||0)+(sh.fame||0);
         daily.popularity=(daily.popularity||0)+pop;
-        daily.stress=(daily.stress||0)+5;
+        daily.stress=(daily.stress||0)+5; /* v20a65 FIX65-1：殺青額外壓力 +5→+2 */
         notes=applyGain60(daily); /* v20a60 CALIB60-1：拍攝日＋殺青增益行遞減帶 */
         notes.push(shootDayLine(sh));
         notes.push(`<span class="good">${eventLine("SHOOT_WRAP",{
@@ -29439,7 +29437,7 @@ function resolvePlannedDay(id){
             popularity: sh.popularity!=null?sh.popularity:0,
             wrappedDay: S.dayIndex|0, rating: (sh.pay||0)>=2000?"表現穩妥":"順利殺青"
           });
-          if(S.wrapHistory.length>20) S.wrapHistory.length=20;
+          if(S.wrapHistory.length>30) S.wrapHistory.length=30; /* v20a65 FIX65-3：上限 20→30——高產多元玩家嘅舊作品俾其他媒介新作擠出窗口，頒獎每桶深度被斬（BUG-3 另一半機制）；作品牆同受惠。舊檔唔使遷移，上限只喺新殺青嗰刻截斷。 */
         }catch(_wh){}
         try{
           const psr = (typeof queuePostShootRewardOnWrap==="function") ? queuePostShootRewardOnWrap(sh) : null;
@@ -29476,7 +29474,7 @@ function resolvePlannedDay(id){
   else if(id==="train_stamina"){ notes=applyGain60({stamina:4+R(0,2), stress:8+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stamina=(S.trainCount.train_stamina||0)+1; S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; maybeUnlockMidCourses(notes); notes.push(eventLine("TRAIN_RESULT_stamina")); }
   else if(id==="train_acting_mid"){ notes=applyGain60({acting:6+R(0,2), stage:2, stress:10+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_acting_mid=(S.trainCount.train_acting_mid||0)+1; }
   else if(id==="train_stage_mid"){ notes=applyGain60({stage:6+R(0,2), charm:2, stress:10+R(0,4)}); S.trainCount=S.trainCount||{}; S.trainCount.train_stage_mid=(S.trainCount.train_stage_mid||0)+1; }
-  else if(id==="rest"){ notes=apply({stress:-(18+R(0,8))}); title = `休息（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
+  else if(id==="rest"){ notes=apply({stress:-S.stress}); /* v20a65 FIX65-1（用戶 2026-11-10 拍板）：全日休息＝壓力清零（舊 −(18+R(0,8)) 平均 −22） */ title = `休息（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
   else if(id==="home_chore"){ notes=apply({money:R(0,200), stress:-(6+R(0,4))}); title = `收拾房間（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
   else if(id==="street"){
     let pay=R(300,1200);
@@ -30201,7 +30199,13 @@ function drawMap(){
   pruneMapTips();
   box.innerHTML="";
   /* v19z20：永遠顯示全區；閒置針淡化（除非「顯示全部地點」） */
-  try{ applyMapShowAllLocs(mapShowAllLocs); }catch(_e){}
+  const wrapEl = document.querySelector(".map-wrap");
+  if(wrapEl) wrapEl.classList.toggle("show-all-locs", !!mapShowAllLocs);
+  const showAllBtn = document.getElementById("map-show-all-locs");
+  if(showAllBtn){
+    showAllBtn.setAttribute("aria-pressed", mapShowAllLocs ? "true" : "false");
+    showAllBtn.textContent = mapShowAllLocs ? "只亮有事" : "全部地點";
+  }
   /* helper：地點有冇通告／事態／熟人／紅星遠觀（v20a5：遠觀亦算有事，免蘇芷茵針被淡化藏起） */
   function locActionFlags(L){
     const hasNpc=!!(S.locNpc && S.locNpc[L.id]);
@@ -33332,14 +33336,12 @@ function freeplayApplyEraStarStubOverlay(){
       if(HOLD_OFF[id]) return;
       let row = STAR_SIGHTINGS.find(s=>s.starId===id);
       if(!row){
-        const silNew = String(st.silhouetteDesc||"");
-        const lineNew = String(st.distanceLine||"");
         row = {
           starId:id,
           displayName: st.displayName || id,
           locs: Array.isArray(st.locs) ? st.locs.slice() : [],
-          distanceLook: (silNew && !eraSightIsPlaceholder(silNew)) ? silNew : "（遠影）",
-          distanceLine: (lineNew && !eraSightIsPlaceholder(lineNew)) ? lineNew : "只能遠望，時機未到唔好行埋。",
+          distanceLook: st.silhouetteDesc || "（遠影）",
+          distanceLine: st.distanceLine || "只能遠望，時機未到唔好行埋。",
           locHint: st.locHint || "",
           rumorTeaser: st.rumorTeaser || "",
           resultToast: st.resultToast || ("已遠觀"+(st.displayName||"")+"。"),
@@ -33351,8 +33353,8 @@ function freeplayApplyEraStarStubOverlay(){
         const sil = String(st.silhouetteDesc||"");
         const line = String(st.distanceLine||"");
         const rum = String(st.rumorTeaser||"");
-        if(sil && !eraSightIsPlaceholder(sil)) row.distanceLook = sil;
-        if(line && !eraSightIsPlaceholder(line) && line.indexOf("只能遠望")<0) row.distanceLine = line;
+        if(sil && sil.indexOf("文案待補")<0) row.distanceLook = sil;
+        if(line && line.indexOf("文案待補")<0 && line.indexOf("只能遠望")<0) row.distanceLine = line;
         if(rum) row.rumorTeaser = rum;
         if(st.locHint) row.locHint = st.locHint;
         if(Array.isArray(st.locs) && st.locs.length) row.locs = st.locs.slice();
@@ -34487,7 +34489,25 @@ function awards62ScoreParts(cat, ceremony, year){
   const normPrimary = Math.min(1, Math.max(0, primary / (isCredit ? 60 : 45)));
   const works = awards62YearWorks(ceremony, year);
   const qs = works.map(w=> w.q);
-  const wsum = (qs[0] || 0) + 0.55 * (qs[1] || 0) + 0.35 * (qs[2] || 0) + 0.20 * (qs[3] || 0);
+  /* v20a65 FIX65-3：跨媒介補分（全弧驗證第二輪 BUG-3）。v62 公式齋計本桶作品：多元發展嘅
+     玩家每桶得 1–3 部，worksScore 永遠稀釋——Arc N（終局 dual 270）8 場 0 勝，離線回算佢
+     最強嗰桶（1989 唱片）base 只得 0.764。補兩瓣（只幫「真・多元」嘅人，專攻曲線唔郁）：
+     (1) 借分：嗰年其他媒介最佳作品嘅質量，以 35% 折扣、第二順位權重（0.55）入本桶 wsum；
+         本桶要有自家作品先借（唔憑空造分）。
+     (2) 跨桶星勢：桶外有 ≥2 部作品、且最佳嗰部 q ≥ 0.5（真係喺第二瓣企得穩），base 加
+         0.08 × crossQ——評審認人，唔淨認嗰一桶。回算：Arc N 代理金碟 0.764 → 0.845 過線；
+         佢 1988 全部場次 ≤0.68、1989 實場 ≤0.73，仍然贏唔到；專攻玩家桶外冇貨，兩瓣都係 0。 */
+  let crossQ65 = 0, crossN65 = 0;
+  try{
+    const myTypes = {};
+    ((ceremony && ceremony.matchTypes) || []).forEach(t=>{ if(t) myTypes[String(t)] = true; });
+    const allWorks = awards62YearWorks({ matchTypes: ["電影", "電視劇", "綜藝", "唱片通告", "廣告"] }, year);
+    const cross = (allWorks || []).filter(w=> w && !myTypes[String((w.h && w.h.type) || "")]);
+    crossN65 = cross.length;
+    if(cross.length) crossQ65 = cross[0].q || 0;
+  }catch(_cx65){}
+  const borrowW65 = works.length ? 0.55 * 0.35 * crossQ65 : 0;
+  const wsum = (qs[0] || 0) + 0.55 * (qs[1] || 0) + 0.35 * (qs[2] || 0) + 0.20 * (qs[3] || 0) + borrowW65;
   const worksScore = Math.min(1, wsum / 1.6);
   let tagBonus = 0;
   try{
@@ -34495,24 +34515,50 @@ function awards62ScoreParts(cat, ceremony, year){
     const want = cat.tagBonusAny || [];
     if(want.length && (tags || []).some(t=> want.indexOf(t) >= 0 || want.indexOf((t && t.id) || t) >= 0)) tagBonus = 0.10;
   }catch(_e){}
-  const base = 0.40 * normPrimary + 0.42 * worksScore + tagBonus;
+  const repPower65 = (crossN65 >= 2 && crossQ65 >= 0.5) ? 0.08 * crossQ65 : 0; /* v20a65 FIX65-3(2) */
+  const base = 0.40 * normPrimary + 0.42 * worksScore + tagBonus + repPower65;
   return {
     primary: primary,
     primaryTrack: isCredit ? "industryCredit" : "stageVolume",
     normPrimary: normPrimary,
     worksScore: worksScore,
     worksCount: works.length,
+    repIsLead65: (typeof awards65IsLeadWork === "function") ? awards65IsLeadWork(works.length ? works[0] : null) : false, /* v20a65 FIX65-4 */
     topQ: qs.length ? qs[0] : 0,
     rep: works.length ? works[0] : null,
     tagBonus: tagBonus,
+    borrow65: borrowW65, crossQ65: crossQ65, repPower65: repPower65, /* v20a65 FIX65-3 */
     base: base
   };
+}
+/* v20a65 FIX65-4：擔正判準——roleScale 一番／二番級，或 roleLabel／作品名明寫主角級。
+   唔可以齋睇 roleScale：pack 入面有幕後助手都掛 "mtv"，而真・MTV 男主角嗰部（gig_1989_mtv_01）
+   roleScale 一樣係 "mtv"、roleLabel 係空——要靠作品名「男主角」先認得返（全弧二輪 BUG-4 實例）。 */
+const AWARDS65_LEAD_SCALES = { film_lead_big:1, tv_lead_long:1, tv_lead:1, film_second_lead:1, tv_second_lead:1, music_lead:1, ad_lead:1, rec_album:1 };
+function awards65IsLeadWork(w){
+  try{
+    if(!w) return false;
+    const rs = (w.g && w.g.roleScale) || (w.h && w.h.roleScale) || "";
+    if(AWARDS65_LEAD_SCALES[rs]) return true;
+    const rl = String((w.g && w.g.roleLabel) || (w.h && w.h.roleLabel) || "");
+    if(/男主角|女主角|主角|主演|擔正|領銜/.test(rl)) return true;
+    const t = String(w.title || "");
+    if(/男主角|女主角/.test(t)) return true;
+    return false;
+  }catch(_e){ return false; }
 }
 function awards62WeakHint(parts, cat){
   if(!parts) return "";
   const trackName = parts.primaryTrack === "industryCredit" ? "業內信用" : "幕前聲望";
+  /* v20a65 FIX65-4：舊版用 topQ 做「缺擔正」判據——MTV 男主角 q 只得 0.48，都會誤嗌缺擔正。
+     改用公式三成分（主軌／作品分／作品數）逐瓣比，作品分嗰瓣再按代表作係咪擔正揀句。 */
+  const repIsLead = (parts.repIsLead65 != null) ? !!parts.repIsLead65 : ((typeof awards65IsLeadWork === "function") ? awards65IsLeadWork(parts.rep) : false);
+  const worksLine = repIsLead
+    ? "差啲咩：代表作夠班，但嗰桶深度唔夠——多一兩部同類好作品墊底，先推得過贏嗰格。"
+    : "差啲咩：缺一部擔正嘅代表作——接主角級製作，先企得穩贏嗰格。";
+  const worksV65 = (parts.worksScore != null) ? parts.worksScore : (parts.topQ || 0); /* 舊 parts 形狀冇 worksScore 就用 topQ 兜底 */
   const cands = [
-    { v: parts.topQ, line: "差啲咩：缺一部擔正嘅代表作——接主角級製作，先企得穩贏嗰格。" },
+    { v: worksV65, line: worksLine },
     { v: parts.normPrimary, line: "差啲咩：" + trackName + "未夠班——評審睇名氣同行內口碑，平日要谷住。" },
     { v: Math.min(1, (parts.worksCount || 0) / 3), line: "差啲咩：嗰年同類作品太少——多殺青幾部同類製作，先儲夠本錢。" }
   ];
@@ -36674,7 +36720,7 @@ function newspaperCheck(){
     try{ window.S = S; }catch(_e){}
     try{ if(S && typeof paintBar==="function") paintBar(); }catch(_e){}
   }
-  return { ok:!fails.length, fails:fails, softRev:"s111", version:"v20a10", softStatus:"≠PASS" };
+  return { ok:!fails.length, fails:fails, softRev:"s107", version:"v20a10", softStatus:"≠PASS" };
 }
 try{
   window.__newspaper = {
@@ -36995,16 +37041,11 @@ function phase3Stars(){
     const m = byId[id];
     if(!base) return null;
     if(!m) return base;
-    const silDesc = m.silhouetteDesc;
-    const baseLook = base.distanceLook;
-    const distanceLook = eraSightIsPlaceholder(silDesc)
-      ? (eraSightIsPlaceholder(baseLook) ? "" : (baseLook || ""))
-      : (silDesc || baseLook);
     return {
       starId:id,
       displayName:m.displayName || base.displayName,
       locs: base.locs.slice(),
-      distanceLook: distanceLook,
+      distanceLook: m.silhouetteDesc || base.distanceLook,
       distanceLine: m.distanceLine || base.distanceLine,
       locHint: m.locHint || base.locHint,
       rumorTeaser: m.rumorTeaser || base.rumorTeaser,
@@ -37120,25 +37161,13 @@ function coreSilSightStar(id){
     actionLabel:"遠觀",
   };
 }
-function eraSightIsPlaceholder(s){
-  if(typeof freeplayIsPlaceholderLine==="function") return freeplayIsPlaceholderLine(s);
-  const t = String(s||"").trim();
-  if(!t) return true;
-  return /待補|文案待補|選項待補/.test(t);
-}
 function eraSightParagraphs(star){
-  const flavor = String((star && (star.distanceLine || star.distanceLook)) || "").trim();
   return [
     [star && star.distanceLook, ""],
     [star && star.distanceLine, ""],
     [star && star.rumorTeaser, ' class="sub"'],
     [star && star.locHint, ' class="sub"'],
-  ].filter(row=>{
-    const t = String(row[0]||"").trim();
-    if(eraSightIsPlaceholder(t)) return false;
-    if(flavor && t===flavor) return false;
-    return true;
-  }).map(row=>`<p${row[1]}>${journalText(row[0])}</p>`).join("");
+  ].filter(row=>String(row[0]||"").trim()).map(row=>`<p${row[1]}>${journalText(row[0])}</p>`).join("");
 }
 function openStarSighting(star){
   if(!star) return { ok:false };
@@ -37154,8 +37183,7 @@ function openStarSighting(star){
       try{ saveQ(); }catch(_e){}
     }
   }catch(_e){}
-  const flavorPick = String(star.distanceLine || star.distanceLook || "").trim();
-  const flavor = (flavorPick && !eraSightIsPlaceholder(flavorPick)) ? flavorPick : "只能遠望，時機未到唔好行埋。";
+  const flavor = star.distanceLine || star.distanceLook || "只能遠望，時機未到唔好行埋。";
   /* Weave Phase 1-3：拼到呢位紅星嘅情報之後，遠觀多一段「知內情」嘅望法。 */
   let intelPara = "";
   try{ const il = (typeof intelSightLineFor==="function") ? intelSightLineFor(star.starId) : ""; if(il) intelPara = `<p>${journalText(il)}</p>`; }catch(_e){}
@@ -39187,7 +39215,7 @@ try{
 function doRest(L){
   confirmSpendDay("休息室歇陣", ()=>{
     const wd = weekdayName(weekdayIdx(S.dayIndex));
-    const notes=apply({stress:-(14+R(0,8))});
+    const notes=apply({stress:-S.stress}); /* v20a65 FIX65-1（用戶 2026-11-10 拍板）：全日休息（doRest）＝壓力清零（舊 −(14+R(0,8)) 平均 −18） */
     writeTodayPlan("rest");
     closeSheet();
     const {ended, summary}=tickDay();
@@ -41073,38 +41101,14 @@ function cont(){
 }
 
 
-/* v19z18: region tabs removed — toggle idle-pin visibility.
-   Button label is the NEXT command (true → 「只亮有事」). Toast names the mode AFTER one flip.
-   s110: a second click in the same gesture flipped the flag back, so the toast named the
-   mode the player started on (the opposite of the command they pressed). Ignore that echo. */
-function mapFilterToastText(showAll){
-  /* Post-toggle map mode. true = show-all-locs (idle pins lit). false = events-only. */
-  return showAll ? "已顯示全部地點" : "只亮有事做嘅地點";
-}
-function applyMapShowAllLocs(showAll){
-  const on = !!showAll;
-  const wrapEl = document.querySelector(".map-wrap");
-  if(wrapEl) wrapEl.classList.toggle("show-all-locs", on);
-  const showAllBtn = document.getElementById("map-show-all-locs");
-  if(showAllBtn){
-    showAllBtn.setAttribute("aria-pressed", on ? "true" : "false");
-    showAllBtn.textContent = on ? "只亮有事" : "全部地點";
-  }
-}
+/* v19z18: region tabs removed — toggle idle-pin visibility */
 (function wireMapShowAllLocs(){
   const btn=document.getElementById("map-show-all-locs");
   if(!btn) return;
-  let lastFlip = 0;
-  btn.onclick=(ev)=>{
-    const now = Date.now();
-    if((ev && ev.detail > 1) || (now - lastFlip) < 500) return;
-    lastFlip = now;
+  btn.onclick=()=>{
     mapShowAllLocs = !mapShowAllLocs;
-    const showAllNow = !!mapShowAllLocs;
-    try{ applyMapShowAllLocs(showAllNow); }catch(_e){}
-    try{ drawMap(); }catch(_e){}
-    try{ applyMapShowAllLocs(showAllNow); }catch(_e){}
-    try{ toast(mapFilterToastText(showAllNow), {closeSheet:false}); }catch(_e){}
+    drawMap();
+    try{ toast(mapShowAllLocs ? "已顯示全部地點" : "只亮有事做嘅地點", {closeSheet:false}); }catch(_e){}
   };
 })();
 
@@ -41340,10 +41344,10 @@ function runSoftP0Checks(){
     if(/金龍/.test(scrub.setting||"") || /金龍/.test((scrub.beats[0].lines||[])[0]||"")) bad("c1_scrub_copy");
     if(typeof c1PlayLocId==="function" && c1PlayLocId()!=="agency_ho") bad("c1_play_loc");
     if(showB01HomeModal.toString().indexOf("openLoc(\"cafe_cha\")")>=0 || showB01HomeModal.toString().indexOf("去金龍")>=0) bad("tut_cafe");
-    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s111") bad("soft_rev_attr");
+    if((document.documentElement.getAttribute("data-soft-rev")||"")!=="s107") bad("soft_rev_attr");
     try{
       var sq = String((typeof location!=="undefined" && location && location.search) || "");
-      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s111(?:&|$)/.test(sq)) bad("soft_rev_url");
+      if(/(?:\?|&)softBehaviorGate=1(?:&|$)/.test(sq) && !/(?:\?|&)softRev=s107(?:&|$)/.test(sq)) bad("soft_rev_url");
       if(/(?:\?|&)v=20a1[1-9](?:&|$)/.test(sq)) bad("v_bumped");
     }catch(_rev){ bad("soft_rev_throw"); }
     if(typeof storyMainProgressLine==="function"){
@@ -41402,8 +41406,8 @@ try{ exposePreviewDebug(); }catch(_e){}
 try{
   if(typeof softPreviewOn==="function" && softPreviewOn()){
     var tip = document.getElementById("start-soft-tip");
-    if(tip && tip.textContent.indexOf("s111")<0){
-      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s111。");
+    if(tip && tip.textContent.indexOf("s107")<0){
+      tip.insertAdjacentHTML("beforeend", "<br>本頁修訂 s107。");
     }
   }
 }catch(_revTip){}
