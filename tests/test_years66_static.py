@@ -11,10 +11,10 @@ def ok(name, cond):
     print(('PASS ' if cond else 'FAIL ') + name)
     if not cond: fails.append(name)
 
-ok('START epoch = 1990-03-07', 'const START = { y:1990, m:3, d:7 }' in src)
+ok('START epoch = 1990-01-01（v20a67 JAN67 改 1 月開局）', 'const START = { y:1990, m:1, d:1 }' in src)
 ok('開始畫面副題 1990', '<p class="start-sub">1990 · 片場星途</p>' in src)
-ok('新遊戲注腳 1990 年春', '1990 年春 · 由零開始' in src)
-ok('開場 modal 日期 1990年3月7日', '<h3>1990年3月7日 · 阿偉的家</h3>' in src)
+ok('新遊戲注腳 1990 年冬（v20a67 開局季節）', '1990 年冬 · 由零開始' in src)
+ok('開場 modal 日期改動態衍生（v20a67）', '· 阿偉的家</h3>' in src and '1990年3月7日' not in src)
 ok('YEARS66 block 存在', '/* ===== v20a66 YEARS66' in src and 'function years66MigrateSave' in src and 'function years66Walk' in src and 'function years66GigRemap' in src)
 ok('normalizeGigRecord 掛 years66GigRemap', 'try{ years66GigRemap(o); }catch(_y66){}' in src)
 m = re.search(r'function normalizeSaveObj\(o\)\{(.*?)\n\}', src, re.S)

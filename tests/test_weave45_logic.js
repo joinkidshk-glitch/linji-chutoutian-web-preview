@@ -139,9 +139,9 @@ function expectGate(id, label, mut, want){
 
 /* ================= (a)+(e) 閘矩陣：齊條件→開；逐個抽走關鍵條件→唔開 ================= */
 /* N6＝C6：route_tv＋W15+ */
-expectGate('C6', 'route_tv＋W16', compose(at(1990,6,20), (sv)=>{ sv.story.routes.route_tv = true; }), true);
+expectGate('C6', 'route_tv＋W16', compose(at(1990,4,19), (sv)=>{ sv.story.routes.route_tv = true; }), true);
 expectGate('C6', '缺 route', at(1990,6,20), false);
-expectGate('C6', '得 route 但 W14', compose(at(1990,6,12), (sv)=>{ sv.story.routes.route_tv = true; }), false);
+expectGate('C6', '得 route 但 W14', compose(at(1990,4,5), (sv)=>{ sv.story.routes.route_tv = true; }), false);
 /* N7＝C7：C5 done＋信用>20＋1991 夏 */
 expectGate('C7', '齊條件', compose(at(1991,7,10), withDone('C5'), (sv)=>setCredit(sv,21)), true);
 expectGate('C7', '缺 C5', compose(at(1991,7,10), (sv)=>setCredit(sv,21)), false);

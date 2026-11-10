@@ -43,7 +43,7 @@ function extractIIFE(decl){
   if(end<0) throw new Error('iife end not found: '+decl);
   return html.slice(i, end) + '\n})();';
 }
-function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1990, 2, 7)) / 86400000); }
+function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1990, 0, 1)) / 86400000); } /* v20a67：epoch 改 1990-01-01 */
 
 /* ================================================================
    段一：真 openLoc——何生「走定留」offer 呈現（1992 夏起）＋撳掣真入 StoryPlay
@@ -212,7 +212,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   var apply = function(delta){ Object.keys(delta||{}).forEach(k=>{ S[k] = (Number(S[k])||0) + delta[k]; }); return []; };
   var applyCastingTags = function(){ return []; };
   const SRC = [
-    "var START = { y:1990, m:3, d:7 };",
+    "var START = { y:1990, m:1, d:1 };", /* v20a67：同真遊戲 START 一致（1 月 epoch） */
     extractFn('dateObj'),
     extractFn('calendarSeason'),
     extractFn('weekNumNow'),

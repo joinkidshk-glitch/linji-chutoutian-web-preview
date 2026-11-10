@@ -257,7 +257,7 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   // 全對在場：春播種 → 夏觸發
   S = saveAt(370); toastCalls = [];
   seedExodusFenPair();
-  S.dayIndex = 460; // 1989 夏（1989-06-14）
+  S.dayIndex = 545; // 1991 夏（1991-06-30；v20a67 1 月 epoch 重對位）
   exodusFenTick();
   ok('exodus: debt written off (removed)', !S.mockDebts.some(d=>d.id==='debt_fen_standin'));
   ok('exodus: write-off counts settled with source', S.favorLedger.settled===1 && S.favorLedger.counted['debt_fen_standin'].source==='exodus_writeoff');
@@ -274,14 +274,14 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   seedExodusFenPair();
   S.mockDebts = S.mockDebts.filter(d=>d.id!=='debt_fen_standin');
   favorLedgerNoteSettled('debt_fen_standin', 'repay_cash');
-  S.dayIndex = 460;
+  S.dayIndex = 545;
   exodusFenTick();
   ok('exodus after repay: settled stays 1 (no double)', S.favorLedger.settled===1);
   ok('exodus after repay: credit still 絕響', S.mockCredits.find(c=>c.id==='credit_fen_rescue').status==='絕響');
   ok('exodus after repay: toast mentions 絕響', toastCalls.length===1 && toastCalls[0].m.indexOf('絕響')>=0);
 
   // 兩邊都無（種過但兩項都唔在場）→ 仍有 toast＋情報，唔靜默
-  S = saveAt(460); toastCalls = [];
+  S = saveAt(545); toastCalls = []; // 1991 夏（觸發窗內）
   S.exodusFenSeeded = true; // 種子旗已置，兩項均已處理完／唔在場
   exodusFenTick();
   ok('exodus neither: toast still fires', toastCalls.length===1);
@@ -295,7 +295,7 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   ok('spring: event not fired yet', toastCalls.length===0 && !S.exodusFenFired);
 
   // catch-up：存檔已喺 1990（更新前跨咗年）→ 補種＋即時觸發
-  S = saveAt(700); toastCalls = []; // 1990-02 左右
+  S = saveAt(760); toastCalls = []; // 1992-01-30（已過觸發窗，catch-up）
   exodusFenTick();
   ok('catch-up 1990: fired with write-off', !!S.exodusFenFired && S.favorLedger.settled===1 && toastCalls.length===1);
 })();

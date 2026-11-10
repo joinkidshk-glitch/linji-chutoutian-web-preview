@@ -39,10 +39,10 @@ def fn_body(name, src_text):
 # --- 主 блок ＋參數 ---
 ok("v20a61 CONSEQ61" in src, "CONSEQ61 主 блок 註頭在位")
 ok("CONSEQ61_REVIEWS" in src, "CONSEQ61_REVIEWS 在位")
-m = re.search(r"1990:\s*\{\s*floor:\s*45,\s*warnLine:\s*65,\s*boundaryWeek:\s*43\s*\}", src)
-ok(m is not None, "1990 評核參數 floor 45／warnLine 65／邊界週 43")
-m = re.search(r"1991:\s*\{\s*floor:\s*100,\s*warnLine:\s*130,\s*boundaryWeek:\s*95\s*\}", src)
-ok(m is not None, "1991 評核參數 floor 100／warnLine 130／邊界週 95")
+m = re.search(r"1990:\s*\{\s*floor:\s*45,\s*warnLine:\s*65,\s*boundaryWeek:\s*52\s*\}", src)
+ok(m is not None, "1990 評核參數 floor 45／warnLine 65／邊界週 52")
+m = re.search(r"1991:\s*\{\s*floor:\s*100,\s*warnLine:\s*130,\s*boundaryWeek:\s*104\s*\}", src)
+ok(m is not None, "1991 評核參數 floor 100／warnLine 130／邊界週 104")
 for key, val in (("graceWeeks", 4), ("sickStreak", 2), ("sickWarnStreak", 2),
                  ("sickRelief", 35), ("sickCooldownDays", 14),
                  ("sickCreditPerDay", 2), ("sickCreditCap", 6)):
