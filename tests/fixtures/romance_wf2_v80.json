@@ -1,0 +1,1250 @@
+{
+ "packNodes": {
+  "R_vera_meet": {
+   "choices": [
+    {
+     "id": "C_vera_meet_warm",
+     "label": "暖場：多謝提點，虛心請教",
+     "effects": {
+      "flags": [
+       "flag_vera_met_warm"
+      ],
+      "stats": {
+       "rel_vera": 1,
+       "craft": 1
+      },
+      "notes": ""
+     }
+    },
+    {
+     "id": "C_vera_meet_cold",
+     "label": "冷淡：點頭就走，趕下一個通告",
+     "effects": {
+      "flags": [
+       "flag_vera_met_cold"
+      ],
+      "stats": {
+       "rel_vera": 0,
+       "fame": 1
+      },
+      "notes": ""
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_vera_met_cold",
+    "flag_vera_met_warm"
+   ],
+   "openConditions": []
+  },
+  "R_vera_push1": {
+   "choices": [
+    {
+     "id": "C_vera_push1_cooperate",
+     "label": "認真配合：花時間試造型",
+     "effects": {
+      "flags": [
+       "flag_vera_cooperate"
+      ],
+      "stats": {
+       "rel_vera": 2,
+       "craft": 1
+      },
+      "notes": ""
+     }
+    },
+    {
+     "id": "C_vera_push1_perfunctory",
+     "label": "敷衍：隨便試一套就算",
+     "effects": {
+      "flags": [
+       "flag_vera_perfunctory"
+      ],
+      "stats": {
+       "rel_vera": 0,
+       "fame": 1
+      },
+      "notes": ""
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_vera_cooperate",
+    "flag_vera_perfunctory"
+   ],
+   "openConditions": []
+  },
+  "R_vera_push2": {
+   "choices": [
+    {
+     "id": "C_vera_push2_honest",
+     "label": "坦白心事：講自己的過去與夢想",
+     "effects": {
+      "flags": [
+       "flag_vera_honest"
+      ],
+      "stats": {
+       "rel_vera": 2,
+       "craft": 1
+      },
+      "notes": ""
+     }
+    },
+    {
+     "id": "C_vera_push2_work",
+     "label": "只談工作：保持專業距離",
+     "effects": {
+      "flags": [
+       "flag_vera_worktalk"
+      ],
+      "stats": {
+       "rel_vera": 1,
+       "fame": 1
+      },
+      "notes": ""
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_vera_honest",
+    "flag_vera_worktalk"
+   ],
+   "openConditions": []
+  },
+  "R_vera_crisis": {
+   "choices": [
+    {
+     "id": "C_vera_crisis_stay",
+     "label": "陪她：推遲通告，留下來陪 Vera",
+     "effects": {
+      "flags": [
+       "flag_vera_stay"
+      ],
+      "stats": {
+       "rel_vera": 2,
+       "trust": 1
+      },
+      "notes": "T5 選陪伴；rel_vera／trust 升。"
+     }
+    },
+    {
+     "id": "C_vera_crisis_work",
+     "label": "趕通告：先顧打歌與形象",
+     "effects": {
+      "flags": [
+       "flag_vera_workfirst"
+      ],
+      "stats": {
+       "music": 1,
+       "rel_vera": -2
+      },
+      "notes": "T5 選事業；music 升，rel_vera 跌。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_vera_stay",
+    "flag_vera_workfirst"
+   ],
+   "openConditions": []
+  },
+  "R_vera_ending": {
+   "choices": [
+    {
+     "id": "C_vera_ending_he",
+     "label": "確定關係：與 Vera 一起走下去",
+     "effects": {
+      "flags": [
+       "flag_vera_he",
+       "flag_vera_commit"
+      ],
+      "stats": {
+       "rel_vera": 3
+      },
+      "notes": "HE：信任形象夥伴；可與事業結局並存。"
+     }
+    },
+    {
+     "id": "C_vera_ending_be",
+     "label": "保持距離：專注事業，感情隨緣",
+     "effects": {
+      "flags": [
+       "flag_vera_be"
+      ],
+      "stats": {
+       "rel_vera": -2
+      },
+      "notes": "BE：工具化／疏離；可與事業結局並存。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_vera_be",
+    "flag_vera_commit",
+    "flag_vera_he"
+   ],
+   "openConditions": [
+    "phase_P5"
+   ]
+  },
+  "R_hiu_meet": {
+   "choices": [
+    {
+     "id": "C_hiu_meet_a",
+     "label": "交換情報",
+     "effects": {
+      "flags": [
+       "flag_hiu_meet_exchange"
+      ],
+      "stats": {
+       "rel_hiu": 1
+      },
+      "notes": ""
+     }
+    },
+    {
+     "id": "C_hiu_meet_b",
+     "label": "客氣疏離",
+     "effects": {
+      "flags": [
+       "flag_hiu_meet_distant"
+      ],
+      "stats": {
+       "rel_hiu": 0
+      },
+      "notes": ""
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_hiu_meet_distant",
+    "flag_hiu_meet_exchange"
+   ],
+   "openConditions": []
+  },
+  "R_hiu_push1": {
+   "choices": [
+    {
+     "id": "C_hiu_push1_a",
+     "label": "幫她讓位／報料",
+     "effects": {
+      "flags": [
+       "flag_hiu_push1_help"
+      ],
+      "stats": {
+       "rel_hiu": 2
+      },
+      "notes": ""
+     }
+    },
+    {
+     "id": "C_hiu_push1_b",
+     "label": "自己先搶",
+     "effects": {
+      "flags": [
+       "flag_hiu_push1_self"
+      ],
+      "stats": {
+       "rel_hiu": -1,
+       "standing": 1
+      },
+      "notes": ""
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_hiu_push1_help",
+    "flag_hiu_push1_self"
+   ],
+   "openConditions": []
+  },
+  "R_hiu_push2": {
+   "choices": [
+    {
+     "id": "C_hiu_push2_a",
+     "label": "約下次",
+     "effects": {
+      "flags": [
+       "flag_hiu_push2_date"
+      ],
+      "stats": {
+       "rel_hiu": 2
+      },
+      "notes": ""
+     }
+    },
+    {
+     "id": "C_hiu_push2_b",
+     "label": "只當同期",
+     "effects": {
+      "flags": [
+       "flag_hiu_push2_friend"
+      ],
+      "stats": {
+       "rel_hiu": 0
+      },
+      "notes": ""
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_hiu_push2_date",
+    "flag_hiu_push2_friend"
+   ],
+   "openConditions": []
+  },
+  "R_hiu_crisis": {
+   "choices": [
+    {
+     "id": "C_hiu_crisis_a",
+     "label": "成全她",
+     "effects": {
+      "flags": [
+       "flag_hiu_crisis_yield"
+      ],
+      "stats": {
+       "rel_hiu": 2,
+       "standing": -1
+      },
+      "notes": ""
+     }
+    },
+    {
+     "id": "C_hiu_crisis_b",
+     "label": "硬搶同場",
+     "effects": {
+      "flags": [
+       "flag_hiu_crisis_fight"
+      ],
+      "stats": {
+       "rel_hiu": -2,
+       "standing": 2
+      },
+      "notes": ""
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_hiu_crisis_fight",
+    "flag_hiu_crisis_yield"
+   ],
+   "openConditions": []
+  },
+  "R_hiu_ending": {
+   "choices": [
+    {
+     "id": "C_hiu_ending_he",
+     "label": "確定關係：同行情侶",
+     "effects": {
+      "flags": [
+       "flag_hiu_he",
+       "flag_hiu_commit"
+      ],
+      "stats": {
+       "rel_hiu": 3
+      },
+      "notes": "HE：互相成就；可與事業結局並存。"
+     }
+    },
+    {
+     "id": "C_hiu_ending_be",
+     "label": "保持距離：漸行漸遠",
+     "effects": {
+      "flags": [
+       "flag_hiu_be"
+      ],
+      "stats": {
+       "rel_hiu": -2
+      },
+      "notes": "BE：競爭撕破或淡友；可與事業結局並存。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_hiu_be",
+    "flag_hiu_commit",
+    "flag_hiu_he"
+   ],
+   "openConditions": [
+    "phase_P5"
+   ]
+  },
+  "R_choi_meet": {
+   "choices": [
+    {
+     "id": "C_choi_meet_a",
+     "label": "坦誠回答：分享真實想法",
+     "effects": {
+      "flags": [
+       "flag_choi_meet_honest"
+      ],
+      "stats": {
+       "rel_choi": 1,
+       "fame": 1
+      },
+      "notes": ""
+     }
+    },
+    {
+     "id": "C_choi_meet_b",
+     "label": "官腔保護：只說標準答案",
+     "effects": {
+      "flags": [
+       "flag_choi_meet_official"
+      ],
+      "stats": {
+       "rel_choi": 0,
+       "fame": 0
+      },
+      "notes": ""
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_choi_meet_honest",
+    "flag_choi_meet_official"
+   ],
+   "openConditions": []
+  },
+  "R_choi_push1": {
+   "choices": [
+    {
+     "id": "C_choi_push1_a",
+     "label": "給她獨家方向：在不傷害人的前提下提供線索",
+     "effects": {
+      "flags": [
+       "flag_choi_give_tip"
+      ],
+      "stats": {
+       "rel_choi": 2,
+       "fame": 1
+      },
+      "notes": ""
+     }
+    },
+    {
+     "id": "C_choi_push1_b",
+     "label": "拒絕提供：保護劇組聲譽",
+     "effects": {
+      "flags": [
+       "flag_choi_refuse_tip"
+      ],
+      "stats": {
+       "rel_choi": 0,
+       "standing": 1
+      },
+      "notes": ""
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_choi_give_tip",
+    "flag_choi_refuse_tip"
+   ],
+   "openConditions": []
+  },
+  "R_choi_push2": {
+   "choices": [
+    {
+     "id": "C_choi_push2_a",
+     "label": "當真約會：放下記者與受訪者的身份",
+     "effects": {
+      "flags": [
+       "flag_choi_real_date"
+      ],
+      "stats": {
+       "rel_choi": 2
+      },
+      "notes": ""
+     }
+    },
+    {
+     "id": "C_choi_push2_b",
+     "label": "當採訪延續：保持專業距離",
+     "effects": {
+      "flags": [
+       "flag_choi_keep_professional"
+      ],
+      "stats": {
+       "rel_choi": 0
+      },
+      "notes": ""
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_choi_keep_professional",
+    "flag_choi_real_date"
+   ],
+   "openConditions": []
+  },
+  "R_choi_crisis": {
+   "choices": [
+    {
+     "id": "C_choi_crisis_a",
+     "label": "公開真情：承認關係，共同面對",
+     "effects": {
+      "flags": [
+       "flag_public_romance"
+      ],
+      "stats": {
+       "rel_choi": 2,
+       "fame": 1
+      },
+      "notes": ""
+     }
+    },
+    {
+     "id": "C_choi_crisis_b",
+     "label": "公關切割：否認關係，保護事業",
+     "effects": {
+      "flags": [
+       "flag_choi_deny_romance"
+      ],
+      "stats": {
+       "rel_choi": -2,
+       "fame": 0
+      },
+      "notes": ""
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_choi_deny_romance",
+    "flag_public_romance"
+   ],
+   "openConditions": []
+  },
+  "R_choi_ending": {
+   "choices": [
+    {
+     "id": "C_choi_ending_he",
+     "label": "承諾未來：低調真情",
+     "effects": {
+      "flags": [
+       "flag_choi_he",
+       "flag_choi_commit"
+      ],
+      "stats": {
+       "rel_choi": 3
+      },
+      "notes": "HE：公開或低調真情；可與事業結局並存。"
+     }
+    },
+    {
+     "id": "C_choi_ending_be",
+     "label": "分道揚鑣：公關犧牲感情",
+     "effects": {
+      "flags": [
+       "flag_choi_be"
+      ],
+      "stats": {
+       "rel_choi": -2
+      },
+      "notes": "BE：頭條換關係失敗；可與事業結局並存。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_choi_be",
+    "flag_choi_commit",
+    "flag_choi_he"
+   ],
+   "openConditions": [
+    "phase_P5"
+   ]
+  },
+  "R_xu_meet": {
+   "choices": [
+    {
+     "id": "C_xu_meet_polite",
+     "label": "有禮接招：不卑不亢",
+     "effects": {
+      "flags": [
+       "flag_xu_met_polite"
+      ],
+      "stats": {
+       "rel_xu": 1,
+       "craft": 1
+      },
+      "notes": "初遇加分。"
+     }
+    },
+    {
+     "id": "C_xu_meet_distance",
+     "label": "保持距離：不攀談",
+     "effects": {
+      "flags": [
+       "flag_xu_met_distance"
+      ],
+      "stats": {
+       "rel_xu": 0,
+       "standing": 1
+      },
+      "notes": "保持距離。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_xu_met_distance",
+    "flag_xu_met_polite"
+   ],
+   "openConditions": [
+    "phase_P3"
+   ]
+  },
+  "R_xu_push1": {
+   "choices": [
+    {
+     "id": "C_xu_push1_accept",
+     "label": "願意談合作：聽金援條件",
+     "effects": {
+      "flags": [
+       "flag_xu_coop_talk"
+      ],
+      "stats": {
+       "rel_xu": 2,
+       "wealth": 1
+      },
+      "notes": "金援推進。"
+     }
+    },
+    {
+     "id": "C_xu_push1_decline",
+     "label": "婉拒口風：想先靠自己",
+     "effects": {
+      "flags": [
+       "flag_xu_coop_decline"
+      ],
+      "stats": {
+       "rel_xu": 0,
+       "standing": 1
+      },
+      "notes": "婉拒金援口風。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_xu_coop_decline",
+    "flag_xu_coop_talk"
+   ],
+   "openConditions": []
+  },
+  "R_xu_push2": {
+   "choices": [
+    {
+     "id": "C_xu_push2_open",
+     "label": "打開私人一面",
+     "effects": {
+      "flags": [
+       "flag_xu_personal_open"
+      ],
+      "stats": {
+       "rel_xu": 2
+      },
+      "notes": "私人推進。"
+     }
+    },
+    {
+     "id": "C_xu_push2_business",
+     "label": "只談生意",
+     "effects": {
+      "flags": [
+       "flag_xu_business_only"
+      ],
+      "stats": {
+       "rel_xu": 1,
+       "standing": 1
+      },
+      "notes": "公事界線。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_xu_business_only",
+    "flag_xu_personal_open"
+   ],
+   "openConditions": []
+  },
+  "R_xu_crisis": {
+   "choices": [
+    {
+     "id": "C_xu_crisis_respect",
+     "label": "尊重合作（連 C14／T6）",
+     "effects": {
+      "flags": [
+       "flag_xu_respect",
+       "flag_bao_respect"
+      ],
+      "stats": {
+       "rel_xu": 2,
+       "wealth": 1,
+       "standing": 1
+      },
+      "notes": "對等合作。"
+     }
+    },
+    {
+     "id": "C_xu_crisis_depend",
+     "label": "依賴結構（連 C14／T6）",
+     "effects": {
+      "flags": [
+       "flag_xu_depend",
+       "flag_bao_depend"
+      ],
+      "stats": {
+       "rel_xu": 1,
+       "wealth": 3,
+       "standing": -1
+      },
+      "notes": "金援依賴。"
+     }
+    },
+    {
+     "id": "C_xu_crisis_refuse",
+     "label": "拒絕（連 C14／T6）",
+     "effects": {
+      "flags": [
+       "flag_xu_refuse",
+       "flag_bao_refuse"
+      ],
+      "stats": {
+       "rel_xu": -1,
+       "standing": 1
+      },
+      "notes": "拒絕依附。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_bao_depend",
+    "flag_bao_refuse",
+    "flag_bao_respect",
+    "flag_xu_depend",
+    "flag_xu_refuse",
+    "flag_xu_respect"
+   ],
+   "openConditions": []
+  },
+  "R_xu_ending": {
+   "choices": [
+    {
+     "id": "C_xu_ending_he",
+     "label": "HE：平等伴侶",
+     "effects": {
+      "flags": [
+       "flag_xu_he",
+       "flag_xu_commit"
+      ],
+      "stats": {
+       "rel_xu": 3,
+       "standing": 1
+      },
+      "notes": "可與事業結局並存。"
+     }
+    },
+    {
+     "id": "C_xu_ending_be",
+     "label": "BE：依賴決裂或冷淡",
+     "effects": {
+      "flags": [
+       "flag_xu_be"
+      ],
+      "stats": {
+       "rel_xu": -2,
+       "wealth": -1
+      },
+      "notes": "可與事業結局並存。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_xu_be",
+    "flag_xu_commit",
+    "flag_xu_he"
+   ],
+   "openConditions": [
+    "phase_P5"
+   ]
+  },
+  "R_tang_meet_stub": {
+   "choices": [
+    {
+     "id": "C_tang_meet_keep_contact",
+     "label": "留下聯絡：寫入 flag_tang_met（不開正式閘）",
+     "effects": {
+      "flags": [
+       "flag_tang_met"
+      ],
+      "stats": {
+       "rel_tang": 1
+      },
+      "notes": "偶遇建檔；正式開閘見 R_tang_meet（排片談判）"
+     }
+    },
+    {
+     "id": "C_tang_meet_hold_back",
+     "label": "先不深交",
+     "effects": {
+      "flags": [],
+      "stats": {
+       "rel_tang": 0
+      },
+      "notes": "不深交；不寫 flag_tang_open"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_tang_met"
+   ],
+   "openConditions": []
+  },
+  "R_tang_meet": {
+   "choices": [
+    {
+     "id": "C_tang_meet_data",
+     "label": "攤開阿偉手上的觀眾數據，同她講清楚這套戲的目標客群同口碑走勢",
+     "effects": {
+      "flags": [
+       "flag_tang_open"
+      ],
+      "stats": {
+       "rel_tang": 1
+      },
+      "notes": "以數據回應數據，打開同鄧麗萍合作的第一道閘；supersedes=R_tang_meet_stub"
+     }
+    },
+    {
+     "id": "C_tang_meet_wait",
+     "label": "不急着爭，先問清楚她這條線的排片準則，回去再補數據",
+     "effects": {
+      "flags": [
+       "flag_tang_met_wait"
+      ],
+      "stats": {
+       "rel_tang": 0
+      },
+      "notes": "暫緩開閘，鄧麗萍覺得你至少不是亂衝；supersedes=R_tang_meet_stub"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_tang_met_wait",
+    "flag_tang_open"
+   ],
+   "openConditions": []
+  },
+  "R_tang_push1": {
+   "choices": [
+    {
+     "id": "C_tang_push1_exchange",
+     "label": "用阿偉手上的試映口碑情報，換她一個冷門檔期的正式位",
+     "effects": {
+      "flags": [
+       "flag_tang_push1_exchange"
+      ],
+      "stats": {
+       "rel_tang": 1
+      },
+      "notes": "數據互助成立，鄧麗萍開始留意你的號召力"
+     }
+    },
+    {
+     "id": "C_tang_push1_prove",
+     "label": "不換情報，直接應承冷門檔期，用午夜場數字證明自己",
+     "effects": {
+      "flags": [
+       "flag_tang_push1_prove"
+      ],
+      "stats": {
+       "rel_tang": 1
+      },
+      "notes": "鄧麗萍欣賞你肯扛數字風險，但未完全放下審判官姿態"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_tang_push1_exchange",
+    "flag_tang_push1_prove"
+   ],
+   "openConditions": [
+    "flag_tang_open",
+    "rel_tang_threshold"
+   ]
+  },
+  "R_tang_push2": {
+   "choices": [
+    {
+     "id": "C_tang_push2_business",
+     "label": "不追問私人事，順着數據講下一季黃金檔合作",
+     "effects": {
+      "flags": [
+       "flag_tang_push2_business"
+      ],
+      "stats": {
+       "rel_tang": 1
+      },
+      "notes": "維持商業盟友節奏，鄧麗萍覺得你懂分寸"
+     }
+    },
+    {
+     "id": "C_tang_push2_private",
+     "label": "問她當年那套文藝片，是不是到今日還有一條刺",
+     "effects": {
+      "flags": [
+       "flag_tang_push2_private"
+      ],
+      "stats": {
+       "rel_tang": 1
+      },
+      "notes": "略觸 secret，鄧麗萍沒有即刻封閉，但叫你不要再問下去"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_tang_push2_business",
+    "flag_tang_push2_private"
+   ],
+   "openConditions": [
+    "flag_tang_open",
+    "rel_tang_threshold"
+   ]
+  },
+  "R_tang_crisis": {
+   "choices": [
+    {
+     "id": "C_tang_crisis_data",
+     "label": "照數據排，將黃金檔讓給對手片，自己這套戲退去次檔",
+     "effects": {
+      "flags": [
+       "flag_tang_crisis_data"
+      ],
+      "stats": {
+       "rel_tang": 1
+      },
+      "notes": "鄧麗萍認同你的理性，但關係停留在商業層面"
+     }
+    },
+    {
+     "id": "C_tang_crisis_favor",
+     "label": "堅持為人情片爭黃金檔，願意自己扛上座率風險",
+     "effects": {
+      "flags": [
+       "flag_tang_crisis_favor"
+      ],
+      "stats": {
+       "rel_tang": 1
+      },
+      "notes": "鄧麗萍為你破例，但講明只此一次，數字不達標就沒有下次"
+     }
+    },
+    {
+     "id": "C_tang_crisis_middle",
+     "label": "提出折衷：黃金檔讓一半場次，午夜場用阿偉這套戲試口碑",
+     "effects": {
+      "flags": [
+       "flag_tang_crisis_middle"
+      ],
+      "stats": {
+       "rel_tang": 1
+      },
+      "notes": "鄧麗萍接受折衷方案，覺得你懂算帳又懂分寸人"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_tang_crisis_data",
+    "flag_tang_crisis_favor",
+    "flag_tang_crisis_middle"
+   ],
+   "openConditions": [
+    "flag_tang_open",
+    "rel_tang_threshold"
+   ]
+  },
+  "R_tang_ending": {
+   "choices": [
+    {
+     "id": "C_tang_ending_he",
+     "label": "HE：商業盟友＋感情（可與事業並存）",
+     "effects": {
+      "flags": [
+       "flag_tang_commit",
+       "flag_tang_he"
+      ],
+      "stats": {
+       "rel_tang": 3,
+       "standing": 1
+      },
+      "notes": "可與事業結局並存。"
+     }
+    },
+    {
+     "id": "C_tang_ending_be",
+     "label": "BE：數字至上決裂／冷淡（可與事業並存）",
+     "effects": {
+      "flags": [
+       "flag_tang_be"
+      ],
+      "stats": {
+       "rel_tang": -2
+      },
+      "notes": "可與事業結局並存。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_tang_be",
+    "flag_tang_commit",
+    "flag_tang_he"
+   ],
+   "openConditions": [
+    "flag_tang_open",
+    "rel_tang_threshold"
+   ]
+  }
+ },
+ "lanPa": {
+  "R_lan_meet": {
+   "choices": [
+    {
+     "id": "C_lan_meet_warm",
+     "label": "落手幫忙：幫佢撳牌派通告",
+     "effects": {
+      "flags": [
+       "flag_lan_met_warm"
+      ],
+      "stats": {
+       "rel_lan": 1
+      },
+      "notes": "初遇加分。"
+     }
+    },
+    {
+     "id": "C_lan_meet_cool",
+     "label": "客氣疏離：只幫手執返啲牌",
+     "effects": {
+      "flags": [
+       "flag_lan_met_cool"
+      ],
+      "stats": {
+       "rel_lan": 0
+      },
+      "notes": "保持距離。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_lan_met_cool",
+    "flag_lan_met_warm"
+   ],
+   "openConditions": [
+    "phase_P2"
+   ],
+   "beatLines": [
+    "哎呀——唔好意思，唔好意思，借過！（成疊通告牌同流程表，俾人一撞，散晒一地）",
+    "多謝你呀。我叫藍若曦，呢度啲人個個叫我阿藍——場記嚟㗎，專幫人撳通告牌、嗌人埋位。",
+    "你嗰組仲差一個位未派……嗱，我幫你留返，你晏啲嚟簽到啦。唔好同人講係我留㗎。"
+   ]
+  },
+  "R_lan_push1": {
+   "choices": [
+    {
+     "id": "C_lan_push1_serious",
+     "label": "認真幫手：陪佢對晒成版牌",
+     "effects": {
+      "flags": [
+       "flag_lan_sang_together"
+      ],
+      "stats": {
+       "rel_lan": 2,
+       "music": 1
+      },
+      "notes": "一齊捱過台慶。"
+     }
+    },
+    {
+     "id": "C_lan_push1_work",
+     "label": "只顧自己嗰場：對完自己嗰格就走",
+     "effects": {
+      "flags": [
+       "flag_lan_work_only"
+      ],
+      "stats": {
+       "rel_lan": 0,
+       "music": 0
+      },
+      "notes": "工作界線。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_lan_sang_together",
+    "flag_lan_work_only"
+   ],
+   "openConditions": [],
+   "beatLines": [
+    "唔好意思，你嗰場要押後兩位——前面嗰組跳舞嘅超時，我成版牌要重排，你唔好行遠呀。",
+    "唔使陪我捱㗎，你去食飯先啦。我呢啲場記命，邊有資格準時食飯——啲人埋晒位，我先有得坐。",
+    "（佢笑住將一張改到花晒嘅流程表遞過嚟）你真係肯幫手？咁你幫我睇住呢幾格，我去嗌人埋位。"
+   ]
+  },
+  "R_lan_push2": {
+   "choices": [
+    {
+     "id": "C_lan_push2_protect",
+     "label": "企出嚟：當住人講明係自己企得穩，唔關佢事",
+     "effects": {
+      "flags": [
+       "flag_lan_protected"
+      ],
+      "stats": {
+       "rel_lan": 2,
+       "fame": -1
+      },
+      "notes": "企出嚟護佢，名聲有啲代價。"
+     }
+    },
+    {
+     "id": "C_lan_push2_distance",
+     "label": "劃清界線：之後少啲埋佢嗰邊",
+     "effects": {
+      "flags": [
+       "flag_lan_colleague"
+      ],
+      "stats": {
+       "rel_lan": 0
+      },
+      "notes": "劃清界線。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_lan_colleague",
+    "flag_lan_protected"
+   ],
+   "openConditions": [],
+   "beatLines": [
+    "你都聽到嗰啲講法啦？我冇偏幫你——你嗰陣企得穩、又從來唔遲到，我先排你嗰格，係咁多。",
+    "你唔使出頭㗎。場記俾人講兩句，唔痛唔癢。你而家先啱啱企穩，唔好為我惹麻煩。",
+    "（佢望住塊通告牌，笑得有啲勉）做呢行，女人做場記，講咩都有人有意見。你明就得㗎喇。"
+   ]
+  },
+  "R_lan_crisis": {
+   "choices": [
+    {
+     "id": "C_lan_crisis_help",
+     "label": "陪佢爭取：同佢一齊同上頭講，留喺星河跟大騷",
+     "effects": {
+      "flags": [
+       "flag_lan_help",
+       "flag_family_help",
+       "flag_family_marriage"
+      ],
+      "stats": {
+       "rel_lan": 2,
+       "fame": -1
+      },
+      "notes": "企佢嗰邊，一齊爭取。"
+     }
+    },
+    {
+     "id": "C_lan_crisis_stepback",
+     "label": "勸佢為前途：去啦，唔好為呢度耽誤自己",
+     "effects": {
+      "flags": [
+       "flag_lan_stepback",
+       "flag_family_marriage"
+      ],
+      "stats": {
+       "rel_lan": -1
+      },
+      "notes": "勸佢行，退後一步。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_family_help",
+    "flag_family_marriage",
+    "flag_lan_help",
+    "flag_lan_stepback"
+   ],
+   "openConditions": [],
+   "beatLines": [
+    "外判嗰邊開嘅人工，多我而家一半。屋企人話，唔去就係傻——女仔做場記做到幾多歲呀，佢哋咁講。",
+    "但係嗰度冇呢版通告牌，冇你哋呢班人……我係咪好唔爭氣？一份工啫，我居然唔捨得成層後台。",
+    "你唔使答我㗎。我只係想講畀一個……會明嘅人聽。成個電視台，得你會企喺度聽我講晒。"
+   ]
+  },
+  "R_lan_ending": {
+   "choices": [
+    {
+     "id": "C_lan_ending_he",
+     "label": "講明心意：嗰餐飯，唔使等第日",
+     "effects": {
+      "flags": [
+       "flag_lan_he",
+       "flag_lan_commit"
+      ],
+      "stats": {
+       "rel_lan": 3
+      },
+      "notes": "可與事業結局並存。"
+     }
+    },
+    {
+     "id": "C_lan_ending_be",
+     "label": "收起嗰一步：笑笑口，當係一個約定",
+     "effects": {
+      "flags": [
+       "flag_lan_be"
+      ],
+      "stats": {
+       "rel_lan": -2
+      },
+      "notes": "可與事業結局並存。"
+     }
+    }
+   ],
+   "flags_written": [
+    "flag_lan_be",
+    "flag_lan_commit",
+    "flag_lan_he"
+   ],
+   "openConditions": [
+    "phase_P5"
+   ],
+   "beatLines": [
+    "嗱，最後一版牌喇。你嗰格，我排得靚靚仔仔——唔好話我偏幫你喎，係你自己企得穩。",
+    "第日你唔使人撳牌嗰陣……請返我食飯啦。一餐就夠，唔使山珍海味——茶餐廳都得。",
+    "（佢笑住轉身去嗌下一組埋位，嗰句說話，留咗喺走廊度，冇人接。）"
+   ]
+  }
+ },
+ "commit48": {
+  "defs": {
+   "CMT_hiu_commit": {
+    "loc": "tvb_longmen",
+    "relKey": "rel_hiu",
+    "crisis": "R_hiu_crisis",
+    "flag": "flag_hiu_commit",
+    "otherFlag": "flag_choi_commit",
+    "actTitle": "曉晴喺廠景天台等你",
+    "actHint": "殺青之後佢冇跟大隊走——有句說話，佢想同你講清楚。"
+   },
+   "CMT_choi_commit": {
+    "loc": "cafe_cha",
+    "relKey": "rel_choi",
+    "crisis": "R_choi_crisis",
+    "flag": "flag_choi_commit",
+    "otherFlag": "flag_hiu_commit",
+    "actTitle": "采兒喺茶餐廳老位等你",
+    "actHint": "佢收埋咗支筆，檯面放住兩杯奶茶——一杯係等你嘅。"
+   }
+  },
+  "nodeIds": [
+   "CMT_hiu_commit",
+   "CMT_choi_commit"
+  ]
+ }
+}

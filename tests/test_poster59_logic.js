@@ -73,7 +73,7 @@ const STUBS_SRC = `
   var gigGapLine34 = function(){ return ''; };
 `;
 function setup(){ return 'eval(WORLD_SRC); eval(STUBS_SRC);'; }
-const ROSTER10 = ['陸柏言','廖炳星','齊鎮海','麥震東','鍾楚凝','蘇芷茵','彭兆基','葉敏芝','駱家聲','顧明輝'];
+const ROSTER10 = ['陸柏言','廖炳星','齊鎮海','麥震東','鍾楚凝','蘇芷茵','彭少祺','葉敏芝','駱家聲','顧明輝'];
 
 /* ============ 段一：對照表完整性（137 部全喺包入面；包非常規即入門 6 張） ============ */
 (function(){
@@ -111,7 +111,7 @@ const ROSTER10 = ['陸柏言','廖炳星','齊鎮海','麥震東','鍾楚凝','�
   const spot = normalizeGigRecord(JSON.parse(JSON.stringify(PACK88.gigs.find(g=>g.id==='gig_1988_film_harbour_high'))));
   ok('fill: 夜海鎗火 leadStarId 接返名冊 id', spot.leadStar==='陸柏言' && spot.leadStarId==='luk_baakyin');
   const dual = normalizeGigRecord(JSON.parse(JSON.stringify(PACK88.gigs.find(g=>g.id==='gig_1988_var_04'))));
-  ok('fill: 選拔夜雙主演', dual.leadStar==='彭兆基、葉敏芝');
+  ok('fill: 選拔夜雙主演', dual.leadStar==='彭少祺、葉敏芝');
   const bridge = normalizeGigRecord({ id:'gig_1988_soft_bridge_summer_ad', softBridge:true, title:'《暑期街招》廣告路人', type:'廣告', req:{} });
   ok('fill: 常駐散工冇 leadStar', bridge.leadStar == null);
   const once = normalizeGigRecord(JSON.parse(JSON.stringify(PACK88.gigs.find(g=>g.id==='gig_1988_tv_06'))));
@@ -148,7 +148,7 @@ const ROSTER10 = ['陸柏言','廖炳星','齊鎮海','麥震東','鍾楚凝','�
   const e = normalizeGigRecord(JSON.parse(JSON.stringify(PACK88.gigs.find(x=>x.entryTier))));
   ok('card: 入門卡冇主演行（唔出空欄）', gigCardHtml(e, {}).indexOf('主演：')<0);
   const d = normalizeGigRecord(JSON.parse(JSON.stringify(PACK88.gigs.find(x=>x.id==='gig_1988_var_04'))));
-  ok('card: 雙主演卡顯示兩名', gigCardHtml(d, {}).indexOf('主演：彭兆基、葉敏芝')>=0);
+  ok('card: 雙主演卡顯示兩名', gigCardHtml(d, {}).indexOf('主演：彭少祺、葉敏芝')>=0);
 })();
 
 /* ============ 段五：作品牆（舊存檔格式／過濾／欄位回查） ============ */
