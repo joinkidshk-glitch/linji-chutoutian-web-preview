@@ -96,3 +96,5 @@ base64 約 2.92MB（佔 60%）。逐張試壓（PIL 同尺寸再編碼，慳唔�
   嗰條路唔經 organizer（本來就唔係 sheet 選項清單）。
 - 驗證證據喺 linji-work68/verify68/（driver68_log.txt＋截圖 9 張）；本地駕駛
   driver68.py（gate-on、槽 3、420px、零 pageerror 全程）。
+
+<!-- 部署重觸發：PR #168 合併後 Pages 首部署未生效，細 commit 重觸發（內容無實質變更）。 -->
