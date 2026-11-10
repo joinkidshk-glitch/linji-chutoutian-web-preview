@@ -110,7 +110,11 @@ S = { trainCount:{ train_vocal:2 }, enrolled:{}, dayIndex:0 };
 st = ux68CourseStatus('train_charm');
 ok('狀態：魅力課——任何訓練 2 堂進度＋附帶途徑', !st.open && st.text.indexOf('2／2') >= 0 && st.text.indexOf('附帶開放') >= 0);
 st = ux68CourseStatus('train_stage');
-ok('狀態：台風訓練現行冇報名入口 → 老實標未開放', !st.open && st.text.indexOf('暫未有報名入口') >= 0);
+/* v20a69 STAGE69 改版：台風訓練已補返接線（電視台附帶＋累計 2 堂自動開放）——
+   本斷言由「老實標暫未有報名入口」改為新正確行為；喺 v68 index 上行會 FAIL（反證）。 */
+ok('狀態：台風訓練（v69 已接線）→ 條件進度＋電視台附帶途徑，唔再標冇入口',
+  !st.open && st.text.indexOf('暫未有報名入口') < 0 && st.text.indexOf('任何訓練累計 2 堂') >= 0
+  && st.text.indexOf('星河電視台') >= 0 && st.text.indexOf('附帶開放') >= 0);
 
 /* ---------- (4) 目標數值（prefs 往返，唔入存檔） ---------- */
 S = { trainCount:{}, enrolled:{}, dayIndex:0 };
