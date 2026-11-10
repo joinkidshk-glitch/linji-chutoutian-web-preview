@@ -40,8 +40,10 @@ ok('setHomeTab v71 接線（guide／train 改落 plan／冇已刪段呼叫／pro
 # 可見與否，永遠顯示＋標籤恆定。喺 v69 index 上行會 FAIL（反證）。
 ok('syncHomeTabExit v70 恆常出口（永遠顯示＋標籤恆定「返回地圖」）',
    '|| tab==="guide"' not in src and 'exit.hidden = false' in src and 'btn.textContent = "返回地圖"' in src)
-ok('增益表由 applyTrainLesson 源碼衍生（唔係硬編碼清單）',
-   'applyTrainLesson.toString()' in src and 'applyGain60' in src)
+# v20a75 改版：增益改按級數據衍生——ux68ParseGainTable 行 TRAIN75_SPEC＋現級
+# （levels75GainRange），同實際上堂共用同一張表，唔再解析源碼字面量。
+ok('v75：增益表由 TRAIN75_SPEC 按現級衍生（同上堂共用數據）',
+   'levels75GainRange(cid, levels75Level(oo, cid))' in src and 'const TRAIN75_SPEC' in src)
 # v20a74 改版：主攻目標（目標數值）成個移除（用戶 2026-11-10 16:06 拍板）——
 # 舊斷言「目標數值存 prefs」改為「全檔冇目標功能殘留」；喺 v73 index 上行會 FAIL（反證）。
 ok('v74：目標數值功能全清（冇讀寫函數／冇 prefs 鍵／冇「主攻」字樣）',

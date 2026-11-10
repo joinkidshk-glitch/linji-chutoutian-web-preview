@@ -37,9 +37,13 @@ chk('renderMemoryPane60 defined', 'function renderMemoryPane60()' in src)
 # --- (1) 接線：拍攝／訓練／散工 ---
 rpd = slice_fn('resolvePlannedDay')
 chk('shoot wrap 走 applyGain60', 'applyGain60(daily)' in rpd)
-chk('resolvePlannedDay 訓練鏈走 applyGain60（9 課）', rpd.count('applyGain60({') >= 9)
+# v20a75 改版：兩條上堂路徑合併共用核心 train75ApplyLesson（增益按級 roll 後經
+# applyGain60），唔再各自內嵌 9 課字面量——原斷言改驗共用核心＋兩路徑都行佢。
+t75 = slice_fn('train75ApplyLesson')
+chk('v75 共用核心 train75ApplyLesson 走 applyGain60', 'applyGain60(roll)' in t75)
+chk('resolvePlannedDay 訓練鏈走共用核心（v75）', 'train75ApplyLesson(id)' in rpd)
 atl = slice_fn('applyTrainLesson')
-chk('applyTrainLesson 訓練鏈走 applyGain60（9 課）', atl.count('applyGain60({') >= 9)
+chk('applyTrainLesson 訓練鏈走共用核心（v75）', 'train75ApplyLesson(courseId)' in atl)
 chk('直接 fame 寫入走 calib60FameGain（3 處）', src.count('calib60FameGain(sv)') == 3)
 chk('fallback alias 在位（抽函數沙盒相容）', src.count('const applyGain60 = (typeof applyCalib60') == 2)
 # 抉擇路徑刻意唔縮：applyChoice 唔准出現 applyCalib60

@@ -92,11 +92,14 @@ ok('解鎖：任何訓練累計 2 堂 → 台風自動開放（同魅力同級�
 const rule = ux68UnlockRule('train_stage');
 ok('鏡像同步：ux68UnlockRule(train_stage)＝任何訓練累計 2 堂、進度即時計',
   !!rule && rule.goal === 2 && rule.have === 2 && rule.need.indexOf('任何訓練累計 2 堂') >= 0);
+/* v20a75 改版：進階台風併入台風級別——3 堂唔再開獨立課，級別仍一級；
+   上滿 5 堂升二級；顯示鏡像 ux68UnlockRule 刪 mid 個案（回 null）。 */
 S = { trainCount:{ train_stage:3 }, enrolled:{ train_stage:true }, dayIndex:0 };
 maybeUnlockMidCourses([]);
-ok('下游解鎖：台風累計 3 堂 → 進階台風開放（原本永遠到唔到嗰條）', !!S.enrolled.train_stage_mid);
-const midRule = ux68UnlockRule('train_stage_mid');
-ok('鏡像同步：進階台風規則仍係台風 3 堂', !!midRule && midRule.goal === 3 && midRule.have === 3);
+ok('v75：台風 3 堂唔再開獨立進階課＋級別仍一級', !S.enrolled.train_stage_mid && levels75Level(S, 'train_stage') === 1);
+S.trainCount.train_stage = 5;
+ok('v75：台風 5 堂 → 升二級（levels75Level 衍生）', levels75Level(S, 'train_stage') === 2);
+ok('v75 鏡像同步：ux68UnlockRule(train_stage_mid) 已刪（回 null）', ux68UnlockRule('train_stage_mid') === null);
 
 /* ---------- (4) 通告捷徑：唔再借演技課代行 ---------- */
 ok('courseForStatKey：stage → train_stage（不變）', courseForStatKey('stage') === 'train_stage');

@@ -20,8 +20,11 @@ chk('courseForStatKey: stamina → train_stamina', 'stamina:"train_stamina", fam
 chk('preferredLocForTrainTarget: train_stamina 分支（電影地點）', 'if(courseId==="train_stamina")' in src and '"film_lion"' in src)
 chk('maybeUnlockMidCourses: 累計 3 堂開放', 'if(total>=3 && !en.train_stamina)' in src)
 chk('stressDeltaForAct: train_stamina = 10', 'train_stamina:10' in src)
-chk('兩條結算路徑（排程＋即場）同公式 +4~6 體能／+8~12 壓力', src.count('stamina:4+R(0,2), stress:8+R(0,4)') == 2)
-chk('結算有 TRAIN_RESULT_stamina 句（兩路徑）', src.count('eventLine("TRAIN_RESULT_stamina")') == 2)
+# v20a75 改版：公式改存 TRAIN75_SPEC（一級 +4~6／+8~12 原值），兩條路徑共用
+# train75ApplyLesson 結算，唔再各一份字面量——改驗數據表＋共用核心。
+chk('v75 武師班一級公式（數據表）+4~6 體能／+8~12 壓力', 'train_stamina:' in src and 'main:"stamina", mLo:4, mSpan:2' in src and 'sLo:8, sSpan:4' in src)
+chk('v75 兩路徑共用 train75ApplyLesson 結算', src.count('train75ApplyLesson(') >= 3)
+chk('結算有 TRAIN_RESULT 句（v75 共用核心動態拼 TRAIN_RESULT_<課>，兩路徑共用）', 'eventLine("TRAIN_RESULT_" +' in src and 'function train75ApplyLesson' in src)
 
 # --- 週結暗加已收（三分支） ---
 chk('低體能分支：刪 stamina +5（fame/stress 保留）', 'apply({fame:-2, stress:5})' in src and 'stamina:5, stress:5' not in src)

@@ -43,7 +43,9 @@ ok("stress:-(4+R(0,4))" in src, "部分休息（提早返屋企）保留")
 ok("stress:-(6+R(0,4))" in src, "部分休息（家務）保留")
 sd = fn_body("shootDailyDelta")
 ok("stress: 8+R(2,6)" in sd, "拍攝日入水維持原值 8+R(2,6)")
-ok(src.count("stress:8+R(0,4)") >= 8, "訓練入水維持原值（兩路徑多課）")
+# v20a75 改版：入水數字改存 TRAIN75_SPEC 數據表（一級＝舊字面量原值）：
+# +8~12 四課 sLo:8/sSpan:4、外貌 6~9、魅力 5~8、智商 4~6，逐課核對一級原值冇變。
+ok(src.count("sLo:8, sSpan:4") >= 4 and "sLo:6, sSpan:3" in src and "sLo:5, sSpan:3" in src and "sLo:4, sSpan:2" in src, "訓練入水維持原值（v75 數據表一級）")
 sdfa = fn_body("stressDeltaForAct")
 ok("rest:-100" in sdfa, "預覽表 rest = −100（清零標示）")
 ok('if(id==="rest") d=-s;' in src, "週預覽 rest 顯示實際清走量")
