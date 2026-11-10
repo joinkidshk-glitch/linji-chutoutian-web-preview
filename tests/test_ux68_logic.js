@@ -52,7 +52,7 @@ for(const c of ['STAT_LABEL','LOCS','COURSE_DEFS','TRAIN_BY_TYPE','COURSE_ENROLL
   eval(extractConst(c).replace('const ' + c + ' =', 'var ' + c + ' ='));
 for(const f of ['applyTrainLesson','calib60SeasonIdx','calib60NowSeasonIdx','calib60NodeTitle'])
   eval(extractFn(f));
-/* prefs 真函數（目標數值要行真 loadPrefs/savePrefs/setPref） */
+/* prefs 真函數（指南／organizer 衍生要行真 loadPrefs/savePrefs/setPref） */
 for(const c of ['PREFS_KEY']) eval(extractConst(c).replace('const ' + c + ' =', 'var ' + c + ' ='));
 for(const f of ['defaultPrefs','loadPrefs','savePrefs','setPref']) eval(extractFn(f));
 var applyPrefsChrome = function(){};
@@ -123,12 +123,10 @@ ok('狀態：台風訓練（v69 已接線）→ 徽章未開放＋條件進度�
   !st.open && st.badge === '未開放' && st.text.indexOf('暫未有報名入口') < 0 && st.text.indexOf('任何訓練累計 2 堂') >= 0
   && st.text.indexOf('附帶開放') >= 0 && ux68CourseGoLoc('train_stage', 'stage') === 'tvb_longmen');
 
-/* ---------- (4) 目標數值（prefs 往返，唔入存檔） ---------- */
-S = { trainCount:{}, enrolled:{}, dayIndex:0 };
-ux68SetTargetStat('vocal');
-ok('目標：setPref 往返 vocal', ux68TargetStat() === 'vocal');
-ux68SetTargetStat('');
-ok('目標：清空後回空字串', ux68TargetStat() === '');
+/* ---------- (4) v20a74：主攻目標（目標數值）成個移除（用戶 2026-11-10 16:06 拍板） ----------
+   （v68–v73 舊斷言「目標數值 prefs 往返」隨功能移除改版；喺 v73 index 上行會 FAIL，係反證。） */
+ok('v74：目標讀寫函數已不存在', typeof ux68TargetStat === 'undefined' && typeof ux68SetTargetStat === 'undefined');
+ok('v74：目標標示函數已不存在', typeof ux68ApplyTargetBadges === 'undefined');
 
 /* ---------- (5) 選項分類覆蓋 ---------- */
 function fakeBtn(cls, n, c, disabled){

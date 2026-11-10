@@ -35,7 +35,9 @@ ok('picker 本體冇 data-gloc 屬性', 'data-gloc' not in picker_block)
 ok('picker 本體冇「前往」字眼（冇跳轉掣文案）', '前往' not in picker_block)
 ok('picker 本體冇 guide68-go 跳轉掣樣式', 'guide68-go' not in picker_block)
 ok('picker 本體保留排入掣（已報名可排）', 'data-t71pick' in picker_block)
-ok('picker 本體保留目標設定入口', 'data-gtgt' in picker_block and '主攻目標' in picker_block)
+# v20a74 改版：主攻目標成個移除（用戶 2026-11-10 16:06 拍板）——
+# 舊斷言「保留目標設定入口」改為驗全清；喺 v73 index 上行會 FAIL（反證）。
+ok('v74：picker 本體冇目標設定入口（冇 data-gtgt／冇「主攻」）', 'data-gtgt' not in picker_block and '主攻' not in picker_block)
 
 # --- handler 冇跳轉分支 ---
 _h = src.find('function train71HandleClick')

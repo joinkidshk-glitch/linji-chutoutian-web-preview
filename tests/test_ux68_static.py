@@ -42,7 +42,10 @@ ok('syncHomeTabExit v70 恆常出口（永遠顯示＋標籤恆定「返回地�
    '|| tab==="guide"' not in src and 'exit.hidden = false' in src and 'btn.textContent = "返回地圖"' in src)
 ok('增益表由 applyTrainLesson 源碼衍生（唔係硬編碼清單）',
    'applyTrainLesson.toString()' in src and 'applyGain60' in src)
-ok('目標數值存 prefs（ux68TargetStat），唔入存檔', 'p.ux68TargetStat' in src and 'setPref("ux68TargetStat"' in src)
+# v20a74 改版：主攻目標（目標數值）成個移除（用戶 2026-11-10 16:06 拍板）——
+# 舊斷言「目標數值存 prefs」改為「全檔冇目標功能殘留」；喺 v73 index 上行會 FAIL（反證）。
+ok('v74：目標數值功能全清（冇讀寫函數／冇 prefs 鍵／冇「主攻」字樣）',
+   'ux68TargetStat' not in src and 'ux68SetTargetStat' not in src and '主攻' not in src)
 ok('指南有「前往」真跳轉（leaveHomeFromNotebook＋openLoc）',
    'function ux68GoLoc' in src and 'leaveHomeFromNotebook("map")' in src and 'openLoc(locId)' in src)
 
@@ -54,7 +57,8 @@ ok('分類覆蓋主要掣型（通告欄／試鏡／報名／傾談／打聽／�
    all(t in src for t in ['只查看通告欄', '試鏡入口', '報名：', '傾談', 'act-ask', '休息室歇陣']))
 ok('要事訊號用既有數據（favorDue／deadlineDay／CALIB60_NODE_WINDOWS／季尾）',
    all(t in src for t in ['favorDueDebt', 'deadlineDay', 'CALIB60_NODE_WINDOWS', 'ux68SeasonEndLeft']))
-ok('目標標示 ▲ 用 STAT_LABEL', '"▲" + label' in src or '"▲"+label' in src or '▲" + label' in src or '"▲"' in src)
+# v20a74 改版：目標標示隨主攻目標功能移除——舊斷言「▲ 用 STAT_LABEL」改為驗全清。
+ok('v74：目標標示已移除（冇 badges 函數／冇 .ux68-tgt）', 'ux68ApplyTargetBadges' not in src and 'ux68-tgt' not in src)
 ok('sheet 標題加地區、desc 唔重複', '${L.name}${L.area ? " · " + L.area : ""}' in src
    and 'textContent=`${descShort}`' in src)
 
