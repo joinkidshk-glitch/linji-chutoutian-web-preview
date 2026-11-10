@@ -4750,6 +4750,52 @@ body.day-res-open .day-row{
 #app .map-stage{ background:#f3e7c9 !important; }
 #app .map-img{ background:#f3e7c9; }
 /* === v20a54 完 === */
+/* === v20a76 CONTRAST76 手帳對比度普查修正 ===
+   用戶 2026-11-10 實玩：v72 修咗子頁掣 active＋toast 灰帶兩處後，手帳仍有
+   字色問題（冇指明邊頁）。唔再逐處補鑊：成個手帳（五大類×全部子頁＋行程
+   三態＋picker＋進度混合態＋回憶錯過態）用 computed color × 有效底色
+   （祖先鏈合成，連 group opacity）逐元素量度 WCAG 對比度，按根因分組修。
+   全部只改文字顏色：唔郁底色／版面／字體大小字距／行為。證據：
+   verify76/audit_before.json＋audit76_before_log.txt（repo 外工作夾）。
+   (A) 深底亮字組：有啲 pane 冇紙底，內容直接坐 #v-home 深色漸變
+       （#2a1f1a→#0a1424），但標題／引言沿用紙面墨色＝深字配深底讀唔到：
+       進度標題 1.14、拍攝簿／庫存／人脈標題 1.14、作品牆／回憶標題 1.20、
+       人情債引言 1.24（v48 修傳聞頁 .pane-intro 時明文留低呢頁唔郁，
+       今次補返）、記數簿報名行 1.99、人脈提示 1.99、拍攝簿條目 2.49。
+       跟返 .home-top 既有語言：深底用淺金米字（#cbb8a0 家族）提亮。
+   (B) 紙面加深組：米紙底上嘅次要文字跌穿 4.5（行程 hint 2.89、
+       .act-item .ah 3.64、picker 格標籤 3.98、指南附註 4.16、壓力
+       綠字 4.42），喺墨色家族（#43301c／#6b4e2e）入面加深。
+   (C) 金錢晶片：手帳頂 $ 金字 #C9A227 配深晶片底得 3.93，提亮金色；
+       money-warn／critical／broke 狀態色唔郁（:not 排除，cascade 不變）。
+   (D) 故意淡化（保留＋保地板，判斷清單）：進度頁 far/missed 行
+       opacity .62（3.59–4.21，≥3）；唯讀詳細卡 .act-item:disabled
+       opacity .55——其 .ah 額外加深至 #241a10，合成後 ≈3.46 保地板；
+       確定掣 is-locked（disabled，3.82）；傳聞頁 .weak-whisper 鬼影字
+       opacity .45，提亮色後 ≈3.16（opacity 所限純色到唔到 4.5）；
+       季節印章 .season-mark 係裝飾水印字（opacity .35，純色數學上限
+       ≈2.36）唔郁，旁邊正文合格。
+   像素核實假陽性（唔使修）：確定掣金漸變 11.25、剪報紙卡 h4 15.33／
+   日期 6.41、回憶條目紙卡 14.89／6.66。逐項修前修後表見
+   NOTES_V20A76_CONTRAST.md。 */
+.prog71-h{ color:#ecdfc2; }
+.prog71-intro{ color:#c3b096; }
+.jobs72-h{ color:#ecdfc2; }
+.works-empty59 h3, .mem-empty60 h3, .mem-head60 h3{ color:#ecdfc2; }
+#home-pane-works .req{ color:#d9c9a3; }
+#home-pane-ledger .ledger-enroll{ color:#c3b096; }
+#home-pane-people .people-next{ color:#c3b096; }
+#home-pane-debt .pane-intro{ color:#e6d7ae; }
+.weak-whisper{ color:#e0d3ac; }
+#v-home .home-top .txt .home-money:not(.money-warn):not(.money-critical):not(.money-broke),
+#v-home .home-top .txt .home-stats-line .hs-i.home-money:not(.money-warn):not(.money-critical):not(.money-broke){ color:#e3c565 !important; }
+.day-row .nm .plan-hint{ color:#59452a; }
+.act-item .ah{ color:#59452a; }
+.act-item:disabled .ah{ color:#241a10; }
+.t70-cell span{ color:#6b5636; }
+.guide68-note{ color:#6b5636; }
+#v-home .home-summary .good, #v-home .nb-live-stress .good{ color:#19684d !important; }
+/* === v20a76 CONTRAST76 完 === */
 </style>
 </head>
 <body>
@@ -24872,12 +24918,15 @@ async function refreshCopyPacksFromDisk(){
    級別唔另存欄位——由 S.trainCount[課] 累計堂數衍生（0–4 一級／5–9 二級／10+ 三級），
    「而家邊級、仲差幾堂升級」隨時計得返；舊進階課點遷移見 levels75MigrateSave。
    增益規格（每課一行）：main 主數值一級 [mLo, mLo+mSpan]，二級 lo+2、三級 lo+4 且
-   span+1（主表 +4~6→+6~8→+8~11；外貌／魅力／智商一級係 +3~5 現行數，跟同一升幅
-   →+5~7→+7~10）；sub 附帶（有先算，值＝級數 +1/+2/+3；附帶邊個數值跟各課現有
-   數據——演技→台風、台風→魅力、外貌→魅力、智商→演技；歌藝／魅力／武師班現行
-   冇附帶，唔發明）；stress 壓力一級 [sLo, sLo+sSpan]，每級 lo+2（主表
-   +8~12→+10~14→+12~16，其餘課跟返自己現行壓力帶同升幅）；fee800＝外貌課
-   學費 $800（各級不變，跟現行，唔加價）。耗時維持 1 日。 */
+   span+1（七課一致 +4~6→+6~8→+8~11）；sub 附帶（有先算，值＝級數 +1/+2/+3；
+   附帶邊個數值跟各課現有數據——演技→台風、台風→魅力、外貌→魅力、智商→演技；
+   歌藝／魅力／武師班現行冇附帶，唔發明）；stress 壓力一級 [sLo, sLo+sSpan]，
+   每級 lo+2（七課一致 +8~12→+10~14→+12~16）；fee800＝外貌課學費 $800（各級
+   不變，跟現行，唔加價）。耗時維持 1 日。
+   v20a76 UNIFY76（用戶 2026-11-10 17:28 拍板統一）：v75 曾保留外貌／魅力／智商
+   三課一級 +3~5、壓力跟各課自己帶（偏差已交代）；用戶揀返統一全表——三課主增益
+   同壓力改到同其餘四課一致（mLo 3→4；壓力 looks 6/3→8/4、charm 5/3→8/4、
+   iq 4/2→8/4），附帶同 fee800 唔郁。 */
 const LEVELS75_STEP = 5;
 const LEVELS75_MAX = 3;
 const LEVELS75_NAMES = ["", "一級", "二級", "三級"];
@@ -24886,9 +24935,9 @@ const TRAIN75_SPEC = {
   train_acting:  { main:"acting",  mLo:4, mSpan:2, sub:"stage",  sLo:8, sSpan:4 },
   train_stage:   { main:"stage",   mLo:4, mSpan:2, sub:"charm",  sLo:8, sSpan:4 },
   train_vocal:   { main:"vocal",   mLo:4, mSpan:2, sub:null,     sLo:8, sSpan:4 },
-  train_looks:   { main:"looks",   mLo:3, mSpan:2, sub:"charm",  sLo:6, sSpan:3, fee800:true },
-  train_charm:   { main:"charm",   mLo:3, mSpan:2, sub:null,     sLo:5, sSpan:3 },
-  train_iq:      { main:"iq",      mLo:3, mSpan:2, sub:"acting", sLo:4, sSpan:2 },
+  train_looks:   { main:"looks",   mLo:4, mSpan:2, sub:"charm",  sLo:8, sSpan:4, fee800:true },
+  train_charm:   { main:"charm",   mLo:4, mSpan:2, sub:null,     sLo:8, sSpan:4 },
+  train_iq:      { main:"iq",      mLo:4, mSpan:2, sub:"acting", sLo:8, sSpan:4 },
   train_stamina: { main:"stamina", mLo:4, mSpan:2, sub:null,     sLo:8, sSpan:4 },
 };
 function levels75Count(o, cid){ return (o && o.trainCount && Number(o.trainCount[cid])) || 0; }
@@ -42043,9 +42092,9 @@ function jobs72SectionHtml(){
       const stLab = (sh.doneDays>0) ? "拍攝中" : "已獲聘";
       body += `<div class="req" style="margin-bottom:8px">
         <b>🎥 ${sh.title}</b> · ${sh.type||""} · <span class="gold">${stLab}</span>
-        <div style="font-size:.78rem;color:var(--muted);margin-top:4px">${L?L.name+" · ":""}進度 ${sh.doneDays||0}/${sh.totalDays} · 剩餘 ${rem} 日</div>
+        <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${L?L.name+" · ":""}進度 ${sh.doneDays||0}/${sh.totalDays} · 剩餘 ${rem} 日</div>
         ${hud?`<div style="font-size:.72rem;color:var(--gold,#c9a227);margin-top:2px">拍攝限期：${hud}</div>`:""}
-        <div style="font-size:.72rem;color:var(--muted)">完成約酬 $ ${(sh.pay||0).toLocaleString()} · 聲望 +${sh.fame||0} · 人氣 +${sh.popularity!=null?sh.popularity:0}（殺青後入帳）</div>
+        <div style="font-size:.72rem;color:#b3a284">完成約酬 $ ${(sh.pay||0).toLocaleString()} · 聲望 +${sh.fame||0} · 人氣 +${sh.popularity!=null?sh.popularity:0}（殺青後入帳）</div>
       </div>`;
     });
   }
@@ -42066,8 +42115,8 @@ function jobs72SectionHtml(){
     hist.forEach(h=>{
       body += `<div class="req" style="margin-bottom:8px">
         <b>✅ ${h.title||"通告"}</b> · ${h.type||""}
-        <div style="font-size:.78rem;color:var(--muted);margin-top:4px">${h.totalDays||0} 日 · 片酬 $ ${(h.pay||0).toLocaleString()} · 聲望 +${h.fame||0}</div>
-        <div style="font-size:.72rem;color:var(--muted)">評價：${h.rating||"已殺青"}</div>
+        <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${h.totalDays||0} 日 · 片酬 $ ${(h.pay||0).toLocaleString()} · 聲望 +${h.fame||0}</div>
+        <div style="font-size:.72rem;color:#b3a284">評價：${h.rating||"已殺青"}</div>
       </div>`;
     });
   }

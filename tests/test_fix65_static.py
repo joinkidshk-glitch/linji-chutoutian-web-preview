@@ -45,7 +45,9 @@ sd = fn_body("shootDailyDelta")
 ok("stress: 8+R(2,6)" in sd, "拍攝日入水維持原值 8+R(2,6)")
 # v20a75 改版：入水數字改存 TRAIN75_SPEC 數據表（一級＝舊字面量原值）：
 # +8~12 四課 sLo:8/sSpan:4、外貌 6~9、魅力 5~8、智商 4~6，逐課核對一級原值冇變。
-ok(src.count("sLo:8, sSpan:4") >= 4 and "sLo:6, sSpan:3" in src and "sLo:5, sSpan:3" in src and "sLo:4, sSpan:2" in src, "訓練入水維持原值（v75 數據表一級）")
+# v20a76 UNIFY76 改版（用戶 2026-11-10 17:28 拍板）：外貌／魅力／智商三課壓力
+# 統一到全表 +8~12（sLo:8, sSpan:4），七課一致；原斷言釘住 v75 偏差值，supersede。
+ok(src.count("sLo:8, sSpan:4") >= 7 and "sLo:6, sSpan:3" not in src and "sLo:5, sSpan:3" not in src and "sLo:4, sSpan:2" not in src, "訓練入水統一全表（v76 UNIFY76：七課 sLo:8／sSpan:4）")
 sdfa = fn_body("stressDeltaForAct")
 ok("rest:-100" in sdfa, "預覽表 rest = −100（清零標示）")
 ok('if(id==="rest") d=-s;' in src, "週預覽 rest 顯示實際清走量")

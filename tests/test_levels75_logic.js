@@ -124,15 +124,17 @@ ok('升級進度：10 堂 → 已到三級（top）',
     return n.lv === 3 && n.top === true; })());
 
 /* ---------- (2) 逐課逐級增益表（即時堂實擲） ---------- */
-/* 期望表（用戶 2026-11-10 拍板＋各課現行一級原值）：
+/* 期望表（用戶 2026-11-10 拍板全表；v20a76 改版：外貌／魅力／智商三課原 v75
+   保留一級 +3~5＋各課自己壓力帶，用戶 17:28 拍板統一返全表——七課主增益同
+   壓力一致，附帶同外貌學費 $800 唔郁）：
    [mainLo, mainHi, subStat, subVal, stressLo, stressHi, fee] × 三級 */
 const EXPECT = {
   train_acting:  { stat:'acting',  sub:'stage', base:[4,6], sBase:[8,12] },
   train_stage:   { stat:'stage',   sub:'charm', base:[4,6], sBase:[8,12] },
   train_vocal:   { stat:'vocal',   sub:null,    base:[4,6], sBase:[8,12] },
-  train_looks:   { stat:'looks',   sub:'charm', base:[3,5], sBase:[6,9], fee:800 },
-  train_charm:   { stat:'charm',   sub:null,    base:[3,5], sBase:[5,8] },
-  train_iq:      { stat:'iq',      sub:'acting', base:[3,5], sBase:[4,6] },
+  train_looks:   { stat:'looks',   sub:'charm', base:[4,6], sBase:[8,12], fee:800 },
+  train_charm:   { stat:'charm',   sub:null,    base:[4,6], sBase:[8,12] },
+  train_iq:      { stat:'iq',      sub:'acting', base:[4,6], sBase:[8,12] },
   train_stamina: { stat:'stamina', sub:null,    base:[4,6], sBase:[8,12] },
 };
 function expAt(e, lv){ /* lv: 1..3 → 主 [lo,hi]、附帶值、壓力 [lo,hi] */
