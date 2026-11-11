@@ -10,6 +10,8 @@
 //   (6) commit 回歸：COMMIT48_DEFS 同 v80 fixture 逐字一致、COMMIT48_REL_MIN=6、節點在位；
 //   (7) 紅線：覆寫表全文冇真人名、冇關海媚名、beats/synopsis 冇直寫年份。
 // 反證：喺 v20a80 index 上行 → 冇 ROMANCE_WF2_OVERRIDES → 抽取即 throw → FAIL。
+// v20a100 CLEAN100 B-03：fixture romance_wf2_v80.json 嘅 lanPa.R_lan_push1 兩抉擇 stats
+// 已跟覆寫表同步（music→stage，PA 化殘留修正）；fixture 其餘部分維持 v80 原貌。
 // 用法：node tests/test_wf2_81_logic.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');

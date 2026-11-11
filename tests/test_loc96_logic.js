@@ -200,7 +200,8 @@ ok(afterDayCalls[0].html.indexOf("何生上門探病") >= 0 && S.npcs.agent === 
 S = mkSick(baseSave(), 10, 11); S.npcs = {};
 afterDayCalls = [];
 conseq61ResolveSickDay("rest");
-ok(afterDayCalls[0].html.indexOf("芬姐") >= 0 && afterDayCalls[0].html.indexOf("糖水") >= 0, "冇人熟：芬姐送糖水（純文案）");
+/* v20a100 CLEAN100 B-10：茶水檔嗰位已分名做「珍姐」（同副導演芬姐係兩個人，用戶拍板）→ 斷言跟住改 */
+ok(afterDayCalls[0].html.indexOf("珍姐") >= 0 && afterDayCalls[0].html.indexOf("糖水") >= 0 && afterDayCalls[0].html.indexOf("芬姐") < 0, "冇人熟：珍姐送糖水（純文案）");
 /* hosp96VisitNote 直接呼叫：dayNo≠1 唔出 */
 S = mkSick(baseSave(), 10, 12);
 ok(hosp96VisitNote(2) === null, "visitNote：第二日回 null");
