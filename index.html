@@ -31022,6 +31022,8 @@ function fresh(){
     newspaperClippings:[],
     pendingMorningPaper:null,
     newspaperLastPresentedDay:null,
+    /* v20a94 PRESS94：第一次「殺青消息點名見報」里程碑日（0=未觸發、>0=觸發拍攝日、-1=舊檔回填已見報） */
+    press94FirstNamedDay:0,
   };
 }
 
@@ -31080,6 +31082,7 @@ function normalizeSaveObj(o){
   if(!Array.isArray(o.newspaperQueue)) o.newspaperQueue=[];
   if(!Array.isArray(o.newspaperClippings)) o.newspaperClippings=[];
   if(o.pendingMorningPaper && typeof o.pendingMorningPaper!=="object") o.pendingMorningPaper=null;
+  if(typeof o.press94FirstNamedDay!=="number") o.press94FirstNamedDay=0;
   try{ syncDualTracks(o); }catch(_e){}
   /* v20a66 YEARS66：舊存檔年份遷移（epoch guard：dayIndex 不變、絕對年份鍵 remap，一次性） */
   try{ if(typeof years66MigrateSave==="function") years66MigrateSave(o); }catch(_e){}
@@ -32569,9 +32572,13 @@ function gigCardHtml(g, opts){
     ? `🔒 暫未能報 · 條件未合${(()=>{ try{ const gl=(typeof gigGapBoardLine37==="function")?gigGapBoardLine37(g):((typeof gigGapLine34==="function")?gigGapLine34(g):""); return gl?`<br><span class="req-gap">${gl}</span>`:""; }catch(_e){ return ""; } })()}`
     : `可接通告 · <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
-  const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
+  /* v20a94 PRESS94「臨」徽章：臨記級通告（同見報門檻共用 press94RoleClass）印章＋級別字改「臨」；
+     tier 數據本身唔郁（篩選／排序／門檻照舊跟 tier）。急件印章優先。
+     typeof 守衛跟 repo 抽函數測試慣例（單獨抽 gigCardHtml 嗰陣冇 press94* 就行返舊徽章）。 */
+  const badge94 = (typeof press94TierBadge==="function") ? press94TierBadge(g) : { key: rk, label: (g && g.tier) || "初" };
+  const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : badge94.key;
   const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a8`;
-  const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>`;
+  const sealImg = `<img class="g-seal" src="${sealSrc}" alt="${badge94.label||sealKey}" onerror="this.style.display='none'"/>`;
   const seasonBit = g.season ? ` · <span class="season-tag">${g.season}</span>` : "";
   const bp = g.boardPriority || "";
   const bpBit = bp ? ` <span class="bp-tag ${bp}">${bp==="high"?"優先":(bp==="low"?"次要":"一般")}</span>` : "";
@@ -32586,7 +32593,7 @@ function gigCardHtml(g, opts){
   /* v20a56 明碼化：softBridge 卡面標明常駐散工，同一次性製作分級 */
   const bridgeBit = g.softBridge ? ` <span class="bridge-tag">常駐散工</span>` : "";
   const bridgeNote = g.softBridge ? `<div class="bridge-note">常駐散工 · 每週有工開：做完一單，隔一排會再開，組名可能唔同。</div>` : "";
-  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+g.tier):""}${seasonBit}${bpBit}${bridgeBit}</div><b class="g-title">${g.title}</b>${bridgeNote}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}</div>`;
+  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+badge94.label):""}${seasonBit}${bpBit}${bridgeBit}</div><b class="g-title">${g.title}</b>${bridgeNote}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}</div>`;
 }
 
 /* ===== v19c PLAN_GIG_PAY_EXACT_v1 + PLAN_GIG_BREACH_FEE_v1（顯示派生；引擎逾期可掛） ===== */
@@ -32794,7 +32801,9 @@ function gigBoardTeaserHtml(g, opts){
   const genre=(g && g.genreLabel) ? String(g.genreLabel) : gigTypeCoarse(g);
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
-  const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : rk;
+  /* v20a94 PRESS94「臨」徽章（短卡）：同 gigCardHtml 共用 press94TierBadge，急件優先；typeof 守衛同上。 */
+  const badge94 = (typeof press94TierBadge==="function") ? press94TierBadge(g) : { key: rk, label: (g && g.tier) || "初" };
+  const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : badge94.key;
   const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a8`;
   let pay="";
   {
@@ -32823,7 +32832,7 @@ function gigBoardTeaserHtml(g, opts){
     }catch(_e){}
   }
   return `<div class="gig-teaser" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
-    <img class="g-seal" src="${sealSrc}" alt="${g.tier||sealKey}" onerror="this.style.display='none'"/>
+    <img class="g-seal" src="${sealSrc}" alt="${badge94.label||sealKey}" onerror="this.style.display='none'"/>
     <div class="gt-title">${work}</div>
     <div class="gt-row"><span class="gt-pill">${genre}</span><span class="${badgeCls}">${badgeText}</span></div>
     ${meta?`<div class="gt-meta">${meta}</div>`:""}
@@ -43631,7 +43640,10 @@ function enqueueNewspaperItem(raw, opts){
     /* WF3 世界事件欄（其餘 source 保持 null/空） */
     paras: (raw.paras && raw.paras.length) ? raw.paras.map(p=>String(p||"")) : null,
     imgKey: String(raw.imgKey||"").trim(),
-    worldId: String(raw.worldId||"").trim()
+    worldId: String(raw.worldId||"").trim(),
+    /* v20a94 PRESS94：見報門檻標記（"fill"=入閘填位製作消息；firstPress94=第一次點名里程碑） */
+    press94: String(raw.press94||"").trim(),
+    firstPress94: raw.firstPress94 ? true : false
   };
   ensureNewspaperQueue().push(item);
   if(opts.persist!==false){ try{ saveQ(); }catch(_e){} }
@@ -43856,6 +43868,134 @@ function newspaperWrapFadeLines(subject, angle){
   if(!newspaperWrapLeadRelation(blob)) return faded;
   return newspaperWrapFaceLines({ gigId: subject && subject.gigId, work: "通告", role: "", type: subject && subject.type }, angle);
 }
+/* ===== v20a94 PRESS94：見報門檻＋「臨」徽章共用崗位分類（用戶 2026-11-11 13:36／13:44）。
+   背景：臨記／幫工殺青照出玩家標題見報，脫離現實（用戶聲望 7 做唱片幫工都上頭條），
+   又同主線 B09／C5「采兒小訪先係第一次見報寫名」嘅里程碑設計打架。
+   分類優先序跟 v20a93 名實判處書（崗位 fiction＞數據）：
+   ①softBridge 常駐散工→base ②roleLabel／標題後綴／labelHint 逐段掃（替身唔出樣恆 base；
+   主角／男主／女主／主演／主唱→named；基層詞→base；配角／嘉賓／模特類→named）
+   ③roleScale 硬基層帶→base、主線／配角帶→named（support_main 但日數帶 ≤8 日＝v93 A4
+   單場戲小崗位→base）④模糊帶（rec_album／film_support_small／variety／ad_av／mtv 等）
+   預設 named：有 A 級海報＋署名崗位嘅製作落呢格，符合「配角級或以上先見報」。
+   離線對照 v93 判後全池 475 張：base 212／named 257，判處預期 63 張全中（verify94/classify94.py）。 ===== */
+const PRESS94_STRONG_NAMED = /主角|男主|女主|主演|主唱/;
+const PRESS94_BASE_LABEL = /臨記|臨時演員|臨時群演|群演|路人|途人|幫工|和音|和唱|伴舞|舞者|班底|散工|舉牌|充場|群戲|過場|閒角|客串|特約|熟手|頂位|助手|場務|武行|手模|試音|遞水/;
+const PRESS94_NAMED_LABEL = /配角|男配|女配|男二|女二|隊長|模特|嘉賓|領唱|領舞/;
+const PRESS94_BASE_SCALES = { ad_extra_day:1, tv_extra_day:1, tv_regular_extra:1, film_action_extra:1, film_extra_short:1, film_stunt:1, tv_cameo_short:1 };
+const PRESS94_NAMED_SCALES = { film_lead_big:1, film_support_main:1, tv_lead_long:1, tv_support_main:1, film_second_lead:1, tv_second_lead:1, tv_lead:1, film_support:1, tv_support:1, ad_lead:1, ad_print:1, photobook:1, music_lead:1, music_guest:1, ad_support:1, film_support_short:1 };
+function press94ScaleOf(gig){
+  if(!gig) return "";
+  if(gig.resolvedScale) return String(gig.resolvedScale);
+  if(gig.roleScale) return String(gig.roleScale);
+  try{ return (typeof resolveRoleScale==="function") ? (resolveRoleScale(gig)||"") : ""; }catch(_e){ return ""; }
+}
+/** 回傳 "base"（臨記／群演／路人／幫工級）或 "named"（配角級或以上）。認唔出就 named（唔過閘，保舊行為）。 */
+function press94RoleClass(gig, labelHint){
+  try{
+    if(gig && gig.softBridge) return "base";
+    const texts = [];
+    if(gig && gig.roleLabel) texts.push(String(gig.roleLabel));
+    if(gig && gig.title) texts.push(String(gig.title).replace(/^《[^》]*》/, ""));
+    if(labelHint) texts.push(String(labelHint));
+    for(let i=0;i<texts.length;i++){
+      const text = texts[i];
+      if(!text) continue;
+      if(text.indexOf("替身")>=0) return "base";
+      if(PRESS94_STRONG_NAMED.test(text)) return "named";
+      if(PRESS94_BASE_LABEL.test(text)) return "base";
+      if(PRESS94_NAMED_LABEL.test(text)) return "named";
+    }
+    const scale = press94ScaleOf(gig);
+    if(PRESS94_BASE_SCALES[scale]) return "base";
+    if(PRESS94_NAMED_SCALES[scale]){
+      if((scale==="film_support_main" || scale==="tv_support_main") && gig && Array.isArray(gig.band) && gig.band.length>=2){
+        const bandHi = Number(gig.band[1])||0;
+        if(bandHi>0 && bandHi<=8) return "base";
+      }
+      return "named";
+    }
+    return "named";
+  }catch(_e){ return "named"; }
+}
+function press94IsBaseRole(gig, labelHint){
+  return press94RoleClass(gig, labelHint)==="base";
+}
+/** 「臨」徽章：同見報門檻共用分類。base→印章 extra＋字「臨」；否則原 tier 印章＋字。 */
+function press94TierBadge(gig){
+  if(press94IsBaseRole(gig)) return { key:"extra", label:"臨" };
+  return { key: (typeof gigTierKey==="function") ? gigTierKey(gig) : "junior", label: (gig && gig.tier) || "初" };
+}
+/* 入閘殺青嘅報紙填位：頭條改寫製作本身嘅消息（有主演紅星就以主演＋製作為主角），
+   唔提阿偉。文案書面語底（唔用嗰啦嘅，同 wrap 模板口徑一致）；變體以作品名 hash 定版——
+   同一製作每次同一句、唔同製作唔同句式，配合 wrap per-gig 去重，唔會連日重複同一條。 */
+function press94FillLines(subject, gig){
+  subject = subject || {};
+  const work = subject.work || "通告";
+  const book = "《"+work+"》";
+  const medium = newspaperMediumFromGigType(subject.type);
+  let star = "";
+  try{ star = (gig && typeof leadStar59Of==="function") ? (leadStar59Of(gig)||"") : ""; }catch(_e){}
+  if(!star && gig && gig.starHint && gig.starHint.name) star = String(gig.starHint.name);
+  const pick = (arr)=>{ try{ let h=0; const s=String(work||""); for(let i=0;i<s.length;i++){ h=((h*31)+s.charCodeAt(i))>>>0; } return arr[h%arr.length]; }catch(_e){ return arr[0]; } };
+  let headline, dek;
+  if(medium==="film"){
+    headline = star
+      ? pick([book+"煞科 "+star+"主演戲份完成", book+"殺青 "+star+"新片趕及上畫"])
+      : pick([book+"煞科 劇組設宴慶功", book+"殺青 趕及檔期上畫", book+"全組煞科 監製請食飯"]);
+    dek = star
+      ? ("電影"+book+"完成拍攝，主演"+star+"的戲份已經拍完，劇組設煞科宴慶功，後期趕工中。")
+      : ("電影"+book+"完成拍攝，劇組設煞科宴慶功，後期趕工，趕及檔期上畫。");
+  } else if(medium==="tv"){
+    headline = star
+      ? pick([book+"煞科 "+star+"趕拍結局篇", book+"殺青 "+star+"主演集數錄完"])
+      : pick([book+"煞科 監製請全組食飯", book+"錄製煞科 準備播出", book+"全劇煞科 後期趕工中"]);
+    dek = star
+      ? ("電視劇"+book+"完成拍攝，主演"+star+"的集數已經錄完，劇組設煞科宴慶功。")
+      : ("電視劇"+book+"完成拍攝，劇組設煞科宴慶功，後期趕工，準備安排播出。");
+  } else if(medium==="music"){
+    headline = star
+      ? pick([book+"錄製完成 "+star+"新歌趕及派台", book+"煞科 "+star+"新碟趕及出街"])
+      : pick([book+"錄製完成 趕及檔期出街", book+"煞科 唱片公司趕工出貨", book+"錄音完成 準備派台"]);
+    dek = star
+      ? ("唱片"+book+"錄製完成，主唱"+star+"的部分已經錄好，唱片公司趕工出貨，趕及檔期推出。")
+      : ("唱片"+book+"錄製完成，唱片公司趕工出貨，趕及檔期推出。");
+  } else if(medium==="ad"){
+    headline = star
+      ? pick([book+"拍攝完成 "+star+"新一輯廣告出街在即", book+"煞科 "+star+"代言新作完成"])
+      : pick([book+"拍攝完成 新一輯廣告出街在即", book+"煞科 客戶收貨趕出街"]);
+    dek = star
+      ? ("廣告"+book+"拍攝完成，主演"+star+"的片段已經拍好，客戶收貨，趕及出街。")
+      : ("廣告"+book+"拍攝完成，客戶收貨，後期趕工，趕及出街。");
+  } else {
+    headline = star
+      ? pick([book+"煞科 "+star+"主演部分完成", book+"殺青 "+star+"趕及檔期"])
+      : pick([book+"煞科 順利完成", book+"殺青 趕及檔期"]);
+    dek = star
+      ? (book+"完成製作，主演"+star+"的部分已經完成，製作組趕工中。")
+      : (book+"完成製作，製作組設宴慶功，後期趕工中。");
+  }
+  const rumor = star
+    ? pick(["聽講"+book+"煞科，主演"+star+"請全組食飯，場面熱鬧。", "聽講"+book+"煞科，"+star+"做到最後一日，劇組上下都話合作愉快。"])
+    : pick(["聽講"+book+"煞科，場務話成組趕到尾先收工，監製幾滿意。", "聽講"+book+"煞科，煞科宴坐滿幾圍，監製話今次算順利。"]);
+  return { headline: headline, dek: dek, rumor: rumor, medium: medium };
+}
+/* 第一次「殺青消息點名」里程碑：未觸發先回 true 並即場標記（入隊嗰刻定死，只派一次）。
+   舊檔回填：剪報入面已有含「阿偉」嘅舊標題，即係改版前已經點名見報過——靜默標記 -1，唔再派句。 */
+function press94ClaimFirstNamed(shootDay){
+  try{
+    if(typeof S==="undefined" || !S) return false;
+    if(S.press94FirstNamedDay) return false;
+    try{
+      const clips = ensureNewspaperClippings();
+      if(clips.some(c=> c && String(c.headline||"").indexOf("阿偉")>=0)){
+        S.press94FirstNamedDay = -1;
+        return false;
+      }
+    }catch(_e){}
+    S.press94FirstNamedDay = (shootDay|0) || 1;
+    return true;
+  }catch(_e){ return false; }
+}
 function enqueueNewspaperFromWrap(sh, pack, opts){
   sh = sh || {};
   pack = pack || {};
@@ -43878,6 +44018,34 @@ function enqueueNewspaperFromWrap(sh, pack, opts){
     fameDelta: 1,
     medium: face.medium
   });
+  /* v20a94 PRESS94 見報門檻：臨記／群演／路人／幫工級殺青唔出玩家標題——
+     份報照入隊（日子／去重／報紙名／欄目不變），頭條換成製作本身嘅消息（press94FillLines），
+     fameDelta 0（同 #104 淡紙一致：見報同聲望結算本來分開，唔經呢度改數值）。
+     殺青畫面／手帳交代唔經報紙，照舊。事件驅動見報（award/story/world）唔經呢度，唔受閘。 */
+  const gig94 = newspaperLookupGig(subject.gigId);
+  const labelHint94 = [sh.roleLabel||"", sh.title||"", pack.roleLabel||""].join(" ");
+  /* typeof 守衛跟 repo 抽函數測試慣例：冇 press94* 嗰陣行返舊行為（唔入閘）。 */
+  if(typeof press94IsBaseRole==="function" && typeof press94FillLines==="function" && press94IsBaseRole(gig94, labelHint94)){
+    const fill94 = press94FillLines(subject, gig94);
+    return enqueueNewspaperItem({
+      eventKey: "wrap:"+subject.gigId+":"+shootDay,
+      source: "wrap",
+      enqueuedDay: cardDay,
+      publishDay: publishDay,
+      fameDelta: 0,
+      paperName: chrome.paperName || "娛樂版",
+      headline: fill94.headline,
+      dek: fill94.dek,
+      clipLabel: chrome.clipLabel || ((chrome.paperName||"娛樂版")+"・殺青"),
+      rumorEcho: fill94.rumor,
+      templateId: chrome.templateId,
+      templateEventKey: chrome.templateEventKey || ("wrap_success."+(face.medium||fill94.medium)),
+      tone: "",
+      medium: face.medium || chrome.medium || "",
+      workTitle: subject.work,
+      press94: "fill"
+    }, opts);
+  }
   const fameN = Number(chrome.fameDelta);
   let fameDelta = (fameN>=1 && fameN<=3) ? fameN : 1;
   let lines = face;
@@ -43888,6 +44056,16 @@ function enqueueNewspaperFromWrap(sh, pack, opts){
   if((Number(S && S.fame)||0) < 15){
     fameDelta = 0;
     lines = newspaperWrapFadeLines(subject, wrapAngle);
+  }
+  /* v20a94 PRESS94 第一次點名里程碑：夠格崗位＋標題真點名（nameTier 非 anon）嘅第一次，
+     dek 尾加編輯按點題。措辭只講「殺青消息第一次點名」——主線 B09／C5 采兒小訪係
+     「專訪寫名」嗰種見報，兩者唔同層次、唔搶唔撞；嗰條線冇讀報紙狀態，無機械耦合。 */
+  let firstPress94 = false;
+  if(lines && lines.nameTier && lines.nameTier!=="anon" && typeof press94ClaimFirstNamed==="function" && press94ClaimFirstNamed(shootDay)){
+    firstPress94 = true;
+    lines = Object.assign({}, lines, {
+      dek: (lines.dek || "") + "編輯按：這位新人的名字，第一次出現在本報的殺青消息之中。"
+    });
   }
   return enqueueNewspaperItem({
     eventKey: "wrap:"+subject.gigId+":"+shootDay,
@@ -43904,7 +44082,8 @@ function enqueueNewspaperFromWrap(sh, pack, opts){
     templateEventKey: chrome.templateEventKey || ("wrap_success."+(lines.medium||face.medium)),
     tone: (lines && lines.angle) || wrapAngle || "",
     medium: lines.medium || face.medium || chrome.medium || "",
-    workTitle: lines.work
+    workTitle: lines.work,
+    firstPress94: firstPress94
   }, opts);
 }
 function enqueueNewspaperFromAward(pack, opts){
@@ -44816,7 +44995,10 @@ function newspaperCheck(){
     if(!ferry || ferry.fameDelta!==0) fails.push("ferry_fade");
     if(ferry && ferry.templateEventKey!=="wrap_success.tv") fails.push("ferry_bucket");
     const ferryFace = ferry ? ((ferry.headline||"")+(ferry.dek||"")) : "";
-    if(ferryFace.indexOf("天星碼頭")<0 || ferryFace.indexOf("過海路人")<0) fails.push("ferry_gig");
+    /* v20a94 PRESS94 改版（有意改行為）：天星碼頭過海路人係基層崗位 → 見報門檻入閘，
+       標題換製作消息（有作品名、冇崗位名／冇玩家），press94 標記 fill。舊斷言（面貌要含崗位名）已廢。 */
+    if(ferryFace.indexOf("天星碼頭")<0 || ferryFace.indexOf("過海路人")>=0) fails.push("ferry_gig");
+    if(!ferry || ferry.press94!=="fill") fails.push("ferry_gate94");
     if(ferryFace.indexOf("星河處境劇")>=0 || ferryFace.indexOf("茶客")>=0) fails.push("ferry_mismatch");
     if(ferryFace.indexOf("聲量")>=0 || /[嗰啦嘅]/.test(ferryFace)) fails.push("ferry_face");
     if(enqueueNewspaperFromWrap(ferrySh, ferryBuilt, { persist:false })) fails.push("ferry_dedupe");
@@ -44870,7 +45052,9 @@ function newspaperCheck(){
     );
     const extraFace = faceOf(fadeExtra);
     if(!fadeExtra || fadeExtra.fameDelta!==0) fails.push("fade0_delta");
-    if(extraFace.indexOf("天星碼頭")<0 || extraFace.indexOf("過海路人")<0) fails.push("fade0_role");
+    /* v20a94 PRESS94 改版：路人崗位入閘出 fill（有作品名、冇崗位名），唔再行 #104 淡紙面貌。 */
+    if(extraFace.indexOf("天星碼頭")<0 || extraFace.indexOf("過海路人")>=0) fails.push("fade0_role");
+    if(!fadeExtra || fadeExtra.press94!=="fill") fails.push("fade0_gate94");
     if(leadNarr(extraFace)) fails.push("fade0_lead");
     S.fame = 5;
     const fadeCrew = enqueueNewspaperFromWrap(
@@ -44880,7 +45064,9 @@ function newspaperCheck(){
     );
     const crewFace = faceOf(fadeCrew);
     if(!fadeCrew || fadeCrew.fameDelta!==0) fails.push("fade_crew_delta");
-    if(crewFace.indexOf("跟組特約")<0 || crewFace.indexOf("傲劍狂刀震江湖")<0) fails.push("fade_crew_role");
+    /* v20a94 PRESS94 改版：跟組特約屬基層（特約詞入閘）→ fill 面貌（有作品名、冇崗位名）。 */
+    if(crewFace.indexOf("跟組特約")>=0 || crewFace.indexOf("傲劍狂刀震江湖")<0) fails.push("fade_crew_role");
+    if(!fadeCrew || fadeCrew.press94!=="fill") fails.push("fade_crew_gate94");
     if(leadNarr(crewFace)) fails.push("fade_crew_lead");
     const fameFlat = Number(S.fame)||0;
     S.dayIndex = 4;
@@ -44903,10 +45089,13 @@ function newspaperCheck(){
       { persist:false }
     );
     const hiFace = faceOf(hi);
-    if(!hi || !(hi.fameDelta>=1 && hi.fameDelta<=3)) fails.push("hi15_delta");
+    /* v20a94 PRESS94 改版（有意改行為）：聲望 15 唔救基層崗位——路人崗位照入閘出 fill、
+       fameDelta 0。舊斷言（fame≥15 路人照出正紙 +1～+3）已廢；正紙口徑由 hi16 男主角嗰組守住。 */
+    if(!hi || hi.fameDelta!==0) fails.push("hi15_delta");
+    if(!hi || hi.press94!=="fill") fails.push("hi15_gate94");
     if(!hi || (hi.enqueuedDay|0)!==3 || (hi.publishDay|0)!==4) fails.push("hi15_when");
     if(!hi || hi.templateEventKey!=="wrap_success.film") fails.push("hi15_bucket");
-    if(hiFace.indexOf("試片")<0 || hiFace.indexOf("過海路人")<0) fails.push("hi15_gig");
+    if(hiFace.indexOf("試片")<0 || hiFace.indexOf("過海路人")>=0) fails.push("hi15_gig");
     S.fame = 16;
     const hiLead = enqueueNewspaperFromWrap(
       { gigId:"gig_wrap_lead_hi", type:"電影", workTitle:"新春大吉", roleLabel:"男主角", title:"新春大吉" },
@@ -44915,6 +45104,44 @@ function newspaperCheck(){
     );
     if(!hiLead || !(hiLead.fameDelta>=1 && hiLead.fameDelta<=3)) fails.push("hi16_delta");
     if(faceOf(hiLead).indexOf("新春大吉")<0 || faceOf(hiLead).indexOf("男主角")<0) fails.push("hi16_gig");
+    /* v20a94 PRESS94 守門：第一次點名里程碑只派一次；fill 標題跟製作走、唔同製作唔同標題（唔連日重複）。 */
+    S.newspaperQueue = [];
+    S.newspaperClippings = [];
+    S.pendingMorningPaper = null;
+    S.newspaperLastPresentedDay = null;
+    S.mockRumors = [];
+    S.fame = 20;
+    S.dayIndex = 2;
+    S.press94FirstNamedDay = 0;
+    const p94a = enqueueNewspaperFromWrap(
+      { gigId:"gig_press94_a", type:"電影", workTitle:"里程碑片甲", roleLabel:"男主角", title:"里程碑片甲" },
+      { dayIndex:2, gigType:"電影" },
+      { persist:false }
+    );
+    if(!p94a || p94a.firstPress94!==true) fails.push("p94_first_flag");
+    if(!p94a || String(p94a.dek||"").indexOf("編輯按")<0 || String(p94a.dek||"").indexOf("第一次出現在本報的殺青消息")<0) fails.push("p94_first_line");
+    if((S.press94FirstNamedDay|0)!==2) fails.push("p94_first_day");
+    const p94b = enqueueNewspaperFromWrap(
+      { gigId:"gig_press94_b", type:"電影", workTitle:"里程碑片乙", roleLabel:"男主角", title:"里程碑片乙" },
+      { dayIndex:3, gigType:"電影" },
+      { persist:false }
+    );
+    if(!p94b || p94b.firstPress94===true) fails.push("p94_second_flag");
+    if(!p94b || String(p94b.dek||"").indexOf("編輯按")>=0) fails.push("p94_second_line");
+    const p94f1 = enqueueNewspaperFromWrap(
+      { gigId:"gig_press94_f1", type:"唱片通告", workTitle:"填位精選甲", roleLabel:"唱片幫工", title:"填位精選甲" },
+      { dayIndex:3, gigType:"唱片通告" },
+      { persist:false }
+    );
+    const p94f2 = enqueueNewspaperFromWrap(
+      { gigId:"gig_press94_f2", type:"唱片通告", workTitle:"填位精選乙", roleLabel:"唱片幫工", title:"填位精選乙" },
+      { dayIndex:4, gigType:"唱片通告" },
+      { persist:false }
+    );
+    if(!p94f1 || p94f1.press94!=="fill" || !p94f2 || p94f2.press94!=="fill") fails.push("p94_fill_mark");
+    if(!p94f1 || !p94f2 || p94f1.headline===p94f2.headline) fails.push("p94_fill_repeat");
+    if(!p94f1 || String(p94f1.headline||"").indexOf("填位精選甲")<0 || !p94f2 || String(p94f2.headline||"").indexOf("填位精選乙")<0) fails.push("p94_fill_work");
+    if((S.press94FirstNamedDay|0)!==2) fails.push("p94_fill_no_claim");
     /* #105：真實載入嘅 C5／C5_c（唔係合成 choice）→ 當日唔彈 → 加速都要出淡紙 → 收下聲望唔變 → 剪報。 */
     const _saveQ105 = saveQ;
     const _accel105 = _weekAccel;
