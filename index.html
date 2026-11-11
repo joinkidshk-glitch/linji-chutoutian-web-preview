@@ -1409,6 +1409,11 @@ button.g, .start button.g{
   display: block;
 }
 .map-hint-help{ margin-top: 2px; opacity: .9; font-size: .64rem; }
+/* v20a114 TRAVEL114：剩餘出行次數行＋額度用完鎖定視覺 */
+.map-hint-travel{display:block;font-size:.7rem;font-weight:700;margin-top:2px;color:#ffd98a}
+.map-hint-travel.travel-done{color:#f2a0a0}
+.pin.travel-locked{opacity:.55;filter:grayscale(.35)}
+.map-area-list button.travel-locked{opacity:.5;filter:grayscale(.4)}
 /* v17g: toast vs map-hint — hide footer while ticket toast is up (ticket art is translucent) */
 #app.toast-up #map-hint{
   visibility: hidden !important;
@@ -24262,7 +24267,7 @@ const StoryOC = (()=>{
       if(typeof refreshLocAfterStory==="function") refreshLocAfterStory();
       else if(typeof atLoc!=="undefined" && atLoc && typeof openLoc==="function"){
         const locSnap = atLoc;
-        setTimeout(()=>{ try{ if(!isStoryPlayActive || !isStoryPlayActive()){ if(atLoc===locSnap) openLoc(locSnap); } }catch(_e){} }, 80);
+        setTimeout(()=>{ try{ if(!isStoryPlayActive || !isStoryPlayActive()){ if(atLoc===locSnap) openLoc(locSnap, {travelFree:true}); } }catch(_e){} }, 80);
       }
     }catch(_e){}
     try{ saveQ(); }catch(_e){}
@@ -27582,7 +27587,7 @@ const StoryPlay = (()=>{
       try{ if(typeof paintBar==="function") paintBar(); }catch(_e){}
       try{ if(typeof drawMap==="function") drawMap(); }catch(_e){}
       try{ if(typeof refreshLocAfterStory==="function") refreshLocAfterStory();
-        else if(typeof atLoc!=="undefined" && atLoc && typeof openLoc==="function") openLoc(atLoc); }catch(_e){}
+        else if(typeof atLoc!=="undefined" && atLoc && typeof openLoc==="function") openLoc(atLoc, {travelFree:true}); }catch(_e){}
     };
     /* v19z12 B1：下一句／選項進 #modal-btns，避免同底層搶點 */
     const modalBtns = [];
@@ -30182,8 +30187,8 @@ function loc96AddSheetActs(add, L){
           <p>驗血、照肺、量血壓，一套做齊要 <b class="gold">$${LOC96_CFG.checkupFee}</b>。做完之後 ${LOC96_CFG.checkupDays} 日，高壓嗰陣冇咁易谷病（病倒門檻寬容 ${LOC96_CFG.checkupShield} 點）。</p>
           <p class="sub">而家存款 $${(Number(S.money)||0).toLocaleString()}。確認先會扣錢。</p>`,
           [ { label:`確認付款 $${LOC96_CFG.checkupFee}`, role:"p", on:()=>{ buyCheckup105(); } },
-            { label:"唔住", role:"g", on:()=>{ try{ openLoc("hospital"); }catch(_e){} } } ],
-          { onDismiss:()=>{ try{ openLoc("hospital"); }catch(_e){} } });
+            { label:"唔住", role:"g", on:()=>{ try{ openLoc("hospital", {travelFree:true}); }catch(_e){} } } ],
+          { onDismiss:()=>{ try{ openLoc("hospital", {travelFree:true}); }catch(_e){} } });
         return;
       }, "act-priority");
       function buyCheckup105(){
@@ -30195,8 +30200,8 @@ function loc96AddSheetActs(add, L){
         modal(`<h3>身體檢查</h3>
           <p>驗血、照肺、量血壓——醫生睇完報告，點點頭：「後生仔底子唔錯。照咁睇，之後 ${LOC96_CFG.checkupDays} 日你谷到高壓，都冇咁易病倒。」</p>
           <p class="gold">−$${LOC96_CFG.checkupFee} · 體檢生效 ${LOC96_CFG.checkupDays} 日</p>`,
-          [{ label:"好，返去開工", role:"p", on:()=>{ try{ openLoc("hospital"); }catch(_e){} } }],
-          { onDismiss:()=>{ try{ openLoc("hospital"); }catch(_e){} } });
+          [{ label:"好，返去開工", role:"p", on:()=>{ try{ openLoc("hospital", {travelFree:true}); }catch(_e){} } }],
+          { onDismiss:()=>{ try{ openLoc("hospital", {travelFree:true}); }catch(_e){} } });
       }
     }
     /* v20a105 UI105 S-25：健康嗰陣醫院板唔再近乎空板——補一張用途說明卡，
@@ -30207,8 +30212,8 @@ function loc96AddSheetActs(add, L){
         <p><b>治療</b>：壓力谷爆病倒嗰朝，遊戲會問你去唔去醫院——付 $${LOC96_CFG.treatFee} 吊針食藥，聽日就好返，慳返成個病程嘅日子。冇病嗰陣冇得買，唔使專程嚟。</p>
         <p><b>探病</b>：你病倒嗰陣，同你最熟嗰位會嚟探你（冇人熟就珍姐送糖水）——唔使喺度等，病嗰陣自然會發生。</p>
         <p><b>身體檢查</b>：$${LOC96_CFG.checkupFee} 一次，生效 ${LOC96_CFG.checkupDays} 日，期間高壓冇咁易谷病。撳「身體檢查」嗰陣會先確認，先至扣錢。</p>`,
-        [{ label:"明白", role:"p", on:()=>{ try{ openLoc("hospital"); }catch(_e){} } }],
-        { onDismiss:()=>{ try{ openLoc("hospital"); }catch(_e){} } });
+        [{ label:"明白", role:"p", on:()=>{ try{ openLoc("hospital", {travelFree:true}); }catch(_e){} } }],
+        { onDismiss:()=>{ try{ openLoc("hospital", {travelFree:true}); }catch(_e){} } });
     }, "");
   }catch(_e){}
 }
@@ -30311,7 +30316,7 @@ function presentSoftSeed(res){
   }
   if(res.id==="seed_hiu_meet_ready" || res.id==="seed_choi_meet_ready" || res.id==="seed_dual_chain_shortest"){
     atLoc = res.locId || (res.id==="seed_choi_meet_ready" ? "cafe_cha" : "tvb_longmen");
-    try{ if(typeof openLoc==="function") openLoc(atLoc); }catch(_e){}
+    try{ if(typeof openLoc==="function") openLoc(atLoc, {travelFree:true}); }catch(_e){}
   }
   return res;
 }
@@ -38062,7 +38067,15 @@ function paintBar(){
       /* v20a108 UI108 S-36：等試鏡消息入口由事業頁搬埋上地圖底部卡——有等緊嘅先顯示。 */
       let audLine108="";
       try{ const _n=(S.pendingAud||[]).length; if(_n>0) audLine108=`<span class="map-hint-aud108">等緊 ${_n} 張試鏡回音（手帳「事業」頁睇詳情）</span>`; }catch(_e){}
-      return `<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${audLine108}${startToday}<span class="map-hint-help" title="有通告／情報／「劇」劇情見圖例">${helpSoft}</span>${storyLine}`;
+      /* v20a114 TRAVEL114：地圖底部卡顯示今日剩餘出行次數（drawMap 每次渲染都刷新）。 */
+      let travelLine114 = "";
+      try{
+        const rem114 = travel114Remain();
+        travelLine114 = rem114 > 0
+          ? `<span class="map-hint-travel">今日出行：仲可以去 ${rem114} 個地方</span>`
+          : `<span class="map-hint-travel travel-done">今日出行額度已用完，聽日再去</span>`;
+      }catch(_e114){}
+      return `<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${audLine108}${travelLine114}${startToday}<span class="map-hint-help" title="有通告／情報／「劇」劇情見圖例">${helpSoft}</span>${storyLine}`;
     })();
   try{
     const stBtn=document.getElementById("map-start-today");
@@ -38174,6 +38187,8 @@ function drawMap(){
   if(img && !img.src) img.src = (typeof MAP_IMG!=="undefined" && MAP_IMG) ? MAP_IMG : "assets/hk_map.jpg";
   const box=document.getElementById("map-pins");
   if(!box) return;
+  /* v20a114 TRAVEL114：額度用完嗰陣，釘同底欄地點掣加鎖定視覺（drawMap 每次渲染都刷新）。 */
+  const travelLocked114 = (typeof travel114Remain==="function") ? travel114Remain() <= 0 : false;
   if(img){
     const well = img.parentElement;
     const h = (well && well.clientHeight) || img.clientHeight || 0;
@@ -38262,7 +38277,7 @@ function drawMap(){
     btn.dataset.loc=L.id;
     /* v19z3：熟人針只喺真係有在場 NPC 先亮；v19z20：idle／has-action；v20a5：遠觀紅星亦 has-action */
     const idleCls = hasAction ? " has-action" : " idle dim";
-    btn.className=`pin v18c-pin-marks-hug ${L.type}${hasBoard?" has-board":""}${hasNpc?" has-npc":""}${hasTip?" has-tip":""}${isStoryTip?" has-story-tip":""}${hasStar?" has-star":""}${idleCls}${L.lab?(" "+L.lab):""}`;
+    btn.className=`pin v18c-pin-marks-hug ${L.type}${hasBoard?" has-board":""}${hasNpc?" has-npc":""}${hasTip?" has-tip":""}${isStoryTip?" has-story-tip":""}${hasStar?" has-star":""}${idleCls}${L.lab?(" "+L.lab):""}${travelLocked114?" travel-locked":""}`;
     btn.style.left=p.x+"%";
     btn.style.top=p.y+"%";
     const markImgs=[];
@@ -38334,7 +38349,7 @@ function drawMap(){
       }
       list.innerHTML = regionLocs.map(L=>{
         const act=actionById[L.id].hasAction;
-        return `<button type="button" data-loc="${L.id}" class="${act?"has-action":"idle-loc"}">${iconHtml112(L.emoji||"")} ${L.name}</button>`;
+        return `<button type="button" data-loc="${L.id}" class="${act?"has-action":"idle-loc"}${travelLocked114?" travel-locked":""}">${iconHtml112(L.emoji||"")} ${L.name}</button>`;
       }).join("");
       list.querySelectorAll("button").forEach(b=>{
         b.onclick=(ev)=>{ ev.stopPropagation(); openLoc(b.getAttribute("data-loc")); };
@@ -42490,7 +42505,7 @@ function openDebtRepaySheet(debtId, L, opts){
       try{ closeSheet(); }catch(_e){}
       return;
     }
-    if(L && L.id){ try{ openLoc(L.id); }catch(_e){} }
+    if(L && L.id){ try{ openLoc(L.id, {travelFree:true}); }catch(_e){} }
   };
   if(gate.giftId){
     btns.push({ label:"禮物還："+d.title, role:"p", on:()=>{
@@ -42513,7 +42528,7 @@ function openDebtRepaySheet(debtId, L, opts){
       after();
     }});
   }
-  btns.push({ label:"取消", role:"g", on:()=>{ if(!fromJournal && L && L.id){ try{ openLoc(L.id); }catch(_e){} } } });
+  btns.push({ label:"取消", role:"g", on:()=>{ if(!fromJournal && L && L.id){ try{ openLoc(L.id, {travelFree:true}); }catch(_e){} } } });
   modal(`<h3>還人情 · ${who}</h3><p>「${d.title}」——用庫存禮物或現金 $200 還。唔可以空手還清。</p>`, btns);
 }
 function openHoRepaySheet(L){
@@ -43245,7 +43260,7 @@ try{
       show("v-map"); paintBar(); drawMap();
       return LOCS.map(l=>l.id);
     },
-    openLoc: function(id){ openLoc(id); },
+    openLoc: function(id, opts){ openLoc(id, opts); },
     closeSheet: function(){ closeSheet(); },
     enterHome: function(){ enterHome(null, false); },
     setTab: function(tab){ setHomeTab(tab); },
@@ -50535,6 +50550,34 @@ const ENC79_PLAYER_TIERS = ["extra","support","lead","king"];
 const ENC79_FAV_CAPS = [30,55,80,100];
 const ENC79_COOLDOWN = 3;      /* 同星巧遇後 3 日內唔再觸發（lastDay 起計 <=3 壓制） */
 const ENC79_DAILY_CAP = 2;     /* 全域每日最多觸發 2 次（跳過都計） */
+const TRAVEL114_DAILY_CAP = 2; /* v20a114：每日入地點出行額度上限（每次入場都計，重入同一地點都計） */
+/* ===== v20a114 TRAVEL114：每日入地點出行額度。
+   狀態 S.travel114 = { day, used }，跟 save 走（JSON.stringify(S) 整體存檔；
+   normalizeSaveObj 只補預設值，唔會洗走未知欄）。lazy init：舊檔冇呢欄 → 滿額；
+   day 唔同今日就 rollover 歸零（唔靠日結鈎，週加速／跳日都啱；同一日重新載入唔會重置）。
+   計數只喺 openLoc 閘口發生，唔好畀其他路徑掂呢個欄。
+   唔改 SAVE key／softRev／?v=。 ===== */
+function travel114State(){
+  const day = (typeof S!=="undefined" && S) ? (Number(S.dayIndex)||0) : 0;
+  if(typeof S==="undefined" || !S) return { day: day, used: 0 };
+  if(!S.travel114 || Number(S.travel114.day)!==day) S.travel114 = { day: day, used: 0 };
+  return S.travel114;
+}
+function travel114Remain(){
+  try{ const st = travel114State(); return Math.max(0, TRAVEL114_DAILY_CAP - (Number(st.used)||0)); }catch(_e){ return TRAVEL114_DAILY_CAP; }
+}
+function travel114IsFree(opts, id){
+  if(id==="home") return true; /* 屋企（基地）唔計；LOCS 現時冇屋企地點，守衛備用 */
+  if(!opts) return false;
+  return !!(opts.forceRestore || opts.encDone || opts.wf4Done || opts.travelFree);
+}
+function travel114TrySpend(opts, id){
+  if(travel114IsFree(opts, id)) return true;
+  const st = travel114State();
+  if((Number(st.used)||0) >= TRAVEL114_DAILY_CAP) return false;
+  st.used = (Number(st.used)||0) + 1;
+  return true;
+}
 const ENC79_WEEK_SOFT_CAP = 10;/* 巧遇來源好感每週軟頂（殺青來源唔計） */
 const ENC79_STARS = [
   { id:"luk_baakyin",  name:"陸柏言", primary:"film_lion",   secondary:"rec_star",    area:"片場嗰邊",     win:[[1992,"夏"],[1992,"秋"]] },
@@ -52250,7 +52293,7 @@ function refreshLocAfterStory(){
     const tryOpen = ()=>{
       try{
         if(isStoryPlayActive()) return false;
-        if(atLoc===locSnap) openLoc(locSnap);
+        if(atLoc===locSnap) openLoc(locSnap, {travelFree:true});
         return true;
       }catch(_e){ return true; }
     };
@@ -52374,6 +52417,14 @@ function openLoc(id, opts){
     kickScheduleIfNeeded();
     return;
   }
+  /* v20a114 TRAVEL114：每日出行額度閘——放喺三個 early return 之後、enc79 攔截之前：
+     被擋嘅入場唔擲巧遇；成功入場嗰次就算觸發咗巧遇都照計。額度用完嗰陣 toast 講明原因
+     然後 return，唔開 sheet、唔擲巧遇、唔扣數；玩家留喺原地，唔 kick 返地圖。 */
+  if(typeof travel114TrySpend==="function" && !travel114TrySpend(opts, id)){
+    toast("今日出行額度用完——今日已經去咗 2 個地方，聽日再去。");
+    return;
+  }
+  if(typeof travel114IsFree==="function" && !travel114IsFree(opts, id)){ try{ saveQ(); }catch(_e){} }
   /* v20a79 ENC79：紅星巧遇對話先行——有星在場（出沒盤）兼冇主線待播壓住，先播全屏巧遇對話，播完先開 sheet。
      opts.encDone 係巧遇播完返入嚟嘅繞過旗；forceRestore 還原路徑唔觸發。 */
   if(!opts.forceRestore && !opts.encDone && typeof enc79TryIntercept==="function"){
@@ -52618,7 +52669,7 @@ function openLoc(id, opts){
           const title = (node && (node.title||node.id)) || nid;
           const face = (typeof storyFaceLine==="function") ? storyFaceLine(node, { playerHint: hp.playerHint, title: tipHere.title }) : (hp.playerHint || "");
           add(`播劇情：${title}`, face,"免費", ()=>{
-            if(locStoryIsDone(nid)){ toast("劇情已完成，唔使再播。"); try{ openLoc(L.id); }catch(_e){} return; }
+            if(locStoryIsDone(nid)){ toast("劇情已完成，唔使再播。"); try{ openLoc(L.id, {travelFree:true}); }catch(_e){} return; }
             /* v19z16 B1：地點播事態前若手帳未確定，靜默提交（保留 StoryPlay homeEditable 閘） */
             try{ if(typeof ensureWeekPlanCommittedForStory==="function") ensureWeekPlanCommittedForStory(); }catch(_ec){}
             closeSheet();
@@ -52640,7 +52691,7 @@ function openLoc(id, opts){
           const n = StoryOC.findNodeRaw(here.id);
           const face = (typeof storyFaceLine==="function") ? storyFaceLine(n||{}, here) : (here.playerHint || here.title || "");
           add(`播劇情：${here.title||here.id}`, face,"免費", ()=>{
-            if(locStoryIsDone(here.id)){ toast("劇情已完成，唔使再播。"); try{ openLoc(L.id); }catch(_e){} return; }
+            if(locStoryIsDone(here.id)){ toast("劇情已完成，唔使再播。"); try{ openLoc(L.id, {travelFree:true}); }catch(_e){} return; }
             try{ if(typeof ensureWeekPlanCommittedForStory==="function") ensureWeekPlanCommittedForStory(); }catch(_ec){}
             closeSheet();
             try{ StoryPlay.start(here.id); }catch(_e){ toast("無法開劇情"); }
@@ -52775,7 +52826,7 @@ function openLoc(id, opts){
         if(heard){ toast("呢單已經聽過——入手帳「傳聞」再睇。"); return; }
         const r=applyMockAsk(L.id, def.id);
         try{ paintBar(); }catch(_e){}
-        const reopen = ()=>{ try{ if(L) openLoc(L.id); }catch(_e2){} };
+        const reopen = ()=>{ try{ if(L) openLoc(L.id, {travelFree:true}); }catch(_e2){} };
         if(r && r.ok && (r.added || r.updated || r.rumorId)){
           const title = (r.rumorId && (S.mockRumors||[]).find(x=>x&&x.id===r.rumorId));
           const rumTitle = (title && title.title) || def.title || "新傳聞";
@@ -55654,7 +55705,7 @@ function doTalk(npcId, L){
   paintBar(); drawMap();
 
   const img = PORTRAITS[npc.face] || "";
-  const go = ()=>{ if(ended) enterHome(summary, true); else if(spendDay) runScheduleFromToday(); else if(L) openLoc(L.id); };
+  const go = ()=>{ if(ended) enterHome(summary, true); else if(spendDay) runScheduleFromToday(); else if(L) openLoc(L.id, {travelFree:true}); };
   const dayNote = spendDay ? `${fmtDate()} · 對話耗一日` : `${fmtDate()} · 傾談唔計日子`;
   const showTalkResult = (bubbleText, extraHtml)=>{
     modal(`<div class="dlg">
@@ -55981,7 +56032,7 @@ function promptAudition(gig, L){
   const gate=canAudition(gig);
   if(!gate.ok){
     S.flags=S.flags||{};
-    const back=()=> L ? openLoc(L.id) : null;
+    const back=()=> L ? openLoc(L.id, {travelFree:true}) : null;
     if(!S.flags.sawTutAudLock){
       maybeShowTutToast("sawTutAudLock","TUT_AUD_LOCK", back);
       return;
@@ -56099,8 +56150,8 @@ function openGiftShop(shopId, L){
     <p class="sub">油麻地廟街夜市 · 買入不耗日 · 每週補貨</p>
     <p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>
     <div id="gift-shop-list">${body}</div>`,[
-      {label:"關閉", role:"g", on:()=>{ if(L) openLoc(L.id); }}
-    ], {onDismiss:()=>{ if(L) openLoc(L.id); }});
+      {label:"關閉", role:"g", on:()=>{ if(L) openLoc(L.id, {travelFree:true}); }}
+    ], {onDismiss:()=>{ if(L) openLoc(L.id, {travelFree:true}); }});
   const box = document.getElementById("gift-shop-list");
   if(box){
     box.querySelectorAll("[data-buy]").forEach(btn=>{
@@ -56135,8 +56186,8 @@ function openGiftPick(npcKey, L){
   modal(`<h3>送禮 · ${name}</h3>
     <p class="sub">每日每人限送 1 次；同一人一星期最多 +2 好感</p>
     <div id="gift-pick-list">${rows}</div>`,[
-      {label:"取消", role:"g", on:()=>{ if(L) openLoc(L.id); }}
-    ], {onDismiss:()=>{ if(L) openLoc(L.id); }});
+      {label:"取消", role:"g", on:()=>{ if(L) openLoc(L.id, {travelFree:true}); }}
+    ], {onDismiss:()=>{ if(L) openLoc(L.id, {travelFree:true}); }});
   const box = document.getElementById("gift-pick-list");
   if(box){
     box.querySelectorAll("[data-give]").forEach(btn=>{
@@ -56155,7 +56206,7 @@ function openGiftPick(npcKey, L){
 }
 function doGiveGift(npcKey, itemId, L){
   const res = GiftShop.giveGift(npcKey, itemId);
-  if(!res.ok){ toast(res.reason||"送唔成"); if(L) openLoc(L.id); return; }
+  if(!res.ok){ toast(res.reason||"送唔成"); if(L) openLoc(L.id, {travelFree:true}); return; }
   const spendDay = softSocialCostsDay();
   let ended=false, summary=null;
   if(spendDay){
@@ -56170,7 +56221,7 @@ function doGiveGift(npcKey, itemId, L){
   const go = ()=>{
     if(ended) enterHome(summary, true);
     else if(spendDay) runScheduleFromToday();
-    else if(L) openLoc(L.id);
+    else if(L) openLoc(L.id, {travelFree:true});
   };
   const lineHtml = /<p[\s>]/.test(String(res.line||"")) ? String(res.line) : `<p>${res.line||""}</p>`;
   const dayNote = spendDay ? `${fmtDate()} · 送禮耗一日` : `${fmtDate()} · 送禮唔計日子`;
