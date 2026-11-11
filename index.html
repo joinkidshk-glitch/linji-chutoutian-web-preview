@@ -4945,6 +4945,7 @@ body.day-res-open .day-row{
               <div class="md97" style="left:31%;top:15%">旺角</div>
               <div class="md97" style="left:63%;top:29%">九龍城</div>
               <div class="md97" style="left:20%;top:35%">油麻地</div>
+              <div class="md97 md97-venue99" style="left:15%;top:47%">金禧大酒店</div>
               <div class="md97" style="left:56%;top:35%">紅磡</div>
               <div class="md97" style="left:18%;top:51%">尖沙咀</div>
               <div class="md97" style="left:50%;top:54%">中環</div>
@@ -42643,6 +42644,68 @@ function awardsCalendarYear(dayIndex){
     return dt.getFullYear();
   }catch(_e){ return START.y; }
 }
+/* v20a99 VENUE99：古典大樓場地化——地圖九龍西岸嗰座紅地氈古典大樓（v3 起純景物、冇 LOCS）
+   畀返身份：虛構大酒店「金禧大酒店」，其大禮堂係三大業界頒獎禮（廣告賞／金碟夜／影藝獎）
+   嘅舉行場地。命名：避開真酒店名（半島／文華／麗晶／富麗華／帝苑等）同影射，「金禧」取
+   金色慶典意象，同遊戲虛構公司（星河／維港／紅棉）同一路數。星河台慶頒獎夜係電視台自己
+   嘅台慶騷，維持喺星河電視台舉行——同 C17 結局幕「電視台頒獎禮後台」嘅地點講法對齊，
+   唔搬，否則會製造新矛盾（v98 啱啱清完）。場地只入文本層：請柬／像素典禮開場／結果卡／
+   手帳獎項頁＋awards stub 同朝早報紙模板嘅載入覆寫；頒獎機制、判定、數值一律唔掂。 */
+const VENUE99_HOTEL = "金禧大酒店";
+const VENUE99_LINE = "金禧大酒店・大禮堂";
+const VENUE99_BY_CEREMONY = {
+  award_harbour_ad: VENUE99_LINE,
+  award_golddisc_music: VENUE99_LINE,
+  award_harbour_film: VENUE99_LINE,
+  award_singho_tv: "星河電視台"
+};
+function venue99ForCeremony(id){
+  return VENUE99_BY_CEREMONY[String(id || "")] || "";
+}
+const VENUE99_INVITE_DEK = {
+  award_harbour_ad: "廣告圈年賞將至，今屆喺金禧大酒店大禮堂舉行。你收到一張旁聽／入圍席位信——去定推辭，隨你。",
+  award_golddisc_music: "唱片年終有金碟夜，喺金禧大酒店大禮堂舉行。你收到一張席位信——碟市邊個上鏡，席上見。",
+  award_harbour_film: "影圈年獎將至，今屆喺金禧大酒店大禮堂舉行。你收到一張旁聽／入圍席位信——票房餘溫同台下掌聲，你揀。"
+};
+const VENUE99_PRESS_DEK = {
+  press_award_ad_01: "廣告年賞散場。金禧大酒店大禮堂門外，有新人名第一次印喺品牌側記。",
+  press_award_music_01: "星河金碟夜結束。金禧大酒店大禮堂嗰晚，有臨記席名字第一次出現喺典禮側記。",
+  press_award_film_01: "維港影藝獎散場。金禧大酒店門外，票房話題以外，亦有新人入圍消息。"
+};
+const VENUE99_NEWS_LINE = {
+  news_award_ad_01: "街招年賞散場：金禧大酒店大禮堂外，廣告席都有鏡頭掃過。",
+  news_award_music_01: "金碟夜散場：金禧大酒店大禮堂，碟市掌聲未完。",
+  news_award_film_01: "影藝獎散場：金禧大酒店門外，票房餘溫同入圍名單一齊出街。"
+};
+/* 朝早報紙（newspaperStub award 模板覆寫）：每個酒店媒介各改 win／nominee 一款 dek，
+   其餘模板保持原樣——真報紙唔會篇篇寫場地。TV 模板唔郁（台慶喺電視台，廠景口吻一致）。 */
+const VENUE99_NP_DEK = {
+  np_win_film_02: "維港影藝獎側記：金禧大酒店大禮堂嗰晚，年度票房話題綠葉由{playerName}奪得，街坊笑言個樣好抵死，臨記生涯添履歷。",
+  np_nom_film_01: "新一屆維港影藝獎入圍名單出爐，{playerName} 成功躋身提名之列。頒獎夜設喺金禧大酒店大禮堂，行內開始留意呢張新面孔。",
+  np_win_music_02: "星河金碟夜側記：金禧大酒店大禮堂嗰晚，{playerName}以MV男配角身份奪最受歡迎出鏡嗓，街坊話聽聲就認得，聲望悄然提升。",
+  np_nom_music_01: "星河金碟夜入圍名單正式公開，{playerName} 獲得獎項提名。頒獎夜喺金禧大酒店大禮堂舉行，錄音室的汗水無白流。",
+  np_win_ad_02: "維港街招・年度廣告賞側記：金禧大酒店大禮堂嗰晚，{playerName}奪得此特別獎，綠葉也有春天，聲望穩步上揚，商戶開始留意。",
+  np_nom_ad_01: "維港街招・年度廣告賞公佈入圍名單，{playerName} 參演的廣告成功突圍。頒獎夜設喺金禧大酒店大禮堂，商業價值備受肯定。"
+};
+function venue99ApplyOverlay(FW){
+  if(!FW) return;
+  try{
+    const st = FW.awardsStub;
+    if(st){
+      (st.ceremonies || []).forEach(c=>{ if(c && VENUE99_INVITE_DEK[c.id]) c.inviteDek = VENUE99_INVITE_DEK[c.id]; });
+      (st.pressTemplates || []).forEach(p=>{ if(p && VENUE99_PRESS_DEK[p.id]) p.dek = VENUE99_PRESS_DEK[p.id]; });
+      (st.newsTemplates || []).forEach(n=>{ if(n && VENUE99_NEWS_LINE[n.id]) n.line = VENUE99_NEWS_LINE[n.id]; });
+    }
+  }catch(_e){}
+  try{
+    const np = FW.newspaperStub;
+    if(np && np.templates){
+      ["award_win", "award_nominee"].forEach(b=>{
+        (np.templates[b] || []).forEach(t=>{ if(t && VENUE99_NP_DEK[t.id]) t.dek = VENUE99_NP_DEK[t.id]; });
+      });
+    }
+  }catch(_e2){}
+}
 /* v20a78 AWARDS78：屆別年份（頒獎去重鍵＋作品計數年）——唔好直接用「今日曆法年」：
    冬季係 12–2 月、橫跨公曆年界，同一季冬喺 12 月尾（曆法年 Y）同 1 月頭（曆法年
    Y+1）會各觸發一屆（全弧驗證第三輪實證：day 364 冬1990 入圍、day 365 冬1991
@@ -42940,6 +43003,7 @@ function buildAwardResultPack(opts){
     repWork62: repWork62,
     standing62: standing62,
     repGigId63: repGigId63,
+    venue99: (typeof venue99ForCeremony==="function") ? venue99ForCeremony(ceremonyId) : "",
     skipped: false,
     dualApplied: false
   };
@@ -42972,6 +43036,7 @@ function commitAwardToLog(pack){
     categories: (pack.categories||[]).map(c=>({ id:c.id, outcome:c.outcome, repTitle: c.repWorkTitle || "", fellows63: (c.fellows63||[]).map(f=>({ star: (f && f.star) || "", title: (f && f.title) || "" })), winner63: (c.winner63 && c.winner63.star) || "" })),
     rewardsApplied: Object.assign({}, pack.rewardsApplied||{}),
     metricEcho: pack.metricEcho||"",
+    venue99: pack.venue99 || "",
     skipped: !!pack.skipped,
     dayIndex: pack.dayIndex|0
   };
@@ -43068,6 +43133,7 @@ function renderAwardInviteHtml(pack){
     <p class="psr-eyebrow">定期頒獎</p>
     <h3 class="psr-h">${pack.inviteTitle||"頒獎夜請柬"}</h3>
     <p class="psr-sub">${pack.displayName||""} · ${pack.season||""}${pack.year?(" "+pack.year):""}</p>
+    ${pack.venue99 ? `<p class="psr-sub">場地：${pack.venue99}</p>` : ""}
     <p class="psr-body">${pack.inviteDek||""}</p>
     ${tierBit}
     ${(()=>{ try{ return awards63InviteBitHtml(pack); }catch(_e){ return pack.repWork62 ? `<p class="psr-rep62">你今年憑《${pack.repWork62}》爭獎。</p>` : ""; } })()}
@@ -43104,7 +43170,7 @@ function renderAwardResultHtml(pack){
   return `<div class="psr-sheet awd-sheet">
     <p class="psr-eyebrow">頒獎結果</p>
     <h3 class="psr-h">${pack.displayName||"頒獎夜"}・結果</h3>
-    <p class="psr-sub">${pack.tierLabel||""}${pack.year?(" · "+pack.year):""}</p>
+    <p class="psr-sub">${pack.tierLabel||""}${pack.year?(" · "+pack.year):""}${pack.venue99?(" · "+pack.venue99):""}</p>
     <div class="psr-cards">
       ${catsHtml}
       <article class="psr-card psr-press">
@@ -43252,6 +43318,7 @@ try{
     rep62: awards62RepWork,
     hints62: awards62SeasonHints,
     beats62: awards62CeremonyBeats,
+    venue99: function(id){ return (typeof venue99ForCeremony==="function") ? venue99ForCeremony(id) : ""; },
     play62: awards62PlayCeremony,
     fellows63: awards63Fellows,
     focus63: awards63FocusCat,
@@ -43504,7 +43571,7 @@ function renderAwardsPane62(){
     });
     if(e.skipped) best = "skipped";
     const badge = best === "won" ? "得獎" : (best === "nominated" ? "入圍" : (best === "skipped" ? "推辭咗" : "觀禮"));
-    const when = (e.year ? (e.year + " 年") : "") + (e.season ? (" · " + e.season) : "");
+    const when = (e.year ? (e.year + " 年") : "") + (e.season ? (" · " + e.season) : "") + (e.venue99 ? (" · " + e.venue99) : "");
     return '<div class="awd62-item"><div class="awd62-head"><span class="awd62-name">' + esc(name) + "</span>"
       + '<span class="awd62-badge ' + best + '">' + badge + "</span></div>"
       + '<div class="awd62-when">' + esc(when) + "</div>"
@@ -43591,7 +43658,8 @@ function awards62CeremonyBeats(pack){
   try{ focus = (typeof awards63FocusCat === "function") ? awards63FocusCat(pack) : null; }catch(_e){}
   const rep = pack.repWork62 || (focus && focus.repWorkTitle) || "";
   const fellows = (focus && Array.isArray(focus.fellows63)) ? focus.fellows63 : [];
-  const beats = [{ id: "open", ms: 1200, caption: "—— " + name + " ——" }];
+  const venue99 = pack.venue99 || ((typeof venue99ForCeremony === "function") ? venue99ForCeremony(pack.ceremonyId) : "");
+  const beats = [{ id: "open", ms: 1200, caption: "—— " + name + " ——" + (venue99 ? ("\n" + venue99) : "") }];
   if(best === "gallery"){
     beats.push({ id: "pan", ms: 2000, caption: "今晚你坐喺觀禮席\n睇住台上群星，記住呢晚。" });
     beats.push({ id: "out", ms: 500, caption: "" });
@@ -45906,6 +45974,7 @@ async function loadFreeplayFramework(){
   }));
   FREEPLAY_FW.loaded = true;
   try{ textfix55Freeplay(FREEPLAY_FW); }catch(_t55){}
+  try{ venue99ApplyOverlay(FREEPLAY_FW); }catch(_v99){} /* v20a99 VENUE99：頒獎場地覆寫，須喺 textfix55 之後行 */
   try{ if(typeof years66Walk==="function") years66Walk(FREEPLAY_FW, null); }catch(_y66){} /* v20a66 YEARS66 */
   try{ freeplayApplyEraStarStubOverlay(); }catch(_e){}
   try{ if(typeof augmentPostShootRewards35==="function") augmentPostShootRewards35(); }catch(_e){}
