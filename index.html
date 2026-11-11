@@ -4856,6 +4856,24 @@ body.day-res-open .day-row{
 .guide68-note{ color:#6b5636; }
 #v-home .home-summary .good, #v-home .nb-live-stress .good{ color:#19684d !important; }
 /* === v20a76 CONTRAST76 完 === */
+/* === v20a106 DLG106 對話呈現層（雙人全身） ===
+   規格跟樣本 linji-fullbody-regen：人物高＝舞台 50%、左右 6px 邊、講者
+   brightness(1) 行前／聽者 0.6／旁白齊 0.6／電話齊 0.8、filter 過渡 250ms。
+   明暗同 z-index 由 JS 逐句 inline 設定（同邊個講緊綁定）；呢度只管幾何、
+   翻轉 class、固定高對話框同電話名牌色。作用域限 .dlg106-on 舞台，
+   舊 bust 路徑（冇 fullbody 嘅 speaker）版面零影響。 */
+.story-play .dlg106-chars{position:absolute;inset:0;z-index:2;pointer-events:none}
+.story-play .dlg106-char{position:absolute;bottom:14%;height:50%;max-width:48%;width:auto;
+  object-fit:contain;object-position:bottom center;transition:filter 250ms ease}
+.story-play .dlg106-char.dlg106-left{left:6px}
+.story-play .dlg106-char.dlg106-right{right:6px}
+.story-play .dlg106-char.dlg106-flip{transform:scaleX(-1)}
+.story-play .sp-stage.dlg106-on .sp-stage-inner{position:relative;z-index:3;align-items:flex-end}
+.story-play .dlg106-plate{min-height:118px;flex:1}
+.story-play .sp-speaker.dlg106-phone-name{color:#33566e}
+.story-play .dlg106-plate.dlg106-plate-phone{border-color:rgba(80,120,150,.55);border-style:dashed}
+#mask.story-play-on .story-play .dlg106-char{bottom:15%}
+/* === v20a106 DLG106 完 === */
 </style>
 </head>
 <body>
@@ -25742,6 +25760,464 @@ window.__spApplyBgPhotos = function(root){
   }catch(_e){}
 };
 
+/* ===== v20a106 DLG106 對話呈現層（雙人全身企立＋表情＋視線）=====
+   規格：底本 linji-fullbody-regen 樣本（390×844、人物高 50%、講者 brightness(1)／
+   聽者 0.6／旁白齊 0.6／電話聲齊 0.8＋藍灰名牌、filter 過渡 250ms）。
+   資產：assets/story/fullbody/{stem}_{expr}.(webp|png)?v=20a106（工人 A 入庫）；
+   stem＝speakerId，阿偉按成長階段（enc79PlayerTier 級數）轉 awi／awi_s2／awi_s3。
+   expr 集：base／smile／serious／sad／surprise／shy／think／angry。
+   情緒解析次序（拍板規格）：beat.emotion/expression 欄 → DLG106_EMOTION_MAP
+   （數據工人 C 嵌入分類 map；交付時 C 未交貨，先留空表＋key 格式註明，填入即生效）
+   → dlg106Classify（C classifier_runtime.js 原樣搬入）→ neutral。
+   視線表 DLG106_GAZE：C 嘅 handoff106/gaze_table.json 全表內嵌（34 條：31 角＋
+   extra_ad_fen＋awi_s2／awi_s3；front 24／left 6／right 4；flipSafe=true 11 條）。SAVE key／softRev／產品 ?v= 一律唔郁；content JSON 一律唔改，
+   正規化只喺呢層做。 */
+const DLG106_CATEGORIES = ["happy","neutral","serious","sad","surprise","shy","think","angry"];
+const DLG106_CAT_TO_EXPR = { happy:"smile", neutral:"base", serious:"serious", sad:"sad", surprise:"surprise", shy:"shy", think:"think", angry:"angry" };
+const DLG106_OLD_EMOTION_TO_CAT = { neutral:"neutral", calm:"neutral", warm:"happy", soft:"happy", smirk:"happy", tense:"serious", firm:"serious", angry:"angry", worried:"think", tired:"sad" };
+const DLG106_EXPR_TO_CAT = { smile:"happy", default:"neutral", frown:"serious", raise_brow:"think", eyes_down:"sad", look_aside:"think" };
+/* 視線表（C gaze_table.json 全表，連 asym／note）：gaze＝原生視線 left／right／front；
+   flipSafe＝可否 CSS 鏡像翻轉。何生 false、駱家聲望左（flipSafe 亦 false——新全身圖
+   唔同舊 bust 翻轉先例，以 C 實測表為準）、阿偉望右 flipSafe=true，同先例吻合。 */
+const DLG106_GAZE = {
+ "awi": {
+  "gaze": "right",
+  "flipSafe": true,
+  "asym": "瀏海分界略偏＋右手入袋、左手垂低，屬姿勢/分界級鏡像",
+  "note": "原生望右，適合企左位面向右邊對手；翻轉後望左亦安全（先例核實吻合）"
+ },
+ "awi_s2": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "淺灰西裝左胸袋口單邊（畫面右側）＋單排鈕門襟扣向",
+  "note": "近正面向觀眾，左右位皆可；唔好翻，胸袋會去錯邊，靠走位唔靠翻"
+ },
+ "awi_s3": {
+  "gaze": "front",
+  "flipSafe": true,
+  "asym": "左手插褲袋、右手垂低，純姿勢；深藍西裝冇胸袋/徽章/道具",
+  "note": "近正面；翻轉安全，需要望左/右時可翻"
+ },
+ "chai_zanhoi": {
+  "gaze": "front",
+  "flipSafe": true,
+  "asym": "三件頭背心鈕置中；僅領呔斜紋方向＋頭髮向後梳略偏",
+  "note": "正面，兩邊位皆可，翻轉安全"
+ },
+ "cheng_william": {
+  "gaze": "front",
+  "flipSafe": true,
+  "asym": "右手托腮屬姿勢；中分微捲中長髮大致對稱，西裝冇單邊配件",
+  "note": "正面沉思相，翻轉安全"
+ },
+ "cheung_hakfan": {
+  "gaze": "left",
+  "flipSafe": false,
+  "asym": "黑皮褸斜拉鏈（騎士褸款）＋單邊拉鏈袋，翻轉拉鏈走向即穿崩",
+  "note": "原生揚下巴望左，適合企右位；唔好翻"
+ },
+ "cheung_tsijun": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "攝影背心一側胸袋插藍筆（畫面右）＋抱臂交疊方向",
+  "note": "正面；唔好翻，筆袋會調邊"
+ },
+ "ching_tinlok": {
+  "gaze": "front",
+  "flipSafe": true,
+  "asym": "身體近側面企（側向畫面左）＋雙手入袋；中分厚瀏海置中",
+  "note": "面正面、身側向左；翻轉安全，可改成身體側向右"
+ },
+ "chow_choiyi": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "右手持卡式錄音機（畫面左）＋記者證掛頸、長風褸鈕排單邊",
+  "note": "正面；唔好翻，錄音機換手最覺眼"
+ },
+ "chung_choning": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "西裝褸單邊跌膊露吊帶裙帶＋左右耳環款式唔同（一圓一長方垂吊）＋單手叉腰",
+  "note": "正面；唔好翻，跌膊同耳環係造型標誌"
+ },
+ "extra_ad_fen": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "右手持通告板（畫面左）＋對講機掛右腰＋恤衫胸袋單邊",
+  "note": "正面；唔好翻，通告板/對講機換邊即唔自然"
+ },
+ "fong_siulung": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "一邊臉頰貼膠布（畫面左頰）係辨識特徵＋右手撓頭姿勢",
+  "note": "正面；唔好翻，膠布會去咗另一邊面"
+ },
+ "gao_wenhan": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "懷錶鏈掛一側胸袋＋錶面刻度、三七分界線明顯＋右手托鏡框",
+  "note": "正面；唔好翻，錶鏈/分界/托鏡手全調邊"
+ },
+ "gu_mingfai": {
+  "gaze": "right",
+  "flipSafe": true,
+  "asym": "中分微捲髮大致對稱、絲質恤衫鈕置中、冇配件道具",
+  "note": "原生憂鬱望右上，適合企左位；翻轉安全可改望左"
+ },
+ "ho_sang": {
+  "gaze": "left",
+  "flipSafe": false,
+  "asym": "左胸袋插金筆（畫面右）＋右手扶眼鏡＋大背頭分界",
+  "note": "原生望左，適合企右位唔使翻；翻轉筆同扶鏡手調邊穿崩（先例核實吻合）"
+ },
+ "ko_chunkit": {
+  "gaze": "right",
+  "flipSafe": false,
+  "asym": "紅皮褸斜拉鏈＋胸前斜拉鏈袋單邊，中分長髮屬次要",
+  "note": "視線偏右，適合企左位；唔好翻，斜拉鏈走向會反"
+ },
+ "kwan_hoimei": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "右手舉鋼筆（畫面左）＋短bob側分＋風褸單邊細節",
+  "note": "正面；唔好翻，筆換手最覺眼"
+ },
+ "lan_ruoxi": {
+  "gaze": "front",
+  "flipSafe": true,
+  "asym": "中分長直髮對稱、珍珠耳環成對；蕾絲門襟邊單側屬細節",
+  "note": "正面，翻轉安全"
+ },
+ "lin_hiu": {
+  "gaze": "front",
+  "flipSafe": true,
+  "asym": "冷衫鈕置中、絲巾結近置中略偏；中分髮型對稱",
+  "note": "正面，翻轉安全"
+ },
+ "liu_bingxing": {
+  "gaze": "left",
+  "flipSafe": false,
+  "asym": "招牌一高一低眉＋歪嘴壞笑方向＋亂髮側掃，面部唔對稱係辨識核心",
+  "note": "原生側目望左，適合企右位；唔好翻，歪笑同眉形會反轉變另一個人"
+ },
+ "lok_gasing": {
+  "gaze": "left",
+  "flipSafe": false,
+  "asym": "皮褸斜拉鏈＋破洞Tee啲窿位唔對稱＋頸鏈垂墜",
+  "note": "原生近側面冷酷望左（重生版指定方向，核實吻合），企右位專用感強；唔好翻"
+ },
+ "lui_ging": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "一邊眉有淺疤（定版規格右眉）係辨識特徵＋大背頭；抱胸姿勢本身對稱",
+  "note": "正面；唔好翻，疤會去咗另一條眉"
+ },
+ "luk_baakyin": {
+  "gaze": "right",
+  "flipSafe": false,
+  "asym": "雙排扣金鈕置中，但西裝左胸袋單邊（畫面右）＋左手插袋",
+  "note": "面偏右，適合企左位；唔好翻，胸袋調邊"
+ },
+ "mak_zhendong": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "工作褲單邊大腿貨袋（畫面右腿）＋抱臂交疊方向＋污漬分布",
+  "note": "正面；唔好翻，貨袋換腿覺眼"
+ },
+ "mok_siufai": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "衛衣正面抽象圖案唔對稱（鏡像會變樣）＋耳機線單邊垂落＋單手扶耳機",
+  "note": "正面；唔好翻，胸口圖案係死穴"
+ },
+ "ngai_wingnaam": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "短髮明顯側掃分界＋運動褸單邊斜拉鏈袋、褲側間條",
+  "note": "正面怒視；唔好翻，分界同斜袋調邊"
+ },
+ "pang_siuki": {
+  "gaze": "front",
+  "flipSafe": true,
+  "asym": "花恤衫花紋隨機；褸襟一粒細金章屬小節，鏡像唔影響辨識",
+  "note": "正面，翻轉安全"
+ },
+ "so_jiyan": {
+  "gaze": "front",
+  "flipSafe": true,
+  "asym": "中分長直髮對稱、雙手身前置中交疊、碎花紋隨機；僅頭略側",
+  "note": "正面，翻轉安全，左右位皆可"
+ },
+ "tang_laiping": {
+  "gaze": "left",
+  "flipSafe": false,
+  "asym": "低馬尾喺一側垂落（畫面左）＋腕錶只戴一隻手腕＋抱臂交疊方向",
+  "note": "視線偏左，適合企右位；唔好翻，錶同馬尾調邊"
+ },
+ "tong_souwan": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "翡翠玉鐲只戴一腕＋髮簪綠珠喺髻一側＋旗袍斜襟盤扣走向＋裙側開衩",
+  "note": "正面；唔好翻，玉鐲/簪/襟向係年代造型證據，全調邊即穿崩"
+ },
+ "tsui_poushan": {
+  "gaze": "left",
+  "flipSafe": false,
+  "asym": "右手拎金色手拿包（畫面左）＋大波浪側分＋連身裙鈕列偏側",
+  "note": "原生揚下巴睥睨望左，適合企右位；唔好翻，手袋換手"
+ },
+ "uncle_kim": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "煙斗咬喺口一側（畫面右）＋單邊眨眼/瞇眼係標誌＋測光表掛頸置中",
+  "note": "正面；唔好翻，煙斗同瞇眼邊調轉即唔同人"
+ },
+ "vera": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "咬鉛筆斜向一側＋頸掛軟尺有刻度數字（鏡像會反字）＋單手叉腰",
+  "note": "正面（眼神略垂）；唔好翻，軟尺數字係死穴"
+ },
+ "yip_manji": {
+  "gaze": "front",
+  "flipSafe": true,
+  "asym": "雙手叉腰近對稱、髮型中分微曲、冇配件道具；僅頭略側",
+  "note": "正面，翻轉安全，左右位皆可"
+ }
+};
+/* C 嵌入分類 map（handoff106/emotion_map_embed.json 真身）：key＝台詞正規化後
+   FNV-1a 32-bit hash（8 位小寫 hex），value＝單字代碼 H/S/A/D/U/Y/T。共 584 條。
+   查法行 C 嘅 dlg106Lookup（正規化＋hash 規格同生成器鎖死，唔好手改）。 */
+const DLG106_EMOTION_MAP = {"2f00e87b":"T","f6977426":"T","a18ea3d0":"D","4dabb9de":"S","2ef3fe4b":"T","14337629":"T","5714abb4":"A","2b60d4a2":"D","1c3d6c38":"S","3713c3d5":"T","8f2bb86e":"H","c419e507":"A","7b7a6070":"S","412477bc":"T","c0f073a5":"T","8cee0d6b":"H","a9ad1b5f":"H","a8dfa207":"T","06b0ffb6":"T","7e25642f":"T","d51caa23":"A","235c5986":"D","c4ef22f3":"D","6bba3820":"D","708c51b5":"D","a8b8d569":"H","17aaf6af":"T","6ace561f":"H","45158b8d":"H","74cbf679":"H","2539fdbd":"T","2cc66f94":"T","3b767bea":"S","5bf83bc7":"D","c245a25f":"D","99b5480e":"D","7612653d":"D","e27291f1":"S","86601f7b":"T","dc29c8c6":"H","b96b6721":"T","d3e8b6e0":"D","7d778bd2":"S","f870d497":"D","4dad3dfe":"D","c53f0a43":"T","952991ea":"H","f5a9506c":"S","4c86df58":"S","e29620cd":"S","093dc6ca":"T","42465128":"T","916e9920":"D","e62e6ce5":"A","6bf470f7":"A","3e80354b":"D","e0489881":"H","90296382":"H","e5a4a7a7":"T","064997af":"Y","df178f70":"H","2596819f":"A","17ba880c":"Y","73c01fa4":"S","e40e9b2e":"T","dc39686c":"T","240c48ef":"T","a02d1a1a":"D","3f2f1aa0":"Y","9918892c":"H","bb312a80":"Y","b0168efa":"Y","3369fc36":"D","d2efbd12":"D","88adefa3":"T","9eb943d0":"H","4827eda5":"T","8306de8b":"T","2f0edc58":"T","e0284d9a":"T","31395936":"T","c56beac6":"S","60e8f4cf":"S","ab839012":"A","b7230faa":"S","fdd92a7f":"T","c93bf50a":"S","94e61ef1":"T","c72f896e":"T","0829d41b":"T","92e5c5b3":"D","59fb8a0d":"T","a5578932":"S","854d01f6":"S","11a27d28":"T","7975940c":"T","b69eabb8":"T","c5f86836":"D","5b9ff3b9":"A","d4917e14":"S","a0c9ce84":"H","9a9b5979":"D","432e4a27":"S","9cff7ae3":"H","e361f6a1":"A","fb950195":"S","3f7f982e":"U","ab84a7ce":"T","fe439b36":"D","bd22df27":"U","e9b341f4":"H","8263a0dc":"D","e1d6ccac":"D","cefe66a5":"A","d81d14ca":"A","40835e9a":"A","7032eaf7":"H","c869781c":"S","fec1373f":"S","7e72a512":"T","447f1e8b":"U","62c1dedc":"A","ae84b82c":"Y","04798a43":"S","433cc60e":"H","bb30eb96":"H","1d332749":"S","8b9abe10":"T","b1eb4f79":"U","86558dd4":"H","bcd42eb3":"U","ccc1d6db":"A","0c34a1d7":"T","5d837206":"Y","c4773966":"D","e0205ad2":"S","b745c3d9":"U","3e8054b6":"S","e8bd222a":"H","d615abbd":"H","20575267":"S","06e1c29e":"S","3f1b7b0d":"U","dc7cd73d":"T","f0485ddc":"T","802ab65a":"H","c8b3f724":"Y","99c9b293":"U","31419d5d":"Y","ba37aa91":"H","bc487821":"H","ae4f74e7":"H","2acfe341":"S","83408b47":"S","6f78e22c":"H","4c294202":"U","69eef7be":"H","44ecbbf7":"D","c6a6e6ec":"H","0b8156da":"S","6fa3a414":"T","0668f41d":"H","2437aebf":"H","be95f31e":"H","cf5b9d75":"H","f09a46f6":"S","d9316ba6":"T","e8d13e40":"T","e092ec11":"U","bb5952a6":"H","38e25a31":"H","ec8c97cb":"S","ca1c5352":"U","9e8b6f49":"H","c798c0ff":"D","0215b15d":"H","7a38f83c":"S","3e37920a":"H","7b54d8bb":"Y","d270bf0b":"T","9daea904":"D","b05afb56":"A","e38ec8dc":"S","5f6515b3":"S","22df172c":"D","1ad44ad7":"H","92692454":"A","7e3a3d71":"D","031f1be1":"D","ee679eae":"S","c94191e8":"S","85365d6b":"D","cf68d299":"S","61ba724e":"D","67080b2b":"U","d26e0c34":"S","f33b95af":"H","bfcd2ac0":"Y","ddc34236":"U","66804453":"D","2095bf64":"D","e88a5473":"S","f9280649":"A","6e530624":"H","85b478b5":"H","47d624c8":"S","62354019":"D","c249bc9c":"D","7264a5a4":"D","ee311042":"H","f348cdc5":"S","d244aa75":"H","a08a9a37":"H","452840a4":"T","62a6ac98":"T","93d40eca":"H","588d1db4":"H","3151fe9d":"T","8d2cfc01":"Y","d339d6d1":"A","e9e13473":"Y","692c5bc4":"S","592b9c95":"A","7841bbed":"S","17270d6f":"U","8011e74b":"S","a1626606":"H","d5601ee6":"D","f9b0b9e6":"T","a6a70282":"S","24d3e0cf":"D","2cf25b3e":"D","0e77b099":"S","84bf7b98":"H","565fc3aa":"D","735fddfb":"H","eb821f65":"H","b693c229":"Y","40dabb1b":"S","64ccc3bd":"S","fc9198ad":"H","b4b96a1e":"S","530346f8":"D","2c0cd0e2":"U","4201fd88":"U","1419fc51":"T","e1be4421":"S","fd5d5472":"T","a0268e6d":"Y","75731372":"U","106f223b":"Y","64fb5624":"S","9cafb2df":"S","308a8dfe":"H","3ffb68ff":"T","cb42c63d":"S","d3e125d7":"A","82184907":"S","eba0228c":"Y","4e4207f4":"S","d2cd13d1":"S","1a75dc16":"T","2c5e052c":"S","61a73422":"U","6a120ac9":"T","6c899070":"H","d9a80a25":"D","5e365965":"D","1c13388b":"S","3f6b78eb":"H","a51817be":"H","a684584f":"A","ad29ef42":"U","0a9e2b59":"S","1752ee43":"U","f386d88b":"T","53f2e1ab":"Y","a96cc2a8":"A","27023734":"S","05f18cd6":"Y","580d9624":"Y","4de21e0f":"S","501759d0":"S","f9d0273f":"Y","269d4a36":"Y","1b3127a2":"S","fd282105":"H","b2b10981":"S","c715c7e5":"S","71433517":"S","23dbe024":"S","35c1b3a4":"T","fcebc781":"A","cdd2febc":"S","beb5ea07":"S","18eedbf4":"H","c9de2927":"U","6c248d99":"S","b3f83e1c":"A","b38a38bb":"U","750615b7":"T","360812d6":"S","0e888b20":"A","0495abea":"H","dd0497ca":"Y","9e2b7306":"Y","8eaa8038":"S","51b5f32c":"S","f7dd886f":"H","70e490fa":"T","e9460b15":"H","6642b637":"S","513fdba4":"T","fb42caf4":"S","c3445738":"T","bc0d5379":"S","96178f46":"H","9f64a9ed":"H","914ef7da":"S","45f1f1d4":"U","1d54d657":"A","b709ae42":"H","750d5c00":"H","817c7fe6":"H","d02b5b7d":"Y","e3281abc":"Y","8d83d347":"S","b88d3fff":"Y","79c88d85":"Y","5164ffc6":"U","3fb069a0":"H","452770b5":"D","d1ab7f5b":"Y","e4ee3d23":"D","5fd3733d":"Y","ce5ce803":"H","842e6649":"H","ebe20d31":"S","4d38f1c3":"D","258da2b0":"S","9eca182d":"H","bbad2d25":"H","676234dd":"S","fd8a720d":"U","9474a2df":"H","15be48b2":"H","d1872aa0":"H","188f18d8":"H","cd3112fe":"H","0d566454":"Y","bb4ca150":"U","fb785146":"H","a0c366a5":"H","7d97807a":"Y","c68106ec":"H","b6dd6923":"S","2eaa2ecc":"H","4873a6d7":"Y","6e2f060d":"H","fb2b13da":"S","27059f6f":"S","197b5eca":"H","4b3c7e39":"U","8524ed50":"S","976dc60d":"H","95451768":"S","83f573f3":"U","54bdcde7":"S","7b9ad2f4":"H","b7c86448":"H","82c9978c":"H","c3864524":"D","f52aab36":"D","0e3c9f10":"S","0014a24a":"U","60201797":"D","d590df69":"H","2fe6a250":"Y","1d9ff6be":"Y","ed2e50df":"U","28e9fde6":"D","f166b0dc":"Y","691a0632":"U","6c6d1332":"S","cd6e37f3":"S","bba42b96":"H","d7b0013b":"Y","6b5059c0":"H","8daae821":"H","b9387664":"S","9ccc1450":"D","ae19ccc5":"H","449c6f05":"H","458cffcd":"H","5cd9aa7f":"D","a83111d5":"H","0109a007":"H","2dfd49ff":"U","8bd3daeb":"T","27722bfc":"H","2ea99918":"S","74a3cc6a":"T","746dba1d":"H","c14697c6":"D","0c11466d":"T","8c09ab74":"S","f0880e76":"D","c53d25ef":"S","bbb5bdae":"D","a13dcbd6":"T","48a40fcf":"T","629654c9":"H","8722859c":"S","6d2ae2ad":"D","fc700393":"D","89b6503d":"D","e27e03f6":"D","c1cd2bb4":"D","7b0fa6a4":"A","41aee540":"S","d9f47cb9":"H","6871fa1a":"S","4ab57475":"D","96aac431":"S","0622c99c":"T","3ec664ab":"T","794d0a0b":"H","8093780f":"S","8535fb3d":"D","184a69f2":"U","63b2bd74":"Y","a79eb4e6":"H","8837fc4c":"H","c59a4ec0":"T","5954f98b":"A","601e19e7":"Y","808ec1e6":"T","0a9effc4":"S","0d9932fe":"H","ddb97a0c":"D","3b51d5cb":"S","2bc7106c":"D","8116c21e":"A","504b9fad":"A","1c6ec958":"U","3d5db89e":"H","a31dbe06":"H","06254e0b":"A","728dbb33":"D","9002f145":"H","7f281770":"S","bd637493":"D","fbeac870":"H","f38f2f73":"Y","fb67553f":"H","199b1c72":"S","cc525ece":"T","b330fbda":"A","8ad17658":"S","086d16f1":"D","e90ba441":"S","ea423cf2":"A","3422ef8b":"H","3410e0f1":"A","a8fcb774":"D","9f53a984":"U","a847d238":"H","e2e236f6":"H","4c94092f":"H","b91b2516":"A","01aecda7":"U","685b546d":"H","f4a64efc":"S","1e706bce":"S","edbaf262":"D","f567f5ee":"S","5d110c1d":"S","ef22c5c9":"H","0bda99f4":"H","d0071575":"S","7a25da18":"D","d9ad93af":"H","4e470777":"S","2e3c650d":"S","08b96dfb":"A","fd36765c":"T","d9eb3894":"D","b83c001d":"T","e9b6d5bd":"S","9fad0811":"T","8ae4ead3":"D","aa4cc343":"D","b065e226":"A","5d3af524":"S","f2ada5c8":"D","9aec72aa":"S","18dbe260":"D","31a45523":"S","c7506609":"Y","02c7b021":"S","844a77ba":"S","3ecc5eb9":"D","bd71d8b4":"H","007f2090":"D","e85b0413":"H","6efb2755":"S","7c8c0068":"D","0bee1af4":"T","35789a39":"T","e9c8ab21":"A","da408c22":"S","4e1c5bde":"U","750afdaf":"Y","5401d499":"U","5974a1db":"T","2cd634c4":"T","20edaa09":"D","d30ab863":"H","fce81069":"T","94fbaf05":"T","b1167339":"Y","1672c3dd":"T","ebb447f6":"T","ffbbd1ff":"T","b5e6ef90":"T","d381adb0":"H","b1c965ee":"T","9f837dac":"S","8532fe66":"T","9f5a009e":"H","d9905d0d":"S","42041d60":"H","7d40926c":"S","dd3ea949":"T","4220f2bf":"T","cc895a85":"S","a0a643c3":"Y","a0471254":"S","67679442":"T","8242266c":"S","e9e2a7ad":"H","ffe8ff60":"S","fe7682f1":"S","d717a8ba":"S","2de3cf1f":"S","b7a49b51":"S","1c50e499":"S","54cfb350":"H","409530c6":"D","39f31114":"A","17bb1574":"H","f82d3b46":"S","71fda987":"S","bd6b46e1":"S","eee0e685":"S","ce761a19":"S","43b3a96e":"S","195d423b":"H","215c4c6d":"H","d3ba15b6":"S","6d487cd5":"S","1b4535f3":"H","e738cc13":"H","2dd0bf77":"H","0a2688a5":"H","4de7d35c":"H","b801b4d8":"H","9f19ba4d":"S","74328531":"H","03751a66":"Y","c857df28":"S","d360a9d9":"Y","8cfe3fe2":"S","33dc0e65":"S","d1caf3e2":"S","40168224":"S","2a7e53ee":"S","6b314f20":"S","c8c92a71":"D","48a45754":"S","93c53ef6":"H","04e0b521":"Y","5f8cee19":"H","0117b5ae":"H"};
+/* ---- C classifier_runtime.js 原樣搬入（handoff106）：正規化／hash／lookup／關鍵字分類器。
+   解析次序：beat emotion 欄 → 本 map → dlg106Classify → neutral。 ---- */
+// classifier_runtime.js — v20a106 runtime fallback classifier + emotion_map lookup helpers.
+// Pure functions, no dependencies. Paste into index.html (or load as a classic script).
+// Ported 1:1 from linji-expression-inventory/work/classify.py (keyword scoring),
+// except the Python-only emotion_field override (27 source rows) which has no runtime input;
+// those exact lines are already covered by emotion_map_embed.json, built from final categories.
+//
+// ---- normalize + hash: MUST stay in lockstep with the emotion_map_embed.json generator ----
+// normalize(text):
+//   1) Unicode NFKC.
+//   2) Delete every whitespace character.
+//   3) Delete every character in DLG106_PUNCT (the set below, itself NFKC-folded at build time
+//      so fullwidth forms collapse onto their halfwidth equivalents, matching the generator).
+//   4) ASCII A-Z -> a-z. All other characters kept as-is.
+// hash(text): FNV-1a 32-bit over the UTF-8 bytes of normalize(text);
+//   offset basis 2166136261, prime 16777619; returns 8-char lowercase hex (zero-padded).
+var DLG106_PUNCT = new Set(("，。！？；：、…‥·—–-「」『』﹝﹞（）()【】［］《》〈〉\"'“”‘’.,!?;:~～＠@#＃*＊/\\|｜%％&＆=＝+＋_＿`｀^＾$＄<>＜＞{}｛｝").normalize("NFKC"));
+function dlg106Normalize(text) {
+  var t = String(text).normalize("NFKC");
+  var out = "";
+  for (var i = 0; i < t.length; i++) {
+    var ch = t[i];
+    if (/\s/.test(ch)) continue;
+    if (DLG106_PUNCT.has(ch)) continue;
+    if (ch >= "A" && ch <= "Z") ch = ch.toLowerCase();
+    out += ch;
+  }
+  return out;
+}
+function dlg106Hash(text) {
+  var bytes = new TextEncoder().encode(dlg106Normalize(text));
+  var h = 2166136261;
+  for (var i = 0; i < bytes.length; i++) {
+    h ^= bytes[i];
+    h = Math.imul(h, 16777619);
+  }
+  return (h >>> 0).toString(16).padStart(8, "0");
+}
+var DLG106_CODES = { H: "happy", S: "serious", A: "angry", D: "sad", U: "surprise", Y: "shy", T: "think" };
+// map: the "map" object from emotion_map_embed.json. Returns a category name or null on miss.
+function dlg106Lookup(text, map) {
+  var code = map[dlg106Hash(text)];
+  return code ? (DLG106_CODES[code] || null) : null;
+}
+// ---- keyword classifier (fallback on map miss) ----
+var DLG106_KW = {
+  angry: ["嬲", "鬧人", "收聲", "夠啦", "黐線", "痴線", "冇用", "廢話", "滾", "唔准",
+    "唔得咁", "頂你", "激死", "火都嚟", "冇眼睇", "不知所謂", "離譜", "豈有此理",
+    "唔好再", "閉嘴", "衰人", "仆", "屌", "叉", "阻住", "唔順眼", "反白眼",
+    "唔耐煩", "冇資格", "妄想", "一步登天", "唔好嚇", "教訓", "警告你"],
+  sad: ["唉", "灰心", "失落", "可惜", "冇咗", "唔捨得", "失望", "後悔", "眼淚", "喊",
+    "攰死", "好攰", "辛苦命", "冇機會", "冇希望", "離開呢行", "移民", "走咗",
+    "散水", "過氣", "俾人忘記", "冇人記得", "痛", "瘀傷", "受傷", "唔開心",
+    "難過", "心酸", "滄桑", "攞命", "頂唔順", "算啦", "唉聲", "唉…", "冇癮"],
+  surprise: ["咦", "哇", "嘩", "吓？", "吓!", "竟然", "估唔到", "唔係嘛", "真係？",
+    "真㗎？", "乜話", "點會", "嚇親", "嚇死", "冇諗過", "意想不到", "咁都得",
+    "唔係啩", "有冇搞錯", "乜你"],
+  shy: ["冧", "面紅", "心跳", "鍾意你", "拍拖", "男朋友", "女朋友", "靦腆", "唔好意思",
+    "尷尬", "掛住你", "錫晒", "鍾意", "傾慕", "心儀", "暗戀", "表白", "一齊行",
+    "陪我", "多謝你陪", "你對我", "我對你", "好感動", "臉紅", "唔敢望"],
+  happy: ["哈哈", "恭喜", "好嘢", "掂晒", "掂！", "開心", "正！", "真係正", "勁", "叻",
+    "贏咗", "成功", "攞獎", "得獎", "笑到", "好彩", "多謝", "唔該晒", "太好",
+    "好消息", "請你食", "我請", "抵到", "發達", "出頭", "紅咗", "升咗",
+    "哈哈哈", "笑死", "好笑", "抵死", "壞笑"],
+  serious: ["記住", "記牢", "聽住", "認真", "標準", "規矩", "唔好以為", "決定咗",
+    "唔好浪費", "要記得", "唔好急", "唔好貪", "先至係", "先係正經", "唔該你",
+    "企定", "唔好亂", "講清楚", "我要睇到", "唔可以", "唔應該", "必須",
+    "唔好再錯", "小心啲", "唔好輕敵", "唔好鬆懈", "一係", "冇得揀"],
+  think: ["諗下", "諗清楚", "唔知點", "唔知係", "究竟", "或者係", "可能係", "唔明白",
+    "唔明點解", "點解會", "心諗", "沉思", "諗緊", "諗嚟諗去", "如果係",
+    "會唔會係", "唔肯定", "猶豫"]
+};
+var DLG106_PRIORITY = ["angry", "shy", "surprise", "sad", "happy", "serious", "think"];
+// Returns one of: angry sad surprise shy happy serious think neutral.
+function dlg106Classify(text) {
+  var t = String(text);
+  var scores = {};
+  for (var cat in DLG106_KW) {
+    var s = 0;
+    var kws = DLG106_KW[cat];
+    for (var i = 0; i < kws.length; i++) {
+      if (t.indexOf(kws[i]) !== -1) s++;
+    }
+    if (s > 0) scores[cat] = s;
+  }
+  // Whole-line bracketed text = inner monologue -> think +1 (same rule as classify.py).
+  var stripped = t;
+  var trail = "。！？…";
+  while (stripped.length && trail.indexOf(stripped[stripped.length - 1]) !== -1) {
+    stripped = stripped.slice(0, -1);
+  }
+  if (t.charAt(0) === "（" && stripped.endsWith("）")) {
+    scores["think"] = (scores["think"] || 0) + 1;
+  }
+  var cats = Object.keys(scores);
+  if (!cats.length) return "neutral";
+  var best = 0;
+  for (var j = 0; j < cats.length; j++) best = Math.max(best, scores[cats[j]]);
+  for (var k = 0; k < DLG106_PRIORITY.length; k++) {
+    if (scores[DLG106_PRIORITY[k]] === best) return DLG106_PRIORITY[k];
+  }
+  return "neutral";
+}
+/* beat 欄位正規化：DLG category 直用；舊 emotion 詞彙（SP_EMOTION_V1）同舊 expression
+   詞彙經對照表轉 category；認唔到回空字串（交畀 map／分類器接力）。 */
+function dlg106NormCategory(v){
+  const s = String(v==null?"":v).trim().toLowerCase();
+  if(!s) return "";
+  if(DLG106_CATEGORIES.indexOf(s)>=0) return s;
+  if(DLG106_OLD_EMOTION_TO_CAT[s]) return DLG106_OLD_EMOTION_TO_CAT[s];
+  if(DLG106_EXPR_TO_CAT[s]) return DLG106_EXPR_TO_CAT[s];
+  return "";
+}
+/* 情緒解析（規格次序）：emotion/expression 欄 → 嵌入 map → 分類器 → neutral。
+   src: { emotion, expression, mapNodeId, speakerId, text } */
+function dlg106ResolveCategory(src){
+  src = src || {};
+  let c = dlg106NormCategory(src.emotion);
+  if(c) return c;
+  c = dlg106NormCategory(src.expression);
+  if(c) return c;
+  try{
+    const mc = dlg106Lookup(src.text==null?"":src.text, DLG106_EMOTION_MAP);
+    c = dlg106NormCategory(mc);
+    if(c) return c;
+  }catch(_e){}
+  return dlg106Classify(src.text);
+}
+function dlg106ExprFor(category){
+  return DLG106_CAT_TO_EXPR[dlg106NormCategory(category) || "neutral"] || "base";
+}
+/* 阿偉成長階段：跟現行級數機制 enc79PlayerTier（0 臨記／1 配角／2 主角／3 天王）——
+   三階段造型：tier 0–1 → awi、2 → awi_s2、3 → awi_s3。函數未載入時退 awi。 */
+function dlg106AweiStem(){
+  try{
+    if(typeof enc79PlayerTier==="function"){
+      const t = enc79PlayerTier()|0;
+      if(t>=3) return "awi_s3";
+      if(t===2) return "awi_s2";
+    }
+  }catch(_e){}
+  return "awi";
+}
+function dlg106StemFor(speakerId){
+  if(speakerId==="awi") return dlg106AweiStem();
+  return String(speakerId||"");
+}
+function dlg106HasFullbody(speakerId){
+  return !!(speakerId && DLG106_GAZE[speakerId]);
+}
+/* 全身圖候補鏈：該 expr（webp→png）→ 同階段 base →（阿偉跨階段 base）→ 空。
+   呼叫方會再喺尾加返各自嘅舊圖後備（企立／bust／剪影），保證唔出破圖。 */
+function dlg106Candidates(speakerId, category){
+  if(!dlg106HasFullbody(speakerId)) return [];
+  const expr = dlg106ExprFor(category);
+  const stem = dlg106StemFor(speakerId);
+  const out = [];
+  const push = (u)=>{ if(u && out.indexOf(u)<0) out.push(u); };
+  const addStem = (st, ex)=>{
+    push("assets/story/fullbody/"+st+"_"+ex+".webp?v=20a106");
+    push("assets/story/fullbody/"+st+"_"+ex+".png?v=20a106");
+  };
+  if(expr!=="base") addStem(stem, expr);
+  addStem(stem, "base");
+  if(speakerId==="awi" && stem!=="awi"){ if(expr!=="base") addStem("awi", expr); addStem("awi", "base"); }
+  return out;
+}
+function dlg106FlipGaze(g){ return g==="left" ? "right" : (g==="right" ? "left" : "front"); }
+/* 雙人企位：左位要望右、右位要望左。flipSafe 先准翻（scaleX(-1)）。
+   評分：啱向 2 分／正面 1 分／背向 0 分；每翻一次 −0.5；阿偉企左 +0.25（預設構圖）。
+   衝突時唔翻得嗰個自然優先就位（佢冇翻轉選項，分數只由企位決定），翻得嗰個翻轉遷就。
+   表外 speaker 回 null（呼叫方行返舊呈現）。table 參數只供測試注入。 */
+function dlg106GazeEntry(id, T){
+  /* 阿偉視線跟成長階段圖組（awi_s2／awi_s3 各有自己一條）；其餘角色直查。 */
+  if(id==="awi"){ const st = dlg106AweiStem(); return T[st] || T[id] || null; }
+  return T[id] || null;
+}
+function dlg106ResolveSides(idA, idB, table){
+  const T = table || DLG106_GAZE;
+  const a = dlg106GazeEntry(idA, T), b = dlg106GazeEntry(idB, T);
+  if(!a && !b) return null;
+  if(!b || idA===idB){
+    if(!a) return null;
+    /* 獨角：企望向畫面內側嗰邊，唔翻 */
+    return { single:{ id:idA, side:(a.gaze==="left" ? "right" : "left"), flip:false } };
+  }
+  if(!a){
+    return { single:{ id:idB, side:(b.gaze==="left" ? "right" : "left"), flip:false } };
+  }
+  const faceScore = (entry, flip, need)=>{
+    const eff = flip ? dlg106FlipGaze(entry.gaze) : entry.gaze;
+    if(eff===need) return 2;
+    if(eff==="front") return 1;
+    return 0;
+  };
+  let best = null;
+  const orders = [ [idA,idB], [idB,idA] ];
+  for(let o=0;o<orders.length;o++){
+    const L = orders[o][0], R = orders[o][1];
+    const eL = dlg106GazeEntry(L, T), eR = dlg106GazeEntry(R, T);
+    const flipsL = eL.flipSafe ? [false,true] : [false];
+    const flipsR = eR.flipSafe ? [false,true] : [false];
+    for(const fL of flipsL){
+      for(const fR of flipsR){
+        let sc = faceScore(eL, fL, "right") + faceScore(eR, fR, "left");
+        sc -= (fL?0.5:0) + (fR?0.5:0);
+        if(L==="awi") sc += 0.25;
+        if(!best || sc > best.score) best = { score:sc, left:{ id:L, flip:fL }, right:{ id:R, flip:fR } };
+      }
+    }
+  }
+  return best;
+}
+/* 全身圖載入失敗後備鏈（同 __spBustErr 同模式）：data-dlg-fallbacks 逐個試，
+   試盡就隱藏張圖（舞台剩返對方＋對話框，唔出破圖）。 */
+window.__dlg106Err = function(img){
+  try{
+    if(!img) return;
+    const fb = String(img.getAttribute("data-dlg-fallbacks")||"").split("|").map(s=>s.trim()).filter(Boolean);
+    const next = fb.shift();
+    if(!next){ try{ img.style.visibility = "hidden"; }catch(_e){} return; }
+    img.setAttribute("data-dlg-fallbacks", fb.join("|"));
+    img.src = next;
+  }catch(_e){}
+};
+try{ window.DLG106 = { GAZE:DLG106_GAZE, MAP:DLG106_EMOTION_MAP, resolveCategory:dlg106ResolveCategory, classify:dlg106Classify, lookup:dlg106Lookup, hash:dlg106Hash, normalize:dlg106Normalize, exprFor:dlg106ExprFor, candidates:dlg106Candidates, resolveSides:dlg106ResolveSides, aweiStem:dlg106AweiStem, hasFullbody:dlg106HasFullbody }; }catch(_e){}
+/* ===== DLG106 模組完 ===== */
+
 /**
  * WIRING_STORY_PLAY_v1 — 最小對白／choices 播放器（建基於 StoryOC）
  */
@@ -25864,6 +26340,7 @@ const StoryPlay = (()=>{
     "高文瀚":"gao_wenhan","藍若曦":"lan_ruoxi","張克凡":"cheung_hakfan","雷勁":"lui_ging",
     "關海媚":"kwan_hoimei","鄭威廉":"cheng_william","唐素雲":"tong_souwan","方小龍":"fong_siulung",
     "徐寶珊":"tsui_poushan","莫少輝":"mok_siufai","金九":"uncle_kim","鄧麗萍":"tang_laiping",
+    "陸柏言":"luk_baakyin","廖炳星":"liu_bingxing","魏詠男":"ngai_wingnaam","葉敏芝":"yip_manji","麥震東":"mak_zhendong","駱家聲":"lok_gasing","彭少祺":"pang_siuki","鍾楚凝":"chung_choning","顧明輝":"gu_mingfai","蘇芷茵":"so_jiyan","齊鎮海":"chai_zanhoi","程天諾":"ching_tinlok",
     "藍父":"extra_lan_father","約會對象":"generic_date","助導阿玲":"extra_ad_ling","助導阿森":"extra_ad_sam",
     "助導":"generic_crew","副導演芬姐":"extra_ad_fen","導演陸志明":"extra_dir_luk",
     "監製周世昌":"extra_prod_chow","院線助理":"generic_cinema_asst","周刊編輯":"generic_mag_editor","週刊編輯":"generic_mag_editor"
@@ -25965,7 +26442,12 @@ const StoryPlay = (()=>{
   }
   function spResolveSpeakerId(b){
     b = b || {};
-    if(b.speakerId!=null && String(b.speakerId).trim()!=="") return String(b.speakerId).trim();
+    if(b.speakerId!=null && String(b.speakerId).trim()!==""){
+      const raw106 = String(b.speakerId).trim();
+      if(raw106==="agent") return "ho_sang"; /* v20a106：NPC 鍵 agent＝何生 */
+      if(raw106==="player") return "awi";    /* v20a106：NPC 鍵 player＝阿偉 */
+      return raw106;
+    }
     const sp = String(b.speaker==null?"":b.speaker).trim();
     if(SP_SPEAKER_LEGACY[sp]) return SP_SPEAKER_LEGACY[sp];
     try{
@@ -26376,8 +26858,63 @@ const StoryPlay = (()=>{
         : spNormExpression(spExprFromEmotion(b.emotion, speakerId)),
       system,
       beat: b,
+      /* v20a106 DLG106：呈現層情緒分類＋電話聲判定（唔改 beat 原始數據） */
+      dlgCat: system ? "neutral" : dlg106ResolveCategory({ emotion:b.emotion, expression:b.expression, mapNodeId:String(n.id||""), speakerId:speakerId, text:lines[_sess.lineIdx] }),
+      dlgPhone: !system && (b.phone===true || b.kind==="phone" || /電話/.test(String(b.speaker||"")) || /^（電話/.test(String(lines[_sess.lineIdx]||""))),
       beatIdx:_sess.beatIdx, lineIdx:_sess.lineIdx, beatCount:beats.length, lineCount:lines.length
     };
+  }
+
+  /* v20a106 DLG106：由已播 beats 推「邊個上畫面」——講者＋最近一位另一方講者；
+     旁白句沿用上一組二人；功能 NPC（extra_unknown）唔佔全身位。 */
+  function spDlgPairIds(cur){
+    const n = _sess && _sess.node;
+    if(!n) return [];
+    const beats = n.beats || [];
+    const lastIdx = cur.system ? cur.beatIdx - 1 : cur.beatIdx;
+    const order = [];
+    for(let i=0;i<=lastIdx && i<beats.length;i++){
+      const b = beats[i] || {};
+      if(spIsSystemBeat(b)) continue;
+      const id = spResolveSpeakerId(b);
+      if(!id || id==="extra_unknown") continue;
+      const at = order.indexOf(id);
+      if(at>=0) order.splice(at,1);
+      order.push(id);
+    }
+    if(cur.system) return order.slice(-2);
+    const others = order.filter(x=>x!==cur.speakerId);
+    const pair = [];
+    if(others.length) pair.push(others[others.length-1]);
+    if(cur.speakerId) pair.push(cur.speakerId);
+    return pair;
+  }
+  /* v20a106 DLG106：雙人全身圖 HTML（企位／翻轉行視線表；明暗跟講者；
+     後備鏈尾接返現行企立／bust 候補，全身檔未入庫都唔出破圖）。 */
+  function spDlgCharsHtml(cur, mode106){
+    const pair = spDlgPairIds(cur).filter(id=>dlg106HasFullbody(id));
+    if(!pair.length) return "";
+    const sides = pair.length>=2
+      ? dlg106ResolveSides(pair[pair.length-2], pair[pair.length-1])
+      : dlg106ResolveSides(pair[0], pair[0]);
+    if(!sides) return "";
+    const slots = sides.single
+      ? [{ id:sides.single.id, flip:sides.single.flip, pos:(sides.single.side==="right" ? "dlg106-right" : "dlg106-left") }]
+      : [{ id:sides.left.id, flip:sides.left.flip, pos:"dlg106-left" }, { id:sides.right.id, flip:sides.right.flip, pos:"dlg106-right" }];
+    const activeId = cur.system ? null : cur.speakerId;
+    const html = slots.map(slot=>{
+      const isActive = !!(activeId && slot.id===activeId);
+      const cat = isActive ? cur.dlgCat : "neutral";
+      const cands = dlg106Candidates(slot.id, cat);
+      try{ const lb = spBustUrl(slot.id, "default"); if(lb && cands.indexOf(lb)<0) cands.push(lb); }catch(_e){}
+      try{ spBustCandidates(slot.id, "default").slice(0,4).forEach(u=>{ if(u && cands.indexOf(u)<0) cands.push(u); }); }catch(_e){}
+      if(!cands.length) return "";
+      let bright = "0.6", z = 3;
+      if(mode106==="phone"){ bright = "0.8"; z = 3; }
+      else if(mode106!=="narration" && isActive){ bright = "1"; z = 4; }
+      return `<img class="dlg106-char ${slot.pos}${slot.flip?" dlg106-flip":""}" src="${esc(cands[0])}" alt="" data-dlg-id="${esc(slot.id)}" data-dlg-fallbacks="${esc(cands.slice(1).join("|"))}" draggable="false" style="filter:brightness(${bright});z-index:${z}" onerror="try{window.__dlg106Err&&window.__dlg106Err(this)}catch(_e){}"/>`;
+    }).join("");
+    return html ? `<div class="dlg106-chars" aria-hidden="true">${html}</div>` : "";
   }
 
   function advance(){
@@ -26635,12 +27172,34 @@ const StoryPlay = (()=>{
         const bgDataS = esc(bgImgsS.join("|"));
         /* v20a105 UI105 D-6：旁白句改入底部對話框（同對白同一塊板，講者名留空），
            唔再浮喺畫面中間；畫面只留場景＋（如有）企立。 */
-        stageBody = `<div class="sp-stage sp-mode-narration" data-sp-kind="system">
+        /* v20a106 DLG106：旁白句若已有對話二人組，兩人齊落 0.6 留喺畫面（唔出名牌）；
+           未有二人組（開場旁白）維持 v105 純場景＋底部旁白板。 */
+        const charsNar106 = spDlgCharsHtml(cur, "narration");
+        stageBody = `<div class="sp-stage sp-mode-narration${charsNar106?" dlg106-on":""}" data-sp-kind="system">
           <div class="sp-bg-layer ${esc(bgClass)}" data-sp-bg-fallbacks="${bgDataS}" aria-hidden="true"></div>
           <div class="sp-bg-scrim" aria-hidden="true"></div>
+          ${charsNar106}
           <div class="sp-stage-inner">
             <div class="sp-plate sp-plate-narration105">
               <div class="sp-line sp-narration">${esc(cur.text)}</div>
+            </div>
+          </div>
+        </div>`;
+      } else if(dlg106HasFullbody(cur.speakerId) && spDlgCharsHtml(cur, cur.dlgPhone ? "phone" : "dialogue")){
+        /* v20a106 DLG106：有全身資產嘅具名 speaker 行雙人全身呈現（場景底沿用
+           spBgClass 逐地點來源，冇改背景邏輯）；名牌跟講者，電話聲轉藍灰名牌。 */
+        const chars106 = spDlgCharsHtml(cur, cur.dlgPhone ? "phone" : "dialogue");
+        const bgImgsD = spBgImageCandidates(bgClass);
+        const bgDataD = esc(bgImgsD.join("|"));
+        const name106 = (cur.displayName||cur.speaker||"") + ((cur.dlgPhone && !/電話/.test(cur.displayName||"")) ? "（電話聲）" : "");
+        stageBody = `<div class="sp-stage sp-mode-dialogue dlg106-on" data-sp-kind="dialogue" data-speaker-id="${esc(cur.speakerId||"")}">
+          <div class="sp-bg-layer ${esc(bgClass)}" data-sp-bg-fallbacks="${bgDataD}" aria-hidden="true"></div>
+          <div class="sp-bg-scrim" aria-hidden="true"></div>
+          ${chars106}
+          <div class="sp-stage-inner">
+            <div class="sp-plate dlg106-plate${cur.dlgPhone?" dlg106-plate-phone":""}">
+              <div class="sp-speaker${cur.dlgPhone?" dlg106-phone-name":""}">${esc(name106)}</div>
+              <div class="sp-line">${esc(cur.text)}</div>
             </div>
           </div>
         </div>`;
@@ -50154,6 +50713,12 @@ function enc79EnsureCss(){
       "#enc79-overlay .e79-stage{position:relative;flex:1 1 auto;overflow:hidden;}",
       "#enc79-overlay .e79-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.92;}",
       "#enc79-overlay .e79-stand{position:absolute;right:2%;bottom:0;height:88%;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));}",
+      /* v20a106 DLG106：巧遇改雙人全身（高＝舞台 50%）；明暗／z-index 由 render 逐句 inline 設定，filter 過渡 250ms */
+      "#enc79-overlay .e79-char{position:absolute;bottom:0;height:50%;max-width:48%;object-fit:contain;object-position:bottom center;transition:filter 250ms ease;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));}",
+      "#enc79-overlay .e79-char-l{left:2%;}",
+      "#enc79-overlay .e79-char-r{right:2%;}",
+      "#enc79-overlay .e79-char.flip{transform:scaleX(-1);}",
+      "#enc79-overlay .e79-name.phone{color:#9fc3dd;}",
       "#enc79-overlay .e79-box{position:relative;background:linear-gradient(180deg,#241a10,#1a120a);border-top:2px solid #a97f2f;padding:12px 14px calc(12px + env(safe-area-inset-bottom));color:#f3e8d5;}",
       "#enc79-overlay .e79-name{font-weight:800;color:#ffd968;margin:0 0 4px;font-size:.95rem;}",
       "#enc79-overlay .e79-line{margin:0 0 10px;line-height:1.55;font-size:1rem;min-height:3.1em;white-space:pre-wrap;}",
@@ -50211,7 +50776,8 @@ function enc79PlayEncounter(starId, locId, wasMet){
   ov.innerHTML =
     '<div class="e79-stage">' +
       (bg ? '<img class="e79-bg" alt="">' : "") +
-      '<img class="e79-stand" alt="">' +
+      '<img class="e79-char e79-char-l" alt="">' +
+      '<img class="e79-char e79-char-r" alt="">' +
       '<span class="e79-meta">巧遇 · '+def.name+'</span>' +
       (built.first ? "" : '<button type="button" class="e79-skip">點頭離開</button>') +
     '</div>' +
@@ -50219,13 +50785,62 @@ function enc79PlayEncounter(starId, locId, wasMet){
   document.body.appendChild(ov);
   const bgImg = ov.querySelector(".e79-bg");
   if(bgImg) bgImg.src = bg;
-  const stand = ov.querySelector(".e79-stand");
-  const cands = enc79StandCandidates(starId);
-  let ci = 0;
-  /* v20a105 ENC105（D-2）：候補行晒都唔隱藏——落中性剪影兜底，畫面唔會冇人。 */
-  const tryNext = ()=>{ if(ci>=cands.length){ stand.onerror = null; stand.style.display=""; stand.src = ENC105_STAND_FALLBACK; return; } stand.src = cands[ci++]; };
-  stand.onerror = tryNext;
-  tryNext();
+  /* v20a106 DLG106：雙人全身——企位／翻轉行視線表（阿偉＋嗰位星），
+     候補鏈＝全身圖（按句情緒）→ ENC105 既有企立／bust／剪影鏈（尾有 SVG 兜底，唔會冇人）。 */
+  const sides106 = dlg106ResolveSides("awi", starId);
+  const charL = ov.querySelector(".e79-char-l");
+  const charR = ov.querySelector(".e79-char-r");
+  const slot106 = (img, slot)=>{ img._sid106 = slot ? slot.id : null; if(img && slot && slot.flip) img.classList.add("flip"); };
+  if(sides106 && sides106.left){ slot106(charL, sides106.left); slot106(charR, sides106.right); }
+  else { slot106(charL, { id:"awi", flip:false }); slot106(charR, { id:starId, flip:false }); }
+  const extraCands106 = (sid)=>{
+    if(sid==="awi"){
+      const out = [];
+      try{ if(typeof UI40_STAND!=="undefined" && UI40_STAND.awi) out.push(UI40_STAND.awi); }catch(_e){}
+      out.push("assets/story/c1/char_hero_bust_default.png?v=20a8");
+      out.push(ENC105_STAND_SILHOUETTE); out.push(ENC105_STAND_FALLBACK);
+      return out;
+    }
+    return enc79StandCandidates(sid);
+  };
+  /* 候補鏈逐級退：行晒落 ENC105 中性剪影兜底（data URI 必載入到），唔隱藏、唔出破圖。 */
+  const tryNext = (img)=>{
+    if(!img) return;
+    const list = img._chain106 || [];
+    img._ci106 = (img._ci106 || 0) + 1;
+    if(img._ci106 >= list.length){ img.onerror = null; img.src = ENC105_STAND_FALLBACK; return; }
+    img.src = list[img._ci106];
+  };
+  const paintChar106 = (img, category)=>{
+    if(!img || !img._sid106) return;
+    const key = img._sid106 + "|" + category;
+    if(img.dataset.k106 === key) return;
+    img.dataset.k106 = key;
+    const cands = dlg106Candidates(img._sid106, category);
+    extraCands106(img._sid106).forEach(u=>{ if(u && cands.indexOf(u)<0) cands.push(u); });
+    if(!cands.length) return;
+    img._chain106 = cands; img._ci106 = 0;
+    img.onerror = ()=>{ tryNext(img); };
+    img.src = cands[0];
+  };
+  const paintDlg106 = (step)=>{
+    try{
+      if(!step || step.choice){ [charL, charR].forEach(im=>{ if(im){ im.style.filter = "brightness(0.6)"; im.style.zIndex = 3; } }); return; }
+      const activeId = step.who==="S" ? starId : (step.who==="A" ? "awi" : null);
+      const phone106 = /電話聲/.test(String(step.text||""));
+      nameEl.classList.toggle("phone", !!phone106);
+      [charL, charR].forEach(im=>{
+        if(!im || !im._sid106) return;
+        const isActive = !!(activeId && im._sid106===activeId);
+        const cat = isActive ? dlg106ResolveCategory({ text:step.text, speakerId:im._sid106 }) : "neutral";
+        paintChar106(im, cat);
+        let b = "0.6";
+        if(phone106) b = "0.8"; else if(isActive) b = "1";
+        im.style.filter = "brightness(" + b + ")";
+        im.style.zIndex = isActive ? 4 : 3;
+      });
+    }catch(_e){}
+  };
   const nameEl = ov.querySelector(".e79-name");
   const lineEl = ov.querySelector(".e79-line");
   const rowEl = ov.querySelector(".e79-row");
@@ -50244,6 +50859,7 @@ function enc79PlayEncounter(starId, locId, wasMet){
     const step = built.steps[idx];
     rowEl.innerHTML = "";
     if(step.choice){
+      paintDlg106(step);
       nameEl.textContent = def.name;
       lineEl.textContent = "……";
       step.options.forEach(opt=>{
@@ -50263,6 +50879,7 @@ function enc79PlayEncounter(starId, locId, wasMet){
       });
       return;
     }
+    paintDlg106(step);
     nameEl.textContent = step.who==="S" ? def.name : (step.who==="A" ? "阿偉" : "");
     lineEl.textContent = step.text;
     const nb = document.createElement("button");

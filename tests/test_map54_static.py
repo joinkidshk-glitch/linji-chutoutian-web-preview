@@ -1,5 +1,8 @@
 # v20a54 大地圖紙面填充＋預解碼 靜態測試。
 # 用法：python3 tests/test_map54_static.py [path-to-index.html]
+# v20a106 更新（QA 工人 D）：DLG106 對話皮膚段合法追加喺 v76 段之後，v54 完結標記
+# 被推出舊 2500 字尾窗——「last skin」斷言改驗「v54 後只有已知後繼段（v20a76＋
+# v20a106 DLG106）先到 </style>」，保留偵測未知皮膚追加嘅原意，唔再用死字數窗。
 import sys
 
 path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
@@ -25,11 +28,14 @@ def seg(start, end=None, src=None):
 v54 = seg('/* === v20a54 新 UI 皮膚層', '/* === v20a54 完 === */')
 ok('v54 segment present', bool(v54))
 try:
-    _tail = html[html.index('</style>') - 2500:html.index('</style>')]
-    _last = 'v20a54 完' in _tail and html.index('/* === v20a54 完 === */') < html.index('</style>')
+    _between = html[html.index('/* === v20a54 完 === */'):html.index('</style>')]
+    _segs_after = [s.split('===')[0] for s in _between.split('/* === ')[1:]
+                   if 'v20a54 完' not in s]
+    _last = bool(_segs_after) and all(('v20a76' in s or 'v20a106' in s) for s in _segs_after) \
+        and 'v20a106 DLG106 完' in _between
 except ValueError:
     _last = False
-ok('v54 segment is last skin before </style>', _last)
+ok('v54 segment followed only by known skins (v76+dlg106) before </style>', _last)
 
 # ---- 1. 紙面填充（只准油漆屬性） ----
 wrap = seg('#app .map-wrap{', '}', v54)
