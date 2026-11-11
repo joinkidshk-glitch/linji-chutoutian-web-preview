@@ -33,7 +33,7 @@ ck("反證：整爛接線（DLG106_GAZE 改名）後 wiring_ok 必須轉 False�
    not wiring_ok(src.replace("DLG106_GAZE", "DLG106_G0NE")))
 i = src.find(".dlg106-char{")
 seg = src[i:i + 420] if i >= 0 else ""
-ck("舞台人物高 50%＋filter 過渡 250ms", "height:50%" in seg and "250ms" in seg)
+ck("舞台人物高 60%（v20a108 取代 50%：--dlg108-char-h，自動收細）＋filter 過渡 250ms", "height:var(--dlg108-char-h,60%)" in seg and "250ms" in seg)
 ck("聽者 0.6／電話 0.8 規格喺呈現碼入面", "0.6" in src and "0.8" in src and "dlg106-phone" in src)
 ck("圖載入失敗後備鏈（__dlg106Err＋data-dlg-fallbacks）", "__dlg106Err" in src and "data-dlg-fallbacks" in src)
 

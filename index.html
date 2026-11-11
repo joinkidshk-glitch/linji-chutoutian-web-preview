@@ -4863,17 +4863,42 @@ body.day-res-open .day-row{
    翻轉 class、固定高對話框同電話名牌色。作用域限 .dlg106-on 舞台，
    舊 bust 路徑（冇 fullbody 嘅 speaker）版面零影響。 */
 .story-play .dlg106-chars{position:absolute;inset:0;z-index:2;pointer-events:none}
-.story-play .dlg106-char{position:absolute;bottom:14%;height:50%;max-width:48%;width:auto;
+.story-play .dlg106-char{position:absolute;bottom:10%;height:var(--dlg108-char-h,60%);max-width:48%;width:auto;
   object-fit:contain;object-position:bottom center;transition:filter 250ms ease}
 .story-play .dlg106-char.dlg106-left{left:6px}
 .story-play .dlg106-char.dlg106-right{right:6px}
 .story-play .dlg106-char.dlg106-flip{transform:scaleX(-1)}
 .story-play .sp-stage.dlg106-on .sp-stage-inner{position:relative;z-index:3;align-items:flex-end}
-.story-play .dlg106-plate{min-height:118px;flex:1}
+.story-play .dlg106-plate{height:118px;min-height:118px;max-height:118px;flex:1}
 .story-play .sp-speaker.dlg106-phone-name{color:#33566e}
 .story-play .dlg106-plate.dlg106-plate-phone{border-color:rgba(80,120,150,.55);border-style:dashed}
-#mask.story-play-on .story-play .dlg106-char{bottom:15%}
+#mask.story-play-on .story-play .dlg106-char{bottom:10%}
 /* === v20a106 DLG106 完 === */
+/* === v20a108 DLG108 對話舞台微調（遮腿＋60%＋自動收細＋對話框定高＋下一句文字鏈） ===
+   (1) 對話框遮腿（VN 標準做法，取代地面錨線——錨線方案已撤銷，呢度唔留錨線 code）：
+       人物高 60% 舞台高、腳底 bottom:10%，腳伸到不透明對話框後面；框頂邊去到人物膝頭
+       至小腿中段（主線牌頂 660／844、巧遇盒頂約 669／844，人物 60%＝506px 時框頂約
+       在人物 80% 高度），腳唔再係畫面錨點，腳浮問題自然消失。主線牌（.sp-stage-inner
+       z-index:3）同巧遇盒（.e79-box z-index:5）都疊喺人物（z-index ≤4）之上。
+   (2) per-pair 自動收細：dlg108FitPct 按對配對兩圖實際闊高比（naturalWidth／Height，
+       onload 實測，唔用表估）計，若中間淨空 ＜12px 就自動降高到啱為止（上限 60%）；
+       60% 實測（現行 96 張＝v106 88＋v107 8，見 qa108d/remeasure108d.json）：阿偉×何生淨空 20.2px、
+       阿偉×鍾楚凝 33.7px、最闊配對方小龍＋Vera 合計 0.795 須收至約 54.6%。
+       高度經 --dlg108-char-h 落喺舞台，唔設值退回 60%。
+   (3) 對話框定高：.dlg106-plate 固定 118px（＝原 min-height；名牌行＋3 行內文＋padding
+       約 108px，剛好裝到）；長文由既有 max-height:56%＋overflow-y:auto 兜底捲動。
+       巧遇 .e79-line 固定 3 行（4.65em）＋名牌行 min-height 固定，短句留白唔跳；
+       框頂邊位置穩定，遮腿位先會次次一樣。選項掣唔受影響。
+   (4) 「下一句」文字鏈：透明底＋金字＋底線，撳掣面積保留（min-height 44px／
+       min-width 88px）；主線只改 beats 模式嘅 role p 掣（:has 區分，選項掣唔郁）；
+       巧遇選項掣（.e79-choice）還原舊全寬深色掣。 */
+#mask.story-play-on:has(.sp-mode-dialogue) #modal-btns button.p,
+#mask.story-play-on:has(.sp-mode-narration) #modal-btns button.p{
+  background:transparent !important;border:0 !important;box-shadow:none !important;
+  color:#ffd968 !important;text-decoration:underline;text-underline-offset:3px;
+  min-width:88px;min-height:44px;padding:8px 14px;font-size:.95rem;
+}
+/* === v20a108 DLG108 完 === */
 </style>
 </head>
 <body>
@@ -26216,7 +26241,66 @@ window.__dlg106Err = function(img){
   }catch(_e){}
 };
 try{ window.DLG106 = { GAZE:DLG106_GAZE, MAP:DLG106_EMOTION_MAP, resolveCategory:dlg106ResolveCategory, classify:dlg106Classify, lookup:dlg106Lookup, hash:dlg106Hash, normalize:dlg106Normalize, exprFor:dlg106ExprFor, candidates:dlg106Candidates, resolveSides:dlg106ResolveSides, aweiStem:dlg106AweiStem, hasFullbody:dlg106HasFullbody }; }catch(_e){}
-/* ===== DLG106 模組完 ===== */
+ /* ===== DLG106 模組完 ===== */
+/* ===== v20a108 DLG108 自動收細＋遮腿量度（對話舞台微調）=====
+   人物預設高 60% 舞台高（--dlg108-char-h，唔設值退回 60%）；腳底 bottom:10%，腳伸到
+   不透明對話框後面（框頂約在人物 80% 高度＝膝頭至小腿中段）。
+   per-pair 自動收細：dlg108FitPct 按對配對兩圖實際闊高比計，若中間淨空 ＜12px 就
+   自動降高到啱為止（上限 60%、下限 30%）；闊高比一律用圖片 natural 尺寸實測（onload
+   嗰陣 __dlg108Fit 觸發），唔用表估——同角唔同表情闊高比可以差成 0.10（如葉敏芝
+   sad 0.28 vs base 0.38），表估會錯。max-width:48% 帽計埋入內。
+   用法：dlg108FitPct(arL, arR, stageW, stageH, marginPx, maxWfrac) → 高 %（已捨入 0.1）。 */
+function dlg108FitPct(arL, arR, stageW, stageH, marginPx, maxWfrac){
+  var base = 60, minGap = 12, lo = 30, hi = 60;
+  var aL = Number(arL), aR = Number(arR);
+  if(!(aL>0) || !(aR>0) || !(stageW>0) || !(stageH>0)) return base;
+  var avail = stageW - (Number(marginPx)||0) - minGap;
+  var maxW = ((maxWfrac>0)?maxWfrac:0.48)*stageW;
+  var wAt = function(pct, ar){ return Math.min(pct/100*stageH*ar, maxW); };
+  var ok = function(pct){ return wAt(pct,aL)+wAt(pct,aR) <= avail+1e-9; };
+  if(ok(base)) return base;
+  for(var i=0;i<24;i++){ var mid=(lo+hi)/2; if(ok(mid)) lo=mid; else hi=mid; }
+  return Math.round(lo*10)/10;
+}
+function dlg108FitApply(stage){
+  try{
+    if(!stage) return false;
+    var isEnc = stage.classList.contains('e79-stage');
+    var imgs = stage.querySelectorAll(isEnc ? '.e79-char' : '.dlg106-char');
+    if(!imgs || imgs.length < 1) return false;
+    if(imgs.length === 1){
+      /* 單人步：冇配對要收細，var 照設 60%（同 CSS fallback 一致，量度可見）。 */
+      if(!imgs[0].naturalWidth || !imgs[0].naturalHeight) return false;
+      stage.style.setProperty('--dlg108-char-h', '60%');
+      return true;
+    }
+    var a = [];
+    for(var i=0;i<imgs.length;i++){
+      var im = imgs[i];
+      if(!im.naturalWidth || !im.naturalHeight) return false;
+      a.push(im.naturalWidth/im.naturalHeight);
+    }
+    if(a.length < 2) return false;
+    var sw = stage.clientWidth, sh = stage.clientHeight;
+    if(!(sw>0) || !(sh>0)) return false;
+    var margin = isEnc ? sw*0.04 : 12;
+    var pct = dlg108FitPct(a[0], a[1], sw, sh, margin, 0.48);
+    stage.style.setProperty('--dlg108-char-h', pct + '%');
+    return true;
+  }catch(_e){ return false; }
+}
+try{
+  window.__dlg108Fit = function(img){
+    try{
+      if(!img) return false;
+      var stage = img.closest ? (img.closest('.sp-stage') || img.closest('.e79-stage')) : null;
+      if(stage) return dlg108FitApply(stage);
+    }catch(_e){}
+    return false;
+  };
+  window.DLG108 = { fitPct:dlg108FitPct, fitApply:dlg108FitApply };
+}catch(_e){}
+/* ===== DLG108 模組完 ===== */
 
 /**
  * WIRING_STORY_PLAY_v1 — 最小對白／choices 播放器（建基於 StoryOC）
@@ -26912,7 +26996,7 @@ const StoryPlay = (()=>{
       let bright = "0.6", z = 3;
       if(mode106==="phone"){ bright = "0.8"; z = 3; }
       else if(mode106!=="narration" && isActive){ bright = "1"; z = 4; }
-      return `<img class="dlg106-char ${slot.pos}${slot.flip?" dlg106-flip":""}" src="${esc(cands[0])}" alt="" data-dlg-id="${esc(slot.id)}" data-dlg-fallbacks="${esc(cands.slice(1).join("|"))}" draggable="false" style="filter:brightness(${bright});z-index:${z}" onerror="try{window.__dlg106Err&&window.__dlg106Err(this)}catch(_e){}"/>`;
+      return `<img class="dlg106-char ${slot.pos}${slot.flip?" dlg106-flip":""}" src="${esc(cands[0])}" alt="" data-dlg-id="${esc(slot.id)}" data-dlg-fallbacks="${esc(cands.slice(1).join("|"))}" draggable="false" style="filter:brightness(${bright});z-index:${z}" onload="try{window.__dlg108Fit&&window.__dlg108Fit(this)}catch(_e){}" onerror="try{window.__dlg106Err&&window.__dlg106Err(this)}catch(_e){}"/>`;
     }).join("");
     return html ? `<div class="dlg106-chars" aria-hidden="true">${html}</div>` : "";
   }
@@ -27180,7 +27264,7 @@ const StoryPlay = (()=>{
           <div class="sp-bg-scrim" aria-hidden="true"></div>
           ${charsNar106}
           <div class="sp-stage-inner">
-            <div class="sp-plate sp-plate-narration105">
+            <div class="sp-plate sp-plate-narration105 dlg106-plate">
               <div class="sp-line sp-narration">${esc(cur.text)}</div>
             </div>
           </div>
@@ -50714,17 +50798,22 @@ function enc79EnsureCss(){
       "#enc79-overlay .e79-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.92;}",
       "#enc79-overlay .e79-stand{position:absolute;right:2%;bottom:0;height:88%;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));}",
       /* v20a106 DLG106：巧遇改雙人全身（高＝舞台 50%）；明暗／z-index 由 render 逐句 inline 設定，filter 過渡 250ms */
-      "#enc79-overlay .e79-char{position:absolute;bottom:0;height:50%;max-width:48%;object-fit:contain;object-position:bottom center;transition:filter 250ms ease;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));}",
+      /* v20a108 DLG108：人物高 60%（--dlg108-char-h，自動收細落喺 .e79-stage）、腳底
+         bottom:10%，腳伸到對話盒後面；對話盒改 absolute 疊喺舞台底（z-index:5，喺人物
+         z-index ≤4 之上），盒頂去到人物膝頭至小腿中段；對白行固定 3 行＋名牌行
+         line-height:1.5＋min-height:1.5em 固定（空名同有名同高，盒高唔跳）；「下一句」改文字鏈
+         （選項掣還原舊全寬深色掣）。 */
+      "#enc79-overlay .e79-char{position:absolute;bottom:10%;height:var(--dlg108-char-h,60%);max-width:48%;object-fit:contain;object-position:bottom center;transition:filter 250ms ease;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));}",
       "#enc79-overlay .e79-char-l{left:2%;}",
       "#enc79-overlay .e79-char-r{right:2%;}",
       "#enc79-overlay .e79-char.flip{transform:scaleX(-1);}",
       "#enc79-overlay .e79-name.phone{color:#9fc3dd;}",
-      "#enc79-overlay .e79-box{position:relative;background:linear-gradient(180deg,#241a10,#1a120a);border-top:2px solid #a97f2f;padding:12px 14px calc(12px + env(safe-area-inset-bottom));color:#f3e8d5;}",
-      "#enc79-overlay .e79-name{font-weight:800;color:#ffd968;margin:0 0 4px;font-size:.95rem;}",
-      "#enc79-overlay .e79-line{margin:0 0 10px;line-height:1.55;font-size:1rem;min-height:3.1em;white-space:pre-wrap;}",
+      "#enc79-overlay .e79-box{position:absolute;left:0;right:0;bottom:0;z-index:5;background:linear-gradient(180deg,#241a10,#1a120a);border-top:2px solid #a97f2f;padding:12px 14px calc(12px + env(safe-area-inset-bottom));color:#f3e8d5;}",
+      "#enc79-overlay .e79-name{font-weight:800;color:#ffd968;margin:0 0 4px;font-size:.95rem;line-height:1.5;min-height:1.5em;}",
+      "#enc79-overlay .e79-line{margin:0 0 10px;line-height:1.55;font-size:1rem;height:4.65em;min-height:4.65em;overflow-y:auto;white-space:pre-wrap;}",
       "#enc79-overlay .e79-row{display:flex;gap:8px;flex-wrap:wrap;}",
-      "#enc79-overlay .e79-btn{flex:1 1 auto;min-height:44px;border-radius:10px;border:1px solid #a97f2f;background:#efe3c2;color:#2a1c08;font-weight:700;font-size:.95rem;padding:8px 10px;}",
-      "#enc79-overlay .e79-choice{flex:1 1 100%;text-align:left;background:#2e2113;color:#f3e8d5;border:1px solid #a97f2f;}",
+      "#enc79-overlay .e79-btn{flex:0 0 auto;margin-left:auto;min-height:44px;min-width:88px;border-radius:10px;border:0;background:transparent;color:#ffd968;font-weight:700;font-size:.95rem;padding:8px 14px;text-decoration:underline;text-underline-offset:3px;}",
+      "#enc79-overlay .e79-btn.e79-choice{flex:1 1 100%;margin-left:0;text-align:left;background:#2e2113;color:#f3e8d5;border:1px solid #a97f2f;text-decoration:none;padding:8px 10px;}",
       "#enc79-overlay .e79-skip{position:absolute;top:calc(8px + env(safe-area-inset-top));right:10px;z-index:2;min-height:40px;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,217,104,.7);background:rgba(20,12,4,.72);color:#ffd968;font-weight:700;}",
       "#enc79-overlay .e79-meta{position:absolute;top:calc(8px + env(safe-area-inset-top));left:10px;z-index:2;color:#ffd968;background:rgba(20,12,4,.72);border:1px solid rgba(255,217,104,.45);border-radius:999px;padding:5px 10px;font-size:.78rem;font-weight:700;}"
     ].join("\n");
@@ -50793,6 +50882,9 @@ function enc79PlayEncounter(starId, locId, wasMet){
   const slot106 = (img, slot)=>{ img._sid106 = slot ? slot.id : null; if(img && slot && slot.flip) img.classList.add("flip"); };
   if(sides106 && sides106.left){ slot106(charL, sides106.left); slot106(charR, sides106.right); }
   else { slot106(charL, { id:"awi", flip:false }); slot106(charR, { id:starId, flip:false }); }
+  /* v20a108 DLG108：自動收細掛鉤——圖載入嗰陣按 natural 尺寸實測闊高比計 fitted 高
+     （見 __dlg108Fit）；雙人未齊載入嗰陣唔做嘢，等齊兩張先計。 */
+  [charL, charR].forEach(function(im){ if(im) im.onload = function(){ try{ window.__dlg108Fit && window.__dlg108Fit(im); }catch(_e){} }; });
   const extraCands106 = (sid)=>{
     if(sid==="awi"){
       const out = [];
