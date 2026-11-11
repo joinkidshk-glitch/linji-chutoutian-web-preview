@@ -427,7 +427,8 @@ function makeEl(){
   Math.random = realRandom;
   const hireBody = __modals.map(m => m.body).join('\n');
   ok('seg3 v91 公佈鏈行完（continuation 有行、pending 清空）', contCalled91 === true && (S.pendingAud || []).length === 0);
-  ok('seg3 獲聘對話有講明「殺青後入帳」', hireBody.indexOf('殺青後入帳') >= 0);
+  /* v20a101 改版：F4 精煉將公佈句改為「殺青嗰日先入帳」（刪重複括號），斷言跟新句。 */
+  ok('seg3 獲聘對話有講明「殺青嗰日先入帳」', hireBody.indexOf('殺青嗰日先入帳') >= 0);
   ok('seg3 獲聘對話聲望 +5／人氣 +17（同 shoot record 同源）', hireBody.indexOf('聲望 +5') >= 0 && hireBody.indexOf('人氣 +17') >= 0);
   ok('seg3 獲聘嗰刻聲望未入帳（S.fame 仍 17）', S.fame === 17 && S.popularity === 10);
   ok('seg3 v91 簽約金 270 公佈嗰刻已入帳（900 嘅三成）', S.money === 5270);

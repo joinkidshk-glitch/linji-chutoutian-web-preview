@@ -86,7 +86,7 @@ GIGS = [];
 /* ---------- (3) 人脈列 ---------- */
 S = { npcs: { agent: 40 } };
 h = people72Html();
-ok('人脈：標題＋門檻說明在位', h.indexOf('人脈') >= 0 && h.indexOf('好感門檻：寒暄0') >= 0);
+ok('人脈：標題＋門檻說明在位', h.indexOf('人脈') >= 0 && h.indexOf('好感夠就傾多啲：閒談 10') >= 0);
 ok('人脈：何生列（名＋經理人＋好感 40＋去找何生事務所）', h.indexOf('何生') >= 0 && h.indexOf('經理人') >= 0
   && h.indexOf('40／100') >= 0 && h.indexOf('data-loc="agency_ho"') >= 0 && h.indexOf('people-go') >= 0);
 ok('人脈：其他 NPC 列齊（林曉晴在列）', h.indexOf('林曉晴') >= 0 && h.indexOf('同期演員') >= 0);
