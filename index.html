@@ -4885,6 +4885,8 @@ body.day-res-open .day-row{
        60% 實測（現行 96 張＝v106 88＋v107 8，見 qa108d/remeasure108d.json）：阿偉×何生淨空 20.2px、
        阿偉×鍾楚凝 33.7px、最闊配對方小龍＋Vera 合計 0.795 須收至約 54.6%。
        高度經 --dlg108-char-h 落喺舞台，唔設值退回 60%。
+       v20a109 DLG109：每人渲染高＝呢個基礎高 × 身高比（阿偉 1.00／彭少祺 0.85／
+       顧明輝・程天諾 1.05），由 dlg108FitApply 逐張 inline height 落；腳底 bottom:10% 唔郁。
    (3) 對話框定高：.dlg106-plate 固定 118px（＝原 min-height；名牌行＋3 行內文＋padding
        約 108px，剛好裝到）；長文由既有 max-height:56%＋overflow-y:auto 兜底捲動。
        巧遇 .e79-line 固定 3 行（4.65em）＋名牌行 min-height 固定，短句留白唔跳；
@@ -26288,15 +26290,19 @@ try{ window.DLG106 = { GAZE:DLG106_GAZE, MAP:DLG106_EMOTION_MAP, resolveCategory
    自動降高到啱為止（上限 60%、下限 30%）；闊高比一律用圖片 natural 尺寸實測（onload
    嗰陣 __dlg108Fit 觸發），唔用表估——同角唔同表情闊高比可以差成 0.10（如葉敏芝
    sad 0.28 vs base 0.38），表估會錯。max-width:48% 帽計埋入內。
-   用法：dlg108FitPct(arL, arR, stageW, stageH, marginPx, maxWfrac) → 高 %（已捨入 0.1）。 */
-function dlg108FitPct(arL, arR, stageW, stageH, marginPx, maxWfrac){
+   v20a109 DLG109：呢度計出嚟係 fitted「基礎高」（上限 60%）；每人實際渲染高＝
+   基礎高 × DLG109_HEIGHT_SCALE[id]（阿偉 1.00／彭少祺 0.85／顧明輝・程天諾 1.05），
+   由 dlg108FitApply 逐張 inline height 落；腳底 bottom:10% 唔郁。
+   用法：dlg108FitPct(arL, arR, stageW, stageH, marginPx, maxWfrac[, scaleL, scaleR]) → 基礎高 %（已捨入 0.1）。 */
+function dlg108FitPct(arL, arR, stageW, stageH, marginPx, maxWfrac, scaleL, scaleR){
   var base = 60, minGap = 12, lo = 30, hi = 60;
   var aL = Number(arL), aR = Number(arR);
   if(!(aL>0) || !(aR>0) || !(stageW>0) || !(stageH>0)) return base;
+  var sL = (Number(scaleL)>0)?Number(scaleL):1, sR = (Number(scaleR)>0)?Number(scaleR):1;
   var avail = stageW - (Number(marginPx)||0) - minGap;
   var maxW = ((maxWfrac>0)?maxWfrac:0.48)*stageW;
-  var wAt = function(pct, ar){ return Math.min(pct/100*stageH*ar, maxW); };
-  var ok = function(pct){ return wAt(pct,aL)+wAt(pct,aR) <= avail+1e-9; };
+  var wAt = function(pct, ar, sc){ return Math.min(pct*sc/100*stageH*ar, maxW); };
+  var ok = function(pct){ return wAt(pct,aL,sL)+wAt(pct,aR,sR) <= avail+1e-9; };
   if(ok(base)) return base;
   for(var i=0;i<24;i++){ var mid=(lo+hi)/2; if(ok(mid)) lo=mid; else hi=mid; }
   return Math.round(lo*10)/10;
@@ -26307,24 +26313,34 @@ function dlg108FitApply(stage){
     var isEnc = stage.classList.contains('e79-stage');
     var imgs = stage.querySelectorAll(isEnc ? '.e79-char' : '.dlg106-char');
     if(!imgs || imgs.length < 1) return false;
+    /* v20a109 DLG109：每張圖嘅角色 id——主線 data-dlg-id，巧遇 _sid106（paintChar106 落）；搵唔到（舊圖後備／剪影）→ 1.00。 */
+    var idOf = function(im){ try{ return im.getAttribute('data-dlg-id') || im._sid106 || ''; }catch(_e){ return ''; } };
+    var scaleOf = function(im){ try{ return (typeof dlg109HeightScale==="function") ? dlg109HeightScale(idOf(im)) : 1; }catch(_e){ return 1; } };
+    var pctOf = function(pct, sc){ return Math.round(pct*sc*10)/10; };
     if(imgs.length === 1){
-      /* 單人步：冇配對要收細，var 照設 60%（同 CSS fallback 一致，量度可見）。 */
+      /* 單人步：冇配對要收細，var 照設 60%（同 CSS fallback 一致，量度可見）；渲染高＝60% × 身高比。 */
       if(!imgs[0].naturalWidth || !imgs[0].naturalHeight) return false;
       stage.style.setProperty('--dlg108-char-h', '60%');
+      imgs[0].style.height = pctOf(60, scaleOf(imgs[0])) + '%';
       return true;
     }
-    var a = [];
+    var a = [], sc = [];
     for(var i=0;i<imgs.length;i++){
       var im = imgs[i];
       if(!im.naturalWidth || !im.naturalHeight) return false;
       a.push(im.naturalWidth/im.naturalHeight);
+      sc.push(scaleOf(im));
     }
     if(a.length < 2) return false;
     var sw = stage.clientWidth, sh = stage.clientHeight;
     if(!(sw>0) || !(sh>0)) return false;
     var margin = isEnc ? sw*0.04 : 12;
-    var pct = dlg108FitPct(a[0], a[1], sw, sh, margin, 0.48);
+    var pct = dlg108FitPct(a[0], a[1], sw, sh, margin, 0.48, sc[0], sc[1]);
     stage.style.setProperty('--dlg108-char-h', pct + '%');
+    /* v20a109：基礎高 × 各自身高比逐張落 inline height（腳底 bottom:10% 唔郁，矮咗只係頭頂低咗）。 */
+    for(var j=0;j<imgs.length && j<2;j++){
+      imgs[j].style.height = pctOf(pct, sc[j]) + '%';
+    }
     return true;
   }catch(_e){ return false; }
 }
@@ -26340,6 +26356,50 @@ try{
   window.DLG108 = { fitPct:dlg108FitPct, fitApply:dlg108FitApply };
 }catch(_e){}
 /* ===== DLG108 模組完 ===== */
+/* ===== v20a109 DLG109 per-character 身高比（對話舞台）=====
+   問題：v108 之前每個人都縮放到同一高度（基礎高 60%），身高差完全唔見——
+   用戶 2026-11-12 實玩巧遇彭少祺段：彭生應該較矮，而家同阿偉一樣高，比例奇怪。
+   做法：身高比表 × DLG108 fitted 基礎高（上限 60%）＝每人渲染高；腳底 bottom:10%
+   唔郁（v108 遮腿設計不變），矮咗只係頭頂低咗。單人步同樣 × 比。
+   三檔（唔准逐個估身高 cm——brief 冇寫 cm，唔作數；分檔理據如下）：
+   - 矮 0.85：pang_siuki。brief 明言「身型偏胖但靈活、面型圓潤」＋金牌司儀靈感
+     對照係矮個司儀；全身圖 AR 0.374，比阿偉 0.343 闊 9%，矮胖型全庫最明顯。
+     60%×0.85＝51%（≈430px／844 舞台），頭頂比阿偉低約 76px——低一截，
+     但唔變 Q 版（Q 版約 0.6–0.7 連頭身比都變，呢度只係縮 15%）。
+   - 高 1.05：gu_mingfai、ching_tinlok。兩人 AR 係全庫最瘦兩名（0.232／0.267），
+     圖中腿長身窄；brief 亦有修長線索（顧：面型偏瘦、溫文爾雅、長風褸；
+     程：面型偏長、跳唱歌手陽光修長形象）。60%×1.05＝63%。
+   - 中 1.00：其餘 31 個 id（含 awi／awi_s2／awi_s3 基準——同一個人唔同階段，
+     冇長高證據，一律 1.00）。brief 無身高線索者一律唔估，闊度差異由 AR 本身
+     表達（例如方小龍 AR 0.413 闊身、Vera 0.382，佢哋係闊唔係矮；何生略發福
+     亦係闊度，唔係高度）。未知 id／舊圖後備 → 1.00。
+   用法：dlg109HeightScale(id) → 比（未知 1.00）；dlg109ScaledPct(basePct, id) →
+   渲染高 %（捨入 0.1）。表覆蓋 DLG106_GAZE 全部 34 個 id（見 tests/test_dlg109_*）。 */
+const DLG109_HEIGHT_SCALE = {
+  "awi":1.00, "awi_s2":1.00, "awi_s3":1.00,
+  "pang_siuki":0.85,
+  "gu_mingfai":1.05, "ching_tinlok":1.05,
+  "chai_zanhoi":1.00, "cheng_william":1.00, "cheung_hakfan":1.00,
+  "cheung_tsijun":1.00, "chow_choiyi":1.00, "chung_choning":1.00,
+  "extra_ad_fen":1.00, "fong_siulung":1.00, "gao_wenhan":1.00,
+  "ho_sang":1.00, "ko_chunkit":1.00, "kwan_hoimei":1.00,
+  "lan_ruoxi":1.00, "lin_hiu":1.00, "liu_bingxing":1.00,
+  "lok_gasing":1.00, "lui_ging":1.00, "luk_baakyin":1.00,
+  "mak_zhendong":1.00, "mok_siufai":1.00, "ngai_wingnaam":1.00,
+  "so_jiyan":1.00, "tang_laiping":1.00, "tong_souwan":1.00,
+  "tsui_poushan":1.00, "uncle_kim":1.00, "vera":1.00, "yip_manji":1.00
+};
+function dlg109HeightScale(id){
+  var v = DLG109_HEIGHT_SCALE[String(id||"")];
+  return (typeof v==="number" && v>0) ? v : 1.00;
+}
+function dlg109ScaledPct(basePct, id){
+  var b = Number(basePct);
+  if(!(b>0)) b = 60;
+  return Math.round(b*dlg109HeightScale(id)*10)/10;
+}
+try{ window.DLG109 = { SCALE:DLG109_HEIGHT_SCALE, scale:dlg109HeightScale, scaledPct:dlg109ScaledPct }; }catch(_e){}
+/* ===== DLG109 模組完 ===== */
 
 /**
  * WIRING_STORY_PLAY_v1 — 最小對白／choices 播放器（建基於 StoryOC）
