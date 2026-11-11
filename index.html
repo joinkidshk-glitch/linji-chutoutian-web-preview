@@ -26052,20 +26052,21 @@ const StoryPlay = (()=>{
     /* No file for the interior fallback. Probing it 404s on the Deng／dual Soft path. */
     if(key==="bg_generic_interior") return [];
     const out = [];
-    /* v20a40 二期：內嵌場景圖優先（UI40_BG_BY_KEY 對應表）；其餘 bg key 行返舊有檔案候選鏈 */
-    try{
-      const sk40 = (typeof UI40_BG_BY_KEY!=="undefined") ? UI40_BG_BY_KEY[key] : "";
-      if(sk40 && typeof UI40_SCENE!=="undefined" && UI40_SCENE[sk40]) out.push(UI40_SCENE[sk40]);
-    }catch(_e){}
+    /* v20a103 SCENE103：地點場景圖年代重製——逐地點新圖（assets/story/locs/）行先，
+       版本參數 20a103 繞開按路徑快取嘅舊圖；v20a40 UI40 內嵌類別圖退到檔案鏈之後做後備。 */
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=20a8");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=20a103");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
       out.push("assets/story/"+key+"."+ext);
       out.push("assets/"+key+"."+ext);
     });
+    try{
+      const sk40 = (typeof UI40_BG_BY_KEY!=="undefined") ? UI40_BG_BY_KEY[key] : "";
+      if(sk40 && typeof UI40_SCENE!=="undefined" && UI40_SCENE[sk40]) out.push(UI40_SCENE[sk40]);
+    }catch(_e){}
     return out;
   }
 
@@ -51375,21 +51376,23 @@ function openLoc(id, opts){
   }catch(_e){}
   if(id==="agency_ho") playPushDoor();
 }
-/* Every locId that has assets/story/locs/bg_loc_{id}.jpg. Query stays ?v=20a8. */
+/* Every locId that has assets/story/locs/bg_loc_{id}.jpg.
+   v20a103 SCENE103：14 張地點圖年代重製後，全部改指逐地點新檔＋版本參數 20a103（繞按路徑快取）；
+   v20a40 UI40 內嵌類別圖唔再做地點版底圖（只留返開局畫面／巧遇後備用途）。 */
 const LOC_SHEET_BG = {
-  cafe_cha:UI40_SCENE.cafe,
-  agency_ho:UI40_SCENE.agency,
-  film_lion:UI40_SCENE.studio,
-  film_cotton:UI40_SCENE.studio,
-  film_harbour:UI40_SCENE.studio,
-  tvb_longmen:UI40_SCENE.startv,
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a8",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a8",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a8",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a8",
-  rec_hk:UI40_SCENE.recording,
-  rec_wanchai:UI40_SCENE.recording,
-  rec_star:UI40_SCENE.recording,
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a103",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a103",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a103",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a103",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a103",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a103",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a103",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a103",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a103",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a103",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a103",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a103",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a103",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");

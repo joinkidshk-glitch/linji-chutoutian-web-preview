@@ -29,3 +29,9 @@ Preview（`?v=19w`）`spBgImageCandidates` 先 probe `assets/story/locs/{key}.jp
 `LOC_SHEET_BG` 掛齊有 `bg_loc_{locId}.jpg` 嘅 loc（含 `rec_wanchai`）。Query 仍 `?v=19w`。
 
 Soft≠PASS。唔 tip LIVE。89–92 HOLD。
+
+---
+
+## v20a103 SCENE103 更新（2026-11-11）
+
+14 張全部換成年代重製版（真實 1990 年代香港參照＋逐地點劇情 brief＋風格錨，同規格 720×1280）：上表 14 個檔名不變、內容全換。載入指向同步改：`LOC_SHEET_BG` 13 個 locId 全部改指本目錄檔案（唔再用 UI40 內嵌類別圖），`spBgImageCandidates` 檔案鏈行先、UI40 退做後備；兩處版本參數統一 `?v=20a103` 繞按路徑快取。審計＋brief＋參照留檔喺 DEV `~/workspace/linji-scene-redo/`（唔入 repo）。詳見根目錄 `NOTES_V20A103_SCENE103.md`。
