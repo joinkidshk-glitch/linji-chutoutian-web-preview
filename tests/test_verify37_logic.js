@@ -579,8 +579,9 @@ function makeEl(){
   const overGig = { id: 'over1', req: { acting: 99 } };      /* 總差額 81 → 長遠目標 */
   ok('seg8 遠卡板面行係「長遠目標・暫未及」唔出數字', gigGapBoardLine37(farGig).indexOf('長遠目標') >= 0 && !/\d/.test(gigGapBoardLine37(farGig)));
   ok('seg8 詳情計法保留真數（欠：歌藝 636）', gigGapLine34(farGig).indexOf('636') >= 0);
-  ok('seg8 近卡板面照出真差額（欠：演技 27）', gigGapBoardLine37(nearGig).indexOf('演技 27') >= 0);
-  ok('seg8 界限=80 照出真數／81 轉長遠目標', gigGapBoardLine37(edgeGig).indexOf('演技 80') >= 0 && gigGapBoardLine37(overGig).indexOf('長遠目標') >= 0);
+  /* v20a105 S-28：板面行跟 gigGapLine34 統一「現值／需 要求（差 差距）」格式 */
+  ok('seg8 近卡板面照出真差額（演技…（差 27））', /演技 \d+／需 \d+（差 27）/.test(gigGapBoardLine37(nearGig)));
+  ok('seg8 界限=80 照出真數／81 轉長遠目標', gigGapBoardLine37(edgeGig).indexOf('（差 80）') >= 0 && gigGapBoardLine37(overGig).indexOf('長遠目標') >= 0);
   ok('seg8 gigGapFar37 判定一致', gigGapFar37(farGig) === true && gigGapFar37(nearGig) === false);
 })();
 

@@ -213,17 +213,23 @@ function sheetRun(locId){
   loc96AddSheetActs((title, hint, cost, on, cls)=>adds.push({ title, hint, cost, on, cls }), { id: locId });
   return adds;
 }
-S = baseSave(); S.money = 1000; toastCalls = [];
+S = baseSave(); S.money = 1000; toastCalls = []; modalCalls = [];
 let adds = sheetRun("hospital");
-ok(adds.length === 1 && adds[0].title === "身體檢查", "健康時：出身體檢查掣");
-adds[0].on();
-ok(S.money === 1000 - LOC96_CFG.checkupFee, "買體檢：扣 $500");
+const ck105 = adds.find(a => a.title === "身體檢查");
+/* v20a105 S-25：體檢改「先確認後扣錢」＋醫院板加「醫院有咩用？」說明卡（空板補用途） */
+ok(!!ck105 && adds.some(a => a.title.indexOf("醫院有咩用") >= 0), "健康時：出身體檢查掣＋醫院有咩用說明卡");
+ck105.on();
+ok(S.money === 1000 && modalCalls.length >= 1, "S-25：撳體檢唔即扣、先出確認框");
+const ckBtn105 = (modalCalls[modalCalls.length - 1].btns || []).find(b => String(b.label).indexOf("確認付款") >= 0);
+ok(!!ckBtn105, "S-25：確認框有「確認付款」掣");
+ckBtn105.on();
+ok(S.money === 1000 - LOC96_CFG.checkupFee, "買體檢：確認後扣 $500");
 ok(S.hosp96.checkupUntil === 10 + LOC96_CFG.checkupDays, "買體檢：checkupUntil＝今日＋28");
 adds = sheetRun("hospital");
-ok(adds.length === 1 && adds[0].title.indexOf("生效中") >= 0, "生效中：出「生效中」掣、唔重複賣");
+ok(adds.filter(a => a.title.indexOf("生效中") >= 0).length === 1 && adds.every(a => a.title !== "身體檢查"), "生效中：出「生效中」掣、唔重複賣");
 S = baseSave(); S.money = 100;
 adds = sheetRun("hospital");
-adds[0].on();
+adds.find(a => a.title === "身體檢查").on();
 ok(S.money === 100 && !(S.hosp96 && S.hosp96.checkupUntil > 0), "唔夠錢：買唔到體檢、冇扣錢");
 ok(sheetRun("cafe_cha").length === 0 && sheetRun("gift_shop").length === 0, "非醫院地點：唔出醫院掣");
 

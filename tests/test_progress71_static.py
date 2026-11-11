@@ -56,7 +56,7 @@ ok('渲染函數齊（renderProgressPane71／prog71Rows／prog71GateItems／prog
 ok('條件衍生用結構化數據（evalGate3Y／progressToward／CALIB60_NODE_WINDOWS）',
    'BehaviorGate.evalGate3Y(id)' in src and 'BehaviorGate.progressToward({ id:id })' in src and 'CALIB60_NODE_WINDOWS' in seg('function prog71GateItems', 'function prog71StubItems'))
 ok('防劇透文案＋最近兩幕規則（fullLeft = 2）',
-   '完成前面嘅幕之後，呢幕嘅標題同條件會逐項列出' in src and 'let fullLeft = 2' in src)
+   '完成前面幕數後逐幕揭曉' in src and 'let fullLeft = 2' in src)  # v20a105 S-45：遠幕合併句取代逐幕 boilerplate
 i71 = src.find('function prog71Esc')
 j71 = src.find('function renderProgressPane71')
 seg71 = src[i71:j71 + 6000] if 0 <= i71 < j71 else ''

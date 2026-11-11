@@ -79,8 +79,9 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
 
   ok('a0 canAudition real: locked gig fails', canAudition(gigLocked).ok === false);
   ok('a0 canAudition real: ready gig passes', canAudition(gigReady).ok === true);
-  /* 差額：聲望 floor（中=16，現 3）差 13；演技 20-8=12；智商 15-10=5 */
-  ok('a1 gap line exact', gigGapLine34(gigLocked) === '欠：聲望 13／演技 12／智商 5');
+  /* 差額：聲望 floor（中=16，現 3）差 13；演技 20-8=12；智商 15-10=5
+   v20a105 S-28：格式改「現值／需 要求（差 差距）」，唔再用「欠：」含糊式 */
+  ok('a1 gap line exact', gigGapLine34(gigLocked) === '聲望 3／需 16（差 13）；演技 8／需 20（差 12）；智商 10／需 15（差 5）');
   ok('a2 gap total', gigGapTotal34(gigLocked) === 30);
   ok('a3 gap line empty when ready', gigGapLine34(gigReady) === '');
   /* 同詳情頁同一套現值/需要值：gigLockReasonLine 真函數列嘅數要同差額對得返 */
@@ -89,7 +90,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
      lr.indexOf('聲望現 3／需要 16') >= 0 && lr.indexOf('演技現 8／需要 20') >= 0 && lr.indexOf('智商現 10／需要 15') >= 0);
 
   const tLock = gigBoardTeaserHtml(gigLocked);
-  ok('a5 teaser locked shows gap line', tLock.indexOf('<div class="gt-gap">欠：聲望 13／演技 12／智商 5</div>') >= 0);
+  ok('a5 teaser locked shows gap line', tLock.indexOf('<div class="gt-gap">聲望 3／需 16（差 13）；演技 8／需 20（差 12）；智商 10／需 15（差 5）</div>') >= 0);
   ok('a6 teaser locked no closest by default', tLock.indexOf('最接近') < 0);
   const tClose = gigBoardTeaserHtml(gigLocked, { closest:true });
   ok('a7 teaser closest marker when flagged', tClose.indexOf('最接近') >= 0);
@@ -98,9 +99,9 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   ok('a9 teaser ready badge intact', tReady.indexOf('可接通告') >= 0);
 
   const cLock = gigCardHtml(gigLocked, {});
-  ok('a10 gigCardHtml locked shows gap', cLock.indexOf('欠：聲望 13／演技 12／智商 5') >= 0);
+  ok('a10 gigCardHtml locked shows gap', cLock.indexOf('聲望 3／需 16（差 13）；演技 8／需 20（差 12）；智商 10／需 15（差 5）') >= 0);
   const cReady = gigCardHtml(gigReady, {});
-  ok('a11 gigCardHtml ready has no gap text', cReady.indexOf('欠：') < 0 && cReady.indexOf('可接通告') >= 0);
+  ok('a11 gigCardHtml ready has no gap text', cReady.indexOf('（差 ') < 0 && cReady.indexOf('可接通告') >= 0);
 })();
 
 /* ================================================================
