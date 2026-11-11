@@ -49,7 +49,7 @@ eval([
   extractConst('YEARS66_SHIFT'), extractConst('YEARS66_OLD_MIN'), extractConst('YEARS66_TOKEN_RE'),
   extractConst('YEARS66_SKIP_KEYS'), extractConst('YEARS66_YEAR_KEYS'),
   extractFn('years66ShiftYear'), extractFn('years66ShiftText'), extractFn('years66Walk'),
-  extractConst('CONTRA98_WHEN_FIX'), extractFn('contra98FixNodeWhen'),
+  extractConst('CONTRA98_WHEN_FIX'), extractConst('CLEAN100_WHEN_FIX'), extractFn('contra98FixNodeWhen'), /* v20a100：contra98FixNodeWhen 兼讀 CLEAN100_WHEN_FIX（C2/C3），抽取要帶埋 */
   extractFn('spSoftSeasonChar'), extractFn('spPlayerMeta_softSeason'), extractFn('spPlayerMeta'),
   extractFn('contra98PrepareNode'),
   extractConst('ENC79_FIRST_ALT98'), extractFn('contra98EncFirstLocSwap'),

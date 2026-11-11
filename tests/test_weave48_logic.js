@@ -224,6 +224,12 @@ loadGame(baseSave());
 {
   const packLan = {};
   romLX.nodes.forEach(n => { packLan[n.id] = n; });
+  /* v20a100 CLEAN100 B-03：pack 側 R_lan_push1 stats.music 正規化（見下面比較處註解） */
+  const normStats100 = (id, pc) => {
+    const st = Object.assign({}, ((pc || {}).effects || {}).stats || {});
+    if(id === 'R_lan_push1' && ('music' in st)){ st.stage = st.music; delete st.music; }
+    return st;
+  };
   let structOk = true, proseOk = true;
   const singerWords = ['唱片店', '錄音室', '合唱', '狗仔', '緋聞', '聯姻', '豪門', '退圈', '登機證', '唱歌', '歌手', '情侶檔'];
   Object.keys(ROMANCE_LAN_PA_OVERRIDES).forEach(id => {
@@ -239,8 +245,11 @@ loadGame(baseSave());
       if(!pc || c.id !== pc.id) structOk = false;
       /* effects 嘅狀態部分（flags＋stats）必須同 pack 逐項一致；notes 係玩家可見文字，
          屬文字層——pack 原 notes 有歌手向字眼（合唱推進／狗仔護航／助抗聯姻），已改寫，另行驗零歌手向 */
+      /* v20a100 CLEAN100 B-03 唯一例外：R_lan_push1 兩抉擇嘅 stats.music 係 PA 化漏網嘅
+         歌手向殘留（嗰幕係對通告牌、冇唱歌；music 鍵連 applyChoice 映射都冇），已改 stage。
+         比較前將 pack 嗰兩處 music 正規化做 stage；其餘全部仍須逐項一致。 */
       else if(canon((c.effects || {}).flags || []) !== canon((pc.effects || {}).flags || [])
-           || canon((c.effects || {}).stats || {}) !== canon((pc.effects || {}).stats || {})) structOk = false;
+           || canon((c.effects || {}).stats || {}) !== canon(normStats100(id, pc))) structOk = false;
       else if(singerWords.some(w => String((c.effects || {}).notes || '').includes(w))) proseOk = false;
     });
     const prose = JSON.stringify({ t: o.title, s: o.setting, y: o.synopsis, b: o.beats, l: (o.choices || []).map(c => c.label) });
