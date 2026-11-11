@@ -417,6 +417,9 @@ function sentenceChecks(tag, line){
     })();
   `;
   const SRC = [
+    extractConst('EMOJI_ICON112'),
+    extractFn('function iconHtml112'),
+    extractFn('function favDots112'),
     extractConst('COURSE_DEFS'),
     extractConst('TRAIN_BY_TYPE'),
     extractConst('COURSE_ENROLL_EXTRA'),
@@ -426,6 +429,7 @@ function sentenceChecks(tag, line){
     extractBlock('/* ===== v20a68 UX68', 'function looksLikeEraId(s){'),
     DRIVER,
   ].join('\n')
+   .replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 =')
    .replace('const COURSE_DEFS =', 'var COURSE_DEFS =')
    .replace('const TRAIN_BY_TYPE =', 'var TRAIN_BY_TYPE =')
    .replace('const COURSE_ENROLL_EXTRA =', 'var COURSE_ENROLL_EXTRA =')

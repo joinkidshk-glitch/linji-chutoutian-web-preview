@@ -72,6 +72,10 @@ var tickDay = function(){ S.dayIndex += 1; return { ended:false, summary:null };
 eval("var START = { y:1988, m:3, d:7 };");
 const CONSTS = ['STAT_LABEL','STAT_MAX','STRESS_MAX','PLAN_ITEMS','LOCS','COURSE_DEFS'];
 for(const c of CONSTS) eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
+/* v20a112 ICONS112：被抽函數調用 iconHtml112，沙盒要一併載入對照＋helper。 */
+eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
+eval(extractFn('iconHtml112'));
+eval(extractFn('favDots112'));
 const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName','dateObj','fmtDate',
   'allPlanDefs','planMeta','formatResultNotes','isCriticalPlanDay','planDayWouldWrap','displayDateObj',
   'courseForStatKey','preferredLocForTrainTarget','resolvePlannedDay','endBrowseDayGoHome','doRest'];

@@ -96,6 +96,9 @@ function makeEl(){
 
   const SRC = [
     "var START = { y:1988, m:3, d:7 };",
+    extractConst('EMOJI_ICON112'),
+    extractFn('function iconHtml112'),
+    extractFn('function favDots112'),
     extractFn('function dateObj'),
     extractFn('function calendarSeason'),
     extractFn('function weekNumNow'),
@@ -121,6 +124,7 @@ function makeEl(){
     extractIIFE('const StoryOC = (()=>{'),
     extractIIFE('const StoryPlay = (()=>{'),
   ].join('\n')
+   .replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 =')
    .replace('const STORY_GATE_3Y =', 'var STORY_GATE_3Y =')
    .replace('const STORY_LOC_SOFT =', 'var STORY_LOC_SOFT =')
    .replace('const STORY_HINT_SOFT =', 'var STORY_HINT_SOFT =')
@@ -386,6 +390,10 @@ function makeEl(){
     'aud91Ensure','aud91PendingOf','aud91WaitDays','aud91WaitPhrase','aud91CreatePending','aud91LogPush','aud91DueList','aud91PendingHint','aud91PresentDue','aud91PresentOne'];
   eval(extractConst('AUD91_CAP').replace('const AUD91_CAP =', 'var AUD91_CAP ='));
   eval("var _aud91Presenting = false;");
+  /* v20a112 ICONS112：被抽函數調用 iconHtml112，沙盒要一併載入對照＋helper。 */
+  eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
+  eval(extractFn('function iconHtml112'));
+  eval(extractFn('function favDots112'));
   for(const f of FNS) eval(extractFn('function ' + f + '('));
 
   ok('seg3 harness: resolvePlannedDay/doAudition 載入', typeof resolvePlannedDay === 'function' && typeof doAudition === 'function');
@@ -534,6 +542,10 @@ function makeEl(){
   eval(extractConst('COURSE_DEFS').replace('const COURSE_DEFS =', 'var COURSE_DEFS ='));
   eval(extractConst('PLAN_ITEMS').replace('const PLAN_ITEMS =', 'var PLAN_ITEMS ='));
   eval(extractConst('PLAN_CATS').replace('const PLAN_CATS =', 'var PLAN_CATS ='));
+  /* v20a112 ICONS112：renderNotebook 調用 iconHtml112，沙盒要一併載入對照＋helper。 */
+  eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
+  eval(extractFn('function iconHtml112'));
+  eval(extractFn('function favDots112'));
   const FNS = ['weekdayIdx','weekdayName','weekNumNow','weekRangeLabelFor','weekRangeLabel','stampWeekPlan37','nbShowingPrevWeek37','nbRangeLabel37',
     'planCatForId','planMeta','isGigWrapped','isGigInProduction','gigActiveShoot','shootDeadlineHud','shootRemain','reqGap','dayPlanLocked','defaultWeekPlan','renderNotebook'];
   for(const f of FNS) eval(extractFn('function ' + f + '('));

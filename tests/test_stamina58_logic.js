@@ -91,6 +91,10 @@ eval("var START = { y:1988, m:3, d:7 };");
 const CONSTS = ['STAT_LABEL','STAT_MAX','STRESS_MAX','PLAN_ITEMS','LOCS','COURSE_DEFS','COURSE_ENROLL_EXTRA','TRAIN_BY_TYPE','EVENTS_ZH_HK','TRAIN75_SPEC','LEVELS75_NAMES','LEVELS75_STEP','LEVELS75_MAX'];
 for(const c of CONSTS) eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
 var EVENTS = EVENTS_ZH_HK;
+/* v20a112 ICONS112：被抽函數調用 iconHtml112，沙盒要一併載入對照＋helper。 */
+eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
+eval(extractFn('iconHtml112'));
+eval(extractFn('favDots112'));
 const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName','dateObj','fmtDate',
   'allPlanDefs','planMeta','formatResultNotes','isCriticalPlanDay','planDayWouldWrap','displayDateObj',
   'fillTpl','eventLine','enrollCourse','maybeUnlockMidCourses','applyTrainLesson','doEnrollRun','enrolledCourseCta',

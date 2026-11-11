@@ -3843,6 +3843,17 @@ body.day-res-open .day-row{
 .psr-card.psr-metrics{ border-color:rgba(180,140,40,.45); }
 .psr-kicker{ font-size:.72rem; color:var(--muted); margin-bottom:2px; }
 .psr-icon{ margin-right:4px; }
+/* v20a112 ICONS112：手繪圖標 <img> 尺寸（跟返各容器原 emoji 字號）＋CSS 勾＋S-46 進度格 */
+.ic112{ height:1.15em; width:1.15em; vertical-align:-0.2em; object-fit:contain; }
+.day-row .ic img.ic112{ height:1.2em; width:1.2em; }
+.cat-tab .ci img.ic112{ height:1.4em; width:1.4em; vertical-align:-0.3em; }
+.act-item .ai img.ic112{ height:1.25em; width:1.25em; }
+.psr-icon img.ic112{ height:1.15em; width:1.15em; vertical-align:-0.25em; }
+#loc-title img.ic112{ height:1.1em; width:1.1em; vertical-align:-0.15em; }
+.ic-check112{ color:#2e7d32; font-weight:800; }
+.fav-dots112{ display:inline-flex; gap:3px; vertical-align:-1px; margin-right:2px; }
+.fav-dots112 i{ width:9px; height:9px; border-radius:50%; background:transparent; border:1.5px solid #b98a4a; }
+.fav-dots112 i.on{ background:#c48a2a; border-color:#c48a2a; }
 .psr-title{ margin:0 0 4px; font-size:.92rem; line-height:1.35; }
 .psr-body{ margin:0; font-size:.8rem; color:#4a3b28; line-height:1.4; }
 .psr-dual{ margin:6px 0 0; }
@@ -31272,7 +31283,7 @@ function train71CourseCard(cid, stat, ctx){
   const lvText75 = LEVELS75_NAMES[nx75.lv] || "一級";
   const prog75 = nx75.top ? "已到三級" : ("再 " + nx75.left + " 堂升" + (LEVELS75_NAMES[nx75.lv + 1] || ""));
   return '<div class="guide68-row t70-card' + (picked ? " picked" : "") + '">'
-    + '<div class="t70-top"><span class="guide68-cname">' + ux68Esc((def.icon ? def.icon + " " : "") + (def.name || cid) + "・" + lvText75) + '</span>'
+    + '<div class="t70-top"><span class="guide68-cname">' + (def.icon ? iconHtml112(def.icon) + " " : "") + ux68Esc((def.name || cid) + "・" + lvText75) + '</span>'
     + '<span class="t70-badge ' + (st.open ? "ok" : (st.badge === "未報名" ? "mid" : "lock")) + '">' + ux68Esc(st.badge) + '</span></div>'
     + '<div class="t70-grid">'
     + '<div class="t70-cell"><span>增益</span><b>' + ux68Esc((SL[stat] || stat) + " " + ux68GainText(g[stat])) + '</b></div>'
@@ -31301,7 +31312,7 @@ function train71CourseMini(cid, stat, ctx){
     act = '<span class="t70-mgain">已開放</span>';
   }
   return '<div class="t70-mini' + (picked ? " picked" : "") + '">'
-    + '<span class="t70-mname">' + ux68Esc((def.icon ? def.icon + " " : "") + (def.name || cid) + "・" + (LEVELS75_NAMES[levels75Level((typeof S !== "undefined" ? S : null), cid)] || "一級")) + '</span>'
+    + '<span class="t70-mname">' + (def.icon ? iconHtml112(def.icon) + " " : "") + ux68Esc((def.name || cid) + "・" + (LEVELS75_NAMES[levels75Level((typeof S !== "undefined" ? S : null), cid)] || "一級")) + '</span>'
     + '<span class="t70-mgain">' + ux68Esc((SL[stat] || stat) + " " + ux68GainText(g[stat])) + '</span>'
     + '<span class="t70-badge sm ' + (st.open ? "ok" : (st.badge === "未報名" ? "mid" : "lock")) + '">' + ux68Esc(st.badge) + '</span>'
     + act
@@ -34013,6 +34024,29 @@ function gigTierKey(g){
   return "junior";
 }
 function uiIcon(key){ return (typeof UI_ASSETS!=="undefined" && UI_ASSETS[key]) ? UI_ASSETS[key] : ""; }
+/* v20a112 ICONS112：emoji→手繪圖標中央對照（notes_icon_audit.md §2）。
+   欄位值保留 emoji 原值（存檔／舊測試唔郁），渲染處經 iconHtml112() 轉 <img>；
+   ✅ 行 CSS 勾（✓ U+2713 文字元，沿用 gap-ok 慣例）；「·」佔位原樣；未知值原樣輸出。 */
+const EMOJI_ICON112 = { "🗺️":"map", "😴":"sleep", "🌙":"sleep", "🎤":"mic", "☕":"tea", "🎬":"clapper", "🎥":"clapper", "💪":"fitness", "🏠":"home", "📰":"news", "🎁":"gift", "🏥":"hospital", "🎵":"music", "💿":"music", "👥":"people", "📺":"tv", "📻":"radio", "📡":"radio", "🦁":"lion", "💼":"briefcase", "🏢":"building", "🎭":"mask", "📚":"book", "📖":"book", "🥋":"martial", "🧹":"broom", "🤒":"sick", "📞":"phone", "😊":"mood", "⭐":"star", "✨":"sparkle" };
+function iconHtml112(v){
+  try{
+    if(v==null || v==="") return "";
+    if(v==="✅") return '<span class="ic-check112" aria-hidden="true">✓</span>';
+    const stem = EMOJI_ICON112[v] || EMOJI_ICON112[String(v).replace(/️/g, "")] || EMOJI_ICON112[String(v) + "️"];
+    if(stem) return '<img class="ic112" src="assets/icons/icon_'+stem+'.png" alt="" aria-hidden="true"/>';
+    if(v==="·") return "·";
+    return (typeof esc==="function") ? esc(String(v)) : String(v);
+  }catch(_e){ return ""; }
+}
+/* v20a112 ICONS112 S-46：好感心形字串改 5 格進度點（滿格實心／空格空心）。 */
+function favDots112(n){
+  try{
+    n = Math.max(0, Math.min(5, Math.round(Number(n)||0)));
+    let s = '<span class="fav-dots112" aria-hidden="true">';
+    for(let i=0;i<5;i++) s += '<i class="'+(i<n?"on":"")+'"></i>';
+    return s + '</span>';
+  }catch(_e){ return ""; }
+}
 function wireUiAssets(){
   const set=(id,key)=>{ const el=document.getElementById(id); if(el){ const src=uiIcon(key); if(src) el.src=src; } };
   set("ic-sta","stat_stamina"); set("ic-stress","stat_stress"); set("ic-money","stat_money");
@@ -36388,7 +36422,7 @@ function renderNotebook(){
     btn.className="day-row"+(planSelDay===i?" on":"")+(locked?" locked":"")+(editable && !locked?" hint-edit":"");
     const hint = locked ? "拍攝檔期已定 · 不可改" : (editable ? "" : (meta.hint||""));
     const hintHtml = hint ? `<span class="plan-hint">${hint}</span>` : "";
-    btn.innerHTML=`<span class="wd">週${weekdayName(i)}</span><span class="ic">${meta.icon}</span><span class="nm"><span class="plan-main">${meta.name}</span>${hintHtml}</span>`;
+    btn.innerHTML=`<span class="wd">週${weekdayName(i)}</span><span class="ic">${iconHtml112(meta.icon)}</span><span class="nm"><span class="plan-main">${meta.name}</span>${hintHtml}</span>`;
     if(editable && !locked){
       const cp=document.createElement("span");
       cp.className="cp";
@@ -36417,7 +36451,7 @@ function renderNotebook(){
     const b=document.createElement("button");
     b.type="button";
     b.className="cat-tab"+(planCat===c.id?" on":"");
-    b.innerHTML=`<span class="ci">${c.icon}</span>${c.name}`;
+    b.innerHTML=`<span class="ci">${iconHtml112(c.icon)}</span>${c.name}`;
     b.onclick=()=>{
       planCat=c.id;
       renderNotebook();
@@ -36450,7 +36484,7 @@ function renderNotebook(){
       b.className="act-item"+(planDraft[planSelDay]===it.id?" on":"");
       b.disabled=!editable || selLocked || !!it.locked || String(it.id).startsWith("shoot:");
       try{ b.setAttribute("aria-label", `為週${weekdayName(planSelDay)}選擇：${it.name}`); }catch(_a){}
-      b.innerHTML=`<span class="ai">${it.icon}</span><span><div class="at">${it.name}</div><div class="ah">${it.hint||""}</div></span>`;
+      b.innerHTML=`<span class="ai">${iconHtml112(it.icon)}</span><span><div class="at">${it.name}</div><div class="ah">${it.hint||""}</div></span>`;
       b.onclick=()=>{
         if(!editable || selLocked) return;
         if(dayPlanLocked(planDraft[planSelDay])){ toast("拍攝日檔期已定"); return; }
@@ -37450,7 +37484,7 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
     const drops = takeShootDropNotes();
     if(drops && drops.length) notes = notes.concat(drops);
   }catch(_e){}
-  const body=`<p>${meta.icon||""} ${meta.hint||""}</p>${formatResultNotes(notes)}`;
+  const body=`<p>${iconHtml112(meta.icon||"")} ${meta.hint||""}</p>${formatResultNotes(notes)}`;
   const clearDayRes = ()=>{ try{ document.body.classList.remove("day-res-open"); const m=document.getElementById("mask"); if(m) m.classList.remove("day-res"); }catch(_e){} };
   let advancedNb = false;
   const nextNb=()=>{
@@ -38296,7 +38330,7 @@ function drawMap(){
       }
       list.innerHTML = regionLocs.map(L=>{
         const act=actionById[L.id].hasAction;
-        return `<button type="button" data-loc="${L.id}" class="${act?"has-action":"idle-loc"}">${L.emoji||""} ${L.name}</button>`;
+        return `<button type="button" data-loc="${L.id}" class="${act?"has-action":"idle-loc"}">${iconHtml112(L.emoji||"")} ${L.name}</button>`;
       }).join("");
       list.querySelectorAll("button").forEach(b=>{
         b.onclick=(ev)=>{ ev.stopPropagation(); openLoc(b.getAttribute("data-loc")); };
@@ -43960,7 +43994,7 @@ function renderPostShootRewardHtml(pack){
   const cardsHtml = cards.map(c=>{
     const body = c.body ? `<p class="psr-body">${String(c.body)}</p>` : "";
     return `<article class="psr-card psr-${c.channel||"x"}">
-      <div class="psr-kicker"><span class="psr-icon">${c.icon||"✨"}</span> ${c.kicker||""}</div>
+      <div class="psr-kicker"><span class="psr-icon">${iconHtml112(c.icon||"✨")}</span> ${c.kicker||""}</div>
       <h4 class="psr-title">${c.title||""}</h4>
       ${body}
     </article>`;
@@ -44580,7 +44614,7 @@ function renderAwardResultHtml(pack){
   const news = pack.news || {};
   const metricLine = pack.metricEcho
     ? `<article class="psr-card psr-metrics">
-        <div class="psr-kicker"><span class="psr-icon">✨</span> ${pack.metricEchoLabel||"餘韻"}</div>
+        <div class="psr-kicker"><span class="psr-icon">${iconHtml112("✨")}</span> ${pack.metricEchoLabel||"餘韻"}</div>
         <h4 class="psr-title">${pack.metricEchoLabel||""}——典禮後仍有人提起。</h4>
       </article>` : "";
   const dual = pack.rewardsApplied || {};
@@ -44594,12 +44628,12 @@ function renderAwardResultHtml(pack){
     <div class="psr-cards">
       ${catsHtml}
       <article class="psr-card psr-press">
-        <div class="psr-kicker"><span class="psr-icon">📰</span> ${press.paperName||"娛樂快報"}</div>
+        <div class="psr-kicker"><span class="psr-icon">${iconHtml112("📰")}</span> ${press.paperName||"娛樂快報"}</div>
         <h4 class="psr-title">${press.headline||""}</h4>
         <p class="psr-body">${press.dek||""}</p>
       </article>
       <article class="psr-card psr-news">
-        <div class="psr-kicker"><span class="psr-icon">📻</span> ${news.outlet||"娛樂快訊"}</div>
+        <div class="psr-kicker"><span class="psr-icon">${iconHtml112("📻")}</span> ${news.outlet||"娛樂快訊"}</div>
         <h4 class="psr-title">${news.line||""}</h4>
       </article>
       ${metricLine}
@@ -51391,7 +51425,7 @@ function enc79PeopleHtml(){
           + '<span style="flex:1"><b>？？？</b><br><span class="sub" style="font-size:.75rem">聽講係'+def.area+'出沒嘅紅星，未撞見過。</span></span></div>';
       }
       const tier = enc79TierOf(st.fav);
-      const hearts = "♥".repeat(Math.round(st.fav/20)) + "♡".repeat(5-Math.round(st.fav/20));
+      const hearts = favDots112(Math.round(st.fav/20));
       const cap = enc79FavCap();
       let nextLine;
       if(tier>=4) nextLine = '<div class="people-next">紅星交情：已經係自己人。</div>';
@@ -52404,7 +52438,7 @@ function openLoc(id, opts){
   try{ pinSoftBridgeOnBoard(L.id); }catch(_pin){}
   const locSheetEl = document.getElementById("loc-sheet");
   if(locSheetEl) locSheetEl.classList.add("loc-hydrating");
-  document.getElementById("loc-title").textContent=`${L.emoji} ${L.name}${L.area ? " · " + L.area : ""}`; /* v20a68 UX68：地區移入標題（地圖標籤淨地名） */
+  document.getElementById("loc-title").innerHTML=iconHtml112(L.emoji||"")+" "+esc59(L.name)+(L.area ? " · " + esc59(L.area) : ""); /* v20a112 ICONS112：標題加地點圖標（原 textContent；L.name／L.area 靜態數據，esc59 轉義） */
   applyLocSheetBg(L.id);
   const hub = !!mockAskDefs(L.id);
   if(hub){
@@ -56051,7 +56085,7 @@ function openGiftShop(shopId, L){
     const disabled = left<=0 || !afford;
     const why = left<=0 ? "沽清" : (!afford ? "唔夠錢" : `餘 ${left}`);
     return `<button type="button" class="act ${disabled?"dim":""}" data-buy="${it.itemId}" ${disabled?"disabled":""} style="width:100%;margin:0 0 8px;text-align:left">
-      <div><div class="n">${it.emoji||"🎁"} ${rarityDot(it.rarity)}${it.name}</div>
+      <div><div class="n">${iconHtml112(it.emoji||"🎁")} ${rarityDot(it.rarity)}${it.name}</div>
       <div class="h">$${(it.price||0).toLocaleString()} · ${rarityLabelZh(it.rarity)} · ${why}</div></div>
       <div class="cost">${disabled?(left<=0?"沽清":"——"):"買下"}</div>
     </button>`;
@@ -56088,7 +56122,7 @@ function openGiftPick(npcKey, L){
     const kind = GiftShop.prefKind(npcKey, itemId);
     const tag = kind==="liked"?"喜":(kind==="dislike"?"慎":"普");
     return `<button type="button" class="act act-priority" data-give="${itemId}" style="width:100%;margin:0 0 8px;text-align:left">
-      <div><div class="n">${item.emoji||"🎁"} ${item.name} ×${count}</div>
+      <div><div class="n">${iconHtml112(item.emoji||"🎁")} ${item.name} ×${count}</div>
       <div class="h">偏好標記：${tag} · ${giftConfirmCostLine()}</div></div>
       <div class="cost">選</div>
     </button>`;
@@ -56157,7 +56191,7 @@ function inv72Html(){
       + `<button type="button" class="pane-go72 inv72-goshop">去廟街禮品檔</button>`;
   } else {
     body = list.map(({itemId, count, item})=>
-      `<p style="margin:6px 0">${item.emoji||"🎁"} <b>${item.name}</b> ×${count} <span class="sub">· ${rarityLabelZh(item.rarity)} · $${(item.price||0).toLocaleString()}</span></p>`
+      `<p style="margin:6px 0">${iconHtml112(item.emoji||"🎁")} <b>${item.name}</b> ×${count} <span class="sub">· ${rarityLabelZh(item.rarity)} · $${(item.price||0).toLocaleString()}</span></p>`
     ).join("");
     body += `<p class="sub" style="margin-top:10px">送禮：地圖遇到 Vera／林曉晴／周采兒 →「送禮」（${softSocialCostsDay()?"耗 1 日":"唔耗日"}）。</p>`;
   }
@@ -56267,7 +56301,7 @@ function showStats(){
 function people72Html(){
   const html=Object.values(NPCS).map(n=>{
     const v=S.npcs[n.id]||0;
-    const h="♥".repeat(Math.round(v/20))+"♡".repeat(5-Math.round(v/20));
+    const h=favDots112(Math.round(v/20));
     const next=affNextUnlock(v);
     let nextLine;
     if(next){
@@ -56521,7 +56555,7 @@ function jobs72SectionHtml(){
     pend91.forEach(rec=>{
       const L=LOCS.find(x=>x.id===rec.locId);
       body += `<div class="req" style="margin-bottom:8px">
-        <b>📞 ${rec.title}</b> · ${rec.type||""} · <span class="gold">等消息</span>
+        <b>${iconHtml112("📞")} ${rec.title}</b> · ${rec.type||""} · <span class="gold">等消息</span>
         <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${L?L.name+" · ":""}${(typeof aud91PendingHint==="function") ? aud91PendingHint(rec) : ""}</div>
       </div>`;
     });
@@ -56530,7 +56564,7 @@ function jobs72SectionHtml(){
     body += `<p class="gold" style="margin:10px 0 6px">試鏡消息（何生通知留底）</p>`;
     log91.slice(0, 6).forEach(en=>{
       body += `<div class="req" style="margin-bottom:8px">
-        <b>${en.ok?"✅":"📞"} ${en.title}</b> · ${en.ok?"獲聘":"未獲聘"}
+        <b>${iconHtml112(en.ok?"✅":"📞")} ${en.title}</b> · ${en.ok?"獲聘":"未獲聘"}
         <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${en.ok?`簽約金 $ ${(en.signPay||0).toLocaleString()} 已入帳 · 餘額 $ ${(en.balance||0).toLocaleString()} 殺青入帳`:"呢張通告完結，再試其他。"}</div>
       </div>`;
     });
@@ -56543,7 +56577,7 @@ function jobs72SectionHtml(){
       const hud = (typeof shootDeadlineHud==="function") ? shootDeadlineHud(sh) : "";
       const stLab = (sh.doneDays>0) ? "拍攝中" : "已獲聘";
       body += `<div class="req" style="margin-bottom:8px">
-        <b>🎥 ${sh.title}</b> · ${sh.type||""} · <span class="gold">${stLab}</span>
+        <b>${iconHtml112("🎥")} ${sh.title}</b> · ${sh.type||""} · <span class="gold">${stLab}</span>
         <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${L?L.name+" · ":""}進度 ${sh.doneDays||0}/${sh.totalDays} · 剩餘 ${rem} 日</div>
         ${hud?`<div style="font-size:.72rem;color:var(--gold,#c9a227);margin-top:2px">拍攝限期：${hud}</div>`:""}
         <div style="font-size:.72rem;color:#b3a284">${(Number(sh.signedPaid)||0)>0 ? `合約 $ ${(sh.pay||0).toLocaleString()} · 簽約金 $ ${(Number(sh.signedPaid)||0).toLocaleString()} 已入帳 · 餘額 $ ${Math.max(0,(sh.pay||0)-(Number(sh.signedPaid)||0)).toLocaleString()} 殺青入帳` : `完成約酬 $ ${(sh.pay||0).toLocaleString()}（殺青後入帳）`} · 聲望 +${sh.fame||0} · 人氣 +${sh.popularity!=null?sh.popularity:0}</div>
@@ -56558,7 +56592,7 @@ function jobs72SectionHtml(){
         const L=LOCS.find(x=>x.id===g.loc);
         body += gigCardHtml(g,{locName:L?L.name:""});
       } else {
-        body += `<div class="req" style="margin-bottom:8px"><b>🎬 ${b.title}</b> · ${b.type||"通告"}</div>`;
+        body += `<div class="req" style="margin-bottom:8px"><b>${iconHtml112("🎬")} ${b.title}</b> · ${b.type||"通告"}</div>`;
       }
     });
   }
@@ -56566,7 +56600,7 @@ function jobs72SectionHtml(){
     body += `<p class="gold" style="margin:10px 0 6px">已殺青履歷</p>`;
     hist.forEach(h=>{
       body += `<div class="req" style="margin-bottom:8px">
-        <b>✅ ${h.title||"通告"}</b> · ${h.type||""}
+        <b>${iconHtml112("✅")} ${h.title||"通告"}</b> · ${h.type||""}
         <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${h.totalDays||0} 日 · 片酬 $ ${(h.pay||0).toLocaleString()} · 聲望 +${h.fame||0}</div>
         <div style="font-size:.72rem;color:#b3a284">評價：${h.rating||"已殺青"}</div>
       </div>`;

@@ -147,6 +147,11 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   eval(extractFn('addLocTalkGiftActs'));
   eval(extractFn('addLocBridgeActs'));
   eval(extractFn('addLocGigActs'));
+  /* v20a112 ICONS112：openLoc 經 openLocSheet 調用 iconHtml112＋esc59，沙盒要一併載入對照＋helper。 */
+  eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112', 'var EMOJI_ICON112'));
+  eval(extractFn('iconHtml112'));
+  eval(extractFn('favDots112'));
+  eval(extractFn('esc59'));
   eval(extractFn('openLoc'));
 
   function actsBtns(){ return els['loc-acts'] ? els['loc-acts'].children : []; }

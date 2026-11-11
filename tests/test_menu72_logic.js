@@ -44,11 +44,16 @@ eval(extractConst('book70GroupSub').replace('const book70GroupSub =', 'var book7
 var PORTRAITS = new Proxy({}, { get: () => 'face.png' });
 var affNextUnlock = function(v){ return v < 100 ? { need: 10, label: '閒談', at: 10 } : null; };
 var shootSpanFor = function(){ return 3; };
+var aud91Ensure = function(){ return []; }; /* v20a112 ICONS112：拍攝簿等消息／試鏡消息段先要 aud91Ensure 在位先讀 S.pendingAud／S.aud91Log。 */
 var isRecordGig = function(){ return false; };
 var gigCardHtml = function(){ return '<div class="gig-stub"></div>'; };
 var rarityLabelZh = function(){ return '稀有'; };
 var softSocialCostsDay = function(){ return false; };
 var GiftShop = { ensureSave: function(){}, inventoryList: function(){ return []; } };
+/* v20a112 ICONS112：被抽函數調用 iconHtml112／favDots112，沙盒要一併載入對照＋helper。 */
+eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
+eval(extractFn('iconHtml112'));
+eval(extractFn('favDots112'));
 eval(extractFn('shootRemain'));
 eval(extractFn('ensureWrapHistoryFromFlags'));
 eval(extractFn('jobs72SectionHtml'));
@@ -74,14 +79,37 @@ S = { booked: [], shoots: [{ id: 'sh1', gigId: 'g1', title: '測試戲', type: '
 h = jobs72SectionHtml();
 ok('拍攝簿拍攝中：段名＋戲名＋進度＋剩餘 2 日＋去相關地點掣', h.indexOf('拍攝中／已獲聘') >= 0 && h.indexOf('測試戲') >= 0
   && h.indexOf('進度 1/3') >= 0 && h.indexOf('剩餘 2 日') >= 0 && h.indexOf('jobs72-goloc') >= 0 && h.indexOf('去相關地點') >= 0);
+ok('拍攝簿拍攝中：🎥 換手繪場記板圖（icon_clapper.png，無 🎥 字面）',
+  h.indexOf('icon_clapper.png') >= 0 && h.indexOf('🎥') < 0);
 S = { booked: [], shoots: [], wrapHistory: [{ gigId: 'g9', title: '舊戲', type: '電視', totalDays: 2, pay: 3000, fame: 5, rating: '好評如潮' }], flags: {}, weekPlan: [], dayIndex: 0 };
 h = jobs72SectionHtml();
 ok('拍攝簿履歷：已殺青履歷＋戲名＋評價保留', h.indexOf('已殺青履歷') >= 0 && h.indexOf('舊戲') >= 0 && h.indexOf('好評如潮') >= 0);
+ok('拍攝簿履歷：✅ 換綠色 CSS 勾（ic-check112，無 ✅ 字面）',
+  h.indexOf('ic-check112') >= 0 && h.indexOf('✅') < 0);
 GIGS = [{ id: 'gb1', loc: LOCS[0].id, title: '待試鏡戲' }];
 S = { booked: [{ gigId: 'gb1', title: '待試鏡戲' }], shoots: [], wrapHistory: [], flags: {}, weekPlan: [], dayIndex: 0 };
 h = jobs72SectionHtml();
 ok('拍攝簿待試鏡段（gigCardHtml 渲染）', h.indexOf('待試鏡（未獲聘）') >= 0 && h.indexOf('gig-stub') >= 0);
 GIGS = [];
+/* v20a112 ICONS112：拍攝簿其餘三個 icon 位（等消息 📞／試鏡消息 ✅📞／待試鏡散工 🎬）數據驅動斷言。 */
+S = { booked: [], shoots: [], wrapHistory: [], flags: {}, weekPlan: [], dayIndex: 0,
+  pendingAud: [{ title: '等消息戲', type: '電視', locId: LOCS[0].id }] };
+h = jobs72SectionHtml();
+ok('拍攝簿等消息：📞 換手繪電話圖（icon_phone.png，無 📞 字面）',
+  h.indexOf('等消息（已試鏡，未有回音）') >= 0 && h.indexOf('等消息戲') >= 0
+  && h.indexOf('icon_phone.png') >= 0 && h.indexOf('📞') < 0);
+S = { booked: [], shoots: [], wrapHistory: [], flags: {}, weekPlan: [], dayIndex: 0,
+  aud91Log: [{ ok: true, title: '中咗戲', signPay: 1000, balance: 2000 }, { ok: false, title: '落選戲' }] };
+h = jobs72SectionHtml();
+ok('拍攝簿試鏡消息：獲聘 ✅ 換綠勾、落選 📞 換電話圖（兩者齊出，無 ✅／📞 字面）',
+  h.indexOf('試鏡消息（何生通知留底）') >= 0 && h.indexOf('中咗戲') >= 0 && h.indexOf('落選戲') >= 0
+  && h.indexOf('ic-check112') >= 0 && h.indexOf('icon_phone.png') >= 0
+  && h.indexOf('✅') < 0 && h.indexOf('📞') < 0);
+S = { booked: [{ gigId: 'nope', title: '散工戲', type: '電影' }], shoots: [], wrapHistory: [], flags: {}, weekPlan: [], dayIndex: 0 };
+h = jobs72SectionHtml();
+ok('拍攝簿待試鏡散工（無 gig 卡）：🎬 換手繪場記板圖（icon_clapper.png，無 🎬 字面）',
+  h.indexOf('待試鏡（未獲聘）') >= 0 && h.indexOf('散工戲') >= 0
+  && h.indexOf('icon_clapper.png') >= 0 && h.indexOf('🎬') < 0);
 
 /* ---------- (3) 人脈列 ---------- */
 S = { npcs: { agent: 40 } };

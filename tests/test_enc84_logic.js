@@ -114,6 +114,10 @@ const iMod84 = html.indexOf('/* ===== v20a84 ENC84：紅星巧遇 Phase 3');
 const iMod84End = html.indexOf('/* ===== ENC84 模組完 ===== */', iMod84);
 if(iMod84 < 0 || iMod84End < 0) throw new Error('ENC84 module not found');
 const mod84 = html.slice(iMod84, iMod84End);
+/* v20a112 ICONS112：enc79PeopleHtml 用 favDots112，沙盒要一併載入對照＋helper。 */
+eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
+eval(extractFn('iconHtml112'));
+eval(extractFn('favDots112'));
 eval(consts + '\n' + fns.map(extractFn).join('\n') + '\n' + mod83 + '\n' + mod84);
 
 const dlgCount = (o)=>{

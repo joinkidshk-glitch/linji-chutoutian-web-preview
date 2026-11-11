@@ -89,6 +89,10 @@ const FNS = ['R','clamp','statHardMax','apply','bumpNpc','planMeta','isGigWrappe
   'weekNumNow','stampWeekPlan37','writeTodayPlan','clearJobFromPlans',
   'shootBandFor','resolveRoleScale','shootWeekdayOk','shootWeekdaySet0','isFreePlanSlot','isMapDay','isRecordGig','shootWeekdayLabel','gigScheduleVerb','displayDateObj','isCriticalPlanDay','planDayWouldWrap','enrollCourse','fameFloor','canAudition','chance','rollAuditionPay','chanceVarianceNote','payContractNote','doAudition',
   'aud91Ensure','aud91PendingOf','aud91WaitDays','aud91WaitPhrase','aud91CreatePending','aud91LogPush','aud91DueList','aud91PendingHint','aud91PresentDue','aud91PresentOne','payWrapNote','shootPendingLine38'];
+/* v20a112 ICONS112：被抽函數調用 iconHtml112，沙盒要一併載入對照＋helper。 */
+eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
+eval(extractFn('iconHtml112'));
+eval(extractFn('favDots112'));
 for (const f of FNS) eval(extractFn(f));
 ok('harness: AUD91 函數全載入', typeof aud91CreatePending === 'function' && typeof aud91PresentDue === 'function' && typeof doAudition === 'function');
 

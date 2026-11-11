@@ -61,7 +61,9 @@ ok('要事訊號用既有數據（favorDue／deadlineDay／CALIB60_NODE_WINDOWS�
    all(t in src for t in ['favorDueDebt', 'deadlineDay', 'CALIB60_NODE_WINDOWS', 'ux68SeasonEndLeft']))
 # v20a74 改版：目標標示隨主攻目標功能移除——舊斷言「▲ 用 STAT_LABEL」改為驗全清。
 ok('v74：目標標示已移除（冇 badges 函數／冇 .ux68-tgt）', 'ux68ApplyTargetBadges' not in src and 'ux68-tgt' not in src)
-ok('sheet 標題加地區、desc 唔重複', '${L.name}${L.area ? " · " + L.area : ""}' in src
+# v20a112 ICONS112：地點板標題改 innerHTML＋圖標（原 textContent 純文字）；地區仍在標題、desc 仍獨立。
+ok('sheet 標題加地區、desc 唔重複', 'document.getElementById("loc-title").innerHTML=iconHtml112(L.emoji||"")' in src
+   and 'esc59(L.name)' in src and 'esc59(L.area)' in src
    and 'textContent=`${descShort}`' in src)
 
 # --- (3) 地圖墨字地名（方案 B 定版：index-alt-b.html） ---
