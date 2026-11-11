@@ -3,6 +3,9 @@
 //   ＋ID/CR 帶位弧＋E3 三變體＋E1 邊界（349/350）與質性閘逐項拆解；
 // - 累計計數器：careerStats95Of 存檔路徑／wrapHistory 衍生路徑／end95AddWrap 種子唔雙計；
 // - 質性件單元：end95Awards（win vs 提名）、end95ChainsDone 六鏈標記、end95PangProgress 三路；
+// v20a101 QA101 改版註記：彭少祺星 id 正名——巧遇系統真 id 係 pang_siuki，本檔舊 fixture
+//   誤用 pang_siu_kei（同 end95PangProgress 舊 bug 同源、互相掩護）；本版 fixture 改用真 id，
+//   end95PangProgress 亦已修返讀 pang_siuki。專門守門見 tests/test_qa101_logic.js。
 // - 差邊瓣：end95BuildGaps 經 resolve 輸出（獎／擔正／鏈／雙軌差額）；純函數不變性；舊檔唔 crash。
 // 用法：node tests/test_ladder95_logic.js
 const fs = require('fs');
@@ -208,7 +211,7 @@ function canon(o){
     careerStats95: stats95({ total: 55,
       byMedium: { film: 8, tv: 10, music: 4, variety: 30, ad: 3 },
       leadByMedium: { variety: 1 }, genreIdentified: 20, genreComedy: 5, genreAction: 3 }),
-    stars: { pang_siu_kei: { fav: 50, tier: 2, metN: 9, lastMet: 500 } },
+    stars: { pang_siuki: { fav: 50, tier: 2, metN: 9, lastMet: 500 } },
   }));
   ok('分科：綜藝專長（佔比 55%＋彭少祺好感 50）→ GH 金牌司儀', r.career === 'GH');
 }
@@ -326,10 +329,10 @@ function canon(o){
     end95ChainsDone(baseSave({ story: { flags: { flag_stay_mind: true }, rel: {}, done: {}, choices: {} } })).includes('F') &&
     end95ChainsDone(baseSave({})).length === 0);
   ok('end95PangProgress：好感路／債權路／C10 路任一通',
-    end95PangProgress(baseSave({ stars: { pang_siu_kei: { fav: 45 } } })) === true &&
+    end95PangProgress(baseSave({ stars: { pang_siuki: { fav: 45 } } })) === true &&
     end95PangProgress(baseSave({ mockCredits: [{ id: 'credit_enc84_pang_patron', amount: 1 }] })) === true &&
     end95PangProgress(baseSave({ story: { flags: {}, rel: {}, done: { C10: true }, choices: {} } })) === true &&
-    end95PangProgress(baseSave({ stars: { pang_siu_kei: { fav: 44 } } })) === false);
+    end95PangProgress(baseSave({ stars: { pang_siuki: { fav: 44 } } })) === false);
 }
 
 /* ============ 純函數不變性＋總結頁呈現 ============ */

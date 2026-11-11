@@ -44,7 +44,8 @@ ok('item2c fixed card present (深宵廠景煞科)', '深宵廠景煞科，新�
 # v20a91 AUD91 改版註：試鏡改為「等公佈先揭曉」，兩條試鏡入口（doAudition／手帳 job:）
 # 不再即場獲聘，改匯入 aud91CreatePending → 公佈嗰刻由 aud91PresentOne 統一呈現，
 # 「殺青後入帳」行改由公佈呈現嗰處承載（原意不變：聲望／人氣唔提早入帳、殺青先落帳）。
-ok('item3 doAudition pending line', '殺青後入帳' in html and '未殺青前唔會加，拍完嗰日先入帳' in html)
+# v20a101 改版：F4 精煉刪走「（未殺青前唔會加，拍完嗰日先入帳）」重複括號，公佈句改「殺青嗰日先入帳」；斷言跟新句（jobs pane 嘅「殺青後入帳」標記不變）。
+ok('item3 doAudition pending line', '殺青後入帳' in html and '殺青嗰日先入帳' in html)
 ok('item3 both hire paths carry the line', html.count('aud91CreatePending(') >= 4 and 'function aud91PresentOne' in html)
 ok('item3 jobs pane marks pending', '（殺青後入帳）' in html)
 

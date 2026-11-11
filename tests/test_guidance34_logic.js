@@ -412,8 +412,11 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   S = { money: 12000 };
   eval(extractFn('showStressPreviewModal'));
   showStressPreviewModal({ start:30, end:95, peak:95, rows:[{ wd:'一', name:'街頭表演', delta:5, sign:'+5', after:95 }] }, ()=>{});
+  /* v20a101 改版：E6 文案精煉刪走「後果講明：」宣告式前缀（系統味），句子直接以「壓力 X」開頭；
+     本斷言改為核實前缀已刪＋數字（約 20%／約 55%）不變。舊版 index 行本斷言會 FAIL 喺前缀檢查。 */
   ok('e8 preview @peak95 shows consequence line with real numbers',
-     modalBodies.length === 1 && modalBodies[0].indexOf('後果講明') >= 0
+     modalBodies.length === 1 && modalBodies[0].indexOf('後果講明') < 0
+     && modalBodies[0].indexOf('壓力 95') >= 0
      && modalBodies[0].indexOf('約 20%') >= 0 && modalBodies[0].indexOf('約 55%') >= 0);
   modalBodies = [];
   showStressPreviewModal({ start:30, end:75, peak:75, rows:[{ wd:'一', name:'街頭表演', delta:5, sign:'+5', after:75 }] }, ()=>{});

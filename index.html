@@ -4855,7 +4855,7 @@ body.day-res-open .day-row{
             <button class="g" id="btn-load" style="display:none">讀檔</button>
           </div>
         </div>
-        <p class="sub" id="start-soft-tip" style="font-size:.78rem;margin-top:6px;opacity:.9">試玩規則：通告欄／打聽／傾談／送禮<strong>不耗日</strong>（部分需小額茶錢）；訓練／試鏡／休息／表演 <strong>+1日</strong>。</p>
+        <p class="sub" id="start-soft-tip" style="font-size:.78rem;margin-top:6px;opacity:.9">通告欄／打聽／傾談／送禮<strong>唔耗日</strong>（茶錢另計）；訓練／試鏡／休息／表演 <strong>+1 日</strong>。</p>
       </div>
     </div>
   </section>
@@ -4885,7 +4885,7 @@ body.day-res-open .day-row{
           <span class="hud-stress-track"><i class="hud-stress-fill" id="hud-stress-fill"></i></span>
           <b class="hud-stress-val" id="hud-stress-val">0</b>
         </div>
-        <button type="button" id="map-show-all-locs" aria-pressed="false" title="閒置地點預設淡化；打開後全部等亮">全部地點</button>
+        <button type="button" id="map-show-all-locs" aria-pressed="false" title="顯示全部地點（連暫時冇事做嗰啲）">全部地點</button>
       </div>
     </div>
     <div class="menu" id="menu">
@@ -4895,7 +4895,7 @@ body.day-res-open .day-row{
            v20a77 HUB77（用戶 2026-11-10 17:51 拍板）：「劇情」掣成粒移除——
            劇情／進度統一由進度頁做門口（頂欄 chip＋地圖「進度」掣直達）。 -->
       <button type="button" data-m="journal">手帳</button>
-      <button type="button" data-m="rest-early">提早休息／+1日</button>
+      <button type="button" data-m="rest-early">提早休息（過一日）</button>
       <div class="menu-sep" aria-hidden="true"></div>
       <button type="button" data-m="replay-tut">重看教學</button>
       <button type="button" data-m="settings">設定</button>
@@ -27884,7 +27884,7 @@ function end95ChainsDone(st){
 /* 彭少祺線進展（GH 閘）：好感到拍檔段（fav ≥45＝T3）／T4 提攜債權／主線 C10 同佢圓場嗰幕，任一即算。 */
 function end95PangProgress(st){
   const s = st || {};
-  const star = (s.stars && typeof s.stars === "object") ? s.stars.pang_siu_kei : null;
+  const star = (s.stars && typeof s.stars === "object") ? s.stars.pang_siuki : null;
   if(star && (Number(star.fav) || 0) >= 45) return true;
   if(end95EverHeldCredit(s, "credit_enc84_pang_patron")) return true;
   if(end95StoryDone(s, "C10")) return true;
@@ -29077,7 +29077,7 @@ const GiftShop = (function(){
     const it = itemById(itemId);
     if(!shop || !it) return { ok:false, reason:"找不到貨品" };
     const left = stockLeft(shopId, itemId);
-    if(left<=0) return { ok:false, reason:"估清了" };
+    if(left<=0) return { ok:false, reason:"沽清了" };
     const price = Number(it.price)||0;
     if((S.money||0) < price){ const sys=(GIFT_REACT&&GIFT_REACT.system)||{}; return { ok:false, reason:sys.noMoney||"口袋裡的數目不夠——先去趕一兩個通告吧。" }; }
     S.money = (S.money||0) - price;
@@ -31755,7 +31755,7 @@ function openSaveSlotsModal(mode){
     </button>`;
   }).join("");
   modal(`<h3>${titles[mode]||"存檔"}</h3>
-    <p class="sub">槽 1 沿用舊存檔鍵（自動相容）。共 ${SAVE_SLOT_COUNT} 格。</p>
+    <p class="sub">共 ${SAVE_SLOT_COUNT} 個存檔位。</p>
     <div class="slot-list" id="slot-list">${rows}</div>`,[
     {label:"關閉", role:"g"}
   ]);
@@ -31873,12 +31873,12 @@ function openSettingsModal(){
   const familyOn = (p.familySafeContent===true) || (p.familySafeContent!==false && familyDefault);
   modal(`<h3>設定</h3>
     <div class="settings-list">
-      <div class="settings-row"><div><div class="lab">BGM</div><div class="hint">即將推出 · 偏好會記住</div></div>
-        <label><input type="checkbox" id="set-bgm" ${p.bgmMuted?"checked":""} aria-label="BGM 靜音" disabled/> BGM 靜音（預留）</label></div>
-      <div class="settings-row"><div><div class="lab">音效</div><div class="hint">即將推出 · 偏好會記住</div></div>
-        <label><input type="checkbox" id="set-sfx" ${p.sfxMuted?"checked":""} aria-label="音效靜音" disabled/> 音效靜音（預留）</label></div>
-      <div class="settings-row"><div><div class="lab">音量</div><div class="hint">即將推出（暫無音訊）</div></div>
-        <span class="hint" style="font-size:.78rem;color:var(--muted)">暫無音訊 · 滑桿稍後開放</span></div>
+      <div class="settings-row"><div><div class="lab">BGM</div><div class="hint">未推出</div></div>
+        <label><input type="checkbox" id="set-bgm" ${p.bgmMuted?"checked":""} aria-label="BGM 靜音" disabled/> BGM 靜音</label></div>
+      <div class="settings-row"><div><div class="lab">音效</div><div class="hint">未推出</div></div>
+        <label><input type="checkbox" id="set-sfx" ${p.sfxMuted?"checked":""} aria-label="音效靜音" disabled/> 音效靜音</label></div>
+      <div class="settings-row"><div><div class="lab">音量</div><div class="hint">未推出</div></div>
+        <span class="hint" style="font-size:.78rem;color:var(--muted)">未推出</span></div>
       <div class="settings-row"><div><div class="lab">對白速度</div><div class="hint">劇情「下一句」逐字顯示</div></div>
         <select id="set-speed">
           <option value="slow" ${speed==="slow"?"selected":""}>慢</option>
@@ -31888,7 +31888,7 @@ function openSettingsModal(){
         </select></div>
       <div class="settings-row"><div><div class="lab">減少動態</div><div class="hint">關閉過場動畫／縮短過場</div></div>
         <label><input type="checkbox" id="set-motion" ${p.reduceMotion?"checked":""}/> 開啟</label></div>
-      <div class="settings-row"><div><div class="lab">家庭友善內容</div><div class="hint">隱藏／替換抽煙、醉酒等描寫（soft 試玩預設開）</div></div>
+      <div class="settings-row"><div><div class="lab">家庭友善內容</div><div class="hint">隱藏／替換抽煙、醉酒等描寫</div></div>
         <label><input type="checkbox" id="set-family" ${familyOn?"checked":""}/> 開啟</label></div>
     </div>`,[
     {label:"完成", role:"p", on:()=>{
@@ -33426,7 +33426,6 @@ function gigBoardTeaserHtml(g, opts){
     ${meta?`<div class="gt-meta">${meta}</div>`:""}
     ${intelMark}
     ${gapHtml}
-    <div class="gt-hint">點開查看通告</div>
   </div>`;
 }
 /* ===== v19d PLAN_GIG_MV3_ALIGN_v1 Phase A 顯示派生 ===== */
@@ -33827,11 +33826,11 @@ function openCastingNoticeDetail(g, L){
   if(gate.ok){
     const softEntry = (typeof softPreviewOn==="function" && softPreviewOn());
     if(softEntry){
-      body += `<p class="var-note">這頁是試鏡入口，打開不耗日。去試鏡先耗一日，結果唔會即場知——要等幾日，何生收到風會打嚟通知。未獲聘不會入拍攝簿，亦不會入帳。獲聘簽約先收簽約金，之後先排拍攝日；餘額殺青先有片酬。</p>`;
+      body += `<p class="var-note">去試鏡要用一日，結果等何生通知。</p>`;
     }
     btns.push({label: softEntry ? "去試鏡" : copy.readyLabel, role:"p", on:()=>{
       confirmSpendDay(softEntry
-        ? `去試鏡：${g.title||"通告"}（試鏡後等通知；未獲聘不入帳；獲聘先收簽約金，餘額殺青先有片酬）`
+        ? `去試鏡：${g.title||"通告"}`
         : `接通告：${g.title||"通告"}`, ()=>doAudition(g, L));
     }});
   } else {
@@ -33927,7 +33926,7 @@ function allPlanDefs(){
   const list=[];
   Object.values(PLAN_ITEMS).forEach(arr=>arr.forEach(x=>list.push(x)));
   (S && S.booked || []).forEach(b=>{
-    list.push({ id:"job:"+b.gigId, icon:"🎬", name:b.title, hint:"舊預約待試鏡（當日先擲骰；失敗則不開拍）" });
+    list.push({ id:"job:"+b.gigId, icon:"🎬", name:b.title, hint:"待試鏡（當日試鏡，結果等何生通知）" });
   });
   return list;
 }
@@ -34944,7 +34943,7 @@ function confirmSpendDay(actionLabel, onYes, opts){
   } else {
     nextLine = `之後會依手帳執行週${next.name}「<b>${next.planName}</b>」。`;
   }
-  modal(`<h3>確認耗日</h3>
+  modal(`<h3>呢步要用一日</h3>
     <p>「<b>${actionLabel}</b>」會用掉今天（週${todayWd}）。</p>
     <p class="sub">${nextLine}</p>`,[
     {label:"取消", role:"g", on: opts.onCancel||null},
@@ -35129,7 +35128,7 @@ function quickFillTrain(){
 }
 function quickClearWeek(){
   if(!S.homeEditable) return;
-  modal(`<h3>清空本週</h3><p>可改日子會改成「到處逛逛」。拍攝／檔期已定之日保留。確定？</p>`,[
+  modal(`<h3>清空本週</h3><p>可改日子會改成「到處逛逛」。拍攝／檔期已定之日保留。</p>`,[
     {label:"清空可改日", role:"p", on:()=>{ applyActToUnlocked("scout_all", "已清空本週（可改日），可還原"); }},
     {label:"取消", role:"g"}
   ]);
@@ -35218,7 +35217,7 @@ function renderNotebook(){
     const btn=document.createElement("button");
     btn.type="button";
     btn.className="day-row"+(planSelDay===i?" on":"")+(locked?" locked":"")+(editable && !locked?" hint-edit":"");
-    const hint = locked ? "拍攝檔期已定 · 不可改" : (editable ? "點此改行程" : (meta.hint||""));
+    const hint = locked ? "拍攝檔期已定 · 不可改" : (editable ? "" : (meta.hint||""));
     const hintHtml = hint ? `<span class="plan-hint">${hint}</span>` : "";
     btn.innerHTML=`<span class="wd">週${weekdayName(i)}</span><span class="ic">${meta.icon}</span><span class="nm"><span class="plan-main">${meta.name}</span>${hintHtml}</span>`;
     if(editable && !locked){
@@ -35274,7 +35273,7 @@ function renderNotebook(){
        處理（train71HandleClick）。 */
     list.innerHTML = '<div class="train71-host">' + ((typeof train71PickerHtml === "function") ? train71PickerHtml("day") : "") + '</div>';
   } else if(planCat==="work" && !items.length){
-    list.innerHTML=`<div class="act-empty">未有待試鏡通告。<br>去地圖通告欄揀通告；達標後可接通告。</div>`;
+    list.innerHTML=`<div class="act-empty">未有待試鏡通告。<br>去地圖通告欄睇通告，啱嘅就去試鏡。</div>`;
   } else {
     items.forEach(it=>{
       const b=document.createElement("button");
@@ -35296,18 +35295,18 @@ function renderNotebook(){
   try{
     const modeEl=document.getElementById("nb-plan-mode");
     const titleEl=document.getElementById("nb-plan-title");
-    if(titleEl) titleEl.textContent = editable ? "編輯本週行程" : ((typeof nbShowingPrevWeek37==="function" && nbShowingPrevWeek37()) ? "上週行程（唯讀）" : "本週行程（唯讀）");
+    if(titleEl) titleEl.textContent = editable ? "編輯本週行程" : ((typeof nbShowingPrevWeek37==="function" && nbShowingPrevWeek37()) ? "上週行程" : "本週行程");
     if(modeEl){
       modeEl.hidden = false;
       if(editable){
         modeEl.className = "nb-plan-mode edit";
-        modeEl.textContent = "計劃模式 · 改完要撳「確定本週行程」先生效";
+        modeEl.textContent = "改完要撳確定先生效";
       } else if(typeof nbShowingPrevWeek37==="function" && nbShowingPrevWeek37()){
         modeEl.className = "nb-plan-mode readonly";
         modeEl.textContent = "唯讀手帳 · 呢版係上週已執行嘅行程；新一週行程喺回家結算時編排";
       } else {
         modeEl.className = "nb-plan-mode readonly";
-        modeEl.textContent = "唯讀手帳 · 行程已定；改排請等下週一回家結算後";
+        modeEl.textContent = "行程已定，下週一回家結算後再排。";
       }
     }
   }catch(_mode){}
@@ -35324,7 +35323,7 @@ function renderNotebook(){
       confBtn.disabled = true;
       confBtn.setAttribute("aria-disabled","true");
       confBtn.classList.add("is-locked");
-      confBtn.textContent = "行程已定 · 下週一可改";
+      confBtn.textContent = "行程已定";
       confBtn.title = "本週行程已確定（唯讀）。下週一回家結算後先可以再排。";
     }
     try{ confBtn.setAttribute("aria-label", confBtn.title); }catch(_a){}
@@ -35535,10 +35534,10 @@ function stressImpact34(s){
 function stressImpactLine34(s){
   const im = stressImpact34(s);
   const pct = (m)=> Math.round(m*100)+"%";
-  if(im.stress>=90) return `後果講明：壓力 ${im.stress} 嗰陣去打工（街頭表演／咖啡店駐場），收入只得返約 ${pct(im.income)}；試鏡成功率打到約 ${pct(im.audition)}。唔好硬頂——先排休息回氣。`;
-  if(im.stress>=70) return `後果講明：壓力 ${im.stress} 嗰陣去打工（街頭表演／咖啡店駐場），收入只得返約 ${pct(im.income)}；試鏡成功率亦打到約 ${pct(im.audition)}。`;
-  if(im.stress>=52) return `後果講明：壓力 ${im.stress} 未到打折線——去到 70 先開始扣打工收入同試鏡成功率。而家排多日休息，仲嚟得切。`;
-  return `後果講明：壓力 ${im.stress} 健康——70 以下唔影響打工收入同試鏡成功率，照衝都得。`;
+  if(im.stress>=90) return `壓力 ${im.stress} 嗰陣去打工（街頭表演／咖啡店駐場），收入只得返約 ${pct(im.income)}；試鏡成功率打到約 ${pct(im.audition)}。唔好硬頂——先排休息回氣。`;
+  if(im.stress>=70) return `壓力 ${im.stress} 嗰陣去打工（街頭表演／咖啡店駐場），收入只得返約 ${pct(im.income)}；試鏡成功率亦打到約 ${pct(im.audition)}。`;
+  if(im.stress>=52) return `壓力 ${im.stress} 未到打折線——去到 70 先開始扣打工收入同試鏡成功率。而家排多日休息，仲嚟得切。`;
+  return `壓力 ${im.stress} 健康——70 以下唔影響打工收入同試鏡成功率，照衝都得。`;
 }
 function showStressPreviewModal(pv, go){
   const risk = pv.peak>=90 ? `<p class="warn">本週壓力高峰約 ${pv.peak}（易爆表，試鏡易飛）——建議加休息。</p>`
@@ -35546,7 +35545,7 @@ function showStressPreviewModal(pv, go){
     : (pv.peak>=52 ? `<p class="bad">本週壓力高峰約 ${pv.peak}，開始偏高（越高越差）。</p>` : `<p class="good">本週壓力高峰約 ${pv.peak}，大致穩陣。</p>`));
   const rows=pv.rows.map(r=>{
     const cls = r.delta<0 ? "good" : (r.delta>0 ? "bad" : "");
-    return `<div class="row"><span>週${r.wd} · ${r.name}</span><span><span class="sp-lab">當日±</span> <b class="${cls}">${r.sign}</b>　<span class="sp-lab">週末累計</span> <b>${r.after}</b></span></div>`;
+    return `<div class="row"><span>週${r.wd} · ${r.name}</span><span><span class="sp-lab">當日±</span> <b class="${cls}">${r.sign}</b>　<span class="sp-lab">累計</span> <b>${r.after}</b></span></div>`;
   }).join("");
   const livingEst=livingCostEstimate();
   const livingRange=livingCostRangeLabel();
@@ -35564,7 +35563,7 @@ function showStressPreviewModal(pv, go){
       if(m<livingEst*2) return `<p class="bad">存款偏緊，建議本週至少排一張通告／試鏡。</p>`;
       return "";
     }catch(_e){ return ""; } })()}
-    <p style="font-size:.72rem;color:var(--muted)">當日±＝當日壓力變化；週末累計＝做到嗰日後嘅壓力。估算值會有浮動。</p>`,[
+    <p style="font-size:.72rem;color:var(--muted)">估算會有少少出入。</p>`,[
     {label:"確定出發", role:"p", on:go},
     {label:"再改手帳", role:"g"}
   ]);
@@ -35583,7 +35582,7 @@ function confirmPlan(){
         confBtn.disabled = true;
         confBtn.setAttribute("aria-disabled","true");
         confBtn.classList.add("is-locked");
-        confBtn.textContent = "行程已定 · 下週一可改";
+        confBtn.textContent = "行程已定";
       }
     }catch(_e){}
     return;
@@ -35667,11 +35666,11 @@ function endBrowseDayGoHome(){
   if(typeof ending78Gate==="function" && ending78Gate()) return;
   try{
     if(typeof isStoryPlayActive==="function" && isStoryPlayActive()){
-      toast("劇情進行中，完結後再返屋企");
+      toast("劇情進行中，完成對白先可以繼續。");
       return;
     }
   }catch(_e){}
-  try{ if(typeof _storyPlayLocked!=="undefined" && _storyPlayLocked){ toast("劇情進行中，完結後再返屋企"); return; } }catch(_e2){}
+  try{ if(typeof _storyPlayLocked!=="undefined" && _storyPlayLocked){ toast("劇情進行中，完成對白先可以繼續。"); return; } }catch(_e2){}
   /* v20a96 LOC96：病日先問去唔去醫院治療（gate 接管咗就唔好再行病假結算） */
   try{ if(typeof hosp96TreatGate==="function" && hosp96TreatGate((typeof todayPlanId==="function") ? todayPlanId() : null)) return; }catch(_h96c){}
   /* v20a61 CONSEQ61-2：病日唔當普通休息日過——行病假結算（作廢行程／告假） */
@@ -35710,13 +35709,13 @@ function goJournalFromMenu(){
 function confirmEarlyRestFromMenu(){
   try{
     if(typeof isStoryPlayActive==="function" && isStoryPlayActive()){
-      toast("劇情進行中，完結後再返屋企");
+      toast("劇情進行中，完成對白先可以繼續。");
       return;
     }
   }catch(_e){}
-  try{ if(typeof _storyPlayLocked!=="undefined" && _storyPlayLocked){ toast("劇情進行中，完結後再返屋企"); return; } }catch(_e2){}
+  try{ if(typeof _storyPlayLocked!=="undefined" && _storyPlayLocked){ toast("劇情進行中，完成對白先可以繼續。"); return; } }catch(_e2){}
   if(kickScheduleIfNeeded()) return;
-  modal(`<h3>確認提早休息？</h3><p>今日會完結並進入下一日（等同休息）。確定？</p>`,[
+  modal(`<h3>確認提早休息？</h3><p>今日會完結並進入下一日（等同休息）。</p>`,[
     { label:"確定休息 +1日", role:"d", on:()=>endBrowseDayGoHome() },
     { label:"取消", role:"g" }
   ]);
@@ -35798,7 +35797,7 @@ function goToMapForBrowse(){
   paintBar(); drawMap();
   const meta=planMeta(todayPlanId());
   if(typeof todayHasSoftSchedule==="function" && todayHasSoftSchedule()){
-    toast(`今日行程：${meta.name}`, { sub:"可先打聽／通告欄；要過日請撳「開始今日」", closeSheet:true });
+    toast(`今日行程：${meta.name}`, { sub:"可先打聽／通告欄；要過日請撳「開始今日行程」", closeSheet:true });
   } else {
     toast(`今日：${meta.name}`, {closeSheet:true});
   }
@@ -36080,6 +36079,8 @@ function resolvePlannedDay(id){
         })||"殺青：酬勞入帳，聲望／人氣結算。"}</span>`);
         if(signedPaid91>0) notes.push(`<span class="var-note">今次入帳係餘額 $ ${wrapPay91.toLocaleString()}——簽約嗰陣已經收咗簽約金 $ ${signedPaid91.toLocaleString()}，兩筆加埋 $ ${(Number(sh.pay)||0).toLocaleString()}，即係合約總額，冇縮水。</span>`);
         try{ notes.push(`<span class="var-note">${payWrapNote(sh)}</span>`); }catch(_e){}
+        /* v20a101 CHK101：殺青入帳嗰刻出實物支票（金額＝今次實際入帳餘額 wrapPay91，同 daily.money 同一數） */
+        try{ if(wrapPay91>0 && typeof chk101Html==="function") notes.push(chk101Html({ amount: wrapPay91, memo: signedPaid91>0 ? "片酬餘額" : "片酬" })); }catch(_chk101){}
         try{
           const _bg56 = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
           if(_bg56 && _bg56.softBridge){
@@ -36110,7 +36111,7 @@ function resolvePlannedDay(id){
           if(typeof softPreviewOn==="function" && softPreviewOn()){
             const flagsN = Object.keys(S.flags||{}).filter(k=>k.indexOf("done_")==0 && S.flags[k]).length;
             const n = Math.max(Number(S.story.gigCount)||0, flagsN);
-            if(n>0 && n<=3) toast("通告進度 "+Math.min(n,3)+"／3"+(n>=3?" · 第2幕條件接近":""));
+            if(n>0 && n<=3) toast(n>=3 ? "通告夠數，下一幕就快開。" : "又完成一單通告——離下一幕又近一步。");
           }
         }catch(_tg){}
         if((S.flags["done_"+sh.gigId]||0)>=1 && sh.type==="電視劇") S.flags.resume_tv=true;
@@ -36741,8 +36742,8 @@ function maybeNudgeStoryEntry(reason){
   S.flags.pendingStoryNudge = false;
   try{ saveQ(); }catch(_e){}
   modal(`<h3>有劇情可播</h3>
-    <p>地圖日常之外，還有主線劇情可播。現在可出「${title}」。</p>
-    <p class="gold">之後也可從頂欄「進度」掣，或者大地圖嘅「進度」掣，睇主線進度同開播。</p>`,[
+    <p>主線劇情開咗：而家可以播「${title}」。</p>
+    <p class="gold">之後喺「進度」頁睇到主線進度同開播。</p>`,[
     { label:"睇進度", role:"p", on:()=>{ try{ enterHome(null, false, "progress"); }catch(_e){} } },
     { label:"稍後", role:"g" }
   ]);
@@ -40926,7 +40927,7 @@ function canRepayDebtById(debtId){
 function applyMockAsk(locId, actionId, repayOpt){
   /* v19z4：事態播放中禁止扣茶錢／背景行動（boolean latch + DOM） */
   if((typeof isStoryPlayActive==="function" && isStoryPlayActive()) || _storyPlayLocked){
-    return { ok:false, toast:"劇情進行中，請先完成對白。" };
+    return { ok:false, toast:"劇情進行中，完成對白先可以繼續。" };
   }
   ensureMockJournal();
   const def = (mockAskDefs(locId)||[]).find(a=>a.id===actionId);
@@ -41131,21 +41132,21 @@ function openDebtRepaySheet(debtId, L, opts){
   if(gate.giftId){
     btns.push({ label:"禮物還："+d.title, role:"p", on:()=>{
       const r=applyMockAsk("agency_ho","act_ho_repay",{ debtId:d.id, mode:"gift", giftId:gate.giftId });
-      toast((r&&r.toast)||(r&&r.ok===false?"還款失敗":"已處理"));
+      toast((r&&r.toast)||(r&&r.ok===false?"還唔到——再試一次":"已還清"));
       after();
     }});
   }
   if(gate.cashOk){
     btns.push({ label:"現金 $200 還："+d.title, role:"p", on:()=>{
       const r=applyMockAsk("agency_ho","act_ho_repay",{ debtId:d.id, mode:"cash" });
-      toast((r&&r.toast)||(r&&r.ok===false?"還款失敗":"已處理"));
+      toast((r&&r.toast)||(r&&r.ok===false?"還唔到——再試一次":"已還清"));
       after();
     }});
   }
   if(gate.softFree && !gate.giftId && !gate.cashOk){
-    btns.push({ label:"預覽說明（唔清債）："+d.title, role:"g", on:()=>{
+    btns.push({ label:"只睇說明（唔還款）："+d.title, role:"g", on:()=>{
       const r=applyMockAsk("agency_ho","act_ho_repay",{ debtId:d.id, mode:"soft" });
-      toast((r&&r.toast)||"預覽：債項仍欠住。");
+      toast((r&&r.toast)||"冇還到，筆債仲欠住。");
       after();
     }});
   }
@@ -41263,7 +41264,7 @@ function renderRumorPane(){
   applyPhase2Steps56TabLabel();
   ensureMockJournal();
   /* v20a34 引導包 P0-5(c)：傳聞頁白話總說明（教學 coach 係步驟指示，唔係頁面用途說明，兩者唔重複） */
-  const intro34=`<p class="pane-intro">呢頁係你聽返嚟嘅傳聞碎片：每張都寫明喺邊度聽返嚟。揀兩張相關嘅可以拼合成情報——情報幫你開到隱藏通告，重要場面識點應對。</p>`;
+  const intro34=`<p class="pane-intro">呢頁係你聽返嚟嘅傳聞碎片：每張都寫明喺邊度聽返嚟。揀兩張相關嘅可以拼合成情報——開到隱藏通告，喺重要場面亦幫到你應對。</p>`;
   const rows=S.mockRumors||[];
   if(!rows.length){
     box.innerHTML=intro34+phase2Steps56CoachHtml(false)+`<article class="rumor-card rumor-empty"><p class="rumor-src">傳聞</p><p>${journalText(MOCK_EMPTY.rumors)}</p></article>`;
@@ -41769,7 +41770,7 @@ function renderProgressPane71(){
   let rows = [];
   try{ rows = prog71Rows(); }catch(_e){ rows = []; }
   if(!rows.length){
-    el.innerHTML = '<div class="prog71-empty"><h3>進度</h3><p>主線資料載入中，或者暫時未有主線紀錄。</p></div>';
+    el.innerHTML = '<div class="prog71-empty"><h3>進度</h3><p>暫時未有主線紀錄。</p></div>';
     return;
   }
   let fullLeft = 2;   /* 最近兩幕未開放先列足逐項條件（防劇透） */
@@ -41980,7 +41981,7 @@ function renderCastingTagsPane(){
   if(!box) return;
   /* Player default: no engineering tag spreadsheet. DEV (?devTags=1) may list earned tags. */
   if(!freeplayDevTagsOn()){
-    box.innerHTML = `<div class="tags-empty debt-empty"><p>選角印象會以手帳淡印顯示，唔會列出工程標籤表。</p><p class="sub" style="margin-top:8px">接通告殺青或劇情之後，暗紋會慢慢浮現。</p></div>`;
+    box.innerHTML = `<div class="tags-empty debt-empty"><p>暫時未有選角印象。</p><p class="sub" style="margin-top:8px">接多啲唔同戲路嘅通告，行內人會開始用幾個字記住你。</p></div>`;
     return;
   }
   const list = ensureCastingTagsState();
@@ -50504,7 +50505,7 @@ function phase3CastCopy(){
     lockedToast:"條件未合",
     subLine:"火候未夠。先跟班睇多幾場，練好再嚟報。",
     leaveLabel:"離開",
-    lockedTag:"暫未能報 · 條件未合",
+    lockedTag:"暫未能報",
     lockedSub:"角色已鎖定，暫未能報；可選擇離開。",
     readyTag:"可接通告",
     readySub:"條件符合，可接通告。",
@@ -50631,17 +50632,16 @@ function openStarSighting(star){
   modal(`<h3>遠觀 · ${journalText(star.displayName)}</h3>
     <p class="sub">${journalText(flavor)}</p>
     ${softSilhouetteFarHtml(star)}${eraSightParagraphs(star)}${intelPara}
-    <p class="sub">僅遠望 · 無互動（時機未到）</p>`, [
+    <p class="sub">而家只能遠望，未有得埋去傾。</p>`, [
     {label:"離開", role:"g"},
   ]);
-  toast(star.resultToast || "遠望一眼，未有互動。", { sub: flavor.slice(0,36) });
   return { ok:true, starId:star.starId, heard:heard, silhouette: phase3SoftOn() ? softSilhouetteFarSrc(star.starId) : "" };
 }
 function addStarSighting(locId, add){
   const star = starAtLoc(locId);
   if(!star || typeof add!=="function") return;
   const verb = star.actionLabel || "遠觀";
-  add(`${verb}：${star.displayName}`, star.distanceLine || "遠處張望", "僅遠望 · 無互動", ()=>openStarSighting(star), "act-priority act-ask");
+  add(`${verb}：${star.displayName}`, star.distanceLine || "遠處張望", "免費", ()=>openStarSighting(star), "act-priority act-ask");
 }
 try{
   window.__phase3 = {
@@ -50895,7 +50895,7 @@ function openLoc(id, opts){
   /* v20a78 LOCK78：已結局唔再開地點 sheet（接通告／傾談／送禮等行動一律擋）。
      結局係終局狀態，forceRestore 還原路徑都唔准繞過——冇合法流程要喺結局後還原 sheet。 */
   if(typeof ending78Gate==="function" && ending78Gate()) return;
-  if(isStoryPlayActive() && !opts.forceRestore){ toast("劇情進行中，請先完成對白。"); return; }
+  if(isStoryPlayActive() && !opts.forceRestore){ toast("劇情進行中，完成對白先可以繼續。"); return; }
   if(!opts.forceRestore && todayIsForcedDay()){
     closeSheet();
     kickScheduleIfNeeded();
@@ -51044,7 +51044,7 @@ function openLoc(id, opts){
             modal(`<h3>暫時未能點</h3>
               <p>${gate.reason||"介面暫未可互動。"}</p>
               <p class="sub">對白未完，介面暫時鎖住——撳『完成對白』先可以繼續。。</p>`,[
-              {label:"仍要試玩進行", role:"p", on:()=>{
+              {label:"仍要繼續", role:"p", on:()=>{
                 try{ ensureLocSheetInteractive({force:true}); }catch(_e){}
                 try{ fn(ev); }catch(err){
                   try{ console.warn(err); }catch(_c){}
@@ -51169,7 +51169,7 @@ function openLoc(id, opts){
     if(L.id==="agency_ho" && typeof DengLine!=="undefined" && DengLine.meetAvailable && DengLine.meetAvailable()){
       add("鄧麗萍約談排片", "龍頭院線排片部有人等你對數。", "免費", ()=>{
         closeSheet();
-        try{ DengLine.playMeet(); }catch(_e){ toast("暫時去不成"); }
+        try{ DengLine.playMeet(); }catch(_e){ toast("暫時去唔成"); }
       }, "act-priority act-story");
     }
     if(L.id==="agency_ho" && typeof DengLine!=="undefined" && DengLine.pushAvailable){
@@ -51179,7 +51179,7 @@ function openLoc(id, opts){
         if(!node) return;
         add(node.title || "鄧麗萍", node.synopsis || "", "免費", ()=>{
           closeSheet();
-          try{ DengLine.playPush(beatId); }catch(_e){ toast("暫時去不成"); }
+          try{ DengLine.playPush(beatId); }catch(_e){ toast("暫時去唔成"); }
         }, "act-priority act-story");
       });
     }
@@ -51189,7 +51189,7 @@ function openLoc(id, opts){
       DualMeet.actionsAt(L.id).forEach(act=>{
         add(act.title, act.hint, "免費", ()=>{
           closeSheet();
-          try{ DualMeet.play(act.id); }catch(_e){ toast("暫時去不成"); }
+          try{ DualMeet.play(act.id); }catch(_e){ toast("暫時去唔成"); }
         }, "act-priority act-story");
       });
     }
@@ -51201,7 +51201,7 @@ function openLoc(id, opts){
       choice47ActionsAt(L.id).forEach(act=>{
         add(act.title, act.hint, "免費", ()=>{
           closeSheet();
-          try{ if(!choice47Play(act.id)) toast("暫時去不成"); }catch(_e){ toast("暫時去不成"); }
+          try{ if(!choice47Play(act.id)) toast("暫時去唔成"); }catch(_e){ toast("暫時去唔成"); }
         }, "act-priority act-story");
       });
     }
@@ -51261,7 +51261,7 @@ function openLoc(id, opts){
       }
       add(def.title, hintFace, askCost, ()=>{
         if(typeof isStoryPlayActive==="function" && isStoryPlayActive()){
-          toast("劇情進行中，請先完成對白。");
+          toast("劇情進行中，完成對白先可以繼續。");
           return;
         }
         if(def.repay){
@@ -51338,6 +51338,16 @@ function openLoc(id, opts){
   }
   if(L.type==="film" || L.type==="tv" || L.type==="music" || L.type==="ad")
     add("休息室歇陣","減壓","+1日", ()=>doRest(L), "act-priority");
+  /* v20a101 QA101-BOARD：非 hub sheet 只讀 S.board 快取；快取俾 advanceDay 隨機成地刪除後
+     冇路徑補返（hub 分支係即場生成、非 hub 唔係），長推進後首開會空板，要撳通告欄先恢復。
+     修法：快取空而且係工作地點嗰陣，用 doScout/hub 同一句 gigsForLocSeasonBoard 補寫返——
+     唔郁刪除節奏、唔郁生成判準、唔郁非空板面（調查報告 qa101_board_investigation.md 機制 A）。 */
+  try{
+    if(!(S.board[L.id]||[]).length && (L.type==="film"||L.type==="tv"||L.type==="music"||L.type==="ad")){
+      const shown101 = gigsForLocSeasonBoard(L.id, calendarSeason());
+      if(shown101.length){ S.board[L.id]=shown101.map(g=>g.id); shown101.forEach(g=>{ S.known[g.id]=true; }); }
+    }
+  }catch(_qa101b){}
   addLocGigActs(add, L, (S.board[L.id]||[]).map(gid=>GIGS.find(g=>g.id===gid)).filter(Boolean), bridgeShown);
   }
 
@@ -52710,7 +52720,7 @@ function doScout(L){
     const acts=document.getElementById("loc-acts");
     if(sheet) sheet.classList.add("board-modal-open");
     if(acts){
-      acts.innerHTML=`<p class="loc-empty-hint">通告欄開啟中 · 請在視窗內瀏覽或接單</p>`;
+      acts.innerHTML=`<p class="loc-empty-hint">通告欄開緊——喺上面睇通告。</p>`;
     }
   }catch(_bm){}
   /* v19z11：關閉／返地點選單／dismiss 一律 forceRestore；keepSheetContent 防掏空 */
@@ -52718,9 +52728,8 @@ function doScout(L){
     try{ const sheet=document.getElementById("loc-sheet"); if(sheet) sheet.classList.remove("board-modal-open"); }catch(_e){}
     try{ if(L) openLoc(L.id, { forceRestore:true }); }catch(_e){}
   };
-  modal(`<h3>只查看通告欄 · ${L.name}</h3>${body}`,[
-    {label:"返地點選單",role:"g",on:reopenLoc},
-    {label:"關閉",role:"g",on:reopenLoc}
+  modal(`<h3>通告欄 · ${L.name}</h3>${body}`,[
+    {label:"返地點選單",role:"g",on:reopenLoc}
   ], { onDismiss: reopenLoc, keepSheetContent: true });
   document.getElementById("modal-inner").querySelectorAll(".gig-teaser").forEach(card=>{
     const open=()=>{
@@ -53808,7 +53817,7 @@ function ensureLocSheetInteractive(opts){
   let storyOn = false;
   try{ storyOn = typeof isStoryPlayActive==="function" && isStoryPlayActive(); }catch(_e){}
   if(storyOn && !force){
-    return { ok:false, reason:"劇情進行中，請先完成對白。", code:"story_play" };
+    return { ok:false, reason:"劇情進行中，完成對白先可以繼續。", code:"story_play" };
   }
   let maskReallyOpen = false;
   try{
@@ -53924,7 +53933,7 @@ function softPreviewOn(){
   try{ return typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview && BehaviorGate.featureFlag_softBehaviorGatePreview(); }catch(_e){ return false; }
 }
 function dayCostLabel(costsDay){
-  if(!costsDay) return softPreviewOn() ? "免費（試玩）" : "免費";
+  if(!costsDay) return "免費";
   /* 訓練／休息／試鏡／行程表演：soft／live 都耗日 */
   return "+1日";
 }
@@ -53961,8 +53970,8 @@ function talkHintLabel(){
   if(softTalkCostsDay()) return "寒暄一下 · 耗一日";
   try{
     const cap = softSocialDailyCap("talk");
-    return `寒暄一下 · 試玩不耗日（今日剩 ${cap.left} 次）`;
-  }catch(_e){ return "寒暄一下 · 試玩不耗日"; }
+    return `寒暄一下 · 唔耗日（今日剩 ${cap.left} 次）`;
+  }catch(_e){ return "寒暄一下 · 唔耗日"; }
 }
 function doTalk(npcId, L){
   try{ ensureLocSheetInteractive(); }catch(_e){}
@@ -54216,6 +54225,79 @@ function aud91PresentDue(continueFn){
   step();
   return true;
 }
+/* ===== v20a101 CHK101 支票實物（用戶 2026-11-11 12:38 提出）=====
+   簽約金公佈嗰刻＋殺青入餘額嗰刻出一張實物支票：底圖零文字（assets/cheque101_base.jpg），
+   銀行名／抬頭／日期／金額全部由 app 疊字；金額直接用入帳嗰個系統數，唔另計。
+   銀行係虛構名，唔用真銀行。純呈現，唔郁任何入帳邏輯。 */
+const CHK101_BANK = "港城商業銀行";
+const CHK101_PAYEE = "陳偉翔";
+function chk101AmountWords(n){
+  n = Math.round(Math.abs(Number(n)||0));
+  if(!n) return "零元正";
+  const D = ["零","壹","貳","參","肆","伍","陸","柒","捌","玖"];
+  const U = ["","拾","佰","仟"];
+  const G = ["","萬","億"];
+  const s = String(n);
+  let out = "", zeroRun = false, groupZeroPending = false;
+  /* 逐組（四位）處理：組內零合併、組尾零唔出、全零組只留一個零橋 */
+  const groups = [];
+  for(let i = s.length; i > 0; i -= 4) groups.unshift(s.slice(Math.max(0, i-4), i));
+  groups.forEach((g, gi) => {
+    const gName = G[groups.length - 1 - gi] || "";
+    const gv = parseInt(g, 10) || 0;
+    if(gv === 0){ if(out) groupZeroPending = true; return; }
+    const gs = g.padStart(4, "0");
+    let seg = "", zr = false;
+    for(let k = 0; k < 4; k++){
+      const d = gs.charCodeAt(k) - 48, u = U[3-k];
+      if(d === 0){ zr = true; continue; }
+      if(zr && seg){ seg += "零"; }
+      zr = false;
+      seg += D[d] + u;
+    }
+    /* 跨組零橋：前有組、本組仟位係零（或中間隔住全零組）→ 補一個零 */
+    if(out && (groupZeroPending || gs.charAt(0) === "0")) out += "零";
+    groupZeroPending = false;
+    out += seg + gName;
+  });
+  return out + "元正";
+}
+function chk101DateStr(){
+  try{ const dt = displayDateObj(); return dt.getFullYear() + "年" + (dt.getMonth()+1) + "月" + dt.getDate() + "日"; }
+  catch(_e){ return ""; }
+}
+function chk101EnsureCss(){
+  if(document.getElementById("chk101-css")) return;
+  const st = document.createElement("style"); st.id = "chk101-css";
+  st.textContent = `
+.chk101{position:relative;margin:10px 0 4px;border-radius:6px;overflow:hidden;box-shadow:0 4px 14px rgba(20,16,8,.35);transform:rotate(-.5deg)}
+.chk101 img{display:block;width:100%;height:auto}
+.chk101 span{position:absolute;color:#22304f;font-family:"Kaiti TC","STKaiti","DFKai-SB","KaiTi",serif;white-space:nowrap}
+.chk101 .ck-bank{left:5.5%;top:10.5%;width:24%;text-align:center;font-family:"Songti TC","STSong",serif;font-weight:700;font-size:.78rem;letter-spacing:.14em;color:#2e4a38}
+.chk101 .ck-date{left:70.5%;top:11%;width:23.5%;text-align:center;font-size:.8rem}
+.chk101 .ck-payee{left:7%;top:32.5%;font-size:1.08rem;font-weight:700;letter-spacing:.35em}
+.chk101 .ck-words{left:7%;top:53.5%;font-size:.92rem;letter-spacing:.06em}
+.chk101 .ck-amt{left:70%;top:50%;width:24.5%;height:11%;display:flex;align-items:center;justify-content:center;font-size:1.12rem;font-weight:700}
+.chk101 .ck-memo{left:6%;top:86.3%;width:25%;text-align:center;font-size:.62rem;color:#5a5340;letter-spacing:.2em}`;
+  document.head.appendChild(st);
+}
+function chk101Html(opts){
+  opts = opts || {};
+  const amount = Math.round(Number(opts.amount)||0);
+  if(!(amount > 0)) return "";
+  try{ chk101EnsureCss(); }catch(_e){}
+  const memo = String(opts.memo || "片酬");
+  return `<figure class="chk101" data-chk101="${amount}">
+    <img src="assets/cheque101_base.jpg" alt="支票" loading="lazy">
+    <span class="ck-bank">${CHK101_BANK}</span>
+    <span class="ck-date">${chk101DateStr()}</span>
+    <span class="ck-payee">${CHK101_PAYEE}</span>
+    <span class="ck-words">港幣${chk101AmountWords(amount)}</span>
+    <span class="ck-amt">$ ${amount.toLocaleString()}</span>
+    <span class="ck-memo">${memo}</span>
+  </figure>`;
+}
+
 function aud91PresentOne(rec, next){
   /* 先喺清單剔除：結果已定死，呈現只係揭曉，唔受 modal 點閂影響 */
   S.pendingAud = aud91Ensure().filter(p=>p!==rec);
@@ -54230,14 +54312,17 @@ function aud91PresentOne(rec, next){
     notes.push(`<span class="good">${eventLine("AUD_PASS",{title:rec.title, shootDays:rec.days})||("試鏡通過，拍攝 "+rec.days+" 日")}</span>`);
     notes.push(`<span class="good">簽約金 $ ${signPay.toLocaleString()} 已入帳（合約 $ ${pay.toLocaleString()} 嘅三成）；餘額 $ ${(pay-signPay).toLocaleString()} 殺青嗰日先入帳。</span>`);
     /* 聲望／人氣跟返 v37 規則：唔係簽約嗰刻入帳，存入 shoot record，殺青日先落帳 */
-    notes.push(`殺青後入帳：${(typeof STAT_LABEL!=="undefined" && STAT_LABEL && STAT_LABEL.fame)||"幕前聲望"} +${rec.fame} · ${(typeof STAT_LABEL!=="undefined" && STAT_LABEL && STAT_LABEL.popularity)||"人氣"} +${rec.pop}（未殺青前唔會加，拍完嗰日先入帳）`);
+    notes.push(`殺青嗰日先入帳：${(typeof STAT_LABEL!=="undefined" && STAT_LABEL && STAT_LABEL.fame)||"幕前聲望"} +${rec.fame} · ${(typeof STAT_LABEL!=="undefined" && STAT_LABEL && STAT_LABEL.popularity)||"人氣"} +${rec.pop}`);
     if(rec.payNote) notes.push(`<span class="var-note">${rec.payNote}</span>`);
     try{ notes.push(`<span class="var-note">${chanceVarianceNote(gig||{req:{}})}</span>`); }catch(_e){}
     try{ notes.push(`<span class="var-note">${payContractNote(gig||{pay:[pay,pay]}, pay, {basePay:rec.payBase, bonusPay:rec.payBonus, bonusLabel:rec.payBonusLabel})}</span>`); }catch(_e){}
     aud91LogPush({ day:S.dayIndex|0, title:rec.title, ok:true, signPay:signPay, balance:pay-signPay });
+    /* v20a101 CHK101：支票 HTML 先喺 try 內砌好，砌唔到就空字串，唔好炸斷公佈鏈 */
+    let chk101SignHtml = "";
+    try{ chk101SignHtml = chk101Html({amount: signPay, memo: "簽約金"}); }catch(_chk101e){}
     if(!gig){
       /* 通告資料對唔返（理論上唔會發生）：簽約金已入帳，唔好卡住玩家 */
-      modal(`<h3>何生來電</h3>${formatResultNotes(notes)}<p class="var-note">嗰張通告嘅資料對唔返，拍攝安排要再同何生確認；簽約金照數入帳。</p>`,[
+      modal(`<h3>何生來電</h3>${formatResultNotes(notes)}${chk101SignHtml}<p class="var-note">嗰張通告嘅資料對唔返，拍攝安排要再同何生確認；簽約金照數入帳。</p>`,[
         {label:"好", role:"p", on:cont}
       ], {onDismiss: cont});
       try{ saveQ(); }catch(_e){}
@@ -54256,6 +54341,7 @@ function aud91PresentOne(rec, next){
         <p>何生打嚟：「嗰邊開完會——用你。簽約金已經過數，拍攝日而家排。」</p>
         <p>成功率約 ${rec.chancePct}%</p>
         ${formatResultNotes(notes)}
+        ${chk101SignHtml}
         <p class="gold">已簽約——返手帳睇行程，再開工。</p>
         <p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
         {label:"好", role:"p", on:go}
@@ -54304,7 +54390,7 @@ function promptAudition(gig, L){
     return;
   }
   confirmSpendDay((typeof softPreviewOn==="function" && softPreviewOn())
-    ? `去試鏡：${gig.title||"通告"}（試鏡後等通知；未獲聘不入帳；獲聘先收簽約金，餘額殺青先有片酬）`
+    ? `去試鏡：${gig.title||"通告"}`
     : `接通告：${gig.title||"通告"}`, ()=>doAudition(gig, L));
 }
 
@@ -54397,11 +54483,11 @@ function openGiftShop(shopId, L){
     const left = row.left;
     const afford = (S.money||0) >= (it.price||0);
     const disabled = left<=0 || !afford;
-    const why = left<=0 ? "估清" : (!afford ? "錢不夠" : `餘 ${left}`);
+    const why = left<=0 ? "沽清" : (!afford ? "唔夠錢" : `餘 ${left}`);
     return `<button type="button" class="act ${disabled?"dim":""}" data-buy="${it.itemId}" ${disabled?"disabled":""} style="width:100%;margin:0 0 8px;text-align:left">
       <div><div class="n">${it.emoji||"🎁"} ${rarityDot(it.rarity)}${it.name}</div>
       <div class="h">$${(it.price||0).toLocaleString()} · ${rarityLabelZh(it.rarity)} · ${why}</div></div>
-      <div class="cost">${disabled?(left<=0?"估清":"——"):"買下"}</div>
+      <div class="cost">${disabled?(left<=0?"沽清":"——"):"買下"}</div>
     </button>`;
   }).join("") || `<p class="sub">本週暫無貨。</p>`;
   closeSheet();
@@ -54443,7 +54529,7 @@ function openGiftPick(npcKey, L){
   }).join("");
   closeSheet();
   modal(`<h3>送禮 · ${name}</h3>
-    <p class="sub">每日每角色限 1 次 · 本週禮物淨好感軟頂 +2 · 單次硬頂 +2</p>
+    <p class="sub">每日每人限送 1 次；同一人一星期最多 +2 好感</p>
     <div id="gift-pick-list">${rows}</div>`,[
       {label:"取消", role:"g", on:()=>{ if(L) openLoc(L.id); }}
     ], {onDismiss:()=>{ if(L) openLoc(L.id); }});
@@ -54505,7 +54591,7 @@ function inv72Html(){
     body = list.map(({itemId, count, item})=>
       `<p style="margin:6px 0">${item.emoji||"🎁"} <b>${item.name}</b> ×${count} <span class="sub">· ${rarityLabelZh(item.rarity)} · $${(item.price||0).toLocaleString()}</span></p>`
     ).join("");
-    body += `<p class="sub" style="margin-top:10px">送禮：地圖遇到 Vera／林曉晴／周采兒 →「送禮」（${softSocialCostsDay()?"耗 1 日":"試玩不耗日"}）。</p>`;
+    body += `<p class="sub" style="margin-top:10px">送禮：地圖遇到 Vera／林曉晴／周采兒 →「送禮」（${softSocialCostsDay()?"耗 1 日":"唔耗日"}）。</p>`;
   }
   return `<h3 class="jobs72-h">庫存</h3><p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>${body}`;
 }
@@ -54632,7 +54718,7 @@ function people72Html(){
       : "";
     return `<div class="people-row" style="margin:8px 0;display:flex;gap:8px;align-items:flex-start"><img src="${PORTRAITS[n.face]}" alt="" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/><span style="flex:1"><b>${n.name}</b> · ${n.role}<br><span class="gold">${h} ${v}／100</span>${nextLine}${goBit}</span></div>`;
   }).join("");
-  return `<h3 class="jobs72-h">人脈</h3><p class="people-next">好感門檻：寒暄0 · 閒談10 · 忠告25 · 情報對白40</p><p class="sub" style="font-size:.75rem">撳「去找」會打開對方常出沒地點，可傾談／送禮。</p>${html}` + ((typeof br89ArcStatusHtml==="function") ? br89ArcStatusHtml() : "") + ((typeof enc79PeopleHtml==="function") ? enc79PeopleHtml() : "");
+  return `<h3 class="jobs72-h">人脈</h3><p class="people-next">好感夠就傾多啲：閒談 10 · 忠告 25 · 情報 40</p><p class="sub" style="font-size:.75rem">撳「去找」會打開對方常出沒地點，可傾談／送禮。</p>${html}` + ((typeof br89ArcStatusHtml==="function") ? br89ArcStatusHtml() : "") + ((typeof enc79PeopleHtml==="function") ? enc79PeopleHtml() : "");
 }
 /* v20a89 BR89：對手／導師八線手帳狀態句（真分支審計 #6）——八線人物大半唔喺
    NPCS／紅星名冊，手帳以前完全唔提佢哋行到邊；而家共用一格：未開始唔出、
@@ -55374,7 +55460,7 @@ function cont(){
   btn.onclick=()=>{
     mapShowAllLocs = !mapShowAllLocs;
     drawMap();
-    try{ toast(mapShowAllLocs ? "已顯示全部地點" : "只亮有事做嘅地點", {closeSheet:false}); }catch(_e){}
+    try{ toast(mapShowAllLocs ? "已顯示全部地點" : "只顯示有事做嘅地點", {closeSheet:false}); }catch(_e){}
   };
 })();
 
