@@ -300,3 +300,9 @@ Soft≠PASS｜唔 tip LIVE｜唔 wake iOS｜89–92 HOLD｜silhouettes v2 Soft t
 - Soft nits（唔擋 Soft tip）：線密度家族；唔再追半檔眉心；Soft A 鏈 ①②③ 收口
 - QC：統籌 Style PASS with nits。Soft≠PASS｜唔 tip LIVE｜唔抬 ?v=｜89–92 HOLD
 - Pack：`/workspace/star-volunteer-web-so-frown-anger-soft-nit.tar.gz`（live tip `so-frown-a3-soft-tip-live.tar.gz`；live-only 入本 PR；bak／qa／compare 唔入）
+
+## v20a105 ENC105 企立入庫（2026-11-11）
+- 新增 12 星企立版 `{id}_stand_default.png`（864×1152 RGB，跟 bust pipeline cover-crop、top-anchored 保頭像）：luk_baakyin／liu_bingxing／ngai_wingnaam／yip_manji／mak_zhendong／lok_gasing／pang_siuki／chung_choning／gu_mingfai／so_jiyan／chai_zanhoi／ching_tinlok。
+- 來源：原生美術庫 `~/workspace/linji-native-design/p0/standing/` 企立原圖（webp）；顧明輝用 v2 版。遊戲 id 同設計檔 slug 對照：mak_zhendong←mak-jandung、pang_siuki←pang-siugei、chai_zanhoi←chai-janhoi、ching_tinlok←ching-tinok，其餘同名去底線／連字號差異。
+- 另加中性剪影兜底 `enc105_stand_silhouette.png`（864×1152 RGBA，程式繪製、無五官），畀巧遇立繪全候補失敗時用。
+- 用途：巧遇對話 `enc79StandCandidates` 第一候補（D-2 修復）；bust 退做後備。

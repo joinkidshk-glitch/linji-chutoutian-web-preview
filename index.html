@@ -49858,7 +49858,12 @@ function enc79EnsureCss(){
     document.head.appendChild(st);
   }catch(_e){}
 }
+/* v20a105 ENC105（D-3）：巧遇背景改行同地點板同一套場景來源——LOC_SHEET_BG 逐地點
+   新場景檔（v103/v104）行先，v40 UI40 類別圖退做最後兜底，唔再一律 fallback 片場圖。 */
 function enc79SceneSrc(locId){
+  try{
+    if(typeof LOC_SHEET_BG!=="undefined" && LOC_SHEET_BG && LOC_SHEET_BG[locId]) return LOC_SHEET_BG[locId];
+  }catch(_e){}
   try{
     const key = (typeof UI40_BG_BY_KEY!=="undefined" && UI40_BG_BY_KEY) ? UI40_BG_BY_KEY["bg_loc_"+locId] : "";
     if(key && typeof UI40_SCENE!=="undefined" && UI40_SCENE[key]) return UI40_SCENE[key];
@@ -49866,14 +49871,23 @@ function enc79SceneSrc(locId){
   }catch(_e){}
   return "";
 }
+/* v20a105 ENC105（D-2）：中性剪影兜底——內嵌 SVG（唔經網絡，一定載入到），
+   加埋入庫剪影檔做倒數第二候補；全部候補失敗都唔准靜靜隱藏立繪。 */
+const ENC105_STAND_FALLBACK = "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='480' viewBox='0 0 360 480'%3E%3Ccircle cx='180' cy='150' r='72' fill='%23261f1a'/%3E%3Cpath d='M52 480 L84 316 Q96 262 180 262 Q264 262 276 316 L308 480 Z' fill='%23261f1a'/%3E%3C/svg%3E";
+const ENC105_STAND_SILHOUETTE = "assets/story/era_stars/enc105_stand_silhouette.png?v=20a105";
 function enc79StandCandidates(starId){
   const out = [];
-  try{ if(typeof UI40_STAND!=="undefined" && UI40_STAND[starId]) out.push(UI40_STAND[starId]); }catch(_e){}
+  /* v20a105 ENC105（D-2）：12 星企立圖（原生美術庫企立版入庫）做第一候補，
+     era_stars bust 退做後備，之後 UI40 內嵌圖／遠觀剪影／中性剪影兜底。 */
+  out.push("assets/story/era_stars/"+starId+"_stand_default.png?v=20a105");
   const stem = { luk_baakyin:"luk_baakyin", liu_bingxing:"liu_bingxing", ngai_wingnaam:"ngai_wingnaam", yip_manji:"yip_manji", so_jiyan:"so_jiyan" }[starId] || starId;
   out.push("assets/story/era_stars/"+stem+"_bust_default.png?v=20a8");
   out.push("assets/story/era_stars/"+starId+"_bust_default.png?v=20a8");
-  try{ if(typeof eraSilhouetteFarSrc==="function") out.push(eraSilhouetteFarSrc(starId)); }catch(_e){}
-  return out.filter((v,i)=> out.indexOf(v)===i);
+  try{ if(typeof UI40_STAND!=="undefined" && UI40_STAND[starId]) out.push(UI40_STAND[starId]); }catch(_e){}
+  try{ if(typeof eraSilhouetteFarSrc==="function"){ const sil = eraSilhouetteFarSrc(starId); if(sil) out.push(sil); } }catch(_e){}
+  try{ out.push(ENC105_STAND_SILHOUETTE); }catch(_e){ out.push("assets/story/era_stars/enc105_stand_silhouette.png?v=20a105"); }
+  try{ out.push(ENC105_STAND_FALLBACK); }catch(_e){}
+  return out.filter((v,i)=> v && out.indexOf(v)===i);
 }
 function enc79PlayEncounter(starId, locId, wasMet){
   const built = enc79BuildScript(starId, !wasMet, locId); /* v20a98 CONTRA98 C-02：傳入觸發地點 */
@@ -49900,7 +49914,8 @@ function enc79PlayEncounter(starId, locId, wasMet){
   const stand = ov.querySelector(".e79-stand");
   const cands = enc79StandCandidates(starId);
   let ci = 0;
-  const tryNext = ()=>{ if(ci>=cands.length){ stand.style.display="none"; return; } stand.src = cands[ci++]; };
+  /* v20a105 ENC105（D-2）：候補行晒都唔隱藏——落中性剪影兜底，畫面唔會冇人。 */
+  const tryNext = ()=>{ if(ci>=cands.length){ stand.onerror = null; stand.style.display=""; stand.src = ENC105_STAND_FALLBACK; return; } stand.src = cands[ci++]; };
   stand.onerror = tryNext;
   tryNext();
   const nameEl = ov.querySelector(".e79-name");
