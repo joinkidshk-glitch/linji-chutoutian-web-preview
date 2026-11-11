@@ -54,4 +54,17 @@
 - **隨機事件 WF4 未套新呈現**：v106 已列，今包範圍外，維持不變。
 - **周采兒 think 係 marginal**：眉角帶懷疑味，收做「懷疑地諗線索」；鄧麗萍 serious 神態偏凌厲但屬人設範圍內，收 pass。兩張已喺生成筆記老實寫明。
 
-## 部署核實＋實駕結果（待補）
+## 部署核實＋實駕結果（2026-11-12 晚補）
+
+- **合併**：分支 `v20a107-expr-fix2`（commit `c943de5`，20 檔）squash 入 main，commit `16363f3`，已 push 到 `git@github.com:joinkidshk-glitch/linji-chutoutian-web-preview.git` 的 main。NOTES 尾段補完另開本 commit（跟 v106 前例）。
+- **線上核實**：`index.html` 4,996,760 bytes、sha256 `1adf7479abe02df3b949937433099e09ec7282623935198bbcc52a5988197bdd`，同本地一致（index 喺 v107 零改動，呢個 sha 同 v106 相同，唔能夠單憑佢證明部署已更新）。8 張新資產逐一 curl：初拉得 404／503（Pages 未部署好），等約 120 秒後重拉，8 張全部 HTTP 200、byte 數同本地一致、sha 全部 MATCH（下載副本曾存 `qa107/mirror/`，驗完已刪，唔入 repo）。
+- **實駕（`qa107/drive107.py`，390×844、Playwright、可棄用槽 3，本地鏡像＝線上逐檔 sha 核對後先駕）：OVERALL PASS: True，零 pageerror。** 四項全過：
+  - **舊檔相容 PASS**：v106 pristine 開局→標記（money 106107、dayIndex 3、flags.qa107mark='v106-slot3'）→真 UI 存槽 3；同一 browser／context／origin 換 v107 鏡像→「繼續」→三項標記逐一還原。截圖 `qa107/shots/compat_v106_saved.png`、`compat_v107_restored.png`。
+  - **C1 tier 2 PASS**：阿偉 think 句「呢兩條路真係各有千秋，要諗清楚先好決定。」第 7 步出 `awi_s2_think.webp`。截圖 `qa107/shots/c1_s2.png`。
+  - **C1 tier 3 PASS**：同一句第 7 步出 `awi_s3_think.webp`。截圖 `qa107/shots/c1_s3.png`。
+  - **蘇芷茵巧遇 PASS**：UI 入場灣仔唱片，dayIndex=424 觸發；第 1 步 happy 句「多謝大家，今日真係好多謝大家支持……」出 `so_jiyan_smile.webp`（`k106=so_jiyan|happy`、`_ci106=0`，即首選一次載入成功，冇退 base）。截圖 `qa107/shots/so_smile.png`（目檢：右邊蘇芷茵全光微笑、米白邊清晰，阿偉左邊變暗）。
+  - **額外實證**：兩次 C1 run 入面，何生 sad 句「另一份係去電影片場做散工，錢就快，但人脈隨時散水。」都出咗 `ho_sang_sad.webp`——第 4 張 fix2 圖亦喺真實主線對白證實咗。紀錄 `qa107/drive_log107.json`、輸出 `qa107/drive107_stdout.txt`。
+- **實駕過程兩次假失敗，老實交代（全部係駕駛 harness 問題，唔係遊戲 bug）**：
+  - **Run 2／3：port 撞車。** 新圖喺 drive 入面成日 404 退 base（ci=2），但獨立 probe（fresh context＋新 port）就一次載入成功。根源：port 8933 俾另一個 worker 嘅 `linji-work108b` http.server 佔咗，drive 嘅 `serve()` 冇驗 bind，靜靜噉成程駕緊人哋個舊版本（新檔唔存在→404）。證據：`ss` 見 8933／8931／8941 全部有人用；`probe_server_switch.py` 證明切換機制本身冇問題。修復：drive 改用 8947，`serve()` 加硬驗（process 存活＋線上 index sha 同本地一致＋新資產 200／byte 數啱，唔啱即 abort）；其後 run 4 server check 即 PASS。教訓已寫入 drive107.py 註解——以後所有 drive 唔准靜默假設 server 啱。
+  - **Run 5：C1 完結後返唔到地圖。** 抉擇後仲有尾段對白，story-play 未行完之前「返回地圖」撳極都唔郁，蘇芷茵段 13 個 day 種子全部開唔到唱片。修復：`back_to_map()` 先逐句行到 story-play inactive，先至撳「返回地圖」，再驗地圖上有「灣仔唱片」掣。Run 6 即 PASS。
+  - Run 2 嗰陣 smile 異常（base 代替 smile）就係上面 port 撞車所致，唔係遊戲渲染問題；run 6 嘅 ci=0 證明咗。
