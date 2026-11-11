@@ -1,0 +1,68 @@
+== A. BEFORE (pristine main) ==
+new game: True
+setup state: True
+before rows: 18
+   人脈 林曉晴 jpeg-data 320 x 426
+   人脈 張子駿 jpeg-data 320 x 426
+   人脈 Vera jpeg-data 320 x 426
+   人脈 高俊傑 jpeg-data 320 x 426
+   人脈 周采兒 jpeg-data 320 x 426
+   人脈 何生 jpeg-data 320 x 426
+   紅星 陸柏言 luk_baakyin_stand_default.png 864 x 1152
+   紅星 廖炳星 liu_bingxing_stand_default.png 864 x 1152
+   紅星 魏詠男 ngai_wingnaam_stand_default.png 864 x 1152
+   紅星 葉敏芝 yip_manji_stand_default.png 864 x 1152
+   紅星 麥震東 mak_zhendong_stand_default.png 864 x 1152
+   紅星 駱家聲 lok_gasing_stand_default.png 864 x 1152
+   紅星 彭少祺 pang_siuki_stand_default.png 864 x 1152
+   紅星 鍾楚凝 chung_choning_stand_default.png 864 x 1152
+   紅星 顧明輝 gu_mingfai_stand_default.png 864 x 1152
+   紅星 ？？？ so_jiyan_silhouette_far.png 864 x 1152
+   紅星 齊鎮海 chai_zanhoi_stand_default.png 864 x 1152
+   紅星 程天諾 ching_tinlok_stand_default.png 864 x 1152
+== B. compat: mark + save slot 3 ==
+save: marked clicked {'money': 109109, 'dayIndex': 3, 'mark': 'main-slot3'}
+== swap server -> v109-bust ==
+== C. continue slot 3 on v109 ==
+continue click: btn-cont
+restored: {'money': 109109, 'dayIndex': 3, 'mark': 'main-slot3'} PASS: True
+== C2. AFTER people page ==
+after rows: 18
+   人脈 林曉晴 webp-data 240 x 312
+   人脈 張子駿 webp-data 240 x 312
+   人脈 Vera webp-data 240 x 312
+   人脈 高俊傑 webp-data 240 x 312
+   人脈 周采兒 webp-data 240 x 312
+   人脈 何生 webp-data 240 x 312
+   紅星 陸柏言 webp-data 240 x 312
+   紅星 廖炳星 webp-data 240 x 312
+   紅星 魏詠男 webp-data 240 x 312
+   紅星 葉敏芝 webp-data 240 x 312
+   紅星 麥震東 webp-data 240 x 312
+   紅星 駱家聲 webp-data 240 x 312
+   紅星 彭少祺 webp-data 240 x 312
+   紅星 鍾楚凝 webp-data 240 x 312
+   紅星 顧明輝 webp-data 240 x 312
+   紅星 ？？？ so_jiyan_silhouette_far.png 864 x 1152
+   紅星 齊鎮海 webp-data 240 x 312
+   紅星 程天諾 webp-data 240 x 312
+== D. hero tiers ==
+hero tier 2 (exp 2) stem=awi_s2 sha_match=True prefix=data:image/webp;base64,UklGRqA
+hero tier 3 (exp 3) stem=awi_s3 sha_match=True prefix=data:image/webp;base64,UklGRp4
+hero tier 0 (exp 0) stem=awi sha_match=True prefix=data:image/webp;base64,UklGRkg
+== E. talk modal ==
+talk agent: btn=寒暄一下 info={'srcKind': 'webp-data', 'nw': 240, 'nh': 312, 'complete': True, 'name': '何生'}
+checks: {
+ "before_npc_all_jpeg": true,
+ "before_rows_18": true,
+ "after_rows_18": true,
+ "after_npc_all_webp240": true,
+ "after_stars_all_webp240": true,
+ "after_unmet_still_silhouette": true,
+ "compat": true,
+ "hero_all_sha": true,
+ "talk_webp240": true,
+ "no_pageerrors": true
+}
+pageerrors: []
+OVERALL PASS: True
