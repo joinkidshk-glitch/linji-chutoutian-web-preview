@@ -26053,10 +26053,11 @@ const StoryPlay = (()=>{
     if(key==="bg_generic_interior") return [];
     const out = [];
     /* v20a103 SCENE103：地點場景圖年代重製——逐地點新圖（assets/story/locs/）行先，
-       版本參數 20a103 繞開按路徑快取嘅舊圖；v20a40 UI40 內嵌類別圖退到檔案鏈之後做後備。 */
+       版本參數 20a103 繞開按路徑快取嘅舊圖；v20a40 UI40 內嵌類別圖退到檔案鏈之後做後備。
+       v20a104：灣仔唱片補強換圖，版本參數升 20a104。 */
     /* Prefer dialog + story/c1 (C1 UI-test pack) before assets/bg placeholders */
     ["jpg","png","webp"].forEach(ext=>{
-      out.push("assets/story/locs/"+key+"."+ext+"?v=20a103");
+      out.push("assets/story/locs/"+key+"."+ext+"?v=20a104");
       out.push("assets/dialog/"+key+"."+ext);
       out.push("assets/story/c1/"+key+"."+ext);
       out.push("assets/bg/"+key+"."+ext);
@@ -51378,21 +51379,22 @@ function openLoc(id, opts){
 }
 /* Every locId that has assets/story/locs/bg_loc_{id}.jpg.
    v20a103 SCENE103：14 張地點圖年代重製後，全部改指逐地點新檔＋版本參數 20a103（繞按路徑快取）；
+   v20a104：灣仔唱片補強換圖，版本參數升 20a104；
    v20a40 UI40 內嵌類別圖唔再做地點版底圖（只留返開局畫面／巧遇後備用途）。 */
 const LOC_SHEET_BG = {
-  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a103",
-  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a103",
-  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a103",
-  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a103",
-  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a103",
-  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a103",
-  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a103",
-  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a103",
-  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a103",
-  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a103",
-  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a103",
-  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a103",
-  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a103",
+  cafe_cha:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a104",
+  agency_ho:"assets/story/locs/bg_loc_agency_ho.jpg?v=20a104",
+  film_lion:"assets/story/locs/bg_loc_film_lion.jpg?v=20a104",
+  film_cotton:"assets/story/locs/bg_loc_film_cotton.jpg?v=20a104",
+  film_harbour:"assets/story/locs/bg_loc_film_harbour.jpg?v=20a104",
+  tvb_longmen:"assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a104",
+  tvb_kowloon:"assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a104",
+  tvb_harbour:"assets/story/locs/bg_loc_tvb_harbour.jpg?v=20a104",
+  ad_central:"assets/story/locs/bg_loc_ad_central.jpg?v=20a104",
+  ad_adm:"assets/story/locs/bg_loc_ad_adm.jpg?v=20a104",
+  rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a104",
+  rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a104",
+  rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a104",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
