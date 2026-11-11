@@ -110,9 +110,11 @@ try:
     import glob as _glob
     files = {}
     for p in sorted(_glob.glob(os.path.join(ROOT, "assets", "story", "fullbody", "*.webp"))):
+        if os.path.basename(p).startswith("boss_"):
+            continue  # v111：通告負責人立繪（S-30v2 卡上人物），唔係對話舞台角色，唔入配對重測
         im = Image.open(p)
         files[os.path.basename(p)[:-5]] = round(im.size[0] / im.size[1], 4)
-    ck("真檔數目 96 張（v106 88 張＋v107 8 張新表情）", len(files) == 96)
+    ck("真檔數目 96 張（v106 88 張＋v107 8 張新表情；v111 boss_* 11 張另計，唔入對話重測）", len(files) == 96)
     def near(name, got, want, tol=0.001):
         ck("闊高比 %s＝%.3f（size-test %.3f）" % (name, got, want), abs(got - want) <= tol)
     bases = {k[:-5]: v for k, v in files.items() if k.endswith("_base")}
