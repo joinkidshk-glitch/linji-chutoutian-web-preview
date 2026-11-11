@@ -50,7 +50,11 @@ ok('執漏：改真功能（冇假壓力、文案改幫手人情）', '壓力上
 ok('執漏：冇幫忙嗰日唔出掣（mockAskDefs 過濾）', 'enc79HelpAvailable()' in seg('function mockAskDefs(', 'function journalText'))
 ok('聽風聲：改名＋每日真資訊分支', 'title:"聽風聲"' in ask and 'function enc79AgencyWind(' in src and 'enc79AgencyWindDay' in src)
 ok('飲茶：未持有保底分支', 'function enc79TeaListen(' in src and '未持有保底' in src)
-ok('護欄：事務所 loc-who 有何生信任進度＋E5 指向', 'enc79HoTrustLine()' in src and '江湖撈家' in seg('function enc79HoTrustLine(', '/* ---------- 處置表', 3000))
+# v20a105 統籌裁決：S-24（審計 A）刪事務所板結局配方句，同本護欄原意（信任進度要標明通去邊，否則 E5 行唔到）
+# 分工調和——事務所只留信任數字＋下一階提示；「通去邊」改喺人情頁定性承載（renderDebtPane 江湖路指向）。
+ok('護欄：事務所 loc-who 有何生信任進度（數字＋下一階提示）', 'enc79HoTrustLine()' in src and '何生信任：' in seg('function enc79HoTrustLine(', '/* ---------- 處置表', 3000))
+ok('S-24 護欄：事務所信任行唔再攤結局配方（冇「江湖撈家」字樣）', '江湖撈家' not in seg('function enc79HoTrustLine(', '/* ---------- 處置表', 3000))
+ok('護欄（105 裁決）：E5 指向喺人情頁定性承載（江湖路＋信任/清債/債權方向）', '江湖路' in seg('function renderDebtPane(', '', 6000) and '信任儲得夠深' in seg('function renderDebtPane(', '', 6000))
 ok('護欄：聽風聲保留何生人情增益（bumpNpc agent）', 'bumpNpc("agent", 3+R(0,2))' in seg('function enc79AgencyWind(', '/* ----------', 4000))
 ok('閘匙保留：茶餐廳三粒＋事務所采兒／守則', ask.count('grantsRumorId:') >= 5 and 'choi_recent_news' in ask and 'hau_ching_recent_news' in ask and 'gao_steal_spotlight' in ask)
 

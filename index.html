@@ -41701,7 +41701,11 @@ function renderDebtPane(){
   const cards=SEASON_COLLECT.filter(c=>c.season===season && !(c && c.id && clearedSeason[c.id]));
   const banner=`<p class="season-banner"><span class="season-mark">${journalText(season)}</span>又過一季，人情數目記心頭。</p><p class="favor-pressure" data-level="${journalText(pressure.label)}">人情壓力　${journalText(pressure.label)}</p>`
     /* v20a34 引導包 P0-5(c)：人情頁白話總說明（季節橫額只講時節，唔係頁面用途說明） */
-    +`<p class="pane-intro">呢頁記住邊個欠你、你欠邊個：你欠人嘅要還（有啲會到期，到期前會有幫忙通告畀你清）；人哋欠你嘅係債權，留住第日有用。</p>`;
+    +`<p class="pane-intro">呢頁記住邊個欠你、你欠邊個：你欠人嘅要還（有啲會到期，到期前會有幫忙通告畀你清）；人哋欠你嘅係債權，留住第日有用。</p>`
+    /* v20a105 統籌裁決（S-24 × ENC79 護欄衝突）：事務所板按 S-24 刪結局配方句（劇透＋塞版），
+       但「信任通去邊」嘅指向按審計修法原文搬嚟人情頁定性承載——講方向唔講數字門檻，
+       保住 E5 路線可發現性（護欄原意），又唔再喺地點板攤開結局條件。 */
+    +`<p class="pane-intro">仲有何生嗰份信任，唔止換情報：信任儲得夠深、自己啲債清得晒、手上又留得住人情債權，第日自有一條江湖路畀你行。</p>`;
   const repayBtn = (id, isSeason)=>{
     return `<div class="debt-cta-wrap"><button type="button" class="debt-repay-btn" data-repay-id="${journalText(id)}" data-season="${isSeason?"1":"0"}">去還</button></div>`;
   };
