@@ -117,7 +117,7 @@ hints = hm.group(1) if hm else ''
 for cid in ['C12','C13','C14','C15','C16']:
     ok('STORY_HINT_SOFT has '+cid, (cid+': { playerHint:') in hints)
 ok('hints free of old C6 date-line title', '首次正式約會對象' not in hints)
-ok('C5 nextHint now points to 飯堂閒角', '下一幕「飯堂閒角」' in hints)
+ok('C5 nextHint 兩線並陳（v89 BR89 有意改版：C1 film 支補返 C6F 片場跟班，唔再只提飯堂閒角）', '行電影線有「片場跟班」' in hints and '行電視線有「飯堂閒角」' in hints)
 
 # ---- 閘不變（4-5 門檻） ----
 gm = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)

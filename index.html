@@ -18744,6 +18744,7 @@ const STORY_LOC_SOFT = {
   C4: "ad_central",
   C5: "tvb_longmen",
   C6: "tvb_longmen",
+  C6F: "film_lion", /* v20a89 BR89：電影線對稱幕 */
   /* v20a29 WEAVE_PHASE4_6：C7–C11 改跟三年版主幹 §2 地標（舊值係 pack 自創線嘅場地）；
      覆寫節點本身有 locId，呢張表只係後備，兩邊保持一致。 */
   C7: "film_harbour",
@@ -18766,10 +18767,11 @@ const STORY_HINT_SOFT = {
   C2: { playerHint: "星河片場後巷有人約飯；通告欄又貼咗新單。", lockedHint: "約第4週起，且隔一日之後先開。未到唔使專程蹲後巷——先照常跑通告；開咗再去星河片場後巷。", nextHint: "下一幕「對對手硬／忍」——約第6週起、隔一日之後；開咗先留意星河電影組通告欄。" },
   C3: { playerHint: "星河電影組通告欄前氣氛緊，有人睇住你嘅名牌。", lockedHint: "約第6週起，且隔一日之後先開。未到唔使專登去盯通告欄——先照常開工；開咗再去星河電影組通告欄。", nextHint: "下一幕「何生拒單」——約第8週起、隔一日之後；開咗先去中環廣告。" },
   C4: { playerHint: "何生檯面有份通告紙等你表態。", lockedHint: "約第8週起，且隔一日之後先開。未到唔使專程跑中環——先照常跑通告；開咗再去中環廣告聽何生講。", nextHint: "下一幕「采兒小訪題」——約第9週起；仲要同周采兒處好關係，或捱到夏台慶籌備季。" },
-  C5: { playerHint: "片場邊有小訪位，筆記本已經打開。", lockedHint: "約第9週起先輪到呢幕。采兒／台慶未登場前：可喺片場或多露面同周采兒混個面（關係約到2），或捱到初夏台慶籌備季（約夏初、台慶前）；兩樣中一樣就得。未到週數就照常跑通告，唔使估下一步。", nextHint: "下一幕「飯堂閒角」——第15週起、行電視線先有；係處境劇班底嘅固定閒角，熬唔熬由你話事。未到就照常跑通告。" },
+  C5: { playerHint: "片場邊有小訪位，筆記本已經打開。", lockedHint: "約第9週起先輪到呢幕。采兒／台慶未登場前：可喺片場或多露面同周采兒混個面（關係約到2），或捱到初夏台慶籌備季（約夏初、台慶前）；兩樣中一樣就得。未到週數就照常跑通告，唔使估下一步。", nextHint: "下一幕——第15週起：行電視線有「飯堂閒角」（處境劇固定閒角），行電影線有「片場跟班」（大製作固定跟班）；接唔接由你話事。未到就照常跑通告。" },
   /* v20a31 WEAVE_PHASE4_8：C6 內容對齊 Qwen 原案（電視城飯堂閒角：熬日子／走人），唔再係 pack 自創約會線；
      舊約會版嘅 date_* 旗／rel 加成隨覆寫移除（commit 門檻已按新 rel 經濟校準，見 NOTES_V20A31）。 */
   C6: { playerHint: "飯堂嗰邊，處境劇班底想搵個固定閒角——冇台詞嗰種。", lockedHint: "第15週起、行電視線（route_tv）先開。未到就照常跑通告；開咗去星河電視台飯堂嗰邊睇下。", nextHint: "下一幕「暴雨救場」——1989 年夏，業內信用夠班先有人嗌你落手救場；開咗去維港電影外景場。" },
+  C6F: { playerHint: "片場嗰邊，大製作想簽個固定跟班——由開鏡跟到殺青嗰種。", lockedHint: "第15週起、行電影線（route_film）先開。未到就照常跑通告；開咗去獅子山製片嗰邊睇下。", nextHint: "下一幕「暴雨救場」——業內信用夠班先有人嗌你落手救場；開咗去維港電影外景場。" },
   /* v20a29 WEAVE_PHASE4_6：C7–C11 提示改跟三年版主幹 §2（舊 C7–C10 提示屬 pack 自創線，已由覆寫節點取代）。
      藍若曦舊線（擋狗仔／唱片場）全數移除——藍身份已拍板係電視台 PA／場記，唔再出歌手向提示。 */
   C7: { playerHint: "黑雨殺到，外景場亂成一團，副導嗌人救場。", lockedHint: "1989 年夏天先有呢場暴雨外景，仲要做完采兒小訪、業內信用夠班先有人嗌你埋手。未到就照常跑通告；開咗去維港電影外景場。", nextHint: "下一幕「茶餐廳度橋」——1989 年秋，聲望夠、有喜劇或動作標籤先觸發；開咗去金龍茶餐廳。" },
@@ -18789,6 +18791,7 @@ const STORY_HINT_SOFT = {
 const STORY_TITLE_SOFT = {
   C1: "先學做動作戲／先賺", C2: "留人脈／趕通告", C3: "對對手硬／忍", C4: "何生拒單", C5: "采兒小訪題",
   C6: "飯堂閒角",
+  C6F: "片場跟班",
   /* v20a29：C7–C11 標題改跟三年版主幹（覆寫節點 title 為準，呢度係 need_done 提示等後備用字） */
   C7: "暴雨救場", C8: "茶餐廳度橋", C9: "年尾追數", C10: "戲路定型", C11: "選美後台",
   /* v20a31：C12–C16 標題跟三年版主幹 */
@@ -18808,6 +18811,8 @@ const STORY_TITLE_SOFT = {
 const STORY_GATE_3Y = {
   /* N6＝C6（1990 全年・可選）：route_tv；W15+ */
   C6:  { route: "route_tv", weekMin: 15 },
+  /* v20a89 BR89：C6F 電影線對稱幕（route_film；W15+），補返 C1 film 支嘅專屬下游 */
+  C6F: { route: "route_film", weekMin: 15 },
   /* N7＝C7（1991 夏）：前置 N5＝C5；信用 > 20 */
   C7:  { needDone: ["C5"], creditGt: 20, yearMin: 1991, seasonIn: ["夏"] },
   /* N8＝C11（1991 夏末／秋・選美後台）：「攜帶特定禮物」屬內容層，4-6 對照時處理，唔入閘 */
@@ -21614,6 +21619,193 @@ function applyStoryWf1Nodes80(){
   return out;
 }
 
+/* ================= BR89（v20a89）：C1 route_film 對稱下游——C6F《片場跟班》 =================
+   背景（真分支審計 #2）：C1 揀電視線有專屬節點 C6《飯堂閒角》，揀電影線乜都冇，
+   playerHint 仲寫到兩邊都有後續咁。C6F 同 C6 等量級：同週數（W15）、同抉擇形狀
+   （接固定位＝安穩＋wealth 1／唔接＝繼續搏）、電影側場景（獅子山製片・大製作跟班）。
+   注入跟 WF1 慣例，唔直改 pack；閘入 STORY_GATE_3Y（route_film＋weekMin 15）。 */
+const STORY_SPINE_NODES_BR89 = {
+  C6F: {
+    id: "C6F",
+    phase: "P1.5",
+    title: "片場跟班",
+    when: "1988",
+    setting: "獅子山製片廠；大製作趕開鏡，成廠人進進出出嗰陣",
+    locId: "film_lion",
+    eraTag: "era_1988_film",
+    cast: [
+      "阿偉",
+      "何生",
+      "電影組副導"
+    ],
+    synopsis: "大製作《廠景歲月》趕住開鏡，副導想簽一個固定跟班臨記：由開鏡跟到殺青，日日有工、跟晒成組人，但成期困喺片場，唔使旨意接出面啲戲。何生問阿偉接唔接——接咗就穩陣，唔接就繼續跑通告搏機會。跟班呢份工，熬嘅唔係戲，係日子。",
+    playerOffer: "大製作想簽你做固定跟班——跟一組戲跟到殺青，定繼續跑？",
+    playerHint: "片場嗰邊，大製作想簽個固定跟班——由開鏡跟到殺青嗰種。",
+    lockedHint: "第15週起、行電影線（route_film）先開。未到就照常跑通告；開咗去獅子山製片嗰邊睇下。",
+    nextHint: "",
+    beats: [
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "獅子山製片廠。布景板、燈架、成箱成箱嘅戲服——大製作開鏡前嗰幾日，成個廠都係跑嚟跑去嘅人。"
+        ]
+      },
+      {
+        speaker: "場務大佬根叔",
+        kind: "npc",
+        lines: [
+          "跟班嗰個位，唔係企鏡頭前面嗰種威，係全組開工你開工、全組收工你先走嗰種攰。",
+          "不過有一樣好：成組人由場務到主角，你跟足一期，個個都認得你嗰張面。呢行，認得你，先至會嗌你。"
+        ]
+      },
+      {
+        speaker: "何生",
+        kind: "npc",
+        lines: [
+          "阿偉，嗰邊大製作想簽個固定跟班，就係由開鏡跟到殺青，日日返嗰組報到嗰個。",
+          "人工唔高，不過一簽一期，唔使餐餐等電話——代價係成期困喺廠入面，出面有咩好戲，你都接唔到。你點睇？"
+        ]
+      },
+      {
+        speaker: "老臨記昌叔",
+        kind: "npc",
+        lines: [
+          "後生仔，跟班嗰張凳，我都坐過——唔係，片場冇凳坐㗎，企到收工嗰種。",
+          "跟得足一期戲，你學到嘅唔係演戲，係成個廠點樣運作。邊個嗌水、邊個嗌停、邊個唔出聲但最惡——你跟完一期，全部知晒。"
+        ]
+      },
+      {
+        speaker: "電影組副導",
+        kind: "npc",
+        lines: [
+          "嗰個位最緊要準時同唔好多問。跟得穩，下一期開戲，我第一個寫你個名落去。"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "你望住成個廠：主角嗰邊有專人服侍，導演嗰邊圍住成班人——跟班嗰個位，喺佈景板後面，燈光照唔到嗰度。"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（一期安穩，換嚟嘅係佈景板後面嗰個位。唔接，我繼續跑，機會喺出面——但出面，唔係日日有工開。）"
+        ]
+      },
+      {
+        speaker: "阿偉",
+        kind: "player",
+        lines: [
+          "（昌叔話佢跟過三期戲，跟到副導肯喺名單第一行寫佢個名——佢等嗰個，唔係近鏡，係一個名。）",
+          "（我驚嘅唔係企得攰，係有一日，我會企到唔記得自己想行出嚟。）"
+        ]
+      },
+      {
+        speaker: "系統",
+        kind: "system",
+        lines: [
+          "副導嗌人試位。何生望住你，等你嗰句。"
+        ]
+      }
+    ],
+    choices: [
+      {
+        id: "C6F_a",
+        label: "跟班：接固定跟班，一期安穩",
+        effects: {
+          flags: [
+            "flag_studio_follow"
+          ],
+          stats: {
+            wealth: 1
+          },
+          tags: [],
+          notes: "你接咗大製作固定跟班：一期安穩，日日有工。人工唔多，但成組人點運作，你由頭跟到尾——呢行，認得路嘅先行得遠。"
+        },
+        resultBeats: [
+          {
+            speaker: "電影組副導",
+            lines: [
+              "好，聽朝六點廠門口等，唔好遲。你嗰個位，以後就係你跟開嗰組。"
+            ]
+          },
+          {
+            speaker: "何生",
+            lines: [
+              "唔好睇小佈景板後面嗰個位——幾多大星，都係喺片場跟出嚟㗎。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "跟住嗰個月，你日日準時報到。第三個禮拜，根叔收工嗰陣撥咗支煙畀你，嗌你唔好咁搏命——片場入面，呢個就係認人；副導嗌人嗰陣，亦都開始嗌你個名，唔再嗌「嗰個後生仔」。"
+            ]
+          }
+        ]
+      },
+      {
+        id: "C6F_b",
+        label: "走人：唔接，繼續跑通告搏機會",
+        effects: {
+          flags: [
+            "flag_studio_roam"
+          ],
+          stats: {},
+          tags: [],
+          notes: "你冇接嗰個跟班位——安穩留返俾人，你繼續搏。何生冇出聲留你，只係拍一拍你膊頭。"
+        },
+        resultBeats: [
+          {
+            speaker: "何生",
+            lines: [
+              "後生仔心頭高，唔怪你。片場咁大，你慢慢行——唔好後悔就得。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "你行出廠門嗰陣，跟班嗰個位，已經有第二個企咗入去。"
+            ]
+          },
+          {
+            speaker: "系統",
+            lines: [
+              "之後嗰排通告有一日冇一日。有次返獅子山做散工，你行過佈景板後面，跟班嗰個後生仔正喺度學你嗰陣咁，望住主角嗰邊出神。"
+            ]
+          }
+        ]
+      }
+    ],
+    conflict: null,
+    flags_written: [
+      "flag_studio_follow",
+      "flag_studio_roam"
+    ],
+    openConditions: [
+      "route_film",
+      "week_min:15"
+    ],
+    openConditionsAny: null,
+    openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（route_film＋W15）；同 C6 對稱，接固定位／走人二擇。"
+  }
+};
+function applyStoryBr89Nodes89(){
+  const out = { ok: true, main: 0 };
+  try{
+    if(typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.main && Array.isArray(STORY_WIRE.main.nodes)){
+      const have = {}; STORY_WIRE.main.nodes.forEach(n=>{ if(n && n.id) have[n.id]=1; });
+      Object.keys(STORY_SPINE_NODES_BR89).forEach(id=>{
+        if(!have[id]){ STORY_WIRE.main.nodes.push(STORY_SPINE_NODES_BR89[id]); out.main++; }
+      });
+    }
+  }catch(_e){ out.ok = false; }
+  return out;
+}
+
 /* ================= WF2（v20a81）：感情線廣東話化＋半線差一步收尾 覆寫表 =================
    做法（同 WF1 慣例）：唔直改 content pack JSON；載入時以欄位級 merge 注入——
    只換 beats／synopsis，同（只限四條半線 ending）choices 嘅 label／effects.notes 文字。
@@ -23930,6 +24122,59 @@ const StoryOC = (()=>{
         notes.push("soft."+k+" "+(v>0?"+":"")+v);
       }
     });
+
+    /* ===== v20a89 BR89：ripple 消費者（真分支審計 #3）。
+       背景：C1–C5 選項 effects.ripple 一直有寫低承諾（creditDelta／debtDelta／
+       stressDelta／healthDelta／tag），但 applyChoice 從來冇消費，玩家照文案做
+       策略決定卻乜都冇發生——係俾假資訊誤導。而家逐欄機械兌現（只兌現文案
+       有寫嘅，唔加任何新懲罰）：
+       - stressDelta → 壓力、healthDelta → 體能（健康受損即體能跌），入 gameDelta 行 apply 統一鉗制；
+       - creditDelta → 業內信用（併入 statsApplied.industryCredit，行返同一條 industryCreditDelta 路）；
+       - debtDelta>0 → 真・欠何生人情債一筆（S.mockDebts，形狀跟教學債，可經事務所還、入人情帳）；
+       - tag → 沉澱標籤（applyCastingTags；未知標籤純記錄、冇雙軌效果）。
+       mapTilt／statTilt／rivalAttitude／bondDepth／intelShare 係描述欄，唔喺度入數：
+       路線由 route_* 旗＋C6／C6F 兩支承載、對手態度由 rival 旗承載、羈絆由 rel 承載。 */
+    const rp89 = (eff && typeof eff.ripple==="object" && eff.ripple) ? eff.ripple : null;
+    if(rp89){
+      const rpStress = Number(rp89.stressDelta)||0;
+      const rpHealth = Number(rp89.healthDelta)||0;
+      if(rpStress){ gameDelta.stress = (gameDelta.stress||0) + rpStress; statsApplied.stress = (Number(statsApplied.stress)||0) + rpStress; }
+      if(rpHealth){ gameDelta.stamina = (gameDelta.stamina||0) + rpHealth; statsApplied.stamina = (Number(statsApplied.stamina)||0) + rpHealth; }
+      const rpCredit = Number(rp89.creditDelta)||0;
+      if(rpCredit){ statsApplied.industryCredit = (Number(statsApplied.industryCredit)||0) + rpCredit; }
+      const rpDebt = Number(rp89.debtDelta)||0;
+      if(rpDebt>0 && typeof S!=="undefined" && S){
+        try{
+          if(!Array.isArray(S.mockDebts)) S.mockDebts = [];
+          if(!S.mockDebts.some(d=>d && d.id==="debt_c4_ho_ripple")){
+            S.mockDebts.unshift({ id:"debt_c4_ho_ripple", creditor:"何生", title:"拒單欠落・何生人情", weight:"正經人情", season:"何生話：嗰次你拒得乾脆，數就記喺度——第日有機會，慢慢還。", status:"未到期" });
+            notes.push("欠下何生一筆人情債（去事務所可以還）");
+          }
+        }catch(_e){}
+      }
+      if(rp89.tag && typeof applyCastingTags==="function"){
+        try{
+          const tg89 = applyCastingTags([String(rp89.tag)], { from:"story-ripple:"+String(node.id||""), applyDual:true });
+          if(tg89 && tg89.length) notes.push("沉澱標籤 " + tg89.map(t=>t.label||t.id).join("、"));
+        }catch(_e){}
+      }
+    }
+
+    /* ===== v20a89 BR89：A_ho 線寫返 S.npcs.agent（真分支審計 #6）。
+       背景：何生線成條係「信任」線（push1 仲有旗直頭叫 flag_ho_trust_up），但抉擇
+       從來冇郁過 S.npcs.agent，而 E5 江湖撈家閘正正讀 agent rel——條線同個閘
+       完全脫鉤。而家逐幕按抉擇寫返細額信任變化（方向跟返各幕文本：企硬／企埋
+       何生嗰邊＝升、行開／冷對＝跌；數額細，唔取代日常事務所儲分路）。 */
+    try{
+      const HO89 = { A_ho_meet:{ any:1 }, A_ho_push1:{ flag_ho_trust_up:2 }, A_ho_push2:{ flag_ho_quality_trust:2 }, A_ho_crisis:{ flag_ho_big_bet:3, flag_ho_crisis_leave:-3 }, A_ho_ending:{ flag_ho_mentor_complete:6, flag_ho_rival_respect:3, flag_ho_cold_war:-4 } };
+      const hoCfg = HO89[node && node.id];
+      if(hoCfg && typeof bumpNpc==="function"){
+        let dv = 0;
+        if(typeof hoCfg.any==="number") dv += hoCfg.any;
+        Object.keys(hoCfg).forEach(k=>{ if(k!=="any" && flagList.includes(k)) dv += hoCfg[k]; });
+        if(dv){ bumpNpc("agent", dv); notes.push("何生信任 " + (dv>0 ? "+" : "") + dv); }
+      }
+    }catch(_e){}
 
     if(typeof apply==="function" && Object.keys(gameDelta).length){
       try{
@@ -27761,16 +28006,41 @@ function endingRomanceScene410(rec){
       + "佢望住你笑：「由片場嗰杯涼茶開始，我就知你唔同。」三年喇，嗰一步，你哋就行到。</p>";
   if(r.kind==="commit" && r.line==="choi")
     return "<p>收科嗰晚，你哋冇去咩大地方——金龍茶餐廳，你哋坐慣嗰張枱。周采兒收起記者證，嗰晚佢唔係嚟訪問你，係嚟陪你食餐飯。</p><p>「我寫過咁多人沉浮，」佢講，「寫到你嗰陣，我先知咩叫唔捨得落筆。」成個故事由茶餐廳開始，喺茶餐廳收尾——啱數。</p>";
-  if(r.kind==="almost" && r.line==="vera")
-    return "<p>頒獎禮後台，Vera幫你整理領口同妝髮——套衫係佢今晚親手幫你揀嘅。佢隻手停喺你領口，冇即刻收返。司儀喺台上叫你個名，佢先鬆開手，推你一把：「去啦，唔好失禮人。」——嗰一步，兩個人都冇行。做造型嘅同做演員嘅，有些距離，近到咁上下，就要停。</p>";
-  if(r.kind==="almost" && r.line==="lan")
-    return "<p>收尾嗰場加班戲，藍若曦照舊幫你撳住個通告牌——三年嚟，你邊場幾點埋位，佢記得比你更清楚。臨走佢講：「第日你唔使我撳牌嗰陣，請返我食飯。」係約定，唔係關係。太熟喇，熟到嗰一步，邊個都唔敢行先。</p>";
-  if(r.kind==="almost" && r.line==="xu")
-    return "<p>徐寶珊送咗份禮物嚟後台——貴到你唔敢即刻拆。你諗起你曾經幫佢擋過一次記者，嗰次，你咩都冇要。佢送你一件你買唔起嘅嘢，你回佢一件佢買唔到嘅嘢——扯平。但你哋兩個都知，有啲嘢，唔係扯平就算，係門嗰邊，同門呢邊，企嘅位置唔同。</p>";
-  if(r.kind==="almost" && r.line==="hiu")
-    return "<p>後台走廊，林曉晴趕住上台，你趕住去開工——嗰餐講咗成年嘅飯，又約唔成。佢回頭笑：「下次啦。」你點頭。呢個年代就係咁，大家都忙，各有各撈，嗰一步，成日差少少。</p>";
-  if(r.kind==="almost" && r.line==="choi")
-    return "<p>金龍茶餐廳，周采兒坐喺隔籬枱趕稿，你坐喺呢邊等通告電話。佢寫完嗰版，抬頭同你點咗下頭，先至走。訪問就做得多喇——有一句說話，你哋兩個都冇講出口。唔係唔想，係一講出口，就唔再係而家咁舒服。</p>";
+  /* v20a89 BR89：半線結局呈現按玩家喺差一步嗰幕嘅 he/be 抉擇分版（審計 #5）——
+     以前無論嗰幕點揀，結局頁都係同一段；而家 be＝親手放下版、he＝留有餘地版、
+     冇去到嗰幕＝原版。判定（邊條線做 almost）完全唔郁，只分呈現文字。 */
+  const BR89_HEBE_FLAGS = ["flag_vera_he","flag_vera_be","flag_lan_he","flag_lan_be","flag_xu_he","flag_xu_be","flag_hiu_he","flag_hiu_be","flag_choi_he","flag_choi_be"];
+  const heBe89 = (line)=>{ try{ const st = (typeof S!=="undefined") ? S : null; if(!st) return ""; const beF = "flag_"+line+"_be", heF = "flag_"+line+"_he"; if(BR89_HEBE_FLAGS.includes(beF) && endingFlag410(st, beF)) return "be"; if(BR89_HEBE_FLAGS.includes(heF) && endingFlag410(st, heF)) return "he"; }catch(_e){} return ""; };
+  if(r.kind==="almost" && r.line==="vera"){
+    const v = heBe89("vera");
+    if(v==="be") return "<p>頒獎禮後台，Vera照舊幫人做造型——唔再係你。嗰次之後，你哋講到明：佢唔會攞自己嘅專業嚟賭，你唔會攞佢嘅前途嚟換。今晚隔住成個後台，佢點一點頭，你點一點頭。清清楚楚，乾乾淨淨——呢個收尾，係你哋兩個自己揀嘅。</p>";
+    return "<p>頒獎禮後台，Vera幫你整理領口同妝髮——套衫係佢今晚親手幫你揀嘅。佢隻手停喺你領口，冇即刻收返。司儀喺台上叫你個名，佢先鬆開手，推你一把：「去啦，唔好失禮人。」——嗰一步，兩個人都冇行。做造型嘅同做演員嘅，有些距離，近到咁上下，就要停。</p>"
+      + (v==="he" ? "<p>但嗰一步冇行，唔係因為唔想——係兩個人都想留返，留到唔使再驚嗰一日。</p>" : "");
+  }
+  if(r.kind==="almost" && r.line==="lan"){
+    const v = heBe89("lan");
+    if(v==="be") return "<p>收尾嗰場戲，撳住個通告牌嗰個，唔再係藍若曦——佢調咗組。你哋嗰日講到明：太熟喇，再行埋一步，成個台嘅閒話會跟住你哋行。而家偶然喺飯堂撞到，佢照舊笑你差啲遲到，你照舊請佢飲檸茶。嗰一步冇行，但嗰段日子，冇蝕。</p>";
+    return "<p>收尾嗰場加班戲，藍若曦照舊幫你撳住個通告牌——三年嚟，你邊場幾點埋位，佢記得比你更清楚。臨走佢講：「第日你唔使我撳牌嗰陣，請返我食飯。」係約定，唔係關係。太熟喇，熟到嗰一步，邊個都唔敢行先。</p>"
+      + (v==="he" ? "<p>嗰句「請返我食飯」，你一直記住——未兌現嘅約定，都係一種牽掛。</p>" : "");
+  }
+  if(r.kind==="almost" && r.line==="xu"){
+    const v = heBe89("xu");
+    if(v==="be") return "<p>徐寶珊嗰份禮物，你最後原封退返，連同一句：兩清喇。佢冇再送，你冇再等。門嗰邊同門呢邊，企嘅位置唔同——呢句說話，嗰日你哋講到明明白白。呢一頁，係你親手揭過去嘅。</p>";
+    return "<p>徐寶珊送咗份禮物嚟後台——貴到你唔敢即刻拆。你諗起你曾經幫佢擋過一次記者，嗰次，你咩都冇要。佢送你一件你買唔起嘅嘢，你回佢一件佢買唔到嘅嘢——扯平。但你哋兩個都知，有啲嘢，唔係扯平就算，係門嗰邊，同門呢邊，企嘅位置唔同。</p>"
+      + (v==="he" ? "<p>扯平嗰句，你哋邊個都冇再提——有啲帳，唔清，先至唔會完。</p>" : "");
+  }
+  if(r.kind==="almost" && r.line==="hiu"){
+    const v = heBe89("hiu");
+    if(v==="be") return "<p>後台走廊，林曉晴趕住上台，你趕住去開工。嗰次之後，你哋冇再約嗰餐飯——唔係邊個變咗，係嗰日你哋講到明：戲，行先。佢回頭嗰下冇笑，你冇追。呢一頁揭得乾淨，係你哋兩個一齊揭嘅。</p>";
+    return "<p>後台走廊，林曉晴趕住上台，你趕住去開工——嗰餐講咗成年嘅飯，又約唔成。佢回頭笑：「下次啦。」你點頭。呢個年代就係咁，大家都忙，各有各撈，嗰一步，成日差少少。</p>"
+      + (v==="he" ? "<p>但嗰餐飯，你冇當佢冇咗——個約仲喺度；嗰一步行唔行，你哋兩個都未講死。</p>" : "");
+  }
+  if(r.kind==="almost" && r.line==="choi"){
+    const v = heBe89("choi");
+    if(v==="be") return "<p>金龍茶餐廳，周采兒冇再坐隔籬枱——佢升咗職，唔再跑呢條線。你哋嗰日講到明：佢支筆唔可以偏，你條路唔可以停。而家偶然喺報紙見到佢個名，你會停一停，先至揭過去。嗰句說話冇講出口，就留返喺嗰張枱。</p>";
+    return "<p>金龍茶餐廳，周采兒坐喺隔籬枱趕稿，你坐喺呢邊等通告電話。佢寫完嗰版，抬頭同你點咗下頭，先至走。訪問就做得多喇——有一句說話，你哋兩個都冇講出口。唔係唔想，係一講出口，就唔再係而家咁舒服。</p>"
+      + (v==="he" ? "<p>不過嗰句說話，你冇打算吞返落去——留返，留到唔使再驚講出口嗰一日。</p>" : "");
+  }
   return "<p>嗰晚收工，你一個人行去搭車。冇邊個喺度等你——但你望住手上嗰張通告紙，覺得咁都唔算差。呢三年你對自己，總算有個交代。感情嗰格空住，唔代表嗰度冇嘢，只係未到時候寫落去。</p>";
 }
 function endingExodusScene410(rec, favor){
@@ -27810,8 +28080,15 @@ function endingInserts410(rec, favor){
       out.push("芬姐走嗰日，你嗰筆人情一筆勾銷；佢欠你嗰份，就成咗絕響——人已不在香港，嗰句「第日還」，收唔返，亦唔使再記掛。");
     }
   }catch(_e){}
+  /* v20a89 BR89：送芬姐嗰幕嘅抉擇回收（審計 #8）——塞利是定默默企到入閘，收科回望跟住分版。 */
+  try{
+    const st89f = (typeof S!=="undefined") ? S : null;
+    if(st89f && endingFlag410(st89f, "flag_wf4_fen_redpacket")) out.push("送芬姐嗰日，你塞咗封利是畀佢，話係茶錢——佢話去到嗰邊第一餐茶，會記住係你請嘅。嗰杯茶嘅人情，你哋咁樣還嚟還去，先至還唔完。");
+    else if(st89f && endingFlag410(st89f, "flag_wf4_fen_quiet")) out.push("送芬姐嗰日，你咩都冇講，同佢企到入閘——有些說話，企埋一齊就已經講咗。佢回頭揚手嗰下，你到收科都記得。");
+  }catch(_e){}
   try{
     if(endingFlag410(S, "flag_family_job_accept")) out.push("屋企嗰邊，阿媽嗰句你記到今晚：「做邊行都好，唔好餓親自己。」");
+    else if(endingFlag410(S, "flag_family_job_decline")) out.push("屋企嗰邊，你嗰日講清楚繼續行呢行——阿媽冇再勸，只係之後每次收工返去，檯面都多一隻碗。嗰隻碗，就係佢嘅答案。");
     else if(S && S.familyHome && S.familyHome.echoNote) out.push("屋企嗰邊，阿媽將你上報嗰版剪咗落嚟，夾喺本電話簿入面——" + String(S.familyHome.echoNote));
     else out.push("屋企嗰邊，阿媽嗰晚煲咗湯，留返俾你收工返嚟飲。");
   }catch(_e){}
@@ -27822,6 +28099,89 @@ function endingInserts410(rec, favor){
     if(ref) out.push("報紙最後一次點你名，係叫你做「" + ref + "」——嗰個稱呼點嚟，呢三年嘅你，最清楚。");
     else if(tier==="named") out.push("報紙寫你嗰陣，已經直呼你做「阿偉」——由「一名臨記」到有個名，你行咗三年。");
     else out.push("報紙寫你嗰陣，仲係叫你做「一名臨記」——唔緊要，名呢家嘢，慢慢嚟。");
+  }catch(_e){}
+  /* v20a89 BR89：對手／導師八線 ending 旗回收（審計 #6）——以前八線結局點揀，
+     結局頁一字不提；而家逐線按玩家嗰幕嘅抉擇出一句收科回顧（只呈現，唔郁判定）。
+     提攜債已兌現嘅，喺度點名邊位真係提攜過你（審計 #10 具名兌現收尾）。 */
+  try{
+    const ARC_END89 = [
+      ["flag_ko_mentor_complete", "高俊傑嗰關，你最後放低身段請教——佢肯教，你肯學，對手變咗半個師父。"],
+      ["flag_ko_rival_respect", "高俊傑同你鬥足三年，最後嗰場，佢主動伸手——對手做到惺惺相惜，係呢行最難得嘅收科。"],
+      ["flag_ko_cold_war", "高俊傑同你嗰場冷戰，到收科都冇解開——呢行就係咁，有啲人，一世都只會係對手。"],
+      ["flag_hakfan_mentor_complete", "張克凡嗰套老戲骨功夫，你學到幾多係幾多——佢肯指點你，已經係畀面。"],
+      ["flag_hakfan_rival_respect", "張克凡嗰邊，最後係互相畀面收科——老江湖認你，你認老江湖。"],
+      ["flag_hakfan_cold_war", "張克凡同你嘅冷戰拖到收科——有些前輩，唔係你行近，佢就會畀你行近。"],
+      ["flag_tsijun_ending_complete", "張子駿嗰條導師線，你由頭跟到尾——佢教嘅唔止演戲，係點喺呢行企得穩。"],
+      ["flag_tsijun_ending_respect", "張子駿收尾嗰日同你講：你係少數肯聽導演講晒成段戲先出聲嘅人——呢句，值錢過片酬。"],
+      ["flag_tsijun_ending_cold", "張子駿嗰邊，最後淡咗落嚟——名導嘅門，唔係人人都敲得開，你敲過，算係咁。"],
+      ["flag_fong_ending_save", "方小龍嗰次意外，你出過手——呢份兄弟情，唔使寫入帳本，你哋兩個都記住。"],
+      ["flag_fong_ending_respect", "方小龍同你收科嗰陣講：做替身嗰班人入面，你係少數會回頭望佢哋嘅嗰個——呢句，佢講得好認真。"],
+      ["flag_fong_ending_cold", "方小龍嗰條線，最後淡咗——武行嘅日子各有各忙，冇邊個欠邊個。"],
+      ["flag_tong_ending_mentor", "唐素雲嗰套做人嘅道理，你跟到收科——佢話你係佢最後一個肯慢慢教嘅後生仔。"],
+      ["flag_tong_ending_respect", "唐素雲收科嗰日送咗你一句：戲要演得長，命要留得長——你一直記住。"],
+      ["flag_tong_ending_cold", "唐素雲嗰邊，最後疏遠咗——長輩嘅提點，你嗰陣冇聽入耳，而家諗返，有少少可惜。"],
+      ["flag_ho_mentor_complete", "何生嗰條線，你行到最後——由一個臨記，到佢肯將成盤生意嘅諗法講你知，呢份信任，唔係用錢買到。"],
+      ["flag_ho_rival_respect", "何生同你收科嗰陣，係互相尊重嘅經理人同藝人——檯面上計到盡，檯面下畀到面。"],
+      ["flag_ho_cold_war", "何生同你最後係冷住收科——合約還合約，人情還人情，嗰種距離，你哋都冇打算拉近。"],
+      ["flag_gao_ending_respect", "高文瀚嗰邊，最後係互相成就——佢教你睇呢行嘅大局，你冇令佢失望。"],
+      ["flag_gao_ending_stay", "高文瀚嗰條線，你揀咗留喺原地睇清楚——唔跟風，唔站隊，收科嗰陣，你仲企得穩。"],
+      ["flag_gao_ending_break", "高文瀚嗰邊，你最後揀咗分道——企位唔同，唔代表邊個啱邊個錯，只係路唔同。"],
+      ["flag_lei_ally", "雷勁嗰邊，你最後行到同佢一條船——水有幾深，你心入面有數；呢步棋點收，要睇你第日點行。"],
+      ["flag_lei_rival_respect", "雷勁同你收科嗰陣，係互相認帳嘅對手——資本嗰邊嘅人認你，唔係因為你企佢嗰邊，係因為你企得穩。"],
+      ["flag_lei_cold_war", "雷勁嗰邊，最後係冷戰收科——你冇埋佢嗰邊，佢冇再埋你身，呢場，算係全身而退。"]
+    ];
+    const st89 = (typeof S!=="undefined") ? S : null;
+    if(st89) ARC_END89.forEach(([flag, line])=>{ try{ if(endingFlag410(st89, flag)) out.push(line); }catch(_f){} });
+  }catch(_e){}
+  /* v20a89 BR89：鄧麗萍半線結局呈現（審計 #5 附帶）——佢條線唔入感情軸判定（既定
+     定性，唔郁），但收科頁以前連一句都冇；而家按佢結局幕嘅 he/be 抉擇出回望句。 */
+  try{
+    const st89t = (typeof S!=="undefined") ? S : null;
+    if(st89t && endingFlag410(st89t, "flag_tang_he")) out.push("鄧麗萍嗰張排片表，嗰個紅圈你冇講穿，佢冇收返——盟友以上嗰句，留返喺個圈入面。");
+    else if(st89t && endingFlag410(st89t, "flag_tang_be")) out.push("鄧麗萍嗰邊，最後係數字至上收科——嗰個紅圈，畀下一格數字蓋過，走廊入面再冇人提過嗰一秒。");
+  }catch(_e){}
+  try{
+    const credits = (typeof S!=="undefined" && S && S.mockCredits) || [];
+    credits.filter(c=>c && c.redeemedBy).slice(0, 3).forEach(c=>{
+      out.push("提攜嗰份，" + (c.debtor||"有人") + "真係兌現咗——嗰次引薦試鏡，係佢開聲，你先有機會企入去。呢份人情，你收科都記得。");
+    });
+  }catch(_e){}
+  /* v20a89 BR89：主幹抉擇回望（審計附帶）——C6–C15 一批態度旗以前落咗冇人讀，
+     而家喺收科頁按玩家真係揀過嘅路回望返（上限 3 段，唔好淹沒成頁）。 */
+  try{
+    const ECHO89 = [
+      ["flag_role_cop", "你第一個畀人記住嘅戲路，係警察——企得穩嗰種正氣，成咗你嘅招牌之一。"],
+      ["flag_role_gangster", "你第一個畀人記住嘅戲路，係黑幫——狠嗰段落足力，嗰種狠勁，成咗你嘅招牌之一。"],
+      ["flag_fans_mediate", "樂壇前哨嗰場風波，你企中間調停——記者同歌迷都畀面你，嗰日之後，行內人對你改觀。"],
+      ["flag_bing_bridge", "茶餐廳嗰次，你夠膽當場度橋畀廖炳星——星哥嗰種人，記人唔記戲，佢記住你。"],
+      ["flag_chase_for_ho", "年尾嗰次，你幫何生追過數——把口講到明嗰種企硬，何生之後冇再試你。"],
+      ["flag_canteen_grind", "電視台飯堂嗰季閒角，你熬得安安穩穩——嗰種捱法，係你嘅底子。"],
+      ["flag_canteen_quit", "電視台飯堂嗰份閒角，你揀唔接，繼續跑通告搏機會——嗰種唔安份，推咗你行到呢度。"],
+      ["flag_studio_follow", "大製作嗰期跟班，你由開鏡跟到殺青——成個廠點運作，你嗰期學晒。"],
+      ["flag_studio_roam", "大製作嗰個跟班位，你揀唔接，繼續跑通告搏機會——嗰種唔安份，推咗你行到呢度。"],
+      ["flag_stunt_refuse", "高危替身嗰次，你老實拒接——呢行唔係下下都要搏，識講「未到」，有時先行得遠。"],
+      ["flag_miss_deflect", "嗰次記者圍攻，你引開咗支咪幫人擋——邊個幫過邊個，呢行啲人記性好到你唔信。"],
+      ["flag_fans_support", "樂壇前哨嗰日，你留低幫歌迷打點派水——企到人上車嗰種耐性，唔係個個有。"],
+      ["flag_fans_avoid", "樂壇前哨嗰場風波，你揀行後門避開——唔捲入，嗰次係啱嘅。"],
+      ["flag_bing_background", "茶餐廳嗰次，你揀企喺背景唔搶風頭——嗰種分寸，後來救過你好多次。"],
+      ["flag_rain_shelter", "暴雨嗰日，你揀保住套戲服——唔衝出去，唔代表冇膽，只係你知咩先最緊要。"],
+      ["flag_newyear_script", "賀歲嗰次，你死背劇本一字不差——嗰種穩陣，監製嗰邊記低咗。"],
+      ["flag_newyear_twotakes", "賀歲嗰次，你臨場改詞嗌多一個 take——嗰種執生，導演嗰邊記低咗。"],
+      ["flag_wf1_studio_dream", "嗰日你講過想自己開公司——嗰粒種子，收科都仲喺度生根。"],
+      ["flag_wf1_steady_craft", "你揀咗穩打穩扎磨手藝嗰條路——三年行落嚟，你嘅戲，係咁磨出嚟嘅。"],
+      ["flag_wf1_gamble_observe", "賭枱邊嗰晚，你企喺側邊睇足全程——睇人賭，學到嘅嘢多過自己落場賭。"],
+      ["flag_wf1_gamble_quiet", "賭枱邊嗰晚，你靜靜走開——嗰種唔埋枱嘅定力，救過你唔止一次。"],
+      ["flag_wf3_m27_stand", "影人上街嗰陣，你企出嚟嗌過——嗰種企位，行內人記住。"],
+      ["flag_wf3_m27_quiet", "影人上街嗰陣，你揀企後排睇清楚——唔出聲，唔代表冇諗法。"]
+    ];
+    const st89b = (typeof S!=="undefined") ? S : null;
+    if(st89b){
+      let nEcho = 0;
+      for(const [flag, line] of ECHO89){
+        if(nEcho>=3) break;
+        try{ if(endingFlag410(st89b, flag)){ out.push(line); nEcho++; } }catch(_f){}
+      }
+    }
   }catch(_e){}
   return out;
 }
@@ -29083,6 +29443,7 @@ async function refreshCopyPacksFromDisk(){
     /* v20a33：套 C17 結局前夕覆寫（取代舊 E01–E10 十檔任揀節點） */
     try{ applyStorySpineOverrides410(); }catch(_sp410){}
     try{ applyStoryWf1Nodes80(); }catch(_wf1){}
+    try{ applyStoryBr89Nodes89(); }catch(_b89){}
     try{ applyRomanceWf2Overrides81(); }catch(_wf2){}
     try{ applyRivalWf4Overrides86(); }catch(_wf4r){}
     /* v20a55 TEXTFIX：主幹覆寫之後、其餘載入之前，清洗劇情包文字 */
@@ -34870,6 +35231,8 @@ function resolvePlannedDay(id){
         }catch(_tg2){}
         /* v20a79 ENC79：同紅星主演通告殺青 → 嗰位星好感 +3（劣評 +1）＋合作回望標記 */
         try{ if(typeof enc79OnWrap==="function") enc79OnWrap(sh); }catch(_e79w){}
+        /* v20a89 BR89：引薦通告殺青 → 提攜債權標記兌現 */
+        try{ if(typeof br89OnGigComplete==="function") br89OnGigComplete(sh.gigId); }catch(_b89w){}
         try{ noteWeekHighlight("gig", sh.title||sh.gigId); }catch(_wh){}
         try{
           if(typeof softPreviewOn==="function" && softPreviewOn()){
@@ -36096,7 +36459,13 @@ function hasMergedIntel(mergedId){
   return rows.some(r=> r && r.id===mergedId && r.state==="merged");
 }
 function intelLineForGig(g){
-  if(!g || !g.starHint || !g.starHint.name) return "";
+  if(!g) return "";
+  /* v20a89 BR89：單卡使用點（持卡即生效，唔使拼合；按通告文本認星名） */
+  if(typeof br89CardUsePointForGig==="function"){
+    const cp = br89CardUsePointForGig(g);
+    if(cp && cp.line) return cp.line;
+  }
+  if(!g.starHint || !g.starHint.name) return "";
   for(const id in INTEL_USE_POINTS){
     const up = INTEL_USE_POINTS[id];
     if(up && up.gigLine && up.starName===g.starHint.name && hasMergedIntel(id)) return up.gigLine;
@@ -36107,6 +36476,11 @@ function intelSightLineFor(starId){
   for(const id in INTEL_USE_POINTS){
     const up = INTEL_USE_POINTS[id];
     if(up && up.sightLine && up.starId===starId && hasMergedIntel(id)) return up.sightLine;
+  }
+  /* v20a89 BR89：單卡使用點（巧遇提示行） */
+  if(typeof br89CardUsePointForStar==="function"){
+    const cp = br89CardUsePointForStar(starId);
+    if(cp && cp.line) return cp.line;
   }
   return "";
 }
@@ -37328,6 +37702,12 @@ function wf4FenFarewellNode(arm){
     { speakerId:"player", speaker:"阿偉", kind:"player", text:"芬姐，你嗰班機……真係唔返嚟喇？" },
     { speakerId:"extra_ad_fen", speaker:"副導演芬姐", kind:"npc", text:"我細佬一家喺嗰邊企穩咗好耐喇，成日催我過去。呢邊呢……我做咗十幾年副導演，排更紙排到眼都花，係時候去嗰邊，過下啲唔使排更嘅日子。" }
   ];
+  /* v20a89 BR89：送別讀返相識嗰幕嘅抉擇（審計 #8）——茶水帳嗰場點揀，送機嗰陣芬姐點講，跟住變。 */
+  try{
+    const fenFlag = (k)=> (typeof enc87StoryFlag==="function") ? enc87StoryFlag(k) : false;
+    if(fenFlag("flag_wf4_fen_tea")) beats.push({ speakerId:"extra_ad_fen", speaker:"副導演芬姐", kind:"npc", text:"嗰日茶水帳，你嗌我唔好走——我記得㗎。地球唔會停轉呀，但有人嗌你留低嗰種感覺，我會帶埋去嗰邊。" });
+    if(fenFlag("flag_wf4_fen_help")) beats.push({ speakerId:"extra_ad_fen", speaker:"副導演芬姐", kind:"npc", text:"你幫我抄嗰版更紙，我仲留住㗎。你啲字咁端正，我成日攞出嚟睇。嗰句『幫人留返個位』——你真係學到㗎。" });
+  }catch(_e){}
   if(wo) beats.push({ speakerId:"extra_ad_fen", speaker:"副導演芬姐", kind:"npc", text:"嗱，你欠我嗰筆人情，你唔使記住喇——我臨走同帳房講咗，一筆勾銷。你個人咁實在，我唔想你記住啲數嚟送我走。" });
   if(ex) beats.push({ speakerId:"extra_ad_fen", speaker:"副導演芬姐", kind:"npc", text:"至於我欠你嗰筆……唉，人走咗，就真係還唔到㗎喇。你當嗰陣請我飲咗餐好大嘅茶啦，好冇？" });
   if(!wo && !ex) beats.push({ speakerId:"extra_ad_fen", speaker:"副導演芬姐", kind:"npc", text:"我冇咩留畀你，嗰本舊更紙我就帶走喇——上面有齊咁多年邊個邊日開工，去到嗰邊悶嗰陣，我會攞出嚟睇下。" });
@@ -38683,6 +39063,187 @@ function mergeWf3Gigs(){
     try{ window.GIGS = GIGS; }catch(_w){}
     return n;
   }catch(_e){ return 0; }
+}
+
+/* =====================================================================
+   v20a89 BR89：分支補完——條件通告＋情報卡使用點（真分支審計 #4／#10）
+   (1) 提攜債具名兌現：陸柏言／彭少祺／程天諾三位星嘅 T4 提攜債權，持有期間
+       各開一張「引薦通告」；殺青嗰陣債權標記已兌現（line 追加交代＋redeemed 欄），
+       結局總結會點名邊位提攜過你。status 唔郁（結局人情計數口徑原封不動）。
+   (2) 魏詠男替身情報卡（rumor_ngai_stunt_tip）開一張情報通告：持卡先上板。
+   (3) 駱家聲／鍾楚凝兩對死卡接入拼合（新 MERGE_PAIRS＋情報旗＋使用點）；
+       其餘單卡加 INTEL_CARD_USE_POINTS89（通告卡情報行／巧遇提示行）。
+   ===================================================================== */
+function br89HoldsCard(id){
+  try{ return !!((typeof S!=="undefined" && S && S.mockRumors) || []).some(r=>r && r.id===id); }catch(_e){ return false; }
+}
+function br89HasCredit(id){
+  try{ return !!((typeof S!=="undefined" && S && S.mockCredits) || []).some(c=>c && c.id===id && c.status!=="絕響"); }catch(_e){ return false; }
+}
+const BR89_PATRON_OF_GIG = { gig_br89_patron_luk:"credit_enc83_luk_patron", gig_br89_patron_pang:"credit_enc84_pang_patron", gig_br89_patron_ching:"credit_enc84_ching_patron", gig_br89_liu_priority:"credit_enc79_liu_priority" };
+const BR89_GIGS = [
+  {
+    id:"gig_br89_patron_luk", year:1988, season:"不限", type:"電影", genreLabel:"電影",
+    loc:"film_harbour", workTitle:"江河歲月", title:"引薦試鏡：《江河歲月》",
+    roleLabel:"引薦試鏡・有對白配角", director:"維港電影",
+    roleHint:"陸柏言親自開聲，監製留咗一個有對白嘅配角位，試鏡名單第一批有你。",
+    blurb:"陸柏言提攜兌現：天王開過聲嗰張引薦紙，而家真係變成一張試鏡通告——唔使排隊，報陸柏言個名入去。",
+    synopsis:"維港電影開拍大製作《江河歲月》，陸柏言向監製提過你個名。呢張通告唔喺公開板出現，只有攞住引薦嗰個人先見到。試鏡嗰日發揮成點，係你自己嘅事；個位，係人哋畀面先有。",
+    eraTag:"era_1988_film", discoverNote:"陸柏言引薦先出現嘅試鏡通告。", boardPriority:"high", boardNote:"引薦",
+    seasonWeight:1, req:{ acting:20 }, pay:[900, 1400], payExact:1150, breachFee:0,
+    fame:[1, 3], popularity:[1, 2], stressDeltaHint:"中", hard:0.3, tier:"中", stars:2,
+    applyDeadlineDays:10, shootDaysHint:3, shootHint:"報陸柏言個名入廠，唔好遲到，試鏡嗰場戲要背熟。",
+    roleScale:"film_support", shootBand:[2, 4], shootWeekdays:[1, 2, 3, 4, 5, 6, 7], shootDeadlineDays:21,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["引薦試鏡，名額得一個"] },
+    storyKeys:["br89_patron_luk"], tagOnComplete:[], rumorKeys:[], favorDelta:[], seasonHook:[], boardHookMode:"normal", isKeyGig:false
+  },
+  {
+    id:"gig_br89_patron_pang", year:1988, season:"不限", type:"電視劇", genreLabel:"電視劇",
+    loc:"tvb_longmen", workTitle:"台慶大騷", title:"引薦試工：《台慶大騷》台上助理",
+    roleLabel:"引薦試工・台上助理", director:"星河電視台",
+    roleHint:"彭少祺向台慶監製推介你做台上助理，企正鏡頭邊，反應要快、笑容要夠。",
+    blurb:"彭少祺提攜兌現：佢講過有大騷會留個位畀你——台慶大騷台上助理，直播出街，全台都睇到。",
+    synopsis:"星河電視台台慶大騷籌備，台上助理要企喺主持隔籬遞獎、帶位、執生。彭少祺喺監製面前提咗你個名，呢張試工紙先會出現喺你面前。直播冇得 NG，企錯一步，全香港都見到。",
+    eraTag:"era_1988_tv", discoverNote:"彭少祺引薦先出現嘅試工通告。", boardPriority:"high", boardNote:"引薦",
+    seasonWeight:1, req:{ stage:18, charm:15 }, pay:[700, 1100], payExact:900, breachFee:0,
+    fame:[1, 3], popularity:[2, 4], stressDeltaHint:"中", hard:0.3, tier:"中", stars:2,
+    applyDeadlineDays:10, shootDaysHint:2, shootHint:"綵排要到齊，企位跟彭少祺嘅走位，唔好搶佢鏡。",
+    roleScale:"tv_support", shootBand:[1, 3], shootWeekdays:[1, 2, 3, 4, 5, 6, 7], shootDeadlineDays:21,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["引薦試工，直播節目"] },
+    storyKeys:["br89_patron_pang"], tagOnComplete:[], rumorKeys:[], favorDelta:[], seasonHook:[], boardHookMode:"normal", isKeyGig:false
+  },
+  {
+    id:"gig_br89_patron_ching", year:1988, season:"不限", type:"唱片", genreLabel:"唱片",
+    loc:"rec_star", workTitle:"天星夜場匯演", title:"引薦試唱：夜場匯演嘉賓位",
+    roleLabel:"引薦試唱・匯演嘉賓", director:"天星音樂",
+    roleHint:"程天諾同夜場匯演監製係老友，留咗一個嘉賓試唱位，唱一首定生死。",
+    blurb:"程天諾提攜兌現：同輩歌手講過會拉你一把——夜場匯演嘉賓位，台下坐滿行內人，唱得好即刻有人記住你。",
+    synopsis:"天星音樂包辦嘅夜場匯演，臨開場先加一個嘉賓試唱位。程天諾喺監製面前講：「呢個後生仔把聲得，畀佢唱一首。」呢張通告唔公開招人，只招引薦嗰一個。唱邊首、點發揮，你自己揸主意。",
+    eraTag:"era_1988_music", discoverNote:"程天諾引薦先出現嘅試唱通告。", boardPriority:"high", boardNote:"引薦",
+    seasonWeight:1, req:{ vocal:18 }, pay:[600, 1000], payExact:800, breachFee:0,
+    fame:[1, 2], popularity:[2, 4], stressDeltaHint:"中", hard:0.3, tier:"中", stars:2,
+    applyDeadlineDays:10, shootDaysHint:1, shootHint:"揀一首最穩陣嘅歌，唔好貪難，台下全行內人。",
+    roleScale:"music_guest", shootBand:[1, 1], shootWeekdays:[1, 2, 3, 4, 5, 6, 7], shootDeadlineDays:14,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["引薦試唱，一首定生死"] },
+    storyKeys:["br89_patron_ching"], tagOnComplete:[], rumorKeys:[], favorDelta:[], seasonHook:[], boardHookMode:"normal", isKeyGig:false
+  },
+  {
+    id:"gig_br89_stunt_ngai", year:1988, season:"不限", type:"電影", genreLabel:"電影",
+    loc:"film_cotton", workTitle:"鐵血柔情", title:"情報通告：《鐵血柔情》替身缺位",
+    roleLabel:"情報通告・替身位", director:"紅棉影業",
+    roleHint:"你一早聽聞呢組長期缺替身，識做嘅直接搵武指報名，唔使等公開招人。",
+    blurb:"情報兌現：魏詠男提過紅棉嗰組長期缺替身——你有呢條情報，先知個位喺度、識得去敲門。",
+    synopsis:"紅棉影業動作片《鐵血柔情》趕住開組，替身位一直缺人，但冇公開招過。你係喺巧遇嗰陣聽魏詠男漏過口風，先知有呢個缺；去到片場報武指個名，佢望你兩眼，就叫你換衫試一個鏡頭。",
+    eraTag:"era_1988_film", discoverNote:"持有替身情報先出現嘅通告。", boardPriority:"high", boardNote:"有情報",
+    seasonWeight:1, req:{ stamina:22 }, pay:[800, 1200], payExact:1000, breachFee:0,
+    fame:[0, 2], popularity:[0, 2], stressDeltaHint:"高", hard:0.35, tier:"中", stars:2,
+    applyDeadlineDays:7, shootDaysHint:2, shootHint:"安全措施聽武指講，唔好逞強，落地姿勢練多兩次。",
+    roleScale:"film_stunt", shootBand:[1, 3], shootWeekdays:[1, 2, 3, 4, 5, 6, 7], shootDeadlineDays:14,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["情報通告，缺替身"] },
+    storyKeys:["br89_stunt_ngai"], tagOnComplete:[], rumorKeys:[], favorDelta:[], seasonHook:[], boardHookMode:"normal", isKeyGig:false
+  },
+  {
+    id:"gig_br89_liu_priority", year:1988, season:"不限", type:"電影", genreLabel:"電影",
+    loc:"film_cotton", workTitle:"笑住過肥年・外傳", title:"優先試鏡：《笑住過肥年・外傳》",
+    roleLabel:"優先試鏡・喜劇配角", director:"紅棉影業",
+    roleHint:"廖炳星講過試鏡名單第一批有你個名——呢張紙唔公開派，係佢嗰份人情變出嚟嘅。",
+    blurb:"廖炳星嗰份「新戲優先試鏡人情」兌現：佢真係喺新戲試鏡名單第一批寫咗你個名，唔使同人逼公開試鏡。",
+    synopsis:"紅棉影業籌備賀歲喜劇外傳，試鏡名單第一批，第一個就係你——廖炳星親自寫落去嘅。佢嗰日仲特登嚟試鏡房門口望咗你一眼，咩都冇講，笑咗下就走。做到幾多，睇你自己；個名點樣入到第一批，你知佢知。",
+    eraTag:"era_1988_film", discoverNote:"廖炳星優先試鏡人情先出現嘅通告。", boardPriority:"high", boardNote:"優先試鏡",
+    seasonWeight:1, req:{ acting:18, charm:12 }, pay:[700, 1100], payExact:900, breachFee:0,
+    fame:[1, 2], popularity:[1, 3], stressDeltaHint:"中", hard:0.3, tier:"中", stars:2,
+    applyDeadlineDays:10, shootDaysHint:2, shootHint:"喜劇節奏跟廖炳星嗰套，唔好自己加戲搶佢位。",
+    roleScale:"film_support", shootBand:[1, 3], shootWeekdays:[1, 2, 3, 4, 5, 6, 7], shootDeadlineDays:21,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["優先試鏡，第一批名單"] },
+    storyKeys:["br89_liu_priority"], tagOnComplete:[], rumorKeys:[], favorDelta:[], seasonHook:[], boardHookMode:"normal", isKeyGig:false
+  }
+];
+function br89GigOn(raw){
+  try{
+    if(!raw || !raw.id || typeof S==="undefined" || !S) return false;
+    if(S.flags && S.flags["done_"+raw.id]) return false;
+    const cid = BR89_PATRON_OF_GIG[raw.id];
+    if(cid) return br89HasCredit(cid) && !(S.mockCredits||[]).some(c=>c && c.id===cid && c.redeemedBy);
+    if(raw.id==="gig_br89_stunt_ngai") return br89HoldsCard("rumor_ngai_stunt_tip");
+    return false;
+  }catch(_e){ return false; }
+}
+function mergeBr89Gigs(){
+  try{
+    if(typeof GIGS==="undefined" || !Array.isArray(GIGS)) return 0;
+    let n = 0;
+    (BR89_GIGS||[]).forEach(raw=>{
+      const i = GIGS.findIndex(g=>g && g.id===raw.id);
+      if(br89GigOn(raw)){
+        const norm = normalizeGigRecord(Object.assign({}, raw, { br89Gig:true }));
+        if(i<0){ GIGS.push(norm); n++; } else GIGS[i] = norm;
+      } else if(i>=0){ GIGS.splice(i,1); n++; }
+    });
+    try{ window.GIGS = GIGS; }catch(_w){}
+    return n;
+  }catch(_e){ return 0; }
+}
+/* 殺青鉤：引薦通告完成 → 債權標記兌現（status 唔郁，結局計數口徑不變） */
+function br89OnGigComplete(gigId){
+  try{
+    const cid = BR89_PATRON_OF_GIG[gigId];
+    if(!cid || typeof S==="undefined" || !S || !Array.isArray(S.mockCredits)) return;
+    const c = S.mockCredits.find(x=>x && x.id===cid);
+    if(c && !c.redeemedBy){
+      const g = (BR89_GIGS||[]).find(x=>x && x.id===gigId);
+      c.redeemedBy = gigId;
+      c.line = String(c.line||"") + "（已兌現：" + (g ? g.title : "引薦通告") + "，呢份提攜真係落咗袋。）";
+      try{ syncNotebookMirror(); }catch(_m){}
+    }
+  }catch(_e){}
+}
+/* ---------- 情報卡使用點：新拼合對＋單卡下游 ---------- */
+try{
+  if(typeof MERGE_PAIRS!=="undefined" && Array.isArray(MERGE_PAIRS)){
+    if(!MERGE_PAIRS.some(p=>p && p.merged==="rumor_lok_highlevel_truth")){
+      MERGE_PAIRS.push({ pairId:"pair_br89_lok_truth", a:"rumor_lok_grudge_heard", b:"rumor_lok_music_tip", merged:"rumor_lok_highlevel_truth", title:"駱家聲同高層不和・內情", text:"兩單風聲拼埋，成件事通晒：駱家聲同台高層嗰場不和，唔係為錢，係為咗佢想自己揀劇本、揀拍檔。高層覺得佢大牌，佢覺得高層當佢係棋。監製位嗰邊，而家係佢唯一仲肯返去傾嘅門口。" });
+    }
+    if(!MERGE_PAIRS.some(p=>p && p.merged==="rumor_chung_farewell_truth")){
+      MERGE_PAIRS.push({ pairId:"pair_br89_chung_farewell", a:"rumor_chung_canada_heard", b:"rumor_chung_advice", merged:"rumor_chung_farewell_truth", title:"鍾楚凝離港安排・內情", text:"兩單風聲拼埋，鍾楚凝嘅安排清楚晒：楓葉卡嗰邊手續辦緊，佢唔係即走，係等埋手頭上嗰套戲埋尾先起行。佢勸你嗰句「及早諗定自己條路」，唔係客套——係過來人講嘅真話。" });
+    }
+  }
+  if(typeof INTEL_FLAGS!=="undefined" && INTEL_FLAGS){
+    if(!INTEL_FLAGS["rumor_lok_highlevel_truth"]) INTEL_FLAGS["rumor_lok_highlevel_truth"] = "intel_lok_truth";
+    if(!INTEL_FLAGS["rumor_chung_farewell_truth"]) INTEL_FLAGS["rumor_chung_farewell_truth"] = "intel_chung_leave";
+  }
+  if(typeof INTEL_USE_POINTS!=="undefined" && INTEL_USE_POINTS){
+    if(!INTEL_USE_POINTS["rumor_lok_highlevel_truth"]) INTEL_USE_POINTS["rumor_lok_highlevel_truth"] = { starName:"駱家聲", starId:"lok_gasing", gigLine:"情報：駱家聲同高層為揀劇本揀拍檔鬧僵，監製嗰邊係唯一仲傾得埋嘅門口——同佢有關嘅電視通告，企監製嗰邊穩陣啲。", sightLine:"你拼到嗰單內情：駱家聲同高層不和，係爭揀劇本揀拍檔嘅自主權。" };
+    if(!INTEL_USE_POINTS["rumor_chung_farewell_truth"]) INTEL_USE_POINTS["rumor_chung_farewell_truth"] = { starName:"鍾楚凝", starId:"chung_choning", gigLine:"情報：鍾楚凝離港手續辦緊，會等手頭套戲埋尾先走——佢接嘅戲唔會開天窗，但之後唔好再預佢期。", sightLine:"你拼到嗰單內情：鍾楚凝唔係即走，等套戲埋尾先起行加拿大。" };
+  }
+}catch(_e){}
+/* 單卡使用點（唔使拼合，持卡即生效）：通告卡情報行＋巧遇提示行 */
+const INTEL_CARD_USE_POINTS89 = {
+  rumor_pang_show_tip: { starName:"彭少祺", starId:"pang_siuki", gigLine:"情報：台慶大騷缺個台上助理，要反應快、笑容夠——彭少祺嗰邊嘅大騷通告，你企呢個位最啱。", sightLine:"你聽過風聲：台慶大騷缺台上助理，彭少祺會幫手睇人。" },
+  rumor_so_ad_tip: { starName:"蘇芷茵", starId:"so_jiyan", gigLine:"情報：有廣告商想搵玉女歌手拍檔拍廣告，出價唔差——廣告通告見到呢個組合，唔好等。", sightLine:"你聽過風聲：有廣告商想搵蘇芷茵拍檔拍廣告。" },
+  rumor_chai_tv_tip: { starName:"齊鎮海", starId:"chai_zanhoi", gigLine:"情報：齊鎮海嫌電視台合約綁得太死，正密謀跳槽——佢嗰台嘅通告期要留神，隨時有變。", sightLine:"你聽過風聲：齊鎮海對電視台份約好有意見，跳槽傳聞冇停過。" },
+  rumor_chung_director_tip: { starName:"鍾楚凝", starId:"chung_choning", gigLine:"情報：有個出名揀蟀嘅文藝片導演正搵女主角拍檔試鏡，要沉得住氣嗰種——文藝片通告見到呢個導演個名，唔好怕悶。", sightLine:"你聽過風聲：嗰位文藝片導演揀人出名嚴，鍾楚凝都係咁俾佢揀中。" },
+  rumor_ching_rehearse: { starName:"程天諾", starId:"ching_tinlok", gigLine:"情報：程天諾半夜收工仲去練歌房練唱，嗰種搏命法先企得穩——錄音／登台通告撞到佢，唔好同佢鬥夜。", sightLine:"你聽過：程天諾收工半夜仲去練歌房，搏到盡。" },
+  rumor_gu_comeback: { starName:"顧明輝", starId:"gu_mingfai", gigLine:"情報：顧明輝密謀復出駐唱，想搵個後生仔拍住暖場——駐唱／匯演通告見到佢個名，係個埋身機會。", sightLine:"你聽過風聲：顧明輝想復出駐唱，仲搵緊拍檔暖場。" }
+};
+function br89CardUsePointForGig(gig){
+  try{
+    if(!gig) return null;
+    const hay = [gig.id, gig.title, gig.workTitle, gig.director, gig.leadStar, gig.genreLabel, gig.type].filter(Boolean).join(" ");
+    for(const cid of Object.keys(INTEL_CARD_USE_POINTS89)){
+      const up = INTEL_CARD_USE_POINTS89[cid];
+      if(up && up.starName && hay.includes(up.starName) && br89HoldsCard(cid)) return { id:cid, starName:up.starName, line:up.gigLine };
+    }
+  }catch(_e){}
+  return null;
+}
+function br89CardUsePointForStar(starId){
+  try{
+    for(const cid of Object.keys(INTEL_CARD_USE_POINTS89)){
+      const up = INTEL_CARD_USE_POINTS89[cid];
+      if(up && up.starId===starId && br89HoldsCard(cid)) return { id:cid, starName:up.starName, line:up.sightLine };
+    }
+  }catch(_e){}
+  return null;
 }
 
 /* ---------- WF3-3 地點一次性對白（CHOICE47 模式：openLoc 行動項＋StoryPlay force 播） ---------- */
@@ -40279,7 +40840,7 @@ function prog71Rows(){
   (oc.done||[]).forEach(r=>{ if(r && r.id) doneSet[r.id] = r; });
   const missed = (S && S.calib60Missed) || {};
   const rows = [];
-  const order71 = [["C1",1],["C2",2],["C3",3],["C4",4],["C5",5],["C6",6],["C18",18],["C19",19],["C7",7],["C8",8],["C9",9],["C10",10],["C11",11],["C12",12],["C13",13],["C14",14],["C15",15],["C16",16],["C17",17]];
+  const order71 = [["C1",1],["C2",2],["C3",3],["C4",4],["C5",5],["C6",6],["C6F",20],["C18",18],["C19",19],["C7",7],["C8",8],["C9",9],["C10",10],["C11",11],["C12",12],["C13",13],["C14",14],["C15",15],["C16",16],["C17",17]];
   for(const pair71 of order71){
     const id = pair71[0]; const n = pair71[1];
     let exists = false;
@@ -40312,11 +40873,11 @@ function renderProgressPane71(){
     let used71 = 0, lastDetailIdx71 = -1;
     rows.forEach((r, i)=>{
       if(r.state!=="locked") return;
-      if(r.id==="C18" || r.id==="C19") return;
+      if(r.id==="C18" || r.id==="C19" || r.id==="C6F") return;
       if(used71 < fullLeft){ used71++; detailSet71[r.id] = 1; lastDetailIdx71 = i; }
     });
     rows.forEach((r, i)=>{
-      if((r.id==="C18" || r.id==="C19") && r.state==="locked" && lastDetailIdx71 >= 0 && i <= lastDetailIdx71) detailSet71[r.id] = 1;
+      if((r.id==="C18" || r.id==="C19" || r.id==="C6F") && r.state==="locked" && lastDetailIdx71 >= 0 && i <= lastDetailIdx71) detailSet71[r.id] = 1;
     });
   }
   const html = ['<div class="prog71-wrap"><h3 class="prog71-h">主線進度</h3><p class="prog71-intro">逐幕列出開放條件同你而家嘅進度：✓ 係已達標，○ 係未達。完成一幕，之後嘅幕會逐漸揭曉。</p>'];
@@ -47680,14 +48241,14 @@ const ENC79_BEATS = {
     { id:"liu_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year<=1991 && enc79TierOf(st.fav)<=1; }, grants(){ enc79GrantFrag("rumor_liao_bingxing_talk"); } },
     { id:"liu_intel", when(st){ return enc79TierOf(st.fav)>=2; } },
     { id:"liu_tease", when(st){ return enc79BoardHasStar("liu_bingxing"); } },
-    { id:"liu_repay", when(st){ return enc79TierOf(st.fav)>=2 && enc79HasMerged("rumor_liao_bingxing_money"); }, grants(){ enc79GrantCredit({ id:"credit_enc79_liu_priority", debtor:"廖炳星", title:"新戲優先試鏡人情", line:"廖炳星講過：下次佢有新戲開鏡，試鏡名單第一批會有你個名。呢份人情，佢記住。", status:"未收" }); } },
+    { id:"liu_repay", when(st){ return enc79TierOf(st.fav)>=2 && enc79HasMerged("rumor_liao_bingxing_money"); } /* v20a89：債權改由 enc79ChoiceFx／RunChoiceFx 按抉擇派（liu_accept 先派），唔再無條件 grants */ },
     { id:"liu_clash", when(st){ const ys=yearSeasonNow(); return ys.year===1992 && ys.season==="冬"; } },
   ],
   mak_zhendong:[
     { id:"mak_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year<=1991 && enc79TierOf(st.fav)<=1; }, grants(){ enc79GrantFrag("rumor_mai_zhendong_hurt"); } },
     { id:"mak_intel", when(st){ return enc79TierOf(st.fav)>=2 && enc79HasMerged("rumor_mai_zhendong_hide_injury"); } },
     { id:"mak_tease", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=1 && ((ys.year===1992 && ys.season==="春") || enc79BoardHasActionGig()); } },
-    { id:"mak_respect", when(st){ return enc79TierOf(st.fav)>=2 && !!st.workedWith && enc79HasMerged("rumor_mai_zhendong_hide_injury"); }, grants(){ enc79GrantCredit({ id:"credit_enc79_mak_wuzhi", debtor:"紅棉武指", title:"武指照應人情", line:"武指嗰邊認咗你：第日有高危位開工，會第一時間諗起你，安全功夫亦會睇實你。", status:"未收" }); } },
+    { id:"mak_respect", when(st){ return enc79TierOf(st.fav)>=2 && !!st.workedWith && enc79HasMerged("rumor_mai_zhendong_hide_injury"); } /* v20a89：債權改按抉擇派（mak_accept 先派），唔再無條件 grants */ },
     { id:"mak_visit", when(st){ try{ const c=(S&&S.conseq61)||{}; const cu=Number(c.cooldownUntil)||0; const day=(S&&S.dayIndex)|0; return !!c.sick || (cu>0 && day-cu<=45 && day-cu>=-14); }catch(_e){ return false; } } },
   ],
   yip_manji:[
@@ -47726,8 +48287,10 @@ function enc79ChoiceFx(segKey, label){
   if(segKey==="heart:mak_zhendong") return { fav: has("秘密")||has("守")?3:1 };
   if(segKey==="heart:yip_manji") return { fav: has("爭取")?2:1 };
   if(segKey==="beat:luk_thanks") return { fav: has("笑")?2:4 };
-  if(segKey==="beat:liu_repay") return { fav: has("推")||has("排緊")?1:2 };
-  if(segKey==="beat:mak_respect") return { fav: has("驚")?2:4 };
+  /* v20a89 BR89：liu_repay／mak_respect 債權改條件派發（審計 #9）——以前 beat.grants 無條件派，
+     推辭／講會驚照攞債權；而家跟返抉擇行 fx 通道派，grants 已由 beat 定義移除。fav 數值維持原值。 */
+  if(segKey==="beat:liu_repay"){ if(has("推")||has("排緊")) return { fav:1, fx:"liu_decline" }; return { fav:2, fx:"liu_accept" }; }
+  if(segKey==="beat:mak_respect"){ if(has("驚")) return { fav:2, fx:"mak_honest" }; return { fav:4, fx:"mak_accept" }; }
   if(segKey==="beat:yip_choice"){
     if(has("守口")) return { fav:4, fx:"yip_kept" };
     return { fav:-8, fx:"yip_leaked" };
@@ -47771,6 +48334,16 @@ function enc79RunChoiceFx(fx){
       S.flags = S.flags || {}; S.flags.enc79_yip_leaked = (S.dayIndex|0);
       enc79GrantRumorCard({ id:"rumor_yip_photo_leak", source:"場務閒聊", title:"寫真安排傳開咗", text:"葉敏芝寫真安排單料，唔知點解傳到成個場都知。有人話，係嗰日同佢傾過偈嘅臨記講出去嘅。" });
     }
+    /* ===== v20a89 BR89：條件派發（審計 #9）——債權跟返玩家點揀先派 ===== */
+    if(fx==="liu_accept"){
+      enc79GrantCredit({ id:"credit_enc79_liu_priority", debtor:"廖炳星", title:"新戲優先試鏡人情", line:"廖炳星講過：下次佢有新戲開鏡，試鏡名單第一批會有你個名。呢份人情，佢記住。", status:"未收" });
+    } else if(fx==="liu_decline"){
+      /* 推辭：優先試鏡嗰格讓返出去，只留一句風聲（邊個接咗嗰格） */
+      enc79GrantRumorCard({ id:"rumor_liu_priority_passed", source:"片場風聲", title:"廖炳星嗰格試鏡位", text:"廖炳星新戲嗰個優先試鏡位，你嗰日推咗，後嚟俾咗另一個後生仔。星哥冇嬲，只係講咗句：機會呢家嘢，過咗就唔等人。" });
+    } else if(fx==="mak_accept"){
+      enc79GrantCredit({ id:"credit_enc79_mak_wuzhi", debtor:"紅棉武指", title:"武指照應人情", line:"武指嗰邊認咗你：第日有高危位開工，會第一時間諗起你，安全功夫亦會睇實你。", status:"未收" });
+    }
+    /* mak_honest：老實講會驚——武指記住你夠直，但照應嗰份人情唔喺呢度派（只有好感，見 enc79ChoiceFx） */
     /* ===== v20a83 ENC83：Phase 2 抉擇實效（行現有帳本／傳聞池，唔另起系統） ===== */
     if(fx==="ngai_meal"){
       if((Number(S.money)||0) >= 150){
@@ -47840,8 +48413,31 @@ function enc79BuildScript(starId, forceFirst){
   if(st.wrapEcho && ENC79_WRAP_ECHO[starId]){
     pushLines([ENC79_WRAP_ECHO[starId]], "wrapecho:"+starId, ()=>{ enc79StarState(starId).wrapEcho = false; });
   }
+  /* v20a89 BR89：主線抉擇記憶前置（審計 #7）——C7_c 嗌「分工救場」之後再遇魏詠男，
+     佢會認返嗰次拍檔（一次性，唔再係揀完即忘）。 */
+  try{
+    const MEM89 = [
+      { star:"ngai_wingnaam", flag:"flag_rain_split", lines:[["S","阿偉，嗰日黑雨，我哋分工救返成組戲——嗰種拍檔，我記到而家。"]] }
+    ];
+    for(const m of MEM89){
+      if(m.star!==starId) continue;
+      const s3 = enc79StarState(starId);
+      if(s3.br89Mem && s3.br89Mem[m.flag]) continue;
+      if(typeof enc87StoryFlag==="function" && enc87StoryFlag(m.flag)){
+        pushLines(m.lines, "br89mem:"+starId, ()=>{ const s4=enc79StarState(starId); s4.br89Mem = s4.br89Mem || {}; s4.br89Mem[m.flag] = ((S&&S.dayIndex)|0); });
+      }
+    }
+  }catch(_e){}
   const beat = enc79PickBeat(starId);
   if(beat && D.beats && D.beats[beat.id]){
+    /* v20a89 BR89：gu_loan 前置讀旗（審計 #7／#10）——事先聽聞佢撲水（情報卡下游）
+       或 C9 幫佢同何生爭取過分期（flag_mediate_gu_debt 嘅下游），開口嗰陣內容分版。 */
+    if(beat.id==="gu_loan" && typeof br89HoldsCard==="function" && br89HoldsCard("rumor_gu_money_heard")){
+      pushLines([["N","（你早聽人講過：顧明輝呢排四圍撲水。佢今日約你出嚟嗰陣，你心入面已經有數——佢唔係嚟敘舊咁簡單。）"]], "beat:gu_loan_pre89", null);
+    }
+    if(beat.id==="gu_loan" && typeof enc87StoryFlag==="function" && enc87StoryFlag("flag_mediate_gu_debt")){
+      pushLines([["S","阿偉，開口之前講句舊事：上次台慶嗰單數，你幫我同何生爭取到分期，我一直記喺心。今日呢筆，我唔當你係外人，先至嚟同你開口。"]], "beat:gu_loan_med89", null);
+    }
     pushSeg(D.beats[beat.id], "beat:"+beat.id, ()=>{ const s2=enc79StarState(starId); s2.beatsDone[beat.id]=((S&&S.dayIndex)|0); try{ beat.grants && beat.grants(); }catch(_g){} });
   } else if(tier>=3 && !st.heartDone && D.heart){
     pushSeg(D.heart, "heart:"+starId, ()=>{ const s2=enc79StarState(starId); s2.heartDone = true; enc79AddFav(starId, 2, "beat"); });
@@ -50437,6 +51033,7 @@ function gigsForLocSeasonBoard(locId, curSeason){
   try{ if(typeof mergeIntelGigs==="function") mergeIntelGigs(); }catch(_ig){}
   try{ if(typeof mergeFavorGigs==="function") mergeFavorGigs(); }catch(_fg){}
   try{ if(typeof mergeWf3Gigs==="function") mergeWf3Gigs(); }catch(_w3g){}
+  try{ if(typeof mergeBr89Gigs==="function") mergeBr89Gigs(); }catch(_b89g){}
   try{ if(typeof mergeRivalGigs==="function") mergeRivalGigs(); }catch(_rg){}
   try{ if(typeof mergeExodusGigs==="function") mergeExodusGigs(); }catch(_xg){}
   try{ if(typeof mergeMidGigs35==="function") mergeMidGigs35(); }catch(_m35){}
@@ -52302,7 +52899,45 @@ function people72Html(){
       : "";
     return `<div class="people-row" style="margin:8px 0;display:flex;gap:8px;align-items:flex-start"><img src="${PORTRAITS[n.face]}" alt="" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/><span style="flex:1"><b>${n.name}</b> · ${n.role}<br><span class="gold">${h} ${v}／100</span>${nextLine}${goBit}</span></div>`;
   }).join("");
-  return `<h3 class="jobs72-h">人脈</h3><p class="people-next">好感門檻：寒暄0 · 閒談10 · 忠告25 · 情報對白40</p><p class="sub" style="font-size:.75rem">撳「去找」會打開對方常出沒地點，可傾談／送禮。</p>${html}` + ((typeof enc79PeopleHtml==="function") ? enc79PeopleHtml() : "");
+  return `<h3 class="jobs72-h">人脈</h3><p class="people-next">好感門檻：寒暄0 · 閒談10 · 忠告25 · 情報對白40</p><p class="sub" style="font-size:.75rem">撳「去找」會打開對方常出沒地點，可傾談／送禮。</p>${html}` + ((typeof br89ArcStatusHtml==="function") ? br89ArcStatusHtml() : "") + ((typeof enc79PeopleHtml==="function") ? enc79PeopleHtml() : "");
+}
+/* v20a89 BR89：對手／導師八線手帳狀態句（真分支審計 #6）——八線人物大半唔喺
+   NPCS／紅星名冊，手帳以前完全唔提佢哋行到邊；而家共用一格：未開始唔出、
+   進行中一句、行完按玩家嗰幕抉擇出收科句（同結局呈現同一批旗）。 */
+const BR89_ARC_LINES = [
+  { name:"高俊傑", role:"對手演員", nodes:["A_ko_meet","A_ko_push1","A_ko_push2","A_ko_crisis","A_ko_ending"], mid:"交手緊——邊個都未服邊個，下一場見真章。", ends:[["flag_ko_mentor_complete","收科：你放低身段請教，佢肯教——對手變咗半個師父。"],["flag_ko_rival_respect","收科：惺惺相惜——鬥足咁耐，佢主動伸手。"],["flag_ko_cold_war","收科：冷戰到底——一世都只會係對手。"]] },
+  { name:"張克凡", role:"世家前輩", nodes:["A_hakfan_meet","A_hakfan_push1","A_hakfan_push2","A_hakfan_crisis","A_hakfan_ending"], mid:"老江湖嗰關，未行完。", ends:[["flag_hakfan_mentor_complete","收科：佢肯指點你呢個後生仔——老戲骨嘅面，唔係人人有。"],["flag_hakfan_rival_respect","收科：互相畀面——老江湖認你，你認老江湖。"],["flag_hakfan_cold_war","收科：冷戰到底——有些前輩，行極都行唔近。"]] },
+  { name:"張子駿", role:"導演導師", nodes:["A_tsijun_meet","A_tsijun_push1","A_tsijun_push2","A_tsijun_crisis","A_tsijun_ending"], mid:"仲跟緊佢磨戲。", ends:[["flag_tsijun_ending_complete","收科：導師線由頭跟到尾——佢教嘅，夠你用好耐。"],["flag_tsijun_ending_respect","收科：佢話你肯聽晒成段戲先出聲——呢句值錢過片酬。"],["flag_tsijun_ending_cold","收科：淡咗落嚟——名導嘅門，你敲過，算係咁。"]] },
+  { name:"方小龍", role:"武行朋友", nodes:["A_fong_meet","A_fong_push1","A_fong_push2","A_fong_crisis","A_fong_ending"], mid:"武行嗰邊，仲有下文。", ends:[["flag_fong_ending_save","收科：嗰次意外你出過手——兄弟情唔入帳本，大家記住。"],["flag_fong_ending_respect","收科：佢話你係少數會回頭望替身嗰班人嘅嗰個。"],["flag_fong_ending_cold","收科：淡咗落嚟——各有各忙，冇邊個欠邊個。"]] },
+  { name:"唐素雲", role:"演技導師", nodes:["A_tong_meet","A_tong_push1","A_tong_push2","A_tong_crisis","A_tong_ending"], mid:"仲跟緊佢磨演技。", ends:[["flag_tong_ending_mentor","收科：佢話你係佢最後一個肯慢慢教嘅後生仔。"],["flag_tong_ending_respect","收科：佢送你一句——戲要演得長，命要留得長。"],["flag_tong_ending_cold","收科：疏遠咗——長輩嘅提點，嗰陣冇聽入耳。"]] },
+  { name:"何生", role:"經理人", nodes:["A_ho_meet","A_ho_push1","A_ho_push2","A_ho_crisis","A_ho_ending"], mid:"信任仲累積緊——儲夠，先行到江湖嗰一步。", ends:[["flag_ho_mentor_complete","收科：佢肯將成盤生意嘅諗法講你知——信任到頂。"],["flag_ho_rival_respect","收科：互相尊重嘅經理人同藝人——檯面計盡，檯下畀面。"],["flag_ho_cold_war","收科：冷住收科——合約還合約，人情還人情。"]] },
+  { name:"高文瀚", role:"金牌推手", nodes:["A_gao_meet","A_gao_push1","A_gao_push2","A_gao_crisis","A_gao_ending"], mid:"金牌推手嗰關，未到最後一句。", ends:[["flag_gao_ending_respect","收科：互相成就——佢教你睇大局，你冇令佢失望。"],["flag_gao_ending_stay","收科：你揀留喺原地睇清楚——唔跟風，唔站隊。"],["flag_gao_ending_break","收科：分道揚鑣——企位唔同，路唔同。"]] },
+  { name:"雷勁", role:"資本方", nodes:["A_lei_meet","A_lei_push1","A_lei_push2","A_lei_crisis","A_lei_ending"], mid:"資本嗰邊，未攤完牌。", ends:[["flag_lei_ally","收科：行到同佢一條船——水有幾深，你心入面有數。"],["flag_lei_rival_respect","收科：互相認帳嘅對手——佢認你企得穩。"],["flag_lei_cold_war","收科：冷戰收科——你冇埋佢嗰邊，算係全身而退。"]] }
+];
+function br89ArcStatusHtml(){
+  try{
+    if(typeof S==="undefined" || !S) return "";
+    const done = (S.story && S.story.done) || {};
+    /* v20a89 BR89：WF3 對白旗附加句（方小龍傾談三旗／何生提點兩旗）——嗰場點揀，
+       人物狀態句跟住變，唔再係傾完就算。 */
+    const EXTRA89 = {
+      "方小龍": [["flag_wf3_fong_craft", "武行嗰邊，你係出名穩陣嗰個。"], ["flag_wf3_fong_bold", "武行嗰邊，記你夠膽搏。"], ["flag_wf3_fong_trust", "武行嗰邊，當你係自己人。"]],
+      "何生": [["flag_wf3_ho_steady", "廖炳星嗰單情報，何生提點你企穩陣——你聽咗。"], ["flag_wf3_ho_asked", "嗰次你追問到底——何生知你唔係盲跟嗰種人。"]]
+    };
+    const rows = [];
+    BR89_ARC_LINES.forEach(L=>{
+      let endLine = "";
+      (L.ends||[]).forEach(([flag, line])=>{ if(!endLine && endingFlag410(S, flag)) endLine = line; });
+      const started = (L.nodes||[]).some(id=>done[id]);
+      let extra = "";
+      (EXTRA89[L.name]||[]).forEach(([flag, line])=>{ if(!extra && endingFlag410(S, flag)) extra = line; });
+      if(endLine) rows.push(`<div class="people-row" style="margin:6px 0"><span style="flex:1"><b>${L.name}</b> · ${L.role}<br><span class="sub">${endLine}${extra ? " " + extra : ""}</span></span></div>`);
+      else if(started) rows.push(`<div class="people-row" style="margin:6px 0"><span style="flex:1"><b>${L.name}</b> · ${L.role}<br><span class="sub">${L.mid}${extra ? " " + extra : ""}</span></span></div>`);
+      else if(extra) rows.push(`<div class="people-row" style="margin:6px 0"><span style="flex:1"><b>${L.name}</b> · ${L.role}<br><span class="sub">${extra}</span></span></div>`);
+    });
+    if(!rows.length) return "";
+    return `<h3 class="jobs72-h" style="margin-top:14px">對手・導師</h3>` + rows.join("");
+  }catch(_e){ return ""; }
 }
 function people72GoLoc(btn){
   const loc = btn.getAttribute("data-loc");
