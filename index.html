@@ -39361,6 +39361,88 @@ function wf4Scene105(ev){
     return LOC_SHEET_BG[locId] || "";
   }catch(_e){ return ""; }
 }
+/* ===== v20a108 D-8（二期）：WF4 隨機事件具名講者企立 =====
+   盤點（見 tests/test_dlg108_*，以 DLG106_GAZE＋assets/story/fullbody/ 核對）：
+   36 事件入面只有 8 單有全身資產講者——全部只得阿偉（awi）；阿媽／霞姐／
+   阿成／昌叔／表姨媽等具名家人／熟人同功能 NPC（場務／副導演／武指…）全部
+   表外，冇全身圖，唔會憑空出企立。對照 SP_SPEAKER_LEGACY 同樣只認「阿偉」→awi。
+   呈現：有阿偉嘅事件行 DLG106 舞台（獨角：dlg106ResolveSides(awi,awi)，視線表
+   企左位唔翻；表情行 dlg106ResolveCategory（map→分類器），講者全光／聽者 0.6／
+   旁白齊 0.6 冇名牌；候補鏈＝全身圖→UI40 企立／bust→剪影→SVG 兜底＋__dlg106Err，
+   保證唔出破圖）。冇阿偉嘅 28 單維持 v105 舊呈現（場景底＋純文字，唔出圖）。
+   抉擇／結算屏維持舊文字（同 StoryPlay 抉擇屏冇舞台一致）；事件內容／文案／數值一律唔郁。 */
+function wf4SpeakerId108(sp){
+  if(!sp || sp==="旁白") return null;
+  if(sp==="阿偉") return "awi";
+  return null;
+}
+function wf4OnTableIds108(ev){
+  try{
+    const out = [];
+    (ev.beats||[]).forEach(b=>{
+      const id = wf4SpeakerId108(b.sp);
+      if(id && typeof dlg106HasFullbody==="function" && dlg106HasFullbody(id) && out.indexOf(id)<0) out.push(id);
+    });
+    return out;
+  }catch(_e){ return []; }
+}
+/* 阿偉候補鏈尾段（同巧遇 paintDlg106 嘅 extraCands106 一致）：UI40 企立 → c1 bust →
+   ENC105 剪影 → SVG data URI 兜底（必載入到）。SVG 內無 |／"／&，可安全放入
+   data-dlg-fallbacks（| 分隔）。 */
+function wf4DlgExtraCands108(sid){
+  const out = [];
+  try{
+    if(sid==="awi"){
+      if(typeof UI40_STAND!=="undefined" && UI40_STAND.awi) out.push(UI40_STAND.awi);
+      out.push("assets/story/c1/char_hero_bust_default.png?v=20a8");
+      if(typeof ENC105_STAND_SILHOUETTE!=="undefined" && ENC105_STAND_SILHOUETTE) out.push(ENC105_STAND_SILHOUETTE);
+      if(typeof ENC105_STAND_FALLBACK!=="undefined" && ENC105_STAND_FALLBACK) out.push(ENC105_STAND_FALLBACK);
+    }
+  }catch(_e){}
+  return out;
+}
+/* DLG106 舞台人物層（鏡像 StoryPlay spDlgCharsHtml：企位／翻轉行視線表，
+   明暗跟講者；表外講者嗰句阿偉留喺台上做聽者 0.6）。 */
+function wf4DlgCharsHtml108(ev, b){
+  try{
+    const ids = wf4OnTableIds108(ev);
+    if(!ids.length || typeof dlg106ResolveSides!=="function") return "";
+    const sides = ids.length>=2 ? dlg106ResolveSides(ids[0], ids[1]) : dlg106ResolveSides(ids[0], ids[0]);
+    if(!sides) return "";
+    const slots = sides.single
+      ? [{ id:sides.single.id, flip:sides.single.flip, pos:(sides.single.side==="right" ? "dlg106-right" : "dlg106-left") }]
+      : [{ id:sides.left.id, flip:sides.left.flip, pos:"dlg106-left" }, { id:sides.right.id, flip:sides.right.flip, pos:"dlg106-right" }];
+    const isNarr = !b || (b.sp||"旁白")==="旁白";
+    const activeId = isNarr ? null : wf4SpeakerId108(b.sp);
+    const html = slots.map(slot=>{
+      const isActive = !!(activeId && slot.id===activeId);
+      const cat = isActive ? dlg106ResolveCategory({ text:(b&&b.tx)||"", speakerId:slot.id }) : "neutral";
+      const cands = dlg106Candidates(slot.id, cat);
+      wf4DlgExtraCands108(slot.id).forEach(u=>{ if(u && cands.indexOf(u)<0) cands.push(u); });
+      if(!cands.length) return "";
+      let bright = "0.6", z = 3;
+      if(!isNarr && isActive){ bright = "1"; z = 4; }
+      return `<img class="dlg106-char ${slot.pos}${slot.flip?" dlg106-flip":""}" src="${wf4Esc(cands[0])}" alt="" data-dlg-id="${wf4Esc(slot.id)}" data-dlg-fallbacks="${wf4Esc(cands.slice(1).join("|"))}" draggable="false" style="filter:brightness(${bright});z-index:${z}" onerror="try{window.__dlg106Err&&window.__dlg106Err(this)}catch(_e){}"/>`;
+    }).join("");
+    return html ? `<div class="dlg106-chars" aria-hidden="true">${html}</div>` : "";
+  }catch(_e){ return ""; }
+}
+/* 單句 DLG106 舞台（鏡像 StoryPlay render 嘅 stageBody：場景圖底＋企立＋底部對話框；
+   旁白句行 sp-mode-narration＋narration 板、冇名牌）。scene105＝wf4Scene105 回嘅圖。
+   注意（v108 分工）：呢度只係照組件原有 class 出 markup，唔加幾何／CSS——舞台高、
+   人物大細、對話框高等幾何由 v108-dlg 工人統一處理，WF4 沿用組件原有 in-flow 規則。 */
+function wf4BeatStageHtml108(ev, b, scene105){
+  const chars = wf4DlgCharsHtml108(ev, b);
+  if(!chars) return "";
+  const isNarr = (b.sp||"旁白")==="旁白";
+  const activeId = isNarr ? "" : (wf4SpeakerId108(b.sp)||"");
+  const bgStyle = scene105 ? ` style="background-image:url(&quot;${scene105}&quot;);background-size:cover;background-position:center"` : "";
+  const plateCls = isNarr ? "sp-plate sp-plate-narration105 dlg106-plate" : "sp-plate dlg106-plate";
+  const nameHtml = isNarr ? "" : `<div class="sp-speaker">${wf4Esc(b.sp||"")}</div>`;
+  return `<div class="story-play"><div class="sp-stage sp-mode-${isNarr?"narration":"dialogue"} dlg106-on" data-sp-kind="${isNarr?"system":"dialogue"}"${activeId?` data-speaker-id="${wf4Esc(activeId)}"`:""}>`
+    + `<div class="sp-bg-layer"${bgStyle} aria-hidden="true"></div><div class="sp-bg-scrim" aria-hidden="true"></div>${chars}`
+    + `<div class="sp-stage-inner"><div class="${plateCls}">${nameHtml}<div class="sp-line">${wf4Esc(b.tx||"")}</div></div></div></div></div>`;
+}
 function wf4PlayEvent(ev, doneCb){
   let finished = false;
   const finish = ()=>{ if(finished) return; finished = true; try{ if(doneCb) doneCb(); }catch(_e){} };
@@ -39369,7 +39451,17 @@ function wf4PlayEvent(ev, doneCb){
     const scene105 = wf4Scene105(ev);
     const sceneHtml105 = scene105 ? `<div class="wf4-scene105" style="background-image:url(&quot;${scene105}&quot;)" aria-hidden="true"></div>` : "";
     const head = `${sceneHtml105}<h3>${wf4Esc(ev.title||"日常")}</h3><p class="sub">${wf4Esc(ev.setting||"")}</p>`;
-    const beatHtml = b => head + `<p><b>${wf4Esc(b.sp||"旁白")}</b>：${wf4Esc(b.tx||"")}</p>`;
+    /* v20a108 D-8（二期）：有全身資產講者（阿偉）嘅事件，逐句行 DLG106 舞台；
+       場景圖改做舞台底，唔再重複出 v105 嗰條 scene 帶。冇阿偉嘅事件維持舊呈現。 */
+    const onTable108 = wf4OnTableIds108(ev);
+    const headDlg108 = `<h3>${wf4Esc(ev.title||"日常")}</h3><p class="sub">${wf4Esc(ev.setting||"")}</p>`;
+    const beatHtml = b => {
+      if(onTable108.length){
+        const st108 = wf4BeatStageHtml108(ev, b, scene105);
+        if(st108) return headDlg108 + st108;
+      }
+      return head + `<p><b>${wf4Esc(b.sp||"旁白")}</b>：${wf4Esc(b.tx||"")}</p>`;
+    };
     const result = (text, fx)=>{
       const notes = wf4ApplyFx(fx);
       const sum = notes.length ? `<p class="sub">${notes.join(" · ")}</p>` : "";
