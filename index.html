@@ -4928,6 +4928,8 @@ body.day-res-open .day-row{
               <div class="mn68" style="left:86%;top:calc(82% + 30px)">天星音樂</div>
               <div class="mn68" style="left:11%;top:calc(16% - 56px)">金龍茶餐廳</div>
               <div class="mn68" style="left:15%;top:calc(86% - 20px)">何生事務所</div>
+              <div class="mn68" style="left:46%;top:calc(35% - 44px)">廟街禮品</div>
+              <div class="mn68" style="left:43%;top:calc(73% + 52px)">仁康醫院</div>
             </div>
           </div>
         </div>
@@ -5197,6 +5199,12 @@ const LOCS = [
     desc:"人聲鼎沸，卡座隱密，後巷煙霧彌漫，係劇組收工後吹水食花生嘅聖地。" },
   { id:"agency_ho", name:"何生事務所", area:"中環", type:"agency", region:"island", x:24, y:86, emoji:"🏢", lab:"lab-up lab-left", residentNpc:"agent",
     desc:"煙灰缸滿瀉，枱面疊住劇本同通告單，電話響過不停，充滿江湖味同壓迫感。" },
+  /* v20a96 LOC96：兩個新地點用返地圖成品圖上已有嘅建築 fabric（廟街夜市排檔／白十字
+     大樓），唔係新畫建築。落位理據（1990 年代零售／醫療地理質地）見 NOTES_V20A96。 */
+  { id:"gift_shop", name:"廟街禮品", area:"油麻地", type:"shop", region:"kln", x:43, y:35, emoji:"🎁",
+    desc:"廟街夜市最旺嗰檔禮品檔：花、果籃、卡帶、蛋撻，送人自用都齊，老闆娘記性好到嚇人。" },
+  { id:"hospital", name:"仁康醫院", area:"薄扶林", type:"med", region:"island", x:43, y:73, emoji:"🏥",
+    desc:"白十字大樓，門口長泊住一部救護車。平時冇人想嚟，病到燶嗰陣，先知呢度有幾重要。" },
 ];
 
 const NPCS = {
@@ -28897,7 +28905,7 @@ const GiftShop = (function(){
       return { ok:false, reason:sys.dailyCap||"人情急不來；今天先到這裡。" };
     }
     const inv = Object.keys(S.inventory||{}).filter(id=>invCount(id)>0);
-    if(!inv.length) return { ok:false, reason:"庫存空空——可先去旺角唱片旁小賣看看。" };
+    if(!inv.length) return { ok:false, reason:"庫存空空——可先去油麻地廟街禮品檔看看。" };
     return { ok:true, reason:"" };
   }
   function prefKind(npcKey, itemId){
@@ -29056,6 +29064,140 @@ const GiftShop = (function(){
     inventoryList, shopList, prefKind, reactionLine, reactionEntry, weekNow, MAP_NPC_TO_KEY
   };
 })();
+
+/* ===== v20a96 LOC96：地點整理（禮物店獨立＋仁康醫院三功能） =====
+   禮物店：pack shops.json 嘅 shop_street_mk 原本寄生 rec_hk（香江唱片附設小賣）；
+   loc96RemapGiftShop 喺 pack 載入後正規化搬去新地點 gift_shop（廟街禮品，地圖上
+   原有嘅廟街夜市排檔 fabric）——shopId 不變，舊檔 S.giftMeta.shopStock／S.inventory
+   零影響；送禮機制／效果一字不改，純粹搬買嘅地方。
+   醫院（hospital 仁康醫院，地圖上原有白十字大樓 fabric）三功能：
+   (1) 付費治療 $600：病日三守衛前 hosp96TreatGate 出選擇——揀醫，今日變病程最後一日
+       （今日照行病假結算，聽日好返），慳返其餘病假；一個病程只醫一次；週加速唔彈窗。
+   (2) 體檢 $500／28 日：期間 conseq61DailyTick 計連續日用「有效壓力」＝收市壓力−10
+       （外加修正；CONSEQ61_CFG／病倒觸發本體一字不改）。
+   (3) 探病：病程第一個結算日、一次，按好感最高嘅熟人嚟探阿偉（+2 好感），
+       冇人熟就芬姐送糖水（純文案）——經 conseq61ResolveSickDay 嘅 hook 注入旁白。
+   新狀態收喺 S.hosp96（防禦式初始化，舊檔自動補）。唔改 SAVE key／softRev／?v=／pack JSON。 */
+const LOC96_CFG = { treatFee:600, checkupFee:500, checkupDays:28, checkupShield:10 };
+function hosp96State(st){
+  const s = st || (typeof S!=="undefined" ? S : null);
+  if(!s || typeof s!=="object") return null;
+  if(!s.hosp96 || typeof s.hosp96!=="object" || Array.isArray(s.hosp96)) s.hosp96 = {};
+  if(typeof s.hosp96.checkupUntil!=="number") s.hosp96.checkupUntil = 0;
+  return s.hosp96;
+}
+function loc96RemapGiftShop(){
+  try{
+    (GIFT_SHOPS.shops||[]).forEach(sh=>{
+      if(sh && sh.shopId==="shop_street_mk"){ sh.locId = "gift_shop"; sh.name = "廟街禮品檔"; }
+    });
+  }catch(_e){}
+}
+function hosp96CheckupActive(st){
+  try{
+    const s = st || (typeof S!=="undefined" ? S : null);
+    if(!s) return false;
+    const h = hosp96State(s);
+    return !!h && (Number(s.dayIndex)||0) < h.checkupUntil;
+  }catch(_e){ return false; }
+}
+/* 體檢生效時畀 conseq61DailyTick 用：收市壓力 −10 先計連續日（警號／病倒門檻等效放寬） */
+function hosp96EffStress(st, raw){
+  const v = Number(raw)||0;
+  return hosp96CheckupActive(st) ? Math.max(0, v - LOC96_CFG.checkupShield) : v;
+}
+/* 病日治療選擇：回 true＝已接管（出咗選擇 modal，結算交返按鈕／dismiss 行 resolve）。 */
+function hosp96TreatGate(id){
+  try{
+    if(typeof _weekAccel!=="undefined" && _weekAccel) return false; /* 週加速：唔彈窗，照自動休養 */
+    if(typeof conseq61IsSickToday!=="function" || !conseq61IsSickToday()) return false;
+    if(typeof conseq61State!=="function") return false;
+    const c = conseq61State(S);
+    if(!c || !c.sick || c.sick.hosp96Treated) return false;
+    const today = Number(S.dayIndex)||0;
+    if(today >= c.sick.to) return false; /* 最後一日：唞埋今日就好，唔使畀錢醫 */
+    const fee = LOC96_CFG.treatFee;
+    const saved = c.sick.to - today; /* 醫好後慳返嘅病假日數 */
+    const afford = (Number(S.money)||0) >= fee;
+    const doResolve = ()=>{ try{ conseq61ResolveSickDay(id); }catch(_e){} };
+    if(!afford){
+      modal(`<h3>病到燶</h3>
+        <p>你燒到成身滾，醫生紙寫明仲要唞 ${saved} 日先好返——嗰幾日嘅行程，全部要作廢。</p>
+        <p class="sub">仁康醫院急症室有吊針同特效藥，$${fee} 可以聽日就好返；不過你而家得 $${(Number(S.money)||0).toLocaleString()}，唔夠畀。唯有留喺屋企，慢慢唞。</p>`,
+        [{ label:"留喺屋企休養", role:"p", on:doResolve }], { onDismiss:doResolve });
+      return true;
+    }
+    modal(`<h3>病到燶——去唔去醫院？</h3>
+      <p>你燒到成身滾，醫生紙寫明仲要唞 ${saved} 日先好返——嗰幾日嘅行程，全部要作廢。</p>
+      <p>去仁康醫院睇急症、吊針食特效藥（<b class="gold">$${fee}</b>）：今日照唞，但聽日就好返，慳返 ${saved} 日病假。唔去，就留喺屋企慢慢唞，唔使錢。</p>`,
+      [
+        { label:`去醫院治療（−$${fee}）`, role:"p", on:()=>{
+          S.money = (Number(S.money)||0) - fee;
+          c.sick.hosp96Treated = true;
+          c.sick.days = today - c.sick.from + 1; /* 病程改寫成今日完結，結算文案對得返 */
+          c.sick.to = today;
+          try{ paintBar(); }catch(_e){}
+          try{ saveQ(); }catch(_e){}
+          doResolve();
+        } },
+        { label:"留喺屋企休養", role:"g", on:doResolve }
+      ], { onDismiss:doResolve });
+    return true;
+  }catch(_e){ return false; }
+}
+/* 探病旁白（conseq61ResolveSickDay 經 hook 呼叫；回 null＝唔出） */
+function hosp96VisitNote(dayNo){
+  try{
+    if(dayNo!==1) return null;
+    if(typeof conseq61State!=="function") return null;
+    const c = conseq61State(S);
+    if(!c || !c.sick || c.sick.hosp96Visited) return null;
+    c.sick.hosp96Visited = true;
+    const cand = ["colleague","agent","stylist"];
+    let best = null, bestV = 0;
+    cand.forEach(nid=>{ const v = Number((S.npcs||{})[nid])||0; if(v>bestV){ bestV = v; best = nid; } });
+    if(best==="colleague"){
+      try{ bumpNpc("colleague", 2); }catch(_e){}
+      return `<span class="good">門鐘響——林曉晴企喺門口，手上兜住一煲白粥同一隻鹹蛋：「聽何生講你病到起唔到身。食啲粥先啦，片場啲人冇你想像中咁快唔記得人。」佢坐到煲粥涼晒先走。</span>`;
+    }
+    if(best==="agent"){
+      try{ bumpNpc("agent", 2); }catch(_e){}
+      return `<span class="good">何生上門探病，一手藥一手生果，入門就鬧：「谷到病，你好叻呀。」鬧完又壓低聲：「嗰邊我幫你順延咗，你唞好先。唔好死撐，死撐冇人工加。」</span>`;
+    }
+    if(best==="stylist"){
+      try{ bumpNpc("stylist", 2); }catch(_e){}
+      return `<span class="good">Vera 帶住一束花同一壺老火湯嚟探你，睇到你面青口唇白，皺晒眉：「個樣殘到咁，邊個導演敢用你呀？飲晒啲湯，好返先講。」</span>`;
+    }
+    return `<span class="good">茶水檔芬姐唔知喺邊度收到風，托人送咗盅燉糖水上嚟，仲附張字條：「後生仔，唔好死撐。唞好，先有下次。」——行內嘅人情味，有時就係一盅糖水。</span>`;
+  }catch(_e){ return null; }
+}
+/* 醫院地點 sheet 服務（openLoc 經 hook 呼叫）：身體檢查買賣 */
+function loc96AddSheetActs(add, L){
+  try{
+    if(!L || L.id!=="hospital") return;
+    const h = hosp96State(S);
+    const today = Number(S.dayIndex)||0;
+    if(h && today < h.checkupUntil){
+      const left = h.checkupUntil - today;
+      add("身體檢查（生效中）", `仲有 ${left} 日 · 高壓冇咁易谷病：警號／病倒門檻寬容 ${LOC96_CFG.checkupShield} 點`, "—", ()=>{
+        toast(`體檢報告仲有效 ${left} 日：呢排谷到高壓，都冇咁易病倒。`);
+      }, "act-priority");
+    } else {
+      add("身體檢查", `$${LOC96_CFG.checkupFee} · 之後 ${LOC96_CFG.checkupDays} 日底子好啲：高壓冇咁易谷病（門檻寬容 ${LOC96_CFG.checkupShield} 點）`, `$${LOC96_CFG.checkupFee}`, ()=>{
+        if((Number(S.money)||0) < LOC96_CFG.checkupFee){ toast("唔夠錢——體檢要 $"+LOC96_CFG.checkupFee+"，先去趕一兩個通告吧。"); return; }
+        S.money = (Number(S.money)||0) - LOC96_CFG.checkupFee;
+        hosp96State(S).checkupUntil = (Number(S.dayIndex)||0) + LOC96_CFG.checkupDays;
+        try{ paintBar(); }catch(_e){}
+        try{ saveQ(); }catch(_e){}
+        modal(`<h3>身體檢查</h3>
+          <p>驗血、照肺、量血壓——醫生睇完報告，點點頭：「後生仔底子唔錯。照咁睇，之後 ${LOC96_CFG.checkupDays} 日你谷到高壓，都冇咁易病倒。」</p>
+          <p class="gold">−$${LOC96_CFG.checkupFee} · 體檢生效 ${LOC96_CFG.checkupDays} 日</p>`,
+          [{ label:"好，返去開工", role:"p", on:()=>{ try{ openLoc("hospital"); }catch(_e){} } }],
+          { onDismiss:()=>{ try{ openLoc("hospital"); }catch(_e){} } });
+      }, "act-priority");
+    }
+  }catch(_e){}
+}
 
 /** Soft progress seeds. Flag off does nothing. LIVE week-gate stays. */
 let softSeedPack = null;
@@ -29679,6 +29821,8 @@ async function refreshCopyPacksFromDisk(){
     if(d) TUTORIAL = d;
     if(giftItems && Array.isArray(giftItems.items)) GIFT_ITEMS = giftItems;
     if(giftShops && Array.isArray(giftShops.shops)) GIFT_SHOPS = giftShops;
+    /* v20a96 LOC96：禮物店獨立——pack 載入後正規化搬去廟街禮品（shopId 不變，舊檔零影響） */
+    try{ if(typeof loc96RemapGiftShop==="function") loc96RemapGiftShop(); }catch(_l96){}
     if(giftPrefs && giftPrefs.npcs) GIFT_PREFS = giftPrefs;
     if(giftReact && (giftReact.byKey || giftReact.entries)) GIFT_REACT = giftReact;
     try{ if(typeof GiftShop!=="undefined") GiftShop.ensureSave(); }catch(_g){}
@@ -30276,7 +30420,7 @@ function ux68ClassifyAct(btn){
   if(title.indexOf("暫未能報") === 0) return { group:"work", locked:true, title };
   if(title.indexOf("報名：") === 0 || (title.indexOf("進行") === 0 && title.indexOf("訓練") >= 0))
     return { group:"train", locked, title };
-  if(title === "休息室歇陣" || title.indexOf("小賣") === 0) return { group:"rest", locked, title };
+  if(title === "休息室歇陣" || title === "買禮物" || title.indexOf("小賣") === 0) return { group:"rest", locked, title };
   if(locked && title.indexOf("：") >= 0) return { group:"work", locked, title };
   return { group:"rest", locked, title };
 }
@@ -32357,7 +32501,9 @@ function conseq61DailyTick(){
     const c = conseq61State(s);
     if(!c) return;
     const today = Number(s.dayIndex)||0;
-    const st = Number(s.stress)||0; /* advanceDay 剛翻日：呢個係剛過去嗰日嘅收市壓力（未經週結回復） */
+    const stRaw = Number(s.stress)||0; /* advanceDay 剛翻日：呢個係剛過去嗰日嘅收市壓力（未經週結回復） */
+    /* v20a96 LOC96：體檢生效期間用有效壓力（收市 −10）計連續日——外加修正，唔改觸發本體 */
+    const st = (typeof hosp96EffStress==="function") ? hosp96EffStress(s, stRaw) : stRaw;
     if(c.sick) return;              /* 病緊：唔計連續日，唔會疊病 */
     if(today < c.cooldownUntil){ c.streak90 = 0; c.peak90 = 0; }  /* 冷卻期：唔儲觸發 */
     else if(st >= 90){ c.streak90++; if(st > c.peak90) c.peak90 = st; }
@@ -32442,6 +32588,8 @@ function conseq61ResolveSickDay(id){
     } else {
       notes.push(`<span class="bad">你成日留喺屋企，食藥、瞓覺、再食藥。窗外有組人開工嗰啲聲，傳到入嚟，好遠。</span>`);
     }
+    /* v20a96 LOC96：探病場景（病程第一個結算日，一次；有人嚟探阿偉） */
+    try{ if(typeof hosp96VisitNote==="function"){ const vn96 = hosp96VisitNote(dayNo); if(vn96) notes.push(vn96); } }catch(_h96v){}
     const title = `病倒休養（第 ${dayNo} 日）`;
     if(lastDay){
       notes.push(...apply({ stress: -CONSEQ61_CFG.sickRelief }));
@@ -34536,7 +34684,7 @@ function settleWeek(){
       /* 週末結算後視為新一週：刷新 common/uncommon 庫存、重置週禮物淨好感 */
       S.giftMeta.shopWeek = -1;
       GiftShop.restockIfNeeded();
-      pushFlavor("街頭小賣換了一批貨；人情週額度也重置了。");
+      pushFlavor("廟街禮品檔換了一批貨；人情週額度也重置了。");
     }
   }catch(_gs){}
   try{
@@ -35392,6 +35540,8 @@ function endBrowseDayGoHome(){
     }
   }catch(_e){}
   try{ if(typeof _storyPlayLocked!=="undefined" && _storyPlayLocked){ toast("劇情進行中，完結後再返屋企"); return; } }catch(_e2){}
+  /* v20a96 LOC96：病日先問去唔去醫院治療（gate 接管咗就唔好再行病假結算） */
+  try{ if(typeof hosp96TreatGate==="function" && hosp96TreatGate((typeof todayPlanId==="function") ? todayPlanId() : null)) return; }catch(_h96c){}
   /* v20a61 CONSEQ61-2：病日唔當普通休息日過——行病假結算（作廢行程／告假） */
   try{ if(typeof conseq61IsSickToday==="function" && conseq61IsSickToday() && typeof conseq61ResolveSickDay==="function" && conseq61ResolveSickDay((typeof todayPlanId==="function") ? todayPlanId() : null)) return; }catch(_sk61h){}
   closeSheet();
@@ -35503,6 +35653,7 @@ function goToMapForBrowse(){
   try{
     let storyOn = false;
     try{ storyOn = (typeof isStoryPlayActive==="function" && isStoryPlayActive()) || (typeof _storyPlayLocked!=="undefined" && !!_storyPlayLocked); }catch(_e){}
+    if(!storyOn && typeof hosp96TreatGate==="function" && hosp96TreatGate((typeof todayPlanId==="function") ? todayPlanId() : null)) return;
     if(!storyOn && typeof conseq61IsSickToday==="function" && conseq61IsSickToday() && typeof conseq61ResolveSickDay==="function"){
       if(conseq61ResolveSickDay((typeof todayPlanId==="function") ? todayPlanId() : null)) return;
     }
@@ -35752,6 +35903,8 @@ function runScheduleFromToday(){
 function resolvePlannedDay(id){
   /* v20a78 LOCK78：已結局唔再執行任何已排日程（拍攝／訓練／打工一律擋） */
   if(typeof ending78Gate==="function" && ending78Gate()) return;
+  /* v20a96 LOC96：病日先問去唔去醫院治療（gate 接管咗就唔好再行病假結算） */
+  try{ if(typeof hosp96TreatGate==="function" && hosp96TreatGate(id)) return; }catch(_h96a){}
   /* v20a61 CONSEQ61-2：病日——行程作廢，行病假結算（拍攝告假／試鏡改期），唔行正常日程 */
   try{ if(typeof conseq61IsSickToday==="function" && conseq61IsSickToday() && typeof conseq61ResolveSickDay==="function" && conseq61ResolveSickDay(id)) return; }catch(_sk61){}
   const applyGain60 = (typeof applyCalib60==="function") ? applyCalib60 : apply; /* v20a60：抽函數測試沙盒冇 applyCalib60 時退回 apply */
@@ -50860,16 +51013,21 @@ function openLoc(id, opts){
   } else {
   /* v20a22：傾談／送禮抽咗做共用 helper（hub 分支共用同一套） */
   addLocTalkGiftActs(add, L, npcId);
-  /* v18d：rec_hk 附設小賣 */
+  /* v18d 原為 rec_hk 附設小賣；v20a96 LOC96：禮物店獨立做 gift_shop 地點，
+     shopAtLoc 跟正規化後嘅 locId 行——唱片公司唔再出呢個掣，新店先出。 */
   try{
     if(typeof GiftShop!=="undefined"){
       const shop = GiftShop.shopAtLoc(L.id);
       if(shop){
-        add("小賣／禮品", shop.name||"旺角街頭檔","免費", ()=>openGiftShop(shop.shopId, L), "act-priority");
+        add("買禮物", shop.name||"廟街禮品檔","免費", ()=>openGiftShop(shop.shopId, L), "act-priority");
       }
     }
   }catch(_gs){}
-  add("只查看通告欄","","免費", ()=>doScout(L), "act-priority");
+  /* v20a96 LOC96：醫院專屬服務（身體檢查）；禮品店除買禮物外冇其他服務掣 */
+  try{ if(typeof loc96AddSheetActs==="function") loc96AddSheetActs(add, L); }catch(_l96s){}
+  /* v20a96 LOC96：通告欄只出喺有通告板嘅工作地點（新地點 shop／med 冇板，唔出空板掣） */
+  if(L.type==="film" || L.type==="tv" || L.type==="music" || L.type==="ad")
+    add("只查看通告欄","","免費", ()=>doScout(L), "act-priority");
   const bridgeShown = addLocBridgeActs(add, L);
   /* v19z20：報名／休息室釘喺通告列表前（首屏可點），避免被多張通告壓到 fold 下 */
   const tr=TRAIN_BY_TYPE[L.type];
@@ -53935,7 +54093,7 @@ function rarityLabelZh(r){
 function openGiftShop(shopId, L){
   try{ GiftShop.ensureSave(); GiftShop.restockIfNeeded(); }catch(_e){}
   const shop = GiftShop.shopById(shopId);
-  if(!shop){ toast("小賣未開檔"); return; }
+  if(!shop){ toast("禮品店未開檔"); return; }
   const rows = GiftShop.shopList(shopId);
   let body = rows.map(row=>{
     const it = row.item;
@@ -53950,8 +54108,8 @@ function openGiftShop(shopId, L){
     </button>`;
   }).join("") || `<p class="sub">本週暫無貨。</p>`;
   closeSheet();
-  modal(`<h3>${shop.name||"小賣"}</h3>
-    <p class="sub">附設於香江唱片 · 買入不耗日 · 週一／週末結算補貨</p>
+  modal(`<h3>${shop.name||"廟街禮品檔"}</h3>
+    <p class="sub">油麻地廟街夜市 · 買入不耗日 · 每週補貨</p>
     <p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>
     <div id="gift-shop-list">${body}</div>`,[
       {label:"關閉", role:"g", on:()=>{ if(L) openLoc(L.id); }}
@@ -53976,7 +54134,7 @@ function openGiftPick(npcKey, L){
   const gate = GiftShop.canGive(npcKey);
   if(!gate.ok){ toast(gate.reason||"暫不可送"); return; }
   const list = GiftShop.inventoryList();
-  if(!list.length){ toast("庫存空空——先去旺角小賣看看。"); return; }
+  if(!list.length){ toast("庫存空空——先去廟街禮品檔看看。"); return; }
   const rows = list.map(({itemId, count, item})=>{
     const kind = GiftShop.prefKind(npcKey, itemId);
     const tag = kind==="liked"?"喜":(kind==="dislike"?"慎":"普");
@@ -54037,15 +54195,15 @@ function doGiveGift(npcKey, itemId, L){
   saveQ();
 }
 /* v20a72 MENU72：庫存內容產生器（原選單 modal 內容原封搬入手帳近況組「庫存」
-   子頁；欄位／文案／排序不變）。空庫存嗰陣出「去香江唱片小賣」掣（class
+   子頁；欄位／文案／排序不變）。空庫存嗰陣出「去廟街禮品檔」掣（v20a96 改指新禮物店；class
    inv72-goshop），由 renderInvPane 綁返同舊 modal 一樣嘅跳轉。 */
 function inv72Html(){
   try{ GiftShop.ensureSave(); }catch(_e){}
   const list = (typeof GiftShop!=="undefined") ? GiftShop.inventoryList() : [];
   let body;
   if(!list.length){
-    body = `<p class="sub">庫存空空。去旺角「香江唱片」地點選單撳「小賣／禮品」買入；送禮要喺已認識嘅熟人／可培養對象面前。</p>`
-      + `<button type="button" class="pane-go72 inv72-goshop">去香江唱片小賣</button>`;
+    body = `<p class="sub">庫存空空。去油麻地「廟街禮品」地點選單撳「買禮物」買入；送禮要喺已認識嘅熟人／可培養對象面前。</p>`
+      + `<button type="button" class="pane-go72 inv72-goshop">去廟街禮品檔</button>`;
   } else {
     body = list.map(({itemId, count, item})=>
       `<p style="margin:6px 0">${item.emoji||"🎁"} <b>${item.name}</b> ×${count} <span class="sub">· ${rarityLabelZh(item.rarity)} · $${(item.price||0).toLocaleString()}</span></p>`
@@ -54057,7 +54215,7 @@ function inv72Html(){
 function inv72GoShop(){
   try{ closeModal(); }catch(_e){}
   try{ if(typeof goToMapForBrowse==="function") goToMapForBrowse(); }catch(_e){}
-  setTimeout(()=>{ try{ openLoc("rec_hk"); }catch(_e){ toast("請去旺角香江唱片"); } }, 60);
+  setTimeout(()=>{ try{ openLoc("gift_shop"); }catch(_e){ toast("請去油麻地廟街禮品檔"); } }, 60);
 }
 function renderInvPane(){
   const box = document.getElementById("inv-list");

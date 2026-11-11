@@ -66,11 +66,11 @@ ok('sheet 標題加地區、desc 唔重複', '${L.name}${L.area ? " · " + L.are
 
 # --- (3) 地圖墨字地名（方案 B 定版：index-alt-b.html） ---
 labels = re.findall(r'<div class="mn68" style="left:([0-9.]+)%;top:calc\((\d+)% ([+-]) (\d+)px\)">([^<]+)</div>', src)
-ok('地圖有 13 個墨字標籤', len(labels) == 13)
+ok('地圖有 15 個墨字標籤（v20a96 LOC96 加海傍禮品＋仁康醫院）', len(labels) == 15)
 lm = re.search(r'const LOCS = \[(.*?)\n\];', src, re.S)
 locs = re.findall(r'\{ id:"(\w+)", name:"([^"]+)"', lm.group(1) if lm else '')
 loc_names = [n for _, n in locs]
-ok('標籤文字同 LOCS 地點名逐個對得上', sorted(t[4] for t in labels) == sorted(loc_names) and len(loc_names) == 13)
+ok('標籤文字同 LOCS 地點名逐個對得上', sorted(t[4] for t in labels) == sorted(loc_names) and len(loc_names) == 15)
 spec = {
     '獅子山製片': ('54', '12', '-', '52'), '香江唱片': ('28', '24', '+', '26'),
     '星河電視台': ('33', '14', '-', '50'), '九龍電視台': ('36', '45', '-', '52'),
@@ -79,6 +79,8 @@ spec = {
     '金鐘創意': ('85', '60', '+', '28'), '灣仔唱片': ('68', '77', '+', '34'),
     '天星音樂': ('86', '82', '+', '30'), '金龍茶餐廳': ('11', '16', '-', '56'),
     '何生事務所': ('15', '86', '-', '20'),
+    # v20a96 LOC96 新標籤：貼返地圖成品圖已有建築（海傍市集木檔／白十字大樓）
+    '廟街禮品': ('46', '35', '-', '44'), '仁康醫院': ('43', '73', '+', '52'),
 }
 got = {t[4]: (t[0], t[1], t[2], t[3]) for t in labels}
 ok('標籤位置同定版樣板（v4 貼建築位）逐個一致', got == spec)

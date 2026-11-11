@@ -96,8 +96,9 @@ ok('人脈：解鎖提示行保留', h.indexOf('人情：再加 10') >= 0);
 S = { money: 500 };
 GiftShop.inventoryList = function(){ return []; };
 h = inv72Html();
+/* v20a96 LOC96 改版：禮物店獨立後，庫存頁掣改指海傍禮品店（原斷言指香江唱片小賣） */
 ok('庫存空態：存款＋空空文案＋去小賣掣', h.indexOf('庫存') >= 0 && h.indexOf('$500') >= 0
-  && h.indexOf('庫存空空') >= 0 && h.indexOf('inv72-goshop') >= 0 && h.indexOf('去香江唱片小賣') >= 0);
+  && h.indexOf('庫存空空') >= 0 && h.indexOf('inv72-goshop') >= 0 && h.indexOf('去廟街禮品檔') >= 0);
 S = { money: 1234 };
 GiftShop.inventoryList = function(){ return [{ itemId: 'a', count: 2, item: { name: '朱古力', rarity: 'rare', price: 80, emoji: '🍫' } }]; };
 h = inv72Html();
