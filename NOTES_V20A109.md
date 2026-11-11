@@ -1,6 +1,6 @@
 # NOTES_V20A109 — 角色身高比＋舊 bust 換新（統籌總交代）
 
-- main：A `a490934`＋B `0bb85b2`＋本 NOTES commit（待推 main 後補 commit hash／線上 byte＋sha）
+- main：`bea5272`（A `a490934`＋B `0bb85b2`＋NOTES `c7f8832`＋實駕證據 `bea5272`）；線上 index.html 5,075,443 bytes、sha256 `758fb7a390a95eb9194ae71dadc0720304a33eaf082a46056e9950cf0d9ad2ab`，同本地逐 byte 一致。
 - 來源：用戶 2026-11-12 06:39 兩則實機反饋——①彭少祺應該較矮，對話舞台將每人縮放到同一高度（60%），身高差唔見晒 ②人情頁見到嘅舊 bust（林曉晴／張子駿／Vera／高俊傑／周采兒）係 v106 之前嘅舊圖。
 - 唔改 SAVE key／softRev／`?v=`。基線 142 PASS／12 FAIL（12 個 static 檔係環境性 FAIL）。
 
