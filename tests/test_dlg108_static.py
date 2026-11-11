@@ -66,7 +66,7 @@ def enc_css(s):
         "#enc79-overlay .e79-char{position:absolute;bottom:10%;height:var(--dlg108-char-h,60%)",
         "#enc79-overlay .e79-box{position:absolute;left:0;right:0;bottom:0;z-index:5;",
         "#enc79-overlay .e79-line{margin:0 0 10px;line-height:1.55;font-size:1rem;height:4.65em;min-height:4.65em;overflow-y:auto;",
-        "#enc79-overlay .e79-name{font-weight:800;color:#ffd968;margin:0 0 4px;font-size:.95rem;line-height:1.5;min-height:1.5em;}",
+        "#enc79-overlay .e79-name{font-weight:800;color:#8a5a00;margin:0 0 4px;font-size:.95rem;line-height:1.5;min-height:1.5em;}",
     ])
 ck("巧遇 CSS 齊全（人物 60%＋bottom:10%＋盒 absolute 疊底 z-index:5＋對白行定 3 行＋名牌行定高）",
    enc_css(src))
@@ -74,8 +74,10 @@ ck("反證：盒 z-index 改 1 後 enc_css 必須轉 False",
    not enc_css(src.replace(
        "#enc79-overlay .e79-box{position:absolute;left:0;right:0;bottom:0;z-index:5;",
        "#enc79-overlay .e79-box{position:absolute;left:0;right:0;bottom:0;z-index:1;")))
-ck("巧遇盒底色不透明（漸變兩色皆實色 hex）",
-   "linear-gradient(180deg,#241a10,#1a120a)" in src)
+# 合併更新（統籌）：D-5 將巧遇盒改做米紙框（同主線牌統一），DLG108 幾何不變。
+# 舊深色盒／金字斷言喺合併後代碼下必然 FAIL——已實證；新斷言喺合併前 dlg 分支代碼下 FAIL，屬反證。
+ck("巧遇盒底色不透明（D-5 米紙漸變三色皆實色 hex）",
+   "linear-gradient(168deg,#f8f0dd 0%,#f2e6cc 58%,#ebdfc1 100%)" in src)
 ck("巧遇人物 z-index ≤4（盒 z-index:5 先蓋得住）",
    'im.style.zIndex = isActive ? 4 : 3' in src)
 
@@ -93,9 +95,9 @@ ck("主線文字鏈唔掂選項模式（規則入面冇 sp-mode-choices）",
    "sp-mode-choices" not in src[src.find("#mask.story-play-on:has(.sp-mode-dialogue)"):src.find("#mask.story-play-on:has(.sp-mode-dialogue)") + 600])
 ck("反證：文字鏈底色改回金色後 next_link_ok 必須轉 False",
    not next_link_ok(src.replace("background:transparent !important;", "background:#ffd968 !important;")))
-ck("巧遇「下一句」文字鏈（透明底＋金字＋底線＋44px／88px 撳掣面積）",
+ck("巧遇「下一句」文字鏈（透明底＋深金字＋底線＋44px／88px 撳掣面積）",
    "#enc79-overlay .e79-btn{flex:0 0 auto;margin-left:auto;min-height:44px;min-width:88px;" in src
-   and "background:transparent;color:#ffd968" in src
+   and "background:transparent;color:#8a5a00" in src
    and "text-decoration:underline;text-underline-offset:3px;" in src)
 ck("巧遇選項掣還原舊全寬深色掣（唔跟文字鏈）",
    "#enc79-overlay .e79-btn.e79-choice{flex:1 1 100%;margin-left:0;text-align:left;background:#2e2113;color:#f3e8d5;border:1px solid #a97f2f;text-decoration:none;" in src)
