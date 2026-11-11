@@ -96,10 +96,15 @@ def raw_of(pat):
     return len(base64.b64decode(m.group(1))) if m else -1
 hero = raw_of(r'"hero_awi":\s*"data:image/jpeg;base64,([A-Za-z0-9+/=]+)')
 guide = raw_of(r'start_guide:\s*"data:image/jpeg;base64,([A-Za-z0-9+/=]+)')
-mapimg = raw_of(r'const MAP_IMG = "data:image/jpeg;base64,([A-Za-z0-9+/=]+)')
+# v20a97 MAP97：MAP_IMG 改指資產檔（見下面 MAP_IMG 斷言註）——舊 raw_of 抽內嵌圖已不適用
 ok('hero_awi 已再壓縮（191,434 → <100,000）', 0 < hero < 100000)
 ok('start_guide 已再壓縮（201,839 → <160,000）', 0 < guide < 160000)
-ok('MAP_IMG 保留原圖（核心視覺唔硬減；q82 試壓冇收益）', mapimg > 370000)
+# v20a97 MAP97 改版（有意改變行為）：大地圖換 v6 全圖重畫定版，MAP_IMG 由內嵌 data URI
+# 改指 assets/hk_map_v6.jpg（新檔名避按路徑快取）。舊斷言「內嵌 >370,000」嘅「唔硬減」精神
+# 保留，改驗資產檔本身：存在＋大過 370,000 bytes（實檔 1376×1824 q88＝793,164 bytes）。
+mapimg97 = Path(p).resolve().parent / 'assets' / 'hk_map_v6.jpg'
+ok('MAP_IMG 指向 v6 資產檔＋唔硬減（資產 >370,000 bytes）', 'const MAP_IMG = "assets/hk_map_v6.jpg";' in src
+   and mapimg97.exists() and mapimg97.stat().st_size > 370000)
 ok('主檔總量 < 5,430,000 bytes（v84 ENC84 巧遇 Phase 3 四星對白 503 句＋註冊模組有意增長至 ~5,115,599；v83 為 ~5,047,816；v82 為 ~4,974,159；v86 WF4 事件池 36＋碎片 18＋對手線覆寫有意增長至 5,196,226；v89 BR89 分支補完有意增長至 ~5,288,705；v92 NAT92 通告板分布自然化（錯峰＋保底＋加厚 18 張）有意增長至 ~5,336,030；v95 LADDER95 結局梯擴充有意增長至 5,386,704）', len(src.encode('utf-8')) < 5430000)
 ok('海報圖已有 loading="lazy"（v59 既有，冇倒退）', 'loading="lazy"' in src)
 
