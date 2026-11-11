@@ -54,4 +54,5 @@ Playwright 駕駛（`wanchai104/drive104.py`，截圖 `drive104/`）：開灣仔
 
 ## 部署核實
 
-（合併後補）
+- git：分支 `v20a104-wanchai104`（a8ce049）→ squash 入 main `639a7be`，已推 GitHub。
+- 線上核實（Pages 部署完成後 curl）：`index.html` 4,921,332 bytes、sha256 `8b28bbcf11647593…`，同本地 main 逐 byte 一致；`assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a104` 線上 sha12 = `c49279626197`，同定版新圖對版（舊圖 `eedd38e1f9e6` 已被取代）。
