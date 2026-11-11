@@ -119,10 +119,10 @@ for cid in ['C12','C13','C14','C15','C16']:
 ok('hints free of old C6 date-line title', '首次正式約會對象' not in hints)
 ok('C5 nextHint 兩線並陳（v89 BR89 有意改版：C1 film 支補返 C6F 片場跟班，唔再只提飯堂閒角）', '行電影線有「片場跟班」' in hints and '行電視線有「飯堂閒角」' in hints)
 
-# ---- 閘不變（4-5 門檻） ----
+# ---- 閘不變（4-5 門檻；v20a113 例外：C15 補 needDone C10，見下） ----
 gm = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)
 gate = gm.group(1) if gm else ''
-for frag in ['C15: { tagAny:', 'creditGt: 42', 'fameGt: 50', 'dualGt: 125', 'C6:  { route: "route_tv", weekMin: 15 }']:
+for frag in ['C15: { needDone: ["C10"], tagAny:', 'creditGt: 42', 'fameGt: 50', 'dualGt: 125', 'C6:  { route: "route_tv", weekMin: 15 }']:
     ok('gate unchanged fragment: '+frag, frag in gate)
 
 # ---- 玩家面真名掃描（現有 QA 禁用表）＋新 block 禁字 ----
