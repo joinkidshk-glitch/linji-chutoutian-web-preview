@@ -110,6 +110,21 @@ eval(extractFn("endingRomance410"));
 eval(extractFn("endingE2Eligible410"));
 eval(extractFn("endingE3Eligible410"));
 eval(extractFn("endingBackstageClose410"));
+/* v20a95 LADDER95：resolveEnding410 新梯依賴（conseq61PresentForcedEnding 內部 call resolve，
+   冇呢批函數會 ReferenceError 被佢 try/catch 吞成 present=false） */
+const ENDING95_T = bindConst("ENDING95_T");
+const END95_TYPE_MEDIUM = bindConst("END95_TYPE_MEDIUM");
+const END95_LEAD_SCALES = bindConst("END95_LEAD_SCALES");
+const END95_STRONG_LEAD = bindConst("END95_STRONG_LEAD");
+const END95_GENRE_TYPE_NAMES = bindConst("END95_GENRE_TYPE_NAMES");
+const END95_COMEDY_G = bindConst("END95_COMEDY_G");
+const END95_ACTION_G = bindConst("END95_ACTION_G");
+const END95_COMEDY_KW = bindConst("END95_COMEDY_KW");
+const END95_ACTION_KW = bindConst("END95_ACTION_KW");
+eval(["end95GenreOf","end95IsLead","end95ClassifyWrap","end95EmptyStats","end95StatsAddOne",
+ "end95DeriveStats","careerStats95Of","end95AddWrap","end95Awards","end95EverHeldCredit",
+ "end95StoryDone","end95ChainsDone","end95PangProgress","end95E3Variant","end95BuildGaps"]
+ .map(n => extractFn(n)).join("\n"));
 eval(extractFn("resolveEnding410"));
 eval(extractFn("endingEsc410"));
 eval(extractFn("endingCareerScene410"));

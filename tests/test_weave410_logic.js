@@ -106,6 +106,22 @@ const SRC = [
   extractFn('function endingE2Eligible410'),
   extractFn('function endingE3Eligible410'),
   extractFn('function endingBackstageClose410'),
+  /* v20a95 LADDER95：resolveEnding410 新梯依賴 */
+  extractFn('function end95GenreOf'),
+  extractFn('function end95IsLead'),
+  extractFn('function end95ClassifyWrap'),
+  extractFn('function end95EmptyStats'),
+  extractFn('function end95StatsAddOne'),
+  extractFn('function end95DeriveStats'),
+  extractFn('function careerStats95Of'),
+  extractFn('function end95AddWrap'),
+  extractFn('function end95Awards'),
+  extractFn('function end95EverHeldCredit'),
+  extractFn('function end95StoryDone'),
+  extractFn('function end95ChainsDone'),
+  extractFn('function end95PangProgress'),
+  extractFn('function end95E3Variant'),
+  extractFn('function end95BuildGaps'),
   extractFn('function resolveEnding410'),
   extractFn('function endingEveOptions410'),
   extractFn('function applyStorySpineOverrides410'),
@@ -129,6 +145,15 @@ const SRC = [
   extractConst('TRAJ_PAPER_REF49'),
   extractConst('ENDING410_CAREER_NAMES'),
   extractConst('ENDING410_T'),
+  extractConst('ENDING95_T'),
+  extractConst('END95_TYPE_MEDIUM'),
+  extractConst('END95_LEAD_SCALES'),
+  extractConst('END95_STRONG_LEAD'),
+  extractConst('END95_GENRE_TYPE_NAMES'),
+  extractConst('END95_COMEDY_G'),
+  extractConst('END95_ACTION_G'),
+  extractConst('END95_COMEDY_KW'),
+  extractConst('END95_ACTION_KW'),
   extractConst('ENDING_NEG_TAGS410'),
   extractConst('ENDING410_BACKSTAGE_KEYS'),
   extractConst('ENDING410_EXODUS_NAME_FALLBACK'),
@@ -149,6 +174,15 @@ const SRC = [
  .replace('const TRAJ_PAPER_REF49 =', 'var TRAJ_PAPER_REF49 =')
  .replace('const ENDING410_CAREER_NAMES =', 'var ENDING410_CAREER_NAMES =')
  .replace('const ENDING410_T =', 'var ENDING410_T =')
+ .replace('const ENDING95_T =', 'var ENDING95_T =')
+ .replace('const END95_TYPE_MEDIUM =', 'var END95_TYPE_MEDIUM =')
+ .replace('const END95_LEAD_SCALES =', 'var END95_LEAD_SCALES =')
+ .replace('const END95_STRONG_LEAD =', 'var END95_STRONG_LEAD =')
+ .replace('const END95_GENRE_TYPE_NAMES =', 'var END95_GENRE_TYPE_NAMES =')
+ .replace('const END95_COMEDY_G =', 'var END95_COMEDY_G =')
+ .replace('const END95_ACTION_G =', 'var END95_ACTION_G =')
+ .replace('const END95_COMEDY_KW =', 'var END95_COMEDY_KW =')
+ .replace('const END95_ACTION_KW =', 'var END95_ACTION_KW =')
  .replace('const ENDING_NEG_TAGS410 =', 'var ENDING_NEG_TAGS410 =')
  .replace('const ENDING410_BACKSTAGE_KEYS =', 'var ENDING410_BACKSTAGE_KEYS =')
  .replace('const ENDING410_EXODUS_NAME_FALLBACK =', 'var ENDING410_EXODUS_NAME_FALLBACK =')
@@ -196,7 +230,9 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
 /* ================= (a) 判定矩陣 ================= */
 {
   const r = R({ fame: 70, stage: 45, acting: 40, industryCreditDelta: 4 });
-  ok('E1：聲量70/台風45/演技40/delta4 → 信用61、雙軌131 → E1', r.career === 'E1' && r.snapshot.credit === 61 && r.snapshot.dual === 131);
+  /* v20a95 LADDER95 改版：E1 收緊（雙軌 ≥350＋質性閘）——舊 E1 命中狀態（雙軌 131、
+     冇獎／冇擔正／冇鏈）按新梯落 E2（信用 61／聲望 70 過 ID 上限同 CR 聲望帶，落返 E2）。 */
+  ok('v95：舊 E1 狀態（聲量70/台風45/演技40/delta4 → 信用61、雙軌131）→ 新梯 E2', r.career === 'E2' && r.snapshot.credit === 61 && r.snapshot.dual === 131);
 }
 {
   const r = R({ fame: 70, stage: 45, acting: 40, industryCreditDelta: 4, castingTags: [{ id: '八卦', label: '八卦' }, { id: '高冷', label: '高冷' }] });
@@ -244,7 +280,7 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
   const st = { fame: 70, stage: 45, acting: 40, industryCreditDelta: 4,
     story: { flags: { flag_family_job_accept: true }, rel: {}, done: {}, choices: {} } };
   const rNo = R(st);
-  ok('E6 唔會自己觸發：有 flag_family_job_accept 都照計 E1', rNo.career === 'E1');
+  ok('E6 唔會自己觸發：有 flag_family_job_accept 都照計事業軸（v95 新梯下呢個狀態＝E2）', rNo.career === 'E2');
   S = baseSave(st);
   ok('E6 安穩版：opts.quit=job → E6／安穩', resolveEnding410(S, { quit: 'job' }).career === 'E6' && resolveEnding410(S, { quit: 'job' }).careerVariant === '安穩');
   ok('E6 遠走版：opts.quit=leave → E6／遠走／exodus=leave', (()=>{ const q = resolveEnding410(S, { quit: 'leave' }); return q.career === 'E6' && q.careerVariant === '遠走' && q.exodus === 'leave'; })());
@@ -306,8 +342,10 @@ function eveKeys(over){
   return endingEveOptions410(S).map(o => o.key);
 }
 {
+  /* v20a95 LADDER95 改版：E4 同 E3 新梯唔再相鄰（中間隔住 SS＋專長格＋E2），
+     E4→E3 前夕轉幕後選項取消——差少少幕後都唔再出 to_backstage，E4 只行 natural／quit。 */
   const keys = eveKeys({ fame: 55, stage: 0, acting: 0, npcs: { agent: 0, director: 40, colleague: 0, reporter: 0, stylist: 0, rival: 0 } });
-  ok('相鄰：E4＋債權0＋導演 rel 40（差少少）→ 出 to_backstage', keys.includes('to_backstage'));
+  ok('相鄰（v95）：E4＋債權0＋導演 rel 40（差少少）→ 唔再出 to_backstage（新梯唔相鄰）', !keys.includes('to_backstage'));
   const keys2 = eveKeys({ fame: 55, stage: 0, acting: 0, npcs: { agent: 0, director: 39, colleague: 0, reporter: 0, stylist: 0, rival: 0 } });
   ok('相鄰：E4＋導演 rel 39＋零幕後標籤 → 唔出 to_backstage', !keys2.includes('to_backstage'));
   const keys3 = eveKeys({ fame: 55, stage: 0, acting: 0,
@@ -320,8 +358,13 @@ function eveKeys(over){
   ok('相鄰：E3 但聲量 30 唔合 E2 → 唔出 to_support', !keys5.includes('to_support'));
   const keys6 = eveKeys({ fame: 10, story: { flags: { flag_leave_mind: true }, rel: {}, done: {}, choices: {} } });
   ok('相鄰：leave_mind＋E0 → 出 leave_follow＋quit_leave', keys6.includes('leave_follow') && keys6.includes('quit_leave'));
-  const keys7 = eveKeys({ fame: 70, stage: 45, acting: 40, industryCreditDelta: 4, story: { flags: { flag_leave_mind: true }, rel: {}, done: {}, choices: {} } });
-  ok('相鄰：leave_mind＋E1 → 唔出 leave_follow（只限 E0／E2）', !keys7.includes('leave_follow'));
+  /* v20a95：leave_follow 唔出嘅前提要真・E1 狀態（舊狀態雙軌 131 新梯只係 E2，會出 leave_follow）——
+     改用齊質性閘嘅 E1 狀態：聲望 200／信用 210／雙軌 410＋獎＋兩媒介擔正＋鏈 F 旗。 */
+  const keys7 = eveKeys({ fame: 200, industryCreditDelta: 110,
+    awardsLog: [{ medium: 'film', categories: [{ id: 'best', outcome: 'won', repTitle: '某片' }] }],
+    careerStats95: { total: 40, byMedium: { film: 20, tv: 20, music: 0, variety: 0, ad: 0 }, leadByMedium: { film: 2, tv: 1, music: 0, variety: 0, ad: 0 }, tvLongLeads: 1, genreIdentified: 0, genreComedy: 0, genreAction: 0, backstageWorks: 0 },
+    story: { flags: { flag_leave_mind: true }, rel: {}, done: {}, choices: {} } });
+  ok('相鄰：leave_mind＋真 E1（v95 質性閘全齊）→ 唔出 leave_follow（只限 E0／E2）', !keys7.includes('leave_follow'));
   ok('相鄰：任何狀態都有 natural＋quit_job', keys7.includes('natural') && keys7.includes('quit_job'));
   ok('相鄰：冇 leave_mind → 唔出 quit_leave', !eveKeys({ fame: 10 }).includes('quit_leave'));
 }
@@ -363,7 +406,8 @@ function eveKeys(over){
   ok('收科後唔再開 C17（done）', !openIds().includes('C17'));
 }
 {
-  /* E4 前夕：危機 beats 插入＋to_backstage 揀完呈現 E3 變體 */
+  /* v20a95 改版：E4 前夕——危機 beats 照插，但 to_backstage 取消（新梯 E4／E3 唔相鄰）；
+     揀 natural 落 E4 真沉版呈現（債權 0）。E2⇄E3 分流由 (c) 段 keys4／keys5 继续守。 */
   modalPages410 = [];
   loadGame(baseSave({
     fame: 55, stage: 0, acting: 0,
@@ -373,11 +417,12 @@ function eveKeys(over){
   const eve = ending410EveNode(node('C17'));
   ok('E4 前夕：beats 插入形象危機拍', JSON.stringify(eve.beats).includes('頭版'));
   const pick = eve.choices.find(c => c.ending410Key === 'to_backstage');
-  ok('E4 前夕：to_backstage 選項在列', !!pick);
-  const result = StoryOC.applyChoice(eve, pick);
-  ending410AfterEveChoice(eve, pick, result);
-  ok('E4 行一格：落檔 career=E3／variant 記由 E4 轉幕後', S.ending410.career === 'E3' && S.ending410.careerVariant.includes('泡沫'));
-  ok('E4 行一格：呈現係幕後場景（控制台）', modalPages410[0].html.includes('控制台'));
+  ok('E4 前夕（v95）：to_backstage 唔再喺選項列（新梯唔相鄰）', !pick);
+  const nat = eve.choices.find(c => c.ending410Key === 'natural');
+  const result = StoryOC.applyChoice(eve, nat);
+  ending410AfterEveChoice(eve, nat, result);
+  ok('E4 順其自然：落檔 career=E4／sunk（債權 0）', S.ending410.career === 'E4' && S.ending410.careerVariant === 'sunk');
+  ok('E4 呈現：泡沫場景（頭版出街嗰朝）', modalPages410[0].html.includes('頭版出街'));
 }
 {
   /* leave_follow：事業不變、去留轉 leave */

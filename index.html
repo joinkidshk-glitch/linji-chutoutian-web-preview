@@ -27526,6 +27526,10 @@ function wrapTrajNotePool49(){
    避免 backfill 寫入破壞純函數深等）；生產路徑兩者數值一致（測試有交叉對照）。 ===== */
 const ENDING410_CAREER_NAMES = {
   E1: "天王接班", E2: "甘草王", E3: "幕後之路", E4: "泡沫偶像",
+  /* v20a95 LADDER95 中段梯（用戶 2026-11-11 拍板）：SS 一線巨星／FK 影壇天王／TK 電視天王／
+     SK 歌王／GH 金牌司儀／CK 喜劇泰斗／AK 動作巨星／ID 人氣偶像／CR 實力派演員 */
+  SS: "一線巨星", FK: "影壇天王", TK: "電視天王", SK: "歌王", GH: "金牌司儀",
+  CK: "喜劇泰斗", AK: "動作巨星", ID: "人氣偶像", CR: "實力派演員",
   E5: "江湖撈家", E6: "退圈", E0: "浮沉未定",
   E7: "未紅先收" /* v20a61 CONSEQ61-1：強制收場（年終評核唔過／破產寬限期滿）；唔經 resolveEnding410 判定表，由 conseq61PresentForcedEnding 寫入 */
 };
@@ -27643,7 +27647,221 @@ function endingBackstageClose410(st){
   const dirRel = (st && st.npcs) ? (Number(st.npcs.director)||0) : 0;
   return endingBackstageTagCount410(st) >= ENDING410_T.backstageCloseTags || dirRel >= ENDING410_T.backstageCloseDirectorRel;
 }
-/* 結局判定（純函數、唯讀、無副作用）：按專檔 §2 上而下 E1→E4→E2→E3→E5→E0；
+/* ===== v20a95 LADDER95：結局梯擴充（用戶 2026-11-11 12:37 四項拍板；草稿 linji-ending-ladder-draft.md）。
+   新梯：E6（主動）＞E1（收緊＋質性閘）＞E4＞SS 一線巨星＞FK 影壇天王＞TK 電視天王＞SK 歌王＞
+   GH 金牌司儀＞CK 喜劇泰斗＞AK 動作巨星＞ID 人氣偶像＞CR 實力派演員＞E2＞E3（＋三變體）＞E5＞E0。
+   專長格靠累計計數器 S.careerStats95（殺青嗰刻累加，唔靠 wrapHistory 30 條窗口）：
+   寫入點 end95AddWrap（殺青結算、wrapHistory unshift 之前呼叫，未有計數器先以當刻
+   wrapHistory 衍生種子）；舊檔喺 normalizeSaveObj 載入嗰陣回填種子；判定唯讀經
+   careerStats95Of（冇存檔計數器就即場衍生，唔寫入）。回填局限：舊檔種子只數到
+   wrapHistory 最近 30 條，計數係下限唔係全史（NOTES 有交代）。 ===== */
+const ENDING95_T = {
+  e1Fame: 70, e1Credit: 65, e1Dual: 350, e1NegMax: 1,          /* E1 收緊（數字）＋質性閘（獎／≥2 媒介擔正／≥1 鏈） */
+  ssDual: 300, ssFame: 60, ssCredit: 55, ssNegMax: 1,          /* SS 一線巨星：爭少少上唔到天王嗰班 */
+  fkDual: 200, fkFilmShare: 0.5, fkFilmLeads: 2,               /* FK 影壇天王 */
+  tkDual: 200, tkTvShare: 0.5, tkTvLongLeads: 1,               /* TK 電視天王 */
+  skDual: 200, skMusicShare: 0.5,                              /* SK 歌王（另要音樂獎提名／得獎） */
+  ghDual: 180, ghHostShare: 0.5,                               /* GH 金牌司儀（綜藝佔比＋彭少祺線進展） */
+  ckDual: 180, ckComedyShare: 0.5, ckCredit: 50,               /* CK 喜劇泰斗（片種佔比＋信用） */
+  akDual: 180, akActionShare: 0.5, akStaminaLessons: 5,        /* AK 動作巨星（片種佔比＋武師班底子） */
+  genreMinSample: 6,                                           /* 片種佔比最低可辨識樣本，防 1/1 刷格 */
+  idFame: 60, idCreditLo: 30, idCreditHi: 54, idNegMax: 2,     /* ID 人氣偶像：紅而未沉（同 E4 信用 <30 分家） */
+  crCredit: 55, crFameLo: 35, crFameHi: 59,                    /* CR 實力派演員 */
+  e3BossFavor: 5                                               /* E3 製片老闆變體：人情總量（已清＋持有）門檻 */
+};
+const END95_TYPE_MEDIUM = { "電影": "film", "電視劇": "tv", "唱片通告": "music", "唱片": "music", "綜藝": "variety", "廣告": "ad" };
+const END95_LEAD_SCALES = { film_lead_big: 1, film_second_lead: 1, tv_lead_long: 1, tv_lead: 1, tv_second_lead: 1, music_lead: 1, ad_lead: 1 };
+const END95_STRONG_LEAD = /主角|男主|女主|主演|主唱|擔正/;
+const END95_GENRE_TYPE_NAMES = { "電影": 1, "電視劇": 1, "唱片通告": 1, "唱片": 1, "綜藝": 1, "廣告": 1 };
+const END95_COMEDY_G = /喜劇|諧|搞笑|笑片|笑匠/;
+const END95_ACTION_G = /動作|武打|警匪|江湖|槍戰|武俠|功夫/;
+const END95_COMEDY_KW = /笑|諧星|趣怪/;
+const END95_ACTION_KW = /武打|武師|功夫|槍|警匪|江湖|劍|拳|飛虎/;
+function end95GenreOf(gig){
+  if(!gig) return "";
+  const gl = String(gig.genreLabel || gig.genre || "").trim();
+  if(gl && !END95_GENRE_TYPE_NAMES[gl]){
+    if(END95_COMEDY_G.test(gl)) return "comedy";
+    if(END95_ACTION_G.test(gl)) return "action";
+    return "other";
+  }
+  const txt = String(gig.workTitle || "") + " " + String(gig.title || "") + " " + String(gig.roleLabel || "");
+  const c = END95_COMEDY_KW.test(txt), a = END95_ACTION_KW.test(txt);
+  if(c && !a) return "comedy";
+  if(a && !c) return "action";
+  return "";
+}
+function end95IsLead(gig){
+  if(!gig) return false;
+  const suffix = String(gig.title || "").replace(/^《[^》]*》/, "");
+  const texts = [String(gig.roleLabel || ""), suffix];
+  for(let i = 0; i < texts.length; i++){ if(texts[i] && texts[i].indexOf("替身") >= 0) return false; }
+  let scale = "";
+  try{ scale = (typeof press94ScaleOf === "function") ? press94ScaleOf(gig) : ""; }catch(_e){}
+  if(!scale) scale = String(gig.resolvedScale || gig.roleScale || "");
+  if(END95_LEAD_SCALES[scale]) return true;
+  for(let i = 0; i < texts.length; i++){ if(texts[i] && END95_STRONG_LEAD.test(texts[i])) return true; }
+  return false;
+}
+function end95ClassifyWrap(gig, totalDays){
+  const out = { medium: "", lead: false, tvLong: false, genre: "", backstage: false };
+  if(!gig) return out;
+  out.medium = END95_TYPE_MEDIUM[String(gig.type || "")] || "";
+  out.lead = end95IsLead(gig);
+  if(out.medium === "tv" && out.lead){
+    const sc = String(gig.resolvedScale || gig.roleScale || "");
+    if(sc === "tv_lead_long" || (Number(totalDays) || 0) >= 15) out.tvLong = true;
+  }
+  out.genre = end95GenreOf(gig);
+  const bt = String(gig.roleLabel || "") + " " + String(gig.genreLabel || gig.genre || "");
+  out.backstage = ENDING410_BACKSTAGE_KEYS.some(k => bt.indexOf(k) >= 0);
+  return out;
+}
+function end95EmptyStats(){
+  return { total: 0,
+    byMedium: { film: 0, tv: 0, music: 0, variety: 0, ad: 0 },
+    leadByMedium: { film: 0, tv: 0, music: 0, variety: 0, ad: 0 },
+    tvLongLeads: 0, genreIdentified: 0, genreComedy: 0, genreAction: 0, backstageWorks: 0 };
+}
+function end95StatsAddOne(st, cls){
+  if(!st || !cls) return st;
+  st.total = (st.total | 0) + 1;
+  if(cls.medium){
+    st.byMedium[cls.medium] = (st.byMedium[cls.medium] | 0) + 1;
+    if(cls.lead) st.leadByMedium[cls.medium] = (st.leadByMedium[cls.medium] | 0) + 1;
+  }
+  if(cls.tvLong) st.tvLongLeads = (st.tvLongLeads | 0) + 1;
+  if(cls.genre){
+    st.genreIdentified = (st.genreIdentified | 0) + 1;
+    if(cls.genre === "comedy") st.genreComedy = (st.genreComedy | 0) + 1;
+    else if(cls.genre === "action") st.genreAction = (st.genreAction | 0) + 1;
+  }
+  if(cls.backstage) st.backstageWorks = (st.backstageWorks | 0) + 1;
+  return st;
+}
+function end95DeriveStats(st){
+  const out = end95EmptyStats();
+  const s = st || {};
+  const hist = Array.isArray(s.wrapHistory) ? s.wrapHistory : [];
+  const gigs = (typeof GIGS !== "undefined" && Array.isArray(GIGS)) ? GIGS : [];
+  hist.forEach(h => {
+    if(!h) return;
+    const gig = h.gigId ? (gigs.find(x => x && x.id === h.gigId) || null) : null;
+    let cls;
+    if(gig) cls = end95ClassifyWrap(gig, h.totalDays);
+    else cls = { medium: END95_TYPE_MEDIUM[String(h.type || "")] || "", lead: false, tvLong: false, genre: "", backstage: false };
+    if(!cls.medium) cls.medium = END95_TYPE_MEDIUM[String(h.type || "")] || "";
+    end95StatsAddOne(out, cls);
+  });
+  return out;
+}
+/* 唯讀：有存檔計數器就用（補齊缺欄防手改檔）；冇就即場衍生，唔寫入（保持 resolve 純函數）。 */
+function careerStats95Of(st){
+  const s = st || {};
+  const cs = s.careerStats95;
+  if(cs && typeof cs === "object" && !Array.isArray(cs) && typeof cs.total === "number"){
+    const out = end95EmptyStats();
+    out.total = cs.total | 0;
+    ["byMedium", "leadByMedium"].forEach(k => {
+      if(cs[k] && typeof cs[k] === "object") Object.keys(out[k]).forEach(m => { out[k][m] = Number(cs[k][m]) || 0; });
+    });
+    ["tvLongLeads", "genreIdentified", "genreComedy", "genreAction", "backstageWorks"].forEach(k => { out[k] = Number(cs[k]) || 0; });
+    return out;
+  }
+  return end95DeriveStats(s);
+}
+/* 殺青寫入點：未有計數器先以「當刻」wrapHistory（未含本單）衍生種子，再加本單。
+   呼叫時機必須喺結算寫 wrapHistory 之前，否則種子會雙計本單。 */
+function end95AddWrap(Sref, gig, sh){
+  try{
+    if(!Sref || !gig) return;
+    if(!Sref.careerStats95 || typeof Sref.careerStats95 !== "object" || Array.isArray(Sref.careerStats95)){
+      Sref.careerStats95 = end95DeriveStats(Sref);
+    }
+    end95StatsAddOne(Sref.careerStats95, end95ClassifyWrap(gig, sh ? sh.totalDays : 0));
+  }catch(_e){}
+}
+function end95Awards(st){
+  const s = st || {};
+  const log = Array.isArray(s.awardsLog) ? s.awardsLog : [];
+  let hasWin = false, wins = 0, musicHonor = false;
+  log.forEach(e => {
+    if(!e || !Array.isArray(e.categories)) return;
+    let eWon = false, eNom = false;
+    e.categories.forEach(c => {
+      if(!c) return;
+      if(c.outcome === "won") eWon = true;
+      if(c.outcome === "won" || c.outcome === "nominated") eNom = true;
+    });
+    if(eWon){ hasWin = true; wins++; }
+    if(e.medium === "music" && eNom) musicHonor = true;
+  });
+  return { hasWin: hasWin, wins: wins, musicHonor: musicHonor };
+}
+function end95EverHeldCredit(st, id){
+  const s = st || {};
+  if(Array.isArray(s.mockCredits) && s.mockCredits.some(c => c && c.id === id)) return true;
+  const L = s.favorLedger;
+  if(L && typeof L === "object" && L.counted && L.counted[id]) return true;
+  return false;
+}
+function end95StoryDone(st, id){
+  const s = st || {};
+  if(s.story && s.story.done && s.story.done[id]) return true;
+  if(s.flags && Number(s.flags["done_" + id]) > 0) return true;
+  return false;
+}
+/* 主線鏈完成（E1 質性閘 ③）：按各鏈既有收尾標記判定，任一即算行完一條。
+   A 陸柏言替工收割／B 廖炳星收割結算／C 麥震東知情替身線（C15＋傷情情報）／
+   D 葉敏芝疑雲線收尾／E 高俊傑線結局旗／F 鏈 F 第 4 拍去留抉擇。 */
+function end95ChainsDone(st){
+  const s = st || {};
+  const wf3 = (s.wf3 && typeof s.wf3 === "object" && !Array.isArray(s.wf3)) ? s.wf3 : {};
+  const out = [];
+  if(wf3.luSettled || end95EverHeldCredit(s, "credit_wf3_lu_team")) out.push("A");
+  if(wf3.liaoHarvestDone || end95EverHeldCredit(s, "credit_wf3_comedy_crew")) out.push("B");
+  if(end95StoryDone(s, "C15") && s.intelFlags && s.intelFlags["intel_mak_injury"]) out.push("C");
+  if(wf3.yipCreditDone || wf3.yipEchoDone) out.push("D");
+  if(endingFlag410(s, "flag_gao_ending_break") || endingFlag410(s, "flag_gao_ending_respect") || endingFlag410(s, "flag_gao_ending_stay")) out.push("E");
+  if(endingFlag410(s, "flag_stay_mind") || endingFlag410(s, "flag_leave_mind")) out.push("F");
+  return out;
+}
+/* 彭少祺線進展（GH 閘）：好感到拍檔段（fav ≥45＝T3）／T4 提攜債權／主線 C10 同佢圓場嗰幕，任一即算。 */
+function end95PangProgress(st){
+  const s = st || {};
+  const star = (s.stars && typeof s.stars === "object") ? s.stars.pang_siu_kei : null;
+  if(star && (Number(star.fav) || 0) >= 45) return true;
+  if(end95EverHeldCredit(s, "credit_enc84_pang_patron")) return true;
+  if(end95StoryDone(s, "C10")) return true;
+  return false;
+}
+/* E3 變體（只分呈現）：人情網夠厚 → 製片老闆；否則按作品媒介構成，電影向大導演／電視向金牌監製。 */
+function end95E3Variant(st, stats, favor){
+  const f = favor || endingFavor410(st);
+  if(((f.settled | 0) + (f.creditsHeld | 0)) >= ENDING95_T.e3BossFavor) return "製片老闆";
+  const film = (stats && stats.byMedium) ? (stats.byMedium.film | 0) : 0;
+  const tv = (stats && stats.byMedium) ? (stats.byMedium.tv | 0) : 0;
+  return film >= tv ? "大導演" : "金牌監製";
+}
+/* 差邊瓣（用戶定調：結算要睇得出差喺邊，唔畀食譜）：回望口吻，只講去 E1 嗰格差邊啲
+   質性件／雙軌差幾多，最多三句；已入 E1 就講「冇差」；E6 主動離場唔出。 */
+function end95BuildGaps(ctx){
+  const T = ENDING95_T;
+  if(!ctx || ctx.career === "E6") return [];
+  if(ctx.career === "E1") return ["嗰一格，你冇差——獎、擔正、主線，你樣樣都齊，數字又企得穩。"];
+  const lines = [];
+  if(!ctx.hasWin) lines.push("獎，你未攞過——頒獎禮嗰幾晚，你仲係坐喺台下面嗰個。");
+  if((ctx.leadMediaCount | 0) <= 0) lines.push("擔正，你未試過企正嗰個位——邊種媒介都未。");
+  else if(ctx.leadMediaCount < 2) lines.push("擔正，你只係喺一邊企過正——爭另一種媒介嗰次。");
+  if(!ctx.chains || !ctx.chains.length) lines.push("嗰幾條行內主線，你一條都未行到尾——天王嗰格，唔係齋靠接工堆得出嚟。");
+  if((ctx.dual | 0) < T.e1Dual) lines.push("聲望同信用加埋，你仲差 " + (T.e1Dual - (ctx.dual | 0)) + " 先到天王嗰條線。");
+  if((ctx.fame | 0) < T.e1Fame) lines.push("聲望仲差 " + (T.e1Fame - (ctx.fame | 0)) + "。");
+  if((ctx.credit | 0) < T.e1Credit) lines.push("信用仲差 " + (T.e1Credit - (ctx.credit | 0)) + "。");
+  return lines.slice(0, 3);
+}
+
+/* 結局判定（純函數、唯讀、無副作用）：v20a95 新梯上而下
+   E1→E4→SS→FK→TK→SK→GH→CK→AK→ID→CR→E2→E3→E5→E0；
    E6 只認 opts.quit（"job"｜"leave"）主動入口，旗本身唔會令純函數自己入 E6。
    opts.exodus 可由前夕抉擇覆寫去留軸（"leave"）。回傳 {career, careerVariant, romance, exodus, title, reasons, snapshot}。 */
 function resolveEnding410(st, opts){
@@ -27660,17 +27878,46 @@ function resolveEnding410(st, opts){
   const agentRel = s.npcs ? (Number(s.npcs.agent)||0) : 0;
   const directorRel = s.npcs ? (Number(s.npcs.director)||0) : 0;
   const reasons = [];
+  /* v20a95 LADDER95：履歷計數＋質性件（唯讀） */
+  const T95 = ENDING95_T;
+  const stats95 = careerStats95Of(s);
+  const awards95 = end95Awards(s);
+  const chains95 = end95ChainsDone(s);
+  const leadMedia95 = ["film", "tv", "music", "variety", "ad"].filter(m => (stats95.leadByMedium[m] || 0) >= 1);
+  const total95 = Math.max(0, stats95.total | 0);
+  const share95 = n => total95 > 0 ? ((Number(n) || 0) / total95) : 0;
+  const genreShare95 = n => stats95.genreIdentified > 0 ? ((Number(n) || 0) / stats95.genreIdentified) : 0;
+  const e1Qual95 = awards95.hasWin && leadMedia95.length >= 2 && chains95.length >= 1;
   let career = "E0", variant = "";
-  if(fame>=T.e1Fame && credit>=T.e1Credit && sum>=T.e1Dual && neg<=T.e1NegMax){
-    career = "E1"; reasons.push("E1：聲望 "+fame+"≥"+T.e1Fame+"、信用 "+credit+"≥"+T.e1Credit+"、雙軌 "+sum+"≥"+T.e1Dual+"、負標籤 "+neg+"≤"+T.e1NegMax);
+  if(fame>=T95.e1Fame && credit>=T95.e1Credit && sum>=T95.e1Dual && neg<=T95.e1NegMax && e1Qual95){
+    career = "E1"; reasons.push("E1：聲望 "+fame+"≥"+T95.e1Fame+"、信用 "+credit+"≥"+T95.e1Credit+"、雙軌 "+sum+"≥"+T95.e1Dual+"、負標籤 "+neg+"≤"+T95.e1NegMax+"＋質性閘全齊（獎 "+awards95.wins+"／擔正媒介 "+leadMedia95.length+"／主線鏈 "+chains95.join("")+"）");
   } else if(fame>=T.e4Fame && credit<T.e4CreditBelow){
     career = "E4";
     variant = (favor.creditsHeld>=T.e4RescueCredits) ? "rescued" : "sunk";
     reasons.push("E4：聲望 "+fame+"≥"+T.e4Fame+"、信用 "+credit+"<"+T.e4CreditBelow+"；債權持有 "+favor.creditsHeld+" → "+(variant==="rescued"?"沉唔死版":"真沉版"));
+  } else if(sum>=T95.ssDual && fame>=T95.ssFame && credit>=T95.ssCredit && neg<=T95.ssNegMax){
+    career = "SS"; reasons.push("SS 一線巨星：雙軌 "+sum+"≥"+T95.ssDual+"、聲望 "+fame+"≥"+T95.ssFame+"、信用 "+credit+"≥"+T95.ssCredit+"、負標籤 "+neg+"≤"+T95.ssNegMax+"（未齊 E1 質性閘：獎 "+(awards95.hasWin?"有":"冇")+"／擔正媒介 "+leadMedia95.length+"／主線鏈 "+chains95.length+"）");
+  } else if(sum>=T95.fkDual && share95(stats95.byMedium.film)>=T95.fkFilmShare && (stats95.leadByMedium.film||0)>=T95.fkFilmLeads){
+    career = "FK"; reasons.push("FK 影壇天王：雙軌 "+sum+"≥"+T95.fkDual+"、電影佔比 "+Math.round(share95(stats95.byMedium.film)*100)+"%≥50%、電影擔正 "+(stats95.leadByMedium.film||0)+"≥"+T95.fkFilmLeads);
+  } else if(sum>=T95.tkDual && share95(stats95.byMedium.tv)>=T95.tkTvShare && stats95.tvLongLeads>=T95.tkTvLongLeads){
+    career = "TK"; reasons.push("TK 電視天王：雙軌 "+sum+"≥"+T95.tkDual+"、電視佔比 "+Math.round(share95(stats95.byMedium.tv)*100)+"%≥50%、電視長劇擔正 "+stats95.tvLongLeads+"≥"+T95.tkTvLongLeads);
+  } else if(sum>=T95.skDual && share95(stats95.byMedium.music)>=T95.skMusicShare && awards95.musicHonor){
+    career = "SK"; reasons.push("SK 歌王：雙軌 "+sum+"≥"+T95.skDual+"、唱片佔比 "+Math.round(share95(stats95.byMedium.music)*100)+"%≥50%、音樂獎提名／得獎有紀錄");
+  } else if(sum>=T95.ghDual && share95(stats95.byMedium.variety)>=T95.ghHostShare && end95PangProgress(s)){
+    career = "GH"; reasons.push("GH 金牌司儀：雙軌 "+sum+"≥"+T95.ghDual+"、綜藝佔比 "+Math.round(share95(stats95.byMedium.variety)*100)+"%≥50%、彭少祺線有進展");
+  } else if(sum>=T95.ckDual && stats95.genreIdentified>=T95.genreMinSample && genreShare95(stats95.genreComedy)>=T95.ckComedyShare && credit>=T95.ckCredit){
+    career = "CK"; reasons.push("CK 喜劇泰斗：雙軌 "+sum+"≥"+T95.ckDual+"、喜劇佔比（可辨識 "+stats95.genreIdentified+" 部）"+Math.round(genreShare95(stats95.genreComedy)*100)+"%≥50%、信用 "+credit+"≥"+T95.ckCredit);
+  } else if(sum>=T95.akDual && stats95.genreIdentified>=T95.genreMinSample && genreShare95(stats95.genreAction)>=T95.akActionShare && ((s.trainCount && Number(s.trainCount.train_stamina))||0)>=T95.akStaminaLessons){
+    career = "AK"; reasons.push("AK 動作巨星：雙軌 "+sum+"≥"+T95.akDual+"、動作佔比（可辨識 "+stats95.genreIdentified+" 部）"+Math.round(genreShare95(stats95.genreAction)*100)+"%≥50%、武師班 "+((s.trainCount && Number(s.trainCount.train_stamina))||0)+" 堂≥"+T95.akStaminaLessons);
+  } else if(fame>=T95.idFame && credit>=T95.idCreditLo && credit<=T95.idCreditHi && neg<=T95.idNegMax){
+    career = "ID"; reasons.push("ID 人氣偶像：聲望 "+fame+"≥"+T95.idFame+"、信用 "+credit+" 喺 "+T95.idCreditLo+"–"+T95.idCreditHi+"、負標籤 "+neg+"≤"+T95.idNegMax);
+  } else if(credit>=T95.crCredit && fame>=T95.crFameLo && fame<=T95.crFameHi){
+    career = "CR"; reasons.push("CR 實力派演員：信用 "+credit+"≥"+T95.crCredit+"、聲望 "+fame+" 喺 "+T95.crFameLo+"–"+T95.crFameHi);
   } else if(credit>=T.e2Credit && fame>=T.e2Fame){
     career = "E2"; reasons.push("E2：信用 "+credit+"≥"+T.e2Credit+"、聲望 "+fame+"≥"+T.e2Fame);
   } else if(endingE3Eligible410(s)){
-    career = "E3"; reasons.push("E3：信用 "+credit+"≥"+T.e3Credit+"、幕後標籤 "+endingBackstageTagCount410(s)+"／導演 rel "+directorRel);
+    career = "E3"; variant = end95E3Variant(s, stats95, favor);
+    reasons.push("E3：信用 "+credit+"≥"+T.e3Credit+"、幕後標籤 "+endingBackstageTagCount410(s)+"／導演 rel "+directorRel+"；變體＝"+variant+"（人情總量 "+((favor.settled|0)+(favor.creditsHeld|0))+"、電影 "+(stats95.byMedium.film|0)+"／電視 "+(stats95.byMedium.tv|0)+"）");
   } else if((favor.settled + favor.creditsHeld)>=T.e5FavorTotal && agentRel>=T.e5AgentRel){
     career = "E5"; reasons.push("E5：已清債 "+favor.settled+"＋持有債權 "+favor.creditsHeld+"≥"+T.e5FavorTotal+"、何生 rel "+agentRel+"≥"+T.e5AgentRel);
   } else {
@@ -27702,10 +27949,18 @@ function resolveEnding410(st, opts){
   else if(opts.quit==="job" || opts.exodus==="stay") exodus = "stay";
   else if(endingFlag410(s, "flag_stay_mind")) exodus = "stay";
   const exodusWord = (exodus==="leave") ? "遠走的人" : (exodus==="stay") ? "留下來的人" : "未說出口的人";
-  const title = (ENDING410_CAREER_NAMES[career] || career) + "・" + exodusWord;
+  /* v20a95：E3 稱號用變體名（大導演／金牌監製／製片老闆），其餘用格名。 */
+  const titleName95 = (career==="E3" && variant) ? variant : (ENDING410_CAREER_NAMES[career] || career);
+  const title = titleName95 + "・" + exodusWord;
+  const gaps95 = end95BuildGaps({ career: career, fame: fame, credit: credit, dual: sum,
+    hasWin: awards95.hasWin, leadMediaCount: leadMedia95.length, chains: chains95 });
   return {
     career: career, careerVariant: variant, baseCareer: baseCareer, baseVariant: baseVariant,
     romance: romance, exodus: exodus, title: title, reasons: reasons,
+    gaps95: gaps95,
+    ladder95: { total: total95, byMedium: Object.assign({}, stats95.byMedium), leadByMedium: Object.assign({}, stats95.leadByMedium),
+      tvLongLeads: stats95.tvLongLeads, genreIdentified: stats95.genreIdentified, genreComedy: stats95.genreComedy, genreAction: stats95.genreAction,
+      leadMedia: leadMedia95.slice(), chains: chains95.slice(), hasWin: awards95.hasWin, musicHonor: awards95.musicHonor },
     snapshot: {
       fame: fame, credit: credit, dual: sum, negTags: neg,
       settled: favor.settled, creditsTotal: favor.creditsTotal, creditsHeld: favor.creditsHeld,
@@ -27718,7 +27973,7 @@ function resolveEnding410(st, opts){
    - natural：順其自然（原判定），永遠有；
    - quit_job：接屋企穩陣工 → E6（玩家主動入口，永遠有，文案寫明後果）；
    - quit_leave：移民離場 → E6 遠走版（只限鏈 F 第 4 拍諗過走嘅人）；
-   - to_backstage：E4＋債權<2＋幕後條件差少少 → 行一格去 E3；或 E2 同時合 E3 資格 → 前夕分流去 E3；
+   - to_backstage：E2 同時合 E3 資格 → 前夕分流去 E3（v20a95 起 E4→E3 取消：新梯唔再相鄰）；
    - to_support：E3 同時合 E2 資格 → 行一格返 E2（爭男配）；
    - leave_follow：flag_leave_mind＋原判定 E0／E2 → 事業不變，去留軸轉移民版。
    任何選項都唔會令事業結局跳多過一格（quit 係專檔明文嘅主動離場，唔受格數限）。 */
@@ -27736,9 +27991,9 @@ function endingEveOptions410(st, baseRes){
   if(endingFlag410(s, "flag_leave_mind")){
     out.push({ key: "quit_leave", label: "走：移民離場——放棄今晚，唔再返呢行", note: "講明先：揀呢個，你會喺啟德上機，呢行嘅事，留返喺香港。（退圈・遠走）" });
   }
-  if(base.career==="E4" && favor.creditsHeld<ENDING410_T.e4RescueCredits && endingBackstageClose410(s)){
-    out.push({ key: "to_backstage", label: "轉幕後重新嚟過：唔企幕前，入班底由頭學起", note: "沉就沉一半——唔爭返幕前嗰格，只行去隔籬嗰格：幕後。" });
-  } else if(base.career==="E2" && endingE3Eligible410(s)){
+  /* v20a95 LADDER95：E4→E3 舊選項取消——新梯入面 E4 同 E3 之間隔住成段中段梯，
+     按拍板「相鄰跟新梯上下格計」唔再算相鄰；E4 前夕分支保留 rescued／sunk 兩版（債權門檻不變）。 */
+  if(base.career==="E2" && endingE3Eligible410(s)){
     out.push({ key: "to_backstage", label: "轉幕後：唔爭幕前嗰格，入去做班底", note: "你有幕後嘅本錢——企前定企後，今晚揀一次。" });
   }
   if(base.career==="E3" && endingE2Eligible410(s)){
@@ -27961,9 +28216,17 @@ function endingCareerScene410(rec){
     case "E2": return "<p>"+hall+"，「最佳男配角」——唔係最搶眼嗰個位，但評審致辭嗰陣講咗句：「冇佢，成套戲企唔穩。」全場識笑，嗰啲笑，係認同。</p>"
       + "<p>你唔係企喺最前嗰個，但邊組開戲都想先問你有冇期。由臨記做到金牌甘草，你靠嘅唔係邊一場爆發，係邊一場都唔甩轆嗰種穩。</p>" + rival
       + "<p>何生拍你膊頭：「甘草先係長做長有。呢行，紅嘅人換得快，企得穩嘅，走唔甩。」</p>";
-    case "E3": return "<p>頒獎禮嗰晚，你冇坐喺台下等叫名——你企喺控制台隔籬，手入面係成晚嘅流程同機位表。套戲攞獎嗰陣，導演上台，第一句多謝嘅，係幕後班底。</p>"
+    case "E3": {
+      /* v20a95：變體段（大導演／金牌監製／製片老闆）只分呈現，判定格不變。 */
+      const vp = (v==="大導演") ? "<p>行內人而家點叫你？佢哋唔叫你阿偉，叫你「偉導」。由企喺鏡頭前面俾人嗌埋位，到坐喺導演椅上面嗌人埋位——嗰張椅，你用三年換返嚟。</p>"
+        : (v==="金牌監製") ? "<p>電視台嗰邊，而家邊套長劇開得成，先要過你嗰關。監製呢個位，唔企喺鏡頭前，但成個廠嘅人食幾多飯、套戲行到幾遠，都係你簽個名先算數。</p>"
+        : (v==="製片老闆") ? "<p>你冇再等邊個開戲俾你拍——你自己開竇，自己揾水喉、自己組班底。三年儲落嘅人情，嗰晚全部變成電話簿入面，一打就通嗰啲號碼。</p>"
+        : "<p>企喺鏡頭後面嗰種實權，唔聲唔聲——邊套戲開得成、邊個有工開，開始有你份講。</p>";
+      return "<p>頒獎禮嗰晚，你冇坐喺台下等叫名——你企喺控制台隔籬，手入面係成晚嘅流程同機位表。套戲攞獎嗰陣，導演上台，第一句多謝嘅，係幕後班底。</p>"
       + "<p>鏡頭掃過嚟嗰一秒，你下意識擰轉面。企咗三年幕前，你最後揀咗企喺鏡頭後面——唔係企唔起，係你發現，成套戲點行，你睇得比企喺前面嗰陣更清楚。</p>"
+      + vp
       + "<p>張子駿收工嗰陣講：「第日你開戲，記得預我一個位——我俾你嗌。」嗰句，抵過好多獎。</p>";
+    }
     case "E4":
       if(v==="rescued") return "<p>頭版出街嗰朝，你以為自己沉硬——聲望衝得太高，信用跟唔上，週刊啲字，一句比一句狠。</p>"
         + "<p>但嗰日下晝開始，電話一個一個打嚟：你以前幫過嘅人、你救過場嘅組，一個一個企返出嚟講你嗰句好話。人情呢樣嘢，平時唔覺，到你就嚟沉嗰陣，先知佢浮得起你。</p>"
@@ -27971,6 +28234,33 @@ function endingCareerScene410(rec){
       return "<p>頭版出街嗰朝，電話靜到唔正常。聲望衝得太高，信用太薄——週刊啲字寫完，通告就一張一張咁消失。</p>"
         + "<p>你企喺化妝間，望住鏡入面嗰個紅過一排嘅自己。冇人踩你，只係冇人再打嚟。呢行起身嘅人多，沉落去嗰陣，通常都係咁靜。</p>"
         + "<p>不過，1993 年先啱啱開始。有啲人沉一沉，先學識點浮——呢句，唔係安慰，係呢行嘅老規矩。你嗰頁，仲未寫完。</p>";
+    case "SS": return "<p>嗰晚頒獎禮，你坐第一行。司儀叫名嗰陣，台下啲掌聲，唔再係俾面嗰種——係全行都認，你已經企喺最高嗰一排。</p>"
+      + "<p>一線，呢兩個字講出嚟輕，企上去重。海報最大嗰個名係你，票房要你扛，記者等你一句。嗰晚你企喺台上面望落去，三年前茶餐廳嗰張長枱，忽然好遠，又好近。</p>"
+      + "<p>何生喺台下舉杯，冇出聲。天王嗰張椅，你未坐上去——但成行都知，張椅隔籬嗰個位，已經寫咗你個名。</p>";
+    case "FK": return "<p>嗰晚係電影嗰邊嘅頒獎禮。你企起身嗰陣，成排導演、監製跟住企——唔係俾面，係呢三年，票房嗰本帳，佢哋睇住你一筆一筆寫落嚟。</p>"
+      + "<p>你唔係拍得最多嗰個，但你擔正嗰啲戲，開畫嗰日戲院門口排嘅隊，唔使點解釋。影壇呢個壇，而家有你一個位——唔係人哋讓，係觀眾用飛尾揀出嚟。</p>"
+      + "<p>何生喺台下講咗句：「大銀幕嗰邊，你企穩喇。」三年，由企喺佈景後面嗰個臨記，企到海報正中間嗰個名。</p>";
+    case "TK": return "<p>嗰晚台慶，全廠嘅燈都為你著。你企喺台中間嗰陣，電視機前面，千家萬戶嗰啲客廳——師奶、學生、收工返屋企嗰班人——個個都認得你嗰個樣、嗰把聲。</p>"
+      + "<p>長劇嗰種紅，唔係一夜爆出嚟嗰種，係晚晚入人哋屋企坐低，坐到街坊當你係屋企人。茶餐廳老闆娘唔收你茶錢嗰日，你就知，呢個壇，你企穩咗。</p>"
+      + "<p>何生笑笑口：「電視呢行，紅嘅人多，留得低嘅少。你留得低。」</p>";
+    case "SK": return "<p>嗰晚唔係戲院，係紅館。你企喺台中間，燈一暗，台下螢光棒成片著起嚟嗰下，你諗起三年前喺錄音室和音企嗰個角落——嗰陣，你連支咪都冇自己嗰支。</p>"
+      + "<p>而家你一開口，台下跟住唱。嗰啲歌，唔再係人哋嘅歌，係你嘅。歌王呢兩個字，唔係唱片公司寫喺海報上面嗰種，係觀眾用喉嚨投票投出嚟。</p>"
+      + "<p>何生喺後台攞住你嗰隻碟，翻嚟覆去睇：「我嗰陣都冇諗到，你把聲，行到咁遠。」</p>";
+    case "GH": return "<p>嗰晚大騷，支咪喺你手。成晚嘅場，邊度冷場、邊度要谷起嚟，你一句就推得返上嚟——台下幾千人，台前成行監製，望住你點樣執生。</p>"
+      + "<p>司儀呢行，紅嘅唔係企喺台上面嗰陣有幾威，係出咗事嗰陣，你接唔接得住。你接得住——由慈善騷嗰晚開始，行內一有大場面，第一個諗起嗰個名，就係你。</p>"
+      + "<p>彭少祺喺台側望住你，嗰種眼神，係前輩睇住衣缽有人接嗰種安慰。嗰晚落台，佢拍你膊頭，一句：「做得好。」抵過成晚掌聲。</p>";
+    case "CK": return "<p>嗰晚頒獎禮，司儀念到你個名之前，先自己笑咗——冇辦法，你嗰啲戲，成行人講起都忍唔住笑。笑，係呢行最難嗰樣嘢，你做到變成招牌。</p>"
+      + "<p>喜劇呢條路，企得穩嘅人唔多：要觀眾笑，又唔可以俾人睇低。你嗰種笑法，街坊學你、細路學你，連同行都偷偷學你嗰下停頓。泰斗嗰個位，唔係笑得最大聲嗰個坐，係笑到最後嗰個坐。</p>"
+      + "<p>何生嗰晚飲大咗兩杯，攬住你講：「阿偉，你嗰種好笑，唔係撞彩——係捱出嚟。」</p>";
+    case "AK": return "<p>嗰晚頒獎禮播你啲戲嘅精華片段：一分鐘入面，你飛過火、跳過樓、喺雨入面打到趴低又企返起身。台下啲武師，成班企起身拍手——嗰種掌聲，唔係俾明星，係俾自己人。</p>"
+      + "<p>動作呢行，觀眾記得嘅唔係邊個打得最勁，係邊個真係捱過。你身上嗰啲舊患，換嚟銀幕上面嗰種真——企喺嗰個位嘅人，冇一個係靠運氣企上去。</p>"
+      + "<p>武指嗰晚同你飲咗杯：「嗰陣你喺武師班俾人打到趴低，爬起身嗰下，我就知你得。」</p>";
+    case "ID": return "<p>嗰晚你一出門，欄杆外面啲歌迷影迷已經嗌到拆天。你嗰三年，唔係靠一場戲企起嚟，係靠一張一張相、一首一首歌，企入成代後生仔女嗰心入面。</p>"
+      + "<p>紅，係真紅——雜誌封面係你，唱片舖櫥窗係你，連巴士站嗰塊廣告板都係你。但你自己知，呢種紅法企得快，企得穩唔穩，要睇你之後點行。嗰晚你喺後台望住鏡，嗰句「偶像」，你戴得起，仲要學戴得耐。</p>"
+      + "<p>何生嗰晚提咗你一句：「紅，唔係終點。企得穩嗰啲，先有資格講下一步。」</p>";
+    case "CR": return "<p>嗰晚頒獎禮，最佳嗰啲獎未念到你個名——但成晚，每有一套戲攞獎，台上面嗰啲人，都會望你嗰邊一眼。嗰種眼神，唔係俾紅人，係俾「好戲」嗰種人。</p>"
+      + "<p>你唔係票房保證，你係品質保證。導演開戲，名單上面有啲位，唔使試鏡，直接寫你個名——唔係因為你紅，係因為嗰場戲難，難戲，要交俾識演嗰個。</p>"
+      + "<p>何生嗰晚講得最淡：「實力派呢三個字，唔響，但耐。你嗰條路，行得遠嗰種。」</p>";
     case "E5": return "<p>頒獎禮嗰晚，你坐嘅唔係演員席——你坐喺經理人嗰排。台上頒緊獎，你手底下兩個新人，一個入圍，一個攞咗新人獎。</p>"
       + "<p>由臨記做到開竇做經理人，你靠嘅從來唔係邊一場戲，係全行都知：阿偉講得出，做得到；佢欠人嘅會還，人哋欠佢嘅，佢記得清清楚楚。</p>"
       + "<p>何生嗰晚同你飲咗杯：「我嗰陣教你認人，你而家啲人脈，貴過我當年。」——江湖撈家呢四個字，唔係貶，係你用三年人情換返嚟嘅招牌。</p>";
@@ -28187,6 +28477,15 @@ function endingInserts410(rec, favor){
 }
 const ENDING410_ADJ_RUMOR = {
   E1: "聽講如果你嗰陣冇咁搏命，而家，可能安安穩穩喺幕後嗌人埋位。",
+  SS: "聽講如果你嗰陣攞埋嗰個獎，天王嗰張椅，可能已經寫咗你個名。",
+  FK: "聽講如果你嗰陣肯行埋電視嗰邊，而家，可能唔止影壇認你。",
+  TK: "聽講如果你嗰陣接埋嗰套大製作電影，而家，可能連戲院都排你啲戲。",
+  SK: "聽講如果你嗰陣肯演多兩套戲，而家，可能唔止歌迷認得你。",
+  GH: "聽講如果你嗰陣接埋嗰套戲嘅男主角，而家，可能唔止大騷支咪係你嘅。",
+  CK: "聽講如果你嗰陣冇下下都要人笑，而家，可能有人肯俾套正劇你擔正。",
+  AK: "聽講如果你嗰陣冇捱咁多下真打，而家，可能企得冇咁前，啲骨都冇咁痛。",
+  ID: "聽講如果你嗰陣肯沉下心磨多兩年戲，而家，可能唔止後生嗰班認得你。",
+  CR: "聽講如果你嗰陣肯接嗰啲賣埠大製作，而家，可能連阿媽嗰輩都識你個名。",
   E2: "聽講如果你嗰陣轉咗幕後，嗰啲獎，可能有一半係你嗌出嚟嘅。",
   E3: "聽講如果你嗰陣企返出去爭男配，今屆嗰個名，可能係你。",
   E4: "聽講如果你嗰陣留返一兩份人情唔好用盡，出事嗰陣，可能有人拉你一把。",
@@ -28242,6 +28541,8 @@ function endingSummaryHtml410(){
     + goneLine
     + "<p><b>感情：</b>" + endingEsc410(romLine) + "</p>"
     + "<p><b>去留：</b>" + endingEsc410(exoLine) + "</p>"
+    /* v20a95 LADDER95 差邊瓣：去天王嗰格差邊啲（回望口吻，唔係攻略）；舊檔／E7 冇 gaps95 就唔出。 */
+    + ((rec.gaps95 && rec.gaps95.length) ? "<p><b>回望嗰一格：</b></p>" + rec.gaps95.map(g => "<p>" + endingEsc410(g) + "</p>").join("") : "")
     + (rumor ? "<p class=\"sub\">茶餐廳嗰邊有人講：「" + endingEsc410(rumor) + "」——聽下就算，唔好當真。</p>" : "")
     + (rec.career==="E7"
       ? "<p class=\"sub\">結局已記入手帳。呢次收場，唔係你揀嘅，係數字同荷包揀嘅。呢一局到呢度收科——日子唔會再行落去；你可以喺手帳回顧呢段日子，或者開新一局再嚟過：下次，唔好等何生出聲先嚟急。</p>"
@@ -28291,6 +28592,7 @@ function ending410AfterEveChoice(node, choice, result){
     const favor = endingFavor410(S);
     S.ending410 = {
       career: res.career, careerVariant: res.careerVariant || "",
+      gaps95: (res.gaps95 || []).slice(),
       romanceLine: res.romance.line || "", romanceKind: res.romance.kind || "solo",
       exodus: res.exodus, title: res.title, eveKey: key,
       day: (S.dayIndex|0),
@@ -30985,6 +31287,7 @@ function fresh(){
     weekPlan: defaultWeekPlan(),
     weekEarn: 0,
     wrapHistory: [],
+    careerStats95: null, /* v20a95 LADDER95：履歷累計計數（殺青嗰刻先生種子再累加；null＝未起計） */
     weekGigsDone: 0,
     weekTrainDone: 0,
     booked:[], // accepted gigs waiting to schedule {gigId,title,type}
@@ -31072,6 +31375,11 @@ function normalizeSaveObj(o){
   if(!o.inventory||typeof o.inventory!=="object")o.inventory={};
   if(!o.giftMeta||typeof o.giftMeta!=="object")o.giftMeta={lastGiveDay:{},weekGiftGain:{},givenCount:{},shopStock:{},shopWeek:0};
   if(!Array.isArray(o.wrapHistory))o.wrapHistory=[];
+  /* v20a95 LADDER95：舊檔回填履歷計數種子（以 wrapHistory 最近 30 條衍生，係下限唔係全史）；
+     已有計數器就唔郁，冪等。 */
+  if(!o.careerStats95 || typeof o.careerStats95!=="object" || Array.isArray(o.careerStats95)){
+    try{ if(typeof end95DeriveStats==="function") o.careerStats95 = end95DeriveStats(o); }catch(_e95){}
+  }
   if(typeof o.vocal!=="number"||!isFinite(o.vocal))o.vocal=14;
   /* Soft: 壓力硬上限 100。舊檔高過 100 要夾落。體能係能力，跟 STAT_MAX，唔夾 100。 */
   if(Number(o.stress)>STRESS_MAX) o.stress=STRESS_MAX;
@@ -35522,6 +35830,12 @@ function resolvePlannedDay(id){
         }catch(_tg){}
         if((S.flags["done_"+sh.gigId]||0)>=1 && sh.type==="電視劇") S.flags.resume_tv=true;
         if(sh.type==="電影") S.flags.resume_film=true;
+        /* v20a95 LADDER95：履歷累計計數（結局梯專長格用）——必須喺下面 wrapHistory
+           unshift 之前行：end95AddWrap 首次會以當刻 wrapHistory 衍生種子，遲咗會雙計本單。 */
+        try{
+          const _g95 = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
+          if(_g95 && typeof end95AddWrap==="function") end95AddWrap(S, _g95, sh);
+        }catch(_e95w){}
         try{
           S.wrapHistory = S.wrapHistory || [];
           const _wg59w = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
