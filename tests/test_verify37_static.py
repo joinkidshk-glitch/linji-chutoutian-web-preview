@@ -41,8 +41,11 @@ ok('item2c extra pool has no named work 夜班廠景', '夜班廠景' not in poo
 ok('item2c fixed card present (深宵廠景煞科)', '深宵廠景煞科，新面孔企到尾' in pool_seg)
 
 # ---- item 3：獲聘文案講明殺青後入帳（兩條路徑＋手帳頁） ----
-ok('item3 doAudition pending line', '殺青後入帳：約酬' in html and '未殺青前唔會加，拍完嗰日先入帳' in html)
-ok('item3 both hire paths carry the line', html.count('殺青後入帳：約酬') >= 2)
+# v20a91 AUD91 改版註：試鏡改為「等公佈先揭曉」，兩條試鏡入口（doAudition／手帳 job:）
+# 不再即場獲聘，改匯入 aud91CreatePending → 公佈嗰刻由 aud91PresentOne 統一呈現，
+# 「殺青後入帳」行改由公佈呈現嗰處承載（原意不變：聲望／人氣唔提早入帳、殺青先落帳）。
+ok('item3 doAudition pending line', '殺青後入帳' in html and '未殺青前唔會加，拍完嗰日先入帳' in html)
+ok('item3 both hire paths carry the line', html.count('aud91CreatePending(') >= 4 and 'function aud91PresentOne' in html)
 ok('item3 jobs pane marks pending', '（殺青後入帳）' in html)
 
 # ---- item 4：週行程戳 ----

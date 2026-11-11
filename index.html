@@ -30867,6 +30867,9 @@ function fresh(){
     weekGigsDone: 0,
     weekTrainDone: 0,
     booked:[], // accepted gigs waiting to schedule {gigId,title,type}
+    /* v20a91 AUD91：試鏡等消息清單（試鏡刻已擲骰定死，公佈日先揭曉）＋何生通知留底 */
+    pendingAud:[], // {gigId,title,type,tier,locId,audDay,revealDay,ok,chancePct,pay,payBase,payBonus,payBonusLabel,payNote,fame,pop,days,fxActing,fxStress,fxFame,fxStressFail,via}
+    aud91Log:[], // {day,title,ok,signPay,balance}
     shoots:[], // active productions {id,gigId,title,type,daysLeft,totalDays,pay,fame,popularity,locId}
     enrolled:{}, // courseId -> true
     trainCount:{}, // courseId -> completions
@@ -31281,6 +31284,12 @@ function payContractNote(gig, lockedPay, roll){
 }
 function payWrapNote(sh){
   const pay=Number(sh&&sh.pay)||0;
+  /* v20a91 AUD91：有簽約金嗰啲，殺青實收＝餘額；講明兩筆加埋＝合約總額，唔好令玩家以為片酬縮水 */
+  if(sh && Number(sh.signedPaid)>0){
+    const signed=Number(sh.signedPaid)||0;
+    const rem=Math.max(0, pay-signed);
+    return `實收餘額 $${rem.toLocaleString()}（合約總額 $${pay.toLocaleString()}：簽約金 $${signed.toLocaleString()} 簽約時已入帳，餘額 $${rem.toLocaleString()} 殺青入帳）。`;
+  }
   /* P0-1（v20a11）：殺青結算同合約拆法一致：牌面擲出＋加成＝實收，加總要對得返。
      舊檔無 payBase／payBonus 欄位就用返原句，唔好出錯數。 */
   if(sh && Number(sh.payBonus)){
@@ -32090,7 +32099,11 @@ function isGigInProduction(g){
   return !!gigActiveShoot(g);
 }
 function isGigConsumed(g){
-  return isGigWrapped(g) || isGigInProduction(g);
+  if(isGigWrapped(g) || isGigInProduction(g)) return true;
+  /* v20a91 AUD91：等消息期間嗰張通告唔返上板（board 每次開都重新生成，
+     淨靠 S.board 快取剔除唔夠，要喺 pool 過濾呢層擋實） */
+  try{ if(g && (S.pendingAud||[]).some(p=>p && p.gigId===g.id)) return true; }catch(_e){}
+  return false;
 }
 function gigLifecycleStatus(g){
   /* hired → shooting → wrapped */
@@ -32105,6 +32118,10 @@ function gigLifecycleStatus(g){
     if(done>0) return { key:"shooting", label:"拍攝中", alt:true, shoot:sh };
     return { key:"hired", label:"已獲聘", alt:true, shoot:sh };
   }
+  try{
+    const pend = (S.pendingAud||[]).find(p=>p && p.gigId===g.id);
+    if(pend) return { key:"pending", label:"等消息", alt:false, pending:pend };
+  }catch(_e){}
   try{
     if((S.booked||[]).some(b=>b && b.gigId===g.id)){
       return { key:"booked", label:"待試鏡", alt:false };
@@ -32913,7 +32930,7 @@ function castingNoticeDetailHtml(g){
       ${releaseRow88}
       ${sumGaps}
       ${intelHtml}
-      <p class="var-note">成數受表現／壓力／信用影響；片酬牌面為約酬區間，獲聘時鎖定合約，殺青按合約實收。</p>
+      <p class="var-note">成數受表現／壓力／信用影響；片酬牌面為約酬區間，試鏡後要等劇組回音，獲聘簽約先收三成簽約金，餘額殺青按合約實收。</p>
     </div>
     <button type="button" class="cn-detail-toggle" data-cn-toggle aria-expanded="false">顯示詳細 ▾</button>
     <div class="cn-detail" hidden>
@@ -32927,6 +32944,7 @@ function castingNoticeDetailHtml(g){
         ${weeklyBlock}
         <div class="cn-kv"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
         <div class="cn-kv"><span class="k">片酬</span><span class="v">${payStr}</span></div>
+        <div class="cn-kv"><span class="k">簽約金</span><span class="v">${(()=>{ try{ const ex=gigPayExact(g); return (ex!=null && ex>0) ? ("約 $"+Math.round(ex*0.3).toLocaleString()+"（合約額三成）") : "合約額三成"; }catch(_e){ return "合約額三成"; } })()} · 簽約即付，餘額殺青入帳</span></div>
         <div class="cn-kv"><span class="k">違約金</span><span class="v">${breachStr}</span></div>
         ${limitsHtml}
       </div>
@@ -33064,6 +33082,14 @@ function jumpToTrainForGig(g){
 function openCastingNoticeDetail(g, L){
   try{
     const life = gigLifecycleStatus(g);
+    if(life && life.key==="pending"){
+      const body = `<h3>${g.title||"通告"}</h3><p class="gold">等消息</p><p>你已經試咗鏡，劇組未有回音。何生一收到風就會打嚟通知你；等消息嗰幾日照常生活就得，唔使日日嚟望。</p>`;
+      modal(body, [
+        {label:"查看手帳", role:"p", on:()=>{ try{ showJobs(); }catch(_e){} }},
+        {label:"離開", role:"g", on:()=>{ if(L) doScout(L); }}
+      ]);
+      return;
+    }
     if(life && (life.key==="hired" || life.key==="shooting" || life.key==="wrapped")){
       const body = `<h3>${g.title||"通告"}</h3><p class="gold">${life.label}</p><p>${life.key==="wrapped"?"本單已殺青，可喺拍攝簿睇履歷。":"已排檔期，請入手帳睇拍攝日。"}</p>`;
       modal(body, [
@@ -33083,11 +33109,11 @@ function openCastingNoticeDetail(g, L){
   if(gate.ok){
     const softEntry = (typeof softPreviewOn==="function" && softPreviewOn());
     if(softEntry){
-      body += `<p class="var-note">這頁是試鏡入口，打開不耗日。去試鏡先耗一日。未獲聘不會入拍攝簿，亦不會入帳。獲聘後要入手帳開工，殺青先有片酬。</p>`;
+      body += `<p class="var-note">這頁是試鏡入口，打開不耗日。去試鏡先耗一日，結果唔會即場知——要等幾日，何生收到風會打嚟通知。未獲聘不會入拍攝簿，亦不會入帳。獲聘簽約先收簽約金，之後先排拍攝日；餘額殺青先有片酬。</p>`;
     }
     btns.push({label: softEntry ? "去試鏡" : copy.readyLabel, role:"p", on:()=>{
       confirmSpendDay(softEntry
-        ? `去試鏡：${g.title||"通告"}（未獲聘不入拍攝簿、不入帳；殺青先有片酬）`
+        ? `去試鏡：${g.title||"通告"}（試鏡後等通知；未獲聘不入帳；獲聘先收簽約金，餘額殺青先有片酬）`
         : `接通告：${g.title||"通告"}`, ()=>doAudition(g, L));
     }});
   } else {
@@ -33206,6 +33232,11 @@ function planMeta(id){
     const title=g?g.title:(gid||"通告");
     return { icon:"🎬", name:`試鏡：${title}`, hint:"當日試鏡（已耗）", locked:true };
   }
+  if(id.startsWith("aud91:")){
+    const gid=id.slice(6);
+    const rec=(S.pendingAud||[]).find(p=>p && p.gigId===gid);
+    return { icon:"📞", name:`等消息：${rec?rec.title:"通告"}`, hint: rec ? ((typeof aud91PendingHint==="function") ? aud91PendingHint(rec) : "等緊劇組回音") : "等緊劇組回音，何生會通知", locked:true };
+  }
   if(id.startsWith("wrap:")){
     let title=id.slice(5);
     try{ title=decodeURIComponent(title); }catch(e){}
@@ -33228,7 +33259,7 @@ function planMeta(id){
 function planCatForId(id){
   const s = String(id||"");
   if(!s) return "browse";
-  if(s.startsWith("shoot:") || s.startsWith("audition:") || s.startsWith("wrap:") || s.startsWith("job:")) return "work";
+  if(s.startsWith("shoot:") || s.startsWith("audition:") || s.startsWith("wrap:") || s.startsWith("job:") || s.startsWith("aud91:")) return "work";
   if(typeof COURSE_DEFS!=="undefined" && COURSE_DEFS[s]) return "train";
   if(s.indexOf("train_")==0) return "train";
   for(const cat of Object.keys(PLAN_ITEMS||{})){
@@ -34275,7 +34306,10 @@ function shootPendingLine38(sh){
   const pay = num(sh.pay), fame = num(sh.fame), pop = num(sh.popularity);
   if(pay==null && fame==null && pop==null) return "殺青後入帳";
   const bits = [];
-  if(pay!=null) bits.push(`約酬 $${pay.toLocaleString()}`);
+  /* v20a91 AUD91：簽約金已入帳嗰啲，講明餘額先係殺青入帳嗰筆 */
+  const signed = num(sh.signedPaid);
+  if(pay!=null && signed!=null && signed>0) bits.push(`簽約金 $${signed.toLocaleString()} 已入帳 · 餘額 $${Math.max(0,pay-signed).toLocaleString()}`);
+  else if(pay!=null) bits.push(`約酬 $${pay.toLocaleString()}`);
   if(fame!=null) bits.push(`聲望 +${fame}`);
   if(pop!=null) bits.push(`人氣 +${pop}`);
   return "殺青後入帳：" + bits.join(" · ");
@@ -34283,8 +34317,16 @@ function shootPendingLine38(sh){
 function workItems(){
   const items=(S.booked||[]).map(b=>({
     id:"job:"+b.gigId, icon:"🎬", name:b.title,
-    hint:`${b.type||"通告"} · 舊預約待試鏡（當日擲骰；失敗＝唔入拍攝簿）`
+    hint:`${b.type||"通告"} · 舊預約待試鏡（當日試鏡；結果等何生通知）`
   }));
+  /* v20a91 AUD91：等消息通告喺行程頁工作組出資訊行（locked，唔可排日） */
+  (S.pendingAud||[]).forEach(rec=>{
+    items.push({
+      id:"aud91:"+rec.gigId, icon:"📞", name:`等消息：${rec.title}`,
+      hint:(typeof aud91PendingHint==="function") ? aud91PendingHint(rec) : "等緊劇組回音，何生會通知",
+      locked:true
+    });
+  });
   // shoots are locked on calendar; show as info-only rows with disabled assign via id shoot
   (S.shoots||[]).forEach(sh=>{
     const hud = (typeof shootDeadlineHud==="function") ? shootDeadlineHud(sh) : "";
@@ -34619,6 +34661,13 @@ function enterHome(summary, editable, initialTab){
       setTimeout(()=>{
         modal(`<h3>拍攝檔期取消</h3><div>${drops.join("<br>")}</div>`,[{label:"我知道了",role:"p"}]);
       }, 40);
+    }
+  }catch(_e){}
+  /* v20a91 AUD91：入屋嗰刻有到期試鏡消息未公佈 → 補呈現（同 drops 嘅 setTimeout 模式；
+     結局鎖定時唔呈現，唔畀 pending 卡住結局流程） */
+  try{
+    if(typeof aud91DueList==="function" && aud91DueList().length && !(typeof ending78Locked==="function" && ending78Locked())){
+      setTimeout(()=>{ try{ aud91PresentDue(null); }catch(_e){} }, 50);
     }
   }catch(_e){}
   S.homeEditable = !!editable;
@@ -35004,6 +35053,10 @@ function goToMapForBrowse(){
   try{
     if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(()=>{ try{ goToMapForBrowse(); }catch(_e4){} })) return;
   }catch(_npMap){}
+  /* v20a91 AUD91：晨報之後、何生試鏡消息公佈（簽約金／落選嗰朝揭曉；同 early-return＋callback 模式） */
+  try{
+    if(typeof aud91PresentDue==="function" && aud91PresentDue(()=>{ try{ goToMapForBrowse(); }catch(_e5){} })) return;
+  }catch(_a91Map){}
   /* v20a86 WF4：晨報之後呈現待播日常事件／芬姐送別戲（同 early-return＋callback 模式） */
   try{
     if(typeof wf4PresentPending==="function" && wf4PresentPending()) return;
@@ -35234,6 +35287,10 @@ function runScheduleFromToday(){
     try{
       if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(()=>{ try{ runScheduleFromToday(); }catch(_e){} })) return;
     }catch(_npDay){}
+    /* v20a91 AUD91：排程日開跑之前先公佈到期試鏡消息（唔好畀自動行程靜默吞咗） */
+    try{
+      if(typeof aud91PresentDue==="function" && aud91PresentDue(()=>{ try{ runScheduleFromToday(); }catch(_e){} })) return;
+    }catch(_a91Day){}
   }
   if(mapish){
     if(_weekAccel){
@@ -35282,7 +35339,11 @@ function resolvePlannedDay(id){
         const pop = sh.popularity!=null ? sh.popularity : Math.max(1, Math.round((sh.fame||1)*0.7));
         const tot=sh.totalDays;
         // v17h: merge daily+wrap into one apply so 壓力唔列兩次
-        daily.money=(daily.money||0)+(sh.pay||0);
+        /* v20a91 AUD91：簽約時已付簽約金（shoot.signedPaid）→ 殺青只入餘額，
+           兩筆加埋＝合約總額分毫不差。舊制合約冇 signedPaid → 全數殺青入帳（不變）。 */
+        const signedPaid91 = Number(sh.signedPaid)||0;
+        const wrapPay91 = Math.max(0, (Number(sh.pay)||0) - signedPaid91);
+        daily.money=(daily.money||0)+wrapPay91;
         daily.fame=(daily.fame||0)+(sh.fame||0);
         daily.popularity=(daily.popularity||0)+pop;
         daily.stress=(daily.stress||0)+5; /* v20a65 FIX65-1：殺青額外壓力 +5→+2 */
@@ -35290,10 +35351,11 @@ function resolvePlannedDay(id){
         notes.push(shootDayLine(sh));
         notes.push(`<span class="good">${eventLine("SHOOT_WRAP",{
           title:sh.title,
-          pay:"$ "+(sh.pay||0).toLocaleString(),
+          pay:"$ "+wrapPay91.toLocaleString(),
           fame:"+"+(sh.fame||0),
           popularity:"+"+pop
         })||"殺青：酬勞入帳，聲望／人氣結算。"}</span>`);
+        if(signedPaid91>0) notes.push(`<span class="var-note">今次入帳係餘額 $ ${wrapPay91.toLocaleString()}——簽約嗰陣已經收咗簽約金 $ ${signedPaid91.toLocaleString()}，兩筆加埋 $ ${(Number(sh.pay)||0).toLocaleString()}，即係合約總額，冇縮水。</span>`);
         try{ notes.push(`<span class="var-note">${payWrapNote(sh)}</span>`); }catch(_e){}
         try{
           const _bg56 = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
@@ -35396,11 +35458,13 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
     title = `咖啡店駐場（週${weekdayName(weekdayIdx(S.dayIndex))}）`;
   }
   else if(id.startsWith("job:")){
-    // 手帳「約試鏡日」——當日先過門檻＋擲成功率；失敗則不開拍、唔入拍攝簿
+    // 手帳「約試鏡日」——當日先過門檻＋擲成功率
+    // v20a91 AUD91：同 doAudition 睇齊——試鏡嗰刻擲定成單入 S.pendingAud 等公佈，
+    // 唔再即日知結果／即日開拍。資格不符（未入場）唔係試鏡結果，照舊即場了結。
     const gid=id.slice(4);
     const gig=GIGS.find(g=>g.id===gid);
     S.booked=(S.booked||[]).filter(b=>b.gigId!==gid);
-    clearJobFromPlans(gid); // 落選／取消後唔留 stale 待試鏡喺手帳
+    clearJobFromPlans(gid); // 試鏡後唔留 stale 待試鏡喺手帳
     if(!gig){ notes=[]; title="試鏡取消"; }
     else {
       const gate=canAudition(gig);
@@ -35409,45 +35473,32 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
         notes.push(`<span class="bad">${gate.reason}</span>`);
         notes.push("接待唔俾你入場試——未獲聘，唔會開拍。");
         title="試鏡資格不符";
+      } else if(typeof aud91PendingOf==="function" && aud91PendingOf(gid)){
+        notes=apply({stress:3+R(0,2)});
+        notes.push(`<span class="var-note">呢張你早前已經試咗鏡，而家等緊劇組回音——唔使再試多次，何生會通知你。</span>`);
+        title=`等消息：${gig.title}`;
       } else {
         const p=chance(gig); // 0..1; same value shown as Math.round(p*100)+'%'
         const roll=Math.random(); // fair uniform [0,1); hire iff roll < p
         const ok=roll<p;
+        /* 試鏡辛勞（壓力／演技）本身同成敗無關，照舊當日入帳；
+           成敗效果先跟新制：成功嗰份冇額外、落選嗰份預roll 定死、公佈嗰刻先入帳 */
         notes=apply({stress:7+R(0,4), acting:R(0,1)});
         notes.push(`成功率約 ${Math.round(p*100)}%`);
         try{ notes.push(`<span class="var-note">${chanceVarianceNote(gig)}</span>`); }catch(_e){}
+        const days91 = shootSpanFor(gig);
+        let rec91;
         if(ok){
           const payRoll=rollAuditionPay(gig);
-          const pay=payRoll.pay;
           const fame=R(gig.fame[0],gig.fame[1]);
           const pop = gig.popularity ? R(gig.popularity[0], gig.popularity[1]) : Math.max(1, Math.round(fame*0.7)+R(0,2));
-          const shoot=scheduleShoot(gig, pay, fame, pop, payRoll);
-          notes.push(`<span class="good">${eventLine("AUD_PASS",{title:gig.title, shootDays:shoot.totalDays})||("獲聘，拍攝約 "+shoot.totalDays+" 日")}</span>`);
-          /* v20a37（必修 3）：手帳排程獲聘路徑補返同 doAudition 一致嘅待入帳行（舊碼呢條路徑冇呢行） */
-          notes.push(`殺青後入帳：約酬 $ ${pay.toLocaleString()} · 聲望 +${fame} · 人氣 +${pop}（未殺青前唔會加，拍完嗰日先入帳）`);
-          try{ notes.push(`<span class="var-note">${payContractNote(gig, pay, payRoll)}</span>`); }catch(_e){}
-          if(payRoll.note) notes.push(`<span class="var-note">${payRoll.note}</span>`);
-          title=`獲聘：${gig.title}`;
-          writeTodayPlan("audition:"+gig.id);
-          const {ended, summary}=tickDay();
-          const contHireFinish=()=>{
-            paintBar();
-            const contHire=()=>{
-              const next=()=>{ if(ended){ enterHome(summary, true); return; } enterHome(null, false); };
-              maybeShowTutToast("sawTutShoot","TUT_SHOOT", next);
-            };
-            modal(`<h3>${title}</h3>${formatResultNotes(notes)}<p class="gold">已鎖拍攝日——返手帳睇行程再開工。</p><p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
-              {label: ended?"回家結算":"睇手帳", role:"p", on:contHire}
-            ], {onDismiss: contHire});
-            saveQ();
-          };
-          confirmPlaceShoot(shoot, weekdayIdx(S.dayIndex), contHireFinish);
-          return;
+          rec91=aud91CreatePending(gig, null, { ok:true, p:p, days:days91, payRoll:payRoll, fame:fame, pop:pop, via:"plan" });
         } else {
-          notes.push(...apply({fame:-R(1,2)}));
-          notes.push(`<span class="bad">${eventLine("AUD_FAIL",{title:gig.title})||"未獲錄用——不會開工。"}</span>`);
-          title=`落選：${gig.title}`;
+          rec91=aud91CreatePending(gig, null, { ok:false, p:p, days:days91, fxFame:-R(1,2), via:"plan" });
         }
+        notes.push(`<span class="gold">試鏡演完，評判只講咗句「返去等消息啦」。何生話：${aud91WaitPhrase(rec91.wait)}，有回音佢會打嚟。</span>`);
+        title=`試鏡完畢：${gig.title}`;
+        writeTodayPlan("audition:"+gig.id);
       }
     }
   } else {
@@ -49684,7 +49735,7 @@ function addLocBridgeActs(add, L){
         if(typeof canAudition==="function" && !canAudition(g).ok) return;
         bridgeShown[g.id] = 1;
         const face = g.workTitle || g.title || "初階臨記";
-        add(`試鏡入口：${face}`, "初階臨記 · 一日殺青 · 正薪夠生活費 · 打開不耗日。未獲聘不入帳；殺青先有片酬。", "不耗日", ()=>openCastingNoticeDetail(g, L), "act-priority act-bridge");
+        add(`試鏡入口：${face}`, "初階臨記 · 一日殺青 · 正薪夠生活費 · 打開不耗日。試鏡後等通知；獲聘先收簽約金，餘額殺青先有片酬。", "不耗日", ()=>openCastingNoticeDetail(g, L), "act-priority act-bridge");
       });
     }
   }catch(_br){}
@@ -49714,7 +49765,7 @@ function addLocGigActs(add, L, gigs, bridgeShown){
     const coarse = (typeof gigTypeCoarse==="function") ? gigTypeCoarse(gig) : "";
     const sub = (coarse && coarse!==genre) ? `${genre}／${coarse}` : genre;
     if(typeof softPreviewOn==="function" && softPreviewOn()){
-      add(`試鏡入口：${gig.title}`, `${sub} · 成功率 ${p}% · 打開不耗日。未獲聘不入帳；殺青先有片酬。`, "不耗日", ()=>openCastingNoticeDetail(gig, L));
+      add(`試鏡入口：${gig.title}`, `${sub} · 成功率 ${p}% · 打開不耗日。試鏡後等通知；獲聘先收簽約金，餘額殺青先有片酬。`, "不耗日", ()=>openCastingNoticeDetail(gig, L));
     } else {
       add(`${castCopy.readyLabel}：${gig.title}`, `${sub} · 成功率 ${p}%`,"+1日", ()=>openCastingNoticeDetail(gig, L));
     }
@@ -52613,6 +52664,170 @@ function doTalk(npcId, L){
   saveQ();
 }
 
+/* ===== v20a91 AUD91 試鏡流程改版（用戶 2026-11-11 拍板，照明星志願嗰套） =====
+   新流程：試鏡日照舊耗一日＋即場擲骰，但結果唔揭曉——成單（成功與否、鎖定片酬、
+   聲望／人氣預roll、效果預roll）喺試鏡嗰刻定死寫入 S.pendingAud，等公佈日嗰朝
+   先由何生通知揭曉。唔准公佈嗰日先擲（防玩家讀檔刷骰；存檔重載結果唔變）。
+   成功公佈嗰刻：即付簽約金（合約額三成）＋先排拍攝日；殺青只入餘額，總額不變。
+   失敗公佈嗰刻：先入返現行落選效果（數值不變，只係改入帳時點）。
+   舊制分界：v91 前已經獲聘／拍攝中嘅合約冇 signedPaid 欄位，沿用舊制全數殺青入帳。 */
+const AUD91_CAP = 3; // 同時等消息上限（試鏡本身耗一日已係天然剎車，3 張防板面被一次過掃清）
+function aud91Ensure(){
+  if(typeof S==="undefined" || !S) return [];
+  if(!Array.isArray(S.pendingAud)) S.pendingAud=[];
+  if(!Array.isArray(S.aud91Log)) S.aud91Log=[];
+  return S.pendingAud;
+}
+function aud91PendingOf(gigId){
+  return aud91Ensure().find(p=>p && p.gigId===gigId) || null;
+}
+/* 等待日數帶（試鏡刻定死）：入門／臨記級 1–2 日；一般製作 2–3 日；高級／大製作 3–4 日 */
+function aud91WaitDays(gig, days){
+  const tier=(gig && gig.tier) || "初";
+  const entry=!!(gig && (gig.entryTier || gig.softBridge));
+  if(entry || (tier==="初" && (days||0)<=2)) return R(1,2);
+  if(tier==="高" || (days||0)>=10) return R(3,4);
+  return R(2,3);
+}
+/* 玩家面講法：畀大約日子，唔出系統味確實日期 */
+function aud91WaitPhrase(wait){
+  const w=Number(wait)||2;
+  if(w<=1) return "聽日應該就有回音";
+  if(w===2) return "過兩日左右有回音";
+  if(w===3) return "要等三日左右先有回音";
+  return "要等四日左右先有回音";
+}
+function aud91CreatePending(gig, L, pre){
+  aud91Ensure();
+  const days = (pre && pre.days!=null) ? pre.days : shootSpanFor(gig);
+  const wait = aud91WaitDays(gig, days);
+  const pr = (pre && pre.payRoll) || null;
+  const rec = {
+    gigId: gig.id, title: gig.title||"", type: gig.type||"", tier: gig.tier||"初",
+    locId: (gig && gig.loc) || (L && L.id) || "",
+    audDay: S.dayIndex|0, revealDay: (S.dayIndex|0)+wait, wait: wait,
+    ok: !!(pre && pre.ok), chancePct: Math.round(((pre&&pre.p)||0)*100),
+    pay: pr ? (Number(pr.pay)||0) : 0,
+    payBase: pr ? (pr.basePay!=null ? Number(pr.basePay) : null) : null,
+    payBonus: pr ? (Number(pr.bonusPay)||0) : 0,
+    payBonusLabel: pr ? String(pr.bonusLabel||"") : "",
+    payNote: pr ? String(pr.note||"") : "",
+    fame: (pre && pre.fame!=null) ? pre.fame : 0,
+    pop: (pre && pre.pop!=null) ? pre.pop : 0,
+    days: days,
+    fxActing: (pre && pre.fxActing) || 0, fxStress: (pre && pre.fxStress) || 0,
+    fxFame: (pre && pre.fxFame) || 0, fxStressFail: (pre && pre.fxStressFail) || 0,
+    via: (pre && pre.via) || "board"
+  };
+  S.pendingAud.push(rec);
+  return rec;
+}
+function aud91LogPush(entry){
+  aud91Ensure();
+  S.aud91Log.unshift(entry);
+  if(S.aud91Log.length>12) S.aud91Log.length=12;
+}
+function aud91DueList(){
+  aud91Ensure();
+  return S.pendingAud.filter(p=>p && (S.dayIndex|0) >= (p.revealDay|0));
+}
+/* 手帳「等消息」行用：試鏡咗幾多日＋大約回音講法 */
+function aud91PendingHint(rec){
+  const waited = Math.max(0, (S.dayIndex|0) - (rec.audDay|0));
+  const left = (rec.revealDay|0) - (S.dayIndex|0);
+  const when = left<=0 ? "應該就快有回音" : (left===1 ? "聽日應該有回音" : ("呢"+(left===2?"兩":left)+"日應該有回音"));
+  return `試鏡咗 ${waited} 日 · ${when}（何生會打嚟通知）`;
+}
+let _aud91Presenting = false;
+/* 朝早公佈呈現：到期 pending 逐單揭曉（免費互動，唔耗玩家嗰日行動）；
+   全部出完先行 continueFn。冇到期／呈現中 → 回 false，呼叫方照常行。 */
+function aud91PresentDue(continueFn){
+  if(_aud91Presenting) return false;
+  if(typeof ending78Locked==="function" && ending78Locked()) return false;
+  if(!aud91DueList().length) return false;
+  _aud91Presenting = true;
+  const done = ()=>{ _aud91Presenting = false; if(typeof continueFn==="function") continueFn(); };
+  const step = ()=>{
+    const list = aud91DueList();
+    if(!list.length){ done(); return; }
+    aud91PresentOne(list[0], step);
+  };
+  try{ toast("何生打嚟——有通告消息。"); }catch(_e){}
+  step();
+  return true;
+}
+function aud91PresentOne(rec, next){
+  /* 先喺清單剔除：結果已定死，呈現只係揭曉，唔受 modal 點閂影響 */
+  S.pendingAud = aud91Ensure().filter(p=>p!==rec);
+  const gig = (typeof GIGS!=="undefined" ? GIGS : []).find(g=>g && g.id===rec.gigId) || null;
+  const cont = ()=>{ try{ saveQ(); }catch(_e){} if(typeof next==="function") next(); };
+  if(rec.ok){
+    const notes=[];
+    if(rec.fxActing || rec.fxStress) notes.push(...apply({acting: rec.fxActing||0, stress: rec.fxStress||0}));
+    const pay = Number(rec.pay)||0;
+    const signPay = Math.round(pay*0.3); /* 簽約金＝合約額三成，公佈嗰刻即付 */
+    if(signPay>0) notes.push(...apply({money: signPay}));
+    notes.push(`<span class="good">${eventLine("AUD_PASS",{title:rec.title, shootDays:rec.days})||("試鏡通過，拍攝 "+rec.days+" 日")}</span>`);
+    notes.push(`<span class="good">簽約金 $ ${signPay.toLocaleString()} 已入帳（合約 $ ${pay.toLocaleString()} 嘅三成）；餘額 $ ${(pay-signPay).toLocaleString()} 殺青嗰日先入帳。</span>`);
+    /* 聲望／人氣跟返 v37 規則：唔係簽約嗰刻入帳，存入 shoot record，殺青日先落帳 */
+    notes.push(`殺青後入帳：${(typeof STAT_LABEL!=="undefined" && STAT_LABEL && STAT_LABEL.fame)||"幕前聲望"} +${rec.fame} · ${(typeof STAT_LABEL!=="undefined" && STAT_LABEL && STAT_LABEL.popularity)||"人氣"} +${rec.pop}（未殺青前唔會加，拍完嗰日先入帳）`);
+    if(rec.payNote) notes.push(`<span class="var-note">${rec.payNote}</span>`);
+    try{ notes.push(`<span class="var-note">${chanceVarianceNote(gig||{req:{}})}</span>`); }catch(_e){}
+    try{ notes.push(`<span class="var-note">${payContractNote(gig||{pay:[pay,pay]}, pay, {basePay:rec.payBase, bonusPay:rec.payBonus, bonusLabel:rec.payBonusLabel})}</span>`); }catch(_e){}
+    aud91LogPush({ day:S.dayIndex|0, title:rec.title, ok:true, signPay:signPay, balance:pay-signPay });
+    if(!gig){
+      /* 通告資料對唔返（理論上唔會發生）：簽約金已入帳，唔好卡住玩家 */
+      modal(`<h3>何生來電</h3>${formatResultNotes(notes)}<p class="var-note">嗰張通告嘅資料對唔返，拍攝安排要再同何生確認；簽約金照數入帳。</p>`,[
+        {label:"好", role:"p", on:cont}
+      ], {onDismiss: cont});
+      try{ saveQ(); }catch(_e){}
+      return;
+    }
+    const shoot = scheduleShoot(gig, pay, rec.fame, rec.pop, {basePay:rec.payBase, bonusPay:rec.payBonus, bonusLabel:rec.payBonusLabel});
+    shoot.signedPaid = signPay; /* v20a91：殺青只入餘額（pay − signedPaid），總額不變 */
+    try{ saveQ(); }catch(_e){}
+    const finishReveal = ()=>{
+      paintBar(); drawMap();
+      const go = ()=>{ maybeShowTutToast("sawTutShoot","TUT_SHOOT", cont); };
+      toast((typeof softPreviewOn==="function" && softPreviewOn())
+        ? "劇組通知：獲聘，簽約金已入帳。入手帳睇行程開工，餘額殺青入帳。"
+        : phase3CastCopy().successToast);
+      modal(`<h3>獲聘！ ${rec.title}</h3>
+        <p>何生打嚟：「嗰邊開完會——用你。簽約金已經過數，拍攝日而家排。」</p>
+        <p>成功率約 ${rec.chancePct}%</p>
+        ${formatResultNotes(notes)}
+        <p class="gold">已簽約——返手帳睇行程，再開工。</p>
+        <p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
+        {label:"好", role:"p", on:go}
+      ], {onDismiss: go});
+      saveQ();
+    };
+    /* 拍攝日由公佈嗰刻起排，唔會早過公佈日（scheduleShoot 嘅 hiredAtDay＝今日） */
+    confirmPlaceShoot(shoot, weekdayIdx(S.dayIndex), finishReveal);
+    return;
+  }
+  /* 落選：現行失敗效果改喺公佈嗰刻入帳（數值同舊制一致，試鏡刻已預roll 定死） */
+  const notes=[];
+  notes.push(...apply({fame: rec.fxFame||0, stress: rec.fxStressFail||0}));
+  const failLine = eventLine("AUD_FAIL",{title:rec.title})||"未獲錄用——不會開工。";
+  notes.push(`<span class="bad">${failLine}</span>`);
+  aud91LogPush({ day:S.dayIndex|0, title:rec.title, ok:false, signPay:0, balance:0 });
+  paintBar(); drawMap();
+  if(presentAudFailSettlement({
+    gigTitle: rec.title,
+    chancePct: rec.chancePct,
+    notesHtml: "",
+    thenFn: cont
+  })){
+    saveQ();
+    return;
+  }
+  modal(`<h3>何生來電</h3><p><b>${rec.title}</b></p><p>何生打嚟：「嗰邊有回音喇——今次冇你份，唔使等喇。」</p><p>成功率約 ${rec.chancePct}%</p><p class="var-note">${(()=>{ try{ return chanceVarianceNote(gig||{req:{}}); }catch(_e){ return "成數受表現／壓力／信用影響。"; } })()}</p>${formatResultNotes(notes)}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
+    {label:"繼續", role:"p", on:cont}
+  ], {onDismiss: cont});
+  saveQ();
+}
+
 function promptAudition(gig, L){
   /* v19i：試鏡預約紙本卡已廢；入口一律直走即場 doAudition（唔再 push pendingAudition） */
   const gate=canAudition(gig);
@@ -52629,7 +52844,7 @@ function promptAudition(gig, L){
     return;
   }
   confirmSpendDay((typeof softPreviewOn==="function" && softPreviewOn())
-    ? `去試鏡：${gig.title||"通告"}（未獲聘不入拍攝簿、不入帳；殺青先有片酬）`
+    ? `去試鏡：${gig.title||"通告"}（試鏡後等通知；未獲聘不入帳；獲聘先收簽約金，餘額殺青先有片酬）`
     : `接通告：${gig.title||"通告"}`, ()=>doAudition(gig, L));
 }
 
@@ -52637,6 +52852,19 @@ function doAudition(gig, L){
   const gate=canAudition(gig);
   if(!gate.ok){
     toast(gate.reason||"未能試鏡");
+    if(L) openCastingNoticeDetail(gig, L);
+    return;
+  }
+  /* v20a91 AUD91：等消息上限＋重複試鏡閘——喺 WF3 試鏡前抉擇之前擋，
+     唔好畀玩家白揀完先發現試唔到／重複試同一張 */
+  aud91Ensure();
+  if(aud91PendingOf(gig.id)){
+    toast("呢張通告已經試咗鏡——而家等緊劇組回音，何生會打嚟通知你。");
+    if(L) openCastingNoticeDetail(gig, L);
+    return;
+  }
+  if((S.pendingAud||[]).length>=AUD91_CAP){
+    toast(`手頭已經有 ${AUD91_CAP} 張通告等緊消息——等埋回音先再試新嘅，唔好一次過報太多。`);
     if(L) openCastingNoticeDetail(gig, L);
     return;
   }
@@ -52657,82 +52885,40 @@ function doAudition(gig, L){
   const p=chance(gig); // 0..1 success probability — UI % uses Math.round(p*100)
   const roll=Math.random(); // fair uniform [0,1); hire iff roll < p (not hardcoded)
   const ok=roll<p;
-  let notes=[];
-  let title;
   S.board[L.id]=(S.board[L.id]||[]).filter(id=>id!==gig.id);
   S.booked=(S.booked||[]).filter(b=>b.gigId!==gig.id);
   closeSheet();
+  writeTodayPlan("audition:"+gig.id); // 試鏡日事實：唔好寫成休息
+  clearJobFromPlans(gig.id);
+  /* v20a91 AUD91：試鏡嗰刻擲定晒——成功與否、鎖定片酬（rollAuditionPay）、
+     聲望／人氣、連成敗效果都預roll，成單寫入 S.pendingAud 等公佈日揭曉。
+     試鏡日唔再即場入任何成敗效果（唔洩底、唔同舊制即知結果打架）；
+     效果改喺公佈嗰刻入帳，數值同舊制一致。 */
+  const days=shootSpanFor(gig);
+  let rec;
   if(ok){
-    writeTodayPlan("audition:"+gig.id); // 試鏡日事實：唔好寫成休息
-    clearJobFromPlans(gig.id);
     const payRoll = rollAuditionPay(gig);
-    let pay = payRoll.pay;
     const fame=R(gig.fame[0],gig.fame[1]);
     const pop = gig.popularity ? R(gig.popularity[0], gig.popularity[1]) : Math.max(1, Math.round(fame*0.7)+R(0,2));
-    const days=shootSpanFor(gig);
-    notes=apply({acting:R(0,1), stress:8+R(0,4)});
-    const shoot=scheduleShoot(gig, pay, fame, pop, payRoll);
-    title="獲聘！";
-    notes.push(`<span class="good">${eventLine("AUD_PASS",{title:gig.title, shootDays:days})||("試鏡通過，拍攝 "+days+" 日")}</span>`);
-    /* v20a37 驗證修復（必修 3）：聲望／人氣唔係獲聘嗰刻入帳——fame/pop 嗰一刻只存入
-       shoot record（scheduleShoot），去到殺青日 resolvePlannedDay wrap 分支先經 apply 落帳。
-       舊文案「完成後約酬…聲望 +5」冇講幾時兌現，實機玩家由獲聘睇到幾週後都以為聲望冇加（bug）。
-       查證結論：落帳路徑本身正常（見 NOTES 模擬實證），係文案誤導＋手帳排程路徑冇同一行。
-       改講明「殺青後入帳」；數字來源不變（同 shoot record 嗰兩個數）。 */
-    notes.push(`殺青後入帳：約酬 $ ${pay.toLocaleString()} · ${(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲望"} +${fame} · ${(STAT_LABEL&&STAT_LABEL.popularity)||"人氣"} +${pop}（未殺青前唔會加，拍完嗰日先入帳）`);
-    if(payRoll.note) notes.push(`<span class="var-note">${payRoll.note}</span>`);
-    try{ notes.push(`<span class="var-note">${chanceVarianceNote(gig)}</span>`); }catch(_e){}
-    try{ notes.push(`<span class="var-note">${payContractNote(gig, pay, payRoll)}</span>`); }catch(_e){}
-    const {ended, summary}=tickDay();
-    const finishHire=()=>{
-      paintBar(); drawMap();
-      const go=()=>{
-        // 開工前先睇手帳：唔好即刻自動播晒拍攝日
-        const cont=()=>{ if(ended) enterHome(summary, true); else enterHome(null, false); };
-        maybeShowTutToast("sawTutShoot","TUT_SHOOT", cont);
-      };
-      toast((typeof softPreviewOn==="function" && softPreviewOn())
-        ? "試鏡獲聘。入手帳開工，殺青先有片酬。"
-        : phase3CastCopy().successToast);
-      modal(`<h3>${title} ${gig.title}</h3>
-        <p>成功率約 ${Math.round(p*100)}%</p>
-        <p class="var-note">${(()=>{ try{ return chanceVarianceNote(gig); }catch(_e){ return "成數受表現／壓力／信用影響。"; } })()}</p>
-        ${formatResultNotes(notes)}
-        <p class="gold">已鎖拍攝日——返手帳睇行程，再開工。</p>
-        ${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}
-        <p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
-        {label: ended?"回家結算":"睇手帳", role:"p", on:go}
-      ], {onDismiss: go});
-      saveQ();
-    };
-    confirmPlaceShoot(shoot, weekdayIdx(S.dayIndex), finishHire);
-    return;
+    rec=aud91CreatePending(gig, L, { ok:true, p:p, days:days, payRoll:payRoll, fame:fame, pop:pop,
+      fxActing:R(0,1), fxStress:8+R(0,4), via:"board" });
+  } else {
+    rec=aud91CreatePending(gig, L, { ok:false, p:p, days:days,
+      fxFame:-R(1,2), fxStressFail:6+R(0,4), via:"board" });
   }
-  writeTodayPlan("audition:"+gig.id); // 試鏡日已耗（落選）
-  clearJobFromPlans(gig.id);
-  notes=apply({fame:-R(1,2), stress:6+R(0,4)});
-  const failLine=eventLine("AUD_FAIL",{title:gig.title})||"未獲錄用——不會開工。";
-  notes.push(`<span class="bad">${failLine}</span>`);
   const {ended, summary}=tickDay();
   paintBar(); drawMap();
-  const contFail=()=>{ if(ended) enterHome(summary, true); else runScheduleFromToday(); };
-  // v17c: first fail settlement IS TUT_AUD_FAIL (title 本次未獲聘), not deferred after 未獲錄用
-  if(presentAudFailSettlement({
-    gigTitle: gig.title,
-    chancePct: Math.round(p*100),
-    notesHtml: ended?`<p class="gold">一週完結 → 回家結算，計劃下週行程</p>`:"",
-    thenFn: contFail
-  })){
-    saveQ();
-    return;
-  }
-  modal(`<h3>未獲錄用</h3><p><b>${gig.title}</b> · 成功率約 ${Math.round(p*100)}%</p><p class="var-note">${(()=>{ try{ return chanceVarianceNote(gig); }catch(_e){ return "成數受表現／壓力／信用影響。"; } })()}</p>${formatResultNotes(notes)}${ended?`<p class="gold" style="margin-top:8px">一週完結 → 回家結算，計劃下週行程</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
-    {label: ended?"回家結算":"繼續", role:"p", on:contFail}
-  ], {onDismiss: contFail});
+  const cont=()=>{ if(ended) enterHome(summary, true); else runScheduleFromToday(); };
+  modal(`<h3>試鏡完畢 ${gig.title}</h3>
+    <p>你照住要求演咗一輪，評判點頭抄低你個名，最後講咗句「返去等消息啦」——呢行唔興即場拍板，劇組要開完會先定到人。</p>
+    <p class="gold">何生話：${aud91WaitPhrase(rec.wait)}，佢一收到風就會打嚟通知你；真係獲聘嗰陣，先簽約收簽約金，之後先排拍攝日開工。</p>
+    <p class="var-note">成功率約 ${Math.round(p*100)}%（成數受表現／壓力／信用影響）。等消息期間照常生活；手帳「事業」頁睇得到而家等緊邊幾張。</p>
+    ${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}
+    <p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
+    {label: ended?"回家結算":"繼續", role:"p", on:cont}
+  ], {onDismiss: cont});
   saveQ();
 }
-
-
 function rarityDot(r){
   const c = r==="uncommon" ? "#6aa8ff" : r==="rare" ? "#c9a0ff" : r==="prestige" ? "#e8b86d" : "#9aaa9a";
   return `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${c};margin-right:6px;vertical-align:middle"></span>`;
@@ -53207,10 +53393,32 @@ function jobs72SectionHtml(){
     return (S.weekPlan||[]).some(p=>p===("shoot:"+sh.id));
   });
   const hist = (S.wrapHistory || []).slice(0, 12);
-  if(!booked.length && !shoots.length && !hist.length){
-    return `<h3 class="jobs72-h">拍攝簿</h3><p>而家未有拍攝中／待試鏡／殺青紀錄。<br>達標後去通告欄試鏡；只有獲聘先會開拍。</p><p class="sub" style="font-size:.75rem;margin-top:8px">早期入場通告喺中環廣告／星河等地——撳下面可直達。</p><button type="button" class="pane-go72 jobs72-goboard">去通告欄</button>`;
+  /* v20a91 AUD91：等消息清單＋試鏡消息留底（何生通知） */
+  const pend91 = (typeof aud91Ensure==="function") ? (S.pendingAud||[]) : [];
+  const log91 = (typeof aud91Ensure==="function") ? (S.aud91Log||[]) : [];
+  if(!booked.length && !shoots.length && !hist.length && !pend91.length && !log91.length){
+    return `<h3 class="jobs72-h">拍攝簿</h3><p>而家未有拍攝中／待試鏡／殺青紀錄。<br>達標後去通告欄試鏡；試鏡後要等幾日先有回音，獲聘先會開拍。</p><p class="sub" style="font-size:.75rem;margin-top:8px">早期入場通告喺中環廣告／星河等地——撳下面可直達。</p><button type="button" class="pane-go72 jobs72-goboard">去通告欄</button>`;
   }
   let body=`<h3 class="jobs72-h">拍攝簿</h3>`;
+  if(pend91.length){
+    body += `<p class="gold" style="margin:0 0 6px">等消息（已試鏡，未有回音）</p>`;
+    pend91.forEach(rec=>{
+      const L=LOCS.find(x=>x.id===rec.locId);
+      body += `<div class="req" style="margin-bottom:8px">
+        <b>📞 ${rec.title}</b> · ${rec.type||""} · <span class="gold">等消息</span>
+        <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${L?L.name+" · ":""}${(typeof aud91PendingHint==="function") ? aud91PendingHint(rec) : ""}</div>
+      </div>`;
+    });
+  }
+  if(log91.length){
+    body += `<p class="gold" style="margin:10px 0 6px">試鏡消息（何生通知留底）</p>`;
+    log91.slice(0, 6).forEach(en=>{
+      body += `<div class="req" style="margin-bottom:8px">
+        <b>${en.ok?"✅":"📞"} ${en.title}</b> · ${en.ok?"獲聘":"未獲聘"}
+        <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${en.ok?`簽約金 $ ${(en.signPay||0).toLocaleString()} 已入帳 · 餘額 $ ${(en.balance||0).toLocaleString()} 殺青入帳`:"呢張通告完結，再試其他。"}</div>
+      </div>`;
+    });
+  }
   if(shoots.length){
     body += `<p class="gold" style="margin:0 0 6px">拍攝中／已獲聘</p>`;
     shoots.forEach(sh=>{
@@ -53222,7 +53430,7 @@ function jobs72SectionHtml(){
         <b>🎥 ${sh.title}</b> · ${sh.type||""} · <span class="gold">${stLab}</span>
         <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${L?L.name+" · ":""}進度 ${sh.doneDays||0}/${sh.totalDays} · 剩餘 ${rem} 日</div>
         ${hud?`<div style="font-size:.72rem;color:var(--gold,#c9a227);margin-top:2px">拍攝限期：${hud}</div>`:""}
-        <div style="font-size:.72rem;color:#b3a284">完成約酬 $ ${(sh.pay||0).toLocaleString()} · 聲望 +${sh.fame||0} · 人氣 +${sh.popularity!=null?sh.popularity:0}（殺青後入帳）</div>
+        <div style="font-size:.72rem;color:#b3a284">${(Number(sh.signedPaid)||0)>0 ? `合約 $ ${(sh.pay||0).toLocaleString()} · 簽約金 $ ${(Number(sh.signedPaid)||0).toLocaleString()} 已入帳 · 餘額 $ ${Math.max(0,(sh.pay||0)-(Number(sh.signedPaid)||0)).toLocaleString()} 殺青入帳` : `完成約酬 $ ${(sh.pay||0).toLocaleString()}（殺青後入帳）`} · 聲望 +${sh.fame||0} · 人氣 +${sh.popularity!=null?sh.popularity:0}</div>
       </div>`;
     });
   }
@@ -53649,6 +53857,8 @@ function contFromSlot(slot){
   if(!S.weekPlan || S.weekPlan.length!==7){ S.weekPlan=defaultWeekPlan(); stampWeekPlan37(); }
   S.weekPlan = scrubStaleJobs(S.weekPlan); // v18p: district scout → scout_all
   if(!S.booked) S.booked=[];
+  if(!Array.isArray(S.pendingAud)) S.pendingAud=[]; /* v20a91 AUD91：舊檔冇呢欄當空陣列 */
+  if(!Array.isArray(S.aud91Log)) S.aud91Log=[];
   if(!S.shoots) S.shoots=[];
   if(S.stress==null) S.stress=12;
   if(S.popularity==null) S.popularity=3;
