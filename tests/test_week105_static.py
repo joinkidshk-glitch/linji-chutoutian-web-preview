@@ -71,7 +71,7 @@ tp = fn_body("todayPlanId")
 ok('startsWith("wrap:")' in tp and '"scout_all"' in tp, "todayPlanId 已完成標記改返自由日")
 pb = seg("function paintBar(){", "let __storyMapRedrawT")
 ok("WEEK105 S-13 保底" in pb and pb.count('id="map-end-day"') >= 2,
-   "paintBar 保底：任何非強制日子有「逛完・過一日」")
+   "paintBar 保底：任何非強制日子有「過一日」")
 
 # --- S-14：實際執行紀錄 ---
 ok("execLog105:{}" in src.replace(" ", "") or "execLog105: {}" in src, "fresh() 有 execLog105 欄")

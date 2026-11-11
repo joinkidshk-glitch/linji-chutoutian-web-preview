@@ -27,7 +27,8 @@ i_after = src.find('<div class="map-wrap">', i_menu)
 menu = src[i_menu:i_after] if 0 <= i_menu < i_after else ''
 ok('選單容器搵到', bool(menu))
 ms = re.findall(r'data-m="([^"]+)"', menu)
-ok('選單 data-m 恰好＝新清單（手帳／提早休息＋系統五項＋wire；劇情掣已於 v20a77 移除）',
+# v20a108 TEXT108 S-49：選單項舊名「提早休息」改「過一日」；data-m 值 rest-early 不變，只係測試名跟改
+ok('選單 data-m 恰好＝新清單（手帳／過一日＋系統五項＋wire；劇情掣已於 v20a77 移除）',
    ms == ['journal', 'rest-early', 'replay-tut', 'settings', 'wire', 'save', 'load', 'new'])
 ok('選單已冇六個資訊頁入口', all(('data-m="%s"' % m) not in menu for m in
    ['stats', 'people', 'inv', 'jobs', 'rumors', 'debts']))
