@@ -96,7 +96,9 @@ ok('S-29 未達標 details 預設摺疊', '<details class="gig-locked108">' in b
 ok('S-29 摺疊標題有張數', '未達標／長遠目標（${locked108.length} 張）' in b)
 
 # S-33 簽約金行升摘要＋違約金有數先出
-b = body_of('function castingNoticeDetailHtml', 7000)
+# 視窗 7000→11000：S-30v2 令 castingNoticeDetailHtml 由 ~6.9k 漲到 9750 字元
+# （負責人英雄區＋要求格＋完成期限 consts），簽約金／違約金／toggle 行全部喺 8.5k 內。
+b = body_of('function castingNoticeDetailHtml', 11000)
 ok('S-33 摘要有簽約金行', '簽約金</span><span class="v">${signFee108}</span>' in b)
 ok('S-33 簽約金寫「接通告後即收」', '（接通告後即收）' in b)
 ok('S-33 違約金有數先出', 'gigBreachFee(g)!=null' in b)

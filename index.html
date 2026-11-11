@@ -4902,6 +4902,76 @@ body.day-res-open .day-row{
 }
 /* === v20a108 DLG108 完 === */
 
+
+/* ===== S-30v2（對照 patch，未入分支）：通告詳情「負責人＋通告紙」上下分層 =====
+   取代 v1 S-30 patch（v1 未入分支；本包係超集，可直接由乾淨 main 套用，唔使先套 v1）。
+   只改呈現：castingNoticeDetailHtml 模板＋本範圍 CSS；數值／機制／content JSON 零改動。
+   (0) 通告 sheet 加高到 88dvh（只限 casting-sheet；先例：#mask.tut-on 嘅 modal 同樣用 88dvh）——
+       78dvh 唔夠同時放負責人半身＋全張卡而唔碌（實測見 s30v2 量度表）。
+       注意：現行 78dvh 規則用咗 !important（#mask:not(.tut-on) .modal），故呢度都要 !important
+       先壓得過（單靠更高 specificity 唔夠）。
+   (1) 米紙卡＋紅印＋紙籤（v1 規則，原樣搬入 cn-paper30v2 範圍）。
+   (2) 負責人半身企卡後面：英雄區 240px、卡頂疊上 100px，可見人物約 140px（頭＋肩＋胸；
+       遮到腰要全屏 sheet，見 s30v2 handoff 取捨，唔喺度硬加）。
+   (3) 要求值改格並排：每格「現值／要求」＋✓／✕；唔合格＝紅字＋✕＋淡紅底三重。
+   (4) 正文字唔細過 13px（.82rem）：掣＋詳細條件行由 .78rem 升上嚟。 */
+#mask.casting-sheet-on:not(.tut-on) .modal{ max-height:min(88dvh,760px) !important; }
+/* 卡身內捲區底墊：原 calc(12px + safe-area) 喺呢個 sheet 係重複嘅——掣列本身已有 safe-area 底墊；
+   收返 12px，等摺疊狀態唔使為咗 28px 空白而碌。展開嗰陣照捲，唔影響。
+   注意：原規則（約 3657 行）用咗 !important，呢度都要 !important 先壓得過。 */
+#mask.casting-sheet-on .notice_sheet_frame.cn-paper30v2 .notice_sheet_body{ padding-bottom:12px !important; }
+/* ---- (2) 負責人英雄區：企喺卡後面，margin-bottom 負值等卡疊上嚟；圖缺失嗰陣成區隱藏，卡自動歸位 ---- */
+#mask.casting-sheet-on #modal-inner .cn-issuer30v2{ flex:0 0 auto; position:relative; height:240px; margin-bottom:-100px; overflow:hidden; background:radial-gradient(120% 110% at 50% 0%, #f6ead0 0%, #ecd9ac 62%, #e0c78e 100%); }
+#mask.casting-sheet-on #modal-inner .cn-issuer30v2 .cn-issuer-img30v2{ display:block; width:60%; max-width:230px; height:auto; margin:0 auto; }
+#mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2{ position:absolute; left:12px; bottom:106px; z-index:2; background:#fbf4dd; border:1px solid #a98d4f; border-radius:6px; box-shadow:0 1px 3px rgba(60,40,10,.3); padding:5px 9px; line-height:1.3; }
+#mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2 b{ display:block; font-size:.95rem; color:#2a2118; }
+#mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2 span{ display:block; font-size:.82rem; font-weight:700; color:#6b5340; }
+/* ---- (1) 米紙卡（v1 規則，原樣搬入 cn-paper30v2 範圍） ---- */
+.notice_sheet_frame.cn-paper30v2{ position:relative; z-index:2; background:linear-gradient(172deg,#f8f0dc,#f3e8c9 60%,#eee0b8); color:#2a2118; border:1px solid #b39a5f; border-radius:6px; box-shadow:0 6px 18px rgba(30,20,8,.35), inset 0 0 0 3px rgba(255,252,240,.5); }
+.notice_sheet_frame.cn-paper30v2 .notice_header_orange{ background:transparent; border-bottom:3px double #8a6d2f; border-radius:0; padding:10px 12px 8px; }
+.notice_sheet_frame.cn-paper30v2 .notice_header_orange .cn-work{ color:#2a2118; text-shadow:none; font-family:"Kaiti SC","KaiTi",serif; letter-spacing:.06em; }
+.notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row .v{ font-family:"Kaiti SC","KaiTi",serif; }
+.notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row .k{ color:#6b5340; }
+/* 狀態膠囊 -> 紅印章（原 notice_tag_recruiting class 保留，邏輯不變） */
+.notice_sheet_frame.cn-paper30v2 .notice_tag_recruiting.cn-stamp30{ background:transparent; color:#b3261e; border:2px solid #b3261e; outline:1px solid #b3261e; outline-offset:2px; border-radius:4px; font-weight:900; letter-spacing:.14em; transform:rotate(-3deg); padding:2px 8px; box-shadow:none; }
+/* 類型膠囊 -> 紙籤 */
+.notice_sheet_frame.cn-paper30v2 .notice_tag_type, .notice_sheet_frame.cn-paper30v2 .notice_tag_genre{ background:#fbf4dd; color:#4a3a20; border:1px dashed #a98d4f; border-radius:3px; box-shadow:0 1px 2px rgba(60,40,10,.25); }
+/* 「顯示詳細」虛線掣 -> 紙籤掣 */
+.notice_sheet_frame.cn-paper30v2 .cn-detail-toggle.cn-paper30-toggle{ border:1px dashed #a98d4f; background:#fbf4dd; color:#4a3a20; border-radius:3px; }
+/* 標籤藍字 -> 墨色；角色職位白盒 -> 紙籤 */
+.notice_sheet_frame.cn-paper30v2 .cn-lab-inline{ color:#6b5340; }
+.notice_sheet_frame.cn-paper30v2 .cn-role-line{ background:#fbf4dd; border:1px dashed #a98d4f; }
+.notice_sheet_frame.cn-paper30v2 .cn-role-line .k{ color:#6b5340; }
+/* ---- (3) 要求格並排對照 ---- */
+.notice_sheet_frame.cn-paper30v2 .cn-req-grid30v2{ display:grid; grid-template-columns:repeat(auto-fit,minmax(72px,1fr)); gap:6px; margin:0 0 6px; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-cell{ border:1px solid #b39a5f; border-radius:6px; background:#fbf4dd; padding:5px 6px 4px; min-width:0; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-top{ display:flex; justify-content:space-between; align-items:baseline; gap:4px; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-lab{ font-size:.82rem; font-weight:900; color:#4a3a20; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-mark{ font-size:.82rem; font-weight:900; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-cell.ok .cn-req-mark{ color:#1f7a4d; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-val{ font-size:.82rem; font-weight:800; color:#1A1410; line-height:1.35; word-break:keep-all; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-cell.no{ background:#fbe7e0; border-color:#c0392b; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-cell.no .cn-req-lab, .notice_sheet_frame.cn-paper30v2 .cn-req-cell.no .cn-req-val, .notice_sheet_frame.cn-paper30v2 .cn-req-cell.no .cn-req-mark{ color:#a93226; }
+/* 要求格已承載條件，摘要嘅重複行收起（純呈現，邏輯不變；格本身有「組製暫無額外能力條件」後備） */
+.notice_sheet_frame.cn-paper30v2 .cn-sum-gaps, .notice_sheet_frame.cn-paper30v2 .cn-board-sub{ display:none; }
+/* 星級＋職位合併一行 */
+.notice_sheet_frame.cn-paper30v2 .cn-stars-role30v2{ display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 8px; font-size:.82rem; margin:0 0 6px; }
+.notice_sheet_frame.cn-paper30v2 .cn-stars-role30v2 .cn-lab-inline{ color:#6b5340; }
+.notice_sheet_frame.cn-paper30v2 .cn-role30v2 .k{ font-weight:900; color:#6b5340; }
+.notice_sheet_frame.cn-paper30v2 .cn-role30v2 .v{ font-weight:700; color:#1A1410; }
+/* ---- (4) 密度：掣＋詳細條件行唔細過 13px ---- */
+.notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row{ margin:2px 0; line-height:1.35; }
+.notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row .v{ word-break:keep-all; overflow-wrap:normal; }
+/* S-30v2 期間拆行：底部期間／期限 bar 嘅短語唔准中間斷開（摘要 .v 上面已有 keep-all；
+   限 cn-paper30v2 範圍，唔改全局）。 */
+.notice_sheet_frame.cn-paper30v2 .notice_period_bar{ word-break:keep-all; }
+/* 承上：值唔肯斷詞之後，flex 會反過來壓縮左邊標籤（「通告期／間」）——標籤鎖死唔換行，闊度畀值。 */
+.notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row .k{ flex:0 0 auto; white-space:nowrap; }
+.notice_sheet_frame.cn-paper30v2 .cn-pills{ margin:0 0 6px; }
+.notice_sheet_frame.cn-paper30v2 .cn-detail-toggle{ font-size:.82rem; padding:7px 10px; }
+.notice_sheet_frame.cn-paper30v2 .cn-cond-row, .notice_sheet_frame.cn-paper30v2 .cn-cond-row .ok, .notice_sheet_frame.cn-paper30v2 .cn-cond-row .no{ font-size:.82rem; }
+/* S-32 保留：卡高按內容收（v105 已修，紙框唔加固定高度） */
+
 /* ===== v20a108 UI108 視覺統一包（B 級）===== */
 #app #v-start .start52 #start-soft-tip{ background:rgba(243,231,200,.93); color:#3a2e22 !important; text-shadow:none; padding:6px 10px; border-radius:8px; box-shadow:0 1px 6px rgba(0,0,0,.28); }
 #app #v-start .start52 #start-soft-tip strong{ color:#8a5a00; }
@@ -34178,16 +34248,20 @@ function gigCastPeriodLine(g, opts105){
   }
   const year=g.year || (typeof calendarYear==="function" ? calendarYear() : 1990);
   const season=g.season && g.season!=="不限" && g.season!=="全年" ? `${g.season}季檔` : "通告檔";
+  /* S-30v2：期間行只留季節／檔期窗（castWindow 分支原樣保留 startHint ～ endHint）。
+     完成期限另見 gigCastDeadlineText30v2（詳情頁獨立行）；「約 N 個工作天」刪走——
+     通告日數行已有同一數字，唔講第二次。 */
+  return withApply(`${year}年${season}`);
+}
+/* S-30v2：完成期限（詳情頁獨立行）。ddl 計法同舊期間行：effectiveShootDeadlineDays，
+   失敗退回 g.shootDeadlineDays；冇數回 ""，呼叫方成行隱藏，唔留空行。 */
+function gigCastDeadlineText30v2(g){
+  if(!g) return "";
   let ed=null, ddl=null;
   try{ ed=effectiveShootDays(g); }catch(_e){ ed=g.shootDaysHint; }
   try{ ddl=effectiveShootDeadlineDays(g, ed); }catch(_e){ ddl=g.shootDeadlineDays; }
-  const bits=[`${year}年${season}`];
-  if(ddl) bits.push(`獲聘後 ${ddl} 日內完成`);
-  if(ed) bits.push(`約 ${ed} 個工作天`);
-  /* v19z3：工作天同報名截止唔黏埋 */
-  if(!apply) return bits.join(" · ");
-  if(!bits.length) return apply;
-  return bits.join(" · ") + "<br>" + apply;
+  if(!ddl) return "";
+  return `獲聘後 ${ddl} 日內`;
 }
 function gigDifficultyStars(g){
   /* PLAN §3.6 */
@@ -34431,12 +34505,43 @@ function gigLockReasonLine(g){
   if(!bits.length) return "條件未合，暫未能報；可選擇離開。";
   return "暫未能報："+bits.join("；")+"。可先訓練再回來。";
 }
+
+/* S-30v2：通告詳情卡上人物＝發出呢張通告嗰個機構嘅負責人（話事人），唔係主角／主演。
+   對照表 key＝g.loc（機構＝通告嘅 loc）。11 間機構老闆全部係為本遊戲新創作嘅虛構人物，
+   全身立繪見 assets/story/fullbody/boss_<loc>_base.webp（v111 入庫；溫子峰圖收 marginal，
+   面相偏後生，留待用戶睇樣後決定係咪重擲）。
+   後備規則：對照表搵唔到（11 間以外嘅 loc）→ 何生（何生事務所話事人／玩家經理人；
+   通告經佢接洽、試鏡結果由佢通知）。阿偉／主演永不頂替。圖缺失嗰陣英雄區成區隱藏，只出卡。 */
+const GIG_ISSUER_FIGURE_MAP30V2 = {
+  "tvb_longmen":  { src:"assets/story/fullbody/boss_tvb_longmen_base.webp?v=20a106",  name:"沈卓衡", org:"星河電視台", role:"台長" },
+  "film_lion":    { src:"assets/story/fullbody/boss_film_lion_base.webp?v=20a106",    name:"羅勁威", org:"獅子山製片", role:"老闆" },
+  "ad_adm":       { src:"assets/story/fullbody/boss_ad_adm_base.webp?v=20a106",       name:"方樂怡", org:"金鐘創意",   role:"老闆" },
+  "ad_central":   { src:"assets/story/fullbody/boss_ad_central_base.webp?v=20a106",   name:"霍君豪", org:"中環廣告",   role:"老闆" },
+  "rec_hk":       { src:"assets/story/fullbody/boss_rec_hk_base.webp?v=20a106",       name:"伍兆昌", org:"香江唱片",   role:"老闆" },
+  "tvb_kowloon":  { src:"assets/story/fullbody/boss_tvb_kowloon_base.webp?v=20a106",  name:"陶映紅", org:"九龍電視台", role:"台長" },
+  "film_cotton":  { src:"assets/story/fullbody/boss_film_cotton_base.webp?v=20a106",  name:"鄭伯康", org:"紅棉影業",   role:"老闆" },
+  "rec_wanchai":  { src:"assets/story/fullbody/boss_rec_wanchai_base.webp?v=20a106",  name:"梁廣成", org:"灣仔唱片",   role:"老闆" },
+  "tvb_harbour":  { src:"assets/story/fullbody/boss_tvb_harbour_base.webp?v=20a106",  name:"顧學禮", org:"海港廣播",   role:"台長" },
+  "film_harbour": { src:"assets/story/fullbody/boss_film_harbour_base.webp?v=20a106", name:"夏文心", org:"維港電影",   role:"老闆" },
+  "rec_star":     { src:"assets/story/fullbody/boss_rec_star_base.webp?v=20a106",     name:"溫子峰", org:"天星音樂",   role:"老闆" },
+};
+function gigIssuerFigure30v2(g){
+  try{
+    const key = (g && g.loc) || "";
+    if(key && GIG_ISSUER_FIGURE_MAP30V2[key]) return GIG_ISSUER_FIGURE_MAP30V2[key];
+  }catch(_e){}
+  return { src:"assets/story/fullbody/ho_sang_base.webp?v=20a106", name:"何生", org:"何生事務所", role:"你的經理人" };
+}
 function castingNoticeDetailHtml(g){
   /* v19f PLAN_GIG_MV3_ALIGN_v1 Phase B label nits；類型 lab＋角色職位；limits 空隱藏；內容等劇本 HANDOFF */
   const work=gigWorkTitle(g);
   const st=gigRecruitStatus(g);
   const dir=gigDirectorLabel(g);
   const period=gigCastPeriodLine(g, {noApply:true});
+  /* S-30v2：完成期限獨立行（有 ddl 先出，冇就成行隱藏）；底部 notice_period_bar 同樣拆開。 */
+  const deadline30v2=gigCastDeadlineText30v2(g);
+  const deadlineRow30v2=deadline30v2?`<div class="cn-sum-row"><span class="k">完成期限</span><span class="v">${deadline30v2}</span></div>`:"";
+  const deadlineBar30v2=deadline30v2?`<div class="notice_period_bar"><b>完成期限：</b>${deadline30v2}</div>`:"";
   const ddl105=gigApplyDeadlineDays(g);
   const ddlRow105 = (ddl105!=null) ? `<div class="cn-sum-row"><span class="k">報名截止</span><span class="v">仲有 ${ddl105} 日截止</span></div>` : "";
   const stars=gigDifficultyStars(g);
@@ -34467,6 +34572,29 @@ function castingNoticeDetailHtml(g){
   if(!condParts.length) condParts.push(`<div class="cn-cond-row">組製暫無額外能力條件</div>`);
   const syn = g.synopsis ? String(g.synopsis) : "（組製未附劇情簡介）";
   const roleLine = gigRoleLineHtml(g);
+  /* S-30v2：發出人英雄區＋星級／職位合併行＋要求格。數值／機制零改動；現值讀 S 同 condParts 一樣。 */
+  const issuer30v2 = gigIssuerFigure30v2(g);
+  const heroHtml30v2 = `<div class="cn-issuer30v2" role="img" aria-label="${issuer30v2.name} · ${issuer30v2.org}"><img class="cn-issuer-img30v2" src="${issuer30v2.src}" alt="${issuer30v2.name}" onerror="this.closest('.cn-issuer30v2').style.display='none'"><div class="cn-issuer-cap30v2"><b>${issuer30v2.name}</b><span>${issuer30v2.org} · ${issuer30v2.role}</span></div></div>`;
+  const roleLabel30v2 = (typeof gigRoleLabelText==="function") ? gigRoleLabelText(g) : "";
+  /* 注意：呢度在 starHtml 起出之前執行，故星星由 stars.n 即場砌，唔讀 starHtml（避 TDZ）。 */
+  const starsGlyph30v2 = Array.from({length:5},(_,i)=> i<stars.n ? "★" : "☆").join("");
+  const starsRoleRow30v2 = `<div class="cn-stars-role30v2"><span class="cn-lab-inline">難易度</span><span class="cn-stars" role="img" aria-label="難易度 ${stars.n} 星">${starsGlyph30v2}</span>${roleLabel30v2?`<span class="cn-role30v2"><span class="k">角色職位</span><span class="v">${roleLabel30v2}</span></span>`:""}</div>`;
+  const reqGridHtml = (()=>{
+    const cells=[];
+    const floor30v2=(typeof fameFloor==="function") ? fameFloor(g) : 0;
+    const push30v2=(key,lab,need)=>{
+      const cur=Number(S&&S[key])||0, ok=cur>=need;
+      cells.push(`<div class="cn-req-cell ${ok?"ok":"no"}"><div class="cn-req-top"><span class="cn-req-lab">${lab}</span><span class="cn-req-mark">${ok?"✓":"✕"}</span></div><div class="cn-req-val">現 ${cur} ／ 要 ${need}</div></div>`);
+    };
+    if(floor30v2>0) push30v2("fame",(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲望",floor30v2);
+    const ORDER30v2=["acting","vocal","stage","charm","looks","stamina","iq"];
+    const keys30v2=Object.keys(g.req||{});
+    keys30v2.sort((a,b)=>{ const ia=ORDER30v2.indexOf(a), ib=ORDER30v2.indexOf(b); return (ia<0?99:ia)-(ib<0?99:ib) || String(a).localeCompare(String(b)); });
+    keys30v2.forEach(k=>push30v2(k,(STAT_LABEL&&STAT_LABEL[k])||k,Number((g.req||{})[k])||0));
+    if(!cells.length) return `<div class="cn-req-grid30v2"><div class="cn-req-cell ok"><div class="cn-req-val">組製暫無額外能力條件</div></div></div>`;
+    return `<div class="cn-req-grid30v2">${cells.join("")}</div>`;
+  })();
+
   /* v20a90 POSTER90（用戶實玩指出）：接通告詳情係「完成之前」嘅場合——作品未開拍
      唔可能有成品海報、亦唔預設紅星已係主演。故本頁唔再渲染成品作品圖（poster59fig）
      同主演行（leadRow59）；成品圖＋主演名只准喺完成後場合出現（殺青 wrapPoster59Html、
@@ -34512,32 +34640,33 @@ function castingNoticeDetailHtml(g){
      否則 Phase 1-3 拼合情報喺詳情頁隱形（試玩斷鏈）。有情報先出，無就完全唔顯示。 */
   let intelHtml = "";
   try{ const il = (typeof intelLineForGig==="function") ? intelLineForGig(g) : ""; if(il) intelHtml = `<div class="discover-note">情報：${il}</div>`; }catch(_e){}
-  return `<div class="notice_sheet_frame" data-gid="${g.id}">
+  return `${heroHtml30v2}<div class="notice_sheet_frame cn-paper30v2" data-gid="${g.id}">
     <div class="notice_poster_wall" aria-hidden="true"></div>
-    <div class="notice_header_orange">
+    <div class="notice_header_orange cn-paper30-head">
       <h2 class="cn-work">${work}</h2>
     </div>
     <div class="notice_sheet_body">
     <div class="cn-summary">
       <div class="cn-pills">
         ${gigGenrePillsHtml(g)}
-        <span class="${statusCls}" data-board-state="${boardState}">${stateLabel}</span>
+        <span class="${statusCls} cn-stamp30" data-board-state="${boardState}">${stateLabel}</span>
       </div>
       ${stateSub?`<p class="cn-board-sub">${stateSub}</p>`:""}
-      <div class="cn-stars-row"><span class="cn-lab-inline">難易度</span><span class="cn-stars">${starHtml}</span></div>
-      ${roleLine}
+      ${starsRoleRow30v2}
+      ${reqGridHtml}
       <div class="cn-sum-row"><span class="k">片酬</span><span class="v">${payStr}</span></div>
       <div class="cn-sum-row"><span class="k">簽約金</span><span class="v">${signFee108}</span></div>
       ${breachRow108}
       <div class="cn-sum-row"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
       <div class="cn-sum-row"><span class="k">通告期間</span><span class="v">${period}</span></div>
+      ${deadlineRow30v2}
       ${ddlRow105}
       ${releaseRow88}
       ${sumGaps}
       ${intelHtml}
       <p class="var-note">成數受表現／壓力／信用影響；片酬牌面為約酬區間，試鏡後要等劇組回音，獲聘簽約先收三成簽約金，餘額殺青按合約實收。</p>
     </div>
-    <button type="button" class="cn-detail-toggle" data-cn-toggle aria-expanded="false">顯示詳細 ▾</button>
+    <button type="button" class="cn-detail-toggle cn-paper30-toggle" data-cn-toggle aria-expanded="false">顯示詳細 ▾</button>
     <div class="cn-detail" hidden>
     <div class="notice_table_frame">
       <div class="notice_table_cell cond">
@@ -34556,6 +34685,7 @@ function castingNoticeDetailHtml(g){
     <div class="cn-director-line">導演：${dir}</div>
     ${producerLine}
     <div class="notice_period_bar"><b>通告期間：</b>${period}</div>
+    ${deadlineBar30v2}
     <div class="notice_synopsis_frame">
       <div class="cn-lab">劇情簡介</div>
       <div class="cn-syn-scroll">
