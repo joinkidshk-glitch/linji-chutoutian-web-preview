@@ -52,11 +52,15 @@ ok('paintStoryEntryHints：badge 更新保留 if 守衛（元素缺席安全降�
    'const badge = document.getElementById("menu-story-badge");' in ps and 'if(badge){' in ps)
 
 # --- 三、chip 改指進度頁 ---
+# v20a108 UI108 S-8（審計 B 項）：頂欄 chip 改做純數字徽章，唔再做掣——進度唯一入口係
+# 地圖 pill（#map-progress-btn）。舊 HUB77「chip click 落點進度頁」斷言按新規格改寫。
 ok('chip：標籤改「進度」＋title 改「主線進度」',
    'id="chip-story" title="主線進度">進度<span class="chip-story-n"' in src)
-c = seg('const cs=document.getElementById("chip-story");', '/* v20a71 PROGRESS71：地圖提示行', 1500)
-ok('chip handler：落點係進度頁', 'enterHome(null, false, "progress")' in c)
-ok('chip handler：唔再開 picker／唔再行 story commit', 'StoryPlay.playOpenPicker()' not in c and 'ensureWeekPlanCommittedForStory' not in c)
+ok('chip：改做 span 純徽章（唔係 button）',
+   '<span class="chip chip-story" id="chip-story"' in src
+   and '<button type="button" class="chip chip-story" id="chip-story"' not in src)
+ok('chip：冇 click 接線（唔再入進度頁）', 'cs.addEventListener("click"' not in src)
+ok('chip：地圖 pill 留唯一進度入口', 'id="map-progress-btn"' in src)
 ok('chip title 四態改主線進度語系',
    '主線進度 · 有 ' in ps and '主線內容載入中' in ps and '主線進度（暫無可播）' in ps and '主線內容載入唔到' in ps)
 ok('chip 舊 title 文案清零', '有可播劇情 · ' not in src and '"劇情（暫無可播）"' not in src and '"劇情內容載入中"' not in src)
