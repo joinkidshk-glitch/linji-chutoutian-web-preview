@@ -28,4 +28,6 @@ ENC105（D-2/D-3）＋WEEK105（S-12/13/14）＋UI105C（其餘 23 項編號）�
 - 統籌綜合實駕（合併版，`linji-work105/qa105final/`）：人情頁指向＋S-44 第一天狀態、S-48 真選單路徑（探針複驗）、S-35 獲聘 modal（真 pendingAud 公佈鏈：冇成功率行、有簽約金段）、S-37 殺青對帳只一段（$516/$155/$361 對數）、S-40 支票第一屏成張可見（截圖肉眼定奪；量度矩形因 modal-inner 邊界差 7px，以截圖為準）。全程零 pageerror。
 
 ## 部署核實
-（推 main 後補）
+- main 已推 GitHub：`c320f77..83bade2`（經 linji-repo 常駐 clone fast-forward＋push）。
+- 線上 index.html：4,956,581 bytes、sha256 `9d939bb96941b083…`，同本地逐字一致（Pages 首次核實係舊版，等約 90 秒後轉新版，屬已知部署延遲）。
+- 新資產線上可達：`assets/story/era_stars/chung_choning_stand_default.png` HTTP 200。
