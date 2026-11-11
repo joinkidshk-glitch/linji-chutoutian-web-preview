@@ -49849,6 +49849,8 @@ function openLoc(id, opts){
     /* v18k: also drop off-season leftovers from older SAVE
        v20a88: 改用提早窗判準——提早窗內嘅通告係合法板面，唔好誤刪 */
     if(typeof gigSeasonHidden88==="function" ? gigSeasonHidden88(gig, calendarSeason()) : seasonRank(gig, calendarSeason())>0) return false;
+    /* v20a92 NAT92：已落板嘅殘留列一併清，同板面判準一致 */
+    if(typeof gigBoardPosted92==="function" && !gigBoardPosted92(gig)) return false;
     return true;
   });
   try{ ensureEntryTierBoardFill(); }catch(_ef){}
@@ -51162,6 +51164,322 @@ function mergeYearGigs36(){
   }catch(_e){ return 0; }
 }
 
+/* ===== v20a92 NAT92 通告板分布自然化（用戶 2026-11-11 10:15 實玩發現、10:18 拍板）=====
+   病根（普查實證）：1990 年庫每格「地點×季×中/高」清一色恰好 1 張（補量嗰陣按格仔
+   分配嘅副作用），板面疊「當季＋下季提早窗」兩季即恆常 2/2/2，太整齊、出戲。
+   通告欄程式本身冇配額——整齊係庫嘅格仔結構，修法係打散「上板時序」＋加厚個別大格：
+   (1) 上板錯峰：庫存通告（pack 年編碼 id＋g36 補庫；入門/常駐散工/劇情條件注入除外）
+       按 id 決定性雜湊（FNV-1a，存檔/重載恆定、唔用 Math.random）喺每個可見 interval
+       內錯開上板日（偏移 0–39 日）＋落板拉前（0–24 日，招滿即落板）。逐 interval 按
+       「interval 長度 − 工期所需日曆日」夾位，保證上板後喺 interval 內拍得完。
+       例外：年初已開窗嘅 interval（冬年初窗＋春提早窗）唔行開窗偏移——開局板面
+       嘅豐富度係 v88/v90 建立嘅反通告荒基線，唔可以俾錯峰抽乾；嗰批改行加闊落板
+       拉前（0–30 日），喺年初窗尾段逐張落板。
+       偏移點解唔跟足建議嘅 21 日：離線模擬實證凈 21 日只蝕到窗口邊緣，雙窗重疊期
+       長達 60 日、平台期太長，「恰好 2」占比只由 62.2% 跌到 44.8%（守衛要 <40%）；
+       攤開到 40 日＋落板拉前先至達標。詳 NOTES_V20A92。
+   (2) 板面保底：錯峰後若某地點成塊板真空（薄池年特別易發生），最快上板嗰張照貼，
+       板面永遠唔會全空（同 v88 入門保底同一哲學）。
+   (3) 格仔加厚：大機構×旺季格補中/高級＋紅棉/灣仔唱片補冬季入門（守衛：第一週
+       每個有通告地點至少 1 張可接——v91 基線嗰兩個地點 fresh 可接 0），全表 18 張，
+       行 mergeNat92Gigs 注入層（唔直改 pack JSON），工期/片酬跟 v90 校準帶。
+   只改「未接通告嘅板面可見性」：已接/拍攝中/殺青、試鏡簽約流程（v91）、海報時機
+   （POSTER90）、門檻 req、季節歸屬一概唔郁。 */
+const NAT92_SPREAD = 40;
+const NAT92_PULL_MAX = 24;
+const NAT92_PULL_OPEN_MAX = 30;
+function nat92Hash(str){
+  let h = 2166136261;
+  const s = String(str == null ? "" : str);
+  for(let i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function nat92StaggerEligible(g){
+  if(!g || g.entryTier || g.softBridge) return false;
+  const id = String(g.id || "");
+  if(!(/^gig_\d{4}_/.test(id) || /^g36_/.test(id))) return false;
+  if(!g.season || typeof GIG_SEASON_SPAN88 === "undefined" || !GIG_SEASON_SPAN88[g.season]) return false;
+  return Number(g.year) > 0;
+}
+function nat92DayIdxOf(y, m, d){
+  const base = new Date(START.y, START.m - 1, START.d);
+  return Math.round((new Date(y, m - 1, d) - base) / 86400000);
+}
+function nat92CalNeedDays(g){
+  if(!g) return 0;
+  let days = 0;
+  try{ days = (typeof effectiveShootDays === "function") ? (Number(effectiveShootDays(g)) || 0) : 0; }catch(_e){ days = 0; }
+  if(!days) days = Number(g.shootDaysHint) || 0;
+  let wd = 5;
+  try{
+    const wds = (typeof effectiveShootWeekdays === "function") ? effectiveShootWeekdays(g) : null;
+    if(Array.isArray(wds) && wds.length) wd = new Set(wds.map(x => Number(x))).size;
+  }catch(_e){}
+  return Math.ceil(days * 7 / Math.max(1, wd));
+}
+/* 可見 interval 清單（絕對 dayIndex）＋逐 interval 嘅上板日/落板日（已夾位）。
+   冬通告有兩個 interval：年初名相符窗（1–2 月）＋錨定提早窗（10 月起）。 */
+function nat92PostIntervals(g){
+  if(!g || typeof GIG_SEASON_SPAN88 === "undefined" || !GIG_SEASON_SPAN88[g.season]) return null;
+  const y = Number(g.year);
+  if(!y) return null;
+  const lead = (typeof GIG_SEASON_LEAD88 === "number") ? GIG_SEASON_LEAD88 : 60;
+  let raw;
+  if(g.season === "冬"){
+    raw = [ [nat92DayIdxOf(y, 1, 1), nat92DayIdxOf(y, 3, 1) - 1],
+            [nat92DayIdxOf(y, 12, 1) - lead, nat92DayIdxOf(y, 12, 31)] ];
+  } else {
+    const span = GIG_SEASON_SPAN88[g.season];
+    const start = nat92DayIdxOf(y, span[0], 1);
+    const end = nat92DayIdxOf(y, span[1] + 1, 1) - 1;
+    raw = [ [Math.max(nat92DayIdxOf(y, 1, 1), start - lead), end] ];
+  }
+  const cal = nat92CalNeedDays(g);
+  const yearStart = nat92DayIdxOf(y, 1, 1);
+  return raw.map((iv, i) => {
+    const len = iv[1] - iv[0] + 1;
+    /* 年初已開窗嘅 interval（冬年初窗＋春提早窗，池啟動嗰刻已經開咗）：唔行開窗
+       偏移——開局板面要保住 v88/v90 建立嘅豐富度，唔可以俾錯峰抽乾變通告荒翻版；
+       嗰批改行加闊落板拉前（0–30 日），喺 interval 尾段逐張落板製造變化。 */
+    const opening = iv[0] <= yearStart;
+    let off = opening ? 0 : Math.floor((nat92Hash("nat92o" + i + ":" + g.id) / 4294967296) * NAT92_SPREAD);
+    let pull = nat92Hash("nat92p" + i + ":" + g.id) % ((opening ? NAT92_PULL_OPEN_MAX : NAT92_PULL_MAX) + 1);
+    off = Math.min(off, Math.max(0, len - cal));
+    pull = Math.min(pull, Math.max(0, len - cal - off));
+    return { from: iv[0], to: iv[1], off, pull, post: iv[0] + off, last: iv[1] - pull };
+  });
+}
+function gigBoardPosted92(g){
+  if(!nat92StaggerEligible(g)) return true;
+  const ivs = nat92PostIntervals(g);
+  if(!ivs) return true;
+  const d = (typeof S !== "undefined" && S) ? (Number(S.dayIndex) || 0) : 0;
+  return ivs.some(iv => d >= iv.post && d <= iv.last);
+}
+/* 節奏模型／測試用：錨定 interval（最後一個）嘅上板偏移 */
+function nat92BoardOffsetDays(g){
+  if(!nat92StaggerEligible(g)) return 0;
+  const ivs = nat92PostIntervals(g);
+  if(!ivs || !ivs.length) return 0;
+  return ivs[ivs.length - 1].off;
+}
+function nat92WindowStartDay(g){
+  if(!nat92StaggerEligible(g)) return null;
+  const ivs = nat92PostIntervals(g);
+  if(!ivs || !ivs.length) return null;
+  return ivs[0].post;
+}
+
+/* --- NAT92 加厚通告（舊曆年份編碼，同 gig36 慣例：1988→1990／1989→1991／1990→1992，
+   normalize 時 years66 自動 +2；文案一律避開年份數字免被 shiftText 誤移） --- */
+function nat92Gig(spec){
+  const pay = Array.isArray(spec.pay) ? spec.pay : [0, 0];
+  const payMid = Math.round((pay[0] + pay[1]) / 2);
+  const high = spec.tier === "高";
+  const o = {
+    id: spec.id, year: spec.year, season: spec.season, seasonHook: spec.seasonHook || [],
+    type: spec.type, genreLabel: spec.type, loc: spec.loc,
+    workTitle: spec.workTitle || "", title: spec.title,
+    roleLabel: spec.roleLabel || "", director: spec.director || "副導",
+    roleHint: spec.roleHint || "", blurb: spec.blurb || "",
+    synopsis: spec.synopsis || spec.blurb || "",
+    eraTag: spec.eraTag || "", discoverNote: spec.discoverNote || "",
+    boardPriority: spec.boardPriority || "normal", boardNote: spec.boardNote || "",
+    seasonWeight: 1, req: spec.req || {}, pay: pay,
+    payExact: spec.payExact != null ? spec.payExact : Math.round(payMid / 10) * 10,
+    breachFee: spec.breachFee != null ? spec.breachFee : Math.round(payMid * 0.55 / 10) * 10,
+    fame: spec.fame || (high ? [50, 85] : [18, 31]),
+    popularity: spec.popularity || (high ? [80, 110] : [39, 62]),
+    stressDeltaHint: spec.stressDeltaHint || "中",
+    hard: spec.hard != null ? spec.hard : (high ? 0.65 : 0.43),
+    tier: spec.tier || "中", stars: 1, entryTier: !!spec.entryTier, softBridge: false,
+    applyDeadlineDays: spec.applyDeadlineDays != null ? spec.applyDeadlineDays : (high ? 16 : 12),
+    shootDaysHint: spec.days, shootHint: spec.shootHint || "",
+    roleScale: spec.roleScale || "tv_support_main",
+    shootBand: [spec.days, spec.days], shootWeekdays: spec.shootWeekdays || [1, 2, 3, 4, 5],
+    shootDeadlineDays: spec.days + 14,
+    limits: { gender: "any", licenses: [], groupOnly: false, notes: [] },
+    storyKeys: spec.storyKeys || [], tagOnComplete: spec.tagOnComplete || [],
+    rumorKeys: [], favorDelta: [], boardHookMode: "normal", isKeyGig: false,
+    industryCreditMin: null, requiresCastingTagAny: null, nat92: true
+  };
+  return o;
+}
+const NAT92_GIGS = [
+  /* 1990（舊曆 1988）：大機構×旺季 中級 */
+  nat92Gig({ id:"gig_1988_nat92_longmen_aut_drama", year:1988, season:"秋", seasonHook:["autumn"], type:"電視劇", loc:"tvb_longmen",
+    workTitle:"雙城記", title:"《雙城記》台慶單元劇：茶餐廳老闆", roleLabel:"單元男配角", director:"監製",
+    roleHint:"茶餐廳老闆，戲份唔多但場場都在，要沉穩、壓得住場。",
+    blurb:"星河電視台台慶月單元劇，清水灣廠景連拍。台慶月曝光高，監製揀人揀得嚴。",
+    synopsis:"台慶月係電視台一年一度嘅大事，單元劇排住隊上。呢個角色唔係主角，但係成個單元嘅定海神針——做得好，成行都會記住你塊面。",
+    eraTag:"era_nat92_longmen_aut", discoverNote:"台慶月重點劇目", boardNote:"台慶劇配角",
+    req:{ acting:300, looks:240, iq:240, charm:330 }, pay:[10000,12400], tier:"中", roleScale:"tv_support_main", days:15 }),
+  nat92Gig({ id:"gig_1988_nat92_longmen_win_sitcom", year:1988, season:"冬", seasonHook:["winter"], type:"電視劇", loc:"tvb_longmen",
+    workTitle:"笑住過年", title:"《笑住過年》賀歲處境劇：大廈看更", roleLabel:"處境劇配角", director:"監製",
+    roleHint:"看更阿伯上身，要識接梗、識停頓，笑位先出到。",
+    blurb:"賀歲處境喜劇趕住新年播出，廠景夜班連拍，笑料要嚟得快。",
+    synopsis:"賀歲劇講意頭，最緊要觀眾睇得開心。看更呢個位唔大，但每集都有笑位，係新人俾人記住嘅好機會。",
+    eraTag:"era_nat92_longmen_win", discoverNote:"賀歲處境劇", boardNote:"賀歲劇配角",
+    req:{ acting:290, charm:350, stage:260 }, pay:[9200,11400], tier:"中", roleScale:"tv_support_main", days:14 }),
+  nat92Gig({ id:"gig_1988_nat92_kowloon_aut_drama", year:1988, season:"秋", seasonHook:["autumn"], type:"電視劇", loc:"tvb_kowloon",
+    workTitle:"山光歲月", title:"《山光歲月》台慶劇：電車司機", roleLabel:"年代劇配角", director:"監製",
+    roleHint:"揸電車嘅年代戲，要練熟嗰種慢條斯理嘅講話節奏。",
+    blurb:"九龍電視台台慶年代劇，外景多。講舊香港人情味，角色要夠貼地。",
+    synopsis:"套劇講電車路沿線幾家人嘅故事，係台慶月嘅溫情牌。司機位唔重，但成日出鏡，觀眾緣就係咁累積返嚟。",
+    eraTag:"era_nat92_kowloon_aut", discoverNote:"台慶年代劇", boardNote:"台慶劇配角",
+    req:{ acting:310, stage:240, charm:320 }, pay:[10200,12600], tier:"中", roleScale:"tv_support_main", days:16 }),
+  nat92Gig({ id:"gig_1988_nat92_lion_sum_action", year:1988, season:"夏", seasonHook:["summer"], type:"電影", loc:"film_lion",
+    workTitle:"天橋雙雄", title:"《天橋雙雄》暑期動作片：追逐戲拍檔", roleLabel:"動作配角", director:"武術指導",
+    roleHint:"天橋同天台追逐戲多，要跑得、跌得，武指會喺場邊睇住。",
+    blurb:"獅子山製片暑期檔動作片，西環天橋實景拍攝。暑期檔係票房戰場，組入面唔養閒人。",
+    synopsis:"呢兩年動作片當道，邊個身手好、邊個就有工開。拍檔位要跟主角一齊跑成套戲，辛苦，但武指記人記得最牢。",
+    eraTag:"era_nat92_lion_sum", discoverNote:"暑期檔動作片", boardNote:"動作片配角",
+    req:{ acting:300, stamina:380, charm:260 }, pay:[10800,13200], tier:"中", roleScale:"film_support_main", days:12 }),
+  nat92Gig({ id:"gig_1988_nat92_harbour_win_comedy", year:1988, season:"冬", seasonHook:["winter"], type:"電影", loc:"film_harbour",
+    workTitle:"笑到飛起", title:"《笑到飛起》賀歲喜劇：廟街檔主", roleLabel:"喜劇配角", director:"副導",
+    roleHint:"廟街檔主，要識拋梗接梗，節奏唔啱成場笑唔出。",
+    blurb:"維港電影賀歲喜劇，廟街實景夜拍。賀歲片最講意頭同笑聲，檔主位係笑料來源之一。",
+    synopsis:"賀歲喜劇靠成班配角撐起笑位。檔主呢個角色唔多戲，但句句都係梗——做得好，新年期間成街都認得你。",
+    eraTag:"era_nat92_harbour_win", discoverNote:"賀歲喜劇", boardNote:"賀歲片配角",
+    req:{ acting:290, charm:360, iq:230 }, pay:[9900,12100], tier:"中", roleScale:"film_support_main", days:11 }),
+  nat92Gig({ id:"gig_1988_nat92_rechk_win_album", year:1988, season:"冬", seasonHook:["winter"], type:"唱片通告", loc:"rec_hk",
+    workTitle:"賀年精選", title:"《賀年精選》賀年大碟：和唱歌手", roleLabel:"和唱歌手", director:"監製",
+    roleHint:"要同主唱夾聲線，錄音室通宵都唔出奇，耳仔要夠靈。",
+    blurb:"香江唱片賀年大碟趕住年前推出，錄音室排到密一密。和唱做得好，下次就有機會企前一步。",
+    synopsis:"過年之前係唱片行嘅黃金檔，家家戶戶都要買返隻賀年碟。和唱位唔出名，但監製聽得出邊個把聲最夾。",
+    eraTag:"era_nat92_rechk_win", discoverNote:"賀年大碟", boardNote:"大碟和唱",
+    req:{ vocal:360, stage:350, charm:290 }, pay:[9000,11000], tier:"中", roleScale:"rec_album", days:9 }),
+  nat92Gig({ id:"gig_1988_nat92_adcentral_sum_ad", year:1988, season:"夏", seasonHook:["summer"], type:"廣告", loc:"ad_central",
+    workTitle:"冰涼一夏", title:"《冰涼一夏》汽水廣告：沙灘男配角", roleLabel:"廣告男配角", director:"客戶代表",
+    roleHint:"沙灘外景曬足成日，要笑得燦爛又唔可以溶妝。",
+    blurb:"中環廣告暑期大客戶，汽水廣告去淺水灣拍。廣告工時短、片酬好，但客戶揀樣揀得最挑剔。",
+    synopsis:"暑期係汽水廣告嘅戰場，呢支廣告會喺電視台黃金時段狂播。做得好，你塊面成個夏天都喺電視出現。",
+    eraTag:"era_nat92_adcentral_sum", discoverNote:"暑期大客戶廣告", boardNote:"廣告配角",
+    req:{ looks:330, charm:320, stage:240 }, pay:[5600,6800], tier:"中", roleScale:"ad_av", days:2 }),
+  nat92Gig({ id:"gig_1988_nat92_tvharbour_aut_var", year:1988, season:"秋", seasonHook:["autumn"], type:"綜藝", loc:"tvb_harbour",
+    workTitle:"台慶星光夜", title:"《台慶星光夜》台慶特輯：遊戲環節嘉賓", roleLabel:"綜藝嘉賓", director:"監製",
+    roleHint:"遊戲環節要放得開，反應慢半拍就俾人剪走。",
+    blurb:"海港廣播台慶特輯錄影，遊戲環節缺個識搞氣氛嘅嘉賓。台慶夜收視高，露面機會難得。",
+    synopsis:"台慶特輯係全台藝員晒冷嘅場合，新人企得埋去已經係一種認可。遊戲環節最講臨場反應，玩得投入先有鏡頭。",
+    eraTag:"era_nat92_tvharbour_aut", discoverNote:"台慶特輯錄影", boardNote:"綜藝嘉賓",
+    req:{ stage:330, charm:310, vocal:300 }, pay:[4200,5000], tier:"中", roleScale:"variety_ep", days:2 }),
+  /* 1990（舊曆 1988）：大機構×旺季 高級 */
+  nat92Gig({ id:"gig_1988_nat92_longmen_aut_high", year:1988, season:"秋", seasonHook:["autumn"], type:"電視劇", loc:"tvb_longmen",
+    workTitle:"夜城故事", title:"《夜城故事》台慶重頭劇：第二男主角", roleLabel:"第二男主角", director:"監製",
+    roleHint:"戲份僅次主角，感情線同事業線各一條，要頂得住長劇嘅拍攝期。",
+    blurb:"星河電視台台慶月重頭長劇，全台資源押晒落去。二男位係全行新人爭崩頭嘅位置。",
+    synopsis:"台慶重頭劇嘅二男，唔係人人有資格企上去——監製要嘅係一部長劇都捱得住嘅人。攞到呢個位，等於半隻腳踏入一線。",
+    eraTag:"era_nat92_longmen_aut_high", discoverNote:"台慶重頭劇", boardNote:"重頭劇二男",
+    req:{ acting:620, stage:480, charm:560, looks:420 }, pay:[39000,47000], tier:"高", roleScale:"tv_lead_long", days:28 }),
+  nat92Gig({ id:"gig_1988_nat92_lion_sum_high", year:1988, season:"夏", seasonHook:["summer"], type:"電影", loc:"film_lion",
+    workTitle:"烈日狂徒", title:"《烈日狂徒》暑期大片：男主角", roleLabel:"男主角", director:"導演",
+    roleHint:"成套戲嘅膽，動作同文戲都要一手包辦，導演會親自揀人。",
+    blurb:"獅子山製片暑期檔壓軸大片，製作費係全年最高嗰部。男主角位，全行都盯住。",
+    synopsis:"暑期檔票房冠軍多數出自呢類大片。坐上男主角個位，唔單止係片酬問題——係成個暑假，戲院門口都掛住你個樣。",
+    eraTag:"era_nat92_lion_sum_high", discoverNote:"暑期檔壓軸大片", boardNote:"暑期大片主角",
+    req:{ acting:800, stamina:700, charm:580 }, pay:[40000,48000], tier:"高", roleScale:"film_lead_big", days:24 }),
+  nat92Gig({ id:"gig_1988_nat92_harbour_sum_high", year:1988, season:"夏", seasonHook:["summer"], type:"電影", loc:"film_harbour",
+    workTitle:"夜雨殺機", title:"《夜雨殺機》警匪片：大反派", roleLabel:"大反派", director:"導演",
+    roleHint:"反派要夠冷、夠狠，一個眼神就要令觀眾心寒。",
+    blurb:"維港電影暑期警匪片，啟德一帶夜景連拍。大反派做得出色，隨時搶晒主角風頭。",
+    synopsis:"警匪片嘅反派係最考演技嘅位——觀眾記恨你，即係你成功咗。呢個角色寫得立體，係嗰種會俾人討論成個暑假嘅反派。",
+    eraTag:"era_nat92_harbour_sum_high", discoverNote:"暑期警匪片", boardNote:"警匪片反派",
+    req:{ acting:680, charm:620, iq:500 }, pay:[32000,39000], tier:"高", roleScale:"film_support_main", days:16 }),
+  nat92Gig({ id:"gig_1988_nat92_rechk_sum_high", year:1988, season:"夏", seasonHook:["summer"], type:"唱片通告", loc:"rec_hk",
+    workTitle:"夏日精選", title:"《夏日精選》暑期大碟：主唱歌手", roleLabel:"主唱歌手", director:"監製",
+    roleHint:"成隻碟嘅主打聲線，要錄到監製點頭為止，唔好預早走。",
+    blurb:"香江唱片暑期大碟押重注，主唱位會跟住做成個暑假嘅宣傳。唱片公司揀人揀聲，唔啱聽幾熟都冇情講。",
+    synopsis:"暑期大碟係唱片公司嘅票房戰場，主打歌會喺電台同卡拉 OK 播足成季。企到主唱位，你把聲就會成個夏天都喺街上響。",
+    eraTag:"era_nat92_rechk_sum_high", discoverNote:"暑期大碟主唱", boardNote:"大碟主唱",
+    req:{ vocal:640, stage:600, charm:520 }, pay:[26000,32000], tier:"高", roleScale:"rec_album", days:12 }),
+  /* 1991（舊曆 1989） */
+  nat92Gig({ id:"gig_1989_nat92_longmen_aut_mid", year:1989, season:"秋", seasonHook:["autumn"], type:"電視劇", loc:"tvb_longmen",
+    workTitle:"台慶星輝", title:"《台慶星輝》台慶單元劇：報館記者", roleLabel:"單元男配角", director:"監製",
+    roleHint:"記者角色要問得快、反應快，對白密，要背得熟。",
+    blurb:"星河電視台台慶月單元劇，報館景連拍。台慶檔期，監製對成套劇嘅要求都提高一截。",
+    synopsis:"單元劇講報館追新聞嘅日子，節奏明快。記者位係全劇嘅眼，邊度有事邊度就有佢——出鏡率高，啱儲觀眾緣。",
+    eraTag:"era_nat92_longmen_aut_91", discoverNote:"台慶月單元劇", boardNote:"台慶劇配角",
+    req:{ acting:320, charm:340, iq:250 }, pay:[10500,12800], tier:"中", roleScale:"tv_support_main", days:15 }),
+  nat92Gig({ id:"gig_1989_nat92_kowloon_win_high", year:1989, season:"冬", seasonHook:["winter"], type:"電視劇", loc:"tvb_kowloon",
+    workTitle:"歲晚烽火", title:"《歲晚烽火》賀歲重頭劇：男主角", roleLabel:"男主角", director:"監製",
+    roleHint:"長劇主角，要由籌備捱到煞科都保持狀態，唔可以有一集鬆懈。",
+    blurb:"九龍電視台歲晚壓軸長劇，趕住賀歲檔期播出。主角位一早全行放風，競爭係呢兩年最激烈嘅一次。",
+    synopsis:"賀歲重頭劇嘅男主角，係可以改變星途嘅位置。套劇會喺新年期間晚晚播，入屋程度唔係電影比得上。",
+    eraTag:"era_nat92_kowloon_win_91", discoverNote:"賀歲重頭劇", boardNote:"重頭劇主角",
+    req:{ acting:660, stage:520, charm:580 }, pay:[42000,50000], tier:"高", roleScale:"tv_lead_long", days:30 }),
+  /* 1992（舊曆 1990） */
+  nat92Gig({ id:"gig_1990_nat92_lion_win_mid", year:1990, season:"冬", seasonHook:["winter"], type:"電影", loc:"film_lion",
+    workTitle:"笑爆賀歲", title:"《笑爆賀歲》賀歲片：茶樓太子爺", roleLabel:"喜劇配角", director:"副導",
+    roleHint:"太子爺要寸得嚟又唔討厭，笑位全靠嗰種不知天高地厚。",
+    blurb:"獅子山製片賀歲喜劇，茶樓實景拍攝。呢兩年賀歲片票房保證，配角都俾人搶住做。",
+    synopsis:"賀歲片嘅配角分分鐘俾主角更入屋——新年流流，觀眾最記得嗰啲笑到佢哋拍枱嘅面孔。太子爺呢個位，寸嘴但唔衰格，先至啱數。",
+    eraTag:"era_nat92_lion_win_92", discoverNote:"賀歲喜劇", boardNote:"賀歲片配角",
+    req:{ acting:330, stamina:400, charm:280 }, pay:[11500,14000], tier:"中", roleScale:"film_support_main", days:13 }),
+  nat92Gig({ id:"gig_1990_nat92_harbour_aut_high", year:1990, season:"秋", seasonHook:["autumn"], type:"電影", loc:"film_harbour",
+    workTitle:"秋日重案", title:"《秋日重案》警匪大片：男主角", roleLabel:"男主角", director:"導演",
+    roleHint:"重案組阿頭，查案戲同動作戲都要親身上，唔靠替身係賣點之一。",
+    blurb:"維港電影秋季警匪大片，重慶大廈同油麻地一帶實景拍攝。呢部係公司今年衝票房同口碑嘅主力。",
+    synopsis:"警匪片拍到呢個年頭，觀眾要嘅唔止火爆場面，仲要人味。男主角係成套戲嘅脊骨——揀得啱，套戲就立得住。",
+    eraTag:"era_nat92_harbour_aut_92", discoverNote:"秋季警匪大片", boardNote:"警匪片主角",
+    req:{ acting:820, charm:600, iq:560 }, pay:[43000,52000], tier:"高", roleScale:"film_lead_big", days:25 }),
+  /* 守衛補位：紅棉影業／灣仔唱片冬季入門（v91 基線嗰兩個地點第一週 fresh 可接 0） */
+  { id:"gig_1988_nat92_cotton_entry", year:1988, season:"冬", seasonHook:["winter"], type:"電影", loc:"film_cotton",
+    workTitle:"紅棉賀歲檔", title:"《紅棉賀歲檔》趕檔場務助手", genreLabel:"幕後", roleLabel:"場務助手", director:"副導阿成",
+    roleHint:"搬景板、遞水、睇通告紙，紅棉賀歲片趕檔缺人。",
+    blurb:"冬季入門跟組：紅棉影業賀歲片趕住上畫，場務人手唔夠，唔使入鏡。",
+    synopsis:"賀歲檔期近，紅棉嗰組日夜趕工。唔使演，聽指示搬搬抬抬就得，啱新人第一週去識下片場點運作。",
+    eraTag:"era_nat92_winter_entry", discoverNote:"冬季入門雜務：無演技門檻。", boardPriority:"high", boardNote:"入門／臨記",
+    seasonWeight:1, req:{}, pay:[350,520], payExact:460, breachFee:120, fame:[1,3], popularity:[2,5],
+    stressDeltaHint:"低", hard:0.15, tier:"初", entryTier:true, stars:1, applyDeadlineDays:5,
+    shootDaysHint:1, shootHint:"準時到，手腳快就得。", roleScale:"film_support_small", shootBand:[1,1],
+    shootWeekdays:[1,2,3,4,5,6], shootDeadlineDays:10,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["冬季入門"] },
+    storyKeys:["season_92_winter","entry_pool"], tagOnComplete:["識跟場"], rumorKeys:[], favorDelta:[],
+    boardHookMode:"normal", isKeyGig:false, industryCreditMin:null, requiresCastingTagAny:null, nat92:true },
+  { id:"gig_1988_nat92_wanchai_entry", year:1988, season:"冬", seasonHook:["winter"], type:"唱片通告", loc:"rec_wanchai",
+    workTitle:"賀年歌精選", title:"《賀年歌精選》試聽包裝幫工", genreLabel:"幕後", roleLabel:"唱片幫工", director:"宣傳部阿玲",
+    roleHint:"入盒、貼標籤、試聽帶，唱片公司趕住年前出貨。",
+    blurb:"冬季入門幫工：灣仔唱片趕出賀年精選，錄音帶要人手入盒包裝。",
+    synopsis:"過年前唱片行最忙，賀年歌精選要趕住上架。幫手試聽、入盒、貼標籤就得，順便聽下新歌點錄。",
+    eraTag:"era_nat92_winter_entry", discoverNote:"冬季入門幫工：無歌藝門檻。", boardPriority:"high", boardNote:"入門／臨記",
+    seasonWeight:1, req:{}, pay:[320,480], payExact:420, breachFee:110, fame:[1,3], popularity:[2,5],
+    stressDeltaHint:"低", hard:0.15, tier:"初", entryTier:true, stars:1, applyDeadlineDays:5,
+    shootDaysHint:1, shootHint:"手腳乾淨，唔好整爛啲帶就得。", roleScale:"rec_album", shootBand:[1,1],
+    shootWeekdays:[1,2,3,4,5,6], shootDeadlineDays:10,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["冬季入門"] },
+    storyKeys:["season_92_winter","entry_pool"], tagOnComplete:["識跟場"], rumorKeys:[], favorDelta:[],
+    boardHookMode:"normal", isKeyGig:false, industryCreditMin:null, requiresCastingTagAny:null, nat92:true }
+];
+const NAT92_ALL_IDS = {};
+NAT92_GIGS.forEach(g => { if(g && g.id) NAT92_ALL_IDS[g.id] = 1; });
+function mergeNat92Gigs(){
+  try{
+    if(typeof GIGS === "undefined" || !Array.isArray(GIGS)) return 0;
+    let yr = 0;
+    try{ yr = (typeof dateObj === "function") ? dateObj().getFullYear() : 0; }catch(_e){ yr = 0; }
+    const want = (typeof NAT92_GIGS !== "undefined" ? NAT92_GIGS : []).filter(raw => {
+      if(!raw || !raw.id) return false;
+      const gy = Number(raw.year) || 0;
+      const gameYear = (gy >= 1988 && gy <= 1992) ? gy + 2 : gy; /* 舊曆編碼 → 遊戲年（同 years66ShiftYear 口徑） */
+      return gameYear === yr;
+    });
+    const wantIds = {};
+    want.forEach(g => { wantIds[g.id] = 1; });
+    /* 跨年洩漏防線：唔係今年嗰批，一律喺池移除 */
+    const before = GIGS.length;
+    GIGS = GIGS.filter(g => !(g && NAT92_ALL_IDS[g.id] && !wantIds[g.id]));
+    let n = 0;
+    want.forEach(raw => {
+      const norm = normalizeGigRecord(JSON.parse(JSON.stringify(raw)));
+      const i = GIGS.findIndex(g => g && g.id === raw.id);
+      if(i < 0){ GIGS.push(norm); n++; }
+      else GIGS[i] = norm;
+    });
+    if(GIGS.length !== before || n){ try{ window.GIGS = GIGS; }catch(_w){} }
+    return n;
+  }catch(_e){ return 0; }
+}
+
 /** v19l：某一地點、某一季嘅通告欄名單。
  *  錯季（seasonRank>0）同已殺青／拍攝中仍然硬藏。
  *  唔再以聲望、req.fame、fameFloor 硬藏「高」或任何級——條件未齊仍上板，Detail 硬鎖「暫未能報」。
@@ -51177,15 +51495,39 @@ function gigsForLocSeasonBoard(locId, curSeason){
   try{ if(typeof mergeMidGigs35==="function") mergeMidGigs35(); }catch(_m35){}
   try{ if(typeof mergeWinterBridge88==="function") mergeWinterBridge88(); }catch(_w88){}
   try{ if(typeof mergeYearGigs36==="function") mergeYearGigs36(); }catch(_y36){}
+  try{ if(typeof mergeNat92Gigs==="function") mergeNat92Gigs(); }catch(_n92){}
   curSeason = curSeason || calendarSeason();
   const byBoard=(a,b)=> boardSortCompare(a,b,curSeason);
   const pool=(GIGS||[]).filter(g=>{
     if(!g || g.loc!==locId) return false;
     /* v20a88：錯季硬藏改提早窗判準（typeof 防禦：抽函數測試沙盒冇 88 函數時回退 v18k 語義） */
     if(typeof gigSeasonHidden88==="function" ? gigSeasonHidden88(g, curSeason) : seasonRank(g, curSeason)>0) return false;
+    /* v20a92 NAT92：未到上板日／已落板嘅庫存通告唔上板（typeof 防禦：冇 92 函數時唔生效） */
+    if(typeof gigBoardPosted92==="function" && !gigBoardPosted92(g)) return false;
     if(isGigConsumed(g)) return false;
     return true;
   });
+  /* v20a92 NAT92 保底：錯峰後成塊板真空嗰陣照貼一張（板面唔會全空）——
+     首選最快上板嗰張；全部已落板嗰陣留最近落板嗰張（張紙仲未撕走）。 */
+  if(!pool.length && typeof nat92PostIntervals==="function"){
+    try{
+      const today92 = (typeof S!=="undefined" && S) ? (Number(S.dayIndex)||0) : 0;
+      let best92 = null, bestKey92 = Infinity, lastG92 = null, lastKey92 = -Infinity;
+      (GIGS||[]).forEach(g=>{
+        if(!g || g.loc!==locId) return;
+        if(typeof gigSeasonHidden88==="function" ? gigSeasonHidden88(g, curSeason) : seasonRank(g, curSeason)>0) return;
+        if(isGigConsumed(g)) return;
+        const ivs = nat92PostIntervals(g);
+        if(!ivs) return;
+        ivs.forEach(iv=>{
+          if(iv.last >= today92 && iv.post < bestKey92){ bestKey92 = iv.post; best92 = g; }
+          if(iv.last > lastKey92){ lastKey92 = iv.last; lastG92 = g; }
+        });
+      });
+      if(best92) pool.push(best92);
+      else if(lastG92) pool.push(lastG92);
+    }catch(_fb){}
+  }
   const tierOrder=["初","中","高"];
   const shown=[];
   tierOrder.forEach(tier=>{
@@ -51622,6 +51964,7 @@ function tipGig(npc){
     if(!prefer(g)) return false;
     if(isGigConsumed(g)) return false; // v18k: 殺青／拍攝中唔再推
     if(typeof gigSeasonHidden88==="function" ? gigSeasonHidden88(g, calendarSeason()) : seasonRank(g, calendarSeason())>0) return false; // v18k 錯季硬藏 → v20a88 提早窗判準
+    if(typeof gigBoardPosted92==="function" && !gigBoardPosted92(g)) return false; // v20a92 NAT92：未上板／已落板唔好推
     if((S.fame||0)+8 < fameFloor(g)) return false;
     // v18p: no district lock — any pin reachable on scout day
     // v17m: early game never tip 獅子山高門檻場
