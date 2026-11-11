@@ -1,6 +1,6 @@
 # NOTES V20A89 — 分支補完 S+M（BR89）
 
-基底 v20a88（5,237,050 bytes）→ v20a89（5,288,705 bytes）。SAVE key／softRev／產品 `?v=` 全不變；
+基底 v20a88（5,237,050 bytes）→ v20a89（5,288,711 bytes）。SAVE key／softRev／產品 `?v=` 全不變；
 唔直改 pack JSON（新節點行注入、情報行註冊表 runtime push）；判定門檻（E1–E7／E5 閘／頒獎線）一概冇郁，
 ending 相關只做呈現分版。關海媚冇入任何新回收。
 
