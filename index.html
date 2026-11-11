@@ -4882,7 +4882,7 @@ body.day-res-open .day-row{
        z-index:3）同巧遇盒（.e79-box z-index:5）都疊喺人物（z-index ≤4）之上。
    (2) per-pair 自動收細：dlg108FitPct 按對配對兩圖實際闊高比（naturalWidth／Height，
        onload 實測，唔用表估）計，若中間淨空 ＜12px 就自動降高到啱為止（上限 60%）；
-       60% 實測（v106 現行 88 張，見 qa108d/remeasure108d.json）：阿偉×何生淨空 20.2px、
+       60% 實測（現行 96 張＝v106 88＋v107 8，見 qa108d/remeasure108d.json）：阿偉×何生淨空 20.2px、
        阿偉×鍾楚凝 33.7px、最闊配對方小龍＋Vera 合計 0.795 須收至約 54.6%。
        高度經 --dlg108-char-h 落喺舞台，唔設值退回 60%。
    (3) 對話框定高：.dlg106-plate 固定 118px（＝原 min-height；名牌行＋3 行內文＋padding
@@ -26267,7 +26267,13 @@ function dlg108FitApply(stage){
     if(!stage) return false;
     var isEnc = stage.classList.contains('e79-stage');
     var imgs = stage.querySelectorAll(isEnc ? '.e79-char' : '.dlg106-char');
-    if(!imgs || imgs.length < 2) return false;
+    if(!imgs || imgs.length < 1) return false;
+    if(imgs.length === 1){
+      /* 單人步：冇配對要收細，var 照設 60%（同 CSS fallback 一致，量度可見）。 */
+      if(!imgs[0].naturalWidth || !imgs[0].naturalHeight) return false;
+      stage.style.setProperty('--dlg108-char-h', '60%');
+      return true;
+    }
     var a = [];
     for(var i=0;i<imgs.length;i++){
       var im = imgs[i];
@@ -26286,10 +26292,11 @@ function dlg108FitApply(stage){
 try{
   window.__dlg108Fit = function(img){
     try{
-      if(!img) return;
+      if(!img) return false;
       var stage = img.closest ? (img.closest('.sp-stage') || img.closest('.e79-stage')) : null;
-      if(stage) dlg108FitApply(stage);
+      if(stage) return dlg108FitApply(stage);
     }catch(_e){}
+    return false;
   };
   window.DLG108 = { fitPct:dlg108FitPct, fitApply:dlg108FitApply };
 }catch(_e){}
@@ -50793,15 +50800,16 @@ function enc79EnsureCss(){
       /* v20a106 DLG106：巧遇改雙人全身（高＝舞台 50%）；明暗／z-index 由 render 逐句 inline 設定，filter 過渡 250ms */
       /* v20a108 DLG108：人物高 60%（--dlg108-char-h，自動收細落喺 .e79-stage）、腳底
          bottom:10%，腳伸到對話盒後面；對話盒改 absolute 疊喺舞台底（z-index:5，喺人物
-         z-index ≤4 之上），盒頂去到人物膝頭至小腿中段；對白行固定 3 行＋名牌行 min-height
-         固定，短句留白唔跳；「下一句」改文字鏈（選項掣還原舊全寬深色掣）。 */
+         z-index ≤4 之上），盒頂去到人物膝頭至小腿中段；對白行固定 3 行＋名牌行
+         line-height:1.5＋min-height:1.5em 固定（空名同有名同高，盒高唔跳）；「下一句」改文字鏈
+         （選項掣還原舊全寬深色掣）。 */
       "#enc79-overlay .e79-char{position:absolute;bottom:10%;height:var(--dlg108-char-h,60%);max-width:48%;object-fit:contain;object-position:bottom center;transition:filter 250ms ease;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));}",
       "#enc79-overlay .e79-char-l{left:2%;}",
       "#enc79-overlay .e79-char-r{right:2%;}",
       "#enc79-overlay .e79-char.flip{transform:scaleX(-1);}",
       "#enc79-overlay .e79-name.phone{color:#9fc3dd;}",
       "#enc79-overlay .e79-box{position:absolute;left:0;right:0;bottom:0;z-index:5;background:linear-gradient(180deg,#241a10,#1a120a);border-top:2px solid #a97f2f;padding:12px 14px calc(12px + env(safe-area-inset-bottom));color:#f3e8d5;}",
-      "#enc79-overlay .e79-name{font-weight:800;color:#ffd968;margin:0 0 4px;font-size:.95rem;min-height:1.2em;}",
+      "#enc79-overlay .e79-name{font-weight:800;color:#ffd968;margin:0 0 4px;font-size:.95rem;line-height:1.5;min-height:1.5em;}",
       "#enc79-overlay .e79-line{margin:0 0 10px;line-height:1.55;font-size:1rem;height:4.65em;min-height:4.65em;overflow-y:auto;white-space:pre-wrap;}",
       "#enc79-overlay .e79-row{display:flex;gap:8px;flex-wrap:wrap;}",
       "#enc79-overlay .e79-btn{flex:0 0 auto;margin-left:auto;min-height:44px;min-width:88px;border-radius:10px;border:0;background:transparent;color:#ffd968;font-weight:700;font-size:.95rem;padding:8px 14px;text-decoration:underline;text-underline-offset:3px;}",

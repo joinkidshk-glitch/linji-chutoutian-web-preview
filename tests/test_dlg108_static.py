@@ -1,5 +1,5 @@
 # v20a108 DLG108 靜態守門：60% 排位＋對話框遮腿＋對話框定高＋下一句文字鏈＋
-# 地面錨線零殘留（04:18 統籌追加取代舊方案）＋ v106 真檔重測（88 張闊高比）。
+# 地面錨線零殘留（04:18 統籌追加取代舊方案）＋ v106/v107 真檔重測（96 張闊高比）。
 # 用法：python3 tests/test_dlg108_static.py [path-to-index.html]
 import json, os, re, sys
 
@@ -37,6 +37,8 @@ ck("onload 收細掛鉤：主線 img 有 onload __dlg108Fit",
    'onload="try{window.__dlg108Fit&&window.__dlg108Fit(this)}' in src)
 ck("onload 收細掛鉤：巧遇 charL/charR 有 im.onload＝__dlg108Fit",
    "im.onload = function(){ try{ window.__dlg108Fit" in src)
+ck("單人步照設 --dlg108-char-h:60%（唔係留空靠 fallback）",
+   "imgs.length === 1" in src and "stage.style.setProperty('--dlg108-char-h', '60%')" in src)
 
 # ---------- 60%＋遮腿 CSS ----------
 i = src.find(".story-play .dlg106-char{")
@@ -64,7 +66,7 @@ def enc_css(s):
         "#enc79-overlay .e79-char{position:absolute;bottom:10%;height:var(--dlg108-char-h,60%)",
         "#enc79-overlay .e79-box{position:absolute;left:0;right:0;bottom:0;z-index:5;",
         "#enc79-overlay .e79-line{margin:0 0 10px;line-height:1.55;font-size:1rem;height:4.65em;min-height:4.65em;overflow-y:auto;",
-        "#enc79-overlay .e79-name{font-weight:800;color:#ffd968;margin:0 0 4px;font-size:.95rem;min-height:1.2em;}",
+        "#enc79-overlay .e79-name{font-weight:800;color:#ffd968;margin:0 0 4px;font-size:.95rem;line-height:1.5;min-height:1.5em;}",
     ])
 ck("巧遇 CSS 齊全（人物 60%＋bottom:10%＋盒 absolute 疊底 z-index:5＋對白行定 3 行＋名牌行定高）",
    enc_css(src))
@@ -100,7 +102,7 @@ ck("巧遇選項掣還原舊全寬深色掣（唔跟文字鏈）",
 ck("反證：舊全寬米白「下一句」掣已消失（flex:1 1 auto 唔再係 .e79-btn 主規則）",
    "#enc79-overlay .e79-btn{flex:1 1 auto;" not in src)
 
-# ---------- v106 真檔重測（88 張闊高比，PIL 實量；對照 size-test README） ----------
+# ---------- 真檔重測（96 張闊高比，PIL 實量；對照 size-test README） ----------
 try:
     from PIL import Image
     import glob as _glob
@@ -108,7 +110,7 @@ try:
     for p in sorted(_glob.glob(os.path.join(ROOT, "assets", "story", "fullbody", "*.webp"))):
         im = Image.open(p)
         files[os.path.basename(p)[:-5]] = round(im.size[0] / im.size[1], 4)
-    ck("真檔數目 88 張", len(files) == 88)
+    ck("真檔數目 96 張（v106 88 張＋v107 8 張新表情）", len(files) == 96)
     def near(name, got, want, tol=0.001):
         ck("闊高比 %s＝%.3f（size-test %.3f）" % (name, got, want), abs(got - want) <= tol)
     bases = {k[:-5]: v for k, v in files.items() if k.endswith("_base")}

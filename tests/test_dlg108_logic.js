@@ -1,5 +1,5 @@
 // v20a108 DLG108 邏輯測試：per-pair 自動收細 dlg108FitPct。
-// 闊高比數字來自 qa108d/remeasure108d.json（v106 現行 88 張實測，PIL 量度），
+// 闊高比數字來自 qa108d/remeasure108d.json（現行 96 張實測，PIL 量度），
 // 同 size-test README（awi 0.343／ho 0.364／chung 0.337／fong 0.413／vera 0.382）
 // 逐項對得上（誤差 ≤0.001）。
 // 規則：人物高上限 60% 舞台高；兩圖闊合計 ≤ stageW - margin - 12px；

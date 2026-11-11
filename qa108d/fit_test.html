@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DLG108 最闊配對自動收細測試（方小龍＋Vera）</title>
+<style>
+  /* 版面規則抄自遊戲本體 v108d（.dlg106-char／.sp-stage 幾何）：舞台 390×844、人物
+     左右 6px、max-width:48%、高 var(--dlg108-char-h,60%)、腳底 bottom:10%。 */
+  #stage{ position:relative; width:390px; height:844px; overflow:hidden; background:#171008; }
+  #bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .dlg106-chars{ position:absolute; inset:0; z-index:2; pointer-events:none; }
+  .dlg106-char{ position:absolute; bottom:10%; height:var(--dlg108-char-h,60%); max-width:48%;
+    width:auto; object-fit:contain; object-position:bottom center; }
+  .dlg106-left{ left:6px; } .dlg106-right{ right:6px; }
+  #plate{ position:absolute; left:12px; right:12px; bottom:66px; height:118px; z-index:3;
+    background:linear-gradient(168deg,#f8f0dd 0%,#f2e6cc 58%,#ebdfc1 100%); border:1px solid rgba(146,110,44,.5); }
+</style>
+</head>
+<body>
+<div id="stage" class="sp-stage">
+  <img id="bg" src="../assets/story/locs/bg_loc_agency_ho.jpg" alt="">
+  <div class="dlg106-chars">
+    <img class="dlg106-char dlg106-left" id="charL" src="../assets/story/fullbody/fong_siulung_base.webp" alt="">
+    <img class="dlg106-char dlg106-right" id="charR" src="../assets/story/fullbody/vera_base.webp" alt="">
+  </div>
+  <div id="plate"></div>
+</div>
+<script>
+/* 由遊戲本體 index.html 抽 DLG108 模組真身（唔係手抄副本），再用佢跑收細。 */
+fetch('../index.html').then(r => r.text()).then(html => {
+  const a = html.indexOf('/* ===== v20a108 DLG108');
+  const b = html.indexOf('/* ===== DLG108 模組完 ===== */');
+  if (a < 0 || b <= a) { window.__fitResult = { error: 'no DLG108 module' }; return; }
+  eval(html.slice(a, b));
+  const stage = document.getElementById('stage');
+  const L = document.getElementById('charL'), R = document.getElementById('charR');
+  let computed = false;
+  const check = () => {
+    if (computed) return;
+    if (!L.complete || !R.complete || !L.naturalWidth || !R.naturalWidth) return;
+    computed = true;
+    const ok = window.__dlg108Fit(L);
+    const lr = L.getBoundingClientRect(), rr = R.getBoundingClientRect();
+    const varH = getComputedStyle(stage).getPropertyValue('--dlg108-char-h').trim();
+    window.__fitResult = {
+      fitApplied: !!ok, varH: varH,
+      leftW: +lr.width.toFixed(1), rightW: +rr.width.toFixed(1),
+      gap: +(rr.left - lr.right).toFixed(1),
+      leftH: +lr.height.toFixed(1), rightH: +rr.height.toFixed(1),
+      natL: L.naturalWidth + 'x' + L.naturalHeight,
+      natR: R.naturalWidth + 'x' + R.naturalHeight
+    };
+  };
+  L.onload = check; R.onload = check; check();
+}).catch(e => { window.__fitResult = { error: String(e) }; });
+</script>
+</body>
+</html>
