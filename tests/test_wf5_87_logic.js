@@ -121,7 +121,10 @@ function loadPack(f) { return JSON.parse(fs.readFileSync(path.join(ROOT, 'conten
   ok('F3 LIVE C15 = 1992春', LIVE({ id: 'C15', eraTag: 'era_1990_spring_action', when: '1992春' }) === '主線 · 1992春');
   ok('F3 LIVE C6 全年冇季節', LIVE({ id: 'C6', eraTag: 'era_1988_canteen', when: '1990' }) === '主線 · 1990');
   ok('F3 LIVE C18 = 1990冬', LIVE({ id: 'C18', eraTag: 'era_1988_winter_agency', when: '1990冬' }) === '主線 · 1990冬');
-  ok('F3 LIVE C1 批准標籤不變', LIVE({ id: 'C1' }) === '主線 · 1990春');
+  /* v20a98 CONTRA98 A-03：標籤格式（主線 · YYYY季）不變，但季節跟返開局曆法——
+     START=1990-01-01・冬、開始按鈕寫「1990 年冬」、JAN67 已將 C1 when 改「1990冬」；
+     原期望「春」係 v67 一月開局改版漏改嗰行硬編碼，屬硬矛盾，已修正為「冬」。 */
+  ok('F3 LIVE C1 批准標籤不變', LIVE({ id: 'C1' }) === '主線 · 1990冬');
   /* F3d：forced session（進度頁「播呢幕」force 播）唔准再短路標籤——修前任何節點都變 1990春 */
   const envF = new Function('START', 'BehaviorGate', 'spIsForcedStory',
     'const YEARS66_SHIFT = 2, YEARS66_OLD_MIN = 1988, YEARS66_OLD_MAX = 1992;\n' +
@@ -129,7 +132,7 @@ function loadPack(f) { return JSON.parse(fs.readFileSync(path.join(ROOT, 'conten
     '\nreturn { spPlayerMeta };'
   )({ y: 1990 }, { featureFlag_softBehaviorGatePreview: () => false }, () => true);
   ok('F3d forced 播 C9 仍標 1991冬', envF.spPlayerMeta({ id: 'C9', eraTag: 'era_1989_winter_pressure', when: '1991冬' }, null, null) === '主線 · 1991冬');
-  ok('F3d forced 播 C1 仍標 1990春', envF.spPlayerMeta({ id: 'C1' }, null, null) === '主線 · 1990春');
+  ok('F3d forced 播 C1 仍標 1990冬', envF.spPlayerMeta({ id: 'C1' }, null, null) === '主線 · 1990冬'); /* v20a98 CONTRA98 A-03 同上 */
   /* soft：年份跟節點 when（修前一律 1990） */
   ok('F3 soft C9 = 1991冬', SOFT({ id: 'C9', when: '1991冬', eraTag: 'era_1989_winter_pressure' }) === '主線 · 1991冬');
   ok('F3 soft C13 = 1992冬', SOFT({ id: 'C13', when: '1992冬', eraTag: 'era_1990_winter_newyear' }) === '主線 · 1992冬');
