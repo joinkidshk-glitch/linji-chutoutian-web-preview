@@ -34552,8 +34552,8 @@ function castingNoticeDetailHtml(g){
   try{ weekdayHint=gigCastingWeekdayHint(g); }catch(_e){}
   const payStr=gigPayExactHtml(g);
   const breachStr=gigBreachFeeHtml(g);
-  /* v20a108 UI108 S-33：簽約金數字行升上摘要區（接通告後即收）；違約金只喺有數嗰陣先出。 */
-  const signFee108=(()=>{ try{ const ex=gigPayExact(g); return (ex!=null && ex>0) ? ("約 $"+Math.round(ex*0.3).toLocaleString()+"（接通告後即收）") : "合約額三成（接通告後即收）"; }catch(_e){ return "合約額三成（接通告後即收）"; } })();
+  /* v20a108 UI108 S-33：簽約金數字行升上摘要區（獲聘後即收；v20a115 更正：簽約金只喺公佈獲聘嗰刻入帳，見 aud91PresentOne「公佈嗰刻即付」，接通告嗰刻唔入帳）；違約金只喺有數嗰陣先出。 */
+  const signFee108=(()=>{ try{ const ex=gigPayExact(g); return (ex!=null && ex>0) ? ("約 $"+Math.round(ex*0.3).toLocaleString()+"（獲聘後即收）") : "合約額三成（獲聘後即收）"; }catch(_e){ return "合約額三成（獲聘後即收）"; } })();
   const breachRow108=(()=>{ try{ return (typeof gigBreachFee==="function" && gigBreachFee(g)!=null) ? `<div class="cn-sum-row"><span class="k">違約金</span><span class="v">${breachStr}</span></div>` : ""; }catch(_e){ return ""; } })();
   const condParts=[];
   const floor=fameFloor(g);
@@ -34602,7 +34602,11 @@ function castingNoticeDetailHtml(g){
      好感/提攜等邏輯照讀），只改顯示時機。 */
   /* v20a88 EARLY88：摘要加一行上映／播出檔期，等玩家睇得明「提早接工、拍完先上映」嘅節奏 */
   const release88 = (typeof gigReleaseLine88==="function") ? gigReleaseLine88(g) : "";
-  const releaseRow88 = release88 ? `<div class="cn-sum-row"><span class="k">檔期</span><span class="v">${release88}</span></div>` : "";
+  /* v20a115 S-30 TEXT115：檔期行只講一個概念——label 用返值入面嘅動詞（播出／上映／推出），
+     值刪走「預計播出：」前綴，唔好 label 同值各講一次；gigReleaseLine88 本身唔郁
+     （seasonTipHtml 括號入面仲要個前綴）。 */
+  const relMatch115 = release88 ? String(release88).match(/^預計(播出|上映|推出)：(.*)$/) : null;
+  const releaseRow88 = release88 ? `<div class="cn-sum-row"><span class="k">${relMatch115 ? "預計"+relMatch115[1] : "預計播出"}</span><span class="v">${relMatch115 ? relMatch115[2] : release88}</span></div>` : "";
   const limitsHtml = gigSpecialLimitsHtml(g);
   const producerLine = gigProducerLineHtml(g);
   const boardState = (st.label==="已殺青" || st.label==="已取消" || st.label==="製作中" || st.label==="已獲聘" || st.label==="拍攝中" || st.label==="待試鏡") ? "" : gigBoardCardState(g);
@@ -34664,7 +34668,7 @@ function castingNoticeDetailHtml(g){
       ${releaseRow88}
       ${sumGaps}
       ${intelHtml}
-      <p class="var-note">成數受表現／壓力／信用影響；片酬牌面為約酬區間，試鏡後要等劇組回音，獲聘簽約先收三成簽約金，餘額殺青按合約實收。</p>
+      <p class="var-note">成數受表現／壓力／信用影響。<br>片酬牌面係約數，實收按合約。<br>獲聘先收三成簽約金，餘額殺青先收。</p>
     </div>
     <button type="button" class="cn-detail-toggle cn-paper30-toggle" data-cn-toggle aria-expanded="false">顯示詳細 ▾</button>
     <div class="cn-detail" hidden>
