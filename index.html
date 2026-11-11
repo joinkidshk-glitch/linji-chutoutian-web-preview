@@ -24269,6 +24269,10 @@ const StoryOC = (()=>{
     }catch(_tg3){}
 
     markDone(node.id);
+    /* v20a105 WEEK105 S-14：劇情日記名——嗰日回顧要顯示「劇情」，唔好畀排程槽位
+       （或之後覆寫槽位嘅動作）頂替。recordExec105Day 喺主 script 先至定義，
+       applyChoice 係遊玩時先行，typeof 守衛足夠。 */
+    try{ if(typeof recordExec105Day==="function") recordExec105Day("story", node.title || node.id || ""); }catch(_e){}
     /* Soft tip #102：選擇已寫入後只掛一次。DualMeet 亦經 applyChoice，唔再喺 pickChoice 加第二掛。
        R_hiu distant 無模板，enqueue 會跳過。報紙唔加 favor。 */
     try{
@@ -31615,6 +31619,14 @@ function fresh(){
     newspaperLastPresentedDay:null,
     /* v20a94 PRESS94：第一次「殺青消息點名見報」里程碑日（0=未觸發、>0=觸發拍攝日、-1=舊檔回填已見報） */
     press94FirstNamedDay:0,
+    /* v20a105 WEEK105（S-12/S-14）：週界未完成狀態＋實際執行紀錄。
+       weekBoundary105：settleWeek 扣完錢嗰刻寫低 {week, day, html}，入到編排步
+       （enterHome editable）先清——重開嗰陣仲喺度＝上次週界未行完，要強制返去
+       結算/編排步，唔准靜默跳過（金額已扣，唔會重扣）。
+       execLog105：{ [dayIndex]: {kinds:[...], detail:""} } 每日實際執行類型，
+       畀手帳回顧用，唔再用排程槽位標籤頂替。舊檔冇呢兩欄由 normalizeSaveObj 補。 */
+    weekBoundary105:null,
+    execLog105:{},
   };
 }
 
@@ -31679,6 +31691,11 @@ function normalizeSaveObj(o){
   if(!Array.isArray(o.newspaperClippings)) o.newspaperClippings=[];
   if(o.pendingMorningPaper && typeof o.pendingMorningPaper!=="object") o.pendingMorningPaper=null;
   if(typeof o.press94FirstNamedDay!=="number") o.press94FirstNamedDay=0;
+  /* v20a105 WEEK105：舊檔冇週界旗／執行紀錄 → 補空值（回顧冇紀錄嗰啲日子照舊
+     用排程標籤顯示，唔好炸）；weekBoundary105 舊檔一律 null——舊檔冇證據證明
+     停喺週界未完成，唔好誤判強制返去結算步。 */
+  if(!o.execLog105 || typeof o.execLog105!=="object" || Array.isArray(o.execLog105)) o.execLog105={};
+  if(o.weekBoundary105===undefined) o.weekBoundary105=null;
   try{ syncDualTracks(o); }catch(_e){}
   /* v20a66 YEARS66：舊存檔年份遷移（epoch guard：dayIndex 不變、絕對年份鍵 remap，一次性） */
   try{ if(typeof years66MigrateSave==="function") years66MigrateSave(o); }catch(_e){}
@@ -32745,6 +32762,8 @@ function conseq61ResolveSickDay(id){
       notes.push(`<span class="var-note">休養中（仲有 ${c.sick.to - today} 日）：唔好諗住偷走去開工，唞唔足，好易翻發。</span>`);
     }
     try{ saveQ(); }catch(_e){}
+    /* v20a105 WEEK105 S-14：病假日記名（回顧顯示病假，唔係原本排程） */
+    try{ if(typeof recordExec105Day==="function") recordExec105Day("sick"); }catch(_e){}
     const dayDone = (typeof fmtDate==="function") ? fmtDate() : "";
     const { ended, summary } = tickDay();
     try{ paintBar(); }catch(_e){}
@@ -34556,6 +34575,123 @@ function nbRangeLabel37(){
   return weekRangeLabel();
 }
 
+/* ===== v20a105 WEEK105 週界狀態組（UI 審計 S-12／S-13／S-14）=====
+   三項同根源：週界狀態冇落存檔、週計劃繼承冇剔已完成通告、回顧用排程標籤頂替實際執行。
+
+   S-12：settleWeek 喺 tickDay 入面即刻扣錢＋saveQ，但結算畫面／編排步只靠記憶體
+   傳 summary 落 enterHome——玩家喺週日日結板（「回家結算」掣）嗰陣重開，錢已扣、
+   畫面同編排步一齊消失，第二週沿用上週計劃。修法：settleWeek 扣完錢嗰刻將
+   {week, day, html} 寫入 S.weekBoundary105 落存檔；enterHome(editable) 先清旗；
+   contFromSlot 載入嗰陣若旗仍有效（dayIndex 啱啱係嗰週之後嘅週一），強制先
+   補呈現結算卡再入編排步。防雙重扣錢：補呈現只讀旗入面存低嘅 html，唔會再行
+   settleWeek／apply，金額只會喺原本嗰次 tickDay 扣一次。
+
+   S-13：已完成通告嘅標記（wrap:／audition:／已唔存在嘅 shoot:）原樣留喺 weekPlan，
+   跨週變成「今日計劃」嗰陣，嗰日唔係 map 日又唔係強制日，地圖冇開始掣又冇過一日掣。
+   修法：scrubInherited105 剔走已完成標記（改返 scout_all）；todayPlanId 見到今日格
+   係已完成標記即時改返自由日；paintBar 保底——任何非強制、非編輯日子都要有
+   「逛完・過一日」入口。已完成標記嘅歷史改由 execLog105 喺手帳回顧承載（S-14）。
+
+   S-14：手帳回顧（上週行程／本週已過日子）以前直接攞 weekPlan 槽位 label，
+   但槽位會被之後嘅寫入覆蓋（提早休息寫 rest、試鏡／劇情嗰日最後變咗其他標籤），
+   同實際經歷對唔上。修法：每個耗日路徑喺 tickDay 之前 recordExec105Day 記低
+   實際執行類型（同一日可多種，合併顯示，如「劇情・試鏡」）；tickDay 有兜底：
+   冇人記低就按當日槽位記一次。回顧渲染：已過去嘅日子優先用執行紀錄，
+   冇紀錄（舊檔）先退返排程標籤，唔會 crash。 ===== */
+function week105Pending(){
+  try{
+    if(typeof S==="undefined" || !S) return null;
+    const p = S.weekBoundary105;
+    if(!p || typeof p!=="object") return null;
+    const wk = Number(p.week)||0;
+    if(wk<=0) return null;
+    /* 旗只喺「嗰週啱啱完結、而家係下一週週一」嗰陣有效；日子行過咗就係殘旗，唔好誤觸發 */
+    if((S.dayIndex|0) !== wk*7) return null;
+    return p;
+  }catch(_e){ return null; }
+}
+function scrubInherited105(plan){
+  const alive = new Set(((typeof S!=="undefined" && S && S.shoots)||[]).map(x=>x && x.id).filter(Boolean));
+  return (plan||[]).map(x=>{
+    const s = String(x||"");
+    if(s.startsWith("wrap:") || s.startsWith("audition:")) return "scout_all";
+    if(s.startsWith("shoot:") && !alive.has(s.slice(6))) return "scout_all";
+    return x;
+  });
+}
+const EXEC105_KINDS = {
+  story:{ icon:"📖", name:"劇情" },
+  audition:{ icon:"🎬", name:"試鏡" },
+  shoot:{ icon:"🎥", name:"拍攝" },
+  wrap:{ icon:"✅", name:"殺青" },
+  train:{ icon:"💪", name:"訓練" },
+  perform:{ icon:"🎤", name:"表演" },
+  social:{ icon:"☕", name:"傾談／社交" },
+  sick:{ icon:"🤒", name:"病假" },
+  browse:{ icon:"🗺️", name:"到處逛逛" },
+  early_rest:{ icon:"🌙", name:"提早休息" },
+  rest:{ icon:"😴", name:"休息睡覺" },
+  chore:{ icon:"🧹", name:"收拾房間" },
+};
+function recordExec105Day(kind, detail){
+  try{
+    if(typeof S==="undefined" || !S || !kind || !EXEC105_KINDS[kind]) return;
+    if(!S.execLog105 || typeof S.execLog105!=="object" || Array.isArray(S.execLog105)) S.execLog105 = {};
+    const d = S.dayIndex|0;
+    const cur = (S.execLog105[d] && typeof S.execLog105[d]==="object") ? S.execLog105[d] : { kinds:[] };
+    if(!Array.isArray(cur.kinds)) cur.kinds = [];
+    if(cur.kinds.indexOf(kind)<0 && cur.kinds.length<3) cur.kinds.push(kind);
+    if(detail && !cur.detail) cur.detail = String(detail).slice(0,40);
+    S.execLog105[d] = cur;
+    /* 只留最近 21 日，費事存檔無限脹 */
+    Object.keys(S.execLog105).forEach(k=>{ if(((Number(k)||0)|0) < d-21) delete S.execLog105[k]; });
+  }catch(_e){}
+}
+function exec105KindForSlot(id){
+  const s = String(id||"");
+  if(!s) return null;
+  if(s.startsWith("shoot:")) return "shoot";
+  if(s.startsWith("wrap:")) return "wrap";
+  if(s.startsWith("job:") || s.startsWith("audition:")) return "audition";
+  if(s === "sick61") return "sick";
+  if(s === "rest") return "rest";
+  if(s === "home_chore") return "chore";
+  if(s === "street" || s === "cafe_gig") return "perform";
+  if(s.indexOf("train_")===0) return "train";
+  if(s === "scout_all" || s === "scout_nt" || s === "scout_kln" || s === "scout_island") return "browse";
+  return null;
+}
+function exec105MetaForDay(dayIdxAbs){
+  try{
+    if(typeof S==="undefined" || !S || !S.execLog105) return null;
+    const e = S.execLog105[dayIdxAbs|0];
+    if(!e || !Array.isArray(e.kinds) || !e.kinds.length) return null;
+    const names = e.kinds.map(k=> (EXEC105_KINDS[k]||{}).name || k);
+    const icon = (EXEC105_KINDS[e.kinds[0]]||{}).icon || "·";
+    let name = names.join("・");
+    const detKinds = { audition:1, wrap:1, shoot:1, story:1, train:1 };
+    if(e.detail && e.kinds.some(k=>detKinds[k])) name += "：" + e.detail;
+    return { icon:icon, name:name, hint:"實際執行紀錄" };
+  }catch(_e){ return null; }
+}
+function nbPlanMondayAbs105(){
+  try{
+    let mon = (S.dayIndex|0) - weekdayIdx(S.dayIndex|0);
+    if(typeof nbShowingPrevWeek37==="function" && nbShowingPrevWeek37()){
+      mon -= 7 * (weekNumNow() - Number(S.weekPlanWeek37));
+    }
+    return mon;
+  }catch(_e){ return (typeof S!=="undefined" && S) ? ((S.dayIndex|0) - weekdayIdx(S.dayIndex|0)) : 0; }
+}
+function nbRowMeta105(rowDayAbs, editable){
+  try{
+    if(editable) return null;
+    if(typeof S==="undefined" || !S) return null;
+    if((rowDayAbs|0) >= (S.dayIndex|0)) return null; /* 今日／未來日子照用排程標籤 */
+    return exec105MetaForDay(rowDayAbs);
+  }catch(_e){ return null; }
+}
+
 function advanceDay(){
   /* v20a78 LOCK78 硬閘：已結局（S.ending410 存在）唔再翻日——無論邊條路徑
      （行程／休息／病假／加速）嚟到 tickDay／advanceDay 都停喺結局嗰日。 */
@@ -34862,6 +34998,14 @@ function settleWeek(){
   const flavorHtml = flavor.length
     ? `<div class="settle-flavor">${flavor.map(x=>`<div class="settle-flavor-line">${x}</div>`).join("")}</div>`
     : "";
+  /* v20a105 WEEK105 S-12：週界未完成狀態落存檔——錢喺上面已經扣完，呢度只係
+     記低「結算未呈現、編排未做」呢一步；重開時 contFromSlot 見旗會補呈現＋入
+     編排步（只讀 html，唔再行 settleWeek，唔會雙重扣錢）。入到編排步
+     （enterHome editable）嗰陣清旗。 */
+  try{
+    S.weekBoundary105 = { week: w, day: S.dayIndex|0, html: settleBlock + flavorHtml };
+    saveQ();
+  }catch(_wb105){}
   return { weekNum:w, html: settleBlock + flavorHtml, stressEvent:(S.stress||0)>=75 };
 }
 
@@ -34966,6 +35110,19 @@ function confirmSpendDay(actionLabel, onYes, opts){
 function tickDay(){
   /* v20a78 LOCK78：已結局唔再行日結算（同 advanceDay 硬閘雙保險） */
   if(typeof ending78Locked==="function" && ending78Locked()) return {ended:false, summary:null};
+  /* v20a105 WEEK105 S-14 兜底：今日仲未有實際執行紀錄（即冇經記名路徑耗日），
+     按當日槽位記一次，費事回顧嗰日空白。記名路徑（resolvePlannedDay／試鏡／
+     劇情／提早休息等）喺 tickDay 之前已經記低，唔會被兜底覆蓋。 */
+  try{
+    if(typeof recordExec105Day==="function" && typeof S!=="undefined" && S){
+      const has105 = !!(S.execLog105 && S.execLog105[S.dayIndex|0]);
+      if(!has105){
+        const pid105 = (typeof todayPlanId==="function") ? todayPlanId() : null;
+        const k105 = (typeof exec105KindForSlot==="function") ? exec105KindForSlot(pid105) : null;
+        if(k105) recordExec105Day(k105);
+      }
+    }
+  }catch(_e105){}
   // Day advance invalidates open loc sheet (stale gigs / fame / 「只限港島」 footer)
   closeSheet();
   atLoc=null;
@@ -35225,8 +35382,15 @@ function renderNotebook(){
   if(qbar) qbar.classList.toggle("show", editable);
   const days=document.getElementById("nb-days");
   days.innerHTML="";
+  const nbMon105 = (typeof nbPlanMondayAbs105==="function") ? nbPlanMondayAbs105() : 0;
   for(let i=0;i<7;i++){
-    const meta=planMeta(planDraft[i]);
+    let meta=planMeta(planDraft[i]);
+    /* v20a105 WEEK105 S-14：已過去嘅日子用實際執行紀錄顯示（試鏡／劇情／提早
+       休息等），唔好用排程槽位標籤頂替；冇紀錄（舊檔）先退返槽位標籤。 */
+    try{
+      const em105 = (typeof nbRowMeta105==="function") ? nbRowMeta105(nbMon105 + i, editable) : null;
+      if(em105) meta = em105;
+    }catch(_e){}
     const locked=dayPlanLocked(planDraft[i]);
     const btn=document.createElement("button");
     btn.type="button";
@@ -35402,6 +35566,9 @@ function enterHome(summary, editable, initialTab){
     }
   }catch(_e){}
   S.homeEditable = !!editable;
+  /* v20a105 WEEK105 S-12：入到編排步（editable）＝週界流程已完成，清走週界旗，
+     之後重開唔好再誤觸發補呈現。唯讀入屋唔清——玩家未編排就重開，旗要留返。 */
+  try{ if(editable && typeof S!=="undefined" && S) S.weekBoundary105 = null; }catch(_e){}
   planSelDay = weekdayIdx(S.dayIndex);
   planCat = "browse";
   try{
@@ -35620,20 +35787,20 @@ function todayPlanId(){
   const raw = S.weekPlan[weekdayIdx(S.dayIndex)] || null;
   if(!raw) return null;
   const s=String(raw);
-  /* v19z3：歷史 audition:/wrap: 唔當「今日計劃」可執行項——顯示自由／已耗紀錄另算 */
-  if(s.startsWith("audition:")){
-    /* 當日試鏡已耗：仍顯示試鏡紀錄；但若該通告已殺青且唔係同一試鏡日語境，改自由 */
-    try{
-      const gid=s.slice(9);
-      if(typeof isGigWrapped==="function" && isGigWrapped(gid) && !(S.homeEditable)){
-        /* 過週後殘留 → 當自由 */
-        const wd=weekdayIdx(S.dayIndex);
-        if(S.weekPlan[wd]===raw && (S.dayIndex%7===0 || S.homeEditable)){
-          S.weekPlan[wd]="scout_all";
-          return "scout_all";
-        }
-      }
-    }catch(_e){}
+  /* v20a105 WEEK105 S-13：已完成標記唔可以做今日計劃——wrap:／audition: 係
+     「嗰件事已經做完」嘅歷史標記，shoot: 若製作已唔存在亦係殘留；留喺今日格
+     會令嗰日冇開始掣又冇過一日掣（審計 S-13）。即時改返自由日；嗰日實際
+     做過咩由 execLog105 回顧承載，唔靠呢格。 */
+  if(s.startsWith("wrap:") || s.startsWith("audition:")){
+    try{ S.weekPlan[weekdayIdx(S.dayIndex)] = "scout_all"; }catch(_e){}
+    return "scout_all";
+  }
+  if(s.startsWith("shoot:")){
+    const alive105 = (S.shoots||[]).some(x=>x && x.id===s.slice(6));
+    if(!alive105){
+      try{ S.weekPlan[weekdayIdx(S.dayIndex)] = "scout_all"; }catch(_e){}
+      return "scout_all";
+    }
   }
   return raw;
 }
@@ -35695,6 +35862,9 @@ function endBrowseDayGoHome(){
   try{ writeTodayPlan("rest"); }catch(_e4){}
   const wd = weekdayName(weekdayIdx(S.dayIndex));
   const notes = apply({stress:-(4+R(0,4))});
+  /* v20a105 WEEK105 S-14：提早休息係實際執行類型，獨立記名——唔好等 writeTodayPlan("rest")
+     將嗰日喺回顧入面變成全日「休息睡覺」（審計 S-14 週四嗰日就係咁嚟）。 */
+  try{ if(typeof recordExec105Day==="function") recordExec105Day("early_rest"); }catch(_e){}
   const {ended, summary}=tickDay();
   const showRest = ()=>{
     try{
@@ -36263,6 +36433,20 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   }
 
   const dayDone = fmtDate();
+  /* v20a105 WEEK105 S-14：記低今日實際執行類型（畀手帳回顧），唔好等回顧嗰陣
+     用排程槽位標籤頂替——槽位之後仲會被 wrap: 等標記改寫。 */
+  try{
+    let k105 = null, det105 = "";
+    const sid105 = String(id||"");
+    if(sid105.startsWith("shoot:")){ k105 = shootFinished ? "wrap" : "shoot"; det105 = String(title||"").replace(/^(拍攝中|殺青|拍攝日→殺青)[:：]/,""); }
+    else if(sid105.startsWith("job:")){ k105 = "audition"; det105 = String(title||"").replace(/^(試鏡完畢|試鏡|落選)[:：]/,""); }
+    else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ k105 = "train"; det105 = ((typeof COURSE_DEFS!=="undefined" && COURSE_DEFS[id])||{}).name || ""; }
+    else if(id==="rest") k105 = "rest";
+    else if(id==="home_chore") k105 = "chore";
+    else if(id==="street" || id==="cafe_gig") k105 = "perform";
+    else if(id==="sick61") k105 = "sick";
+    if(k105 && typeof recordExec105Day==="function") recordExec105Day(k105, det105);
+  }catch(_e){}
   const {ended, summary}=tickDay();
   paintBar();
   // refresh hint after shoot progress mutates (殺青用上面固定文案，唔再 planMeta fallback「製作中」)
@@ -36823,6 +37007,19 @@ function paintBar(){
         if(!startToday && typeof todayPlanId==="function" && typeof isMapDay==="function"
           && isMapDay(todayPlanId()) && !(S && S.homeEditable)){
           startToday = `<button type="button" class="map-start-today" id="map-end-day" title="今日係自由逛逛：周圍行、打聽、睇通告欄都唔耗日；逛完撳呢個掣返屋企瞓，過到下一日">逛完・過一日</button>`;
+        }
+        /* v20a105 WEEK105 S-13 保底：任何日子都要有結束今日嘅入口。已完成標記日
+           （wrap:／audition: 殘留）以前既唔係 map 日又冇 soft 行程，地圖冇掣過日；
+           而家 todayPlanId 已將嗰啲格改返自由日，呢度再兜底：非強制、非編輯、
+           未有掣嘅日子一律補「逛完・過一日」（行既有 confirmEarlyRestFromMenu）。 */
+        if(!startToday && !(S && S.homeEditable)){
+          try{
+            const pid105 = (typeof todayPlanId==="function") ? todayPlanId() : null;
+            const forced105 = (typeof todayIsForcedDay==="function") ? todayIsForcedDay() : false;
+            if(!forced105){
+              startToday = `<button type="button" class="map-start-today" id="map-end-day" title="逛完撳呢個掣返屋企瞓，過到下一日">逛完・過一日</button>`;
+            }
+          }catch(_e){}
         }
       }catch(_st){}
       return `<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${startToday}<span class="map-hint-help" title="有通告／情報／「劇」劇情見圖例">${helpSoft}</span>${storyLine}`;
@@ -52876,6 +53073,8 @@ function doEnrollRun(L, tr){
   }catch(_cta){}
   writeTodayPlan(tr.courseId);
   closeSheet();
+  /* v20a105 WEEK105 S-14：地點即場訓練記名 */
+  try{ if(typeof recordExec105Day==="function") recordExec105Day("train", (COURSE_DEFS[tr.courseId]||{}).name || ""); }catch(_e){}
   const {ended, summary}=tickDay();
   const cname=(COURSE_DEFS[tr.courseId]||{}).name || tr.name;
   /* v19q：第一堂／已解鎖只留首次報名。加練標題用課名，唔再寫「（第一堂）」，正文唔再重複已解鎖。 */
@@ -53169,6 +53368,8 @@ function doRest(L){
     const notes=apply({stress:-S.stress}); /* v20a65 FIX65-1（用戶 2026-11-10 拍板）：全日休息（doRest）＝壓力清零（舊 −(14+R(0,8)) 平均 −18） */
     writeTodayPlan("rest");
     closeSheet();
+    /* v20a105 WEEK105 S-14：地點即場休息記名 */
+    try{ if(typeof recordExec105Day==="function") recordExec105Day("rest"); }catch(_e){}
     const {ended, summary}=tickDay();
     const showRest = ()=>{
       try{
@@ -54162,6 +54363,8 @@ function doTalk(npcId, L){
 
   let ended=false, summary=null;
   if(spendDay){
+    /* v20a105 WEEK105 S-14：傾談耗日記名 */
+    try{ if(typeof recordExec105Day==="function") recordExec105Day("social"); }catch(_e){}
     const t = tickDay();
     ended = !!t.ended; summary = t.summary;
   }
@@ -54566,6 +54769,8 @@ function doAudition(gig, L){
     rec=aud91CreatePending(gig, L, { ok:false, p:p, days:days,
       fxFame:-R(1,2), fxStressFail:6+R(0,4), via:"board" });
   }
+  /* v20a105 WEEK105 S-14：試鏡日記名（回顧要顯示返試鏡，唔係排程槽位） */
+  try{ if(typeof recordExec105Day==="function") recordExec105Day("audition", gig.title||""); }catch(_e){}
   const {ended, summary}=tickDay();
   paintBar(); drawMap();
   const cont=()=>{ if(ended) enterHome(summary, true); else runScheduleFromToday(); };
@@ -54670,6 +54875,8 @@ function doGiveGift(npcKey, itemId, L){
   let ended=false, summary=null;
   if(spendDay){
     try{ writeTodayPlan("cafe_gig"); }catch(_e){}
+    /* v20a105 WEEK105 S-14：送禮耗日記名 */
+    try{ if(typeof recordExec105Day==="function") recordExec105Day("social"); }catch(_e){}
     const t = tickDay();
     ended = !!t.ended; summary = t.summary;
   }
@@ -55516,6 +55723,9 @@ function contFromSlot(slot){
   if(!S.locNpc)refreshNpc();
   if(!S.weekPlan || S.weekPlan.length!==7){ S.weekPlan=defaultWeekPlan(); stampWeekPlan37(); }
   S.weekPlan = scrubStaleJobs(S.weekPlan); // v18p: district scout → scout_all
+  /* v20a105 WEEK105 S-13：跨 session 繼承嗰陣剔走已完成通告標記（wrap:／audition:／
+     已唔存在嘅 shoot:）——唔好等佢哋變成下週「今日計劃」卡死嗰日；歷史由 execLog105 承載。 */
+  try{ S.weekPlan = scrubInherited105(S.weekPlan); }catch(_e){}
   if(!S.booked) S.booked=[];
   if(!Array.isArray(S.pendingAud)) S.pendingAud=[]; /* v20a91 AUD91：舊檔冇呢欄當空陣列 */
   if(!Array.isArray(S.aud91Log)) S.aud91Log=[];
@@ -55542,6 +55752,27 @@ function contFromSlot(slot){
     setTimeout(()=>{ try{ showEndingSummary410(); }catch(_e){} }, 60);
     return;
   }
+  /* v20a105 WEEK105 S-12：上次停喺週界未完成（結算已扣錢、未呈現、未編排）→
+     強制返去結算/編排步：先入編排步（enterHome editable 會清旗＋出新一週預設
+     行程），再補呈現存低嘅結算卡。只讀旗入面嘅 html，唔行 settleWeek，
+     生活費唔會重扣。softSeed 要求嗰陣唔攔（種子會覆寫成個狀態）。 */
+  try{
+    const wp105 = (typeof week105Pending==="function") ? week105Pending() : null;
+    const seed105 = (typeof softSeedRequested==="function") && softSeedRequested();
+    if(wp105 && !seed105){
+      enterHome({ weekNum: wp105.week, html: wp105.html||"", stressEvent:false }, true);
+      setTimeout(()=>{
+        try{
+          modal(`<h3>回家結算 · 第 ${wp105.week} 週</h3>${wp105.html||""}<p class="gold">上次喺週結算嗰陣離開咗——金額嗰陣已經入帳，唔會重扣。而家可以編排新一週行程。</p>`,[
+            {label:"編排新一週行程", role:"p"}
+          ]);
+        }catch(_e){}
+      }, 80);
+      return;
+    }
+    /* 殘旗（日子已行過週一）順手清走，唔好留喺存檔 */
+    if(S.weekBoundary105 && !wp105) S.weekBoundary105 = null;
+  }catch(_e){}
   if(softSeedRequested()){
     maybeApplySoftSeed();
     return;
