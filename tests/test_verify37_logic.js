@@ -2,7 +2,7 @@
 // 宗旨（吸取 v20a34/35 教訓）：唔齋 call 被修函數餵假數據——每段都行玩家真路徑：
 //   段一：真 StoryOC.listOpen offer → 真 StoryPlay.start/skipToChoices/pickChoice → 真 showResult 畫面（捕捉 modal body）
 //   段二：真 buildPostShootRewardPack 組裝 ×30＋真 newspaperWrapFaceLines
-//   段三：真 doAudition 獲聘 → 真 scheduleShoot → 真 resolvePlannedDay 逐日行到殺青（item 3/5/6b）＋真訓練日 ×20（item 6a）
+//   段三：真 doAudition（v91：入 pending）→ 撥到公佈日真 aud91PresentDue 揭曉獲聘 → 真 resolvePlannedDay 逐日行到殺青（item 3/5/6b）＋真訓練日 ×20（item 6a）
 //   段四：真 renderNotebook（DOM stub 捕捉標頭）
 //   段五：真 gigGap* 顯示路徑（item 8）
 //   段六：真 applyMockAsk 打聽路徑（item 9）
@@ -333,7 +333,7 @@ function makeEl(){
 })();
 
 /* ================================================================
-   段三：真 doAudition → 真 scheduleShoot → 真 resolvePlannedDay 逐日
+   段三：真 doAudition →（v91）pending → 真 aud91PresentDue 公佈 → 真 resolvePlannedDay 逐日
    item 3（聲望兌現時機）／item 5（場數文案）／item 6（訓練＋長工抉擇節奏）
    ================================================================ */
 (function(){
@@ -382,7 +382,10 @@ function makeEl(){
     'shootSpanFor','effectiveShootDays','effectiveShootWeekdays','effectiveShootDeadlineDays','newShootId','scheduleShoot',
     'defaultWeekPlan','lockShootsIntoDraft','placeShootOnPlan','previewShootPlacement','confirmPlaceShoot',
     'weekNumNow','stampWeekPlan37','writeTodayPlan','clearJobFromPlans',
-    'shootBandFor','resolveRoleScale','shootWeekdayOk','shootWeekdaySet0','isFreePlanSlot','isMapDay','isRecordGig','shootWeekdayLabel','gigScheduleVerb','displayDateObj','isCriticalPlanDay','planDayWouldWrap','enrollCourse','fameFloor','canAudition','chance','rollAuditionPay','chanceVarianceNote','payContractNote','doAudition'];
+    'shootBandFor','resolveRoleScale','shootWeekdayOk','shootWeekdaySet0','isFreePlanSlot','isMapDay','isRecordGig','shootWeekdayLabel','gigScheduleVerb','displayDateObj','isCriticalPlanDay','planDayWouldWrap','enrollCourse','fameFloor','canAudition','chance','rollAuditionPay','chanceVarianceNote','payContractNote','doAudition',
+    'aud91Ensure','aud91PendingOf','aud91WaitDays','aud91WaitPhrase','aud91CreatePending','aud91LogPush','aud91DueList','aud91PendingHint','aud91PresentDue','aud91PresentOne'];
+  eval(extractConst('AUD91_CAP').replace('const AUD91_CAP =', 'var AUD91_CAP ='));
+  eval("var _aud91Presenting = false;");
   for(const f of FNS) eval(extractFn('function ' + f + '('));
 
   ok('seg3 harness: resolvePlannedDay/doAudition 載入', typeof resolvePlannedDay === 'function' && typeof doAudition === 'function');
@@ -403,19 +406,34 @@ function makeEl(){
     limits: { gender: 'any', licenses: [], groupOnly: false, notes: [] },
   };
 
-  /* ---- item 3：獲聘對話數字 vs 頂欄實際入帳 ---- */
+  /* ---- item 3：獲聘對話數字 vs 頂欄實際入帳 ----
+     v20a91 AUD91 改版註：流程改為試鏡→pending→公佈先揭曉，段三跟新流程駕駛；
+     item 3 原意保留（聲望／人氣唔提早入帳、殺青先落帳、數字同公佈對話一致），
+     另加簽約金對數：公佈入 270（900×30%）、殺青入餘額 630，合共＝合約 900。 */
   S = baseSave(); GIGS = [gigTv3]; S.board = { tvb_longmen: [gigTv3.id] };
   const realRandom = Math.random;
   Math.random = () => 0.05; /* 釘死試鏡 roll（必獲聘）；fame/pop 區間係單值，唔受影響 */
   __modals = [];
   doAudition(gigTv3, { id: 'tvb_longmen', name: '星河電視台' });
+  const audBody = __modals.map(m => m.body).join('\n');
+  ok('seg3 v91 試鏡當日只講等消息（未揭曉結果）', audBody.indexOf('等消息') >= 0 && audBody.indexOf('獲聘！') < 0);
+  ok('seg3 v91 試鏡後入 pending（結果試鏡刻定死）', (S.pendingAud || []).length === 1 && S.pendingAud[0].ok === true && S.pendingAud[0].pay === 900);
+  ok('seg3 v91 試鏡後未有 shoot／聲望未入帳／錢未入帳', (S.shoots || []).length === 0 && S.fame === 17 && S.money === 5000);
+  const pend91 = (S.pendingAud || [])[0];
+  S.dayIndex = pend91 ? pend91.revealDay : 999; /* 撥去公佈日 */
+  __modals = [];
+  let contCalled91 = false;
+  aud91PresentDue(() => { contCalled91 = true; });
   Math.random = realRandom;
   const hireBody = __modals.map(m => m.body).join('\n');
+  ok('seg3 v91 公佈鏈行完（continuation 有行、pending 清空）', contCalled91 === true && (S.pendingAud || []).length === 0);
   ok('seg3 獲聘對話有講明「殺青後入帳」', hireBody.indexOf('殺青後入帳') >= 0);
   ok('seg3 獲聘對話聲望 +5／人氣 +17（同 shoot record 同源）', hireBody.indexOf('聲望 +5') >= 0 && hireBody.indexOf('人氣 +17') >= 0);
   ok('seg3 獲聘嗰刻聲望未入帳（S.fame 仍 17）', S.fame === 17 && S.popularity === 10);
+  ok('seg3 v91 簽約金 270 公佈嗰刻已入帳（900 嘅三成）', S.money === 5270);
   const shoot = (S.shoots || [])[0];
   ok('seg3 shoot record 存住 fame 5／pop 17 待殺青', !!shoot && shoot.fame === 5 && shoot.popularity === 17);
+  ok('seg3 v91 shoot record 記住簽約金 270', !!shoot && shoot.signedPaid === 270);
   if(shoot){
     S.weekPlan = ['shoot:' + shoot.id, 'shoot:' + shoot.id, 'shoot:' + shoot.id, 'rest', 'rest', 'rest', 'rest'];
     resolvePlannedDay('shoot:' + shoot.id);
@@ -425,6 +443,7 @@ function makeEl(){
     resolvePlannedDay('shoot:' + shoot.id);
     ok('seg3 殺青日聲望入帳 17→22（＝對話 +5）', S.fame === 22);
     ok('seg3 殺青日人氣入帳 10→27（＝對話 +17）', S.popularity === 27);
+    ok('seg3 v91 殺青入餘額 630（簽約金 270＋餘額 630＝合約 900 分毫不差）', S.money === 5900);
     ok('seg3 殺青後 shoot 已清', (S.shoots || []).length === 0);
   }
 
