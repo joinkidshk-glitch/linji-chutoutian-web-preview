@@ -94,6 +94,14 @@
 - 舊檔相容（`drive_compat111.py`，槽 3）：pristine main 存檔（money 111111／dayIndex 3／
   mark `v111-slot3`）喺 v111 版完整還原，PASS，0 pageerror。
 
+## 6. 上線核實（合併後）
+
+- main commit：`3d20b58`（分支 `v111-s30` squash 入 main；分支本身亦已推上 origin 備查）。
+- 線上核實（GitHub Pages，推送後即時對版，無部署延遲）：`index.html` 5,088,978 bytes、
+  sha256 `83737185a0f3176abda874eeb99d665f3e5d21035510108c732ba0ee82de66ad`，同本地合併版
+  逐 byte 一致；抽查 boss 圖三張（`boss_tvb_longmen_base`／`boss_film_harbour_base`／
+  `boss_rec_star_base`，帶 `?v=20a106`）全部 HTTP 200＋sha 同本地一致；何生圖 HTTP 200。
+
 ## 5. 殘留／跟進（唔入今包）
 
 1. **通告欄卡片 meta 未修**：卡片 meta 行仍係「酬勞 · 約 N 日 · 獲聘後 N 日內完成」
