@@ -95,10 +95,11 @@ ok('冇用返小木牌款（冇 .lbl／木框牌 CSS）', 'class="lbl"' not in s
 def raw_of(pat):
     m = re.search(pat, src)
     return len(base64.b64decode(m.group(1))) if m else -1
-hero = raw_of(r'"hero_awi":\s*"data:image/jpeg;base64,([A-Za-z0-9+/=]+)')
+# v20a109 BUST109：hero_awi 由 JPEG 換成 WebP 裁圖（同一 <100,000 上限；實測 8,016 bytes）。
+hero = raw_of(r'"hero_awi":\s*"data:image/(?:jpeg|webp);base64,([A-Za-z0-9+/=]+)')
 guide = raw_of(r'start_guide:\s*"data:image/jpeg;base64,([A-Za-z0-9+/=]+)')
 # v20a97 MAP97：MAP_IMG 改指資產檔（見下面 MAP_IMG 斷言註）——舊 raw_of 抽內嵌圖已不適用
-ok('hero_awi 已再壓縮（191,434 → <100,000）', 0 < hero < 100000)
+ok('hero_awi 已再壓縮（191,434 → <100,000；v109 WebP 8,016）', 0 < hero < 100000)
 ok('start_guide 已再壓縮（201,839 → <160,000）', 0 < guide < 160000)
 # v20a97 MAP97 改版（有意改變行為）：大地圖換 v6 全圖重畫定版，MAP_IMG 由內嵌 data URI
 # 改指 assets/hk_map_v6.jpg（新檔名避按路徑快取）。舊斷言「內嵌 >370,000」嘅「唔硬減」精神
