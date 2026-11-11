@@ -20,9 +20,10 @@
 - 主 script 抽出 `node --check` OK；git diff grep 存證：SAVE key／softRev／產品 ?v= 冇刪除或改動行（只有 DLG106 註解提及）。
 
 ## 實駕證據索引（合併後線上鏡像實駕，工人 D）
-- 主線 C1：`qa106/shots/c1_speaker.png`（講者句全身雙人＋表情）、`qa106/shots/c1_narration.png`（旁白句兩人齊暗＋冇名牌）、`qa106/shots/c1_phone.png`（電話聲句 0.8＋藍灰電話牌）。
-- 巧遇表情切換：`qa106/shots/enc_expr_a.png`／`qa106/shots/enc_expr_b.png`（同角前後兩句唔同表情＋明暗交替）。
-- 舊檔相容：存檔→重載→狀態還原（見 qa106 駕駛紀錄）。
+- 主線 C1：`qa106/shots/c1_speaker.png`（講者句全身雙人＋表情）、`qa106/shots/c1_narration.png`（旁白句兩人齊暗＋冇名牌）、`qa106/shots/c1_phone.png`（電話聲句 0.8＋藍灰電話牌）、`qa106/shots/c1_choices.png`（抉擇畫面）。
+- 巧遇表情切換：`qa106/shots/enc_expr_a.png`／`qa106/shots/enc_expr_b.png`（鍾楚凝段尾兩句：阿偉 smile 全光→鍾楚凝 serious 全光，明暗交替）；另 `enc_chung_step05.png`（阿偉 surprise）、`enc_gu_step12.png`（阿偉 think）。
+- 舊檔相容：`qa106/shots/compat_v105_saved.png`／`qa106/shots/compat_v106_restored.png`＋`qa106/compat_log.json`。
+- 全程紀錄：`qa106/drive_log.json`（C1 17 步＋巧遇 15＋13 步逐句 chars/filter 數據）、駕駛腳本 `qa106/drive106.py`／`qa106/drive_compat.py`。
 
 ## 未達標位（老實申報）
 - **阿偉 s2／s3 表情缺口**：s2/s3 只有 base/smile/serious 三款，非 neutral 精確覆蓋得 60/188＝31.9%；think（63 句，阿偉最大類別）／surprise／sad／shy 喺主角／天王期一律退 base。要補圖以 think 優先。
@@ -31,5 +32,8 @@
 - **零精確覆蓋 9 角屬資產缺口**：cheung_tsijun、fong_siulung、gao_wenhan、tang_laiping、extra_ad_fen、uncle_kim、kwan_hoimei、cheng_william、mok_siufai——有非 neutral 對白但嗰啲類別冇表情圖，runtime 退 base（逐角原因見 C 覆蓋報告；extra_ad_fen 嘅「sad」9 句經查係旁白假陽性，唔使補圖）。
 - 名冊外功能 NPC（generic_*／extra_* 等 10 個 speaker）冇全身資產，行舊呈現，屬規格內豁免。
 
-## 部署核實＋實駕結果
-（合併後補記，見跟進 commit。）
+## 部署核實＋實駕結果（工人 D 補記）
+- 合併：分支 `v20a106-dialogue` commit `1f2442b` → linji-repo `git merge --squash` 入 main commit `5c028ac` → push。
+- 線上核實：`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/index.html` 下載 4,996,760 bytes、sha256 `1adf7479abe02df3b9…`，同合併後本地逐 byte 一致（首次 curl 係 v105 舊版，等約 100 秒部署後轉新版，同 v105 已知延遲相符，冇使重觸發）。抽查資產 awi_base／luk_baakyin_base／mak_zhendong_base／lin_hiu_sad／lin_hiu_shy 五張全 HTTP 200＋sha 同本地逐 byte 一致。
+- 實駕（本地鏡像＝線上 index＋88 張 fullbody 逐檔下載 sha 全對後先駕；390×844、Playwright）：**主線 C1 成段播通**——17 步逐句驗：開首旁白（未有 pair 前淨旁白板）→何生獨角→阿偉入畫雙人；講者句阿偉 think 表情圖全光＋何生 0.6（c1_speaker）；電話聲句張子駿＋何生齊 0.8＋藍灰虛線電話牌＋名牌「張子駿（電話聲）」（c1_phone）；尾旁白句雙人齊 0.6＋冇名牌（c1_narration）；抉擇正常結算。**巧遇兩段全播**：鍾楚凝＠金鐘創意 15 步（阿偉 base→surprise→smile、鍾楚凝 base→serious，逐句明暗交替正確）、顧明輝＠海港廣播 13 步（阿偉 surprise／think 切換）。全程零 pageerror。
+- 舊檔相容 PASS：v105 pristine 鏡像開局，經真 UI（☰→存檔→槽 3）存入標記狀態（$106,106／dayIndex 3／flags.qa106mark），同 origin 換 v106 鏡像後「繼續」載入，三項標記逐一還原、HUD 顯示 $106,106＋1990年1月4日，存檔結構冇爛（compat_log.json：PASS）。主線駕駛中途 reload→繼續亦正常入返。
