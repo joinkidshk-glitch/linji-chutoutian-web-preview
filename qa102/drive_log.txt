@@ -1,0 +1,41 @@
+to map: Page.click: Timeout 5000ms exceeded.
+Call log:
+  - waiting for locator("#home-back-map-tabs")
+    - locator resolved to <button class="g" type="button" data-mode="map" id="home-back-map-tabs">返回地圖</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+      - waiting 100ms
+    9 × waiting for element to be visible, enabled and stable
+      - element is not visible
+    - retrying click action
+      - waiting 500ms
+
+PASS 頁內自檢 __fx102.check() 全綠
+PASS restFx 自檢全綠（新 src）
+PASS 01_shoot：喺地圖先改植
+PASS 01_shoot：日結板出啱片（assets/fx/fx_shoot.mp4?v=20a10）
+PASS 01_shoot：真係播緊（t 1.40→2.22）
+PASS 02_record：喺地圖先改植
+PASS 02_record：日結板出啱片（assets/fx/fx_record.mp4?v=20a10）
+PASS 02_record：真係播緊（t 1.44→2.25）
+PASS 03_shoot_ext：喺地圖先改植
+PASS 03_shoot_ext：日結板出啱片（assets/fx/fx_shoot_ext.mp4?v=20a10）
+PASS 03_shoot_ext：真係播緊（t 1.47→2.27）
+PASS 04_audition：日結板出啱片（gig_1988_entry_ad_passerby）
+PASS 04_audition：真係播緊
+PASS 05_train_a：喺地圖先改植
+FAIL 05_train_a：日結板出啱片（None）
+PASS 06_train_b：喺地圖先改植
+FAIL 06_train_b：日結板出啱片（None）
+PASS 07_train_c：喺地圖先改植
+FAIL 07_train_c：日結板出啱片（None）
+PASS 08_rest：喺地圖先改植
+FAIL 08_rest：日結板出啱片（None）
+PASS 全程冇 pageerror（[]）
+drive_fx: 18/22 PASS

@@ -3885,6 +3885,16 @@ body.day-res-open .day-row{
   border:1px solid rgba(60,40,20,.22); border-radius:8px;
 }
 .rest-sleep-inline .rest-sleep-cap{ display:none; }
+/* v20a102 FX102：行程像素動畫嵌日結板（拍攝/錄音/試鏡/訓練；造法同 rest-sleep-inline） */
+.act-fx102{
+  margin:0 0 8px; display:flex; justify-content:center;
+}
+.act-fx102 video{
+  width:100%; max-width:280px; max-height:min(36dvh, 240px);
+  height:auto; background:#14100e; display:block;
+  image-rendering:pixelated; image-rendering:crisp-edges;
+  border:1px solid rgba(60,40,20,.22); border-radius:8px;
+}
 #mask:not(.tut-on) .modal .rest-sleep-deltas{
   margin:4px 0 0; display:flex; flex-direction:column; gap:2px;
 }
@@ -35008,8 +35018,10 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
     btns.push({label: ended?"回家結算":"返回地圖", role:"p", on: ended?go:()=>goToMapForBrowse()});
   }
   const liveHint = livingCostDayEndHint();
+  const fx102Html = (typeof actFx102Html==="function") ? actFx102Html(opts.fx102Kind) : ""; /* v20a102 FX102 */
   const dismissFn = ended ? go : ()=>{ try{ goToMapForBrowse(); }catch(_e){} };
-  modal(`<h3>${title}</h3>${dropHtml}${resultHtml}${extra}${liveHint}${dayLine}${(!ended && btns.some(b=>String(b.label||"").indexOf("加速")>=0))?`<p class="week-accel-hint">加速會跳過地圖日；預設請返地圖再決定。</p>`:""}`, btns, {onDismiss: dismissFn});
+  modal(`<h3>${title}</h3>${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}${dayLine}${(!ended && btns.some(b=>String(b.label||"").indexOf("加速")>=0))?`<p class="week-accel-hint">加速會跳過地圖日；預設請返地圖再決定。</p>`:""}`, btns, {onDismiss: dismissFn});
+  try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   saveQ();
 }
@@ -36044,6 +36056,7 @@ function resolvePlannedDay(id){
   let meta=planMeta(id);
   let notes=[];
   let title=meta.name;
+  let fx102Kind=null; /* v20a102 FX102：今個行程日要播邊條片（shoot/job/train 分支內 set；其餘日子 null＝唔播） */
 
   let shootFinished=false;
   if(id.startsWith("shoot:")){
@@ -36054,6 +36067,7 @@ function resolvePlannedDay(id){
       title="拍攝取消";
       meta={icon:"🎥", name:title, hint:"呢單拍攝已唔存在"};
     } else {
+      if(typeof actFx102KindForShoot==="function") fx102Kind=actFx102KindForShoot(sh); /* v20a102 FX102 */
       sh.doneDays=(sh.doneDays||0)+1;
       sh.daysLeft = Math.max(0, (sh.totalDays||0) - (sh.doneDays||0));
       const finished = sh.doneDays >= sh.totalDays;
@@ -36163,7 +36177,7 @@ function resolvePlannedDay(id){
       }
     }
   }
-else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75ApplyLesson(id); S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; }
+else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75ApplyLesson(id); S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; if(typeof actFx102KindForTrain==="function") fx102Kind=actFx102KindForTrain(id); /* v20a102 FX102 */ }
   
   else if(id==="rest"){ notes=apply({stress:-S.stress}); /* v20a65 FIX65-1（用戶 2026-11-10 拍板）：全日休息＝壓力清零（舊 −(18+R(0,8)) 平均 −22） */ title = `休息（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
   else if(id==="home_chore"){ notes=apply({money:R(0,200), stress:-(6+R(0,4))}); title = `收拾房間（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
@@ -36230,6 +36244,7 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
         }
         notes.push(`<span class="gold">試鏡演完，評判只講咗句「返去等消息啦」。何生話：${aud91WaitPhrase(rec91.wait)}，有回音佢會打嚟。</span>`);
         title=`試鏡完畢：${gig.title}`;
+        fx102Kind="audition"; /* v20a102 FX102：真係演咗試鏡嗰日先播（資格不符／已等消息唔播） */
         writeTodayPlan("audition:"+gig.id);
       }
     }
@@ -36321,6 +36336,7 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
     });
   }catch(_e){}
   const liveHint2 = livingCostDayEndHint();
+  const fx102Html = (typeof actFx102Html==="function") ? actFx102Html(fx102Kind) : ""; /* v20a102 FX102 */
   const dismissNb = ended ? nextNbReward : ()=> afterDayRes(()=>{ try{ goToMapForBrowse(); }catch(_e){} });
   /* v20a10：休息睡覺 — 片嵌日結板；文案只留數值；週加速靜默合併唔播 */
   if(id==="rest" && !_weekAccel){
@@ -36340,7 +36356,8 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
       saveQ();
     }
   } else {
-    modal(`<h3>${title}</h3>${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}${dayLine}${(!ended && btns.some(b=>String(b.label||"").indexOf("加速")>=0))?`<p class="week-accel-hint">加速需二次確認並列出將跳過日子。</p>`:""}`, btns, {onDismiss: dismissNb});
+    modal(`<h3>${title}</h3>${fx102Html}${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}${dayLine}${(!ended && btns.some(b=>String(b.label||"").indexOf("加速")>=0))?`<p class="week-accel-hint">加速需二次確認並列出將跳過日子。</p>`:""}`, btns, {onDismiss: dismissNb});
+    try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
     /* v20a35 節奏包 P1-6：日結算板入面嘅片場抉擇掣接線（冇抉擇嗰日 no-op） */
     try{ if(typeof wireSetChoice35==="function") wireSetChoice35(); }catch(_wc35){}
     if(isRestCard){ try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){} }
@@ -37188,6 +37205,7 @@ function closeModal(){
     if(mb) mb.innerHTML="";
   }catch(_e){}
   document.getElementById("mask").classList.remove("on");
+  try{ stopActFx102(); }catch(_e){} /* v20a102 FX102：關 modal 順手停行程片 */
   try{ document.getElementById("mask").classList.remove("day-res"); document.body.classList.remove("day-res-open"); }catch(_e){}
   // keep tut-on cleared unless a tut card immediately reopens
   if(!(_tut && _tut.active && _tut.blocking)) setTutMask(false);
@@ -52865,13 +52883,13 @@ function doEnrollRun(L, tr){
       }catch(_e){}
     }
   }] : [];
-  afterDayModal(`<p>${L.name}</p>${formatResultNotes(notes)}${foot}`, title, L, ended, summary, { extraBtns });
+  afterDayModal(`<p>${L.name}</p>${formatResultNotes(notes)}${foot}`, title, L, ended, summary, { extraBtns, fx102Kind: (typeof actFx102KindForTrain==="function" ? actFx102KindForTrain(tr.courseId) : null) }); /* v20a102 FX102：地點即場訓練都播片 */
   try{ if(typeof renderNotebook==="function") renderNotebook(); }catch(_nb){}
 }
 
 
 /* ===== v20a10 REST SLEEP FX — 8-bit clip inside rest day-end panel; Soft≠PASS; no tip LIVE; SAVE unchanged ===== */
-const REST_SLEEP_FX_SRC = "assets/fx/awei-rest-sleep.mp4";
+const REST_SLEEP_FX_SRC = "assets/fx/fx_rest.mp4"; /* v20a102 FX102：新版像素瞓覺片（samples19 標準）取代舊寫實片嘅用途；舊檔 awei-rest-sleep.mp4 保留唔刪 */
 let _restSleepFxArmed = false;
 function restSleepFxHtml(){
   const src = REST_SLEEP_FX_SRC + ((/\?/.test(REST_SLEEP_FX_SRC)?"&":"?") + "v=20a10");
@@ -53038,7 +53056,7 @@ function restSleepFxCheck(){
   if(typeof restSleepFxHtml!=="function") fails.push("html");
   if(typeof armRestSleepFxInModal!=="function") fails.push("arm");
   if(typeof presentRestSleepDayEnd!=="function") fails.push("present");
-  if(typeof REST_SLEEP_FX_SRC==="undefined" || String(REST_SLEEP_FX_SRC).indexOf("awei-rest-sleep.mp4")<0) fails.push("src");
+  if(typeof REST_SLEEP_FX_SRC==="undefined" || String(REST_SLEEP_FX_SRC).indexOf("fx_rest.mp4")<0) fails.push("src"); /* v20a102：斷言跟新版休息片改版（有意改變行為，見 NOTES_V20A102） */
   try{ if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save"); }catch(_e){ fails.push("save"); }
   return { ok:!fails.length, fails:fails, version:"v20a10", softStatus:"≠PASS", mode:"in-panel", src: (typeof REST_SLEEP_FX_SRC!=="undefined"?REST_SLEEP_FX_SRC:"") };
 }
@@ -53052,6 +53070,82 @@ try{
     src: function(){ return REST_SLEEP_FX_SRC; },
     html: restSleepFxHtml
   };
+}catch(_e){}
+
+/* ===== v20a102 FX102 — 行程像素動畫（拍攝/錄音/試鏡/訓練）=====
+   跟 v20a10 休息片同一機制：日結板頂嵌 <video>（3 秒循環、muted、
+   唔阻斷流程）；播放純視覺，唔掂存檔／數值／判定；週加速唔播
+   （跟休息片先例）。人物／節拍跟 samples19 定版標準；背景係臨時
+   底稿（地點場景圖重製中，新圖落地後再對位，底圖同人物分層）。 */
+const ACT_FX102 = {
+  shoot: "assets/fx/fx_shoot.mp4",
+  shootExt: "assets/fx/fx_shoot_ext.mp4",
+  record: "assets/fx/fx_record.mp4",
+  audition: "assets/fx/fx_audition.mp4",
+  trainA: "assets/fx/fx_train_a.mp4",
+  trainB: "assets/fx/fx_train_b.mp4",
+  trainC: "assets/fx/fx_train_c.mp4",
+  rest: "assets/fx/fx_rest.mp4"
+};
+const ACT_FX102_EXT_KW = ["外景","戶外","街頭","廟街","夜市","碼頭","沙灘","海邊","郊野","城門河","天台","遊樂場","村屋","渡輪"];
+function actFx102KindForShoot(sh){
+  if(!sh) return null;
+  const t = String(sh.type||"");
+  if(t.indexOf("唱片")>=0 || t==="music") return "record";
+  const w = String(sh.title||"") + " " + String(sh.workTitle||"");
+  for(let i=0;i<ACT_FX102_EXT_KW.length;i++){ if(w.indexOf(ACT_FX102_EXT_KW[i])>=0) return "shootExt"; }
+  if(String(sh.locId||"").indexOf("rec_")===0) return "record";
+  return "shoot";
+}
+function actFx102KindForTrain(cid){
+  if(cid==="train_vocal" || cid==="train_looks") return "trainB";
+  if(cid==="train_stamina") return "trainC";
+  if(cid==="train_acting" || cid==="train_stage" || cid==="train_charm" || cid==="train_iq") return "trainA";
+  return null;
+}
+function actFx102Html(kind){
+  const src0 = kind ? ACT_FX102[kind] : null;
+  if(!src0) return "";
+  const src = src0 + "?v=20a10";
+  return `<div class="act-fx102"><video id="act-fx102-video" playsinline muted loop autoplay preload="auto" src="${src}"></video></div>`;
+}
+function stopActFx102(){
+  try{
+    const vid = document.getElementById("act-fx102-video");
+    if(vid){ try{ vid.pause(); }catch(_e1){} }
+  }catch(_e){}
+}
+function armActFx102(){
+  try{
+    const vid = document.getElementById("act-fx102-video");
+    if(!vid) return false;
+    try{ vid.muted = true; vid.playsInline = true; }catch(_e6){}
+    try{ vid.setAttribute("playsinline",""); vid.setAttribute("muted",""); }catch(_e7){}
+    try{ vid.currentTime = 0; }catch(_e8){}
+    const p = vid.play();
+    if(p && typeof p.catch==="function"){ p.catch(()=>{}); }
+    return true;
+  }catch(_e){ return false; }
+}
+function actFx102Check(){
+  const fails=[];
+  const keys = Object.keys(ACT_FX102);
+  if(keys.length!==8) fails.push("map-count");
+  ["shoot","shootExt","record","audition","trainA","trainB","trainC","rest"].forEach(k=>{
+    if(!ACT_FX102[k] || ACT_FX102[k].indexOf("assets/fx/fx_")!==0) fails.push("map:"+k);
+  });
+  if(actFx102KindForTrain("train_vocal")!=="trainB") fails.push("train-map");
+  if(actFx102KindForTrain("train_stamina")!=="trainC") fails.push("train-map");
+  if(actFx102KindForTrain("train_acting")!=="trainA") fails.push("train-map");
+  if(actFx102KindForShoot({type:"唱片通告", title:"錄音日"})!=="record") fails.push("shoot-map");
+  if(actFx102KindForShoot({type:"電影", title:"清水灣片場拍攝"})!=="shoot") fails.push("shoot-map-ext-neg");
+  if(actFx102KindForShoot({type:"電影", title:"廟街外景夜戲"})!=="shootExt") fails.push("shoot-map-ext");
+  /* SAVE 紅線唔喺度重複字面值（polish48 等四個靜態測試精確計數 ==10）——委託既有 restSleepFxCheck 把關 */
+  try{ if(typeof restSleepFxCheck==="function" && !restSleepFxCheck().ok) fails.push("restfx"); }catch(_e){}
+  return { ok:!fails.length, fails:fails, version:"v20a102" };
+}
+try{
+  window.__fx102 = { map: ACT_FX102, kindForShoot: actFx102KindForShoot, kindForTrain: actFx102KindForTrain, html: actFx102Html, arm: armActFx102, stop: stopActFx102, check: actFx102Check };
 }catch(_e){}
 
 function doRest(L){
