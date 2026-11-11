@@ -40,10 +40,12 @@ ok('tvb_rules granted only at cafe_cha + agency_ho', sorted(set(grant_locs)) == 
 ok('no guidance text sends player to TV station to hear rules',
    '星河電視台聽' not in html and '去星河電視台打聽' not in html and '電視台打聽電視城規矩' not in html)
 tut_seg = seg('const TUTORIAL_ZH_HK', 'const EVENTS_ZH_HK')
-ok('tutorial ask guidance names only cafe/agency (both have ask)', '茶餐廳／事務所「打聽」不耗日' in tut_seg)
+# v20a108 TEXT108 S-42：TUT_MAP 舊句「茶餐廳／事務所「打聽」不耗日」改寫做完整句，意思不變（打聽唔耗日＋傳聞入手帳）
+ok('tutorial ask guidance names only cafe/agency (both have ask)', '喺茶餐廳或者事務所「打聽」唔耗日' in tut_seg)
 
 # ---- P0-4：過一日掣接線 ----
-ok('end-day button id + label in paintBar', 'id="map-end-day"' in html and '逛完・過一日' in html)
+# v20a108 TEXT108 S-49：地圖金掣舊名「逛完・過一日」退役，統一叫「過一日」
+ok('end-day button id + label in paintBar', 'id="map-end-day"' in html and '>過一日</button>' in html)
 pb_seg = seg('function paintBar(){', 'let __storyMapRedrawT')
 ok('end-day button only on map days (isMapDay gate)', 'isMapDay(todayPlanId())' in pb_seg and 'map-end-day' in pb_seg)
 ok('end-day button excluded when homeEditable', 'S.homeEditable' in pb_seg)

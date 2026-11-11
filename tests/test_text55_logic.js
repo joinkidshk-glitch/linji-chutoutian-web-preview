@@ -14,7 +14,8 @@ function chk(name, cond) { if (!cond) fails.push(name); }
 // A10: rumor id leak line -> natural line
 chk('A10 rumor line', TF.textfix55Str('你啱啱聽完關於星河電視台嘅傳聞 tvb_rules_gossip，心入面有好多問號。', 'lines', null, TF.TEXTFIX55_OPTS_STORY) === '你啱啱聽完星河電視台嗰啲規矩傳聞，心入面有好多問號。');
 // A6: tutorial softBehaviorGate body -> natural wording
-chk('A6 tutorial body', TF.textfix55Str('正式版同熟人「傾談／送禮」耗一日；試玩閘（softBehaviorGate）下傾談／送禮不耗日（茶錢仍可能扣費；訓練／試鏡／休息／行程表演仍耗日）。', 'body', null, TF.TEXTFIX55_OPTS_SIMPLE) === '而家同熟人傾談／送禮唔會計一日（茶錢照扣）；訓練、試鏡、休息同跟行程開工先會計日。');
+// v20a108 TEXT108 S-42：A6 期望值跟新潤飾句（舊值係 v55 橋接句，意思不變；反證：舊值喺新表下已唔再係輸出）
+chk('A6 tutorial body', TF.textfix55Str('正式版同熟人「傾談／送禮」耗一日；試玩閘（softBehaviorGate）下傾談／送禮不耗日（茶錢仍可能扣費；訓練／試鏡／休息／行程表演仍耗日）。', 'body', null, TF.TEXTFIX55_OPTS_SIMPLE) === '而家同熟人傾談或者送禮都唔會計一日（茶錢照扣）；只有訓練、試鏡、休息同跟行程開工先會計日。');
 // C11: sent-death-question phrase swap
 chk('C11 phrase', TF.textfix55Str('接送命題嗰陣', 'lines', null, TF.TEXTFIX55_OPTS_STORY) === '接辣手問題嗰陣');
 // KHM: name scrubbed to title in display fields

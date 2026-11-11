@@ -219,15 +219,15 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   /* 逛逛日（週一 scout_all） */
   paintBar();
   const hintHtml = els['map-hint'].innerHTML;
-  ok('c1 scout day: end-day button rendered in map hint', hintHtml.indexOf('id="map-end-day"') >= 0 && hintHtml.indexOf('逛完・過一日') >= 0);
+  ok('c1 scout day: end-day button rendered in map hint', hintHtml.indexOf('id="map-end-day"') >= 0 && hintHtml.indexOf('>過一日<') >= 0);
   ok('c2 scout day: no start-today button', hintHtml.indexOf('id="map-start-today"') < 0);
   const edBtn = els['map-end-day'];
   ok('c3 scout day: button wired by paintBar', typeof edBtn.onclick === 'function');
   const dayBefore = S.dayIndex;
   edBtn.onclick({ preventDefault(){}, stopPropagation(){} });
   ok('c4 click opens the REAL early-rest confirm modal',
-     modalCalls.length === 1 && modalCalls[0].body.indexOf('確認提早休息') >= 0);
-  const confirmBtn = (modalCalls[0].btns||[]).find(b=>b.label.indexOf('確定休息') >= 0);
+     modalCalls.length === 1 && modalCalls[0].body.indexOf('確認過一日') >= 0);
+  const confirmBtn = (modalCalls[0].btns||[]).find(b=>b.label.indexOf('確定過一日') >= 0);
   ok('c5 confirm button present', !!confirmBtn);
   confirmBtn.on();
   ok('c6 day advanced exactly once via endBrowseDayGoHome→tickDay', tickCalls === 1 && S.dayIndex === dayBefore + 1);
