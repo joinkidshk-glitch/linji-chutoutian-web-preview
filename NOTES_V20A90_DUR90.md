@@ -39,6 +39,27 @@ SHOOT_DAYS（type fallback）同步：廣告 [1,2]、唱片通告 [6,14]、綜�
 4. **期限夾位**：新工期所需日曆日（工作天÷每週拍攝日×7）＋緩衝 > 現行 deadline 時逐張補 shootDeadlineDays。全池驗證：deadline 違規 0；所需日曆日最長（電視主角 36 日）遠細過上板窗（提早 60 日＋成季約 92 日），接到必趕得上檔期——夾位例外：無。
 5. **舊檔安全**：scheduleShoot 接單時已 snapshot totalDays／pay 入 S.shoots，校準只影響新接通告；進行中／已完成通告沿用接單日數片酬，唔回溯。
 
+## 補充：POSTER90 作品圖／主演顯示時機（用戶實玩指出，併入本包）
+
+問題：接通告頁面無條件顯示成品作品圖＋「主演」行——作品未開拍唔可能有成品海報，亦唔應預設紅星已係主演。
+
+顯示時機規則：成品圖＋主演名只准喺**完成後**場合出現。調用點全面盤點分類：
+
+| 調用點 | 場合 | 處置 |
+|---|---|---|
+| `castingNoticeDetailHtml`（詳情頁模板；`openCastingNoticeDetail` 開啟器，未接／已獲聘／拍攝中共用） | 完成前 | **移除** poster59fig（成品圖）＋leadRow59（主演行） |
+| `gigCardHtml`（通告板全卡） | 完成前 | **移除** 主演行（`${leadStar}` via leadStarLine59） |
+| 通告板 teaser（`.gig-teaser`） | 完成前 | 本身冇圖冇主演行，冇郁（實駕核實） |
+| `openCastingNoticeDetail` hired/shooting/wrapped 狀態 body | 完成前/中 | 本身冇渲染海報/主演，冇郁 |
+| `wrapPoster59Html`＋殺青結算 notes | 完成後（殺青畫面） | 保留 |
+| `worksWallEntries59`／`workCard59Html`（作品牆＋手帳履歷，源自 S.wrapHistory） | 完成後 | 保留 |
+| 頒獎 glam 全屏海報／唱名作品卡／請柬細海報＋對手作品選角（數據選擇） | 完成後 | 保留 |
+| 結局 filmography（經 wrapHistory/作品牆數據） | 完成後 | 保留 |
+
+數據層冇郁：`leadStar59Apply` 回填、`leadStar59Of` 讀取、殺青後同主演紅星好感（ENC79）等邏輯照舊，只改顯示。連帶改版：v59 兩測試（poster59_static/logic）釘舊顯示嘅斷言已喺原位改為 POSTER90 新規則並註明；poster59_static 餘下 FAIL 只有 master-asset 環境性一項，同基線一致。
+
+驗證：`tests/test_poster90_static.py`（詳情/卡面斷言＋完成後保留＋紀律；對未修版反證 FAIL 7 項）。真 UI 實駕（槽 3，證據 verify90/poster90_*.png＋verify_poster90.py）：`gig_1988_ad_08`《離境大堂一封信》（A 級海報、廣告・冬・1 日）詳情頁截圖＋DOM 斷言——冇 `.cn-poster59`、冇任何 img、摘要行只剩片酬/通告日數/通告期間/檔期；接單→day 2 殺青，殺青畫面截圖見海報縮圖＋「主演：陸柏言」＋「作品已收入手帳作品牆」如常出現（`.wrap-poster59 img` src = `assets/posters/poster-1988_ad_08.webp`）；pageerror 0。
+
 ## 唔郁清單
 
 門檻 req、季節歸屬、主演／海報接線、E7／評核／頒獎判定數字、SAVE key／softRev／?v=、pack JSON（校準只行 normalize 層）。

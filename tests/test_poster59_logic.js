@@ -141,16 +141,20 @@ const ROSTER10 = ['陸柏言','廖炳星','齊鎮海','麥震東','鍾楚凝','�
   ok('poster: 散工／亂 id 回空', poster59Path('gig_1988_soft_bridge_summer_ad')==='' && poster59Path('nope')==='');
 })();
 
-/* ============ 段四：通告卡主演行 ============ */
+/* ============ 段四：通告卡主演行（v20a90 POSTER90 改版） ============ */
+/* POSTER90（用戶實玩拍板）：通告卡係完成前場合，唔再顯示主演行——本段由 v59 原版
+   「有名製作卡有主演行」改為「有名製作卡都冇主演行」；leadStar 數據回填照舊
+   （段二斷言冇改），主演名只喺完成後場合（作品牆段五／殺青）出現。 */
 (function(){
   eval(setup());
   const g = normalizeGigRecord(JSON.parse(JSON.stringify(PACK88.gigs.find(x=>x.id==='gig_1988_film_harbour_high'))));
   const card = gigCardHtml(g, {});
-  ok('card: 有名製作卡有主演行', card.indexOf('lead-star')>=0 && card.indexOf('主演：陸柏言')>=0);
+  ok('card: 有名製作卡冇主演行 (POSTER90)', card.indexOf('lead-star')<0 && card.indexOf('主演：')<0);
+  ok('card: 有名製作 leadStar 數據仍在 (POSTER90)', g.leadStar==='陸柏言');
   const e = normalizeGigRecord(JSON.parse(JSON.stringify(PACK88.gigs.find(x=>x.entryTier))));
   ok('card: 入門卡冇主演行（唔出空欄）', gigCardHtml(e, {}).indexOf('主演：')<0);
   const d = normalizeGigRecord(JSON.parse(JSON.stringify(PACK88.gigs.find(x=>x.id==='gig_1988_var_04'))));
-  ok('card: 雙主演卡顯示兩名', gigCardHtml(d, {}).indexOf('主演：彭少祺、葉敏芝')>=0);
+  ok('card: 雙主演卡都唔預告主演 (POSTER90)', gigCardHtml(d, {}).indexOf('主演：')<0 && d.leadStar==='彭少祺、葉敏芝');
 })();
 
 /* ============ 段五：作品牆（舊存檔格式／過濾／欄位回查） ============ */

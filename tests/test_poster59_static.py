@@ -38,10 +38,13 @@ chk('star id map present', 'const POSTER59_STAR_IDS = {' in src and '"luk_baakyi
 norm = slice_fn('normalizeGigRecord')
 chk('normalize hook wired', 'leadStar59Apply(o)' in norm)
 card = slice_fn('gigCardHtml')
-chk('card renders lead star line', 'leadStarLine59(g)' in card and '${leadStar}' in card)
+# v20a90 POSTER90 改版（用戶實玩拍板）：完成前場合唔出主演行/成品圖——以下三條斷言
+# 由 v59 原版「必須渲染」改為「必須唔渲染」，顯示時機守門改由 test_poster90_static.py 負責；
+# leadStar 數據層（normalize 回填/殺青讀取）冇郁，見下面 hook 斷言。
+chk('card does NOT render lead star line (POSTER90)', 'leadStarLine59(g)' not in card and '${leadStar}' not in card)
 detail = slice_fn('castingNoticeDetailHtml')
-chk('detail has lead row', 'leadRow59' in detail and '主演' in detail)
-chk('detail has poster figure', 'poster59fig' in detail and 'cn-poster59' in detail)
+chk('detail has NO lead row (POSTER90)', '${leadRow59}' not in detail and '<span class="k">主演</span>' not in detail)
+chk('detail has NO poster figure (POSTER90)', '${poster59fig}' not in detail and 'cn-poster59' not in detail)
 chk('wrap pushes poster figure', 'wrapPoster59Html(sh.gigId)' in src)
 chk('wrap snapshots work fields', 'workTitle: _wg59w' in src and 'roleLabel: _wg59w' in src)
 

@@ -32391,8 +32391,8 @@ function gigCardHtml(g, opts){
     syn=`<div class="syn">${g.synopsis}</div>`;
   }
   const role = g.roleHint ? `<div class="role">角色：${g.roleHint}</div>` : "";
-  /* v20a59 POSTER59：主演行（有名製作先有；冇 leadStar 唔出空欄） */
-  const leadStar = (typeof leadStarLine59==="function") ? leadStarLine59(g) : "";
+  /* v20a90 POSTER90：通告卡係「完成之前」場合，唔出主演行（理由同詳情頁，見
+     openCastingNoticeDetail 註）；主演名只准完成後場合出現。leadStar 數據唔郁。 */
   /* Weave Phase 1-3：持有對應拼合情報嗰陣，通告卡多一行情報提示（無情報就完全唔顯示）。 */
   let intelHtml = "";
   try{ const il = (typeof intelLineForGig==="function") ? intelLineForGig(g) : ""; if(il) intelHtml = `<div class="discover-note">情報：${il}</div>`; }catch(_e){}
@@ -32448,7 +32448,7 @@ function gigCardHtml(g, opts){
   /* v20a56 明碼化：softBridge 卡面標明常駐散工，同一次性製作分級 */
   const bridgeBit = g.softBridge ? ` <span class="bridge-tag">常駐散工</span>` : "";
   const bridgeNote = g.softBridge ? `<div class="bridge-note">常駐散工 · 每週有工開：做完一單，隔一排會再開，組名可能唔同。</div>` : "";
-  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+g.tier):""}${seasonBit}${bpBit}${bridgeBit}</div><b class="g-title">${g.title}</b>${bridgeNote}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${leadStar}${role}${intelHtml}</div>`;
+  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+g.tier):""}${seasonBit}${bpBit}${bridgeBit}</div><b class="g-title">${g.title}</b>${bridgeNote}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}</div>`;
 }
 
 /* ===== v19c PLAN_GIG_PAY_EXACT_v1 + PLAN_GIG_BREACH_FEE_v1（顯示派生；引擎逾期可掛） ===== */
@@ -32848,14 +32848,14 @@ function castingNoticeDetailHtml(g){
   if(!condParts.length) condParts.push(`<div class="cn-cond-row">組製暫無額外能力條件</div>`);
   const syn = g.synopsis ? String(g.synopsis) : "（組製未附劇情簡介）";
   const roleLine = gigRoleLineHtml(g);
-  /* v20a59 POSTER59：主演列＋作品圖細圖（有獨畫先出） */
-  const leadStar59v = (typeof leadStar59Of==="function") ? leadStar59Of(g) : "";
-  const leadRow59 = leadStar59v ? `<div class="cn-sum-row"><span class="k">主演</span><span class="v">${leadStar59v}</span></div>` : "";
+  /* v20a90 POSTER90（用戶實玩指出）：接通告詳情係「完成之前」嘅場合——作品未開拍
+     唔可能有成品海報、亦唔預設紅星已係主演。故本頁唔再渲染成品作品圖（poster59fig）
+     同主演行（leadRow59）；成品圖＋主演名只准喺完成後場合出現（殺青 wrapPoster59Html、
+     作品牆、手帳履歷、頒獎、結局 filmography）。leadStar 選角數據本身唔郁（殺青後
+     好感/提攜等邏輯照讀），只改顯示時機。 */
   /* v20a88 EARLY88：摘要加一行上映／播出檔期，等玩家睇得明「提早接工、拍完先上映」嘅節奏 */
   const release88 = (typeof gigReleaseLine88==="function") ? gigReleaseLine88(g) : "";
   const releaseRow88 = release88 ? `<div class="cn-sum-row"><span class="k">檔期</span><span class="v">${release88}</span></div>` : "";
-  const poster59src = (typeof poster59Path==="function") ? poster59Path(g.id) : "";
-  const poster59fig = poster59src ? `<div class="cn-poster59"><img src="${poster59src}" alt="" loading="lazy" onerror="this.parentNode.style.display='none'"/></div>` : "";
   const limitsHtml = gigSpecialLimitsHtml(g);
   const producerLine = gigProducerLineHtml(g);
   const boardState = (st.label==="已殺青" || st.label==="已取消" || st.label==="製作中" || st.label==="已獲聘" || st.label==="拍攝中" || st.label==="待試鏡") ? "" : gigBoardCardState(g);
@@ -32900,7 +32900,6 @@ function castingNoticeDetailHtml(g){
     </div>
     <div class="notice_sheet_body">
     <div class="cn-summary">
-      ${poster59fig}
       <div class="cn-pills">
         ${gigGenrePillsHtml(g)}
         <span class="${statusCls}" data-board-state="${boardState}">${stateLabel}</span>
@@ -32908,7 +32907,6 @@ function castingNoticeDetailHtml(g){
       ${stateSub?`<p class="cn-board-sub">${stateSub}</p>`:""}
       <div class="cn-stars-row"><span class="cn-lab-inline">難易度</span><span class="cn-stars">${starHtml}</span></div>
       ${roleLine}
-      ${leadRow59}
       <div class="cn-sum-row"><span class="k">片酬</span><span class="v">${payStr}</span></div>
       <div class="cn-sum-row"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
       <div class="cn-sum-row"><span class="k">通告期間</span><span class="v">${period}</span></div>
