@@ -25,10 +25,12 @@ ok('標籤 舊座標唔見（星河 14%／金禧 44.5%）', 'top:calc(14% - 50%)
 ok('浮進度掣 HTML 已刪', 'id="map-progress-btn"' not in html)
 ok('進度入口：頂欄 chip 恢復做 button', '<button type="button" class="chip chip-story" id="chip-story"' in html)
 ok('進度入口：chip 有 click 接線入進度頁', 'cs.addEventListener("click"' in html)
-# 全部地點掣搬入底部卡（paintBar 模板 map-hint-top128 入面，唔再喺 HUD bar-secondary）
-_i = html.find('map-hint-top128"><span')
-_tpl = html[_i:_i + 600] if _i >= 0 else ''
-ok('全部地點掣搬入底部卡', 'map-hint-top128' in html and 'id="map-show-all-locs"' in _tpl)
+# v20a135 MAP135：全部地點掣已由底部卡拎走（地圖熱區篤建築就入到，掣係多餘嘅）——
+# 模板（paintBar #map-hint innerHTML 段）入面唔可以再有呢個掣；舊 v128 斷言反轉。
+_i = html.find('document.getElementById("map-hint").innerHTML')
+_j = html.find('paintStoryEntryHints', _i) if _i >= 0 else -1
+_tpl = html[_i:_j] if _i >= 0 and _j > _i else ''
+ok('全部地點掣已由底部卡拎走（v135）', 'id="map-show-all-locs"' not in _tpl)
 
 # 壓力 bar 加粗＋數字加粗
 ok('壓力 track 12px', '#app .hud-stress-track{ height:12px; }' in html)

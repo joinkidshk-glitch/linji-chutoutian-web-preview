@@ -5166,13 +5166,10 @@ body.day-res-open .day-row{
   margin:0 12px 12px !important; font-size:.82rem !important; line-height:1.4 !important;
 }
 #v-map .map-hint b{ color:#2b2118 !important; }
-#v-map .map-hint .map-hint-top128{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
 #v-map .map-hint .map-hint-date{ font-size:.82rem; }
-#v-map .map-hint #map-show-all-locs{
-  background:#fdf8ea; color:#5c4a1f; border:1px solid var(--gold); border-radius:999px;
-  padding:3px 10px; font-size:.72rem; font-weight:800; cursor:pointer; white-space:nowrap;
-}
 #v-map .map-hint .map-hint-plan{ font-size:.82rem; margin-top:6px; color:#2b2118 !important; }
+/* v20a135 MAP135：計劃＋出行合併做一行——出行 span 喺 plan 行入面行內顯示，唔再獨佔一行。 */
+#v-map .map-hint .map-hint-plan .map-hint-travel{ display:inline !important; margin-top:0 !important; font-size:inherit !important; }
 #v-map .map-hint .map-hint-travel{ color:#8a5a12 !important; }
 #v-map .map-hint .map-hint-travel.travel-done{ color:#b3541e !important; }
 #v-map .map-hint .map-hint-aud108{ color:#8a5a12 !important; }
@@ -5180,7 +5177,11 @@ body.day-res-open .day-row{
   display:block !important; width:100% !important; margin:8px 0 0 !important;
   padding:10px 12px !important; font-size:.9rem !important; text-align:center !important;
 }
-#v-map .map-hint .map-hint-help{ color:#8a755a !important; font-size:.68rem !important; margin-top:6px !important; }
+/* v20a135 MAP135（量度結論）：卡縮細之後地圖唔使再調 sizing——舞台本身已經係
+   闊度-bound（圖 1376×1824 自然比例；polaroid padding:0 係 v19z20 定案，圖已經
+   係最闊，唔再收窄）。實測：932 屏圖 509pt 已完整顯示，卡縮細騰出嘅位變羊皮紙；
+   700 短屏卡原本遮住圖底，卡縮細之後可見圖高 386→483pt。想再放大就要改 cover
+   裁圖，會郁熱區百分比對位（v20a43 棄用原因），今票唔做。 */
 #v-map .map-hint .map-hint-story{
   background:#142238 !important; border:2px solid #c97f1f !important; margin-top:8px !important;
   display:-webkit-box !important; -webkit-box-orient:vertical !important; -webkit-line-clamp:2 !important;
@@ -5418,7 +5419,7 @@ body.day-res-open .day-row{
           </div>
         </div>
       </div>
-      <div class="map-hint" id="map-hint"><b>點地點</b>：通告欄／打聽不耗日（茶錢另計）；訓練／試鏡／休息 +1 日</div>
+      <div class="map-hint" id="map-hint"><b>載入中…</b></div>
       <div id="map-stress-tip" role="status" aria-live="polite"></div>
       <div id="map-money-tip" class="map-money-tip" role="status" aria-live="polite" hidden></div>
     </div>
@@ -38393,18 +38394,14 @@ function storyMapHintHtml(){
   }
   return "";
 }
-/** v17v：只刷新 #map-hint 內 .map-hint-story（C3→C4 唔等整條 paintBar） */
+/** v17v：只刷新 #map-hint 內 .map-hint-story（C3→C4 唔等整條 paintBar）
+    v20a135 MAP135：劇情卡已由地圖底部卡拎走（進度提示進度頁已有）——呢度淨係清走
+    殘留嗰個，永不再插入；storyMapHintHtml() 本身留返畀進度頁／其他地方用。 */
 function refreshMapHintStory(){
   const el = document.getElementById("map-hint");
   if(!el) return;
-  const storyLine = (typeof storyMapHintHtml==="function") ? (storyMapHintHtml()||"") : "";
   const existing = el.querySelector(".map-hint-story");
-  if(existing){
-    if(storyLine) existing.outerHTML = storyLine;
-    else existing.remove();
-  }else if(storyLine){
-    el.insertAdjacentHTML("beforeend", storyLine);
-  }
+  if(existing) existing.remove();
 }
 function storyHomeHintHtml(){
   const snap = storyOpenSnapshot();
@@ -38542,20 +38539,26 @@ function paintBar(){
   const popEl=document.getElementById("c-pop"); if(popEl) popEl.textContent = S.popularity||0;
   try{ refreshMoneyHud(); }catch(_e){ const moneyEl=document.getElementById("c-money"); if(moneyEl) moneyEl.textContent = (Number(S.money)||0).toLocaleString(); }
   const pid=todayPlanId();
-  const planLine = pid ? `今日計劃：<b>${planLabel(pid)}</b>` : "今日計劃：自由行動";
+  /* v20a135 MAP135：計劃＋出行合併做一行——「今日：〈計劃〉 · 仲可以去 N 個地方」；
+     額度用完變體同樣併入（「出行額度已用完，聽日再去」）。 */
+  const planName135 = pid ? planLabel(pid) : "自由行動";
+  let travelBit135 = "";
+  try{
+    const rem135 = travel114Remain();
+    travelBit135 = rem135 > 0
+      ? `<span class="map-hint-travel">仲可以去 ${rem135} 個地方</span>`
+      : `<span class="map-hint-travel travel-done">出行額度已用完，聽日再去</span>`;
+  }catch(_e135){}
+  const planLine = `今日：<b>${planName135}</b>${travelBit135 ? " · " + travelBit135 : ""}`;
   let stressHint="";
   if(stVal>=90) stressHint=" · <span class='bad'>壓力爆表</span>";
   else if(stVal>=52) stressHint=" · <span class='bad'>壓力偏高</span>";
   document.getElementById("map-hint").innerHTML =
-    (()=>{
-      const storyLine = (typeof storyMapHintHtml==="function") ? storyMapHintHtml() : "";
+    (()=>{ /* v20a135 MAP135：劇情卡＋灰色規則行已拎走，見下。 */
       try{
         const tip=document.getElementById("start-soft-tip");
         if(tip) tip.style.display = (typeof softPreviewOn==="function" && softPreviewOn()) ? "" : "none";
       }catch(_t){}
-      const helpSoft = (typeof softPreviewOn==="function" && softPreviewOn())
-        ? "通告欄／打聽／傾談／送禮不耗日（茶錢另計）· 訓練／試鏡／休息／表演 +1日"
-        : "通告欄／打聽不耗日（茶錢另計）· 傾談／送禮／訓練／試鏡／休息 +1日";
       let startToday = "";
       try{
         if(typeof todayHasSoftSchedule==="function" && todayHasSoftSchedule()){
@@ -38585,25 +38588,8 @@ function paintBar(){
       /* v20a108 UI108 S-36：等試鏡消息入口由事業頁搬埋上地圖底部卡——有等緊嘅先顯示。 */
       let audLine108="";
       try{ const _n=(S.pendingAud||[]).length; if(_n>0) audLine108=`<span class="map-hint-aud108">等緊 ${_n} 張試鏡回音（手帳「事業」頁睇詳情）</span>`; }catch(_e){}
-      /* v20a114 TRAVEL114：地圖底部卡顯示今日剩餘出行次數（drawMap 每次渲染都刷新）。 */
-      let travelLine114 = "";
-      try{
-        const rem114 = travel114Remain();
-        travelLine114 = rem114 > 0
-          ? `<span class="map-hint-travel">今日出行：仲可以去 ${rem114} 個地方</span>`
-          : `<span class="map-hint-travel travel-done">今日出行額度已用完，聽日再去</span>`;
-      }catch(_e114){}
-      /* v20a128 MAP128：底部卡收斂——頂行（日期＋全部地點掣）、計劃／出行、過一日金掣、
-         灰色規則字只喺開局第一日出（seenMapHelp128；一日內重繪唔會閃走），劇情卡最多 2 行（CSS clamp）。 */
-      let helpFirst128 = "";
-      try{
-        if(!(S.flags && S.flags.seenMapHelp128) && (S.dayIndex||0) <= 0){
-          helpFirst128 = `<span class="map-hint-help" title="有通告／情報／「劇」劇情見圖例">${helpSoft}</span>`;
-        }else if(S.flags){
-          S.flags.seenMapHelp128 = true;
-        }
-      }catch(_e){}
-      return `<span class="map-hint-top128"><span class="map-hint-date"><b>${fmtDate()}</b></span><button type="button" id="map-show-all-locs" aria-pressed="false" title="顯示全部地點（連暫時冇事做嗰啲）">全部地點 ▸</button></span><span class="map-hint-plan">${planLine}${stressHint}</span>${audLine108}${travelLine114}${startToday}${helpFirst128}${storyLine}`;
+      /* v20a135 MAP135：灰色規則行、劇情卡、地點篩選掣已拎走；出行已併入 planLine（上）。 */
+      return `<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${audLine108}${startToday}`;
     })();
   try{
     const stBtn=document.getElementById("map-start-today");
