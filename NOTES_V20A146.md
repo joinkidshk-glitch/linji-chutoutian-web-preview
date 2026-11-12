@@ -116,3 +116,13 @@
 - 但第一步 commit 兩支 resync 腳本即刻撞返同一故障：`git add` 後 `git commit` 報 `fatal: unable to write loose object file: Operation not permitted`（exit 128）；5 秒後重試，`git add` 寫入嘅 staged 狀態竟然消失咗——兩支腳本變返 untracked，`git commit` 報 `no changes added to commit`。即係話寫入故障唔止係大聲失敗，仲有靜默丟失（staged index 寫完唔見咗）。
 - 結論：故障唔係上一手統籌個 cell 獨有，恢復統籌個 cell 一樣中招，而且係間歇性＋靜默丟失——喺呢個狀態下做 squash 合併／push 唔安全（就算 commit 表面成功都唔敢信佢真係落咗盤）。按指示停低，唔死 loop，等主 agent 決定（等 VM 恢復再試，或換個 cell／換條路落地）。
 - 未做：重跑實駕（probe146_a1.py 5×700＋2×932、scroll 探針、probe146_cards.py、tour146.py）、新鮮 baseline 全套 vs 工作版全套、squash 合併＋push＋curl 核實。分支現況：`v20a146` 停喺 `3135ccf`，3 個 commit ahead of origin/main；兩支 resync 腳本（`qa146/resync_rebase146b.py`、`qa146/resync_b1_146b.py`）仍未入 commit；NOTES 呢個修改亦未 commit。
+
+## 落地紀錄（2026-11-13 02:43，第二輪恢復統籌）
+- 環境恢復：v147 02:19 成功落地之後 git object 寫入恢復正常；本輪先試探 `git hash-object -w`＋`git cat-file` 讀返驗證通過，之後全程寫入正常（commit／rebase／push 零 EPERM）。
+- Rebase 上 v147 main（`687a3a1`）：`5a276ab` 嗰陣 `test_travel114_static.py` 衝突——純行號漂移，`checkout --ours`＋`qa146/resync_travel114_147.py` resync（44 個 openLoc( 呼叫點序列逐字一致、內容逐行相同；DEF 53545→53560、WRAPPER 44154→44169）；`3f2df37` B1 步同樣衝突，OLD=HEAD resync（DEF 53560→53562、WRAPPER 44169→44171）。index.html diff 內容同原本 v146 diff 逐字相同。
+- 教訓：第一輪重做 rebase 嗰陣 `git rebase --continue 2>&1 | head -20` 令 git 食 SIGPIPE，中途死咗，`3f2df37`（B1）俾靜默 skip 咗（`done` 有佢但 log 冇佢、圖唔見咗）；之後 `git rebase --abort`＋唔 pipe 重做先回復完整。**以後 rebase --continue 絕對唔好 pipe 去 head。**
+- 重跑實駕（rebase 後最終樹）：A1 day02@700 五次 modal y=149、h3 y=163–185；@932 兩次 y=269、h3 y=283–305；scroll 探針 scrollTop=216 前後 modal 完全唔郁（pristine 會跌去 y=-67）；B1 st05／st08 卡片 700＋932 四張全部搵到＋目視新場景圖（唔係灰底）；tour：T1 mask==app @700＋@1200x900、T2、T6、T3（st06 banner 50% 75%、set08／st04 50% 50% 不變）、T4 全部 PASS；T5 S-30 首次 board:false、重跑一樣——對 pristine（687a3a1）跑同一 tour，T5 同樣失敗，證實係 pre-existing 間歇性（已知靜默吞點擊 outstanding 項），唔係 v146 回歸。附帶：pristine 嗰邊 T1 @1200x900（mask absolute 偏 2px）＋T3 st06（50% 50%）同樣 FAIL，v146 樹 PASS——即係 v146 修咗嗰兩樣。
+- 全套：新鮮 pristine baseline（687a3a1）209 PASS／12 FAIL；工作版 210 PASS／12 FAIL（209＋mask146），FAIL 清單完全一致＝零回歸；mask146 反證：對 pristine index.html 13 項斷言全部 FAIL。
+- 落地：常駐 clone squash 合併，main `76a00cb`，push 成功；線上核實 5,231,734 bytes、sha256 `f7cd35fa…`，同 repo 完全一致（部署約 2 分鐘後先轉新版）。
+- 更正：上面「未解決」話 B1 兩張圖唔包入 commit——錯，佢哋喺 `3f2df37` 已經入咗分支，今次一併落地；生成證據（`qa146/gen_bg-wf4-*.jpg`／`media-generation-*.json`）留喺工作副本，唔入 repo。
+- 下一步按新常規：v146 落地後做一次設計 review（只出報告唔改 code）。
