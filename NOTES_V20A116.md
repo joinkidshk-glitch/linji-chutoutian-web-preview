@@ -109,6 +109,16 @@
     （成品 `final/`、manifest `manifest_boss_v2b.json`、對照 `sheets/sheet_faces_v2_v2b.png`）
 - 換入前 v1 對照表見 v111 NOTES（`NOTES_V20A111*.md`，main `41e4be8`）。
 
+## 7. 合併紀錄
+
+- 分支 `v116-boss-swap`（`fd16bf4`）squash 入 main：**main `1634344`**（parent `a02f77f` v117）。
+- 線上核實（助手親自 curl）：`index.html` **5,099,919 bytes，sha256 `9ba6251a1ee9700ead7800b9e7bd28aeeeec4c3fd112699f4ba41c21b0ef1a9d`**，
+  同合併後本地一致；新圖線上亦對上（`boss_tvb_longmen_v2b_base.webp` 112,628 bytes，
+  sha `a07f61a785f9…` 同 repo 檔一致；`boss_rec_star_v2_base.webp` http 200）。
+- 合併後實駕（對住 main 本體 `~/workspace/linji-work116-merge/qa116m/`）：**11/11 間 PASS，
+  0 pageerror，boss 圖 0 失敗請求**（DRIVE116 PASS；其餘 4 個 404 係已知舊表情缺檔）。
+- v1 檔留庫做後備；回滾方法見 §5。
+
 ## 6. 殘留缺口
 
 - v115 文字重寫已合併入 main（本分支 rebase 後實駕截圖見到新版短行文字），唔係 v116 漏改。
