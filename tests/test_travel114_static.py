@@ -15,6 +15,9 @@
 # qa120/resync_travel114.py 核實：44 個 openLoc( 呼叫點序列逐字一致、內容逐行相同，
 # 純漂移（COUNT 13／FREE 27 不變，DEF 52492→52616、WRAPPER 43344→43468）。
 # 44 個 openLoc( 呼叫點序列逐字一致、內容逐行相同，純漂移（COUNT 13／FREE 27 不變）。
+# v20a130 resync：actFx102Html 喺行 55209 加 1 行（shoot 專屬 ?v=20a130 early
+# return），行號 ≥55209 者 +1；<55209 不變。qa130/resync_travel114.py 核實：
+# 44 個 openLoc( 呼叫點序列逐字一致、內容逐行相同，純漂移（COUNT 13／FREE 27 不變）。
 # v20a125 resync：TEXT125 淨 +12 行（currentLine +4／advance +1／familySafe +7），行號跟 qa125/resync_travel114.py 重算。
 # v119 再實量：DLG119 剪影模組淨 +152 行（CSS 4877 起 +15、GAZE／DLG119 模組／
 # LEGACY／REG／pair 去重／chars 25979–27386 起累積至 +152）；行號按 difflib 對位
@@ -98,11 +101,11 @@ COUNT_LINES = {
     38700,  # 地圖釘 goPin（最近針／後備 L.id）
     38731,  # 地圖底欄地點掣
     43229,  # 人情債「去事務所」
-    56816,  # inv72GoShop 去禮品檔
-    56983,  # people72GoLoc
-    57126,  # jobs72GoBoard
-    57147,  # jobs72GoLoc
-    57597,  # 開局屋企 modal「去睇劇情」
+    56817,  # inv72GoShop 去禮品檔
+    56984,  # people72GoLoc
+    57127,  # jobs72GoBoard
+    57148,  # jobs72GoLoc
+    57598,  # 開局屋企 modal「去睇劇情」
 }
 # 免費清單（帶旗，唔計）：27 處
 FREE_LINES = {
@@ -125,14 +128,14 @@ FREE_LINES = {
     53083,  # 「劇情已完成」toast 後重開而家身處地點
     53218,  # 聽完傳聞後 reopen 而家身處地點
     54850,  # forceRestore（舊旗）
-    56260,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
-    56593,  # promptAudition back（返去而家身處地點）
-    56711,
+    56261,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    56594,  # promptAudition back（返去而家身處地點）
     56712,
-    56747,
-    56748,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    56767,  # doGiveGift 失敗後重開而家身處地點
-    56782,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    56713,
+    56748,
+    56749,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    56768,  # doGiveGift 失敗後重開而家身處地點
+    56783,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
 DEF_LINE = 52789       # function openLoc(id, opts){

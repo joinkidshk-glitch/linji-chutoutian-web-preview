@@ -55206,6 +55206,7 @@ function actFx102KindForTrain(cid){
 function actFx102Html(kind){
   const src0 = kind ? ACT_FX102[kind] : null;
   if(!src0) return "";
+  if(kind==="shoot") return `<div class="act-fx102"><video id="act-fx102-video" playsinline muted loop autoplay preload="auto" src="${src0}?v=20a130"></video></div>`; /* v20a130：拍攝片換 PixelLab character-animation 版（1.0x 原版），同路徑覆蓋要升版本參數先避開瀏覽器快取；只升呢條片，其餘 7 條仲係 20a10；產品 v／SAVE／softRev 不變 */
   const src = src0 + "?v=20a10";
   return `<div class="act-fx102"><video id="act-fx102-video" playsinline muted loop autoplay preload="auto" src="${src}"></video></div>`;
 }
