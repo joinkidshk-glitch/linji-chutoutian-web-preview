@@ -68,7 +68,7 @@ def extract_json_after(marker):
 
 gaze = extract_json_after("const DLG106_GAZE =")
 emap = extract_json_after("const DLG106_EMOTION_MAP =")
-ck("視線表 34 條", len(gaze) == 34)
+ck("視線表 39 條（34＋v20a119 DLG119 5 鍵：shadow_male／shadow_female／shadow_elder／crew_laolinji／generic_cinema_asst）", len(gaze) == 39)
 ck("emotion map 584 條", len(emap) == 584)
 
 HAND = os.path.join(ROOT, "handoff106")
@@ -81,8 +81,15 @@ else:
     info("handoff106/ 唔喺 work copy（可能已清理）——跳過逐條對照，淨驗內嵌表規模")
 
 ROSTER = [k for k in gaze if k not in ("awi_s2", "awi_s3")]
-ck("名冊 32 角（34 減 awi 兩階段）", len(ROSTER) == 32)
+ck("名冊 37 角（39 減 awi 兩階段）", len(ROSTER) == 37)
 ck("extra_ad_fen 喺名冊入面", "extra_ad_fen" in ROSTER)
+ck("DLG119 5 鍵喺名冊入面",
+   all(k in ROSTER for k in ("shadow_male", "shadow_female", "shadow_elder", "crew_laolinji", "generic_cinema_asst")))
+ck("DLG119 影鍵全部 front＋唔翻得（邊光永遠右側）",
+   all(gaze[k]["gaze"] == "front" and gaze[k]["flipSafe"] is False
+       for k in ("shadow_male", "shadow_female", "shadow_elder", "generic_cinema_asst")))
+ck("老臨記 front＋唔翻得（右手持杯＋左胸袋，實圖量度）",
+   gaze["crew_laolinji"]["gaze"] == "front" and gaze["crew_laolinji"]["flipSafe"] is False)
 ck("視線表每角都有合法 gaze 同 flipSafe bool",
    all(v.get("gaze") in ("left", "right", "front") and isinstance(v.get("flipSafe"), bool) for v in gaze.values()))
 
@@ -94,17 +101,22 @@ if not os.path.isdir(FB):
     info("PENDING-ASSETS：assets/story/fullbody/ 未存在——資產工人 A 未交付，"
          "88 張焗邊圖未入庫；本節只申報唔 FAIL。入庫後重跑本測試，缺檔即 FAIL。")
 else:
+    # v20a119 DLG119：generic_cinema_asst 係別名鍵，圖走 shadow_male（唔係自己 stem 嘅 base 檔）。
+    STEM_ALIAS = {"generic_cinema_asst": "shadow_male"}
     missing = []
     for stem in STEMS:
-        if not (os.path.isfile(os.path.join(FB, stem + "_base.webp")) or os.path.isfile(os.path.join(FB, stem + "_base.png"))):
+        disk = STEM_ALIAS.get(stem, stem)
+        if not (os.path.isfile(os.path.join(FB, disk + "_base.webp")) or os.path.isfile(os.path.join(FB, disk + "_base.png"))):
             missing.append(stem + "_base")
-    ck("名冊 32 角＋阿偉 s2/s3 全部有 fullbody base 資產", not missing)
+    ck("名冊 37 角＋阿偉 s2/s3 全部有 fullbody base 資產（generic_cinema_asst 計 shadow_male 別名）", not missing)
     if missing: info("缺 base 資產：" + ", ".join(missing))
     nfiles = len([f for f in os.listdir(FB) if f.endswith((".webp", ".png"))])
     info("fullbody 資產檔數：" + str(nfiles))
 
 # 名冊外豁免（功能 NPC：行舊呈現 bust/剪影/無圖，按規格喺交代列明）
-EXEMPT = ["generic_crew", "generic_date", "generic_cinema_asst", "generic_mag_editor",
+# v20a119 DLG119：generic_cinema_asst 已入名冊（別名鍵），唔再豁免；其餘 9 個舊 id
+# 只留 REG 條目做後備（LEGACY 已經唔再指去佢哋），名冊外豁免維持。
+EXEMPT = ["generic_crew", "generic_date", "generic_mag_editor",
           "extra_lan_father", "extra_ad_ling", "extra_ad_sam", "extra_dir_luk",
           "extra_prod_chow", "extra_unknown"]
 info("名冊外豁免 speaker（無全身資產、行舊呈現）：" + ", ".join(EXEMPT))

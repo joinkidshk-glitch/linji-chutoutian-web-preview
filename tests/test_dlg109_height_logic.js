@@ -34,13 +34,14 @@ ok('搵到 dlg108FitPct／dlg108FitApply／window.DLG109',
 
 // ---- 身高比表 ----
 const GAZE_IDS = ["awi","awi_s2","awi_s3","chai_zanhoi","cheng_william","cheung_hakfan",
-  "cheung_tsijun","ching_tinlok","chow_choiyi","chung_choning","extra_ad_fen",
-  "fong_siulung","gao_wenhan","gu_mingfai","ho_sang","ko_chunkit","kwan_hoimei",
+  "cheung_tsijun","ching_tinlok","chow_choiyi","chung_choning","crew_laolinji","extra_ad_fen",
+  "fong_siulung","gao_wenhan","generic_cinema_asst","gu_mingfai","ho_sang","ko_chunkit","kwan_hoimei",
   "lan_ruoxi","lin_hiu","liu_bingxing","lok_gasing","lui_ging","luk_baakyin",
-  "mak_zhendong","mok_siufai","ngai_wingnaam","pang_siuki","so_jiyan",
+  "mak_zhendong","mok_siufai","ngai_wingnaam","pang_siuki","shadow_elder","shadow_female",
+  "shadow_male","so_jiyan",
   "tang_laiping","tong_souwan","tsui_poushan","uncle_kim","vera","yip_manji"];
-ok('身高比表有 34 個 key（DLG106_GAZE 全數）', Object.keys(D109.SCALE).length === 34);
-ok('身高比表覆蓋全部 34 個 GAZE id', GAZE_IDS.every(id => typeof D109.SCALE[id] === 'number'));
+ok('身高比表有 39 個 key（DLG106_GAZE 全數，v119 加 5 鍵）', Object.keys(D109.SCALE).length === 39);
+ok('身高比表覆蓋全部 39 個 GAZE id', GAZE_IDS.every(id => typeof D109.SCALE[id] === 'number'));
 ok('全部身高比喺 0.80–1.10 之間',
    Object.values(D109.SCALE).every(v => v >= 0.80 && v <= 1.10));
 ok('阿偉基準 1.00（s1／s2／s3 同值）',

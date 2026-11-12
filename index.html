@@ -4998,6 +4998,21 @@ body.day-res-open .day-row{
 .story-play .dlg106-char.dlg106-left{left:6px}
 .story-play .dlg106-char.dlg106-right{right:6px}
 .story-play .dlg106-char.dlg106-flip{transform:scaleX(-1)}
+/* === v20a119 DLG119 無名角色剪影：光暈層＋影缺失「影」黑卡 ===
+   光暈（.dlg119-halo）跟人物同一幾何（bottom:10%／高 --dlg108-char-h／左右 6px），
+   貼喺人物背後（z-index:2 inline，人物 z-index 3／4），唔入 dlg108Fit 計算
+   （fit 只 query .dlg106-char；光暈高跟 --dlg108-char-h var，影身高比 1.00 所以同高）。
+   「影」黑卡（.dlg119-sil）沿用舊版 sp-bust-sil 配色（深啡漸變＋虛線金邊＋淡金「影」字），
+   只係改做 dlg106-char 幾何（企立位），由 __dlg106Err 喺影圖 404 走盡嗰陣換入。 */
+.story-play .dlg119-halo{position:absolute;bottom:10%;height:var(--dlg108-char-h,60%);max-width:48%;width:auto;
+  object-fit:contain;object-position:bottom center;pointer-events:none}
+.story-play .dlg119-halo.dlg106-left{left:6px}
+.story-play .dlg119-halo.dlg106-right{right:6px}
+.story-play .dlg106-char.dlg119-sil{display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#3a3228,#1a140e);
+  color:rgba(245,230,192,.35);font-size:2.4rem;font-weight:900;
+  border:2px dashed rgba(196,160,80,.45);border-radius:10px}
+/* === v20a119 DLG119 完 === */
 .story-play .sp-stage.dlg106-on .sp-stage-inner{position:relative;z-index:3;align-items:flex-end}
 .story-play .dlg106-plate{height:118px;min-height:118px;max-height:118px;flex:1}
 .story-play .sp-speaker.dlg106-phone-name{color:#33566e}
@@ -26085,7 +26100,10 @@ window.__spApplyBgPhotos = function(root){
    （數據工人 C 嵌入分類 map；交付時 C 未交貨，先留空表＋key 格式註明，填入即生效）
    → dlg106Classify（C classifier_runtime.js 原樣搬入）→ neutral。
    視線表 DLG106_GAZE：C 嘅 handoff106/gaze_table.json 全表內嵌（34 條：31 角＋
-   extra_ad_fen＋awi_s2／awi_s3；front 24／left 6／right 4；flipSafe=true 11 條）。SAVE key／softRev／產品 ?v= 一律唔郁；content JSON 一律唔改，
+   extra_ad_fen＋awi_s2／awi_s3；front 24／left 6／right 4；flipSafe=true 11 條）。
+   v20a119 DLG119 加 5 鍵 → 39 條：shadow_male／shadow_female／shadow_elder／
+   crew_laolinji（front，flipSafe=false）＋generic_cinema_asst（顯式 id 別名，圖走男影）；
+   front 29／left 6／right 4；flipSafe=true 維持 11 條。SAVE key／softRev／產品 ?v= 一律唔郁；content JSON 一律唔改，
    正規化只喺呢層做。 */
 const DLG106_CATEGORIES = ["happy","neutral","serious","sad","surprise","shy","think","angry"];
 const DLG106_CAT_TO_EXPR = { happy:"smile", neutral:"base", serious:"serious", sad:"sad", surprise:"surprise", shy:"shy", think:"think", angry:"angry" };
@@ -26155,6 +26173,12 @@ const DLG106_GAZE = {
   "asym": "西裝褸單邊跌膊露吊帶裙帶＋左右耳環款式唔同（一圓一長方垂吊）＋單手叉腰",
   "note": "正面；唔好翻，跌膊同耳環係造型標誌"
  },
+ "crew_laolinji": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "右手持藍搪瓷杯（畫面中偏右）＋左胸袋單邊（畫面右）＋格仔恤衫鈕門置中",
+  "note": "老臨記有面全身圖（v20a119 DLG119，唯一留面嘅無名角）；持杯手＋胸袋調邊即穿崩，唔好翻"
+ },
  "extra_ad_fen": {
   "gaze": "front",
   "flipSafe": false,
@@ -26172,6 +26196,12 @@ const DLG106_GAZE = {
   "flipSafe": false,
   "asym": "懷錶鏈掛一側胸袋＋錶面刻度、三七分界線明顯＋右手托鏡框",
   "note": "正面；唔好翻，錶鏈/分界/托鏡手全調邊"
+ },
+ "generic_cinema_asst": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "別名指向 shadow_male（v20a119 DLG119 §6.2(4)(a)）；邊光永遠喺右側",
+  "note": "院線助理顯式 speakerId 專用鍵（content 有 1 句顯式 id，LEGACY 改唔到）；圖走男影，唔郁 REG artId"
  },
  "gu_mingfai": {
   "gaze": "right",
@@ -26262,6 +26292,24 @@ const DLG106_GAZE = {
   "flipSafe": true,
   "asym": "中分長直髮對稱、雙手身前置中交疊、碎花紋隨機；僅頭略側",
   "note": "正面，翻轉安全，左右位皆可"
+ },
+ "shadow_elder": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "闊袍＋圓頭微俯，袍袖闊度唔對稱；暖琥珀邊光永遠喺右側",
+  "note": "老武師專用老年影（v20a119 DLG119）；影分版本主方案 (b)，矮一截（圖內人形約 84% 高）一眼分到，唔翻"
+ },
+ "shadow_female": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "馬尾垂落一側＋暖琥珀邊光永遠喺右側，填充單色無五官",
+  "note": "無名女角剪影（v20a119 DLG119）；邊光唔翻，企左右位皆可"
+ },
+ "shadow_male": {
+  "gaze": "front",
+  "flipSafe": false,
+  "asym": "暖琥珀邊光永遠喺右側，填充單色無五官",
+  "note": "無名男角剪影（v20a119 DLG119）；邊光唔翻，企左右位皆可"
  },
  "tang_laiping": {
   "gaze": "left",
@@ -26459,8 +26507,48 @@ function bust109HeroSrc(){
   try{ if(typeof PORTRAITS!=="undefined" && PORTRAITS && PORTRAITS.hero_awi) return PORTRAITS.hero_awi; }catch(_e){}
   return "";
 }
+/* ===== v20a119 DLG119 無名角色剪影 =====
+   拍板（2026-11-12 09:30）：無名角色一律剪影人形，淨留老臨記有面；
+   Phase 1 嗰 9 張通用圖除老臨記嗰張之外全部留檔唔接入。
+   影圖（fix1 V5 焗入底圖：填充 +14、邊光 ×1.15＋向內加粗 1px；聽者版預出
+   _dim：填充 ×0.78、邊光 ×0.92——CSS brightness() 一刀切做唔到，唔准用佢）：
+   講者行 {stem}_base.webp、聽者行 {stem}_dim_base.webp；光暈 {stem}_halo.png
+   （暖色 (232,200,150)、峰值 alpha 0.30）貼喺人物背後、底圖之上，講者／聽者同一層。
+   影唔翻轉（邊光永遠右側，GAZE flipSafe=false）；同影去重見 dlg119DedupePair。 */
+const DLG119_SHADOW_STEM = {
+  "shadow_male": "shadow_male",
+  "shadow_female": "shadow_female",
+  "shadow_elder": "shadow_elder",
+  /* 顯式 speakerId 別名（CREW_MAPPING §6.2(4)(a)）：content 有 1 句 speakerId:"generic_cinema_asst"
+     （MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json），LEGACY 改唔到；GAZE 另有同名鍵，圖走男影，唔郁 REG artId。 */
+  "generic_cinema_asst": "shadow_male"
+};
+function dlg119ShadowAsset(speakerId){
+  const a = DLG119_SHADOW_STEM[String(speakerId||"")];
+  return a || null;
+}
+function dlg119IsShadow(speakerId){ return !!dlg119ShadowAsset(speakerId); }
+/* 影候補鏈（唔行表情 expr→base 候補：影冇表情款，講者直入 base、聽者直入 _dim）。 */
+function dlg119Candidates(stem, isListener){
+  const base = "assets/story/fullbody/"+stem+"_base.webp?v=20a106";
+  if(isListener) return ["assets/story/fullbody/"+stem+"_dim_base.webp?v=20a106", base];
+  return [base];
+}
+function dlg119HaloUrl(stem){
+  return "assets/story/fullbody/"+stem+"_halo.png?v=20a106";
+}
+/* pair 去重底線（fix1 方案 (a)）：兩個講者解出同一個影 asset → 只留後者（當前講者），
+   孖影永不出現。crew_laolinji 係有面圖，唔係影，唔入呢條防線。 */
+function dlg119DedupePair(pair){
+  if(!pair || pair.length < 2) return pair ? pair.slice() : [];
+  const a = dlg119ShadowAsset(pair[pair.length-2]), b = dlg119ShadowAsset(pair[pair.length-1]);
+  if(a && b && a===b) return [pair[pair.length-1]];
+  return pair.slice();
+}
 function dlg106StemFor(speakerId){
   if(speakerId==="awi") return dlg106AweiStem();
+  const sh = dlg119ShadowAsset(speakerId);
+  if(sh) return sh;
   return String(speakerId||"");
 }
 function dlg106HasFullbody(speakerId){
@@ -26536,12 +26624,33 @@ window.__dlg106Err = function(img){
     if(!img) return;
     const fb = String(img.getAttribute("data-dlg-fallbacks")||"").split("|").map(s=>s.trim()).filter(Boolean);
     const next = fb.shift();
-    if(!next){ try{ img.style.visibility = "hidden"; }catch(_e){} return; }
+    if(!next){
+      /* v20a119 DLG119：影圖缺失（404 走盡候補鏈）→ 跌返舊版「影」黑卡，唔准白屏、
+         唔准頂替做其他角色；同場光暈一併隱藏。非影人物維持原行爲（隱藏張圖）。 */
+      if(img.getAttribute("data-dlg119-shadow")){
+        try{
+          const st = img.closest ? (img.closest(".sp-stage") || img.closest(".e79-stage")) : null;
+          if(st){
+            const h = st.querySelector('.dlg119-halo[data-dlg-id="'+img.getAttribute("data-dlg-id")+'"]');
+            if(h) h.style.visibility = "hidden";
+          }
+        }catch(_e){}
+        const d = document.createElement("div");
+        d.className = String(img.className||"").replace("dlg106-flip","").replace(/\s+/g," ").trim() + " dlg119-sil";
+        d.setAttribute("data-dlg-id", img.getAttribute("data-dlg-id") || "");
+        d.setAttribute("aria-hidden", "true");
+        d.textContent = "影";
+        img.replaceWith(d);
+        return;
+      }
+      try{ img.style.visibility = "hidden"; }catch(_e){}
+      return;
+    }
     img.setAttribute("data-dlg-fallbacks", fb.join("|"));
     img.src = next;
   }catch(_e){}
 };
-try{ window.DLG106 = { GAZE:DLG106_GAZE, MAP:DLG106_EMOTION_MAP, resolveCategory:dlg106ResolveCategory, classify:dlg106Classify, lookup:dlg106Lookup, hash:dlg106Hash, normalize:dlg106Normalize, exprFor:dlg106ExprFor, candidates:dlg106Candidates, resolveSides:dlg106ResolveSides, aweiStem:dlg106AweiStem, hasFullbody:dlg106HasFullbody }; }catch(_e){}
+try{ window.DLG106 = { GAZE:DLG106_GAZE, MAP:DLG106_EMOTION_MAP, resolveCategory:dlg106ResolveCategory, classify:dlg106Classify, lookup:dlg106Lookup, hash:dlg106Hash, normalize:dlg106Normalize, exprFor:dlg106ExprFor, candidates:dlg106Candidates, resolveSides:dlg106ResolveSides, aweiStem:dlg106AweiStem, hasFullbody:dlg106HasFullbody, shadowAsset:dlg119ShadowAsset, isShadow:dlg119IsShadow, shadowCands:dlg119Candidates, dedupePair:dlg119DedupePair, haloUrl:dlg119HaloUrl }; }catch(_e){}
  /* ===== DLG106 模組完 ===== */
 /* ===== v20a108 DLG108 自動收細＋遮腿量度（對話舞台微調）=====
    人物預設高 60% 舞台高（--dlg108-char-h，唔設值退回 60%）；腳底 bottom:10%，腳伸到
@@ -26633,8 +26742,11 @@ try{
      冇長高證據，一律 1.00）。brief 無身高線索者一律唔估，闊度差異由 AR 本身
      表達（例如方小龍 AR 0.413 闊身、Vera 0.382，佢哋係闊唔係矮；何生略發福
      亦係闊度，唔係高度）。未知 id／舊圖後備 → 1.00。
+     v20a119 DLG119：新加 5 個 id（shadow_male／shadow_female／shadow_elder／
+     crew_laolinji／generic_cinema_asst）一律 1.00——老年影矮一截係圖本身
+     人形佔比（圖內 1179／1400 ≈ 84%），唔係身高比，唔另外 ×0.84。
    用法：dlg109HeightScale(id) → 比（未知 1.00）；dlg109ScaledPct(basePct, id) →
-   渲染高 %（捨入 0.1）。表覆蓋 DLG106_GAZE 全部 34 個 id（見 tests/test_dlg109_*）。 */
+   渲染高 %（捨入 0.1）。表覆蓋 DLG106_GAZE 全部 39 個 id（見 tests/test_dlg109_*）。 */
 const DLG109_HEIGHT_SCALE = {
   "awi":1.00, "awi_s2":1.00, "awi_s3":1.00,
   "pang_siuki":0.85,
@@ -26647,7 +26759,9 @@ const DLG109_HEIGHT_SCALE = {
   "lok_gasing":1.00, "lui_ging":1.00, "luk_baakyin":1.00,
   "mak_zhendong":1.00, "mok_siufai":1.00, "ngai_wingnaam":1.00,
   "so_jiyan":1.00, "tang_laiping":1.00, "tong_souwan":1.00,
-  "tsui_poushan":1.00, "uncle_kim":1.00, "vera":1.00, "yip_manji":1.00
+  "tsui_poushan":1.00, "uncle_kim":1.00, "vera":1.00, "yip_manji":1.00,
+  "shadow_male":1.00, "shadow_female":1.00, "shadow_elder":1.00,
+  "crew_laolinji":1.00, "generic_cinema_asst":1.00
 };
 function dlg109HeightScale(id){
   var v = DLG109_HEIGHT_SCALE[String(id||"")];
@@ -26784,9 +26898,18 @@ const StoryPlay = (()=>{
     "關海媚":"kwan_hoimei","鄭威廉":"cheng_william","唐素雲":"tong_souwan","方小龍":"fong_siulung",
     "徐寶珊":"tsui_poushan","莫少輝":"mok_siufai","金九":"uncle_kim","鄧麗萍":"tang_laiping",
     "陸柏言":"luk_baakyin","廖炳星":"liu_bingxing","魏詠男":"ngai_wingnaam","葉敏芝":"yip_manji","麥震東":"mak_zhendong","駱家聲":"lok_gasing","彭少祺":"pang_siuki","鍾楚凝":"chung_choning","顧明輝":"gu_mingfai","蘇芷茵":"so_jiyan","齊鎮海":"chai_zanhoi","程天諾":"ching_tinlok",
-    "藍父":"extra_lan_father","約會對象":"generic_date","助導阿玲":"extra_ad_ling","助導阿森":"extra_ad_sam",
-    "助導":"generic_crew","副導演芬姐":"extra_ad_fen","導演陸志明":"extra_dir_luk",
-    "監製周世昌":"extra_prod_chow","院線助理":"generic_cinema_asst","周刊編輯":"generic_mag_editor","週刊編輯":"generic_mag_editor"
+    "藍父":"shadow_male","約會對象":"shadow_female","助導阿玲":"shadow_female","助導阿森":"shadow_male",
+    "助導":"shadow_male","副導演芬姐":"extra_ad_fen","導演陸志明":"shadow_male",
+    "監製周世昌":"shadow_male","院線助理":"shadow_male","周刊編輯":"shadow_male","週刊編輯":"shadow_male",
+    /* v20a119 DLG119：無名角色剪影（淨留老臨記有面；場務預設男、昌叔預設影、約會對象預設女影——見 handoff） */
+    "老臨記":"crew_laolinji","老武師":"shadow_elder",
+    "場務姐姐":"shadow_female","服裝助手":"shadow_female","茶水阿姐":"shadow_female","飯堂阿姐":"shadow_female",
+    "阿媽":"shadow_female","歌迷阿妹":"shadow_female","佳麗":"shadow_female",
+    "副導演":"shadow_male","副導":"shadow_male","處境劇副導":"shadow_male","電影組副導":"shadow_male",
+    "場務":"shadow_male","後台場務":"shadow_male","老場務":"shadow_male","場務大佬根叔":"shadow_male",
+    "導演":"shadow_male","選角導演":"shadow_male","監製":"shadow_male","唱片公司職員":"shadow_male",
+    "武指":"shadow_male","週刊記者":"shadow_male","高仔":"shadow_male","老臨記昌叔":"shadow_male",
+    "茶餐廳伙記":"shadow_male","酒廊伙記":"shadow_male","編劇阿昌":"shadow_male","保安":"shadow_male"
   };
   const SP_FACE_TO_ID = {
     hero_awi:"awi", npc_ho:"ho_sang", npc_vera:"vera", npc_lin:"lin_hiu",
@@ -26823,7 +26946,12 @@ const StoryPlay = (()=>{
     extra_ad_fen: { artId:"generic_crew", portraitsKey:null, display:"副導演芬姐" },
     extra_dir_luk: { artId:"generic_crew", portraitsKey:null, display:"導演陸志明" },
     extra_prod_chow: { artId:"generic_crew", portraitsKey:null, display:"監製周世昌" },
-    extra_unknown: { artId:"generic_crew", portraitsKey:null, display:"" }
+    extra_unknown: { artId:"generic_crew", portraitsKey:null, display:"" },
+    /* v20a119 DLG119：剪影／老臨記（舊 8 個 id 嘅 REG 條目唔刪除，防其他引用斷鏈） */
+    shadow_male: { artId:"shadow_male", portraitsKey:null, display:"" },
+    shadow_female: { artId:"shadow_female", portraitsKey:null, display:"" },
+    shadow_elder: { artId:"shadow_elder", portraitsKey:null, display:"" },
+    crew_laolinji: { artId:"crew_laolinji", portraitsKey:null, display:"老臨記" }
   };
   const SP_KNOWN_LOCS = {
     tvb_longmen:1, tvb_kowloon:1, tvb_harbour:1, film_lion:1, film_cotton:1, film_harbour:1,
@@ -26980,6 +27108,9 @@ const StoryPlay = (()=>{
     /* v20a40 二期：企立內嵌圖優先；冇覆蓋嘅角色行返舊有候選鏈（表情差分保留喺舊鏈） */
     try{ if(spBustIsStand40(speakerId)) return UI40_STAND[speakerId]; }catch(_e){}
     if(!speakerId || speakerId==="generic_crew" || speakerId==="extra_unknown") return "";
+    /* v20a119 DLG119：影圖唔行 bust 候補鏈——影圖缺失嗰陣 render() 嘅 else 支要出舊版「影」黑卡，
+       而唔係拎一串唔存在嘅 npc bust URL 去試（嗰啲 URL 全部 404，最尾只會隱形，見唔到「影」卡）。 */
+    if(typeof dlg119IsShadow==="function" && dlg119IsShadow(speakerId)) return "";
     const cands = spBustCandidates(speakerId, expression);
     const expr = spNormExpression(expression);
     /* Soft files win for core style-lock busts, the Cheung pair, and the hero raise_brow redo. Other faces stay on the embedded portrait. */
@@ -27325,11 +27456,19 @@ const StoryPlay = (()=>{
       if(at>=0) order.splice(at,1);
       order.push(id);
     }
-    if(cur.system) return order.slice(-2);
+    if(cur.system){
+      /* v20a119 DLG119：旁白句 pair 同樣去重（兩個講者同一影 asset → 單人影）。 */
+      try{ if(typeof dlg119DedupePair==="function") return dlg119DedupePair(order.slice(-2)); }catch(_e){}
+      return order.slice(-2);
+    }
     const others = order.filter(x=>x!==cur.speakerId);
     const pair = [];
     if(others.length) pair.push(others[others.length-1]);
     if(cur.speakerId) pair.push(cur.speakerId);
+    /* v20a119 DLG119：同影去重底線（fix1 方案 (a)）——兩個講者解出同一個影 asset
+       （例：場務→副導演，兩個都係 shadow_male）→ 去重得返單人影，孖影永不出現。
+       注意：spDlgPairIds 本來 skip extra_unknown，新影 id 唔會 skip，所以呢條防線一定要有。 */
+    try{ if(typeof dlg119DedupePair==="function") return dlg119DedupePair(pair); }catch(_e){}
     return pair;
   }
   /* v20a106 DLG106：雙人全身圖 HTML（企位／翻轉行視線表；明暗跟講者；
@@ -27348,14 +27487,27 @@ const StoryPlay = (()=>{
     const html = slots.map(slot=>{
       const isActive = !!(activeId && slot.id===activeId);
       const cat = isActive ? cur.dlgCat : "neutral";
-      const cands = dlg106Candidates(slot.id, cat);
-      try{ const lb = spBustUrl(slot.id, "default"); if(lb && cands.indexOf(lb)<0) cands.push(lb); }catch(_e){}
-      try{ spBustCandidates(slot.id, "default").slice(0,4).forEach(u=>{ if(u && cands.indexOf(u)<0) cands.push(u); }); }catch(_e){}
+      /* v20a119 DLG119：影唔行表情候補鏈＋唔接 bust 後備——講者 base／聽者 _dim 版
+         （明暗焗入圖，唔用 CSS brightness 一刀切）；光暈貼喺人物背後、底圖之上，
+         講者／聽者同一層。影唔用 brightness filter：bright 一律 "1"。 */
+      const stem119 = (typeof dlg119ShadowAsset==="function") ? dlg119ShadowAsset(slot.id) : null;
+      let cands;
+      if(stem119){
+        cands = dlg119Candidates(stem119, !isActive);
+      } else {
+        cands = dlg106Candidates(slot.id, cat);
+        try{ const lb = spBustUrl(slot.id, "default"); if(lb && cands.indexOf(lb)<0) cands.push(lb); }catch(_e){}
+        try{ spBustCandidates(slot.id, "default").slice(0,4).forEach(u=>{ if(u && cands.indexOf(u)<0) cands.push(u); }); }catch(_e){}
+      }
       if(!cands.length) return "";
       let bright = "0.6", z = 3;
       if(mode106==="phone"){ bright = "0.8"; z = 3; }
       else if(mode106!=="narration" && isActive){ bright = "1"; z = 4; }
-      return `<img class="dlg106-char ${slot.pos}${slot.flip?" dlg106-flip":""}" src="${esc(cands[0])}" alt="" data-dlg-id="${esc(slot.id)}" data-dlg-fallbacks="${esc(cands.slice(1).join("|"))}" draggable="false" style="filter:brightness(${bright});z-index:${z}" onload="try{window.__dlg108Fit&&window.__dlg108Fit(this)}catch(_e){}" onerror="try{window.__dlg106Err&&window.__dlg106Err(this)}catch(_e){}"/>`;
+      if(stem119) bright = "1";
+      const halo119 = stem119
+        ? `<img class="dlg119-halo ${slot.pos}" src="${esc(dlg119HaloUrl(stem119))}" alt="" data-dlg-id="${esc(slot.id)}" draggable="false" style="z-index:2" onerror="this.style.visibility='hidden'"/>`
+        : "";
+      return halo119 + `<img class="dlg106-char ${slot.pos}${slot.flip?" dlg106-flip":""}" src="${esc(cands[0])}" alt="" data-dlg-id="${esc(slot.id)}"${stem119?" data-dlg119-shadow=\"1\"":""} data-dlg-fallbacks="${esc(cands.slice(1).join("|"))}" draggable="false" style="filter:brightness(${bright});z-index:${z}" onload="try{window.__dlg108Fit&&window.__dlg108Fit(this)}catch(_e){}" onerror="try{window.__dlg106Err&&window.__dlg106Err(this)}catch(_e){}"/>`;
     }).join("");
     return html ? `<div class="dlg106-chars" aria-hidden="true">${html}</div>` : "";
   }

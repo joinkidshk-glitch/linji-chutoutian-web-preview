@@ -114,7 +114,7 @@ try:
             continue  # v111：通告負責人立繪（S-30v2 卡上人物），唔係對話舞台角色，唔入配對重測
         im = Image.open(p)
         files[os.path.basename(p)[:-5]] = round(im.size[0] / im.size[1], 4)
-    ck("真檔數目 96 張（v106 88 張＋v107 8 張新表情；v111 boss_* 11 張另計，唔入對話重測）", len(files) == 96)
+    ck("真檔數目 103 張（v106 88 張＋v107 8 張新表情＋v119 DLG119 7 張 webp；v111 boss_* 11 張另計，唔入對話重測；3 張 halo 係 png）", len(files) == 103)
     def near(name, got, want, tol=0.001):
         ck("闊高比 %s＝%.3f（size-test %.3f）" % (name, got, want), abs(got - want) <= tol)
     bases = {k[:-5]: v for k, v in files.items() if k.endswith("_base")}
@@ -132,13 +132,13 @@ try:
     pairs = sorted(((round(bases[a] + bases[b], 3), a, b)
                     for ii, a in enumerate(sorted(bases)) for b in sorted(bases)[ii + 1:]), reverse=True)
     s_top, a_top, b_top = pairs[0]
-    ck("重測：最闊配對合計 %.3f（方小龍＋Vera／葉敏芝 0.795）" % s_top, abs(s_top - 0.795) <= 0.001)
+    ck("重測：最闊配對合計 %.3f（方小龍＋老年影 0.813；v119 前係方小龍＋Vera 0.795）" % s_top, abs(s_top - 0.813) <= 0.001)
     cap = round((AVAIL - 12) / s_top / 844 * 100, 1)
-    ck(f"重測：最闊配對上限 {cap:.1f}%（size-test 約 55%）", 54.0 <= cap <= 55.5)
+    ck(f"重測：最闊配對上限 {cap:.1f}%（size-test 約 55%，v119 老年影闊袍 0.400 令上限跌到約 53%）", 52.5 <= cap <= 54.0)
     n_shrink = sum(1 for s, a, b in pairs
                  if round(AVAIL - H * (bases[a] + bases[b]), 1) < 12)
-    ck(f"重測：60% 下淨空 <12px 嘅配對有 {n_shrink}/{len(pairs)} 個（自動收細非擺設）",
-       n_shrink == 55)
+    ck(f"重測：60% 下淨空 <12px 嘅配對有 {n_shrink}/{len(pairs)} 個（自動收細非擺設；v119 前 55 個）",
+       n_shrink == 110)
     info("重測寫入 qa108d/remeasure108d.json（%d 張，%d 個 base）" % (len(files), len(bases)))
 except ImportError:
     warns.append("PIL 未裝：跳過真檔重測")
