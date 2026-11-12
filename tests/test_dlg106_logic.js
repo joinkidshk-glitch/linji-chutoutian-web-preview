@@ -30,14 +30,14 @@ const GAZE = D.DLG106_GAZE, EMAP = D.DLG106_EMOTION_MAP;
 /* ---- (1) 視線表：同 handoff106/gaze_table.json 全表一致 ---- */
 let handoffGaze = null;
 try{ handoffGaze = JSON.parse(fs.readFileSync(path.join(root, 'handoff106', 'gaze_table.json'), 'utf8')); }catch(_e){}
-ok('視線表 34 條（31 角＋extra_ad_fen＋awi_s2/s3）', Object.keys(GAZE).length === 34);
+ok('視線表 39 條（31 角＋extra_ad_fen＋awi_s2/s3＋v20a119 DLG119 5 鍵）', Object.keys(GAZE).length === 39);
 if(handoffGaze){
   ok('視線表同 handoff gaze_table.json 逐條一致', JSON.stringify(GAZE) === JSON.stringify(handoffGaze));
 } else info('handoff106/gaze_table.json 唔喺度（可能已清走）——跳過逐條對照，淨驗分佈');
 const dist = { front:0, left:0, right:0 };
 let flipTrue = 0;
 for(const k of Object.keys(GAZE)){ dist[GAZE[k].gaze]++; if(GAZE[k].flipSafe) flipTrue++; }
-ok('視線分佈 front24／left6／right4', dist.front === 24 && dist.left === 6 && dist.right === 4);
+ok('視線分佈 front29／left6／right4（v119 加 5 個 front）', dist.front === 29 && dist.left === 6 && dist.right === 4);
 ok('flipSafe=true 共 11 條', flipTrue === 11);
 ok('何生 left＋唔翻得', GAZE.ho_sang.gaze === 'left' && GAZE.ho_sang.flipSafe === false);
 ok('駱家聲 left＋唔翻得（C 實測，唔跟舊 bust 翻轉先例）', GAZE.lok_gasing.gaze === 'left' && GAZE.lok_gasing.flipSafe === false);
