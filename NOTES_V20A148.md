@@ -54,4 +54,7 @@ const scenePos146 = scene105 && scene105.indexOf("bg_wf4_market.jpg")>=0 ? ";bac
 
 ## 落地
 
-（待填：main commit、線上 bytes／sha 核實）
+- main commit `e323db1`（squash merge，分支 `v20a148`，base `da90957`；v149 未落地，唔使 rebase）。
+- index.html staged diff 同分支原 diff 逐字相同（blob `98615c6..4f5a4ae`，5＋／5－）；`git fsck --strict` 乾淨。
+- 已推上 GitHub（`da90957..e323db1 main -> main`，origin/main 已確認 `e323db1`）。
+- 線上核實：（待填：curl bytes／sha）
