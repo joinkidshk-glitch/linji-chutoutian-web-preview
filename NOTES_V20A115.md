@@ -35,6 +35,7 @@
 
 ## 實駕（工人 `7868477b`，改前 v111 main vs 改後本分支，Playwright 390px）
 - **pageerror／console.error：兩版都係 0**。
+- **pageerror／console.error：兩版都係 0**。
 - **任務原文寫埋咗兩張通告**：指定 gig id `gig_1988_tvb_longmen_spring_high` 係《靈幻喜劇迎春夜》固定班底（片酬 $3,000／簽約金約 $900），$156 嗰張係《賀歲特輯》拜年群演（`gig_1988_entry_winter_cny_crowd`，片酬 $520）。兩張行同一組文字改動，兩張都駕埋對照。
 - 改前 → 改後（DOM 讀出＋截圖核對）：
   - 檔期行：「檔期／預計播出：1990 年農曆新年特輯」→「預計播出／1990 年農曆新年特輯」
@@ -49,3 +50,9 @@
 ## 殘留缺口
 - 通告欄卡片 meta 行（`gigBoardTeaserHtml`）仍係「酬勞 · 約 N 日 · 獲聘後 N 日內完成」串埋一行——v111 已列跟進一票，今包刻意唔掂。
 - 「檔期」呢個詞喺詳情頁其他位（例如詳細區「檔期／片酬」小標）仍然存在，嗰啲係分組標題唔係行 label，今包唔郁。
+
+## 上線核實
+- main commit：**`2b42ca0`**（squash，分支 `v115-s30-text` 三個 commit：改動＋測試／實駕證據／NOTES；合併時 main 頭係 v112 `6ed8206`，auto-merge 零衝突）。
+- 線上核實（curl，2026-11-12 約 00:00 HKT）：線上 `index.html` **5,092,391 bytes、sha256 `d8a53b85a7da394424450a24c86420213632f095e4b3257baf0a461c0ea95502`**，同 `2b42ca0:index.html` 逐 byte 一致。
+- 合併後全套重驗（現行 main 已再進到 v113 `aead4ba`，同一樹）：py 76 PASS／12 FAIL（88 檔）＋js 76 PASS／0 FAIL（76 檔）＝**152 PASS／12 FAIL**，FAIL 清單同 v111 基線逐字相同；`test_s30text115_static.py`／`test_aud91_static.py`／`test_ui108_static.py` 全部 PASS。
+- 注意：核實嗰刻 Pages 仍派緊 `2b42ca0` 版本，v113（`aead4ba`）已入 main 但未部署——屬已知 Pages 部署滯後，v113 嗰邊跟進。
