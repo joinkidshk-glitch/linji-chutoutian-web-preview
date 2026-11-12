@@ -49,3 +49,8 @@
 - 11 張老闆圖係 v2/v2b 新檔：邏輯測試讀真 map 證明跟表，實駕截圖目視確認。
 - `/tmp` 滿咗（512M tmpfs 得約 105M 空）：新 main worktree 改放 `~/workspace/linji-main110wt`；舊 `/tmp/linji-main116`（aeec7a5）＋drive 輸出未清，遲啲要執。
 - 實駕腳本／probe／resync 腳本留喺工作副本 `~/workspace/linji-work118/`，唔入 repo；`drive_explore118.py` 已 `git rm`（誤入 WIP commit）。
+
+## 合併紀錄
+- Squash 合併入 main：`2cdae13`（基底 `999c719`＝v110）。
+- 本地 main index.html：5,137,219 bytes，sha256 `af6b43db0911b34a…`。
+- 線上初檢（合併後即刻）：5,121,987 bytes，sha `d1c8fcea…`——舊版，Pages 部署滯後；推呢個 NOTES commit 重觸發部署，之後再核實。
