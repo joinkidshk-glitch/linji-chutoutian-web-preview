@@ -54992,7 +54992,7 @@ function doEnrollRun(L, tr){
 const REST_SLEEP_FX_SRC = "assets/fx/fx_rest.mp4"; /* v20a102 FX102：新版像素瞓覺片（samples19 標準）取代舊寫實片嘅用途；舊檔 awei-rest-sleep.mp4 保留唔刪 */
 let _restSleepFxArmed = false;
 function restSleepFxHtml(){
-  const src = REST_SLEEP_FX_SRC + ((/\?/.test(REST_SLEEP_FX_SRC)?"&":"?") + "v=20a10");
+  const src = REST_SLEEP_FX_SRC + ((/\?/.test(REST_SLEEP_FX_SRC)?"&":"?") + "v=20a129"); /* v20a129：休息片換 PixelLab v3，同路徑覆蓋要升版本參數先避開瀏覽器快取（跟 v102 背景圖版本參數前例）；產品 ?v=／SAVE／softRev 不變 */
   return `<div class="rest-sleep-inline" id="rest-sleep-inline">`+
     `<video id="rest-sleep-video" playsinline muted preload="auto" src="${src}"></video>`+
     `</div>`;
