@@ -1,0 +1,220 @@
+pristine server check: {'new_asset_status': 404, 'old_asset_status': 200}
+########## PRISTINE RUN ##########
+== pristine P1 tier0 Pang ==
+  new_game: True
+  [p1_pang] try dayIndex=0 -> 中環廣告
+  [p1_pang] day 0: 入場冇觸發巧遇
+  [p1_pang] try dayIndex=1 -> 中環廣告
+  [p1_pang] day 1: overlay name=彭少祺
+  ENC p1_pang[0] name=彭少祺 line=哎，收工啦收工啦，各位辛苦晒，聽日準時呀！ L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(1)'}
+  ENC p1_pang[1] name= line=中環廣告公司大堂，彭少祺啱啱錄完嘢出嚟，一路行一路同人打招呼，邊個出入佢都叫得出名。 L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(0.6)'}
+  ENC p1_pang[2] name=彭少祺 line=阿玲，琴日你個仔冇事嘛？老陳，你副新眼鏡幾襯你喎。 L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(1)'}
+  ENC p1_pang[3] name= line=佢轉個頭，忽然望住阿偉，笑到眼都瞇埋。 L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(0.6)'}
+  ENC p1_pang[4] name=彭少祺 line=咦，阿偉！係咪先？我冇記錯人呀？ L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(1)'}
+  ENC p1_pang[5] name=阿偉 line=彭、彭生？你識我？ L={'src': 'awi_base.webp', 'filter': 'brightness(1)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(0.6)'}
+  [p1_pang] day 1: seen=[]
+== pristine P2 tier2 Chung ==
+  new_game: True
+  set_tier -> 2
+  [p2_chung] try dayIndex=608 -> 天星音樂
+  [p2_chung] day 608: overlay name=
+  [p2_chung] day 608: 唔係目標星（），行完佢再試下日
+  [p2_chung] try dayIndex=609 -> 天星音樂
+  [p2_chung] day 609: overlay name=
+  [p2_chung] day 609: 唔係目標星（），行完佢再試下日
+  [p2_chung] try dayIndex=610 -> 天星音樂
+  [p2_chung] day 610: 入場冇觸發巧遇
+  [p2_chung] try dayIndex=611 -> 天星音樂
+  [p2_chung] day 611: 入場冇觸發巧遇
+  [p2_chung] try dayIndex=612 -> 天星音樂
+  [p2_chung] day 612: overlay name=
+  [p2_chung] day 612: 唔係目標星（），行完佢再試下日
+  [p2_chung] try dayIndex=613 -> 天星音樂
+  [p2_chung] day 613: overlay name=鍾楚凝
+  ENC p2_chung[0] name=鍾楚凝 line=係你呀。我趕時間，唔好行咁近。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(1)'}
+  ENC p2_chung[1] name=阿偉 line=哦……鍾小姐，你忙啦，我唔阻你。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(1)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(0.6)'}
+  ENC p2_chung[2] name=鍾楚凝 line=嗯。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(1)'}
+  ENC p2_chung[3] name=鍾楚凝 line=阿偉，你擔正喇。主角唔係企中間嗰個，係成場戲嘅重心跌落你度，你接唔接得住嗰個。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(1)'}
+  ENC p2_chung[4] name=鍾楚凝 line=唔好俾紅嗰陣嘅掌聲呃咗，擔正之後，先係真正考演技嗰陣。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(1)'}
+  ENC p2_chung[5] name=鍾楚凝 line=試鏡嗰啲，你唔好一入房就笑到咁燦爛，人哋未嗌你，你已經交晒底牌喇。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(1)'}
+  [p2_chung] day 613: seen=[]
+  LOADER pristine_p2 awi surprise t2: first=awi_s2_surprise.webp status=404 expect=awi_s2_surprise.webp BAD
+  LOADER pristine_p2 awi sad t2: first=awi_s2_sad.webp status=404 expect=awi_s2_sad.webp BAD
+  LOADER pristine_p2 awi shy t2: first=awi_s2_shy.webp status=404 expect=awi_s2_shy.webp BAD
+== pristine P3 tier3 Liu ==
+  new_game: True
+  set_tier -> 3
+  [p3_liu] try dayIndex=974 -> 金龍茶餐廳
+  [p3_liu] day 974: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=975 -> 金龍茶餐廳
+  [p3_liu] day 975: overlay name=
+  [p3_liu] day 975: 唔係目標星（），行完佢再試下日
+  [p3_liu] try dayIndex=976 -> 金龍茶餐廳
+  [p3_liu] day 976: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=977 -> 金龍茶餐廳
+  [p3_liu] day 977: overlay name=
+  [p3_liu] day 977: 唔係目標星（），行完佢再試下日
+  [p3_liu] try dayIndex=978 -> 金龍茶餐廳
+  [p3_liu] day 978: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=979 -> 金龍茶餐廳
+  [p3_liu] day 979: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=980 -> 金龍茶餐廳
+  [p3_liu] day 980: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=981 -> 金龍茶餐廳
+  [p3_liu] day 981: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=982 -> 金龍茶餐廳
+  [p3_liu] day 982: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=983 -> 金龍茶餐廳
+  [p3_liu] day 983: 入場冇觸發巧遇
+  LOADER pristine_p3 awi surprise t3: first=awi_s3_surprise.webp status=404 expect=awi_s3_surprise.webp BAD
+  LOADER pristine_p3 awi sad t3: first=awi_s3_sad.webp status=404 expect=awi_s3_sad.webp BAD
+  LOADER pristine_p3 awi shy t3: first=awi_s3_shy.webp status=404 expect=awi_s3_shy.webp BAD
+branch server check: all ok = True
+########## BRANCH RUN ##########
+== branch P1 tier0 Pang ==
+  new_game: True
+  [p1_pang] try dayIndex=0 -> 中環廣告
+  [p1_pang] day 0: 入場冇觸發巧遇
+  [p1_pang] try dayIndex=1 -> 中環廣告
+  [p1_pang] day 1: overlay name=彭少祺
+  ENC p1_pang[0] name=彭少祺 line=哎，收工啦收工啦，各位辛苦晒，聽日準時呀！ L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(1)'}
+  ENC p1_pang[1] name= line=中環廣告公司大堂，彭少祺啱啱錄完嘢出嚟，一路行一路同人打招呼，邊個出入佢都叫得出名。 L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(0.6)'}
+  ENC p1_pang[2] name=彭少祺 line=阿玲，琴日你個仔冇事嘛？老陳，你副新眼鏡幾襯你喎。 L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(1)'}
+  ENC p1_pang[3] name= line=佢轉個頭，忽然望住阿偉，笑到眼都瞇埋。 L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(0.6)'}
+  ENC p1_pang[4] name=彭少祺 line=咦，阿偉！係咪先？我冇記錯人呀？ L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_surprise.webp', 'filter': 'brightness(1)'}
+  ENC p1_pang[5] name=阿偉 line=彭、彭生？你識我？ L={'src': 'awi_base.webp', 'filter': 'brightness(1)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(0.6)'}
+  ENC p1_pang[6] name=彭少祺 line=上次嗰個大騷後台呀嘛，你企喺後台門口嗰堆臨記入面，仲幫手扶過支咪架，我記得㗎。 L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(1)'}
+  ENC p1_pang[7] name=阿偉 line=嗰日咁多人，你都記得我？ L={'src': 'awi_base.webp', 'filter': 'brightness(1)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(0.6)'}
+  ENC p1_pang[8] name=彭少祺 line=做司儀冇第二樣本事，記人名就係我哋嘅飯碗嚟㗎嘛。記得人名，人哋就覺得你有畀心機。 L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(1)'}
+  ENC p1_pang[9] name=彭少祺 line=你嗰日企到最尾，個個走晒你仲幫手執嘢，我睇在眼內㗎。 L={'src': 'awi_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(1)'}
+  ENC p1_pang[10] name=阿偉 line=我嗰陣淨係諗住唔好阻住人，冇諗過有人會留意。 L={'src': 'awi_angry.webp', 'filter': 'brightness(1)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(0.6)'}
+  [p1_pang] day 1: seen=['awi_angry.webp', 'pang_siuki_surprise.webp']
+== branch P2 tier2 Chung ==
+  new_game: True
+  set_tier -> 2
+  [p2_chung] try dayIndex=608 -> 天星音樂
+  [p2_chung] day 608: overlay name=
+  [p2_chung] day 608: 唔係目標星（），行完佢再試下日
+  [p2_chung] try dayIndex=609 -> 天星音樂
+  [p2_chung] day 609: overlay name=
+  [p2_chung] day 609: 唔係目標星（），行完佢再試下日
+  [p2_chung] try dayIndex=610 -> 天星音樂
+  [p2_chung] day 610: 入場冇觸發巧遇
+  [p2_chung] try dayIndex=611 -> 天星音樂
+  [p2_chung] day 611: 入場冇觸發巧遇
+  [p2_chung] try dayIndex=612 -> 天星音樂
+  [p2_chung] day 612: overlay name=
+  [p2_chung] day 612: 唔係目標星（），行完佢再試下日
+  [p2_chung] try dayIndex=613 -> 天星音樂
+  [p2_chung] day 613: overlay name=鍾楚凝
+  ENC p2_chung[0] name=鍾楚凝 line=係你呀。我趕時間，唔好行咁近。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(1)'}
+  ENC p2_chung[1] name=阿偉 line=哦……鍾小姐，你忙啦，我唔阻你。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(1)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(0.6)'}
+  ENC p2_chung[2] name=鍾楚凝 line=嗯。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(1)'}
+  ENC p2_chung[3] name=鍾楚凝 line=阿偉，你擔正喇。主角唔係企中間嗰個，係成場戲嘅重心跌落你度，你接唔接得住嗰個。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(1)'}
+  ENC p2_chung[4] name=鍾楚凝 line=唔好俾紅嗰陣嘅掌聲呃咗，擔正之後，先係真正考演技嗰陣。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(1)'}
+  ENC p2_chung[5] name=鍾楚凝 line=試鏡嗰啲，你唔好一入房就笑到咁燦爛，人哋未嗌你，你已經交晒底牌喇。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'chung_choning_smile.webp', 'filter': 'brightness(1)'}
+  ENC p2_chung[6] name=阿偉 line=咁入房嗰陣應該點呀？ L={'src': 'awi_s2_base.webp', 'filter': 'brightness(1)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(0.6)'}
+  ENC p2_chung[7] name=鍾楚凝 line=企定，望住對方，等佢講嘢。你越定，佢越想知你仲有啲咩未出。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'chung_choning_serious.webp', 'filter': 'brightness(1)'}
+  ENC p2_chung[8] name=阿偉 line=原來定，都係一種演法。 L={'src': 'awi_s2_base.webp', 'filter': 'brightness(1)'} R={'src': 'chung_choning_base.webp', 'filter': 'brightness(0.6)'}
+  [p2_chung] day 613: seen=['chung_choning_smile.webp']
+  LOADER branch_p2 awi surprise t2: first=awi_s2_surprise.webp status=200 expect=awi_s2_surprise.webp OK
+  LOADER branch_p2 awi sad t2: first=awi_s2_sad.webp status=200 expect=awi_s2_sad.webp OK
+  LOADER branch_p2 awi shy t2: first=awi_s2_shy.webp status=200 expect=awi_s2_shy.webp OK
+== branch P3 tier3 Liu ==
+  new_game: True
+  set_tier -> 3
+  [p3_liu] try dayIndex=974 -> 金龍茶餐廳
+  [p3_liu] day 974: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=975 -> 金龍茶餐廳
+  [p3_liu] day 975: overlay name=
+  [p3_liu] day 975: 唔係目標星（），行完佢再試下日
+  [p3_liu] try dayIndex=976 -> 金龍茶餐廳
+  [p3_liu] day 976: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=977 -> 金龍茶餐廳
+  [p3_liu] day 977: overlay name=
+  [p3_liu] day 977: 唔係目標星（），行完佢再試下日
+  [p3_liu] try dayIndex=978 -> 金龍茶餐廳
+  [p3_liu] day 978: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=979 -> 金龍茶餐廳
+  [p3_liu] day 979: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=980 -> 金龍茶餐廳
+  [p3_liu] day 980: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=981 -> 金龍茶餐廳
+  [p3_liu] day 981: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=982 -> 金龍茶餐廳
+  [p3_liu] day 982: 入場冇觸發巧遇
+  [p3_liu] try dayIndex=983 -> 金龍茶餐廳
+  [p3_liu] day 983: 入場冇觸發巧遇
+  LOADER branch_p3 awi surprise t3: first=awi_s3_surprise.webp status=200 expect=awi_s3_surprise.webp OK
+  LOADER branch_p3 awi sad t3: first=awi_s3_sad.webp status=200 expect=awi_s3_sad.webp OK
+  LOADER branch_p3 awi shy t3: first=awi_s3_shy.webp status=200 expect=awi_s3_shy.webp OK
+== branch loader tier0 ==
+  LOADER branch_t0 awi angry t0: first=awi_angry.webp status=200 expect=awi_angry.webp OK
+  LOADER branch_t0 chung_choning think t0: first=chung_choning_think.webp status=200 expect=chung_choning_think.webp OK
+  LOADER branch_t0 chung_choning happy t0: first=chung_choning_smile.webp status=200 expect=chung_choning_smile.webp OK
+  LOADER branch_t0 ho_sang angry t0: first=ho_sang_angry.webp status=200 expect=ho_sang_angry.webp OK
+  LOADER branch_t0 liu_bingxing shy t0: first=liu_bingxing_shy.webp status=200 expect=liu_bingxing_shy.webp OK
+  LOADER branch_t0 pang_siuki surprise t0: first=pang_siuki_surprise.webp status=200 expect=pang_siuki_surprise.webp OK
+branch missing after P1-P3: ['awi_s2_sad.webp', 'awi_s2_shy.webp', 'awi_s2_surprise.webp', 'awi_s3_sad.webp', 'awi_s3_shy.webp', 'awi_s3_surprise.webp', 'chung_choning_think.webp', 'liu_bingxing_shy.webp']
+== branch EXTRA liu (missing=['awi_s2_sad.webp', 'awi_s2_shy.webp', 'awi_s2_surprise.webp', 'awi_s3_sad.webp', 'awi_s3_shy.webp', 'awi_s3_surprise.webp', 'chung_choning_think.webp', 'liu_bingxing_shy.webp']) ==
+  new_game: True, tier -> 2
+  [x_liu] try dayIndex=974 -> 金龍茶餐廳
+  [x_liu] day 974: 入場冇觸發巧遇
+  [x_liu] try dayIndex=975 -> 金龍茶餐廳
+  [x_liu] day 975: overlay name=
+  [x_liu] day 975: 唔係目標星（），行完佢再試下日
+  [x_liu] try dayIndex=976 -> 金龍茶餐廳
+  [x_liu] day 976: 入場冇觸發巧遇
+  [x_liu] try dayIndex=977 -> 金龍茶餐廳
+  [x_liu] day 977: overlay name=
+  [x_liu] day 977: 唔係目標星（），行完佢再試下日
+  [x_liu] try dayIndex=978 -> 金龍茶餐廳
+  [x_liu] day 978: 入場冇觸發巧遇
+== branch EXTRA pang (missing=['awi_s2_sad.webp', 'awi_s2_shy.webp', 'awi_s2_surprise.webp', 'awi_s3_sad.webp', 'awi_s3_shy.webp', 'awi_s3_surprise.webp', 'chung_choning_think.webp', 'liu_bingxing_shy.webp']) ==
+  new_game: True, tier -> 3
+  [x_pang] try dayIndex=10 -> 中環廣告
+  [x_pang] day 10: overlay name=彭少祺
+  ENC x_pang[0] name=彭少祺 line=哎，收工啦收工啦，各位辛苦晒，聽日準時呀！ L={'src': 'awi_s3_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(1)'}
+  ENC x_pang[1] name= line=中環廣告公司大堂，彭少祺啱啱錄完嘢出嚟，一路行一路同人打招呼，邊個出入佢都叫得出名。 L={'src': 'awi_s3_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(0.6)'}
+  ENC x_pang[2] name=彭少祺 line=阿玲，琴日你個仔冇事嘛？老陳，你副新眼鏡幾襯你喎。 L={'src': 'awi_s3_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(1)'}
+  ENC x_pang[3] name= line=佢轉個頭，忽然望住阿偉，笑到眼都瞇埋。 L={'src': 'awi_s3_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(0.6)'}
+  ENC x_pang[4] name=彭少祺 line=咦，阿偉！係咪先？我冇記錯人呀？ L={'src': 'awi_s3_base.webp', 'filter': 'brightness(0.6)'} R={'src': 'pang_siuki_surprise.webp', 'filter': 'brightness(1)'}
+  ENC x_pang[5] name=阿偉 line=彭、彭生？你識我？ L={'src': 'awi_s3_base.webp', 'filter': 'brightness(1)'} R={'src': 'pang_siuki_base.webp', 'filter': 'brightness(0.6)'}
+  [x_pang] day 10: seen=[]
+== branch EXTRA chung (missing=['awi_s2_sad.webp', 'awi_s2_shy.webp', 'awi_s2_surprise.webp', 'awi_s3_sad.webp', 'awi_s3_shy.webp', 'awi_s3_surprise.webp', 'chung_choning_think.webp', 'liu_bingxing_shy.webp']) ==
+  new_game: True, tier -> 3
+  [x_chung] try dayIndex=608 -> 天星音樂
+  [x_chung] day 608: overlay name=
+  [x_chung] day 608: 唔係目標星（），行完佢再試下日
+  [x_chung] try dayIndex=609 -> 天星音樂
+  [x_chung] day 609: overlay name=
+  [x_chung] day 609: 唔係目標星（），行完佢再試下日
+  [x_chung] try dayIndex=610 -> 天星音樂
+  [x_chung] day 610: 入場冇觸發巧遇
+  [x_chung] try dayIndex=611 -> 天星音樂
+  [x_chung] day 611: 入場冇觸發巧遇
+  [x_chung] try dayIndex=612 -> 天星音樂
+  [x_chung] day 612: overlay name=
+  [x_chung] day 612: 唔係目標星（），行完佢再試下日
+== branch EXTRA liu0 (missing=['awi_s2_sad.webp', 'awi_s2_shy.webp', 'awi_s2_surprise.webp', 'awi_s3_sad.webp', 'awi_s3_shy.webp', 'awi_s3_surprise.webp', 'chung_choning_think.webp', 'liu_bingxing_shy.webp']) ==
+  new_game: True, tier -> 0
+  [x_liu0] try dayIndex=974 -> 金龍茶餐廳
+  [x_liu0] day 974: 入場冇觸發巧遇
+  [x_liu0] try dayIndex=975 -> 金龍茶餐廳
+  [x_liu0] day 975: overlay name=
+  [x_liu0] day 975: 唔係目標星（），行完佢再試下日
+  [x_liu0] try dayIndex=976 -> 金龍茶餐廳
+  [x_liu0] day 976: 入場冇觸發巧遇
+  [x_liu0] try dayIndex=977 -> 金龍茶餐廳
+  [x_liu0] day 977: overlay name=
+  [x_liu0] day 977: 唔係目標星（），行完佢再試下日
+  [x_liu0] try dayIndex=978 -> 金龍茶餐廳
+  [x_liu0] day 978: 入場冇觸發巧遇
+branch missing after extras: ['awi_s2_sad.webp', 'awi_s2_shy.webp', 'awi_s2_surprise.webp', 'awi_s3_sad.webp', 'awi_s3_shy.webp', 'awi_s3_surprise.webp', 'chung_choning_think.webp', 'liu_bingxing_shy.webp']
+seen_branch: ['awi_angry.webp', 'chung_choning_smile.webp', 'pang_siuki_surprise.webp']
+missing render targets: ['awi_s2_sad.webp', 'awi_s2_shy.webp', 'awi_s2_surprise.webp', 'awi_s3_sad.webp', 'awi_s3_shy.webp', 'awi_s3_surprise.webp', 'chung_choning_think.webp', 'liu_bingxing_shy.webp']
+loader all ok: True
+target404 pristine: 18 branch: 0
+pageerrors: []
+OVERALL PASS: False
+DONE
