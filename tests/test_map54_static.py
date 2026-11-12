@@ -7,6 +7,8 @@
 # 已知後繼段加 v20a108，要求埋 DLG108 完結標記。
 # v20a119 更新：DLG119 剪影 CSS 段合法追加（光暈層＋「影」黑卡，喺 DLG106 段內、
 # DLG106 完結標記之前），已知後繼段加 v20a119，要求埋 DLG119 完結標記。
+# v20a131 更新：UI131 B批 CSS 段合法追加（B2 事業 tab 筆記紙＋B4 對話框短句置中，
+# 喺 v128 A6 段之後、</style> 之前），已知後繼段加 v20a131。
 import sys
 
 path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
@@ -35,11 +37,11 @@ try:
     _between = html[html.index('/* === v20a54 完 === */'):html.index('</style>')]
     _segs_after = [s.split('===')[0] for s in _between.split('/* === ')[1:]
                    if 'v20a54 完' not in s]
-    _last = bool(_segs_after) and all(('v20a76' in s or 'v20a106' in s or 'v20a108' in s or 'v20a119' in s or 'v20a128' in s) for s in _segs_after) \
+    _last = bool(_segs_after) and all(('v20a76' in s or 'v20a106' in s or 'v20a108' in s or 'v20a119' in s or 'v20a128' in s or 'v20a131' in s) for s in _segs_after) \
         and 'v20a106 DLG106 完' in _between and 'v20a108 DLG108 完' in _between and 'v20a119 DLG119 完' in _between
 except ValueError:
     _last = False
-ok('v54 segment followed only by known skins (v76+dlg106+dlg108+dlg119+v128) before </style>', _last)
+ok('v54 segment followed only by known skins (v76+dlg106+dlg108+dlg119+v128+v131) before </style>', _last)
 
 # ---- 1. 紙面填充（只准油漆屬性） ----
 wrap = seg('#app .map-wrap{', '}', v54)

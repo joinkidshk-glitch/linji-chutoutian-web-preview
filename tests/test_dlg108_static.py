@@ -114,7 +114,7 @@ try:
             continue  # v111：通告負責人立繪（S-30v2 卡上人物），唔係對話舞台角色，唔入配對重測
         im = Image.open(p)
         files[os.path.basename(p)[:-5]] = round(im.size[0] / im.size[1], 4)
-    ck("真檔數目 121 張（v106 88 張＋v107 8 張新表情＋v119 DLG119 7 張 webp＋v123 12 張新表情＋v126 6 張新表情；v111 boss_* 11 張另計，唔入對話重測；3 張 halo 係 png）", len(files) == 121)
+    ck("真檔數目 123 張（v106 88 張＋v107 8 張新表情＋v119 DLG119 7 張 webp＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖；v111 boss_* 11 張另計，唔入對話重測；3 張 halo 係 png）", len(files) == 123)
     def near(name, got, want, tol=0.001):
         ck("闊高比 %s＝%.3f（size-test %.3f）" % (name, got, want), abs(got - want) <= tol)
     bases = {k[:-5]: v for k, v in files.items() if k.endswith("_base")}
@@ -137,8 +137,8 @@ try:
     ck(f"重測：最闊配對上限 {cap:.1f}%（size-test 約 55%，v119 老年影闊袍 0.400 令上限跌到約 53%）", 52.5 <= cap <= 54.0)
     n_shrink = sum(1 for s, a, b in pairs
                  if round(AVAIL - H * (bases[a] + bases[b]), 1) < 12)
-    ck(f"重測：60% 下淨空 <12px 嘅配對有 {n_shrink}/{len(pairs)} 個（自動收細非擺設；v119 前 55 個）",
-       n_shrink == 110)
+    ck(f"重測：60% 下淨空 <12px 嘅配對有 {n_shrink}/{len(pairs)} 個（自動收細非擺設；v119 前 55 個；v20a131 B1 加 2 個 base，＋10 對）",
+       n_shrink == 120)
     info("重測寫入 qa108d/remeasure108d.json（%d 張，%d 個 base）" % (len(files), len(bases)))
 except ImportError:
     warns.append("PIL 未裝：跳過真檔重測")

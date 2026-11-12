@@ -91,11 +91,11 @@ let o = api.locpanel118OwnerFor('agency_ho');
 ok('何生：圖源＝S-30 fallback（ho_sang_base）', !!o && o.src.indexOf('ho_sang_base.webp') >= 0);
 ok('何生：名牌「何生 · 事務所老闆」', !!o && o.name === '何生' && o.sub === '事務所老闆');
 o = api.locpanel118OwnerFor('cafe_cha');
-ok('霞姐：名牌無圖（noFig）、「霞姐 · 金龍茶餐廳老闆娘」',
-   !!o && o.noFig === true && !o.src && o.name === '霞姐' && o.sub === '金龍茶餐廳老闆娘');
+ok('霞姐：企立圖＋名牌（v20a131 B1）、「霞姐 · 金龍茶餐廳老闆娘」',
+   !!o && !o.noFig && o.src.indexOf('xia_jie_base.webp') >= 0 && o.name === '霞姐' && o.sub === '金龍茶餐廳老闆娘');
 o = api.locpanel118OwnerFor('gift_shop');
-ok('禮品檔：名牌無圖（noFig）、「老闆娘 · 廟街禮品檔」',
-   !!o && o.noFig === true && !o.src && o.name === '老闆娘' && o.sub === '廟街禮品檔');
+ok('禮品檔：企立圖＋名牌（v20a131 B1）、「老闆娘 · 廟街禮品檔」',
+   !!o && !o.noFig && o.src.indexOf('gift_lady_base.webp') >= 0 && o.name === '老闆娘' && o.sub === '廟街禮品檔');
 ok('醫院：null（唔出人、連名牌都唔出）', api.locpanel118OwnerFor('hospital') === null);
 ok('未知地點：null（唔用何生頂替）', api.locpanel118OwnerFor('home') === null && api.locpanel118OwnerFor('nope') === null);
 

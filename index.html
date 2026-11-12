@@ -3968,7 +3968,7 @@ body.day-res-open .day-row{
 .psr-cards{ display:flex; flex-direction:column; gap:8px; margin:8px 0 10px; }
 .psr-card{ border:1px solid rgba(180,140,60,.35); background:linear-gradient(180deg,rgba(255,248,230,.92),rgba(255,240,210,.78)); border-radius:10px; padding:10px 12px; box-shadow:0 1px 0 rgba(255,255,255,.5) inset; }
 .psr-card.psr-press{ border-color:rgba(120,90,40,.4); }
-.psr-card.psr-news{ border-color:rgba(60,100,140,.35); background:linear-gradient(180deg,rgba(235,244,255,.9),rgba(220,234,250,.75)); }
+.psr-card.psr-news{ border-color:rgba(120,90,40,.4); } /* v20a131 B3：藍底唔係分類色（遊戲內無任何解釋），統一返 .psr-card 預設米色漸變；粉卡 psr-streetFans 唔喺 B3 範圍，唔郁 */
 .psr-card.psr-streetFans{ border-color:rgba(160,60,80,.35); background:linear-gradient(180deg,rgba(255,236,240,.92),rgba(255,224,230,.78)); }
 .psr-card.psr-metrics{ border-color:rgba(180,140,40,.45); }
 .psr-kicker{ font-size:.72rem; color:var(--muted); margin-bottom:2px; }
@@ -5235,6 +5235,47 @@ body.day-res-open .day-row{
 #home-tab-exit{ position:static; padding:6px 10px 0; background:transparent; border-top:0; justify-content:flex-start; }
 #home-tab-exit #home-back-map-tabs{ margin:0; }
 #nb-actions #btn-reset-plan{ min-height:34px; padding:6px 12px; font-size:.8rem; align-self:center; }
+/* === v20a131 UI131 B批：B2 事業 tab 統一做筆記紙＋B4 對話框短句置中 ===
+   B2：事業 tab（作品／獎項／回憶三頁）之前直接坐喺 #v-home 深色漸變（#2a1f1a→#0a1424）
+   上面，成頁深藍底＋淺字，同行程 tab 嘅筆記紙係兩種視覺語言。純油漆層，唔郁內容／
+   副 tab 結構／作品牆文案：
+   (1) 三頁嘅 .journal-scroll 改返同 .notebook 同一套米紙（#f3e6c8＋金邊 #c4a574）；
+   (2) 拍攝簿 .req 列由深藍盒（#0d1828）改做紙卡（淺米漸變＋金邊），行內淺金字
+       #b3a284／.gold #C9A227 喺紙面對比唔夠，一併改深墨／深金；
+   (3) v76 為深底加嘅淺字覆寫（.jobs72-h／.works-empty59 h3／.mem-* h3／.req 字色）
+       喺事業頁範圍內還原返紙面墨色；其他頁（記數／人脈／人情債）唔郁。
+   唔郁：.work-csscard59 係無海報作品嘅海報代用卡（深藍係海報畫面本身，唔係頁底色）；
+   .gig-card 內嘅 .req（通告要求列自有紙面規則）——拍攝簿紙卡選擇器用
+   #works-list > .req，只命中 jobs72SectionHtml 直出嘅列。
+   B4：對話框維持固定高（.dlg106-plate 118px／.e79-line 4.65em 一律唔郁），短句
+   文字喺固定高框入面垂直置中，唔貼頂留大片空底；名牌行唔郁。 */
+#home-pane-works .journal-scroll,
+#home-pane-awards .journal-scroll,
+#home-pane-memory .journal-scroll{
+  background:#f3e6c8; color:#2a2118;
+  border-radius:14px 14px 0 0; border:2px solid #c4a574; border-bottom:0;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);
+  padding:12px 10px 16px;
+}
+#home-pane-works #works-list > .req{
+  background:linear-gradient(180deg,#fbf2da,#f3e5c3);
+  border:1px solid #d9c491; border-radius:4px;
+  color:#2a2118; box-shadow:0 2px 6px rgba(74,56,28,.15);
+}
+#home-pane-works #works-list > .req div{ color:#6b4e2e !important; }
+#home-pane-works .gold{ color:#8a5a20; }
+#home-pane-works .jobs72-h{ color:#43301c; }
+#home-pane-works .works-empty59 h3{ color:var(--navy); }
+#home-pane-memory .mem-empty60 h3, #home-pane-memory .mem-head60 h3{ color:var(--navy); }
+/* B4 主線：plate 改 flex 縱向，.sp-line 用 margin-top/bottom:auto——有剩空間就上下
+   平分置中，長文溢出嗰陣 free space 變負、auto margin 歸零，文字貼名牌行起行，
+   plate 照舊捲動，唔會裁頂。只限 .dlg106-plate，舊 bust 牌（無 dlg106-plate）唔郁。 */
+.story-play .dlg106-plate{ display:flex; flex-direction:column; }
+.story-play .dlg106-plate .sp-line{ margin-top:auto; margin-bottom:auto; }
+/* B4 巧遇：.e79-line 本身定高 4.65em（3 行）＋overflow-y:auto；display:flex＋
+   align-items:safe center——短句喺 3 行高內置中，超長句溢出嗰陣 safe center
+   跌返 flex-start，首行唔會被置中裁走、照舊捲動。 */
+#enc79-overlay .e79-line{ display:flex; align-items:safe center; }
 </style>
 </head>
 <body>
@@ -53533,8 +53574,8 @@ function applyLocSheetBg(locId){
      換入後面板自動跟新檔）；名牌「名 · 機構＋職位」，文案唔寫「佢今日喺度」／唔寫駐場。
    · agency_ho：何生——經 gigIssuerFigure30v2 fallback 攞圖（S-30 後備規則同一來源），
      名牌「何生 · 事務所老闆」。
-   · cafe_cha：霞姐冇圖，只出名牌「霞姐 · 金龍茶餐廳老闆娘」，唔出人（唔加 residentNpc）。
-   · gift_shop：老闆娘無名，只出名牌「老闆娘 · 廟街禮品檔」，唔憑空起名、唔出人。
+   · cafe_cha：霞姐有圖（v20a131 B1，xia_jie_base.webp），企位＋名牌「霞姐 · 金龍茶餐廳老闆娘」。
+   · gift_shop：老闆娘無名但有圖（v20a131 B1，gift_lady_base.webp），企位＋名牌「老闆娘 · 廟街禮品檔」，唔憑空起名。
    · hospital：冇設定，唔出人、連名牌都唔出。
    · 唔准用何生 fallback 頂替任何地點負責人（S-30 fallback 只係通告卡後備）。
    冇場景圖地點：現時 15 地點場景圖齊晒（v118 補埋 gift_shop／hospital 兩張）；
@@ -53561,8 +53602,8 @@ function locpanel118OwnerFor(locId){
       if(f && f.src) return { src:f.src, name:"何生", sub:"事務所老闆" };
       return { src:"assets/story/fullbody/ho_sang_base.webp?v=20a106", name:"何生", sub:"事務所老闆" };
     }
-    if(locId==="cafe_cha") return { name:"霞姐", sub:"金龍茶餐廳老闆娘", noFig:true };
-    if(locId==="gift_shop") return { name:"老闆娘", sub:"廟街禮品檔", noFig:true };
+    if(locId==="cafe_cha") return { src:"assets/story/fullbody/xia_jie_base.webp?v=20a131", name:"霞姐", sub:"金龍茶餐廳老闆娘" }; /* v20a131 B1：霞姐企立圖入庫，恢復企位＋名牌 */
+    if(locId==="gift_shop") return { src:"assets/story/fullbody/gift_lady_base.webp?v=20a131", name:"老闆娘", sub:"廟街禮品檔" }; /* v20a131 B1：禮品老闆娘企立圖入庫，恢復企位＋名牌 */
     if(locId==="hospital") return null;
     const m=(typeof GIG_ISSUER_FIGURE_MAP30V2!=="undefined" && GIG_ISSUER_FIGURE_MAP30V2) ? GIG_ISSUER_FIGURE_MAP30V2[locId] : null;
     if(m && m.src) return { src:m.src, name:m.name, sub:(m.org||"")+(m.role||"") };
@@ -53633,8 +53674,8 @@ function locpanel118Render(L, spent){
     sheet.classList.add("locpanel118-has-owner");
     if(tagrow){ tagrow.hidden=true; const tt=document.getElementById("loc-tagrow-tag118"); if(tt) tt.innerHTML=""; }
   } else if(o && o.noFig && tagrow){
-    /* v20a128 A2 N2：冇企立圖嘅地點（霞姐／禮品老闆娘）唔浮名牌——畫企立圖係 B1
-       另案，未畫之前收起浮名牌，唔好得個名無人企喺度。 */
+    /* v20a128 A2 N2：冇企立圖嘅地點唔浮名牌——v20a131 B1 之後霞姐／禮品老闆娘
+       已有企立圖，呢個分支只係後備（再冇地點回 noFig），唔好得個名無人企喺度。 */
     tagrow.hidden=true; const tt=document.getElementById("loc-tagrow-tag118"); if(tt) tt.innerHTML="";
     if(owner){ owner.hidden=true; const oi=document.getElementById("loc-owner-img118"); if(oi){ oi.removeAttribute("src"); oi.alt=""; } const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML=""; }
     sheet.classList.remove("locpanel118-has-owner");

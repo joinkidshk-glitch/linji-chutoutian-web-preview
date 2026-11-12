@@ -90,11 +90,13 @@ ck("負責人函數唔 hardcode boss 檔路徑（v116 換入後自動跟新檔�
 ck("agency_ho 分支在（何生）", 'locId==="agency_ho"' in owner_src)
 ck("agency_ho 經 gigIssuerFigure30v2 fallback 攞圖（S-30 同一來源）",
    "gigIssuerFigure30v2({loc:\"agency_ho\"})" in owner_src)
-ck("cafe_cha 分支：霞姐名牌、noFig", 'locId==="cafe_cha"' in owner_src
-   and "金龍茶餐廳老闆娘" in owner_src and "noFig:true" in owner_src)
-ck("gift_shop 分支：老闆娘名牌、noFig、唔憑空起名",
+ck("cafe_cha 分支：霞姐企立圖＋名牌（v20a131 B1）", 'locId==="cafe_cha"' in owner_src
+   and "金龍茶餐廳老闆娘" in owner_src and "xia_jie_base.webp" in owner_src)
+ck("gift_shop 分支：老闆娘企立圖＋名牌、唔憑空起名（v20a131 B1）",
    'locId==="gift_shop"' in owner_src and "廟街禮品檔" in owner_src
-   and "noFig:true" in owner_src)
+   and "gift_lady_base.webp" in owner_src)
+ck("負責人函數再冇 noFig（v20a131 B1 之後 15 地點全部有圖或 null）",
+   "noFig" not in owner_src)
 ck("hospital 分支：return null（唔出人、連名牌都唔出）",
    'locId==="hospital"' in owner_src and "return null" in owner_src)
 ck("gigIssuerFigure30v2 呼叫只喺 agency_ho 分支出現（唔用何生頂替其他地點）",
