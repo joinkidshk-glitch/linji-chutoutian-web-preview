@@ -57,4 +57,5 @@ const scenePos146 = scene105 && scene105.indexOf("bg_wf4_market.jpg")>=0 ? ";bac
 - main commit `e323db1`（squash merge，分支 `v20a148`，base `da90957`；v149 未落地，唔使 rebase）。
 - index.html staged diff 同分支原 diff 逐字相同（blob `98615c6..4f5a4ae`，5＋／5－）；`git fsck --strict` 乾淨。
 - 已推上 GitHub（`da90957..e323db1 main -> main`，origin/main 已確認 `e323db1`）。
-- 線上核實：（待填：curl bytes／sha）
+- 線上核實：已確認——線上 index.html **5,231,901 bytes、sha256 `48d3a1e2…`**，同 repo 完全一致；
+  `background-position:center 20%` 線上出現 1 次（部署約 2 分鐘後生效）。
