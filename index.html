@@ -5212,8 +5212,13 @@ body.day-res-open .day-row{
 /* N4：強制劇情抉擇屏得紙卡、#modal-btns 空咗——空 bar 收起，唔留一條黑邊。 */
 #mask.story-play-on #modal-btns:empty{ display:none !important; }
 /* WF4：事件 modal 入面嘅 DLG106 舞台加高，人物唔再得 34×100（342×168 舞台）。
-   wf4-stage-on 由 wf4PlayEvent 加、finish() 清。 */
-#mask.wf4-stage-on #modal-inner .story-play .sp-stage{ min-height:480px; }
+   wf4-stage-on 由 wf4PlayEvent 加、finish() 清。
+   v20a133：min-height 改 viewport-aware——480px 喺 dvh ≥924 先足額（保 v128
+   批准嘅高屏觀感），短屏按 52dvh 縮（dvh 700→364px），等舞台 fit 入
+   .story-play 上限 min(58dvh,480px) 同 modal-inner，唔使捲都見晒對話框。
+   （v128 回歸：固定 480px 喺 dvh 700 嗰陣超出 story-play 406px 上限，
+   舞台底部對話框俾 overflow:hidden 剪到得返 61px。） */
+#mask.wf4-stage-on #modal-inner .story-play .sp-stage{ min-height:min(480px,52dvh); }
 /* N16：巧遇第三方講者（副導／導演／場務／伙記）中間影格——平時隱藏，第三方句先出；
    企中間、矮一截（52% vs 60%）、z-index 低過兩位主角，讀做企後少少嘅第三者。 */
 #enc79-overlay .e79-char3{ position:absolute; left:50%; bottom:10%; height:52%; max-width:40%;

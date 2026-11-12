@@ -45,7 +45,9 @@ ok('N16 中間影格唔用 .e79-char class（唔入 __dlg108Fit 自動收細）'
 ok('N16 名牌出職銜＋文案去前綴', 'tpName128' in html and 'tpName128.text' in html and 'tpName128.name' in html)
 
 # WF4：事件 modal 舞台加高，人物唔再 34×100
-ok('WF4 舞台加高 CSS 在', '#mask.wf4-stage-on #modal-inner .story-play .sp-stage{ min-height:480px; }' in html)
+# v20a133：固定 480px 改 viewport-aware（修 v128 回歸：短 viewport 對話框被切）
+ok('WF4 舞台加高 CSS 在', '#mask.wf4-stage-on #modal-inner .story-play .sp-stage{ min-height:min(480px,52dvh); }' in html)
+ok('WF4 舞台唔再固定 min-height:480px（v128 回歸寫法）', '#mask.wf4-stage-on #modal-inner .story-play .sp-stage{ min-height:480px; }' not in html)
 ok('WF4 開場加 class、finish() 清走', 'classList.add("wf4-stage-on")' in html and 'classList.remove("wf4-stage-on")' in html)
 
 print('TOTAL %s' % ('PASS' if not fails else 'FAIL: ' + ', '.join(fails)))
