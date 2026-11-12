@@ -52473,6 +52473,12 @@ function openLoc(id, opts){
   /* v20a118 LOCPANEL118：今次入場係咪真係扣咗額度（免費返嚟重開 sheet 唔扣；pill「已到埗」
      行只喺扣咗數嗰陣先出）。travel114IsFree 係純判斷，呢度讀一次唔會改數。 */
   const spent118 = !(typeof travel114IsFree==="function" && travel114IsFree(opts, id));
+  /* v20a118：探訪扣數記憶（transient，唔入 save）——巧遇／WF4 攔截後嘅免費返嚟、同 modal
+     完嘅免費重開，pill 要同扣數嗰次入場一模一樣（數字＋「已到埗」行），否則玩家會
+     以為呢次免費。只認同地點＋同日；新一日／唔同地點即失效。 */
+  if(spent118){
+    try{ locpanel118SpentVisit = { loc:id, day:(typeof S!=="undefined" && S) ? (Number(S.dayIndex)||0) : 0 }; }catch(_e){}
+  }
   /* v20a79 ENC79：紅星巧遇對話先行——有星在場（出沒盤）兼冇主線待播壓住，先播全屏巧遇對話，播完先開 sheet。
      opts.encDone 係巧遇播完返入嚟嘅繞過旗；forceRestore 還原路徑唔觸發。 */
   if(!opts.forceRestore && !opts.encDone && typeof enc79TryIntercept==="function"){
@@ -53036,8 +53042,19 @@ function applyLocSheetBg(locId){
    冇場景圖地點：現時 15 地點場景圖齊晒（v118 補埋 gift_shop／hospital 兩張）；
    locpanel118-nobg 素底態留返做後備機制——將來有地點 LOC_SHEET_BG 冇 key 即自動行素底，
    唔使改呢度。
-   額度 pill 讀 S.travel114（入場嗰刻已扣，顯示扣後數字）；「✓ 已到埗」行只喺今次入場
-   真係扣咗數嗰陣先出（免費返嚟重開 sheet 唔出，pill 數字亦唔變）。 */
+   額度 pill 讀 S.travel114（入場嗰刻已扣，顯示扣後數字）；「✓ 已到埗」行喺今次探訪
+   扣咗數嗰陣出——包括巧遇／WF4 攔截後嘅免費返嚟同 modal 完嘅免費重開（locpanel118SpentVisit
+   認同地點＋同日，pill 同扣數嗰次入場一模一樣）。 */
+let locpanel118SpentVisit = null; /* v20a118：今次探訪扣數記憶 { loc, day }，transient，唔入 save */
+function locpanel118ArrivedNow(L, spent){
+  if(spent) return true;
+  try{
+    const v = locpanel118SpentVisit;
+    if(!v || !L) return false;
+    const day = (typeof S!=="undefined" && S) ? (Number(S.dayIndex)||0) : 0;
+    return v.loc===L.id && v.day===day;
+  }catch(_e){ return false; }
+}
 function locpanel118OwnerFor(locId){
   try{
     if(locId==="agency_ho"){
@@ -53098,7 +53115,7 @@ function locpanel118Render(L, spent){
   sheet.classList.toggle("locpanel118-nobg", !hasBg);
   let used=0, remain=2;
   try{ const st=travel114State(); used=Number(st.used)||0; remain=travel114Remain(); }catch(_e){}
-  if(pill){ pill.innerHTML=locpanel118QuotaHtml(used, remain, !!spent); pill.hidden=false; }
+  if(pill){ pill.innerHTML=locpanel118QuotaHtml(used, remain, locpanel118ArrivedNow(L, !!spent)); pill.hidden=false; }
   const o=locpanel118OwnerFor(L.id);
   const esc118=(s)=>{ try{ return (typeof esc59==="function") ? esc59(s) : String(s==null?"":s); }catch(_e){ return String(s==null?"":s); } };
   if(o && o.src && owner){
@@ -53111,16 +53128,16 @@ function locpanel118Render(L, spent){
     }
     owner.hidden=false;
     sheet.classList.add("locpanel118-has-owner");
-    if(tagrow) tagrow.hidden=true;
+    if(tagrow){ tagrow.hidden=true; const tt=document.getElementById("loc-tagrow-tag118"); if(tt) tt.innerHTML=""; }
   } else if(o && o.noFig && tagrow){
     const tag=document.getElementById("loc-tagrow-tag118");
     if(tag) tag.innerHTML="<b>"+esc118(o.name)+"</b> · "+esc118(o.sub);
     tagrow.hidden=false;
-    if(owner) owner.hidden=true;
+    if(owner){ owner.hidden=true; const oi=document.getElementById("loc-owner-img118"); if(oi) oi.removeAttribute("src"); const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML=""; }
     sheet.classList.remove("locpanel118-has-owner");
   } else {
-    if(owner) owner.hidden=true;
-    if(tagrow) tagrow.hidden=true;
+    if(owner){ owner.hidden=true; const oi=document.getElementById("loc-owner-img118"); if(oi) oi.removeAttribute("src"); const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML=""; }
+    if(tagrow){ tagrow.hidden=true; const tt=document.getElementById("loc-tagrow-tag118"); if(tt) tt.innerHTML=""; }
     sheet.classList.remove("locpanel118-has-owner");
   }
   try{ requestAnimationFrame(function(){ locpanel118AnchorOwner(); }); }catch(_e){}
@@ -53149,6 +53166,11 @@ function locpanel118Hide(){
     ["loc-quota118","loc-owner118","loc-tagrow118"].forEach(function(id){
       const el=document.getElementById(id); if(el) el.hidden=true;
     });
+    /* v20a118：收起嗰陣一併清走殘留內容，唔好留上一地點嘅名牌／圖喺 DOM 入面 */
+    const oi=document.getElementById("loc-owner-img118"); if(oi) oi.removeAttribute("src");
+    const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML="";
+    const tt=document.getElementById("loc-tagrow-tag118"); if(tt) tt.innerHTML="";
+    const pl=document.getElementById("loc-quota118"); if(pl) pl.innerHTML="";
   }catch(_e){}
 }
 if(typeof window!=="undefined" && !window.__locpanel118ResizeWired){

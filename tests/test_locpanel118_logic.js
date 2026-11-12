@@ -44,9 +44,11 @@ const sandboxSrc =
   extractConstLine('TRAVEL114_DAILY_CAP') + '\n' +
   extractConstObj('EMOJI_ICON112') + ';\n' +
   'const esc = (s)=>String(s==null?"":s);\n' +
+  'var S = { dayIndex: 5 };\nvar locpanel118SpentVisit = null;\n' +
   ['gigIssuerFigure30v2', 'iconHtml112', 'locpanel118OwnerFor',
-   'locpanel118QuotaHtml', 'locpanel118ActIcon'].map(extractFn).join('\n') +
-  '\nreturn { locpanel118OwnerFor, locpanel118QuotaHtml, locpanel118ActIcon, GIG_ISSUER_FIGURE_MAP30V2 };';
+   'locpanel118QuotaHtml', 'locpanel118ActIcon', 'locpanel118ArrivedNow'].map(extractFn).join('\n') +
+  '\nreturn { locpanel118OwnerFor, locpanel118QuotaHtml, locpanel118ActIcon, locpanel118ArrivedNow, GIG_ISSUER_FIGURE_MAP30V2,' +
+  ' setVisit: (v)=>{ locpanel118SpentVisit = v; }, setDay: (d)=>{ S.dayIndex = d; } };';
 const api = new Function(sandboxSrc)();
 const MAP = api.GIG_ISSUER_FIGURE_MAP30V2;
 
@@ -64,6 +66,18 @@ ok('pill 未入場：已用 0 / 2、仲可以去 2 個地方、0 粒已用',
 h = api.locpanel118QuotaHtml(2, 0, true);
 ok('pill 用盡：已用 2 / 2、仲可以去 0 個地方、2 粒已用',
    h.indexOf('已用 2 / 2') >= 0 && h.indexOf('仲可以去 0 個地方') >= 0 && (h.match(/lp118-dot used/g) || []).length === 2);
+
+/* ---- (1b) 已到埗行：探訪記憶（巧遇／WF4 攔截後免費返嚟、modal 免費重開都出） ---- */
+const L_AG = { id: 'agency_ho' };
+ok('arrived：今次扣數即出', api.locpanel118ArrivedNow(L_AG, true) === true);
+ok('arrived：冇扣數、冇記憶唔出', api.locpanel118ArrivedNow(L_AG, false) === false);
+api.setVisit({ loc: 'agency_ho', day: 5 });
+ok('arrived：免費返嚟、同地點同日（探訪記憶）照出', api.locpanel118ArrivedNow(L_AG, false) === true);
+ok('arrived：免費返嚟、唔同地點唔出', api.locpanel118ArrivedNow({ id: 'cafe_cha' }, false) === false);
+api.setDay(6);
+ok('arrived：免費返嚟、同地點但換日唔出', api.locpanel118ArrivedNow(L_AG, false) === false);
+api.setDay(5); api.setVisit(null);
+ok('arrived：記憶清走後唔出', api.locpanel118ArrivedNow(L_AG, false) === false);
 
 /* ---- (2) 15 地點負責人對照 ---- */
 const ORGS11 = ['film_lion', 'rec_hk', 'tvb_longmen', 'tvb_kowloon', 'tvb_harbour',

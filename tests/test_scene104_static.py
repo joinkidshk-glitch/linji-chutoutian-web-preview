@@ -15,9 +15,10 @@ def ok(name, cond):
 # --- 基線不變 ---
 ok('SAVE key／softRev／產品 ?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
 
-LOCS13 = ['cafe_cha','agency_ho','film_lion','film_cotton','film_harbour','tvb_longmen',
-          'tvb_kowloon','tvb_harbour','ad_central','ad_adm','rec_hk','rec_wanchai','rec_star']
-FILES14 = ['bg_c1_tea_restaurant'] + ['bg_loc_' + x for x in LOCS13]
+LOCS15 = ['cafe_cha','agency_ho','film_lion','film_cotton','film_harbour','tvb_longmen',
+          'tvb_kowloon','tvb_harbour','ad_central','ad_adm','rec_hk','rec_wanchai','rec_star',
+          'gift_shop','hospital']
+FILES16 = ['bg_c1_tea_restaurant'] + ['bg_loc_' + x for x in LOCS15]
 
 def jpeg_size(b):
     i = 2
@@ -35,13 +36,15 @@ def jpeg_size(b):
 
 # --- (1) 版本參數：全域冇 ?v=20a103 殘留；兩處載入點都係 20a104 ---
 ok('index 冇 ?v=20a103 殘留', '?v=20a103' not in src)
-ok('index ?v=20a104 共 14 處（builder 1＋LOC_SHEET_BG 13）', src.count('?v=20a104') == 14)
+# v20a118 LOCPANEL118：廟街禮品＋仁康醫院場景圖補齊（另一統籌一次生成，QC 全 pass），
+# LOC_SHEET_BG 13→15，?v=20a104 共 16 處（builder 1＋LOC_SHEET_BG 15）。
+ok('index ?v=20a104 共 16 處（builder 1＋LOC_SHEET_BG 15）', src.count('?v=20a104') == 16)
 
 m = re.search(r'const LOC_SHEET_BG = \{(.*?)\n\};', src, re.S)
 ok('搵到 LOC_SHEET_BG', bool(m))
 if m:
     block = m.group(1)
-    for loc in LOCS13:
+    for loc in LOCS15:
         ok(f'LOC_SHEET_BG[{loc}] 指檔 ?v=20a104',
            f'{loc}:"assets/story/locs/bg_loc_{loc}.jpg?v=20a104"' in block)
 
@@ -61,8 +64,9 @@ EXPECT_SHA = {
  'bg_loc_rec_hk': '8bd6f8a39286', 'bg_loc_rec_star': '07c59b102bff',
  'bg_loc_rec_wanchai': 'c49279626197', 'bg_loc_tvb_harbour': '2d828b1afeeb',
  'bg_loc_tvb_kowloon': '5fdf5cb66638', 'bg_loc_tvb_longmen': 'dc8132dc12c5',
+ 'bg_loc_gift_shop': '022d39114c11', 'bg_loc_hospital': '77d0837447fc',
 }
-for key in FILES14:
+for key in FILES16:
     f = root / 'assets' / 'story' / 'locs' / (key + '.jpg')
     ok(f'{key}.jpg 存在', f.exists())
     if not f.exists(): continue

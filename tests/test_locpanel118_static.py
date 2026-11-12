@@ -121,6 +121,13 @@ ck("render 圖缺失 onerror 收起負責人（唔出爛圖）",
    "onerror" in render_src and "owner.hidden=true" in render_src)
 ck("render 叫 locpanel118AnchorOwner（腳部錨定選項卡頂）",
    "locpanel118AnchorOwner()" in render_src)
+ck("render 經 locpanel118ArrivedNow 決定已到埗行（同探訪免費返嚟都出）",
+   "locpanel118ArrivedNow(L, !!spent)" in render_src)
+arrived_src = extract_fn("locpanel118ArrivedNow")
+ck("locpanel118ArrivedNow：spent 即出；否則認探訪記憶（同地點＋同日）",
+   "if(spent) return true" in arrived_src and "v.loc===L.id && v.day===day" in arrived_src)
+ck("探訪記憶係 transient（let 變量，唔入 S／唔入 save）",
+   "let locpanel118SpentVisit = null;" in src and "S.locpanel118SpentVisit" not in src)
 anchor_src = extract_fn("locpanel118AnchorOwner")
 ck("錨定：腳部收 8px 入選項卡（遮腿）", "- 8" in anchor_src)
 ck("錨定：人物高度上限 230、下限 120（唔頂穿 sheet 頂）",
@@ -138,6 +145,8 @@ for k in range(j, len(src)):
 openloc = src[i:j + 1]
 ck("openLoc 有 spent118（travel114IsFree 判斷，唔改數）",
    "const spent118 = !(typeof travel114IsFree" in openloc)
+ck("openLoc 扣數嗰陣寫探訪記憶（locpanel118SpentVisit）",
+   "locpanel118SpentVisit = { loc:id, day:" in openloc)
 ck("spent118 喺額度閘之後、enc79 攔截之前定義",
    openloc.find("travel114TrySpend(opts, id)") < openloc.find("const spent118")
    < openloc.find("enc79TryIntercept"))
