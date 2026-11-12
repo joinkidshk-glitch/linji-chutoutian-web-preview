@@ -82,3 +82,7 @@
   再 ＋8；v143 版：佢嗰 +43 喺 L5347，WF4 插入點 40319→40362，之後全部 ＋28）。
   index.html 兩次都乾淨合併（WF4 區同佢哋改嘅 ENC79／手帳區無重疊）。
 - （落地 commit＋線上核實結果待補）
+- **已落地：main `646e16f`**（git 直接合併，冇開 PR；squash，分支 `v20a134`）。
+  線上核實通過：index.html **5,202,772 bytes、sha256
+  `429edf5e7e1dc5856ea6ebc1124ca58d60288231ebc5dfbec7ca462a33e8fd02`**，
+  同 repo HEAD 完全一致；線上 `WF4_SCENE_OVERRIDE134` ×2、`bg_wf4_market` ×5。
