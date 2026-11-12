@@ -20,8 +20,18 @@ const code = html.slice(a, b);
 global.window = {};
 global.__tier106 = 0;
 global.enc79PlayerTier = () => global.__tier106;
-const D = eval(code + '\n;({DLG106_GAZE,DLG106_EMOTION_MAP,DLG106_CAT_TO_EXPR,DLG119_SHADOW_STEM})');
-const GAZE = D.DLG106_GAZE, DLG119_SHADOW_STEM = D.DLG119_SHADOW_STEM;
+/* DLG119_SHADOW_STEM 用 typeof 守住：pristine main 冇呢個 const，eval 回傳 undefined
+   而唔係成個 test 掟 ReferenceError——反證要乾淨 FAIL，唔係 crash。
+   外層 binding 叫 STEM119 唔叫 DLG119_SHADOW_STEM：direct eval 同外層共用 scope，
+   同名 const 喺 pristine（模組入面冇內層宣告）會撞 TDZ。 */
+const D = eval(code + '\n;({DLG106_GAZE,DLG106_EMOTION_MAP,DLG106_CAT_TO_EXPR,DLG119_SHADOW_STEM:(typeof DLG119_SHADOW_STEM!=="undefined"?DLG119_SHADOW_STEM:undefined)})');
+const GAZE = D.DLG106_GAZE, STEM119 = D.DLG119_SHADOW_STEM;
+/* DLG119 helper 唔喺度（pristine main）→ 即刻乾淨 FAIL，唔好捱到落去先 crash。 */
+if(typeof dlg119ShadowAsset !== 'function' || typeof dlg119DedupePair !== 'function' || !STEM119){
+  console.log('FAIL DLG119 模組唔喺度（pristine main 預期 FAIL：影 helper／別名表未接入）');
+  console.log('RESULT FAIL');
+  process.exit(1);
+}
 // function 宣告經 eval 已入 scope：dlg119ShadowAsset/dlg119IsShadow/dlg119Candidates/
 // dlg119HaloUrl/dlg119DedupePair/dlg106StemFor/dlg106Candidates/dlg106ResolveSides/dlg106HasFullbody
 
@@ -41,7 +51,7 @@ ok('shadowAsset：老臨記／阿偉／芬姐唔係影（回 null）',
 ok('isShadow：影 true、其餘 false', dlg119IsShadow('shadow_male') === true
   && dlg119IsShadow('generic_cinema_asst') === true && dlg119IsShadow('crew_laolinji') === false);
 ok('反證：別名表刪走 generic_cinema_asst → shadowAsset 必須回 null',
-  (()=>{ const t = Object.assign({}, DLG119_SHADOW_STEM); delete t.generic_cinema_asst;
+  (()=>{ const t = Object.assign({}, STEM119); delete t.generic_cinema_asst;
     return (t['generic_cinema_asst'] || null) === null; })());
 
 /* ---- (2) 講者／聽者候補鏈 ---- */

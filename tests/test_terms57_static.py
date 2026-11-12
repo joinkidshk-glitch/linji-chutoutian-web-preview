@@ -167,7 +167,9 @@ chk('B7 success-rate labels kept', '成功率約' in src)
 chk('B2 gate/tag values renamed', src.count('"身手好"') >= 6)
 chk('B2 ending neg tags', '["八卦", "耍大牌", "高冷", "爛片"]' in src)
 chk('B2 legacy save migration', '舊存檔標籤改名遷移' in src)
-chk('B6 speaker alias kept+added', '"周刊編輯":"generic_mag_editor","週刊編輯":"generic_mag_editor"' in src)
+# v20a119 DLG119：周刊編輯／週刊編輯兩個寫法保留，目標由 generic_mag_editor
+# 改指 shadow_male（無名角色一律剪影；LEGACY 兩寫法齊全，見 tests/test_dlg119_static.py）。
+chk('B6 speaker alias kept+added', '"周刊編輯":"shadow_male","週刊編輯":"shadow_male"' in src)
 # v20a75 改版：進階課已併入級別，舊 unlock 句『進階演技課開放咗』唔再存在——
 # 改驗 v75 升級提示句『升到二級』（措辭跟用戶拍板）。
 chk('B1 journal unlock wording', '手帳「訓練」開放咗' in src and '升到${LEVELS75_NAMES' in src and '進階演技課開放咗' not in src)

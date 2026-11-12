@@ -245,7 +245,7 @@ fake_fb = tempfile.mkdtemp(prefix="dlg119negfb_")
 try:
     for fn in os.listdir(FB):
         os.symlink(os.path.join(FB, fn), os.path.join(fake_fb, fn))
-    os.remove(os.path.join(fake_fb, "shadow_elder_halo.png"))
+    os.remove(os.path.join(fake_fb, "shadow_elder_halo.png")) if os.path.lexists(os.path.join(fake_fb, "shadow_elder_halo.png")) else None
     ck("反證（真磁碟）：抽走 shadow_elder_halo.png → checker 必須報缺",
        any("shadow_elder_halo.png" in p for p in check_mapping(legacy or {}, gaze or {}, fake_fb)))
 finally:
