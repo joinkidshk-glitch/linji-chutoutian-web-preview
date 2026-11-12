@@ -23,6 +23,8 @@
 | `bg_loc_rec_hk` | `bg_loc_rec_hk.jpg` | 720×1280 | 19w 合入。香江唱片 |
 | `bg_loc_rec_wanchai` | `bg_loc_rec_wanchai.jpg` | 720×1280 | 19w 合入。灣仔唱片。Soft OK |
 | `bg_loc_rec_star` | `bg_loc_rec_star.jpg` | 720×1280 | 19w 合入。天星音樂 |
+| `bg_loc_gift_shop` | `bg_loc_gift_shop.jpg` | 720×1280 | v20a118 補齊。廟街夜市禮品檔（藍白帆布頂＋燈泡串） |
+| `bg_loc_hospital` | `bg_loc_hospital.jpg` | 720×1280 | v20a118 補齊。仁康醫院（混凝土主樓＋有蓋落客亭＋黃昏暖光） |
 
 Preview（`?v=19w`）`spBgImageCandidates` 先 probe `assets/story/locs/{key}.jpg`。
 
