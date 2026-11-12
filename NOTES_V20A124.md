@@ -94,11 +94,16 @@ log `qa124/logs/r2fix.log`、截圖 `qa124/shots/r2fix_*.png`。**25／25 PASS�
 - H1 自然觸發點仍然未搵到（v122 防守性清旗，唔影響有效性）——v122 殘留，原樣。
 - `test_travel114_static.py` 寫死行號，本包 resync 咗一次；將來任何改 index.html 行數嘅包都要再 resync。
 
-## 合併紀錄（待填）
+## 合併紀錄
 
 - 分支：`v124-aud91r2`（基底 main `9eecc01`）
-- 合併 main commit：
-- 線上 index bytes／sha：
+- 合併 main commit：`3be1b3d`（squash，parent `9eecc01`；合併嗰刻本地 index.html 5,150,036 bytes、
+  sha256 `c67d288bc51b3e411a6bec0fa381a9d5dbca6c6503099b90066f45e06c6db036`）
+- 線上核實：push 後初檢 Pages 仲係舊版 v120（5,147,719 bytes，部署滯後）；其後 v119（`fd4860a`）＋v123
+  （`1255f18`，index.html 零改動）先後合併上 main，覆檢嗰刻線上已係最新 main `41c2cbc`：
+  index 5,159,938 bytes、sha256 `e771c824fc91fe0ed42567727746aee218e1b2baeca81344fc3855a1d70aaeb5`，
+  同 `git show origin/main:index.html` 逐字對上；線上檔案含 5 處 `v20a124`，本包修復確認在線。
+  `3be1b3d` 仍係 main 嘅祖先（`git merge-base --is-ancestor` 已核實）。
 
 ## 回滾
 
