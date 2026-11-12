@@ -66,4 +66,4 @@
 ## 落地
 - 工作副本 `~/workspace/linji-work137/`，分支 `v20a137`，基底 origin/main `673df0d`（v135；落地前 `git fetch` 確認 v134／v136 未行前，唔使 rebase）。
 - 落地行新制：常駐 clone checkout main → `git merge --squash v20a137` → commit → push main（經 deploy key，唔開 PR）。
-- （待補：main commit＋線上 index byte／sha curl 核實。）
+- **已落地（2026-11-12）：main `ea6a941`（squash，分支 `0a6afad`）；線上核實：index.html 5,185,661 bytes、sha256 `e3a8a7097ddbbb11fa5722fa6ff4188ebc97720f0afea0b0e34334e7f601241c`，同 repo 完全一致。**
