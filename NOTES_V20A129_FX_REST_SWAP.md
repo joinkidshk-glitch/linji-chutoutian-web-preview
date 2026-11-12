@@ -29,7 +29,10 @@
 - 過程記錄：① 初版 drive 入錯何生事務所（agency 冇休息掣），轉星河電視台後 PASS；② 8952 port 俾另一統籌嘅 server 佔住，轉 8955（冇 kill 佢）。
 
 ## 合併紀錄
-- （待補：分支、squash commit、線上 byte／sha 核實）
+- main commit：`be21881`（squash，PR #183，分支 `v129-rest-swap` `f297847`；基底 v20a126 `c71526a`）
+- 線上核實：index.html 200、5,161,329 bytes、sha256 `e04c3109c0cd6559f3e66d7ff12c2e80020b6e5307757e723cc844b47b172dc5`（同 origin/main 完全一致）；`assets/fx/fx_rest.mp4` 200、36,212 bytes、sha256 `c1057a3f613474826b992e0b55c850bde08ea6370b98d5691ec8810083894c59`（同 origin/main／v3 原檔完全一致）
+- 測試：全套 **176 PASS／12 FAIL**（基線 v126 main 175／12＋1 新測試；FAIL 清單同基線一致，零回歸）。
+- 實駕：休息日日結板播新片（`fx_rest.mp4?v=20a129`、readyState 4、960×540、currentTime 1.88→3.0），0 pageerror；pristine 對照播舊片（`?v=20a10`）。
 
 ## 回滾
 - 成個 squash 係一個 commit：`git revert <squash>` 即退返 v126 狀態（舊片＋舊 `?v=20a10` 一併落返嚟）。
