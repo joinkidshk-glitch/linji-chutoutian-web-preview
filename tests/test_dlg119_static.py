@@ -220,8 +220,8 @@ ck("產品 ?v= 不變", "v20a10" in src)
 # ---------- ⑪ 資產總數 ----------
 if os.path.isdir(FB):
     names = set(os.listdir(FB))
-    ck("fullbody 總數 148（128＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖）",
-       len([f for f in names if f.endswith((".webp", ".png"))]) == 148)
+    ck("fullbody 總數 170（128＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情）",
+       len([f for f in names if f.endswith((".webp", ".png"))]) == 170)
     ck("10 張新資產齊（6 張 base/dim＋3 張 halo＋老臨記 base）",
        all(fn in names for fn in (
            "shadow_male_base.webp", "shadow_male_dim_base.webp", "shadow_male_halo.png",

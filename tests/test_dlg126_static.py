@@ -69,7 +69,7 @@ if os.path.isdir(FB):
     missing = check_new_assets(names)
     ck("6 張新資產全部喺 assets/story/fullbody/", not missing)
     if missing: info("缺新資產：" + ", ".join(missing))
-    ck("fullbody 總數 140→146→148（v123 後 140 張＋v126 6 張新表情＋v20a131 B1 2 張企立圖）", len([f for f in names if f.endswith((".webp", ".png"))]) == 148)
+    ck("fullbody 總數 140→146→148→170（v123 後 140 張＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情）", len([f for f in names if f.endswith((".webp", ".png"))]) == 170)
     for fn, _sp, _cat, n in NEW:
         p = os.path.join(FB, fn)
         ok = os.path.isfile(p) and os.path.getsize(p) > 50000
