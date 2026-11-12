@@ -52,3 +52,8 @@ SAVE key、softRev s107、產品 `?v=` v20a10 全部唔郁；`content/` 零改�
 ## 落地
 分支 `v20a132`（基底 main `4f4b96a`）→ 常駐 clone squash merge 入 main →
 push main（經 deploy key，唔開 PR）。線上核實見下文。
+
+## 線上核實（push 後約 2 分鐘，curl）
+- main commit：`d0edc18`（squash，分支 `v20a132` `1cfe9ee`）
+- 線上 index.html：**5,178,992 bytes、sha256 `ca76094705f630fda0c537f1891559274707d1a7e8d31beb6f3f7d48d1736778`**，
+  同 repo 完全一致。唔使重觸發。
