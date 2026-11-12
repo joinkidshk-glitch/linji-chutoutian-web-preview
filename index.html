@@ -5305,9 +5305,64 @@ body.day-res-open .day-row{
 #app .map-stage{ flex:0 0 auto !important; width:100% !important; height:auto !important; aspect-ratio:1270/1824 !important; max-height:100% !important; }
 #app .map-img{ width:100% !important; height:100% !important; object-fit:cover !important; object-position:60% 50% !important; }
 /* === v20a137 MAP137 完 === */
+/* === v20a141 BOOK141：手帳去網頁感（樣本 v2b：B 式文件夾 tab＋備忘紙＋吊牌＋印章） ===
+   用戶 2026-11-12 22:10 拍板揀 B。只換手帳外殼呈現：五 tab／stats／返回掣／plan 組
+   subtab／確認掣鎖定態；內容面板、切換 handler、id、數據源一律不變。
+   手寫字體棧（Kaiti TC 優先；iPhone 出楷體，Linux 截圖用 Noto Serif 代係已知限制）。
+   Tab 列＋subtab 列共用一張紙面（#f5eddc），margin 歸零貼住 pane 頂，選中 tab 駁住紙面、
+   中間唔留深色底；plan pane 嘅 notebook 本身就係紙面，直接駁上。 */
+.hand141{ font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; }
+/* --- (3) 備忘紙＋吊牌列（頂欄之下、tab 之上） --- */
+.memo141-row{ display:flex; align-items:flex-start; gap:10px; padding:2px 2px 0; margin:0 0 2px; position:relative; z-index:3; flex:0 0 auto; }
+.memo141{ position:relative; flex:1 1 auto; min-width:0; background:linear-gradient(#f8f1dc,#f0e5c4); padding:14px 14px 10px; transform:rotate(-1.2deg); box-shadow:0 5px 12px rgba(0,0,0,.45); color:#3a2e22; }
+.memo141-tape{ position:absolute; top:-11px; left:50%; width:96px; height:22px; transform:translateX(-50%) rotate(1.6deg); background:linear-gradient(rgba(232,163,61,.5),rgba(232,163,61,.32)); clip-path:polygon(2% 0,98% 0,100% 50%,98% 100%,2% 100%,0 50%); box-shadow:0 1px 3px rgba(0,0,0,.25); }
+.memo141-line{ margin:0; font-size:16px; line-height:1.65; color:#3a2e22; filter:url(#inkSoft141); white-space:nowrap; }
+.memo141 .memo141-line:nth-child(2){ transform:rotate(.5deg); }
+.memo141 .memo141-line:nth-child(3){ transform:rotate(-.4deg); }
+.memo141 .memo141-line:nth-child(4){ transform:rotate(.3deg); }
+.memo141-u{ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='6'%3E%3Cpath d='M0 3 Q 6 0 12 3 T 24 3' fill='none' stroke='%23c0452c' stroke-width='1.6'/%3E%3C/svg%3E") bottom repeat-x; padding-bottom:3px; }
+.memo141-chop{ position:absolute; right:10px; bottom:8px; width:23px; height:23px; background:#c0452c; color:#f5eddc; font-size:15px; line-height:23px; text-align:center; border-radius:3px; transform:rotate(6deg); opacity:.92; filter:url(#inkSoft141); font-family:"Songti TC","STSong","Noto Serif CJK TC",serif; }
+.tagwrap141{ margin-left:auto; padding-top:26px; transform:rotate(2.5deg); flex:0 0 auto; }
+.tag141-string{ width:26px; height:16px; margin:0 auto -2px; border:1.6px solid #8a6f4d; border-bottom:none; border-radius:14px 14px 0 0; }
+#home-tab-exit.tagwrap141{ padding:26px 0 0; background:transparent; border-top:0; }
+#home-tab-exit #home-back-map-tabs{ flex:0 0 auto; width:102px !important; min-height:38px; height:38px; margin:0; padding:0 0 0 26px; background:#c9a876; color:#3a2e22; border:0; border-radius:0; font-size:14px; font-weight:700; letter-spacing:.06em; font-family:inherit; cursor:pointer; position:relative; display:flex; align-items:center; clip-path:polygon(0 0,100% 0,100% 100%,16px 100%,0 50%); box-shadow:0 3px 8px rgba(0,0,0,.4); }
+#home-tab-exit #home-back-map-tabs::before{ content:""; position:absolute; left:7px; top:50%; width:9px; height:9px; margin-top:-4.5px; border-radius:50%; background:#1c130c; box-shadow:inset 0 0 0 1.5px #a8895f; } /* 窿用 ::before——syncHomeTabExit 設 textContent 唔會清走佢 */
+/* --- (1) B 式文件夾 tab：58px 闊、選中 38px 高同紙面色、其餘 32px manila、底部伸出 1.5px 截斷分隔線 --- */
+#home-tabs{ margin:0; background:#f5eddc; border-radius:10px 10px 0 0; padding:14px 12px 0; gap:6px; justify-content:center; align-items:flex-end; position:relative; }
+#home-tabs::after{ content:""; position:absolute; left:12px; right:12px; bottom:0; height:1.5px; background:#cbb98d; }
+#home-tabs .home-tab{ flex:0 0 58px; width:58px; min-width:58px; min-height:0; height:32px; padding:0; background:#e9dcbc; color:#6d5a3e; font-size:14px; letter-spacing:.06em; border:1px solid #cbb98d; border-bottom:none; border-radius:9px 9px 0 0; }
+#home-tabs .home-tab.on{ height:38px; background:#f5eddc; color:#3a2e22; font-weight:700; margin-bottom:-1.5px; z-index:1; box-shadow:0 -2px 4px rgba(0,0,0,.12); }
+#home-tabs .home-tab.on::after{ content:none; }
+/* --- (2) plan 組 subtab：紙面頂行手寫字——「進度」褪色、「行程」紅墨手畫圈（圈跟 .on 郁）；
+   其餘四組唔加呢套，維持 pill（只係坐喺同一張紙面 strip 上面）。 --- */
+#home-subtabs{ margin:0; background:#f5eddc; padding:2px 12px 6px; }
+#home-subtabs .hsub-group{ margin:0; }
+.hsub-group[data-hsubgroup="plan"]{ justify-content:flex-start; gap:22px; padding:4px 12px 4px 46px; align-items:center; }
+#home-subtabs .hsub-group[data-hsubgroup="plan"] .home-tab{ flex:0 0 auto; min-width:0; min-height:0; height:auto; background:transparent; border:0; border-radius:0; padding:2px; box-shadow:none; font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:17px; font-weight:400; color:#3a2e22; }
+#home-subtabs .hsub-group[data-hsubgroup="plan"] .home-tab:not(.on){ color:#a08a68; }
+#home-subtabs .hsub-group[data-hsubgroup="plan"] .home-tab.on{ background:transparent; color:#3a2e22; font-weight:700; position:relative; }
+#home-subtabs .hsub-group[data-hsubgroup="plan"] .home-tab.on::after{ content:""; position:absolute; left:-11px; top:-9px; width:calc(100% + 22px); height:calc(100% + 18px); background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 44' preserveAspectRatio='none'%3E%3Cpath d='M7 22 C 15 5, 85 4, 94 19 C 96 33, 78 42, 48 41 C 20 40, 4 35, 7 22' fill='none' stroke='%23c0452c' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat; filter:url(#inkSoft141); pointer-events:none; }
+/* --- (5) 印章：只喺已確定鎖定態（#btn-confirm-plan.is-locked，disabled＋「行程已定」）先變印章；
+   未定嗰陣 .is-locked 唔喺度，維持原有 .ink 確定掣；「還原」掣鎖定態本身 display:none，不變。 --- */
+#nb-actions:has(#btn-confirm-plan.is-locked){ background:#f5eddc; border-top:1px solid #cbb98d; justify-content:center; }
+#nb-actions #btn-confirm-plan.is-locked{ flex:0 0 auto; width:fit-content; min-height:0; margin:6px auto 4px; padding:6px 20px 6px 22px; font-family:"Songti TC","STSong","Noto Serif CJK TC",serif; font-size:24px; font-weight:700; letter-spacing:.32em; text-indent:.32em; color:#c0452c !important; background:rgba(192,69,44,.045) !important; border:3px double #c0452c !important; border-radius:8px !important; transform:rotate(-4.5deg); filter:url(#ink141); opacity:.93; box-shadow:inset 0 0 0 1px rgba(192,69,44,.3) !important; }
+/* === v20a141 BOOK141 完 === */
 </style>
 </head>
 <body>
+<!-- v20a141 BOOK141：手墨抖動 filter defs（ink141／inkSoft141；檔內本無 feTurbulence，無撞名） -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="ink141" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02 0.09" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6"/>
+    </filter>
+    <filter id="inkSoft141" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03 0.12" numOctaves="2" seed="11" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="1.5"/>
+    </filter>
+  </defs>
+</svg>
 <aside id="desktop-rail" class="desktop-rail" aria-label="桌面操作提示">
   <h2>操作提示</h2>
   <ul>
@@ -5461,13 +5516,18 @@ body.day-res-open .day-row{
         <div class="txt">
           <h2>阿偉的家 · 行程手帳</h2>
           <p id="home-date" class="home-date-line">—</p>
-          <p id="home-stats" class="home-stats-line" aria-label="幕前聲望與業內信用"></p>
         </div>
       </div>
       <!-- v20a128 A6 S-20：返回地圖搬去頂部（手帳頂欄之下、分類掣之上）——底部唔再
            同「確定本週行程」疊三層；底部只留主 CTA＋細還原。 -->
-      <div class="nb-actions home-tab-exit" id="home-tab-exit">
-        <button class="g" type="button" id="home-back-map-tabs">返回地圖</button>
+      <!-- v20a141 BOOK141（樣本 v2b）：#home-stats 改做備忘紙（內容由 enterHome 填 live 數字）；
+           「返回地圖」改做牛皮紙吊牌（id＋book70ExitHome handler 不變；窿用 ::before，唔怕 textContent 清走）。 -->
+      <div class="memo141-row">
+        <div class="memo141" id="home-stats" aria-label="銀包、幕前聲望與業內信用"></div>
+        <div class="tagwrap141 home-tab-exit" id="home-tab-exit">
+          <div class="tag141-string" aria-hidden="true"></div>
+          <button type="button" class="tag141" id="home-back-map-tabs">返回地圖</button>
+        </div>
       </div>
       <div class="home-tabs" id="home-tabs" role="tablist" aria-label="手帳大類">
         <button type="button" class="home-tab on" id="hgroup-plan" role="tab" aria-selected="true" data-hgroup="plan" data-htab="plan">行程</button>
@@ -37155,7 +37215,9 @@ function enterHome(summary, editable, initialTab){
   const hs = document.getElementById("home-stats");
   if(hs){
     const dual = syncDualTracks(S);
-    hs.innerHTML = `<span class="hs-i home-money">$ ${(S.money||0).toLocaleString()}</span><span class="hs-i hs-stage"><i class="dual-swatch dual-swatch-stage" aria-hidden="true"></i>幕前聲望 <b id="h-stage-volume">${dual.stageVolume}</b></span><span class="hs-i hs-credit"><i class="dual-swatch dual-swatch-credit" aria-hidden="true"></i>業內信用 <b id="h-industry-credit">${dual.industryCredit}</b></span>`;
+    /* v20a141 BOOK141：備忘紙三行（樣本 v2b）——數字同一數據源（S.money／syncDualTracks），
+       唔寫死；.home-money 保留畀 refreshMoneyHud 即時刷錢數；h-stage-volume／h-industry-credit id 保留。 */
+    hs.innerHTML = `<span class="memo141-tape" aria-hidden="true"></span><p class="hand141 memo141-line">銀包　<span class="memo141-u home-money">$ ${(S.money||0).toLocaleString()}</span></p><p class="hand141 memo141-line">幕前聲望　<b id="h-stage-volume">${dual.stageVolume}</b></p><p class="hand141 memo141-line">業內信用　<b id="h-industry-credit">${dual.industryCredit}</b></p><span class="memo141-chop" aria-hidden="true">偉</span>`;
   }
   /* v20a71 PART3C：「本週結算」摺疊卡成段移除（用戶 13:33：資訊太多）——
      enterHome 唔再填充任何卡面內容：summary（週結算）只喺結算流程 modal 出完就算，
