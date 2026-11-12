@@ -34,7 +34,10 @@ ok('N14 舊藍膠囊唔見', 'background:#3a6ea5; border-radius:999px' not in ht
 
 # N18：通告詳情「劇情簡介」白底 inset 改米紙；老闆 hero 唔裁 bust
 ok('N18 簡介框米紙＋虛線邊', 'background:#fbf4dd; border:1px dashed #a98d4f;' in html)
-ok('N18 老闆 hero height auto（唔裁 46px）', 'cn-issuer30v2{ flex:0 0 auto; position:relative; height:auto;' in html)
+# v20a132 resync：v128 以為老闆圖係 240×312 bust，先將 hero 改 auto「唔裁 46px」；
+# 實情 11 張老闆圖全部係全身（480×1424 起，比例 ~3.0），auto 令全身圖 609px 擠壓卡面，
+# 真機上標題被切、摘要隱形（v132 回歸）。還原 240px＝v116 胸口以上 crop 原設計。
+ok('N18 老闆 hero height 240px（胸口以上 crop；v116 原設計）', 'cn-issuer30v2{ flex:0 0 auto; position:relative; height:240px;' in html)
 
 # N12：壓力明細「而家壓力」vs 高峰打架——改叫「高峰壓力」
 ok('N12 高峰壓力 label', '"高峰壓力"' in html)

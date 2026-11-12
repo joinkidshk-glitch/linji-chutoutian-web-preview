@@ -5072,7 +5072,7 @@ body.day-res-open .day-row{
    注意：原規則（約 3657 行）用咗 !important，呢度都要 !important 先壓得過。 */
 #mask.casting-sheet-on .notice_sheet_frame.cn-paper30v2 .notice_sheet_body{ padding-bottom:12px !important; }
 /* ---- (2) 負責人英雄區：企喺卡後面，margin-bottom 負值等卡疊上嚟；圖缺失嗰陣成區隱藏，卡自動歸位 ---- */
-#mask.casting-sheet-on #modal-inner .cn-issuer30v2{ flex:0 0 auto; position:relative; height:auto; margin-bottom:-100px; overflow:hidden; background:radial-gradient(120% 110% at 50% 0%, #f6ead0 0%, #ecd9ac 62%, #e0c78e 100%); }
+#mask.casting-sheet-on #modal-inner .cn-issuer30v2{ flex:0 0 auto; position:relative; height:240px; /* v20a132：還原 240px 上限（v116 胸口以上 crop 原設計；v128 改 auto 令全身圖 609px 擠壓卡面，真機上標題被切、摘要隱形） */ margin-bottom:-100px; overflow:hidden; background:radial-gradient(120% 110% at 50% 0%, #f6ead0 0%, #ecd9ac 62%, #e0c78e 100%); }
 #mask.casting-sheet-on #modal-inner .cn-issuer30v2 .cn-issuer-img30v2{ display:block; width:60%; max-width:230px; height:auto; margin:0 auto; }
 #mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2{ position:absolute; left:12px; bottom:106px; z-index:2; background:#fbf4dd; border:1px solid #a98d4f; border-radius:6px; box-shadow:0 1px 3px rgba(60,40,10,.3); padding:5px 9px; line-height:1.3; }
 #mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2 b{ display:block; font-size:.95rem; color:#2a2118; }
