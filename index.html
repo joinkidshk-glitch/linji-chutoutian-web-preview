@@ -34308,17 +34308,47 @@ function gigDirectorLabel(g){
   if(g && g.director) return String(g.director);
   return "組製未公開";
 }
-/* v20a117 S-30 DEDUP117：導演欄只出真名。實駕普查（window.GIGS，183 張）：
-   職銜值（唔係人名）共 31 張——「副導」×19、「副導阿標」×4、「廣告助導」×3、
-   「特輯副導」×1、「場務阿強」×1、「外景場記」×1、「平面攝影師阿忠」×1、
-   「錄音室助導」×1；其餘 152 張係真名，0 張缺 director（fallback「組製未公開」
-   實池唔觸發）。呢 8 個職銜值＋fallback 一律唔出（係噪音）；「副導阿標」等雖有
-   花名，但係場務職銜唔係導演名，同樣濾走。 */
-const GIG_DIRECTOR_GENERIC117 = new Set(["副導","特輯副導","副導阿標","廣告助導","場務阿強","外景場記","平面攝影師阿忠","錄音室助導","組製未公開"]);
+/* v20a121 DIRECTOR121：導演欄只出真名——職銜關鍵字規則，取代 v117 窮舉 Set。
+   原因：v117 窮舉只識 8 個值，但 live pool 實查仲有漏網——「監製」×7、「導演」×2、
+   「監製助理」「武指領班」「武術指導」「客戶代表」「副導阿成」「宣傳部阿玲」各×1
+   （合共 15 張）喺舊規則下會照出導演行；v117 所講「152 張真名」實為 137 張真名＋
+   15 張職銜值，呢度更正。更正後實池：183 張＝137 真名（113 個名）＋46 職銜值
+   （16 個值），0 張缺 director（fallback「組製未公開」實池唔觸發）。
+   規則：值入面含任何一個職銜關鍵字（子串）就當職銜，唔出。關鍵字按工種分組——
+   導演組「副導／助導／導演」；製作組「監製／製片／製作／組製／統籌」；現場組
+   「場務／場記／武指／武術／指導」；技術組「攝影／燈光／收音／剪接／後期」；
+   文宣組「編劇／宣傳／客戶」；雜項「助理／幕後／未公開／待定」。
+   點解揀呢啲字：(1) 實池 16 個職銜值全部命中；(2) 其餘 9 個係同系合理延伸
+   （製片／燈光／收音／剪接／編劇／統籌／製作／後期／幕後——其中「幕後／後期／
+   製作／編劇／剪接／場記／副導／統籌」係遊戲自身幕後工種詞彙，見
+   ENDING410_BACKSTAGE_KEYS）；(3) 「未公開／待定」擋佔位符（fallback「組製未公開」
+   同將來「導演待定」之類）。加新字之前，先對住實池真名逐個做子串碰撞檢查——
+   現行 113 個真名（137 張）零碰撞，詳見 tests/test_director121_logic.js 內嵌表
+   同 qa121/census_main.json；新通告 director 值入庫前亦應用同一檢查。
+   已知限制：值預期係「淨人名」或「淨職銜」二揀一；「導演陳大文」呢類混合值會
+   被成個濾走（實池 0 張，內容側應直接填淨人名）。
+   v117 窮舉覆蓋過嘅 8 值＋fallback（現由關鍵字覆蓋，留低做審計對照）：
+   "副導" "特輯副導" "副導阿標" "廣告助導" "場務阿強" "外景場記" "平面攝影師阿忠" "錄音室助導" "組製未公開" */
+const GIG_DIRECTOR_ROLE_KEYWORDS121 = [
+  "副導","助導","導演",                 /* 導演組 */
+  "監製","製片","製作","組製","統籌",   /* 製作組 */
+  "場務","場記","武指","武術","指導",   /* 現場組 */
+  "攝影","燈光","收音","剪接","後期",   /* 技術組 */
+  "編劇","宣傳","客戶",                 /* 文宣組 */
+  "助理","幕後","未公開","待定"         /* 雜項／佔位符 */
+];
+function gigDirectorIsRoleValue121(s){
+  const v = String(s||"").trim();
+  if(!v) return false;
+  for(let i=0;i<GIG_DIRECTOR_ROLE_KEYWORDS121.length;i++){
+    if(v.indexOf(GIG_DIRECTOR_ROLE_KEYWORDS121[i])>=0) return true;
+  }
+  return false;
+}
 function gigDirectorRealName117(g){
   const d = (typeof gigDirectorLabel==="function") ? gigDirectorLabel(g) : "";
   const s = String(d||"").trim();
-  if(!s || GIG_DIRECTOR_GENERIC117.has(s)) return "";
+  if(!s || gigDirectorIsRoleValue121(s)) return "";
   return s;
 }
 function gigApplyDeadlineDays(g){
@@ -34720,7 +34750,7 @@ function castingNoticeDetailHtml(g){
         </div>`;
   /* v20a117 S-30 DEDUP117：詳細區刪除，唯一資料搬入摘要區（有料先出，冇就唔加行）。
      ①特殊限制 limitsHtml（空即 ""，gigSpecialLimitsHtml 本身守門）；②導演只出真名
-     （gigDirectorRealName117 濾走 8 個職銜值＋fallback）；③製作人 producerLine（空即 ""）；
+     （gigDirectorRealName117 濾走職銜值——v121 關鍵字規則，實池 16 個值＋fallback）；③製作人 producerLine（空即 ""）；
      ④每週開工 weeklyBlock 只喺 total>1 先出（1 日通告「通告日數 共 1 天」已講完，
      「每週最多 6 日」係噪音；「實際只需通告 N 日」嗰句只喺 total<weekly 跟埋出，沿用原條件）；
      ⑤劇情簡介 synopsisFrame117——任務書對照漏咗呢項：佢只喺詳細區出現，係成張卡唯一
