@@ -173,8 +173,10 @@ v115 文字一句唔郁；數字一概唔變；SAVE key（`starVolunteer_map_v19
 - 合併：squash 入 main（見 main commit），線上 curl 核實 byte＋sha（見下）。
 
 ## 線上核實
-- main commit：
-- 線上 index.html： bytes，sha256：
+- main commit：`ae1d8b1`（squash；分支 `v117-s30-layout` `42dfb0a`）
+- 本地 index.html：5,099,862 bytes，sha256 `c6bb45b8…`
+- 線上 index.html：5,099,862 bytes，sha256 `c6bb45b8…`（已對上；首查仍係 v114 舊版
+  5,101,629／`672e34db…`，Pages 部署停滯，推呢個 NOTES 補記重觸發後對上）
 - 導演 generic 集係窮舉已知 8 值：將來年庫加新職銜值（例如「副導阿強」）會漏網而出街——
   可接受，測試釘死咗已知 8 值；要根治先改做職銜關鍵字規則，另開一票。
 - 本分支基於 main `4d967ed`；期間 v114 已合併入 main（`cf66865`，出行額度 2 次／日）——
