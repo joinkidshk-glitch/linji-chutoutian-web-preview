@@ -4,15 +4,15 @@
   seed ok=False: {'gig': 'gig_1988_entry_ferry_crowd', 'day': 0, 'due': 1}
   set pendingEnding={kind:review,year:1990,dual:0,floor:100}
   open_journal: menu=True journal-item=True
-    seq +1905ms mask=False btns=[] modal=''
-    seq +2866ms mask=True btns=['我知道了'] modal='系統 / 本次未獲聘 /  / 今次未獲聘，呢一場唔可以再參加。 /  / 可以返去訓練，或者另揀一張通告。 /  / 《天星碼'
+    seq +1130ms mask=False btns=[] modal=''
+    seq +1313ms mask=True btns=['我知道了'] modal='系統 / 本次未獲聘 /  / 今次未獲聘，呢一場唔可以再參加。 /  / 可以返去訓練，或者另揀一張通告。 /  / 《天星碼'
   T2 after enterHome: pend=[] due=0 ending410=null conseq61pend={'kind': 'review', 'year': 1990, 'dual': 0, 'floor': 100}
   VERDICT T2-a aud91 有出: PASS 
   VERDICT T2-b aud91 企住：等 1.8s 強制結局未出現: PASS 
   VERDICT T2-c 等待期間 E7 未寫（結局未偷跑）: PASS 
   dismiss aud91: 我知道了
-    seq +101ms mask=False btns=[] modal=''
-    seq +468ms mask=True btns=['下一頁'] modal='1990 年尾 · 事務所評核 /  / 第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，'
+    seq +23ms mask=False btns=[] modal=''
+    seq +269ms mask=True btns=['下一頁'] modal='1990 年尾 · 事務所評核 /  / 第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，'
   T2 after aud91 dismiss: modal='1990 年尾 · 事務所評核\n\n第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，加埋離公司肯留人嗰條線，仲差一截。\n\n「' btns=['下一頁'] ending410.career=E7
   VERDICT T2-d dismiss 後強制結局 modal 出現: PASS 
   VERDICT T2-e E7 已寫: PASS 
@@ -30,15 +30,15 @@
   persist via localStorage (aud91=True pendEnd=False): {"day": 7, "pend": 1}
   after reload (title): view=v-start day=None pend=[]
   click 繼續: True
-    seq +101ms mask=False btns=[] modal=''
-    seq +411ms mask=True btns=['我知道了'] modal='系統 / 本次未獲聘 /  / 今次未獲聘，呢一場唔可以再參加。 /  / 可以返去訓練，或者另揀一張通告。 /  / 《天星碼'
+    seq +95ms mask=False btns=[] modal=''
+    seq +323ms mask=True btns=['我知道了'] modal='系統 / 本次未獲聘 /  / 今次未獲聘，呢一場唔可以再參加。 /  / 可以返去訓練，或者另揀一張通告。 /  / 《天星碼'
   T3 after 繼續: pend=[] due=0 ending410=null weekB105=null view=v-home
   VERDICT T3-a aud91 有出: PASS 
   VERDICT T3-b aud91 企住：等 1.8s 結算未出現: PASS 
   VERDICT T3-c 等待期間未結局: PASS 
   dismiss aud91: 我知道了
-    seq +52ms mask=False btns=[] modal=''
-    seq +167ms mask=True btns=['編排新一週行程'] modal='回家結算 · 第 1 週 /  / R2 測試結算內容：第 1 週結算。 /  / 上次喺週結算嗰陣離開咗——金額嗰'
+    seq +29ms mask=False btns=[] modal=''
+    seq +312ms mask=True btns=['編排新一週行程'] modal='回家結算 · 第 1 週 /  / R2 測試結算內容：第 1 週結算。 /  / 上次喺週結算嗰陣離開咗——金額嗰'
   T3 after aud91 dismiss: modal='回家結算 · 第 1 週\n\nR2 測試結算內容：第 1 週結算。\n\n上次喺週結算嗰陣離開咗——金額嗰陣已經入帳，唔會重扣。而家可以編排新一週' btns=['編排新一週行程'] view=v-home
   VERDICT T3-d dismiss 後結算 modal 出現: PASS 
     dismiss[0] modal='回家結算 · 第 1 週\n\nR2 測試結算內容：第 1 週結算。\n\n上次喺週結算嗰陣離開咗——金額嗰陣已經入帳，唔會重扣。而家可以編排新一週' btns=['編排新一週行程']
@@ -47,8 +47,8 @@
   seed ok=False: {'gig': 'gig_1988_entry_ferry_crowd', 'day': 7, 'due': 1}
   back-to-map: True view=v-map
   open_journal: menu=True journal-item=True
-    seq +3111ms mask=False btns=[] modal=''
-    seq +3499ms mask=True btns=['繼續'] modal='何生來電 /  / 《天星碼頭》過海人潮 /  / 何生打嚟：「嗰邊有回音喇——今次冇你份，唔使等喇。」 /  / 成功率約'
+    seq +2599ms mask=False btns=[] modal=''
+    seq +2774ms mask=True btns=['繼續'] modal='何生來電 /  / 《天星碼頭》過海人潮 /  / 何生打嚟：「嗰邊有回音喇——今次冇你份，唔使等喇。」 /  / 成功率約'
   T3 second seed: journal-ok=True presented=True pend=[] due=0 mask=True view=v-home
   VERDICT T3-f 第二播種探針即刻呈現（旗唔卡）: PASS 
   T3 ERRORS: (none)
@@ -60,20 +60,20 @@
   after reload (title): view=v-start day=None pend=[]
   click 繼續: True
     seq +106ms mask=False btns=[] modal=''
-    seq +398ms mask=True btns=['我知道了'] modal='系統 / 本次未獲聘 /  / 今次未獲聘，呢一場唔可以再參加。 /  / 可以返去訓練，或者另揀一張通告。 /  / 《天星碼'
+    seq +472ms mask=True btns=['我知道了'] modal='系統 / 本次未獲聘 /  / 今次未獲聘，呢一場唔可以再參加。 /  / 可以返去訓練，或者另揀一張通告。 /  / 《天星碼'
   T5 after 繼續: pend=[] ending410=null
   VERDICT T5-a aud91 有出: PASS 
   VERDICT T5-b aud91 企住：結算／結局都未出現: PASS 
   VERDICT T5-c 等待期間 E7 未寫: PASS 
   dismiss aud91: 我知道了
-    seq +26ms mask=False btns=[] modal=''
-    seq +342ms mask=True btns=['編排新一週行程'] modal='回家結算 · 第 1 週 /  / R2 測試結算內容：第 1 週結算。 /  / 上次喺週結算嗰陣離開咗——金額嗰'
+    seq +35ms mask=False btns=[] modal=''
+    seq +177ms mask=True btns=['編排新一週行程'] modal='回家結算 · 第 1 週 /  / R2 測試結算內容：第 1 週結算。 /  / 上次喺週結算嗰陣離開咗——金額嗰'
   T5 after aud91 dismiss: modal='回家結算 · 第 1 週\n\nR2 測試結算內容：第 1 週結算。\n\n上次喺週結算嗰陣離開咗——金額嗰陣已經入帳，唔會重扣。而家可以編排新一週' btns=['編排新一週行程'] ending410=null
   VERDICT T5-d dismiss 後結算 modal 出現（結局之前）: PASS 
   VERDICT T5-e 結算嗰刻 E7 未寫（結局未偷跑）: PASS 
   dismiss settlement: 編排新一週行程
-    seq +27ms mask=False btns=[] modal=''
-    seq +260ms mask=True btns=['下一頁'] modal='1990 年尾 · 事務所評核 /  / 第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，'
+    seq +47ms mask=False btns=[] modal=''
+    seq +255ms mask=True btns=['下一頁'] modal='1990 年尾 · 事務所評核 /  / 第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，'
   T5 after settlement dismiss: modal='1990 年尾 · 事務所評核\n\n第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，加埋離公司肯留人嗰條線，仲差一截。\n\n「' btns=['下一頁'] ending410.career=E7
   VERDICT T5-f 結算 dismiss 後強制結局 modal 出現: PASS 
   VERDICT T5-g E7 已寫: PASS 
@@ -89,8 +89,8 @@
   new-game all-street: view=v-map day=0
   persist via localStorage (aud91=False pendEnd=False): {"day": 7, "pend": 0}
   click 繼續: True
-    seq +104ms mask=False btns=[] modal=''
-    seq +393ms mask=True btns=['編排新一週行程'] modal='回家結算 · 第 1 週 /  / R2 測試結算內容：第 1 週結算。 /  / 上次喺週結算嗰陣離開咗——金額嗰'
+    seq +279ms mask=False btns=[] modal=''
+    seq +891ms mask=True btns=['編排新一週行程'] modal='回家結算 · 第 1 週 /  / R2 測試結算內容：第 1 週結算。 /  / 上次喺週結算嗰陣離開咗——金額嗰'
   T4 after 繼續: modal='回家結算 · 第 1 週\n\nR2 測試結算內容：第 1 週結算。\n\n上次喺週結算嗰陣離開咗——金額嗰陣已經入帳，唔會重扣。而家可以編排新一週' btns=['編排新一週行程'] pend=[] view=v-home
   VERDICT T4-a 無 aud91：結算 modal 直出: PASS 
     dismiss[0] modal='回家結算 · 第 1 週\n\nR2 測試結算內容：第 1 週結算。\n\n上次喺週結算嗰陣離開咗——金額嗰陣已經入帳，唔會重扣。而家可以編排新一週' btns=['編排新一週行程']
@@ -98,8 +98,8 @@
   seed ok=False: {'gig': 'gig_1988_entry_ferry_crowd', 'day': 7, 'due': 1}
   back-to-map: True view=v-map
   open_journal: menu=True journal-item=True
-    seq +2781ms mask=False btns=[] modal=''
-    seq +3156ms mask=True btns=['我知道了'] modal='系統 / 本次未獲聘 /  / 今次未獲聘，呢一場唔可以再參加。 /  / 可以返去訓練，或者另揀一張通告。 /  / 《天星碼'
+    seq +3198ms mask=False btns=[] modal=''
+    seq +3562ms mask=True btns=['我知道了'] modal='系統 / 本次未獲聘 /  / 今次未獲聘，呢一場唔可以再參加。 /  / 可以返去訓練，或者另揀一張通告。 /  / 《天星碼'
   T4 seed after settlement: journal-ok=True presented=True pend=[] due=0
   VERDICT T4-b 之後播種即刻出 aud91: PASS 
   T4 ERRORS: (none)

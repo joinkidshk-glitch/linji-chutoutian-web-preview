@@ -76,7 +76,8 @@ ok('Pair B 三連撞：結算 modal 有 onDismiss 記 done（遮罩點走都計�
 # ---- 三連撞旗：module-level 宣告在位 ----
 ok('三連撞旗宣告在位', 'var _week105SettlePending124 = false;' in html and 'var _week105SettleDone124 = false;' in html)
 ok('三連撞旗宣告跟 _aud91Presenting 埋一齊',
-   abs(html.index('var _week105SettlePending124') - html.index('let _aud91Presenting')) < 1200)
+   'var _week105SettlePending124' in html and 'let _aud91Presenting' in html
+   and abs(html.index('var _week105SettlePending124') - html.index('let _aud91Presenting')) < 1200)
 
 # ---- R2 唔做：modal() 冇加通用 guard ----
 mo = seg('function modal(html, buttons, opts){', 'function closeModal(){')
