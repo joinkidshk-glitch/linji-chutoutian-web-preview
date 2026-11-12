@@ -95,7 +95,7 @@ try:
             continue  # v111：通告負責人立繪（S-30v2 卡上人物），唔係對話舞台角色，唔入身高重測
         im = Image.open(p)
         files[os.path.basename(p)[:-5]] = round(im.size[0] / im.size[1], 4)
-    ck("真檔數目仍係 145 張（109 唔加圖；96＋v119 DLG119 7 張 webp＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情；3 張 halo 係 png，唔入呢個數；v111 boss_* 11 張另計，唔入身高重測）", len(files) == 145)
+    ck("真檔數目 182 張（109 唔加圖；96＋v119 DLG119 7 張 webp＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情＋v138 37 張新表情；3 張 halo 係 png，唔入呢個數；v111 boss_* 11 張另計，唔入身高重測）", len(files) == 182)
     bases = {k[:-5]: v for k, v in files.items() if k.endswith("_base")}
     def near(name, got, want, tol=0.001):
         ck("闊高比 %s＝%.3f（實量 %.3f）" % (name, got, want), abs(got - want) <= tol)
