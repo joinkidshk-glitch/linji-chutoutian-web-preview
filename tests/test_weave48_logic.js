@@ -264,15 +264,18 @@ loadGame(baseSave());
      (() => { const st = endingRomanceState48(); return ['hiu','choi','vera','lan','xu'].every(k => st[k] && st[k].met === false && st[k].rel === 0 && st[k].committed === false); })());
 }
 
-/* ---- N12＝C15 ---- */
+/* ---- N12＝C15（v20a113：補鏈，需 C10 done） ---- */
 function c15Save(over){
   return baseSave(Object.assign({
     dayIndex: dayIndexOf(1992, 4, 15), fame: 20,
     castingTags: [{ id: 'tag_action', label: '動作演員' }],
+    story: { flags: {}, rel: {}, done: { C10: true }, choices: {} },
   }, over || {}));
 }
 loadGame(c15Save());
 ok('C15：1992 春＋動作標籤 → offer 喺 film_harbour', !!openRow('C15') && openRow('C15').locId === 'film_harbour');
+loadGame(c15Save({ story: { flags: {}, rel: {}, done: {}, choices: {} } }));
+ok('C15：C10 未做唔出現', !openIds().includes('C15'));
 loadGame(c15Save({ castingTags: [] }));
 ok('C15：冇動作標籤唔出現', !openIds().includes('C15'));
 loadGame(c15Save({ dayIndex: dayIndexOf(1991, 4, 15) }));

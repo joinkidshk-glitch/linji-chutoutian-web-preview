@@ -19074,7 +19074,10 @@ const STORY_TITLE_SOFT = {
    fameGt／creditGt／dualGt 雙軌門檻（嚴格大於，跟 §4「>」）、tagAny 持有任一選角標籤
    （ctx.tags 已正規化，id 或 label 命中都算）、yearEq／yearMin 年份窗、seasonIn 季節窗。
    評估器：BehaviorGate.evalGate3Y（ctx 用擴充版 readCtx：fame／credit／year／season／tags／dual）。
-   呢張表只管「開閘」；C7–C17 嘅內容呈現留待 4-6／4-8 接通，C17 結局判定留待 4-10。 */
+   呢張表只管「開閘」；C7–C17 嘅內容呈現留待 4-6／4-8 接通，C17 結局判定留待 4-10。
+   v20a113 鏈審計（用戶 2026-11-12 實玩捉到 C18 第 2 週跳步）：C18／C19 補鏈（見各幕註解）；其餘純季節閘
+   逐個判斷——C11←C7 補鏈、C15←C10 補鏈；C9／C13 刻意唔鏈（恢復節點，防錯過窗口成條關鍵路徑軟鎖，
+   見各幕註解）；C6／C6F 係路線分支可選幕，唔當順序主幹鏈。守門測試見 tests/test_story_gate113_logic.js。 */
 const STORY_GATE_3Y = {
   /* N6＝C6（1990 全年・可選）：route_tv；W15+ */
   C6:  { route: "route_tv", weekMin: 15 },
@@ -19082,30 +19085,52 @@ const STORY_GATE_3Y = {
   C6F: { route: "route_film", weekMin: 15 },
   /* N7＝C7（1991 夏）：前置 N5＝C5；信用 > 20 */
   C7:  { needDone: ["C5"], creditGt: 20, yearMin: 1991, seasonIn: ["夏"] },
-  /* N8＝C11（1991 夏末／秋・選美後台）：「攜帶特定禮物」屬內容層，4-6 對照時處理，唔入閘 */
-  C11: { yearMin: 1991, seasonIn: ["夏", "秋"] },
+  /* N8＝C11（1991 夏末／秋・選美後台）：「攜帶特定禮物」屬內容層，4-6 對照時處理，唔入閘
+     v20a113：補 needDone C7——C11 係 N 次序入面 C7 嘅下一幕，唔鏈會令 1991 夏未做 C7 都直入；
+     安全：C11 唔喺關鍵路徑（冇嘢要 C11），C7 門檻溫和；代價係錯過 C7 夏天窗口嘅玩家秋天嗰半開唔到 C11，
+     換嚴格 N 次序，符合「順序開啟」要求。 */
+  C11: { needDone: ["C7"], yearMin: 1991, seasonIn: ["夏", "秋"] },
   /* N9＝C8（1991 秋）：前置 N7＝C7；聲量 > 28；持有喜劇或動作標籤
      v20a29：tagAny 補 STUB_CASTING_TAGS registry 實際 id／label（tag_comedy／喜劇細胞／tag_action／動作演員）——
      4-5 NOTES 已預告呢個 registry 對照喺 4-6 補，唔補嘅話真標籤永遠唔中候選。 */
   C8:  { needDone: ["C7"], fameGt: 28, tagAny: ["喜劇", "comedy", "動作", "action", "tag_comedy", "喜劇細胞", "tag_action", "身手好"], yearMin: 1991, seasonIn: ["秋"] },
-  /* N10＝C9（1991 冬）：「人情債觸發」屬內容層，4-6 處理，唔入閘 */
+  /* N10＝C9（1991 冬）：「人情債觸發」屬內容層，4-6 處理，唔入閘
+     v20a113：刻意唔補 needDone C8——C8 係 1991 秋限定；若果 C9 要 C8，錯過 C8 秋天窗口嘅玩家會連
+     C9→C10→C14→C12→C16→C13→C17 成條關鍵路徑一齊死（災難性軟鎖）。C9 係恢復節點，關鍵路徑經
+     C10 要 C9 間接卡住，唔可以直接跳去結局。 */
   C9:  { yearMin: 1991, seasonIn: ["冬"] },
   /* N11＝C10（1991 冬末）：前置 N10＝C9；雙軌總和 > 70 */
   C10: { needDone: ["C9"], dualGt: 70, yearMin: 1991, seasonIn: ["冬"] },
-  /* N12＝C15（1992 春）：持有動作標籤（v20a29 同 C8 一併補 registry id／label 候選） */
-  C15: { tagAny: ["動作", "action", "tag_action", "身手好"], yearMin: 1992, seasonIn: ["春"] },
+  /* N12＝C15（1992 春）：持有動作標籤（v20a29 同 C8 一併補 registry id／label 候選）
+     v20a113：補 needDone C10——C15 係 N 次序入面 C10 嘅下一幕，唔鏈會令 1992 春未做 C10 都直入；
+     安全：C15 唔喺關鍵路徑，C14 已經要 C10，唔增加新嘅軟鎖風險。 */
+  C15: { needDone: ["C10"], tagAny: ["動作", "action", "tag_action", "身手好"], yearMin: 1992, seasonIn: ["春"] },
   /* N13＝C14（1992 夏）：前置 N11＝C10；信用 > 42 */
   C14: { needDone: ["C10"], creditGt: 42, yearMin: 1992, seasonIn: ["夏"] },
   /* N14＝C12（1992 秋）：前置 N13＝C14；聲量 > 50 */
   C12: { needDone: ["C14"], fameGt: 50, yearMin: 1992, seasonIn: ["秋"] },
   /* N15＝C16（1992 秋末）：前置 N14＝C12；雙軌總和 > 125 */
   C16: { needDone: ["C12"], dualGt: 125, yearMin: 1992, seasonIn: ["秋"] },
-  /* N16＝C13（1992 冬・賀歲片） */
+  /* N16＝C13（1992 冬・賀歲片）
+     v20a113：刻意唔補 needDone C16——C16 係 1992 秋末＋dual>125；若果 C13 要 C16，錯過 C16 嘅玩家會連
+     C13＋C17（結局）一齊死（災難性軟鎖）。C13 係恢復節點，關鍵路徑經 C17 要 C13 間接卡住。 */
   C13: { yearMin: 1992, seasonIn: ["冬"] },
   /* N17＝C17（1992 冬・事件閘）：前置 N16＝C13。結局判定／呈現係 4-10，呢度只守入場閘 */
   C17: { needDone: ["C13"], yearEq: 1992, seasonIn: ["冬"] },
-  C18: { yearMin: 1990, seasonIn: ["冬"] }, /* WF1 補幕：1990冬（真空帶前段） */
-  C19: { yearMin: 1991, seasonIn: ["春"] }, /* WF1 補幕：1991春（真空帶後段） */
+  /* WF1 補幕：1990冬（真空帶前段）
+     v20a113：補 needDone C5＋weekMin 48——舊閘得 yearMin＋seasonIn，1990 年 1 月計做冬，第 2 週去
+     事務所已經開得（用戶 2026-11-12 實玩捉到跳步）。weekMin 48 實數：1990-12-01＝dayIndex 334＝
+     第 48 週（week＝floor(day/7)+1），係 1990 年 12 月第一個週次；同 STORY_SPINE_NODES_WF1
+     C18 pacing.weekMin＝48 一致（v20a100 A-12 章戳「約第48週」）。C5 自身 weekMin 9，C5 完成
+     先至有資格；yearMin 保持 1990 唔轉 yearEq（codebase 慣例係 yearMin，C17 例外；殘留：理論上
+     每年冬天都重開，同 CALIB60 單一窗口顯示有落差，係全庫 yearMin 閘共有嘅既有模式，留待以後整體檢討）。 */
+  C18: { needDone: ["C5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] },
+  /* WF1 補幕：1991春（真空帶後段）
+     v20a113：補 needDone C18＋weekMin 61——舊閘同款漏鏈，1991 年春一到唔使做完 C18 就開得。
+     weekMin 61 實數：1991-03-01（春首日）＝dayIndex 424＝第 61 週；同 pacing.weekMin＝61 一致，
+     功能上同 seasonIn＋yearMin 重疊（春首日已係第 61 週），寫入係為咗同節點章戳對齊、等進度頁
+     鎖定原因逐項顯示「到第 61 週」。 */
+  C19: { needDone: ["C18"], weekMin: 61, yearMin: 1991, seasonIn: ["春"] },
 };
 /* v20a29 WEAVE_PHASE4_6：主幹 1989 節點內容覆寫（N7–N11）。
    定界對照結論：content pack story_detail_c1_to_c17.json 只有 C1–C5 跟 Qwen 原規劃／三年版主幹；
@@ -32596,6 +32621,41 @@ function applyPrefsChrome(){
     window.__audioPrefs = { bgmMuted:!!p.bgmMuted, sfxMuted:!!p.sfxMuted, volume:Number(p.volume)||70 };
   }catch(_e){}
 }
+/* v20a113 GATE113：載入遷移——清走跳步存檔嘅非法 done 標記（C18／C19／C11／C15 補鏈之後）。
+   判準（forensic：S.story.done 只係 boolean map，冇逐幕播出日子，唔能夠直接查「播出嗰陣」）：
+   (a) needDone 鏈：done 已標、但任一前置而家未 done → 播出嗰陣前置一定未滿足（前置完成只會由未做
+       變已做，唔會倒轉），必清；
+   (b) weekMin：done 已標、但而家週數 < 閘嘅 weekMin → 播出嗰陣週數只會更細，播出一定早過個窗，
+       必清（日子只會向前行，冇倒帶機制；jan67 遷移喺呢步之前已經將日數對返新 epoch）。
+   只覆蓋 STORY_GATE_3Y 入面有 needDone／weekMin 嘅幕；C6／C6F 路線幕有 weekMin 15 但冇 needDone——
+   (b) 判準一樣適用，佢哋嘅 done 喺舊制下本身已經受閘守住，順帶覆蓋唔會誤清。
+   合法完成唔會誤清：合法播出嗰陣前置已齊＋週數已夠，之後週數只會更大、前置唔會變返未做。
+   冪等；回傳清走咗嘅 id 清單（畀測試／日誌用；載入路徑唔使理回傳值）。
+   已知盲點（唔扮冇）：1 月播出、之後先做完 C5 嘅檔（C18 done＋C5 done 並存、而家週數 ≥48），
+   (a)(b) 都捉唔到——S.story.done 冇播出日子，無法分辨合法 12 月播出同非法 1 月播出，留返以後若果
+   加逐幕完成日子紀錄先至補得返。 */
+function storyGate113Scrub(o, gate){
+  var cleared = [];
+  try{
+    if(!o || typeof o !== "object") return cleared;
+    var g = gate || (typeof STORY_GATE_3Y !== "undefined" ? STORY_GATE_3Y : null);
+    if(!g || typeof g !== "object") return cleared;
+    var done = (o.story && o.story.done && typeof o.story.done === "object") ? o.story.done : null;
+    if(!done) return cleared;
+    var week = Math.floor((Number(o.dayIndex)||0)/7)+1;
+    Object.keys(g).forEach(function(id){
+      if(!done[id]) return;
+      var e = g[id] || {};
+      var bad = false;
+      if(Array.isArray(e.needDone)){
+        for(var i=0;i<e.needDone.length;i++){ if(!done[e.needDone[i]]){ bad = true; break; } }
+      }
+      if(!bad && e.weekMin != null && week < Number(e.weekMin)) bad = true;
+      if(bad){ delete done[id]; cleared.push(id); }
+    });
+  }catch(_e113){}
+  return cleared;
+}
 function normalizeSaveObj(o){
   if(!o||typeof o!=="object") return null;
   if(!o.inventory||typeof o.inventory!=="object")o.inventory={};
@@ -32630,6 +32690,9 @@ function normalizeSaveObj(o){
   try{ if(typeof jan67MigrateSave==="function") jan67MigrateSave(o); }catch(_e){}
   /* v20a75 LEVELS75：舊檔進階課併入級別（中課報名／堂數／weekPlan id 遷移；天然冪等，唔降級） */
   try{ if(typeof levels75MigrateSave==="function") levels75MigrateSave(o); }catch(_e){}
+  /* v20a113 GATE113：清走跳步存檔嘅非法 done 標記（前置未滿足／早過窗口嗰陣播出嘅 C18／C19／C11／C15）；
+     必須喺 calib60MissedScan 之前——被清走嗰幕若果已過窗，要正確登記做「已錯過」；未過窗就留返未開放狀態 */
+  try{ if(typeof storyGate113Scrub==="function") storyGate113Scrub(o); }catch(_e){}
   /* v20a60 CALIB60-3：舊檔靜靜補登已漏節點入「回憶」（唔彈提示、唔出結算行）；新登記只會喺週結發生 */
   try{ if(typeof calib60MissedScan==="function") calib60MissedScan(o); }catch(_e){}
   /* v20a61 CONSEQ61-1：舊檔已過評核年份→靜靜標記已過，永不追溯收場；病倒連續日由 0 起計，唔會讀檔即病 */

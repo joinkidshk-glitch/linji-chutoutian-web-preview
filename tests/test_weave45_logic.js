@@ -148,9 +148,10 @@ expectGate('C7', '缺 C5', compose(at(1991,7,10), (sv)=>setCredit(sv,21)), false
 expectGate('C7', '信用得 20（唔過 >20）', compose(at(1991,7,10), withDone('C5'), (sv)=>setCredit(sv,20)), false);
 expectGate('C7', '1991 春（季節唔啱）', compose(at(1991,4,10), withDone('C5'), (sv)=>setCredit(sv,21)), false);
 expectGate('C7', '1990 夏（年份唔啱）', compose(at(1990,7,10), withDone('C5'), (sv)=>setCredit(sv,21)), false);
-/* N8＝C11：1991 夏／秋 */
-expectGate('C11', '1991 夏', at(1991,7,10), true);
-expectGate('C11', '1991 秋', at(1991,10,10), true);
+/* N8＝C11：C7 done＋1991 夏／秋（v20a113 補鏈） */
+expectGate('C11', '1991 夏', compose(at(1991,7,10), withDone('C7')), true);
+expectGate('C11', '1991 秋', compose(at(1991,10,10), withDone('C7')), true);
+expectGate('C11', '缺 C7', at(1991,10,10), false);
 expectGate('C11', '1991 春', at(1991,4,10), false);
 expectGate('C11', '1990 夏', at(1990,7,10), false);
 /* N9＝C8：C7 done＋聲量>28＋喜劇/動作標籤＋1991 秋 */
@@ -169,8 +170,9 @@ expectGate('C9', '1990 冬', at(1990,12,10), false);
 expectGate('C10', '齊條件（雙軌 71）', compose(at(1991,12,10), withDone('C9'), (sv)=>setDual(sv,40,71)), true);
 expectGate('C10', '雙軌得 70（唔過 >70）', compose(at(1991,12,10), withDone('C9'), (sv)=>setDual(sv,40,70)), false);
 expectGate('C10', '缺 C9', compose(at(1991,12,10), (sv)=>setDual(sv,40,71)), false);
-/* N12＝C15：動作標籤＋1992 春 */
-expectGate('C15', '齊條件', compose(at(1992,4,10), (sv)=>{ sv.castingTags = [{ id:"action", label:"動作" }]; }), true);
+/* N12＝C15：C10 done＋動作標籤＋1992 春（v20a113 補鏈） */
+expectGate('C15', '齊條件', compose(at(1992,4,10), withDone('C10'), (sv)=>{ sv.castingTags = [{ id:"action", label:"動作" }]; }), true);
+expectGate('C15', '缺 C10', compose(at(1992,4,10), (sv)=>{ sv.castingTags = [{ id:"action", label:"動作" }]; }), false);
 expectGate('C15', '無動作標籤', at(1992,4,10), false);
 expectGate('C15', '1991 春（年份唔啱）', compose(at(1991,4,10), (sv)=>{ sv.castingTags = [{ id:"action", label:"動作" }]; }), false);
 /* N13＝C14：C10 done＋信用>42＋1992 夏 */

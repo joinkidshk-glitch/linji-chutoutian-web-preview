@@ -3,7 +3,8 @@
 //   (2) 後果拍：每幕每個 choice 都有 resultBeats（揀完有下文）；新第三 choice 旗入 flags_written、幅度唔勁過既有；
 //   (3) 零回歸：既有 beats/choices/resultBeats 對 v79 fixture（tests/fixtures/spine_c6_c17_v79.json）子序列＋前綴保留；
 //   (4) 補幕 C18/C19：結構（8–10 拍／2 抉擇連後果拍）、地點、when 用舊標籤（YEARS66 +2）、gate entry 規則
-//       （yearMin＋seasonIn；1990冬 C18 開／1990秋唔開／1991春 C19 開／1990春唔開；冇 needDone 唔卡主線）；
+//       （v20a113 改設計：C18 需 C5＋weekMin 48 深冬窗，C19 需 C18＋weekMin 61；1990 年 1 月第 2 週唔再開 C18；
+//       舊設計「冇 needDone 唔卡主線」已廢——用戶 2026-11-12 實玩捉到跳步）；
 //   (5) 注入：applyStoryWf1Nodes80 冪等（行兩次唔重複 push、唔覆蓋已有同 id 節點）；
 //   (6) 紅線：14 節點全文冇真人名、冇關海媚名、冇直寫 1991–1994 年份。
 // 反證：喺 v20a79 index 上行 → 冇 STORY_SPINE_NODES_WF1 → 抽取即 throw → FAIL。
@@ -127,27 +128,37 @@ for(const id of ['C18', 'C19']){
   ok(id + ' CALIB60 標題登記', typeof CTIT[id] === 'string' && CTIT[id].length > 0);
   const g = GATE[id];
   ok(id + ' gate entry 在位（yearMin＋seasonIn）', !!g && g.yearMin != null && Array.isArray(g.seasonIn));
-  ok(id + ' gate 冇 needDone（唔卡主線）', !!g && !g.needDone);
+  /* v20a113：補鏈——C18 需 C5＋weekMin 48（深冬窗，1990-12-01 係第 48 週），C19 需 C18＋weekMin 61
+     （1991-03-01 春首日係第 61 週；同 pacing.weekMin 一致） */
+  if(id === 'C18') ok('C18 gate 需 C5＋weekMin 48', !!g && JSON.stringify(g.needDone || []) === '["C5"]' && g.weekMin === 48);
+  if(id === 'C19') ok('C19 gate 需 C18＋weekMin 61', !!g && JSON.stringify(g.needDone || []) === '["C18"]' && g.weekMin === 61);
 }
 ok('C18 地點＝何生事務所 agency_ho', NODES.C18.locId === 'agency_ho');
 ok('C19 地點＝獅子山製片 film_lion', NODES.C19.locId === 'film_lion');
 ok('C18 when 用舊標籤 1988冬（YEARS66 +2 → 1990冬）', NODES.C18.when === '1988冬');
 ok('C19 when 用舊標籤 1989春（YEARS66 +2 → 1991春）', NODES.C19.when === '1989春');
-/* gate 規則模擬（evalGate3Y 對 yearMin/seasonIn 兩項嘅文件化行為） */
-function gatePass(id, year, season){
+/* gate 規則模擬（evalGate3Y 對 yearMin/seasonIn/needDone/weekMin 四項嘅文件化行為；
+   doneIds＝已完成幕清單，week＝而家週數；預設 done 齊＋週數夠，等舊式呼叫照舊通過） */
+function gatePass(id, year, season, doneIds, week){
   const g = GATE[id];
   if(!g) return false;
+  if(doneIds == null && Array.isArray(g.needDone)) doneIds = g.needDone.slice();
+  if(Array.isArray(g.needDone) && !g.needDone.every(d => (doneIds || []).includes(d))) return false;
+  if(g.weekMin != null && !((week != null ? week : 999) >= g.weekMin)) return false;
   if(g.yearMin != null && !(year >= g.yearMin)) return false;
   if(Array.isArray(g.seasonIn) && g.seasonIn.length && !g.seasonIn.includes(season)) return false;
   if(g.yearEq != null && year !== g.yearEq) return false;
   return true;
 }
-ok('C18 1990冬 開', gatePass('C18', 1990, '冬'));
-ok('C18 1990秋 唔開（未入冬）', !gatePass('C18', 1990, '秋'));
-ok('C18 1991冬 仍開（yearMin 非 yearEq）', gatePass('C18', 1991, '冬'));
-ok('C19 1991春 開', gatePass('C19', 1991, '春'));
-ok('C19 1990春 唔開（未夠年份）', !gatePass('C19', 1990, '春'));
-ok('C19 1991冬 唔開（過季）', !gatePass('C19', 1991, '冬'));
+ok('C18 1990冬 開（C5 已做＋第 48 週）', gatePass('C18', 1990, '冬', ['C5'], 48));
+ok('C18 1990秋 唔開（未入冬）', !gatePass('C18', 1990, '秋', ['C5'], 48));
+ok('C18 1991冬 仍開（yearMin 非 yearEq）', gatePass('C18', 1991, '冬', ['C5'], 100));
+ok('C18 1990冬 第 2 週 唔開（未到第 48 週——v113 舉報個案）', !gatePass('C18', 1990, '冬', ['C5'], 2));
+ok('C18 1990冬 C5 未做 唔開（前置未完成）', !gatePass('C18', 1990, '冬', [], 48));
+ok('C19 1991春 開（C18 已做＋第 61 週）', gatePass('C19', 1991, '春', ['C18'], 61));
+ok('C19 1991春 C18 未做 唔開（前置未完成）', !gatePass('C19', 1991, '春', [], 61));
+ok('C19 1990春 唔開（未夠年份）', !gatePass('C19', 1990, '春', ['C18'], 61));
+ok('C19 1991冬 唔開（過季）', !gatePass('C19', 1991, '冬', ['C18'], 61));
 
 /* (5) 注入冪等 */
 {
