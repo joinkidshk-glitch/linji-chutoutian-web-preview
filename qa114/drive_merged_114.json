@@ -1,0 +1,386 @@
+{
+ "errors": [],
+ "console_errors": [
+  "Failed to load resource: the server responded with a status of 404 (File not found)",
+  "Failed to load resource: the server responded with a status of 404 (File not found)",
+  "Failed to load resource: the server responded with a status of 404 (File not found)",
+  "Failed to load resource: the server responded with a status of 404 (File not found)"
+ ],
+ "failed_requests": [],
+ "items": {
+  "1_map_hint": {
+   "verdict": "PASS",
+   "detail": {
+    "hint": "今日出行：仲可以去 2 個地方",
+    "day": 0,
+    "travel": {
+     "day": 0,
+     "used": 0
+    },
+    "activeSlot": 3,
+    "shot": "shots/merged114/drive_merged_A_fresh_map.png"
+   }
+  },
+  "2a_first_entry": {
+   "verdict": "PASS",
+   "detail": {
+    "enter": "dialogue-sheet",
+    "used": {
+     "day": 0,
+     "used": 1
+    },
+    "hint_after": "今日出行：仲可以去 1 個地方",
+    "shot": "shots/merged114/drive_merged_A1_cafe_sheet.png / drive_merged_A_after1_map.png"
+   }
+  },
+  "2b_second_entry": {
+   "verdict": "PASS",
+   "detail": {
+    "enter": "sheet",
+    "used": {
+     "day": 0,
+     "used": 2
+    },
+    "hint_after": "今日出行額度已用完，聽日再去",
+    "lockedPins": 15,
+    "lockedArea": 13,
+    "shot": "shots/merged114/drive_merged_A2_gift_sheet.png / drive_merged_A_after2_map.png"
+   }
+  },
+  "3_blocked": {
+   "verdict": "PASS",
+   "detail": {
+    "enter": {
+     "outcome": "blocked",
+     "toast": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+     "before": {
+      "hasS": true,
+      "day": 0,
+      "travel": {
+       "day": 0,
+       "used": 2
+      },
+      "remain": 0,
+      "starDay": {
+       "day": 0,
+       "presence": {
+        "rec_star": [
+         "luk_baakyin"
+        ],
+        "cafe_cha": [
+         "liu_bingxing"
+        ],
+        "rec_hk": [
+         "yip_manji"
+        ],
+        "ad_adm": [
+         "chung_choning"
+        ],
+        "tvb_harbour": [
+         "gu_mingfai"
+        ]
+       },
+       "triggered": 1,
+       "doneToday": {
+        "liu_bingxing": 1
+       }
+      },
+      "money": 12000,
+      "stress": 12,
+      "stamina": 75,
+      "hintTravel": "今日出行額度已用完，聽日再去",
+      "hintTravelCls": "map-hint-travel travel-done",
+      "toast": "",
+      "view": [
+       "v-map"
+      ],
+      "sheetOn": false,
+      "sheetTitle": "地點",
+      "sheetBtns": [
+       {
+        "t": "返回地圖",
+        "id": "loc-close"
+       }
+      ],
+      "modalTitle": null,
+      "modalBtns": [],
+      "hasStage": false,
+      "e79Meta": null,
+      "stageLine": null,
+      "stageChars": [],
+      "areaList": [
+       "tvb_kowloon",
+       "ad_central",
+       "rec_star",
+       "agency_ho",
+       "cafe_cha",
+       "ad_adm",
+       "tvb_longmen",
+       "film_cotton",
+       "rec_hk",
+       "tvb_harbour",
+       "film_lion",
+       "film_harbour",
+       "rec_wanchai"
+      ],
+      "showAll": "全部地點",
+      "startToday": null,
+      "endDay": "過一日",
+      "lockedPins": 15,
+      "lockedArea": 13,
+      "lsKeys": [
+       "starVolunteer_prefs_v19z9",
+       "starVolunteer_map_v19w_slot3"
+      ],
+      "prefs": {
+       "bgmMuted": false,
+       "sfxMuted": false,
+       "volume": 70,
+       "textSpeed": "fast",
+       "reduceMotion": false,
+       "familySafeContent": null,
+       "familySafeUserSet": false,
+       "activeSlot": 3,
+       "lastSlot": 3
+      }
+     },
+     "after": {
+      "hasS": true,
+      "day": 0,
+      "travel": {
+       "day": 0,
+       "used": 2
+      },
+      "remain": 0,
+      "starDay": {
+       "day": 0,
+       "presence": {
+        "rec_star": [
+         "luk_baakyin"
+        ],
+        "cafe_cha": [
+         "liu_bingxing"
+        ],
+        "rec_hk": [
+         "yip_manji"
+        ],
+        "ad_adm": [
+         "chung_choning"
+        ],
+        "tvb_harbour": [
+         "gu_mingfai"
+        ]
+       },
+       "triggered": 1,
+       "doneToday": {
+        "liu_bingxing": 1
+       }
+      },
+      "money": 12000,
+      "stress": 12,
+      "stamina": 75,
+      "hintTravel": "今日出行額度已用完，聽日再去",
+      "hintTravelCls": "map-hint-travel travel-done",
+      "toast": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+      "view": [
+       "v-map"
+      ],
+      "sheetOn": false,
+      "sheetTitle": "地點",
+      "sheetBtns": [
+       {
+        "t": "返回地圖",
+        "id": "loc-close"
+       }
+      ],
+      "modalTitle": null,
+      "modalBtns": [],
+      "hasStage": false,
+      "e79Meta": null,
+      "stageLine": null,
+      "stageChars": [],
+      "areaList": [
+       "tvb_kowloon",
+       "ad_central",
+       "rec_star",
+       "agency_ho",
+       "cafe_cha",
+       "ad_adm",
+       "tvb_longmen",
+       "film_cotton",
+       "rec_hk",
+       "tvb_harbour",
+       "film_lion",
+       "film_harbour",
+       "rec_wanchai"
+      ],
+      "showAll": "全部地點",
+      "startToday": null,
+      "endDay": "過一日",
+      "lockedPins": 15,
+      "lockedArea": 13,
+      "lsKeys": [
+       "starVolunteer_prefs_v19z9",
+       "starVolunteer_map_v19w_slot3"
+      ],
+      "prefs": {
+       "bgmMuted": false,
+       "sfxMuted": false,
+       "volume": 70,
+       "textSpeed": "fast",
+       "reduceMotion": false,
+       "familySafeContent": null,
+       "familySafeUserSet": false,
+       "activeSlot": 3,
+       "lastSlot": 3
+      }
+     },
+     "sheetOn": false,
+     "view": [
+      "v-map"
+     ],
+     "js_fallback": false
+    },
+    "toast": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+    "sheetOn": false,
+    "view": [
+     "v-map"
+    ],
+    "used": {
+     "day": 0,
+     "used": 2
+    },
+    "shot": "shots/merged114/drive_merged_A3_hosp_blocked.png"
+   }
+  },
+  "4_reentry_counts": {
+   "verdict": "PASS",
+   "detail": {
+    "first": "dialogue-sheet",
+    "reentry": "sheet",
+    "used_after_reentry": {
+     "day": 0,
+     "used": 2
+    },
+    "hint_after_reentry": "今日出行額度已用完，聽日再去",
+    "third": "blocked",
+    "third_toast": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+    "shot": "shots/merged114/drive_merged_B2_cafe_again_sheet.png / drive_114_B3_gift_blocked.png"
+   }
+  },
+  "5_next_day_reset": {
+   "verdict": "PASS",
+   "detail": {
+    "advance": {
+     "ok": true
+    },
+    "used_before": {
+     "day": 0,
+     "used": 2
+    },
+    "day_before": 0,
+    "day_after": 1,
+    "travel": {
+     "day": 1,
+     "used": 0
+    },
+    "hint": "今日出行：仲可以去 2 個地方",
+    "error": null,
+    "log_tail": [
+     {
+      "confirm": "確定過一日"
+     },
+     {
+      "i": 0,
+      "day": 1,
+      "view": [
+       "v-map"
+      ],
+      "modalTitle": "小休（週一）",
+      "modalBtns": [
+       "返回地圖",
+       "開始今日行程"
+      ],
+      "stage": false,
+      "sheet": false
+     },
+     {
+      "i": 1,
+      "day": 1,
+      "view": [
+       "v-map"
+      ],
+      "modalTitle": null,
+      "modalBtns": [],
+      "stage": false,
+      "sheet": false
+     }
+    ],
+    "shot": "shots/merged114/drive_merged_B_advance_nextday.png"
+   }
+  },
+  "6_encounter": {
+   "verdict": "PASS",
+   "detail": {
+    "found": true,
+    "days_tried": [
+     {
+      "day": 0,
+      "probe": "sheet",
+      "presence": {
+       "rec_star": [
+        "luk_baakyin"
+       ],
+       "cafe_cha": [
+        "liu_bingxing"
+       ],
+       "rec_hk": [
+        "yip_manji"
+       ],
+       "ad_adm": [
+        "chung_choning"
+       ],
+       "tvb_harbour": [
+        "gu_mingfai"
+       ]
+      },
+      "pilot_locs": [
+       [
+        "rec_star",
+        "luk_baakyin"
+       ],
+       [
+        "cafe_cha",
+        "liu_bingxing"
+       ],
+       [
+        "rec_hk",
+        "yip_manji"
+       ]
+      ]
+     }
+    ],
+    "detail": [
+     {
+      "day": 0,
+      "loc": "rec_star",
+      "star": "luk_baakyin",
+      "enter": "dialogue-sheet",
+      "trig_before": 0,
+      "trig_after": 1,
+      "used_after": {
+       "day": 0,
+       "used": 2
+      },
+      "sheet_after_dlg": true,
+      "stage_chars": []
+     }
+    ],
+    "shot": "shots/merged114/drive_merged_C*_star_*_afterdlg_*.png"
+   }
+  }
+ },
+ "notes": [
+  "A_fresh: seeded slot3 minimal save so slot modal appears"
+ ]
+}

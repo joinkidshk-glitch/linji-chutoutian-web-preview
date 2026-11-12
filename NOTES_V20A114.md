@@ -132,6 +132,8 @@
 - 上面 §3 嘅行號表係舊基底（`0bb85b2`）嗰版；新基底行號見 static test 入面嘅清單，分類內容不變。
 - Rebase 後全套重跑：見 `qa114/suite_rebased2_114.txt`（預期 151 PASS／12 FAIL；main `2b42ca0` 基線係 149／12，淨多兩隻新測試）。
 
+## 5. 已知限制（畀統籌／用戶定奪）
+
 - **主線劇情地點都計數**：玩家嗰日用晒額度，劇情地點要聽日先去到。劇情窗口普遍以日／週計，
   實測未見即日死線；若果家長想劇情地點豁免，再傾（要改嘅話，`openLoc` 閘口加
   「目標地點有未播主線」豁免係一行起兩行止，但會開返刷巧遇嘅口——劇情地點好多都有星出沒）。
@@ -142,3 +144,9 @@
   唯一例外：玩家手動改 localStorage——同其他所有存檔欄一樣，唔擋。
 - **未做實駕**：subagent 冇 live browser；地圖剩餘次數行＋鎖定視覺＋被擋 toast
   只驗到靜態／邏輯層，實機畫面要統籌／主 agent 實駕核實。
+
+## 7. 合併紀錄（統籌跟進）
+
+- 合併：squash 入 main，commit `cf66865`（基底 main `4d967ed`，即 v113 合併後）；合併前全套重跑 **154 PASS／12 FAIL**（12 FAIL 為已知環境性 static FAIL，零新增）。
+- 線上核實：Pages 部署約兩分鐘後對上數——`index.html` **5,101,629 bytes、sha256 `672e34db45059e61bf769aec672253d13fe4de23246ba1682d138ddf5a2dc68c`**，同本地 main 逐 byte 一致，唔使重觸發。
+- 合併後冒煙實駕（main `cf66865`，本地鏡像＋Playwright，槽 3）：**6/6 PASS、0 pageerror**——地圖顯示／計數／鎖住 toast 逐字／重入同一地點都計／過一日重置／巧遇（陸柏言＠天星音樂）正常觸發。證據：`qa114/drive_merged_114.py`＋`drive_merged_114.json`＋`drive_merged_report.md`＋`shots/merged114/`（14 張）。
