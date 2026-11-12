@@ -733,6 +733,21 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .works-frames142{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 2px 2px}
 .works-frame142{aspect-ratio:3/4;border:2px dashed rgba(185,138,47,.6);border-radius:6px;background:rgba(255,248,232,.55);display:flex;align-items:center;justify-content:center;color:rgba(139,90,32,.4);font-size:1.3rem}
 .works-frames142-cap{font-size:.78rem;color:var(--muted-ink);line-height:1.5;margin:8px 2px 2px}
+/* v20a156 EMPTY156：手帳三組空狀態佔位框——跟作品牆 .works-frames142 同一套語言
+   （虛線金框＋米紙底＋☆＋手寫字說明句），只喺空狀態渲染；有內容嗰陣唔出。
+   幾何：獎項 2×2（四場典禮各一格）、剪報闊框＋三格、庫存兩行×三格禮物格；
+   三組加埋啱啱填滿 932 pane（留白 ≤ 約 15%），700 本來就碌得郁，唔使再就。 */
+.empty156-frames{display:grid;gap:8px;margin:14px 2px 2px}
+.empty156-frames.cols2{grid-template-columns:repeat(2,1fr)}
+.empty156-frames.cols3{grid-template-columns:repeat(3,1fr)}
+.empty156-frame{aspect-ratio:3/4;border:2px dashed rgba(185,138,47,.6);border-radius:6px;background:rgba(255,248,232,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:rgba(139,90,32,.4);font-size:1.3rem;padding:6px 4px;text-align:center}
+.empty156-frame .f156-lab{font-size:.8rem;line-height:1.5;color:#6b4e2e;font-weight:700}
+.empty156-frame .f156-sub{font-size:.72rem;line-height:1.4;color:var(--muted-ink)}
+.empty156-wide{border:2px dashed rgba(185,138,47,.6);border-radius:6px;background:rgba(255,248,232,.55);margin:14px 2px 2px;min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:rgba(139,90,32,.4);text-align:center;padding:20px 10px}
+.empty156-wide .f156-star{font-size:1.6rem;line-height:1.2}
+.empty156-wide .f156-lab{font-size:.92rem;line-height:1.5;color:#6b4e2e;font-weight:800}
+.empty156-cap{font-size:.78rem;color:var(--muted-ink);line-height:1.5;margin:8px 2px 2px}
+/* EMPTY156 完 */
 /* v20a60 CALIB60：手帳「回憶」頁＋聲樂凍結提示（跟紙面語言） */
 .mem-empty60{padding:10px 4px;line-height:1.6}
 .mem-empty60 h3{margin:0 0 6px;color:var(--navy)}
@@ -32059,8 +32074,27 @@ function train71TogglePanel(force){
   const open = force != null ? !!force : !!wrap.hidden;
   if(open) train71RenderPanel();
   wrap.hidden = !open;
+  if(open) train71ScrollChips156();
   return open;
 }
+/* v20a156 PICKER156：短屏開選擇器預設捲到 chips 位（v145 review B3）——
+   chips 已經全見嗰陣（932）唔郁；捲唔到／唔全見先 scrollIntoView 置中，
+   令 chips 離開底部 toast 嗰個位置。只行 fill picker 呢個開口（逐日排入
+   嗰邊由 renderNotebook 主導，唔喺呢票郁）。 */
+function train71ScrollChips156(){
+  try{
+    const chips = document.querySelector("#nb-train71-wrap .guide68-chips");
+    if(!chips) return;
+    const nb = document.getElementById("notebook");
+    if(nb){
+      const r = chips.getBoundingClientRect();
+      const nr = nb.getBoundingClientRect();
+      if(r.top >= nr.top && r.bottom <= nr.bottom) return;
+    }
+    chips.scrollIntoView({ block:"center" });
+  }catch(_e){}
+}
+/* PICKER156 完 */
 function train71HandleClick(ev, ctx){
   const t = ev.target;
   if(!t || !t.closest) return false;
@@ -45981,7 +46015,9 @@ function renderAwardsPane62(){
   const esc = (typeof esc59 === "function") ? esc59 : function(s){ return String(s == null ? "" : s); };
   const log = (typeof ensureAwardsLog === "function") ? ensureAwardsLog() : [];
   if(!log.length){
-    el.innerHTML = '<div class="awd62-empty">未有頒獎紀錄。每年四季都有典禮（廣告／唱片／電影／電視），收到請柬嗰陣出席就得——入圍同得獎會記喺呢頁，憑邊部作品都寫明。</div>';
+    el.innerHTML = '<div class="awd62-empty">未有頒獎紀錄。每年四季都有典禮（廣告／唱片／電影／電視），收到請柬嗰陣出席就得——入圍同得獎會記喺呢頁，憑邊部作品都寫明。'
+    + '<div class="empty156-frames cols2" aria-hidden="true"><div class="empty156-frame">☆<span class="f156-lab">廣告賞</span><span class="f156-sub">春季</span></div><div class="empty156-frame">☆<span class="f156-lab">金碟夜</span><span class="f156-sub">夏季</span></div><div class="empty156-frame">☆<span class="f156-lab">影藝獎</span><span class="f156-sub">秋季</span></div><div class="empty156-frame">☆<span class="f156-lab">台慶</span><span class="f156-sub">冬季</span></div></div>'
+    + '<p class="empty156-cap">第一個獎入嚟，就會擺入上面嗰格。</p></div>';
     return;
   }
   el.innerHTML = log.map(e=>{
@@ -47958,7 +47994,10 @@ function renderClippingsPane(){
     }catch(_e){}
   };
   if(!rows.length){
-    box.innerHTML = endingCard + `<article class="clip-card"><p class="clip-date">剪報</p><h4>未有剪報</h4><p>殺青、頒獎或劇情見報之後，下一朝的報紙會留在這裡。傳聞仍是圈內耳語，跟這疊公開剪報分開。</p></article>`;
+    box.innerHTML = endingCard + `<article class="clip-card"><p class="clip-date">剪報</p><h4>未有剪報</h4><p>殺青、頒獎或劇情見報之後，下一朝的報紙會留在這裡。傳聞仍是圈內耳語，跟這疊公開剪報分開。</p></article>`
+    + '<div class="empty156-wide" aria-hidden="true"><div class="f156-star">☆</div><span class="f156-lab">等你第一張剪報</span></div>'
+    + '<div class="empty156-frames cols3" aria-hidden="true"><div class="empty156-frame">☆</div><div class="empty156-frame">☆</div><div class="empty156-frame">☆</div></div>'
+    + '<p class="empty156-cap">第一張剪報一到，就會黐喺呢度；之後逐張疊上去。</p>';
     wireEndingBtn();
     return;
   }
@@ -57577,7 +57616,9 @@ function inv72Html(){
   let body;
   if(!list.length){
     body = `<p class="sub">庫存空空。去油麻地「廟街禮品」地點選單撳「買禮物」買入；送禮要喺已認識嘅熟人／可培養對象面前。</p>`
-      + `<button type="button" class="pane-go72 inv72-goshop">去廟街禮品檔</button>`;
+      + `<button type="button" class="pane-go72 inv72-goshop">去廟街禮品檔</button>`
+      + `<div class="empty156-frames cols3" aria-hidden="true"><div class="empty156-frame">☆</div><div class="empty156-frame">☆</div><div class="empty156-frame">☆</div><div class="empty156-frame">☆</div><div class="empty156-frame">☆</div><div class="empty156-frame">☆</div></div>`
+      + `<p class="empty156-cap">買咗禮物，就會擺入呢啲格。</p>`;
   } else {
     body = list.map(({itemId, count, item})=>
       `<p style="margin:6px 0">${iconHtml112(item.emoji||"🎁")} <b>${item.name}</b> ×${count} <span class="sub">· ${rarityLabelZh(item.rarity)} · $${(item.price||0).toLocaleString()}</span></p>`
