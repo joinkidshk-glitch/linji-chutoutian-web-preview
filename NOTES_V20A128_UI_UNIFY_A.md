@@ -75,9 +75,9 @@
 ## 合併紀錄
 - 分支 `v20a128`（工作副本 `~/workspace/linji-work128/`；origin 係 github.com 直連，唔係常駐 clone 本地路徑）。
 - rebase 兩次：第一次上 v129 main `d37284a`（零衝突，`d857870`）；第二次上 v130 main `78b574f`（一個衝突：`test_travel114_static.py` 行號，取 main 版再 resync，`0d44093`）。
-- PR：待填。squash 合併入 main：待填。
-- 線上核實：待填（index.html byte＋sha；fx_rest `?v=20a129`、fx_shoot `?v=20a130`、其餘 fx `?v=20a10` 不變）。
-- 本 NOTES 由分支 commit 入 repo；合併紀錄段由 follow-up commit 補入 main（跟 v129／v130 前例）。
+- PR #185（https://github.com/joinkidshk-glitch/linji-chutoutian-web-preview/pull/185），squash 合併入 main：**`d8c4560`**（2026-11-12）。**註：呢個係最後一個經 PR 合併嘅版本包**——用戶 2026-11-12 17:02 拍板以後唔再開 PR（connector 每 call 要 approve 一次太煩），由 v131 起改行 git 直接 squash merge（checkout main → `git merge --squash <branch>` → commit → push main，經 deploy key）。
+- 線上核實（合併後約 2 分鐘 curl，第一次即對上，唔使重觸發）：index.html **5,175,531 bytes、sha256 `e8e9c6b1615b99df021e6970b35e35d6acb9b3bbfebd15029a68cce7b961dfa6`**；`assets/fx/fx_rest.mp4` **36,212 bytes、sha256 `c1057a3f613474826b992e0b55c850bde08ea6370b98d5691ec8810083894c59`**（v129 原狀）；`assets/fx/fx_shoot.mp4` **46,231 bytes、sha256 `f98a2cc9fc948403df0c6cf226afbfaebfa76450ccdd65daa56f6babfa7768bc`**（v130 原狀）——三者同分支完全一致，部署即係 ground truth。`?v=20a129`（rest）／`?v=20a130`（shoot）early return 喺 live 檔入面；其餘 fx 行共用 `?v=20a10`。
+- 本 NOTES 補充段（合併紀錄＋線上核實）由 follow-up commit 補入 main（跟 v129／v130 前例）。
 
 ## 回滾
 - 成個 squash 係一個 commit：`git revert <squash>` 即退返 v130 狀態。
