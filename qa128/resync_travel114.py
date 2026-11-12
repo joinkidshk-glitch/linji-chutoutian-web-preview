@@ -1,5 +1,5 @@
 """Re-sync test_travel114_static.py line allowlists after v128 UI A-batch
-(pure line shift from A1-A6 edits; OLD = branch base c71526a v126, NEW = work128).
+(pure line shift from A1-A6 edits; OLD = branch base 78b574f v130, NEW = work128).
 Method (same as v122): for every old-listed line, take its content from pristine
 main index.html and find the identical stripped line in the work index.html.
 Positional sequence alignment of ALL openLoc( lines must be identical (no call
@@ -10,7 +10,7 @@ Without --apply: print only. With --apply: rewrite the test file's sets.
 import re, subprocess, sys
 
 ROOT = "/home/hatch/workspace/linji-work128"
-OLD = subprocess.run(["git", "show", "c71526a:index.html"], cwd=ROOT,
+OLD = subprocess.run(["git", "show", "78b574f:index.html"], cwd=ROOT,
                      capture_output=True, text=True).stdout.split("\n")
 NEW = open(ROOT + "/index.html", encoding="utf-8").read().split("\n")
 TEST = open(ROOT + "/tests/test_travel114_static.py", encoding="utf-8").read()
