@@ -38,3 +38,9 @@
 
 ## 紅線
 SAVE key／softRev s107／產品 `?v=` v20a10 不變；content pack JSON 唔郁；index.html 註解無其他測試硬計嘅版本字串。
+
+## 落地紀錄
+- main `4667ae0`（git 直接合併，冇開 PR），基底 bcac846。
+- 線上核實：index.html 5,193,778 bytes、sha256 `5b5aabbc0a29c5d1378a7bbf3339976ffbff6b034805a8bb98241dabcb6cdba9`，同 repo HEAD 一致；`memo141` 12 處。
+- 測試：全套基線 194／12 → 本票 196／12，FAIL 清單完全一致，零回歸；新測試反證：pristine static 11 FAIL／logic 1 FAIL。
+- 實駕：430×932＋430×700 五點全驗（B 式 tab、備忘紙 live 數字、吊牌、印章只喺鎖定態、五 tab 切換、進度／行程圈跟住郁），見 `qa141/drive141.json`。
