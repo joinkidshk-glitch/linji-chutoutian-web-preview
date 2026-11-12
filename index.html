@@ -721,6 +721,10 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .works-note59{font-size:.78rem;color:var(--muted-ink);line-height:1.5;margin:12px 2px 2px}
 .works-empty59{padding:10px 4px;line-height:1.6}
 .works-empty59 h3{margin:0 0 6px;color:var(--navy)}
+/* v20a142 A2b：作品牆空狀態示意畫框——未有作品都見到面牆係點樣；上面兩段機制說明一字唔郁。 */
+.works-frames142{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 2px 2px}
+.works-frame142{aspect-ratio:3/4;border:2px dashed rgba(185,138,47,.6);border-radius:6px;background:rgba(255,248,232,.55);display:flex;align-items:center;justify-content:center;color:rgba(139,90,32,.4);font-size:1.3rem}
+.works-frames142-cap{font-size:.78rem;color:var(--muted-ink);line-height:1.5;margin:8px 2px 2px}
 /* v20a60 CALIB60：手帳「回憶」頁＋聲樂凍結提示（跟紙面語言） */
 .mem-empty60{padding:10px 4px;line-height:1.6}
 .mem-empty60 h3{margin:0 0 6px;color:var(--navy)}
@@ -4882,6 +4886,12 @@ body.day-res-open .day-row{
 .prog71-note{ font-size:.78rem; color:#6b5636; line-height:1.55; margin:6px 0 0; }
 .prog71-empty h3{ margin:0 0 4px; font-size:.95rem; }
 .prog71-empty p{ font-size:.8rem; color:#8a755a; line-height:1.6; }
+/* v20a142 A2a：進度頁尾「星途寄語」填補區塊——開局下半死位嘅有意設計，唔係佔位卡；
+   只加 pane 內內容，唔郁 pane 底色／外殼（v141 手帳殼進行中）。 */
+.prog71-next142{ margin:2px 0 0; border:1px dashed rgba(185,138,47,.6); background:linear-gradient(180deg,#fdf6e0,#fbf2da); border-radius:12px; padding:12px 12px 13px; }
+.prog71-next142 p.prog71-next142-k{ font-size:.72rem; font-weight:800; letter-spacing:.14em; color:#8a5a20; margin:0 0 6px; }
+.prog71-next142 p{ margin:0; font-size:.82rem; line-height:1.6; color:#43301c; }
+.prog71-next142 p + p{ margin-top:6px; font-size:.78rem; color:#6b5636; }
 /* === v20a77 HUB77：進度頁「播呢幕」掣＋大地圖常駐「進度」掣 === */
 .prog71-play{ margin-top:8px; min-height:40px; padding:8px 16px; border-radius:10px; border:1px solid #7a4b12;
   background:#b98a2f; color:#fff8e8; font-weight:800; font-size:.84rem; cursor:pointer; }
@@ -5504,21 +5514,25 @@ body.day-res-open .day-row{
           <div class="map-stage" id="map-stage">
             <img class="map-img" id="map-img" alt="香港地圖" draggable="false" />
             <div class="map-pins" id="map-pins"></div>
+            <!-- v20a142 B1：4 張標籤由花紋底微調去附近空位（淨郁錨，唔郁 LOCS 熱區座標；
+                 底紋雜亂度以 PIL 逐格計過：香江 sd 49.8→27.1、廟街 47.6→25.6、海港 67.0→2.7；
+                 金龍盒本身已乾淨（sd 3.0），只向右 10px 置中返喺針上面、離開屋頂線。
+                 其餘 11 張錨唔郁。 -->
             <div class="map-names68" id="map-names68" aria-hidden="true">
               <div class="mn68" style="left:54%;top:calc(12% - 52px)">獅子山製片</div>
-              <div class="mn68" style="left:28%;top:calc(24% + 26px)">香江唱片</div>
+              <div class="mn68" style="left:29.2%;top:calc(24% + 31px)">香江唱片</div>
               <div class="mn68" style="left:26%;top:2%">星河電視台</div>
               <div class="mn68" style="left:36%;top:calc(45% - 52px)">九龍電視台</div>
-              <div class="mn68" style="left:88%;top:calc(15% + 16px)">海港廣播</div>
+              <div class="mn68" style="left:88%;top:calc(15% - 44px)">海港廣播</div>
               <div class="mn68" style="left:74%;top:calc(11% - 44px)">紅棉影業</div>
               <div class="mn68" style="left:80%;top:calc(18% + 38px)">維港電影</div>
               <div class="mn68" style="left:60%;top:calc(57% + 30px)">中環廣告</div>
               <div class="mn68" style="left:85%;top:calc(60% + 28px)">金鐘創意</div>
               <div class="mn68" style="left:68%;top:calc(77% + 34px)">灣仔唱片</div>
               <div class="mn68" style="left:86%;top:calc(82% + 30px)">天星音樂</div>
-              <div class="mn68" style="left:11%;top:calc(16% - 56px)">金龍茶餐廳</div>
+              <div class="mn68" style="left:16%;top:calc(16% - 56px)">金龍茶餐廳</div>
               <div class="mn68" style="left:15%;top:calc(86% - 20px)">何生事務所</div>
-              <div class="mn68" style="left:44%;top:calc(35% - 44px)">廟街禮品</div>
+              <div class="mn68" style="left:28.4%;top:calc(35% - 104px)">廟街禮品</div>
               <div class="mn68" style="left:43%;top:calc(73% + 52px)">仁康醫院</div>
             </div>
             <!-- v20a97 MAP97 地區名細字層（落位表見 NOTES_V20A97_MAP97.md）——
@@ -32570,7 +32584,9 @@ function workCard59Html(e){
 function worksWallHtml59(){
   const es = worksWallEntries59();
   if(!es.length){
-    return '<div class="works-empty59"><h3>作品牆</h3><p>仲未有作品入牆。有作品圖嘅製作，殺青之後，佢嘅作品圖就會黐喺呢面牆度；冇海報嘅製作（例如電視特輯），完成咗只會記入拍攝簿，唔會上牆。由臨記做到主角，成幅牆就係你嘅履歷。</p></div>';
+    /* v20a142 A2b：作品牆空狀態加示意畫框——未有作品都見到面牆係點樣。上面兩段
+       機制說明文字一字唔郁，淨係加畫框＋一句。 */
+    return '<div class="works-empty59"><h3>作品牆</h3><p>仲未有作品入牆。有作品圖嘅製作，殺青之後，佢嘅作品圖就會黐喺呢面牆度；冇海報嘅製作（例如電視特輯），完成咗只會記入拍攝簿，唔會上牆。由臨記做到主角，成幅牆就係你嘅履歷。</p><div class="works-frames142" aria-hidden="true"><div class="works-frame142">☆</div><div class="works-frame142">☆</div><div class="works-frame142">☆</div></div><p class="works-frames142-cap">完成作品後，佢嘅作品圖會黐喺呢度。</p></div>';
   }
   return '<div class="works-wall59">' + es.map(workCard59Html).join("") + '</div>'
     + '<p class="works-note59">有作品圖嘅殺青製作會收錄喺度。早期做臨記，海報得明星個樣；做到主角嗰日，幅圖就會有你份。</p>';
@@ -39161,6 +39177,13 @@ function modal(html, buttons, opts){
   preserveMapScroll();
   _modalDismiss = typeof opts.onDismiss==="function" ? opts.onDismiss : null;
   document.getElementById("modal-inner").innerHTML=html;
+  /* v20a142 A1：#app 係 overflow:hidden 但 scrollHeight 會超高（view 疊埋嗰陣），
+     openLoc 嘅 scrollIntoView／下面 firstBtn.focus() 會捲起 #app；#mask 係 #app 入面
+     absolute inset:0，成個 modal 跟住上移——760px 高 modal 頂出 viewport，英雄圖髮頂被切
+     （實駕：#app.scrollTop 216 → img y=-40；捲數因 layout 而變，時現時唔現）。
+     開 modal 嗰陣歸零 #app＋#modal-inner scrollTop，focus 唔捲（下面再歸零一次兜底）。 */
+  try{ const _app142=document.getElementById("app"); if(_app142) _app142.scrollTop=0; }catch(_e){}
+  try{ const _mi142=document.getElementById("modal-inner"); if(_mi142) _mi142.scrollTop=0; }catch(_e){}
   wireGigCardSynToggles(document.getElementById("modal-inner"));
   const row=document.getElementById("modal-btns");
   row.classList.toggle("soft-leave-only", softLeaveOnlyButtons(buttons));
@@ -39192,7 +39215,8 @@ function modal(html, buttons, opts){
   try{ setUnderlyingInert(true); }catch(_e){}
   try{
     const firstBtn = row.querySelector("button");
-    if(firstBtn && typeof firstBtn.focus==="function") setTimeout(()=>{ try{ firstBtn.focus(); }catch(_f){} }, 0);
+    if(firstBtn && typeof firstBtn.focus==="function") setTimeout(()=>{ try{ firstBtn.focus({preventScroll:true}); }catch(_f){ try{ firstBtn.focus(); }catch(_g){} }
+      try{ const _app142=document.getElementById("app"); if(_app142) _app142.scrollTop=0; }catch(_h){} }, 0);
   }catch(_e){}
   // Prevent focus/layout from scrolling map-wrap under the phone frame
   restoreMapScroll();
@@ -44022,6 +44046,15 @@ function renderProgressPane71(){
       html.push('<div class="prog71-row far"><div class="prog71-top"><span class="prog71-act">第 '+loN+'–17 幕</span><span class="prog71-tag lock">未開放</span></div><p class="prog71-note">完成前面幕數後逐幕揭曉。</p></div>');
     }
   });
+  /* v20a142 A2a：進度頁尾「星途寄語」填補區塊——開局下半死位嘅有意設計（唔係佔位卡）；
+     淨係加 pane 內內容，唔郁 pane 底色／外殼（v141 手帳殼進行中）。有未開嘅幕就寫
+     之後嘅幕等緊你行過去；十七幕行晒就轉收科口吻。 */
+  const allDone142 = rows.length>0 && rows.every(r=>r && r.state==="done");
+  if(!allDone142){
+    html.push('<div class="prog71-next142"><p class="prog71-next142-k">星途寄語</p><p>臨記呢行，冇一步登天——每一日跑嘅通告、練嘅功、識嘅人，都係之後嗰幕嘅伏線。</p><p>行住先——聽日通告欄會有新單，片場亦會有新面孔。</p></div>');
+  } else {
+    html.push('<div class="prog71-next142"><p class="prog71-next142-k">星途寄語</p><p>十七幕行晒——由黃大仙屋邨出發嘅臨記仔，行到呢一步，已經唔係當初嗰個阿偉。</p><p>前路未寫好，係因為要由你話事。</p></div>');
+  }
   html.push('</div>');
   el.innerHTML = html.join("");
 }

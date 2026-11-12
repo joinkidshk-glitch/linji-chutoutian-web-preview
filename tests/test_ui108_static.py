@@ -57,7 +57,7 @@ ok('S-7 星河新位 26%/2%（v128 A1）', 'left:26%;top:2%">星河電視台' in
 ok('S-7 灣仔地區名已刪（v137）', 'left:56%;top:68%">灣仔' not in html)
 ok('S-7 銅鑼灣地區名已刪（v137）', 'right:6%;top:66%">銅鑼灣' not in html)
 ok('S-7 維港電影新位 80%', 'left:80%;top:calc(18% + 38px)">維港電影' in html)
-ok('S-7 廟街禮品新位 44%', 'left:44%;top:calc(35% - 44px)">廟街禮品' in html)
+ok('S-7 廟街禮品新位 28.4%/-104px（v20a142 B1，避紅白格花紋底）', 'left:28.4%;top:calc(35% - 104px)">廟街禮品' in html)
 ok('S-7 舊擠迫座標唔再出現', 'left:49%;top:8%">鑽石山' not in html and 'left:63%;top:29%">九龍城' not in html)
 ok('S-7 地區名光暈加厚', '0 0 4px #f3e7c8, 0 0 4px #f3e7c8, 0 0 4px #f3e7c8' in html)
 

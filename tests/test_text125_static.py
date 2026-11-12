@@ -28,18 +28,18 @@ def check(s):
     """回傳問題清單（空＝全過）。供反證餵變異輸入。"""
     probs = []
     ls = s.split("\n")
-    # ① currentLine fallback（行號 27709，rebase 重對；v131 B2/B4 令行號由 27511 移位；v133 令行號由 27552 移位；v135 令行號由 27557 移位，CSS 淨 +1；v137 令行號由 27558 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 27571 移位，淨 +60：CSS 段 ＋42／SVG defs ＋13／手帳 HTML 淨 ＋5；v143 令行號由 27631 移位，淨 +43：BOOK143 CSS 段；v136 rebase 上 v143，閘註解＋evalGate3Y 淨 +35）
-    if len(ls) < 27709 or FALLBACK not in ls[27708]:
-        probs.append("currentLine 第 27709 行冇 text fallback")
+    # ① currentLine fallback（行號 27723，rebase 重對；v131 B2/B4 令行號由 27511 移位；v133 令行號由 27552 移位；v135 令行號由 27557 移位，CSS 淨 +1；v137 令行號由 27558 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 27571 移位，淨 +60：CSS 段 ＋42／SVG defs ＋13／手帳 HTML 淨 ＋5；v143 令行號由 27631 移位，淨 +43：BOOK143 CSS 段；v136 rebase 上 v143，閘註解＋evalGate3Y 淨 +35；v142 ＋14：A2b CSS ＋4／A2a CSS ＋6／B1 註釋 ＋4）
+    if len(ls) < 27723 or FALLBACK not in ls[27722]:
+        probs.append("currentLine 第 27723 行冇 text fallback")
     if not re.search(r"const lines = Array\.isArray\(b\.lines\) \? b\.lines : \(b\.line \? \[b\.line\] : "
                      + re.escape(FALLBACK) + r"\);", s):
         probs.append("currentLine fallback 唔係 lines＞line＞text 次序")
-    # ① advance fallback（行號 27822，rebase 重對；v131 B2/B4 令行號由 27624 移位；v133 令行號由 27665 移位；v135 令行號由 27670 移位，CSS 淨 +1；v137 令行號由 27671 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 27684 移位，淨 +60，同上；v143 令行號由 27744 移位，淨 +43，同上；v136 rebase 上 v143，淨 +35）
-    if len(ls) < 27822 or FALLBACK not in ls[27821]:
-        probs.append("advance 第 27822 行冇 text fallback")
-    # ② applyFamilySafeToNode 處理 b.text（行號 33423–33425，rebase 重對；v131 B2/B4 令行號由 33222 移位；v133 令行號由 33263 移位；v135 令行號由 33268 移位，CSS 淨 +1；v137 令行號由 33269 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 33282 移位，淨 +60，同上；v143 令行號由 33342 移位，淨 +43，同上；v136 rebase 上 v143，淨 +38，含 scrub 護欄 +3）
-    if len(ls) < 33425 or 'if(typeof b.text === "string" && b.text){' not in ls[33422]:
-        probs.append("applyFamilySafeToNode 第 33423 行冇 b.text 分支")
+    # ① advance fallback（行號 27836，rebase 重對；v131 B2/B4 令行號由 27624 移位；v133 令行號由 27665 移位；v135 令行號由 27670 移位，CSS 淨 +1；v137 令行號由 27671 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 27684 移位，淨 +60，同上；v143 令行號由 27744 移位，淨 +43，同上；v136 rebase 上 v143，淨 +35；v142 ＋14，同 currentLine 一樣）
+    if len(ls) < 27836 or FALLBACK not in ls[27835]:
+        probs.append("advance 第 27836 行冇 text fallback")
+    # ② applyFamilySafeToNode 處理 b.text（行號 33439–33441，rebase 重對；v131 B2/B4 令行號由 33222 移位；v133 令行號由 33263 移位；v135 令行號由 33268 移位，CSS 淨 +1；v137 令行號由 33269 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 33282 移位，淨 +60，同上；v143 令行號由 33342 移位，淨 +43，同上；v136 rebase 上 v143，淨 +38，含 scrub 護欄 +3；v142 ＋16，實量）
+    if len(ls) < 33441 or 'if(typeof b.text === "string" && b.text){' not in ls[33438]:
+        probs.append("applyFamilySafeToNode 第 33439 行冇 b.text 分支")
     if 'b.text.replace(/臨時演員蹲在路邊抽煙/g' not in s:
         probs.append("applyFamilySafeToNode b.text 替換唔齊")
     # ③ 五表普查

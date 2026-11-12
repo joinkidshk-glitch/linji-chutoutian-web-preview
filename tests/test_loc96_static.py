@@ -21,7 +21,7 @@ ok('id:"gift_shop", name:"廟街禮品", area:"油麻地", type:"shop"' in src a
    "gift_shop 登記（廟街夜市排檔位 43,35）")
 ok('id:"hospital", name:"仁康醫院", area:"薄扶林", type:"med"' in src and "x:43, y:73" in src,
    "hospital 登記（白十字大樓位 43,73）")
-ok('<div class="mn68" style="left:44%;top:calc(35% - 44px)">廟街禮品</div>' in src, "廟街禮品墨字標籤在位（v20a108 S-7 微調 46%→44%）")
+ok('<div class="mn68" style="left:28.4%;top:calc(35% - 104px)">廟街禮品</div>' in src, "廟街禮品墨字標籤在位（v20a142 B1：44%→28.4%／-44px→-104px，避開紅白格花紋底）")
 ok("海傍禮品" not in src, "舊稱「海傍禮品」已清零（落位跟地圖審計 A11/B5 對位廟街夜市）")
 ok('<div class="mn68" style="left:43%;top:calc(73% + 52px)">仁康醫院</div>' in src, "仁康醫院墨字標籤在位")
 
