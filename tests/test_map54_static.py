@@ -14,6 +14,8 @@
 # 喺 </style> 之前），已知後繼段加 v20a141。
 # v20a143 更新：BOOK143 手帳內臟紙面化 CSS 段合法追加（B1 編輯掣＋B2 其餘四組 subtab＋B3 短屏印章，
 # 喺 </style> 之前），已知後繼段加 v20a143。
+# v20a145 更新：BOOK145 手帳紙面化收尾 CSS 段合法追加（B1 短屏鎖定態＋B2 其餘八組 pane＋B3 訓練選擇器，
+# 喺 </style> 之前），已知後繼段加 v20a145。
 import sys
 
 path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
@@ -42,11 +44,11 @@ try:
     _between = html[html.index('/* === v20a54 完 === */'):html.index('</style>')]
     _segs_after = [s.split('===')[0] for s in _between.split('/* === ')[1:]
                    if 'v20a54 完' not in s]
-    _last = bool(_segs_after) and all(('v20a76' in s or 'v20a106' in s or 'v20a108' in s or 'v20a119' in s or 'v20a128' in s or 'v20a131' in s or 'v20a137' in s or 'v20a141' in s or 'v20a143' in s) for s in _segs_after) \
+    _last = bool(_segs_after) and all(('v20a76' in s or 'v20a106' in s or 'v20a108' in s or 'v20a119' in s or 'v20a128' in s or 'v20a131' in s or 'v20a137' in s or 'v20a141' in s or 'v20a143' in s or 'v20a145' in s) for s in _segs_after) \
         and 'v20a106 DLG106 完' in _between and 'v20a108 DLG108 完' in _between and 'v20a119 DLG119 完' in _between
 except ValueError:
     _last = False
-ok('v54 segment followed only by known skins (v76+dlg106+dlg108+dlg119+v128+v131+v137+v141+v143) before </style>', _last)
+ok('v54 segment followed only by known skins (v76+dlg106+dlg108+dlg119+v128+v131+v137+v141+v143+v145) before </style>', _last)
 
 # ---- 1. 紙面填充（只准油漆屬性） ----
 wrap = seg('#app .map-wrap{', '}', v54)

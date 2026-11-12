@@ -5400,7 +5400,74 @@ body.day-res-open .day-row{
   #nb-actions #btn-confirm-plan.is-locked{ font-size:20px; padding:4px 14px 4px 16px; margin:4px auto 3px; }
   #nb-actions{ padding:6px 10px calc(6px + env(safe-area-inset-bottom)); }
 }
-/* === v20a143 BOOK143 完 === */</style>
+/* === v20a143 BOOK143 完 === */
+/* === v20a145 BOOK145：手帳紙面化收尾（v143 review B1＋B2＋B3；用戶 2026-11-13 拍板修頭三項） ===
+   只換呈現：掣嘅 id／class／onclick 綁定、subtab 切換 handler、鎖定態印章邏輯一律不變。
+   紙面語言跟 v141／v143：手寫字體棧 Kaiti、紅墨 #c0452c、紙面 #f5eddc／#fbf3df、
+   事業頁紙 #f3e6c8、金邊 #cbb98d／#b99b62、墨 #3a2e22。
+   B1 量度（probe145_pre，700 鎖定態）：標題行 22px＋提示列 27px＋間距，收起兩行慳 61px；
+   週六成行要 17px、週日成行要 62px——光收兩行差 1px，所以 range 底 margin 再收 4px、
+   footer padding 再收 2px（全部短屏鎖定態限定），合共慳 67px，週日底 632 ≤ footer 頂 639。
+   印章維持 20px，唔再縮（再縮失印章味）；932 唔入 media query，原封不動。 */
+/* --- B2：其餘八組 pane 底換紙面（跟 v131 B2 事業三頁同一套米紙＋金邊） ---
+   實駕核實：works／awards／memory 已經係紙色 rgb(243,230,200)，其餘八組仲係透明
+   （透出 #v-home 深色底）；plan pane 本身係 notebook 紙面，唔郁；事業組回憶 pane
+   （v142 範圍）唔郁——呢度淨係補返八組 journal-scroll。 */
+#home-pane-ledger .journal-scroll,
+#home-pane-inv .journal-scroll,
+#home-pane-rumor .journal-scroll,
+#home-pane-clippings .journal-scroll,
+#home-pane-debt .journal-scroll,
+#home-pane-people .journal-scroll,
+#home-pane-tags .journal-scroll,
+#home-pane-progress .journal-scroll{
+  background:#f3e6c8; color:#2a2118;
+  border-radius:14px 14px 0 0; border:2px solid #c4a574; border-bottom:0;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);
+  padding:12px 10px 16px;
+}
+/* B2 附帶：三處為深底加嘅淺字覆寫，喺紙面還原返墨色（同 v131 B2 做法）——
+   ledger-enroll #c3b096／people-next #c3b096／debt pane-intro #e6d7ae；
+   傳聞頁 .pane-intro／.rumor-hint 本身已經係實色米紙底＋深字（v20a48／v20a49），唔郁。 */
+#home-pane-ledger .ledger-enroll{ color:#6b4e2e; }
+#home-pane-people .people-next{ color:#6b4e2e; }
+#home-pane-debt .pane-intro{ color:#5a4328; }
+/* B2 附帶（續）：v76 為深底加嘅淺字覆寫仲有三處喺新紙面頁——.jobs72-h（庫存／人脈標題，
+   #ecdfc2 喺紙面淡到睇唔到，實駕 crop 核實）同進度頁 .prog71-h／.prog71-intro；
+   跟 v131 做法，喺紙面頁範圍內還原返墨色。傳聞頁 .weak-whisper 係故意淡化嘅鬼影字
+   （v76 判斷清單保留），唔郁。記數簿 h3 繼承 pane 墨色、debt／rumor 無 h3，唔使郁。 */
+#home-pane-inv .jobs72-h, #home-pane-people .jobs72-h{ color:#43301c; }
+#home-pane-progress .prog71-h{ color:#43301c; }
+#home-pane-progress .prog71-intro{ color:#8a755a; }
+/* --- B3：訓練選擇器換紙面語言（跟 v143 B1 紙標籤同一套） ---
+   屬性 chips 其實係 .guide68-chip（train71PickerHtml 出，兩個 host 共用：全日填滿＋逐日排入；
+   唔係 .train71-pick——嗰個係課程卡上面「全日排呢堂／排入呢一日」金掣，兩個一齊換紙面）。
+   chips：紙標籤＋手寫字，選中紅墨（跟複製 chip .on）；排入掣：紙標籤＋手寫字＋金邊，
+   唔再係實色金掣。課程卡本身（.guide68-row／.t70-mini）已經係米紙卡，唔郁；
+   已揀卡綠框（.t70-card.picked）照舊。
+   舊規則搶贏一鑊（實駕 probe 捉到）：1887／2116 行 .nb-quick button（0,1,1，後代選擇器，
+   底 #efe6cf＋8px 圓角＋font-family:inherit）蓋走 0,1,0 嘅 base rule——chips 同排入掣
+   全部係 .nb-quick 後代（全日 host）；所以呢度用 0,2,0（.guide68-chips／.train71-acts
+   親層）先搶得返；逐日 host（#act-list）唔喺 .nb-quick 入面，同一選擇器照樣啱用。
+   2116 行 font-size／min-height／padding 係 !important，唔郁（chips 維持 .72rem 密度）。 */
+.guide68-chips .guide68-chip{ background:#fbf3df; border:1px solid #b99b62; border-radius:3px; color:#3a2e22;
+  font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; box-shadow:0 1px 0 rgba(107,78,46,.35); }
+.guide68-chips .guide68-chip.on{ background:#fdf6e0; border-color:#c0452c; color:#c0452c; box-shadow:inset 0 0 0 1px rgba(192,69,44,.4); }
+.train71-acts .train71-pick{ background:#fbf3df; border:1px solid #b99b62; border-radius:3px; color:#3a2e22;
+  font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-weight:800; box-shadow:0 1px 0 rgba(107,78,46,.35); }
+.train71-acts .train71-pick:active{ transform:translateY(1px); }
+/* --- B1：短屏（dvh ≲780）鎖定態再慳 67px，700 鎖定態七日成行全見 ---
+   只限鎖定態（:has(#btn-confirm-plan.is-locked)）：收起「本週行程」標題行＋
+   「行程已定」提示列（印章本身已經講咗行程已定；932 唔入 media query，兩行照舊見到），
+   range 底 margin 6px→2px（要 !important 蓋 1655 行），footer padding 6px→5px。
+   印章 20px／54px 高／斜 -4.5° 唔郁；可編輯態唔入 :has(.is-locked)，完全唔受影響。 --- */
+@media (max-height:780px){
+  #home-pane-plan:has(#btn-confirm-plan.is-locked) #nb-plan-title,
+  #home-pane-plan:has(#btn-confirm-plan.is-locked) #nb-plan-mode{ display:none !important; }
+  #home-pane-plan:has(#btn-confirm-plan.is-locked) .nb-range{ margin-bottom:2px !important; }
+  #nb-actions:has(#btn-confirm-plan.is-locked){ padding:5px 10px calc(5px + env(safe-area-inset-bottom)); }
+}
+/* === v20a145 BOOK145 完 === */</style>
 </head>
 <body>
 <!-- v20a141 BOOK141：手墨抖動 filter defs（ink141／inkSoft141；檔內本無 feTurbulence，無撞名） -->
