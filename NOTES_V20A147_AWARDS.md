@@ -86,3 +86,12 @@
 - 新增：`qa147/drive147.py`、`qa147/CALIBRATION_D4.md`、`qa147/sim147.js`、`qa147/sim147_out2.txt`、`qa147/sim147b.js`、`qa147/sim147b_out.txt`、`qa147/resync_travel114.py`、`qa147/suite_baseline147real.txt`、`qa147/suite_work147.txt`、`qa147/suite_work147_pipe.txt`、`NOTES_V20A147_AWARDS.md`（本檔）
 - 已廢棄：`qa147/sim147.py`／`qa147/sim147_out.txt`（舊模擬，數字錯）／`qa147/suite_baseline147.txt`（假 baseline）
 - `git status`：M index.html＋8 個測試檔；未追蹤 `NOTES_V20A147_AWARDS.md`、`qa147/`、`samples147/`（後者非本票產物——另一 agent 嘅頒獎場景樣本，16:39–16:47）
+
+## 落地（2026-11-13 統籌）
+
+- D4 重做工核實：親自重跑 `qa147/sim147b.js`——L=0.875 下 E=0.54、頂級檔 57%、Y1 強 0%（★ PASS 行），同匯報一致；`awards62YearOf` 唯一呼叫點係計分 filter，改口徑範圍收斂（舊版 `h.year` 優先，`wrappedDay` 只係最後兜底，實際到唔到；新版 `wrappedDay` 優先，`|| 0` 兜底改做跌返 pack 年）。0.90 作廢理據成立。
+- Rebase 上 main `57d4081`（v145）：index.html 乾淨合併；唯一衝突 `tests/test_travel114_static.py`（v145＋67 行 vs v147＋67／＋9 行同區釘行）——取 v147 版後用 difflib 對位重算（新舊 index.html 只差 1 行→68 行一個 replace 段，42 個釘行內容逐行相同，純漂移；DEF 53478→53545、WRAPPER 44087→44154），測試全數 PASS 後繼續 rebase。分支 `v20a147` `eff0e14`（基底 f45e766）。
+- Squash 合併入 main：**`a3a0ac1`**（唔開 PR，git 直接合併）。`samples147/`（1.4M 頒獎樣本）留喺工作副本，唔入 repo。
+- 重驗（rebase 後最終狀態，統籌親自跑）：受影響 13 檔全部 PASS；全套 **209 PASS／12 FAIL**（v145 加咗 2 檔，FAIL 清單同 baseline 逐項相同，零回歸）；`drive147.py all 932` 重跑 **OVERALL 5/5 PASS**（一次過，~98 秒，0 pageerror；gallery_932 總長 9337ms、comfort t=8563／長 2606ms；證據已 amend 入分支 commit）。
+- 線上核實：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/index.html — **5,229,291 bytes、sha256 `9f2c04ed…`，同 repo 一致**（部署約 80 秒後覆核，頭 4 次仍係舊版 v145 5,223,215 bytes）。
+- 設計 review 待派（新常規）：v147 落地後做一次設計 review，只出報告唔改 code。
