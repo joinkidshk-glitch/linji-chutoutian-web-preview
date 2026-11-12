@@ -21,7 +21,7 @@ table = {}
 if m:
     for em in re.finditer(r'(wf4_ev_\w+):"([^"]+)"', m.group(1)):
         table[em.group(1)] = em.group(2)
-ok('覆寫表 16 單（18 單無 loc − 2 單刻意留灰）', len(table) == 16)
+ok('覆寫表 18 單（18 單無 loc，全覆蓋，v20a146 補埋 st05／st08）', len(table) == 18)
 
 # --- 全部事件 id（DAILY_EVENTS_WF4） ---
 ev_ids = set(re.findall(r'id:"(wf4_ev_\w+)"', html))
@@ -39,11 +39,11 @@ if arr:
         if im and 'loc:"' not in chunk:
             nolocev.add(im.group(1))
 ok('無 loc 事件 18 單', len(nolocev) == 18)
-leftover = {'wf4_ev_st05', 'wf4_ev_st08'}
-ok('18 單無 loc＝16 覆寫＋2 留灰（st05 卡拉OK／st08 的士）',
+leftover = set()
+ok('18 單無 loc＝18 覆寫＋0 留灰（v20a146 補埋 st05 卡拉OK／st08 的士）',
    nolocev == set(table) | leftover)
-ok('2 單留灰唔喺覆寫表（刻意，唔硬湊錯圖）',
-   not (leftover & set(table)))
+ok('st05／st08 喺覆寫表（v20a146 補圖，無留灰）',
+   {'wf4_ev_st05', 'wf4_ev_st08'} <= set(table))
 
 # --- 場景檔存在 ---
 for ev, url in sorted(table.items()):
@@ -67,7 +67,8 @@ ok('對話框定高 118px 唔郁（B4）',
    '.story-play .dlg106-plate{height:118px;min-height:118px;max-height:118px;flex:1}' in html)
 
 # --- 新圖 3 張齊晒＋格式 ---
-for f in ['bg_wf4_home.jpg', 'bg_wf4_booth.jpg', 'bg_wf4_market.jpg']:
+for f in ['bg_wf4_home.jpg', 'bg_wf4_booth.jpg', 'bg_wf4_market.jpg',
+          'bg_wf4_karaoke.jpg', 'bg_wf4_taxi.jpg']:
     p = os.path.join(root, 'assets/story/locs', f)
     ok('新場景圖存在：' + f, os.path.isfile(p))
     if os.path.isfile(p):

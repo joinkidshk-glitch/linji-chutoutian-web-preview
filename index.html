@@ -424,7 +424,15 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 
 .menu button{appearance:none;border:0;background:transparent;color:var(--text);text-align:left;padding:9px 12px;font:inherit;cursor:pointer;border-radius:8px}
 .menu button:hover{background:var(--panel2)}
-.mask{position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:50;display:none;align-items:flex-end;justify-content:center;padding:10px}
+/* v20a146 MASK146：.mask 改 viewport 錨定——舊 absolute＋inset:0 令 mask 跟住 #app 捲：
+   #app overflow:hidden 但 scrollHeight 超高（實量 916 vs client 700），openLoc scrollIntoView＋modal focus() 會將
+   #app scrollTop 推到 0–537（視流程而定）；mask 喺 #app 入面，bottom-aligned modal 跟住上移，scrollTop=216 嗰陣
+   modal y=149→-67、h3 y=-53（v134 review 壞例逐 px 吻合，qa146/probe146_scroll.py 喺 pristine 重現到；v142 喺 S-30 A1
+   亦證實同一機制，嗰邊用防禦性歸零 scrollTop；呢度結構性改 fixed，同 v142 互補唔衝突）。fixed 令 mask 高永遠＝visual
+   viewport，唔跟 #app scrollTop，modal 底永遠貼 viewport 底減 10px padding，標題一定見到。橫向繼續跟 #app 框（390px 置中），唔做 full-viewport 闊，免 desktop 走樣；≥480px 上下貼齊 #app 框（body padding 14px），≥900px 跟 468px 框＋desktop-rail 偏移（rail 喺 #app 之前，#app 中心＝viewport 中心＋(rail 闊＋22px gap)/2）。align-items:flex-end 唔郁，全部 modal 繼續行 bottom-sheet。 */
+.mask{position:fixed;top:0;bottom:0;left:50%;width:min(390px,100%);transform:translateX(-50%);background:rgba(0,0,0,.6);z-index:50;display:none;align-items:flex-end;justify-content:center;padding:10px}
+@media(min-width:480px){.mask{top:14px;bottom:14px}}
+@media(min-width:900px){.mask{width:min(468px,100%);top:18px;bottom:18px;left:calc(50% + (min(220px,22vw) + 22px)/2)}}
 .mask.on{display:flex}
 .modal{width:100%;max-width:100%;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px;max-height:min(78dvh,720px);overflow:hidden;display:flex;flex-direction:column;box-sizing:border-box}
 .modal h3{margin:0 0 8px;font-size:1.02rem}
@@ -438,7 +446,7 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .tut-card .tut-line{margin:0 0 8px;color:#3a2e22;font-size:.9rem;line-height:1.45}
 .tut-card .tut-line:last-child{margin-bottom:0}
 #mask.tut-on{align-items:center;padding:16px}
-#mask.tut-on .modal{background:transparent;border:0;padding:0;max-height:min(88dvh,760px);overflow:hidden;box-shadow:none}
+#mask.tut-on .modal{background:transparent;border:0;padding:0;max-height:min(88dvh,88svh,760px);overflow:hidden;box-shadow:none}
 /* v19r: one column, same order every step — 下一步／我知道了 then 跳過教學 */
 #mask.tut-on #modal-btns{justify-content:stretch;gap:8px;flex-wrap:nowrap;flex-direction:column;align-items:stretch;margin-top:10px}
 #mask.tut-on #modal-btns button{flex:0 0 auto;width:100%;min-height:44px;font-size:.92rem;font-weight:700}
@@ -1724,7 +1732,9 @@ button.g, .start button.g{
   display: flex !important;
   flex-direction: column !important;
   overflow: hidden !important; /* was whole-modal scroll — 關閉／返選單 scrolled off */
-  max-height: min(78dvh, 720px) !important;
+  /* v20a146 MASK146：高帽加 78svh——dvh 個別 load 誤報偏大嗰陣，modal 唔會高過細 viewport，標題唔會頂出畫面；
+     svh 唔支援嗰陣呢句失效，跌返上面 L430 嘅 min(78dvh,720px)，同值，安全。 */
+  max-height: min(78dvh,78svh,720px) !important;
 }
 /* v17x: bounded flex child so overflow-y actually scrolls (classic min-height:0) */
 #modal-inner{
@@ -1753,7 +1763,7 @@ button.g, .start button.g{
 /* v19z12 N7：矮屏保底，避免底部 CTA 被裁 */
 @media (max-height: 820px){
   #mask:not(.tut-on) .modal{
-    max-height: min(88dvh, 720px) !important;
+    max-height: min(88dvh,88svh,720px) !important; /* v20a146 MASK146：同上加 88svh 後備帽 */
   }
   #modal-btns{
     padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
@@ -40489,8 +40499,8 @@ function wf4Scene105(ev){
      舞台得返預設米色漸變＋旁白深 scrim，一片灰。盤點 36 單：18 單有 loc（已有
      圖）；18 單無 loc 全部係 day 事件。以下覆寫表按事件 setting 映射，優先過
      ev.loc／atLoc（setting 先係正確場景，玩家身處地點唔代表事件發生地）。現有
-     圖 2 組＋新圖 3 張，覆蓋 16／18；剩低 2 單（wf4_ev_st05 卡拉OK 包廂、
-     wf4_ev_st08 的士車廂）冇啱嘅場景，寧願留灰都唔硬湊錯圖。新圖參照＋QC 見
+     圖 2 組＋新圖 3 張（v134）＋新圖 2 張（v146），覆蓋 18／18；st05 卡拉OK包廂／
+     st08 的士車廂 v146 已補圖，無留灰。新圖參照＋QC 見
      ~/workspace/linji-wf4scenes-refs/SOURCES.md。 */
   try{
     if(ev && ev.id && typeof WF4_SCENE_OVERRIDE134!=="undefined" && WF4_SCENE_OVERRIDE134[ev.id]) return WF4_SCENE_OVERRIDE134[ev.id];
@@ -40500,7 +40510,7 @@ function wf4Scene105(ev){
   }catch(_e){ return ""; }
 }
 /* v20a134 WF4 場景覆寫表（見 wf4Scene105 註解）：屋企組 5 單、電話亭組 4 單、
-   街市組 5 單用新圖；廠房門口＋冰室用現有地點圖。 */
+   街市組 5 單用新圖；廠房門口＋冰室用現有地點圖；v20a146 補 st05 卡拉OK／st08 的士，18／18 全覆蓋。 */
 const WF4_SCENE_OVERRIDE134 = {
   wf4_ev_home01:"assets/story/locs/bg_wf4_home.jpg?v=20a134",
   wf4_ev_home02:"assets/story/locs/bg_wf4_home.jpg?v=20a134",
@@ -40516,6 +40526,8 @@ const WF4_SCENE_OVERRIDE134 = {
   wf4_ev_st11:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
   wf4_ev_day03:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
   wf4_ev_day04:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_st05:"assets/story/locs/bg_wf4_karaoke.jpg?v=20a146",
+  wf4_ev_st08:"assets/story/locs/bg_wf4_taxi.jpg?v=20a146",
   wf4_ev_set08:"assets/story/locs/bg_loc_film_lion.jpg?v=20a104",
   wf4_ev_st04:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a104",
 };
@@ -40610,7 +40622,12 @@ function wf4PlayEvent(ev, doneCb){
        wf4-stage-on 令 .sp-stage 最少 480px 高，人物約 288px；finish() 清走。 */
     try{ document.getElementById("mask").classList.add("wf4-stage-on"); }catch(_w4a){}
     const scene105 = wf4Scene105(ev);
-    const sceneHtml105 = scene105 ? `<div class="wf4-scene105" style="background-image:url(&quot;${scene105}&quot;)" aria-hidden="true"></div>` : "";
+    /* v20a146 B2：街市場景圖（bg_wf4_market.jpg）banner 偏向檔口帶——張圖上半截係空白招牌，
+       center 橫裁（342×150）裁出招牌帶＋檔口頂；75% 裁到簷篷＋菜／魚檔（原圖 y 723–1038／1280）。
+       只限 market 圖（st06／st07／st11／day03／day04 五單共用）；set08（film_lion）／st04（cafe_cha）
+       唔加，唔郁共用 .wf4-scene105 嘅 background-position:center；舞台版 sp-bg-layer 唔郁。 */
+    const scenePos146 = scene105 && scene105.indexOf("bg_wf4_market.jpg")>=0 ? ";background-position:center 75%" : "";
+    const sceneHtml105 = scene105 ? `<div class="wf4-scene105" style="background-image:url(&quot;${scene105}&quot;)${scenePos146}" aria-hidden="true"></div>` : "";
     const head = `${sceneHtml105}<h3>${wf4Esc(ev.title||"日常")}</h3><p class="sub">${wf4Esc(ev.setting||"")}</p>`;
     /* v20a108 D-8（二期）：有全身資產講者（阿偉）嘅事件，逐句行 DLG106 舞台；
        場景圖改做舞台底，唔再重複出 v105 嗰條 scene 帶。冇阿偉嘅事件維持舊呈現。 */
