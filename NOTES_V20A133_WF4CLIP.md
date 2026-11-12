@@ -52,7 +52,9 @@ plate 只見 61px／line bottom 652 vs plate bottom 679／inner 476/439。
 
 ## 落地
 - 分支 `v20a133`，基底 v127 後 main `ac57418`（rebase 乾淨，v127 冇郁 index.html）。
-- main commit：待填；線上核實：待填。
+- main commit：`76dc2d9`（git 直接合併，冇開 PR）；線上核實：線上 index
+  **5,179,425 bytes、sha256 `001aab3343101add6ead80c72cc0b799fe8eeb5c4fa641a2b49693ea48c35079`**
+  已 curl 核實，同 repo 完全一致。
 
 ## 範圍外（唔掂）
 - 灰色舞台底：v105 既定 fallback（day 事件＋地圖 atLoc null→`wf4Scene105`
