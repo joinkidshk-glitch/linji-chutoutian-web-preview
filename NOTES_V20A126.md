@@ -1,9 +1,8 @@
 # NOTES_V20A126 — 表情補圖批（6 張新表情）
 
 ## 合併紀錄
-- main commit：（待補——squash 合併後填）
-- 分支：`v126-expr`（基底 v20a125 `f671d28`）
-- 線上核實：（待補——curl 核實後填；index.html 零改動，線上 byte／sha 預期同 v125 一樣 5,161,148 bytes）
+- main commit：`2c97668`（squash，分支 `v126-expr` `351ded3`；基底 v20a125 `f671d28`）
+- 線上核實：index.html 200、5,161,148 bytes、sha256 `8f08858aff911075dabf7cb8b18732146d7d36425d5f6a56f2830aaa686c518a`（同 v125 完全一致，零改動）；6 張新圖全部 200＋byte／sha 對上（fong_siulung_smile 106,654 B、pang_siuki_serious 173,454 B、gu_mingfai_smile 128,582 B、yip_manji_serious 177,120 B、lan_ruoxi_shy 212,768 B、ching_tinlok_sad 160,644 B）。新圖推 main 後即檢 404（Pages 部署滯後），約 2.5 分鐘後覆檢全數 200。
 - 測試：全套 **175 PASS／12 FAIL**（基線 v125 main 173／12＋2 新測試；FAIL 清單同基線一致，零回歸）。
 - 實駕：6 張目標全部實機渲染見齊（4 張巧遇真 UI 路徑＋2 張主線合成 force-start；見下），目標 404 由 9 → 0，0 pageerror。
 
