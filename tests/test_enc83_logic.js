@@ -94,7 +94,7 @@ function storyNodeLocId(n){ return n && n.__loc; }
 let _played = [];
 function enc79PlayEncounter(sid, loc, wasMet){ _played.push([sid, loc, wasMet]); }
 
-const names = ['ENC79_TIER_NAMES','ENC79_PLAYER_TIERS','ENC79_FAV_CAPS','ENC79_COOLDOWN','ENC79_DAILY_CAP','ENC79_WEEK_SOFT_CAP','ENC79_STARS','ENC79_PILOT','ENC79_DISTANCE_EXTRA','ENC79_STAGEUP','ENC79_CAP_LINES','ENC79_WRAP_ECHO','ENC79_TEA_POOL','ENC79_BEATS','ENC79_DIALOG'];
+const names = ['ENC79_TIER_NAMES','ENC79_PLAYER_TIERS','ENC79_FAV_CAPS','ENC79_COOLDOWN','ENC79_DAILY_CAP','ENC79_WEEKLY_CAP','ENC79_WEEK_SOFT_CAP','ENC79_STARS','ENC79_PILOT','ENC79_DISTANCE_EXTRA','ENC79_STAGEUP','ENC79_CAP_LINES','ENC79_WRAP_ECHO','ENC79_TEA_POOL','ENC79_BEATS','ENC79_DIALOG'];
 const asVar = (code, name)=> code.replace('const ' + name + ' =', 'var ' + name + ' =');
 const P1 = ['luk_baakyin','liu_bingxing','mak_zhendong','yip_manji'];
 const P2 = ['ngai_wingnaam','gu_mingfai','lok_gasing','chai_zanhoi'];

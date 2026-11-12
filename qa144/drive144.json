@@ -1,0 +1,302 @@
+{
+ "checks": {
+  "goto_map_day0": true,
+  "enc1_trigger": true,
+  "enc1_dialogue_lines": true,
+  "enc1_fav_up": true,
+  "enc1_counters": true,
+  "blocked_daily": true,
+  "end_day_0_to_1": true,
+  "enc2_trigger": true,
+  "enc2_counters": true,
+  "end_day_1_to_2": true,
+  "blocked_weekly": true,
+  "advance_to_day7": true,
+  "weekly_plan_confirmed": true,
+  "enc3_trigger_reset": true,
+  "enc3_counters": true,
+  "no_page_errors": true
+ },
+ "steps": [
+  {
+   "step": "goto_map",
+   "dayIndex": 0,
+   "starWeek": {
+    "week": 1,
+    "triggered": 0
+   }
+  },
+  {
+   "step": "predict_day0",
+   "presence": {
+    "rec_star": [
+     "luk_baakyin"
+    ],
+    "cafe_cha": [
+     "liu_bingxing"
+    ],
+    "rec_hk": [
+     "yip_manji"
+    ]
+   }
+  },
+  {
+   "step": "enc1_triggered",
+   "loc": "cafe_cha",
+   "star": "liu_bingxing",
+   "meta": "巧遇 · 廖炳星",
+   "firstLine": "金龍茶餐廳下晝三點幾，卡位嗰邊傳嚟一陣自言自語，廖炳星攤開成枱紙，度橋度到入晒神。",
+   "starWeek": {
+    "week": 1,
+    "triggered": 1
+   },
+   "starDayTrig": 1
+  },
+  {
+   "step": "enc1_played",
+   "star": "liu_bingxing",
+   "lines": 14,
+   "choices": [
+    "大膽講邊句橋好笑啲"
+   ],
+   "favBefore": 0,
+   "favAfter": 3,
+   "favDelta": 3,
+   "starWeek": {
+    "week": 1,
+    "triggered": 1
+   },
+   "starDayTrig": 1,
+   "sheetTitle": "金龍茶餐廳 · 油麻地"
+  },
+  {
+   "step": "blocked_daily",
+   "loc": "rec_star",
+   "starPresent": "luk_baakyin",
+   "outcome": "sheet",
+   "presenceAtLoc": [
+    "luk_baakyin"
+   ],
+   "starWeek": {
+    "week": 1,
+    "triggered": 1
+   },
+   "starDayTrig": 1,
+   "overlayLine": ""
+  },
+  {
+   "step": "end_day_0_to_1",
+   "ok": true,
+   "mode": "rest",
+   "before": 0,
+   "after": 1,
+   "doubleTick": false
+  },
+  {
+   "step": "predict_day1",
+   "presence": {
+    "film_lion": [
+     "luk_baakyin"
+    ],
+    "cafe_cha": [
+     "liu_bingxing"
+    ],
+    "rec_hk": [
+     "yip_manji"
+    ]
+   },
+   "whispers": {}
+  },
+  {
+   "step": "enc2_triggered",
+   "loc": "cafe_cha",
+   "star": "liu_bingxing",
+   "firstLine": "（頭都唔抬）嗯……呢句尾音要收得急啲先好笑。",
+   "starWeek": {
+    "week": 1,
+    "triggered": 2
+   },
+   "starDayTrig": 1
+  },
+  {
+   "step": "enc2_played",
+   "star": "liu_bingxing",
+   "lines": 11,
+   "choices": [],
+   "favBefore": 3,
+   "favAfter": 3,
+   "starWeek": {
+    "week": 1,
+    "triggered": 2
+   },
+   "starDayTrig": 1
+  },
+  {
+   "step": "end_day_1_to_2",
+   "ok": true,
+   "mode": "schedule",
+   "before": 1,
+   "after": 2,
+   "doubleTick": false
+  },
+  {
+   "step": "predict_day2",
+   "presence": {
+    "film_lion": [
+     "luk_baakyin",
+     "mak_zhendong"
+    ],
+    "cafe_cha": [
+     "liu_bingxing"
+    ]
+   },
+   "whispers": {}
+  },
+  {
+   "step": "blocked_weekly",
+   "loc": "cafe_cha",
+   "outcome": "sheet",
+   "presenceAtLoc": [
+    "liu_bingxing"
+   ],
+   "starWeek": {
+    "week": 1,
+    "triggered": 2
+   },
+   "starDayTrig": 0
+  },
+  {
+   "step": "end_day_2_to_?",
+   "ok": true,
+   "mode": "rest",
+   "before": 2,
+   "after": 3,
+   "doubleTick": false
+  },
+  {
+   "step": "end_day_3_to_?",
+   "ok": true,
+   "mode": "rest",
+   "before": 3,
+   "after": 4,
+   "doubleTick": false
+  },
+  {
+   "step": "end_day_4_to_?",
+   "ok": true,
+   "mode": "schedule",
+   "before": 4,
+   "after": 5,
+   "doubleTick": false
+  },
+  {
+   "step": "end_day_5_to_?",
+   "ok": false,
+   "mode": "schedule",
+   "before": 5,
+   "after": 7,
+   "doubleTick": true
+  },
+  {
+   "step": "confirm_weekly_plan",
+   "ok": true,
+   "why": "plan confirmed, back on map"
+  },
+  {
+   "step": "predict_day7",
+   "presence": {
+    "film_lion": [
+     "luk_baakyin"
+    ]
+   },
+   "whispers": {},
+   "starWeek": {
+    "week": 1,
+    "triggered": 2
+   }
+  },
+  {
+   "step": "enc3_triggered",
+   "loc": "film_lion",
+   "star": "luk_baakyin",
+   "firstLine": "獅子山製片廠條走廊逼到爆，陸柏言俾保鑣前後隔開，大步行過嚟。",
+   "starWeek": {
+    "week": 2,
+    "triggered": 1
+   },
+   "starDayTrig": 1
+  },
+  {
+   "step": "enc3_played",
+   "star": "luk_baakyin",
+   "lines": 11,
+   "choices": [
+    "雙手遞返，唔多口"
+   ],
+   "starWeek": {
+    "week": 2,
+    "triggered": 1
+   },
+   "starDayTrig": 1
+  }
+ ],
+ "pageErrors": [],
+ "finalState": {
+  "dayIndex": 7,
+  "starWeek": {
+   "week": 2,
+   "triggered": 1
+  },
+  "starDay": {
+   "day": 7,
+   "triggered": 1,
+   "presence": {
+    "film_lion": [
+     "luk_baakyin"
+    ],
+    "agency_ho": [
+     "ngai_wingnaam"
+    ],
+    "tvb_longmen": [
+     "pang_siuki"
+    ],
+    "ad_adm": [
+     "chung_choning"
+    ],
+    "rec_wanchai": [
+     "so_jiyan"
+    ]
+   },
+   "doneToday": {
+    "luk_baakyin": 1
+   }
+  },
+  "stars": {
+   "luk_baakyin": {
+    "fav": 3,
+    "met": true,
+    "seen": 1,
+    "lastDay": 7
+   },
+   "liu_bingxing": {
+    "fav": 3,
+    "met": true,
+    "seen": 2,
+    "lastDay": 1
+   },
+   "mak_zhendong": {
+    "fav": 0,
+    "met": false,
+    "seen": 0,
+    "lastDay": -999
+   },
+   "yip_manji": {
+    "fav": 0,
+    "met": false,
+    "seen": 0,
+    "lastDay": -999
+   }
+  }
+ },
+ "verdict": "PASS"
+}

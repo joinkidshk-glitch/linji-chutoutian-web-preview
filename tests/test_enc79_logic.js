@@ -1,6 +1,6 @@
 // v20a79 ENC79 邏輯測試：紅星巧遇 Phase 1——
 //   (1) 出沒盤：種子確定性（同日重算不變）／程天諾 1992 前 P=0／風聲窗 P 升 80%；
-//   (2) 觸發閘：冷卻 3 日壓制／每日上限 2／主線待播壓制（出沒保留、doneToday 唔入帳）；
+//   (2) 觸發閘：冷卻 3 日壓制／每日上限 1（v20a144，由 2 收緊）／主線待播壓制（出沒保留、doneToday 唔入帳）；
 //   (3) 好感：五段邊界／級數上限（臨記 30）／每週軟頂 +10（巧遇來源）／殺青來源唔計軟頂／跌幅直扣；
 //   (4) 舊檔兼容：冇 S.stars 嘅舊檔 lazy-init 唔 crash、冪等；
 //   (5) 風聲：入傳聞頁「風聲」類、同星同時最多 1 條、過期轉舊聞；
@@ -90,7 +90,7 @@ function storyNodeLocId(n){ return n && n.__loc; }
 let _played = [];
 function enc79PlayEncounter(sid, loc, wasMet){ _played.push([sid, loc, wasMet]); }
 
-const names = ['ENC79_TIER_NAMES','ENC79_PLAYER_TIERS','ENC79_FAV_CAPS','ENC79_COOLDOWN','ENC79_DAILY_CAP','ENC79_WEEK_SOFT_CAP','ENC79_STARS','ENC79_PILOT','ENC79_DISTANCE_EXTRA','ENC79_STAGEUP','ENC79_CAP_LINES','ENC79_WRAP_ECHO','ENC79_TEA_POOL','ENC79_BEATS','ENC79_DIALOG'];
+const names = ['ENC79_TIER_NAMES','ENC79_PLAYER_TIERS','ENC79_FAV_CAPS','ENC79_COOLDOWN','ENC79_DAILY_CAP','ENC79_WEEKLY_CAP','ENC79_WEEK_SOFT_CAP','ENC79_STARS','ENC79_PILOT','ENC79_DISTANCE_EXTRA','ENC79_STAGEUP','ENC79_CAP_LINES','ENC79_WRAP_ECHO','ENC79_TEA_POOL','ENC79_BEATS','ENC79_DIALOG'];
 const asVar = (code, name)=> code.replace('const ' + name + ' =', 'var ' + name + ' =');
 /* DLG 對白內文含括號字元，brace-count 抽取會截斷——改用行首錨點切片 */
 function extractDlg(name){
@@ -154,7 +154,7 @@ forcePresence('luk_baakyin','film_lion');
 ok('冷卻 3 日內壓制', enc79TryIntercept('film_lion')===false && _played.length===0);
 resetS(210); _played = [];
 forcePresence('luk_baakyin','film_lion'); S.starDay.triggered = 2;
-ok('每日上限 2 壓制', enc79TryIntercept('film_lion')===false && _played.length===0);
+ok('每日上限 1 壓制（v20a144：triggered=2 已過上限）', enc79TryIntercept('film_lion')===false && _played.length===0);
 resetS(220); _played = [];
 forcePresence('luk_baakyin','film_lion');
 _storyOpen = [{ id:'C1', __loc:'film_lion' }];

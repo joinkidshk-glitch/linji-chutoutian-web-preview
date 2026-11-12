@@ -51229,7 +51229,8 @@ const ENC79_TIER_NAMES = ["生面","有印象","傾得埋","有交情","自己�
 const ENC79_PLAYER_TIERS = ["extra","support","lead","king"];
 const ENC79_FAV_CAPS = [30,55,80,100];
 const ENC79_COOLDOWN = 3;      /* 同星巧遇後 3 日內唔再觸發（lastDay 起計 <=3 壓制） */
-const ENC79_DAILY_CAP = 2;     /* 全域每日最多觸發 2 次（跳過都計） */
+const ENC79_DAILY_CAP = 1;     /* v20a144：全域每日最多觸發 1 次（跳過都計） */
+const ENC79_WEEKLY_CAP = 2;    /* v20a144：全域每週最多觸發 2 次（跳過都計；週＝weekNumNow，星期一重置） */
 const TRAVEL114_DAILY_CAP = 2; /* v20a114：每日入地點出行額度上限（每次入場都計，重入同一地點都計） */
 /* ===== v20a114 TRAVEL114：每日入地點出行額度。
    狀態 S.travel114 = { day, used }，跟 save 走（JSON.stringify(S) 整體存檔；
@@ -51326,6 +51327,7 @@ function enc79EnsureStars(){
     if(typeof st.workedWith!=="boolean") st.workedWith = !!st.workedWith;
   }
   if(!S.starFavWeek || typeof S.starFavWeek!=="object" || Array.isArray(S.starFavWeek)) S.starFavWeek = { week:-1, gain:0 };
+  if(!S.starWeek || typeof S.starWeek!=="object" || Array.isArray(S.starWeek)) S.starWeek = { week:-1, triggered:0 }; /* v20a144：每週觸發計數（跨週重置，見 enc79TryIntercept） */
   if(!S.starWhispers || typeof S.starWhispers!=="object" || Array.isArray(S.starWhispers)) S.starWhispers = {};
   return S.stars;
 }
@@ -51851,6 +51853,10 @@ function enc79TryIntercept(locId){
     enc79EnsureStars();
     const sd = enc79EnsureDay();
     const day = S.dayIndex|0;
+    /* v20a144：每週計數器跨週重置（週＝weekNumNow，星期一界；跟 S.starFavWeek 同一套週） */
+    const wk144 = (typeof weekNumNow==="function") ? weekNumNow() : 0;
+    if(!S.starWeek || typeof S.starWeek!=="object" || Array.isArray(S.starWeek)) S.starWeek = { week:-1, triggered:0 };
+    if(S.starWeek.week!==wk144){ S.starWeek.week = wk144; S.starWeek.triggered = 0; }
     /* 初遇保底計數：入主場但嗰位星今日唔在場 → 計一日 */
     for(const def of ENC79_STARS){
       if(def.primary!==locId) continue;
@@ -51865,6 +51871,7 @@ function enc79TryIntercept(locId){
     const here = sd.presence[locId] || [];
     if(!here.length) return false;
     if((sd.triggered||0) >= ENC79_DAILY_CAP) return false;
+    if((S.starWeek.triggered||0) >= ENC79_WEEKLY_CAP) return false; /* v20a144：每週上限 */
     /* 揀星：未做節拍 > 有風聲 > 名冊序 */
     const cands = here.filter(sid=> ENC79_PILOT[sid] && !(sd.doneToday||{})[sid]).map(sid=>{
       const st = enc79StarState(sid);
@@ -51884,6 +51891,7 @@ function enc79TryIntercept(locId){
     if(enc79StoryPendingAt(locId)) return false; /* 主線待播優先：出沒留返同日下次入場 */
     /* 觸發入帳（跳過都計，防刷）：冷卻／上限／次數即時生效 */
     sd.triggered = (sd.triggered||0) + 1;
+    S.starWeek.triggered = (S.starWeek.triggered||0) + 1; /* v20a144：每週計數同步入帳 */
     sd.doneToday[pick.sid] = 1;
     const st = enc79StarState(pick.sid);
     st.lastDay = day; st.seen = (st.seen||0) + 1;
