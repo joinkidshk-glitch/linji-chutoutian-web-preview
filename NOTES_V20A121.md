@@ -53,7 +53,7 @@
 - Squash 合併入 main：`3bc0061`（基底 `215b97e`＝v118）。
 - 本地 main index.html：5,139,404 bytes，sha256 `266bd83750e402d7613ea04a981bc9775b36a8a13a42de3d9fef998bc2009e70`。
 - 線上初檢（合併後即刻）：5,137,219 bytes，sha `af6b43db0911b34a…`——舊版，Pages 部署滯後；推呢個 NOTES commit 重觸發部署，之後再核實。
-- 線上覆檢（NOTES 重觸發後）：（待補）
+- 線上覆檢（NOTES 重觸發後約 90 秒）：5,139,404 bytes，sha `266bd83750e402d7…`，同本地逐字對上。
 
 ## 回滾方法
 - 成段還原即可：`git revert 3bc0061`（squash 單一 commit；只掂 index.html＋3 個測試檔，無 content pack、無 SAVE key、無資產）。舊 `GIG_DIRECTOR_GENERIC117` Set 會返嚟，但留意還原即係還原埋漏網 15 張（監製／導演等會重新出導演行）——回滾只適用於新規則本身出問題（例如誤殺真名），唔係無代價。
