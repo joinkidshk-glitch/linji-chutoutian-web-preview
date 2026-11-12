@@ -125,8 +125,8 @@ backstopDay: 1096}
 - 全套：baseline **201／12**、work **204／12**（＋3 係 v136 新測試；FAIL 清單一字不差，零回歸；`qa136/suite_baseline134.txt`／`qa136/suite_work136_v134.txt`）。
 - 實駕：drive 932 **8/8 PASS**（`qa136/drive_v134_932.log`）＋ play_c17 700 **1/1 PASS**。
 - Code 抽查（rebase 後最終版）：C17 閘 `{ needDone: ["C13"], weekMin: 153, yearEq: 1992, seasonIn: ["冬"], awardResolved: { ceremonyId: "award_singho_tv", year: 1992 }, backstopDay: 1096 }`；`CONSEQ61_REVIEWS` 1992 `{ floor: 155, warnLine: 195, boundaryWeek: 156 }`；全檔無「頒獎禮開場」（0 宗）、「頒獎禮散場」3 處；`awardSnooz` 死碼 0 宗；`S.pendingAwardPack` 持久化在位；SAVE key `starVolunteer_map_v19w`、softRev s107、產品 `?v=v20a10` 無改動。
-- 落地 main commit：（待填）
-- 線上核實：（待填）
+- 落地 main commit：`2aef2dc`（squash，基底 `c881530` v134 NOTES；經 deploy key 直推，唔開 PR）
+- 線上核實：GitHub Pages 部署後 curl 核實——線上 index.html **5,213,775 bytes、sha256 `f8a83a55…`**，同 repo 一致；`weekMin: 153` ×2、`backstopDay: 1096` ×1 在位、「頒獎禮開場」0 宗。首 fetch 部署未及（舊版 5,202,772 bytes），約 2 分鐘後再 fetch 已一致。
 
 ## 檔案
 
