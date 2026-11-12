@@ -2,7 +2,7 @@
 
 基底：main `e08a070`（v148；v149／v150 未落地）。工作分支 `v20a151`（工作副本 `~/workspace/linji-work151`）。
 用戶原話：「以後佢個名可以直接出現喺玩家面，唔使再用『當紅花旦／台柱』代替。」
-狀態：實作＋測試＋實駕完成，**未落地、未 push**，等統籌合併。
+狀態：實作＋測試＋實駕完成。**已上線（main `86e391d`，rebase 上 `0c7ebbb` 後 push；線上 5,235,582 bytes、sha256 `faa40207ba06…` 已核實，同 repo 一致）。**
 **落地更新（統籌，見 §10）：main 先行落地 v156（`9c850f9`），v151 合併嗰陣 rebase 概念上跟 `9c850f9`；新測試行號 resync +15 後 31/31 PASS，反證改對 `9c850f9`（19 FAIL）。**
 
 ## 1. 改動清單（前後對照）
@@ -126,3 +126,9 @@
 - `tests/test_kwan151_static.py` 已 resync +15（連 assertion 名同註解）：合併後樹上 **31/31 PASS**；反證改對 `9c850f9`（pristine index＋3 個 JSON 抽出嚟跑）→ **19 項乾淨 FAIL**，零 crash（12 項「唔郁」守門喺 pristine 照樣 PASS）。
 - 合併後樹上覆驗：`test_kwan151_textfix.js`／`test_terms57_logic.js`／`test_text55_logic.js` 全部 ALL PASS；cleanup100／text55_static／aud91fix122／aud91fix124／gigreq110／wf5_87／handbook156（v156 自身測試）全部 PASS。
 - 全套數字（§5）係工人喺 `e08a070` 基底跑出嚟嘅；合併後因行號漂移只係 resync 咗新測試，index.html diff 內容不變，唔重跑全套（另註：統籌獨立重跑全套嗰陣發現 `run_suite.sh` 本身有波動——同一 repo 連續跑出 211/12、137/86、200/23 三個唔同數，失敗項每次唔同、全部係 .py；直接逐個跑嗰啲測試 5–8 次全部 PASS，flash51 等 12 項先係每次都出現嘅 pre-existing FAIL；結論係 suite runner 喺呢部機有波動，唔係 v151 回歸；v151 相關測試已逐個直接覆驗晒）。
+
+## 11. 落地紀錄（統籌）
+- 落地嗰陣 GitHub main 已先行到 `0c7ebbb`（v156 NOTES），本地 main `f8a254e` 分叉（ahead 2、behind 1）。rebase：`git rebase --onto origin/main 4901732 main`——只 replay v151 自己嗰個 commit，本地重複嘅 `4901732`（v156 NOTES 補錄，同 `0c7ebbb` 內容只差 NOTES 一行）drop 咗；rebase 零衝突。
+- Rebase 後新 commit `86e391d`，`git diff f8a254e 86e391d` 得 `NOTES_V20A156.md` 一行（GitHub 版嗰行），v151 內容零改動；合併後樹上覆驗（新測試 31/31、JS 11/11、terms57／text55_logic／cleanup100／text55_static／aud91fix122／124／gigreq110／wf5_87／handbook156 全部 PASS）。
+- Push：`0c7ebbb..86e391d main -> main`（經已修好嘅 `~/workspace/gh_tunnel.py` 隧道直接推；18080 嗰條已死，唔使再用 `/tmp/gh_tunnel.py`）。
+- 線上核實：`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/` HTTP 200、**5,235,582 bytes、sha256 `faa40207ba06…`**，同 repo `index.html` 完全一致。
