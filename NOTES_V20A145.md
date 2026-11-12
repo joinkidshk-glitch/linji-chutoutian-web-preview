@@ -49,3 +49,9 @@
 
 - SAVE key／softRev／產品 `?v=`／content pack JSON 零改動；C1–C2（頂部 HUD、地圖熱區描邊）留返原生版；事業組回憶 pane（v142 範圍）唔郁；v143 review「已證實唔係問題」一節嘅誤讀項一律冇修。
 - 取捨：chips 字體維持 .72rem（2116 行 `!important` 唔郁，密度不變）；`.weak-whisper` 鬼影字故意保留淡化。
+
+## 落地（2026-11-13 統籌）
+
+- Squash 合併入 main：`57d4081`（分支 `v20a145` 337ac8c，基底 79defe3，零衝突；唔開 PR，git 直接合併）。
+- 線上核實：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/index.html — **5,223,215 bytes、sha256 `2bf503a2…`，同 repo 一致**（部署約 2 分鐘後覆核，首查仍係舊版 5,217,690 bytes）。
+- 設計 review 待派（新常規）：v145 落地後做一次設計 review，只出報告唔改 code。
