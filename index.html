@@ -36846,10 +36846,19 @@ function enterHome(summary, editable, initialTab){
      同 PROGRESS71 報告 3C 節（劇情進度改由地圖提示行＋手帳「進度」頁承載）。
      summary 引數保留（呼叫方簽名不變），本函數唔再用佢做展示。 */
   ensureMockJournal();
-  /* v20a61 CONSEQ61-1：週結判咗強制收場（評核唔過／寬限期滿）→ 結算卡出完之後呈現結局全套 */
+  /* v20a61 CONSEQ61-1：週結判咗強制收場（評核唔過／寬限期滿）→ 結算卡出完之後呈現結局全套
+     v20a124 AUD91FIX R2 Pair A：試鏡公佈（+50ms）開緊嗰陣唔好畀強制結局 modal 取代佢——
+     _aud91Presenting 真嗰陣隔 300ms 再 check，直至旗清先呈現（公佈先、結局後）。
+     唔喺 modal() 入面做通用 guard（reentrancy 問題，見 R2_EVAL §4）。 */
   try{
     if(typeof S!=="undefined" && S && S.conseq61 && S.conseq61.pendingEnding && !S.ending410 && typeof conseq61PresentForcedEnding==="function"){
-      setTimeout(()=>{ try{ conseq61PresentForcedEnding(); }catch(_e){} }, 90);
+      const _presentForcedEnding124 = ()=>{
+        try{ if(typeof _aud91Presenting!=="undefined" && _aud91Presenting){ setTimeout(_presentForcedEnding124, 300); return; } }catch(_e){}
+        /* v20a124 三連撞：有 week105 結算等緊嗰陣，等埋結算 modal 被㩒走先出結局（結算先、結局後）。 */
+        try{ if(typeof _week105SettlePending124!=="undefined" && _week105SettlePending124 && !_week105SettleDone124){ setTimeout(_presentForcedEnding124, 300); return; } }catch(_e){}
+        try{ conseq61PresentForcedEnding(); }catch(_e){}
+      };
+      setTimeout(_presentForcedEnding124, 90);
     }
   }catch(_pe61){}
   /* v20a6：允許呼叫方指定初始分頁（選單「狀態」→記數），避免先 plan 再 setTimeout 搶跑 */
@@ -56238,6 +56247,12 @@ function aud91PendingHint(rec){
   return `試鏡咗 ${waited} 日 · ${when}（何生會打嚟通知）`;
 }
 let _aud91Presenting = false;
+/* v20a124 AUD91FIX R2 三連撞序列化：reload＋week105＋pendingEnding 齊晒嗰陣，結算 modal 必須先出先走，
+   強制結局先可以出；否則兩個 guard 各自輪流 poll 會撞 order（結算遲出嗰陣會取代結局 modal）。
+   _week105SettlePending124＝呢個 session 有 week105 結算等緊呈現；_week105SettleDone124＝結算
+   modal 已出＋玩家㩒走咗（掣／遮罩都計）。var 提升，enterHome／contFromSlot 嘅 timer 回呼讀到。 */
+var _week105SettlePending124 = false;
+var _week105SettleDone124 = false;
 /* 朝早公佈呈現：到期 pending 逐單揭曉（免費互動，唔耗玩家嗰日行動）；
    全部出完先行 continueFn。冇到期／呈現中 → 回 false，呼叫方照常行。 */
 function aud91PresentDue(continueFn){
@@ -57510,14 +57525,21 @@ function contFromSlot(slot){
     const wp105 = (typeof week105Pending==="function") ? week105Pending() : null;
     const seed105 = (typeof softSeedRequested==="function") && softSeedRequested();
     if(wp105 && !seed105){
+      /* v20a124 三連撞：記低呢個 session 有結算等緊，等強制結局 guard 識得排喺結算後面。 */
+      try{ _week105SettlePending124 = true; _week105SettleDone124 = false; }catch(_e){}
       enterHome({ weekNum: wp105.week, html: wp105.html||"", stressEvent:false }, true);
-      setTimeout(()=>{
+      /* v20a124 AUD91FIX R2 Pair B：同 Pair A 對稱 guard——試鏡公佈（+50ms）開緊嗰陣 defer 結算
+         modal，直至 _aud91Presenting 清先開（公佈先、結算後），唔畀結算取代公佈、唔 strand 旗。
+         掣 on＋onDismiss 一齊記 done（掣撳／遮罩點走都計），等強制結局 guard 識得結算已經走咗。 */
+      const _presentSettlement124 = ()=>{
+        try{ if(typeof _aud91Presenting!=="undefined" && _aud91Presenting){ setTimeout(_presentSettlement124, 300); return; } }catch(_e){}
         try{
           modal(`<h3>回家結算 · 第 ${wp105.week} 週</h3>${wp105.html||""}<p class="gold">上次喺週結算嗰陣離開咗——金額嗰陣已經入帳，唔會重扣。而家可以編排新一週行程。</p>`,[
-            {label:"編排新一週行程", role:"p"}
-          ]);
+            {label:"編排新一週行程", role:"p", on: ()=>{ try{ _week105SettleDone124 = true; }catch(_e){} }}
+          ], {onDismiss: ()=>{ try{ _week105SettleDone124 = true; }catch(_e){} }});
         }catch(_e){}
-      }, 80);
+      };
+      setTimeout(_presentSettlement124, 80);
       return;
     }
     /* 殘旗（日子已行過週一）順手清走，唔好留喺存檔 */

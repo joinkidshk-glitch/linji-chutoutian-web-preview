@@ -1,0 +1,107 @@
+== T2 Pair A（修復後）：fail pending ＋ pendingEnding → 入屋：aud91 企到 dismiss，之後先出強制結局 ==
+  click 新遊戲: 新遊戲
+  new-game all-street: view=v-map day=0
+  seed ok=False: {'gig': 'gig_1988_entry_ferry_crowd', 'day': 0, 'due': 1}
+  set pendingEnding={kind:review,year:1990,dual:0,floor:100}
+  open_journal: menu=True journal-item=True
+    seq +1130ms mask=False btns=[] modal=''
+    seq +1313ms mask=True btns=['我知道了'] modal='系統 / 本次未獲聘 /  / 今次未獲聘，呢一場唔可以再參加。 /  / 可以返去訓練，或者另揀一張通告。 /  / 《天星碼'
+  T2 after enterHome: pend=[] due=0 ending410=null conseq61pend={'kind': 'review', 'year': 1990, 'dual': 0, 'floor': 100}
+  VERDICT T2-a aud91 有出: PASS 
+  VERDICT T2-b aud91 企住：等 1.8s 強制結局未出現: PASS 
+  VERDICT T2-c 等待期間 E7 未寫（結局未偷跑）: PASS 
+  dismiss aud91: 我知道了
+    seq +23ms mask=False btns=[] modal=''
+    seq +269ms mask=True btns=['下一頁'] modal='1990 年尾 · 事務所評核 /  / 第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，'
+  T2 after aud91 dismiss: modal='1990 年尾 · 事務所評核\n\n第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，加埋離公司肯留人嗰條線，仲差一截。\n\n「' btns=['下一頁'] ending410.career=E7
+  VERDICT T2-d dismiss 後強制結局 modal 出現: PASS 
+  VERDICT T2-e E7 已寫: PASS 
+    dismiss[0] modal='1990 年尾 · 事務所評核\n\n第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，加埋離公司肯留人嗰條線，仲差一截。\n\n「' btns=['下一頁']
+    dismiss[1] modal='收場之後\n\n嗰晚收工，你一個人行去搭車。冇邊個喺度等你——但你望住手上嗰張通告紙，覺得咁都唔算差。呢三年你對自己，總算有個交代。感情嗰格空住' btns=['睇手帳總結']
+    dismiss[2] modal='1990 年尾評核・提早收科・手帳總結\n\n你的稱號\n\n未紅先收・未說出口的人\n\n事業結局：未紅先收（review1990版）\n\n幕前聲望 5' btns=['回顧手帳', '開新一局', '讀檔']
+    dismiss: 無已知掣 → 停，唔亂撳
+  T2 after ending flow: view=v-home mask=True modal='1990 年尾評核・提早收科・手帳總結\n\n你的稱號\n\n未紅先收・未說出口的人\n\n事業結局：未紅先收（review1990版）\n\n幕前聲望 5'
+  VERDICT T2-f 結局流程行完（總結 modal／手帳）: PASS 
+  T2 ERRORS: (none)
+  VERDICT T2-g 0 pageerror: PASS 
+== T3 Pair B（修復後）：week105Pending ＋ fail pending → reload → 繼續：aud91 完整呈現先，之後結算 ==
+  click 新遊戲: 新遊戲
+  new-game all-street: view=v-map day=0
+  persist via localStorage (aud91=True pendEnd=False): {"day": 7, "pend": 1}
+  after reload (title): view=v-start day=None pend=[]
+  click 繼續: True
+    seq +95ms mask=False btns=[] modal=''
+    seq +323ms mask=True btns=['我知道了'] modal='系統 / 本次未獲聘 /  / 今次未獲聘，呢一場唔可以再參加。 /  / 可以返去訓練，或者另揀一張通告。 /  / 《天星碼'
+  T3 after 繼續: pend=[] due=0 ending410=null weekB105=null view=v-home
+  VERDICT T3-a aud91 有出: PASS 
+  VERDICT T3-b aud91 企住：等 1.8s 結算未出現: PASS 
+  VERDICT T3-c 等待期間未結局: PASS 
+  dismiss aud91: 我知道了
+    seq +29ms mask=False btns=[] modal=''
+    seq +312ms mask=True btns=['編排新一週行程'] modal='回家結算 · 第 1 週 /  / R2 測試結算內容：第 1 週結算。 /  / 上次喺週結算嗰陣離開咗——金額嗰'
+  T3 after aud91 dismiss: modal='回家結算 · 第 1 週\n\nR2 測試結算內容：第 1 週結算。\n\n上次喺週結算嗰陣離開咗——金額嗰陣已經入帳，唔會重扣。而家可以編排新一週' btns=['編排新一週行程'] view=v-home
+  VERDICT T3-d dismiss 後結算 modal 出現: PASS 
+    dismiss[0] modal='回家結算 · 第 1 週\n\nR2 測試結算內容：第 1 週結算。\n\n上次喺週結算嗰陣離開咗——金額嗰陣已經入帳，唔會重扣。而家可以編排新一週' btns=['編排新一週行程']
+  T3 after dismiss settlement: view=v-home mask=False homeEditable=True
+  VERDICT T3-e 結算 dismiss 後入返手帳編排步: PASS 
+  seed ok=False: {'gig': 'gig_1988_entry_ferry_crowd', 'day': 7, 'due': 1}
+  back-to-map: True view=v-map
+  open_journal: menu=True journal-item=True
+    seq +2599ms mask=False btns=[] modal=''
+    seq +2774ms mask=True btns=['繼續'] modal='何生來電 /  / 《天星碼頭》過海人潮 /  / 何生打嚟：「嗰邊有回音喇——今次冇你份，唔使等喇。」 /  / 成功率約'
+  T3 second seed: journal-ok=True presented=True pend=[] due=0 mask=True view=v-home
+  VERDICT T3-f 第二播種探針即刻呈現（旗唔卡）: PASS 
+  T3 ERRORS: (none)
+  VERDICT T3-g 0 pageerror: PASS 
+== T5 三連撞：week105 ＋ fail pending ＋ pendingEnding → reload → 繼續：aud91 → 結算 → 強制結局 ==
+  click 新遊戲: 新遊戲
+  new-game all-street: view=v-map day=0
+  persist via localStorage (aud91=True pendEnd=True): {"day": 7, "pend": 1}
+  after reload (title): view=v-start day=None pend=[]
+  click 繼續: True
+    seq +106ms mask=False btns=[] modal=''
+    seq +472ms mask=True btns=['我知道了'] modal='系統 / 本次未獲聘 /  / 今次未獲聘，呢一場唔可以再參加。 /  / 可以返去訓練，或者另揀一張通告。 /  / 《天星碼'
+  T5 after 繼續: pend=[] ending410=null
+  VERDICT T5-a aud91 有出: PASS 
+  VERDICT T5-b aud91 企住：結算／結局都未出現: PASS 
+  VERDICT T5-c 等待期間 E7 未寫: PASS 
+  dismiss aud91: 我知道了
+    seq +35ms mask=False btns=[] modal=''
+    seq +177ms mask=True btns=['編排新一週行程'] modal='回家結算 · 第 1 週 /  / R2 測試結算內容：第 1 週結算。 /  / 上次喺週結算嗰陣離開咗——金額嗰'
+  T5 after aud91 dismiss: modal='回家結算 · 第 1 週\n\nR2 測試結算內容：第 1 週結算。\n\n上次喺週結算嗰陣離開咗——金額嗰陣已經入帳，唔會重扣。而家可以編排新一週' btns=['編排新一週行程'] ending410=null
+  VERDICT T5-d dismiss 後結算 modal 出現（結局之前）: PASS 
+  VERDICT T5-e 結算嗰刻 E7 未寫（結局未偷跑）: PASS 
+  dismiss settlement: 編排新一週行程
+    seq +47ms mask=False btns=[] modal=''
+    seq +255ms mask=True btns=['下一頁'] modal='1990 年尾 · 事務所評核 /  / 第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，'
+  T5 after settlement dismiss: modal='1990 年尾 · 事務所評核\n\n第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，加埋離公司肯留人嗰條線，仲差一截。\n\n「' btns=['下一頁'] ending410.career=E7
+  VERDICT T5-f 結算 dismiss 後強制結局 modal 出現: PASS 
+  VERDICT T5-g E7 已寫: PASS 
+    dismiss[0] modal='1990 年尾 · 事務所評核\n\n第一年年尾，事務所做評核。何生叫你入房，攤開本記數簿：聲望同信用，加埋離公司肯留人嗰條線，仲差一截。\n\n「' btns=['下一頁']
+    dismiss[1] modal='收場之後\n\n嗰晚收工，你一個人行去搭車。冇邊個喺度等你——但你望住手上嗰張通告紙，覺得咁都唔算差。呢三年你對自己，總算有個交代。感情嗰格空住' btns=['睇手帳總結']
+    dismiss[2] modal='1990 年尾評核・提早收科・手帳總結\n\n你的稱號\n\n未紅先收・未說出口的人\n\n事業結局：未紅先收（review1990版）\n\n幕前聲望 5' btns=['回顧手帳', '開新一局', '讀檔']
+    dismiss: 無已知掣 → 停，唔亂撳
+  T5 after ending flow: view=v-home mask=True modal='1990 年尾評核・提早收科・手帳總結\n\n你的稱號\n\n未紅先收・未說出口的人\n\n事業結局：未紅先收（review1990版）\n\n幕前聲望 5'
+  T5 ERRORS: (none)
+  VERDICT T5-h 0 pageerror: PASS 
+== T4 Pair B 對照：week105Pending 無 aud91 → 繼續；之後播種返地圖入屋應即刻出 ==
+  click 新遊戲: 新遊戲
+  new-game all-street: view=v-map day=0
+  persist via localStorage (aud91=False pendEnd=False): {"day": 7, "pend": 0}
+  click 繼續: True
+    seq +279ms mask=False btns=[] modal=''
+    seq +891ms mask=True btns=['編排新一週行程'] modal='回家結算 · 第 1 週 /  / R2 測試結算內容：第 1 週結算。 /  / 上次喺週結算嗰陣離開咗——金額嗰'
+  T4 after 繼續: modal='回家結算 · 第 1 週\n\nR2 測試結算內容：第 1 週結算。\n\n上次喺週結算嗰陣離開咗——金額嗰陣已經入帳，唔會重扣。而家可以編排新一週' btns=['編排新一週行程'] pend=[] view=v-home
+  VERDICT T4-a 無 aud91：結算 modal 直出: PASS 
+    dismiss[0] modal='回家結算 · 第 1 週\n\nR2 測試結算內容：第 1 週結算。\n\n上次喺週結算嗰陣離開咗——金額嗰陣已經入帳，唔會重扣。而家可以編排新一週' btns=['編排新一週行程']
+  T4 after dismiss settlement: view=v-home mask=False homeEditable=True
+  seed ok=False: {'gig': 'gig_1988_entry_ferry_crowd', 'day': 7, 'due': 1}
+  back-to-map: True view=v-map
+  open_journal: menu=True journal-item=True
+    seq +3198ms mask=False btns=[] modal=''
+    seq +3562ms mask=True btns=['我知道了'] modal='系統 / 本次未獲聘 /  / 今次未獲聘，呢一場唔可以再參加。 /  / 可以返去訓練，或者另揀一張通告。 /  / 《天星碼'
+  T4 seed after settlement: journal-ok=True presented=True pend=[] due=0
+  VERDICT T4-b 之後播種即刻出 aud91: PASS 
+  T4 ERRORS: (none)
+  VERDICT T4-c 0 pageerror: PASS 
+DONE r2fix: 25 PASS / 0 FAIL
