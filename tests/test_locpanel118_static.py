@@ -58,6 +58,13 @@ for eid in ("loc-quota118", "loc-owner118", "loc-owner-img118", "loc-owner-tag11
     ck("HTML 有 #%s" % eid, ('id="%s"' % eid) in src)
 ck("pill／負責人／名牌列預設 hidden", all(
     ('id="%s" hidden' % e) in src for e in ("loc-quota118", "loc-owner118", "loc-tagrow118")))
+# v20a118 實駕捉到：三個元素嘅 author display 規則（flex）會蓋過 UA [hidden]{display:none}，
+# hidden 咗都照顯示——冇 src 嘅負責人圖會出破圖 icon＋殘留 alt 字。必須有 [hidden] 明寫覆寫。
+ck("[hidden] 覆寫：三元素 hidden 嗰陣 display:none（唔好俾 author display 蓋過）",
+   bool(re.search(r"\.locpanel118-quota\[hidden\][^{]*,\s*#loc-sheet\s+\.locpanel118-owner\[hidden\][^{]*,\s*#loc-sheet\s+\.locpanel118-tagrow\[hidden\]\s*\{\s*display:\s*none\s*!important", src)) or
+   all(("[hidden]" in src and "display:none !important" in src and
+        (".locpanel118-%s[hidden]" % n) in src)
+       for n in ("quota", "owner", "tagrow")))
 ck("新元素喺 #loc-sheet 入面",
    src.find('id="loc-quota118"') > src.find('id="loc-sheet"') and
    src.find('id="loc-tagrow118"') < src.find('id="loc-acts"'))

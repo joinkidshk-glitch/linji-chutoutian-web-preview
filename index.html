@@ -3564,6 +3564,9 @@ body.day-res-open .day-row{
 }
 #loc-sheet .locpanel118-tag b{ color:#e8c97a; }
 #loc-sheet .locpanel118-tagrow{ flex:0 0 auto; display:flex; justify-content:flex-end; margin:0 0 4px; }
+/* v20a118：上面三條 author display 規則會蓋過 UA [hidden]{display:none}——hidden 咗嘅
+   元素（尤其 owner 入面幅圖，冇 src 會出破圖 icon＋殘留 alt 字）會繼續顯示，必須明寫返 */
+#loc-sheet .locpanel118-quota[hidden], #loc-sheet .locpanel118-owner[hidden], #loc-sheet .locpanel118-tagrow[hidden]{ display:none !important; }
 #loc-sheet.locpanel118-has-owner #loc-title,
 #loc-sheet.locpanel118-has-owner #loc-desc,
 #loc-sheet.locpanel118-has-owner #loc-who{ max-width:calc(100% - 128px); }
@@ -53133,10 +53136,10 @@ function locpanel118Render(L, spent){
     const tag=document.getElementById("loc-tagrow-tag118");
     if(tag) tag.innerHTML="<b>"+esc118(o.name)+"</b> · "+esc118(o.sub);
     tagrow.hidden=false;
-    if(owner){ owner.hidden=true; const oi=document.getElementById("loc-owner-img118"); if(oi) oi.removeAttribute("src"); const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML=""; }
+    if(owner){ owner.hidden=true; const oi=document.getElementById("loc-owner-img118"); if(oi){ oi.removeAttribute("src"); oi.alt=""; } const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML=""; }
     sheet.classList.remove("locpanel118-has-owner");
   } else {
-    if(owner){ owner.hidden=true; const oi=document.getElementById("loc-owner-img118"); if(oi) oi.removeAttribute("src"); const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML=""; }
+    if(owner){ owner.hidden=true; const oi=document.getElementById("loc-owner-img118"); if(oi){ oi.removeAttribute("src"); oi.alt=""; } const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML=""; }
     if(tagrow){ tagrow.hidden=true; const tt=document.getElementById("loc-tagrow-tag118"); if(tt) tt.innerHTML=""; }
     sheet.classList.remove("locpanel118-has-owner");
   }
@@ -53167,7 +53170,7 @@ function locpanel118Hide(){
       const el=document.getElementById(id); if(el) el.hidden=true;
     });
     /* v20a118：收起嗰陣一併清走殘留內容，唔好留上一地點嘅名牌／圖喺 DOM 入面 */
-    const oi=document.getElementById("loc-owner-img118"); if(oi) oi.removeAttribute("src");
+    const oi=document.getElementById("loc-owner-img118"); if(oi){ oi.removeAttribute("src"); oi.alt=""; }
     const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML="";
     const tt=document.getElementById("loc-tagrow-tag118"); if(tt) tt.innerHTML="";
     const pl=document.getElementById("loc-quota118"); if(pl) pl.innerHTML="";
