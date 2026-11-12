@@ -37,7 +37,8 @@
 
 ## 合併
 
-- 待填：squash commit、線上 index byte／sha 核實。
+- 分支 `v122-aud91-fix`（commit `97db695`）→ squash 入 main **`4df677d`**（已 push）。合併嗰陣 main 仍係 `f7fb273`，無 rebase、無衝突。
+- 線上核實：`curl https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/index.html?v=20a10` → HTTP 200、**5,139,966 bytes**、sha256 **`97dd13db…`**，同本地 main `index.html` 完全一致（含 3 處 `AUD91FIX` 標記）。注意：push 後即刻 curl 嗰陣線上仲係舊版（5,139,404 bytes，v121），等約 2 分鐘 Pages 部署完成先對上。
 
 ## 回滾
 
