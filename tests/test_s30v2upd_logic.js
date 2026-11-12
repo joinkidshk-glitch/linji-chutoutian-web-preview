@@ -79,8 +79,19 @@ ok('deadline: 空 gig 不 throw', typeof emptyDdl === 'string');
 
 for (const loc of ['tvb_longmen', 'film_lion', 'ad_adm', 'ad_central', 'rec_hk', 'tvb_kowloon',
                'film_cotton', 'rec_wanchai', 'tvb_harbour', 'film_harbour', 'rec_star']) {
-  ok('asset: boss_' + loc + '_base.webp 已入庫',
+  ok('asset: boss_' + loc + '_base.webp（v1 後備）仍在庫',
      fs.existsSync(path.join(__dirname, '..', 'assets', 'story', 'fullbody', 'boss_' + loc + '_base.webp')));
+}
+// v20a116：對照表改指新檔（7 張 v2＋4 張 v2b），v1 檔留庫做回滾後備。
+const V2_LOCS = ['ad_adm', 'ad_central', 'rec_hk', 'tvb_kowloon', 'film_cotton', 'film_harbour', 'rec_star'];
+const V2B_LOCS = ['tvb_longmen', 'film_lion', 'rec_wanchai', 'tvb_harbour'];
+for (const loc of V2_LOCS) {
+  ok('asset: boss_' + loc + '_v2_base.webp 已入庫',
+     fs.existsSync(path.join(__dirname, '..', 'assets', 'story', 'fullbody', 'boss_' + loc + '_v2_base.webp')));
+}
+for (const loc of V2B_LOCS) {
+  ok('asset: boss_' + loc + '_v2b_base.webp 已入庫',
+     fs.existsSync(path.join(__dirname, '..', 'assets', 'story', 'fullbody', 'boss_' + loc + '_v2b_base.webp')));
 }
 ok('asset: ho_sang_base.webp（何生後備）存在',
    fs.existsSync(path.join(__dirname, '..', 'assets', 'story', 'fullbody', 'ho_sang_base.webp')));
@@ -98,13 +109,19 @@ const EXPECT = {
   rec_star: ['溫子峰', '天星音樂', '老闆'],
 };
 ok('map: 11 間', Object.keys(GIG_ISSUER_FIGURE_MAP30V2).length === 11);
+// v20a116：對照表 11 間全指新檔（v2 7 張／v2b 4 張）；?v= 維持 20a106（新檔名本身就係 cache-buster）。
+const SRC_SUFFIX = {};
+for (const loc of V2_LOCS) SRC_SUFFIX[loc] = '_v2_base.webp';
+for (const loc of V2B_LOCS) SRC_SUFFIX[loc] = '_v2b_base.webp';
 for (const [loc, [name, org, role]] of Object.entries(EXPECT)){
   const f = gigIssuerFigure30v2({ loc });
-  ok('map: ' + loc + ' → ' + name,
+  ok('map: ' + loc + ' → ' + name + '（新檔 ' + SRC_SUFFIX[loc] + '）',
      f && f.name === name && f.org === org && f.role === role
-     && f.src === 'assets/story/fullbody/boss_' + loc + '_base.webp?v=20a106',
+     && f.src === 'assets/story/fullbody/boss_' + loc + SRC_SUFFIX[loc] + '?v=20a106',
      JSON.stringify(f));
 }
+ok('map: 11 間無一指舊 v1 檔',
+   Object.values(GIG_ISSUER_FIGURE_MAP30V2).every(f => /_v2b?_base\.webp\?v=20a106$/.test(f.src)));
 const ho = gigIssuerFigure30v2({ loc: 'cafe_cha' });
 ok('fallback: 未映射 loc → 何生',
    ho && ho.name === '何生' && ho.org === '何生事務所' && ho.role === '你的經理人',

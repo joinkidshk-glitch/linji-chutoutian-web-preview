@@ -34535,23 +34535,23 @@ function gigLockReasonLine(g){
 }
 
 /* S-30v2：通告詳情卡上人物＝發出呢張通告嗰個機構嘅負責人（話事人），唔係主角／主演。
-   對照表 key＝g.loc（機構＝通告嘅 loc）。11 間機構老闆全部係為本遊戲新創作嘅虛構人物，
-   全身立繪見 assets/story/fullbody/boss_<loc>_base.webp（v111 入庫；溫子峰圖收 marginal，
-   面相偏後生，留待用戶睇樣後決定係咪重擲）。
+   對照表 key＝g.loc（機構＝通告嘅 loc）。11 間機構老闆全部係為本遊戲新創作嘅虛構人物。
+   v20a116：v1（太寫實）→ v2 動畫風 7 張＋v2b 修正 4 張（新檔名入庫，v1 檔留庫做後備；
+   回滾＝src 指返 boss_<loc>_base.webp，詳見 NOTES_V20A116.md）。
    後備規則：對照表搵唔到（11 間以外嘅 loc）→ 何生（何生事務所話事人／玩家經理人；
    通告經佢接洽、試鏡結果由佢通知）。阿偉／主演永不頂替。圖缺失嗰陣英雄區成區隱藏，只出卡。 */
 const GIG_ISSUER_FIGURE_MAP30V2 = {
-  "tvb_longmen":  { src:"assets/story/fullbody/boss_tvb_longmen_base.webp?v=20a106",  name:"沈卓衡", org:"星河電視台", role:"台長" },
-  "film_lion":    { src:"assets/story/fullbody/boss_film_lion_base.webp?v=20a106",    name:"羅勁威", org:"獅子山製片", role:"老闆" },
-  "ad_adm":       { src:"assets/story/fullbody/boss_ad_adm_base.webp?v=20a106",       name:"方樂怡", org:"金鐘創意",   role:"老闆" },
-  "ad_central":   { src:"assets/story/fullbody/boss_ad_central_base.webp?v=20a106",   name:"霍君豪", org:"中環廣告",   role:"老闆" },
-  "rec_hk":       { src:"assets/story/fullbody/boss_rec_hk_base.webp?v=20a106",       name:"伍兆昌", org:"香江唱片",   role:"老闆" },
-  "tvb_kowloon":  { src:"assets/story/fullbody/boss_tvb_kowloon_base.webp?v=20a106",  name:"陶映紅", org:"九龍電視台", role:"台長" },
-  "film_cotton":  { src:"assets/story/fullbody/boss_film_cotton_base.webp?v=20a106",  name:"鄭伯康", org:"紅棉影業",   role:"老闆" },
-  "rec_wanchai":  { src:"assets/story/fullbody/boss_rec_wanchai_base.webp?v=20a106",  name:"梁廣成", org:"灣仔唱片",   role:"老闆" },
-  "tvb_harbour":  { src:"assets/story/fullbody/boss_tvb_harbour_base.webp?v=20a106",  name:"顧學禮", org:"海港廣播",   role:"台長" },
-  "film_harbour": { src:"assets/story/fullbody/boss_film_harbour_base.webp?v=20a106", name:"夏文心", org:"維港電影",   role:"老闆" },
-  "rec_star":     { src:"assets/story/fullbody/boss_rec_star_base.webp?v=20a106",     name:"溫子峰", org:"天星音樂",   role:"老闆" },
+  "tvb_longmen":  { src:"assets/story/fullbody/boss_tvb_longmen_v2b_base.webp?v=20a106",  name:"沈卓衡", org:"星河電視台", role:"台長" },
+  "film_lion":    { src:"assets/story/fullbody/boss_film_lion_v2b_base.webp?v=20a106",    name:"羅勁威", org:"獅子山製片", role:"老闆" },
+  "ad_adm":       { src:"assets/story/fullbody/boss_ad_adm_v2_base.webp?v=20a106",       name:"方樂怡", org:"金鐘創意",   role:"老闆" },
+  "ad_central":   { src:"assets/story/fullbody/boss_ad_central_v2_base.webp?v=20a106",   name:"霍君豪", org:"中環廣告",   role:"老闆" },
+  "rec_hk":       { src:"assets/story/fullbody/boss_rec_hk_v2_base.webp?v=20a106",       name:"伍兆昌", org:"香江唱片",   role:"老闆" },
+  "tvb_kowloon":  { src:"assets/story/fullbody/boss_tvb_kowloon_v2_base.webp?v=20a106",  name:"陶映紅", org:"九龍電視台", role:"台長" },
+  "film_cotton":  { src:"assets/story/fullbody/boss_film_cotton_v2_base.webp?v=20a106",  name:"鄭伯康", org:"紅棉影業",   role:"老闆" },
+  "rec_wanchai":  { src:"assets/story/fullbody/boss_rec_wanchai_v2b_base.webp?v=20a106",  name:"梁廣成", org:"灣仔唱片",   role:"老闆" },
+  "tvb_harbour":  { src:"assets/story/fullbody/boss_tvb_harbour_v2b_base.webp?v=20a106",  name:"顧學禮", org:"海港廣播",   role:"台長" },
+  "film_harbour": { src:"assets/story/fullbody/boss_film_harbour_v2_base.webp?v=20a106", name:"夏文心", org:"維港電影",   role:"老闆" },
+  "rec_star":     { src:"assets/story/fullbody/boss_rec_star_v2_base.webp?v=20a106",     name:"溫子峰", org:"天星音樂",   role:"老闆" },
 };
 function gigIssuerFigure30v2(g){
   try{
