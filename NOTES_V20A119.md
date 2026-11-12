@@ -1,7 +1,7 @@
 # NOTES_V20A119 — 無名角色剪影接入（DLG119）
 
 - 合併：分支 `v119-shadow`（rebase 後 tip `7a8cffa`，基底 main `3be1b3d` v124）→ squash 入 main **`fd4860a`**，已 push。
-- 線上核實：本地 index.html **5,159,938 bytes**／sha256 `e771c824fc91fe0e…`（curl 線上對數見下）。
+- 線上核實：本地 index.html **5,159,938 bytes**／sha256 `e771c824fc91fe0e…`；curl 線上 **200、5,159,938 bytes、sha `e771c824fc91fe0e…`，對上**（push 後即刻驗，Pages 無滯後）。
 - 測試：全套 A/B——pristine main（`3be1b3d`）**167 PASS／12 FAIL** vs 工作版 **169 PASS／12 FAIL**，零新增回歸；新 PASS 得 2 個新守門（`test_dlg119_logic.js`、`test_dlg119_static.py`，含反證）。12 FAIL 係既有清單（flash51／giglib36／pacing35／poster59／rumor49／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wrap38），兩邊一致。
 - 實駕：Playwright 390×844、`?softPreview=1`、本地鏡像＋逐檔 byte／sha 核對，**0 pageerror**（全部 5 次驅動）。25 幕實機＋2 幕合成對照，38 名全覆蓋（見 §2）。
 - 回滾：`git revert fd4860a`（squash 單一 commit；影圖檔＋測試一併還原）。
