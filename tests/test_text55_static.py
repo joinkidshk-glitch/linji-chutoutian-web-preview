@@ -40,7 +40,7 @@ chk('C10 debt toast natural', '請截圖回報' not in src)
 chk('C10 press headline natural', '俾人截圖' not in outside)
 # favor-debt fallback placeholder
 chk('debt fallback natural', 'line || "（文案待補）"' not in src and 'line || "人情一筆"' in src)
-# KHM: name only in QA ban-lists / speaker registry / cleaner patterns
+# KHM (v151)：名禁令退役——cleaner pattern 已拎走；名只留喺 QA ban-lists（其餘人名）／speaker registry／display
 import re
 ctx_ok = True
 for m in re.finditer('關海媚', outside):
@@ -48,7 +48,7 @@ for m in re.finditer('關海媚', outside):
     if not any(k in ctx for k in ['陳淑芬', 'speaker', 'display', 'devAppendix', '禁令', 'Ho', 'guanHaimei', 'kwan_hoimei', 'indexOf']):
         ctx_ok = False
 chk('KHM outside tables only in QA/registry contexts', ctx_ok)
-chk('KHM cleaner pattern present', '"關海媚", "當紅花旦"' in block)
+chk('KHM cleaner pattern removed (v151)', '"關海媚", "當紅花旦"' not in block)
 # A8: undefined jargon in story hint overrides replaced
 chk('A8 hint overrides natural', outside.count('雙軌總和夠數') == 0 and '聲望同信用總和夠數' in src)
 # item name unified

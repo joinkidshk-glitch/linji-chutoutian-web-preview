@@ -18,9 +18,9 @@ chk('A10 rumor line', TF.textfix55Str('你啱啱聽完關於星河電視台嘅�
 chk('A6 tutorial body', TF.textfix55Str('正式版同熟人「傾談／送禮」耗一日；試玩閘（softBehaviorGate）下傾談／送禮不耗日（茶錢仍可能扣費；訓練／試鏡／休息／行程表演仍耗日）。', 'body', null, TF.TEXTFIX55_OPTS_SIMPLE) === '而家同熟人傾談或者送禮都唔會計一日（茶錢照扣）；只有訓練、試鏡、休息同跟行程開工先會計日。');
 // C11: sent-death-question phrase swap
 chk('C11 phrase', TF.textfix55Str('接送命題嗰陣', 'lines', null, TF.TEXTFIX55_OPTS_STORY) === '接辣手問題嗰陣');
-// KHM: name scrubbed to title in display fields
+// KHM (v151)：名禁令退役——display 欄位而家直出真名，唔再洗做稱號
 const w1 = TF.textfix55Walk({ beats: [{ speaker: '關海媚', lines: ['關海媚企喺窗邊。'] }] }, null, null, TF.TEXTFIX55_OPTS_STORY);
-chk('KHM speaker+lines', w1.beats[0].speaker === '當紅花旦' && w1.beats[0].lines[0] === '當紅花旦企喺窗邊。');
+chk('KHM speaker+lines', w1.beats[0].speaker === '關海媚' && w1.beats[0].lines[0] === '關海媚企喺窗邊。');
 // A16/A17: effects.notes engine shorthand -> human text
 chk('note ending-parallel strip', TF.textfix55Note('張子駿／文藝線；craft 高。愛情結局另表並存。') === '跟張子駿行文藝線，手藝夠硬。');
 chk('note flag write', TF.textfix55Note('你拒絕咗，信用加一，寫入 flag_ho_trust') === '你拒絕咗，信用加一。');

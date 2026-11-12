@@ -40,10 +40,20 @@ seg_end = html.find('function normalizeGigRecord', seg_start) if seg_start >= 0 
 seg = html[seg_start:seg_end] if (seg_start >= 0 and seg_end > seg_start) else ''
 ok('OVR110 段冇真藝人名', not any(n in seg for n in ['周星馳','劉德華','張國榮','周潤發','梁朝偉','梅艷芳','張曼玉','王祖賢','鍾楚紅','林青霞']))
 # content pack JSON 唔准俾本包改動（OVR110 一律行 normalize 層）
+# v151 例外：三檔 DENG mock 准許淨刪 guanHaimeiUpgradeForbidden 一行（名禁令退役）。
+def _v151_flag_only(p):
+    try:
+        d = subprocess.run(['git', '-C', ROOT, 'diff', 'HEAD', '--', p],
+                           capture_output=True, text=True, timeout=30).stdout
+    except Exception:
+        return False
+    removed = [l for l in d.splitlines() if l.startswith('-') and not l.startswith('---')]
+    added = [l for l in d.splitlines() if l.startswith('+') and not l.startswith('+++')]
+    return len(removed) in (1, 2) and all(r == '-    "guanHaimeiUpgradeForbidden": true,' for r in removed) and added == []
 try:
     out = subprocess.run(['git', '-C', ROOT, 'diff', '--name-only', 'HEAD', '--', 'content/'],
                          capture_output=True, text=True, timeout=60)
-    changed = [l for l in out.stdout.splitlines() if l.strip()]
+    changed = [l for l in out.stdout.splitlines() if l.strip() and not _v151_flag_only(l)]
     ok('content/*.json 零改動', changed == [])
 except Exception as e:
     ok('content/*.json 零改動（git 檢查失敗：%s）' % e, False)

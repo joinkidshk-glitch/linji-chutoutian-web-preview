@@ -5,7 +5,7 @@
 #   (2) B-12/C-05 稱呼線分類器：全 index 嘅「偉翔」（NPC 對白，唔計陳偉翔全名指稱）
 #       只准出現在 T4 opener／pool、king、heart、patron／finale beat 語境；
 #   (3) 檔案層衛生：protagonist／worldview／cast_main／gift_react 正規化；
-#       SP_SPEAKER_REG 關海媚 display＝稱號；LOCS 海港廣播 desc 有電台交代；
+#       SP_SPEAKER_REG 關海媚 display＝真名（v151 解禁，舊稱號規則退役）；LOCS 海港廣播 desc 有電台交代；
 #   (4) A-09：NEWS82 E5 第一段已改傳聞框架（盛傳／有傳／密斟），冇直述「相繼過檔」；
 #   (5) TEXTFIX55_EXACT 新五條（C5 秋日×3、C1 星河電視城、C4 一筆勾銷）齊；
 #       pack 原文仍然存在（證明行緊覆寫層、冇直改 pack）；
@@ -92,8 +92,8 @@ gj = io.open(os.path.join(root, 'content', 'gift_react_copy.json'), encoding='ut
 ok('H gift 藍冇錄音前/練歌', '今晚錄音前' not in gj and '練歌時' not in gj)
 ok('H gift 藍 PA 措辭到位', '今晚開工前先偷吃一粒' in gj and '跟場成晚' in gj)
 ok('H gift 冇聯姻壓力標籤', '聯姻壓力' not in gj)
-ok('H speaker 關海媚稱號', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"當紅花旦" }' in html)
-ok('H speaker 冇原名display', 'display:"關海媚"' not in html)
+ok('H speaker 關海媚真名display (v151)', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"關海媚" }' in html)
+ok('H speaker 唔再用稱號display (v151)', 'display:"當紅花旦"' not in html)
 ok('H 海港廣播 desc 電台交代', '海港電台嘅錄音室' in html)
 
 # (3b) B-11 自檢夾具：seed/calendar 四條期望值已對返 START 1990；when 分支 p3when 維持 1988（節點自帶年份）

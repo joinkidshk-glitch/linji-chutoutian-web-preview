@@ -55,8 +55,20 @@ packs = [
     "content/story_detail_romance_tang.json",
     "content/story_detail_rival_mentor.json",
 ]
+# v151 例外：兩檔 DENG mock 准許刪走 guanHaimeiUpgradeForbidden 一行（名禁令退役）；
+# 驗法：BASE 版刪走呢行之後要同現版逐字相同（唔係任意改）；其餘六檔照舊逐檔 sha 對照。
+V151_FLAG_LINE = '    "guanHaimeiUpgradeForbidden": true,\n'
+V151_PACKS = {
+    "content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json",
+    "content/MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json",
+}
 for p in packs:
-    ok("pack 冇直改: " + p, sha(os.path.join(ROOT, p)) == sha(os.path.join(BASE, p)))
+    if p in V151_PACKS:
+        base_txt = open(os.path.join(BASE, p), encoding="utf8").read()
+        cur_txt = open(os.path.join(ROOT, p), encoding="utf8").read()
+        ok("pack v151 只刪禁令 flag: " + p, base_txt.replace(V151_FLAG_LINE, "") == cur_txt)
+    else:
+        ok("pack 冇直改: " + p, sha(os.path.join(ROOT, p)) == sha(os.path.join(BASE, p)))
 
 # 審計腳本留底
 ok("審計腳本存在", os.path.exists(os.path.join(ROOT, "tests", "audit_wf5.js")))
