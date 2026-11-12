@@ -147,11 +147,34 @@ v115 文字一句唔郁；數字一概唔變；SAVE key（`starVolunteer_map_v19
 提及「摺疊狀態」（純註釋，零行為影響，留返唔郁）。
 
 ## 殘留缺口
-- 每週 pattern／導演真名／製作人三行喺兩張目標通告全部唔出（兩張都係 1 日＋generic 導演＋
+- ~~每週 pattern／導演真名／製作人三行喺兩張目標通告全部唔出（兩張都係 1 日＋generic 導演＋
   無製作人）——規則本身啱，但實駕未能親眼見到呢三行喺摘要區出現嘅樣。現成對照：
   《靈幻喜劇迎春夜》`gig_1988_tvb_longmen_spring_high`（星河電視台同板）係多日
   （shootDaysHint 5）＋真名導演黃志鳴＋製作人鄧啟東，三行應該齊出——
-  建議合併前／線上核實嗰陣開呢張睇埋。
+  建議合併前／線上核實嗰陣開呢張睇埋。~~ **已補驗（統籌，rebase 後）**：
+  `qa117/drive117_spring.py` 實駕《靈幻喜劇迎春夜》，0 pageerror——摘要區親眼見到三行齊出：
+  導演 黃志鳴／製作人 鄧啟東／可開工 每週最多 6 日＋逢週一至六＋「實際只需通告 2 日
+  （唔係每週做滿）」（total=2＜weekly=6 嗰句跟埋出）；特殊限制「須接受高壓檔期安排」＋
+  劇情簡介＋角色行齊全；掣＋詳細區消失。證據 `qa117/drive117_spring.json`＋
+  `qa117/shots/spring_spring_sheet.png`／`spring_spring_sheet_bottom.png`
+  （bottom 截圖頂行半裁係碌位 artifact，DOM JSON 核實文字無誤）。
+  欄卡 meta 亦係兩行「片酬 $3,000」／「拍攝約 2 日」。
+
+## 合併後補記（統籌）
+- Rebase：分支由 `4d967ed` rebase 上 main `2d71588`（v114 `cf66865`＋NOTES），乾淨無衝突，
+  新 commit `42b37db`。
+- **travel114 行號同步（rebase 後新問題，唔係 v117 內容錯）**：全套重跑 154 PASS／13 FAIL，
+  唯一新增 FAIL 係 `test_travel114_static.py`（main 上 PASS）。根源：該測試將
+  `FREE_LINES`／`COUNT_LINES`／`DEF_LINE`／`WRAPPER_LINE` 寫死做行號，v117 刪詳細區
+  淨 −93 行令行號移位（−75 行喺 ~34136 行之前、−93 行喺之後）。修法：逐行經 difflib
+  對位舊 main 行內容核實新行號（唔係得個常數偏移），同步測試兩個清單＋兩行常數；
+  測試本身嘅覆蓋檢查（零漏網呼叫點）即係反證。結果：該測試 68 PASS／0 FAIL。
+  全套重跑：**155 PASS／12 FAIL**（v114 main 154／12＋新守門檔 1；FAIL 清單逐字相同），零回歸。
+- 合併：squash 入 main（見 main commit），線上 curl 核實 byte＋sha（見下）。
+
+## 線上核實
+- main commit：
+- 線上 index.html： bytes，sha256：
 - 導演 generic 集係窮舉已知 8 值：將來年庫加新職銜值（例如「副導阿強」）會漏網而出街——
   可接受，測試釘死咗已知 8 值；要根治先改做職銜關鍵字規則，另開一票。
 - 本分支基於 main `4d967ed`；期間 v114 已合併入 main（`cf66865`，出行額度 2 次／日）——
