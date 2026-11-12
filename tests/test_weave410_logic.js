@@ -75,7 +75,7 @@ var modalPages410 = [];
 var modal = function(htmlStr, buttons){ modalPages410.push({ html: htmlStr, buttons: buttons || [] }); };
 
 const SRC = [
-  "var START = { y:1990, m:3, d:7 };",
+  extractConst('START'),  // v20a136：唔再 hardcode 舊 1990-03-07 epoch——抽真 const（v20a67 START＝1990-01-01），否則 weekMin:153 永遠唔啱（舊 epoch week 短 9）
   extractFn('function dateObj'),
   extractFn('function calendarSeason'),
   extractFn('function weekNumNow'),
@@ -161,6 +161,10 @@ const SRC = [
   extractConst('ENDING410_CHOICE_IDS'),
   extractConst('STORY_SPINE_NODE_C17_410'),
   extractConst('ENDING410_ADJ_RUMOR'),
+  /* v20a136：awardResolved 檢查行真 awardsGetFlag（＋ensureAwardsFlags／awardsFlagKey），唔 stub */
+  extractFn('function ensureAwardsFlags'),
+  extractFn('function awardsFlagKey'),
+  extractFn('function awardsGetFlag'),
   extractIIFE('const BehaviorGate = (function(){'),
   extractIIFE('const StoryOC = (()=>{'),
 ].join('\n')
@@ -190,6 +194,7 @@ const SRC = [
  .replace('const ENDING410_CHOICE_IDS =', 'var ENDING410_CHOICE_IDS =')
  .replace('const STORY_SPINE_NODE_C17_410 =', 'var STORY_SPINE_NODE_C17_410 =')
  .replace('const ENDING410_ADJ_RUMOR =', 'var ENDING410_ADJ_RUMOR =')
+ .replace('const START =', 'var START =')
  .replace('const BehaviorGate =', 'var BehaviorGate =')
  .replace('const StoryOC =', 'var StoryOC =');
 eval(SRC);
@@ -197,7 +202,7 @@ var displayDateObj = function(){ return dateObj(); };
 
 ok('harness: 結局系統函數載入', typeof resolveEnding410 === 'function' && typeof endingEveOptions410 === 'function' && typeof applyStorySpineOverrides410 === 'function');
 
-function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1990, 2, 7)) / 86400000); }
+function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1990, 0, 1)) / 86400000); }  // v20a136：epoch 跟真 START 1990-01-01（舊 1990-03-07 令 week 短 9）
 function baseSave(over){
   return Object.assign({
     dayIndex: dayIndexOf(1992, 12, 15), money: 900, fame: 20, stage: 0, acting: 8, popularity: 30,
@@ -326,8 +331,10 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
   ok('閘：1991 冬（yearEq 唔中）→ C17 唔開', !openIds().includes('C17'));
   loadGame(baseSave({ story: { flags: {}, rel: {}, done: {}, choices: {} } }));
   ok('閘：1992 冬但 C13 未 done → C17 唔開', !openIds().includes('C17'));
-  loadGame(baseSave({ story: { flags: {}, rel: {}, done: { C13: true }, choices: {} } }));
+  loadGame(baseSave({ awardsFlags: { "1992/award_singho_tv": "done" }, story: { flags: {}, rel: {}, done: { C13: true }, choices: {} } }));
   ok('閘：1992 冬＋C13 done → C17 開', openIds().includes('C17'));
+  loadGame(baseSave({ story: { flags: {}, rel: {}, done: { C13: true }, choices: {} } }));
+  ok('閘：1992 冬＋C13 done 但台慶未有結果 → C17 唔開（v20a136 awardResolved）', !openIds().includes('C17'));
   const n = node('C17');
   ok('覆寫：C17 係「三年收科」＋locId tvb_longmen＋有 playerOffer', n.title === '三年收科' && n.locId === 'tvb_longmen' && !!n.playerOffer);
   ok('覆寫：舊十檔清零（冇 endingId choices／冇 E01 字串／冇 ending_e 旗）',
@@ -443,6 +450,7 @@ function eveKeys(over){
 {
   /* 舊檔 A：舊 pack C13 已 done、C17 未播（offer 狀態）→ 行到新流程 */
   loadGame(baseSave({
+    awardsFlags: { "1992/award_singho_tv": "done" },
     story: { flags: { gossip_vague: true }, rel: { rel_choi: 2 }, done: { C13: true }, choices: { C13: 'C13_c' } }
   }));
   ok('舊檔 A：C17 以新節點開到、唔 crash', openIds().includes('C17') && node('C17').title === '三年收科');

@@ -19435,7 +19435,7 @@ const STORY_HINT_SOFT = {
   C16: { playerHint: "舞蹈室嗰邊試音試到夜，程天諾就喺隔籬練舞。", lockedHint: "1990 年秋末先開，仲要做完樂壇前哨、聲望同信用總和夠數。未到就照常跑通告；開咗去天星音樂舞蹈室。", nextHint: "下一幕「賀歲片」——1990 年冬，廖炳星嗰組賀歲片飛紙仔滿天飛；開咗去紅棉影業片場。" },
   C13: { playerHint: "賀歲片趕住煞科，炳星同導演鬧到停機——你要執生，定跟足劇本？", lockedHint: "1990 年冬先開（賀歲片趕工季）。未到就照常跑通告；開咗去紅棉影業片場。", nextHint: "主線去到尾聲——1990 年冬末頒獎禮季，三年就嚟收科。" },
   /* v20a33 WEAVE_PHASE4_10：C17 前夕場景提示 */
-  C17: { playerHint: "頒獎禮前夕，何生喺後台等你——三年，係時候收科。", lockedHint: "1990 年冬、賀歲片煞科之後先到呢一晚。未到就照常跑通告；到咗去星河電視台後台。", nextHint: "" },
+  C17: { playerHint: "台慶之後，何生喺後台等你——三年，係時候收科。", lockedHint: "1990 年冬、台慶之後先到呢一晚。未到就照常跑通告；到咗去星河電視台後台。", nextHint: "" },
 };
 const STORY_TITLE_SOFT = {
   C1: "先學做動作戲／先賺", C2: "留人脈／趕通告", C3: "對對手硬／忍", C4: "何生拒單", C5: "采兒小訪題",
@@ -19497,8 +19497,17 @@ const STORY_GATE_3Y = {
      v20a113：刻意唔補 needDone C16——C16 係 1992 秋末＋dual>125；若果 C13 要 C16，錯過 C16 嘅玩家會連
      C13＋C17（結局）一齊死（災難性軟鎖）。C13 係恢復節點，關鍵路徑經 C17 要 C13 間接卡住。 */
   C13: { yearMin: 1992, seasonIn: ["冬"] },
-  /* N17＝C17（1992 冬・事件閘）：前置 N16＝C13。結局判定／呈現係 4-10，呢度只守入場閘 */
-  C17: { needDone: ["C13"], yearEq: 1992, seasonIn: ["冬"] },
+  /* N17＝C17（1992 冬・事件閘）：前置 N16＝C13。結局判定／呈現係 4-10，呢度只守入場閘
+     v20a136：搬閘去 1992 年 12 月——舊閘得 yearEq＋seasonIn（冬＝12／1／2 月），1992 年 1 月 1 日
+     已經成立，結局 day ~746（調查報告 ~/workspace/linji-endgate-inv/ENDGATE_INVESTIGATION.md）。
+     weekMin 153 實數：1992-12-01＝dayIndex 1065＝第 153 週（同 C18 weekMin 48／C19 weekMin 61
+     先列）；11 月 30 日（週 153）係秋，seasonIn 唔過，12 月 1 日三個條件齊晒先開。
+     awardResolved：要等 1992 屆冬台慶有結果先開（flag done／skipped 先計；invited／pending／
+     空字串唔計）——去咗／旁聽／推辭都計有結果；1992 年 1 月嗰場係屆別 1991（awardsEditionYear：
+     冬季 1–2 月歸上一年），唔會誤觸。backstopDay 1096：1993-01-01（dayIndex 1096）之後無條件開，
+     1992-12-31 係硬邊界（評估器繞過全部條件，包括同日 pacing 檢查）。 */
+  C17: { needDone: ["C13"], weekMin: 153, yearEq: 1992, seasonIn: ["冬"],
+    awardResolved: { ceremonyId: "award_singho_tv", year: 1992 }, backstopDay: 1096 },
   /* WF1 補幕：1990冬（真空帶前段）
      v20a113：補 needDone C5＋weekMin 48——舊閘得 yearMin＋seasonIn，1990 年 1 月計做冬，第 2 週去
      事務所已經開得（用戶 2026-11-12 實玩捉到跳步）。weekMin 48 實數：1990-12-01＝dayIndex 334＝
@@ -20576,7 +20585,7 @@ function applyStorySpineOverrides46(){
    紅星 speakerId：廖炳星有 era 資產（liu_bingxing）照用；麥震東／齊鎮海／陸柏言／程天諾未有
    era speaker 資產，跟 4-6 顧明輝／彭少祺先例用 speaker 顯示名（通用剪影＋名照出）。 */
 const STORY_SPINE_NODES_1990 = {
-  /* N12＝C15（1990 春・高危替身）：做高危替身／拒接；麥震東（動作片片場） */
+  /* N12＝C15（1992 春・高危替身）：做高危替身／拒接；麥震東（動作片片場） */
   C15: {
     id: "C15",
     phase: "P3",
@@ -20763,7 +20772,7 @@ const STORY_SPINE_NODES_1990 = {
     redStarHook: "麥震東喺動作片片場：巨星拍高危鏡頭受傷，成組等一個人頂上。",
     nodeRipple: "做替身升聲望兼令動作組欠你一份人情（債權）；拒接就落個「惜身」口碑——兩條路，兩種演員。"
   },
-  /* N13＝C14（1990 夏・站隊）：站隊電視台／站隊電影公司；齊鎮海（高爾夫球場挖角） */
+  /* N13＝C14（1992 夏・站隊）：站隊電視台／站隊電影公司；齊鎮海（高爾夫球場挖角） */
   C14: {
     id: "C14",
     phase: "P3",
@@ -20966,7 +20975,7 @@ const STORY_SPINE_NODES_1990 = {
     redStarHook: "齊鎮海喺高爾夫球場：一哥俾對台高價挖角傳聞纏身，佢自己先嚟挖你角。",
     nodeRipple: "站電視台跌信用（班底記情）；站電影公司升聲望（大製作入場券）。"
   },
-  /* N14＝C12（1990 秋・樂壇前哨）：幫粉絲應援／避開狂熱粉；陸柏言（唱片公司大堂） */
+  /* N14＝C12（1992 秋・樂壇前哨）：幫粉絲應援／避開狂熱粉；陸柏言（唱片公司大堂） */
   C12: {
     id: "C12",
     phase: "P3",
@@ -21192,7 +21201,7 @@ const STORY_SPINE_NODES_1990 = {
     redStarHook: "陸柏言喺唱片公司大堂：天王俾緋聞纏身，歌迷聚集聲援，前哨戰味濃。",
     nodeRipple: "應援升聲望兼得「親和力」；避開跌信用兼得「高冷」——代言嗰邊會記住。"
   },
-  /* N15＝C16（1990 秋末・偶像實力之爭）：靠修音／苦練唱功；程天諾（舞蹈室） */
+  /* N15＝C16（1992 秋末・偶像實力之爭）：靠修音／苦練唱功；程天諾（舞蹈室） */
   C16: {
     id: "C16",
     phase: "P3",
@@ -21379,7 +21388,7 @@ const STORY_SPINE_NODES_1990 = {
     redStarHook: "程天諾喺天星音樂舞蹈室：跳唱新人俾實力派公開批評，佢用半夜嘅汗嚟答。",
     nodeRipple: "靠修音得「偶像派」升聲望；苦練得「實力派」跌信用——終局口碑標籤，喺呢度落釘。"
   },
-  /* N16＝C13（1990 冬・賀歲片）：臨場爆肚／死背劇本；廖炳星（片場鬧翻） */
+  /* N16＝C13（1992 冬・賀歲片）：臨場爆肚／死背劇本；廖炳星（片場鬧翻） */
   C13: {
     id: "C13",
     phase: "P3",
@@ -25460,6 +25469,21 @@ const BehaviorGate = (function(){
     const entry = gate3YEntry(id);
     if(!entry) return null;
     const ctx = readCtx(opts||{});
+    /* v20a136 backstopDay：過咗硬邊界（C17：1993-01-01＝dayIndex 1096）無條件開，繞過全部條件
+       （needDone／weekMin／yearEq／seasonIn／awardResolved／同日 pacing 檢查一併繞過）。 */
+    if(entry.backstopDay!=null && Number(ctx.dayIndex) >= Number(entry.backstopDay)){
+      return {
+        ok: true,
+        openable: true,
+        and: [{ token: "backstopDay:"+entry.backstopDay, ok: true, reason: "ok" }],
+        any: null,
+        phaseSoft: null,
+        reasons: [],
+        skippedThresholds: [],
+        gate3Y: true,
+        softBehavior: gatePath()==="soft",
+      };
+    }
     const checks = [];
     let ok = true;
     const step = (token, pass)=>{ checks.push({ token:token, ok:!!pass, reason: pass ? "ok" : "fail" }); if(!pass) ok = false; };
@@ -25480,6 +25504,17 @@ const BehaviorGate = (function(){
     if(Array.isArray(entry.seasonIn) && entry.seasonIn.length){
       const cur = seasonKeyOf(ctx.season);
       step("seasonIn:"+entry.seasonIn.join("|"), !!cur && entry.seasonIn.some(s=>seasonKeyOf(s)===cur));
+    }
+    /* v20a136 awardResolved：嗰屆頒獎禮要有終端結果（awardsGetFlag＝done／skipped）先開；
+       invited／pending／空字串唔計。defensive：S／awardsFlags 唔存在嗰陣當未解決，唔好 crash。 */
+    if(entry.awardResolved){
+      const ar = entry.awardResolved;
+      let resolved = false;
+      try{
+        const st = (typeof awardsGetFlag==="function") ? awardsGetFlag(ar.year, ar.ceremonyId) : "";
+        resolved = (st==="done" || st==="skipped");
+      }catch(_e){ resolved = false; }
+      step("awardResolved:"+ar.year+"/"+ar.ceremonyId, resolved);
     }
     try{
       if(!(opts && opts.ignorePacing===true) && typeof S!=="undefined" && S && S.story
@@ -29492,7 +29527,7 @@ function endingEveOptions410(st, baseRes){
   const base = baseRes || resolveEnding410(s);
   const favor = endingFavor410(s);
   const out = [];
-  out.push({ key: "natural", label: "順其自然：照呢三年嘅路，行到邊度就邊度", note: "唔強求，唔回頭——頒獎禮開場，你企返你企慣嗰個位。" });
+  out.push({ key: "natural", label: "順其自然：照呢三年嘅路，行到邊度就邊度", note: "唔強求，唔回頭——頒獎禮散場，你企返你企慣嗰個位。"  /* v20a136：C17 成幕改做頒獎禮之後（動態重建選項，靜態節點 notes 嗰句同步改咗） */ });
   if(endingFlag410(s, "flag_family_job_accept")){
     out.push({ key: "quit_job", label: "收山：屋企嗰份穩陣工仲等緊你——接咗佢，唔再做呢行", note: "講明先：揀呢個，今晚之後你就唔再係呢行嘅人。（退圈・安穩）" });
   } else {
@@ -29524,7 +29559,7 @@ const STORY_SPINE_NODE_C17_410 = {
   phase: "P5",
   title: "三年收科",
   when: "1990冬",
-  setting: "星河電視台頒獎禮後台化妝間；1990 年冬末，三年前嗰個臨記，企喺頒獎禮門口",
+  setting: "星河電視台頒獎禮後台化妝間；1990 年冬末，三年前嗰個臨記，喺頒獎禮散場之後仲企喺後台",
   locId: "tvb_longmen",
   eraTag: "era_1990_winter_finale",
   cast: [
@@ -29532,17 +29567,17 @@ const STORY_SPINE_NODE_C17_410 = {
     "何生",
     "張子駿"
   ],
-  synopsis: "1990 年冬末，台慶頒獎禮前夕。三年——由茶餐廳聽人講邊個紅邊個沉，到自己企喺化妝間，等人叫名。何生攞住流程表入嚟，有啲說話，要喺開場之前同你講清楚。",
-  playerOffer: "頒獎禮前夕，何生喺後台等你——三年，係時候收科。",
-  playerHint: "頒獎禮前夕，何生喺後台等你——三年，係時候收科。",
-  lockedHint: "1990 年冬、賀歲片煞科之後先到呢一晚。未到就照常跑通告；到咗去星河電視台後台。",
+  synopsis: "1990 年冬末，台慶頒獎禮之後。三年——由茶餐廳聽人講邊個紅邊個沉，到自己企喺化妝間，聽住台前散場嘅人聲。何生攞住流程表入嚟，有啲說話，要喺散場之前同你講清楚。",
+  playerOffer: "台慶之後，何生喺後台等你——三年，係時候收科。",
+  playerHint: "台慶之後，何生喺後台等你——三年，係時候收科。",
+  lockedHint: "1990 年冬、台慶之後先到呢一晚。未到就照常跑通告；到咗去星河電視台後台。",
   nextHint: "",
   beats: [
     {
       speaker: "系統",
       kind: "system",
       lines: [
-        "1990 年冬末，星河電視台頒獎禮後台。化妝鏡一排燈泡熱到出煙，走廊盡頭已經聽到司儀試咪。",
+        "1990 年冬末，星河電視台頒獎禮後台。化妝鏡一排燈泡熱到出煙，走廊盡頭仲聽到散場嘅人聲。",
         "三年前，你喺茶餐廳聽人講邊個紅、邊個沉；今晚，流程表上面，有你個名。"
       ]
     },
@@ -29550,8 +29585,8 @@ const STORY_SPINE_NODE_C17_410 = {
       speaker: "系統",
       kind: "system",
       lines: [
-        "你係坐公司車嚟嘅。電視台門口鋪咗紅地氈，欄杆外歌迷同記者迫成兩堵牆，閃光燈閃到你眼前發白。",
-        "三年前你連後台道門喺邊都唔知，企喺門口等通告，等極都冇人叫你個名；今晚，你係行紅地氈入去嗰個。"
+        "你係坐公司車嚟嘅。電視台門口條紅地氈啱啱捲起，欄杆外仲有歌迷同記者未散，閃光燈間唔中閃一下。",
+        "三年前你連後台道門喺邊都唔知，企喺門口等通告，等極都冇人叫你個名；今晚，你係俾人請入去、再俾掌聲送出嚟嗰個。"
       ]
     },
     {
@@ -29559,15 +29594,15 @@ const STORY_SPINE_NODE_C17_410 = {
       kind: "npc",
       lines: [
         "阿偉，坐陣。今晚之後，你喺行內點定位，唔再係我講，係你呢三年做過嘅嘢講。",
-        "我唔同你講大道理——你自己諗清楚：企前，定企後？留低，定走？呢啲，今晚之前答自己一次就夠。"
+        "我唔同你講大道理——你自己諗清楚：企前，定企後？留低，定走？呢啲，散場之前答自己一次就夠。"
       ]
     },
     {
       speaker: "何生",
       kind: "npc",
       lines: [
-        "流程我同你對多次：你坐第三排邊位，司儀叫到邊一段，你先好企起身，唔好早，唔好遲。",
-        "仲有，鏡頭掃過嚟嗰陣唔好四圍望——你呢三年點行過嚟，企定定，人哋就睇得明。"
+        "流程表上面，你坐第三排邊位——司儀叫到邊一段、你幾時企起身，今晚全部發生晒喇。剩低要對嘅，唔係流程，係你之後點行。",
+        "仲有，鏡頭掃過嚟嗰陣，你冇四圍望——你呢三年點行過嚟，企定定，人哋就睇得明。"
       ]
     },
     {
@@ -29589,7 +29624,7 @@ const STORY_SPINE_NODE_C17_410 = {
       speaker: "系統",
       kind: "system",
       lines: [
-        "走廊嗰邊，今晚到場嘅紅星陸續入座——有啲你淨係遠遠望過，有啲同你喺同一塊佈景前面企過通宵。",
+        "走廊嗰邊，今晚到場嘅紅星陸續散場——有啲你淨係遠遠望過，有啲同你喺同一塊佈景前面企過通宵。",
         "冇人再當你係嚟送外賣、定嚟等位嗰個臨記；化妝姐順手幫你整一整條領呔，嗌咗你一聲偉哥，你愣咗一下，先記得應佢。"
       ]
     },
@@ -29612,7 +29647,7 @@ const STORY_SPINE_NODE_C17_410 = {
       speaker: "系統",
       kind: "system",
       lines: [
-        "司儀喺台上試最後一次咪。何生企起身，拍拍你膊頭，留返最後一句：",
+        "台前散場嘅人聲漸漸靜落嚟。何生企起身，拍拍你膊頭，留返最後一句：",
         "「諗清楚，就行出去。」"
       ]
     }
@@ -29628,7 +29663,7 @@ const STORY_SPINE_NODE_C17_410 = {
         ],
         stats: {},
         tags: [],
-        notes: "唔強求，唔回頭——頒獎禮開場，你企返你企慣嗰個位。"
+        notes: "唔強求，唔回頭——頒獎禮散場，你企返你企慣嗰個位。"
       }
     },
     {
@@ -29661,7 +29696,7 @@ const STORY_SPINE_NODE_C17_410 = {
   openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（C13 done＋1990 冬，事件閘）；此欄只作 legacy 對照。",
   thresholds: {},
   pacing: {
-    weekMin: 140,
+    weekMin: 153,
     minDaysAfterPrev: 1,
     when: "1990冬",
     prevMain: "C13"
@@ -30058,7 +30093,7 @@ function ending78Gate(){
 }
 function endingSummaryHtml410(){
   const rec = (typeof S!=="undefined" && S && S.ending410) || null;
-  if(!rec) return "<h3>三年收科</h3><p>未收科——去到 1992 年冬、賀歲片煞科之後，頒獎禮前夕嗰晚，先係埋單嗰陣。</p>";
+  if(!rec) return "<h3>三年收科</h3><p>未收科——去到 1992 年冬、台慶之後嗰晚，先係埋單嗰陣。</p>";
   const favorLine = "已清人情 " + (rec.settled|0) + " 筆 · 持有債權 " + (rec.creditsHeld|0) + " 份"
     + ((rec.exodusNames && rec.exodusNames.length) ? " · 絕響 " + rec.exodusNames.length + " 筆" : "");
   const goneLine = (rec.exodusNames && rec.exodusNames.length)
@@ -33178,6 +33213,9 @@ function storyGate113Scrub(o, gate){
     var week = Math.floor((Number(o.dayIndex)||0)/7)+1;
     Object.keys(g).forEach(function(id){
       if(!done[id]) return;
+      /* v20a136：已寫 S.ending410 嘅舊檔（舊閘 1992 年 1 月合法收科）唔清 C17——結局唔復活，
+         完成紀錄亦唔改寫；scrub 只清跳步得返嚟嘅未收科紀錄。 */
+      if(id==="C17" && o.ending410) return;
       var e = g[id] || {};
       var bad = false;
       if(Array.isArray(e.needDone)){
@@ -34024,7 +34062,12 @@ const CONSEQ61_REVIEWS = {
      v66 3 月 epoch 時係 wk43／wk95）。評核前警告由 boundaryWeek 距離 1–4 週自動衍生
      → 警告週位自動跟移去 wk48–51／wk100–103，唔使另改。地板／警告線數字不變。 */
   1990: { floor: 45,  warnLine: 65,  boundaryWeek: 52 },
-  1991: { floor: 100, warnLine: 130, boundaryWeek: 104 }
+  1991: { floor: 100, warnLine: 130, boundaryWeek: 104 },
+  /* v20a136：1992 年條目（結局閘搬去 12 月後，遊戲行到年尾先有第三年評核）。數字暫定，
+     照 1990→1991 升幅推（floor ＋55、warnLine ＋65）：floor 155／warnLine 195；boundaryWeek 156
+     （第 156 週週結 ≈ 1992-12-27，calib60YearOfWeek(156)＝1992 已驗）。警告週（152–155 週）同
+     conseq61LegacyMark 舊檔行為自動跟到，唔使另改。評核數字之後按實玩再調整。 */
+  1992: { floor: 155, warnLine: 195, boundaryWeek: 156 }
 };
 const CONSEQ61_CFG = {
   graceWeeks: 4,        /* 破產寬限：4 個週結；期間有戲拍緊暫停倒數；存款返到夠冚下週生活費、或本週入帳夠冚＋存款返正數（v20a65 FIX65-2）即解除 */
@@ -37617,7 +37660,7 @@ function goToMapForBrowse(){
   /* v20a8：季節窗頒獎請柬（同殺青分 pending；關 sheet 後還原地圖 CTA） */
   try{
     if(typeof queueAwardsOnSeasonWindow==="function") queueAwardsOnSeasonWindow();
-    /* 請柬真係彈出先截住。當日「稍後」唔好再入嚟，否則會遞迴，淡紙永遠留喺佇列。 */
+    /* 請柬真係彈出先截住。v20a136：「稍後」已拎走，dismiss 即推辭，唔會再有靜默 snooze。 */
     if(typeof presentPendingAward==="function" && presentPendingAward(()=>{ try{ goToMapForBrowse(); }catch(_e3){} })) return;
   }catch(_awdMap){}
   /* Soft tip #101：次日朝早報紙。殺青短卡同頒獎請柬先出，正式報紙跟住。 */
@@ -43819,6 +43862,8 @@ function prog71GateItems(id){
       items.push({ ok:ok, text:"有"+(fams.length ? fams.join("或") : "指定")+"標籤" });
       return;
     }
+    if(tok.indexOf("awardResolved:")===0){ items.push({ ok:ok, text:"等冬台慶有結果（去現場／旁聽／推辭都計）" }); return; }
+    if(tok.indexOf("backstopDay:")===0){ return; } /* 兜底條件，唔係玩家要達成嘅要求，唔顯示 */
     if(tok.indexOf("yearEq:")===0 || tok.indexOf("yearMin:")===0 || tok.indexOf("seasonIn:")===0){
       winHas = true; if(!ok) winOk = false; return;
     }
@@ -45305,6 +45350,8 @@ function queueAwardInvite(pack){
   }
   FREEPLAY_FW._pendingAward = pack;
   awardsSetFlag(pack.year, pack.ceremonyId, "invited");
+  /* v20a136 G1：pending pack 持久化入存檔（reload 還原用；出席／推辭嗰陣清走）。 */
+  try{ if(typeof S!=="undefined" && S) S.pendingAwardPack = pack; }catch(_e){}
   return pack;
 }
 function promoteAwardQueue(){
@@ -45314,12 +45361,54 @@ function promoteAwardQueue(){
   const next = q.shift();
   FREEPLAY_FW._pendingAward = next;
   if(next) awardsSetFlag(next.year, next.ceremonyId, "invited");
+  try{ if(next && typeof S!=="undefined" && S) S.pendingAwardPack = next; }catch(_e){}
   return next;
+}
+/* v20a136 G1：reload 遺失請柬還原。FREEPLAY_FW._pendingAward／_awardQueue 係 session-only，
+   但 S.awardsFlags 嘅 invited／pending 旗標係持久化——reload 後請柬唔見、嗰屆亦唔會再排。
+   還原路徑：(b) 優先用 S.pendingAwardPack（queueAwardInvite／promoteAwardQueue 寫入，
+   出席／推辭清走；normalizeSaveObj 原樣保留未知欄位，舊檔唔使遷移）；(a) 後備重建——舊檔
+   （flag invited 但冇 S.pendingAwardPack）由 buildAwardResultPack 重建：tier／分數由 S 計返，
+   係確定性；唯獨入圍類別抽選有 Math.random，重建版類別組合可能唔同原版——請柬本身唔會唔見，
+   結果以重建版為準。由 queueAwardsOnSeasonWindow 統一呼叫（每次返地圖都行一次）。 */
+function restorePendingAward136(){
+  try{
+    const flags = (typeof S!=="undefined" && S && S.awardsFlags && typeof S.awardsFlags==="object") ? S.awardsFlags : {};
+    const persisted = (typeof S!=="undefined" && S) ? S.pendingAwardPack : null;
+    if(persisted && persisted.ceremonyId && persisted.year!=null){
+      const fk = awardsFlagKey(persisted.year, persisted.ceremonyId);
+      const fst = flags[fk];
+      if(fst!=="invited" && fst!=="pending"){
+        try{ S.pendingAwardPack = null; }catch(_e){}
+      }
+    }
+    const keys = Object.keys(flags).filter(k=>{
+      const st = flags[k];
+      return (st==="invited" || st==="pending") && String(k).indexOf("/")>=0;
+    }).sort();
+    keys.forEach(k=>{
+      const parts = String(k).split("/");
+      const year = Number(parts[0]);
+      const cid = parts.slice(1).join("/");
+      if(!cid || !isFinite(year)) return;
+      if(FREEPLAY_FW._pendingAward && FREEPLAY_FW._pendingAward.ceremonyId===cid && FREEPLAY_FW._pendingAward.year===year) return;
+      if(ensureAwardQueue().some(p=>p && p.ceremonyId===cid && p.year===year)) return;
+      if(persisted && persisted.ceremonyId===cid && persisted.year===year){
+        queueAwardInvite(persisted);
+        return;
+      }
+      if(typeof buildAwardResultPack!=="function") return;
+      const rebuilt = buildAwardResultPack({ ceremonyId: cid, year: year });
+      if(rebuilt) queueAwardInvite(rebuilt);
+    });
+  }catch(_e){}
 }
 function queueAwardsOnSeasonWindow(opts){
   opts = opts || {};
   if(!awardsSoftOn() && !opts.force) return [];
   if(!(FREEPLAY_FW.awardsSchema || FREEPLAY_FW.awardsStub)) return [];
+  /* v20a136 G1：先還原 reload 遺失嘅請柬（flag invited／pending 但 session 冇 pack），再排新一屆。 */
+  try{ restorePendingAward136(); }catch(_e){}
   const queued = [];
   awardsCeremonies().forEach(ceremony=>{
     if(!ceremony || !ceremony.id) return;
@@ -45425,31 +45514,30 @@ function presentAwardInvite(pack, thenFn){
   if(!pack){ cont(); return false; }
   const attend = ()=>{
     FREEPLAY_FW._pendingAward = null;
+    try{ if(typeof S!=="undefined" && S) S.pendingAwardPack = null; }catch(_e){}
     /* v20a62 AWARDS62-B：出席先播 8-bit 像素頒獎動畫（可跳過），播完／出事都照入結果卡 */
     try{ awards62PlayCeremony(pack, ()=>presentAwardResult(pack, cont)); }
     catch(_e){ presentAwardResult(pack, cont); }
   };
   const skip = ()=>{
     FREEPLAY_FW._pendingAward = null;
+    try{ if(typeof S!=="undefined" && S) S.pendingAwardPack = null; }catch(_e){}
     pack.skipped = true;
     pack.rewardsApplied = { stageVolume:0, industryCredit:0, money:0, tags:[] };
     commitAwardToLog(pack);
+    /* v20a136 D1：推辭＝典禮照舉行＋第二日報紙講結果——用非 skipped 嘅 pack 副本入報紙
+       （publishDay＝day+1；rewards 保持歸零，唔派獎勵）。declined 副本行專用文案（見
+       enqueueNewspaperFromAward opts.declined）：唔可以用 win／nominee 桶模板——嗰啲寫阿偉
+       奪獎／入圍，推辭咗嘅人根本冇去，寫咗就係假結果。 */
+    try{ enqueueNewspaperFromAward(Object.assign({}, pack, { skipped:false }), { declined:true }); }catch(_np2){}
     try{ toast("已推辭席位", { sub: pack.displayName||"" }); }catch(_e){}
-    cont();
-  };
-  const later = ()=>{
-    /* keep pending; snooze until day advances so goToMapForBrowse 唔即刻再弹 */
-    awardsSetFlag(pack.year, pack.ceremonyId, "invited");
-    FREEPLAY_FW._awardSnoozed = true;
-    FREEPLAY_FW._awardSnoozeDay = (S && (S.dayIndex|0)) || 0;
     cont();
   };
   try{
     modal(renderAwardInviteHtml(pack), [
       { label: "出席", role: "p", on: attend },
-      { label: "推辭", role: "g", on: skip },
-      { label: "稍後", role: "g", on: later }
-    ], { onDismiss: later, keepSheetContent:true });
+      { label: "推辭", role: "g", on: skip }
+    ], { onDismiss: skip, keepSheetContent:true });
     return true;
   }catch(_e){ cont(); return false; }
 }
@@ -45458,15 +45546,9 @@ function presentPendingAward(thenFn){
   try{ queueAwardsOnSeasonWindow(); }catch(_e){}
   promoteAwardQueue();
   const pack = FREEPLAY_FW._pendingAward;
-  /* 冇請柬、或今日已揀「稍後」：交返呼叫方繼續（朝早報紙）。唔好再 call cont，否則同 goToMapForBrowse 對撞到爆棧，淡紙唔會出。 */
+  /* v20a136：「稍後」已拎走（bug：snooze 會令請柬喺同一日內靜默消失，reload 更加唔見）。
+     冇請柬就交返呼叫方繼續（朝早報紙）。唔好再 call cont，否則同 goToMapForBrowse 對撞到爆棧，淡紙唔會出。 */
   if(!pack) return false;
-  try{
-    const day = (S && (S.dayIndex|0)) || 0;
-    if(FREEPLAY_FW._awardSnoozed && (FREEPLAY_FW._awardSnoozeDay|0)===day) return false;
-    if(FREEPLAY_FW._awardSnoozed && (FREEPLAY_FW._awardSnoozeDay|0)!==day){
-      FREEPLAY_FW._awardSnoozed = false;
-    }
-  }catch(_sn){}
   return presentAwardInvite(pack, cont);
 }
 function awardsCheck(){
@@ -45511,7 +45593,7 @@ function awardsDebugForceSeasonWindow(ceremonyId, opts){
     delete f[awardsFlagKey(year, id)];
   }catch(_e){}
   FREEPLAY_FW._pendingAward = null;
-  FREEPLAY_FW._awardSnoozed = false;
+  try{ if(typeof S!=="undefined" && S) S.pendingAwardPack = null; }catch(_e){}
   const packs = queueAwardsOnSeasonWindow({
     force: true,
     forceCeremonyId: id,
@@ -46934,26 +47016,84 @@ function enqueueNewspaperFromWrap(sh, pack, opts){
     firstPress94: firstPress94
   }, opts);
 }
+/* v20a136 G3：旁聽（gallery）報紙模板——inline 注入（唔直改 content JSON，沿用 WF1 注入先例）。
+   唔可以直接映射去 award_nominee 桶：nominee 模板固定文案寫「入圍／提名」，旁聽席觀禮寫咗就係
+   假結果。呢 4 隻模板只寫「阿偉坐喺台下睇完整晚」，唔寫入圍／得獎；fameDelta ＋1（win 桶 4–8、
+   nominee 桶 2，gallery 最細）。 */
+const NEWSPAPER_AWARD_GALLERY_TEMPLATES_136 = [
+  { id:"np_gal_film_01", eventKey:"award_gallery.film", medium:"film", paperName:"娛樂快報",
+    headline:"維港影藝獎之夜 阿偉台下見證新面孔誕生",
+    dek:"維港影藝獎散場。阿偉坐喺台下睇完整晚——未輪到佢上台，但成晚嘅掌聲同燈光，佢全部記低咗。",
+    clipLabel:"娛樂快報・影藝獎夜", rumorEcho:"", fameDelta:1 },
+  { id:"np_gal_tv_01", eventKey:"award_gallery.tv", medium:"tv", paperName:"娛樂快報",
+    headline:"星河台慶夜 阿偉由頭坐到尾",
+    dek:"星河台慶・年度頒獎夜，阿偉坐滿全場。台上邊個拎獎佢都睇住——第日，佢想人哋都睇住佢。",
+    clipLabel:"娛樂快報・台慶夜", rumorEcho:"", fameDelta:1 },
+  { id:"np_gal_music_01", eventKey:"award_gallery.music", medium:"music", paperName:"娛樂快報",
+    headline:"星河金碟夜 阿偉台下聽足成晚",
+    dek:"星河金碟夜結束。阿偉喺台下聽足成晚，由第一首歌到最後一首——嗰啲掌聲，佢想第日係為自己而起。",
+    clipLabel:"娛樂快報・金碟夜", rumorEcho:"", fameDelta:1 },
+  { id:"np_gal_ad_01", eventKey:"award_gallery.ad", medium:"ad", paperName:"娛樂快報",
+    headline:"維港街招賞 阿偉觀禮見證年度廣告",
+    dek:"維港街招賞散場。阿偉坐喺觀禮席，睇住年度廣告一個一個上台——行內嘅版圖，今晚佢睇清楚咗。",
+    clipLabel:"娛樂快報・街招賞", rumorEcho:"", fameDelta:1 }
+];
 function enqueueNewspaperFromAward(pack, opts){
   if(!pack || pack.skipped) return null;
-  let bucket = "";
-  if(pack.bestOutcome==="won") bucket = "award_win";
-  else if(pack.bestOutcome==="nominated" || pack.bestOutcome==="lost") bucket = "award_nominee";
-  else return null;
+  opts = opts || {};
   const press = pack.press || {};
   const year = pack.year!=null ? pack.year : "";
   const ceremonyId = pack.ceremonyId || "award";
   const name = pack.displayName || "頒獎夜";
   const day = (S && (S.dayIndex|0)) || 0;
   const medium = newspaperMediumFromAward(pack);
-  const tmpl = newspaperPickTemplate(bucket, medium);
-  const copy = newspaperCopyFromTemplate(tmpl, {
-    paperName: press.paperName || "娛樂快報",
-    headline: press.headline || (name+"見報"),
-    dek: press.dek || ("阿偉出席"+name+"，娛樂版記了一筆。"),
-    fameDelta: bucket==="award_win" ? 5 : 2,
-    medium: medium
-  });
+  /* v20a136 declined：推辭咗嘅典禮照舉行、第二日報紙講結果——但唔可以用 win／nominee／gallery
+     桶模板（嗰啲寫阿偉奪獎／入圍／坐喺台下，推辭咗嘅人一樣都冇）。行典禮級 press 文案
+     （pack.press：頒獎夜通用側記，唔寫阿偉贏獎／出席），fameDelta 0，唔派聲望。 */
+  if(opts.declined){
+    return enqueueNewspaperItem({
+      eventKey: "award:"+year+":"+ceremonyId,
+      source: "award",
+      enqueuedDay: day,
+      publishDay: day+1,
+      fameDelta: 0,
+      paperName: press.paperName || "娛樂快報",
+      headline: press.headline || (name+"見報"),
+      dek: press.dek || (name+"照常舉行，結果出爐。"),
+      clipLabel: (press.paperName || "娛樂快報")+"・頒獎夜",
+      rumorEcho: "",
+      templateId: "",
+      templateEventKey: "award_declined."+medium,
+      medium: medium,
+      workTitle: name
+    }, opts);
+  }
+  let bucket = "";
+  if(pack.bestOutcome==="won") bucket = "award_win";
+  else if(pack.bestOutcome==="nominated" || pack.bestOutcome==="lost") bucket = "award_nominee";
+  else if(pack.bestOutcome==="gallery") bucket = "award_gallery";
+  else return null;
+  let tmpl = null, copy = null;
+  if(bucket==="award_gallery"){
+    const pool = NEWSPAPER_AWARD_GALLERY_TEMPLATES_136.filter(t=>t && t.medium===medium);
+    tmpl = (pool.length ? pool[0] : NEWSPAPER_AWARD_GALLERY_TEMPLATES_136[0]) || null;
+    copy = newspaperCopyFromTemplate(tmpl, {
+      paperName: press.paperName || "娛樂快報",
+      headline: press.headline || (name+"見報"),
+      dek: press.dek || ("阿偉出席"+name+"，娛樂版記了一筆。"),
+      fameDelta: 1,
+      medium: medium
+    });
+  } else {
+    tmpl = newspaperPickTemplate(bucket, medium);
+    copy = newspaperCopyFromTemplate(tmpl, {
+      paperName: press.paperName || "娛樂快報",
+      headline: press.headline || (name+"見報"),
+      dek: press.dek || ("阿偉出席"+name+"，娛樂版記了一筆。"),
+      fameDelta: bucket==="award_win" ? 5 : 2,
+      medium: medium
+    });
+  }
   return enqueueNewspaperItem({
     eventKey: "award:"+year+":"+ceremonyId,
     source: "award",
@@ -47729,7 +47869,14 @@ function newspaperCheck(){
       }
       const again = enqueueNewspaperFromWrap({ gigId:"seedg", type:"電影", title:"試片" }, { dayIndex:0, gigType:"電影", title:"試片" }, { persist:false });
       if(again) fails.push("seed_dedupe");
-      if(enqueueNewspaperFromAward({ skipped:false, bestOutcome:"gallery", year:1988, ceremonyId:"award_harbour_film", medium:"film" }, { persist:false })) fails.push("gallery_paper");
+      /* v20a136 G3：旁聽（gallery）而家有報紙——inline gallery 桶＋1 聲望，文案唔寫入圍／得獎。 */
+      const gal = enqueueNewspaperFromAward({ skipped:false, bestOutcome:"gallery", year:1988, ceremonyId:"award_harbour_film", medium:"film" }, { persist:false });
+      if(!gal || gal.fameDelta!==1 || gal.templateEventKey!=="award_gallery.film") fails.push("gallery_paper");
+      if(gal && /入圍|提名|得獎|奪獎/.test(gal.headline+gal.dek)) fails.push("gallery_copy");
+      /* v20a136 D1：推辭一樣有報紙——declined 文案行典禮級 press，唔派聲望，唔寫阿偉贏獎／出席。 */
+      const dec = enqueueNewspaperFromAward({ skipped:false, bestOutcome:"won", year:1988, ceremonyId:"award_harbour_ad", medium:"ad", displayName:"維港街招", press:{ paperName:"娛樂快報", headline:"街招年賞，版面多一行", dek:"廣告年賞散場。" } }, { persist:false, declined:true });
+      if(!dec || dec.fameDelta!==0 || dec.templateEventKey!=="award_declined.ad") fails.push("declined_paper");
+      if(dec && /阿偉/.test(dec.headline+dec.dek)) fails.push("declined_copy");
       const win = enqueueNewspaperFromAward({ skipped:false, bestOutcome:"won", year:1988, ceremonyId:"award_harbour_ad", medium:"ad", displayName:"維港街招", press:{} }, { persist:false });
       if(!win || !(win.fameDelta>=4 && win.fameDelta<=8)) fails.push("seed_win");
       if(win && win.eventKey!=="award:1988:award_harbour_ad") fails.push("award_key");
@@ -48048,20 +48195,20 @@ function newspaperCheck(){
         if(!(S.newspaperClippings||[]).some(c=>c && (c.eventKeys||[]).indexOf("story:C5:dodge")>=0 && (Number(c.fameDelta)||0)===0 && String(c.headline||"").indexOf("避談敏感話題")>=0)) fails.push("story_c5_clip");
         if((S.newspaperQueue||[]).some(it=>it && it.eventKey==="story:C5:dodge")) fails.push("story_c5_left");
         const prevAward = FREEPLAY_FW && FREEPLAY_FW._pendingAward;
-        const prevSn = FREEPLAY_FW && FREEPLAY_FW._awardSnoozed;
-        const prevSnDay = FREEPLAY_FW && FREEPLAY_FW._awardSnoozeDay;
         const prevQ105 = FREEPLAY_FW && (FREEPLAY_FW._awardQueue||[]).slice();
         if(FREEPLAY_FW){
           S.awardsFlags = { "1988/award_harbour_film":"done", "1988/award_harbour_ad":"done", "1988/award_golddisc_music":"done", "1988/award_singho_tv":"done" };
-          FREEPLAY_FW._pendingAward = { year:1988, ceremonyId:"award_test_snooze", displayName:"測試請柬" };
-          FREEPLAY_FW._awardSnoozed = true;
-          FREEPLAY_FW._awardSnoozeDay = S.dayIndex|0;
+          FREEPLAY_FW._pendingAward = { year:1988, ceremonyId:"award_test_invite", displayName:"測試請柬" };
           let cont105 = false;
-          const blocked105 = presentPendingAward(function(){ cont105 = true; });
-          if(blocked105 || cont105) fails.push("award_snooze_block");
+          const presented105 = presentPendingAward(function(){ cont105 = true; });
+          /* v20a136：「稍後」已拎走——有請柬就要彈出，唔再靜默擋住；dismiss 即推辭。 */
+          if(!presented105) fails.push("award_invite_present");
+          if(cont105) fails.push("award_invite_cont_early");
+          const modal105b = ((document.getElementById("modal-btns")||{}).innerText||"");
+          if(modal105b.indexOf("稍後")>=0) fails.push("award_invite_later_btn");
+          if(modal105b.indexOf("出席")<0 || modal105b.indexOf("推辭")<0) fails.push("award_invite_btns");
+          try{ closeModal(); }catch(_cm105c){}
           FREEPLAY_FW._pendingAward = prevAward || null;
-          FREEPLAY_FW._awardSnoozed = !!prevSn;
-          FREEPLAY_FW._awardSnoozeDay = prevSnDay;
           FREEPLAY_FW._awardQueue = prevQ105 || [];
         }
       }

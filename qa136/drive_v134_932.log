@@ -1,0 +1,28 @@
+== gate_nov ==
+  PASS {"ctx_week_151": true, "ctx_season_autumn": true, "gate_closed": true, "gate_weekMin_blocks": true, "listOpen_no_C17": true, "progress_C17_locked": true, "progress_shows_award_item": true, "progress_no_play_btn": true}
+    gate: {"ok": false, "reasons": ["weekMin:153", "seasonIn:冬", "awardResolved:1992/award_singho_tv"], "openIds": []}
+    ctx: {"day": 1056, "week": 151, "year": 1992, "season": "秋", "dual": 65}
+== gate_dec_open ==
+  PASS {"ctx_week_153plus": true, "gate_closed": true, "gate_only_award_blocks": true, "listOpen_no_C17": true, "progress_C17_locked": true, "progress_no_play_btn": true, "progress_displays_1992_winter": true}
+    gate: {"ok": false, "reasons": ["awardResolved:1992/award_singho_tv"], "openIds": ["C18"]}
+    ctx: {"day": 1069, "week": 153, "year": 1992, "season": "冬", "dual": 65}
+== play_c17 ==
+  PASS {"gate_open": true, "listOpen_has_C17": true, "progress_open_with_play": true, "story_started": true, "first_line_post_ceremony": true, "header_displays_1992_winter": true, "dialog_not_clipped": true, "choice_picked": true, "ending410_written": true, "story_C17_done": true, "map_locked_no_advance": true}
+    gate: {"ok": true, "reasons": [], "openIds": ["C17", "C18"]}
+    ctx: {"day": 1069, "week": 153, "year": 1992, "season": "冬", "dual": 65}
+== backstop ==
+  PASS {"ctx_day_ge_1096": true, "gate_open_unconditional": true, "gate_no_reasons": true, "listOpen_has_C17": true}
+    gate: {"ok": true, "reasons": [], "openIds": ["C1", "C9", "C13", "C17"]}
+    ctx: {"day": 1100, "week": 158, "year": 1993, "season": "冬", "dual": 65}
+== decline ==
+  PASS {"invite_shown": true, "invite_is_tv": true, "invite_has_attend": true, "invite_has_decline": true, "invite_no_later": true, "flag_skipped": true, "pending_cleared": true, "paper_queued_next_day": true, "paper_next_day": true, "clip_recorded": true, "paper_mentions_ceremony": true, "paper_no_false_win": true}
+    ctx: {"day": 1069, "week": 153, "year": 1992, "season": "冬", "dual": 65}
+== reload ==
+  PASS {"invite_shown_before": true, "pack_persisted_in_S": true, "save_restored_day": true, "pack_survived_reload": true, "invite_shown_after_reload": true, "invite_after_no_later": true}
+    ctx: {"day": 1069, "week": 153, "year": 1992, "season": "冬", "dual": 65}
+== c10_defer ==
+  PASS {"dec_week49": true, "dec_no_invite": true, "dec_still_on_map": true, "dec_flag_still_empty": true, "dec_no_pending_pack": true, "jan_invite_shown": true, "jan_invite_is_tv": true, "jan_edition_1992": true}
+== review ==
+  PASS {"seed_week_155": true, "seed_dual_low": true, "warn_mentions_1992_review": true, "warn_shows_floor_155": true, "warn_shows_dual": true, "review_1992_recorded": true, "review_floor_155": true, "review_failed_low_dual": true, "forced_ending_presented": true}
+    ctx: {"day": 1084, "week": 155, "year": 1992, "season": "冬", "dual": 32}
+OVERALL 8/8 PASS | /home/hatch/workspace/linji-work136/qa136/drive136.json

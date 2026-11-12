@@ -60,6 +60,10 @@ const SRC = [
   extractFn('syncDualTracks'),
   extractFn('yearSeasonNow'),
   extractConst('STORY_GATE_3Y'),
+  /* v20a136：awardResolved 檢查行真 awardsGetFlag（＋ensureAwardsFlags／awardsFlagKey），唔 stub */
+  extractFn('ensureAwardsFlags'),
+  extractFn('awardsFlagKey'),
+  extractFn('awardsGetFlag'),
   extractIIFE('const BehaviorGate = (function(){'),
   extractIIFE('const StoryOC = (()=>{'),
 ].join('\n')
@@ -191,10 +195,15 @@ expectGate('C16', '缺 C12', compose(at(1992,10,10), (sv)=>setDual(sv,60,126)), 
 expectGate('C13', '1992 冬', at(1992,12,10), true);
 expectGate('C13', '1992 秋', at(1992,10,10), false);
 expectGate('C13', '1991 冬', at(1991,12,10), false);
-/* N17＝C17：C13 done＋1992 冬（事件閘） */
-expectGate('C17', '齊條件', compose(at(1992,12,10), withDone('C13')), true);
-expectGate('C17', '缺 C13', at(1992,12,10), false);
-expectGate('C17', '1993 冬（yearEq 1992 唔啱）', compose(at(1993,12,10), withDone('C13')), false);
+/* v20a136：C17 要等 1992 屆冬台慶有結果（awardsFlags 1992/award_singho_tv＝done／skipped） */
+function withAwardDone(){ return (sv)=>{ sv.awardsFlags = { "1992/award_singho_tv": "done" }; }; }
+/* N17＝C17：C13 done＋weekMin 153（1992-12-01）＋1992 冬＋台慶有結果（事件閘）；1993-01-01 後 backstop 無條件開 */
+expectGate('C17', '齊條件', compose(at(1992,12,10), withDone('C13'), withAwardDone()), true);
+expectGate('C17', '齊條件但台慶未有結果', compose(at(1992,12,10), withDone('C13')), false);
+expectGate('C17', '缺 C13', compose(at(1992,12,10), withAwardDone()), false);
+expectGate('C17', '1992-01（weekMin 153 未到）', compose(at(1992,1,10), withDone('C13'), withAwardDone()), false);
+expectGate('C17', '1993 冬（backstop 無條件開）', compose(at(1993,12,10), withDone('C13')), true);
+expectGate('C17', '1993 冬＋缺 C13（backstop 照開）', at(1993,12,10), true);
 
 /* 同日禁：同 v17z 口徑，當日播完任一 C* → 覆寫節點都唔入可播；ignorePacing 可豁免 */
 (function(){

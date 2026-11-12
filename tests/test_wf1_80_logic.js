@@ -1,7 +1,9 @@
 // v20a80 WF1 邏輯測試：劇情豐富化 WF1——後段加厚＋真空帶補幕。
 //   (1) 加厚完整性：C6–C17 每幕 beats ≥8 拍（C17 ≥9）、beats 字數過門檻、resultBeats 合計 ≥150（C17 除外，結局幕 choices 由 ending410 動態重建）；
 //   (2) 後果拍：每幕每個 choice 都有 resultBeats（揀完有下文）；新第三 choice 旗入 flags_written、幅度唔勁過既有；
-//   (3) 零回歸：既有 beats/choices/resultBeats 對 v79 fixture（tests/fixtures/spine_c6_c17_v79.json）子序列＋前綴保留；
+//   (3) 零回歸：既有 beats/choices/resultBeats 對 v136 fixture（tests/fixtures/spine_c6_c17_v136.json）子序列＋前綴保留；
+//       （v20a136：C15/C14/C12/C16/C13 beats 首句 1990→1992、C17 成幕改做頒獎禮之後＋C17_410_a notes「開場」→「散場」，
+//       意圖改動，fixture 由 v79 重新生成做 v136；舊 v79 檔留檔。生成器 qa136/gen_fixture136.js）
 //   (4) 補幕 C18/C19：結構（8–10 拍／2 抉擇連後果拍）、地點、when 用舊標籤（YEARS66 +2）、gate entry 規則
 //       （v20a113 改設計：C18 需 C5＋weekMin 48 深冬窗，C19 需 C18＋weekMin 61；1990 年 1 月第 2 週唔再開 C18；
 //       舊設計「冇 needDone 唔卡主線」已廢——用戶 2026-11-12 實玩捉到跳步）；
@@ -45,7 +47,7 @@ const GATE = extractConst('STORY_GATE_3Y');
 const CWIN = extractConst('CALIB60_NODE_WINDOWS');
 const CTIT = extractConst('CALIB60_NODE_TITLES');
 const NODES = Object.assign({}, T89, T90, TC6, { C17: C17N }, WF1);
-const fixture = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'spine_c6_c17_v79.json'), 'utf8'));
+const fixture = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'spine_c6_c17_v136.json'), 'utf8'));
 
 function beatLines(n){ return (n.beats || []).flatMap(b => b.lines || []); }
 function beatChars(n){ return beatLines(n).join('').length; }
@@ -71,7 +73,7 @@ for(const id of Object.keys(FLOOR)){
   }
   /* C17 豁免：其 choices 播放時由 ending410EveNode 動態重建（帶 ending410Key），靜態 choices 本來就冇 resultBeats */
 }
-/* C17：choices 由 ending410 動態重建，靜態 choices 同 v79 逐字一致（fixture slim 口徑逐項比） */
+/* C17：choices 由 ending410 動態重建，靜態 choices 同 v136 fixture 逐字一致（fixture slim 口徑逐項比） */
 {
   let c17ok = (C17N.choices || []).length === fixture.C17.choices.length;
   fixture.C17.choices.forEach((fc, i) => {
@@ -80,7 +82,7 @@ for(const id of Object.keys(FLOOR)){
     const nRes = (nc.resultBeats || []).map(b => b.lines || []);
     if(JSON.stringify(nRes) !== JSON.stringify(fc.resultLines)) c17ok = false;
   });
-  ok('C17 choices 同 v79 fixture 逐字一致', c17ok);
+  ok('C17 choices 同 v136 fixture 逐字一致', c17ok);
 }
 
 /* (3) 零回歸：對 fixture 子序列／前綴 */
@@ -99,7 +101,7 @@ for(const id of Object.keys(fixture)){
     if(JSON.stringify(nRes.slice(0, fRes.length)) !== JSON.stringify(fRes)) fxOk = false;
   }
   ok(id + ' 既有 choices label/effects 不變＋resultBeats 前綴保留', fxOk);
-  ok(id + ' flags_written ⊇ v79', (f.flags_written || []).every(x => (n.flags_written || []).includes(x)));
+  ok(id + ' flags_written ⊇ v136 fixture', (f.flags_written || []).every(x => (n.flags_written || []).includes(x)));
 }
 
 /* (2b) 新第三 choice：旗入帳、幅度唔勁過既有 */

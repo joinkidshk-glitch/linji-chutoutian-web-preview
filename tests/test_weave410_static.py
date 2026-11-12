@@ -40,10 +40,13 @@ for frag in ['title: "三年收科"', 'locId: "tvb_longmen"', 'playerOffer:', 'f
 ok('C17 override free of old ten-ending ids', all(x not in node for x in ['C17_e01', 'ending_e01', 'endings_catalog', 'E01']))
 ok('applyStorySpineOverrides410 defined + wired in refreshCopyPacksFromDisk',
    'function applyStorySpineOverrides410()' in blk and 'applyStorySpineOverrides410();' in html)
-ok('C17 SOFT tables aligned', 'C17: "tvb_longmen",' in html and 'C17: "三年收科",' in html and 'C17: { playerHint: "頒獎禮前夕' in html)
+ok('C17 SOFT tables aligned', 'C17: "tvb_longmen",' in html and 'C17: "三年收科",' in html and 'C17: { playerHint: "台慶之後' in html)
 gm = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)
 gate = gm.group(1) if gm else ''
-ok('C17 gate unchanged (needDone C13 + yearEq 1992 + 冬)', 'C17: { needDone: ["C13"], yearEq: 1992, seasonIn: ["冬"] }' in gate)
+# v20a136：C17 閘搬去 1992 年 12 月——weekMin 153＋等冬台慶有結果＋1993-01-01 backstop。
+ok('C17 gate v136 (weekMin 153 + awardResolved 1992 TV + backstopDay 1096)',
+   'weekMin: 153' in gate and 'awardResolved: { ceremonyId: "award_singho_tv", year: 1992 }' in gate
+   and 'backstopDay: 1096' in gate and 'needDone: ["C13"]' in gate)
 
 # ---- hooks ----
 ok('StoryPlay.start C17 eve-node hook', 'node.id==="C17" && typeof ending410EveNode==="function"' in html)
