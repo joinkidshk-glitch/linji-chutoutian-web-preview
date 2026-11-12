@@ -3530,10 +3530,11 @@ body.day-res-open .day-row{
    樣本（Phase 1 何生事務所）落到底部 sheet 嘅適配：場景圖照舊係 #loc-bg banner（呢版
    加高，等負責人有企位）；額度 pill 疊喺 banner 左上；負責人企右邊、腳由選項卡遮住
    （同對話舞台遮腿同一做法）；選項區變米紙卡。選項行為／數值／額度計數零改動。
-   冇圖地點（gift_shop／hospital）行素底：banner 隱藏、pill 改行 in-flow 頂行。 */
-#loc-sheet.locpanel118 .loc-bg{ height:210px; }
-@media (max-height:860px){ #loc-sheet.locpanel118 .loc-bg{ height:150px; } }
-@media (max-height:720px){ #loc-sheet.locpanel118 .loc-bg{ height:120px; } }
+   冇圖地點（gift_shop／hospital）行素底：banner 隱藏、pill 改行 in-flow 頂行。
+   v20a120 LOCFULL120：呢版 sheet 已經唔係 bottom sheet，改行全屏幕（見下面
+   LOCFULL120 一節）；下面三條 banner 高度規則由全幅底規則取代，短屏改收標題／pill 字。 */
+@media (max-height:860px){ #loc-sheet.locpanel118 #loc-title{ font-size:1.05rem; } }
+@media (max-height:720px){ #loc-sheet.locpanel118 #loc-title{ font-size:1rem; } #loc-sheet.locpanel118 .locpanel118-quota{ font-size:12px; } }
 #loc-sheet .locpanel118-quota{
   position:absolute; top:26px; left:12px; z-index:5;
   display:flex; flex-direction:column; align-items:flex-start; gap:2px;
@@ -3587,6 +3588,129 @@ body.day-res-open .day-row{
 #loc-sheet.sheet .act.act-priority,
 #app #loc-sheet.sheet .act.act-priority{
   min-height:48px !important;
+}
+/* ===== v20a120 LOCFULL120：地點面板改全屏幕（純呈現層）=====
+   根源：v118 上線版沿用舊 bottom sheet 殼（.sheet max-height 72dvh／560px，場景圖只係
+   入面一條 210px banner），上面一半地圖、下面一半面板；用戶 09:42 實機截圖（香江唱片）證實。
+   呢版跟返 Phase 1 樣本（linji-locpanel/sample_agency_ho/sample_agency_ho.html）：
+   場景圖全幅做底（cover 成個 viewport）、地圖完全遮住、選項卡浮喺底（左右 12px、底 12px、
+   米紙卡，返回地圖掣貼住卡底成同一塊）。行為／數值／額度計數零改動。
+   實現要點：
+   · sheet 本身變全幅：inset 0＋height 100%＋max-height none。選擇器要帶 #app（2,2,0）
+     先壓得過 v17y（#app #loc-sheet.sheet，2,1,0）同 toast-up keep-sheet 嗰條（2,3,0，
+     另見下面專條）；.sheet 底層 max-height 52dvh／v17y 72dvh／560px 一併蓋過。
+   · #loc-bg 由 in-flow banner 變 absolute 全幅底（inset 0、cover、center 30% 跟樣本）；
+     上面 v118 三條 banner 高度規則已刪，短屏唔再收 banner，改收標題／pill 字。
+   · 標題／描述／#loc-who 行 in-flow 頂部，淺米字＋陰影＋頂部漸變暗角（跟樣本 .scrim-top），
+     喺場景圖上面讀到；.grab 拖手全屏幕無意義，隱藏。
+   · 額度 pill 由 absolute（疊 banner 左上）改行 in-flow：flex order 排喺 #loc-who 之後、
+     地名下面（同樣本「地名→pill」次序一致），左對齊、實底不變；舊 absolute top:26 會撞標題。
+   · flex order 全寫死（標題 1／描述 2／#loc-who 3／pill 4／名牌列 5／選項卡 6／掣列 7），
+     唔靠 DOM 次序（pill 喺 DOM 入面排標題前面）。
+   · 選項區（#loc-acts）overflow auto 內滾，成版唔會碌走場景圖；fix1：唔再 flex:1 撐滿
+     成版（grid 會拉長啲掣），改行 flex:0 1 auto＋margin-top:auto 貼底，選項少嗰陣
+     卡片內容高、上面留返場景，選項多嗰陣照舊內滾；掣列貼住卡底（負 margin 食咗 6px
+     gap、去頂框、底圓角），視覺上同一塊米紙卡。
+   · 負責人企位：闊 120→150px（貼近樣本 150px），標題收窄 128→164px；高度上限由
+     AnchorOwner 230→400（見下面 JS；fix1：腳收 120px 入卡，跟樣本，個人可以放大；
+     選項區改貼底之後 actsTop 低咗，短選項單負責人可以去到 400 上限）。
+   · 冇圖素底態（locpanel118-nobg）：全屏幕都要有實底，唔可以透明見到地圖——還原米紙底＋深色字。
+   · v118 嗰條 [hidden]{display:none !important} 覆寫保留（唔喺呢節重複，上面原條文不變）。 */
+#app #loc-sheet.sheet.locpanel118,
+#v-map #loc-sheet.sheet.locpanel118{
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  inset:0 !important;
+  height:100% !important;
+  max-height:none !important;
+  border-radius:0 !important;
+  border:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  padding:12px 12px calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  overflow:hidden !important;
+  gap:6px !important;
+}
+#app.toast-up.keep-sheet #loc-sheet.sheet.locpanel118,
+#app.toast-up.keep-sheet #v-map #loc-sheet.sheet.locpanel118{
+  max-height:none !important;
+  padding-bottom:calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+}
+/* 場景圖全幅底（唔再係 210px banner） */
+#app #loc-sheet.sheet.locpanel118 .loc-bg,
+#loc-sheet.locpanel118 .loc-bg{
+  position:absolute !important;
+  inset:0 !important;
+  width:auto !important;
+  height:auto !important;
+  margin:0 !important;
+  border:none !important;
+  border-radius:0 !important;
+  background-position:center 30% !important;
+  z-index:0 !important;
+}
+/* 頂部漸變暗角（跟樣本 .scrim-top），等頂欄文字喺場景圖上面讀到 */
+#app #loc-sheet.sheet.locpanel118::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:240px; z-index:1;
+  background:linear-gradient(rgba(20,14,8,.72), rgba(20,14,8,.28) 70%, transparent);
+  pointer-events:none;
+}
+#app #loc-sheet.sheet.locpanel118 .grab{ display:none !important; }
+/* 頂欄文字：in-flow、淺米字＋陰影；order 1–3 */
+#app #loc-sheet.sheet.locpanel118 #loc-title,
+#app #loc-sheet.sheet.locpanel118 #loc-desc,
+#app #loc-sheet.sheet.locpanel118 #loc-who{
+  position:relative; z-index:2; flex:0 0 auto;
+  color:#f8f1de !important; text-shadow:0 1px 6px rgba(0,0,0,.6);
+}
+#app #loc-sheet.sheet.locpanel118 #loc-title{ order:1; font-size:1.15rem; letter-spacing:1px; margin:0; }
+#app #loc-sheet.sheet.locpanel118 #loc-desc{ order:2; margin:2px 0 0; }
+#app #loc-sheet.sheet.locpanel118 #loc-who{ order:3; margin:2px 0 0; }
+/* 額度 pill：in-flow，地名下面（跟樣本次序），左對齊 */
+#app #loc-sheet.sheet.locpanel118 .locpanel118-quota{
+  position:static !important;
+  top:auto !important; left:auto !important;
+  order:4; align-self:flex-start; flex:0 0 auto;
+  margin:6px 0 2px; z-index:2;
+}
+/* 無圖名牌列：in-flow，order 5 */
+#app #loc-sheet.sheet.locpanel118 .locpanel118-tagrow{
+  order:5; position:relative; z-index:2; margin:0 0 2px;
+}
+/* 選項卡：order 6，內滾；掣列：order 7，貼住卡底成同一塊。
+   v20a120-fix1：選項區唔再 flex:1 撐滿成版——.acts 係 grid，container 一高過內容就
+   會將每粒掣拉長（醫院 2 粒掣變咗兩大格空卡，實駕見到）。改行 flex:0 1 auto＋
+   margin-top:auto：選項少嗰陣卡片貼底、內容高，上面留返場景（跟樣本）；選項多嗰陣
+   shrink＋overflow auto 照舊內滾。align-content:start 兜底，唔俾 grid 拉長啲掣。 */
+#app #loc-sheet.sheet.locpanel118 #loc-acts{
+  order:6; border-radius:12px 12px 0 0; margin-bottom:0;
+  flex:0 1 auto !important; margin-top:auto !important; align-content:start;
+}
+#app #loc-sheet.sheet.locpanel118 .btnrow{
+  order:7; flex:0 0 auto;
+  background:#f8f1de; border:1px solid #d8c9a8; border-top:none;
+  border-radius:0 0 12px 12px;
+  margin:-6px 0 0 !important; padding:6px 8px 8px !important;
+}
+/* 負責人：闊 150px（貼近樣本）；標題收窄 164px 避開人物＋名牌 */
+#app #loc-sheet.sheet.locpanel118 .locpanel118-owner{ width:150px; }
+#app #loc-sheet.sheet.locpanel118 .locpanel118-owner img{ max-width:150px; }
+#app #loc-sheet.sheet.locpanel118.locpanel118-has-owner #loc-title,
+#app #loc-sheet.sheet.locpanel118.locpanel118-has-owner #loc-desc,
+#app #loc-sheet.sheet.locpanel118.locpanel118-has-owner #loc-who{ max-width:calc(100% - 164px); }
+/* 冇圖素底態：全屏幕都要實底，唔可以透明見到地圖 */
+#app #loc-sheet.sheet.locpanel118.locpanel118-nobg{
+  background:#F2EBD8 !important;
+  border:2px solid #C9A227 !important;
+  border-bottom:0 !important;
+}
+#app #loc-sheet.sheet.locpanel118.locpanel118-nobg::before{ display:none; }
+#app #loc-sheet.sheet.locpanel118.locpanel118-nobg #loc-title,
+#app #loc-sheet.sheet.locpanel118.locpanel118-nobg #loc-desc,
+#app #loc-sheet.sheet.locpanel118.locpanel118-nobg #loc-who{
+  color:#1A1410 !important; text-shadow:none;
 }
 .toast.has-sub{
   max-height:148px !important;
@@ -53190,11 +53314,14 @@ function locpanel118AnchorOwner(){
     const img=document.getElementById("loc-owner-img118");
     const actsTop=acts.offsetTop||0;
     const tagH=tag ? tag.offsetHeight||0 : 0;
-    /* 腳部收 8px 入選項卡後面（遮腿）；矮屏嗰陣收細個人，唔好頂穿 sheet 頂 */
-    const imgH=Math.max(120, Math.min(230, actsTop - tagH - 12));
+    /* v20a120 LOCFULL120-fix1：全屏幕之後 sheet 高變咗（~844px），負責人上限 230→400
+       （貼近樣本 400px）；腳部收 120px 入選項卡後面（遮腿，跟樣本腳入卡 120px 做法，
+       個人可以放大、淨係頭＋身喺卡上面見到）；矮屏嗰陣收細個人，唔好頂穿 sheet 頂——
+       上限由 actsTop（選項卡頂）本身限住，公式不變（+120 係 tuck 量）。 */
+    const imgH=Math.max(120, Math.min(400, actsTop - tagH - 12 + 120));
     if(img) img.style.height=imgH+"px";
     owner.style.height=(imgH+tagH+4)+"px";
-    owner.style.bottom=Math.max(0, sheet.clientHeight - actsTop - 8)+"px";
+    owner.style.bottom=Math.max(0, sheet.clientHeight - actsTop - 120)+"px";
   }catch(_e){}
 }
 function locpanel118Hide(){
