@@ -27416,7 +27416,11 @@ const StoryPlay = (()=>{
     if(_sess.mode!=="beats") return null;
     if(_sess.beatIdx >= beats.length) return null;
     const b = beats[_sess.beatIdx] || {};
-    const lines = Array.isArray(b.lines) ? b.lines : (b.line ? [b.line] : []);
+    /* v20a125 TEXT125：beats 亦接受 `text` 單句——CHOICE47／WF3／COMMIT48／WF4 全部用 text 形；
+       舊版只讀 lines／line，呢啲 beats 逐句 currentLine() 回 null → render 即跳去 choices，
+       對白成段唔顯示。fallback 次序 lines＞line＞text；兩者並存嘅 beat 行為不變（全庫零 beat
+       同時有 lines／line＋text）；傳聞等其他 text: 欄位唔經 currentLine，唔受影響。 */
+    const lines = Array.isArray(b.lines) ? b.lines : (b.line ? [b.line] : (typeof b.text === "string" && b.text ? [b.text] : []));
     if(_sess.lineIdx >= lines.length) return null;
     const system = spIsSystemBeat(b);
     const speakerId = system ? null : spResolveSpeakerId(b);
@@ -27518,7 +27522,8 @@ const StoryPlay = (()=>{
     const beats = n.beats || [];
     if(_sess.mode==="beats"){
       const b = beats[_sess.beatIdx] || {};
-      const lines = Array.isArray(b.lines) ? b.lines : [];
+      /* v20a125 TEXT125：同 currentLine 一致，text 單句計一行（否則 lineCount／推進同顯示唔一致）。 */
+      const lines = Array.isArray(b.lines) ? b.lines : (b.line ? [b.line] : (typeof b.text === "string" && b.text ? [b.text] : []));
       if(_sess.lineIdx + 1 < lines.length){
         _sess.lineIdx++;
       } else if(_sess.beatIdx + 1 < beats.length){
@@ -33130,7 +33135,14 @@ function applyFamilySafeToNode(node){
   try{
     const n = JSON.parse(JSON.stringify(node));
     (n.beats||[]).forEach(b=>{
-      if(!b || !Array.isArray(b.lines)) return;
+      if(!b) return;
+      /* v20a125 TEXT125：text 單句 beats 行返同一套替換（同 lines 完全對齊；
+         現行 5 個 text-beats 節點表入面冇呢啲詞，今日行為不變，防將來漏網）。 */
+      if(typeof b.text === "string" && b.text){
+        b.text = b.text.replace(/臨時演員蹲在路邊抽煙/g, "臨時演員蹲在路邊喝紙包飲料、等開工")
+          .replace(/抽煙/g, "歇息").replace(/食煙/g, "傾偈").replace(/買醉/g, "夜歸散心");
+      }
+      if(!Array.isArray(b.lines)) return;
       b.lines = b.lines.map(line=>{
         let s=String(line||"");
         s=s.replace(/臨時演員蹲在路邊抽煙/g, "臨時演員蹲在路邊喝紙包飲料、等開工");
