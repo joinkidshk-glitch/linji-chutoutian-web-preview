@@ -1,7 +1,7 @@
 # NOTES_V20A125 — StoryPlay 讀埋 `text` 單句 beats（TEXT125）
 
 - 合併：分支 `v125-textbeats`（tip `d48df67`，基底 main `1255f18` v123；合併嗰陣 main 已行前到 `e957022` v124 NOTES，squash 無衝突）→ squash 入 main **`b41d2cd`**，已 push。
-- 線上核實：本地 index.html **5,161,148 bytes**／sha256 `8f08858aff911075…`；push 後即刻 curl 線上 **200、5,159,938 bytes、sha `e771c824…`（舊版 v119，未部署）**——Pages 部署滯後已知毛病，已推本 NOTES commit 重觸發，待補核實數字（見下）。
+- 線上核實：本地 index.html **5,161,148 bytes**／sha256 `8f08858aff911075…`；push 後即刻 curl 線上 200、5,159,938 bytes、sha `e771c824…`（舊版 v119，未部署）——Pages 部署滯後已知毛病，推本 NOTES commit（`4105933`）重觸發後約 3 分鐘再驗，線上 **200、5,161,148 bytes、sha `8f08858aff911075…`，對上**。
 - 測試：全套 A/B——pristine main（`1255f18`）**171 PASS／12 FAIL** vs 工作版／合併後樹 **173 PASS／12 FAIL**，零新增回歸；新 PASS 得 2 個新守門（`test_text125_logic.js`、`test_text125_static.py`，含反證）；另 `test_travel114_static.py` 行號 resync（見 §3）。
 - 實駕：Playwright 390×844、`?softPreview=1`、本地鏡像（工作副本 `python3 -m http.server 8978`），**12/12 節點 PASS＋C2 對照 PASS、0 pageerror**（見 §2）。
 - 回滾：`git revert b41d2cd`（squash 單一 commit；index.html＋2 新測試＋travel114 resync 一併還原）。
@@ -73,4 +73,4 @@
 1. 5 個表情檔缺失（見 §2 404 清單：`crew_laolinji_serious`、`ho_sang_surprise`、`liu_bingxing_sad`、`fong_siulung_smile`、`extra_ad_fen_serious`），補圖嗰陣一併做；`ho_sang_angry`、`liu_bingxing_shy` 已喺 v123 補好。
 2. resultBeats 50 句繼續唔播——引擎設計本身唔讀（只出 `effects.notes`），唔係 bug；將來要播 resultBeats 對白要另開一票改 `pickChoice`／`showResult`。
 3. 送別變體只驗咗中性變體（8 句）；tea／help／wroteOff／exodused 變體行同一條 `text` fallback，邏輯上已覆蓋，未逐一實駕。
-4. 線上核實待補（本 NOTES 推送後重驗，見頂部）。
+4. 線上核實已補（見頂部：推 NOTES 後約 3 分鐘，線上 byte／sha 對上）。
