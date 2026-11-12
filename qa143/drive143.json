@@ -1,0 +1,3402 @@
+{
+ "errors": [],
+ "http404": [],
+ "phases": {
+  "932": {
+   "editable": {
+    "vh": 932,
+    "vw": 430,
+    "money": 12000,
+    "dual": null,
+    "memoText": "銀包 $ 12,000幕前聲望 5業內信用 10偉",
+    "memoRect": {
+     "x": 31,
+     "y": 91,
+     "w": 256,
+     "h": 108,
+     "top": 91,
+     "bottom": 200
+    },
+    "tabs": [
+     {
+      "id": "hgroup-plan",
+      "text": "行程",
+      "on": true,
+      "rect": {
+       "x": 58,
+       "y": 213,
+       "w": 58,
+       "h": 38,
+       "top": 213,
+       "bottom": 251
+      },
+      "bg": "rgb(245, 237, 220)",
+      "height": "38px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-career",
+      "text": "事業",
+      "on": false,
+      "rect": {
+       "x": 122,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-status",
+      "text": "近況",
+      "on": false,
+      "rect": {
+       "x": 186,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-news",
+      "text": "消息",
+      "on": false,
+      "rect": {
+       "x": 250,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-favor",
+      "text": "人情",
+      "on": false,
+      "rect": {
+       "x": 314,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     }
+    ],
+    "quick": [
+     {
+      "id": "nb-q-rest",
+      "text": "全日休息",
+      "rect": {
+       "x": 91,
+       "y": 402,
+       "w": 82,
+       "h": 44,
+       "top": 402,
+       "bottom": 446
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-q-train",
+      "text": "全日訓練",
+      "rect": {
+       "x": 181,
+       "y": 402,
+       "w": 82,
+       "h": 44,
+       "top": 402,
+       "bottom": 446
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-q-clear",
+      "text": "清空本週",
+      "rect": {
+       "x": 271,
+       "y": 402,
+       "w": 82,
+       "h": 44,
+       "top": 402,
+       "bottom": 446
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-q-copy",
+      "text": "複製到…",
+      "rect": {
+       "x": 91,
+       "y": 454,
+       "w": 82,
+       "h": 44,
+       "top": 454,
+       "bottom": 498
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     }
+    ],
+    "subGroups": [
+     {
+      "group": "plan",
+      "on": true,
+      "items": [
+       {
+        "id": "htab-plan",
+        "text": "行程",
+        "on": true,
+        "rect": {
+         "x": 148,
+         "y": 256,
+         "w": 38,
+         "h": 23,
+         "top": 256,
+         "bottom": 278
+        },
+        "color": "rgb(58, 46, 34)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": true,
+        "afterContent": "\"\"",
+        "afterW": "60px",
+        "afterH": "40.6875px"
+       },
+       {
+        "id": "htab-progress",
+        "text": "進度",
+        "on": false,
+        "rect": {
+         "x": 88,
+         "y": 256,
+         "w": 38,
+         "h": 23,
+         "top": 256,
+         "bottom": 278
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "career",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-works",
+        "text": "作品",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-awards",
+        "text": "獎項",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-memory",
+        "text": "回憶",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "status",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-ledger",
+        "text": "記數",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-tags",
+        "text": "標籤",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-inv",
+        "text": "庫存",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "news",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-rumor",
+        "text": "傳聞",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-clippings",
+        "text": "剪報",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "favor",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-debt",
+        "text": "人情債",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-people",
+        "text": "人脈",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     }
+    ],
+    "paneOn": "home-pane-plan",
+    "copyWrapOpen": false,
+    "copyChips": [],
+    "copyActions": [
+     {
+      "id": "",
+      "text": "平日（一至五）",
+      "cls": "",
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "11.52px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "",
+      "text": "週末",
+      "cls": "",
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "11.52px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "",
+      "text": "全日（可改日）",
+      "cls": "",
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "11.52px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-copy-apply",
+      "text": "套用複製",
+      "cls": "ink",
+      "borderRadius": "3px",
+      "bg": "rgba(192, 69, 44, 0.07)",
+      "color": "rgb(192, 69, 44)",
+      "fontSize": "11.52px",
+      "border": "2px solid rgb(192, 69, 44)"
+     }
+    ],
+    "dayCopyBtn": {
+     "text": "⧉ 複製",
+     "rect": {
+      "x": 332,
+      "y": 518,
+      "w": 45,
+      "h": 21,
+      "top": 518,
+      "bottom": 539
+     },
+     "bg": "rgba(0, 0, 0, 0)",
+     "color": "rgb(122, 77, 18)",
+     "fontSize": "13px",
+     "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+     "borderRadius": "0px",
+     "borderTop": "0px none rgb(122, 77, 18)",
+     "borderBottom": "1px dashed rgb(185, 155, 98)",
+     "boxShadow": "none"
+    },
+    "trainWrapVisible": false,
+    "nbActions": {
+     "rect": {
+      "x": 30,
+      "y": 859,
+      "w": 370,
+      "h": 73,
+      "top": 859,
+      "bottom": 932
+     },
+     "bg": "rgb(245, 237, 220)"
+    },
+    "confirm": {
+     "text": "確定本週行程",
+     "disabled": false,
+     "locked": false,
+     "rect": {
+      "x": 94,
+      "y": 870,
+      "w": 296,
+      "h": 52,
+      "top": 870,
+      "bottom": 922
+     },
+     "color": "rgb(192, 69, 44)",
+     "fontSize": "18px",
+     "bg": "rgba(192, 69, 44, 0.07)",
+     "borderTop": "2px solid rgb(192, 69, 44)",
+     "borderRadius": "6px",
+     "letterSpacing": "2.52px",
+     "transform": "none"
+    },
+    "reset": {
+     "text": "還原",
+     "visible": true,
+     "rect": {
+      "x": 40,
+      "y": 874,
+      "w": 46,
+      "h": 44,
+      "top": 874,
+      "bottom": 918
+     },
+     "color": "rgb(122, 98, 72)",
+     "fontSize": "15px",
+     "bg": "rgba(0, 0, 0, 0)",
+     "borderBottom": "1px dashed rgb(185, 155, 98)",
+     "borderRadius": "0px"
+    },
+    "tag": {
+     "text": "返回地圖",
+     "rect": {
+      "x": 294,
+      "y": 132,
+      "w": 104,
+      "h": 42,
+      "top": 132,
+      "bottom": 174
+     }
+    },
+    "geometry": {
+     "notebookTop": 288,
+     "nbActionsRect": {
+      "x": 30,
+      "y": 859,
+      "w": 370,
+      "h": 73,
+      "top": 859,
+      "bottom": 932
+     }
+    },
+    "days": {
+     "count": 7,
+     "fullVisible": 7,
+     "rows": [
+      {
+       "text": "週一到處逛逛⧉ 複製",
+       "top": 511,
+       "bottom": 545,
+       "visibleFull": true,
+       "hasCopy": true
+      },
+      {
+       "text": "週二休息睡覺⧉ 複製",
+       "top": 548,
+       "bottom": 582,
+       "visibleFull": true,
+       "hasCopy": true
+      },
+      {
+       "text": "週三到處逛逛⧉ 複製",
+       "top": 585,
+       "bottom": 619,
+       "visibleFull": true,
+       "hasCopy": true
+      },
+      {
+       "text": "週四到處逛逛⧉ 複製",
+       "top": 622,
+       "bottom": 656,
+       "visibleFull": true,
+       "hasCopy": true
+      },
+      {
+       "text": "週五街頭表演⧉ 複製",
+       "top": 659,
+       "bottom": 693,
+       "visibleFull": true,
+       "hasCopy": true
+      },
+      {
+       "text": "週六咖啡店駐場小表演⧉ 複製",
+       "top": 696,
+       "bottom": 730,
+       "visibleFull": true,
+       "hasCopy": true
+      },
+      {
+       "text": "週日休息睡覺⧉ 複製",
+       "top": 733,
+       "bottom": 767,
+       "visibleFull": true,
+       "hasCopy": true
+      }
+     ]
+    },
+    "toast": ""
+   },
+   "baseDays": [
+    "週一到處逛逛⧉ 複製",
+    "週二休息睡覺⧉ 複製",
+    "週三到處逛逛⧉ 複製",
+    "週四到處逛逛⧉ 複製",
+    "週五街頭表演⧉ 複製",
+    "週六咖啡店駐場小表演⧉ 複製",
+    "週日休息睡覺⧉ 複製"
+   ],
+   "b1_rest": {
+    "days": [
+     "週一休息睡覺⧉ 複製",
+     "週二休息睡覺⧉ 複製",
+     "週三休息睡覺⧉ 複製",
+     "週四休息睡覺⧉ 複製",
+     "週五休息睡覺⧉ 複製",
+     "週六休息睡覺⧉ 複製",
+     "週日休息睡覺⧉ 複製"
+    ],
+    "allRest": true
+   },
+   "b1_reset_after_rest": {
+    "backToBase": true,
+    "days": [
+     "週一到處逛逛⧉ 複製",
+     "週二休息睡覺⧉ 複製",
+     "週三到處逛逛⧉ 複製",
+     "週四到處逛逛⧉ 複製",
+     "週五街頭表演⧉ 複製",
+     "週六咖啡店駐場小表演⧉ 複製",
+     "週日休息睡覺⧉ 複製"
+    ]
+   },
+   "b1_train": {
+    "pickerVisible": true,
+    "toast": "未報名任何課程——喺清單睇邊度報名，報咗先排得入"
+   },
+   "b1_train_toggle_off": true,
+   "b1_clear": {
+    "days": [
+     "週一到處逛逛⧉ 複製",
+     "週二到處逛逛⧉ 複製",
+     "週三到處逛逛⧉ 複製",
+     "週四到處逛逛⧉ 複製",
+     "週五到處逛逛⧉ 複製",
+     "週六到處逛逛⧉ 複製",
+     "週日到處逛逛⧉ 複製"
+    ],
+    "allScout": true
+   },
+   "b1_reset_after_clear": true,
+   "b1_daycopy": {
+    "clicked": true,
+    "wrapOpen": true,
+    "chips": [
+     [
+      "週一",
+      true
+     ],
+     [
+      "週二",
+      false
+     ],
+     [
+      "週三",
+      false
+     ],
+     [
+      "週四",
+      false
+     ],
+     [
+      "週五",
+      false
+     ],
+     [
+      "週六",
+      false
+     ],
+     [
+      "週日",
+      false
+     ]
+    ],
+    "chipStyle": {
+     "text": "週一",
+     "disabled": true,
+     "on": false,
+     "borderRadius": "3px",
+     "bg": "rgb(251, 243, 223)",
+     "fontSize": "11.52px"
+    },
+    "actions": [
+     [
+      "平日（一至五）",
+      "3px",
+      "rgb(58, 46, 34)"
+     ],
+     [
+      "週末",
+      "3px",
+      "rgb(58, 46, 34)"
+     ],
+     [
+      "全日（可改日）",
+      "3px",
+      "rgb(58, 46, 34)"
+     ],
+     [
+      "套用複製",
+      "3px",
+      "rgb(192, 69, 44)"
+     ]
+    ]
+   },
+   "b1_copy_apply": {
+    "toast": "已複製到 2 日，可還原",
+    "days": [
+     "週一到處逛逛⧉ 複製",
+     "週二休息睡覺⧉ 複製",
+     "週三到處逛逛⧉ 複製",
+     "週四到處逛逛⧉ 複製",
+     "週五街頭表演⧉ 複製",
+     "週六到處逛逛⧉ 複製",
+     "週日到處逛逛⧉ 複製"
+    ]
+   },
+   "b1_reset_after_copy": true,
+   "b1_copybtn": {
+    "wrapOpen": true,
+    "chips": 7
+   },
+   "b1_copybtn_toggle_off": true,
+   "b2": {
+    "hgroup-career": {
+     "htab-works": {
+      "pane": "home-pane-works",
+      "items": [
+       [
+        "作品",
+        true,
+        true
+       ],
+       [
+        "獎項",
+        false,
+        false
+       ],
+       [
+        "回憶",
+        false,
+        false
+       ]
+      ],
+      "circleFollowsOn": true
+     },
+     "htab-awards": {
+      "pane": "home-pane-awards",
+      "items": [
+       [
+        "作品",
+        false,
+        false
+       ],
+       [
+        "獎項",
+        true,
+        true
+       ],
+       [
+        "回憶",
+        false,
+        false
+       ]
+      ],
+      "circleFollowsOn": true
+     },
+     "htab-memory": {
+      "pane": "home-pane-memory",
+      "items": [
+       [
+        "作品",
+        false,
+        false
+       ],
+       [
+        "獎項",
+        false,
+        false
+       ],
+       [
+        "回憶",
+        true,
+        true
+       ]
+      ],
+      "circleFollowsOn": true
+     }
+    },
+    "hgroup-status": {
+     "htab-ledger": {
+      "pane": "home-pane-ledger",
+      "items": [
+       [
+        "記數",
+        true,
+        true
+       ],
+       [
+        "標籤",
+        false,
+        false
+       ],
+       [
+        "庫存",
+        false,
+        false
+       ]
+      ],
+      "circleFollowsOn": true
+     },
+     "htab-inv": {
+      "pane": "home-pane-inv",
+      "items": [
+       [
+        "記數",
+        false,
+        false
+       ],
+       [
+        "標籤",
+        false,
+        false
+       ],
+       [
+        "庫存",
+        true,
+        true
+       ]
+      ],
+      "circleFollowsOn": true
+     }
+    },
+    "hgroup-news": {
+     "htab-rumor": {
+      "pane": "home-pane-rumor",
+      "items": [
+       [
+        "傳聞",
+        true,
+        true
+       ],
+       [
+        "剪報",
+        false,
+        false
+       ]
+      ],
+      "circleFollowsOn": true
+     },
+     "htab-clippings": {
+      "pane": "home-pane-clippings",
+      "items": [
+       [
+        "傳聞",
+        false,
+        false
+       ],
+       [
+        "剪報",
+        true,
+        true
+       ]
+      ],
+      "circleFollowsOn": true
+     }
+    },
+    "hgroup-favor": {
+     "htab-debt": {
+      "pane": "home-pane-debt",
+      "items": [
+       [
+        "人情債",
+        true,
+        true
+       ],
+       [
+        "人脈",
+        false,
+        false
+       ]
+      ],
+      "circleFollowsOn": true
+     },
+     "htab-people": {
+      "pane": "home-pane-people",
+      "items": [
+       [
+        "人情債",
+        false,
+        false
+       ],
+       [
+        "人脈",
+        true,
+        true
+       ]
+      ],
+      "circleFollowsOn": true
+     }
+    }
+   },
+   "b2_plan_control": {
+    "progress": [
+     [
+      "行程",
+      false,
+      false
+     ],
+     [
+      "進度",
+      true,
+      true
+     ]
+    ],
+    "back": [
+     [
+      "行程",
+      true,
+      true
+     ],
+     [
+      "進度",
+      false,
+      false
+     ]
+    ]
+   },
+   "locked": {
+    "vh": 932,
+    "vw": 430,
+    "money": 12000,
+    "dual": null,
+    "memoText": "銀包 $ 12,000幕前聲望 5業內信用 10偉",
+    "memoRect": {
+     "x": 31,
+     "y": 91,
+     "w": 256,
+     "h": 108,
+     "top": 91,
+     "bottom": 200
+    },
+    "tabs": [
+     {
+      "id": "hgroup-plan",
+      "text": "行程",
+      "on": true,
+      "rect": {
+       "x": 58,
+       "y": 213,
+       "w": 58,
+       "h": 38,
+       "top": 213,
+       "bottom": 251
+      },
+      "bg": "rgb(245, 237, 220)",
+      "height": "38px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-career",
+      "text": "事業",
+      "on": false,
+      "rect": {
+       "x": 122,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-status",
+      "text": "近況",
+      "on": false,
+      "rect": {
+       "x": 186,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-news",
+      "text": "消息",
+      "on": false,
+      "rect": {
+       "x": 250,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-favor",
+      "text": "人情",
+      "on": false,
+      "rect": {
+       "x": 314,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     }
+    ],
+    "quick": [
+     {
+      "id": "nb-q-rest",
+      "text": "全日休息",
+      "rect": {
+       "x": 0,
+       "y": 0,
+       "w": 0,
+       "h": 0,
+       "top": 0,
+       "bottom": 0
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-q-train",
+      "text": "全日訓練",
+      "rect": {
+       "x": 0,
+       "y": 0,
+       "w": 0,
+       "h": 0,
+       "top": 0,
+       "bottom": 0
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-q-clear",
+      "text": "清空本週",
+      "rect": {
+       "x": 0,
+       "y": 0,
+       "w": 0,
+       "h": 0,
+       "top": 0,
+       "bottom": 0
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-q-copy",
+      "text": "複製到…",
+      "rect": {
+       "x": 0,
+       "y": 0,
+       "w": 0,
+       "h": 0,
+       "top": 0,
+       "bottom": 0
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     }
+    ],
+    "subGroups": [
+     {
+      "group": "plan",
+      "on": true,
+      "items": [
+       {
+        "id": "htab-plan",
+        "text": "行程",
+        "on": true,
+        "rect": {
+         "x": 148,
+         "y": 256,
+         "w": 38,
+         "h": 23,
+         "top": 256,
+         "bottom": 278
+        },
+        "color": "rgb(58, 46, 34)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": true,
+        "afterContent": "\"\"",
+        "afterW": "60px",
+        "afterH": "40.6875px"
+       },
+       {
+        "id": "htab-progress",
+        "text": "進度",
+        "on": false,
+        "rect": {
+         "x": 88,
+         "y": 256,
+         "w": 38,
+         "h": 23,
+         "top": 256,
+         "bottom": 278
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "career",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-works",
+        "text": "作品",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-awards",
+        "text": "獎項",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-memory",
+        "text": "回憶",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "status",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-ledger",
+        "text": "記數",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-tags",
+        "text": "標籤",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-inv",
+        "text": "庫存",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "news",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-rumor",
+        "text": "傳聞",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-clippings",
+        "text": "剪報",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "favor",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-debt",
+        "text": "人情債",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-people",
+        "text": "人脈",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     }
+    ],
+    "paneOn": "home-pane-plan",
+    "copyWrapOpen": false,
+    "copyChips": [
+     {
+      "text": "週一",
+      "disabled": true,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     },
+     {
+      "text": "週二",
+      "disabled": false,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     },
+     {
+      "text": "週三",
+      "disabled": false,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     },
+     {
+      "text": "週四",
+      "disabled": false,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     },
+     {
+      "text": "週五",
+      "disabled": false,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     },
+     {
+      "text": "週六",
+      "disabled": false,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     },
+     {
+      "text": "週日",
+      "disabled": false,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     }
+    ],
+    "copyActions": [
+     {
+      "id": "",
+      "text": "平日（一至五）",
+      "cls": "",
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "11.52px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "",
+      "text": "週末",
+      "cls": "",
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "11.52px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "",
+      "text": "全日（可改日）",
+      "cls": "",
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "11.52px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-copy-apply",
+      "text": "套用複製",
+      "cls": "ink",
+      "borderRadius": "3px",
+      "bg": "rgba(192, 69, 44, 0.07)",
+      "color": "rgb(192, 69, 44)",
+      "fontSize": "11.52px",
+      "border": "2px solid rgb(192, 69, 44)"
+     }
+    ],
+    "dayCopyBtn": null,
+    "trainWrapVisible": false,
+    "nbActions": {
+     "rect": {
+      "x": 30,
+      "y": 848,
+      "w": 370,
+      "h": 84,
+      "top": 848,
+      "bottom": 932
+     },
+     "bg": "rgb(245, 237, 220)"
+    },
+    "confirm": {
+     "text": "行程已定",
+     "disabled": true,
+     "locked": true,
+     "rect": {
+      "x": 122,
+      "y": 858,
+      "w": 186,
+      "h": 67,
+      "top": 858,
+      "bottom": 925
+     },
+     "color": "rgb(192, 69, 44)",
+     "fontSize": "24px",
+     "bg": "rgba(192, 69, 44, 0.043)",
+     "borderTop": "3px double rgb(192, 69, 44)",
+     "borderRadius": "8px",
+     "letterSpacing": "7.68px",
+     "transform": "matrix(0.996917, -0.0784591, 0.0784591, 0.996917, 0, 0)"
+    },
+    "reset": {
+     "text": "還原",
+     "visible": false,
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0,
+      "top": 0,
+      "bottom": 0
+     },
+     "color": "rgb(122, 98, 72)",
+     "fontSize": "15px",
+     "bg": "rgba(0, 0, 0, 0)",
+     "borderBottom": "1px dashed rgb(185, 155, 98)",
+     "borderRadius": "0px"
+    },
+    "tag": {
+     "text": "返回地圖",
+     "rect": {
+      "x": 294,
+      "y": 132,
+      "w": 104,
+      "h": 42,
+      "top": 132,
+      "bottom": 174
+     }
+    },
+    "geometry": {
+     "notebookTop": 288,
+     "nbActionsRect": {
+      "x": 30,
+      "y": 848,
+      "w": 370,
+      "h": 84,
+      "top": 848,
+      "bottom": 932
+     }
+    },
+    "days": {
+     "count": 7,
+     "fullVisible": 7,
+     "rows": [
+      {
+       "text": "週一到處逛逛全日自由行動 · 大地圖任選",
+       "top": 387,
+       "bottom": 429,
+       "visibleFull": true,
+       "hasCopy": false
+      },
+      {
+       "text": "週二休息睡覺瞓足一日 · 大減壓",
+       "top": 432,
+       "bottom": 474,
+       "visibleFull": true,
+       "hasCopy": false
+      },
+      {
+       "text": "週三到處逛逛全日自由行動 · 大地圖任選",
+       "top": 477,
+       "bottom": 519,
+       "visibleFull": true,
+       "hasCopy": false
+      },
+      {
+       "text": "週四到處逛逛全日自由行動 · 大地圖任選",
+       "top": 522,
+       "bottom": 564,
+       "visibleFull": true,
+       "hasCopy": false
+      },
+      {
+       "text": "週五街頭表演碼頭／行人專用區賣藝",
+       "top": 567,
+       "bottom": 609,
+       "visibleFull": true,
+       "hasCopy": false
+      },
+      {
+       "text": "週六咖啡店駐場小表演小費＋曝光",
+       "top": 612,
+       "bottom": 654,
+       "visibleFull": true,
+       "hasCopy": false
+      },
+      {
+       "text": "週日休息睡覺瞓足一日 · 大減壓",
+       "top": 657,
+       "bottom": 699,
+       "visibleFull": true,
+       "hasCopy": false
+      }
+     ]
+    },
+    "toast": ""
+   },
+   "backToMap": true,
+   "errors": [],
+   "http404": []
+  },
+  "700": {
+   "editable": {
+    "vh": 700,
+    "vw": 430,
+    "money": 12000,
+    "dual": null,
+    "memoText": "銀包 $ 12,000幕前聲望 5業內信用 10偉",
+    "memoRect": {
+     "x": 31,
+     "y": 91,
+     "w": 256,
+     "h": 108,
+     "top": 91,
+     "bottom": 200
+    },
+    "tabs": [
+     {
+      "id": "hgroup-plan",
+      "text": "行程",
+      "on": true,
+      "rect": {
+       "x": 58,
+       "y": 213,
+       "w": 58,
+       "h": 38,
+       "top": 213,
+       "bottom": 251
+      },
+      "bg": "rgb(245, 237, 220)",
+      "height": "38px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-career",
+      "text": "事業",
+      "on": false,
+      "rect": {
+       "x": 122,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-status",
+      "text": "近況",
+      "on": false,
+      "rect": {
+       "x": 186,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-news",
+      "text": "消息",
+      "on": false,
+      "rect": {
+       "x": 250,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-favor",
+      "text": "人情",
+      "on": false,
+      "rect": {
+       "x": 314,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     }
+    ],
+    "quick": [
+     {
+      "id": "nb-q-rest",
+      "text": "全日休息",
+      "rect": {
+       "x": 91,
+       "y": 402,
+       "w": 82,
+       "h": 44,
+       "top": 402,
+       "bottom": 446
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-q-train",
+      "text": "全日訓練",
+      "rect": {
+       "x": 181,
+       "y": 402,
+       "w": 82,
+       "h": 44,
+       "top": 402,
+       "bottom": 446
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-q-clear",
+      "text": "清空本週",
+      "rect": {
+       "x": 271,
+       "y": 402,
+       "w": 82,
+       "h": 44,
+       "top": 402,
+       "bottom": 446
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-q-copy",
+      "text": "複製到…",
+      "rect": {
+       "x": 91,
+       "y": 454,
+       "w": 82,
+       "h": 44,
+       "top": 454,
+       "bottom": 498
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     }
+    ],
+    "subGroups": [
+     {
+      "group": "plan",
+      "on": true,
+      "items": [
+       {
+        "id": "htab-plan",
+        "text": "行程",
+        "on": true,
+        "rect": {
+         "x": 148,
+         "y": 256,
+         "w": 38,
+         "h": 23,
+         "top": 256,
+         "bottom": 278
+        },
+        "color": "rgb(58, 46, 34)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": true,
+        "afterContent": "\"\"",
+        "afterW": "60px",
+        "afterH": "40.6875px"
+       },
+       {
+        "id": "htab-progress",
+        "text": "進度",
+        "on": false,
+        "rect": {
+         "x": 88,
+         "y": 256,
+         "w": 38,
+         "h": 23,
+         "top": 256,
+         "bottom": 278
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "career",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-works",
+        "text": "作品",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-awards",
+        "text": "獎項",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-memory",
+        "text": "回憶",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "status",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-ledger",
+        "text": "記數",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-tags",
+        "text": "標籤",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-inv",
+        "text": "庫存",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "news",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-rumor",
+        "text": "傳聞",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-clippings",
+        "text": "剪報",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "favor",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-debt",
+        "text": "人情債",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-people",
+        "text": "人脈",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     }
+    ],
+    "paneOn": "home-pane-plan",
+    "copyWrapOpen": false,
+    "copyChips": [],
+    "copyActions": [
+     {
+      "id": "",
+      "text": "平日（一至五）",
+      "cls": "",
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "11.52px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "",
+      "text": "週末",
+      "cls": "",
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "11.52px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "",
+      "text": "全日（可改日）",
+      "cls": "",
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "11.52px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-copy-apply",
+      "text": "套用複製",
+      "cls": "ink",
+      "borderRadius": "3px",
+      "bg": "rgba(192, 69, 44, 0.07)",
+      "color": "rgb(192, 69, 44)",
+      "fontSize": "11.52px",
+      "border": "2px solid rgb(192, 69, 44)"
+     }
+    ],
+    "dayCopyBtn": {
+     "text": "⧉ 複製",
+     "rect": {
+      "x": 332,
+      "y": 518,
+      "w": 45,
+      "h": 21,
+      "top": 518,
+      "bottom": 539
+     },
+     "bg": "rgba(0, 0, 0, 0)",
+     "color": "rgb(122, 77, 18)",
+     "fontSize": "13px",
+     "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+     "borderRadius": "0px",
+     "borderTop": "0px none rgb(122, 77, 18)",
+     "borderBottom": "1px dashed rgb(185, 155, 98)",
+     "boxShadow": "none"
+    },
+    "trainWrapVisible": false,
+    "nbActions": {
+     "rect": {
+      "x": 30,
+      "y": 635,
+      "w": 370,
+      "h": 65,
+      "top": 635,
+      "bottom": 700
+     },
+     "bg": "rgb(245, 237, 220)"
+    },
+    "confirm": {
+     "text": "確定本週行程",
+     "disabled": false,
+     "locked": false,
+     "rect": {
+      "x": 94,
+      "y": 642,
+      "w": 296,
+      "h": 52,
+      "top": 642,
+      "bottom": 694
+     },
+     "color": "rgb(192, 69, 44)",
+     "fontSize": "18px",
+     "bg": "rgba(192, 69, 44, 0.07)",
+     "borderTop": "2px solid rgb(192, 69, 44)",
+     "borderRadius": "6px",
+     "letterSpacing": "2.52px",
+     "transform": "none"
+    },
+    "reset": {
+     "text": "還原",
+     "visible": true,
+     "rect": {
+      "x": 40,
+      "y": 646,
+      "w": 46,
+      "h": 44,
+      "top": 646,
+      "bottom": 690
+     },
+     "color": "rgb(122, 98, 72)",
+     "fontSize": "15px",
+     "bg": "rgba(0, 0, 0, 0)",
+     "borderBottom": "1px dashed rgb(185, 155, 98)",
+     "borderRadius": "0px"
+    },
+    "tag": {
+     "text": "返回地圖",
+     "rect": {
+      "x": 294,
+      "y": 132,
+      "w": 104,
+      "h": 42,
+      "top": 132,
+      "bottom": 174
+     }
+    },
+    "geometry": {
+     "notebookTop": 288,
+     "nbActionsRect": {
+      "x": 30,
+      "y": 635,
+      "w": 370,
+      "h": 65,
+      "top": 635,
+      "bottom": 700
+     }
+    },
+    "days": {
+     "count": 7,
+     "fullVisible": 3,
+     "rows": [
+      {
+       "text": "週一到處逛逛⧉ 複製",
+       "top": 511,
+       "bottom": 545,
+       "visibleFull": true,
+       "hasCopy": true
+      },
+      {
+       "text": "週二休息睡覺⧉ 複製",
+       "top": 548,
+       "bottom": 582,
+       "visibleFull": true,
+       "hasCopy": true
+      },
+      {
+       "text": "週三到處逛逛⧉ 複製",
+       "top": 585,
+       "bottom": 619,
+       "visibleFull": true,
+       "hasCopy": true
+      },
+      {
+       "text": "週四到處逛逛⧉ 複製",
+       "top": 622,
+       "bottom": 656,
+       "visibleFull": false,
+       "hasCopy": true
+      },
+      {
+       "text": "週五街頭表演⧉ 複製",
+       "top": 659,
+       "bottom": 693,
+       "visibleFull": false,
+       "hasCopy": true
+      },
+      {
+       "text": "週六咖啡店駐場小表演⧉ 複製",
+       "top": 696,
+       "bottom": 730,
+       "visibleFull": false,
+       "hasCopy": true
+      },
+      {
+       "text": "週日休息睡覺⧉ 複製",
+       "top": 733,
+       "bottom": 767,
+       "visibleFull": false,
+       "hasCopy": true
+      }
+     ]
+    },
+    "toast": ""
+   },
+   "baseDays": [
+    "週一到處逛逛⧉ 複製",
+    "週二休息睡覺⧉ 複製",
+    "週三到處逛逛⧉ 複製",
+    "週四到處逛逛⧉ 複製",
+    "週五街頭表演⧉ 複製",
+    "週六咖啡店駐場小表演⧉ 複製",
+    "週日休息睡覺⧉ 複製"
+   ],
+   "b1_rest": {
+    "days": [
+     "週一休息睡覺⧉ 複製",
+     "週二休息睡覺⧉ 複製",
+     "週三休息睡覺⧉ 複製",
+     "週四休息睡覺⧉ 複製",
+     "週五休息睡覺⧉ 複製",
+     "週六休息睡覺⧉ 複製",
+     "週日休息睡覺⧉ 複製"
+    ],
+    "allRest": true
+   },
+   "b1_reset_after_rest": {
+    "backToBase": true,
+    "days": [
+     "週一到處逛逛⧉ 複製",
+     "週二休息睡覺⧉ 複製",
+     "週三到處逛逛⧉ 複製",
+     "週四到處逛逛⧉ 複製",
+     "週五街頭表演⧉ 複製",
+     "週六咖啡店駐場小表演⧉ 複製",
+     "週日休息睡覺⧉ 複製"
+    ]
+   },
+   "b1_train": {
+    "pickerVisible": true,
+    "toast": "未報名任何課程——喺清單睇邊度報名，報咗先排得入"
+   },
+   "b1_train_toggle_off": true,
+   "b1_clear": {
+    "days": [
+     "週一到處逛逛⧉ 複製",
+     "週二到處逛逛⧉ 複製",
+     "週三到處逛逛⧉ 複製",
+     "週四到處逛逛⧉ 複製",
+     "週五到處逛逛⧉ 複製",
+     "週六到處逛逛⧉ 複製",
+     "週日到處逛逛⧉ 複製"
+    ],
+    "allScout": true
+   },
+   "b1_reset_after_clear": true,
+   "b1_daycopy": {
+    "clicked": true,
+    "wrapOpen": true,
+    "chips": [
+     [
+      "週一",
+      true
+     ],
+     [
+      "週二",
+      false
+     ],
+     [
+      "週三",
+      false
+     ],
+     [
+      "週四",
+      false
+     ],
+     [
+      "週五",
+      false
+     ],
+     [
+      "週六",
+      false
+     ],
+     [
+      "週日",
+      false
+     ]
+    ],
+    "chipStyle": {
+     "text": "週一",
+     "disabled": true,
+     "on": false,
+     "borderRadius": "3px",
+     "bg": "rgb(251, 243, 223)",
+     "fontSize": "11.52px"
+    },
+    "actions": [
+     [
+      "平日（一至五）",
+      "3px",
+      "rgb(58, 46, 34)"
+     ],
+     [
+      "週末",
+      "3px",
+      "rgb(58, 46, 34)"
+     ],
+     [
+      "全日（可改日）",
+      "3px",
+      "rgb(58, 46, 34)"
+     ],
+     [
+      "套用複製",
+      "3px",
+      "rgb(192, 69, 44)"
+     ]
+    ]
+   },
+   "b1_copy_apply": {
+    "toast": "已複製到 2 日，可還原",
+    "days": [
+     "週一到處逛逛⧉ 複製",
+     "週二休息睡覺⧉ 複製",
+     "週三到處逛逛⧉ 複製",
+     "週四到處逛逛⧉ 複製",
+     "週五街頭表演⧉ 複製",
+     "週六到處逛逛⧉ 複製",
+     "週日到處逛逛⧉ 複製"
+    ]
+   },
+   "b1_reset_after_copy": true,
+   "b1_copybtn": {
+    "wrapOpen": true,
+    "chips": 7
+   },
+   "b1_copybtn_toggle_off": true,
+   "b2": {
+    "hgroup-career": {
+     "htab-works": {
+      "pane": "home-pane-works",
+      "items": [
+       [
+        "作品",
+        true,
+        true
+       ],
+       [
+        "獎項",
+        false,
+        false
+       ],
+       [
+        "回憶",
+        false,
+        false
+       ]
+      ],
+      "circleFollowsOn": true
+     },
+     "htab-awards": {
+      "pane": "home-pane-awards",
+      "items": [
+       [
+        "作品",
+        false,
+        false
+       ],
+       [
+        "獎項",
+        true,
+        true
+       ],
+       [
+        "回憶",
+        false,
+        false
+       ]
+      ],
+      "circleFollowsOn": true
+     },
+     "htab-memory": {
+      "pane": "home-pane-memory",
+      "items": [
+       [
+        "作品",
+        false,
+        false
+       ],
+       [
+        "獎項",
+        false,
+        false
+       ],
+       [
+        "回憶",
+        true,
+        true
+       ]
+      ],
+      "circleFollowsOn": true
+     }
+    },
+    "hgroup-status": {
+     "htab-ledger": {
+      "pane": "home-pane-ledger",
+      "items": [
+       [
+        "記數",
+        true,
+        true
+       ],
+       [
+        "標籤",
+        false,
+        false
+       ],
+       [
+        "庫存",
+        false,
+        false
+       ]
+      ],
+      "circleFollowsOn": true
+     },
+     "htab-inv": {
+      "pane": "home-pane-inv",
+      "items": [
+       [
+        "記數",
+        false,
+        false
+       ],
+       [
+        "標籤",
+        false,
+        false
+       ],
+       [
+        "庫存",
+        true,
+        true
+       ]
+      ],
+      "circleFollowsOn": true
+     }
+    },
+    "hgroup-news": {
+     "htab-rumor": {
+      "pane": "home-pane-rumor",
+      "items": [
+       [
+        "傳聞",
+        true,
+        true
+       ],
+       [
+        "剪報",
+        false,
+        false
+       ]
+      ],
+      "circleFollowsOn": true
+     },
+     "htab-clippings": {
+      "pane": "home-pane-clippings",
+      "items": [
+       [
+        "傳聞",
+        false,
+        false
+       ],
+       [
+        "剪報",
+        true,
+        true
+       ]
+      ],
+      "circleFollowsOn": true
+     }
+    },
+    "hgroup-favor": {
+     "htab-debt": {
+      "pane": "home-pane-debt",
+      "items": [
+       [
+        "人情債",
+        true,
+        true
+       ],
+       [
+        "人脈",
+        false,
+        false
+       ]
+      ],
+      "circleFollowsOn": true
+     },
+     "htab-people": {
+      "pane": "home-pane-people",
+      "items": [
+       [
+        "人情債",
+        false,
+        false
+       ],
+       [
+        "人脈",
+        true,
+        true
+       ]
+      ],
+      "circleFollowsOn": true
+     }
+    }
+   },
+   "b2_plan_control": {
+    "progress": [
+     [
+      "行程",
+      false,
+      false
+     ],
+     [
+      "進度",
+      true,
+      true
+     ]
+    ],
+    "back": [
+     [
+      "行程",
+      true,
+      true
+     ],
+     [
+      "進度",
+      false,
+      false
+     ]
+    ]
+   },
+   "locked": {
+    "vh": 700,
+    "vw": 430,
+    "money": 12000,
+    "dual": null,
+    "memoText": "銀包 $ 12,000幕前聲望 5業內信用 10偉",
+    "memoRect": {
+     "x": 31,
+     "y": 91,
+     "w": 256,
+     "h": 108,
+     "top": 91,
+     "bottom": 200
+    },
+    "tabs": [
+     {
+      "id": "hgroup-plan",
+      "text": "行程",
+      "on": true,
+      "rect": {
+       "x": 58,
+       "y": 213,
+       "w": 58,
+       "h": 38,
+       "top": 213,
+       "bottom": 251
+      },
+      "bg": "rgb(245, 237, 220)",
+      "height": "38px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-career",
+      "text": "事業",
+      "on": false,
+      "rect": {
+       "x": 122,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-status",
+      "text": "近況",
+      "on": false,
+      "rect": {
+       "x": 186,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-news",
+      "text": "消息",
+      "on": false,
+      "rect": {
+       "x": 250,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     },
+     {
+      "id": "hgroup-favor",
+      "text": "人情",
+      "on": false,
+      "rect": {
+       "x": 314,
+       "y": 218,
+       "w": 58,
+       "h": 32,
+       "top": 218,
+       "bottom": 250
+      },
+      "bg": "rgb(233, 220, 188)",
+      "height": "32px",
+      "width": "58px"
+     }
+    ],
+    "quick": [
+     {
+      "id": "nb-q-rest",
+      "text": "全日休息",
+      "rect": {
+       "x": 0,
+       "y": 0,
+       "w": 0,
+       "h": 0,
+       "top": 0,
+       "bottom": 0
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-q-train",
+      "text": "全日訓練",
+      "rect": {
+       "x": 0,
+       "y": 0,
+       "w": 0,
+       "h": 0,
+       "top": 0,
+       "bottom": 0
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-q-clear",
+      "text": "清空本週",
+      "rect": {
+       "x": 0,
+       "y": 0,
+       "w": 0,
+       "h": 0,
+       "top": 0,
+       "bottom": 0
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-q-copy",
+      "text": "複製到…",
+      "rect": {
+       "x": 0,
+       "y": 0,
+       "w": 0,
+       "h": 0,
+       "top": 0,
+       "bottom": 0
+      },
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "15px",
+      "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+      "borderRadius": "3px",
+      "border": "1px solid rgb(185, 155, 98)"
+     }
+    ],
+    "subGroups": [
+     {
+      "group": "plan",
+      "on": true,
+      "items": [
+       {
+        "id": "htab-plan",
+        "text": "行程",
+        "on": true,
+        "rect": {
+         "x": 148,
+         "y": 256,
+         "w": 38,
+         "h": 23,
+         "top": 256,
+         "bottom": 278
+        },
+        "color": "rgb(58, 46, 34)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": true,
+        "afterContent": "\"\"",
+        "afterW": "60px",
+        "afterH": "40.6875px"
+       },
+       {
+        "id": "htab-progress",
+        "text": "進度",
+        "on": false,
+        "rect": {
+         "x": 88,
+         "y": 256,
+         "w": 38,
+         "h": 23,
+         "top": 256,
+         "bottom": 278
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "career",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-works",
+        "text": "作品",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-awards",
+        "text": "獎項",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-memory",
+        "text": "回憶",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "status",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-ledger",
+        "text": "記數",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-tags",
+        "text": "標籤",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-inv",
+        "text": "庫存",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "news",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-rumor",
+        "text": "傳聞",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-clippings",
+        "text": "剪報",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     },
+     {
+      "group": "favor",
+      "on": false,
+      "items": [
+       {
+        "id": "htab-debt",
+        "text": "人情債",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       },
+       {
+        "id": "htab-people",
+        "text": "人脈",
+        "on": false,
+        "rect": {
+         "x": 0,
+         "y": 0,
+         "w": 0,
+         "h": 0,
+         "top": 0,
+         "bottom": 0
+        },
+        "color": "rgb(160, 138, 104)",
+        "fontSize": "17px",
+        "fontFamily": "\"Kaiti TC\", STKaiti, KaiTi, \"N",
+        "bg": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "circle": false,
+        "afterContent": "none",
+        "afterW": "auto",
+        "afterH": "auto"
+       }
+      ]
+     }
+    ],
+    "paneOn": "home-pane-plan",
+    "copyWrapOpen": false,
+    "copyChips": [
+     {
+      "text": "週一",
+      "disabled": true,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     },
+     {
+      "text": "週二",
+      "disabled": false,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     },
+     {
+      "text": "週三",
+      "disabled": false,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     },
+     {
+      "text": "週四",
+      "disabled": false,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     },
+     {
+      "text": "週五",
+      "disabled": false,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     },
+     {
+      "text": "週六",
+      "disabled": false,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     },
+     {
+      "text": "週日",
+      "disabled": false,
+      "on": false,
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "fontSize": "11.52px"
+     }
+    ],
+    "copyActions": [
+     {
+      "id": "",
+      "text": "平日（一至五）",
+      "cls": "",
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "11.52px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "",
+      "text": "週末",
+      "cls": "",
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "11.52px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "",
+      "text": "全日（可改日）",
+      "cls": "",
+      "borderRadius": "3px",
+      "bg": "rgb(251, 243, 223)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "11.52px",
+      "border": "1px solid rgb(185, 155, 98)"
+     },
+     {
+      "id": "nb-copy-apply",
+      "text": "套用複製",
+      "cls": "ink",
+      "borderRadius": "3px",
+      "bg": "rgba(192, 69, 44, 0.07)",
+      "color": "rgb(192, 69, 44)",
+      "fontSize": "11.52px",
+      "border": "2px solid rgb(192, 69, 44)"
+     }
+    ],
+    "dayCopyBtn": null,
+    "trainWrapVisible": false,
+    "nbActions": {
+     "rect": {
+      "x": 30,
+      "y": 637,
+      "w": 370,
+      "h": 63,
+      "top": 637,
+      "bottom": 700
+     },
+     "bg": "rgb(245, 237, 220)"
+    },
+    "confirm": {
+     "text": "行程已定",
+     "disabled": true,
+     "locked": true,
+     "rect": {
+      "x": 140,
+      "y": 642,
+      "w": 151,
+      "h": 54,
+      "top": 642,
+      "bottom": 697
+     },
+     "color": "rgb(192, 69, 44)",
+     "fontSize": "20px",
+     "bg": "rgba(192, 69, 44, 0.043)",
+     "borderTop": "3px double rgb(192, 69, 44)",
+     "borderRadius": "8px",
+     "letterSpacing": "6.4px",
+     "transform": "matrix(0.996917, -0.0784591, 0.0784591, 0.996917, 0, 0)"
+    },
+    "reset": {
+     "text": "還原",
+     "visible": false,
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0,
+      "top": 0,
+      "bottom": 0
+     },
+     "color": "rgb(122, 98, 72)",
+     "fontSize": "15px",
+     "bg": "rgba(0, 0, 0, 0)",
+     "borderBottom": "1px dashed rgb(185, 155, 98)",
+     "borderRadius": "0px"
+    },
+    "tag": {
+     "text": "返回地圖",
+     "rect": {
+      "x": 294,
+      "y": 132,
+      "w": 104,
+      "h": 42,
+      "top": 132,
+      "bottom": 174
+     }
+    },
+    "geometry": {
+     "notebookTop": 288,
+     "nbActionsRect": {
+      "x": 30,
+      "y": 637,
+      "w": 370,
+      "h": 63,
+      "top": 637,
+      "bottom": 700
+     }
+    },
+    "days": {
+     "count": 7,
+     "fullVisible": 5,
+     "rows": [
+      {
+       "text": "週一到處逛逛全日自由行動 · 大地圖任選",
+       "top": 387,
+       "bottom": 429,
+       "visibleFull": true,
+       "hasCopy": false
+      },
+      {
+       "text": "週二休息睡覺瞓足一日 · 大減壓",
+       "top": 432,
+       "bottom": 474,
+       "visibleFull": true,
+       "hasCopy": false
+      },
+      {
+       "text": "週三到處逛逛全日自由行動 · 大地圖任選",
+       "top": 477,
+       "bottom": 519,
+       "visibleFull": true,
+       "hasCopy": false
+      },
+      {
+       "text": "週四到處逛逛全日自由行動 · 大地圖任選",
+       "top": 522,
+       "bottom": 564,
+       "visibleFull": true,
+       "hasCopy": false
+      },
+      {
+       "text": "週五街頭表演碼頭／行人專用區賣藝",
+       "top": 567,
+       "bottom": 609,
+       "visibleFull": true,
+       "hasCopy": false
+      },
+      {
+       "text": "週六咖啡店駐場小表演小費＋曝光",
+       "top": 612,
+       "bottom": 654,
+       "visibleFull": false,
+       "hasCopy": false
+      },
+      {
+       "text": "週日休息睡覺瞓足一日 · 大減壓",
+       "top": 657,
+       "bottom": 699,
+       "visibleFull": false,
+       "hasCopy": false
+      }
+     ]
+    },
+    "toast": ""
+   },
+   "backToMap": true,
+   "errors": [],
+   "http404": []
+  }
+ }
+}

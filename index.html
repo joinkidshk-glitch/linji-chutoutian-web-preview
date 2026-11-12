@@ -5347,7 +5347,50 @@ body.day-res-open .day-row{
 #nb-actions:has(#btn-confirm-plan.is-locked){ background:#f5eddc; border-top:1px solid #cbb98d; justify-content:center; }
 #nb-actions #btn-confirm-plan.is-locked{ flex:0 0 auto; width:fit-content; min-height:0; margin:6px auto 4px; padding:6px 20px 6px 22px; font-family:"Songti TC","STSong","Noto Serif CJK TC",serif; font-size:24px; font-weight:700; letter-spacing:.32em; text-indent:.32em; color:#c0452c !important; background:rgba(192,69,44,.045) !important; border:3px double #c0452c !important; border-radius:8px !important; transform:rotate(-4.5deg); filter:url(#ink141); opacity:.93; box-shadow:inset 0 0 0 1px rgba(192,69,44,.3) !important; }
 /* === v20a141 BOOK141 完 === */
-</style>
+/* === v20a143 BOOK143：手帳內臟紙面化（v141 review B1＋B2＋B3；用戶 2026-11-12 拍板修頭三項） ===
+   只換呈現：掣嘅 id／class／onclick 綁定、subtab 切換 handler、鎖定態印章邏輯一律不變。
+   紙面語言跟 v141：手寫字體棧 Kaiti、紅墨 #c0452c、紙面 #f5eddc／#fbf3df、墨 #3a2e22、
+   褪色 #a08a68、金邊 #cbb98d。plan 組手寫行（v141 原規則）原封不動——B2 淨係用
+   :not([data-hsubgroup="plan"]) 擴展去其餘四組，唔郁 plan 組。
+   舊 !important 搶贏位（實駕 probe143 核實）：904 行 grouped 規則蓋 .nb-actions
+   button.paper／.ink（金漸變＋2px 墨框＋radius 10px）→ 還原／確定要用 2×id 選擇器
+   ＋!important 先搶得返；v17l 蓋 .nb-quick button font-size .72rem → 手寫 15px 要
+   !important；其餘舊規則無 !important，後出＋同級／高級選擇器即贏。 */
+/* --- B2：其餘四組 subtab 照 plan 組做法——紙面頂行手寫字，未選褪色，選中紅墨手畫圈 --- */
+#home-subtabs .hsub-group:not([data-hsubgroup="plan"]){ justify-content:flex-start; gap:22px; padding:4px 12px 4px 46px; align-items:center; }
+#home-subtabs .hsub-group:not([data-hsubgroup="plan"]) .home-tab{ flex:0 0 auto; min-width:0; min-height:0; height:auto; background:transparent; border:0; border-radius:0; padding:2px; box-shadow:none; font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:17px; font-weight:400; color:#3a2e22; }
+#home-subtabs .hsub-group:not([data-hsubgroup="plan"]) .home-tab:not(.on){ color:#a08a68; }
+#home-subtabs .hsub-group:not([data-hsubgroup="plan"]) .home-tab.on{ background:transparent; color:#3a2e22; font-weight:700; position:relative; }
+#home-subtabs .hsub-group:not([data-hsubgroup="plan"]) .home-tab.on::after{ content:""; position:absolute; left:-11px; top:-9px; width:calc(100% + 22px); height:calc(100% + 18px); background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 44' preserveAspectRatio='none'%3E%3Cpath d='M7 22 C 15 5, 85 4, 94 19 C 96 33, 78 42, 48 41 C 20 40, 4 35, 7 22' fill='none' stroke='%23c0452c' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat; filter:url(#inkSoft141); pointer-events:none; }
+/* --- B1：編輯態掣群紙面化 --- */
+/* 快捷四掣（全日休息／全日訓練／清空本週／複製到…）：紙標籤＋手寫字，唔再係圓角 pill。
+   直屬 > button 先至命中四掣，唔會搶走 #nb-train71-wrap 入面嘅訓練選擇器掣。 */
+.nb-quick > button{ font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:15px !important; font-weight:700; color:#3a2e22; background:#fbf3df; border:1px solid #b99b62; border-radius:3px; box-shadow:0 1px 0 rgba(107,78,46,.35); }
+.nb-quick > button:active{ background:#f3e6c8; transform:scale(.98); }
+/* 複製面板：日 chip 改紙標籤（選中紅墨邊），三粒預設＋套用改紙標籤手寫字；
+   「套用複製」.ink 由深啡實底改紅墨字（主行動仍然一眼認到）。 */
+.nb-copy-chips button, .nb-copy-chips .chip-day{ border-radius:3px; background:#fbf3df; border:1px solid #b99b62; font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:13px; }
+.nb-copy-chips button.on, .nb-copy-chips .chip-day.on{ background:#fdf6e0; border-color:#c0452c; color:#c0452c; box-shadow:inset 0 0 0 1px rgba(192,69,44,.4); }
+.nb-copy-actions button{ font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:14px; font-weight:700; color:#3a2e22; background:#fbf3df; border:1px solid #b99b62; border-radius:3px; box-shadow:0 1px 0 rgba(107,78,46,.35); }
+.nb-copy-actions button.ink{ background:rgba(192,69,44,.07); color:#c0452c; border:2px solid #c0452c; }
+/* 每行「複製」：改手寫墨字＋虛線底線，唔再係米色細 pill（仍係 role=button 撳得）。 */
+.day-row .cp{ background:transparent; border:0; border-bottom:1px dashed #b99b62; border-radius:0; box-shadow:none; color:#7a4d12; font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:13px; font-weight:700; padding:2px 2px; min-width:0; }
+/* 底部 bar：深色底改紙面色（鎖定態 :has(.is-locked) 本身已經係紙面，兩態一致）。 */
+.nb-actions{ background:#f5eddc; border-top:1px solid #cbb98d; }
+/* 「還原」：改手寫墨字＋虛線底線（次要掣）。要 !important 先搶得贏 904 行 grouped
+   .nb-actions button.paper !important（金邊＋米底＋radius 10px＋shadow）。 */
+#nb-actions #btn-reset-plan{ background:transparent !important; border:0 !important; border-bottom:1px dashed #b99b62 !important; border-radius:0 !important; box-shadow:none !important; color:#7a6248 !important; font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:15px !important; font-weight:700; min-height:44px; padding:6px 8px; }
+/* 可編輯態「確定本週行程」：改紅墨字掣（2px 實線紅框＋淡紅底＋手寫字，仍然係一個
+   撳得嘅掣）。:not(.is-locked) 令鎖定態印章（3px double、24px、斜 -4.5°）完全唔受
+   影響；同樣要 !important 先搶得贏 904 行 grouped .nb-actions button.ink !important。 */
+#nb-actions #btn-confirm-plan:not(.is-locked){ background:rgba(192,69,44,.07) !important; border:2px solid #c0452c !important; border-radius:6px !important; box-shadow:0 2px 0 rgba(107,78,46,.4) !important; color:#c0452c !important; font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:18px !important; font-weight:700; letter-spacing:.14em; }
+/* --- B3：短屏（dvh ≲780）印章收細一級，慳約 15–20px 俾多半日；932 唔入呢個
+   media query，印章 24px／3px double／斜 -4.5° 原封不動。 --- */
+@media (max-height:780px){
+  #nb-actions #btn-confirm-plan.is-locked{ font-size:20px; padding:4px 14px 4px 16px; margin:4px auto 3px; }
+  #nb-actions{ padding:6px 10px calc(6px + env(safe-area-inset-bottom)); }
+}
+/* === v20a143 BOOK143 完 === */</style>
 </head>
 <body>
 <!-- v20a141 BOOK141：手墨抖動 filter defs（ink141／inkSoft141；檔內本無 feTurbulence，無撞名） -->
