@@ -27,3 +27,8 @@
   - ④ 正常流程：三段巧遇對白／選項／好感（廖 +3、陸 +3）零回歸；最終 `stars：luk fav 3 seen 1、liu fav 3 seen 2`。
   - Drive 教訓（已修入 drive，未改遊戲）：有 soft 行程嘅日子地圖出「開始今日行程」唔係「過一日」（end_day 兩條路都支援）；schedule 執行有機會一日跳兩日（日 5→7，drive 以實際 dayIndex 為準，唔假設每日只進一日）；星期一朝早開週計劃要確定先返到地圖；出沒盤 Python 重算（FNV-1a 日種子）同 live `S.starDay.presence` 每次都對得上。
   - 殘留觀察（唔係 bug）：`enc1_sheet.png` 同 `enc2_sheet.png` byte-identical——同一個地點全屏 sheet、內容完全一樣，合理。
+
+## 合併紀錄
+- Squash merge 入 main：`a9c66cd`（分支 `v20a144`，工作 commit `02ef4cb`），已推上 GitHub。
+- 線上核實（push 後約 3 分鐘）：index.html **5,194,707 bytes、sha256 `9d0ad918f4b009abd1210e77a6118c2b587335f958df9b63cd45f1faaa60aff1`**，同 repo HEAD 完全一致；`ENC79_WEEKLY_CAP` 線上在位。
+- 獨立核實（統籌親自重跑）：新測試喺 pristine main 乾淨 FAIL（logic 抽唔到 `ENC79_WEEKLY_CAP` 即 throw；static 8 FAIL）；全套親自重跑 **PASS 198／FAIL 12**，FAIL 清單同 baseline 完全一致，零回歸。
