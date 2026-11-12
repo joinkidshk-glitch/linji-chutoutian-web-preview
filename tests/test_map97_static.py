@@ -62,14 +62,13 @@ for lid, (ex, ey) in EXP_LOCS.items():
     if not m or (int(m.group(1)), int(m.group(2))) != (ex, ey): locs_ok = False
 ok('LOCS 15 地點座標同 v96 逐一一致', locs_ok and len(re.findall(r'\{ id:"', src.split('const NPCS')[0].split('const LOCS')[1])) == 15)
 
-# --- (4) 地區名細字層 ---
-ok('地區層容器存在（map-districts97）', 'id="map-districts97"' in src)
+# --- (4) 地區名細字層（v20a137：用戶拍板大地圖唔要地區名，12 個已刪；淨低會場標籤） ---
+ok('地區層容器存在（map-districts97，淨低會場標籤）', 'id="map-districts97"' in src)
 i_names = src.find('id="map-names68"'); i_dist = src.find('id="map-districts97"'); i_stage_end = src.find('map-polaroid', i_dist)
 ok('地區層喺 map-stage 內、名稱層之後', 0 < i_names < i_dist)
 md = re.findall(r'<div class="md97"[^>]*>([^<]+)</div>', src)
-ok('地區名恰好 12 個', len(md) == 12)
-ok('地區名清單正確', set(md) == {
-    '中環', '金鐘', '灣仔', '銅鑼灣', '尖沙咀', '紅磡', '油麻地', '旺角', '九龍城', '鑽石山', '清水灣', '薄扶林'})
+ok('地區名恰好 0 個（v137 已拎走）', len(md) == 0)
+ok('會場標籤恰好一個（金禧大酒店保留）', src.count('<div class="md97 md97-venue99"') == 1)
 ok('地區層 pointer-events:none（唔擋熱區）', '.map-districts97{ position:absolute; inset:0; pointer-events:none;' in src)
 ok('地區名 pointer-events:none', bool(re.search(r'\.md97\{[^}]*pointer-events:none', src)))
 m_md = re.search(r'\.md97\{[^}]*font-size:([\d.]+)px', src)

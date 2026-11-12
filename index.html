@@ -5282,6 +5282,29 @@ body.day-res-open .day-row{
    align-items:safe center——短句喺 3 行高內置中，超長句溢出嗰陣 safe center
    跌返 flex-start，首行唔會被置中裁走、照舊捲動。 */
 #enc79-overlay .e79-line{ display:flex; align-items:safe center; }
+/* === v20a137 MAP137 地圖 cover 放大＋拎走地區名 ===
+   用戶 2026-11-12 21:03 拍板：430×932 地圖要再放大（v135 卡縮細後圖高仍 509pt，
+   騰出嘅位變卡下面 229pt 羊皮紙）；21:04 追加地區名唔要。
+   幾何（量度見 NOTES_V20A137_MAP.md，基線 drive137_pre2.json）：app 闊 cap 390px，
+   舞台闊 384 固定；圖 1376×1824（比例 0.7542），contain 之下圖高＝384÷0.7542＝509
+   已經係上限——想再高，唔係靠裁源圖：建築 span 實測 x≈95–1300px（闊約 1250px），
+   矩形裁源圖只會令比例更闊、更矮（裁到建築 bbox 係 0.806，圖高得返 476），
+   所以源圖唔郁（MAP_IMG 照舊 hk_map_v6.jpg），改 cover 顯示。
+   新制：polaroid 恢復 flex:1 食返 wrap 剩位；well 變 flex column 置中；
+   舞台 aspect-ratio 1270/1824（窗闊＝384×1824÷舞台高；1270＝建築 span 1240＋30
+   安全邊），384 闊嗰陣高 551pt（509→551，+42）；max-height:100% 令 700 短屏
+   舞台跟返 well 高（514，唔爆版）。object-position 60%：932 窗 [~63,~1334]，
+   建築 95–1300 兩邊各留 ~30px；700 近乎全幅（窗 [~8,~1371]）。
+   熱區／地點名／會場標籤對位唔再係靜態 %：drawMap＋positionMapLabels137 用
+   map137CoverTransform() 即場由渲染幾何換算（見 JS 段），932（height-bound）
+   同 700（width-bound，近乎 identity）各自啱位。LOCS x/y 唔郁（圖 % 係 source
+   of truth）。地區名：12 個 .md97 地區 div 已刪（HTML 段），金禧大酒店會場
+   標籤保留（JS 即場定位）。 */
+#app .map-polaroid{ flex:1 1 auto !important; }
+#app .map-well{ flex:1 1 auto !important; height:100% !important; display:flex !important; flex-direction:column !important; justify-content:center !important; }
+#app .map-stage{ flex:0 0 auto !important; width:100% !important; height:auto !important; aspect-ratio:1270/1824 !important; max-height:100% !important; }
+#app .map-img{ width:100% !important; height:100% !important; object-fit:cover !important; object-position:60% 50% !important; }
+/* === v20a137 MAP137 完 === */
 </style>
 </head>
 <body>
@@ -5400,21 +5423,11 @@ body.day-res-open .day-row{
               <div class="mn68" style="left:44%;top:calc(35% - 44px)">廟街禮品</div>
               <div class="mn68" style="left:43%;top:calc(73% + 52px)">仁康醫院</div>
             </div>
-            <!-- v20a97 MAP97 地區名細字層（落位表見 NOTES_V20A97_MAP97.md） -->
+            <!-- v20a97 MAP97 地區名細字層（落位表見 NOTES_V20A97_MAP97.md）——
+                 v20a137 MAP137：用戶 2026-11-12 21:04 拍板大地圖唔要地區名，12 個地區 div 已刪；
+                 淨低金禧大酒店會場標籤（venue99），位置由 positionMapLabels137 即場換算。 -->
             <div class="map-districts97" id="map-districts97" aria-hidden="true">
-              <div class="md97" style="left:38%;top:6.5%">鑽石山</div>
-              <div class="md97" style="left:84%;top:7%">清水灣</div>
-              <div class="md97" style="left:31%;top:15%">旺角</div>
-              <div class="md97" style="left:58%;top:31.5%">九龍城</div>
-              <div class="md97" style="left:20%;top:35%">油麻地</div>
               <div class="md97 md97-venue99" style="left:11%;top:32%">金禧大酒店</div>
-              <div class="md97" style="left:52%;top:38%">紅磡</div>
-              <div class="md97" style="left:18%;top:51%">尖沙咀</div>
-              <div class="md97" style="left:50%;top:54%">中環</div>
-              <div class="md97" style="left:72%;top:57%">金鐘</div>
-              <div class="md97" style="left:34%;top:50%">薄扶林</div>
-              <div class="md97" style="left:56%;top:68%">灣仔</div>
-              <div class="md97" style="right:6%;top:66%">銅鑼灣</div>
             </div>
           </div>
         </div>
@@ -38695,6 +38708,79 @@ function pruneMapTips(){
   });
   try{ refreshStoryMapTips(); }catch(_e){}
 }
+/* === v20a137 MAP137：cover 換算（見 CSS 段＋NOTES_V20A137_MAP.md） ===
+   舞台而家係 cover：圖 1376×1824 按 object-fit:cover 填舞台，stage 唔再＝圖框，
+   靜態 % 對位失效。呢組函數由即場渲染幾何（舞台盒＋圖 natural 尺寸＋
+   computed object-position）計出 cover 換算，drawMap 嘅針同地點名／會場標籤
+   全部經佢換算先定位——932（height-bound）同 700（width-bound，近乎 identity）
+   各自啱位。LOCS x/y 本身唔郁（仍係圖 % 座標，source of truth）。
+   回滾：刪呢段＋CSS 段＋還原地區名 div，drawMap 會跌返 contain % 定位。 */
+const MAP137_NATURAL = { w: 1376, h: 1824 }; /* hk_map_v6.jpg（test_map97 守住尺寸） */
+function map137CoverTransform(){
+  try{
+    const stage = document.getElementById("map-stage");
+    const img = document.getElementById("map-img");
+    if(!stage || !img) return null;
+    const r = stage.getBoundingClientRect();
+    const W = r.width, H = r.height;
+    if(!(W > 0 && H > 0)) return null;
+    const nw = (img.naturalWidth > 0 ? img.naturalWidth : MAP137_NATURAL.w);
+    const nh = (img.naturalHeight > 0 ? img.naturalHeight : MAP137_NATURAL.h);
+    const cs = getComputedStyle(img);
+    if((cs.objectFit || "") !== "cover") return null; /* contain  regime：% 即係圖 %，唔使換算 */
+    let px = 0.5, py = 0.5;
+    try{
+      const parts = String(cs.objectPosition || "50% 50%").trim().split(/\s+/);
+      const num = (v, dflt)=>{ if(!v) return dflt; if(v === "left" || v === "top") return 0; if(v === "center") return 0.5; if(v === "right" || v === "bottom") return 1; const f = parseFloat(v); return isNaN(f) ? dflt : f/100; };
+      px = num(parts[0], 0.5); py = num(parts[1] || parts[0], 0.5);
+    }catch(_e){}
+    const s = Math.max(W / nw, H / nh);
+    const cw = nw * s, ch = nh * s;
+    const offX = Math.max(0, cw - W) * px;
+    const offY = Math.max(0, ch - H) * py;
+    return { s, offX, offY, W, H, nw, nh };
+  }catch(_e){ return null; }
+}
+/* 圖 % → 舞台 %（cover 換算；tr 係 null 即 identity） */
+function map137ImgPctToStagePct(xPct, yPct, tr){
+  if(!tr) return { x: xPct, y: yPct };
+  const sx = ((xPct / 100) * tr.nw * tr.s - tr.offX) / tr.W * 100;
+  const sy = ((yPct / 100) * tr.nh * tr.s - tr.offY) / tr.H * 100;
+  return { x: sx, y: sy };
+}
+/* 地點名（.mn68）＋會場標籤（.md97-venue99）即場定位：anchor 係 inline style
+   嘅圖 %（首次行嗰陣存入 dataset——原 style 同 anchor 一併存低，之後每次由
+   dataset 計，唔怕俾 px 蓋過；換算係 null（contain）嗰陣還原返原 style）。
+   橫向 clamp：.mn68／.md97 都係 translate(-50%) 置中，錨點太貼邊（932 cover
+   窗向右移，左緣錨 11% 會跌出舞台）嗰陣夾返入舞台，唔好畀 label 俾 polaroid
+   框邊切走（金龍茶餐廳／金禧大酒店 932 實測切字，見 NOTES）。縱向唔使夾
+   （頂錨 ≥2%＋負 offset 落點 ≥9px，底錨＋offset 唔過 500px）。 */
+function positionMapLabels137(){
+  try{
+    const tr = map137CoverTransform();
+    document.querySelectorAll(".map-names68 .mn68, #map-districts97 .md97-venue99").forEach(el=>{
+      if(el.dataset.map137orig === undefined){
+        el.dataset.map137orig = el.getAttribute("style") || "";
+        const st = el.style;
+        const ax = parseFloat(st.left) || 0;
+        let ay = 0, aoff = 0;
+        const top = (st.top || "").trim();
+        const m = top.match(/([\d.]+)%\s*([+-]\s*[\d.]+)px/);
+        if(m){ ay = parseFloat(m[1]); aoff = parseFloat(m[2].replace(/\s/g, "")) || 0; }
+        else { ay = parseFloat(top) || 0; }
+        el.dataset.map137ax = String(ax); el.dataset.map137ay = String(ay); el.dataset.map137aoff = String(aoff);
+      }
+      if(!tr){ el.setAttribute("style", el.dataset.map137orig); return; }
+      const ax = parseFloat(el.dataset.map137ax), ay = parseFloat(el.dataset.map137ay), aoff = parseFloat(el.dataset.map137aoff) || 0;
+      const p = map137ImgPctToStagePct(ax, ay, tr);
+      let lx = p.x / 100 * tr.W;
+      const w137 = el.offsetWidth || 0;
+      if(w137 > 0){ lx = Math.max(w137 / 2 + 2, Math.min(lx, tr.W - w137 / 2 - 2)); }
+      el.style.left = lx + "px";
+      el.style.top = ((p.y / 100 * tr.H) + aoff) + "px";
+    });
+  }catch(_e){}
+}
 function drawMap(){
   try{ updateMapStressTip(); }catch(_st){}
   const img=document.getElementById("map-img");
@@ -38772,6 +38858,12 @@ function drawMap(){
       });
     }
   }
+  /* v20a137 MAP137：cover 換算——fan-out 後嘅圖 % 換做舞台 % 先定位（見 map137CoverTransform）。
+     pinPos／btn.style.left-top／goPin 最近針解析全部食換算後嘅舞台 %，行為不變。 */
+  try{
+    const tr137 = map137CoverTransform();
+    if(tr137){ placed.forEach(p=>{ const q = map137ImgPctToStagePct(p.x, p.y, tr137); p.x = q.x; p.y = q.y; }); }
+  }catch(_e){}
   const pinPos = {};
   placed.forEach(p=>{ pinPos[p.L.id] = { x:p.x, y:p.y }; });
   drawMap._pinPos = pinPos;
@@ -38870,6 +38962,8 @@ function drawMap(){
       });
     }
   }catch(_e){}
+  /* v20a137 MAP137：地點名＋會場標籤即場定位（cover 換算；見 positionMapLabels137）。 */
+  try{ if(typeof positionMapLabels137==="function") positionMapLabels137(); }catch(_e){}
 }
 
 let _modalDismiss=null;
@@ -58279,6 +58373,15 @@ const _mi=document.getElementById("map-img"); if(_mi){ _mi.onload=()=>{ try{ dra
    喺 boot 呢度對真身 #map-img 同一個 detached Image 各呼叫 decode()，
    等 bitmap 喺玩家仲喺開始畫面嗰陣已經 ready；純呈現接線，唔掂任何邏輯。 */
 try{ if(_mi && _mi.decode) _mi.decode().catch(()=>{}); if(_mi && _mi.src){ const _pm=new Image(); _pm.src=_mi.src; if(_pm.decode) _pm.decode().catch(()=>{}); } }catch(_e){}
+/* v20a137 MAP137：viewport 變（轉向／dvh 變）嗰陣舞台高變 → cover 換算變，
+   針＋地點名要重畫先至啱位。debounce 後行既有 scheduleStoryMapRedraw（內含 drawMap）。 */
+try{
+  let __map137ResizeT = null;
+  window.addEventListener("resize", ()=>{
+    if(__map137ResizeT) clearTimeout(__map137ResizeT);
+    __map137ResizeT = setTimeout(()=>{ try{ if(typeof scheduleStoryMapRedraw==="function") scheduleStoryMapRedraw("resize137"); }catch(_e){} }, 160);
+  });
+}catch(_e){}
 try{ applyPrefsChrome(); }catch(_e){}
 (function paintTitleSaveBtns(){
   const has = hasSave();

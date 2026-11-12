@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # v20a99 VENUE99 靜態測試：古典大樓場地化——金禧大酒店・大禮堂。
 # 反證：喺 v20a98 index 上行會 FAIL（冇 VENUE99、冇場地接線、地圖冇酒店標籤）。
+# v20a137 更新：地區名 12 個已刪（地圖淨低會場標籤）；會場標籤計數改數 div
+# （v137 JS 換算函數亦引用 .md97-venue99 類名，裸字串計數會多）。
 # 用法：python3 tests/test_venue99_static.py [path-to-index.html]
 import re, sys
 from pathlib import Path
@@ -36,9 +38,9 @@ ok('獎項頁 when 行帶場地', '(e.venue99 ? (" · " + e.venue99) : "")' in s
 ok('__awards 暴露 venue99（駕駛／除錯）', 'venue99: function(id)' in src)
 
 # --- (3) 地圖景物標籤：唔開 LOCS、只加細字標籤 ---
-ok('地圖有酒店細字標籤恰好一個', src.count('md97-venue99') == 1 and '>金禧大酒店</div>' in src)
+ok('地圖有酒店細字標籤恰好一個', src.count('<div class="md97 md97-venue99"') == 1 and '>金禧大酒店</div>' in src)
 md = re.findall(r'<div class="md97"[^>]*>([^<]+)</div>', src)
-ok('地區名仍恰好 12 個（酒店標籤唔計入地區名）', len(md) == 12)
+ok('地區名恰好 0 個（v137 已拎走；酒店標籤唔計入地區名）', len(md) == 0)
 locs_seg = src.split('const LOCS')[1].split('const NPCS')[0] if 'const LOCS' in src else ''
 ok('LOCS 冇金禧（唔開新地點、冇熱區）', '金禧' not in locs_seg and 'venue99' not in locs_seg)
 ok('LOCS 仍 15 個地點', locs_seg.count('{ id:"') == 15)

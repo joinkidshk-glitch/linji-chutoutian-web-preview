@@ -46,14 +46,16 @@ ok('S-5 B01 呼叫新場景（舊圖只做退路）', 'b01GuideHtml108()' in bod
 
 # S-7 地圖標籤微調＋光暈加厚
 # v128 A1：金禧／薄扶林／星河／灣仔／銅鑼灣五個再微調（跟 §7 建議稿；金禧 3% 會出界，實測 11%）。
-ok('S-7 鑽石山新位 38%/6.5%', 'left:38%;top:6.5%">鑽石山' in html)
-ok('S-7 九龍城新位 58%/31.5%', 'left:58%;top:31.5%">九龍城' in html)
-ok('S-7 紅磡新位 52%/38%', 'left:52%;top:38%">紅磡' in html)
+# v20a137 MAP137：用戶拍板大地圖唔要地區名，12 個地區 div 已刪——下面 6 個地區斷言
+# 由「新位在」反轉做「地區 div 已刪」；金禧會場標籤＋15 地點名保留，斷言不變。
+ok('S-7 鑽石山地區名已刪（v137）', 'left:38%;top:6.5%">鑽石山' not in html)
+ok('S-7 九龍城地區名已刪（v137）', 'left:58%;top:31.5%">九龍城' not in html)
+ok('S-7 紅磡地區名已刪（v137）', 'left:52%;top:38%">紅磡' not in html)
 ok('S-7 金禧新位 11%/32%（v128 A1）', 'left:11%;top:32%">金禧大酒店' in html)
-ok('S-7 薄扶林新位 34%/50%（v128 A1）', 'left:34%;top:50%">薄扶林' in html)
+ok('S-7 薄扶林地區名已刪（v137）', 'left:34%;top:50%">薄扶林' not in html)
 ok('S-7 星河新位 26%/2%（v128 A1）', 'left:26%;top:2%">星河電視台' in html)
-ok('S-7 灣仔新位 56%/68%（v128 A1）', 'left:56%;top:68%">灣仔' in html)
-ok('S-7 銅鑼灣新位 right 6%/66%（v128 A1）', 'right:6%;top:66%">銅鑼灣' in html)
+ok('S-7 灣仔地區名已刪（v137）', 'left:56%;top:68%">灣仔' not in html)
+ok('S-7 銅鑼灣地區名已刪（v137）', 'right:6%;top:66%">銅鑼灣' not in html)
 ok('S-7 維港電影新位 80%', 'left:80%;top:calc(18% + 38px)">維港電影' in html)
 ok('S-7 廟街禮品新位 44%', 'left:44%;top:calc(35% - 44px)">廟街禮品' in html)
 ok('S-7 舊擠迫座標唔再出現', 'left:49%;top:8%">鑽石山' not in html and 'left:63%;top:29%">九龍城' not in html)
