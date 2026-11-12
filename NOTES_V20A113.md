@@ -70,5 +70,5 @@
 
 - main commit：`6060323`（squash 自分支 `v113-story-gates`，rebase 上 origin/main v115 `2b42ca0` 後合併；rebase 乾淨零衝突）。
 - main index：**5,097,864 bytes**，sha256 `53b558f1177041ff3489aa0024ff376c669f09ebd9910e7f0937493c3a0896e8`。
-- 線上核實：初次 curl 仍係舊版（5,092,391 bytes／`d8a53b85…`，Pages 部署滯後，已知毛病）；已推 NOTES 細 commit 重觸發部署，待覆核。
-- 合併後實駕：（待填，跑完補）。
+- 線上核實：**已核實**——live `index.html` 5,097,864 bytes、sha256 `53b558f1…`，同 main 逐字一致；`storyGate113Scrub` 在線（2 處：定義＋呼叫），新 C18 閘行在線。初次 curl 仍係舊版（Pages 滯後），推 NOTES 細 commit（`4d967ed`）重觸發後約 2 分鐘轉到新版。
+- 合併後實駕：本地 merged main（`6060323`，同部署版 byte 一致）重跑 `drive_gate113.py`，**14/14 ALL PASS**，零 pageerror。
