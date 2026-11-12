@@ -108,13 +108,7 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
     border-radius:32px;
   }
 }
-.cn-detail-toggle{
-  display:block;width:100%;margin:8px 0 4px;padding:8px 10px;
-  border-radius:10px;border:1px dashed rgba(138,90,32,.45);
-  background:rgba(230,210,168,.25);color:#5a4328;font-weight:800;
-  font-size:.78rem;cursor:pointer;text-align:center;
-}
-.cn-detail[hidden]{ display:none !important; }
+/* v20a117 S-30 DEDUP117：.cn-detail-toggle／.cn-detail 已隨詳細區刪除，CSS 一併清。 */
 .cn-summary .cn-sum-row{display:flex;justify-content:space-between;gap:8px;margin:4px 0;font-size:.82rem}
 .cn-summary .cn-sum-row .k{color:#6B5340;font-weight:700}
 .cn-summary .cn-sum-row .v{font-weight:800;color:#1A1410;text-align:right}
@@ -2823,6 +2817,7 @@ body.day-res-open #mask.day-res{
 }
 .gig-teaser .gt-badge.done{ background:#6a6a6a; }
 .gig-teaser .gt-meta{ font-size:.72rem; color:#6b5a48; line-height:1.4; }
+.gig-teaser .gt-meta-line{ display:block; }
 .gig-teaser .gt-hint{ font-size:.7rem; color:#a33; font-weight:700; margin-top:6px; }
 .gig-teaser .g-seal{ position:absolute; top:8px; right:8px; height:28px; width:auto; }
 
@@ -2857,12 +2852,7 @@ body.day-res-open #mask.day-res{
   text-shadow:0 1px 0 rgba(0,0,0,.18);
   word-break:keep-all; line-break:strict; overflow-wrap:anywhere;
 }
-/* v18w: 導演移出橙頭，改普通副行（唔做 header chip） */
-.cn-director-line{
-  font-size:.78rem; font-weight:700; color:#5a4a38;
-  margin:0 0 8px; padding:0 2px; line-height:1.35;
-  word-break:keep-all; line-break:strict;
-}
+/* v20a117 S-30 DEDUP117：.cn-director-line 已隨詳細區刪除（導演改行摘要區 cn-sum-row）；.notice_director_slot 係舊 legacy chip，唔關今包事，留返。 */
 .notice_director_slot{ display:none; } /* legacy chip 停用 */
 .cn-pills{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 8px; }
 .cn-pills .cn-lab-inline{
@@ -2880,13 +2870,9 @@ body.day-res-open #mask.day-res{
   min-height:28px; line-height:22px; box-sizing:border-box;
 }
 .notice_tag_recruiting.alt{ background:#6a6a6a; }
-.notice_period_bar{
-  font-size:.78rem; font-weight:700; color:#6a4020;
-  background:rgba(224,112,32,.18); border:1px solid rgba(196,90,18,.35);
-  border-radius:6px; padding:8px 10px; margin:0 0 10px; line-height:1.4;
-  min-height:32px; box-sizing:border-box;
-  word-break:keep-all; line-break:strict;
-}
+/* v20a117 S-30 DEDUP117：.notice_period_bar／.notice_table_frame／.notice_table_cell／
+   .cn-cond-row（＋.cn-lab 喺表頭嗰個）已隨詳細區刪除——呢幾段 CSS 只服務詳細區，
+   摘要區唔用；.cn-kv／.cn-lab（劇情簡介框嗰個）保留。 */
 .cn-tabs{ display:flex; gap:4px; margin:0; border-bottom:2px solid #3a6ea5; }
 .notice_tab_on, .notice_tab_off{
   flex:0 0 auto; padding:8px 14px; font-size:.8rem; font-weight:800;
@@ -2894,45 +2880,6 @@ body.day-res-open #mask.day-res{
 }
 .notice_tab_on{ background:#3a6ea5; color:#fff; }
 .notice_tab_off{ background:#d8d0bc; color:#5a4a38; }
-.notice_table_frame{
-  display:grid; grid-template-columns:1fr 1fr;
-  gap:0; border:1.5px solid #3a6ea5; border-top:0;
-  background:#fffef8; font-size:.78rem;
-  align-items:stretch;
-}
-@media (max-width:360px){
-  .notice_table_frame{ grid-template-columns:1fr; }
-}
-.notice_table_cell{
-  padding:8px 10px;
-  display:flex; flex-direction:column; align-items:stretch;
-  box-sizing:border-box;
-}
-.notice_table_cell.cond{ border-right:1.5px solid rgba(58,110,165,.35); }
-.notice_table_cell.meta{ /* same top padding as cond — 兩欄頂對齊 */ }
-@media (max-width:360px){
-  .notice_table_cell.cond{ border-right:0; border-bottom:1.5px solid rgba(58,110,165,.35); }
-}
-.notice_table_cell .cn-lab{
-  font-weight:900; color:#3a6ea5; font-size:.72rem;
-  margin:0 0 6px; letter-spacing:.04em;
-  min-height:1.35em; line-height:1.35;
-  display:flex; align-items:center; gap:6px; flex-wrap:wrap;
-}
-.cn-cond-row{
-  margin:0 0 4px; line-height:1.3;
-  font-size:.78rem; letter-spacing:-.02em;
-  word-break:keep-all; line-break:strict;
-}
-.cn-cond-row .ok,
-.cn-cond-row .no{
-  color:inherit; font-weight:700;
-  white-space:nowrap; display:inline-block; max-width:100%;
-  font-size:clamp(.68rem, 3.1vw, .8rem);
-  letter-spacing:-.02em;
-}
-.cn-cond-row .ok{ color:#1f7a4d; }
-.cn-cond-row .no{ color:#a33; }
 .cn-kv{
   display:flex; justify-content:flex-start; align-items:flex-start; gap:4px;
   margin:0 0 5px; line-height:1.35;
@@ -3251,30 +3198,15 @@ body.day-res-open .day-row{
   font-size:.78rem; font-weight:800; color:#3a6ea5;
 }
 .cn-lab-inline{ letter-spacing:.04em; }
-.cn-role-line{
-  display:flex; align-items:flex-start; gap:6px;
-  margin:0 0 10px; padding:8px 10px;
-  background:#fffef8; border:1.5px solid rgba(58,110,165,.35);
-  border-radius:6px; font-size:.78rem; line-height:1.4;
-  word-break:keep-all; line-break:strict;
-}
-.cn-role-line .k{ flex:0 0 auto; font-weight:900; color:#3a6ea5; }
-.cn-role-line .v{ flex:1 1 auto; font-weight:700; color:#1A1410; min-width:0; }
 .cn-kv.cn-limits{ align-items:flex-start; }
 .cn-kv.cn-limits .k{ flex:0 0 auto; min-width:4.2em; white-space:nowrap; word-break:keep-all; }
 .cn-kv.cn-limits .v{
   text-align:left; margin-left:0; font-weight:700; color:#6a4020;
   white-space:normal; word-break:keep-all; line-break:strict;
 }
-.cn-producer-line{
-  font-size:.78rem; font-weight:700; color:#5a4a38;
-  margin:-4px 0 8px; padding:0 2px; line-height:1.35;
-  word-break:keep-all; line-break:strict;
-}
-/* v19d: director／period after meta table */
-.notice_sheet_frame > .cn-director-line{ margin-top:10px; }
-.notice_sheet_frame > .notice_period_bar{ margin-top:0; }
-
+/* v20a117 S-30 DEDUP117：.cn-producer-line 已隨詳細區刪除（製作人改行摘要區
+   cn-sum-row，見 gigProducerLineHtml）；.cn-director-line／.notice_period_bar
+   嗰兩條 > 規則同樣死咗，一併清。 */
 .gig-board-list{ display:flex; flex-direction:column; gap:0; }
 
 /* v19u Phase 2：手帳三頁、傳聞卡、人情債條、新 pin 色塊。出圖 HOLD，無新圖。 */
@@ -4930,7 +4862,7 @@ body.day-res-open .day-row{
    (2) 負責人半身企卡後面：英雄區 240px、卡頂疊上 100px，可見人物約 140px（頭＋肩＋胸；
        遮到腰要全屏 sheet，見 s30v2 handoff 取捨，唔喺度硬加）。
    (3) 要求值改格並排：每格「現值／要求」＋✓／✕；唔合格＝紅字＋✕＋淡紅底三重。
-   (4) 正文字唔細過 13px（.82rem）：掣＋詳細條件行由 .78rem 升上嚟。 */
+   (4) 正文字唔細過 13px（.82rem）：摘要行由 .78rem 升上嚟。（v20a117：原句「掣＋詳細條件行」隨詳細區刪除而更新。） */
 #mask.casting-sheet-on:not(.tut-on) .modal{ max-height:min(88dvh,760px) !important; }
 /* 卡身內捲區底墊：原 calc(12px + safe-area) 喺呢個 sheet 係重複嘅——掣列本身已有 safe-area 底墊；
    收返 12px，等摺疊狀態唔使為咗 28px 空白而碌。展開嗰陣照捲，唔影響。
@@ -4952,12 +4884,8 @@ body.day-res-open .day-row{
 .notice_sheet_frame.cn-paper30v2 .notice_tag_recruiting.cn-stamp30{ background:transparent; color:#b3261e; border:2px solid #b3261e; outline:1px solid #b3261e; outline-offset:2px; border-radius:4px; font-weight:900; letter-spacing:.14em; transform:rotate(-3deg); padding:2px 8px; box-shadow:none; }
 /* 類型膠囊 -> 紙籤 */
 .notice_sheet_frame.cn-paper30v2 .notice_tag_type, .notice_sheet_frame.cn-paper30v2 .notice_tag_genre{ background:#fbf4dd; color:#4a3a20; border:1px dashed #a98d4f; border-radius:3px; box-shadow:0 1px 2px rgba(60,40,10,.25); }
-/* 「顯示詳細」虛線掣 -> 紙籤掣 */
-.notice_sheet_frame.cn-paper30v2 .cn-detail-toggle.cn-paper30-toggle{ border:1px dashed #a98d4f; background:#fbf4dd; color:#4a3a20; border-radius:3px; }
 /* 標籤藍字 -> 墨色；角色職位白盒 -> 紙籤 */
 .notice_sheet_frame.cn-paper30v2 .cn-lab-inline{ color:#6b5340; }
-.notice_sheet_frame.cn-paper30v2 .cn-role-line{ background:#fbf4dd; border:1px dashed #a98d4f; }
-.notice_sheet_frame.cn-paper30v2 .cn-role-line .k{ color:#6b5340; }
 /* ---- (3) 要求格並排對照 ---- */
 .notice_sheet_frame.cn-paper30v2 .cn-req-grid30v2{ display:grid; grid-template-columns:repeat(auto-fit,minmax(72px,1fr)); gap:6px; margin:0 0 6px; }
 .notice_sheet_frame.cn-paper30v2 .cn-req-cell{ border:1px solid #b39a5f; border-radius:6px; background:#fbf4dd; padding:5px 6px 4px; min-width:0; }
@@ -4975,17 +4903,14 @@ body.day-res-open .day-row{
 .notice_sheet_frame.cn-paper30v2 .cn-stars-role30v2 .cn-lab-inline{ color:#6b5340; }
 .notice_sheet_frame.cn-paper30v2 .cn-role30v2 .k{ font-weight:900; color:#6b5340; }
 .notice_sheet_frame.cn-paper30v2 .cn-role30v2 .v{ font-weight:700; color:#1A1410; }
-/* ---- (4) 密度：掣＋詳細條件行唔細過 13px ---- */
+/* ---- (4) 密度：摘要行唔細過 13px ---- */
 .notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row{ margin:2px 0; line-height:1.35; }
 .notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row .v{ word-break:keep-all; overflow-wrap:normal; }
-/* S-30v2 期間拆行：底部期間／期限 bar 嘅短語唔准中間斷開（摘要 .v 上面已有 keep-all；
-   限 cn-paper30v2 範圍，唔改全局）。 */
-.notice_sheet_frame.cn-paper30v2 .notice_period_bar{ word-break:keep-all; }
+/* S-30v2 期間拆行：摘要 .v 上面已有 keep-all；
+   限 cn-paper30v2 範圍，唔改全局。 */
 /* 承上：值唔肯斷詞之後，flex 會反過來壓縮左邊標籤（「通告期／間」）——標籤鎖死唔換行，闊度畀值。 */
 .notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row .k{ flex:0 0 auto; white-space:nowrap; }
 .notice_sheet_frame.cn-paper30v2 .cn-pills{ margin:0 0 6px; }
-.notice_sheet_frame.cn-paper30v2 .cn-detail-toggle{ font-size:.82rem; padding:7px 10px; }
-.notice_sheet_frame.cn-paper30v2 .cn-cond-row, .notice_sheet_frame.cn-paper30v2 .cn-cond-row .ok, .notice_sheet_frame.cn-paper30v2 .cn-cond-row .no{ font-size:.82rem; }
 /* S-32 保留：卡高按內容收（v105 已修，紙框唔加固定高度） */
 
 /* ===== v20a108 UI108 視覺統一包（B 級）===== */
@@ -34137,23 +34062,8 @@ function wireGigCardSynToggles(root){
       btn.setAttribute("aria-expanded", wasClamped ? "true" : "false");
     });
   });
-  /* v19z8：通告摘要／詳細兩段 */
-  root.querySelectorAll("[data-cn-toggle]").forEach(btn=>{
-    if(btn.dataset.wired) return;
-    btn.dataset.wired="1";
-    btn.addEventListener("click", ev=>{
-      ev.preventDefault();
-      ev.stopPropagation();
-      const frame = btn.closest(".notice_sheet_frame") || btn.parentElement;
-      const detail = frame ? frame.querySelector(".cn-detail") : null;
-      if(!detail) return;
-      const open = detail.hasAttribute("hidden");
-      if(open) detail.removeAttribute("hidden");
-      else detail.setAttribute("hidden","");
-      btn.textContent = open ? "收起詳細 ▴" : "顯示詳細 ▾";
-      btn.setAttribute("aria-expanded", open ? "true" : "false");
-    });
-  });
+  /* v20a117 S-30 DEDUP117：v19z8「顯示詳細」掣接線刪除——掣＋.cn-detail 已成段移除，
+     摘要即全部內容，唔留死接線。 */
 }
 function gigCardHtml(g, opts){
   opts=opts||{};
@@ -34320,6 +34230,19 @@ function gigDirectorLabel(g){
   if(g && g.director) return String(g.director);
   return "組製未公開";
 }
+/* v20a117 S-30 DEDUP117：導演欄只出真名。實駕普查（window.GIGS，183 張）：
+   職銜值（唔係人名）共 31 張——「副導」×19、「副導阿標」×4、「廣告助導」×3、
+   「特輯副導」×1、「場務阿強」×1、「外景場記」×1、「平面攝影師阿忠」×1、
+   「錄音室助導」×1；其餘 152 張係真名，0 張缺 director（fallback「組製未公開」
+   實池唔觸發）。呢 8 個職銜值＋fallback 一律唔出（係噪音）；「副導阿標」等雖有
+   花名，但係場務職銜唔係導演名，同樣濾走。 */
+const GIG_DIRECTOR_GENERIC117 = new Set(["副導","特輯副導","副導阿標","廣告助導","場務阿強","外景場記","平面攝影師阿忠","錄音室助導","組製未公開"]);
+function gigDirectorRealName117(g){
+  const d = (typeof gigDirectorLabel==="function") ? gigDirectorLabel(g) : "";
+  const s = String(d||"").trim();
+  if(!s || GIG_DIRECTOR_GENERIC117.has(s)) return "";
+  return s;
+}
 function gigApplyDeadlineDays(g){
   /* v19j：報名截止日數（距招募完結）。缺欄／非有限數字／負數 → null，呼叫方隱藏該行。 */
   if(!g || typeof g.applyDeadlineDays!=="number" || !Number.isFinite(g.applyDeadlineDays) || g.applyDeadlineDays<0) return null;
@@ -34457,7 +34380,11 @@ function gigBoardTeaserHtml(g, opts){
   const verb=gigScheduleVerb(g);
   let days="";
   try{ days=`${verb}約 ${effectiveShootDays(g)} 日`; }catch(_e){}
-  const meta=[pay, days].filter(Boolean).join(" · ");
+  /* v20a117 S-30 DEDUP117：欄卡 meta 拆行（跟 v111 期間拆行同一做法：一段一行）。
+     實駕核實實際渲染只得兩段——「片酬 $N」「拍攝約 N 日」；任務書話嘅第三段
+     「獲聘後 N 日內完成」並唔喺 teaser meta 出現（嗰句係詳情頁「完成期限」行嘅值），
+     故按實際兩段拆，唔憑空加第三段。數字／文字一字唔郁，只係由「 · 」串連改逐行。 */
+  const metaParts=[pay, days].filter(Boolean);
   const lifeKey = st.key || ((st.label==="已殺青"||st.label==="已取消")?"wrapped":(st.label==="拍攝中"?"shooting":(st.label==="已獲聘"?"hired":"")));
   const boardState = (lifeKey==="wrapped" || lifeKey==="shooting" || lifeKey==="hired" || st.label==="已殺青" || st.label==="製作中" || st.label==="已獲聘" || st.label==="拍攝中") ? "" : gigBoardCardState(g);
   const castCopy = phase3CastCopy();
@@ -34479,7 +34406,7 @@ function gigBoardTeaserHtml(g, opts){
     <img class="g-seal" src="${sealSrc}" alt="${badge94.label||sealKey}" onerror="this.style.display='none'"/>
     <div class="gt-title">${work}</div>
     <div class="gt-row"><span class="gt-pill">${genre}</span><span class="${badgeCls}">${badgeText}</span></div>
-    ${meta?`<div class="gt-meta">${meta}</div>`:""}
+    ${metaParts.length?`<div class="gt-meta">${metaParts.map(m=>`<div class="gt-meta-line">${m}</div>`).join("")}</div>`:""}
     ${intelMark}
     ${gapHtml}
   </div>`;
@@ -34533,12 +34460,9 @@ function gigRoleLabelText(g){
   if(map[scale]) return map[scale];
   return "";
 }
-function gigRoleLineHtml(g){
-  /* v19f：label 固定「角色職位」（唔用「角色」／「職位」單字） */
-  const lab=gigRoleLabelText(g);
-  if(!lab) return "";
-  return `<div class="cn-role-line"><span class="k">角色職位</span><span class="v">${lab}</span></div>`;
-}
+/* v20a117 S-30 DEDUP117：gigRoleLineHtml 刪除——唯一調用點係 castingNoticeDetailHtml
+   入面從來冇渲染過嘅 `roleLine` const（角色職位已由摘要區 starsRoleRow30v2
+   嘅 cn-role30v2 承載；roleHint 喺劇情簡介框嘅 cn-role-note）。連同 .cn-role-line CSS 一併清。 */
 function gigLimitsParts(g){
   const parts=[];
   const lim = g && g.limits;
@@ -34585,10 +34509,12 @@ function gigSpecialLimitsHtml(g){
   return `<div class="cn-kv cn-limits"><span class="k">特殊限制</span><span class="v">${parts.join("；")}</span></div>`;
 }
 function gigProducerLineHtml(g){
+  /* v20a117 S-30 DEDUP117：由詳細區搬入摘要區，改用摘要區 cn-sum-row（同其他行一樣式）；
+     文字一字唔郁（label「製作人」＋名）；冇製作人嗰陣回 ""，成行隱藏。 */
   if(!g || !g.producer) return "";
   const p=String(g.producer).trim();
   if(!p) return "";
-  return `<div class="cn-producer-line">製作人：${p}</div>`;
+  return `<div class="cn-sum-row"><span class="k">製作人</span><span class="v">${p}</span></div>`;
 }
 
 function gigLockReasonLine(g){
@@ -34638,12 +34564,11 @@ function castingNoticeDetailHtml(g){
   /* v19f PLAN_GIG_MV3_ALIGN_v1 Phase B label nits；類型 lab＋角色職位；limits 空隱藏；內容等劇本 HANDOFF */
   const work=gigWorkTitle(g);
   const st=gigRecruitStatus(g);
-  const dir=gigDirectorLabel(g);
   const period=gigCastPeriodLine(g, {noApply:true});
-  /* S-30v2：完成期限獨立行（有 ddl 先出，冇就成行隱藏）；底部 notice_period_bar 同樣拆開。 */
+  /* S-30v2：完成期限獨立行（有 ddl 先出，冇就成行隱藏）。v20a117 DEDUP117：
+     底部 notice_period_bar（期間／期限 bar）隨詳細區刪除，deadlineBar30v2 死咗，一併刪。 */
   const deadline30v2=gigCastDeadlineText30v2(g);
   const deadlineRow30v2=deadline30v2?`<div class="cn-sum-row"><span class="k">完成期限</span><span class="v">${deadline30v2}</span></div>`:"";
-  const deadlineBar30v2=deadline30v2?`<div class="notice_period_bar"><b>完成期限：</b>${deadline30v2}</div>`:"";
   const ddl105=gigApplyDeadlineDays(g);
   const ddlRow105 = (ddl105!=null) ? `<div class="cn-sum-row"><span class="k">報名截止</span><span class="v">仲有 ${ddl105} 日截止</span></div>` : "";
   const stars=gigDifficultyStars(g);
@@ -34657,24 +34582,10 @@ function castingNoticeDetailHtml(g){
   /* v20a108 UI108 S-33：簽約金數字行升上摘要區（獲聘後即收；v20a115 更正：簽約金只喺公佈獲聘嗰刻入帳，見 aud91PresentOne「公佈嗰刻即付」，接通告嗰刻唔入帳）；違約金只喺有數嗰陣先出。 */
   const signFee108=(()=>{ try{ const ex=gigPayExact(g); return (ex!=null && ex>0) ? ("約 $"+Math.round(ex*0.3).toLocaleString()+"（獲聘後即收）") : "合約額三成（獲聘後即收）"; }catch(_e){ return "合約額三成（獲聘後即收）"; } })();
   const breachRow108=(()=>{ try{ return (typeof gigBreachFee==="function" && gigBreachFee(g)!=null) ? `<div class="cn-sum-row"><span class="k">違約金</span><span class="v">${breachStr}</span></div>` : ""; }catch(_e){ return ""; } })();
-  const condParts=[];
-  const floor=fameFloor(g);
-  if(floor>0){
-    const cur=Number(S.fame)||0;
-    const v=floor;
-    const ok=cur>=v;
-    condParts.push(`<div class="cn-cond-row"><span class="${ok?"ok":"no"}">${(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲望"}：需要 ${v}</span></div>`);
-  }
-  Object.entries(g.req||{}).forEach(([k,v])=>{
-    const cur=Number(S[k])||0;
-    const ok=cur>=v;
-    const lab=STAT_LABEL[k]||k;
-    condParts.push(`<div class="cn-cond-row"><span class="${ok?"ok":"no"}">${lab}：需要 ${v}</span></div>`);
-  });
-  if(!condParts.length) condParts.push(`<div class="cn-cond-row">組製暫無額外能力條件</div>`);
+  /* v20a117 S-30 DEDUP117：condParts（詳細區「條件」表）隨詳細區刪除——同摘要區
+     要求格（reqGridHtml，現／要對照）同一組數，只係冇現值，純重複。 */
   const syn = g.synopsis ? String(g.synopsis) : "（組製未附劇情簡介）";
-  const roleLine = gigRoleLineHtml(g);
-  /* S-30v2：發出人英雄區＋星級／職位合併行＋要求格。數值／機制零改動；現值讀 S 同 condParts 一樣。 */
+  /* S-30v2：發出人英雄區＋星級／職位合併行＋要求格。數值／機制零改動；現值讀 S，同已刪詳細區舊 condParts 一樣。 */
   const issuer30v2 = gigIssuerFigure30v2(g);
   const heroHtml30v2 = `<div class="cn-issuer30v2" role="img" aria-label="${issuer30v2.name} · ${issuer30v2.org}"><img class="cn-issuer-img30v2" src="${issuer30v2.src}" alt="${issuer30v2.name}" onerror="this.closest('.cn-issuer30v2').style.display='none'"><div class="cn-issuer-cap30v2"><b>${issuer30v2.name}</b><span>${issuer30v2.org} · ${issuer30v2.role}</span></div></div>`;
   const roleLabel30v2 = (typeof gigRoleLabelText==="function") ? gigRoleLabelText(g) : "";
@@ -34729,7 +34640,26 @@ function castingNoticeDetailHtml(g){
           ${weekdayHint?`<div class="cn-wd-sub">${weekdayHint}</div>`:""}
           ${(total < weekly) ? `<div class="cn-wd-sub">實際只需通告 ${total} 日（唔係每週做滿）</div>` : ""}
         </div>`;
-  /* v19z8：預設摘要（片酬／日數／差幾多）；詳細摺叠 */
+  /* v20a117 S-30 DEDUP117：詳細區刪除，唯一資料搬入摘要區（有料先出，冇就唔加行）。
+     ①特殊限制 limitsHtml（空即 ""，gigSpecialLimitsHtml 本身守門）；②導演只出真名
+     （gigDirectorRealName117 濾走 8 個職銜值＋fallback）；③製作人 producerLine（空即 ""）；
+     ④每週開工 weeklyBlock 只喺 total>1 先出（1 日通告「通告日數 共 1 天」已講完，
+     「每週最多 6 日」係噪音；「實際只需通告 N 日」嗰句只喺 total<weekly 跟埋出，沿用原條件）；
+     ⑤劇情簡介 synopsisFrame117——任務書對照漏咗呢項：佢只喺詳細區出現，係成張卡唯一
+     劇情簡介（通告欄 teaser 冇簡介，gigCardHtml 只喺手帳／未能試鏡 modal 先出），刪詳細區
+     唔救返就會成張卡冇晒簡介，故一併搬入摘要，markup 原樣搬（.notice_synopsis_frame CSS 照用）。
+     順序：事實行尾（預計播出之後）、差距／情報／var-note 之前。 */
+  const directorReal117 = gigDirectorRealName117(g);
+  const directorRow117 = directorReal117 ? `<div class="cn-sum-row"><span class="k">導演</span><span class="v">${directorReal117}</span></div>` : "";
+  const weeklyRow117 = (total > 1) ? weeklyBlock : "";
+  const synopsisFrame117 = `<div class="notice_synopsis_frame">
+      <div class="cn-lab">劇情簡介</div>
+      <div class="cn-syn-scroll">
+        <p>${syn}</p>
+        ${(g.roleLabel && g.roleHint) ? (`<div class="cn-role-note">角色：${String(g.roleHint)}</div>`) : ""}
+      </div>
+    </div>`;
+  /* v19z8：預設摘要（片酬／日數／差幾多）；v20a117：詳細摺叠已刪，摘要即全部內容 */
   let sumGaps = "";
   try{
     const gaps = (typeof gigMissingReqGaps==="function") ? gigMissingReqGaps(g) : [];
@@ -34768,37 +34698,14 @@ function castingNoticeDetailHtml(g){
       ${deadlineRow30v2}
       ${ddlRow105}
       ${releaseRow88}
+      ${limitsHtml}
+      ${directorRow117}
+      ${producerLine}
+      ${weeklyRow117}
+      ${synopsisFrame117}
       ${sumGaps}
       ${intelHtml}
       <p class="var-note">成數受表現／壓力／信用影響。<br>片酬牌面係約數，實收按合約。<br>獲聘先收三成簽約金，餘額殺青先收。</p>
-    </div>
-    <button type="button" class="cn-detail-toggle cn-paper30-toggle" data-cn-toggle aria-expanded="false">顯示詳細 ▾</button>
-    <div class="cn-detail" hidden>
-    <div class="notice_table_frame">
-      <div class="notice_table_cell cond">
-        <div class="cn-lab">條件</div>
-        ${condParts.join("")}
-      </div>
-      <div class="notice_table_cell meta">
-        <div class="cn-lab">檔期／片酬</div>
-        ${weeklyBlock}
-        <div class="cn-kv"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
-        <div class="cn-kv"><span class="k">片酬</span><span class="v">${payStr}</span></div>
-        <div class="cn-kv"><span class="k">簽約金</span><span class="v">${(()=>{ try{ const ex=gigPayExact(g); return (ex!=null && ex>0) ? ("約 $"+Math.round(ex*0.3).toLocaleString()+"（合約額三成）") : "合約額三成"; }catch(_e){ return "合約額三成"; } })()} · 簽約即付，餘額殺青入帳</span></div>
-        ${limitsHtml}
-      </div>
-    </div>
-    <div class="cn-director-line">導演：${dir}</div>
-    ${producerLine}
-    <div class="notice_period_bar"><b>通告期間：</b>${period}</div>
-    ${deadlineBar30v2}
-    <div class="notice_synopsis_frame">
-      <div class="cn-lab">劇情簡介</div>
-      <div class="cn-syn-scroll">
-        <p>${syn}</p>
-        ${(g.roleLabel && g.roleHint) ? (`<div class="cn-role-note">角色：${String(g.roleHint)}</div>`) : ""}
-      </div>
-    </div>
     </div>
     </div>
   </div>`;
