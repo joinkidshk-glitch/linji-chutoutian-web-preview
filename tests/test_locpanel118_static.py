@@ -136,9 +136,11 @@ ck("locpanel118ArrivedNow：spent 即出；否則認探訪記憶（同地點＋�
 ck("探訪記憶係 transient（let 變量，唔入 S／唔入 save）",
    "let locpanel118SpentVisit = null;" in src and "S.locpanel118SpentVisit" not in src)
 anchor_src = extract_fn("locpanel118AnchorOwner")
-ck("錨定：腳部收 8px 入選項卡（遮腿）", "- 8" in anchor_src)
-ck("錨定：人物高度上限 230、下限 120（唔頂穿 sheet 頂）",
-   "Math.min(230" in anchor_src and "Math.max(120" in anchor_src)
+ck("錨定：腳部收 120px 入選項卡（遮腿，跟樣本；v120-fix1，舊 8px 已改）", "- 120" in anchor_src)
+# v20a120 LOCFULL120：全屏幕之後 sheet 高變咗（~844px），人物高度上限 230→400（貼近
+# Phase 1 樣本 400px）；下限 120 不變。舊 230 斷言由呢條取代。
+ck("錨定：人物高度上限 400、下限 120（唔頂穿 sheet 頂）",
+   "Math.min(400" in anchor_src and "Math.max(120" in anchor_src)
 
 # ---------- 4. openLoc／closeSheet 接線 ----------
 i = src.find("function openLoc(id, opts){")
