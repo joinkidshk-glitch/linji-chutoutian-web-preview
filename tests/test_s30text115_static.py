@@ -44,7 +44,7 @@ ok('T4 機制：doAudition 接通告嗰刻唔入帳（body 無 apply({money／S.
    (lambda _b: ('apply({money' not in _b) and ('S.money' not in _b))(html[html.find('function doAudition('):html.find('function rarityDot(', html.find('function doAudition('))]))
 ok('T4 摘要行寫「獲聘後即收」', '（獲聘後即收）' in b)
 ok('T4 舊寫法「接通告後即收」全檔清零', '（接通告後即收）' not in html)
-ok('T4 詳細區「簽約即付」不變（簽約＝獲聘嗰刻，同機制一致）', '簽約即付，餘額殺青入帳' in b)
+ok('T4 詳細區「簽約即付」已隨詳細區刪除（v20a117 S-30 DEDUP117：嗰句同 var-note 第三行「獲聘先收三成簽約金，餘額殺青先收」重複，成段刪除係應有之義；摘要保留同一時點，機制不變）', '簽約即付，餘額殺青入帳' not in b and '獲聘先收三成簽約金，餘額殺青先收。' in b)
 
 print('---')
 print('PASS' if not fails else 'FAIL: ' + '; '.join(fails))

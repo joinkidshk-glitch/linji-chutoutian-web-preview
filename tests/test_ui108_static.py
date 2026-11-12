@@ -105,8 +105,10 @@ ok('S-33 違約金有數先出', 'gigBreachFee(g)!=null' in b)
 ok('S-33 違約金行只喺條件 helper 入面（模板改用 ${breachRow108}）', '${breachRow108}' in b and html.count('<div class="cn-sum-row"><span class="k">違約金</span><span class="v">${breachStr}</span></div>') == 1)
 _i_sign = b.find('${signFee108}</span>')
 _i_breach = b.find('${breachRow108}', _i_sign)
-_i_toggle = b.find('cn-detail-toggle', _i_sign)
-ok('S-33 違約金行升入摘要（唔使展開先見）', _i_sign > 0 and 0 < _i_breach < _i_toggle)
+# v20a117 S-30 DEDUP117：詳細區成段刪除，「顯示詳細」掣已移除——舊斷言
+# 「違約金行喺掣之前（唔使展開先見）」改為「掣已移除＋違約金行喺摘要區」；
+# 全卡即摘要，「唔使展開」已成結構事實，唔係放寬測試。
+ok('S-33 違約金行升入摘要（唔使展開先見；v20a117 詳細區已刪，cn-detail-toggle 已移除）', _i_sign > 0 and 0 < _i_breach and 'cn-detail-toggle' not in b)
 
 # S-34 「離開」改淺色文字掣
 ok('S-34 btn_leave 透明淺色', 'button.btn_leave,\n#mask:not(.tut-on) #modal-btns button.g.btn_leave{\n  background:transparent !important; color:#7a6248 !important;' in html)
