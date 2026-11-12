@@ -70,6 +70,9 @@ var leadStar59Of = function(g){ return (g && TEST_STAR[g.id]) || ''; };
 var poster59Path = function(gid){ return (gid && POSTER59_IDS[gid]) ? ('data:poster:'+gid) : ''; };
 var work59WorkOf = function(h, g){ return (g && (g.workTitle || g.title)) || ''; };
 
+/* v128 A5：獎項渲染經 iconHtml112（🏆→trophy 圖）——抽真身入 stub，唔係 mock。 */
+eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
+eval(extractFn('iconHtml112'));
 for(const f of ['awards63StarName','awards63AllGigs','awards63GigYear','awards63GigPay','awards63Fellows','awards63FocusCat','awards62CeremonyBeats'])
   eval(extractFn(f));
 

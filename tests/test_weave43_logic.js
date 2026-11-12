@@ -311,10 +311,10 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   ensureFamilyHomeDebt();
   S.dayIndex = 7;
   let r = settleWeek();
-  ok('settle seed week: seed flavor appears', r.html.indexOf('屋企人催數，從來唔出聲')>=0);
+  ok('settle seed week: seed flavor appears', r.html.indexOf('屋企人唔會開口催數，記低就算')>=0);
   S.dayIndex = 14;
   r = settleWeek();
-  ok('settle next week: seed flavor does NOT repeat', r.html.indexOf('屋企人催數，從來唔出聲')<0);
+  ok('settle next week: seed flavor does NOT repeat', r.html.indexOf('屋企人唔會開口催數，記低就算')<0);
 
   // 還清嗰週（種子 flavor 早已消費；day 20 還清記低，day 21 結算）
   S = baseS(0);

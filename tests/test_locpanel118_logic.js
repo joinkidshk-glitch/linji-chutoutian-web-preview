@@ -103,7 +103,7 @@ ok('未知地點：null（唔用何生頂替）', api.locpanel118OwnerFor('home'
 const ICON_CASES = [
   ['播劇情：《上岸路》', 'act-priority act-story', 'icon_mask.png'],
   ['劇情已完成：《上岸路》', 'act-story', 'icon_mask.png'],
-  ['打聽電視城規矩', 'act-priority act-ask', 'icon_news.png'],
+  ['打聽電視城規矩', 'act-priority act-ask', 'icon_tv.png'],
   ['同何生傾談', 'act-priority', 'icon_people.png'],
   ['送禮：林曉晴', 'act-priority', 'icon_gift.png'],
   ['只查看通告欄', 'act-priority', 'icon_briefcase.png'],

@@ -46,14 +46,17 @@ try{
 }
 eval(code);
 
-// ---- 段一：32 個欄位值逐個映射（審計 notes_icon_audit.md §2） ----
+// ---- 段一：40 個欄位值逐個映射（審計 notes_icon_audit.md §2＋v128 A5：🏆＋禮物 8 隻補圖） ----
 const EXPECT = {
   '🗺️':'map', '😴':'sleep', '🌙':'sleep', '🎤':'mic', '☕':'tea',
   '🎬':'clapper', '🎥':'clapper', '💪':'fitness', '🏠':'home', '📰':'news',
   '🎁':'gift', '🏥':'hospital', '🎵':'music', '💿':'music', '👥':'people',
   '📺':'tv', '📻':'radio', '📡':'radio', '🦁':'lion', '💼':'briefcase',
   '🏢':'building', '🎭':'mask', '📚':'book', '📖':'book', '🥋':'martial',
-  '🧹':'broom', '🤒':'sick', '📞':'phone', '😊':'mood', '⭐':'star', '✨':'sparkle'
+  '🧹':'broom', '🤒':'sick', '📞':'phone', '😊':'mood', '⭐':'star', '✨':'sparkle',
+  '🏆':'trophy', '🍍':'gift_pineapple', '🧁':'gift_eggtart', '🧴':'gift_thermos',
+  '📎':'gift_hairclip', '📝':'gift_memopad', '📼':'gift_cassette', '🍬':'gift_sweetbox',
+  '🌸':'gift_perfume'
 };
 for(const [em, stem] of Object.entries(EXPECT)){
   const out = iconHtml112(em);
@@ -72,7 +75,8 @@ for(const v of [...fieldVals].sort()){
   ok('field value covered: ' + v, iconHtml112(v).includes('<img class="ic112"'));
 }
 // ---- 段二：留低嗰批原樣通過 ----
-for(const em of ['🏆', '🔒', '💡', '📋', '👤', '🍍', '🧁', '🧴', '📎', '📝', '📼', '🍬', '🌸']){
+// v128 A5：🏆＋禮物 8 隻已補圖，不再 passthrough（改行段一映射）；淨低 🔒💡📋👤。
+for(const em of ['🔒', '💡', '📋', '👤']){
   ok('passthrough ' + em, iconHtml112(em) === em);
 }
 ok('passthrough · placeholder', iconHtml112('·') === '·');
