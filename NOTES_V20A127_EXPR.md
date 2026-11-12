@@ -204,7 +204,16 @@ loader 證明係本批驗收上限；跟進要內容／引擎改動，另開票�
 
 ## 出貨
 新制：分支 `v127-expr` → checkout main → `git merge --squash v127-expr` → commit →
-push main（經 deploy key，唔使 approve；唔開 PR）。合併後 curl 線上核實 index byte／sha
-＋22 張新圖逐張 200。
-
-<!-- 合併後補：main commit／線上 byte／sha／逐張圖 200 核實結果 -->
+push main（經 deploy key，唔使 approve；唔開 PR）。合併嗰陣 main 已行前到 7f68665
+（v20a132），squash 直接落喺 7f68665，乾淨；全套 A/B 同實駕喺合併後樹重跑。
+**合併紀錄：main `62d166f`**（v20a127：表情補圖批，116 個檔案，+7791/−7）。
+線上核實（2026-11-12 晚，push 後約 2 分鐘）：index **200、5,178,992 bytes、
+sha `ca76094705f6`**（同 v132 相同——本批唔郁 index.html）；22 張新圖逐張 **200**，
+byte 數同本地一字唔差（gu_shy 134830、gu_think 133960、gu_angry 136986、
+pang_sad 176540、chow_sad 104910、chow_angry 99818、yip_shy 178792、
+yip_surprise 180500、yip_angry 177976、ching_shy 169786、ching_surprise 178072、
+ching_think 168012、lan_serious 212402、lan_think 211322、fong_sad 104200、
+fong_angry 105670、cheng_serious 72786、cheng_shy 73466、kwan_serious 95956、
+mok_sad 213748、uncle_serious 239524、uncle_smile 240376）。
+最終 A/B（基底 7f68665）：pristine **189/12** vs 合併樹 **191/12**，FAIL 清單一致；
+合併樹全 drive **22/22、OVERALL PASS: True**、0 pageerror。
