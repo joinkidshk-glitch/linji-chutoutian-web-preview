@@ -40350,13 +40350,41 @@ function wf4Scene105(ev){
   /* v20a105 UI105 D-8（第一階段）：隨機事件補返場景圖做底——用返地點板同一套
      新場景來源 LOC_SHEET_BG（逐地點檔）；事件本身有 loc 就用嗰度，day 事件用
      玩家當前地點 atLoc。冇對應新圖嗰兩個地點（醫院／禮品）回空字串，唔出底圖。
-     具名角色企立屬第二包，今包唔做。 */
+     具名角色企立屬第二包，今包唔做。
+     v20a134 WF4 灰底：無 loc 嘅 day 事件喺地圖（atLoc null）嗰陣上面回空字串，
+     舞台得返預設米色漸變＋旁白深 scrim，一片灰。盤點 36 單：18 單有 loc（已有
+     圖）；18 單無 loc 全部係 day 事件。以下覆寫表按事件 setting 映射，優先過
+     ev.loc／atLoc（setting 先係正確場景，玩家身處地點唔代表事件發生地）。現有
+     圖 2 組＋新圖 3 張，覆蓋 16／18；剩低 2 單（wf4_ev_st05 卡拉OK 包廂、
+     wf4_ev_st08 的士車廂）冇啱嘅場景，寧願留灰都唔硬湊錯圖。新圖參照＋QC 見
+     ~/workspace/linji-wf4scenes-refs/SOURCES.md。 */
   try{
+    if(ev && ev.id && typeof WF4_SCENE_OVERRIDE134!=="undefined" && WF4_SCENE_OVERRIDE134[ev.id]) return WF4_SCENE_OVERRIDE134[ev.id];
     const locId = (ev && ev.loc) || (typeof atLoc!=="undefined" ? atLoc : null);
     if(!locId || typeof LOC_SHEET_BG==="undefined") return "";
     return LOC_SHEET_BG[locId] || "";
   }catch(_e){ return ""; }
 }
+/* v20a134 WF4 場景覆寫表（見 wf4Scene105 註解）：屋企組 5 單、電話亭組 4 單、
+   街市組 5 單用新圖；廠房門口＋冰室用現有地點圖。 */
+const WF4_SCENE_OVERRIDE134 = {
+  wf4_ev_home01:"assets/story/locs/bg_wf4_home.jpg?v=20a134",
+  wf4_ev_home02:"assets/story/locs/bg_wf4_home.jpg?v=20a134",
+  wf4_ev_home03:"assets/story/locs/bg_wf4_home.jpg?v=20a134",
+  wf4_ev_home04:"assets/story/locs/bg_wf4_home.jpg?v=20a134",
+  wf4_ev_day01:"assets/story/locs/bg_wf4_home.jpg?v=20a134",
+  wf4_ev_st01:"assets/story/locs/bg_wf4_booth.jpg?v=20a134",
+  wf4_ev_st02:"assets/story/locs/bg_wf4_booth.jpg?v=20a134",
+  wf4_ev_st03:"assets/story/locs/bg_wf4_booth.jpg?v=20a134",
+  wf4_ev_day02:"assets/story/locs/bg_wf4_booth.jpg?v=20a134",
+  wf4_ev_st06:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_st07:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_st11:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_day03:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_day04:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_set08:"assets/story/locs/bg_loc_film_lion.jpg?v=20a104",
+  wf4_ev_st04:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a104",
+};
 /* ===== v20a108 D-8（二期）：WF4 隨機事件具名講者企立 =====
    盤點（見 tests/test_dlg108_*，以 DLG106_GAZE＋assets/story/fullbody/ 核對）：
    36 事件入面只有 8 單有全身資產講者——全部只得阿偉（awi）；阿媽／霞姐／
