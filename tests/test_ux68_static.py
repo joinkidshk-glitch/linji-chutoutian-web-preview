@@ -62,12 +62,16 @@ ok('要事訊號用既有數據（favorDue／deadlineDay／CALIB60_NODE_WINDOWS�
 # v20a74 改版：目標標示隨主攻目標功能移除——舊斷言「▲ 用 STAT_LABEL」改為驗全清。
 ok('v74：目標標示已移除（冇 badges 函數／冇 .ux68-tgt）', 'ux68ApplyTargetBadges' not in src and 'ux68-tgt' not in src)
 # v20a112 ICONS112：地點板標題改 innerHTML＋圖標（原 textContent 純文字）；地區仍在標題、desc 仍獨立。
+# v20a128 A2 N3：描述唔再截 28 字（descShort 已刪），出全文 L.desc。
 ok('sheet 標題加地區、desc 唔重複', 'document.getElementById("loc-title").innerHTML=iconHtml112(L.emoji||"")' in src
    and 'esc59(L.name)' in src and 'esc59(L.area)' in src
-   and 'textContent=`${descShort}`' in src)
+   and 'document.getElementById("loc-desc").textContent = L.desc||""' in src)
 
 # --- (3) 地圖墨字地名（方案 B 定版：index-alt-b.html） ---
-labels = re.findall(r'<div class="mn68" style="left:([0-9.]+)%;top:calc\((\d+)% ([+-]) (\d+)px\)">([^<]+)</div>', src)
+# v128 A1：星河電視台改 plain top（left:26%;top:2%，唔再用 calc 扣 50px）——regex 要識
+# plain top（記做 sign "+"、px "0"），其餘 14 個繼續 calc 格式。
+labels = re.findall(r'<div class="mn68" style="left:([0-9.]+)%;top:(?:calc\((\d+)% ([+-]) (\d+)px\)|([0-9.]+)%)">([^<]+)</div>', src)
+labels = [(t[0], t[1] or t[4], t[2] or '+', t[3] or '0', t[5]) for t in labels]
 ok('地圖有 15 個墨字標籤（v20a96 LOC96 加海傍禮品＋仁康醫院）', len(labels) == 15)
 lm = re.search(r'const LOCS = \[(.*?)\n\];', src, re.S)
 locs = re.findall(r'\{ id:"(\w+)", name:"([^"]+)"', lm.group(1) if lm else '')
@@ -75,7 +79,7 @@ loc_names = [n for _, n in locs]
 ok('標籤文字同 LOCS 地點名逐個對得上', sorted(t[4] for t in labels) == sorted(loc_names) and len(loc_names) == 15)
 spec = {
     '獅子山製片': ('54', '12', '-', '52'), '香江唱片': ('28', '24', '+', '26'),
-    '星河電視台': ('33', '14', '-', '50'), '九龍電視台': ('36', '45', '-', '52'),
+    '星河電視台': ('26', '2', '+', '0'), '九龍電視台': ('36', '45', '-', '52'),
     '海港廣播': ('88', '15', '+', '16'), '紅棉影業': ('74', '11', '-', '44'),
     '維港電影': ('80', '18', '+', '38'), '中環廣告': ('60', '57', '+', '30'),
     '金鐘創意': ('85', '60', '+', '28'), '灣仔唱片': ('68', '77', '+', '34'),

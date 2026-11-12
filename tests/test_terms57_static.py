@@ -162,7 +162,7 @@ chk('A1 no 事態 text node', '>事態<' not in src and '>事態 <' not in src)
 # ---- spot outcomes ----
 chk('A3 board toast', '廣告通告欄更新咗：有新通告' in src and '通告欄更新咗' in src)
 chk('B5 deposit wording', '"存款不足 $"+fee+"——債項未清。"' in src and '存款亦不足 $200' in src)
-chk('B7 成數 note x3', src.count('成數受表現／壓力／信用影響') == 3)
+chk('B7 成數 note x2（v128 A4 N9 刪咗落選 modal 嗰份，原 x3）', src.count('成數受表現／壓力／信用影響') == 2)
 chk('B7 success-rate labels kept', '成功率約' in src)
 chk('B2 gate/tag values renamed', src.count('"身手好"') >= 6)
 chk('B2 ending neg tags', '["八卦", "耍大牌", "高冷", "爛片"]' in src)

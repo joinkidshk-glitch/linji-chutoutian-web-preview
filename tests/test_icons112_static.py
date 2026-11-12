@@ -18,14 +18,16 @@ ok('helper iconHtml112 defined', 'function iconHtml112(v){' in html)
 ok('helper favDots112 defined', 'function favDots112(n){' in html)
 m = re.search(r'const EMOJI_ICON112 = \{([^}]*)\}', html)
 ok('helper map parses', bool(m))
-stems = set(re.findall(r'"([a-z]+)"', m.group(1))) if m else set()
+stems = set(re.findall(r'"([a-z_]+)"', m.group(1))) if m else set()
 for stem in ['map','sleep','mic','tea','clapper','fitness','home','news','gift','hospital',
              'music','people','tv','radio','lion','briefcase','building','mask','book',
-             'martial','broom','sick','phone','mood','star','sparkle']:
+             'martial','broom','sick','phone','mood','star','sparkle',
+             'trophy','gift_pineapple','gift_eggtart','gift_thermos','gift_hairclip',
+             'gift_memopad','gift_cassette','gift_sweetbox','gift_perfume']:
     ok('map has stem ' + stem, stem in stems)
-ok('map has 26 stems', len(stems) == 26)
+ok('map has 35 stems', len(stems) == 35)
 
-# ---- 2. 26 隻圖標檔案齊（12 樣本＋14 新圖） ----
+# ---- 2. 35 隻圖標檔案齊（12 樣本＋14 新圖＋v128 A5 補 9：🏆＋禮物 8 隻） ----
 for stem in sorted(stems):
     ok('file assets/icons/icon_' + stem + '.png', os.path.isfile(os.path.join(root, 'assets', 'icons', 'icon_' + stem + '.png')))
 
@@ -69,8 +71,10 @@ ok('old hearts people72 gone', '"♡".repeat' not in html)
 ok('S-46 favDots112 wired x2', html.count('favDots112(Math.round(') == 2)
 
 # ---- 6. 刻意留低嘅 emoji（審計 §4）：唔准靜靜消失，亦唔准擴散 ----
-ok('kept 🏆 awards (no icon commissioned)', '🏆' in html)
-ok('kept 🔒 lock glyph', '🔒' in html)
+# v128 A5：🏆 已補圖（唔再係「冇圖留低」），映射入段一驗；v128 A4：🔒 換咗 CSS 畫鎖
+# （.sp-lock-ico），emoji 本身清零——兩項都係刻意改動，唔係靜靜消失。
+ok('🏆 awards 有圖（v128 A5：trophy 映射）', '"🏆":"trophy"' in html)
+ok('🔒 已換 CSS 畫鎖（v128 A4：.sp-lock-ico，emoji 清零）', '🔒' not in html and '.sp-lock-ico' in html)
 ok('kept 💡 intel mark', '💡' in html)
 ok('kept 📋/👤 map fallbacks', '📋' in html and '👤' in html)
 gifts_path = os.path.join(root, 'content', 'items_gifts.json')

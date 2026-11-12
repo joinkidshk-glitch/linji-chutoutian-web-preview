@@ -81,7 +81,7 @@ imp_seg = seg('function stressImpact34(', 'function stressImpactLine34(')
 ok('helper mirrors real branches (0.5/0.78 then 0.2/0.78*0.7)',
    'income = 0.5' in imp_seg and 'audition = 0.78' in imp_seg and 'income = 0.2' in imp_seg and '0.78*0.7' in imp_seg)
 prev_seg = seg('function showStressPreviewModal(pv, go){', 'function confirmPlan(){')
-ok('preview modal renders consequence line from pv.peak', 'stressImpactLine34(pv.peak)' in prev_seg)
+ok('preview modal renders consequence line from pv.peak', 'stressImpactLine34(pv.peak, "高峰壓力")' in prev_seg)
 
 # ---- P1-1(b)：雙軌解釋接線 ----
 ok('dual explainer helper exists', 'function dualTrackExplainHtml34(' in html)

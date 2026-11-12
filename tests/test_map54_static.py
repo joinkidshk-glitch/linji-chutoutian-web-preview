@@ -35,11 +35,11 @@ try:
     _between = html[html.index('/* === v20a54 完 === */'):html.index('</style>')]
     _segs_after = [s.split('===')[0] for s in _between.split('/* === ')[1:]
                    if 'v20a54 完' not in s]
-    _last = bool(_segs_after) and all(('v20a76' in s or 'v20a106' in s or 'v20a108' in s or 'v20a119' in s) for s in _segs_after) \
+    _last = bool(_segs_after) and all(('v20a76' in s or 'v20a106' in s or 'v20a108' in s or 'v20a119' in s or 'v20a128' in s) for s in _segs_after) \
         and 'v20a106 DLG106 完' in _between and 'v20a108 DLG108 完' in _between and 'v20a119 DLG119 完' in _between
 except ValueError:
     _last = False
-ok('v54 segment followed only by known skins (v76+dlg106+dlg108+dlg119) before </style>', _last)
+ok('v54 segment followed only by known skins (v76+dlg106+dlg108+dlg119+v128) before </style>', _last)
 
 # ---- 1. 紙面填充（只准油漆屬性） ----
 wrap = seg('#app .map-wrap{', '}', v54)

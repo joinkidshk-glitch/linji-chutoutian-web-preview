@@ -30,15 +30,18 @@ ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107'
 ok('NOTES_V20A77 在位', (p.parent / 'NOTES_V20A77_HUB.md').exists())
 
 # --- 一、大地圖「進度」掣 ---
+# v20a128 A1（計劃 §5／§7 mockup）：進度只留一個入口（頂欄 chip），地圖浮 pill 取消
+# （N19 一併解決；反轉 v108 S-8「chip 只係徽章、入口係 pill」嗰個決定）。
+# 舊 HUB77 浮 pill 斷言按新規格改寫——pill 唔見，chip 係入口（見第三節）。
 i_vm = src.find('<section id="v-map" class="view">')
 i_vh = src.find('<section id="v-home" class="view">')
 vmap = src[i_vm:i_vh] if 0 <= i_vm < i_vh else ''
-ok('地圖掣：#map-progress-btn 喺 v-map 內、文案「進度」',
-   'id="map-progress-btn"' in vmap and 'id="map-progress-btn" aria-label="主線進度">進度</button>' in vmap)
-ok('地圖掣：CSS 絕對定位浮掣（紙底金框）', '#map-progress-btn{ position:absolute;' in src and 'border:1px solid var(--gold-seal)' in src)
-ok('地圖掣：開 sheet 時隱藏（跟 map-hint 一致，唔遮地點面板）', '.map-wrap.sheet-open #map-progress-btn{ display:none; }' in src)
+ok('地圖浮 pill 已取消（A1：進度入口只留頂欄 chip）',
+   'id="map-progress-btn"' not in vmap and 'id="map-progress-btn" aria-label="主線進度">進度</button>' not in vmap)
+ok('地圖浮 pill CSS 已取消', '#map-progress-btn{ position:absolute;' not in src)
+ok('地圖浮 pill 開 sheet 隱藏規則已取消', '.map-wrap.sheet-open #map-progress-btn{ display:none; }' not in src)
 w = seg('const _mapProg77 = document.getElementById("map-progress-btn");', '/* v20a77 HUB77：進度頁「播呢幕」掣')
-ok('地圖掣：click 直達進度頁（enterHome progress）', 'enterHome(null, false, "progress")' in w)
+ok('地圖浮 pill 舊接線留 null guard（元素缺席唔 crash）', '_mapProg77' in src and 'if(_mapProg77)' in w)
 ok('地圖 hint 掣行為保留（data-prog71 委派入進度頁）', '_mapHint71' in src and 'data-prog71' in src)
 
 # --- 二、選單刪劇情掣 ---
@@ -52,15 +55,15 @@ ok('paintStoryEntryHints：badge 更新保留 if 守衛（元素缺席安全降�
    'const badge = document.getElementById("menu-story-badge");' in ps and 'if(badge){' in ps)
 
 # --- 三、chip 改指進度頁 ---
-# v20a108 UI108 S-8（審計 B 項）：頂欄 chip 改做純數字徽章，唔再做掣——進度唯一入口係
-# 地圖 pill（#map-progress-btn）。舊 HUB77「chip click 落點進度頁」斷言按新規格改寫。
+# v20a128 A1（計劃 §5／§7 mockup）：進度只留一個入口——頂欄 chip。chip 恢復做掣
+# （反轉 v108 S-8「chip 只係數字徽章、入口係 pill」；浮 pill 已取消，chip 唔做掣就冇入口）。
 ok('chip：標籤改「進度」＋title 改「主線進度」',
    'id="chip-story" title="主線進度">進度<span class="chip-story-n"' in src)
-ok('chip：改做 span 純徽章（唔係 button）',
-   '<span class="chip chip-story" id="chip-story"' in src
-   and '<button type="button" class="chip chip-story" id="chip-story"' not in src)
-ok('chip：冇 click 接線（唔再入進度頁）', 'cs.addEventListener("click"' not in src)
-ok('chip：地圖 pill 留唯一進度入口', 'id="map-progress-btn"' in src)
+ok('chip：恢復做 button（唯一進度入口）',
+   '<button type="button" class="chip chip-story" id="chip-story"' in src
+   and '<span class="chip chip-story" id="chip-story"' not in src)
+ok('chip：有 click 接線入進度頁（enterHome progress）', 'cs.addEventListener("click"' in src and 'enterHome(null, false, "progress")' in src)
+ok('chip：cursor pointer（係掣，唔係徽章）', '#app #chip-story{ cursor:pointer; }' in src)
 ok('chip title 四態改主線進度語系',
    '主線進度 · 有 ' in ps and '主線內容載入中' in ps and '主線進度（暫無可播）' in ps and '主線內容載入唔到' in ps)
 ok('chip 舊 title 文案清零', '有可播劇情 · ' not in src and '"劇情（暫無可播）"' not in src and '"劇情內容載入中"' not in src)

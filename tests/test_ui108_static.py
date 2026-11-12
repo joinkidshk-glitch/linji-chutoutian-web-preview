@@ -45,22 +45,28 @@ ok('S-5 用阿偉／何生新全身', 'fullbody/awi_base.webp?v=20a106' in html 
 ok('S-5 B01 呼叫新場景（舊圖只做退路）', 'b01GuideHtml108()' in body_of('function showB01HomeModal', 2600))
 
 # S-7 地圖標籤微調＋光暈加厚
+# v128 A1：金禧／薄扶林／星河／灣仔／銅鑼灣五個再微調（跟 §7 建議稿；金禧 3% 會出界，實測 11%）。
 ok('S-7 鑽石山新位 38%/6.5%', 'left:38%;top:6.5%">鑽石山' in html)
 ok('S-7 九龍城新位 58%/31.5%', 'left:58%;top:31.5%">九龍城' in html)
 ok('S-7 紅磡新位 52%/38%', 'left:52%;top:38%">紅磡' in html)
-ok('S-7 金禧新位 11%/44.5%', 'left:11%;top:44.5%">金禧大酒店' in html)
-ok('S-7 薄扶林新位 41%/65%', 'left:41%;top:65%">薄扶林' in html)
+ok('S-7 金禧新位 11%/32%（v128 A1）', 'left:11%;top:32%">金禧大酒店' in html)
+ok('S-7 薄扶林新位 34%/50%（v128 A1）', 'left:34%;top:50%">薄扶林' in html)
+ok('S-7 星河新位 26%/2%（v128 A1）', 'left:26%;top:2%">星河電視台' in html)
+ok('S-7 灣仔新位 56%/68%（v128 A1）', 'left:56%;top:68%">灣仔' in html)
+ok('S-7 銅鑼灣新位 right 6%/66%（v128 A1）', 'right:6%;top:66%">銅鑼灣' in html)
 ok('S-7 維港電影新位 80%', 'left:80%;top:calc(18% + 38px)">維港電影' in html)
 ok('S-7 廟街禮品新位 44%', 'left:44%;top:calc(35% - 44px)">廟街禮品' in html)
 ok('S-7 舊擠迫座標唔再出現', 'left:49%;top:8%">鑽石山' not in html and 'left:63%;top:29%">九龍城' not in html)
 ok('S-7 地區名光暈加厚', '0 0 4px #f3e7c8, 0 0 4px #f3e7c8, 0 0 4px #f3e7c8' in html)
 
 # S-8 頂欄進度 chip 只係徽章
-ok('S-8 chip 係 span 唔係 button', '<span class="chip chip-story" id="chip-story"' in html)
-ok('S-8 chip 冇 button 版', '<button type="button" class="chip chip-story" id="chip-story"' not in html)
-ok('S-8 chip click 接線已刪', 'cs.addEventListener("click"' not in html)
-ok('S-8 地圖 pill 唯一入口保留', 'id="map-progress-btn"' in html)
-ok('S-8 chip 游標唔係 pointer', '#app #chip-story{ cursor:default; }' in html)
+# v128 A1（計劃 §5／§7 mockup）：反轉——進度只留一個入口（頂欄 chip），地圖浮 pill 取消；
+# chip 恢復做 button＋click 接線，唔再係徽章。
+ok('S-8 chip 恢復做 button（唯一進度入口）', '<button type="button" class="chip chip-story" id="chip-story"' in html)
+ok('S-8 chip 唔再係 span 徽章', '<span class="chip chip-story" id="chip-story"' not in html)
+ok('S-8 chip click 接線恢復', 'cs.addEventListener("click"' in html)
+ok('S-8 地圖浮 pill 已取消', 'id="map-progress-btn"' not in html)
+ok('S-8 chip 游標係 pointer', '#app #chip-story{ cursor:pointer; }' in html)
 
 # S-9 劇情高亮改柔光呼吸光暈（v108 規則喺舊規則之後，先覆蓋）
 _i_old = html.find('.pin.has-story-tip{box-shadow:0 0 0 2px rgba(196,138,42,.85)')
