@@ -57,3 +57,6 @@ SAVE key／softRev s107／產品 `?v=` v20a10 不變；content pack JSON 唔郁�
 - 落地嗰陣 main 已行前到 `a1b0920`（v144 上線：紅星巧遇頻率收緊＋NOTES 補錄）。`git rebase origin/main`：index.html 自動合併（v144 改 51229／51327／51851＋ 區，BOOK143 段喺 `</style>` 前，唔撞）；得 `tests/test_travel114_static.py` 一個衝突（兩邊都郁咗 COUNT／FREE／DEF／WRAPPER 行號錨點）。
 - 衝突解法（純行號，唔改語義）：rebase 後檔案＝HEAD＋BOOK143 插入（＋43 行，喺全部錨點之前）→ HEAD 側數字一律 ＋43（40 個錨點＋DEF 53151→53194＋WRAPPER 43938→43981；算術核實：v143 側＝orig＋43，HEAD 側＝orig＋V（V=0 或 8＝v144 淨增行數），差 43 或 35 對得上）。`test_travel114_static.py` 解完即 PASS。
 - 重驗（rebase 後）：新測試 book143 static／logic 照舊 ALL PASS；map54／text125／travel114 全部 PASS；全套 **PASS 200／FAIL 12**，對新基線（v144 main，197／12）FAIL 清單完全一致＝零回歸（＋3 PASS＝2 個新測試＋`test_enc144_logic.js`——基線嗰次跑漏咗呢行，單獨跑 ALL PASS，唔係回歸）；`drive143.py` 重跑：B2 每組 circleFollows=True、700 鎖定態印章 20px／footer 63px／5 日全見、0 pageerror／0 HTTP404。
+
+## 落地
+- **main `cd40cb7`**（git 直接合併，冇開 PR；squash，分支 `v20a143`）。**線上核實通過**：index.html **5,200,760 bytes、sha256 `c04ec926191ccd89062a4e2ace47a33928f078faa898d9ad250f1d927209b7da`**，同 repo HEAD 完全一致（BOOK143 2 處）。第一次 curl 嗰陣線上仲係 v144 舊版（5,194,707 bytes、sha `9d0ad918…`），等多約 4 分鐘再驗先見到新版。
