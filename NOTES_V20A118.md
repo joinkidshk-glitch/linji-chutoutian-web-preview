@@ -55,4 +55,4 @@
 - 本地 main index.html：5,137,219 bytes，sha256 `af6b43db0911b34a…`。
 - 線上初檢（合併後即刻）：5,121,987 bytes，sha `d1c8fcea…`——舊版，Pages 部署滯後；推呢個 NOTES commit 重觸發部署，之後再核實。
 - 線上覆檢（NOTES 重觸發後約 90 秒）：5,137,219 bytes，sha `af6b43db0911b34a…`，同本地逐字對上。合併後實駕見下。
-- 合併後實駕（main `ae74a3e`，本地鏡像）：事務所＋星河電視台＋茶餐廳＋禮品檔 4/4 PASS，0 pageerror（見 parent handoff 實駕段）。
+- 合併後實駕（main `ae74a3e`，本地鏡像）：事務所＋星河電視台＋茶餐廳＋禮品檔 4/4 PASS，0 JS pageerror；另有 2 個 console 404，係已知舊問題（廖炳星欠 shy 表情圖，`liu_bingxing_shy.webp/png`，今次茶餐廳巧遇撞正佢；fallback 正常）。
