@@ -1,8 +1,9 @@
 // v20a63 頒獎禮群星版・邏輯測試：
 // (1) fellows 衍生：嗰年嗰媒介 pack 通告＋LEADSTAR59 主演，按片酬序、每星一部、唔用冇 sprite 嘅主演（彭少祺；v81 正名，sprite 對照仍為 null）。
 // (2) 玩家自己殺青過嘅作品唔會變對手；年份唔串。
-// (3) 冇主演數據（1991）→ 紅星池按媒介兜底：確定性、唔重複、唔出程天諾（1990 零出場紅線，池內根本冇佢）。
-// (4) beats：入圍揭曉唱出得主星名＋作品；得獎＋有海報先有 glamour beat；冇海報得獎維持 9–10 秒（v64 enter 走路入場後基線）。
+// (3) 冇主演數據（1991）→ 紅星池按媒介兜底：加權隨機（v20a147，頂級紅星機率高啲）、同一 (year, ceremonyId, medium) 可重現（seeded）、唔重複、唔出程天諾（1990 零出場紅線，池內根本冇佢）。
+// (4) beats：入圍揭曉唱出得主星名＋作品；得獎＋有海報先有 glamour beat；冇海報得獎維持 9–10 秒（v64 enter 走路入場後基線）；入圍落選有 comfort 安慰 beat（v20a147，reveal 之後、out 之前）；旁聽行埋宣佈弧約 9.6 秒，唱名／揭曉唔寫阿偉（v20a147）。
+// (6) v20a147 加權分佈：枚舉 seeds，頂級星首抽佔比明顯高過均勻分佈。
 // (5) focus cat 揀啱（won 優先 won cat、nominated 揀 nominated cat）。
 // 反證：對 v20a62 index 行 → AWARDS63 函數唔存在 → FAIL。
 // 用法：node tests/test_awards63_logic.js [path-to-index.html]
@@ -37,7 +38,7 @@ function extractConst(name){
 
 /* ---- 世界 stub ---- */
 var window = {};
-for(const c of ['POSTER59_STAR_IDS','POSTER59_IDS','AWARDS63_POOL'])
+for(const c of ['POSTER59_STAR_IDS','POSTER59_IDS','AWARDS63_POOL','AWARDS63_TIER_WEIGHT'])
   eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
 
 var TEST_STAR = {
@@ -73,7 +74,7 @@ var work59WorkOf = function(h, g){ return (g && (g.workTitle || g.title)) || '';
 /* v128 A5：獎項渲染經 iconHtml112（🏆→trophy 圖）——抽真身入 stub，唔係 mock。 */
 eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
 eval(extractFn('iconHtml112'));
-for(const f of ['awards63StarName','awards63AllGigs','awards63GigYear','awards63GigPay','awards63Fellows','awards63FocusCat','awards62CeremonyBeats'])
+for(const f of ['awards63StarName','awards63AllGigs','awards63GigYear','awards63GigPay','awards63KeySeed','awards63SeededRng','awards63WeightedPick','awards63Fellows','awards63FocusCat','awards62CeremonyBeats'])
   eval(extractFn(f));
 
 const CER_FILM = { id:'award_harbour_film', medium:'film', matchTypes:['電影'] };
@@ -145,7 +146,40 @@ const totalWN = beatsWN.reduce((a,b)=>a+b.ms,0);
 ok('得獎＋冇海報 → 冇 glamour、全長維持 9–10 秒', !beatsWN.some(b=>b.id==='glamour') && totalWN >= 9000 && totalWN <= 10000);
 
 const beatsGal = awards62CeremonyBeats({ displayName:'海港廣告獎', bestOutcome:'gallery', categories:[] });
-ok('旁聽：冇 names/suspense/reveal、有 pan 群星鏡頭且較短', !beatsGal.some(b=>b.id==='names'||b.id==='suspense'||b.id==='reveal') && beatsGal.some(b=>b.id==='pan') && beatsGal.reduce((a,b)=>a+b.ms,0) < totalWN);
+const totalGal = beatsGal.reduce((a,b)=>a+b.ms,0);
+ok('旁聽：行埋宣佈弧（有 names/suspense/reveal），約 9.6 秒', totalGal >= 9000 && totalGal <= 10000 && ['open','pan','names','suspense','reveal','out'].every(id=>beatsGal.some(b=>b.id===id)));
+ok('旁聽唱名唔列阿偉（冇 fellows 嗰陣用通用行）', !!(beatsGal.find(b=>b.id==='names')) && !beatsGal.find(b=>b.id==='names').lines.some(l=>/阿偉/.test(l)));
+ok('旁聽揭曉唔寫阿偉入圍／得獎', !!(beatsGal.find(b=>b.id==='reveal')) && !/阿偉/.test(beatsGal.find(b=>b.id==='reveal').caption));
+ok('旁聽冇 comfort beat（只限入圍落選）', !beatsGal.some(b=>b.id==='comfort'));
+const packGalF = { displayName:'海港廣告獎', bestOutcome:'gallery', repWork62:'', categories:[{ label:'最佳廣告', outcome:'gallery', repWorkTitle:'', fellows63:[felLuk], winner63:null }] };
+const beatsGalF = awards62CeremonyBeats(packGalF);
+ok('旁聽唱名只列對手（有 fellows 嗰陣）', !!(beatsGalF.find(b=>b.id==='names')) && beatsGalF.find(b=>b.id==='names').lines.some(l=>/陸柏言/.test(l)) && !beatsGalF.find(b=>b.id==='names').lines.some(l=>/阿偉/.test(l)));
+ok('旁聽揭曉唱出得主（fellows[0]）', !!(beatsGalF.find(b=>b.id==='reveal')) && /陸柏言/.test(beatsGalF.find(b=>b.id==='reveal').caption) && /《賀歲喜劇笑滿堂》/.test(beatsGalF.find(b=>b.id==='reveal').caption));
+
+/* ---- (6) v20a147 加權隨機分佈 ---- */
+// 頂級＝權重 3（名冊巔峰 1990–92）；首抽理論佔比：film 9/14≈64%、tv 6/10=60%、music 6/7≈86%、ad 6/10=60%。
+// 均勻分佈會係 film 50%、tv 50%、music 67%、ad 40%。枚舉 2000 粒 seed 計實測佔比。
+const TIER_TOP147 = new Set(['luk_baakyin','so_jiyan','liu_bingxing','lok_gasing','yip_manji']);
+function firstPickShare147(medium, n){
+  const pool = AWARDS63_POOL[medium];
+  let top = 0;
+  for(let i = 0; i < n; i++){
+    const rng = awards63SeededRng(awards63KeySeed('1991/award_probe_' + medium + '_' + i + '/' + medium));
+    const sid = awards63WeightedPick(pool, {}, rng);
+    if(TIER_TOP147.has(sid)) top++;
+  }
+  return top / n;
+}
+const SHARE147 = { film:[0.64,0.50], tv:[0.60,0.50], music:[0.86,0.67], ad:[0.60,0.40] };
+for(const m of ['film','tv','music','ad']){
+  const s = firstPickShare147(m, 2000);
+  console.log('  加權首抽佔比 ' + m + ': ' + (s*100).toFixed(1) + '%（理論 ' + (SHARE147[m][0]*100).toFixed(0) + '%，均勻 ' + (SHARE147[m][1]*100).toFixed(0) + '%）');
+  ok('加權：' + m + ' 頂級星首抽佔比明顯高過均勻', s > SHARE147[m][1] + 0.05 && Math.abs(s - SHARE147[m][0]) < 0.06);
+}
+ok('加權：同一 key 同一 pick（seeded 可重現）', awards63WeightedPick(AWARDS63_POOL.film, {}, awards63SeededRng(awards63KeySeed('1991/award_harbour_film/film'))) === awards63WeightedPick(AWARDS63_POOL.film, {}, awards63SeededRng(awards63KeySeed('1991/award_harbour_film/film'))));
+ok('加權：唔抽已經用過嘅星', (()=>{ const used = { luk_baakyin:true, liu_bingxing:true, lok_gasing:true }; const got = awards63WeightedPick(AWARDS63_POOL.film, used, awards63SeededRng(12345)); return got && !used[got]; })());
+ok('加權：池抽乾返空字串', awards63WeightedPick(AWARDS63_POOL.tv, { chai_zanhoi:true, yip_manji:true, luk_baakyin:true, chung_choning:true }, awards63SeededRng(1)) === '');
+ok('加權：權重表齊晒池內 10 星', Object.values(AWARDS63_POOL).flat().every(id=>AWARDS63_TIER_WEIGHT[id] != null));
 
 console.log('');
 console.log(fails.length ? ('FAILED: '+fails.length+' -> '+fails.join(' | ')) : 'ALL PASS');

@@ -113,7 +113,7 @@ const beatsTv = awards62CeremonyBeats({ displayName: '星河台慶・年度頒�
 ok('beats 開場 TV 按 ceremonyId 兜底＝星河電視台', beatsTv[0].caption.indexOf('星河電視台') >= 0 && beatsTv[0].caption.indexOf('金禧') < 0);
 const beatsNone = awards62CeremonyBeats({ displayName: '頒獎夜', bestOutcome: 'gallery', ceremonyId: 'unknown_x', categories: [] });
 ok('beats 開場未知典禮冇場地行', beatsNone[0].caption === '—— 頒獎夜 ——');
-ok('gallery beats 結構不變（open/pan/out）', beatsFilm.length === 3 && beatsFilm[1].id === 'pan' && beatsFilm[2].id === 'out');
+ok('gallery beats 新結構（v20a147：open/pan/names/suspense/reveal/out，約 9.6 秒）', beatsFilm.length === 6 && beatsFilm[1].id === 'pan' && beatsFilm[2].id === 'names' && beatsFilm[3].id === 'suspense' && beatsFilm[4].id === 'reveal' && beatsFilm[5].id === 'out');
 
 /* ---- (4) 禁忌：真酒店名 ---- */
 const FORBIDDEN = ['半島酒店', '文華東方', '文華酒店', '麗晶', '富麗華', '帝苑', '香格里拉', '凱悅', '喜來登',

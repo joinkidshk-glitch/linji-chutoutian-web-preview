@@ -1,0 +1,29 @@
+Pipe-based suite run (qa147/run_suite_pipe.sh — stdout 經 pipe，唔寫 /tmp/suite_one.log，
+免受檔案寫入攔截影響），2026-11-13 01:23 HKT，工作副本 ~/workspace/linji-work147。
+TOTAL PASS 200 FAIL 19
+FAILED (19):
+tests/test_bust109_static.py
+tests/test_dlg107_static.py
+tests/test_dlg119_static.py
+tests/test_dlg123_static.py
+tests/test_dlg126_static.py
+tests/test_dlg127_static.py
+tests/test_dlg138_static.py
+tests/test_flash51_static.py
+tests/test_giglib36_static.py
+tests/test_pacing35_static.py
+tests/test_poster59_static.py
+tests/test_rumor49_static.py
+tests/test_slot50_static.py
+tests/test_soft_tip_111_restore.py
+tests/test_start53_static.py
+tests/test_weave43_static.py
+tests/test_weave44_static.py
+tests/test_weave49_static.py
+tests/test_wrap38_static.py
+對照真正 baseline qa147/suite_baseline147real.txt（207 PASS / 12 FAIL）：
+新增失敗只得頭 7 檔，全部係 tempfile 負證測試（tempfile.mkdtemp() 被環境寫入攔截擋住）；
+同一環境下 pristine（~/workspace/pristine147real/）跑同一批一樣 FAIL。其餘 12 個 FAIL
+同 baseline 完全一致＝零回歸。
+注意：qa147/suite_work147.txt 而家係一次撞正壞窗口嘅 file-based 跑數（98/121），作廢，
+以本檔為準。

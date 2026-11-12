@@ -1,0 +1,34 @@
+gig map size: 467
+title map size: 512
+wraps matched: 138 unmatched: 0 []
+engine consts: WIN_LINE = 0.9 TASTE = 0.05
+
+=== A. 全弧真實檔案（30 窗口 wrapHistory，真引擎） ===
+day 典禮 年份 | 計數(wrappedDay) | score桶 works | rep | topQ | baseCredit baseStage baseMAX | P(win) L=0.82 / 0.78 / 0.76
+59 維港街招・年度廣告賞 1990 | 計數=0 | 桶=0 rep=《》 topQ=0.00 crossQ=0.00 | credit=0.127 stage=0.062 MAX=0.127 | P82=0% P78=0% P76=0% | 實際=gallery
+151 星河金碟夜 1990 | 計數=1 | 桶=1 rep=《錄音室拍板》 topQ=0.44 crossQ=0.51 | credit=0.435 stage=0.395 MAX=0.435 | P82=0% P78=0% P76=0% | 實際=nominated
+245 維港影藝獎 1990 | 計數=4 | 桶=4 rep=《外景臨記》 topQ=0.51 crossQ=0.51 | credit=0.748 stage=0.748 MAX=0.748 | P82=0% P78=18% P76=38% | 實際=nominated
+364 星河台慶・年度頒獎夜 1990 | 計數=16 | 桶=16 rep=《廠景夜戲》 topQ=0.51 crossQ=0.51 | credit=0.748 stage=0.748 MAX=0.748 | P82=0% P78=18% P76=38% | 實際=nominated
+365 星河台慶・年度頒獎夜 1991 | 計數=0 | 桶=0 rep=《》 topQ=0.00 crossQ=0.00 | credit=0.400 stage=0.400 MAX=0.400 | P82=0% P78=0% P76=0% | 實際=gallery
+427 維港街招・年度廣告賞 1991 | 計數=3 | 桶=3 rep=《歲晚大清貨》 topQ=0.44 crossQ=0.74 | credit=0.655 stage=0.655 MAX=0.655 | P82=0% P78=0% P76=0% | 實際=nominated
+518 星河金碟夜 1991 | 計數=6 | 桶=6 rep=《賀歲歌和音班》 topQ=0.44 crossQ=0.74 | credit=0.739 stage=0.739 MAX=0.739 | P82=0% P78=9% P76=29% | 實際=nominated
+609 維港影藝獎 1991 | 計數=6 | 桶=2 rep=《西環貨倉》 topQ=0.51 crossQ=0.74 | credit=0.694 stage=0.694 MAX=0.694 | P82=0% P78=0% P76=0% | 實際=nominated
+742 星河台慶・年度頒獎夜 1992 | 計數=0 | 桶=0 rep=《》 topQ=0.00 crossQ=0.00 | credit=0.400 stage=0.400 MAX=0.400 | P82=0% P78=0% P76=0% | 實際=gallery
+
+=== B. what-if：窗口 30 → 60（同一批 wraps） ===
+151 星河金碟夜 1990 | 桶=1 rep=《錄音室拍板》 topQ=0.44 | MAX=0.435 | P82=0% P78=0%
+245 維港影藝獎 1990 | 桶=4 rep=《外景臨記》 topQ=0.51 | MAX=0.748 | P82=0% P78=18%
+364 星河台慶・年度頒獎夜 1990 | 桶=29 rep=《霓虹夜影》 topQ=0.51 | MAX=0.748 | P82=0% P78=18%
+427 維港街招・年度廣告賞 1991 | 桶=3 rep=《歲晚大清貨》 topQ=0.44 | MAX=0.655 | P82=0% P78=0%
+518 星河金碟夜 1991 | 桶=6 rep=《賀歲歌和音班》 topQ=0.44 | MAX=0.739 | P82=0% P78=9%
+609 維港影藝獎 1991 | 桶=8 rep=《酒廊風雲》 topQ=0.74 | MAX=0.879 | P82=100% P78=100%
+
+=== C. Synthetic 前瞻檔案（真引擎，桶向量直接砌） ===
+Y1 正常 (wk26 fame43/credit52) | credit=0.585 stage=0.620 MAX=0.620 | P82=0% P80=0% P78=0% P76=0% P75=0%
+Y1 強 (wk39 fame64/credit71) | credit=0.800 stage=0.800 MAX=0.800 | P82=30% P80=50% P78=70% P76=90% P75=100%
+Y2 中 (wk52 fame81/credit87) | credit=0.821 stage=0.821 MAX=0.821 | P82=51% P80=71% P78=91% P76=100% P75=100%
+Y2 thin 全弧風格 (fame149/credit162) | credit=0.741 stage=0.741 MAX=0.741 | P82=0% P80=0% P78=11% P76=31% P75=41%
+Y2 擔正 (wk65 fame118/credit124) | credit=0.882 stage=0.882 MAX=0.882 | P82=100% P80=100% P78=100% P76=100% P75=100%
+Y3 擔正 (wk104 fame176/credit200) | credit=0.882 stage=0.882 MAX=0.882 | P82=100% P80=100% P78=100% P76=100% P75=100%
+Y3 E1 弧深桶 (fame181/credit210) | credit=0.882 stage=0.882 MAX=0.882 | P82=100% P80=100% P78=100% P76=100% P75=100%
+Y3 擔正但專攻 (fame176/credit200, 無跨媒介) | credit=0.820 stage=0.820 MAX=0.820 | P82=50% P80=70% P78=90% P76=100% P75=100%

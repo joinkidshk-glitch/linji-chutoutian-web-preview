@@ -1,0 +1,51 @@
+  （gig 庫：content JSON＋index 內嵌 104 隻）
+=== A. 全弧三輪真實檔案（arcN，138 單殺青，90 單對唔到 gig 庫）===
+  未對照（唔計入桶，列出嚟交代）：[(177, '《金鐘招牌牆》背景路人'), (180, '《廠景夜戲》後景行人'), (184, '《盛夏外景》背景行人'), (187, '《暑期外景組》場務助手'), (191, '《夏日涼茶招》廣告路人'), (195, '《暑期夜班組》場務助手'), (198, '《盛夏廠景》後景行人'), (201, '《暑期橫額》背景路人'), (205, '《海邊外景》背景行人'), (212, '《暑期補景組》場務助手'), (215, '《暑期廠景組》場務助手'), (221, '《廠景夜戲》後景行人')]
+  殺青分布（年／媒介）：{'1990/ad': 6, '1990/film': 2, '1990/music': 1, '1990/tv': 10, '1991/ad': 3, '1991/film': 8, '1991/music': 4, '1991/tv': 10, '1992/ad': 1, '1992/film': 1, '1992/tv': 2}
+  擔正作品數：4（全弧 138 單）
+
+day  ceremony              year med  result    fame credit bucket_qs                    cross  base_sv base_ic baseMAX
+59   award_harbour_ad       1990 ad     gallery   7    19     []                           q0.00/n0  0.062  0.127  0.127
+151  award_golddisc_music   1990 music  nominated 24   38     [0.44]                       q0.51/n6  0.395  0.435  0.435
+245  award_harbour_film     1990 film   nominated 51   62     [0.55]                       q0.55/n12  0.616  0.616  0.616
+364  award_singho_tv        1990 tv     nominated 80   87     [0.55, 0.55, 0.55, 0.55, 0.5 q0.55/n9  0.775  0.775  0.775
+365  award_singho_tv        1991 tv     gallery   80   88     []                           q0.00/n0  0.400  0.400  0.400
+427  award_harbour_ad       1991 ad     nominated 106  112    [0.25, 0.22]                 q0.78/n6  0.599  0.599  0.599
+518  award_golddisc_music   1991 music  nominated 141  148    [0.48, 0.48, 0.25]           q0.78/n15  0.720  0.720  0.720
+609  award_harbour_film     1991 film   nominated 162  174    [0.78, 0.78, 0.78, 0.55, 0.5 q0.78/n14  0.882  0.882  0.882
+742  award_singho_tv        1992 tv     gallery   180  207    []                           q0.25/n1  0.400  0.400  0.400
+
+  baseMAX 分布（6 場入圍）：[0.435, 0.616, 0.775, 0.599, 0.72, 0.882]
+  最高 base：0.882（day 609 award_harbour_film）
+
+=== B. 前瞻檔案（synthetic；雙軌取全弧週快照，桶向量見標註）===
+  Y1 正常 (wk26)       fame 43   credit 52   bucket [0.55, 0.48] cross [0.48] -> base 0.620
+  Y1 強 (wk39)        fame 64   credit 71   bucket [0.78, 0.55, 0.48] cross [0.55, 0.48] -> base 0.800
+  Y2 中 (wk52)        fame 81   credit 87   bucket [0.78, 0.55, 0.48, 0.4] cross [0.55, 0.55, 0.48] -> base 0.821
+  Y2 全弧風格 thin       fame 149  credit 162  bucket [0.55, 0.48, 0.4, 0.36] cross [0.55, 0.55, 0.48, 0.4] -> base 0.741
+  Y2 擔正 (wk65)       fame 118  credit 124  bucket [1.0, 0.78, 0.55] cross [0.66, 0.55] -> base 0.873
+  Y3 擔正 (wk104)      fame 176  credit 200  bucket [1.0, 0.78, 0.55, 0.48] cross [0.78, 0.66] -> base 0.882
+
+=== C. 贏率 P(win) = clamp((base+.05-L)/.10) ===
+  檔案                              base   L=0.82  L=0.80  L=0.78  L=0.76
+  59 harbour_ad 1990 gallery       0.127  0%  0%  0%  0%
+  151 golddisc_music 1990 nominated 0.435  0%  0%  0%  0%
+  245 harbour_film 1990 nominated  0.616  0%  0%  0%  0%
+  364 singho_tv 1990 nominated     0.775  5%  25%  45%  65%
+  365 singho_tv 1991 gallery       0.400  0%  0%  0%  0%
+  427 harbour_ad 1991 nominated    0.599  0%  0%  0%  0%
+  518 golddisc_music 1991 nominated 0.720  0%  0%  0%  10%
+  609 harbour_film 1991 nominated  0.882  100%  100%  100%  100%
+  742 singho_tv 1992 gallery       0.400  0%  0%  0%  0%
+  Y1 正常 (wk26)                     0.620  0%  0%  0%  0%
+  Y1 強 (wk39)                      0.800  30%  50%  70%  90%
+  Y2 中 (wk52)                      0.821  51%  71%  91%  100%
+  Y2 全弧風格 thin                     0.741  0%  0%  11%  31%
+  Y2 擔正 (wk65)                     0.873  100%  100%  100%  100%
+  Y3 擔正 (wk104)                    0.882  100%  100%  100%  100%
+
+=== D. 匯總（判據：強勢入圍年 25-40%；第一年 ~0%；弱玩 0%）===
+  L=0.82: Y1最強 30% | Y2中 51% | Y2全弧風格 0% | Y2擔正 100% | 全弧實測最高base 0.882 -> 100%
+  L=0.80: Y1最強 50% | Y2中 71% | Y2全弧風格 0% | Y2擔正 100% | 全弧實測最高base 0.882 -> 100%
+  L=0.78: Y1最強 70% | Y2中 91% | Y2全弧風格 11% | Y2擔正 100% | 全弧實測最高base 0.882 -> 100%
+  L=0.76: Y1最強 90% | Y2中 100% | Y2全弧風格 31% | Y2擔正 100% | 全弧實測最高base 0.882 -> 100%

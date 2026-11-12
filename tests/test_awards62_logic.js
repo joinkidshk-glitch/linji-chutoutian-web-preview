@@ -1,10 +1,10 @@
 // v20a62 頒獎優化包・邏輯測試：
 // (1) 作品質量加權：一部擔正大製作明顯抵兩三部閒角工；quality 表（roleScale／片酬段／stars 微調）。
-// (2) 實力判定：刪 18% 贏獎骰——遠離贏線時口味 ±0.05 翻唔到盤；邊界 ±0.05 內先由口味話事。
+// (2) 實力判定：刪 18% 贏獎骰——遠離贏線時口味 ±0.05 翻唔到盤；邊界 ±0.05 內先由口味話事。贏線 v20a147 D4 重做校準到 0.875（舊 0.90 版見 qa147/CALIBRATION_D4.md §5）。
 // (3) 冇第一年隱形壓分：同參數下 1988 同 1990 年 base 分完全一樣。
 // (4) 代表作＝嗰年嗰媒介最高質嗰部；請柬門檻行；結果弱瓣「差啲咩」。
 // (5) standing 差額（入圍差幾部／贏線差幾多）；季前提示觸發／靜默（含冬→春跨年跳過）。
-// (6) beats 純資料：得獎全長 9–10 秒（v64 起 enter 改真走路入場 1750ms，基線由 8–9 秒更新）、旁聽較短、唱名行掛代表作。
+// (6) beats 純資料：得獎全長 9–10 秒（v64 起 enter 改真走路入場 1750ms，基線由 8–9 秒更新）、旁聽行埋宣佈弧約 9.6 秒（v20a147，唔再 3.7 秒草草收場）、入圍落選有 comfort 安慰 beat（v20a147）、唱名行掛代表作。
 // (7) 獎項頁 render：新記錄（displayName＋repTitle）同舊記錄（乜都冇）都顯示到，唔崩。
 // (8) buildAwardResultPack 端到端：categories 掛 repWorkTitle／weakHint62、pack 有 standing62。
 // 反證：對 v20a61 index 行 → AWARDS62 函數唔存在 → FAIL。
@@ -164,8 +164,15 @@ S.wrapHistory = [ wrap('gig_lead', 1989), wrap('gig_lead2', 1989) ];
 const catTag = { id:'film_actor', primaryTrack:'stageVolume', tagBonusAny:['動作演員'] };
 const pMid = awards62ScoreParts(catTag, FILM_CER, 1989);
 ok('中間帶 base ≈ 0.8306', approx(pMid.base, 0.8306, 0.002));
+/* v20a147 D4 重做校準：贏線 0.82→0.90→0.875——0.8306 檔喺新線下三種口味都係 nominated，唔再係邊界；
+   邊界檔案改做 base 0.92（fame 45＋lead＋lead2×2＋tag），taste −0.05 先跌返 nominated（0.87＜0.875）。 */
+S = baseSave(); S.fame = 45; S._tags = ['動作演員'];
+S.wrapHistory = [ wrap('gig_lead', 1989), wrap('gig_lead2', 1989), wrap('gig_lead2', 1989) ];
+const pEdge = awards62ScoreParts(catTag, FILM_CER, 1989);
+ok('邊界檔 base ≈ 0.92', approx(pEdge.base, 0.92, 0.002));
+Math.random = function(){ return 0.5; }; /* taste = 0 */
 let r = awardsScoreCategory(catTag, FILM_CER, 1989, 'nominee');
-ok('taste 0 → won（過贏線）', r.outcome === 'won');
+ok('taste 0 → won（過贏線 0.875）', r.outcome === 'won');
 Math.random = function(){ return 0; }; /* taste = -0.05 */
 r = awardsScoreCategory(catTag, FILM_CER, 1989, 'nominee');
 ok('taste -0.05 → 擦邊跌返 nominated', r.outcome === 'nominated');
@@ -173,7 +180,7 @@ Math.random = function(){ return 1; }; /* taste = +0.05：最勁口味都翻唔�
 S = baseSave(); S.fame = 45;
 S.wrapHistory = [ wrap('gig_lead', 1989) ];
 r = awardsScoreCategory(CAT_SV, FILM_CER, 1989, 'nominee');
-ok('base 0.6625 + 口味盡 0.05 都未到贏線 → nominated（冇 18% 骰翻盤）', r.outcome === 'nominated');
+ok('base 0.6625 + 口味盡 0.05 都未到贏線 0.875 → nominated（冇 18% 骰翻盤）', r.outcome === 'nominated');
 r = awardsScoreCategory(CAT_SV, FILM_CER, 1989, 'gallery');
 ok('gallery tier 恆 gallery', r.outcome === 'gallery');
 
@@ -231,7 +238,19 @@ const namesBeat = beatsWon.find(b=>b.id==='names');
 ok('唱名行掛代表作', !!namesBeat && namesBeat.lines.some(l=>/《長篇劇》/.test(l)));
 const beatsGal = awards62CeremonyBeats({ displayName:'海港廣告獎', bestOutcome:'gallery', categories:[] });
 const totalGal = beatsGal.reduce((a,b)=>a+b.ms, 0);
-ok('旁聽 beats 較短且冇唱名/懸念', totalGal < totalWon && !beatsGal.some(b=>b.id==='names'||b.id==='suspense'));
+ok('旁聽 beats 約 9.6 秒（v20a147：唔再 3.7 秒草草收場）', totalGal >= 9000 && totalGal <= 10000);
+ok('旁聽有齊 open/pan/names/suspense/reveal/out', ['open','pan','names','suspense','reveal','out'].every(id=>beatsGal.some(b=>b.id===id)));
+ok('旁聽唱名唔列阿偉', !!(beatsGal.find(b=>b.id==='names')) && !beatsGal.find(b=>b.id==='names').lines.some(l=>/阿偉/.test(l)));
+ok('旁聽揭曉唔寫阿偉入圍／得獎', !!(beatsGal.find(b=>b.id==='reveal')) && !/阿偉/.test(beatsGal.find(b=>b.id==='reveal').caption));
+ok('旁聽冇 comfort beat（只限入圍落選）', !beatsGal.some(b=>b.id==='comfort'));
+const packNom147 = { displayName:'星河電視獎', bestOutcome:'nominated', repWork62:'長篇劇',
+  categories:[{ label:'最佳男主角', outcome:'nominated', repWorkTitle:'長篇劇' }] };
+const beatsNom147 = awards62CeremonyBeats(packNom147);
+const comfortBeat = beatsNom147.find(b=>b.id==='comfort');
+ok('入圍有 comfort 安慰 beat（reveal 之後、out 之前，2600ms）', !!comfortBeat && comfortBeat.ms === 2600 && beatsNom147.indexOf(comfortBeat) === beatsNom147.length - 2 && beatsNom147[beatsNom147.length - 1].id === 'out');
+ok('comfort 文案：何生安慰＋阿偉回應，唔話佢贏咗', !!comfortBeat && /何生/.test(comfortBeat.caption) && /阿偉/.test(comfortBeat.caption) && !/得獎|贏咗/.test(comfortBeat.caption));
+ok('入圍全長＝得獎 9350＋comfort 2600', beatsNom147.reduce((a,b)=>a+b.ms,0) === totalWon + 2600);
+ok('得獎冇 comfort beat', !beatsWon.some(b=>b.id==='comfort'));
 
 /* ================= (7) 獎項頁 render ================= */
 S = baseSave();
@@ -264,6 +283,37 @@ S.wrapHistory = [];
 const packLow = buildAwardResultPack({ ceremonyId:'award_singho_tv', year:1989 });
 const gateLow = awards62GateLineHtml(packLow);
 ok('請柬門檻行：新人出差額', /仲差 2 部電視作品/.test(gateLow));
+
+/* ================= (9) v20a147 D4 重做校準：窗口＋年份口徑＋贏線 =================
+   上一手 0.90 只對理論檔有效——觀測全弧最佳 base 0.748 喺 0.82／0.90 之下贏率都係 0%。
+   重做：窗口 30→90、計分年份改用殺青日曆年、贏線 0.875。模擬見 qa147/sim147b.js。 */
+ok('WIN_LINE 0.875（D4 重做校準）', AWARDS62_WIN_LINE === 0.875);
+/* (9a) 窗口：3 部擔正舊作喺第 31–33 位（舊 30 窗口之外），新計分要見到佢哋。
+   wrapHistory 係新在前：30 部新臨記工行先，3 部擔正舊作殿後。 */
+S = baseSave(); S.fame = 45;
+const hist90 = [];
+for(let i = 0; i < 30; i++) hist90.push(wrap('gig_extra', 1991));
+for(let i = 0; i < 3; i++) hist90.push(wrap('gig_lead', 1991));
+S.wrapHistory = hist90;
+const pFull = awards62ScoreParts(CAT_SV, FILM_CER, 1991);
+ok('窗口 90：殿後 3 部擔正計入，base ≈ 0.82', approx(pFull.base, 0.82, 0.002));
+ok('窗口 90：代表作係擔正舊作', awards62RepWork(FILM_CER, 1991) === '大製作');
+S.wrapHistory = hist90.slice(0, 30); /* 模擬舊 30 窗口：只剩新臨記工 */
+const pOld = awards62ScoreParts(CAT_SV, FILM_CER, 1991);
+ok('舊 30 窗口反證：同一批只計頭 30 部，base ≈ 0.499', approx(pOld.base, 0.499, 0.002));
+ok('舊 30 窗口反證：代表作跌返臨記工', awards62RepWork(FILM_CER, 1991) === '臨記工');
+/* (9b) 年份口徑：pack 年 1990、1991 年殺青嘅橋接工，計分要入 1991 桶，唔係 1990 桶。 */
+const hBridge = wrap('gig_lead', 1990);
+hBridge.wrappedDay = (1991 - 1988) * 365 + 120; /* 1991 年中 */
+ok('年份口徑：pack 1990＋1991 殺青 → YearOf 1991', awards62YearOf(hBridge) === 1991);
+S = baseSave(); S.fame = 45; S.wrapHistory = [hBridge];
+ok('年份口徑：橋接工入 1991 桶（base 0.6625）', approx(awards62ScoreParts(CAT_SV, FILM_CER, 1991).base, 0.6625, 0.002));
+ok('年份口徑：橋接工唔入 1990 桶（得主軌 0.40）', approx(awards62ScoreParts(CAT_SV, FILM_CER, 1990).base, 0.40, 0.002));
+const hRev = wrap('gig_lead', 1991);
+hRev.wrappedDay = (1990 - 1988) * 365 + 120; /* 反向：pack 1991、1990 殺青 */
+ok('年份口徑（反向）：pack 1991＋1990 殺青 → YearOf 1990', awards62YearOf(hRev) === 1990);
+ok('年份口徑（fallback）：冇 wrappedDay 跌返 h.year', awards62YearOf({ gigId: 'gig_lead', year: 1990 }) === 1990);
+ok('年份口徑（fallback 尾）：乜都冇 → 0', awards62YearOf({ gigId: 'gig_lead' }) === 0);
 
 console.log(fails.length ? ('\nFAILED: '+fails.length) : '\nALL PASS');
 process.exit(fails.length ? 1 : 0);

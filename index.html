@@ -38119,7 +38119,7 @@ function resolvePlannedDay(id){
             popularity: sh.popularity!=null?sh.popularity:0,
             wrappedDay: S.dayIndex|0, rating: (sh.pay||0)>=2000?"表現穩妥":"順利殺青"
           });
-          if(S.wrapHistory.length>30) S.wrapHistory.length=30; /* v20a65 FIX65-3：上限 20→30——高產多元玩家嘅舊作品俾其他媒介新作擠出窗口，頒獎每桶深度被斬（BUG-3 另一半機制）；作品牆同受惠。舊檔唔使遷移，上限只喺新殺青嗰刻截斷。 */
+          if(S.wrapHistory.length>90) S.wrapHistory.length=90; /* v20a147 D4 重做校準：上限 30→90——全弧 arcN 單年最多 79 部（1991 年）、任何 365 日窗口最多 79 部，30 條連一年都冚唔晒，day 609 三部 0.74 代表作俾擠出窗口（base 0.694，見 qa147/CALIBRATION_D4.md §5）；90 條冚得晒一年份量兼有裕。作品牆／ladder95／人情／對手等讀取逐個核過：只會更準，詳見 CALIBRATION_D4.md §5 讀取審計。舊檔已截斷嘅歷史救唔返，新殺青先累積到 90。 */
         }catch(_wh){}
         try{
           const psr = (typeof queuePostShootRewardOnWrap==="function") ? queuePostShootRewardOnWrap(sh) : null;
@@ -45270,7 +45270,7 @@ function awardsScoreCategory(cat, ceremony, year, tier){
   /* v20a62 AWARDS62-1/2/3：實力判定——刪舊版贏獎隨機骰同第一年隱形壓分。
      base 由 awards62ScoreParts 計：
      主軌 0.40（聲望/45 或 信用/60）＋質量加權作品 0.42＋合適標籤 0.10；
-     評審口味只 ±0.05（AWARDS62_TASTE），唔主導結果；到贏線 0.82 就贏。 */
+     評審口味只 ±0.05（AWARDS62_TASTE），唔主導結果；到贏線 0.875 就贏。 */
   const parts = awards62ScoreParts(cat, ceremony, year);
   const taste = (Math.random()*2 - 1) * AWARDS62_TASTE;
   const score = parts.base + taste;
@@ -45555,12 +45555,15 @@ function renderAwardResultHtml(pack){
     const badge = c.outcome==="won" ? "得獎" : (c.outcome==="gallery" ? "觀禮" : "入圍");
     const repBit62 = c.repWorkTitle ? `<p class="psr-rep62">憑《${c.repWorkTitle}》${badge}</p>` : "";
     const weakBit62 = c.weakHint62 ? `<p class="psr-weak62">${c.weakHint62}</p>` : "";
+    /* v20a147 D2：入圍落選結果卡加一句安慰行（何生鼓勵，唔重複 weakHint 嘅「差啲咩」診斷，唔話佢贏咗）。 */
+    const comfortBit147 = c.outcome === "nominated" ? `<p class="psr-comfort147">何生：「差少少啫，唔緊要，下年再嚟過。」</p>` : "";
     const felBit63 = (()=>{ try{ return awards63FellowsHtml(c); }catch(_e){ return ""; } })();
     return `<article class="psr-card psr-metrics">
       <div class="psr-kicker"><span class="psr-icon">${iconHtml112("🏆")}</span> ${badge} · ${c.label||""}</div>
       <h4 class="psr-title">${c.line||""}</h4>
       ${repBit62}
       ${weakBit62}
+      ${comfortBit147}
       ${felBit63}
     </article>`;
   }).join("");
@@ -45736,7 +45739,11 @@ try{
    B：canvas 步進器（125ms 一格 ≈ 8fps）＋像素精靈圖＋像素舞台底圖 AWARDS62_STAGE_PX；
       底圖載入失敗自動降級 awards62FallbackStage 程式格仔舞台；全程可跳過／撳畫面推進。
    awardsLog 只加欄位（displayName／categories[].repTitle），既有欄位語義不變；SAVE key 不變。 */
-const AWARDS62_WIN_LINE = 0.82;
+const AWARDS62_WIN_LINE = 0.875; /* v20a147 D4 重做校準：0.90→0.875——校準見 qa147/CALIBRATION_D4.md §5。
+   0.90 嗰版只對理論檔有效（擔正檔 32%），觀測到嘅真實全弧最佳 base 0.748 喺 0.82／0.90 之下
+   贏率都係 0%，唔符合「等正常實玩贏得到先至算驗到」。重做同期修咗計分樽頸（窗口 30→90＋
+   計分年份改用殺青日曆年），觀測最佳 base 0.694→0.879；新線下觀測期望贏場 0.54／9 場、
+   頂級檔 57%、Y1 強 0%。可行窗好窄（頂級 ≤60% 要 L≥0.872；期望 ≥0.5 要 L≤0.879），0.875 係中點。 */
 const AWARDS62_TASTE = 0.05;
 const AWARDS62_ROLE_Q = {
   film_lead_big: 1.00, tv_lead_long: 1.00,
@@ -45770,11 +45777,18 @@ function awards62WorkQuality(h){
   }catch(_e2){}
   return Math.min(1, Math.max(0.05, q));
 }
+/* v20a147 D4 重做校準：計分年份改用殺青日曆年（wrappedDay）——同 countYearMediumWraps
+   （入圍計數）同一個口徑，兩邊終於一致。舊版用 h.year（gig pack 年份＋2 remap）：
+   全弧 138 部入面 35 部 pack 年 ≠ 殺青日曆年（全部係 soft-bridge 臨記工，pack 1990 但
+   1991 年先殺青），佢哋計數嗰陣入 1991 桶、計分嗰陣入 1990 桶（嗰年典禮早已完結）——
+   計分桶永遠見唔到佢哋，day 609「計數 6、計分桶 2」就係咁嚟。改口徑後呢 35 部歸返
+   殺青嗰年（窗口 30 下 day 609 base 0.694→0.778 獨立證據；窗口 90 下佢哋唔入頭四名，
+   base 唔變）。冇 wrappedDay 嘅舊式記錄（例如遷移補入）照舊跌返 h.year／id 年份。 */
 function awards62YearOf(h){
+  try{ if(h && h.wrappedDay != null){ const y = awardsYearFromDay(h.wrappedDay); if(y) return y; } }catch(_e){}
   if(h && h.year) return Number(h.year) || 0;
   const m = String((h && h.gigId) || "").match(/(\d{4})/);
   if(m){ const y66 = Number(m[1]); return (y66>=1988 && y66<=1992) ? y66+2 : y66; } /* v20a66：id 內嵌年份係舊曆編碼 */
-  try{ if(h && h.wrappedDay != null) return awardsYearFromDay(h.wrappedDay) || 0; }catch(_e){}
   return 0;
 }
 function awards62YearWorks(ceremony, year){
@@ -46066,7 +46080,19 @@ function awards62CeremonyBeats(pack){
   const beats = [{ id: "open", ms: 1200, caption: "—— " + name + " ——" + (venue99 ? ("\n" + venue99) : "") }];
   if(best === "gallery"){
     beats.push({ id: "pan", ms: 2000, caption: "今晚你坐喺觀禮席\n睇住台上群星，記住呢晚。" });
-    beats.push({ id: "out", ms: 500, caption: "" });
+    /* v20a147：旁聽唔再 3.7 秒草草收場——行埋宣佈弧（唱名→懸念→揭曉→散場），
+       open 1200＋pan 2000＋names 2400＋suspense 1400＋reveal 2100＋out 500＝9600ms；
+       唱名只列對手（fellows），文案唔寫阿偉入圍／得獎；得主＝fellows[0]。 */
+    const gLines = [];
+    fellows.forEach(f=>{ if(f && f.star) gLines.push(f.star + "：《" + (f.title || "") + "》"); });
+    beats.push({ id: "names", ms: 2400, caption: "", lines: gLines.length ? gLines : ["入圍名單逐個唱出……"] });
+    beats.push({ id: "suspense", ms: 1400, caption: "得獎者是……" });
+    const gWin = fellows.length ? fellows[0] : null;
+    let gReveal;
+    if(gWin && gWin.star) gReveal = iconHtml112("🏆") + " " + gWin.star + "憑《" + (gWin.title || "") + "》得獎";
+    else gReveal = "今晚嘅得獎者誕生——掌聲屬於台上嗰位。";
+    beats.push({ id: "reveal", ms: 2100, caption: gReveal });
+    beats.push({ id: "out", ms: 500, caption: "掌聲響起——今晚完滿落幕。" });
     return beats;
   }
   beats.push({ id: "enter", ms: 1750, caption: "提名者魚貫入場，企到台前。" });
@@ -46089,6 +46115,11 @@ function awards62CeremonyBeats(pack){
   let glam = false;
   try{ glam = best === "won" && typeof poster59Path === "function" && !!poster59Path(pack.repGigId63 || ""); }catch(_e){}
   if(glam) beats.push({ id: "glamour", ms: 1800, caption: "" });
+  if(best === "nominated"){
+    /* v20a147 D2：入圍落選加安慰 beat（reveal 之後、out 之前，2600ms）——何生一句安慰＋
+       阿偉一句回應，caption 字幕就夠，唔加新 sprite；文案唔話佢贏咗。won／gallery 唔行呢段。 */
+    beats.push({ id: "comfort", ms: 2600, caption: "何生拍拍你膊頭：「差少少啫，唔緊要，下年再嚟過。」\n阿偉：「……嗯。下年，我要自己行上台。」" });
+  }
   beats.push({ id: "out", ms: 500, caption: "" });
   return beats;
 }
@@ -46113,7 +46144,7 @@ function awards62PlayCeremony(pack, doneFn){
     let focus = null;
     try{ focus = (typeof awards63FocusCat === "function") ? awards63FocusCat(pack) : null; }catch(_e){}
     const fellows = (focus && Array.isArray(focus.fellows63)) ? focus.fellows63.slice(0, 3) : [];
-    const winFellow = (focus && focus.winner63) || null;
+    const winFellow = (focus && (focus.winner63 || (focus.fellows63 && focus.fellows63[0]))) || null; /* v20a147：gallery 類別 winner63 係 null，得主照 fellows[0] 規則取 fellows63[0]，等揭曉嗰陣得主行前；nominated／won 行為不變 */
     const repTitle = (pack && pack.repWork62) || (focus && focus.repWorkTitle) || "";
     const posterOf = (gid)=>{ try{ return (typeof poster59Path === "function" && gid) ? poster59Path(gid) : ""; }catch(_e){ return ""; } };
     /* 台位：對手一排＋玩家（旁聽嗰晚玩家唔上台）；得主對手標記 */
@@ -46271,7 +46302,7 @@ function awards62PlayCeremony(pack, doneFn){
     };
     const syncCards = (b, elapsed)=>{
       if(!cardsEl) return;
-      if(b && (b.id === "names" || b.id === "suspense" || b.id === "reveal")){
+      if(b && (b.id === "names" || b.id === "suspense" || b.id === "reveal" || b.id === "comfort")){ /* v20a147：comfort 期間卡片維持 reveal 狀態可見 */
         cardsEl.classList.add("on");
         cardEls.forEach((el, i)=> el.classList.toggle("show", b.id !== "names" || elapsed > 200 + i * 380));
       }
@@ -46369,6 +46400,15 @@ function awards62PlayCeremony(pack, doneFn){
         }
         return;
       }
+      if(id === "comfort"){
+        /* v20a147 D2：安慰 beat——企定人仔，玩家全光、得主稍暗、其餘再暗；卡片維持 reveal 狀態（見 syncCards）。 */
+        slots.forEach((s, i)=>{
+          if(s.kind === "player") drawFigure(s, i, { alpha: 1 });
+          else if(i === winnerSlot) drawFigure(s, i, { alpha: 0.85 });
+          else drawFigure(s, i, { alpha: 0.7 });
+        });
+        return;
+      }
       if(id === "glamour"){
         ctx.fillStyle = "rgba(5,3,12,0.45)"; ctx.fillRect(0, 0, W, H);
         if(playerSlot >= 0) drawFigure(slots[playerSlot], playerSlot, { hold: true, alpha: 0.9 });
@@ -46464,7 +46504,7 @@ const AWARDS64_SPRITES = {
    像素角色 v63 原用「真立繪像素化」衍生；v20a64 起成套換做 Q 版人仔（AWARDS64_SPRITES，開羅語法逐格繪製＋走路幀）：
    阿偉跟定版造型（黑碎瀏海、深藍西裝褸＋白恤衫開領、冇呔）；紅星池＝POSTER59_STAR_IDS 嗰 10 位
    （程天諾唔喺池內——1990 零出場紅線，任何年份都唔派佢）。
-   提名對手（fellows）由嗰年嗰媒介 pack 通告＋LEADSTAR59 主演衍生；冇主演數據就按媒介喺紅星池兜底配對（確定性輪派）。
+   提名對手（fellows）由嗰年嗰媒介 pack 通告＋LEADSTAR59 主演衍生；冇主演數據就按媒介喺紅星池兜底配對（加權隨機，v20a147）。
    海報利用：唱名作品卡列（DOM 層，海報縮圖／CSS 片名卡）＋得獎 glamour 全屏海報＋請柬細海報——全部重用 poster59Path 既有 data URI，唔重複編碼。 */
 const AWARDS63_POOL = {
   film:  ["luk_baakyin", "liu_bingxing", "mak_zhendong", "chai_zanhoi", "lok_gasing", "ngai_wingnaam"],
@@ -46472,6 +46512,46 @@ const AWARDS63_POOL = {
   music: ["lok_gasing", "gu_mingfai", "liu_bingxing"],
   ad:    ["so_jiyan", "chung_choning", "luk_baakyin", "ngai_wingnaam", "gu_mingfai"]
 };
+/* v20a147：第二輪兜底配對改加權隨機——頂級紅星出現機率高啲，唔係固定人選。
+   星級來源：紅星名冊 PLAN_ERA_STAR_TARGETS_v1.md「巔峰年」——巔峰 1990–92＝當紅頂級 ×3
+   （陸柏言 1990、蘇芷茵 1991、廖炳星 1992、駱家聲 1990、葉敏芝 1992）；
+   1988–89＝上一代當紅 ×2（麥震東 1988、齊鎮海 1988、鍾楚凝 1989）；
+   1984–85＝過氣 ×1（魏詠男 1985、顧明輝 1984）。
+   池外星（程天諾等）唔入池，唔使權重。分佈見 tests/test_awards63_logic.js §147。 */
+const AWARDS63_TIER_WEIGHT = {
+  luk_baakyin: 3, so_jiyan: 3, liu_bingxing: 3, lok_gasing: 3, yip_manji: 3,
+  mak_zhendong: 2, chai_zanhoi: 2, chung_choning: 2,
+  ngai_wingnaam: 1, gu_mingfai: 1
+};
+function awards63KeySeed(key){
+  let h = 2166136261 >>> 0; /* FNV-1a 32-bit */
+  const s = String(key || "");
+  for(let i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  return h >>> 0;
+}
+function awards63SeededRng(seed){
+  let a = (seed >>> 0) || 1;
+  return function(){
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function awards63WeightedPick(pool, used, rng){
+  /* 由未用過嘅池星按 AWARDS63_TIER_WEIGHT 抽一粒（缺值當 1）；池抽乾就返 ""。 */
+  let total = 0;
+  const avail = [];
+  (pool || []).forEach(sid=>{
+    if(!sid || used[sid]) return;
+    const w = Number(AWARDS63_TIER_WEIGHT[sid]) || 1;
+    if(w > 0){ avail.push({ sid: sid, w: w }); total += w; }
+  });
+  if(!avail.length || total <= 0) return "";
+  let r = rng() * total;
+  for(let i = 0; i < avail.length; i++){ r -= avail[i].w; if(r <= 0) return avail[i].sid; }
+  return avail[avail.length - 1].sid;
+}
 function awards63StarName(starId){
   try{
     const ids = (typeof POSTER59_STAR_IDS !== "undefined" && POSTER59_STAR_IDS) || {};
@@ -46547,22 +46627,18 @@ function awards63Fellows(ceremony, year){
     used[c.starId] = true;
     out.push({ starId: c.starId, star: c.star, title: c.title, gigId: c.g.id, poster: posterOf(c.g.id), assigned: false });
   });
-  /* 第二輪：冇主演數據嘅作品 → 紅星池按媒介確定性輪派（同一年同媒介結果穩定） */
+  /* 第二輪：冇主演數據嘅作品 → 紅星池按星級加權隨機抽（v20a147；頂級紅星機率高啲，唔係固定人選）。
+     同一 (year, ceremonyId, medium) 用同一 seed，可重現；結果喺排程嗰刻計好存入 pack，唔用裸 Math.random()。 */
   if(out.length < 3){
     const pool = AWARDS63_POOL[medium] || AWARDS63_POOL.film;
+    const rng = awards63SeededRng(awards63KeySeed([year, ceremony && ceremony.id, medium].join("/")));
     cands.forEach(c=>{
       if(out.length >= 3) return;
       if(c.starId) return;
-      let hsum = 0;
-      const idStr = String(c.g.id || "");
-      for(let i = 0; i < idStr.length; i++) hsum = (hsum * 31 + idStr.charCodeAt(i)) >>> 0;
-      for(let k = 0; k < pool.length; k++){
-        const sid = pool[(hsum + k) % pool.length];
-        if(used[sid]) continue;
-        used[sid] = true;
-        out.push({ starId: sid, star: awards63StarName(sid), title: c.title, gigId: c.g.id, poster: posterOf(c.g.id), assigned: true });
-        break;
-      }
+      const sid = awards63WeightedPick(pool, used, rng);
+      if(!sid) return;
+      used[sid] = true;
+      out.push({ starId: sid, star: awards63StarName(sid), title: c.title, gigId: c.g.id, poster: posterOf(c.g.id), assigned: true });
     });
   }
   return out;

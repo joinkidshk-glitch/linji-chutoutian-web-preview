@@ -157,11 +157,15 @@ function work59GigLookup(id){ return GIGMAP[id] || null; }
 function work59WorkOf(h, g){ return (g && g.id) || (h && h.gigId) || ""; }
 function ensureCastingTagsState(){ return []; }
 function awardsDual(){ return { stageVolume: S.fame || 0, industryCredit: S.industryCredit || 0 }; }
+eval(extractFn("awardsCalendarYear"));
+eval(extractFn("awardsYearFromDay"));
 eval(extractFn("awards62WorkQuality"));
 eval(extractFn("awards62YearOf"));
 eval(extractFn("awards62YearWorks"));
 eval(extractFn("awards62ScoreParts"));
-function wrap(gigId, year){ const g = GIGMAP[gigId]; return { gigId: gigId, type: g.type, year: year, pay: g.pay[1], wrappedDay: 100 }; }
+/* v20a147 D4 重做校準：計分年份改用殺青日曆年——fixture 嘅 wrappedDay 必須同 year 同一年。
+   舊寫死 wrappedDay: 100 係 1990 年中（START 1990-03-07＋100 日），同 1989 桶錯位。 */
+function wrap(gigId, year){ const g = GIGMAP[gigId]; return { gigId: gigId, type: g.type, year: year, pay: g.pay[1], wrappedDay: (year - 1990) * 365 + 100 }; }
 const MUSIC_CER = { id: "award_golddisc_music", medium: "music", matchTypes: ["唱片通告"] };
 const FILM_CER = { id: "award_harbour_film", medium: "film", matchTypes: ["電影"] };
 const CAT_MU = { id: "cat_x", primaryTrack: "stageVolume", tagBonusAny: [] };
@@ -197,6 +201,16 @@ const hintExtra = awards62WeakHint({ primaryTrack: "stageVolume", normPrimary: 1
 ok(hintExtra.indexOf("缺一部擔正") >= 0, "臨記代表作 → 照出「缺擔正」（唔好矯枉過正）");
 const hintPrim = awards62WeakHint({ topQ: 0.9, normPrimary: 0.2, worksCount: 5, primaryTrack: "industryCredit" }, CAT_MU);
 ok(hintPrim.indexOf("業內信用") >= 0, "舊 parts 形狀（冇 worksScore）主軌最弱 → 指主軌（topQ 兜底唔崩）");
+
+/* ---------- (6) v20a147 D4 重做校準：贏線＋計分年份口徑 ---------- */
+ok(AWARDS62_WIN_LINE === 0.875, "贏線 0.875（D4 重做校準：0.90→0.875）");
+ok(awards62YearOf({ gigId: "g_film_lead", type: "電影", year: 1989, pay: 50000, wrappedDay: -265 }) === 1989,
+   "YearOf：1989 殺青（wrappedDay -265 = 1989-06-15）→ 1989");
+ok(awards62YearOf({ gigId: "g_film_lead", type: "電影", year: 1988, pay: 50000, wrappedDay: 100 }) === 1990,
+   "YearOf：橋接工 pack 1988、1990 殺青 → 1990（pack 年唔再話事）");
+S = { fame: 60, industryCredit: 60, wrapHistory: [{ gigId: "g_film_lead", type: "電影", year: 1988, pay: 50000, wrappedDay: 100 }] };
+ok(awards62ScoreParts(CAT_MU, FILM_CER, 1990).worksCount === 1, "橋接工入殺青年份桶（1990 桶有 1 部）");
+ok(awards62ScoreParts(CAT_MU, FILM_CER, 1988).worksCount === 0, "橋接工唔入 pack 年份桶（1988 桶 0 部）");
 
 console.log("FIX65 LOGIC: " + pass + " pass, " + fail + " fail");
 process.exit(fail ? 1 : 0);

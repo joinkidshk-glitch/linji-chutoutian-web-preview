@@ -97,6 +97,10 @@ chk('懸念掃光（suspense lit slot）', 'lightPool' in play_fn and 'lit' in p
 beats_fn = slice_fn('awards62CeremonyBeats')
 chk('beats：入圍唱得主、glamour 只限有海報得獎', 'winner63' in beats_fn and 'glamour' in beats_fn and 'poster59Path' in beats_fn)
 chk('beats：旁聽用 pan 群星鏡頭', '"pan"' in beats_fn)
+chk('beats：旁聽行埋宣佈弧（names/suspense/reveal，v20a147）', 'gLines' in beats_fn and 'gReveal' in beats_fn)
+chk('beats：入圍落選有 comfort 安慰 beat（v20a147）', '"comfort"' in beats_fn and '何生拍拍你膊頭' in beats_fn)
+chk('對手加權：AWARDS63_TIER_WEIGHT＋seeded RNG＋weighted pick（v20a147）', 'AWARDS63_TIER_WEIGHT' in src and 'awards63SeededRng' in src and 'awards63WeightedPick' in src)
+chk('對手加權：第二輪唔用裸 Math.random（seeded draw）', 'awards63SeededRng(awards63KeySeed' in src)
 
 # --- (5) 海報唔重複編碼 ---
 chk('POSTER59_DATA 只得一份', src.count('const POSTER59_DATA') == 1)
@@ -104,7 +108,7 @@ chk('海報全經 poster59Path 取用（新 code 冇另嵌海報圖）', src.cou
 
 # --- (6) 硬規則 ---
 chk('SAVE key 不變', 'starVolunteer_map_v19w' in src)
-chk('v62 贏線冇郁', 'const AWARDS62_WIN_LINE = 0.82' in src)
+chk('v62 贏線 v147 重做校準值 0.875（唔係舊 0.90）', 'const AWARDS62_WIN_LINE = 0.875' in src)
 chk('v62 評分 parts 冇郁', 'function awards62ScoreParts(cat, ceremony, year)' in src)
 
 print('')

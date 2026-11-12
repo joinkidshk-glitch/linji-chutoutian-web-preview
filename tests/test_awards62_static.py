@@ -26,7 +26,7 @@ def slice_fn(name):
 
 # --- 區塊本體 ---
 chk('AWARDS62 block present', '/* ===== v20a62 AWARDS62' in src)
-chk('WIN_LINE const 0.82', 'const AWARDS62_WIN_LINE = 0.82' in src)
+chk('WIN_LINE const 0.875（v20a147 D4 重做校準：0.90→0.875，見 qa147/CALIBRATION_D4.md §5）', 'const AWARDS62_WIN_LINE = 0.875' in src)
 chk('TASTE const 0.05', 'const AWARDS62_TASTE = 0.05' in src)
 chk('ROLE_Q const', 'const AWARDS62_ROLE_Q' in src and 'film_lead_big: 1.00' in src)
 chk('scoreParts defined', 'function awards62ScoreParts(cat, ceremony, year)' in src)

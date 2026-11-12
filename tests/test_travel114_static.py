@@ -111,7 +111,9 @@ ck("地圖釘加 travel-locked class（額度用完）", '${travelLocked114?" tr
 ck("drawMap 計 travelLocked114（travel114Remain() <= 0）",
    "const travelLocked114 = (typeof travel114Remain===\"function\") ? travel114Remain() <= 0 : false;" in src)
 
-# ---------- 呼叫點分類覆蓋（allowlist，行號＝改後實量；v20a137 MAP137 令行號移位：CSS ＋23／地區名 HTML －10／JS ＋73＋6＋2／resize ＋9，見 NOTES_V20A137_MAP.md；v20a144 ENC144 ＋8 行（WEEKLY_CAP／starWeek／每週重置）；v20a143 BOOK143 ＋43 行（CSS 段，全部錨點再 ＋43）；v20a145 BOOK145 ＋67 行（CSS 段，全部錨點再 ＋67） ----------
+# ---------- 呼叫點分類覆蓋（allowlist，行號＝改後實量；v20a137 MAP137 令行號移位：CSS ＋23／地區名 HTML －10／JS ＋73＋6＋2／resize ＋9，見 NOTES_V20A137_MAP.md；v20a144 ENC144 ＋8 行（WEEKLY_CAP／starWeek／每週重置）；v20a143 BOOK143 ＋43 行（CSS 段，全部錨點再 ＋43）；v20a147 AWARDS147 ＋67 行（贏線註解＋3／gallery 宣佈弧＋14／comfort beat＋6／comfort draw＋10／結果卡安慰行＋2／對手加權＋32，全部錨點再 ＋67） ----------
+# v20a147 rebase 上 main 57d4081（v145）resync：v145 ＋67 行（CSS 段）全部錨點再 ＋67；difflib 對位核實——新舊 index.html 只差 1 行→68 行一個 replace 段，42 個釘行內容逐行相同，純漂移；COUNT 13／FREE 27 不變，DEF 53478→53545、WRAPPER 44087→44154（同 v145 版 44154 一致）。
+# v20a147 D4 重做校準 resync：淨 ＋9 行（贏線註解 ＋2／YearOf 註解＋函數 ＋7；cap／scoreCategory 註解原地改行數不變）；行號 ≥45711 者 ＋9（qa147/resync_travel114.py 核實：44 個 openLoc( 呼叫點序列逐字一致、內容逐行相同，純漂移；COUNT 13／FREE 27 不變，DEF 53469→53478、WRAPPER 44087 不變）。
 # 計清單（玩家主動導航，預設計數，唔加旗）：13 處
 COUNT_LINES = {
     32122,  # ux68GoLoc 手帳「前往」
@@ -122,11 +124,11 @@ COUNT_LINES = {
     39161,  # 地圖釘 goPin（最近針／後備 L.id）
     39192,  # 地圖底欄地點掣
     43731,  # 人情債「去事務所」
-    57499,  # inv72GoShop 去禮品檔
-    57666,  # people72GoLoc
-    57809,  # jobs72GoBoard
-    57830,  # jobs72GoLoc
-    58280,  # 開局屋企 modal「去睇劇情」
+    57575,  # inv72GoShop 去禮品檔
+    57742,  # people72GoLoc
+    57885,  # jobs72GoBoard
+    57906,  # jobs72GoLoc
+    58356,  # 開局屋企 modal「去睇劇情」
 }
 # 免費清單（帶旗，唔計）：27 處
 FREE_LINES = {
@@ -142,24 +144,24 @@ FREE_LINES = {
     40690,  # wf4Fire 完（wf4Done，舊旗）
     43388,  # 人情債流程尾，返去而家身處地點
     43411,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
-    52344,
-    52463,  # 巧遇播完（encDone，舊旗）
-    53356,  # 劇情播完刷新（refreshLocAfterStory）
-    53738,
-    53760,  # 「劇情已完成」toast 後重開而家身處地點
-    53895,  # 聽完傳聞後 reopen 而家身處地點
-    55532,  # forceRestore（舊旗）
-    56943,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
-    57276,  # promptAudition back（返去而家身處地點）
-    57394,
-    57395,
-    57430,
-    57431,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    57450,  # doGiveGift 失敗後重開而家身處地點
-    57465,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    52420,
+    52539,  # 巧遇播完（encDone，舊旗）
+    53432,  # 劇情播完刷新（refreshLocAfterStory）
+    53814,
+    53836,  # 「劇情已完成」toast 後重開而家身處地點
+    53971,  # 聽完傳聞後 reopen 而家身處地點
+    55608,  # forceRestore（舊旗）
+    57019,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    57352,  # promptAudition back（返去而家身處地點）
+    57470,
+    57471,
+    57506,
+    57507,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    57526,  # doGiveGift 失敗後重開而家身處地點
+    57541,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 53469      # function openLoc(id, opts){
+DEF_LINE = 53545      # function openLoc(id, opts){
 WRAPPER_LINE = 44154  # window.__phase2.openLoc：轉發 opts
 # 頁內測試區：runSoftP0Checks 函數範圍（brace-match 實量，唔靠死行號）
 def fn_range(start_pat):
