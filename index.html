@@ -35393,7 +35393,8 @@ function confirmPlaceShoot(shoot, fromWeekday, thenFn){
     {label:"確定佔用", role:"p", on:()=>go(true)},
     {label:"只排空日", role:"g", on:()=>go(false)},
     {label:"取消", role:"g", on:()=>{ /* abort overwrite — still place free only */ go(false); }}
-  ]);
+    /* v20a122 AUD91FIX H2：遮罩點走等同撳「取消」（只排空日），等 finishReveal 照行、_aud91Presenting 清旗。 */
+  ], { onDismiss: ()=>go(false) });
 }
 
 function scheduleShoot(gig, pay, fame, popularity, payBreak){
@@ -38520,6 +38521,8 @@ function modal(html, buttons, opts){
   restoreMapScroll();
 }
 function closeModal(){
+  /* v20a122 AUD91FIX H1 保底：任何關 modal 嘅路都清晨報旗，免卡死吞鏈。 */
+  try{ if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = false; }catch(_p122){}
   try{ document.getElementById("modal-btns").classList.remove("soft-leave-only"); }catch(_e){}
   try{ document.getElementById("mask").classList.remove("casting-sheet-on"); }catch(_e){}
   try{ document.getElementById("mask").classList.remove("paper-on"); }catch(_e){}
@@ -46906,7 +46909,9 @@ function presentDueMorningPaper(thenFn){
   if(!S) return false;
   try{ flushPendingStoryPapers(); }catch(_e){}
   /* 加速途中都要出逾期紙。靜默吞日之前由 runScheduleFromToday 先彈，再續加速。 */
-  if(FREEPLAY_FW && FREEPLAY_FW._paperShowing) return true;
+  /* v20a122 AUD91FIX H1：旗卡死（上次晨報 modal 冇正常清旗）唔好靜默吞成條鏈——
+     清旗再跌落去正常流程（冇到期就 return false，鏈繼續行 aud91）。 */
+  if(FREEPLAY_FW && FREEPLAY_FW._paperShowing) FREEPLAY_FW._paperShowing = false;
   if(newspaperHoldForToday()) return false;
   const edition = pullDueNewspaperEdition();
   if(!edition) return false;
