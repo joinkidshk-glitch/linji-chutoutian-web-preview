@@ -40622,11 +40622,11 @@ function wf4PlayEvent(ev, doneCb){
        wf4-stage-on 令 .sp-stage 最少 480px 高，人物約 288px；finish() 清走。 */
     try{ document.getElementById("mask").classList.add("wf4-stage-on"); }catch(_w4a){}
     const scene105 = wf4Scene105(ev);
-    /* v20a146 B2：街市場景圖（bg_wf4_market.jpg）banner 偏向檔口帶——張圖上半截係空白招牌，
-       center 橫裁（342×150）裁出招牌帶＋檔口頂；75% 裁到簷篷＋菜／魚檔（原圖 y 723–1038／1280）。
-       只限 market 圖（st06／st07／st11／day03／day04 五單共用）；set08（film_lion）／st04（cafe_cha）
-       唔加，唔郁共用 .wf4-scene105 嘅 background-position:center；舞台版 sp-bg-layer 唔郁。 */
-    const scenePos146 = scene105 && scene105.indexOf("bg_wf4_market.jpg")>=0 ? ";background-position:center 75%" : "";
+    /* v20a146 B2＋v20a148 B1：場景圖 banner per-image 裁切位——街市（bg_wf4_market.jpg）75% 偏向檔口帶
+       （上半截空白招牌，center 橫裁裁出招牌帶＋檔口頂；75% 裁到簷篷＋菜／魚檔，原圖 y 723–1038／1280）；
+       的士（bg_wf4_taxi.jpg）20% 偏向 747＋啟德跑道（review 模擬驗證：20% 成架 747 入晒鏡＋跑道燈齊，
+       25% 機頂微裁、30% 已出框）。只限呢兩張圖；set08／st04 唔加，唔郁共用 .wf4-scene105 嘅 center；舞台版 sp-bg-layer 唔郁。 */
+    const scenePos146 = scene105 && scene105.indexOf("bg_wf4_market.jpg")>=0 ? ";background-position:center 75%" : scene105 && scene105.indexOf("bg_wf4_taxi.jpg")>=0 ? ";background-position:center 20%" : "";
     const sceneHtml105 = scene105 ? `<div class="wf4-scene105" style="background-image:url(&quot;${scene105}&quot;)${scenePos146}" aria-hidden="true"></div>` : "";
     const head = `${sceneHtml105}<h3>${wf4Esc(ev.title||"日常")}</h3><p class="sub">${wf4Esc(ev.setting||"")}</p>`;
     /* v20a108 D-8（二期）：有全身資產講者（阿偉）嘅事件，逐句行 DLG106 舞台；
