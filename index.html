@@ -3526,6 +3526,64 @@ body.day-res-open .day-row{
 @media (max-height:720px){
   #loc-sheet .loc-bg{ height:88px; }
 }
+/* ===== v20a118 LOCPANEL118：地點面板重設計（純呈現層）=====
+   樣本（Phase 1 何生事務所）落到底部 sheet 嘅適配：場景圖照舊係 #loc-bg banner（呢版
+   加高，等負責人有企位）；額度 pill 疊喺 banner 左上；負責人企右邊、腳由選項卡遮住
+   （同對話舞台遮腿同一做法）；選項區變米紙卡。選項行為／數值／額度計數零改動。
+   冇圖地點（gift_shop／hospital）行素底：banner 隱藏、pill 改行 in-flow 頂行。 */
+#loc-sheet.locpanel118 .loc-bg{ height:210px; }
+@media (max-height:860px){ #loc-sheet.locpanel118 .loc-bg{ height:150px; } }
+@media (max-height:720px){ #loc-sheet.locpanel118 .loc-bg{ height:120px; } }
+#loc-sheet .locpanel118-quota{
+  position:absolute; top:26px; left:12px; z-index:5;
+  display:flex; flex-direction:column; align-items:flex-start; gap:2px;
+  background:rgba(28,20,12,.88); border:1px solid #c9a86a; border-radius:12px;
+  padding:7px 11px; font-size:13px; color:#f3e9d2; box-shadow:0 2px 10px rgba(0,0,0,.45);
+  max-width:252px;
+}
+#loc-sheet .locpanel118-quota .lp118-l1{ display:inline-flex; align-items:center; gap:8px; white-space:nowrap; }
+#loc-sheet .locpanel118-quota .lp118-l2{ padding-left:24px; }
+#loc-sheet .locpanel118-quota .lp118-dots{ display:inline-flex; gap:5px; }
+#loc-sheet .locpanel118-quota .lp118-dot{ width:11px; height:11px; border-radius:50%; border:1.5px solid #d8b96a; }
+#loc-sheet .locpanel118-quota .lp118-dot.used{ background:#d8b96a; }
+#loc-sheet .locpanel118-quota b{ color:#e8c97a; }
+#loc-sheet .locpanel118-quota .lp118-arrived{ font-size:12px; color:#ffe9b0; }
+#loc-sheet.locpanel118-nobg .locpanel118-quota{ position:static; margin:2px 0 6px; max-width:none; }
+#loc-sheet .locpanel118-owner{
+  position:absolute; right:8px; z-index:3; pointer-events:none;
+  display:flex; flex-direction:column; align-items:center; width:120px;
+}
+#loc-sheet .locpanel118-owner img{
+  display:block; width:auto; max-width:120px; object-fit:contain;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));
+}
+#loc-sheet .locpanel118-tag{
+  background:rgba(28,20,12,.88); border:1px solid #c9a86a; color:#f3e9d2;
+  border-radius:8px; padding:4px 8px; font-size:12px; letter-spacing:.5px;
+  box-shadow:0 2px 8px rgba(0,0,0,.4); white-space:nowrap;
+}
+#loc-sheet .locpanel118-tag b{ color:#e8c97a; }
+#loc-sheet .locpanel118-tagrow{ flex:0 0 auto; display:flex; justify-content:flex-end; margin:0 0 4px; }
+/* v20a118：上面三條 author display 規則會蓋過 UA [hidden]{display:none}——hidden 咗嘅
+   元素（尤其 owner 入面幅圖，冇 src 會出破圖 icon＋殘留 alt 字）會繼續顯示，必須明寫返 */
+#loc-sheet .locpanel118-quota[hidden], #loc-sheet .locpanel118-owner[hidden], #loc-sheet .locpanel118-tagrow[hidden]{ display:none !important; }
+#loc-sheet.locpanel118-has-owner #loc-title,
+#loc-sheet.locpanel118-has-owner #loc-desc,
+#loc-sheet.locpanel118-has-owner #loc-who{ max-width:calc(100% - 128px); }
+/* 米紙選項卡：實底＋z-index，負責人腳部收喺卡後面（遮腿） */
+#loc-sheet.locpanel118 #loc-acts{
+  position:relative; z-index:4;
+  background:#f8f1de; border:1px solid #d8c9a8; border-radius:12px; padding:8px;
+}
+/* 選項圖標（v112 手繪圖標，經 iconHtml112）：.act 頭一位由文字 div 變咗 icon span，
+   v17k 嗰條 .act > div:first-child 唔再命中文字 div，要用 .act-txt118 補返同一套 flex 規則 */
+#loc-sheet.locpanel118 .act .act-ic118{ flex:0 0 auto; width:26px; display:flex; align-items:center; justify-content:center; }
+#loc-sheet.locpanel118 .act .act-ic118 img.ic112{ height:24px; width:24px; }
+#loc-sheet.sheet .act > div.act-txt118,
+#app #loc-sheet.sheet .act > div.act-txt118{
+  display:flex !important; flex:1 1 auto !important; flex-direction:column !important;
+  justify-content:center !important; min-width:0 !important; gap:2px !important;
+}
 #loc-sheet.sheet .act.act-priority,
 #app #loc-sheet.sheet .act.act-priority{
   min-height:48px !important;
@@ -5096,10 +5154,14 @@ body.day-res-open .day-row{
     <!-- v17y: sheet is sibling of map-wrap so absolute bottom pins to #v-map, not mid flex/scroll -->
     <div class="sheet" id="loc-sheet">
       <div class="grab"></div>
+      <!-- v20a118 LOCPANEL118：額度 pill＋負責人企位＋名牌（純呈現層；內容由 locpanel118Render 填） -->
+      <div class="locpanel118-quota" id="loc-quota118" hidden></div>
+      <div class="locpanel118-owner" id="loc-owner118" hidden><div class="locpanel118-tag" id="loc-owner-tag118"></div><img id="loc-owner-img118" alt=""></div>
       <div class="loc-bg" id="loc-bg" hidden></div>
       <h2 id="loc-title">地點</h2>
       <p class="sub" id="loc-desc"></p>
       <p class="sub" id="loc-who"></p>
+      <div class="locpanel118-tagrow" id="loc-tagrow118" hidden><span class="locpanel118-tag" id="loc-tagrow-tag118"></span></div>
       <div class="acts" id="loc-acts"></div>
       <div class="btnrow"><button class="g" type="button" id="loc-close">返回地圖</button></div>
     </div>
@@ -52411,6 +52473,15 @@ function openLoc(id, opts){
     return;
   }
   if(typeof travel114IsFree==="function" && !travel114IsFree(opts, id)){ try{ saveQ(); }catch(_e){} }
+  /* v20a118 LOCPANEL118：今次入場係咪真係扣咗額度（免費返嚟重開 sheet 唔扣；pill「已到埗」
+     行只喺扣咗數嗰陣先出）。travel114IsFree 係純判斷，呢度讀一次唔會改數。 */
+  const spent118 = !(typeof travel114IsFree==="function" && travel114IsFree(opts, id));
+  /* v20a118：探訪扣數記憶（transient，唔入 save）——巧遇／WF4 攔截後嘅免費返嚟、同 modal
+     完嘅免費重開，pill 要同扣數嗰次入場一模一樣（數字＋「已到埗」行），否則玩家會
+     以為呢次免費。只認同地點＋同日；新一日／唔同地點即失效。 */
+  if(spent118){
+    try{ locpanel118SpentVisit = { loc:id, day:(typeof S!=="undefined" && S) ? (Number(S.dayIndex)||0) : 0 }; }catch(_e){}
+  }
   /* v20a79 ENC79：紅星巧遇對話先行——有星在場（出沒盤）兼冇主線待播壓住，先播全屏巧遇對話，播完先開 sheet。
      opts.encDone 係巧遇播完返入嚟嘅繞過旗；forceRestore 還原路徑唔觸發。 */
   if(!opts.forceRestore && !opts.encDone && typeof enc79TryIntercept==="function"){
@@ -52574,7 +52645,7 @@ function openLoc(id, opts){
       }
     }catch(_e105){}
     const b=document.createElement("button"); b.type="button"; b.className="act"+(cls?" "+cls:"");
-    b.innerHTML=`<div><div class="n">${title}</div>${hint105?`<div class="h">${hint105}</div>`:""}</div><div class="cost">${cost105}</div>`;
+    b.innerHTML=`${locpanel118ActIcon(title, cls)}<div class="act-txt118"><div class="n">${title}</div>${hint105?`<div class="h">${hint105}</div>`:""}</div><div class="cost">${cost105}</div>`;
     b.onclick=(ev)=>{
       try{
         const gate = ensureLocSheetInteractive();
@@ -52631,7 +52702,7 @@ function openLoc(id, opts){
       b.className="act act-priority act-story act-story-done";
       b.disabled = true;
       b.setAttribute("aria-disabled","true");
-      b.innerHTML=`<div><div class="n">劇情已完成${title?`：${title}`:""}</div><div class="h">呢幕已經播過，唔使再重播。</div></div><div class="cost">—</div>`;
+      b.innerHTML=`${locpanel118ActIcon("", "act-story")}<div class="act-txt118"><div class="n">劇情已完成${title?`：${title}`:""}</div><div class="h">呢幕已經播過，唔使再重播。</div></div><div class="cost">—</div>`;
       b.onclick=(ev)=>{ try{ ev.preventDefault(); }catch(_e){} toast("劇情已完成，唔使再播。"); };
       acts.appendChild(b);
     };
@@ -52897,6 +52968,9 @@ function openLoc(id, opts){
   try{ ensureLocSheetInteractive(); }catch(_ei2){}
   const wrap=mapWrapEl(); if(wrap) wrap.classList.add("sheet-open");
   try{ ux68OrganizeLocSheet(L); }catch(_ux68){} /* v20a68 UX68：選項分組／要事置頂／未開放摺疊／目標標示 */
+  /* v20a118 LOCPANEL118：選項砌好＋ux68 整理完先渲染面板（額度 pill／負責人／名牌／
+     企位錨定要讀 #loc-acts 位置；純呈現，唔郁上面任何行為）。 */
+  try{ locpanel118Render(L, spent118); }catch(_e118){}
   paintBar(); drawMap();
   // After redraw, keep map from jumping; nudge pin into visible band above sheet
   restoreMapScroll();
@@ -52934,6 +53008,12 @@ const LOC_SHEET_BG = {
   rec_hk:"assets/story/locs/bg_loc_rec_hk.jpg?v=20a104",
   rec_wanchai:"assets/story/locs/bg_loc_rec_wanchai.jpg?v=20a104",
   rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a104",
+  /* v20a118 LOCPANEL118：廟街禮品＋仁康醫院場景圖補齊（另一統籌一次生成，QC 全 pass，
+     720×1280、無字、無真人樣；真實參照＋SOURCES 存 linji-locpanel/scene_new/refs/）。
+     15 地點場景圖齊晒；gift_shop 檔名跟 locId（bg_loc_gift_shop.jpg），唔用生成嗰陣
+     嘅 bg_loc_gift_temple.jpg 原名。 */
+  gift_shop:"assets/story/locs/bg_loc_gift_shop.jpg?v=20a104",
+  hospital:"assets/story/locs/bg_loc_hospital.jpg?v=20a104",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -52950,6 +53030,156 @@ function applyLocSheetBg(locId){
     sheet.classList.remove("has-loc-bg");
   }
 }
+/* ===== v20a118 LOCPANEL118：地點面板重設計（純呈現層）=====
+   15 地點全量：額度 pill＋負責人企位＋名牌＋米紙選項卡＋選項手繪圖標。
+   零行為改動：選項行為／數值／額度計數一律唔郁（v114 規則不變；閘口照舊喺 openLoc 內）。
+   負責人來源（Phase 1 mapping，6 點未決用預設）：
+   · 11 間機構老闆：跟 GIG_ISSUER_FIGURE_MAP30V2 對照表行（唔 hardcode boss 檔路徑，v116
+     換入後面板自動跟新檔）；名牌「名 · 機構＋職位」，文案唔寫「佢今日喺度」／唔寫駐場。
+   · agency_ho：何生——經 gigIssuerFigure30v2 fallback 攞圖（S-30 後備規則同一來源），
+     名牌「何生 · 事務所老闆」。
+   · cafe_cha：霞姐冇圖，只出名牌「霞姐 · 金龍茶餐廳老闆娘」，唔出人（唔加 residentNpc）。
+   · gift_shop：老闆娘無名，只出名牌「老闆娘 · 廟街禮品檔」，唔憑空起名、唔出人。
+   · hospital：冇設定，唔出人、連名牌都唔出。
+   · 唔准用何生 fallback 頂替任何地點負責人（S-30 fallback 只係通告卡後備）。
+   冇場景圖地點：現時 15 地點場景圖齊晒（v118 補埋 gift_shop／hospital 兩張）；
+   locpanel118-nobg 素底態留返做後備機制——將來有地點 LOC_SHEET_BG 冇 key 即自動行素底，
+   唔使改呢度。
+   額度 pill 讀 S.travel114（入場嗰刻已扣，顯示扣後數字）；「✓ 已到埗」行喺今次探訪
+   扣咗數嗰陣出——包括巧遇／WF4 攔截後嘅免費返嚟同 modal 完嘅免費重開（locpanel118SpentVisit
+   認同地點＋同日，pill 同扣數嗰次入場一模一樣）。 */
+let locpanel118SpentVisit = null; /* v20a118：今次探訪扣數記憶 { loc, day }，transient，唔入 save */
+function locpanel118ArrivedNow(L, spent){
+  if(spent) return true;
+  try{
+    const v = locpanel118SpentVisit;
+    if(!v || !L) return false;
+    const day = (typeof S!=="undefined" && S) ? (Number(S.dayIndex)||0) : 0;
+    return v.loc===L.id && v.day===day;
+  }catch(_e){ return false; }
+}
+function locpanel118OwnerFor(locId){
+  try{
+    if(locId==="agency_ho"){
+      /* 何生：S-30 fallback 同一來源（gigIssuerFigure30v2 搵唔到 agency_ho 即回何生） */
+      const f=(typeof gigIssuerFigure30v2==="function") ? gigIssuerFigure30v2({loc:"agency_ho"}) : null;
+      if(f && f.src) return { src:f.src, name:"何生", sub:"事務所老闆" };
+      return { src:"assets/story/fullbody/ho_sang_base.webp?v=20a106", name:"何生", sub:"事務所老闆" };
+    }
+    if(locId==="cafe_cha") return { name:"霞姐", sub:"金龍茶餐廳老闆娘", noFig:true };
+    if(locId==="gift_shop") return { name:"老闆娘", sub:"廟街禮品檔", noFig:true };
+    if(locId==="hospital") return null;
+    const m=(typeof GIG_ISSUER_FIGURE_MAP30V2!=="undefined" && GIG_ISSUER_FIGURE_MAP30V2) ? GIG_ISSUER_FIGURE_MAP30V2[locId] : null;
+    if(m && m.src) return { src:m.src, name:m.name, sub:(m.org||"")+(m.role||"") };
+  }catch(_e){}
+  return null;
+}
+function locpanel118QuotaHtml(used, remain, spent){
+  const cap=(typeof TRAVEL114_DAILY_CAP!=="undefined") ? TRAVEL114_DAILY_CAP : 2;
+  let dots="";
+  for(let i=0;i<cap;i++) dots+='<span class="lp118-dot'+(i<used?" used":"")+'"></span>';
+  let h='<span class="lp118-l1"><span class="lp118-dots">'+dots+'</span>今日出行：<b>已用 '+used+' / '+cap+'</b></span>'
+    +'<span class="lp118-l2">仲可以去 '+remain+' 個地方</span>';
+  if(spent) h+='<span class="lp118-arrived">✓ 已到埗，扣咗 1 次出行額度</span>';
+  return h;
+}
+/* 選項圖標：按掣類／標題揀 v112 手繪圖標（經 iconHtml112；樣本 mock 嗰陣暫用 emoji）。
+   揀唔到合適圖標嘅掣唔出圖標（寧缺勿錯，唔用 emoji 頂替）。 */
+function locpanel118ActIcon(title, cls){
+  try{
+    const t=String(title||""), c=String(cls||"");
+    let em="";
+    if(/鄧麗萍/.test(t)) em="📞";
+    else if(/act-story/.test(c)) em="🎭";
+    else if(/act-ask/.test(c)) em="📰";
+    else if(/^同.+傾談/.test(t)) em="👥";
+    else if(/^送禮/.test(t) || t==="還人情／送禮" || /^還人情/.test(t)) em="🎁";
+    else if(t==="只查看通告欄" || /^查看檔期/.test(t)) em="💼";
+    else if(/試鏡入口/.test(t) || /^接通告/.test(t)) em="🎬";
+    else if(/報名/.test(t) || /訓練/.test(t)) em="💪";
+    else if(t==="休息室歇陣") em="😴";
+    else if(t==="買禮物") em="🎁";
+    else if(/身體檢查/.test(t)) em="🏥";
+    else if(t==="醫院有咩用？") em="📖";
+    else if(t==="聽風聲") em="📻";
+    if(!em) return "";
+    const ic=(typeof iconHtml112==="function") ? iconHtml112(em) : "";
+    return ic ? '<span class="act-ic118">'+ic+'</span>' : "";
+  }catch(_e){ return ""; }
+}
+function locpanel118Render(L, spent){
+  const sheet=document.getElementById("loc-sheet");
+  if(!sheet || !L) return;
+  const pill=document.getElementById("loc-quota118");
+  const owner=document.getElementById("loc-owner118");
+  const tagrow=document.getElementById("loc-tagrow118");
+  sheet.classList.add("locpanel118");
+  const hasBg=!!(typeof LOC_SHEET_BG!=="undefined" && LOC_SHEET_BG && LOC_SHEET_BG[L.id]);
+  sheet.classList.toggle("locpanel118-nobg", !hasBg);
+  let used=0, remain=2;
+  try{ const st=travel114State(); used=Number(st.used)||0; remain=travel114Remain(); }catch(_e){}
+  if(pill){ pill.innerHTML=locpanel118QuotaHtml(used, remain, locpanel118ArrivedNow(L, !!spent)); pill.hidden=false; }
+  const o=locpanel118OwnerFor(L.id);
+  const esc118=(s)=>{ try{ return (typeof esc59==="function") ? esc59(s) : String(s==null?"":s); }catch(_e){ return String(s==null?"":s); } };
+  if(o && o.src && owner){
+    const img=document.getElementById("loc-owner-img118");
+    const tag=document.getElementById("loc-owner-tag118");
+    if(tag) tag.innerHTML="<b>"+esc118(o.name)+"</b> · "+esc118(o.sub);
+    if(img){
+      img.onerror=function(){ try{ owner.hidden=true; sheet.classList.remove("locpanel118-has-owner"); }catch(_e){} };
+      img.src=o.src; img.alt=o.name||"";
+    }
+    owner.hidden=false;
+    sheet.classList.add("locpanel118-has-owner");
+    if(tagrow){ tagrow.hidden=true; const tt=document.getElementById("loc-tagrow-tag118"); if(tt) tt.innerHTML=""; }
+  } else if(o && o.noFig && tagrow){
+    const tag=document.getElementById("loc-tagrow-tag118");
+    if(tag) tag.innerHTML="<b>"+esc118(o.name)+"</b> · "+esc118(o.sub);
+    tagrow.hidden=false;
+    if(owner){ owner.hidden=true; const oi=document.getElementById("loc-owner-img118"); if(oi){ oi.removeAttribute("src"); oi.alt=""; } const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML=""; }
+    sheet.classList.remove("locpanel118-has-owner");
+  } else {
+    if(owner){ owner.hidden=true; const oi=document.getElementById("loc-owner-img118"); if(oi){ oi.removeAttribute("src"); oi.alt=""; } const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML=""; }
+    if(tagrow){ tagrow.hidden=true; const tt=document.getElementById("loc-tagrow-tag118"); if(tt) tt.innerHTML=""; }
+    sheet.classList.remove("locpanel118-has-owner");
+  }
+  try{ requestAnimationFrame(function(){ locpanel118AnchorOwner(); }); }catch(_e){}
+}
+function locpanel118AnchorOwner(){
+  try{
+    const sheet=document.getElementById("loc-sheet");
+    const owner=document.getElementById("loc-owner118");
+    const acts=document.getElementById("loc-acts");
+    if(!sheet || !owner || owner.hidden || !acts) return;
+    const tag=document.getElementById("loc-owner-tag118");
+    const img=document.getElementById("loc-owner-img118");
+    const actsTop=acts.offsetTop||0;
+    const tagH=tag ? tag.offsetHeight||0 : 0;
+    /* 腳部收 8px 入選項卡後面（遮腿）；矮屏嗰陣收細個人，唔好頂穿 sheet 頂 */
+    const imgH=Math.max(120, Math.min(230, actsTop - tagH - 12));
+    if(img) img.style.height=imgH+"px";
+    owner.style.height=(imgH+tagH+4)+"px";
+    owner.style.bottom=Math.max(0, sheet.clientHeight - actsTop - 8)+"px";
+  }catch(_e){}
+}
+function locpanel118Hide(){
+  try{
+    const sheet=document.getElementById("loc-sheet");
+    if(sheet) sheet.classList.remove("locpanel118", "locpanel118-nobg", "locpanel118-has-owner");
+    ["loc-quota118","loc-owner118","loc-tagrow118"].forEach(function(id){
+      const el=document.getElementById(id); if(el) el.hidden=true;
+    });
+    /* v20a118：收起嗰陣一併清走殘留內容，唔好留上一地點嘅名牌／圖喺 DOM 入面 */
+    const oi=document.getElementById("loc-owner-img118"); if(oi){ oi.removeAttribute("src"); oi.alt=""; }
+    const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML="";
+    const tt=document.getElementById("loc-tagrow-tag118"); if(tt) tt.innerHTML="";
+    const pl=document.getElementById("loc-quota118"); if(pl) pl.innerHTML="";
+  }catch(_e){}
+}
+if(typeof window!=="undefined" && !window.__locpanel118ResizeWired){
+  window.__locpanel118ResizeWired=true;
+  try{ window.addEventListener("resize", function(){ locpanel118AnchorOwner(); }); }catch(_e){}
+}
 function closeSheet(opts){
   opts = opts || {};
   const sheet=document.getElementById("loc-sheet");
@@ -52960,6 +53190,7 @@ function closeSheet(opts){
   }
   if(!opts.preserveContent){
     try{ applyLocSheetBg(""); }catch(_e){}
+    try{ locpanel118Hide(); }catch(_e118){} /* v20a118 LOCPANEL118：關 sheet 收返 pill／負責人／名牌 */
     try{
       const t=document.getElementById("loc-title");
       const d=document.getElementById("loc-desc");

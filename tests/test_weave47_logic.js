@@ -152,6 +152,9 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   eval(extractFn('iconHtml112'));
   eval(extractFn('favDots112'));
   eval(extractFn('esc59'));
+  /* v20a118 LOCPANEL118：openLoc add() 掣經 locpanel118ActIcon 揀 v112 圖標，沙盒要一併載入真函數
+     （locpanel118Render 有 try/catch 包住，唔使載；spent118 用 typeof 守衛，唔使載 travel114）。 */
+  eval(extractFn('locpanel118ActIcon'));
   eval(extractFn('openLoc'));
 
   function actsBtns(){ return els['loc-acts'] ? els['loc-acts'].children : []; }
