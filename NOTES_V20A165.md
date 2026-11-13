@@ -224,3 +224,9 @@
 - `git ls-tree -r fc1a1aa`：main 入面有 **1058** 個同類 tracked scratch（例如 `qa102/debug_fx.py`、`qa102/drive_fx.py`、`qa102/drive_log.txt`）——舊版有將 qa／drive／debug 檔帶入 main 嘅先例。但本票按任務指示做：未引用嘅 scratch 用 `git rm` 由分支拎走，唔帶入 main。
 - 查引用：`debug165.py`／`debug165b.py`／`debug165c.py`、`drive165.py`、`qa165/resync_travel114.py`／`resync_travel114_157.py`／`resync_travel114_165c.py`——無任何測試／suite／drive 引用佢哋（grep `tests/`＋`qa131/run_suite.sh`：只有舊版 `qaXXX/resync_travel114.py` 喺 `test_travel114_static.py` 註解入面提及，唔係引用）。`drive165/`、`qa165/probe*.txt`、suite 輸出係 untracked，唔入 merge，唔使理。
 - 執行時機：rebase＋最終驗證之後先 `git rm`（rebase 嗰陣仲要 resync 腳本；drive 重跑仲要 `drive165.py`）。詳見 §7。
+
+## §10 落地紀錄
+
+- **已上線（main `b754fac`，2026-11-13 核實，線上 5,247,634 bytes sha `dcb32841…`）**：squash merge（`fc1a1aa..b754fac`），6 檔 ＋549／−86（`index.html`、NOTES、`tests/test_story165_static.py`、`tests/test_travel114_static.py`、`tests/test_hub77_static.py`、`tests/test_progress71_logic.js`）；push 上 GitHub 成功；`git fsck --strict` 乾淨（只得 dangling tree／commit）；curl 核實線上 index 同 repo HEAD 逐字一致（HTTP 200）。
+- 統籌驗證：四檔直接受影響測試重跑全部 PASS（story165 39/39、hub77、travel114、progress71）；全套重跑工作版 **228／12**，FAIL 係 12 項已知 pre-existing（flash51、giglib36、pacing35、poster59、rumor49、slot50、soft_tip_111_restore、start53、weave43、weave44、weave49、wrap38），同基線一致，零回歸。
+- 殘留：第三條返地圖路 `#home-back-map` → `leaveHomeFromNotebook("map")` 仍然係 bypass（§9.4，等用戶決定掛唔掛）；v149 未落地（典禮區）；v170 進行中（提名人 character＋移上舞台，典禮區要重驗）。
