@@ -87,3 +87,14 @@ M6 用咗 `assets/awards/`，M1 用咗 `assets/story/awards/`——合併嗰陣�
 - **headless 驗唔到聲**：實駕驗到嘅係觸發邏輯＋`play()` resolve＋檔案攞取，唔扮驗到聲。
 - `test_poster59_static.py` 嘅 webp count pin 早已過時（pristine 已經 FAIL），M1 令實數 42→41，一樣 FAIL，失敗集合同 pristine 相同，呢票刻意唔郁。
 - 隧道：工作副本 `core.sshCommand` 已改行 `~/workspace/gh_tunnel.py`（18080 已死，見 AGENTS.md）。
+
+## 落地紀錄（2026-11-13）
+- **rebase 兩輪**：第一輪上 `9fde729`（v161 NOTES），第二輪上 `222a984`（v152 NOTES；遊戲 `40702c7`）。7 個 commit 逐個 replay，全部衝突都係 `test_travel114_static.py`／`test_text125_static.py` 釘行純漂移（difflib 核實：44 個 openLoc 呼叫點逐字一致、41 個釘行內容逐行相同；M4 步 ＋37／M6 ＋30／M9 ＋41；DEF 最終 53540、WRAPPER 44034）。線性 rebase 掉咗嘅 merge 獨有內容已補返（M6 測試 loop fix 取 theirs；燕尾服資產統一 `assets/story/awards/awei_tuxedo.png`，commit `e9b7cd6`）。
+- **resync 腳本撞值 bug（第一輪親歷，已修）**：舊腳本逐對 re.sub 換釘值，新值撞未換舊值致 FREE 丟失 57601、57638 重複；修法單次掃描＋dict 查表一次過換。教訓：逐對 replace 換行號一定要單次查表，唔好逐對 re.sub。
+- **kwan151／tang152 resync（第二輪新增）**：v160 嘅 M4 walkup CSS 喺 L802 插入 5 行，令 v152 resync 過嘅兩檔舊測試釘行全部 ＋5（kwan151 13 個錨點／17 處核實、tang152 3 個錨點，內容逐字相同純漂移）。kwan151 resync 嗰陣逐對 replace 又撞值一次（25877→25882 再俾 25882→25887 撞走，A2 誤指 25887），已改返 25882——同一教訓第二次出現，寫低警惕後人。
+- **落地嗰陣嘅烏龍（已修正，零損失）**：第一次 squash merge 用咗常駐 clone 入面未更新嘅舊分支（`4cf2770`，9fde729 base），travel114 取咗舊版 resync 致 FAIL（28）、text125 衝突未解——即刻 `git reset --hard HEAD` 還原，再由工作副本 force-push 新分支（`046c45d`）上常駐 clone，重做 squash merge 零衝突。教訓：**merge 之前一定要核對常駐 clone 嘅分支 HEAD 係咪最新**（`git log -1 v20a160` 兩邊對一次）。
+- **push 斷線三次**：頭三次 `git push origin main` 全部 2 秒內「Broken pipe／remote hung up」（SSH＋proxy 認證本身正常，ls-remote 即刻得）；第四次成功。屬間歇性 egress proxy reset，唔係認證／內容問題；重試即得，唔使改設定。
+- **fsck／reflog**：`git fsck --strict` 只有 dangling objects（rebase 殘留，預期），零 error／invalid／corrupt／missing；`9fde729` 嘅 reflog invalid entry 今次已唔再出現；`222a984`／`40702c7` 全部係完整 commit。
+- **squash commit**：`109422b`（main，基於 `222a984`）。**線上核實：5,213,030 bytes、sha256 `f7010c90522e76fd6ccf597b8fd7c9e4a5c76146fa97ffa9dc538fc0b22d1fe7`，同 repo 完全一致**（push 後 90 秒 curl，HTTP 200）。
+- **最終驗證（rebase 後最終樹）**：新測試 M1 19/19、M4 27/27、M6 17/17、M9 34/34 全部 PASS；全套 **221 PASS／12 FAIL**（12 項同 v152 baseline 逐項相同，零回歸；`test_wrap38_logic.js` 直接跑 ALL PASS，suite 嗰項係已知波動）；合併實駕 `qa160-merge/drive160merge.py` 3/3 PASS、0 pageerror（won_932／gallery_932／won_700 各 13/13）；主 JS `node --check` 通過。
+- **殘留（唔喺呢票）**：M6 glamour beat 燕尾服俾海報遮住睇唔到、獎盃 glyph 對比弱（另開票候選）；掌聲 MP3 未經人耳試聽；v149 未落地，佢落地後舞台幾何可能變，底圖要重驗。
