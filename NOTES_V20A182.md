@@ -1,6 +1,6 @@
 # NOTES_V20A182 — 修 v178 設計 review B1＋C1＋C2（未落地，分支 `v20a182`）
 
-狀態：**未落地。分支 `v20a182`，HEAD `f60f6ee`（rebase 上 main `ece1fac` 之後；基底原本 `4475564`，做嘢期間 main 郁咗一個 v176 NOTES commit `ece1fac`，已 rebase，零衝突）。等統籌 squash merge 落 main。**
+狀態：**已落地。遊戲 commit `515a900`（分支 `v20a182` HEAD `d2e619c`，基底 main `ece1fac`），2026-11-13 16:35 我 curl 核實：線上 5,319,514 bytes sha `17043a69…`，同 repo HEAD:index.html 完全一致。Live 係 v182。**
 
 任務：用戶 2026-11-13 15:58 親自拍板「一次過修」v178 設計 review（`~/workspace/linji-design-review-v178/REVIEW.md`）嘅 B1＋C1＋C2。實作＋驗證＋NOTES＋commit＋push 分支；唔落地（唔 squash merge、唔 push main、唔做設計 review）。
 
