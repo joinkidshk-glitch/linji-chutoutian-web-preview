@@ -1,6 +1,6 @@
 # NOTES_V20A178 — 高俊傑上頒獎禮（已落地，分支 `v20a178`）
 
-狀態：**入池邏輯已實裝＋驗證晒，commit 上分支，等統籌落地**（唔推 main、唔開 review）。
+狀態：**已落地 main `ba43b9e`（2026-11-13 15:33 HKT），線上 5,277,347 bytes sha `cfa17f2a…` 已核實同 repo HEAD:index.html 一致。**
 Character 由用戶生成（`bbaa5bf2-a598-4863-ba5a-47cc7cc4fe03`），驗收過關，入池已落地；
 **Q 版 sprite 衍生已按用戶 2026-11-13 15:11 方向剝走（見 §10），舞台圖由 v180 接手。**
 
