@@ -140,3 +140,7 @@
 ## §9b. 統籌 rebase 紀錄（落地前）
 - Rebase 上 main `276ffa1`（v160 NOTES；遊戲 commit `109422b`）：`index.html` 自動合併，diff 改動行數 80 行同原分支完全一致（純漂移）；唯一衝突 `tests/test_travel114_static.py`——v160 同 v164 各 resync 一次，統籌用單次掃描 dict 查表合併（HEAD＝v160 編號，行號 ＞53879 者 ＋16，DEF 53540／WRAPPER 44034 唔郁），`test_travel114_static.py` 重跑 PASS（COUNT 13／FREE 27 不變，全部錨點內容核實）。
 - Rebase 後重驗（最終樹 `663b67c`）：新測試 tang164 34/34、tang152／travel114／icons112 logic＋static／kwan151 全部 PASS、主 script `node --check` SYNTAX-OK、全套 **222／12**（v160 基線 221／12＋1 新測試；12 項 FAIL＝flash51／giglib36／pacing35／poster59／rumor49／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wrap38，逐項同基線一致，零回歸）、實駕 `qa164/drive164.py` 重跑 **7/7 PASS、每項 0 pageerror**（T0–T6 全部 True）。
+
+## §10. 落地紀錄（統籌）
+- 落地：分支 `v20a164`（最終 `1ef054c`）→ checkout main → `git merge --squash` → commit `3973d4a` → push main（`276ffa1..3973d4a`，一次成功）；線上核實 **5,218,568 bytes、sha256 `fe149f34…`**，同 repo HEAD 完全一致（push 後約 2.5 分鐘先部署好，初次 curl 仍見舊版係 Pages 部署 lag，唔係 push 失敗）。`git fsck --strict` 乾淨（只得 rebase／amend 後正常 dangling commit；中途一次「invalid reflog entry 1ef054c」係 fsck 同 amend 並行嘅 race，重跑已消失，分支本身完整——同 v160 嗰次同病）。
+- 設計 review 已派（落地後，見任務）。
