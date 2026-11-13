@@ -19,7 +19,7 @@ ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107'
 ok('NOTES_V20A81 在位', (p.parent / 'NOTES_V20A81_WF2.md').exists())
 
 # --- 一、框架 ---
-ok('WF2 覆寫表在位', 'const ROMANCE_WF2_OVERRIDES = {' in src and 'R_hiu_meet' in src and 'R_tang_ending' in src)
+ok('WF2 覆寫表在位', 'const ROMANCE_WF2_OVERRIDES = {' in src and 'R_hiu_meet' in src and 'R_tang_ending": {' not in src)  # v20a152：鄧麗萍感情線覆寫已刪
 ok('apply 函數在位', 'function applyRomanceWf2Overrides81(){' in src)
 ok('冪等守衛 WeakSet 在位', 'const WF2_APPLIED81 = new WeakSet();' in src)
 i48 = src.find('applyStorySpineOverrides48(); }catch(_sp48){}')

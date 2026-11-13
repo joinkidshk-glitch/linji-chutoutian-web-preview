@@ -18,10 +18,10 @@ def ok(name, cond):
 
 # 一、A-01/A-02/A-03
 ok('A-03: C1 頁首硬編碼改「冬」', ') || 1990)+"冬"' in src and ') || 1990)+"春"' not in src)
-ok('A-01/02: CONTRA98_WHEN_FIX 表在位（23 節點）', src.count('"1990冬","era_1990_winter_finale"') >= 12 and 'era_1990_autumn_capital' in src)
+ok('A-01/02: CONTRA98_WHEN_FIX 表在位（22 節點；v20a152 刪 R_tang_ending）', src.count('"1990冬","era_1990_winter_finale"') >= 11 and 'era_1990_autumn_capital' in src)
 ok('A-01/02: contra98FixNodeWhen 函數在位', 'function contra98FixNodeWhen(packs)' in src)
-i_fix = src.find('contra98FixNodeWhen([main, rom1, rom2, romTang, rival])')
-i_walk = src.find('romTang, rival, gateStub, dengMock')  # story pack 嗰次 walk（檔入面另有 gift pack walk，唔好混淆）
+i_fix = src.find('contra98FixNodeWhen([main, rom1, rom2, rival])')  # v20a152：romTang 已停載，唔再入表
+i_walk = src.find('rival, gateStub, dengMock')  # story pack 嗰次 walk（檔入面另有 gift pack walk，唔好混淆）
 ok('A-01/02: 載入次序——正規化喺 story years66Walk 之前', 0 <= i_fix < i_walk)
 
 # 二、B-01/B-02

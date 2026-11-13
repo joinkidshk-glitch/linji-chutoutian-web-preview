@@ -159,7 +159,7 @@ function loadPack(f) { return JSON.parse(fs.readFileSync(path.join(ROOT, 'conten
   const orig = files.map(loadPack);
   const work = JSON.parse(JSON.stringify(orig));
   const applied = applyVariantWf5Overrides87(work[0], work[1], work[2]);
-  ok('變體 套用節點數 = 7', applied === 7);
+  ok('變體 套用節點數 = 6（v20a152：R_tang_ending 已刪）', applied === 6);
   const nodesOf = (packs) => packs.flatMap(p => [].concat(p.beats || [], p.nodes || [])).filter(n => n && n.id && Array.isArray(n.beats));
   const before = nodesOf(orig), after = nodesOf(work);
   const CANTO = ['嘅', '喺', '唔', '佢', '哋', '咗', '冇', '畀', '嚟', '㗎', '嗰', '呢', '先', '返', '埋', '攞', '睇', '講'];
@@ -180,18 +180,14 @@ function loadPack(f) { return JSON.parse(fs.readFileSync(path.join(ROOT, 'conten
     if (JSON.stringify(a.openConditions || null) !== JSON.stringify(b.openConditions || null)) structOk = false;
   }
   ok('變體 結構不變量全保', structOk);
-  /* 鄧麗萍收尾同 WF2 定版咬合 */
-  const end = byId.R_tang_ending, endTxt = JSON.stringify(end.beats);
-  for (const k of ['紅筆圈住', '呢格，我睇好你', '改咗把尺', '百分之七', '五成九', '留返喺個紅圈入面'])
-    ok('變體 ending 含關鍵句「' + k + '」', endTxt.indexOf(k) >= 0 || JSON.stringify(end).indexOf(k) >= 0);
-  const labels = {}; (end.choices || []).forEach(c => labels[c.id] = c.label);
-  ok('變體 ending HE label = WF2 定版', labels.C_tang_ending_he === '企返喺張表嗰邊：用一個數字，應承佢嗰格');
-  ok('變體 ending BE label = WF2 定版', labels.C_tang_ending_be === '數字至上：收返嗰格，各行各路');
-  ok('變體 ending 冇「跨越商業界線」舊味', JSON.stringify(end).indexOf('跨越商業界線') < 0);
+  /* v20a152：鄧麗萍收尾已刪——WF5 表冇 R_tang_ending，push mock 載入嗰陣過濾咗；
+     以下斷言 WF5 覆寫層本身唔再有 ending 條目（業務節點 meet／push1／push2／crisis 照覆寫） */
+  ok('變體 WF5 表冇 R_tang_ending（v20a152）', !('R_tang_ending' in eval('(' + ovSrc + ')')));
+  ok('變體 WF5 表留返鄧麗萍業務節點', ['R_tang_meet', 'R_tang_push1', 'R_tang_push2', 'R_tang_crisis'].every(k => k in eval('(' + ovSrc + ')')));
   /* 禁詞＋年份數字（DengLine selfCheck 口徑） */
-  const dengAll = JSON.stringify([byId.R_tang_meet, byId.R_tang_push1, byId.R_tang_push2, byId.R_tang_crisis, byId.R_tang_ending]);
+  const dengAll = JSON.stringify([byId.R_tang_meet, byId.R_tang_push1, byId.R_tang_push2, byId.R_tang_crisis]);
   for (const b of ['關海媚', '陳淑芬', '施南生', 'Ho哥', 'nextHint']) ok('變體 鄧線冇禁詞「' + b + '」', dengAll.indexOf(b) < 0);
-  ok('變體 鄧線 beats 冇 1989–1992 數字', !/19(89|90|91|92)/.test(JSON.stringify([byId.R_tang_push1.beats, byId.R_tang_push2.beats, byId.R_tang_crisis.beats, byId.R_tang_ending.beats])));
+  ok('變體 鄧線 beats 冇 1989–1992 數字', !/19(89|90|91|92)/.test(JSON.stringify([byId.R_tang_push1.beats, byId.R_tang_push2.beats, byId.R_tang_crisis.beats])));
   /* 采兒 meet：週刊正字＋M33 口徑 */
   const choi = byId.R_choi_meet, choiVis = JSON.stringify({ t: choi.title, s: choi.setting, y: choi.synopsis, b: choi.beats });
   ok('變體 采兒 meet 用《星訊週刊》', choiVis.indexOf('《星訊週刊》') >= 0);
