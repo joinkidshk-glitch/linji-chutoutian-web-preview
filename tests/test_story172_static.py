@@ -15,6 +15,8 @@
 #   普通玩家路徑（掣／autoPushC1IfNeeded）soft 閘原封不動。
 # C1：進度頁鎖行「去 X 先播到呢幕」改做場景資料 framing「（場景：X）」，
 #   同已開放行同一寫法；OR 條件入面嘅「或到 X」一併改做「或（場景：X）」。
+#   （v20a179 取代：v172 review 唯一新項 C1——鎖行括號改做標籤式「場景：X」／
+#   「或場景：X」，見 test_story179_*；以下兩條斷言已跟住更新，舊括號寫法作廢。）
 #   傳聞提示「（去金龍茶餐廳打聽）」刻意保留——佢講嘅係點滿足「聽到傳聞」呢個
 #   條件（要去邊度打聽），唔係講去邊度觸發呢幕；v20a34 P0-3 刻意將兩者分開寫。
 # 反證：喺 pristine main（v171，6d08c7c）上行會 FAIL（鎖行仲係舊觸發句；
@@ -45,15 +47,15 @@ def seg(a, b, span=6000):
 stub = seg('function prog71StubItems(id){', 'function prog71Rows(){', 4000)
 ok('C1：鎖行舊觸發句「去 X 先播到呢幕」全檔清零',
    '"去"+lm[1]+"先播到呢幕"' not in src and '先播到呢幕' not in src)
-ok('C1：「到 X 播」改做場景資料「（場景：X）」（同已開放行同一寫法）',
-   '"（場景："+lm[1]+"）"' in stub)
+ok('C1：「到 X 播」改做場景資料標籤式「場景：X」（v179 取代 v172 括號寫法）',
+   '"場景："+lm[1]' in stub and '"（場景："+lm[1]+"）"' not in stub)
 ok('C1：已開放行「（場景：X）」寫法唔變（鎖行同佢對齊，唔係另創新寫法）',
    '（場景：" + prog71Esc(r.locName) + "）' in src)
 
 # --- 二、C1 掃埋：同一 checklist 其他 remain 項唔留觸發句 ---
-ok('C1：OR 條件「或到 X」改做「或（場景：X）」',
-   '或（場景：$1）' in stub and '以下任一達標："+s }' not in stub
-   and '以下任一達標："+s.replace(/或到([^／]+)/g, "或（場景：$1）")' in stub)
+ok('C1：OR 條件「或到 X」改做標籤式「或場景：X」（v179 取代 v172 括號寫法）',
+   '或場景：$1' in stub and '或（場景：$1）' not in stub and '以下任一達標："+s }' not in stub
+   and '以下任一達標："+s.replace(/或到([^／]+)/g, "或場景：$1")' in stub)
 gate = seg('function prog71GateItems(id){', 'function prog71StubItems(id){', 5000)
 ok('C1：兩條 checklist（GateItems C6–C17／StubItems C1–C5）入面無觸發句殘留',
    '先播到呢幕' not in gate and '先播到呢幕' not in stub

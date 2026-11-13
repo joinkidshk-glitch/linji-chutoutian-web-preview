@@ -44088,16 +44088,16 @@ function prog71StubItems(id){
     if(/^通告\s*\d+／\d+/.test(s)) return;                /* 通告項已列 */
     if(s==="距上一幕再隔一日"){ items.push({ ok:false, text:"同上一幕隔一日" }); return; }
     const lm = s.match(/^到(.+)播$/);
-    /* v20a172 C1：地點係場景資料，唔係觸發指令——同已開放行「（場景：X）」同一
-       framing。舊句暗示要去嗰度先觸發，錯：開咗之後返地圖嗰陣就會播出（v165
-       強制播），去嗰度只係場景設定。 */
-    if(lm){ items.push({ ok:false, text:"（場景："+lm[1]+"）" }); return; }
+    /* v20a172 C1：地點係場景資料，唔係觸發指令（開咗之後返地圖嗰陣就會播出，
+       v165 強制播；去嗰度只係場景設定）。v20a179：鎖行唔用括號孤兒句，改做
+       標籤式「場景：X」——拎走括號，同隔籬條件句分返開；已開放行完整句式唔郁。 */
+    if(lm){ items.push({ ok:false, text:"場景："+lm[1] }); return; }
     if(s.indexOf("未聽聞")===0){ items.push({ ok:false, text:"聽到傳聞："+s.slice(3) }); return; }
     if(s.indexOf("要到秋或冬")>=0){ items.push({ ok:false, text:s.replace(/。$/,"") }); return; }
     if(s==="檔期未到該季"){ items.push({ ok:false, text:"等到啱嘅季節" }); return; }
-    /* v20a172 C1：OR 條件入面嘅地點同樣只係場景資料——「或到 X」改做「或（場景：X）」，
-       唔留「去 X」觸發句。 */
-    if(s.indexOf("或到")>=0){ items.push({ ok:false, text:"以下任一達標："+s.replace(/或到([^／]+)/g, "或（場景：$1）") }); return; }
+    /* v20a172 C1：OR 條件入面嘅地點同樣只係場景資料，唔留「去 X」觸發句。
+       v20a179 C1：同上，拎走括號改做標籤式「或場景：X」。 */
+    if(s.indexOf("或到")>=0){ items.push({ ok:false, text:"以下任一達標："+s.replace(/或到([^／]+)/g, "或場景：$1") }); return; }
     items.push({ ok:false, text:s.replace("需多於","要多於").replace("（現 ","（而家 ") });
   });
   return items;
