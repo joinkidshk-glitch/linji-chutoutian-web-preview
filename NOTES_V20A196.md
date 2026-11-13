@@ -253,4 +253,4 @@
 - **全套 A/B（合併樹 vs pristine main `2de5026`，獨立 worktree `~/workspace/pristine196c`）**：
   - 基線：**276／12**（`qa196/suite_merge_baseline.txt`，同 v197 落地數字一致）。
   - 工作版：**278／12**（`qa196/suite_merge_work.txt`）。＋2 係 v196 兩檔新測試，雙雙 PASS；FAIL 清單同基線 12 項穩定 FAIL 完全一致，**零回歸**。
-- **落地**：squash commit parent `2de5026`（v197 搭同一程）；push 後親自 curl 核實線上 bytes／sha；落地後派 v196 設計 review。
+- **落地**：squash commit `d5898c3`（parent `2de5026`，v197 搭同一程；76 檔，＋11473／−220）。commit 前 amend 咗一次：合併樹實駕覆寫咗 6 個 qa 檔（c12a 報告＋5 張截圖，16:48–49 寫入，stage 嗰陣未入），`git add`＋`--amend --no-edit` 補入，原 `3ec8845` 作廢（未推過，安全）。push：fetch 兩次先通（第一次 CONNECT timeout）；push 全量第 3 次成功（前兩次 Broken pipe／remote hung up，egress proxy reset），唔使拆細推。`git ls-remote` 核實 GitHub HEAD＝`d5898c3`；curl 核實線上 **5,370,757 bytes sha `832c8460…`** 同 repo HEAD 一致（17:03 HKT；第一次 curl 17:01 仲係舊版 v200 5,355,791 bytes，Pages 部署約 2 分鐘）。**v197 同 v196 一齊上咗去**（origin/main 由 `4e841e5` 直跳 `d5898c3`）。落地後派 v196 設計 review。
