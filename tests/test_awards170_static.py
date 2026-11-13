@@ -1,8 +1,8 @@
 # v20a181：橫向舞台幾何 static tests（原 v20a170 檔成份改寫；v170 係 FLOOR 跟底圖頂線，v181 成個舞台重建）。
-# v181 幾何：canvas 邏輯 480×360（4:3）／backing 720×540／setTransform 1.5；FLOOR＝262（木地板 y200–334，
-# 深 134px＝37.2% 高）；slotCx 置中 240／間距 120（4 slots 60／180／300／420；gallery 75／240／405）；
+# v181 幾何：canvas 邏輯 480×360（4:3）／backing 720×540／setTransform 1.5；FLOOR＝262（木地板 y228–310，
+# 深 82px＝22.8% 高；v20a187 B1 收窄，舊 y200–334／134px 係讀錯參考圖）；slotCx 置中 240／間距 120（4 slots 60／180／300／420；gallery 75／240／405）；
 # 人物 px 幀 dispH 112（fellow）／116（玩家）／燕尾服 112；行前向中央 240 集中 22%、y＋10（新腳 272）；
-# 光池 99；獎盃 glyph −112（燕尾服頭頂）／−52（對手胸前）；後備舞台＝同一個程式舞台（awards181DrawBase）。
+# 光池 99；獎盃 glyph −110（燕尾服頭頂，v20a187 C6；舊 −112）／−52（對手胸前）；後備舞台＝同一個程式舞台（awards181DrawBase）。
 # 唔郁：slotCx 行前 x 向中心 22%、entryPlan（左右兩流／0.16px/ms／rank*380）、glamour overlay 並置
 # （aspect 跟 canvas 改 480/360）、卡列隱藏 choke point（display:none）、SAVE key、softRev、?v=。
 # M4 walkup GIF＋M1 底圖已撤（見 test_awards160_m4／m1）；walkup beat 而家由 canvas 畫人物（唔再淨係壓暗）。
@@ -36,13 +36,13 @@ fb_fn = slice_fn('awards62FallbackStage')
 base_fn = slice_fn('awards181DrawBase')
 beats_fn = slice_fn('awards62CeremonyBeats')
 
-# --- (1) FLOOR＝262（木地板 y200–334） ---
-chk('FLOOR＝262（v181：木地板 y200–334，深 134px）', 'const FLOOR = 262' in play_fn)
+# --- (1) FLOOR＝262（木地板 y228–310，v20a187 B1） ---
+chk('FLOOR＝262（v181：木地板 y228–310，深 82px）', 'const FLOOR = 262' in play_fn)
 chk('舊 FLOOR＝250 唔再出現（頒獎禮範圍）', 'const FLOOR = 250' not in play_fn)
 chk('舊 FLOOR＝193 唔再出現（頒獎禮範圍）', 'const FLOOR = 193' not in play_fn)
 chk('舊 FLOOR＝155 唔再出現（頒獎禮範圍）', 'const FLOOR = 155' not in play_fn)
 chk('FLOOR 只定義一次', play_fn.count('const FLOOR =') == 1)
-chk('FLOOR 註解寫明木地板 y200–334＋37.2%', '200' in play_fn and '134' in play_fn and '37.2%' in play_fn)
+chk('FLOOR 註解寫明木地板 y228–310＋22.8%', '228' in play_fn and '82' in play_fn and '22.8%' in play_fn)
 
 # --- (2) 後備舞台＝同一個程式舞台 ---
 chk('後備舞台在場', bool(fb_fn))
@@ -50,8 +50,8 @@ chk('後備舞台 delegate 去 awards181DrawBase', 'awards181DrawBase(ctx, W, H,
 chk('後備舞台舊平台頂 H-110 唔再出現', 'H - 110' not in fb_fn)
 chk('後備舞台舊金線 H-116 唔再出現', 'H - 116' not in fb_fn)
 chk('後備舞台舊平台底 H-33 唔再出現', 'H - 33' not in fb_fn)
-chk('程式舞台地板 y200–334 在場', '#d9a75f' in base_fn and '200, W + 16, 134' in base_fn)
-chk('程式舞台觀眾席 y340–360 在場', '#120c20' in base_fn and '340, W + 16, 20' in base_fn)
+chk('程式舞台地板 y228–310 在場', '#d9a75f' in base_fn and '228, W + 16, 82' in base_fn)
+chk('程式舞台觀眾席 y316–360 在場', '#120c20' in base_fn and '316, W + 16, 44' in base_fn)
 
 # --- (3) slot x ---
 chk('slotCx 公式（置中 240／間距 120，v181）', '240 + (i - (slots.length - 1) / 2) * 120' in play_fn)
@@ -65,8 +65,8 @@ chk('drawFigure 腳底＝FLOOR＋o.y（跟常數，唔寫死）', 'const fy = FL
 chk('reveal 行前 y＋10（新腳 272）', 'y: Math.round(10 * p)' in play_fn)
 chk('reveal 行前 x 向中心 240、22% 唔變', '(240 - cx0) * 0.22' in play_fn)
 chk('lightPool 跟 FLOOR（F-99 至 F）', 'F - 99' in play_fn)
-chk('獎盃 glyph 跟 FLOOR（FLOOR + fp.y - 112／-52）',
-    'FLOOR + fp.y - 112' in play_fn and 'FLOOR + fp.y - 52' in play_fn)
+chk('獎盃 glyph 跟 FLOOR（FLOOR + fp.y - 110／-52，v20a187 C6）',
+    'FLOOR + fp.y - 110' in play_fn and 'FLOOR + fp.y - 52' in play_fn)
 chk('人物高度 px 幀（fellow 112／玩家 116／燕尾服 112）',
     '? 116 : 112' in play_fn and 'dispH: 112' in play_fn)
 chk('canvas 480×360（W 480／H 360）', 'const W = 480, H = 360' in play_fn)

@@ -79,7 +79,7 @@ chk('B1 slotCx 間距 120、置中 240（v181）', '240 + (i - (slots.length - 1
 chk('B1 glamour overlay aspect 跟 canvas（480/360）', 'aspect-ratio:480/360' in src)
 chk('B1 行前 y＋10（腳 272）', 'y: Math.round(10 * p)' in play_fn)
 chk('B1 光池高 99', 'F - 99' in play_fn)
-chk('B1 獎盃 glyph（−112／−52，v181）', 'FLOOR + fp.y - 112' in play_fn and 'FLOOR + fp.y - 52' in play_fn)
+chk('B1 獎盃 glyph（−110／−52，v20a187 C6；舊 −112）', 'FLOOR + fp.y - 110' in play_fn and 'FLOOR + fp.y - 52' in play_fn)
 chk('B1 彩紙底界跟新高（364）', 'p.y > 364' in play_fn)
 chk('B1 後備舞台 delegate 去程式舞台（H-110 舊平台頂消失）', 'awards181DrawBase(ctx, W, H, 0)' in fb_fn and 'H - 110' not in fb_fn)
 chk('B1 合併態釘死：backing 720×540＋setTransform 1.5＋邏輯 480×360（v181）',

@@ -54,7 +54,7 @@ chk('beats：gallery／nominated 唔行 walkup（walkup 喺 won guard 入面）'
 chk('play：draw 有 walkup case', 'id === "walkup"' in play_fn)
 chk('play：walkup 用 px east 幀行入場', 'frame: "east"' in play_fn)
 chk('play：walkup 1400ms 行完（由台左 -40 行到中央）', 'beatElapsed / 1400' in play_fn)
-chk('play：walkup 行完換燕尾服捧杯', 'tuxedo: true' in play_fn and 'drawTrophyGlyph(targetX, FLOOR - 112)' in play_fn)
+chk('play：walkup 行完換燕尾服捧杯', 'tuxedo: true' in play_fn and 'drawTrophyGlyph(targetX, FLOOR - 110)' in play_fn) # v20a187 C6 resync：舊 −112
 chk('play：walkup 文案經 setCaption（唔喺 beat caption，免同台下字幕重複）', 'setCaption("阿偉行上台，接過獎盃，高高舉起。")' in play_fn)
 
 # --- 硬規則冇郁 ---

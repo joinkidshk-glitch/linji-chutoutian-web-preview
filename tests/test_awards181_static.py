@@ -3,7 +3,8 @@
 #   (a) 橫向呈現：撐滿框冇黑帶（canvas width:100%＋height:auto，frame min(96vw,760px) 唔郁）。
 #   (b) 佈局跟參考圖：頂部啡金橫額（DOM，典禮名）／左右兩格黃色數字條（DOM，聲望 S.fame／角逐
 #       pack.categories 項數）／中央大白牌（DOM，焦點獎項名）＋牌下兩行黃字（代表作／會場名）／
-#       淺色幕布＋平木地板 y200–334（深 134px＝37.2% 高）＋深木前緣＋暗觀眾席 y340–360／
+#       淺色幕布＋平木地板 y228–310（深 82px＝22.8% 高；v20a187 B1 收窄，舊 y200–334／134px 係讀錯參考圖）
+#       ＋深木前緣 y310–316＋暗觀眾席 y316–360／
 #       左右簡化深色燈架／人物左／中／右分開企（4 slots 60／180／300／420，罅 78px；gallery 75／240／405）。
 #   (c) 人物：PixelLab character 幀 px_<starId>_<dir>.png（south 企立／east／west 行入場跟方向；
 #       12 人 × 3 向，全部腳底 y115 對齊 v180 錨；dispH 112，人物約 89px＝框高四分一；燕尾服同樣 112）。
@@ -86,7 +87,7 @@ chk('文字層全部 pointer-events:none（撳畫面快進照通）', 'pointer-e
 # 實測根因（2026-11-13 探針，932 won names）：sub 框 y239–327（顯示 px）vs 人頭頂 y265
 #   （canvas 頂 −10＋173 邏輯×572/360）；舊 top:43.5% 係對 canvaswrap 高 572 計（唔係成個 frame 865），
 #   但就算對 canvas 計，兩行字 156.6–212.6 邏輯都同頭頂 173 邏輯重疊 40 邏輯——位置本身就係人頭高度。
-# 修法：白牌改三行牌（獎項名＋代表作＋會場名），白牌底唔郁（149.4 邏輯＜glyph 頂 150＜頭頂 173）。
+# 修法：白牌改三行牌（獎項名＋代表作＋會場名），白牌底唔郁（149.4 邏輯＜glyph 頂 152，v20a187 C6 由 150 改 152＜頭頂 173）。
 def _pct(rule, prop):
     m = re.search(prop + r':\s*([\d.]+)%', rule)
     return float(m.group(1)) if m else None
@@ -97,7 +98,7 @@ chk('黃字 fix：細字係白牌入面嘅 span（board div 包住 awd181-t＋aw
     '<span class="awd181-t">' in play_fn and '<span class="awd181-sub">' in play_fn
     and play_fn.find('awd181-board') < play_fn.find('awd181-sub')
     and '</span></div>' in play_fn[play_fn.find('awd181-sub'):])
-chk('黃字 fix：白牌底唔過獎盃 glyph 頂（top＋height＝41.5%→149.4 邏輯＜150）',
+chk('黃字 fix：白牌底唔過獎盃 glyph 頂（top＋height＝41.5%→149.4 邏輯＜152，v20a187 C6）',
     board_top is not None and board_h is not None and round((board_top + board_h) * 3.6, 1) == 149.4)
 chk('黃字 fix：白牌底唔過人頭頂（149.4 邏輯＜173）',
     board_top is not None and board_h is not None and (board_top + board_h) * 3.6 < 173)
@@ -132,10 +133,10 @@ chk('黃字 fix：細字唔再係黃色（#ffe14d 唔喺 .awd181-sub）', '#ffe1
 chk('黃字 fix：.long 條件覆蓋長細字行（細字行 ＞10 字都縮）',
     'awd181Line1).length > 10' in play_fn and 'awd181Line2).length > 10' in play_fn)
 chk('程式舞台函數在場', 'function awards181DrawBase(ctx, W, H, off)' in src)
-chk('地板 y200–334（#d9a75f）', '#d9a75f' in base_fn and '200, W + 16, 134' in base_fn)
-chk('地板深 134px＝37.2% 高（下半約四成）', 'const FLOOR = 262' in play_fn and 'const W = 480, H = 360' in play_fn)
-chk('地板前緣深木邊 y334（#5a3a1e）', '#5a3a1e' in base_fn and '334, W + 16, 6' in base_fn)
-chk('暗觀眾席 y340–360（#120c20）', '#120c20' in base_fn and '340, W + 16, 20' in base_fn)
+chk('地板 y228–310（#d9a75f）', '#d9a75f' in base_fn and '228, W + 16, 82' in base_fn) # v20a187 B1 resync：舊 y200–334／134px
+chk('地板深 82px＝22.8% 高（v20a187 B1）', 'const FLOOR = 262' in play_fn and 'const W = 480, H = 360' in play_fn)
+chk('地板前緣深木邊 y310（#5a3a1e）', '#5a3a1e' in base_fn and '310, W + 16, 6' in base_fn)
+chk('暗觀眾席 y316–360（#120c20）', '#120c20' in base_fn and '316, W + 16, 44' in base_fn)
 chk('淺色幕布（#f2e8d5）', '#f2e8d5' in base_fn)
 chk('幕布唔抄淺綠格仔花紋（#f2e8d5 淺米，唔係綠格）', '#f2e8d5' in base_fn)
 chk('燈架深色鐵架左右（#23232c，x12／452）', '#23232c' in base_fn)
@@ -172,7 +173,7 @@ chk('人物 dispH 112（fellow）／116（玩家）', '? 116 : 112' in play_fn)
 chk('人物高約 89px＝框高四分一（112×102/128）', 88 <= round(112 * 102 / 128) <= 90)
 chk('燕尾服 dispH 112（同 reveal 齊高）', play_fn.count('dispH: 112') >= 3)
 chk('燕尾服腳底 115/128 唔郁', 'dispH * 115 / 128' in play_fn)
-chk('獎盃 glyph 燕尾服頂 −112', 'FLOOR + fp.y - 112' in play_fn)
+chk('獎盃 glyph 燕尾服頂 −110（v20a187 C6；舊 −112）', 'FLOOR + fp.y - 110' in play_fn)
 chk('獎盃 glyph 對手胸前 −52', 'FLOOR + fp.y - 52' in play_fn)
 chk('舊 glyph −96／−39 唔再出現', 'FLOOR + fp.y - 96' not in play_fn and 'FLOOR + fp.y - 39' not in play_fn)
 
@@ -226,7 +227,7 @@ chk('fellows 上限 3（slice(0, 3)）', 'focus.fellows63.slice(0, 3)' in play_f
 chk('卡列／字幕／跳過掣仲在', 'awd63-cards' in play_fn and 'awd62-caption' in play_fn and 'awd62-skip' in play_fn)
 chk('彩紙 M5 仲在（reveal／comfort／out）', 'awd_confetti_m5.gif' in play_fn and 'syncConfetti149' in play_fn)
 chk('fanfare＋掌聲仲在（揭曉觸發）', 'awards160PlayWinAudio()' in play_fn and 'AWARDS160_FANFARE_SRC' in src)
-chk('glamour 燕尾服仲在（tuxedo: true ≥4 處：reveal 行前＋企定＋walkup＋glamour）', play_fn.count('tuxedo: true') == 4)
+chk('glamour 燕尾服仲在（tuxedo: true 5 處：reveal 行前＋企定＋walkup＋glamour＋out，v20a187 C3）', play_fn.count('tuxedo: true') == 5)
 chk('comfort beat 仲在（draw 分支）', 'id === "comfort"' in play_fn)
 chk('燕尾服資產仲在', os.path.isfile(os.path.join(PX_DIR, 'awei_tuxedo.png')))
 chk('SAVE key 不變', 'starVolunteer_map_v19w' in src)

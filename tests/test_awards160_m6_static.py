@@ -86,7 +86,7 @@ chk('reveal won 企定加獎盃 glyph', 'drawTrophyGlyph' in won_block)
 glam_i = play_fn.find('if(id === "glamour"){')
 glam_block = slice_brace(play_fn, play_fn.find('{', glam_i)) if glam_i >= 0 else ''
 chk('glamour 區有 tuxedo: true', 'tuxedo: true' in glam_block)
-chk('全 play 內 tuxedo: true 共 4 處（reveal 行前＋企定＋walkup＋glamour）', play_fn.count('tuxedo: true') == 4)
+chk('全 play 內 tuxedo: true 共 5 處（reveal 行前＋企定＋walkup＋glamour＋out，v20a187 C3）', play_fn.count('tuxedo: true') == 5)
 
 # --- (5) 輸分支唔著 ---
 comf_i = play_fn.find('if(id === "comfort"){')

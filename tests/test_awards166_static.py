@@ -59,7 +59,7 @@ chk('B1 0.93 暗層留喺 panel', 'background:rgba(10,6,18,.93)' in panel_css)
 chk('B1 panel 係 column（海報上、cap 下）', 'flex-direction:column' in panel_css)
 panel_img = css_rule('.awd63-glamour-panel>img')  # v20a174 A1：裱框規則收窄到直屬海報 img（>）
 chk('B1 panel 海報 rule 在場（直屬 img，v174 A1）', bool(panel_img))
-chk('B1 海報縮細（max-width:88%／max-height:60%）', 'max-width:88%' in panel_img and 'max-height:60%' in panel_img)
+chk('B1 海報縮細（max-width:88%／max-height:40%，v20a187 C1 下半置中；舊 60%）', 'max-width:88%' in panel_img and 'max-height:40%' in panel_img)
 chk('B1 舊大海報尺寸唔見（76vw／330px／60vh）', 'max-width:min(76vw,330px)' not in src and 'max-height:60vh' not in src)
 chk('B1 海報金框＋光暈保留', 'border:4px solid #f2c14e' in panel_img and 'box-shadow:0 0 34px rgba(242,193,78,.45)' in panel_img)
 
@@ -73,7 +73,7 @@ chk('B1 glamour 層喺 frame 入面（canvas 之後、skip 掣之前）',
     inner_block.find('awd62-canvas') < inner_block.find('+ glamHtml') < inner_block.find('awd62-skip'))
 chk('B1 glamHtml 新位置（canvaswrap 閂標記之後、skip 掣之前，v181 文字層喺 wrap 入面）', 'awd181Html + "</div>" + glamHtml' in play_fn)
 chk('B1 walkup GIF 層已撤（v181：改由 canvas 畫，唔再係 stage 尾段 overlay）', '"</div>" + walkupHtml' not in play_fn and '.awd62-walkup160' not in src)
-chk('B1 reveal／glamour／walkup 燕尾服唔郁（共 4 處，v181 walkup 加一處）', play_fn.count('tuxedo: true') == 4)
+chk('B1 reveal／glamour／walkup／out 燕尾服唔郁（共 5 處，v187 C3 out 加一處）', play_fn.count('tuxedo: true') == 5)
 
 # --- C1 (4)：setCaption 隱藏空框 ---
 sc_i = play_fn.find('const setCaption')

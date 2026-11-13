@@ -1,6 +1,6 @@
 # v20a181：頒獎禮舞台橫向重建 static tests（原 v20a177 檔成份改寫；v177 幾何成批作廢）。
 # 設計（見 NOTES_V20A181.md §1）：canvas 邏輯 480×360（4:3）／backing 720×540／setTransform 1.5；
-#   (a) 地板：木地板 y200–334（深 134px＝37.2% 高），FLOOR＝262，行前腳 272；後備舞台＝同一個程式舞台。
+#   (a) 地板：木地板 y228–310（深 82px＝22.8% 高；v20a187 B1 收窄，舊 y200–334／134px 係讀錯參考圖），FLOOR＝262，行前腳 272；後備舞台＝同一個程式舞台。
 #   (b) 企位：won／nominated 4 slots 60／180／300／420（間距 120，置中 240；人闊約 42px，罅 78px，
 #       兩邊各留 39px；冇圓台／講台）；gallery 3 slots 75／240／405（罅 165／165，左／中／右分開企）。
 #   (c) 行走：enter beat 逐個由台側行到企位（entryPlan 0.16px/ms＋rank*380，唔郁；from −40／520）；
@@ -47,21 +47,21 @@ GAL = [75, 240, 405]
 FIG_W = 46          # px 人物顯示闊上限（dispH 112 × 最闊 48/128 ≈ 42，取 46 留鬆）
 
 # --- (a) 地板：FLOOR 250→262 ---
-chk('地板 FLOOR＝262（木地板 y200–334）', 'const FLOOR = 262' in play_fn)
+chk('地板 FLOOR＝262（木地板 y228–310，v20a187 B1）', 'const FLOOR = 262' in play_fn)
 chk('舊 FLOOR＝250 唔再出現（頒獎禮範圍）', 'const FLOOR = 250' not in play_fn)
 chk('FLOOR 只定義一次', play_fn.count('const FLOOR =') == 1)
-chk('地板深 134px（H 360 − FLOOR 262，佔 canvas 高 37.2%）',
+chk('地板深 82px（H 360，佔 canvas 高 22.8%；v20a187 B1）',
     'const W = 480, H = 360' in play_fn and 'const FLOOR = 262' in play_fn)
 chk('行前腳 272（FLOOR＋10）', 'y: Math.round(10 * p)' in play_fn)
 chk('drawFigure 腳底跟 FLOOR（唔寫死）', 'const fy = FLOOR + (o.y || 0)' in play_fn)
 chk('光池跟 FLOOR（F-99 至 F）', 'F - 99' in play_fn)
-chk('獎盃 glyph 跟 FLOOR（−112／−52）',
-    'FLOOR + fp.y - 112' in play_fn and 'FLOOR + fp.y - 52' in play_fn)
+chk('獎盃 glyph 跟 FLOOR（−110／−52，v20a187 C6）',
+    'FLOOR + fp.y - 110' in play_fn and 'FLOOR + fp.y - 52' in play_fn)
 chk('後備舞台 delegate 去程式舞台（舊平台頂 H-110 消失）', 'awards181DrawBase(ctx, W, H, 0)' in fb_fn and 'H - 110' not in fb_fn)
 chk('後備舞台舊金線 H-116 唔再出現', 'H - 116' not in fb_fn)
 chk('後備舞台舊平台底 H-33 唔再出現', 'H - 33' not in fb_fn)
-chk('程式舞台地板 y200–334（#d9a75f）', '#d9a75f' in base_fn and '200, W + 16, 134' in base_fn)
-chk('程式舞台觀眾席 y340–360（#120c20）', '#120c20' in base_fn and '340, W + 16, 20' in base_fn)
+chk('程式舞台地板 y228–310（#d9a75f）', '#d9a75f' in base_fn and '228, W + 16, 82' in base_fn)
+chk('程式舞台觀眾席 y316–360（#120c20）', '#120c20' in base_fn and '316, W + 16, 44' in base_fn)
 
 # --- (b) 企位：slotCx ---
 chk('won／nominated slotCx 間距 120、置中 240',
