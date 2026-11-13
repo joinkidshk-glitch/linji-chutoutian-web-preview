@@ -1828,6 +1828,21 @@ button.g, .start button.g{
 #mask:not(.tut-on) #modal-btns button.p{
   color: #1A1410 !important;
 }
+/* v20a189：日結板加速細連結——掣列下方全行一列，細字＋底線但 44px 高撳得到（唔好細到撳唔中） */
+#mask:not(.tut-on) #modal-btns button.day-end-accel-link{
+  flex: 1 1 100%;
+  min-height: 44px;
+  padding: 6px 8px;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #6b4e2e !important;
+  font-size: .85rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 /* v17x: sticky 保留首屏，但唔食垂直 pan（padding／gradient pointer-events:none） */
 #modal-inner .gig-actions{
   position: sticky;
@@ -3216,6 +3231,16 @@ body.day-res-open .day-row{
 #mask:not(.tut-on) .modal{
   overflow: hidden !important;
   max-height: min(78dvh, 720px) !important;
+}
+/* v20a189：日結板矮屏放寬——上面呢條 78dvh（後來居上）壓死咗 v19z12 N7 嘅
+   88dvh 矮屏保底，700 高嗰陣 modal 得 546px，綠色殺青行啱啱俾掣欄裁一半；
+   88dvh（modal 616px／inner 457px）實測最長內容嗰版仲差 3px 先過到綠色結算行，
+   所以放寬到 92dvh（modal 644px／inner ~485px）；只放寬掛咗 day-res 嘅日結板
+   （其餘 modal 唔郁），矮屏先生效。modal 係底錨（top = vh - h - 10），掣列唔會跌出屏。 */
+@media (max-height: 820px){
+  #mask.day-res:not(.tut-on) .modal{
+    max-height: min(92dvh,92svh,720px) !important;
+  }
 }
 #mask:not(.tut-on):not(.casting-sheet-on) #modal-inner{
   flex: 1 1 0% !important;
@@ -36999,7 +37024,7 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
   const liveHint = livingCostDayEndHint();
   const fx102Html = (typeof actFx102Html==="function") ? actFx102Html(opts.fx102Kind) : ""; /* v20a102 FX102 */
   const dismissFn = ended ? go : ()=>{ try{ goToMapForBrowse(); }catch(_e){} };
-  modal(`<h3>${title}</h3>${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}${dayLine}${(!ended && btns.some(b=>String(b.label||"").indexOf("加速")>=0))?`<p class="week-accel-hint">加速會跳過地圖日；預設請返地圖再決定。</p>`:""}`, btns, {onDismiss: dismissFn});
+  modal(`<h3>${title}</h3>${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}${dayLine}`, btns, {onDismiss: dismissFn});
   try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   saveQ();
@@ -37987,26 +38012,31 @@ function dayEndContinueButtons(ended, goRunSchedule, opts){
     const s=String(nextId||"");
     return s.startsWith("shoot:") || s.startsWith("job:");
   }catch(_e){ return false; }})();
-  try{
-    const rem = countRemainingAutoDays();
-    if(rem>0){
-      btns.push({
-        label:"加速本週剩餘",
-        role:"g",
-        on:()=>confirmWeekAccel(()=>{ if(typeof goRunSchedule==="function") goRunSchedule(); })
-      });
-    }
-  }catch(_e){}
   if(nextForced){
     btns.push({label:"開始今日行程", role:"p", on:goRunSchedule});
   } else if(nextIsMap){
     /* v20a4：走 goRunSchedule（殺青後 afterDayRes→reward→nextNb→map），唔直行 goToMap 跳過獎勵 */
     btns.push({label:"返回地圖", role:"p", on: (typeof goRunSchedule==="function") ? goRunSchedule : (()=>{ try{ goToMapForBrowse(); }catch(_e){} })});
   } else {
-    /* soft schedule（街頭／訓練／休息）：預設返地圖，另可開始今日 */
-    btns.push({label:"返回地圖", role:"p", on: (typeof goRunSchedule==="function") ? goRunSchedule : (()=>{ try{ goToMapForBrowse(); }catch(_e){} })});
+    /* v20a189：soft 日「返回地圖」真係返地圖（自由行 goToMapForBrowse，唔經行程）——舊寫法
+       兩粒都行 goRunSchedule，撳邊粒都係直接開今日行程；「開始今日行程」繼續行 goRunSchedule。
+       runScheduleFromToday 喺 soft 日確實直接開行程（resolvePlannedDay，唔係落地圖），
+       所以兩粒修好後真係分流，唔會再撞。 */
+    btns.push({label:"返回地圖", role:"p", on:(()=>{ try{ goToMapForBrowse(); }catch(_e){} })});
     btns.push({label:"開始今日行程", role:"g", on:goRunSchedule});
   }
+  /* v20a189：加速降級——唔再係同行大掣，改做掣列下方細連結（role "link"，modal() 另行渲染）；
+     點落去照行 confirmWeekAccel 確認 modal，流程唔郁。放最後，等主掣先渲染。 */
+  try{
+    const rem = countRemainingAutoDays();
+    if(rem>0){
+      btns.push({
+        label:"想跳過本週剩餘日子？加速 →",
+        role:"link",
+        on:()=>confirmWeekAccel(()=>{ if(typeof goRunSchedule==="function") goRunSchedule(); })
+      });
+    }
+  }catch(_e){}
   return btns;
 }
 function flushWeekAccelSummary(finalTitle, finalBody, ended, summary, contFn){
@@ -38392,11 +38422,14 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
       saveQ();
     }
   } else {
-    modal(`<h3>${title}</h3>${fx102Html}${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}${dayLine}${(!ended && btns.some(b=>String(b.label||"").indexOf("加速")>=0))?`<p class="week-accel-hint">加速需二次確認並列出將跳過日子。</p>`:""}`, btns, {onDismiss: dismissNb});
+    modal(`<h3>${title}</h3>${fx102Html}${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}${dayLine}`, btns, {onDismiss: dismissNb});
     try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
     /* v20a35 節奏包 P1-6：日結算板入面嘅片場抉擇掣接線（冇抉擇嗰日 no-op） */
     try{ if(typeof wireSetChoice35==="function") wireSetChoice35(); }catch(_wc35){}
-    if(isRestCard){ try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){} }
+    /* v20a189：日結板一律掛 day-res（唔止休息卡）——矮屏 92dvh 放寬只認呢個 class；
+       唔加 body.day-res-open，唔改 dim／HUD 樣（嗰條 gradient 規則要兩個 class 齊先生效）；
+       closeModal 本來就會清 mask day-res。 */
+    try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
     saveQ();
   }
 }
@@ -39377,7 +39410,8 @@ function modal(html, buttons, opts){
   row.innerHTML="";
   (buttons||[{label:"好",role:"p"}]).forEach(b=>{
     const btn=document.createElement("button");
-    let cls=b.role==="g"?"g":b.role==="d"?"d":"p";
+    /* v20a189：role "link"＝日結板加速細連結（全行一列，掣列下方；見 dayEndContinueButtons） */
+    let cls=b.role==="link"?"day-end-accel-link":b.role==="g"?"g":b.role==="d"?"d":"p";
     if(b.cls) cls+=" "+b.cls;
     btn.className=cls;
     btn.textContent=b.label;
