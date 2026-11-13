@@ -272,3 +272,8 @@ travel114 曾因此 double-shift，要還原重做一次）。內容逐字相同
   改放 `~/workspace/linji-pristine191-suite/`，用完已清走。
 - Commit＋push：NOTES 增補另一個 commit，分支 `v20a191` 用 `git push --force-with-lease origin v20a191` 只推常駐 clone，
   唔推 GitHub。**本票唔落地**——等統籌 squash merge＋監察部署＋覆檢；唔開設計 review。
+
+## 9. 落地紀錄（統籌補）
+- 遊戲 commit `f2a6b0c`（main `b3db32f` v189 → squash merge `v20a191`，push main 一次成功，無斷線）。
+- 線上核實：5,336,448 bytes、sha256 `9eb1980d…`，同 repo `HEAD:index.html` 完全一致（Pages 部署滯後約 150 秒，第一 curl 仲係 v189 舊版）。
+- `git fsck --strict` 乾淨（只有 squash merge 正常 dangling）。
