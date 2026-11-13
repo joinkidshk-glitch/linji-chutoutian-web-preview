@@ -160,6 +160,11 @@
 - 重驗（最終樹）：關鍵測試 174／170／168／166／160_m1／64_chibi 全 PASS＋qa149 36/36；全套 pristine `cd4291b` **233／12** → 工作版 **234／12**（＋1 係新測試 174），FAIL 集合 `diff` 零差異，零回歸（結果 `qa174/suite_pristine174t.txt`／`suite_work174t.txt`，pristine worktree `~/workspace/linji-pristine174t`）。
 - 實駕 `qa174/drive174.py` 最終樹：**4/4 PASS、0 pageerror**（一次過，nominated flake 今次冇出現）。
 
+## §10 落地紀錄（統籌）
+- Squash merge 分支 `v20a174`（HEAD `82908fe`，三輪 rebase：上 `a500536` v149、上 `0ecaeb3` v153、上 `cd4291b` v173，全部乾淨）→ main 遊戲 commit **`e2add29`**。
+- Push main 三次先得（頭兩次 egress proxy reset 斷線，第三次成功；`cd4291b..e2add29`）。
+- **線上核實：5,269,914 bytes、sha256 `3af45a51789cc015`**，同 repo `main:index.html` 逐字一致，live 係 v174。
+
 ### Rebase 上 main `a500536`（v149 已落地，遊戲 `461dc87`）
 
 - 開工核實 main HEAD＝`a500536`（預期一致，落地期間冇再郁）。
