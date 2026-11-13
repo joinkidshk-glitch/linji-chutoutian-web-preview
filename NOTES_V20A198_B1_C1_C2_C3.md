@@ -250,3 +250,4 @@
   實際行 25659 有嗰個 pattern）。
 - rebase 後全套：**269 PASS／12 FAIL**——正正 12 項穩定 FAIL，零回歸（267→269 係新加 2 檔 v198 測試）。
 - rebase 後分支 commits：`06c942f`（本體）＋`11bffcf`＋`7f29530`；另加本節 commit（resync 腳本＋4 粒修正）。
+- **落地**：squash merge 上 main，遊戲 commit `22382b2`，已 push main；我親自 curl 核實線上 5,345,774 bytes sha `1f2933e5…` 同 repo HEAD:index.html 一致。
