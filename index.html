@@ -778,11 +778,15 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .psr-gate62.ok{color:#3d6038;font-weight:700}
 .awd62-stage{position:fixed;inset:0;z-index:9990;background:#14101f;display:flex;align-items:center;justify-content:center;padding:12px}
 .awd62-frame{position:relative;width:min(96vw,760px)}
+.awd62-canvaswrap{position:relative}
+.awd62-m5fx149{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none;display:none;z-index:2}
+.awd62-m5fx149.on{display:block}
+.awd62-m5fx149.b{transform:scaleX(-1);opacity:.85}
 canvas.awd62-canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;background:#241736;border:4px solid #0d0918;box-shadow:0 0 0 4px #8a6d2f,0 18px 50px rgba(0,0,0,.65)}
 .awd62-caption{margin-top:10px;background:#1d1430;border:3px solid #8a6d2f;box-shadow:4px 4px 0 #0d0918;color:#ffe9b0;padding:10px 14px;min-height:54px;font-size:15px;line-height:1.55;text-align:center;white-space:pre-line}
 .awd62-caption .gold{color:#f2c14e;font-weight:900}
 .awd62-caption .dim{color:#b9a8d9;font-size:13px}
-.awd62-skip{position:absolute;top:-10px;right:-4px;background:#3a2a12;color:#ffd968;border:3px solid #8a6d2f;box-shadow:3px 3px 0 #0d0918;padding:6px 14px;font-weight:900;font-size:14px;cursor:pointer;z-index:3;border-radius:0}
+.awd62-skip{position:absolute;top:8px;right:8px;background:#3a2a12;color:#ffd968;border:3px solid #8a6d2f;box-shadow:3px 3px 0 #0d0918;padding:6px 14px;font-weight:900;font-size:14px;cursor:pointer;z-index:3;border-radius:0}
 .awd62-skip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #0d0918}
 .awd62-tap{margin-top:8px;text-align:center;color:#8d7db5;font-size:12px}
 .awd63-cards{display:none;gap:8px;justify-content:center;margin-top:10px}
@@ -794,7 +798,11 @@ canvas.awd62-canvas{display:block;width:100%;height:auto;image-rendering:pixelat
 .awd63-card .s{font-size:10px;color:#8a6d2f;text-align:center;line-height:15px;height:15px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .awd63-card.me{border-color:#f2c14e;box-shadow:0 0 0 2px #f2c14e,0 4px 10px rgba(0,0,0,.5)}
 .awd63-card.me::after{content:"你";position:absolute;top:-9px;right:-7px;background:#c02727;color:#fff;font-size:10px;font-weight:900;border-radius:50%;width:19px;height:19px;line-height:19px;text-align:center;z-index:2}
-.awd63-csscard{aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#3a2a4a,#241736);color:#ffe9b0;font-weight:900;font-size:13px;line-height:1.4;padding:6px;text-align:center;border:1px solid #8a6d2f}
+.awd63-card.win::after{content:"🏆";position:absolute;top:-9px;left:-7px;background:#f2c14e;color:#3a2a12;font-size:11px;font-weight:900;border-radius:50%;width:19px;height:19px;line-height:19px;text-align:center;z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.5)} /* v20a149 B3：得主卡 🏆 角標 */
+.awd63-csscard{aspect-ratio:2/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:linear-gradient(160deg,#3a2a4a,#241736);color:#ffe9b0;font-weight:900;font-size:13px;line-height:1.4;padding:6px;text-align:center;border:1px solid #8a6d2f} /* v20a149 B3：冇 poster 嗰陣改做大媒介圖標＋細字典禮名 */
+.awd63-csscard .ic112{width:30px;height:30px}
+.awd63-cssicon{font-size:26px;line-height:1}
+.awd63-cssname{font-size:11px;font-weight:700;color:#d9c491;line-height:1.35}
 .awd63-glamour{position:absolute;top:0;left:0;width:100%;aspect-ratio:424/240;display:none;flex-direction:row;justify-content:flex-end;align-items:stretch;z-index:2;pointer-events:none} /* v20a166 B1：glamour 海報縮細並置——overlay 由全幅改做只冚 canvas，左邊透明留位畀燕尾服，右邊 44% 暗 panel 放海報＋cap；0.93 暗層留喺 panel；pointer-events:none，撳掣／elementFromPoint 照通 canvas */
 .awd63-glamour.on{display:flex}
 .awd63-glamour-panel{flex:0 0 44%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:10px 12px;background:rgba(10,6,18,.93);box-sizing:border-box}.awd63-glamour-panel img{max-width:88%;max-height:60%;object-fit:contain;border:4px solid #f2c14e;box-shadow:0 0 34px rgba(242,193,78,.45);background:#2b2118}
@@ -4456,6 +4464,11 @@ body.day-res-open .day-row{
     0 5px 12px rgba(0,0,0,.38),
     inset 0 0 44px rgba(146,118,62,.15);
   padding:18px 20px 14px;
+}
+/* v20a149 B4：短屏（700）報紙尾句俾「收下這份剪報」掣遮住——報紙底加 padding（76px ≥掣高＋間隙），
+   等尾句碌得起過掣位；只喺 max-height:800px 生效，932 唔郁。 */
+@media (max-height:800px){
+  #mask.paper-on .paper-sheet{ padding-bottom:76px; }
 }
 
 /* --- (3) 報頭：大字置中＋粗幼雙線，報紙格式 --- */
@@ -45594,10 +45607,13 @@ function renderAwardResultHtml(pack){
   }).join("");
   const press = pack.press || {};
   const news = pack.news || {};
+  /* v20a149 B2：metricLine stub 重寫——有得主寫實內容，冇得主先跌返舊句；
+     won 嗰陣得主係阿偉，唔用對手名（awardWinner149 嗰邊已回 null）。 */
+  const win149 = (typeof awardWinner149 === "function") ? awardWinner149(pack) : null;
   const metricLine = pack.metricEcho
     ? `<article class="psr-card psr-metrics">
         <div class="psr-kicker"><span class="psr-icon">${iconHtml112("✨")}</span> ${pack.metricEchoLabel||"餘韻"}</div>
-        <h4 class="psr-title">${pack.metricEchoLabel||""}——典禮後仍有人提起。</h4>
+        <h4 class="psr-title">${win149 ? ((pack.metricEchoLabel||"") + "——" + awardWinLine149(win149) + "，典禮後仍有人提起。") : ((pack.metricEchoLabel||"")+"——典禮後仍有人提起。")}</h4>
       </article>` : "";
   const dual = pack.rewardsApplied || {};
   const dualLine = (dual.stageVolume || dual.industryCredit)
@@ -46019,8 +46035,10 @@ function renderAwardsPane62(){
       if(c.repTitle && !repTitle) repTitle = c.repTitle;
       if(!fellowsTxt && Array.isArray(c.fellows63) && c.fellows63.length){
         fellowsTxt = "同屆提名：" + c.fellows63.map(f=> (f.star || "") + "《" + (f.title || "") + "》").join("、");
-        /* v20a128 A5：得主標記唔可以塞入 esc(fellowsTxt)（<img> 會被轉義成文字），拆出嚟做 HTML。 */
-        if(c.winner63) fellowsWinHtml128 = "（" + iconHtml112("🏆") + " " + esc(c.winner63) + "）";
+        /* v20a128 A5：得主標記唔可以塞入 esc(fellowsTxt)（<img> 會被轉義成文字），拆出嚟做 HTML。
+           v20a149 B2（順手）：gallery 嗰行同樣用 fellows[0] 標得主（winner63 null 時）；won 唔標對手。 */
+        const w149 = c.winner63 || ((c.outcome === "gallery" && c.fellows63[0]) ? c.fellows63[0].star : null);
+        if(w149) fellowsWinHtml128 = "（" + iconHtml112("🏆") + " " + esc(typeof w149 === "object" ? (w149.star || "") : w149) + "）";
       }
     });
     if(e.skipped) best = "skipped";
@@ -46250,14 +46268,19 @@ function awards62PlayCeremony(pack, doneFn){
     stage.className = "awd62-stage";
     let cardsHtml = "";
     const cardsData = [];
+    /* v20a149 B3：卡片加 win 旗（對照上面 winFellow；阿偉自己嗰張只喺 best==="won" 先係得主）。 */
     if(best !== "gallery"){
-      if(repTitle) cardsData.push({ me: true, title: repTitle, star: "阿偉", poster: posterOf(pack && pack.repGigId63) });
-      fellows.forEach(f=> cardsData.push({ me: false, title: f.title || "", star: f.star || "", poster: f.poster || posterOf(f.gigId) }));
+      if(repTitle) cardsData.push({ me: true, title: repTitle, star: "阿偉", poster: posterOf(pack && pack.repGigId63), win: best === "won" });
+      fellows.forEach(f=> cardsData.push({ me: false, title: f.title || "", star: f.star || "", poster: f.poster || posterOf(f.gigId), win: !!(winFellow && f.star === winFellow.star && f.title === winFellow.title) }));
     }
     if(cardsData.length){
+      /* v20a149 B3：冇 poster 嗰陣 csscard 唔再印片名——改做大媒介圖標＋細字典禮名，
+         片名只留卡底 .t 一行。 */
+      const medIcon149 = { film: "🎬", tv: "📺", music: "🎵", ad: "📣" }[(pack && pack.medium) || ""] || "🏆";
+      const medName149 = (pack && pack.displayName) || "頒獎夜";
       cardsHtml = '<div class="awd63-cards">' + cardsData.map(c=>{
-        const media = c.poster ? ('<img src="' + c.poster + '" alt="《' + c.title + '》作品圖"/>') : ('<div class="awd63-csscard">《' + c.title + '》</div>');
-        return '<div class="awd63-card' + (c.me ? " me" : "") + '">' + media + '<div class="t">《' + c.title + '》</div><div class="s">' + c.star + "</div></div>";
+        const media = c.poster ? ('<img src="' + c.poster + '" alt="《' + c.title + '》作品圖"/>') : ('<div class="awd63-csscard"><span class="awd63-cssicon">' + iconHtml112(medIcon149) + '</span><span class="awd63-cssname">' + medName149 + "</span></div>");
+        return '<div class="awd63-card' + (c.me ? " me" : "") + (c.win ? " win" : "") + '">' + media + '<div class="t">《' + c.title + '》</div><div class="s">' + c.star + "</div></div>";
       }).join("") + "</div>";
     }
     let glamHtml = "";
@@ -46275,8 +46298,12 @@ function awards62PlayCeremony(pack, doneFn){
       walkupHtml = '<div class="awd62-walkup160"><img src="assets/fx/awd_walkup_m4.gif" alt="阿偉行上台領獎"/>'
         + '<div class="cap">阿偉行上台，接過獎盃，高高舉起。</div></div>';
     }
+    /* v20a149 B1：canvas backing 424×240→636×360（draw() 內 setTransform 1.5，邏輯座標唔郁）；
+       揭曉彩紙 M5 GIF 疊加（reveal／comfort／out 期間顯示，見 syncConfetti149）。 */
     stage.innerHTML = '<div class="awd62-frame">'
-      + '<canvas class="awd62-canvas" width="424" height="240"></canvas>' + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服 */
+      + '<div class="awd62-canvaswrap"><canvas class="awd62-canvas" width="636" height="360"></canvas>'
+      + '<img class="awd62-m5fx149" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>'
+      + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/></div>' + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服 */
       + '<button type="button" class="awd62-skip">跳過 ⏩</button>'
       + cardsHtml
       + '<div class="awd62-caption"></div>'
@@ -46292,6 +46319,12 @@ function awards62PlayCeremony(pack, doneFn){
     const cardEls = cardsEl ? Array.prototype.slice.call(cardsEl.querySelectorAll(".awd63-card")) : [];
     const glamEl = stage.querySelector(".awd63-glamour");
     const walkEl = stage.querySelector(".awd62-walkup160"); /* v20a160-m4 */
+    /* v20a149 B1：M5 彩紙 GIF 疊加——reveal／comfort／out 期間顯示，其餘收起。 */
+    const confImgs149 = stage.querySelectorAll(".awd62-m5fx149");
+    const syncConfetti149 = (b)=>{
+      const show = !!(b && (b.id === "reveal" || b.id === "comfort" || b.id === "out"));
+      confImgs149.forEach(im=> im.classList.toggle("on", show));
+    };
     skipBtn.addEventListener("click", (ev)=>{ try{ ev.stopPropagation(); }catch(_e){} finish(); });
     let bgImg = null, bgReady = false;
     try{
@@ -46397,7 +46430,7 @@ function awards62PlayCeremony(pack, doneFn){
     const CONF_COLS = ["#f2c14e", "#ffe98f", "#c02727", "#ece7db"];
     const spawnConfetti = ()=>{
       confetti.length = 0;
-      for(let i = 0; i < 46; i++){
+      for(let i = 0; i < 90; i++){ /* v20a149 B1：46→90 粒，加密 */
         confetti.push({ x: Math.floor(Math.random() * 424), y: -10 - Math.floor(Math.random() * 70),
           c: CONF_COLS[i % CONF_COLS.length], s: 3 + (i % 2), v: 3 + (i % 3), sway: (i % 3) - 1 });
       }
@@ -46436,6 +46469,9 @@ function awards62PlayCeremony(pack, doneFn){
     };
     const draw = (b, tick, beatElapsed)=>{
       const W = 424, H = 240;
+      /* v20a149 B1：canvas backing 636×360，邏輯座標維持 424×240，全部繪圖經 1.5× transform
+         （FLOOR／slotCx／confetti／fallback 舞台全部照舊）。 */
+      ctx.setTransform(1.5, 0, 0, 1.5, 0, 0);
       const id = b ? b.id : "";
       if(id === "pan" && bgReady && bgImg){
         const off = Math.round(Math.sin(tick * 0.45) * 6);
@@ -46525,6 +46561,8 @@ function awards62PlayCeremony(pack, doneFn){
             const fy = 205 + ((tick * 31 + i * 37) % 26);
             if((tick + i) % 2 === 0) ctx.fillRect(fx, fy, 3, 3);
           }
+          /* v20a149 B1：非贏 reveal 都畫程式彩紙（唔再只得 8 點金光）。 */
+          confetti.forEach(p=>{ ctx.fillStyle = p.c; ctx.fillRect(p.x, p.y, p.s, p.s); });
         }
         return;
       }
@@ -46535,6 +46573,8 @@ function awards62PlayCeremony(pack, doneFn){
           else if(i === winnerSlot) drawFigure(s, i, { alpha: 0.85 });
           else drawFigure(s, i, { alpha: 0.7 });
         });
+        /* v20a149 B1：comfort 期間彩紙維持飄落。 */
+        confetti.forEach(p=>{ ctx.fillStyle = p.c; ctx.fillRect(p.x, p.y, p.s, p.s); });
         return;
       }
       if(id === "glamour"){
@@ -46559,7 +46599,8 @@ function awards62PlayCeremony(pack, doneFn){
       capLineIdx = -1;
       if(beatIdx >= beats.length){ finish(); return; }
       beatStart = performance.now();
-      if(beats[beatIdx].id === "reveal" && best === "won"){ spawnConfetti(); try{ awards160PlayWinAudio(); }catch(_e){} /* v20a160 M9：贏分支揭曉嗰刻播 fanfare＋掌聲（只此一處觸發） */ }
+      if(beats[beatIdx].id === "reveal") spawnConfetti(); if(beats[beatIdx].id === "reveal" && best === "won"){ try{ awards160PlayWinAudio(); }catch(_e){} /* v20a160 M9：贏分支揭曉嗰刻播 fanfare＋掌聲（只此一處觸發） */ } /* v20a149 B1：非贏 reveal 都 spawn（舊只限 won） */
+      syncConfetti149(beats[beatIdx]);
       syncGlamour(beats[beatIdx]);
       syncWalkup(beats[beatIdx]); /* v20a160-m4 */
       applyBeatCaption(beats[beatIdx], 0);
@@ -46574,7 +46615,7 @@ function awards62PlayCeremony(pack, doneFn){
       const tick = Math.floor(now / 125);
       if(tick !== lastTick){
         lastTick = tick;
-        if(b.id === "reveal" && best === "won"){
+        if(b.id === "reveal" || b.id === "comfort"){ /* v20a149 B1：comfort 期間彩紙繼續落 */
           confetti.forEach(p=>{ p.y += p.v; p.x += p.sway; if(p.y > 244){ p.y = -8; p.x = Math.floor(Math.random() * 424); } });
         }
         draw(b, tick, elapsed);
@@ -46586,6 +46627,7 @@ function awards62PlayCeremony(pack, doneFn){
     };
     syncGlamour(beats[0]);
     syncWalkup(beats[0]); /* v20a160-m4 */
+    syncConfetti149(beats[0]);
     applyBeatCaption(beats[0], 0);
     raf = requestAnimationFrame(loop);
     return true;
@@ -46801,13 +46843,45 @@ function awards63FocusFellows(pack){
 function awards63FellowsHtml(c){
   const fl = (c && Array.isArray(c.fellows63)) ? c.fellows63 : [];
   if(!fl.length) return "";
-  const win = c.winner63 || null;
+  /* v20a149 B2：win fallback——winner63 有就用佢；gallery 類別 winner63 係 null（v147 註解），
+     得主照 fellows[0] 規則。won 類別唔 fallback（得主係阿偉自己，唔可以標對手）。 */
+  const winRaw = c.winner63 || ((c.outcome === "gallery" && fl[0]) ? fl[0] : null) || null;
+  const win = (winRaw && typeof winRaw === "object") ? winRaw : ((typeof winRaw === "string" && winRaw) ? { star: winRaw, title: "" } : null);
   const parts = fl.map(f=>{
-    const isW = win && f.star === win.star && f.title === win.title;
+    const isW = win && f.star === win.star && (!win.title || f.title === win.title);
     return (isW ? iconHtml112("🏆") + " " : "") + f.star + "《" + f.title + "》";
   });
-  const head = (c.outcome === "nominated" && win) ? ("同屆提名（" + iconHtml112("🏆") + " 為得主）") : "同屆提名";
+  const head = win ? ("同屆提名（" + iconHtml112("🏆") + " 為得主）") : "同屆提名";
   return '<p class="psr-fellows63">' + head + "：" + parts.join("、") + "</p>";
+}
+/* v20a149 B2：當屆得主 helper——focus 類別嘅 winner63，冇就照 gallery 規則取 fellows[0]
+   （得主係 seeded 加權隨機，唔可以寫死）。won 類別回 null（得主係阿偉，唔係對手）；
+   冇 focus／冇 fellows 回 null，調用點跌返舊文案，唔 crash。 */
+function awardWinner149(pack){
+  try{
+    const f = (typeof awards63FocusCat === "function") ? awards63FocusCat(pack) : null;
+    if(!f) return null;
+    if(f.outcome === "won") return null;
+    const w = f.winner63;
+    if(w && typeof w === "object" && w.star) return { star: w.star, title: w.title || "" };
+    if(typeof w === "string" && w) return { star: w, title: "" };
+    const fl = Array.isArray(f.fellows63) ? f.fellows63 : [];
+    if(fl.length && fl[0] && fl[0].star) return { star: fl[0].star, title: fl[0].title || "" };
+  }catch(_e){}
+  return null;
+}
+/* v20a149 B2：得主奪獎行（有作品先寫「憑《》奪獎」，冇作品名只寫「奪獎」，唔出空書名號）。 */
+function awardWinLine149(win){
+  if(!win || !win.star) return "";
+  return win.title ? (win.star + "憑《" + win.title + "》奪獎") : (win.star + "奪獎");
+}
+/* v20a149 B2：旁聽報紙動態得主文案（每 medium 一套，沿用舊模板語氣同報名）。 */
+function awardGalleryCopy149(medium, win){
+  const line = awardWinLine149(win);
+  if(medium === "tv") return { headline: "星河台慶夜 " + line, dek: "星河台慶・年度頒獎夜，" + line + "。阿偉坐滿全場——第日，佢想人哋都睇住佢。" };
+  if(medium === "music") return { headline: "星河金碟夜 " + line, dek: "星河金碟夜結束。" + line + "，阿偉喺台下聽足成晚——嗰啲掌聲，佢想第日係為自己而起。" };
+  if(medium === "ad") return { headline: "維港街招賞 " + line, dek: "維港街招賞散場。" + line + "，阿偉坐喺觀禮席——行內嘅版圖，今晚佢睇清楚咗。" };
+  return { headline: "維港影藝獎之夜 " + line, dek: "維港影藝獎散場。" + line + "，阿偉坐喺台下睇完整晚——未輪到佢上台，但成晚嘅掌聲同燈光，佢全部記低咗。" };
 }
 function awards63InviteBitHtml(pack){
   if(!pack || !pack.repWork62) return "";
@@ -47371,6 +47445,11 @@ function enqueueNewspaperFromAward(pack, opts){
      桶模板（嗰啲寫阿偉奪獎／入圍／坐喺台下，推辭咗嘅人一樣都冇）。行典禮級 press 文案
      （pack.press：頒獎夜通用側記，唔寫阿偉贏獎／出席），fameDelta 0，唔派聲望。 */
   if(opts.declined){
+    /* v20a149 B2：推辭報紙寫明賽果——得主（winner63／fellows[0]，玩家冇去所以得主係對手），
+       冇得主先跌返 press 舊路。 */
+    const win149 = (typeof awardWinner149 === "function") ? awardWinner149(pack) : null;
+    const head149 = win149 ? awardWinLine149(win149) : null;
+    const dek149 = win149 ? (name + "照常舉行，" + awardWinLine149(win149) + "。") : null;
     return enqueueNewspaperItem({
       eventKey: "award:"+year+":"+ceremonyId,
       source: "award",
@@ -47378,8 +47457,8 @@ function enqueueNewspaperFromAward(pack, opts){
       publishDay: day+1,
       fameDelta: 0,
       paperName: press.paperName || "娛樂快報",
-      headline: press.headline || (name+"見報"),
-      dek: press.dek || (name+"照常舉行，結果出爐。"),
+      headline: head149 || press.headline || (name+"見報"),
+      dek: dek149 || press.dek || (name+"照常舉行，結果出爐。"),
       clipLabel: (press.paperName || "娛樂快報")+"・頒獎夜",
       rumorEcho: "",
       templateId: "",
@@ -47397,13 +47476,31 @@ function enqueueNewspaperFromAward(pack, opts){
   if(bucket==="award_gallery"){
     const pool = NEWSPAPER_AWARD_GALLERY_TEMPLATES_136.filter(t=>t && t.medium===medium);
     tmpl = (pool.length ? pool[0] : NEWSPAPER_AWARD_GALLERY_TEMPLATES_136[0]) || null;
-    copy = newspaperCopyFromTemplate(tmpl, {
-      paperName: press.paperName || "娛樂快報",
-      headline: press.headline || (name+"見報"),
-      dek: press.dek || ("阿偉出席"+name+"，娛樂版記了一筆。"),
-      fameDelta: 1,
-      medium: medium
-    });
+    /* v20a149 B2：旁聽報紙寫明賽果——得主（fellows[0]，winner63 係 null）＋作品＋阿偉台下見證；
+       冇得主先跌返舊靜態模板。唔經 newspaperCopyFromTemplate（模板 headline 會蓋過動態文案）。 */
+    const win149 = (typeof awardWinner149 === "function") ? awardWinner149(pack) : null;
+    if(win149){
+      const dyn149 = awardGalleryCopy149(medium, win149);
+      copy = {
+        paperName: press.paperName || "娛樂快報",
+        headline: dyn149.headline,
+        dek: dyn149.dek,
+        fameDelta: 1,
+        clipLabel: (tmpl && tmpl.clipLabel) || "",
+        rumorEcho: "",
+        templateId: (tmpl && tmpl.id) || "",
+        templateEventKey: (tmpl && tmpl.eventKey) || ("award_gallery." + medium),
+        medium: medium
+      };
+    } else {
+      copy = newspaperCopyFromTemplate(tmpl, {
+        paperName: press.paperName || "娛樂快報",
+        headline: press.headline || (name+"見報"),
+        dek: press.dek || ("阿偉出席"+name+"，娛樂版記了一筆。"),
+        fameDelta: 1,
+        medium: medium
+      });
+    }
   } else {
     tmpl = newspaperPickTemplate(bucket, medium);
     copy = newspaperCopyFromTemplate(tmpl, {

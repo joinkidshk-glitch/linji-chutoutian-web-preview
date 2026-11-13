@@ -7,6 +7,7 @@
 # 反證：喺 pristine main（e08a070／v148）index 上行，刪項斷言會乾淨 FAIL（感情線仲喺度），唔會 crash。
 # v20a160 M4 步 resync：walkup CSS 喺 L802 插入 5 行，三個錨點一律 ＋5（內容逐字核實，純漂移；其餘 M1／M6／M9 插入點全部喺 L44855 之後，唔影響本檔錨點）。
 # v20a157 rebase 上 main 60b0a8f resync：splice 插入令三個錨點漂移（HELD ＋24、normaliser／loader ＋66；qa131/resync_rebase157.py difflib 對位核實內容逐字相同，純漂移；ok() 名全形括號標籤一併更新）。
+# v20a149 rebase 上 main 6d08c7c（v171）resync：CSS ＋13，三個錨點一律 ＋13（qa149/resync_rebase149.py difflib 對位核實內容逐字相同，純漂移；ok() 名標籤一併更新）。
 # 行號寫死（HELD 25725／normaliser 31387／loader 31531（v152 rebase 上 main 8409178：v155＋v161 令行號再移位） 等），rebase 要人手 resync。
 # 用法：python3 tests/test_tang152_static.py [path-to-index.html]
 import json
@@ -52,7 +53,7 @@ ok('刪節點：CONTRA98_WHEN_FIX 冇 R_tang_ending', 'R_tang_ending:["1990' not
 ok('刪節點：CONTRA98 winter_finale 由 12 減到 11', src.count('"1990冬","era_1990_winter_finale"') == 11)
 
 # --- 3. DengLine 排片線留返（meet＋push1／push2／crisis，閘門唔郁） ---
-ok('留線：HELD 縮到 3 節（L25725）', lines()[25724].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
+ok('留線：HELD 縮到 3 節（L25738）', lines()[25737].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
 ok('留線：PUSH_CHROME 有 push1／push2／crisis，冇 ending',
    'R_tang_push1: { chromeSeason:"winter"' in src and 'R_tang_push2: { chromeSeason:"spring"' in src
    and 'R_tang_crisis: { chromeSeason:"autumn"' in src)
@@ -72,8 +73,8 @@ ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
    'DengLine.loadMock(dengMock)' in src and 'DengLine.loadPushMock(dengPushMock)' in src)
 
 # --- 4. 載入機制：stub 正規化＋push mock 過濾 ---
-ok('機制：normaliseTangStub152 函數在位（L31387）', lines()[31386].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行（L31531）', lines()[31530].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位（L31400）', lines()[31399].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行（L31544）', lines()[31543].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)

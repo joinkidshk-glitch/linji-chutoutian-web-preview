@@ -4,6 +4,7 @@
 # v20a170 P2：底圖換成新舞台-only 圖（同路徑同尺寸；源圖 pixflux 400×224，裁走底部椅背 → 400×208，
 # 再放大 424×240；§4 用 PIL 釘圖內容：幕布紅＋舞台頂邊 y≈194＋講台在位＋底部無椅背）。
 # 反證：對 pristine main（e08a070）index.html 跑——舊像素底圖在位、新常數／新檔案全部缺失 → 乾淨 FAIL，唔 crash。
+# v20a149 rebase 上 main 6d08c7c resync：B1 canvas backing 424×240→636×360（draw() 內 setTransform 1.5，邏輯座標唔郁）；backing 斷言跟新尺寸，其餘（底圖檔 424×240、drawImage 1:1、pixelated、降級舞台）唔郁。
 import os, re, struct, sys
 
 idx_path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
@@ -80,7 +81,7 @@ chk('loader 失敗照舊降級（onerror → bgReady=false）', 'im.onerror' in 
 chk('draw() 畫底圖 1:1（424×240）', 'ctx.drawImage(bgImg, 0, 0, W, H)' in play_fn)
 chk('pan beat 保持橫移畫法（440 闊）', 'ctx.drawImage(bgImg, -8 + off, 0, 440, H)' in play_fn)
 chk('降級舞台函數仲在（載入失敗兜底）', 'function awards62FallbackStage(ctx, W, H)' in src)
-chk('canvas backing store 仲係 424×240', '<canvas class="awd62-canvas" width="424" height="240">' in src)
+chk('canvas backing store 636×360（v149 B1：424×240→636×360，邏輯座標唔郁）', '<canvas class="awd62-canvas" width="636" height="360">' in src)
 chk('canvas 像素呈現唔郁（pixelated）', 'image-rendering:pixelated' in src and 'awd62-canvas' in src)
 
 # --- 3. 硬規則：SAVE key／softRev／?v= 冇郁 ---
