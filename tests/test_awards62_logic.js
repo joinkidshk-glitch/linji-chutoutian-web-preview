@@ -107,7 +107,7 @@ var FREEPLAY_FW = {
     categories: {
       award_singho_tv: [
         { id:'tv_lead', label:'最佳男主角', winLine:'台上念到你個名。', loseLine:'入圍未得獎。', galleryLine:'觀禮一晚。' },
-        { id:'tv_pop', label:'最受歡迎男藝員', winLine:'觀眾票選有你。', loseLine:'入圍未得獎。', galleryLine:'觀禮一晚。' }
+        { id:'tv_pop', label:'最佳男配角', winLine:'台上念到你個名。', loseLine:'入圍未得獎。', galleryLine:'觀禮一晚。' }
       ],
       award_harbour_ad: [
         { id:'ad_best', label:'最佳廣告演繹', winLine:'台上念到你個名。', loseLine:'入圍未得獎。', galleryLine:'觀禮一晚。' }

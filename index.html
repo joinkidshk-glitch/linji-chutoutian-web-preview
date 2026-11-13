@@ -45262,9 +45262,9 @@ const VENUE99_NEWS_LINE = {
 /* 朝早報紙（newspaperStub award 模板覆寫）：每個酒店媒介各改 win／nominee 一款 dek，
    其餘模板保持原樣——真報紙唔會篇篇寫場地。TV 模板唔郁（台慶喺電視台，廠景口吻一致）。 */
 const VENUE99_NP_DEK = {
-  np_win_film_02: "維港影藝獎側記：金禧大酒店大禮堂嗰晚，年度票房話題綠葉由{playerName}奪得，街坊笑言個樣好抵死，臨記生涯添履歷。",
+  np_win_film_02: "維港影藝獎側記：金禧大酒店大禮堂嗰晚，{playerName}奪得演員獎，街坊笑言個樣好抵死，臨記生涯添履歷。",
   np_nom_film_01: "新一屆維港影藝獎入圍名單出爐，{playerName} 成功躋身提名之列。頒獎夜設喺金禧大酒店大禮堂，行內開始留意呢張新面孔。",
-  np_win_music_02: "星河金碟夜側記：金禧大酒店大禮堂嗰晚，{playerName}以MV男配角身份奪最受歡迎出鏡嗓，街坊話聽聲就認得，聲望悄然提升。",
+  np_win_music_02: "星河金碟夜側記：金禧大酒店大禮堂嗰晚，{playerName}憑歌聲奪獎，街坊話聽聲就認得，聲望悄然提升。",
   np_nom_music_01: "星河金碟夜入圍名單正式公開，{playerName} 獲得獎項提名。頒獎夜喺金禧大酒店大禮堂舉行，錄音室的汗水無白流。",
   np_win_ad_02: "維港街招・年度廣告賞側記：金禧大酒店大禮堂嗰晚，{playerName}奪得此特別獎，綠葉也有春天，聲望穩步上揚，商戶開始留意。",
   np_nom_ad_01: "維港街招・年度廣告賞公佈入圍名單，{playerName} 參演的廣告成功突圍。頒獎夜設喺金禧大酒店大禮堂，商業價值備受肯定。"
@@ -45405,7 +45405,15 @@ function awardsEvalTier(ceremony, year, forceTier){
       if(c.industryCreditMin!=null && dual.industryCredit >= Number(c.industryCreditMin)) return true;
       return false;
     });
-    if(wraps >= wrapMin && dualOk) return "nominee";
+    /* v20a188：提名仲要過角色閘——嗰年嗰媒介未做過任何可提名角色（主角／配角／歌手），
+       就算作品數＋雙軌夠數都只係旁聽，唔可以第一年做臨記就入圍男主角。冇覆寫表嘅舊環境
+       （awards188EligibleCats 回 null）唔閘。 */
+    let roleOk188 = true;
+    try{
+      const el188 = (typeof awards188EligibleCats === "function") ? awards188EligibleCats(ceremony.id, ceremony, year) : null;
+      if(Array.isArray(el188)) roleOk188 = el188.length > 0;
+    }catch(_e){}
+    if(wraps >= wrapMin && dualOk && roleOk188) return "nominee";
   }catch(_e){}
   /* gallery */
   try{
@@ -45430,7 +45438,230 @@ function awardsEvalTier(ceremony, year, forceTier){
   if(gigCount >= 1 || wraps >= 1) return "gallery";
   return "gallery";
 }
+/* ===== v20a188 AWARDS188：獎項全部改名＋提名跟角色掛鈎 =====
+   用戶 2026-11-13 18:34 拍板：電影／電視／音樂三組跟真實獎項名，廣告組由助手定。
+   新表 15 個，取代 schema／stub 舊 10 個（舊組別後綴、舊人氣獎、生造名拎走）。
+   唔郁 content pack JSON——呢張覆寫表喺 index.html 載入層攞優先權（awardsMvpCategories／
+   awardsStubCategory 先讀呢度，冇先跌返 schema／stub；舊測試環境冇呢個 const 就行舊路）。
+   典禮名、提名門檻（嗰年嗰媒介殺青夠數＋雙軌一條達標）、對手加權、贏線 0.875、報紙流程全部唔郁。
+   role：lead（做過主角）／support（做過配角）／singer（唱過歌）／newcomer（新人獎＝唱過歌＋嗰媒介首年）。
+   gender：阿偉係男仔，女主角／女配角／女歌手只係典禮獎項表嘅完整 slate，永遠唔入玩家提名池。
+   判定「做過嗰個位」用現有數據：awards62YearWorks（嗰年嗰媒介殺青，帶 gig；年份口徑跟計分同款：
+   殺青日曆年；wrapHistory 上限 90，舊檔截斷咗嘅救唔返）；主角沿用遊戲既有判準
+   end95IsLead（結局梯嗰套，連替身 guard）＋awards65IsLeadWork（v65 代表作嗰套）；
+   配角＝roleScale 含 "support" 或 roleLabel 含「配角」／「男配」；歌手＝唱片通告桶任何作品。
+   唔新造追蹤表。primaryTrack：主角／歌手行幕前聲望（舊人氣獎嗰瓣），配角／新人行
+   業內信用（舊新人獎嗰瓣）——舊 mvp 池每典禮都係一聲望一信用，新表每典禮同樣兩瓣齊，
+   standing bestBase 唔變。winLine／loseLine 唔寫數字承諾。 */
+const AWARDS188_CATEGORIES = {
+  award_harbour_ad: [
+    { id:"cat_ad_lead_m", label:"最佳廣告男主角", primaryTrack:"stageVolume", matchTypes:["廣告"], metricEcho:"attention", role:"lead", gender:"m",
+      winLine:"品牌席拍掌。你個名第一次同「街招」一齊被念出嚟。",
+      loseLine:"入圍名單有你——盃未到，街外已經有人記得你個樣。",
+      galleryLine:"你坐後排，睇人上台領獎。廣告燈好白，你記住呢種掌聲。" },
+    { id:"cat_ad_lead_f", label:"最佳廣告女主角", primaryTrack:"stageVolume", matchTypes:["廣告"], metricEcho:"attention", role:"lead", gender:"f",
+      winLine:"品牌席拍掌——女主角個名同「街招」一齊被念出嚟，全場都望住台上。",
+      loseLine:"女主角一格入圍咗，未攞獎——街外已經有人記得嗰個樣。",
+      galleryLine:"你坐後排，睇人上台領獎。廣告燈好白，你記住呢種掌聲。" },
+    { id:"cat_ad_support_m", label:"最佳廣告男配角", primaryTrack:"industryCredit", matchTypes:["廣告"], metricEcho:"attention", role:"support", gender:"m",
+      winLine:"台上念到你個名。廣告入面你得一鏡，今晚嗰一鏡企到台中央。",
+      loseLine:"入圍咗，未攞獎——街外嗰一鏡，下一支廣告再爭。",
+      galleryLine:"你坐後排，睇人上台領獎。廣告燈好白，你記住呢種掌聲。" },
+    { id:"cat_ad_support_f", label:"最佳廣告女配角", primaryTrack:"industryCredit", matchTypes:["廣告"], metricEcho:"attention", role:"support", gender:"f",
+      winLine:"台上念出女配角個名——廣告入面佢得一鏡，今晚嗰一鏡企到台中央。",
+      loseLine:"女配角一格入圍咗，未攞獎——街外嗰一鏡，下一支廣告再爭。",
+      galleryLine:"你坐後排，睇人上台領獎。廣告燈好白，你記住呢種掌聲。" }
+  ],
+  award_golddisc_music: [
+    { id:"cat_music_singer_m", label:"最佳男歌手", primaryTrack:"stageVolume", matchTypes:["唱片通告"], metricEcho:"sales", role:"singer", gender:"m",
+      winLine:"台上念到你。金碟反光好刺，你聽得見心跳同掌聲一齊嚟。",
+      loseLine:"名單滑過你個名——入圍咗，未抱碟。錄音室仲有下一更。",
+      galleryLine:"你坐席上，聽人謝唱片公司。你記住碟市點樣叫人名。" },
+    { id:"cat_music_singer_f", label:"最佳女歌手", primaryTrack:"stageVolume", matchTypes:["唱片通告"], metricEcho:"sales", role:"singer", gender:"f",
+      winLine:"台上念出女歌手個名——金碟反光好刺，掌聲同歌聲一齊嚟。",
+      loseLine:"女歌手一格入圍咗，未抱碟——碟市仲有下一更。",
+      galleryLine:"你坐席上，聽人謝唱片公司。你記住碟市點樣叫人名。" },
+    { id:"cat_music_newcomer", label:"最佳新人獎", primaryTrack:"industryCredit", matchTypes:["唱片通告"], metricEcho:"sales", role:"newcomer", gender:"",
+      winLine:"台上念到你個名——新人獎第一次有人叫你，唔係叫臨記。",
+      loseLine:"名單滑過你個名——入圍咗，未抱碟。新人路長，下一張碟再嚟過。",
+      galleryLine:"你坐席上，睇新人上台。你記住碟市點樣叫人名。" }
+  ],
+  award_harbour_film: [
+    { id:"cat_film_lead_m", label:"最佳男主角", primaryTrack:"stageVolume", matchTypes:["電影"], metricEcho:"boxOffice", role:"lead", gender:"m",
+      winLine:"影藝獎台上念到你個名。燈光好光，你聽得見自己心跳同掌聲一齊嚟。",
+      loseLine:"入圍咗，未抱盃。票房數字會過去，你仲有下一場戲。",
+      galleryLine:"你坐後排，睇大銀幕片段。你記住影圈點樣鼓掌。" },
+    { id:"cat_film_lead_f", label:"最佳女主角", primaryTrack:"stageVolume", matchTypes:["電影"], metricEcho:"boxOffice", role:"lead", gender:"f",
+      winLine:"影藝獎台上念出女主角個名——掌聲起嗰刻，全場都望向台上嗰位。",
+      loseLine:"女主角一格競爭激烈，入圍已經係肯定——下一部戲再嚟過。",
+      galleryLine:"你坐後排，睇大銀幕片段。你記住影圈點樣鼓掌。" },
+    { id:"cat_film_support_m", label:"最佳男配角", primaryTrack:"industryCredit", matchTypes:["電影"], metricEcho:"boxOffice", role:"support", gender:"m",
+      winLine:"台上念到你個名。綠葉都有人記得——今晚，配角企到台中央。",
+      loseLine:"入圍咗，未抱盃。戲入面你撐住場，戲外你仲有下一場。",
+      galleryLine:"你坐後排，睇住綠葉上台。你記住行內點樣叫配角個名。" },
+    { id:"cat_film_support_f", label:"最佳女配角", primaryTrack:"industryCredit", matchTypes:["電影"], metricEcho:"boxOffice", role:"support", gender:"f",
+      winLine:"台上念出女配角個名——戲入面佢撐住場，今晚佢企到台中央。",
+      loseLine:"女配角一格入圍咗，未抱盃——戲入面嘅光，下一部再爭。",
+      galleryLine:"你坐後排，睇住綠葉上台。你記住行內點樣叫配角個名。" }
+  ],
+  award_singho_tv: [
+    { id:"cat_tv_lead_m", label:"最佳男主角", primaryTrack:"stageVolume", matchTypes:["電視劇","綜藝"], metricEcho:"ratings", role:"lead", gender:"m",
+      winLine:"台上念到你個名。燈光好光，你聽得見自己心跳。",
+      loseLine:"名單滑過你個名——入圍咗，未抱盃。還有下一場。",
+      galleryLine:"你坐後排，聽得見掌聲。呢晚你記住行內點樣叫人名。" },
+    { id:"cat_tv_lead_f", label:"最佳女主角", primaryTrack:"stageVolume", matchTypes:["電視劇","綜藝"], metricEcho:"ratings", role:"lead", gender:"f",
+      winLine:"台上念出女主角個名——台慶夜掌聲最響嗰刻，屬於台上嗰位。",
+      loseLine:"女主角一格入圍咗，未抱盃——收視會過去，下一套劇再嚟過。",
+      galleryLine:"你坐後排，聽得見掌聲。呢晚你記住行內點樣叫人名。" },
+    { id:"cat_tv_support_m", label:"最佳男配角", primaryTrack:"industryCredit", matchTypes:["電視劇","綜藝"], metricEcho:"ratings", role:"support", gender:"m",
+      winLine:"台上念到你個名。配角都有人記得——今晚，綠葉企到台中央。",
+      loseLine:"入圍咗，未抱盃。劇入面你撐住場，劇外你仲有下一套。",
+      galleryLine:"你坐後排，睇住綠葉上台。你記住行內點樣叫配角個名。" },
+    { id:"cat_tv_support_f", label:"最佳女配角", primaryTrack:"industryCredit", matchTypes:["電視劇","綜藝"], metricEcho:"ratings", role:"support", gender:"f",
+      winLine:"台上念出女配角個名——劇入面佢撐住場，今晚佢企到台中央。",
+      loseLine:"女配角一格入圍咗，未抱盃——劇入面嘅光，下一套再爭。",
+      galleryLine:"你坐後排，睇住綠葉上台。你記住行內點樣叫配角個名。" }
+  ]
+};
+/* 玩家係男仔（阿偉）：女獎項永遠唔入提名池。 */
+const AWARDS188_PLAYER_GENDER = "m";
+/* 主角判準：先用遊戲既有 end95IsLead（結局梯嗰套，連替身 guard——roleScale 話長劇、
+   roleLabel 話替身嗰啲 gig_1988_tv_06／gig_1988_film_harbour_winter_high 唔可以當主角）；
+   再用 v65 awards65IsLeadWork（代表作嗰套），同樣驗替身；gig 搵唔到就用 wrap 紀錄本身
+   嘅 roleLabel／作品名兜底。 */
+function awards188IsLead(w){
+  try{
+    if(!w) return false;
+    const g = w.g || null, h = w.h || null;
+    if(g && typeof end95IsLead === "function"){
+      try{ if(end95IsLead(g)) return true; }catch(_e){}
+    }
+    if(g && typeof awards65IsLeadWork === "function"){
+      try{
+        if(awards65IsLeadWork(w)){
+          const rl = String((g && g.roleLabel) || (h && h.roleLabel) || "");
+          const sx = String((g && g.title) || "").replace(/^《[^》]*》/, "");
+          if(rl.indexOf("替身") < 0 && sx.indexOf("替身") < 0) return true;
+        }
+      }catch(_e2){}
+    }
+    if(!g && h){
+      const rl = String(h.roleLabel || "");
+      const t = String(h.workTitle || h.title || "");
+      if(rl.indexOf("替身") >= 0 || t.indexOf("替身") >= 0) return false;
+      if(/男主角|女主角|主角|主演|擔正|領銜/.test(rl)) return true;
+      if(/男主角|女主角/.test(t)) return true;
+    }
+    return false;
+  }catch(_e){ return false; }
+}
+function awards188IsSupport(w){
+  try{
+    if(!w) return false;
+    const g = w.g || null, h = w.h || null;
+    const rs = String((g && g.roleScale) || (h && h.roleScale) || "");
+    const rl = String((g && g.roleLabel) || (h && h.roleLabel) || "");
+    if(/替身/.test(rl)) return false; /* 替身唔係配角 */
+    if(/support/.test(rs)) return true;
+    if(/配角|男配/.test(rl)) return true;
+    return false;
+  }catch(_e){ return false; }
+}
+/* 嗰件作品算咩位：lead／support／singer／""。唱片通告桶任何作品都算唱過歌
+   （主唱／和音／MTV 都係開過聲）；綜藝／臨記／替身／武師等唔係 lead 亦唔係 support。 */
+function awards188WorkRole(w){
+  try{
+    if(!w) return "";
+    const g = w.g || null, h = w.h || null;
+    const type = String((h && h.type) || (g && g.type) || "");
+    if(type === "唱片通告") return "singer";
+    if(awards188IsLead(w)) return "lead";
+    if(awards188IsSupport(w)) return "support";
+    return "";
+  }catch(_e){ return ""; }
+}
+/* 新人獎要係嗰媒介首年：之前年份冇同媒介殺青。用現有 wrapHistory 掃，唔新造追蹤表；
+   舊檔 wrapHistory 截斷咗嘅話，新人閘可能誤放（只影響獎項名，唔影響提名本身）。 */
+function awards188HadEarlierWork(ceremony, year){
+  try{
+    const types = {};
+    ((ceremony && ceremony.matchTypes) || []).forEach(t=>{ if(t) types[String(t)] = true; });
+    const hist = (typeof S !== "undefined" && S && Array.isArray(S.wrapHistory)) ? S.wrapHistory : [];
+    for(let i = 0; i < hist.length; i++){
+      const h = hist[i];
+      if(!h || !types[String(h.type || "")]) continue;
+      const y = (typeof awards62YearOf === "function") ? awards62YearOf(h) : (Number(h.year) || 0);
+      if(y && y < year) return true;
+    }
+  }catch(_e){}
+  return false;
+}
+function awards188CatEligible(cat, ceremony, year, works){
+  if(!cat) return false;
+  if(cat.gender && cat.gender !== AWARDS188_PLAYER_GENDER) return false;
+  const role = cat.role || "";
+  if(role === "lead" || role === "support" || role === "singer"){
+    const ws = works || ((typeof awards62YearWorks === "function") ? awards62YearWorks(ceremony, year) : []);
+    for(let i = 0; i < ws.length; i++){
+      if(awards188WorkRole(ws[i]) === role) return true;
+    }
+    return false;
+  }
+  if(role === "newcomer"){
+    const ws = works || ((typeof awards62YearWorks === "function") ? awards62YearWorks(ceremony, year) : []);
+    let sang = false;
+    for(let i = 0; i < ws.length; i++){ if(awards188WorkRole(ws[i]) === "singer"){ sang = true; break; } }
+    if(!sang) return false;
+    return !awards188HadEarlierWork(ceremony, year);
+  }
+  return true; /* 冇 role 標記嘅類別（舊表）唔閘 */
+}
+/* 回 null＝冇覆寫表（舊測試環境），調用方行舊路；回陣列＝覆寫表入面角色啱嘅獎項。 */
+function awards188EligibleCats(ceremonyId, ceremony, year){
+  try{
+    if(typeof AWARDS188_CATEGORIES === "undefined") return null;
+    const list = (AWARDS188_CATEGORIES && AWARDS188_CATEGORIES[ceremonyId]) || null;
+    if(!list) return null;
+    const cer = ceremony || ((typeof awardsCeremonyById === "function") ? awardsCeremonyById(ceremonyId) : null) || {};
+    const works = (typeof awards62YearWorks === "function") ? awards62YearWorks(cer, year) : [];
+    return list.filter(c=> awards188CatEligible(c, cer, year, works));
+  }catch(_e){ return null; }
+}
+/* v20a188：朝早報紙 award_win 模板覆寫——pack 入面 8 款 win 模板（每媒介 2 款）
+   全部用舊獎項名寫 headline／dek／clipLabel，實駕驗到贏獎報紙會原樣出街。
+   只換表入面有嘅欄——VENUE99 嗰邊改過嘅 dek（film_02／music_02／ad_02）唔郁，
+   唔打架；模板唔知玩家贏邊一格，所以一律用通用演員／歌手獎寫法，唔寫具體格名。
+   喺 load 嗰陣 textfix55＋venue99 之後行（見 loadFreeplayPacks 尾段）。 */
+const AWARDS188_NP_WIN = {
+  np_win_film_01: { headline:"維港影藝獎揭曉 {playerName} 奪演員獎", dek:"阿偉憑三句對白搶鏡，評審讚其眼神有戲，開始有觀眾記得佢個名。", clipLabel:"維港影藝獎・得獎" },
+  np_win_film_02: { headline:"影藝獎夜 阿偉茶餐廳食面戲封王", clipLabel:"維港影藝獎・得獎" },
+  np_win_tv_01: { headline:"星河台慶夜 演員獎爆冷由{playerName}奪得", dek:"廠景熬出頭！阿偉獲獎時多謝監製不殺之恩，而家連星河電視台高層都開始留意佢。", clipLabel:"星河台慶・得獎" },
+  np_win_tv_02: { headline:"台慶夜 阿偉靠一句收工了贏街坊票", dek:"星河台慶・年度頒獎夜側記：{playerName}拿下演員獎，綠葉光芒蓋不住，聲望再下一城。", clipLabel:"星河台慶・得獎" },
+  np_win_music_01: { headline:"星河金碟夜 新人奪獎 {playerName}跑出", dek:"錄音室和音熬出頭！阿偉憑合唱單曲獲獎，評審指其聲線有市井煙火味，喺行內漸漸有口碑。", clipLabel:"星河金碟夜・得獎" },
+  np_win_music_02: { headline:"金碟夜 阿偉奪獎 樂壇多把靚聲", clipLabel:"星河金碟夜・得獎" },
+  np_win_ad_01: { headline:"維港街招賞 {playerName}跑出", dek:"靠一支涼茶廣告突圍！阿偉獲評夠貼地，有街坊味，奪獎殊不容易，街坊開始記得佢個樣。", clipLabel:"維港街招・得獎" },
+  np_win_ad_02: { headline:"街外一鏡 阿偉憑跌低眼鏡贏掌聲", clipLabel:"維港街招・得獎" }
+};
+function awards188ApplyNpOverlay(FW){
+  try{
+    const np = FW && FW.newspaperStub;
+    if(!np || !np.templates) return;
+    (np.templates["award_win"] || []).forEach(t=>{
+      if(!t || !AWARDS188_NP_WIN[t.id]) return;
+      const o = AWARDS188_NP_WIN[t.id];
+      if(o.headline) t.headline = o.headline;
+      if(o.dek) t.dek = o.dek;
+      if(o.clipLabel) t.clipLabel = o.clipLabel;
+    });
+  }catch(_e){}
+}
 function awardsMvpCategories(ceremonyId){
+  /* v20a188：覆寫表優先——新 15 獎（每典禮 3–4 個）；冇覆寫嗰陣行舊路（schema→stub）。 */
+  try{
+    if(typeof AWARDS188_CATEGORIES !== "undefined" && AWARDS188_CATEGORIES && Array.isArray(AWARDS188_CATEGORIES[ceremonyId])){
+      return AWARDS188_CATEGORIES[ceremonyId].slice();
+    }
+  }catch(_e){}
   const schema = FREEPLAY_FW.awardsSchema;
   const stub = FREEPLAY_FW.awardsStub;
   let list = [];
@@ -45443,6 +45674,14 @@ function awardsMvpCategories(ceremonyId){
   return list.slice(0, 2);
 }
 function awardsStubCategory(ceremonyId, catId){
+  /* v20a188：覆寫表優先——label／winLine／loseLine／galleryLine 由呢度出。 */
+  try{
+    if(typeof AWARDS188_CATEGORIES !== "undefined" && AWARDS188_CATEGORIES){
+      const list = AWARDS188_CATEGORIES[ceremonyId] || [];
+      const hit = list.find(c=>c && c.id===catId);
+      if(hit) return hit;
+    }
+  }catch(_e){}
   const stub = FREEPLAY_FW.awardsStub;
   const list = (stub && stub.categories && stub.categories[ceremonyId]) || [];
   return list.find(c=>c && c.id===catId) || null;
@@ -45505,8 +45744,16 @@ function buildAwardResultPack(opts){
   const week = opts.week!=null ? opts.week : (typeof weekNumNow==="function" ? weekNumNow() : 1);
   const tier = awardsEvalTier(ceremony, year, opts.forceTier);
   const cats = awardsMvpCategories(ceremonyId);
-  const pickN = Math.min(cats.length, 1 + (Math.random()<0.45 && cats.length>1 ? 1 : 0));
-  const shuffled = cats.slice();
+  /* v20a188：提名池只留角色啱嘅獎項。實路徑 nominee 一定有 eligible（awardsEvalTier 已閘）；
+     gallery 冇角色就睇全場（嗰獎係頒畀人哋，唔係提名玩家）；forceTier debug 嗰陣 eligible
+     空就跌返全表，唔留空 pack。冇覆寫表嘅舊環境（回 null）行舊路。 */
+  let pool188 = cats;
+  try{
+    const el188 = (typeof awards188EligibleCats === "function") ? awards188EligibleCats(ceremonyId, ceremony, year) : null;
+    if(Array.isArray(el188) && el188.length) pool188 = el188;
+  }catch(_e){}
+  const pickN = Math.min(pool188.length, 1 + (Math.random()<0.45 && pool188.length>1 ? 1 : 0));
+  const shuffled = pool188.slice();
   for(let i=shuffled.length-1;i>0;i--){
     const j = Math.floor(Math.random()*(i+1));
     const t = shuffled[i]; shuffled[i]=shuffled[j]; shuffled[j]=t;
@@ -45981,6 +46228,8 @@ try{
     play62: awards62PlayCeremony,
     fellows63: awards63Fellows,
     focus63: awards63FocusCat,
+    table188: function(){ return (typeof AWARDS188_CATEGORIES !== "undefined") ? AWARDS188_CATEGORIES : null; },
+    eligible188: function(id, year){ try{ return awards188EligibleCats(id, null, year); }catch(_e){ return null; } },
     pane62: renderAwardsPane62
   };
 }catch(_e){}
@@ -46210,6 +46459,10 @@ function awards62GateLineHtml(pack){
   const bits = [];
   if(st.gapWorks > 0) bits.push("仲差 " + st.gapWorks + " 部" + med + "作品先夠入圍（而家 " + st.wraps + "/" + st.wrapMin + "）");
   if(!st.dualOk) bits.push("聲望／業內信用未到入圍基本盤");
+  /* v20a188：作品數＋雙軌夠數但席位仍然係觀禮 → 角色閘（嗰年未做過可提名角色）。 */
+  if(!bits.length && st.wraps >= st.wrapMin && st.dualOk){
+    bits.push((pack && pack.medium) === "music" ? "嗰年未唱過歌，入圍唔到歌手獎" : "嗰年未做過主角／配角級作品，入圍唔到演員獎");
+  }
   if(!bits.length) bits.push("坐觀禮席睇全場");
   return '<p class="psr-gate62">今晚席位：觀禮。' + bits.join("；") + "。</p>";
 }
@@ -49006,6 +49259,7 @@ async function loadFreeplayFramework(){
   FREEPLAY_FW.loaded = true;
   try{ textfix55Freeplay(FREEPLAY_FW); }catch(_t55){}
   try{ venue99ApplyOverlay(FREEPLAY_FW); }catch(_v99){} /* v20a99 VENUE99：頒獎場地覆寫，須喺 textfix55 之後行 */
+  try{ if(typeof awards188ApplyNpOverlay==="function") awards188ApplyNpOverlay(FREEPLAY_FW); }catch(_e188){} /* v20a188：報紙 win 模板舊獎項名覆寫，須喺 textfix55＋venue99 之後行 */
   try{ if(typeof years66Walk==="function") years66Walk(FREEPLAY_FW, null); }catch(_y66){} /* v20a66 YEARS66 */
   try{ freeplayApplyEraStarStubOverlay(); }catch(_e){}
   try{ if(typeof augmentPostShootRewards35==="function") augmentPostShootRewards35(); }catch(_e){}

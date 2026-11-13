@@ -4,6 +4,8 @@
 # 零淨行數改動（2 行改、0 行加減，總行數 60143 不變——rebase 上 v184 main 77603b3 後基底 60127→60143，v185 本身淨 0），kwan151／tang152／rom176 行號釘逐檔核實見下。
 # v20a181 第三次 rebase 上 main cd4985f（v185）resync：v185 本身淨 0 行，v181 淨 ＋8，合併後總行數 60143→60151（code 數更新，標籤留返 main 數字）。
 # v20a186 resync：index.html 淨 ＋4 行（結果卡同屆提名行移出逐類別卡，插入點 L45783–45826），總行數 60151→60155。
+# v20a188 resync：index.html 淨 +225 行（AWARDS188 覆寫表＋角色閘，插入點 L45380–46310）；其後釘行各 +225，之前唔郁；總行數 60155→60380。
+# v20a188 resync 補 +29：上一手 +225 計少咗其後再加嘅 NP_WIN 覆寫＋load 呼叫＋gate 行＋debug 入口（淨 +29）；總淨變 +254，總行數 60409；difflib 對位核實全部錨點純漂移，見 qa188/resync188_verify.py。
 # 反證：pristine main (01ddcaa) 冇 v185 標記／spans／規則 → 多項 FAIL（唔 crash）。
 # 用法：python3 tests/test_gift185_static.py [path-to-index.html]
 import io, os, sys
@@ -31,7 +33,7 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 60143 不變（零淨行數改動，行號釘唔漂移）', html.count('\n') == 60155)
+ok('總行數 60143 不變（零淨行數改動，行號釘唔漂移）', html.count('\n') == 60409)
 
 # ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',

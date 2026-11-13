@@ -56,10 +56,10 @@ const FEL = [
 ];
 const WIN = FEL[0];
 const LIST_TXT = '葉敏芝《渡輪燈火》、鍾楚凝《星光夜》、高俊傑《潮汐家庭》';
-const CAT_NEW = { id: 'cat_newcomer_tv', label: '最佳電視新人（臨記組）', outcome: 'nominated',
+const CAT_NEW = { id: 'cat_tv_lead_m', label: '最佳男主角', outcome: 'nominated',
   line: '名單滑過你個名——入圍咗，未抱盃。還有下一場。', repWorkTitle: '', weakHint62: '差啲咩：缺一部擔正嘅代表作。',
   fellows63: FEL, winner63: WIN };
-const CAT_FACE = { id: 'cat_popular_face', label: '最受歡迎螢幕面孔', outcome: 'nominated',
+const CAT_FACE = { id: 'cat_tv_support_m', label: '最佳男配角', outcome: 'nominated',
   line: '入圍名單有你，獎就落咗別人手上。', repWorkTitle: '', weakHint62: '差啲咩：缺一部擔正嘅代表作。',
   fellows63: FEL, winner63: WIN };
 function basePack(cats){
@@ -76,11 +76,11 @@ ok('兩類：同屆提名行只出一次', count(dual, '同屆提名') === 1);
 ok('兩類：psr-fellows63 節點只得一個', count(dual, 'psr-fellows63') === 1);
 ok('兩類：名單逐字不變（葉敏芝《渡輪燈火》、鍾楚凝《星光夜》、高俊傑《潮汐家庭》只出一次）', count(dual, LIST_TXT) === 1);
 ok('兩類：同屆提名行喺兩張類別卡之後（卡底獨立一行）',
-  dual.indexOf('同屆提名') > dual.lastIndexOf('最受歡迎螢幕面孔') && dual.indexOf('同屆提名') > dual.indexOf('最佳電視新人'));
-ok('兩類：kicker 次序唔郁（id 序：新人先、面孔後）',
-  dual.indexOf('最佳電視新人（臨記組）') < dual.indexOf('最受歡迎螢幕面孔'));
+  dual.indexOf('同屆提名') > dual.lastIndexOf('最佳男配角') && dual.indexOf('同屆提名') > dual.indexOf('最佳男主角'));
+ok('兩類：kicker 次序唔郁（id 序：男主角先、男配角後）',
+  dual.indexOf('最佳男主角') < dual.indexOf('最佳男配角'));
 ok('兩類：兩張類別卡齊晒（label 各一；餘韻卡同用 psr-metrics class，唔計入）',
-  count(dual, '最佳電視新人（臨記組）') === 1 && count(dual, '最受歡迎螢幕面孔') === 1);
+  count(dual, '最佳男主角') === 1 && count(dual, '最佳男配角') === 1);
 ok('兩類：得主標記仲喺名單入面（🏆圖標＋為得主）', /同屆提名/.test(dual) && /為得主/.test(dual));
 ok('兩類：請柬／結果卡以外內容唔郁（報紙卡＋餘韻卡＋雙軌行齊）',
   /娛樂快報/.test(dual) && /收視餘溫/.test(dual) && /幕前聲望 \+1 · 業內信用 \+2/.test(dual));
@@ -89,18 +89,18 @@ ok('兩類：請柬／結果卡以外內容唔郁（報紙卡＋餘韻卡＋雙�
 const single = renderAwardResultHtml(basePack([CAT_NEW]));
 ok('單類：同屆提名行維持一行', count(single, '同屆提名') === 1);
 ok('單類：名單逐字不變', count(single, LIST_TXT) === 1);
-ok('單類：一張類別卡', count(single, '最佳電視新人（臨記組）') === 1 && count(single, '最受歡迎螢幕面孔') === 0);
+ok('單類：一張類別卡', count(single, '最佳男主角') === 1 && count(single, '最佳男配角') === 0);
 
 /* ---- 冇 fellows：唔出空行 ---- */
 const noFel = renderAwardResultHtml(basePack([
-  { id: 'cat_newcomer_tv', label: '最佳電視新人（臨記組）', outcome: 'won', line: '得獎。', repWorkTitle: '長篇劇', fellows63: [], winner63: null }
+  { id: 'cat_tv_lead_m', label: '最佳男主角', outcome: 'won', line: '得獎。', repWorkTitle: '長篇劇', fellows63: [], winner63: null }
 ]));
 ok('冇 fellows：同屆提名行 0 次（唔出空行）', count(noFel, '同屆提名') === 0);
-ok('冇 fellows：結果卡其餘部分正常（得獎卡＋報紙卡齊）', /得獎 · 最佳電視新人/.test(noFel) && /娛樂快報/.test(noFel));
+ok('冇 fellows：結果卡其餘部分正常（得獎卡＋報紙卡齊）', /得獎 · 最佳男主角/.test(noFel) && /娛樂快報/.test(noFel));
 
 /* ---- 第一類冇 fellows、第二類有：照出第二類嗰份（唔漏） ---- */
 const mixed = renderAwardResultHtml(basePack([
-  { id: 'cat_newcomer_tv', label: '最佳電視新人（臨記組）', outcome: 'nominated', line: '入圍。', repWorkTitle: '', fellows63: [], winner63: null },
+  { id: 'cat_tv_lead_m', label: '最佳男主角', outcome: 'nominated', line: '入圍。', repWorkTitle: '', fellows63: [], winner63: null },
   CAT_FACE
 ]));
 ok('首類無 fellows、次類有：同屆提名行照出一次', count(mixed, '同屆提名') === 1 && count(mixed, LIST_TXT) === 1);
