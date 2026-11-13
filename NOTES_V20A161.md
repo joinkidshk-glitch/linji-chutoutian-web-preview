@@ -87,7 +87,7 @@ margin:2px 0 0; max-width:140px; text-align:left;
 - **第二次 rebase 上 `bf612bc`（v155 落地嗰陣 main 郁咗）**：`index.html` 自動合併乾淨（v161 區塊同 v155 改動唔同區）；三份測試衝突，全部純行號漂移——取 bf612bc 版再用 `qa161/resolve_rebase161_v155.py` 一律 +14（difflib 對位＋逐行錨點核實，RESULT PASS；舊 `resync161_rebase.py` 係第一次 rebase 嘅，硬計 9346a8e 釘行，已取代；換號嗰陣跳過 v155 歷史註解嗰行，`25744→25761`／`DEF 53601→53618` 原封不動）。`git rebase --continue` 嗰陣 EDITOR 未設會停低，要用 `GIT_EDITOR=true`（唔好 pipe 去 head，見 AGENTS.md v146 教訓）。隧道再跟 AGENTS.md 新教訓（v157）：`core.sshCommand` 加 `-o UserKnownHostsFile=/home/hatch/.ssh/known_hosts`，唔用 `StrictHostKeyChecking=no`；host key 核實係真 GitHub（`SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU`）。
 - **第三次 rebase 上 `150e3ef`**（v155 NOTES 補錄 commit，淨改 `NOTES_V20A155.md`，零衝突乾淨過）。
 - **最終全套 A/B（bf612bc／150e3ef 底，`qa161/suite_v155_pristine.txt`／`suite_v155_work.txt`）**：pristine **215 PASS／12 FAIL**，工作版 **216 PASS／12 FAIL**——FAIL 清單逐項相同，全部係 12 項穩定 pre-existing（flash51／giglib36／pacing35／poster59／rumor49／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wrap38），工作版多出嚟嗰 1 個 PASS 就係新測試 `test_start161_static.py`。**零回歸，准落地。**
-- 落地 commit／線上核實：見本檔落地後補錄（main 上另一個 NOTES commit）。
+- 落地 commit／線上核實：**已落地（2026-11-13）**——squash commit `8409178`（main `150e3ef`→`8409178`），線上 index.html **5,238,545 bytes、sha256 `c379b928a92fc522fb988d1ae994fd38e072fe381db1bc125c56e88713cdc5c7`**，同 repo 逐字相同，已核實。
 
 ## 9. 檔案
 
