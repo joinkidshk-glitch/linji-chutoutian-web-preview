@@ -171,3 +171,10 @@ JS pageerror **0**；console error 324 個，**全部係已知 pre-existing `bg_
 - c2b 重遇路徑（點頭離開）只以源碼核實，未 live 驗——要 live 驗要隔日再撞同一粒星，
   另開票先做。
 - `~/workspace/tmp-pristine202/`（基線用嘅 pristine 樹）用完可刪。
+
+## 9. 落地紀錄（統籌補）
+
+- 遊戲 commit `1a4a249`（squash merge `v20a202`，基底 main `860e790`），2026-11-14 04:53 HKT 推上 GitHub main。統籌親自核實：新測試 logic 47/47＋static 30/30（反證對 pristine 乾淨 FAIL）、相關 7 邏輯＋8 靜態測試逐個重跑 PASS、全套 A/B 基線 280/12 → 工作版 282/12（FAIL 清單完全相同）、實駕報告 15 runs／0 pageerror／324 個 http fail 全部係已知 pre-existing `bg_loc_home_airport` 404。
+- Push：全包連續斷 3 次（Broken pipe／remote hung up，pack 約 21MB）後改拆細推——分三程 fast-forward 全部一次成功：`ef3673a`（v201 證據 sup）→ `860e790`（v201 證據 shots，兩粒 v201 證據 commit 至此先上 GitHub）→ `1a4a249`（v202）。教訓：大 pack 斷線唔好死重試，拆做逐粒 commit 推。
+- 線上核實：初次 curl 仲係舊版 v201（Pages 部署 lag，約 90 秒後追上），之後線上 5,377,918 bytes sha `04b0f2ed…` 同 repo `HEAD:index.html` 逐字一致。
+- 設計 review 已派（見 `~/workspace/linji-design-review-v202/`）。
