@@ -3,7 +3,7 @@
 **分支** `v20a173`（工作副本 `~/workspace/linji-work173`），基底 `e8c3a73`（v170 已落地，
 main `59fdf54`，線上 5,254,542 bytes sha `651c26e7…` 已核實）。
 **範圍**：用戶 2026-11-13 12:50 拍板，修晒 v171 review C1＋C2（報告
-`~/workspace/linji-design-review-v171/REVIEW.md`，A 0／B 0／C 2）。**唔落地**——統籌落地。
+`~/workspace/linji-design-review-v171/REVIEW.md`，A 0／B 0／C 2）。**已落地**（見 §10 落地紀錄）。
 **改動**：`index.html` L4832 同行 2 處（加 0 行，總行數 59173 不變；openLoc DEF 行 53692 不變；
 kwan151／tang152／travel114 釘行唔使 resync）＋`tests/test_tang171_static.py` 2 條斷言跟新值
 ＋新 `tests/test_tang173_static.py`（21 項）＋實駕 `qa173/drive173.py`／`drive173.json`／`shots173/`。
@@ -135,3 +135,9 @@ c2 ok／sent／empty 932、送筆結果）。
 - **重驗（rebase 後最終樹）**：`test_tang173` **21/21**、`test_tang171` **22/22**、`kwan151`／`tang152`／`travel114`／`text125` 全部 PASS；`node --check` 兩段 inline script PASS。反證：`test_tang173` 喺 pristine `0ecaeb3` index 上行 **17/21**，4 項新行為斷言乾淨 FAIL（2× C1 stop、2× C2 `.h !important`），唔 crash。
 - **全套 A/B**（`qa131/run_suite.sh`，pristine worktree `~/workspace/pristine173-0ecaeb3`，紀錄 `qa173/suite_pristine_0ecaeb3.txt`／`qa173/suite_rebase173.txt`）：pristine **232／12** vs 工作版 **233／12**，FAIL 清單逐項相同（12 項 pre-existing），**零回歸**（＋1 正好係新加嘅 test_tang173）。
 - **實駕重跑**（`qa173/drive173.py all`，完整 Chromium＋`xvfb-run -a`，port 8183）：**c1_932 PASS／c1_700 PASS／c2 PASS，OVERALL PASS，0 pageerror**。數字同工人嗰輪完全一致：932 淡出 live 序列化 `... rgb(248, 241, 222) 60%`、「還人情」zoneOverlap 22／belowSolid 4、scrollH 814（頂／底／resize 全部 814）、700 送禮掣 zoneOverlap 30／visFrac 0.84／belowSolid 12、C2 鎖住態標題／hint 全部 opacity 0.72、可送態 1。`drive173.json`＋`shots173/` 重跑後 byte-identical（git 無改動）——rebase 零行為改變。HTTP 404 全部 pre-existing artId 缺圖（`rom_tang_*_soft_hold`）。
+
+## §10. 落地紀錄
+
+- **遊戲 commit `4762572`**（squash merge `v20a173`，基底 `0ecaeb3`／v153；17 檔 ＋2784／−5；index.html 淨 1 行改動——L4845 同行：淡出 stop 78%→60%＋`.h` 加 `!important`），**2026-11-13 已 push main**（`0ecaeb3..4762572`，一次成功），`git fsck` 乾淨（淨 dangling 殘留）。
+- **線上核實**：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/ —— **5,267,258 bytes、sha256 `a84b8d2b…`**，同 repo `HEAD:index.html` 完全一致。第一次 curl 仲係舊版（Pages 部署滯後，5,266,916 bytes sha `094072a4…`）；等 90 秒後重 curl 攞到新版。
+- 驗收總數（最終樹 `b7d07e3`／分支 HEAD）：新測試 21/21；全套 pristine `0ecaeb3` 232／12 vs 工作版 233／12，FAIL 清單逐項相同，零回歸；實駕 3/3 PASS、0 pageerror（HTTP 404 全部 pre-existing artId 缺圖）。
