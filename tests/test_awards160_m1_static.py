@@ -1,6 +1,8 @@
 # v20a160 M1 會場場景圖做典禮底圖 static tests：
-# 會場實景底圖檔案在位（424×240 JPG，等比放大、冇拉變形）、典禮 code 引用佢、
+# 會場實景底圖檔案在位（424×240 JPG，配合 canvas backing store 1:1）、典禮 code 引用佢、
 # 舊像素舞台 data URI 已撤、降級舞台同 canvas 幾何唔郁、硬規則（SAVE key／softRev／?v=）冇郁。
+# v20a170 P2：底圖換成新舞台-only 圖（同路徑同尺寸；源圖 pixflux 400×224，裁走底部椅背 → 400×208，
+# 再放大 424×240；§4 用 PIL 釘圖內容：幕布紅＋舞台頂邊 y≈194＋講台在位＋底部無椅背）。
 # 反證：對 pristine main（e08a070）index.html 跑——舊像素底圖在位、新常數／新檔案全部缺失 → 乾淨 FAIL，唔 crash。
 import os, re, struct, sys
 
@@ -86,6 +88,31 @@ chk('SAVE key 不變', 'starVolunteer_map_v19w' in src)
 chk('softRev 不變（s107）', 'var SOFT_REV = "s107"' in src)
 chk('產品 ?v= 不變（v20a10）', '?v=20a10' in src)
 chk('底圖路徑唔帶 ?v=（新檔名本身避快取）', '?v=' not in BG_REL)
+
+# --- 4. v20a170 P2：新舞台-only 圖內容（PIL 量度）---
+# 幕布底 y191–193 過渡、y194 滿亮平台面（FLOOR＝194−1＝193）；底部無椅背（舊圖底部椅區 dark 0.29–0.55）。
+try:
+    from PIL import Image
+    bg = Image.open(BG_PATH).convert('RGB')
+    def row_br(y, x0, x1):
+        row = [bg.getpixel((x, y)) for x in range(x0, x1)]
+        return sum(sum(p) / 3 for p in row) / len(row)
+    def dark_frac(y):
+        row = [bg.getpixel((x, y)) for x in range(424)]
+        return sum(1 for p in row if sum(p) / 3 < 55) / 424
+    chk('舞台頂邊：y188–190 仲係幕布紅（中央帶 mean < 110）',
+        row_br(188, 244, 297) < 110 and row_br(190, 244, 297) < 110)
+    chk('舞台頂邊：y194–196 已係平台面（中央帶 mean > 180）',
+        row_br(194, 244, 297) > 180 and row_br(196, 244, 297) > 180)
+    chk('幕布紅在位（y100 中央帶 R-B 均值 > 50）',
+        sum(bg.getpixel((x, 100))[0] - bg.getpixel((x, 100))[2]
+            for x in range(100, 325)) / 225 > 50)
+    gold = sum(1 for y in range(180, 216) for x in range(195, 231)
+               if (lambda p: p[0] > 170 and p[1] > 140 and p[2] < 210 and p[0] - p[2] > 30)(bg.getpixel((x, y))))
+    chk('講台在位（中央有金色講台像素）', gold > 0)
+    chk('底部無椅背（y232／y239 dark < 0.25）', dark_frac(232) < 0.25 and dark_frac(239) < 0.25)
+except Exception as e:
+    chk('PIL 讀到新底圖（' + str(e) + '）', False)
 
 print('')
 print('FAILED: %d' % len(fails) if fails else 'ALL PASS')

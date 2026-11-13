@@ -18,6 +18,7 @@
 # 行號：六處全部同行改動（CSS 規則 append 入 L4832 v169 行、add() 同行加 class、
 #      sync 定義＋scroll wiring append 入 resize 守門行、resize handler／rAF／openLoc 尾
 #      同行加呼叫），總行數 59171 不變，openLoc DEF 行 53690 不變——
+#      （v20a170 resync：P2 fallback 註解 +2 行 → 總行數 59173，openLoc DEF 行 53692）
 #      test_tang152／travel114／kwan151 釘行全部唔使 resync。
 # 反證：喺 pristine main（56141a3／v169）index 上行，新行為斷言會乾淨 FAIL，
 #      唔會 crash。守門斷言喺 pristine 都 PASS（佢哋守「舊嘢冇郁過」）。
@@ -47,9 +48,9 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 59171', src.count('\n') == 59171)
-ok('零行數漂移：openLoc DEF 行 53690 不變（travel114 釘行）',
-   len(lines) >= 53690 and 'function openLoc(id, opts){' in lines[53689])
+ok('零行數漂移：總行數 59173', src.count('\n') == 59173)
+ok('零行數漂移：openLoc DEF 行 53692 不變（travel114 釘行）',
+   len(lines) >= 53692 and 'function openLoc(id, opts){' in lines[53691])
 
 # --- §1. C1：捲動提示（淡出漸變） ---
 ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',

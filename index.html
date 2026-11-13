@@ -46095,11 +46095,13 @@ function awards62FallbackStage(ctx, W, H){
   for(let y = 0; y < H; y += 8){
     for(let x = ((y / 8) % 2) * 4; x < W; x += 8) ctx.fillRect(x, y, 4, 4);
   }
-  ctx.fillStyle = "#7a1f24"; ctx.fillRect(0, 0, 44, H - 52); ctx.fillRect(W - 44, 0, 44, H - 52);
-  ctx.fillStyle = "#8a6d2f"; ctx.fillRect(44, 0, 4, H - 52); ctx.fillRect(W - 48, 0, 4, H - 52);
+  /* v20a170 P2：後備舞台平台頂跟 FLOOR＝193（新頂 H-47＝193，平台正面由 193 伸到 H-22＝218，
+     金線 H-51＝189 橫跨頂邊；舊圖頂 155 用 H-85／H-89，P2 新圖頂線 194） */
+  ctx.fillStyle = "#7a1f24"; ctx.fillRect(0, 0, 44, H - 47); ctx.fillRect(W - 44, 0, 44, H - 47);
+  ctx.fillStyle = "#8a6d2f"; ctx.fillRect(44, 0, 4, H - 47); ctx.fillRect(W - 48, 0, 4, H - 47);
   ctx.fillStyle = "#8a6d2f"; ctx.fillRect(0, 0, W, 10);
-  ctx.fillStyle = "#3a2a1a"; ctx.fillRect(0, H - 52, W, 30);
-  ctx.fillStyle = "rgba(255,217,104,0.25)"; ctx.fillRect(W / 2 - 52, H - 56, 104, 10);
+  ctx.fillStyle = "#3a2a1a"; ctx.fillRect(0, H - 47, W, 25);
+  ctx.fillStyle = "rgba(255,217,104,0.25)"; ctx.fillRect(W / 2 - 52, H - 51, 104, 10);
   ctx.fillStyle = "#120c20"; ctx.fillRect(0, H - 22, W, 22);
   ctx.fillStyle = "#1d1430";
   for(let x = 6; x < W - 8; x += 16) ctx.fillRect(x, H - 26, 10, 8);
@@ -46323,7 +46325,7 @@ function awards62PlayCeremony(pack, doneFn){
       tim.onerror = ()=>{ tuxRec.ok = false; };
       tim.src = AWARDS160_TUXEDO_AWEI;
     }catch(_e){}
-    const FLOOR = 194;
+    const FLOOR = 193; /* v20a170 P2：舞台頂線 y≈194（新舞台-only 底圖，PIL 量度最終 424×240：中央帶幕布底 y191–193 過渡、y194 滿亮平台面；舊圖頂線 155、舊值 194 企觀眾席） */
     const slotCx = (i)=> 202 + (i - (slots.length - 1) / 2) * 72;
     /* v20a64：入場走路計劃——左右兩流、深位先行（唔使穿過已企定嘅人）；速度 0.16px/ms，walkA/walkB 交替（bob 已入幀） */
     const entryPlan = slots.map((s, i)=> ({ side: slotCx(i) <= 202 ? -1 : 1, cx: slotCx(i), from: 0, delay: 0, dur: 0 }));

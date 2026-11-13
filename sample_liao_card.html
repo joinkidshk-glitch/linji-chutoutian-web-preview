@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>v170 Phase 1 樣本 — 廖炳星提名卡三變體對照</title>
+<style>
+  /* 頁面說明區（唔係卡設計） */
+  body{background:#241736;color:#ffe9b0;font-family:"PingFang HK","Microsoft JhengHei",sans-serif;margin:0;padding:24px}
+  h1{font-size:18px;margin:0 0 6px}
+  p.sub{font-size:13px;color:#b9a8d9;margin:0 0 20px;line-height:1.6}
+  .row{display:flex;gap:28px;justify-content:flex-start;align-items:flex-start;flex-wrap:wrap}
+  .variant{width:88px;text-align:center}
+  .variant h2{font-size:13px;color:#f2c14e;margin:0 0 8px;white-space:nowrap}
+  .variant .cost{font-size:11px;color:#b9a8d9;line-height:1.5;margin:8px 0 0}
+  /* ── 以下卡 CSS 逐字照抄 index.html L788–797（live），只加 .show 令卡可見 ── */
+  .awd63-cards{display:flex;gap:8px;justify-content:center;margin-top:10px}
+  .awd63-card{width:88px;background:linear-gradient(180deg,#fbf2da,#f3e5c3);border:2px solid #d9c491;border-radius:4px;padding:5px;box-shadow:0 3px 8px rgba(0,0,0,.45);opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease;position:relative;box-sizing:border-box}
+  .awd63-card.show{opacity:1;transform:none}
+  .awd63-card img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;background:#2b2118}
+  .awd63-card .t{font-size:11px;line-height:1.35;color:#4a3a20;text-align:center;margin-top:4px;font-weight:700;height:30px;overflow:hidden}
+  .awd63-card .s{font-size:10px;color:#8a6d2f;text-align:center;line-height:15px;height:15px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .awd63-csscard{aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#3a2a4a,#241736);color:#ffe9b0;font-weight:900;font-size:13px;line-height:1.4;padding:6px;text-align:center;border:1px solid #8a6d2f;box-sizing:border-box}
+  img.pix{image-rendering:pixelated}
+  /* 放大檢視（只供睇面部細節，唔係卡設計） */
+  .zoom{margin-top:28px;border-top:1px solid #8a6d2f;padding-top:16px}
+  .zoom h2{font-size:14px;color:#f2c14e;margin:0 0 10px}
+  .zoom .row{ gap:28px}
+  .zoom figure{margin:0;width:156px;text-align:center}
+  .zoom figcaption{font-size:11px;color:#b9a8d9;margin-top:6px;line-height:1.5}
+  .zoom img{width:156px;height:234px;object-fit:cover;display:block;background:#2b2118}
+  .zoom .csszoom{width:156px;height:234px;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#3a2a4a,#241736);color:#ffe9b0;font-weight:900;font-size:26px;border:1px solid #8a6d2f;box-sizing:border-box}
+  .notes{margin-top:28px;border-top:1px solid #8a6d2f;padding-top:16px;font-size:13px;line-height:1.7;max-width:760px}
+  .notes h2{font-size:14px;color:#f2c14e}
+  .notes li{margin-bottom:6px}
+</style>
+</head>
+<body>
+<h1>v170 Phase 1 樣本 — 廖炳星提名卡：三變體對照</h1>
+<p class="sub">基準 case：won_932，影藝獎 1991，廖炳星《離岸的信》。三張卡尺寸、字體、排版全部跟 live（卡 88×172px，media 78×117，2:3；.t 11px／.s 10px）。<br>
+卡面 media 區而家係「作品」位（作品海報／無圖字卡）；(b)(c) 將佢變成「人物」位——作品海報唔再出現，係語義改動，唔止換圖。</p>
+
+<div class="row">
+  <div class="variant">
+    <h2>(a) 現況 · 深色字卡</h2>
+    <div class="awd63-cards"><div class="awd63-card show"><div class="awd63-csscard">《離岸的信》</div><div class="t">《離岸的信》</div><div class="s">廖炳星</div></div></div>
+    <p class="cost">live 而家就係咁<br>.awd63-csscard 降級設計<br>成本 0 次</p>
+  </div>
+  <div class="variant">
+    <h2>(b) 現成 bust 裁切</h2>
+    <div class="awd63-cards"><div class="awd63-card show"><img src="samples170/liao_bust_crop_2x3.png" alt="廖炳星 bust"><div class="t">《離岸的信》</div><div class="s">廖炳星</div></div></div>
+    <p class="cost">era_stars bust 864×1152<br>裁 504×756（2:3，v109 同款）<br>成本 0 次</p>
+  </div>
+  <div class="variant">
+    <h2>(c) Pixellab 生成人像</h2>
+    <div class="awd63-cards"><div class="awd63-card show"><img class="pix" src="samples170/liao_pixellab_south.png" alt="廖炳星 Pixellab 像素人像"><div class="t">《離岸的信》</div><div class="s">廖炳星</div></div></div>
+    <p class="cost">create-character-v3 新開<br>character 1c3c608c… south 幀<br>成本 3 次（見下）</p>
+  </div>
+</div>
+
+<div class="zoom">
+  <h2>放大 ×2 檢視（只供睇面部，唔係卡設計）</h2>
+  <div class="row">
+    <figure><div class="csszoom">《離岸的信》</div><figcaption>(a) 字卡放大：仍然係字，冇人像</figcaption></figure>
+    <figure><img src="samples170/liao_bust_crop_2x3.png" alt="廖炳星 bust 放大"><figcaption>(b) bust 放大：挑眉壞笑、頭微傾、花恤衫，全部對 brief</figcaption></figure>
+    <figure><img class="pix" src="samples170/liao_pixellab_south.png" alt="廖炳星 Pixellab 放大"><figcaption>(c) 像素全身放大：花恤衫啱 brief，但 128px 全身入 2:3 框，面得 ~18px 高，表情睇唔清</figcaption></figure>
+  </div>
+</div>
+
+<div class="notes">
+  <h2>三變體風格對照結論（畀用戶睇）</h2>
+  <ul>
+    <li><b>(a) 現況字卡</b>：深紫漸變＋金字，係「無圖作品」降級設計，唔係 bug。問題唔係醜，係三張 fellow 卡全部得作品名＋人名，冇人像——用戶原話。</li>
+    <li><b>(b) 現成 bust</b>：乾淨二次元動畫風，同主線對話舞台／fullbody 同一風格家族；面大、表情（挑眉壞笑、頭微傾）同 brief 一字不差；零生成成本。缺點：卡面由「作品」變「人物」，作品海報唔再出現（同 (c) 一樣）。</li>
+    <li><b>(c) Pixellab 像素人像</b>：character 係像素風全身 sprite（128×128，8 方向），唔係動畫風 bust。衫（花恤衫＋寬鬆西褲）跟到 brief，但全身入 78×117 框，頭只佔約 1/4 高，卡面睇落面細、表情弱；同阿偉卡（動畫風作品海報）並排仍然係兩種風格——<b>像素 fellow＋海報阿偉，風格依然唔統一</b>。要真統一，要麼四張卡全部行 (b)，要麼四張卡全部行像素（阿偉卡都要換做佢個 v2 character 像素圖，唔再用海報）。</li>
+    <li><b>成本</b>：(c) 一個 character 實測 3 次（公式 1 pixen＋ceil(128²×8／65536)＝1＋2；餘額 4,576→4,573）。全套 10 位池星照計約 30 次；若阿偉卡都換像素，佢已有 v2 character，0 次新生成。</li>
+    <li><b>工人建議</b>：先睇 (b)——零成本、同舞台同風格、面夠大。若用戶堅持 Pixellab 路線，(c) 證明到做到，但要接受「面細＋像素 vs 海報」兩個 trade-off，或者改做像素頭像特寫（唔係全身 character，要另試做法／成本）。</li>
+  </ul>
+  <p>資產：character id <code>1c3c608c-f6ed-4c1b-8edd-4b9cae2cba7e</code>（名「廖炳星」，state「Idle」，128×128，8 方向，view side，template mannequin）；job <code>3d2accc5-c712-405c-8c11-30c931eebc45</code>。圖檔喺 <code>samples170/</code>，未入 repo <code>assets/</code>。</p>
+</div>
+</body>
+</html>
