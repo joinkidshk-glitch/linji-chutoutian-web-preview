@@ -1,8 +1,11 @@
 # NOTES_V20A183 — v176 設計 review B1–B4＋C1–C9 一次過修
 
+狀態：**已落地。遊戲 commit `7497c9e`（分支 `v20a183` HEAD `94caebd`，基底 main `6ed68f8`），2026-11-13 17:10 我 curl 核實：線上 5,329,880 bytes sha `9890d43e…`，同 repo HEAD:index.html 完全一致。Live 係 v183。**
+
 - 分支 `v20a183`，基底 main `6ed68f8`（v182）。**唔落地**：呢票只做實作＋驗證＋commit＋push 分支，等統籌 squash merge。
 - 來源：`~/workspace/linji-design-review-v176/REVIEW.md`（用戶 2026-11-13 16:30 拍板一次過修晒 B1–B4＋C1–C9）。
 - index.html 淨 **+117 行**（60010→60127，`count('\n')`）；`qa183/apply183.py` 28 處取代，全部 assert 恰好出現一次，由 pristine 重跑同工作版 byte-for-byte 一致（已驗證 `APPLY-REPRODUCIBLE`）。
+- 落地過程（統籌補記）：squash merge 後 `git push origin main` 連續 7 次喺上傳階段被 egress proxy reset（Broken pipe／remote hung up，`ls-remote` 讀取正常；空 commit 細 push 成功，證實寫入通道本身通，問題係大 pack 上傳）。解法：拆細推——文字包（index.html＋測試＋NOTES＋qa 腳本）一次成功（`7497c9e`）；10 張實駕截圖逐張推（中途又斷過 4 次，逐個 sha 重推先齊，`e3484db`→`0f90dc7`）。教訓：proxy 惡劣嗰陣大 pack 推唔到，拆細逐張推係可行出路；截圖 commit 拆散咗 10 個，之後落地唔好學。
 - 紅線全部守住：SAVE key `starVolunteer_map_v19w`、softRev `s107`、`?v=v20a10` 唔郁；三份 pack JSON（`gift_react_copy.json`、`npc_lines_core.json`、`tutorial_zh_HK.json`）原封不動（static test 有紅線斷言）；鎖邏輯（`flag_romance_locked`／rel 5 鎖／rel 6 commit）唔郁；頒獎禮舞台 code 冇掂。
 
 ## 逐項修法
