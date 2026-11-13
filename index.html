@@ -4829,7 +4829,7 @@ body.day-res-open .day-row{
 .ux68-ghead:first-child{ margin-top:2px; }
 .ux68-ghead-urgent{ color:#9c3d1e; border-bottom-color:rgba(180,80,40,.55); }
 .ux68-note{ font-size:.8rem; font-weight:700; color:#9c3d1e; padding:1px 2px 5px; line-height:1.45; }
-.ux68-why{ display:block; font-size:.74rem; font-weight:700; color:#9c3d1e; margin-top:3px; line-height:1.4; }
+.ux68-why{ display:block; font-size:.74rem; font-weight:700; color:#9c3d1e; margin-top:3px; line-height:1.4; } /* v20a169 B2：#loc-acts 由 grid 轉 flex 直欄＋掣 flex-shrink:0——grid auto 行高跟 max-content（唔換行）計，長簡介卡被夾喺 50px 行高溢出框外（實測文字欄 91px、掣 50px）；flex 直欄＋唔縮先係卡高隨內容增長（實測 push 卡 115px、零重疊；機制見 NOTES_V20A169 §2）——flex 規則唔可以寫入 #loc-acts 原規則行：locfull120 測試用 9000 字元窗切 LOCFULL120 段，長註解會推走窗尾 nobg 規則，呢行喺窗外 */ #loc-sheet.sheet.locpanel118 #loc-acts{ display:flex !important; flex-direction:column !important; } #loc-sheet.sheet.locpanel118 #loc-acts .act{ flex-shrink:0; }
 .ux68-locked-toggle{ width:100%; margin-top:12px; padding:9px 10px; text-align:left; cursor:pointer;
   background:transparent; border:1px dashed rgba(120,95,60,.55); border-radius:10px;
   color:#7a6248; font:inherit; font-size:.8rem; font-weight:700; }
@@ -31458,7 +31458,7 @@ async function refreshCopyPacksFromDisk(){
     try{ if(typeof loc96RemapGiftShop==="function") loc96RemapGiftShop(); }catch(_l96){}
     if(giftPrefs && giftPrefs.npcs) GIFT_PREFS = giftPrefs; try{ if(typeof applyTangGift164==="function") applyTangGift164(); }catch(_t164){}
     if(giftReact && (giftReact.byKey || giftReact.entries)) GIFT_REACT = giftReact; try{ if(typeof applyTangGift167==="function") applyTangGift167(); }catch(_t167){}
-    try{ if(typeof GiftShop!=="undefined") GiftShop.ensureSave(); }catch(_g){}
+    try{ if(typeof GiftShop!=="undefined") GiftShop.ensureSave(); }catch(_g){} try{ if(typeof applyTangGift169==="function") applyTangGift169(); }catch(_t169){}
     /* v20a55 TEXTFIX：載入即清洗玩家面文字（審計 linji-text-audit） */
     try{ textfix55SimplePack(a); }catch(_t55){}
     try{ textfix55SimplePack(b); }catch(_t55){}
@@ -32201,7 +32201,7 @@ function ux68OrganizeLocSheet(L){
       if(!it.btn.querySelector(".ux68-why")){
         const s = document.createElement("span");
         s.className = "ux68-why"; s.textContent = it.urgent;
-        it.btn.appendChild(s);
+        (it.btn.querySelector(".act-txt118")||it.btn).appendChild(s); /* v20a169：badge 入文字欄（簡介之下橫排紅字），唔再做 row flex item——舊位會被擠到 min-content 闊度變 7 行直欄、縱跨兩卡；卡高隨內容增長靠 #loc-acts 轉 flex 直欄（見 .ux68-why 行旁註） */
       }
       frag.appendChild(it.btn);
     });
@@ -53859,7 +53859,7 @@ function openLoc(id, opts){
     try{
       const moneyM = cost105.match(/\$\s?[\d,]+/);
       const dayM = cost105.match(/\+\s?1\s?日/);
-      const known105 = ["免費","無","不耗日","已聽過","今日已滿","未開放","—","-","沽清","買下","禮物／現金","幫手"];
+      const known105 = ["免費","無","不耗日","已聽過","今日已滿","未開放","—","-","沽清","買下","禮物／現金","幫手","庫存空","今日已送"];
       if(moneyM){
         cost105 = moneyM[0].replace(/\s/g,"");
         if(dayM && hint105.indexOf("+1日")<0) hint105 = (hint105?hint105+" · ":"") + "要用一日";
@@ -59119,6 +59119,46 @@ function applyTangGift167(){
         R.byKey[key] = ent;
         if(!R.entries.some(e=>e && e.id==="GR-tang-coffee｜liked")) R.entries.push(ent);
       }
+    }
+  }catch(_e){}
+  return 1;
+}
+/* ===== v20a169：v164 review C1 名筆句改字＋C2 新貨置頂（B1／B2 見行內改動）。
+   C1：pack 原句「…你至少知道我不是靠感人情書辦事的人。」疑似筆誤（review C1）——
+   改字做「…你至少知道我不是靠感情、靠人情辦事的人。」（跟 review 建議字眼；
+   第一句「名筆。簽名、批檔期、改數字，都用得着。」同第二句「謝謝…」一字唔郁，
+   鄧麗萍公事、講數字口吻不變）。唔直改 content/gift_react_copy.json：載入正規化
+   覆寫 byKey＋entries 兩份（pack 入面同一句出現兩次：byKey map 一份、entries 陣
+   一份，兩邊一齊改，否則 reactionEntry（行 byKey）同 entries 掃描會唔一致）。
+   只喺現句含「感人情書」嗰陣先改——pack 日後已修正就唔會俾呢度覆寫返。
+   C2：四件 v164 新貨喺 shop_street_mk stock 排第 11–14 位（review C2）——置頂：
+   將四個 itemId 穩定移到 stock 陣頭（其餘 10 件相對次序不變）。只係顯示次序：
+   restockIfNeeded 由 stock 陣逐行建 shopStock 字典，count 不變；舊檔 shopStock
+   字典本身唔受影響。冪等：已經係頭四位就唔郁。
+   呼叫點：refreshCopyPacksFromDisk 嘅 GiftShop.ensureSave() 行（同行 append，
+   零行數漂移）——一定要喺 GIFT_REACT 賦值之後、textfix55Walk(giftReact) 之前，
+   等新句同 pack 句行同一套清洗；揀呢行唔揀 GIFT_REACT 賦值行，係為避開 v167
+   （咖啡豆 :liked 句，進行中）喺嗰行掛嘅 applyTangGift167() 呼叫。 */
+function applyTangGift169(){
+  try{
+    const NEW169 = "鄧麗萍：「名筆。簽名、批檔期、改數字，都用得着。你至少知道我不是靠感情、靠人情辦事的人。」";
+    const R = (typeof GIFT_REACT!=="undefined" && GIFT_REACT) || null;
+    if(R){
+      const ent = R.byKey && R.byKey["tang:gift_fountain_pen:liked"];
+      if(ent && Array.isArray(ent.lines) && ent.lines.length && String(ent.lines[0]).indexOf("感人情書")>=0) ent.lines[0] = NEW169;
+      (R.entries||[]).forEach(e=>{ if(e && e.id==="GR-tang-pen｜liked" && Array.isArray(e.lines) && e.lines.length && String(e.lines[0]).indexOf("感人情書")>=0) e.lines[0] = NEW169; });
+    }
+  }catch(_e){}
+  try{
+    const shops = (typeof GIFT_SHOPS!=="undefined" && GIFT_SHOPS && GIFT_SHOPS.shops) || null;
+    const shop = Array.isArray(shops) ? shops.filter(s=>s && s.shopId==="shop_street_mk")[0] : null;
+    if(shop && Array.isArray(shop.stock)){
+      const TOP169 = ["gift_fountain_pen","gift_desk_calculator","gift_dress_watch","gift_rose_premium"];
+      const top = [], rest = [];
+      shop.stock.forEach(r=>{ if(r && TOP169.indexOf(r.itemId)>=0) top.push(r); else rest.push(r); });
+      top.sort((a,b)=>TOP169.indexOf(a.itemId)-TOP169.indexOf(b.itemId));
+      const reordered = top.concat(rest);
+      for(let i=0;i<reordered.length;i++) shop.stock[i] = reordered[i];
     }
   }catch(_e){}
   return 1;
