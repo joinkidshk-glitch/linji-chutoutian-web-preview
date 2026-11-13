@@ -5,6 +5,7 @@
 # 再放大 424×240；§4 用 PIL 釘圖內容：幕布紅＋舞台頂邊 y≈194＋講台在位＋底部無椅背）。
 # 反證：對 pristine main（e08a070）index.html 跑——舊像素底圖在位、新常數／新檔案全部缺失 → 乾淨 FAIL，唔 crash。
 # v20a149 rebase 上 main 6d08c7c resync：B1 canvas backing 424×240→636×360（draw() 內 setTransform 1.5，邏輯座標唔郁）；backing 斷言跟新尺寸，其餘（底圖檔 424×240、drawImage 1:1、pixelated、降級舞台）唔郁。
+# v20a174 rebase 上 main a500536 resync：v174 B1 邏輯座標改 424×360，合併後 backing 636×540（424×360 ×1.5，setTransform 1.5 均勻）；底圖檔本身仲係 424×240，draw() 垂直拉伸（唔再 1:1）。
 import os, re, struct, sys
 
 idx_path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
@@ -70,18 +71,18 @@ if os.path.isfile(BG_PATH):
     dims = jpeg_size(BG_PATH)
 chk('底圖係 JPEG（magic FF D8）', magic_ok)
 chk('底圖檔案大小合理（10–200KB）', size_ok)
-chk('底圖尺寸 424×240（配合 canvas backing store 1:1）', dims == (424, 240))
-chk('底圖比例 ≈424/240（等比放大，冇拉變形）',
+chk('底圖尺寸 424×240（源圖；canvas 邏輯 424×360／backing 636×540，垂直拉伸 1.5×）', dims == (424, 240))
+chk('底圖比例 ≈424/240（源圖比例；canvas 拉伸係 v174 B1 刻意垂直放大，唔係等比）',
     dims[0] and abs(dims[0] / dims[1] - 424 / 240) < 0.01)
 
 # --- 2. 典禮 code 引用佢 ---
 play_fn = slice_fn('awards62PlayCeremony')
 chk('loader 用新常數', 'im.src = AWARDS62_STAGE_BG;' in play_fn)
 chk('loader 失敗照舊降級（onerror → bgReady=false）', 'im.onerror' in play_fn and 'bgReady = false' in play_fn)
-chk('draw() 畫底圖 1:1（424×240）', 'ctx.drawImage(bgImg, 0, 0, W, H)' in play_fn)
+chk('draw() 畫底圖拉伸到 canvas（424×360，v174 B1）', 'ctx.drawImage(bgImg, 0, 0, W, H)' in play_fn)
 chk('pan beat 保持橫移畫法（440 闊）', 'ctx.drawImage(bgImg, -8 + off, 0, 440, H)' in play_fn)
 chk('降級舞台函數仲在（載入失敗兜底）', 'function awards62FallbackStage(ctx, W, H)' in src)
-chk('canvas backing store 636×360（v149 B1：424×240→636×360，邏輯座標唔郁）', '<canvas class="awd62-canvas" width="636" height="360">' in src)
+chk('canvas backing store 636×540（v149 B1＋v174 B1 合併：邏輯 424×360 ×1.5）', '<canvas class="awd62-canvas" width="636" height="540">' in src)
 chk('canvas 像素呈現唔郁（pixelated）', 'image-rendering:pixelated' in src and 'awd62-canvas' in src)
 
 # --- 3. 硬規則：SAVE key／softRev／?v= 冇郁 ---
@@ -91,7 +92,7 @@ chk('產品 ?v= 不變（v20a10）', '?v=20a10' in src)
 chk('底圖路徑唔帶 ?v=（新檔名本身避快取）', '?v=' not in BG_REL)
 
 # --- 4. v20a170 P2：新舞台-only 圖內容（PIL 量度）---
-# 幕布底 y191–193 過渡、y194 滿亮平台面（FLOOR＝194−1＝193）；底部無椅背（舊圖底部椅區 dark 0.29–0.55）。
+# 幕布底 y191–193 過渡、y194 滿亮平台面（FLOOR＝291−1＝290，拉伸後；v20a170 舊值 193）。
 try:
     from PIL import Image
     bg = Image.open(BG_PATH).convert('RGB')

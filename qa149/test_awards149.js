@@ -1,6 +1,8 @@
 // qa149/test_awards149.js — v20a149 B1–B4 測試（Node，抽 index.html 真函數 eval＋靜態檢查）
 // 用法：node qa149/test_awards149.js [index.html路徑]   （預設 index.html，在工作副本根目錄執行）
 // 反證：對 pristine main（da90957，qa149/pristine_index.html）跑，149 新檢查要乾淨 FAIL，唔 crash。
+// v20a174 rebase 上 main a500536 resync：backing 636×360→636×540、邏輯 424×240→424×360
+// （v174 B1 舞台垂直拉伸；setTransform 1.5 均勻不變）。其餘斷言（B2／B3／B4／彩紙／跳過掣）逐項對位過，唔郁。
 const fs = require('fs');
 const vm = require('vm');
 
@@ -186,8 +188,9 @@ chk('B1 舞台：觀眾帶已剔走——.awd62-stage 還原橫向置中 flex，
   SRC.includes('.awd62-stage{position:fixed;inset:0;z-index:9990;background:#14101f;display:flex;align-items:center;justify-content:center;padding:12px}')
   && !SRC.includes('.awd62-frame{position:relative;width:min(96vw,760px);flex:none}')
   && !SRC.includes('awd62-' + 'aud') && !SRC.includes('aud' + '149'));
-chk('B1 舞台：canvas backing 636×360', SRC.includes('width="636" height="360"'));
-chk('B1 舞台：draw() 入口 setTransform 1.5（邏輯座標唔郁）', SRC.includes('ctx.setTransform(1.5, 0, 0, 1.5, 0, 0);'));
+chk('B1 舞台：canvas backing 636×540（v149×v174 合併：邏輯 424×360 ×1.5）', SRC.includes('width="636" height="540"'));
+chk('B1 舞台：draw() 入口 setTransform 1.5（邏輯座標 424×360，v174 B1）',
+  SRC.includes('ctx.setTransform(1.5, 0, 0, 1.5, 0, 0);') && playSrc.includes('const W = 424, H = 360'));
 chk('B1 彩紙：M5 GIF 資產入 repo＋code 用 ?v=20a149 引用',
   fs.existsSync('assets/fx/awd_confetti_m5.gif') && fs.statSync('assets/fx/awd_confetti_m5.gif').size > 10000
   && SRC.includes('assets/fx/awd_confetti_m5.gif?v=20a149'));

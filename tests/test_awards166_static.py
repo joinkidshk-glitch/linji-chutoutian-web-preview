@@ -1,9 +1,9 @@
 # v20a166 頒獎禮 glamour 並置＋空字幕框隱藏 static tests：
 # B1（海報縮細並置）：
-# (1) glamour overlay 由 stage 全幅改做只冚 canvas：absolute＋top:0／left:0／width:100%／aspect-ratio:424/240，唔再 inset:0；
+# (1) glamour overlay 由 stage 全幅改做只冚 canvas：absolute＋top:0／left:0／width:100%／aspect-ratio:424/360（v20a174 B1：canvas 高 240→360），唔再 inset:0；
 #     overlay 本身冇 0.93 暗底（暗層搬去右邊 panel），pointer-events:none（撳掣／elementFromPoint 照通 canvas）。
 # (2) 右邊暗 panel：.awd63-glamour-panel flex:0 0 44%（左邊 56% 透明留位畀燕尾服；
-#     燕尾服 4 slots 時 cx=166、dispH 64 → 右緣 (166+32)/424＝46.7%＜56%，3 slots 時 55.2% 亦喺 panel 左緣之外），
+#     燕尾服 4 slots 時 cx=162、dispH 96 → 右緣 (162+48)/424＝49.5%＜56%，喺 panel 左緣之外），
 #     暗底 rgba(10,6,18,.93) 留喺 panel；海報縮細（max-width:88%／max-height:60%，舊 76vw／330px／60vh 唔見）。
 # (3) glamHtml 包 panel div；glamour 層搬入 .awd62-frame（canvas 之後、skip 掣之前），唔再係 stage 尾段全幅。
 # C1（空 caption 隱藏字幕框）：
@@ -44,7 +44,7 @@ def css_rule(selector):
 glam_css = css_rule('.awd63-glamour')
 chk('B1 glamour overlay 在場', bool(glam_css))
 chk('B1 overlay absolute＋top:0／left:0／width:100%', 'position:absolute' in glam_css and 'top:0' in glam_css and 'left:0' in glam_css and 'width:100%' in glam_css)
-chk('B1 overlay aspect-ratio:424/240（對齊 canvas）', 'aspect-ratio:424/240' in glam_css)
+chk('B1 overlay aspect-ratio:424/360（對齊 canvas，v174 B1）', 'aspect-ratio:424/360' in glam_css)
 chk('B1 overlay 唔再 inset:0 全幅', 'inset:0' not in glam_css)
 chk('B1 overlay 本身冇 0.93 暗底（暗層搬去 panel）', 'background:rgba(10,6,18,.93)' not in glam_css)
 chk('B1 overlay pointer-events:none', 'pointer-events:none' in glam_css)
@@ -57,8 +57,8 @@ chk('B1 panel 在場', bool(panel_css))
 chk('B1 panel 闊 44%（左邊 56% 透明留位畀燕尾服）', 'flex:0 0 44%' in panel_css)
 chk('B1 0.93 暗層留喺 panel', 'background:rgba(10,6,18,.93)' in panel_css)
 chk('B1 panel 係 column（海報上、cap 下）', 'flex-direction:column' in panel_css)
-panel_img = css_rule('.awd63-glamour-panel img')
-chk('B1 panel 海報 rule 在場', bool(panel_img))
+panel_img = css_rule('.awd63-glamour-panel>img')  # v20a174 A1：裱框規則收窄到直屬海報 img（>）
+chk('B1 panel 海報 rule 在場（直屬 img，v174 A1）', bool(panel_img))
 chk('B1 海報縮細（max-width:88%／max-height:60%）', 'max-width:88%' in panel_img and 'max-height:60%' in panel_img)
 chk('B1 舊大海報尺寸唔見（76vw／330px／60vh）', 'max-width:min(76vw,330px)' not in src and 'max-height:60vh' not in src)
 chk('B1 海報金框＋光暈保留', 'border:4px solid #f2c14e' in panel_img and 'box-shadow:0 0 34px rgba(242,193,78,.45)' in panel_img)

@@ -2,7 +2,7 @@
 # (1) Q 版資產在場：AWARDS64_SPRITES 共 34 張（企姿 11＋阿偉捧杯 1＋全員行 A/B 22），base64 ≤130KB。
 # (2) v63 寫實 sprite 成套撤走：AWARDS63_SPRITES const 唔存在、舊衍生標記（縮 72px）已改。
 # (3) 走路入場接線：entryPlan（左右兩流）＋walkA/walkB 幀引用＋reveal 行前 fwd64。
-# (4) 渲染尺度跟 mock v3：FLOOR=193（v20a170 P2：新舞台-only 底圖頂線 y≈194；舊圖 155、舊值 194 企觀眾席）、slotCx 置中 202／間距 72、人仔高 48（玩家 50）。
+# (4) 渲染尺度跟 mock v3：FLOOR=290（v20a174 B1：canvas 高 240→360，底圖垂直拉伸 1.5×，舞台頂線 193×1.5＝289.5→290；v20a170 P2 舊值 193）、slotCx 置中 202／間距 80＋gallery 中央 −36（C1）、人仔高 72（玩家 75）。
 # (5) 提名卡統一規則仲喺度（v64 B 部分，同 test_awards64_static.py 互補抽查）。
 # 反證: run against a pre-v64 index -> AWARDS64 block missing -> FAIL.
 import sys, re
@@ -69,9 +69,9 @@ chk('剪影降級保留', '剪影降級（Q 版比例' in play_fn)
 chk('跳過掣保留', 'awd62-skip' in play_fn)
 
 # --- (4) 渲染尺度（mock v3） ---
-chk('地板線 FLOOR=193（v20a170 P2：新圖舞台頂線）', 'const FLOOR = 193' in play_fn)
-chk('slotCx 置中 202／間距 72', '202 + (i - (slots.length - 1) / 2) * 72' in play_fn)
-chk('人仔高度 48／玩家 50', '? 50 : 48' in play_fn)
+chk('地板線 FLOOR=290（v20a174 B1：拉伸後舞台頂線）', 'const FLOOR = 290' in play_fn)
+chk('slotCx 置中 202／間距 80', '202 + (i - (slots.length - 1) / 2) * 80' in play_fn)
+chk('人仔高度 72／玩家 75', '? 75 : 72' in play_fn)
 
 # --- (5) 卡片統一規則抽查 ---
 chk('唱名卡海報 2:3 框', 'aspect-ratio:2/3' in src)
