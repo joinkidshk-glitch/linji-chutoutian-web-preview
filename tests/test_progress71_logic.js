@@ -221,7 +221,9 @@ function sentenceChecks(tag, line){
   loadGame(freshSave());
   const b1 = pane71();
   if(DEBUG) console.log('B1 len:', b1.length);
-  ok('B1：第 1 幕已開放＋標題＋觸發地點', b1.indexOf('第 1 幕') >= 0 && b1.indexOf('先學做動作戲') >= 0 && b1.indexOf('已開放') >= 0 && b1.indexOf('去何生事務所就會觸發') >= 0);
+  /* v20a165 STORY165：已開放行唔再講「去 X 就會觸發」（地點唔再係觸發條件），改「返地圖
+     嗰陣就會播出」＋場景地點；「播呢幕」掣已拎走。 */
+  ok('B1：第 1 幕已開放＋標題＋場景地點（v165：返地圖就會播出）', b1.indexOf('第 1 幕') >= 0 && b1.indexOf('先學做動作戲') >= 0 && b1.indexOf('已開放') >= 0 && b1.indexOf('返地圖嗰陣就會播出') >= 0 && b1.indexOf('場景：何生事務所') >= 0 && b1.indexOf('去何生事務所就會觸發') < 0);
   ok('B1：第 2 幕逐項——前置旗未達', b1.indexOf('先完成第 1 幕〈先學做動作戲／先賺〉') >= 0);
   ok('B1：第 2 幕逐項——週數連即時進度（第 4 週・而家第 1 週）', b1.indexOf('到第 4 週（而家第 1 週）') >= 0);
   ok('B1：第 2 幕逐項——通告連即時進度（0／3）', b1.indexOf('接通告 0／3 張') >= 0);

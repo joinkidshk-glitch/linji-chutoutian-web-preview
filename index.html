@@ -37707,6 +37707,14 @@ function goToMapForBrowse(){
     }
   }catch(_sk61m){}
   if(kickScheduleIfNeeded()) return;
+  /* v20a165 STORY165：主線強制播放——條件滿足嘅主線幕，返地圖嗰陣即播（用戶 2026-11-13 09:24
+     拍板：符合條件就硬性規定播劇情，唔畀玩家自己決定播定唔播）。擺位：晨鏈（獎勵／請柬／
+     報紙／試鏡消息／WF4／病假）＋行程 kick 全部行完之後、地圖顯示之前——唔會打斷任何 modal；
+     行程日（forced day）kick 咗先，故事順延到下次返地圖；病假日唔播。唔經 openLoc，
+     唔食出行額度；story165TryForcedPlay 返 false 就跌返地圖，唔重試、唔 loop。 */
+  try{
+    if(typeof story165TryForcedPlay==="function" && story165TryForcedPlay()) return;
+  }catch(_s165){}
   nudgeRegionForToday();
   try{ closeSheet(); }catch(_e){}
   atLoc=null;
@@ -38318,6 +38326,70 @@ function autoPushC1IfNeeded(opts){
       }catch(_e){ return false; }
     }
     return true;
+  }catch(_e){ return false; }
+}
+
+/* v20a165 STORY165：主線強制播放（generalise autoPushC1IfNeeded 到全部主線幕）。
+   觸發點係 goToMapForBrowse 尾段（晨鏈＋行程 kick 行完之後、地圖顯示之前）；
+   一日最多一幕（evalNode 同日禁）；唔經 openLoc，唔食出行額度；
+   手帳未確定嗰陣唔靜默提交，順延到下次返地圖；結局鎖／劇情進行中嗰陣唔播。 */
+function story165NextOpen(){
+  try{
+    if(typeof StoryOC==="undefined" || !S) return null;
+    StoryOC.ensure();
+    const oc = StoryOC.listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true }) || {};
+    const open = oc.open || [];
+    /* 播次序跟 prog71 order71：C1–C5、C6、C6F、C18、C19、C7–C17 */
+    const ORDER165 = ["C1","C2","C3","C4","C5","C6","C6F","C18","C19","C7","C8","C9","C10","C11","C12","C13","C14","C15","C16","C17"];
+    const rank165 = (id)=>{ const i = ORDER165.indexOf(id); return i < 0 ? 99 : i; };
+    const cands = open.filter(r=>r && r.id && (r.id==="C6F" || /^C\d+$/.test(r.id)));
+    if(!cands.length) return null;
+    cands.sort((a,b)=>rank165(a.id)-rank165(b.id));
+    return cands[0];
+  }catch(_e){ return null; }
+}
+function story165CanPlay(){
+  try{
+    if(typeof S==="undefined" || !S) return null;
+    if(S.homeEditable) return null;
+    if(typeof ending78Locked==="function" && ending78Locked()) return null;
+    if(typeof ending78Gate==="function" && ending78Gate()) return null;
+    if(typeof isStoryPlayActive==="function" && isStoryPlayActive()) return null;
+    if(typeof _storyPlayLocked!=="undefined" && _storyPlayLocked) return null;
+    return story165NextOpen();
+  }catch(_e){ return null; }
+}
+/* v20a165 (c)：「有非故事 modal 開緊」偵測——只供下面兩條新掛點（book70ExitHome／
+   #loc-close）用，唔可以放喺 story165CanPlay 入面。原因（實駕 case C 捉到）：
+   晨鏈嘅報紙／試鏡／請柬 modal 係用掣 on() → cont() → goToMapForBrowse() 呢條路續鏈，
+   而 modal 掣 onclick 係 on() 行先、closeModal() 行後——即係 goToMapForBrowse 掛點
+   行到嗰陣，嗰 modal 喺技術上仲係開緊（#mask 仲有 on）。StoryPlay.render() 經
+   modal() 行，會直接重用同一個 #mask，根本唔會冚 modal；擺閘喺 CanPlay 會令
+   每次晨鏈續鏈嗰陣都誤判「modal 開緊」，強制播永遠唔會喺聽朝晨鏈行到。
+   偵測：#mask 有 on 但無 story-play-on（story 本身都經 modal()，要排除佢；
+   story 進行中嗰態由上面 isStoryPlayActive 嗰行守住，唔使呢度理）。 */
+function story165ModalOpen(){
+  try{
+    const _m165 = (typeof document!=="undefined" && document.getElementById) ? document.getElementById("mask") : null;
+    return !!(_m165 && _m165.classList && _m165.classList.contains("on") && !_m165.classList.contains("story-play-on"));
+  }catch(_e){ return false; }
+}
+function story165TryForcedPlay(){
+  try{
+    const next = story165CanPlay();
+    if(!next) return false;
+    /* omit 節點（C11–C17 等）要先寫 offer，否則 StoryPlay.start 會拒
+       （「這幕尚未在地圖出現」）；同 openLoc 入場寫 offer 同一動作。 */
+    try{
+      if(typeof StoryOC!=="undefined" && StoryOC.findNode && StoryOC.openMeetOffer){
+        const found = StoryOC.findNode(next.id);
+        const node = found ? found.node : StoryOC.findNodeRaw(next.id);
+        if(node && StoryOC.hasPlayerOffer && !StoryOC.hasPlayerOffer(node, found ? found.pack : null)) StoryOC.openMeetOffer(next.id, "forced165");
+      }
+    }catch(_e){}
+    /* 普通 start，等佢自己再驗 eval＋offer＋homeEditable＋結局鎖；唔用 opts.force。 */
+    if(typeof StoryPlay!=="undefined" && StoryPlay.start) return !!StoryPlay.start(next.id);
+    return false;
   }catch(_e){ return false; }
 }
 
@@ -43766,6 +43838,13 @@ function book70ExitHome(){
   try{ closeSheet(); }catch(_e){}
   atLoc = null;
   show("v-map"); paintBar(); drawMap();
+  /* v20a165 (c)：手帳「返回地圖」都觸發強制播（用戶 2026-11-13 11:11 拍板 (c)——
+     兩條返回路徑都掛）。呢度係純粹返地圖、無 modal 開緊（story165ModalOpen 兜底：
+     萬一經 ux68GoLoc 程序呼叫喺 modal 掣 on() 入面行到呢度，modal 技術上仲開緊，
+     就唔播住，免得冚 modal——故事順延，ux68GoLoc 嗰邊 60ms 後開地點照行）；播到
+     就 return（結算「關閉」直返地圖，唔經 goToMapForBrowse）；播唔到（無開放幕／
+     未確定行程／結局鎖／modal 開緊）就照原樣留喺地圖，故事順延到下次返地圖。 */
+  try{ if(typeof story165ModalOpen!=="function" || !story165ModalOpen()){ if(typeof story165TryForcedPlay==="function" && story165TryForcedPlay()) return; } }catch(_s165b){}
 }
 function setHomeTab(tab){
   /* v20a70 BOOK70：tab 參數仍係子頁 id（全部既有呼叫不變），分組顯示交
@@ -44012,22 +44091,11 @@ function renderProgressPane71(){
       return;
     }
     if(r.state==="open"){
-      /* v20a77 HUB77：進度頁做播放門口——在場判定用返 picker（pickerHereBlock）
-         同一套 evalNode（checkNodePhase＋player），ev.ok 先出「播呢幕」掣；
-         唔在場維持「去 X 就會觸發」文字，唔畀隔空播。 */
-      let here77 = false;
-      try{
-        const node77 = (typeof StoryOC!=="undefined" && StoryOC.findNodeRaw) ? StoryOC.findNodeRaw(r.id) : null;
-        const ev77 = (node77 && StoryOC.evalNode) ? StoryOC.evalNode(node77, { checkNodePhase:true, player:true }) : null;
-        here77 = !!(ev77 && ev77.ok);
-      }catch(_e){ here77 = false; }
-      let openBody;
-      if(here77){
-        openBody = '<p class="prog71-note">'+(r.locName ? ("你而家喺"+prog71Esc(r.locName)+"，可以即刻播呢幕。") : "你而家喺現場，可以即刻播呢幕。")+'</p>'
-          + '<button type="button" class="prog71-play" data-prog77-play="'+prog71Esc(r.id)+'">播呢幕</button>';
-      } else {
-        openBody = '<p class="prog71-note">'+(r.locName ? ("去"+prog71Esc(r.locName)+"就會觸發。") : "已經開咗——去返嗰幕嘅地點就會觸發（地圖上有「劇」針標示）。")+'</p>';
-      }
+      /* v20a165 STORY165：首播唔再經掣——條件滿足嘅幕返地圖嗰陣即播（goToMapForBrowse
+         尾段 story165TryForcedPlay）。進度頁只做紀錄：已開放行唔再出「播呢幕」掣，
+         亦唔再分「在場／唔在場」——v155 B1 三態根因就係呢個掣嘅有無取決於 soft 路徑
+         atLoc，live 根本唔跟地點。地點留返做場景資料（唔係觸發條件，唔寫「去 X 就會觸發」）。 */
+      const openBody = '<p class="prog71-note">已經開放——返地圖嗰陣就會播出。' + (r.locName ? ("（場景：" + prog71Esc(r.locName) + "）") : "") + '</p>';
       html.push('<div class="prog71-row open"><div class="prog71-top"><span class="prog71-act">第 '+r.n+' 幕</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag open">已開放</span></div>'
         + openBody + '</div>');
       return;
@@ -45584,14 +45652,23 @@ function presentAwardInvite(pack, thenFn){
     try{ if(typeof S!=="undefined" && S) S.pendingAwardPack = null; }catch(_e){}
     pack.skipped = true;
     pack.rewardsApplied = { stageVolume:0, industryCredit:0, money:0, tags:[] };
-    commitAwardToLog(pack);
-    /* v20a136 D1：推辭＝典禮照舉行＋第二日報紙講結果——用非 skipped 嘅 pack 副本入報紙
-       （publishDay＝day+1；rewards 保持歸零，唔派獎勵）。declined 副本行專用文案（見
-       enqueueNewspaperFromAward opts.declined）：唔可以用 win／nominee 桶模板——嗰啲寫阿偉
-       奪獎／入圍，推辭咗嘅人根本冇去，寫咗就係假結果。 */
-    try{ enqueueNewspaperFromAward(Object.assign({}, pack, { skipped:false }), { declined:true }); }catch(_np2){}
-    try{ toast("已推辭席位", { sub: pack.displayName||"" }); }catch(_e){}
-    cont();
+    /* v20a165 STORY165：推辭都播典禮——電視直播版（gallery 旁聽弧重用：唔上台、
+       得主＝fellows[0] 既定規則，winner63 有就跟 winner63；唔派獎勵、唔出結果卡）。
+       播完先行原本嘅 skip bookkeeping（入 log 標 skipped、第二日報紙 declined 版、
+       toast、cont）——同 attend「播完先入結果」同一寫法；出事跌返舊 skip 路徑。 */
+    const finishSkip = ()=>{
+      commitAwardToLog(pack);
+      /* v20a136 D1：推辭＝典禮照舉行＋第二日報紙講結果——用非 skipped 嘅 pack 副本入報紙
+         （publishDay＝day+1；rewards 保持歸零，唔派獎勵）。declined 副本行專用文案（見
+         enqueueNewspaperFromAward opts.declined）：唔可以用 win／nominee 桶模板——嗰啲寫阿偉
+         奪獎／入圍，推辭咗嘅人根本冇去，寫咗就係假結果。 */
+      try{ enqueueNewspaperFromAward(Object.assign({}, pack, { skipped:false }), { declined:true }); }catch(_np2){}
+      try{ toast("已推辭席位", { sub: pack.displayName||"" }); }catch(_e){}
+      cont();
+    };
+    try{
+      awards62PlayCeremony(Object.assign({}, pack, { bestOutcome:"gallery", declined165:true }), finishSkip);
+    }catch(_e){ finishSkip(); }
   };
   try{
     modal(renderAwardInviteHtml(pack), [
@@ -46038,7 +46115,10 @@ function awards62CeremonyBeats(pack){
   const venue99 = pack.venue99 || ((typeof venue99ForCeremony === "function") ? venue99ForCeremony(pack.ceremonyId) : "");
   const beats = [{ id: "open", ms: 1200, caption: "—— " + name + " ——" + (venue99 ? ("\n" + venue99) : "") }];
   if(best === "gallery"){
-    beats.push({ id: "pan", ms: 2000, caption: "今晚你坐喺觀禮席\n睇住台上群星，記住呢晚。" });
+    /* v20a165 STORY165：推辭直播版——同一 gallery 旁聽弧，只換 pan 字幕做電視轉播
+       framing（推辭咗嘅人唔喺觀禮席）；names／suspense／reveal 照舊（只列 fellows，
+       得主＝fellows[0]，動態讀，唔寫死）。 */
+    beats.push({ id: "pan", ms: 2000, caption: pack.declined165 ? "今晚你喺屋企睇電視轉播\n台上群星逐一亮相，記住呢晚。" : "今晚你坐喺觀禮席\n睇住台上群星，記住呢晚。" });
     /* v20a147：旁聽唔再 3.7 秒草草收場——行埋宣佈弧（唱名→懸念→揭曉→散場），
        open 1200＋pan 2000＋names 2400＋suspense 1400＋reveal 2100＋out 500＝9600ms；
        唱名只列對手（fellows），文案唔寫阿偉入圍／得獎；得主＝fellows[0]。 */
@@ -58617,24 +58697,8 @@ try{
   });
 }catch(_e){}
 
-/* v20a77 HUB77：進度頁「播呢幕」掣——委派掛喺 #progress-list（render 只換
-   innerHTML，委派唔受影響）。開播前行 ensureWeekPlanCommittedForStory，
-   再行 StoryPlay.start(id)，同地點 sheet 觸發完全同一條路徑；
-   在場判定喺 render 嗰陣已用 picker 同一套 evalNode 做咗，start 本身會再驗。 */
-try{
-  const _progList77 = document.getElementById("progress-list");
-  if(_progList77) _progList77.addEventListener("click", (e)=>{
-    const b = (e.target && e.target.closest) ? e.target.closest("[data-prog77-play]") : null;
-    if(!b) return;
-    const id = b.getAttribute("data-prog77-play");
-    if(!id) return;
-    try{ if(typeof ensureWeekPlanCommittedForStory==="function") ensureWeekPlanCommittedForStory(); }catch(_ec){}
-    try{
-      if(typeof StoryPlay!=="undefined" && StoryPlay.start) StoryPlay.start(id);
-      else toast("無法開劇情");
-    }catch(_e){ toast("無法開劇情"); }
-  });
-}catch(_e){}
+/* v20a165 STORY165：進度頁「播呢幕」掣已拎走（見 renderProgressPane71），呢段委派
+   一併拎走；首播唔再經掣觸發，改由 goToMapForBrowse 尾段強制播。 */
 
 const _homeSubtabsEl = document.getElementById("home-subtabs");
 if(_homeSubtabsEl) _homeSubtabsEl.onclick=e=>{
@@ -58715,7 +58779,16 @@ if(_homeTabExitBtn) _homeTabExitBtn.onclick=()=>{
 };
 document.getElementById("btn-new").onclick=startNew;
 document.getElementById("btn-cont").onclick=cont;
-document.getElementById("loc-close").onclick=closeSheet;
+/* v20a165 (c)：地點 sheet「返回地圖」都觸發強制播（用戶 2026-11-13 11:11 拍板 (c)——
+   兩條返回路徑都掛）。唔可以掛喺 closeSheet() 本體——佢有 ~30 個 call sites，
+   modal() 每次開 modal 都會先 call 佢，掛本體會喺每個 modal 之前誤播（story 同
+   modal 共用同一個 #mask／#modal-inner，會冚 modal）；openLoc／enterHome／
+   過日／巧遇／訓練等流程入面嘅 closeSheet() 更加唔係「返回地圖」。只掛真正嘅
+   用戶撳掣呢一度：sheet 關咗、用戶已經喺地圖上面、無 modal 開緊（modal 閘喺
+   story165ModalOpen，呢度直接問佢——唔可以擺喺 story165CanPlay，晨鏈續鏈嗰陣
+   modal 技術上仲開緊，擺嗰度會誤擋聽朝強制播，見 story165ModalOpen 註解）。atLoc 唔郁——goToMapForBrowse 掛點嗰陣 atLoc 都未清，
+   兩條路一致；播唔到就照原樣留喺地圖（atLoc 殘留同現狀一樣）。 */
+document.getElementById("loc-close").onclick=()=>{ try{ closeSheet(); }catch(_e){} try{ if(typeof story165ModalOpen!=="function" || !story165ModalOpen()){ if(typeof story165TryForcedPlay==="function") story165TryForcedPlay(); } }catch(_s165c){} };
 document.getElementById("btn-menu").onclick=e=>{
   e.stopPropagation();
   const menu=document.getElementById("menu");

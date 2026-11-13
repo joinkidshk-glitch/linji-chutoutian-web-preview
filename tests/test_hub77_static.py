@@ -6,6 +6,9 @@
 # 四、進度頁做播放門口：在場（picker 同一套 evalNode）先出「播呢幕」掣；
 #    播完畫面掣、劇情提示 modal、手帳提示 fallback 全部改指進度頁；
 #    playOpenPicker 保留做死碼（只剩 ?debug 接線面板引用），玩家入口清零。
+#    【v20a165 STORY165 取代】用戶 2026-11-13 09:24 拍板劇情強制播放：首播唔再經掣，
+#    條件滿足嘅幕返地圖嗰陣即播——進度頁「播呢幕」掣＋委派一併拎走，進度頁只做紀錄；
+#    v155 B1 三態根因就係呢個掣嘅有無取決於 soft 路徑 atLoc。以下斷言按 v165 新規格。
 # 反證：喺 v20a76 index 上行會 FAIL（冇 map-progress-btn、選單仲有劇情掣、
 # chip 仲開 picker、進度頁冇播掣）。
 # 用法：python3 tests/test_hub77_static.py [path-to-index.html]
@@ -40,7 +43,7 @@ ok('地圖浮 pill 已取消（A1：進度入口只留頂欄 chip）',
    'id="map-progress-btn"' not in vmap and 'id="map-progress-btn" aria-label="主線進度">進度</button>' not in vmap)
 ok('地圖浮 pill CSS 已取消', '#map-progress-btn{ position:absolute;' not in src)
 ok('地圖浮 pill 開 sheet 隱藏規則已取消', '.map-wrap.sheet-open #map-progress-btn{ display:none; }' not in src)
-w = seg('const _mapProg77 = document.getElementById("map-progress-btn");', '/* v20a77 HUB77：進度頁「播呢幕」掣')
+w = seg('const _mapProg77 = document.getElementById("map-progress-btn");', '/* v20a165 STORY165：進度頁「播呢幕」掣已拎走')
 ok('地圖浮 pill 舊接線留 null guard（元素缺席唔 crash）', '_mapProg77' in src and 'if(_mapProg77)' in w)
 ok('地圖 hint 掣行為保留（data-prog71 委派入進度頁）', '_mapHint71' in src and 'data-prog71' in src)
 
@@ -68,18 +71,18 @@ ok('chip title 四態改主線進度語系',
    '主線進度 · 有 ' in ps and '主線內容載入中' in ps and '主線進度（暫無可播）' in ps and '主線內容載入唔到' in ps)
 ok('chip 舊 title 文案清零', '有可播劇情 · ' not in src and '"劇情（暫無可播）"' not in src and '"劇情內容載入中"' not in src)
 
-# --- 四、進度頁播放門口 ---
+# --- 四、進度頁播放門口（v20a165 STORY165 取代：掣拎走，首播改強制播） ---
 rp = seg('function renderProgressPane71(){', '/* === v20a71', 9000)
-ok('進度頁：在場判定用 picker 同一套 evalNode（checkNodePhase＋player）',
-   'StoryOC.evalNode(node77, { checkNodePhase:true, player:true })' in rp and 'StoryOC.findNodeRaw(r.id)' in rp)
-ok('進度頁：在場先出「播呢幕」掣（data-prog77-play）',
-   'data-prog77-play="' in rp and '>播呢幕</button>' in rp and 'here77' in rp)
-ok('進度頁：唔在場維持「去 X 就會觸發」文字', '"去"+prog71Esc(r.locName)+"就會觸發。"' in rp)
+ok('進度頁：已開放行唔再出「播呢幕」掣（v165：首播唔經掣）',
+   'data-prog77-play="' not in rp and '>播呢幕</button>' not in rp and 'here77' not in rp)
+ok('進度頁：已開放行寫「返地圖嗰陣就會播出」', '返地圖嗰陣就會播出' in rp)
+ok('進度頁：舊「去 X 就會觸發」／「你而家喺」文案清零',
+   '"去"+prog71Esc(r.locName)+"就會觸發。"' not in rp and '你而家喺' not in rp)
 ok('進度頁：舊「開劇情列表播」提示已改寫', '開劇情列表播' not in rp and '劇情列表' not in rp)
-pw = seg('const _progList77 = document.getElementById("progress-list");', 'bind global buttons', 2500)
-ok('播掣委派：closest data-prog77-play', 'closest("[data-prog77-play]")' in pw)
-ok('播掣：開播前 ensureWeekPlanCommittedForStory＋StoryPlay.start(id)',
-   'ensureWeekPlanCommittedForStory' in pw and 'StoryPlay.start(id)' in pw)
+ok('播掣委派已拎走：closest data-prog77-play／_progList77 清零',
+   'closest("[data-prog77-play]")' not in src and '_progList77' not in src)
+ok('強制播掛點在位（goToMapForBrowse 尾段 story165TryForcedPlay）',
+   'story165TryForcedPlay()' in src and 'function story165TryForcedPlay(){' in src)
 
 # --- 五、播完掣／提示改指進度頁、picker 玩家入口清零 ---
 ok('播完畫面：冇「劇情列表」掣', 'label:"劇情列表"' not in src)
