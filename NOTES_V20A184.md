@@ -1,5 +1,7 @@
 # NOTES_V20A184 — 修 v182 設計 review 新 C1＋C2
 
+**落地**：遊戲 commit `454ed8e`，線上核實 5,331,174 bytes sha `dbefbaa2…`，同 repo `HEAD:index.html` 完全一致（push main 一次成功；第一次 curl 仲係 v183 舊版，Pages 部署滯後，等約 100 秒後重 curl 攞到新版）。`git fsck` 乾淨（淨 dangling blob／tree，無錯誤）。
+
 - **分支**：`v20a184`，基底 main `01ddcaa`（v183 NOTES 已落地：遊戲 `7497c9e`＋NOTES `01ddcaa`，live 5,329,880 bytes sha `9890d43e…`）。**Rebase 已做完**（`b5cf756`，由 `6ed68f8` rebase 上 `01ddcaa`，diff 淨 v184 改動，見 §5）；接手嗰陣 main 仍係 `01ddcaa`，唔使再 rebase。
 - **範圍**：v182 review（`~/workspace/linji-design-review-v182/REVIEW.md`）兩項新 C 級，全部修晒。工人唔落地（唔 squash merge、唔 push main、唔開設計 review）。
 - **紅線遵守**：SAVE key（`starVolunteer_map_v19w`）、softRev（`s107`）、`?v=`（`v20a10`）唔郁；`content/` pack JSON 零改動；獎項集合／文案一字唔郁；得主標記（`awd63-card win` 金框＋🏆 角標）唔郁。
