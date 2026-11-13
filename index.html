@@ -24923,6 +24923,7 @@ const BehaviorGate = (function(){
     Object.keys(byId).forEach(k=>{ delete byId[k]; });
     data.nodes.forEach(n=>{ if(n && n.beatId) byId[n.beatId] = n; });
     try{ if(byId.C1 && typeof softCanonC1Face==="function") softCanonC1Face(byId.C1); }catch(_c1){}
+    try{ healC17Loc("C17"); }catch(_c17){} /* v20a153 A1：stub 得 C1–C5，C17 未入 byId 嗰陣 no-op；slots 接手嗰陣先真正改 */
     return { ok:true, n:data.nodes.length, stubRev:data.stubRev, planSha8:data.enginePlanSha8||"" };
   }
 
@@ -24945,6 +24946,19 @@ const BehaviorGate = (function(){
     held.locId = "agency_ho";
     held.trigger = held.trigger || {};
     held.trigger.locIdAny = ["agency_ho"];
+  }
+  function healC17Loc(node){
+    /* v20a153 A1：C17 播點係星河電視台後台。Freeplay slots 舊身寫 agency_ho／
+       cafe_cha（locId＋trigger.locIdAny），同全套文案（setting／playerHint／
+       lockedHint／STORY_LOC_SOFT／410 locId＝tvb_longmen）分裂。呢度載入嗰陣
+       正規化返 tvb_longmen，唔改 content pack JSON；slots 源頭照舊。 */
+    if(nodeId(node)!=="C17") return;
+    const held = byId.C17;
+    if(!held) return;
+    held.locId = "tvb_longmen";
+    held.trigger = held.trigger || {};
+    held.trigger.locIdAny = ["tvb_longmen"];
+    (held.beats||[]).forEach(b=>{ if(b && (b.locId==="agency_ho" || b.locId==="cafe_cha")) b.locId = "tvb_longmen"; });
   }
   function softLocId(node){
     if(nodeId(node)==="C1") return "agency_ho";
@@ -25009,6 +25023,7 @@ const BehaviorGate = (function(){
   function softLockPlayerLine(node){
     const id = nodeId(node);
     try{ healC1Loc(node); }catch(_c1){}
+    try{ healC17Loc(node); }catch(_c17){} /* v20a153 A1 */
     const held = byId[id];
     const trig = held && held.trigger;
     if(!trig) return "";
@@ -25360,6 +25375,7 @@ const BehaviorGate = (function(){
   function evalTrigger_AND_softRumor(nodeOrId, opts){
     const id = nodeId(nodeOrId);
     try{ healC1Loc(id); }catch(_c1){}
+    try{ healC17Loc(id); }catch(_c17){} /* v20a153 A1 */
     const node = byId[id];
     if(!node || !node.trigger || !stub){
       return { ok:false, openable:false, and:[], any:null, phaseSoft:null, reasons:["no_stub"], skippedThresholds:[], softBehavior:true };
@@ -25590,6 +25606,7 @@ const BehaviorGate = (function(){
   function progressToward(node){
     const id = nodeId(node);
     try{ healC1Loc(node); }catch(_c1){}
+    try{ healC17Loc(node); }catch(_c17){} /* v20a153 A1 */
     const held = byId[id];
     const trig = held && held.trigger;
     if(!trig) return null;
@@ -25700,6 +25717,9 @@ const BehaviorGate = (function(){
     });
     /* Slots fetch can still be a stale cafe body. C1 play loc stays 何生事務所. */
     try{ if(byId.C1 && typeof softCanonC1Face==="function") softCanonC1Face(byId.C1); }catch(_c1){}
+    /* v20a153 A1：C17 slots 舊身係 agency_ho／cafe_cha，呢度正規化返 tvb_longmen
+       （softLocId／locIdAny／mapTips／enc79StoryPendingAt 全部跟 byId 行）。 */
+    try{ healC17Loc("C17"); }catch(_c17){}
     return { ok:true, n:n, faces:faces, created:created };
   }
   const api = {
@@ -27690,6 +27710,22 @@ const StoryPlay = (()=>{
       order.push(id);
     }
     if(cur.system){
+      /* v20a153 B2：開場旁白（之前未有講者）唔再空舞台——下一位講者預先企台
+         （render 行 narration，activeId＝null，聽者暗態 0.6）。只取下一位，
+         唔預告再後嘅人（佢未入場）；C17 開場兩句旁白於是由何生企台。 */
+      if(!order.length){
+        try{
+          for(let j=cur.beatIdx+1;j<beats.length;j++){
+            const nb = beats[j] || {};
+            if(spIsSystemBeat(nb)) continue;
+            const nid = spResolveSpeakerId(nb);
+            if(!nid || nid==="extra_unknown") continue;
+            if(typeof dlg119DedupePair==="function") return dlg119DedupePair([nid]);
+            return [nid];
+          }
+        }catch(_e){}
+        return [];
+      }
       /* v20a119 DLG119：旁白句 pair 同樣去重（兩個講者同一影 asset → 單人影）。 */
       try{ if(typeof dlg119DedupePair==="function") return dlg119DedupePair(order.slice(-2)); }catch(_e){}
       return order.slice(-2);
@@ -27701,7 +27737,7 @@ const StoryPlay = (()=>{
     /* v20a128 A3 D-1：開場單人步（例：C1 第 2–4 步得何生一人企右、左邊空）補阿偉
        左企位——阿偉係主角，呢幕入面佢有對白（即係在場聽緊），唔係獨角戲。
        只喺「pair 得一個人、唔係阿偉、阿偉喺呢節有對白」嗰陣補，唔會將阿偉
-       加去佢完全唔在場嘅場口；開場旁白（system）唔郁，繼續冇人。 */
+       加去佢完全唔在場嘅場口；開場旁白（system）行 v20a153 B2 預告下一位講者，唔經呢條。 */
     if(pair.length===1 && pair[0]!=="awi"){
       try{
         const hasAwi = (n.beats||[]).some(b=>!spIsSystemBeat(b) && spResolveSpeakerId(b)==="awi");
@@ -28012,7 +28048,7 @@ const StoryPlay = (()=>{
         /* v20a105 UI105 D-6：旁白句改入底部對話框（同對白同一塊板，講者名留空），
            唔再浮喺畫面中間；畫面只留場景＋（如有）企立。 */
         /* v20a106 DLG106：旁白句若已有對話二人組，兩人齊落 0.6 留喺畫面（唔出名牌）；
-           未有二人組（開場旁白）維持 v105 純場景＋底部旁白板。 */
+           未有二人組（開場旁白）由 v20a153 B2 預告下一位講者企台（聽者暗態）。 */
         const charsNar106 = spDlgCharsHtml(cur, "narration");
         stageBody = `<div class="sp-stage sp-mode-narration${charsNar106?" dlg106-on":""}" data-sp-kind="system">
           <div class="sp-bg-layer ${esc(bgClass)}" data-sp-bg-fallbacks="${bgDataS}" aria-hidden="true"></div>
@@ -40712,6 +40748,10 @@ function wf4TryLocEvent(locId){
     if(st.pending) return false;
     if(st.lastDay === day) return false;
     if(!wf4BaseOk()) return false;
+    /* v20a153 A1：主線待播優先——同 enc79TryIntercept 嘅 enc79StoryPendingAt 同一條
+       規則。呢度有幕等播（例：C17 喺電視台），WF4 隨機事件唔好食咗個入場；留返
+       下次入場先擲。呢次唔計入 locTries（唔嘥嗰日嘅事件額）。 */
+    try{ if(typeof enc79StoryPendingAt==="function" && enc79StoryPendingAt(locId)) return false; }catch(_w4sp){}
     if(st.locDay !== day){ st.locDay = day; st.locTries = 0; }
     if(st.locTries >= WF4_CFG.locTriesPerDay) return false;
     st.locTries += 1;
@@ -44056,7 +44096,9 @@ function prog71Rows(){
   (oc.done||[]).forEach(r=>{ if(r && r.id) doneSet[r.id] = r; });
   const missed = (S && S.calib60Missed) || {};
   const rows = [];
-  const order71 = [["C1",1],["C2",2],["C3",3],["C4",4],["C5",5],["C6",6],["C6F",20],["C18",18],["C19",19],["C7",7],["C8",8],["C9",9],["C10",10],["C11",11],["C12",12],["C13",13],["C14",14],["C15",15],["C16",16],["C17",17]];
+  /* v20a153 B3：1–20 順序；插入幕 C18／C19／C6F 排返主線之後（之前插喺 C6 同
+     C7 之間，C17＋C18 齊開嗰陣第一個「播呢幕」係 C18，實駕撳錯過）。 */
+  const order71 = [["C1",1],["C2",2],["C3",3],["C4",4],["C5",5],["C6",6],["C7",7],["C8",8],["C9",9],["C10",10],["C11",11],["C12",12],["C13",13],["C14",14],["C15",15],["C16",16],["C17",17],["C18",18],["C19",19],["C6F",20]];
   for(const pair71 of order71){
     const id = pair71[0]; const n = pair71[1];
     let exists = false;
@@ -44086,14 +44128,19 @@ function renderProgressPane71(){
      但要排到入選主線幕範圍內先跟住出逐項（維持遠幕防劇透、唔遮主線條件）。 */
   const detailSet71 = {};
   {
-    let used71 = 0, lastDetailIdx71 = -1;
+    let used71 = 0;
     rows.forEach((r, i)=>{
       if(r.state!=="locked") return;
       if(r.id==="C18" || r.id==="C19" || r.id==="C6F") return;
-      if(used71 < fullLeft){ used71++; detailSet71[r.id] = 1; lastDetailIdx71 = i; }
+      if(used71 < fullLeft){ used71++; detailSet71[r.id] = 1; }
     });
-    rows.forEach((r, i)=>{
-      if((r.id==="C18" || r.id==="C19" || r.id==="C6F") && r.state==="locked" && lastDetailIdx71 >= 0 && i <= lastDetailIdx71) detailSet71[r.id] = 1;
+    /* v20a153 B3：插入幕跟幕號唔跟行 index——C18／C19／C6F 而家排喺 C17 之後，
+       行 index 永遠大過最後一個逐項主線幕。插入幕喺上一幕已揭曉逐項嗰陣跟住出
+       逐項（C18 跟 C17、C19 跟 C18、C6F 跟 C19），維持 v20a80 原意。 */
+    let lastDetailN71 = 0;
+    rows.forEach(r=>{ if(detailSet71[r.id]) lastDetailN71 = Math.max(lastDetailN71, r.n|0); });
+    rows.forEach(r=>{
+      if((r.id==="C18" || r.id==="C19" || r.id==="C6F") && r.state==="locked" && lastDetailN71 >= (r.n|0) - 1) detailSet71[r.id] = 1;
     });
   }
   const html = ['<div class="prog71-wrap"><h3 class="prog71-h">主線進度</h3><p class="prog71-intro">逐幕列出開放條件同你而家嘅進度：✓ 係已達標，○ 係未達。完成一幕，之後嘅幕會逐漸揭曉。</p>'];
@@ -44138,9 +44185,12 @@ function renderProgressPane71(){
     /* v20a105 UI105 S-45：遠幕（未開放又未到逐項揭曉）唔再逐幕重複同一句 boilerplate；
        全部合併做一行，喺第一個遠幕位置出一次，其餘遠幕跳過。 */
     if(!farMerged105){
-      farMerged105 = true;
       const farNs = rows.filter(x=>x && x.state==="locked" && !detailSet71[x.id] && (x.n|0)>=1 && (x.n|0)<=17).map(x=>x.n|0);
-      const loN = farNs.length ? Math.min.apply(null, farNs) : (r.n|0);
+      /* v20a153 B3：得返插入幕（C18／C19／C6F）未開、主線 1–17 行晒嗰陣唔出合併行
+         （舊 fallback 用 r.n 會印出「第 18–17 幕」／「第 20–17 幕」倒轉區間）。 */
+      if(!farNs.length) return;
+      farMerged105 = true;
+      const loN = Math.min.apply(null, farNs);
       html.push('<div class="prog71-row far"><div class="prog71-top"><span class="prog71-act">第 '+loN+'–17 幕</span><span class="prog71-tag lock">未開放</span></div><p class="prog71-note">完成前面幕數後逐幕揭曉。</p></div>');
     }
   });
@@ -44436,6 +44486,22 @@ function softCanonC1Face(node){
   });
   return node;
 }
+/** v20a153 A1：C17 玩家面／故事節點跟電視台。故事節點本身 locId 已經係
+    tvb_longmen（410 覆寫），呢度只係防禦性正規化——唔抄 slot.locId（舊身
+    agency_ho）。注意：410 源字串寫 1990（when／setting／synopsis／lockedHint），
+    靠播放時 year-walk 先顯示 1992——呢度絕對唔郁任何年份字眼。 */
+function softCanonC17Loc(node){
+  if(!node) return node;
+  const id = String(node.id || node.beatId || "");
+  if(id!=="C17") return node;
+  node.locId = "tvb_longmen";
+  if(node.trigger && typeof node.trigger==="object") node.trigger.locIdAny = ["tvb_longmen"];
+  (node.beats||[]).forEach(b=>{
+    if(!b) return;
+    if(b.locId==="agency_ho" || b.locId==="cafe_cha") b.locId = "tvb_longmen";
+  });
+  return node;
+}
 function c1PlayLocId(){ return "agency_ho"; }
 function c1PlayLocName(){
   try{
@@ -44535,6 +44601,11 @@ function applyFreeplaySlotsToSoftGate(){
         if(id==="C1"){
           if(slot.locId) storyNode.locId = slot.locId;
           softCanonC1Face(storyNode);
+        }
+        if(id==="C17"){
+          /* v20a153 A1：故事節點本身 locId 已經係 tvb_longmen（410 覆寫），呢度
+             只係防禦性正規化——唔抄 slot.locId（舊身 agency_ho）。 */
+          try{ if(typeof softCanonC17Loc==="function") softCanonC17Loc(storyNode); }catch(_c17){}
         }
       }catch(_e){}
     });

@@ -29,7 +29,7 @@ ok('YEARS66 walk list 含 WF1 表', 'STORY_SPINE_NODE_C17_410, STORY_SPINE_NODES
 ok('gate C18/C19 登記（v20a113 補鏈：C18 需 C5＋weekMin 48，C19 需 C18＋weekMin 61）', 'C18: { needDone: ["C5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] }' in src and 'C19: { needDone: ["C18"], weekMin: 61, yearMin: 1991, seasonIn: ["春"] }' in src)
 ok('CALIB60 時窗登記 C18/C19', 'C18: { year:1990, seasons:["冬"], whenLabel:"1990 年冬" }' in src and 'C19: { year:1991, seasons:["春"], whenLabel:"1991 年春" }' in src)
 ok('CALIB60 標題登記 上岸路／賭枱邊', 'C18:"上岸路"' in src and 'C19:"賭枱邊"' in src)
-ok('進度頁次序：C6F/C18/C19 排 C6 後 C7 前（v89 BR89 加 C6F 喺 C6 正後）', '["C6",6],["C6F",20],["C18",18],["C19",19],["C7",7]' in src)
+ok('進度頁次序：1–20 順排，C18/C19/C6F 喺尾（v20a153 B3 supersedes v89 BR89 嘅 C6 後插位：舊排法令第 20／18／19 幕插喺第 6／7 幕之間）', '["C17",17],["C18",18],["C19",19],["C6F",20]' in src)
 ok('C18/C19 旗已寫入節點 flags_written', 'flag_wf1_studio_dream' in src and 'flag_wf1_gamble_quiet' in src)
 
 # --- 二、加厚量 ---

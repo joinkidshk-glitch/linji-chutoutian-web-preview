@@ -16,6 +16,7 @@
 # v20a160 M4 步 resync：walkup CSS 喺 L802 插入 5 行，全部錨點 ＋5（17 個錨點逐行核實，內容逐字相同，純漂移；其餘 M1／M6／M9 插入點全部喺 L44855 之後，唔影響本檔錨點）。
 # v20a157 rebase 上 main 60b0a8f resync：splice 插入令錨點漂移（＜30831 者 ＋24、≥30831 者 ＋66；qa131/resync_rebase157.py difflib 對位核實：13 個錨點內容逐字相同，純漂移）。
 # v20a149 rebase 上 main 6d08c7c（v171）resync：CSS ＋13，13 個錨點一律 ＋13（qa149/resync_rebase149.py difflib 對位核實內容逐字相同，純漂移）。
+# v20a153 第三輪 rebase 上 main a500536（v149）resync：difflib 對位核實純漂移，code 行錨點按映射重寫（見 qa153/resync_rebase153c.py）。
 # 用法：python3 tests/test_kwan151_static.py [path-to-index.html]
 import io, json, os, sys
 
@@ -32,34 +33,34 @@ def line(n):
     return lines[n - 1] if 1 <= n <= len(lines) else ''
 
 # (1) banned-list 檢查：關海媚已清，其餘禁令留返
-ok('A1 L25582 regex 冇關海媚', '關海媚' not in line(25582) and '/Ho\\s*哥|陳淑芬|施南生/' in line(25582))
-ok('A2 L25919 list 冇關海媚', '關海媚' not in line(25919) and '["陳淑芬","施南生","Ho哥"]' in line(25919))
-ok('A3 L25967 list 冇關海媚', '關海媚' not in line(25967) and '["陳淑芬","施南生","Ho哥","Ho 哥","nextHint"]' in line(25967))
-ok('A4 L26186 list 冇關海媚', '關海媚' not in line(26186) and '["陳淑芬","施南生","Ho哥","Ho 哥"]' in line(26186))
+ok('A1 L25598 regex 冇關海媚', '關海媚' not in line(25598) and '/Ho\\s*哥|陳淑芬|施南生/' in line(25598))
+ok('A2 L25939 list 冇關海媚', '關海媚' not in line(25939) and '["陳淑芬","施南生","Ho哥"]' in line(25939))
+ok('A3 L25987 list 冇關海媚', '關海媚' not in line(25987) and '["陳淑芬","施南生","Ho哥","Ho 哥","nextHint"]' in line(25987))
+ok('A4 L26206 list 冇關海媚', '關海媚' not in line(26206) and '["陳淑芬","施南生","Ho哥","Ho 哥"]' in line(26206))
 ok('A5 其餘禁令仲喺度', all(w in html for w in ['陳淑芬', '施南生', 'Ho哥']))
 
 # (2) kwan_note check 退役
-ok('A6 kwan_note check 已註解', 'bad("kwan_note")' not in html and 'v151 退役' in line(25924))
-ok('A7 L25922 註解唔留「關海媚禁令」字眼', '關海媚禁令' not in line(25922) and '雙女主改讀 devAppendix' in line(25922))
-ok('A8 dual_note 唔郁', 'bad("dual_note")' in line(25923))
+ok('A6 kwan_note check 已註解', 'bad("kwan_note")' not in html and 'v151 退役' in line(25944))
+ok('A7 L25942 註解唔留「關海媚禁令」字眼', '關海媚禁令' not in line(25942) and '雙女主改讀 devAppendix' in line(25942))
+ok('A8 dual_note 唔郁', 'bad("dual_note")' in line(25943))
 ok('A9 guanHaimeiUpgradeForbidden 全檔清零', 'guanHaimeiUpgradeForbidden' not in html)
 
 # (3) TEXTFIX55_PHRASES
 ok('B1 PHRASES 關海媚配對已拎走', '["關海媚", "當紅花旦"]' not in html)
-ok('B2 PHRASES 其餘配對唔郁', '["星河電視城", "星河電視台"]' in line(30919) and '["送命題", "辣手問題"]' in line(30919))
+ok('B2 PHRASES 其餘配對唔郁', '["星河電視城", "星河電視台"]' in line(30955) and '["送命題", "辣手問題"]' in line(30955))
 
 # (4) TEXTFIX55_EXACT C13 映射：保留映射，只改 value
-ok('B3 EXACT C13 value 有關海媚', '關海媚提醒頭條係雙刃' in line(30910))
-ok('B4 EXACT C13 value 冇當紅花旦', '嗰位當紅花旦亦提過佢' not in line(30910))
-ok('B5 EXACT 其餘修正原封不動', '1990年冬，娛樂週刊已經寫好緋聞草稿' in line(30910)
-   and '1991年冬，虛構娛樂周刊已寫好緋聞草稿' in line(30910))
+ok('B3 EXACT C13 value 有關海媚', '關海媚提醒頭條係雙刃' in line(30946))
+ok('B4 EXACT C13 value 冇當紅花旦', '嗰位當紅花旦亦提過佢' not in line(30946))
+ok('B5 EXACT 其餘修正原封不動', '1990年冬，娛樂週刊已經寫好緋聞草稿' in line(30946)
+   and '1991年冬，虛構娛樂周刊已寫好緋聞草稿' in line(30946))
 
 # (5) UI 顯示名
-ok('C1 speaker display 改真名', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"關海媚" }' in line(27160))
+ok('C1 speaker display 改真名', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"關海媚" }' in line(27180))
 ok('C2 唔再有稱號 display', 'display:"當紅花旦"' not in html)
-ok('C3 relMap rel_mei 改真名', '["rel_mei","關海媚"]' in line(30961))
-ok('C4 NOTE_EXACT 兩句改真名', '采兒同關海媚嗰邊都近咗啲' in line(30918) and '但采兒同關海媚嗰邊，都冷淡咗' in line(30918))
-ok('C5 NOTE_EXACT 冇殘留稱號', '嗰位當紅花旦' not in line(30918))
+ok('C3 relMap rel_mei 改真名', '["rel_mei","關海媚"]' in line(30997))
+ok('C4 NOTE_EXACT 兩句改真名', '采兒同關海媚嗰邊都近咗啲' in line(30954) and '但采兒同關海媚嗰邊，都冷淡咗' in line(30954))
+ok('C5 NOTE_EXACT 冇殘留稱號', '嗰位當紅花旦' not in line(30954))
 
 # (6) content JSON flag
 for rel in ['content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json',
@@ -77,7 +78,7 @@ for rel in ['content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json',
        'mvpDualHeroineProtected' in txt)
 
 # (7) 唔郁嘅嘢
-ok('E1 speaker registry 留返', '"關海媚":"kwan_hoimei"' in line(27127))
+ok('E1 speaker registry 留返', '"關海媚":"kwan_hoimei"' in line(27147))
 ok('E2 故事散文稱號句唔郁', '嗰位當紅花旦向你微微點咗下頭' in html and '嗰位當紅花旦同你擦身而過' in html)
 ok('E3 12 星名冊規則唔郁', '當紅花旦唔入名冊' in html)
 ok('E4 台柱係指阿偉，唔郁', '成行都嗌你做台柱喇' in html)

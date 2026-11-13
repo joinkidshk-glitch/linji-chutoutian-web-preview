@@ -22,6 +22,7 @@
 # v20a149 rebase 上 main e8c3a73（v170）resync：淨 ＋98 行（CSS ＋13／JS ＋85），總行數 59173→59271、DEF 53692→53790；其餘斷言唔郁。
 # v20a149 fixup3（rebase 上 e8c3a73）：reveal 行融返一行（−1），總行數 59271→59270、DEF 53790→53789。
 #      test_tang152／travel114／kwan151 釘行全部唔使 resync。
+# v20a153 第三輪 rebase 上 main a500536（v149）resync：總行數 59270→59341、DEF 53789→53860（difflib 對位核實純漂移，見 qa153/resync_rebase153c.py）。
 # 反證：喺 pristine main（56141a3／v169）index 上行，新行為斷言會乾淨 FAIL，
 #      唔會 crash。守門斷言喺 pristine 都 PASS（佢哋守「舊嘢冇郁過」）。
 # 用法：python3 tests/test_tang171_static.py [path-to-index.html]
@@ -50,9 +51,9 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 59270（v170 59173＋v149 ＋97）', src.count('\n') == 59270)
-ok('零行數漂移：openLoc DEF 行 53789 不變（travel114 釘行）',
-   len(lines) >= 53789 and 'function openLoc(id, opts){' in lines[53788])
+ok('零行數漂移：總行數 59270（v170 59173＋v149 ＋97）', src.count('\n') == 59341)
+ok('零行數漂移：openLoc DEF 行 53860 不變（travel114 釘行）',
+   len(lines) >= 53860 and 'function openLoc(id, opts){' in lines[53859])
 
 # --- §1. C1：捲動提示（淡出漸變） ---
 ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',

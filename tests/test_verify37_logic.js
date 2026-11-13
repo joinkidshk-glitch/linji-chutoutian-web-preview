@@ -50,6 +50,16 @@ function extractIIFE(decl){
   if(end < 0) throw new Error('iife end not found: ' + decl);
   return html.slice(i, end) + '\n})();';
 }
+/* v20a153：抽一段連續原始碼（起止 marker 之間，含起止行）。DLG106/119 段
+   （spDlgCharsHtml 經 dlg106HasFullbody／dlg119DedupePair 行佢）本身就係
+   一段連續原始碼，逐個函數列出易漏，成段抽最穩。 */
+function extractSlice(startMarker, endMarker){
+  const i = html.indexOf(startMarker);
+  if(i < 0) throw new Error('slice start not found: ' + startMarker);
+  const j = html.indexOf(endMarker, i);
+  if(j < 0) throw new Error('slice end not found: ' + endMarker);
+  return html.slice(i, j + endMarker.length);
+}
 function makeEl(){
   const el = {
     children: [], style: {}, dataset: {}, hidden: false, disabled: false,
@@ -122,9 +132,20 @@ function makeEl(){
     extractConst('LOCS'),
     extractIIFE('const BehaviorGate = (function(){'),
     extractIIFE('const StoryOC = (()=>{'),
+    /* v20a153 B2：spDlgPairIds 開場旁白 look-ahead 令 pair 非空，spDlgCharsHtml
+       會 call dlg106HasFullbody／dlg119DedupePair——DLG106/119 段要一併抽入，
+       否則 C1 開場 system beat 就 ReferenceError。 */
+    extractSlice('const DLG106_CATEGORIES = ', 'haloUrl:dlg119HaloUrl }; }catch(_e){}'),
     extractIIFE('const StoryPlay = (()=>{'),
   ].join('\n')
    .replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 =')
+   .replace('const DLG106_CATEGORIES =', 'var DLG106_CATEGORIES =')
+   .replace('const DLG106_CAT_TO_EXPR =', 'var DLG106_CAT_TO_EXPR =')
+   .replace('const DLG106_OLD_EMOTION_TO_CAT =', 'var DLG106_OLD_EMOTION_TO_CAT =')
+   .replace('const DLG106_EXPR_TO_CAT =', 'var DLG106_EXPR_TO_CAT =')
+   .replace('const DLG106_GAZE =', 'var DLG106_GAZE =')
+   .replace('const DLG106_EMOTION_MAP =', 'var DLG106_EMOTION_MAP =')
+   .replace('const DLG119_SHADOW_STEM =', 'var DLG119_SHADOW_STEM =')
    .replace('const STORY_GATE_3Y =', 'var STORY_GATE_3Y =')
    .replace('const STORY_LOC_SOFT =', 'var STORY_LOC_SOFT =')
    .replace('const STORY_HINT_SOFT =', 'var STORY_HINT_SOFT =')
