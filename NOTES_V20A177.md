@@ -156,6 +156,9 @@ PIL LANCZOS 重採樣，**唔換風格、唔換內容、唔換尺寸**：
 
 ## §8 落地紀錄（統籌）
 
-- （待統籌填：期間 v175 可能落地，main 郁咗唔使驚；落地嗰陣 rebase，`index.html` 淨行數 0，kwan151／tang152 唔使 resync；底圖係 binary，rebase 有衝突要人手揀新版。）
+- 落地 2026-11-13：main 落地嗰陣仲係 `7801a72`（v175 未落地），**唔使 rebase**；squash merge `v20a177`（分支 HEAD `e88903d`）→ 遊戲 commit `f09fa1b`，51 檔 ＋18583／−32；`index.html` 淨行數 0，kwan151／tang152 唔使 resync。
+- Push：第一次 egress proxy reset 斷線（Broken pipe／remote hung up），重試即得（`7801a72..f09fa1b main -> main`）。重試前 `git fsck` 曾經報一條 `missing blob 03fdbc2d…`（`tests/test_text125_static.py`），重查之後 fsck 乾淨、blob 在位——係斷線 push 嘅短暫殘留，唔係 repo 損壞，落地後 fsck 淨返 pre-existing dangling 物件。
+- 線上核實（親自 curl，兩次）：第一次仲係舊版（v172，5,271,408 bytes sha `eb594747…`，Pages 滯後）；等 90 秒後重 curl：**5,271,575 bytes、sha256 `eafb7a72aa3a38d7e1aa7a0c79d5f0148fe3d8949fa86d0cedd0ee036f13a896`**，同 repo `HEAD:index.html` 逐字一致。Live 係 v177。
 
-### 測試 resync（合併態，待統籌填）
+### 測試 resync（合併態）
+- 合併態即分支態：177：53／53、174：42／42、170：47／47、160_m1：24／24、64_chibi：18／18（統籌獨立重跑，全部 PASS）；全套 pristine 235／12 vs 工作版 236／12 零回歸；實駕 drive177.json won_932 28／28、won_700 26／26、gallery_932 21／21、nominated_932 21／21（nominated 係合併檔，見 §5.3）。
