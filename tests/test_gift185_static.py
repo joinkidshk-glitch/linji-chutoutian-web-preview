@@ -39,7 +39,7 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 60667（v194 合併：v198 60602＋65）', html.count('\n') == 60667)
+ok('總行數 60711（v199 rebase 上 main a1a6681：v194 60667＋44）', html.count('\n') == 60711)
 
 # ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',

@@ -34,8 +34,8 @@ ck("反證：整爛接線（DLG109_HEIGHT_SCALE 改名）後 mod_ok 必須轉 Fa
    not mod_ok(src.replace("DLG109_HEIGHT_SCALE", "DLG109_HEIGHT_SCALX")))
 ck("fitApply 逐張落 inline height（基礎高 × 身高比）",
    "imgs[j].style.height" in src and "pctOf(pct, sc[j])" in src)
-ck("fitApply 單人步同樣 × 比（唔係淨係雙人）",
-   "imgs[0].style.height = pctOf(60, scaleOf(imgs[0]))" in src)
+ck("fitApply 單人步同樣 × 比（唔係淨係雙人；v20a199 DLG199：阿偉單人 pct1＝min(60, 天花板)，其餘 60%）",
+   "imgs[0].style.height = pctOf(pct1, scaleOf(imgs[0]))" in src and "var pct1 = 60;" in src)
 ck("角色 id 來源雙路：主線 data-dlg-id＋巧遇 _sid106",
    "im.getAttribute('data-dlg-id') || im._sid106" in src)
 ck("未知 id 默認 1.00（舊圖後備唔郁）",

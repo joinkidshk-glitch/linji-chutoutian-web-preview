@@ -4,7 +4,8 @@
 #       一律搵唔到（hash＋長度比對，唔係齋靠 key 名；舊 hash 寫死喺下面
 #       OLD 常數，來源 qa109b/old_portraits.json，main 546007d 實量）
 #       ② 新 PORTRAITS 7 鍵＋BUST109_EXTRA 14 鍵：全部 data:image/webp，
-#       解碼係真 WebP、240×312、sha256 同 qa109b/crop109.json 一致
+#       解碼係真 WebP、240×312、sha256 同 crop 記錄一致（v20a199 C1：hero_awi／awi_s3
+#       改用 qa199/crop199.json，其餘 19 鍵沿用 qa109b/crop109.json；見下面 crop199 一節）
 #       ③ 覆蓋齊：NPCS 6 個 face 值全部有 PORTRAITS 鍵；12 紅星全部有
 #       BUST109_EXTRA 鍵；每個 PORTRAITS 鍵對應嘅全身 *_base.webp 喺磁碟存在
 #       ④ 接線：bust109HeroSrc 定義＋enterHome 用佢；enc79PeopleHtml 紅星段
@@ -111,6 +112,20 @@ if os.path.exists(crop_path):
 else:
     info("qa109b/crop109.json 缺席，跳過 hash 交叉比對")
 
+# v20a199 C1：hero_awi／awi_s3 收緊裁切＋恤衫色對比（FRAC 0.30→0.24），新記錄喺
+# qa199/crop199.json（2 鍵）；其餘 19 鍵沿用 crop109.json。兩個新 bust 必須同舊
+# crop109 值唔同（證明真係換咗），awi_s2 必須繼續同 crop109 一致（今票唔郁佢）。
+crop199_path = os.path.join(ROOT, "qa199", "crop199.json")
+crop199 = {}
+if os.path.exists(crop199_path):
+    with open(crop199_path, encoding="utf-8") as f: crop199 = json.load(f)
+    ck("crop199.json 有 2 項（hero_awi／awi_s3）", set(crop199) == {"hero_awi", "awi_s3"})
+    for _k in ("hero_awi", "awi_s3"):
+        ck(f"{_k} 新 sha 同舊 crop109 值唔同（C1 真係換咗）",
+           _k in crop and crop199[_k]["webp_sha256"] != crop[_k]["webp_sha256"])
+else:
+    info("qa199/crop199.json 缺席，hero_awi／awi_s3 沿用 crop109.json 比對")
+
 def check_one(label, b64val, expect_key):
     ok_prefix = b64val.startswith("data:image/webp;base64,")
     ck(f"{label} 係 WebP data URI", ok_prefix)
@@ -119,11 +134,13 @@ def check_one(label, b64val, expect_key):
     if webp_info:
         fmt, size, sha, blen = webp_info(raw_b64)
         ck(f"{label} 解碼係 WebP 240×312", fmt == "WEBP" and size == (240, 312))
-        if expect_key in crop:
-            ck(f"{label} sha256 同 crop109.json 一致", sha == crop[expect_key]["webp_sha256"])
-            ck(f"{label} b64 長度同 crop109.json 一致", blen == crop[expect_key]["b64_len"])
+        rec = crop199.get(expect_key) or crop.get(expect_key)
+        rec_name = "crop199.json" if expect_key in crop199 else "crop109.json"
+        if rec:
+            ck(f"{label} sha256 同 {rec_name} 一致", sha == rec["webp_sha256"])
+            ck(f"{label} b64 長度同 {rec_name} 一致", blen == rec["b64_len"])
         else:
-            info(f"{label} 唔喺 crop109.json，跳過 hash 比對")
+            info(f"{label} 唔喺 crop 記錄，跳過 hash 比對")
 
 for k, stem in PORTRAITS_STEM.items():
     check_one(f"PORTRAITS.{k}（{stem}）", PORTRAITS.get(k, ""), k)

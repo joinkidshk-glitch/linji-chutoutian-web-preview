@@ -38,8 +38,9 @@ ck("onload 收細掛鉤：主線 img 有 onload __dlg108Fit",
    'onload="try{window.__dlg108Fit&&window.__dlg108Fit(this)}' in src)
 ck("onload 收細掛鉤：巧遇 charL/charR 有 im.onload＝__dlg108Fit",
    "im.onload = function(){ try{ window.__dlg108Fit" in src)
-ck("單人步照設 --dlg108-char-h:60%（唔係留空靠 fallback）",
-   "imgs.length === 1" in src and "stage.style.setProperty('--dlg108-char-h', '60%')" in src)
+ck("單人步照設 --dlg108-char-h（唔係留空靠 fallback；v20a199 DLG199：阿偉單人 min(60, 天花板)，其餘 60%）",
+   "imgs.length === 1" in src and "stage.style.setProperty('--dlg108-char-h', pct1 + '%');" in src
+   and "var pct1 = 60;" in src)
 
 # ---------- 60%＋遮腿 CSS ----------
 i = src.find(".story-play .dlg106-char{")

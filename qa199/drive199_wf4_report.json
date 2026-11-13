@@ -1,0 +1,101 @@
+{
+ "errors": [],
+ "http_fail": [],
+ "checks": [
+  {
+   "name": "載入 day400 ptm2 stem=s2",
+   "pass": true,
+   "detail": {
+    "contClicked": true,
+    "stem": "awi_s2"
+   }
+  },
+  {
+   "name": "設 tier=1（day02 cond）stem=awi",
+   "pass": true,
+   "detail": "awi"
+  },
+  {
+   "name": "清場後無故事 overlay",
+   "pass": true,
+   "detail": {
+    "clicks": 38,
+    "day": 401
+   }
+  },
+  {
+   "name": "過一日後日數推進 1 日",
+   "pass": true,
+   "detail": {
+    "dayBefore": 401,
+    "dayNow": 402
+   }
+  },
+  {
+   "name": "WF4 場景「傳呼台嘅一課」呈現（beat 原文 Call機／520）",
+   "pass": true,
+   "detail": "Call機響起一串密碼數字，阿偉對住本密碼簿查到眼花——原來係臨記頭嗌佢提早半粒鐘到廠，佢差啲睇錯做收工。"
+  },
+  {
+   "name": "WF4 pending 已清＋seen 已入",
+   "pass": true,
+   "detail": {
+    "pending": null,
+    "seen02": true
+   }
+  },
+  {
+   "name": "WF4 img 全部有 onload __dlg108Fit",
+   "pass": true,
+   "detail": [
+    {
+     "id": "awi",
+     "src": "awi_base.webp",
+     "onload": "try{window.__dlg108Fit&&window.__dlg108Fit(this)}catch(_e){}",
+     "hasFit": true
+    }
+   ]
+  },
+  {
+   "name": "WF4 獨角撳繼續後 fit 有落手（inline height 已設）＋唔溢出",
+   "pass": true,
+   "detail": {
+    "continued": true,
+    "fit": {
+     "id": "awi",
+     "src": "awi_sad.webp",
+     "w": 96.1,
+     "h": 286.8,
+     "natW": 933,
+     "natH": 2784,
+     "ar": 0.3351,
+     "paintedH": 286.8,
+     "inlineH": "60%",
+     "cssMaxW": "48%",
+     "stageH": 480,
+     "docScrollW": 932,
+     "winW": 932
+    }
+   }
+  }
+ ],
+ "runs": {
+  "wf4": {
+   "storyOn": true,
+   "txt": "Call機響起一串密碼數字，阿偉對住本密碼簿查到眼花——原來係臨記頭嗌佢提早半粒鐘到廠，佢差啲睇錯做收工。",
+   "chars": [
+    {
+     "id": "awi",
+     "src": "awi_base.webp",
+     "onload": "try{window.__dlg108Fit&&window.__dlg108Fit(this)}catch(_e){}",
+     "hasFit": true
+    }
+   ],
+   "wf4": {
+    "pending": null,
+    "seen02": true
+   },
+   "day": 402
+  }
+ }
+}
