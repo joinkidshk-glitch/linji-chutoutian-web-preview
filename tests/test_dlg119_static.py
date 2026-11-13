@@ -1,3 +1,4 @@
+# v20a195 resync：加 2 張 angry 表情（awi_s2／s3_angry），fullbody 總數 207→209、真檔 182→184。
 # v20a119 DLG119 靜態守門：無名角色剪影接入（男／女／老年影＋老臨記有面）。
 # 覆蓋：① 38 個顯示名逐名解像（LEGACY→影 id／老臨記 id→GAZE 有鍵→磁碟檔存在）
 #       ② 「週刊編輯」／「周刊編輯」兩寫法 ③ 院線助理顯式 speakerId 嗰句（PUSH 檔）
@@ -220,8 +221,8 @@ ck("產品 ?v= 不變", "v20a10" in src)
 # ---------- ⑪ 資產總數 ----------
 if os.path.isdir(FB):
     names = set(os.listdir(FB))
-    ck("fullbody 總數 207（128＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情＋v138 37 張新表情）",
-       len([f for f in names if f.endswith((".webp", ".png"))]) == 207)
+    ck("fullbody 總數 209（128＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情＋v138 37 張新表情＋v195 2 張 angry 表情）",
+       len([f for f in names if f.endswith((".webp", ".png"))]) == 209)
     ck("10 張新資產齊（6 張 base/dim＋3 張 halo＋老臨記 base）",
        all(fn in names for fn in (
            "shadow_male_base.webp", "shadow_male_dim_base.webp", "shadow_male_halo.png",

@@ -1,3 +1,4 @@
+# v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），總行數 60522→60609、DEF 55018→55102；L4862 錨點 4889 唔郁（喺插入點之前）。
 # -*- coding: utf-8 -*-
 # v20a191 resync：index.html 淨 +47 行，總行數 60155→60202、DEF 54651→54698、L4862→L4864。
 # v20a191 rebase 上 main b3db32f resync：總行數 60443→60490、DEF 54940→54986、L4862→L4889（合併後實量 4889）。
@@ -77,9 +78,9 @@ def blend(fg, bg, a):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 59442（v181 ＋8）', src.count('\n') == 60522)
-ok('零行數漂移：openLoc DEF 行 53961（v181 ＋8，travel114 釘行）',
-   len(lines) >= 55018 and 'function openLoc(id, opts){' in lines[55017])
+ok('零行數漂移：總行數 60609（v181 ＋8＋v195 ＋87）', src.count('\n') == 60609)
+ok('零行數漂移：openLoc DEF 行 55102（v195 ＋84：55018→55102，travel114 釘行）',
+   len(lines) >= 55102 and 'function openLoc(id, opts){' in lines[55101])
 ok('零行數漂移：L4862 仲係 v169／v171／v173 同行（v181 CSS ＋13，kwan151／tang152 釘行已一併 resync）',
    len(lines) >= 4889 and 'loc-acts-more171::after' in lines[4888] and 'act-locked171' in lines[4888])
 ok('L4862 註解平衡：/* 數＝*/ 數，鎖住底 rule 唔喺註解入面（v173 曾中招：註解入面再插 /*…*/ 令首個 */ 提早閂註解，殘尾變裸文吞咗鎖住底 rule 嘅 selector，live 底色跌返 #f5e6c0）',

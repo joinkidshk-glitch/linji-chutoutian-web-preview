@@ -26795,14 +26795,18 @@ function dlg106ExprFor(category){
   return DLG106_CAT_TO_EXPR[dlg106NormCategory(category) || "neutral"] || "base";
 }
 /* 阿偉成長階段：跟現行級數機制 enc79PlayerTier（0 臨記／1 配角／2 主角／3 天王）——
-   三階段造型：tier 0–1 → awi、2 → awi_s2、3 → awi_s3。函數未載入時退 awi。 */
+   三階段造型：tier 0–1 → awi、2 → awi_s2、3 → awi_s3。函數未載入時退 awi。
+   v20a195 TIER195：讀 max(即時 tier, 最高紀錄 playerTierMax)——升咗就唔跌返。 */
 function dlg106AweiStem(){
   try{
-    if(typeof enc79PlayerTier==="function"){
-      const t = enc79PlayerTier()|0;
-      if(t>=3) return "awi_s3";
-      if(t===2) return "awi_s2";
-    }
+    /* v20a195 TIER195：舊檔第一次讀造型嗰陣懶回填最高紀錄（packs 未齊嗰陣載入、
+       playerTierMax 留空嗰種）；已有數字就即返，唔再掃年庫。 */
+    if(typeof enc195EnsureTierMax==="function") enc195EnsureTierMax();
+    const live = (typeof enc79PlayerTier==="function") ? enc79PlayerTier()|0 : 0;
+    const mx = (typeof S!=="undefined" && S && S.flags) ? (Number(S.flags.playerTierMax)||0) : 0;
+    const t = Math.max(live, mx);
+    if(t>=3) return "awi_s3";
+    if(t===2) return "awi_s2";
   }catch(_e){}
   return "awi";
 }
@@ -33413,6 +33417,9 @@ function normalizeSaveObj(o){
   try{ if(typeof calib60MissedScan==="function") calib60MissedScan(o); }catch(_e){}
   /* v20a61 CONSEQ61-1：舊檔已過評核年份→靜靜標記已過，永不追溯收場；病倒連續日由 0 起計，唔會讀檔即病 */
   try{ if(typeof conseq61LegacyMark==="function") conseq61LegacyMark(o); }catch(_e){}
+  /* v20a195 TIER195：舊檔回填阿偉造型最高 tier（由 done_* 旗反推全歷年；年庫未載入
+     就留空唔寫，等 dlg106AweiStem 第一次讀嗰陣懶回填）。 */
+  try{ if(typeof enc195BackfillTierMax==="function") enc195BackfillTierMax(o); }catch(_t195){}
   return o;
 }
 function saveSummaryFrom(o){
@@ -38168,6 +38175,8 @@ function resolvePlannedDay(id){
         if(sh.type==="電視劇"||sh.type==="綜藝") bumpNpc("colleague",3+R(0,2));
         if(sh.type==="廣告") bumpNpc("stylist",2);
         S.flags["done_"+sh.gigId]=(S.flags["done_"+sh.gigId]||0)+1;
+        /* v20a195 TIER195：殺青記最高 tier（升咗就唔跌返）。 */
+        try{ if(typeof enc195RecordTierMax==="function") enc195RecordTierMax(); }catch(_t195){}
         S.weekGigsDone = (Number(S.weekGigsDone)||0) + 1;
         try{
           if(!S.story || typeof S.story!=="object") S.story = {};
@@ -52597,6 +52606,81 @@ function enc79PlayerTier(){
     return 0;
   }catch(_e){ return 0; }
 }
+/* v20a195 TIER195：阿偉造型最高紀錄（B 方案，用戶 2026-11-13 20:58 由 A 改 B）。
+   根因：enc79PlayerTier() 只數當年 GIGS 入面嘅 lead 完成數，syncGigsForCalendarYear()
+   每年換年庫，1990 年做完男主角升到 s2，踏入 1991 年即跌返 s1（調查報告
+   ~/workspace/linji-work-awei-look/INVESTIGATION.md）。
+   B 方案：tier 持久化做最高紀錄——殺青嗰陣記 max，dlg106AweiStem() 讀
+   max(即時 tier, 最高紀錄)，升咗就唔跌返；即時 tier 計數本身唔郁。
+   計數口徑跟 enc79PlayerTier：done_* 旗＋normalize 後 roleScale（含 NAME93／OVR110
+   降級——gig_1988_tv_06 等假男主角唔計）；唔可以直接數 pack JSON。 */
+function enc195TierFromAllYears(flags, fame){
+  /* 由 done_* 旗反推全歷年 tier：掃 STORY_WIRE.gigsByYear 全部年庫（1990–1994），
+     每張經 normalizeGigRecord（NAME93／OVR110 降級一致）。年庫未載入→回 null
+     （唔寫錯值，等 packs 到齊再由 enc195EnsureTierMax 懶回填）。 */
+  try{
+    const by = (typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.gigsByYear) || null;
+    if(!by) return null;
+    const fl = (flags && typeof flags==="object") ? flags : {};
+    const seen = {};
+    let lead=0, sup=0, anyPack=false;
+    const years = Object.keys(by);
+    for(let i=0;i<years.length;i++){
+      const pk = by[years[i]];
+      const raw = pk && Array.isArray(pk.gigs) ? pk.gigs : null;
+      if(!raw || !raw.length) continue;
+      anyPack = true;
+      for(let j=0;j<raw.length;j++){
+        const r0 = raw[j];
+        if(!r0 || !r0.id || seen[r0.id]) continue;
+        seen[r0.id] = 1;
+        if(!(Number(fl["done_"+r0.id])>0)) continue;
+        let g = r0;
+        try{ if(typeof normalizeGigRecord==="function") g = normalizeGigRecord(r0); }catch(_n){}
+        const rs = String((g && g.roleScale) || "");
+        if(/lead/.test(rs)) lead++; else if(/support|cameo/.test(rs)) sup++;
+      }
+    }
+    if(!anyPack) return null;
+    const fm = Number(fame)||0;
+    if(lead>=3 && fm>=70) return 3;
+    if(lead>=1) return 2;
+    if(sup>=1 || fm>=25) return 1;
+    return 0;
+  }catch(_e){ return null; }
+}
+function enc195BackfillTierMax(o){
+  /* 舊檔回填：載入嗰陣（normalizeSaveObj）由現有 done_* 旗反推一次最高 tier 寫入。
+     冪等：已有數字就唔郁；年庫未載入就留空（唔寫 0），等 dlg106AweiStem 懶回填。 */
+  try{
+    if(!o || typeof o!=="object") return;
+    if(!o.flags || typeof o.flags!=="object") o.flags = {};
+    if(typeof o.flags.playerTierMax==="number" && isFinite(o.flags.playerTierMax)) return;
+    const t = enc195TierFromAllYears(o.flags, Number(o.fame)||0);
+    if(t==null) return;
+    o.flags.playerTierMax = t;
+  }catch(_e){}
+}
+function enc195EnsureTierMax(){
+  /* 懶回填：舊檔喺 packs 未齊嗰陣載入、playerTierMax 留空嗰陣，第一次讀造型嗰陣補填。
+     之後已有數字就即返，唔再掃年庫。 */
+  try{
+    if(typeof S==="undefined" || !S) return;
+    enc195BackfillTierMax(S);
+  }catch(_e){}
+}
+function enc195RecordTierMax(){
+  /* 殺青寫入點：done_* 旗啱啱寫入之後 call，記 max(現值, 即時 tier)。
+     口徑跟 enc79PlayerTier（數當年 GIGS 嘅 done_* 旗）——同回填同一條數，
+     唔會出現「即時 tier 2 但最高紀錄得 1」嘅矛盾。 */
+  try{
+    if(typeof S==="undefined" || !S) return;
+    if(!S.flags || typeof S.flags!=="object") S.flags = {};
+    const live = (typeof enc79PlayerTier==="function") ? enc79PlayerTier()|0 : 0;
+    const cur = Number(S.flags.playerTierMax)||0;
+    S.flags.playerTierMax = Math.max(cur, live);
+  }catch(_e){}
+}
 function enc79FavCap(){ return ENC79_FAV_CAPS[enc79PlayerTier()] || 30; }
 /* 好感增減：巧遇／送禮來源（enc/beat/gift）受每週軟頂＋級數上限；殺青（wrap）唔計軟頂、仍受級數上限；跌幅直扣 */
 function enc79AddFav(starId, delta, src){
@@ -59320,6 +59404,9 @@ function failShootOverdue(sh){
   S.flags = S.flags||{};
   if(sh.gigId){
     S.flags["done_"+sh.gigId]=(S.flags["done_"+sh.gigId]||0)+1;
+    /* v20a195 TIER195：逾期掉單同樣寫 done_* 旗（enc79PlayerTier 計數認呢支旗），
+       最高紀錄跟同一口徑先唔會同即時 tier 打架。 */
+    try{ if(typeof enc195RecordTierMax==="function") enc195RecordTierMax(); }catch(_t195){}
     S.flags["fail_shoot_"+sh.gigId]=1;
   }
   const sid=sh.id;

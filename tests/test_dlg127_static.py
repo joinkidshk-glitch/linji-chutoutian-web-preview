@@ -1,3 +1,4 @@
+# v20a195 resync：加 2 張 angry 表情（awi_s2／s3_angry），fullbody 總數 207→209、真檔 182→184。
 # v20a127 DLG127 靜態守門：22 張新表情圖入庫＋檔名／映射／句數／焗邊。
 # 覆蓋：① 22 張新資產本地存在＋檔名一字唔差＋WebP 檔頭＋fullbody 總數 170
 #       ② 每張新圖有對應分類句數（句數來源：
@@ -94,7 +95,7 @@ if os.path.isdir(FB):
     missing = check_new_assets(names)
     ck("22 張新資產全部喺 assets/story/fullbody/", not missing)
     if missing: info("缺新資產：" + ", ".join(missing))
-    ck("fullbody 總數 148→170→207（v131 後 148 張＋v127 22 張新表情＋v138 37 張新表情）", len([f for f in names if f.endswith((".webp", ".png"))]) == 207)
+    ck("fullbody 總數 148→170→207→209（v131 後 148 張＋v127 22 張新表情＋v138 37 張新表情＋v195 2 張 angry 表情）", len([f for f in names if f.endswith((".webp", ".png"))]) == 209)
     for fn, _sp, _cat, n in NEW:
         p = os.path.join(FB, fn)
         ok = os.path.isfile(p) and os.path.getsize(p) > 50000

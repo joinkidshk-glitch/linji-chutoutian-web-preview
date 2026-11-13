@@ -1,3 +1,4 @@
+# v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），總行數 60522→60609、DEF 55018→55102。
 # -*- coding: utf-8 -*-
 # v20a191 resync：index.html 淨 +47 行，總行數 60155→60202、DEF 54651→54698。
 # v20a191 rebase 上 main b3db32f resync：總行數 60443→60490、DEF 54940→54986。
@@ -77,9 +78,9 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 59442（v170 59173＋v149 ＋97＋v153 ＋71＋v172 ＋15＋v175 ＋78＋v181 ＋8）', src.count('\n') == 60522)
-ok('零行數漂移：openLoc DEF 行 53961（v181 ＋8，travel114 釘行）',
-   len(lines) >= 55018 and 'function openLoc(id, opts){' in lines[55017])
+ok('零行數漂移：總行數 60609（v170 59173＋v149 ＋97＋v153 ＋71＋v172 ＋15＋v175 ＋78＋v181 ＋8＋v195 ＋87）', src.count('\n') == 60609)
+ok('零行數漂移：openLoc DEF 行 55102（v195 ＋84：55018→55102，travel114 釘行）',
+   len(lines) >= 55102 and 'function openLoc(id, opts){' in lines[55101])
 
 # --- §1. C1：捲動提示（淡出漸變） ---
 ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',

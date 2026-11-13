@@ -1,3 +1,4 @@
+# v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），normaliser／loader 錨點各 +4；HELD 唔郁（喺插入點之前）。
 # -*- coding: utf-8 -*-
 # v20a191 resync：index.html 淨 +47 行，三個錨點 +2／+9／+9 重算，內容逐字核實純漂移。
 # v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行，三個錨點 +2／+9／+9 重算，內容逐字核實純漂移。
@@ -82,8 +83,8 @@ ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
    'DengLine.loadMock(dengMock)' in src and 'DengLine.loadPushMock(dengPushMock)' in src)
 
 # --- 4. 載入機制：stub 正規化＋push mock 過濾 ---
-ok('機制：normaliseTangStub152 函數在位（L31501）', lines()[31509].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行（L31645）', lines()[31653].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位（L31514）', lines()[31513].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行（L31658）', lines()[31657].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)

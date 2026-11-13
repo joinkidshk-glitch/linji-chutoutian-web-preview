@@ -1,3 +1,4 @@
+# v20a195 resync：加 2 張 angry 表情（awi_s2／s3_angry），fullbody 總數 207→209、真檔 182→184。
 # v20a109 DLG109 靜態守門：per-character 身高比表（阿偉 1.00／彭少祺 0.85／
 # 顧明輝・程天諾 1.05／其餘 1.00）＋ dlg108FitApply 逐張 inline height ＋
 # 遮腿幾何不變（bottom:10%／60% 基礎高／對話框定高）＋ PORTRAITS／舊 bust 零掂
@@ -95,7 +96,7 @@ try:
             continue  # v111：通告負責人立繪（S-30v2 卡上人物），唔係對話舞台角色，唔入身高重測
         im = Image.open(p)
         files[os.path.basename(p)[:-5]] = round(im.size[0] / im.size[1], 4)
-    ck("真檔數目 182 張（109 唔加圖；96＋v119 DLG119 7 張 webp＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情＋v138 37 張新表情；3 張 halo 係 png，唔入呢個數；v111 boss_* 11 張另計，唔入身高重測）", len(files) == 182)
+    ck("真檔數目 184 張（109 唔加圖；96＋v119 DLG119 7 張 webp＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情＋v138 37 張新表情＋v195 2 張 angry 表情；3 張 halo 係 png，唔入呢個數；v111 boss_* 11 張另計，唔入身高重測）", len(files) == 184)
     bases = {k[:-5]: v for k, v in files.items() if k.endswith("_base")}
     def near(name, got, want, tol=0.001):
         ck("闊高比 %s＝%.3f（實量 %.3f）" % (name, got, want), abs(got - want) <= tol)

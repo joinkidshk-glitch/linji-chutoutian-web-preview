@@ -1,3 +1,4 @@
+# v20a195 resync：加 2 張 angry 表情（awi_s2／s3_angry），fullbody 總數 207→209、真檔 182→184。
 # v20a108 DLG108 靜態守門：60% 排位＋對話框遮腿＋對話框定高＋下一句文字鏈＋
 # 地面錨線零殘留（04:18 統籌追加取代舊方案）＋ v106/v107 真檔重測（96 張闊高比）。
 # 用法：python3 tests/test_dlg108_static.py [path-to-index.html]
@@ -114,7 +115,7 @@ try:
             continue  # v111：通告負責人立繪（S-30v2 卡上人物），唔係對話舞台角色，唔入配對重測
         im = Image.open(p)
         files[os.path.basename(p)[:-5]] = round(im.size[0] / im.size[1], 4)
-    ck("真檔數目 182 張（v106 88 張＋v107 8 張新表情＋v119 DLG119 7 張 webp＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情＋v138 37 張新表情；v111 boss_* 11 張另計，唔入對話重測；3 張 halo 係 png）", len(files) == 182)
+    ck("真檔數目 184 張（v106 88 張＋v107 8 張新表情＋v119 DLG119 7 張 webp＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情＋v138 37 張新表情＋v195 2 張 angry 表情；v111 boss_* 11 張另計，唔入對話重測；3 張 halo 係 png）", len(files) == 184)
     def near(name, got, want, tol=0.001):
         ck("闊高比 %s＝%.3f（size-test %.3f）" % (name, got, want), abs(got - want) <= tol)
     bases = {k[:-5]: v for k, v in files.items() if k.endswith("_base")}
