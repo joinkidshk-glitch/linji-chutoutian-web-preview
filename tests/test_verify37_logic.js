@@ -26,6 +26,14 @@ function extractFn(decl){
   }
   return html.slice(i, k);
 }
+/* v20a202：showResult／resolvePlannedDay 而家靠呢啲 helper 出去向行（文案層），
+   全檔案各段共用，喺模組層一次過抽真；call time 先 resolve todayPlanId／planLabel／
+   FREEPLAY_FW，各段自己嘅 stub 照用。 */
+eval(extractFn('function esc202'));
+eval(extractFn('function nextDayLabel202'));
+eval(extractFn('function dayEndNextLine202'));
+eval(extractFn('function dayEndDismissNote202'));
+eval(extractFn('function storyResultDestLine202'));
 function extractConst(name){
   const i = html.indexOf('const ' + name + ' =');
   if(i < 0) throw new Error('const not found: ' + name);

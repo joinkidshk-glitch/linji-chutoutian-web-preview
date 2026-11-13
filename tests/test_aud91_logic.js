@@ -88,7 +88,9 @@ const FNS = ['R','clamp','statHardMax','apply','bumpNpc','planMeta','isGigWrappe
   'defaultWeekPlan','lockShootsIntoDraft','placeShootOnPlan','previewShootPlacement','confirmPlaceShoot',
   'weekNumNow','stampWeekPlan37','writeTodayPlan','clearJobFromPlans',
   'shootBandFor','resolveRoleScale','shootWeekdayOk','shootWeekdaySet0','isFreePlanSlot','isMapDay','isRecordGig','shootWeekdayLabel','gigScheduleVerb','displayDateObj','isCriticalPlanDay','planDayWouldWrap','enrollCourse','fameFloor','canAudition','chance','rollAuditionPay','chanceVarianceNote','payContractNote','doAudition',
-  'aud91Ensure','aud91PendingOf','aud91WaitDays','aud91WaitPhrase','aud91CreatePending','aud91LogPush','aud91DueList','aud91PendingHint','aud91PresentDue','aud91PresentOne','payWrapNote','shootPendingLine38'];
+  'aud91Ensure','aud91PendingOf','aud91WaitDays','aud91WaitPhrase','aud91CreatePending','aud91LogPush','aud91DueList','aud91PendingHint','aud91PresentDue','aud91PresentOne','payWrapNote','shootPendingLine38',
+  /* v20a202：resolvePlannedDay 而家靠呢啲 helper 出去向行＋dismiss 提示 */
+  'esc202','nextDayLabel202','dayEndNextLine202','dayEndDismissNote202','storyResultDestLine202'];
 /* v20a112 ICONS112：被抽函數調用 iconHtml112，沙盒要一併載入對照＋helper。 */
 eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
 eval(extractFn('iconHtml112'));

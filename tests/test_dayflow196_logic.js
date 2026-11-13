@@ -124,6 +124,11 @@ eval(extractFn('story165AfterContSet'));
 eval(extractFn('planDayWouldWrap'));
 eval(extractFn('isCriticalPlanDay'));
 eval(extractFn('countRemainingAutoDays'));
+eval(extractFn('esc202')); /* v20a202：afterDayModal／休息卡／確認 modal 而家靠呢啲 helper 出去向行＋dismiss 提示 */
+eval(extractFn('nextDayLabel202'));
+eval(extractFn('dayEndNextLine202'));
+eval(extractFn('dayEndDismissNote202'));
+eval(extractFn('storyResultDestLine202'));
 eval(extractFn('dayEndContinueButtons'));
 eval(extractFn('morningChain196'));
 eval(extractFn('runScheduleFromToday'));

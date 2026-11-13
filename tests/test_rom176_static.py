@@ -73,13 +73,13 @@ for fn in ('rom176TryIntercept', 'rom176PlayEncounter', 'rom176DoGiveStarGift', 
 # v20a186 resync：index.html 淨 ＋4 行（結果卡同屆提名行移出逐類別卡，插入點 L45783–45826），其後釘行各 ＋4（53077→53081、53445→53449、54584→54588、54678→54682）；NPCS lan／GIFT_REACT 釘喺插入點之前，唔郁。
 # v20a188 resync：index.html 淨 +225 行（AWARDS188 覆寫表＋角色閘，插入點 L45380–46310）；其後釘行各 +225，之前唔郁；總行數 60155→60380。
 # v20a188 resync 補 +29：上一手 +225 計少咗其後再加嘅 NP_WIN 覆寫＋load 呼叫＋gate 行＋debug 入口（淨 +29）；總淨變 +254，總行數 60409；difflib 對位核實全部錨點純漂移，見 qa188/resync188_verify.py。
-ok('釘：NPCS lan 條目 L6127', line(6127).startswith('  lan:{ id:"lan", name:"藍若曦"'))
-ok('釘：載入點 L31683（GIFT_REACT 賦值同行呼叫注入）',
-   'GIFT_REACT = giftReact' in line(31683) and 'rom176ApplyGiftOverrides()' in line(31683))
-ok('釘：ROM176 block 起點 L53814', line(53814).startswith('/* ===== v20a176 ROM176'))
-ok('釘：rom176ApplyGiftOverrides 定義 L54182', line(54182).startswith('function rom176ApplyGiftOverrides()'))
-ok('釘：addLocTalkGiftActs L55321', line(55321).startswith('function addLocTalkGiftActs(add, L, npcId)'))
-ok('釘：openLoc rom176 攔截 L55415', 'rom176TryIntercept(id)' in line(55415))
+ok('釘：NPCS lan 條目 L6134', line(6134).startswith('  lan:{ id:"lan", name:"藍若曦"'))
+ok('釘：載入點 L31695（GIFT_REACT 賦值同行呼叫注入）',
+   'GIFT_REACT = giftReact' in line(31695) and 'rom176ApplyGiftOverrides()' in line(31695))
+ok('釘：ROM176 block 起點 L53890', line(53890).startswith('/* ===== v20a176 ROM176'))
+ok('釘：rom176ApplyGiftOverrides 定義 L54258', line(54258).startswith('function rom176ApplyGiftOverrides()'))
+ok('釘：addLocTalkGiftActs L55397', line(55397).startswith('function addLocTalkGiftActs(add, L, npcId)'))
+ok('釘：openLoc rom176 攔截 L55491', 'rom176TryIntercept(id)' in line(55491))
 # v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行，6 個釘行按段 +2／+9／+47 重算（6070→6072、31574→31583、53369→53416、53737→53784、54876→54923、54970→55017），difflib 對位核實純漂移。
 
 # ---- 注入呼叫位置（GIFT 賦值之後、同一行） ----

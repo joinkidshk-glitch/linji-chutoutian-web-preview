@@ -3,6 +3,7 @@
 # v20a197 resync：index.html 淨 +94 行，總行數 60490→60584（difflib 對位核實純漂移，見 qa197/resync197.py；其餘斷言唔郁；B4 補丁再 +9 行）。
 # v20a196 resync：index.html 淨 +83 行，總行數 60490→60573（showResult −1／晨鏈＋74／WF4＋63／尾段＋83 淨計；其餘斷言唔郁）。
 # v20a196 落地合併上 main 2de5026：總行數 60817→60900（v197 ＋94 之上再 ＋83）。
+# v20a202 resync：index.html 淨 +88 行（見 qa202/resync202.py），總行數 60900→60988。
 # v20a191 resync：index.html 淨 +47 行，總行數 60155→60202（其餘斷言唔郁）。
 # v20a191 rebase 上 main b3db32f resync：總行數 60443→60490。
 # v20a191 rebase 上 main 593a845 resync：總行數 60409→60456。
@@ -42,7 +43,7 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 60900（v196 落地合併上 main 2de5026：v197 60817＋83）', html.count('\n') == 60900)
+ok('總行數 60988（v202 淨 +88：CSS +7／showResult +1／render +4／afterDayModal +3／helpers +50／resolve +2／modal +9／confirm45 +1+5+4／休息卡 +2）', html.count('\n') == 60988)
 
 # ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',

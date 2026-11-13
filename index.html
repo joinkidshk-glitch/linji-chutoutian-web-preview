@@ -1856,6 +1856,13 @@ button.g, .start button.g{
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+/* v20a202 B1/B2/C2：去向行＋dismiss 提示＋劇情鎖死提示（純文案層，唔郁流程）。
+   .dayend-next202 放內容頂（<h3> 之後，第一屏見）；.modal-note202 係 modal() role:"note"
+   渲染嘅純文字行，落喺 sticky #modal-btns 底，長期可見、唔可撳；故事播放嗰陣掣欄係深色，
+   用淺金字。 */
+.dayend-next202{margin:6px 0 2px;font-size:.85rem;font-weight:700;color:#6b4e2e;line-height:1.4}
+.modal-note202{flex:1 1 100%;text-align:center;font-size:.78rem;line-height:1.4;color:#7a6248;padding:2px 4px}
+#mask.story-play-on .modal-note202{color:rgba(255,232,170,.75)}
 /* v17x: sticky 保留首屏，但唔食垂直 pan（padding／gradient pointer-events:none） */
 #modal-inner .gig-actions{
   position: sticky;
@@ -28178,7 +28185,8 @@ const StoryPlay = (()=>{
         if(typeof prev==="function") prev();
       }});
     };
-    modal(`<h3>劇情結算</h3>${body}`, (btns||[]).map(wrapBtn), {
+    /* v20a202 B1：去向行放 <h3> 之後（第一屏見）；slot 只 peek，消費留返「關閉」／dismiss。 */
+    modal(`<h3>劇情結算</h3>${storyResultDestLine202()}${body}`, (btns||[]).map(wrapBtn), {
       onDismiss:()=>{
         try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
         try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
@@ -28353,6 +28361,10 @@ const StoryPlay = (()=>{
         }});
       }
     }
+    /* v20a202 C2：鎖死提示——所有故事一律唔出「先返回」（v196 D4），但要講出口：
+       掣欄底加一行細字，播緊對白／抉擇兩種 mode 都有；純文字，唔改鎖死流程。
+       （enc79 巧遇 overlay 唔加——佢本身有「點頭離開」出口，唔係鎖死，寫呢句會係錯話。） */
+    modalBtns.push({ label:"劇情進行中，播完先可以離開", role:"note" });
     /* v20a196 D4：所有故事一律唔出「先返回」（舊寫法只係 lockedForced 先唔出）。 */
     /* v20a196 D4：所有故事 onDismiss 一律重開畫面（舊 lockedForced 嗰條路）；mask click 唔會返地圖。
        注意次序：closeModal() 會先清 story-play-on＋解鎖，render() 再加返——C1 舊路同一寫法。 */
@@ -37133,7 +37145,10 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
   const fx102Html = (typeof actFx102Html==="function") ? actFx102Html(opts.fx102Kind) : ""; /* v20a102 FX102 */
   /* v20a196 D1／D7：dismiss 跟下一日行程——排程日＝繼續跑下一日（go），逛逛日＝返地圖。 */
   const dismissFn = ended ? go : ()=>{ try{ if(nextDayIsMap()) goToMapForBrowse(); else go(); }catch(_e){ try{ goToMapForBrowse(); }catch(_e2){} } };
-  modal(`<h3>${title}</h3>${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}${dayLine}`, btns, {onDismiss: dismissFn});
+  /* v20a202 B1/B2：去向行放 <h3> 之後（第一屏見，唔使碌）；dismiss 提示行 role:"note"
+     放掣列尾（sticky 掣欄底，長期可見）。流程／dismissFn 本身唔郁。 */
+  try{ btns.push(dayEndDismissNote202(ended)); }catch(_e){}
+  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}${dayLine}`, btns, {onDismiss: dismissFn});
   try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   saveQ();
@@ -38123,6 +38138,56 @@ function story165AfterContSet(kind){
     if(typeof FREEPLAY_FW!=="undefined" && FREEPLAY_FW) FREEPLAY_FW._story165AfterCont = (kind==="schedule") ? "schedule" : "map";
   }catch(_e){}
 }
+/* v20a202 B1/B2：下一日去向＋dismiss 提示（純文案層，唔郁 v196 承諾制流程）。
+   日結板嗰陣 dayIndex 已經係下一日，所以 todayPlanId() 讀嘅就係下一日計劃；
+   判定跟 nextDayIsMap() 同一邏輯（冇計劃／地圖日／wrap:／audition: 歷史標記＝逛逛日）。
+   邊界：
+   - ended（週結）：聽日係下週，未排計劃——唔出聽日行，dismiss 行「回家結算」。
+   - rest／home_chore／train／shoot:／job:：planLabel 實名＋「（自動行程）」。
+   - sick61：planMeta 實名「病假」，朝早行 conseq61 病假結算，一樣係自動行程。
+   - 逛逛日（scout_*／wrap:／audition:／冇計劃）：一律「到處逛逛（返地圖自由行）」，
+     唔用 planLabel（scout_nt 等 planMeta 得返 raw id，唔係人話）。
+   - 週末：週六板讀週日計劃、週日板係 ended——上面兩條已經覆蓋，唔使特別處理。
+   - 週加速摘要板（flushWeekAccelSummary）唔係日結板，唔加（範圍外）。 */
+function esc202(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function nextDayLabel202(){
+  try{
+    const id = todayPlanId();
+    if(!id || (typeof isMapDay==="function" && isMapDay(id)) || String(id).startsWith("wrap:") || String(id).startsWith("audition:")){
+      return { kind:"map", label:"到處逛逛" };
+    }
+    if(String(id)==="rest") return { kind:"schedule", label:"休息" };
+    let nm = String(id);
+    try{ nm = planLabel(id) || nm; }catch(_e){}
+    return { kind:"schedule", label:nm };
+  }catch(_e){ return { kind:"map", label:"到處逛逛" }; }
+}
+function dayEndNextLine202(ended){
+  if(ended) return "";
+  const d = nextDayLabel202();
+  const txt = d.kind==="map" ? ("聽日：" + d.label + "（返地圖自由行）") : ("聽日：" + d.label + "（自動行程）");
+  return `<p class="dayend-next202">${esc202(txt)}</p>`;
+}
+function dayEndDismissNote202(ended){
+  if(ended) return { label:"撳出面＝回家結算", role:"note" };
+  const d = nextDayLabel202();
+  return { label: d.kind==="map" ? "撳出面＝返地圖" : "撳出面＝繼續跑聽日行程", role:"note" };
+}
+/* v20a202 B1（劇情結算）：showResult 嗰陣 dayIndex 已經係入緊嗰日（唔係聽日），
+   所以用「關閉之後」＋今日 framing；slot 只 peek 唔消費（消費留返「關閉」／dismiss 本身）。
+   slot=schedule → 今日行程實名；slot=map → 返地圖；冇 slot（玩家自己開播）→ 返地圖。 */
+function storyResultDestLine202(){
+  let slot = null;
+  try{ slot = (typeof FREEPLAY_FW!=="undefined" && FREEPLAY_FW) ? (FREEPLAY_FW._story165AfterCont || null) : null; }catch(_e){}
+  if(slot==="schedule"){
+    const d = nextDayLabel202();
+    const txt = d.kind==="map" ? "關閉之後：返地圖（今日：到處逛逛）"
+      : ("關閉之後：繼續跑今日行程「" + d.label + "」（自動行程）");
+    return `<p class="dayend-next202">${esc202(txt)}</p>`;
+  }
+  if(slot==="map") return `<p class="dayend-next202">關閉之後：返地圖（今日：到處逛逛）</p>`;
+  return `<p class="dayend-next202">關閉：返地圖</p>`;
+}
 function dayEndContinueButtons(ended, goRunSchedule, opts){
   opts = opts || {};
   const btns = [];
@@ -38587,6 +38652,8 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
       return Object.assign({}, b, { on: ()=> afterDayRes(typeof orig==="function" ? orig : nextNb) });
     });
   }catch(_e){}
+  /* v20a202 B2：dismiss 提示行放掣列尾（下面兩個 modal 分支共用呢個 btns）。 */
+  try{ btns.push(dayEndDismissNote202(ended)); }catch(_e){}
   const liveHint2 = livingCostDayEndHint();
   const fx102Html = (typeof actFx102Html==="function") ? actFx102Html(fx102Kind) : ""; /* v20a102 FX102 */
   /* v20a196 D1／D7：dismiss 跟下一日行程——排程日＝繼續跑下一日（nextNb，獎勵 sheet 行先），逛逛日＝返地圖。 */
@@ -38604,12 +38671,12 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
         onSchedule: nextNbReward
       });
     }catch(_e){
-      modal(`<h3>${title}</h3>${formatRestSleepDeltas(notes)}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}`, btns, {onDismiss: dismissNb});
+      modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${formatRestSleepDeltas(notes)}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}`, btns, {onDismiss: dismissNb});
       if(isRestCard){ try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e2){} }
       saveQ();
     }
   } else {
-    modal(`<h3>${title}</h3>${fx102Html}${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}${dayLine}`, btns, {onDismiss: dismissNb});
+    modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${fx102Html}${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}${dayLine}`, btns, {onDismiss: dismissNb});
     try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
     /* v20a35 節奏包 P1-6：日結算板入面嘅片場抉擇掣接線（冇抉擇嗰日 no-op） */
     try{ if(typeof wireSetChoice35==="function") wireSetChoice35(); }catch(_wc35){}
@@ -39563,6 +39630,15 @@ function modal(html, buttons, opts){
   row.classList.toggle("soft-leave-only", softLeaveOnlyButtons(buttons));
   row.innerHTML="";
   (buttons||[{label:"好",role:"p"}]).forEach(b=>{
+    /* v20a202 B2/C2：role "note"＝掣欄底純文字提示行（唔係掣，唔可撳、唔接 onDismiss、
+       唔影響 firstBtn focus）；落喺 sticky #modal-btns 入面，長期可見。 */
+    if(b && b.role==="note"){
+      const note=document.createElement("div");
+      note.className="modal-note202";
+      note.textContent=String(b.label||"");
+      row.appendChild(note);
+      return;
+    }
     const btn=document.createElement("button");
     /* v20a189：role "link"＝日結板加速細連結（全行一列，掣列下方；見 dayEndContinueButtons） */
     let cls=b.role==="link"?"day-end-accel-link":b.role==="g"?"g":b.role==="d"?"d":"p";
@@ -57649,9 +57725,10 @@ function armRestSleepFxInModal(){
 /** v20a45（A 方案）：日結休息卡「開始今日行程」嘅確認 modal（模式跟 confirmEarlyRestFromMenu）。
    文案按今日計劃講明後果：休息／自動行程會即時結算埋今日（連續過日）；已排定行程就直接進行。
    本函數只出 modal 同轉交選擇，唔掂 dayIndex／存檔——開始／返地圖都係呼叫者畀嘅結算後去向。 */
-function presentStartScheduleConfirm45(onStart, onMap){
+function presentStartScheduleConfirm45(onStart, onMap, onCancel){
   const goStart = (typeof onStart==="function") ? onStart : (()=>{});
   const goMap = (typeof onMap==="function") ? onMap : (()=>{ try{ goToMapForBrowse(); }catch(_e){} });
+  const goCancel = (typeof onCancel==="function") ? onCancel : null;
   let dateTxt = "";
   try{ dateTxt = fmtDate(); }catch(_e){}
   let id = null;
@@ -57675,6 +57752,11 @@ function presentStartScheduleConfirm45(onStart, onMap){
   try{ mapNext45 = nextDayIsMap(); }catch(_e){}
   const btns45 = [{ label:"開始今日行程", role:"p", on:()=>{ try{ goStart(); }catch(_e){} } }];
   if(mapNext45) btns45.push({ label:"返回地圖", role:"g", on:()=>{ try{ goMap(); }catch(_e){} } });
+  /* v20a202 C1：揀咗加「取消」掣（唔係改直述句）——標題問句本身冇錯，錯在得一個答案；
+     取消返去休息卡本身（唔係返地圖），重開 presentRestSleepDayEnd（opts 原封不動）；
+     dismiss 照跟 D1 繼續（map 日返地圖／排程日開始行程），同取消唔衝突，板底用 note 寫明。 */
+  if(goCancel) btns45.push({ label:"取消（返去休息卡）", role:"g", on:()=>{ try{ goCancel(); }catch(_e){} } });
+  btns45.push({ label: mapNext45 ? "撳出面＝返地圖" : "撳出面＝開始今日行程", role:"note" });
   modal(`<h3>開始今日行程？</h3><p>將會開始 ${dateTxt} 嘅行程。</p><p>${consequence}</p>`, btns45,
     { onDismiss: ()=>{ try{ if(mapNext45) goMap(); else goStart(); }catch(_e){} } });
 }
@@ -57717,7 +57799,11 @@ function presentRestSleepDayEnd(opts){
   const goScheduleAsk = ()=>{
     if(!opts.confirmStartSchedule){ goSchedule(); return; }
     finish(()=>{
-      try{ presentStartScheduleConfirm45(proceedSchedule, proceedMap); }
+      try{ presentStartScheduleConfirm45(proceedSchedule, proceedMap, ()=>{
+        /* v20a202 C1：取消＝返去休息卡本身——用同一份 opts 重開 presentRestSleepDayEnd
+           （finish 已經清咗 day-res／停咗 FX，重開嗰陣會重新加上；dayIndex／存檔唔郁）。 */
+        try{ presentRestSleepDayEnd(opts); }catch(_e){}
+      }); }
       catch(_e){ try{ if(nextDayIsMap()) proceedMap(); else proceedSchedule(); }catch(_e2){} }
     });
   };
@@ -57755,7 +57841,9 @@ function presentRestSleepDayEnd(opts){
   const gold = ended ? `<p class="gold">一週完結 → 回家結算</p>` : "";
   /* v20a196 D1／D7：dismiss 跟下一日行程——排程日＝繼續跑下一日，逛逛日＝返地圖。 */
   const dismissFn = ended ? goSchedule : ()=>{ try{ if(nextDayIsMap()) goMap(); else goSchedule(); }catch(_e){ goMap(); } };
-  modal(`<h3>${title}</h3>${body}${gold}`, btns, {onDismiss: dismissFn});
+  /* v20a202 B1/B2：去向行放 <h3> 之後（第一屏見）；dismiss 提示行放掣列尾。流程／dismissFn 唔郁。 */
+  try{ btns.push(dayEndDismissNote202(ended)); }catch(_e){}
+  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${body}${gold}`, btns, {onDismiss: dismissFn});
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   armRestSleepFxInModal();
   saveQ();

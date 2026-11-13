@@ -46,17 +46,17 @@ def check(s):
 # v20a197 rebase 上 main 2c1a680 resync：currentLine 27785→27840、advance 27914→27969、applyFamilySafe 33617→33672（difflib 對位 main→merged 核實純漂移）。
     # v20a183 resync：C7 CSS ＋2／prefKind ＋1：27696→27698、27825→27827、33518→33521。
     # ① currentLine fallback（行號 27805，rebase 重對；v131 B2/B4 令行號由 27511 移位；v133 令行號由 27552 移位；v135 令行號由 27557 移位，CSS 淨 +1；v137 令行號由 27558 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 27571 移位，淨 +60：CSS 段 ＋42／SVG defs ＋13／手帳 HTML 淨 ＋5；v143 令行號由 27631 移位，淨 +43：BOOK143 CSS 段；v136 rebase 上 v143，閘註解＋evalGate3Y 淨 +35；v142 ＋14：A2b CSS ＋4／A2a CSS ＋6／B1 註釋 ＋4；v145 ＋67：BOOK145 CSS 段；v146 rebase ＋10：MASK146 CSS 段 ＋8／modal 高帽註解 ＋2，B2 喺 40613 後唔影響呢行）
-    if len(ls) < 27840 or FALLBACK not in ls[27839]:
-        probs.append("currentLine 第 27840 行冇 text fallback")  # v157 resync：27805→27824（splice ＋24）；v149 rebase ＋13：27639→27652；v20a199 resync：27742→27785（DLG199 ＋30／fitApply ＋13／WF4 onload ＋1）
+    if len(ls) < 27840 or FALLBACK not in ls[27846]:
+        probs.append("currentLine 第 27847 行冇 text fallback")  # v157 resync：27805→27824（splice ＋24）；v149 rebase ＋13：27639→27652；v20a199 resync：27742→27785（DLG199 ＋30／fitApply ＋13／WF4 onload ＋1）
     if not re.search(r"const lines = Array\.isArray\(b\.lines\) \? b\.lines : \(b\.line \? \[b\.line\] : "
                      + re.escape(FALLBACK) + r"\);", s):
         probs.append("currentLine fallback 唔係 lines＞line＞text 次序")
     # ① advance fallback（行號 27913，rebase 重對；v131 B2/B4 令行號由 27624 移位；v133 令行號由 27665 移位；v135 令行號由 27670 移位，CSS 淨 +1；v137 令行號由 27676 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 27684 移位，淨 +60，同上；v143 令行號由 27744 移位，淨 +43，同上；v136 rebase 上 v143，淨 +35；v142 ＋14，同 currentLine 一樣；v145 ＋67，同上；v146 rebase ＋10，同 currentLine）
-    if len(ls) < 27969 or FALLBACK not in ls[27968]:
-        probs.append("advance 第 27969 行冇 text fallback")  # v157 resync：27913→27937（splice ＋24）；v149 rebase ＋13：27752→27765；v20a199 resync：27871→27914
+    if len(ls) < 27969 or FALLBACK not in ls[27975]:
+        probs.append("advance 第 27976 行冇 text fallback")  # v157 resync：27913→27937（splice ＋24）；v149 rebase ＋13：27752→27765；v20a199 resync：27871→27914
     # ② applyFamilySafeToNode 處理 b.text（行號 33516–33518，rebase 重對；v131 B2/B4 令行號由 33222 移位；v133 令行號由 33263 移位；v135 令行號由 33268 移位，CSS 淨 +1；v137 令行號由 33269 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 33282 移位，淨 +60，同上；v143 令行號由 33342 移位，淨 +43，同上；v136 rebase 上 v143，淨 +38，含 scrub 護欄 +3；v142 ＋16，實量；v145 ＋67，同上；v146 rebase ＋10，同 currentLine）
-    if len(ls) < 33671 or 'if(typeof b.text === "string" && b.text){' not in ls[33670]:
-        probs.append("applyFamilySafeToNode 第 33671 行冇 b.text 分支")  # v196 落地合併上 main 2de5026：v197 33672→33671（showResult 淨 −1）
+    if len(ls) < 33671 or 'if(typeof b.text === "string" && b.text){' not in ls[33682]:
+        probs.append("applyFamilySafeToNode 第 33683 行冇 b.text 分支")  # v196 落地合併上 main 2de5026：v197 33672→33671（showResult 淨 −1）
     if 'b.text.replace(/臨時演員蹲在路邊抽煙/g' not in s:
         probs.append("applyFamilySafeToNode b.text 替換唔齊")
     # ③ 五表普查

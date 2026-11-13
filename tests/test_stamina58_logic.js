@@ -101,7 +101,9 @@ const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName'
   'enrolledTrainItems','gigMissingReqGaps','bestTrainJumpForGig','stressDeltaForAct',
   'courseForStatKey','preferredLocForTrainTarget','resolvePlannedDay',
   /* v20a75：兩條上堂路徑共用核心＋級別衍生，harness 要一併抽取先行得返 */
-  'levels75Count','levels75Level','levels75Next','levels75GainRange','levels75GainRoll','train75ApplyLesson'];
+  'levels75Count','levels75Level','levels75Next','levels75GainRange','levels75GainRoll','train75ApplyLesson',
+  /* v20a202：resolvePlannedDay 而家靠呢啲 helper 出去向行＋dismiss 提示 */
+  'esc202','nextDayLabel202','dayEndNextLine202','dayEndDismissNote202','storyResultDestLine202'];
 for(const f of FNS) eval(extractFn(f));
 const weekFlavorBlock = extractWeekFlavorBlock();
 

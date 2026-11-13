@@ -78,7 +78,9 @@ eval(extractFn('iconHtml112'));
 eval(extractFn('favDots112'));
 const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName','dateObj','fmtDate',
   'allPlanDefs','planMeta','formatResultNotes','isCriticalPlanDay','planDayWouldWrap','displayDateObj',
-  'courseForStatKey','preferredLocForTrainTarget','resolvePlannedDay','endBrowseDayGoHome','doRest'];
+  'courseForStatKey','preferredLocForTrainTarget','resolvePlannedDay','endBrowseDayGoHome','doRest',
+  /* v20a202：resolvePlannedDay 而家靠呢啲 helper 出去向行＋dismiss 提示 */
+  'esc202','nextDayLabel202','dayEndNextLine202','dayEndDismissNote202','storyResultDestLine202'];
 for(const f of FNS) eval(extractFn(f));
 
 ok('harness: 四路徑函數載入', typeof resolvePlannedDay==='function' && typeof doRest==='function'

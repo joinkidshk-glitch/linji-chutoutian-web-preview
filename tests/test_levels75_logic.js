@@ -92,7 +92,9 @@ const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName'
   'allPlanDefs','planMeta','formatResultNotes','isCriticalPlanDay','planDayWouldWrap','displayDateObj',
   'fillTpl','eventLine','enrollCourse','maybeUnlockMidCourses','applyTrainLesson','resolvePlannedDay',
   'defaultPrefs','loadPrefs','savePrefs','setPref','progressToward',
-  'levels75Count','levels75Level','levels75Next','levels75GainRange','levels75GainRoll','train75ApplyLesson','levels75MigrateSave'];
+  'levels75Count','levels75Level','levels75Next','levels75GainRange','levels75GainRoll','train75ApplyLesson','levels75MigrateSave',
+  /* v20a202：resolvePlannedDay 而家靠呢啲 helper 出去向行＋dismiss 提示 */
+  'esc202','nextDayLabel202','dayEndNextLine202','dayEndDismissNote202','storyResultDestLine202'];
 /* v20a112 ICONS112：被抽函數調用 iconHtml112，沙盒要一併載入對照＋helper。 */
 eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
 eval(extractFn('iconHtml112'));

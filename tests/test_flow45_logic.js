@@ -53,6 +53,11 @@ const document = {
 
 /* ---- 真碼入作用域 ---- */
 eval(extractFn('nextDayIsMap')); /* v20a196 D7：dayEndContinueButtons／休息卡／確認 modal 而家靠佢判定逛逛日 */
+eval(extractFn('esc202')); /* v20a202：presentStartScheduleConfirm45／presentRestSleepDayEnd 而家靠呢啲 helper 出去向行＋dismiss 提示 */
+eval(extractFn('nextDayLabel202'));
+eval(extractFn('dayEndNextLine202'));
+eval(extractFn('dayEndDismissNote202'));
+eval(extractFn('storyResultDestLine202'));
 eval(extractFn('dayEndContinueButtons'));
 eval(extractFn('presentStartScheduleConfirm45'));
 eval(extractFn('presentRestSleepDayEnd'));
