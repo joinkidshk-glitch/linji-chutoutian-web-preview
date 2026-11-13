@@ -64,6 +64,12 @@
 - 掌聲 MP3 未經人耳試聽（狀態不變，今票唔郁音頻）。
 - 截圖 `won_*_beat_glamour.png` 肉眼對照：右邊 panel 海報＋cap、左邊燕尾服企紅地毯，下方卡列位置留空（暗底），同一張海報只出現一次。
 
-## 6. 合併紀錄（統籌填）
+## 6. 合併紀錄（統籌填，2026-11-13）
 
-- （待落地）
+- **Rebase**：分支由舊基底 `60b0a8f`（v166）rebase 上最新 main `47b67eb`（v157 NOTES），零衝突，新 HEAD `05f10c1`；rebase 後 diff 逐字相同（`syncGlamour` 由 L46277 移到 L46344，純行號漂移；index.html 總行數 58,952 不變）。
+- **Rebase 後重驗（最終樹，EPERM 之前）**：新測試 22/22；反證對 pristine `47b67eb` 6 項修復斷言乾淨 FAIL；kwan151／tang152／travel114／text125 全部 PASS；`node --check` 兩段 inline script 通過；實駕重跑 **OVERALL PASS**（won_932 總長 13,896ms、won_700 14,378ms，兩 case 各 31 項 checks 全 True、0 pageerror；glamour 期間卡列 hidden＋`glamour-hide`、框高 174px、之後恢復；海報只出現一次；燕尾服 5 點探針全部 CANVAS）；`git fsck --strict` 零 error（只有 dangling trees）。
+- **全套 A/B（rebase 後最終樹；官方 suite 腳本俾 EPERM 污染，改用 stdout-only 逐檔直跑 sweep，兩個樹各 238／237 檔全跑）**：pristine `47b67eb` **217 PASS／20 FAIL** vs 工作版 **218 PASS／20 FAIL**——FAIL 清單逐項相同（20 檔完全一致），差額正正係新加嘅 `test_awards168_static.py` 一檔，**零回歸**。20 檔＝已知 12 項穩定 FAIL（flash51／giglib36／pacing35／poster59／rumor49／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wrap38）＋**8 檔 EPERM 噪音**（bust109／dlg107／dlg119／dlg123／dlg126／dlg127／dlg138／story157_index）：呢 8 檔全部係 `tempfile` 抽 inline script 嗰類，直接跑即 crash `FileNotFoundError: No usable temporary directory`（EPERM 嗰陣 `/tmp`／`/var/tmp`／`/usr/tmp`／repo 全部寫唔到），兩邊樹 crash 完全相同，唔係回歸。乾淨環境下預期係 **226／12**（v157 落地實測基線 225／12＋新測試 1 檔）。工人喺舊基底跑嘅官方 suite（`qa131/run_suite.sh`）係 pristine 223／12 vs 工作版 224／12（§3），數字差異只係基底唔同（v157 加咗測試檔）＋EPERM 噪音；commit 訊息引工人嗰個 224／12。
+- **EPERM 故障擋落地**：約 02:50–03:01 UTC，環境寫入間歇性 `Operation not permitted`——`git hash-object -w` 喺常駐 clone＋工作副本兩邊連續失敗、Python `tempfile` 全目錄失效、官方 suite 跑出假數（工作版 101／137、OUT 檔 0 行，redirect 失敗即計 FAIL，唔係回歸）；診斷：普通 `>` redirect 間歇成功、但 `O_EXCL` 建立（git loose object、tempfile）持續失敗，`/tmp` 45%／inode 1% 唔係爆滿。等咗 150s／300s／600s 三輪探測都 FAIL；約 03:01 UTC 寫入恢復（`git hash-object -w` 成功、tempfile 正常），即刻落地。
+- **合併＋推送**：常駐 clone `git merge --squash v20a168`（分支 HEAD 已核對係最新 `05f10c1`），commit **`5e6a6b0`**（3 檔：NOTES 69 行＋index.html 6 行改＋新測試 99 行；171 insertions、3 deletions）；`git fsck --strict` 乾淨；`git push origin main` 一次成功（`47b67eb..5e6a6b0`）。
+- **線上核實**：curl GitHub Pages，**live index.html 5,238,925 bytes、sha256 `236ed09d311c4522a0db0719aebfa2922478c3f527c20da4656cb88ad990fa83`**，同 `git show 5e6a6b0:index.html` **逐 byte 相同**（`cmp` 通過；6 次 curl 一致；live 檔入面 `glamour-hide` CSS 規則＋JS toggle 兩行齊）。
+- **附帶：v167 喺 v168 之後落地**：v168 push 之後，v167（`280af68`，鄧麗萍咖啡豆 :liked 句）合併上 main，家下 origin／local main 頂係 `280af68`，v168 `5e6a6b0` 係佢嘅 parent。核實嗰陣 Pages 仲未部署 v167（deploy lag），live 仍係 v168；v167 嘅 index.html（5,241,450 bytes）係喺 v168 之上建嘅，內含 v168 改動，Pages 追上之後 live 會變做 v167 bytes，v168 內容不變。本 NOTES commit 喺 `280af68` 之上，淨改 `NOTES_V20A168.md` §6。
