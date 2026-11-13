@@ -249,3 +249,8 @@ pristine exit 1、10 項 FAIL、零 stack trace。static 反證本身已乾淨�
   （`qa188/drive188_rebase.log`，舊結果備份 `qa188/drive188_rebase_prev.json`）；
   v187 舞台幾何改動無整爛獎項流程（stage caption／白牌／結果卡全部 PASS）。
 - 本票唔落地：squash merge／push main／設計 review 由統籌做。
+
+## §12 第二次 rebase＋落地（統籌）
+- 第二次 rebase：基底 `4283862`（v190，main 落地期間再郁）；新 HEAD `1fd1327`；零衝突（v190 只改 glamour panel CSS L805–810，淨行數 0；v188 15 個新獎項＋角色閘＋報紙覆寫在位，v190 `align-items:flex-end`／`container-type:size`／`calc(40cqh - 8px)` 在位）；resync 毋須改任何檔（index.html 行數前後同係 60409 行）；新測試 logic 57／static 35、v190 測試 32＋33、相關舊測試逐個直跑 0 FAIL；全套 A/B 工作分支 **259 PASS／12 FAIL**，pristine `4283862` **257／12**，FAIL 清單 12 項完全相同；實駕 `drive188.py` **18/18 PASS、0 pageerror**。pristine worktree `~/workspace/linji-pristine190wt` 留咗喺度未刪（跟進清理）。
+- 落地：checkout main → `git merge --squash v20a188` → commit `0c29f03` → push main（一次成功）。落地前 main 係 `1029f68`（v190 NOTES，1029f68 只改 NOTES_V20A190.md，合併乾淨）。
+- 線上核實：第一次 curl 仲係 v190 舊版（5,311,650 bytes sha `ba40a6a02b6c…`，Pages 部署滯後），等約 3 分鐘後重 curl：**5,330,237 bytes、sha256 `a51871c2b77f…`，同 repo `HEAD:index.html` 完全一致**。`git fsck` 乾淨（dangling commit／tree 各一，正常殘留）。
