@@ -7,7 +7,7 @@
 - 改動總覽：`index.html` 淨 6 行同行改動（6 insertions／6 deletions），總行數 59171 不變，
   openLoc DEF 行 53690 不變——test_tang152／travel114／kwan151 釘行全部唔使 resync。
   新測試 `tests/test_tang171_static.py`（22 項）＋實駕 `qa171/drive171.py`（3 case）。
-- **唔落地**：呢份 NOTES 係工人草稿，落地由統籌做（rebase 紀錄見 §7，留空）。
+- **已落地**：遊戲 commit `6d08c7c`，線上 5,254,126 bytes sha `faebbd6a…` 已核實；落地紀錄見 §7。
 
 ## §1. C1——push 並存態最尾掣要碌先見（首屏冇提示）
 
@@ -155,6 +155,10 @@
   已清走舊 live 檔（`/tmp` 回到 21%），pristine 樹改放 `~/workspace/pristine171-tmp/`（用完可刪）。
   寫入 EPERM 今次全程冇出現；Chromium 全程穩定，0 pageerror。
 
-## §7. rebase／落地紀錄（留空畀統籌填）
+## §7. rebase／落地紀錄（統籌填）
 
-- （待統籌填：rebase 上最新 main、squash merge、push、線上核實 bytes＋sha）
+- 基底即係最新 main `56141a3`（遊戲 `1259ad8`），唔使 rebase；分支 `v20a171` HEAD `8272e46` 由工作副本推上常駐 clone 已核實。
+- Squash merge 零衝突；合併樹重驗新測試 22/22＋`node --check` SYNTAX-OK；`git fsck --strict` 只有 dangling objects（正常）＋一條 `refs/heads/v20a170: invalid reflog entry 1ec53357…`（v170 分支 reflog 問題，唔影響 main／落地，留返 v170 嗰邊清）。
+- 遊戲 commit `6d08c7c`；第一次 push 斷線（Broken pipe／remote hung up，egress proxy reset），重試一次成功（`56141a3..6d08c7c main -> main`）。
+- 線上核實：5,254,126 bytes、sha256 `faebbd6a…`，同 `6d08c7c:index.html` 逐字一致（HTTP 200；Pages deploy lag 約 90 秒）。
+- 落地後派 v171 設計 review（報告 `~/workspace/linji-design-review-v171/REVIEW.md`）。
