@@ -264,3 +264,6 @@ fixed 最終輪（92dvh，第四輪；中間兩輪用嚟修 probe：見下）：
   suite 兩份＋drive 重跑報告／截圖一併 commit＋push 分支（force-with-lease，
   只推常駐 clone，唔上 GitHub）。**唔落地**——squash merge／push main／設計 review
   由統籌做。
+
+## 落地紀錄
+- 遊戲 commit `b7ca827`，線上親自 curl 核實 5,331,999 bytes、sha256 `bbca684a…`，同 repo `HEAD:index.html` 一致。
