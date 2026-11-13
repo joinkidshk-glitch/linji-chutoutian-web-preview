@@ -17,7 +17,7 @@
 
 ### M4 上台領獎動畫 — `assets/fx/awd_walkup_m4.gif`
 - **一定要修好版 `m4_walkup_fixed.gif`**（原檔入庫，sha256 `3d446609…0603` 一致；9 幀全幅＋disposal=2）。原版差分幀＋disposal=0，播起嚟有殘影，唔准用。獎盃第 5→6 幀轉手跳位係已知、用戶接受，冇重抽。
-- 落點：贏分支加新 beat `walkup` 2200ms（≈GIF 一圈 1080ms 播兩圈），插喺 `reveal` 之後、`glamour`／`out` 之前；贏全長 9350→11550ms。唔直接疊喺 reveal——嗰陣 canvas 已經畫緊行前＋捧杯，疊 GIF 會兩個阿偉打架；獨立 beat、canvas 壓暗、GIF 做主角（同 v147 comfort 加 beat 同一模式）。gallery／nominated 唔行。
+- 落點：贏分支加新 beat `walkup` 2200ms（≈GIF 一圈 1080ms 播兩圈），插喺 `reveal` 之後、`glamour`／`out` 之前；贏全長 11150→13350ms（v166 更正：舊數 9350→11550 兩邊都漏咗 glamour beat 1800ms——beats62 總和 13350ms，實駕 13594／13605ms）。唔直接疊喺 reveal——嗰陣 canvas 已經畫緊行前＋捧杯，疊 GIF 會兩個阿偉打架；獨立 beat、canvas 壓暗、GIF 做主角（同 v147 comfort 加 beat 同一模式）。gallery／nominated 唔行。
 - 呈現：簡單 `<img>` overlay（`.awd62-walkup160`，跟 glamour 同款層，`pointer-events:none`，GIF 300px 像素渲染＋金框）；文案「阿偉行上台，接過獎盃，高高舉起。」淨放 overlay `.cap`，beat caption 係 `""`（第一版兩邊都放，截圖見到金字＋台下暗字重複，已改）。
 - `index.html` 淨 ＋37 行。
 - 工人 NOTES：`NOTES_V20A160_M4.md`；分支 `v20a160-m4`，commit `ad2fcbc`。
