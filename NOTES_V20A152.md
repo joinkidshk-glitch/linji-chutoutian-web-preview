@@ -129,3 +129,9 @@
 - **決定 4——禮物專屬反應句 live 行唔到（pre-existing），另開一票，唔入 v152**：`gift_prefs.json` tang likes／dislikes 皆空 → `prefKind` 永遠 neutral → pen／calc／watch（`:liked`）同 rose（`:dislike`）查唔到 entry，跌入通用佔位句；連帶玩家面暫時冇 UI 路徑送禮畀鄧麗萍（`MAP_NPC_TO_KEY` 冇 tang、佢唔係任何地點駐場 NPC）。T3 已喺數據層驗證（reactionEntry＋giveGift ok），TEXTFIX 改寫本身正確；要玩家 live 見到，先要填返 likes／dislikes（經覆寫機制，唔直改 JSON）再加 UI 入口——超出「只刪感情線」範圍。
 - **追加 resync——`test_kwan151_static.py`**：rebase 後全套初跑工作版 214／13（對照 214／12），多出嘅 1 項係 v151 測試（行號寫死，v152 刪行令錨點移位，內容本身無損）：逐項按內容搵返新行號（A 組 −235／−236、B／C 組 −242），重跑 ALL PASS。最終全套：對照 214／12、工作版 214／12，FAIL 清單逐項相同（12 項穩定 pre-existing），零回歸。
 - **第二次 rebase（main 再郁：9346a8e → 8409178，v155＋v161 落地）**：index.html 自動合併零衝突；test_text125／test_travel114／test_kwan151 三份舊測試 resync（方法同上，difflib／內容核實純漂移：travel114 DEF 53632→53425、WRAPPER 44236→44029；text125 27846→27610、27959→27723、33581→33374；kwan151 A 組 −235／−236、B／C 組 −242）；tang152 三錨點 25665→25696、31285→31316、31429→31460。相關測試重跑全部 PASS；實駕重跑 3/3 PASS、0 pageerror。
+
+## 6. 落地紀錄
+- main commit `40702c7`（由 `9fde729` squash merge `v20a152`，分支 7 個 commit）；線上核實：5,229,214 bytes、sha256 `e73ddd44…`，同 repo 完全一致。
+- 最終全套（main 8409178 對照）：對照 216／12、工作版 217／12（＋1＝新 test_tang152_static.py），FAIL 清單逐項相同（12 項穩定 pre-existing），零回歸。實駕 3/3、0 pageerror。
+- 兩次 rebase：9346a8e（v151＋v156）＋8409178（v155＋v161）；衝突合併：TEXTFIX55／relMap 程式合併重疊 0；三份舊測試＋tang152 resync（difflib／內容核實純漂移）。
+- 統籌決定：flag_tang_crisis_* 留返、seed 檔唔郁、舊存檔死旗唔遷移；禮物專屬反應句 live 行唔到（pre-existing：tang likes／dislikes 皆空＋冇 UI 入口）另開一票，唔入 v152。
