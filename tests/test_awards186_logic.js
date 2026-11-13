@@ -2,7 +2,9 @@
 // 兩類獎項嗰陣，結果卡「同屆提名」行只出一次（舊版逐類別卡各出一行，同一份名單重複兩次）。
 // 修法：呈現層改動——同屆提名行由逐類別卡內移出，取排序後第一個有 fellows63 嘅類別，
 // 喺卡列之後獨立一行；數據／判定／fellows 池／贏線／得主標記一字唔郁。
-// 斷言：兩類＝1 行、單類＝1 行、冇 fellows＝0 行；名單逐字不變；kicker 次序（id 序）唔郁；
+// 斷言：兩類＝1 行、單類＝1 行、冇 fellows＝0 行；名單逐字不變；kicker 次序跟舞台 focus
+// （v20a192 C3：focus 格行先，其餘格維持 id 序——呢度 pack 次序面孔先、兩類都係 nominated，
+// focus 係面孔，所以男配角先、男主角後；v184 嗰陣係 id 序男主角先）；
 // 同屆提名行喺兩張類別卡之後（卡底獨立一行，唔係跟第一類卡）。
 // 反證：對 pristine main b1b6092 index 行 → 兩類嗰陣出 2 行 → FAIL（唔 crash）。
 // 用法：node tests/test_awards186_logic.js [path-to-index.html]
@@ -57,7 +59,7 @@ const FEL = [
 const WIN = FEL[0];
 const LIST_TXT = '葉敏芝《渡輪燈火》、鍾楚凝《星光夜》、高俊傑《潮汐家庭》';
 const CAT_NEW = { id: 'cat_tv_lead_m', label: '最佳男主角', outcome: 'nominated',
-  line: '名單滑過你個名——入圍咗，未抱盃。還有下一場。', repWorkTitle: '', weakHint62: '差啲咩：缺一部擔正嘅代表作。',
+  line: '名單滑過你個名——入圍咗，未抱盃。仲有下一場。', repWorkTitle: '', weakHint62: '差啲咩：缺一部擔正嘅代表作。',
   fellows63: FEL, winner63: WIN };
 const CAT_FACE = { id: 'cat_tv_support_m', label: '最佳男配角', outcome: 'nominated',
   line: '入圍名單有你，獎就落咗別人手上。', repWorkTitle: '', weakHint62: '差啲咩：缺一部擔正嘅代表作。',
@@ -77,8 +79,8 @@ ok('兩類：psr-fellows63 節點只得一個', count(dual, 'psr-fellows63') ===
 ok('兩類：名單逐字不變（葉敏芝《渡輪燈火》、鍾楚凝《星光夜》、高俊傑《潮汐家庭》只出一次）', count(dual, LIST_TXT) === 1);
 ok('兩類：同屆提名行喺兩張類別卡之後（卡底獨立一行）',
   dual.indexOf('同屆提名') > dual.lastIndexOf('最佳男配角') && dual.indexOf('同屆提名') > dual.indexOf('最佳男主角'));
-ok('兩類：kicker 次序唔郁（id 序：男主角先、男配角後）',
-  dual.indexOf('最佳男主角') < dual.indexOf('最佳男配角'));
+ok('兩類：kicker 次序跟舞台 focus（v192 C3：pack 次序面孔先 → 男配角先、男主角後；其餘格維持 id 序）',
+  dual.indexOf('最佳男配角') < dual.indexOf('最佳男主角'));
 ok('兩類：兩張類別卡齊晒（label 各一；餘韻卡同用 psr-metrics class，唔計入）',
   count(dual, '最佳男主角') === 1 && count(dual, '最佳男配角') === 1);
 ok('兩類：得主標記仲喺名單入面（🏆圖標＋為得主）', /同屆提名/.test(dual) && /為得主/.test(dual));

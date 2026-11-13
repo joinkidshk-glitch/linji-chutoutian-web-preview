@@ -129,7 +129,8 @@ chk('接線：主角判準沿用既有 helper（end95IsLead＋awards65IsLeadWork
     'end95IsLead' in slice_fn('awards188IsLead') and 'awards65IsLeadWork' in slice_fn('awards188IsLead'))
 chk('接線：替身 guard 在位（替身唔係主角／配角）',
     slice_fn('awards188IsLead').count('替身') >= 2 and '替身' in slice_fn('awards188IsSupport'))
-chk('接線：請柬門檻行講明角色閘原因', '未做過主角／配角級作品' in gate_fn and '未唱過歌' in gate_fn)
+chk('接線：請柬門檻行講明角色閘原因（v192 C2：音樂版死文案刪走，淨低電影／電視版閘句）',
+    '未做過主角／配角級作品' in gate_fn and '未唱過歌' not in gate_fn)
 chk('接線：__awards 暴露 table188／eligible188（實駕探針用）',
     'table188' in src and 'eligible188' in src)
 

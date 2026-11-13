@@ -43,7 +43,7 @@ chk('C1 fellows 行喺卡列之後（${catsHtml} 之後、報紙卡之前）',
 chk('C1 冇 fellows 嗰陣唔出空行（felCat186 無就空字串）', '|| null' in result_fn and '""' in result_fn)
 chk('C1 類別卡其餘內容唔郁（kicker／rep／weak／comfort 齊）',
     'repBit62' in result_fn and 'weakBit62' in result_fn and 'comfortBit147' in result_fn)
-chk('C1 結果卡仍用固定 id 排序（v184 C2 唔郁）', 'awardsCatsSorted184(pack)' in result_fn)
+chk('C1 結果卡 focus 格行先、其餘格維持固定 id 排序（v184 C2 唔郁，v192 C3 疊加）', 'awardsCatsSorted184(pack)' in result_fn)
 
 # --- 唔郁嘅嘢 ---
 chk('helper awards63FellowsHtml 本身唔郁（得主標記＋名單格式）',

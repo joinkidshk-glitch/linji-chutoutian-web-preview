@@ -38,7 +38,7 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 60143 不變（零淨行數改動，行號釘唔漂移）', html.count('\n') == 60490)
+ok('總行數 60143 不變（零淨行數改動，行號釘唔漂移）', html.count('\n') == 60522)
 
 # ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',

@@ -45343,11 +45343,11 @@ const VENUE99_NEWS_LINE = {
 /* 朝早報紙（newspaperStub award 模板覆寫）：每個酒店媒介各改 win／nominee 一款 dek，
    其餘模板保持原樣——真報紙唔會篇篇寫場地。TV 模板唔郁（台慶喺電視台，廠景口吻一致）。 */
 const VENUE99_NP_DEK = {
-  np_win_film_02: "維港影藝獎側記：金禧大酒店大禮堂嗰晚，{playerName}奪得演員獎，街坊笑言個樣好抵死，臨記生涯添履歷。",
+  np_win_film_02: "維港影藝獎側記：金禧大酒店大禮堂嗰晚，{playerName}奪得演員獎，街坊笑言個樣好抵死，聲望再下一城。",
   np_nom_film_01: "新一屆維港影藝獎入圍名單出爐，{playerName} 成功躋身提名之列。頒獎夜設喺金禧大酒店大禮堂，行內開始留意呢張新面孔。",
   np_win_music_02: "星河金碟夜側記：金禧大酒店大禮堂嗰晚，{playerName}憑歌聲奪獎，街坊話聽聲就認得，聲望悄然提升。",
   np_nom_music_01: "星河金碟夜入圍名單正式公開，{playerName} 獲得獎項提名。頒獎夜喺金禧大酒店大禮堂舉行，錄音室的汗水無白流。",
-  np_win_ad_02: "維港街招・年度廣告賞側記：金禧大酒店大禮堂嗰晚，{playerName}奪得此特別獎，綠葉也有春天，聲望穩步上揚，商戶開始留意。",
+  np_win_ad_02: "維港街招・年度廣告賞側記：金禧大酒店大禮堂嗰晚，{playerName}奪得廣告獎，聲望穩步上揚，商戶開始留意。",
   np_nom_ad_01: "維港街招・年度廣告賞公佈入圍名單，{playerName} 參演的廣告成功突圍。頒獎夜設喺金禧大酒店大禮堂，商業價值備受肯定。"
 };
 function venue99ApplyOverlay(FW){
@@ -45588,7 +45588,7 @@ const AWARDS188_CATEGORIES = {
   award_singho_tv: [
     { id:"cat_tv_lead_m", label:"最佳男主角", primaryTrack:"stageVolume", matchTypes:["電視劇","綜藝"], metricEcho:"ratings", role:"lead", gender:"m",
       winLine:"台上念到你個名。燈光好光，你聽得見自己心跳。",
-      loseLine:"名單滑過你個名——入圍咗，未抱盃。還有下一場。",
+      loseLine:"名單滑過你個名——入圍咗，未抱盃。仲有下一場。",
       galleryLine:"你坐後排，聽得見掌聲。呢晚你記住行內點樣叫人名。" },
     { id:"cat_tv_lead_f", label:"最佳女主角", primaryTrack:"stageVolume", matchTypes:["電視劇","綜藝"], metricEcho:"ratings", role:"lead", gender:"f",
       winLine:"台上念出女主角個名——台慶夜掌聲最響嗰刻，屬於台上嗰位。",
@@ -45712,16 +45712,23 @@ function awards188EligibleCats(ceremonyId, ceremony, year){
    全部用舊獎項名寫 headline／dek／clipLabel，實駕驗到贏獎報紙會原樣出街。
    只換表入面有嘅欄——VENUE99 嗰邊改過嘅 dek（film_02／music_02／ad_02）唔郁，
    唔打架；模板唔知玩家贏邊一格，所以一律用通用演員／歌手獎寫法，唔寫具體格名。
-   喺 load 嗰陣 textfix55＋venue99 之後行（見 loadFreeplayPacks 尾段）。 */
+   喺 load 嗰陣 textfix55＋venue99 之後行（見 loadFreeplayPacks 尾段）。
+   v20a192 B1：7 款舊前提一次過改晒做通用得獎寫法（唔寫具體戲份／產品／角色位；
+   報紙模板得 {playerName} 一個代位，寫唔到代表作名，所以唔用作品名代入）——
+   film_01 dek「三句對白搶鏡」→憑實力跑出；film_02 headline「茶餐廳食面戲封王」→奪獎成焦點；
+   tv_01 dek「多謝監製不殺之恩」→多謝台前幕後；tv_02 headline／dek「靠一句收工了／綠葉光芒」→奪獎贏街坊票；
+   music_01 headline／dek「新人奪獎／和音／合唱單曲」→奪獎跑出／憑歌聲獲獎（唔寫「新人」，呢款會喺贏最佳男歌手嗰陣出）；
+   ad_01 dek「涼茶廣告」→憑廣告突圍；ad_02 headline「憑跌低眼鏡贏掌聲」→奪獎贏掌聲；
+   music_02 唯一乾淨，唔郁；4 款 nominee 模板＋8 款 clipLabel 唔郁。 */
 const AWARDS188_NP_WIN = {
-  np_win_film_01: { headline:"維港影藝獎揭曉 {playerName} 奪演員獎", dek:"阿偉憑三句對白搶鏡，評審讚其眼神有戲，開始有觀眾記得佢個名。", clipLabel:"維港影藝獎・得獎" },
-  np_win_film_02: { headline:"影藝獎夜 阿偉茶餐廳食面戲封王", clipLabel:"維港影藝獎・得獎" },
-  np_win_tv_01: { headline:"星河台慶夜 演員獎爆冷由{playerName}奪得", dek:"廠景熬出頭！阿偉獲獎時多謝監製不殺之恩，而家連星河電視台高層都開始留意佢。", clipLabel:"星河台慶・得獎" },
-  np_win_tv_02: { headline:"台慶夜 阿偉靠一句收工了贏街坊票", dek:"星河台慶・年度頒獎夜側記：{playerName}拿下演員獎，綠葉光芒蓋不住，聲望再下一城。", clipLabel:"星河台慶・得獎" },
-  np_win_music_01: { headline:"星河金碟夜 新人奪獎 {playerName}跑出", dek:"錄音室和音熬出頭！阿偉憑合唱單曲獲獎，評審指其聲線有市井煙火味，喺行內漸漸有口碑。", clipLabel:"星河金碟夜・得獎" },
+  np_win_film_01: { headline:"維港影藝獎揭曉 {playerName} 奪演員獎", dek:"阿偉憑實力跑出，評審讚其眼神有戲，開始有觀眾記得佢個名。", clipLabel:"維港影藝獎・得獎" },
+  np_win_film_02: { headline:"影藝獎夜 阿偉奪獎成焦點", clipLabel:"維港影藝獎・得獎" },
+  np_win_tv_01: { headline:"星河台慶夜 演員獎爆冷由{playerName}奪得", dek:"廠景熬出頭！阿偉獲獎時多謝台前幕後，而家連星河電視台高層都開始留意佢。", clipLabel:"星河台慶・得獎" },
+  np_win_tv_02: { headline:"台慶夜 阿偉奪獎贏街坊票", dek:"星河台慶・年度頒獎夜側記：{playerName}拿下演員獎，掌聲蓋不住，聲望再下一城。", clipLabel:"星河台慶・得獎" },
+  np_win_music_01: { headline:"星河金碟夜 阿偉奪獎跑出", dek:"錄音室熬出頭！阿偉憑歌聲獲獎，評審指其聲線有市井煙火味，喺行內漸漸有口碑。", clipLabel:"星河金碟夜・得獎" },
   np_win_music_02: { headline:"金碟夜 阿偉奪獎 樂壇多把靚聲", clipLabel:"星河金碟夜・得獎" },
-  np_win_ad_01: { headline:"維港街招賞 {playerName}跑出", dek:"靠一支涼茶廣告突圍！阿偉獲評夠貼地，有街坊味，奪獎殊不容易，街坊開始記得佢個樣。", clipLabel:"維港街招・得獎" },
-  np_win_ad_02: { headline:"街外一鏡 阿偉憑跌低眼鏡贏掌聲", clipLabel:"維港街招・得獎" }
+  np_win_ad_01: { headline:"維港街招賞 {playerName}跑出", dek:"憑廣告突圍！阿偉獲評夠貼地，有街坊味，奪獎殊不容易，街坊開始記得佢個樣。", clipLabel:"維港街招・得獎" },
+  np_win_ad_02: { headline:"街外一鏡 阿偉奪獎贏掌聲", clipLabel:"維港街招・得獎" }
 };
 function awards188ApplyNpOverlay(FW){
   try{
@@ -46094,8 +46101,19 @@ function renderAwardInviteHtml(pack){
   const tierBit = pack.tierLabel ? `<p class="psr-sub">席位：${pack.tierLabel}</p>` : "";
   /* v20a182 C2：補一行今晚獎項（pack.categories 真實數據），請柬唔再得 6 行字就完；
      gallery／提名都啱用（唔寫「角逐」，旁聽者唔係參賽者）。
-     v20a184 C2：用 awardsCatsSorted184 固定排序出，唔靠 build 嗰陣 shuffle 次序。 */
-  const catsBit182 = (Array.isArray(pack.categories) && pack.categories.length) ? `<p class="psr-sub">今晚獎項：${awardsCatsSorted184(pack).map(c=> (c && c.label) || "").filter(Boolean).join("、")}</p>` : "";
+     v20a184 C2：用 awardsCatsSorted184 固定排序出，唔靠 build 嗰陣 shuffle 次序。
+     v20a192 C4：gallery（旁聽）列全 slate——AWARDS188_CATEGORIES 成個獎項表（男女獎齊，
+     表內次序：男主角、女主角、男配角、女配角／男歌手、女歌手、新人獎），唔再淨列 pack 嗰
+     2 個男獎；全場都係觀禮，行尾標明（觀禮）。女獎只係列名，唔寫到好似阿偉會爭。
+     nominee 請柬唔郁（列你爭嗰啲）。舊環境冇覆寫表就跌返原來寫法。 */
+  let catsBit182 = "";
+  if(pack.tier === "gallery" && typeof AWARDS188_CATEGORIES !== "undefined" && AWARDS188_CATEGORIES && Array.isArray(AWARDS188_CATEGORIES[pack.ceremonyId])){
+    const full192 = AWARDS188_CATEGORIES[pack.ceremonyId].map(c=> (c && c.label) || "").filter(Boolean);
+    if(full192.length) catsBit182 = `<p class="psr-sub">今晚獎項：${full192.join("、")}（觀禮）</p>`;
+  }
+  if(!catsBit182){
+    catsBit182 = (Array.isArray(pack.categories) && pack.categories.length) ? `<p class="psr-sub">今晚獎項：${awardsCatsSorted184(pack).map(c=> (c && c.label) || "").filter(Boolean).join("、")}</p>` : "";
+  }
   return `<div class="psr-sheet awd-sheet">
     <p class="psr-eyebrow">定期頒獎</p>
     <h3 class="psr-h">${pack.inviteTitle||"頒獎夜請柬"}</h3>
@@ -46110,8 +46128,19 @@ function renderAwardInviteHtml(pack){
 }
 function renderAwardResultHtml(pack){
   pack = pack || {};
-  /* v20a184 C2：結果卡同請柬用同一固定排序（按獎項 id），同一 pack 兩次渲染次序一致。 */
+  /* v20a184 C2：結果卡同請柬用同一固定排序（按獎項 id），同一 pack 兩次渲染次序一致。
+     v20a192 C3：focus 格行先——舞台白牌＋揭曉只演 focus 嗰格（awards63FocusCat：pack 內第一個
+     won／nominated），結果卡第一行要係同一格，唔再齋按 id 序排男主角先；其餘格維持 v184
+     id 固定排序，跨類別穩定次序唔郁。同屆提名行取第一個有 fellows63 嘅類別（各類共用同一份
+     名單），唔受卡序影響。 */
   const cats = awardsCatsSorted184(pack);
+  try{
+    const f192 = (typeof awards63FocusCat === "function") ? awards63FocusCat(pack) : null;
+    if(f192){
+      const fi192 = cats.findIndex(c=> c && c.id === f192.id);
+      if(fi192 > 0){ const mv192 = cats.splice(fi192, 1)[0]; cats.unshift(mv192); }
+    }
+  }catch(_e192){}
   /* v20a186 C1：同屆提名行只出一次——兩類嗰陣逐類別各出一行會重複同一份名單。
      取排序後第一個有 fellows63 嘅類別（同場各類共用同一屆名單），喺卡列之後獨立一行；
      唔改數據／判定／得主標記，逐字內容同舊版第一行一樣。 */
@@ -46540,9 +46569,12 @@ function awards62GateLineHtml(pack){
   const bits = [];
   if(st.gapWorks > 0) bits.push("仲差 " + st.gapWorks + " 部" + med + "作品先夠入圍（而家 " + st.wraps + "/" + st.wrapMin + "）");
   if(!st.dualOk) bits.push("聲望／業內信用未到入圍基本盤");
-  /* v20a188：作品數＋雙軌夠數但席位仍然係觀禮 → 角色閘（嗰年未做過可提名角色）。 */
-  if(!bits.length && st.wraps >= st.wrapMin && st.dualOk){
-    bits.push((pack && pack.medium) === "music" ? "嗰年未唱過歌，入圍唔到歌手獎" : "嗰年未做過主角／配角級作品，入圍唔到演員獎");
+  /* v20a188：作品數＋雙軌夠數但席位仍然係觀禮 → 角色閘（嗰年未做過可提名角色）。
+     v20a192 C2：音樂分支刪走——任何唱片通告作品都算唱過歌，庫入面零 rec_extra_day gig，
+     音樂版嗰句永遠湊唔齊觸發條件，係死文案；唔為一句文案加數據，刪走乾淨啲。
+     音樂嗰陣唔再推角色閘句，跌返「坐觀禮席睇全場」；電影／電視版閘句一字唔郁。 */
+  if(!bits.length && st.wraps >= st.wrapMin && st.dualOk && (pack && pack.medium) !== "music"){
+    bits.push("嗰年未做過主角／配角級作品，入圍唔到演員獎");
   }
   if(!bits.length) bits.push("坐觀禮席睇全場");
   return '<p class="psr-gate62">今晚席位：觀禮。' + bits.join("；") + "。</p>";

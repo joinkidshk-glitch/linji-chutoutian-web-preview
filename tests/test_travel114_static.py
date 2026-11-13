@@ -151,10 +151,10 @@ COUNT_LINES = {
     39325,  # 地圖釘 goPin（最近針／後備 L.id）
     39356,  # 地圖底欄地點掣
     43911,  # 人情債「去事務所」
-    59046,  # inv72GoShop 去禮品檔
-    59224,  # people72GoLoc
-    59367,  # jobs72GoBoard
-    59388,  # jobs72GoLoc
+    59078,  # inv72GoShop 去禮品檔
+    59256,  # people72GoLoc
+    59399,  # jobs72GoBoard
+    59420,  # jobs72GoLoc
 }
 # 免費清單（帶旗，唔計）：34 處（舊 27 減 2 條改行 back176 守衛，加 ROM176 新 8 處＋v183 C9 intro 1 處）
 FREE_LINES = {
@@ -170,31 +170,31 @@ FREE_LINES = {
     40866,  # wf4Fire 完（wf4Done，舊旗）
     43568,  # 人情債流程尾，返去而家身處地點
     43591,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
-    53239,
-    53358,  # 巧遇播完（encDone，舊旗）
-    53408,  # v176 星巧遇送禮掣 fallback（encDone）
-    53631,  # v176 女角巧遇 def-missing（encDone）
-    53670,  # v176 女角巧遇「行開」（encDone）
-    53676,  # v176 女角巧遇 onDismiss（encDone）
-    53743,  # v176 星送禮 canGive-fail（encDone）
-    53745,  # v176 星送禮冇 item（encDone）
-    53748,  # v176 星送禮冇庫存（encDone）
-    53775,  # v176 星送禮結果 modal go（encDone）
-    54886,  # 劇情播完刷新（refreshLocAfterStory）
-    55260,
-    55282,  # 「劇情已完成」toast 後重開而家身處地點
-    55433,  # 聽完傳聞後 reopen 而家身處地點
-    57070,  # forceRestore（舊旗）
-    58814,  # promptAudition back（返去而家身處地點）
-    58932,
-    58933,
-    58968,
-    58969,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    58994,  # doGiveGift 失敗後重開而家身處地點
-    59838,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
+    53271,
+    53390,  # 巧遇播完（encDone，舊旗）
+    53440,  # v176 星巧遇送禮掣 fallback（encDone）
+    53663,  # v176 女角巧遇 def-missing（encDone）
+    53702,  # v176 女角巧遇「行開」（encDone）
+    53708,  # v176 女角巧遇 onDismiss（encDone）
+    53775,  # v176 星送禮 canGive-fail（encDone）
+    53777,  # v176 星送禮冇 item（encDone）
+    53780,  # v176 星送禮冇庫存（encDone）
+    53807,  # v176 星送禮結果 modal go（encDone）
+    54918,  # 劇情播完刷新（refreshLocAfterStory）
+    55292,
+    55314,  # 「劇情已完成」toast 後重開而家身處地點
+    55465,  # 聽完傳聞後 reopen 而家身處地點
+    57102,  # forceRestore（舊旗）
+    58846,  # promptAudition back（返去而家身處地點）
+    58964,
+    58965,
+    59000,
+    59001,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    59026,  # doGiveGift 失敗後重開而家身處地點
+    59870,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 54986      # function openLoc(id, opts){
+DEF_LINE = 55018      # function openLoc(id, opts){
 WRAPPER_LINE = 44434  # window.__phase2.openLoc：轉發 opts
 # v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行；COUNT／FREE／DEF／WRAPPER 按兩段 shift 重算，difflib 對位核實純漂移。
 # v20a176 resync：NPCS ＋7／星收尾掣 ＋12／ROM176 block ＋501／茶聽 ＋12／addLoc −13／openLoc 掛點 ＋5／
