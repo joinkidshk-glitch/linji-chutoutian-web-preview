@@ -45748,12 +45748,22 @@ function queueAwardsOnSeasonWindow(opts){
   });
   return queued;
 }
+/* v20a184 C2：請柬／結果卡呈現層固定排序——buildAwardResultPack 每次 build 都
+   Fisher-Yates shuffle 啲 categories 再 slice（見該函數 shuffled 段），同一場同一播種
+   兩次實駕次序都會翻（932 新人先、700 面孔先）。呢度只係呈現層按獎項 id 排（slice 唔郁
+   原 pack）；pack 數據／content JSON／判定一字唔郁。 */
+function awardsCatsSorted184(pack){
+  const cats = (pack && Array.isArray(pack.categories)) ? pack.categories.slice() : [];
+  cats.sort((a, b)=> String((a && a.id) || "").localeCompare(String((b && b.id) || "")));
+  return cats;
+}
 function renderAwardInviteHtml(pack){
   pack = pack || {};
   const tierBit = pack.tierLabel ? `<p class="psr-sub">席位：${pack.tierLabel}</p>` : "";
   /* v20a182 C2：補一行今晚獎項（pack.categories 真實數據），請柬唔再得 6 行字就完；
-     gallery／提名都啱用（唔寫「角逐」，旁聽者唔係參賽者）。 */
-  const catsBit182 = (Array.isArray(pack.categories) && pack.categories.length) ? `<p class="psr-sub">今晚獎項：${pack.categories.map(c=> (c && c.label) || "").filter(Boolean).join("、")}</p>` : "";
+     gallery／提名都啱用（唔寫「角逐」，旁聽者唔係參賽者）。
+     v20a184 C2：用 awardsCatsSorted184 固定排序出，唔靠 build 嗰陣 shuffle 次序。 */
+  const catsBit182 = (Array.isArray(pack.categories) && pack.categories.length) ? `<p class="psr-sub">今晚獎項：${awardsCatsSorted184(pack).map(c=> (c && c.label) || "").filter(Boolean).join("、")}</p>` : "";
   return `<div class="psr-sheet awd-sheet">
     <p class="psr-eyebrow">定期頒獎</p>
     <h3 class="psr-h">${pack.inviteTitle||"頒獎夜請柬"}</h3>
@@ -45768,7 +45778,8 @@ function renderAwardInviteHtml(pack){
 }
 function renderAwardResultHtml(pack){
   pack = pack || {};
-  const cats = Array.isArray(pack.categories) ? pack.categories : [];
+  /* v20a184 C2：結果卡同請柬用同一固定排序（按獎項 id），同一 pack 兩次渲染次序一致。 */
+  const cats = awardsCatsSorted184(pack);
   const catsHtml = cats.map(c=>{
     const badge = c.outcome==="won" ? "得獎" : (c.outcome==="gallery" ? "觀禮" : "入圍");
     const repBit62 = c.repWorkTitle ? `<p class="psr-rep62">憑《${c.repWorkTitle}》${badge}</p>` : "";
@@ -46468,9 +46479,14 @@ function awards62PlayCeremony(pack, doneFn){
          每場最多 4 張卡，保證唔撞——星名 hash 試過，葉敏芝／高俊傑撞同一色）；
          卡片數據／判定唔郁，只改呈現。 */
       const AWDS63_TINTS182 = ["#3a2a4a", "#274a3a", "#4a2a2e", "#2a3a4a", "#4a3a20", "#33355e"];
+      /* v20a184 C1：漸變第二 stop 唔再全場同一隻 #241736（卡面下半三張一模一樣）——
+         每隻 tint 配返同色系深色（按 index 對位，紫卡 keep #241736），成張卡面都帶 tint；
+         色板數量／第一 stop／卡面文字唔郁。 */
+      const AWDS63_DEEPS184 = ["#241736", "#122a1e", "#2c1518", "#141f2b", "#2a1e0c", "#1b1c38"];
       cardsHtml = '<div class="awd63-cards">' + cardsData.map((c, ci)=>{
         const tint182 = AWDS63_TINTS182[ci % AWDS63_TINTS182.length];
-        const media = c.poster ? ('<img src="' + c.poster + '" alt="《' + c.title + '》作品圖"/>') : ('<div class="awd63-csscard" style="background:linear-gradient(160deg,' + tint182 + ',#241736)"><span class="awd63-cssmono">' + (c.star || "?").charAt(0) + '</span><span class="awd63-cssstar">' + (c.star || "") + '</span><span class="awd63-cssmed">' + medLabel182 + "</span></div>"); /* v20a182 C1 註：星名跟隔籬 .s 行一樣直接印（內部數據，唔經 esc；esc 係局部 helper，play 作用域冇佢）；媒介細行淨留文字——手繪 icon 係深啡線稿，喺深色卡面會變深色方塊 */
+        const deep184 = AWDS63_DEEPS184[ci % AWDS63_DEEPS184.length];
+        const media = c.poster ? ('<img src="' + c.poster + '" alt="《' + c.title + '》作品圖"/>') : ('<div class="awd63-csscard" style="background:linear-gradient(160deg,' + tint182 + ',' + deep184 + ')"><span class="awd63-cssmono">' + (c.star || "?").charAt(0) + '</span><span class="awd63-cssstar">' + (c.star || "") + '</span><span class="awd63-cssmed">' + medLabel182 + "</span></div>"); /* v20a182 C1 註：星名跟隔籬 .s 行一樣直接印（內部數據，唔經 esc；esc 係局部 helper，play 作用域冇佢）；媒介細行淨留文字——手繪 icon 係深啡線稿，喺深色卡面會變深色方塊 */
         return '<div class="awd63-card' + (c.me ? " me" : "") + (c.win ? " win" : "") + '">' + media + '<div class="t">《' + c.title + '》</div><div class="s">' + c.star + "</div></div>";
       }).join("") + "</div>";
     }
