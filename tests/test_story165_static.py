@@ -63,8 +63,8 @@ ok('選幕：N 次序 C1..C6、C6F、C18、C19、C7..C17',
 t = seg('function story165TryForcedPlay(){', '/** v17p PLAN 9.1', 3000)
 ok('omit 節點先寫 offer（forced165，同 openLoc 入場同一動作）',
    'openMeetOffer(next.id, "forced165")' in t)
-ok('普通 StoryPlay.start（唔用 opts.force／allowDuringPlanner，等 start 自己再驗）',
-   'StoryPlay.start(next.id)' in t and 'StoryPlay.start(next.id, {' not in t
+ok('普通 StoryPlay.start（唔用 opts.force／allowDuringPlanner，等 start 自己再驗；v172 起帶 ignoreSheetLoc:true——選幕同播出一致，soft 地圖 atLoc=null 唔再擋強制播）',
+   'StoryPlay.start(next.id, { ignoreSheetLoc:true })' in t
    and 'force:true' not in t and 'allowDuringPlanner' not in t)
 ok('強制播唔經 openLoc／唔食出行額度', 'openLoc(' not in t and 'travel114TrySpend' not in t)
 
@@ -140,9 +140,10 @@ ok('(c) modal 閘唔喺 story165CanPlay——晨鏈續鏈嗰陣 modal 技術上�
    and 'classList.contains("on")' not in _c165)
 ok('(c) 兩條新掛點都有 try/catch 跌返地圖（強制播出事唔阻返地圖）',
    'catch(_s165b){}' in bh and 'catch(_s165c){}' in src)
-ok('(c) 新掛點唔經 openLoc／唔食額度／唔用 opts.force',
+ok('(c) 新掛點唔經 openLoc／唔食額度／唔用 opts.force（v172：只准 ignoreSheetLoc:true）',
    'openLoc(' not in bh and 'travel114TrySpend' not in bh
-   and 'StoryPlay.start(next.id, {' not in src.split('function story165TryForcedPlay(){')[1][:3000])
+   and 'force:true' not in src.split('function story165TryForcedPlay(){')[1][:3000]
+   and 'allowDuringPlanner' not in src.split('function story165TryForcedPlay(){')[1][:3000])
 ok('(c) leaveHomeFromNotebook 唔喺呢票（第三條返地圖路，留返統籌決定——見 NOTES §9）',
    'story165TryForcedPlay' not in seg('function leaveHomeFromNotebook(mode){', 'document.getElementById("home-back-map").onclick', 2000))
 

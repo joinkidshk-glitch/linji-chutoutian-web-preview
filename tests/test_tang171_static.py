@@ -27,6 +27,8 @@
 #      !important——下面兩條斷言跟住改，舊值斷言搬咗去 test_tang173_static.py
 #      （驗新值存在＋舊值唔存在），唔係刪咗守門。
 # v20a173 rebase 上 main 0ecaeb3（v153）：同行改動，總行數 59341、DEF 53860 不變。
+# v20a172 rebase 上 main a500536（v149）resync：v149 淨 ＋97，總行數 59285、openLoc DEF 行 53804（qa172/resync172b.py difflib 對位核實）。
+# v20a172 rebase 上 main e2add29（v174）resync：v172 4 hunks 淨 ＋15，總行數 59341→59356、DEF 53860→53875（qa172/resync172c.py difflib 對位核實純漂移）。
 # 反證：喺 pristine main（56141a3／v169）index 上行，新行為斷言會乾淨 FAIL，
 #      唔會 crash。守門斷言喺 pristine 都 PASS（佢哋守「舊嘢冇郁過」）。
 # 用法：python3 tests/test_tang171_static.py [path-to-index.html]
@@ -55,9 +57,9 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 59341（v170 59173＋v149 ＋97＋v153 ＋71）', src.count('\n') == 59341)
-ok('零行數漂移：openLoc DEF 行 53860 不變（travel114 釘行）',
-   len(lines) >= 53860 and 'function openLoc(id, opts){' in lines[53859])
+ok('零行數漂移：總行數 59356（v170 59173＋v149 ＋97＋v153 ＋71＋v172 ＋15）', src.count('\n') == 59356)
+ok('零行數漂移：openLoc DEF 行 53875 不變（travel114 釘行）',
+   len(lines) >= 53875 and 'function openLoc(id, opts){' in lines[53874])
 
 # --- §1. C1：捲動提示（淡出漸變） ---
 ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',

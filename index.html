@@ -27110,7 +27110,12 @@ const StoryPlay = (()=>{
       if(StoryOC.hasPlayerOffer && !StoryOC.hasPlayerOffer(node, pack)){
         toast("這幕尚未在地圖出現"); return false;
       }
-      const ev = StoryOC.evalNode(node, { checkNodePhase:true });
+      /* v20a172 B1：start() 接受 opt-in 嘅 ignoreSheetLoc，只係原樣轉交 evalNode——
+         soft 路徑 stepLoc／stepFavor 已經識呢個 opts（見 BehaviorGate），一路都係
+         等緊上層傳入嚟；唔傳嗰陣（全部現有 call sites）行為同以前完全一樣。
+         用途唯一：story165TryForcedPlay 強制播（選幕嗰陣 listOpen 已經用
+         ignoreSheetLoc，播嗰陣唔可以再俾 map 上 atLoc=null 擋返）。 */
+      const ev = StoryOC.evalNode(node, { checkNodePhase:true, ignoreSheetLoc: !!opts.ignoreSheetLoc });
       /* 0b 玩家路徑必須 ev.ok（擋 phaseSoft／Tang P3） */
       if(!ev.ok){
         if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview() && BehaviorGate.coversNode(node)){
@@ -38436,8 +38441,13 @@ function story165TryForcedPlay(){
         if(node && StoryOC.hasPlayerOffer && !StoryOC.hasPlayerOffer(node, found ? found.pack : null)) StoryOC.openMeetOffer(next.id, "forced165");
       }
     }catch(_e){}
-    /* 普通 start，等佢自己再驗 eval＋offer＋homeEditable＋結局鎖；唔用 opts.force。 */
-    if(typeof StoryPlay!=="undefined" && StoryPlay.start) return !!StoryPlay.start(next.id);
+    /* v20a172 B1：強制播帶 ignoreSheetLoc 語義入 start()——選幕嗰陣 listOpen 已經
+       用 ignoreSheetLoc（唔驗地點），播嗰陣必須一致，否則 soft 路徑地圖上 atLoc=null
+       會俾 stepLoc 擋返，強制播喺 softPreview 下全滅（v165 review B1；live 唔受影響，
+       因為 live eval 根本唔驗地點）。只繞過地點一步：其餘 soft 條件（前置／週數／
+       通告／傳聞／聲望／季節／人情）照驗；普通 start() 唔帶呢個 opt，soft 閘對玩家
+       路徑原封不動。 */
+    if(typeof StoryPlay!=="undefined" && StoryPlay.start) return !!StoryPlay.start(next.id, { ignoreSheetLoc:true });
     return false;
   }catch(_e){ return false; }
 }
@@ -44078,11 +44088,16 @@ function prog71StubItems(id){
     if(/^通告\s*\d+／\d+/.test(s)) return;                /* 通告項已列 */
     if(s==="距上一幕再隔一日"){ items.push({ ok:false, text:"同上一幕隔一日" }); return; }
     const lm = s.match(/^到(.+)播$/);
-    if(lm){ items.push({ ok:false, text:"去"+lm[1]+"先播到呢幕" }); return; }
+    /* v20a172 C1：地點係場景資料，唔係觸發指令——同已開放行「（場景：X）」同一
+       framing。舊句暗示要去嗰度先觸發，錯：開咗之後返地圖嗰陣就會播出（v165
+       強制播），去嗰度只係場景設定。 */
+    if(lm){ items.push({ ok:false, text:"（場景："+lm[1]+"）" }); return; }
     if(s.indexOf("未聽聞")===0){ items.push({ ok:false, text:"聽到傳聞："+s.slice(3) }); return; }
     if(s.indexOf("要到秋或冬")>=0){ items.push({ ok:false, text:s.replace(/。$/,"") }); return; }
     if(s==="檔期未到該季"){ items.push({ ok:false, text:"等到啱嘅季節" }); return; }
-    if(s.indexOf("或到")>=0){ items.push({ ok:false, text:"以下任一達標："+s }); return; }
+    /* v20a172 C1：OR 條件入面嘅地點同樣只係場景資料——「或到 X」改做「或（場景：X）」，
+       唔留「去 X」觸發句。 */
+    if(s.indexOf("或到")>=0){ items.push({ ok:false, text:"以下任一達標："+s.replace(/或到([^／]+)/g, "或（場景：$1）") }); return; }
     items.push({ ok:false, text:s.replace("需多於","要多於").replace("（現 ","（而家 ") });
   });
   return items;
