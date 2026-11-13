@@ -153,4 +153,9 @@ Commit 入分支 `v20a153`（未 push）：
 - 相關測試全 PASS：c17route153 23/23、kwan151、text125、tang152、tang171 22/22、travel114、v155、wf1_80、verify37。
 - **實駕抽查（最終樹 e8908b7）**：**932：49／49 PASS；700：49／49 PASS；0 pageerror**；兩輪各 2 個 console 404（同一 pre-existing `ho_sang_shy` 缺圖）。
 
-## 落地紀錄（待填）
+## 落地紀錄
+
+- **遊戲 commit `bbd318e`**（squash merge `v20a153`，基底 a500536／v149；14 檔 ＋937／−82；index.html ＋80／−9），**2026-11-13 已 push main**（`a500536..bbd318e`），`git fsck` 乾淨（淨 dangling 殘留）。
+- **線上核實**：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/ —— **5,266,916 bytes、sha256 `094072a4…`**，同 repo `HEAD:index.html` 完全一致。第一次 curl 仲係舊版（Pages 部署滯後，5,262,537 bytes sha `b299ce9f…`）；第二次 curl 撞到 egress 傳輸中斷（2,756 bytes、exit 23）；重試後攞到完整新版。
+- 驗收總數（最終樹 e8908b7／分支 HEAD `0135b21`）：新測試 23/23；全套 pristine a500536 231／12 vs 工作版 232／12，FAIL 清單逐項相同，零回歸；實駕 932＋700 各 49／49 PASS、0 pageerror（2 個 console 404 係 pre-existing `ho_sang_shy` 缺圖）。
+- 殘留：`ho_sang_shy` 缺檔（表情修復票跟進）；茶餐廳廖炳星初遇唔受冷卻壓制（pre-existing，v138 已記低）。
