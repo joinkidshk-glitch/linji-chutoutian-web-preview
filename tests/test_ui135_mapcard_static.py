@@ -31,7 +31,7 @@ ok('全部地點掣 id 唔喺模板', 'id="map-show-all-locs"' not in tpl)
 ok('全部地點掣字唔喺模板', '全部地點' not in tpl)
 ok('頂行 flex 包裝唔喺模板', 'map-hint-top128' not in tpl)
 
-# 3. 藍色劇情卡唔再由地圖卡出（模板唔計 storyMapHintHtml；插入口 refreshMapHintStory 另驗）
+# 3. 藍色劇情卡唔再由地圖卡出（模板唔計 storyMapHintHtml；v198 C1 已成個拎走，另驗 §6／§7）
 ok('劇情卡唔喺模板', 'storyMapHintHtml' not in tpl and 'map-hint-story' not in tpl)
 
 # 4. 合併行在：計劃＋出行同一行，兩個動態位齊全；額度用完變體同樣併入
@@ -45,16 +45,13 @@ ok('日期行保留（fmtDate 含週數）', 'fmtDate()' in tpl)
 ok('audLine108 保留（有等緊先顯示）', 'map-hint-aud108' in tpl)
 ok('過一日掣保留', '過一日' in tpl and 'id="map-end-day"' in tpl)
 
-# 6. refreshMapHintStory 唔再插入劇情卡：淨係移除殘留，唔 insertAdjacentHTML
-_k = html.find('function refreshMapHintStory(){')
-_m = html.find('\n}\n', _k) if _k >= 0 else -1
-ref = html[_k:_m] if _k >= 0 and _m > _k else ''
-ok('refreshMapHintStory 抽得到', bool(ref))
-ok('refreshMapHintStory 唔再插入', 'insertAdjacentHTML' not in ref)
-ok('refreshMapHintStory 只移除殘留', 'existing.remove()' in ref)
+# 6. v20a198 C1：refreshMapHintStory 已成個拎走（死 code）——地圖卡模板唔再有 hint 插入口
+ok('refreshMapHintStory 宣告已拎走（v198 C1 死 code 清除）', 'function refreshMapHintStory(){' not in html)
+ok('refreshMapHintStory 呼叫點已拎走', 'refreshMapHintStory();' not in html)
 
-# 7. storyMapHintHtml() 本身留返（進度頁／其他地方用），唔好刪
-ok('storyMapHintHtml 函數本身保留', 'function storyMapHintHtml()' in html)
+# 7. v20a198 C1：storyMapHintHtml() 已成個拎走（死 code）——「三處同一來源」只剩兩處玩家面見到嘅
+ok('storyMapHintHtml 函數已拎走（v198 C1 死 code 清除）', 'function storyMapHintHtml()' not in html)
+ok('storyMainProgressLine 保留（「下一幕」句式規格）', 'function storyMainProgressLine(){' in html)
 
 # 8. CSS：卡內死規則清走（top128／卡內 show-all／卡內 help）；出行 span 行內顯示
 ok('CSS：死咗嘅 top128 規則清走', '.map-hint-top128' not in html)

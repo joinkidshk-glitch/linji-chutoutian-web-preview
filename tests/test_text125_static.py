@@ -52,8 +52,8 @@ def check(s):
     if len(ls) < 27871 or FALLBACK not in ls[27870]:
         probs.append("advance 第 27871 行冇 text fallback")  # v157 resync：27913→27937（splice ＋24）；v149 rebase ＋13：27752→27765
     # ② applyFamilySafeToNode 處理 b.text（行號 33516–33518，rebase 重對；v131 B2/B4 令行號由 33222 移位；v133 令行號由 33263 移位；v135 令行號由 33268 移位，CSS 淨 +1；v137 令行號由 33269 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 33282 移位，淨 +60，同上；v143 令行號由 33342 移位，淨 +43，同上；v136 rebase 上 v143，淨 +38，含 scrub 護欄 +3；v142 ＋16，實量；v145 ＋67，同上；v146 rebase ＋10，同 currentLine）
-    if len(ls) < 33575 or 'if(typeof b.text === "string" && b.text){' not in ls[33574]:
-        probs.append("applyFamilySafeToNode 第 33575 行冇 b.text 分支")  # v157 resync：33516→33582（splice ＋66）；v149 rebase ＋13：33445→33458
+    if len(ls) < 33574 or 'if(typeof b.text === "string" && b.text){' not in ls[33573]:
+        probs.append("applyFamilySafeToNode 第 33574 行冇 b.text 分支")  # v20a198 resync：33568→33567（C1 死 code 刪 −43 淨計，30413 export −1；其後 ＋12−41… 淨 −7 尾段；difflib 對位核實純漂移）
     if 'b.text.replace(/臨時演員蹲在路邊抽煙/g' not in s:
         probs.append("applyFamilySafeToNode b.text 替換唔齊")
     # ③ 五表普查

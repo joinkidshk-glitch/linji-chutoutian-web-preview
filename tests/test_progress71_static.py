@@ -25,7 +25,8 @@ def segN(a, n):
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
 
 # --- 一、組句改版 ---
-prog = seg('function storyMainProgressLine(){', 'function storyMapHintHtml(){')
+# v20a198 C1：storyMapHintHtml／refreshMapHintStory 已拎走（死 code），段界改用下一個函數 wireHomeStoryHint。
+prog = seg('function storyMainProgressLine(){', 'function wireHomeStoryHint(){')
 ok('PROGRESS71 標記存在', 'PROGRESS71' in src and 'PROGRESS71：組句全面改版' in prog)
 ok('進度行冇「開咗去」拼裝碎片', '開咗去' not in prog)
 ok('進度行冇「即將」碎片頭', '即將' not in prog)
@@ -36,15 +37,12 @@ ok('進度行有「條件已經夠晒」守衛句（只喺閘數據在手嗰陣�
 picker = segN('function playOpenPicker(){', 30000)
 ok('劇情列表兄弟句改完整子句（開咗之後…就會觸發）', '開咗之後' in picker and '開咗去' not in picker)
 
-# --- 一（續）、地圖 hint 行可撳 ---
-hint = seg('function storyMapHintHtml(){', 'function refreshMapHintStory(){')
-ok('hint 內容態出掣（data-prog71 恰好兩處：有劇情行＋進度行）', src.count('data-prog71="1"') == 2)
-ok('hint 錯誤／載入態保留普通 span（唔撳得）',
-   'map-hint-story-err' in hint[:600] and 'data-prog71' not in hint[:600]
-   and '劇情內容載入中，請稍候。' in hint and hint.count('data-prog71') == 2)
-ok('hint 撳入開進度頁（委派＋enterHome progress）',
-   'enterHome(null, false, "progress")' in src and 'closest("[data-prog71]")' in src)
-ok('hint 進度句改副行承載（map-hint-story-remain）', '<span class="map-hint-story-remain">' in hint)
+# --- 一（續）、v20a198 C1：地圖 hint renderer 已拎走（死 code），進度入口改行地圖「進度」掣＋手帳進度子頁 ---
+ok('v198 C1：地圖 hint renderer 已拎走', 'function storyMapHintHtml(){' not in src and 'function refreshMapHintStory(){' not in src)
+ok('v198 C1：地圖卡模板唔再有 hint 掣（data-prog71="1" 零出現）', src.count('data-prog71="1"') == 0)
+ok('v198 C1：進度入口仲喺度（頂欄 chip＋手帳進度子頁；v128 起地圖浮掣已取消）',
+   'id="chip-story"' in src and 'id="home-pane-progress"' in src and 'enterHome(null, false, "progress")' in src)
+ok('v198 C1：storyMainProgressLine 保留（「下一幕」句式規格）', 'function storyMainProgressLine(){' in src)
 
 # --- 二、進度子頁 ---
 ok('行程組分段掣＝行程＋進度（冇訓練掣——3B 後訓練入選擇器）',

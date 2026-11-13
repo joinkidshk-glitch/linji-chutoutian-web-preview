@@ -86,8 +86,8 @@ ok('A：prog71Rows 行帶 label（storyActLabel 來源）', 'label:storyActLabel
 rp = func_body(src, 'renderProgressPane71')
 ok('A：進度頁四行模板用 r.label（唔再寫死「第 "+r.n+" 幕」）',
    rp.count('r.label || ("第 "+r.n+" 幕")') == 4 and "'第 '+r.n+' 幕'" not in rp)
-ok('A：鎖住未揭曉嘅插入幕唔觸發合併行（guard 在位）',
-   'if(storyActIsInsert(r.id)) return;' in rp)
+ok('A：v20a198 C2——鎖住插入幕出獨立行（舊 skip guard 已拎走，遠幕按段合併）',
+   'if(storyActIsInsert(r.id)) return;' not in rp and 'prog71-insert' in rp and 'segOf198' in rp)
 ok('A：遠幕合併 fallback 保留（farNs 空嗰陣跳過）', 'if(!farNs.length) return;' in rp)
 ok('A：逐項揭曉閾值邏輯保留（lastDetailN71）',
    'lastDetailN71 >= (r.n|0) - 1' in rp and 'lastDetailN71' in rp)

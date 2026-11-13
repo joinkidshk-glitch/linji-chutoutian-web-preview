@@ -6,6 +6,9 @@
 //       (c) 遠幕合併＋逐項揭曉邏輯未爛（合併行位置／區間、鎖住插入幕唔觸發合併行）
 //       (d) 舊存檔（已有 C6F done 旗）載入後進度頁顯示正確
 //       (e) 前置句＋地圖下一幕提示同樣行共用幕號（C19 前置 C18、C6 路線後綴）
+// v20a198 更新：(c) 語義改咗——鎖住插入幕而家出獨立鎖定行（C2），遠幕合併按段計
+//       （新局「第 4–6 幕」＋「第 7–17 幕」）；下面 (c) 斷言已跟新語義改，舊「鎖住插入幕
+//       唔出獨立行」寫法作廢，見 test_story198_logic.js (C2) 覆蓋。
 // 反證：喺 pristine main（v187）index 上行，storyActLabel 唔存在——
 //       本檔唔 crash，逐組印 FAIL 後 exit 1。
 // 用法：node tests/test_story191_logic.js（STORY191_DEBUG=1 印實際輸出）
@@ -191,7 +194,11 @@ function freshSave(over){
   ok('(a) C6 行係「第 6 幕・電視線」（對稱，唔係齋「第 6 幕」）', paneA.indexOf('第 6 幕・電視線') >= 0);
   ok('(a) C6 行喺 C6F 行之前', paneA.indexOf('第 6 幕・電視線') < paneA.indexOf('第 6 幕・電影線'));
   noBadNumbers('(a) Case A 進度頁', paneA);
-  ok('(c) 鎖住插入幕唔出獨立行（C18／C19 標題唔見）', paneA.indexOf('上岸路') < 0 && paneA.indexOf('賭枱邊') < 0);
+  ok('(c) v198：鎖住插入幕出獨立鎖定行（C18／C19 標題見到＋有解鎖條件）', paneA.indexOf('番外・1990 冬') >= 0 && paneA.indexOf('上岸路') >= 0 && paneA.indexOf('到第 48 週') >= 0
+    && paneA.indexOf('番外・1991 春') >= 0 && paneA.indexOf('賭枱邊') >= 0 && paneA.indexOf('先完成番外・1990 冬〈上岸路〉') >= 0);
+  ok('(c) v198：鎖住插入行喺 C6F 行之後、C7 行之前', paneA.indexOf('第 6 幕・電影線') < paneA.indexOf('番外・1990 冬')
+    && paneA.indexOf('番外・1991 春') < paneA.indexOf('第 7 幕'));
+  ok('(c) v198：鎖住插入行帶 prog71-insert 標記', paneA.indexOf('prog71-row locked prog71-insert') >= 0);
   ok('(c) 遠幕合併行仲喺度、區間啱（第 8–17 幕）', paneA.indexOf('第 8–17 幕') >= 0 && paneA.indexOf('完成前面幕數後逐幕揭曉') >= 0);
   ok('(c) 合併行喺逐項行之後（唔會提早印喺 C7 上面）', paneA.indexOf('先完成第 5 幕〈采兒小訪題〉') >= 0
     && paneA.indexOf('先完成第 5 幕〈采兒小訪題〉') < paneA.indexOf('第 8–17 幕'));
@@ -219,7 +226,8 @@ function freshSave(over){
   ok('(a) C18 開放行係「番外・1990 冬：上岸路」', paneC18.indexOf('番外・1990 冬') >= 0 && paneC18.indexOf('上岸路') >= 0 && paneC18.indexOf('已開放') >= 0);
   ok('(a) C18 行喺 C6 行之後、C7 行之前', paneC18.indexOf('第 6 幕・電視線') < paneC18.indexOf('番外・1990 冬')
     && paneC18.indexOf('番外・1990 冬') < paneC18.indexOf('第 7 幕'));
-  ok('(a) C19 鎖住唔出獨立行（賭枱邊唔見）', paneC18.indexOf('賭枱邊') < 0);
+  ok('(a) v198：C19 鎖住都出獨立行（賭枱邊見到＋前置句在位）', paneC18.indexOf('賭枱邊') >= 0 && paneC18.indexOf('先完成番外・1990 冬〈上岸路〉') >= 0);
+  ok('(a) v198：C6F 鎖住行講啱條件（行電影線，唔係行電視線）', paneC18.indexOf('行電影線') >= 0 && paneC18.indexOf('行電視線') < 0);
   noBadNumbers('(a) C18 開放進度頁', paneC18);
 
   /* ---- (e) 前置句：C19 前置 C18 用番外標籤 ---- */
@@ -247,9 +255,12 @@ function freshSave(over){
   loadGame(freshSave());
   const paneFresh = pane71();
   if(DEBUG) console.log('paneFresh:', paneFresh);
-  ok('(c) 新遊戲遠幕合併一行「第 4–17 幕」', paneFresh.indexOf('第 4–17 幕') >= 0 && paneFresh.indexOf('完成前面幕數後逐幕揭曉') >= 0);
+  ok('(c) v198：新遊戲遠幕按段合併兩行「第 4–6 幕」＋「第 7–17 幕」', paneFresh.indexOf('第 4–6 幕') >= 0 && paneFresh.indexOf('第 7–17 幕') >= 0 && paneFresh.indexOf('完成前面幕數後逐幕揭曉') >= 0);
+  ok('(c) v198：第一合併行喺插入行之前、第二合併行喺插入行之後', paneFresh.indexOf('第 4–6 幕') < paneFresh.indexOf('番外・1990 冬') && paneFresh.indexOf('番外・1991 春') < paneFresh.indexOf('第 7–17 幕'));
+  ok('(c) v198：新遊戲唔再印舊合併行「第 4–17 幕」', paneFresh.indexOf('第 4–17 幕') < 0);
   ok('(c) 新遊戲冇倒轉區間', paneFresh.indexOf('第 18–17 幕') < 0 && paneFresh.indexOf('第 20–17 幕') < 0);
-  ok('(c) 新遊戲插入幕標題全唔見（防劇透維持）', paneFresh.indexOf('片場跟班') < 0 && paneFresh.indexOf('上岸路') < 0 && paneFresh.indexOf('賭枱邊') < 0);
+  ok('(c) v198：新遊戲鎖住插入幕標題見到（C6F／C18／C19）', paneFresh.indexOf('片場跟班') >= 0 && paneFresh.indexOf('上岸路') >= 0 && paneFresh.indexOf('賭枱邊') >= 0);
+  ok('(c) v198：新遊戲 C6F 鎖行講啱條件（行電影線）', paneFresh.indexOf('行電影線') >= 0 && paneFresh.indexOf('行電視線') < 0);
   ok('(c) 新遊戲 C6 標題唔見（防劇透維持）', paneFresh.indexOf('飯堂閒角') < 0);
   noBadNumbers('(c) 新遊戲進度頁', paneFresh);
 })();

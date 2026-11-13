@@ -7,8 +7,9 @@
 # 五、普通 StoryPlay.start（唔用 opts.force）；omit 節點先寫 offer；唔經 openLoc／唔食額度
 # 六、進度頁「播呢幕」掣拎走（v155 B1 三態根除）；委派一併拎走
 # 七、（刪）home-story-hint 係死碼（v20a71 PART3C 起 enterHome 唔再渲染 storyHomeHintHtml，
-#    wireHomeStoryHint 嘅掣永遠唔存在）——本票唔郁佢，實時提示係地圖提示行（storyMapHintHtml，
-#    掣入進度頁，唔使改）；死碼留返原樣，唔做無謂 churn。
+#    wireHomeStoryHint 嘅掣永遠唔存在）——本票唔郁佢；v20a198 C1 亦已拎走地圖提示行
+#    storyMapHintHtml（死 code），實時提示只剩 storyMainProgressLine 嘅「下一幕」句式
+#    ＋進度頁逐行前置句；死碼留返原樣，唔做無謂 churn。
 # 八、頒獎禮：推辭都播典禮——電視直播版（gallery 旁聽弧重用）；得主規則唔變
 # 九、閘條件唔變：C17 weekMin 153＋backstopDay 1096、C18 48、C19 61、額度 cap 2
 # 反證：喺 pristine main（v160，276ffa1）上行會 FAIL（冇 story165 函數／掛點／
@@ -78,8 +79,9 @@ ok('進度頁：舊「去 X 就會觸發」／「你而家喺」文案清零',
 ok('播掣委派已拎走', 'closest("[data-prog77-play]")' not in src and '_progList77' not in src)
 
 # --- 七、home-story-hint 係死碼（v20a71 PART3C 起停用）---
-# 實時提示係地圖提示行 storyMapHintHtml（掣入進度頁，唔寫「到現場先可播」，唔使改）；
-# 死碼留返原樣——斷言佢冇被本票郁過（唔係本票範圍）。
+# v20a198 C1 拎走咗地圖提示行 storyMapHintHtml（死 code）；實時提示只剩
+# storyMainProgressLine 嘅「下一幕」句式＋進度頁逐行前置句；死碼留返原樣——
+# 斷言佢冇被本票郁過（唔係本票範圍）。
 wh = seg('function wireHomeStoryHint(){', '', 2500)
 ok('home-story-hint 死碼留返原樣（v71 起停用，本票唔郁）',
    '（到現場先可播）。<button type="button" id="home-story-open">去現場播劇情</button>' in src

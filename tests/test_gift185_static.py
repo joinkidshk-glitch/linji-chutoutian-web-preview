@@ -39,7 +39,7 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 60609（v195 淨 +87，行號釘見 qa195/resync195_rebase.py）', html.count('\n') == 60609)
+ok('總行數 60602（v198 rebase 上 main 2374637：分支 60483＋119）', html.count('\n') == 60602)
 
 # ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',

@@ -78,9 +78,9 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 60609（v170 59173＋v149 ＋97＋v153 ＋71＋v172 ＋15＋v175 ＋78＋v181 ＋8＋v195 ＋87）', src.count('\n') == 60609)
-ok('零行數漂移：openLoc DEF 行 55102（v195 ＋84：55018→55102，travel114 釘行）',
-   len(lines) >= 55102 and 'function openLoc(id, opts){' in lines[55101])
+ok('零行數漂移：總行數 60602（v198 rebase 上 main 2374637：分支 60483＋119）', src.count('\n') == 60602)
+ok('零行數漂移：openLoc DEF 行 55095（v198 rebase 上 main 2374637，difflib 對位純漂移，travel114 釘行）',
+   len(lines) >= 55095 and 'function openLoc(id, opts){' in lines[55094])
 
 # --- §1. C1：捲動提示（淡出漸變） ---
 ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',

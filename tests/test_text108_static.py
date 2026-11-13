@@ -111,7 +111,10 @@ ok('S-47 有牆備註舊句已清', '殺青作品會收錄喺度。早期做臨�
 # ---- 覆核項：v105 既定寫法仍在位（走樣即 FAIL） ----
 ok('覆核 S-3 行程編輯頁教學行在位', 'id="plan-teach105"' in html)
 ok('覆核 S-10 劇情卡「›」釘右中線', '.map-hint-story-btn::after' in html and 'content:"›"' in html)
-ok('覆核 S-10 副行截第一句', 'progShort105' in html)
+# v20a198 C1：storyMapHintHtml 已成個拎走（死 code），progShort105（副行截第一句）只係嗰個
+# 已刪 renderer 入面嘅局部變量，一併消失；「下一幕」句式本身留喺 storyMainProgressLine
+#（規格＋dev 自檢），內容由進度頁逐行前置句承載。
+ok('v198 C1：副行截第一句隨地圖提示 renderer 一併拎走', 'progShort105' not in html and 'function storyMainProgressLine(){' in html)
 ok('覆核 S-19 確定行程唔再彈壓力 modal', 'commitPlanAndGo();' in body_of('function confirmPlan', 1500))
 ok('覆核 S-19 壓力影響句係完整句子', '已經爆煲邊緣' in body_of('function stressImpactLine34', 1500))
 ok('覆核 S-23 費用欄正規化在位', 'cost105 = "免費"' in html)

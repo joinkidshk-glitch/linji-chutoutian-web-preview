@@ -28116,7 +28116,7 @@ const StoryPlay = (()=>{
           <p class="sp-meta">${esc(playerMeta)}</p>
           ${actLabel191?`<p class="sp-act191">${esc(actLabel191)}：${esc(actTitle191)}</p>`:""}
           <h3>${esc(n.title||n.id)}</h3>
-          ${n.setting?`<div class="sp-setting">${esc(n.setting)}</div>`:""}
+          ${n.setting?`<div class="sp-setting">${esc((typeof storySettingStripRoute198==="function") ? storySettingStripRoute198(n.setting) : n.setting)}</div>`:""}
         </div>` : "";
       let stageBody = "";
       if(cur.system){
@@ -30414,7 +30414,6 @@ function exposePreviewDebug(){
     window.syncGigsForDay = syncGigsForCalendarYear; /* alias：tester／QA 年切 */
     window.previewJumpCalendarYear = previewJumpCalendarYear;
     window.scheduleStoryMapRedraw = scheduleStoryMapRedraw;
-    window.refreshMapHintStory = refreshMapHintStory;
     window.storyNodeLocId = storyNodeLocId;
     window.storyHintPack = storyHintPack;
     window.calendarSeason = calendarSeason;
@@ -38770,56 +38769,15 @@ function storyMainProgressLine(){
     return out71;
   }catch(_e){ return ""; }
 }
-function storyMapHintHtml(){
-  const fault = (typeof storyWireContentFault==="function") ? storyWireContentFault() : null;
-  if(fault && fault.kind==="failed"){
-    return `<span class="map-hint-story map-hint-story-err">${storyFaultText(fault.player)}</span>`;
-  }
-  const snap = storyOpenSnapshot();
-  let rows = (snap.open||[]).slice();
-  try{
-    if(typeof StoryOC!=="undefined" && StoryOC.isDone("C1")) rows = rows.filter(r=>r && r.id!=="C1");
-  }catch(_e){}
-  const progress = (typeof storyMainProgressLine==="function") ? (storyMainProgressLine()||"") : "";
-  if(rows.length){
-    const row = rows[0] || {};
-    let label = "";
-    try{
-      const node = (typeof StoryOC!=="undefined" && StoryOC.findNodeRaw) ? StoryOC.findNodeRaw(row.id) : null;
-      /* 同 tip／pin：playerHint／title。唔跌去 nextHint。 */
-      label = (typeof storyFaceLine==="function" ? storyFaceLine(node, row) : "") || row.playerHint || row.title || row.id || "";
-    }catch(_e){
-      label = row.playerHint || row.title || row.id || "";
-    }
-    if(!label) label = "新節";
-    /* v20a71 PROGRESS71：成行改做掣，撳落去開手帳「進度」頁；下一幕進度句
-       （已改完整句子）改行細字副行，唔再用「 · 」同標題串埋一截。 */
-    /* v20a105 UI105 S-10：副行只留第一句（下一幕＋條件一句），全文留返進度頁 */
-    const progShort105 = progress ? (String(progress).split("。")[0] + "。") : "";
-    const progBit = progShort105 ? `<span class="map-hint-story-remain">${progShort105}</span>` : "";
-    return `<button type="button" class="map-hint-story map-hint-story-btn" data-prog71="1" title="撳入睇主線進度"><span class="map-hint-story-in128">有劇情 · ${label}${progBit}</span></button>`;
-  }
-  /* v19z20：無開放事態時仍常駐下一幕進度，避免「斷崖消失」 */
-  if(progress){
-    /* v20a71 PROGRESS71：同上，撳得入「進度」頁 */
-    /* v20a105 UI105 S-10：只顯示第一句，成張卡兩行內 */
-    const progShort105b = String(progress).split("。")[0] + "。";
-    return `<button type="button" class="map-hint-story map-hint-story-btn" data-prog71="1" title="撳入睇主線進度"><span class="map-hint-story-in128">${progShort105b}</span></button>`;
-  }
-  if(fault && fault.kind==="pending"){
-    return `<span class="map-hint-story">劇情內容載入中，請稍候。</span>`;
-  }
-  return "";
-}
-/** v17v：只刷新 #map-hint 內 .map-hint-story（C3→C4 唔等整條 paintBar）
-    v20a135 MAP135：劇情卡已由地圖底部卡拎走（進度提示進度頁已有）——呢度淨係清走
-    殘留嗰個，永不再插入；storyMapHintHtml() 本身留返畀進度頁／其他地方用。 */
-function refreshMapHintStory(){
-  const el = document.getElementById("map-hint");
-  if(!el) return;
-  const existing = el.querySelector(".map-hint-story");
-  if(existing) existing.remove();
-}
+/* v20a198 C1：拎走死 code——storyMapHintHtml()（地圖下一幕提示 renderer）零呼叫者
+   （v135 已拎走地圖劇情卡，之後再冇人叫佢），refreshMapHintStory() 亦只係清走一個
+   永遠唔會再出現嘅殘留元素；兩個一併刪除，連 window export＋scheduleStoryMapRedraw
+   兩個呼叫點。唔將提示接返地圖：v135 拎走劇情卡係已拍板嘅決定（進度提示進度頁已有），
+   重加等於反轉佢。storyMainProgressLine() 本身保留——佢係已測試嘅「下一幕」句式規格
+   （logic test＋頁內 runSoftP0Checks 覆蓋），內容（下一幕＋條件）玩家已喺進度頁逐行
+   條件見到；v191 嗰句「三處同一來源」更正為兩處玩家見到嘅（進度頁＋場景頂）。
+   .map-hint-story CSS 規則留返（冇元素再用呢個 class，純 inert；成段刪 CSS 會令
+   之後幾千行釘行測試漂移，得不償失，留待 stylesheet 清理嗰陣一併拎走）。 */
 function storyHomeHintHtml(){
   const snap = storyOpenSnapshot();
   /* v18a：C1 已完成就唔好再推「先練／先賺／去星河播 C1」 */
@@ -39039,10 +38997,8 @@ let __storyMapRedrawT = null;
 /** v17u: tip 資料＋針 redraw debounce（C3→C4 唔使等無關重繪） */
 function scheduleStoryMapRedraw(why){
   try{ refreshStoryMapTips(); }catch(_e){}
-  try{ refreshMapHintStory(); }catch(_e){}
   const kick = ()=>{
     try{ refreshStoryMapTips(); }catch(_e){}
-    try{ refreshMapHintStory(); }catch(_e){}
     try{ if(typeof paintStoryEntryHints==="function") paintStoryEntryHints(); }catch(_e){}
     try{ if(typeof drawMap==="function") drawMap(); }catch(_e){}
   };
@@ -40866,6 +40822,18 @@ function wf4TryLocEvent(locId){
        規則。呢度有幕等播（例：C17 喺電視台），WF4 隨機事件唔好食咗個入場；留返
        下次入場先擲。呢次唔計入 locTries（唔嘥嗰日嘅事件額）。 */
     try{ if(typeof enc79StoryPendingAt==="function" && enc79StoryPendingAt(locId)) return false; }catch(_w4sp){}
+    /* v20a198 B1：強制播優先於 WF4 地點事件——A1 守衛只認「同一地點有主線待播」
+       （enc79StoryPendingAt 睇節點 locId），但強制播唔跟地點：C6F 喺片場，C6 喺
+       電視台飯堂，C18 喺事務所——玩家由茶餐廳觸發強制播嗰陣，A1 守衛永遠唔着。
+       結果：首次入茶餐廳，seeded roll wf4loc:98:cafe_cha:1＝0.1535＜pLoc 0.20 通過，
+       pool {cha03, cha04, boss01, st10} 嘅 pick wf4pick:loc:cafe_cha:98:0＝0.6895
+       落 boss01——once 霞姐事件必定打尖（實駕 2/2），目標主線幕要等下次觸發先出。
+       修法：有強制播 pending（story165CanPlay 非空）嗰陣，WF4 地點事件同樣留返
+       下次入場先擲，呢次唔計 locTries（同 A1 守衛一樣）。boss01 本身唔郁：
+       once 仲喺 pool，強制播完之後下一次入茶餐廳照出（同日都出，因為 deferred
+       嗰次冇計數，roll／pick 唔變）。晨鏈 wf4PresentPending（pending day 事件）
+       嘅次序唔郁——boss01 係 trig:"loc"，永遠唔會係 pending，唔關 B1 事。 */
+    try{ if(typeof story165CanPlay==="function" && story165CanPlay()) return false; }catch(_w4s165){}
     if(st.locDay !== day){ st.locDay = day; st.locTries = 0; }
     if(st.locTries >= WF4_CFG.locTriesPerDay) return false;
     st.locTries += 1;
@@ -44097,8 +44065,11 @@ function prog71Esc(s){
   return String(s == null ? "" : s);
 }
 /* v20a191：主線幕號唯一來源——進度頁（prog71Rows／renderProgressPane71）、
-   場景頂（StoryPlay 開場 head）、地圖下一幕提示（storyMainProgressLine）三處共用
-   同一個函數，唔各自寫一套字。
+   場景頂（StoryPlay 開場 head）兩處玩家見到嘅地方共用同一個函數，唔各自寫一套字。
+   （v20a198 C1 更正：v191 原本寫「三處」，第三處係地圖下一幕提示
+   storyMainProgressLine——但佢嘅 renderer storyMapHintHtml 零呼叫者，玩家面根本
+   唔存在；v198 已拎走嗰個 renderer，storyMainProgressLine 本身保留做已測試嘅
+   「下一幕」句式規格，唔計入玩家見到嘅地方。）
    主幹 C1–C17 用順序號「第 N 幕」；插入幕唔佔順序號，改用錨點標籤：
    － C6／C6F 係同一幕嘅路線雙生，錨「第 6 幕」＋路線後綴（電視線／電影線），對稱一致；
    － C18／C19 係時間錨番外，錨季節（跟 CALIB60_NODE_WINDOWS whenLabel：C18 1990 年冬、
@@ -44116,6 +44087,14 @@ function storyActLabel(id){
 }
 function storyActIsInsert(id){
   return id==="C6F" || id==="C18" || id==="C19";
+}
+/* v20a198 C3：場景行唔再重複路線名——幕號行已經講咗路線（「第 6 幕・電影線」），
+   場景行（節點 setting）入面嘅「電影線：／電視線：」係重複。只喺場景頂 head 剝走
+   路線名＋冒號，保留後面嘅地點細節（「獅子山製片廠 · 1990 年 · 佈景板後面嗰個位」）；
+   節點 setting 資料本身唔郁（其他地方照用原字）。現時得 C6／C6F 兩個 setting 有呢個
+   寫法；「番外」唔喺 setting 入面，唔使處理。 */
+function storySettingStripRoute198(setting){
+  return String(setting||"").replace(/電影線：/g,"").replace(/電視線：/g,"");
 }
 function prog71Title(id){
   try{
@@ -44158,7 +44137,10 @@ function prog71GateItems(id){
       items.push({ ok:ok, text:"先完成"+(storyActLabel(d) || ("第 "+(Number(d.replace(/^C/,""))||0)+" 幕"))+"〈"+prog71Title(d)+"〉" });
       return;
     }
-    if(tok.indexOf("route:")===0){ items.push({ ok:ok, text:"行電視線" }); return; }
+    /* v20a198 C2 附帶：路線名唔可以寫死——舊寫法一律印「行電視線」，C6F（route_film）
+       嘅鎖行會講錯條件（v198 之前 C6F 鎖行隱形，錯字見唔到；家下鎖行見光，必須跟
+       token 分返「行電視線／行電影線」）。 */
+    if(tok.indexOf("route:")===0){ items.push({ ok:ok, text:(tok.indexOf("route_film")>=0 ? "行電影線" : "行電視線") }); return; }
     if(tok.indexOf("weekMin:")===0){ items.push({ ok:ok, text:"到第 "+(Number(tok.slice(8))||0)+" 週（而家第 "+wk+" 週）" }); return; }
     if(tok.indexOf("fameGt:")===0){ items.push({ ok:ok, text:"聲望多於 "+(Number(tok.slice(7))||0)+"（而家 "+fame+"）" }); return; }
     if(tok.indexOf("creditGt:")===0){ items.push({ ok:ok, text:"業內信用多於 "+(Number(tok.slice(9))||0)+"（而家 "+credit+"）" }); return; }
@@ -44346,7 +44328,13 @@ function renderProgressPane71(){
   }
   const html = ['<div class="prog71-wrap"><h3 class="prog71-h">主線進度</h3><p class="prog71-intro">逐幕列出開放條件同你而家嘅進度：✓ 係已達標，○ 係未達。完成一幕，之後嘅幕會逐漸揭曉。</p>'];
   let farMerged105 = false; /* v20a105 UI105 S-45 */
-  rows.forEach(r=>{
+  /* v20a198 C2：遠幕合併按「段」計——鎖住插入行（而家常駐可見，見下面 detail 分支）
+     截斷遠幕連續段，每段各自合併（新局：「第 4–6 幕」＋「第 7–17 幕」），唔再全頁
+     只得一行「第 loN–17 幕」（否則插入行之後嘅遠幕會冇合併行、或者合併行區間蓋過
+     插入行，玩家數落去會多咗。段界＝鎖住插入行；done／open／missed 行唔截斷。 */
+  const segOf198 = {};
+  { let seg198 = 0; rows.forEach((r, j)=>{ segOf198[j] = seg198; if(r && storyActIsInsert(r.id) && r.state==="locked") seg198++; }); }
+  rows.forEach((r, i)=>{
     if(r.state==="done"){
       html.push('<div class="prog71-row done"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag ok">✓ 已完成</span></div></div>');
       return;
@@ -44371,7 +44359,11 @@ function renderProgressPane71(){
         + '<p class="prog71-note">時窗係'+prog71Esc(wl || "較早前")+'，已經過咗。嗰段日子嘅紀錄喺「回憶」頁。</p></div>');
       return;
     }
-    if(detailSet71[r.id]){
+    /* v20a198 C2：鎖住嘅插入幕唔再隱形——出獨立鎖定行＋逐項解鎖條件（同 detail 行
+       同一 markup；標籤行 storyActLabel，永遠唔印「第 18／19／20 幕」）。唔佔主幹
+       逐項名額（fullLeft 只數 C1–C17，見上面 detailSet71）；插入行本身截斷遠幕段
+       （farMerged105 重置，後面嘅遠幕另起一行合併）。 */
+    if(detailSet71[r.id] || storyActIsInsert(r.id)){
       let items = null;
       try{ items = prog71GateItems(r.id) || prog71StubItems(r.id); }catch(_e){ items = null; }
       let body;
@@ -44380,24 +44372,25 @@ function renderProgressPane71(){
       } else {
         body = '<p class="prog71-note">時機未到——先照常跑通告、見人，條件夠就會開。</p>';
       }
-      html.push('<div class="prog71-row locked"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag lock">未開放</span></div>'+body+'</div>');
+      html.push('<div class="prog71-row locked'+(storyActIsInsert(r.id) ? ' prog71-insert' : '')+'"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag lock">未開放</span></div>'+body+'</div>');
+      if(storyActIsInsert(r.id)) farMerged105 = false;
       return;
     }
-    /* v20a191：鎖住又未到逐項嘅插入幕唔出獨立行，亦唔觸發下面嘅遠幕合併行
-       （維持 v153 舊行為：插入幕未開嗰陣喺進度頁唔見，開放／完成嗰陣先出現；
-       合併行只由主幹遠幕觸發，印喺第一個主幹遠幕位置——插入幕而家排喺 C6 同
-       C7 之間，唔加呢個 guard 會令合併行提早印喺逐項行上面）。 */
-    if(storyActIsInsert(r.id)) return;
     /* v20a105 UI105 S-45：遠幕（未開放又未到逐項揭曉）唔再逐幕重複同一句 boilerplate；
-       全部合併做一行，喺第一個遠幕位置出一次，其餘遠幕跳過。 */
+       全部合併做一行，喺第一個遠幕位置出一次，其餘遠幕跳過。
+       v20a198 C2：合併只計同段遠幕（見上面 segOf198）——段界係鎖住插入行；區間用
+       嗰段實際首末（loN–hiN），唔再寫死「–17」（新局前段係「第 4–6 幕」，後段先係
+       「第 7–17 幕」）。得返一幕嗰陣印單幕（「第 17 幕」唔印「第 17–17 幕」）。 */
     if(!farMerged105){
-      const farNs = rows.filter(x=>x && x.state==="locked" && !detailSet71[x.id] && (x.n|0)>=1 && (x.n|0)<=17).map(x=>x.n|0);
+      const farNs = rows.filter((x, j)=>x && x.state==="locked" && !detailSet71[x.id] && (x.n|0)>=1 && (x.n|0)<=17 && segOf198[j]===segOf198[i]).map(x=>x.n|0);
       /* v20a153 B3：得返插入幕（C18／C19／C6F）未開、主線 1–17 行晒嗰陣唔出合併行
          （舊 fallback 用 r.n 會印出「第 18–17 幕」／「第 20–17 幕」倒轉區間）。 */
       if(!farNs.length) return;
       farMerged105 = true;
       const loN = Math.min.apply(null, farNs);
-      html.push('<div class="prog71-row far"><div class="prog71-top"><span class="prog71-act">第 '+loN+'–17 幕</span><span class="prog71-tag lock">未開放</span></div><p class="prog71-note">完成前面幕數後逐幕揭曉。</p></div>');
+      const hiN = Math.max.apply(null, farNs);
+      const farLbl198 = (loN===hiN) ? ("第 "+loN+" 幕") : ("第 "+loN+"–"+hiN+" 幕");
+      html.push('<div class="prog71-row far"><div class="prog71-top"><span class="prog71-act">'+farLbl198+'</span><span class="prog71-tag lock">未開放</span></div><p class="prog71-note">完成前面幕數後逐幕揭曉。</p></div>');
     }
   });
   /* v20a142 A2a：進度頁尾「星途寄語」填補區塊——開局下半死位嘅有意設計（唔係佔位卡）；

@@ -69,7 +69,7 @@ ok('item6b set-choice force rule present', 'force37' in seg('function setChoiceO
 ok('item7 picker lock rows append play location', '開咗之後' in seg('function playOpenPicker(){', 'function spPlayerMeta(') and '開咗去' not in seg('function playOpenPicker(){', 'function spPlayerMeta('))
 # v20a71 PROGRESS71 改版：locBit37 拼裝尾已刪，進度行改用完整尾句講明觸發地點
 # （locNameOf71 攞 LOCS 名＋「開咗之後，去X就會觸發。」），斷言跟新正確行為改。
-ok('item7 progress line appends play location', 'locNameOf71' in html and '就會觸發' in seg('function storyMainProgressLine(){', 'function storyMapHintHtml(){'))
+ok('item7 progress line appends play location', 'locNameOf71' in html and '就會觸發' in seg('function storyMainProgressLine(){', 'function wireHomeStoryHint(){'))
 ok('item7 here-block names location', '先可以播這幕' in html)
 
 # ---- item 8：差額界限 ----
