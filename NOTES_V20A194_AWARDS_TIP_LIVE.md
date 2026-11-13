@@ -90,3 +90,5 @@
 - `tests/test_gift185_static.py`、`tests/test_rom176_static.py`、`tests/test_tang171_static.py`、`tests/test_tang173_static.py`、`tests/test_travel114_static.py`（釘行 resync，內容斷言唔郁）
 - `qa194/drive194.py`、`qa194/drive194_report.json`、`qa194/shots/`（16 張）、`qa194/resync194.py`、`qa194/apply_resync194.py`、`qa194/dbg_map.py`、`qa194/dbg_b.py`
 - 本 NOTES：`NOTES_V20A194_AWARDS_TIP_LIVE.md`
+
+- 落地：遊戲 `707ff66`，線上 5,349,830 bytes sha `4ed6aa07…` 已核實（curl，同 repo HEAD:index.html 一致）。
