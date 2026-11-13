@@ -4211,7 +4211,7 @@ body.day-res-open .day-row{
    (b) 企立唔夠高——唔係 % 參照盒問題（企立 containing block 係 .sp-stage 全高），係 max-width:58%
        撞限：企立源圖高 500、闊 325–416（比例 0.65–0.83），高 70% 需要闊 46–58% 畫面高，
        喺手機框闊高比約 0.55 下即 83–106% 舞台闊，58% 上限迫高度縮到 41–49%。
-       修：max-width 放寬到 94%、height 70%→72%（最闊嗰兩張 0.83 比例受幾何所限約 62%，已申報）。 */
+       修：max-width 放寬到 94%、height 70%→72%（最闊嗰兩張 0.83 比例受幾何所限約 62%，已申報）。
    目標：《明星志願》式全屏分層——場景圖全屏做底＋企立圖企左下＋米紙對話牌壓底＋標題收做頂部半透明條。
    突破容器方法（純 CSS，零模板/邏輯改動）：#mask 本身係 #app 直接子元素、position:absolute;inset:0
    已覆蓋成個遊戲框；祖先鏈 #app／.modal／#modal-inner 全部冇 transform/filter/backdrop-filter，
@@ -4223,6 +4223,12 @@ body.day-res-open .day-row{
    底部漸變 overlay 貼住牌底；選擇模式按鈕較多，保留喺流程底欄（:has 區分，唔支援 :has 時
    安全退回：全部模式都行底欄＋全屏場景，唔會爛版）。 */
 /* --- 容器：modal 拉做框內全屏 --- */
+/* v20a155 B1：上面 v20a41 大註解之前提早閂咗（「已申報」句後多咗個閂標記），後面十行散文跌出註解、
+   併入下一條 rule 嘅 prelude，令 #mask.story-play-on 呢條 rule 成條靜默失效——mask 一直留返
+   padding:10px＋rgba(0,0,0,.72) 半透明底，舞台底緣 910、modal 底 922、mask 底 932，底下 10px
+   透出下層淺色卡（實量暖灰 (71,69,63)，唔係純黑）。上面刪走多餘閂標記，等呢條 rule 正常生效。
+   另 #modal-inner 嗰行 padding 加 !important：L3506 嗰條 (2,2,0) 贏呢度 (2,1,0)，
+   12px padding-bottom 令 .story-play／舞台矮咗 12px。兩者一齊先令舞台底緣貼齊 viewport 底。 */
 #mask.story-play-on{padding:0;align-items:stretch;background:#0a0705 !important}
 #mask.story-play-on .modal{
   position:relative;height:100%;width:100%;
@@ -4230,7 +4236,7 @@ body.day-res-open .day-row{
   border:0 !important;border-radius:0;
   background:#0a0705 !important;box-shadow:none !important;
 }
-#mask.story-play-on #modal-inner{overflow:hidden !important;padding:0}
+#mask.story-play-on #modal-inner{overflow:hidden !important;padding:0 !important}
 /* --- 主根：全高、做疊層定位原點 --- */
 #mask.story-play-on .story-play{
   position:relative;height:100%;max-height:none;gap:0;overflow:hidden;
@@ -4890,25 +4896,32 @@ body.day-res-open .day-row{
 #app .map-polaroid{ flex:0 1 auto !important; }
 /* S-19：壓力明細行內展開盒 */
 #nb-stress-detail105{ margin:8px 0 4px; padding:10px 12px; border:1px solid #c4a574; border-radius:10px; background:rgba(255,248,232,.96); font-size:.82rem; line-height:1.55; color:#43301c; }
-#home-pane-progress .journal-scroll{ flex:1 1 auto; min-height:0; overflow:auto; padding:4px 2px 16px; -webkit-overflow-scrolling:touch; }
-.prog71-wrap{ padding:2px 0 8px; }
-.prog71-h{ margin:0 0 4px; font-size:.95rem; color:#43301c; }
-.prog71-intro{ font-size:.78rem; color:#8a755a; line-height:1.6; margin:0 0 10px; }
-.prog71-row{ border:1px solid #c4a574; background:#fff8e8; border-radius:12px; padding:9px 11px; margin:0 0 8px; }
+/* v20a155 B2：進度頁上面收窄，等「星途寄語」成塊喺 932 第一眼見晒（唔碌）。
+   實量開局：寄語卡底 1038（在場態，開局行有「播呢幕」掣）／984（唔在場態），可視底 930，
+   要慳 108／54px。以下十一處小收窄合共約 110–116px，文案／幕次序／寄語卡本身一律唔郁：
+   行 padding 9→4（40）、行距 8→5（12）、intro margin 10→6＋行高 1.6→1.5（約 6.5）、
+   條件 ul margin 8→6（4）、li 行高 1.55→1.4（約 21）、note 行高 1.55→1.45＋margin 6→5（約 4.5）、
+   播掣 min-height 40→36＋margin 8→6（6，在場態先有）、標題 margin 4→2（2）、
+   捲動器頂 padding 4→2（2）、wrap 頂 padding 2→0（2）、幕頂行高 1.3（約 14）。 */
+#home-pane-progress .journal-scroll{ flex:1 1 auto; min-height:0; overflow:auto; padding:2px 2px 16px; -webkit-overflow-scrolling:touch; }
+.prog71-wrap{ padding:0 0 8px; }
+.prog71-h{ margin:0 0 2px; font-size:.95rem; color:#43301c; }
+.prog71-intro{ font-size:.78rem; color:#8a755a; line-height:1.5; margin:0 0 6px; }
+.prog71-row{ border:1px solid #c4a574; background:#fff8e8; border-radius:12px; padding:4px 11px; margin:0 0 5px; }
 .prog71-row.open{ border-color:#b98a2f; background:#fdf3d0; box-shadow:0 0 0 1px rgba(185,138,47,.35); }
 .prog71-row.locked{ background:#fdf6e0; }
 .prog71-row.far, .prog71-row.missed{ opacity:.62; }
-.prog71-top{ display:flex; align-items:baseline; gap:8px; }
+.prog71-top{ display:flex; align-items:baseline; gap:8px; line-height:1.3; }
 .prog71-act{ font-size:.74rem; font-weight:800; color:#8a5a20; white-space:nowrap; }
 .prog71-top b{ font-size:.9rem; color:#43301c; }
 .prog71-tag{ margin-left:auto; flex:0 0 auto; font-size:.68rem; font-weight:800; padding:2px 8px; border-radius:999px;
   border:1px solid #b98a2f; color:#6b4e2e; background:#fff8e8; white-space:nowrap; }
 .prog71-tag.ok{ background:#3e6b34; border-color:#3e6b34; color:#fff8e8; }
 .prog71-tag.open{ background:#b98a2f; border-color:#b98a2f; color:#fff8e8; }
-.prog71-items{ list-style:none; margin:8px 0 0; padding:0; }
-.prog71-items li{ font-size:.8rem; line-height:1.55; color:#6b5636; }
+.prog71-items{ list-style:none; margin:6px 0 0; padding:0; }
+.prog71-items li{ font-size:.8rem; line-height:1.4; color:#6b5636; }
 .prog71-items li.ok{ color:#3e6b34; font-weight:700; }
-.prog71-note{ font-size:.78rem; color:#6b5636; line-height:1.55; margin:6px 0 0; }
+.prog71-note{ font-size:.78rem; color:#6b5636; line-height:1.45; margin:5px 0 0; }
 .prog71-empty h3{ margin:0 0 4px; font-size:.95rem; }
 .prog71-empty p{ font-size:.8rem; color:#8a755a; line-height:1.6; }
 /* v20a142 A2a：進度頁尾「星途寄語」填補區塊——開局下半死位嘅有意設計，唔係佔位卡；
@@ -4918,7 +4931,7 @@ body.day-res-open .day-row{
 .prog71-next142 p{ margin:0; font-size:.82rem; line-height:1.6; color:#43301c; }
 .prog71-next142 p + p{ margin-top:6px; font-size:.78rem; color:#6b5636; }
 /* === v20a77 HUB77：進度頁「播呢幕」掣＋大地圖常駐「進度」掣 === */
-.prog71-play{ margin-top:8px; min-height:40px; padding:8px 16px; border-radius:10px; border:1px solid #7a4b12;
+.prog71-play{ margin-top:6px; min-height:36px; padding:8px 16px; border-radius:10px; border:1px solid #7a4b12;
   background:#b98a2f; color:#fff8e8; font-weight:800; font-size:.84rem; cursor:pointer; }
 .prog71-play:active{ transform:translateY(1px); }
 /* v20a128 MAP128：#map-progress-btn 規則隨浮掣一併取消（進度入口只留頂欄 chip）。 */
@@ -5164,6 +5177,10 @@ body.day-res-open .day-row{
 .b01-fig-ho108{ right:4%; }
 /* S-7：地區名光暈加厚 */
 .md97{ text-shadow:0 0 4px #f3e7c8, 0 0 4px #f3e7c8, 0 0 4px #f3e7c8, 2px 0 3px #f3e7c8, -2px 0 3px #f3e7c8, 0 2px 3px #f3e7c8, 0 -2px 3px #f3e7c8; }
+/* v20a155 B3：會場標籤「金禧大酒店」跟返 15 張地點標籤——深啡墨字 #43301c＋.mn68 同級米紙光暈，opacity 返 1。
+   之前 .md97 淡金 #7a5c33／opacity .88 直接印喺米紙上面，遠睇幾乎融入紙面；只改顏色／光暈，唔郁位置邏輯。 */
+.md97-venue99{ color:#43301c; opacity:1;
+  text-shadow:0 0 3px #f3e7c8, 0 0 3px #f3e7c8, 1px 0 2px #f3e7c8, -1px 0 2px #f3e7c8, 0 1px 2px #f3e7c8, 0 -1px 2px #f3e7c8; }
 /* S-8：頂欄進度 chip 只係徽章，唔係掣 */
 #app #chip-story{ cursor:pointer; }
 /* S-9：劇情高亮改柔光呼吸光暈，唔用直角線框 */
