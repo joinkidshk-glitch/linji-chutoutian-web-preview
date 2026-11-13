@@ -8,8 +8,9 @@
 #       見 test_bust109_static.py 交叉比對）。
 #       ③ C2／C3：兩張新 angry 圖存在＋規格（896×2976、透明底、四角 alpha 0、
 #       米白光邊——同 qa199/samples199/bake199_results.json 交叉比對）；
-#       sha 同 v195 舊版唔同（證明真係換咗）；s1 angry 原封不動（今票唔郁佢）；
-#       s2／s3 serious 原封不動（C2 對照基線）。
+#       sha 同 v195 舊版唔同（證明真係換咗）；s1 angry 原封不動（v199 當時唔郁佢；
+#       v20a201 將成個 s1 組重生，awi_angry.webp 已換走，見 test_awei201_static.py；
+#       下面 UNTOUCHED 唔再釘佢）；s2／s3 serious 原封不動（C2 對照基線）。
 #       ④ 反證：checker 食舊值（舊 angry sha／REF 過細）必須報問題。
 #       ⑤ 基線不變：SAVE key／softRev／產品 ?v=。
 # 用法：python3 tests/test_awei199_static.py [path-to-index.html]
@@ -46,9 +47,10 @@ try:
     mx = max(ars.values())
     info("全庫 awi* %d 張，最大 AR %.4f（%s）" % (len(ars), mx, max(ars, key=ars.get)))
     ck("REF ≥ 全庫最大 AR（留 ≥0.001 裕度）", REF >= mx)
-    ck("REF ≥ 邏輯測試九個 AR（s1 angry 0.3446 封頂）", REF >= 0.3446)
+    # v20a201：s1 重生後最大 AR 唔再係 s1 angry 0.3446，改為 s3 serious 0.3032。
+    ck("REF ≥ 邏輯測試九個 AR（s3 serious 0.3032 封頂，v201 後）", REF >= 0.3032)
     # 寫死最大三張，防 PIL 量度漂移靜靜過關
-    ck("s1 angry AR ≈ 0.3446", abs(ars.get("awi_angry.webp", 0) - 0.3446) < 0.001)
+    ck("s1 angry AR ≈ 0.2801（v201 重生）", abs(ars.get("awi_angry.webp", 0) - 0.2801) < 0.001)
     ck("新 s2／s3 angry AR ≈ 0.3011（bake 後 896×2976）",
        abs(ars.get("awi_s2_angry.webp", 0) - 0.3011) < 0.001
        and abs(ars.get("awi_s3_angry.webp", 0) - 0.3011) < 0.001)
@@ -73,16 +75,25 @@ def extract_map(name):
     b = src.index("};", a) + 2
     return dict(re.findall(r'"([^"]+)":\s*"([^"]+)"', src[a:b]))
 crop199_path = os.path.join(ROOT, "qa199", "crop199.json")
+# v20a201：hero_awi bust 由新 base 重裁，新記錄喺 qa201/crop201.json（1 鍵）；
+# awi_s3 繼續用 crop199.json。
+crop201_path = os.path.join(ROOT, "qa201", "crop201.json")
+crop201 = {}
+if os.path.exists(crop201_path):
+    with open(crop201_path, encoding="utf-8") as f: crop201 = json.load(f)
+    ck("crop201.json 有 1 項（hero_awi）", set(crop201) == {"hero_awi"})
 if os.path.exists(crop199_path):
     with open(crop199_path, encoding="utf-8") as f: crop199 = json.load(f)
     ck("crop199.json 有 2 項", set(crop199) == {"hero_awi", "awi_s3"})
     P, E = extract_map("PORTRAITS"), extract_map("BUST109_EXTRA")
-    for key, val in (("hero_awi", P.get("hero_awi", "")), ("awi_s3", E.get("awi_s3", ""))):
+    expect = {"hero_awi": (P.get("hero_awi", ""), crop201.get("hero_awi") or crop199["hero_awi"]),
+              "awi_s3": (E.get("awi_s3", ""), crop199["awi_s3"])}
+    for key, (val, rec) in expect.items():
         raw = base64.b64decode(val.split(",", 1)[1])
-        ck(f"{key} bust sha 同 crop199.json 一致",
-           hashlib.sha256(raw).hexdigest() == crop199[key]["webp_sha256"])
+        ck(f"{key} bust sha 同 crop 記錄一致",
+           hashlib.sha256(raw).hexdigest() == rec["webp_sha256"])
         ck(f"{key} bust 唔等於舊 crop109 值",
-           hashlib.sha256(raw).hexdigest() != crop199[key]["old_webp_sha256"])
+           hashlib.sha256(raw).hexdigest() != rec["old_webp_sha256"])
 else:
     info("qa199/crop199.json 缺席，跳過 C1 hash 比對")
 
@@ -91,8 +102,7 @@ OLD_ANGRY = {  # v195 版（main b1633e6 實量），今票必須換走
   "awi_s2_angry.webp": "aa50c70ee89db6b50bb68449deb415c086efa1ea2e5415258b2fe2ed57e4bb3d",
   "awi_s3_angry.webp": "f863fef694109bea4f23251f59fb3d044eaa3dd3006986b2e42931a71661bdd6",
 }
-UNTOUCHED = {  # 今票唔郁（main b1633e6 實量）
-  "awi_angry.webp": "8508c88d22f532c83e849ad10f0815558a6d83450775a13735755d8b57596dbe",
+UNTOUCHED = {  # 今票唔郁（main b1633e6 實量；v20a201 拎走咗 awi_angry.webp——成個 s1 組重生）
   "awi_s2_serious.webp": "0a8b8e825a8b8b51a6354c94d2fa7f702473eb24c5066a2653ce1bf64acd47ae",
   "awi_s3_serious.webp": "e05c2fe8928d714838119e39d6fbc4ae96175dc584f1d86b0f78cc8d1f165f97",
 }
@@ -146,7 +156,7 @@ else:
 # ---------- ④ 反證 ----------
 def check_ref(ref_val, angry_shas):
     problems = []
-    if ref_val < 0.3446: problems.append("REF 細過 s1 angry AR")
+    if ref_val < 0.3032: problems.append("REF 細過 s3 serious AR（v201 後全庫最大）")
     for fn, old in OLD_ANGRY.items():
         if angry_shas.get(fn) == old: problems.append(fn + " 未換")
     return problems

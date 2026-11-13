@@ -120,7 +120,7 @@ try:
     def near(name, got, want, tol=0.001):
         ck("闊高比 %s＝%.3f（size-test %.3f）" % (name, got, want), abs(got - want) <= tol)
     bases = {k[:-5]: v for k, v in files.items() if k.endswith("_base")}
-    near("awi base", bases.get("awi", -1), 0.343)
+    near("awi base", bases.get("awi", -1), 0.280)  # v20a201：s1 重生 0.343→0.280（修 v199 review C1）
     near("ho_sang base", bases.get("ho_sang", -1), 0.364)
     near("chung_choning base", bases.get("chung_choning", -1), 0.337)
     near("fong_siulung base", bases.get("fong_siulung", -1), 0.413)
@@ -129,8 +129,8 @@ try:
     def gap(ar1, ar2): return round(AVAIL - H * (ar1 + ar2), 1)
     g_ah = gap(bases["awi"], bases["ho_sang"])
     g_ac = gap(bases["awi"], bases["chung_choning"])
-    ck(f"重測：阿偉×何生 60% 淨空 {g_ah:.1f}px（size-test 17px，新批更鬆）", 19.0 <= g_ah <= 21.5)
-    ck(f"重測：阿偉×鍾楚凝 60% 淨空 {g_ac:.1f}px（size-test 30px）", 32.0 <= g_ac <= 35.0)
+    ck(f"重測：阿偉×何生 60% 淨空 {g_ah:.1f}px（v201 s1 收窄 0.280，淨空由 ~20px 放寬到 ~52px）", 51.0 <= g_ah <= 53.0)
+    ck(f"重測：阿偉×鍾楚凝 60% 淨空 {g_ac:.1f}px（v201 s1 收窄 0.280，淨空由 ~34px 放寬到 ~66px）", 64.5 <= g_ac <= 66.5)
     pairs = sorted(((round(bases[a] + bases[b], 3), a, b)
                     for ii, a in enumerate(sorted(bases)) for b in sorted(bases)[ii + 1:]), reverse=True)
     s_top, a_top, b_top = pairs[0]
@@ -139,8 +139,8 @@ try:
     ck(f"重測：最闊配對上限 {cap:.1f}%（size-test 約 55%，v119 老年影闊袍 0.400 令上限跌到約 53%）", 52.5 <= cap <= 54.0)
     n_shrink = sum(1 for s, a, b in pairs
                  if round(AVAIL - H * (bases[a] + bases[b]), 1) < 12)
-    ck(f"重測：60% 下淨空 <12px 嘅配對有 {n_shrink}/{len(pairs)} 個（自動收細非擺設；v119 前 55 個；v20a131 B1 加 2 個 base，＋10 對）",
-       n_shrink == 120)
+    ck(f"重測：60% 下淨空 <12px 嘅配對有 {n_shrink}/{len(pairs)} 個（自動收細非擺設；v119 前 55 個；v20a131 B1 加 2 個 base，＋10 對；v20a201 s1 收窄，－5 對）",
+       n_shrink == 115)
     info("重測寫入 qa108d/remeasure108d.json（%d 張，%d 個 base）" % (len(files), len(bases)))
 except ImportError:
     warns.append("PIL 未裝：跳過真檔重測")

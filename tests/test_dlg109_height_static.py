@@ -103,7 +103,7 @@ try:
     near("pang_siuki base", bases.get("pang_siuki", -1), 0.376)
     near("gu_mingfai base", bases.get("gu_mingfai", -1), 0.232)
     near("ching_tinlok base", bases.get("ching_tinlok", -1), 0.267)
-    near("awi base", bases.get("awi", -1), 0.343)
+    near("awi base", bases.get("awi", -1), 0.280)  # v20a201：s1 重生 0.343→0.280（修 v199 review C1）
     H, W = 0.60 * 844, 390
     def gap_scaled(ar1, sc1, ar2, sc2, margin):
         return round(W - margin - H * (ar1 * sc1 + ar2 * sc2), 1)

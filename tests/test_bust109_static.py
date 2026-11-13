@@ -112,9 +112,19 @@ if os.path.exists(crop_path):
 else:
     info("qa109b/crop109.json 缺席，跳過 hash 交叉比對")
 
-# v20a199 C1：hero_awi／awi_s3 收緊裁切＋恤衫色對比（FRAC 0.30→0.24），新記錄喺
-# qa199/crop199.json（2 鍵）；其餘 19 鍵沿用 crop109.json。兩個新 bust 必須同舊
-# crop109 值唔同（證明真係換咗），awi_s2 必須繼續同 crop109 一致（今票唔郁佢）。
+# v20a201：hero_awi 由新 s1 base 重裁，新記錄喺 qa201/crop201.json（1 鍵）；
+# awi_s3 繼續用 crop199.json。hero_awi 必須同 crop199 舊值唔同（base 換咗，
+# bust 跟住換）。
+crop201_path = os.path.join(ROOT, "qa201", "crop201.json")
+crop201 = {}
+if os.path.exists(crop201_path):
+    with open(crop201_path, encoding="utf-8") as f: crop201 = json.load(f)
+    ck("crop201.json 有 1 項（hero_awi）", set(crop201) == {"hero_awi"})
+    # crop201 記錄嘅 old_webp_sha256 就係 crop199 嗰個 hero_awi 值。
+    ck("hero_awi 新 sha 同舊 crop199 值唔同（base 換咗，bust 跟住換）",
+       crop201["hero_awi"]["webp_sha256"] != crop201["hero_awi"]["old_webp_sha256"])
+else:
+    info("qa201/crop201.json 缺席，hero_awi 沿用 crop199.json 比對")
 crop199_path = os.path.join(ROOT, "qa199", "crop199.json")
 crop199 = {}
 if os.path.exists(crop199_path):
@@ -134,8 +144,9 @@ def check_one(label, b64val, expect_key):
     if webp_info:
         fmt, size, sha, blen = webp_info(raw_b64)
         ck(f"{label} 解碼係 WebP 240×312", fmt == "WEBP" and size == (240, 312))
-        rec = crop199.get(expect_key) or crop.get(expect_key)
-        rec_name = "crop199.json" if expect_key in crop199 else "crop109.json"
+        rec = crop201.get(expect_key) or crop199.get(expect_key) or crop.get(expect_key)
+        rec_name = ("crop201.json" if expect_key in crop201 else
+                    "crop199.json" if expect_key in crop199 else "crop109.json")
         if rec:
             ck(f"{label} sha256 同 {rec_name} 一致", sha == rec["webp_sha256"])
             ck(f"{label} b64 長度同 {rec_name} 一致", blen == rec["b64_len"])
