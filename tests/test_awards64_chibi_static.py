@@ -1,5 +1,6 @@
 # v20a64「Q版群星」整合 static tests:
 # (1) Q 版資產在場：AWARDS64_SPRITES 共 34 張（企姿 11＋阿偉捧杯 1＋全員行 A/B 22），base64 ≤130KB。
+#     v20a178-strip（用戶 2026-11-13 15:11）：高俊傑 3 張 Q 版衍生剝走，返返 34 張；舞台圖由 v180 接手。
 # (2) v63 寫實 sprite 成套撤走：AWARDS63_SPRITES const 唔存在、舊衍生標記（縮 72px）已改。
 # (3) 走路入場接線：entryPlan（左右兩流）＋walkA/walkB 幀引用＋reveal 行前 fwd64。
 # (4) 渲染尺度跟 mock v3：FLOOR=290（v20a174 B1：canvas 高 240→360，底圖垂直拉伸 1.5×，舞台頂線 193×1.5＝289.5→290；v20a170 P2 舊值 193）、slotCx 置中 202／間距 80＋gallery 中央 −36（C1）、人仔高 72（玩家 75）。

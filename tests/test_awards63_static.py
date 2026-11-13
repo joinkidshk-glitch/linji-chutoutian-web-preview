@@ -3,6 +3,7 @@
 # (2) sprite 資產：v63 原 AWARDS63_SPRITES（寫實 12 張）；v20a64 起成套換做 AWARDS64_SPRITES
 #     Q 版 34 張（企姿 12＋捧杯 1 含喺企姿數＋行 A/B 22，實際＝企姿 11＋捧杯 1＋行 22）、base64 總量 ≤130KB。
 #     本測試嘅 sprite 帳目已按 v64 更新基線（2026-11-10 整合時註明）。
+#     v20a178-strip（用戶 2026-11-13 15:11）：高俊傑 3 張 Q 版衍生剝走，返返 34 張；舞台圖由 v180 接手。
 # (3) 紅星池冇程天諾（1988 零出場紅線）。
 # (4) fellows 接線齊：build pack／log／請柬／結果卡／獎項頁／play（作品卡＋glamour＋對手捧杯）。
 # (5) 海報唔重複編碼：POSTER59_DATA 只得一份 const；新 code 只經 poster59Path 重用。

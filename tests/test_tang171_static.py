@@ -30,6 +30,8 @@
 # v20a172 rebase 上 main a500536（v149）resync：v149 淨 ＋97，總行數 59285、openLoc DEF 行 53804（qa172/resync172b.py difflib 對位核實）。
 # v20a172 rebase 上 main e2add29（v174）resync：v172 4 hunks 淨 ＋15，總行數 59341→59356、DEF 53860→53875（qa172/resync172c.py difflib 對位核實純漂移）。
 # v20a175 rebase 上 main f09fa1b（v177）resync：index.html 淨 ＋78，總行數 59356→59434、DEF 53875→53953。
+# v20a178 第二次 rebase 上 main 91f264a（v175）resync：v178 ＋25 行（AWARDS64 註解＋1／ko sprite＋3／fellows 特別名額＋21）疊喺 v175 ＋78 之上，總行數 59434→59459、DEF 53953→53978（qa178/resync178b.py difflib 對位核實純漂移；三檔 rebase 衝突後以 v175 版為底重算）。
+# v20a178 strip 上 91f264a resync：strip 淨 −4 行（AWARDS64 註解＋1／ko sprite＋3），總行數 59459→59455、DEF 53978→53974（qa178/resync178c.py difflib 對位核實純漂移）。
 # 反證：喺 pristine main（56141a3／v169）index 上行，新行為斷言會乾淨 FAIL，
 #      唔會 crash。守門斷言喺 pristine 都 PASS（佢哋守「舊嘢冇郁過」）。
 # 用法：python3 tests/test_tang171_static.py [path-to-index.html]
@@ -58,9 +60,9 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 59434（v170 59173＋v149 ＋97＋v153 ＋71＋v172 ＋15＋v175 ＋78）', src.count('\n') == 59434)
-ok('零行數漂移：openLoc DEF 行 53953 不變（travel114 釘行）',
-   len(lines) >= 53953 and 'function openLoc(id, opts){' in lines[53952])
+ok('零行數漂移：總行數 59455（v170 59173＋v149 ＋97＋v153 ＋71＋v172 ＋15＋v175 ＋78）', src.count('\n') == 59455)
+ok('零行數漂移：openLoc DEF 行 53974 不變（travel114 釘行）',
+   len(lines) >= 53974 and 'function openLoc(id, opts){' in lines[53973])
 
 # --- §1. C1：捲動提示（淡出漸變） ---
 ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',

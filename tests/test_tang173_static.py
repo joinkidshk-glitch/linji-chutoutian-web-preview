@@ -29,6 +29,8 @@
 # v20a173 rebase 上 main 0ecaeb3（v153）resync：總行數 59173→59341、DEF 53692→53860、CSS 同行 4832→4845、舊 rule L2016→L2024／L2040→L2048（逐項 grep＋git show 核實純漂移，單次掃描 dict 查表，見 NOTES_V20A173 §9）。
 # v20a172 rebase 上 main e2add29（v174）resync：v172 4 hunks 淨 ＋15，總行數 59341→59356、DEF 53860→53875（qa172/resync172c.py difflib 對位核實純漂移；全套初跑由 suite 捉到，見 NOTES §5.5）。
 # v20a175 rebase 上 main f09fa1b（v177）resync：index.html 淨 ＋78，總行數 59356→59434、DEF 53875→53953（L4845 喺 CSS 插入點之前，唔郁）。
+# v20a178 第二次 rebase 上 main 91f264a（v175）resync：v178 ＋25 行（AWARDS64 註解＋1／ko sprite＋3／fellows 特別名額＋21）疊喺 v175 ＋78 之上，總行數 59434→59459、DEF 53953→53978（qa178/resync178b.py difflib 對位核實純漂移；三檔 rebase 衝突後以 v175 版為底重算）。
+# v20a178 strip 上 91f264a resync：strip 淨 −4 行（AWARDS64 註解＋1／ko sprite＋3），總行數 59459→59455、DEF 53978→53974（qa178/resync178c.py difflib 對位核實純漂移）。
 import sys
 from pathlib import Path
 p = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent / 'index.html'
@@ -58,9 +60,9 @@ def blend(fg, bg, a):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 59434', src.count('\n') == 59434)
-ok('零行數漂移：openLoc DEF 行 53953 不變（travel114 釘行）',
-   len(lines) >= 53953 and 'function openLoc(id, opts){' in lines[53952])
+ok('零行數漂移：總行數 59455', src.count('\n') == 59455)
+ok('零行數漂移：openLoc DEF 行 53974 不變（travel114 釘行）',
+   len(lines) >= 53974 and 'function openLoc(id, opts){' in lines[53973])
 ok('零行數漂移：L4845 仲係 v169／v171／v173 同行（冇插行，kwan151／tang152 釘行唔使 resync）',
    len(lines) >= 4845 and 'loc-acts-more171::after' in lines[4844] and 'act-locked171' in lines[4844])
 ok('L4845 註解平衡：/* 數＝*/ 數，鎖住底 rule 唔喺註解入面（v173 曾中招：註解入面再插 /*…*/ 令首個 */ 提早閂註解，殘尾變裸文吞咗鎖住底 rule 嘅 selector，live 底色跌返 #f5e6c0）',
