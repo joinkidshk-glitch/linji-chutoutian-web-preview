@@ -3,8 +3,11 @@
 # (1) v178 條款喺 awards63Fellows 入面：v178 標記＋1991 年閘＋ko_chunkit＋「高俊傑」直接寫名。
 # (2) 池／權重唔郁：AWARDS63_POOL、AWARDS63_TIER_WEIGHT 入面冇 ko_chunkit。
 # (3) 上限唔郁：awards63Fellows 入面仲有 out.length >= 3 兩輪封頂。
-# (4) 舞台＋卡片行現行通用路徑，唔另起一套：舞台 loadSpr(f.starId) 逐個 fellow 載 sprite；
+# (4) 舞台＋卡片行現行通用路徑，唔另起一套：舞台 loadPx(f.starId, d) 逐個 fellow 載 PixelLab 幀
+#     （south／east／west 三向；v20a181 起 Q 版 loadSpr／walkA／walkB 成批退役）；
 #     卡片 cardsData 用 fellows.forEach 通用 builder（poster 有就用 poster，冇就 CSS 卡）。
+# v20a181 rebase 上 main 9640c6f（v183）更新：(4) 兩項由 loadSpr／walkA／walkB 改做 loadPx 三向幀，
+# 其餘 v178 條款（入池／權重／上限／硬規則）唔郁。
 # (5) 硬規則：SAVE key 不變；POSTER59_STAR_IDS 唔加高俊傑（嗰個 map 係海報／主演邏輯，唔係提名池）。
 # 反證：對 pristine main 行 → v178 條款唔存在 → 乾淨 FAIL（exit 1，唔 crash）。
 # Sprite 檢查已刪（用戶 2026-11-13 15:11：舞台直接用 PixelLab character，唔衍生 Q 版；
@@ -68,8 +71,8 @@ chk('AWARDS63_TIER_WEIGHT 冇佢', 'ko_chunkit' not in weights)
 chk('兩輪封頂 out.length >= 3 仲喺度', 'out.length >= 3' in fellows_fn)
 
 # --- (4) 舞台＋卡片行現行通用路徑 ---
-chk('舞台逐個 fellow 載 sprite（loadSpr(f.starId) 通用）', 'loadSpr(f.starId)' in play_fn)
-chk('舞台載埋 walk 幀（通用）', 'loadSpr(f.starId + "_walkA")' in play_fn and 'loadSpr(f.starId + "_walkB")' in play_fn)
+chk('舞台逐個 fellow 載 PixelLab 幀（loadPx(f.starId, d) 通用）', 'loadPx(f.starId, d)' in play_fn)
+chk('舞台載埋三向幀（south 企立／east／west 行，通用）', '["south", "east", "west"].forEach(d=> loadPx(f.starId, d))' in play_fn)
 chk('卡片用 fellows 通用 builder（唔按 starId 分流）', 'fellows.forEach(f=> cardsData.push' in play_fn)
 chk('卡片冇 poster 嗰陣跌返 CSS 卡（通用規則）', 'awd63-csscard' in play_fn)
 

@@ -1,14 +1,18 @@
-# v20a64「Q版群星」整合 static tests:
-# (1) Q 版資產在場：AWARDS64_SPRITES 共 34 張（企姿 11＋阿偉捧杯 1＋全員行 A/B 22），base64 ≤130KB。
-#     v20a178-strip（用戶 2026-11-13 15:11）：高俊傑 3 張 Q 版衍生剝走，返返 34 張；舞台圖由 v180 接手。
-# (2) v63 寫實 sprite 成套撤走：AWARDS63_SPRITES const 唔存在、舊衍生標記（縮 72px）已改。
-# (3) 走路入場接線：entryPlan（左右兩流）＋walkA/walkB 幀引用＋reveal 行前 fwd64。
-# (4) 渲染尺度跟 mock v3：FLOOR=290（v20a174 B1：canvas 高 240→360，底圖垂直拉伸 1.5×，舞台頂線 193×1.5＝289.5→290；v20a170 P2 舊值 193）、slotCx 置中 202／間距 80＋gallery 中央 −36（C1）、人仔高 72（玩家 75）。
+# v20a181：Q 版池成批清走 static tests（原 v20a64「Q版群星」檔成份改寫）。
+# v181 起人物改用 PixelLab character 幀（assets/story/awards/px_<starId>_<dir>.png，south 企立／
+# east／west 行入場跟方向；12 人 × 3 向，全部腳底 y115 對齊 v180 錨；dispH 112，人物約 89px）。
+# AWARDS64_SPRITES（34 張 base64）＋loadSpr／drawSpr 路徑一併刪，唔留 fallback；載唔到畫中性剪影。
+# (1) Q 版資產已撤：AWARDS64_SPRITES const 唔存在、play 內冇 base64 池。
+# (2) v63 寫實 sprite 繼續撤走（AWARDS63_SPRITES const 唔存在）。
+# (3) 走路入場接線：entryPlan（左右兩流）＋east／west 幀引用＋reveal 行前 fwd64。
+# (4) 渲染尺度 v181：FLOOR=262、slotCx 置中 240／間距 120、人物高 112（玩家 116）。
 # (5) 提名卡統一規則仲喺度（v64 B 部分，同 test_awards64_static.py 互補抽查）。
-# 反證: run against a pre-v64 index -> AWARDS64 block missing -> FAIL.
-import sys, re
+# 反證：run against pristine main 91f264a -> 「已撤」斷言全部 FAIL（Q 版池仲在），唔 crash；
+#   接線／尺度新斷言同樣 FAIL；卡片守衛 pristine 應 PASS。
+import os, sys
 
 idx_path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
+root = os.path.dirname(os.path.abspath(idx_path))
 src = open(idx_path, encoding='utf-8').read()
 fails = []
 
@@ -29,50 +33,32 @@ def slice_fn(name):
             if depth == 0: return src[i:k+1]
     return ''
 
-def slice_const(name):
-    i = src.find('const ' + name + ' =')
-    if i < 0: return ''
-    depth = 0
-    started = False
-    for k in range(i, len(src)):
-        ch = src[k]
-        if ch in '{[': depth += 1; started = True
-        elif ch in '}]':
-            depth -= 1
-            if started and depth == 0: return src[i:k+1]
-        elif ch == ';' and not started:
-            return src[i:k+1]
-    return ''
+# --- (1) Q 版資產已撤 ---
+play_fn = slice_fn('awards62PlayCeremony')
+chk('AWARDS64_SPRITES 常數已撤', 'const AWARDS64_SPRITES' not in src)
+chk('Q 版 base64 池已撤（play 內冇 data:image/png）', 'data:image/png;base64' not in play_fn)
+chk('loadSpr／drawSpr 路徑已撤（play 範圍；退役註解提及除外）', 'loadSpr' not in play_fn and 'drawSpr' not in play_fn)
+chk('舊 walkA／walkB 幀值已撤', '"walkA"' not in src and '"walkB"' not in src)
+chk('Q 版標記剩低只係退役註解（v20a64 AWARDS64 一詞只出現喺註解）',
+    src.count('AWARDS64') <= 3)
 
-# --- (1) Q 版資產 ---
-chk('AWARDS64 區塊標記在位', 'v20a64 AWARDS64' in src)
-spr = slice_const('AWARDS64_SPRITES')
-STARS = ['luk_baakyin', 'liu_bingxing', 'chai_zanhoi', 'mak_zhendong', 'lok_gasing',
-         'chung_choning', 'so_jiyan', 'ngai_wingnaam', 'gu_mingfai', 'yip_manji']
-chk('企姿齊（阿偉＋捧杯＋10 星）', all(('"' + k + '":') in spr for k in ['awei', 'awei_hold'] + STARS))
-chk('行幀齊（全員 walkA/walkB）', all(('"' + k + suf + '":') in spr for k in ['awei'] + STARS for suf in ('_walkA', '_walkB')))
-chk('sprite 共 34 張', spr.count('data:image/png;base64') == 34)
-b64len = sum(len(m) for m in re.findall(r'data:image/png;base64,([A-Za-z0-9+/=]+)', spr))
-chk('sprite base64 總量 ≤130KB（實際約 28KB）', 0 < b64len <= 130 * 1024)
-
-# --- (2) v63 寫實資產全撤 ---
+# --- (2) v63 寫實資產繼續撤走 ---
 chk('AWARDS63_SPRITES 已撤', 'const AWARDS63_SPRITES' not in src)
 chk('舊衍生標記（縮 72px）已撤', '縮 72px' not in src)
 
-# --- (3) 走路接線 ---
-play_fn = slice_fn('awards62PlayCeremony')
-chk('play 載入 AWARDS64_SPRITES', 'AWARDS64_SPRITES' in play_fn)
+# --- (3) 走路接線（PixelLab 幀） ---
+chk('play 載入 PixelLab 幀（loadPx）', 'loadPx' in play_fn and 'px_" + starId' in play_fn)
 chk('入場計劃 entryPlan（兩流深位先行）', 'entryPlan' in play_fn and 'rank * 380' in play_fn)
-chk('walkA/walkB 幀有被引用', '_walkA' in play_fn and '_walkB' in play_fn and 'o.frame' in play_fn)
-chk('enter beat 用 walk 幀行入', 'id === "enter"' in play_fn and 'frame: (tick % 2)' in play_fn)
+chk('east／west 行幀有被引用', '"east"' in play_fn and '"west"' in play_fn and 'o.frame' in play_fn)
+chk('enter beat 用側面幀行入', 'id === "enter"' in play_fn and 'frame: (p.side < 0) ? "east" : "west"' in play_fn)
 chk('reveal 得獎者行前（fwd64）', 'fwd64' in play_fn and 'moving' in play_fn)
-chk('剪影降級保留', '剪影降級（Q 版比例' in play_fn)
+chk('中性剪影降級保留（唔係 Q 版比例）', '中性剪影' in play_fn and 'Q 版比例' not in play_fn)
 chk('跳過掣保留', 'awd62-skip' in play_fn)
 
-# --- (4) 渲染尺度（mock v3） ---
-chk('地板線 FLOOR=250（v20a177：拉伸後舞台頂線，底圖重構）', 'const FLOOR = 250' in play_fn)
-chk('slotCx 置中 212／間距 100（v177）', '212 + (i - (slots.length - 1) / 2) * 100' in play_fn)
-chk('人仔高度 72／玩家 75', '? 75 : 72' in play_fn)
+# --- (4) 渲染尺度（v181） ---
+chk('地板線 FLOOR=262（木地板 y200–334）', 'const FLOOR = 262' in play_fn)
+chk('slotCx 置中 240／間距 120', '240 + (i - (slots.length - 1) / 2) * 120' in play_fn)
+chk('人物高度 112／玩家 116', '? 116 : 112' in play_fn)
 
 # --- (5) 卡片統一規則抽查 ---
 chk('唱名卡海報 2:3 框', 'aspect-ratio:2/3' in src)

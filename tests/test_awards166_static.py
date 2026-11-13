@@ -1,9 +1,9 @@
 # v20a166 頒獎禮 glamour 並置＋空字幕框隱藏 static tests：
 # B1（海報縮細並置）：
-# (1) glamour overlay 由 stage 全幅改做只冚 canvas：absolute＋top:0／left:0／width:100%／aspect-ratio:424/360（v20a174 B1：canvas 高 240→360），唔再 inset:0；
+# (1) glamour overlay 由 stage 全幅改做只冚 canvas：absolute＋top:0／left:0／width:100%／aspect-ratio:480/360（v20a181：canvas 480×360），唔再 inset:0；
 #     overlay 本身冇 0.93 暗底（暗層搬去右邊 panel），pointer-events:none（撳掣／elementFromPoint 照通 canvas）。
 # (2) 右邊暗 panel：.awd63-glamour-panel flex:0 0 44%（左邊 56% 透明留位畀燕尾服；
-#     燕尾服 4 slots 時 cx=162、dispH 96 → 右緣 (162+48)/424＝49.5%＜56%，喺 panel 左緣之外），
+#     燕尾服 4 slots 時 cx=180、dispH 112 → 右緣 (180+56)/480＝49.2%＜56%，喺 panel 左緣之外，v20a181 幾何），
 #     暗底 rgba(10,6,18,.93) 留喺 panel；海報縮細（max-width:88%／max-height:60%，舊 76vw／330px／60vh 唔見）。
 # (3) glamHtml 包 panel div；glamour 層搬入 .awd62-frame（canvas 之後、skip 掣之前），唔再係 stage 尾段全幅。
 # C1（空 caption 隱藏字幕框）：
@@ -44,7 +44,7 @@ def css_rule(selector):
 glam_css = css_rule('.awd63-glamour')
 chk('B1 glamour overlay 在場', bool(glam_css))
 chk('B1 overlay absolute＋top:0／left:0／width:100%', 'position:absolute' in glam_css and 'top:0' in glam_css and 'left:0' in glam_css and 'width:100%' in glam_css)
-chk('B1 overlay aspect-ratio:424/360（對齊 canvas，v174 B1）', 'aspect-ratio:424/360' in glam_css)
+chk('B1 overlay aspect-ratio:480/360（對齊 canvas，v181）', 'aspect-ratio:480/360' in glam_css)
 chk('B1 overlay 唔再 inset:0 全幅', 'inset:0' not in glam_css)
 chk('B1 overlay 本身冇 0.93 暗底（暗層搬去 panel）', 'background:rgba(10,6,18,.93)' not in glam_css)
 chk('B1 overlay pointer-events:none', 'pointer-events:none' in glam_css)
@@ -71,9 +71,9 @@ inner_i = play_fn.find("stage.innerHTML = '<div class=\"awd62-frame\">'")
 inner_block = play_fn[inner_i:inner_i+700] if inner_i >= 0 else ''
 chk('B1 glamour 層喺 frame 入面（canvas 之後、skip 掣之前）',
     inner_block.find('awd62-canvas') < inner_block.find('+ glamHtml') < inner_block.find('awd62-skip'))
-chk('B1 舊位置唔見（frame 閂標記之後先加 glamHtml）', '"</div>" + glamHtml' not in play_fn)
-chk('B1 walkup 層唔郁（仲喺 stage 尾段）', '"</div>" + walkupHtml' in play_fn)
-chk('B1 reveal／glamour 燕尾服唔郁', play_fn.count('tuxedo: true') == 3)
+chk('B1 glamHtml 新位置（canvaswrap 閂標記之後、skip 掣之前，v181 文字層喺 wrap 入面）', 'awd181Html + "</div>" + glamHtml' in play_fn)
+chk('B1 walkup GIF 層已撤（v181：改由 canvas 畫，唔再係 stage 尾段 overlay）', '"</div>" + walkupHtml' not in play_fn and '.awd62-walkup160' not in src)
+chk('B1 reveal／glamour／walkup 燕尾服唔郁（共 4 處，v181 walkup 加一處）', play_fn.count('tuxedo: true') == 4)
 
 # --- C1 (4)：setCaption 隱藏空框 ---
 sc_i = play_fn.find('const setCaption')

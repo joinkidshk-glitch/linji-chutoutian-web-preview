@@ -71,13 +71,14 @@ tab_fn = slice_fn('setHomeTab')
 chk('setHomeTab 接 awards 頁', 'awards' in tab_fn and 'renderAwardsPane62' in tab_fn)
 
 # --- B: 像素動畫三路（序列／跳過／降級） ---
-# v20a160 M1：舞台底圖由內嵌像素 WebP data URI 改為會場實景檔案（舊 AWARDS62_STAGE_PX 全檔已撤）；
-# 檔案在位＋尺寸由 tests/test_awards160_m1_static.py 負責，呢度只 pin 接線。
-chk('會場實景底圖在位（v20a160 M1：檔案路徑，舊像素 data URI 已撤）',
-    'const AWARDS62_STAGE_BG = "assets/story/awards/bg_awards_ballroom.jpg";' in src
+# v20a181：M1 實景底圖退役，舞台改程式繪製；Q 版池成批清走，人物改 PixelLab 幀。
+# 檔案在位＋尺寸由 tests/test_awards160_m1_static.py／test_awards181_static.py 負責，呢度只 pin 接線。
+chk('程式舞台在位（v20a181：awards181DrawBase，M1 底圖已撤）',
+    'function awards181DrawBase(ctx, W, H, off)' in src
+    and 'const AWARDS62_STAGE_BG' not in src
     and 'AWARDS62_STAGE_PX' not in src)
-chk('底圖 loader 用新常數', 'im.src = AWARDS62_STAGE_BG;' in slice_fn('awards62PlayCeremony'))
-chk('阿偉精靈圖（v64 起改 Q 版 AWARDS64_SPRITES；舊手繪 map 已撤）', 'const AWARDS62_SPR_STAND' not in src and 'const AWARDS64_SPRITES' in src)
+chk('draw() 畫程式舞台（唔再 loader 底圖）', 'awards181DrawBase(ctx, W, H,' in slice_fn('awards62PlayCeremony'))
+chk('阿偉人物圖（v181 起改 PixelLab 幀 loadPx；舊手繪 map／Q 版池已撤）', 'const AWARDS62_SPR_STAND' not in src and 'const AWARDS64_SPRITES' not in src and 'loadPx' in src)
 chk('canvas 像素呈現（pixelated）', 'image-rendering:pixelated' in src and 'awd62-canvas' in src)
 chk('跳過掣存在', 'awd62-skip' in src and '跳過' in src)
 chk('撳畫面推進存在', 'addEventListener("click"' in slice_fn('awards62PlayCeremony'))

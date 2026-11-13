@@ -2,7 +2,8 @@
 # (1) 資產在場：assets/story/awards/awei_tuxedo.png，PNG 128x128（Pixellab state 7577440c… south 原圖）。
 # (2) 常量接線：AWARDS160_TUXEDO_AWEI 指向該資產；awards62PlayCeremony 預載（tuxRec）。
 # (3) 渲染：drawTuxedo 腳底對齊 floorY（115/128）；drawFigure 經 o.tuxedo 分流，載唔到跌返 Q 版 drawSpr。
-# (4) 贏分支先著：reveal won 區（行前＋企定）同 glamour 區有 tuxedo: true；全 play 內 tuxedo: true 共 3 處。
+# (4) 贏分支先著：reveal won 區（行前＋企定）同 glamour 區有 tuxedo: true；全 play 內 tuxedo: true 共 4 處
+#     （v20a181：walkup beat 行完換燕尾服捧杯，加多一處）。
 # (5) 輸分支唔著：comfort 區、nominated reveal else 區、awards62CeremonyBeats 全部無 tuxedo。
 # 反證：run against pristine main (e08a070) -> 資產＋常量＋接線全部缺 -> FAIL（唔 crash）。
 import os, struct, sys
@@ -65,11 +66,10 @@ chk('play 預載燕尾服（tuxRec）', 'tuxRec' in play_fn and 'AWARDS160_TUXED
 chk('drawTuxedo helper 在場', 'const drawTuxedo' in play_fn)
 chk('燕尾服腳底對齊 floorY（115/128）', 'dispH * 115 / 128' in play_fn)
 chk('drawFigure 經 o.tuxedo 分流', 'o.tuxedo' in play_fn)
-chk('載唔到跌返 Q 版 drawSpr', 'drawTuxedo(cx' in play_fn and 'drawSpr(key, cx' in play_fn)
+chk('載唔到跌返 px south 幀（drawPx 剪影降級）', 'drawTuxedo(cx' in play_fn and 'drawPx(starId, dir, cx' in play_fn)
 
 # --- (4) 贏分支先著 ---
-# v20a160 merge 修正：M4 walkup 段喺同一個 play 函數入面加咗另一個 if(best === "won"){（行上台 GIF），
-# find 會撞到佢；要搵有 tuxedo: true 嗰個先係 reveal won 區（行前＋企定）。
+# v20a181：M4 walkup GIF 區已撤，play 內只剩 reveal 一個 if(best === "won"){（行前＋企定）。
 _won_cands = []
 _start = 0
 while True:
@@ -78,7 +78,7 @@ while True:
         break
     _won_cands.append((_wi, slice_brace(play_fn, play_fn.find('{', _wi))))
     _start = _wi + 1
-chk('reveal won 區搵到（兩個 won 區，取有 tuxedo 嗰個）', sum(1 for _, b in _won_cands if 'tuxedo: true' in b) == 1)
+chk('reveal won 區搵到（一個 won 區，帶 tuxedo: true）', sum(1 for _, b in _won_cands if 'tuxedo: true' in b) == 1)
 _won_hit = [(i, b) for i, b in _won_cands if 'tuxedo: true' in b]
 won_i, won_block = _won_hit[0] if _won_hit else (-1, '')
 chk('reveal won 區有 tuxedo: true', 'tuxedo: true' in won_block)
@@ -86,7 +86,7 @@ chk('reveal won 企定加獎盃 glyph', 'drawTrophyGlyph' in won_block)
 glam_i = play_fn.find('if(id === "glamour"){')
 glam_block = slice_brace(play_fn, play_fn.find('{', glam_i)) if glam_i >= 0 else ''
 chk('glamour 區有 tuxedo: true', 'tuxedo: true' in glam_block)
-chk('全 play 內 tuxedo: true 共 3 處（reveal 行前＋企定＋glamour）', play_fn.count('tuxedo: true') == 3)
+chk('全 play 內 tuxedo: true 共 4 處（reveal 行前＋企定＋walkup＋glamour）', play_fn.count('tuxedo: true') == 4)
 
 # --- (5) 輸分支唔著 ---
 comf_i = play_fn.find('if(id === "comfort"){')

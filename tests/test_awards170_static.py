@@ -1,19 +1,12 @@
-# v20a170 Phase 2：新舞台-only 底圖＋FLOOR 跟新圖頂線 static tests。
-# v20a174 B1 resync：canvas 高 240→360（底圖垂直拉伸 1.5×，構圖完整保留），全部 y 幾何 ×1.5：
-# FLOOR 193→290（源圖舞台頂 193×1.5＝289.5，FLOOR＝291−1＝290）；人仔 fellow 48→72／玩家 50→75／
-# 燕尾服 64→96；slotCx 間距 72→80＋gallery 中央 −30（C1）；行前 y＋7→＋10；光池 66→99；
-# 獎盃 glyph 21×12→31×18（−64→−96／−26→−39）；後備舞台 H-47→H-70。
-# 唔郁：slotCx 置中 202、行前 x 向中心 22%、walkup GIF（DOM 層）、glamour overlay 並置（aspect 跟 canvas 改 424/360）、
-# 卡列隱藏 choke point（v174 C2 改 display:none，見 test_awards174／168）、SAVE key、softRev、?v=、content pack JSON。
-# 斷言：
-# (1) FLOOR＝290，舊值 193／155 全檔消失（頒獎禮範圍內；註解入面提及舊值除外）。
-# (2) 後備舞台平台頂 H-70＝290、正面伸到 H-33、金線 H-76 橫跨頂邊；舊 H-47／H-51／H-22／H-26 唔再出現。
-# (3) slot x：slotCx 公式（置中 202／間距 80）、gallery 中央 slot 左移 30、4 slots 阿偉 x＝162。
-# (4) 腳底 y 對舞台頂：drawFigure 腳底＝FLOOR＋o.y；reveal 行前腳＝FLOOR＋10＝300；lightPool／獎盃 glyph 全部跟 FLOOR。
-# (5) 受影響 beats 清單：pan／enter／names／suspense／reveal／comfort／glamour 經 drawFigure（跟 FLOOR）；
-#     open／walkup／out 冇人物 canvas 繪圖（walkup 只係壓暗＋DOM GIF）。
-# (6) 唔郁守衛：walkup GIF 檔名／glamour overlay CSS／syncGlamour 卡列隱藏／SAVE key／softRev 在場。
-# 反證：run against pristine main e8c3a73 -> (1)(2)(3)(4) 斷言全部 FAIL（唔 crash）；(5)(6) 係回歸守衛，pristine 應 PASS。
+# v20a181：橫向舞台幾何 static tests（原 v20a170 檔成份改寫；v170 係 FLOOR 跟底圖頂線，v181 成個舞台重建）。
+# v181 幾何：canvas 邏輯 480×360（4:3）／backing 720×540／setTransform 1.5；FLOOR＝262（木地板 y200–334，
+# 深 134px＝37.2% 高）；slotCx 置中 240／間距 120（4 slots 60／180／300／420；gallery 75／240／405）；
+# 人物 px 幀 dispH 112（fellow）／116（玩家）／燕尾服 112；行前向中央 240 集中 22%、y＋10（新腳 272）；
+# 光池 99；獎盃 glyph −112（燕尾服頭頂）／−52（對手胸前）；後備舞台＝同一個程式舞台（awards181DrawBase）。
+# 唔郁：slotCx 行前 x 向中心 22%、entryPlan（左右兩流／0.16px/ms／rank*380）、glamour overlay 並置
+# （aspect 跟 canvas 改 480/360）、卡列隱藏 choke point（display:none）、SAVE key、softRev、?v=。
+# M4 walkup GIF＋M1 底圖已撤（見 test_awards160_m4／m1）；walkup beat 而家由 canvas 畫人物（唔再淨係壓暗）。
+# 反證：run against pristine main 91f264a -> (1)(2)(3)(4) 斷言全部 FAIL（唔 crash）；(5)(6) 係回歸守衛，pristine 應 PASS。
 import os, sys
 
 idx_path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
@@ -40,47 +33,43 @@ def slice_fn(name):
 
 play_fn = slice_fn('awards62PlayCeremony')
 fb_fn = slice_fn('awards62FallbackStage')
+base_fn = slice_fn('awards181DrawBase')
 beats_fn = slice_fn('awards62CeremonyBeats')
 
-# --- (1) FLOOR＝250（v177 resync：底圖重構，地板深 110px） ---
-chk('FLOOR＝250（v177：拉伸後舞台頂線，底圖重構）', 'const FLOOR = 250' in play_fn)
+# --- (1) FLOOR＝262（木地板 y200–334） ---
+chk('FLOOR＝262（v181：木地板 y200–334，深 134px）', 'const FLOOR = 262' in play_fn)
+chk('舊 FLOOR＝250 唔再出現（頒獎禮範圍）', 'const FLOOR = 250' not in play_fn)
 chk('舊 FLOOR＝193 唔再出現（頒獎禮範圍）', 'const FLOOR = 193' not in play_fn)
 chk('舊 FLOOR＝155 唔再出現（頒獎禮範圍）', 'const FLOOR = 155' not in play_fn)
 chk('FLOOR 只定義一次', play_fn.count('const FLOOR =') == 1)
-chk('FLOOR 註解寫明拉伸 1.5×＋源圖頂線 194（v177 註解保留 194 來源）', '194' in play_fn and '1.5' in play_fn)
+chk('FLOOR 註解寫明木地板 y200–334＋37.2%', '200' in play_fn and '134' in play_fn and '37.2%' in play_fn)
 
-# --- (2) 後備舞台平台頂跟 FLOOR ---
+# --- (2) 後備舞台＝同一個程式舞台 ---
 chk('後備舞台在場', bool(fb_fn))
-chk('後備舞台側幕／金邊到 H-110＝250（v177）', 'H - 110' in fb_fn)
-chk('後備舞台平台正面由 H-110 伸到 H-33（高 37，v177）', 'ctx.fillRect(0, H - 110, W, 37)' in fb_fn)
-chk('後備舞台金線 H-116 橫跨平台頂邊（v177）', 'H - 116' in fb_fn)
-chk('後備舞台舊平台頂 H-70 唔再出現（v177）', 'H - 70' not in fb_fn)
-chk('後備舞台舊平台頂 H-47 唔再出現', 'H - 47' not in fb_fn)
-chk('後備舞台舊金線 H-76 唔再出現（v177）', 'H - 76' not in fb_fn)
-chk('後備舞台舊金線 H-51 唔再出現', 'H - 51' not in fb_fn)
-chk('後備舞台舊平台底 H-22 唔再出現', 'H - 22' not in fb_fn)
-chk('後備舞台舊椅列 H-26 唔再出現', 'H - 26' not in fb_fn)
-chk('後備舞台舊平台頂 H-85 唔再出現', 'H - 85' not in fb_fn)
-chk('後備舞台舊金線 H-89 唔再出現', 'H - 89' not in fb_fn)
-chk('後備舞台底部／椅列新值（H-33／H-39）', 'H - 33' in fb_fn and 'H - 39' in fb_fn)
+chk('後備舞台 delegate 去 awards181DrawBase', 'awards181DrawBase(ctx, W, H, 0)' in fb_fn)
+chk('後備舞台舊平台頂 H-110 唔再出現', 'H - 110' not in fb_fn)
+chk('後備舞台舊金線 H-116 唔再出現', 'H - 116' not in fb_fn)
+chk('後備舞台舊平台底 H-33 唔再出現', 'H - 33' not in fb_fn)
+chk('程式舞台地板 y200–334 在場', '#d9a75f' in base_fn and '200, W + 16, 134' in base_fn)
+chk('程式舞台觀眾席 y340–360 在場', '#120c20' in base_fn and '340, W + 16, 20' in base_fn)
 
 # --- (3) slot x ---
-chk('slotCx 公式（置中 212／間距 100，v177）', '212 + (i - (slots.length - 1) / 2) * 100' in play_fn)
-chk('gallery 3 slots 用 [82, 162, 262]（v177 C1，唔再 −36）', '[82, 162, 262]' in play_fn)
-chk('4 slots 阿偉 x＝162（slotCx(1)＝212-50，v177 唔變）', 'slotCx' in play_fn and 'playerSlot' in play_fn)
+chk('slotCx 公式（置中 240／間距 120，v181）', '240 + (i - (slots.length - 1) / 2) * 120' in play_fn)
+chk('gallery 3 slots 用 [75, 240, 405]', '[75, 240, 405]' in play_fn)
+chk('4 slots 阿偉 x＝180（slotCx(1)＝240-60）', 'slotCx' in play_fn and 'playerSlot' in play_fn)
 chk('入場 entryPlan 唔郁（左右兩流／0.16px/ms／rank*380）',
     'entryPlan' in play_fn and '0.16' in play_fn and 'rank * 380' in play_fn)
 
-# --- (4) 腳底 y 對舞台頂 ---
+# --- (4) 腳底 y 對地板 ---
 chk('drawFigure 腳底＝FLOOR＋o.y（跟常數，唔寫死）', 'const fy = FLOOR + (o.y || 0)' in play_fn)
-chk('reveal 行前 y＋10（新腳 300，講台身前平台面）', 'y: Math.round(10 * p)' in play_fn)
-chk('reveal 行前 x 向中心 22% 唔變', '(212 - cx0) * 0.22' in play_fn)
+chk('reveal 行前 y＋10（新腳 272）', 'y: Math.round(10 * p)' in play_fn)
+chk('reveal 行前 x 向中心 240、22% 唔變', '(240 - cx0) * 0.22' in play_fn)
 chk('lightPool 跟 FLOOR（F-99 至 F）', 'F - 99' in play_fn)
-chk('獎盃 glyph 跟 FLOOR（FLOOR + fp.y - 96／-39）',
-    'FLOOR + fp.y - 96' in play_fn and 'FLOOR + fp.y - 39' in play_fn)
-chk('人仔高度放大 1.5×（fellow 72／玩家 75／燕尾服 96）',
-    '? 75 : 72' in play_fn and 'dispH: 96' in play_fn)
-chk('canvas 高 360（W 424 唔變）', 'const W = 424, H = 360' in play_fn)
+chk('獎盃 glyph 跟 FLOOR（FLOOR + fp.y - 112／-52）',
+    'FLOOR + fp.y - 112' in play_fn and 'FLOOR + fp.y - 52' in play_fn)
+chk('人物高度 px 幀（fellow 112／玩家 116／燕尾服 112）',
+    '? 116 : 112' in play_fn and 'dispH: 112' in play_fn)
+chk('canvas 480×360（W 480／H 360）', 'const W = 480, H = 360' in play_fn)
 
 # --- (5) 受影響 beats 清單 ---
 for bid in ('pan', 'enter', 'names', 'suspense', 'reveal', 'comfort', 'glamour'):
@@ -90,17 +79,17 @@ chk('open beat 冇人物（空台漸光）', 'id === "open"' in play_fn)
 open_block = play_fn[play_fn.find('id === "open"'):play_fn.find('id === "pan"')]
 chk('open beat 唔畫人物', 'drawFigure' not in open_block)
 walk_block = play_fn[play_fn.find('if(id === "walkup")'):play_fn.find('if(id === "out")')]
-chk('walkup beat canvas 冇人物（只壓暗，GIF 係 DOM 層）', 'drawFigure' not in walk_block)
-chk('walkup beat 註解寫明 GIF 做主角', 'GIF' in walk_block)
+chk('walkup beat canvas 畫人物（v181：px east 幀行上台，唔再淨係壓暗）', 'drawFigure' in walk_block and 'frame: "east"' in walk_block)
 chk('beats 列表唔變（open／pan／enter／names／suspense／reveal／comfort／walkup／glamour／out）',
     all(('"%s"' % b) in beats_fn for b in
         ('open', 'pan', 'enter', 'names', 'suspense', 'reveal', 'comfort', 'walkup', 'glamour', 'out')))
 
-# --- (6) 唔郁守衛 ---
-chk('walkup GIF 檔名唔變（awd_walkup_m4.gif）', 'awd_walkup_m4.gif' in src)
-chk('walkup GIF overlay CSS 唔變（.awd62-walkup160）', '.awd62-walkup160' in src)
-chk('glamour overlay 唔變（v166：absolute＋424/360 對齊 canvas）',
-    'position:absolute' in src and 'aspect-ratio:424/360' in src)
+# --- (6) 唔郁守衛（M1／M4 已撤，守衛改做「已撤」） ---
+chk('walkup GIF 檔名已撤（awd_walkup_m4.gif 唔再出現）', 'awd_walkup_m4.gif' not in src)
+chk('walkup GIF overlay CSS 已撤（.awd62-walkup160）', '.awd62-walkup160' not in src)
+chk('M1 底圖常數已撤（AWARDS62_STAGE_BG）', 'const AWARDS62_STAGE_BG' not in src)
+chk('glamour overlay 唔變（v166：absolute＋480/360 對齊 canvas，v181）',
+    'position:absolute' in src and 'aspect-ratio:480/360' in src)
 chk('syncGlamour 卡列隱藏唔變（v168：glamour-hide）', 'glamour-hide' in play_fn)
 chk('SAVE key 唔變（starVolunteer_map_v19w）', 'starVolunteer_map_v19w' in src)
 chk('softRev 唔變', 'softRev' in src)

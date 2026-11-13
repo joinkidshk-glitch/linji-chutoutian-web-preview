@@ -1,15 +1,14 @@
 # v20a63 頒獎禮群星版 static tests:
 # (1) 舊手繪 pixel map 全撤（PAL62／SPR_STAND／SPR_HOLD／DrawSprite／紅呔格 WWRRWW 一律唔准返嚟）。
-# (2) sprite 資產：v63 原 AWARDS63_SPRITES（寫實 12 張）；v20a64 起成套換做 AWARDS64_SPRITES
-#     Q 版 34 張（企姿 12＋捧杯 1 含喺企姿數＋行 A/B 22，實際＝企姿 11＋捧杯 1＋行 22）、base64 總量 ≤130KB。
-#     本測試嘅 sprite 帳目已按 v64 更新基線（2026-11-10 整合時註明）。
-#     v20a178-strip（用戶 2026-11-13 15:11）：高俊傑 3 張 Q 版衍生剝走，返返 34 張；舞台圖由 v180 接手。
+# (2) sprite 資產：v63 原 AWARDS63_SPRITES（寫實 12 張）；v20a64 起成套換做 AWARDS64_SPRITES Q 版 34 張；
+#     v20a181 起 Q 版池成批清走，改做 PixelLab character 幀（assets/story/awards/px_<starId>_<dir>.png，
+#     south／east／west；12 人 × 3 向，腳底 y115）。
 # (3) 紅星池冇程天諾（1988 零出場紅線）。
 # (4) fellows 接線齊：build pack／log／請柬／結果卡／獎項頁／play（作品卡＋glamour＋對手捧杯）。
 # (5) 海報唔重複編碼：POSTER59_DATA 只得一份 const；新 code 只經 poster59Path 重用。
 # (6) 硬規則：SAVE key 不變、v62 評分公式（WIN_LINE）冇郁。
 # 反證: run against a pre-v63 index -> AWARDS63 block missing -> FAIL.
-import sys, re
+import sys, re, os
 
 idx_path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
 src = open(idx_path, encoding='utf-8').read()
@@ -49,18 +48,17 @@ def slice_const(name):
 
 # --- (2) 資產本體 ---
 chk('AWARDS63 區塊標記在位', 'v20a63 AWARDS63' in src)
-chk('AWARDS64_SPRITES 在位（v64 Q 版取代）', 'const AWARDS64_SPRITES' in src)
+chk('AWARDS64_SPRITES 已撤（v181：改 PixelLab 幀）', 'const AWARDS64_SPRITES' not in src)
 chk('AWARDS63_SPRITES 舊寫實資產已撤', 'const AWARDS63_SPRITES' not in src)
 chk('AWARDS63_POOL 在位', 'const AWARDS63_POOL' in src)
 chk('fellows 函數在位', 'function awards63Fellows(ceremony, year)' in src)
 chk('focus 函數在位', 'function awards63FocusCat(pack)' in src)
-spr = slice_const('AWARDS64_SPRITES')
-SPR_KEYS = ['awei', 'awei_hold', 'luk_baakyin', 'liu_bingxing', 'chai_zanhoi', 'mak_zhendong',
-            'lok_gasing', 'chung_choning', 'so_jiyan', 'ngai_wingnaam', 'gu_mingfai', 'yip_manji']
-WALK_KEYS = [k + suf for k in ['awei'] + SPR_KEYS[2:] for suf in ('_walkA', '_walkB')]
-chk('sprite 齊 34 張（企姿 11＋捧杯 1＋行幀 22）', all(('"'+k+'":') in spr for k in SPR_KEYS + WALK_KEYS) and spr.count('data:image/png;base64') == 34)
-b64len = sum(len(m) for m in re.findall(r'data:image/png;base64,([A-Za-z0-9+/=]+)', spr))
-chk('sprite base64 總量 ≤130KB（v64 實際約 28KB）', 0 < b64len <= 130 * 1024)
+PX_DIR = os.path.join(os.path.dirname(os.path.abspath(idx_path)), 'assets', 'story', 'awards')
+PX_IDS = ['awei', 'luk_baakyin', 'liu_bingxing', 'chai_zanhoi', 'mak_zhendong', 'lok_gasing',
+          'chung_choning', 'so_jiyan', 'ngai_wingnaam', 'gu_mingfai', 'yip_manji', 'ko_chunkit']
+chk('PixelLab 幀齊 36 檔（12 人 × south／east／west）',
+    all(os.path.isfile(os.path.join(PX_DIR, 'px_%s_%s.png' % (sid, d))) for sid in PX_IDS for d in ('south', 'east', 'west')))
+chk('play 內冇 Q 版 base64 池', 'data:image/png;base64' not in slice_fn('awards62PlayCeremony'))
 
 # --- (1) 舊手繪 map 全撤 ---
 chk('舊 PAL62 已撤', 'AWARDS62_PAL62' not in src)
@@ -70,7 +68,7 @@ chk('舊手繪格（含紅呔 WWRRWW）已撤', 'WWRRWW' not in src)
 
 # --- (3) 紅線 ---
 pool = slice_const('AWARDS63_POOL')
-chk('紅星池冇程天諾 id', 'tinok' not in pool and 'tinok' not in spr)
+chk('紅星池冇程天諾 id', 'tinok' not in pool)
 chk('池按四媒介齊（film/tv/music/ad）', all((m + ':') in pool for m in ['film', 'tv', 'music', 'ad']))
 
 # --- (4) 接線 ---
@@ -88,8 +86,8 @@ chk('結果卡有同屆提名行', 'awards63FellowsHtml' in result_fn)
 pane_fn = slice_fn('renderAwardsPane62')
 chk('獎項頁顯示同屆提名', 'fellowsTxt' in pane_fn and 'fellows63' in pane_fn)
 play_fn = slice_fn('awards62PlayCeremony')
-chk('動畫載 sprite 圖（AWARDS64_SPRITES）', 'AWARDS64_SPRITES' in play_fn and 'loadSpr' in play_fn)
-chk('動畫有剪影降級', 'drawSpr' in play_fn and '剪影降級' in play_fn)
+chk('動畫載 PixelLab 幀（loadPx）', 'loadPx' in play_fn and 'px_" + starId' in play_fn)
+chk('動畫有中性剪影降級', 'drawPx' in play_fn and '中性剪影' in play_fn)
 chk('唱名作品卡列（DOM）', 'awd63-cards' in play_fn and 'awd63-card' in play_fn)
 chk('玩家卡有金框「你」標記 CSS', '.awd63-card.me' in src and 'content:"你"' in src)
 chk('glamour 海報層', 'awd63-glamour' in play_fn and '.awd63-glamour' in src)

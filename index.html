@@ -778,7 +778,7 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .psr-gate62{margin:6px 0 0;font-size:.84rem;line-height:1.55;color:#4a3a22}
 .psr-gate62.ok{color:#3d6038;font-weight:700}
 .awd62-stage{position:fixed;inset:0;z-index:9990;background:#14101f;display:flex;align-items:center;justify-content:center;padding:12px}
-.awd62-frame{position:relative;width:min(96vw,760px)}
+.awd62-frame{position:relative;width:min(96vw,760px);container-type:inline-size}
 .awd62-canvaswrap{position:relative}
 .awd62-m5fx149{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none;display:none;z-index:2}
 .awd62-m5fx149.on{display:block}
@@ -805,15 +805,28 @@ canvas.awd62-canvas{display:block;width:100%;height:auto;image-rendering:pixelat
 .awd63-csscard .awd63-cssstar{font-size:12px;font-weight:800;color:#ffe9b0;line-height:1.3}
 .awd63-csscard .awd63-cssmed{display:flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:#d9c491;line-height:1.2}
 .awd63-csscard .awd63-cssmed .ic112{width:14px;height:14px}
-.awd63-glamour{position:absolute;top:0;left:0;width:100%;aspect-ratio:424/360;display:none;flex-direction:row;justify-content:flex-end;align-items:stretch;z-index:2;pointer-events:none} /* v20a166 B1：glamour 海報縮細並置——overlay 由全幅改做只冚 canvas，左邊透明留位畀燕尾服，右邊 44% 暗 panel 放海報＋cap；0.93 暗層留喺 panel；pointer-events:none，撳掣／elementFromPoint 照通 canvas；v20a174 B1：canvas 424×240→424×360，aspect 跟住改 */
+.awd63-glamour{position:absolute;top:0;left:0;width:100%;aspect-ratio:480/360;display:none;flex-direction:row;justify-content:flex-end;align-items:stretch;z-index:2;pointer-events:none} /* v20a166 B1：glamour 海報縮細並置——overlay 由全幅改做只冚 canvas，左邊透明留位畀燕尾服，右邊 44% 暗 panel 放海報＋cap；0.93 暗層留喺 panel；pointer-events:none，撳掣／elementFromPoint 照通 canvas；v20a174 B1：canvas 424×240→424×360，aspect 跟住改；v20a181：canvas 480×360（4:3），aspect 跟住改 */
 .awd63-glamour.on{display:flex}
 .awd63-glamour-panel{flex:0 0 44%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:10px 12px;background:rgba(10,6,18,.93);box-sizing:border-box}.awd63-glamour-panel>img{max-width:88%;max-height:60%;object-fit:contain;border:4px solid #f2c14e;box-shadow:0 0 34px rgba(242,193,78,.45);background:#2b2118} /* v20a174 A1：裱框規則由 panel 內全部 img 收窄到直屬海報 img（>），唔再套落 .cap 內 22px 獎盃 */
 .awd63-glamour .cap{color:#f2c14e;font-weight:900;font-size:19px;text-align:center;line-height:1.55;text-shadow:0 2px 0 #000}.awd63-glamour .cap img.ic112,.awd62-caption img.ic112{background:#f2c14e;border-radius:4px;padding:2px;width:22px;height:22px;box-sizing:border-box;vertical-align:-.25em} /* v20a174 A1：深啡獎盃線稿喺深底隱形——加金底 chip（唔改圖標資產／唔改成套風格），glamour＋reveal 兩處 1x 睇得清 */
-/* v20a160-m4：行上台領獎 GIF 層——跟 glamour 同款全幅 overlay，GIF 本身透明底，播嗰陣先 .on；pointer-events:none 等撳掣／撳畫面快進照通 */
-.awd62-walkup160{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(10,6,18,.88);z-index:2;flex-direction:column;gap:12px;padding:16px;pointer-events:none}
-.awd62-walkup160.on{display:flex}
-.awd62-walkup160 img{width:min(72vw,300px);height:auto;image-rendering:pixelated;image-rendering:crisp-edges;border:4px solid #f2c14e;box-shadow:0 0 34px rgba(242,193,78,.45);background:#241736}
-.awd62-walkup160 .cap{color:#f2c14e;font-weight:900;font-size:19px;text-align:center;line-height:1.55;text-shadow:0 2px 0 #000}
+/* v20a181：橫向舞台文字層（DOM 層，canvas 只畫景＋人；字用 DOM，免 headless 欠 CJK 字體出豆腐）——
+   位置全部用 % 對齊 480×360 canvas：橫額 top 1.1%／高 9.5%；數字條 top 12.2%／高 7.8%；白牌 top 21%／高 20.5%。
+   白牌底 41.5%＝149.4 邏輯（獎盃 glyph 頂 150 邏輯啱啱讓開）；代表作／會場名兩行搬入白牌做細字（黃字 fix：舊 43.5% 獨立放＝人頭高度，頭頂 173 邏輯）。
+   字體用 cqw 跟 frame 闊等比縮放（px 做後備）。全部 pointer-events:none，撳畫面快進／跳過掣照通。 */
+.awd181-banner{position:absolute;top:1.1%;left:8%;width:84%;height:9.5%;background:linear-gradient(180deg,#a06a35,#7c4f22);border:3px solid #f2c14e;box-shadow:0 0 0 2px #5e3a15;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:19px;font-size:5.2cqw;letter-spacing:.12em;text-shadow:0 2px 0 rgba(0,0,0,.45);z-index:3;pointer-events:none;box-sizing:border-box;white-space:nowrap;overflow:hidden}
+.awd181-strip{position:absolute;top:12.2%;height:7.8%;background:#ffe98f;border:2px solid #d9b64a;display:flex;align-items:center;z-index:3;pointer-events:none;box-sizing:border-box;padding:0 2%}
+.awd181-strip.l{left:2.5%;width:45%}
+.awd181-strip.r{left:52.5%;width:45%}
+.awd181-strip .lab{display:flex;align-items:center;color:#2b6cb0;font-weight:900;font-size:13px;font-size:3.6cqw;white-space:nowrap}
+.awd181-strip .num{margin-left:auto;background:#fff;border:2px solid #d9b64a;color:#1d1d1d;font-weight:900;font-size:15px;font-size:4.2cqw;padding:0 8px;height:78%;display:flex;align-items:center}
+.awd181-ic{flex:none;width:18px;width:4.6cqw;height:18px;height:4.6cqw;margin-right:6px}
+.awd181-ic.spk{background:#c02727;border-radius:3px;position:relative}
+.awd181-ic.spk::before{content:"";position:absolute;left:3px;top:5px;border-style:solid;border-width:4px 0 4px 7px;border-color:transparent transparent transparent #fff}
+.awd181-ic.spk::after{content:"";position:absolute;left:11px;top:4px;width:3px;height:10px;background:#fff;border-radius:1px}
+.awd181-ic.star{background:#f2c14e;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.awd181-board{position:absolute;top:21%;left:20%;width:60%;height:20.5%;background:#fdfbf5;border:3px solid #1d1d1d;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#1d1d1d;font-weight:900;z-index:3;pointer-events:none;box-sizing:border-box;text-align:center;padding:0 6px;white-space:nowrap;overflow:hidden}
+.awd181-board .awd181-t{font-size:20px;font-size:5.4cqw;line-height:1.15;white-space:nowrap}.awd181-board.long .awd181-t{font-size:15px;font-size:4.2cqw}
+.awd181-sub{color:#7c4f22;font-weight:900;font-size:12px;font-size:3cqw;line-height:1.3;margin-top:.3cqw;text-align:center;pointer-events:none;white-space:nowrap}.awd181-board.long .awd181-sub{font-size:10px;font-size:2.6cqw}
 .awd63-invite-row{display:flex;gap:10px;align-items:flex-start;margin:6px 0}
 .awd63-invite-poster{width:84px;height:126px;object-fit:cover;flex:none;border:3px solid #fdf6df;box-shadow:0 2px 7px rgba(43,32,18,.35);background:#2b2118;transform:rotate(1.6deg)}
 .awd63-invite-txt{flex:1;min-width:0}
@@ -45184,17 +45197,8 @@ try{
   };
 }catch(_e){}
 
-/* ===== v20a62 AWARDS62：典禮舞台底圖（v20a160 M1 改用會場實景相）=====
-   v20a160 M1：assets/story/awards/bg_awards_ballroom.jpg（424×240 JPG q88，39,211 bytes；
-   來源 M1 樣本 m1_ballroom.png 400×224，兩側各裁 2px 後等比放大）。舊像素底圖（2048×1152
-   原圖縮 424×240 WebP q82，binary 18,654 bytes／base64 24,872 字元）已撤。載入失敗時動畫
-   自動降級做 canvas 程式繪製格仔舞台。 */
-/* v20a160 M1：典禮舞台底圖改用會場實景相（assets/story/awards/bg_awards_ballroom.jpg，
-   M1 樣本 m1_ballroom.png 400×224 → 兩側各裁 2px → 396×224 → 等比放大 424×240，
-   比例 1.7679 vs 目標 1.7667，殘差 0.07% 可忽略；頂部吊燈原本已裁一半，冇再裁主體。
-   四場典禮＋贏／入圍落選／旁聽三分支共用同一張底圖（會場係同一個地方；draw() 單一 bgImg）。
-   載入失敗照舊跌返 awards62FallbackStage 程式格仔舞台。舊像素底圖 data URI 已撤。） */
-const AWARDS62_STAGE_BG = "assets/story/awards/bg_awards_ballroom.jpg";
+/* v20a181：M1 會場實景底圖退役——舞台改做 canvas 程式繪製（淺色幕布＋木地板＋橫額／數字條／白牌 DOM 層），
+   AWARDS62_STAGE_BG 常數＋bg_awards_ballroom.jpg 一併撤走；載入失敗唔再分叉，畫同一個程式舞台。 */
 
 /* ===== v20a7 AWARDS CEREMONY — four medium tracks; Soft≠PASS; no tip LIVE ===== */
 function ensureAwardsLog(){
@@ -45983,8 +45987,8 @@ try{
       作品分改質量加權（gig roleScale 級數為主、片酬段兜底、stars 微調），唔再齋數件數。
       每類別掛代表作（嗰年嗰媒介最高質嗰部）；請柬出門檻行、結果卡出「差啲咩」弱瓣；
       季前提示接 settleWeek 既有 pushFlavor 渠道；手帳加「獎項」頁（舊 awardsLog 相容）。
-   B：canvas 步進器（125ms 一格 ≈ 8fps）＋像素精靈圖＋會場實景底圖 AWARDS62_STAGE_BG（v20a160 M1）；
-      底圖載入失敗自動降級 awards62FallbackStage 程式格仔舞台；全程可跳過／撳畫面推進。
+   B：canvas 步進器（125ms 一格 ≈ 8fps）＋PixelLab 角色幀＋程式橫向舞台（v20a181：M1 實景底圖已撤）；
+      全程可跳過／撳畫面推進。
    awardsLog 只加欄位（displayName／categories[].repTitle），既有欄位語義不變；SAVE key 不變。 */
 const AWARDS62_WIN_LINE = 0.875; /* v20a147 D4 重做校準：0.90→0.875——校準見 qa147/CALIBRATION_D4.md §5。
    0.90 嗰版只對理論檔有效（擔正檔 32%），觀測到嘅真實全弧最佳 base 0.748 喺 0.82／0.90 之下
@@ -46303,23 +46307,60 @@ function awards62SeasonHints(st, w){
   }catch(_e){}
   return null;
 }
-/* ---- B：8-bit 像素頒獎動畫（canvas 步進器；素材＝像素底圖＋程式精靈圖） ---- */
-function awards62FallbackStage(ctx, W, H){
-  ctx.fillStyle = "#241736"; ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = "rgba(255,255,255,0.03)";
-  for(let y = 0; y < H; y += 8){
-    for(let x = ((y / 8) % 2) * 4; x < W; x += 8) ctx.fillRect(x, y, 4, 4);
+/* ---- B：8-bit 像素頒獎動畫（canvas 步進器；素材＝程式舞台＋PixelLab 角色幀） ---- */
+/* v20a181：橫向舞台程式繪製（取代 M1 實景底圖＋v177 後備格仔舞台）——480×360 邏輯座標：
+   淺色幕布 y36–200（直紋摺＋兩側深紅側幕）；簡化深色燈架 x12–28／452–468；平木地板 y200–334
+   （深 134px＝37.2% 高，橫木紋＋深木前緣 y334–340）；暗觀眾席 y340–360（少量光點）。
+   橫額／數字條／白牌／牌下黃字係 DOM 層（.awd181-*），唔喺 canvas 畫字；人物／光池／彩紙／獎盃
+   由 draw() 之後畫。off＝pan beat 橫移量（±6，邊位各預留 8px 唔露底）。 */
+function awards181DrawBase(ctx, W, H, off){
+  off = off || 0;
+  ctx.save();
+  ctx.translate(off, 0);
+  /* 幕布：淺米底＋直紋摺（左右深淺交替 16px 帶），頂部 y0–36 留深紅帶做橫額底 */
+  ctx.fillStyle = "#6e1a20"; ctx.fillRect(-8, 0, W + 16, 36);
+  ctx.fillStyle = "#f2e8d5"; ctx.fillRect(-8, 36, W + 16, 164);
+  for(let x = -8; x < W + 8; x += 32){
+    ctx.fillStyle = "rgba(120,90,40,0.10)"; ctx.fillRect(x, 36, 16, 164);
+    ctx.fillStyle = "rgba(255,255,255,0.35)"; ctx.fillRect(x + 16, 36, 3, 164);
   }
-  /* v20a177：後備舞台平台頂跟 FLOOR＝250（新頂 H-110＝250，平台正面由 250 伸到 H-33＝327，
-     金線 H-116＝244 橫跨頂邊；v20a174 舊值 H-70／H-76 係 FLOOR 290 嗰陣，全部跟新地板郁） */
-  ctx.fillStyle = "#7a1f24"; ctx.fillRect(0, 0, 44, H - 110); ctx.fillRect(W - 44, 0, 44, H - 110);
-  ctx.fillStyle = "#8a6d2f"; ctx.fillRect(44, 0, 4, H - 110); ctx.fillRect(W - 48, 0, 4, H - 110);
-  ctx.fillStyle = "#8a6d2f"; ctx.fillRect(0, 0, W, 15);
-  ctx.fillStyle = "#3a2a1a"; ctx.fillRect(0, H - 110, W, 37);
-  ctx.fillStyle = "rgba(255,217,104,0.25)"; ctx.fillRect(W / 2 - 52, H - 116, 104, 15);
-  ctx.fillStyle = "#120c20"; ctx.fillRect(0, H - 33, W, 33);
-  ctx.fillStyle = "#1d1430";
-  for(let x = 6; x < W - 8; x += 16) ctx.fillRect(x, H - 39, 10, 12);
+  /* 側幕：深紅＋直摺線 */
+  ctx.fillStyle = "#7a1f24"; ctx.fillRect(-8, 0, 38, 200); ctx.fillRect(W - 30, 0, 38, 200);
+  ctx.fillStyle = "rgba(0,0,0,0.25)";
+  for(let x = -4; x < 30; x += 10) ctx.fillRect(x, 0, 3, 200);
+  for(let x = W - 26; x < W + 8; x += 10) ctx.fillRect(x, 0, 3, 200);
+  ctx.fillStyle = "#8a6d2f"; ctx.fillRect(30, 0, 3, 200); ctx.fillRect(W - 33, 0, 3, 200);
+  /* 燈架：簡化深色鐵架（兩條直杆＋橫檔＋頂部一個斜撐），左右各一 */
+  [12, W - 28].forEach(function(tx){
+    ctx.fillStyle = "#23232c"; ctx.fillRect(tx, 40, 4, 160); ctx.fillRect(tx + 12, 40, 4, 160);
+    ctx.fillStyle = "#3a3a44";
+    for(let y = 48; y < 200; y += 18) ctx.fillRect(tx, y, 16, 3);
+    ctx.fillRect(tx, 40, 16, 4); ctx.fillRect(tx, 196, 16, 4);
+    ctx.beginPath(); ctx.moveTo(tx, 58); ctx.lineTo(tx + 16, 76); ctx.moveTo(tx + 16, 58); ctx.lineTo(tx, 76); ctx.strokeStyle = "#3a3a44"; ctx.lineWidth = 2; ctx.stroke();
+  });
+  /* 木地板：淺木底＋橫紋＋豎縫＋頂部高光；前緣深木邊 */
+  ctx.fillStyle = "#d9a75f"; ctx.fillRect(-8, 200, W + 16, 134);
+  ctx.fillStyle = "rgba(255,255,255,0.10)"; ctx.fillRect(-8, 200, W + 16, 12);
+  ctx.fillStyle = "rgba(90,50,10,0.28)";
+  for(let y = 212; y < 334; y += 12) ctx.fillRect(-8, y, W + 16, 2);
+  ctx.fillStyle = "rgba(90,50,10,0.18)";
+  let seamRow = 0;
+  for(let y = 206; y < 334; y += 12, seamRow++){
+    const sx = (seamRow % 2 === 0) ? 20 : 80;
+    for(let x = sx; x < W + 8; x += 120) ctx.fillRect(x, y, 2, 12);
+  }
+  ctx.fillStyle = "#5a3a1e"; ctx.fillRect(-8, 334, W + 16, 6);
+  /* 暗觀眾席：暗色帶＋少量光點／彩紙點（唔畫人物） */
+  ctx.fillStyle = "#120c20"; ctx.fillRect(-8, 340, W + 16, 20);
+  ctx.fillStyle = "rgba(255,233,143,0.85)";
+  [[40, 348], [130, 352], [215, 347], [300, 353], [380, 348], [445, 351]].forEach(function(p){ ctx.fillRect(p[0], p[1], 3, 3); });
+  ctx.fillStyle = "rgba(236,231,219,0.5)";
+  [[80, 350], [260, 349], [340, 352], [410, 347]].forEach(function(p){ ctx.fillRect(p[0], p[1], 2, 2); });
+  ctx.restore();
+}
+function awards62FallbackStage(ctx, W, H){
+  /* v20a181：後備舞台＝同一個程式舞台（M1 底圖已撤，唔再分叉；參數 W/H 照舊由 draw() 傳入）。 */
+  awards181DrawBase(ctx, W, H, 0);
 }
 function awards62CeremonyBeats(pack){
   pack = pack || {};
@@ -46367,13 +46408,13 @@ function awards62CeremonyBeats(pack){
     else revealCap = "入圍到最後一輪\n" + (rep ? ("《" + rep + "》——差少少，下年再嚟。") : "差少少，下年再嚟。");
   }
   beats.push({ id: "reveal", ms: 2100, caption: revealCap });
-  /* v20a160-m4：贏分支揭曉之後加 walkup beat（2200ms）——阿偉行上台領獎 GIF（DOM 層 <img>，
-     assets/fx/awd_walkup_m4.gif）；GIF 一圈 9 幀 @120ms＝1080ms，2200ms 播到約兩圈，播完入
-     glamour／out，overlay 熄。點解唔直接疊喺 reveal：reveal 嗰陣 canvas 已經畫緊玩家行前＋捧杯，
-     再疊 GIF 會兩個阿偉打架；獨立一個 beat，canvas 壓暗、GIF 做主角（同 v20a147 comfort 加 beat 同一模式）。
+  /* v20a160-m4：贏分支揭曉之後加 walkup beat（2200ms）——阿偉行上台領獎（v20a181：M4 GIF 已撤，
+     改由 canvas 畫，px east 幀由台左行到中央，1400ms 行完，換燕尾服捧杯；播完入 glamour／out。
+     點解唔直接疊喺 reveal：reveal 嗰陣 canvas 已經畫緊玩家行前＋捧杯，再疊會兩個阿偉打架；
+     獨立一個 beat，canvas 壓暗、行上台做主角（同 v20a147 comfort 加 beat 同一模式）。
      淨係 won 行，gallery／nominated 唔行。 */
   if(best === "won"){
-    /* v20a160-m4：文案唔放 beat caption——字喺 overlay 層 .cap（跟 glamour 同款，beat caption 係 ""），
+    /* v20a160-m4：文案唔放 beat caption——字喺 draw() walkup 分支 setCaption（跟 glamour 同款，beat caption 係 ""），
        免得台下字幕框同 overlay 金字重複兩次（v147 review B3 同類問題）。 */
     beats.push({ id: "walkup", ms: 2200, caption: "" });
   }
@@ -46453,7 +46494,21 @@ function awards62PlayCeremony(pack, doneFn){
     const fellows = (focus && Array.isArray(focus.fellows63)) ? focus.fellows63.slice(0, 3) : [];
     const winFellow = (focus && (focus.winner63 || (focus.fellows63 && focus.fellows63[0]))) || null; /* v20a147：gallery 類別 winner63 係 null，得主照 fellows[0] 規則取 fellows63[0]，等揭曉嗰陣得主行前；nominated／won 行為不變 */
     const repTitle = (pack && pack.repWork62) || (focus && focus.repWorkTitle) || "";
-    const posterOf = (gid)=>{ try{ return (typeof poster59Path === "function" && gid) ? poster59Path(gid) : ""; }catch(_e){ return ""; } };
+    const posterOf = (gid)=>{ try{ return (typeof poster59Path === "function" && gid) ? poster59Path(gid) : ""; }catch(_e){ return ""; } }; const esc = (typeof esc59 === "function") ? esc59 : function(s){ return String(s == null ? "" : s); }; /* v20a181：esc local alias（跟 46182 行同一寫法），本 scope 冇 esc，唔加會 ReferenceError 即死 */
+    /* v20a181：橫向舞台文字層（DOM 層 .awd181-*，對齊 480×360 canvas；字唔入 canvas）——
+       橫額＝典禮名（pack.displayName）；左數字條＝聲望（S.fame 即時值）；右數字條＝角逐（今屆
+       pack.categories 項數，1–2 項）；白牌＝焦點獎項名（focus.label）＋牌內細字代表作／會場名（黃字 fix：搬入白牌，唔再放 43.5%）。
+       全部用 esc()，唔抄參考圖任何字。esc 係本函數 local alias（跟 46182 行同一寫法，附喺 posterOf 同行，零行數漂移；本 scope 冇 esc，唔加會 ReferenceError 即死，實駕捉到）。 */
+    const awd181Fame = (()=>{ try{ return (typeof S !== "undefined" && S) ? Math.max(0, Math.round(Number(S.fame) || 0)) : 0; }catch(_e){ return 0; } })();
+    const awd181Noms = (pack && Array.isArray(pack.categories)) ? pack.categories.length : 0;
+    const awd181Board = (focus && focus.label) || (pack && pack.displayName) || "頒獎夜";
+    const awd181Line1 = repTitle ? "《" + repTitle + "》" : "入圍名單逐一揭曉";
+    const awd181Line2 = (pack && pack.venue99) || (pack && pack.displayName) || "";
+    const awd181Html = '<div class="awd181-banner">' + esc((pack && pack.displayName) ? pack.displayName : "頒獎夜") + "</div>"
+      + '<div class="awd181-strip l"><span class="lab"><i class="awd181-ic spk"></i>聲望</span><span class="num">' + awd181Fame + "</span></div>"
+      + '<div class="awd181-strip r"><span class="lab"><i class="awd181-ic star"></i>角逐</span><span class="num">' + awd181Noms + "</span></div>"
+      + '<div class="awd181-board' + (String(awd181Board).length > 8 || String(awd181Line1).length > 10 || String(awd181Line2).length > 10 ? " long" : "") + '"><span class="awd181-t">' + esc(awd181Board) + "</span>"
+      + '<span class="awd181-sub">' + esc(awd181Line1) + (awd181Line2 ? "<br/>" + esc(awd181Line2) : "") + "</span></div>";
     /* 台位：對手一排＋玩家（旁聽嗰晚玩家唔上台）；得主對手標記 */
     const slots = [];
     fellows.forEach(f=> slots.push({ kind: "fellow", f: f, starId: f.starId || "", isWinner: !!(winFellow && f.star === winFellow.star && f.title === winFellow.title) }));
@@ -46496,26 +46551,19 @@ function awards62PlayCeremony(pack, doneFn){
       glamHtml = '<div class="awd63-glamour"><div class="awd63-glamour-panel"><img src="' + posterOf(pack.repGigId63) + '" alt="《' + repTitle + '》作品圖"/>'
         + '<div class="cap">' + iconHtml112("🏆") + ' 得獎<br/>' + (wonCat.label || "") + "：《" + repTitle + "》</div></div></div>"; /* v20a166 B1：海報＋cap 入右邊 44% 暗 panel，overlay 左邊透明留位畀燕尾服 canvas */
     }
-    let walkupHtml = "";
-    if(best === "won"){
-      /* v20a160-m4：行上台領獎 GIF——用修好版（全幅幀＋disposal=2，每幀播完清畫布）；
-         原版係差分幀＋disposal=0，播起嚟有殘影，唔准用；獎盃第 5→6 幀轉手跳位
-         係已知、用戶接受，唔重抽。GIF 自帶無限 loop（NETSCAPE loop 0），show 幾耐播幾耐，
-         beat 完 syncWalkup 熄層即停。 */
-      walkupHtml = '<div class="awd62-walkup160"><img src="assets/fx/awd_walkup_m4.gif" alt="阿偉行上台領獎"/>'
-        + '<div class="cap">阿偉行上台，接過獎盃，高高舉起。</div></div>';
-    }
-    /* v20a149 B1＋v20a174 B1 合併：canvas backing 636×540（邏輯 424×360 ×1.5，draw() 內 setTransform 1.5）；
-       揭曉彩紙 M5 GIF 疊加（reveal／comfort／out 期間顯示，見 syncConfetti149）。 */
+    /* v20a181：M4 walkup GIF 退役——行上台改由 canvas 畫（walkup beat 內阿偉用 px east 幀由台側行到中央，
+       再換燕尾服捧杯；文案改由 draw() walkup 分支 setCaption，beats.walkup.caption 繼續係 ""，logic test 唔郁）。 */
+    /* v20a149 B1＋v20a181 合併：canvas backing 720×540（邏輯 480×360 ×1.5，draw() 內 setTransform 1.5）；
+       揭曉彩紙 M5 GIF 疊加（reveal／comfort／out 期間顯示，見 syncConfetti149）；文字層 .awd181-* 疊喺 canvas 上面。 */
     stage.innerHTML = '<div class="awd62-frame">'
-      + '<div class="awd62-canvaswrap"><canvas class="awd62-canvas" width="636" height="540"></canvas>'
+      + '<div class="awd62-canvaswrap"><canvas class="awd62-canvas" width="720" height="540"></canvas>'
       + '<img class="awd62-m5fx149" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>'
-      + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/></div>' + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服；v20a174 B1：邏輯座標 424×360（底圖垂直拉伸 1.5×），backing 636×540 */
+      + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>' + awd181Html + "</div>" + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服；v20a181：邏輯座標 480×360（4:3），backing 720×540 */
       + '<button type="button" class="awd62-skip">跳過 ⏩</button>'
       + cardsHtml
       + '<div class="awd62-caption"></div>'
       + '<div class="awd62-tap">撳畫面可以快進</div>'
-      + "</div>" + walkupHtml;
+      + "</div>";
     document.body.appendChild(stage);
     const cv = stage.querySelector("canvas");
     const ctx = cv.getContext("2d");
@@ -46525,7 +46573,6 @@ function awards62PlayCeremony(pack, doneFn){
     const cardsEl = stage.querySelector(".awd63-cards");
     const cardEls = cardsEl ? Array.prototype.slice.call(cardsEl.querySelectorAll(".awd63-card")) : [];
     const glamEl = stage.querySelector(".awd63-glamour");
-    const walkEl = stage.querySelector(".awd62-walkup160"); /* v20a160-m4 */
     /* v20a149 B1：M5 彩紙 GIF 疊加——reveal／comfort／out 期間顯示，其餘收起。 */
     const confImgs149 = stage.querySelectorAll(".awd62-m5fx149");
     const syncConfetti149 = (b)=>{
@@ -46533,31 +46580,25 @@ function awards62PlayCeremony(pack, doneFn){
       confImgs149.forEach(im=> im.classList.toggle("on", show));
     };
     skipBtn.addEventListener("click", (ev)=>{ try{ ev.stopPropagation(); }catch(_e){} finish(); });
-    let bgImg = null, bgReady = false;
-    try{
-      const im = new Image();
-      im.onload = ()=>{ bgImg = im; bgReady = true; };
-      im.onerror = ()=>{ bgReady = false; };
-      im.src = AWARDS62_STAGE_BG;
-    }catch(_e){ bgReady = false; }
-    /* v20a64：Q 版像素人（企姿＋行 A/B）預載；未載好／失敗就畫剪影頂住，唔會穿崩 */
-    const sprImgs = {};
-    const loadSpr = (key)=>{
-      if(!key || sprImgs[key]) return;
+    /* v20a181：PixelLab 角色幀預載（企立 south／行 east／west；12 人 × 3 向，assets/story/awards/px_<starId>_<dir>.png，
+       全部腳底 y115 對齊 v180 錨；未載好／冇檔就畫中性剪影頂住，唔跌返 Q 版。M1 底圖已撤，唔再 preload bgImg。 */
+    const pxImgs = {};
+    const loadPx = (starId, dir)=>{
+      if(!starId || !dir) return;
+      const key = starId + "|" + dir;
+      if(pxImgs[key]) return;
       const rec = { img: null, ok: false };
-      sprImgs[key] = rec;
+      pxImgs[key] = rec;
       try{
-        const uri = (typeof AWARDS64_SPRITES !== "undefined" && AWARDS64_SPRITES) ? AWARDS64_SPRITES[key] : "";
-        if(!uri) return;
         const im = new Image();
         im.onload = ()=>{ rec.img = im; rec.ok = true; };
         im.onerror = ()=>{ rec.ok = false; };
-        im.src = uri;
+        im.src = "assets/story/awards/px_" + starId + "_" + dir + ".png";
       }catch(_e){}
     };
-    loadSpr("awei"); loadSpr("awei_hold"); loadSpr("awei_walkA"); loadSpr("awei_walkB");
-    fellows.forEach(f=>{ loadSpr(f.starId); loadSpr(f.starId + "_walkA"); loadSpr(f.starId + "_walkB"); });
-    /* v20a160 M6：燕尾服阿偉預載（贏分支先用；載唔到 ok=false，drawFigure 跌返 Q 版 awei） */
+    ["south", "east", "west"].forEach(d=> loadPx("awei", d));
+    fellows.forEach(f=>{ if(f.starId) ["south", "east", "west"].forEach(d=> loadPx(f.starId, d)); });
+    /* v20a160 M6：燕尾服阿偉預載（贏分支先用；載唔到 ok=false，drawFigure 跌返 px south 幀） */
     const tuxRec = { img: null, ok: false };
     try{
       const tim = new Image();
@@ -46565,36 +46606,37 @@ function awards62PlayCeremony(pack, doneFn){
       tim.onerror = ()=>{ tuxRec.ok = false; };
       tim.src = AWARDS160_TUXEDO_AWEI;
     }catch(_e){}
-    const FLOOR = 250; /* v20a177：地板加深——底圖重構（源圖幕布 0–193 壓到 0–166、地板 194–239 拉到 167–239；源圖舞台頂線由 y194 變 y167，×1.5 拉伸後 167×1.5＝250.5→250；地板深 360−250＝110px＝30.6% canvas 高，對照參考圖地板佔畫面高 30.7%）；人物腳底跟同一常數，行前腳 260 */
-    const slotCx = (i)=>{ if(slots.length === 3) return [82, 162, 262][i]; let cx = 212 + (i - (slots.length - 1) / 2) * 100; return cx; }; /* v20a177：舞台加闊——won／nominated 4 slots 間距 80→100、置中 202→212（62／162／262／362，罅 37px、兩邊各留 31px；講台 x194–229 啱啱落喺 slot 2／3 之間 193–231 條罅，draw-rect 重疊 0）；gallery 3 slots 82／162／262（罅 80／100，中央＋右邊兩人同講台各留 1–2px，唔再 −36 移位；左邊空出 293–424＝131px 行走區，對照參考圖右三分一留空） */
-    /* v20a64：入場走路計劃——左右兩流、深位先行（唔使穿過已企定嘅人）；速度 0.16px/ms，walkA/walkB 交替（bob 已入幀） */
-    const entryPlan = slots.map((s, i)=> ({ side: slotCx(i) <= 202 ? -1 : 1, cx: slotCx(i), from: 0, delay: 0, dur: 0 }));
+    const FLOOR = 262; /* v20a181：橫向重建——木地板 y200–334（深 134px＝37.2% canvas 高，對照參考圖地板佔畫面下半約四成）；人物腳底跟同一常數，行前腳 272；舊 v177 FLOOR 250／圓台講台一併作廢 */
+    const slotCx = (i)=>{ if(slots.length === 3) return [75, 240, 405][i]; let cx = 240 + (i - (slots.length - 1) / 2) * 120; return cx; }; /* v20a181：橫向企位——won／nominated 4 slots 60／180／300／420（間距 120，人闊約 42px，罅 78px，中間大段空地板；兩邊各留 39px）；gallery 3 slots 75／240／405（罅 165／165，左／中／右分開企） */
+    /* v20a64：入場走路計劃——左右兩流、深位先行（唔使穿過已企定嘅人）；速度 0.16px/ms，行幀跟方向揀 east／west（v20a181：舊 walkA／walkB 作廢） */
+    const entryPlan = slots.map((s, i)=> ({ side: slotCx(i) <= 240 ? -1 : 1, cx: slotCx(i), from: 0, delay: 0, dur: 0 }));
     [-1, 1].forEach(side=>{
       entryPlan.map((p, i)=> i).filter(i=> entryPlan[i].side === side)
         .sort((a, b)=> side < 0 ? entryPlan[b].cx - entryPlan[a].cx : entryPlan[a].cx - entryPlan[b].cx)
         .forEach((slotI, rank)=>{
           const p = entryPlan[slotI];
-          p.from = side < 0 ? -30 : 454;
+          p.from = side < 0 ? -40 : 520;
           p.delay = rank * 380;
           p.dur = Math.abs(p.cx - p.from) / 0.16;
         });
     });
-    const drawSpr = (key, cx, floorY, dispH)=>{
-      const rec = sprImgs[key];
+    /* v20a181：PixelLab 幀繪製——128px 原圖人物腳底 y115（v180 錨），dispH 係成張圖顯示高度，
+       腳底對齊 floorY，人物高 ≈ dispH×102/128（dispH 112 → 人物約 89px＝框高四分一）。
+       載唔到／冇檔（例如池外主演 starId）就畫中性剪影（PixelLab 比例頭＋身），唔跌返 Q 版。 */
+    const drawPx = (starId, dir, cx, floorY, dispH)=>{
+      const rec = pxImgs[starId + "|" + dir];
       if(rec && rec.ok && rec.img){
-        const dw = Math.round(dispH * rec.img.width / rec.img.height);
-        ctx.drawImage(rec.img, Math.round(cx - dw / 2), Math.round(floorY - dispH), dw, dispH);
+        const top = floorY - dispH * 115 / 128;
+        ctx.drawImage(rec.img, Math.round(cx - dispH / 2), Math.round(top), Math.round(dispH), Math.round(dispH));
         return true;
       }
-      /* 剪影降級（Q 版比例：闊方頭＋短身） */
-      const w = dispH * 0.8;
       ctx.fillStyle = "#1d1832";
-      ctx.fillRect(Math.round(cx - w * 0.6), Math.round(floorY - dispH), Math.round(w * 1.2), Math.round(dispH * 0.52));
-      ctx.fillRect(Math.round(cx - w / 2), Math.round(floorY - dispH * 0.5), Math.round(w), Math.round(dispH * 0.5));
+      ctx.beginPath(); ctx.ellipse(Math.round(cx), Math.round(floorY - dispH * 0.86), Math.round(dispH * 0.11), Math.round(dispH * 0.13), 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillRect(Math.round(cx - dispH * 0.18), Math.round(floorY - dispH * 0.70), Math.round(dispH * 0.36), Math.round(dispH * 0.70));
       return false;
     };
     /* v20a160 M6：燕尾服阿偉——128px 原圖人物佔框 x42–87／y13–115（45×102），腳底喺 y115。
-       dispH 係成張圖顯示高度；腳底對齊 floorY，人物高 ≈ dispH×102/128（dispH 64 → 人物 51px，同 Q 版玩家 50px 齊高）。 */
+       dispH 係成張圖顯示高度；腳底對齊 floorY，人物高 ≈ dispH×102/128（v20a181：dispH 112 → 人物約 89px，同 px 企立幀齊高）。 */
     const drawTuxedo = (cx, floorY, dispH)=>{
       if(!(tuxRec.ok && tuxRec.img)) return false;
       const top = floorY - dispH * 115 / 128;
@@ -46604,18 +46646,17 @@ function awards62PlayCeremony(pack, doneFn){
     const drawFigure = (s, i, o)=>{
       o = o || {};
       const cx = (o.x != null) ? o.x : slotCx(i);
-      const dispH = o.dispH || (s.kind === "player" ? 75 : 72); /* v20a174 B1：人仔放大 1.5×（fellow 48→72、玩家 50→75、燕尾服 64→96），跟 canvas 拉伸比例一致 */
+      const dispH = o.dispH || (s.kind === "player" ? 116 : 112); /* v20a181：px 幀 dispH 112（人物約 89px＝框高四分一）、玩家 116；燕尾服同樣 112，齊高 */
       const bob = o.bob || 0;
       const fy = FLOOR + (o.y || 0);
-      let key;
-      if(s.kind === "player") key = o.hold ? "awei_hold" : (o.frame === "walkA" ? "awei_walkA" : o.frame === "walkB" ? "awei_walkB" : "awei");
-      else key = o.frame === "walkA" ? s.starId + "_walkA" : o.frame === "walkB" ? s.starId + "_walkB" : s.starId;
+      const starId = (s.kind === "player") ? "awei" : (s.starId || "");
+      const dir = (o.frame === "east" || o.frame === "west") ? o.frame : "south"; /* v20a181：企立 south；行嗰陣跟行嘅方向揀 east／west（入場／行前／walkup 由呼叫位傳入）；舊 walkA／walkB 幀名作廢 */
       ctx.save();
       ctx.globalAlpha = (o.alpha != null) ? o.alpha : 1;
       ctx.fillStyle = "rgba(0,0,0,0.30)";
       ctx.fillRect(Math.round(cx - dispH * 0.20), fy - 4, Math.round(dispH * 0.40), 6); /* v20a174 B1：接觸影跟 1.5× 比例（舊 fy-3／高 4） */
       if(s.kind === "player" && o.tuxedo && drawTuxedo(cx, fy + bob, dispH)){ ctx.restore(); return; }
-      drawSpr(key, cx, fy + bob, dispH);
+      drawPx(starId, dir, cx, fy + bob, dispH);
       ctx.restore();
     };
     const lightPool = (cx, w, fy)=>{
@@ -46638,7 +46679,7 @@ function awards62PlayCeremony(pack, doneFn){
     const spawnConfetti = ()=>{
       confetti.length = 0;
       for(let i = 0; i < 90; i++){ /* v20a149 B1：46→90 粒，加密 */
-        confetti.push({ x: Math.floor(Math.random() * 424), y: -10 - Math.floor(Math.random() * 70),
+        confetti.push({ x: Math.floor(Math.random() * 480), y: -10 - Math.floor(Math.random() * 70),
           c: CONF_COLS[i % CONF_COLS.length], s: 3 + (i % 2), v: 3 + (i % 3), sway: (i % 3) - 1 });
       }
     };
@@ -46670,21 +46711,12 @@ function awards62PlayCeremony(pack, doneFn){
       if(!glamEl) return;
       glamEl.classList.toggle("on", !!(b && b.id === "glamour")); if(cardsEl) cardsEl.classList.toggle("glamour-hide", !!(b && b.id === "glamour"));
     };
-    const syncWalkup = (b)=>{ /* v20a160-m4：淨係 walkup beat 嗰陣 show GIF 層，其餘 beat 熄 */
-      if(!walkEl) return;
-      walkEl.classList.toggle("on", !!(b && b.id === "walkup"));
-    };
     const draw = (b, tick, beatElapsed)=>{
-      const W = 424, H = 360; /* v20a174 B1：canvas 高 240→360；底圖 drawImage(bgImg, 0, 0, W, H) 垂直拉伸 1.5×（imageSmoothingEnabled=false，像素邊保持硬淨） */
-      /* v20a149 B1＋v20a174 B1 合併：canvas backing 636×540，邏輯座標 424×360，全部繪圖經 1.5× transform
-         （FLOOR／slotCx／confetti／fallback 舞台全部照舊）。 */
+      const W = 480, H = 360; /* v20a181：橫向 4:3（480×360）；backing 720×540，全部繪圖經 1.5× transform（imageSmoothingEnabled=false，像素邊保持硬淨） */
+      /* v20a149 B1：canvas backing 720×540（邏輯 480×360 ×1.5）；M1 底圖已撤，舞台底由 awards181DrawBase 程式繪製。 */
       ctx.setTransform(1.5, 0, 0, 1.5, 0, 0);
       const id = b ? b.id : "";
-      if(id === "pan" && bgReady && bgImg){
-        const off = Math.round(Math.sin(tick * 0.45) * 6);
-        ctx.drawImage(bgImg, -8 + off, 0, 440, H);
-      } else if(bgReady && bgImg){ ctx.drawImage(bgImg, 0, 0, W, H); }
-      else { awards62FallbackStage(ctx, W, H); }
+      awards181DrawBase(ctx, W, H, id === "pan" ? Math.round(Math.sin(tick * 0.45) * 6) : 0); /* pan beat 橫移 ±6（舊底圖 pan 同款幅度，人物企位唔郁） */
       if(id === "open"){
         /* v20a64：開場空台亮起，人仔留返 enter beat 先行入嚟 */
         const step = Math.min(3, Math.floor(beatElapsed / 300));
@@ -46696,14 +46728,14 @@ function awards62PlayCeremony(pack, doneFn){
         return;
       }
       if(id === "enter"){
-        /* v20a64：真行入場——跟 entryPlan 逐個由台側行到企位（walkA/walkB 每 tick 交替），到埗切企姿 */
+        /* v20a64：真行入場——跟 entryPlan 逐個由台側行到企位（east／west 側面幀跟方向，到埗切 south 企姿） */
         slots.forEach((s, i)=>{
           const p = entryPlan[i];
           const t = beatElapsed - p.delay;
           if(t < 0) return;
           if(t >= p.dur){ drawFigure(s, i, { alpha: 1 }); return; }
           const x = Math.round(p.from + (p.cx - p.from) * (t / p.dur));
-          drawFigure(s, i, { x: x, frame: (tick % 2) ? "walkA" : "walkB", alpha: 1 });
+          drawFigure(s, i, { x: x, frame: (p.side < 0) ? "east" : "west", bob: (tick % 2) ? -1 : 0, alpha: 1 }); /* v20a181：入場行幀跟方向揀 east（由左入）／west（由右入）；原地 bob 照舊 */
         });
         return;
       }
@@ -46711,7 +46743,7 @@ function awards62PlayCeremony(pack, doneFn){
         slots.forEach((s, i)=> drawFigure(s, i, { alpha: 1 }));
         ctx.fillStyle = "#ffffff";
         for(let i = 0; i < 6; i++){
-          const fx = (tick * 67 + i * 89) % 424;
+          const fx = (tick * 67 + i * 89) % 480;
           const fy = 225 + ((tick * 41 + i * 53) % 120); /* v20a174 B1：names 閃粉 y 帶 150–230 → 225–345（×1.5） */
           if((tick + i) % 3 === 0) ctx.fillRect(fx, fy, 3, 3);
         }
@@ -46732,7 +46764,8 @@ function awards62PlayCeremony(pack, doneFn){
         const fwd64 = (i)=>{
           const p = Math.min(1, beatElapsed / 500);
           const cx0 = slotCx(i);
-          return { x: Math.round(cx0 + (212 - cx0) * 0.22 * p), y: Math.round(10 * p), moving: p < 1, frame: (tick % 2) ? "walkA" : "walkB" }; /* v20a174 B1：行前 y＋7→＋10（×1.5），新腳 FLOOR＋10＝300 */
+          const dir64 = (cx0 < 240) ? "east" : "west"; /* v20a181：行前向中央 240 集中（舊 212）；行幀跟方向揀 east／west */
+          return { x: Math.round(cx0 + (240 - cx0) * 0.22 * p), y: Math.round(10 * p), moving: p < 1, frame: dir64 }; /* v20a181：行前 y＋10，新腳 FLOOR＋10＝272 */
         };
         if(best === "won"){
           const fp = fwd64(playerSlot);
@@ -46740,11 +46773,11 @@ function awards62PlayCeremony(pack, doneFn){
           slots.forEach((s, i)=>{
             if(s.kind === "player"){
               /* v20a160 M6：贏分支揭曉嗰陣阿偉著燕尾服上台——行前嗰 500ms 已經係燕尾服（唔等企定先換衫，免得中途爆衫）；
-                 企定捧杯嗰陣頭頂加獎盃 glyph（燕尾服原圖手臂垂低、本身冇獎盃，沿用對手得主嗰套標記）。載唔到圖就跌返 Q 版 awei_hold。 */
-              if(fp.moving) drawFigure(s, i, { x: fp.x, y: fp.y, frame: fp.frame, alpha: 1, tuxedo: true, dispH: 96 });
+                 企定捧杯嗰陣頭頂加獎盃 glyph（燕尾服原圖手臂垂低、本身冇獎盃，沿用對手得主嗰套標記）。載唔到圖就跌返 px south 幀，唔跌 Q 版。 */
+              if(fp.moving) drawFigure(s, i, { x: fp.x, y: fp.y, frame: fp.frame, alpha: 1, tuxedo: true, dispH: 112 });
               else {
-                drawFigure(s, i, { x: fp.x, y: fp.y, hold: true, bob: (tick % 2) ? -1 : 0, alpha: 1, tuxedo: true, dispH: 96 });
-                drawTrophyGlyph(fp.x, FLOOR + fp.y - 96); /* v20a174 B1：燕尾服 dispH 64→96，glyph 頂 −96（glyph 高 18，頭頂 −76.5，剛好喺頭頂之上） */
+                drawFigure(s, i, { x: fp.x, y: fp.y, hold: true, bob: (tick % 2) ? -1 : 0, alpha: 1, tuxedo: true, dispH: 112 });
+                drawTrophyGlyph(fp.x, FLOOR + fp.y - 112); /* v20a181：燕尾服 dispH 112，glyph 頂 −112（glyph 高 18，頭頂 −89，剛好喺頭頂之上） */
               }
             }
             else drawFigure(s, i, { alpha: 0.7 });
@@ -46758,13 +46791,13 @@ function awards62PlayCeremony(pack, doneFn){
               if(fp.moving) drawFigure(s, i, { x: fp.x, y: fp.y, frame: fp.frame, alpha: 1 });
               else {
                 drawFigure(s, i, { x: fp.x, y: fp.y, bob: (tick % 2) ? -1 : 0, alpha: 1 });
-                drawTrophyGlyph(fp.x, FLOOR + fp.y - 39); /* v20a174 B1：對手得主 glyph −26→−39（×1.5，胸前捧杯位） */
+                drawTrophyGlyph(fp.x, FLOOR + fp.y - 52); /* v20a181：對手得主 glyph −52（px 人物高約 89px，胸前捧杯位） */
               }
             } else drawFigure(s, i, { alpha: s.kind === "player" ? 0.9 : 0.6 });
           });
           ctx.fillStyle = "#ffd968";
           for(let i = 0; i < 8; i++){
-            const fx = (tick * 57 + i * 71) % 424;
+            const fx = (tick * 57 + i * 71) % 480;
             const fy = 307 + ((tick * 31 + i * 37) % 39); /* v20a174 B1：reveal 閃粉 y 帶 205–231 → 307–346（×1.5） */
             if((tick + i) % 2 === 0) ctx.fillRect(fx, fy, 3, 3);
           }
@@ -46787,13 +46820,26 @@ function awards62PlayCeremony(pack, doneFn){
       if(id === "glamour"){
         ctx.fillStyle = "rgba(5,3,12,0.45)"; ctx.fillRect(0, 0, W, H);
         /* v20a160 M6：贏分支 glamour 海報一擊嗰陣繼續著燕尾服（同揭曉同一套衫，唔換返）。 */
-        if(playerSlot >= 0) drawFigure(slots[playerSlot], playerSlot, { hold: true, alpha: 0.9, tuxedo: true, dispH: 96 }); /* v20a174 B1：glamour 燕尾服 dispH 64→96 */
+        if(playerSlot >= 0) drawFigure(slots[playerSlot], playerSlot, { hold: true, alpha: 0.9, tuxedo: true, dispH: 112 }); /* v20a181：glamour 燕尾服 dispH 112（同 reveal 齊高） */
         return;
       }
       if(id === "walkup"){
-        /* v20a160-m4：walkup beat——canvas 壓暗，GIF（DOM 層 .awd62-walkup160）做主角；
-           圖載唔到都有暗場＋字幕頂住，唔會穿崩。 */
+        /* v20a181：walkup beat——canvas 做主角（M4 GIF 已撤）：阿偉用 px east 幀由台左行到中央企位
+           （1400ms 行完，之後換燕尾服企定捧杯）；對手企定稍暗；文案經 setCaption（beats.walkup.caption
+           繼續係 ""，免同台下字幕重複；applyBeatCaption 喺 advance 嗰陣收起咗，呢度每 tick 補返）。 */
         ctx.fillStyle = "rgba(5,3,12,0.45)"; ctx.fillRect(0, 0, W, H);
+        setCaption("阿偉行上台，接過獎盃，高高舉起。");
+        const targetX = (playerSlot >= 0) ? slotCx(playerSlot) : 240;
+        const wp = Math.min(1, beatElapsed / 1400);
+        slots.forEach((s, i)=>{ if(s.kind !== "player") drawFigure(s, i, { alpha: 0.7 }); });
+        if(playerSlot >= 0){
+          if(wp < 1){
+            drawFigure(slots[playerSlot], playerSlot, { x: Math.round(-40 + (targetX + 40) * wp), frame: "east", bob: (tick % 2) ? -1 : 0, alpha: 1 });
+          } else {
+            drawFigure(slots[playerSlot], playerSlot, { x: targetX, hold: true, bob: (tick % 2) ? -1 : 0, alpha: 1, tuxedo: true, dispH: 112 });
+            drawTrophyGlyph(targetX, FLOOR - 112);
+          }
+        }
         return;
       }
       if(id === "out"){
@@ -46809,7 +46855,6 @@ function awards62PlayCeremony(pack, doneFn){
       if(beats[beatIdx].id === "reveal") spawnConfetti(); if(beats[beatIdx].id === "reveal" && best === "won"){ try{ awards160PlayWinAudio(); }catch(_e){} /* v20a160 M9：贏分支揭曉嗰刻播 fanfare＋掌聲（只此一處觸發） */ } /* v20a149 B1：非贏 reveal 都 spawn（舊只限 won） */
       syncConfetti149(beats[beatIdx]);
       syncGlamour(beats[beatIdx]);
-      syncWalkup(beats[beatIdx]); /* v20a160-m4 */
       applyBeatCaption(beats[beatIdx], 0);
     };
     stage.addEventListener("click", ()=>{ advance(); });
@@ -46823,7 +46868,7 @@ function awards62PlayCeremony(pack, doneFn){
       if(tick !== lastTick){
         lastTick = tick;
         if(b.id === "reveal" || b.id === "comfort"){ /* v20a149 B1：comfort 期間彩紙繼續落；v20a174 B1：彩紙底界 244→364（H＋4） */
-          confetti.forEach(p=>{ p.y += p.v; p.x += p.sway; if(p.y > 364){ p.y = -8; p.x = Math.floor(Math.random() * 424); } });
+          confetti.forEach(p=>{ p.y += p.v; p.x += p.sway; if(p.y > 364){ p.y = -8; p.x = Math.floor(Math.random() * 480); } });
         }
         draw(b, tick, elapsed);
         if(b.id === "names") applyBeatCaption(b, Math.floor(elapsed / 125));
@@ -46833,7 +46878,6 @@ function awards62PlayCeremony(pack, doneFn){
       if(!finished) raf = requestAnimationFrame(loop);
     };
     syncGlamour(beats[0]);
-    syncWalkup(beats[0]); /* v20a160-m4 */
     syncConfetti149(beats[0]);
     applyBeatCaption(beats[0], 0);
     raf = requestAnimationFrame(loop);
@@ -46851,50 +46895,14 @@ function awards62PlayCeremony(pack, doneFn){
    49907fa9-077f-4f59-aaba-45d3a06958fb 開；job dcbd831c-0d56-4be2-8c3d-12efb5de6190，8 方向齊）。
    原生 128×128——export-spritesheet 驗證過 south 格中央 128px 同呢個樣本檔像素一致，無更高清來源，
    128px 上限寫入 NOTES_V20A160_M6.md。只喺典禮贏分支揭曉／glamour 嗰陣著，平時唔換衫；
-   載唔到就跌返 Q 版 awei，唔穿崩。 */
+   載唔到就跌返 px south 幀，唔穿崩。 */
 const AWARDS160_TUXEDO_AWEI = "assets/story/awards/awei_tuxedo.png";
 
-/* v20a64 AWARDS64：Q 版像素人（Kairosoft 語法，gen_chibi2.py 逐格繪製）——企姿 12＋行 A/B 22，共 34 張 44×50。
-   v63 嗰批「真立繪像素化」寫實 sprite 已成套撤走，由呢套 Q 版取代（NOTES_V20A64_CHIBI.md）。 */
-const AWARDS64_SPRITES = {
-  "awei": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAAB+0lEQVR4nO2YvUsCYRzHv2cN0gUuikYEES1xRMJth1OLq9TsGLoJ/gX9BYKbzs5Fq4tTuAlGHC0RbRUG4aBEUNcgd53nPS/38lTW85nO5/XDj+d+/u5RwMDQdAsAHievrKGRyKlJAEDfHCi0cdROQ9Mtr+ju9j5149v7ay5BEjk1SZUmdnhlSaJRBf2gSa/yLiJCLAyJnxYIihQWjRQWjRQWDXcednPVqQEADspN59n+Hcd4GoGE36YvAIC949PAGwEzcb+5N2fzbcVqm7gGVdgdDV4hFl65oPz9M7xeOMFWdhNAuGhFne8bYUPTrW6r4jvB3iwsPPO7rYpTh3tZuiPhK9w3BwrtTRVNsdqOXg/bRH3L/12WkMKd5oXvc1yEqiVolGslR7RcK8W9PPszn5SPRUHLEABDGPi6SBEtbqfRyBcp3rbnNS2SmJf01FxoC32RElRu2GvgfXg+17aSP0L+sB5onfTUJEovXVqLJUtMxk9QU1kAs4iyxkRh6SIshUUTm/Cw1wjVF5T/G+HvQgqLRgqLhvrXPGgUnGe9filUxL1XsbpYwdlw1xLpqUksLdVUllmR0eqIWYlZIPa74a6H++ZAMTTdevhIMRfdSIwBALxj7bXde5HGUyPMqv7jhHevpXvppLBouM+ooenW3WgkRGInk5Fn+NfwCehksWYiXGKMAAAAAElFTkSuQmCC",
-  "awei_hold": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACiElEQVR4nO2Yz2sTQRTHv5sGLI2SS0oqIpQiWFklIXtbcpBecsmhtCeRgD+Q5hboX+BfEOitRVAh5wYPvfRSBCUnt0RkaQtSPAhaKthQsopY18Oy62a7OzO7s4Ou2e9pMvNm3oe3b9++jASKVFkxAeDz8DvNlEszuUkAQE/XJJIdcVGVFdMLem32FtHx+w/vmACDNJObJEIHLnhhg0B5Af1Egs6yHiICLIoyfxsgrFJg0UqBRSsFFi3mOuzW204LAFBqrDlj+3cc9iSFAv5hfAUA3Fh+HNoRYIH77d3bHJ2rNTcCzyACu6PBCkSTFy6s/v8cvlh9hKvFKwCiRYt3v2+EVVkxt9dXfDfYzqKKZf/2+orTh3uVuJTwBe7pmkR6U0Wr1tzg74dt8b7lY1clUuDO2gvfcVyK1EuQ1GgtOqCN1mLcx9P/5gfVY1EiVQiAAgz8uUgRDW6XUe6LFO/clymZC8yrgqGfm4t8kRIWrr/Txlm/OzI3UV5CeWE11DkFQw+ETlxZi6VKDAdHyOWLAKyI0mx4NJ4R/vjqjjUwtnzXD7YWAADX6zvcvriAnzd2AQCn+ye4NL+E0/0uxf4QAHCvU4nsM3EpkThgrpSwH+2b0kkoex5xAWvtqjP+NlVHtlJH/9ntEZvy/ZcAgLN+F1rbmlNWX0f2OV4p4dbP3QcAgJulOd95KVOPxQ8XsP1oh4Mj7D25QLSdf7gZy5eOCOzOUVreZStPKa7uElfdvmrN8x2c44fixVHB0ANby1y+SO3ISNG1Wsxq4LpbzP1wT9ckVVbMT7/y1EMvZwYAAFZb+2y3ryB7YoRp3X+cYvWVuLKWAosWc46qsmIeHh8LgZibnk5z+J/Rb5hT2+G3wR3tAAAAAElFTkSuQmCC",
-  "awei_walkA": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACMklEQVR4nO2av0sCYRjHv1pDZOCiWEQQ0RJHFNwmTi2uUrNj5Cb4F/QXCG42NxetLk7hJhhxtIg0BBUWIZRFUTboiZ73vu/z3ntvYd1n8e79+eH17vG59wyBSNIwe9S2XqhZ9RClnbCRLXr38qbqxGUxMgdALM6tTBpmzym6vrrJnbh5fUkSZLEYmeNKMyucsixRVUE3eNKz1EF0iHkh/NsCsgTCugmEdRMI64Ych0e5OM4DALaypeGxfe5Hex5Swu/dJwDAxt6h9ERAX9yt79XJeFk6d8Qcgys8uhpUIRFOOVn+/jW8kNrHSmIZgLfVUu3vusJJw+xVygeuHezJvELpXykfMB8Ypu6ScBWuWfUQ707VTTp3pJ4P26je5f8uSgTCx6Uz12O/8JRL8MjmM0PRbD7j9/Dix3xWPNYFL0IAEhspusXtMKq8keIse5g3lMScxLrWRJnnjRRZuUa1iM/G6VjZzPYutncKUuPEuhZTeurCmi9R4qVzj0g0AaC/oqI2KkzdCgfCuvFNuFEteqqT5f+u8E8RCOsmENYN96e5XkwNj83CuVaR0bnSuckMzoacS8S6FjO1jEQTwoyMl0f0U8wUs34UpvBgb2IsH/54vhEOuBTujJ3ffkWl2osgvd8F+vmxaHJbwM5lKX3chHkJvO8PoU5eH5vc+tbgcy0eJ70gJ0UJ3W/yZRCucNIwe612e3DW5rYFAMTjikp8tF4SNaseon471P9LaL+GqSJUvgEPvsdHSR9FTwAAAABJRU5ErkJggg==",
-  "awei_walkB": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACMklEQVR4nO2YP0vDQBiHf60OxQpdKlVEcHCRIBayhU4uXUXnjtJuhX4CP0HBrZ07K65dOkm3QkWCi4ibShVxMIqgcaiJyTX3J7mcWs2zNLl77+7hbXJ9eylwMDTdBoCbpxdeqBSL2QwAoG8OUqw4Zqeh6TYpura6wVz44upMSJDGYjbDlKZ2kLI0UVnBIFjSs6KTqBCLQvqnBcKSCKsmEVZNIqwa4X3Yy2mnDgDYrBy41859HPEsQgm/Wg8AgPXd/dALAWPxoLHnh/62cq1NnYMp7M2GqBAPUi4sf/8Zni/tYaWwDCBatmTHB2bY0HS726oGDnAWi4rI+G6r6tbhJFP3SAQK981BivWmqqZca8vXww6yb/m/2yUS4c7BceB1XESqJVhU6tuuaKW+Hff0/L/5tP1YFawdAuAIA18HKarFnW1U+iCFbLub06TESPKWOdEW+SAlrNyw18Tb8MjXNlPcQXGrEWqevGVSpaduW4tll3h6vEU2VwAwzigvRoapy3AirJrYhIe9ZqS+sPzfDH8XibBqEmHVMH+aB82Se603TpSKeNcq1yYrOAfhWiJvmdTSMpsrcCsyVh0xLjFL1H4voYqfvGXi+j3HjFlKP/ruefEAgLT/xDLyPw5vAd83BylD020RYWdBkXhyDA9mhr2T0M66vhuhR8LQdPtyNPq8GzFjsbAgqcTm12xrot9g7OcSJM/3F9yYy89PQ9Nt3rMsJOy8cKKxInFREc6wahFRPgCi/MuM7Z1G/AAAAABJRU5ErkJggg==",
-  "luk_baakyin": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACBUlEQVR4nO2ZMWvCQBTH/6lCBesoCiUgpUsbSodAh9DdVejsKLr5FfwKbg0dnQuu/QIOBYdS0i6lCF0URym00JIOJRL17nJ5ubMN5j/Fu/fu/Xz37nKeBiTkWLYPANP3Dxnz2KoWCwCAkTc2omwjDRzL9nWBrqtaLERCCzuTwB7XzoT9L5NHZnsUNLdDVWYp4CLofGKiCPEySdWe0tG2oAxYt1IHHGvRPQy6WiDOm31pWyGwLsCoOPWOy7WNleGTq97y+fm2x7XTOVYs4PDAlIAqvjD5xUEJmHRWgBTuEqkDZh4wHMv2767bTIeDyxbMyiEA2hTL+tc7LvMAFDvDQTCqkvozgUfe2BDthbrFyy5A2CWSrvSk/qlbdKkDVv6LY9AfrnxudhtKx1cOrBpwXdyS+KudQrRDAJL3EgDAe5GoUpCcxPcS621v35UNu8X0XgqqVL3YaDNzs4028r0EC04kHjgLVCQzN+NCp25b211gUR3L1riMdjfD25ISYJkpV1UW5Fez5/66Wu2vWNtW2I8iMjA1INUv0O7UsOfml9O7Db9AWUnoljDDTzeN5fNpa7jSR13tPL9wLCW3l2ZutnK0VFkSrCMmT9Ln4ZE3NhzL9ieLz8hBa6V9AICsbTB2OBbPXphhmb9SVUk2VuoWXQasW9I16li2/zqfa4E4KpezGv43+gEg1cyXc6FkNwAAAABJRU5ErkJggg==",
-  "luk_baakyin_walkA": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACN0lEQVR4nO2av2vCQBTHn1WoYB1FoQhSurShdAh0CN1dhc6Oopv/gv+CW6Wjc8G1/4BDwaGUtEsRaRfFrdJioTYdasTo/Xj3cmcJ+p3i3Xt3H9+9XC53iYGCHMv2VOyx6rq9GNYWZeiDDj+mVCahcqkkAODApQaOZXumQFeVSyWl0MLKMLDHhTNh/cvgkVkug+ZW6IosBVwEnQhNJBEvklTtaW1tA9oBm1bkgJVuuod23QjEebmJthUCmwKU9VOstbi2ShE+uWosrp9vG1w7k20pAS83TOlQxx8mPzgoHYYdFYAIzhKRA2YuMBzL9u6uq0yHg8sK5LOHAEAbYqx/sdZiLoCUI+x3RlVYfyZw1+3FRHOhafGiC0CYJcLe6WH9I3fTRQ5Y+xtHu9kJ/C7XS1rb1w6sG3BV3JT4r5lCNEMAIPclAAB4DxJd8oMTel9itextll2zmwzvUVDp3MVaWT4+Wisj70uw4ETigbNARcrHR1zoyE1r2wssymNsjmO0vRHelLQAY4ZcV1qQH81u68/Vqn4rTVvLfhSRgakdUv18bU8Ou63EYng34edrlxKmJYzw001pcX1a6QTqqHc7z2+5Ly27l/n4KLC01JkSrCUmT1zg+RtHYD08+3yVNlhI7wd+DyZfSvYyoc94Hcv2ZJ37AP5aFuPDAhYt4I2f0/1M34X1/fnZ5VEmgzprRs0Spk7xKZJG2LFsrz8e41tMZ8LwSGU0JbpuL4YdHew3E8ZzWOXjDYx+AVr44c+DT1XmAAAAAElFTkSuQmCC",
-  "luk_baakyin_walkB": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACNUlEQVR4nO2Zv2vCQBTHn42gYDMWhRJw6NKG0iHQIXR3FTo7Ft38F/wX3CodnQuu/QccCg6lpF2KCF0Ut0rBQtt0aCOJ3o+Xlztt0O8UL+/dfXz37uVyyQBCru34AADj9znGPLZKhTwAAPS9QUZmKzVwbcfXBbqsUiEvhRbeTAJ7VD4V3n8ZPTLbZdDcG6oiSwEXQWcTE0nEiyRVe0p7W4N2wLqVOuBYi+6h29QCcVZro22FwLoAZeNUGh2ubawIH1+2FtfPty2unc6+YgGHO6YMqOIPkx8clAGTzgpACqtE6oCZGwzXdvy76zrTYf/iCqziIQDQphjrX2l0mBug2BEOBqMqqT8TuO8NMqJaqFu86AIQqkTSlZ7UP3WLLnXAyt84uu1e5HetWVXav3Jg1YDL4qbEpiqFqEIAIM8lAAB4DxJVCoKT+Fxiue31q7hiNxvfo6DM0vlKm2VMVtrI5xIsOJF44CxQkSxjwoVOXVnbXmBRHmNzHKPtjfC6pAQYM+Wq0oL8aPY6v652/TNW2Qr7UUQGpg5I9Qu0PTnsdbKL6V2HX6BdSuiWMMJPN9XF9clVL3KPutp5fuGxlJxeWsYksrVUmRKsLSZPsXLYMiYwmn0IbcpmLvJbZg8AAGYuElXyG0d4A9/3BhnXdnwMcDAgxn7ZRyZhhMOdsN4+NiFUSri24w+nU1yP5kESHqn+TVnDzqD2T7ff8zepzfDvk7ZrO74sl1HAwYLD2mLsqEJHWDcIVj/YZ+b+2ZvnfQAAAABJRU5ErkJggg==",
-  "liu_bingxing": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACWklEQVR4nO2YP0gbURzHvwmFLCFDQLSEQhUc5IYOR6EcpYtDyFAQ3IQIGUqylMwdlJIMmUuX3FRoIFuh0EEyuHQIBcngEBwUdbAoCA4lS5ecg9w1ebn3/71q5D7T5b3f+/2+/PJ77/3uUuDgOW4AADd/fvNMtcjnCgCA/nCQYtkxJz3HDUihz5/mmYHPL2+EBNLI5wpM0dQJUixNqK7AOFiin4g6sSFMhfR9C5AlEWybRLBtEsG2mTvB3IvjoNuIntc2P87MZzNj5hoSUR80hG86ADj6NhtMFp6Pl1u7zPnHVxIk2dfv8GzxrhVUybju+tgMe44b9NrV2AVhMFVE1vfa1agPJ5m7kogV3B8OUsWaz9zttjjoNlCs+fr9cIjuSaG7/nGUxEPGuODOp++xz6aQrmEe5fpGJLRc3zDtnv+aTzuPbcE6IQCOYODfhxTbwos1H4CBDynk2N7+Fy1hJKX1ysyY8ocUFXHp419Tv8err6R9lNYrVNHWj7XtVgbbrYwxf9KnxFV1BwCw5Ddj51UyKoOxY+39jzYA4PPb2tT41w9/TYUAoCCYllkVRp0zAEC2vCy8xliGyczaQktwuJlU/3aZzIb81+bnqroTbVpVtDJsekOJYLz5YRFuWJ1SkiqJUecs2tn3hZUM087kEJ1SkhKssqt58G5OEqbgyUZm8srlBSEzK3JBkE0T1U7ICvFtoAmW/CYqJxfC9sL9cH84SHmOG7x4k+U6Pfw5AgCI2oa+J2PR7Jklwev+TSIaK3nNt83cCRauUc9xg9PraysiVhYWkhp+MNwCdTfIcMO98M8AAAAASUVORK5CYII=",
-  "liu_bingxing_walkA": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACgElEQVR4nO2aP0gjQRTGv4iQJlgEgh4inIKFpLAIB0c4bCyCxUHgOiFCCkkasbbwOLSwFptsJRiwCwoWYnHNFeFAUlgEizuMhWIgYCFpbIyFTEgmOzNv/p2n5Fdtdua9+Xj75s3MbiIgkk6mOtS+JlTrtQiln7ITE3r/cGurSUp8bBKAWri0MZ1MdXihHz/EpQNf392TBIqIj01KRQsbeLEiobYCw5CJHqU68SHMhJHXFqDLULBvhoJ9MxTsmzcnWLlwnB9uda/nvv0YaI9Fn6Q2PFQfIsgrHQBcVgYH00Xl49Pyd2n7+0sJntiXVUyNv2wFTSJuax8a4XQy1TkrFUIN2GCmUOzPSgXhgeHNpUSo4Gq9FskUA+ls98X54RYyxcB+P8ywrRS29u8jJf5nnAsu7x6HXrtCO4dV5NazXaG59axr9+pjvqge+0JWIQCNFym+hWeKAQAHL1L4e6c/962E8Swt5gfuGb9IMRE38ud33++n2c/aPpYW80LR3svayk4UKztRZ/60q0SzsAkAmAi2Q9tNIqqDs7K2dlICAOx9LfbdP9h4dDUEAAPBosia0C43AACx3DTZxlmE+cj6wkowm0ymj10nsox/uvlpFja7k9YUqwi7nlAUnG9+ZLAJa5NKWinRLje6M/u18BJhUU1m2KSSlmCTWa1CtXLySAX3bmR6l1zVIHxkKQsEv2kS9iP1Qvg20AUTwTbyf2/I/bX2w/MLMaXDi1/tvt8qG9a/94Bg/F6i10jnWzOz07FhJw5+XB7vdfioQiuDM4kE6QM5KYd9f8nXQRnhdDLVuWq1AABXlZbS4UwiYa9KgteUqNZrEerTof5fwnsOU4VQeQZxPd29Syh4wgAAAABJRU5ErkJggg==",
-  "liu_bingxing_walkB": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAAChUlEQVR4nO2YPUgcQRTH/yeBaw6LA4lBBCOkCFukWAJhCTYWh4VwkC5wwhVy14h1CkPQwjqkua0CObA7FCzEwsZCAmJhISkS1CJB4cAiXJPGTZHsZm9u5s13/OB+1e3OvDd/3r0383YKkBAFYQIAVz9/yKZaUR6dAAAcnBwVqHnkYBSECSt06lGZXPj84kpJoIjy6AQpWjjAihUJtRXIgxL9QNWJD2EmjNy0AF2Ggn0zFOyboWDf3DnB0oPjcGM1+/301buB8VLxmrRhUfUhQvmkA4AvncHFdJH5eP76LTl+/1KCpfRyEZMP/7SCJhG3tedGOArCZLfV4Bqki5miYr/bamR9OMudSwmu4IOTo0KlGZPV7ovDjVVUmrF9P5xiu1PY2t+PlLjNOBfcfr/F/e0K7RyWUVuuZkJry1XX7uWf+aL92BfUDgFIBAP/LlJ8C680YwAOLlLYdzt7H62EsczN1gfeGV+kmIgb+fq57/n6yQttH3OzdaFo79vawnoRC+tFZ/60d4nLxgoAYDxe446bRFQHZ9va0nYLAPBhvtn3/tObX66WAGAgWBRZE3rtMwBAqfZY2cZZhNnI+sJKcFpMpn+7TmRT/mvzc9lYyYrWFKsIuy4oFZw3PxRpwdqkklZK9NpnWWXfFF4iLNqTU2xSSUuwSVXLkJ2cLKTgfCOTP3Jli7CRVTkg2KZJOE9pFvhtoAvG4zXUv31Xnk+2l/mmPW2wn82USIfH+72+Z9l8ng3VDwtT4u9lSpJ/Fl0f8WwB/geAzEYGmcN5JzqL+0Rpl4iCMDntdgEAp50uOXd6bMxeFcGtuUhR/Qe9H82bHfWTMQrCRJbLSoJNCs4XyhH2LUSV36sO4nMu1fVtAAAAAElFTkSuQmCC",
-  "chai_zanhoi": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACEklEQVR4nO2Zv0sCYRjHv2aF5CERREIEES1xRMQtcrYb4SA0uwSR0OAatLQErQ5BLi3OgYNE/QGKi0SEtEQ0BkKEVER2XJNynve+997d+15a95le3x/P++H18b2HMwQGVFnRAeD5/ZNlumPi0QgAoNZshOzm2k5QZUUXJWomHo3YSlMHecguL64Sxx6e7gb67KSJA36erBma9JjfMl4JhEUTCItm3M2i21K+7/NatsBFhgWqsFnM6zxWUrkicexvp8TK9tFA3/3FYJ/IGI6EncqJiDFyKTFywpYFhior+vXZnuUCaWMXC3PzANx9vazrU7miZQHk+IS7m7nF63pL4VqzEaLdhaIhnS7g4knn9Vce3BLDjqvih0apUO77nM1nuMbnLsxb0AwxJX7rpqDdEADjewkAID1IeNE9HM/vJcx9b+EJ4vx6tWLZn0imiWskrTPQ5/q9BE2ORL1awcn6JgDg4OaKKktC0jr8HhxWxGLTvXYimUbG0DaOtduvnvcauXs4EBZNICwabsKXx5O8QlHhJrx1+AUAyHx89/qMbV7835TwC1+Eeea3L8Ld/OYBtZaonu702sn9c26b2u1Fq8OZix9J6xBLS2NRU54yhWQoeKxKTBLM9XCt2QipsqK/aJpt0JlwGADAOrcb27gXaT71hFn+SuUF617BtSaakRNmzlFVVvTHVkuIxNLsbJDDQ8MPIoWx2e/gXPUAAAAASUVORK5CYII=",
-  "chai_zanhoi_walkA": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACRUlEQVR4nO2av0sCURzAv2aFpEgIkhBBREscEXGLnO1GOAjNLkEkNLgGLS1Bq0OQS4tz4CBRf4DiIhEhLRGNgSAiFaEd1+KJnvfe+97de1fWfRbv3s8P757vvnfvfGABRZI1K+WxVBt1H7YsqqAu+vr+adeJSiwYAACcOLOAIsmaKFEjsWCAKU3N5CG7urxOzHt6eRhLY0kTM9wcWSM06Sm3ZZziCYvGExbNtJ1K98XcyPlGJs9FBgNV2CjmtByWZLZAzPvbU2Jt92Qs7fFqPE1kG5aErcqJaGPipsTECZsGGIoka7cXB6YVQlv7sLSwCAD2Li+2fjJbMA2ALI+w3pldnNY3Fa426j7aWiga0ugC2LjTOf2Xe6vEb8dW8EOjmC+NnGdyaa7tcxfmLWiEOCV+aqWgrRAAyPcSAACkGwkv9MFx/F7CmPbmnyGWr1XKpunxRIpYJ6T2xtJsv5egyZGoVcpwtrkNAABHdzdUWRIhtcfvxmFGODw/OI4nUpAeOh7O63TajvuauHXYExaNJywabsLXp7O8mqLCTXjnuAsAAOmPr0Ha8DEv/u+UcAtXhHnOb1eE9fnNA2osUTnfGxwnDi+5dcrqixaHo4OfkNojhpbDQU1pztAkIuAxCzFJEIX7Txwj8XC3y94Gi/j9I+ctVbVUngV6j1eRZI3VuS6gx7KYOmbCtACe+0OokXarRc/v/65Eo6i9ZtQqIWoX3w7MEVYkWXtuNtENRqJRR0IshE6JaqPuw14d7DcTwuewlY83MHwD+8XGJAIe5V4AAAAASUVORK5CYII=",
-  "chai_zanhoi_walkB": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACQklEQVR4nO2YsUvDQBTGvxoV0SAiiIIIDi4SRCSLpO6KOBScuwii4OAquLgIrg6CLi7OgoOI/gEtLkVEiouIoyCUIipiDXExJU1zdy/JXbSa39LL3bt3Hy+vdy+XAQHLMB0AeHx9p5iHZqinCwBQLJcyIluhgWWYjiqhfoZ6uoSiuYMyxI6NTjDH7h5umvpEopkDSUbWD090W9Ji4pIKVk0qWDXtUSZdH603PE/md6WIocAV7BcW147K7OoBc+xvp8T44lZT3+1xc59KH6EEhxWnwkfLpUTLCQ4sMCzDdC72VwIn6DPLGBkcBhDt9VLnz64eBBZAoSPsLhaVuPMDBRfLpQxvL1QNK7pAhJMu7r883SV+O5GKHx5HuycNz/n1nFT/0gXLFuiHmRI/tVPwdgiAeC8BAKyDRBZucGLfS/j7XrQOpv1l4TSwfzq7wJyj27Wmvsj3EjxxLC4Lp9iZmgMAbFydc8Wy0O2avIMjiN7evnp7OruAnKftHXt+rsZeq+X24VSwalLBqpEm+Gy7U5YrLtIEz29+AAByb5/1Pm9bFv83JZIiEcEy8zsRwW5+y4BbSxT2lurt7NqhtEVFa/HqcHLxo9s1ZmnpLWpOun0uCQVPUInJIlS1pts1VGyba9OvaQ3PInsAgKY1RDXyF4e3gC+WSxnLMB2KYHdBir1/jghuhL1Ogr4+fgJSSliG6dw/PZEc9g8MxBIk4tccHNQ3KP1ewk+1UhHbfP9ahumIcpkk2P3DUW0pdlEhR1i1ECpfJEXMYS5eoXoAAAAASUVORK5CYII=",
-  "mak_zhendong": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACEElEQVR4nO2Yv0sCYRjHv0aBYmgEkhBJhEscTTd5tLtKzY6hm0vtQaMOtens1BC0+g/YJBQhLUeEUyAECmFgcA1xdp7vvfe+d+97dXafSd+fHx8fn/f1YnBBU1QDAF7fP9yG+iKbjAMAuv1ejDaO2qkpqmEXze8eUDfWXx6ZBJ3IJuNUaccOu6yTqF9BEjTpVdZFZIh5YeW3BXiJhGUTCcsmdMLUsvbQrgXlMUex2nLsW64I29k/Pl9oe7pZbJO5Bpcwr5yMNZY7JQBg/fAEO1vbALxFy+98YoQ1RTU6zQpxgrmZV1jmd5qV2T3cTuhSgijc7fditFoom2K15f8+bOL3V/7vqkQk3L66Jb4WBXcOu1GulWai5VpJ9PLuf/Od6rEsaBUCcBEGfh6kyBY3y6ivBylWTPFx/ozYPxkNqPMT6RyxPaXXAbiLmjAN0hTVcBIVRUqvM0lHZU02kbBsmIUno4FrJQgCrpPu/mIDwHj2vtBIedr07nQ8955nHV9HszXiTnVWNMLuEkHJMwsn0jkUGvQTjVXUayoBHiJslZqMBoGlgomvlOCRJX0zXj6s8PuwFbcyaPbziEs9OBLpnPCU4bpeirixkaK+Nbxmvl56SolP/ZLav4kpAOANawt91pZp5oh7b+YIA99RJknYoQmTxrJGF1jmy89fIXTCXFXieTiUIrGXyTDncegiHDrhLw3YrMAPcLTuAAAAAElFTkSuQmCC",
-  "mak_zhendong_walkA": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACMElEQVR4nO2Zv0sCURzAv0aCYmgIohBJg0scTTd5tLtKzY6hm0vtQaMOtens1FC0+g/YJBQhLRLhEMFBpBAGBtdQJ3f6fv8wtPss+u7de/e5d9/7vnd3IWDEMkyHdV8ROr1uiGU/6k6u6OvHp6wTkUwsAgB0cWKlZZjOrGhuZ4944P7zA5MgjkwsQpTGVszK4kRlBVGQpNdZO9EhJsLaXwvwEgjrJhDWzdIJE9Pafau6KA8fhUoTW7daIzzL7uHp3LbHq/ltOvvgEuaV09HHaocEAMDG/hFsp7cAQGy0ZNsjR9gyTKfdKCMbuAcThaV9u1HGPjAsXUgghTu9boiUC3VTqDTl18Musnf5v8sSgXDr4gb5XxXcMUyjVC1ORUvVouru6Y/5uHysC1KGAOB4kaJb3E2jUi9SvLjio9wJsn48HBDbRxNZ5PZ4vwYACl9VAfzI4kRVEe/XmKSDtKabQFg3zMLj4YCaCRYB10x3d7YJAKNpOV+PCx309njkK/P0IzU1e0ccl2dVo2wtsSh5ZuFoIgv5OnlGYxUVDSUAgRH2So2Hg4WFgotUSPDIoq6MyMkqXw97oaVBt55HXOvEEU1klYcM1/JSxYoNNepp+5J5eSkUEl/9c2xdEia+8huEfWVvaZI64D42lzBJ1Is7WrTv02H7eu4EaWi96QAA3u0Xcv3vr2WYjrIFvO4v+TxQR9gyTOfJtpk7TKZSUkI0tIZEp9cNsV4drVmCB1YRVr4B5yDBf5lsYPYAAAAASUVORK5CYII=",
-  "mak_zhendong_walkB": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACOUlEQVR4nO2YvUvDQBiHfxUFi9JKoSiIxcFFglMmg7ur6OwounXRXXDUQTednRwEV/+BOhUUKS5FpIMIBbEFqVAhDpqaxvt47y4Xv/Is7eU+8vTNmzfXZCDBc1wfAB6eX2RDjZgYGQYAVGrVjGicsNNzXD8qOjM9Jzxx/e6aJMhjYmRYKM3tiMryRE0FWYikB6mL2BDTYeC7BVRJhW2TCtvm1wkLy9rVcTkpjz4WN464fX8rwlFmV7a/HLs5/XrM5hpKwqpyNtb42ykBAKMLa5ganwSgFy3T+cwIe47rnx+uMycEJ9OFMv/8cL23D4/y61KCKVypVTOiWmibxY0j8/1wgOld/u+qRCp8fHDG/B4XyjksY7W81BNdLS/Fvbz8bz6vHttCVCEAiTDw+SLFtnhQRo1epIQJxNszW8z+TqshnJ/Nl5jHc/VdAHLRANIgz3F9nmhc5Oq7JOm0rNkmFbYNWbjTakgrQRIoPekud8YAtHvt+b2c1kkvNtt9bZV1jB7N4Yjz6mzcxLaXSEqeLJzNlzC/J36iUUV1UwnQiHBYqtNqJJYKAUYpoSLLujI6Pzb2/XAYWRkM+lXErT44svlS7CmjtL2MY8fGivp484S8vdRKidf6PrevgG5f+xFDfe1wq1tcVj43OcLAe5SjAlEK6PaiRRkfnSODnMO8d11JQ0oJz3H922aTtGChWDQSkvFjtpfUK2i1DgPAU/NePubj03NcX5bLJOFKrZqhRoB68+hCjrBtESpvXMTCARIgWisAAAAASUVORK5CYII=",
-  "lok_gasing": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAAB7klEQVR4nO2ZP2vCQBjGH0sHRRBSEBylSykZGsiWL9C10KGTe6fq2NGxY3Tr7NSh4KfIJqSDlC6loyAoBIrd0qGkhJi7e+9y55+QHwiSe33fJw9P5JLUQMCz3RgAFt8/lHJpOs06ACCYz2qiWmGBZ7uxKaFZOs26UDRz0bSrLERu5x7cpassWG6f7ENMESrBpqkEm6YSbJpTHU3eJn1hzVVvpGMUTXAi6PJ2uLX2/rp9TLUH5aSkHKaKM9mj3BkuEgkdvwd2HAkdkZL+l0i7pCKg6O/LnWFg/7E4OocrwQAwGU0xGU1NtNazl8jS69+YaAugrJHQtdPSMUP4XCLL13qtKCmfrmXlHmc9l+BmWLc46gzWSQAaM+z7Y0TRKvfj+2NdY+QEO47HXBsMHpTWeD3zkBIchgFzAM9F1prjeAjDQEYC/6JjZZg1KIpWufWt1hm5B/CXYdZFp5ThPKdlHFZxNkHJYdZgisMUsdodTkgPpjqs6mxCIYezyGSYhzGH06j8S6hQOSy7JsvROczd/Hy8PP5/v7h7khoqS3rW9f0zs458x9G1LOHuTdbJdG8q3Jd46T1xMJ/VPNuNF5uNsGmn0QAAUGuT3ulZrHquw5RXqbqgzirnPd0hcXSCyRn1bDf+XC6NiDhvt6sMHwy/chP1rPvRVuMAAAAASUVORK5CYII=",
-  "lok_gasing_walkA": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACHUlEQVR4nO1aMWvCQBR+KR0iBSEFwVG6lJKhgWz5A66FDp3cnapjx44do5uzU4eCvyKbkA5SukhHQVAItnZLhzYlxtzde5c7RckHgua9e+/L55fjkosBBHi2G1PysQgmYwObi0pMiM4+v2U5cVE/MwEAR1yY4NlurItoFvUzU0iaGdStKgsitXMP7lJVFlhqn+yDTBGUhHWjJKwbJWHdOFVR5HXYEeZct3oqWuEIJ4Subh+3Ym8v28dka2BOiqQwlpzOGsft4SKWUDEeYMeWUGEp8iyRVkmGQNHxx+1hgP3b4uAULgkDAAx7Ixj2RjpKq1lLZNHq3OgoCwDHaglVKy0VPYTPJbL4WC4lKeWjYVm5x1nPJbgeVk0O24N1EgAKPez7fYiiRe7H9/uq2tAIO47HjHW791IxXs08kAiHYcBswFORFXMcD8IwoFDgX3QsD7MaRdEiN79aPUfXAPj1MOuik/JwntIUhWWUTSClMKsxRmEMWeUKJ0g3xiosq2yCQgpnQfEwD9oUTkNmlpBBqTA1RsXBKcxd/Lw/P/x/v7x7IjWlIt2r2R4w89B3HA3LEq7eqEqma2PBJBxMxkazPdhYE5umKSxYr1Q2fs/Wa1K+COg9Xs92Y1HzhEDiP8yYPMK83VAtN6FpfK1W3Pj0L35Rq6H2mlHTmq5dfBkIFfZsN57O5/iKRE9SodUSwWRsYP8d7DsT2j1MeXkDgx/bdAkC82z6+AAAAABJRU5ErkJggg==",
-  "lok_gasing_walkB": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACGUlEQVR4nO2ZsWvCQBTGn6WDIgjp5OhWSoYGsuUf6Fro0Mm9U3Xs2LFjdOvs1KHgX5FNSAcpXaSjICgEW7ulQ3tyjXl37y53WiU/KNjcy3ufn1/kEitAIHD9FABg+vFFKVemWa8CAEA0HlVktdKCwPVTW0KzNOtVqWh00barGDK3cw9u01UMzO2jXYgpQinYNqVg25SCbXNsosnLoCOtOW/3TIyiCWaCzq7uN9ZenzeP6fagvCklh6nibPY47AwXiYSJ8wG2HAkTkVL+luBd0hFQ9PzDzjDA7mOxdw6XggEABr0hDHpDG63N7CWytDuXNtoCwKFGwtROy8QM6XOJLO+LhaakfFqOk3scey4hzLBpcdQZ2JsAMJjhMOxDksxz/8Kwb2qMmmDPC9C1bvdWa03UMw8lwXEcoQNELmJrnhdAHEcqEsQXHZZhbFCSzHPrG40Tcg+AnwxjF51WhvOcVnFYx1mGlsPYYIrDFLHGHWbwg6kO6zrLKORwFpUMi7DmMI/Ot4QOpcOqa6rsncPCzc/b09369en1g9JQVfhZFzePaB35jqPlONLdm6qTfG8qSrdILceB6WolrGnWan/+l9UzeFdFPy4Kf3XkN/HReFQJXD+lCGYDKfXZc2QIHeabYHcg24YUicD108lsRuuYiYRp/s1dM/UTtPJcgudzuZTWTH5rAtdPZVkmCWYXHLWWUqcL2WHbQqh8AwINECfnNd3dAAAAAElFTkSuQmCC",
-  "chung_choning": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACNklEQVR4nO2ZPUsDQRCG34tisBEbTSGihZAijZAuWFlEsBVt1ELyC0TQxjKNgvgLgoVaia2ghZWkC9ikCFhoqTZiIxE0FrIxdzc7+3F38RZ9q2Rvdva5YXZu9s6DQqVCsQMA7+1HlWkkDWVzAIB6s+FxduzFUqHYSRo0qKFsjoWWXogLdnp8lL1+//QSGuOgycHfiGxQMuhMcCANsMD3nhH7p1ch4LTLB5yW6ApRUXY7wi4otAvjSIubswOlzdzyltKGqhSD9lg/0gHk5ujAC1kB2wCa+ONuwBfuYDoEHc0sbIYc3F0eGsHp+OgFDqaFUYRN4ZLwoV0lqMjEJRPfbJWgcjU7u4LJ3AQAu2jpzBcpQVUJaYRlG0ssZiud+dymdu7BIe0lTGpj3BJrU72EcR2Ousv7ViXSIh9wvdnwxGEwDTKqEra62qmRv+NSLM1Pr8p7lS5oea8St3u+lwDib3RUClYn415COEgaXLeMaqXEaa2Kh9e37v/yeYu0a23MkuP5o1ty/Gop71tjtbKrZGF7idNalZwkAwbC0DJYwA/cKwEe+cTBgQpxgDJ/MnBKbj84/t9LJCC3gf9kL5G03AbmqoRODbaVzPd/lfgNOVcl2F5iamQ4WSKLtZxLCeWJAwCeF9f7AjN2cRwaY08c9WbDoz419UvU/lHmcNCg3zcQ6VuzEAV9fbJN2s6v7VvZAWpYQPPEYRp1Ya9rZyLjCaVCsZP5aLM2nwNZAICOnSm0c2XNOeAv1UoTUSj1ALAAAAAASUVORK5CYII=",
-  "chung_choning_walkA": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACSklEQVR4nO2ZMUtCURTHjxo+WqIpB4kaAgcXwU2aCgxao5ZqCD9BBLU0uhhEn0Bacoo+QEJN4Sa0OAgNNTRUS7SEQdkg13z33Xvuudd39V3yD4Ked+65Pw/nHs/zxYCoQjbfpfqaqNFqxih+SicG+tV5GZYJVdJLAYAaHL1YyOa7tkF5Jb0UCi29EBbs4twsev3x9T1gw6CFxnFklpcMOs4bogAL0DszooMeAI66fMBRyS6TKMtuZ9gFBU5hGGVxd3mq9FnePFD6iDrFlDnWnyiA2BoKPJMRsAmgTjzsC/jSzZcDH2hpbT8Q4OH6TAuOEmMQmC8LrQzrwtmIQe4SosyEJZ3YaJcQ1aqX24L5VBoAzLJFWc9KQtQlpBmWHSy2mako67FD7dwPh3SW0OmNYYvtLZoltPvwsKd8ZF0iKvIBN1rNGLsZjIK0uoSp6kdV4fuwFMrwM6hipdQHLVZKYYfHZwmA8AcdlfjupD1LsAC2waltlFQStWoZnj4++5+LV22hX3svJ7Rnzu+F9vpGxrfHdulYyYLOErVqWbhIBgwQhJbBAviBB8XAh77jwECZMEBZPBm4SG7/cEz+l7Agt4H/5SxhW24DY12C0oNNJYs96RLjkHNdAp0lFmam7RIZ7OVcSSjvOAAA3tZ3RwLDRlPs30vhPMzbnleLVgB5pW/qAZuyhnkH2w/FVfvzIj1B56FvLw6Ffis7JwFb/LuDxv5JeP33lCf6JGCAHrRqcwbANqasGfSnyLkuYRW40WrGfhIeYC+d7AIA/AJ2HR9nFMEQEwAAAABJRU5ErkJggg==",
-  "chung_choning_walkB": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACVUlEQVR4nO2Zv0tCURTHz9Pw0RIt5SBRQ+DgIrhJU4X9AVEQtYR/QQS1tOViEP0F0lBO0Rok1BRuQouD0FBDQ03REgZpQ1x7775zf7778l3yC4Ked+65H4/nHs9TBwQq5gp9AIDP7ovINZRSbhoAAJrtlsPz414s5gr9qEFppdw0F5p5wRTs3PQk9/rj61vAxoNGjcPILC0WdII2xAEW4OfMkPPjVQA47vIBxyW7RFiW7c6wDQqcQhNlcXdxLPRZWNsV+mCdYkwf61cygLw1MvBEWsA6gCrxeG/Al266HOhA8ys7gQAP1ydKcDIxvMB0WShlWBUuihjSXQLLjCmpxOZ2CaxW3fw6zKQzAKCXLZn1pCSwLsHMMOtgkc10JbOed6it++JgzhIqvdG0yN7YLKHch8Oe8j/rEnGRD7jZbjnkZjAOUuoSumrs19DnpmRk+PGqVC0PQEvVsunw/FkCwPygIxLdnZRnCRIganDZNipVEvVaBZ7ePwavS5cd1K+znUft2dN71N5Yzfr22CwfCFm4s0S9VkEXsYABgtAsWAA/sFcEPPQdBw+UiAfIiscCx2T3F8fod4kIZDfwv5wlopbdwLwuIdODdcWKPeoSw5B1XYI7S8xOjEdLpLGXdSUh9eulygQWRlNXZwEbXRboPEzbnpdKxuEwZW4aAZuwhmkH7A1EqVD/NRNh0Lfne6jv4tZRwCbrK4IFkLzjIIGKuUI/8dUFAIDljUPcOen6Npb5hGRAiaQdyeYEmKWeB1jGn14jknVtTQm42W45vaQLvIfKx6ujb3J4KfWkd+wZAAAAAElFTkSuQmCC",
-  "so_jiyan": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAAB4UlEQVR4nO2ZMUjDQBSG/0qhhbo4pSCiQyeDImYyDoKLODh0cSoIrk4uLoKD4OLi5CoI3Ts4iIvgoE46VHSQUuwmOHQSHIQ4HcT0cncvd6de7LeEJi/v/X387xG4AhQI/SACgNf3D5VwMtVKGQBw83hXkMVKA0I/iGwJTVKtlKWihQ95YmtTM9zYzssDVR8XmWjuA9sWkCGyyMCNn7SADF63R35LTFaGgm0zFGwb5wQXVQOfWns2dWC6vq8UpywYAGor2wP3OhdHlBTaOUiCqeJs5MivhxmluXVMeOMAsnVL9/3UDqcNGSuWFZX3RQPunCVSBauuGRuIapM9rDvl/25LOCeYZIm4t0STfHJwCgDY3N3QzpWE7GEVREJ1cc4SzglWtkRyN35OLhgTQdn5yh1u359z73ef26QrJTePzEPX73UBAGOlUfR7XeWrLs55eCjYNs4JFg4dZXp1ideanV9NjSNtiavWcXZFhnI5ZwllwSZ2qInc+e3wX8E5wcItUezdxn55doV8q5VOvjrMvlNN7t803uBhqb4ljctXhxnsn7MDP9NQzgWFJ6FJ2CFf6AfRZXOHm3C5cZgpTlQvDrfDKqfqJqHUIwsL/SBqrC0KY5pn1wAAlThqc5wbOucEfwFhrrmwS5o0KQAAAABJRU5ErkJggg==",
-  "so_jiyan_walkA": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACBUlEQVR4nO2aMUjDUBCG/0qhhbo4tSCiQ6cGRcxkHAQXcXDI4lQQXJ1cXASHgouLk2tBcHHq4CAugkPrVIdKHaQUuwkOnQQHIS5GY/Pycpfkqa/2X0JfLvc+rv8dKa8pMGQZpsOJp6rRbqaosaRAF/Tp5TUqk1SFXBYADTw0wDJMRxXooAq5bCi09KYItjgzK4ztPN5x+YQKgxbeUG2BMMks4lv4SQuESVTtsd+CiaoRsGqNgFVLO+A0NfC+tq+SAyW7QoojAwNAcXXHt9a5POKkiJ2DBcyFU5FjeD3sKjO/gan8JIBo1Yr7fGCFg5rM3SyqKM/LGlw7SwQCU8eMCsn2Zns4bpf/uymhHTDLEl5vyTq5enACANja24yda1BsD1MkA40r7SyhHTDZEoOz8W16MTEIzswnV7h1eyFc7z60WFdObpEiN12/1wUATGTG0e91yde40s7DI2DV0g5Y2nSc7o0r715zC2uBcawpcV07jk6UUC7tLEEGTmKGJpF7eCv8V6QdsHRKpHs3nk95tSDf9gqWdhWWApfsCkp2Bc+KqwuAvIeS33RRRXmRJwEv29sAvg78rk53hXEr5UPfGiWWcy7oA260m6k4p/beg0DLMJ3qWV0YV15fAgCcntc/CyHL5UpYYVGgZZiOu0kIhMP5O0HQfkHSbkoobbqPykntxf023gEnesH1x6WhLwAAAABJRU5ErkJggg==",
-  "so_jiyan_walkB": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACA0lEQVR4nO2ZMUjDQBSG/0qhhbo4tSCiQ6cGRcxkOggu4tChi1NBcHVycREcCi4uTq4FwcWpo7gIDtapDpU6SCl2Exw6CQ5CXDxI08vdvSRnvdhvCbm8vPvz+N8bciko4Fi2CwBvH58q4WQKuSwAoNVtp2Sx0gDHsl1dQv0UclmpaOFDntji0jI3tvf6RNXHRSaa+0C3BWSILDK28JsWkMGr9sykxIRlKlg3U8G6MU5wWjXwuXmsUwdK1bpSnLJgAChuHYyt9W7OKCki5yAJporTkSO5HmZkVnewkJ8HEK5aUd8PrHBQk7HNwqLyvqjBjbNEoGDVMaMD0d5kD0ft8n83JYwTTLKE11uiTm6cXAAA9o52I+fyQ/awCiKhUTHOEsYJVraEfzZ+La7HJoIy85Ur3Hm85q73XzqkKyU3j9BNNxz0AQBzmVkMB33la1SM8/BUsG6MEyxsOkr3RsW718radmAcaUrcNc/DK4opl3GWUBYcxwyNI3dyK/xXME6wcEqkBw+eu7xeISN7BZOsCjPeNVeX7bFR3ZfGCStcqtYn+kOFh1KF2ZezA7+4oZwLCk9C/bS67RR7dnt5yE24WTsdOQx0LNuVxYr2869xKxx01utYtlurlAEAjat7rggqjmW7Kqf4DC3/JbxiapVy4MexjwegLDqZY43xUwWu33wx2vgG/WXEcftbHYQAAAAASUVORK5CYII=",
-  "ngai_wingnaam": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACJ0lEQVR4nO2YQUsCQRTH/xuhkkRJSMIiiSwUWRB4Cb+A5y5dg6APIHQTOgSeO3UKgj5B576AdBGCMgoklAgCiVWiSAPtNLHazs68nV1txf9pd+fNzG/fvpn3ZjVIKJfJ9gHg9eNLxpysRDQCAChXK5rIVmiQy2T7foEOKxGNCKG5jTyvGqlN7mC1+i2N0EYib9s+HKVXeeJ5e2YcMCqaAvutKbDfmh3FJPeXR0Kb9Z1jqbFIwN1PEwAQmotxbWTgmIx8AQBQuzqR7kMCZqBWcAogkxtQJmlgOzAjX4CRL0hPrALKpBTD1IlVQJkCt0sEDpgcEuGtXSSXdQDuPrFqf7KH2WRupdp/8kNCdaWr9g+chwMH7Hnxc166GLjfL+55Or7nwF4DDmsyQqJcrWjsmD8qseO9lcHOTvgjhYm9wMsKvxZ+LB3YPl8tnnH76A3TEXBYUka5TLbvBAoA79d3ju3z2xuO7XrDlIIOXAxPgf3W5AJ3Wm10Wm0/WaREynT108OBe6ftyknD2x9lHKXUPA6Pe1ZLhNaSv9fdh2cA4r3XjciJw8mr4cUF1yCyiYN+CLVAdVptJUg3UgoJCqzdl3Hzsr7+vRQtStZOAfcUmFcAWRekqkjlpahik5Gd19PtnnR56crD3zc1x/ZUbAkAUDff/rRZU2svFSfPLZ2ay9WKpjdMISxp8nqT5F1gkouf/6LAAZN2iadm0xeIdDwuHceB83DggH8AoVW5x93JpSIAAAAASUVORK5CYII=",
-  "ngai_wingnaam_walkA": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACP0lEQVR4nO2az0oCQRjAPyVUkiiJSBBJQiiyIPASvoDnLl2DoAcQugkdAs+dOgVBT9C5F5AuQlBGgYgSQbCEShRpoZ0mVtuZ+b6ZnZUVfyA4OzM7v/12dv6sBoBALpMdUMpjKVcrAWxZVEEm+vrxpeokJB6NAABOXFogl8kOTImOEo9GpNLcTF5U06kt7slqjTuaoQOyaDse9DKqPHjRDo5DRoepsGmmwqaZ8aKRh6tjaZmN3RPUuUjCvc8WAACEZmPcMhg5RjpfAACA2vUpug5JmInaxSmCDBVRBlrYSSydL0A6X0A3rCPK0OrD1IZ1RBm+GyV8J0zuEuHtPUguJwBA7Rbr1idHmDWmim79ye8Suk+6bn3fRdh3wq4vfi5Kl0Ppg+K+q+d3XdhtwVEmo0uUq5WAqbc8PNj23u7gVA79iohdwMsKfy38VDp0PL5WPOfWSTRbQsFR0K+qRKIAAO8398L8uZ1NYX6i2UJJ+64PT4VNM7nC3XYHuu2OSRcUpJmucXY0lBYNVyJGhz/KebSm5nFE3LW1RGg9+fe99/gMAPKxVwXyxCGKanhhXlkEO3HQN6E2qW67oyWpglaXoMg63RmVizX69lL2ULJ8irirwrwFkP2B1IW0vJSt2DA4RX2100cvL5Ui/H1b4+alYotD6UbrbShtn1r7qSVy2yRhkagdFi3ZriXYsP5doAzji5/+T1/4qVsW1C0L/cM7Stjr/Z0IaZfIZbKDumV54YLC6DhM2X0bHSUoUP68geEX2pbfuCL9zowAAAAASUVORK5CYII=",
-  "ngai_wingnaam_walkB": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACVElEQVR4nO2YQWvbMBTH/ykjDQulDWO0EEpDCawsGwx8Gf4COe/Sa2GwDxDYLdBDIeeeeioU9gl63hcIuwQGW8YGIaSMwsCMJJSOJRtxD0WtYyzrPclK6pA/GCzrSfr5+Ul6cgYEuRXHB4Bf138p5mxt5XMAgGa7lVHZKg3ciuPbAg1rK59TQksrZV4tl15KO+v0vvAII6TyduTDWXpVJpm3V+YBY6IlsG0tgW3r0SwG+XZ+qLR5/uaI1BcLePynDwDIPi5IbShwQuVqDQDQ+XhMbsMCFqBBcA6gkA6oEBk4CqxcraFcrZEHNgEVMoph7sAmoEKpWyVSB8wOidVX+9jeLALQ+8Sm7dkeFoPpyrT94oeE6Uw3bZ86D6cOOPHk56zxYar8tn6QaP+JAycNGNZihESz3cqIY/6sJI73QYYoO+WPFCHxApc78lz4R+Nd5PNn9VNpm+JFPxYwLJKRW3H8OFAAuPr0NbZ+7fWL2PriRZ8EnboYXgLb1uICjwZDjAZDmywksXa63sn7qXLcchWn8PLH6cdoa56HxxPLJbJ723f34+8/AajXXh2xN444r65urGuDUDcO/iE0ADUaDI0gdWQUEhzYqC+j87JW/16qJqWo54AnCixLgIIT0lSs9FKVsVEU5fXd4YScXmp5+N/njrSuVHgyVe71f0+Vg1vrpPSUPTYZuNluZVw4fhhAZgvcJ/0yrfS825vQS8a2oRrO+sgkE8nDbsXxu55nm4WkB5NeUr+gdeDJ/4ny6noeup5HgiaFBOfYT12edMVaJWyCUHUDr1HkEoipp9QAAAAASUVORK5CYII=",
-  "gu_mingfai": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACCklEQVR4nO2Zv2rCUBTGP9siRduCg9RSXEq3O5SSLQ8guBVKRcjmA7iLFpFa3PsAboHSLt2EPoCbdHKTLg4WHDr0D6VQ0kEimub+ScwRLfe3eXPOuV9uvtycxBgUMJnhAMDLx5dKeGAyyW0AQLffi8lipQEmMxwqoV4yyW2p6A3RwWWKBSZX0L2aPLiCly3WRSZauMKriBZMjRZMzVbUBZ8eGnO/T8/qkdZfWLBXoOz4oicQWPCsAJYrg+XK6D/eKOWyXBkA5uKDnkCoFfabWAU3Pmw+IOgl/J5035+voSfywxUeT6TmxkU9RaBdIp5IRSYWmJy4V6yMwJbYOzlHdv9wOuGy831X2GSG07ErvgnuZGFRye/YFW4DtHYPDl/B3X4vlrday9YyJW+1uDddYA8vetMtmv8/LLHKkAi2m23YzTZF6egF2802rFoJVq1EIlr4Si3aj6kQ7RCA4ncJYLKZU+Juo7LvEtIV9o7d3V5z43d/3n3H3zZ3uDmFYvXPWKgVNpnhiMRRUihWo+nWVgEtmBoSwaPhAKPhgKJ09K/5AHCQPaYoC0Bbgh7tYUB7eA5tCYDWEkLBs92XqOOKAl6n50XZEn5tII+glghSW7kf7vZ7MZMZTv3yQlq0cXUPAFCNdWvPzsWLF1pC5a/UqFCdS29r1KydYGWPmsxwnsdjEhFH6bT28MrwC2xWyHQhldfjAAAAAElFTkSuQmCC",
-  "gu_mingfai_walkA": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACO0lEQVR4nO2aPUvDUBSG36oUqR/QoViRLsUtg0i2/IBCN0EshQyCP6C7WCnFSncHx24B0cWt4A/oVnTJVlw6VOjg4AciSBxqShKT+5HklCp5ttycc++bk5Obk3uTggSaoloy9qL0zH5K1FbI0Bb69PYRVhOT/MoyADHhXANNUS0qoV7yK8tc0Qusk7MUC0zuIC/tAgXPWqwNTzQzwvNIIpiaRDA1S3F3eH/bdB3v7jVi7T+yYK9A3vmoFyAt2ClAKdWglGow7y6EfJVSDQBc9rIXECrCfgOLYNuH9QcYtYTfm+7z/Tn0QH7YwtOZrKudVVNIzRLpTDY2scDkwr1ieUinxPrOPgobW9MBZ+3vG2FNUa2ucezrYA8WFhH/rnEcWAD9uReHr+Ce2U+V9fastUwp6+3Ah046h6M+dFH9/0dKzDMkgo1WB0arQ9F1/IKNVgd6/Qh6/YhENPOTmjUfU8GaIQDBdQlgMplTYk+jvHUJboS9bddX54H2a1+vvu0vi6uBPpXqya+2UBHWFNViiaOkUj2Jp1qbBxLB1JAIHg0HGA0HFF3H/5kPAJuFbYpuASQpQU+Sw0CSwy6SlABoU4Ip2Fl9sSquOAiq9LwIp4RfGRiEbErI9B0Y4Z+1CVc9bJoP3A6bZzeu48bpgZQ9D2ZKOGtSmX1m20/Gx7lwwyrgSR46J4e1SyG7Yi4ntNcslMNUu/hh4EZYU1TrcTwGIBatYi4XXRUD0pTomf2U6N0R/WeCPIdlft4Q4RvkcNp454M5ogAAAABJRU5ErkJggg==",
-  "gu_mingfai_walkB": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACNElEQVR4nO2ZPUvDUBSG36qI1A9wEBXpIm53EMmWH1DoJoil0EHoD+gurRSx4u7g2C0gurgV/AFu4tRNXBwUHBz8QASJQ025iblfSU6IkmfL7Tnnvjn35ObktgANbGa5APD49qFjbszS9BQA4GpwXVDZKg1sZrlUQoMsTU8pRY/JfkxTLDBcQW81RQgFpy3WQyVamuEskgumJhdMzUTSAW8u9n3XG5udROPHFhwUqPo97g0YC+YFsHITrNzE4PJYy5eVmwDgsze9gUgZDptYB88+qj8g6SXC3nSf78+RJwrDEz5ZnPeNy3oKo11isjifmFhgeONBsSqMS2JufQulxZXRhGn7h2bYZpbbd3ZDHbzJoqLj33d2hQ3Qn3txhAq+GlwXKvWjtLWMqNSPhA+dcQ3Hfeji+v+PksgyJIKdbg9Ot0cROnnBTreHeruBertBIlr6SS3bj6mQ7RCA5rkEMNzMKfG2UdW5hDLDwbGz00Oh/ezXa+j4y/iM0Kdaa/0ai5Rhm1muTBwl1VormW4tC+SCqSER/HB/i4f7W4rQyX/mA8ByaY0iLIC8JOjJaxjIa9hHXhIAbUlIBfPdl6zjSgJRpxdEuyTC2kARpiVhEtuoJKq1Fjp721Kb/YNz37XK3oM/B5H1w0LBP4cpLn+t+tMvOKGuvUokjzTDfBCTySnRKgmbWe7d0xMAYKd5IrVdXViIr0pCZl4cuitIsg/zqFaEx2aWq6plLcFRHjgqtDNMLUSXbwNu3IAMO6nJAAAAAElFTkSuQmCC",
-  "yip_manji": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACK0lEQVR4nO2Zv0vDQBTHv1HBwTq14lCdLEjJImTLJF0c2tlJKBScHKT4Yyk4CC5VKQ5OglDwT2gHF3Hq1rEUoW46aSfrKHGoCenlkrtr7lJS+51C8vLehy8vL5eLBg6ZumEBQDY54AkXVrefAAC0Om2NFcsMMHXDUgVKqttPMKF9L8pwdWNtJfD669uH5xzLberJKF31k5/bc5OACaMZsGrNgFVrQWXy25tz7tiDwzOuOGnAInBhxA0cFRBLQg5ndsqec73HmlDBsDmEgEXhVOSY/imxuLWL9dU0gPHcCnu/sMN2sXEV9v7YtUTsgIV7OOxT/u+mxAz4/qJOPZYl6au1UqXogJYqRdnp1SwvVYDail0Pczuc26sCAJqN8Asgt/KF4eotm+SL5waWDUrmPS7uc8UL9fDlEd9njKhOrvk/DmLXw9MB3Oq0NXtTbhIK2sX07eFWp61BNyxVDxupq/odgOHUCNpy9W0Jk4D9fO/J5BuRO3ezUXO2emmiApOw+UIZqXRGJuOIUumMM4+BYGjmQ+dOpFo8tTy94nbX7idTN6ztzWX5hC49v3w5tcj67rhAh1n9JFtkK9LEbImopgRvLQ9wq9PWyF6KApqs4TfeqHP4D9qiJVIt26zxXhzDBJG9PFgvDYDzx6LqCWHLnhRBMbFb/DAdBhDZaJPyr5kmUzesp4dT6rXcXtUpzBsnoulsCbdM3bAS89+BMYOfJQAAT5yoy7FzOHbAv5xG3duyf6WPAAAAAElFTkSuQmCC",
-  "yip_manji_walkA": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACQUlEQVR4nO2Zv0vDQBTHX6zgYJ1acahOFqRkEbJlEheHFkcnoVBwcpDij6WgILj4g+LgJAgF/4R2cBGnbBlLEeqmk3ayjhKHeCW9JnfvkruUaL9LS/LNex8eLy+XnAYCMnXDEfFjZbVtDetFGQloIdMPy8RUp5cGABw412DqhqMKlFanl+ZCB56UUdXlxXnm+ZfX95FjvGr7HoyzqkEKqvbUOGCiaAKsWhNg1ZpWGfzm+hTt3d07RvmkAYvARREaOC4gnoQqnN+ojhzrPtSFEkaNIQQsCqcixt+fEjOrW7C0kAOAcNWKer1whUmysIp6feJaInHAwj0c9S7/d1NiAnx31vD9L0vSV2uVWnkAWqmVZYdXs7xUAUqUuB5GV3h9+xwAAFrN6Asgr4old/VWyOD8aGDZoHTcg/IOyi/Uwxf7uNcYUR1e4V8OEtfDfwPYatsa+Sg3DrG+Ygb2sNW2NdANR9XNRuuycQsA7tRgfXINbAmTgv1468rkG5I3dqtZZ37p9wWmYYulKmRzeZmMQ8rm8oN5DMCG5t503kCqhck10ive6pJ+MnXDWVuZk0/o0dPz5yAXnd/rY1aY10+yRbein7gtEdeUwOYaAbbatkb3UhzQdI6g8eY7h3+hHb9AqkWKFe7B4QaI7eHBe2gAIDcWVU8IIjIpWJ7ELX6E9pqJHu+PfH3krSSsF7PXjFrAk0CYmexNauqGs1k+8fWlU+5v/3tW/m4+SZ5OfXF9XgDMNaLAiethpdteZG3A84jE/AGXE/HoPnq7yQAAAABJRU5ErkJggg==",
-  "yip_manji_walkB": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAACSUlEQVR4nO2Zv0vDQBTHv1HBwTq14lCdLIhkEbJlki4OFkenQqHg5CDij6WgILhURRycBEHwT9DBRZy6dSxFqJtO6qSOEod6Ib0muXfNXUpqv1NJXt779PHNy+VigCDbtBwAWEh/UcKl1fxIAQBqjbohihUG2Kbl6ALl1fxICaEDT6ro6tzMVOj555e3rmOibvsejLOrQQrq9kg/YKJoCKxbQ2DdGtOZ/OL8kBy7sblPilMGLAMXRWTguIBEkupwbnmr61jr/kyqYNQcUsCycDpyDP6UGF9cw+x0FkBv3Yp6vXSHWbFeFfX6xFkiccDSHo56l/+7KTEEvjq69v2tSspXa+VKyQUtV0qq0+tZXuoAZUqch8kdzherAIC72+gLIK9WCu3V20KaFk8GVg3K590prZPipTx8vE17jZHV7in95SBxHh4M4FqjbrBNuX4obBcz0MO1Rt2AaTm6bjZeJ9eXANpTI2zLNdASNgf7/tpSydchb+672zN3q9dPvsA87EphC5lsTiVjhzLZnDuPgXBo4U3nTaRblFpdXvF2l/nJNi1naX5SPaFHj0+fbi2+vjcutMMiP6kWb0U/CS0R15Sg1uoCrjXqBu+lOKD5GkHjzXcO/0E7fol0izWrtwdHO0FsDw/RQwMgfljUPSGY2KQIi0nc4kfYYQCxjTYl35p5MfiHmz3f8/litaOwbVoONZYiqTcO27Sc1Og3AGC1dBAQNSGTErZpOTLQUv/OCxykr58Jt2uUeP4akRJ300lZgi1ORDHRkML1Cw7d8BqRnPdVAAAAAElFTkSuQmCC",
-};
+/* v20a181：Q 版池 AWARDS64_SPRITES 成批清走（34 張 44×50 inline base64，連埋只食佢嘅 loadSpr／drawSpr 路徑一併刪，唔留 fallback）——人物改用 PixelLab character 幀（assets/story/awards/px_<starId>_<dir>.png，south／east／west），載唔到畫中性剪影。 */
 
 /* ===== v20a63 AWARDS63：頒獎禮群星版 =====
-   像素角色 v63 原用「真立繪像素化」衍生；v20a64 起成套換做 Q 版人仔（AWARDS64_SPRITES，開羅語法逐格繪製＋走路幀）：
+   像素角色 v63 原用「真立繪像素化」衍生；v20a64 起成套換做 Q 版人仔；v20a181 起 Q 版池成批清走，改做
+   PixelLab character 幀（assets/story/awards/px_<starId>_<dir>.png，south 企立／east／west 行入場）：
    阿偉跟定版造型（黑碎瀏海、深藍西裝褸＋白恤衫開領、冇呔）；紅星池＝POSTER59_STAR_IDS 嗰 10 位
    （程天諾唔喺池內——1990 零出場紅線，任何年份都唔派佢）。
    提名對手（fellows）由嗰年嗰媒介 pack 通告＋LEADSTAR59 主演衍生；冇主演數據就按媒介喺紅星池兜底配對（加權隨機，v20a147）。

@@ -12,7 +12,7 @@
 # (3) syncCards "on" beat 清單唔郁：卡列 "on" 邏輯不變（names／suspense／reveal／comfort 先加 on，glamour 唔入 list——
 #     卡列 glamour 期間仍然係 "on" 態，只係俾 display:none 隱藏，恢復嗰陣唔使重新唱名）；
 #     但 stagger 時序 v174 B2 改咗（200＋i*380 → 60＋i*180，見 test_awards174）。
-# (4) v166 並置佈局唔變：overlay 只冚 canvas（aspect-ratio 424/360，v174 B1）、右 panel 44%＋0.93 暗底、海報縮細 88%／60%。
+# (4) v166 並置佈局唔變：overlay 只冚 canvas（aspect-ratio 480/360，v181：canvas 480×360）、右 panel 44%＋0.93 暗底、海報縮細 88%／60%。
 # (5) beats 唔變：won 順序 reveal→walkup→glamour→out，glamour 1800ms；syncGlamour 兩個 call 位（init＋advance）齊。
 # 反證：run against pristine main (60b0a8f) -> (1)(2) 斷言全部 FAIL（唔 crash）；(3)(4)(5) 係回歸守衛，pristine 應 PASS。
 import os, sys
@@ -56,7 +56,7 @@ chk('C1 .awd63-cards.on 規則跟 v174 B2（常駐 flex＋visibility）', css_ru
 
 # --- (2) JS：syncGlamour 同條件 toggle ---
 sg_i = play_fn.find('const syncGlamour')
-sg_block = play_fn[sg_i:play_fn.find('const syncWalkup', sg_i)] if sg_i >= 0 else ''
+sg_block = play_fn[sg_i:play_fn.find('const draw', sg_i)] if sg_i >= 0 else ''  # v20a181：syncWalkup 已撤，下一 const 係 draw
 chk('C1 syncGlamour 在場', bool(sg_block))
 chk('C1 syncGlamour toggle 卡列 glamour-hide', 'cardsEl.classList.toggle("glamour-hide"' in sg_block)
 chk('C1 卡列 toggle 同 overlay 同條件（淨係 glamour beat）',
@@ -79,8 +79,8 @@ chk('C1 syncCards 唔會除 "on"（恢復唔使重新唱名）', 'classList.remo
 
 # --- (4) v166 並置佈局唔變 ---
 glam_css = css_rule('.awd63-glamour')
-chk('C1 v166 overlay 唔變（absolute＋424/360 對齊 canvas，v174 B1）',
-    'position:absolute' in glam_css and 'aspect-ratio:424/360' in glam_css and 'inset:0' not in glam_css)
+chk('C1 v166 overlay 唔變（absolute＋480/360 對齊 canvas，v181）',
+    'position:absolute' in glam_css and 'aspect-ratio:480/360' in glam_css and 'inset:0' not in glam_css)
 panel_css = css_rule('.awd63-glamour-panel')
 chk('C1 v166 右 panel 唔變（44%＋0.93 暗底）',
     'flex:0 0 44%' in panel_css and 'background:rgba(10,6,18,.93)' in panel_css)

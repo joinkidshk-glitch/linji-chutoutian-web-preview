@@ -73,7 +73,7 @@ ok("soft rev attr check s111", '!=="s111") bad("soft_rev_attr")' in html)
 ok("SAVE key unchanged", 'const SAVE = "starVolunteer_map_v19w"' in html)
 ok("product ?v= stays 20a10", "softRev=s111" in html and "?v=20a10" in html)
 ok("no product v bump in soft rev script", 'q.set("v", "20a10")' in html)
-ok("awards poster consequence and chibi still present", "v20a63 AWARDS63" in html and "const AWARDS64_SPRITES" in html and "const POSTER59_DATA" in html and "v20a61 CONSEQ61" in html)
+ok("awards poster consequence and chibi still present", "v20a63 AWARDS63" in html and "loadPx" in html and "const POSTER59_DATA" in html and "v20a61 CONSEQ61" in html)  # v20a181：Q 版池 AWARDS64_SPRITES 已撤，改 PixelLab 幀 loadPx
 
 sight_fn = grab("eraSightIsPlaceholder")
 paras_fn = grab("eraSightParagraphs")

@@ -1,12 +1,10 @@
-# v20a160 M1 會場場景圖做典禮底圖 static tests：
-# 會場實景底圖檔案在位（424×240 JPG，配合 canvas backing store 1:1）、典禮 code 引用佢、
-# 舊像素舞台 data URI 已撤、降級舞台同 canvas 幾何唔郁、硬規則（SAVE key／softRev／?v=）冇郁。
-# v20a170 P2：底圖換成新舞台-only 圖（同路徑同尺寸；源圖 pixflux 400×224，裁走底部椅背 → 400×208，
-# 再放大 424×240；§4 用 PIL 釘圖內容：幕布紅＋舞台頂邊 y≈194＋講台在位＋底部無椅背）。
-# 反證：對 pristine main（e08a070）index.html 跑——舊像素底圖在位、新常數／新檔案全部缺失 → 乾淨 FAIL，唔 crash。
-# v20a149 rebase 上 main 6d08c7c resync：B1 canvas backing 424×240→636×360（draw() 內 setTransform 1.5，邏輯座標唔郁）；backing 斷言跟新尺寸，其餘（底圖檔 424×240、drawImage 1:1、pixelated、降級舞台）唔郁。
-# v20a174 rebase 上 main a500536 resync：v174 B1 邏輯座標改 424×360，合併後 backing 636×540（424×360 ×1.5，setTransform 1.5 均勻）；底圖檔本身仲係 424×240，draw() 垂直拉伸（唔再 1:1）。
-import os, re, struct, sys
+# v20a181：M1 會場實景底圖退役 static tests（原 v20a160 M1 檔成份改寫）。
+# v181 起舞台改做 canvas 程式繪製（awards181DrawBase：淺色幕布＋木地板＋燈架），M1 實景底圖
+# assets/story/awards/bg_awards_ballroom.jpg＋AWARDS62_STAGE_BG 常數＋bgImg loader 一併撤走；
+# 載入失敗唔再分叉——後備舞台就係同一個程式舞台。詳細新幾何見 tests/test_awards181_static.py。
+# 反證：run against pristine main 91f264a -> 「已撤」斷言全部 FAIL（常數／檔案／loader 仲在），唔 crash；
+#   backing／pixelated／硬規則守衛 pristine 應 PASS。
+import os, sys
 
 idx_path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
 src = open(idx_path, encoding='utf-8').read()
@@ -30,93 +28,29 @@ def slice_fn(name):
             if depth == 0: return src[i:k+1]
     return ''
 
-def jpeg_size(path):
-    """唔靠 PIL 讀 JPEG 尺寸（SOF0/SOF2）；讀唔到返 (0, 0)。"""
-    try:
-        with open(path, 'rb') as fh:
-            data = fh.read(2)
-            if data != b'\xff\xd8': return (0, 0)
-            while True:
-                hdr = fh.read(4)
-                if len(hdr) < 4: return (0, 0)
-                if hdr[0] != 0xFF: return (0, 0)
-                marker = hdr[1]
-                seglen = struct.unpack('>H', hdr[2:4])[0]
-                if marker in (0xC0, 0xC1, 0xC2):
-                    sof = fh.read(5)
-                    if len(sof) < 5: return (0, 0)
-                    h, w = struct.unpack('>HH', sof[1:5])
-                    return (w, h)
-                fh.seek(seglen - 2, 1)
-    except Exception:
-        return (0, 0)
-
 BG_REL = 'assets/story/awards/bg_awards_ballroom.jpg'
 BG_PATH = os.path.join(root, BG_REL)
-
-# --- 1. 新底圖常數＋檔案 ---
-chk('會場底圖常數在位（AWARDS62_STAGE_BG＝檔案路徑）',
-    'const AWARDS62_STAGE_BG = "assets/story/awards/bg_awards_ballroom.jpg";' in src)
-chk('舊像素舞台 data URI 已撤（AWARDS62_STAGE_PX 全檔消失）', 'AWARDS62_STAGE_PX' not in src)
-chk('底圖只得一個共享引用點（常數定義＋loader 各一次，唔分場／唔分分支）',
-    src.count('const AWARDS62_STAGE_BG = ') == 1 and src.count('im.src = AWARDS62_STAGE_BG;') == 1)
-chk('底圖檔案在位（新檔名，唔撞舊快取）', os.path.isfile(BG_PATH))
-magic_ok = False
-size_ok = False
-dims = (0, 0)
-if os.path.isfile(BG_PATH):
-    with open(BG_PATH, 'rb') as fh:
-        magic_ok = fh.read(2) == b'\xff\xd8'
-    size_ok = 10 * 1024 <= os.path.getsize(BG_PATH) <= 200 * 1024
-    dims = jpeg_size(BG_PATH)
-chk('底圖係 JPEG（magic FF D8）', magic_ok)
-chk('底圖檔案大小合理（10–200KB）', size_ok)
-chk('底圖尺寸 424×240（源圖；canvas 邏輯 424×360／backing 636×540，垂直拉伸 1.5×）', dims == (424, 240))
-chk('底圖比例 ≈424/240（源圖比例；canvas 拉伸係 v174 B1 刻意垂直放大，唔係等比）',
-    dims[0] and abs(dims[0] / dims[1] - 424 / 240) < 0.01)
-
-# --- 2. 典禮 code 引用佢 ---
 play_fn = slice_fn('awards62PlayCeremony')
-chk('loader 用新常數', 'im.src = AWARDS62_STAGE_BG;' in play_fn)
-chk('loader 失敗照舊降級（onerror → bgReady=false）', 'im.onerror' in play_fn and 'bgReady = false' in play_fn)
-chk('draw() 畫底圖拉伸到 canvas（424×360，v174 B1）', 'ctx.drawImage(bgImg, 0, 0, W, H)' in play_fn)
-chk('pan beat 保持橫移畫法（440 闊）', 'ctx.drawImage(bgImg, -8 + off, 0, 440, H)' in play_fn)
-chk('降級舞台函數仲在（載入失敗兜底）', 'function awards62FallbackStage(ctx, W, H)' in src)
-chk('canvas backing store 636×540（v149 B1＋v174 B1 合併：邏輯 424×360 ×1.5）', '<canvas class="awd62-canvas" width="636" height="540">' in src)
+fb_fn = slice_fn('awards62FallbackStage')
+
+# --- 1. M1 底圖退役 ---
+chk('M1 常數已撤（AWARDS62_STAGE_BG 定義消失）', 'const AWARDS62_STAGE_BG' not in src)
+chk('M1 底圖檔案已刪', not os.path.isfile(BG_PATH))
+chk('M1 loader 已撤（唔再 preload bgImg）', 'im.src = AWARDS62_STAGE_BG;' not in play_fn and 'bgReady' not in play_fn)
+chk('draw() 唔再畫 bgImg', 'drawImage(bgImg' not in play_fn)
+chk('舊像素舞台 data URI 繼續唔存在（AWARDS62_STAGE_PX 全檔消失）', 'AWARDS62_STAGE_PX' not in src)
+
+# --- 2. 程式舞台接替 ---
+chk('程式舞台函數在場（awards181DrawBase）', 'function awards181DrawBase(ctx, W, H, off)' in src)
+chk('降級舞台函數仲在（簽名唔變）', 'function awards62FallbackStage(ctx, W, H)' in src)
+chk('降級舞台＝同一個程式舞台（唔再分叉）', 'awards181DrawBase(ctx, W, H, 0)' in fb_fn)
+chk('canvas backing store 720×540（邏輯 480×360 ×1.5）', '<canvas class="awd62-canvas" width="720" height="540">' in src)
 chk('canvas 像素呈現唔郁（pixelated）', 'image-rendering:pixelated' in src and 'awd62-canvas' in src)
 
 # --- 3. 硬規則：SAVE key／softRev／?v= 冇郁 ---
 chk('SAVE key 不變', 'starVolunteer_map_v19w' in src)
 chk('softRev 不變（s107）', 'var SOFT_REV = "s107"' in src)
 chk('產品 ?v= 不變（v20a10）', '?v=20a10' in src)
-chk('底圖路徑唔帶 ?v=（新檔名本身避快取）', '?v=' not in BG_REL)
-
-# --- 4. v20a170 P2：新舞台-only 圖內容（PIL 量度）---
-# 幕布底 y191–193 過渡、y194 滿亮平台面（FLOOR＝291−1＝290，拉伸後；v20a170 舊值 193）。
-# v20a177 resync：底圖重構（幕布 0–193→0–166、地板 194–239→167–239），新舞台頂線源圖 y167，
-#   FLOOR＝167×1.5＝250.5→250；PIL 檢查改量 y160–164（幕布）／y170–172（平台面）、講台 y170–200。
-try:
-    from PIL import Image
-    bg = Image.open(BG_PATH).convert('RGB')
-    def row_br(y, x0, x1):
-        row = [bg.getpixel((x, y)) for x in range(x0, x1)]
-        return sum(sum(p) / 3 for p in row) / len(row)
-    def dark_frac(y):
-        row = [bg.getpixel((x, y)) for x in range(424)]
-        return sum(1 for p in row if sum(p) / 3 < 55) / 424
-    chk('舞台頂邊：y160–164 仲係幕布紅（中央帶 mean < 110，v177 新頂線 y167）',
-        row_br(160, 244, 297) < 110 and row_br(164, 244, 297) < 110)
-    chk('舞台頂邊：y170–172 已係平台面（中央帶 mean > 180，v177）',
-        row_br(170, 244, 297) > 180 and row_br(172, 244, 297) > 180)
-    chk('幕布紅在位（y100 中央帶 R-B 均值 > 50）',
-        sum(bg.getpixel((x, 100))[0] - bg.getpixel((x, 100))[2]
-            for x in range(100, 325)) / 225 > 50)
-    gold = sum(1 for y in range(170, 201) for x in range(195, 231)
-               if (lambda p: p[0] > 170 and p[1] > 140 and p[2] < 210 and p[0] - p[2] > 30)(bg.getpixel((x, y))))
-    chk('講台在位（中央有金色講台像素）', gold > 0)
-    chk('底部無椅背（y232／y239 dark < 0.25）', dark_frac(232) < 0.25 and dark_frac(239) < 0.25)
-except Exception as e:
-    chk('PIL 讀到新底圖（' + str(e) + '）', False)
 
 print('')
 print('FAILED: %d' % len(fails) if fails else 'ALL PASS')
