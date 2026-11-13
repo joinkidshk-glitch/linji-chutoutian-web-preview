@@ -137,56 +137,57 @@ ck("drawMap 計 travelLocked114（travel114Remain() <= 0）",
 # v20a149 fixup3（rebase 上 e8c3a73）：reveal 行融返一行（−1，插入點 L46602），淨 ＋98→＋97；COUNT 13／FREE 27 不變，DEF 53790→53789、WRAPPER 44185 唔郁。
 # 計清單（玩家主動導航，預設計數，唔加旗）：13 處
 COUNT_LINES = {
-    32115,  # ux68GoLoc 手帳「前往」
-    35596,  # 訓練建議「去報名」
-    37723,  # 訓練報名導航
-    38794,  # 進度頁「去現場播劇情」
-    39228,
-    39231,  # 地圖釘 goPin（最近針／後備 L.id）
-    39262,  # 地圖底欄地點掣
-    43816,  # 人情債「去事務所」
-    57923,  # inv72GoShop 去禮品檔
-    58090,  # people72GoLoc
-    58233,  # jobs72GoBoard
-    58254,  # jobs72GoLoc
-    58704,  # 開局屋企 modal「去睇劇情」
+    32125,  # ux68GoLoc 手帳「前往」
+    35621,  # 訓練建議「去報名」
+    37748,  # 訓練報名導航
+    38819,  # 進度頁「去現場播劇情」
+    39253,
+    39256,  # 地圖釘 goPin（最近針／後備 L.id）
+    39287,  # 地圖底欄地點掣
+    43841,  # 人情債「去事務所」
+    58001,  # inv72GoShop 去禮品檔
+    58168,  # people72GoLoc
+    58311,  # jobs72GoBoard
+    58332,  # jobs72GoLoc
+    58782,  # 開局屋企 modal「去睇劇情」
 }
 # 免費清單（帶旗，唔計）：27 處
 FREE_LINES = {
-    24625,  # 劇情播完刷新（markDone fallback）
-    28160,  # 劇情播完刷新（leaveStory）
-    30782,
-    30783,
-    30795,
-    30796,
-    30807,
-    30808,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
-    30911,  # 故事 seed 就緒，系統傳送去劇情地點
-    40771,  # wf4Fire 完（wf4Done，舊旗）
-    43473,  # 人情債流程尾，返去而家身處地點
-    43496,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
-    52750,
-    52869,  # 巧遇播完（encDone，舊旗）
-    53762,  # 劇情播完刷新（refreshLocAfterStory）
-    54144,
-    54166,  # 「劇情已完成」toast 後重開而家身處地點
-    54317,  # 聽完傳聞後 reopen 而家身處地點
-    55954,  # forceRestore（舊旗）
-    57365,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
-    57698,  # promptAudition back（返去而家身處地點）
-    57816,
-    57817,
-    57852,
-    57853,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    57872,  # doGiveGift 失敗後重開而家身處地點
-    57887,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    24635,  # 劇情播完刷新（markDone fallback）
+    28170,  # 劇情播完刷新（leaveStory）
+    30792,
+    30793,
+    30805,
+    30806,
+    30817,
+    30818,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
+    30921,  # 故事 seed 就緒，系統傳送去劇情地點
+    40796,  # wf4Fire 完（wf4Done，舊旗）
+    43498,  # 人情債流程尾，返去而家身處地點
+    43521,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
+    52828,
+    52947,  # 巧遇播完（encDone，舊旗）
+    53840,  # 劇情播完刷新（refreshLocAfterStory）
+    54222,
+    54244,  # 「劇情已完成」toast 後重開而家身處地點
+    54395,  # 聽完傳聞後 reopen 而家身處地點
+    56032,  # forceRestore（舊旗）
+    57443,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    57776,  # promptAudition back（返去而家身處地點）
+    57894,
+    57895,
+    57930,
+    57931,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    57950,  # doGiveGift 失敗後重開而家身處地點
+    57965,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 53875      # function openLoc(id, opts){
-WRAPPER_LINE = 44250  # window.__phase2.openLoc：轉發 opts
+DEF_LINE = 53953      # function openLoc(id, opts){
+WRAPPER_LINE = 44328  # window.__phase2.openLoc：轉發 opts
 # v20a153 第三輪 rebase 上 main a500536（v149）resync：difflib 對位核實純漂移，COUNT/FREE/DEF/WRAPPER 行號按映射重寫（見 qa153/resync_rebase153c.py）。
 # v20a172 rebase 上 main a500536（v149）resync：v149 淨 ＋97；＜45594 者 ＋13、典禮區後者 ＋97，DEF 53707→53804、WRAPPER 44187→44200；COUNT 13／FREE 27 不變（qa172/resync172b.py difflib 對位核實）。
 # v20a172 rebase 上 main e2add29（v174）resync：COUNT／FREE 按段 ＋0／＋5／＋10／＋15，DEF 53860→53875、WRAPPER 44235→44250（qa172/resync172c.py difflib 對位核實純漂移）。
+# v20a175 rebase 上 main f09fa1b（v177）resync：index.html 淨 ＋78（CSS ＋10／toast() ＋15／helpers ＋51／adopt ＋2）；錨點逐行核實內容逐字相同，純漂移（＜33710 者 ＋10、33711–44131 者 ＋25、≥44223 者 ＋78；COUNT 13／FREE 27 不變，DEF 53875→53953、WRAPPER 44250→44328）。
 # 頁內測試區：runSoftP0Checks 函數範圍（brace-match 實量，唔靠死行號）
 def fn_range(start_pat):
     s = src.find(start_pat)

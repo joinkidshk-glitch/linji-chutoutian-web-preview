@@ -12,6 +12,7 @@
 # v20a153 第三輪 rebase 上 main a500536（v149）resync：HELD／normaliser／loader 三錨點 difflib 對位核實純漂移（見 qa153/resync_rebase153c.py）。
 # v20a172 rebase 上 main a500536（v149）resync：v149 淨 ＋97，三個錨點一律 ＋13（HELD 25738／normaliser 31405／loader 31549；qa172/resync172b.py difflib 對位核實）。
 # v20a172 rebase 上 main e2add29（v174）resync：HELD 唔郁（＜27080）、normaliser／loader ＋5（qa172/resync172c.py difflib 對位核實純漂移）。
+# v20a175 rebase 上 main f09fa1b（v177）resync：index.html 淨 ＋78，三個錨點全部 ＜33710，一律 ＋10（錨點逐行核實內容逐字相同，純漂移；ok() 名標籤一併更新）。
 # 用法：python3 tests/test_tang152_static.py [path-to-index.html]
 import json
 import sys
@@ -56,7 +57,7 @@ ok('刪節點：CONTRA98_WHEN_FIX 冇 R_tang_ending', 'R_tang_ending:["1990' not
 ok('刪節點：CONTRA98 winter_finale 由 12 減到 11', src.count('"1990冬","era_1990_winter_finale"') == 11)
 
 # --- 3. DengLine 排片線留返（meet＋push1／push2／crisis，閘門唔郁） ---
-ok('留線：HELD 縮到 3 節（L25758）', lines()[25757].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
+ok('留線：HELD 縮到 3 節（L25768）', lines()[25767].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
 ok('留線：PUSH_CHROME 有 push1／push2／crisis，冇 ending',
    'R_tang_push1: { chromeSeason:"winter"' in src and 'R_tang_push2: { chromeSeason:"spring"' in src
    and 'R_tang_crisis: { chromeSeason:"autumn"' in src)
@@ -76,8 +77,8 @@ ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
    'DengLine.loadMock(dengMock)' in src and 'DengLine.loadPushMock(dengPushMock)' in src)
 
 # --- 4. 載入機制：stub 正規化＋push mock 過濾 ---
-ok('機制：normaliseTangStub152 函數在位（L31441）', lines()[31440].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行（L31585）', lines()[31584].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位（L31451）', lines()[31450].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行（L31595）', lines()[31594].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)

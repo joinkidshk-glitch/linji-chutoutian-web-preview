@@ -4954,6 +4954,16 @@ body.day-res-open .day-row{
 .prog71-items li{ font-size:.8rem; line-height:1.4; color:#6b5636; }
 .prog71-items li.ok{ color:#3e6b34; font-weight:700; }
 .prog71-note{ font-size:.78rem; color:#6b5636; line-height:1.45; margin:5px 0 0; }
+/* v20a175 C2：進度頁頂部 in-flow 提示 banner——收容開頁嗰陣仲生效嘅全域 toast
+   （例如 B01「去何生事務所睇劇情」掣嗰句「已用預設行程 · 到何生事務所可播開局劇情」）。
+   全域 #toast 係 #app 底部 absolute overlay，1.8 秒未散就開進度頁會蓋住第 14–15 幕
+   （v153 review C2，約 1/4 開頁出現）。banner 係 in-flow 置頂：將 list 向下推，唔遮行；
+   收起嗰陣 max-height／opacity／margin 過渡，版面唔會一下跳。字句本身唔變。 */
+.prog175-banner{ position:static; margin:0 0 6px; padding:8px 11px; border:1px solid #b98a2f;
+  border-radius:10px; background:#fdf3d0; color:#43301c; font-size:.8rem; font-weight:700;
+  line-height:1.4; overflow:hidden; max-height:120px; opacity:1;
+  transition:max-height .3s ease, opacity .3s ease, margin .3s ease, padding .3s ease; }
+.prog175-banner.bye{ max-height:0; opacity:0; margin:0; padding-top:0; padding-bottom:0; border-width:0; }
 .prog71-empty h3{ margin:0 0 4px; font-size:.95rem; }
 .prog71-empty p{ font-size:.8rem; color:#8a755a; line-height:1.6; }
 /* v20a142 A2a：進度頁尾「星途寄語」填補區塊——開局下半死位嘅有意設計，唔係佔位卡；
@@ -33708,6 +33718,21 @@ function toast(m, opts){
   if(!msg || msg==="叮"){
     if(!opts.force) return;
   }
+  /* v20a175 C2：手帳進度頁開住嗰陣（#v-home.on＋進度 pane.on），提示改行頂部
+     in-flow banner，唔用 #toast 底部 overlay 蓋住行。兩重可見判斷缺一不可：
+     離開手帳去返地圖嗰陣 progress pane 會留返 "on" class，淨睇 pane 會誤判，
+     將地圖提示吞咗入隱藏咗嘅手帳。banner 唔到就跌返 overlay（唔吞提示）。 */
+  {
+    const _vh = document.getElementById("v-home");
+    const _pp = document.getElementById("home-pane-progress");
+    if(_vh && _vh.classList.contains("on") && _pp && _pp.classList.contains("on")){
+      const _bm = msg + (opts.sub ? " — " + String(opts.sub) : "");
+      if(prog175ShowBanner(_bm)){
+        toast._msg = msg; toast._subKey = opts.sub ? String(opts.sub) : ""; toast._until = Date.now() + 1800;
+        return;
+      }
+    }
+  }
   const stampWanted = !!opts.stamp || /完成|已存檔|已約|行程已定|已還原|通告欄更新咗/.test(String(m||""));
   /* P0-4（v20a11）：同一句提示喺顯示期間（1.8 秒）重複觸發唔好重置計時器。
      連環入地圖／過日會不停重出「今日：…」嗰句，舊寫法每次都由頭計 1.8 秒，睇落久久唔散。 */
@@ -44129,6 +44154,57 @@ function prog71Rows(){
   }
   return rows;
 }
+/* v20a175 C2：進度頁頂部 in-flow 提示 banner（見 .prog175-banner CSS）。
+   全域 #toast 係 #app 底部 absolute overlay——開局提示（B01「去何生事務所睇劇情」
+   掣嗰句「已用預設行程 · 到何生事務所可播開局劇情」）1.8 秒未散就開進度頁，
+   會蓋住第 14–15 幕約 1 秒（v153 review C2，約 1/4 開頁出現，pre-existing，同 B3 無關）。
+   修法唔郁 toast 系統本身：進度頁 render 嗰陣，若 #toast 仲生效就收佢入
+   .prog71-wrap 頂部嘅 in-flow banner（將 list 向下推，唔遮行）；toast() 喺進度頁
+   開住嗰陣觸發亦直接行 banner。字句本身唔變。banner 1.8 秒後平滑收起再移除，
+   版面唔會一下跳。 */
+function prog175ShowBanner(msg){
+  try{
+    const wrap = document.querySelector("#progress-list .prog71-wrap");
+    if(!wrap) return false;
+    const text = String(msg||"").trim();
+    if(!text) return false;
+    let b = document.getElementById("prog175-banner");
+    if(!b){
+      b = document.createElement("div");
+      b.id = "prog175-banner";
+      b.className = "prog175-banner";
+      b.setAttribute("role", "status");
+      wrap.insertBefore(b, wrap.firstChild);
+    }
+    b.classList.remove("bye");
+    b.textContent = text;
+    if(prog175ShowBanner._t) clearTimeout(prog175ShowBanner._t);
+    prog175ShowBanner._t = setTimeout(()=>{
+      const el = document.getElementById("prog175-banner");
+      if(!el) return;
+      el.classList.add("bye");
+      setTimeout(()=>{ const e2 = document.getElementById("prog175-banner"); if(e2) e2.remove(); }, 350);
+    }, 1800);
+    return true;
+  }catch(_e){ return false; }
+}
+function prog175AdoptToast(){
+  try{
+    const t = document.getElementById("toast");
+    if(!t || !t.classList.contains("on")) return false;
+    const msg = (t.textContent||"").trim();
+    if(!msg) return false;
+    if(!prog175ShowBanner(msg)) return false;
+    /* 收起 overlay：清計時＋class，唔等佢 1.8 秒後先至消失（否則會喺 banner 下面重疊出現）。 */
+    try{ clearTimeout(toast._t); }catch(_e){}
+    t.classList.remove("on","has-stamp","has-sub");
+    t.replaceChildren();
+    t.setAttribute("aria-hidden","true");
+    const app = document.getElementById("app");
+    if(app) app.classList.remove("toast-up","keep-sheet");
+    return true;
+  }catch(_e){ return false; }
+}
 function renderProgressPane71(){
   const el = document.getElementById("progress-list");
   if(!el) return;
@@ -44170,7 +44246,7 @@ function renderProgressPane71(){
          尾段 story165TryForcedPlay）。進度頁只做紀錄：已開放行唔再出「播呢幕」掣，
          亦唔再分「在場／唔在場」——v155 B1 三態根因就係呢個掣嘅有無取決於 soft 路徑
          atLoc，live 根本唔跟地點。地點留返做場景資料（唔係觸發條件，唔寫「去 X 就會觸發」）。 */
-      const openBody = '<p class="prog71-note">已經開放——返地圖嗰陣就會播出。' + (r.locName ? ("（場景：" + prog71Esc(r.locName) + "）") : "") + '</p>';
+      const openBody = '<p class="prog71-note">返地圖嗰陣就會播出。' + (r.locName ? ("（場景：" + prog71Esc(r.locName) + "）") : "") + '</p>';
       html.push('<div class="prog71-row open"><div class="prog71-top"><span class="prog71-act">第 '+r.n+' 幕</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag open">已開放</span></div>'
         + openBody + '</div>');
       return;
@@ -44220,6 +44296,8 @@ function renderProgressPane71(){
   }
   html.push('</div>');
   el.innerHTML = html.join("");
+  /* v20a175 C2：開頁嗰陣若全域 toast 仲生效，收佢入頂部 in-flow banner，唔好畀 overlay 蓋住行。 */
+  try{ prog175AdoptToast(); }catch(_e){}
 }
 
 function phase2GateFingerprint(){
