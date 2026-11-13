@@ -4790,6 +4790,20 @@ body.day-res-open .day-row{
 }
 .slot-list .slot-row .slot-meta{ color:#dccba6; }
 /* === v20a53 完 === */
+/* === v20a161 首頁簡介句收窄＋置左，避開阿偉塊面 ===
+   問題：.start-intro 置中 max-width:332px，390×844 第二行字壓住阿偉頭頂髮
+   （glyph-vs-head 144.4×16.7px），390×700 兩行字直壓塊面（glyph-vs-face
+   87.4×41.4px＝3618px²；探針＋原圖膚色框實證，見 NOTES_V20A161.md）。
+   修法：簡介句收窄到 140px、置左（margin-left:0，靠 .start-head 20px padding
+   落位 x=20，box 右緣 160；字最遠只到 x=144）。企位 #start-standee 唔郁
+   （bottom:170px／height:min(52%,430px) 原封不動，移低會撞底部紙條掣）。
+   清位：844 面左緣 175.5／髮左緣 151.5 → 字清 31.5px／7.5px；
+   700 面左緣 210.0／髮左緣 189.6 → 字清 66px／45.6px；932 本來已清。
+   文字本身唔改；柔霧底、字體、行高全部沿用 v53。 */
+#app #v-start .start52 .start-intro{
+  margin:2px 0 0; max-width:140px; text-align:left;
+}
+/* === v20a161 完 === */
 /* === v20a68 UX68 皮膚：訓練指南頁／地點選項分組／地圖墨字地名（方案 B） ===
    地名：深啡墨字 #43301c 12.5px 粗字＋紙色 #f3e7c8 光暈，直接印喺地圖上（冇牌冇底框），
    定版樣板 linji-map-names-sample/index-alt-b.html；pointer-events:none 唔擋隱形熱區。 */
