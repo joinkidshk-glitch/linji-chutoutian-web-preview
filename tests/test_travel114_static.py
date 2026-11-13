@@ -1,4 +1,6 @@
 # v20a114 TRAVEL114 靜態守門：每日入地點出行額度（上限 2 次；重入同一地點都計）。
+# v20a191 resync：index.html 淨 +47 行（CSS +2／StoryPlay head +7／storyMainProgressLine +2／prog71 +36）；COUNT／FREE／DEF／WRAPPER 按段 +2／+9／+11／+47 重算，內容逐字核實純漂移，呼叫點總數不變。
+# v20a191 rebase 上 main b3db32f resync：見 COUNT_LINES 區註解。
 # 覆蓋：① 常量逐字 TRAVEL114_DAILY_CAP = 2 ② openLoc 閘口喺 enc79 攔截之前、
 #       被擋 toast 文案逐字 ③ 地圖 #map-hint 剩餘次數行＋travel-locked 鎖定視覺
 #       ④ 呼叫點分類覆蓋：全部 openLoc( 呼叫點逐個核對——唔係帶免費旗就係喺計清單
@@ -141,59 +143,60 @@ ck("drawMap 計 travelLocked114（travel114Remain() <= 0）",
 # v20a189 resync：index.html 淨 ＋34 行（accel-link CSS ＋15 @~1831／day-res 92dvh media ＋10 @~3235／hint 刪除 −10 @37990／soft map 掣 ＋3／accel link push ＋12／day-res class ＋4；difflib 對位核實純漂移，見 qa189/resync189.py）。
 # v20a189 rebase 上 main 0c29f03（v188）resync：淨 +254（v188；v190 淨 0）；COUNT／FREE／DEF 按段 +0／+254 映射（COUNT 12／FREE 34 不變，DEF 54685→54939、WRAPPER 44387 唔郁；difflib 對位核實純漂移，見 qa189/resync189_rebase.py）。
 COUNT_LINES = {
-    32175,  # ux68GoLoc 手帳「前往」
-    35671,  # 訓練建議「去報名」
-    37798,  # 訓練報名導航
-    38877,  # 進度頁「去現場播劇情」
-    39311,
-    39314,  # 地圖釘 goPin（最近針／後備 L.id）
-    39345,  # 地圖底欄地點掣
-    43900,  # 人情債「去事務所」
-    58999,  # inv72GoShop 去禮品檔
-    59177,  # people72GoLoc
-    59320,  # jobs72GoBoard
-    59341,  # jobs72GoLoc
+    32184,  # ux68GoLoc 手帳「前往」
+    35680,  # 訓練建議「去報名」
+    37807,  # 訓練報名導航
+    38888,  # 進度頁「去現場播劇情」
+    39322,
+    39325,  # 地圖釘 goPin（最近針／後備 L.id）
+    39356,  # 地圖底欄地點掣
+    43911,  # 人情債「去事務所」
+    59046,  # inv72GoShop 去禮品檔
+    59224,  # people72GoLoc
+    59367,  # jobs72GoBoard
+    59388,  # jobs72GoLoc
 }
 # 免費清單（帶旗，唔計）：34 處（舊 27 減 2 條改行 back176 守衛，加 ROM176 新 8 處＋v183 C9 intro 1 處）
 FREE_LINES = {
-    24684,  # 劇情播完刷新（markDone fallback）
-    28219,  # 劇情播完刷新（leaveStory）
-    30842,
-    30843,
-    30855,
-    30856,
-    30867,
-    30868,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
-    30971,  # 故事 seed 就緒，系統傳送去劇情地點
-    40855,  # wf4Fire 完（wf4Done，舊旗）
-    43557,  # 人情債流程尾，返去而家身處地點
-    43580,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
-    53192,
-    53311,  # 巧遇播完（encDone，舊旗）
-    53361,  # v176 星巧遇送禮掣 fallback（encDone）
-    53584,  # v176 女角巧遇 def-missing（encDone）
-    53623,  # v176 女角巧遇「行開」（encDone）
-    53629,  # v176 女角巧遇 onDismiss（encDone）
-    53696,  # v176 星送禮 canGive-fail（encDone）
-    53698,  # v176 星送禮冇 item（encDone）
-    53701,  # v176 星送禮冇庫存（encDone）
-    53728,  # v176 星送禮結果 modal go（encDone）
-    54839,  # 劇情播完刷新（refreshLocAfterStory）
-    55213,
-    55235,  # 「劇情已完成」toast 後重開而家身處地點
-    55386,  # 聽完傳聞後 reopen 而家身處地點
-    57023,  # forceRestore（舊旗）
-    58767,  # promptAudition back（返去而家身處地點）
-    58885,
-    58886,
-    58921,
-    58922,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    58947,  # doGiveGift 失敗後重開而家身處地點
-    59791,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
+    24686,  # 劇情播完刷新（markDone fallback）
+    28228,  # 劇情播完刷新（leaveStory）
+    30851,
+    30852,
+    30864,
+    30865,
+    30876,
+    30877,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
+    30980,  # 故事 seed 就緒，系統傳送去劇情地點
+    40866,  # wf4Fire 完（wf4Done，舊旗）
+    43568,  # 人情債流程尾，返去而家身處地點
+    43591,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
+    53239,
+    53358,  # 巧遇播完（encDone，舊旗）
+    53408,  # v176 星巧遇送禮掣 fallback（encDone）
+    53631,  # v176 女角巧遇 def-missing（encDone）
+    53670,  # v176 女角巧遇「行開」（encDone）
+    53676,  # v176 女角巧遇 onDismiss（encDone）
+    53743,  # v176 星送禮 canGive-fail（encDone）
+    53745,  # v176 星送禮冇 item（encDone）
+    53748,  # v176 星送禮冇庫存（encDone）
+    53775,  # v176 星送禮結果 modal go（encDone）
+    54886,  # 劇情播完刷新（refreshLocAfterStory）
+    55260,
+    55282,  # 「劇情已完成」toast 後重開而家身處地點
+    55433,  # 聽完傳聞後 reopen 而家身處地點
+    57070,  # forceRestore（舊旗）
+    58814,  # promptAudition back（返去而家身處地點）
+    58932,
+    58933,
+    58968,
+    58969,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    58994,  # doGiveGift 失敗後重開而家身處地點
+    59838,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 54939      # function openLoc(id, opts){
-WRAPPER_LINE = 44387  # window.__phase2.openLoc：轉發 opts
+DEF_LINE = 54986      # function openLoc(id, opts){
+WRAPPER_LINE = 44434  # window.__phase2.openLoc：轉發 opts
+# v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行；COUNT／FREE／DEF／WRAPPER 按兩段 shift 重算，difflib 對位核實純漂移。
 # v20a176 resync：NPCS ＋7／星收尾掣 ＋12／ROM176 block ＋501／茶聽 ＋12／addLoc −13／openLoc 掛點 ＋5／
 # doGiveGift ＋4／人脈頁 ＋10，淨 ＋538 行；qa176/resync176.py 逐行核實全部釘行內容逐字相同（純漂移），
 # 新 8 處 encDone 係 ROM176 返程（星送禮 fallback 1＋女角巧遇 3＋星送禮 4）；doTalk／doGiveGift 兩條 go

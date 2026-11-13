@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# v20a191 resync：index.html 淨 +47 行，總行數 60155→60202、DEF 54651→54698。
+# v20a191 rebase 上 main b3db32f resync：總行數 60443→60490、DEF 54940→54986。
+# v20a191 rebase 上 main 593a845 resync：總行數 60409→60456、DEF 54905→54952。
 # v20a171 靜態測試：v169 review C1＋C2。
 # 修法選擇（見 NOTES_V20A171.md，唔好假設）：
 #  C1：push 並存態成版掣過長，最尾掣要碌先見，首屏冇提示——揀 acts 區底加淡出
@@ -74,9 +77,9 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 59442（v170 59173＋v149 ＋97＋v153 ＋71＋v172 ＋15＋v175 ＋78＋v181 ＋8）', src.count('\n') == 60443)
+ok('零行數漂移：總行數 59442（v170 59173＋v149 ＋97＋v153 ＋71＋v172 ＋15＋v175 ＋78＋v181 ＋8）', src.count('\n') == 60490)
 ok('零行數漂移：openLoc DEF 行 53961（v181 ＋8，travel114 釘行）',
-   len(lines) >= 54940 and 'function openLoc(id, opts){' in lines[54938])
+   len(lines) >= 54986 and 'function openLoc(id, opts){' in lines[54985])
 
 # --- §1. C1：捲動提示（淡出漸變） ---
 ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',

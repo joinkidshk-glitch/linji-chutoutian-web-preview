@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# v20a191 resync：index.html 淨 +47 行，總行數 60155→60202、DEF 54651→54698、L4862→L4864。
+# v20a191 rebase 上 main b3db32f resync：總行數 60443→60490、DEF 54940→54986、L4862→L4889（合併後實量 4889）。
+# v20a191 rebase 上 main 593a845 resync：總行數 60409→60456、DEF 54905→54952、L4862→L4864（合併後實量 4864）。
 # v20a173 靜態測試：v171 review C1＋C2（兩項 C 級殘留）。
 #  C1——932 淡出提示偏弱：同一個 30px 淡出，932 首屏只冚住「還人情」底 22px、
 #      掣睇落完整（visFrac 1），700 就明顯切＋溶走（送禮掣 visFrac 0.84）。
@@ -74,15 +77,15 @@ def blend(fg, bg, a):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 59442（v181 ＋8）', src.count('\n') == 60443)
+ok('零行數漂移：總行數 59442（v181 ＋8）', src.count('\n') == 60490)
 ok('零行數漂移：openLoc DEF 行 53961（v181 ＋8，travel114 釘行）',
-   len(lines) >= 54940 and 'function openLoc(id, opts){' in lines[54938])
+   len(lines) >= 54986 and 'function openLoc(id, opts){' in lines[54985])
 ok('零行數漂移：L4862 仲係 v169／v171／v173 同行（v181 CSS ＋13，kwan151／tang152 釘行已一併 resync）',
-   len(lines) >= 4887 and 'loc-acts-more171::after' in lines[4886] and 'act-locked171' in lines[4886])
+   len(lines) >= 4889 and 'loc-acts-more171::after' in lines[4888] and 'act-locked171' in lines[4888])
 ok('L4862 註解平衡：/* 數＝*/ 數，鎖住底 rule 唔喺註解入面（v173 曾中招：註解入面再插 /*…*/ 令首個 */ 提早閂註解，殘尾變裸文吞咗鎖住底 rule 嘅 selector，live 底色跌返 #f5e6c0）',
-   lines[4886].count('/*') == lines[4886].count('*/')
-   and lines[4886].rfind('/*', 0, lines[4886].find('#app #loc-sheet.sheet .act.act-locked171{ background'))
-   < lines[4886].rfind('*/', 0, lines[4886].find('#app #loc-sheet.sheet .act.act-locked171{ background')))
+   lines[4888].count('/*') == lines[4888].count('*/')
+   and lines[4888].rfind('/*', 0, lines[4888].find('#app #loc-sheet.sheet .act.act-locked171{ background'))
+   < lines[4888].rfind('*/', 0, lines[4888].find('#app #loc-sheet.sheet .act.act-locked171{ background')))
 
 # --- §1. C1：淡出實色 stop 78% → 60% ---
 ok('C1：淡出漸變實色 stop 已提早到 60%',

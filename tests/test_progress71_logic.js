@@ -84,6 +84,10 @@ function buildSrc(){
     extractFn('function esc59'),
     extractFn('function calib60NodeTitle'),
     extractFn('function storyMainProgressLine'),
+    /* v191：storyActLabel／storyActIsInsert 係新 dependency——pristine 冇呢兩個函數嗰陣
+       用空 stub 頂住，等斷言乾淨 FAIL（唔好喺 extractFn 拋錯 crash）；新 code 抽到真身。 */
+    (html.indexOf('function storyActLabel(') >= 0 ? extractFn('function storyActLabel') : 'function storyActLabel(id){ return ""; }'),
+    (html.indexOf('function storyActIsInsert(') >= 0 ? extractFn('function storyActIsInsert') : 'function storyActIsInsert(id){ return false; }'),
     extractFn('function prog71Esc'),
     extractFn('function prog71Title'),
     extractFn('function prog71LocName'),
@@ -186,7 +190,7 @@ function sentenceChecks(tag, line){
   const a3 = storyMainProgressLine();
   if(DEBUG) console.log('A3:', a3);
   sentenceChecks('A3 C6 未開進度行', a3);
-  ok('A3：指向第 6 幕〈飯堂閒角〉', a3.indexOf('第 6 幕〈飯堂閒角〉') >= 0);
+  ok('A3：指向第 6 幕・電視線〈飯堂閒角〉（v191：C6 加路線後綴，同 C6F 對稱）', a3.indexOf('第 6 幕・電視線〈飯堂閒角〉') >= 0);
   ok('A3：冇差額數據嗰陣唔虛報「條件已經夠晒」', a3.indexOf('條件已經夠晒') < 0);
   ok('A3：尾句講明去星河電視台觸發', /去星河電視台就會觸發。$/.test(a3));
 

@@ -2,7 +2,7 @@
 # v20a153 靜態測試：v136 review A1＋B2＋B3。
 # A1：C17 路由改返星河電視台（tvb_longmen）——soft gate 載入嗰陣正規化，唔改 content pack JSON。
 # B2：C17 開場兩句旁白由何生企台——spDlgPairIds 開場旁白預告下一位講者。
-# B3：進度頁幕次序排返 1–20（C18／C19／C6F 排返主線之後）。
+# B3：進度頁次序（v20a191 改版：插入幕跟播次序排喺 C6 之後，唔再排尾扮第 18／19／20 幕；內部 n 保留）。
 # 反證：喺 pristine main（e08a070／v148）index 上行，A1／B2／B3 新斷言要乾淨 FAIL（唔 crash）；
 #      其餘基線斷言（SAVE／softRev／?v=／when 1990冬／410 locId／slots 源頭）喺 pristine 一樣 PASS；
 #      410 setting／synopsis／lockedHint 三句斷言跟 v157 版措辭，喺 e08a070 會 FAIL（措辭係 v157 改嘅，唔係 v153）。
@@ -85,13 +85,17 @@ ok('B2：舊註解「開場旁白唔郁，繼續冇人」已拎走', '開場旁�
 ok('B2：render 旁白註解已更新（開場旁白由 B2 預告下一位講者）',
    '由 v20a153 B2 預告下一位講者企台' in src)
 
-# --- B3：進度頁 1–20 順序 ---
+# --- B3：進度頁 1–20 順序（v20a191 改版：插入幕唔再排尾扮第 18／19／20 幕） ---
+# v191 顯示次序跟 ORDER165（C6、C6F、C18、C19、C7–C17）；內部 n 保留
+# （C6F=20、C18=18、C19=19）供 far-merge／逐項揭曉邏輯用，行為同 v153 一致。
+# 反證更新：喺 v153 index 上行，新 B3 斷言要乾淨 FAIL（舊排法 C17、C18、C19、C6F）。
 m = re.search(r'const order71 = \[(.*?)\];', src, re.S)
 pairs = re.findall(r'\[\s*"([^"]+)"\s*,\s*(\d+)\s*\]', m.group(1)) if m else []
 ok('B3：order71 抽到 20 項', len(pairs) == 20)
-ok('B3：幕號順序係 1–20（C18／C19／C6F 排返主線之後）',
-   [int(n) for _, n in pairs] == list(range(1, 21))
-   and [i for i, _ in pairs] == ['C%d' % n for n in range(1, 18)] + ['C18', 'C19', 'C6F'])
+ok('B3：顯示次序跟播次序（C6、C6F、C18、C19、C7–C17）',
+   [i for i, _ in pairs] == ['C%d' % n for n in range(1, 7)] + ['C6F', 'C18', 'C19'] + ['C%d' % n for n in range(7, 18)])
+ok('B3：內部 n 保留 1–20（供 far-merge／逐項邏輯用，唔係顯示幕號）',
+   sorted(int(n) for _, n in pairs) == list(range(1, 21)))
 ok('B3：插入幕逐項跟幕號唔跟行 index（lastDetailN71 規則）',
    'lastDetailN71' in src and 'lastDetailN71 >= (r.n|0) - 1' in src)
 ok('B3：舊行-index 規則已拎走', 'lastDetailIdx71' not in src)

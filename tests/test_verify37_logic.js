@@ -125,6 +125,10 @@ function makeEl(){
     extractFn('function dualDeltaBit'),
     extractFn('function dualTrackExplainHtml34'),
     extractFn('function storyMainProgressLine'),
+    /* v191：storyActLabel／prog71Title 係 StoryPlay head 嘅新 dependency——pristine 冇
+       storyActLabel 嗰陣用空 stub 頂住，等斷言乾淨 FAIL（唔好喺 extractFn 拋錯 crash）。 */
+    (html.indexOf('function storyActLabel(') >= 0 ? extractFn('function storyActLabel') : 'function storyActLabel(id){ return ""; }'),
+    extractFn('function prog71Title'),
     extractConst('STORY_GATE_3Y'),
     extractConst('STORY_LOC_SOFT'),
     extractConst('STORY_HINT_SOFT'),
@@ -240,7 +244,7 @@ function makeEl(){
   const prog = storyMainProgressLine();
   /* v20a71 PROGRESS71 改版：舊斷言驗「第N幕即將」碎片頭＋「開咗去…播」拼裝尾——
      用戶評文法怪，v71 全面改完整句子，斷言跟新正確行為改（句子內容由 v71 專測覆蓋）。 */
-  ok('seg7 主線進度行指向下一幕（v71 完整句）', prog.indexOf('第 6 幕〈飯堂閒角〉') >= 0 && prog.indexOf('未開') >= 0 && prog.indexOf('即將') < 0);
+  ok('seg7 主線進度行指向下一幕（v71 完整句；v191：C6 加路線後綴）', prog.indexOf('第 6 幕・電視線〈飯堂閒角〉') >= 0 && prog.indexOf('未開') >= 0 && prog.indexOf('即將') < 0);
   ok('seg7 主線進度行講明去星河電視台觸發（v71）', prog.indexOf('星河電視台') >= 0 && prog.indexOf('就會觸發。') >= 0 && prog.indexOf('開咗去') < 0);
 })();
 

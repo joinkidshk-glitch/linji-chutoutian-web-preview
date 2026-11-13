@@ -30,7 +30,10 @@ var STORY_TITLE_SOFT = {};
 var CASES = {};
 var BehaviorGate = { progressToward: function(arg){ return CASES[arg.id] || null; } };
 var StoryOC = { isDone: function(){ return false; } };
-eval(extractFn('function prog71Title') + '\n' + extractFn('function prog71StubItems'));
+/* v191：prog71StubItems 而家呼 storyActLabel——pristine 冇嗰陣用空 stub 頂住，
+   等斷言乾淨 FAIL（唔好喺 extractFn 拋錯 crash）；新 code 抽到真身。 */
+var __act191 = html.indexOf('function storyActLabel(') >= 0 ? extractFn('function storyActLabel') : 'function storyActLabel(id){ return ""; }';
+eval(__act191 + '\n' + extractFn('function prog71Title') + '\n' + extractFn('function prog71StubItems'));
 function texts(id){ return (prog71StubItems(id) || []).map(function(it){ return it.text; }); }
 
 /* C3：單地點鎖行 */

@@ -2439,6 +2439,8 @@ body.day-res-open #mask.day-res{
   display:flex;align-items:center;justify-content:center;pointer-events:none;
 }
 .story-play .sp-meta{color:#6b5a48;font-size:.72rem;margin:0 0 6px}
+/* v20a191 B：場景頂幕號行（同進度頁同一標籤來源）——幕號＋進度頁標題，置於 meta 同節點標題之間；顏色跟 v20a46 教訓用 #mask.story-play-on scope＋淺色＋!important＋陰影（通用 modal p 規則會強制深色，深啡喺深色場景圖上睇唔清，實駕 A_film 截圖證實） */
+#mask.story-play-on .story-play .sp-head .sp-act191{display:block;margin:0 0 2px;font-size:.85rem;font-weight:800;line-height:1.4;color:rgba(245,234,210,.95) !important;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 .story-play .sp-setting{font-size:.78rem;color:#5a4a38;margin:0 0 8px;padding:6px 8px;background:rgba(120,90,40,.08);border-radius:6px}
 .story-play .sp-speaker{font-weight:800;color:#4a2e10;margin:0 0 4px}
 .story-play .sp-line{margin:0 0 8px;white-space:pre-wrap;color:#2a2118;font-size:.92rem;line-height:1.5}
@@ -28096,12 +28098,19 @@ const StoryPlay = (()=>{
       const step = cur.beatIdx + 1;
       const bgClass = spBgClass(cur.beat, n);
       const playerMeta = spPlayerMeta(n, _sess.pack, _sess.label);
+      /* v20a191 B：場景頂加幕號——同進度頁同一個 storyActLabel 來源（唔係節點 title
+         拼數字），加埋進度頁標題（prog71Title），等玩家認得出播緊邊幕。只限主線幕
+         （C1–C17＋C6F／C18／C19）；storyActLabel 回 "" 嗰陣（巧遇／隨機事件／支線）
+         唔出呢行。開場 head 只喺第一句閃現（v105 D-7），幕號行跟同一位置。 */
+      const actLabel191 = (typeof storyActLabel==="function") ? storyActLabel(n.id) : "";
+      const actTitle191 = actLabel191 ? ((typeof prog71Title==="function") ? prog71Title(n.id) : "") : "";
       /* v20a105 UI105 D-7：頂欄唔再常駐劇本結構——「對白 X/Y · 句 X/Y」計數成行刪走；
          幕標題＋場景描述只喺幕開始第一句閃現一次（sp-head-opening），之後頂欄收起，
          只剩底部「下一句／跳至選項」控制。 */
       const isOpening105 = (step===1 && (cur.lineIdx|0)===0);
       const head = isOpening105 ? `<div class="sp-head sp-head-opening">
           <p class="sp-meta">${esc(playerMeta)}</p>
+          ${actLabel191?`<p class="sp-act191">${esc(actLabel191)}：${esc(actTitle191)}</p>`:""}
           <h3>${esc(n.title||n.id)}</h3>
           ${n.setting?`<div class="sp-setting">${esc(n.setting)}</div>`:""}
         </div>` : "";
@@ -38649,7 +38658,8 @@ function storyMainProgressLine(){
     const target = lockedMain;
     if(!target){
       if(openMain){
-        const n = Number(String(openMain.id).replace(/^C/,""))||0;
+        /* v20a191：已開放幕用共用幕號（舊寫法 C18／C19 會印「第 18／19 幕」）。 */
+        const openActLbl = (typeof storyActLabel==="function") ? storyActLabel(openMain.id) : "";
         const t = (typeof STORY_TITLE_SOFT!=="undefined" && STORY_TITLE_SOFT[openMain.id]) || openMain.title || openMain.id;
         /* v20a71 PROGRESS71：已開放分支改完整句＋講明去邊觸發（舊「可播第N幕 · 標題」係標籤唔係句子） */
         let openLocName = "";
@@ -38657,13 +38667,14 @@ function storyMainProgressLine(){
           const L = (typeof LOCS!=="undefined" && openMain.locId) ? LOCS.find(l=>l.id===openMain.locId) : null;
           openLocName = (L && L.name) || "";
         }catch(_e){}
-        const openHead = n ? (`第 ${n} 幕〈${t}〉已經開咗`) : (`〈${t}〉已經開咗`);
+        const openHead = openActLbl ? (openActLbl+"〈"+t+"〉已經開咗") : ("〈"+t+"〉已經開咗");
         return openLocName ? (openHead+`，去${openLocName}就會觸發。`) : (openHead+"。");
       }
       return "";
     }
     const id = String(target.id||"");
-    const actN = Number(id.replace(/^C/,""))||0;
+    /* v20a191：下一幕幕號用共用幕號（舊寫法 C18／C19 會印「第 18／19 幕」）。 */
+    const actLbl71 = (typeof storyActLabel==="function") ? storyActLabel(id) : "";
     const title = (typeof STORY_TITLE_SOFT!=="undefined" && STORY_TITLE_SOFT[id]) || target.title || id;
     let remain = null;
     let gigHave = null, gigNeed = null, week = null, weekMin = null;
@@ -38730,7 +38741,7 @@ function storyMainProgressLine(){
     }
     const allDiffs71 = headDiffs71.concat(diffs71).slice(0,3);
     if(!locName71 && remainLocNames71) locName71 = remainLocNames71;
-    const headTxt71 = actN ? ("下一幕第 "+actN+" 幕〈"+title+"〉") : ("下一幕〈"+title+"〉");
+    const headTxt71 = actLbl71 ? ("下一幕"+actLbl71+"〈"+title+"〉") : ("下一幕〈"+title+"〉");
     let out71;
     let tailUsed71 = false;
     if(allDiffs71.length){
@@ -44076,6 +44087,27 @@ function prog71Esc(s){
   if(typeof esc59 === "function") return esc59(s);
   return String(s == null ? "" : s);
 }
+/* v20a191：主線幕號唯一來源——進度頁（prog71Rows／renderProgressPane71）、
+   場景頂（StoryPlay 開場 head）、地圖下一幕提示（storyMainProgressLine）三處共用
+   同一個函數，唔各自寫一套字。
+   主幹 C1–C17 用順序號「第 N 幕」；插入幕唔佔順序號，改用錨點標籤：
+   － C6／C6F 係同一幕嘅路線雙生，錨「第 6 幕」＋路線後綴（電視線／電影線），對稱一致；
+   － C18／C19 係時間錨番外，錨季節（跟 CALIB60_NODE_WINDOWS whenLabel：C18 1990 年冬、
+     C19 1991 年春），唔再叫「第 18／19 幕」。
+   非主線 id（巧遇／隨機事件／支線）回 ""，呼叫方唔出幕號。 */
+function storyActLabel(id){
+  const s = String(id||"");
+  if(s==="C6") return "第 6 幕・電視線";
+  if(s==="C6F") return "第 6 幕・電影線";
+  if(s==="C18") return "番外・1990 冬";
+  if(s==="C19") return "番外・1991 春";
+  const m = s.match(/^C(\d+)$/);
+  if(m){ const n = Number(m[1]); if(n>=1 && n<=17) return "第 "+n+" 幕"; }
+  return "";
+}
+function storyActIsInsert(id){
+  return id==="C6F" || id==="C18" || id==="C19";
+}
 function prog71Title(id){
   try{
     if(typeof STORY_TITLE_SOFT !== "undefined" && STORY_TITLE_SOFT[id]) return String(STORY_TITLE_SOFT[id]);
@@ -44112,8 +44144,9 @@ function prog71GateItems(id){
     const ok = !!(c && c.ok);
     if(tok.indexOf("needDone:")===0){
       const d = tok.slice(9);
-      const dn = Number(d.replace(/^C/,""))||0;
-      items.push({ ok:ok, text:"先完成第 "+dn+" 幕〈"+prog71Title(d)+"〉" });
+      /* v20a191：前置幕用共用幕號（唔好再寫死「第 N 幕」——C19 前置 C18 嗰陣舊寫法
+         會印「先完成第 18 幕〈上岸路〉」）。 */
+      items.push({ ok:ok, text:"先完成"+(storyActLabel(d) || ("第 "+(Number(d.replace(/^C/,""))||0)+" 幕"))+"〈"+prog71Title(d)+"〉" });
       return;
     }
     if(tok.indexOf("route:")===0){ items.push({ ok:ok, text:"行電視線" }); return; }
@@ -44155,8 +44188,8 @@ function prog71StubItems(id){
   (Array.isArray(p.needDone) ? p.needDone : []).forEach(d=>{
     let okDone = false;
     try{ okDone = !!(typeof StoryOC !== "undefined" && StoryOC.isDone && StoryOC.isDone(d)); }catch(_e){}
-    const dn = Number(String(d).replace(/^C/,""))||0;
-    items.push({ ok:okDone, text:"先完成第 "+dn+" 幕〈"+prog71Title(d)+"〉" });
+    /* v20a191：前置幕用共用幕號（同 prog71GateItems 口徑）。 */
+    items.push({ ok:okDone, text:"先完成"+(storyActLabel(d) || ("第 "+(Number(String(d).replace(/^C/,""))||0)+" 幕"))+"〈"+prog71Title(d)+"〉" });
   });
   if(Number(p.weekMin)>0){
     items.push({ ok:Number(p.week)>=Number(p.weekMin), text:"到第 "+p.weekMin+" 週（而家第 "+p.week+" 週）" });
@@ -44195,9 +44228,16 @@ function prog71Rows(){
   (oc.done||[]).forEach(r=>{ if(r && r.id) doneSet[r.id] = r; });
   const missed = (S && S.calib60Missed) || {};
   const rows = [];
-  /* v20a153 B3：1–20 順序；插入幕 C18／C19／C6F 排返主線之後（之前插喺 C6 同
-     C7 之間，C17＋C18 齊開嗰陣第一個「播呢幕」係 C18，實駕撳錯過）。 */
-  const order71 = [["C1",1],["C2",2],["C3",3],["C4",4],["C5",5],["C6",6],["C7",7],["C8",8],["C9",9],["C10",10],["C11",11],["C12",12],["C13",13],["C14",14],["C15",15],["C16",16],["C17",17],["C18",18],["C19",19],["C6F",20]];
+  /* v20a191 supersedes v20a153 B3：插入幕唔再排喺主線之後扮第 18／19／20 幕。
+     顯示次序跟 ORDER165（播次序）：C1–C5、C6、[C6F、]C18、[C19、]C7–C17——
+     C6F 跟住 C6（路線雙生）、C18／C19 喺 C6 同 C7 之間（1990 冬／1991 春，時序上
+     啱啱喺 C6 1990 春同 C7 1991 夏之間）。
+     v153 B3 原意（C17＋C18 齊開嗰陣撳錯「播呢幕」掣）已經唔使守：v165 拎走咗
+     「播呢幕」掣，強制播冇得逐行撳，次序再唔會造成誤撳。
+     內部 n（C6F=20、C18=18、C19=19）保留唔郁：far-merge（v105）同逐項揭曉
+     （v80／v153，lastDetailN71 閾值）全部用 n 計，行為同 v153 一模一樣——
+     C18 只喺 C17 已揭曉逐項嗰陣跟住出逐項，C19／C6F 經呢條路永遠唔出逐項。 */
+  const order71 = [["C1",1],["C2",2],["C3",3],["C4",4],["C5",5],["C6",6],["C6F",20],["C18",18],["C19",19],["C7",7],["C8",8],["C9",9],["C10",10],["C11",11],["C12",12],["C13",13],["C14",14],["C15",15],["C16",16],["C17",17]];
   for(const pair71 of order71){
     const id = pair71[0]; const n = pair71[1];
     let exists = false;
@@ -44209,7 +44249,7 @@ function prog71Rows(){
     if(doneSet[id] || (StoryOC.isDone && StoryOC.isDone(id))) state = "done";
     else if(openSet[id]) state = "open";
     else if(missed[id]) state = "missed";
-    rows.push({ id:id, n:n, state:state, title:prog71Title(id), locName:prog71LocName(id) });
+    rows.push({ id:id, n:n, label:storyActLabel(id), state:state, title:prog71Title(id), locName:prog71LocName(id) });
   }
   return rows;
 }
@@ -44284,9 +44324,11 @@ function renderProgressPane71(){
       if(r.id==="C18" || r.id==="C19" || r.id==="C6F") return;
       if(used71 < fullLeft){ used71++; detailSet71[r.id] = 1; }
     });
-    /* v20a153 B3：插入幕跟幕號唔跟行 index——C18／C19／C6F 而家排喺 C17 之後，
-       行 index 永遠大過最後一個逐項主線幕。插入幕喺上一幕已揭曉逐項嗰陣跟住出
-       逐項（C18 跟 C17、C19 跟 C18、C6F 跟 C19），維持 v20a80 原意。 */
+    /* v20a153 B3（v20a191 保留邏輯、改顯示次序）：插入幕跟幕號唔跟行 index——
+       內部 n 保留（C18=18、C19=19、C6F=20），插入幕喺上一幕已揭曉逐項嗰陣跟住出
+       逐項（C18 跟 C17、C19 跟 C18、C6F 跟 C19），維持 v20a80 原意。由於 n 上限
+       係 17（lastDetailN71 只由主幹逐項行計），實際上只有 C18 可以經呢條路出逐項，
+       C19／C6F 永遠唔出——同 v153 行為一致，唔係新 bug。 */
     let lastDetailN71 = 0;
     rows.forEach(r=>{ if(detailSet71[r.id]) lastDetailN71 = Math.max(lastDetailN71, r.n|0); });
     rows.forEach(r=>{
@@ -44297,7 +44339,7 @@ function renderProgressPane71(){
   let farMerged105 = false; /* v20a105 UI105 S-45 */
   rows.forEach(r=>{
     if(r.state==="done"){
-      html.push('<div class="prog71-row done"><div class="prog71-top"><span class="prog71-act">第 '+r.n+' 幕</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag ok">✓ 已完成</span></div></div>');
+      html.push('<div class="prog71-row done"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag ok">✓ 已完成</span></div></div>');
       return;
     }
     if(r.state==="open"){
@@ -44306,7 +44348,7 @@ function renderProgressPane71(){
          亦唔再分「在場／唔在場」——v155 B1 三態根因就係呢個掣嘅有無取決於 soft 路徑
          atLoc，live 根本唔跟地點。地點留返做場景資料（唔係觸發條件，唔寫「去 X 就會觸發」）。 */
       const openBody = '<p class="prog71-note">返地圖嗰陣就會播出。' + (r.locName ? ("（場景：" + prog71Esc(r.locName) + "）") : "") + '</p>';
-      html.push('<div class="prog71-row open"><div class="prog71-top"><span class="prog71-act">第 '+r.n+' 幕</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag open">已開放</span></div>'
+      html.push('<div class="prog71-row open"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag open">已開放</span></div>'
         + openBody + '</div>');
       return;
     }
@@ -44316,7 +44358,7 @@ function renderProgressPane71(){
         const rec = (S && S.calib60Missed && S.calib60Missed[r.id]) || {};
         wl = rec.whenLabel || ((typeof CALIB60_NODE_WINDOWS !== "undefined" && CALIB60_NODE_WINDOWS[r.id]) ? CALIB60_NODE_WINDOWS[r.id].whenLabel : "") || "";
       }catch(_e){}
-      html.push('<div class="prog71-row missed"><div class="prog71-top"><span class="prog71-act">第 '+r.n+' 幕</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag miss">已錯過</span></div>'
+      html.push('<div class="prog71-row missed"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag miss">已錯過</span></div>'
         + '<p class="prog71-note">時窗係'+prog71Esc(wl || "較早前")+'，已經過咗。嗰段日子嘅紀錄喺「回憶」頁。</p></div>');
       return;
     }
@@ -44329,9 +44371,14 @@ function renderProgressPane71(){
       } else {
         body = '<p class="prog71-note">時機未到——先照常跑通告、見人，條件夠就會開。</p>';
       }
-      html.push('<div class="prog71-row locked"><div class="prog71-top"><span class="prog71-act">第 '+r.n+' 幕</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag lock">未開放</span></div>'+body+'</div>');
+      html.push('<div class="prog71-row locked"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag lock">未開放</span></div>'+body+'</div>');
       return;
     }
+    /* v20a191：鎖住又未到逐項嘅插入幕唔出獨立行，亦唔觸發下面嘅遠幕合併行
+       （維持 v153 舊行為：插入幕未開嗰陣喺進度頁唔見，開放／完成嗰陣先出現；
+       合併行只由主幹遠幕觸發，印喺第一個主幹遠幕位置——插入幕而家排喺 C6 同
+       C7 之間，唔加呢個 guard 會令合併行提早印喺逐項行上面）。 */
+    if(storyActIsInsert(r.id)) return;
     /* v20a105 UI105 S-45：遠幕（未開放又未到逐項揭曉）唔再逐幕重複同一句 boilerplate；
        全部合併做一行，喺第一個遠幕位置出一次，其餘遠幕跳過。 */
     if(!farMerged105){

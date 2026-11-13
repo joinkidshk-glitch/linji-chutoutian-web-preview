@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# v20a191：前置句改行共用幕號 storyActLabel（渲染字不變，見 test_story179_logic.js）；source 檢查跟新寫法。
 # v20a179 STORY179 靜態測試：v172 review 唯一新項 C1（用戶已拍板）
 #
 # 鎖行嘅「（場景：X）」係一句無動詞嘅孤兒括號，隔籬四項全部係條件句，初睇要
@@ -64,7 +65,7 @@ ok('C1：全檔只剩已開放行一處用「（場景：」括號寫法（code 
 
 # --- 四、其餘條件句唔變（v172 C1 守衛照舊） ---
 ok('C1：鎖行其餘條件句唔變（前置／週數／通告／聲望／季節）',
-   '先完成第 ' in stub and '到第 ' in stub and '接通告 ' in stub
+   '"先完成"+(storyActLabel(d)' in stub and '到第 ' in stub and '接通告 ' in stub
    and '要多於' in stub and '等到啱嘅季節' in stub)
 ok('C1：傳聞提示「聽到傳聞」刻意保留', '聽到傳聞：' in stub)
 ok('C1：鎖行舊觸發句繼續清零（去 X 先播到／就會觸發）',

@@ -1,4 +1,7 @@
 # v20a185 GIFT185 靜態測試：修 v183 review B1（700 尾行俾取消掣欄遮住）＋C1（兩欄卡名「×N」孤兒跌行）。
+# v20a191 resync：index.html 淨 +47 行，總行數 60155→60202（其餘斷言唔郁）。
+# v20a191 rebase 上 main b3db32f resync：總行數 60443→60490。
+# v20a191 rebase 上 main 593a845 resync：總行數 60409→60456。
 # 修法路線 a：卡名一行 ellipsis＋數量 span 鎖 nowrap → 卡片 85→67px，5 行一眼全見，尾行清過取消掣欄；
 # 另加 .act min-width:0，防 nowrap 名撐闊 grid 軌（右欄伸出 modal 外、elementFromPoint 命中 BODY）。
 # 零淨行數改動（2 行改、0 行加減，總行數 60143 不變——rebase 上 v184 main 77603b3 後基底 60127→60143，v185 本身淨 0），kwan151／tang152／rom176 行號釘逐檔核實見下。
@@ -35,7 +38,7 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 60143 不變（零淨行數改動，行號釘唔漂移）', html.count('\n') == 60443)
+ok('總行數 60143 不變（零淨行數改動，行號釘唔漂移）', html.count('\n') == 60490)
 
 # ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',

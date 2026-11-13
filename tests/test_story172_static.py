@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# v20a191：前置句改行共用幕號 storyActLabel（渲染字不變，見 test_story179_logic.js）；source 檢查跟新寫法。
 # v20a172 STORY172 靜態測試：v165 review B1＋C1 修復（用戶 2026-11-13 12:33 拍板修晒）
 #
 # B1(a) 耐久記錄——驗強制播必須行 LIVE 模式（無 ?softPreview=1）：
@@ -64,7 +65,7 @@ ok('C1：兩條 checklist（GateItems C6–C17／StubItems C1–C5）入面無�
 ok('C1：傳聞提示「聽到傳聞」刻意保留（條件提示，唔係觸發句——見檔頭註解）',
    '聽到傳聞：' in stub and 'rumorHearHint' in src)
 ok('C1：鎖行其餘條件句唔變（前置／週數／通告／聲望／季節）',
-   '先完成第 ' in stub and '到第 ' in stub and '接通告 ' in stub
+   '"先完成"+(storyActLabel(d)' in stub and '到第 ' in stub and '接通告 ' in stub
    and '要多於' in stub and '等到啱嘅季節' in stub)
 
 # --- 三、B1(a)：live 模式驗證要求有耐久記錄 ---

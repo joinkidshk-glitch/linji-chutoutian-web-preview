@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# v20a191：order71 顯示次序跟播次序（C6、C6F、C18、C19、C7–C17），唔再排尾扮第 18／19／20 幕；內部 n 保留。
 # v20a155 靜態測試：v142 review B1＋B2＋B3。
 # 反證：喺 pristine main（e08a070／v148）index 上行，B1／B2／B3 斷言會乾淨 FAIL，唔會 crash。
 # 用法：python3 tests/test_v155_static.py [path-to-index.html]
@@ -14,8 +15,8 @@ def ok(name, cond):
 # --- 基線不變 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
 ok('content pack JSON 唔郁（今次唔涉及）', 'content/gigs_1988.json' in src and 'story_detail_c1_to_c17.json' in src)
-ok('幕次序係 1–20（v153 B3 改返，supersedes v89 舊排法）',
-   'const order71 = [["C1",1],["C2",2],["C3",3],["C4",4],["C5",5],["C6",6],["C7",7],["C8",8],["C9",9],["C10",10],["C11",11],["C12",12],["C13",13],["C14",14],["C15",15],["C16",16],["C17",17],["C18",18],["C19",19],["C6F",20]];' in src)
+ok('幕次序跟播次序（v191：C6F／C18／C19 跟 C6，唔再排尾扮第 18／19／20 幕）',
+   'const order71 = [["C1",1],["C2",2],["C3",3],["C4",4],["C5",5],["C6",6],["C6F",20],["C18",18],["C19",19],["C7",7],["C8",8],["C9",9],["C10",10],["C11",11],["C12",12],["C13",13],["C14",14],["C15",15],["C16",16],["C17",17]];' in src)
 ok('機制說明一字唔郁',
    '逐幕列出開放條件同你而家嘅進度：✓ 係已達標，○ 係未達。完成一幕，之後嘅幕會逐漸揭曉。' in src)
 ok('寄語卡文案／樣式唔郁',
