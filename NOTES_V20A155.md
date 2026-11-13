@@ -129,3 +129,8 @@ prog71-row L4910；B3 註解 L5180、venue99 rule L5182、.md97 光暈 rule L517
 - B2 在場態餘量得 2px（見 §2）。
 - main 郁咗兩版（見頂部），rebase 後要重跑靜態測試＋抽驗實駕。
 - 18080 隧道已死：工作副本 `core.sshCommand` 已改行 `~/workspace/gh_tunnel.py`（跟常駐 clone 同款）。
+
+## 7. 落地（統籌，2026-11-13）
+- squash merge 入 main：`bf612bc`（基於 `9346a8e`）；push 成功 `9346a8e..bf612bc main -> main`。
+- 線上核實：`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/index.html` 200，
+  **5,237,573 bytes、sha256 `d776a09e…`**，同 repo 完全一致；`v20a155` 出現 3 次。
