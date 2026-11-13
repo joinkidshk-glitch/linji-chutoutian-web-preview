@@ -217,3 +217,10 @@
   commit 喺工作副本就得，統籌會喺常駐 clone 合併）。
 - Pristine 對照 clone `~/workspace/linji-pristine192`（b7ca827）事後已刪；
   反證＋baseline suite 已做完，留低 `qa192/suite_pristine192.txt` 做紀錄。
+
+## 落地紀錄（統籌）
+
+- 遊戲 commit `6cfcfbf`（squash merge `v20a192`，基底 rebase 後 `f2a6b0c`）；線上親自 curl
+  核實 **5,339,072 bytes、sha256 `df05fdd3740c…`**，同 repo `6cfcfbf:index.html` 完全一致。
+- Push main 一次成功；`git fsck --strict` 乾淨（淨係正常 dangling）。
+- Rebase 期間 main 由 `b7ca827` 行前到 `f2a6b0c`（v191 落地），詳見上節。
