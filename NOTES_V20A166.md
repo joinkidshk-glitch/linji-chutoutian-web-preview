@@ -64,3 +64,11 @@ glamour beat 燕尾服 canvas 繪製 14 次，但 `.awd63-glamour` overlay（`rg
 - glamour panel 內容偏逼：cap 3 行（88px）＋海報 126px＋gap／padding，panel 高 230px——實測海報頂 y248（panel 頂 244＋4）、cap 底 y470（panel 底 474−4），啱啱塞得入，無溢出；再長嘅獎項名會再逼，下一票郁 glamour 文案嗰陣要重驗。
 - v149 未落地（頒獎禮 B1 舞台放大＋B2 報紙賽果＋comfort beat）：今次改動只限 glamour overlay／caption 顯示，冇掂舞台幾何／報紙／comfort，唔會同 v149 打架；但 v149 落地後舞台幾何變，glamour 並置要重驗一次（overlay 係 aspect-ratio 對齊 canvas，理論上跟住郁）。
 - 掌聲 MP3 仍然未經人耳試聽（v160 已知，唔係今票範圍）。
+
+## 落地紀錄（統籌）
+- main 落地前係 `13e2594`（v164 NOTES；遊戲 commit `3973d4a`）。分支 `v20a166` 兩輪 rebase：先上 `3973d4a`（v164 遊戲），再上 `13e2594`（v164 NOTES，淨 4 行 NOTES，零衝突）；最終分支 HEAD `e56b223`。第一次 push 俾常駐 clone 拒絕（non-fast-forward——rebase 改寫歷史），用 `--force-with-lease` 更新分支後，核實常駐 clone `v20a166` HEAD＝`e56b223` 先 merge（v160 教訓）。
+- C2 修正**分開 commit**：`433b62a`（淨改 `NOTES_V20A160.md` 1 行），唔撈入 v166 squash。
+- Squash commit：`da05b32`——「v20a166: 頒獎禮 glamour 海報縮細並置＋空字幕框隱藏（v160 review B1／C1；C2 另 commit 433b62a；新測試 33 項＋實駕 won_932／won_700 全 PASS；全套 223／12 零回歸）」。`qa166/` 實駕腳本＋截圖留喺工作副本，唔入 main（18 張圖約 3.5MB）。
+- 線上核實：push 後約 135 秒 curl，HTTP 200，**5,219,490 bytes、sha256 `bdd92378…`**，同 repo HEAD index.html 完全一致（第一次 45 秒嗰陣仲係舊版 5,218,568／`fe149f34…`，Pages 部署有 lag）。
+- 驗證（rebase 後最終樹）：新測試 33/33 PASS＋反證 pristine 21 FAIL（唔 crash）；全套 pristine 222／12 vs 工作版 **223／12**，FAIL 清單逐項相同（12 項穩定 pre-existing），零回歸；kwan151／tang152／travel114 全部 PASS；主 JS `node --check` SYNTAX-OK；合併後樹重驗新測試 ALL PASS；`git fsck --strict` 只有 dangling objects（預期），零 error。
+- 殘留：glamour 燕尾服偏細（61×62px，同 reveal 一致，按規格）；glamour panel 內容偏逼（cap 3 行 88px＋海報 126px，panel 高 230px，啱啱塞入無溢出；再長嘅獎項名要重驗）；v149 未落地，佢落地後舞台幾何變，glamour 並置要重驗一次；掌聲 MP3 仍然未經人耳試聽。
