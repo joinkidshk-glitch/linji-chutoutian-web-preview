@@ -134,7 +134,15 @@ for stem in ["awi_s2", "awi_s3"] + STARS:
 m_npcs = re.search(r"const NPCS\s*=\s*\{(.*?)\n\};", src, re.S)
 ck("搵到 NPCS", bool(m_npcs))
 faces = set(re.findall(r'face:"([^"]+)"', m_npcs.group(1))) if m_npcs else set()
-ck(f"NPCS 6 個 face（{sorted(faces)}）全部有 PORTRAITS 鍵", faces and faces <= set(PORTRAITS))
+# v20a176：NPCS 加藍／徐／海媚 3 個 face，PORTRAITS 鍵行 runtime 注入（rom176ApplyGiftOverrides，
+# GIFT 賦值之後呼叫）——覆蓋檢查要連注入鍵一齊計，唔係齋睇字面 PORTRAITS。
+injected = set(re.findall(r'PORTRAITS\.(npc_\w+)\s*=', src))
+ck(f"NPCS {len(faces)} 個 face（{sorted(faces)}）全部有 PORTRAITS 鍵（字面＋運行注入）",
+   faces and faces <= (set(PORTRAITS) | injected))
+for k, stem in (("npc_lan", "lan_ruoxi"), ("npc_xu", "tsui_poushan"), ("npc_mei", "kwan_hoimei")):
+    ck(f"注入 PORTRAITS.{k} 指向存在嘅 fullbody 圖",
+       ('PORTRAITS.%s = "assets/story/fullbody/%s_base.webp' % (k, stem)) in src
+       and os.path.exists(os.path.join(ROOT, "assets", "story", "fullbody", stem + "_base.webp")))
 m_stars = re.search(r"const ENC79_STARS = \[(.*?)\n\];", src, re.S)
 star_ids = re.findall(r'id:"([^"]+)"', m_stars.group(1)) if m_stars else []
 ck(f"紅星 12 個（{len(star_ids)}）全部有 BUST109_EXTRA 鍵",

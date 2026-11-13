@@ -1,0 +1,15 @@
+PASS v178 標記喺 awards63Fellows 入面
+PASS 1991 年閘（year >= 1991）
+PASS 特別名額 starId ko_chunkit
+PASS 星名直接寫「高俊傑」
+PASS 佢唔入 AWARDS63_POOL
+PASS AWARDS63_TIER_WEIGHT 冇佢
+PASS 兩輪封頂 out.length >= 3 仲喺度
+PASS 舞台逐個 fellow 載 sprite（loadSpr(f.starId) 通用）
+PASS 舞台載埋 walk 幀（通用）
+PASS 卡片用 fellows 通用 builder（唔按 starId 分流）
+PASS 卡片冇 poster 嗰陣跌返 CSS 卡（通用規則）
+PASS SAVE key 不變
+PASS POSTER59_STAR_IDS 唔加高俊傑（海報／主演邏輯唔郁）
+
+ALL PASS

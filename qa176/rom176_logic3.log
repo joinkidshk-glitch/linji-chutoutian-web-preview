@@ -1,0 +1,77 @@
+PASS harness: ROM176＋enc79 函數全載入
+PASS A1 12 星 prefs 齊（最愛 2／喜歡 2／唔鍾意 1–2，relKey＋空閘）
+PASS A2 海媚 prefs（最愛保溫瓶＋拍紙簿）
+PASS A3 48 條星反應句（最愛 24＋喜歡 12＋唔鍾意 12，每星 2／1／1） :: fav=24 liked=12 dis=12 entries=48
+PASS A4 注入冪等（再跑一次唔會重複）
+PASS A5 NPC_LINES 藍／徐／海媚（5 類 × 2 句）
+PASS A6 PORTRAITS 藍／徐／海媚 fullbody 圖
+PASS B1 同一日種子可重現
+PASS B2 P(出)=0.50（365 日曉晴出沒率 0.35–0.65） :: 出沒 181/365
+PASS B3 主場 share 0.65（出沒日主場佔比 0.50–0.80） :: 主場 120/181
+PASS B4 唔係日日一樣（365 日 presence 有變化） :: 相異 150
+PASS B5 風聲窗 P≥0.80（365 日出沒率 ≥0.75） :: 出沒 287/365
+PASS B6 風聲窗 share 0.85（主場佔比 ≥0.70） :: 主場 236/287
+PASS B7 未完成節點 offer → 出沒率上升（P+0.10） :: 節點 226 vs 平時 181
+PASS B8 海媚未解鎖（C9 未完成）P=0
+PASS B9 海媚解鎖（C9 完成）P=0.50
+PASS B10 海媚退路：done-state 讀唔到＋day<699 → 鎖住
+PASS B11 海媚退路：done-state 讀唔到＋day≥699 → 解鎖
+PASS B12 海媚退路：S.story.done 有 C9 → 解鎖
+PASS B13 grantWhisper 寫入 3 日窗＋手帳
+PASS B14 風聲未過期 active／過期失效
+PASS B15 tea targets 唔包已有風聲／未解鎖海媚
+PASS C0 測試前提：搵到曉晴喺長門嘅日子 :: day=0
+PASS C1 每日第 1 次觸發
+PASS C1b 同日第 2 次唔觸發（每日 1 次）
+PASS C2 每週 3 次已滿唔觸發
+PASS C2b 每週 2 次仲觸發到
+PASS C3 冷卻中（昨日見過）唔觸發 :: 在場 hiu
+PASS C3b 冷卻過咗（3 日前）觸發返
+PASS C4 測試前提：搵到長門冇人嘅日子 :: day=1
+PASS C4b 保底 5 日 → 下次入主場保證出沒
+PASS C4c 撞到後保底清零
+PASS C4d 保底 4 日（今日已計）唔保證
+PASS C5 主線待播壓住女角巧遇
+PASS C6 觸發即計見過旗／冷卻／每週計數
+PASS C7a 未見過 → false
+PASS C7b gift_met 旗 → true
+PASS C7c R meet 完成 → true
+PASS D1 唔可以送禮嗰陣只出傾談＋行開 :: 傾談/行開
+PASS D2 冇約會掣（v159 未落地，defensive）
+PASS D3 greet 用注入 NPC_LINES（唔係 "……"）
+PASS D4 肖像係注入 fullbody 圖
+PASS D5 撳傾談 → doTalk（npcId lan）＋設返程旗
+PASS D6 可以送禮嗰陣出送禮掣 :: 傾談/送禮/行開
+PASS D7 撳送禮 → openGiftPick（key xu）＋設返程旗
+PASS D8 撳行開 → openLoc encDone
+PASS E1a 最愛 +4
+PASS E1b 喜歡 +2
+PASS E1c 唔鍾意 −2
+PASS E1d 普通 +1
+PASS E2a 重複最愛減半 +4→+2
+PASS E2b 重複喜歡減半 +2→+1
+PASS E2c 重複普通減半 +1→+0
+PASS E2d 重複唔鍾意唔減半（−2 照舊）
+PASS E3a 見過＋有庫存 → 送得
+PASS E3b 送最愛：fav +4、扣庫存、記 giftHist、記 lastGiveDay
+PASS E3c 結果 modal 講明「好感 +4」＋「送禮唔計日子」
+PASS E3d 同日再送唔得（每日每星 1 份）
+PASS E3e 翌日送得返
+PASS E4a 送禮同對話共用軟頂（餘 2）
+PASS E4b 軟頂滿咗再送＋0
+PASS E4c wrap 唔計軟頂（照入）
+PASS E4d enc 同樣受軟頂（滿咗＋0）
+PASS E5a 級數上限 30（tier 0）：28＋4 → 只入 2
+PASS E5b 到頂再送＋0
+PASS E6a 未見過唔送得
+PASS E6b 冇庫存唔送得
+PASS E7a 最愛反應句（item-specific）
+PASS E7b 喜歡反應句（tier-generic）
+PASS E7c 唔鍾意反應句（tier-generic）
+PASS E7d 普通反應句（placeholder）
+PASS E8 星送禮唔寫 S.story.rel（冇假 rel_luk_baakyin）
+PASS F1 冇旗 → {travelFree:true}
+PASS F2 有旗 → {encDone:true}（食咗佢）
+PASS F3 旗只食一次
+PASS F4 rom176IsWomanNpc（6 女角 npcId）
+ALL PASS

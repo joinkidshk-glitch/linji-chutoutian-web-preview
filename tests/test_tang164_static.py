@@ -91,7 +91,7 @@ ok('UI：送禮選擇頁 tang 副標講明唔會改變排片關係',
    'npcKey==="tang"?"每日限送 1 次 · 送禮只係公事心意，唔會改變排片關係"' in src)
 ok('UI：送禮結果 tang 顯示「排片關係不變」唔係「好感 ±0」',
    'const deltaTxt = npcKey==="tang" ? "排片關係不變" :' in src)
-ok('UI：手帳庫存提示提埋鄧麗萍', '或者喺事務所見過鄧麗萍之後' in src)
+ok('UI：手帳庫存提示提埋鄧麗萍', '喺事務所見過鄧麗萍之後' in src)  # v176 改咗句式（去「或者」），意思不變
 
 # --- §7. pack JSON 守門（冇直改；反應句 id 同 prefs key 對得上） ---
 prefs = json.loads((ROOT / 'content' / 'gift_prefs.json').read_text(encoding='utf-8'))

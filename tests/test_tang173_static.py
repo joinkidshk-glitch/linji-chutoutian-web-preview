@@ -31,6 +31,9 @@
 # v20a175 rebase 上 main f09fa1b（v177）resync：index.html 淨 ＋78，總行數 59356→59434、DEF 53875→53953（L4845 喺 CSS 插入點之前，唔郁）。
 # v20a178 第二次 rebase 上 main 91f264a（v175）resync：v178 ＋25 行（AWARDS64 註解＋1／ko sprite＋3／fellows 特別名額＋21）疊喺 v175 ＋78 之上，總行數 59434→59459、DEF 53953→53978（qa178/resync178b.py difflib 對位核實純漂移；三檔 rebase 衝突後以 v175 版為底重算）。
 # v20a178 strip 上 91f264a resync：strip 淨 −4 行（AWARDS64 註解＋1／ko sprite＋3），總行數 59459→59455、DEF 53978→53974（qa178/resync178c.py difflib 對位核實純漂移）。
+# v20a176 resync：淨 ＋538 行（NPCS ＋7／星收尾掣 ＋12／ROM176 block ＋501／茶聽 ＋12／addLoc −13／openLoc 掛點 ＋5／doGiveGift ＋4／人脈頁 ＋10），總行數 59356→59894、DEF 53875→54394（qa176/resync176.py 逐行核實內容逐字相同，純漂移）。
+# v20a176 rebase 上 main 91f264a（v175）resync：v175 淨 ＋78（CSS ＋10／toast ＋15／prog175 ＋51＋render ＋2），總行數 59894→59972、DEF 54394→54472（qa176/resync176_rebase.py difflib 對位核實純漂移）。
+# v20a176 第三輪 rebase 上 main c682cc2（v178）resync：v178 淨 ＋21（fellows 特別名額＋21；註解＋sprite 來回 ＋4−4 抵消），總行數 59972→59993、DEF 54472→54493（qa176/resync176_rebase3.py difflib 對位核實純漂移；三檔 rebase 衝突後取 v176 嗰邊，v178 註解行補返）。
 import sys
 from pathlib import Path
 p = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent / 'index.html'
@@ -60,9 +63,9 @@ def blend(fg, bg, a):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 59455', src.count('\n') == 59455)
-ok('零行數漂移：openLoc DEF 行 53974 不變（travel114 釘行）',
-   len(lines) >= 53974 and 'function openLoc(id, opts){' in lines[53973])
+ok('零行數漂移：總行數 59993', src.count('\n') == 59993)
+ok('零行數漂移：openLoc DEF 行 54493（v175 ＋78＋v176 ＋519＋v178 ＋21）（travel114 釘行）',
+   len(lines) >= 54493 and 'function openLoc(id, opts){' in lines[54492])
 ok('零行數漂移：L4845 仲係 v169／v171／v173 同行（冇插行，kwan151／tang152 釘行唔使 resync）',
    len(lines) >= 4845 and 'loc-acts-more171::after' in lines[4844] and 'act-locked171' in lines[4844])
 ok('L4845 註解平衡：/* 數＝*/ 數，鎖住底 rule 唔喺註解入面（v173 曾中招：註解入面再插 /*…*/ 令首個 */ 提早閂註解，殘尾變裸文吞咗鎖住底 rule 嘅 selector，live 底色跌返 #f5e6c0）',

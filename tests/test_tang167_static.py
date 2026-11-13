@@ -81,8 +81,8 @@ ok('一致：calcDelta 計 liked（raw +2 來自 deltaRel.liked）',
    and 'let delta = kind==="liked" ? (Number(dr.liked)||2)' in src)
 ok('一致：giveGift tang 專例照行（applied 強制 0，rel_tang 唔郁）',
    'let applied = (npcKey==="tang") ? 0 : rawDelta;' in src)
-ok('一致：giveGift 回傳 delta:applied（唔係 rawDelta）',
-   'kind, delta:applied, softcap, line, relKey, before, after, costsDay:true' in src)
+ok('一致：giveGift 回傳 delta:applied（唔係 rawDelta；v176 拎走 costsDay:true 殘留）',
+   'kind, delta:applied, softcap, line, relKey, before, after' in src)
 ok('一致：結果 modal tang 顯示「排片關係不變」，唔顯示數字',
    'const deltaTxt = npcKey==="tang" ? "排片關係不變" :' in src)
 

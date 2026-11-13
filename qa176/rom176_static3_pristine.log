@@ -1,0 +1,60 @@
+PASS SAVE key 冇變
+PASS softRev 冇變
+PASS ?v= 冇變
+PASS gift_prefs.json：npcs 只有原有 6 項（冇星、冇海媚）
+PASS gift_prefs.json：lan／xu prefs 原封不動（唔重複注入）
+PASS gift_react_copy.json：55 條原封不動（冇星反應句）
+PASS items_gifts.json：10 樣禮物齊（唔郁）
+FAIL ROM176 模組標記
+FAIL ROM176_WOMEN 六位女角
+FAIL ROM176 常數（P 0.50／share 0.65／caps 1／3／冷卻 2／保底 5）
+FAIL 函數在位：rom176TryIntercept
+FAIL 函數在位：rom176PlayEncounter
+FAIL 函數在位：rom176DoGiveStarGift
+FAIL 函數在位：rom176ApplyGiftOverrides
+FAIL 函數在位：rom176GrantWhisper
+FAIL 函數在位：rom176MeiUnlocked
+FAIL 函數在位：rom176BackOpts
+FAIL 函數在位：rom176StarDelta
+FAIL 函數在位：rom176CanGiveStarGift
+FAIL 釘：NPCS lan 條目 L6028
+FAIL 釘：載入點 L31531（GIFT_REACT 賦值同行呼叫注入）
+FAIL 釘：ROM176 block 起點 L53033
+FAIL 釘：rom176ApplyGiftOverrides 定義 L53398
+FAIL 釘：addLocTalkGiftActs L54430
+FAIL 釘：openLoc rom176 攔截 L54524
+FAIL 注入呼叫喺 GIFT_REACT 賦值之後
+FAIL NPCS 有 lan（藍若曦，homes 主＋副）
+FAIL NPCS 有 xu（徐寶珊，homes 主＋副）
+FAIL NPCS 有 mei（關海媚，homes 主＋副）
+FAIL FAV176 24 條（每星 2 條最愛 item-specific）
+FAIL GEN176 24 條（每星喜歡／唔鍾意各 1 條 tier-generic）
+FAIL 海媚 prefs 注入（最愛保溫瓶＋拍紙簿）
+FAIL enc79AddFav 週軟頂包埋 "gift"（兩處）
+FAIL giveGift 回傳冇 costsDay:true 殘留
+FAIL doGiveGift 有星分支（唔行 giveGift）
+FAIL doGiveGift／doTalk／openGiftPick 返程行 rom176BackOpts
+FAIL 星巧遇收尾有「送禮」掣
+FAIL openGiftPick 星副標（每日每星限送 1 份）
+FAIL 地點板冇女角送禮掣（「送禮：${NPCS」零出現）
+FAIL addLocTalkGiftActs 有女角閘（rom176IsWomanNpc）
+FAIL addLocTalkGiftActs 冇 romance 送禮 try block
+PASS 非女角傾談掣保留
+PASS 鄧麗萍送禮掣保留（agency_ho 專屬段）
+FAIL openLoc 有 rom176 攔截
+FAIL 女角攔截行先過星攔截
+FAIL 紅星段「唔靠送禮」已改
+FAIL 紅星段新文案
+FAIL 人脈頁提示改做「撞佢」
+PASS 人脈頁女角行有出沒提示
+FAIL 庫存頁送禮提示改做「撞到先送得」
+FAIL 茶聽有女角風聲分支（roll<0.50）
+FAIL 風聲 rumorId 用 romwind:
+FAIL 茶餐廳女角行蹤線 6 句
+FAIL 海媚閘主閘係 isDone("C9")
+FAIL 海媚閘退路 day≥699
+PASS 星冇寫入 S.npcs（NPCS 冇星 id 條目）
+FAIL 冇自己寫排他鎖／約會系統
+FAIL 約會入口 defensive（只喺 typeof 檢查後出）
+---
+FAILURES: 47

@@ -18,6 +18,12 @@ b = src.find('async function refreshCopyPacksFromDisk(){')
 chk('TEXTFIX55 block present', 0 <= a < b)
 block = src[a:b] if 0 <= a < b else ''
 outside = (src[:a] + src[b:]) if 0 <= a < b else src
+# v20a176：ROM176 block 入面有意寫關海媚（女角 prefs／出沒表／對白），同 TEXTFIX55 block 一樣道理——
+# KHM 掃描要剔走呢段（ROM176 內容由 test_rom176_static 覆），NPCS 註冊條目留喺 outside，用 npc_mei 認。
+_rs = outside.find('/* ===== v20a176 ROM176')
+_re = outside.find('/* ---------- 殺青回望', _rs) if _rs >= 0 else -1
+if _rs >= 0 and _re > _rs:
+    outside = outside[:_rs] + outside[_re:]
 
 # call sites
 chk('call: copy packs cleaned', 'textfix55SimplePack(giftItems)' in src and 'TEXTFIX55_OPTS_GIFT' in src)
@@ -45,7 +51,7 @@ import re
 ctx_ok = True
 for m in re.finditer('關海媚', outside):
     ctx = outside[max(0, m.start()-60):m.start()+30]
-    if not any(k in ctx for k in ['陳淑芬', 'speaker', 'display', 'devAppendix', '禁令', 'Ho', 'guanHaimei', 'kwan_hoimei', 'indexOf']):
+    if not any(k in ctx for k in ['陳淑芬', 'speaker', 'display', 'devAppendix', '禁令', 'Ho', 'guanHaimei', 'kwan_hoimei', 'indexOf', 'npc_mei', 'id:"mei"']):
         ctx_ok = False
 chk('KHM outside tables only in QA/registry contexts', ctx_ok)
 chk('KHM cleaner pattern removed (v151)', '"關海媚", "當紅花旦"' not in block)

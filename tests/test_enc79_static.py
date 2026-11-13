@@ -73,6 +73,12 @@ print('四星對白句數（靜態計）:', total_lines)
 ok('四星對白在位（每星 >= 90 句）', all((b.count('["S",') + b.count('["A",') + b.count('["N",') >= 90) for b in dlg_blocks))
 ok('四星對白總數 >= 430', total_lines >= 430)
 mod_seg = seg('/* ===== v20a79 ENC79', '/* ===== ENC79 模組完 ===== */', 300000)
+# v20a176：ROM176 block 插喺 ENC79 模組段中間（殺青回望之前），入面有意寫關海媚（女角 prefs／對白），
+# 唔係 ENC79 對白——紅線掃描要剔走 ROM176 段（ROM176 內容由 test_rom176_static 覆），頭尾兩截照掃。
+_rom176_start = mod_seg.find('/* ===== v20a176 ROM176')
+_rom176_end = mod_seg.find('/* ---------- 殺青回望', _rom176_start)
+if _rom176_start >= 0 and _rom176_end > _rom176_start:
+    mod_seg = mod_seg[:_rom176_start] + mod_seg[_rom176_end:]
 ok('模組結束標記在位', len(mod_seg) > 20000)
 new_text = ''.join(dlg_blocks) + mod_seg
 ok('紅線：冇關海媚個名', '關海媚' not in new_text)

@@ -98,8 +98,11 @@ lan_block = nocomment[_lan_i:_lan_j] if (_lan_i >= 0 and _lan_j > _lan_i) else '
 lan_lines = [ln for ln in nocomment.splitlines() if '藍若曦' in ln]
 # v20a33 申報：Phase 4-10 結局「差一步」場景（藍 PA 版：收尾加班戲撳通告牌）正當地用佢個名一次，
 # 屬 PA 線內容，斷言放寬到包含嗰句（以「撳住個通告牌」標誌句識別）；「零歌手向」嗰半保留不變。
+# v20a176 申報：ROM176 巧遇系統正當地用佢個名——出沒表註冊（name:"藍若曦"）、開場白（lan:"藍若曦…）、
+# 茶餐廳風聲線（通告牌，PA 線內容）；NPCS 註冊條目同理。斷言放寬到包含呢三個模式；
+# 「零歌手向」嗰半保留不變（通告牌係場記職責，唔係歌手向）。
 ok('藍若曦 remaining occurrences are engine infra or PA-line content (v20a31)',
-   all(('lan_ruoxi' in ln) or ('lan:"藍若曦"' in ln) or (ln in lan_block) or ('撳住個通告牌' in ln) for ln in lan_lines))
+   all(('lan_ruoxi' in ln) or ('lan:"藍若曦' in ln) or ('name:"藍若曦"' in ln) or (ln in lan_block) or ('通告牌' in ln) for ln in lan_lines))
 ok('藍若曦 occurrences carry no singer framing',
    all(not any(w in ln for w in ['歌手', '唱片', '狗仔', '宣傳場', '玉女']) for ln in lan_lines))
 

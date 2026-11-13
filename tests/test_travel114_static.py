@@ -137,59 +137,73 @@ ck("drawMap 計 travelLocked114（travel114Remain() <= 0）",
 # v20a149 fixup3（rebase 上 e8c3a73）：reveal 行融返一行（−1，插入點 L46602），淨 ＋98→＋97；COUNT 13／FREE 27 不變，DEF 53790→53789、WRAPPER 44185 唔郁。
 # 計清單（玩家主動導航，預設計數，唔加旗）：13 處
 COUNT_LINES = {
-    32125,  # ux68GoLoc 手帳「前往」
-    35621,  # 訓練建議「去報名」
-    37748,  # 訓練報名導航
-    38819,  # 進度頁「去現場播劇情」
-    39253,
-    39256,  # 地圖釘 goPin（最近針／後備 L.id）
-    39287,  # 地圖底欄地點掣
-    43841,  # 人情債「去事務所」
-    58022,  # inv72GoShop 去禮品檔
-    58189,  # people72GoLoc
-    58332,  # jobs72GoBoard
-    58353,  # jobs72GoLoc
-    58803,  # 開局屋企 modal「去睇劇情」
+    32132,  # ux68GoLoc 手帳「前往」
+    35628,  # 訓練建議「去報名」
+    37755,  # 訓練報名導航
+    38826,  # 進度頁「去現場播劇情」
+    39260,
+    39263,  # 地圖釘 goPin（最近針／後備 L.id）
+    39294,  # 地圖底欄地點掣
+    43848,  # 人情債「去事務所」
+    58550,  # inv72GoShop 去禮品檔
+    58727,  # people72GoLoc
+    58870,  # jobs72GoBoard
+    58891,  # jobs72GoLoc
+    59341,  # 開局屋企 modal「去睇劇情」
 }
-# 免費清單（帶旗，唔計）：27 處
+# 免費清單（帶旗，唔計）：33 處（舊 27 減 2 條改行 back176 守衛，加 ROM176 新 8 處）
 FREE_LINES = {
-    24635,  # 劇情播完刷新（markDone fallback）
-    28170,  # 劇情播完刷新（leaveStory）
-    30792,
-    30793,
-    30805,
-    30806,
-    30817,
-    30818,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
-    30921,  # 故事 seed 就緒，系統傳送去劇情地點
-    40796,  # wf4Fire 完（wf4Done，舊旗）
-    43498,  # 人情債流程尾，返去而家身處地點
-    43521,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
-    52849,
-    52968,  # 巧遇播完（encDone，舊旗）
-    53861,  # 劇情播完刷新（refreshLocAfterStory）
-    54243,
-    54265,  # 「劇情已完成」toast 後重開而家身處地點
-    54416,  # 聽完傳聞後 reopen 而家身處地點
-    56053,  # forceRestore（舊旗）
-    57464,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
-    57797,  # promptAudition back（返去而家身處地點）
-    57915,
-    57916,
-    57951,
-    57952,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    57971,  # doGiveGift 失敗後重開而家身處地點
-    57986,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    24642,  # 劇情播完刷新（markDone fallback）
+    28177,  # 劇情播完刷新（leaveStory）
+    30799,
+    30800,
+    30812,
+    30813,
+    30824,
+    30825,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
+    30928,  # 故事 seed 就緒，系統傳送去劇情地點
+    40803,  # wf4Fire 完（wf4Done，舊旗）
+    43505,  # 人情債流程尾，返去而家身處地點
+    43528,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
+    52856,
+    52975,  # 巧遇播完（encDone，舊旗）
+    53025,  # v176 星巧遇送禮掣 fallback（encDone）
+    53247,  # v176 女角巧遇 def-missing（encDone）
+    53284,  # v176 女角巧遇「行開」（encDone）
+    53290,  # v176 女角巧遇 onDismiss（encDone）
+    53357,  # v176 星送禮 canGive-fail（encDone）
+    53359,  # v176 星送禮冇 item（encDone）
+    53362,  # v176 星送禮冇庫存（encDone）
+    53389,  # v176 星送禮結果 modal go（encDone）
+    54393,  # 劇情播完刷新（refreshLocAfterStory）
+    54767,
+    54789,  # 「劇情已完成」toast 後重開而家身處地點
+    54940,  # 聽完傳聞後 reopen 而家身處地點
+    56577,  # forceRestore（舊旗）
+    58321,  # promptAudition back（返去而家身處地點）
+    58439,
+    58440,
+    58475,
+    58476,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    58498,  # doGiveGift 失敗後重開而家身處地點
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 53974      # function openLoc(id, opts){
-WRAPPER_LINE = 44328  # window.__phase2.openLoc：轉發 opts
+DEF_LINE = 54493      # function openLoc(id, opts){
+WRAPPER_LINE = 44335  # window.__phase2.openLoc：轉發 opts
+# v20a176 resync：NPCS ＋7／星收尾掣 ＋12／ROM176 block ＋501／茶聽 ＋12／addLoc −13／openLoc 掛點 ＋5／
+# doGiveGift ＋4／人脈頁 ＋10，淨 ＋538 行；qa176/resync176.py 逐行核實全部釘行內容逐字相同（純漂移），
+# 新 8 處 encDone 係 ROM176 返程（星送禮 fallback 1＋女角巧遇 3＋星送禮 4）；doTalk／doGiveGift 兩條 go
+# 改行 rom176BackOpts()（結構上只返 {encDone:true} 或 {travelFree:true}），由 back176 規則認，唔入 FREE_LINES。
+# 呼叫點總數 44→52（免費 33＋計數 13＋定義／wrapper／測試區 4＋back176 2）。# v20a176 rebase 上 main a41b789（v179）resync：main 淨 ＋15（27110／38436／44078 各 ＋5），
+# COUNT／FREE／DEF／WRAPPER 按段 ＋0／＋5／＋10／＋15（grep openLoc( 逐行核對），總數 52 不變。
+# v20a176 rebase 上 main 91f264a（v175）resync：v175 淨 ＋78，COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫（qa176/resync176_rebase.py），總數 52 不變。
 # v20a153 第三輪 rebase 上 main a500536（v149）resync：difflib 對位核實純漂移，COUNT/FREE/DEF/WRAPPER 行號按映射重寫（見 qa153/resync_rebase153c.py）。
 # v20a172 rebase 上 main a500536（v149）resync：v149 淨 ＋97；＜45594 者 ＋13、典禮區後者 ＋97，DEF 53707→53804、WRAPPER 44187→44200；COUNT 13／FREE 27 不變（qa172/resync172b.py difflib 對位核實）。
 # v20a172 rebase 上 main e2add29（v174）resync：COUNT／FREE 按段 ＋0／＋5／＋10／＋15，DEF 53860→53875、WRAPPER 44235→44250（qa172/resync172c.py difflib 對位核實純漂移）。
 # v20a175 rebase 上 main f09fa1b（v177）resync：index.html 淨 ＋78（CSS ＋10／toast() ＋15／helpers ＋51／adopt ＋2）；錨點逐行核實內容逐字相同，純漂移（＜33710 者 ＋10、33711–44131 者 ＋25、≥44223 者 ＋78；COUNT 13／FREE 27 不變，DEF 53875→53953、WRAPPER 44250→44328）。
 # v20a178 第二次 rebase 上 main 91f264a（v175）resync：v178 ＋25 行（註解＋1／sprite＋3／fellows＋21，插入點新行號 46815／46850／46993；其後者 ＋25、之前者唔郁）；COUNT 13／FREE 27 不變，DEF 53953→53978、WRAPPER 44328 唔郁（qa178/resync178b.py difflib 對位核實純漂移；三檔 rebase 衝突後以 v175 版為底重算）。
 # v20a178 strip 上 91f264a resync：strip 淨 −4 行（註解＋1／sprite＋3，刪除點舊行號 46815／46852–46854；其後者 −4、之前者唔郁）；COUNT 13／FREE 27 不變，DEF 53978→53974、WRAPPER 44328 唔郁（qa178/resync178c.py difflib 對位核實純漂移）。
+# v20a176 第三輪 rebase 上 main c682cc2（v178）resync：v178 淨 ＋21（fellows 特別名額＋21，插入點 46993 之後者 ＋21）；COUNT 13／FREE 33 不變，DEF 54472→54493、WRAPPER 44335 唔郁（qa176/resync176_rebase3.py difflib 對位核實純漂移；三檔 rebase 衝突後取 v176 嗰邊，v178 註解行補返）。
 # 頁內測試區：runSoftP0Checks 函數範圍（brace-match 實量，唔靠死行號）
 def fn_range(start_pat):
     s = src.find(start_pat)
@@ -216,6 +230,11 @@ for ln, line in enumerate(lines, 1):
         continue
     if TEST_START <= ln <= TEST_END:
         continue  # 頁內測試 code（57835）＋字串檢查（57877），唔改
+    if "back176" in line:
+        # v176：rom176BackOpts() 返程守衛——只返 {encDone:true} 或 {travelFree:true}，結構上免費。
+        # doTalk／doGiveGift 兩條 go 行呢個（舊 FREE 57350／57872 嗰兩行）；openGiftPick 取消／dismiss
+        # 兩行同時帶 back176＋travelFree:true 字面，留喺 FREE_LINES，逐行旗檢查照過。
+        continue
     if any(f in line for f in FREE_FLAGS):
         if ln not in FREE_LINES:
             unaccounted.append((ln, "帶免費旗但唔喺 FREE_LINES：" + line.strip()[:90]))
@@ -233,7 +252,7 @@ for ln in sorted(FREE_LINES):
 for ln in sorted(COUNT_LINES):
     ck("計清單行 %d 實際冇帶旗（預設計數）" % ln,
        not any(f in lines[ln - 1] for f in FREE_FLAGS))
-info("呼叫點分類：免費 %d 處＋計數 %d 處＋定義／wrapper／測試區 4 處" %
+info("呼叫點分類：免費 %d 處＋計數 %d 處＋back176 守衛 2 處＋定義／wrapper／測試區 4 處" %
      (len(FREE_LINES), len(COUNT_LINES)))
 info("頁內測試區 runSoftP0Checks 行 %d–%d（內含測試呼叫＋字串檢查，唔改）" % (TEST_START, TEST_END))
 
