@@ -123,3 +123,9 @@ C2 adoption 每 iteration 量度（以 932 iter1 為例，其餘 15 次同一 pa
 - 無新殘留。C2 live-fire 嗰陣 openLoc 喺進度頁開住嗰陣照跑（事務所 sheet 喺地圖層開，唔搶 view），實駕證實唔影響 banner／行。
 - Pristine 比對 worktree：舊嘅 `~/workspace/linji-pristine175/`（detached `a618a5d`）仲留喺 workspace，統籌核實完可清走；rebase 重驗用嘅 `~/workspace/linji-pristine175r/`（detached `f09fa1b`）跑完已清走（`git worktree remove`）；第二次 rebase 用嘅 `~/workspace/linji-pristine175r2/`（detached `a41b789`）同樣跑完已清走。
 - 全套 12 項 pre-existing FAIL 同開工前一批，唔喺呢票範圍。
+
+## §10 落地紀錄（統籌填）
+
+- 遊戲 commit **`4ef7405`**（squash merge `v20a175`，基底 `a41b789` v179 NOTES；20 檔 ＋5813／−79）。落地前 main 冇再郁（核實嗰陣 HEAD 仲係 `a41b789`）。
+- 線上核實（統籌親自 curl，兩次）：第一次仲係舊版（v179，5,271,638 bytes sha `c428f3d1…`，Pages 部署滯後）；等 90 秒後重 curl，**5,276,015 bytes、sha256 `76c39a9faeb6f89f8177941998694458cdd6fb975348cbb72b6e03e9863db3da`**，同 repo `HEAD:index.html` 完全一致。Push main 一次成功（`a41b789..4ef7405`），`git fsck` 乾淨（淨 dangling 殘留；之前嗰條 `a41b789` reflog invalid entry 已經解開——佢就係 v179 NOTES commit 本身，而家係 main 嘅祖先，唔係懸空 entry）。
+- 下一票 rebase 基底改用 **`4ef7405`**（live 已係 v175）。
