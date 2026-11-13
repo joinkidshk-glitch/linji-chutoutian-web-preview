@@ -91,3 +91,10 @@
 - 改動：`index.html`（2 行）、`tests/test_awards190_logic.js`（新）、`tests/test_awards190_static.py`（新）、`tests/test_awards166_static.py`、`tests/test_awards168_static.py`、`tests/test_awards187_logic.js`、`tests/test_awards187_static.py`（四檔跟住更新）。
 - 實駕：`qa190/drive190.py`、`qa190/drive190_report.json`、`qa190/drive190_report_932_won.json`（改前基線）、`qa190/probe190_css.py`（機制探針）、`qa190/shots190/`（22 張）、`qa190/suite190_pristine.txt`（混合時段跑，見註）、`qa190/suite190_work.txt`。
 - 註：`suite190_pristine.txt` 係工作副本跑嗰陣同我改 code 撞咗時段（89 秒內），嚴格講唔係乾淨基線；乾淨基線已喺 linji-repo `dcf1b72` 重跑（`/tmp/suite190_pristine_repo.txt`，255／12，FAIL 清單同 work 版逐檔相同）。`suite190_pristine.txt` 留檔只作參考。
+
+## §7 合併紀錄（統籌補）
+
+- 落地：main `4283862`（squash merge `v20a190`，HEAD `dddf09e`，零衝突；push main 一次成功，無斷線）。
+- 線上核實：5,311,650 bytes，sha256 `ba40a6a02b6c…`，同 repo `HEAD:index.html` 完全一致（Pages 部署滯後約 150 秒，第一 curl 仲係 v187 舊版）。
+- 統籌親自覆核：新測試兩檔重跑 ALL PASS；全套 A/B（pristine 255／12 vs work 257／12，FAIL 清單逐檔相同，零回歸）；實駕報告 `qa190/drive190_report.json`（6/6、0 pageerror、0 http fail）＋glamour 數字逐項核對（932 panel 386–693／空 3.3%、700 panel 380–660／空 3.6%、clearance 36／24px、重疊 False、海報盒唔郁）；`932_won_glamour.png` 目測核實（白牌完整、海報面完整、panel 貼住海報＋caption、上方見返幕布）。
+- `git fsck --strict` 乾淨（淨係正常 dangling）。常駐 clone 工作樹乾淨（淨係 pre-existing untracked `qa123/`／`qa166/`，冇誤 commit）。
