@@ -1,0 +1,37 @@
+{
+  "errors": [],
+  "http_fail": [],
+  "runs": {
+    "c6-700": {
+      "key": "c6-700",
+      "vp": 700,
+      "pass": true,
+      "evidence": {
+        "entry": {
+          "title": "第一日：冇價",
+          "day": 0
+        },
+        "no_leave_btn": true,
+        "skip_to_choice_present": false,
+        "after_mask_click": {
+          "story": true,
+          "mask": true
+        },
+        "elementFromPoint": [
+          "toast",
+          "sp-stage-inner",
+          "sp-stage-inner"
+        ],
+        "after_map_click": {
+          "story": true,
+          "map": false
+        },
+        "after_close": {
+          "map": true,
+          "mask": false
+        }
+      },
+      "pageerrors": []
+    }
+  }
+}

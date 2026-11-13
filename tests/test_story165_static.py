@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-# v20a165 STORY165 靜態測試：主線強制播放（用戶 2026-11-13 09:24 拍板）
+# v20a196（2026-11-13）：強制播掛點由 goToMapForBrowse 內聯改行共用晨鏈 morningChain196
+# （goToMapForBrowse 同 runScheduleFromToday 排程日共用一條鏈）；story165TryForcedPlay
+# 加 afterCont 參數（播之前寫 D3 續鏈 slot）。下面 §一／§二／§三／§五／§十嘅錨點跟新寫法，
+# 其餘斷言（守門／選幕／掛點兩條返地圖路／閘）唔郁。
 # 一、強制播三函數在位（story165NextOpen／CanPlay／TryForcedPlay）
 # 二、掛點：goToMapForBrowse 尾段——kickScheduleIfNeeded 之後、地圖顯示之前
 # 三、守門：手帳未確定順延（唔靜默提交）、結局鎖／劇情進行中唔播
@@ -33,20 +36,27 @@ def seg(a, b, span=6000):
 # --- 一、強制播函數在位 ---
 ok('強制播三函數在位',
    'function story165NextOpen(){' in src and 'function story165CanPlay(){' in src
-   and 'function story165TryForcedPlay(){' in src)
+   and 'function story165TryForcedPlay(afterCont){' in src)
 
-# --- 二、掛點：goToMapForBrowse 尾段 ---
+# --- 二、掛點：共用晨鏈 morningChain196 尾段（v196 D2） ---
 g = seg('function goToMapForBrowse(){', '/* v19z8', 12000)
-ok('掛點在位：kick 之後即試強制播、地圖顯示之前',
-   'if(kickScheduleIfNeeded()) return;' in g and 'story165TryForcedPlay()' in g
+ch = seg('function morningChain196(', 'function runScheduleFromToday(){', 6000)
+ok('掛點在位：kick（地圖模式先）之後即試強制播、鏈尾行 finalFn',
+   'if(opts.mapMode){' in ch and 'story165TryForcedPlay(afterKind)' in ch
+   and 'done();' in ch
+   and ch.index('kickScheduleIfNeeded()') < ch.index('story165TryForcedPlay(afterKind)')
+   < ch.index('done();'))
+ok('掛點有 try/catch 跌返鏈尾（強制播出事唔阻流程）',
+   'catch(_e){}' in ch)
+ok('goToMapForBrowse 經共用鏈（mapMode:true），地圖顯示喺鏈尾之後',
+   'morningChain196(()=>{' in g and '{ mapMode:true });' in g
    and 'show("v-map")' in g
-   and g.index('if(kickScheduleIfNeeded()) return;') < g.index('story165TryForcedPlay()')
-   < g.index('show("v-map")'))
-ok('掛點有 try/catch 跌返地圖（強制播出事唔阻返地圖）',
-   'catch(_s165){}' in g)
+   and g.index('morningChain196(()=>{') < g.index('show("v-map")'))
+ok('runScheduleFromToday 排程日經共用鏈（mapMode:false），continuation＝跑當日行程',
+   'morningChain196(()=>{ resolvePlannedDay(id); }, { mapMode:false });' in src)
 
 # --- 三、守門 ---
-c = seg('function story165CanPlay(){', 'function story165TryForcedPlay(){', 2000)
+c = seg('function story165CanPlay(){', 'function story165TryForcedPlay(afterCont){', 2000)
 ok('守門：手帳未確定順延（唔靜默提交）', 'if(S.homeEditable) return null;' in c)
 ok('守門：結局鎖唔播', 'ending78Locked' in c and 'ending78Gate' in c)
 ok('守門：劇情進行中唔播', 'isStoryPlayActive' in c and '_storyPlayLocked' in c)
@@ -61,13 +71,15 @@ ok('選幕：N 次序 C1..C6、C6F、C18、C19、C7..C17',
    '"C1","C2","C3","C4","C5","C6","C6F","C18","C19","C7"' in n)
 
 # --- 五、普通 start，唔用 force；唔經 openLoc ---
-t = seg('function story165TryForcedPlay(){', '/** v17p PLAN 9.1', 3000)
+t = seg('function story165TryForcedPlay(afterCont){', '/** v17p PLAN 9.1', 3000)
 ok('omit 節點先寫 offer（forced165，同 openLoc 入場同一動作）',
    'openMeetOffer(next.id, "forced165")' in t)
 ok('普通 StoryPlay.start（唔用 opts.force／allowDuringPlanner，等 start 自己再驗；v172 起帶 ignoreSheetLoc:true——選幕同播出一致，soft 地圖 atLoc=null 唔再擋強制播）',
    'StoryPlay.start(next.id, { ignoreSheetLoc:true })' in t
    and 'force:true' not in t and 'allowDuringPlanner' not in t)
 ok('強制播唔經 openLoc／唔食出行額度', 'openLoc(' not in t and 'travel114TrySpend' not in t)
+ok('v196 D3：播之前寫續鏈 slot（預設 map）',
+   'story165AfterContSet(afterCont || "map")' in t)
 
 # --- 六、進度頁掣拎走 ---
 rp = seg('function renderProgressPane71(){', '/* === v20a71', 9000)
@@ -129,7 +141,7 @@ ok('(c) closeSheet 本體唔掛強制播（~30 個 call sites，modal() 都會 c
    'story165TryForcedPlay' not in seg('function closeSheet(opts){', '/* ===== v20a35', 2500))
 ok('(c) book70ExitHome 掛點先問 modal 閘再試播（ux68GoLoc 經 modal 掣 on() 嗰陣唔冚 modal）',
    'story165ModalOpen()' in bh and 'story165TryForcedPlay()' in bh)
-mh = seg('function story165ModalOpen(){', 'function story165TryForcedPlay(){', 1500)
+mh = seg('function story165ModalOpen(){', 'function story165TryForcedPlay(afterCont){', 1500)
 ok('(c) modal 閘 helper 在位：#mask 有 on 但無 story-play-on 嗰陣先算 modal 開緊',
    'function story165ModalOpen(){' in src
    and 'classList.contains("on")' in mh and 'story-play-on' in mh
@@ -144,8 +156,8 @@ ok('(c) 兩條新掛點都有 try/catch 跌返地圖（強制播出事唔阻返�
    'catch(_s165b){}' in bh and 'catch(_s165c){}' in src)
 ok('(c) 新掛點唔經 openLoc／唔食額度／唔用 opts.force（v172：只准 ignoreSheetLoc:true）',
    'openLoc(' not in bh and 'travel114TrySpend' not in bh
-   and 'force:true' not in src.split('function story165TryForcedPlay(){')[1][:3000]
-   and 'allowDuringPlanner' not in src.split('function story165TryForcedPlay(){')[1][:3000])
+   and 'force:true' not in src.split('function story165TryForcedPlay(afterCont){')[1][:3000]
+   and 'allowDuringPlanner' not in src.split('function story165TryForcedPlay(afterCont){')[1][:3000])
 ok('(c) leaveHomeFromNotebook 唔喺呢票（第三條返地圖路，留返統籌決定——見 NOTES §9）',
    'story165TryForcedPlay' not in seg('function leaveHomeFromNotebook(mode){', 'document.getElementById("home-back-map").onclick', 2000))
 

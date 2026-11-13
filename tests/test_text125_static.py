@@ -1,6 +1,7 @@
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），三錨點 +4／+4／+7 重算。
 # v20a125 TEXT125 靜態守門：StoryPlay 讀埋 `text` 單句 beats。
 # v20a191 resync：index.html 淨 +47 行，三錨點 +2／+2／+9（currentLine 27711→27713、advance 27840→27842、familySafe 33534→33543），內容逐字核實純漂移。
+# v20a196 resync：showResult 淨 −1，familySafe 錨點 33568→33567，內容逐字核實純漂移。
 # v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行，三錨點 +2／+2／+9（currentLine 27736→27738、advance 27865→27867、familySafe 33559→33568），內容逐字核實純漂移。
 # 覆蓋：① currentLine／advance 有 text fallback（行號寫死，rebase 要人手重對）
 #       ② applyFamilySafeToNode 處理 b.text
@@ -54,8 +55,8 @@ def check(s):
     if len(ls) < 27969 or FALLBACK not in ls[27968]:
         probs.append("advance 第 27969 行冇 text fallback")  # v157 resync：27913→27937（splice ＋24）；v149 rebase ＋13：27752→27765；v20a199 resync：27871→27914
     # ② applyFamilySafeToNode 處理 b.text（行號 33516–33518，rebase 重對；v131 B2/B4 令行號由 33222 移位；v133 令行號由 33263 移位；v135 令行號由 33268 移位，CSS 淨 +1；v137 令行號由 33269 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 33282 移位，淨 +60，同上；v143 令行號由 33342 移位，淨 +43，同上；v136 rebase 上 v143，淨 +38，含 scrub 護欄 +3；v142 ＋16，實量；v145 ＋67，同上；v146 rebase ＋10，同 currentLine）
-    if len(ls) < 33672 or 'if(typeof b.text === "string" && b.text){' not in ls[33671]:
-        probs.append("applyFamilySafeToNode 第 33672 行冇 b.text 分支")  # v20a198 resync：33568→33567（C1 死 code 刪 −43 淨計，30413 export −1；其後 ＋12−41… 淨 −7 尾段；difflib 對位核實純漂移）；v20a199 resync：33574→33617
+    if len(ls) < 33671 or 'if(typeof b.text === "string" && b.text){' not in ls[33670]:
+        probs.append("applyFamilySafeToNode 第 33671 行冇 b.text 分支")  # v196 落地合併上 main 2de5026：v197 33672→33671（showResult 淨 −1）
     if 'b.text.replace(/臨時演員蹲在路邊抽煙/g' not in s:
         probs.append("applyFamilySafeToNode b.text 替換唔齊")
     # ③ 五表普查

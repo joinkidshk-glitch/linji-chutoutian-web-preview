@@ -28,8 +28,10 @@ ok('事件池唔經 StoryPlay applyChoice（唔污染 story 狀態）',
 # 接線 hooks
 ok('wf4DailyTick 掛 advanceDay（wf3SettleTick 之後）',
    src.find('wf3SettleTick(); }catch(_w3s){}') < src.find('wf4DailyTick(); }catch(_w4t){}') > 0)
-ok('wf4PresentPending 掛 goToMapForBrowse（晨報之後）',
-   src.find('presentDueMorningPaper') < src.find('wf4PresentPending()) return') and 'wf4PresentPending()) return' in src)
+# v20a196 D2：晨鏈抽去共用 morningChain196——WF4 仲係晨報之後、請柬／試鏡消息之後，帶鏈續鏈＋allowForced。
+ok('wf4PresentPending 掛共用晨鏈 morningChain196（晨報之後，帶鏈續鏈）',
+   src.find('presentDueMorningPaper(step)') < src.find('wf4PresentPending(step, { allowForced:true, afterCont:afterKind })')
+   and 'wf4PresentPending(step, { allowForced:true, afterCont:afterKind })' in src)
 ok('wf4TryLocEvent 掛 openLoc（巧遇攔截之後）',
    src.find('enc79TryIntercept(id)) return') < src.find('wf4TryLocEvent(id)) return') and 'wf4TryLocEvent(id)) return' in src)
 ok('openLoc 有 wf4Done 繞過旗', 'opts.wf4Done' in src)

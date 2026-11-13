@@ -52,6 +52,7 @@ const document = {
 };
 
 /* ---- 真碼入作用域 ---- */
+eval(extractFn('nextDayIsMap')); /* v20a196 D7：dayEndContinueButtons／休息卡／確認 modal 而家靠佢判定逛逛日 */
 eval(extractFn('dayEndContinueButtons'));
 eval(extractFn('presentStartScheduleConfirm45'));
 eval(extractFn('presentRestSleepDayEnd'));
@@ -80,21 +81,15 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
   ok('A confirm-start runs schedule exactly once', schedCalls === 1 && mapCalls === 0);
 })();
 
-/* ---- B：旗標開＋返回地圖／關閉 —— 停喺結算後狀態，唔推日 ---- */
+/* ---- B（v196 改）：旗標開＋排程下一日（rest）—— 確認冇「返回地圖」，dismiss＝開始行程，唔推日 ---- */
 (function(){
   reset(); PLAN_NOW = 'rest';
   presentRestSleepDayEnd({ title:'休息（週一）', notes:[], ended:false, summary:null, confirmStartSchedule:true });
   press(lastModal(), '開始今日');
-  press(lastModal(), '返回地圖');
-  ok('B cancel goes to map, schedule never runs', mapCalls === 1 && schedCalls === 0);
-  ok('B dayIndex untouched after cancel', S.dayIndex === 1);
-
-  reset(); PLAN_NOW = 'rest';
-  presentRestSleepDayEnd({ title:'休息（週一）', notes:[], ended:false, summary:null, confirmStartSchedule:true });
-  press(lastModal(), '開始今日');
   const c = lastModal();
+  ok('B v196 scheduled next day: confirm has no 返回地圖', !c.btns.some(x => String(x.label || '').indexOf('返回地圖') >= 0));
   if(typeof c.opts.onDismiss === 'function') c.opts.onDismiss();
-  ok('B2 dismiss goes to map, schedule never runs', mapCalls === 1 && schedCalls === 0 && S.dayIndex === 1);
+  ok('B2 v196 dismiss starts schedule, never maps', schedCalls === 1 && mapCalls === 0 && S.dayIndex === 1);
 })();
 
 /* ---- C：冇旗標（legacy playRestSleepFx 路徑）—— 開始即行程，冇確認 ---- */
@@ -133,7 +128,13 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
   presentStartScheduleConfirm45(()=>{ started++; }, ()=>{ mapped++; });
   const c = lastModal();
   ok('F auto-plan copy names plan + instant settle', c.html.indexOf('街頭表演') >= 0 && c.html.indexOf('自動行程') >= 0 && c.html.indexOf('即時結算埋今日') >= 0);
-  press(c, '返回地圖');
+  ok('F v196 scheduled next day: confirm has no 返回地圖', !c.btns.some(x => String(x.label || '').indexOf('返回地圖') >= 0));
+  // 返地圖路徑改行逛逛日（scout_all）驗：確認照出兩粒掣，取消只返地圖
+  reset(); PLAN_NOW = 'scout_all';
+  presentStartScheduleConfirm45(()=>{ started++; }, ()=>{ mapped++; });
+  const cm = lastModal();
+  ok('F map next day: confirm still has 返回地圖', cm.btns.some(x => String(x.label || '').indexOf('返回地圖') >= 0));
+  press(cm, '返回地圖');
   ok('F cancel callback only maps', mapped === 1 && started === 0 && S.dayIndex === 1);
 
   reset(); PLAN_NOW = 'shoot:demo1';

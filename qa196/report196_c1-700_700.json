@@ -1,0 +1,56 @@
+{
+  "errors": [],
+  "http_fail": [],
+  "runs": {
+    "c1-700": {
+      "key": "c1-700",
+      "vp": 700,
+      "pass": true,
+      "evidence": {
+        "settled_opening": true,
+        "mon_board": {
+          "title": "拍攝日→殺青：《陰陽夜更》動作替身",
+          "btns": [
+            "開始今日行程",
+            "想跳過本週剩餘日子？加速 →"
+          ],
+          "day": 1
+        },
+        "tue": {
+          "stop": "dayend",
+          "events": [
+            "reward",
+            "paper",
+            "dayend:街頭表演（週二）"
+          ],
+          "title": "街頭表演（週二）",
+          "btns": [
+            "開始今日行程"
+          ],
+          "day": 2
+        },
+        "wed": {
+          "stop": "dayend",
+          "events": [
+            "paper",
+            "dayend:休息（週三）"
+          ],
+          "title": "休息（週三）",
+          "btns": [
+            "返回地圖"
+          ],
+          "day": 3
+        },
+        "thu": {
+          "stop": "map",
+          "events": [
+            "map"
+          ],
+          "map": true,
+          "day": 3
+        }
+      },
+      "pageerrors": []
+    }
+  }
+}

@@ -81,8 +81,13 @@ ok('進度頁：舊「去 X 就會觸發」／「你而家喺」文案清零',
 ok('進度頁：舊「開劇情列表播」提示已改寫', '開劇情列表播' not in rp and '劇情列表' not in rp)
 ok('播掣委派已拎走：closest data-prog77-play／_progList77 清零',
    'closest("[data-prog77-play]")' not in src and '_progList77' not in src)
-ok('強制播掛點在位（goToMapForBrowse 尾段 story165TryForcedPlay）',
-   'story165TryForcedPlay()' in src and 'function story165TryForcedPlay(){' in src)
+# v20a196 D2：強制播掛點由 goToMapForBrowse 尾段搬入共用晨鏈 morningChain196
+# （goToMapForBrowse／runScheduleFromToday 排程日共用；story165TryForcedPlay 簽名加 afterCont 參數）。
+mc77 = seg('function morningChain196(', 'function runScheduleFromToday')
+ok('強制播掛點在位（v196：共用晨鏈 morningChain196 尾段 story165TryForcedPlay）',
+   'function story165TryForcedPlay(afterCont){' in src
+   and 'story165TryForcedPlay(afterKind)' in mc77
+   and 'morningChain196(' in seg('function goToMapForBrowse(){', 'function nudgeRegionForToday'))
 
 # --- 五、播完掣／提示改指進度頁、picker 玩家入口清零 ---
 ok('播完畫面：冇「劇情列表」掣', 'label:"劇情列表"' not in src)

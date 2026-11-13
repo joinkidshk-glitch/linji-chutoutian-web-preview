@@ -79,7 +79,7 @@ ok('B1(a)：NOTES 講明 soft 只驗文案／靜態，唔作強制播 pass/fail 
 sp = seg('function start(idOrNode, opts){', '/* v18h', 6000)
 ok('B1(b)：StoryPlay.start 原樣轉交 ignoreSheetLoc 去 evalNode',
    'StoryOC.evalNode(node, { checkNodePhase:true, ignoreSheetLoc: !!opts.ignoreSheetLoc })' in sp)
-t = seg('function story165TryForcedPlay(){', '/** v17p PLAN 9.1', 3000)
+t = seg('function story165TryForcedPlay(afterCont){', '/** v17p PLAN 9.1', 3000)  # v196：簽名加 afterCont 參數（D3 續鏈 slot）
 ok('B1(b)：強制播經 start() 嗰陣帶 { ignoreSheetLoc:true }',
    'StoryPlay.start(next.id, { ignoreSheetLoc:true })' in t)
 ok('B1(b)：強制播仍然唔用 opts.force／allowDuringPlanner（只繞地點一步）',

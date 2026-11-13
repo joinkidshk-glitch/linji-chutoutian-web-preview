@@ -44,7 +44,10 @@ ok('簽約金三成', 'Math.round(pay*0.3)' in html and 'shoot.signedPaid = sign
 gtm = seg('function goToMapForBrowse(){', 'function nudgeRegionForToday')
 ok('地圖落點有公佈 hook', 'aud91PresentDue' in gtm)
 rs = seg('function runScheduleFromToday(){', 'function resolvePlannedDay')
-ok('排程落點有公佈 hook', 'aud91PresentDue' in rs)
+# v20a196 D2：排程落點改行共用晨鏈 morningChain196——公佈 hook 搬咗入晨鏈，runScheduleFromToday（排程日）經佢跑。
+mc = seg('function morningChain196(', 'function runScheduleFromToday')
+ok('排程落點有公佈 hook（v196：晨鏈 morningChain196 有 aud91PresentDue，runScheduleFromToday 排程日經佢跑）',
+   'aud91PresentDue' in mc and 'morningChain196(' in rs)
 ok('公佈唔卡結局（presentDue 有結局鎖檢查）', 'ending78Locked' in seg('function aud91PresentDue', 'function aud91PresentOne'))
 
 # ---- 殺青只入餘額 ----

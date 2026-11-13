@@ -1,0 +1,112 @@
+{
+  "errors": [],
+  "http_fail": [],
+  "runs": {
+    "c12a-932": {
+      "key": "c12a-932",
+      "vp": 932,
+      "pass": true,
+      "evidence": {
+        "settled_opening": true,
+        "mon_board": {
+          "stop": "dayend",
+          "title": "街頭表演（週一）",
+          "btns": [
+            "返回地圖"
+          ],
+          "day": 1
+        },
+        "entry": {
+          "stop": "invite",
+          "events": [
+            "invite:街招年賞請柬"
+          ],
+          "invite": true,
+          "title": "街招年賞請柬",
+          "btns": [
+            "出席",
+            "推辭"
+          ]
+        },
+        "after_dismiss": {
+          "ceremony": true,
+          "map": false
+        },
+        "after_ceremony": {
+          "stop": "map",
+          "events": [
+            "paper",
+            "map"
+          ],
+          "map": true,
+          "day": 1
+        },
+        "award_log_tail": [
+          {
+            "id": "aw_1990_harbour_ad",
+            "ceremonyId": "award_harbour_ad",
+            "displayName": "維港街招・年度廣告賞",
+            "medium": "ad",
+            "year": 1990,
+            "season": "春",
+            "week": 1,
+            "tier": "gallery",
+            "categories": [
+              {
+                "id": "cat_ad_lead_m",
+                "outcome": "gallery",
+                "repTitle": "",
+                "fellows63": [
+                  {
+                    "star": "陸柏言",
+                    "title": "冬霧西裝金錶硬照"
+                  },
+                  {
+                    "star": "鍾楚凝",
+                    "title": "春日新潮時裝特輯"
+                  },
+                  {
+                    "star": "蘇芷茵",
+                    "title": "盛夏驕陽防曬輯"
+                  }
+                ],
+                "winner63": ""
+              },
+              {
+                "id": "cat_ad_support_m",
+                "outcome": "gallery",
+                "repTitle": "",
+                "fellows63": [
+                  {
+                    "star": "陸柏言",
+                    "title": "冬霧西裝金錶硬照"
+                  },
+                  {
+                    "star": "鍾楚凝",
+                    "title": "春日新潮時裝特輯"
+                  },
+                  {
+                    "star": "蘇芷茵",
+                    "title": "盛夏驕陽防曬輯"
+                  }
+                ],
+                "winner63": ""
+              }
+            ],
+            "rewardsApplied": {
+              "stageVolume": 0,
+              "industryCredit": 0,
+              "money": 0,
+              "tags": []
+            },
+            "metricEcho": "attention",
+            "venue99": "金禧大酒店・大禮堂",
+            "skipped": true,
+            "dayIndex": 0
+          }
+        ]
+      },
+      "pageerrors": []
+    }
+  }
+}

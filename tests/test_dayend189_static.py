@@ -26,13 +26,12 @@ def idx(hay, needle):
 
 fn = seg('function dayEndContinueButtons(', 'function flushWeekAccelSummary(')
 
-# ---- 1：soft 分支「返回地圖」真係返地圖 ----
-ok('soft map button goes to goToMapForBrowse',
-   'label:"返回地圖", role:"p", on:(()=>{ try{ goToMapForBrowse(); }catch(_e){} })}' in fn)
-ok('soft map button does NOT run goRunSchedule',
-   fn.count('label:"返回地圖"') == 2
+# v20a196 D1／D7（取代 v189 soft 兩粒掣）：soft 日而家都係排程日，唔出「返回地圖」，只留「開始今日行程」；
+# 「返回地圖」只剩 map 分支嗰粒（行 goRunSchedule 經獎勵流程）。其餘斷言（forced／map／ended／加速）唔郁。
+ok('v196 soft branch has NO 返回地圖 (only the map-branch one left)',
+   fn.count('label:"返回地圖"') == 1
    and 'label:"返回地圖", role:"p", on: (typeof goRunSchedule' in fn  # 只剩 nextIsMap 嗰粒
-   and 'label:"返回地圖", role:"p", on:goRunSchedule' not in fn)
+   and 'label:"返回地圖", role:"p", on:(()=>{ try{ goToMapForBrowse(); }catch(_e){} })}' not in fn)
 ok('soft schedule button still runs goRunSchedule',
    'label:"開始今日行程", role:"g", on:goRunSchedule' in fn)
 

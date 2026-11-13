@@ -79,9 +79,9 @@ def blend(fg, bg, a):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 60817（v197 rebase 上 main 4e841e5：v200 60723＋94，difflib 核實）', src.count('\n') == 60817)
-ok('零行數漂移：openLoc DEF 行 55310（v197 rebase 上 main 4e841e5：v200 55216＋94，travel114 釘行，difflib 核實）',
-   len(lines) >= 55310 and 'function openLoc(id, opts){' in lines[55309])
+ok('零行數漂移：總行數 60900（v196 落地合併上 main 2de5026：v197 60817＋83）', src.count('\n') == 60900)
+ok('零行數漂移：openLoc DEF 行 55384（v196 落地合併上 main 2de5026：v197 55310＋74，travel114 釘行）',
+   len(lines) >= 55384 and 'function openLoc(id, opts){' in lines[55383])
 ok('零行數漂移：L4862 仲係 v169／v171／v173 同行（v181 CSS ＋13，kwan151／tang152 釘行已一併 resync）',
    len(lines) >= 4935 and 'loc-acts-more171::after' in lines[4934] and 'act-locked171' in lines[4934])
 ok('L4862 註解平衡：/* 數＝*/ 數，鎖住底 rule 唔喺註解入面（v173 曾中招：註解入面再插 /*…*/ 令首個 */ 提早閂註解，殘尾變裸文吞咗鎖住底 rule 嘅 selector，live 底色跌返 #f5e6c0）',

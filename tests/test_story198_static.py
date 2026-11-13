@@ -75,7 +75,10 @@ ok('B1：boss01 定義唔郁（once:true、茶餐廳、setFlag boss_met）',
 ok('B1：story165CanPlay 本身唔郁（仲係經 story165NextOpen）',
    'return story165NextOpen();' in func_body_braces(src, 'story165CanPlay'))
 ok('B1：晨鏈 wf4PresentPending 次序唔郁（pending day 事件先行，唔關 boss01 事）',
-   'if(typeof wf4PresentPending==="function" && wf4PresentPending()) return;' in src)
+   # v20a196 D2：晨鏈搬入共用 runner morningChain196，wf4PresentPending 改帶續鏈（step＋allowForced／afterCont），
+   # 舊式無參呼叫已拎走；pending day 事件仍然喺鏈入面、仍然喺強制播之前，boss01（trig:"loc"）仍然唔關事。
+   'wf4PresentPending(step, { allowForced:true, afterCont:afterKind })' in src
+   and src.index('wf4PresentPending(step') < src.index('強制播（播之前寫續鏈 slot'))
 
 # --- C1：死 code 已清 ---
 ok('C1：storyMapHintHtml 宣告已拎走', 'function storyMapHintHtml(){' not in src)

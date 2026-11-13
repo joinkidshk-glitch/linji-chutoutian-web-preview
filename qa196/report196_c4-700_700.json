@@ -1,0 +1,48 @@
+{
+  "errors": [],
+  "http_fail": [],
+  "runs": {
+    "c4-700": {
+      "key": "c4-700",
+      "vp": 700,
+      "pass": true,
+      "evidence": {
+        "settled_opening": true,
+        "phase1": {
+          "stop": "invite",
+          "events": [
+            "reward",
+            "invite:街招年賞請柬"
+          ]
+        },
+        "ceremony_seen": true,
+        "after_ceremony": {
+          "title": "維港街招・年度廣告賞・結果",
+          "btns": [
+            "收下這晚"
+          ]
+        },
+        "phase2": {
+          "stop": "dayend",
+          "events": [
+            "paper",
+            "aud:何生來電",
+            "modal:開鏡拜神企前排:繼續",
+            "modal:開鏡拜神企前排:睇落去",
+            "modal:開鏡拜神企前排:雙手接過燒豬",
+            "modal:開鏡拜神企前排:好",
+            "dayend:街頭表演（週二）"
+          ],
+          "title": "街頭表演（週二）",
+          "day": 2
+        },
+        "wf4_state": {
+          "pending": null,
+          "seen": 1,
+          "audLeft": 0
+        }
+      },
+      "pageerrors": []
+    }
+  }
+}

@@ -1,6 +1,6 @@
 // v20a189 日結板三粒掣・邏輯／真路徑測試
 //   行真 dayEndContinueButtons＋真 countRemainingAutoDays＋真 runScheduleFromToday（抽出嚟跑）：
-//   (a) soft 日「返回地圖」行 goToMapForBrowse，唔行 goRunSchedule；「開始今日行程」繼續行 goRunSchedule。
+//   (a) v196：soft 日（排程日）唔出「返回地圖」，只留「開始今日行程」；「開始今日行程」繼續行 goRunSchedule。
 //   (b) forced／map／ended 分支唔郁（map 嗰粒繼續經 goRunSchedule，等獎勵流程行先）。
 //   (c) 加速係 role "link" 細連結，撳落去照行 confirmWeekAccel（thenGo 再行 goRunSchedule）；
 //       本週冇剩餘自動日就唔出連結。
@@ -39,6 +39,17 @@ function goToMapForBrowse(){ mapCalls++; }
 function resolvePlannedDay(id){ resolveCalls.push(id); }
 function presentDueMorningPaper(){ return false; }
 function aud91PresentDue(){ return false; }
+/* v20a196 D2：共用晨鏈嘅其餘鏈環 stub（全部「冇嘢播」，鏈直接跌落去行程） */
+var FREEPLAY_FW = {};
+function ending78Gate(){ return false; }
+function presentPendingPostShootReward(){ return false; }
+function presentPendingAward(){ return false; }
+function wf4PresentPending(){ return false; }
+function story165TryForcedPlay(){ return false; }
+function kickScheduleIfNeeded(){ return false; }
+function hosp96TreatGate(){ return false; }
+function conseq61IsSickToday(){ return false; }
+function conseq61ResolveSickDay(){ return false; }
 function storyOpenSnapshot(){ return { open: [] }; }
 function modal(){ return false; }
 function fmtDate(){ return ''; }
@@ -51,13 +62,15 @@ eval(extractFn('weekdayIdx'));
 eval(extractFn('planDayWouldWrap'));
 eval(extractFn('isCriticalPlanDay'));
 eval(extractFn('countRemainingAutoDays'));
+eval(extractFn('nextDayIsMap')); /* v20a196 D7：dayEndContinueButtons 而家靠佢判定逛逛日 */
 eval(extractFn('dayEndContinueButtons'));
+eval(extractFn('morningChain196')); /* v20a196 D2：runScheduleFromToday 排程日行呢條共用晨鏈 */
 eval(extractFn('runScheduleFromToday'));
 
 function labels(btns){ return (btns || []).map(b => b.label); }
 function findBtn(btns, sub){ return (btns || []).find(b => String(b.label || '').indexOf(sub) >= 0); }
 
-/* ---- (a) soft：返回地圖真返地圖，開始今日行程繼續行程 ---- */
+/* ---- (a) v196 soft：排程日唔出「返回地圖」，只留「開始今日行程」＋加速連結 ---- */
 (function(){
   reset();
   // 注意：dayEndContinueButtons 係 tickDay 之後先叫，S.dayIndex 已經係新一日（聽日）；
@@ -65,12 +78,9 @@ function findBtn(btns, sub){ return (btns || []).find(b => String(b.label || '')
   S.dayIndex = 1;
   S.weekPlan = ['rest', 'street', 'rest', 'rest', 'rest', 'rest', 'scout_all'];
   const btns = dayEndContinueButtons(false, goRunSchedule);
-  ok('a soft has map + schedule + accel-link',
-    JSON.stringify(labels(btns)) === JSON.stringify(['返回地圖', '開始今日行程', '想跳過本週剩餘日子？加速 →']));
-  const mapBtn = findBtn(btns, '返回地圖');
-  ok('a soft map button is NOT goRunSchedule', mapBtn && mapBtn.on !== goRunSchedule);
-  mapBtn.on();
-  ok('a soft map button goes to map, schedule never runs', mapCalls === 1 && schedCalls === 0);
+  ok('a v196 soft has only schedule + accel-link (no 返回地圖)',
+    JSON.stringify(labels(btns)) === JSON.stringify(['開始今日行程', '想跳過本週剩餘日子？加速 →']));
+  ok('a soft has no 返回地圖 button', !findBtn(btns, '返回地圖'));
   const schedBtn = findBtn(btns, '開始今日行程');
   ok('a soft schedule button IS goRunSchedule', schedBtn && schedBtn.on === goRunSchedule);
   const link = findBtn(btns, '加速');
@@ -112,8 +122,8 @@ function findBtn(btns, sub){ return (btns || []).find(b => String(b.label || '')
   S.dayIndex = 1;
   S.weekPlan = ['rest', 'street', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all'];
   const btns = dayEndContinueButtons(false, goRunSchedule);
-  ok('e no remaining auto days -> no accel link',
-    JSON.stringify(labels(btns)) === JSON.stringify(['返回地圖', '開始今日行程']));
+  ok('e no remaining auto days -> no accel link, v196 soft only 開始今日行程',
+    JSON.stringify(labels(btns)) === JSON.stringify(['開始今日行程']));
 })();
 
 /* ---- (d) runScheduleFromToday 分流核實 ---- */

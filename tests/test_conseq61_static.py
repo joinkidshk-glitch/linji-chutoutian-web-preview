@@ -60,8 +60,12 @@ ok("conseq61PresentForcedEnding" in eh, "enterHome 接強制收場呈現 hook")
 rpd = fn_body("resolvePlannedDay", src)
 head = rpd[:600]
 ok("conseq61ResolveSickDay" in head, "resolvePlannedDay 開頭有病日守衛")
+# v20a196 D2：病日守衛由 goToMapForBrowse 內聯鏈搬入共用晨鏈 morningChain196
+# （goToMapForBrowse／runScheduleFromToday 排程日共用；守衛本身唔郁，照樣唔准入地圖避病）。
+mc61 = fn_body("morningChain196", src)
+ok("conseq61ResolveSickDay" in mc61, "v196：共用晨鏈 morningChain196 有病日守衛（唔准入地圖避病）")
 gm = fn_body("goToMapForBrowse", src)
-ok("conseq61ResolveSickDay" in gm, "goToMapForBrowse 有病日守衛（唔准入地圖避病）")
+ok("morningChain196(" in gm, "goToMapForBrowse 經共用晨鏈 morningChain196 跑病日守衛")
 eb = fn_body("endBrowseDayGoHome", src)
 ok("conseq61ResolveSickDay" in eb, "endBrowseDayGoHome 有病日守衛（唔准扮休息避病）")
 nso = fn_body("normalizeSaveObj", src)

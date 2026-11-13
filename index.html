@@ -28147,15 +28147,21 @@ const StoryPlay = (()=>{
         try{ start(nid); }catch(_e){}
       } });
       /* v20a77 HUB77：舊「劇情列表」掣改指手帳「進度」頁（唔再開 playOpenPicker） */
-      btns.push({ label:"進度", role:"g", on:()=>{ clearPendingB01Flag(); try{ enterHome(null, false, "progress"); }catch(_e){} } });
+      btns.push({ label:"進度", role:"g", on:()=>{ clearPendingB01Flag(); try{ if(typeof story165AfterContClear==="function") story165AfterContClear(); }catch(_e){} /* v20a196 D3：主動入去手帳，續鏈放棄 */ try{ enterHome(null, false, "progress"); }catch(_e){} } });
     } else {
       /* 無下一可播：v20a77 HUB77 改去進度頁睇未開放條件（舊版開劇情列表） */
-      btns.push({ label:"進度", role:"g", on:()=>{ clearPendingB01Flag(); try{ enterHome(null, false, "progress"); }catch(_e){} } });
+      btns.push({ label:"進度", role:"g", on:()=>{ clearPendingB01Flag(); try{ if(typeof story165AfterContClear==="function") story165AfterContClear(); }catch(_e){} /* v20a196 D3：主動入去手帳，續鏈放棄 */ try{ enterHome(null, false, "progress"); }catch(_e){} } });
     }
     btns.push({ label:"關閉", role:"g", on:()=>{
       try{ if(typeof paintStoryEntryHints==="function") paintStoryEntryHints(); }catch(_e){}
       try{ if(typeof paintBar==="function") paintBar(); }catch(_e){}
       try{ if(typeof scheduleStoryMapRedraw==="function") scheduleStoryMapRedraw("backMap"); else if(typeof drawMap==="function") drawMap(); }catch(_e){}
+      /* v20a196 D3：強制播續鏈 slot——排程日→跑下一日（全晨鏈＋行程），逛逛日→返地圖；
+         冇 slot（玩家自己開播嘅故事）→舊行為 show("v-map")＋B01。slot 有嘢嗰陣唔沖 B01
+         （B01 旗留返，下次故事結算先沖，唔好喺續鏈中途彈手帳 modal 打斷晨鏈）。 */
+      const cont196 = (typeof story165AfterContTake==="function") ? story165AfterContTake() : null;
+      if(cont196==="schedule"){ try{ runScheduleFromToday(); }catch(_e){} return; }
+      if(cont196==="map"){ try{ goToMapForBrowse(); }catch(_e){} return; }
       try{ show("v-map"); }catch(_e){}
       /* 次要：回地圖先可沖 B01（頂欄／chip／家亦入手帳）；下一節路徑永不 */
       flushPendingB01();
@@ -28177,6 +28183,10 @@ const StoryPlay = (()=>{
         try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
         try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
         try{ document.getElementById("app").classList.remove("mask-up"); }catch(_e){}
+        /* v20a196 D3：dismiss（mask click）一樣消費續鏈 slot；冇 slot 先留喺原地／重開地點（舊行為）。 */
+        const cont196d = (typeof story165AfterContTake==="function") ? story165AfterContTake() : null;
+        if(cont196d==="schedule"){ try{ runScheduleFromToday(); }catch(_e){} return; }
+        if(cont196d==="map"){ try{ goToMapForBrowse(); }catch(_e){} return; }
         try{ if(typeof paintStoryEntryHints==="function") paintStoryEntryHints(); }catch(_e){}
         try{ if(typeof paintBar==="function") paintBar(); }catch(_e){}
         try{ if(typeof drawMap==="function") drawMap(); }catch(_e){}
@@ -28315,20 +28325,9 @@ const StoryPlay = (()=>{
     }
     try{ document.getElementById("mask").classList.add("story-play-on"); }catch(_e){}
     try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(true); }catch(_e){}
-    const forcedChrome = spIsForcedStory(n, _sess.pack, _sess.label);
-    const seedDismiss = !!(forcedChrome && spSoftSeedCanDismiss());
-    const lockedForced = forcedChrome && !seedDismiss;
-    const leaveStory = ()=>{
-      abort();
-      try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
-      try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
-      try{ document.getElementById("app").classList.remove("mask-up"); }catch(_e){}
-      try{ if(typeof paintStoryEntryHints==="function") paintStoryEntryHints(); }catch(_e){}
-      try{ if(typeof paintBar==="function") paintBar(); }catch(_e){}
-      try{ if(typeof drawMap==="function") drawMap(); }catch(_e){}
-      try{ if(typeof refreshLocAfterStory==="function") refreshLocAfterStory();
-        else if(typeof atLoc!=="undefined" && atLoc && typeof openLoc==="function") openLoc(atLoc, {travelFree:true}); }catch(_e){}
-    };
+    /* v20a196 D4：故事播放期間鎖死返地圖——唔再按 lockedForced 分流：所有故事一律唔出「先返回」
+       （leaveStory 連同 forcedChrome／seedDismiss／lockedForced 一併拎走；spSoftSeedCanDismiss()
+       函數本身保留，offer 階段邏輯可能用到，播放期間唔再靠佢開 dismiss 口）。「跳至選項」唔郁。 */
     /* v19z12 B1：下一句／選項進 #modal-btns，避免同底層搶點 */
     const modalBtns = [];
     if(_sess.mode==="beats"){
@@ -28354,10 +28353,10 @@ const StoryPlay = (()=>{
         }});
       }
     }
-    if(!lockedForced) modalBtns.push({ label:"先返回", role:"g", on: leaveStory });
-    const dismissOpts = lockedForced
-      ? { onDismiss:()=>{ /* C1／非種子 forced：outside tap 唔可走；重開畫面 */ try{ render(); }catch(_e){} } }
-      : { onDismiss:()=>{ abort(); try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){} } };
+    /* v20a196 D4：所有故事一律唔出「先返回」（舊寫法只係 lockedForced 先唔出）。 */
+    /* v20a196 D4：所有故事 onDismiss 一律重開畫面（舊 lockedForced 嗰條路）；mask click 唔會返地圖。
+       注意次序：closeModal() 會先清 story-play-on＋解鎖，render() 再加返——C1 舊路同一寫法。 */
+    const dismissOpts = { onDismiss:()=>{ try{ render(); }catch(_e){} } };
     modal(inner, modalBtns, dismissOpts);
     try{
       const root = document.getElementById("story-play-root");
@@ -37125,11 +37124,15 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
   try{
     dayEndContinueButtons(ended, go).forEach(b=>btns.push(b));
   }catch(_e){
-    btns.push({label: ended?"回家結算":"返回地圖", role:"p", on: ended?go:()=>goToMapForBrowse()});
+    /* v20a196 D1／D7：degraded 路徑一樣跟下一日行程（排程日唔出「返回地圖」）。 */
+    let mapNext196 = true;
+    try{ mapNext196 = nextDayIsMap(); }catch(_e2){}
+    btns.push({label: ended?"回家結算":(mapNext196?"返回地圖":"開始今日行程"), role:"p", on: ended?go:(mapNext196?()=>goToMapForBrowse():go)});
   }
   const liveHint = livingCostDayEndHint();
   const fx102Html = (typeof actFx102Html==="function") ? actFx102Html(opts.fx102Kind) : ""; /* v20a102 FX102 */
-  const dismissFn = ended ? go : ()=>{ try{ goToMapForBrowse(); }catch(_e){} };
+  /* v20a196 D1／D7：dismiss 跟下一日行程——排程日＝繼續跑下一日（go），逛逛日＝返地圖。 */
+  const dismissFn = ended ? go : ()=>{ try{ if(nextDayIsMap()) goToMapForBrowse(); else go(); }catch(_e){ try{ goToMapForBrowse(); }catch(_e2){} } };
   modal(`<h3>${title}</h3>${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}${dayLine}`, btns, {onDismiss: dismissFn});
   try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
@@ -37931,50 +37934,13 @@ function goEnrollableCompany(){
 function goToMapForBrowse(){
   /* v20a78 LOCK78：已結局唔再入地圖行動——改出結局總結（回顧／新局／讀檔） */
   if(typeof ending78Gate==="function" && ending78Gate()) return;
-  /* v20a4：若殺青獎勵仍 pending（例如舊路徑跳過 afterDayRes），先出 sheet 再返地圖 */
-  try{
-    if(typeof presentPendingPostShootReward==="function" && FREEPLAY_FW && FREEPLAY_FW._pendingPostShootReward){
-      presentPendingPostShootReward(()=>{ try{ goToMapForBrowse(); }catch(_e2){} });
-      return;
-    }
-  }catch(_psrMap){}
-  /* v20a8：季節窗頒獎請柬（同殺青分 pending；關 sheet 後還原地圖 CTA） */
-  try{
-    if(typeof queueAwardsOnSeasonWindow==="function") queueAwardsOnSeasonWindow();
-    /* 請柬真係彈出先截住。v20a136：「稍後」已拎走，dismiss 即推辭，唔會再有靜默 snooze。 */
-    if(typeof presentPendingAward==="function" && presentPendingAward(()=>{ try{ goToMapForBrowse(); }catch(_e3){} })) return;
-  }catch(_awdMap){}
-  /* Soft tip #101：次日朝早報紙。殺青短卡同頒獎請柬先出，正式報紙跟住。 */
-  try{
-    if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(()=>{ try{ goToMapForBrowse(); }catch(_e4){} })) return;
-  }catch(_npMap){}
-  /* v20a91 AUD91：晨報之後、何生試鏡消息公佈（簽約金／落選嗰朝揭曉；同 early-return＋callback 模式） */
-  try{
-    if(typeof aud91PresentDue==="function" && aud91PresentDue(()=>{ try{ goToMapForBrowse(); }catch(_e5){} })) return;
-  }catch(_a91Map){}
-  /* v20a86 WF4：晨報之後呈現待播日常事件／芬姐送別戲（同 early-return＋callback 模式） */
-  try{
-    if(typeof wf4PresentPending==="function" && wf4PresentPending()) return;
-  }catch(_wf4m){}
-  /* v20a61 CONSEQ61-2：病日唔入地圖——先行病假結算（劇情進行中唔截，費事打斷播片） */
-  try{
-    let storyOn = false;
-    try{ storyOn = (typeof isStoryPlayActive==="function" && isStoryPlayActive()) || (typeof _storyPlayLocked!=="undefined" && !!_storyPlayLocked); }catch(_e){}
-    if(!storyOn && typeof hosp96TreatGate==="function" && hosp96TreatGate((typeof todayPlanId==="function") ? todayPlanId() : null)) return;
-    if(!storyOn && typeof conseq61IsSickToday==="function" && conseq61IsSickToday() && typeof conseq61ResolveSickDay==="function"){
-      if(conseq61ResolveSickDay((typeof todayPlanId==="function") ? todayPlanId() : null)) return;
-    }
-  }catch(_sk61m){}
-  if(kickScheduleIfNeeded()) return;
-  /* v20a165 STORY165：主線強制播放——條件滿足嘅主線幕，返地圖嗰陣即播（用戶 2026-11-13 09:24
-     拍板：符合條件就硬性規定播劇情，唔畀玩家自己決定播定唔播）。擺位：晨鏈（獎勵／請柬／
-     報紙／試鏡消息／WF4／病假）＋行程 kick 全部行完之後、地圖顯示之前——唔會打斷任何 modal；
-     行程日（forced day）kick 咗先，故事順延到下次返地圖；病假日唔播。唔經 openLoc，
+  /* v20a196 D2：全晨鏈行共用 runner morningChain196（次序：殺青獎勵→頒獎請柬→朝早報紙→
+     試鏡消息→WF4→病假→強制日 kick→強制播），continuation＝下面落地圖顯示。
+     v20a165 STORY165 擺位唔變：強制播喺晨鏈＋行程 kick 全部行完之後、地圖顯示之前——唔會打斷
+     任何 modal；行程日（forced day）kick 咗先，故事順延到下次返地圖；病假日唔播。唔經 openLoc，
      唔食出行額度；story165TryForcedPlay 返 false 就跌返地圖，唔重試、唔 loop。 */
-  try{
-    if(typeof story165TryForcedPlay==="function" && story165TryForcedPlay()) return;
-  }catch(_s165){}
-  nudgeRegionForToday();
+  morningChain196(()=>{
+    nudgeRegionForToday();
   try{ closeSheet(); }catch(_e){}
   atLoc=null;
   show("v-map");
@@ -37985,6 +37951,7 @@ function goToMapForBrowse(){
   } else {
     toast(`今日：${meta.name}`, {closeSheet:true});
   }
+  }, { mapMode:true });
 }
 
 /* v19z8：週日結加速 — 合併非關鍵自動日，殺青／試鏡／事態仍停 */
@@ -38126,6 +38093,36 @@ function livingCostDayEndHint(){
     return `<p class="gold" style="margin-top:6px">本週結束將扣生活費 <b>−$${est.toLocaleString()}</b>（定額，週結算照此數扣）。</p>`;
   }catch(_e){ return ""; }
 }
+/* v20a196 DAYFLOW196：日流程自動連跑＋故事播放鎖死返地圖（用戶 2026-11-13 拍板兩條硬規則）。
+   D7 helper：下一日係咪逛逛日（日結板嗰陣 dayIndex 已經係下一日，所以直接讀 todayPlanId()）。
+   判定沿用 dayEndContinueButtons 舊邏輯：冇計劃／地圖日／wrap:／audition: 歷史標記＝逛逛日。 */
+function nextDayIsMap(){
+  try{
+    const nextId = todayPlanId();
+    return !nextId || (typeof isMapDay==="function" && isMapDay(nextId)) || String(nextId).startsWith("wrap:") || String(nextId).startsWith("audition:");
+  }catch(_e){ return true; }
+}
+/* v20a196 D3：強制播續鏈 slot（FREEPLAY_FW._story165AfterCont＝"schedule"／"map"／null）。
+   寫入點只有兩個：story165TryForcedPlay（播之前）＋ wf4PresentFenFarewell（經鏈播芬姐送別戲嗰陣，
+   佢行 StoryPlay、結算經 showResult，續鏈要跟同一 slot）。消費點只有兩個：showResult「關閉」
+   同 showResult onDismiss；「下一節」唔消費（留到成條鏈播完先消費）；「進度」清走 slot
+   （玩家主動入去手帳，續鏈放棄，出返手帳行返地圖路徑）。 */
+function story165AfterContTake(){
+  try{
+    if(typeof FREEPLAY_FW==="undefined" || !FREEPLAY_FW) return null;
+    const v = FREEPLAY_FW._story165AfterCont || null;
+    FREEPLAY_FW._story165AfterCont = null;
+    return (v==="schedule" || v==="map") ? v : null;
+  }catch(_e){ return null; }
+}
+function story165AfterContClear(){
+  try{ if(typeof FREEPLAY_FW!=="undefined" && FREEPLAY_FW) FREEPLAY_FW._story165AfterCont = null; }catch(_e){}
+}
+function story165AfterContSet(kind){
+  try{
+    if(typeof FREEPLAY_FW!=="undefined" && FREEPLAY_FW) FREEPLAY_FW._story165AfterCont = (kind==="schedule") ? "schedule" : "map";
+  }catch(_e){}
+}
 function dayEndContinueButtons(ended, goRunSchedule, opts){
   opts = opts || {};
   const btns = [];
@@ -38137,7 +38134,8 @@ function dayEndContinueButtons(ended, goRunSchedule, opts){
     const nextIdx=(S.dayIndex|0);
     return todayPlanId();
   }catch(_e){ return null; } })();
-  const nextIsMap = !nextId || (typeof isMapDay==="function" && isMapDay(nextId)) || String(nextId).startsWith("wrap:") || String(nextId).startsWith("audition:");
+  /* v20a196 D7：逛逛判定抽去共用 helper nextDayIsMap()（同下面三處共用同一邏輯）。 */
+  const nextIsMap = nextDayIsMap();
   const nextForced = (()=>{ try{
     const s=String(nextId||"");
     return s.startsWith("shoot:") || s.startsWith("job:");
@@ -38148,11 +38146,10 @@ function dayEndContinueButtons(ended, goRunSchedule, opts){
     /* v20a4：走 goRunSchedule（殺青後 afterDayRes→reward→nextNb→map），唔直行 goToMap 跳過獎勵 */
     btns.push({label:"返回地圖", role:"p", on: (typeof goRunSchedule==="function") ? goRunSchedule : (()=>{ try{ goToMapForBrowse(); }catch(_e){} })});
   } else {
-    /* v20a189：soft 日「返回地圖」真係返地圖（自由行 goToMapForBrowse，唔經行程）——舊寫法
-       兩粒都行 goRunSchedule，撳邊粒都係直接開今日行程；「開始今日行程」繼續行 goRunSchedule。
-       runScheduleFromToday 喺 soft 日確實直接開行程（resolvePlannedDay，唔係落地圖），
-       所以兩粒修好後真係分流，唔會再撞。 */
-    btns.push({label:"返回地圖", role:"p", on:(()=>{ try{ goToMapForBrowse(); }catch(_e){} })});
+    /* v20a196 D1／D7：soft 日而家都係排程日（下一日有排程）——唔出「返回地圖」，只留
+       「開始今日行程」；下一日係逛逛日會行上面 nextIsMap 分支（照出「返回地圖」）。
+       v20a189 嗰粒 soft「返回地圖」真返地圖嘅修法保留喺 map 分支（行 goRunSchedule 經獎勵流程），
+       呢度唔再出。 */
     btns.push({label:"開始今日行程", role:"g", on:goRunSchedule});
   }
   /* v20a189：加速降級——唔再係同行大掣，改做掣列下方細連結（role "link"，modal() 另行渲染）；
@@ -38190,19 +38187,71 @@ function resolveWeekRemaining(opts){
   try{ runScheduleFromToday(); }catch(_e){ _weekAccel=false; }
   return { ok:true };
 }
+/* v20a196 D2：共用晨鏈 runner——goToMapForBrowse 同 runScheduleFromToday（排程日）行同一條鏈，
+   唔複製兩份。次序跟返舊 goToMapForBrowse：殺青獎勵 → 頒獎請柬 → 朝早報紙 → 試鏡消息 →
+   WF4（含芬姐送別戲） → 病假 → （地圖模式先）強制日 kick → 強制播；鏈尾行 finalFn。
+   每環都係 early-return＋continuation（step），呈現完撳掣／dismiss 先行下一環。 */
+function morningChain196(finalFn, opts){
+  opts = opts || {};
+  const done = (typeof finalFn==="function") ? finalFn : function(){ try{ goToMapForBrowse(); }catch(_e){} };
+  const afterKind = opts.mapMode ? "map" : "schedule";
+  const step = ()=>{
+    try{ if(typeof ending78Gate==="function" && ending78Gate()) return; }catch(_e){}
+    /* 殺青獎勵（pending 先出；冇 pending 就跌落去） */
+    try{
+      if(typeof presentPendingPostShootReward==="function" && FREEPLAY_FW && FREEPLAY_FW._pendingPostShootReward){
+        presentPendingPostShootReward(step);
+        return;
+      }
+    }catch(_e){}
+    /* 頒獎請柬（presentPendingAward 內部已經會 queueAwardsOnSeasonWindow） */
+    try{
+      if(typeof presentPendingAward==="function" && presentPendingAward(step)) return;
+    }catch(_e){}
+    /* 朝早報紙 */
+    try{
+      if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(step)) return;
+    }catch(_e){}
+    /* 試鏡消息 */
+    try{
+      if(typeof aud91PresentDue==="function" && aud91PresentDue(step)) return;
+    }catch(_e){}
+    /* WF4 日常事件／芬姐送別戲（鏈入面放寬 forced 拒絕：晨鏈喺日頭未開工前跑，事件唔會中斷拍攝；
+       doneCb＝step，播完繼續行鏈；芬姐故事經 StoryPlay，續鏈跟 afterKind slot） */
+    try{
+      if(typeof wf4PresentPending==="function" && wf4PresentPending(step, { allowForced:true, afterCont:afterKind })) return;
+    }catch(_e){}
+    /* 病假（故事進行中唔截；病假板行 afterDayModal，掣／dismiss 已經跟 D7） */
+    try{
+      let storyOn = false;
+      try{ storyOn = (typeof isStoryPlayActive==="function" && isStoryPlayActive()) || (typeof _storyPlayLocked!=="undefined" && !!_storyPlayLocked); }catch(_e2){}
+      if(!storyOn && typeof hosp96TreatGate==="function" && hosp96TreatGate((typeof todayPlanId==="function") ? todayPlanId() : null)) return;
+      if(!storyOn && typeof conseq61IsSickToday==="function" && conseq61IsSickToday() && typeof conseq61ResolveSickDay==="function"){
+        if(conseq61ResolveSickDay((typeof todayPlanId==="function") ? todayPlanId() : null)) return;
+      }
+    }catch(_e){}
+    /* 地圖模式先 kick 強制日（排程日唔使 kick，本身就係跑行程） */
+    if(opts.mapMode){
+      try{ if(kickScheduleIfNeeded()) return; }catch(_e){}
+    }
+    /* 強制播（播之前寫續鏈 slot；冇嘢播就跌落去 finalFn） */
+    try{
+      if(typeof story165TryForcedPlay==="function" && story165TryForcedPlay(afterKind)) return;
+    }catch(_e){}
+    done();
+  };
+  step();
+}
 function runScheduleFromToday(){
   const id=todayPlanId();
   const mapish = !id || (typeof isMapDay==="function" && isMapDay(id)) || String(id).startsWith("wrap:") || String(id).startsWith("audition:");
-  /* 下一曆日若已有報紙，先彈朝早版，再耗今日。
-     加速本週剩餘亦然：唔好靜默吞掉逾期淡紙（C5 迴避 fameDelta=0 會永遠留喺佇列）。 */
+  /* v20a196 D2：排程日行全晨鏈（報紙→試鏡消息→請柬→WF4→強制播），continuation＝跑當日行程。
+     下一曆日若已有報紙，先彈朝早版，再耗今日；加速本週剩餘亦然：唔好靜默吞掉逾期淡紙
+     （C5 迴避 fameDelta=0 會永遠留喺佇列）。舊寫法淨係行報紙＋試鏡消息，請柬／WF4／強制播
+     會漏到下一個逛逛日先出（WF4 pending 仲會喺 2 日後靜默丟失）。 */
   if(!mapish){
-    try{
-      if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(()=>{ try{ runScheduleFromToday(); }catch(_e){} })) return;
-    }catch(_npDay){}
-    /* v20a91 AUD91：排程日開跑之前先公佈到期試鏡消息（唔好畀自動行程靜默吞咗） */
-    try{
-      if(typeof aud91PresentDue==="function" && aud91PresentDue(()=>{ try{ runScheduleFromToday(); }catch(_e){} })) return;
-    }catch(_a91Day){}
+    morningChain196(()=>{ resolvePlannedDay(id); }, { mapMode:false });
+    return;
   }
   if(mapish){
     if(_weekAccel){
@@ -38524,7 +38573,12 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   const nextNbReward = ()=> afterDayRes(nextNb);
   let btns = [];
   try{ btns = dayEndContinueButtons(ended, nextNbReward); }
-  catch(_e){ btns = [{label: ended?"回家結算":"返回地圖", role:"p", on: ended?nextNbReward:()=>afterDayRes(()=>goToMapForBrowse())}]; }
+  catch(_e){
+    /* v20a196 D1／D7：degraded 路徑一樣跟下一日行程（排程日唔出「返回地圖」）。 */
+    let mapNext196 = true;
+    try{ mapNext196 = nextDayIsMap(); }catch(_e2){}
+    btns = [{label: ended?"回家結算":(mapNext196?"返回地圖":"開始今日行程"), role:"p", on: ended?nextNbReward:(mapNext196?()=>afterDayRes(()=>goToMapForBrowse()):nextNbReward)}];
+  }
   /* Wrap button handlers so reward sheet follows kill-green settle */
   try{
     btns = (btns||[]).map(b=>{
@@ -38535,7 +38589,8 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   }catch(_e){}
   const liveHint2 = livingCostDayEndHint();
   const fx102Html = (typeof actFx102Html==="function") ? actFx102Html(fx102Kind) : ""; /* v20a102 FX102 */
-  const dismissNb = ended ? nextNbReward : ()=> afterDayRes(()=>{ try{ goToMapForBrowse(); }catch(_e){} });
+  /* v20a196 D1／D7：dismiss 跟下一日行程——排程日＝繼續跑下一日（nextNb，獎勵 sheet 行先），逛逛日＝返地圖。 */
+  const dismissNb = ended ? nextNbReward : ()=> afterDayRes(()=>{ try{ if(nextDayIsMap()) goToMapForBrowse(); else nextNb(); }catch(_e){ try{ goToMapForBrowse(); }catch(_e2){} } });
   /* v20a10：休息睡覺 — 片嵌日結板；文案只留數值；週加速靜默合併唔播 */
   if(id==="rest" && !_weekAccel){
     try{
@@ -38643,7 +38698,9 @@ function story165ModalOpen(){
     return !!(_m165 && _m165.classList && _m165.classList.contains("on") && !_m165.classList.contains("story-play-on"));
   }catch(_e){ return false; }
 }
-function story165TryForcedPlay(){
+/* v20a196 D3：加可選 afterCont（"schedule"／"map"，預設 "map"）——播之前寫續鏈 slot，
+   showResult「關閉」／onDismiss 消費。book70ExitHome／#loc-close 舊呼叫（無參數）預設返地圖，行為唔變。 */
+function story165TryForcedPlay(afterCont){
   try{
     const next = story165CanPlay();
     if(!next) return false;
@@ -38662,7 +38719,13 @@ function story165TryForcedPlay(){
        因為 live eval 根本唔驗地點）。只繞過地點一步：其餘 soft 條件（前置／週數／
        通告／傳聞／聲望／季節／人情）照驗；普通 start() 唔帶呢個 opt，soft 閘對玩家
        路徑原封不動。 */
-    if(typeof StoryPlay!=="undefined" && StoryPlay.start) return !!StoryPlay.start(next.id, { ignoreSheetLoc:true });
+    if(typeof StoryPlay!=="undefined" && StoryPlay.start){
+      const ok196 = !!StoryPlay.start(next.id, { ignoreSheetLoc:true });
+      if(ok196){
+        try{ if(typeof story165AfterContSet==="function") story165AfterContSet(afterCont || "map"); }catch(_e){}
+      }
+      return ok196;
+    }
     return false;
   }catch(_e){ return false; }
 }
@@ -40960,19 +41023,25 @@ function wf4TryLocEvent(locId){
     return true;
   }catch(_e){ return false; }
 }
-function wf4PresentPending(){
+/* v20a196 D2：加可選 continuation（cont，預設返地圖保舊行為）＋ opts.allowForced／afterCont。
+   鏈入面放寬 forced 拒絕：晨鏈喺日頭未開工前跑，事件唔會中斷拍攝；doneCb＝鏈續鏈，
+   事件播完照跑當日行程（實駕證實見 NOTES_V20A196 §實駕）。舊呼叫（無參數）行為唔變。 */
+function wf4PresentPending(cont, opts){
+  opts = opts || {};
+  const done196 = (typeof cont==="function") ? cont : function(){ try{ goToMapForBrowse(); }catch(_e){} };
   try{
     const st = wf4Ensure(); if(!st) return false;
     if(typeof ending78Locked==="function" && ending78Locked()) return false;
-    if(typeof todayIsForcedDay==="function" && todayIsForcedDay()) return false;
+    if(!opts.allowForced && typeof todayIsForcedDay==="function" && todayIsForcedDay()) return false;
     if(typeof conseq61IsSickToday==="function" && conseq61IsSickToday()) return false;
-    /* 芬姐送別戲優先於日常事件（一次性，唔好俾日常事件拖過頭） */
-    if(wf4PresentFenFarewell()) return true;
+    /* 芬姐送別戲優先於日常事件（一次性，唔好俾日常事件拖過頭）——佢行 StoryPlay，
+       續鏈跟 D3 slot（afterCont：鏈傳入，預設 "map"）。 */
+    if(wf4PresentFenFarewell(opts.afterCont)) return true;
     if(!st.pending) return false;
     if(!wf4BaseOk()) return false;
     const ev = DAILY_EVENTS_WF4.find(e=>e && e.id===st.pending);
     if(!ev){ st.pending = null; return false; }
-    wf4Fire(ev, ()=>{ try{ goToMapForBrowse(); }catch(_e){} });
+    wf4Fire(ev, done196);
     return true;
   }catch(_e){ return false; }
 }
@@ -41131,7 +41200,7 @@ function wf4FenFarewellNode(arm){
     flags_written:["flag_wf4_fen_redpacket","flag_wf4_fen_quiet"]
   };
 }
-function wf4PresentFenFarewell(){
+function wf4PresentFenFarewell(afterCont){
   try{
     const st = wf4Ensure(); if(!st) return false;
     if(st.fenFarewellDone) return false;
@@ -41141,7 +41210,12 @@ function wf4PresentFenFarewell(){
     if(!arm) return false;
     if(typeof StoryPlay==="undefined" || !StoryPlay.start) return false;
     const ok = !!StoryPlay.start(wf4FenFarewellNode(arm), { force:true });
-    if(ok){ st.fenFarewellDone = true; S.wf4FenFarewell = null; try{ saveQ(); }catch(_s){} }
+    if(ok){
+      st.fenFarewellDone = true; S.wf4FenFarewell = null; try{ saveQ(); }catch(_s){}
+      /* v20a196 D3：芬姐送別戲經 StoryPlay 播，結算經 showResult——播之前寫續鏈 slot
+         （鏈傳入 afterCont；直接呼叫嗰陣預設 "map"，即係返地圖舊行為）。 */
+      try{ if(typeof story165AfterContSet==="function") story165AfterContSet(afterCont || "map"); }catch(_e){}
+    }
     return ok;
   }catch(_e){ return false; }
 }
@@ -57595,10 +57669,14 @@ function presentStartScheduleConfirm45(onStart, onMap){
   } else {
     consequence = "如果今日排咗休息／自動行程，會即時結算埋今日（即係連續過日）。";
   }
-  modal(`<h3>開始今日行程？</h3><p>將會開始 ${dateTxt} 嘅行程。</p><p>${consequence}</p>`,[
-    { label:"開始今日行程", role:"p", on:()=>{ try{ goStart(); }catch(_e){} } },
-    { label:"返回地圖", role:"g", on:()=>{ try{ goMap(); }catch(_e){} } }
-  ], { onDismiss: ()=>{ try{ goMap(); }catch(_e){} } });
+  /* v20a196 D1／D7：排程日唔出「返回地圖」，dismiss＝開始行程（玩家已經撳咗「開始」，dismiss
+     唔可以走佬返地圖）；逛逛日照舊（兩粒掣＋dismiss 返地圖）。 */
+  let mapNext45 = true;
+  try{ mapNext45 = nextDayIsMap(); }catch(_e){}
+  const btns45 = [{ label:"開始今日行程", role:"p", on:()=>{ try{ goStart(); }catch(_e){} } }];
+  if(mapNext45) btns45.push({ label:"返回地圖", role:"g", on:()=>{ try{ goMap(); }catch(_e){} } });
+  modal(`<h3>開始今日行程？</h3><p>將會開始 ${dateTxt} 嘅行程。</p><p>${consequence}</p>`, btns45,
+    { onDismiss: ()=>{ try{ if(mapNext45) goMap(); else goStart(); }catch(_e){} } });
 }
 /** Compact rest day-end: title + in-panel video + numeric deltas only + CTA. */
 function presentRestSleepDayEnd(opts){
@@ -57640,7 +57718,7 @@ function presentRestSleepDayEnd(opts){
     if(!opts.confirmStartSchedule){ goSchedule(); return; }
     finish(()=>{
       try{ presentStartScheduleConfirm45(proceedSchedule, proceedMap); }
-      catch(_e){ try{ proceedMap(); }catch(_e2){} }
+      catch(_e){ try{ if(nextDayIsMap()) proceedMap(); else proceedSchedule(); }catch(_e2){} }
     });
   };
   try{ document.body.classList.add("day-res-open"); }catch(_e){}
@@ -57648,7 +57726,10 @@ function presentRestSleepDayEnd(opts){
   try{
     btns = dayEndContinueButtons(ended, goSchedule);
   }catch(_e){
-    btns = [{label: ended?"回家結算":"返回地圖", role:"p", on: ended?goSchedule:goMap}];
+    /* v20a196 D1／D7：degraded 路徑一樣跟下一日行程（排程日唔出「返回地圖」）。 */
+    let mapNext196 = true;
+    try{ mapNext196 = nextDayIsMap(); }catch(_e2){}
+    btns = [{label: ended?"回家結算":(mapNext196?"返回地圖":"開始今日行程"), role:"p", on: ended?goSchedule:(mapNext196?goMap:goSchedule)}];
   }
   try{
     btns = (btns||[]).map(b=>{
@@ -57666,12 +57747,14 @@ function presentRestSleepDayEnd(opts){
       if(lab.indexOf("回家結算")>=0) return Object.assign({}, b, { on: goSchedule });
       if(lab.indexOf("開始今日")>=0) return Object.assign({}, b, { on: goScheduleAsk });
       const orig = b.on;
-      return Object.assign({}, b, { on: ()=> finish(typeof orig==="function" ? orig : goMap) });
+      /* v20a196 D1／D7：未識別掣唔可以預設 goMap——有 orig 就行 orig；冇 orig 先跟下一日行程。 */
+      return Object.assign({}, b, { on: ()=> finish((typeof orig==="function") ? orig : (()=>{ try{ if(nextDayIsMap()) proceedMap(); else proceedSchedule(); }catch(_e){ proceedMap(); } })) });
     });
   }catch(_e){}
   const body = restSleepFxHtml() + formatRestSleepDeltas(notes);
   const gold = ended ? `<p class="gold">一週完結 → 回家結算</p>` : "";
-  const dismissFn = ended ? goSchedule : goMap;
+  /* v20a196 D1／D7：dismiss 跟下一日行程——排程日＝繼續跑下一日，逛逛日＝返地圖。 */
+  const dismissFn = ended ? goSchedule : ()=>{ try{ if(nextDayIsMap()) goMap(); else goSchedule(); }catch(_e){ goMap(); } };
   modal(`<h3>${title}</h3>${body}${gold}`, btns, {onDismiss: dismissFn});
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   armRestSleepFxInModal();

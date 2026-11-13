@@ -1,0 +1,51 @@
+{
+  "errors": [],
+  "http_fail": [],
+  "runs": {
+    "c12b-932": {
+      "key": "c12b-932",
+      "vp": 932,
+      "pass": true,
+      "evidence": {
+        "settled_opening": true,
+        "mon_board": {
+          "stop": "dayend",
+          "title": "街頭表演（週一）",
+          "btns": [
+            "返回地圖"
+          ],
+          "day": 1
+        },
+        "entry": {
+          "stop": "invite",
+          "events": [
+            "invite:街招年賞請柬"
+          ],
+          "invite": true
+        },
+        "ceremony": {
+          "ceremony": true,
+          "map": false
+        },
+        "elementFromPoint": [
+          "awd62-stage",
+          "awd62-stage",
+          "awd62-stage"
+        ],
+        "after_click": {
+          "ceremony": true,
+          "map": false
+        },
+        "after": {
+          "stop": "map",
+          "events": [
+            "paper",
+            "map"
+          ],
+          "map": true
+        }
+      },
+      "pageerrors": []
+    }
+  }
+}

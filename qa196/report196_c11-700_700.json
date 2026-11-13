@@ -1,0 +1,48 @@
+{
+  "errors": [],
+  "http_fail": [],
+  "runs": {
+    "c11-700": {
+      "key": "c11-700",
+      "vp": 700,
+      "pass": true,
+      "evidence": {
+        "settled_opening": true,
+        "accel_click_reward_first": null,
+        "accel_confirm": {
+          "title": "加速本週剩餘？",
+          "btns": [
+            "取消",
+            "確認加速"
+          ]
+        },
+        "after_accel": {
+          "stop": "decision:返回地圖",
+          "events": [
+            "paper",
+            "paper",
+            "modal:本週加速完成:返回地圖"
+          ],
+          "title": "本週加速完成",
+          "btns": [
+            "返回地圖"
+          ],
+          "day": 4
+        },
+        "after_summary": {
+          "stop": "map",
+          "events": [
+            "story:傳呼台嘅一課",
+            "story-done:True",
+            "modal:傳呼台嘅一課:抄低成串密碼慢慢對",
+            "modal:傳呼台嘅一課:好",
+            "map"
+          ],
+          "map": true,
+          "day": 4
+        }
+      },
+      "pageerrors": []
+    }
+  }
+}
