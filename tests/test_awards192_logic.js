@@ -8,7 +8,8 @@
 //     跌返「坐觀禮席睇全場」；film／tv 版閘句逐字不變。
 // C3：renderAwardResultHtml 第一行跟舞台 focus（awards63FocusCat）——雙格 pack
 //     focus 格行先，其餘格維持 v184 id 序；同屆提名行仍然只出一次。
-// C4：renderAwardInviteHtml gallery 請柬列全 slate（4 格＋觀禮標記）；nominee 請柬唔郁。
+// C4：renderAwardInviteHtml gallery 請柬列全 slate（4 格＋觀禮標記）；nominee 請柬
+//     v20a200 改標籤（「今晚獎項」→「你爭嘅獎項」，v192 殘留已修；slate 唔郁）。
 // 反證：對 pristine main b7ca827 index 行 → v192 文案／邏輯未入 → FAIL（唔 crash）。
 // 用法：node tests/test_awards192_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -186,8 +187,10 @@ ok('C4：gallery 請柬列全 slate（廣告 4 格男女獎齊）',
   /今晚獎項：最佳廣告男主角、最佳廣告女主角、最佳廣告男配角、最佳廣告女配角（觀禮）/.test(galAd));
 const nomFilm = renderAwardInviteHtml(invPack(
   [{ id: 'cat_film_support_m', label: '最佳男配角' }, { id: 'cat_film_lead_m', label: '最佳男主角' }], 'nominee'));
+/* v20a200（v192 殘留已修）：nominee 行標籤由「今晚獎項」改做「你爭嘅獎項」，
+   slate 照舊淨列你爭嗰 2 格，唔加女獎／觀禮標記。 */
 ok('C4：nominee 請柬唔郁（淨列你爭嗰 2 格，唔加女獎／觀禮標記）',
-  /今晚獎項：最佳男主角、最佳男配角<\/p>/.test(nomFilm) && nomFilm.indexOf('（觀禮）') < 0);
+  /你爭嘅獎項：最佳男主角、最佳男配角<\/p>/.test(nomFilm) && nomFilm.indexOf('（觀禮）') < 0);
 ok('C4：gallery 請柬女獎只係列名（唔寫阿偉會爭女獎）',
   galFilm.indexOf('女主角') >= 0 && galFilm.indexOf('你爭') < 0);
 

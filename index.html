@@ -46184,8 +46184,11 @@ function renderAwardInviteHtml(pack){
     const full192 = AWARDS188_CATEGORIES[pack.ceremonyId].map(c=> (c && c.label) || "").filter(Boolean);
     if(full192.length) catsBit182 = `<p class="psr-sub">今晚獎項：${full192.join("、")}（觀禮）</p>`;
   }
+  /* v20a200（v192 殘留對過）：nominee／won 請柬「今晚獎項」行淨列你爭嗰 1–2 格，
+     同 C2 同一類問題——標籤話係全晚獎項，內容淨係你爭嗰啲。改標籤唔改 slate：
+     「你爭嘅獎項：…」（gallery 嗰邊 v192 C4 已列全 slate＋（觀禮），唔郁）。 */
   if(!catsBit182){
-    catsBit182 = (Array.isArray(pack.categories) && pack.categories.length) ? `<p class="psr-sub">今晚獎項：${awardsCatsSorted184(pack).map(c=> (c && c.label) || "").filter(Boolean).join("、")}</p>` : "";
+    catsBit182 = (Array.isArray(pack.categories) && pack.categories.length) ? `<p class="psr-sub">你爭嘅獎項：${awardsCatsSorted184(pack).map(c=> (c && c.label) || "").filter(Boolean).join("、")}</p>` : "";
   }
   return `<div class="psr-sheet awd-sheet">
     <p class="psr-eyebrow">定期頒獎</p>
@@ -46195,7 +46198,7 @@ function renderAwardInviteHtml(pack){
     <p class="psr-body">${pack.inviteDek||""}</p>
     ${tierBit}
     ${catsBit182}
-    ${(()=>{ try{ return awards63InviteBitHtml(pack); }catch(_e){ return pack.repWork62 ? `<p class="psr-rep62">你今年憑《${pack.repWork62}》爭獎。</p>` : ""; } })()}
+    ${(()=>{ try{ return awards63InviteBitHtml(pack); }catch(_e){ return pack.repWork62 ? `<p class="psr-rep62">你今年憑《${pack.repWork62}》${pack.tier === "gallery" ? "入場觀禮" : "爭獎"}。</p>` : ""; } })()}
     ${(()=>{ try{ return awards62GateLineHtml(pack); }catch(_e){ return ""; } })()}
   </div>`;
 }
@@ -46677,7 +46680,9 @@ function awards62GateLineHtml(pack){
     return '<p class="psr-gate62 ok">' + s + "</p>";
   }
   const bits = [];
-  if(st.gapWorks > 0) bits.push("仲差 " + st.gapWorks + " 部" + med + "作品先夠入圍（而家 " + st.wraps + "/" + st.wrapMin + "）");
+  /* v20a200 C1：gap 句加「今年」——作品數按屆（曆法年）計，跨年作品唔計（既定口徑，
+     計數本身唔郁）；邀請函呢句同季前提示嗰句兩邊一齊加，等講法一致。 */
+  if(st.gapWorks > 0) bits.push("今年仲差 " + st.gapWorks + " 部" + med + "作品先夠入圍（而家 " + st.wraps + "/" + st.wrapMin + "）");
   if(!st.dualOk) bits.push("聲望／業內信用未到入圍基本盤");
   /* v20a188：作品數＋雙軌夠數但席位仍然係觀禮 → 角色閘（嗰年未做過可提名角色）。
      v20a192 C2：音樂分支刪走——任何唱片通告作品都算唱過歌，庫入面零 rec_extra_day gig，
@@ -46764,7 +46769,8 @@ function awards62SeasonHints(st, w){
       const whenTxt = d === 1 ? "下季就係" : "今季就係";
       if(sd.tier !== "nominee"){
         if(sd.gapWorks >= 1 && sd.gapWorks <= 2){
-          return '<span class="var-note">' + whenTxt + "「" + name + "」：仲差 " + sd.gapWorks + " 部" + med + "作品先夠入圍——呢排接" + med + "通告要留神。</span>";
+          /* v20a200 C1：同邀請函閘句一樣加「今年」（計數按屆，跨年唔計；兩邊講法一致）。 */
+          return '<span class="var-note">' + whenTxt + "「" + name + "」：今年仲差 " + sd.gapWorks + " 部" + med + "作品先夠入圍——呢排接" + med + "通告要留神。</span>";
         }
         if(sd.gapWorks === 0 && !sd.dualOk){
           return '<span class="var-note">' + whenTxt + "「" + name + "」：作品數夠，但聲望／業內信用未到入圍基本盤——谷下聲望同行內口碑。</span>";
@@ -47606,7 +47612,13 @@ function awards63InviteBitHtml(pack){
   const img = poster ? '<img class="awd63-invite-poster" src="' + poster + '" alt="《' + pack.repWork62 + '》作品圖"/>' : "";
   const fel = awards63FocusFellows(pack);
   const felTxt = fel.length ? '<div class="psr-fellows63">同屆提名：' + fel.map(f=> f.star + "《" + f.title + "》").join("、") + "</div>" : "";
-  return '<div class="awd63-invite-row">' + img + '<div class="awd63-invite-txt"><p class="psr-rep62">你今年憑《' + pack.repWork62 + '》爭獎。</p>' + felTxt + "</div></div>";
+  /* v20a200 C2：旁聽席唔係爭獎——gallery 嗰陣 rep 行改「入場觀禮」，海報＋同屆提名
+     照留（嗰兩樣唔係爭獎宣稱）；nominee／won 照舊「爭獎」。揀改寫法唔揀唔出呢行，
+     因為呢行同時帶海報＋同屆提名，刪行會一併刪走嗰兩樣。 */
+  const repLine200 = (pack.tier === "gallery")
+    ? ('你今年憑《' + pack.repWork62 + '》入場觀禮。')
+    : ('你今年憑《' + pack.repWork62 + '》爭獎。');
+  return '<div class="awd63-invite-row">' + img + '<div class="awd63-invite-txt"><p class="psr-rep62">' + repLine200 + '</p>' + felTxt + "</div></div>";
 }
 
 
