@@ -203,3 +203,7 @@ Resync 腳本 `qa172/resync172.py`：**單次掃描 dict 查表**（唔逐對 re
 - Commit：遊戲＋測試一個 commit、NOTES＋qa 證據一個 commit；push 分支去常駐 clone（`git push origin v20a172`，rebase 後用 force-with-lease）。**唔落地**——落地由統籌做。
 
 ## §8 落地紀錄（統籌填）
+
+- 落地：分支最終 HEAD `ff071cf`（遊戲＋測試 `3704883`，基底 `e2add29`／v174），squash merge → main 遊戲 commit **`9eea029`**，push main 一次成功（`a618a5d..9eea029`），`git fsck` 乾淨。
+- 線上核實（統籌親自 curl，兩次）：第一次仲係舊版（v174，5,269,914 bytes sha `3af45a51…`，Pages 部署滯後）；等 90 秒後重 curl，**5,271,408 bytes、sha256 `eb594747bdb7e38e1e6174565600b969ce2bcff17965355e7230803a01bb798c`**，同 repo `HEAD:index.html` 完全一致。
+- 落地後全套數字以 rebase 工人重驗為準（見 §5.4／§6）：新測試 22/22，全套 pristine 234／12 vs 工作版 235／12 零回歸，實駕 6/6 PASS 0 pageerror。
