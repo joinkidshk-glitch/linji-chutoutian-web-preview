@@ -77,7 +77,7 @@ nocomment = re.sub(r'/\*.*?\*/', '', html, flags=re.S)
 hm = re.search(r'const STORY_HINT_SOFT = \{(.*?)\n\};', nocomment, re.S)
 hints = hm.group(1) if hm else ''
 ok('STORY_HINT_SOFT extractable (comments stripped)', bool(hints))
-seg_start = hints.index('C7: { playerHint: "黑雨殺到') if 'C7: { playerHint: "黑雨殺到' in hints else -1
+seg_start = hints.index('C7: { playerHint: "暴雨殺到') if 'C7: { playerHint: "暴雨殺到' in hints else -1  # v157：黑雨→暴雨（時代用語修正）
 seg = hints[seg_start:] if seg_start >= 0 else ''
 # v20a31（Phase 4-8）申報：STORY_HINT_SOFT 之後加咗 C12–C16 entry，其中 C12／C16 係樂壇節點，
 # 提示正當地引用「唱片公司」場地（陸柏言／程天諾本業，唔關藍事）。呢段斷言嘅原意係驗

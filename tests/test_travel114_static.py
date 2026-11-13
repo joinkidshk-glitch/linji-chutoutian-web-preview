@@ -119,6 +119,8 @@ ck("drawMap 計 travelLocked114（travel114Remain() <= 0）",
   # v20a161 rebase 上 bf612bc（v155 先落地）resync：START161 淨 +14 行（插入段新行 4793-4806），
 # 行號 ≥4793 者 +14；本檔釘行全部喺插入點之後，一律 +14（difflib 對位＋逐行錨點核實，見 qa161/resolve_rebase161_v155.py）。
 # v20a155 rebase 上 main 9346a8e（v151＋v156）resync：v155 淨 ＋17（B1 註解 ＋6／B2 註解 ＋7／B3 ＋4），全部錨點再 ＋17；COUNT 13／FREE 27 不變，DEF 53601→53618、WRAPPER 44205→44222。
+# v20a157 resync：splice 8 份 fragment（C6/C6F/1989/1990/C17/F4/G4/WF1）＋C17 synopsis 第2段改寫，行號純漂移；/tmp/resync114.py difflib 對位核實：44 個 openLoc( 呼叫點序列逐字一致、內容逐行相同；COUNT 13／FREE 27 不變，DEF 53562→53632、WRAPPER 44171→44241。
+# v20a157 rebase 上 main 60b0a8f resync：main v152–v166 淨刪行＋splice 漂移（早段 −191／−185／−184、中段 −137、尾段 −22／−6／−4；qa131/resync_rebase157.py difflib 對位核實：42 個錨點內容逐行相同，純漂移；COUNT 13／FREE 27 不變，DEF 53632→53610、WRAPPER 44241→44104）。
 # v20a146 rebase B1 步 resync：覆寫表加 st05／st08 兩行（其後錨點 ＋2）；qa146/resync_travel114_147.py HEAD 核實：44 個 openLoc( 呼叫點序列逐字一致、內容逐行相同，純漂移；COUNT 13／FREE 27 不變，DEF 53560→53562、WRAPPER 44169→44171。
 # v20a160 rebase 上 main 222a984（v152）M1 步：淨 ＋7 行（M1 底圖常數段）；difflib 核實純漂移（3 replace 段、44 個 openLoc 呼叫點逐字一致、41 個釘行內容逐行相同）；COUNT 13／FREE 27 不變，DEF 53425→53432、WRAPPER 44029 不變。
 # v20a160 rebase 上 main 222a984（v152）M4 步：淨 ＋37 行（walkup CSS ＋5／beats walkup ＋8／beat caption ＋2／PlayCeremony 其餘 ＋22；difflib 核實純漂移，44 個 openLoc 呼叫點逐字一致；COUNT 13／FREE 27 不變，DEF 53432→53469、WRAPPER 44029→44034；行號 ＜46131 者 ＋5，其後者 ＋37）。
@@ -129,53 +131,53 @@ ck("drawMap 計 travelLocked114（travel114Remain() <= 0）",
 # DEF 53540／WRAPPER 44034 喺插入點之前唔郁；COUNT 13／FREE 27 不變。
 # 計清單（玩家主動導航，預設計數，唔加旗）：13 處
 COUNT_LINES = {
-    31995,  # ux68GoLoc 手帳「前往」
-    35476,  # 訓練建議「去報名」
-    37603,  # 訓練報名導航
-    38597,  # 進度頁「去現場播劇情」
-    39031,
-    39034,  # 地圖釘 goPin（最近針／後備 L.id）
-    39065,  # 地圖底欄地點掣
-    43611,  # 人情債「去事務所」
-    57588,  # inv72GoShop 去禮品檔
-    57755,  # people72GoLoc
-    57898,  # jobs72GoBoard
-    57919,  # jobs72GoLoc
-    58369,  # 開局屋企 modal「去睇劇情」
+    32061,  # ux68GoLoc 手帳「前往」
+    35542,  # 訓練建議「去報名」
+    37669,  # 訓練報名導航
+    38663,  # 進度頁「去現場播劇情」
+    39097,
+    39100,  # 地圖釘 goPin（最近針／後備 L.id）
+    39131,  # 地圖底欄地點掣
+    43681,  # 人情債「去事務所」
+    57658,  # inv72GoShop 去禮品檔
+    57825,  # people72GoLoc
+    57968,  # jobs72GoBoard
+    57989,  # jobs72GoLoc
+    58439,  # 開局屋企 modal「去睇劇情」
 }
 # 免費清單（帶旗，唔計）：27 處
 FREE_LINES = {
-    24588,  # 劇情播完刷新（markDone fallback）
-    28082,  # 劇情播完刷新（leaveStory）
-    30662,
-    30663,
-    30675,
-    30676,
-    30687,
-    30688,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
-    30791,  # 故事 seed 就緒，系統傳送去劇情地點
-    40570,  # wf4Fire 完（wf4Done，舊旗）
-    43268,  # 人情債流程尾，返去而家身處地點
-    43291,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
-    52415,
-    52534,  # 巧遇播完（encDone，舊旗）
-    53427,  # 劇情播完刷新（refreshLocAfterStory）
-    53809,
-    53831,  # 「劇情已完成」toast 後重開而家身處地點
-    53982,  # 聽完傳聞後 reopen 而家身處地點
-    55619,  # forceRestore（舊旗）
-    57030,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
-    57363,  # promptAudition back（返去而家身處地點）
-    57481,
-    57482,
-    57517,
-    57518,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    57537,  # doGiveGift 失敗後重開而家身處地點
-    57552,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    24612,  # 劇情播完刷新（markDone fallback）
+    28106,  # 劇情播完刷新（leaveStory）
+    30728,
+    30729,
+    30741,
+    30742,
+    30753,
+    30754,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
+    30857,  # 故事 seed 就緒，系統傳送去劇情地點
+    40636,  # wf4Fire 完（wf4Done，舊旗）
+    43338,  # 人情債流程尾，返去而家身處地點
+    43361,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
+    52485,
+    52604,  # 巧遇播完（encDone，舊旗）
+    53497,  # 劇情播完刷新（refreshLocAfterStory）
+    53879,
+    53901,  # 「劇情已完成」toast 後重開而家身處地點
+    54052,  # 聽完傳聞後 reopen 而家身處地點
+    55689,  # forceRestore（舊旗）
+    57100,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    57433,  # promptAudition back（返去而家身處地點）
+    57551,
+    57552,
+    57587,
+    57588,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    57607,  # doGiveGift 失敗後重開而家身處地點
+    57622,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 53540      # function openLoc(id, opts){
-WRAPPER_LINE = 44034  # window.__phase2.openLoc：轉發 opts
+DEF_LINE = 53610      # function openLoc(id, opts){
+WRAPPER_LINE = 44104  # window.__phase2.openLoc：轉發 opts
 # 頁內測試區：runSoftP0Checks 函數範圍（brace-match 實量，唔靠死行號）
 def fn_range(start_pat):
     s = src.find(start_pat)

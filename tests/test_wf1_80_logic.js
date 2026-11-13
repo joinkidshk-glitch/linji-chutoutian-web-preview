@@ -60,12 +60,15 @@ function isSubseq(sub, full){
 }
 
 /* (1)(2) 加厚完整性 */
+/* v20a157：C15/C16/C13 重寫做 7 拍（設計稿拍數；字數下限不變，仍過門檻），其餘仍 ≥8 拍 */
 const FLOOR = { C6:350, C7:350, C11:350, C8:350, C9:350, C10:350, C15:350, C14:350, C12:350, C16:380, C13:350, C17:420 };
+const BEAT_FLOOR = { C15:7, C16:7, C13:7 };
 for(const id of Object.keys(FLOOR)){
   const n = NODES[id];
   ok(id + ' 節點在位', !!n);
   if(!n) continue;
-  ok(id + ' beats ≥8 拍（實 ' + (n.beats || []).length + '）', (n.beats || []).length >= 8);
+  const bf = BEAT_FLOOR[id] || 8;
+  ok(id + ' beats ≥' + bf + ' 拍（實 ' + (n.beats || []).length + '）', (n.beats || []).length >= bf);
   ok(id + ' beats 字數 ≥' + FLOOR[id] + '（實 ' + beatChars(n) + '）', beatChars(n) >= FLOOR[id]);
   if(id !== 'C17'){
     ok(id + ' resultBeats 合計 ≥150（實 ' + resultChars(n) + '）', resultChars(n) >= 150);
@@ -86,21 +89,24 @@ for(const id of Object.keys(FLOOR)){
 }
 
 /* (3) 零回歸：對 fixture 子序列／前綴 */
+/* v20a157：C6–C17 全幕重寫，v136 fixture 文本（beats／label／notes／resultBeats）已由設計稿取代——
+   文本子序列／前綴檢查對重寫幕不再適用（新文本斷言改由 tests/test_story157_index_static.py 承接）；
+   此處保留機制等價檢查：choices id 順序不變、每抉擇 flags/stats/tags 同 fixture 一致、flags_written 只增不減。 */
 for(const id of Object.keys(fixture)){
   const n = NODES[id], f = fixture[id];
   if(!n){ ok(id + ' fixture 回歸（節點在位）', false); continue; }
-  ok(id + ' 既有 beats 子序列保留', isSubseq((f.beatLines || []).flat(), beatLines(n)));
   const fIds = f.choices.map(c => c.id), nIds = (n.choices || []).map(c => c.id);
   ok(id + ' 既有 choices id 子序列保留', isSubseq(fIds, nIds));
   let fxOk = true;
   for(const fc of f.choices){
     const nc = (n.choices || []).find(c => c.id === fc.id);
-    if(!nc || nc.label !== fc.label || JSON.stringify(nc.effects) !== JSON.stringify(fc.effects)) fxOk = false;
-    const fRes = fc.resultLines || [];
-    const nRes = (((nc || {}).resultBeats) || []).map(b => b.lines || []);
-    if(JSON.stringify(nRes.slice(0, fRes.length)) !== JSON.stringify(fRes)) fxOk = false;
+    if(!nc) { fxOk = false; continue; }
+    const fe = fc.effects || {}, ne = nc.effects || {};
+    if(JSON.stringify(fe.flags || []) !== JSON.stringify(ne.flags || [])) fxOk = false;
+    if(JSON.stringify(fe.stats || {}) !== JSON.stringify(ne.stats || {})) fxOk = false;
+    if(JSON.stringify(fe.tags || []) !== JSON.stringify(ne.tags || [])) fxOk = false;
   }
-  ok(id + ' 既有 choices label/effects 不變＋resultBeats 前綴保留', fxOk);
+  ok(id + ' 既有 choices flags/stats/tags 同 v136 fixture 一致（label／notes／resultBeats 文本由 v157 重寫）', fxOk);
   ok(id + ' flags_written ⊇ v136 fixture', (f.flags_written || []).every(x => (n.flags_written || []).includes(x)));
 }
 

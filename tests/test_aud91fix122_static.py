@@ -27,22 +27,16 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html or '?v=20a10' in html or '20a10&softBehaviorGate' in html)
-# v151 例外：三檔 DENG mock 准許刪走 guanHaimeiUpgradeForbidden 一行（名禁令退役）；
-# 驗埋 diff 淨係刪呢行先算過，其餘 content JSON 改動一律唔准。
-def _v151_flag_only(p):
-    try:
-        d = subprocess.run(['git', '-C', ROOT, 'diff', 'HEAD', '--', p],
-                           capture_output=True, text=True, timeout=30).stdout
-    except Exception:
-        return False
-    removed = [l for l in d.splitlines() if l.startswith('-') and not l.startswith('---')]
-    added = [l for l in d.splitlines() if l.startswith('+') and not l.startswith('+++')]
-    return len(removed) in (1, 2) and all(r == '-    "guanHaimeiUpgradeForbidden": true,' for r in removed) and added == []
 try:
     st = subprocess.run(['git', 'status', '--porcelain'], cwd=ROOT,
                         capture_output=True, text=True, timeout=30)
     touched = [l[3:] for l in st.stdout.splitlines() if l.strip()]
-    ok('content pack JSON 冇俾本包改動', not any(p.startswith('content/') and p.endswith('.json') and not _v151_flag_only(p) for p in touched))
+    # v157 豁免（已拍板，窄化）：只准 content/story_detail_c1_to_c17.json 呢一次改動
+    # （C1–C5 pack nodes[0–4] 重寫，v157 brief＋SCOUT §3.1：C1–C5 無覆寫，loader 成個
+    # pack fetch；其餘 content JSON 一律唔准郁）。
+    _v157_allowed = {'content/story_detail_c1_to_c17.json'}
+    ok('content pack JSON 冇俾本包改動（v157 只豁免 story_detail_c1_to_c17.json）',
+       all(p in _v157_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
 except Exception as e:
     print('SKIP content pack 檢查（git 唔可用：%s）' % e)
 

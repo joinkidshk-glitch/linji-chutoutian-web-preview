@@ -7,6 +7,7 @@
 #       ⑥ SAVE key／softRev／產品 ?v= 不變
 # 反證：(a) 抽走 currentLine／advance 任一 fallback → checker 必須報錯；
 #       (b) WF3 少一句 text → 普查必須報錯；(c) 成個測試對 pristine main 跑必須 FAIL。
+# v20a157 rebase 上 main 60b0a8f resync：main 淨刪行令三錨點漂移（currentLine 27824→27639、advance 27937→27752、familySafe 33582→33445；qa131/resync_rebase157.py difflib 對位核實內容逐字相同，純漂移；報錯字串行號一併更新）。
 # 用法：python3 tests/test_text125_static.py [path-to-index.html]
 import re, sys, os
 
@@ -28,18 +29,18 @@ def check(s):
     """回傳問題清單（空＝全過）。供反證餵變異輸入。"""
     probs = []
     ls = s.split("\n")
-    # ① currentLine fallback（行號 27615，rebase 重對；v131 B2/B4 令行號由 27511 移位；v133 令行號由 27552 移位；v135 令行號由 27557 移位，CSS 淨 +1；v137 令行號由 27558 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 27571 移位，淨 +60：CSS 段 ＋42／SVG defs ＋13／手帳 HTML 淨 ＋5；v143 令行號由 27631 移位，淨 +43：BOOK143 CSS 段；v136 rebase 上 v143，閘註解＋evalGate3Y 淨 +35；v142 ＋14：A2b CSS ＋4／A2a CSS ＋6／B1 註釋 ＋4；v145 ＋67：BOOK145 CSS 段；v146 rebase ＋10：MASK146 CSS 段 ＋8／modal 高帽註解 ＋2，B2 喺 40613 後唔影響呢行；v155 rebase ＋17：B1 註解 ＋6／B2 註解 ＋7／B3 ＋4；v161 rebase 上 bf612bc ＋14；v20a160 rebase 上 main 9fde729 M4 步 ＋5）
-    if len(ls) < 27615 or FALLBACK not in ls[27614]:
-        probs.append("currentLine 第 27615 行冇 text fallback")
+    # ① currentLine fallback（行號 27800，rebase 重對；v131 B2/B4 令行號由 27511 移位；v133 令行號由 27552 移位；v135 令行號由 27557 移位，CSS 淨 +1；v137 令行號由 27558 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 27571 移位，淨 +60：CSS 段 ＋42／SVG defs ＋13／手帳 HTML 淨 ＋5；v143 令行號由 27631 移位，淨 +43：BOOK143 CSS 段；v136 rebase 上 v143，閘註解＋evalGate3Y 淨 +35；v142 ＋14：A2b CSS ＋4／A2a CSS ＋6／B1 註釋 ＋4；v145 ＋67：BOOK145 CSS 段；v146 rebase ＋10：MASK146 CSS 段 ＋8／modal 高帽註解 ＋2，B2 喺 40613 後唔影響呢行）
+    if len(ls) < 27639 or FALLBACK not in ls[27638]:
+        probs.append("currentLine 第 27639 行冇 text fallback")  # v157 resync：27800→27824（splice ＋24）
     if not re.search(r"const lines = Array\.isArray\(b\.lines\) \? b\.lines : \(b\.line \? \[b\.line\] : "
                      + re.escape(FALLBACK) + r"\);", s):
         probs.append("currentLine fallback 唔係 lines＞line＞text 次序")
-    # ① advance fallback（行號 27728，rebase 重對；v131 B2/B4 令行號由 27624 移位；v133 令行號由 27665 移位；v135 令行號由 27670 移位，CSS 淨 +1；v137 令行號由 27671 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 27684 移位，淨 +60，同上；v143 令行號由 27744 移位，淨 +43，同上；v136 rebase 上 v143，淨 +35；v142 ＋14，同 currentLine 一樣；v145 ＋67，同上；v146 rebase ＋10，同 currentLine；v156 ＋15：EMPTY156 CSS 段（33516 嗰組再 ＋19 PICKER156；v155 rebase ＋17，同 currentLine；v161 rebase 上 bf612bc ＋14；v20a160 rebase 上 main 9fde729 M4 步 ＋5）
-    if len(ls) < 27728 or FALLBACK not in ls[27727]:
-        probs.append("advance 第 27728 行冇 text fallback")
-    # ② applyFamilySafeToNode 處理 b.text（行號 33379–33583，rebase 重對；v131 B2/B4 令行號由 33222 移位；v133 令行號由 33263 移位；v135 令行號由 33268 移位，CSS 淨 +1；v137 令行號由 33269 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 33282 移位，淨 +60，同上；v143 令行號由 33342 移位，淨 +43，同上；v136 rebase 上 v143，淨 +38，含 scrub 護欄 +3；v142 ＋16，實量；v145 ＋67，同上；v146 rebase ＋10，同 currentLine；v155 rebase ＋17，同 currentLine；v161 rebase 上 bf612bc ＋14；v20a160 rebase 上 main 9fde729 M4 步 ＋5）
-    if len(ls) < 33381 or 'if(typeof b.text === "string" && b.text){' not in ls[33378]:
-        probs.append("applyFamilySafeToNode 第 33379 行冇 b.text 分支")
+    # ① advance fallback（行號 27913，rebase 重對；v131 B2/B4 令行號由 27624 移位；v133 令行號由 27665 移位；v135 令行號由 27670 移位，CSS 淨 +1；v137 令行號由 27671 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 27684 移位，淨 +60，同上；v143 令行號由 27744 移位，淨 +43，同上；v136 rebase 上 v143，淨 +35；v142 ＋14，同 currentLine 一樣；v145 ＋67，同上；v146 rebase ＋10，同 currentLine）
+    if len(ls) < 27752 or FALLBACK not in ls[27751]:
+        probs.append("advance 第 27752 行冇 text fallback")  # v157 resync：27913→27937（splice ＋24）
+    # ② applyFamilySafeToNode 處理 b.text（行號 33516–33518，rebase 重對；v131 B2/B4 令行號由 33222 移位；v133 令行號由 33263 移位；v135 令行號由 33268 移位，CSS 淨 +1；v137 令行號由 33269 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 33282 移位，淨 +60，同上；v143 令行號由 33342 移位，淨 +43，同上；v136 rebase 上 v143，淨 +38，含 scrub 護欄 +3；v142 ＋16，實量；v145 ＋67，同上；v146 rebase ＋10，同 currentLine）
+    if len(ls) < 33447 or 'if(typeof b.text === "string" && b.text){' not in ls[33444]:
+        probs.append("applyFamilySafeToNode 第 33445 行冇 b.text 分支")  # v157 resync：33516→33582（splice ＋66）
     if 'b.text.replace(/臨時演員蹲在路邊抽煙/g' not in s:
         probs.append("applyFamilySafeToNode b.text 替換唔齊")
     # ③ 五表普查
@@ -89,7 +90,7 @@ def census(s):
     out = []
     segs = dict(table_segments(s))
     for tname, want_b, want_r in [
-            ("CHOICE47_NODES", 8, 11), ("WF3_TALK_NODES", 43, 24),
+            ("CHOICE47_NODES", 8, 15), ("WF3_TALK_NODES", 43, 24),  # v157：CHOICE47 resultBeats 11→15（F4 3×3=9＋G4 2+4=6；beats 8 不變）
             ("COMMIT48_NODES", 8, 8), ("WF4_FEN_INTRO_NODE", 6, 4)]:
         seg = segs[tname]
         # 逐節點計（beats 之後先至係 choices；全表第一個 beats:[ 到第一個 choices:[ 只覆蓋首節點）

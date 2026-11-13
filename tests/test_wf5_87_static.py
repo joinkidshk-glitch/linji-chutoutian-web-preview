@@ -45,18 +45,29 @@ ok("WF5 apply", "function applyVariantWf5Overrides87" in idx)
 ok("WF5 call site", "applyVariantWf5Overrides87(dengMock, dengPushMock, dualMock)" in idx)
 
 # pack JSON 冇直改（同 v86 出貨副本逐檔 sha 對照）
+# v157 豁免（已拍板，窄化）：story_detail_c1_to_c17.json 只准 nodes[0-4] 改動
+# （C1–C5 重寫，v157 brief＋SCOUT §3.1）；此處改為對照 nodes[5:] sha，證明死版
+# C6–C17 一字唔郁；其餘 7 檔仍逐檔全檔 sha 對照。
+import json
+def sha_nodes_tail(p):
+    try:
+        nodes = json.loads(open(p, encoding="utf-8").read()).get("nodes", [])
+        return hashlib.sha256(json.dumps(nodes[5:], sort_keys=True,
+                                         ensure_ascii=False).encode("utf-8")).hexdigest()
+    except Exception:
+        return None
+
 packs = [
     "content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json",
     "content/MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json",
     "content/MOCK_STORY_DUAL_MEET_THICKEN_SOFT_v1.json",
-    "content/story_detail_c1_to_c17.json",
     "content/story_detail_romance_vera_hiu_choi.json",
     "content/story_detail_romance_lan_xu.json",
     "content/story_detail_romance_tang.json",
     "content/story_detail_rival_mentor.json",
 ]
 # v151 例外：兩檔 DENG mock 准許刪走 guanHaimeiUpgradeForbidden 一行（名禁令退役）；
-# 驗法：BASE 版刪走呢行之後要同現版逐字相同（唔係任意改）；其餘六檔照舊逐檔 sha 對照。
+# 驗法：BASE 版刪走呢行之後要同現版逐字相同（唔係任意改）；其餘五檔照舊逐檔 sha 對照。
 V151_FLAG_LINE = '    "guanHaimeiUpgradeForbidden": true,\n'
 V151_PACKS = {
     "content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json",
@@ -69,6 +80,9 @@ for p in packs:
         ok("pack v151 只刪禁令 flag: " + p, base_txt.replace(V151_FLAG_LINE, "") == cur_txt)
     else:
         ok("pack 冇直改: " + p, sha(os.path.join(ROOT, p)) == sha(os.path.join(BASE, p)))
+ok("pack 只改 nodes[0-4]: content/story_detail_c1_to_c17.json",
+   sha_nodes_tail(os.path.join(ROOT, "content/story_detail_c1_to_c17.json"))
+   == sha_nodes_tail(os.path.join(BASE, "content/story_detail_c1_to_c17.json")))
 
 # 審計腳本留底
 ok("審計腳本存在", os.path.exists(os.path.join(ROOT, "tests", "audit_wf5.js")))

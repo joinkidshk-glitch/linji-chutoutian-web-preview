@@ -45,7 +45,7 @@ for stale in ['賀歲搶位','緋聞公關真假','徐寶珊','聯姻','舊底�
 # ---- C6 對齊 ----
 c6blk = block('const STORY_SPINE_NODES_C6 = {', '/* v20a31 WEAVE_PHASE4_8：藍若曦感情線')
 ok('STORY_SPINE_NODES_C6 defined', bool(c6blk))
-ok('C6 title 飯堂閒角 + loc tvb_longmen', 'title: "飯堂閒角"' in c6blk and 'locId: "tvb_longmen"' in c6blk)
+ok('C6 title 角落嗰張枱 + loc tvb_longmen（v157 新標題，舊「飯堂閒角」）', 'title: "角落嗰張枱"' in c6blk and 'locId: "tvb_longmen"' in c6blk)
 ok('C6 flags canteen pair', 'flag_canteen_grind' in c6blk and 'flag_canteen_quit' in c6blk)
 ok('C6 no date flags / no rel stats', 'date_' not in c6blk and 'rel_' not in c6blk)
 
