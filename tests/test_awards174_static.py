@@ -5,12 +5,16 @@
 # B1 舞台做大：canvas 424×240→424×360（底圖垂直拉伸 1.5×，吊燈／幕布邊完整保留，唔用 cover-crop——
 #     cover 1.5× 會裁走兩盞吊燈 x26–83／340–397，見 NOTES §2）；FLOOR 193→290，人仔 48／50／64→72／75／96，
 #     slotCx 間距 72→80，行前 y＋7→＋10，光池 66→99，glyph 21×12→31×18，後備舞台 H-47→H-70。
+#     v20a177 resync：FLOOR 290→250（底圖重構，地板深 110px）、slotCx 間距 80→100／置中 202→212、
+#     後備舞台 H-70→H-110／H-76→H-116、gallery 中央唔再 −36（改 [82,162,262]），見 NOTES_V20A177.md。
 #     v20a174 rebase 上 main a500536（v149 已落地）：合併後 backing 636×540（邏輯 424×360 ×1.5，
 #     setTransform 1.5 均勻），見 NOTES §9；B1 斷言跟合併態，舊「636 唔入呢票」守衛已作廢。
 # B2 names 卡列跳位＋逐張淡入：(a) 卡列預留高度——.awd63-cards 常駐 flex＋visibility:hidden，
 #     .on 先可見，names 開場 frame 高唔跳；(b) stagger 200＋i*380 → 60＋i*180，第 4 張 600ms 出齊。
 # C1 gallery 中央提名人俾講台遮：中央 slot 左移 36（202→166），避開講台正面 x194–229（源圖 y196–214）；
-#     中央人闊 63px（x134–197），只剩右緣 3px 貼講台邊（舊重疊 29px 闊，減 ~90%）；
+#     中央人闊 63px（x134–197），只剩右緣 3px 貼講台邊（舊重疊 29px 闊，減 ~90%）。
+#     v20a177 resync：新幾何下 gallery 用 [82,162,262]，中央人右緣 193／右邊人左緣 231，同講台重疊 0，唔再移位；
+#     won 路講台啱啱落喺 slot 2／3 之間（193–231），見 NOTES_V20A177.md §1。
 # C2 glamour 174px 隱藏卡列空帶：glamour-hide 由 visibility:hidden 改 display:none，frame 收短，死位取消。
 # 唔郁守衛：cardsData／cardsHtml 唔掂（提名卡人像未拍板）、SAVE key、softRev、?v=。
 # 反證：run against pristine main a500536 -> A1／B1／B2／C1／C2 斷言全部 FAIL（唔 crash）；唔郁守衛 pristine 應 PASS。
@@ -68,15 +72,15 @@ chk('A1 圖標資產本身唔改（trophy 仍經 iconHtml112，唔改成套風�
 # --- B1：舞台做大 ---
 chk('B1 canvas backing 636×540（v149×v174 合併：邏輯 424×360 ×1.5）', '<canvas class="awd62-canvas" width="636" height="540">' in src)
 chk('B1 draw() 用新高 H＝360', 'const W = 424, H = 360' in play_fn)
-chk('B1 FLOOR＝290（193×1.5）', 'const FLOOR = 290' in play_fn)
+chk('B1 FLOOR＝250（v177：167×1.5，底圖重構地板加深）', 'const FLOOR = 250' in play_fn)
 chk('B1 人仔放大 1.5×（72／75／96）', '? 75 : 72' in play_fn and 'dispH: 96' in play_fn)
-chk('B1 slotCx 間距 80', '202 + (i - (slots.length - 1) / 2) * 80' in play_fn)
+chk('B1 slotCx 間距 100、置中 212（v177）', '212 + (i - (slots.length - 1) / 2) * 100' in play_fn)
 chk('B1 glamour overlay aspect 跟 canvas（424/360）', 'aspect-ratio:424/360' in src)
 chk('B1 行前 y＋10（腳 300）', 'y: Math.round(10 * p)' in play_fn)
 chk('B1 光池高 99', 'F - 99' in play_fn)
 chk('B1 獎盃 glyph 放大（−96／−39）', 'FLOOR + fp.y - 96' in play_fn and 'FLOOR + fp.y - 39' in play_fn)
 chk('B1 彩紙底界跟新高（364）', 'p.y > 364' in play_fn)
-chk('B1 後備舞台平台頂 H-70＝290', 'H - 70' in fb_fn)
+chk('B1 後備舞台平台頂 H-110＝250（v177）', 'H - 110' in fb_fn)
 chk('B1 合併態釘死：backing 636×540＋setTransform 1.5＋邏輯 424×360（v149×v174）',
     '<canvas class="awd62-canvas" width="636" height="540">' in src
     and 'ctx.setTransform(1.5, 0, 0, 1.5, 0, 0);' in play_fn
@@ -96,10 +100,11 @@ chk('B2 卡列 beat 清單唔變（names／suspense／reveal／comfort）',
     and 'b.id === "reveal"' in play_fn and 'b.id === "comfort"' in play_fn)
 
 # --- C1：gallery 中央提名人俾講台遮 ---
-chk('C1 gallery 中央 slot 左移 36（166）',
-    'slots.length === 3 && i === 1' in play_fn and 'cx -= 36' in play_fn)
-chk('C1 只移中央 slot（兩側 slot 唔郁，公式置中 202 唔變）',
-    '202 + (i - (slots.length - 1) / 2) * 80' in play_fn)
+chk('C1 gallery 3 slots 用 [82, 162, 262]（v177：唔再 −36，中央＋右邊同講台各留 1–2px）',
+    '[82, 162, 262]' in play_fn)
+chk('C1 舊中央 −36 移位唔再出現', 'cx -= 36' not in play_fn)
+chk('C1 won 路 slot 公式置中 212／間距 100（v177）',
+    '212 + (i - (slots.length - 1) / 2) * 100' in play_fn)
 chk('C1 won 路 slot 唔受中央移位影響（只喺 3 slots 先減）',
     'slots.length === 3' in play_fn)
 

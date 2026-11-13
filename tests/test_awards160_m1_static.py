@@ -93,6 +93,8 @@ chk('底圖路徑唔帶 ?v=（新檔名本身避快取）', '?v=' not in BG_REL)
 
 # --- 4. v20a170 P2：新舞台-only 圖內容（PIL 量度）---
 # 幕布底 y191–193 過渡、y194 滿亮平台面（FLOOR＝291−1＝290，拉伸後；v20a170 舊值 193）。
+# v20a177 resync：底圖重構（幕布 0–193→0–166、地板 194–239→167–239），新舞台頂線源圖 y167，
+#   FLOOR＝167×1.5＝250.5→250；PIL 檢查改量 y160–164（幕布）／y170–172（平台面）、講台 y170–200。
 try:
     from PIL import Image
     bg = Image.open(BG_PATH).convert('RGB')
@@ -102,14 +104,14 @@ try:
     def dark_frac(y):
         row = [bg.getpixel((x, y)) for x in range(424)]
         return sum(1 for p in row if sum(p) / 3 < 55) / 424
-    chk('舞台頂邊：y188–190 仲係幕布紅（中央帶 mean < 110）',
-        row_br(188, 244, 297) < 110 and row_br(190, 244, 297) < 110)
-    chk('舞台頂邊：y194–196 已係平台面（中央帶 mean > 180）',
-        row_br(194, 244, 297) > 180 and row_br(196, 244, 297) > 180)
+    chk('舞台頂邊：y160–164 仲係幕布紅（中央帶 mean < 110，v177 新頂線 y167）',
+        row_br(160, 244, 297) < 110 and row_br(164, 244, 297) < 110)
+    chk('舞台頂邊：y170–172 已係平台面（中央帶 mean > 180，v177）',
+        row_br(170, 244, 297) > 180 and row_br(172, 244, 297) > 180)
     chk('幕布紅在位（y100 中央帶 R-B 均值 > 50）',
         sum(bg.getpixel((x, 100))[0] - bg.getpixel((x, 100))[2]
             for x in range(100, 325)) / 225 > 50)
-    gold = sum(1 for y in range(180, 216) for x in range(195, 231)
+    gold = sum(1 for y in range(170, 201) for x in range(195, 231)
                if (lambda p: p[0] > 170 and p[1] > 140 and p[2] < 210 and p[0] - p[2] > 30)(bg.getpixel((x, y))))
     chk('講台在位（中央有金色講台像素）', gold > 0)
     chk('底部無椅背（y232／y239 dark < 0.25）', dark_frac(232) < 0.25 and dark_frac(239) < 0.25)

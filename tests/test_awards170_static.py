@@ -42,19 +42,21 @@ play_fn = slice_fn('awards62PlayCeremony')
 fb_fn = slice_fn('awards62FallbackStage')
 beats_fn = slice_fn('awards62CeremonyBeats')
 
-# --- (1) FLOOR＝290 ---
-chk('FLOOR＝290（拉伸後舞台頂線）', 'const FLOOR = 290' in play_fn)
+# --- (1) FLOOR＝250（v177 resync：底圖重構，地板深 110px） ---
+chk('FLOOR＝250（v177：拉伸後舞台頂線，底圖重構）', 'const FLOOR = 250' in play_fn)
 chk('舊 FLOOR＝193 唔再出現（頒獎禮範圍）', 'const FLOOR = 193' not in play_fn)
 chk('舊 FLOOR＝155 唔再出現（頒獎禮範圍）', 'const FLOOR = 155' not in play_fn)
 chk('FLOOR 只定義一次', play_fn.count('const FLOOR =') == 1)
-chk('FLOOR 註解寫明拉伸 1.5×＋源圖頂線 194', '194' in play_fn and '1.5' in play_fn)
+chk('FLOOR 註解寫明拉伸 1.5×＋源圖頂線 194（v177 註解保留 194 來源）', '194' in play_fn and '1.5' in play_fn)
 
 # --- (2) 後備舞台平台頂跟 FLOOR ---
 chk('後備舞台在場', bool(fb_fn))
-chk('後備舞台側幕／金邊到 H-70＝290', 'H - 70' in fb_fn)
-chk('後備舞台平台正面由 H-70 伸到 H-33（高 37）', 'ctx.fillRect(0, H - 70, W, 37)' in fb_fn)
-chk('後備舞台金線 H-76 橫跨平台頂邊', 'H - 76' in fb_fn)
+chk('後備舞台側幕／金邊到 H-110＝250（v177）', 'H - 110' in fb_fn)
+chk('後備舞台平台正面由 H-110 伸到 H-33（高 37，v177）', 'ctx.fillRect(0, H - 110, W, 37)' in fb_fn)
+chk('後備舞台金線 H-116 橫跨平台頂邊（v177）', 'H - 116' in fb_fn)
+chk('後備舞台舊平台頂 H-70 唔再出現（v177）', 'H - 70' not in fb_fn)
 chk('後備舞台舊平台頂 H-47 唔再出現', 'H - 47' not in fb_fn)
+chk('後備舞台舊金線 H-76 唔再出現（v177）', 'H - 76' not in fb_fn)
 chk('後備舞台舊金線 H-51 唔再出現', 'H - 51' not in fb_fn)
 chk('後備舞台舊平台底 H-22 唔再出現', 'H - 22' not in fb_fn)
 chk('後備舞台舊椅列 H-26 唔再出現', 'H - 26' not in fb_fn)
@@ -63,9 +65,9 @@ chk('後備舞台舊金線 H-89 唔再出現', 'H - 89' not in fb_fn)
 chk('後備舞台底部／椅列新值（H-33／H-39）', 'H - 33' in fb_fn and 'H - 39' in fb_fn)
 
 # --- (3) slot x ---
-chk('slotCx 公式（置中 202／間距 80）', '202 + (i - (slots.length - 1) / 2) * 80' in play_fn)
-chk('gallery 中央 slot 左移 36（C1，避講台）', 'slots.length === 3 && i === 1' in play_fn and 'cx -= 36' in play_fn)
-chk('4 slots 阿偉 x＝162（slotCx(1)＝202-40）', 'slotCx' in play_fn and 'playerSlot' in play_fn)
+chk('slotCx 公式（置中 212／間距 100，v177）', '212 + (i - (slots.length - 1) / 2) * 100' in play_fn)
+chk('gallery 3 slots 用 [82, 162, 262]（v177 C1，唔再 −36）', '[82, 162, 262]' in play_fn)
+chk('4 slots 阿偉 x＝162（slotCx(1)＝212-50，v177 唔變）', 'slotCx' in play_fn and 'playerSlot' in play_fn)
 chk('入場 entryPlan 唔郁（左右兩流／0.16px/ms／rank*380）',
     'entryPlan' in play_fn and '0.16' in play_fn and 'rank * 380' in play_fn)
 

@@ -46199,13 +46199,13 @@ function awards62FallbackStage(ctx, W, H){
   for(let y = 0; y < H; y += 8){
     for(let x = ((y / 8) % 2) * 4; x < W; x += 8) ctx.fillRect(x, y, 4, 4);
   }
-  /* v20a174 B1：後備舞台平台頂跟 FLOOR＝290（新頂 H-70＝290，平台正面由 290 伸到 H-33＝327，
-     金線 H-76＝284 橫跨頂邊；v20a170 舊值 H-47／H-51／H-22 係 240 高 canvas，全部 ×1.5） */
-  ctx.fillStyle = "#7a1f24"; ctx.fillRect(0, 0, 44, H - 70); ctx.fillRect(W - 44, 0, 44, H - 70);
-  ctx.fillStyle = "#8a6d2f"; ctx.fillRect(44, 0, 4, H - 70); ctx.fillRect(W - 48, 0, 4, H - 70);
+  /* v20a177：後備舞台平台頂跟 FLOOR＝250（新頂 H-110＝250，平台正面由 250 伸到 H-33＝327，
+     金線 H-116＝244 橫跨頂邊；v20a174 舊值 H-70／H-76 係 FLOOR 290 嗰陣，全部跟新地板郁） */
+  ctx.fillStyle = "#7a1f24"; ctx.fillRect(0, 0, 44, H - 110); ctx.fillRect(W - 44, 0, 44, H - 110);
+  ctx.fillStyle = "#8a6d2f"; ctx.fillRect(44, 0, 4, H - 110); ctx.fillRect(W - 48, 0, 4, H - 110);
   ctx.fillStyle = "#8a6d2f"; ctx.fillRect(0, 0, W, 15);
-  ctx.fillStyle = "#3a2a1a"; ctx.fillRect(0, H - 70, W, 37);
-  ctx.fillStyle = "rgba(255,217,104,0.25)"; ctx.fillRect(W / 2 - 52, H - 76, 104, 15);
+  ctx.fillStyle = "#3a2a1a"; ctx.fillRect(0, H - 110, W, 37);
+  ctx.fillStyle = "rgba(255,217,104,0.25)"; ctx.fillRect(W / 2 - 52, H - 116, 104, 15);
   ctx.fillStyle = "#120c20"; ctx.fillRect(0, H - 33, W, 33);
   ctx.fillStyle = "#1d1430";
   for(let x = 6; x < W - 8; x += 16) ctx.fillRect(x, H - 39, 10, 12);
@@ -46444,8 +46444,8 @@ function awards62PlayCeremony(pack, doneFn){
       tim.onerror = ()=>{ tuxRec.ok = false; };
       tim.src = AWARDS160_TUXEDO_AWEI;
     }catch(_e){}
-    const FLOOR = 290; /* v20a174 B1：canvas 高 240→360（底圖垂直拉伸 1.5×），舞台頂線 193×1.5＝289.5→290（源圖 PIL：中央帶幕布底 y191–193 過渡、y194 滿亮平台面；v20a170 P2 舊值 193＝194−1；拉伸後 291−1＝290）；x 幾何唔郁 */
-    const slotCx = (i)=>{ let cx = 202 + (i - (slots.length - 1) / 2) * 80; if(slots.length === 3 && i === 1) cx -= 36; return cx; }; /* v20a174 B1：間距 72→80（人仔放大 1.5×，闊 63px，留罅 17px）；v20a174 C1：gallery 中央 slot 左移 36（166），避開講台正面 x194–229（源圖 y196–214）——中央人闊 63px（x134–197），只剩右緣 3px 貼講台邊（舊 29px 闊重疊，減 ~90%）；won 路 4 slots 82／162／242／322，gallery 122／166／282 */
+    const FLOOR = 250; /* v20a177：地板加深——底圖重構（源圖幕布 0–193 壓到 0–166、地板 194–239 拉到 167–239；源圖舞台頂線由 y194 變 y167，×1.5 拉伸後 167×1.5＝250.5→250；地板深 360−250＝110px＝30.6% canvas 高，對照參考圖地板佔畫面高 30.7%）；人物腳底跟同一常數，行前腳 260 */
+    const slotCx = (i)=>{ if(slots.length === 3) return [82, 162, 262][i]; let cx = 212 + (i - (slots.length - 1) / 2) * 100; return cx; }; /* v20a177：舞台加闊——won／nominated 4 slots 間距 80→100、置中 202→212（62／162／262／362，罅 37px、兩邊各留 31px；講台 x194–229 啱啱落喺 slot 2／3 之間 193–231 條罅，draw-rect 重疊 0）；gallery 3 slots 82／162／262（罅 80／100，中央＋右邊兩人同講台各留 1–2px，唔再 −36 移位；左邊空出 293–424＝131px 行走區，對照參考圖右三分一留空） */
     /* v20a64：入場走路計劃——左右兩流、深位先行（唔使穿過已企定嘅人）；速度 0.16px/ms，walkA/walkB 交替（bob 已入幀） */
     const entryPlan = slots.map((s, i)=> ({ side: slotCx(i) <= 202 ? -1 : 1, cx: slotCx(i), from: 0, delay: 0, dur: 0 }));
     [-1, 1].forEach(side=>{

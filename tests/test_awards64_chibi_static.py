@@ -69,8 +69,8 @@ chk('剪影降級保留', '剪影降級（Q 版比例' in play_fn)
 chk('跳過掣保留', 'awd62-skip' in play_fn)
 
 # --- (4) 渲染尺度（mock v3） ---
-chk('地板線 FLOOR=290（v20a174 B1：拉伸後舞台頂線）', 'const FLOOR = 290' in play_fn)
-chk('slotCx 置中 202／間距 80', '202 + (i - (slots.length - 1) / 2) * 80' in play_fn)
+chk('地板線 FLOOR=250（v20a177：拉伸後舞台頂線，底圖重構）', 'const FLOOR = 250' in play_fn)
+chk('slotCx 置中 212／間距 100（v177）', '212 + (i - (slots.length - 1) / 2) * 100' in play_fn)
 chk('人仔高度 72／玩家 75', '? 75 : 72' in play_fn)
 
 # --- (5) 卡片統一規則抽查 ---
