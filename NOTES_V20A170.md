@@ -192,3 +192,8 @@
 - **tang171 零行數漂移守門捉到 +2 行**：`tests/test_tang171_static.py`（v171 新測試）釘總行數 59171＋openLoc DEF 行 53690；P2 fallback 嗰兩行註解令 index.html 變 59173、openLoc DEF 移去 53692——係純漂移，唔係功能回歸（`grep -n` 核實 `function openLoc(id, opts){` 真係喺 53692）。修法：resync 該檔釘值 59171→59173、53690→53692（＋註解說明來源），唔刪 P2 註解。直跑 22/22 PASS。
 - **最終全套 A/B**（`qa131/run_suite.sh`，統籌獨立重跑）：v171 main `6d08c7c` **230／12** vs 工作版 **231／12**；FAIL 清單逐項完全相同（12 項穩定 pre-existing：flash51／giglib36／pacing35／poster59／rumor49／slot50／soft_tip_111／start53／weave43／weave44／weave49／wrap38），唯一差別係新測試檔 `test_awards170_static.py` PASS。**零回歸**。
 - 落地：常駐 clone checkout main → `git merge --squash v20a170` → commit → push main → curl 核實 bytes／sha → fsck → 派 v170 設計 review。
+
+### §7.11 落地紀錄（統籌，2026-11-13 約 12:45 HKT）
+- Game commit `59fdf54`（squash merge 自分支 `v20a170` HEAD `2a82c78`，基底 main `29d4821`）。
+- 線上核實：`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/` index.html **5,254,542 bytes、sha256 `651c26e7045fdb30234c7fd8fb1496500814f71311653b9d508bbe1e46694776`**，同 repo index.html 字節數＋sha 完全一致。`FLOOR = 193`／`H-47` 各 1 處。`git fsck --strict` 乾淨。
+- Pixellab 總花費：Phase 1 3 次＋Phase 2 2 次＝**5 次**；餘額 **4,571／5,000**。
