@@ -38,6 +38,7 @@
 # v20a176 resync：淨 ＋538 行（NPCS ＋7／星收尾掣 ＋12／ROM176 block ＋501／茶聽 ＋12／addLoc −13／openLoc 掛點 ＋5／doGiveGift ＋4／人脈頁 ＋10），總行數 59341→59879、DEF 53860→54379（qa176/resync176.py 逐行核實內容逐字相同，純漂移）。
 # v20a176 rebase 上 main 91f264a（v175）resync：v175 淨 ＋78（CSS ＋10／toast ＋15／prog175 ＋51＋render ＋2），總行數 59894→59972、DEF 54394→54472（qa176/resync176_rebase.py difflib 對位核實純漂移）。
 # v20a176 第三輪 rebase 上 main c682cc2（v178）resync：v178 淨 ＋21（fellows 特別名額＋21；註解＋sprite 來回 ＋4−4 抵消），總行數 59972→59993、DEF 54472→54493（qa176/resync176_rebase3.py difflib 對位核實純漂移；三檔 rebase 衝突後取 v176 嗰邊，v178 註解行補返）。
+# v20a182 resync：v182 淨 ＋17 行（CSS＋2／請柬＋4／presentAwardInvite＋6／C1 JS＋5），總行數 59993→60010、DEF 54493→54510（qa182/resync182.py difflib 對位核實純漂移）。
 import sys
 from pathlib import Path
 p = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent / 'index.html'
@@ -63,9 +64,9 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 59993（v170 59173＋v149 ＋97＋v153 ＋71＋v172 ＋15＋v175 ＋78＋v176 ＋538＋v178 ＋21）', src.count('\n') == 59993)
-ok('零行數漂移：openLoc DEF 行 54493（v175 ＋78＋v176 ＋519＋v178 ＋21）（travel114 釘行）',
-   len(lines) >= 54493 and 'function openLoc(id, opts){' in lines[54492])
+ok('零行數漂移：總行數 60010（v170 59173＋v149 ＋97＋v153 ＋71＋v172 ＋15＋v175 ＋78＋v176 ＋538＋v178 ＋21＋v182 ＋17）', src.count('\n') == 60010)
+ok('零行數漂移：openLoc DEF 行 54510（v175 ＋78＋v176 ＋519＋v178 ＋21＋v182 ＋17）（travel114 釘行）',
+   len(lines) >= 54510 and 'function openLoc(id, opts){' in lines[54509])
 
 # --- §1. C1：捲動提示（淡出漸變） ---
 ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',

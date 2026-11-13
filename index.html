@@ -762,6 +762,7 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .awd62-item{display:flex;gap:10px;align-items:baseline;background:linear-gradient(180deg,#fbf2da,#f3e5c3);border:1px solid #d9c491;border-radius:4px;padding:8px 10px;margin:8px 2px;box-shadow:0 2px 6px rgba(74,56,28,.15);flex-wrap:wrap}
 .awd62-item .awd62-name{font-weight:800;color:var(--navy);letter-spacing:.02em}
 .awd62-item .awd62-when{color:#6b4e2e;font-weight:700;font-size:.8rem;white-space:nowrap}
+.awd62-item .awd62-fellows{flex-basis:100%;color:#6b4e2e;font-weight:700;font-size:.8rem;line-height:1.5;white-space:normal} /* v20a182 B1：提名行獨立 class 准換行——舊 .awd62-when white-space:nowrap 令三 fellow 長名單伸出卡邊被切（實量 scrollW 494 vs 卡 340，成行 31% 唔見）；日期行繼續用 .awd62-when 唔郁 */
 .awd62-badge{font-weight:800;font-size:.78rem;border-radius:3px;padding:1px 7px;white-space:nowrap}
 .awd62-badge.won{background:#8a6d1f;color:#fff8e1}
 .awd62-badge.nominated{background:#fdf3d8;color:#6b4e2e;border:1px dashed #b98c4a}
@@ -799,10 +800,11 @@ canvas.awd62-canvas{display:block;width:100%;height:auto;image-rendering:pixelat
 .awd63-card.me{border-color:#f2c14e;box-shadow:0 0 0 2px #f2c14e,0 4px 10px rgba(0,0,0,.5)}
 .awd63-card.me::after{content:"你";position:absolute;top:-9px;right:-7px;background:#c02727;color:#fff;font-size:10px;font-weight:900;border-radius:50%;width:19px;height:19px;line-height:19px;text-align:center;z-index:2}
 .awd63-card.win::after{content:"🏆";position:absolute;top:-9px;left:-7px;background:#f2c14e;color:#3a2a12;font-size:11px;font-weight:900;border-radius:50%;width:19px;height:19px;line-height:19px;text-align:center;z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.5)} /* v20a149 B3：得主卡 🏆 角標 */
-.awd63-csscard{aspect-ratio:2/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:linear-gradient(160deg,#3a2a4a,#241736);color:#ffe9b0;font-weight:900;font-size:13px;line-height:1.4;padding:6px;text-align:center;border:1px solid #8a6d2f} /* v20a149 B3：冇 poster 嗰陣改做大媒介圖標＋細字典禮名 */
-.awd63-csscard .ic112{width:30px;height:30px}
-.awd63-cssicon{font-size:26px;line-height:1}
-.awd63-cssname{font-size:11px;font-weight:700;color:#d9c491;line-height:1.35}
+.awd63-csscard{aspect-ratio:2/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:linear-gradient(160deg,#3a2a4a,#241736);color:#ffe9b0;font-weight:900;font-size:13px;line-height:1.4;padding:6px;text-align:center;border:1px solid #8a6d2f} /* v20a182 C1：卡面改做 fellow 專屬——大字首字＋全名＋媒介細行，唔再三張都印同一典禮名；底色按卡位 index 揀 tint（見 play 內 AWDS63_TINTS182），一眼分得開 */
+.awd63-csscard .awd63-cssmono{font-size:30px;line-height:1;font-weight:900;color:#ffe9b0}
+.awd63-csscard .awd63-cssstar{font-size:12px;font-weight:800;color:#ffe9b0;line-height:1.3}
+.awd63-csscard .awd63-cssmed{display:flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:#d9c491;line-height:1.2}
+.awd63-csscard .awd63-cssmed .ic112{width:14px;height:14px}
 .awd63-glamour{position:absolute;top:0;left:0;width:100%;aspect-ratio:424/360;display:none;flex-direction:row;justify-content:flex-end;align-items:stretch;z-index:2;pointer-events:none} /* v20a166 B1：glamour 海報縮細並置——overlay 由全幅改做只冚 canvas，左邊透明留位畀燕尾服，右邊 44% 暗 panel 放海報＋cap；0.93 暗層留喺 panel；pointer-events:none，撳掣／elementFromPoint 照通 canvas；v20a174 B1：canvas 424×240→424×360，aspect 跟住改 */
 .awd63-glamour.on{display:flex}
 .awd63-glamour-panel{flex:0 0 44%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:10px 12px;background:rgba(10,6,18,.93);box-sizing:border-box}.awd63-glamour-panel>img{max-width:88%;max-height:60%;object-fit:contain;border:4px solid #f2c14e;box-shadow:0 0 34px rgba(242,193,78,.45);background:#2b2118} /* v20a174 A1：裱框規則由 panel 內全部 img 收窄到直屬海報 img（>），唔再套落 .cap 內 22px 獎盃 */
@@ -45746,6 +45748,9 @@ function queueAwardsOnSeasonWindow(opts){
 function renderAwardInviteHtml(pack){
   pack = pack || {};
   const tierBit = pack.tierLabel ? `<p class="psr-sub">席位：${pack.tierLabel}</p>` : "";
+  /* v20a182 C2：補一行今晚獎項（pack.categories 真實數據），請柬唔再得 6 行字就完；
+     gallery／提名都啱用（唔寫「角逐」，旁聽者唔係參賽者）。 */
+  const catsBit182 = (Array.isArray(pack.categories) && pack.categories.length) ? `<p class="psr-sub">今晚獎項：${pack.categories.map(c=> (c && c.label) || "").filter(Boolean).join("、")}</p>` : "";
   return `<div class="psr-sheet awd-sheet">
     <p class="psr-eyebrow">定期頒獎</p>
     <h3 class="psr-h">${pack.inviteTitle||"頒獎夜請柬"}</h3>
@@ -45753,6 +45758,7 @@ function renderAwardInviteHtml(pack){
     ${pack.venue99 ? `<p class="psr-sub">場地：${pack.venue99}</p>` : ""}
     <p class="psr-body">${pack.inviteDek||""}</p>
     ${tierBit}
+    ${catsBit182}
     ${(()=>{ try{ return awards63InviteBitHtml(pack); }catch(_e){ return pack.repWork62 ? `<p class="psr-rep62">你今年憑《${pack.repWork62}》爭獎。</p>` : ""; } })()}
     ${(()=>{ try{ return awards62GateLineHtml(pack); }catch(_e){ return ""; } })()}
   </div>`;
@@ -45827,6 +45833,12 @@ function presentAwardResult(pack, thenFn){
 function presentAwardInvite(pack, thenFn){
   const cont = (typeof thenFn==="function") ? thenFn : function(){};
   if(!pack){ cont(); return false; }
+  /* v20a182 C2：請柬唔行 story 全屏舞台——N1 開場故事等 modal 仲開緊嗰陣 #mask 會留返
+     story-play-on，modal 變 height:100% 全黑（實量 932px，內容得 ~200px，掣貼底）；
+     呢度開請柬前落返個 class，等 modal 行返正常 bottom-sheet；唔郁請柬邏輯，
+     故事本身之後經 StoryPlay 重入嗰陣會再加返。 */
+  try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
+  try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
   const attend = ()=>{
     FREEPLAY_FW._pendingAward = null;
     try{ if(typeof S!=="undefined" && S) S.pendingAwardPack = null; }catch(_e){}
@@ -46219,7 +46231,7 @@ function renderAwardsPane62(){
       + '<span class="awd62-badge ' + best + '">' + badge + "</span></div>"
       + '<div class="awd62-when">' + esc(when) + "</div>"
       + (repTitle ? ('<div class="awd62-rep">憑《' + esc(repTitle) + "》</div>") : "")
-      + (fellowsTxt ? ('<div class="awd62-when">' + esc(fellowsTxt) + fellowsWinHtml128 + "</div>") : "")
+      + (fellowsTxt ? ('<div class="awd62-fellows">' + esc(fellowsTxt) + fellowsWinHtml128 + "</div>") : "")
       + "</div>";
   }).join("");
 }
@@ -46447,10 +46459,15 @@ function awards62PlayCeremony(pack, doneFn){
     if(cardsData.length){
       /* v20a149 B3：冇 poster 嗰陣 csscard 唔再印片名——改做大媒介圖標＋細字典禮名，
          片名只留卡底 .t 一行。 */
-      const medIcon149 = { film: "🎬", tv: "📺", music: "🎵", ad: "📣" }[(pack && pack.medium) || ""] || "🏆";
-      const medName149 = (pack && pack.displayName) || "頒獎夜";
-      cardsHtml = '<div class="awd63-cards">' + cardsData.map(c=>{
-        const media = c.poster ? ('<img src="' + c.poster + '" alt="《' + c.title + '》作品圖"/>') : ('<div class="awd63-csscard"><span class="awd63-cssicon">' + iconHtml112(medIcon149) + '</span><span class="awd63-cssname">' + medName149 + "</span></div>");
+      const medLabel182 = { film: "電影", tv: "電視", music: "唱片", ad: "廣告" }[(pack && pack.medium) || ""] || "頒獎";
+      /* v20a182 C1：冇 poster 嘅 CSS 卡唔再三張印同一典禮名——卡面改做 fellow 專屬：
+         大字首字＋全名＋媒介細行；底色按卡位 index 揀 tint（AWDS63_TINTS182，6 色，
+         每場最多 4 張卡，保證唔撞——星名 hash 試過，葉敏芝／高俊傑撞同一色）；
+         卡片數據／判定唔郁，只改呈現。 */
+      const AWDS63_TINTS182 = ["#3a2a4a", "#274a3a", "#4a2a2e", "#2a3a4a", "#4a3a20", "#33355e"];
+      cardsHtml = '<div class="awd63-cards">' + cardsData.map((c, ci)=>{
+        const tint182 = AWDS63_TINTS182[ci % AWDS63_TINTS182.length];
+        const media = c.poster ? ('<img src="' + c.poster + '" alt="《' + c.title + '》作品圖"/>') : ('<div class="awd63-csscard" style="background:linear-gradient(160deg,' + tint182 + ',#241736)"><span class="awd63-cssmono">' + (c.star || "?").charAt(0) + '</span><span class="awd63-cssstar">' + (c.star || "") + '</span><span class="awd63-cssmed">' + medLabel182 + "</span></div>"); /* v20a182 C1 註：星名跟隔籬 .s 行一樣直接印（內部數據，唔經 esc；esc 係局部 helper，play 作用域冇佢）；媒介細行淨留文字——手繪 icon 係深啡線稿，喺深色卡面會變深色方塊 */
         return '<div class="awd63-card' + (c.me ? " me" : "") + (c.win ? " win" : "") + '">' + media + '<div class="t">《' + c.title + '》</div><div class="s">' + c.star + "</div></div>";
       }).join("") + "</div>";
     }
