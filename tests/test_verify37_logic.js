@@ -559,6 +559,7 @@ function makeEl(){
   var toast = function(){}; var saveQ = function(){};
   var goEnrollableCompany = function(){}; var openCopyFromDay = function(){}; var toggleCopyPanel = function(){};
   var renderCopyChips = function(){}; var syncHomeTabExit = function(){}; var updateLiveStressStrip = function(){};
+  var syncConfirmPlanStamp197 = function(){}; /* v20a197 B2＋D1：renderNotebook 經 helper 互換確認掣／鎖定印章；沙盒唔測印章，stub 即可 */
   var todayHasSoftSchedule = function(){ return false; }; var todayIsForcedDay = function(){ return false; };
   var enrolledTrainItems = function(){ return []; }; var workItems = function(){ return []; };
   var planSelDay = 0; var planCat = 'browse'; var planDraft = null; var planBackup = null;

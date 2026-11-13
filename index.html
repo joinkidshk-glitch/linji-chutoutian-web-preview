@@ -119,6 +119,12 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
   border:1px solid #C9A227;background:#C9A227;color:#1A1410;font-weight:800;
   font-size:.72rem;cursor:pointer;
 }
+/* v20a197 C2：地圖底部主掣同一位兩個身份——位置保留，用色區分。「開始今日行程」
+   留返金色實色；「過一日」改紙色＋啡框，唔用金漸變。 */
+#v-map .map-hint #map-end-day{
+  background:#fffdf6 !important; color:#3a2e22 !important;
+  border:2px solid #8a6f4d !important; box-shadow:none !important;
+}
 /* v20a34 引導包：通告卡差額／頁面白話說明／債來歷／雙軌解釋／壓力後果 */
 .gt-gap{margin-top:4px;font-size:.74rem;font-weight:700;color:#8a5a12}
 .gt-closest{display:inline-block;margin-left:6px;padding:0 6px;border-radius:999px;background:#C9A227;color:#1A1410;font-size:.68rem;font-weight:800}
@@ -532,6 +538,7 @@ html.reduce-motion *::after, body.reduce-motion *::after{
   background:#f3e6c8;color:#2a2118;border-radius:14px 14px 0 0;border:2px solid #c4a574;border-bottom:0;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);
   overflow:auto; /* v13: single vertical scroller for week + cats + acts */
+  padding-bottom:84px; /* v20a197 B7：內容尾加等於 bar 高度嘅 padding，分類掣碌到底嗰陣完全喺 bar 上面（932：84px） */
   -webkit-overflow-scrolling:touch;
   scrollbar-width:none;-ms-overflow-style:none;
 }
@@ -1539,6 +1546,12 @@ button.g, .start button.g{
   order: 1 !important;
   white-space: nowrap !important;
 }
+/* v20a197 C4：肯定／主動作永遠在上（DOM 第一粒＝視覺最上）——tut-on 嗰陣，
+   唔係教學掣嘅 modal 掣（.g／.d／其他）唔可以靠預設 order:0 走去 .p（order:1）
+   上面（獎賞請柬實駕量度：DOM 出席先、視覺推辭在上，根源就係呢條）；
+   一律 order:1，次序跟 DOM（全站審計：全部 modal DOM 次序本身已經係肯定行先）。
+   教學掣 .tut-skip／.tut-replay-step 用更高特指度嘅規則壓住（order:2／3），唔受影響。 */
+#mask.tut-on #modal-btns button{ order:1 !important; }
 /* v17p: board header／era／title — 避免單字「工。」孤兒斷行 */
 .gig-card .t{
   white-space: nowrap !important;
@@ -2033,6 +2046,8 @@ button.g, .start button.g{
   box-sizing: border-box !important;
   text-align: left !important;
   width: 100% !important;
+  height: 60px !important; /* v20a197 C3：行動掣固定 60px 高，唔跟內容行數走 */
+  overflow: hidden !important;
   background: #efe6cf !important;
   border: 1.5px solid rgba(196,165,116,.7) !important;
   color: #1A1410 !important;
@@ -2050,12 +2065,19 @@ button.g, .start button.g{
   color: #1A1410 !important;
   font-weight: 800 !important;
   line-height: 1.25 !important;
+  white-space: nowrap !important; /* v20a197 C3：標題單行截短 */
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 #loc-sheet.sheet .act .h{
   color: #5a4328 !important;
   opacity: 1 !important;
   line-height: 1.2 !important;
   margin-top: 0 !important;
+  display: -webkit-box !important; /* v20a197 C3：描述單行截短 */
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
 }
 #loc-sheet.sheet .act .cost,
 #app #loc-sheet.sheet .act .cost{
@@ -2166,15 +2188,17 @@ body.day-res-open #mask.day-res{
   padding-top:52px;
   background:linear-gradient(180deg, rgba(0,0,0,.18) 0, rgba(0,0,0,.18) 48px, rgba(0,0,0,.58) 48px);
 }
-/* v18a: loc sheet open — keep compact date HUD (map-hint) instead of fully hiding */
+/* v20a197 B6：sheet 開嗰陣唔再將 .map-hint 改做 compact HUD——舊 v18a 規則
+   （top:42px＋max-width:280px＋細字＋收起 help／story 行）係「過一日」掣走位
+   （y 863→989、闊 338→252）嘅主因。宜家 hint 保持乾淨態幾何（#v-map .map-hint
+   嗰套紙卡），再加 position:sticky＋bottom:12px 釘喺 scrollport 底，唔跟
+   scrollMapPinIntoView 走；hint 喺 sheet 下面（z 6 vs sheet 40），照舊撳唔到。
+   代價：v18a compact 日期 HUD 拎走（日期照舊喺頂欄＋hint 入面）。 */
 .map-wrap.sheet-open .map-hint{
-  display:block !important;
-  bottom:auto; top:42px; left:8px; right:auto;
-  max-width:min(72%,280px); max-height:2.8em; overflow:hidden;
-  font-size:.6rem; padding:4px 7px; opacity:.94; z-index:7;
+  position:sticky !important; bottom:12px !important; top:auto; left:auto; right:auto;
+  display:block !important; max-width:none; max-height:none; overflow:visible;
+  font-size:.82rem; padding:11px 12px 12px; opacity:1; z-index:6;
 }
-.map-wrap.sheet-open .map-hint .map-hint-help,
-.map-wrap.sheet-open .map-hint .map-hint-story{ display:none; }
 
 .settle-toggle{ color: #1A1410 !important; }
 .settle-chev{ color: #5a4328 !important; }
@@ -2307,6 +2331,12 @@ body.day-res-open #mask.day-res{
 #loc-sheet.sheet .btnrow button,
 #app #loc-sheet.sheet .btnrow button{
   min-height: 44px !important;
+}
+/* v20a197 B5：「返回地圖」全局規格＝底部全寬 44px（全站 modal／sheet CTA 既有
+   pattern；日結 modal 嗰粒已經係全寬唔郁）。地點 sheet 嗰粒由置中窄掣改全寬。 */
+#loc-sheet.sheet .btnrow #loc-close,
+#app #loc-sheet.sheet .btnrow #loc-close{
+  flex:1 1 100% !important; width:100% !important; min-height:44px !important;
 }
 #loc-sheet.sheet .act,
 #app #loc-sheet.sheet .act{
@@ -2447,9 +2477,10 @@ body.day-res-open #mask.day-res{
 .story-play .sp-progress{font-size:.7rem;color:#6b5a48;margin:0 0 6px}
 .story-play .sp-choices{display:flex;flex-direction:column;gap:8px;margin-top:4px;flex:0 0 auto}
 .story-play .sp-choice{
-  text-align:left;min-height:44px;padding:10px 12px;border-radius:10px;
+  text-align:left;min-height:64px;padding:10px 12px;border-radius:10px;
   border:1px solid rgba(0,0,0,.16);background:#f7f1e6;color:#2a2118;
   cursor:pointer;font-size:.86rem;line-height:1.35;font-weight:700;
+  display:flex;flex-direction:column;justify-content:center; /* v20a197 C5：固定最小 64px，短句置中 */
 }
 .story-play .sp-choice:hover,.story-play .sp-choice:active{background:#efe6d6}
 .story-play .sp-choice .sp-notes{display:block;margin-top:4px;font-size:.7rem;color:#6a5a48;font-weight:500}
@@ -3240,10 +3271,25 @@ body.day-res-open .day-row{
    所以放寬到 92dvh（modal 644px／inner ~485px）；只放寬掛咗 day-res 嘅日結板
    （其餘 modal 唔郁），矮屏先生效。modal 係底錨（top = vh - h - 10），掣列唔會跌出屏。 */
 @media (max-height: 820px){
-  #mask.day-res:not(.tut-on) .modal{
+  #mask.day-res .modal{
     max-height: min(92dvh,92svh,720px) !important;
+    height: min(92dvh,92svh,720px) !important;
   }
 }
+/* v20a197 B4：日結板 modal 固定高度——掣列唔再跟內容高度郁。三條日結路徑
+   （afterDayModal／第二日結／presentRestSleepDayEnd）一律掛 day-res；
+   #modal-inner 本來就捲得郁（flex:1 1 0%＋overflow-y:auto），內容入面捲、掣唔郁。
+   只郁幾何，唔郁日結流程邏輯（v196 協調）。
+   v20a197 B4 補：固定高度本身唔夠——兩板 anchor 唔同：拍攝板 v20a189 刻意唔加
+   body.day-res-open（保 dim 樣），tut-on 置中（align-items:center）；休息板加咗，
+   v18a 規則 body.day-res-open #mask.day-res 將佢拉返 flex-end 貼底。實駕量度：
+   soft 板 modal y=86（置中，760px 頂帽）、rest 板 y=529（貼底，387px 內容高），
+   掣 y 差 70px（686／739／791 vs 756／809／861），同 review 數字逐 px 相同——
+   即係舊版 :not(.tut-on) 規則喺 tut-on 態下完全冇生效。所以 day-res 一律行
+   flex-end 底錨（同 v18a／base bottom-sheet 一致），高度規則亦唔再排除 tut-on；
+   過一日確認等非 day-res modal 唔受影響（繼續 tut-on 置中）。 */
+#mask.day-res .modal{ height: min(78dvh,78svh,720px) !important; }
+#mask.day-res{ align-items: flex-end !important; }
 #mask:not(.tut-on):not(.casting-sheet-on) #modal-inner{
   flex: 1 1 0% !important;
   min-height: 0 !important;
@@ -5282,8 +5328,15 @@ body.day-res-open .day-row{
 #nb-actions #btn-reset-plan{ flex:0 0 auto; }
 #nb-actions #btn-confirm-plan{ flex:1 1 auto; }
 /* S-29：未達標通告預設摺疊 */
-.gig-locked108{ margin-top:8px; border-top:1px dashed rgba(120,95,60,.5); padding-top:6px; }
-.gig-locked108 summary{ cursor:pointer; font-size:.8rem; font-weight:800; color:#7a6248; padding:6px 2px; }
+/* v20a197 C6：54px 罅成因已核實——入面係 <details class="gig-locked108"> 嘅
+   summary 分組頭（margin-top 8＋summary 行高＋padding-top 6＋卡 margin），唔係
+   無解釋嘅空位。將 summary 做返明顯嘅分組標題，等個罅變成一眼認到嘅分組頭；
+   開合狀態用 ::after 提示（▸ 點開睇／▾ 點開收起）。 */
+.gig-locked108{ margin-top:12px; border-top:2px solid #cbb98d; padding-top:0; }
+.gig-locked108 summary{ display:block; cursor:pointer; font-size:.85rem; font-weight:800; color:#3a2e22; background:#efe6cf; border-bottom:1px solid #cbb98d; padding:10px; margin:0 0 8px; list-style:none; }
+.gig-locked108 summary::-webkit-details-marker{ display:none; }
+.gig-locked108 summary::after{ content:"  ▸ 點開睇"; font-weight:700; color:#7a6248; }
+.gig-locked108[open] summary::after{ content:"  ▾ 點開收起"; }
 /* S-34：「離開」改淺色文字掣，唔同主行動搶眼 */
 #mask:not(.tut-on) #modal-btns button.btn_leave,
 #mask:not(.tut-on) #modal-btns button.g.btn_leave{
@@ -5463,15 +5516,15 @@ body.day-res-open .day-row{
 .tagwrap141{ margin-left:auto; padding-top:26px; transform:rotate(2.5deg); flex:0 0 auto; }
 .tag141-string{ width:26px; height:16px; margin:0 auto -2px; border:1.6px solid #8a6f4d; border-bottom:none; border-radius:14px 14px 0 0; }
 #home-tab-exit.tagwrap141{ padding:26px 0 0; background:transparent; border-top:0; }
-#home-tab-exit #home-back-map-tabs{ flex:0 0 auto; width:102px !important; min-height:38px; height:38px; margin:0; padding:0 0 0 26px; background:#c9a876; color:#3a2e22; border:0; border-radius:0; font-size:14px; font-weight:700; letter-spacing:.06em; font-family:inherit; cursor:pointer; position:relative; display:flex; align-items:center; clip-path:polygon(0 0,100% 0,100% 100%,16px 100%,0 50%); box-shadow:0 3px 8px rgba(0,0,0,.4); }
+#home-tab-exit #home-back-map-tabs{ flex:0 0 auto; width:102px !important; min-height:44px; height:44px; margin:0; padding:0 0 0 26px; background:#c9a876; color:#3a2e22; border:0; border-radius:0; font-size:14px; font-weight:700; letter-spacing:.06em; font-family:inherit; cursor:pointer; position:relative; display:flex; align-items:center; clip-path:polygon(0 0,100% 0,100% 100%,16px 100%,0 50%); box-shadow:0 3px 8px rgba(0,0,0,.4); } /* v20a197 B5：高 38→44px，同全站 CTA 44px 睇齊；保留頁頂右位置＋吊牌形（常駐 chrome，唔係流程 CTA） */
 #home-tab-exit #home-back-map-tabs::before{ content:""; position:absolute; left:7px; top:50%; width:9px; height:9px; margin-top:-4.5px; border-radius:50%; background:#1c130c; box-shadow:inset 0 0 0 1.5px #a8895f; } /* 窿用 ::before——syncHomeTabExit 設 textContent 唔會清走佢 */
 /* --- (1) B 式文件夾 tab：58px 闊、選中 38px 高同紙面色、其餘 32px manila、底部伸出 1.5px 截斷分隔線 --- */
 #home-tabs{ margin:0; background:#f5eddc; border-radius:10px 10px 0 0; padding:14px 12px 0; gap:6px; justify-content:center; align-items:flex-end; position:relative; }
 #home-tabs::after{ content:""; position:absolute; left:12px; right:12px; bottom:0; height:1.5px; background:#cbb98d; }
 #home-tabs .home-tab{ flex:0 0 58px; width:58px; min-width:58px; min-height:0; height:32px; padding:0; background:#e9dcbc; color:#6d5a3e; font-size:14px; letter-spacing:.06em; border:1px solid #cbb98d; border-bottom:none; border-radius:9px 9px 0 0; }
-#home-tabs .home-tab.on{ height:38px; background:#f5eddc; color:#3a2e22; font-weight:700; margin-bottom:-1.5px; z-index:1; box-shadow:0 -2px 4px rgba(0,0,0,.12); }
+#home-tabs .home-tab.on{ height:32px; background:#f5eddc; color:#3a2e22; font-weight:700; margin-bottom:-1.5px; z-index:1; box-shadow:0 -2px 4px rgba(0,0,0,.12); } /* v20a197 C1：使用中狀態用色／底線區分，唔改大細——五格固定 58×32、同一條 y，切頁唔郁 5px */
 #home-tabs .home-tab.on::after{ content:none; }
-/* --- (2) plan 組 subtab：紙面頂行手寫字——「進度」褪色、「行程」紅墨手畫圈（圈跟 .on 郁）；
+/* --- (2) plan 組 subtab：紙面頂行手寫字——「進度」褪色、「本週安排」紅墨手畫圈（圈跟 .on 郁）；
    其餘四組唔加呢套，維持 pill（只係坐喺同一張紙面 strip 上面）。 --- */
 #home-subtabs{ margin:0; background:#f5eddc; padding:2px 12px 6px; }
 #home-subtabs .hsub-group{ margin:0; }
@@ -5482,8 +5535,9 @@ body.day-res-open .day-row{
 #home-subtabs .hsub-group[data-hsubgroup="plan"] .home-tab.on::after{ content:""; position:absolute; left:-11px; top:-9px; width:calc(100% + 22px); height:calc(100% + 18px); background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 44' preserveAspectRatio='none'%3E%3Cpath d='M7 22 C 15 5, 85 4, 94 19 C 96 33, 78 42, 48 41 C 20 40, 4 35, 7 22' fill='none' stroke='%23c0452c' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat; filter:url(#inkSoft141); pointer-events:none; }
 /* --- (5) 印章：只喺已確定鎖定態（#btn-confirm-plan.is-locked，disabled＋「行程已定」）先變印章；
    未定嗰陣 .is-locked 唔喺度，維持原有 .ink 確定掣；「還原」掣鎖定態本身 display:none，不變。 --- */
-#nb-actions:has(#btn-confirm-plan.is-locked){ background:#f5eddc; border-top:1px solid #cbb98d; justify-content:center; }
-#nb-actions #btn-confirm-plan.is-locked{ flex:0 0 auto; width:fit-content; min-height:0; margin:6px auto 4px; padding:6px 20px 6px 22px; font-family:"Songti TC","STSong","Noto Serif CJK TC",serif; font-size:24px; font-weight:700; letter-spacing:.32em; text-indent:.32em; color:#c0452c !important; background:rgba(192,69,44,.045) !important; border:3px double #c0452c !important; border-radius:8px !important; transform:rotate(-4.5deg); filter:url(#ink141); opacity:.93; box-shadow:inset 0 0 0 1px rgba(192,69,44,.3) !important; }
+#nb-actions:has(#btn-confirm-plan.is-locked){ background:#f5eddc; border-top:1px solid #cbb98d; } /* v20a197 B2：印章改 flex:1 佔滿 bar，唔再置中收窄 */
+#nb-actions #btn-confirm-plan.is-locked{ flex:1 1 auto; width:auto; height:52px; min-height:0; margin:0; padding:6px 20px 6px 22px; display:flex; align-items:center; justify-content:center; box-sizing:border-box; cursor:default; font-family:"Songti TC","STSong","Noto Serif CJK TC",serif; font-size:24px; font-weight:700; letter-spacing:.32em; text-indent:.32em; color:#c0452c !important; background:rgba(192,69,44,.045) !important; border:3px double #c0452c !important; border-radius:8px !important; transform:rotate(-4.5deg); filter:url(#ink141); opacity:.93; box-shadow:inset 0 0 0 1px rgba(192,69,44,.3) !important; } /* v20a197 B2＋D1：鎖定態幾何同未確認掣一致（flex:1 佔滿 bar，52px 高）；24px 字唔郁（靜態測試硬計）；D1 嗰陣呢粒會由 <button> 換做 <span>，呢條規則照行 */
+#nb-actions #btn-reset-plan:disabled{ opacity:.35; cursor:not-allowed; } /* v20a197 B2：「還原」鎖定態唔消失，改 disabled 灰態留喺原位 */
 /* === v20a141 BOOK141 完 === */
 /* === v20a143 BOOK143：手帳內臟紙面化（v141 review B1＋B2＋B3；用戶 2026-11-12 拍板修頭三項） ===
    只換呈現：掣嘅 id／class／onclick 綁定、subtab 切換 handler、鎖定態印章邏輯一律不變。
@@ -5525,8 +5579,9 @@ body.day-res-open .day-row{
 /* --- B3：短屏（dvh ≲780）印章收細一級，慳約 15–20px 俾多半日；932 唔入呢個
    media query，印章 24px／3px double／斜 -4.5° 原封不動。 --- */
 @media (max-height:780px){
-  #nb-actions #btn-confirm-plan.is-locked{ font-size:20px; padding:4px 14px 4px 16px; margin:4px auto 3px; }
+  #nb-actions #btn-confirm-plan.is-locked{ font-size:20px; padding:4px 14px 4px 16px; margin:0; } /* v20a197 B2：700 印章都係 flex:1 佔滿 bar，margin 歸零（舊 margin:4px auto 3px 會令 auto margin 搶走 flex 空間、印章收窄置中） */
   #nb-actions{ padding:6px 10px calc(6px + env(safe-area-inset-bottom)); }
+  .notebook{ padding-bottom:61px; } /* v20a197 B7：700 短屏 bar 矮啲，padding 跟住收 */
 }
 /* === v20a143 BOOK143 完 === */
 /* === v20a145 BOOK145：手帳紙面化收尾（v143 review B1＋B2＋B3；用戶 2026-11-13 拍板修頭三項） ===
@@ -5593,7 +5648,7 @@ body.day-res-open .day-row{
   #home-pane-plan:has(#btn-confirm-plan.is-locked) #nb-plan-title,
   #home-pane-plan:has(#btn-confirm-plan.is-locked) #nb-plan-mode{ display:none !important; }
   #home-pane-plan:has(#btn-confirm-plan.is-locked) .nb-range{ margin-bottom:2px !important; }
-  #nb-actions:has(#btn-confirm-plan.is-locked){ padding:5px 10px calc(5px + env(safe-area-inset-bottom)); }
+  #nb-actions:has(#btn-confirm-plan.is-locked){ padding:6px 10px calc(6px + env(safe-area-inset-bottom)); } /* v20a197 B2：鎖定態 bar padding 同未確認態一致（舊 5px 會令印章 y 差 1px） */
 }
 /* === v20a145 BOOK145 完 === */</style>
 </head>
@@ -5790,7 +5845,7 @@ body.day-res-open .day-row{
       </div>
       <div class="home-subtabs" id="home-subtabs" aria-label="手帳分類">
         <div class="hsub-group" data-hsubgroup="plan">
-          <button type="button" class="home-tab hsub" id="htab-plan" role="tab" aria-selected="false" data-htab="plan">行程</button>
+          <button type="button" class="home-tab hsub" id="htab-plan" role="tab" aria-selected="false" data-htab="plan">本週安排</button> <!-- v20a197 C7：主分頁「行程」同 sub-tab 撞名，sub-tab 改名「本週安排」 -->
           <button type="button" class="home-tab hsub" id="htab-progress" role="tab" aria-selected="false" data-htab="progress">進度</button>
         </div>
         <div class="hsub-group" data-hsubgroup="career">
@@ -36953,17 +37008,10 @@ function setUnderlyingInert(on){
       if(on){ conf.setAttribute("inert",""); conf.setAttribute("aria-disabled","true"); }
       else {
         conf.removeAttribute("inert");
-        /* v20a8：overlay 關掉後跟 homeEditable 還原，唔好誤開唯讀確定鍵 */
+        /* v20a8：overlay 關掉後跟 homeEditable 還原，唔好誤開唯讀確定鍵
+           v20a197 B2＋D1：經 helper 互換 button／span（幾何不變，鎖定態唔再係掣） */
         try{
-          if(typeof S!=="undefined" && S && S.homeEditable){
-            conf.removeAttribute("aria-disabled");
-            conf.disabled = false;
-            conf.classList.remove("is-locked");
-          } else {
-            conf.setAttribute("aria-disabled","true");
-            conf.disabled = true;
-            conf.classList.add("is-locked");
-          }
+          syncConfirmPlanStamp197(!(typeof S!=="undefined" && S && S.homeEditable));
         }catch(_e){ conf.removeAttribute("aria-disabled"); }
       }
     }
@@ -37277,6 +37325,44 @@ function openCopyFromDay(dayIdx){
   const q=document.getElementById("nb-quick");
   if(q) q.scrollIntoView({behavior:"smooth", block:"nearest"});
 }
+/* v20a197 B2＋D1：確認掣／鎖定印章互換 helper。
+   未確認態＝正常 <button>（固定幾何，flex:1 佔滿 bar）；確認後＝同一幾何嘅
+   非掣 <span> 印章（紅印章視覺不變，唔係掣，撳落去冇動作）。節點互換嗰陣保留
+   id／class／text／title／aria-label；換返 button 嗰陣重綁 onclick=confirmPlan。
+   自然觸發點已核實：玩家自己撳「確定本週行程」→ confirmPlan() → commitPlanAndGo()
+   設 S.homeEditable=false → 再入返手帳時 renderNotebook() 切鎖定態；冇自動確認
+   （review 嘅「自動確認」係 drive setup 撳咗真掣造成）。 */
+function syncConfirmPlanStamp197(locked){
+  const old=document.getElementById("btn-confirm-plan");
+  if(!old) return null;
+  const wantTag = locked ? "SPAN" : "BUTTON";
+  let el = old;
+  if(old.tagName !== wantTag){
+    el = document.createElement(locked ? "span" : "button");
+    el.id = "btn-confirm-plan";
+    el.className = old.className;
+    if(!locked){ el.type = "button"; el.onclick = confirmPlan; }
+    const t = old.getAttribute("title"); if(t) el.setAttribute("title", t);
+    const al = old.getAttribute("aria-label"); if(al) el.setAttribute("aria-label", al);
+    old.replaceWith(el);
+  }
+  el.classList.toggle("is-locked", !!locked);
+  if(locked){
+    el.textContent = "行程已定";
+    el.setAttribute("aria-disabled","true");
+    el.removeAttribute("disabled");
+    el.setAttribute("title","本週行程已確定（唯讀）。下週一回家結算後先可以再排。");
+    el.setAttribute("aria-label","本週行程已確定（唯讀）。下週一回家結算後先可以再排。");
+  } else {
+    el.textContent = "確定本週行程";
+    el.removeAttribute("aria-disabled");
+    el.disabled = false;
+    el.setAttribute("title","確定本週行程（會先睇壓力預覽）");
+    el.setAttribute("aria-label","確定本週行程（會先睇壓力預覽）");
+  }
+  el.style.display = "inline-block";
+  return el;
+}
 function renderNotebook(){
   if(!planDraft || planDraft.length!==7) planDraft = (S.weekPlan && S.weekPlan.length===7) ? S.weekPlan.slice() : defaultWeekPlan();
   document.getElementById("nb-range").textContent = (typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel();
@@ -37400,25 +37486,12 @@ function renderNotebook(){
   }catch(_mode){}
   const confBtn=document.getElementById("btn-confirm-plan");
   if(confBtn){
-    confBtn.style.display = "inline-block";
-    if(editable){
-      confBtn.disabled = false;
-      confBtn.removeAttribute("aria-disabled");
-      confBtn.classList.remove("is-locked");
-      confBtn.textContent = "確定本週行程";
-      confBtn.title = "確定本週行程（會先睇壓力預覽）";
-    } else {
-      confBtn.disabled = true;
-      confBtn.setAttribute("aria-disabled","true");
-      confBtn.classList.add("is-locked");
-      confBtn.textContent = "行程已定";
-      confBtn.title = "本週行程已確定（唯讀）。下週一回家結算後先可以再排。";
-    }
-    try{ confBtn.setAttribute("aria-label", confBtn.title); }catch(_a){}
+    /* v20a197 B2＋D1：經 helper 互換 button／span（幾何不變，鎖定態唔再係掣） */
+    syncConfirmPlanStamp197(!editable);
   }
   const resetBtn=document.getElementById("btn-reset-plan");
   if(resetBtn){
-    resetBtn.style.display = editable ? "inline-block" : "none";
+    resetBtn.style.display = "inline-block"; /* v20a197 B2：鎖定態唔消失，改 disabled 灰態留喺原位 */
     resetBtn.disabled = !editable;
   }
   try{
@@ -37540,6 +37613,7 @@ function enterHome(summary, editable, initialTab){
   const _homeTab = (initialTab && typeof initialTab==="string") ? initialTab : "plan";
   setHomeTab(_homeTab);
   renderNotebook();
+  try{ revealCatTabs197(); }catch(_r197){} /* v20a197 B7：入屋初 paint，分類掣俾 bar 冚住就捲返出嚟 */
   try{ wireHomeStoryHint(); paintStoryEntryHints(); }catch(_e){}
   paintBar(); // Monday chips reflect post-weekend recovery before map return
   saveQ();
@@ -37684,10 +37758,8 @@ function confirmPlan(){
     try{
       const confBtn=document.getElementById("btn-confirm-plan");
       if(confBtn){
-        confBtn.disabled = true;
-        confBtn.setAttribute("aria-disabled","true");
-        confBtn.classList.add("is-locked");
-        confBtn.textContent = "行程已定";
+        /* v20a197 B2＋D1：經 helper 切鎖定印章（span，非掣） */
+        syncConfirmPlanStamp197(true);
       }
     }catch(_e){}
     return;
@@ -44025,6 +44097,26 @@ function book70ExitHome(){
      未確定行程／結局鎖／modal 開緊）就照原樣留喺地圖，故事順延到下次返地圖。 */
   try{ if(typeof story165ModalOpen!=="function" || !story165ModalOpen()){ if(typeof story165TryForcedPlay==="function" && story165TryForcedPlay()) return; } }catch(_s165b){}
 }
+/* v20a197 B7：分類掣初 paint 揭露——padding-bottom（上面 .notebook 規則）只係令
+   分類掣「碌得到底」，初 paint 嗰陣佢哋依然喺日程列下面、俾 sticky bar 冚住
+   （padding 喺內容尾，推唔高分類掣）。所以入 plan pane 嗰陣補一嘢：只喺
+   scrollTop===0（即係初 paint／未碌過）嗰陣，如果分類掣底俾 bar 冚住，就將
+   #notebook 捲到剛好令分類掣完全見到；玩家自己碌過就唔郁。 */
+function revealCatTabs197(){
+  try{
+    const nb=document.getElementById("notebook");
+    const tabs=document.getElementById("cat-tabs");
+    const bar=document.getElementById("nb-actions");
+    if(!nb||!tabs||!bar) return;
+    if(nb.scrollTop!==0) return;
+    const tR=tabs.getBoundingClientRect();
+    const bR=bar.getBoundingClientRect();
+    if(!tR.height) return;
+    if(tR.bottom <= bR.top - 4) return;
+    const need = tR.bottom - (bR.top - 4);
+    nb.scrollTop = Math.min(nb.scrollHeight - nb.clientHeight, need);
+  }catch(_e){}
+}
 function setHomeTab(tab){
   /* v20a70 BOOK70：tab 參數仍係子頁 id（全部既有呼叫不變），分組顯示交
      book70SyncTabGroups。
@@ -44078,6 +44170,7 @@ function setHomeTab(tab){
     try{ renderMemoryPane60(); }catch(_e){}
   }
   try{ syncHomeTabExit(tab); }catch(_exit){}
+  if(tab==="plan"){ try{ revealCatTabs197(); }catch(_r197){} } /* v20a197 B7：切返行程頁嗰陣，初 paint 分類掣俾 bar 冚住就捲返出嚟 */
 }
 
 function syncHomeTabExit(tab){
@@ -47044,8 +47137,7 @@ function awards62PlayCeremony(pack, doneFn){
     stage.innerHTML = '<div class="awd62-frame">'
       + '<div class="awd62-canvaswrap"><canvas class="awd62-canvas" width="720" height="540"></canvas>'
       + '<img class="awd62-m5fx149" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>'
-      + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>' + awd181Html + "</div>" + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服；v20a181：邏輯座標 480×360（4:3），backing 720×540 */
-      + '<button type="button" class="awd62-skip">跳過 ⏩</button>'
+      + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>' + awd181Html + '<button type="button" class="awd62-skip">跳過 ⏩</button>' + "</div>" + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服；v20a181：邏輯座標 480×360（4:3），backing 720×540；v20a197 B3：跳過掣搬入 canvaswrap（480×360 固定比例，唔跟 beat 高度走） */
       + cardsHtml
       + '<div class="awd62-caption"></div>'
       + '<div class="awd62-tap">撳畫面可以快進</div>'
@@ -53392,19 +53484,21 @@ function enc79EnsureCss(){
          bottom:10%，腳伸到對話盒後面；對話盒改 absolute 疊喺舞台底（z-index:5，喺人物
          z-index ≤4 之上），盒頂去到人物膝頭至小腿中段；對白行固定 3 行＋名牌行
          line-height:1.5＋min-height:1.5em 固定（空名同有名同高，盒高唔跳）；「下一句」改文字鏈
-         （選項掣還原舊全寬深色掣）。 */
+         （選項掣還原舊全寬深色掣）。
+         v20a197 B1：「下一句」改全寬深色掣，同主線 #modal-btns 同一粒（370×44、同一位
+         同一樣，置中；文字鏈設計作廢）。選項掣同樣 370px 置中。 */
       "#enc79-overlay .e79-char{position:absolute;bottom:10%;height:var(--dlg108-char-h,60%);max-width:48%;object-fit:contain;object-position:bottom center;transition:filter 250ms ease;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));}",
       "#enc79-overlay .e79-char-l{left:2%;}",
       "#enc79-overlay .e79-char-r{right:2%;}",
       "#enc79-overlay .e79-char.flip{transform:scaleX(-1);}",
       /* v20a108 合併：DLG108 幾何（absolute 疊人物＋固定行高）＋D-5 米紙框配色 */
       "#enc79-overlay .e79-name.phone{color:#2f6fed;}",
-      "#enc79-overlay .e79-box{position:absolute;left:0;right:0;bottom:0;z-index:5;background:linear-gradient(168deg,#f8f0dd 0%,#f2e6cc 58%,#ebdfc1 100%);border-top:2px solid #92702c;padding:12px 14px calc(12px + env(safe-area-inset-bottom));color:#2a2118;}",
+      "#enc79-overlay .e79-box{position:absolute;left:0;right:0;bottom:0;z-index:5;background:linear-gradient(168deg,#f8f0dd 0%,#f2e6cc 58%,#ebdfc1 100%);border-top:2px solid #92702c;padding:12px 14px calc(9px + env(safe-area-inset-bottom));color:#2a2118;}",
       "#enc79-overlay .e79-name{font-weight:800;color:#8a5a00;margin:0 0 4px;font-size:.95rem;line-height:1.5;min-height:1.5em;}",
       "#enc79-overlay .e79-line{margin:0 0 10px;line-height:1.55;font-size:1rem;height:4.65em;min-height:4.65em;overflow-y:auto;white-space:pre-wrap;}",
       "#enc79-overlay .e79-row{display:flex;gap:8px;flex-wrap:wrap;}",
-      "#enc79-overlay .e79-btn{flex:0 0 auto;margin-left:auto;min-height:44px;min-width:88px;border-radius:10px;border:0;background:transparent;color:#8a5a00;font-weight:700;font-size:.95rem;padding:8px 14px;text-decoration:underline;text-underline-offset:3px;}",
-      "#enc79-overlay .e79-btn.e79-choice{flex:1 1 100%;margin-left:0;text-align:left;background:#2e2113;color:#f3e8d5;border:1px solid #a97f2f;text-decoration:none;padding:8px 10px;}",
+      "#enc79-overlay .e79-btn{flex:0 1 370px;width:370px;max-width:100%;margin:0 auto;min-height:44px;border-radius:10px;border:1px solid #a97f2f;background:#2e2113;color:#f3e8d5;font-weight:700;font-size:.95rem;padding:10px 14px;text-decoration:none;text-align:center;}",
+      "#enc79-overlay .e79-btn.e79-choice{flex:0 1 370px;width:370px;max-width:100%;margin:0 auto;text-align:left;background:#2e2113;color:#f3e8d5;border:1px solid #a97f2f;text-decoration:none;padding:8px 10px;}",
       "#enc79-overlay .e79-skip{position:absolute;top:calc(8px + env(safe-area-inset-top));right:10px;z-index:2;min-height:40px;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,217,104,.7);background:rgba(20,12,4,.72);color:#ffd968;font-weight:700;}",
       "#enc79-overlay .e79-meta{position:absolute;top:calc(8px + env(safe-area-inset-top));left:10px;z-index:2;color:#ffd968;background:rgba(20,12,4,.72);border:1px solid rgba(255,217,104,.45);border-radius:999px;padding:5px 10px;font-size:.78rem;font-weight:700;}"
     ].join("\n");
@@ -57275,7 +57369,7 @@ function doScout(L){
       body+=gigBoardTeaserHtml(g, { closest: !!(closest34 && g && g.id===closest34) });
     });
     if(locked108.length){
-      body+=`<details class="gig-locked108"><summary>未達標／長遠目標（${locked108.length} 張）——點開睇</summary>`;
+      body+=`<details class="gig-locked108"><summary>未達標／長遠目標（${locked108.length} 張）</summary>`; /* v20a197 C6：開合提示改由 CSS ::after 出（▸／▾），唔寫死喺字串入面 */
       locked108.forEach((g)=>{
         body+=gigBoardTeaserHtml(g, { closest: !!(closest34 && g && g.id===closest34) });
       });

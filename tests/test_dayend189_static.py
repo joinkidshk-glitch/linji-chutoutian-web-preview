@@ -72,8 +72,12 @@ ok('week-accel-hint no longer emitted in day-end bodies (css rule only)',
    html.count('week-accel-hint') == 1)
 ok('day-end modal gets day-res class (wrap path, for short-screen relief)',
    seg('function resolvePlannedDay(', 'function autoPushC1IfNeeded(').count('classList.add("day-res")') >= 3)
+# v20a197 B4：92dvh 矮屏放寬唔再排除 tut-on——舊版 :not(.tut-on) 令成條規則喺
+# 教學態下完全唔生效（兩板日結都係 tut-on，實駕量度掣 y 差 70px 同 review 逐 px
+# 相同）；宜家 day-res modal 一律固定高度＋底錨，矮屏放寬跟同一條。
 ok('short-screen relief scoped to day-res modals (92dvh)',
-   '#mask.day-res:not(.tut-on) .modal{' in html and 'min(92dvh,92svh,720px)' in html)
+   '#mask.day-res .modal{' in html and '#mask.day-res:not(.tut-on) .modal{' not in html
+   and 'min(92dvh,92svh,720px)' in html)
 
 # ---- 7：confirmWeekAccel 確認流程唔郁 ----
 ok('confirmWeekAccel still exists with 取消／確認加速',

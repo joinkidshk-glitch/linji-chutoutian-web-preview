@@ -38,10 +38,10 @@ ok('B2：subtab 切換 handler 仲喺度（setHomeTab／htab id 齊）',
 ok('B2：各 pane 渲染函數仲喺度（renderClippingsPane／renderInvPane／renderRumorPane 唔郁）',
   html.includes('function renderClippingsPane()') && html.includes('function renderInvPane()'));
 
-// --- B1：鎖定邏輯唔郁（淨係 CSS 收起兩行，DOM／文字／is-locked 照舊） ---
-ok('B1：鎖定態邏輯仲喺度（confirmPlan 加 is-locked＋「行程已定」）',
-  html.includes('confBtn.classList.add("is-locked")')
-  && html.includes('confBtn.textContent = "行程已定"'));
+// --- B1：鎖定邏輯唔郁（淨係 CSS 收起兩行，DOM／文字／is-locked 照舊；v20a197 B2＋D1：經 helper 互換 button／span） ---
+ok('B1：鎖定態邏輯仲喺度（syncConfirmPlanStamp197 切鎖定印章＋「行程已定」）',
+  html.includes('syncConfirmPlanStamp197(true)')
+  && html.includes('el.textContent = "行程已定"'));
 ok('B1：提示列文字仲喺度（「行程已定，下週一回家結算後再排。」——短屏淨係 CSS 隱藏）',
   html.includes('行程已定，下週一回家結算後再排。'));
 ok('B1：標題行／range 行 HTML 唔郁',

@@ -69,9 +69,9 @@ chk('B1 glamHtml 包 .awd63-glamour-panel', '<div class="awd63-glamour"><div cla
 chk('B1 glamHtml 仍有海報 img＋cap', 'posterOf(pack.repGigId63)' in play_fn and 'awd63-glamour' in play_fn)
 inner_i = play_fn.find("stage.innerHTML = '<div class=\"awd62-frame\">'")
 inner_block = play_fn[inner_i:inner_i+700] if inner_i >= 0 else ''
-chk('B1 glamour 層喺 frame 入面（canvas 之後、skip 掣之前）',
-    inner_block.find('awd62-canvas') < inner_block.find('+ glamHtml') < inner_block.find('awd62-skip'))
-chk('B1 glamHtml 新位置（canvaswrap 閂標記之後、skip 掣之前，v181 文字層喺 wrap 入面）', 'awd181Html + "</div>" + glamHtml' in play_fn)
+chk('B1 glamour 層喺 frame 入面（canvas 之後；v20a197 B3：skip 掣搬入 canvaswrap，喺 glamHtml 之前）',
+    inner_block.find('awd62-canvas') < inner_block.find('awd62-skip') < inner_block.find('+ glamHtml'))
+chk('B1 glamHtml 新位置（canvaswrap 閂標記之後；v20a197 B3：skip 掣搬入 wrap，喺閂標記之前）', 'awd62-skip">跳過 ⏩</button>\' + "</div>" + glamHtml' in play_fn)
 chk('B1 walkup GIF 層已撤（v181：改由 canvas 畫，唔再係 stage 尾段 overlay）', '"</div>" + walkupHtml' not in play_fn and '.awd62-walkup160' not in src)
 chk('B1 reveal／glamour／walkup／out 燕尾服唔郁（共 5 處，v187 C3 out 加一處）', play_fn.count('tuxedo: true') == 5)
 

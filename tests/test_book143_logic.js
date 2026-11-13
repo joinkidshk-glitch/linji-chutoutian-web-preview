@@ -30,10 +30,10 @@ ok('每行「複製」生成邏輯仲喺度（cp.onclick → openCopyFromDay，�
 ok('還原＋確定綁定齊（resetPlanDraft／confirmPlan）',
   html.includes('document.getElementById("btn-reset-plan").onclick=resetPlanDraft')
   && html.includes('document.getElementById("btn-confirm-plan").onclick=confirmPlan'));
-ok('鎖定態邏輯仲喺度（唔 editable → disabled＋is-locked＋「行程已定」；editable →「確定本週行程」）',
-  html.includes('confBtn.classList.add("is-locked")')
-  && html.includes('confBtn.textContent = "行程已定"')
-  && html.includes('confBtn.textContent = "確定本週行程"'));
+ok('鎖定態邏輯仲喺度（v20a197 B2＋D1：經 syncConfirmPlanStamp197 互換 button／span；唔 editable → 鎖定印章「行程已定」；editable →「確定本週行程」）',
+  html.includes('syncConfirmPlanStamp197(true)')
+  && html.includes('el.textContent = "行程已定"')
+  && html.includes('el.textContent = "確定本週行程"'));
 
 // --- B2：subtab 切換係共用 handler，四組同 plan 組同一條路 ---
 ok('subtab 切換共用 setHomeTab（delegate 到 button[data-htab]，唔分組）',

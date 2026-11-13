@@ -1,6 +1,7 @@
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），normaliser／loader 錨點各 +4；HELD 唔郁（喺插入點之前）。
 # v20a199 resync：index.html 淨 +44 行（DLG199 ＋30／fitApply ＋13／WF4 onload ＋1）；normaliser／loader 錨點按 difflib 映射重算（31512→31555、31656→31699），HELD 唔郁（喺插入點之前）；內容逐字核實純漂移。
 # -*- coding: utf-8 -*-
+# v20a197 resync：index.html 淨 +94 行，三個錨點 difflib 對位核實純漂移（見 qa197/resync197.py）：25818→25873、31509→31564、31653→31708。（B4 補丁再 +9 行，見同檔。）
 # v20a191 resync：index.html 淨 +47 行，三個錨點 +2／+9／+9 重算，內容逐字核實純漂移。
 # v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行，三個錨點 +2／+9／+9 重算，內容逐字核實純漂移。
 # v20a152 靜態測試：鄧麗萍只刪感情線，留返排片 NPC。
@@ -64,7 +65,7 @@ ok('刪節點：CONTRA98_WHEN_FIX 冇 R_tang_ending', 'R_tang_ending:["1990' not
 ok('刪節點：CONTRA98 winter_finale 由 12 減到 11', src.count('"1990冬","era_1990_winter_finale"') == 11)
 
 # --- 3. DengLine 排片線留返（meet＋push1／push2／crisis，閘門唔郁） ---
-ok('留線：HELD 縮到 3 節（L25817）', lines()[25818].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
+ok('留線：HELD 縮到 3 節（L25817）', lines()[25873].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
 ok('留線：PUSH_CHROME 有 push1／push2／crisis，冇 ending',
    'R_tang_push1: { chromeSeason:"winter"' in src and 'R_tang_push2: { chromeSeason:"spring"' in src
    and 'R_tang_crisis: { chromeSeason:"autumn"' in src)
@@ -84,8 +85,8 @@ ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
    'DengLine.loadMock(dengMock)' in src and 'DengLine.loadPushMock(dengPushMock)' in src)
 
 # --- 4. 載入機制：stub 正規化＋push mock 過濾 ---
-ok('機制：normaliseTangStub152 函數在位（L31501）', lines()[31555].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行（L31645）', lines()[31699].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位（L31501）', lines()[31610].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行（L31645）', lines()[31754].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)

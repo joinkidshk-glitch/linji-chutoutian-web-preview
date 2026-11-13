@@ -97,12 +97,12 @@ ck("主線文字鏈唔掂選項模式（規則入面冇 sp-mode-choices）",
    "sp-mode-choices" not in src[src.find("#mask.story-play-on:has(.sp-mode-dialogue)"):src.find("#mask.story-play-on:has(.sp-mode-dialogue)") + 600])
 ck("反證：文字鏈底色改回金色後 next_link_ok 必須轉 False",
    not next_link_ok(src.replace("background:transparent !important;", "background:#ffd968 !important;")))
-ck("巧遇「下一句」文字鏈（透明底＋深金字＋底線＋44px／88px 撳掣面積）",
-   "#enc79-overlay .e79-btn{flex:0 0 auto;margin-left:auto;min-height:44px;min-width:88px;" in src
-   and "background:transparent;color:#8a5a00" in src
-   and "text-decoration:underline;text-underline-offset:3px;" in src)
-ck("巧遇選項掣還原舊全寬深色掣（唔跟文字鏈）",
-   "#enc79-overlay .e79-btn.e79-choice{flex:1 1 100%;margin-left:0;text-align:left;background:#2e2113;color:#f3e8d5;border:1px solid #a97f2f;text-decoration:none;" in src)
+ck("巧遇「下一句」全寬深色掣，同主線同一粒（v20a197 B1：370×44 置中，文字鏈設計作廢）",
+   "#enc79-overlay .e79-btn{flex:0 1 370px;width:370px;max-width:100%;margin:0 auto;min-height:44px;" in src
+   and "background:#2e2113;color:#f3e8d5" in src
+   and "text-decoration:none;text-align:center;" in src)
+ck("巧遇選項掣全寬深色掣（v20a197 B1：同「下一句」一樣 370px 置中）",
+   "#enc79-overlay .e79-btn.e79-choice{flex:0 1 370px;width:370px;max-width:100%;margin:0 auto;text-align:left;background:#2e2113;color:#f3e8d5;border:1px solid #a97f2f;text-decoration:none;" in src)
 ck("反證：舊全寬米白「下一句」掣已消失（flex:1 1 auto 唔再係 .e79-btn 主規則）",
    "#enc79-overlay .e79-btn{flex:1 1 auto;" not in src)
 

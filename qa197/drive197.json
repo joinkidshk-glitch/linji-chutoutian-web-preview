@@ -1,0 +1,8482 @@
+{
+ "viewport_runs": {
+  "932": {
+   "height": 932,
+   "screens": {
+    "map_final": {
+     "vw": 430,
+     "vh": 932,
+     "buttons": [
+      {
+       "text": "新遊戲1990 年冬 · 由零開始開工",
+       "id": "btn-new",
+       "cls": "p",
+       "x": 40,
+       "y": 724,
+       "w": 351,
+       "h": 66,
+       "inVP": true,
+       "covered": false,
+       "hit": "",
+       "disabled": false,
+       "tag": "BUTTON"
+      },
+      {
+       "text": "繼續",
+       "id": "btn-cont",
+       "cls": "g",
+       "x": 40,
+       "y": 798,
+       "w": 170,
+       "h": 52,
+       "inVP": true,
+       "covered": false,
+       "hit": "",
+       "disabled": false,
+       "tag": "BUTTON"
+      },
+      {
+       "text": "讀檔",
+       "id": "btn-load",
+       "cls": "g",
+       "x": 220,
+       "y": 798,
+       "w": 170,
+       "h": 51,
+       "inVP": true,
+       "covered": false,
+       "hit": "",
+       "disabled": false,
+       "tag": "BUTTON"
+      }
+     ],
+     "tag": "map_final"
+    }
+   },
+   "probes": {
+    "b2_unconfirmed": {
+     "confirm": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "btn-confirm-plan",
+      "cls": "ink tut-spotlight-target",
+      "x": 94,
+      "y": 870,
+      "w": 296,
+      "h": 52,
+      "bottom": 922,
+      "right": 390,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgba(192, 69, 44, 0.07)",
+      "color": "rgb(192, 69, 44)",
+      "fontSize": "18px",
+      "text": "確定本週行程"
+     },
+     "reset": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "btn-reset-plan",
+      "cls": "paper",
+      "x": 40,
+      "y": 874,
+      "w": 46,
+      "h": 44,
+      "bottom": 918,
+      "right": 86,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(122, 98, 72)",
+      "fontSize": "15px",
+      "text": "還原"
+     },
+     "bar": {
+      "found": true,
+      "tag": "DIV",
+      "id": "nb-actions",
+      "cls": "nb-actions",
+      "x": 30,
+      "y": 859,
+      "w": 370,
+      "h": 73,
+      "bottom": 932,
+      "right": 400,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(245, 237, 220)",
+      "color": "rgb(242, 235, 216)",
+      "fontSize": "16px",
+      "text": "返回地圖\n        還原\n        確定本週行程"
+     },
+     "quick_visible": true
+    },
+    "b7_first_paint": {
+     "scrollTop": 121,
+     "scrollHeight": 869,
+     "clientHeight": 573,
+     "barTop": 859,
+     "barH": 73,
+     "catTop": 805,
+     "catBottom": 855,
+     "buttons": [
+      {
+       "t": "工作",
+       "x": 82,
+       "y": 805,
+       "w": 56,
+       "h": 50,
+       "bottom": 855
+      },
+      {
+       "t": "表演",
+       "x": 144,
+       "y": 805,
+       "w": 56,
+       "h": 50,
+       "bottom": 855
+      },
+      {
+       "t": "訓練",
+       "x": 206,
+       "y": 805,
+       "w": 56,
+       "h": 50,
+       "bottom": 855
+      },
+      {
+       "t": "休息",
+       "x": 268,
+       "y": 805,
+       "w": 56,
+       "h": 50,
+       "bottom": 855
+      },
+      {
+       "t": "外出",
+       "x": 330,
+       "y": 805,
+       "w": 56,
+       "h": 50,
+       "bottom": 855
+      }
+     ]
+    },
+    "c1_tabs": {
+     "行程": {
+      "x": 58,
+      "y": 215,
+      "w": 58,
+      "h": 32
+     },
+     "事業": {
+      "x": 122,
+      "y": 215,
+      "w": 58,
+      "h": 32
+     },
+     "近況": {
+      "x": 186,
+      "y": 215,
+      "w": 58,
+      "h": 32
+     },
+     "消息": {
+      "x": 250,
+      "y": 215,
+      "w": 58,
+      "h": 32
+     },
+     "人情": {
+      "x": 314,
+      "y": 215,
+      "w": 58,
+      "h": 32
+     }
+    },
+    "c7_subtab": "本週安排",
+    "b7_clickable": [
+     {
+      "t": "工作",
+      "hit": false,
+      "hitTag": "DIV#"
+     },
+     {
+      "t": "表演",
+      "hit": false,
+      "hitTag": "DIV#"
+     },
+     {
+      "t": "訓練",
+      "hit": false,
+      "hitTag": "DIV#"
+     },
+     {
+      "t": "休息",
+      "hit": false,
+      "hitTag": "DIV#"
+     },
+     {
+      "t": "外出",
+      "hit": false,
+      "hitTag": "DIV#"
+     }
+    ],
+    "u6_copy": {
+     "before": {
+      "open": false,
+      "display": "none"
+     },
+     "rowBtn": "⧉ 複製",
+     "selDayBefore": null,
+     "selDayAfterRow": null,
+     "afterRow": {
+      "open": false,
+      "display": "none"
+     },
+     "quickBtn": "複製到…",
+     "afterQuick": {
+      "open": true,
+      "display": "block"
+     },
+     "selDayAfterQuick": null
+    },
+    "b2_locked": {
+     "confirm": {
+      "found": true,
+      "tag": "SPAN",
+      "id": "btn-confirm-plan",
+      "cls": "ink tut-spotlight-target is-locked",
+      "x": 92,
+      "y": 858,
+      "w": 299,
+      "h": 75,
+      "bottom": 934,
+      "right": 392,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgba(192, 69, 44, 0.043)",
+      "color": "rgb(192, 69, 44)",
+      "fontSize": "24px",
+      "text": "行程已定"
+     },
+     "reset": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "btn-reset-plan",
+      "cls": "paper",
+      "x": 40,
+      "y": 874,
+      "w": 46,
+      "h": 44,
+      "bottom": 918,
+      "right": 86,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(122, 98, 72)",
+      "fontSize": "15px",
+      "text": "還原"
+     },
+     "bar": {
+      "found": true,
+      "tag": "DIV",
+      "id": "nb-actions",
+      "cls": "nb-actions",
+      "x": 30,
+      "y": 859,
+      "w": 370,
+      "h": 73,
+      "bottom": 932,
+      "right": 400,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(245, 237, 220)",
+      "color": "rgb(242, 235, 216)",
+      "fontSize": "16px",
+      "text": "返回地圖\n        還原\n        行程已定"
+     },
+     "quick_visible": true,
+     "stamp_click_noop": {
+      "tag": "SPAN",
+      "maskBefore": true,
+      "maskAfter": true
+     }
+    },
+    "b2_locked_settled": {
+     "confirmTag": "SPAN",
+     "confirmText": "行程已定",
+     "confirmBox": {
+      "offsetW": 296,
+      "offsetH": 52,
+      "offsetL": 64,
+      "offsetT": 10
+     },
+     "confirmBg": "rgba(192, 69, 44, 0.043)",
+     "resetDisabled": true,
+     "resetDisplay": "block",
+     "resetOpacity": "0.35",
+     "quickDisplay": "none",
+     "quickInline": "none",
+     "barH": 73,
+     "homeEditable": false
+    },
+    "b2_stamp_noop": {
+     "tag": "SPAN",
+     "before": {
+      "editable": false,
+      "maskOn": false,
+      "journalOpen": true
+     },
+     "after": {
+      "editable": false,
+      "maskOn": false,
+      "journalOpen": true
+     },
+     "noop": true
+    },
+    "intro_finished": false,
+    "b1_mainline": [],
+    "map_clean": {
+     "start_today": {
+      "found": false
+     },
+     "end_day": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "map-end-day",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 861,
+      "w": 338,
+      "h": 45,
+      "bottom": 906,
+      "right": 384,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "14.4px",
+      "text": "過一日"
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 797,
+      "w": 366,
+      "h": 123,
+      "bottom": 920,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月1日（一）· 第1週今日：到處逛逛 · 仲可以去 2 個地方過一日"
+     },
+     "appScrollTop": 0,
+     "wrapScrollTop": 0
+    },
+    "b6_sheet_open": {
+     "start_today": {
+      "found": false
+     },
+     "end_day": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "map-end-day",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 861,
+      "w": 338,
+      "h": 45,
+      "bottom": 906,
+      "right": 384,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "14.4px",
+      "text": "過一日"
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 797,
+      "w": 366,
+      "h": 123,
+      "bottom": 920,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月1日（一）· 第1週今日：到處逛逛 · 仲可以去 1 個地方過一日"
+     },
+     "appScrollTop": 0,
+     "wrapScrollTop": 0,
+     "sheet": {
+      "found": true,
+      "tag": "DIV",
+      "id": "loc-sheet",
+      "cls": "sheet",
+      "x": 20,
+      "y": 952,
+      "w": 390,
+      "h": 196,
+      "bottom": 1148,
+      "right": 410,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(242, 235, 216)",
+      "color": "rgb(26, 20, 16)",
+      "fontSize": "16px",
+      "text": "地點\n      點地圖針或下方本區列表選擇地點\n      \n      \n "
+     }
+    },
+    "b5_loc_close": {
+     "tag": "BUTTON",
+     "offsetW": 362,
+     "offsetH": 46,
+     "bbox": {
+      "x": 34,
+      "y": 1092,
+      "w": 362,
+      "h": 46
+     },
+     "text": "返回地圖"
+    },
+    "c3_acts": [],
+    "b1_encounter": null,
+    "b5_home_back": {
+     "tag": "BUTTON",
+     "offsetW": 102,
+     "offsetH": 44,
+     "bbox": {
+      "x": 294,
+      "y": 132,
+      "w": 104,
+      "h": 48
+     },
+     "bg": "rgb(201, 168, 118)",
+     "text": "返回地圖"
+    },
+    "u4_quota": {
+     "before": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "after": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "sheet_opened": true,
+     "locTitle": "地點"
+    },
+    "u6_copy_locked": {
+     "cpCount": 0,
+     "quickDisplay": "none",
+     "homeEditable": false
+    },
+    "b4_soft": {
+     "modal": {
+      "found": true,
+      "tag": "DIV",
+      "id": "modal",
+      "cls": "modal",
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0,
+      "bottom": 0,
+      "right": 0,
+      "visible": false,
+      "disabled": false,
+      "bg": "rgb(242, 235, 216)",
+      "color": "rgb(26, 20, 16)",
+      "fontSize": "16px",
+      "text": ""
+     },
+     "btns": [],
+     "title": null
+    },
+    "c2_end_day": {
+     "end_day": {
+      "found": false
+     },
+     "start_today": {
+      "found": false
+     }
+    }
+   },
+   "notes": [
+    "open 茶餐廳 -> True"
+   ],
+   "pageerrors": [],
+   "zero_pageerror": true
+  },
+  "700": {
+   "height": 700,
+   "screens": {
+    "map_final": {
+     "vw": 430,
+     "vh": 700,
+     "buttons": [
+      {
+       "text": "新遊戲1990 年冬 · 由零開始開工",
+       "id": "btn-new",
+       "cls": "p",
+       "x": 40,
+       "y": 492,
+       "w": 351,
+       "h": 66,
+       "inVP": true,
+       "covered": false,
+       "hit": "",
+       "disabled": false,
+       "tag": "BUTTON"
+      },
+      {
+       "text": "繼續",
+       "id": "btn-cont",
+       "cls": "g",
+       "x": 40,
+       "y": 566,
+       "w": 170,
+       "h": 52,
+       "inVP": true,
+       "covered": false,
+       "hit": "",
+       "disabled": false,
+       "tag": "BUTTON"
+      },
+      {
+       "text": "讀檔",
+       "id": "btn-load",
+       "cls": "g",
+       "x": 220,
+       "y": 566,
+       "w": 170,
+       "h": 51,
+       "inVP": true,
+       "covered": false,
+       "hit": "",
+       "disabled": false,
+       "tag": "BUTTON"
+      }
+     ],
+     "tag": "map_final"
+    }
+   },
+   "probes": {
+    "b2_unconfirmed": {
+     "confirm": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "btn-confirm-plan",
+      "cls": "ink tut-spotlight-target",
+      "x": 94,
+      "y": 642,
+      "w": 296,
+      "h": 52,
+      "bottom": 694,
+      "right": 390,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgba(192, 69, 44, 0.07)",
+      "color": "rgb(192, 69, 44)",
+      "fontSize": "18px",
+      "text": "確定本週行程"
+     },
+     "reset": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "btn-reset-plan",
+      "cls": "paper",
+      "x": 40,
+      "y": 646,
+      "w": 46,
+      "h": 44,
+      "bottom": 690,
+      "right": 86,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(122, 98, 72)",
+      "fontSize": "15px",
+      "text": "還原"
+     },
+     "bar": {
+      "found": true,
+      "tag": "DIV",
+      "id": "nb-actions",
+      "cls": "nb-actions",
+      "x": 30,
+      "y": 635,
+      "w": 370,
+      "h": 65,
+      "bottom": 700,
+      "right": 400,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(245, 237, 220)",
+      "color": "rgb(242, 235, 216)",
+      "fontSize": "16px",
+      "text": "返回地圖\n        還原\n        確定本週行程"
+     },
+     "quick_visible": true
+    },
+    "b7_first_paint": {
+     "scrollTop": 345,
+     "scrollHeight": 846,
+     "clientHeight": 349,
+     "barTop": 635,
+     "barH": 65,
+     "catTop": 581,
+     "catBottom": 631,
+     "buttons": [
+      {
+       "t": "工作",
+       "x": 82,
+       "y": 581,
+       "w": 56,
+       "h": 50,
+       "bottom": 631
+      },
+      {
+       "t": "表演",
+       "x": 144,
+       "y": 581,
+       "w": 56,
+       "h": 50,
+       "bottom": 631
+      },
+      {
+       "t": "訓練",
+       "x": 206,
+       "y": 581,
+       "w": 56,
+       "h": 50,
+       "bottom": 631
+      },
+      {
+       "t": "休息",
+       "x": 268,
+       "y": 581,
+       "w": 56,
+       "h": 50,
+       "bottom": 631
+      },
+      {
+       "t": "外出",
+       "x": 330,
+       "y": 581,
+       "w": 56,
+       "h": 50,
+       "bottom": 631
+      }
+     ]
+    },
+    "c1_tabs": {
+     "行程": {
+      "x": 58,
+      "y": 215,
+      "w": 58,
+      "h": 32
+     },
+     "事業": {
+      "x": 122,
+      "y": 215,
+      "w": 58,
+      "h": 32
+     },
+     "近況": {
+      "x": 186,
+      "y": 215,
+      "w": 58,
+      "h": 32
+     },
+     "消息": {
+      "x": 250,
+      "y": 215,
+      "w": 58,
+      "h": 32
+     },
+     "人情": {
+      "x": 314,
+      "y": 215,
+      "w": 58,
+      "h": 32
+     }
+    },
+    "c7_subtab": "本週安排",
+    "b7_clickable": [
+     {
+      "t": "工作",
+      "hit": false,
+      "hitTag": "DIV#"
+     },
+     {
+      "t": "表演",
+      "hit": false,
+      "hitTag": "DIV#"
+     },
+     {
+      "t": "訓練",
+      "hit": false,
+      "hitTag": "DIV#"
+     },
+     {
+      "t": "休息",
+      "hit": false,
+      "hitTag": "DIV#"
+     },
+     {
+      "t": "外出",
+      "hit": false,
+      "hitTag": "DIV#"
+     }
+    ],
+    "u6_copy": {
+     "before": {
+      "open": false,
+      "display": "none"
+     },
+     "rowBtn": "⧉ 複製",
+     "selDayBefore": null,
+     "selDayAfterRow": null,
+     "afterRow": {
+      "open": false,
+      "display": "none"
+     },
+     "quickBtn": "複製到…",
+     "afterQuick": {
+      "open": true,
+      "display": "block"
+     },
+     "selDayAfterQuick": null
+    },
+    "b2_locked": {
+     "confirm": {
+      "found": true,
+      "tag": "SPAN",
+      "id": "btn-confirm-plan",
+      "cls": "ink tut-spotlight-target is-locked",
+      "x": 92,
+      "y": 630,
+      "w": 299,
+      "h": 75,
+      "bottom": 706,
+      "right": 392,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgba(192, 69, 44, 0.043)",
+      "color": "rgb(192, 69, 44)",
+      "fontSize": "20px",
+      "text": "行程已定"
+     },
+     "reset": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "btn-reset-plan",
+      "cls": "paper",
+      "x": 40,
+      "y": 646,
+      "w": 46,
+      "h": 44,
+      "bottom": 690,
+      "right": 86,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(122, 98, 72)",
+      "fontSize": "15px",
+      "text": "還原"
+     },
+     "bar": {
+      "found": true,
+      "tag": "DIV",
+      "id": "nb-actions",
+      "cls": "nb-actions",
+      "x": 30,
+      "y": 635,
+      "w": 370,
+      "h": 65,
+      "bottom": 700,
+      "right": 400,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(245, 237, 220)",
+      "color": "rgb(242, 235, 216)",
+      "fontSize": "16px",
+      "text": "返回地圖\n        還原\n        行程已定"
+     },
+     "quick_visible": true,
+     "stamp_click_noop": {
+      "tag": "SPAN",
+      "maskBefore": true,
+      "maskAfter": true
+     }
+    },
+    "b2_locked_settled": {
+     "confirmTag": "SPAN",
+     "confirmText": "行程已定",
+     "confirmBox": {
+      "offsetW": 296,
+      "offsetH": 52,
+      "offsetL": 64,
+      "offsetT": 6
+     },
+     "confirmBg": "rgba(192, 69, 44, 0.043)",
+     "resetDisabled": true,
+     "resetDisplay": "block",
+     "resetOpacity": "0.35",
+     "quickDisplay": "none",
+     "quickInline": "none",
+     "barH": 65,
+     "homeEditable": false
+    },
+    "b2_stamp_noop": {
+     "tag": "SPAN",
+     "before": {
+      "editable": false,
+      "maskOn": false,
+      "journalOpen": true
+     },
+     "after": {
+      "editable": false,
+      "maskOn": false,
+      "journalOpen": true
+     },
+     "noop": true
+    },
+    "intro_finished": false,
+    "b1_mainline": [],
+    "map_clean": {
+     "start_today": {
+      "found": false
+     },
+     "end_day": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "map-end-day",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 629,
+      "w": 338,
+      "h": 45,
+      "bottom": 674,
+      "right": 384,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "14.4px",
+      "text": "過一日"
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 565,
+      "w": 366,
+      "h": 123,
+      "bottom": 688,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月1日（一）· 第1週今日：到處逛逛 · 仲可以去 2 個地方過一日"
+     },
+     "appScrollTop": 0,
+     "wrapScrollTop": 0
+    },
+    "b6_sheet_open": {
+     "start_today": {
+      "found": false
+     },
+     "end_day": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "map-end-day",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 629,
+      "w": 338,
+      "h": 45,
+      "bottom": 674,
+      "right": 384,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "14.4px",
+      "text": "過一日"
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 565,
+      "w": 366,
+      "h": 123,
+      "bottom": 688,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月1日（一）· 第1週今日：到處逛逛 · 仲可以去 1 個地方過一日"
+     },
+     "appScrollTop": 0,
+     "wrapScrollTop": 0,
+     "sheet": {
+      "found": true,
+      "tag": "DIV",
+      "id": "loc-sheet",
+      "cls": "sheet",
+      "x": 20,
+      "y": 720,
+      "w": 390,
+      "h": 196,
+      "bottom": 916,
+      "right": 410,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(242, 235, 216)",
+      "color": "rgb(26, 20, 16)",
+      "fontSize": "16px",
+      "text": "地點\n      點地圖針或下方本區列表選擇地點\n      \n      \n "
+     }
+    },
+    "b5_loc_close": {
+     "tag": "BUTTON",
+     "offsetW": 362,
+     "offsetH": 46,
+     "bbox": {
+      "x": 34,
+      "y": 860,
+      "w": 362,
+      "h": 46
+     },
+     "text": "返回地圖"
+    },
+    "c3_acts": [],
+    "b1_encounter": null,
+    "b5_home_back": {
+     "tag": "BUTTON",
+     "offsetW": 102,
+     "offsetH": 44,
+     "bbox": {
+      "x": 294,
+      "y": 132,
+      "w": 104,
+      "h": 48
+     },
+     "bg": "rgb(201, 168, 118)",
+     "text": "返回地圖"
+    },
+    "u4_quota": {
+     "before": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "after": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "sheet_opened": true,
+     "locTitle": "地點"
+    },
+    "u6_copy_locked": {
+     "cpCount": 0,
+     "quickDisplay": "none",
+     "homeEditable": false
+    },
+    "b4_soft": {
+     "modal": {
+      "found": true,
+      "tag": "DIV",
+      "id": "modal",
+      "cls": "modal",
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0,
+      "bottom": 0,
+      "right": 0,
+      "visible": false,
+      "disabled": false,
+      "bg": "rgb(242, 235, 216)",
+      "color": "rgb(26, 20, 16)",
+      "fontSize": "16px",
+      "text": ""
+     },
+     "btns": [],
+     "title": null
+    },
+    "c2_end_day": {
+     "end_day": {
+      "found": false
+     },
+     "start_today": {
+      "found": false
+     }
+    }
+   },
+   "notes": [
+    "open 茶餐廳 -> True"
+   ],
+   "pageerrors": [],
+   "zero_pageerror": true
+  }
+ },
+ "awards": {
+  "screens": {
+   "award_invite": {
+    "vw": 430,
+    "vh": 932,
+    "buttons": [
+     {
+      "text": "進度2",
+      "id": "chip-story",
+      "cls": "chip chip-story on",
+      "x": 312,
+      "y": 6,
+      "w": 56,
+      "h": 28,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#toast.toast",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "☰",
+      "id": "btn-menu",
+      "cls": "iconbtn",
+      "x": 372,
+      "y": 6,
+      "w": 28,
+      "h": 28,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#mask.mask tut-on on",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "廟街禮品",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug shop idle dim",
+      "x": 157,
+      "y": 322,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "P#.psr-body",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "仁康醫院",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug med idle dim",
+      "x": 157,
+      "y": 532,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#.psr-sheet awd-sheet",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星獅子山製片",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+      "x": 194,
+      "y": 196,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "P#.psr-eyebrow",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星香江唱片",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug music has-board has-npc has-star has-",
+      "x": 103,
+      "y": 262,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "P#.psr-sub",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "劇星星河電視台",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug tv has-board has-npc has-tip has-stor",
+      "x": 148,
+      "y": 207,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#.psr-sheet awd-sheet",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "九龍電視台",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug tv has-board has-action lab-down lab-",
+      "x": 132,
+      "y": 378,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "P#.psr-sub",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星海港廣播",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug tv has-board has-npc has-star has-act",
+      "x": 352,
+      "y": 212,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "H3#.psr-h",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星紅棉影業",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+      "x": 261,
+      "y": 190,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "P#.psr-eyebrow",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星維港電影",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+      "x": 311,
+      "y": 229,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "H3#.psr-h",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星中環廣告",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug ad has-board has-npc has-star has-act",
+      "x": 244,
+      "y": 444,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#.psr-fellows63",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "金鐘創意",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug ad has-board has-npc has-action lab-u",
+      "x": 331,
+      "y": 460,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#.psr-fellows63",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星灣仔唱片",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug music has-board has-npc has-star has-",
+      "x": 277,
+      "y": 554,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "P#.psr-gate62 ok",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星天星音樂",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug music has-board has-npc has-star has-",
+      "x": 315,
+      "y": 582,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#modal-inner.",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星金龍茶餐廳",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug cafe has-star has-action lab-up",
+      "x": 40,
+      "y": 218,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "H3#.psr-h",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "劇何生事務所",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug agency has-tip has-story-tip has-acti",
+      "x": 78,
+      "y": 604,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "BUTTON#.p",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "開始今日行程",
+      "id": "map-start-today",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 863,
+      "w": 338,
+      "h": 43,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#mask.mask tut-on on",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "出席",
+      "id": "",
+      "cls": "p",
+      "x": 36,
+      "y": 616,
+      "w": 358,
+      "h": 45,
+      "inVP": true,
+      "covered": false,
+      "hit": "",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "推辭",
+      "id": "",
+      "cls": "g",
+      "x": 36,
+      "y": 669,
+      "w": 358,
+      "h": 44,
+      "inVP": true,
+      "covered": false,
+      "hit": "",
+      "disabled": false,
+      "tag": "BUTTON"
+     }
+    ],
+    "tag": "award_invite"
+   },
+   "award_result": {
+    "vw": 430,
+    "vh": 932,
+    "buttons": [
+     {
+      "text": "進度2",
+      "id": "chip-story",
+      "cls": "chip chip-story on",
+      "x": 312,
+      "y": 6,
+      "w": 56,
+      "h": 28,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#mask.mask tut-on on",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "☰",
+      "id": "btn-menu",
+      "cls": "iconbtn",
+      "x": 372,
+      "y": 6,
+      "w": 28,
+      "h": 28,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#mask.mask tut-on on",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "廟街禮品",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug shop idle dim",
+      "x": 157,
+      "y": 322,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "P#.psr-comfort147",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "仁康醫院",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug med idle dim",
+      "x": 157,
+      "y": 532,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#.psr-cards",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星獅子山製片",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+      "x": 194,
+      "y": 196,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "H4#.psr-title",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星香江唱片",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug music has-board has-npc has-star has-",
+      "x": 103,
+      "y": 262,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "P#.psr-weak62",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "劇星星河電視台",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug tv has-board has-npc has-tip has-stor",
+      "x": 148,
+      "y": 207,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "H4#.psr-title",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "九龍電視台",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug tv has-board has-action lab-down lab-",
+      "x": 132,
+      "y": 378,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "P#.psr-fellows63",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星海港廣播",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug tv has-board has-npc has-star has-act",
+      "x": 352,
+      "y": 212,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "H4#.psr-title",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星紅棉影業",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+      "x": 261,
+      "y": 190,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "H4#.psr-title",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星維港電影",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+      "x": 311,
+      "y": 229,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "P#.psr-rep62",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星中環廣告",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug ad has-board has-npc has-star has-act",
+      "x": 244,
+      "y": 444,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#.psr-kicker",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "金鐘創意",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug ad has-board has-npc has-action lab-u",
+      "x": 331,
+      "y": 460,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "H4#.psr-title",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星灣仔唱片",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug music has-board has-npc has-star has-",
+      "x": 277,
+      "y": 554,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#.psr-kicker",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星天星音樂",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug music has-board has-npc has-star has-",
+      "x": 315,
+      "y": 582,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "H4#.psr-title",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "星金龍茶餐廳",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug cafe has-star has-action lab-up",
+      "x": 40,
+      "y": 218,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "H4#.psr-title",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "劇何生事務所",
+      "id": "",
+      "cls": "pin v18c-pin-marks-hug agency has-tip has-story-tip has-acti",
+      "x": 78,
+      "y": 604,
+      "w": 52,
+      "h": 52,
+      "inVP": true,
+      "covered": true,
+      "hit": "H4#.psr-title",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "開始今日行程",
+      "id": "map-start-today",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 863,
+      "w": 338,
+      "h": 43,
+      "inVP": true,
+      "covered": true,
+      "hit": "DIV#mask.mask tut-on on",
+      "disabled": false,
+      "tag": "BUTTON"
+     },
+     {
+      "text": "收下這晚",
+      "id": "",
+      "cls": "p",
+      "x": 36,
+      "y": 786,
+      "w": 358,
+      "h": 45,
+      "inVP": true,
+      "covered": false,
+      "hit": "",
+      "disabled": false,
+      "tag": "BUTTON"
+     }
+    ],
+    "tag": "award_result"
+   }
+  },
+  "notes": [
+   "pack={\"bestOutcome\": \"nominated\", \"cats\": [{\"id\": \"cat_film_lead_m\", \"label\": \"最佳男主角\", \"outcome\": \"nominated\"}]}"
+  ],
+  "skip_track": [
+   {
+    "t": 11,
+    "stage": true,
+    "caption": "—— 維港影藝獎 ——\n金禧大酒店・大禮堂",
+    "skip": {
+     "x": 327,
+     "y": 178,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 535,
+    "stage": true,
+    "caption": "提名者魚貫入場，企到台前。",
+    "skip": {
+     "x": 327,
+     "y": 187,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 1042,
+    "stage": true,
+    "caption": "提名者魚貫入場，企到台前。",
+    "skip": {
+     "x": 327,
+     "y": 187,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 1600,
+    "stage": true,
+    "caption": "提名者魚貫入場，企到台前。",
+    "skip": {
+     "x": 327,
+     "y": 187,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 2107,
+    "stage": true,
+    "caption": "入圍名單\n阿偉：《新春大吉》",
+    "skip": {
+     "x": 327,
+     "y": 178,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 2615,
+    "stage": true,
+    "caption": "入圍名單\n陸柏言：《夜海鎗火》",
+    "skip": {
+     "x": 327,
+     "y": 178,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 3202,
+    "stage": true,
+    "caption": "入圍名單\n陸柏言：《夜海鎗火》",
+    "skip": {
+     "x": 327,
+     "y": 178,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 3709,
+    "stage": true,
+    "caption": "入圍名單\n廖炳星：《幽靈夜巡隊》",
+    "skip": {
+     "x": 327,
+     "y": 178,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 4219,
+    "stage": true,
+    "caption": "得獎者是……",
+    "skip": {
+     "x": 327,
+     "y": 187,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 4734,
+    "stage": true,
+    "caption": "得獎者是……",
+    "skip": {
+     "x": 327,
+     "y": 187,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 5240,
+    "stage": true,
+    "caption": "得獎者是……",
+    "skip": {
+     "x": 327,
+     "y": 187,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 5823,
+    "stage": true,
+    "caption": " 陸柏言憑《夜海鎗火》得獎你嘅《新春大吉》入圍到最後——差少少，下年再嚟。",
+    "skip": {
+     "x": 327,
+     "y": 177,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 6329,
+    "stage": true,
+    "caption": " 陸柏言憑《夜海鎗火》得獎你嘅《新春大吉》入圍到最後——差少少，下年再嚟。",
+    "skip": {
+     "x": 327,
+     "y": 177,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 6898,
+    "stage": true,
+    "caption": " 陸柏言憑《夜海鎗火》得獎你嘅《新春大吉》入圍到最後——差少少，下年再嚟。",
+    "skip": {
+     "x": 327,
+     "y": 177,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 7405,
+    "stage": true,
+    "caption": " 陸柏言憑《夜海鎗火》得獎你嘅《新春大吉》入圍到最後——差少少，下年再嚟。",
+    "skip": {
+     "x": 327,
+     "y": 177,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 7912,
+    "stage": true,
+    "caption": "何生拍拍你膊頭：「差少少啫，唔緊要，下年再嚟過。」\n阿偉：「……嗯。下年，我要自己行上台。」",
+    "skip": {
+     "x": 327,
+     "y": 178,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 8420,
+    "stage": true,
+    "caption": "何生拍拍你膊頭：「差少少啫，唔緊要，下年再嚟過。」\n阿偉：「……嗯。下年，我要自己行上台。」",
+    "skip": {
+     "x": 327,
+     "y": 178,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 8926,
+    "stage": true,
+    "caption": "何生拍拍你膊頭：「差少少啫，唔緊要，下年再嚟過。」\n阿偉：「……嗯。下年，我要自己行上台。」",
+    "skip": {
+     "x": 327,
+     "y": 178,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 9434,
+    "stage": true,
+    "caption": "何生拍拍你膊頭：「差少少啫，唔緊要，下年再嚟過。」\n阿偉：「……嗯。下年，我要自己行上台。」",
+    "skip": {
+     "x": 327,
+     "y": 178,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 10011,
+    "stage": true,
+    "caption": "何生拍拍你膊頭：「差少少啫，唔緊要，下年再嚟過。」\n阿偉：「……嗯。下年，我要自己行上台。」",
+    "skip": {
+     "x": 327,
+     "y": 178,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 10525,
+    "stage": true,
+    "caption": "",
+    "skip": {
+     "x": 327,
+     "y": 219,
+     "w": 83,
+     "h": 38,
+     "t": "跳過 ⏩"
+    }
+   },
+   {
+    "t": 11409,
+    "stage": false
+   }
+  ],
+  "invite": {
+   "btns": [
+    {
+     "text": "出席",
+     "cls": "p",
+     "x": 36,
+     "y": 616,
+     "w": 358,
+     "h": 45,
+     "order": "1"
+    },
+    {
+     "text": "推辭",
+     "cls": "g",
+     "x": 36,
+     "y": 669,
+     "w": 358,
+     "h": 44,
+     "order": "1"
+    }
+   ],
+   "maskCls": "mask tut-on on"
+  },
+  "pageerrors": [],
+  "zero_pageerror": true,
+  "b3_probe": {
+   "conclusion": "skip pinned to canvaswrap: dy=8, dx=315 constant across all 22 samples; residual viewport-y variation (177/178/187/219) is the FRAME moving (frameY 169/170/179/211, frameH 510-594), not the button — rebase re-verification on main 4e841e5, same as original",
+   "rows": [
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 592
+     },
+     "wrap": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 178,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "—— 維港影藝獎 ——\n金禧大酒店・大禮堂",
+     "t": 10
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 179,
+      "w": 406,
+      "h": 574
+     },
+     "wrap": {
+      "x": 12,
+      "y": 179,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 187,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "提名者魚貫入場，企到台前。",
+     "t": 537
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 179,
+      "w": 406,
+      "h": 574
+     },
+     "wrap": {
+      "x": 12,
+      "y": 179,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 187,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "提名者魚貫入場，企到台前。",
+     "t": 1102
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 179,
+      "w": 406,
+      "h": 574
+     },
+     "wrap": {
+      "x": 12,
+      "y": 179,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 187,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "提名者魚貫入場，企到台前。",
+     "t": 1610
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 592
+     },
+     "wrap": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 178,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "入圍名單\n阿偉：《新春大吉》",
+     "t": 2116
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 592
+     },
+     "wrap": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 178,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "入圍名單\n陸柏言：《夜海鎗火》",
+     "t": 2630
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 592
+     },
+     "wrap": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 178,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "入圍名單\n陸柏言：《夜海鎗火》",
+     "t": 3193
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 592
+     },
+     "wrap": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 178,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "入圍名單\n廖炳星：《幽靈夜巡隊》",
+     "t": 3702
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 179,
+      "w": 406,
+      "h": 574
+     },
+     "wrap": {
+      "x": 12,
+      "y": 179,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 187,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "得獎者是……",
+     "t": 4213
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 179,
+      "w": 406,
+      "h": 574
+     },
+     "wrap": {
+      "x": 12,
+      "y": 179,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 187,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "得獎者是……",
+     "t": 4723
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 179,
+      "w": 406,
+      "h": 574
+     },
+     "wrap": {
+      "x": 12,
+      "y": 179,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 187,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "得獎者是……",
+     "t": 5231
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 169,
+      "w": 406,
+      "h": 594
+     },
+     "wrap": {
+      "x": 12,
+      "y": 169,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 177,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": " 陸柏言憑《夜海鎗火》得獎你嘅《新春大吉》入圍到",
+     "t": 5737
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 169,
+      "w": 406,
+      "h": 594
+     },
+     "wrap": {
+      "x": 12,
+      "y": 169,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 177,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": " 陸柏言憑《夜海鎗火》得獎你嘅《新春大吉》入圍到",
+     "t": 6299
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 169,
+      "w": 406,
+      "h": 594
+     },
+     "wrap": {
+      "x": 12,
+      "y": 169,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 177,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": " 陸柏言憑《夜海鎗火》得獎你嘅《新春大吉》入圍到",
+     "t": 6804
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 169,
+      "w": 406,
+      "h": 594
+     },
+     "wrap": {
+      "x": 12,
+      "y": 169,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 177,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": " 陸柏言憑《夜海鎗火》得獎你嘅《新春大吉》入圍到",
+     "t": 7311
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 592
+     },
+     "wrap": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 178,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "何生拍拍你膊頭：「差少少啫，唔緊要，下年再嚟過。",
+     "t": 7816
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 592
+     },
+     "wrap": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 178,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "何生拍拍你膊頭：「差少少啫，唔緊要，下年再嚟過。",
+     "t": 8321
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 592
+     },
+     "wrap": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 178,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "何生拍拍你膊頭：「差少少啫，唔緊要，下年再嚟過。",
+     "t": 8827
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 592
+     },
+     "wrap": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 178,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "何生拍拍你膊頭：「差少少啫，唔緊要，下年再嚟過。",
+     "t": 9339
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 592
+     },
+     "wrap": {
+      "x": 12,
+      "y": 170,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 178,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "何生拍拍你膊頭：「差少少啫，唔緊要，下年再嚟過。",
+     "t": 9899
+    },
+    {
+     "stage": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932
+     },
+     "frame": {
+      "x": 12,
+      "y": 211,
+      "w": 406,
+      "h": 510
+     },
+     "wrap": {
+      "x": 12,
+      "y": 211,
+      "w": 406,
+      "h": 307
+     },
+     "skip": {
+      "x": 327,
+      "y": 219,
+      "w": 83,
+      "h": 38
+     },
+     "skipParent": "awd62-canvaswrap",
+     "caption": "",
+     "t": 10404
+    },
+    {
+     "stage": null,
+     "frame": null,
+     "wrap": null,
+     "skip": null,
+     "skipParent": null,
+     "caption": "",
+     "t": 11004
+    }
+   ]
+  }
+ },
+ "errors": [],
+ "pageerrors": [],
+ "diag_runs": {
+  "932": {
+   "height": 932,
+   "probes": {
+    "b7_hitchain": [
+     {
+      "t": "工作",
+      "hitIsBtn": false,
+      "chain": [
+       {
+        "tag": "DIV",
+        "id": "",
+        "cls": "sp-plate sp-plate-narration105 dlg106-plate",
+        "pe": "auto",
+        "x": 32,
+        "y": 748,
+        "w": 366,
+        "h": 118
+       },
+       {
+        "tag": "DIV",
+        "id": "",
+        "cls": "sp-stage-inner",
+        "pe": "auto",
+        "x": 20,
+        "y": 0,
+        "w": 390,
+        "h": 932
+       },
+       {
+        "tag": "DIV",
+        "id": "",
+        "cls": "sp-stage sp-mode-narration dlg106-on",
+        "pe": "auto",
+        "x": 20,
+        "y": 0,
+        "w": 390,
+        "h": 932
+       },
+       {
+        "tag": "DIV",
+        "id": "story-play-root",
+        "cls": "story-play sp-cinematic",
+        "pe": "auto",
+        "x": 20,
+        "y": 0,
+        "w": 390,
+        "h": 932
+       },
+       {
+        "tag": "DIV",
+        "id": "modal-inner",
+        "cls": "",
+        "pe": "auto",
+        "x": 20,
+        "y": 0,
+        "w": 390,
+        "h": 932
+       },
+       {
+        "tag": "DIV",
+        "id": "modal",
+        "cls": "modal",
+        "pe": "auto",
+        "x": 20,
+        "y": 0,
+        "w": 390,
+        "h": 932
+       }
+      ]
+     },
+     {
+      "t": "表演",
+      "hitIsBtn": false,
+      "chain": [
+       {
+        "tag": "DIV",
+        "id": "",
+        "cls": "sp-plate sp-plate-narration105 dlg106-plate",
+        "pe": "auto",
+        "x": 32,
+        "y": 748,
+        "w": 366,
+        "h": 118
+       },
+       {
+        "tag": "DIV",
+        "id": "",
+        "cls": "sp-stage-inner",
+        "pe": "auto",
+        "x": 20,
+        "y": 0,
+        "w": 390,
+        "h": 932
+       },
+       {
+        "tag": "DIV",
+        "id": "",
+        "cls": "sp-stage sp-mode-narration dlg106-on",
+        "pe": "auto",
+        "x": 20,
+        "y": 0,
+        "w": 390,
+        "h": 932
+       },
+       {
+        "tag": "DIV",
+        "id": "story-play-root",
+        "cls": "story-play sp-cinematic",
+        "pe": "auto",
+        "x": 20,
+        "y": 0,
+        "w": 390,
+        "h": 932
+       },
+       {
+        "tag": "DIV",
+        "id": "modal-inner",
+        "cls": "",
+        "pe": "auto",
+        "x": 20,
+        "y": 0,
+        "w": 390,
+        "h": 932
+       },
+       {
+        "tag": "DIV",
+        "id": "modal",
+        "cls": "modal",
+        "pe": "auto",
+        "x": 20,
+        "y": 0,
+        "w": 390,
+        "h": 932
+       }
+      ]
+     }
+    ],
+    "b7_real_click": {
+     "before_on": "外出",
+     "tab": {
+      "x": 110,
+      "y": 829.921875
+     },
+     "clicked": true,
+     "after_on": "外出"
+    },
+    "u6_per_day": [
+     {
+      "i": 0,
+      "dayName": "週一到處逛逛⧉ 複製",
+      "locked": false,
+      "panelOpen": false,
+      "panelDisplay": "none",
+      "selDay": null,
+      "toast": [
+       ""
+      ]
+     },
+     {
+      "i": 1,
+      "dayName": "週二休息睡覺⧉ 複製",
+      "locked": false,
+      "panelOpen": false,
+      "panelDisplay": "none",
+      "selDay": null,
+      "toast": [
+       ""
+      ]
+     },
+     {
+      "i": 2,
+      "dayName": "週三到處逛逛⧉ 複製",
+      "locked": false,
+      "panelOpen": false,
+      "panelDisplay": "none",
+      "selDay": null,
+      "toast": [
+       ""
+      ]
+     },
+     {
+      "i": 3,
+      "dayName": "週四到處逛逛⧉ 複製",
+      "locked": false,
+      "panelOpen": false,
+      "panelDisplay": "none",
+      "selDay": null,
+      "toast": [
+       ""
+      ]
+     },
+     {
+      "i": 4,
+      "dayName": "週五街頭表演⧉ 複製",
+      "locked": false,
+      "panelOpen": false,
+      "panelDisplay": "none",
+      "selDay": null,
+      "toast": [
+       ""
+      ]
+     },
+     {
+      "i": 5,
+      "dayName": "週六咖啡店駐場小表演⧉ ",
+      "locked": false,
+      "panelOpen": false,
+      "panelDisplay": "none",
+      "selDay": null,
+      "toast": [
+       ""
+      ]
+     },
+     {
+      "i": 6,
+      "dayName": "週日休息睡覺⧉ 複製",
+      "locked": false,
+      "panelOpen": false,
+      "panelDisplay": "none",
+      "selDay": null,
+      "toast": [
+       ""
+      ]
+     }
+    ],
+    "depart": {
+     "clicked": false,
+     "state": {
+      "maskOn": true,
+      "dayIndex": 0,
+      "mapVisible": false,
+      "title": "第一日：冇價",
+      "modalBtns": [
+       "下一句"
+      ],
+      "story": true,
+      "choices": 0,
+      "enc": false,
+      "locSheet": false,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "vis": [
+      {
+       "t": "返回地圖",
+       "id": "home-back-map-tabs",
+       "x": 294,
+       "y": 132,
+       "w": 104,
+       "h": 48
+      },
+      {
+       "t": "行程",
+       "id": "hgroup-plan",
+       "x": 58,
+       "y": 215,
+       "w": 58,
+       "h": 32
+      },
+      {
+       "t": "事業",
+       "id": "hgroup-career",
+       "x": 122,
+       "y": 213,
+       "w": 58,
+       "h": 32
+      },
+      {
+       "t": "近況",
+       "id": "hgroup-status",
+       "x": 186,
+       "y": 213,
+       "w": 58,
+       "h": 32
+      },
+      {
+       "t": "消息",
+       "id": "hgroup-news",
+       "x": 250,
+       "y": 213,
+       "w": 58,
+       "h": 32
+      },
+      {
+       "t": "人情",
+       "id": "hgroup-favor",
+       "x": 314,
+       "y": 213,
+       "w": 58,
+       "h": 32
+      },
+      {
+       "t": "本週安排",
+       "id": "htab-plan",
+       "x": 148,
+       "y": 251,
+       "w": 72,
+       "h": 23
+      },
+      {
+       "t": "進度",
+       "id": "htab-progress",
+       "x": 88,
+       "y": 251,
+       "w": 38,
+       "h": 23
+      },
+      {
+       "t": "全日休息",
+       "id": "nb-q-rest",
+       "x": 91,
+       "y": 275,
+       "w": 82,
+       "h": 44
+      },
+      {
+       "t": "全日訓練",
+       "id": "nb-q-train",
+       "x": 181,
+       "y": 275,
+       "w": 82,
+       "h": 44
+      },
+      {
+       "t": "清空本週",
+       "id": "nb-q-clear",
+       "x": 271,
+       "y": 275,
+       "w": 82,
+       "h": 44
+      },
+      {
+       "t": "複製到…",
+       "id": "nb-q-copy",
+       "x": 91,
+       "y": 327,
+       "w": 82,
+       "h": 44
+      },
+      {
+       "t": "週一到處逛逛⧉ 複製",
+       "id": "",
+       "x": 82,
+       "y": 384,
+       "w": 304,
+       "h": 34
+      },
+      {
+       "t": "週二休息睡覺⧉ 複製",
+       "id": "",
+       "x": 82,
+       "y": 421,
+       "w": 304,
+       "h": 34
+      }
+     ]
+    },
+    "after_confirm_loop": {
+     "state": {
+      "maskOn": true,
+      "dayIndex": 0,
+      "mapVisible": false,
+      "title": "第一日：冇價",
+      "modalBtns": [
+       "下一句"
+      ],
+      "story": true,
+      "choices": 0,
+      "enc": false,
+      "locSheet": false,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "vis": [
+      {
+       "t": "返回地圖",
+       "id": "home-back-map-tabs",
+       "x": 294,
+       "y": 132,
+       "w": 104,
+       "h": 48
+      },
+      {
+       "t": "行程",
+       "id": "hgroup-plan",
+       "x": 58,
+       "y": 215,
+       "w": 58,
+       "h": 32
+      },
+      {
+       "t": "事業",
+       "id": "hgroup-career",
+       "x": 122,
+       "y": 213,
+       "w": 58,
+       "h": 32
+      },
+      {
+       "t": "近況",
+       "id": "hgroup-status",
+       "x": 186,
+       "y": 213,
+       "w": 58,
+       "h": 32
+      },
+      {
+       "t": "消息",
+       "id": "hgroup-news",
+       "x": 250,
+       "y": 213,
+       "w": 58,
+       "h": 32
+      },
+      {
+       "t": "人情",
+       "id": "hgroup-favor",
+       "x": 314,
+       "y": 213,
+       "w": 58,
+       "h": 32
+      },
+      {
+       "t": "本週安排",
+       "id": "htab-plan",
+       "x": 148,
+       "y": 251,
+       "w": 72,
+       "h": 23
+      },
+      {
+       "t": "進度",
+       "id": "htab-progress",
+       "x": 88,
+       "y": 251,
+       "w": 38,
+       "h": 23
+      },
+      {
+       "t": "全日休息",
+       "id": "nb-q-rest",
+       "x": 91,
+       "y": 275,
+       "w": 82,
+       "h": 44
+      },
+      {
+       "t": "全日訓練",
+       "id": "nb-q-train",
+       "x": 181,
+       "y": 275,
+       "w": 82,
+       "h": 44
+      },
+      {
+       "t": "清空本週",
+       "id": "nb-q-clear",
+       "x": 271,
+       "y": 275,
+       "w": 82,
+       "h": 44
+      },
+      {
+       "t": "複製到…",
+       "id": "nb-q-copy",
+       "x": 91,
+       "y": 327,
+       "w": 82,
+       "h": 44
+      },
+      {
+       "t": "週一到處逛逛⧉ 複製",
+       "id": "",
+       "x": 82,
+       "y": 384,
+       "w": 304,
+       "h": 34
+      },
+      {
+       "t": "週二休息睡覺⧉ 複製",
+       "id": "",
+       "x": 82,
+       "y": 421,
+       "w": 304,
+       "h": 34
+      }
+     ]
+    },
+    "intro_finished": true,
+    "b1_mainline": [
+     {
+      "step": 0,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ],
+      "choices": []
+     },
+     {
+      "step": 1,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ],
+      "choices": []
+     },
+     {
+      "step": 2,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ],
+      "choices": []
+     },
+     {
+      "step": 3,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ],
+      "choices": []
+     },
+     {
+      "step": 4,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ],
+      "choices": []
+     },
+     {
+      "step": 5,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ],
+      "choices": []
+     },
+     {
+      "step": 6,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ],
+      "choices": []
+     },
+     {
+      "step": 7,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ],
+      "choices": []
+     }
+    ],
+    "after_intro": {
+     "state": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "vis": [
+      {
+       "t": "進度",
+       "id": "chip-story",
+       "x": 330,
+       "y": 6,
+       "w": 38,
+       "h": 28
+      },
+      {
+       "t": "☰",
+       "id": "btn-menu",
+       "x": 372,
+       "y": 6,
+       "w": 28,
+       "h": 28
+      },
+      {
+       "t": "何生事務所",
+       "id": "",
+       "x": 78,
+       "y": 603,
+       "w": 52,
+       "h": 52
+      },
+      {
+       "t": "廟街禮品",
+       "id": "",
+       "x": 157,
+       "y": 321,
+       "w": 52,
+       "h": 52
+      },
+      {
+       "t": "仁康醫院",
+       "id": "",
+       "x": 157,
+       "y": 531,
+       "w": 52,
+       "h": 52
+      },
+      {
+       "t": "星獅子山製片",
+       "id": "",
+       "x": 194,
+       "y": 195,
+       "w": 52,
+       "h": 52
+      },
+      {
+       "t": "星香江唱片",
+       "id": "",
+       "x": 103,
+       "y": 261,
+       "w": 52,
+       "h": 52
+      },
+      {
+       "t": "星星河電視台",
+       "id": "",
+       "x": 148,
+       "y": 206,
+       "w": 52,
+       "h": 52
+      },
+      {
+       "t": "九龍電視台",
+       "id": "",
+       "x": 132,
+       "y": 377,
+       "w": 52,
+       "h": 52
+      },
+      {
+       "t": "星海港廣播",
+       "id": "",
+       "x": 352,
+       "y": 211,
+       "w": 52,
+       "h": 52
+      },
+      {
+       "t": "星紅棉影業",
+       "id": "",
+       "x": 261,
+       "y": 189,
+       "w": 52,
+       "h": 52
+      },
+      {
+       "t": "星維港電影",
+       "id": "",
+       "x": 311,
+       "y": 228,
+       "w": 52,
+       "h": 52
+      },
+      {
+       "t": "星中環廣告",
+       "id": "",
+       "x": 244,
+       "y": 443,
+       "w": 52,
+       "h": 52
+      },
+      {
+       "t": "金鐘創意",
+       "id": "",
+       "x": 331,
+       "y": 459,
+       "w": 52,
+       "h": 52
+      }
+     ]
+    },
+    "sheet_state": {
+     "open_loc": true,
+     "story_played": false,
+     "state": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": true,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     }
+    },
+    "b6_sheet_open": {
+     "end_day": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "map-end-day",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 645,
+      "w": 338,
+      "h": 45,
+      "bottom": 690,
+      "right": 384,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "14.4px",
+      "text": "過一日"
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 581,
+      "w": 366,
+      "h": 123,
+      "bottom": 704,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月1日（一）· 第1週今日：到處逛逛 · 仲可以去 1 個地方過一日"
+     },
+     "sheet": {
+      "found": true,
+      "tag": "DIV",
+      "id": "loc-sheet",
+      "cls": "sheet",
+      "x": 20,
+      "y": 736,
+      "w": 390,
+      "h": 196,
+      "bottom": 932,
+      "right": 410,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(242, 235, 216)",
+      "color": "rgb(26, 20, 16)",
+      "fontSize": "16px",
+      "text": "地點\n      點地圖針或下方本區列表選擇地點\n      \n      \n "
+     },
+     "appScrollTop": 216,
+     "wrapScrollTop": 0
+    },
+    "b5_loc_close": {
+     "tag": "BUTTON",
+     "offsetW": 362,
+     "offsetH": 46,
+     "bbox": {
+      "x": 34,
+      "y": 876,
+      "w": 362,
+      "h": 46
+     },
+     "text": "返回地圖"
+    },
+    "c3_acts": [],
+    "b1_encounter": null,
+    "c6_board": {
+     "cards": [
+      {
+       "y": 250,
+       "bottom": 368,
+       "h": 118
+      },
+      {
+       "y": 376,
+       "bottom": 495,
+       "h": 118
+      },
+      {
+       "y": 503,
+       "bottom": 621,
+       "h": 118
+      },
+      {
+       "y": 692,
+       "bottom": 848,
+       "h": 156
+      },
+      {
+       "y": 856,
+       "bottom": 996,
+       "h": 139
+      },
+      {
+       "y": 1004,
+       "bottom": 1160,
+       "h": 156
+      },
+      {
+       "y": 1168,
+       "bottom": 1308,
+       "h": 139
+      },
+      {
+       "y": 1316,
+       "bottom": 1455,
+       "h": 139
+      },
+      {
+       "y": 1463,
+       "bottom": 1603,
+       "h": 139
+      },
+      {
+       "y": 1611,
+       "bottom": 1750,
+       "h": 139
+      },
+      {
+       "y": 1758,
+       "bottom": 1897,
+       "h": 139
+      },
+      {
+       "y": 1905,
+       "bottom": 2045,
+       "h": 139
+      }
+     ],
+     "n": 12,
+     "gaps": [
+      8,
+      8,
+      71,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8,
+      8
+     ],
+     "summary": {
+      "x": 36,
+      "y": 643,
+      "w": 358,
+      "h": 41,
+      "bg": "rgb(239, 230, 207)",
+      "fontSize": "13.6px",
+      "fontWeight": "800",
+      "text": "未達標／長遠目標（9 張）"
+     }
+    },
+    "u2_detail": {
+     "opened": null,
+     "census": {
+      "vw": 430,
+      "vh": 932,
+      "buttons": [
+       {
+        "text": "進度",
+        "id": "chip-story",
+        "cls": "chip chip-story",
+        "x": 330,
+        "y": 6,
+        "w": 38,
+        "h": 28,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#toast.toast",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "☰",
+        "id": "btn-menu",
+        "cls": "iconbtn",
+        "x": 372,
+        "y": 6,
+        "w": 28,
+        "h": 28,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on on",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "何生事務所",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug agency idle dim lab-up lab-left",
+        "x": 78,
+        "y": 603,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#gig-board-list.gig-board-list",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "廟街禮品",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug shop idle dim",
+        "x": 157,
+        "y": 321,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.gt-meta-line",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "仁康醫院",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug med idle dim",
+        "x": 157,
+        "y": 531,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "SPAN#.gt-badge",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星獅子山製片",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+        "x": 194,
+        "y": 195,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "P#.board-lead",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星香江唱片",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug music has-board has-npc has-star has-",
+        "x": 103,
+        "y": 261,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.gig-teaser",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星星河電視台",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug tv has-board has-npc has-star has-act",
+        "x": 148,
+        "y": 206,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "SPAN#.board-lead-mix",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "九龍電視台",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug tv has-board has-npc has-action lab-d",
+        "x": 132,
+        "y": 377,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.gt-title",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星海港廣播",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug tv has-board has-star has-action lab-",
+        "x": 352,
+        "y": 211,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "P#.board-lead",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星紅棉影業",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug film has-board has-npc has-star has-a",
+        "x": 261,
+        "y": 189,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "P#.board-lead",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星維港電影",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+        "x": 311,
+        "y": 228,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.gig-teaser",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星中環廣告",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug ad has-board has-npc has-star has-act",
+        "x": 244,
+        "y": 443,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.gt-meta-line",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "金鐘創意",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug ad has-board has-action lab-up",
+        "x": 331,
+        "y": 459,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.gig-teaser",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星灣仔唱片",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug music has-board has-npc has-star has-",
+        "x": 277,
+        "y": 553,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.gt-meta-line",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星天星音樂",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug music has-board has-star has-action",
+        "x": 315,
+        "y": 581,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.gt-meta-line",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星金龍茶餐廳",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug cafe has-star has-action lab-up",
+        "x": 40,
+        "y": 217,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "SPAN#.board-lead-mix",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "過一日",
+        "id": "map-end-day",
+        "cls": "map-start-today",
+        "x": 46,
+        "y": 861,
+        "w": 338,
+        "h": 45,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on on",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "賀歲特輯 電視特輯可接通告 片酬 $520拍攝約 1 日",
+        "id": "",
+        "cls": "gig-teaser",
+        "x": 36,
+        "y": 250,
+        "w": 358,
+        "h": 118,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "DIV"
+       },
+       {
+        "text": "街景臨記 日常可接通告 片酬 $550拍攝約 1 日",
+        "id": "",
+        "cls": "gig-teaser",
+        "x": 36,
+        "y": 376,
+        "w": 358,
+        "h": 118,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "DIV"
+       },
+       {
+        "text": "靈異屋邨夜話 處境喜劇可接通告 片酬 $1,150拍攝約 3 日",
+        "id": "",
+        "cls": "gig-teaser",
+        "x": 36,
+        "y": 503,
+        "w": 358,
+        "h": 118,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "DIV"
+       },
+       {
+        "text": "瑞氣盈門賀新歲 晚會暫未能報 片酬 $2,400拍攝約 2 日 歌藝 14／需 15（差",
+        "id": "",
+        "cls": "gig-teaser",
+        "x": 36,
+        "y": 692,
+        "w": 358,
+        "h": 156,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on on",
+        "disabled": false,
+        "tag": "DIV"
+       },
+       {
+        "text": "鴻運當頭笑住過 處境喜劇暫未能報 片酬 $1,750拍攝約 3 日 演技 18／需 20",
+        "id": "",
+        "cls": "gig-teaser",
+        "x": 36,
+        "y": 856,
+        "w": 358,
+        "h": 139,
+        "inVP": false,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on on",
+        "disabled": false,
+        "tag": "DIV"
+       },
+       {
+        "text": "靈幻喜劇迎春夜 晚會暫未能報 片酬 $3,000拍攝約 2 日 歌藝 14／需 15（差",
+        "id": "",
+        "cls": "gig-teaser",
+        "x": 36,
+        "y": 1004,
+        "w": 358,
+        "h": 156,
+        "inVP": false,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on on",
+        "disabled": false,
+        "tag": "DIV"
+       },
+       {
+        "text": "夜班廠景 電視劇暫未能報 片酬 $950拍攝約 3 日 演技 18／需 32（差 14）",
+        "id": "",
+        "cls": "gig-teaser",
+        "x": 36,
+        "y": 1168,
+        "w": 358,
+        "h": 139,
+        "inVP": false,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on on",
+        "disabled": false,
+        "tag": "DIV"
+       },
+       {
+        "text": "賀歲喜劇笑滿堂 處境喜劇暫未能報 片酬 $11,000拍攝約 16 日 長遠目標 · 暫",
+        "id": "",
+        "cls": "gig-teaser",
+        "x": 36,
+        "y": 1316,
+        "w": 358,
+        "h": 139,
+        "inVP": false,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on on",
+        "disabled": false,
+        "tag": "DIV"
+       },
+       {
+        "text": "笑住過年 電視劇暫未能報 片酬 $10,300拍攝約 14 日 長遠目標 · 暫未及（點",
+        "id": "",
+        "cls": "gig-teaser",
+        "x": 36,
+        "y": 1463,
+        "w": 358,
+        "h": 139,
+        "inVP": false,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on on",
+        "disabled": false,
+        "tag": "DIV"
+       },
+       {
+        "text": "喜氣洋洋聚一堂 晚會暫未能報 片酬 $5,000拍攝約 2 日 長遠目標 · 暫未及（點",
+        "id": "",
+        "cls": "gig-teaser",
+        "x": 36,
+        "y": 1611,
+        "w": 358,
+        "h": 139,
+        "inVP": false,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on on",
+        "disabled": false,
+        "tag": "DIV"
+       },
+       {
+        "text": "陰陽界捉鬼記 處境喜劇暫未能報 片酬 $9,600拍攝約 16 日 長遠目標 · 暫未及",
+        "id": "",
+        "cls": "gig-teaser",
+        "x": 36,
+        "y": 1758,
+        "w": 358,
+        "h": 139,
+        "inVP": false,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on on",
+        "disabled": false,
+        "tag": "DIV"
+       },
+       {
+        "text": "茶客即興猜情晚會 遊戲節目暫未能報 片酬 $2,000拍攝約 2 日 長遠目標 · 暫未",
+        "id": "",
+        "cls": "gig-teaser",
+        "x": 36,
+        "y": 1905,
+        "w": 358,
+        "h": 139,
+        "inVP": false,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on on",
+        "disabled": false,
+        "tag": "DIV"
+       },
+       {
+        "text": "返去地點",
+        "id": "",
+        "cls": "g",
+        "x": 36,
+        "y": 700,
+        "w": 358,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ],
+      "tag": "casting_detail"
+     }
+    },
+    "u4_quota": {
+     "before": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "after": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "sheet_opened": true,
+     "locTitle": "地點",
+     "toast_before": [
+      ""
+     ],
+     "toast_after": [
+      ""
+     ]
+    },
+    "b4_reload": {
+     "continued": "clicked_continue",
+     "state": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     }
+    },
+    "b4_soft": null,
+    "b4_rest_reload": {
+     "continued": "clicked_continue",
+     "state": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     }
+    },
+    "c2_end_day": {
+     "end_day": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "map-end-day",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 861,
+      "w": 338,
+      "h": 45,
+      "bottom": 906,
+      "right": 384,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "14.4px",
+      "text": "過一日"
+     },
+     "start_today": {
+      "found": false
+     }
+    },
+    "c4_overday": {
+     "btns": [
+      {
+       "text": "確定過一日",
+       "cls": "d",
+       "role": "d",
+       "x": 204,
+       "y": 850,
+       "w": 110,
+       "h": 48
+      },
+      {
+       "text": "取消",
+       "cls": "g",
+       "role": "g",
+       "x": 322,
+       "y": 850,
+       "w": 64,
+       "h": 48
+      }
+     ],
+     "title": "確認過一日？",
+     "dom_order": [
+      "確定過一日",
+      "取消"
+     ]
+    },
+    "pageerrors": []
+   },
+   "notes": [],
+   "zero_pageerror": true
+  }
+ },
+ "final_runs": {
+  "932": {
+   "height": 932,
+   "probes": {
+    "u6_direct": {
+     "homeEditable": false,
+     "planSelDay": "undef",
+     "toastBefore": "行程已定",
+     "err": "ReferenceError: openCopyFromDay is not defined",
+     "after": {
+      "panelOpen": false,
+      "panelDisplay": "none",
+      "selDay": "undef",
+      "toastAfter": "行程已定"
+     },
+     "dayLocked": [],
+     "dayLockedErr": "ReferenceError: dayPlanLocked is not defined"
+    },
+    "u6_quick_direct": {
+     "panelOpen": true,
+     "panelDisplay": "block",
+     "selDay": "undef"
+    },
+    "intro_finished": true,
+    "b7_post_intro": {
+     "scrollTop": 16,
+     "barTop": 859,
+     "tabs": [
+      {
+       "t": "工作",
+       "y": 804,
+       "bottom": 855,
+       "hitIsBtn": false,
+       "hitCls": "ic112"
+      },
+      {
+       "t": "表演",
+       "y": 804,
+       "bottom": 855,
+       "hitIsBtn": false,
+       "hitCls": "ic112"
+      },
+      {
+       "t": "訓練",
+       "y": 804,
+       "bottom": 855,
+       "hitIsBtn": false,
+       "hitCls": "ic112"
+      },
+      {
+       "t": "休息",
+       "y": 804,
+       "bottom": 855,
+       "hitIsBtn": false,
+       "hitCls": "ic112"
+      },
+      {
+       "t": "外出",
+       "y": 804,
+       "bottom": 855,
+       "hitIsBtn": false,
+       "hitCls": "ic112"
+      }
+     ]
+    },
+    "b7_post_intro_click": {
+     "before_on": "外出",
+     "tab": {
+      "x": 110,
+      "y": 829.359375
+     },
+     "after_on": "外出"
+    }
+   },
+   "notes": [
+    "EXCEPTION: Error(\"Page.evaluate: TypeError: Cannot read properties of null (reading 'dayIndex')\\n    at eval (eval at evaluate (:370:30), <anonymous>:1:21)\\n    at UtilityScript.evaluate (<anonymous>:377:18)\\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\")"
+   ]
+  }
+ },
+ "final2_runs": {
+  "932": {
+   "height": 932,
+   "probes": {
+    "b7_dom": {
+     "outer": "<button type=\"button\" class=\"cat-tab\"><span class=\"ci\"><img class=\"ic112\" src=\"assets/icons/icon_clapper.png\" alt=\"\" aria-hidden=\"true\"></span>工作</button>",
+     "hasIcChild": true,
+     "icOuter": "<img class=\"ic112\" src=\"assets/icons/icon_clapper.png\" alt=\"\" aria-hidden=\"true\">",
+     "hitTag": "DIV",
+     "hitCls": "sp-plate sp-plate-narration105 dlg106-pl",
+     "hitIsBtn": false,
+     "hitIsIcChild": false,
+     "onclick": "function",
+     "cls": "cat-tab"
+    },
+    "b7_clicks": {
+     "before_on": "外出",
+     "after_js_click_work": "外出",
+     "after_mouse_click_perf": "外出"
+    },
+    "u6_synth": {
+     "homeEditable": true,
+     "cpCount": 0,
+     "rowBtn": null,
+     "afterRow": {
+      "open": false,
+      "display": "none"
+     },
+     "toast": ""
+    },
+    "intro_finished": true,
+    "b1_mainline": [
+     {
+      "step": 0,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 1,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 2,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 3,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 4,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 5,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 6,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 7,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     }
+    ]
+   },
+   "notes": [
+    "EXCEPTION: Error(\"Page.evaluate: TypeError: Cannot read properties of null (reading 'dayIndex')\\n    at eval (eval at evaluate (:370:30), <anonymous>:1:21)\\n    at UtilityScript.evaluate (<anonymous>:377:18)\\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\")"
+   ]
+  }
+ },
+ "final3_runs": {
+  "932": {
+   "height": 932,
+   "probes": {
+    "b7_dom": {
+     "outer": "<button type=\"button\" class=\"cat-tab\"><span class=\"ci\"><img class=\"ic112\" src=\"assets/icons/icon_clapper.png\" alt=\"\" aria-hidden=\"true\"></span>工作</button>",
+     "hasIcChild": true,
+     "icOuter": "<img class=\"ic112\" src=\"assets/icons/icon_clapper.png\" alt=\"\" aria-hidden=\"true\">",
+     "hitTag": "DIV",
+     "hitCls": "sp-plate sp-plate-narration105 dlg106-pl",
+     "hitIsBtn": false,
+     "hitIsIcChild": false,
+     "onclick": "function",
+     "cls": "cat-tab"
+    },
+    "b7_clicks": {
+     "before_on": "外出",
+     "after_js_click_work": "外出",
+     "after_mouse_click_perf": "外出"
+    },
+    "u6_synth": {
+     "homeEditable": true,
+     "cpCount": 0,
+     "rowBtn": null,
+     "afterRow": {
+      "open": false,
+      "display": "none"
+     },
+     "toast": "",
+     "dayRows": [
+      {
+       "cls": "day-row on",
+       "hasCp": false
+      },
+      {
+       "cls": "day-row",
+       "hasCp": false
+      },
+      {
+       "cls": "day-row",
+       "hasCp": false
+      },
+      {
+       "cls": "day-row",
+       "hasCp": false
+      },
+      {
+       "cls": "day-row",
+       "hasCp": false
+      },
+      {
+       "cls": "day-row",
+       "hasCp": false
+      },
+      {
+       "cls": "day-row",
+       "hasCp": false
+      }
+     ],
+     "planDraft": "undef"
+    },
+    "b7_editable_click": {
+     "before": "外出",
+     "after": "訓練",
+     "tabs": [
+      {
+       "t": "工作",
+       "y": 611,
+       "bottom": 661,
+       "hitIsBtn": false,
+       "hitIsChild": false
+      },
+      {
+       "t": "表演",
+       "y": 611,
+       "bottom": 661,
+       "hitIsBtn": false,
+       "hitIsChild": false
+      },
+      {
+       "t": "訓練",
+       "y": 611,
+       "bottom": 661,
+       "hitIsBtn": false,
+       "hitIsChild": false
+      },
+      {
+       "t": "休息",
+       "y": 611,
+       "bottom": 661,
+       "hitIsBtn": false,
+       "hitIsChild": false
+      },
+      {
+       "t": "外出",
+       "y": 611,
+       "bottom": 661,
+       "hitIsBtn": false,
+       "hitIsChild": false
+      }
+     ],
+     "homeEditable": true
+    },
+    "intro_finished": true,
+    "b1_mainline": [
+     {
+      "step": 0,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 1,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 2,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 3,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 4,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 5,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 6,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 7,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     }
+    ],
+    "b4_reload": {
+     "continued": "clicked_continue",
+     "state": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     }
+    },
+    "b4_seed_state": {
+     "dayIndex": 0,
+     "weekPlan": [
+      "scout_all",
+      "rest",
+      "scout_all",
+      "scout_all",
+      "street",
+      "cafe_gig",
+      "rest"
+     ],
+     "shoots": [],
+     "todayPlan": null
+    },
+    "b4_map_btns": {
+     "startToday": null,
+     "todayPlan": null
+    },
+    "b4_start_clicked": false,
+    "b4_soft": null,
+    "b4_rest_reload": {
+     "continued": "clicked_continue",
+     "state": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     }
+    },
+    "b4_rest_start_clicked": false,
+    "b4_rest": null,
+    "sheet_clean": {
+     "attempt": 1,
+     "open_loc": true,
+     "state": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "金龍茶餐廳 · 油麻地",
+      "menuOpen": false
+     }
+    },
+    "b6_sheet_open": {
+     "end_day": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "map-end-day",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 861,
+      "w": 338,
+      "h": 45,
+      "bottom": 906,
+      "right": 384,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "14.4px",
+      "text": "過一日"
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 797,
+      "w": 366,
+      "h": 123,
+      "bottom": 920,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月1日（一）· 第1週今日：到處逛逛 · 仲可以去 1 個地方過一日"
+     },
+     "sheet": {
+      "found": true,
+      "tag": "DIV",
+      "id": "loc-sheet",
+      "cls": "sheet has-loc-bg on sheet-live locpanel118 locpanel118-has-owner",
+      "x": 20,
+      "y": 0,
+      "w": 390,
+      "h": 932,
+      "bottom": 932,
+      "right": 410,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(26, 20, 16)",
+      "fontSize": "16px",
+      "text": "今日出行：已用 1 / 2仲可以去 1 個地方✓ 已到埗，扣咗 1 次出行額度\n"
+     },
+     "appScrollTop": 0
+    },
+    "c3_acts": [
+     {
+      "t": "大堂飲茶聽八卦花 $15 茶錢，隔籬枱可能有料。",
+      "x": 41,
+      "y": 514,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "幫手執漏老闆娘今日唔夠人手，幫佢執枱沖茶頂一陣，",
+      "x": 41,
+      "y": 581,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "打聽電視城規矩向茶餐廳伙記打聽入廠禁忌 · 請伙",
+      "x": 41,
+      "y": 648,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "打聽高仔搶鏡事向茶客打聽高仔片場八卦 · 請茶客",
+      "x": 41,
+      "y": 715,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "打聽曉晴近況向化妝師打聽曉晴動向 · 請化妝師飲",
+      "x": 41,
+      "y": 782,
+      "w": 338,
+      "h": 60
+     }
+    ],
+    "b5_loc_close": {
+     "tag": "BUTTON",
+     "offsetW": 348,
+     "offsetH": 46,
+     "bbox": {
+      "x": 41,
+      "y": 865,
+      "w": 348,
+      "h": 46
+     },
+     "text": "返回地圖"
+    },
+    "loc_title": "金龍茶餐廳 · 油麻地",
+    "b1_encounter": {
+     "nb": {
+      "x": 30,
+      "y": 879,
+      "w": 370,
+      "h": 44,
+      "offsetW": 370,
+      "offsetH": 44,
+      "text": "下一句"
+     },
+     "line": "（頭都唔抬）嗯……呢句尾音要收得急啲先好笑。",
+     "advance": {
+      "before": "（頭都唔抬）嗯……呢句尾音要收得急啲先好笑。",
+      "after": "後生仔，茶餐廳大把位，唔使同我逼埋一枱。",
+      "advanced": true
+     },
+     "loc": "茶餐廳",
+     "day": 1
+    },
+    "u2_detail": {
+     "opened": {
+      "cls": "gig-teaser",
+      "text": "賀歲特輯\n    電視特輯可接通告\n    片酬 $520拍"
+     },
+     "state": {
+      "maskOn": true,
+      "dayIndex": 1,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [
+       "接通告",
+       "離開"
+      ],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "census": {
+      "vw": 430,
+      "vh": 932,
+      "buttons": [
+       {
+        "text": "進度",
+        "id": "chip-story",
+        "cls": "chip chip-story",
+        "x": 330,
+        "y": 6,
+        "w": 38,
+        "h": 28,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#toast.toast",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "☰",
+        "id": "btn-menu",
+        "cls": "iconbtn",
+        "x": 372,
+        "y": 6,
+        "w": 28,
+        "h": 28,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#mask.mask wf4-stage-on casting-shee",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "何生事務所",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug agency idle dim lab-up lab-left",
+        "x": 78,
+        "y": 604,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "SPAN#.k",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "廟街禮品",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug shop idle dim",
+        "x": 157,
+        "y": 322,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "H2#.cn-work",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "仁康醫院",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug med idle dim",
+        "x": 157,
+        "y": 532,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.cn-sum-row",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星獅子山製片",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+        "x": 194,
+        "y": 196,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "IMG#.cn-issuer-img30v2",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星香江唱片",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug music has-board has-npc has-star has-",
+        "x": 103,
+        "y": 262,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "SPAN#.",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星星河電視台",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug tv has-board has-npc has-star has-act",
+        "x": 148,
+        "y": 207,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "IMG#.cn-issuer-img30v2",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "九龍電視台",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug tv has-board has-action lab-down lab-",
+        "x": 132,
+        "y": 378,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "SPAN#.notice_tag_genre",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星海港廣播",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug tv has-board has-star has-action lab-",
+        "x": 352,
+        "y": 212,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.cn-issuer30v2",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星紅棉影業",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+        "x": 261,
+        "y": 190,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "IMG#.cn-issuer-img30v2",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星維港電影",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+        "x": 311,
+        "y": 229,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.cn-issuer30v2",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星中環廣告",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug ad has-board has-npc has-star has-act",
+        "x": 244,
+        "y": 444,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.cn-req-val",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "金鐘創意",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug ad has-board has-npc has-action lab-u",
+        "x": 331,
+        "y": 460,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.cn-summary",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星灣仔唱片",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug music has-board has-star has-action",
+        "x": 277,
+        "y": 554,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "SPAN#.v",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星天星音樂",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug music has-board has-npc has-star has-",
+        "x": 315,
+        "y": 582,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "SPAN#.v",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星金龍茶餐廳",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug cafe has-star has-action lab-up",
+        "x": 40,
+        "y": 218,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.cn-issuer30v2",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "開始今日行程",
+        "id": "map-start-today",
+        "cls": "map-start-today",
+        "x": 46,
+        "y": 863,
+        "w": 338,
+        "h": 43,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#modal-btns.btnrow",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "接通告",
+        "id": "",
+        "cls": "p",
+        "x": 44,
+        "y": 858,
+        "w": 167,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "離開",
+        "id": "",
+        "cls": "g btn_leave",
+        "x": 219,
+        "y": 858,
+        "w": 167,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ],
+      "tag": "casting_detail"
+     }
+    },
+    "u4_quota": {
+     "before": {
+      "state": {
+       "maskOn": true,
+       "dayIndex": 1,
+       "mapVisible": true,
+       "title": null,
+       "modalBtns": [
+        "接通告",
+        "離開"
+       ],
+       "story": false,
+       "choices": 0,
+       "enc": false,
+       "locSheet": true,
+       "locTitle": "地點",
+       "menuOpen": false
+      },
+      "locTitle": "地點",
+      "hint": "1990年1月2日（二）· 第1週今日：休息睡覺 · 仲可以去 1 個地方開始今日行程",
+      "toast": "",
+      "used": 2
+     },
+     "after": {
+      "state": {
+       "maskOn": true,
+       "dayIndex": 1,
+       "mapVisible": true,
+       "title": null,
+       "modalBtns": [
+        "接通告",
+        "離開"
+       ],
+       "story": false,
+       "choices": 0,
+       "enc": false,
+       "locSheet": true,
+       "locTitle": "地點",
+       "menuOpen": false
+      },
+      "locTitle": "地點",
+      "hint": "1990年1月2日（二）· 第1週今日：休息睡覺 · 仲可以去 1 個地方開始今日行程",
+      "toast": "",
+      "used": 2
+     }
+    },
+    "pageerrors": []
+   },
+   "notes": [],
+   "zero_pageerror": true
+  }
+ },
+ "final4_runs": {
+  "932": {
+   "height": 932,
+   "probes": {
+    "u6_synth": {
+     "afterRowClick": {
+      "cpCount": 7,
+      "homeEditable": true
+     },
+     "rowBtn": "⧉ 複製",
+     "afterRowCopy": {
+      "open": true,
+      "display": "block"
+     },
+     "toast": "行程已定"
+    },
+    "u6_quick": {
+     "panelOpen": false,
+     "panelDisplay": "none"
+    },
+    "b7_editable": {
+     "before": "外出",
+     "after": "訓練",
+     "barTop": 859,
+     "scrollTop": 501,
+     "homeEditable": true,
+     "tabs": [
+      {
+       "t": "工作",
+       "y": 630,
+       "bottom": 680,
+       "hitIsBtn": false,
+       "hitIsChild": false,
+       "hitCls": "sp-stage-inner"
+      },
+      {
+       "t": "表演",
+       "y": 630,
+       "bottom": 680,
+       "hitIsBtn": false,
+       "hitIsChild": false,
+       "hitCls": "sp-stage-inner"
+      },
+      {
+       "t": "訓練",
+       "y": 630,
+       "bottom": 680,
+       "hitIsBtn": false,
+       "hitIsChild": false,
+       "hitCls": "sp-stage-inner"
+      },
+      {
+       "t": "休息",
+       "y": 630,
+       "bottom": 680,
+       "hitIsBtn": false,
+       "hitIsChild": false,
+       "hitCls": "sp-stage-inner"
+      },
+      {
+       "t": "外出",
+       "y": 630,
+       "bottom": 680,
+       "hitIsBtn": false,
+       "hitIsChild": false,
+       "hitCls": "sp-stage-inner"
+      }
+     ]
+    },
+    "intro_finished": true,
+    "b1_mainline": [
+     {
+      "step": 0,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 1,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 2,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 3,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 4,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 5,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 6,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 7,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     }
+    ],
+    "b4_seed": {
+     "ret": {
+      "ok": true,
+      "gigId": "gig_1988_film_01",
+      "dayIndex": 0,
+      "todayPlan": "shoot:probe189w",
+      "tomPlan": "street"
+     },
+     "state": {
+      "weekPlan": [
+       "shoot:probe189w",
+       "street",
+       "rest",
+       "rest",
+       "rest",
+       "rest",
+       "rest"
+      ],
+      "shoots": [
+       "probe189w",
+       "probe189f"
+      ]
+     }
+    },
+    "b4_map_btns": {
+     "startToday": null,
+     "endDay": {
+      "t": "過一日",
+      "x": 46,
+      "y": 861,
+      "w": 338,
+      "h": 45,
+      "vis": true
+     }
+    },
+    "b4_start_clicked": false,
+    "b4_soft": null,
+    "b4_rest_seed": {
+     "ret": {
+      "ok": true,
+      "dayIndex": 0,
+      "todayPlan": "rest",
+      "tomPlan": "street"
+     },
+     "state": {
+      "weekPlan": [
+       "rest",
+       "street",
+       "rest",
+       "rest",
+       "rest",
+       "rest",
+       "rest"
+      ]
+     }
+    },
+    "b4_rest_start_clicked": false,
+    "b4_rest": null,
+    "c2_end_day": {
+     "end_day": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "map-end-day",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 861,
+      "w": 338,
+      "h": 45,
+      "bottom": 906,
+      "right": 384,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "14.4px",
+      "text": "過一日"
+     },
+     "start_today": {
+      "found": false
+     }
+    },
+    "c4_overday": {
+     "btns": [
+      {
+       "text": "確定過一日",
+       "cls": "d",
+       "role": "d",
+       "x": 36,
+       "y": 457,
+       "w": 358,
+       "h": 44
+      },
+      {
+       "text": "取消",
+       "cls": "g",
+       "role": "g",
+       "x": 36,
+       "y": 509,
+       "w": 358,
+       "h": 44
+      }
+     ],
+     "title": "確認過一日？",
+     "dom_order": [
+      "確定過一日",
+      "取消"
+     ]
+    },
+    "sheet_clean": {
+     "attempt": 1,
+     "open_loc": true,
+     "state": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "金龍茶餐廳 · 油麻地",
+      "menuOpen": false
+     }
+    },
+    "b6_sheet_open": {
+     "end_day": {
+      "found": false
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 799,
+      "w": 366,
+      "h": 121,
+      "bottom": 920,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月1日（一）· 第1週今日：休息睡覺 · 仲可以去 1 個地方開始今"
+     },
+     "sheet": {
+      "found": true,
+      "tag": "DIV",
+      "id": "loc-sheet",
+      "cls": "sheet has-loc-bg on sheet-live locpanel118 locpanel118-has-owner",
+      "x": 20,
+      "y": 0,
+      "w": 390,
+      "h": 932,
+      "bottom": 932,
+      "right": 410,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(26, 20, 16)",
+      "fontSize": "16px",
+      "text": "今日出行：已用 1 / 2仲可以去 1 個地方✓ 已到埗，扣咗 1 次出行額度\n"
+     },
+     "appScrollTop": 0
+    },
+    "c3_acts": [
+     {
+      "t": "大堂飲茶聽八卦花 $15 茶錢，隔籬枱可能有料。",
+      "x": 41,
+      "y": 514,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "幫手執漏老闆娘今日唔夠人手，幫佢執枱沖茶頂一陣，",
+      "x": 41,
+      "y": 581,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "打聽電視城規矩向茶餐廳伙記打聽入廠禁忌 · 請伙",
+      "x": 41,
+      "y": 648,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "打聽高仔搶鏡事向茶客打聽高仔片場八卦 · 請茶客",
+      "x": 41,
+      "y": 715,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "打聽曉晴近況向化妝師打聽曉晴動向 · 請化妝師飲",
+      "x": 41,
+      "y": 782,
+      "w": 338,
+      "h": 60
+     }
+    ],
+    "b5_loc_close": {
+     "tag": "BUTTON",
+     "offsetW": 348,
+     "offsetH": 46,
+     "bbox": {
+      "x": 41,
+      "y": 865,
+      "w": 348,
+      "h": 46
+     },
+     "text": "返回地圖"
+    },
+    "loc_title": "金龍茶餐廳 · 油麻地",
+    "b1_encounter": null,
+    "u2_detail": {
+     "opened": {
+      "cls": "gig-teaser",
+      "text": "賀歲特輯\n    電視特輯可接通告\n    片酬 $520拍"
+     },
+     "state": {
+      "maskOn": true,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [
+       "接通告",
+       "離開"
+      ],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "census": {
+      "vw": 430,
+      "vh": 932,
+      "buttons": [
+       {
+        "text": "進度",
+        "id": "chip-story",
+        "cls": "chip chip-story",
+        "x": 330,
+        "y": 6,
+        "w": 38,
+        "h": 28,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#toast.toast",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "☰",
+        "id": "btn-menu",
+        "cls": "iconbtn",
+        "x": 372,
+        "y": 6,
+        "w": 28,
+        "h": 28,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on wf4-stage-on casti",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "何生事務所",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug agency idle dim lab-up lab-left",
+        "x": 78,
+        "y": 604,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "P#.",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "廟街禮品",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug shop idle dim",
+        "x": 157,
+        "y": 322,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.cn-req-cell ok",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "仁康醫院",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug med idle dim",
+        "x": 157,
+        "y": 532,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.cn-summary",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星獅子山製片",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+        "x": 194,
+        "y": 196,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "IMG#.cn-issuer-img30v2",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星香江唱片",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug music has-board has-npc has-star has-",
+        "x": 103,
+        "y": 262,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "SPAN#.notice_tag_type",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星星河電視台",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug tv has-board has-npc has-star has-act",
+        "x": 148,
+        "y": 207,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.notice_sheet_frame cn-paper30v",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "九龍電視台",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug tv has-board has-npc has-action lab-d",
+        "x": 132,
+        "y": 378,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.cn-sum-row",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星海港廣播",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug tv has-board has-star has-action lab-",
+        "x": 352,
+        "y": 212,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.notice_header_orange cn-paper3",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星紅棉影業",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug film has-board has-star has-action",
+        "x": 261,
+        "y": 190,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "IMG#.cn-issuer-img30v2",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星維港電影",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug film has-board has-npc has-star has-a",
+        "x": 311,
+        "y": 229,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "H2#.cn-work",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星中環廣告",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug ad has-board has-star has-action lab-",
+        "x": 244,
+        "y": 444,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.cn-sum-row",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "金鐘創意",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug ad has-board has-npc has-action lab-u",
+        "x": 331,
+        "y": 460,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "SPAN#.v",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星灣仔唱片",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug music has-board has-star has-action",
+        "x": 277,
+        "y": 554,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.cn-kv cn-limits",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星天星音樂",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug music has-board has-npc has-star has-",
+        "x": 315,
+        "y": 582,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.cn-lab",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "星金龍茶餐廳",
+        "id": "",
+        "cls": "pin v18c-pin-marks-hug cafe has-star has-action lab-up",
+        "x": 40,
+        "y": 218,
+        "w": 52,
+        "h": 52,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#.notice_header_orange cn-paper3",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "開始今日行程",
+        "id": "map-start-today",
+        "cls": "map-start-today",
+        "x": 46,
+        "y": 863,
+        "w": 338,
+        "h": 43,
+        "inVP": true,
+        "covered": true,
+        "hit": "DIV#mask.mask tut-on wf4-stage-on casti",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "接通告",
+        "id": "",
+        "cls": "p",
+        "x": 36,
+        "y": 744,
+        "w": 358,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       },
+       {
+        "text": "離開",
+        "id": "",
+        "cls": "g btn_leave",
+        "x": 36,
+        "y": 796,
+        "w": 358,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ],
+      "tag": "casting_detail"
+     }
+    },
+    "u4_quota": {
+     "before": {
+      "state": {
+       "maskOn": true,
+       "dayIndex": 0,
+       "mapVisible": true,
+       "title": null,
+       "modalBtns": [
+        "接通告",
+        "離開"
+       ],
+       "story": false,
+       "choices": 0,
+       "enc": false,
+       "locSheet": true,
+       "locTitle": "地點",
+       "menuOpen": false
+      },
+      "locTitle": "地點",
+      "hint": "1990年1月1日（一）· 第1週今日：休息睡覺 · 仲可以去 1 個地方開始今日行程",
+      "toast": "",
+      "used": 2
+     },
+     "after": {
+      "state": {
+       "maskOn": true,
+       "dayIndex": 0,
+       "mapVisible": true,
+       "title": null,
+       "modalBtns": [
+        "接通告",
+        "離開"
+       ],
+       "story": false,
+       "choices": 0,
+       "enc": false,
+       "locSheet": true,
+       "locTitle": "地點",
+       "menuOpen": false
+      },
+      "locTitle": "地點",
+      "hint": "1990年1月1日（一）· 第1週今日：休息睡覺 · 仲可以去 1 個地方開始今日行程",
+      "toast": "",
+      "used": 2
+     }
+    },
+    "pageerrors": []
+   },
+   "notes": [],
+   "zero_pageerror": true
+  }
+ },
+ "final5_runs": {
+  "932": {
+   "height": 932,
+   "probes": {
+    "intro_finished": true,
+    "b1_mainline": [
+     {
+      "step": 0,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 1,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 2,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 3,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 4,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 5,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 6,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 7,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 879,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     }
+    ],
+    "b1_day0_pending": {
+     "state_enc": false,
+     "enc": null
+    },
+    "b4_seed": {
+     "ret": {
+      "ok": true,
+      "gigId": "gig_1988_film_01",
+      "dayIndex": 0,
+      "todayPlan": "shoot:probe189w",
+      "tomPlan": "street"
+     },
+     "state": {
+      "weekPlan": [
+       "shoot:probe189w",
+       "street",
+       "rest",
+       "rest",
+       "rest",
+       "rest",
+       "rest"
+      ],
+      "shoots": [
+       "probe189w",
+       "probe189f"
+      ]
+     }
+    },
+    "b4_soft_via_journal": {
+     "maskCls": "mask tut-on on day-res",
+     "modalH": 720,
+     "modalY": 196,
+     "modalW": 358,
+     "innerScroll": {
+      "sh": 814,
+      "ch": 552,
+      "st": 0
+     },
+     "title": "拍攝日→殺青：《陰陽夜更》動作替身",
+     "btns": [
+      {
+       "t": "返回地圖",
+       "cls": "p",
+       "x": 36,
+       "y": 756,
+       "w": 358,
+       "h": 720
+      },
+      {
+       "t": "開始今日行程",
+       "cls": "g",
+       "x": 36,
+       "y": 809,
+       "w": 358,
+       "h": 720
+      },
+      {
+       "t": "想跳過本週剩餘日子？加速 →",
+       "cls": "day-end-accel-link",
+       "x": 36,
+       "y": 861,
+       "w": 358,
+       "h": 720
+      }
+     ]
+    },
+    "b4_soft": {
+     "maskCls": "mask tut-on on day-res",
+     "modalH": 720,
+     "modalY": 196,
+     "modalW": 358,
+     "innerScroll": {
+      "sh": 814,
+      "ch": 552,
+      "st": 0
+     },
+     "title": "拍攝日→殺青：《陰陽夜更》動作替身",
+     "btns": [
+      {
+       "t": "返回地圖",
+       "cls": "p",
+       "x": 36,
+       "y": 756,
+       "w": 358,
+       "h": 720
+      },
+      {
+       "t": "開始今日行程",
+       "cls": "g",
+       "x": 36,
+       "y": 809,
+       "w": 358,
+       "h": 720
+      },
+      {
+       "t": "想跳過本週剩餘日子？加速 →",
+       "cls": "day-end-accel-link",
+       "x": 36,
+       "y": 861,
+       "w": 358,
+       "h": 720
+      }
+     ]
+    },
+    "b4_soft_after_back": {
+     "maskOn": true,
+     "dayIndex": 1,
+     "mapVisible": true,
+     "title": "傳媒・街外・成績",
+     "modalBtns": [
+      "收下這份反響"
+     ],
+     "story": false,
+     "choices": 0,
+     "enc": false,
+     "locSheet": true,
+     "locTitle": "地點",
+     "menuOpen": false
+    },
+    "b4_rest_seed": {
+     "ret": {
+      "ok": true,
+      "dayIndex": 7,
+      "todayPlan": "rest",
+      "tomPlan": "street"
+     },
+     "state": {
+      "weekPlan": [
+       "rest",
+       "street",
+       "rest",
+       "rest",
+       "rest",
+       "rest",
+       "rest"
+      ]
+     }
+    },
+    "b4_rest_via_journal": null,
+    "b4_rest_start_clicked": true,
+    "b4_rest": {
+     "maskCls": "mask tut-on on day-res",
+     "modalH": 720,
+     "modalY": 196,
+     "modalW": 358,
+     "innerScroll": {
+      "sh": 552,
+      "ch": 552,
+      "st": 0
+     },
+     "title": "休息（週一）",
+     "btns": [
+      {
+       "t": "返回地圖",
+       "cls": "p",
+       "x": 36,
+       "y": 756,
+       "w": 358,
+       "h": 720
+      },
+      {
+       "t": "開始今日行程",
+       "cls": "g",
+       "x": 36,
+       "y": 809,
+       "w": 358,
+       "h": 720
+      },
+      {
+       "t": "想跳過本週剩餘日子？加速 →",
+       "cls": "day-end-accel-link",
+       "x": 36,
+       "y": 861,
+       "w": 358,
+       "h": 720
+      }
+     ]
+    },
+    "u1_rest_back": {
+     "clicked": true,
+     "state": {
+      "maskOn": true,
+      "dayIndex": 8,
+      "mapVisible": true,
+      "title": "電視台臨記班底添新血 阿偉獲青睞",
+      "modalBtns": [
+       "收下這份剪報"
+      ],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     }
+    },
+    "b6_clean": {
+     "end_day": {
+      "found": false
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 799,
+      "w": 366,
+      "h": 121,
+      "bottom": 920,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月9日（二）· 第2週今日：街頭表演 · 仲可以去 2 個地方開始今"
+     }
+    },
+    "sheet_clean": {
+     "attempt": 1,
+     "open_loc": true,
+     "state": {
+      "maskOn": true,
+      "dayIndex": 8,
+      "mapVisible": true,
+      "title": "電視台臨記班底添新血 阿偉獲青睞",
+      "modalBtns": [
+       "收下這份剪報"
+      ],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "金龍茶餐廳 · 油麻地",
+      "menuOpen": false
+     }
+    },
+    "b6_sheet_open": {
+     "end_day_count": 0,
+     "end_day": {
+      "found": false
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 799,
+      "w": 366,
+      "h": 121,
+      "bottom": 920,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月9日（二）· 第2週今日：街頭表演 · 仲可以去 1 個地方開始今"
+     },
+     "sheet": {
+      "found": true,
+      "tag": "DIV",
+      "id": "loc-sheet",
+      "cls": "sheet has-loc-bg on locpanel118 locpanel118-has-owner",
+      "x": 20,
+      "y": 0,
+      "w": 390,
+      "h": 932,
+      "bottom": 932,
+      "right": 410,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(26, 20, 16)",
+      "fontSize": "16px",
+      "text": "今日出行：已用 1 / 2仲可以去 1 個地方✓ 已到埗，扣咗 1 次出行額度\n"
+     },
+     "appScrollTop": 0
+    },
+    "c3_acts": [
+     {
+      "t": "大堂飲茶聽八卦花 $15 茶錢，隔籬枱可能有料。",
+      "x": 41,
+      "y": 514,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "幫手執漏老闆娘今日唔夠人手，幫佢執枱沖茶頂一陣，",
+      "x": 41,
+      "y": 581,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "打聽電視城規矩向茶餐廳伙記打聽入廠禁忌 · 請伙",
+      "x": 41,
+      "y": 648,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "打聽高仔搶鏡事向茶客打聽高仔片場八卦 · 請茶客",
+      "x": 41,
+      "y": 715,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "打聽曉晴近況向化妝師打聽曉晴動向 · 請化妝師飲",
+      "x": 41,
+      "y": 782,
+      "w": 338,
+      "h": 60
+     }
+    ],
+    "b5_loc_close": {
+     "tag": "BUTTON",
+     "offsetW": 348,
+     "offsetH": 46,
+     "bbox": {
+      "x": 41,
+      "y": 865,
+      "w": 348,
+      "h": 46
+     },
+     "text": "返回地圖"
+    },
+    "loc_title": "金龍茶餐廳 · 油麻地",
+    "b6_after_close": {
+     "end_day": {
+      "found": false
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 799,
+      "w": 366,
+      "h": 121,
+      "bottom": 920,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月9日（二）· 第2週今日：街頭表演 · 仲可以去 1 個地方開始今"
+     }
+    },
+    "b1_hunt_log": [
+     {
+      "day": 8,
+      "plan": {
+       "1": "九龍電視台",
+       "2": "香江唱片",
+       "3": "維港電影"
+      },
+      "daily_gate": 0.3748
+     }
+    ],
+    "b1_encounter": null,
+    "u2_detail": {
+     "opened": {
+      "cls": "gig-teaser",
+      "text": "賀歲特輯\n    電視特輯可接通告\n    片酬 $520拍"
+     },
+     "state": {
+      "maskOn": true,
+      "dayIndex": 8,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [
+       "接通告",
+       "離開"
+      ],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "detail_btns": [
+      {
+       "text": "接通告",
+       "cls": "p",
+       "role": "p",
+       "x": 36,
+       "y": 744,
+       "w": 358,
+       "h": 44
+      },
+      {
+       "text": "離開",
+       "cls": "g btn_leave",
+       "role": "g btn_leave",
+       "x": 36,
+       "y": 796,
+       "w": 358,
+       "h": 44
+      }
+     ],
+     "maskCls": "mask tut-on casting-sheet-on on"
+    },
+    "u4_quota": {
+     "before": {
+      "state": {
+       "maskOn": true,
+       "dayIndex": 8,
+       "mapVisible": true,
+       "title": "通告欄 · 星河電視台",
+       "modalBtns": [
+        "返去地點"
+       ],
+       "story": false,
+       "choices": 0,
+       "enc": false,
+       "locSheet": true,
+       "locTitle": "地點",
+       "menuOpen": false
+      },
+      "locTitle": "地點",
+      "hint": "1990年1月9日（二）· 第2週今日：街頭表演 · 仲可以去 1 個地方開始今日行程",
+      "toast": "",
+      "used": 2
+     },
+     "after": {
+      "state": {
+       "maskOn": true,
+       "dayIndex": 8,
+       "mapVisible": true,
+       "title": "通告欄 · 星河電視台",
+       "modalBtns": [
+        "返去地點"
+       ],
+       "story": false,
+       "choices": 0,
+       "enc": false,
+       "locSheet": true,
+       "locTitle": "地點",
+       "menuOpen": false
+      },
+      "locTitle": "地點",
+      "hint": "1990年1月9日（二）· 第2週今日：街頭表演 · 仲可以去 1 個地方開始今日行程",
+      "toast": "",
+      "used": 2
+     }
+    },
+    "c2_end_day": {
+     "end_day": {
+      "found": false
+     },
+     "start_today": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "map-start-today",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 863,
+      "w": 338,
+      "h": 43,
+      "bottom": 906,
+      "right": 384,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(201, 162, 39)",
+      "color": "rgb(26, 20, 16)",
+      "fontSize": "14.4px",
+      "text": "開始今日行程"
+     }
+    },
+    "pageerrors": []
+   },
+   "notes": [],
+   "zero_pageerror": true
+  },
+  "932i": {
+   "height": 932,
+   "probes": {
+    "b4_soft_samples": [
+     {
+      "maskCls": "mask tut-on on day-res",
+      "maskChildren": [
+       "DIV.modal"
+      ],
+      "maskCS": {
+       "ai": "flex-end",
+       "jc": "center",
+       "fd": "row",
+       "pad": "16px",
+       "h": 932
+      },
+      "modal": {
+       "x": 36,
+       "y": 196,
+       "w": 358,
+       "h": 720
+      },
+      "modalCS": {
+       "mt": "0px",
+       "mb": "0px",
+       "trans": "all",
+       "anim": "none",
+       "maxH": "760px",
+       "h": "720px",
+       "pos": "static"
+      },
+      "modalParent": "DIV#mask.mask.tut-on",
+      "innerScroll": {
+       "sh": 814,
+       "ch": 552
+      },
+      "title": "拍攝日→殺青：《陰陽夜更》動作替身",
+      "btns": [
+       {
+        "t": "返回地圖",
+        "x": 36,
+        "y": 756,
+        "w": 358,
+        "h": 45
+       },
+       {
+        "t": "開始今日行程",
+        "x": 36,
+        "y": 809,
+        "w": 358,
+        "h": 44
+       },
+       {
+        "t": "想跳過本週剩餘日子？加速 →",
+        "x": 36,
+        "y": 861,
+        "w": 358,
+        "h": 45
+       }
+      ]
+     },
+     {
+      "maskCls": "mask tut-on on day-res",
+      "maskChildren": [
+       "DIV.modal"
+      ],
+      "maskCS": {
+       "ai": "flex-end",
+       "jc": "center",
+       "fd": "row",
+       "pad": "16px",
+       "h": 932
+      },
+      "modal": {
+       "x": 36,
+       "y": 196,
+       "w": 358,
+       "h": 720
+      },
+      "modalCS": {
+       "mt": "0px",
+       "mb": "0px",
+       "trans": "all",
+       "anim": "none",
+       "maxH": "760px",
+       "h": "720px",
+       "pos": "static"
+      },
+      "modalParent": "DIV#mask.mask.tut-on",
+      "innerScroll": {
+       "sh": 814,
+       "ch": 552
+      },
+      "title": "拍攝日→殺青：《陰陽夜更》動作替身",
+      "btns": [
+       {
+        "t": "返回地圖",
+        "x": 36,
+        "y": 756,
+        "w": 358,
+        "h": 45
+       },
+       {
+        "t": "開始今日行程",
+        "x": 36,
+        "y": 809,
+        "w": 358,
+        "h": 44
+       },
+       {
+        "t": "想跳過本週剩餘日子？加速 →",
+        "x": 36,
+        "y": 861,
+        "w": 358,
+        "h": 45
+       }
+      ]
+     },
+     {
+      "maskCls": "mask tut-on on day-res",
+      "maskChildren": [
+       "DIV.modal"
+      ],
+      "maskCS": {
+       "ai": "flex-end",
+       "jc": "center",
+       "fd": "row",
+       "pad": "16px",
+       "h": 932
+      },
+      "modal": {
+       "x": 36,
+       "y": 196,
+       "w": 358,
+       "h": 720
+      },
+      "modalCS": {
+       "mt": "0px",
+       "mb": "0px",
+       "trans": "all",
+       "anim": "none",
+       "maxH": "760px",
+       "h": "720px",
+       "pos": "static"
+      },
+      "modalParent": "DIV#mask.mask.tut-on",
+      "innerScroll": {
+       "sh": 814,
+       "ch": 552
+      },
+      "title": "拍攝日→殺青：《陰陽夜更》動作替身",
+      "btns": [
+       {
+        "t": "返回地圖",
+        "x": 36,
+        "y": 756,
+        "w": 358,
+        "h": 45
+       },
+       {
+        "t": "開始今日行程",
+        "x": 36,
+        "y": 809,
+        "w": 358,
+        "h": 44
+       },
+       {
+        "t": "想跳過本週剩餘日子？加速 →",
+        "x": 36,
+        "y": 861,
+        "w": 358,
+        "h": 45
+       }
+      ]
+     },
+     {
+      "maskCls": "mask tut-on on day-res",
+      "maskChildren": [
+       "DIV.modal"
+      ],
+      "maskCS": {
+       "ai": "flex-end",
+       "jc": "center",
+       "fd": "row",
+       "pad": "16px",
+       "h": 932
+      },
+      "modal": {
+       "x": 36,
+       "y": 196,
+       "w": 358,
+       "h": 720
+      },
+      "modalCS": {
+       "mt": "0px",
+       "mb": "0px",
+       "trans": "all",
+       "anim": "none",
+       "maxH": "760px",
+       "h": "720px",
+       "pos": "static"
+      },
+      "modalParent": "DIV#mask.mask.tut-on",
+      "innerScroll": {
+       "sh": 814,
+       "ch": 552
+      },
+      "title": "拍攝日→殺青：《陰陽夜更》動作替身",
+      "btns": [
+       {
+        "t": "返回地圖",
+        "x": 36,
+        "y": 756,
+        "w": 358,
+        "h": 45
+       },
+       {
+        "t": "開始今日行程",
+        "x": 36,
+        "y": 809,
+        "w": 358,
+        "h": 44
+       },
+       {
+        "t": "想跳過本週剩餘日子？加速 →",
+        "x": 36,
+        "y": 861,
+        "w": 358,
+        "h": 45
+       }
+      ]
+     },
+     {
+      "maskCls": "mask tut-on on day-res",
+      "maskChildren": [
+       "DIV.modal"
+      ],
+      "maskCS": {
+       "ai": "flex-end",
+       "jc": "center",
+       "fd": "row",
+       "pad": "16px",
+       "h": 932
+      },
+      "modal": {
+       "x": 36,
+       "y": 196,
+       "w": 358,
+       "h": 720
+      },
+      "modalCS": {
+       "mt": "0px",
+       "mb": "0px",
+       "trans": "all",
+       "anim": "none",
+       "maxH": "760px",
+       "h": "720px",
+       "pos": "static"
+      },
+      "modalParent": "DIV#mask.mask.tut-on",
+      "innerScroll": {
+       "sh": 814,
+       "ch": 552
+      },
+      "title": "拍攝日→殺青：《陰陽夜更》動作替身",
+      "btns": [
+       {
+        "t": "返回地圖",
+        "x": 36,
+        "y": 756,
+        "w": 358,
+        "h": 45
+       },
+       {
+        "t": "開始今日行程",
+        "x": 36,
+        "y": 809,
+        "w": 358,
+        "h": 44
+       },
+       {
+        "t": "想跳過本週剩餘日子？加速 →",
+        "x": 36,
+        "y": 861,
+        "w": 358,
+        "h": 45
+       }
+      ]
+     },
+     {
+      "maskCls": "mask tut-on on day-res",
+      "maskChildren": [
+       "DIV.modal"
+      ],
+      "maskCS": {
+       "ai": "flex-end",
+       "jc": "center",
+       "fd": "row",
+       "pad": "16px",
+       "h": 932
+      },
+      "modal": {
+       "x": 36,
+       "y": 196,
+       "w": 358,
+       "h": 720
+      },
+      "modalCS": {
+       "mt": "0px",
+       "mb": "0px",
+       "trans": "all",
+       "anim": "none",
+       "maxH": "760px",
+       "h": "720px",
+       "pos": "static"
+      },
+      "modalParent": "DIV#mask.mask.tut-on",
+      "innerScroll": {
+       "sh": 814,
+       "ch": 552
+      },
+      "title": "拍攝日→殺青：《陰陽夜更》動作替身",
+      "btns": [
+       {
+        "t": "返回地圖",
+        "x": 36,
+        "y": 756,
+        "w": 358,
+        "h": 45
+       },
+       {
+        "t": "開始今日行程",
+        "x": 36,
+        "y": 809,
+        "w": 358,
+        "h": 44
+       },
+       {
+        "t": "想跳過本週剩餘日子？加速 →",
+        "x": 36,
+        "y": 861,
+        "w": 358,
+        "h": 45
+       }
+      ]
+     }
+    ],
+    "b4_rest_samples": [
+     {
+      "maskCls": "mask tut-on on day-res",
+      "maskChildren": [
+       "DIV.modal"
+      ],
+      "maskCS": {
+       "ai": "flex-end",
+       "jc": "center",
+       "fd": "row",
+       "pad": "52px 16px 16px",
+       "h": 932
+      },
+      "modal": {
+       "x": 36,
+       "y": 196,
+       "w": 358,
+       "h": 720
+      },
+      "modalCS": {
+       "mt": "0px",
+       "mb": "0px",
+       "trans": "all",
+       "anim": "none",
+       "maxH": "760px",
+       "h": "720px",
+       "pos": "static"
+      },
+      "modalParent": "DIV#mask.mask.tut-on",
+      "innerScroll": {
+       "sh": 552,
+       "ch": 552
+      },
+      "title": "休息（週一）",
+      "btns": [
+       {
+        "t": "返回地圖",
+        "x": 36,
+        "y": 756,
+        "w": 358,
+        "h": 45
+       },
+       {
+        "t": "開始今日行程",
+        "x": 36,
+        "y": 809,
+        "w": 358,
+        "h": 44
+       },
+       {
+        "t": "想跳過本週剩餘日子？加速 →",
+        "x": 36,
+        "y": 861,
+        "w": 358,
+        "h": 45
+       }
+      ]
+     },
+     {
+      "maskCls": "mask tut-on on day-res",
+      "maskChildren": [
+       "DIV.modal"
+      ],
+      "maskCS": {
+       "ai": "flex-end",
+       "jc": "center",
+       "fd": "row",
+       "pad": "52px 16px 16px",
+       "h": 932
+      },
+      "modal": {
+       "x": 36,
+       "y": 196,
+       "w": 358,
+       "h": 720
+      },
+      "modalCS": {
+       "mt": "0px",
+       "mb": "0px",
+       "trans": "all",
+       "anim": "none",
+       "maxH": "760px",
+       "h": "720px",
+       "pos": "static"
+      },
+      "modalParent": "DIV#mask.mask.tut-on",
+      "innerScroll": {
+       "sh": 552,
+       "ch": 552
+      },
+      "title": "休息（週一）",
+      "btns": [
+       {
+        "t": "返回地圖",
+        "x": 36,
+        "y": 756,
+        "w": 358,
+        "h": 45
+       },
+       {
+        "t": "開始今日行程",
+        "x": 36,
+        "y": 809,
+        "w": 358,
+        "h": 44
+       },
+       {
+        "t": "想跳過本週剩餘日子？加速 →",
+        "x": 36,
+        "y": 861,
+        "w": 358,
+        "h": 45
+       }
+      ]
+     },
+     {
+      "maskCls": "mask tut-on on day-res",
+      "maskChildren": [
+       "DIV.modal"
+      ],
+      "maskCS": {
+       "ai": "flex-end",
+       "jc": "center",
+       "fd": "row",
+       "pad": "52px 16px 16px",
+       "h": 932
+      },
+      "modal": {
+       "x": 36,
+       "y": 196,
+       "w": 358,
+       "h": 720
+      },
+      "modalCS": {
+       "mt": "0px",
+       "mb": "0px",
+       "trans": "all",
+       "anim": "none",
+       "maxH": "760px",
+       "h": "720px",
+       "pos": "static"
+      },
+      "modalParent": "DIV#mask.mask.tut-on",
+      "innerScroll": {
+       "sh": 552,
+       "ch": 552
+      },
+      "title": "休息（週一）",
+      "btns": [
+       {
+        "t": "返回地圖",
+        "x": 36,
+        "y": 756,
+        "w": 358,
+        "h": 45
+       },
+       {
+        "t": "開始今日行程",
+        "x": 36,
+        "y": 809,
+        "w": 358,
+        "h": 44
+       },
+       {
+        "t": "想跳過本週剩餘日子？加速 →",
+        "x": 36,
+        "y": 861,
+        "w": 358,
+        "h": 45
+       }
+      ]
+     },
+     {
+      "maskCls": "mask tut-on on day-res",
+      "maskChildren": [
+       "DIV.modal"
+      ],
+      "maskCS": {
+       "ai": "flex-end",
+       "jc": "center",
+       "fd": "row",
+       "pad": "52px 16px 16px",
+       "h": 932
+      },
+      "modal": {
+       "x": 36,
+       "y": 196,
+       "w": 358,
+       "h": 720
+      },
+      "modalCS": {
+       "mt": "0px",
+       "mb": "0px",
+       "trans": "all",
+       "anim": "none",
+       "maxH": "760px",
+       "h": "720px",
+       "pos": "static"
+      },
+      "modalParent": "DIV#mask.mask.tut-on",
+      "innerScroll": {
+       "sh": 552,
+       "ch": 552
+      },
+      "title": "休息（週一）",
+      "btns": [
+       {
+        "t": "返回地圖",
+        "x": 36,
+        "y": 756,
+        "w": 358,
+        "h": 45
+       },
+       {
+        "t": "開始今日行程",
+        "x": 36,
+        "y": 809,
+        "w": 358,
+        "h": 44
+       },
+       {
+        "t": "想跳過本週剩餘日子？加速 →",
+        "x": 36,
+        "y": 861,
+        "w": 358,
+        "h": 45
+       }
+      ]
+     },
+     {
+      "maskCls": "mask tut-on on day-res",
+      "maskChildren": [
+       "DIV.modal"
+      ],
+      "maskCS": {
+       "ai": "flex-end",
+       "jc": "center",
+       "fd": "row",
+       "pad": "52px 16px 16px",
+       "h": 932
+      },
+      "modal": {
+       "x": 36,
+       "y": 196,
+       "w": 358,
+       "h": 720
+      },
+      "modalCS": {
+       "mt": "0px",
+       "mb": "0px",
+       "trans": "all",
+       "anim": "none",
+       "maxH": "760px",
+       "h": "720px",
+       "pos": "static"
+      },
+      "modalParent": "DIV#mask.mask.tut-on",
+      "innerScroll": {
+       "sh": 552,
+       "ch": 552
+      },
+      "title": "休息（週一）",
+      "btns": [
+       {
+        "t": "返回地圖",
+        "x": 36,
+        "y": 756,
+        "w": 358,
+        "h": 45
+       },
+       {
+        "t": "開始今日行程",
+        "x": 36,
+        "y": 809,
+        "w": 358,
+        "h": 44
+       },
+       {
+        "t": "想跳過本週剩餘日子？加速 →",
+        "x": 36,
+        "y": 861,
+        "w": 358,
+        "h": 45
+       }
+      ]
+     },
+     {
+      "maskCls": "mask tut-on on day-res",
+      "maskChildren": [
+       "DIV.modal"
+      ],
+      "maskCS": {
+       "ai": "flex-end",
+       "jc": "center",
+       "fd": "row",
+       "pad": "52px 16px 16px",
+       "h": 932
+      },
+      "modal": {
+       "x": 36,
+       "y": 196,
+       "w": 358,
+       "h": 720
+      },
+      "modalCS": {
+       "mt": "0px",
+       "mb": "0px",
+       "trans": "all",
+       "anim": "none",
+       "maxH": "760px",
+       "h": "720px",
+       "pos": "static"
+      },
+      "modalParent": "DIV#mask.mask.tut-on",
+      "innerScroll": {
+       "sh": 552,
+       "ch": 552
+      },
+      "title": "休息（週一）",
+      "btns": [
+       {
+        "t": "返回地圖",
+        "x": 36,
+        "y": 756,
+        "w": 358,
+        "h": 45
+       },
+       {
+        "t": "開始今日行程",
+        "x": 36,
+        "y": 809,
+        "w": 358,
+        "h": 44
+       },
+       {
+        "t": "想跳過本週剩餘日子？加速 →",
+        "x": 36,
+        "y": 861,
+        "w": 358,
+        "h": 45
+       }
+      ]
+     }
+    ],
+    "after_rest_day": {
+     "maskOn": true,
+     "dayIndex": 8,
+     "mapVisible": true,
+     "title": "電視台臨記班底添新血 阿偉獲青睞",
+     "modalBtns": [
+      "收下這份剪報"
+     ],
+     "story": false,
+     "choices": 0,
+     "enc": false,
+     "locSheet": true,
+     "locTitle": "地點",
+     "menuOpen": false
+    },
+    "b6_free_day_state": {
+     "maskOn": false,
+     "dayIndex": 8,
+     "mapVisible": true,
+     "title": null,
+     "modalBtns": [],
+     "story": false,
+     "choices": 0,
+     "enc": false,
+     "locSheet": true,
+     "locTitle": "地點",
+     "menuOpen": false
+    },
+    "b6_clean": {
+     "end_day": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "map-end-day",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 861,
+      "w": 338,
+      "h": 45,
+      "bottom": 906,
+      "right": 384,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "14.4px",
+      "text": "過一日"
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 797,
+      "w": 366,
+      "h": 123,
+      "bottom": 920,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月9日（二）· 第2週今日：自由行動 · 仲可以去 2 個地方過一日"
+     }
+    },
+    "b6_sheet_opened": {
+     "attempt": 1,
+     "state": {
+      "maskOn": false,
+      "dayIndex": 8,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "金龍茶餐廳 · 油麻地",
+      "menuOpen": false
+     }
+    },
+    "b6_sheet_open": {
+     "end_day_count": 1,
+     "end_day": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "map-end-day",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 861,
+      "w": 338,
+      "h": 45,
+      "bottom": 906,
+      "right": 384,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "14.4px",
+      "text": "過一日"
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 797,
+      "w": 366,
+      "h": 123,
+      "bottom": 920,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月9日（二）· 第2週今日：自由行動 · 仲可以去 1 個地方過一日"
+     },
+     "sheet": {
+      "found": true,
+      "tag": "DIV",
+      "id": "loc-sheet",
+      "cls": "sheet has-loc-bg on sheet-live locpanel118 locpanel118-has-owner",
+      "x": 20,
+      "y": 0,
+      "w": 390,
+      "h": 932,
+      "bottom": 932,
+      "right": 410,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(26, 20, 16)",
+      "fontSize": "16px",
+      "text": "今日出行：已用 1 / 2仲可以去 1 個地方✓ 已到埗，扣咗 1 次出行額度\n"
+     },
+     "appScrollTop": 0
+    },
+    "b6_after_close": {
+     "end_day": {
+      "found": true,
+      "tag": "BUTTON",
+      "id": "map-end-day",
+      "cls": "map-start-today",
+      "x": 46,
+      "y": 861,
+      "w": 338,
+      "h": 45,
+      "bottom": 906,
+      "right": 384,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(58, 46, 34)",
+      "fontSize": "14.4px",
+      "text": "過一日"
+     },
+     "hint": {
+      "found": true,
+      "tag": "DIV",
+      "id": "map-hint",
+      "cls": "map-hint",
+      "x": 32,
+      "y": 797,
+      "w": 366,
+      "h": 123,
+      "bottom": 920,
+      "right": 398,
+      "visible": true,
+      "disabled": false,
+      "bg": "rgb(255, 253, 246)",
+      "color": "rgb(43, 33, 24)",
+      "fontSize": "13.12px",
+      "text": "1990年1月9日（二）· 第2週今日：自由行動 · 仲可以去 1 個地方過一日"
+     }
+    },
+    "c4_before": {
+     "maskOn": false,
+     "dayIndex": 8,
+     "mapVisible": true,
+     "title": null,
+     "modalBtns": [],
+     "story": false,
+     "choices": 0,
+     "enc": false,
+     "locSheet": true,
+     "locTitle": "地點",
+     "menuOpen": false
+    },
+    "c4_overday": {
+     "btns": [
+      {
+       "t": "確定過一日",
+       "cls": "d",
+       "x": 36,
+       "y": 457,
+       "w": 358,
+       "h": 44
+      },
+      {
+       "t": "取消",
+       "cls": "g",
+       "x": 36,
+       "y": 509,
+       "w": 358,
+       "h": 44
+      }
+     ],
+     "dom_order": [
+      "確定過一日",
+      "取消"
+     ],
+     "maskCls": "mask tut-on on",
+     "modal": {
+      "x": 36,
+      "y": 369,
+      "w": 358,
+      "h": 194
+     },
+     "title": "確認過一日？"
+    },
+    "c4_after_cancel_day": 8,
+    "u2_detail_again": {
+     "btns": [
+      {
+       "text": "接通告",
+       "cls": "p",
+       "role": "p",
+       "x": 36,
+       "y": 744,
+       "w": 358,
+       "h": 44
+      },
+      {
+       "text": "離開",
+       "cls": "g btn_leave",
+       "role": "g btn_leave",
+       "x": 36,
+       "y": 796,
+       "w": 358,
+       "h": 44
+      }
+     ]
+    },
+    "u4_close_giglist": {
+     "clicked_back": "返去地點",
+     "state": {
+      "maskOn": false,
+      "dayIndex": 8,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "星河電視台 · 九龍塘",
+      "menuOpen": false
+     }
+    },
+    "u4_quota": {
+     "before": {
+      "state": {
+       "maskOn": false,
+       "dayIndex": 8,
+       "mapVisible": true,
+       "title": null,
+       "modalBtns": [],
+       "story": false,
+       "choices": 0,
+       "enc": false,
+       "locSheet": true,
+       "locTitle": "地點",
+       "menuOpen": false
+      },
+      "locTitle": "地點",
+      "hint": "1990年1月9日（二）· 第2週今日：自由行動 · 仲可以去 1 個地方過一日",
+      "toast": "",
+      "used": 1
+     },
+     "after": {
+      "state": {
+       "maskOn": false,
+       "dayIndex": 8,
+       "mapVisible": true,
+       "title": null,
+       "modalBtns": [],
+       "story": false,
+       "choices": 0,
+       "enc": false,
+       "locSheet": true,
+       "locTitle": "地點",
+       "menuOpen": false
+      },
+      "locTitle": "地點",
+      "hint": "1990年1月9日（二）· 第2週今日：自由行動 · 仲可以去 1 個地方過一日",
+      "toast": "",
+      "used": 2
+     }
+    },
+    "b1_hunt_log": [
+     {
+      "day": 8,
+      "plan": {
+       "1": "九龍電視台",
+       "2": "香江唱片",
+       "3": "維港電影"
+      },
+      "daily_gate": 0.3748,
+      "try1_九龍電視台": {
+       "enc": false,
+       "story": false,
+       "sheet": true
+      },
+      "try2_香江唱片": {
+       "enc": false,
+       "story": false,
+       "sheet": true
+      },
+      "try3_維港電影": {
+       "enc": false,
+       "story": false,
+       "sheet": true
+      }
+     },
+     {
+      "day": 9,
+      "plan": {
+       "1": "星河電視台",
+       "2": "天星音樂",
+       "3": "九龍電視台"
+      },
+      "daily_gate": 0.151,
+      "try1_星河電視台": {
+       "enc": true,
+       "story": false,
+       "sheet": true
+      }
+     }
+    ],
+    "b1_encounter": {
+     "nb": {
+      "x": 30,
+      "y": 879,
+      "w": 370,
+      "h": 44,
+      "offsetW": 370,
+      "offsetH": 44,
+      "text": "下一句"
+     },
+     "line": "哎，收工啦收工啦，各位辛苦晒，聽日準時呀！",
+     "advance": {
+      "before": "哎，收工啦收工啦，各位辛苦晒，聽日準時呀！",
+      "after": "星河電視台大堂，彭少祺啱啱錄完節目出嚟，一路行一路同人打招呼",
+      "advanced": true
+     },
+     "via": "loc_try1",
+     "loc": "星河電視台",
+     "day": 9
+    },
+    "pageerrors": []
+   },
+   "notes": [],
+   "zero_pageerror": true
+  },
+  "932j": {
+   "height": 932,
+   "probes": {
+    "b4_soft_v2": {
+     "maskCls": "mask tut-on on day-res",
+     "modalH": 720,
+     "modalY": 196,
+     "modalW": 358,
+     "innerScroll": {
+      "sh": 814,
+      "ch": 552,
+      "st": 0
+     },
+     "title": "拍攝日→殺青：《陰陽夜更》動作替身",
+     "btns": [
+      {
+       "t": "返回地圖",
+       "cls": "p",
+       "x": 36,
+       "y": 756,
+       "w": 358,
+       "h": 720
+      },
+      {
+       "t": "開始今日行程",
+       "cls": "g",
+       "x": 36,
+       "y": 809,
+       "w": 358,
+       "h": 720
+      },
+      {
+       "t": "想跳過本週剩餘日子？加速 →",
+       "cls": "day-end-accel-link",
+       "x": 36,
+       "y": 861,
+       "w": 358,
+       "h": 720
+      }
+     ]
+    },
+    "b4_rest_v2": {
+     "maskCls": "mask tut-on on day-res",
+     "modalH": 720,
+     "modalY": 196,
+     "modalW": 358,
+     "innerScroll": {
+      "sh": 552,
+      "ch": 552,
+      "st": 0
+     },
+     "title": "休息（週一）",
+     "btns": [
+      {
+       "t": "返回地圖",
+       "cls": "p",
+       "x": 36,
+       "y": 756,
+       "w": 358,
+       "h": 720
+      },
+      {
+       "t": "開始今日行程",
+       "cls": "g",
+       "x": 36,
+       "y": 809,
+       "w": 358,
+       "h": 720
+      },
+      {
+       "t": "想跳過本週剩餘日子？加速 →",
+       "cls": "day-end-accel-link",
+       "x": 36,
+       "y": 861,
+       "w": 358,
+       "h": 720
+      }
+     ]
+    },
+    "b4_compare": {
+     "soft_modal": {
+      "y": 196,
+      "h": 720
+     },
+     "rest_modal": {
+      "y": 196,
+      "h": 720
+     },
+     "soft_btn_ys": [
+      756,
+      809,
+      861
+     ],
+     "rest_btn_ys": [
+      756,
+      809,
+      861
+     ],
+     "btn_y_diff": [
+      0,
+      0,
+      0
+     ],
+     "identical": true
+    },
+    "c4_control": {
+     "btns": [
+      {
+       "t": "確定過一日",
+       "x": 36,
+       "y": 457,
+       "w": 358,
+       "h": 44
+      },
+      {
+       "t": "取消",
+       "x": 36,
+       "y": 509,
+       "w": 358,
+       "h": 44
+      }
+     ],
+     "maskCls": "mask tut-on on",
+     "maskAI": "center",
+     "modal": {
+      "y": 369,
+      "h": 194
+     }
+    },
+    "pageerrors": []
+   },
+   "notes": [],
+   "zero_pageerror": true
+  },
+  "700k": {
+   "height": 700,
+   "probes": {
+    "intro_finished": true,
+    "b1_mainline": [
+     {
+      "step": 0,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 647,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 1,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 647,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 2,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 647,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 3,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 647,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 4,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 647,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 5,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 647,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 6,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 647,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     },
+     {
+      "step": 7,
+      "kind": "line",
+      "next": [
+       {
+        "text": "下一句",
+        "id": "",
+        "cls": "p",
+        "x": 30,
+        "y": 647,
+        "w": 370,
+        "h": 44,
+        "inVP": true,
+        "covered": false,
+        "hit": "",
+        "disabled": false,
+        "tag": "BUTTON"
+       }
+      ]
+     }
+    ],
+    "c3_open": true,
+    "c3_acts": [],
+    "b4_soft": {
+     "maskCls": "mask tut-on on day-res",
+     "modalH": 546,
+     "modalY": 138,
+     "modalW": 358,
+     "innerScroll": {
+      "sh": 789,
+      "ch": 374,
+      "st": 0
+     },
+     "title": "拍攝日→殺青：《陰陽夜更》動作替身",
+     "btns": [
+      {
+       "t": "返回地圖",
+       "cls": "p",
+       "x": 36,
+       "y": 520,
+       "w": 358,
+       "h": 546
+      },
+      {
+       "t": "開始今日行程",
+       "cls": "g",
+       "x": 36,
+       "y": 573,
+       "w": 358,
+       "h": 546
+      },
+      {
+       "t": "想跳過本週剩餘日子？加速 →",
+       "cls": "day-end-accel-link",
+       "x": 36,
+       "y": 625,
+       "w": 358,
+       "h": 546
+      }
+     ]
+    },
+    "b4_rest": {
+     "maskCls": "mask tut-on on day-res",
+     "modalH": 546,
+     "modalY": 138,
+     "modalW": 358,
+     "innerScroll": {
+      "sh": 374,
+      "ch": 374,
+      "st": 0
+     },
+     "title": "休息（週一）",
+     "btns": [
+      {
+       "t": "返回地圖",
+       "cls": "p",
+       "x": 36,
+       "y": 520,
+       "w": 358,
+       "h": 546
+      },
+      {
+       "t": "開始今日行程",
+       "cls": "g",
+       "x": 36,
+       "y": 573,
+       "w": 358,
+       "h": 546
+      },
+      {
+       "t": "想跳過本週剩餘日子？加速 →",
+       "cls": "day-end-accel-link",
+       "x": 36,
+       "y": 625,
+       "w": 358,
+       "h": 546
+      }
+     ]
+    },
+    "b4_compare": {
+     "soft_modal": {
+      "y": 138,
+      "h": 546
+     },
+     "rest_modal": {
+      "y": 138,
+      "h": 546
+     },
+     "soft_btn_ys": [
+      520,
+      573,
+      625
+     ],
+     "rest_btn_ys": [
+      520,
+      573,
+      625
+     ],
+     "btn_y_diff": [
+      0,
+      0,
+      0
+     ],
+     "identical": true
+    },
+    "c4_control": {
+     "btns": [
+      {
+       "t": "確定過一日",
+       "x": 36,
+       "y": 339,
+       "w": 358,
+       "h": 44
+      },
+      {
+       "t": "取消",
+       "x": 36,
+       "y": 391,
+       "w": 358,
+       "h": 44
+      }
+     ],
+     "maskCls": "mask tut-on on",
+     "maskAI": "center",
+     "modal": {
+      "y": 251,
+      "h": 198
+     }
+    },
+    "pageerrors": []
+   },
+   "notes": [],
+   "zero_pageerror": true
+  },
+  "700l": {
+   "height": 700,
+   "probes": {
+    "sheet_clean": {
+     "attempt": 1,
+     "open_loc": true,
+     "state": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "金龍茶餐廳 · 油麻地",
+      "menuOpen": false
+     }
+    },
+    "c3_acts": [
+     {
+      "t": "大堂飲茶聽八卦花 $15 茶錢，隔籬枱可能有料。",
+      "x": 41,
+      "y": 282,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "幫手執漏老闆娘今日唔夠人手，幫佢執枱沖茶頂一陣，",
+      "x": 41,
+      "y": 349,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "打聽電視城規矩向茶餐廳伙記打聽入廠禁忌 · 請伙",
+      "x": 41,
+      "y": 416,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "打聽高仔搶鏡事向茶客打聽高仔片場八卦 · 請茶客",
+      "x": 41,
+      "y": 483,
+      "w": 338,
+      "h": 60
+     },
+     {
+      "t": "打聽曉晴近況向化妝師打聽曉晴動向 · 請化妝師飲",
+      "x": 41,
+      "y": 550,
+      "w": 338,
+      "h": 60
+     }
+    ],
+    "loc_title": "金龍茶餐廳 · 油麻地",
+    "pageerrors": []
+   },
+   "notes": [],
+   "zero_pageerror": true
+  },
+  "932m": {
+   "height": 932,
+   "probes": {
+    "clean_check": {
+     "maskOn": false,
+     "dayIndex": 0,
+     "mapVisible": true,
+     "title": null,
+     "modalBtns": [],
+     "story": false,
+     "choices": 0,
+     "enc": false,
+     "locSheet": true,
+     "locTitle": "地點",
+     "menuOpen": false
+    },
+    "u4_pre": {
+     "state": {
+      "maskOn": false,
+      "dayIndex": 0,
+      "mapVisible": true,
+      "title": null,
+      "modalBtns": [],
+      "story": false,
+      "choices": 0,
+      "enc": false,
+      "locSheet": true,
+      "locTitle": "地點",
+      "menuOpen": false
+     },
+     "toast": {
+      "text": "",
+      "on": false,
+      "aria": "true",
+      "cls": "toast"
+     },
+     "used": 1,
+     "hint": "1990年1月1日（一）· 第1週今日：到處逛逛 · 仲可以去 1 個地方過一日"
+    },
+    "u4_toast": {
+     "clicked": true,
+     "samples": [
+      {
+       "ms": 0,
+       "text": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+       "on": true,
+       "aria": "false",
+       "cls": "toast on"
+      },
+      {
+       "ms": 104,
+       "text": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+       "on": true,
+       "aria": "false",
+       "cls": "toast on"
+      },
+      {
+       "ms": 209,
+       "text": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+       "on": true,
+       "aria": "false",
+       "cls": "toast on"
+      },
+      {
+       "ms": 312,
+       "text": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+       "on": true,
+       "aria": "false",
+       "cls": "toast on"
+      },
+      {
+       "ms": 418,
+       "text": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+       "on": true,
+       "aria": "false",
+       "cls": "toast on"
+      },
+      {
+       "ms": 522,
+       "text": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+       "on": true,
+       "aria": "false",
+       "cls": "toast on"
+      },
+      {
+       "ms": 625,
+       "text": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+       "on": true,
+       "aria": "false",
+       "cls": "toast on"
+      },
+      {
+       "ms": 731,
+       "text": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+       "on": true,
+       "aria": "false",
+       "cls": "toast on"
+      },
+      {
+       "ms": 836,
+       "text": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+       "on": true,
+       "aria": "false",
+       "cls": "toast on"
+      },
+      {
+       "ms": 941,
+       "text": "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。",
+       "on": true,
+       "aria": "false",
+       "cls": "toast on"
+      },
+      {
+       "ms": 1045,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 1156,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 1266,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 1373,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 1479,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 1583,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 1687,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 1792,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 1898,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 2054,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 2181,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 2287,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 2392,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 2497,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 2601,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 2706,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 2811,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      {
+       "ms": 2918,
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      }
+     ],
+     "post": {
+      "state": {
+       "maskOn": false,
+       "dayIndex": 0,
+       "mapVisible": true,
+       "title": null,
+       "modalBtns": [],
+       "story": false,
+       "choices": 0,
+       "enc": false,
+       "locSheet": true,
+       "locTitle": "地點",
+       "menuOpen": false
+      },
+      "toast": {
+       "text": "",
+       "on": false,
+       "aria": "true",
+       "cls": "toast"
+      },
+      "used": 2,
+      "locTitle": "地點",
+      "hint": "1990年1月1日（一）· 第1週今日：到處逛逛 · 仲可以去 1 個地方過一日"
+     },
+     "seen_texts": [
+      "今日出行額度用完——今日已經去咗 2 個地方，聽日再去。"
+     ]
+    },
+    "pageerrors": []
+   },
+   "notes": [],
+   "zero_pageerror": true
+  }
+ }
+}

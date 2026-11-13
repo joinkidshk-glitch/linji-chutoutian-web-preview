@@ -25,10 +25,10 @@ ok('鎖定態印章原封不動（24px、3px double 紅框、斜 -4.5°、letter
    '#nb-actions #btn-confirm-plan.is-locked{' in src and 'font-size:24px' in src
    and 'border:3px double #c0452c !important' in src and 'rotate(-4.5deg)' in src
    and 'letter-spacing:.32em' in src)
-ok('v143 B3 短屏印章 20px 規則仲喺度（唔係本票改走）',
-   '#nb-actions #btn-confirm-plan.is-locked{ font-size:20px; padding:4px 14px 4px 16px; margin:4px auto 3px; }' in src)
-ok('五個大 tab／備忘紙／吊牌唔郁（v141 選擇器仲喺度）',
-   '#home-tabs .home-tab.on{ height:38px' in src and 'class="memo141" id="home-stats"' in src
+ok('v143 B3 短屏印章 20px 規則仲喺度（唔係本票改走；v20a197 B2：margin 歸零）',
+   '#nb-actions #btn-confirm-plan.is-locked{ font-size:20px; padding:4px 14px 4px 16px; margin:0; }' in src)
+ok('五個大 tab／備忘紙／吊牌唔郁（v141 選擇器仲喺度；v20a197 C1：選中格改 32px）',
+   '#home-tabs .home-tab.on{ height:32px' in src and 'class="memo141" id="home-stats"' in src
    and 'width:102px !important' in src)
 ok('v143 B1 紙標籤／B2 其餘四組 subtab 規則仲喺度',
    '.nb-quick > button{ font-family:"Kaiti TC"' in src
@@ -78,8 +78,8 @@ ok('B1：短屏鎖定態先收起標題行＋提示列（:has(.is-locked)，可�
    and '#home-pane-plan:has(#btn-confirm-plan.is-locked) #nb-plan-mode{ display:none !important; }' in seg)
 ok('B1：range 底 margin 6px→2px（短屏鎖定態限定，!important 蓋舊規則）',
    '#home-pane-plan:has(#btn-confirm-plan.is-locked) .nb-range{ margin-bottom:2px !important; }' in seg)
-ok('B1：footer padding 6px→5px（短屏鎖定態限定）',
-   '#nb-actions:has(#btn-confirm-plan.is-locked){ padding:5px 10px calc(5px + env(safe-area-inset-bottom)); }' in seg)
+ok('B1：footer padding 短屏鎖定態同未確認態一致（v20a197 B2：5px→6px，印章 y 唔差 1px）',
+   '#nb-actions:has(#btn-confirm-plan.is-locked){ padding:6px 10px calc(6px + env(safe-area-inset-bottom)); }' in seg)
 ok('B1：成段收窄只喺 @media (max-height:780px) 入面——932 唔受影響',
    seg.count('@media (max-height:780px){') == 1)
 ok('B1：標題行／提示列本身仲喺 HTML（淨係 CSS 收起，DOM／文字唔郁）',

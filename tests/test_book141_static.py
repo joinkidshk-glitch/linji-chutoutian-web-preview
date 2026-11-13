@@ -27,8 +27,8 @@ ok('五個大類 tab 仲齊（data-hgroup ×5＋行程／事業／近況／消�
    and all(s in src for s in ['>行程</button>', '>事業</button>', '>近況</button>', '>消息</button>', '>人情</button>']))
 ok('B 式尺寸：tab 58px 闊、未選 32px、高 manila #e9dcbc',
    '#home-tabs .home-tab{' in src and 'flex:0 0 58px' in src and 'height:32px' in src and '#e9dcbc' in src)
-ok('B 式選中態：38px 高、同紙面色 #f5eddc、底部伸出 1.5px',
-   '#home-tabs .home-tab.on{' in src and 'height:38px' in src and 'margin-bottom:-1.5px' in src)
+ok('B 式選中態：32px 高、同紙面色 #f5eddc、底部伸出 1.5px（v20a197 C1：使用中狀態用色／底線區分，唔改大細）',
+   '#home-tabs .home-tab.on{' in src and 'height:32px' in src and 'margin-bottom:-1.5px' in src)
 ok('分隔線喺 tab 列底（#home-tabs::after）＋選中 tab 蓋走舊金底線',
    '#home-tabs::after' in src and '#home-tabs .home-tab.on::after{ content:none; }' in src)
 ok('tab 列＋subtab 列共用紙面、margin 歸零貼住 pane 頂',
@@ -72,11 +72,11 @@ ok('印章樣式：印泥紅 #c0452c 雙線框、斜 -4.5°、letter-spacing .32
    and 'rotate(-4.5deg)' in src and 'letter-spacing:.32em' in src)
 ok('印章只綁 .is-locked（未定嗰陣唔出；裸 #btn-confirm-plan 無印章規則）',
    '#btn-confirm-plan.is-locked' in src and '#btn-confirm-plan{ font-family:"Songti TC"' not in src)
-ok('鎖定態邏輯仲喺度（唔 editable → disabled＋is-locked＋「行程已定」；editable →「確定本週行程」）',
-   'confBtn.classList.add("is-locked")' in src and 'confBtn.textContent = "行程已定"' in src
-   and 'confBtn.textContent = "確定本週行程"' in src)
-ok('「還原」掣鎖定態照舊隱藏（唔俾印章搶走還原路）',
-   'resetBtn.style.display = editable ? "inline-block" : "none"' in src)
+ok('鎖定態邏輯仲喺度（v20a197 B2＋D1：經 syncConfirmPlanStamp197 互換 button／span；唔 editable → 鎖定印章「行程已定」；editable →「確定本週行程」）',
+   'syncConfirmPlanStamp197(true)' in src and 'el.textContent = "行程已定"' in src
+   and 'el.textContent = "確定本週行程"' in src)
+ok('「還原」掣鎖定態改 disabled 灰態留喺原位（v20a197 B2：唔再消失）',
+   'resetBtn.style.display = "inline-block"' in src and '#btn-reset-plan:disabled' in src)
 
 # --- 內容面板唔郁 ---
 ok('內容面板 id 全保留（plan／ledger／rumor／clippings／debt／people／tags／inv／works／awards／memory／progress）',

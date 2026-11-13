@@ -23,8 +23,8 @@ ok('鎖定態印章原封不動（24px、3px double 紅框、斜 -4.5°、letter
    '#nb-actions #btn-confirm-plan.is-locked{' in src and 'font-size:24px' in src
    and 'border:3px double #c0452c !important' in src and 'rotate(-4.5deg)' in src
    and 'letter-spacing:.32em' in src)
-ok('五個大 tab／備忘紙／吊牌唔郁（v141 選擇器仲喺度）',
-   '#home-tabs .home-tab.on{ height:38px' in src and 'class="memo141" id="home-stats"' in src
+ok('五個大 tab／備忘紙／吊牌唔郁（v141 選擇器仲喺度；v20a197 C1：選中格改 32px）',
+   '#home-tabs .home-tab.on{ height:32px' in src and 'class="memo141" id="home-stats"' in src
    and 'width:102px !important' in src)
 
 # --- B2：其餘四組 subtab 照 plan 組做法 ---
@@ -71,7 +71,7 @@ ok('B1：全部掣 id／class 仲齊（全日休息／全日訓練／清空本�
 # --- B3：短屏印章收細，932 唔變 ---
 ok('B3：短屏 media query（max-height:780px）印章 24px→20px、收窄 padding／margin',
    '@media (max-height:780px){' in src
-   and '#nb-actions #btn-confirm-plan.is-locked{ font-size:20px; padding:4px 14px 4px 16px; margin:4px auto 3px; }' in src)
+   and '#nb-actions #btn-confirm-plan.is-locked{ font-size:20px; padding:4px 14px 4px 16px; margin:0; }' in src)  # v20a197 B2：700 印章都係 flex:1 佔滿 bar，margin 歸零（舊 margin:4px auto 3px 會令印章收窄置中）
 ok('B3：短屏 nb-actions padding 一併收窄（慳多約 8px）',
    '#nb-actions{ padding:6px 10px calc(6px + env(safe-area-inset-bottom)); }' in src)
 ok('B3：932 印章規則無全局改動（24px 只出現喺 v141 原規則，唔係 BOOK143 段入面改大）',
