@@ -1,5 +1,6 @@
 # NOTES_V20A176 — 全部人隨機撞到，連紅星都可以送禮
 
+- **已落地：遊戲 commit `4475564`，線上核實 5,316,979 bytes、sha256 `25212cc9a458c78f22246f9808d266a80327e2023b84e3ab2052b0ca535f04df`，同 repo HEAD:index.html 完全一致（2026-11-13 約 15:58 HKT；第一次 push 斷線 egress proxy reset，重試成功；Pages 部署滯後約 2 分鐘）**
 - 分支：`v20a176`（工作副本 `~/workspace/linji-work176/`），基底 main `c682cc2`（v178；三段 rebase 完成，見 §9：a618a5d→a41b789→91f264a→c682cc2）
 - 設計：`DESIGN.md`（§0–§11），用戶拍板「全部人隨機撞到，連紅星都可以送禮（明星志願嗰套）」
 - **本票唔落地**——落地由統籌做。**Rebase 已完成**（基底 `c682cc2`，最新 main；重驗見 §3／§9）。
