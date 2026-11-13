@@ -219,9 +219,9 @@
 10. **Ripple S1–S10**：唔實作，等用戶拍板（見 §4）。
 11. **C17 synopsis 第 2 段**：整合員已改寫做玩家安全寫法（見 §1.7）；如設計組想保留「舊版」對照說明，請改放 DEV 註解，唔好放 synopsis。
 
-## §8 落地記錄（[PENDING]）
+## §8 落地記錄（已落地）
 
-- Rebase：[PENDING]
-- Squash merge：[PENDING]
-- 線上核實：[PENDING]（基線：v166 上線 5,219,490 bytes、sha `bdd92378…`；main `60b0a8f`；落地前 curl 核實線上同 origin/main 逐字一致）
-- 設計 review：`~/workspace/linji-design-review-v157/REVIEW.md`（[PENDING]）
+- Rebase：分支 `v20a157` 由 `e08a070` rebase 上 `origin/main` `60b0a8f`（v166 NOTES）。6 個測試檔衝突（aud91fix122／124、gigreq110、text125、travel114、wf5_87），其中 wf5_87 手動合併（保留 main 嘅 v151 DENG 例外＋v157 嘅 nodes[5:] 檢查——v157 原版喺 rebase 後樹會誤判 DENG 兩檔）；rebase 後 HEAD `171829a`；resync commit `22900ab`（travel114 42 錨點／text125 3 錨點／kwan151 13 錨點／tang152 3 錨點，difflib 核實全部純漂移；全套 rebase 後 225／12 零回歸）。期間修好 SSH host key 查錯地方問題（`core.sshCommand` 加 `-o UserKnownHostsFile=/home/hatch/.ssh/known_hosts`，見 AGENTS.md）。
+- Squash merge：main `807440f`（44 檔，+4431/−647），push `60b0a8f..807440f` 上 GitHub。合併前核對常駐 clone 分支 HEAD＝`22900ab`（v160 教訓）＋兩邊 tree sha 一致。
+- 線上核實：5,238,462 bytes、sha `bd62ff94…`，同 repo `main:index.html` 逐字一致（curl 核實，HTTP 200）。
+- 設計 review：`~/workspace/linji-design-review-v157/REVIEW.md`（已派，待報告）。
