@@ -1,5 +1,6 @@
 # NOTES v20a185 — 修 v183 review 新 B1＋C1（送禮選擇器 700 遮擋＋「×N」孤兒行）
 
+- **落地**：遊戲 commit `7c23238`（squash merge `v20a185`，基底 `77603b3` v184）；線上親自 curl 核實 **5,331,936 bytes、sha256 `5fbd3e24…`**，同 repo `HEAD:index.html` 完全一致（第一次 curl 仲係 v184 舊版，Pages 部署滯後；等 90 秒後重 curl 攞到新版）。Push main 一次成功（`77603b3..7c23238`），`git fsck` 乾淨（淨 dangling tree／commit，squash 正常殘留）。
 - 基底 main `01ddcaa`（v183 NOTES；live v183，5,329,880 bytes sha `9890d43e…`）
 - 分支 `v20a185`，工作副本 `~/workspace/linji-work185/`；**唔落地**（工人只做實作＋驗證＋commit＋push 分支）
 - 範圍：淨係修呈現層（modal 幾何＋卡片換行）。唔改 SAVE key（`starVolunteer_map_v19w`）、softRev（`s107`）、`?v=`（`v20a10`）；唔郁 `content/` pack JSON；唔郁頒獎禮舞台 code；唔改鎖邏輯／rel／fav 數值。
