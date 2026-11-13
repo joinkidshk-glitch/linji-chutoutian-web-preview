@@ -40,7 +40,9 @@
 - 注意：半成品嗰陣 `qa195/resync195.py`／`apply_resync195.py` 係對 f2a6b0c 基底寫嘅，留返做審計紀錄；rebase 後嘅正確映射係 `resync195_rebase.py`＋`resolve_rebase195.py`。
 
 ## 6. 落地
-- （待填：squash merge commit、線上 bytes／sha 核實）
+- Squash merge：常駐 clone main `b104f85`（v192）→ `git merge --squash v20a195` → commit `4f47077`（「v20a195: 阿偉造型最高紀錄（B 方案）＋ s2/s3 angry 表情（新測試 32+18 項＋實駕 23/23 PASS；全套 267/12 零回歸）」），75 檔、5197+/93-。`git fsck --strict` 乾淨。
+- Push main 一次成功（`b104f85..4f47077 main -> main`）；curl 核實線上 **5,343,979 bytes、sha `369e4c96fccb…`** 同 repo HEAD:index.html 一致（第一次 curl 嗰陣 Pages 仲係舊版 v192，75 秒後再核先追上）。
+- `samples195/`（raw 生成 PNG）跟 v147 前例唔入 repo，留喺工作副本 `~/workspace/linji-work195/samples195/`。
 
 ## 7. 設計 review
 - （待填）
