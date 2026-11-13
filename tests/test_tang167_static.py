@@ -76,9 +76,9 @@ ok('likes：v164 嗰三件唔郁（applyTangGift164 仲係三件賦值，咖啡�
    and 'gift_coffee_beans' not in fn_body('applyTangGift164'))
 ok('一致：reactionEntry 查 byKey（pref liked 唔跌返 neutral）',
    'let ent = by[npcKey+":"+itemId+":"+prefKey];' in src)
-ok('一致：calcDelta 計 liked（raw +2 來自 deltaRel.liked）',
+ok('一致：calcDelta 計 liked（raw +2 來自 deltaRel.liked；v183 B2 最愛同數）',
    'const { delta:rawDelta, kind, relKey } = calcDelta(npcKey, itemId);' in src
-   and 'let delta = kind==="liked" ? (Number(dr.liked)||2)' in src)
+   and 'let delta = (kind==="liked" || kind==="favorite") ? (Number(dr.liked)||2)' in src)
 ok('一致：giveGift tang 專例照行（applied 強制 0，rel_tang 唔郁）',
    'let applied = (npcKey==="tang") ? 0 : rawDelta;' in src)
 ok('一致：giveGift 回傳 delta:applied（唔係 rawDelta；v176 拎走 costsDay:true 殘留）',

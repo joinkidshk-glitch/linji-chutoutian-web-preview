@@ -108,7 +108,7 @@ for (const f of ['enc79Hash','enc79Rand','enc79StarDef','enc79EnsureStars','enc7
   'rom176WomanMet','rom176MeiUnlocked','rom176WhisperActive','rom176BeatOpen','rom176PresenceP',
   'rom176EnsureDay','rom176PresenceAt','rom176GrantWhisper','rom176TeaTargets','rom176TryIntercept',
   'rom176StarPrefKind','rom176StarDelta','rom176CanGiveStarGift','rom176StarReactionLine',
-  'rom176DoGiveStarGift','rom176ApplyGiftOverrides']) eval(extractFn(f));
+  'rom176DoGiveStarGift','rom176ApplyGiftOverrides','rom183XuMetBefore183','rom183RelText183']) eval(extractFn(f));
 } catch (e) { __extractFailed = e; }
 if (__extractFailed){
   console.log('FAIL harness: 抽取 ROM176／enc79 函數失敗（pristine 預期反證） :: ' + __extractFailed.message);

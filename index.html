@@ -3842,10 +3842,12 @@ body.day-res-open .day-row{
 /* ===== v19z31: playtest closeout — people/jobs/debt CTAs ===== */
 .people-go, .debt-empty .debt-repay-btn{
   margin-top:6px; min-height:36px; padding:6px 12px; border-radius:10px;
-  border:1px solid rgba(201,162,39,.55); background:rgba(201,162,39,.12);
-  color:var(--gold,#c9a227); font-weight:700; font-size:.78rem; cursor:pointer;
+  border:1px solid rgba(90,67,40,.65); background:rgba(201,162,39,.28);
+  color:#5a4328; font-weight:700; font-size:.78rem; cursor:pointer;
 }
 .people-go:active, .debt-empty .debt-repay-btn:active{ transform:scale(.98); }
+/* v20a183 C7：700 禮物選擇器兩欄排（10 行變 5 行），尾 3 件唔使碌；取消掣 pinned 不變 */
+@media (max-height:720px){ #gift-pick-list{ display:grid; grid-template-columns:1fr 1fr; gap:4px 8px; } #gift-pick-list .act{ margin-bottom:0 !important; padding:6px 8px !important; } }
 /* ===== v19z30: map chrome polish — compact legend · story strip · pin/HUD harden ===== */
 /* 1) Legend: one short row, less vertical space on phone */
 #map-legend.map-legend,
@@ -28450,7 +28452,7 @@ const StoryPlay = (()=>{
 })();
 
 
-const TUTORIAL_ZH_HK = {"version":3,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口 + v19z10 short tut ≤4","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上面嘅地點，就係你可以去嘅地方；要先撳入地點，先睇到有咩行動。","能力未夠，就去報名訓練；喺茶餐廳或者事務所「打聽」唔耗日，打聽返嚟嘅傳聞會記入手帳。"],"bodyAlt":["所有行動都要由地圖入去。","訓練夠數先報得試鏡；打聽、傾談同送禮都唔耗日（茶錢另計）。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可以免費睇住先；條件未合嗰啲會顯示「暫未能報」，達標之後先接得通告（接通告要用一日）。","記數簿記收支，行程記拍攝同本週安排——開工之前，記得睇手帳。"],"bodyAlt":["睇完通告欄，先決定去唔去試鏡。","數目同行程都喺手帳；達標之後先接通告。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練夠先報得試鏡","body":["去對應地點報名訓練，能力夠數先報到試鏡門檻。","訓練堂數儲夠之後，魅力課同觀察課就會開放。"],"bodyAlt":["能力未夠，就去合適地點報名訓練。","訓練儲夠數，魅力課同觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"打聽不耗日","body":["喺茶餐廳或者事務所「打聽」唔耗日，打聽返嚟嘅傳聞會記入手帳。","而家同熟人傾談或者送禮都唔會計一日（茶錢照扣）；只有訓練、試鏡、休息同跟行程開工先會計日。"],"bodyAlt":["打聽唔耗日（茶錢另計）。","傾談同送禮都唔佔日子（茶錢另計）。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到呢度（可以跳過；之後喺選單重看）。","建議你先去訓練，或者睇吓通告欄，再撳地圖上嘅「進度」掣——第一段故事會接著出現。"],"bodyAlt":["教學完喇，之後可以喺選單重看。","下一步：去訓練，或者睇吓通告欄同進度。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["今次未獲聘，呢一場唔可以再參加。","可以返去訓練，或者另揀一張通告。"],"bodyAlt":["呢一場未獲聘，唔會再開放。","返去訓練，或者另搵一張啱嘅通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘之後，拍攝日已經排咗進行程。","開工之前，記得睇手帳同行程，跟住上面嘅安排去做。"],"bodyAlt":["已經獲聘，拍攝日記咗喺行程。","跟住行程開工，進度可以喺手帳睇到。"],"buttons":["我知道了"]}},"filterPass":"2026-11-07"};
+const TUTORIAL_ZH_HK = {"version":3,"locale":"zh-Hant-written","source":"DS_PLAYER_ZH_FILTER_v1 + PLAN_GIG_CARD_PLAYER_COPY_v1 + v19n hard-gate／事態入口 + v19z10 short tut ≤4","ui":{"next":"下一步","gotIt":"我知道了","skip":"跳過教學","replay":"重看教學","replayStep":"重看本步"},"steps":[{"id":"TUT_WELCOME","speaker":"何生","title":"先做到有穩定收入","body":["1988 年春，你在黃大仙屋邨當臨記起步。","這階段目標很簡單：先做到有穩定收入。"],"bodyAlt":["你從臨記做起。先別想一下子成名。","眼前目標：先做到有穩定收入。"],"buttons":["下一步"]},{"id":"TUT_MAP","speaker":"系統","title":"從地圖選行動","body":["地圖上面嘅地點，就係你可以去嘅地方；要先撳入地點，先睇到有咩行動。","能力未夠，就去報名訓練；喺茶餐廳或者事務所「打聽」唔耗日，打聽返嚟嘅傳聞會記入手帳。","去佢哋常出沒嘅地方，有機會撞到佢哋——撞到先可以傾談／送禮。"],"bodyAlt":["所有行動都要由地圖入去。","訓練夠數先報得試鏡；打聽、傾談同送禮都唔耗日（茶錢另計）。"],"buttons":["下一步"]},{"id":"TUT_BOARD","speaker":"系統","title":"通告與報名條件","body":["通告欄可以免費睇住先；條件未合嗰啲會顯示「暫未能報」，達標之後先接得通告（接通告要用一日）。","記數簿記收支，行程記拍攝同本週安排——開工之前，記得睇手帳。"],"bodyAlt":["睇完通告欄，先決定去唔去試鏡。","數目同行程都喺手帳；達標之後先接通告。"],"buttons":["下一步"]},{"id":"TUT_TRAIN","speaker":"系統","title":"訓練夠先報得試鏡","body":["去對應地點報名訓練，能力夠數先報到試鏡門檻。","訓練堂數儲夠之後，魅力課同觀察課就會開放。"],"bodyAlt":["能力未夠，就去合適地點報名訓練。","訓練儲夠數，魅力課同觀察課就會開放。"],"buttons":["下一步"]},{"id":"TUT_NPC","speaker":"系統","title":"打聽不耗日","body":["喺茶餐廳或者事務所「打聽」唔耗日，打聽返嚟嘅傳聞會記入手帳。","而家同熟人傾談或者送禮都唔會計一日（茶錢照扣）；只有訓練、試鏡、休息同跟行程開工先會計日。去佢哋常出沒嘅地方，有機會撞到佢哋——撞到先可以傾談／送禮。"],"bodyAlt":["打聽唔耗日（茶錢另計）。","傾談同送禮都唔佔日子（茶錢另計）。"],"buttons":["下一步"]},{"id":"TUT_NOTEBOOK","speaker":"何生","title":"記數簿與行程","body":["記數簿記收支和數目，別漏任何一筆。","行程記拍攝與本週安排，開工前先看。"],"bodyAlt":["數目記在記數簿，收支要清楚。","本週安排和拍攝進度，全在行程頁。"],"buttons":["下一步"]},{"id":"TUT_DONE","speaker":"系統","title":"教學先到這裡","body":["教學先到呢度（可以跳過；之後喺選單重看）。","建議你先去訓練，或者睇吓通告欄，再撳地圖上嘅「進度」掣——第一段故事會接著出現。"],"bodyAlt":["教學完喇，之後可以喺選單重看。","下一步：去訓練，或者睇吓通告欄同進度。"],"buttons":["我知道了"]}],"toasts":{"TUT_AUD_LOCK":{"speaker":"何生","title":"能力不夠","body":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"],"bodyAlt":["這張通告暫未能報。","先去訓練，能力夠了再來報名。"],"buttons":["我知道了"],"bodyOnBoard":["這張通告暫未能報，因為能力未夠。","能力還不夠。可先到手帳安排訓練，再回來報名。"]},"TUT_AUD_FAIL":{"speaker":"系統","title":"本次未獲聘","body":["今次未獲聘，呢一場唔可以再參加。","可以返去訓練，或者另揀一張通告。"],"bodyAlt":["呢一場未獲聘，唔會再開放。","返去訓練，或者另搵一張啱嘅通告。"],"buttons":["我知道了"]},"TUT_SHOOT":{"speaker":"系統","title":"開工看行程","body":["獲聘之後，拍攝日已經排咗進行程。","開工之前，記得睇手帳同行程，跟住上面嘅安排去做。"],"bodyAlt":["已經獲聘，拍攝日記咗喺行程。","跟住行程開工，進度可以喺手帳睇到。"],"buttons":["我知道了"]}},"filterPass":"2026-11-07"};
 let TUTORIAL = TUTORIAL_ZH_HK;
 const TUT_MAIN_IDS = ["TUT_WELCOME","TUT_MAP","TUT_BOARD","TUT_DONE"]; /* v19z10：≤4 核心步；TRAIN／NPC／NOTEBOOK 併入文案 */
 /* PLAN 5ba79338: step 5 drag-guide and step 6 merge FX. Soft tip mounts tutorial-fx PNGs only when gatePath()==="soft". Modal scroll is separate. No new Soft flag. Soft≠PASS. Do not tip LIVE. ?v= stays 19w.
@@ -30516,6 +30518,7 @@ const GiftShop = (function(){
   }
   function prefKind(npcKey, itemId){
     const pref = prefFor(npcKey) || { likes:[], dislikes:[] };
+    if((pref.favorites||[]).indexOf(itemId)>=0) return "favorite"; /* v20a183 B2：最愛獨立回傳，唔再併入 liked */
     if((pref.likes||[]).indexOf(itemId)>=0) return "liked";
     if((pref.dislikes||[]).indexOf(itemId)>=0) return "dislike";
     return "neutral";
@@ -30554,7 +30557,7 @@ const GiftShop = (function(){
   }
   function reactionEntry(npcKey, itemId, pref){
     const by = (GIFT_REACT && GIFT_REACT.byKey) || {};
-    const prefKey = (pref==="dislike") ? "dislike" : pref;
+    const prefKey = (pref==="dislike") ? "dislike" : (pref==="favorite" ? "liked" : pref); /* v20a183 B2：最愛查句行 :liked（女角 pack 得 :liked 句） */
     let ent = by[npcKey+":"+itemId+":"+prefKey];
     if(!ent && prefKey!=="neutral"){
       /* 缺專屬 → 同角任意 neutral（同 item 優先，否則首條） */
@@ -30577,7 +30580,7 @@ const GiftShop = (function(){
     const html = formatEntryHtml(ent);
     if(html) return html;
     /* 短佔位 fallback */
-    if(pref==="liked") return lines.liked || "佢接過禮物，笑住講：「你記性真好。」";
+    if(pref==="liked" || pref==="favorite") return lines.liked || "佢接過禮物，笑住講：「你記性真好。」"; /* v20a183 B2：最愛 fallback 同喜歡 */
     if(pref==="dislike") return lines.dislike || "佢接過禮物，皺一皺眉，冇出聲。";
     return lines.neutral || sysLine("fallbackThanks", "謝謝，我收下。");
   }
@@ -30585,7 +30588,7 @@ const GiftShop = (function(){
     const it = itemById(itemId) || {};
     const dr = it.deltaRel || { default:1, liked:2, disliked:-1 };
     const kind = prefKind(npcKey, itemId);
-    let delta = kind==="liked" ? (Number(dr.liked)||2)
+    let delta = (kind==="liked" || kind==="favorite") ? (Number(dr.liked)||2) /* v20a183 B2：最愛同喜歡同數（女角 +2；星數值行 rom176StarDelta，唔經呢度） */
               : kind==="dislike" ? (Number(dr.disliked)!=null?Number(dr.disliked):-1)
               : (Number(dr.default)||1);
     /* 同 item 重複：第 2 次起正數減半（向下取整），負數維持 −1 */
@@ -31536,10 +31539,10 @@ async function refreshCopyPacksFromDisk(){
     try{ textfix55SimplePack(a); }catch(_t55){}
     try{ textfix55SimplePack(b); }catch(_t55){}
     try{ textfix55SimplePack(c); }catch(_t55){}
-    try{ textfix55SimplePack(d); }catch(_t55){}
+    try{ textfix55SimplePack(d); }catch(_t55){} try{ if(typeof rom183ApplyLineOverrides==="function") rom183ApplyLineOverrides(); }catch(_e183){} /* v20a183 C1/C6：NPC_LINES 粵語 greet＋教學巧遇句，載入正規化（唔直改 pack JSON） */
     try{ textfix55SimplePack(giftItems); }catch(_t55){}
     try{ textfix55SimplePack(giftPrefs); }catch(_t55){}
-    try{ if(giftReact) textfix55Walk(giftReact, null, null, TEXTFIX55_OPTS_GIFT); }catch(_t55){}
+    try{ if(giftReact) textfix55Walk(giftReact, null, null, TEXTFIX55_OPTS_GIFT); }catch(_t55){} try{ if(typeof rom183ApplyGiftReactFix==="function") rom183ApplyGiftReactFix(); }catch(_e183){} /* v20a183 C3：55 條女角反應句過粵語 filter（清洗之後行，唔直改 pack JSON） */
     try{ if(typeof years66Walk==="function"){ [a, b, c, d, giftItems, giftPrefs, giftReact].forEach(p=>{ try{ years66Walk(p, null); }catch(_y66){} }); } }catch(_y66){}
     /* v20a67 JAN67：disk pack 開局季節文字對位（Ch1 開場白／教學歡迎卡；BEATS／TUTORIAL 已賦值） */
     try{ if(typeof jan67OpeningTextFix==="function"){ jan67OpeningTextFix(c, 0); jan67OpeningTextFix(d, 0); } }catch(_j67){}
@@ -53071,8 +53074,8 @@ const ROM176_GREET = {
   choi:"采兒：「阿偉！啱啱好，我有單嘢想問你——唔係訪問，純粹八卦。」",
   vera:"Vera：「咁啱。你今日呢身……算啦，唔講住，行埋嚟傾兩句。」",
   lan:"藍若曦：「阿偉？通告牌嗰邊啱啱先改完，你咁啱行過嚟……係咪有嘢想問？」",
-  xu:"徐寶珊：「後生仔，行路望路呀。咦，係你——上次春茗撞過嗰個。」",
-  mei:"關海媚：「咁啱，喺呢度撞到你。」（佢望咗你一眼，冇即刻行開。）",
+  xu:"徐寶珊：「後生仔，行路望路呀。咦，係你——啱啱先撞到，唔好意思。」", /* v20a183 C2：初遇版，唔預設春茗；見過版喺 ROM183_GREET_MET */
+  mei:"關海媚：「咁啱，喺呢度撞到你。」", /* v20a183 C4：刪括號舞台指示，淨留對白 */
 };
 const ROM176_TEA_LINES = {
   hiu:"化妝師話，林曉晴呢排多數喺星河電視台廠景出沒，收工會喺附近行下。",
@@ -53243,9 +53246,10 @@ function rom176TryIntercept(locId){
     const pick = cands[0];
     if(typeof enc79StoryPendingAt==="function" && enc79StoryPendingAt(locId)) return false; /* 主線待播優先：出沒留返同日下次入場 */
     /* 觸發入帳（跳過都計，防刷）：冷卻／上限／次數即時生效；撞到呢次即計見過 */
+    const metBefore183 = rom176WomanMet(pick.key); /* v20a183 C2：設旗前捕捉見過未（設旗後再問永遠係見過） */
     sd.triggered = (sd.triggered||0) + 1;
     S.romWeek.count = (S.romWeek.count||0) + 1;
-    sd.doneToday[pick.key] = 1;
+    sd.doneToday[pick.key] = locId; /* v20a183 B3：記埋邊個地點撞到，等地點板在場行跟返巧遇盤 */
     S.romLast[pick.key] = day;
     if(S.romPity) S.romPity[pick.key] = { days:0, day:day };
     try{
@@ -53255,11 +53259,11 @@ function rom176TryIntercept(locId){
       if(typeof StoryOC!=="undefined" && StoryOC.setFlag){ StoryOC.ensure(); StoryOC.setFlag("flag_"+pick.key+"_talk_met", true); }
     }catch(_f){}
     try{ saveQ(); }catch(_e){}
-    rom176PlayEncounter(pick.key, locId);
+    rom176PlayEncounter(pick.key, locId, metBefore183);
     return true;
   }catch(_e){ return false; }
 }
-function rom176PlayEncounter(key, locId){
+function rom176PlayEncounter(key, locId, metBefore183){
   const def = rom176WomanDef(key);
   if(!def){ try{ openLoc(locId, { encDone:true }); }catch(_e){} return; }
   rom176SetEncounter({ kind:"woman", key:key, locId:locId });
@@ -53276,6 +53280,8 @@ function rom176PlayEncounter(key, locId){
       || ((typeof NPC_LINES_CORE!=="undefined" ? NPC_LINES_CORE : null) || {})[def.npcId];
     if(pack && Array.isArray(pack.greet) && pack.greet.length) greet = pack.greet[0];
   }catch(_g){}
+  /* v20a183 C2：徐寶珊見過先講「上次春茗」，未見過講初遇版（pack 冇 xu，行 ROM176_GREET／ROM183_GREET_MET）。 */
+  if(key==="xu"){ const met183 = (typeof metBefore183==="boolean") ? metBefore183 : rom183XuMetBefore183(); greet = met183 ? ROM183_GREET_MET.xu : (ROM176_GREET.xu || greet); }
   /* 收尾漏風聲：種子定 30%，漏另一位未有風聲嘅女角行蹤（照星嘅「紅星帶紅星」） */
   let leakLine = "";
   try{
@@ -53303,7 +53309,7 @@ function rom176PlayEncounter(key, locId){
     + (portrait ? "<img class=\"dlg-portrait\" src=\""+portrait+"\" alt=\""+def.name+"\"/>" : "")
     + "<div class=\"dlg-side\"><div class=\"dlg-name\">"+def.name+"</div><div class=\"dlg-bubble\">"+greet+"</div></div></div></div>\n    "
     + leakLine
-    + "<p class=\"sub\">喺"+(L.name||locId)+"撞到佢。傾談／送禮唔耗日；今日唔會再撞到佢。</p>",
+    + "<p class=\"sub\">喺"+(L.name||locId)+"撞到佢。傾談／送禮唔耗日；今日唔會再撞到佢。"+rom183RelText183(key)+"</p>",
     btns, { onDismiss:()=>{ rom176SetEncounter(null); try{ openLoc(locId, { encDone:true }); }catch(_e){} } });
 }
 
@@ -53522,13 +53528,13 @@ function rom176ApplyGiftOverrides(){
           intel:["聽聞下個月有套大製作開鏡，通告牌仲未定，你留意下。","有個副導話想搵生面孔試吓文戲，你得閒去片場行下。"],
           pressure:["唔好喺呢個時候煩我，通告牌改到我頭都大埋。","你唔見我忙到連水都冇時間飲咩？"] },
         xu:{ name:"徐寶珊",
-          greet:["後生仔，行路望路呀。咦，係你——上次春茗撞過嗰個。","你喺呢度做咩？廣告公司唔係片場，唔好周圍望。"],
+          greet:["後生仔，行路望路呀。咦，係你——啱啱先撞到，唔好意思。","你喺呢度做咩？廣告公司唔係片場，唔好周圍望。"], /* v20a183 C2：同 ROM176_GREET.xu */
           chat:["做廣告呢行，客戶話乜就係乜，你唔啱聽都要笑住應。","你話做臨記辛苦？我由朝九做到夜晚十一，邊日唔係咁。"],
           advice:["想人記得你？第一印象好重要，企出嚟嗰下唔可以縮。","呢行最緊要準時同醒目，遲到一次，人哋就唔再搵你。"],
           intel:["有個客戶想搵個生面孔拍廣告，條件唔高，你可以試下。","聽聞有間大公司想搞個新系列，要好多臨記，你留意通告欄。"],
           pressure:["我而家趕住見客，你有嘢快啲講，唔好阻住我。","唔好喺度阻住晒，我仲有三個會要開。"] },
         mei:{ name:"關海媚",
-          greet:["咁啱，喺呢度撞到你。","（佢望咗你一眼，冇即刻行開。）有嘢搵我？"],
+          greet:["咁啱，喺呢度撞到你。","有嘢搵我？"], /* v20a183 C4：刪括號舞台指示，淨留對白 */
           chat:["台上面光鮮，台下面一地雞毛——呢啲嘢，行內人先明。","你以為做台柱風光？收工嗰陣，成個人散晒。"],
           advice:["想紅？首先要企得穩，唔好俾人一眼睇穿你怯。","呢行講嘅係氣場。你企出嚟嗰下，人哋信你，你就贏一半。"],
           intel:["聽聞台慶嗰邊有個大騷，仲爭緊人，你可以留意下。","有個監製話想搵個新面孔試鏡，唔係大製作，但係個好開始。"],
@@ -53546,6 +53552,113 @@ function rom176ApplyGiftOverrides(){
     }
   }catch(_e){}
   return 1;
+}
+
+/* ===== v20a183 ROM183：修 v176 設計 review B1–B4＋C1–C9（用戶 2026-11-13 16:30 拍板一次過修）。
+   全部顯示／文案／入口層修法：唔改 SAVE key／softRev／?v=，唔直改 content/ pack JSON（C1／C3／C6
+   行載入正規化，呼叫點喺 pack 賦值＋TEXTFIX55 清洗之後），唔改鎖邏輯（B1 淨顯示；B4 淨係收起
+   未解鎖嘅掣；C9 淨係開局 intro 入場免費，travel114 上限／計數本身唔郁）。===== */
+const ROM183_GREET_MET = {
+  xu:"徐寶珊：「後生仔，行路望路呀。咦，係你——上次春茗撞過嗰個。」", /* C2：見過版（只喺 metBefore183 嗰陣用） */
+};
+const ROM183_PACK_GREET = { /* C1：三位舊女角 pack greet[0] 粵語版（ROM176_GREET 嗰句去 speaker 前綴） */
+  colleague:"咦，阿偉？咁啱嘅，喺呢度撞到你。",
+  stylist:"咁啱。你今日呢身……算啦，唔講住，行埋嚟傾兩句。",
+  reporter:"阿偉！啱啱好，我有單嘢想問你——唔係訪問，純粹八卦。",
+};
+function rom183XuMetBefore183(){
+  try{
+    if(typeof StoryOC!=="undefined" && StoryOC.isDone) return !!StoryOC.isDone("R_xu_meet");
+    if(S && S.story && S.story.done) return !!S.story.done["R_xu_meet"];
+  }catch(_e){}
+  return false;
+}
+function rom183RelVal183(key){
+  try{
+    if(!key) return 0;
+    if(typeof StoryOC!=="undefined" && StoryOC.getRel) return Number(StoryOC.getRel("rel_"+key))||0;
+    if(S && S.story && S.story.rel) return Number(S.story.rel["rel_"+key])||0;
+  }catch(_e){}
+  return 0;
+}
+function rom183RelText183(key){ /* B1：巧遇 modal 細字（rel 0 嗰陣都出，等玩家知有呢條數） */
+  try{ if(!key) return ""; return "而家好感 "+rom183RelVal183(key)+"／5。"; }catch(_e){ return ""; }
+}
+function rom183RelLine183(rk){ /* B1：人脈頁女角行感情進度（淨顯示，讀 S.story.rel） */
+  try{ if(!rk) return ""; return '<div class="people-next">感情：好感 '+rom183RelVal183(rk)+'／5</div>'; }catch(_e){ return ""; }
+}
+function rom183WhoLine183(L, npcId){ /* B3：地點板在場行——今日喺呢度撞過嘅女角優先 */
+  try{
+    if(L && typeof S!=="undefined" && S && S.romDay && S.romDay.day===(S.dayIndex|0) && S.romDay.doneToday){
+      for(const k in S.romDay.doneToday){
+        if(S.romDay.doneToday[k]!==L.id) continue;
+        const d = (typeof rom176WomanDef==="function") ? rom176WomanDef(k) : null;
+        if(!d) continue;
+        const npc = (typeof NPCS!=="undefined") ? NPCS[d.npcId] : null;
+        return "在場："+d.name+"（"+(npc ? npc.role : "")+"） · 今日已經撞過佢，聽日再嚟";
+      }
+    }
+  }catch(_e){}
+  return npcId ? ("在場："+NPCS[npcId].name+"（"+NPCS[npcId].role+"）") : "";
+}
+function rom183ApplyLineOverrides(){ /* C1：pack greet[0] 改粵語（runtime 覆寫，唔直改 pack JSON）；C6：教學加巧遇句 */
+  try{
+    const NL = (typeof NPC_LINES!=="undefined" ? NPC_LINES : null) || null;
+    if(NL){
+      for(const id in ROM183_PACK_GREET){
+        if(NL[id] && Array.isArray(NL[id].greet) && NL[id].greet.length) NL[id].greet[0] = ROM183_PACK_GREET[id];
+      }
+    }
+  }catch(_e){}
+  try{
+    const TUTS = [];
+    if(typeof TUTORIAL!=="undefined" && TUTORIAL) TUTS.push(TUTORIAL);
+    if(typeof TUTORIAL_ZH_HK!=="undefined" && TUTORIAL_ZH_HK && TUTS.indexOf(TUTORIAL_ZH_HK)<0) TUTS.push(TUTORIAL_ZH_HK);
+    const LINE183 = "去佢哋常出沒嘅地方，有機會撞到佢哋——撞到先可以傾談／送禮。";
+    TUTS.forEach(t=>{
+      const steps = (t && Array.isArray(t.steps)) ? t.steps : [];
+      steps.forEach(st=>{
+        if(!st) return; if(st.id==="TUT_MAP"){ if(Array.isArray(st.body) && st.body.join("").indexOf("撞到")<0) st.body.push(LINE183); } else if(st.id!=="TUT_NPC") return; /* v20a183 C6 修正：live 教學只行 TUT_MAIN_IDS 四步，TUT_NPC 唔顯示，巧遇句要落喺 TUT_MAP 先見到 */
+        ["body","bodyAlt"].forEach(k=>{
+          const arr = st[k];
+          if(Array.isArray(arr) && arr.length>1 && typeof arr[1]==="string" && arr[1].indexOf("撞到")<0) arr[1] = arr[1] + LINE183;
+        });
+      });
+    });
+  }catch(_e){}
+  return 1;
+}
+function rom183ApplyGiftReactFix(){ /* C3：55 條女角反應句過粵語 filter（runtime 覆寫 byKey＋entries 兩份，唔直改 pack JSON） */
+  try{
+    const R = (typeof GIFT_REACT!=="undefined" && GIFT_REACT) || null;
+    if(!R) return 0;
+    const EXACT183 = {
+      "Vera：「這條顏色很乾淨，不會搶鏡頭，也適合日常出門。你有想過我平常穿什麼，還是碰巧選中？」": "Vera：「呢條色幾乾淨，唔會搶鏡，平時出街都啱著。你有冇諗過我平時著咩，定係撞啱？」",
+      "Vera：「花可以，包裝也不俗氣。你是想說什麼，還是只想我看見紅色？」": "Vera：「花得，包裝都唔老土。你想講咩，定係只想我見到紅色？」",
+      "Vera：「實用就好。造型間很乾，有熱水比什麼都實際。」": "Vera：「實用就好。造型間好乾，有熱水好過咩。」",
+      "林曉晴：「保溫瓶？你是不是看見我冬天抱著紙杯發抖？太實用了。」": "林曉晴：「保溫瓶？你係咪見到我冬天抱住紙杯震？真係實用。」",
+      "林曉晴：「我可以裝熱水，也可以裝涼茶。這份心意比什麼名牌都實際，謝謝你。」": "林曉晴：「裝熱水得，裝涼茶都得。呢份心意比咩名牌都實際，唔該你。」",
+      "林曉晴：「我現在就夾上——你看看，是不是整齊一點？」": "林曉晴：「我而家就夾上——你睇下，係咪整齊啲？」",
+      "林曉晴：「卡帶？是不是你從哪個通告聽來的？我最喜歡這種『有人記掛你』的情報味。」": "林曉晴：「卡帶？係咪你喺邊個通告聽返嚟？我最鍾意呢種『有人記掛你』嘅情報味。」",
+      "林曉晴：「這……也太貴重了。你是不是搞錯對象？我只是臨記，收這個會睡不著。」": "林曉晴：「呢樣……貴重得滯。你係咪搞錯咗對象？我只係個臨記，收呢樣會瞓唔著。」",
+      "藍若曦：「換別的吧。卡帶、小甜品，什麼都好，別用香味包裝我。」": "藍若曦：「換第二樣啦。卡帶、小甜品，咩都好，唔好用香味包裝我。」",
+      "徐寶珊：「年份還過得去。你開始懂，場上什麼叫『識玩』。」": "徐寶珊：「年份都仲過得去。你開始識，場上咩叫『識玩』。」",
+    };
+    const fixLine = (ln)=>{
+      if(typeof ln!=="string") return ln;
+      if(Object.prototype.hasOwnProperty.call(EXACT183, ln)) return EXACT183[ln];
+      if(ln.indexOf("是不是")<0 && ln.indexOf("什麼")<0) return ln;
+      return ln.split("是不是").join("係咪").split("什麼").join("咩");
+    };
+    const fixEnt = (ent)=>{
+      if(!ent || !Array.isArray(ent.lines)) return;
+      for(let i=0;i<ent.lines.length;i++) ent.lines[i] = fixLine(ent.lines[i]);
+      if(typeof ent.narration==="string") ent.narration = fixLine(ent.narration);
+    };
+    (R.entries||[]).forEach(fixEnt);
+    if(R.byKey && typeof R.byKey==="object") for(const k in R.byKey) fixEnt(R.byKey[k]);
+    return 1;
+  }catch(_e){ return 0; }
 }
 
 /* ---------- 殺青回望（resolvePlannedDay 掛點） ---------- */
@@ -54619,7 +54732,7 @@ function openLoc(id, opts){
   const npcId=locPanelNpcId(L);
   try{ refreshStoryMapTips(); }catch(_e){}
   const tipHere=(S.mapTips||{})[L.id];
-  let who = hub ? "" : (npcId ? `在場：${NPCS[npcId].name}（${NPCS[npcId].role}）` : "");
+  let who = hub ? "" : rom183WhoLine183(L, npcId); /* v20a183 B3：在場行跟返巧遇盤（啱啱撞過嗰位優先，唔再話另一位「在場」） */
   if(!hub && tipHere){
     let tipDoneWho = false;
     try{
@@ -58478,7 +58591,7 @@ function openGiftPick(npcKey, L){
   if(!list.length){ toast("庫存空空——先去廟街禮品檔看看。"); return; }
   const rows = list.map(({itemId, count, item})=>{
     const kind = GiftShop.prefKind(npcKey, itemId);
-    const tag = kind==="liked"?"喜":(kind==="dislike"?"慎":"普");
+    const tag = kind==="favorite"?"★ 最愛":(kind==="liked"?"喜":(kind==="dislike"?"慎":"普")); /* v20a183 B2：最愛獨立標記，唔同「喜」撞色撞字 */
     return `<button type="button" class="act act-priority" data-give="${itemId}" style="width:100%;margin:0 0 8px;text-align:left">
       <div><div class="n">${iconHtml112(item.emoji||"🎁")} ${item.name} ×${count}</div>
       <div class="h">偏好標記：${tag} · ${giftConfirmCostLine()}</div></div>
@@ -58497,8 +58610,11 @@ function openGiftPick(npcKey, L){
       btn.addEventListener("click", ()=>{
         const id = btn.getAttribute("data-give");
         const it = GiftShop.itemById(id);
+        const kind183 = GiftShop.prefKind(npcKey, id);
+        const kindLine183 = kind183==="favorite" ? `<p class="sub">★ 最愛：佢最鍾意呢樣禮物。</p>` : kind183==="liked" ? `<p class="sub">佢幾鍾意呢樣。</p>` : kind183==="dislike" ? `<p class="sub">佢未必鍾意呢樣，要諗清楚。</p>` : "";
         modal(`<h3>確認送禮</h3>
           <p>把「<b>${(it&&it.name)||id}</b>」送給 <b>${name}</b>？</p>
+          ${kindLine183}
           <p class="sub">${giftConfirmCostLine()}</p>`,[
           {label:"取消", role:"g", on:()=>openGiftPick(npcKey, L)},
           {label:"送出", role:"p", on:()=>doGiveGift(npcKey, id, L)}
@@ -58679,13 +58795,14 @@ function people72Html(){
         ? `<div class="people-next">人情：傾談話題已全開 · 關係階梯：再加 ${tierNext.need} →「${tierNext.label}」（${tierNext.at}）</div>`
         : `<div class="people-next">人情：${hasTier ? "傾談話題同情報階梯已全開" : "傾談話題已全開"}</div>`;
     }
+    const rk176 = { colleague:"hiu", stylist:"vera", reporter:"choi", lan:"lan", xu:"xu", mei:"mei" }[n.id] || ""; const rel183 = (typeof rom183RelLine183==="function") ? rom183RelLine183(rk176) : ""; /* v20a183 B1：感情進度行（讀 S.story.rel，淨顯示，鎖邏輯唔郁） */
     const home = (n.id==="agent") ? "agency_ho" : ((n.homes && n.homes[0]) || "");
     const homeName = (()=>{ try{ const L=LOCS.find(x=>x.id===home); return L?L.name:""; }catch(_e){ return ""; } })();
+    const lockedMeiGo183 = (rk176==="mei") && (typeof rom176MeiUnlocked==="function") && !rom176MeiUnlocked(); /* v20a183 B4：海媚未解鎖，掣唔生效 */
     const goBit = home
-      ? `<div class="people-next"><button type="button" class="people-go" data-npc="${n.id}" data-loc="${home}">去找 · ${homeName||"地圖"}</button></div>`
+      ? (lockedMeiGo183 ? `<div class="people-next">主線再行前啲先撞到佢</div>` : `<div class="people-next"><button type="button" class="people-go" data-npc="${n.id}" data-loc="${home}">去 ${homeName||"地圖"} 行下</button></div>`)
       : "";
     /* v20a176 ROM176：女角行加出沒提示（見過寫「常喺」、未見寫「多數喺」；海媚未解鎖唔寫）。 */
-    const rk176 = { colleague:"hiu", stylist:"vera", reporter:"choi", lan:"lan", xu:"xu", mei:"mei" }[n.id] || "";
     let haunt176 = "";
     if(rk176){
       const lockedMei176 = (rk176==="mei") && (typeof rom176MeiUnlocked==="function") && !rom176MeiUnlocked();
@@ -58694,7 +58811,7 @@ function people72Html(){
         haunt176 = `<div class="people-next">${met176 ? "常喺" : "多數喺"}${homeName||"佢常去嘅地方"}出沒</div>`;
       }
     }
-    return `<div class="people-row" style="margin:8px 0;display:flex;gap:8px;align-items:flex-start"><img src="${PORTRAITS[n.face]}" alt="" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/><span style="flex:1"><b>${n.name}</b> · ${n.role}<br><span class="gold">${h} ${v}／100</span>${nextLine}${haunt176}${goBit}</span></div>`;
+    return `<div class="people-row" style="margin:8px 0;display:flex;gap:8px;align-items:flex-start"><img src="${PORTRAITS[n.face]}" alt="" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/><span style="flex:1"><b>${n.name}</b> · ${n.role}<br><span class="gold">${h} ${v}／100</span>${nextLine}${haunt176}${rel183}${goBit}</span></div>`;
   }).join("");
   return `<h3 class="jobs72-h">人脈</h3><p class="people-next">好感夠就傾多啲：閒談 10 · 忠告 25 · 情報 40</p><p class="sub" style="font-size:.75rem">去佢常出沒嘅地方撞佢；撞到先可以傾談／送禮。</p>${html}` + ((typeof br89ArcStatusHtml==="function") ? br89ArcStatusHtml() : "") + ((typeof enc79PeopleHtml==="function") ? enc79PeopleHtml() : "");
 }
@@ -59355,7 +59472,7 @@ function showB01HomeModal(){
             const locId = (typeof c1PlayLocId==="function") ? c1PlayLocId() : "agency_ho";
             show("v-map"); paintBar(); drawMap();
             setTimeout(()=>{ try{
-              openLoc(locId);
+              openLoc(locId, {travelFree:true}); /* v20a183 C9：開局 intro（屋企 modal「去睇劇情」掣）係系統引導入場，唔計出行額度 */
               toast(committed ? ("已用預設行程 · 到"+c1Where+"可播開局劇情") : ("到"+c1Where+"先可播開局劇情"));
             }catch(_e){} }, 80);
           }catch(_e){}

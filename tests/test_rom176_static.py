@@ -1,4 +1,5 @@
 # v20a176 ROM176 全面隨機巧遇・靜態測試：接線標記／紅線／玩家面文案／行號釘。
+# v20a183 resync：v183 淨 ＋117 行（C7 CSS ＋2／prefKind ＋1／TryIntercept ＋1／PlayEncounter ＋2／ROM183 block ＋107／確認 modal ＋3／goBit ＋1；difflib 對位核實純漂移，見 qa183/resync183.py）。
 # v20a182 resync：v182 淨 ＋17 行，錨點按段 ＋2／＋12／＋17（NPCS 6028＋2、載入點 31531＋2、block 53033＋12、其後 ＋17；qa182/resync182.py difflib 對位核實純漂移）。
 # 用法：python3 tests/test_rom176_static.py [path-to-index.html]
 # 反證：pristine main (a618a5d) 冇 ROM176 標記、「唔靠送禮」仲喺度、地點板仲有女角送禮掣 → 多項 FAIL。
@@ -58,13 +59,13 @@ for fn in ('rom176TryIntercept', 'rom176PlayEncounter', 'rom176DoGiveStarGift', 
     ok('函數在位：' + fn, ('function ' + fn) in html)
 
 # ---- 行號釘（本票插入點；下次 resync 對呢啲） ----
-ok('釘：NPCS lan 條目 L6030', line(6030).startswith('  lan:{ id:"lan", name:"藍若曦"'))
+ok('釘：NPCS lan 條目 L6032', line(6032).startswith('  lan:{ id:"lan", name:"藍若曦"'))
 ok('釘：載入點 L31533（GIFT_REACT 賦值同行呼叫注入）',
-   'GIFT_REACT = giftReact' in line(31533) and 'rom176ApplyGiftOverrides()' in line(31533))
-ok('釘：ROM176 block 起點 L53050', line(53050).startswith('/* ===== v20a176 ROM176'))
-ok('釘：rom176ApplyGiftOverrides 定義 L53415', line(53415).startswith('function rom176ApplyGiftOverrides()'))
-ok('釘：addLocTalkGiftActs L54447', line(54447).startswith('function addLocTalkGiftActs(add, L, npcId)'))
-ok('釘：openLoc rom176 攔截 L54541', 'rom176TryIntercept(id)' in line(54541))
+   'GIFT_REACT = giftReact' in line(31536) and 'rom176ApplyGiftOverrides()' in line(31536))
+ok('釘：ROM176 block 起點 L53050', line(53053).startswith('/* ===== v20a176 ROM176'))
+ok('釘：rom176ApplyGiftOverrides 定義 L53415', line(53421).startswith('function rom176ApplyGiftOverrides()'))
+ok('釘：addLocTalkGiftActs L54447', line(54560).startswith('function addLocTalkGiftActs(add, L, npcId)'))
+ok('釘：openLoc rom176 攔截 L54541', 'rom176TryIntercept(id)' in line(54654))
 
 # ---- 注入呼叫位置（GIFT 賦值之後、同一行） ----
 gi = html.find('GIFT_REACT = giftReact')

@@ -101,8 +101,13 @@ lan_lines = [ln for ln in nocomment.splitlines() if '藍若曦' in ln]
 # v20a176 申報：ROM176 巧遇系統正當地用佢個名——出沒表註冊（name:"藍若曦"）、開場白（lan:"藍若曦…）、
 # 茶餐廳風聲線（通告牌，PA 線內容）；NPCS 註冊條目同理。斷言放寬到包含呢三個模式；
 # 「零歌手向」嗰半保留不變（通告牌係場記職責，唔係歌手向）。
+# v20a183 申報：ROM183 粵語覆寫表（C3 禮物反應句正規化）正當地引用佢個名一次——覆寫鍵／值都係
+# 原 pack 句嘅逐字粵語版，唔係新寫嘅歌手向內容。斷言放寬到包含 ROM183 block 入面嘅行。
+_lan183_i = nocomment.find('const ROM183_GREET_MET')
+_lan183_j = nocomment.find('function enc79OnWrap', _lan183_i) if _lan183_i >= 0 else -1
+lan_block183 = nocomment[_lan183_i:_lan183_j] if (_lan183_i >= 0 and _lan183_j > _lan183_i) else ''
 ok('藍若曦 remaining occurrences are engine infra or PA-line content (v20a31)',
-   all(('lan_ruoxi' in ln) or ('lan:"藍若曦' in ln) or ('name:"藍若曦"' in ln) or (ln in lan_block) or ('通告牌' in ln) for ln in lan_lines))
+   all(('lan_ruoxi' in ln) or ('lan:"藍若曦' in ln) or ('name:"藍若曦"' in ln) or (ln in lan_block) or ('通告牌' in ln) or (ln in lan_block183) for ln in lan_lines))
 ok('藍若曦 occurrences carry no singer framing',
    all(not any(w in ln for w in ['歌手', '唱片', '狗仔', '宣傳場', '玉女']) for ln in lan_lines))
 

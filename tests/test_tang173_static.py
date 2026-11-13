@@ -34,6 +34,7 @@
 # v20a176 resync：淨 ＋538 行（NPCS ＋7／星收尾掣 ＋12／ROM176 block ＋501／茶聽 ＋12／addLoc −13／openLoc 掛點 ＋5／doGiveGift ＋4／人脈頁 ＋10），總行數 59356→59894、DEF 53875→54394（qa176/resync176.py 逐行核實內容逐字相同，純漂移）。
 # v20a176 rebase 上 main 91f264a（v175）resync：v175 淨 ＋78（CSS ＋10／toast ＋15／prog175 ＋51＋render ＋2），總行數 59894→59972、DEF 54394→54472（qa176/resync176_rebase.py difflib 對位核實純漂移）。
 # v20a176 第三輪 rebase 上 main c682cc2（v178）resync：v178 淨 ＋21（fellows 特別名額＋21；註解＋sprite 來回 ＋4−4 抵消），總行數 59972→59993、DEF 54472→54493（qa176/resync176_rebase3.py difflib 對位核實純漂移；三檔 rebase 衝突後取 v176 嗰邊，v178 註解行補返）。
+# v20a183 resync：v183 淨 ＋117 行（C7 CSS ＋2／prefKind ＋1／TryIntercept ＋1／PlayEncounter ＋2／ROM183 block ＋107／確認 modal ＋3／goBit ＋1；difflib 對位核實純漂移，見 qa183/resync183.py）。
 # v20a182 resync：v182 淨 ＋17 行（CSS＋2／請柬＋4／presentAwardInvite＋6／C1 JS＋5），總行數 59993→60010、DEF 54493→54510、CSS 同行 4845→4847（qa182/resync182.py difflib 對位核實純漂移）。
 import sys
 from pathlib import Path
@@ -64,15 +65,15 @@ def blend(fg, bg, a):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 60010', src.count('\n') == 60010)
-ok('零行數漂移：openLoc DEF 行 54510（v175 ＋78＋v176 ＋519＋v178 ＋21＋v182 ＋17）（travel114 釘行）',
-   len(lines) >= 54510 and 'function openLoc(id, opts){' in lines[54509])
-ok('零行數漂移：L4847 仲係 v169／v171／v173 同行（v182 CSS 插 2 行，kwan151／tang152 釘行一併 resync）',
-   len(lines) >= 4847 and 'loc-acts-more171::after' in lines[4846] and 'act-locked171' in lines[4846])
-ok('L4847 註解平衡：/* 數＝*/ 數，鎖住底 rule 唔喺註解入面（v173 曾中招：註解入面再插 /*…*/ 令首個 */ 提早閂註解，殘尾變裸文吞咗鎖住底 rule 嘅 selector，live 底色跌返 #f5e6c0）',
-   lines[4846].count('/*') == lines[4846].count('*/')
-   and lines[4846].rfind('/*', 0, lines[4846].find('#app #loc-sheet.sheet .act.act-locked171{ background'))
-   < lines[4846].rfind('*/', 0, lines[4846].find('#app #loc-sheet.sheet .act.act-locked171{ background')))
+ok('零行數漂移：總行數 60010', src.count('\n') == 60127)
+ok('零行數漂移：openLoc DEF 行 54623（v175 ＋78＋v176 ＋519＋v178 ＋21＋v182 ＋17）（travel114 釘行）',
+   len(lines) >= 54623 and 'function openLoc(id, opts){' in lines[54622])
+ok('零行數漂移：L4849 仲係 v169／v171／v173 同行（v182 CSS 插 2 行，kwan151／tang152 釘行一併 resync）',
+   len(lines) >= 4847 and 'loc-acts-more171::after' in lines[4848] and 'act-locked171' in lines[4848])
+ok('L4849 註解平衡：/* 數＝*/ 數，鎖住底 rule 唔喺註解入面（v173 曾中招：註解入面再插 /*…*/ 令首個 */ 提早閂註解，殘尾變裸文吞咗鎖住底 rule 嘅 selector，live 底色跌返 #f5e6c0）',
+   lines[4848].count('/*') == lines[4848].count('*/')
+   and lines[4848].rfind('/*', 0, lines[4848].find('#app #loc-sheet.sheet .act.act-locked171{ background'))
+   < lines[4848].rfind('*/', 0, lines[4848].find('#app #loc-sheet.sheet .act.act-locked171{ background')))
 
 # --- §1. C1：淡出實色 stop 78% → 60% ---
 ok('C1：淡出漸變實色 stop 已提早到 60%',
