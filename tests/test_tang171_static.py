@@ -15,7 +15,7 @@
 #      #6b5636（同鎖住底對比度 5.25:1，高過 B1 實測 4.21:1，唔會灰到讀唔到）。
 #      只做視覺區分：disabled／aria／點擊／toast 全部唔郁，撳鎖住態照有 toast 講原因。
 # 唔郁：v167 review C1（接受現狀）、咖啡豆句、push1 到唔到、玫瑰扣庫存、v170／v149。
-# 行號：六處全部同行改動（CSS 規則 append 入 L4832 v169 行、add() 同行加 class、
+# 行號：全部同行改動（CSS 規則 append 入 L4832 v169 行、add() 同行加 class、
 #      sync 定義＋scroll wiring append 入 resize 守門行、resize handler／rAF／openLoc 尾
 #      同行加呼叫），總行數 59171 不變，openLoc DEF 行 53690 不變——
 #      （v20a170 resync：P2 fallback 註解 +2 行 → 總行數 59173，openLoc DEF 行 53692）
@@ -23,6 +23,10 @@
 # v20a149 fixup3（rebase 上 e8c3a73）：reveal 行融返一行（−1），總行數 59271→59270、DEF 53790→53789。
 #      test_tang152／travel114／kwan151 釘行全部唔使 resync。
 # v20a153 第三輪 rebase 上 main a500536（v149）resync：總行數 59270→59341、DEF 53789→53860（difflib 對位核實純漂移，見 qa153/resync_rebase153c.py）。
+# v20a173 更新（見 NOTES_V20A173 §1–§2）：淡出實色 stop 78%→60%、鎖住態 .h 加
+#      !important——下面兩條斷言跟住改，舊值斷言搬咗去 test_tang173_static.py
+#      （驗新值存在＋舊值唔存在），唔係刪咗守門。
+# v20a173 rebase 上 main 0ecaeb3（v153）：同行改動，總行數 59341、DEF 53860 不變。
 # 反證：喺 pristine main（56141a3／v169）index 上行，新行為斷言會乾淨 FAIL，
 #      唔會 crash。守門斷言喺 pristine 都 PASS（佢哋守「舊嘢冇郁過」）。
 # 用法：python3 tests/test_tang171_static.py [path-to-index.html]
@@ -51,14 +55,14 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 59270（v170 59173＋v149 ＋97）', src.count('\n') == 59341)
+ok('零行數漂移：總行數 59341（v170 59173＋v149 ＋97＋v153 ＋71）', src.count('\n') == 59341)
 ok('零行數漂移：openLoc DEF 行 53860 不變（travel114 釘行）',
    len(lines) >= 53860 and 'function openLoc(id, opts){' in lines[53859])
 
 # --- §1. C1：捲動提示（淡出漸變） ---
 ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',
    '#loc-acts.loc-acts-more171::after' in src
-   and 'linear-gradient(to bottom, rgba(248,241,222,0), #f8f1de 78%)' in src)
+   and 'linear-gradient(to bottom, rgba(248,241,222,0), #f8f1de 60%)' in src)  # v20a173：stop 78%→60%
 ok('C1：漸變唔佔位（sticky＋margin-top:-30px 抵消 30px 高＋margin-bottom:-7px 抵消 7px flex gap）',
    'position:sticky; bottom:0;' in src and 'height:30px; margin-top:-30px; margin-bottom:-7px;' in src)
 ok('C1：漸變唔攔點擊（pointer-events:none）',
@@ -87,7 +91,7 @@ ok('C2：鎖住態費用欄轉深啡灰 #6b5636（唔再係紅 #C43C2A）',
    '#app #loc-sheet.sheet .act.act-locked171 .cost{ color:#6b5636 !important; }' in src)
 ok('C2：鎖住態標題／hint 微淡（opacity .72）',
    '.act.act-locked171 .n{ opacity:.72; }' in src
-   and '.act.act-locked171 .h{ opacity:.72; }' in src)
+   and '.act.act-locked171 .h{ opacity:.72 !important; }' in src)  # v20a173：.h 加 !important
 _c = contrast('6b5636', 'e6dfcc')
 print('INFO locked cost contrast #6b5636 on #e6dfcc = %.2f:1' % _c)
 ok('C2：鎖住態費用欄對比度 >= 4.5:1（高過 B1 實測 4.21:1，讀得到）', _c >= 4.5)
