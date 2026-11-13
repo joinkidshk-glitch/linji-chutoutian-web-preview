@@ -45283,7 +45283,7 @@ try{
 /* v20a181：M1 會場實景底圖退役——舞台改做 canvas 程式繪製（淺色幕布＋木地板＋橫額／數字條／白牌 DOM 層），
    AWARDS62_STAGE_BG 常數＋bg_awards_ballroom.jpg 一併撤走；載入失敗唔再分叉，畫同一個程式舞台。 */
 
-/* ===== v20a7 AWARDS CEREMONY — four medium tracks; Soft≠PASS; no tip LIVE ===== */
+/* ===== v20a7 AWARDS CEREMONY — four medium tracks; v20a194 tipped LIVE (soft 閘已拆) ===== */
 function ensureAwardsLog(){
   if(!S || typeof S!=="object") return [];
   if(!Array.isArray(S.awardsLog)) S.awardsLog = [];
@@ -45745,6 +45745,31 @@ function awards188ApplyNpOverlay(FW){
     });
   }catch(_e){}
 }
+/* v20a194：頒獎禮 tip LIVE——pack meta 覆寫（唔直改 content JSON）。
+   Repo 紅線（aud91fix122／124／gigreq110）：content/*.json 一律唔准郁（v157 只豁免
+   story_detail_c1_to_c17.json），pack 改動行覆寫／注入層——v188 獎項名都係咁做。
+   所以磁碟上兩個 pack 嘅 meta.softStatus 繼續係 "≠PASS"，載入嗰陣先喺 FREEPLAY_FW
+   度改做 "PASS"（＋note 嗰句 "Soft≠PASS; no tip LIVE" 改做 tipped LIVE，等 runtime
+   meta 唔再講大話）；門檻／獎項／內容一字唔郁。 */
+function awards194ApplyMetaTip(FW){
+  if(!FW) return;
+  try{
+    const sc = FW.awardsSchema;
+    if(sc && sc.meta){
+      sc.meta.softStatus = "PASS";
+      if(typeof sc.meta.note==="string")
+        sc.meta.note = sc.meta.note.replace("Soft≠PASS; no tip LIVE.", "v20a194: tipped LIVE (soft gate removed).");
+    }
+  }catch(_e){}
+  try{
+    const st = FW.awardsStub;
+    if(st && st.meta){
+      st.meta.softStatus = "PASS";
+      if(typeof st.meta.note==="string")
+        st.meta.note = st.meta.note.replace("Soft≠PASS; ", "v20a194: tipped LIVE; ");
+    }
+  }catch(_e){}
+}
 function awardsMvpCategories(ceremonyId){
   /* v20a188：覆寫表優先——新 15 獎（每典禮 3–4 個）；冇覆寫嗰陣行舊路（schema→stub）。 */
   try{
@@ -46060,7 +46085,9 @@ function restorePendingAward136(){
 }
 function queueAwardsOnSeasonWindow(opts){
   opts = opts || {};
-  if(!awardsSoftOn() && !opts.force) return [];
+  /* v20a194：頒獎禮拆 soft 閘——live 模式照常排期，唔再跟 awardsSoftOn()。
+     awardsSoftOn() 本身保留（soft 框架共用，語義唔郁），只係頒獎禮唔再問佢。
+     opts.force 係除錯路（awardsDebugForceSeasonWindow）傳入，保留。 */
   if(!(FREEPLAY_FW.awardsSchema || FREEPLAY_FW.awardsStub)) return [];
   /* v20a136 G1：先還原 reload 遺失嘅請柬（flag invited／pending 但 session 冇 pack），再排新一屆。 */
   try{ restorePendingAward136(); }catch(_e){}
@@ -46295,7 +46322,44 @@ function awardsCheck(){
     if(/金像|十大中文金曲|廣告公會|TVB.*大獎/.test(html)) fails.push("real_award_name");
     if(/nextHint/.test(html) && /待補 nextHint/.test(html)) fails.push("nextHint");
   }catch(_e){ fails.push("build_err"); }
-  return { ok:!fails.length, fails:fails, version:"v20a10", softStatus:"≠PASS", ceremonies:have.slice() };
+  /* v20a194：驗閘——live 模式下 queue 唔可以再係空（頒獎禮由 v20a7 起鎖喺 soft 閘後面，
+     awardsCheck 之前照回 ok:true，係自檢盲點）。探針用 forceCeremonyId 跳過季節／週數，
+     但唔跳旗標／build；快照＋還原晒 flags／pending／queue／S.pendingAwardPack，
+     自檢本身唔留低副作用。schema／stub 未載入嗰陣跳過探針（上面已經 fail 緊）。 */
+  if(FREEPLAY_FW.awardsSchema && FREEPLAY_FW.awardsStub){
+    /* v20a194：驗 tip——runtime meta 應該已經由 awards194ApplyMetaTip 改做 PASS
+       （磁碟上 pack 仲係 ≠PASS，見該函數註解）。meta 未 tip 嗰陣自檢要 fail，唔可以
+       齋驗 queue 返到嘢就當 tip 咗。 */
+    try{
+      const ms = FREEPLAY_FW.awardsSchema.meta && FREEPLAY_FW.awardsSchema.meta.softStatus;
+      const mt = FREEPLAY_FW.awardsStub.meta && FREEPLAY_FW.awardsStub.meta.softStatus;
+      if(ms!=="PASS" || mt!=="PASS") fails.push("meta_tip");
+    }catch(_e){ fails.push("meta_tip"); }
+    try{
+      const probeCer = (typeof awardsCeremonyById==="function") ? awardsCeremonyById("award_harbour_ad") : null;
+      const probeYear = (typeof awardsEditionYear==="function" && probeCer) ? awardsEditionYear(probeCer) : 1990;
+      const probeKey = awardsFlagKey(probeYear, "award_harbour_ad");
+      const flagsObj = ensureAwardsFlags();
+      const snapHadFlag = Object.prototype.hasOwnProperty.call(flagsObj, probeKey);
+      const snapFlag = flagsObj[probeKey];
+      const snapPending = FREEPLAY_FW._pendingAward;
+      const snapQueue = ensureAwardQueue().slice();
+      const snapSavePack = (typeof S!=="undefined" && S) ? S.pendingAwardPack : null;
+      try{
+        delete flagsObj[probeKey];
+        FREEPLAY_FW._pendingAward = null;
+        ensureAwardQueue().length = 0;
+        const got = queueAwardsOnSeasonWindow({ forceCeremonyId:"award_harbour_ad", forceTier:"gallery", ignoreC10:true });
+        if(!Array.isArray(got) || !got.length || got[0].ceremonyId!=="award_harbour_ad") fails.push("live_queue");
+      }finally{
+        if(snapHadFlag) flagsObj[probeKey] = snapFlag; else delete flagsObj[probeKey];
+        FREEPLAY_FW._pendingAward = snapPending;
+        const q = ensureAwardQueue(); q.length = 0; snapQueue.forEach(p=>q.push(p));
+        try{ if(typeof S!=="undefined" && S) S.pendingAwardPack = snapSavePack; }catch(_e){}
+      }
+    }catch(_e){ fails.push("live_queue_err"); }
+  }
+  return { ok:!fails.length, fails:fails, version:"v20a10", softStatus:"PASS", ceremonies:have.slice() };
 }
 function awardsPreview(opts){
   return buildAwardResultPack(opts||{});
@@ -49375,6 +49439,7 @@ async function loadFreeplayFramework(){
   try{ textfix55Freeplay(FREEPLAY_FW); }catch(_t55){}
   try{ venue99ApplyOverlay(FREEPLAY_FW); }catch(_v99){} /* v20a99 VENUE99：頒獎場地覆寫，須喺 textfix55 之後行 */
   try{ if(typeof awards188ApplyNpOverlay==="function") awards188ApplyNpOverlay(FREEPLAY_FW); }catch(_e188){} /* v20a188：報紙 win 模板舊獎項名覆寫，須喺 textfix55＋venue99 之後行 */
+  try{ if(typeof awards194ApplyMetaTip==="function") awards194ApplyMetaTip(FREEPLAY_FW); }catch(_e194){} /* v20a194：頒獎禮 pack meta tip（softStatus → PASS，覆寫層；content JSON 唔郁） */
   try{ if(typeof years66Walk==="function") years66Walk(FREEPLAY_FW, null); }catch(_y66){} /* v20a66 YEARS66 */
   try{ freeplayApplyEraStarStubOverlay(); }catch(_e){}
   try{ if(typeof augmentPostShootRewards35==="function") augmentPostShootRewards35(); }catch(_e){}
