@@ -45784,20 +45784,23 @@ function renderAwardResultHtml(pack){
   pack = pack || {};
   /* v20a184 C2：結果卡同請柬用同一固定排序（按獎項 id），同一 pack 兩次渲染次序一致。 */
   const cats = awardsCatsSorted184(pack);
+  /* v20a186 C1：同屆提名行只出一次——兩類嗰陣逐類別各出一行會重複同一份名單。
+     取排序後第一個有 fellows63 嘅類別（同場各類共用同一屆名單），喺卡列之後獨立一行；
+     唔改數據／判定／得主標記，逐字內容同舊版第一行一樣。 */
+  const felCat186 = cats.find(c=>c && Array.isArray(c.fellows63) && c.fellows63.length) || null;
+  const felBit186 = felCat186 ? (()=>{ try{ return awards63FellowsHtml(felCat186); }catch(_e){ return ""; } })() : "";
   const catsHtml = cats.map(c=>{
     const badge = c.outcome==="won" ? "得獎" : (c.outcome==="gallery" ? "觀禮" : "入圍");
     const repBit62 = c.repWorkTitle ? `<p class="psr-rep62">憑《${c.repWorkTitle}》${badge}</p>` : "";
     const weakBit62 = c.weakHint62 ? `<p class="psr-weak62">${c.weakHint62}</p>` : "";
     /* v20a147 D2：入圍落選結果卡加一句安慰行（何生鼓勵，唔重複 weakHint 嘅「差啲咩」診斷，唔話佢贏咗）。 */
     const comfortBit147 = c.outcome === "nominated" ? `<p class="psr-comfort147">何生：「差少少啫，唔緊要，下年再嚟過。」</p>` : "";
-    const felBit63 = (()=>{ try{ return awards63FellowsHtml(c); }catch(_e){ return ""; } })();
     return `<article class="psr-card psr-metrics">
       <div class="psr-kicker"><span class="psr-icon">${iconHtml112("🏆")}</span> ${badge} · ${c.label||""}</div>
       <h4 class="psr-title">${c.line||""}</h4>
       ${repBit62}
       ${weakBit62}
       ${comfortBit147}
-      ${felBit63}
     </article>`;
   }).join("");
   const press = pack.press || {};
@@ -45820,6 +45823,7 @@ function renderAwardResultHtml(pack){
     <p class="psr-sub">${pack.tierLabel||""}${pack.year?(" · "+pack.year):""}${pack.venue99?(" · "+pack.venue99):""}</p>
     <div class="psr-cards">
       ${catsHtml}
+      ${felBit186}
       <article class="psr-card psr-press">
         <div class="psr-kicker"><span class="psr-icon">${iconHtml112("📰")}</span> ${press.paperName||"娛樂快報"}</div>
         <h4 class="psr-title">${press.headline||""}</h4>

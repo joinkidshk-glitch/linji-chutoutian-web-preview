@@ -62,13 +62,14 @@ for fn in ('rom176TryIntercept', 'rom176PlayEncounter', 'rom176DoGiveStarGift', 
     ok('函數在位：' + fn, ('function ' + fn) in html)
 
 # ---- 行號釘（本票插入點；下次 resync 對呢啲） ----
+# v20a186 resync：index.html 淨 ＋4 行（結果卡同屆提名行移出逐類別卡，插入點 L45783–45826），其後釘行各 ＋4（53077→53081、53445→53449、54584→54588、54678→54682）；NPCS lan／GIFT_REACT 釘喺插入點之前，唔郁。
 ok('釘：NPCS lan 條目 L6032', line(6045).startswith('  lan:{ id:"lan", name:"藍若曦"'))
 ok('釘：載入點 L31533（GIFT_REACT 賦值同行呼叫注入）',
    'GIFT_REACT = giftReact' in line(31549) and 'rom176ApplyGiftOverrides()' in line(31549))
-ok('釘：ROM176 block 起點 L53050', line(53077).startswith('/* ===== v20a176 ROM176'))
-ok('釘：rom176ApplyGiftOverrides 定義 L53415', line(53445).startswith('function rom176ApplyGiftOverrides()'))
-ok('釘：addLocTalkGiftActs L54447', line(54584).startswith('function addLocTalkGiftActs(add, L, npcId)'))
-ok('釘：openLoc rom176 攔截 L54541', 'rom176TryIntercept(id)' in line(54678))
+ok('釘：ROM176 block 起點 L53050', line(53081).startswith('/* ===== v20a176 ROM176'))
+ok('釘：rom176ApplyGiftOverrides 定義 L53415', line(53449).startswith('function rom176ApplyGiftOverrides()'))
+ok('釘：addLocTalkGiftActs L54447', line(54588).startswith('function addLocTalkGiftActs(add, L, npcId)'))
+ok('釘：openLoc rom176 攔截 L54541', 'rom176TryIntercept(id)' in line(54682))
 
 # ---- 注入呼叫位置（GIFT 賦值之後、同一行） ----
 gi = html.find('GIFT_REACT = giftReact')
