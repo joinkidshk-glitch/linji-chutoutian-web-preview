@@ -120,55 +120,59 @@ ck("drawMap 計 travelLocked114（travel114Remain() <= 0）",
 # 行號 ≥4793 者 +14；本檔釘行全部喺插入點之後，一律 +14（difflib 對位＋逐行錨點核實，見 qa161/resolve_rebase161_v155.py）。
 # v20a155 rebase 上 main 9346a8e（v151＋v156）resync：v155 淨 ＋17（B1 註解 ＋6／B2 註解 ＋7／B3 ＋4），全部錨點再 ＋17；COUNT 13／FREE 27 不變，DEF 53601→53618、WRAPPER 44205→44222。
 # v20a146 rebase B1 步 resync：覆寫表加 st05／st08 兩行（其後錨點 ＋2）；qa146/resync_travel114_147.py HEAD 核實：44 個 openLoc( 呼叫點序列逐字一致、內容逐行相同，純漂移；COUNT 13／FREE 27 不變，DEF 53560→53562、WRAPPER 44169→44171。
+# v20a160 rebase 上 main 222a984（v152）M1 步：淨 ＋7 行（M1 底圖常數段）；difflib 核實純漂移（3 replace 段、44 個 openLoc 呼叫點逐字一致、41 個釘行內容逐行相同）；COUNT 13／FREE 27 不變，DEF 53425→53432、WRAPPER 44029 不變。
+# v20a160 rebase 上 main 222a984（v152）M4 步：淨 ＋37 行（walkup CSS ＋5／beats walkup ＋8／beat caption ＋2／PlayCeremony 其餘 ＋22；difflib 核實純漂移，44 個 openLoc 呼叫點逐字一致；COUNT 13／FREE 27 不變，DEF 53432→53469、WRAPPER 44029→44034；行號 ＜46131 者 ＋5，其後者 ＋37）。
+# v20a160 rebase 上 main 222a984（v152）M6 步：淨 ＋30 行（tuxRec 預載 ＋8／drawTuxedo＋drawFigure 分流 ＋10／reveal won 燕尾服＋獎盃 glyph ＋5／glamour ＋1／常量 ＋7，減 4 行舊；difflib 核實純漂移，44 個 openLoc 呼叫點逐字一致；COUNT 13／FREE 27 不變，DEF 53469→53499、WRAPPER 44034 不變；行號 ≥46232 者 ＋30）。
+# v20a160 rebase 上 main 222a984（v152）M9 步：淨 ＋41 行（fanfare 常數＋預載＋揭曉觸發）；difflib 核實純漂移，44 個 openLoc 呼叫點逐字一致；COUNT 13／FREE 27 不變，DEF 53499→53540、WRAPPER 44034 不變；行號 ≥46301 者 ＋41。
 # 計清單（玩家主動導航，預設計數，唔加旗）：13 處
 COUNT_LINES = {
-    31990,  # ux68GoLoc 手帳「前往」
-    35471,  # 訓練建議「去報名」
-    37598,  # 訓練報名導航
-    38592,  # 進度頁「去現場播劇情」
-    39026,
-    39029,  # 地圖釘 goPin（最近針／後備 L.id）
-    39060,  # 地圖底欄地點掣
-    43606,  # 人情債「去事務所」
-    57457,  # inv72GoShop 去禮品檔
-    57624,  # people72GoLoc
-    57767,  # jobs72GoBoard
-    57788,  # jobs72GoLoc
-    58238,  # 開局屋企 modal「去睇劇情」
+    31995,  # ux68GoLoc 手帳「前往」
+    35476,  # 訓練建議「去報名」
+    37603,  # 訓練報名導航
+    38597,  # 進度頁「去現場播劇情」
+    39031,
+    39034,  # 地圖釘 goPin（最近針／後備 L.id）
+    39065,  # 地圖底欄地點掣
+    43611,  # 人情債「去事務所」
+    57572,  # inv72GoShop 去禮品檔
+    57739,  # people72GoLoc
+    57882,  # jobs72GoBoard
+    57903,  # jobs72GoLoc
+    58353,  # 開局屋企 modal「去睇劇情」
 }
 # 免費清單（帶旗，唔計）：27 處
 FREE_LINES = {
-    24583,  # 劇情播完刷新（markDone fallback）
-    28077,  # 劇情播完刷新（leaveStory）
-    30657,
-    30658,
-    30670,
-    30671,
-    30682,
-    30683,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
-    30786,  # 故事 seed 就緒，系統傳送去劇情地點
-    40565,  # wf4Fire 完（wf4Done，舊旗）
-    43263,  # 人情債流程尾，返去而家身處地點
-    43286,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
-    52300,
-    52419,  # 巧遇播完（encDone，舊旗）
-    53312,  # 劇情播完刷新（refreshLocAfterStory）
-    53694,
-    53716,  # 「劇情已完成」toast 後重開而家身處地點
-    53851,  # 聽完傳聞後 reopen 而家身處地點
-    55488,  # forceRestore（舊旗）
-    56899,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
-    57232,  # promptAudition back（返去而家身處地點）
-    57350,
-    57351,
-    57386,
-    57387,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    57406,  # doGiveGift 失敗後重開而家身處地點
-    57421,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    24588,  # 劇情播完刷新（markDone fallback）
+    28082,  # 劇情播完刷新（leaveStory）
+    30662,
+    30663,
+    30675,
+    30676,
+    30687,
+    30688,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
+    30791,  # 故事 seed 就緒，系統傳送去劇情地點
+    40570,  # wf4Fire 完（wf4Done，舊旗）
+    43268,  # 人情債流程尾，返去而家身處地點
+    43291,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
+    52415,
+    52534,  # 巧遇播完（encDone，舊旗）
+    53427,  # 劇情播完刷新（refreshLocAfterStory）
+    53809,
+    53831,  # 「劇情已完成」toast 後重開而家身處地點
+    53966,  # 聽完傳聞後 reopen 而家身處地點
+    55603,  # forceRestore（舊旗）
+    57014,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    57347,  # promptAudition back（返去而家身處地點）
+    57465,
+    57466,
+    57501,
+    57502,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    57521,  # doGiveGift 失敗後重開而家身處地點
+    57536,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 53425      # function openLoc(id, opts){
-WRAPPER_LINE = 44029  # window.__phase2.openLoc：轉發 opts
+DEF_LINE = 53540      # function openLoc(id, opts){
+WRAPPER_LINE = 44034  # window.__phase2.openLoc：轉發 opts
 # 頁內測試區：runSoftP0Checks 函數範圍（brace-match 實量，唔靠死行號）
 def fn_range(start_pat):
     s = src.find(start_pat)

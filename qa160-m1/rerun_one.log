@@ -1,0 +1,71 @@
+PASS SAVE key 不變
+PASS softRev 不變
+PASS 產品 ?v= 不變
+PASS 常量逐字 const TRAVEL114_DAILY_CAP = 2;
+PASS helper travel114State 已定義
+PASS helper travel114Remain 已定義
+PASS helper travel114IsFree 已定義
+PASS helper travel114TrySpend 已定義
+PASS travel114IsFree 認 travelFree／encDone／forceRestore／wf4Done 四旗
+PASS travel114IsFree 有屋企守衛（id === "home" 唔計）
+PASS travel114IsFree 唔用 atLoc 做判據
+PASS lazy rollover 只睇 S.dayIndex（換日歸零，同一日重載唔重置）
+PASS openLoc 入面有額度閘（travel114TrySpend）
+PASS 閘喺 enc79TryIntercept 之前（被擋嘅入場唔擲巧遇）
+PASS 閘喺 todayIsForcedDay return 之後（強制日唔計）
+PASS 被擋 toast 文案逐字（玩家面用「出行」，唔出內部名）
+PASS 計數入場即 saveQ（重新載入唔可以刷返額度）
+PASS 閘口用 typeof 守衛（同 enc79／wf4 攔截慣例一致，抽真 openLoc 嘅舊測試唔會炸）
+PASS #map-hint 有剩餘次數行（map-hint-travel）
+PASS 剩餘次數文案「仲可以去 N 個地方」（v135 合併行）
+PASS 用盡文案「出行額度已用完，聽日再去」（v135 合併行）
+PASS 剩餘次數行由 travel114Remain() 計（paintBar 每次渲染刷新）
+PASS 鎖定視覺 CSS 齊全（.pin.travel-locked＋.map-area-list button.travel-locked）
+PASS 地圖釘加 travel-locked class（額度用完）
+PASS drawMap 計 travelLocked114（travel114Remain() <= 0）
+PASS __phase2 wrapper 轉發 opts（openLoc(id, opts)）
+PASS openLoc 定義行 53569 係函數定義，唔係呼叫點
+PASS 全部 openLoc( 呼叫點都有分類（免費旗／計清單／定義／wrapper／測試區），零漏網
+PASS 免費清單行 24772 實際帶旗
+PASS 免費清單行 28267 實際帶旗
+PASS 免費清單行 30853 實際帶旗
+PASS 免費清單行 30854 實際帶旗
+PASS 免費清單行 30866 實際帶旗
+PASS 免費清單行 30867 實際帶旗
+PASS 免費清單行 30878 實際帶旗
+PASS 免費清單行 30879 實際帶旗
+PASS 免費清單行 30982 實際帶旗
+PASS 免費清單行 40707 實際帶旗
+PASS 免費清單行 43405 實際帶旗
+PASS 免費清單行 43428 實際帶旗
+PASS 免費清單行 52444 實際帶旗
+PASS 免費清單行 52563 實際帶旗
+PASS 免費清單行 53456 實際帶旗
+PASS 免費清單行 53838 實際帶旗
+PASS 免費清單行 53860 實際帶旗
+PASS 免費清單行 53995 實際帶旗
+PASS 免費清單行 55632 實際帶旗
+PASS 免費清單行 57043 實際帶旗
+PASS 免費清單行 57376 實際帶旗
+PASS 免費清單行 57494 實際帶旗
+PASS 免費清單行 57495 實際帶旗
+PASS 免費清單行 57530 實際帶旗
+PASS 免費清單行 57531 實際帶旗
+PASS 免費清單行 57550 實際帶旗
+PASS 免費清單行 57565 實際帶旗
+PASS 計清單行 32132 實際冇帶旗（預設計數）
+PASS 計清單行 35613 實際冇帶旗（預設計數）
+PASS 計清單行 37740 實際冇帶旗（預設計數）
+PASS 計清單行 38734 實際冇帶旗（預設計數）
+PASS 計清單行 39168 實際冇帶旗（預設計數）
+PASS 計清單行 39171 實際冇帶旗（預設計數）
+PASS 計清單行 39202 實際冇帶旗（預設計數）
+PASS 計清單行 43748 實際冇帶旗（預設計數）
+PASS 計清單行 57599 實際冇帶旗（預設計數）
+PASS 計清單行 57766 實際冇帶旗（預設計數）
+PASS 計清單行 57909 實際冇帶旗（預設計數）
+PASS 計清單行 57930 實際冇帶旗（預設計數）
+PASS 計清單行 58380 實際冇帶旗（預設計數）
+INFO 呼叫點分類：免費 27 處＋計數 13 處＋定義／wrapper／測試區 4 處
+INFO 頁內測試區 runSoftP0Checks 行 58715–58850（內含測試呼叫＋字串檢查，唔改）
+RESULT PASS

@@ -4,7 +4,7 @@
 // (3) 冇第一年隱形壓分：同參數下 1988 同 1990 年 base 分完全一樣。
 // (4) 代表作＝嗰年嗰媒介最高質嗰部；請柬門檻行；結果弱瓣「差啲咩」。
 // (5) standing 差額（入圍差幾部／贏線差幾多）；季前提示觸發／靜默（含冬→春跨年跳過）。
-// (6) beats 純資料：得獎全長 9–10 秒（v64 起 enter 改真走路入場 1750ms，基線由 8–9 秒更新）、旁聽行埋宣佈弧約 9.6 秒（v20a147，唔再 3.7 秒草草收場）、入圍落選有 comfort 安慰 beat（v20a147）、唱名行掛代表作。
+// (6) beats 純資料：得獎全長約 11.5 秒（v20a160-m4：加 walkup 2200ms；v64 起 enter 改真走路入場 1750ms，基線由 8–9 秒更新）、旁聽行埋宣佈弧約 9.6 秒（v20a147，唔再 3.7 秒草草收場）、入圍落選有 comfort 安慰 beat（v20a147）、唱名行掛代表作。
 // (7) 獎項頁 render：新記錄（displayName＋repTitle）同舊記錄（乜都冇）都顯示到，唔崩。
 // (8) buildAwardResultPack 端到端：categories 掛 repWorkTitle／weakHint62、pack 有 standing62。
 // 反證：對 v20a61 index 行 → AWARDS62 函數唔存在 → FAIL。
@@ -232,8 +232,10 @@ const wonPack = { displayName:'星河電視獎', bestOutcome:'won', repWork62:'�
   categories:[{ label:'最佳男主角', outcome:'won', repWorkTitle:'長篇劇' }] };
 const beatsWon = awards62CeremonyBeats(wonPack);
 const totalWon = beatsWon.reduce((a,b)=>a+b.ms, 0);
-ok('得獎 beats 全長 9–10 秒', totalWon >= 9000 && totalWon <= 10000);
-ok('beats 有齊 open/enter/names/suspense/reveal/out', ['open','enter','names','suspense','reveal','out'].every(id=>beatsWon.some(b=>b.id===id)));
+ok('得獎 beats 全長約 11.5 秒（v20a160-m4：reveal 之後加 walkup 2200ms，9350＋2200＝11550）', totalWon >= 11000 && totalWon <= 12000);
+ok('beats 有齊 open/enter/names/suspense/reveal/walkup/out', ['open','enter','names','suspense','reveal','walkup','out'].every(id=>beatsWon.some(b=>b.id===id)));
+const walkupBeat = beatsWon.find(b=>b.id==='walkup');
+ok('walkup beat：reveal 之後、out 之前，2200ms；caption 係空（文案喺 overlay cap，跟 glamour 同款，免同台下字幕重複）', !!walkupBeat && walkupBeat.ms === 2200 && beatsWon.indexOf(walkupBeat) === beatsWon.indexOf(beatsWon.find(b=>b.id==='reveal')) + 1 && walkupBeat.caption === '');
 const namesBeat = beatsWon.find(b=>b.id==='names');
 ok('唱名行掛代表作', !!namesBeat && namesBeat.lines.some(l=>/《長篇劇》/.test(l)));
 const beatsGal = awards62CeremonyBeats({ displayName:'海港廣告獎', bestOutcome:'gallery', categories:[] });
@@ -249,8 +251,9 @@ const beatsNom147 = awards62CeremonyBeats(packNom147);
 const comfortBeat = beatsNom147.find(b=>b.id==='comfort');
 ok('入圍有 comfort 安慰 beat（reveal 之後、out 之前，2600ms）', !!comfortBeat && comfortBeat.ms === 2600 && beatsNom147.indexOf(comfortBeat) === beatsNom147.length - 2 && beatsNom147[beatsNom147.length - 1].id === 'out');
 ok('comfort 文案：何生安慰＋阿偉回應，唔話佢贏咗', !!comfortBeat && /何生/.test(comfortBeat.caption) && /阿偉/.test(comfortBeat.caption) && !/得獎|贏咗/.test(comfortBeat.caption));
-ok('入圍全長＝得獎 9350＋comfort 2600', beatsNom147.reduce((a,b)=>a+b.ms,0) === totalWon + 2600);
+ok('入圍全長＝得獎 −walkup 2200＋comfort 2600（即得獎＋400，walkup 只限贏分支）', beatsNom147.reduce((a,b)=>a+b.ms,0) === totalWon + 400);
 ok('得獎冇 comfort beat', !beatsWon.some(b=>b.id==='comfort'));
+ok('旁聽／入圍冇 walkup beat（只限贏分支，v20a160-m4）', !beatsGal.some(b=>b.id==='walkup') && !beatsNom147.some(b=>b.id==='walkup'));
 
 /* ================= (7) 獎項頁 render ================= */
 S = baseSave();

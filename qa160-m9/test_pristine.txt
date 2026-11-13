@@ -1,0 +1,36 @@
+FAIL fanfare 入咗 assets/audio/awards_fanfare.mp3
+FAIL fanfare 係 take 1（sha256 吻合）
+FAIL fanfare 大細 462979 bytes（原檔，冇重編）
+PASS fanfare 唔係 take 2（sha256 唔同）
+FAIL 掌聲入咗 assets/audio/awards_applause.mp3
+FAIL 掌聲係 MP3（ID3／幀同步頭，唔係 WAV）
+FAIL 掌聲唔係 WAV 原檔（頭 4 bytes 唔係 RIFF）
+FAIL 掌聲 MP3 細過 200KB（WAV 557KB 已轉換慳位）
+PASS assets/ 入面冇任何 take2 檔案
+PASS index.html 冇 take2 字串
+FAIL helper awards160PlayWinAudio 在位
+FAIL fanfare 路徑常數指去 assets/audio/awards_fanfare.mp3
+FAIL 掌聲路徑常數指去 assets/audio/awards_applause.mp3
+FAIL helper 用 new Audio 按需要建元素
+FAIL helper play() 有 .catch 兜底（自動播放拒絕靜默吞）
+FAIL helper 跟 prefs 靜音（bgmMuted／sfxMuted）
+FAIL helper 讀 prefs 音量（volume）
+FAIL 掌聲延遲常數 900ms
+FAIL helper 用 900ms 延遲疊掌聲
+FAIL helper 有 QA 旗標 window.__awards160Audio
+FAIL helper 全檔只定義一次
+FAIL helper 全檔只呼叫一次（advance 嗰行）
+FAIL 呼叫位喺 awards62PlayCeremony 入面
+FAIL 呼叫行係 reveal＋won 條件（同 spawnConfetti 一行）
+FAIL 呼叫包喺 try/catch 入面（唔可以拖垮典禮）
+FAIL 全檔 new Audio 只得一個（helper 獨家）
+FAIL new Audio 嗰個喺 helper 入面
+FAIL 兩條音源常數各只用一次（helper 內）
+FAIL QA 旗標只喺 M9 註解＋helper 區塊出現
+FAIL 冇其他 awards160 呼叫點（定義＋呼叫共 2 次）
+FAIL 註解寫明 fanfare 揭曉起、掌聲 900ms 後疊
+PASS SAVE key 不變
+PASS softRev s107 不變
+PASS 產品 ?v= v20a10 不變
+
+FAILED: 28

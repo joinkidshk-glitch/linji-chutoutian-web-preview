@@ -2,7 +2,7 @@
 // (1) fellows 衍生：嗰年嗰媒介 pack 通告＋LEADSTAR59 主演，按片酬序、每星一部、唔用冇 sprite 嘅主演（彭少祺；v81 正名，sprite 對照仍為 null）。
 // (2) 玩家自己殺青過嘅作品唔會變對手；年份唔串。
 // (3) 冇主演數據（1991）→ 紅星池按媒介兜底：加權隨機（v20a147，頂級紅星機率高啲）、同一 (year, ceremonyId, medium) 可重現（seeded）、唔重複、唔出程天諾（1990 零出場紅線，池內根本冇佢）。
-// (4) beats：入圍揭曉唱出得主星名＋作品；得獎＋有海報先有 glamour beat；冇海報得獎維持 9–10 秒（v64 enter 走路入場後基線）；入圍落選有 comfort 安慰 beat（v20a147，reveal 之後、out 之前）；旁聽行埋宣佈弧約 9.6 秒，唱名／揭曉唔寫阿偉（v20a147）。
+// (4) beats：入圍揭曉唱出得主星名＋作品；得獎＋有海報先有 glamour beat；冇海報得獎約 11.5 秒（v20a160-m4：加 walkup 2200ms；v64 enter 走路入場後基線 9–10 秒已過時）；入圍落選有 comfort 安慰 beat（v20a147，reveal 之後、out 之前）；旁聽行埋宣佈弧約 9.6 秒，唱名／揭曉唔寫阿偉（v20a147）。
 // (6) v20a147 加權分佈：枚舉 seeds，頂級星首抽佔比明顯高過均勻分佈。
 // (5) focus cat 揀啱（won 優先 won cat、nominated 揀 nominated cat）。
 // 反證：對 v20a62 index 行 → AWARDS63 函數唔存在 → FAIL。
@@ -143,7 +143,8 @@ const packWonNoPoster = { displayName:'維港影藝獎', bestOutcome:'won', repW
   categories:[{ label:'最佳電影', outcome:'won', repWorkTitle:'陰陽夜更', fellows63:[], winner63:null }] };
 const beatsWN = awards62CeremonyBeats(packWonNoPoster);
 const totalWN = beatsWN.reduce((a,b)=>a+b.ms,0);
-ok('得獎＋冇海報 → 冇 glamour、全長維持 9–10 秒', !beatsWN.some(b=>b.id==='glamour') && totalWN >= 9000 && totalWN <= 10000);
+ok('得獎＋冇海報 → 冇 glamour、全長約 11.5 秒（v20a160-m4：walkup 2200ms，9350＋2200＝11550）', !beatsWN.some(b=>b.id==='glamour') && totalWN >= 11000 && totalWN <= 12000);
+ok('得獎＋冇海報都有 walkup beat（reveal 之後）', !!beatsWN.find(b=>b.id==='walkup') && beatsWN.find(b=>b.id==='walkup').ms === 2200);
 
 const beatsGal = awards62CeremonyBeats({ displayName:'海港廣告獎', bestOutcome:'gallery', categories:[] });
 const totalGal = beatsGal.reduce((a,b)=>a+b.ms,0);
