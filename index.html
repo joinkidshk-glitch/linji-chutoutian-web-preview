@@ -786,7 +786,7 @@ canvas.awd62-canvas{display:block;width:100%;height:auto;image-rendering:pixelat
 .awd62-skip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #0d0918}
 .awd62-tap{margin-top:8px;text-align:center;color:#8d7db5;font-size:12px}
 .awd63-cards{display:none;gap:8px;justify-content:center;margin-top:10px}
-.awd63-cards.on{display:flex}
+.awd63-cards.on{display:flex}.awd63-cards.glamour-hide{visibility:hidden} /* v20a168 C1：glamour 期間卡列隱藏——visibility 留位唔郁佈局（唔用 display:none，免得 frame 高度跳動）；只喺 glamour beat 生效 */
 .awd63-card{width:88px;background:linear-gradient(180deg,#fbf2da,#f3e5c3);border:2px solid #d9c491;border-radius:4px;padding:5px;box-shadow:0 3px 8px rgba(0,0,0,.45);opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease;position:relative}
 .awd63-card.show{opacity:1;transform:none}
 .awd63-card img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;background:#2b2118}
@@ -46344,9 +46344,9 @@ function awards62PlayCeremony(pack, doneFn){
         cardEls.forEach((el, i)=> el.classList.toggle("show", b.id !== "names" || elapsed > 200 + i * 380));
       }
     };
-    const syncGlamour = (b)=>{
+    const syncGlamour = (b)=>{ /* v20a168 C1：glamour 期間卡列一併隱藏——同一 choke point，跟 overlay 一齊開／閂，下一 beat（out）即恢復；visibility 留位，唔郁佈局 */
       if(!glamEl) return;
-      glamEl.classList.toggle("on", !!(b && b.id === "glamour"));
+      glamEl.classList.toggle("on", !!(b && b.id === "glamour")); if(cardsEl) cardsEl.classList.toggle("glamour-hide", !!(b && b.id === "glamour"));
     };
     const syncWalkup = (b)=>{ /* v20a160-m4：淨係 walkup beat 嗰陣 show GIF 層，其餘 beat 熄 */
       if(!walkEl) return;
