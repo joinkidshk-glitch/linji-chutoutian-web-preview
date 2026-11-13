@@ -46,7 +46,7 @@ try{
 }
 eval(code);
 
-// ---- 段一：40 個欄位值逐個映射（審計 notes_icon_audit.md §2＋v128 A5：🏆＋禮物 8 隻補圖） ----
+// ---- 段一：44 個欄位值逐個映射（審計 notes_icon_audit.md §2＋v128 A5：🏆＋禮物 8 隻補圖） ----
 const EXPECT = {
   '🗺️':'map', '😴':'sleep', '🌙':'sleep', '🎤':'mic', '☕':'tea',
   '🎬':'clapper', '🎥':'clapper', '💪':'fitness', '🏠':'home', '📰':'news',
@@ -56,7 +56,8 @@ const EXPECT = {
   '🧹':'broom', '🤒':'sick', '📞':'phone', '😊':'mood', '⭐':'star', '✨':'sparkle',
   '🏆':'trophy', '🍍':'gift_pineapple', '🧁':'gift_eggtart', '🧴':'gift_thermos',
   '📎':'gift_hairclip', '📝':'gift_memopad', '📼':'gift_cassette', '🍬':'gift_sweetbox',
-  '🌸':'gift_perfume'
+  '🌸':'gift_perfume',
+  '🖊️':'gift_pen', '🧮':'gift_calculator', '⌚':'gift_watch', '🌹':'gift_rose'
 };
 for(const [em, stem] of Object.entries(EXPECT)){
   const out = iconHtml112(em);
@@ -69,7 +70,7 @@ ok('map ✅ has no img', !iconHtml112('✅').includes('<img'));
 // 欄位值窮舉：index.html 入面所有 icon:/emoji: 值都對得上（除 ✅／·）
 const fieldVals = new Set();
 for(const m of html.matchAll(/(?:icon|emoji)\s*:\s*"([^"]*)"/g)) fieldVals.add(m[1]);
-ok('field values enumerated (33 incl · = 32 emoji + placeholder)', fieldVals.size === 33);
+ok('field values enumerated (37 incl · = 36 emoji + placeholder)', fieldVals.size === 37);
 for(const v of [...fieldVals].sort()){
   if(v === '✅' || v === '·') continue;
   ok('field value covered: ' + v, iconHtml112(v).includes('<img class="ic112"'));

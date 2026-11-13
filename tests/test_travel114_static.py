@@ -124,6 +124,9 @@ ck("drawMap 計 travelLocked114（travel114Remain() <= 0）",
 # v20a160 rebase 上 main 222a984（v152）M4 步：淨 ＋37 行（walkup CSS ＋5／beats walkup ＋8／beat caption ＋2／PlayCeremony 其餘 ＋22；difflib 核實純漂移，44 個 openLoc 呼叫點逐字一致；COUNT 13／FREE 27 不變，DEF 53432→53469、WRAPPER 44029→44034；行號 ＜46131 者 ＋5，其後者 ＋37）。
 # v20a160 rebase 上 main 222a984（v152）M6 步：淨 ＋30 行（tuxRec 預載 ＋8／drawTuxedo＋drawFigure 分流 ＋10／reveal won 燕尾服＋獎盃 glyph ＋5／glamour ＋1／常量 ＋7，減 4 行舊；difflib 核實純漂移，44 個 openLoc 呼叫點逐字一致；COUNT 13／FREE 27 不變，DEF 53469→53499、WRAPPER 44034 不變；行號 ≥46232 者 ＋30）。
 # v20a160 rebase 上 main 222a984（v152）M9 步：淨 ＋41 行（fanfare 常數＋預載＋揭曉觸發）；difflib 核實純漂移，44 個 openLoc 呼叫點逐字一致；COUNT 13／FREE 27 不變，DEF 53499→53540、WRAPPER 44034 不變；行號 ≥46301 者 ＋41。
+# v20a164 rebase 上 main 276ffa1（v160）resync：TANG164 事務所送禮掣 ＋16 行
+# （base 53764–53779，v160 漂移 ＋115 → rebased 插入點 53879）；行號 ＞53879 者 ＋16；
+# DEF 53540／WRAPPER 44034 喺插入點之前唔郁；COUNT 13／FREE 27 不變。
 # 計清單（玩家主動導航，預設計數，唔加旗）：13 處
 COUNT_LINES = {
     31995,  # ux68GoLoc 手帳「前往」
@@ -134,11 +137,11 @@ COUNT_LINES = {
     39034,  # 地圖釘 goPin（最近針／後備 L.id）
     39065,  # 地圖底欄地點掣
     43611,  # 人情債「去事務所」
-    57572,  # inv72GoShop 去禮品檔
-    57739,  # people72GoLoc
-    57882,  # jobs72GoBoard
-    57903,  # jobs72GoLoc
-    58353,  # 開局屋企 modal「去睇劇情」
+    57588,  # inv72GoShop 去禮品檔
+    57755,  # people72GoLoc
+    57898,  # jobs72GoBoard
+    57919,  # jobs72GoLoc
+    58369,  # 開局屋企 modal「去睇劇情」
 }
 # 免費清單（帶旗，唔計）：27 處
 FREE_LINES = {
@@ -159,16 +162,16 @@ FREE_LINES = {
     53427,  # 劇情播完刷新（refreshLocAfterStory）
     53809,
     53831,  # 「劇情已完成」toast 後重開而家身處地點
-    53966,  # 聽完傳聞後 reopen 而家身處地點
-    55603,  # forceRestore（舊旗）
-    57014,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
-    57347,  # promptAudition back（返去而家身處地點）
-    57465,
-    57466,
-    57501,
-    57502,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    57521,  # doGiveGift 失敗後重開而家身處地點
-    57536,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    53982,  # 聽完傳聞後 reopen 而家身處地點
+    55619,  # forceRestore（舊旗）
+    57030,  # 傾談結果 modal go（唔耗日嗰條路，返去而家身處地點）
+    57363,  # promptAudition back（返去而家身處地點）
+    57481,
+    57482,
+    57517,
+    57518,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    57537,  # doGiveGift 失敗後重開而家身處地點
+    57552,  # 送禮結果 modal go（唔耗日嗰條路，返去而家身處地點）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
 DEF_LINE = 53540      # function openLoc(id, opts){

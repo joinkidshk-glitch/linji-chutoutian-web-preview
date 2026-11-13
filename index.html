@@ -30484,7 +30484,7 @@ const GiftShop = (function(){
     if(invCount(itemId)<=0) return { ok:false, reason:"庫存沒有這件禮物" };
     const pref = prefFor(npcKey);
     const { delta:rawDelta, kind, relKey } = calcDelta(npcKey, itemId);
-    let applied = rawDelta;
+    let applied = (npcKey==="tang") ? 0 : rawDelta; /* v20a164：鄧麗萍送禮唔加 rel_tang——rel_tang 係排片線生意閘（push1 需 flag_tang_open ∧ rel_tang≥2；見面 data 抉擇先 +1，live 再無其他 +1 來源），送禮加分會變成用錢買通排片線；反應句照出，關係數字唔郁。 */
     let softcap = false;
     const weekGain = Number((S.giftMeta.weekGiftGain||{})[relKey])||0;
     if(applied>0){
@@ -31390,7 +31390,7 @@ async function refreshCopyPacksFromDisk(){
     if(giftShops && Array.isArray(giftShops.shops)) GIFT_SHOPS = giftShops;
     /* v20a96 LOC96：禮物店獨立——pack 載入後正規化搬去廟街禮品（shopId 不變，舊檔零影響） */
     try{ if(typeof loc96RemapGiftShop==="function") loc96RemapGiftShop(); }catch(_l96){}
-    if(giftPrefs && giftPrefs.npcs) GIFT_PREFS = giftPrefs;
+    if(giftPrefs && giftPrefs.npcs) GIFT_PREFS = giftPrefs; try{ if(typeof applyTangGift164==="function") applyTangGift164(); }catch(_t164){}
     if(giftReact && (giftReact.byKey || giftReact.entries)) GIFT_REACT = giftReact;
     try{ if(typeof GiftShop!=="undefined") GiftShop.ensureSave(); }catch(_g){}
     /* v20a55 TEXTFIX：載入即清洗玩家面文字（審計 linji-text-audit） */
@@ -34642,7 +34642,7 @@ function uiIcon(key){ return (typeof UI_ASSETS!=="undefined" && UI_ASSETS[key]) 
 /* v20a112 ICONS112：emoji→手繪圖標中央對照（notes_icon_audit.md §2）。
    欄位值保留 emoji 原值（存檔／舊測試唔郁），渲染處經 iconHtml112() 轉 <img>；
    ✅ 行 CSS 勾（✓ U+2713 文字元，沿用 gap-ok 慣例）；「·」佔位原樣；未知值原樣輸出。 */
-const EMOJI_ICON112 = { "🗺️":"map", "😴":"sleep", "🌙":"sleep", "🎤":"mic", "☕":"tea", "🎬":"clapper", "🎥":"clapper", "💪":"fitness", "🏠":"home", "📰":"news", "🎁":"gift", "🏥":"hospital", "🎵":"music", "💿":"music", "👥":"people", "📺":"tv", "📻":"radio", "📡":"radio", "🦁":"lion", "💼":"briefcase", "🏢":"building", "🎭":"mask", "📚":"book", "📖":"book", "🥋":"martial", "🧹":"broom", "🤒":"sick", "📞":"phone", "😊":"mood", "⭐":"star", "✨":"sparkle", "🏆":"trophy", "🍍":"gift_pineapple", "🧁":"gift_eggtart", "🧴":"gift_thermos", "📎":"gift_hairclip", "📝":"gift_memopad", "📼":"gift_cassette", "🍬":"gift_sweetbox", "🌸":"gift_perfume" };
+const EMOJI_ICON112 = { "🗺️":"map", "😴":"sleep", "🌙":"sleep", "🎤":"mic", "☕":"tea", "🎬":"clapper", "🎥":"clapper", "💪":"fitness", "🏠":"home", "📰":"news", "🎁":"gift", "🏥":"hospital", "🎵":"music", "💿":"music", "👥":"people", "📺":"tv", "📻":"radio", "📡":"radio", "🦁":"lion", "💼":"briefcase", "🏢":"building", "🎭":"mask", "📚":"book", "📖":"book", "🥋":"martial", "🧹":"broom", "🤒":"sick", "📞":"phone", "😊":"mood", "⭐":"star", "✨":"sparkle", "🏆":"trophy", "🍍":"gift_pineapple", "🧁":"gift_eggtart", "🧴":"gift_thermos", "📎":"gift_hairclip", "📝":"gift_memopad", "📼":"gift_cassette", "🍬":"gift_sweetbox", "🌸":"gift_perfume", "🖊️":"gift_pen", "🧮":"gift_calculator", "⌚":"gift_watch", "🌹":"gift_rose" };
 function iconHtml112(v){
   try{
     if(v==null || v==="") return "";
@@ -53875,6 +53875,22 @@ function openLoc(id, opts){
         }, "act-priority act-story");
       });
     }
+    /* v20a164：鄧麗萍送禮入口——見面後（flag_tang_open）先出，行現成 openGiftPick；
+       佢唔係地圖駐場 NPC（MAP_NPC_TO_KEY 冇 tang、NPCS 亦冇佢），唔行 addLocTalkGiftActs；
+       事務所係佢唯一出現場合（meet／push 掣都喺呢度），送禮掣跟埋同一版面。 */
+    if(L.id==="agency_ho" && typeof GiftShop!=="undefined" && typeof StoryOC!=="undefined"){
+      let tangOpen = false;
+      try{ tangOpen = !!StoryOC.getFlag("flag_tang_open"); }catch(_e){}
+      if(tangOpen){
+        const gate = GiftShop.canGive("tang");
+        const hint = giftHintLabel(gate.ok, gate.reason);
+        add("送禮：鄧麗萍", hint, giftGateBadge(gate), ()=>{
+          const live = GiftShop.canGive("tang");
+          if(!live.ok){ toast(live.reason||"暫不可送"); return; }
+          openGiftPick("tang", L);
+        }, (gate.ok || (/庫存|今天|今日|人情急/.test(String(gate.reason||""))))?"act-priority":"");
+      }
+    }
   }catch(_e){}
   try{
     if(typeof DualMeet!=="undefined" && DualMeet.actionsAt){
@@ -57496,7 +57512,7 @@ function openGiftPick(npcKey, L){
   }).join("");
   closeSheet();
   modal(`<h3>送禮 · ${name}</h3>
-    <p class="sub">每日每人限送 1 次；同一人一星期最多 +2 好感</p>
+    <p class="sub">${npcKey==="tang"?"每日限送 1 次 · 送禮只係公事心意，唔會改變排片關係":"每日每人限送 1 次；同一人一星期最多 +2 好感"}</p>
     <div id="gift-pick-list">${rows}</div>`,[
       {label:"取消", role:"g", on:()=>{ if(L) openLoc(L.id, {travelFree:true}); }}
     ], {onDismiss:()=>{ if(L) openLoc(L.id, {travelFree:true}); }});
@@ -57529,7 +57545,7 @@ function doGiveGift(npcKey, itemId, L){
     ended = !!t.ended; summary = t.summary;
   }
   paintBar(); drawMap();
-  const deltaTxt = res.softcap ? "本週心領（+0）" : (res.delta>0?`好感 +${res.delta}`:(res.delta<0?`好感 ${res.delta}`:"好感 ±0"));
+  const deltaTxt = npcKey==="tang" ? "排片關係不變" : res.softcap ? "本週心領（+0）" : (res.delta>0?`好感 +${res.delta}`:(res.delta<0?`好感 ${res.delta}`:"好感 ±0"));
   const go = ()=>{
     if(ended) enterHome(summary, true);
     else if(spendDay) runScheduleFromToday();
@@ -57562,7 +57578,7 @@ function inv72Html(){
     body = list.map(({itemId, count, item})=>
       `<p style="margin:6px 0">${iconHtml112(item.emoji||"🎁")} <b>${item.name}</b> ×${count} <span class="sub">· ${rarityLabelZh(item.rarity)} · $${(item.price||0).toLocaleString()}</span></p>`
     ).join("");
-    body += `<p class="sub" style="margin-top:10px">送禮：地圖遇到 Vera／林曉晴／周采兒 →「送禮」（${softSocialCostsDay()?"耗 1 日":"唔耗日"}）。</p>`;
+    body += `<p class="sub" style="margin-top:10px">送禮：地圖遇到 Vera／林曉晴／周采兒，或者喺事務所見過鄧麗萍之後 →「送禮」（${softSocialCostsDay()?"耗 1 日":"唔耗日"}）。</p>`;
   }
   return `<h3 class="jobs72-h">庫存</h3><p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>${body}`;
 }
@@ -58876,6 +58892,58 @@ if(_btnLoadMini) _btnLoadMini.onclick=()=>openSaveSlotsModal("load");
 try{ GIGS = (GIGS||[]).map(normalizeGigRecord); }catch(_n){}
 try{ mergeEntryGigsIntoPool(); }catch(_me){}
 try{ exposePreviewDebug(); }catch(_e){}
+/* ===== v20a164：鄧麗萍送禮補完（v152 殘留）。調查結論：
+   (1) gift_prefs.json tang likes／dislikes 皆空 → prefKind 永遠 neutral；
+       gift_react_copy.json 嘅 tang 專屬句齊晒：:liked＝名筆／計數機／腕表
+       （GR-tang-pen｜liked／GR-tang-calc｜liked／GR-tang-watch｜liked）、
+       :dislike＝玫瑰（GR-tang-rose｜dislike）、:neutral＝拍紙簿／咖啡豆
+       （GR-tang-memo｜neutral／GR-tang-coffee｜neutral）。
+   (2) 咖啡豆只有 :neutral 句，冇 :liked 句——唔入 likes（入咗會跌返 neutral
+       句，但 delta 計 +2，句同數打架）；咖啡豆行 neutral（+1＋專屬 neutral 句）。
+   (3) 名筆／計數機／腕表／玫瑰四件貨根本唔喺 items_gifts.json／shops.json
+       （商店只得 10 件 MVP 貨）——冇得買就冇得送，呢度一併注入埋貨＋上架；
+       價錢跟現行 uncommon 帶（$280–$650），每週補貨 1–2 件；
+       玫瑰上架後 Vera／采兒嗰邊嘅 :liked 玫瑰句亦同時打通（同病，順手）。
+       舊檔同週內已有 shopStock 嘅，亦補埋缺嘅四格（否則要等下星期先見到貨）。
+   (4) rel_tang 唔加：見 giveGift 嘅 tang 特例（排片閘門）。
+   做法：載入正規化（跟 loc96／normaliseTangStub152 先例），唔直改 pack JSON。
+   呼叫點：refreshCopyPacksFromDisk 嘅 giftPrefs 賦值行（同行 append，零行數漂移）。 */
+function applyTangGift164(){
+  try{
+    const t = (typeof GIFT_PREFS!=="undefined" && GIFT_PREFS && GIFT_PREFS.npcs && GIFT_PREFS.npcs.tang) || null;
+    if(t){
+      t.likes = ["gift_fountain_pen","gift_desk_calculator","gift_dress_watch"];
+      t.dislikes = ["gift_rose_premium"];
+    }
+  }catch(_e){}
+  try{
+    const items = (typeof GIFT_ITEMS!=="undefined" && GIFT_ITEMS && GIFT_ITEMS.items) || null;
+    if(Array.isArray(items)){
+      const add = (it)=>{ if(!items.some(x=>x && x.itemId===it.itemId)) items.push(it); };
+      add({ itemId:"gift_fountain_pen", name:"名筆", emoji:"🖊️", category:"work", rarity:"uncommon", price:550, tags:["practical","work"], deltaRel:{ default:1, liked:2, disliked:-1 }, unlock:{ week_min:1, fame_min:0 } });
+      add({ itemId:"gift_desk_calculator", name:"桌上計數機", emoji:"🧮", category:"work", rarity:"common", price:280, tags:["practical","work"], deltaRel:{ default:1, liked:2, disliked:-1 }, unlock:{ week_min:1, fame_min:0 } });
+      add({ itemId:"gift_dress_watch", name:"正裝腕表", emoji:"⌚", category:"fashion", rarity:"uncommon", price:650, tags:["fashion","work"], deltaRel:{ default:1, liked:2, disliked:-1 }, unlock:{ week_min:1, fame_min:0 } });
+      add({ itemId:"gift_rose_premium", name:"高級玫瑰花束", emoji:"🌹", category:"fashion", rarity:"uncommon", price:600, tags:["fashion"], deltaRel:{ default:1, liked:2, disliked:-1 }, unlock:{ week_min:1, fame_min:0 } });
+    }
+  }catch(_e){}
+  try{
+    const shops = (typeof GIFT_SHOPS!=="undefined" && GIFT_SHOPS && GIFT_SHOPS.shops) || null;
+    const shop = Array.isArray(shops) ? shops.filter(s=>s && s.shopId==="shop_street_mk")[0] : null;
+    if(shop){
+      if(!Array.isArray(shop.stock)) shop.stock = [];
+      const put = (id, count)=>{ if(!shop.stock.some(r=>r && r.itemId===id)) shop.stock.push({ itemId:id, count:count, restock:"weekly" }); };
+      put("gift_fountain_pen", 2); put("gift_desk_calculator", 2); put("gift_dress_watch", 1); put("gift_rose_premium", 2);
+    }
+  }catch(_e){}
+  try{
+    const st = (typeof S!=="undefined" && S && S.giftMeta && S.giftMeta.shopStock && S.giftMeta.shopStock.shop_street_mk) || null;
+    if(st){
+      const fill = (id, count)=>{ if(typeof st[id]!=="number") st[id] = count; };
+      fill("gift_fountain_pen", 2); fill("gift_desk_calculator", 2); fill("gift_dress_watch", 1); fill("gift_rose_premium", 2);
+    }
+  }catch(_e){}
+  return 1;
+}
 refreshCopyPacksFromDisk();
 })();
 
