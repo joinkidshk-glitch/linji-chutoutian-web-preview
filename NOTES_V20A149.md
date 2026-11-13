@@ -222,3 +222,12 @@ B4 係 700 報紙尾句第一眼位置問題（同一個 seed、同一條尾句�
   空帶唔變。判斷不變：接受現狀（用戶方向 1 嘅代價），等 v170 落地後再睇整體。
 - 殘留（唔阻塞落地）：700 B4 第一眼、TV B2 drive 讀空條目、declined drive 腳本要跟 v165
   流程更新——三項留返畀 v149 設計 review 評判／開跟進票。
+
+## §7 落地紀錄
+- Squash merge：分支 `v20a149`（HEAD `2413544`）→ main commit **`461dc87`**
+  （2026-11-13，基底 e8c3a73／v170）。
+- 線上核實：`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/index.html`
+  **5,262,537 bytes、sha256 `b299ce9f…`**，同 repo index.html 逐 byte 一致；
+  `awardWinner149` 出現 5 次、`awd62-aud149` 0 次。`git fsck` 乾淨（只有 rebase 遺低
+  的 dangling commit／tree，唔係損壞）。
+- v149 落地之後，v170 卡片接入（等 v149 嘅 B3 csscard 結構）可以繼續。
