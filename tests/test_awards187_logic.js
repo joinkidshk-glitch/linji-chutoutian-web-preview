@@ -3,6 +3,8 @@
 //     貼近參考圖 0.64／0.43 方向；舊 y200–334／134px 係工人 NOTES 讀錯參考圖，見 review §4 B1）。
 //     幕布拉長到 y228、燈架跟到 y228、觀眾席 y316–360（前緣 310–316 之下，深 44px，光點照舊）。
 // C1：glamour 海報改做下半置中（panel justify-content:flex-end＋img max-height 60%→40%），海報頂唔再壓白牌。
+// v20a190 新 C1：panel 縮短貼底（overlay align-items flex-end＋container-type:size），img cap 轉等價
+//   calc(40cqh - 8px)——舊 40% 會對住內容高嘅 panel 失效；以下 C1 斷言跟住更新，結論（海報頂唔壓牌）不變。
 // C2：卡罅 8→24px，「你」徽（右出 7px）同隔籬卡 🏆 徽（左出 7px）中間留 10px。
 // C3：out beat 照畫人物、跟 overlay 一齊暗落（alpha＝1−step×0.25；won 只留燕尾服阿偉，其餘跟 comfort 暗度）。
 // C4：walkup 行緊嗰陣 y＋6（行前一格，掠過左邊提名人有前後層次），行完換燕尾服 y 歸 0。
@@ -101,11 +103,11 @@ function cssRule(sel){
 const panelCss = cssRule('.awd63-glamour-panel');
 const panelImgCss = cssRule('.awd63-glamour-panel>img');
 ok('C1 glamour panel 改 flex-end（海報＋cap 沉底，唔再垂直置中頂住牌）', panelCss.includes('justify-content:flex-end'));
-ok('C1 海報 max-height 60%→40%（max-width 88% 唔郁）',
-  panelImgCss.includes('max-height:40%') && panelImgCss.includes('max-width:88%') && !panelImgCss.includes('max-height:60%'));
+ok('C1 海報 max-height 40%→calc(40cqh - 8px)（v20a190 等價轉換；max-width 88% 唔郁）',
+  panelImgCss.includes('max-height:calc(40cqh - 8px)') && panelImgCss.includes('max-width:88%') && !panelImgCss.includes('max-height:40%') && !panelImgCss.includes('max-height:60%'));
 /* 最差情況計數（邏輯單位）：panel 高 360；img ≤144；cap 兩行＋padding＋gap 預 45 → 海報頂 ≥171 ＞ 牌底 149.4 */
 ok('C1 海報頂計數 ≥171 邏輯＞牌底 149.4（360−144−45）', (360 - 0.40 * 360 - 45) > 149.4);
-ok('C1 panel 本身仲係全高暗底（flex 0 0 44%＋rgba(10,6,18,.93) 唔郁，牌 z-index 3 照喺上面）',
+ok('C1 panel 闊 44%＋0.93 暗底唔郁（v20a190：全高改做貼底縮短，見 test_awards190；牌 z-index 3 照喺上面）',
   panelCss.includes('flex:0 0 44%') && panelCss.includes('rgba(10,6,18,.93)'));
 
 /* ================= C2：卡罅 8→24px（CSS＋角標計數） ================= */

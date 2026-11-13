@@ -2,6 +2,8 @@
 # B1：地板 y228–310（深 82px＝22.8% 高；地板深／人物高 0.92、腳底以下空地板 48px＝0.54 倍）；
 #     幕布拉長到 y228、燈架跟到 y228、觀眾席 y316–360（深 44px，光點照舊）。
 # C1：glamour 海報下半置中（panel flex-end＋img max-height 40%），海報頂唔再壓白牌。
+# v20a190 新 C1：panel 縮短貼底（overlay align-items flex-end＋container-type:size），img cap 轉等價
+#   calc(40cqh - 8px)——舊 40% 會對住內容高嘅 panel 失效；以下 C1 斷言跟住更新，結論（海報頂唔壓牌）不變。
 # C2：卡罅 8→24px，角標留 10px 罅。
 # C3：out beat 照畫人物、alpha 跟 step 遞減。C4：walkup 行緊 y＋6。C5：glamour-hide display:none 保留（trade-off）。
 # C6：glyph −112→−110（牌底 149.4 到 glyph 頂 152，留 2.6 邏輯罅）。
@@ -58,7 +60,7 @@ chk('B1 FLOOR＝262 唔郁（腳底唔郁，只郁地板帶）', 'const FLOOR = 
 panel_rule = css_rule('.awd63-glamour-panel')
 panel_img_rule = css_rule('.awd63-glamour-panel>img')
 chk('C1 panel 改 flex-end（海報＋cap 沉底）', 'justify-content:flex-end' in panel_rule)
-chk('C1 海報 max-height 60%→40%', 'max-height:40%' in panel_img_rule and 'max-height:60%' not in panel_img_rule)
+chk('C1 海報 max-height 40%→calc(40cqh - 8px)（v20a190 等價轉換；舊 40% 唔再出現）', 'max-height:calc(40cqh - 8px)' in panel_img_rule and 'max-height:40%' not in panel_img_rule and 'max-height:60%' not in panel_img_rule)
 chk('C1 海報 max-width 88% 唔郁', 'max-width:88%' in panel_img_rule)
 chk('C1 海報頂計數 ≥171 邏輯＞牌底 149.4（360−144−45）', (360 - 0.40 * 360 - 45) > 149.4)
 

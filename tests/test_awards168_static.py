@@ -85,7 +85,7 @@ panel_css = css_rule('.awd63-glamour-panel')
 chk('C1 v166 右 panel 唔變（44%＋0.93 暗底）',
     'flex:0 0 44%' in panel_css and 'background:rgba(10,6,18,.93)' in panel_css)
 panel_img = css_rule('.awd63-glamour-panel>img')  # v20a174 A1：裱框規則收窄到直屬海報 img（>）
-chk('C1 v166 海報縮細（88%／40%，v20a187 C1）', 'max-width:88%' in panel_img and 'max-height:40%' in panel_img)
+chk('C1 v166 海報縮細（88%／calc(40cqh - 8px)，v20a190 新 C1；舊 40% 已由等價 cqh 式取代）', 'max-width:88%' in panel_img and 'max-height:calc(40cqh - 8px)' in panel_img and 'max-height:40%' not in panel_img)
 chk('C1 v166 glamour 層仲喺 frame 入面', '+ glamHtml' in play_fn and 'awd62-canvas' in play_fn)
 
 # --- (5) beats 唔變 ---
