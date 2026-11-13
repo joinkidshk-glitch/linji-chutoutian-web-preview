@@ -116,3 +116,8 @@
 - **實駕重跑**（rebase 後最終樹，`qa167/drive167.py`）：**5/5 PASS，每項 0 pageerror**——T0 likes 四件齊＋prefKind 咖啡豆 liked＋新句逐字一致；T1 meet→送禮掣；T2 UI 送咖啡豆見新 liked 句＋rel_tang 維持 1＋weekGain null；T3 名筆／T4 玫瑰覆驗照行。
 - **環境（EPERM 風暴＋Chromium SIGTRAP，約 02:46–03:02）**：期間 git 寫入（`git hash-object -w` 報 `unable to write loose object file: Operation not permitted`）、tempfile 建立、套件 echo append、Chromium launch（SIGTRAP，zygote broken pipe）全部受影響；v164 design review 同期亦報 Chromium 全死。風暴過後（約 03:02，`tempfile.mkdtemp()` 恢復）重試全部通過。`git fsck --strict` 只有 dangling trees（rebase 殘留，預期），零 error／corrupt／missing。
 - **GitHub 分支核實**：工人用 `git worktree add` 開副本，佢繼承常駐 clone 嘅 origin＝github.com（唔似 clone 式副本 origin 係本地路徑），一度 `git push origin v20a167` 推咗上 GitHub；已即刻 `push --delete` 刪返，統籌 `git ls-remote --heads origin` 核實 GitHub 已無 `v20a167`（亦無 v20a157／v20a166；remote 共 186 個 heads）。Main 完全冇郁過，冇開 PR。教訓已入 AGENTS.md：worktree 分支本身已經喺常駐 clone，唔使 push 去任何 origin。
+
+## §11. 落地紀錄
+- 遊戲 commit `280af68`（main；基底 `5e6a6b0`＝v168，已先落地；分支 v20a167 HEAD `a6a2f40`，squash merge 零衝突）。
+- 線上核實：5,241,450 bytes、sha256 `4e476e85…`，同 `git show HEAD:index.html` 一致（初次 curl 嗰陣 GitHub Pages 仲未 deploy 完，見到 v168 舊版 5,238,925 bytes；約 2 分鐘後重驗一致）。
+- 全套合併樹：227／12 零回歸（FAIL 全部係 12 項穩定 pre-existing；＋3 對 v168 基線 224／12＝新測試 1＋波動 2）。
