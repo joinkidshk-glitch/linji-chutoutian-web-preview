@@ -93,3 +93,10 @@ index.html 淨 ＋4 行（插入點 L45783–45826），其後行號釘一律 �
 ## §7 殘留／跟進
 
 - 無。C1 已修好，唔使開設計 review（按任務指示，落地由統籌處理）。
+
+## §8 落地紀錄（統籌）
+
+- 落地：2026-11-13 約 18:47 HKT，main `b1b6092` → 遊戲 `fc76b9e`（squash merge，無需 rebase，main 落地期間未郁）。
+- 統籌親自核實：diff index.html 淨 ＋4 行（只改 `renderAwardResultHtml`）；新測試 logic 14/14＋static 17/17 我親自重跑 PASS；反證對 pristine `b1b6092` logic 4 FAIL＋static 5 FAIL 乾淨；相關測試 awards63 logic/static、awards184 static、awards181 logic/static 全部 PASS；resync 五檔純行號漂移 ＋4；實駕結果卡截圖我親自睇過，同屆提名行只出一次。
+- 線上：我親自 curl 核實 5,309,088 bytes、sha256 `b9976b56af55ac24a8ae474f9f81dc027cdf62a7095b820f979d48d13c91e50e`，同 repo HEAD:index.html 完全一致（push 後等約 90 秒部署先攞到新版）。
+- `git fsck` 乾淨。設計 review 已派（`~/workspace/linji-design-review-v186/`）。
