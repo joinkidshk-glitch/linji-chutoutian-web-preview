@@ -1,0 +1,75 @@
+# v20a185 GIFT185 靜態測試：修 v183 review B1（700 尾行俾取消掣欄遮住）＋C1（兩欄卡名「×N」孤兒跌行）。
+# 修法路線 a：卡名一行 ellipsis＋數量 span 鎖 nowrap → 卡片 85→67px，5 行一眼全見，尾行清過取消掣欄；
+# 另加 .act min-width:0，防 nowrap 名撐闊 grid 軌（右欄伸出 modal 外、elementFromPoint 命中 BODY）。
+# 零淨行數改動（2 行改、0 行加減，總行數 60143 不變——rebase 上 v184 main 77603b3 後基底 60127→60143，v185 本身淨 0），kwan151／tang152／rom176 行號釘逐檔核實見下。
+# 反證：pristine main (01ddcaa) 冇 v185 標記／spans／規則 → 多項 FAIL（唔 crash）。
+# 用法：python3 tests/test_gift185_static.py [path-to-index.html]
+import io, os, sys
+
+path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
+html = io.open(path, encoding='utf-8').read()
+lines = html.split('\n')
+fails = []
+def ok(name, cond):
+    print(('PASS ' if cond else 'FAIL ') + name)
+    if not cond:
+        fails.append(name)
+def seg(start, end):
+    try:
+        i = html.index(start)
+    except ValueError:
+        return ''
+    try:
+        j = html.index(end, i) if end else len(html)
+    except ValueError:
+        j = min(len(html), i + 40000)
+    return html[i:j]
+
+# ---- 紅線：SAVE key／softRev／?v= 不變；唔直改 content pack JSON ----
+ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
+ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
+ok('?v= 冇變', 'v=20a10' in html)
+ok('總行數 60143 不變（零淨行數改動，行號釘唔漂移）', html.count('\n') == 60143)
+
+# ---- B1：路線 a 標記＋grid 軌防撐闊 ----
+ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',
+   'v20a185 B1+C1' in html and '路線 a' in html)
+ok('B1 .act min-width:0（防 nowrap 名撐闊 grid 軌）',
+   '#gift-pick-list .act{ min-width:0 !important; }' in html)
+
+# ---- C1：名 span ellipsis＋數量 span nowrap ----
+ok('C1 .n 行 flex（icon＋名＋數量一行）',
+   '#gift-pick-list .n{ display:flex !important; align-items:baseline !important; gap:4px !important; }' in html)
+ok('C1 名 span ellipsis＋nowrap＋min-width:0',
+   '#gift-pick-list .n .gift-pick-name{ flex:1 1 auto !important; min-width:0 !important; overflow:hidden !important; text-overflow:ellipsis !important; white-space:nowrap !important; }' in html)
+ok('C1 數量 span nowrap＋唔縮',
+   '#gift-pick-list .n .gift-pick-count{ flex:0 0 auto !important; white-space:nowrap !important; }' in html)
+ok('C1 icon 唔縮（.ic112 flex:0 0 auto）',
+   '#gift-pick-list .n .ic112{ flex:0 0 auto !important; }' in html)
+
+# ---- openGiftPick row 模板用 spans；舊裸「名 ×N」清走 ----
+pick = seg('function openGiftPick(npcKey, L){', 'function doGiveGift(npcKey, itemId, L){')
+ok('C1 row 模板：名入 .gift-pick-name span',
+   '<span class="gift-pick-name">${item.name}</span>' in pick)
+ok('C1 row 模板：數量入 .gift-pick-count span',
+   '<span class="gift-pick-count">×${count}</span>' in pick)
+ok('C1 row 模板：舊裸「${item.name} ×${count}」已清走',
+   '${item.name} ×${count}' not in pick)
+ok('C1 row 模板：「選」掣仲在', '<div class="cost">選</div>' in pick)
+ok('C1 row 模板：偏好標記行唔郁', '偏好標記：${tag}' in pick)
+
+# ---- v183 C7 兩欄設計原封不動（淨係修遮擋，唔推翻兩欄） ----
+ok('C7 700 media query 兩欄原封不動',
+   '@media (max-height:720px){ #gift-pick-list{ display:grid; grid-template-columns:1fr 1fr; gap:4px 8px; }' in html
+   and '#gift-pick-list .act{ margin-bottom:0 !important; padding:6px 8px !important; }' in html)
+ok('C7 取消掣 pinned 規則唔郁', '#modal-btns{' in html and 'position: sticky' in html)
+
+# ---- 作用域：淨係 #gift-pick-list，唔郁禮品店 list／其他 .n ----
+ok('C1 規則全部鎖喺 #gift-pick-list 作用域',
+   html.count('gift-pick-name') == 2 and html.count('gift-pick-count') == 2)
+ok('禮品店 list 唔用新 spans（openGiftShop 模板唔郁）',
+   '<span class="gift-pick-name">' not in seg('function openGiftShop(shopId, L){', 'function openGiftPick(npcKey, L){'))
+
+print('---')
+print('FAILURES: %d' % len(fails) if fails else 'ALL PASS')
+sys.exit(1 if fails else 0)

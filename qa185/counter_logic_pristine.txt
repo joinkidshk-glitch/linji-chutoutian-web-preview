@@ -1,0 +1,21 @@
+PASS openGiftPick 在位
+PASS row 模板 literal 在位
+PASS row 模板有開閂 backtick
+FAIL 渲染 [原創卡帶（獨立樂隊）] 有 .gift-pick-name span 包住全名
+FAIL 渲染 [原創卡帶（獨立樂隊）] 有 .gift-pick-count span 包住 ×3
+FAIL 渲染 [原創卡帶（獨立樂隊）] 名 span 在數量 span 之前（名＋×N 同行次序）
+FAIL 渲染 [原創卡帶（獨立樂隊）] 冇裸「名 ×N」文字（唔會換行跌孤兒）
+PASS 渲染 [原創卡帶（獨立樂隊）] 仍有「選」掣
+FAIL 渲染 [實用不銹鋼保溫瓶] 有 .gift-pick-name span 包住全名
+FAIL 渲染 [實用不銹鋼保溫瓶] 有 .gift-pick-count span 包住 ×3
+FAIL 渲染 [實用不銹鋼保溫瓶] 名 span 在數量 span 之前（名＋×N 同行次序）
+FAIL 渲染 [實用不銹鋼保溫瓶] 冇裸「名 ×N」文字（唔會換行跌孤兒）
+PASS 渲染 [實用不銹鋼保溫瓶] 仍有「選」掣
+FAIL v185 標記在位
+FAIL C1 名 span：flex:1＋min-width:0＋ellipsis＋nowrap
+FAIL C1 數量 span：flex:0 0 auto＋nowrap
+FAIL C1 .n 行 flex 排（icon＋名＋數量一行）
+FAIL C1 icon 唔縮（.ic112 flex:0 0 auto）
+FAIL B1 grid 軌唔被 nowrap 名撐闊（.act min-width:0）
+PASS C7 700 media query 兩欄原封不動
+FAILURES: 14

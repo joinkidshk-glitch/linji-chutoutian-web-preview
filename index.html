@@ -3847,7 +3847,7 @@ body.day-res-open .day-row{
 }
 .people-go:active, .debt-empty .debt-repay-btn:active{ transform:scale(.98); }
 /* v20a183 C7：700 禮物選擇器兩欄排（10 行變 5 行），尾 3 件唔使碌；取消掣 pinned 不變 */
-@media (max-height:720px){ #gift-pick-list{ display:grid; grid-template-columns:1fr 1fr; gap:4px 8px; } #gift-pick-list .act{ margin-bottom:0 !important; padding:6px 8px !important; } }
+@media (max-height:720px){ #gift-pick-list{ display:grid; grid-template-columns:1fr 1fr; gap:4px 8px; } #gift-pick-list .act{ margin-bottom:0 !important; padding:6px 8px !important; } } /* v20a185 B1+C1：卡名一行 ellipsis＋數量 span 鎖 nowrap，卡片矮返，700 下 5 行清過取消掣欄（路線 a：唔靠碌，一眼全見；.act min-width:0 防 nowrap 名撐闊 grid 軌） */ #gift-pick-list .act{ min-width:0 !important; } #gift-pick-list .n{ display:flex !important; align-items:baseline !important; gap:4px !important; } #gift-pick-list .n .ic112{ flex:0 0 auto !important; } #gift-pick-list .n .gift-pick-name{ flex:1 1 auto !important; min-width:0 !important; overflow:hidden !important; text-overflow:ellipsis !important; white-space:nowrap !important; } #gift-pick-list .n .gift-pick-count{ flex:0 0 auto !important; white-space:nowrap !important; }
 /* ===== v19z30: map chrome polish — compact legend · story strip · pin/HUD harden ===== */
 /* 1) Legend: one short row, less vertical space on phone */
 #map-legend.map-legend,
@@ -58609,7 +58609,7 @@ function openGiftPick(npcKey, L){
     const kind = GiftShop.prefKind(npcKey, itemId);
     const tag = kind==="favorite"?"★ 最愛":(kind==="liked"?"喜":(kind==="dislike"?"慎":"普")); /* v20a183 B2：最愛獨立標記，唔同「喜」撞色撞字 */
     return `<button type="button" class="act act-priority" data-give="${itemId}" style="width:100%;margin:0 0 8px;text-align:left">
-      <div><div class="n">${iconHtml112(item.emoji||"🎁")} ${item.name} ×${count}</div>
+      <div><div class="n">${iconHtml112(item.emoji||"🎁")} <span class="gift-pick-name">${item.name}</span> <span class="gift-pick-count">×${count}</span></div>
       <div class="h">偏好標記：${tag} · ${giftConfirmCostLine()}</div></div>
       <div class="cost">選</div>
     </button>`;

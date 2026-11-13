@@ -55,7 +55,8 @@ ok('render jobs72 shoot 🎥', '${iconHtml112("🎥")} ${sh.title}' in html)
 ok('render jobs72 gig 🎬', '${iconHtml112("🎬")} ${b.title}' in html)
 ok('render jobs72 wrap ✅', '${iconHtml112("✅")} ${h.title' in html)
 ok('render gift shop', '${iconHtml112(it.emoji||"🎁")}' in html)
-ok('render gift give', '${iconHtml112(item.emoji||"🎁")} ${item.name}' in html)
+# v20a185 C1：give 行名入 .gift-pick-name span（icon 呼叫本身唔郁，淨係包多層 span 做 ellipsis）
+ok('render gift give', '${iconHtml112(item.emoji||"🎁")} <span class="gift-pick-name">${item.name}</span>' in html)
 ok('render gift inv', '${iconHtml112(item.emoji||"🎁")} <b>${item.name}' in html)
 
 # ---- 5. 舊寫法已清（反證：基線呢批全部 FAIL） ----

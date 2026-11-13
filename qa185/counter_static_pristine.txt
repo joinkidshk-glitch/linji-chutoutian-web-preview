@@ -1,0 +1,21 @@
+PASS SAVE key 冇變
+PASS softRev 冇變
+PASS ?v= 冇變
+PASS 總行數 60127 不變（零淨行數改動，行號釘唔漂移）
+FAIL B1 v185 標記在位（路線 a：唔靠碌，一眼全見）
+FAIL B1 .act min-width:0（防 nowrap 名撐闊 grid 軌）
+FAIL C1 .n 行 flex（icon＋名＋數量一行）
+FAIL C1 名 span ellipsis＋nowrap＋min-width:0
+FAIL C1 數量 span nowrap＋唔縮
+FAIL C1 icon 唔縮（.ic112 flex:0 0 auto）
+FAIL C1 row 模板：名入 .gift-pick-name span
+FAIL C1 row 模板：數量入 .gift-pick-count span
+FAIL C1 row 模板：舊裸「${item.name} ×${count}」已清走
+PASS C1 row 模板：「選」掣仲在
+PASS C1 row 模板：偏好標記行唔郁
+PASS C7 700 media query 兩欄原封不動
+PASS C7 取消掣 pinned 規則唔郁
+FAIL C1 規則全部鎖喺 #gift-pick-list 作用域
+PASS 禮品店 list 唔用新 spans（openGiftShop 模板唔郁）
+---
+FAILURES: 10
