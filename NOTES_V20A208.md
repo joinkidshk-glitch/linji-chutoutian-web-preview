@@ -125,3 +125,9 @@
 - 受影響靜態測試逐個覆驗：gift185／rom176／tang171／tang173／travel114／awards160_m4／m6／m9／awards177／178／182——全部 ALL PASS。
 - 全套 `qa131/run_suite.sh`：基線 A（pristine worktree main `b7ddb37`，`qa208/suite208_base_rebased.txt`）**291 PASS／13 FAIL**；跑 B（工作版，`qa208/suite208_work_rebased.txt`）**293 PASS／13 FAIL**，FAIL 清單同基線逐項一致，**零回歸**（＋2 PASS 係 v208 兩個新測試檔）。
 - 實駕重跑（`qa208/drive208.py`，同一腳本，rebase 後工作版）：**5/5 PASS**，0 pageerror／0 requestfailed。film nominated 50,135ms（預期 50,850）／film won 51,394ms（預期 52,250，強 seed fame 80／credit 60＋跨媒介作品，seed 1 即 won；walkup／glamour／fanfare 全部見到）／music gallery 33,024ms（預期 33,800）／ad declined 45,674ms（預期 46,500）／film skip 700 第 2 格撳跳過即完＋結果卡即出。`qa208/drive208.json`＋截圖已更新做呢輪結果。
+
+### §4 落地紀錄
+
+- 分支 `v20a208`（`e5bdef7`）→ 常駐 clone main squash merge → 遊戲 commit **`57ef15b`**；push main `b7ddb37..57ef15b`，`git ls-remote` 核實一致。
+- 線上核實（curl，pipe 計 sha）：index.html **5,478,389 bytes，sha `7e3f798a8ab23fb492fcf973d48fe55884c7a1c25fc75fd467e72ed5703332b6`**，同 repo HEAD 一致。
+- 落地次序更新：v208 之後係 **v211**（用戶 2026-11-14 16:42 拍板修 v207 review A1＋B1＋B2＋C1–C3，另加 16:46 追加 spotlight 改光柱），再之後先係 v209。
