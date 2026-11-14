@@ -380,3 +380,11 @@ scene104 `?v=20a104` 26→29（WF4 覆寫表重用 10→13：v134 2＋v203 8＋v
     「外景小巴嗰個暈車」＋beat「暈車」、「海邊嗰場晨戲」＋beat「潮水一路漲」全部上台；
     0 pageerror、0 http fail。截圖 `qa206/shots206b1/`。
 - Pristine worktree `~/workspace/tmp-pristine206` 落地後即清（唔留大檔）。
+
+## 9. 落地紀錄（v20a206 上線）
+
+- 遊戲 commit `8b5c460`（squash merge `v20a206`，4 粒分支 commit：B1 `5970165` → C1 `4f9d6c6` → C2 `8f1f37f` → rebase 重驗 `1fc1f74`）。
+- 線上親自 curl 核實：`index.html` 5,455,174 bytes，sha256 `bff57aeb7ed26671…`，同 repo HEAD 逐字一致。
+- 全套 A/B（rebase 後最終樹）：工作版 290／13 vs pristine main `a426947` 287／13，FAIL 清單逐項相同，零回歸。
+- 實駕重跑（rebase 後最終樹）：C1 drive T＋W 全部 2／30（首單 day 4、次單 day 10）、C2 drive 9／9、B1 probe 2／2；0 pageerror、0 http fail。
+- 工作副本 `linji-work206`＋pristine worktree `tmp-pristine206` 落地＋review 完即清；分支 `v20a206` 留喺常駐 clone（`1fc1f74`）。
