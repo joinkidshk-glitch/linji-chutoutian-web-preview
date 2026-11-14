@@ -1,3 +1,4 @@
+# v20a211 B1 resync：雙幾何（矮 480×432／高 480×540，HS211／HSC211＝×1.25）——短基準值不變，高 viewport 按比例換算；見 NOTES_V20A211。
 # v20a190 修 v187 設計 review 新 C1・static tests（字串＋CSS 規則斷言，跟 v187 寫法）：
 # 新 C1：v187 海報推到底避白牌，panel 上半留 46–48% 空暗底（932 空 273px／700 空 234px）。
 # 修法（用戶 2026-11-13 19:40 拍板）：panel 縮短貼底——overlay align-items stretch→flex-end，
@@ -98,7 +99,7 @@ chk('C1 高身海報（0.5 比例）cap 下闊 106px＜max-width 273px', (220 - 
 # --- 唔郁守衛：其餘六項 ---
 chk('守衛 B1 地板 y274–372（#d9a75f，深 98px；v20a207 B2）', '#d9a75f' in base_fn and '228 / 360' in base_fn and '310 / 360' in base_fn)
 chk('守衛 B1 觀眾席 y379–432（#120c20，高 53；v20a207 B2）', '#120c20' in base_fn and '316 / 360' in base_fn)
-chk('守衛 B1 FLOOR＝314（v20a207 B2）', 'const FLOOR = 314' in play_fn)
+chk('守衛 B1 FLOOR＝314（v20a207 B2）', 'const FLOOR = Math.round(314 * HSC211)' in play_fn)
 cards_rule = css_rule('.awd63-cards')
 _m = re.search(r'gap:\s*(\d+)px', cards_rule)
 chk('守衛 C2 卡罅 gap 24px', _m and int(_m.group(1)) == 24)
@@ -110,7 +111,7 @@ _walk = play_fn[_walk_i:play_fn.find('if(id === "out"){', _walk_i)] if _walk_i >
 chk('守衛 C4 walkup 行緊 y＋6（只一處）', 'y: 6' in _walk and _walk.count('y: 6') == 1)
 chk('守衛 C5 glamour-hide 仲係 display:none', 'display:none' in css_rule('.awd63-cards.glamour-hide'))
 chk('守衛 C6 燕尾服 glyph −129 兩處、舊 −112 唔見（v20a207 B2）',
-    'FLOOR + fp.y - 129' in play_fn and 'FLOOR - 129' in play_fn and '- 112' not in play_fn)
+    'FLOOR + fp.y - Math.round(129 * HSC211)' in play_fn and 'FLOOR - Math.round(129 * HSC211)' in play_fn and '- 112' not in play_fn)
 chk('守衛 C6 牌底 179.3 到 glyph 頂 185 留 5.7 邏輯罅（v20a207 B2）', abs((314 - 129) - 179.3 - 5.7) < 0.01)
 
 # --- 唔郁守衛：流程／版本 ---

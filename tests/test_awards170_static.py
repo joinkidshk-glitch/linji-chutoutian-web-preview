@@ -1,3 +1,4 @@
+# v20a211 B1 resync：雙幾何（矮 480×432／高 480×540，HS211／HSC211＝×1.25）——短基準值不變，高 viewport 按比例換算；見 NOTES_V20A211。
 # v20a181：橫向舞台幾何 static tests（原 v20a170 檔成份改寫；v170 係 FLOOR 跟底圖頂線，v181 成個舞台重建）。
 # v181 幾何：canvas 邏輯 480×360（4:3）／backing 720×540／setTransform 1.5；FLOOR＝262（木地板 y228–310，
 # v20a207 B2 resync：邏輯 480×432（10:9）／backing 720×648；FLOOR＝314（木地板 y274–372，
@@ -38,7 +39,7 @@ base_fn = slice_fn('awards181DrawBase')
 beats_fn = slice_fn('awards62CeremonyBeats')
 
 # --- (1) FLOOR＝314（木地板 y274–372，v20a207 B2） ---
-chk('FLOOR＝314（v20a207 B2：木地板 y274–372，深 98px）', 'const FLOOR = 314' in play_fn)
+chk('FLOOR＝314（v20a207 B2：木地板 y274–372，深 98px）', 'const FLOOR = Math.round(314 * HSC211)' in play_fn)
 chk('舊 FLOOR＝250 唔再出現（頒獎禮範圍）', 'const FLOOR = 250' not in play_fn)
 chk('舊 FLOOR＝193 唔再出現（頒獎禮範圍）', 'const FLOOR = 193' not in play_fn)
 chk('舊 FLOOR＝155 唔再出現（頒獎禮範圍）', 'const FLOOR = 155' not in play_fn)
@@ -65,12 +66,12 @@ chk('入場 entryPlan 唔郁（左右兩流／0.16px/ms／rank*380）',
 chk('drawFigure 腳底＝FLOOR＋o.y（跟常數，唔寫死）', 'const fy = FLOOR + (o.y || 0)' in play_fn)
 chk('reveal 行前 y＋10（新腳 324；v20a207 B2）', 'y: Math.round(10 * p)' in play_fn)
 chk('reveal 行前 x 向中心 240、22% 唔變', '(240 - cx0) * 0.22' in play_fn)
-chk('lightPool 跟 FLOOR（F-120 至 F；v20a207 B2）', 'F - 120' in play_fn)
+chk('lightPool 跟 FLOOR（F-120 至 F；v20a207 B2）', 'F - Math.round(120 * HSC211)' in play_fn)
 chk('獎盃 glyph 跟 FLOOR（FLOOR + fp.y - 129／-61，v20a187 C6；v20a207 B2）',
-    'FLOOR + fp.y - 129' in play_fn and 'FLOOR + fp.y - 61' in play_fn)
+    'FLOOR + fp.y - Math.round(129 * HSC211)' in play_fn and 'FLOOR + fp.y - Math.round(61 * HSC211)' in play_fn)
 chk('人物高度 px 幀（fellow 136／玩家 140／燕尾服 136；v20a207 B2）',
-    '? 140 : 136' in play_fn and 'dispH: 136' in play_fn)
-chk('canvas 480×432（W 480／H 432；v20a207 B2）', 'const W = 480, H = 432' in play_fn)
+    'Math.round(140 * HSC211)' in play_fn and 'dispH: Math.round(136 * HSC211)' in play_fn)
+chk('canvas 480×432（W 480／H 432；v20a207 B2）', 'const W = 480, H = HS211' in play_fn)
 
 # --- (5) 受影響 beats 清單 ---
 for bid in ('pan', 'enter', 'names', 'suspense', 'reveal', 'comfort', 'glamour'):

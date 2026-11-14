@@ -1,3 +1,4 @@
+// v20a211 B1 resync：雙幾何（矮 480×432／高 480×540，HS211／HSC211＝×1.25）——短基準值不變，高 viewport 按比例換算；見 NOTES_V20A211。
 // v20a190 修 v187 設計 review 新 C1・邏輯測試：
 // 新 C1：v187 為咗避白牌將海報推到底，panel 上半留 46–48% 空暗底（932 空 273px／700 空 234px）。
 // 修法（用戶 2026-11-13 19:40 拍板：海報置中返少少／panel 縮短）：panel 縮短貼底——
@@ -118,7 +119,7 @@ ok('C1 高身海報（0.5 比例）cap 下闊 106px＜max-width 273px（唔脹�
 /* ================= 唔郁守衛：其餘六項 ================= */
 ok('守衛 B1 地板 y274–372（#d9a75f，深 98px；v20a207 B2）', baseSrc.includes('228 / 360') && baseSrc.includes('310 / 360'));
 ok('守衛 B1 觀眾席 y379–432（#120c20，高 53；v20a207 B2）', baseSrc.includes('316 / 360'));
-ok('守衛 B1 FLOOR＝314（v20a207 B2）', playSrc.includes('const FLOOR = 314'));
+ok('守衛 B1 FLOOR＝314（v20a207 B2）', playSrc.includes('const FLOOR = Math.round(314 * HSC211)'));
 const cardsCss = cssRule('.awd63-cards');
 const gapM = cardsCss.match(/gap:\s*(\d+)px/);
 ok('守衛 C2 卡罅 gap 24px（角標 clearance 10px）', gapM && Number(gapM[1]) === 24);
@@ -130,7 +131,7 @@ const walkBlock = walkIdx >= 0 ? playSrc.slice(walkIdx, playSrc.indexOf('if(id =
 ok('守衛 C4 walkup 行緊 y＋6（只一處）', walkBlock.includes('y: 6') && (walkBlock.match(/y: 6/g) || []).length === 1);
 ok('守衛 C5 glamour-hide 仲係 display:none（v174 trade-off：下移 124px 唔郁）',
   cssRule('.awd63-cards.glamour-hide').includes('display:none'));
-ok('守衛 C6 燕尾服 glyph −129 兩處、舊 −112 唔見（v20a207 B2）', playSrc.includes('FLOOR + fp.y - 129') && playSrc.includes('FLOOR - 129') && !playSrc.includes('- 112'));
+ok('守衛 C6 燕尾服 glyph −129 兩處、舊 −112 唔見（v20a207 B2）', playSrc.includes('FLOOR + fp.y - Math.round(129 * HSC211)') && playSrc.includes('FLOOR - Math.round(129 * HSC211)') && !playSrc.includes('- 112'));
 ok('守衛 C6 牌底 179.3 到 glyph 頂 185 留 5.7 邏輯罅（v20a207 B2）', Math.abs((314 - 129) - 179.3 - 5.7) < 0.01);
 
 /* ================= 唔郁守衛：流程／版本 ================= */

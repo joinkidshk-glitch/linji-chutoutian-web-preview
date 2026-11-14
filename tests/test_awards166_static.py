@@ -65,7 +65,7 @@ chk('B1 海報金框＋光暈保留', 'border:4px solid #f2c14e' in panel_img an
 
 # --- B1 (3)：glamHtml 包 panel＋搬入 frame ---
 play_fn = slice_fn('awards62PlayCeremony')
-chk('B1 glamHtml 包 .awd63-glamour-panel', '<div class="awd63-glamour"><div class="awd63-glamour-panel">' in play_fn)
+chk('B1 glamHtml 包 .awd63-glamour-panel', '<div class="awd63-glamour" style="aspect-ratio:480/\' + HS211 + \'"><div class="awd63-glamour-panel">' in play_fn) # v20a211 B1：glamour overlay 高跟 HS211
 chk('B1 glamHtml 仍有海報 img＋cap', 'posterOf(pack.repGigId63)' in play_fn and 'awd63-glamour' in play_fn)
 inner_i = play_fn.find("stage.innerHTML = '<div class=\"awd62-frame\">'")
 inner_block = play_fn[inner_i:inner_i+700] if inner_i >= 0 else ''

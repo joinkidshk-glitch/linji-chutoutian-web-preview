@@ -1,3 +1,4 @@
+// v20a211 B1 resync：雙幾何（矮 480×432／高 480×540，HS211／HSC211＝×1.25）——短基準值不變，高 viewport 按比例換算；見 NOTES_V20A211。
 // v20a187 修 v181 設計 review B1＋C1–C6・邏輯測試：
 // B1：地板收窄 y228–310（深 82px＝22.8% 高；v20a207 B2 resync：地板 y274–372，深 98px＝22.7% 高；
 //     地板深／人物高 98/108≈0.91、腳底以下空地板 58px＝0.54 倍，
@@ -150,14 +151,14 @@ ok('C5 syncGlamour 仲係同一個 choke point toggle glamour-hide',
 
 /* ================= C6：glyph −110（play 原文＋計數） ================= */
 ok('C6 燕尾服 glyph −129 兩處（reveal 行前＋walkup 捧杯；v20a207 B2）',
-  playSrc.includes('FLOOR + fp.y - 129') && playSrc.includes('FLOOR - 129'));
+  playSrc.includes('FLOOR + fp.y - Math.round(129 * HSC211)') && playSrc.includes('FLOOR - Math.round(129 * HSC211)'));
 ok('C6 舊 −112 唔再出現（頒獎禮範圍）', !playSrc.includes('- 112'));
 ok('C6 牌底 179.3 到 glyph 頂 185 留 5.7 邏輯罅（v20a207 B2）', Math.abs((314 - 129) - 179.3 - 5.7) < 0.01);
 ok('C6 glyph 底 203 離頭頂 206 仲有 3px（唔掂頭；v20a207 B2）', (314 - 129 + 18) === 203 && 206 - 203 === 3);
-ok('C6 對手胸前 glyph −61（v20a207 B2）', playSrc.includes('FLOOR + fp.y - 61'));
+ok('C6 對手胸前 glyph −61（v20a207 B2）', playSrc.includes('FLOOR + fp.y - Math.round(61 * HSC211)'));
 
 /* ================= 唔郁守衛 ================= */
-ok('守衛 FLOOR＝314（v20a207 B2）', playSrc.includes('const FLOOR = 314'));
+ok('守衛 FLOOR＝314（v20a207 B2）', playSrc.includes('const FLOOR = Math.round(314 * HSC211)'));
 ok('守衛 4 slots 60／180／300／420、gallery 75／240／405 唔郁',
   playSrc.includes('240 + (i - (slots.length - 1) / 2) * 120') && playSrc.includes('[75, 240, 405]'));
 const beatsWon = awards62CeremonyBeats({ displayName: '星河電視獎', bestOutcome: 'won', repWork62: '長篇劇',

@@ -126,8 +126,9 @@ ok('C2：成張 gallery 請柬有「入場觀禮」',
   galInvite.indexOf('你今年憑《過江龍》入場觀禮。') >= 0);
 ok('C2：gallery 請柬 gap 句有「今年」',
   galInvite.indexOf('今年仲差 1 部電影作品先夠入圍（而家 0/1）') >= 0);
-ok('C2：gallery 請柬席位＋全 slate＋（觀禮）唔郁',
-  galInvite.indexOf('席位：旁聽席') >= 0 &&
+ok('C2：gallery 請柬席位去重（v211 C3：刪「席位：旁聽席」，只留閘句「今晚席位：觀禮。」）＋全 slate＋（觀禮）唔郁',
+  galInvite.indexOf('席位：旁聽席') < 0 &&
+  galInvite.indexOf('今晚席位：觀禮。') >= 0 &&
   galInvite.indexOf('今晚獎項：最佳男主角、最佳女主角、最佳男配角、最佳女配角（觀禮）') >= 0);
 const nomInvite = renderAwardInviteHtml(invPack(
   [{ id: 'cat_film_support_m', label: '最佳男配角' }, { id: 'cat_film_lead_m', label: '最佳男主角' }],

@@ -1,3 +1,4 @@
+# v20a211 B1 resync：雙幾何（矮 480×432／高 480×540，HS211／HSC211＝×1.25）——短基準值不變，高 viewport 按比例換算；見 NOTES_V20A211。
 # v20a207：v204 設計 review 七項修復（B2／B3／C1–C5；B1 唔修，見 NOTES §1）。
 #   B2 舞台放大：邏輯 480×360→480×432（10:9）／backing 720×540→720×648／FLOOR 262→314
 #       （地板 y274–372，深 98px＝22.7%；觀眾席 y379–432）；人物 dispH 112→136／玩家 116→140
@@ -50,27 +51,27 @@ play_fn = slice_fn('awards62PlayCeremony')
 base_fn = slice_fn('awards181DrawBase')
 
 # --- B2：舞台放大（邏輯 480×432／backing 720×648／FLOOR 314）---
-chk('B2 canvas 邏輯 480×432（10:9）', 'const W = 480, H = 432' in play_fn)
+chk('B2 canvas 邏輯 480×432（10:9）', 'const W = 480, H = HS211' in play_fn)
 chk('B2 舊邏輯 480×360 唔再出現（頒獎禮範圍）', 'const W = 480, H = 360' not in play_fn)
-chk('B2 canvas backing 720×648', '<canvas class="awd62-canvas" width="720" height="648">' in src)
+chk('B2 canvas backing 720×648', 'Math.round(HS211 * 1.5)' in src)
 chk('B2 舊 backing 720×540 唔再出現', '<canvas class="awd62-canvas" width="720" height="540">' not in src)
 chk('B2 setTransform 1.5 唔郁', 'ctx.setTransform(1.5, 0, 0, 1.5, 0, 0)' in play_fn)
-chk('B2 FLOOR＝314（腳底）', 'const FLOOR = 314' in play_fn)
+chk('B2 FLOOR＝314（腳底）', 'const FLOOR = Math.round(314 * HSC211)' in play_fn)
 chk('B2 舊 FLOOR＝262 唔再出現（頒獎禮範圍）', 'const FLOOR = 262' not in play_fn)
 chk('B2 地板 y274–372（深 98px＝22.7% 高）', '228 / 360' in base_fn and '310 / 360' in base_fn)
 chk('B2 地板深 98px＝22.7% 高', abs(98 / 432 - 0.227) < 0.002)
 chk('B2 觀眾席 y379–432（316／360 比例）', '316 / 360' in base_fn)
-chk('B2 人物 dispH 136（fellow）／140（玩家）', '? 140 : 136' in play_fn)
+chk('B2 人物 dispH 136（fellow）／140（玩家）', 'Math.round(140 * HSC211)' in play_fn)
 chk('B2 舊 dispH 112／116 唔再出現（頒獎禮範圍）', '? 116 : 112' not in play_fn)
-chk('B2 燕尾服 dispH 136（同 reveal 齊高）', play_fn.count('dispH: 136') >= 3)
-chk('B2 獎盃 glyph 燕尾服頂 −129（兩處）', 'FLOOR + fp.y - 129' in play_fn and 'FLOOR - 129' in play_fn)
+chk('B2 燕尾服 dispH 136（同 reveal 齊高）', play_fn.count('dispH: Math.round(136 * HSC211)') >= 3)
+chk('B2 獎盃 glyph 燕尾服頂 −129（兩處）', 'FLOOR + fp.y - Math.round(129 * HSC211)' in play_fn and 'FLOOR - Math.round(129 * HSC211)' in play_fn)
 chk('B2 舊 glyph −110 唔再出現（頒獎禮範圍）', 'FLOOR + fp.y - 110' not in play_fn and 'FLOOR - 110' not in play_fn)
-chk('B2 對手胸前 glyph −61', 'FLOOR + fp.y - 61' in play_fn)
+chk('B2 對手胸前 glyph −61', 'FLOOR + fp.y - Math.round(61 * HSC211)' in play_fn)
 chk('B2 舊胸前 glyph −52 唔再出現', 'FLOOR + fp.y - 52' not in play_fn)
 chk('B2 牌底 179.3 到 glyph 頂 185 留罅', abs((314 - 129) - 179.3 - 5.7) < 0.01)
 chk('B2 glyph 底 203 離頭頂 206 仲有 3px', (314 - 129 + 18) == 203 and 206 - 203 == 3)
-chk('B2 光池高 120（蓋過 108px 人仔）', 'F - 120' in play_fn)
-chk('B2 彩紙底界 436（H＋4）', 'p.y > 436' in play_fn)
+chk('B2 光池高 120（蓋過 108px 人仔）', 'F - Math.round(120 * HSC211)' in play_fn)
+chk('B2 彩紙底界 436（H＋4）', 'p.y > HS211 + 4' in play_fn)
 chk('B2 glamour overlay aspect 跟 canvas（480/432）', 'aspect-ratio:480/432' in css_rule('.awd63-glamour'))
 chk('B2 舊 glamour aspect 480/360 唔再出現', 'aspect-ratio:480/360' not in src)
 chk('B2 stage safe center＋可捲（唔出 viewport 兜底）',

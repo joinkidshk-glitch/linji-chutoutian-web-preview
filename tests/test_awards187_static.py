@@ -1,3 +1,4 @@
+# v20a211 B1 resync：雙幾何（矮 480×432／高 480×540，HS211／HSC211＝×1.25）——短基準值不變，高 viewport 按比例換算；見 NOTES_V20A211。
 # v20a187 修 v181 設計 review B1＋C1–C6・static tests（字串＋CSS 規則斷言，跟 v181 寫法）：
 # B1：地板 y228–310（深 82px＝22.8% 高；v20a207 B2 resync：地板 y274–372，深 98px＝22.7% 高；地板深／人物高 0.91、腳底以下空地板 58px＝0.54 倍）；
 #     幕布拉長到 y274、燈架跟到 y274、觀眾席 y379–432（深 53px，光點照舊）。
@@ -54,7 +55,7 @@ chk('B1 地板前緣 y372（#5a3a1e；v20a207 B2）', '#5a3a1e' in base_fn and '
 chk('B1 觀眾席 y379–432（#120c20；v20a207 B2）', '#120c20' in base_fn and '316 / 360' in base_fn)
 chk('B1 舊觀眾席 y340／高 20 唔再出現', '340, W + 16, 20' not in base_fn)
 chk('B1 觀眾席光點仲在（金色 3px 點）', 'rgba(255,233,143,0.85)' in base_fn)
-chk('B1 FLOOR＝314（v20a207 B2）', 'const FLOOR = 314' in play_fn)
+chk('B1 FLOOR＝314（v20a207 B2）', 'const FLOOR = Math.round(314 * HSC211)' in play_fn)
 
 # --- C1：glamour 海報下半置中 ---
 panel_rule = css_rule('.awd63-glamour-panel')
@@ -95,11 +96,11 @@ chk('C5 glamour-hide 仲係 display:none（v174 trade-off 保留）', 'display:n
 chk('C5 syncGlamour 仲係 toggle glamour-hide', 'cardsEl.classList.toggle("glamour-hide"' in play_fn)
 
 # --- C6：glyph −110 ---
-chk('C6 燕尾服 glyph −129 兩處（v20a207 B2）', 'FLOOR + fp.y - 129' in play_fn and 'FLOOR - 129' in play_fn)
+chk('C6 燕尾服 glyph −129 兩處（v20a207 B2）', 'FLOOR + fp.y - Math.round(129 * HSC211)' in play_fn and 'FLOOR - Math.round(129 * HSC211)' in play_fn)
 chk('C6 舊 −112 唔再出現（頒獎禮範圍）', '- 112' not in play_fn)
 chk('C6 牌底 179.3 到 glyph 頂 185 留 5.7 邏輯罅（v20a207 B2）', abs((314 - 129) - 179.3 - 5.7) < 0.01)
 chk('C6 glyph 底 203 離頭頂 206 仲有 3px（v20a207 B2）', (314 - 129 + 18) == 203 and 206 - 203 == 3)
-chk('C6 對手胸前 glyph −61（v20a207 B2）', 'FLOOR + fp.y - 61' in play_fn)
+chk('C6 對手胸前 glyph −61（v20a207 B2）', 'FLOOR + fp.y - Math.round(61 * HSC211)' in play_fn)
 
 # --- 唔郁守衛：黃字 fix 三行白牌（牌底 179.3 唔郁；v20a207 B2） ---
 def _pct(rule, prop):

@@ -56,9 +56,9 @@ chk('中性剪影降級保留（唔係 Q 版比例）', '中性剪影' in play_f
 chk('跳過掣保留', 'awd62-skip' in play_fn)
 
 # --- (4) 渲染尺度（v181） ---
-chk('地板線 FLOOR=314（木地板 y274–372；v20a207 B2）', 'const FLOOR = 314' in play_fn)
+chk('地板線 FLOOR=314×HSC211（木地板 y274–372；v20a207 B2；v20a211 B1 高舞台 393）', 'const FLOOR = Math.round(314 * HSC211)' in play_fn)
 chk('slotCx 置中 240／間距 120', '240 + (i - (slots.length - 1) / 2) * 120' in play_fn)
-chk('人物高度 136／玩家 140（v20a207 B2）', '? 140 : 136' in play_fn)
+chk('人物高度 136／玩家 140 ×HSC211（v20a207 B2；v20a211 B1 高舞台 170／175）', 'Math.round(140 * HSC211) : Math.round(136 * HSC211)' in play_fn)
 
 # --- (5) 卡片統一規則抽查 ---
 chk('唱名卡海報 2:3 框', 'aspect-ratio:2/3' in src)

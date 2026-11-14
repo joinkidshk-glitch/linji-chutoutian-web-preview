@@ -1,0 +1,26 @@
+serve sha ca54a4041f37 want ca54a4041f37
+== music_gal_932 ==
+/home/hatch/workspace/linji-work211/qa211/drive211.py:136: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = list(im.crop(box).getdata())
+== music_gal_700 ==
+== music_nom_700 ==
+== film_nom_700 ==
+== film_gal_932 ==
+== ad_gal_932 ==
+== music_won_932 ==
+== music_won_700 ==
+== film_won_932 ==
+== ad_won_932 ==
+  (no won pack in 20 seeds, skip)
+== DRIVE211 DONE ==
+  music_gal_932: FAIL bad={"C3_invite_one_seat_line": false, "C3_invite_no_dup_seat": false, "B1_names_band_lt_232": false, "B1_reveal_band_lt_232": false, "C2_frame_shift_le_2": false, "A1_toast_off_at_result": false} errs=[] skipped=None
+  music_gal_700: FAIL bad={"C3_invite_one_seat_line": false, "C3_invite_no_dup_seat": false, "C2_frame_shift_le_2": false, "A1_toast_off_at_result": false} errs=[] skipped=None
+  music_nom_700: FAIL bad={"C2_frame_shift_le_2": false, "A1_toast_off_at_result": false, "A1_eyebrow_not_covered": false} errs=[] skipped=None
+  film_nom_700: FAIL bad={"A1_toast_off_at_result": false, "A1_eyebrow_not_covered": false} errs=[] skipped=None
+  film_gal_932: FAIL bad={"C3_invite_one_seat_line": false, "C3_invite_no_dup_seat": false, "B1_names_band_lt_232": false, "B1_reveal_band_lt_232": false, "C2_frame_shift_le_2": false, "A1_toast_off_at_result": false} errs=[] skipped=None
+  ad_gal_932: FAIL bad={"C3_invite_one_seat_line": false, "C3_invite_no_dup_seat": false, "B1_names_band_lt_232": false, "B1_reveal_band_lt_232": false, "C2_frame_shift_le_2": false, "A1_toast_off_at_result": false} errs=[] skipped=None
+  music_won_932: FAIL bad={"A1_toast_off_at_result": false, "B2_no_stub_sales_line": false, "B2_won_sales_names_player": false, "C1_won_fellows_names_player": false} errs=[] skipped=None
+  music_won_700: FAIL bad={"A1_toast_off_at_result": false, "B2_no_stub_sales_line": false, "B2_won_sales_names_player": false, "C1_won_fellows_names_player": false} errs=[] skipped=None
+  film_won_932: FAIL bad={"A1_toast_off_at_result": false, "B2_no_stub_sales_line": false, "B2_won_sales_names_player": false, "C1_won_fellows_names_player": false} errs=[] skipped=None
+  ad_won_932: FAIL bad={"pack_outcome_won": false} errs=None skipped=True
+== SUMMARY 0/10 cases PASS ==
