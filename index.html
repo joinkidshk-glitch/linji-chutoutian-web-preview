@@ -4575,11 +4575,8 @@ body.day-res-open .day-row{
     inset 0 0 44px rgba(146,118,62,.15);
   padding:18px 20px 14px;
 }
-/* v20a149 B4：短屏（700）報紙尾句俾「收下這份剪報」掣遮住——報紙底加 padding（76px ≥掣高＋間隙），
-   等尾句碌得起過掣位；只喺 max-height:800px 生效，932 唔郁。 */
-@media (max-height:800px){
-  #mask.paper-on .paper-sheet{ padding-bottom:76px; }
-}
+/* v20a216 R4：上面 76px media query 已搬去 v48 段 34px 規則之後（同權重後出者贏），
+   呢度唔再留多一條，免得兩條打架。 */
 
 /* --- (3) 報頭：大字置中＋粗幼雙線，報紙格式 --- */
 #mask.paper-on .paper-mast{
@@ -4688,21 +4685,32 @@ body.day-res-open .day-row{
   padding-bottom:20px;
 }
 /* (2) 收紙掣黐紙：#modal-btns 同紙身同一個 −2.2° 一齊斜（兩者同闊、
-       各自中心旋轉，斜向視覺一致）；margin-top 由 +8 改 −7（要 !important
-       蓋過 base 規則嗰個 8px !important），成欄上移 15px 輕疊紙底邊；
-       position/z-index 保證疊喺捲動紙面之上。作用域只限 .paper-on，
-       其他 modal 掣欄零影響。 */
+       各自中心旋轉，斜向視覺一致）；v20a216 R4：刪走 v48 嗰個負上移——
+       v48「輕疊紙底邊」嘅設計意圖，用戶已明確話係問題，掣列唔再上移疊紙，
+       跌返 base 規則嘅 margin-top:8px。position/z-index 保留，作用域只限
+       .paper-on，其他 modal 掣欄零影響。 */
 #mask.paper-on #modal-btns{
   transform:rotate(-2.2deg);
-  margin-top:-7px !important;
   padding-top:2px;
   position:relative;
   z-index:7;
 }
-/* 掣疊紙底嗰陣要疊喺紙嘅留白位，唔好壓住最底嗰行附註：
-   紙身底 padding 由 14px 加到 34px，附註行同紙底邊之間留返約 20px 紙邊。 */
+/* 紙身底 padding 由 14px 加到 34px，附註行同紙底邊之間留返約 20px 紙邊。 */
 #mask.paper-on .paper-sheet{
   padding-bottom:34px;
+}
+/* v20a216 R4（修 v149 死碼）：短屏（700）報紙底 padding 要 76px（≥掣高＋間隙），
+   等尾句碌得起過掣位。呢條同上面 34px 規則同權重（1 ID＋2 class），後出者贏——
+   所以 76px media query 一定要放喺 34px 規則之後，唔可以放喺前面（舊版放 L4580
+   俾 L4704 靜默蓋過，computed 永遠係 34px）。只喺 max-height:800px 生效，932 唔郁。 */
+@media (max-height:800px){
+  #mask.paper-on .paper-sheet{ padding-bottom:76px; }
+}
+/* v20a216 R4：報紙 modal 放寬到 88dvh——紙身高過 78dvh 帽嗰陣，版尾＋「第二版 →」掣
+   收喺摺疊線下面。88dvh 之前只喺 ≤820px 短屏生效，844 屏唔受惠，依家 paper-on 全高都行。
+   權重（1 ID＋3 class）高過上面 #mask:not(.tut-on) .modal 嗰兩條，唔使靠次序。 */
+#mask.paper-on:not(.tut-on) .modal{
+  max-height:min(88dvh,88svh,760px) !important;
 }
 /* (1b) 剪報卡斜度補償：卡身橫向掃掠約 2px，journal-scroll padding 得 2px，
         畀卡左右各留 5px margin，角落唔貼裁邊。 */
@@ -4757,12 +4765,32 @@ body.day-res-open .day-row{
   font-family:"Noto Sans TC", "PingFang HK", "Microsoft JhengHei", sans-serif;
   font-weight:900; font-size:37px; line-height:1.18; letter-spacing:3px;
   margin:2px 0 5px; color:#111;
+  text-wrap:balance; overflow-wrap:break-word;
 }
 .paper-sheet .np214-headline2{
   font-family:"Noto Sans TC", "PingFang HK", "Microsoft JhengHei", sans-serif;
   font-weight:900; font-size:30px; line-height:1.2; letter-spacing:2px;
   margin:2px 0 5px; color:#111;
+  text-wrap:balance; overflow-wrap:break-word;
 }
+/* v20a216 R1：頭條按字數降級——≤10 字 37px、11–16 字 30px、17–18 字 26px、>18 字 22px
+   （樣本 v11 示範長標題降到 30px；再長降一級。實駕：20 字標題喺 26px 下 3 行兼孤行
+   「佈，」，22px 先收得返 2 行）。書名號唔准斷開、關鍵詞套紅。 */
+.paper-sheet .np214-headline3{
+  font-family:"Noto Sans TC", "PingFang HK", "Microsoft JhengHei", sans-serif;
+  font-weight:900; font-size:26px; line-height:1.25; letter-spacing:2px;
+  margin:2px 0 5px; color:#111;
+  text-wrap:balance; overflow-wrap:break-word;
+}
+.paper-sheet .np214-headline4{
+  font-family:"Noto Sans TC", "PingFang HK", "Microsoft JhengHei", sans-serif;
+  font-weight:900; font-size:22px; line-height:1.25; letter-spacing:1px;
+  margin:2px 0 5px; color:#111;
+  text-wrap:balance; overflow-wrap:break-word;
+}
+.paper-sheet .np214-nobreak{ white-space:nowrap; }
+.paper-sheet .np214-headline .red, .paper-sheet .np214-headline2 .red,
+.paper-sheet .np214-headline3 .red, .paper-sheet .np214-headline4 .red{ color:#b32020; }
 .paper-sheet .np214-dek{
   font-size:15px; font-weight:700; line-height:1.5; letter-spacing:1px;
   border-top:1px solid #1a1a1a; border-bottom:1px solid #1a1a1a;
@@ -4844,6 +4872,13 @@ body.day-res-open .day-row{
   border-bottom:1px solid #1a1a1a; padding-bottom:3px; margin-bottom:5px;
 }
 .paper-sheet .np214-factbox .np214-row{ margin-bottom:6px; }
+/* v20a216 實駕修正：無相嗰陣資料格唔好浮動（138px 浮格會將兩欄正文壓成 2–3 字一
+   行窄條）；改做全闊格放喺正文下面，順便填版。 */
+.paper-sheet .np214-factbox-wide{ float:none; clear:both; width:auto; margin:8px 0 4px; }
+/* 全闊格行內出值（一行一筆），唔係兩行一筆——慳返 ~54px，等版尾第一屏見到。
+   注意：呢條一定要高過 .np214-factbox .np214-row .np214-v 嘅 display:block（同級
+   specificity、後出先贏——寫成 .np214-factbox.np214-factbox-wide 先穩陣）。 */
+.paper-sheet .np214-factbox.np214-factbox-wide .np214-row .np214-v{ display:inline; margin-left:6px; }
 .paper-sheet .np214-factbox .np214-row b{ font-weight:700; }
 .paper-sheet .np214-factbox .np214-row .np214-v{ display:block; }
 .paper-sheet .np214-adbox{
@@ -4879,6 +4914,9 @@ body.day-res-open .day-row{
   font-size:10.5px; letter-spacing:1px; color:#333;
 }
 .paper-sheet .np214-switchrow{ display:flex; gap:10px; justify-content:center; margin-top:10px; }
+/* v20a216 R4：切換掣列 sticky 喺紙面可視底——未碌到底都見到有第二版（第一屏見到）。
+   紙色底，碌嗰陣唔會透出下面嘅字。 */
+.paper-sheet .np214-switchrow{ position:sticky; bottom:0; z-index:3; background:#f5eedb; padding-top:6px; }
 .paper-sheet .np214-switch{
   font-family:"Noto Sans TC", "PingFang HK", sans-serif;
   font-size:13px; font-weight:700; letter-spacing:2px;
@@ -43016,7 +43054,7 @@ const NEWS82_EVENTS = [
   { id:"E5", day:532, level:"side", paperName:"電視週刊", clipLabel:"電視圈人事", imgKey:"E5",
     headline:"電視圈連環挖角 人事地震",
     paras:[
-      "電視圈近日盛傳人事變動，有傳有小生花旦及幕後主創正同另一台密斟過檔，星河電視與海港電視均被捲入傳聞。消息傳出後，兩台編排與劇集部署備受關注，經理人電話響個不停——係真挖角定放風試水溫，圈中人人估緊，合約問題成為連日熱話。",
+      "電視圈近日盛傳人事變動，有傳有小生花旦及幕後主創正同另一台密斟過檔，星河電視與海港電視均被捲入傳聞。消息傳出後，兩台編排與劇集部署備受關注，經理人電話響個不停——是真挖角還是放風試水溫，圈中人人猜測，合約問題成為連日熱話。",
       "有資深藝員認為，藝員尋求新發展無可厚非，平台不同，機會亦不同。亦有人持相反意見，指大台多年栽培不易，臨陣過檔難免影響劇組士氣與觀眾觀感，去留之間，應以情理兼備為上。",
       "為填補空缺，兩台均加快力捧新人，劇集配角與主持位置陸續換上新面孔。對後生一輩而言，前人離席未必是壞事，反而令上位空缺驟增；只是機會來得突然，能否接得住，仍看本身根底。"
     ],
@@ -49193,6 +49231,12 @@ function awards63InviteBitHtml(pack){
 function ensureNewspaperQueue(){
   if(!S || typeof S!=="object") return [];
   if(!Array.isArray(S.newspaperQueue)) S.newspaperQueue = [];
+  /* v20a216 R0：舊存檔殘留遷移——v214 刪咗填位生成器，但 v214 之前已入隊嘅
+     填位項目（舊填位分支先寫嘅標記）仲喺隊列入面，到期嗰陣會原樣見報。
+     載入／呈現路徑每次行過呢度就成類清走，唔係逐則清；v215 之後唔再產生呢類項目。 */
+  if(S.newspaperQueue.some(it=> it && it.press94==="fill")){
+    S.newspaperQueue = S.newspaperQueue.filter(it=> !(it && it.press94==="fill"));
+  }
   return S.newspaperQueue;
 }
 function ensureNewspaperClippings(){
@@ -49229,6 +49273,9 @@ function newspaperEventSeen(eventKey){
 function enqueueNewspaperItem(raw, opts){
   opts = opts || {};
   if(!S || !raw) return null;
+  /* v20a216 R0：入隊閘——帶舊填位標記嘅項目唔入隊（v214 已刪生成器，live 唔再產生；
+     舊存檔／舊 code 路徑遞過嚟都擋住，唔留去重 key，唔佔隊列）。 */
+  if(raw.press94==="fill") return null;
   const eventKey = String(raw.eventKey||"").trim();
   if(!eventKey || newspaperEventSeen(eventKey)) return null;
   const day = (raw.enqueuedDay!=null) ? (raw.enqueuedDay|0) : ((S.dayIndex|0)||0);
@@ -50112,50 +50159,50 @@ function newspaperDueItems(day){
    有 id 並登記 SIDE_PAPER_FRAGS 嗰三則（陸柏言／廖炳星／麥震東線）見報後入池做報紙碎片，其餘維持唔入池。
    文案守則：虛構紅星名＋真地名＋日常質地；唔用真藝名；家庭友善用字。 ===== */
 const PAPER_SIDE_ITEMS = [
-  { id:"side_lu_concert", h:"陸柏言紅磡開唱未公佈，黃牛飛已經炒起", d:"歌迷連夜喺紅磡體育館外排隊，場外士多話呢幾日絲襪奶茶都賣多咗。" },
-  { id:"side_liao_newfilm", h:"廖炳星新片清水灣開鏡，影迷塞爆片場閘口", d:"電視城外小巴站排長龍，茶水阿姐話今朝多咗三倍人買菠蘿油。" },
-  { h:"魏詠男深水埗開武館，街坊排隊拜師", d:"過氣武打女星親自紮馬示範，圍觀街坊拍爛手掌，隔籬涼茶舖生意旺到加枱。" },
-  { h:"葉敏芝寫真集再加印，書報攤老闆笑到見牙唔見眼", d:"旺角一帶書報攤話，後生仔放學必經，有人一次買三本話要嚟「收藏」。" },
-  { h:"廟街夜市有劇組取景，煲仔飯檔被圍到水洩不通", d:"檔主話拍戲嗰陣最旺，臨記食客一邊食一邊望鏡頭，唔知入唔入到鏡。" },
-  { h:"電視城飯堂加價一毫，臨記們怨聲四起", d:"有臨記話，飯堂加一毫唔緊要，最緊要唔好cut咗嗰杯免費例湯。" },
-  { h:"重慶大廈又有外景隊開工，電梯口逼到落唔到樓", d:"住客話見慣唔怪，仲有人即場被副導演拉去做路人，收工多一份車馬費。" },
-  { h:"跑馬地夜馬人頭湧湧，明星馬主成焦點", d:"馬迷話入場唔係為賭馬，係想撞下有冇星出現，順便買份馬經研究下期。" },
-  { h:"蘇芷茵新歌派台，唱片舖門口貼滿海報", d:"電台 DJ 話點唱率日日升，唱片舖老闆已經入定多兩箱貨等上架。" },
-  { h:"大排檔宵夜檔成片場後台，收工人潮傾到天光", d:"檔主話邊組收工、邊個俾導演鬧，坐低食碗雲吞麵就聽得七七八八。" },
-  { h:"卡拉 OK 新店佐敦開張，後生仔女排隊試唱", d:"老闆話房間裝修跟足日本款，有成班後生訂房訂到下個月。", fromYear:1991 },
-  { h:"移民講座場場爆滿，顧問公司廣告登到上副刊", d:"茶餐廳入面十枱有三枱講移民，有人話唔係想走，係買個保險。", fromYear:1991 },
-  { h:"酒樓散席飯訂枱急升，經理話做到手軟", d:"有經理話近排啲圍餐十居其九係送行宴，食到尾總有人眼濕濕。", fromYear:1991 },
-  { h:"某武師舉家移民，劇組筵開三席送行", d:"監製話佢嗰身功夫唔係咁易搵人替，嗰晚成班武師輪住嚟敬佢，話去到外國都要記住清水灣呢班兄弟。", fromYear:1991 },
-  { h:"程天諾接拍汽水廣告，新人王氣勢逼人", d:"廣告商話就係睇中佢後生夠活力，廣告未出街，學校門口已經貼滿佢啲相。", fromYear:1992 },
+  { id:"side_lu_concert", h:"陸柏言紅磡開唱未公佈，黃牛票價已經高企", d:"歌迷連夜於紅磡體育館外排隊，場外士多表示，近日絲襪奶茶銷量亦見上升。" },
+  { id:"side_liao_newfilm", h:"廖炳星新片清水灣開鏡，影迷擠滿片場閘口", d:"電視城外小巴站大排長龍，茶水部職員表示，今早購買菠蘿油的人數較平日多出三倍。" },
+  { h:"魏詠男深水埗開武館，街坊排隊拜師", d:"前武打女星親自紮馬示範，圍觀街坊掌聲不絕，鄰近涼茶舖生意興旺，需加開座位。" },
+  { h:"葉敏芝寫真集再加印，書報攤老闆笑逐顏開", d:"旺角一帶書報攤表示，年輕人放學必經，有人一次購買三本，稱要作「收藏」之用。" },
+  { h:"廟街夜市有劇組取景，煲仔飯檔被圍到水洩不通", d:"檔主表示，拍戲期間生意最旺，臨記食客一邊進食，一邊望向鏡頭，未知能否入鏡。" },
+  { h:"電視城飯堂加價一毫，臨記們怨聲四起", d:"有臨記表示，飯堂加價一毫並無大礙，最重要是不要取消那杯免費例湯。" },
+  { h:"重慶大廈又有外景隊開工，電梯口擠擁難行", d:"住客表示早已習以為常，更有人即場獲副導演邀請擔任路人，收工可多取一份車馬費。" },
+  { h:"跑馬地夜馬人頭湧湧，明星馬主成焦點", d:"馬迷表示，入場並非為賭馬，而是希望偶遇明星，順道購買馬經，研究下期賽事。" },
+  { h:"蘇芷茵新歌派台，唱片舖門口貼滿海報", d:"電台唱片騎師表示點唱率逐日上升，唱片舖老闆已預備多兩箱貨品等候上架。" },
+  { h:"大排檔宵夜檔成片場後台，收工人潮徹夜長談", d:"檔主表示，哪組收工、哪人被導演責備，坐下吃一碗雲吞麵便可聽得大概。" },
+  { h:"卡拉 OK 新店佐敦開張，年輕人排隊試唱", d:"老闆表示，房間裝修仿照日本款式，大批年輕人訂房已排至下月。", fromYear:1991 },
+  { h:"移民講座場場爆滿，顧問公司廣告登到上副刊", d:"茶餐廳內十桌有三桌談論移民，有人表示並非有意離開，而是買個保障。", fromYear:1991 },
+  { h:"酒樓散席飯訂枱急升，經理分身乏術", d:"有經理表示，近日圍餐十居其九為送行宴，宴席將散時，總有人眼泛淚光。", fromYear:1991 },
+  { h:"某武師舉家移民，劇組筵開三席送行", d:"監製表示，他一身功夫不易找人替代，當晚一眾武師輪流向他敬酒，並囑咐他到了外國亦要記住清水灣這班兄弟。", fromYear:1991 },
+  { h:"程天諾接拍汽水廣告，新人王氣勢逼人", d:"廣告商表示，看中他年輕有活力，廣告尚未推出，學校門口已貼滿他的海報。", fromYear:1992 },
   /* v20a31（Phase 4-8）：程天諾預熱（主幹 §5）——N15（C16）出場前，喺 N13–N14 期間先令佢「未見其人先聞其名」：
      兩則 1990 花邊分別埋「跳唱／舞蹈室」同「修音爭議」兩條線，C16 開場嗰陣玩家已經聽過佢個名。 */
-  { h:"程天諾舞蹈室練到半夜，保安話成層樓都聽到佢數拍子", d:"唱片公司職員話，呢個跳唱新人唔靠樣食飯，排舞練到保安鎖門先肯走，監製睇到直點頭。", fromYear:1992 },
-  { h:"實力派前輩公開批評程天諾靠修音，樂壇口水戰開打", d:"有資深歌手受訪嗰陣話，而家啲新人入錄音室先係考場；被點名嗰位跳唱新人冇出聲回應，只係嗰晚又練到半夜。", fromYear:1992 },
-  { h:"啟德機場送機大堂日日人山人海", d:"有送機嘅人話，而家去機場唔係旅行，係送親戚，一送就唔知幾時先再見。", fromYear:1992 },
-  { h:"賀歲片搶檔期傳到熱哄哄，院線排片傷腦筋", d:"邊套賀歲、邊套押後，戲院經理話排到聖誕都未排得晒，年尾有排煩。" },
-  { id:"side_mak_wrap", h:"麥震東新片煞科宴缺席，劇組話佢唔舒服", d:"監製話佢拍到煞科嗰日都仲吊緊威也，係咪唔舒服，就無人肯講多句。" },
+  { h:"程天諾舞蹈室練到半夜，保安稱整層皆聞拍子聲", d:"唱片公司職員表示，這名跳唱新人並非單靠外表，排舞至保安鎖門方肯離開，監製看在眼裡，頻頻點頭。", fromYear:1992 },
+  { h:"實力派前輩公開批評程天諾靠修音，樂壇掀起口水戰", d:"有資深歌手受訪時表示，如今新人進錄音室方是考場；被點名的跳唱新人未有回應，當晚又練習至半夜。", fromYear:1992 },
+  { h:"啟德機場送機大堂日日人山人海", d:"有送機者表示，如今前往機場並非旅行，而是送別親戚，此一送別，不知何時再見。", fromYear:1992 },
+  { h:"賀歲片搶檔期傳得沸沸揚揚，院線排片煞費思量", d:"哪套賀歲、哪套押後，戲院經理表示，排至聖誕仍未排妥，年尾將有一番忙碌。" },
+  { id:"side_mak_wrap", h:"麥震東新片煞科宴缺席，劇組稱其身體不適", d:"監製表示，他拍至煞科當日仍在吊威也，是否身體不適，無人肯多言。" },
   /* v20a82 WF3 鏈 D 擴充：花邊池 19→28 則，其中 9 則新登記入池做報紙碎片（見 SIDE_PAPER_FRAGS）。
      文案按年代映射庫 M34/M10/M19/M28/M37/M22/M14 寫，數字唔寫死、台灣資金只寫風聲。 */
-  { id:"side_yip_swimsuit", h:"葉敏芝泳裝寫真未出街先轟動，經理人話係宣傳安排", d:"唱片公司隔籬嘅書報攤話，海報未貼出嚟已經有人問幾時有貨；經理人強調寫真係一早安排好嘅宣傳，叫大家唔好亂估。", fromYear:1991 },
-  { id:"side_ku_wrap", h:"顧明輝新劇煞科，劇組話佢嗰排瘦咗成個碼", d:"煞科宴上佢敬酒敬到尾都冇坐低，有幕後話佢嗰排一日走幾組，返到屋企企住都瞓得著，唔知係敬業定冇得揀。" },
-  { id:"side_boxoffice_record", h:"暑期檔票房報捷，戲院加開午夜場都爆滿", d:"院商話呢個暑期檔旺到加場都唔夠分，後生仔排隊排到出街口，賣飛阿姐數錢數到手軟。", fromYear:1991 },
-  { id:"side_poach_rumor", h:"電視台挖角戰未停，經理人電話繼續響唔停", d:"茶餐廳有人講，邊個台開咩價、邊個仲傾緊，消息一日三變，後生嗰班忽然覺得自己都值錢咗。", fromYear:1991 },
-  { id:"side_comedy_king", h:"喜劇片場場爆滿，笑匠檔期排到出年", d:"發行商話而家最穩陣係喜劇，觀眾入場就係想笑下，幾位笑匠嘅期表滿到經理人要逐日mark。" },
-  { id:"side_singer_contest", h:"歌唱比賽決賽收視報捷，唱片公司即晚去後台傾約", d:"電視台後台逼滿經理人，邊個攞獎邊個冇獎都有人吼，後生歌手一夜之間身價唔同晒。" },
-  { id:"side_astronaut_family", h:"太空人家庭成茶餘飯後話題，機場送機又排長龍", d:"有人全家走剩一個喺香港開工，茶餐廳伙記話近排成日聽到枱枱都講電話費貴過租。", fromYear:1991 },
-  { id:"side_taiwan_money", h:"外埠資金入市傳聞又起，製片開戲前先問水喉", d:"行內流傳台灣嗰邊資金唔同以前咁鬆手，係咪真就冇人證實到，之不過監製開新戲嗰陣，個個都先問句錢到未。", fromYear:1992 },
-  { id:"side_own_studio", h:"自組公司成風氣，藝人自己做老闆開戲", d:"近排唔少藝員自己開公司接工作，唔再齋靠大廠排期；有人話係多條路，有人話係唔信得過人哋排畀自己嗰份。", fromYear:1991 },
+  { id:"side_yip_swimsuit", h:"葉敏芝泳裝寫真未出街先轟動，經理人稱為宣傳安排", d:"唱片公司鄰近的書報攤表示，海報尚未張貼，已有人詢問何時有貨；經理人強調，寫真乃一早安排的宣傳，籲各界勿妄加揣測。", fromYear:1991 },
+  { id:"side_ku_wrap", h:"顧明輝新劇煞科，劇組稱其近來清減不少", d:"煞科宴上他敬酒至最後亦未坐下，有幕後人員表示，他近來一日走幾組，回到家中站著亦能入睡，不知是敬業，還是別無選擇。" },
+  { id:"side_boxoffice_record", h:"暑期檔票房報捷，戲院加開午夜場都爆滿", d:"院商表示，這個暑期檔旺得加場亦不敷分配，年輕人排隊排至街口，售票員數錢數至手軟。", fromYear:1991 },
+  { id:"side_poach_rumor", h:"電視台挖角戰未停，經理人電話響個不停", d:"茶餐廳有人談論，哪台開出何種條件、哪人仍在洽談，消息一日三變，年輕一輩忽然覺得自己亦身價不菲。", fromYear:1991 },
+  { id:"side_comedy_king", h:"喜劇片場場爆滿，笑匠檔期排到出年", d:"發行商表示，目前最穩妥的仍是喜劇，觀眾入場只求一笑，幾位笑匠的檔期已滿，經理人須逐日編排。" },
+  { id:"side_singer_contest", h:"歌唱比賽決賽收視報捷，唱片公司即晚去後台傾約", d:"電視台後台擠滿經理人，無論得獎與否皆有人招攬，年輕歌手一夜之間身價大變。" },
+  { id:"side_astronaut_family", h:"太空人家庭成茶餘飯後話題，機場送機又排長龍", d:"有人全家離開，僅剩一人在港工作，茶餐廳夥計表示，近日時常聽到每桌都在談論電話費貴過租金。", fromYear:1991 },
+  { id:"side_taiwan_money", h:"外埠資金入市傳聞又起，製片開戲前先問資金是否到位", d:"行內流傳，台灣方面資金已不如以往寬鬆，是否屬實無人證實，然而監製開新戲時，人人先問一句資金是否到位。", fromYear:1992 },
+  { id:"side_own_studio", h:"自組公司成風氣，藝人自己做老闆開戲", d:"近日不少藝員自行開設公司接工作，不再單靠大廠排期；有人認為是多一條出路，亦有人認為是不信任他人為自己安排的工作。", fromYear:1991 },
   /* v20a86 WF4 花邊補完：Call 機／大哥大（原本零次）＋日常質地；跟既有 fromYear 閘口徑，純 flavor 唔入池 */
-  { h:"傳呼密碼簿熱賣，書報攤一個下晝賣斷市", d:"後生仔話而家冇本密碼簿傍身，Call機響都唔知人哋講乜——520、3344嗰啲，人人背到琅琅上口。", fromYear:1991 },
-  { h:"大哥大新款開售，電器舖門口排長龍", d:"老闆話新款輕咗少少，價錢就重咗一大截；排隊嗰啲十居其九係公司客，話拎住部機見客，講嘢都大聲啲。", fromYear:1992 },
-  { h:"卡拉OK歌唱大賽爆棚，包廂訂到下個月", d:"主辦嗰邊話報名人數多到要加場初選，後生歌手個個話，唱到俾唱片公司聽到，機會就嚟㗎喇。" },
-  { h:"八號風球外景取消，茶檔變臨時避風塘", d:"成組人困喺茶檔等消息，茶水阿姐煲咗三大煲奶茶，話風球日嘅生意，分分鐘好過平時。" },
-  { h:"老字號冰室做到月尾結業，老客排隊食最後一餐", d:"伙記話唔係冇生意，係冇人接手——啲老客食完紅豆冰，企喺門口影相，影完先肯走。", fromYear:1992 },
-  { h:"啟德送機的士加價都冇人講價", d:"的士司機話近排夜晚去機場嗰啲客，上車多數眼濕濕，落車嗰陣塞貼士都塞得特別爽手。", fromYear:1991 },
-  { h:"回流客辦團年飯，老街坊坐滿三圍", d:"走咗幾年又返嚟嗰啲，話嗰邊咩都好，係冇呢度啲人情味；一餐飯食到半夜，邊個都唔肯先走。", fromYear:1992 },
-  { h:"鐳射影碟舖租碟榜出爐，動作片包辦三甲", d:"舖頭老闆話後生仔租碟唔睇影評㗎，睇封面邊個企得最有型就租邊隻，租到啲碟面花晒都照租。" },
-  { h:"街市檔租再加，魚檔阿姐話要賣貴兩蚊", d:"師奶們圍住檔口起哄，話啲餸再貴落去，真係要返屋企食白粥喇——阿姐笑笑口照秤，秤尾仲送多條蔥。" },
-  { h:"傳呼台請覆台小姐，見工條龍排到出街", d:"人事部話覆台呢行最緊要口齒伶俐同捱得夜，做得嚟又唔怕聽人鬧——後生女話，新行業嚟㗎，試下無妨。", fromYear:1990 }
+  { h:"傳呼密碼簿熱賣，書報攤一個下晝賣斷市", d:"年輕人表示，如今沒有一本密碼簿傍身，傳呼機響起亦不知對方說甚麼——520、3344之類，人人背得琅琅上口。", fromYear:1991 },
+  { h:"大哥大新款開售，電器舖門口排長龍", d:"老闆表示，新款輕了一些，價錢卻重了一大截；排隊者十居其九為公司客戶，稱拿著這部電話見客，說話亦大聲一些。", fromYear:1992 },
+  { h:"卡拉OK歌唱大賽爆棚，包廂訂到下個月", d:"主辦方面表示，報名人數眾多，需加場初選，年輕歌手人人表示，若能唱給唱片公司聽到，機會便來了。" },
+  { h:"八號風球外景取消，茶檔變臨時避風塘", d:"整組人困於茶檔等候消息，茶水部職員煲了三大煲奶茶，表示風球日的生意，隨時好過平日。" },
+  { h:"老字號冰室將於月尾結業，老客排隊吃最後一餐", d:"夥計表示，並非沒有生意，而是無人接手——老顧客吃完紅豆冰，站在門口拍照，拍完方肯離開。", fromYear:1992 },
+  { h:"啟德送機的士加價亦無人議價", d:"的士司機表示，近日夜晚前往機場的乘客，上車時多數眼泛淚光，下車時給小費亦特別慷慨。", fromYear:1991 },
+  { h:"回流客辦團年飯，老街坊坐滿三圍", d:"離開幾年又回來的人表示，那邊甚麼都好，只是沒有這裡的人情味；一餐飯吃至半夜，誰也不肯先走。", fromYear:1992 },
+  { h:"鐳射影碟舖租碟榜出爐，動作片包辦三甲", d:"舖頭老闆表示，年輕人租碟不看影評，只看封面哪人站得最有型便租哪隻，租至碟面磨花亦照租不誤。" },
+  { h:"街市檔租再加，魚檔阿姐稱須加價兩元", d:"主婦們圍住檔口起哄，表示菜價再貴下去，真的要回家吃白粥了——檔主笑著照秤，秤尾還多送一條蔥。" },
+  { h:"傳呼台招聘覆台小姐，應徵者大排長龍", d:"人事部表示，覆台這行最重要是口齒伶俐、捱得夜，勝任者亦不怕聽人責罵——年輕女子表示，這是新行業，不妨一試。", fromYear:1990 }
 
 ];
 function paperSideItemForDay(day){
@@ -50318,6 +50365,10 @@ try{ window.np214ShowPage = np214ShowPage; }catch(_e){} /* v20a214 工人 4：in
   要 global——函數本身喺 IIFE 入面，唔掛 window 撳「第二版 →」就爆 np214ShowPage is not defined
   （實駕 run1 8/10 場 pageerror）；跟 window.__newspaper 同一 pattern。 */
 function buildNewspaperEdition(batch, day){
+  /* v20a216 R0：合版前再濾一次——直接遞入嚟嘅 batch（唔經隊列）有殘留填位項都唔出；
+     成批都係填位就回 null，唔出空報紙。 */
+  batch = (batch||[]).filter(it=> !(it && it.press94==="fill"));
+  if(!batch.length) return null;
   const ranked = batch.slice().sort((a,b)=>{
     /* v20a82 WF3：世界事件（source=world）優先——頭版級（worldId 屬頭版事件）排最前，
        花邊級世界事件排玩家新聞之前；同級之間保持原有 fameDelta/award 排序。 */
@@ -50371,6 +50422,17 @@ function buildNewspaperEdition(batch, day){
   const eventKeys = ranked.map(it=>it && it.eventKey).filter(Boolean);
   /* Weave Phase 3-1：連載口吻——今期主話題同上一份報紙同鍵，先喺主新聞 dek 加跟進句。 */
   const topicKey = (typeof newspaperTopicKey==="function") ? newspaperTopicKey(head) : "";
+  /* v20a216 R3：角色欄由 wrapHistory 補——頭條項目本身唔帶 roleLabel（wrap 入隊嗰陣
+     只留低 workTitle／medium）。舊檔／抽出測試冇 wrapHistory 就留空，資料格唔出呢行。 */
+  let role216 = head.roleLabel || "";
+  if(!role216 && head.eventKey && String(head.eventKey).indexOf("wrap:")===0){
+    try{
+      const gid216 = String(head.eventKey).slice(5).replace(/:\d+$/, "");
+      const hist216 = (typeof S!=="undefined" && S && Array.isArray(S.wrapHistory)) ? S.wrapHistory : [];
+      const hit216 = hist216.find(en=> en && en.gigId===gid216);
+      if(hit216) role216 = hit216.roleLabel || "";
+    }catch(_e216){}
+  }
   let headDek = head.dek || "";
   if(topicKey && topicKey===((typeof newspaperPrevTopicKey==="function") ? newspaperPrevTopicKey() : "")){
     const serial = (typeof newspaperSerialLine==="function") ? newspaperSerialLine(topicKey) : "";
@@ -50392,6 +50454,10 @@ function buildNewspaperEdition(batch, day){
     eventKeys: eventKeys,
     fameApplied: false,
     source: head.source || "wrap",
+    /* v20a216 R3：資料格用真數據——作品／媒介／角色由頭條項目透傳落嚟。 */
+    workTitle: head.workTitle || "",
+    medium: head.medium || "",
+    roleLabel: role216,
     /* WF3 世界事件主新聞欄（非 world 時為 null/空） */
     paras: (head.paras && head.paras.length) ? head.paras : null,
     imgKey: head.imgKey || "",
@@ -50414,6 +50480,7 @@ function pullDueNewspaperEdition(){
   batch.forEach(it=>{ if(it && it.eventKey) keys[it.eventKey] = true; });
   S.newspaperQueue = ensureNewspaperQueue().filter(it=> !(it && keys[it.eventKey]));
   const edition = buildNewspaperEdition(batch, day);
+  if(!edition) return null; /* v20a216 R0：成批都係殘留填位（已濾走）就唔出空報紙 */
   S.pendingMorningPaper = edition;
   return edition;
 }
@@ -50428,6 +50495,28 @@ function renderMorningPaperHtml(edition){
   /* v20a214 NP214：報紙面寫全名（渲染時先換，唔郁 edition 數據／模板）。
      typeof 守衛：renderMorningPaperHtml 要保持可獨立抽出嚟測（polish48 只抽佢＋newspaperEsc）。 */
   const esc = s => newspaperEsc((typeof newspaperFullName214==="function") ? newspaperFullName214(s) : s);
+  /* v20a216 R1：頭條富文本（inline helper——polish48 只抽呢個函數＋newspaperEsc，
+     唔可以依賴外面嘅新函數）。字數（去空白計）定字級：≤10 字 37px、11–16 字 30px、
+     >16 字 26px（樣本 v11 示範長標題降到 30px）。書名號《…》包 nowrap span 唔准斷開；
+     書名＋紅星名＋獎項動作詞套紅（樣本 v11「駱家聲奪新人獎」——奪新人獎套紅；
+     人名／作品名／獎項名由內容定：紅星名單用遊戲已有嘅 PAPER_TOPIC_STARS，有就用、
+     冇就用內置同一份名單；獎項動作詞係通用詞，唔係逐個標題硬編）。 */
+  const headStars216 = (typeof PAPER_TOPIC_STARS!=="undefined" && Array.isArray(PAPER_TOPIC_STARS)) ? PAPER_TOPIC_STARS : ["陸柏言","麥震東","高俊傑","廖炳星","葉敏芝","魏詠男","程天諾","蘇芷茵"];
+  const headWords216 = ["奪新人獎","奪獎","奪得","入圍","殺青","煞科","得獎","獲獎","開鏡","封王","稱王","問鼎"];
+  const headRich216 = raw => {
+    let t = esc(raw);
+    const books = [];
+    t = t.replace(/《[^》]*》/g, m=>{ books.push(m); return "\u0001"+(books.length-1)+"\u0001"; });
+    headStars216.forEach(nm=>{ if(nm) t = t.split(nm).join("\u0002"+nm+"\u0002"); });
+    headWords216.forEach(w=>{ if(w) t = t.split(w).join("\u0002"+w+"\u0002"); });
+    t = t.replace(/\u0002([^\u0002]*)\u0002/g, '<span class="red">$1</span>');
+    t = t.replace(/\u0001(\d+)\u0001/g, (m,i)=> '<span class="np214-nobreak red">'+books[+i]+'</span>');
+    return t;
+  };
+  const headClass216 = raw => {
+    const n = String(raw||"").replace(/\s+/g,"").length;
+    return n<=10 ? "np214-headline" : (n<=16 ? "np214-headline2" : (n<=18 ? "np214-headline3" : "np214-headline4"));
+  };
   const fame = Number(e.fameDelta)||0;
   const fameLine = fame
     ? `<p class="paper-fame">聲望 ${fame>0?"+":""}${fame}</p>`
@@ -50441,8 +50530,14 @@ function renderMorningPaperHtml(edition){
       <div class="np214-eng">VICTORIA HARBOUR DAILY</div>
       <div class="np214-dateline"><span>${newspaperEsc(dateLabel)}</span><span>${newspaperEsc(section)} · <b>${pageNo==="1" ? "第一版" : "第二版"}</b></span></div>
     </header>`;
-  /* 右直欄「影視娛樂」：欄名＋裝飾填充字（唔係真內容）；花邊短訊留喺第二版短訊列，唔搬入邊欄。 */
+  /* 右直欄「影視娛樂」：第一版欄名＋同版短訊預告（第一則短訊標題，真內容，截 6 字＋
+     「同版：」短標籤——直排字太長會撐高成版；有預告嗰陣唔出裝飾填充字，免得邊欄
+     高過主欄拖長成張紙）。花邊短訊全文留喺第二版短訊列，唔搬入邊欄。 */
+  const firstShort216 = (e.shorts||[]).find(s=> s && s.source!=="summary") || null;
+  const sidePrev216 = firstShort216 ? `<p><span class="np214-sb-tag">同版：</span>${esc(String(firstShort216.headline||"").slice(0,6))}${String(firstShort216.headline||"").length>6 ? "……" : ""}</p>` : "";
   const sidebar = `<aside class="np214-sidebar"><h3>影視娛樂</h3>
+      ${sidePrev216}${sidePrev216 ? "" : `<p class="np214-filler-v" aria-hidden="true">金碟夜唱片銷量</p>`}</aside>`;
+  const sidebar2 = `<aside class="np214-sidebar"><h3>影視娛樂</h3>
       <p class="np214-filler-v" aria-hidden="true">金碟夜唱片銷量</p></aside>`;
   const pagefoot = label => `<div class="np214-pagefoot"><span>維港日報</span><span>${label}</span></div>`;
   /* v20a48：眉題去重（純呈現）——clipLabel 成日係大標題嘅頭半句
@@ -50465,10 +50560,28 @@ function renderMorningPaperHtml(edition){
   const bodyParas = e.worldId
     ? (e.paras||[]).map((p,i)=>`<p${i===0 ? ' class="np214-lead"' : ""}>${esc(p)}</p>`).join("")
     : (e.dek ? `<p class="np214-lead">${esc(e.dek)}</p>` : "");
+  /* v20a216 R3：第一版資料格——只用真數據（作品／媒介／角色），有先出、冇就唔出。
+     媒介碼轉中文；作品名有就做格名。角色欄由 buildNewspaperEdition 經 wrapHistory 補。 */
+  const mediumName216 = { film:"電影", tv:"電視劇", music:"唱片", ad:"廣告", any:"" }[String(e.medium||"")] || String(e.medium||"");
+  let factRows216 = "";
+  if(e.workTitle) factRows216 += `<div class="np214-row"><b>作品</b><span class="np214-v">《${esc(e.workTitle)}》</span></div>`;
+  if(mediumName216) factRows216 += `<div class="np214-row"><b>媒介</b><span class="np214-v">${esc(mediumName216)}</span></div>`;
+  if(e.roleLabel) factRows216 += `<div class="np214-row"><b>角色</b><span class="np214-v">${esc(e.roleLabel)}</span></div>`;
+  const factbox216 = factRows216 ? `<aside class="np214-factbox${headImg ? "" : " np214-factbox-wide"}"><h4>${e.workTitle ? "《"+esc(e.workTitle)+"》小檔案" : "本期小檔案"}</h4>${factRows216}</aside>` : "";
+  /* v20a216 R3：短正文（dek 少過 80 字）＋無相嗰陣，第一版出模糊填充字頂住版面
+     （結果報紙同一手法）；有相／長正文／世界事件唔出，唔好成版模糊字。
+     實駕修正：無相嗰陣填充字唔浮動（浮左格會壓窄兩欄正文），全闊放喺正文＋資料格下面。 */
+  const dekLen216 = String(e.dek||"").replace(/\s+/g,"").length;
+  const fillerP1216 = (!e.worldId && !headImg && dekLen216 < 80)
+    ? `<p class="np214-filler" aria-hidden="true">金碟夜 唱片銷量 樂壇頒獎 歌壇新人 專輯榜上 典禮掌聲 大禮堂 電台 唱片鋪 夏季 歌手 專輯 紅地毯 晚禮服 歌迷 歡呼 閃光燈</p>` : "";
   /* 短訊放第二版（buildNewspaperEdition 已排好：最多 3 則＋overflow「同日還有 N 則」＋花邊）。
      summary 則（同日還有 N 則）行簡化版式；有圖嘅短訊出黑白小圖。 */
-  const shorts = (e.shorts||[]).map(s=>{
+  /* v20a216 R2：第一則短訊已升格做第二版大標題＋副題（下低 lead），唔喺短訊列重複一次；
+     summary 摺行照留。lead 嗰則嘅相由大標題嗰邊出（見 page2）。 */
+  const leadIdx216 = (e.shorts||[]).findIndex(s=> s && s.source!=="summary");
+  const shorts = (e.shorts||[]).map((s,si)=>{
     if(!s) return "";
+    if(si===leadIdx216) return "";
     if(s.source==="summary") return `<p class="np214-summary">${esc(s.headline||"")}${s.dek ? "——"+esc(s.dek) : ""}</p>`;
     return `<article class="np214-short">
       <p class="np214-kicker">${esc(s.paperName||"")}</p>
@@ -50478,15 +50591,23 @@ function renderMorningPaperHtml(edition){
     </article>`;
   }).join("");
   const hasShorts = (e.shorts||[]).length > 0;
+  /* v20a216 R2：第二版要有真標題——第一則非 summary 短訊嘅標題做大標題（字級同第一版
+     一樣按字數降），「同版短訊」只留喺眉題／版尾，永遠唔可以做頭條。第一則係 summary
+     （得摺行）就用第二則；得 summary 一則就用頭版標題＋「（續）」。副題用第一則短訊
+     dek 頭一句。 */
+  const p2HeadRaw216 = firstShort216 ? String(firstShort216.headline||"") : (String(e.headline||"") + "（續）");
+  const p2Dek216 = firstShort216 ? String(firstShort216.dek||"").split("。")[0] : "";
   const page2 = hasShorts ? `<section class="np214-page" data-np214-page="2">
     ${masthead("2")}
-    <p class="np214-kicker">娛樂快報</p>
-    <h3 class="np214-headline2">同版短訊</h3>
+    <p class="np214-kicker">同版短訊</p>
+    <h3 class="${headClass216(p2HeadRaw216)}">${headRich216(p2HeadRaw216)}</h3>
+    ${p2Dek216 ? `<p class="np214-dek">${esc(p2Dek216)}。</p>` : ""}
+    ${(firstShort216 && firstShort216.imgKey && NEWS82_IMGS && NEWS82_IMGS[firstShort216.imgKey])?`<img class="np214-short-img" src="${NEWS82_IMGS[firstShort216.imgKey]}" alt="">`:""}
     <div class="np214-layout"><div class="np214-maincol np214-clearfix">
       <div class="np214-shorts">${shorts}</div>
       ${(typeof np214Page2Ads214==="function") ? np214Page2Ads214() : ""}
-      ${(e.shorts||[]).length<=2 ? `<p class="np214-filler" aria-hidden="true">金碟夜 唱片銷量 樂壇頒獎 歌壇新人 專輯榜上 典禮掌聲 大禮堂 電台 唱片鋪 夏季 歌手 專輯 紅地毯 晚禮服 歌迷 歡呼 閃光燈</p>` : ""}
-    </div>${sidebar}</div>
+      ${(e.shorts||[]).length<=2 ? `<p class="np214-filler" aria-hidden="true">金碟夜 唱片銷量 樂壇頒獎 歌壇新人 專輯榜上 典禮掌聲 大禮堂 電台 唱片鋪 夏季 歌手 專輯 紅地毯 晚禮服 歌迷 歡呼 閃光燈</p><p class="np214-filler" aria-hidden="true">電視城 片場 臨記 佈景 通告 排期 試鏡 劇本 對白 燈光 收音 廠景 外景 午夜場 票房 觀眾 掌聲 鎂光燈</p><p class="np214-filler" aria-hidden="true">唱片舖 卡式帶 黑膠 點唱 電台節目 排行榜 銷量榜 新人獎 金曲 演唱會 紅磡 體育館 歌迷會 海報 寫真</p>` : ""}
+    </div>${sidebar2}</div>
     ${pagefoot("第二版 · 同版短訊")}
     <div class="np214-switchrow"><button type="button" class="np214-switch" onclick="np214ShowPage(this,1)">← 第一版</button></div>
   </section>` : "";
@@ -50494,11 +50615,14 @@ function renderMorningPaperHtml(edition){
   <section class="np214-page on" data-np214-page="1">
     ${masthead("1")}
     ${clip}
-    <h3 class="np214-headline">${esc(e.headline||"")}</h3>
+    <h3 class="${headClass216(e.headline)}">${headRich216(e.headline||"")}</h3>
     ${dekStrip}
     <div class="np214-layout"><div class="np214-maincol np214-clearfix">
       ${headImg}
+      ${headImg ? factbox216 : ""}
       ${bodyParas ? `<div class="np214-body2">${bodyParas}</div>` : ""}
+      ${headImg ? "" : factbox216}
+      ${fillerP1216}
     </div>${sidebar}</div>
     ${fameLine}
     <p class="paper-note">公開報紙。圈內耳語仍在手帳「傳聞」。</p>
@@ -50629,6 +50753,11 @@ function commitMorningPaper(edition, opts){
 function presentDueMorningPaper(thenFn){
   const cont = (typeof thenFn==="function") ? thenFn : function(){};
   if(!S) return false;
+  /* v20a216 附帶：防禦性清走殘留嘅 story-play-on——萬一晨鏈喺故事播放期間觸發，
+     報紙唔會用全屏故事版面出（modal 全高、紙變闊、掣位全錯）。正常晨鏈結算嗰陣
+     已經清咗，呢度只係兜底，唔影響正常流程。 */
+  try{ var _mask216 = document.getElementById("mask"); if(_mask216 && _mask216.classList) _mask216.classList.remove("story-play-on"); }catch(_e216){}
+  try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e216b){}
   try{ flushPendingStoryPapers(); }catch(_e){}
   /* 加速途中都要出逾期紙。靜默吞日之前由 runScheduleFromToday 先彈，再續加速。 */
   /* v20a122 AUD91FIX H1：旗卡死（上次晨報 modal 冇正常清旗）唔好靜默吞成條鏈——
@@ -50892,6 +51021,140 @@ function newspaperCheck(){
       /* #102 仍係選擇當日唔彈、publishDay=選擇日+1。上面 honest 已鎖。 */
       if((honest.publishDay|0)!==1) fails.push("story_pub_regress");
     }
+    /* v20a216：報紙修復——R0 殘留填位過濾、R1 長標題降級＋書名唔斷開、R2 第二版真標題、
+       R3 短正文填版、R4 掣唔疊紙、R5 晨報短訊書面語。 */
+    S.newspaperQueue = [];
+    S.newspaperClippings = [];
+    S.pendingMorningPaper = null;
+    S.newspaperLastPresentedDay = null;
+    S.mockRumors = [];
+    S.dayIndex = 40;
+    /* R0a：舊隊列殘留填位項（直接塞入 S.newspaperQueue，模擬 v214 之前入隊嘅舊存檔）
+       一經讀取就成類清走，唔出報紙。標記經物件屬性加，唔用字面寫法。 */
+    S.newspaperQueue.push({ eventKey:"wrap:gig_1988_entry_rec_clap:38", source:"wrap",
+      enqueuedDay:39, publishDay:40, fameDelta:0, paperName:"樂壇速遞",
+      headline:"《錄音室拍板》錄音完成 準備派台",
+      dek:"唱片《錄音室拍板》錄製完成，唱片公司趕工出貨，趕及檔期推出。",
+      clipLabel:"樂壇速遞・MV直擊", rumorEcho:"", templateEventKey:"wrap_success.music",
+      medium:"music", workTitle:"錄音室拍板" });
+    S.newspaperQueue[S.newspaperQueue.length-1].press94 = "fill";
+    if(ensureNewspaperQueue().some(it=> it && it.press94==="fill")) fails.push("r0_queue_purge216");
+    if(ensureNewspaperQueue().length) fails.push("r0_queue_empty216");
+    if(newspaperDueItems(40).length) fails.push("r0_due216");
+    if(pullDueNewspaperEdition()) fails.push("r0_no_paper216");
+    if(presentDueMorningPaper(function(){})) fails.push("r0_no_modal216");
+    /* R0b：入隊閘——新遞入嚟嘅填位項直接拒收。 */
+    const fillRaw216 = { eventKey:"wrap:fill216:39", source:"wrap", enqueuedDay:39,
+      publishDay:40, fameDelta:0, paperName:"樂壇速遞", headline:"填位", dek:"填位內文" };
+    fillRaw216.press94 = "fill";
+    if(enqueueNewspaperItem(fillRaw216, { persist:false })) fails.push("r0_enqueue_gate216");
+    if(ensureNewspaperQueue().some(it=> it && it.eventKey==="wrap:fill216:39")) fails.push("r0_enqueue_queued216");
+    /* R0c：合版直入 batch 有填位項都濾走；成批都係填位回 null，唔出空報紙。 */
+    const fillBatch216 = [{ eventKey:"wrap:fill216b:39", source:"wrap", enqueuedDay:39,
+      publishDay:40, fameDelta:0, paperName:"娛樂版", headline:"填位", dek:"填位內文" }];
+    fillBatch216[0].press94 = "fill";
+    if(buildNewspaperEdition(fillBatch216, 40)) fails.push("r0_build_null216");
+    const mixedBatch216 = fillBatch216.concat([{ eventKey:"wrap:ok216:39", source:"wrap",
+      enqueuedDay:39, publishDay:40, fameDelta:1, paperName:"娛樂版", headline:"正紙",
+      dek:"正紙內文" }]);
+    const edMixed216 = buildNewspaperEdition(mixedBatch216, 40);
+    if(!edMixed216 || edMixed216.headline!=="正紙") fails.push("r0_build_mixed216");
+    /* R1：長標題降級＋書名唔斷開＋套紅。 */
+    const htmlLong216 = renderMorningPaperHtml({ paperName:"樂壇速遞",
+      dateLabel:"1990年2月10日 星期六", dayIndex:40,
+      headline:"《錄音室拍板》錄音完成 準備派台",
+      dek:"唱片《錄音室拍板》錄製完成，唱片公司趕工出貨，趕及檔期推出。",
+      clipLabel:"樂壇速遞・MV直擊", fameDelta:0,
+      workTitle:"錄音室拍板", medium:"music",
+      shorts:[{ paperName:"花邊短訊", headline:"陸柏言紅磡開唱", dek:"歌迷排隊。", source:"side" }] });
+    if(htmlLong216.indexOf('class="np214-headline2"')<0) fails.push("r1_mid_30px216");
+    if(htmlLong216.indexOf('<span class="np214-nobreak red">《錄音室拍板》</span>')<0) fails.push("r1_book_nobreak216");
+    const htmlShort216 = renderMorningPaperHtml({ paperName:"娛樂版",
+      dateLabel:"1990年2月10日 星期六", dayIndex:40, headline:"駱家聲奪新人獎",
+      dek:"金碟夜新人輩出。", fameDelta:1, shorts:[] });
+    if(htmlShort216.indexOf('class="np214-headline"')<0) fails.push("r1_short_37px216");
+    if(htmlShort216.indexOf('<span class="red">奪新人獎</span>')<0) fails.push("r1_red216");
+    const htmlXLong216 = renderMorningPaperHtml({ paperName:"娛樂版",
+      dateLabel:"1990年2月10日 星期六", dayIndex:40,
+      headline:"陸柏言紅磡開唱未公佈，黃牛票價高企",
+      dek:"唱片趕工出貨。", fameDelta:0, shorts:[] });
+    if(htmlXLong216.indexOf('class="np214-headline3"')<0) fails.push("r1_long_26px216");
+    const htmlXXLong216 = renderMorningPaperHtml({ paperName:"娛樂版",
+      dateLabel:"1990年2月10日 星期六", dayIndex:40,
+      headline:"陸柏言紅磡開唱未公佈，黃牛票價已經高企",
+      dek:"唱片趕工出貨。", fameDelta:0, shorts:[] });
+    if(htmlXXLong216.indexOf('class="np214-headline4"')<0) fails.push("r1_xlong_22px216");
+    /* R2：第二版頭條唔係欄目名，係第一則短訊標題；得摺行就用頭版標題＋（續）。 */
+    if(htmlLong216.indexOf('<h3 class="np214-headline2">同版短訊</h3>')>=0) fails.push("r2_hardcoded216");
+    if(htmlLong216.indexOf('<span class="red">陸柏言</span>')<0) fails.push("r2_real_head216");
+    if(htmlLong216.indexOf("歌迷排隊")<0) fails.push("r2_dek216");
+    const htmlSum216 = renderMorningPaperHtml({ paperName:"娛樂版", dateLabel:"1990年2月10日 星期六",
+      dayIndex:40, headline:"頭條", dek:"主文。", fameDelta:0,
+      shorts:[{ source:"summary", headline:"同日還有 2 則", dek:"版面有限，其餘從略。" }] });
+    if(htmlSum216.indexOf("頭條（續）")<0) fails.push("r2_summary_fallback216");
+    /* R3：短正文填版——資料格（真數據）＋第一版填充字（無相嗰陣唔浮動，全闊）＋邊欄預告＋第二版填充字三行。 */
+    if(htmlLong216.indexOf('np214-factbox')<0) fails.push("r3_factbox216");
+    if(htmlLong216.indexOf('錄音室拍板》小檔案')<0) fails.push("r3_factbox_title216");
+    if(htmlLong216.indexOf('<b>媒介</b>')<0 || htmlLong216.indexOf('唱片')<0) fails.push("r3_factbox_rows216");
+    const p1Slice216 = htmlLong216.split('data-np214-page="2"')[0] || "";
+    if(p1Slice216.indexOf('<p class="np214-filler"')<0) fails.push("r3_filler_p1_216");
+    if(p1Slice216.indexOf('np214-filler-left')>=0) fails.push("r3_filler_p1_nofloat216");
+    if(htmlLong216.indexOf('同版：')<0) fails.push("r3_sidebar_preview216");
+    const p2Slice216 = (htmlLong216.split('data-np214-page="2"')[1] || "");
+    if((p2Slice216.match(/<p class="np214-filler"/g)||[]).length!==3) fails.push("r3_filler_p2_216");
+    /* R4：掣唔疊紙——開一份真晨報 modal，量 computed style（margin-top 唔可以負、紙底 padding ≥34）。 */
+    S.newspaperQueue = [];
+    S.newspaperClippings = [];
+    S.pendingMorningPaper = null;
+    S.newspaperLastPresentedDay = null;
+    S.dayIndex = 40;
+    enqueueNewspaperItem({ eventKey:"wrap:r4wrap:39", source:"wrap", enqueuedDay:39,
+      publishDay:40, fameDelta:0, paperName:"娛樂版", headline:"短頭條", dek:"主文一句。",
+      clipLabel:"" }, { persist:false });
+    const showed216 = presentDueMorningPaper(function(){});
+    if(!showed216) fails.push("r4_present216");
+    else {
+      try{
+        const btns216 = document.getElementById("modal-btns");
+        const mt216 = btns216 ? parseFloat(getComputedStyle(btns216).marginTop) : NaN;
+        if(!(mt216>=0)) fails.push("r4_btn_margin216");
+        const sheet216 = document.querySelector(".paper-sheet");
+        const pb216 = sheet216 ? parseFloat(getComputedStyle(sheet216).paddingBottom) : NaN;
+        if(!(pb216>=34)) fails.push("r4_sheet_padding216");
+      }catch(_e216){ fails.push("r4_measure216"); }
+      try{ closeModal(); }catch(_e216c){}
+      try{ if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = false; }catch(_e216d){}
+    }
+    /* R5：晨報短訊書面語防倒退——花邊池 39 則＋world 短訊段＋推出短訊輸出唔可以有口語字
+       （引號內除外；「話」只禁報道動詞用法，電話／說話／話題／通話／熱話／一句話唔計）。 */
+    const banned216 = function(txt){
+      const noq = String(txt||"").replace(/「[^」]*」/g, "");
+      if(/[喺嘅咗唔]/.test(noq)) return true;
+      if(/嗰/.test(noq)) return true;
+      if(/係[^。]{0,12}定/.test(noq)) return true; /* 「係…定…」口語選擇句（E5 原文） */
+      if(/估緊/.test(noq)) return true;
+      const t2 = String(txt||"").replace(/電話|說話|話題|通話|熱話|一句話/g, "");
+      if(/話/.test(t2)) return true;
+      if(/cut|mark/i.test(String(txt||""))) return true;
+      return false;
+    };
+    if(typeof PAPER_SIDE_ITEMS!=="undefined" && Array.isArray(PAPER_SIDE_ITEMS)){
+      if(PAPER_SIDE_ITEMS.length!==39) fails.push("r5_side_count216");
+      PAPER_SIDE_ITEMS.forEach(function(it){
+        if(it && banned216((it.h||"") + (it.d||""))) fails.push("r5_side_colloquial216");
+      });
+    } else fails.push("r5_side_missing216");
+    if(typeof NEWS82_EVENTS!=="undefined" && Array.isArray(NEWS82_EVENTS)){
+      NEWS82_EVENTS.forEach(function(ev){
+        if(ev && ev.level==="side" && Array.isArray(ev.paras)){
+          ev.paras.forEach(function(p){ if(banned216(p)) fails.push("r5_world_side216"); });
+        }
+      });
+    }
+    try{
+      const rel216 = (typeof release215CopyFor==="function") ? release215CopyFor({ workTitle:"試片" }, { season:"春", type:"電影" }) : null;
+      if(!rel216 || banned216(rel216.headline + rel216.dek)) fails.push("r5_release216");
+    }catch(_e216r){ fails.push("r5_release_throw216"); }
     /* #103（v20a214 NP214 已改）：天星碼頭過海路人係 base——殺青唔出報紙，唔入佇列，
        短卡日／再下一個朝早都唔會有呢單；下面驗 null＋空隊列唔出晨報。 */
     S.newspaperQueue = [];

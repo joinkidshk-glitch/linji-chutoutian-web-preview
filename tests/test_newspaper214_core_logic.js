@@ -134,10 +134,15 @@ out = renderMorningPaperHtml(baseEd({ shorts: [] }));
 ok('c14 冇短訊就單版、冇切換掣', out.indexOf('np214-page') >= 0 && out.indexOf('第二版') < 0 && out.indexOf('np214ShowPage') < 0);
 
 out = renderMorningPaperHtml(baseEd());
+const _p2at15 = out.indexOf('data-np214-page="2"');
 ok('c15 短訊喺第二版、頭條喺第一版',
-  out.indexOf('data-np214-page="1"') >= 0 && out.indexOf('data-np214-page="2"') >= 0
-  && out.indexOf('短訊一') > out.indexOf('data-np214-page="2"')
-  && out.indexOf('《天星碼頭》') < out.indexOf('data-np214-page="2"'));
+  out.indexOf('data-np214-page="1"') >= 0 && _p2at15 >= 0
+  && out.indexOf('短訊一', _p2at15) > _p2at15
+  && out.indexOf('《天星碼頭》') < _p2at15);
+/* v20a216 R2/R3：第一則短訊升格做第二版大標題，短訊列唔重複（大標題嗰則唔再出 h4）；
+   第一版邊欄預告係截斷預告，唔計入呢度。 */
+ok('c15b 首則短訊喺第二版只出一次（大標題）',
+  (out.slice(_p2at15).match(/短訊一/g) || []).length === 1);
 ok('c16 切換掣行 np214ShowPage、唔經 modal 掣列',
   out.indexOf('onclick="np214ShowPage(this,2)"') >= 0 && out.indexOf('onclick="np214ShowPage(this,1)"') >= 0);
 

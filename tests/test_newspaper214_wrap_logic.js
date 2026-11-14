@@ -168,7 +168,9 @@ function saveQ(){}
   const worldShort = { eventKey:'world:E1', paperName:'娛樂版', headline:'E1頭條', dek:'世界第一段。世界第二段。世界第三段。', source:'world', imgKey:'E1' };
   const wrapHead = { headline:'警網雄風殺青', dek:'通告殺青。', shorts:[worldShort], fameDelta:2, dateLabel:'1990年1月1日 星期一', paperName:'娛樂版' };
   const htmlWS = renderMorningPaperHtml(wrapHead);
-  ok('E05_world_short_once', countSub(htmlWS, 'E1頭條')===1 && htmlWS.indexOf('data:image/webp;base64,FAKEE1')>=0);
+  /* v20a216 R2/R3：E1頭條出兩次——第一版邊欄「同版短訊」預告＋第二版大標題；
+     短訊列唔重複（digest skip lead），相由 lead 出。 */
+  ok('E05_world_short_once', countSub(htmlWS, 'E1頭條')===2 && htmlWS.indexOf('data:image/webp;base64,FAKEE1')>=0);
   const storyEd = { headline:'劇情見報頭條', dek:'劇情副題一行。', shorts:[], fameDelta:2, dateLabel:'1990年1月1日 星期一', paperName:'娛樂版' };
   const htmlS = renderMorningPaperHtml(storyEd);
   ok('E06_story_dek_once', countSub(htmlS, '劇情副題一行。')===1);
@@ -176,7 +178,9 @@ function saveQ(){}
   ok('E08_story_fame', htmlS.indexOf('聲望 +2')>=0);
   const storyShort = { eventKey:'story:C5:honest', paperName:'娛樂版', headline:'坦率見報', dek:'劇情副題一行。', source:'story' };
   const htmlSS = renderMorningPaperHtml({ headline:'頭條', dek:'主文。', shorts:[storyShort], fameDelta:0, dateLabel:'1990年1月1日 星期一', paperName:'娛樂版' });
-  ok('E09_story_short_once', countSub(htmlSS, '坦率見報')===1 && countSub(htmlSS, '劇情副題一行。')===1);
+  /* v20a216 R2/R3：標題出兩次（邊欄預告＋第二版大標題）；副題只出一次（第二版副題行，
+     短訊列唔重複）。 */
+  ok('E09_story_short_once', countSub(htmlSS, '坦率見報')===2 && countSub(htmlSS, '劇情副題一行。')===1);
   const edWorldFirst = buildNewspaperEdition([
     { eventKey:'wrap:x:1', source:'wrap', enqueuedDay:1, publishDay:2, fameDelta:2, paperName:'娛樂版', headline:' wrap頭條', dek:'wrap。', clipLabel:'', rumorEcho:'' },
     { eventKey:'world:E1', source:'world', enqueuedDay:1, publishDay:2, fameDelta:0, paperName:'娛樂版', headline:'E1頭條', dek:'', clipLabel:'', rumorEcho:'', paras:['一','二','三'], imgKey:'E1', worldId:'E1' }

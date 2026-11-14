@@ -33,7 +33,8 @@ ok('clip card side margins', '#app #clippings-list .clip-card' in v48 and 'margi
 _bi = v48.index('#mask.paper-on #modal-btns{') if '#mask.paper-on #modal-btns{' in v48 else -1
 btns = v48[_bi:v48.index('/* (1b)', _bi)] if _bi >= 0 else ''
 ok('btns tilt with paper', 'rotate(-2.2deg)' in btns)
-ok('btns pulled up overlapping', 'margin-top:-7px !important' in btns)
+# v20a216 R4 規格已改：掣列唔再上移疊紙（用戶明確話係問題），負 margin 已刪，跌返 base +8px。
+ok('btns no longer pulled up overlapping (v216)', 'margin-top:-7px' not in btns)
 ok('btns above paper stacking', 'z-index:7' in btns)
 # 其他 modal 掣欄唔受影響：全域 #modal-btns base 規則 margin-top 仍係 +8px !important
 base_btns = seg('\n#modal-btns{\n', '#modal-btns button')
