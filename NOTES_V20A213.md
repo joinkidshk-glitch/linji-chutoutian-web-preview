@@ -240,7 +240,8 @@ modal 可見性要用有冇文字判，撳掣要限定 `#modal` 範圍（否則�
     settle 迴圈入面已經見到並撳咗殺青板＋「收下這份反響」，trace 有證；終態同
     rebase 前一致）。F 場 day 336 `settleOk: False` 係探針未行完當日故事（「回家結算」），
     唔係遊戲錯；關鍵斷言（335 出報、336 唔重出）已驗。
-- **上線**：遊戲 commit（待填）＋NOTES commit（待填）；線上 bytes／sha（待填，
-  curl 核實同 repo HEAD 一致）。
+- **上線**：遊戲 commit `4183d77`；線上 5,500,561 bytes，
+  sha256 `ef52d2fe7dcc45ac072c307e9b8104be03fae83e8243aa1e09602509eb35b342`，
+  curl 核實同 repo HEAD 一致（push 後約 4 分鐘傳播到 Pages）。NOTES commit 見 git log。
 - **落地後跟進**：星期日典禮 v192 C1——補一場由 planning 確認→開週一→睇報紙嘅實駕，
   驗證週一報紙出唔出到（見 §4／§5）。
