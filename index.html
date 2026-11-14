@@ -32520,7 +32520,8 @@ const POSTER59_STAR_IDS = {
   "陸柏言": "luk_baakyin", "廖炳星": "liu_bingxing", "齊鎮海": "chai_zanhoi",
   "麥震東": "mak_zhendong", "魏詠男": "ngai_wingnaam", "鍾楚凝": "chung_choning",
   "蘇芷茵": "so_jiyan", "駱家聲": "lok_gasing", "顧明輝": "gu_mingfai",
-  "葉敏芝": "yip_manji", "彭少祺": null
+  "葉敏芝": "yip_manji", "藍若曦": "lan_ruoxi", "沈映雪": "shum_yingsuet",
+  "江詩盈": "kong_siying", "彭少祺": null
 };
 const LEADSTAR59 = {
   "gig_1988_ad_01": "廖炳星",
@@ -46593,6 +46594,7 @@ function buildAwardResultPack(opts){
       weakHint62: (scored.outcome==="nominated" && scored.parts) ? awards62WeakHint(scored.parts, cat) : "",
       line: line,
       primaryTrack: cat.primaryTrack||"",
+      gender: cat.gender||"", /* v20a204：逐類別計 fellows 要用，舊路冇 gender 嗰陣係 "" */
       metricEcho: cat.metricEcho || ceremony.metricEcho || ""
     };
   });
@@ -46616,10 +46618,12 @@ function buildAwardResultPack(opts){
   let repGigId63 = "";
   try{ const ws63 = awards62YearWorks(ceremony, year); if(ws63.length && ws63[0].h) repGigId63 = ws63[0].h.gigId || ""; }catch(_e63g){}
   try{
-    const fl63 = (typeof awards63Fellows === "function") ? awards63Fellows(ceremony, year) : [];
+    /* v20a204：逐個類別計 fellows（按 c.gender 分流），唔再全 pack 共用同一份——
+       女獎類別 fellows 全女＋得主女，男獎全男，新人獎（gender ""）混合不變。 */
     categories.forEach(c=>{
-      c.fellows63 = fl63;
-      c.winner63 = (c.outcome === "nominated" && fl63.length) ? fl63[0] : null;
+      const fl = (typeof awards63Fellows === "function") ? awards63Fellows(ceremony, year, c.gender || "", c.id) : [];
+      c.fellows63 = fl;
+      c.winner63 = (c.outcome === "nominated" && fl.length) ? fl[0] : null;
     });
   }catch(_e63f){}
   return {
@@ -46862,8 +46866,8 @@ function renderAwardResultHtml(pack){
   /* v20a184 C2：結果卡同請柬用同一固定排序（按獎項 id），同一 pack 兩次渲染次序一致。
      v20a192 C3：focus 格行先——舞台白牌＋揭曉只演 focus 嗰格（awards63FocusCat：pack 內第一個
      won／nominated），結果卡第一行要係同一格，唔再齋按 id 序排男主角先；其餘格維持 v184
-     id 固定排序，跨類別穩定次序唔郁。同屆提名行取第一個有 fellows63 嘅類別（各類共用同一份
-     名單），唔受卡序影響。 */
+     id 固定排序，跨類別穩定次序唔郁。同屆提名行取第一個有 fellows63 嘅類別（v20a204 起每類
+     各自一份名單，按性別分流），唔受卡序影響。 */
   const cats = awardsCatsSorted184(pack);
   try{
     const f192 = (typeof awards63FocusCat === "function") ? awards63FocusCat(pack) : null;
@@ -46872,9 +46876,9 @@ function renderAwardResultHtml(pack){
       if(fi192 > 0){ const mv192 = cats.splice(fi192, 1)[0]; cats.unshift(mv192); }
     }
   }catch(_e192){}
-  /* v20a186 C1：同屆提名行只出一次——兩類嗰陣逐類別各出一行會重複同一份名單。
-     取排序後第一個有 fellows63 嘅類別（同場各類共用同一屆名單），喺卡列之後獨立一行；
-     唔改數據／判定／得主標記，逐字內容同舊版第一行一樣。 */
+  /* v20a186 C1：同屆提名行只出一次——兩類嗰陣逐類別各出一行會重複。
+     取排序後第一個有 fellows63 嘅類別（v20a204 起每類各自一份名單，呢行係該類嗰份），
+     喺卡列之後獨立一行；唔改數據／判定／得主標記。 */
   const felCat186 = cats.find(c=>c && Array.isArray(c.fellows63) && c.fellows63.length) || null;
   const felBit186 = felCat186 ? (()=>{ try{ return awards63FellowsHtml(felCat186); }catch(_e){ return ""; } })() : "";
   const catsHtml = cats.map(c=>{
@@ -47720,7 +47724,7 @@ function awards62PlayCeremony(pack, doneFn){
       confImgs149.forEach(im=> im.classList.toggle("on", show));
     };
     skipBtn.addEventListener("click", (ev)=>{ try{ ev.stopPropagation(); }catch(_e){} finish(); });
-    /* v20a181：PixelLab 角色幀預載（企立 south／行 east／west；12 人 × 3 向，assets/story/awards/px_<starId>_<dir>.png，
+    /* v20a181：PixelLab 角色幀預載（企立 south／行 east／west；v20a204 起 15 人 × 3 向，assets/story/awards/px_<starId>_<dir>.png，
        全部腳底 y115 對齊 v180 錨；未載好／冇檔就畫中性剪影頂住，唔跌返 Q 版。M1 底圖已撤，唔再 preload bgImg。 */
     const pxImgs = {};
     const loadPx = (starId, dir)=>{
@@ -48043,16 +48047,18 @@ const AWARDS160_TUXEDO_AWEI = "assets/story/awards/awei_tuxedo.png";
 /* ===== v20a63 AWARDS63：頒獎禮群星版 =====
    像素角色 v63 原用「真立繪像素化」衍生；v20a64 起成套換做 Q 版人仔；v20a181 起 Q 版池成批清走，改做
    PixelLab character 幀（assets/story/awards/px_<starId>_<dir>.png，south 企立／east／west 行入場）：
-   阿偉跟定版造型（黑碎瀏海、深藍西裝褸＋白恤衫開領、冇呔）；紅星池＝POSTER59_STAR_IDS 嗰 10 位
-   （程天諾唔喺池內——1990 零出場紅線，任何年份都唔派佢）。
+   阿偉跟定版造型（黑碎瀏海、深藍西裝褸＋白恤衫開領、冇呔）；紅星池＝POSTER59_STAR_IDS 嗰 13 位
+   （v20a204：舊 10 位＋藍若曦／沈映雪／江詩盈；程天諾唔喺池內——1990 零出場紅線，任何年份都唔派佢）。
    提名對手（fellows）由嗰年嗰媒介 pack 通告＋LEADSTAR59 主演衍生；冇主演數據就按媒介喺紅星池兜底配對（加權隨機，v20a147）。
    海報利用：唱名作品卡列（DOM 層，海報縮圖／CSS 片名卡）＋得獎 glamour 全屏海報＋請柬細海報——全部重用 poster59Path 既有 data URI，唔重複編碼。 */
 const AWARDS63_POOL = {
-  film:  ["luk_baakyin", "liu_bingxing", "mak_zhendong", "chai_zanhoi", "lok_gasing", "ngai_wingnaam"],
+  film:  ["luk_baakyin", "liu_bingxing", "mak_zhendong", "chai_zanhoi", "lok_gasing", "ngai_wingnaam", "kong_siying"],
   tv:    ["chai_zanhoi", "yip_manji", "luk_baakyin", "chung_choning"],
-  music: ["lok_gasing", "gu_mingfai", "liu_bingxing"],
+  music: ["lok_gasing", "gu_mingfai", "liu_bingxing", "lan_ruoxi", "shum_yingsuet"],
   ad:    ["so_jiyan", "chung_choning", "luk_baakyin", "ngai_wingnaam", "gu_mingfai"]
 };
+/* v20a204：女星補入池——藍若曦（玉女歌手）＋沈映雪（抒情歌后）入音樂池；
+   江詩盈（文藝片女主角）入電影池。入池後 music 2 女／5、film 2 女／7。 */
 /* v20a147：第二輪兜底配對改加權隨機——頂級紅星出現機率高啲，唔係固定人選。
    星級來源：紅星名冊 PLAN_ERA_STAR_TARGETS_v1.md「巔峰年」——巔峰 1990–92＝當紅頂級 ×3
    （陸柏言 1990、蘇芷茵 1991、廖炳星 1992、駱家聲 1990、葉敏芝 1992）；
@@ -48062,8 +48068,18 @@ const AWARDS63_POOL = {
 const AWARDS63_TIER_WEIGHT = {
   luk_baakyin: 3, so_jiyan: 3, liu_bingxing: 3, lok_gasing: 3, yip_manji: 3,
   mak_zhendong: 2, chai_zanhoi: 2, chung_choning: 2,
-  ngai_wingnaam: 1, gu_mingfai: 1
+  ngai_wingnaam: 1, gu_mingfai: 1,
+  lan_ruoxi: 3, shum_yingsuet: 3, kong_siying: 3 /* v20a204：三位新入池女星都係巔峰 1990–92＝×3 */
 };
+/* v20a204：女性 id 集（性別分流用；預設男，唔使列男表）。7 位女星：
+   蘇芷茵／鍾楚凝／魏詠男／葉敏芝（舊 4 位）＋藍若曦／沈映雪／江詩盈（新入池 3 位）。 */
+const AWARDS204_FEMALE_STARS = {
+  so_jiyan: 1, chung_choning: 1, ngai_wingnaam: 1, yip_manji: 1,
+  lan_ruoxi: 1, shum_yingsuet: 1, kong_siying: 1
+};
+function awards204StarGender(starId){
+  return (starId && AWARDS204_FEMALE_STARS[starId]) ? "f" : "m";
+}
 function awards63KeySeed(key){
   let h = 2166136261 >>> 0; /* FNV-1a 32-bit */
   const s = String(key || "");
@@ -48132,8 +48148,13 @@ function awards63GigPay(g){
   if(Array.isArray(g.pay)) return Number(g.pay[1] != null ? g.pay[1] : g.pay[0]) || 0;
   return Number(g.pay) || 0;
 }
-function awards63Fellows(ceremony, year){
+function awards63Fellows(ceremony, year, gender, catId){
+  /* v20a204：性別分流——第三參數 gender 可選（"m"／"f"／""／唔傳＝唔過濾，舊行為不變）。
+     第一輪真主演＋第二輪池抽都只取啱性別嘅星；高俊傑特別名額（男）唔入女獎；
+     seed 加埋 gender＋catId，每類別獨立可重現，男女唔共用同一隨機序列。 */
   ceremony = ceremony || {};
+  gender = (gender === "f" || gender === "m") ? gender : "";
+  const genderOk204 = (sid)=> !gender || awards204StarGender(sid) === gender;
   const types = {};
   ((ceremony && ceremony.matchTypes) || []).forEach(t=>{ if(t) types[String(t)] = true; });
   if(!Object.keys(types).length) return [];
@@ -48161,18 +48182,25 @@ function awards63Fellows(ceremony, year){
   const used = {};
   const out = [];
   const posterOf = (gid)=>{ try{ return (typeof poster59Path === "function") ? poster59Path(gid) : ""; }catch(_e){ return ""; } };
-  /* 第一輪：真主演對手（按片酬序、每位星只取一部） */
+  /* 第一輪：真主演對手（按片酬序、每位星只取一部；v20a204：性別唔啱就跳過） */
   cands.forEach(c=>{
     if(out.length >= 3) return;
     if(!c.starId || used[c.starId]) return;
+    if(!genderOk204(c.starId)) return;
     used[c.starId] = true;
     out.push({ starId: c.starId, star: c.star, title: c.title, gigId: c.g.id, poster: posterOf(c.g.id), assigned: false });
   });
   /* 第二輪：冇主演數據嘅作品 → 紅星池按星級加權隨機抽（v20a147；頂級紅星機率高啲，唔係固定人選）。
      同一 (year, ceremonyId, medium) 用同一 seed，可重現；結果喺排程嗰刻計好存入 pack，唔用裸 Math.random()。 */
   if(out.length < 3){
-    const pool = AWARDS63_POOL[medium] || AWARDS63_POOL.film;
-    const rng = awards63SeededRng(awards63KeySeed([year, ceremony && ceremony.id, medium].join("/")));
+    const poolAll = AWARDS63_POOL[medium] || AWARDS63_POOL.film;
+    const pool = gender ? poolAll.filter(sid=> awards204StarGender(sid) === gender) : poolAll;
+    /* seed：舊式呼叫（唔傳 gender／catId）沿用舊三元 seed，抽籤結果同舊版一致；
+       傳咗 gender／catId 先加落 seed——每類別獨立可重現，男女唔共用同一序列。 */
+    const seedParts204 = [year, ceremony && ceremony.id, medium];
+    if(gender) seedParts204.push(gender);
+    if(catId) seedParts204.push(catId);
+    const rng = awards63SeededRng(awards63KeySeed(seedParts204.join("/")));
     cands.forEach(c=>{
       if(out.length >= 3) return;
       if(c.starId) return;
@@ -48186,8 +48214,12 @@ function awards63Fellows(ceremony, year){
      佢唔係紅星（POSTER59_STAR_IDS／AWARDS63_POOL 刻意唔加佢），所以唔行第一／二輪；
      掛靠一張冇主演嘅作品；滿 3 嗰陣只可以取代第二輪兜底位（assigned:true，繼承嗰個位嘅
      title／gigId／poster），唔逼走第一輪真主演；冇啱嘅 cand 嗰陣唔入。 */
-  if(year >= 1991 && !out.some(f=> f && f.starId === "ko_chunkit")){
-    const koRng = awards63SeededRng(awards63KeySeed([year, ceremony && ceremony.id, medium, "ko"].join("/")));
+  if(year >= 1991 && gender !== "f" && !out.some(f=> f && f.starId === "ko_chunkit")){
+    const koParts204 = [year, ceremony && ceremony.id, medium];
+    if(gender) koParts204.push(gender);
+    if(catId) koParts204.push(catId);
+    koParts204.push("ko");
+    const koRng = awards63SeededRng(awards63KeySeed(koParts204.join("/")));
     if(koRng() < 0.5){
       const usedGig = {};
       out.forEach(f=>{ if(f && f.gigId) usedGig[f.gigId] = true; });

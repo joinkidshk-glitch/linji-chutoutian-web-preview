@@ -51,7 +51,7 @@ chk('AWARDS63 區塊標記在位', 'v20a63 AWARDS63' in src)
 chk('AWARDS64_SPRITES 已撤（v181：改 PixelLab 幀）', 'const AWARDS64_SPRITES' not in src)
 chk('AWARDS63_SPRITES 舊寫實資產已撤', 'const AWARDS63_SPRITES' not in src)
 chk('AWARDS63_POOL 在位', 'const AWARDS63_POOL' in src)
-chk('fellows 函數在位', 'function awards63Fellows(ceremony, year)' in src)
+chk('fellows 函數在位（v20a204：簽名加可選 gender＋catId）', 'function awards63Fellows(ceremony, year, gender, catId)' in src)
 chk('focus 函數在位', 'function awards63FocusCat(pack)' in src)
 PX_DIR = os.path.join(os.path.dirname(os.path.abspath(idx_path)), 'assets', 'story', 'awards')
 PX_IDS = ['awei', 'luk_baakyin', 'liu_bingxing', 'chai_zanhoi', 'mak_zhendong', 'lok_gasing',

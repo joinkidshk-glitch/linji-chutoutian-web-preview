@@ -158,9 +158,10 @@ ok('旁聽唱名只列對手（有 fellows 嗰陣）', !!(beatsGalF.find(b=>b.id
 ok('旁聽揭曉唱出得主（fellows[0]）', !!(beatsGalF.find(b=>b.id==='reveal')) && /陸柏言/.test(beatsGalF.find(b=>b.id==='reveal').caption) && /《賀歲喜劇笑滿堂》/.test(beatsGalF.find(b=>b.id==='reveal').caption));
 
 /* ---- (6) v20a147 加權隨機分佈 ---- */
-// 頂級＝權重 3（名冊巔峰 1990–92）；首抽理論佔比：film 9/14≈64%、tv 6/10=60%、music 6/7≈86%、ad 6/10=60%。
-// 均勻分佈會係 film 50%、tv 50%、music 67%、ad 40%。枚舉 2000 粒 seed 計實測佔比。
-const TIER_TOP147 = new Set(['luk_baakyin','so_jiyan','liu_bingxing','lok_gasing','yip_manji']);
+// 頂級＝權重 3（名冊巔峰 1990–92）；首抽理論佔比：film 12/17≈71%、tv 6/10=60%、music 12/13≈92%、ad 6/10=60%。
+// 均勻分佈會係 film 57%、tv 50%、music 80%、ad 40%。枚舉 2000 粒 seed 計實測佔比。
+// （v20a204：film 加江詩盈 ×3、music 加藍若曦／沈映雪 ×3，理論值跟住改；tv／ad 不變。）
+const TIER_TOP147 = new Set(['luk_baakyin','so_jiyan','liu_bingxing','lok_gasing','yip_manji','lan_ruoxi','shum_yingsuet','kong_siying']);
 function firstPickShare147(medium, n){
   const pool = AWARDS63_POOL[medium];
   let top = 0;
@@ -171,7 +172,7 @@ function firstPickShare147(medium, n){
   }
   return top / n;
 }
-const SHARE147 = { film:[0.64,0.50], tv:[0.60,0.50], music:[0.86,0.67], ad:[0.60,0.40] };
+const SHARE147 = { film:[0.71,0.57], tv:[0.60,0.50], music:[0.92,0.80], ad:[0.60,0.40] };
 for(const m of ['film','tv','music','ad']){
   const s = firstPickShare147(m, 2000);
   console.log('  加權首抽佔比 ' + m + ': ' + (s*100).toFixed(1) + '%（理論 ' + (SHARE147[m][0]*100).toFixed(0) + '%，均勻 ' + (SHARE147[m][1]*100).toFixed(0) + '%）');
@@ -180,7 +181,7 @@ for(const m of ['film','tv','music','ad']){
 ok('加權：同一 key 同一 pick（seeded 可重現）', awards63WeightedPick(AWARDS63_POOL.film, {}, awards63SeededRng(awards63KeySeed('1991/award_harbour_film/film'))) === awards63WeightedPick(AWARDS63_POOL.film, {}, awards63SeededRng(awards63KeySeed('1991/award_harbour_film/film'))));
 ok('加權：唔抽已經用過嘅星', (()=>{ const used = { luk_baakyin:true, liu_bingxing:true, lok_gasing:true }; const got = awards63WeightedPick(AWARDS63_POOL.film, used, awards63SeededRng(12345)); return got && !used[got]; })());
 ok('加權：池抽乾返空字串', awards63WeightedPick(AWARDS63_POOL.tv, { chai_zanhoi:true, yip_manji:true, luk_baakyin:true, chung_choning:true }, awards63SeededRng(1)) === '');
-ok('加權：權重表齊晒池內 10 星', Object.values(AWARDS63_POOL).flat().every(id=>AWARDS63_TIER_WEIGHT[id] != null));
+ok('加權：權重表齊晒池內 13 星', Object.values(AWARDS63_POOL).flat().every(id=>AWARDS63_TIER_WEIGHT[id] != null));
 
 console.log('');
 console.log(fails.length ? ('FAILED: '+fails.length+' -> '+fails.join(' | ')) : 'ALL PASS');

@@ -80,9 +80,9 @@ def blend(fg, bg, a):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 61400（v193 61167＋v203 淨 +233）', src.count('\n') == 61400)
-ok('零行數漂移：openLoc DEF 行 55872（v193 55639＋v203 +233，travel114 釘行）',
-   len(lines) >= 55872 and 'function openLoc(id, opts){' in lines[55871])
+ok('零行數漂移：總行數 61432（v193 61167＋v203 +233＋v204 +32）', src.count('\n') == 61432)
+ok('零行數漂移：openLoc DEF 行 55904（v193 55639＋v203 +233＋v204 +32，travel114 釘行）',
+   len(lines) >= 55904 and 'function openLoc(id, opts){' in lines[55903])
 ok('零行數漂移：L4862 仲係 v169／v171／v173 同行（v181 CSS ＋13，kwan151／tang152 釘行已一併 resync）',
    len(lines) >= 4942 and 'loc-acts-more171::after' in lines[4941] and 'act-locked171' in lines[4941])
 ok('L4862 註解平衡：/* 數＝*/ 數，鎖住底 rule 唔喺註解入面（v173 曾中招：註解入面再插 /*…*/ 令首個 */ 提早閂註解，殘尾變裸文吞咗鎖住底 rule 嘅 selector，live 底色跌返 #f5e6c0）',

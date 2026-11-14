@@ -55,8 +55,8 @@ def check(s):
     if len(ls) < 27969 or FALLBACK not in ls[27975]:
         probs.append("advance 第 27976 行冇 text fallback")  # v157 resync：27913→27937（splice ＋24）；v149 rebase ＋13：27752→27765；v20a199 resync：27871→27914
     # ② applyFamilySafeToNode 處理 b.text（行號 33516–33518，rebase 重對；v131 B2/B4 令行號由 33222 移位；v133 令行號由 33263 移位；v135 令行號由 33268 移位，CSS 淨 +1；v137 令行號由 33269 移位，CSS ＋23／地區名 HTML －10；v141 令行號由 33282 移位，淨 +60，同上；v143 令行號由 33342 移位，淨 +43，同上；v136 rebase 上 v143，淨 +38，含 scrub 護欄 +3；v142 ＋16，實量；v145 ＋67，同上；v146 rebase ＋10，同 currentLine）
-    if len(ls) < 33671 or 'if(typeof b.text === "string" && b.text){' not in ls[33682]:
-        probs.append("applyFamilySafeToNode 第 33683 行冇 b.text 分支")  # v196 落地合併上 main 2de5026：v197 33672→33671（showResult 淨 −1）
+    if len(ls) < 33671 or 'if(typeof b.text === "string" && b.text){' not in ls[33683]:
+        probs.append("applyFamilySafeToNode 第 33684 行冇 b.text 分支")  # v196 落地合併上 main 2de5026：v197 33672→33671（showResult 淨 −1）
     if 'b.text.replace(/臨時演員蹲在路邊抽煙/g' not in s:
         probs.append("applyFamilySafeToNode b.text 替換唔齊")
     # ③ 五表普查
