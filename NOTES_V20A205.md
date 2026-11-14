@@ -108,3 +108,9 @@ e2a720c5d100accbea09a3c0d52b208b9b2a02cf4ebfa7760844e6fbd2a45d22  lan_ruoxi_thin
 - **全套 A/B**：工作版 **287／13**、pristine（main `9e338d6` detached worktree）**287／13**；work-only／pristine-only FAIL 皆空，**零回歸**。13 項 FAIL 全部係已知 pre-existing static（flash51／giglib36／pacing35／poster59／rumor49／slot50／soft_tip_111_restore／start53／weave43／44／49／wf5_87／wrap38），同 v204 基線逐項一致。
 - **實駕（本地鏡像＋Playwright，`StoryPlay.start(id,{force:true})` 播晒 5 節 R_lan_*）**：舞台出現新造型，base／smile／sad／think／shy 5 個表情逐張截圖核實分得清（`linji-design-review-v205/shots/lan_{base,smile,sad,think,shy}_*.png`）；6 檔 HTTP 全部 200，零 `lan_ruoxi` 404。**serious 冇喺舞台出現**：全遊戲 86 節 probe 過，藍若曦對白冇一句 resolve 到 serious（base 9／sad 2／shy 3／smile 1／think 1 句）；serious 檔本身齊（HTTP 200，candidate chain 入面有，缺圖會優雅退 base）——係內容現況，唔係 v205 缺陷（舊檔時代都一樣，v205 冇改 code／冇改對白）。
 - **附帶觀察（pre-existing，唔係 v205 回歸）**：R_lan_* 5 節嘅 artId 圖（`rom_lan_meet/push1/push2/crisis/ending`）喺 repo 入面唔存在，引擎試咗多個路徑 404 後退返素色舞台底。v205 只掂 6 張 webp＋NOTES，呢啲檔喺 main 一樣唔存在；舞台本身運作正常。
+
+## §8 落地紀錄
+
+- 遊戲 commit `1cf324e`（squash merge `v20a205`，7 檔：6 張 webp＋NOTES），已 push 上 GitHub main。
+- 線上核實：index.html 5,451,440 bytes sha `ad3005f8…` 同 repo HEAD 一致（index.html 本版冇改）；新 base webp 線上 sha `9ecf648e…` 同 repo 一致，新造型已上線。
+- 重驗：相關測試 30 項全綠；全套 287／13 零回歸（pristine A/B）；實駕 5 節 R_lan_*，base／smile／sad／think／shy 5 表情上台截圖核實，serious 檔齊但遊戲入面冇對白 resolve 到佢（內容現況，見 §7）。
