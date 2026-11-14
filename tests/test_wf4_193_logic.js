@@ -58,6 +58,11 @@ const parts = [];
   try { parts.push(extractFn(n)); }
   catch(e) { parts.push('function ' + n + '(){ return NaN; }'); }
 });
+/* v206 C1 新增函數（pristine 冇）：wf4DailyTick ≥ day 7 會 call 佢，唔抽出嚟 sandbox
+   入面 tick 會入 try/catch 靜默死咗，day 7 之後嘅 day 事件唔見晒（三年 sim 數字會跌）。
+   stub 返 false（＝未見過）等 pristine 行為不變。 */
+try { parts.push(extractFn('wf4SeenAny')); }
+catch(e) { parts.push('function wf4SeenAny(){ return false; }'); }
 eval(parts.join('\n') + '; global.__W = { DAILY_EVENTS_WF4, WF4_CFG, wf4Ensure, wf4BaseOk, wf4CondOk, wf4PickEvent, wf4Fire, wf4DailyTick, wf4TryLocEvent, wf4PresentPending, wf4EffPDay, wf4EffPLoc };');
 const W = global.__W;
 function freshS(day){

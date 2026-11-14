@@ -68,6 +68,11 @@ const parts = [];
   try { parts.push(extractFn(n)); }
   catch(e) { parts.push('function ' + n + '(){ return NaN; }'); }
 });
+/* v206 C1 新增函數（pristine 冇）：wf4DailyTick ≥ day 7 會 call 佢，唔抽出嚟 sandbox
+   入面 tick 會入 try/catch 靜默死咗，day 10 之後嘅 day 事件唔見晒（A／C／D 計數跌）。
+   stub 返 false（＝未見過）等 pristine 行為不變。 */
+try { parts.push(extractFn('wf4SeenAny')); }
+catch(e) { parts.push('function wf4SeenAny(){ return false; }'); }
 eval(parts.join('\n') + '; global.__W = { DAILY_EVENTS_WF4, WF4_CFG, WF4_SCENE_OVERRIDE134, wf4Ensure, wf4BaseOk, wf4CondOk, wf4PickEvent, wf4Fire, wf4DailyTick, wf4TryLocEvent, wf4PresentPending, wf4EffPDay, wf4EffPLoc, wf4Scene105, awards62CeremonyActive, story165CanPlay };');
 const W = global.__W;
 function freshS(day){
@@ -182,17 +187,24 @@ function approx(a, b){ return Math.abs(a - b) < 1e-3; } // 曲線值 0.033／0.0
 {
   const scene = id => W.wf4Scene105(W.DAILY_EVENTS_WF4.find(e=>e.id===id));
   ok('C2 day05 冰室→茶餐廳圖（唔再係街市）', scene('wf4_ev_day05').includes('bg_loc_cafe_cha.jpg'));
-  ok('C2 day07 電車→的士車廂圖（唔再係電話亭）', scene('wf4_ev_day07').includes('bg_wf4_taxi.jpg'));
-  ok('C2 day09 唱片舖→店舖圖（唔再係街市）', scene('wf4_ev_day09').includes('bg_loc_gift_shop.jpg'));
+  ok('C2 day07 電車→街市街景圖（唔再係電話亭／的士）', scene('wf4_ev_day07').includes('bg_wf4_market.jpg'));
+  ok('C2 day09 唱片舖→唱片舖內景圖（唔再係夜市檔）', scene('wf4_ev_day09').includes('bg_loc_rec_hk.jpg'));
   ok('C2 day11 茶樓→茶餐廳圖（唔再係街市）', scene('wf4_ev_day11').includes('bg_loc_cafe_cha.jpg'));
   ok('C2 day14 片場休息區→獅子山廠圖（唔再係電話亭）', scene('wf4_ev_day14').includes('bg_loc_film_lion.jpg'));
   ok('C2 day15 茶餐廳門口→茶餐廳圖本身（唔再係街市）', scene('wf4_ev_day15').includes('bg_loc_cafe_cha.jpg'));
-  ok('C2 st17 士多→店舖圖（唔再係街市）', scene('wf4_ev_st17').includes('bg_loc_gift_shop.jpg'));
+  ok('C2 st17 士多→街市街景圖（唔再係夜市檔）', scene('wf4_ev_st17').includes('bg_wf4_market.jpg'));
+  ok('v20a206 C2 day19 公園晨運→街市街景圖（唔再係屋企客廳）', scene('wf4_ev_day19').includes('bg_wf4_market.jpg'));
+  ok('v20a206 C2 day22 地鐵站賣唱→街市街景圖（唔再係的士）', scene('wf4_ev_day22').includes('bg_wf4_market.jpg'));
+  ok('v20a206 C2 day24 電視台信件房→電視台辦公室圖（唔再係屋企客廳）', scene('wf4_ev_day24').includes('bg_loc_tvb_kowloon.jpg'));
+  ok('v20a206 C2 day27 海邊散步→海港圖（唔再係的士）', scene('wf4_ev_day27').includes('bg_loc_film_harbour.jpg'));
+  ok('v20a206 C2 全面掃描 day10 巴士望海→海港圖（唔再係的士＋747）', scene('wf4_ev_day10').includes('bg_loc_film_harbour.jpg'));
+  ok('v20a206 C2 全面掃描 st13 渡輪→海港圖（唔再係的士＋747）', scene('wf4_ev_st13').includes('bg_loc_film_harbour.jpg'));
+  ok('v20a206 C2 夜市檔圖淨返 day20／day21', scene('wf4_ev_day20').includes('bg_loc_gift_shop.jpg') && scene('wf4_ev_day21').includes('bg_loc_gift_shop.jpg'));
   const expectNew = {
-    wf4_ev_day17: 'bg_wf4_home.jpg', wf4_ev_day18: 'bg_wf4_market.jpg', wf4_ev_day19: 'bg_wf4_home.jpg',
-    wf4_ev_day20: 'bg_loc_gift_shop.jpg', wf4_ev_day21: 'bg_loc_gift_shop.jpg', wf4_ev_day22: 'bg_wf4_taxi.jpg',
-    wf4_ev_day23: 'bg_wf4_market.jpg', wf4_ev_day24: 'bg_wf4_home.jpg', wf4_ev_day25: 'bg_wf4_market.jpg',
-    wf4_ev_day26: 'bg_wf4_taxi.jpg', wf4_ev_day27: 'bg_wf4_taxi.jpg', wf4_ev_day28: 'bg_wf4_home.jpg',
+    wf4_ev_day17: 'bg_wf4_home.jpg', wf4_ev_day18: 'bg_wf4_market.jpg', wf4_ev_day19: 'bg_wf4_market.jpg',
+    wf4_ev_day20: 'bg_loc_gift_shop.jpg', wf4_ev_day21: 'bg_loc_gift_shop.jpg', wf4_ev_day22: 'bg_wf4_market.jpg',
+    wf4_ev_day23: 'bg_wf4_market.jpg', wf4_ev_day24: 'bg_loc_tvb_kowloon.jpg', wf4_ev_day25: 'bg_wf4_market.jpg',
+    wf4_ev_day26: 'bg_wf4_taxi.jpg', wf4_ev_day27: 'bg_loc_film_harbour.jpg', wf4_ev_day28: 'bg_wf4_home.jpg',
   };
   ok('C2 12 單新 day 事件全部有場景圖（唔留灰）',
     Object.entries(expectNew).every(([id, f])=>scene(id).includes(f)));

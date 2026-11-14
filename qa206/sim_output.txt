@@ -1,0 +1,24 @@
+保底 pick（day 7、seen 空）：wf4_ev_day09「唱片舖試聽嗰首歌」
+WF4_CFG: {"pDay":0.03,"pLoc":0.03,"gapDays":3,"locTriesPerDay":3,"pendingMaxAge":2,"pDayWelcome":0.12,"pLocWelcome":0.08,"welcomeDays":30,"pityDay":7}
+day 池：48 單；loc 池：65 單；總數：113 單
+
+===== 頭 30 日：v203 四路線對照（same-day 次序，等數字可比） =====
+A 均衡 [same-day]：頭 30 日 4 單，首單 day 1（day1:wf4_ev_set42，day4:wf4_ev_home03，day10:wf4_ev_day10，day22:wf4_ev_set36）；保底零觸發
+B 電視 [same-day]：頭 30 日 5 單，首單 day 1（day1:wf4_ev_set42，day4:wf4_ev_home03，day7:wf4_ev_cha03，day10:wf4_ev_st05，day21:wf4_ev_boss01）；保底零觸發
+C 電影 [same-day]：頭 30 日 2 單，首單 day 3（day3:wf4_ev_set09，day10:wf4_ev_day20）；保底零觸發
+D 茶餐廳 [same-day]：頭 30 日 4 單，首單 day 4（day4:wf4_ev_day25，day7:wf4_ev_cha04，day10:wf4_ev_day09，day21:wf4_ev_st10）；保底零觸發
+
+===== 頭 30 日：實玩路線 R（開局 3 日唔入場＋每日 2 地點） =====
+R 實玩 [same-day]：頭 30 日 3 單，首單 day 3（day3:wf4_ev_set53，day10:wf4_ev_day20，day22:wf4_ev_set35）；保底零觸發
+R 實玩 [morning]：頭 30 日 3 單，首單 day 3（day3:wf4_ev_set53，day10:wf4_ev_day20，day22:wf4_ev_set35）；保底零觸發
+S0 零入場 [morning]：頭 30 日 2 單，首單 day 4（day4:wf4_ev_day25，day10:wf4_ev_day18）；保底零觸發
+
+===== 頭 30 日：對照變體 R-skip（假設 tick 只跑落點日 0→3→7→9→…，§14 假設） =====
+R-skip [same-day]：頭 30 日 1 單，首單 day 3（day3:wf4_ev_set53）；保底派單：零觸發
+
+===== 保底觸發情境（morning 次序） =====
+F 首 7 日強制日封 tick [morning]：頭 30 日 3 單，首單 day 7（day7:wf4_ev_day09，day10:wf4_ev_day20，day22:wf4_ev_set35）；保底派單：day7:wf4_ev_day09；保底播出：day7:wf4_ev_day09
+E day 4 pending 播唔出→過期→保底補派 [morning]：頭 30 日 3 單，首單 day 7（day7:wf4_ev_day09，day10:wf4_ev_day20，day22:wf4_ev_set35）；保底派單：day7:wf4_ev_day09；保底播出：day7:wf4_ev_day09
+
+===== 三年：A 均衡路線（保底有冇提早抽乾） =====
+A 三年：81 單，唔同 81／113，首單 day 1，尾單 day 1075

@@ -1,5 +1,7 @@
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），總行數 60522→60609、DEF 55018→55102；L4862 錨點 4889 唔郁（喺插入點之前）。
 # v20a203 resync：index.html 淨 +233 行（見 qa203/resync203.py difflib 對位核實純漂移），總行數 61167→61400、DEF 55639→55872。
+# v20a206 C1 resync：index.html 淨 +22 行（WF4 保底，插入點舊 L41129–41496）；總行數 61400→61422、DEF 55872→55894（qa206/resync206.py difflib 對位核實純漂移）。
+# v20a206 C2 resync：index.html 淨 +3 行（WF4 覆寫表頭註解＋3，插入點舊 L41271 之後）；總行數 61422→61425、DEF 55894→55897（qa206/resync206c2.py difflib 對位核實純漂移）。
 # -*- coding: utf-8 -*-
 # v20a197 resync：index.html 淨 +94 行，總行數 60490→60584、DEF 54986→55080、L4862 行 4889→4935（difflib 對位核實純漂移，見 qa197/resync197.py；B4 補丁再 +9 行）。
 # v20a191 resync：index.html 淨 +47 行，總行數 60155→60202、DEF 54651→54698、L4862→L4864。
@@ -80,9 +82,9 @@ def blend(fg, bg, a):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 61432（v193 61167＋v203 +233＋v204 +32）', src.count('\n') == 61432)
-ok('零行數漂移：openLoc DEF 行 55904（v193 55639＋v203 +233＋v204 +32，travel114 釘行）',
-   len(lines) >= 55904 and 'function openLoc(id, opts){' in lines[55903])
+ok('零行數漂移：總行數 61457（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3）', src.count('\n') == 61457)
+ok('零行數漂移：openLoc DEF 行 55929（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3，travel114 釘行）',
+   len(lines) >= 55929 and 'function openLoc(id, opts){' in lines[55928])
 ok('零行數漂移：L4862 仲係 v169／v171／v173 同行（v181 CSS ＋13，kwan151／tang152 釘行已一併 resync）',
    len(lines) >= 4942 and 'loc-acts-more171::after' in lines[4941] and 'act-locked171' in lines[4941])
 ok('L4862 註解平衡：/* 數＝*/ 數，鎖住底 rule 唔喺註解入面（v173 曾中招：註解入面再插 /*…*/ 令首個 */ 提早閂註解，殘尾變裸文吞咗鎖住底 rule 嘅 selector，live 底色跌返 #f5e6c0）',

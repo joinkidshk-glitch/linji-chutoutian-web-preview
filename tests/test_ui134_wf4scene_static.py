@@ -76,5 +76,27 @@ for f in ['bg_wf4_home.jpg', 'bg_wf4_booth.jpg', 'bg_wf4_market.jpg',
         im = Image.open(p)
         ok('新場景圖 720×1280：' + f, im.size == (720, 1280))
 
+# --- v20a206 C2：7 單再重映射＋全面掃描追加 2 單 ---
+for ev, f in [('wf4_ev_day07', 'bg_wf4_market.jpg'), ('wf4_ev_day09', 'bg_loc_rec_hk.jpg'),
+              ('wf4_ev_st17', 'bg_wf4_market.jpg'), ('wf4_ev_day19', 'bg_wf4_market.jpg'),
+              ('wf4_ev_day22', 'bg_wf4_market.jpg'), ('wf4_ev_day24', 'bg_loc_tvb_kowloon.jpg'),
+              ('wf4_ev_day27', 'bg_loc_film_harbour.jpg'), ('wf4_ev_day10', 'bg_loc_film_harbour.jpg'),
+              ('wf4_ev_st13', 'bg_loc_film_harbour.jpg')]:
+    ok('v20a206 C2 重映射 %s → %s' % (ev, f), f in table.get(ev, ''))
+ok('v20a206 C2 夜市檔圖唔再一圖四用（淨返 day20／day21）',
+   sorted(k for k, v in table.items() if 'bg_loc_gift_shop.jpg' in v) == ['wf4_ev_day20', 'wf4_ev_day21'])
+ok('v20a206 C2 的士圖淨返 st08／st15／day26',
+   sorted(k for k, v in table.items() if 'bg_wf4_taxi.jpg' in v) == ['wf4_ev_day26', 'wf4_ev_st08', 'wf4_ev_st15'])
+ok('v20a206 C2 屋企圖唔再配 day19 公園／day24 信件房',
+   'bg_wf4_home.jpg' not in table.get('wf4_ev_day19', '') and 'bg_wf4_home.jpg' not in table.get('wf4_ev_day24', ''))
+ok('v20a206 C2 review 話可接受／勉強嗰 7 單唔郁（day11／20／21／23／25／26／28）',
+   table.get('wf4_ev_day11') == 'assets/story/locs/bg_loc_cafe_cha.jpg?v=20a104'
+   and table.get('wf4_ev_day20') == 'assets/story/locs/bg_loc_gift_shop.jpg?v=20a104'
+   and table.get('wf4_ev_day21') == 'assets/story/locs/bg_loc_gift_shop.jpg?v=20a104'
+   and table.get('wf4_ev_day23') == 'assets/story/locs/bg_wf4_market.jpg?v=20a134'
+   and table.get('wf4_ev_day25') == 'assets/story/locs/bg_wf4_market.jpg?v=20a134'
+   and table.get('wf4_ev_day26') == 'assets/story/locs/bg_wf4_taxi.jpg?v=20a146'
+   and table.get('wf4_ev_day28') == 'assets/story/locs/bg_wf4_home.jpg?v=20a134')
+
 print('TOTAL ' + ('PASS' if not fails else 'FAIL %d' % len(fails)))
 sys.exit(1 if fails else 0)
