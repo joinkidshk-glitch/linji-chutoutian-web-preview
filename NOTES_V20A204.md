@@ -100,8 +100,14 @@
 - 途中修正過兩項 harness 誤判（唔係遊戲 bug，記錄喺度等統籌知）：(a) 舞台人物係 canvas 畫，唔係 `<img>`，初版用 `.awd63-card`／stage img 驗 px 係空驗——改用 resource timing＋截圖；(b) 提名場報紙係「入圍名單」印玩家名，唔印對手得主——初版驗得主名係錯期望，改做 tier-aware（gallery 驗得主名、提名驗玩家入圍名）。probe（`qa204/probe204.py`）另有全表：music/film/tv/ad × 1990–92 × f/m/mix 共 36 組 fellows，女獎零高俊傑、男獎全男、新人獎混合，全部同邏輯測試一致。
 - 未驗（留統籌）：tv／ad 女獎類別實駕（邏輯層已覆，probe 全表已驗，典禮場次集中音樂＋電影優先，按設計）；第三年贏獎線實玩校準（唔喺呢票範圍）。
 
-## §3 落地（統籌填）
-（待填；注意 v203 而家做緊，落地前要 rebase 上最新 main 再重驗）
+## §3 落地（統籌，2026-11-14）
+
+- 遊戲 commit：`9436c71`（squash merge `v20a204`，分支 6 個 commit：`1cfea57` 實作＋`1fdca1a` 改名＋`6faf995` 刪舊檔＋`0bb9996` grokbot 換圖＋`314ca57` QA 證據＋`598b301` rebase 後重驗證據）。
+- Rebase 上 main `3768c90`（v203）：5 個 static test 衝突（gift185／rom176／tang171／tang173／travel114），全部純行號漂移——difflib 對位核實 42 個錨點逐字相同（總行數 61432＝61167＋v203 +233＋v204 +32；openLoc DEF 55904；ROM176 54334／54702／55841／55935；COUNT／FREE 36 個錨點逐一映射）。腳本存檔 `qa204/resync204_rebase.py`（對位）＋`qa204/resolve204_rebase.py`（解衝突）。Rebase 後 5 個 test 全部 ALL PASS／RESULT PASS 先 `--continue`。
+- 線上核實（統籌親自 curl，2026-11-14 約 14:15 HKT）：5,451,440 bytes，sha256 `ad3005f8…`，同 repo HEAD `index.html` 逐字一致。Push 一次成功（無斷線）；Pages 部署滯後約 4 分鐘。
+- 統籌獨立重驗全套（`qa131/run_suite.sh`，正確傳參出 list 檔）：工作版 **287／13**，實體 pristine worktree（main `3768c90`）**285／13**；FAIL 清單逐項相同（flash51／giglib36／pacing35／poster59／rumor49／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wf5_87／wrap38），**零回歸**。工作版 PASS 多 2 項係兩個新 v204 測試檔。
+- 實駕（`qa204/drive204.py`，rebase 後最終樹重跑）：**8/8 PASS**、0 pageerror。音樂／電影旁聽女獎提名人＋得主全部女星（音樂 gallery 藍若曦＋沈映雪、電影 gallery 江詩盈）；男獎全男、新人獎混合唔 crash；舞台 px 全部載到（`stage_px_all_loaded`），結果卡＋報紙正確印新星名；grokbot 版 3 星舞台同框腳底同線（截圖目視：金碟夜藍＋沈企埋一齊、影藝獎江詩盈企側邊）。
+- 殘留（唔喺呢票）：tv／ad 女獎類別實駕未跑（邏輯層＋probe 全表已驗）；第三年贏獎線實玩校準另開票。
 
 ## §4 補充 — 新女星設計圖 v4（主助手 2026-11-14 13:22–13:24，用戶反饋後修訂）
 - 用戶話 v1–v3 設計圖「不太像明星」，要求上網查當年香港女明星做參照。已查：林憶蓮《都市觸覺》時期（俐落西裝剪裁、黑白灰、蓬鬆短髮、淡雅妝）【Tatler】；張曼玉 1992《阮玲玉》柏林影后、經典短髮造型【東方新地／laitimes】。**參照只限風格 archetype，唔抄任何真人塊面，prompt 同 BRIEF 永禁真人姓名**（玩家面永禁真名，DEV 內部討論除外）。
