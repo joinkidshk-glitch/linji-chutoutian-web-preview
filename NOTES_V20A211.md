@@ -65,13 +65,13 @@
 - **walkup／glamour beat frame 跳位**：空字幕 `display:none`＋glamour 卡列 `display:none` 仍然會令 frame 跳，係 v174 已接受嘅 trade-off，C2 只修 names→reveal（review 嗰項）。
 - **報紙重設計進行緊**（用戶 2026-11-14 16:47 起，樣本另派）：結果卡將來會改做 90 年代報紙版式；本票嘅修法（toast 收起／點名得主／圖例）喺新版式入面一樣適用，唔使等。
 
-## §5 落地紀錄（rebase＋重驗完成，待 squash merge）
+## §5 落地紀錄（已上線）
 
-- **狀態**：分支 `v20a211` 已 rebase 上 main `f58f19c`（v208），新 HEAD **`258dbe4`**；工作樹乾淨（淨係 untracked QA 證據檔）。**待 squash merge → main → push → 線上核實。**
+- **狀態**：已落地。遊戲 commit **`7704ce3`**（squash merge `v20a211`，66 檔：index.html＋NOTES＋19 測試檔 resync＋新測試＋qa211 證據）；**線上核實：index.html 5,483,733 bytes，sha256 `7eb2b20280d1cf9c5c52ac10116c3143d0adda5f06bb6f7391899a7c6085580e`，同 repo HEAD 一致**（2026-11-14 18:28 HKT，push 後約 2.5 分鐘 Pages 部署完成；第一 curl 仍係舊版 5,478,389 bytes sha `7e3f798a…`，等部署先核實到新版）。
 - **Rebase（`b7ddb37` → `f58f19c`）**：**6 個衝突，全部已解，兩邊改動齊**——`index.html` 1 處（glamour HTML：v208 用 `glamRep208`，v211 加 `aspect-ratio:480/HS211`，合併後兩邊齊；核實 v211 標記齊 hideToast211 ×2、HS211 ×8、win211 ×2、caption 93px、tierBit guard、spotlight207 ×3，v208 標記齊 buildSlots208 ×3、buildCardsData208 ×3、glamRep208 ×3；總行數 61756）＋5 個 static 測試純行號漂移（gift185／rom176／tang171／tang173／travel114，`diff -U0` 26 hunks 逐個釘行核實後重寫：openLoc DEF 56228、rom176 釘 54658／55026／56165／56259、travel114 COUNT 12／FREE 33／DEF 56228／WRAPPER 45187）。`node --check` OK。6 檔重跑全部 PASS。
 - **重驗（rebase 後）**：新測試 47 項全綠＋5 個 resync 測試全綠；全套 A/B pristine `linji-pristine211b`（`f58f19c`）**293／13** vs 工作版 **294／13**（+1 係新測試），FAIL 清單逐項相同，**零回歸**（13 項穩定 pre-existing FAIL 同 v208 基線一致）；實駕 `qa211/drive211e.py` **9/10 PASS**（見 §6，ad_won_932 跳過係 pre-existing）。
 - **B1 重新量度（逐格流程，唔沿用單格 175px）**：932 frame y80／h773，上下黑帶各 **~80px**（v208 review ~144px、v207 232px）；700 frame y12／h683，頂黑帶 ~12px、底 ~5px。C2 names→reveal 位移 **0px**（9 場全部）。B7 光柱：框頂亮度差 **+76.7 至 +130.2**（門檻 ≥20）、腳底 **+7.1 至 +12.2**（門檻 ≥3）、中段暖色偏移 **+13 至 +27**（門檻 ≥8，3 行以上）。C1 揭曉亮度差（得主 vs 鄰位落選者）**+13.1 至 +61.2**（門檻 ≥12；最緊係 film_won_932 +13.1）。
-- **落地嗰陣要做**：常駐 clone 檢查撞車 → checkout main → `git merge --squash v20a211` → commit → push main（deploy key 隧道）→ curl 線上核實 bytes＋sha → 派設計 review → 清 `linji-work211`＋`linji-pristine211b`（分支留喺常駐 clone）。落地次序 v211 → v212 → v209 → v213 → v214（v212 實作完成 hold 緊，v213／v214 已開工，唔好掂）。
+- **跟進**：派設計 review（報告 `~/workspace/linji-design-review-v211/REVIEW.md`）→ review 完清 `linji-work211`＋`linji-pristine211b`（分支 `v20a211` 留喺常駐 clone）。落地次序下一位：v212 → v209 → v213 → v214（v212 實作完成 hold 緊，v213／v214 已開工）。
 
 ## §6 實駕探針修正史（rebase 後三輪，量度方法問題，唔係遊戲回歸）
 
