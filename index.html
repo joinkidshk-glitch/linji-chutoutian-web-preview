@@ -38010,6 +38010,10 @@ function planDayWouldWrap(id){
 function isCriticalPlanDay(id, shootFinished){
   const s=String(id||"");
   if(!s) return false;
+  /* v20a213：典禮日唔可以靜默加速掠過——嗰晚要播典禮，日結板要停低出，播完先至過下一日。 */
+  try{
+    if(typeof awards213BookedForDay==="function" && typeof S!=="undefined" && S && awards213BookedForDay((S.dayIndex|0)||0)) return true;
+  }catch(_e){}
   if(s.startsWith("wrap:") || s.startsWith("audition:") || s.startsWith("job:")) return true;
   /* v19z10：所有拍攝日都停（唔再加速掠過中段），至少留一屏拍攝結果 */
   if(s.startsWith("shoot:")) return true;
@@ -38288,6 +38292,11 @@ function morningChain196(finalFn, opts){
   const afterKind = opts.mapMode ? "map" : "schedule";
   const step = ()=>{
     try{ if(typeof ending78Gate==="function" && ending78Gate()) return; }catch(_e){}
+    /* v20a213：昨晚典禮（前一日收工之後播）——喺今日晨鏈任何環節之前播；殺青獎勵已經喺
+       日結板嗰陣經 afterDayRes 出咗，唔會撞；播完先行返 step，繼續今日晨鏈。 */
+    try{
+      if(typeof awards213PlayBookedEvening==="function" && awards213PlayBookedEvening(step)) return;
+    }catch(_e){}
     /* 殺青獎勵（pending 先出；冇 pending 就跌落去） */
     try{
       if(typeof presentPendingPostShootReward==="function" && FREEPLAY_FW && FREEPLAY_FW._pendingPostShootReward){
@@ -38612,13 +38621,16 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   const body=`<p>${iconHtml112(meta.icon||"")} ${meta.hint||""}</p>${formatResultNotes(notes)}`;
   const clearDayRes = ()=>{ try{ document.body.classList.remove("day-res-open"); const m=document.getElementById("mask"); if(m) m.classList.remove("day-res"); }catch(_e){} };
   let advancedNb = false;
-  const nextNb=()=>{
+  const nextNbRaw=()=>{
     if(advancedNb) return;
     advancedNb = true;
     clearDayRes();
     if(ended){ enterHome(summary, true); return; }
     runScheduleFromToday();
   };
+  /* v20a213：收工之後先播典禮——日結板掣／dismiss 行到呢度嗰陣，殺青結算＋日結板＋殺青獎勵
+     （afterDayRes）已經出晒；典禮播完先至返地圖／跑下一日／回家結算，唔會同日結板打架。 */
+  const nextNb=()=>{ try{ awards213EveningThen(nextNbRaw); }catch(_e){ nextNbRaw(); } };
   const isAudFail = /^落選：/.test(String(title||"")) || title==="試鏡資格不符" || title==="未獲錄用";
   if(isAudFail && presentAudFailSettlement({
     gigTitle: String(title||"").replace(/^落選：/,""),
@@ -46775,6 +46787,7 @@ function ensureAwardQueue(){
 }
 function queueAwardInvite(pack){
   if(!pack) return null;
+  if(typeof awards213HasBooked==="function" && awards213HasBooked(pack.year, pack.ceremonyId)) return pack; /* v20a213：決定咗嗰屆唔再排入 pending（restore 重建都擋喺呢度） */
   if(FREEPLAY_FW._pendingAward){
     const q = ensureAwardQueue();
     if(!q.some(p=>p && p.ceremonyId===pack.ceremonyId && p.year===pack.year)){
@@ -46826,6 +46839,7 @@ function restorePendingAward136(){
       const year = Number(parts[0]);
       const cid = parts.slice(1).join("/");
       if(!cid || !isFinite(year)) return;
+      if(typeof awards213HasBooked==="function" && awards213HasBooked(year, cid)) return; /* v20a213：決定咗嘅屆唔好由旗標重建返請柬 */
       if(FREEPLAY_FW._pendingAward && FREEPLAY_FW._pendingAward.ceremonyId===cid && FREEPLAY_FW._pendingAward.year===year) return;
       if(ensureAwardQueue().some(p=>p && p.ceremonyId===cid && p.year===year)) return;
       if(persisted && persisted.ceremonyId===cid && persisted.year===year){
@@ -46838,6 +46852,149 @@ function restorePendingAward136(){
     });
   }catch(_e){}
 }
+/* ===== v20a213 AWARDS213：請柬提前 3 日＋典禮改晚上播（用戶 2026-11-14 18:07 拍板）=====
+   舊制：季節首日朝早晨鏈彈請柬，一接受即刻播成晚典禮，唔耗日——請柬寫「今晚」但朝早播，敘事穿崩。
+   新制：(a) 請柬喺典禮日 −3 日朝早到（典禮日＝季節首日 3/1、6/1、9/1、12/1），玩家嗰陣決定
+   出席／推辭＝預約咗嗰晚；(b) 典禮日照常返工／拍攝，收工之後（日結板閂咗、下一日晨鏈行之前）
+   先播成晚典禮，逐格流程／節奏／跳過掣照舊；(c) 典禮日撞殺青：殺青結算＋日結板行先，典禮隨後，
+   兩邊唔互吞、唔打架；(d) 報紙維持翌日（publishDay＝典禮日＋1）。
+   狀態：決定寫入 S.awardBooked213（持久化，reload 唔見唔到）＋ FREEPLAY_FW._awardBooked213
+   （session 鏡）；pending 請柬喺決定嗰刻清走，旗標留「invited」防重排。晚間播嗰陣先清 booking
+   （one-shot），播完先行原本嘅續鏈。S.dayIndex 喺日結嗰陣已經翻到典禮日＋1，所以播嗰陣用
+   FREEPLAY_FW._awardCeremonyDay213 覆寫報紙 enqueuedDay，publishDay 先至啱（典禮日＋1）。
+   舊存檔：舊制 pending 請柬（請柬日＝典禮日當日建，pack.dayIndex＝典禮日）經 restorePendingAward136
+   還原後照彈，決定嗰陣 ceremonyDay 取 pack 嘅屆別季節首日（唔早過今日——過期就當今晚），唔會爛、
+   唔會重複彈、典禮照開。未知 ceremonyId 嘅合成 pack（in-page 自檢假請柬）保留舊即播行為。 */
+const AWARDS213_LEAD_DAYS = 3;
+const AWARDS213_SEASON_MONTH = { "春":3, "夏":6, "秋":9, "冬":12 };
+function awards213DateObj(dayIndex){
+  try{ return new Date(START.y, START.m-1, START.d + ((dayIndex|0)||0)); }catch(_e){ return new Date(1990, 0, 1); }
+}
+function awards213DateLabel(dayIndex){
+  const dt = awards213DateObj(dayIndex);
+  const w = ["日","一","二","三","四","五","六"][dt.getDay()];
+  return (dt.getMonth()+1) + "月" + dt.getDate() + "日（星期" + w + "）";
+}
+function awards213DateLabelShort(dayIndex){
+  const dt = awards213DateObj(dayIndex);
+  return (dt.getMonth()+1) + "月" + dt.getDate() + "日";
+}
+function awards213CeremonyDay(ceremony, year){
+  try{
+    const m = (ceremony && AWARDS213_SEASON_MONTH[ceremony.season]) || 0;
+    if(!m) return null;
+    const y = (year!=null) ? (year|0) : 1990;
+    return Math.round((new Date(y, m-1, 1).getTime() - new Date(START.y, START.m-1, START.d).getTime()) / 86400000);
+  }catch(_e){ return null; }
+}
+function awards213NightLabel(pack){
+  /* 請柬文案用嘅「嗰晚」標籤：有 stamp 就寫實日期（6月1日），冇 stamp（合成／舊測試 pack）
+     跌返「今晚」，等舊測試逐字期望唔郁。 */
+  try{
+    if(pack && pack.ceremonyDay213!=null) return awards213DateLabelShort(pack.ceremonyDay213);
+  }catch(_e){}
+  return "今晚";
+}
+function awards213CeremonyDayForPack(pack){
+  /* 屆別季節首日；過期（舊存檔／debug 遲咗）就當今晚——決定咗嗰晚就播，唔會因為過期而開唔到。 */
+  try{
+    const today = (typeof S!=="undefined" && S) ? ((S.dayIndex|0)||0) : 0;
+    if(pack && pack.ceremonyDay213!=null) return Math.max(pack.ceremonyDay213|0, today);
+    const cer = (pack && pack.ceremonyId && typeof awardsCeremonyById==="function") ? awardsCeremonyById(pack.ceremonyId) : null;
+    const d = (cer && pack.year!=null) ? awards213CeremonyDay(cer, pack.year) : null;
+    if(d!=null) return Math.max(d, today);
+    if(pack && pack.dayIndex!=null) return Math.max(pack.dayIndex|0, today);
+    return today;
+  }catch(_e){ return (typeof S!=="undefined" && S) ? ((S.dayIndex|0)||0) : 0; }
+}
+function awards213Booked(){
+  try{
+    if(typeof S!=="undefined" && S && S.awardBooked213 && S.awardBooked213.pack) return S.awardBooked213;
+    if(typeof FREEPLAY_FW!=="undefined" && FREEPLAY_FW && FREEPLAY_FW._awardBooked213 && FREEPLAY_FW._awardBooked213.pack) return FREEPLAY_FW._awardBooked213;
+  }catch(_e){}
+  return null;
+}
+function awards213HasBooked(year, ceremonyId){
+  const b = awards213Booked();
+  return !!(b && b.ceremonyId===ceremonyId && (b.year|0)===(year|0));
+}
+function awards213Book(pack, decision){
+  const ceremonyDay = awards213CeremonyDayForPack(pack);
+  const booked = { ceremonyId: pack.ceremonyId, year: pack.year, ceremonyDay: ceremonyDay, decision: decision, pack: pack };
+  try{ if(typeof S!=="undefined" && S) S.awardBooked213 = booked; }catch(_e){}
+  try{ if(typeof FREEPLAY_FW!=="undefined" && FREEPLAY_FW) FREEPLAY_FW._awardBooked213 = booked; }catch(_e){}
+  try{ FREEPLAY_FW._pendingAward = null; }catch(_e){}
+  try{ if(typeof S!=="undefined" && S) S.pendingAwardPack = null; }catch(_e){}
+  return booked;
+}
+function awards213ClearBooked(){
+  try{ if(typeof S!=="undefined" && S) S.awardBooked213 = null; }catch(_e){}
+  try{ if(typeof FREEPLAY_FW!=="undefined" && FREEPLAY_FW) FREEPLAY_FW._awardBooked213 = null; }catch(_e){}
+}
+function awards213BookedForDay(dayIndex){
+  const b = awards213Booked();
+  return !!(b && (b.ceremonyDay|0)===(dayIndex|0));
+}
+function awards213DueBooked(){
+  const b = awards213Booked();
+  if(!b) return null;
+  const today = (typeof S!=="undefined" && S) ? ((S.dayIndex|0)||0) : 0;
+  if((b.ceremonyDay|0) >= today) return null; /* 典禮日未完——收工之後先播 */
+  try{
+    const st = (typeof awardsGetFlag==="function") ? awardsGetFlag(b.year, b.ceremonyId) : "";
+    if(st==="done" || st==="skipped") return null; /* 已經入 log，唔重播 */
+  }catch(_e){}
+  return b;
+}
+function awards213PlayDecision(pack, decision, cont){
+  /* 晚間播：出席＝現場版（播完出結果卡）；推辭＝電視直播版（v165 行為，播完入 log＋第二日報紙 declined 版，唔出結果卡）。
+     由 presentAwardInvite 舊 attend／skip 原樣抽出，判定／文案／報紙規則一字唔郁；只係唔再經請柬 modal。 */
+  const done = (typeof cont==="function") ? cont : function(){};
+  if(decision==="attend"){
+    try{ awards62PlayCeremony(pack, ()=>presentAwardResult(pack, done)); }
+    catch(_e){ presentAwardResult(pack, done); }
+    return;
+  }
+  pack.skipped = true;
+  pack.rewardsApplied = { stageVolume:0, industryCredit:0, money:0, tags:[] };
+  const finishSkip = ()=>{
+    commitAwardToLog(pack);
+    try{ enqueueNewspaperFromAward(Object.assign({}, pack, { skipped:false }), { declined:true }); }catch(_np2){}
+    try{ toast("已推辭席位", { sub: pack.displayName||"" }); }catch(_e){}
+    done();
+  };
+  try{
+    awards62PlayCeremony(Object.assign({}, pack, { bestOutcome:"gallery", declined165:true }), finishSkip);
+  }catch(_e){ finishSkip(); }
+}
+function awards213PlayBookedEvening(thenFn){
+  const cont = (typeof thenFn==="function") ? thenFn : function(){};
+  let b = null;
+  try{ b = awards213DueBooked(); }catch(_e){ return false; }
+  if(!b) return false;
+  try{ if(typeof awards62CeremonyActive==="function" && awards62CeremonyActive()) return false; }catch(_e){}
+  awards213ClearBooked(); /* one-shot：播之前清，唔怕重入／雙掛點重播 */
+  const pack = b.pack;
+  try{ pack.dayIndex = b.ceremonyDay|0; }catch(_e){}
+  try{ FREEPLAY_FW._awardCeremonyDay213 = b.ceremonyDay|0; }catch(_e){}
+  const done = ()=>{
+    try{ FREEPLAY_FW._awardCeremonyDay213 = null; }catch(_e){}
+    cont();
+  };
+  try{
+    awards213PlayDecision(pack, b.decision, done);
+  }catch(_e){ done(); }
+  return true;
+}
+function awards213EveningThen(fn){
+  /* 日結續鏈包一層：有到期典禮就播完先行原本續鏈，冇就直行。播嗰陣 modal／stage 唔會同日結板打架——
+     日結板已經閂咗（續鏈先至叫），典禮播完先至返地圖／跑下一日。 */
+  const next = (typeof fn==="function") ? fn : function(){};
+  try{
+    if(awards213PlayBookedEvening(next)) return;
+  }catch(_e){}
+  next();
+}
 function queueAwardsOnSeasonWindow(opts){
   opts = opts || {};
   /* v20a194：頒獎禮拆 soft 閘——live 模式照常排期，唔再跟 awardsSoftOn()。
@@ -46847,16 +47004,27 @@ function queueAwardsOnSeasonWindow(opts){
   /* v20a136 G1：先還原 reload 遺失嘅請柬（flag invited／pending 但 session 冇 pack），再排新一屆。 */
   try{ restorePendingAward136(); }catch(_e){}
   const queued = [];
+  const today213 = (typeof S!=="undefined" && S) ? ((S.dayIndex|0)||0) : 0;
   awardsCeremonies().forEach(ceremony=>{
     if(!ceremony || !ceremony.id) return;
-    if(!opts.forceCeremonyId && !awardsSeasonMatches(ceremony)) return;
-    if(!opts.forceCeremonyId && !awardsWeekOk(ceremony)) return;
-    if(opts.forceCeremonyId && ceremony.id!==opts.forceCeremonyId) return;
     /* v20a78 AWARDS78：旗標鍵／作品計數年改用屆別年（冬季 1–2 月歸上一年），
        同一季冬唔會再喺年界兩邊各開一屆 */
     const year = awardsEditionYear(ceremony);
     const st = awardsGetFlag(year, ceremony.id);
     if(st==="done" || st==="skipped" || st==="invited" || st==="pending") return;
+    if(typeof awards213HasBooked==="function" && awards213HasBooked(year, ceremony.id)) return; /* v20a213：決定咗（預約咗），唔重排 */
+    /* v20a213：請柬窗口＝[典禮日−3, 典禮日]。舊季節配對（awardsSeasonMatches）喺請柬日會擋——
+       請柬日仲係上一季（例如金碟夜請柬 5 月 29 號，曆法仲係春）——改用窗口判；week 閘照留做雙保險
+       （典禮日就係季節首日，週數嗰陣一定過咗 weekMinSoft）。
+       forceCeremonyId（debug／自檢探針）跳過窗口＋週數，同舊制一致。窗口過咗（從來冇排過）
+       就唔再排——嗰屆已過，唔寫旗標，下一屆用唔同 year 鍵，唔會誤擋。 */
+    if(!opts.forceCeremonyId){
+      const cerDay213 = (typeof awards213CeremonyDay==="function") ? awards213CeremonyDay(ceremony, year) : null;
+      if(cerDay213==null) return;
+      if(today213 < cerDay213 - AWARDS213_LEAD_DAYS || today213 > cerDay213) return;
+      if(!awardsWeekOk(ceremony)) return;
+    }
+    if(opts.forceCeremonyId && ceremony.id!==opts.forceCeremonyId) return;
     /* C10 anti-stack: TV only */
     if(ceremony.id==="award_singho_tv" && softC10WindowActive() && !opts.ignoreC10){
       return; /* defer — will retry later days */
@@ -46866,6 +47034,10 @@ function queueAwardsOnSeasonWindow(opts){
       year: year,
       forceTier: opts.forceTier
     });
+    try{
+      const cerDay213b = (typeof awards213CeremonyDay==="function") ? awards213CeremonyDay(ceremony, year) : null;
+      if(cerDay213b!=null){ pack.ceremonyDay213 = cerDay213b; pack.inviteDay213 = cerDay213b - AWARDS213_LEAD_DAYS; }
+    }catch(_e){}
     queueAwardInvite(pack);
     queued.push(pack);
   });
@@ -46894,7 +47066,9 @@ function renderAwardInviteHtml(pack){
   let catsBit182 = "";
   if(pack.tier === "gallery" && typeof AWARDS188_CATEGORIES !== "undefined" && AWARDS188_CATEGORIES && Array.isArray(AWARDS188_CATEGORIES[pack.ceremonyId])){
     const full192 = AWARDS188_CATEGORIES[pack.ceremonyId].map(c=> (c && c.label) || "").filter(Boolean);
-    if(full192.length) catsBit182 = `<p class="psr-sub">今晚獎項：${full192.join("、")}（觀禮）</p>`;
+    /* v20a213：請柬提前 3 日到，「今晚」唔再啱——有 stamp 就寫實日期（6月1日獎項），
+       冇 stamp（合成 pack）跌返「今晚獎項」，舊測試逐字期望唔郁。 */
+    if(full192.length) catsBit182 = `<p class="psr-sub">${(pack && pack.ceremonyDay213!=null) ? (awards213DateLabelShort(pack.ceremonyDay213) + "獎項：") : "今晚獎項："}${full192.join("、")}（觀禮）</p>`;
   }
   /* v20a200（v192 殘留對過）：nominee／won 請柬「今晚獎項」行淨列你爭嗰 1–2 格，
      同 C2 同一類問題——標籤話係全晚獎項，內容淨係你爭嗰啲。改標籤唔改 slate：
@@ -46907,6 +47081,7 @@ function renderAwardInviteHtml(pack){
     <h3 class="psr-h">${pack.inviteTitle||"頒獎夜請柬"}</h3>
     <p class="psr-sub">${pack.displayName||""} · ${pack.season||""}${pack.year?(" "+pack.year):""}</p>
     ${pack.venue99 ? `<p class="psr-sub">場地：${pack.venue99}</p>` : ""}
+    ${(pack && pack.ceremonyDay213!=null) ? `<p class="psr-sub">典禮夜：${awards213DateLabel(pack.ceremonyDay213)}</p>` : ""}
     <p class="psr-body">${pack.inviteDek||""}</p>
     ${tierBit}
     ${catsBit182}
@@ -47010,7 +47185,16 @@ function presentAwardInvite(pack, thenFn){
      故事本身之後經 StoryPlay 重入嗰陣會再加返。 */
   try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
   try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
+  /* v20a213：請柬決定＝預約，唔即播——已知典禮寫入 booking，嗰晚收工之後先播；
+     未知 ceremonyId 嘅合成 pack（in-page 自檢假請柬）保留舊即播行為，等自檢期望唔郁。 */
+  const known213 = !!(pack && pack.ceremonyId && typeof awardsCeremonyById==="function" && awardsCeremonyById(pack.ceremonyId));
+  try{ if(pack && pack.ceremonyDay213==null) pack.ceremonyDay213 = awards213CeremonyDayForPack(pack); }catch(_e){}
   const attend = ()=>{
+    if(known213){
+      try{ awards213Book(pack, "attend"); }catch(_e){}
+      cont();
+      return;
+    }
     FREEPLAY_FW._pendingAward = null;
     try{ if(typeof S!=="undefined" && S) S.pendingAwardPack = null; }catch(_e){}
     /* v20a62 AWARDS62-B：出席先播 8-bit 像素頒獎動畫（可跳過），播完／出事都照入結果卡 */
@@ -47018,6 +47202,11 @@ function presentAwardInvite(pack, thenFn){
     catch(_e){ presentAwardResult(pack, cont); }
   };
   const skip = ()=>{
+    if(known213){
+      try{ awards213Book(pack, "decline"); }catch(_e){}
+      cont();
+      return;
+    }
     FREEPLAY_FW._pendingAward = null;
     try{ if(typeof S!=="undefined" && S) S.pendingAwardPack = null; }catch(_e){}
     pack.skipped = true;
@@ -47138,6 +47327,8 @@ function awardsDebugForceSeasonWindow(ceremonyId, opts){
   }catch(_e){}
   FREEPLAY_FW._pendingAward = null;
   try{ if(typeof S!=="undefined" && S) S.pendingAwardPack = null; }catch(_e){}
+  try{ if(typeof S!=="undefined" && S) S.awardBooked213 = null; }catch(_e){} /* v20a213：force 重排連預約一併清，否則 booking 會擋返 queue */
+  try{ if(typeof FREEPLAY_FW!=="undefined" && FREEPLAY_FW) FREEPLAY_FW._awardBooked213 = null; }catch(_e){}
   const packs = queueAwardsOnSeasonWindow({
     force: true,
     forceCeremonyId: id,
@@ -47167,6 +47358,9 @@ try{
     order208: awards208CatRank, /* v20a208：格次序 rank（配角先、主角後、男主角壓軸） */
     venue99: function(id){ return (typeof venue99ForCeremony==="function") ? venue99ForCeremony(id) : ""; },
     play62: awards62PlayCeremony,
+    booked213: awards213Booked, /* v20a213：已預約嘅典禮（S.awardBooked213） */
+    playEvening213: awards213PlayBookedEvening, /* v20a213：播到期嘅晚間典禮，冇就返 false */
+    ceremonyDay213: awards213CeremonyDay, /* v20a213：屆別季節首日 dayIndex */
     fellows63: awards63Fellows,
     focus63: awards63FocusCat,
     table188: function(){ return (typeof AWARDS188_CATEGORIES !== "undefined") ? AWARDS188_CATEGORIES : null; },
@@ -47410,7 +47604,9 @@ function awards62GateLineHtml(pack){
     bits.push("嗰年未做過主角／配角級作品，入圍唔到演員獎");
   }
   if(!bits.length) bits.push("坐觀禮席睇全場");
-  return '<p class="psr-gate62">今晚席位：觀禮。' + bits.join("；") + "。</p>";
+  /* v20a213：請柬提前 3 日到，「今晚席位」唔再啱——有 stamp 就寫實日期（6月1日席位），
+     冇 stamp（合成 pack）跌返「今晚席位」，舊測試逐字期望唔郁。 */
+  return '<p class="psr-gate62">' + ((pack && pack.ceremonyDay213!=null) ? (awards213DateLabelShort(pack.ceremonyDay213) + "席位：觀禮。") : "今晚席位：觀禮。") + bits.join("；") + "。</p>";
 }
 function renderAwardsPane62(){
   const el = document.getElementById("awards-list");
@@ -49216,7 +49412,10 @@ function enqueueNewspaperFromAward(pack, opts){
   const year = pack.year!=null ? pack.year : "";
   const ceremonyId = pack.ceremonyId || "award";
   const name = pack.displayName || "頒獎夜";
-  const day = (S && (S.dayIndex|0)) || 0;
+  /* v20a213：晚間播嗰陣 S.dayIndex 已經翻到典禮日＋1（tickDay 喺日結板之前行）——報紙 publishDay
+     要係典禮日＋1，唔係播嗰陣嘅 dayIndex＋1。用播嗰陣寫低嘅典禮日覆寫，冇覆寫就照舊。 */
+  const day = (typeof FREEPLAY_FW!=="undefined" && FREEPLAY_FW && FREEPLAY_FW._awardCeremonyDay213!=null)
+    ? (FREEPLAY_FW._awardCeremonyDay213|0) : ((S && (S.dayIndex|0)) || 0);
   const medium = newspaperMediumFromAward(pack);
   /* v20a136 declined：推辭咗嘅典禮照舉行、第二日報紙講結果——但唔可以用 win／nominee／gallery
      桶模板（嗰啲寫阿偉奪獎／入圍／坐喺台下，推辭咗嘅人一樣都冇）。行典禮級 press 文案

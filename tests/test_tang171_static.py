@@ -88,9 +88,10 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 61795（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39）', src.count('\n') == 61795)  # v20a212 rebase 上 main b1ca47a resync，qa212/resync212_rebase.py difflib 核實純漂移
-ok('零行數漂移：openLoc DEF 行 56225（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v212 +39，travel114 釘行）',
-   len(lines) >= 56267 and 'function openLoc(id, opts){' in lines[56266])
+ok('零行數漂移：總行數 61994（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199）', src.count('\n') == 61994)
+ok('零行數漂移：openLoc DEF 行 56466（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199，travel114 釘行）',
+   len(lines) >= 56466 and 'function openLoc(id, opts){' in lines[56465])
+# v20a213 rebase 上 main 17c6f69 resync：釘行按 difflib 映射重寫，qa213/resync213_rebase.py 核實純漂移（v211 +42／v212 +39／v213 +199）。
 # --- §1. C1：捲動提示（淡出漸變） ---
 ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',
    '#loc-acts.loc-acts-more171::after' in src

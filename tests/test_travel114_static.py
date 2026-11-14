@@ -156,15 +156,15 @@ COUNT_LINES = {
     32314,  # ux68GoLoc 手帳「前往」
     35821,  # 訓練建議「去報名」
     37972,  # 訓練報名導航
-    39142,  # 進度頁「去現場播劇情」
-    39574,
-    39577,  # 地圖釘 goPin（最近針／後備 L.id）
-    39608,  # 地圖底欄地點掣
-    44619,  # 人情債「去事務所」
-    60348,  # inv72GoShop 去禮品檔
-    60526,  # people72GoLoc
-    60672,  # jobs72GoBoard
-    60693,  # jobs72GoLoc
+    39154,  # 進度頁「去現場播劇情」
+    39586,
+    39589,  # 地圖釘 goPin（最近針／後備 L.id）
+    39620,  # 地圖底欄地點掣
+    44631,  # 人情債「去事務所」
+    60547,  # inv72GoShop 去禮品檔
+    60725,  # people72GoLoc
+    60871,  # jobs72GoBoard
+    60892,  # jobs72GoLoc
 }
 # 免費清單（帶旗，唔計）：33 處（舊 34 減 v196 D4 刪走 leaveStory 嗰行 28228；舊 27 減 2 條改行 back176 守衛，加 ROM176 新 8 處＋v183 C9 intro 1 處）
 FREE_LINES = {
@@ -177,38 +177,40 @@ FREE_LINES = {
     31006,
     31007,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
     31110,  # 故事 seed 就緒，系統傳送去劇情地點
-    41562,  # wf4Fire 完（wf4Done，舊旗）
-    44276,  # 人情債流程尾，返去而家身處地點
-    44299,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
-    54520,
-    54639,  # 巧遇播完（encDone，舊旗）
-    54689,  # v176 星巧遇送禮掣 fallback（encDone）
-    54912,  # v176 女角巧遇 def-missing（encDone）
-    54951,  # v176 女角巧遇「行開」（encDone）
-    54957,  # v176 女角巧遇 onDismiss（encDone）
-    55024,  # v176 星送禮 canGive-fail（encDone）
-    55026,  # v176 星送禮冇 item（encDone）
-    55029,  # v176 星送禮冇庫存（encDone）
-    55056,  # v176 星送禮結果 modal go（encDone）
-    56167,  # 劇情播完刷新（refreshLocAfterStory）
-    56541,
-    56563,  # 「劇情已完成」toast 後重開而家身處地點
-    56714,  # 聽完傳聞後 reopen 而家身處地點
-    58351,  # forceRestore（舊旗）
-    60116,  # promptAudition back（返去而家身處地點）
-    60234,
-    60235,
-    60270,
-    60271,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    60296,  # doGiveGift 失敗後重開而家身處地點
-    61143,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
+    41574,  # wf4Fire 完（wf4Done，舊旗）
+    44288,  # 人情債流程尾，返去而家身處地點
+    44311,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
+    54719,
+    54838,  # 巧遇播完（encDone，舊旗）
+    54888,  # v176 星巧遇送禮掣 fallback（encDone）
+    55111,  # v176 女角巧遇 def-missing（encDone）
+    55150,  # v176 女角巧遇「行開」（encDone）
+    55156,  # v176 女角巧遇 onDismiss（encDone）
+    55223,  # v176 星送禮 canGive-fail（encDone）
+    55225,  # v176 星送禮冇 item（encDone）
+    55228,  # v176 星送禮冇庫存（encDone）
+    55255,  # v176 星送禮結果 modal go（encDone）
+    56366,  # 劇情播完刷新（refreshLocAfterStory）
+    56740,
+    56762,  # 「劇情已完成」toast 後重開而家身處地點
+    56913,  # 聽完傳聞後 reopen 而家身處地點
+    58550,  # forceRestore（舊旗）
+    60315,  # promptAudition back（返去而家身處地點）
+    60433,
+    60434,
+    60469,
+    60470,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    60495,  # doGiveGift 失敗後重開而家身處地點
+    61342,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 56267      # function openLoc(id, opts){
-WRAPPER_LINE = 45188  # window.__phase2.openLoc：轉發 opts
+DEF_LINE = 56466      # function openLoc(id, opts){
+WRAPPER_LINE = 45200  # window.__phase2.openLoc：轉發 opts
 # v20a212 rebase 上 main b1ca47a resync：COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫，qa212/resync212_rebase.py 核實純漂移（v211 +42 段內逐段 shift）。
+# v20a213 rebase 上 main 17c6f69 resync：COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫（以 HEAD :2: 33 針為準，補返合併漏咗嘅 30995；DEF 56466／WRAPPER 45200），qa213/resync213_rebase2.py 核實純漂移。
 # v196 落地合併上 main 2de5026：/tmp/resync_travel114_196d.py difflib 對位核實 51 個呼叫點逐字相同，純漂移（leaveStory 嗰行已喺 v196 刪走）；COUNT 12／FREE 33 不變；DEF 55384／WRAPPER 44647。
 # v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行；COUNT／FREE／DEF／WRAPPER 按兩段 shift 重算，difflib 對位核實純漂移。
+# v20a213 resync：index.html 淨 +199 行（見 qa213/resync213.py difflib 對位核實純漂移；插入點 晨鏈 ~L38277／resolvePlannedDay ~L38600／awards213 block ~L46800／presentAwardInvite ~L46991／gate 行 ~L47375／報紙 override ~L49131），COUNT／FREE／DEF／WRAPPER 按 difflib 映射重算，內容逐字相同。
 # v20a176 resync：NPCS ＋7／星收尾掣 ＋12／ROM176 block ＋501／茶聽 ＋12／addLoc −13／openLoc 掛點 ＋5／
 # doGiveGift ＋4／人脈頁 ＋10，淨 ＋538 行；qa176/resync176.py 逐行核實全部釘行內容逐字相同（純漂移），
 # 新 8 處 encDone 係 ROM176 返程（星送禮 fallback 1＋女角巧遇 3＋星送禮 4）；doTalk／doGiveGift 兩條 go

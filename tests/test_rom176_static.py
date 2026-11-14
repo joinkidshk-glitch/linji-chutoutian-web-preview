@@ -80,12 +80,15 @@ for fn in ('rom176TryIntercept', 'rom176PlayEncounter', 'rom176DoGiveStarGift', 
 ok('釘：NPCS lan 條目 L6152', line(6152).startswith('  lan:{ id:"lan", name:"藍若曦"'))
 ok('釘：載入點 L31712（GIFT_REACT 賦值同行呼叫注入）',
    'GIFT_REACT = giftReact' in line(31713) and 'rom176ApplyGiftOverrides()' in line(31713))
-ok('釘：ROM176 block 起點 L54697', line(54697).startswith('/* ===== v20a176 ROM176'))
-ok('釘：rom176ApplyGiftOverrides 定義 L55065', line(55065).startswith('function rom176ApplyGiftOverrides()'))
-ok('釘：addLocTalkGiftActs L56204', line(56204).startswith('function addLocTalkGiftActs(add, L, npcId)'))
-ok('釘：openLoc rom176 攔截 L56298', 'rom176TryIntercept(id)' in line(56298))
+ok('釘：ROM176 block 起點 L54896', line(54896).startswith('/* ===== v20a176 ROM176'))
+ok('釘：rom176ApplyGiftOverrides 定義 L55264', line(55264).startswith('function rom176ApplyGiftOverrides()'))
+ok('釘：addLocTalkGiftActs L56403', line(56403).startswith('function addLocTalkGiftActs(add, L, npcId)'))
+ok('釘：openLoc rom176 攔截 L56497', 'rom176TryIntercept(id)' in line(56497))
+# v20a213 resync：index.html 淨 +199 行，釘行按 difflib 映射重寫（見 qa213/resync213.py）。
+# v20a208 resync：rebase 上 main b7ddb37，釘行按 difflib 映射重寫（54616→54815、54984→55183、56123→56322、56217→56416；6151／31712 唔郁），qa208/resync208_rebase.py 核實純漂移。
 # v20a208 resync：rebase 上 main b7ddb37，釘行按 difflib 映射重寫（54393→54616、54761→54984、55900→56123、55994→56217；6151／31712 唔郁），qa208/resync208_rebase.py 核實純漂移。
 # v20a212 rebase 上 main b1ca47a resync：釘行按 difflib 映射重寫（6152→6152、31713→31713、54655→54697、55023→55065、56162→56204、56256→56298），qa212/resync212_rebase.py 核實純漂移。
+# v20a213 rebase 上 main 17c6f69 resync：釘行按 difflib 映射重寫（31712→31713、54815→54896、55183→55264、56322→56403、56416→56497；6152 唔郁），qa213/resync213_rebase.py 核實純漂移。
 # v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行，6 個釘行按段 +2／+9／+47 重算（6070→6072、31574→31583、53369→53416、53737→53784、54876→54923、54970→55017），difflib 對位核實純漂移。
 
 # ---- 注入呼叫位置（GIFT 賦值之後、同一行） ----

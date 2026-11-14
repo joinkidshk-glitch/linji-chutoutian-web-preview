@@ -1,6 +1,9 @@
 // v20a194 頒獎禮拆 soft 閘・邏輯測試：
 // 1. LIVE 模式（awardsSoftOn()==false）queueAwardsOnSeasonWindow() 照常排期——
 //    春廣告賞／夏金碟夜／冬台慶各返 1（pristine main 返 []，因為閘喺第一行）。
+// v20a213（用戶 2026-11-14 18:07 拍板）：排期窗口改做 [典禮日−3, 典禮日]（典禮日＝季節首日），
+//    季節配對唔再係閘（請柬日仲係上一季）；下面「三窗各返 1」嘅日子改用窗口內日子
+//    （春 56・夏 148・冬 334），窗口外（55／60／160／335）返 0；其餘 v194 斷言唔郁。
 // 2. awardsCheck() 加咗 live_queue 探針：ok:true、fails:[]、softStatus:"PASS"；
 //    探針零副作用（flags／pending／queue／S.pendingAwardPack 前後一致），
 //    已存在嘅 invited 旗標＋pending pack 照原樣還原。
@@ -59,12 +62,34 @@ function buildAwardResultPack(o){
 function renderAwardInviteHtml(){ return ''; }
 function renderAwardResultHtml(){ return ''; }
 function presentPendingAward(){ return false; }
+/* v20a213 反證守衛：v213 嘢唔存在嗰陣乾淨 FAIL（逐項列出），唔好等 const 抽取嗰陣 throw 崩潰。 */
+const NEED213 = ['AWARDS213_LEAD_DAYS', 'awards213CeremonyDay', 'awardBooked213'];
+let missing213 = NEED213.filter(s => html.indexOf(s) < 0);
+if(missing213.length){
+  missing213.forEach(m=>{ fails.push('反證213：' + m + ' 唔存在'); console.log('FAIL 反證213：' + m + ' 唔存在（pristine main 預期，v213 未入）'); });
+  console.log('\nFAILED: ' + fails.length);
+  process.exit(1);
+}
+
 for(const f of ['awardsSoftOn', 'awardsCalendarYear', 'awardsEditionYear', 'awardsCeremonies',
   'awardsCeremonyById', 'awardsFlagKey', 'awardsGetFlag', 'awardsSetFlag',
   'ensureAwardsFlags', 'ensureAwardsLog', 'ensureAwardQueue', 'queueAwardInvite',
   'restorePendingAward136', 'awardsSeasonMatches', 'awardsWeekOk',
+  'awards213CeremonyDay', 'awards213HasBooked', 'awards213Booked',
   'queueAwardsOnSeasonWindow', 'awardsCheck', 'awards194ApplyMetaTip'])
   eval(extractFn(f));
+/* v20a213：queue 用 AWARDS213_LEAD_DAYS／AWARDS213_SEASON_MONTH（const，要抽出嚟先用到；
+   頂層直接 eval——包入 IIFE 嘅 var 出唔返嚟，queue 會拎唔到。） */
+eval(html.slice(html.indexOf('const AWARDS213_LEAD_DAYS ='), html.indexOf(';', html.indexOf('const AWARDS213_LEAD_DAYS =')) + 1).replace('const AWARDS213_LEAD_DAYS =', 'var AWARDS213_LEAD_DAYS ='));
+eval((function(){
+  const i2 = html.indexOf('const AWARDS213_SEASON_MONTH =');
+  let depth = 0, k = html.indexOf('{', i2);
+  for(; k < html.length; k++){
+    if(html[k] === '{') depth++;
+    else if(html[k] === '}'){ depth--; if(depth === 0) break; }
+  }
+  return html.slice(i2, k + 1).replace('const AWARDS213_SEASON_MONTH =', 'var AWARDS213_SEASON_MONTH =') + ';';
+})());
 /* 模擬 loadFreeplayFramework 嘅覆寫步驟：pack 入 FW 之後先 tip meta。 */
 awards194ApplyMetaTip(FREEPLAY_FW);
 ok('0：覆寫後 schema meta.softStatus 係 PASS（runtime tip）',
@@ -98,26 +123,36 @@ ok('1：BehaviorGate 回 true 嗰陣 awardsSoftOn()==true（語義唔郁）', aw
 delete global.BehaviorGate;
 ok('1：BehaviorGate 拎走之後 awardsSoftOn() 返 false', awardsSoftOn() === false);
 
-/* ---- 2. LIVE 模式排期：三窗各返 1（pristine 全部返 []） ---- */
-reset(); S.dayIndex = 60; __season = '春'; __week = 9;
+/* ---- 2. LIVE 模式排期：三窗各返 1（pristine 全部返 []）----
+   v20a213：窗口＝[典禮日−3, 典禮日]——春典禮日 3/1（day 59）請柬日 2/26（day 56）；
+   夏典禮日 6/1（day 151）請柬日 5/29（day 148）；冬典禮日 12/1（day 334）請柬日 11/28（day 331）。 */
+reset(); S.dayIndex = 56; __season = '冬'; __week = 9;
 let q = queueAwardsOnSeasonWindow();
-ok('2：LIVE 春窗 queue 返 1 張廣告賞（閘已拆）',
+ok('2：LIVE 春窗 queue 返 1 張廣告賞（閘已拆；請柬日 2/26，曆法仲係冬）',
   Array.isArray(q) && q.length === 1 && q[0].ceremonyId === 'award_harbour_ad');
-reset(); S.dayIndex = 160; __season = '夏'; __week = 23;
+ok('2：春窗 pack 印典禮日＋請柬日 stamp（ceremonyDay213=59、inviteDay213=56）',
+  q.length === 1 && q[0].ceremonyDay213 === 59 && q[0].inviteDay213 === 56);
+reset(); S.dayIndex = 148; __season = '春'; __week = 22;
 q = queueAwardsOnSeasonWindow();
-ok('2：LIVE 夏窗 queue 返 1 張金碟夜',
+ok('2：LIVE 夏窗 queue 返 1 張金碟夜（請柬日 5/29，曆法仲係春）',
   Array.isArray(q) && q.length === 1 && q[0].ceremonyId === 'award_golddisc_music');
-reset(); S.dayIndex = 335; __season = '冬'; __week = 48;
+reset(); S.dayIndex = 334; __season = '秋'; __week = 48;
 q = queueAwardsOnSeasonWindow();
-ok('2：LIVE 冬窗 queue 返 1 張台慶（C10 窗口之外）',
+ok('2：LIVE 冬窗 queue 返 1 張台慶（C10 窗口之外；典禮日 12/1）',
   Array.isArray(q) && q.length === 1 && q[0].ceremonyId === 'award_singho_tv');
+reset(); S.dayIndex = 55; __season = '冬'; __week = 8;
+q = queueAwardsOnSeasonWindow();
+ok('2：請柬日前一日（day 55）未到窗口，返 0', Array.isArray(q) && q.length === 0);
+reset(); S.dayIndex = 60; __season = '春'; __week = 9;
+q = queueAwardsOnSeasonWindow();
+ok('2：典禮日過咗（day 60，3/2）窗口閂埋，返 0', Array.isArray(q) && q.length === 0);
 
 /* ---- 3. 其餘排期邏輯唔郁 ---- */
-reset(); S.dayIndex = 60; __season = '春'; __week = 9;
+reset(); S.dayIndex = 56; __season = '冬'; __week = 9;
 S.awardsFlags = { '1990/award_harbour_ad': 'done' };
 q = queueAwardsOnSeasonWindow();
 ok('3：done 旗標唔重排（春窗返 0）', Array.isArray(q) && q.length === 0);
-reset(); S.dayIndex = 335; __season = '冬'; __week = 50; __c10 = true;
+reset(); S.dayIndex = 334; __season = '秋'; __week = 48; __c10 = true;
 q = queueAwardsOnSeasonWindow();
 ok('3：C10 窗口內台慶延期（冬窗返 0）', Array.isArray(q) && q.length === 0);
 __c10 = false;

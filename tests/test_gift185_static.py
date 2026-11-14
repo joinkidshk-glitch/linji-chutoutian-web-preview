@@ -3,6 +3,7 @@
 # v20a203 resync：index.html 淨 +233 行（見 qa203/resync203.py difflib 對位核實純漂移），總行數 61167→61400。
 # v20a206 C1 resync：index.html 淨 +22 行（WF4 保底：註解＋3／wf4SeenAny＋10／保底檢查＋9，插入點舊 L41129–41496）；總行數 61400→61422（qa206/resync206.py difflib 對位核實純漂移）。
 # v20a206 C2 resync：index.html 淨 +3 行（WF4 覆寫表頭註解＋3，插入點舊 L41271 之後）；總行數 61422→61425（qa206/resync206c2.py difflib 對位核實純漂移）。
+# v20a213 resync：index.html 淨 +199 行（見 qa213/resync213.py difflib 對位核實純漂移），總行數 61714→61913。
 # v20a208 resync：index.html 淨 +223 行（見 qa208/resync208.py difflib 對位核實純漂移；rebase 上 main b7ddb37 後 qa208/resync208_rebase.py 再對位核實），總行數 61491→61714。
 # v20a212 resync：index.html 淨 +39 行（見 qa212/resync212.py difflib 對位核實純漂移），總行數 61714→61753。
 # v20a185 GIFT185 靜態測試：修 v183 review B1（700 尾行俾取消掣欄遮住）＋C1（兩欄卡名「×N」孤兒跌行）。
@@ -49,7 +50,8 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 61795（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39）', html.count('\n') == 61795)  # v20a212 rebase 上 main b1ca47a resync：v211 +42＋v212 +39，qa212/resync212_rebase.py difflib 核實純漂移
+ok('總行數 61994（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199）', html.count('\n') == 61994)
+# v20a213 rebase 上 main 17c6f69 resync：釘行按 difflib 映射重寫，qa213/resync213_rebase.py 核實純漂移（v211 +42／v212 +39／v213 +199）。
 # ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',
    'v20a185 B1+C1' in html and '路線 a' in html)
