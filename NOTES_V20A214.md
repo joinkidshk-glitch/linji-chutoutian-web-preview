@@ -429,3 +429,10 @@
 - 實駕重跑（`qa214/drive214_rebased.py`，報告 `qa214/drive214_rebased.json`，截圖 `qa214/shots214_rebased/` 35 張）：**10/10 場 PASS，223 項檢查 0 壞，0 pageerror**（film_won_932／700、music_won_932、film_gallery_932、film_declined_932、wrap_named_poster、wrap_anon、wrap_base、morning_multi、wf3_e1）。
 - 實駕要適配 v213 晚上播（原版 `drive214.py` 喺 v213 流程會斷，唔係遊戲 bug）：① 新局之後遊戲停喺屋企行程手帳，唔係地圖——new_game 後即 `settle_to_map` 先；② 出席／推辭只係預約，典禮今晚先播——撳掣後設 weekPlan 全 rest、跑一日、日結板、返地圖、晚上舞台先出現；③ `run_day_via_map` 喺 settle 一次 modal-stuck 就即刻返 False，而 C1 重播尾段「劇情結算」modal 掣有 race——包咗 `run_day_retry`（最多 3 次）；④ 結果報紙／晨報相片讀數 race——`paper_ready` 等相 load 完（nw>0）先讀；⑤ v213 流程撳「收下這晚」之後晨鏈即刻自然出晨報食咗 queue——queue 一定要喺撳掣之前影低（推辭案 queue 讀到嗰陣已經空咗，因為晨鏈喺 finishSkip 之後同步跑埋）；⑥ 推辭嗰則係短訊放第二版（第一版係 C1 故事頭條），`innerText` 唔包 `display:none` 第二版——推辭三項斷言改用 sheetText＋pages 拼埋驗；得主係鍾楚凝憑《凶樓夜半怪談》奪獎，唔係玩家，符合 v149 B2。
 - 附帶核實（唔係 v214 改動，實駕順便見到）：v213 晚上播＋v214 報紙一齊行得通——請柬日預約→典禮日跑一日→晚上舞台→結果報紙→翌日晨報；推辭→電視直播版→第二版短訊寫明得主。請柬顯示日期有個舊問題（force 逾期 pack 顯示「9月1日」但預約係今晚 10 月 20 日，`awards213CeremonyDayForPack` 用 `Math.max(季節首日, 今日)` 做預約日，但請柬文案讀季節首日）——只影響 debug force 逾期路徑，真實流程請柬提前 3 日唔會逾期，唔入呢票，留返 v213 跟進。
+
+## 20. 落地紀錄（2026-11-14）
+
+- 遊戲 commit `976e5b7`（squash merge `v20a214`，rebase 後分支 HEAD `0913f04`）；NOTES commit 本檔。
+- 線上核實（curl，Pages 傳播約 2 分鐘後一致）：`index.html` 5,524,996 bytes，sha256 `dd81cde28a0fa5bc9b029d4417955f78ab740b3ef2957f3421f1f36159a79495`，同 repo HEAD 一致；新圖 `assets/story/newspaper/photo_awi_ceremony.webp`（30,654 bytes，sha `ab49bf6f…`）＋`photo_lok_ceremony.webp`（45,166 bytes，sha `ff45e485…`）逐張對 sha 一致。
+- 重驗數字：新測試六檔全綠（award logic 47/47、awards211 static 47 PASS）；全套 A/B 299/13 vs 305/13（＋6 新檔，13 項 FAIL 兩邊相同，零回歸）；實駕重跑 10/10、223 項檢查 0 壞、0 pageerror（`qa214/drive214_rebased.json`）。
+- 落地次序：v211 → v212 → v209 → v213 → **v214（已上線）** → v215（hold 緊，唔好掂）。
