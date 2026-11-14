@@ -51,9 +51,8 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 62352（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358）', html.count('\n') == 62352)
-# v20a213 rebase 上 main 17c6f69 resync：釘行按 difflib 映射重寫，qa213/resync213_rebase.py 核實純漂移（v211 +42／v212 +39／v213 +199）。
-# ---- B1：路線 a 標記＋grid 軌防撐闊 ----
+ok('總行數 62492（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140）', html.count('\n') == 62492)
+# v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行（advanceDay tick＋2／whitelist＋1／RELEASE215 block＋130／排序＋4／pullDue 懶掃＋3），difflib 核實純漂移（總行數 62352→62492）。# ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',
    'v20a185 B1+C1' in html and '路線 a' in html)
 ok('B1 .act min-width:0（防 nowrap 名撐闊 grid 軌）',

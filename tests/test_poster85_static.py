@@ -20,7 +20,7 @@ ok('poster85File 在位', 'function poster85File(gigId)' in html)
 ok('查表回檔案參照', '"assets/posters/" + poster85File(gigId)' in html)
 ok('試點內嵌保留（POSTER59_DATA 仍在）', 'const POSTER59_DATA = {' in html and 'poster59Path' in html)
 size = os.path.getsize(ipath)
-ok('主檔冇脹大（<%d；v89 BR89 有意增長至 5,288,705；v92 NAT92 通告板分布自然化（錯峰＋保底＋加厚 18 張）有意增長至 5,336,030；v95 LADDER95 結局梯擴充（新梯判定＋計數器＋9 格文案）有意增長至 5,386,704；v203 WF4 迎新期＋Phase 2 擴池（41 單新事件＋迎新期 code）有意增長至 5,448,954；v213 請柬提前＋晚間典禮有意增長至 5,491,267，上限跟住原位更新）' % (5491267 + 40000), size < 5491267 + 40000)
+ok('主檔冇脹大（<%d；v89 BR89 有意增長至 5,288,705；v92 NAT92 通告板分布自然化（錯峰＋保底＋加厚 18 張）有意增長至 5,336,030；v95 LADDER95 結局梯擴充（新梯判定＋計數器＋9 格文案）有意增長至 5,386,704；v203 WF4 迎新期＋Phase 2 擴池（41 單新事件＋迎新期 code）有意增長至 5,448,954；v213 請柬提前＋晚間典禮有意增長至 5,491,267；v214 NP214 報紙重做有意增長至 5,524,996；v215 RELEASE215 推出日提及（新函數＋掛點）有意增長至 5,532,430，上限跟住原位更新）' % (5532430 + 40000), size < 5532430 + 40000)
 seg = html[html.index('v20a85 POSTER85'):html.index('function poster59Path')]
 ok('POSTER85 段冇 data URI 內嵌', 'data:image' not in seg)
 

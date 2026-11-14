@@ -36910,6 +36910,8 @@ function advanceDay(){
   try{ if(typeof favorDueTick==="function") favorDueTick(); }catch(_fd){}
   /* v20a82 WF3：報紙事件刊出 tick＋鏈 A/B/D 結算 tick（同 favorDueTick 同位，advanceDay 內） */
   try{ if(typeof news82Tick==="function") news82Tick(); }catch(_n82){}
+  /* v20a215 RELEASE215：推出日提及 tick（同 news82Tick 同位；dayIndex 啱啱變做推出日嗰陣入隊，enqueuedDay＝尋日） */
+  try{ if(typeof release215EnqueueDue==="function") release215EnqueueDue(); }catch(_r215){}
   try{ if(typeof wf3SettleTick==="function") wf3SettleTick(); }catch(_w3s){}
   /* v20a86 WF4：日常事件每日種子擲（排喺 WF3 結算之後，唔擾既有 tick 序） */
   try{ if(typeof wf4DailyTick==="function") wf4DailyTick(); }catch(_w4t){}
@@ -49231,8 +49233,9 @@ function enqueueNewspaperItem(raw, opts){
   if(!eventKey || newspaperEventSeen(eventKey)) return null;
   const day = (raw.enqueuedDay!=null) ? (raw.enqueuedDay|0) : ((S.dayIndex|0)||0);
   const srcRaw = String(raw.source||"");
-  /* v20a82 WF3：source 擴展 "world"（年代事件報紙；paras/imgKey/worldId 隨項攜帶） */
-  const source = srcRaw==="award" ? "award" : (srcRaw==="story" ? "story" : (srcRaw==="world" ? "world" : "wrap"));
+  /* v20a82 WF3：source 擴展 "world"（年代事件報紙；paras/imgKey/worldId 隨項攜帶）
+     v20a215 RELEASE215：source 擴展 "release"（推出日短訊；排序排最後，唔搶頭條） */
+  const source = srcRaw==="award" ? "award" : (srcRaw==="story" ? "story" : (srcRaw==="world" ? "world" : (srcRaw==="release" ? "release" : "wrap")));
   const item = {
     eventKey: eventKey,
     source: source,
@@ -49766,6 +49769,136 @@ function enqueueNewspaperFromAward(pack, opts){
     imgKey: imgKey214
   }, opts);
 }
+/* ===== v20a215 RELEASE215：推出日提及——已殺青臨記級通告喺推出季首日晨報一則短訊。
+   規則：只限 press94 base 級（臨記級，配角級以上已有殺青報，唔入呢票）；觸發日＝gig 年＋季嘅首日
+   （春 3/1、夏 6/1、秋 9/1、冬 12/1）；須喺觸發日之前殺青（wrappedDay < releaseDay），推出日
+   當日／之後先殺青唔補出；去重 key release:<gigId>，一張通告永遠只提一次；fameDelta 0、唔點名玩家；
+   文案用季節寫法，唔逐字印 releaseLabel（賀歲檔 label 講農曆新年 1–2 月，同季首日 3 月 1 號對撞）；
+   source "release"——buildNewspaperEdition 排序永遠排最後，唔搶頭條、唔扮殺青報。
+   掛點有二（冪等，newspaperEventSeen 守住）：(1) advanceDay tick（跟 news82Tick 同位，live 主路徑）；
+   (2) pullDueNewspaperEdition 開頭懶掃（載入／播種存檔直接跳到推出日嗰陣，advanceDay 未行過）。
+   入隊慣例跟 award／wrap：enqueuedDay = publishDay - 1，等同日到期嘅獎項報可以同一批合併。
+   wrapHistory 90 條夠冚：提及只可能喺殺青後約 90 日內（通告提早窗 60 日＋拍攝期），而 v20a147 D4
+   核過任何 365 日窗口最多 79 部；gig 池按年換庫亦唔影響——推出日同殺青日必屬同一曆年
+   （季首日喺 gig 嗰年內，殺青早過推出日），查 gig 嗰陣 GIGS 未換池；逾期先載入嗰陣再經
+   STORY_WIRE.gigsByYear 跨年搵返。逐張準確推出日數據留返劇本定稿＋通告重設計嗰陣先加。 ===== */
+const RELEASE215_SEASON_MONTH = { "春":3, "夏":6, "秋":9, "冬":12 };
+const RELEASE215_SEASON_WORD = { "春":"春季", "夏":"夏季", "秋":"秋季", "冬":"冬季" };
+function release215GameYear(y){
+  const n = Number(y)||0;
+  if(!n) return 0;
+  if(n>=1988 && n<=1989) return n+2; /* 舊曆編碼（v66 前存檔／未 remap 紀錄）：1988→1990、1989→1991 */
+  if(n>=1990 && n<=1994) return n; /* 已 remap 遊戲年（live GIGS／wrapHistory 正常值） */
+  return 0;
+}
+function release215ReleaseDay(year, season){
+  try{
+    const y = release215GameYear(year);
+    const m = RELEASE215_SEASON_MONTH[String(season||"")]||0;
+    if(!y || !m) return null;
+    return Math.round((Date.UTC(y, m-1, 1) - Date.UTC(1990, 0, 1)) / 86400000);
+  }catch(_e){ return null; }
+}
+function release215LookupGig(gigId){
+  const id = String(gigId||"");
+  if(!id) return null;
+  try{
+    if(typeof newspaperLookupGig==="function"){
+      const hit = newspaperLookupGig(id);
+      if(hit) return hit;
+    }
+  }catch(_e){}
+  try{
+    const by = (typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.gigsByYear) || {};
+    const years = Object.keys(by);
+    for(let i=0;i<years.length;i++){
+      const pack = by[years[i]];
+      const gs = pack && pack.gigs;
+      if(Array.isArray(gs)){
+        const hit = gs.find(g=> g && g.id===id);
+        if(hit) return hit;
+      }
+    }
+  }catch(_e){}
+  return null;
+}
+function release215CopyFor(entry, gig){
+  try{
+    entry = entry || {};
+    gig = gig || null;
+    let work = "";
+    try{
+      if(typeof postShootDisplayTitle==="function"){
+        work = postShootDisplayTitle({
+          workTitle: (gig && gig.workTitle) || entry.workTitle || "",
+          title: (gig && (gig.workTitle || gig.title)) || entry.workTitle || entry.title || ""
+        }) || "";
+      }
+    }catch(_e){}
+    if(!work) work = String((gig && gig.workTitle) || entry.workTitle || "").trim();
+    if(!work) return null;
+    const seasonWord = RELEASE215_SEASON_WORD[String((gig && gig.season) || "")] || "";
+    if(!seasonWord) return null;
+    const type = String((gig && gig.type) || entry.type || "");
+    const verb = (type==="電影") ? "上映" : ((type==="電視劇" || type==="綜藝") ? "播出" : "推出");
+    const medium = (type.indexOf("電影")>=0) ? "film" : ((type.indexOf("電視")>=0 || type.indexOf("綜藝")>=0) ? "tv" : ((type.indexOf("唱片")>=0 || type.indexOf("音樂")>=0) ? "music" : ((type.indexOf("廣告")>=0) ? "ad" : "")));
+    let tail = "檔期陸續公佈。";
+    if(medium==="film") tail = "院線排片陸續公佈。";
+    else if(medium==="tv") tail = "電視台黃金時段播出。";
+    else if(medium==="ad") tail = "廣告時段陸續出街。";
+    else if(medium==="music") tail = "唱片舖陸續上架。";
+    return {
+      work: work,
+      medium: medium,
+      headline: "《"+work+"》"+seasonWord+verb,
+      dek: "《"+work+"》"+seasonWord+verb+"，"+tail
+    };
+  }catch(_e){ return null; }
+}
+function release215EnqueueDue(){
+  try{
+    if(typeof S==="undefined" || !S) return 0;
+    const today = S.dayIndex|0;
+    const hist = Array.isArray(S.wrapHistory) ? S.wrapHistory : [];
+    let n = 0;
+    hist.forEach(entry=>{
+      try{
+        if(!entry || !entry.gigId) return;
+        const gig = (typeof release215LookupGig==="function") ? release215LookupGig(entry.gigId) : null;
+        const season = gig ? gig.season : "";
+        const yearRaw = gig ? gig.year : entry.year;
+        const relDay = (typeof release215ReleaseDay==="function") ? release215ReleaseDay(yearRaw, season) : null;
+        if(relDay==null) return;
+        if((Number(entry.wrappedDay)||0) >= relDay) return; /* 推出日當日／之後先殺青：唔補出 */
+        if(relDay > today) return; /* 未到推出日 */
+        const hint = [entry.roleLabel||"", entry.title||""].join(" ");
+        if(typeof press94IsBaseRole==="function"){
+          if(!press94IsBaseRole(gig, hint)) return;
+        }else if(typeof press94RoleClass==="function"){
+          if(press94RoleClass(gig, hint)!=="base") return;
+        }
+        const copy = (typeof release215CopyFor==="function") ? release215CopyFor(entry, gig) : null;
+        if(!copy || !copy.headline) return;
+        const it = (typeof enqueueNewspaperItem==="function") ? enqueueNewspaperItem({
+          eventKey: "release:"+String(entry.gigId),
+          source: "release",
+          enqueuedDay: today-1,
+          publishDay: relDay,
+          fameDelta: 0,
+          paperName: "娛樂版",
+          headline: copy.headline,
+          dek: copy.dek,
+          clipLabel: "娛樂版・推出",
+          rumorEcho: "",
+          medium: copy.medium || "",
+          workTitle: copy.work || ""
+        }, { persist:false }) : null;
+        if(it) n++;
+      }catch(_e){}
+    });
+    return n;
+  }catch(_e){ return 0; }
+}
 /* Soft tip #102：劇情選擇 → 次日朝早報。唔加 favor。boardScentTag 只存，演算法 P1 HOLD。
    C6–C17／鄧線唔入。R_hiu distant 無模板，跳過。 */
 const STORY_FLAG_EVENT = {
@@ -50197,6 +50330,10 @@ function buildNewspaperEdition(batch, day){
     const aa = a && a.source==="award" ? 1 : 0;
     const bb = b && b.source==="award" ? 1 : 0;
     if(bb!==aa) return bb-aa;
+    /* v20a215 RELEASE215：推出短訊永遠排最後——唔搶頭條；淨係得佢嗰陣先做頭版（成份報得呢則）。 */
+    const ra = a && a.source==="release" ? 1 : 0;
+    const rb = b && b.source==="release" ? 1 : 0;
+    if(rb!==ra) return ra-rb;
     return 0;
   });
   const head = ranked[0] || {};
@@ -50264,6 +50401,9 @@ function buildNewspaperEdition(batch, day){
 function pullDueNewspaperEdition(){
   if(!S) return null;
   if(S.pendingMorningPaper && S.pendingMorningPaper.fameApplied!==true) return S.pendingMorningPaper;
+  /* v20a215 RELEASE215：懶掃——載入／播種存檔直接跳到推出日（advanceDay 未行過）嗰陣，
+     喺計到期／分批之前先入隊；入隊嗰陣 enqueuedDay＝尋日，等同日到期嘅獎項報同一批合併。 */
+  try{ if(typeof release215EnqueueDue==="function") release215EnqueueDue(); }catch(_r215){}
   const day = S.dayIndex|0;
   const due = newspaperDueItems(day);
   if(!due.length) return null;

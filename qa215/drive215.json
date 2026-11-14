@@ -1,0 +1,235 @@
+{
+ "a_release_spring": {
+  "case": "a_release_spring",
+  "checks": {
+   "new_game": true,
+   "paper_modal_shown": true,
+   "headline_present": true,
+   "no_player_name_near": true,
+   "fame_line": true,
+   "fame_unchanged_or_expected": true,
+   "clipping_has_release": true,
+   "queue_empty": true,
+   "follow_no_paper": true,
+   "follow_still_one_clipping": true,
+   "follow_queue_empty": true,
+   "zero_pageerror": true
+  },
+  "seed": {
+   "day": 59,
+   "gig": {
+    "id": "gig_1988_entry_ad_passerby",
+    "workTitle": "便利店短片",
+    "type": "廣告",
+    "season": "春",
+    "year": 1990,
+    "roleLabel": "廣告路人 B",
+    "roleScale": "ad_extra_day"
+   },
+   "wrapDay": 30
+  },
+  "expected_headline": "《便利店短片》春季推出",
+  "continue_clicked": "繼續",
+  "modal": {
+   "visible": true,
+   "h3": "《便利店短片》春季推出",
+   "btns": [
+    "收下這份剪報"
+   ],
+   "body": "維港日報\nVICTORIA HARBOUR DAILY\n1990年3月1日 星期四\n娛樂版 · 第一版\n\n娛樂版・推出\n\n《便利店短片》春季推出\n\n《便利店短片》春季推出，廣告時段陸續出街。\n\n影視娛樂\n\n金碟夜唱片銷量\n\n聲望未有變動。\n\n公開報紙。圈內耳語仍在手帳「傳聞」。\n\n維港日報\n第一版 · 娛樂版\n第二版 →\n收下這份剪報"
+  },
+  "headline_page": 1,
+  "state_after": {
+   "day": 59,
+   "fame": 5,
+   "queue": [],
+   "clips": [
+    {
+     "keys": [
+      "release:gig_1988_entry_ad_passerby"
+     ],
+     "head": "《便利店短片》春季推出",
+     "fame": 0
+    }
+   ],
+   "pend": null
+  },
+  "follow_modal": {
+   "visible": true,
+   "h3": "後巷聽古",
+   "btns": [
+    "下一句",
+    "跳至選項"
+   ],
+   "body": "主線 · 1990冬\n\n第 2 幕：留人脈／趕通告\n\n後巷聽古\n片場後巷／附近茶餐廳\n片場後巷充滿住煙味同茶記嘅油煙味，幾個老臨記圍埋一齊吹水。\n下一句\n跳至選項\n劇情進行中，播完先可以離開"
+  },
+  "follow_modal_h3": "後巷聽古",
+  "follow_state": {
+   "day": 60,
+   "fame": 5,
+   "queue": [],
+   "clips": [
+    {
+     "keys": [
+      "release:gig_1988_entry_ad_passerby"
+     ],
+     "head": "《便利店短片》春季推出",
+     "fame": 0
+    }
+   ],
+   "pend": null
+  },
+  "pageerrors": [],
+  "verdict": "PASS"
+ },
+ "b_named_no": {
+  "case": "b_named_no",
+  "checks": {
+   "new_game": true,
+   "no_paper_modal": true,
+   "map_visible": true,
+   "queue_empty": true,
+   "no_clippings": true,
+   "zero_pageerror": true
+  },
+  "seed": {
+   "day": 151,
+   "gig": {
+    "id": "gig_1988_rec_02",
+    "workTitle": "海傍情話",
+    "type": "唱片通告",
+    "season": "夏",
+    "year": 1990,
+    "roleLabel": "男主角",
+    "roleScale": "mtv"
+   },
+   "wrapDay": 100
+  },
+  "expected_headline": "《海傍情話》夏季推出",
+  "continue_clicked": "繼續",
+  "modal": {
+   "visible": true,
+   "h3": "後巷聽古",
+   "btns": [
+    "下一句",
+    "跳至選項"
+   ],
+   "body": "主線 · 1990冬\n\n第 2 幕：留人脈／趕通告\n\n後巷聽古\n片場後巷／附近茶餐廳\n片場後巷充滿住煙味同茶記嘅油煙味，幾個老臨記圍埋一齊吹水。\n下一句\n跳至選項\n劇情進行中，播完先可以離開"
+  },
+  "other_modal_h3": "後巷聽古",
+  "state_after": {
+   "day": 151,
+   "fame": 5,
+   "queue": [],
+   "clips": [],
+   "pend": null
+  },
+  "pageerrors": [],
+  "verdict": "PASS"
+ },
+ "c_wrapped_on_day": {
+  "case": "c_wrapped_on_day",
+  "checks": {
+   "new_game": true,
+   "no_paper_modal": true,
+   "map_visible": true,
+   "queue_empty": true,
+   "no_clippings": true,
+   "zero_pageerror": true
+  },
+  "seed": {
+   "day": 59,
+   "gig": {
+    "id": "gig_1988_entry_ad_passerby",
+    "workTitle": "便利店短片",
+    "type": "廣告",
+    "season": "春",
+    "year": 1990,
+    "roleLabel": "廣告路人 B",
+    "roleScale": "ad_extra_day"
+   },
+   "wrapDay": 59
+  },
+  "expected_headline": "《便利店短片》春季推出",
+  "continue_clicked": "繼續",
+  "modal": {
+   "visible": true,
+   "h3": "後巷聽古",
+   "btns": [
+    "下一句",
+    "跳至選項"
+   ],
+   "body": "主線 · 1990冬\n\n第 2 幕：留人脈／趕通告\n\n後巷聽古\n片場後巷／附近茶餐廳\n片場後巷充滿住煙味同茶記嘅油煙味，幾個老臨記圍埋一齊吹水。\n下一句\n跳至選項\n劇情進行中，播完先可以離開"
+  },
+  "other_modal_h3": "後巷聽古",
+  "state_after": {
+   "day": 59,
+   "fame": 5,
+   "queue": [],
+   "clips": [],
+   "pend": null
+  },
+  "pageerrors": [],
+  "verdict": "PASS"
+ },
+ "e_merge_award": {
+  "case": "e_merge_award",
+  "checks": {
+   "new_game": true,
+   "paper_modal_shown": true,
+   "headline_present": true,
+   "no_player_name_near": true,
+   "head_is_award": true,
+   "fame_line": true,
+   "headline_visible_p2": true,
+   "fame_unchanged_or_expected": true,
+   "clipping_has_release": true,
+   "queue_empty": true,
+   "one_clipping_only": true,
+   "merged_keys_both": true,
+   "zero_pageerror": true
+  },
+  "seed": {
+   "day": 151,
+   "gig": {
+    "id": "gig_1988_film_02",
+    "workTitle": "孤劍破陣",
+    "type": "電影",
+    "season": "夏",
+    "year": 1990,
+    "roleLabel": "武師群戲",
+    "roleScale": "film_support_small"
+   },
+   "wrapDay": 100
+  },
+  "expected_headline": "《孤劍破陣》夏季上映",
+  "continue_clicked": "繼續",
+  "modal": {
+   "visible": true,
+   "h3": "頒獎見報",
+   "btns": [
+    "收下這份剪報"
+   ],
+   "body": "維港日報\nVICTORIA HARBOUR DAILY\n1990年6月1日 星期五\n娛樂快報 · 第一版\n\n娛樂快報・頒獎夜\n\n頒獎見報\n\n維港影藝獎之夜結果出爐。\n\n影視娛樂\n\n金碟夜唱片銷量\n\n聲望 +2\n\n公開報紙。圈內耳語仍在手帳「傳聞」。\n\n維港日報\n第一版 · 娛樂快報\n第二版 →\n收下這份剪報"
+  },
+  "headline_page": 2,
+  "state_after": {
+   "day": 151,
+   "fame": 7,
+   "queue": [],
+   "clips": [
+    {
+     "keys": [
+      "award:1990:award_harbour_film",
+      "release:gig_1988_film_02"
+     ],
+     "head": "頒獎見報",
+     "fame": 2
+    }
+   ],
+   "pend": null
+  },
+  "pageerrors": [],
+  "verdict": "PASS"
+ }
+}

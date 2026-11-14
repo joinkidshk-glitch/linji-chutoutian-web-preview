@@ -56,8 +56,11 @@ ok('S14_story_render', 'function enqueueNewspaperFromStory(' in html
    and 'imgKey' not in seg('function enqueueNewspaperFromStory(', 'function newspaperDueItems('))
 ok('S15_edition_sort_kept', 'news82IsHead(a.worldId) ? 2 : 1' in html
    and '同日還有 "+overflow.length+" 則' in html)
-ok('S16_no_release_mechanism', 'enqueueNewspaperItem' in html
-   and 'source: "release"' not in html and 'releaseDay' not in html)
+# v20a215：S16 原意係「v214 唔引入推出日機制」；v215 正正就係落地呢個機制，改釘 v215 規格
+#（source release＋季首日換算＋入隊函數＋去重 key release:<gigId> 四樣齊，先算 v215 機制在位）。
+ok('S16_release_mechanism_v215', 'enqueueNewspaperItem' in html
+   and 'source: "release"' in html and 'function release215ReleaseDay(' in html
+   and 'release215EnqueueDue' in html and '"release:"+String(entry.gigId)' in html)
 
 # ---- (4) 第二版廣告＋邊欄 ----
 ok('S17_ads_helper', 'function np214Page2Ads214(' in html
