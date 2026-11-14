@@ -64,3 +64,10 @@
 - 實駕重跑（`qa212/drive212_rebased.py`，同一 seed `seed_used: 1`，寫入 `qa212/drive212_rebased.json`，唔覆蓋舊 `drive212.json`）：**7/7 PASS，0 pageerror**——film_nom_932、film_won_932、film_won_700、music_gal_932、ad_dec_932、film_skip_700、map_932。
 - 關鍵數字（同舊基底 drive212.json 同 seed 對數一致）：B1 film_nom winner_keys `陸柏言|歲歲平安、鍾楚凝|凶樓夜半怪談、蘇芷茵|歲晚街頭、廖炳星|幽靈夜巡隊`（4 個 distinct；NOTES 舊版寫嘅《春日新潮時裝特輯》／《三年》係另一 seed／run，唔係呢個）；film_won 3 鍵＋玩家格 won 豁免；music_gal `廖炳星|三年、藍若曦|三年、駱家聲|三年`（星唔同，鍵 distinct）；ad_dec 4 個 distinct；懸念三句輪換（第 4 格循環返第一句）；A1 won 兩場 skip `display:none`＋cap 全文；C1 音樂尾格 dim 32.04%／廣告 cat2 42.81%（根因修復前全空 0.0%）；C2 lag 全部 ≤250ms；C3 宣佈邊光啲；C5 centres 198／278（目標 [200, 280]）。
 - 註：重跑腳本尾段打印 winner 嗰陣有個小 bug（`winner` 係字串唔係 dict，`AttributeError`）——JSON 本身喺打印之前已經寫好，7/7 結果唔受影響；winner_keys 由 JSON 直接讀。
+
+## 落地紀錄（2026-11-14 約 19:20）
+
+- 遊戲 commit `a7be9a8`（squash merge 自分支 `v20a212` `63b987d`，基底 main `b1ca47a`）；NOTES commit（本檔）跟後補。
+- 線上核實：`curl` index.html **5,487,683 bytes sha `cbad0769e5c176abab560899ea87f29636d71023780f6d15961c03f9c43a93ed`**，同 repo HEAD `a7be9a8` 一致（push 後約 4 分鐘先傳播到 Pages，初核仍係 v211 舊 sha，唔係 push 失敗）。
+- 落地次序：v211 → **v212（本版）** → v209 → v213 → v214。
+- 設計 review 已派（`~/workspace/linji-design-review-v212/`），重點逐項核實 v211 review 嘅 A1／B1／C1／C3／C5 喺 live 修好。
