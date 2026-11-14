@@ -94,3 +94,11 @@ v214 嘅 code（基底未落地，落地嗰陣先 rebase 對一次）、典禮�
 - 新測試：logic 25＋static 28 全綠。反證（pristine `7e27e1a`，新測試抄過去跑）：logic 23 FAIL、static 19 FAIL，乾淨 FAIL 唔 crash；static 其餘 9 項 PASS 係「唔郁」不變量／空真（季節詞表、唔讀 releaseLabel、季首日對照表）。
 - 全套 A/B（乾淨 pristine）：**305／13 vs 307／13，FAIL 清單完全相同**（13 項穩定 pre-existing FAIL），＋2 係新測試，零回歸。注意：第一輪 A/B pristine 嗰邊混入咗反證嗰陣抄過去嘅兩檔新測試（305／15 vs 306／14），基線唔乾淨，已清走重跑。
 - 實駕重跑（rebase 後，`qa215/drive215.py`）：**4/4 PASS，0 pageerror**。初跑 (e) 兩項 FAIL（`headline_present`、`head_is_award`）——唔係機制錯：合併本身啱（一份剪報、兩則 key 齊、聲望 +2）；係 v214 分頁報紙將短訊放第二版（`SECTION.np214-page`，`display:none`），`modal_info` 嘅 innerText 只見第一版。Probe（`qa215/probe_e.py`）核實短訊喺全版 HTML 入面、第二版可見；drive 已更新（headline 睇埋全版 textContent＋記低邊一版＋短訊喺第二版嗰陣撳過去核實可見＋截圖），重跑 4/4 PASS（(e) `headline_page: 2`、`headline_visible_p2: true`）。第二版截圖目視確認：同版短訊頭條就係《孤劍破陣》夏季上映。
+
+## 12. 落地紀錄（2026-11-14，落地統籌）
+
+- 遊戲 commit **`2e4f1c0`**（squash merge `v20a215` 分支尖 `a617d98`，4 個 commits 一併入），NOTES commit（呢個）。
+- 線上核實：`index.html` **5,532,430 bytes**、sha256 **`45fd9a98c3e7…`**，同 repo HEAD 逐 byte 一致；`origin/main`＝`2e4f1c0`。
+- 初核（push 後 4 分鐘）線上 sha 係舊版 `148a02d4…`，係 Pages 傳播延遲，唔係失敗；重核一致。
+- `git fsck --no-dangling` 重跑 exit 0 乾淨。注意：落地嗰陣有個 fsck 同 commit 撞期嘅 race（`invalid reflog entry／missing commit 2e4f1c0`），重跑已證實唔係 corruption——以後 fsck 唔好同 commit 同時跑。
+- 落地次序：v214 → **v215 完成**。下一位 v210（暫緩至劇本定稿）。
