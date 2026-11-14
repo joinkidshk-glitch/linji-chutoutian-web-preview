@@ -94,6 +94,7 @@ ok('(C1) storyMainProgressLine 仲行共用幕號', html.indexOf('storyActLabel(
     extractFn('function wf4PickEvent'),
     extractFn('function wf4Fire'),
     extractFn('function wf4TryLocEvent'),
+    extractFn('function wf4EffPLoc'),
     extractFn('function story165NextOpen'),
     extractFn('function story165CanPlay'),
     extractFn('function storyNodeLocId'),

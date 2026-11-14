@@ -53,7 +53,12 @@ const parts = [];
 ['DAILY_EVENTS_WF4','WF4_CFG'].forEach(n => parts.push(extractConst(n)));
 ['wf4Ensure','wf4Hash','wf4Rand','wf4NewsDay','wf4YearSeason','wf4Tier','wf4BaseOk','wf4CondOk','wf4PickEvent',
  'wf4ApplyFx','wf4Esc','wf4PlayEvent','wf4Fire','wf4DailyTick','wf4TryLocEvent','wf4PresentPending'].forEach(n => parts.push(extractFn(n)));
-eval(parts.join('\n') + '; global.__W = { DAILY_EVENTS_WF4, WF4_CFG, wf4Ensure, wf4BaseOk, wf4CondOk, wf4PickEvent, wf4Fire, wf4DailyTick, wf4TryLocEvent, wf4PresentPending };');
+/* v203 helpers（pristine 冇）：抽唔到就用 stub 頂住，等斷言乾淨 FAIL，唔好成個測試 crash */
+['wf4EffPDay','wf4EffPLoc'].forEach(n => {
+  try { parts.push(extractFn(n)); }
+  catch(e) { parts.push('function ' + n + '(){ return NaN; }'); }
+});
+eval(parts.join('\n') + '; global.__W = { DAILY_EVENTS_WF4, WF4_CFG, wf4Ensure, wf4BaseOk, wf4CondOk, wf4PickEvent, wf4Fire, wf4DailyTick, wf4TryLocEvent, wf4PresentPending, wf4EffPDay, wf4EffPLoc };');
 const W = global.__W;
 function freshS(day){
   return { dayIndex: day||0, money: 12000, stress: 50, stamina: 60, fame: 10, popularity: 10, acting: 10, charm: 10, stage: 10,
@@ -68,20 +73,21 @@ function freshS(day){
   ok('WF4_CFG 冇 repeatDays（已刪）', !('repeatDays' in W.WF4_CFG));
   ok('WF4_CFG locTriesPerDay／pendingMaxAge 不變', W.WF4_CFG.locTriesPerDay === 3 && W.WF4_CFG.pendingMaxAge === 2);
   const evs = W.DAILY_EVENTS_WF4;
-  ok('池 72 單', evs.length === 72);
-  ok('day 池 36 單', evs.filter(e=>e.trig==='day').length === 36);
-  ok('loc 池 36 單', evs.filter(e=>e.trig==='loc').length === 36);
+  ok('池 113 單（v20a203 Phase 2：72→113）', evs.length === 113);
+  ok('day 池 48 單（v20a203：36→48）', evs.filter(e=>e.trig==='day').length === 48);
+  ok('loc 池 65 單（v20a203：36→65）', evs.filter(e=>e.trig==='loc').length === 65);
   const byLoc = {};
   evs.filter(e=>e.trig==='loc').forEach(e=>{ (byLoc[e.loc]=byLoc[e.loc]||[]).push(e.id); });
-  ok('每個地點 loc 池 ≥4（電視台三地由 1 補到 4）',
-    ['film_lion','film_cotton','film_harbour','tvb_longmen','tvb_harbour','tvb_kowloon'].every(l=>(byLoc[l]||[]).length>=4)
-    && (byLoc['cafe_cha']||[]).length >= 8);
-  ok('新事件 id 齊（day05–16、st12–17、set11–25、cha05–07）',
-    ['wf4_ev_day05','wf4_ev_day16','wf4_ev_st12','wf4_ev_st17','wf4_ev_set11','wf4_ev_set25','wf4_ev_cha05','wf4_ev_cha07']
+  ok('每個地點 loc 池 ≥9（v20a203 Phase 2：每地點補到 9，cafe_cha 11 不變）',
+    ['film_lion','film_cotton','film_harbour','tvb_longmen','tvb_harbour','tvb_kowloon'].every(l=>(byLoc[l]||[]).length===9)
+    && (byLoc['cafe_cha']||[]).length === 11);
+  ok('新事件 id 齊（v193：day05–16、st12–17、set11–25、cha05–07；v20a203：day17–28、set26–54）',
+    ['wf4_ev_day05','wf4_ev_day16','wf4_ev_st12','wf4_ev_st17','wf4_ev_set11','wf4_ev_set25','wf4_ev_cha05','wf4_ev_cha07',
+     'wf4_ev_day17','wf4_ev_day28','wf4_ev_set26','wf4_ev_set54']
       .every(id=>evs.some(e=>e.id===id)));
 }
 
-/* (2) once：逐單封印（全部 72 單，唔分 once 旗）——兩輪環境（1990 冬／tier 0／銀包見底／低壓
+/* (2) once：逐單封印（全部 113 單，唔分 once 旗）——兩輪環境（1990 冬／tier 0／銀包見底／低壓
    ＋1992 夏／tier 2／高壓），等季節／年份／tier／銀包／壓力閘事件都有機會合資格，先驗封印 */
 {
   const passes = [
@@ -104,7 +110,7 @@ function freshS(day){
       delete st.seen[ev.id];
     }
   }
-  ok('72 單逐單見過即封（1000 日後都唔漏，兩輪環境）', leaked.length === 0);
+  ok('113 單逐單見過即封（1000 日後都唔漏，兩輪環境）', leaked.length === 0);
 }
 
 /* (3) 抽乾嗰陣優雅：全池見晒 → pick 回 null，tick／入場唔 crash 唔出空卡 */
@@ -296,12 +302,15 @@ function freshS(day){
 /* (7) 新事件文案紀律：冇阿偉講者（NEW108 維持 8 單）、冇真人名／禁詞、fx 喺範圍內 */
 {
   const NEW36 = W.DAILY_EVENTS_WF4.filter(e=>/^(wf4_ev_day0[5-9]|wf4_ev_day1[0-6]|wf4_ev_st1[2-7]|wf4_ev_set1[1-9]|wf4_ev_set2[0-5]|wf4_ev_cha0[5-7])$/.test(e.id));
-  ok('新事件數 36', NEW36.length === 36);
-  ok('新事件冇阿偉做講者', NEW36.every(e=>!e.beats.some(b=>b.sp==='阿偉')));
-  const txt = JSON.stringify(NEW36);
+  ok('v193 新事件數 36（不變）', NEW36.length === 36);
+  const NEW41 = W.DAILY_EVENTS_WF4.filter(e=>/^(wf4_ev_day1[7-9]|wf4_ev_day2[0-8]|wf4_ev_set2[6-9]|wf4_ev_set3[0-9]|wf4_ev_set4[0-9]|wf4_ev_set5[0-4])$/.test(e.id));
+  ok('v20a203 新事件數 41（day17–28＋set26–54）', NEW41.length === 41);
+  const NEW77 = NEW36.concat(NEW41);
+  ok('新事件冇阿偉做講者', NEW77.every(e=>!e.beats.some(b=>b.sp==='阿偉')));
+  const txt = JSON.stringify(NEW77);
   ok('新事件文案冇真人名／禁詞', !/(周潤發|劉德華|張國榮|陳百強|梅艷芳|VCD|互聯網|狗仔隊|1989年)/.test(txt));
   let badFx = [];
-  for(const e of NEW36){
+  for(const e of NEW77){
     const fxs = [...(e.choices||[]).map(c=>c.fx||{}), e.fx||{}];
     for(const fx of fxs) for(const k of Object.keys(fx)){
       if(!['money','stress','stamina','fame','popularity','acting','charm','stage','looks','iq'].includes(k)) badFx.push(e.id+':key'+k);
@@ -309,7 +318,7 @@ function freshS(day){
   }
   ok('新事件 fx 鍵全合規', badFx.length === 0);
   ok('新事件全部有香港質地（真地名／年代工種／片種關鍵詞）',
-    NEW36.every(e=>/旺角|深水埗|油麻地|廟街|紅磡|清水灣|佐敦|港島|灣仔|維港|天星|啟德|片場|錄影廠|廣播|茶餐廳|冰室|大排檔|街市|卡拉OK|電車|渡輪|傳呼|Call機|屋邨|天台|電話亭|的士|涼茶|廠房|臨記|電視台|製片|影業|化妝|道具|開鏡/.test(e.setting + JSON.stringify(e.beats))));
+    NEW77.every(e=>/旺角|深水埗|油麻地|廟街|紅磡|清水灣|佐敦|港島|灣仔|維港|天星|啟德|片場|錄影廠|廣播|茶餐廳|冰室|大排檔|街市|卡拉OK|電車|渡輪|傳呼|Call機|屋邨|天台|電話亭|的士|涼茶|廠房|臨記|電視台|製片|影業|化妝|道具|開鏡/.test(e.setting + JSON.stringify(e.beats))));
 }
 
 console.log(fails.length ? ('FAILURES: ' + fails.join(' | ')) : 'ALL PASS');

@@ -1,0 +1,210 @@
+{
+  "note": "合併報告：各 case 分開跑（A 分兩次：首輪 14/15，set54 因 day 730 台慶典禮時序 FAIL，加 ceremony-wait 後重跑 3/3；B 跑咗三輪結果完全一致；C／D／E 各一輪）。全部 0 pageerror、0 console error、0 http fail。",
+  "errors": [],
+  "http_fail": [],
+  "cases": {
+    "B_welcome": {
+      "ok": false,
+      "titles": [
+        "大排檔嗰張長枱",
+        "街市魚檔嗰斤蝦"
+      ],
+      "n": 2,
+      "distinct": true,
+      "start_day": 0,
+      "end_day": 30,
+      "note": "自設 ≥3 斷言未達；v193 實玩係 0／52 日（day 7→59），呢輪 2／30 日有改善；sim A 路線預測 4 單，差距係 drive 路線（每日 2 個固定地點＋成週推進跳日）唔同 sim 路線（逐日＋7 地點輪入）所致。"
+    },
+    "A_scene_tour": {
+      "ok": true,
+      "results": {
+        "wf4_ev_day05": {
+          "ok": true,
+          "title": "冰室門口嗰張櫈",
+          "expect_title": "冰室門口嗰張櫈",
+          "scene": "assets/story/locs/bg_loc_cafe_cha.jpg?v=20a104",
+          "expect_scene": "bg_loc_cafe_cha.jpg",
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_day07": {
+          "ok": true,
+          "title": "電車上面嗰段戲",
+          "expect_title": "電車上面嗰段戲",
+          "scene": "assets/story/locs/bg_wf4_taxi.jpg?v=20a146",
+          "expect_scene": "bg_wf4_taxi.jpg",
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_day09": {
+          "ok": true,
+          "title": "唱片舖試聽嗰首歌",
+          "expect_title": "唱片舖試聽嗰首歌",
+          "scene": "assets/story/locs/bg_loc_gift_shop.jpg?v=20a104",
+          "expect_scene": "bg_loc_gift_shop.jpg",
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_day11": {
+          "ok": true,
+          "title": "茶樓飲早茶聽到消息",
+          "expect_title": "茶樓飲早茶聽到消息",
+          "scene": "assets/story/locs/bg_loc_cafe_cha.jpg?v=20a104",
+          "expect_scene": "bg_loc_cafe_cha.jpg",
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_day14": {
+          "ok": true,
+          "title": "Call機密碼簿唔見咗",
+          "expect_title": "Call機密碼簿唔見咗",
+          "scene": "assets/story/locs/bg_loc_film_lion.jpg?v=20a104",
+          "expect_scene": "bg_loc_film_lion.jpg",
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_day15": {
+          "ok": true,
+          "title": "銀包得返幾蚊",
+          "expect_title": "銀包得返幾蚊",
+          "scene": "assets/story/locs/bg_loc_cafe_cha.jpg?v=20a104",
+          "expect_scene": "bg_loc_cafe_cha.jpg",
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_st15": {
+          "ok": true,
+          "title": "的士司機嗰段追星往事",
+          "expect_title": "的士司機嗰段追星往事",
+          "scene": "assets/story/locs/bg_wf4_taxi.jpg?v=20a146",
+          "expect_scene": "bg_wf4_taxi.jpg",
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_st17": {
+          "ok": true,
+          "title": "樓下士多嗰支豆漿",
+          "expect_title": "樓下士多嗰支豆漿",
+          "scene": "assets/story/locs/bg_loc_gift_shop.jpg?v=20a104",
+          "expect_scene": "bg_loc_gift_shop.jpg",
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_day17": {
+          "ok": true,
+          "title": "屋邨樓梯嗰盞燈",
+          "expect_title": "屋邨樓梯嗰盞燈",
+          "scene": "assets/story/locs/bg_wf4_home.jpg?v=20a134",
+          "expect_scene": "bg_wf4_home.jpg",
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_day18": {
+          "ok": true,
+          "title": "街市魚檔嗰斤蝦",
+          "expect_title": "街市魚檔嗰斤蝦",
+          "scene": "assets/story/locs/bg_wf4_market.jpg?v=20a134",
+          "expect_scene": "bg_wf4_market.jpg",
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_day20": {
+          "ok": true,
+          "title": "舊書攤嗰本舊雜誌",
+          "expect_title": "舊書攤嗰本舊雜誌",
+          "scene": "assets/story/locs/bg_loc_gift_shop.jpg?v=20a104",
+          "expect_scene": "bg_loc_gift_shop.jpg",
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_day24": {
+          "ok": true,
+          "title": "電視台嗰封觀眾來信",
+          "expect_title": "電視台嗰封觀眾來信",
+          "scene": "assets/story/locs/bg_wf4_home.jpg?v=20a134",
+          "expect_scene": "bg_wf4_home.jpg",
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_set17": {
+          "ok": true,
+          "title": "錄影廠門口嗰班粉絲",
+          "expect_title": "錄影廠門口嗰班粉絲",
+          "scene": "assets/story/locs/bg_loc_tvb_longmen.jpg?v=20a104",
+          "expect_scene": null,
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_set26": {
+          "ok": true,
+          "title": "片場門口嗰個飯盒",
+          "expect_title": "片場門口嗰個飯盒",
+          "scene": "assets/story/locs/bg_loc_film_lion.jpg?v=20a104",
+          "expect_scene": null,
+          "scene_ok": true,
+          "table_ok": true
+        },
+        "wf4_ev_set54": {
+          "ok": true,
+          "title": "收工嗰陣嗰首歌",
+          "expect_title": "收工嗰陣嗰首歌",
+          "scene": "assets/story/locs/bg_loc_tvb_kowloon.jpg?v=20a104",
+          "expect_scene": null,
+          "scene_ok": true,
+          "table_ok": true
+        }
+      }
+    },
+    "C_ceremony": {
+      "ok": true,
+      "ceremony_seen": true,
+      "invite_clicked": false,
+      "penetration": {
+        "locBtn": true,
+        "closeBtn": "clicked"
+      },
+      "story_during_ceremony": false,
+      "ceremony_still_after_probe": true,
+      "quota_before": {
+        "day": 98,
+        "money": 14936,
+        "stress": 12,
+        "fame": 26,
+        "pending": "wf4_ev_set17",
+        "locTries": 0
+      },
+      "quota_after": {
+        "day": 98,
+        "money": 14936,
+        "stress": 12,
+        "fame": 26,
+        "pending": "wf4_ev_set17",
+        "locTries": 0
+      },
+      "story": {
+        "active": true,
+        "act191": "第 6 幕・電影線：片場跟班",
+        "nodeTitle": "角落嗰張枱"
+      },
+      "c6f_done": true
+    },
+    "D_exhaust": {
+      "ok": true,
+      "fired": "片場門口嗰個飯盒",
+      "expect": "片場門口嗰個飯盒",
+      "attempts": 16,
+      "titles": [
+        "片場門口嗰個飯盒"
+      ],
+      "extra_after_exhaust": []
+    },
+    "E_700": {
+      "ok": true,
+      "title": "冰室門口嗰張櫈",
+      "scene": "assets/story/locs/bg_loc_cafe_cha.jpg?v=20a104",
+      "map": true
+    },
+    "errors_932": [],
+    "errors_700": []
+  }
+}

@@ -19,7 +19,7 @@ ok('產品 ?v= 不變', 'v20a10' in src)
 
 # 事件池本體
 ok('DAILY_EVENTS_WF4 表存在', 'const DAILY_EVENTS_WF4 = [' in src)
-ok('事件數 72（v20a193 擴池 36→72）', len(re.findall(r'id:"wf4_ev_', src)) == 72)
+ok('事件數 113（v20a203 Phase 2 擴池 72→113）', len(re.findall(r'id:"wf4_ev_', src)) == 113)
 ok('WF4_CFG 頻率參數（v20a193：pDay .03／pLoc .03／gap 3，repeatDays 已刪）',
    'pDay:0.03' in src and 'pLoc:0.03' in src and 'gapDays:3' in src and 'repeatDays:45' not in src
    and 'repeatDays' not in src[src.find('const WF4_CFG'):src.find('const WF4_CFG')+120])

@@ -67,6 +67,11 @@ const parts = [];
  'wf4ApplyFx','wf4Esc','wf4PlayEvent','wf4Fire','wf4DailyTick','wf4TryLocEvent','wf4PresentPending','wf4SeedFrags',
  'wf4FenIntroDone','wf4FenActionsAt','wf4FenPlay','wf4FenFarewellArm','wf4FenFarewellNode','wf4PresentFenFarewell',
  'applyRivalWf4Overrides86'].forEach(n => parts.push(extractFn(n)));
+/* v203 helpers（pristine 冇）：抽唔到就用 stub 頂住，等斷言乾淨 FAIL，唔好成個測試 crash */
+['wf4EffPDay','wf4EffPLoc'].forEach(n => {
+  try { parts.push(extractFn(n)); }
+  catch(e) { parts.push('function ' + n + '(){ return NaN; }'); }
+});
 eval(parts.join('\n') + '; global.__W = { DAILY_EVENTS_WF4, WF4_CFG, WF4_FRAG_SEEDS, RIVAL_WF4_OVERRIDES, wf4Ensure, wf4BaseOk, wf4CondOk, wf4PickEvent, wf4Fire, wf4DailyTick, wf4TryLocEvent, wf4PresentPending, wf4SeedFrags, wf4FenActionsAt, wf4FenFarewellArm, wf4FenFarewellNode, wf4PresentFenFarewell, applyRivalWf4Overrides86 };');
 const W = global.__W;
 
@@ -78,9 +83,9 @@ function freshS(day){
 /* (1) 事件表完整性 */
 {
   const evs = W.DAILY_EVENTS_WF4;
-  ok('事件總數 72（v20a193 擴池）', evs.length === 72);
+  ok('事件總數 113（v20a203 Phase 2 擴池 72→113）', evs.length === 113);
   ok('id 唯一', new Set(evs.map(e=>e.id)).size === evs.length);
-  ok('day/loc 各 36（v20a193）', evs.filter(e=>e.trig==='day').length === 36 && evs.filter(e=>e.trig==='loc').length === 36);
+  ok('day 48／loc 65（v20a203：36／36→48／65）', evs.filter(e=>e.trig==='day').length === 48 && evs.filter(e=>e.trig==='loc').length === 65);
   let schemaBad = [];
   for(const e of evs){
     if(!e.title || !e.setting || !Array.isArray(e.beats) || e.beats.length < 1 || e.beats.length > 3) schemaBad.push(e.id+':beats');

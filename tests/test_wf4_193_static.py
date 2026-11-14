@@ -63,16 +63,16 @@ ok('全檔 repeatDays 只剩註解提及（唔係 code）',
 
 # --- 池：72 單，day／loc 各 36，每地點 ≥4 ---
 ev_ids = re.findall(r'id:"(wf4_ev_\w+)"', src)
-ok('事件總數 72', len(ev_ids) == 72)
+ok('事件總數 113（v20a203 Phase 2：72→113）', len(ev_ids) == 113)
 ok('id 唯一', len(set(ev_ids)) == len(ev_ids))
 arr = re.search(r'DAILY_EVENTS_WF4\s*=\s*\[(.*?)\n\];', src, re.S)
 ok('DAILY_EVENTS_WF4 陣列搵到', arr is not None)
 if arr:
     body = arr.group(1)
-    ok('day 池 36', body.count('trig:"day"') == 36)
-    ok('loc 池 36', body.count('trig:"loc"') == 36)
-    for loc, n in [('film_lion', 5), ('film_cotton', 4), ('film_harbour', 4),
-                   ('tvb_longmen', 4), ('tvb_harbour', 4), ('tvb_kowloon', 4),
+    ok('day 池 48（v20a203：36→48）', body.count('trig:"day"') == 48)
+    ok('loc 池 65（v20a203：36→65）', body.count('trig:"loc"') == 65)
+    for loc, n in [('film_lion', 9), ('film_cotton', 9), ('film_harbour', 9),
+                   ('tvb_longmen', 9), ('tvb_harbour', 9), ('tvb_kowloon', 9),
                    ('cafe_cha', 11)]:
         ok('loc 池 %s＝%d 單' % (loc, n), body.count('loc:"%s"' % loc) == n)
     # 條件閘放寬（v20a193）
@@ -85,7 +85,7 @@ m = re.search(r'const WF4_SCENE_OVERRIDE134 = \{(.*?)\};', src, re.S)
 ok('WF4_SCENE_OVERRIDE134 存在', m is not None)
 if m:
     table = set(re.findall(r'(wf4_ev_\w+):"', m.group(1)))
-    ok('覆寫表 36 行', len(table) == 36)
+    ok('覆寫表 48 行（v20a203：36→48，新 day 12 單入表）', len(table) == 48)
     for new_id in ['wf4_ev_day05', 'wf4_ev_day16', 'wf4_ev_st12', 'wf4_ev_st17']:
         ok('新 day 事件入覆寫表：' + new_id, new_id in table)
 

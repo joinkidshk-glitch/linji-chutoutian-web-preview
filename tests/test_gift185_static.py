@@ -1,4 +1,5 @@
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），總行數 60522→60609。
+# v20a203 resync：index.html 淨 +233 行（見 qa203/resync203.py difflib 對位核實純漂移），總行數 61167→61400。
 # v20a185 GIFT185 靜態測試：修 v183 review B1（700 尾行俾取消掣欄遮住）＋C1（兩欄卡名「×N」孤兒跌行）。
 # v20a197 resync：index.html 淨 +94 行，總行數 60490→60584（difflib 對位核實純漂移，見 qa197/resync197.py；其餘斷言唔郁；B4 補丁再 +9 行）。
 # v20a196 resync：index.html 淨 +83 行，總行數 60490→60573（showResult −1／晨鏈＋74／WF4＋63／尾段＋83 淨計；其餘斷言唔郁）。
@@ -43,7 +44,7 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 61167（v202 60988＋v193 淨 +179）', html.count('\n') == 61167)
+ok('總行數 61400（v193 61167＋v203 淨 +233）', html.count('\n') == 61400)
 
 # ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',

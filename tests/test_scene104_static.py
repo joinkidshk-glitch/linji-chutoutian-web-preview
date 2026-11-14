@@ -37,8 +37,8 @@ def jpeg_size(b):
 # --- (1) 版本參數：全域冇 ?v=20a103 殘留；兩處載入點都係 20a104 ---
 ok('index 冇 ?v=20a103 殘留', '?v=20a103' not in src)
 # v20a118 LOCPANEL118：廟街禮品＋仁康醫院場景圖補齊（另一統籌一次生成，QC 全 pass），
-# LOC_SHEET_BG 13→15，?v=20a104 共 18 處（builder 1＋LOC_SHEET_BG 15＋v134 WF4 覆寫表重用 2：set08→bg_loc_film_lion、st04→bg_loc_cafe_cha）。
-ok('index ?v=20a104 共 18 處（builder 1＋LOC_SHEET_BG 15＋v134 重用 2）', src.count('?v=20a104') == 18)
+# LOC_SHEET_BG 13→15，?v=20a104 共 26 處（builder 1＋LOC_SHEET_BG 15＋WF4 覆寫表重用 10：v134 重用 2＋v203 C2 重映射重用 8；檔案本身冇變，cache-buster 重用正確）。
+ok('index ?v=20a104 共 26 處（builder 1＋LOC_SHEET_BG 15＋WF4 覆寫表重用 10：v134 2＋v203 8）', src.count('?v=20a104') == 26)
 
 m = re.search(r'const LOC_SHEET_BG = \{(.*?)\n\};', src, re.S)
 ok('搵到 LOC_SHEET_BG', bool(m))

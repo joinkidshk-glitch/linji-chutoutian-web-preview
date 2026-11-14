@@ -85,9 +85,9 @@ evs = extract_events(src)
 NEW108 = {"wf4_ev_cha02", "wf4_ev_home01", "wf4_ev_st01", "wf4_ev_st03",
           "wf4_ev_boss01", "wf4_ev_boss02", "wf4_ev_boss03", "wf4_ev_day02"}
 with_awi = {e["id"] for e in evs if any(b.get("sp") == "阿偉" for b in e["beats"])}
-ck("事件總數 72（v20a193）", len(evs) == 72)
+ck("事件總數 113（v20a203 Phase 2）", len(evs) == 113)
 ck("有阿偉講者嘅事件＝預期 8 單（盤點表同數據一致）", with_awi == NEW108)
-ck("其餘 64 單冇阿偉（舊路徑＋v20a193 新事件，NEW108 維持 8 單）", len(evs) - len(with_awi) == 64)
+ck("其餘 105 單冇阿偉（舊路徑＋v193 新事件＋v203 新事件，NEW108 維持 8 單）", len(evs) - len(with_awi) == 105)
 named_no_asset = set()
 for e in evs:
     for b in e["beats"]:
