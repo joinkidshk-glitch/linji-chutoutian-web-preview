@@ -11,7 +11,7 @@
 //       40%×(panel 高−20)），兩 viewport 逐 px 等價（932 cap 220／700 cap 193.6，探針核實）。
 // 驗收（實駕量度）：panel 空佔比 47.9%→3.3%（932）／46.3%→3.6%（700）；海報盒唔郁
 //   （932 img 396–616／700 img 390–583）；clearance 36／24 唔跌；底罅 77 唔郁；面完整。
-// 唔郁守衛：B1 地板 y228–310／FLOOR 262；C2 卡罅 24px／角標 10px；C3 out 留人；C4 walkup y＋6；
+// 唔郁守衛：B1 地板 y274–372／FLOOR 314（v20a207 B2）；C2 卡罅 24px／角標 10px；C3 out 留人；C4 walkup y＋6；
 //   C5 glamour 下移 124px（trade-off，glamour-hide display:none）；C6 glyph −110（2.6 邏輯罅）。
 // 唔郁：fellows 池／對手加權／贏線 0.875／報紙流程／6 beats 順序；唔直改 content pack JSON。
 // 反證：對 pristine main dcf1b72 行 → 新 C1 斷言全部 FAIL（唔 crash）；守衛 pristine 應 PASS。
@@ -74,9 +74,9 @@ ok('C1 panel 闊 44%＋0.93 暗底＋column＋flex-end＋gap 8＋padding 10/12 �
   panelCss.includes('flex:0 0 44%') && panelCss.includes('rgba(10,6,18,.93)') &&
   panelCss.includes('flex-direction:column') && panelCss.includes('justify-content:flex-end') &&
   panelCss.includes('gap:8px') && panelCss.includes('padding:10px 12px'));
-ok('C1 overlay 仲係 absolute top:0／left:0／width:100%＋aspect 480/360＋pointer-events:none',
+ok('C1 overlay 仲係 absolute top:0／left:0／width:100%＋aspect 480/432＋pointer-events:none（v20a207 B2）',
   glamCss.includes('position:absolute') && glamCss.includes('top:0') && glamCss.includes('left:0') &&
-  glamCss.includes('width:100%') && glamCss.includes('aspect-ratio:480/360') &&
+  glamCss.includes('width:100%') && glamCss.includes('aspect-ratio:480/432') &&
   glamCss.includes('pointer-events:none'));
 ok('C1 cap 字體唔郁（19px／行高 1.55，兩行＝58.9px——計數用）',
   cssRule('.awd63-glamour .cap').includes('font-size:19px') &&
@@ -116,9 +116,9 @@ ok('C1 高身海報（0.5 比例）cap 下闊 106px＜max-width 273px（唔脹�
   (220 - 8) * 0.5 === 106 && 106 < 0.88 * (334.4 - 24));
 
 /* ================= 唔郁守衛：其餘六項 ================= */
-ok('守衛 B1 地板 y228–310（#d9a75f，深 82px）', baseSrc.includes('228, W + 16, 82'));
-ok('守衛 B1 觀眾席 y316–360（#120c20，高 44）', baseSrc.includes('316, W + 16, 44'));
-ok('守衛 B1 FLOOR＝262 唔郁', playSrc.includes('const FLOOR = 262'));
+ok('守衛 B1 地板 y274–372（#d9a75f，深 98px；v20a207 B2）', baseSrc.includes('228 / 360') && baseSrc.includes('310 / 360'));
+ok('守衛 B1 觀眾席 y379–432（#120c20，高 53；v20a207 B2）', baseSrc.includes('316 / 360'));
+ok('守衛 B1 FLOOR＝314（v20a207 B2）', playSrc.includes('const FLOOR = 314'));
 const cardsCss = cssRule('.awd63-cards');
 const gapM = cardsCss.match(/gap:\s*(\d+)px/);
 ok('守衛 C2 卡罅 gap 24px（角標 clearance 10px）', gapM && Number(gapM[1]) === 24);
@@ -130,8 +130,8 @@ const walkBlock = walkIdx >= 0 ? playSrc.slice(walkIdx, playSrc.indexOf('if(id =
 ok('守衛 C4 walkup 行緊 y＋6（只一處）', walkBlock.includes('y: 6') && (walkBlock.match(/y: 6/g) || []).length === 1);
 ok('守衛 C5 glamour-hide 仲係 display:none（v174 trade-off：下移 124px 唔郁）',
   cssRule('.awd63-cards.glamour-hide').includes('display:none'));
-ok('守衛 C6 燕尾服 glyph −110 兩處、舊 −112 唔見', playSrc.includes('FLOOR + fp.y - 110') && playSrc.includes('FLOOR - 110') && !playSrc.includes('- 112'));
-ok('守衛 C6 牌底 149.4 到 glyph 頂 152 留 2.6 邏輯罅', Math.abs((262 - 110) - 149.4 - 2.6) < 0.01);
+ok('守衛 C6 燕尾服 glyph −129 兩處、舊 −112 唔見（v20a207 B2）', playSrc.includes('FLOOR + fp.y - 129') && playSrc.includes('FLOOR - 129') && !playSrc.includes('- 112'));
+ok('守衛 C6 牌底 179.3 到 glyph 頂 185 留 5.7 邏輯罅（v20a207 B2）', Math.abs((314 - 129) - 179.3 - 5.7) < 0.01);
 
 /* ================= 唔郁守衛：流程／版本 ================= */
 const beatsWon = awards62CeremonyBeats({ displayName: '星河電視獎', bestOutcome: 'won', repWork62: '長篇劇',

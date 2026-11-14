@@ -1,3 +1,4 @@
+# v20a207 resync：index.html 淨 +34 行（見 qa207/resync207.py，73 錨點對位零 mismatch，純漂移）。
 # -*- coding: utf-8 -*-
 # v20a142 靜態守門測試：A1 老闆 bust 髮頂被切（#app 捲動拖郁 #mask）＋
 # A2 空狀態死位（進度頁星途寄語／作品牆空畫框）＋B1 地圖標籤壓紋底（4 張錨微調）。
@@ -46,7 +47,7 @@ ok('A2b 示意畫框有「黐喺呢度」一句', '完成作品後，佢嘅作�
 ok('A2b 畫框 CSS 存在（虛線金框＋3/4 比例）', '.works-frames142{' in html and 'aspect-ratio:3/4' in html)
 ok('A2b 空畫框只喺空狀態出現（有作品嗰陣唔出）', 'worksWallHtml59' in html and 'works-frames142' in html.split('worksWallHtml59')[1][:1500])
 
-# --- B1：4 張錨新值；其餘 11 張唔郁；LOCS 熱區座標唔郁 ---
+# --- B1：5 張錨新值；其餘 10 張唔郁；LOCS 熱區座標唔郁（v20a207 C5：中環廣告 60%→51%，避開藍塔） ---
 def mn(name):
     mm = re.search(r'<div class="mn68" style="([^"]*)">' + re.escape(name) + r'</div>', html)
     return mm.group(1) if mm else None
@@ -54,13 +55,13 @@ ok('B1 香江唱片錨＝29.2%／24% +31px', mn('香江唱片') == 'left:29.2%;t
 ok('B1 廟街禮品錨＝28.4%／35% -104px', mn('廟街禮品') == 'left:28.4%;top:calc(35% - 104px)')
 ok('B1 海港廣播錨＝88%／15% -44px', mn('海港廣播') == 'left:88%;top:calc(15% - 44px)')
 ok('B1 金龍茶餐廳錨＝16%／16% -56px', mn('金龍茶餐廳') == 'left:16%;top:calc(16% - 56px)')
+ok('B1 中環廣告錨＝51%／57% +30px（v20a207 C5：60%→51%，避開藍塔，「廣」字唔再俾遮）', mn('中環廣告') == 'left:51%;top:calc(57% + 30px)')
 UNCHANGED = {
     '獅子山製片': 'left:54%;top:calc(12% - 52px)',
     '星河電視台': 'left:26%;top:2%',
     '九龍電視台': 'left:36%;top:calc(45% - 52px)',
     '紅棉影業': 'left:74%;top:calc(11% - 44px)',
     '維港電影': 'left:80%;top:calc(18% + 38px)',
-    '中環廣告': 'left:60%;top:calc(57% + 30px)',
     '金鐘創意': 'left:85%;top:calc(60% + 28px)',
     '灣仔唱片': 'left:68%;top:calc(77% + 34px)',
     '天星音樂': 'left:86%;top:calc(82% + 30px)',

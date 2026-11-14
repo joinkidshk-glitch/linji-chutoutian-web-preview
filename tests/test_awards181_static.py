@@ -54,17 +54,17 @@ beats_fn = slice_fn('awards62CeremonyBeats')
 
 WON = [60, 180, 300, 420]
 GAL = [75, 240, 405]
-FIG_W = 46          # px 人物顯示闊上限（dispH 112 × 最闊 48/128 ≈ 42，取 46 留鬆）
-FLOOR = 262
+FIG_W = 51          # px 人物顯示闊上限（dispH 136 × 最闊 48/128 ≈ 51；v20a207 B2：112→136）
+FLOOR = 314 # v20a207 B2
 
-# --- (a) 橫向呈現：480×360（4:3）／backing 720×540／setTransform 1.5 ---
-chk('canvas 邏輯 480×360（4:3）', 'const W = 480, H = 360' in play_fn)
+# --- (a) 橫向呈現：480×432（10:9）／backing 720×648／setTransform 1.5（v20a207 B2） ---
+chk('canvas 邏輯 480×432（10:9；v20a207 B2）', 'const W = 480, H = 432' in play_fn)
 chk('舊邏輯 424×360 唔再出現（頒獎禮範圍）', 'const W = 424, H = 360' not in play_fn)
-chk('canvas backing 720×540', '<canvas class="awd62-canvas" width="720" height="540">' in src)
+chk('canvas backing 720×648（v20a207 B2）', '<canvas class="awd62-canvas" width="720" height="648">' in src)
 chk('舊 backing 636×540 唔再出現', 'width="636" height="540"' not in src)
 chk('setTransform 1.5 唔郁', 'ctx.setTransform(1.5, 0, 0, 1.5, 0, 0)' in play_fn)
 chk('canvas 撐滿框冇黑帶（width:100%＋height:auto）', 'canvas.awd62-canvas{display:block;width:100%;height:auto' in src)
-chk('glamour overlay aspect 跟 canvas（480/360）', 'aspect-ratio:480/360' in css_rule('.awd63-glamour'))
+chk('glamour overlay aspect 跟 canvas（480/432；v20a207 B2）', 'aspect-ratio:480/432' in css_rule('.awd63-glamour'))
 
 # --- (b) 佈局：橫額／數字條／白牌（DOM 層）＋程式舞台（canvas 層） ---
 chk('橫額 DOM 在場（.awd181-banner）', 'awd181-banner' in play_fn and 'awd181-banner{' in src)
@@ -87,7 +87,7 @@ chk('文字層全部 pointer-events:none（撳畫面快進照通）', 'pointer-e
 # 實測根因（2026-11-13 探針，932 won names）：sub 框 y239–327（顯示 px）vs 人頭頂 y265
 #   （canvas 頂 −10＋173 邏輯×572/360）；舊 top:43.5% 係對 canvaswrap 高 572 計（唔係成個 frame 865），
 #   但就算對 canvas 計，兩行字 156.6–212.6 邏輯都同頭頂 173 邏輯重疊 40 邏輯——位置本身就係人頭高度。
-# 修法：白牌改三行牌（獎項名＋代表作＋會場名），白牌底唔郁（149.4 邏輯＜glyph 頂 152，v20a187 C6 由 150 改 152＜頭頂 173）。
+# 修法：白牌改三行牌（獎項名＋代表作＋會場名），白牌底唔郁（179.3 邏輯＜glyph 頂 185，v20a187 C6 由 150 改 152＜頭頂 173；v20a207 B2：H 432，牌底 179.3／glyph 頂 185／頭頂 206）。
 def _pct(rule, prop):
     m = re.search(prop + r':\s*([\d.]+)%', rule)
     return float(m.group(1)) if m else None
@@ -133,10 +133,10 @@ chk('黃字 fix：細字唔再係黃色（#ffe14d 唔喺 .awd181-sub）', '#ffe1
 chk('黃字 fix：.long 條件覆蓋長細字行（細字行 ＞10 字都縮）',
     'awd181Line1).length > 10' in play_fn and 'awd181Line2).length > 10' in play_fn)
 chk('程式舞台函數在場', 'function awards181DrawBase(ctx, W, H, off)' in src)
-chk('地板 y228–310（#d9a75f）', '#d9a75f' in base_fn and '228, W + 16, 82' in base_fn) # v20a187 B1 resync：舊 y200–334／134px
-chk('地板深 82px＝22.8% 高（v20a187 B1）', 'const FLOOR = 262' in play_fn and 'const W = 480, H = 360' in play_fn)
-chk('地板前緣深木邊 y310（#5a3a1e）', '#5a3a1e' in base_fn and '310, W + 16, 6' in base_fn)
-chk('暗觀眾席 y316–360（#120c20）', '#120c20' in base_fn and '316, W + 16, 44' in base_fn)
+chk('地板 y274–372（#d9a75f，H 比例；v20a207 B2）', '#d9a75f' in base_fn and '228 / 360' in base_fn and '310 / 360' in base_fn) # v20a187 B1 resync：舊 y200–334／134px
+chk('地板深 98px＝22.7% 高（v20a187 B1；v20a207 B2）', 'const FLOOR = 314' in play_fn and 'const W = 480, H = 432' in play_fn)
+chk('地板前緣深木邊 y372（#5a3a1e；v20a207 B2）', '#5a3a1e' in base_fn and '310 / 360' in base_fn and '316 / 360' in base_fn)
+chk('暗觀眾席 y379–432（#120c20，H 比例；v20a207 B2）', '#120c20' in base_fn and '316 / 360' in base_fn)
 chk('淺色幕布（#f2e8d5）', '#f2e8d5' in base_fn)
 chk('幕布唔抄淺綠格仔花紋（#f2e8d5 淺米，唔係綠格）', '#f2e8d5' in base_fn)
 chk('燈架深色鐵架左右（#23232c，x12／452）', '#23232c' in base_fn)
@@ -145,19 +145,19 @@ chk('draw() 畫程式舞台（唔再畫 bgImg）', 'awards181DrawBase(ctx, W, H,
 chk('pan beat 橫移程式舞台（±6）', 'Math.round(Math.sin(tick * 0.45) * 6)' in play_fn)
 
 # --- (b2) 企位：左／中／右分開企，中間大段空地板 ---
-chk('FLOOR＝262（腳底）', 'const FLOOR = 262' in play_fn)
+chk('FLOOR＝314（腳底；v20a207 B2）', 'const FLOOR = 314' in play_fn)
 chk('舊 FLOOR＝250 唔再出現（頒獎禮範圍）', 'const FLOOR = 250' not in play_fn)
 chk('FLOOR 只定義一次', play_fn.count('const FLOOR =') == 1)
 chk('4 slots 60／180／300／420（間距 120，置中 240）', '240 + (i - (slots.length - 1) / 2) * 120' in play_fn)
 chk('gallery 3 slots 75／240／405', '[75, 240, 405]' in play_fn)
 chk('4 slots 唔出 canvas 界', WON[0] - FIG_W // 2 >= 0 and WON[-1] + FIG_W // 2 <= 480)
 chk('gallery 唔出 canvas 界', GAL[0] - FIG_W // 2 >= 0 and GAL[-1] + FIG_W // 2 <= 480)
-chk('4 slots 相鄰罅 ≥70px（大段空地板）', all(WON[i+1] - WON[i] - FIG_W >= 70 for i in range(3)))
+chk('4 slots 相鄰罅 ≥65px（大段空地板；v20a207 B2：人闊咗，69px 保守罅）', all(WON[i+1] - WON[i] - FIG_W >= 65 for i in range(3)))
 chk('gallery 相鄰罅 ≥100px', all(GAL[i+1] - GAL[i] - FIG_W >= 100 for i in range(2)))
 chk('入場由台側行入（from -40／520，界外起步）', 'p.from = side < 0 ? -40 : 520' in play_fn)
 chk('入場分流界＝240（中央）', 'slotCx(i) <= 240 ? -1 : 1' in play_fn)
 chk('行前向中央 240 集中（舊 212 唔再出現）', '(240 - cx0) * 0.22' in play_fn and '(212 - cx0)' not in play_fn)
-chk('行前腳 FLOOR＋10＝272', 'y: Math.round(10 * p)' in play_fn)
+chk('行前腳 FLOOR＋10＝324（v20a207 B2）', 'y: Math.round(10 * p)' in play_fn)
 chk('drawFigure 腳底跟 FLOOR（唔寫死）', 'const fy = FLOOR + (o.y || 0)' in play_fn)
 
 # --- (c) 人物：PixelLab character 幀 ---
@@ -169,12 +169,12 @@ chk('drawPx 在場（腳底 115/128）', 'const drawPx = (starId, dir, cx, floor
 chk('企立用 south 幀（預設 dir south）', '? o.frame : "south"' in play_fn or 'o.frame : "south"' in play_fn)
 chk('行幀跟方向（east／west，唔再 walkA／walkB）', '"east"' in play_fn and '"west"' in play_fn and 'frame: (tick % 2)' not in play_fn)
 chk('入場行幀跟 side（左入 east／右入 west）', 'frame: (p.side < 0) ? "east" : "west"' in play_fn)
-chk('人物 dispH 112（fellow）／116（玩家）', '? 116 : 112' in play_fn)
+chk('人物 dispH 136（fellow）／140（玩家；v20a207 B2）', '? 140 : 136' in play_fn)
 chk('人物高約 89px＝框高四分一（112×102/128）', 88 <= round(112 * 102 / 128) <= 90)
-chk('燕尾服 dispH 112（同 reveal 齊高）', play_fn.count('dispH: 112') >= 3)
+chk('燕尾服 dispH 136（同 reveal 齊高；v20a207 B2）', play_fn.count('dispH: 136') >= 3)
 chk('燕尾服腳底 115/128 唔郁', 'dispH * 115 / 128' in play_fn)
-chk('獎盃 glyph 燕尾服頂 −110（v20a187 C6；舊 −112）', 'FLOOR + fp.y - 110' in play_fn)
-chk('獎盃 glyph 對手胸前 −52', 'FLOOR + fp.y - 52' in play_fn)
+chk('獎盃 glyph 燕尾服頂 −129（v20a187 C6；v20a207 B2；舊 −112）', 'FLOOR + fp.y - 129' in play_fn)
+chk('獎盃 glyph 對手胸前 −61（v20a207 B2）', 'FLOOR + fp.y - 61' in play_fn)
 chk('舊 glyph −96／−39 唔再出現', 'FLOOR + fp.y - 96' not in play_fn and 'FLOOR + fp.y - 39' not in play_fn)
 
 # --- (c2) px 資產：36 檔齊，128×128，腳底 y115 ---

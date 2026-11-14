@@ -5,7 +5,7 @@
 # (1) Q 版資產已撤：AWARDS64_SPRITES const 唔存在、play 內冇 base64 池。
 # (2) v63 寫實 sprite 繼續撤走（AWARDS63_SPRITES const 唔存在）。
 # (3) 走路入場接線：entryPlan（左右兩流）＋east／west 幀引用＋reveal 行前 fwd64。
-# (4) 渲染尺度 v181：FLOOR=262、slotCx 置中 240／間距 120、人物高 112（玩家 116）。
+# (4) 渲染尺度 v181：FLOOR=262、slotCx 置中 240／間距 120、人物高 112（玩家 116）。v20a207 B2 resync：FLOOR=314、人物高 136（玩家 140）。
 # (5) 提名卡統一規則仲喺度（v64 B 部分，同 test_awards64_static.py 互補抽查）。
 # 反證：run against pristine main 91f264a -> 「已撤」斷言全部 FAIL（Q 版池仲在），唔 crash；
 #   接線／尺度新斷言同樣 FAIL；卡片守衛 pristine 應 PASS。
@@ -56,9 +56,9 @@ chk('中性剪影降級保留（唔係 Q 版比例）', '中性剪影' in play_f
 chk('跳過掣保留', 'awd62-skip' in play_fn)
 
 # --- (4) 渲染尺度（v181） ---
-chk('地板線 FLOOR=262（木地板 y200–334）', 'const FLOOR = 262' in play_fn)
+chk('地板線 FLOOR=314（木地板 y274–372；v20a207 B2）', 'const FLOOR = 314' in play_fn)
 chk('slotCx 置中 240／間距 120', '240 + (i - (slots.length - 1) / 2) * 120' in play_fn)
-chk('人物高度 112／玩家 116', '? 116 : 112' in play_fn)
+chk('人物高度 136／玩家 140（v20a207 B2）', '? 140 : 136' in play_fn)
 
 # --- (5) 卡片統一規則抽查 ---
 chk('唱名卡海報 2:3 框', 'aspect-ratio:2/3' in src)

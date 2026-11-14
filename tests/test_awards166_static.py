@@ -1,6 +1,6 @@
 # v20a166 頒獎禮 glamour 並置＋空字幕框隱藏 static tests：
 # B1（海報縮細並置）：
-# (1) glamour overlay 由 stage 全幅改做只冚 canvas：absolute＋top:0／left:0／width:100%／aspect-ratio:480/360（v20a181：canvas 480×360），唔再 inset:0；
+# (1) glamour overlay 由 stage 全幅改做只冚 canvas：absolute＋top:0／left:0／width:100%／aspect-ratio:480/432（v20a181：canvas 480×360；v20a207 B2：480×432），唔再 inset:0；
 #     overlay 本身冇 0.93 暗底（暗層搬去右邊 panel），pointer-events:none（撳掣／elementFromPoint 照通 canvas）。
 # (2) 右邊暗 panel：.awd63-glamour-panel flex:0 0 44%（左邊 56% 透明留位畀燕尾服；
 #     燕尾服 4 slots 時 cx=180、dispH 112 → 右緣 (180+56)/480＝49.2%＜56%，喺 panel 左緣之外，v20a181 幾何），
@@ -44,7 +44,7 @@ def css_rule(selector):
 glam_css = css_rule('.awd63-glamour')
 chk('B1 glamour overlay 在場', bool(glam_css))
 chk('B1 overlay absolute＋top:0／left:0／width:100%', 'position:absolute' in glam_css and 'top:0' in glam_css and 'left:0' in glam_css and 'width:100%' in glam_css)
-chk('B1 overlay aspect-ratio:480/360（對齊 canvas，v181）', 'aspect-ratio:480/360' in glam_css)
+chk('B1 overlay aspect-ratio:480/432（對齊 canvas，v181；v20a207 B2）', 'aspect-ratio:480/432' in glam_css)
 chk('B1 overlay 唔再 inset:0 全幅', 'inset:0' not in glam_css)
 chk('B1 overlay 本身冇 0.93 暗底（暗層搬去 panel）', 'background:rgba(10,6,18,.93)' not in glam_css)
 chk('B1 overlay pointer-events:none', 'pointer-events:none' in glam_css)

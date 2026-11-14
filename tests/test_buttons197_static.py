@@ -1,3 +1,4 @@
+# v20a207 resync：index.html 淨 +34 行（見 qa207/resync207.py，73 錨點對位零 mismatch，純漂移）。
 # -*- coding: utf-8 -*-
 # v20a197 BUTTONS197 靜態測試：全站掣位 review B1–B7＋C1–C7＋刪 D1 印章掣
 # （用戶 2026-11-13 21:11 拍板「一次過修晒」）。
@@ -44,10 +45,10 @@ ok('D1：三個呼叫點齊（renderNotebook／setUnderlyingInert／confirmPlan 
    src.count('syncConfirmPlanStamp197(') >= 4)  # 定義＋三個呼叫點
 
 # --- B3：頒獎禮「跳過」釘死喺舞台固定位 ---
-ok('B3：跳過掣搬入 canvaswrap（480×360 固定比例，唔跟 beat 高度走）',
+ok('B3：跳過掣搬入 canvaswrap（480×432 固定比例，v20a207 B2，唔跟 beat 高度走）',
    'awd62-skip">跳過 ⏩</button>\' + "</div>" + glamHtml' in src)
-ok('B3：跳過掣 CSS 唔郁（absolute top:8 right:8，宜家相對 canvaswrap）',
-   '.awd62-skip{position:absolute;top:8px;right:8px' in src)
+ok('B3：跳過掣 CSS 搬去底邊（v20a207 B3：absolute bottom:8 right:8，唔再壓框角「角度」pill）',
+   '.awd62-skip{position:absolute;bottom:8px;right:8px' in src)
 
 # --- B4：日結板 modal 固定高度＋底錨統一 ---
 # 實駕揭露舊版 :not(.tut-on) 喺 tut-on 態下完全冇生效（兩板都係 tut-on，掣 y 差 70px

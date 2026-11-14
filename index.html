@@ -784,20 +784,20 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .psr-weak62{margin:6px 0 0;font-size:.82rem;color:#6b4e2e;background:#fdf3d8;border:1px dashed #b98c4a;border-radius:4px;padding:6px 8px;line-height:1.5}
 .psr-gate62{margin:6px 0 0;font-size:.84rem;line-height:1.55;color:#4a3a22}
 .psr-gate62.ok{color:#3d6038;font-weight:700}
-.awd62-stage{position:fixed;inset:0;z-index:9990;background:#14101f;display:flex;align-items:center;justify-content:center;padding:12px}
+.awd62-stage{position:fixed;inset:0;z-index:9990;background:#14101f;display:flex;align-items:safe center;justify-content:center;padding:12px;overflow-y:auto} /* v20a207 B2：safe center＋overflow-y:auto——提名 700 幀高貼近 viewport，內容萬一超高都唔會頂裁，改捲唔改佈局 */
 .awd62-frame{position:relative;width:min(96vw,760px);container-type:inline-size}
 .awd62-canvaswrap{position:relative}
 .awd62-m5fx149{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none;display:none;z-index:2}
 .awd62-m5fx149.on{display:block}
 .awd62-m5fx149.b{transform:scaleX(-1);opacity:.85}
 canvas.awd62-canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;background:#241736;border:4px solid #0d0918;box-shadow:0 0 0 4px #8a6d2f,0 18px 50px rgba(0,0,0,.65)}
-.awd62-caption{margin-top:10px;background:#1d1430;border:3px solid #8a6d2f;box-shadow:4px 4px 0 #0d0918;color:#ffe9b0;padding:10px 14px;min-height:54px;font-size:15px;line-height:1.55;text-align:center;white-space:pre-line}
+.awd62-caption{margin-top:10px;background:#1d1430;border:3px solid #8a6d2f;box-shadow:4px 4px 0 #0d0918;color:#ffe9b0;padding:8px 12px;min-height:54px; /* v20a207 B2：padding 10→8，提名 700 留 4px */font-size:15px;line-height:1.55;text-align:center;white-space:pre-line}
 .awd62-caption .gold{color:#f2c14e;font-weight:900}
 .awd62-caption .dim{color:#b9a8d9;font-size:13px}
-.awd62-skip{position:absolute;top:8px;right:8px;background:#3a2a12;color:#ffd968;border:3px solid #8a6d2f;box-shadow:3px 3px 0 #0d0918;padding:6px 14px;font-weight:900;font-size:14px;cursor:pointer;z-index:3;border-radius:0}
+.awd62-skip{position:absolute;bottom:8px;right:8px; /* v20a207 B3：由右上角搬去右下角——舊位壓住「角逐」pill 右端數字；右下係地板前緣＋觀眾席暗帶，唔遮人物（腳底 FLOOR 之上）／唔遮數字條 */background:#3a2a12;color:#ffd968;border:3px solid #8a6d2f;box-shadow:3px 3px 0 #0d0918;padding:6px 14px;font-weight:900;font-size:14px;cursor:pointer;z-index:3;border-radius:0}
 .awd62-skip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #0d0918}
-.awd62-tap{margin-top:8px;text-align:center;color:#8d7db5;font-size:12px}
-.awd63-cards{display:flex;gap:24px;justify-content:center;margin-top:10px;visibility:hidden} /* v20a174 B2：卡列預留高度——由 display:none 改常駐 flex＋visibility 隱藏，names beat 開場 frame 高唔跳（開場全空 0.2s 消除）；.on 先可見；v20a187 C2：gap 8→24——「你」徽（右出 7px）同隔籬卡 🏆 徽（左出 7px）中間留 10px，唔再喺 8px 卡罅撞埋；4 卡總闊 376→424px，760 框仲放到 */
+.awd62-tap{margin-top:6px; /* v20a207 B2：8→6，提名 700 留 2px */text-align:center;color:#8d7db5;font-size:12px}
+.awd63-cards{display:flex;gap:24px;justify-content:center;margin-top:8px;visibility:hidden} /* v20a207 B2：margin-top 10→8，提名 700 留 2px */ /* v20a174 B2：卡列預留高度——由 display:none 改常駐 flex＋visibility 隱藏，names beat 開場 frame 高唔跳（開場全空 0.2s 消除）；.on 先可見；v20a187 C2：gap 8→24——「你」徽（右出 7px）同隔籬卡 🏆 徽（左出 7px）中間留 10px，唔再喺 8px 卡罅撞埋；4 卡總闊 376→424px，760 框仲放到 */
 .awd63-cards.on{visibility:visible}.awd63-cards.glamour-hide{display:none} /* v20a174 C2：glamour 期間卡列改 display:none 收短 frame（v168 visibility 留位嗰 174px 死位取消；下一 beat 除返即恢復） */
 .awd63-card{width:88px;background:linear-gradient(180deg,#fbf2da,#f3e5c3);border:2px solid #d9c491;border-radius:4px;padding:5px;box-shadow:0 3px 8px rgba(0,0,0,.45);opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease;position:relative}
 .awd63-card.show{opacity:1;transform:none}
@@ -812,12 +812,12 @@ canvas.awd62-canvas{display:block;width:100%;height:auto;image-rendering:pixelat
 .awd63-csscard .awd63-cssstar{font-size:12px;font-weight:800;color:#ffe9b0;line-height:1.3}
 .awd63-csscard .awd63-cssmed{display:flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:#d9c491;line-height:1.2}
 .awd63-csscard .awd63-cssmed .ic112{width:14px;height:14px}
-.awd63-glamour{position:absolute;top:0;left:0;width:100%;aspect-ratio:480/360;display:none;flex-direction:row;justify-content:flex-end;align-items:flex-end;container-type:size;z-index:2;pointer-events:none} /* v20a166 B1：glamour 海報縮細並置——overlay 由全幅改做只冚 canvas，左邊透明留位畀燕尾服，右邊 44% 暗 panel 放海報＋cap；0.93 暗層留喺 panel；pointer-events:none，撳掣／elementFromPoint 照通 canvas；v20a174 B1：canvas 424×240→424×360，aspect 跟住改；v20a181：canvas 480×360（4:3），aspect 跟住改；v20a190 新 C1：align-items stretch→flex-end——panel 高改做內容高、貼住 overlay 底（唔再全高留 46–48% 空暗底），海報＋cap 位置唔郁；container-type:size 令 img 嘅 cqh 以 overlay 高計 */
+.awd63-glamour{position:absolute;top:0;left:0;width:100%;aspect-ratio:480/432; /* v20a207 B2：跟 canvas 480×432 */display:none;flex-direction:row;justify-content:flex-end;align-items:flex-end;container-type:size;z-index:2;pointer-events:none} /* v20a166 B1：glamour 海報縮細並置——overlay 由全幅改做只冚 canvas，左邊透明留位畀燕尾服，右邊 44% 暗 panel 放海報＋cap；0.93 暗層留喺 panel；pointer-events:none，撳掣／elementFromPoint 照通 canvas；v20a174 B1：canvas 424×240→424×360，aspect 跟住改；v20a181：canvas 480×360（4:3），aspect 跟住改；v20a190 新 C1：align-items stretch→flex-end——panel 高改做內容高、貼住 overlay 底（唔再全高留 46–48% 空暗底），海報＋cap 位置唔郁；container-type:size 令 img 嘅 cqh 以 overlay 高計 */
 .awd63-glamour.on{display:flex}
 .awd63-glamour-panel{flex:0 0 44%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px;padding:10px 12px;background:rgba(10,6,18,.93);box-sizing:border-box}.awd63-glamour-panel>img{max-width:88%;max-height:calc(40cqh - 8px);object-fit:contain;border:4px solid #f2c14e;box-shadow:0 0 34px rgba(242,193,78,.45);background:#2b2118} /* v20a174 A1：裱框規則由 panel 內全部 img 收窄到直屬海報 img（>），唔再套落 .cap 內 22px 獎盃；v20a187 C1：海報改做下半置中（flex-end＋max-height 60%→40%）——海報頂 ≥ 牌底 149.4 邏輯，唔再壓住白牌；v20a190 新 C1：panel 縮短貼底（見上行），40% 唔可以直接留——% 會對住而家內容高嘅 panel 解（不定→失效，海報脹到 284.8 撞牌，探針證實）；轉 calc(40cqh - 8px)：40cqh＝舊 40%×overlay 高，−8px＝扣返 panel 上下 padding 各 10px 嘅 40%（0.4×20，全域 border-box 下舊 cap＝40%×(panel 高−20)），兩 viewport 逐 px 等價（932：220／700：193.6，探針＋實駕核實），高身海報（0.5 比例）一樣箍得住 */
-.awd63-glamour .cap{color:#f2c14e;font-weight:900;font-size:19px;text-align:center;line-height:1.55;text-shadow:0 2px 0 #000}.awd63-glamour .cap img.ic112,.awd62-caption img.ic112{background:#f2c14e;border-radius:4px;padding:2px;width:22px;height:22px;box-sizing:border-box;vertical-align:-.25em} /* v20a174 A1：深啡獎盃線稿喺深底隱形——加金底 chip（唔改圖標資產／唔改成套風格），glamour＋reveal 兩處 1x 睇得清 */
+.awd63-glamour .cap{color:#f2c14e;font-weight:900;font-size:19px;text-align:center;line-height:1.55;text-shadow:0 2px 0 #000}.awd63-glamour .cap img.ic112,.awd62-caption img.ic112,.psr-fellows63 img.ic112{background:#f2c14e; /* v20a207 C2：同一金底 chip 套落結果卡同屆提名行（頭＋得主標記），1x 認到係獎盃 */border-radius:4px;padding:2px;width:22px;height:22px;box-sizing:border-box;vertical-align:-.25em} /* v20a174 A1：深啡獎盃線稿喺深底隱形——加金底 chip（唔改圖標資產／唔改成套風格），glamour＋reveal 兩處 1x 睇得清 */
 /* v20a181：橫向舞台文字層（DOM 層，canvas 只畫景＋人；字用 DOM，免 headless 欠 CJK 字體出豆腐）——
-   位置全部用 % 對齊 480×360 canvas：橫額 top 1.1%／高 9.5%；數字條 top 12.2%／高 7.8%；白牌 top 21%／高 20.5%。
+   位置全部用 % 對齊 480×432 canvas：橫額 top 1.1%／高 9.5%；數字條 top 12.2%／高 7.8%；白牌 top 21%／高 20.5%。（v20a207 B2：360→432，% 唔郁）
    白牌底 41.5%＝149.4 邏輯（獎盃 glyph 頂 152 邏輯，留 2.6 邏輯罅；v20a187 C6 由 150 改 152）；代表作／會場名兩行搬入白牌做細字（黃字 fix：舊 43.5% 獨立放＝人頭高度，頭頂 173 邏輯）。
    字體用 cqw 跟 frame 闊等比縮放（px 做後備）。全部 pointer-events:none，撳畫面快進／跳過掣照通。 */
 .awd181-banner{position:absolute;top:1.1%;left:8%;width:84%;height:9.5%;background:linear-gradient(180deg,#a06a35,#7c4f22);border:3px solid #f2c14e;box-shadow:0 0 0 2px #5e3a15;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:19px;font-size:5.2cqw;letter-spacing:.12em;text-shadow:0 2px 0 rgba(0,0,0,.45);z-index:3;pointer-events:none;box-sizing:border-box;white-space:nowrap;overflow:hidden}
@@ -4127,7 +4127,19 @@ body.day-res-open .day-row{
 .psr-body{ margin:0; font-size:.8rem; color:#4a3b28; line-height:1.4; }
 .psr-dual{ margin:6px 0 0; }
 .psr-foot{ margin:8px 0 0; font-size:.68rem; }
-.awd-sheet .psr-eyebrow{ letter-spacing:.14em; }
+.awd-sheet .psr-eyebrow{ letter-spacing:.14em; margin-bottom:2px; } /* v20a207 C3-nom：提名版結果卡再慳 6px（eyebrow mb 8→2；見下文 cap 註解） */
+/* v20a207 C3：結果卡收緊——700 高要慳 ~73px 先連 metric 格＋聲望行一齊見（probe：scroll 579 vs client 439，
+   88dvh 放寬補 ~74px，呢度再慳 ~73px）：卡列 gap 8→5、卡 padding 10→6、標題 .92→.88rem／行高 1.3、
+   kicker／fellows／sub／dual 行距各收 1–4px。只限 .awd-sheet，其他 modal 唔郁；932 內容變矮，modal 跟住收，唔爛。 */
+.awd-sheet .psr-cards{gap:5px;margin:2px 0 4px} /* v20a207 C3-nom：提名版再慳 8px（6/8→2/4） */
+.awd-sheet .psr-card{padding:5px 10px} /* v20a207 C3-nom：提名版再慳 8px（4 張卡各 2px） */
+.awd-sheet .psr-title{font-size:.88rem;line-height:1.3}
+.awd-sheet .psr-body{line-height:1.35}.awd-sheet .psr-weak62{margin:2px 0 0;padding:4px 8px;line-height:1.35} /* v20a207 C3-nom：診斷盒再慳 ~12px（只限提名版有 weakHint 嗰格） */.awd-sheet .psr-comfort147{margin:2px 0 0;font-size:.85rem;line-height:1.35} /* v20a207 C3-nom：安慰行收 margin（.modal p 預設 mb 8px）再慳 ~8px */
+.awd-sheet .psr-kicker{margin-bottom:1px}
+.awd-sheet .psr-fellows63{margin-top:0;font-size:12px;line-height:1.3} /* v20a207 C3-nom：提名行再慳 ~4px */
+.awd-sheet .psr-sub{margin:0 0 2px} /* v20a207 C3-nom：再慳 4px */
+.awd-sheet .psr-h{margin:0} /* v20a207 C3-nom：再慳 2px */
+.awd-sheet .psr-dual{margin:2px 0 0} /* v20a207 C3-nom：再慳 4px */
 /* Soft tip #101：朝早報紙（公開版面）同剪報。唔出圖。 */
 .paper-sheet{
   text-align:left; background:#f4efe4; color:#1a1410;
@@ -5254,6 +5266,11 @@ body.day-res-open .day-row{
    (3) 要求值改格並排：每格「現值／要求」＋✓／✕；唔合格＝紅字＋✕＋淡紅底三重。
    (4) 正文字唔細過 13px（.82rem）：摘要行由 .78rem 升上嚟。（v20a117：原句「掣＋詳細條件行」隨詳細區刪除而更新。） */
 #mask.casting-sheet-on:not(.tut-on) .modal{ max-height:min(88dvh,760px) !important; }
+/* v20a207 C3：頒獎結果卡矮屏放寬到 94dvh（只限掛咗 awd-sheet-on 嘅結果卡，請柬唔郁）——
+   78dvh 喺 700 高得 546px，旁聽版 scroll 579 vs client 439；94dvh（modal 658／inner ~551）＋收緊 ~73px
+   先令旁聽版齊見；提名版 scroll 601 vs client 509，要再慳 ~50px 內容（.awd-sheet C3-nom）＋btns／modal
+   padding 各收 ~12px／8px 先齊見。跟 casting-sheet／day-res 前例，!important 先壓得過 L3271 嘅 78dvh；932 高嗰陣 min(94dvh,720px)＝720，唔郁。 */
+#mask.awd-sheet-on:not(.tut-on) .modal{ max-height:min(94dvh,94svh,720px) !important; } /* v20a207 C3-nom：btns／modal padding 同行收窄（只限結果卡） */ #mask.awd-sheet-on #modal-btns{margin-top:4px!important;padding:6px 0 calc(8px + env(safe-area-inset-bottom, 0px))!important} #mask.awd-sheet-on .modal{padding-top:8px!important;padding-bottom:8px!important}
 /* 卡身內捲區底墊：原 calc(12px + safe-area) 喺呢個 sheet 係重複嘅——掣列本身已有 safe-area 底墊；
    收返 12px，等摺疊狀態唔使為咗 28px 空白而碌。展開嗰陣照捲，唔影響。
    注意：原規則（約 3657 行）用咗 !important，呢度都要 !important 先壓得過。 */
@@ -5783,7 +5800,7 @@ body.day-res-open .day-row{
               <div class="mn68" style="left:88%;top:calc(15% - 44px)">海港廣播</div>
               <div class="mn68" style="left:74%;top:calc(11% - 44px)">紅棉影業</div>
               <div class="mn68" style="left:80%;top:calc(18% + 38px)">維港電影</div>
-              <div class="mn68" style="left:60%;top:calc(57% + 30px)">中環廣告</div>
+              <div class="mn68" style="left:51%;top:calc(57% + 30px)">中環廣告</div> <!-- v20a207 C5：由 60% 移去 51%——舊位正中藍塔（塔身約 57–64% 闊），「廣」字俾塔遮半；新位落喺塔左綠坡，成個名見到；唔郁其他 14 個標籤，唔加 CSS 規則 -->
               <div class="mn68" style="left:85%;top:calc(60% + 28px)">金鐘創意</div>
               <div class="mn68" style="left:68%;top:calc(77% + 34px)">灣仔唱片</div>
               <div class="mn68" style="left:86%;top:calc(82% + 30px)">天星音樂</div>
@@ -39675,6 +39692,7 @@ function modal(html, buttons, opts){
   });
   const maskEl=document.getElementById("mask");
   maskEl.classList.toggle("casting-sheet-on", !!opts.castingSheet);
+  maskEl.classList.toggle("awd-sheet-on", !!opts.awardSheet); /* v20a207 C3：結果卡先掛（presentAwardResult 傳 awardSheet:true） */
   /* v20a47：opts.paperSheet → #mask.paper-on（報紙實物化情境 class，純呈現；closeModal 清除） */
   maskEl.classList.toggle("paper-on", !!opts.paperSheet);
   maskEl.classList.add("on");
@@ -39695,6 +39713,7 @@ function closeModal(){
   try{ document.getElementById("modal-btns").classList.remove("soft-leave-only"); }catch(_e){}
   try{ document.getElementById("mask").classList.remove("casting-sheet-on"); }catch(_e){}
   try{ document.getElementById("mask").classList.remove("paper-on"); }catch(_e){}
+  try{ document.getElementById("mask").classList.remove("awd-sheet-on"); }catch(_e){} /* v20a207 C3 */
   /* v19z3：清 story-play-on + 清空 #modal-inner，避免劇情結算 HTML／mask 殘留 */
   try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
   try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
@@ -46053,9 +46072,9 @@ function venue99ForCeremony(id){
   return VENUE99_BY_CEREMONY[String(id || "")] || "";
 }
 const VENUE99_INVITE_DEK = {
-  award_harbour_ad: "廣告圈年賞將至，今屆喺金禧大酒店大禮堂舉行。你收到一張旁聽／入圍席位信——去定推辭，隨你。",
+  award_harbour_ad: "廣告圈年賞將至，今屆喺金禧大酒店大禮堂舉行。你收到一張席位信——去定推辭，隨你。" /* v20a207 C4：席位已定係旁聽席，斜槓寫法令人以為未定；跟音樂場「一張席位信」寫法 */,
   award_golddisc_music: "唱片年終有金碟夜，喺金禧大酒店大禮堂舉行。你收到一張席位信——碟市邊個上鏡，席上見。",
-  award_harbour_film: "影圈年獎將至，今屆喺金禧大酒店大禮堂舉行。你收到一張旁聽／入圍席位信——票房餘溫同台下掌聲，你揀。"
+  award_harbour_film: "影圈年獎將至，今屆喺金禧大酒店大禮堂舉行。你收到一張席位信——票房餘溫同台下掌聲，你揀。" /* v20a207 C4：同上 */
 };
 const VENUE99_PRESS_DEK = {
   press_award_ad_01: "廣告年賞散場。金禧大酒店大禮堂門外，有新人名第一次印喺品牌側記。",
@@ -46964,7 +46983,7 @@ function presentAwardResult(pack, thenFn){
     try{ enqueueNewspaperFromAward(pack); }catch(_np){}
     modal(renderAwardResultHtml(pack), [
       { label: "收下這晚", role: "p", on: cont }
-    ], { onDismiss: cont, keepSheetContent:true });
+    ], { onDismiss: cont, keepSheetContent:true, awardSheet:true }); /* v20a207 C3：結果卡掛 awd-sheet-on 放寬 88dvh */
     try{ toast((pack.displayName||"頒獎夜")+"・結果", { sub: pack.tierLabel||"", stamp:true }); }catch(_e){}
     return true;
   }catch(_e){ cont(); return false; }
@@ -47478,54 +47497,61 @@ function awards62SeasonHints(st, w){
   return null;
 }
 /* ---- B：8-bit 像素頒獎動畫（canvas 步進器；素材＝程式舞台＋PixelLab 角色幀） ---- */
-/* v20a181：橫向舞台程式繪製（取代 M1 實景底圖＋v177 後備格仔舞台）——480×360 邏輯座標：
+/* v20a181：橫向舞台程式繪製（取代 M1 實景底圖＋v177 後備格仔舞台）——480×432 邏輯座標（v20a207 B2：360→432）：
    淺色幕布 y36–228（直紋摺＋兩側深紅側幕）；簡化深色燈架 x12–28／452–468；平木地板 y228–310
    （深 82px＝22.8% 高，橫木紋＋深木前緣 y310–316；v20a187 B1 收窄，舊 y200–334／134px 係讀錯參考圖）；暗觀眾席 y316–360（少量光點）。
    橫額／數字條／白牌／牌下黃字係 DOM 層（.awd181-*），唔喺 canvas 畫字；人物／光池／彩紙／獎盃
    由 draw() 之後畫。off＝pan beat 橫移量（±6，邊位各預留 8px 唔露底）。 */
 function awards181DrawBase(ctx, W, H, off){
   off = off || 0;
+  /* v20a207 B2：舞台加高 360→432（10:9，×1.2）——縱座標全部按 H/360 比例換算（舊數值見註），
+     地板 y274–372（深 98px＝22.7%，同舊 22.8% 一致）、觀眾席 y379–432；橫座標唔郁。 */
+  const rb = Math.round(H * 36 / 360);    /* 紅帶高（舊 36） */
+  const curtB = Math.round(H * 228 / 360); /* 幕布底＝地板頂（舊 228） */
+  const floorB = Math.round(H * 310 / 360);/* 地板底（舊 310） */
+  const edgeB = Math.round(H * 316 / 360); /* 前緣底（舊 316） */
+  const sy = (y)=> Math.round(y * H / 360); /* 縱向換算（燈架／光點用） */
   ctx.save();
   ctx.translate(off, 0);
-  /* 幕布：淺米底＋直紋摺（左右深淺交替 16px 帶），頂部 y0–36 留深紅帶做橫額底 */
-  ctx.fillStyle = "#6e1a20"; ctx.fillRect(-8, 0, W + 16, 36);
-  ctx.fillStyle = "#f2e8d5"; ctx.fillRect(-8, 36, W + 16, 192); /* v20a187 B1：幕布拉長到 y228（地板頂上移，唔留 28px 生口） */
+  /* 幕布：淺米底＋直紋摺（左右深淺交替 16px 帶），頂部 y0–rb 留深紅帶做橫額底 */
+  ctx.fillStyle = "#6e1a20"; ctx.fillRect(-8, 0, W + 16, rb);
+  ctx.fillStyle = "#f2e8d5"; ctx.fillRect(-8, rb, W + 16, curtB - rb); /* v20a187 B1：幕布拉長到地板頂，唔留生口 */
   for(let x = -8; x < W + 8; x += 32){
-    ctx.fillStyle = "rgba(120,90,40,0.10)"; ctx.fillRect(x, 36, 16, 192);
-    ctx.fillStyle = "rgba(255,255,255,0.35)"; ctx.fillRect(x + 16, 36, 3, 192);
+    ctx.fillStyle = "rgba(120,90,40,0.10)"; ctx.fillRect(x, rb, 16, curtB - rb);
+    ctx.fillStyle = "rgba(255,255,255,0.35)"; ctx.fillRect(x + 16, rb, 3, curtB - rb);
   }
   /* 側幕：深紅＋直摺線 */
-  ctx.fillStyle = "#7a1f24"; ctx.fillRect(-8, 0, 38, 228); ctx.fillRect(W - 30, 0, 38, 228);
+  ctx.fillStyle = "#7a1f24"; ctx.fillRect(-8, 0, 38, curtB); ctx.fillRect(W - 30, 0, 38, curtB);
   ctx.fillStyle = "rgba(0,0,0,0.25)";
-  for(let x = -4; x < 30; x += 10) ctx.fillRect(x, 0, 3, 228);
-  for(let x = W - 26; x < W + 8; x += 10) ctx.fillRect(x, 0, 3, 228);
-  ctx.fillStyle = "#8a6d2f"; ctx.fillRect(30, 0, 3, 228); ctx.fillRect(W - 33, 0, 3, 228);
+  for(let x = -4; x < 30; x += 10) ctx.fillRect(x, 0, 3, curtB);
+  for(let x = W - 26; x < W + 8; x += 10) ctx.fillRect(x, 0, 3, curtB);
+  ctx.fillStyle = "#8a6d2f"; ctx.fillRect(30, 0, 3, curtB); ctx.fillRect(W - 33, 0, 3, curtB);
   /* 燈架：簡化深色鐵架（兩條直杆＋橫檔＋頂部一個斜撐），左右各一 */
   [12, W - 28].forEach(function(tx){
-    ctx.fillStyle = "#23232c"; ctx.fillRect(tx, 40, 4, 188); ctx.fillRect(tx + 12, 40, 4, 188); /* v20a187 B1：燈架跟幕布落到 y228 */
+    ctx.fillStyle = "#23232c"; ctx.fillRect(tx, sy(40), 4, sy(188)); ctx.fillRect(tx + 12, sy(40), 4, sy(188)); /* v20a187 B1：燈架跟幕布落到地板頂 */
     ctx.fillStyle = "#3a3a44";
-    for(let y = 48; y < 228; y += 18) ctx.fillRect(tx, y, 16, 3);
-    ctx.fillRect(tx, 40, 16, 4); ctx.fillRect(tx, 224, 16, 4);
-    ctx.beginPath(); ctx.moveTo(tx, 58); ctx.lineTo(tx + 16, 76); ctx.moveTo(tx + 16, 58); ctx.lineTo(tx, 76); ctx.strokeStyle = "#3a3a44"; ctx.lineWidth = 2; ctx.stroke();
+    for(let y = sy(48); y < curtB; y += sy(18)) ctx.fillRect(tx, y, 16, 3);
+    ctx.fillRect(tx, sy(40), 16, 4); ctx.fillRect(tx, sy(224), 16, 4);
+    ctx.beginPath(); ctx.moveTo(tx, sy(58)); ctx.lineTo(tx + 16, sy(76)); ctx.moveTo(tx + 16, sy(58)); ctx.lineTo(tx, sy(76)); ctx.strokeStyle = "#3a3a44"; ctx.lineWidth = 2; ctx.stroke();
   });
-  /* 木地板：淺木底＋橫紋＋豎縫＋頂部高光；前緣深木邊（v20a187 B1：地板 y228–310，深 82px＝22.8% 高；FLOOR 262 唔郁，腳底以下空地板 48px＝0.54 倍人物高；舊 y200–334／134px 係對照參考圖讀錯咗，見 review §4 B1） */
-  ctx.fillStyle = "#d9a75f"; ctx.fillRect(-8, 228, W + 16, 82);
-  ctx.fillStyle = "rgba(255,255,255,0.10)"; ctx.fillRect(-8, 228, W + 16, 12);
+  /* 木地板：淺木底＋橫紋＋豎縫＋頂部高光；前緣深木邊（v20a187 B1：地板 y228–310，深 82px＝22.8% 高；v20a207 B2：按 H 換算 y274–372，深 98px＝22.7%；FLOOR 314，腳底以下空地板 58px＝0.54 倍人物高） */
+  ctx.fillStyle = "#d9a75f"; ctx.fillRect(-8, curtB, W + 16, floorB - curtB);
+  ctx.fillStyle = "rgba(255,255,255,0.10)"; ctx.fillRect(-8, curtB, W + 16, sy(12));
   ctx.fillStyle = "rgba(90,50,10,0.28)";
-  for(let y = 240; y < 310; y += 12) ctx.fillRect(-8, y, W + 16, 2);
+  for(let y = sy(240); y < floorB; y += sy(12)) ctx.fillRect(-8, y, W + 16, 2);
   ctx.fillStyle = "rgba(90,50,10,0.18)";
   let seamRow = 0;
-  for(let y = 234; y < 310; y += 12, seamRow++){
+  for(let y = sy(234); y < floorB; y += sy(12), seamRow++){
     const sx = (seamRow % 2 === 0) ? 20 : 80;
-    for(let x = sx; x < W + 8; x += 120) ctx.fillRect(x, y, 2, 12);
+    for(let x = sx; x < W + 8; x += 120) ctx.fillRect(x, y, 2, sy(12));
   }
-  ctx.fillStyle = "#5a3a1e"; ctx.fillRect(-8, 310, W + 16, 6);
-  /* 暗觀眾席：暗色帶＋少量光點／彩紙點（唔畫人物）（v20a187 B1：前緣 310–316 之下 y316–360，深 44px；光點散開覆蓋成帶） */
-  ctx.fillStyle = "#120c20"; ctx.fillRect(-8, 316, W + 16, 44);
+  ctx.fillStyle = "#5a3a1e"; ctx.fillRect(-8, floorB, W + 16, edgeB - floorB);
+  /* 暗觀眾席：暗色帶＋少量光點／彩紙點（唔畫人物）（v20a187 B1：前緣之下 y316–360，深 44px；v20a207 B2：y379–432，深 53px；光點散開覆蓋成帶） */
+  ctx.fillStyle = "#120c20"; ctx.fillRect(-8, edgeB, W + 16, H - edgeB);
   ctx.fillStyle = "rgba(255,233,143,0.85)";
-  [[40, 326], [130, 336], [215, 324], [300, 340], [380, 328], [445, 334]].forEach(function(p){ ctx.fillRect(p[0], p[1], 3, 3); });
+  [[40, 326], [130, 336], [215, 324], [300, 340], [380, 328], [445, 334]].forEach(function(p){ ctx.fillRect(p[0], sy(p[1]), 3, 3); });
   ctx.fillStyle = "rgba(236,231,219,0.5)";
-  [[80, 344], [260, 330], [340, 346], [410, 332]].forEach(function(p){ ctx.fillRect(p[0], p[1], 2, 2); });
+  [[80, 344], [260, 330], [340, 346], [410, 332]].forEach(function(p){ ctx.fillRect(p[0], sy(p[1]), 2, 2); });
   ctx.restore();
 }
 function awards62FallbackStage(ctx, W, H){
@@ -47665,7 +47691,7 @@ function awards62PlayCeremony(pack, doneFn){
     const winFellow = (focus && (focus.winner63 || (focus.fellows63 && focus.fellows63[0]))) || null; /* v20a147：gallery 類別 winner63 係 null，得主照 fellows[0] 規則取 fellows63[0]，等揭曉嗰陣得主行前；nominated／won 行為不變 */
     const repTitle = (pack && pack.repWork62) || (focus && focus.repWorkTitle) || "";
     const posterOf = (gid)=>{ try{ return (typeof poster59Path === "function" && gid) ? poster59Path(gid) : ""; }catch(_e){ return ""; } }; const esc = (typeof esc59 === "function") ? esc59 : function(s){ return String(s == null ? "" : s); }; /* v20a181：esc local alias（跟 46182 行同一寫法），本 scope 冇 esc，唔加會 ReferenceError 即死 */
-    /* v20a181：橫向舞台文字層（DOM 層 .awd181-*，對齊 480×360 canvas；字唔入 canvas）——
+    /* v20a181：橫向舞台文字層（DOM 層 .awd181-*，對齊 480×432 canvas；字唔入 canvas）——v20a207 B2：360→432，% 唔郁
        橫額＝典禮名（pack.displayName）；左數字條＝聲望（S.fame 即時值）；右數字條＝角逐（今屆
        pack.categories 項數，1–2 項）；白牌＝焦點獎項名（focus.label）＋牌內細字代表作／會場名（黃字 fix：搬入白牌，唔再放 43.5%）。
        全部用 esc()，唔抄參考圖任何字。esc 係本函數 local alias（跟 46182 行同一寫法，附喺 posterOf 同行，零行數漂移；本 scope 冇 esc，唔加會 ReferenceError 即死，實駕捉到）。 */
@@ -47723,12 +47749,12 @@ function awards62PlayCeremony(pack, doneFn){
     }
     /* v20a181：M4 walkup GIF 退役——行上台改由 canvas 畫（walkup beat 內阿偉用 px east 幀由台側行到中央，
        再換燕尾服捧杯；文案改由 draw() walkup 分支 setCaption，beats.walkup.caption 繼續係 ""，logic test 唔郁）。 */
-    /* v20a149 B1＋v20a181 合併：canvas backing 720×540（邏輯 480×360 ×1.5，draw() 內 setTransform 1.5）；
+    /* v20a149 B1＋v20a181 合併：canvas backing 720×648（邏輯 480×432 ×1.5，draw() 內 setTransform 1.5）；v20a207 B2：360→432；
        揭曉彩紙 M5 GIF 疊加（reveal／comfort／out 期間顯示，見 syncConfetti149）；文字層 .awd181-* 疊喺 canvas 上面。 */
     stage.innerHTML = '<div class="awd62-frame">'
-      + '<div class="awd62-canvaswrap"><canvas class="awd62-canvas" width="720" height="540"></canvas>'
+      + '<div class="awd62-canvaswrap"><canvas class="awd62-canvas" width="720" height="648"></canvas>'
       + '<img class="awd62-m5fx149" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>'
-      + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>' + awd181Html + '<button type="button" class="awd62-skip">跳過 ⏩</button>' + "</div>" + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服；v20a181：邏輯座標 480×360（4:3），backing 720×540；v20a197 B3：跳過掣搬入 canvaswrap（480×360 固定比例，唔跟 beat 高度走） */
+      + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>' + awd181Html + '<button type="button" class="awd62-skip">跳過 ⏩</button>' + "</div>" + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服；v20a181：邏輯座標 480×432（10:9，v20a207 B2），backing 720×648；v20a197 B3：跳過掣搬入 canvaswrap（480×360 固定比例，唔跟 beat 高度走） */
       + cardsHtml
       + '<div class="awd62-caption"></div>'
       + '<div class="awd62-tap">撳畫面可以快進</div>'
@@ -47775,8 +47801,8 @@ function awards62PlayCeremony(pack, doneFn){
       tim.onerror = ()=>{ tuxRec.ok = false; };
       tim.src = AWARDS160_TUXEDO_AWEI;
     }catch(_e){}
-    const FLOOR = 262; /* v20a181：橫向重建——木地板 y200–334（深 134px＝37.2% canvas 高）；v20a187 B1 更正：地板改 y228–310（深 82px＝22.8% 高），「佔畫面下半約四成」係讀錯參考圖（實測下半 29%，見 review §4 B1）；人物腳底跟同一常數，行前腳 272；舊 v177 FLOOR 250／圓台講台一併作廢 */
-    const slotCx = (i)=>{ if(slots.length === 3) return [75, 240, 405][i]; let cx = 240 + (i - (slots.length - 1) / 2) * 120; return cx; }; /* v20a181：橫向企位——won／nominated 4 slots 60／180／300／420（間距 120，人闊約 42px，罅 78px，中間大段空地板；兩邊各留 39px）；gallery 3 slots 75／240／405（罅 165／165，左／中／右分開企） */
+    const FLOOR = 314; /* v20a181：橫向重建——木地板 y200–334（深 134px＝37.2% canvas 高）；v20a187 B1 更正：地板改 y228–310（深 82px＝22.8% 高），「佔畫面下半約四成」係讀錯參考圖（實測下半 29%，見 review §4 B1）；人物腳底跟同一常數，行前腳 272；舊 v177 FLOOR 250／圓台講台一併作廢；v20a207 B2：canvas 加高 360→432，地板按比例 y274–372（深 98px＝22.7%），FLOOR 262→314（地板深 41% 處，腳底以下空地板 58px）；行前腳 FLOOR＋10＝324 */
+    const slotCx = (i)=>{ if(slots.length === 3) return [75, 240, 405][i]; let cx = 240 + (i - (slots.length - 1) / 2) * 120; return cx; }; /* v20a181：橫向企位——won／nominated 4 slots 60／180／300／420（間距 120，人闊約 48px，罅 72px，中間大段空地板；兩邊各留 36px）；gallery 3 slots 75／240／405（罅 165／165，左／中／右分開企）；v20a207 B2：dispH 112→136，人闊 42→48px */
     /* v20a64：入場走路計劃——左右兩流、深位先行（唔使穿過已企定嘅人）；速度 0.16px/ms，行幀跟方向揀 east／west（v20a181：舊 walkA／walkB 作廢） */
     const entryPlan = slots.map((s, i)=> ({ side: slotCx(i) <= 240 ? -1 : 1, cx: slotCx(i), from: 0, delay: 0, dur: 0 }));
     [-1, 1].forEach(side=>{
@@ -47790,7 +47816,7 @@ function awards62PlayCeremony(pack, doneFn){
         });
     });
     /* v20a181：PixelLab 幀繪製——128px 原圖人物腳底 y115（v180 錨），dispH 係成張圖顯示高度，
-       腳底對齊 floorY，人物高 ≈ dispH×102/128（dispH 112 → 人物約 89px＝框高四分一）。
+       腳底對齊 floorY，人物高 ≈ dispH×102/128（dispH 136 → 人物約 108px；v20a207 B2：112→136，人物大返）。
        載唔到／冇檔（例如池外主演 starId）就畫中性剪影（PixelLab 比例頭＋身），唔跌返 Q 版。 */
     const drawPx = (starId, dir, cx, floorY, dispH)=>{
       const rec = pxImgs[starId + "|" + dir];
@@ -47805,7 +47831,7 @@ function awards62PlayCeremony(pack, doneFn){
       return false;
     };
     /* v20a160 M6：燕尾服阿偉——128px 原圖人物佔框 x42–87／y13–115（45×102），腳底喺 y115。
-       dispH 係成張圖顯示高度；腳底對齊 floorY，人物高 ≈ dispH×102/128（v20a181：dispH 112 → 人物約 89px，同 px 企立幀齊高）。 */
+       dispH 係成張圖顯示高度；腳底對齊 floorY，人物高 ≈ dispH×102/128（v20a181：dispH 112 → 人物約 89px，同 px 企立幀齊高；v20a207 B2：112→136 → 人物約 108px）。 */
     const drawTuxedo = (cx, floorY, dispH)=>{
       if(!(tuxRec.ok && tuxRec.img)) return false;
       const top = floorY - dispH * 115 / 128;
@@ -47815,7 +47841,7 @@ function awards62PlayCeremony(pack, doneFn){
     const drawFigure = (s, i, o)=>{
       o = o || {};
       const cx = (o.x != null) ? o.x : slotCx(i);
-      const dispH = o.dispH || (s.kind === "player" ? 116 : 112); /* v20a181：px 幀 dispH 112（人物約 89px＝框高四分一）、玩家 116；燕尾服同樣 112，齊高 */
+      const dispH = o.dispH || (s.kind === "player" ? 140 : 136); /* v20a181：px 幀 dispH 112（人物約 89px＝框高四分一）、玩家 116；燕尾服同樣 112，齊高；v20a207 B2：136／140（人物約 108px），人物大返 */
       const bob = o.bob || 0;
       const fy = FLOOR + (o.y || 0);
       const starId = (s.kind === "player") ? "awei" : (s.starId || "");
@@ -47830,9 +47856,17 @@ function awards62PlayCeremony(pack, doneFn){
     };
     const lightPool = (cx, w, fy)=>{
       const F = (fy != null) ? fy : FLOOR;
-      ctx.fillStyle = "rgba(255,217,104,0.16)"; ctx.fillRect(cx - w / 2, F - 99, w, 99); /* v20a174 B1：光池高 66→99（×1.5，蓋過 72px 人仔） */
+      ctx.fillStyle = "rgba(255,217,104,0.16)"; ctx.fillRect(cx - w / 2, F - 120, w, 120); /* v20a174 B1：光池高 66→99（×1.5，蓋過 72px 人仔）；v20a207 B2：99→120（蓋過 108px 人仔） */
       ctx.fillStyle = "rgba(255,217,104,0.30)"; ctx.fillRect(cx - w / 2 - 6, F - 6, w + 12, 6);
     };
+    const spotlight207 = (cx, w, fy)=>{ /* v20a207 C1：揭曉得主專屬 spotlight——舊版得主淨係 alpha 1＋淡光池（0.16），
+      實測得主／落選者亮度只差 3%，肉眼分唔到。呢度加光柱（由紅帶底灑落腳底）＋加光光池＋地面光暈三層，
+      得主企喺光入面，落選者再暗（見 reveal 分支 alpha），一眼分到邊個得獎。只喺 reveal 用，suspense 照舊 lightPool。 */
+      const F = (fy != null) ? fy : FLOOR;
+      ctx.fillStyle = "rgba(255,220,120,0.30)"; ctx.fillRect(cx - w / 2 - 14, 40, w + 28, F - 40);
+      ctx.fillStyle = "rgba(255,217,104,0.22)"; ctx.fillRect(cx - w / 2, F - 120, w, 120);
+      ctx.fillStyle = "rgba(255,217,104,0.45)"; ctx.fillRect(cx - w / 2 - 8, F - 6, w + 16, 6);
+    }; const dimVeil207 = (cx)=>{ const g = ctx.createLinearGradient(cx - 30, 0, cx + 30, 0); g.addColorStop(0, "rgba(10,6,20,0)"); g.addColorStop(0.25, "rgba(10,6,20,0.45)"); g.addColorStop(0.75, "rgba(10,6,20,0.45)"); g.addColorStop(1, "rgba(10,6,20,0)"); ctx.fillStyle = g; ctx.fillRect(cx - 30, FLOOR - 118, 60, 124); }; /* v20a207 C1：落選者暗罩——舞台底係光色（白簾＋淺木地板），alpha 減淡只會令光底透出嚟，落選者望落仲光過得主（實測得主 179.6 vs 落選者 179.0／更暗 -18）；實色企＋暗罩（中間 0.45、邊緣漸隱）先真係暗，對照得主 spotlight。只喺 reveal 用。 */
     const drawTrophyGlyph = (cx, top)=>{ /* v20a174 B1：獎盃 glyph 放大 1.5×（舊 21×12→新 31×18），跟人仔比例一致 */
       const rows = [11, 11, 9, 9, 8, 6, 5, 4, 3, 3];
       ctx.fillStyle = "#f2c14e";
@@ -47881,8 +47915,8 @@ function awards62PlayCeremony(pack, doneFn){
       glamEl.classList.toggle("on", !!(b && b.id === "glamour")); if(cardsEl) cardsEl.classList.toggle("glamour-hide", !!(b && b.id === "glamour"));
     };
     const draw = (b, tick, beatElapsed)=>{
-      const W = 480, H = 360; /* v20a181：橫向 4:3（480×360）；backing 720×540，全部繪圖經 1.5× transform（imageSmoothingEnabled=false，像素邊保持硬淨） */
-      /* v20a149 B1：canvas backing 720×540（邏輯 480×360 ×1.5）；M1 底圖已撤，舞台底由 awards181DrawBase 程式繪製。 */
+      const W = 480, H = 432; /* v20a207 B2：舞台加高 360→432（10:9）；backing 720×648，全部繪圖經 1.5× transform（imageSmoothingEnabled=false，像素邊保持硬淨）；闊度唔郁（直向 viewport 闊度係樽頸），加高先收窄到上下空帶 */
+      /* v20a149 B1：canvas backing 720×648（邏輯 480×432 ×1.5）；M1 底圖已撤，舞台底由 awards181DrawBase 程式繪製。 */
       ctx.setTransform(1.5, 0, 0, 1.5, 0, 0);
       const id = b ? b.id : "";
       awards181DrawBase(ctx, W, H, id === "pan" ? Math.round(Math.sin(tick * 0.45) * 6) : 0); /* pan beat 橫移 ±6（舊底圖 pan 同款幅度，人物企位唔郁） */
@@ -47934,35 +47968,35 @@ function awards62PlayCeremony(pack, doneFn){
           const p = Math.min(1, beatElapsed / 500);
           const cx0 = slotCx(i);
           const dir64 = (cx0 < 240) ? "east" : "west"; /* v20a181：行前向中央 240 集中（舊 212）；行幀跟方向揀 east／west */
-          return { x: Math.round(cx0 + (240 - cx0) * 0.22 * p), y: Math.round(10 * p), moving: p < 1, frame: dir64 }; /* v20a181：行前 y＋10，新腳 FLOOR＋10＝272 */
+          return { x: Math.round(cx0 + (240 - cx0) * 0.22 * p), y: Math.round(10 * p), moving: p < 1, frame: dir64 }; /* v20a181：行前 y＋10，新腳 FLOOR＋10＝272；v20a207 B2：FLOOR 314，新腳 324 */
         };
         if(best === "won"){
           const fp = fwd64(playerSlot);
-          lightPool(fp.x, 72, FLOOR + fp.y);
+          spotlight207(fp.x, 72, FLOOR + fp.y); /* v20a207 C1：得主 spotlight（舊 lightPool 太淡） */
           slots.forEach((s, i)=>{
             if(s.kind === "player"){
               /* v20a160 M6：贏分支揭曉嗰陣阿偉著燕尾服上台——行前嗰 500ms 已經係燕尾服（唔等企定先換衫，免得中途爆衫）；
                  企定捧杯嗰陣頭頂加獎盃 glyph（燕尾服原圖手臂垂低、本身冇獎盃，沿用對手得主嗰套標記）。載唔到圖就跌返 px south 幀，唔跌 Q 版。 */
-              if(fp.moving) drawFigure(s, i, { x: fp.x, y: fp.y, frame: fp.frame, alpha: 1, tuxedo: true, dispH: 112 });
+              if(fp.moving) drawFigure(s, i, { x: fp.x, y: fp.y, frame: fp.frame, alpha: 1, tuxedo: true, dispH: 136 });
               else {
-                drawFigure(s, i, { x: fp.x, y: fp.y, hold: true, bob: (tick % 2) ? -1 : 0, alpha: 1, tuxedo: true, dispH: 112 });
-                drawTrophyGlyph(fp.x, FLOOR + fp.y - 110); /* v20a181：燕尾服 dispH 112，glyph 頂 −112（glyph 高 18，頭頂 −89，剛好喺頭頂之上）；v20a187 C6：−112→−110，牌底 149.4 到 glyph 頂 152 留 2.6 邏輯罅（舊 1px 太脆），glyph 底 170 離頭頂 173 仲有 3px */
+                drawFigure(s, i, { x: fp.x, y: fp.y, hold: true, bob: (tick % 2) ? -1 : 0, alpha: 1, tuxedo: true, dispH: 136 });
+                drawTrophyGlyph(fp.x, FLOOR + fp.y - 129); /* v20a181：燕尾服 dispH 112，glyph 頂 −112（glyph 高 18，頭頂 −89，剛好喺頭頂之上）；v20a187 C6：−112→−110，牌底 149.4 到 glyph 頂 152 留 2.6 邏輯罅（舊 1px 太脆），glyph 底 170 離頭頂 173 仲有 3px；v20a207 B2：dispH 136→人物 108px，glyph −129（頂 185，牌底 179.3 留 5.7 罅；底 203 離頭頂 206 仲有 3px） */
               }
             }
-            else drawFigure(s, i, { alpha: 0.7 });
+            else { drawFigure(s, i, { alpha: 1 }); dimVeil207(slotCx(i)); } /* v20a207 C1：落選者實色＋暗罩（舊 alpha 0.55：光底上半透明透光更光） */
           });
           confetti.forEach(p=>{ ctx.fillStyle = p.c; ctx.fillRect(p.x, p.y, p.s, p.s); });
         } else {
           slots.forEach((s, i)=>{
             if(i === winnerSlot){
               const fp = fwd64(i);
-              lightPool(fp.x, 66, FLOOR + fp.y);
+              spotlight207(fp.x, 66, FLOOR + fp.y); /* v20a207 C1：得主 spotlight（舊 lightPool 太淡） */
               if(fp.moving) drawFigure(s, i, { x: fp.x, y: fp.y, frame: fp.frame, alpha: 1 });
               else {
                 drawFigure(s, i, { x: fp.x, y: fp.y, bob: (tick % 2) ? -1 : 0, alpha: 1 });
-                drawTrophyGlyph(fp.x, FLOOR + fp.y - 52); /* v20a181：對手得主 glyph −52（px 人物高約 89px，胸前捧杯位） */
+                drawTrophyGlyph(fp.x, FLOOR + fp.y - 61); /* v20a181：對手得主 glyph −52（px 人物高約 89px，胸前捧杯位）；v20a207 B2：人物 108px，胸前位 −61 */
               }
-            } else drawFigure(s, i, { alpha: s.kind === "player" ? 0.9 : 0.6 });
+            } else { drawFigure(s, i, { alpha: 1 }); dimVeil207(slotCx(i)); } /* v20a207 C1：落選者實色＋暗罩（舊玩家 0.6／對手 0.5：光底上半透明透光更光） */
           });
           ctx.fillStyle = "#ffd968";
           for(let i = 0; i < 8; i++){
@@ -47989,7 +48023,7 @@ function awards62PlayCeremony(pack, doneFn){
       if(id === "glamour"){
         ctx.fillStyle = "rgba(5,3,12,0.45)"; ctx.fillRect(0, 0, W, H);
         /* v20a160 M6：贏分支 glamour 海報一擊嗰陣繼續著燕尾服（同揭曉同一套衫，唔換返）。 */
-        if(playerSlot >= 0) drawFigure(slots[playerSlot], playerSlot, { hold: true, alpha: 0.9, tuxedo: true, dispH: 112 }); /* v20a181：glamour 燕尾服 dispH 112（同 reveal 齊高） */
+        if(playerSlot >= 0) drawFigure(slots[playerSlot], playerSlot, { hold: true, alpha: 0.9, tuxedo: true, dispH: 136 }); /* v20a181：glamour 燕尾服 dispH 112（同 reveal 齊高） */
         return;
       }
       if(id === "walkup"){
@@ -48005,15 +48039,15 @@ function awards62PlayCeremony(pack, doneFn){
           if(wp < 1){
             drawFigure(slots[playerSlot], playerSlot, { x: Math.round(-40 + (targetX + 40) * wp), y: 6, frame: "east", bob: (tick % 2) ? -1 : 0, alpha: 1 });
           } else {
-            drawFigure(slots[playerSlot], playerSlot, { x: targetX, hold: true, bob: (tick % 2) ? -1 : 0, alpha: 1, tuxedo: true, dispH: 112 });
-            drawTrophyGlyph(targetX, FLOOR - 110); /* v20a187 C6：−112→−110（同 reveal 齊，牌底 149.4 到 glyph 頂 152 留 2.6 邏輯罅） */
+            drawFigure(slots[playerSlot], playerSlot, { x: targetX, hold: true, bob: (tick % 2) ? -1 : 0, alpha: 1, tuxedo: true, dispH: 136 });
+            drawTrophyGlyph(targetX, FLOOR - 129); /* v20a187 C6：−112→−110（同 reveal 齊，牌底 149.4 到 glyph 頂 152 留 2.6 邏輯罅）；v20a207 B2：−129（頂 185，牌底 179.3 留 5.7 罅；底 203 離頭頂 206 仲有 3px） */
           }
         }
         return;
       }
       if(id === "out"){
         const step = Math.min(4, Math.floor(beatElapsed / 125)); const fa = 1 - step * 0.25; /* v20a187 C3：out 期間人物照畫、跟 overlay 一齊暗落（唔再一幀消失；won 跟 glamour 只留燕尾服阿偉，其餘跟 comfort 暗度 player 1／得主 0.85／其他 0.7 再 ×fa） */
-        if(best === "won" && playerSlot >= 0) drawFigure(slots[playerSlot], playerSlot, { alpha: fa, tuxedo: true, dispH: 112 }); else slots.forEach((s, i)=> drawFigure(s, i, { alpha: fa * (s.kind === "player" ? 1 : (i === winnerSlot ? 0.85 : 0.7)) }));
+        if(best === "won" && playerSlot >= 0) drawFigure(slots[playerSlot], playerSlot, { alpha: fa, tuxedo: true, dispH: 136 }); else slots.forEach((s, i)=> drawFigure(s, i, { alpha: fa * (s.kind === "player" ? 1 : (i === winnerSlot ? 0.85 : 0.7)) }));
         ctx.fillStyle = "rgba(5,3,12," + (step * 0.25).toFixed(2) + ")"; ctx.fillRect(0, 0, W, H); }
     };
     const advance = ()=>{
@@ -48036,8 +48070,8 @@ function awards62PlayCeremony(pack, doneFn){
       const tick = Math.floor(now / 125);
       if(tick !== lastTick){
         lastTick = tick;
-        if(b.id === "reveal" || b.id === "comfort"){ /* v20a149 B1：comfort 期間彩紙繼續落；v20a174 B1：彩紙底界 244→364（H＋4） */
-          confetti.forEach(p=>{ p.y += p.v; p.x += p.sway; if(p.y > 364){ p.y = -8; p.x = Math.floor(Math.random() * 480); } });
+        if(b.id === "reveal" || b.id === "comfort"){ /* v20a149 B1：comfort 期間彩紙繼續落；v20a174 B1：彩紙底界 244→364（H＋4）；v20a207 B2：364→436（H 432＋4） */
+          confetti.forEach(p=>{ p.y += p.v; p.x += p.sway; if(p.y > 436){ p.y = -8; p.x = Math.floor(Math.random() * 480); } });
         }
         draw(b, tick, elapsed);
         if(b.id === "names") applyBeatCaption(b, Math.floor(elapsed / 125));

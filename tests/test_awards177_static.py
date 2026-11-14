@@ -44,24 +44,24 @@ base_fn = slice_fn('awards181DrawBase')
 
 WON = [60, 180, 300, 420]
 GAL = [75, 240, 405]
-FIG_W = 46          # px 人物顯示闊上限（dispH 112 × 最闊 48/128 ≈ 42，取 46 留鬆）
+FIG_W = 51          # px 人物顯示闊上限（dispH 136 × 最闊 48/128 ≈ 51；v20a207 B2：112→136）
 
-# --- (a) 地板：FLOOR 250→262 ---
-chk('地板 FLOOR＝262（木地板 y228–310，v20a187 B1）', 'const FLOOR = 262' in play_fn)
+# --- (a) 地板：FLOOR 262→314（v20a207 B2） ---
+chk('地板 FLOOR＝314（木地板 y274–372，v20a207 B2）', 'const FLOOR = 314' in play_fn)
 chk('舊 FLOOR＝250 唔再出現（頒獎禮範圍）', 'const FLOOR = 250' not in play_fn)
 chk('FLOOR 只定義一次', play_fn.count('const FLOOR =') == 1)
-chk('地板深 82px（H 360，佔 canvas 高 22.8%；v20a187 B1）',
-    'const W = 480, H = 360' in play_fn and 'const FLOOR = 262' in play_fn)
-chk('行前腳 272（FLOOR＋10）', 'y: Math.round(10 * p)' in play_fn)
+chk('地板深 98px（H 432，佔 canvas 高 22.7%；v20a207 B2）',
+    'const W = 480, H = 432' in play_fn and 'const FLOOR = 314' in play_fn)
+chk('行前腳 324（FLOOR＋10；v20a207 B2）', 'y: Math.round(10 * p)' in play_fn)
 chk('drawFigure 腳底跟 FLOOR（唔寫死）', 'const fy = FLOOR + (o.y || 0)' in play_fn)
-chk('光池跟 FLOOR（F-99 至 F）', 'F - 99' in play_fn)
-chk('獎盃 glyph 跟 FLOOR（−110／−52，v20a187 C6）',
-    'FLOOR + fp.y - 110' in play_fn and 'FLOOR + fp.y - 52' in play_fn)
+chk('光池跟 FLOOR（F-120 至 F；v20a207 B2）', 'F - 120' in play_fn)
+chk('獎盃 glyph 跟 FLOOR（−129／−61，v20a187 C6；v20a207 B2）',
+    'FLOOR + fp.y - 129' in play_fn and 'FLOOR + fp.y - 61' in play_fn)
 chk('後備舞台 delegate 去程式舞台（舊平台頂 H-110 消失）', 'awards181DrawBase(ctx, W, H, 0)' in fb_fn and 'H - 110' not in fb_fn)
 chk('後備舞台舊金線 H-116 唔再出現', 'H - 116' not in fb_fn)
 chk('後備舞台舊平台底 H-33 唔再出現', 'H - 33' not in fb_fn)
-chk('程式舞台地板 y228–310（#d9a75f）', '#d9a75f' in base_fn and '228, W + 16, 82' in base_fn)
-chk('程式舞台觀眾席 y316–360（#120c20）', '#120c20' in base_fn and '316, W + 16, 44' in base_fn)
+chk('程式舞台地板 y274–372（#d9a75f，H 比例）', '#d9a75f' in base_fn and '228 / 360' in base_fn and '310 / 360' in base_fn)
+chk('程式舞台觀眾席 y379–432（#120c20，H 比例）', '#120c20' in base_fn and '316 / 360' in base_fn)
 
 # --- (b) 企位：slotCx ---
 chk('won／nominated slotCx 間距 120、置中 240',
@@ -70,8 +70,8 @@ chk('gallery 3 slots 用 [75, 240, 405]', '[75, 240, 405]' in play_fn)
 chk('舊間距 100 唔再出現（slotCx 範圍）', '* 100' not in play_fn)
 chk('舊 gallery [82, 162, 262] 唔再出現', '[82, 162, 262]' not in play_fn)
 chk('舊置中 212 唔再出現（slotCx 範圍）', '212 + (i -' not in play_fn)
-chk('won 4 slots 罅 ≥70px（120−46＝74）',
-    all(WON[i+1] - WON[i] - FIG_W >= 70 for i in range(3)))
+chk('won 4 slots 罅 ≥65px（120−51＝69；v20a207 B2：人闊咗）',
+    all(WON[i+1] - WON[i] - FIG_W >= 65 for i in range(3)))
 chk('gallery 3 slots 罅 ≥100px（165−46＝119）',
     all(GAL[i+1] - GAL[i] - FIG_W >= 100 for i in range(2)))
 chk('won 企位唔出 canvas 界（左右各留 39px）',
@@ -81,7 +81,7 @@ chk('舞台冇講台／圓台幾何（LECTERN／講台 x194 唔再出現；退�
 chk('玩家 slot 仍然係 1（won 4 slots，阿偉 x＝180）',
     'slots.splice(Math.min(1, slots.length), 0, { kind: "player" })' in play_fn)
 chk('glamour 燕尾服右緣 236／480＝49.2%（<56%，海報 panel 唔重疊）',
-    180 + 112 // 2 < 480 * 0.56)
+    180 + 136 // 2 < 480 * 0.56) # v20a207 B2：dispH 136
 
 # --- (c) 行走接線 ---
 chk('入場 entryPlan 唔郁（左右兩流／0.16px/ms／rank*380）',
@@ -96,15 +96,15 @@ chk('walkup beat 改由 canvas 畫（2200ms，唔再用 M4 GIF）',
 
 # --- v174 五項唔郁守衛（v181 幾何跟住改） ---
 chk('v174 A1：海報裱框收窄到直屬 img（>）', bool(css_rule('.awd63-glamour-panel>img')))
-chk('v174 A1：獎盃金底 chip 規則在場（#f2c14e／22px）',
-    'background:#f2c14e' in css_rule('.awd63-glamour .cap img.ic112,.awd62-caption img.ic112')
-    and 'width:22px' in css_rule('.awd63-glamour .cap img.ic112,.awd62-caption img.ic112'))
-chk('v174 B1：canvas 邏輯 480×360／backing 720×540／setTransform 1.5（v181）',
-    'const W = 480, H = 360' in play_fn
-    and '<canvas class="awd62-canvas" width="720" height="540">' in src
+chk('v174 A1：獎盃金底 chip 規則在場（#f2c14e／22px；v20a207 C2 擴到 fellows）',
+    'background:#f2c14e' in css_rule('.awd63-glamour .cap img.ic112,.awd62-caption img.ic112,.psr-fellows63 img.ic112')
+    and 'width:22px' in css_rule('.awd63-glamour .cap img.ic112,.awd62-caption img.ic112,.psr-fellows63 img.ic112'))
+chk('v174 B1：canvas 邏輯 480×432／backing 720×648／setTransform 1.5（v181；v20a207 B2）',
+    'const W = 480, H = 432' in play_fn
+    and '<canvas class="awd62-canvas" width="720" height="648">' in src
     and 'ctx.setTransform(1.5, 0, 0, 1.5, 0, 0);' in play_fn)
-chk('v174 B1：人物 112／116／燕尾服 112（v181）', '? 116 : 112' in play_fn and 'dispH: 112' in play_fn)
-chk('v174 B1：glamour overlay aspect 480/360（v181）', 'aspect-ratio:480/360' in src)
+chk('v174 B1：人物 136／140／燕尾服 136（v181；v20a207 B2）', '? 140 : 136' in play_fn and 'dispH: 136' in play_fn)
+chk('v174 B1：glamour overlay aspect 480/432（v181；v20a207 B2）', 'aspect-ratio:480/432' in src)
 chk('v174 B2：卡列常駐 flex＋visibility 隱藏（預留高度）',
     'display:flex' in css_rule('.awd63-cards') and 'visibility:hidden' in css_rule('.awd63-cards'))
 chk('v174 B2：stagger 60＋i*180 唔郁', 'elapsed > 60 + i * 180' in play_fn)
@@ -118,7 +118,7 @@ chk('SAVE key 唔變（starVolunteer_map_v19w）', 'starVolunteer_map_v19w' in s
 chk('softRev 唔變', 'softRev' in src)
 chk('掌聲 MP3 唔喺呢票（M9 觸發點仲在）', 'awards160PlayWinAudio' in play_fn)
 chk('提名卡唔掂（cardsData／cardsHtml 仲在）', 'cardsData' in play_fn and 'cardsHtml' in play_fn)
-chk('彩紙底界 364 唔郁（H 唔變）', 'p.y > 364' in play_fn)
+chk('彩紙底界 436（H 432；v20a207 B2）', 'p.y > 436' in play_fn)
 
 print('')
 print('FAILED: %d' % len(fails) if fails else 'ALL PASS')

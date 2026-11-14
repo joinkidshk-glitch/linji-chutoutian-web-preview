@@ -1,13 +1,13 @@
 # v20a187 修 v181 設計 review B1＋C1–C6・static tests（字串＋CSS 規則斷言，跟 v181 寫法）：
-# B1：地板 y228–310（深 82px＝22.8% 高；地板深／人物高 0.92、腳底以下空地板 48px＝0.54 倍）；
-#     幕布拉長到 y228、燈架跟到 y228、觀眾席 y316–360（深 44px，光點照舊）。
+# B1：地板 y228–310（深 82px＝22.8% 高；v20a207 B2 resync：地板 y274–372，深 98px＝22.7% 高；地板深／人物高 0.91、腳底以下空地板 58px＝0.54 倍）；
+#     幕布拉長到 y274、燈架跟到 y274、觀眾席 y379–432（深 53px，光點照舊）。
 # C1：glamour 海報下半置中（panel flex-end＋img max-height 40%），海報頂唔再壓白牌。
 # v20a190 新 C1：panel 縮短貼底（overlay align-items flex-end＋container-type:size），img cap 轉等價
 #   calc(40cqh - 8px)——舊 40% 會對住內容高嘅 panel 失效；以下 C1 斷言跟住更新，結論（海報頂唔壓牌）不變。
 # C2：卡罅 8→24px，角標留 10px 罅。
 # C3：out beat 照畫人物、alpha 跟 step 遞減。C4：walkup 行緊 y＋6。C5：glamour-hide display:none 保留（trade-off）。
-# C6：glyph −112→−110（牌底 149.4 到 glyph 頂 152，留 2.6 邏輯罅）。
-# 唔郁守衛：FLOOR 262／企位／三行白牌黃字 fix（牌底 149.4）／SAVE key／softRev／?v=。
+# C6：glyph −112→−110（牌底 149.4 到 glyph 頂 152，留 2.6 邏輯罅）；v20a207 B2：−110→−129（牌底 179.3 到 glyph 頂 185，留 5.7 邏輯罅）。
+# 唔郁守衛：FLOOR 314（v20a207 B2）／企位／三行白牌黃字 fix（牌底 179.3）／SAVE key／softRev／?v=。
 # 反證：run against pristine main b1b6092 index -> 新幾何／修法斷言全部 FAIL（唔 crash）；守衛 pristine 應 PASS。
 import sys, re
 
@@ -42,19 +42,19 @@ play_fn = slice_fn('awards62PlayCeremony')
 base_fn = slice_fn('awards181DrawBase')
 
 # --- B1：地板收窄（程式舞台幾何） ---
-chk('B1 地板 y228–310（#d9a75f，深 82px）', '#d9a75f' in base_fn and '228, W + 16, 82' in base_fn)
+chk('B1 地板 y274–372（#d9a75f，深 98px；v20a207 B2）', '#d9a75f' in base_fn and '228 / 360' in base_fn and '310 / 360' in base_fn)
 chk('B1 舊地板 y200／深 134 唔再出現（base 範圍）', '200, W + 16, 134' not in base_fn)
-chk('B1 地板深 82px＝22.8% 高（20–26% 帶）', 0.20 <= 82 / 360 <= 0.26)
+chk('B1 地板深 98px＝22.7% 高（20–26% 帶；v20a207 B2）', 0.20 <= 98 / 432 <= 0.26)
 chk('B1 地板深／人物高 82/89≈0.92（0.85–1.00）', 0.85 <= 82 / 89 <= 1.00)
-chk('B1 腳底以下空地板 48px＝0.54 倍人物高（0.48–0.60）', 0.48 <= (310 - 262) / 89 <= 0.60)
-chk('B1 幕布拉長到 y228（#f2e8d5 高 192）', '#f2e8d5' in base_fn and '36, W + 16, 192' in base_fn)
-chk('B1 側幕落到 y228（#7a1f24 高 228）', '#7a1f24' in base_fn and '38, 228' in base_fn)
-chk('B1 燈架鐵杆落到 y228（#23232c 高 188）', '#23232c' in base_fn and '40, 4, 188' in base_fn)
-chk('B1 地板前緣 y310（#5a3a1e 高 6）', '#5a3a1e' in base_fn and '310, W + 16, 6' in base_fn)
-chk('B1 觀眾席 y316–360（#120c20 高 44）', '#120c20' in base_fn and '316, W + 16, 44' in base_fn)
+chk('B1 腳底以下空地板 58px＝0.54 倍人物高（0.48–0.60；v20a207 B2）', 0.48 <= (372 - 314) / 108 <= 0.60)
+chk('B1 幕布拉長到 y274（#f2e8d5；v20a207 B2）', '#f2e8d5' in base_fn and '36 / 360' in base_fn and '228 / 360' in base_fn)
+chk('B1 側幕落到 y274（#7a1f24；v20a207 B2）', '#7a1f24' in base_fn and '228 / 360' in base_fn)
+chk('B1 燈架鐵杆落到 y274（#23232c；v20a207 B2）', '#23232c' in base_fn and 'sy(188)' in base_fn)
+chk('B1 地板前緣 y372（#5a3a1e；v20a207 B2）', '#5a3a1e' in base_fn and '310 / 360' in base_fn and '316 / 360' in base_fn)
+chk('B1 觀眾席 y379–432（#120c20；v20a207 B2）', '#120c20' in base_fn and '316 / 360' in base_fn)
 chk('B1 舊觀眾席 y340／高 20 唔再出現', '340, W + 16, 20' not in base_fn)
 chk('B1 觀眾席光點仲在（金色 3px 點）', 'rgba(255,233,143,0.85)' in base_fn)
-chk('B1 FLOOR＝262 唔郁（腳底唔郁，只郁地板帶）', 'const FLOOR = 262' in play_fn)
+chk('B1 FLOOR＝314（v20a207 B2）', 'const FLOOR = 314' in play_fn)
 
 # --- C1：glamour 海報下半置中 ---
 panel_rule = css_rule('.awd63-glamour-panel')
@@ -62,7 +62,7 @@ panel_img_rule = css_rule('.awd63-glamour-panel>img')
 chk('C1 panel 改 flex-end（海報＋cap 沉底）', 'justify-content:flex-end' in panel_rule)
 chk('C1 海報 max-height 40%→calc(40cqh - 8px)（v20a190 等價轉換；舊 40% 唔再出現）', 'max-height:calc(40cqh - 8px)' in panel_img_rule and 'max-height:40%' not in panel_img_rule and 'max-height:60%' not in panel_img_rule)
 chk('C1 海報 max-width 88% 唔郁', 'max-width:88%' in panel_img_rule)
-chk('C1 海報頂計數 ≥171 邏輯＞牌底 149.4（360−144−45）', (360 - 0.40 * 360 - 45) > 149.4)
+chk('C1 海報頂計數 ≥214 邏輯＞牌底 179.3（432−172.8−45；v20a207 B2）', (432 - 0.40 * 432 - 45) > 179.3)
 
 # --- C2：卡罅 8→24px ---
 cards_rule = css_rule('.awd63-cards')
@@ -95,22 +95,22 @@ chk('C5 glamour-hide 仲係 display:none（v174 trade-off 保留）', 'display:n
 chk('C5 syncGlamour 仲係 toggle glamour-hide', 'cardsEl.classList.toggle("glamour-hide"' in play_fn)
 
 # --- C6：glyph −110 ---
-chk('C6 燕尾服 glyph −110 兩處', 'FLOOR + fp.y - 110' in play_fn and 'FLOOR - 110' in play_fn)
+chk('C6 燕尾服 glyph −129 兩處（v20a207 B2）', 'FLOOR + fp.y - 129' in play_fn and 'FLOOR - 129' in play_fn)
 chk('C6 舊 −112 唔再出現（頒獎禮範圍）', '- 112' not in play_fn)
-chk('C6 牌底 149.4 到 glyph 頂 152 留 2.6 邏輯罅', abs((262 - 110) - 149.4 - 2.6) < 0.01)
-chk('C6 glyph 底 170 離頭頂 173 仲有 3px', (262 - 110 + 18) == 170 and 173 - 170 == 3)
-chk('C6 對手胸前 glyph −52 唔郁', 'FLOOR + fp.y - 52' in play_fn)
+chk('C6 牌底 179.3 到 glyph 頂 185 留 5.7 邏輯罅（v20a207 B2）', abs((314 - 129) - 179.3 - 5.7) < 0.01)
+chk('C6 glyph 底 203 離頭頂 206 仲有 3px（v20a207 B2）', (314 - 129 + 18) == 203 and 206 - 203 == 3)
+chk('C6 對手胸前 glyph −61（v20a207 B2）', 'FLOOR + fp.y - 61' in play_fn)
 
-# --- 唔郁守衛：黃字 fix 三行白牌（牌底 149.4 唔郁） ---
+# --- 唔郁守衛：黃字 fix 三行白牌（牌底 179.3 唔郁；v20a207 B2） ---
 def _pct(rule, prop):
     mm = re.search(prop + r':\s*([\d.]+)%', rule)
     return float(mm.group(1)) if mm else None
 board_rule = css_rule('.awd181-board')
 board_top = _pct(board_rule, 'top'); board_h = _pct(board_rule, 'height')
-chk('守衛 白牌底 149.4 邏輯唔郁（top＋height＝41.5%）',
-    board_top is not None and board_h is not None and round((board_top + board_h) * 3.6, 1) == 149.4)
-chk('守衛 白牌底 149.4 ＜ glyph 頂 152（C6 之後罅仲大咗）',
-    board_top is not None and board_h is not None and (board_top + board_h) * 3.6 < 152)
+chk('守衛 白牌底 179.3 邏輯唔郁（top＋height＝41.5%；v20a207 B2：H 432）',
+    board_top is not None and board_h is not None and round((board_top + board_h) * 4.32, 1) == 179.3)
+chk('守衛 白牌底 179.3 ＜ glyph 頂 185（C6 之後罅仲大咗；v20a207 B2）',
+    board_top is not None and board_h is not None and (board_top + board_h) * 4.32 < 185)
 chk('守衛 4 slots／gallery 企位唔郁',
     '240 + (i - (slots.length - 1) / 2) * 120' in play_fn and '[75, 240, 405]' in play_fn)
 chk('守衛 SAVE key 不變', 'starVolunteer_map_v19w' in src)

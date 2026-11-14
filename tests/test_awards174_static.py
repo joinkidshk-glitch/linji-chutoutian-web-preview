@@ -60,7 +60,7 @@ chk('A1 海報裱框規則收窄到直屬 img（>）', bool(panel_img))
 chk('A1 裱框唔再套落 panel 內全部 img（舊 .awd63-glamour-panel img 規則消失）',
     '.awd63-glamour-panel img{' not in src)
 chk('A1 海報金框＋光暈保留', 'border:4px solid #f2c14e' in panel_img and 'box-shadow:0 0 34px rgba(242,193,78,.45)' in panel_img)
-chip_rule = css_rule('.awd63-glamour .cap img.ic112,.awd62-caption img.ic112')
+chip_rule = css_rule('.awd63-glamour .cap img.ic112,.awd62-caption img.ic112,.psr-fellows63 img.ic112') # v20a207 C2：同一 rule 擴到結果卡同屆提名行
 chk('A1 獎盃金底 chip 規則在場（glamour cap＋reveal 字幕）', bool(chip_rule))
 chk('A1 chip 係金底（#f2c14e）', 'background:#f2c14e' in chip_rule)
 chk('A1 chip 22px 見方（1x 睇得清）', 'width:22px' in chip_rule and 'height:22px' in chip_rule)
@@ -71,21 +71,21 @@ chk('A1 圖標資產本身唔改（trophy 仍經 iconHtml112，唔改成套風�
     '"🏆":"trophy"' in src and 'icon_trophy' not in play_fn)
 
 # --- B1：舞台做大 ---
-chk('B1 canvas backing 720×540（v181：邏輯 480×360 ×1.5）', '<canvas class="awd62-canvas" width="720" height="540">' in src)
-chk('B1 draw() 用橫向 480×360（4:3）', 'const W = 480, H = 360' in play_fn)
-chk('B1 FLOOR＝262（v181：木地板 y200–334，深 134px）', 'const FLOOR = 262' in play_fn)
-chk('B1 人物 px 幀（112／116／燕尾服 112）', '? 116 : 112' in play_fn and 'dispH: 112' in play_fn)
+chk('B1 canvas backing 720×648（v181：邏輯 480×432 ×1.5；v20a207 B2）', '<canvas class="awd62-canvas" width="720" height="648">' in src)
+chk('B1 draw() 用橫向 480×432（10:9；v20a207 B2）', 'const W = 480, H = 432' in play_fn)
+chk('B1 FLOOR＝314（v20a207 B2：木地板 y274–372，深 98px）', 'const FLOOR = 314' in play_fn)
+chk('B1 人物 px 幀（136／140／燕尾服 136；v20a207 B2）', '? 140 : 136' in play_fn and 'dispH: 136' in play_fn)
 chk('B1 slotCx 間距 120、置中 240（v181）', '240 + (i - (slots.length - 1) / 2) * 120' in play_fn)
-chk('B1 glamour overlay aspect 跟 canvas（480/360）', 'aspect-ratio:480/360' in src)
-chk('B1 行前 y＋10（腳 272）', 'y: Math.round(10 * p)' in play_fn)
-chk('B1 光池高 99', 'F - 99' in play_fn)
-chk('B1 獎盃 glyph（−110／−52，v20a187 C6；舊 −112）', 'FLOOR + fp.y - 110' in play_fn and 'FLOOR + fp.y - 52' in play_fn)
-chk('B1 彩紙底界跟新高（364）', 'p.y > 364' in play_fn)
+chk('B1 glamour overlay aspect 跟 canvas（480/432；v20a207 B2）', 'aspect-ratio:480/432' in src)
+chk('B1 行前 y＋10（腳 324；v20a207 B2）', 'y: Math.round(10 * p)' in play_fn)
+chk('B1 光池高 120（v20a207 B2）', 'F - 120' in play_fn)
+chk('B1 獎盃 glyph（−129／−61，v20a187 C6；v20a207 B2；舊 −112）', 'FLOOR + fp.y - 129' in play_fn and 'FLOOR + fp.y - 61' in play_fn)
+chk('B1 彩紙底界跟新高（436；v20a207 B2）', 'p.y > 436' in play_fn)
 chk('B1 後備舞台 delegate 去程式舞台（H-110 舊平台頂消失）', 'awards181DrawBase(ctx, W, H, 0)' in fb_fn and 'H - 110' not in fb_fn)
-chk('B1 合併態釘死：backing 720×540＋setTransform 1.5＋邏輯 480×360（v181）',
-    '<canvas class="awd62-canvas" width="720" height="540">' in src
+chk('B1 合併態釘死：backing 720×648＋setTransform 1.5＋邏輯 480×432（v181；v20a207 B2）',
+    '<canvas class="awd62-canvas" width="720" height="648">' in src
     and 'ctx.setTransform(1.5, 0, 0, 1.5, 0, 0);' in play_fn
-    and 'const W = 480, H = 360' in play_fn)
+    and 'const W = 480, H = 432' in play_fn)
 chk('B1 舊 canvas 高 240 唔再出現（play 範圍）', 'H = 240' not in play_fn and 'height="240"' not in play_fn)
 
 # --- B2：names 卡列跳位＋逐張淡入 ---

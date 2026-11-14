@@ -8,7 +8,7 @@
 #   兩 viewport 逐 px 等價（932 cap 220／700 cap 193.6）。
 # 驗收（實駕量度）：空佔比 47.9%→3.3%（932）／46.3%→3.6%（700）；海報盒唔郁（932 img 396–616／
 #   700 img 390–583）；clearance 36／24 唔跌；底罅 77 唔郁。
-# 唔郁守衛：B1 地板 y228–310／FLOOR 262；C2 卡罅 24px；C3 out 留人；C4 walkup y＋6；
+# 唔郁守衛：B1 地板 y274–372／FLOOR 314（v20a207 B2）；C2 卡罅 24px；C3 out 留人；C4 walkup y＋6；
 #   C5 glamour-hide display:none（下移 124px trade-off）；C6 glyph −110。
 # 反證：run against pristine main dcf1b72 index -> 新 C1 斷言全部 FAIL（唔 crash）；守衛 pristine 應 PASS。
 import sys, re
@@ -62,9 +62,9 @@ chk('C1 panel 闊 44%＋0.93 暗底＋column＋flex-end＋gap 8＋padding 10/12 
     'flex:0 0 44%' in panel_rule and 'rgba(10,6,18,.93)' in panel_rule
     and 'flex-direction:column' in panel_rule and 'justify-content:flex-end' in panel_rule
     and 'gap:8px' in panel_rule and 'padding:10px 12px' in panel_rule)
-chk('C1 overlay 仲係 absolute top:0／left:0／width:100%＋aspect 480/360＋pointer-events:none',
+chk('C1 overlay 仲係 absolute top:0／left:0／width:100%＋aspect 480/432＋pointer-events:none（v20a207 B2）',
     'position:absolute' in glam_rule and 'top:0' in glam_rule and 'left:0' in glam_rule
-    and 'width:100%' in glam_rule and 'aspect-ratio:480/360' in glam_rule
+    and 'width:100%' in glam_rule and 'aspect-ratio:480/432' in glam_rule
     and 'pointer-events:none' in glam_rule)
 chk('C1 cap 字體唔郁（19px／行高 1.55，兩行＝58.9px）',
     'font-size:19px' in cap_rule and 'line-height:1.55' in cap_rule)
@@ -96,9 +96,9 @@ chk('C1 panel 底唔郁（932：693；700：660）',
 chk('C1 高身海報（0.5 比例）cap 下闊 106px＜max-width 273px', (220 - 8) * 0.5 == 106 and 106 < 0.88 * (334.4 - 24))
 
 # --- 唔郁守衛：其餘六項 ---
-chk('守衛 B1 地板 y228–310（#d9a75f，深 82px）', '#d9a75f' in base_fn and '228, W + 16, 82' in base_fn)
-chk('守衛 B1 觀眾席 y316–360（#120c20，高 44）', '#120c20' in base_fn and '316, W + 16, 44' in base_fn)
-chk('守衛 B1 FLOOR＝262 唔郁', 'const FLOOR = 262' in play_fn)
+chk('守衛 B1 地板 y274–372（#d9a75f，深 98px；v20a207 B2）', '#d9a75f' in base_fn and '228 / 360' in base_fn and '310 / 360' in base_fn)
+chk('守衛 B1 觀眾席 y379–432（#120c20，高 53；v20a207 B2）', '#120c20' in base_fn and '316 / 360' in base_fn)
+chk('守衛 B1 FLOOR＝314（v20a207 B2）', 'const FLOOR = 314' in play_fn)
 cards_rule = css_rule('.awd63-cards')
 _m = re.search(r'gap:\s*(\d+)px', cards_rule)
 chk('守衛 C2 卡罅 gap 24px', _m and int(_m.group(1)) == 24)
@@ -109,9 +109,9 @@ _walk_i = play_fn.find('if(id === "walkup"){')
 _walk = play_fn[_walk_i:play_fn.find('if(id === "out"){', _walk_i)] if _walk_i >= 0 else ''
 chk('守衛 C4 walkup 行緊 y＋6（只一處）', 'y: 6' in _walk and _walk.count('y: 6') == 1)
 chk('守衛 C5 glamour-hide 仲係 display:none', 'display:none' in css_rule('.awd63-cards.glamour-hide'))
-chk('守衛 C6 燕尾服 glyph −110 兩處、舊 −112 唔見',
-    'FLOOR + fp.y - 110' in play_fn and 'FLOOR - 110' in play_fn and '- 112' not in play_fn)
-chk('守衛 C6 牌底 149.4 到 glyph 頂 152 留 2.6 邏輯罅', abs((262 - 110) - 149.4 - 2.6) < 0.01)
+chk('守衛 C6 燕尾服 glyph −129 兩處、舊 −112 唔見（v20a207 B2）',
+    'FLOOR + fp.y - 129' in play_fn and 'FLOOR - 129' in play_fn and '- 112' not in play_fn)
+chk('守衛 C6 牌底 179.3 到 glyph 頂 185 留 5.7 邏輯罅（v20a207 B2）', abs((314 - 129) - 179.3 - 5.7) < 0.01)
 
 # --- 唔郁守衛：流程／版本 ---
 chk('守衛 walkup 2200ms、glamour 1800ms 唔郁', 'id: "glamour", ms: 1800' in beats_fn and 'id: "walkup", ms: 2200' in beats_fn)

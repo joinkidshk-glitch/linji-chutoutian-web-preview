@@ -1,5 +1,6 @@
 # v20a181：橫向舞台幾何 static tests（原 v20a170 檔成份改寫；v170 係 FLOOR 跟底圖頂線，v181 成個舞台重建）。
 # v181 幾何：canvas 邏輯 480×360（4:3）／backing 720×540／setTransform 1.5；FLOOR＝262（木地板 y228–310，
+# v20a207 B2 resync：邏輯 480×432（10:9）／backing 720×648；FLOOR＝314（木地板 y274–372，
 # 深 82px＝22.8% 高；v20a187 B1 收窄，舊 y200–334／134px 係讀錯參考圖）；slotCx 置中 240／間距 120（4 slots 60／180／300／420；gallery 75／240／405）；
 # 人物 px 幀 dispH 112（fellow）／116（玩家）／燕尾服 112；行前向中央 240 集中 22%、y＋10（新腳 272）；
 # 光池 99；獎盃 glyph −110（燕尾服頭頂，v20a187 C6；舊 −112）／−52（對手胸前）；後備舞台＝同一個程式舞台（awards181DrawBase）。
@@ -36,13 +37,13 @@ fb_fn = slice_fn('awards62FallbackStage')
 base_fn = slice_fn('awards181DrawBase')
 beats_fn = slice_fn('awards62CeremonyBeats')
 
-# --- (1) FLOOR＝262（木地板 y228–310，v20a187 B1） ---
-chk('FLOOR＝262（v181：木地板 y228–310，深 82px）', 'const FLOOR = 262' in play_fn)
+# --- (1) FLOOR＝314（木地板 y274–372，v20a207 B2） ---
+chk('FLOOR＝314（v20a207 B2：木地板 y274–372，深 98px）', 'const FLOOR = 314' in play_fn)
 chk('舊 FLOOR＝250 唔再出現（頒獎禮範圍）', 'const FLOOR = 250' not in play_fn)
 chk('舊 FLOOR＝193 唔再出現（頒獎禮範圍）', 'const FLOOR = 193' not in play_fn)
 chk('舊 FLOOR＝155 唔再出現（頒獎禮範圍）', 'const FLOOR = 155' not in play_fn)
 chk('FLOOR 只定義一次', play_fn.count('const FLOOR =') == 1)
-chk('FLOOR 註解寫明木地板 y228–310＋22.8%', '228' in play_fn and '82' in play_fn and '22.8%' in play_fn)
+chk('FLOOR 註解寫明木地板 y274–372＋22.7%', '274' in play_fn and '98' in play_fn and '22.7%' in play_fn)
 
 # --- (2) 後備舞台＝同一個程式舞台 ---
 chk('後備舞台在場', bool(fb_fn))
@@ -50,8 +51,8 @@ chk('後備舞台 delegate 去 awards181DrawBase', 'awards181DrawBase(ctx, W, H,
 chk('後備舞台舊平台頂 H-110 唔再出現', 'H - 110' not in fb_fn)
 chk('後備舞台舊金線 H-116 唔再出現', 'H - 116' not in fb_fn)
 chk('後備舞台舊平台底 H-33 唔再出現', 'H - 33' not in fb_fn)
-chk('程式舞台地板 y228–310 在場', '#d9a75f' in base_fn and '228, W + 16, 82' in base_fn)
-chk('程式舞台觀眾席 y316–360 在場', '#120c20' in base_fn and '316, W + 16, 44' in base_fn)
+chk('程式舞台地板 y274–372 在場（H 比例）', '#d9a75f' in base_fn and '228 / 360' in base_fn and '310 / 360' in base_fn)
+chk('程式舞台觀眾席 y379–432 在場（H 比例）', '#120c20' in base_fn and '316 / 360' in base_fn)
 
 # --- (3) slot x ---
 chk('slotCx 公式（置中 240／間距 120，v181）', '240 + (i - (slots.length - 1) / 2) * 120' in play_fn)
@@ -62,14 +63,14 @@ chk('入場 entryPlan 唔郁（左右兩流／0.16px/ms／rank*380）',
 
 # --- (4) 腳底 y 對地板 ---
 chk('drawFigure 腳底＝FLOOR＋o.y（跟常數，唔寫死）', 'const fy = FLOOR + (o.y || 0)' in play_fn)
-chk('reveal 行前 y＋10（新腳 272）', 'y: Math.round(10 * p)' in play_fn)
+chk('reveal 行前 y＋10（新腳 324；v20a207 B2）', 'y: Math.round(10 * p)' in play_fn)
 chk('reveal 行前 x 向中心 240、22% 唔變', '(240 - cx0) * 0.22' in play_fn)
-chk('lightPool 跟 FLOOR（F-99 至 F）', 'F - 99' in play_fn)
-chk('獎盃 glyph 跟 FLOOR（FLOOR + fp.y - 110／-52，v20a187 C6）',
-    'FLOOR + fp.y - 110' in play_fn and 'FLOOR + fp.y - 52' in play_fn)
-chk('人物高度 px 幀（fellow 112／玩家 116／燕尾服 112）',
-    '? 116 : 112' in play_fn and 'dispH: 112' in play_fn)
-chk('canvas 480×360（W 480／H 360）', 'const W = 480, H = 360' in play_fn)
+chk('lightPool 跟 FLOOR（F-120 至 F；v20a207 B2）', 'F - 120' in play_fn)
+chk('獎盃 glyph 跟 FLOOR（FLOOR + fp.y - 129／-61，v20a187 C6；v20a207 B2）',
+    'FLOOR + fp.y - 129' in play_fn and 'FLOOR + fp.y - 61' in play_fn)
+chk('人物高度 px 幀（fellow 136／玩家 140／燕尾服 136；v20a207 B2）',
+    '? 140 : 136' in play_fn and 'dispH: 136' in play_fn)
+chk('canvas 480×432（W 480／H 432；v20a207 B2）', 'const W = 480, H = 432' in play_fn)
 
 # --- (5) 受影響 beats 清單 ---
 for bid in ('pan', 'enter', 'names', 'suspense', 'reveal', 'comfort', 'glamour'):
@@ -88,8 +89,8 @@ chk('beats 列表唔變（open／pan／enter／names／suspense／reveal／comfo
 chk('walkup GIF 檔名已撤（awd_walkup_m4.gif 唔再出現）', 'awd_walkup_m4.gif' not in src)
 chk('walkup GIF overlay CSS 已撤（.awd62-walkup160）', '.awd62-walkup160' not in src)
 chk('M1 底圖常數已撤（AWARDS62_STAGE_BG）', 'const AWARDS62_STAGE_BG' not in src)
-chk('glamour overlay 唔變（v166：absolute＋480/360 對齊 canvas，v181）',
-    'position:absolute' in src and 'aspect-ratio:480/360' in src)
+chk('glamour overlay 唔變（v166：absolute＋480/432 對齊 canvas，v181；v20a207 B2）',
+    'position:absolute' in src and 'aspect-ratio:480/432' in src)
 chk('syncGlamour 卡列隱藏唔變（v168：glamour-hide）', 'glamour-hide' in play_fn)
 chk('SAVE key 唔變（starVolunteer_map_v19w）', 'starVolunteer_map_v19w' in src)
 chk('softRev 唔變', 'softRev' in src)

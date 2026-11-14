@@ -44,7 +44,7 @@ chk('舊像素舞台 data URI 繼續唔存在（AWARDS62_STAGE_PX 全檔消失�
 chk('程式舞台函數在場（awards181DrawBase）', 'function awards181DrawBase(ctx, W, H, off)' in src)
 chk('降級舞台函數仲在（簽名唔變）', 'function awards62FallbackStage(ctx, W, H)' in src)
 chk('降級舞台＝同一個程式舞台（唔再分叉）', 'awards181DrawBase(ctx, W, H, 0)' in fb_fn)
-chk('canvas backing store 720×540（邏輯 480×360 ×1.5）', '<canvas class="awd62-canvas" width="720" height="540">' in src)
+chk('canvas backing store 720×648（邏輯 480×432 ×1.5；v20a207 B2）', '<canvas class="awd62-canvas" width="720" height="648">' in src)
 chk('canvas 像素呈現唔郁（pixelated）', 'image-rendering:pixelated' in src and 'awd62-canvas' in src)
 
 # --- 3. 硬規則：SAVE key／softRev／?v= 冇郁 ---

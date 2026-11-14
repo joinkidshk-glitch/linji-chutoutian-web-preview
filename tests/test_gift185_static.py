@@ -1,3 +1,4 @@
+# v20a207 resync：index.html 淨 +34 行（見 qa207/resync207.py，73 錨點對位零 mismatch，純漂移）。
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），總行數 60522→60609。
 # v20a203 resync：index.html 淨 +233 行（見 qa203/resync203.py difflib 對位核實純漂移），總行數 61167→61400。
 # v20a206 C1 resync：index.html 淨 +22 行（WF4 保底：註解＋3／wf4SeenAny＋10／保底檢查＋9，插入點舊 L41129–41496）；總行數 61400→61422（qa206/resync206.py difflib 對位核實純漂移）。
@@ -46,8 +47,7 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 61457（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3）', html.count('\n') == 61457)
-
+ok('總行數 61491（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34）', html.count('\n') == 61491)
 # ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',
    'v20a185 B1+C1' in html and '路線 a' in html)
