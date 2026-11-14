@@ -83,3 +83,9 @@
 - **Won 種子再試（今次試到，見 `qa207/won_sweep207.py`／`won_stage207.py`）**：上一任 60 seeds 攞唔到 won，係 seed 太弱（fame 80／credit 0／淨 rec 3，base 0.82＜贏線 0.875），唔係結構問題。v208 式強 seed（fame 80／credit 60／rec 3＋film_lead 2＋tv_lead 2＋ad_lead 1）四組（music 1990／1991、film 1990／1991）全部 seed 1 即 won（`qa207/won_sweep207.json`）。再用強 seed 跑 music won 932 全場（`qa207/won_stage207.json`）：**12／12 PASS**，揭曉「得獎！最佳新人獎：《冬日暖歌賀歲合唱》」，亮度差 **+51.0**（148.7 vs 97.7，門檻 ≥12），B2 frame y143／canvas 366、B3 重疊 0、C3 scroll 458＝client 458、零 pageerror。Won 分支缺口已補，唔再係殘留。
 - 檔案：QA 新增 `qa207/won_sweep207.py`／`won_sweep207.json`／`won_stage207.py`／`won_stage207.json`／`suite_rebaseA.txt`／`suite_rebaseB.txt`；drive207.json＋9 張截圖重跑更新；won 截圖 4 張新增。
 - 檔案：code `index.html`（61466 行）；測試 `tests/test_awards207_static.py`＋上述 24 個 resync 檔；QA `qa207/`（`probe207.py`、`drive207.py`、`resync207.py`、`resync207_apply.py`＋`apply2/3/4.py`、`suite_pristineA.txt`、`suite_workB.txt`、`suite_workC.txt`、`suite_workD.txt`、`drive207.json`、`shots207/`）。
+
+## §4 落地紀錄（2026-11-14）
+- 遊戲 commit `1a9ac75`（squash merge `v20a207`，分支 HEAD `41f97e5`，rebase 上 main `8cecf7f`）；NOTES commit 本檔。
+- 線上核實：index.html **5,462,493 bytes，sha256 `ca54a4041f378e0d76a866eb346eb7d26b37b03d7e0fdc031b8f8bd7247d39b7`**，同 repo HEAD 一致（初次 curl 係舊版，Pages 部署滯後約 3 分鐘，第二次核實先一致）。
+- 重驗（rebase 後）：新測試 0 FAIL；24 個 resync＋2 logic 檔全 PASS；全套 pristine 290／13 → 工作版 291／13（+1 係本票新測試，FAIL 清單逐項相同，零回歸）；實駕重跑 5／6（5 場全 true；won 場用弱 seed 攞唔到，見 §3）；won 強 seed 全場 12／12 PASS（亮度差 +51.0）。
+- 落地次序：v205 → v206（`8b5c460`）→ **v207（`1a9ac75`）** → v208 → v209。
