@@ -115,7 +115,7 @@ hide_css = css_rule('.awd63-cards.glamour-hide')
 chk('C2 glamour-hide 改 display:none（frame 收短）', 'display:none' in hide_css)
 chk('C2 唔再 visibility:hidden 留位', 'visibility:hidden' not in hide_css)
 chk('C2 syncGlamour 仍然係單一 choke point（跟 overlay 同條件）',
-    'classList.toggle("glamour-hide", !!(b && b.id === "glamour"))' in play_fn)
+    'classList.toggle("glamour-hide", isGlam212)' in play_fn)
 chk('C2 下一 beat 恢復機制仲在（toggle，唔係單向加）',
     play_fn.count('syncGlamour(beats[') == 2)
 

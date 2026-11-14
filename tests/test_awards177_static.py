@@ -112,8 +112,8 @@ chk('v174 B2：卡列常駐 flex＋visibility 隱藏（預留高度）',
 chk('v174 B2：stagger 60＋i*180 唔郁', 'elapsed > 60 + i * 180' in play_fn)
 chk('v174 C2：glamour-hide display:none（frame 收短）',
     'display:none' in css_rule('.awd63-cards.glamour-hide'))
-chk('v174 C2：syncGlamour 單一 choke point 仲在',
-    'classList.toggle("glamour-hide", !!(b && b.id === "glamour"))' in play_fn)
+chk('v174 C2：syncGlamour 單一 choke point 仲在（v20a212 A1：改用 isGlam212 變數，跳過掣一併喺呢度開／閂）',
+    'classList.toggle("glamour-hide", isGlam212)' in play_fn)
 
 # --- 紀律守衛 ---
 chk('SAVE key 唔變（starVolunteer_map_v19w）', 'starVolunteer_map_v19w' in src)

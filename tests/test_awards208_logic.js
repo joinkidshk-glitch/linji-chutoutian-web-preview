@@ -19,7 +19,7 @@ const ASSERT_NAMES = [
   'film 次序：男配角→女配角→女主角→男主角','tv 次序同 film 一樣','ad 次序同 film 一樣',
   'music 次序：新人獎→女歌手→男歌手','未知 role 排最後（rank 9）',
   'night film 4 格，全部有 3 位 fellows','玩家格 isFocus 啱（lead_m），其餘格唔係',
-  '非玩家格 outcome gallery、得主＝fellows[0]','玩家格 nominated 得主＝winner63（陸柏言）',
+  '非玩家格 outcome gallery、得主跨格去重（首格＝fellows[0]，後格揀未贏過嗰位）','玩家格 nominated 得主＝winner63（陸柏言）',
   'open／out 成晚各一次','每格 1 個 catTitle，次序同 night 一致',
   '每格 nominee beats 數：玩家格 4、其他格 3','多格模式冇舊 names beat',
   '提名 beat caption 逐位「星：《作品》」，第一位係阿偉','nominee 欄位：idx／total／slotIdx 映射啱（阿偉 slot 1）',
@@ -134,8 +134,11 @@ ok('未知 role 排最後（rank 9）', awards208CatRank({ role:'x', gender:'m' 
 ok('night film 4 格，全部有 3 位 fellows', nightFilm.length === 4 && nightFilm.every(n=> n.fellows.length === 3));
 ok('玩家格 isFocus 啱（lead_m），其餘格唔係',
   nightFilm.filter(n=>n.isFocus).length === 1 && nightFilm[3].isFocus && !nightFilm[0].isFocus);
-ok('非玩家格 outcome gallery、得主＝fellows[0]',
-  nightFilm.slice(0, 3).every(n=> n.outcome === 'gallery' && n.winner && n.winner.star === '星1號'));
+ok('非玩家格 outcome gallery、得主跨格去重（首格＝fellows[0]，後格揀未贏過嗰位）',
+  nightFilm.slice(0, 3).every(n=> n.outcome === 'gallery') &&
+  nightFilm[0].winner && nightFilm[0].winner.star === '星1號' &&
+  nightFilm[1].winner && nightFilm[1].winner.star === '星2號' &&
+  nightFilm[2].winner && nightFilm[2].winner.star === '星3號');
 ok('玩家格 nominated 得主＝winner63（陸柏言）', nightFilm[3].winner && nightFilm[3].winner.star === '陸柏言');
 
 /* ---- (2) beat 結構：nominated film ---- */

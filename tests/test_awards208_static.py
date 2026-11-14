@@ -79,8 +79,9 @@ chk('卡片只出已宣佈嗰啲（syncCards nominee 閘）',
 chk('逐位宣佈字幕：入圍名單進度＋獎項名',
     '入圍名單' in play_fn and 'nomineeTotal' in play_fn)
 chk('轉格重建 slots／卡片／白牌，唔拆舞台（removeChild 全場只得 cleanup 一處）',
-    'buildSlots208' in play_fn and 'cardsHtmlFor208' in play_fn and 'awd181-t' in play_fn and
+    'buildSlots208' in play_fn and 'cardsInnerHtmlFor208' in play_fn and 'awd181-t' in play_fn and
     play_fn.count('removeChild') == 1)
+# v20a212 C1 根因：cardsHtmlFor208 改名 cardsInnerHtmlFor208（只回傳內層卡片，唔包容器）
 chk('轉格嗰陣卡片 on 即刻拎走（新格逐張出）', 'classList.remove("on")' in play_fn)
 chk('跳過掣 finish() 成晚完（唔係跳格）', 'skipBtn.addEventListener("click"' in play_fn and 'finish()' in play_fn)
 chk('全晚 fellows 一次過預載', 'night208.forEach(nc=> (nc.fellows' in play_fn)

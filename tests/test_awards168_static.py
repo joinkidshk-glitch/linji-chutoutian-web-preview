@@ -60,8 +60,8 @@ sg_block = play_fn[sg_i:play_fn.find('const draw', sg_i)] if sg_i >= 0 else ''  
 chk('C1 syncGlamour 在場', bool(sg_block))
 chk('C1 syncGlamour toggle 卡列 glamour-hide', 'cardsEl.classList.toggle("glamour-hide"' in sg_block)
 chk('C1 卡列 toggle 同 overlay 同條件（淨係 glamour beat）',
-    'classList.toggle("on", !!(b && b.id === "glamour"))' in sg_block
-    and 'classList.toggle("glamour-hide", !!(b && b.id === "glamour"))' in sg_block)
+    'classList.toggle("on", isGlam212)' in sg_block
+    and 'classList.toggle("glamour-hide", isGlam212)' in sg_block)
 chk('C1 cardsEl 有 null guard（gallery 冇卡列唔會爆）', 'if(cardsEl)' in sg_block)
 chk('C1 syncGlamour 註解寫明恢復機制（下一 beat 即恢復）', '下一 beat' in sg_block and '恢復' in sg_block)
 chk('C1 syncGlamour 兩個 call 位齊（init＋advance）', play_fn.count('syncGlamour(beats[') == 2)
