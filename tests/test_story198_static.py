@@ -58,7 +58,11 @@ ok('開放條件／閘唔郁', 'C6F: { route: "route_film", weekMin: 15 }' in sr
    and 'C19: { needDone: ["C18"], weekMin: 61, yearMin: 1991, seasonIn: ["春"] }' in src)
 ok('WF4 事件池唔郁（boss01 之外嘅事件唔掂）', 'wf4_ev_cha01' in src and 'wf4_ev_boss02' in src
    and 'wf4_ev_boss03' in src and 'wf4_ev_st10' in src)
-ok('WF4_CFG 機率唔郁', 'pDay:0.30, pLoc:0.20' in src)
+# v20a193 改咗頻率（用戶拍板：once 硬規則嘅數學代價，密度跌約 4 倍）——
+# v198 嗰陣嘅 0.30／0.20 已經唔係現行值；呢度釘死 v193 新值。v198 嘅保證係
+# boss01 定義／池唔郁，唔係機率唔郁。
+ok('WF4_CFG 機率跟 v193（pDay／pLoc 0.03；v198 嗰陣係 0.30／0.20）',
+   'pDay:0.03' in src and 'pLoc:0.03' in src)
 
 # --- B1：強制播優先於 WF4 地點事件 ---
 wf4 = func_body_braces(src, 'wf4TryLocEvent')

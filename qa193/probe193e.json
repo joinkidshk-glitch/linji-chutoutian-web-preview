@@ -1,0 +1,127 @@
+{
+  "A": {
+    "ok": true,
+    "titles": [
+      "化妝間借粉底",
+      "冰室門口嗰張櫈",
+      "茶客講睇場費"
+    ],
+    "days": 37,
+    "leaked": [],
+    "distinct": 3
+  },
+  "final_state": {
+    "day": 70,
+    "dateStr": null,
+    "seen": {
+      "wf4_ev_set03": 21,
+      "wf4_ev_st04": 7,
+      "wf4_ev_cha03": 2,
+      "__n": 30
+    },
+    "pending": "wf4_ev_set03",
+    "lastDay": 64
+  },
+  "probe_after_load": [
+    {
+      "fn": "contFromSlot",
+      "t": 1794579000824,
+      "day": null,
+      "pending": null
+    },
+    {
+      "fn": "runScheduleFromToday",
+      "t": 1794579000843,
+      "day": 69,
+      "pending": "wf4_ev_set03",
+      "plan": "rest"
+    },
+    {
+      "fn": "presentDueMorningPaper",
+      "t": 1794579000843,
+      "day": 69,
+      "pending": "wf4_ev_set03"
+    },
+    {
+      "fn": "aud91PresentDue",
+      "t": 1794579000843,
+      "day": 69,
+      "pending": "wf4_ev_set03"
+    },
+    {
+      "fn": "resolvePlannedDay",
+      "t": 1794579000843,
+      "day": 69,
+      "pending": "wf4_ev_set03",
+      "id": "rest"
+    },
+    {
+      "fn": "wf4DailyTick",
+      "t": 1794579000869,
+      "day": 70,
+      "pending": "wf4_ev_set03",
+      "pendingDay": 69
+    }
+  ],
+  "probe_final": [
+    {
+      "fn": "contFromSlot",
+      "t": 1794579000824,
+      "day": null,
+      "pending": null
+    },
+    {
+      "fn": "runScheduleFromToday",
+      "t": 1794579000843,
+      "day": 69,
+      "pending": "wf4_ev_set03",
+      "plan": "rest"
+    },
+    {
+      "fn": "presentDueMorningPaper",
+      "t": 1794579000843,
+      "day": 69,
+      "pending": "wf4_ev_set03"
+    },
+    {
+      "fn": "aud91PresentDue",
+      "t": 1794579000843,
+      "day": 69,
+      "pending": "wf4_ev_set03"
+    },
+    {
+      "fn": "resolvePlannedDay",
+      "t": 1794579000843,
+      "day": 69,
+      "pending": "wf4_ev_set03",
+      "id": "rest"
+    },
+    {
+      "fn": "wf4DailyTick",
+      "t": 1794579000869,
+      "day": 70,
+      "pending": "wf4_ev_set03",
+      "pendingDay": 69
+    },
+    {
+      "fn": "story165TryForcedPlay",
+      "t": 1794579018810,
+      "day": 70,
+      "pending": "wf4_ev_set03"
+    },
+    {
+      "fn": "wf4TryLocEvent",
+      "t": 1794579021271,
+      "day": 70,
+      "pending": "wf4_ev_set03",
+      "loc": "cafe_cha"
+    },
+    {
+      "fn": "story165TryForcedPlay",
+      "t": 1794579022053,
+      "day": 70,
+      "pending": "wf4_ev_set03"
+    }
+  ],
+  "errors": []
+}

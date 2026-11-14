@@ -1,0 +1,89 @@
+{
+  "errors": [],
+  "http_fail": [],
+  "cases": {
+    "A_events": {
+      "ok": true,
+      "titles": [
+        "化妝間借粉底",
+        "冰室門口嗰張櫈",
+        "茶客講睇場費"
+      ],
+      "days": 37,
+      "leaked": [],
+      "distinct": 3
+    },
+    "B_reload_seen": {
+      "ok": true,
+      "before_n": 7,
+      "after_n": 7,
+      "errors": []
+    },
+    "C_old_save": {
+      "ok": true,
+      "state": {
+        "day": 70,
+        "dateStr": null,
+        "seen": {
+          "wf4_ev_set03": 21,
+          "wf4_ev_st04": 7,
+          "wf4_ev_cha03": 2,
+          "__n": 30
+        },
+        "pending": null,
+        "lastDay": 64
+      },
+      "errors": []
+    },
+    "D_exhausted": {
+      "ok": true,
+      "wf4_titles_seen": [],
+      "state_day": 72,
+      "errors": []
+    },
+    "E_v198x193": {
+      "ok": true,
+      "entry_ok": true,
+      "closed": true,
+      "seed": {
+        "ok": true,
+        "day": 98,
+        "week": 15,
+        "open": [
+          "C6F"
+        ],
+        "pending": "wf4_ev_set03",
+        "locTries": 0
+      },
+      "state": {
+        "day": 98,
+        "dateStr": null,
+        "seen": {
+          "wf4_ev_set03": 21,
+          "__n": 21
+        },
+        "pending": null,
+        "lastDay": 95
+      },
+      "locTries": 0,
+      "story": {
+        "active": true,
+        "act191": "第 6 幕・電影線：片場跟班",
+        "nodeTitle": "角落嗰張枱"
+      },
+      "wf4title": null,
+      "c6f_done": {
+        "c6f": true
+      },
+      "errors": []
+    },
+    "errors_932": [],
+    "smoke_700": {
+      "ok": true,
+      "titles": [],
+      "errors": []
+    },
+    "errors_700": [],
+    "E_v198x193_rerun_note": "首次全 drive 嗰次 E 係 drive bug（故事喺入場嗰刻讀，讀早咗；強制播係閂 sheet 先觸發）致 FAIL；run_case_e 修正後（閂 sheet 再讀）用 drive193e.py 單獨重跑，全綠。見 drive193e_report.json。"
+  }
+}

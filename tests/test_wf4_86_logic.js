@@ -78,9 +78,9 @@ function freshS(day){
 /* (1) 事件表完整性 */
 {
   const evs = W.DAILY_EVENTS_WF4;
-  ok('事件總數 36', evs.length === 36);
+  ok('事件總數 72（v20a193 擴池）', evs.length === 72);
   ok('id 唯一', new Set(evs.map(e=>e.id)).size === evs.length);
-  ok('day/loc 各 18', evs.filter(e=>e.trig==='day').length === 18 && evs.filter(e=>e.trig==='loc').length === 18);
+  ok('day/loc 各 36（v20a193）', evs.filter(e=>e.trig==='day').length === 36 && evs.filter(e=>e.trig==='loc').length === 36);
   let schemaBad = [];
   for(const e of evs){
     if(!e.title || !e.setting || !Array.isArray(e.beats) || e.beats.length < 1 || e.beats.length > 3) schemaBad.push(e.id+':beats');
@@ -112,8 +112,9 @@ function freshS(day){
   S.dayIndex = 100; _forced = true; ok('強制日（拍攝日）唔出事件', W.wf4BaseOk() === false); _forced = false;
   _sick = true; ok('病日唔出事件', W.wf4BaseOk() === false); _sick = false;
   _locked = true; ok('已結局唔出事件', W.wf4BaseOk() === false); _locked = false;
-  S.wf4.lastDay = 99; ok('同上次觸發隔唔夠 2 日唔出', W.wf4BaseOk() === false);
-  S.wf4.lastDay = 98; ok('隔夠 2 日回復', W.wf4BaseOk() === true);
+  S.wf4.lastDay = 99; ok('同上次觸發隔唔夠 3 日唔出（v20a193 gap 3）', W.wf4BaseOk() === false);
+  S.wf4.lastDay = 98; ok('隔 2 日都唔出（v20a193 gap 3）', W.wf4BaseOk() === false);
+  S.wf4.lastDay = 97; ok('隔夠 3 日回復', W.wf4BaseOk() === true);
 }
 
 /* (3) 每日種子擲＋呈現＋後果入帳 */
@@ -147,14 +148,19 @@ function freshS(day){
 {
   S = freshS(200); _ys = { year:1991, season:'夏' }; _tier = 2;
   const st = W.wf4Ensure();
-  st.evDay['wf4_ev_st04'] = 190; // 10 日前出過
-  let pickedCool = 0;
-  for(let i = 0; i < 40; i++){ st.seen.__n = i; const p = W.wf4PickEvent('day', null); if(p && p.id === 'wf4_ev_st04') pickedCool++; }
-  ok('45 日冷卻內唔重複揀同一事件', pickedCool === 0);
-  st.evDay['wf4_ev_st04'] = 100; // 100 日前
-  let pickedAfter = 0;
-  for(let i = 0; i < 60; i++){ st.seen.__n = 100 + i; const p = W.wf4PickEvent('day', null); if(p && p.id === 'wf4_ev_st04') pickedAfter++; }
-  ok('過冷卻後可再出', pickedAfter >= 1);
+  // v20a193 once 硬規則：見過即封，唔係冷卻——就算 100 日後都唔可以再揀
+  st.seen['wf4_ev_st04'] = 1;
+  let pickedSeen = 0;
+  for(let i = 0; i < 60; i++){ st.seen.__n = i; const p = W.wf4PickEvent('day', null); if(p && p.id === 'wf4_ev_st04') pickedSeen++; }
+  ok('見過嘅事件唔再揀（once，唔係冷卻）', pickedSeen === 0);
+  S.dayIndex = 300; // 快進 100 日之後
+  let pickedLater = 0;
+  for(let i = 0; i < 60; i++){ st.seen.__n = 100 + i; const p = W.wf4PickEvent('day', null); if(p && p.id === 'wf4_ev_st04') pickedLater++; }
+  ok('100 日後都唔再出（once 係永久封印）', pickedLater === 0);
+  delete st.seen['wf4_ev_st04'];
+  let pickedFresh = 0;
+  for(let i = 0; i < 60; i++){ st.seen.__n = 200 + i; const p = W.wf4PickEvent('day', null); if(p && p.id === 'wf4_ev_st04') pickedFresh++; }
+  ok('未見過嘅事件照常可揀', pickedFresh >= 1);
   const boss01 = W.DAILY_EVENTS_WF4.find(e => e.id === 'wf4_ev_boss01');
   const boss02 = W.DAILY_EVENTS_WF4.find(e => e.id === 'wf4_ev_boss02');
   const boss03 = W.DAILY_EVENTS_WF4.find(e => e.id === 'wf4_ev_boss03');
@@ -173,8 +179,8 @@ function freshS(day){
   ok('boss01 播完設 boss_met 旗', S.wf4.flags.boss_met === true);
   // day03 moneyMax
   const day03 = W.DAILY_EVENTS_WF4.find(e => e.id === 'wf4_ev_day03');
-  S.money = 1000; ok('day03 有錢唔出', W.wf4CondOk(day03) === false);
-  S.money = 200; ok('day03 銀包見底先出', W.wf4CondOk(day03) === true);
+  S.money = 5000; ok('day03 有錢唔出（v20a193 放寬到 ≤$1000）', W.wf4CondOk(day03) === false);
+  S.money = 800; ok('day03 銀包得返幾百先出（v20a193 放寬）', W.wf4CondOk(day03) === true);
   // home01 stressMin
   const home01 = W.DAILY_EVENTS_WF4.find(e => e.id === 'wf4_ev_home01');
   S.stress = 30; ok('home01 壓力低唔出', W.wf4CondOk(home01) === false);

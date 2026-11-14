@@ -84,14 +84,14 @@ function imgOf(stageHtml){
   return { cls:m[1], src:m[2], fallbacks:m[3], style:m[4] };
 }
 
-/* ---- (1) 盤點：36 事件，8 單新路徑（只得阿偉），28 單舊路徑 ---- */
+/* ---- (1) 盤點：72 事件，8 單新路徑（只得阿偉），64 單舊路徑（v20a193 新事件唔用阿偉做講者） ---- */
 {
-  ok('WF4 事件總數 36', evs.length === 36);
+  ok('WF4 事件總數 72（v20a193）', evs.length === 72);
   const routed = evs.map(e => ({ id:e.id, on:wf4OnTableIds108(e) }));
   const newIds = routed.filter(r => r.on.length).map(r => r.id).sort();
   ok('新路徑 8 單＝cha02/home01/st01/st03/boss01/boss02/boss03/day02',
     JSON.stringify(newIds) === JSON.stringify(NEW108.slice().sort()));
-  ok('舊路徑 28 單', routed.filter(r => !r.on.length).length === 28);
+  ok('舊路徑 64 單（v20a193：28 舊＋36 新，全部冇阿偉講者）', routed.filter(r => !r.on.length).length === 64);
   ok('新路徑 onTable 全部只含 awi（冇第二個全身講者）',
     routed.every(r => r.on.every(id => id === 'awi')));
   ok('三人事件（boss01-03）同樣只出阿偉獨角（唔會多角輪換出假人）',

@@ -19,9 +19,10 @@ ok('產品 ?v= 不變', 'v20a10' in src)
 
 # 事件池本體
 ok('DAILY_EVENTS_WF4 表存在', 'const DAILY_EVENTS_WF4 = [' in src)
-ok('事件數 36', len(re.findall(r'id:"wf4_ev_', src)) == 36)
-ok('WF4_CFG 頻率參數（pDay .30／pLoc .20／gap 2／repeat 45）',
-   'pDay:0.30' in src and 'pLoc:0.20' in src and 'gapDays:2' in src and 'repeatDays:45' in src)
+ok('事件數 72（v20a193 擴池 36→72）', len(re.findall(r'id:"wf4_ev_', src)) == 72)
+ok('WF4_CFG 頻率參數（v20a193：pDay .03／pLoc .03／gap 3，repeatDays 已刪）',
+   'pDay:0.03' in src and 'pLoc:0.03' in src and 'gapDays:3' in src and 'repeatDays:45' not in src
+   and 'repeatDays' not in src[src.find('const WF4_CFG'):src.find('const WF4_CFG')+120])
 ok('事件池唔經 StoryPlay applyChoice（唔污染 story 狀態）',
    'function wf4PlayEvent' in src and 'wf4ApplyFx' in src)
 

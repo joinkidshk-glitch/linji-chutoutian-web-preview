@@ -21,11 +21,11 @@ table = {}
 if m:
     for em in re.finditer(r'(wf4_ev_\w+):"([^"]+)"', m.group(1)):
         table[em.group(1)] = em.group(2)
-ok('覆寫表 18 單（18 單無 loc，全覆蓋，v20a146 補埋 st05／st08）', len(table) == 18)
+ok('覆寫表 36 單（36 單無 loc，全覆蓋，v20a193 新 day 事件 18 單入埋表）', len(table) == 36)
 
 # --- 全部事件 id（DAILY_EVENTS_WF4） ---
 ev_ids = set(re.findall(r'id:"(wf4_ev_\w+)"', html))
-ok('DAILY_EVENTS_WF4 36 單', len(ev_ids) == 36)
+ok('DAILY_EVENTS_WF4 72 單（v20a193）', len(ev_ids) == 72)
 ok('覆寫表全部 id 都係真事件', table and all(k in ev_ids for k in table))
 ok('覆寫表無重複 id', len(table) == len(set(table)))
 
@@ -38,9 +38,9 @@ if arr:
         im = re.match(r'\{\s*id:"(wf4_ev_\w+)"', chunk)
         if im and 'loc:"' not in chunk:
             nolocev.add(im.group(1))
-ok('無 loc 事件 18 單', len(nolocev) == 18)
+ok('無 loc 事件 36 單（v20a193：18 舊＋18 新 day）', len(nolocev) == 36)
 leftover = set()
-ok('18 單無 loc＝18 覆寫＋0 留灰（v20a146 補埋 st05 卡拉OK／st08 的士）',
+ok('36 單無 loc＝36 覆寫＋0 留灰（v20a193 新 day 事件入埋表）',
    nolocev == set(table) | leftover)
 ok('st05／st08 喺覆寫表（v20a146 補圖，無留灰）',
    {'wf4_ev_st05', 'wf4_ev_st08'} <= set(table))

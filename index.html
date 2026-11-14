@@ -40530,7 +40530,7 @@ const DAILY_EVENTS_WF4 = [
   ] },
 { id:"wf4_ev_home01", grp:"屋企", trig:"day",
   title:"阿媽煲老火湯", setting:"屋企，夜晚十一點幾返到門口",
-  cond:{ stressMin:55 },
+  cond:{ stressMin:45 },
   beats:[
     {sp:"阿媽", tx:"返嚟喇？煲咗湯喺廚房，自己攞嚟飲，唔好嘥咗佢。"},
     {sp:"阿偉", tx:"媽，你又唔瞓等我。啖湯落肚，成身啲攰好似散咗一半。"}
@@ -40734,7 +40734,7 @@ const DAILY_EVENTS_WF4 = [
   ] },
 { id:"wf4_ev_day03", grp:"日常", trig:"day",
   title:"銀包見底嗰晚", setting:"屋企樓下，買完餸企喺士多門口",
-  cond:{ moneyMax:300 },
+  cond:{ moneyMax:1000 },
   beats:[
     {sp:"旁白", tx:"阿偉摸下銀包，得返幾張散紙，距離出糧仲有成個禮拜。士多啲罐頭排到整整齊齊，佢計嚟計去都係唔夠。"},
     {sp:"旁白", tx:"電話亭就喺隔籬。打返屋企，阿媽實會問佢夠唔夠錢使——佢企喺度，諗咗好耐。"}
@@ -40745,22 +40745,185 @@ const DAILY_EVENTS_WF4 = [
   ] },
 { id:"wf4_ev_day04", grp:"日常", trig:"day",
   title:"阿婆嗰碗涼茶", setting:"屋企樓下涼茶舖，夜晚收工返到",
-  cond:{ stressMin:75 },
+  cond:{ stressMin:60 },
   beats:[
     {sp:"旁白", tx:"阿偉收工返到樓下，面青口唇白，企喺涼茶舖前面發吽哣。賣涼茶嘅阿婆望佢兩眼，舀咗碗廿四味推埋嚟。"},
     {sp:"涼茶阿婆", tx:"飲咗佢啦，後生仔。你嗰身火，再唔降下，瞓都瞓唔着。錢就唔使喇，你阿媽成日幫襯我㗎。"}
   ],
   fx:{ stress:-7, stamina:2 },
-  tail:"碗涼茶苦到入心，阿偉飲晒，抹下嘴。嗰晚返上樓，佢真係一覺瞓到天光。" }
+  tail:"碗涼茶苦到入心，阿偉飲晒，抹下嘴。嗰晚返上樓，佢真係一覺瞓到天光。" },
+{ id:"wf4_ev_day05", grp:"日常", trig:"day",
+  title:"冰室門口嗰張櫈", setting:"旺角冰室門口，晏晝等位嗰陣",
+  beats:[ {sp:"旁白", tx:"冰室門口得返一張櫈，阿偉啱啱想坐低，隔籬個阿伯拎住份報紙行埋嚟，望住佢笑。"}, {sp:"冰室阿伯", tx:"後生仔，你坐啦，我企慣㗎。呢份報紙借你睇，今日啲戲院廣告，幾大版下。"} ],
+  choices:[ { label:"坐低一齊睇報紙", fx:{ stress:-2, charm:1 }, out:"兩個人一齊睇報紙，阿伯逐格戲同佢講邊套好睇，講到好似自己拍過咁。"}, { label:"讓返張櫈畀阿伯", fx:{ popularity:1, stress:-1 }, out:"阿伯笑住坐低，話後生仔識做，順手請佢飲咗杯凍奶茶。"} ] },
+{ id:"wf4_ev_day06", grp:"日常", trig:"day",
+  title:"大排檔嗰煲及第粥", setting:"深水埗大排檔，夜晚收工後",
+  cond:{ tierMin:1 },
+  beats:[ {sp:"旁白", tx:"收工嗰陣肚餓到打鼓，阿偉行入大排檔，檔主認得佢係前排嗰個後生，話今日及第粥啱啱煲好。"}, {sp:"檔主", tx:"呢煲粥我留咗碗畀你㗎，食落去暖笠笠，聽日開工都精神啲。"} ],
+  choices:[ { label:"慢慢食埋成碗", fx:{ stamina:2, stress:-2 }, out:"粥暖到入心，阿偉食到額頭出汗，檔主話佢識食，聽日再嚟。"}, { label:"打包返屋企同阿媽食", fx:{ money:-5, charm:1 }, out:"阿媽見到佢打包返嚟，話仔大個識諗家，嗰晚碗粥食得特別香。"} ] },
+{ id:"wf4_ev_day07", grp:"日常", trig:"day",
+  title:"電車上面嗰段戲", setting:"港島電車上層，朝早去片場嗰程",
+  beats:[ {sp:"旁白", tx:"電車叮叮聲行過灣仔，阿偉坐喺上層，望住街景默默背對白。隔籬個婆婆忽然開口，問佢係咪拍戲嗰啲人。"}, {sp:"電車婆婆", tx:"後生仔，你背嗰啲嘢係咪戲嚟㗎？我孫女晚晚睇電視，最鍾意睇人喊戲。"} ],
+  choices:[ { label:"同婆婆講兩句戲", fx:{ popularity:1, stress:-2 }, out:"婆婆聽到眉飛色舞，話返屋企會同孫女講，今日電車遇到個做戲嘅。"}, { label:"繼續默默背對白", fx:{ acting:1, stress:1 }, out:"佢背多兩轉，落車嗰陣成段對白已經入晒腦，婆婆話佢認真，笑住揮手。"} ] },
+{ id:"wf4_ev_day08", grp:"日常", trig:"day",
+  title:"天台晾衫嗰陣風", setting:"屋邨天台，黃昏晾衫嗰陣",
+  cond:{ season:["夏","秋"] },
+  beats:[ {sp:"旁白", tx:"黃昏天台好大風，衫俾風吹到啪啪聲。阿偉上去收衫，撞到樓上個叔叔喺度整天線，望住成片屋邨發吽哣。"}, {sp:"天台叔叔", tx:"呢度望出去，成個香港都係人。後生仔，你喺邊度做嘢㗎？做戲好唔好搵食呀？"} ],
+  choices:[ { label:"同叔叔吹下水", fx:{ stress:-3 }, out:"兩個人企喺天台吹咗陣水，風涼涼哋，阿偉落樓嗰陣成個人鬆晒。"}, { label:"幫手扶住條天線", fx:{ stamina:-1, popularity:1 }, out:"佢幫手扶住天線等叔叔扭實，叔叔話佢好手勢，轉頭請佢食咗個橙。"} ] },
+{ id:"wf4_ev_day09", grp:"日常", trig:"day",
+  title:"唱片舖試聽嗰首歌", setting:"旺角唱片舖，晏晝行過嗰陣",
+  beats:[ {sp:"旁白", tx:"唱片舖門口播住新歌，幾個後生企喺度聽。店員見阿偉企得耐，塞副耳筒畀佢，話呢隻碟啱啱返貨。"}, {sp:"唱片店員", tx:"呢首歌好紅㗎，啲客成日嚟問。你聽下，係咪啱你哋呢代人？"} ],
+  choices:[ { label:"試聽埋成隻碟", fx:{ stress:-2, iq:1 }, out:"佢聽到入晒神，店員話佢識聽歌，臨走送咗張歌詞卡畀佢。"}, { label:"問下有冇卡拉OK版", fx:{ charm:1 }, out:"店員話卡拉OK版要遲啲先返，阿偉話返到嚟再買，店員笑住話幫佢留返隻。"} ] },
+{ id:"wf4_ev_day10", grp:"日常", trig:"day",
+  title:"巴士上層望住個海", setting:"過海巴士上層，黃昏返屋企嗰程",
+  beats:[ {sp:"旁白", tx:"巴士行過海底隧道，上面係維港。阿偉坐喺上層望住個海，諗起今日片場嗰場戲，到底邊度做得唔夠好。"}, {sp:"巴士阿姐", tx:"後生仔，你成日望住個海發吽哣，係咪諗緊心事呀？唔好諗咁多啦，返屋企食飯先啦。"} ],
+  choices:[ { label:"笑住話冇事", fx:{ stress:-2 }, out:"佢笑住話冇事，落車嗰陣步伐輕咗，個海嘅風好似將啲煩惱吹走咗啲。"}, { label:"問阿姐今日塞唔塞車", fx:{ popularity:1 }, out:"阿姐話今日算順，阿偉話多謝佢揸得穩陣，阿姐笑到見牙唔見眼。"} ] },
+{ id:"wf4_ev_day11", grp:"日常", trig:"day",
+  title:"茶樓飲早茶聽到消息", setting:"油麻地茶樓，朝早飲早茶",
+  cond:{ yearMin:1991 },
+  beats:[ {sp:"旁白", tx:"茶樓朝早好嘈，啲阿叔一邊飲茶一邊講行內消息。隔籬枱講起邊間公司請人，邊個劇組開新戲，阿偉豎起耳仔聽。"}, {sp:"茶樓阿叔", tx:"聽講嗰邊有個新戲開，搵緊後生面孔。你做開呢行，唔好淨係等電話，要周圍行下先得㗎。"} ],
+  choices:[ { label:"認真記低啲消息", fx:{ iq:1, stress:1 }, out:"佢將啲消息記喺心入面，返到屋企再諗下邊啲啱自己，唔好白行一趟。"}, { label:"同阿叔斟多壺茶", fx:{ money:-8, popularity:1 }, out:"阿叔話佢識做人，斟茶嗰陣又漏多兩句，話邊個監製最錫新人。"} ] },
+{ id:"wf4_ev_day12", grp:"日常", trig:"day",
+  title:"街市買餸撞到熟人", setting:"旺角街市，朝早買餸嗰陣",
+  cond:{ tierMin:1 },
+  beats:[ {sp:"旁白", tx:"阿偉幫阿媽去街市買餸，行到菜檔嗰陣，有個師奶望住佢，話佢好面善，好似喺電視見過。"}, {sp:"街市師奶", tx:"你係咪電視嗰個後生呀？我成日睇嗰套劇㗎，你嗰場喊戲，我喊埋一份呀！"} ],
+  choices:[ { label:"多謝師奶支持", fx:{ popularity:1, charm:1 }, out:"師奶開心到不得了，話返屋企同屋企人講，今日街市撞到電視上面嗰個。"}, { label:"幫師奶揀埋啲餸", fx:{ stress:-2 }, out:"佢幫師奶揀咗啲新鮮嘅菜，師奶話佢又靚仔又乖，臨走塞咗個橙畀佢。"} ] },
+{ id:"wf4_ev_day13", grp:"日常", trig:"day",
+  title:"電話亭入面嗰個長途", setting:"街角電話亭，夜晚九點幾",
+  cond:{ stressMin:45 },
+  beats:[ {sp:"旁白", tx:"阿偉排咗成粒鐘電話亭，終於輪到佢。佢打去嗰邊搵屋企人，電話接通嗰下，喉嚨忽然哽住，唔知講咩好。"}, {sp:"電話嗰邊", tx:"偉仔，係咪你呀？嗰邊天氣凍唔凍呀？做嘢辛唔辛苦呀？唔好成日捱夜呀。"} ],
+  choices:[ { label:"報喜不報憂", fx:{ stress:-4, money:-15 }, out:"佢話呢邊一切都好，收線嗰陣眼濕濕，但心入面暖笠笠，覺得捱得落去。"}, { label:"照直講最近好攰", fx:{ stress:-2, charm:1 }, out:"嗰邊靜咗陣，話攰就返屋企唞下先，唔好死頂。阿偉話知道，掛線嗰陣笑咗出嚟。"} ] },
+{ id:"wf4_ev_day14", grp:"日常", trig:"day",
+  title:"Call機密碼簿唔見咗", setting:"片場休息區，臨開工嗰陣",
+  cond:{ yearMin:1991 },
+  beats:[ {sp:"旁白", tx:"阿偉袋住嗰本傳呼密碼簿唔見咗，成朝心掛掛，驚邊個覆台搵佢覆唔到。臨記頭行埋嚟，話啱啱喺更紙堆搵返。"}, {sp:"臨記頭", tx:"你本簿仔喺更紙下面，唔使急。我幫你抄多份留底，下次唔見都有得查。"} ],
+  choices:[ { label:"即刻抄多份留底", fx:{ iq:1, stress:-1 }, out:"佢抄多份收好，臨記頭話佢醒目，話呢行最怕就係斷咗聯絡。"}, { label:"多謝臨記頭請食嘢", fx:{ money:-10, popularity:1 }, out:"佢請臨記頭飲咗杯茶，臨記頭話後生仔識做人，第日有好更會諗起佢。"} ] },
+{ id:"wf4_ev_day15", grp:"日常", trig:"day",
+  title:"銀包得返幾蚊", setting:"茶餐廳門口，埋單嗰陣",
+  cond:{ moneyMax:1000 },
+  beats:[ {sp:"旁白", tx:"阿偉埋單嗰陣先發現銀包得返幾蚊，面都紅埋。收銀阿姐望佢一眼，話唔緊要，記住數先，下次返嚟先畀。"}, {sp:"收銀阿姐", tx:"唔使怕醜，個個都有手緊嗰陣。我寫低你個名，你下次嚟先畀返我，唔收你利息㗎。"} ],
+  choices:[ { label:"應承下次一定畀返", fx:{ stress:2, charm:1 }, out:"佢認真應承，阿姐話信得過佢，臨走仲叫佢唔好為咗幾蚊唔開心。"}, { label:"即刻諗下邊度慳返", fx:{ iq:1, stress:1 }, out:"佢一路行一路計數，諗住呢幾日慳啲使，等出糧嗰日就鬆返。"} ] },
+{ id:"wf4_ev_day16", grp:"日常", trig:"day",
+  title:"瞓唔着嗰晚數星", setting:"屋企天台，夜晚瞓唔着走上去",
+  cond:{ stressMin:45 },
+  beats:[ {sp:"旁白", tx:"阿偉瞓唔着，走上天台數星。夜晚嘅屋邨好靜，得返啲冷氣機聲。佢望住天，諗起細個嗰陣阿爸話，星上面都有人望返落嚟。"}, {sp:"樓下阿婆", tx:"後生仔，咁夜仲唔瞓呀？瞓唔着就望下天啦，天上面啲星，望耐咗，個人就會靜返落嚟。"} ],
+  choices:[ { label:"繼續望住啲星", fx:{ stress:-4 }, out:"佢望到眼都攰，落樓嗰陣成個人鬆晒，嗰晚終於瞓得着。"}, { label:"落樓沖杯熱奶瞓", fx:{ stamina:1, stress:-2 }, out:"佢沖咗杯熱奶，慢慢飲，飲完眼皮就打架，瞓落床冇耐就瞓着咗。"} ] },
+{ id:"wf4_ev_st12", grp:"街頭", trig:"day",
+  title:"廟街夜市嗰檔煲仔飯", setting:"廟街夜市，夜晚十點幾",
+  cond:{ season:["秋","冬"] },
+  beats:[ {sp:"旁白", tx:"廟街夜晚人山人海，阿偉收工行過，煲仔飯檔啲飯焦香傳到老遠。檔主見佢企喺度，話坐低食碗，唔使企喺度聞。"}, {sp:"煲仔飯檔主", tx:"我啲煲仔飯係全條街最香㗎，食過就返唔到轉頭。你坐低，慢慢食，唔使急。"} ],
+  choices:[ { label:"坐低食碗煲仔飯", fx:{ money:-12, stamina:2, stress:-2 }, out:"飯焦脆到卜卜聲，阿偉食到舐舐脷，檔主話佢識食，聽晚再嚟。"}, { label:"打包返屋企慢慢食", fx:{ money:-12, charm:1 }, out:"佢打包返屋企，阿媽話煲仔飯好香，兩個人分嚟食，食到成屋都係飯香。"} ] },
+{ id:"wf4_ev_st13", grp:"街頭", trig:"day",
+  title:"渡輪上面嗰陣海風", setting:"天星小輪上層，朝早過海嗰程",
+  beats:[ {sp:"旁白", tx:"渡輪慢慢離開碼頭，海風吹到好舒服。阿偉企喺船邊，望住兩岸啲樓，諗起自己由細到大，都係喺呢個海上面來來去去。"}, {sp:"渡輪阿伯", tx:"後生仔，你又過海呀？呢隻船我坐咗幾十年，風浪大細都見過。做人同坐船一樣，唔好怕搖。"} ],
+  choices:[ { label:"同阿伯吹下海風", fx:{ stress:-3 }, out:"兩個人吹住海風，船到碼頭嗰陣，阿偉覺得成個人都清醒晒。"}, { label:"望住個海背對白", fx:{ acting:1 }, out:"佢望住個海背對白，船浪聲做背景，背嗰陣特別順，好似個海幫佢打拍子咁。"} ] },
+{ id:"wf4_ev_st14", grp:"街頭", trig:"day",
+  title:"卡拉OK嗰晚有人點錯歌", setting:"佐敦卡拉OK，夜晚同班臨記去唱歌",
+  cond:{ yearMin:1991 },
+  beats:[ {sp:"旁白", tx:"卡拉OK房入面，班臨記輪住唱歌。有個後生點錯歌，播咗首慢歌，成房人即刻起哄，話要阿偉頂上救場。"}, {sp:"臨記後生仔", tx:"偉哥，你上去啦！呢首歌得你先唱得掂，我哋啲音全部走晒，靠你喇！"} ],
+  choices:[ { label:"拎起支咪唱埋佢", fx:{ stage:1, popularity:1, stress:1 }, out:"佢一開口，成房人靜晒，唱到尾聲嗰陣，班臨記拍晒手，話佢唱得好過原唱。"}, { label:"推隔籬嗰個上去頂", fx:{ charm:1, stress:-1 }, out:"佢推咗隔籬嗰個上去，嗰個唱到甩晒音，成房人笑到碌地，阿偉都笑到停唔到。"} ] },
+{ id:"wf4_ev_st15", grp:"街頭", trig:"day",
+  title:"的士上面聽到嘅電台", setting:"的士車廂，夜晚收工返屋企嗰程",
+  cond:{ tierMax:1 },
+  beats:[ {sp:"旁白", tx:"的士電台播住點唱節目，司機跟住哼。阿偉坐喺後座，聽到主持人話今晚有個聽眾點歌畀做臨記嘅後生，祝佢早日上位。"}, {sp:"的士司機", tx:"喂，後生仔，嗰個點歌係咪講你呀？做臨記都俾人點歌，你好嘢喎，我載咁多年客都未聽過。"} ],
+  choices:[ { label:"笑住話可能係朋友", fx:{ stress:-2, charm:1 }, out:"佢笑住話可能係朋友點，司機話有朋友咁支持，實會紅，聽到阿偉心暖暖。"}, { label:"跟住電台哼埋一份", fx:{ stage:1, stress:-1 }, out:"佢跟住哼，司機話佢把聲唔錯，落車嗰陣仲話下次再載佢。"} ] },
+{ id:"wf4_ev_st16", grp:"街頭", trig:"day",
+  title:"返屋企樓下撞到細佬", setting:"屋邨樓下，黃昏返到屋企嗰陣",
+  cond:{ yearMin:1991 },
+  beats:[ {sp:"旁白", tx:"阿偉返到屋邨樓下，撞到樓下嗰個細佬仔，拎住個波，話今日踢波輸咗，唔開心。細佬望住佢，問佢做戲輸唔輸得。"}, {sp:"樓下細佬", tx:"偉哥，你做戲嗰陣有冇輸過呀？我今日輸咗波，成隊人都話我唔掂，你話我聽日仲踢唔踢好呀？"} ],
+  choices:[ { label:"同細佬講輸咗唔緊要", fx:{ charm:1, stress:-2 }, out:"佢話輸咗先會識贏，細佬聽完眼都光埋，話聽日一定會贏返，抱住個波跑返上樓。"}, { label:"陪細佬踢返陣波", fx:{ stamina:-2, popularity:1 }, out:"佢陪細佬踢咗陣波，細佬入咗球，開心到跳起，話偉哥係佢哋嗰隊嘅福星。"} ] },
+{ id:"wf4_ev_st17", grp:"街頭", trig:"day",
+  title:"涼茶舖嗰碗廿四味", setting:"屋企樓下涼茶舖，下晝收工返到",
+  cond:{ stressMin:45 },
+  beats:[ {sp:"旁白", tx:"阿偉收工返到樓下，成身都係汗，涼茶舖嗰碗廿四味望落去好吸引。阿婆話佢今日面色唔好，飲碗降下火先。"}, {sp:"涼茶阿婆", tx:"後生仔，你呢排捱得太多喇，飲碗廿四味啦，苦啲，但飲完個人會舒服啲，瞓覺都好瞓啲。"} ],
+  choices:[ { label:"一啖飲晒成碗", fx:{ stress:-5, stamina:1 }, out:"碗涼茶苦到佢皺晒眉，但飲完成個人涼浸浸，返上樓嗰陣腳步都輕咗。"}, { label:"慢慢飲同阿婆傾偈", fx:{ stress:-3, popularity:1 }, out:"佢慢慢飲，同阿婆傾咗陣偈，阿婆話佢識飲，臨走塞咗粒話梅畀佢解苦。"} ] },
+{ id:"wf4_ev_set11", grp:"片場", trig:"loc", loc:"film_lion",
+  title:"廠房門口嗰班車", setting:"獅子山製片廠門口，清早等車嗰陣",
+  beats:[ {sp:"旁白", tx:"清早廠房門口，班臨記等緊嗰班車。有個後生第一次嚟，唔知企邊度，阿偉揮手叫佢埋嚟，等陣一齊上車。"}, {sp:"新臨記", tx:"唔該晒你呀，我第一次嚟呢邊，驚企錯位。聽講今日拍武打場，我哋要企邊度呀？"} ],
+  choices:[ { label:"同佢講下企位", fx:{ popularity:1, stress:-1 }, out:"佢同新臨記講咗企位同注意事項，新臨記話多謝佢，成程車都唔再騰騰震。"}, { label:"一齊上車坐埋一齊", fx:{ charm:1 }, out:"兩個人坐埋一齊，傾住今日嗰場戲，車到廠嗰陣，已經熟到似識咗好耐。"} ] },
+{ id:"wf4_ev_set12", grp:"片場", trig:"loc", loc:"film_lion",
+  title:"道具房嗰把遮", setting:"獅子山製片廠道具房，晏晝等埋位嗰陣",
+  cond:{ season:["夏","秋"] },
+  beats:[ {sp:"旁白", tx:"晏晝落大雨，道具房門口擺住把大遮。阿偉攞遮嗰陣，道具大叔話呢把遮跟咗劇組好多年，遮過唔少大明星。"}, {sp:"道具大叔", tx:"呢把遮好有歷史㗎，邊個攞過都紅。你攞去用下，沾下喜氣，話唔定聽日就輪到你。"} ],
+  choices:[ { label:"攞遮去幫手擋雨", fx:{ popularity:1, stamina:-1 }, out:"佢攞遮去幫器材擋雨，道具大叔話佢識做，話把遮今日算係搵啱人。"}, { label:"問大叔講下把遮嘅故事", fx:{ iq:1, stress:-1 }, out:"大叔講起把遮遮過邊啲人，講到眉飛色舞，阿偉聽到入晒神，連雨停咗都唔知。"} ] },
+{ id:"wf4_ev_set13", grp:"片場", trig:"loc", loc:"film_cotton",
+  title:"化妝間嗰面鏡", setting:"紅棉影業化妝間，開鏡前嗰陣",
+  beats:[ {sp:"旁白", tx:"化妝間嗰面鏡好大，照到成個人。化妝師幫阿偉補妝嗰陣，話佢塊面好上鏡，唔使點化都得。"}, {sp:"化妝師", tx:"你塊面生得好，燈光一打落嚟就精神。記住，入鏡之前望下鏡，話畀自己聽，今日一定得。"} ],
+  choices:[ { label:"望住鏡同自己打氣", fx:{ stage:1, stress:-1 }, out:"佢望住鏡深呼吸，入鏡嗰陣成個人定晒，化妝師喺鏡頭後面豎起手指公。"}, { label:"問化妝師點樣先上鏡", fx:{ looks:1, iq:1 }, out:"化妝師教佢點樣側面先好睇，佢記低，話下次拍戲會試下。"} ] },
+{ id:"wf4_ev_set14", grp:"片場", trig:"loc", loc:"film_cotton",
+  title:"收工嗰陣嗰句說話", setting:"紅棉影業廠房門口，夜晚收工嗰陣",
+  beats:[ {sp:"旁白", tx:"收工嗰陣，副導演行過阿偉身邊，停低望佢一眼，話今日嗰場戲佢做得幾好，叫佢繼續努力。"}, {sp:"副導演", tx:"今日嗰場，你做得幾好。唔好話我冇提你，呢行最緊要係俾人記住，記住你嗰個樣，記住你嗰份心。"} ],
+  choices:[ { label:"認真多謝副導演", fx:{ fame:1, stress:-1 }, out:"佢認真多謝，副導演拍下佢膊頭，話聽日嗰場都係佢，叫佢早啲返嚟。"}, { label:"問下聽日有冇戲", fx:{ charm:1 }, out:"副導演話聽日有場戲啱佢，叫佢準時到，阿偉開心到差啲跳起。"} ] },
+{ id:"wf4_ev_set15", grp:"片場", trig:"loc", loc:"film_harbour",
+  title:"碼頭邊嗰場夜戲", setting:"維港電影外景碼頭，夜晚拍緊夜戲",
+  beats:[ {sp:"旁白", tx:"碼頭邊夜晚好靜，得返海浪聲同燈光。阿偉企喺碼頭邊等埋位，望住對岸啲燈，忽然覺得呢個景好靚。"}, {sp:"場務", tx:"呢場夜戲好重要㗎，燈光師話呢個位最靚。你企好啲，唔好望鏡頭，望住個海就得。"} ],
+  choices:[ { label:"望住個海入戲", fx:{ acting:1, stress:1 }, out:"佢望住個海，成個人靜落嚟，導演嗌開始嗰陣，佢嗰場戲一take就過。"}, { label:"幫手望住啲器材", fx:{ popularity:1, stamina:-1 }, out:"佢幫手望住啲器材，唔俾海風吹跌，場務話佢細心，收工嗰陣多謝咗佢。"} ] },
+{ id:"wf4_ev_set16", grp:"片場", trig:"loc", loc:"film_harbour",
+  title:"道具船上面嗰陣風", setting:"維港電影道具船，晏晝拍緊外景",
+  cond:{ season:["春","夏"] },
+  beats:[ {sp:"旁白", tx:"道具船喺海上面搖下搖下，阿偉企喺船頭，風吹到衫都飛起。船家話呢陣風啱啱好，拍出嚟一定靚。"}, {sp:"船家", tx:"後生仔，企穩啲呀，呢陣風大，唔好跌落海呀。拍戲啫，唔使咁搏命㗎。"} ],
+  choices:[ { label:"企穩繼續拍", fx:{ stage:1, stress:2 }, out:"佢企穩，風吹住佢，嗰場戲拍出嚟特別有氣勢，導演話呢個鏡頭留得。"}, { label:"坐低慢慢等風細啲", fx:{ stress:-2, stamina:1 }, out:"佢坐低等風細，船家話佢醒目，話拍戲最緊要安全，唔好為咗一場戲搏命。"} ] },
+{ id:"wf4_ev_set17", grp:"片場", trig:"loc", loc:"tvb_longmen",
+  title:"錄影廠門口嗰班粉絲", setting:"星河電視台錄影廠門口，晏晝收工嗰陣",
+  cond:{ tierMin:1 },
+  beats:[ {sp:"旁白", tx:"錄影廠門口企住班粉絲，拎住紙筆等簽名。阿偉行出嚟嗰陣，有個女仔細細聲問，佢係咪嗰套劇入面嗰個後生。"}, {sp:"粉絲女仔", tx:"你係咪嗰套劇嗰個呀？我晚晚睇㗎，你嗰場喊戲，我喊埋一份。可唔可以簽個名呀？"} ],
+  choices:[ { label:"認真簽名多謝佢", fx:{ popularity:1, fame:1 }, out:"佢認真簽名，女仔開心到跳起，話返屋企會將個簽名貼喺牆上面。"}, { label:"同班粉絲影張相", fx:{ charm:1, popularity:1 }, out:"班粉絲圍住佢影相，個個笑到見牙唔見眼，阿偉話下次再見。"} ] },
+{ id:"wf4_ev_set18", grp:"片場", trig:"loc", loc:"tvb_longmen",
+  title:"新聞部嗰陣騷動", setting:"星河電視台新聞部，走廊行過嗰陣",
+  beats:[ {sp:"旁白", tx:"新聞部走廊忽然騷動，有人話有單大新聞啱啱入嚟，成班人跑嚟跑去。阿偉企喺一邊，望住啲人忙到飛起。"}, {sp:"新聞部職員", tx:"唔好意思，借過借過，今日有大新聞，成個部門都忙到飛起。你係邊組㗎？唔好企喺走廊中間呀。"} ],
+  choices:[ { label:"即刻讓開畀佢哋過", fx:{ popularity:1 }, out:"佢即刻讓開，職員話佢識做，跑過嗰陣仲同佢講咗聲唔該。"}, { label:"企埋一邊聽下咩事", fx:{ iq:1, stress:1 }, out:"佢聽到啲消息，雖然唔關佢事，但對呢個圈嘅嘢，又識多咗少少。"} ] },
+{ id:"wf4_ev_set19", grp:"片場", trig:"loc", loc:"tvb_longmen",
+  title:"化妝間借粉底", setting:"星河電視台化妝間，開鏡前嗰陣",
+  beats:[ {sp:"旁白", tx:"化妝間入面，隔籬個演員話粉底用晒，問阿偉借唔借到。阿偉望下自己嗰盒，話借畀佢用住先，唔使客氣。"}, {sp:"隔籬演員", tx:"唔該晒你呀，我今日趕住出鏡，粉底用晒都唔知。借你嗰盒用下先，聽日買返盒新嘅還你。"} ],
+  choices:[ { label:"大方借畀佢用", fx:{ popularity:1, charm:1 }, out:"嗰個演員話佢好人，化完妝話下次有戲會介紹佢，兩個人就咁熟咗。"}, { label:"教佢點樣慳住用", fx:{ iq:1 }, out:"佢教嗰個演員點樣慳住用，兩個人傾起化妝經，傾到開鏡都唔捨得停。"} ] },
+{ id:"wf4_ev_set20", grp:"片場", trig:"loc", loc:"tvb_harbour",
+  title:"清水灣嗰陣海風", setting:"海港廣播清水灣廠房外，晏晝唞氣嗰陣",
+  beats:[ {sp:"旁白", tx:"清水灣廠房出面，海風吹到好舒服。阿偉行出嚟唞氣，望住個海，覺得呢度同市區唔同，靜到可以聽到自己呼吸。"}, {sp:"廠房阿姐", tx:"呢度啲風好舒服㗎，成日喺度做嘢，個人都靜啲。你唞陣啦，唔好成日匿喺廠入面。"} ],
+  choices:[ { label:"坐喺出面唞陣", fx:{ stress:-3, stamina:1 }, out:"佢坐喺出面唞咗陣，海風吹到成個人鬆晒，返入廠嗰陣精神好多。"}, { label:"同阿姐吹下水", fx:{ popularity:1, stress:-1 }, out:"阿姐話佢識嘆，兩個人吹咗陣水，阿姐話呢度啲海風，係免費嘅福利嚟。"} ] },
+{ id:"wf4_ev_set21", grp:"片場", trig:"loc", loc:"tvb_harbour",
+  title:"廣播室嗰個電話", setting:"海港廣播廣播室，走廊行過嗰陣",
+  beats:[ {sp:"旁白", tx:"廣播室走廊，電話響個唔停。有個職員跑出嚟，話有個聽眾打嚟點歌，點畀嗰個做臨記嘅後生，話佢嗰場戲做得好。"}, {sp:"廣播室職員", tx:"喂，後生仔，嗰個點歌係咪講你呀？聽眾話你嗰場戲做得好，點首歌畀你，話你聽日一定得。"} ],
+  choices:[ { label:"多謝嗰位聽眾", fx:{ popularity:1, stress:-2 }, out:"佢話多謝，職員話會幫佢轉達，嗰晚佢瞓覺嗰陣，耳邊仲係嗰首歌。"}, { label:"問下係邊首歌", fx:{ charm:1 }, out:"職員話係首慢歌，阿偉話啱聽，職員笑住話佢有品味。"} ] },
+{ id:"wf4_ev_set22", grp:"片場", trig:"loc", loc:"tvb_harbour",
+  title:"飯堂嗰碟叉燒", setting:"海港廣播廠房飯堂，放飯嗰陣",
+  beats:[ {sp:"旁白", tx:"飯堂放飯，今日嗰碟叉燒特別靚。阿偉排隊嗰陣，前面個師傅話佢排得啱，今日啲叉燒係新鮮出爐，食落去一定正。"}, {sp:"飯堂師傅", tx:"後生仔，你今日有口福喇，呢碟叉燒啱啱出爐，我俾多兩舊你，食飽啲先有力氣開工。"} ],
+  choices:[ { label:"多謝師傅慢慢食", fx:{ stamina:2, stress:-1 }, out:"叉燒香到不得了，阿偉食到舐舐脷，師傅話佢識食，聽日再俾多啲佢。"}, { label:"分啲畀隔籬嗰個", fx:{ popularity:1 }, out:"佢分咗啲叉燒畀隔籬嗰個臨記，嗰個話多謝佢，兩個人食到笑晒。"} ] },
+{ id:"wf4_ev_set23", grp:"片場", trig:"loc", loc:"tvb_kowloon",
+  title:"外景車上面嗰程", setting:"九龍電視台外景車，朝早出外景嗰程",
+  beats:[ {sp:"旁白", tx:"外景車朝早出發，成車人都未瞓醒。阿偉坐喺車尾，望住窗外，司機話今日去紅磡嗰邊，嗰度啲景好靚。"}, {sp:"外景車司機", tx:"後生仔，你瞓陣啦，車程仲有成粒鐘。去到嗰邊我嗌你，唔好瞓過頭呀。"} ],
+  choices:[ { label:"瞓陣養足精神", fx:{ stamina:2, stress:-1 }, out:"佢瞓咗陣，落車嗰陣精神晒，司機話佢瞓得快，話呢行最緊要識得瞓。"}, { label:"同車上面啲人傾偈", fx:{ popularity:1 }, out:"佢同車上面啲人傾偈，傾到去到嗰邊，成車人都熟晒，開工嗰陣特別齊心。"} ] },
+{ id:"wf4_ev_set24", grp:"片場", trig:"loc", loc:"tvb_kowloon",
+  title:"紅磡碼頭嗰場戲", setting:"九龍電視台外景，紅磡碼頭邊",
+  beats:[ {sp:"旁白", tx:"紅磡碼頭邊，海風好大。阿偉企喺碼頭邊等埋位，望住啲船出出入入，諗起呢度以前係點樣，依家又係點樣。"}, {sp:"場務", tx:"呢場戲喺碼頭邊拍，背景係啲船，你企好啲，唔好望鏡頭，望住啲船就得。"} ],
+  choices:[ { label:"望住啲船入戲", fx:{ acting:1 }, out:"佢望住啲船，成個人靜落嚟，嗰場戲一take就過，導演話呢個鏡頭好。"}, { label:"幫手望住啲道具", fx:{ stamina:-1, popularity:1 }, out:"佢幫手望住啲道具，唔俾海風吹走，場務話佢細心，收工嗰陣多謝咗佢。"} ] },
+{ id:"wf4_ev_set25", grp:"片場", trig:"loc", loc:"tvb_kowloon",
+  title:"道具部嗰個電話", setting:"九龍電視台道具部，晏晝等埋位嗰陣",
+  beats:[ {sp:"旁白", tx:"道具部電話響，道具大叔接完話有個道具要改，成班人即刻忙起嚟。阿偉企喺一邊，望住佢哋點樣喺咁短時間改好。"}, {sp:"道具大叔", tx:"呢個道具要改一改，你幫手拎住先，我去搵工具。唔好整爛呀，呢個係聽日嗰場戲要用㗎。"} ],
+  choices:[ { label:"小心拎住個道具", fx:{ iq:1, stress:1 }, out:"佢小心拎住，大叔返嚟話佢拎得穩，話後生仔手定，適合做呢行。"}, { label:"問大叔呢個道具點用", fx:{ acting:1 }, out:"大叔話佢知呢個道具喺邊場戲用，點樣用先啱，阿偉聽到入晒神。"} ] },
+{ id:"wf4_ev_cha05", grp:"茶餐廳", trig:"loc", loc:"cafe_cha",
+  title:"茶餐廳嗰張舊枱", setting:"金龍茶餐廳，晏晝閒時",
+  beats:[ {sp:"旁白", tx:"金龍茶餐廳角落有張舊枱，枱面花晒，但係阿偉最鍾意坐嗰度。老闆娘話呢張枱坐過唔少人，有啲而家已經紅到發紫。"}, {sp:"老闆娘", tx:"呢張枱好有歷史㗎，以前有個後生成日坐呢度食嘢，依家佢啲戲晚晚播。你坐下，沾下喜氣啦。"} ],
+  choices:[ { label:"坐低食餐晏", fx:{ money:-15, stress:-2 }, out:"佢坐低食餐晏，老闆娘話佢坐得啱，話呢張枱嘅人，個個都有運。"}, { label:"問老闆娘邊個坐過", fx:{ iq:1 }, out:"老闆娘講起邊啲人坐過呢張枱，講到眉飛色舞，阿偉聽到入晒神。"} ] },
+{ id:"wf4_ev_cha06", grp:"茶餐廳", trig:"loc", loc:"cafe_cha",
+  title:"老闆娘嗰煲湯", setting:"金龍茶餐廳，夜晚收工後",
+  beats:[ {sp:"旁白", tx:"夜晚收工，阿偉返到金龍茶餐廳，老闆娘話今日煲咗湯，留咗碗畀佢。湯暖笠笠，飲落去成個人都暖晒。"}, {sp:"老闆娘", tx:"飲碗湯先啦，後生仔。你呢排做嘢咁辛苦，唔飲返碗湯，聽日邊有力氣開工呀？"} ],
+  choices:[ { label:"慢慢飲埋成碗", fx:{ stress:-3, stamina:2 }, out:"湯暖到入心，阿偉飲完成個人鬆晒，老闆娘話佢飲得慢，識得嘆。"}, { label:"多謝老闆娘請食嘢", fx:{ popularity:1, charm:1 }, out:"佢多謝老闆娘，老闆娘話唔使客氣，話佢成日嚟幫襯，已經當佢自己人。"} ] },
+{ id:"wf4_ev_cha07", grp:"茶餐廳", trig:"loc", loc:"cafe_cha",
+  title:"隔籬枱嗰份報紙", setting:"金龍茶餐廳，朝早食早餐嗰陣",
+  cond:{ yearMin:1992 },
+  beats:[ {sp:"旁白", tx:"朝早茶餐廳，隔籬枱有份報紙，頭版講緊邊個邊個又話走。茶客們你一言我一語，阿偉坐喺隔籬，靜靜哋聽。"}, {sp:"隔籬茶客", tx:"你睇下，今日份報紙又講邊個走。呢幾年，行行都係咁，個個都話要諗下第日點行。"} ],
+  choices:[ { label:"靜靜聽埋佢", fx:{ stress:-1, iq:1 }, out:"佢靜靜聽，聽到啲人心入面嘅諗法，雖然唔關佢事，但佢將啲說話記低咗。"}, { label:"轉話題講下套戲", fx:{ charm:1 }, out:"佢轉話題講下最近嗰套戲，成枱人即刻講返戲經，報紙嗰版就咁翻咗過去。"} ] }
 ];
 
 /* ===== v20a86 WF4：日常隨機事件池＋碎片庫補完＋配角小弧（芬姐送別／霞姐）＋對手線做深覆寫。
    設計依據：linji-story-enrichment-plan.md WF4＋linji-era-mapping-bank.md（題材 M25/M30/M36/M38/M39 等）。
    事件池原則：輕量自家 modal stepper（唔行 StoryPlay／applyChoice，唔污染 story 狀態、唔出「進度 +1」誤導字眼）；
    觸發閘跟 LOCK78 精神——已結局／拍攝日（強制日）／病日／報紙頭版日（NEWS82 七日）一律唔出；
-   頻率：每日種子擲（day 事件）＋入地點種子擲（loc 事件），全域一日最多一單、唔連續兩日、同一事件 45 日唔重複。
-   頻率校準以種子模擬為準（見 NOTES_V20A86_WF4.md）。 ===== */
-const WF4_CFG = { pDay:0.30, pLoc:0.20, gapDays:2, repeatDays:45, locTriesPerDay:3, pendingMaxAge:2 };
+   頻率：每日種子擲（day 事件）＋入地點種子擲（loc 事件），全域一日最多一單、唔連續兩日。
+   v20a193 once 硬規則：同一事件同一存檔只出一次（見過即封，唔係冷卻）；repeatDays／evDay 已刪除（舊 save 嘅 evDay 欄位由 wf4Ensure 保留做相容，唔再讀寫）。
+   頻率校準以種子模擬為準（見 NOTES_V20A86_WF4.md）；v20a193 頻率 pDay 0.03／pLoc 0.03／gap 3（見 NOTES_V20A193＋qa193/sim_output.txt）：
+   池 72 單下三年約 47–62 單事件，均衡路線 day 池抽乾約 day 915（1992 年中後期），重複率 0%。 ===== */
+const WF4_CFG = { pDay:0.03, pLoc:0.03, gapDays:3, locTriesPerDay:3, pendingMaxAge:2 };
 const WF4_FX_LABEL = { money:"現金", stress:"壓力", stamina:"體能", fame:"聲望", popularity:"人氣", acting:"演技", charm:"魅力", stage:"台風", looks:"外貌", iq:"觀察" };
 
 function wf4Ensure(){
@@ -40770,7 +40933,7 @@ function wf4Ensure(){
   if(typeof st.lastDay!=="number") st.lastDay = -99;
   if(!st.seen || typeof st.seen!=="object") st.seen = {};
   if(!st.flags || typeof st.flags!=="object") st.flags = {};
-  if(!st.evDay || typeof st.evDay!=="object") st.evDay = {};
+  if(!st.evDay || typeof st.evDay!=="object") st.evDay = {}; // v20a193：legacy 相容（舊 save 有此欄），once 規則唔再讀寫 evDay
   if(typeof st.pendingDay!=="number") st.pendingDay = -99;
   if(typeof st.locDay!=="number") st.locDay = -99;
   if(typeof st.locTries!=="number") st.locTries = 0;
@@ -40839,9 +41002,7 @@ function wf4PickEvent(trig, locId){
     const pool = DAILY_EVENTS_WF4.filter(ev=>{
       if(!ev || ev.trig!==trig) return false;
       if(trig==="loc" && ev.loc!==locId) return false;
-      if(ev.once && (st.seen[ev.id]||0) > 0) return false;
-      const last = st.evDay[ev.id];
-      if(typeof last==="number" && day - last < WF4_CFG.repeatDays) return false;
+      if(st.seen && (st.seen[ev.id]||0) > 0) return false; // v20a193 once 硬規則：見過即封（唔分 once 旗）
       return wf4CondOk(ev);
     });
     if(!pool.length) return null;
@@ -40904,6 +41065,24 @@ const WF4_SCENE_OVERRIDE134 = {
   wf4_ev_st08:"assets/story/locs/bg_wf4_taxi.jpg?v=20a146",
   wf4_ev_set08:"assets/story/locs/bg_loc_film_lion.jpg?v=20a104",
   wf4_ev_st04:"assets/story/locs/bg_loc_cafe_cha.jpg?v=20a104",
+  wf4_ev_day05:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_day06:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_day07:"assets/story/locs/bg_wf4_booth.jpg?v=20a134",
+  wf4_ev_day08:"assets/story/locs/bg_wf4_home.jpg?v=20a134",
+  wf4_ev_day09:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_day10:"assets/story/locs/bg_wf4_taxi.jpg?v=20a146",
+  wf4_ev_day11:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_day12:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_day13:"assets/story/locs/bg_wf4_booth.jpg?v=20a134",
+  wf4_ev_day14:"assets/story/locs/bg_wf4_booth.jpg?v=20a134",
+  wf4_ev_day15:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_day16:"assets/story/locs/bg_wf4_home.jpg?v=20a134",
+  wf4_ev_st12:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
+  wf4_ev_st13:"assets/story/locs/bg_wf4_taxi.jpg?v=20a146",
+  wf4_ev_st14:"assets/story/locs/bg_wf4_karaoke.jpg?v=20a146",
+  wf4_ev_st15:"assets/story/locs/bg_wf4_taxi.jpg?v=20a146",
+  wf4_ev_st16:"assets/story/locs/bg_wf4_home.jpg?v=20a134",
+  wf4_ev_st17:"assets/story/locs/bg_wf4_market.jpg?v=20a134",
 };
 /* ===== v20a108 D-8（二期）：WF4 隨機事件具名講者企立 =====
    盤點（見 tests/test_dlg108_*，以 DLG106_GAZE＋assets/story/fullbody/ 核對）：
@@ -41045,8 +41224,7 @@ function wf4Fire(ev, doneCb){
     const st = wf4Ensure(); if(!st || !ev){ if(doneCb) doneCb(); return; }
     const day = S.dayIndex|0;
     st.lastDay = day;
-    st.evDay[ev.id] = day;
-    st.seen[ev.id] = (st.seen[ev.id]||0) + 1;
+    st.seen[ev.id] = (st.seen[ev.id]||0) + 1; // v20a193：seen 係 once 封印，saveQ 即寫，reload／舊 save 照封
     st.seen.__n = (st.seen.__n||0) + 1;
     if(ev.setFlag) st.flags[ev.setFlag] = true;
     if(st.pending === ev.id) st.pending = null;
@@ -41058,7 +41236,7 @@ function wf4DailyTick(){
   try{
     const st = wf4Ensure(); if(!st) return;
     const day = S.dayIndex|0;
-    if(st.pending && day - st.pendingDay > WF4_CFG.pendingMaxAge) st.pending = null;
+    if(st.pending && (day - st.pendingDay > WF4_CFG.pendingMaxAge || (st.seen && (st.seen[st.pending]||0) > 0))) st.pending = null; // v20a193 Case C：pending 指向已見過事件即刻清，唔等過期（load 補跑嗰日行 advanceDay tick，呢度係舊 save stale pending 第一個清走位）
     if(st.pending) return;
     if(!wf4BaseOk()) return;
     if(wf4Rand("wf4day:"+day) >= WF4_CFG.pDay) return;
@@ -41070,7 +41248,7 @@ function wf4TryLocEvent(locId){
   try{
     const st = wf4Ensure(); if(!st) return false;
     const day = S.dayIndex|0;
-    if(st.pending) return false;
+    if(st.pending && st.seen && (st.seen[st.pending]||0) > 0) st.pending = null; if(st.pending) return false; // v20a193 Case C：pending 指向已見過事件即刻清，唔好擋住今次入場擲骰
     if(st.lastDay === day) return false;
     if(!wf4BaseOk()) return false;
     /* v20a153 A1：主線待播優先——同 enc79TryIntercept 嘅 enc79StoryPendingAt 同一條
@@ -41107,13 +41285,14 @@ function wf4PresentPending(cont, opts){
   const done196 = (typeof cont==="function") ? cont : function(){ try{ goToMapForBrowse(); }catch(_e){} };
   try{
     const st = wf4Ensure(); if(!st) return false;
+    if(!st.pending) return false;
+    if(st.seen && (st.seen[st.pending]||0) > 0){ st.pending = null; return false; } // v20a193 Case C：清 stale pending 唔靠 base 條件，擺最前——舊 save pending 指向已見過事件嗰陣，無論報紙日／強制日／病日／gap 內，返地圖嗰陣都要即刻清走唔彈
     if(typeof ending78Locked==="function" && ending78Locked()) return false;
     if(!opts.allowForced && typeof todayIsForcedDay==="function" && todayIsForcedDay()) return false;
     if(typeof conseq61IsSickToday==="function" && conseq61IsSickToday()) return false;
     /* 芬姐送別戲優先於日常事件（一次性，唔好俾日常事件拖過頭）——佢行 StoryPlay，
        續鏈跟 D3 slot（afterCont：鏈傳入，預設 "map"）。 */
     if(wf4PresentFenFarewell(opts.afterCont)) return true;
-    if(!st.pending) return false;
     if(!wf4BaseOk()) return false;
     const ev = DAILY_EVENTS_WF4.find(e=>e && e.id===st.pending);
     if(!ev){ st.pending = null; return false; }

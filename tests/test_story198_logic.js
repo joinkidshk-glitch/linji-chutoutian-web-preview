@@ -1,6 +1,9 @@
 // v20a198 STORY198・邏輯／真路徑測試
 // B1：強制播優先於 WF4 地點事件（wf4TryLocEvent 有強制播 pending 嗰陣 defer，唔計 locTries；
 //     boss01 本身唔郁，強制播完之後下一次入茶餐廳照出）
+//     ——v20a193 互動（2026-11-13 第二次重驗）：v193 將 pLoc 0.20→0.03、cafe_cha 池 4→11 單，
+//     B1 嘅根因對照／「之後照出」唔可以再寫死舊數（roll 0.1535、pick 落 boss01），已改寫做
+//     頻率／池無關嘅寫法（池收窄＋day 127 確定性例子）；defer 主修斷言一隻字都冇郁。
 // C1：死 code 已清（storyMapHintHtml／refreshMapHintStory 冇晒；storyMainProgressLine 保留）
 // C2：鎖住插入幕出獨立鎖定行＋逐項解鎖條件；遠幕合併按段計（「第 4–6 幕」＋「第 7–17 幕」）
 // C3：場景行唔再重複路線名（storySettingStripRoute198）
@@ -108,13 +111,27 @@ ok('(C1) storyMainProgressLine 仲行共用幕號', html.indexOf('storyActLabel(
     __fired198.length = 0;
   }
 
-  /* 根因對照（探針實測＋靜態計數）：pristine 狀態 day 98 首次入茶餐廳，
+  /* 根因對照（探針實測＋靜態計數）：v198 嗰陣 day 98 首次入茶餐廳，
      roll wf4loc:98:cafe_cha:1＝0.1535＜pLoc 0.20 通過，pool {cha03, cha04, boss01, st10}
-     嘅 pick wf4pick:loc:cafe_cha:98:0＝0.6895 落 index 2＝boss01——必定打尖。 */
+     嘅 pick wf4pick:loc:cafe_cha:98:0＝0.6895 落 index 2＝boss01——必定打尖。
+     v20a193 改咗兩樣嘢（用戶拍板，見 NOTES_V20A193 §3.1）：pLoc 0.20→0.03、
+     cafe_cha 池 4→11 單——所以呢三個對照唔可以再寫死舊數，要改寫做頻率／池無關
+     嘅寫法：(i) RNG 本身冇變（同一粒 seeded roll 值仲係 0.1535）；(ii) 將池收窄到
+     得 boss01 嗰陣，pick／入場照樣出 boss01（證明 boss01 仲喺池、仲出到，唔係俾
+     v193 清走咗）；(iii) 用 day 127（seeded roll 0.0256＜0.03）做「出到」嘅確定性
+     例子。defer 本身（主修）嘅斷言一隻字都冇郁。 */
   reset([], {});
-  ok('(B1) 根因：冇強制播嗰陣 pick 落 boss01', wf4PickEvent('loc', 'cafe_cha') && wf4PickEvent('loc', 'cafe_cha').id === 'wf4_ev_boss01');
-  ok('(B1) 根因：roll 0.1535 通過 pLoc 0.20', wf4Rand('wf4loc:98:cafe_cha:1') < 0.20);
+  var st0 = wf4Ensure();
+  DAILY_EVENTS_WF4.filter(e=>e.loc==='cafe_cha' && e.id!=='wf4_ev_boss01').forEach(e=>{ st0.seen[e.id]=1; });
+  ok('(B1) 根因：池收窄到得 boss01，pick 照落 boss01（boss01 仲喺池，唔係俾 v193 清走）',
+    wf4PickEvent('loc', 'cafe_cha') && wf4PickEvent('loc', 'cafe_cha').id === 'wf4_ev_boss01');
+  ok('(B1) 根因：seeded roll 值唔郁（0.1535，RNG 冇變）', Math.abs(wf4Rand('wf4loc:98:cafe_cha:1') - 0.1535) < 0.0001);
+  ok('(B1) 根因：v193 pLoc 0.03 之下呢粒 roll 唔通過（頻率跌係 v193 拍板，唔係 defer 爛）',
+    wf4Rand('wf4loc:98:cafe_cha:1') >= WF4_CFG.pLoc && WF4_CFG.pLoc === 0.03);
   reset([], {});
+  S.dayIndex = 127; // seeded roll wf4loc:127:cafe_cha:1＝0.0256＜pLoc 0.03，確定性例子
+  st0 = wf4Ensure();
+  DAILY_EVENTS_WF4.filter(e=>e.loc==='cafe_cha' && e.id!=='wf4_ev_boss01').forEach(e=>{ st0.seen[e.id]=1; });
   ok('(B1) 對照：冇強制播嗰陣首次入茶餐廳照出 boss01', wf4TryLocEvent('cafe_cha') === true
     && __fired198.join(',') === 'wf4_ev_boss01' && S.wf4.seen.wf4_ev_boss01 === 1 && S.wf4.flags.boss_met === true);
   if(DEBUG) console.log('B1 control wf4:', JSON.stringify(S.wf4));
@@ -130,9 +147,13 @@ ok('(C1) storyMainProgressLine 仲行共用幕號', html.indexOf('storyActLabel(
   ok('(B1) defer 嗰次唔計 locTries（唔嘥當日事件額）', S.wf4.locTries === 0 && S.wf4.locDay === -99);
   if(DEBUG) console.log('B1 deferred wf4:', JSON.stringify(S.wf4));
 
-  /* boss01 之後去向：強制播播完（open 清空）→ 下一次入茶餐廳照出 */
+  /* boss01 之後去向：強制播播完（open 清空）→ 下一次入茶餐廳照出。
+     v193 之後 day 98 嗰粒 roll（0.1535）過唔到 pLoc 0.03，所以用返同一個
+     確定性例子：day 127（roll 0.0256＜0.03）＋池收窄到得 boss01。 */
   StoryOC._open = [];
   ok('(B1) 前設：強制播播完之後 CanPlay 清空', story165CanPlay() === null);
+  S.dayIndex = 127;
+  DAILY_EVENTS_WF4.filter(e=>e.loc==='cafe_cha' && e.id!=='wf4_ev_boss01').forEach(e=>{ S.wf4.seen[e.id]=1; });
   ok('(B1) boss01 之後仲出：下一次入茶餐廳就出', wf4TryLocEvent('cafe_cha') === true
     && __fired198.join(',') === 'wf4_ev_boss01' && S.wf4.seen.wf4_ev_boss01 === 1 && S.wf4.locTries === 1);
 
