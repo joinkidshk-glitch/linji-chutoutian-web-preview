@@ -106,3 +106,11 @@
 - `tests/test_gift185_static.py`、`tests/test_kwan151_static.py`、`tests/test_rom176_static.py`、`tests/test_tang152_static.py`、`tests/test_tang171_static.py`、`tests/test_tang173_static.py`、`tests/test_text125_static.py`、`tests/test_travel114_static.py`（釘行 resync，見 §4）
 - `qa216/resync216.py`、`qa216/apply_resync216.py`、`qa216/resync216_map.json`（新增）
 - 本檔 `NOTES_V20A216.md`
+
+## 8. 落地紀錄
+
+- 遊戲 commit `65b4b3e`；線上 5,553,530 bytes，sha256 `28b203f1…` 同 repo 一致，已核實。
+- 全套 suite：A（pristine v215）307／13、B（工作副本）309／13，FAIL 清單一模一樣（13 個穩定 FAIL）；兩個新測試 ALL PASS。
+- 線上實駕（Playwright，live 站，1990-02-10 晨報，390×844／430×932／390×700）：Case A 填位項目拒收（隊列 0、唔出報紙）；Case B P1 頭條 30px／2 行、紅＋唔斷開，P2 真頭條 22px／2 行，填版 gap −1.3／6.7px，掣疊紙 0px、三個 viewport 0 pageerrors；Case C `newspaperCheck` 同 pristine 一樣 3 個 pre-existing fail（`merge_cap`／`press_colloquial`／`seed_win`）。截圖 `~/workspace/linji-newspaper-v216-inv/shots-live/`（12 張）。
+- 設計 review `~/workspace/linji-design-review-v216/REVIEW.md`：A 0／B 1（紙內「傳聞」系統句，已知殘留）／C 4，等拍板。
+- 環境備註：Chromium 直連 egress proxy 出唔到去（MITM 憑證），線上實駕經本地中繼 proxy（`/tmp/relay_proxy.py`，127.0.0.1:18081）＋`--ignore-certificate-errors` 測試瀏覽器跑；目標站 bytes 已用 curl＋sha256 獨立核實。
