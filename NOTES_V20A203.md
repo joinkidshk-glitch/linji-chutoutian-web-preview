@@ -232,3 +232,12 @@ day15 文案＋閘改動、C3 `awards62CeremonyActive`＋`story165CanPlay` 一�
   註：三個測試喺 pristine 全部 PASS（pristine 主檔 5,409,025 bytes，未超舊上限；
   scene104 計數 18 啱啱好），喺工作版更新期望後亦全部 PASS；兩邊 FAIL 清單相同＝零回歸，
   結論不變。
+
+## 14. 落地紀錄（統籌，2026-11-14）
+
+- 遊戲 commit：`165597e`（squash merge `v20a203`，分支 2 個 commit：`86b5a01` 實作＋`80cab66` 補修三個舊測試期望）。
+- 線上核實（統籌親自 curl，2026-11-14 約 13:12 HKT）：5,448,954 bytes，sha256 `2adda051…`，同 repo HEAD `index.html` 一致。Push 首次斷線（Broken pipe／egress proxy reset），重試一次成功；Pages 部署滯後約 5 分鐘。
+- 統籌獨立重驗全套（`qa131/run_suite.sh`，正確傳參出 list 檔）：工作版 **285／13**，實體 pristine worktree（main `6e45cdb`）**283／13**；`comm` 比對 work-only／pristine-only FAIL 皆為空，13 項 FAIL 兩邊逐項相同（flash51／giglib36／pacing35／poster59／rumor49／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wf5_87／wrap38），**零回歸**。工作版 PASS 多 2 項係 v203 兩個新測試檔。教訓：`run_suite.sh` 要傳 `<repo-root> <outfile>` 兩個參數，唔傳參數逐檔結果會寫唔到去（只剩 TOTAL 行），FAIL 清單對唔到。
+- **B1 迎新期實效（統籌決定：照原定落地，唔加頻率）**：統籌獨立探針（逐日推進＋4 地點輪換）30 日得 1 單，工人 drive 得 2 單，sim 四路線 A4／B5／C2／D4。差距係 sim 假設每日 tick＋每日入 7 個地點，但實玩「過一日」會跳日＋出行額度每日限 2 個地點，擲骰次數遠少過 sim。實玩迎新期實效約 1–2 單／頭 30 日，第一單 day 7 之前就出；對比 v193 嘅 0／52 日，前置目的已達到。工人自設 ≥3 斷言係任意數，sim C 路線都只係 2 單；為追任意數加頻率會提早抽乾——正正係 B2 啱啱修好嘅問題。留待設計 review 再 judge 體感。
+- 殘留觀察（唔係 blocker，唔喺呢票做）：成週推進跳日嗰陣，中間嗰幾日嘅 daily tick 似乎只跑落點日嗰次——未證實，要另開探針。
+- 工作副本 untracked 殘留 `qa203/shots203/CO_d3_day_wf4.png`（上一手工人 drive 截圖，未入 commit）：squash merge 唔包括佢，工作副本刪除嗰陣一併清走。
