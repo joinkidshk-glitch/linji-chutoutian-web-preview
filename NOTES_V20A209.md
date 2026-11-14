@@ -92,3 +92,42 @@
   等 parent 通知。
 - `rom_lan_*` 場景圖缺失（pre-existing，v205 已記錄），令 R_lan 舞台底係素色，
   光邊喺素色底上面反而更顯眼；補圖係另一票。
+
+## §8 落地紀錄（2026-11-14，遊戲 commit `54ee62b`）
+- Rebase：分支 base `a426947`（v205）→ main `eed04dc`（v212），**0 衝突**，
+  兩粒 commit 乾淨落上（新 HEAD `bda8ca6`：實作 `45e0a9c`＋NOTES）。
+  本票零 index.html 改動，rebase 純粹係行號／基底追趕。
+- 重驗（rebase 後，工作副本）：
+  - 新測試 `tests/test_lan209_outline_static.py`：**49 個斷言全綠，0 FAIL**
+    （§4 寫 44 項係計數口徑：6 檔 × 7 項＋lin_hiu 對照 2＝44，另加反證 2＋
+    基線 3＝49；同一檔，唔係回歸）。band share：base 99.99%、其餘 5 張
+    100.00%；v107 ring 1.0000；零遠處米白。
+  - 反證（pristine main `eed04dc`，同一測試）：**13 項 FAIL**
+    （6 張 sha＋6 張 band＋反證現版項），band 0.12–0.25%，乾淨 FAIL。
+  - 全套 A/B：pristine **296／14** vs 工作版 **297／13**。FAIL 清單只差
+    lan209 一項（pristine 預期 FAIL、工作版 PASS）；其餘 13 項穩定
+    pre-existing FAIL 逐項相同（flash51／giglib36／pacing35／poster59／
+    rumor49／slot50／soft_tip_111_restore／start53／weave43／weave44／
+    weave49／wf5_87／wrap38），**零回歸**。總數同 v212 時代唔同係因為
+    v212 加 2 檔＋本票加 1 檔（293→296）。
+  - 實駕重跑（`qa209/drive209.py`，本地鏡像＋Playwright）：4 節全開
+    （meet 7／push1 6／crisis 6／ending 8 行），同原跑逐行一致；6 張 webp
+    HTTP 全部 200；**0 pageerror**；破圖 0；旁白句 `brightness(0.6)`、
+    講者句 `brightness(1)`，光邊跟住變暗（截圖親自讀過確認）。原跑
+    drive log 留底 `qa209/drive209_orig_a426947.json`。
+  - 404：新跑 48 條 vs 原跑 36 條——探針核實全部只係已知缺圖
+    `rom_lan_*` 場景圖（每節 3 副檔名 × 多次重載；`bg_loc_home_airport`
+    而家 index.html 0 引用，已唔出 404）；**冇新 404**，唔係回歸。
+  - 修正 §5 一處講法：原跑同重跑上台見到嘅表情都係 base／sad／shy／
+    smile 四種（serious 嗰節本身冇對白；think 喺今次行嘅路徑冇上台）。
+    serious／think 靠 HTTP 200＋band test 核實；光邊焗入圖檔，靜態證明
+    覆蓋晒 6 張。
+- 落地：squash merge 去 main → 遊戲 commit `54ee62b`（6 張 webp＋新測試＋
+  qa209 證據，45 檔）；push 第一次俾 egress proxy reset 斷線（Broken pipe，
+  已知問題），重試成功；`git ls-remote` 核實 main＝`54ee62b`。
+- 線上核實：index.html 唔郁（`cbad0769…`、5,487,683 bytes，同 v212 一致，
+  預期之內）；6 張 webp push 後約 4 分鐘傳播完成，live sha 逐張對 repo
+  一致（base `bd7923f2…`、sad `adcffb30…`、serious `e98414ed…`、
+  shy `ed0a5e91…`、smile `7536aa7d…`、think `1e035184…`）。
+- 落地次序下一位：v213 → v214（v214 實作完成 HEAD `5fa653e`；推出日提及
+  另開細票 v215，落地次序 v209 → v213 → v214 → v215）。
