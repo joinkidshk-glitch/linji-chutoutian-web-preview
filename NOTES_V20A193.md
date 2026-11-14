@@ -267,3 +267,8 @@ once 之後，三年抽獎次數唔可以超過可達池。舊頻率三年約 35
   - C：舊 save（seen set03:21、evDay 舊紀錄、pending 指 set03）遷移 0 pageerror，pending 清走（null），seen 保留。
   - D：seed seen＝全部 72 單，行 2 日＋入兩個地點，零 WF4 modal、0 pageerror。
   - E：day 98／第 15 週，stale pending（set03:21）清走，C6F「第 6 幕・電影線：片場跟班」即播完成，boss01 唔打尖（wf4title null），locTries 仲係 0。
+
+## 10. 落地紀錄（2026-11-14）
+- 遊戲 commit `71c7865`（squash merge 分支 `v20a193`＝`8d78a19`，基底 `6c207a6`＝v202；index.html 淨 ＋211／−16 行；64 檔 ＋6531／−91）。
+- Push 一次成功（無拆細）。線上核實：初次 curl 仲係舊版 v202（5,377,918 bytes），約 90 秒後追上——**線上 5,409,025 bytes、sha `8b0e800d…`，同 repo HEAD:index.html 逐字一致**。
+- 落地後派設計 review（見 `~/workspace/linji-design-review-v193/`）。
