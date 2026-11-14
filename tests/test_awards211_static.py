@@ -3,7 +3,10 @@
 #   B1 高 viewport（≥850px，即 932）舞台加高 480×540（×1.25），矮 viewport（700）留返 480×432——
 #       700 提名版 frame 已經 644px，canvas 再高會頂爆 viewport；FLOOR／人物／光池／glyph／閃粉全部按 HSC211 換算。
 #   B2 won 版銷量卡點名得主＋作品（win211：won 類別攞玩家＋代表作，動態，唔寫死）。
+#       v20a214 適配：結果卡改做《維港日報》報紙，第二版用 playerWinLine214／winLine214／metricHead214；
+#       wonCat211／win211／「典禮後仍有人提起」stub 全部退役（見 B2 段）。
 #   C1 won 版同屆提名加玩家一行「阿偉《代表作》🏆」＋圖例（金底 chip 同 v207 C2 一致）。
+#       v20a214 適配：★統一＋全名，改做「★ 陳偉翔《代表作》」＋「★為得主」圖例（見 C1 段）。
 #   C2 字幕框高度釘死 93px（3 行上限；基線 names 69／reveal 54–93 來回跳令 frame 跳 7–12px）。
 #   C3 gallery 請柬席位去重（tierBit 唔出，留返 gate 行「今晚席位：觀禮。」；nominee 保留 tierBit）。
 #   B7 揭曉 spotlight 改做由上射落嚟嘅梯形光柱（上窄下闊、y=0 到腳底、暖白漸變＋亮芯＋腳底光灘）；dimVeil207 不動。
@@ -38,6 +41,10 @@ def css_rule(selector):
     if i < 0: return ''
     j = src.find('}', i)
     return src[i:j+1] if j >= 0 else ''
+
+def strip_comments(s):
+    # v20a214 rebase 適配：斷言嗰陣先剝走 /* */ 註解——註解入面提到嘅舊字串（例如 stub「典禮後仍有人提起」）唔係 code，唔剝會誤判
+    return re.sub(r'/\*[\s\S]*?\*/', '', s)
 
 play_fn = slice_fn('awards62PlayCeremony')
 res_fn = slice_fn('renderAwardResultHtml')
@@ -81,19 +88,22 @@ chk('B1 地板比例唔郁（drawBase 仍按 H/360 換算，地板深 22.7%）',
 chk('B1 觀眾暗帶唔加唔減（drawBase 316/360 仲在，冇新觀眾席／剪影帶）',
     '316 / 360' in slice_fn('awards181DrawBase') and '觀眾席' not in play_fn.replace('暗觀眾席', ''))
 
-# --- B2：won 版銷量卡點名得主＋作品 ---
-chk('B2 won 類別攞玩家＋代表作（動態，唔寫死作品名）',
-    'wonCat211' in res_fn and 'c.outcome === "won"' in res_fn
-    and '{ star: "阿偉", title: (wonCat211.repWorkTitle || pack.repWork62 || "") }' in res_fn)
-chk('B2 metric 卡用 win211（唔再淨係 win149）', 'awardWinLine149(win211)' in res_fn)
-chk('B2 win211 跌返 win149（gallery／提名版對手得主唔郁）', 'const win211 = win149 ||' in res_fn)
-chk('B2 冇得主先跌返 stub（win211 null 分支仲在）', '+"——典禮後仍有人提起。")' in res_fn)
+# --- B2：won 版銷量卡點名得主＋作品（v20a214 適配：結果卡改做報紙，第二版用真得主數據） ---
+chk('B2 won 版第二版點名玩家＋代表作（動態，唔寫死作品名）',
+    'playerWinLine214' in res_fn and '陳偉翔憑《' in res_fn
+    and 'rep214' in res_fn and 'wonCat211' not in res_fn)
+chk('B2 第二版用真得主數據（metricHead214＝winLine214 || playerWinLine214）',
+    'metricHead214' in res_fn and 'winLine214 || playerWinLine214' in res_fn)
+chk('B2 winLine214 跌返 win149（gallery／提名版對手得主唔郁）',
+    'const winLine214' in res_fn and 'awardWinLine149(win149)' in res_fn)
+chk('B2 冇得主先跌返散場句，stub「典禮後仍有人提起」唔再出現（註解先剝走，唔係誤判）',
+    '典禮後仍有人提起' not in strip_comments(res_fn) and '散場' in strip_comments(res_fn))
 chk('B2 awardWinner149 本身唔郁（won 回 null 係既定規則）',
     'if(f.outcome === "won") return null;' in slice_fn('awardWinner149'))
 
-# --- C1：won 版同屆提名加玩家一行 ---
-chk('C1 won 版加玩家一行（阿偉＋代表作，排第一）',
-    'isWon211' in fel_fn and 'parts.unshift(iconHtml112("🏆") + " 阿偉"' in fel_fn
+# --- C1：won 版同屆提名加玩家一行（v20a214 適配：★＋全名陳偉翔） ---
+chk('C1 won 版加玩家一行（★ 陳偉翔＋代表作，排第一）',
+    'isWon211' in fel_fn and 'parts.unshift("★ 陳偉翔"' in fel_fn
     and 'c.repWorkTitle' in fel_fn)
 chk('C1 won 版行首有圖例（為得主）', '(win || isWon211)' in fel_fn)
 chk('C1 gallery／提名版 fellows 邏輯唔郁（winner63／fellows[0] fallback 仲在）',

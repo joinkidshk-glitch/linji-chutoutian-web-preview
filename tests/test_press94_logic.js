@@ -5,8 +5,9 @@
 //     配角級或以上（主角/主唱/配角/嘉賓/模特/support_main/lead 帶）→ named；
 //     替身唔出樣恆 base；support_main 短帶（≤8 日，v93 A4 單場戲型）→ base。
 //   B 徽章（press94TierBadge）：base → {key:"extra", label:"臨"}；其餘照 tier（初/中/高）。
-//   C 填位文案（press94FillLines）：標題含作品名、唔提玩家/崗位；有主演就以主演為主角；
-//     同一作品定版（兩次呼叫一致）；書面語底（冇嗰啦嘅）、冇禁用詞「聲量」。
+//   C 填位已退役（v20a214 NP214，用戶 2026-11-14 18:14 拍板）：press94FillLines 已刪，
+//     base 殺青唔出報紙（連製作消息填位都唔出），報紙路徑唔留死 code；base 入閘行為
+//     改由 test_newspaper214_wrap_logic.js 經 enqueueNewspaperFromWrap 真路徑驗。
 // 反證：v93 index 冇 press94* → 抽取失敗 FAIL。
 const fs = require('fs');
 const path = require('path');
@@ -42,7 +43,7 @@ const parts = [
   extractConst('PRESS94_NAMED_LABEL'), extractConst('PRESS94_BASE_SCALES'),
   extractConst('PRESS94_NAMED_SCALES'),
   extractFn('press94ScaleOf'), extractFn('press94RoleClass'), extractFn('press94IsBaseRole'),
-  extractFn('press94TierBadge'), extractFn('press94FillLines'),
+  extractFn('press94TierBadge'),
   extractFn('gigTierKey'), extractFn('newspaperMediumFromGigType')
 ];
 ok('extract_all', parts.every(Boolean), parts.map((p,i)=>i+':'+!!p).join(','));
@@ -80,19 +81,10 @@ if(parts.every(Boolean)){
   const b4 = press94TierBadge({roleLabel:'男主角', roleScale:'tv_lead_long', tier:'高'});
   ok('B04_高照舊', b4.key==='senior' && b4.label==='高', JSON.stringify(b4));
 
-  // C 填位文案
-  const subj = { work:'賀年歌精選', type:'唱片通告' };
-  const f1 = press94FillLines(subj, { roleLabel:'唱片幫工', roleScale:'rec_album' });
-  const f1b = press94FillLines(subj, { roleLabel:'唱片幫工', roleScale:'rec_album' });
-  ok('C01_fill含作品名', f1.headline.indexOf('賀年歌精選')>=0, f1.headline);
-  ok('C02_fill唔提玩家崗位', (f1.headline+f1.dek+f1.rumor).indexOf('阿偉')<0 && (f1.headline+f1.dek).indexOf('幫工')<0, f1.headline+'|'+f1.dek);
-  ok('C03_fill定版', f1.headline===f1b.headline && f1.dek===f1b.dek);
-  const f2 = press94FillLines({ work:'警網雄風', type:'電影' }, { roleLabel:'', starHint:{ name:'陸柏言' } });
-  ok('C04_fill主演主角', f2.headline.indexOf('陸柏言')>=0 && f2.headline.indexOf('警網雄風')>=0, f2.headline);
-  const blob = [f1, f2].map(f=>f.headline+f.dek+f.rumor).join('');
-  ok('C05_fill書面語底', !/[嗰啦嘅]/.test(blob) && blob.indexOf('聲量')<0);
-  const f3 = press94FillLines({ work:'填位精選乙', type:'唱片通告' }, { roleLabel:'唱片幫工' });
-  ok('C06_fill唔同製作唔同標題', f3.headline!==f1.headline && f3.headline.indexOf('填位精選乙')>=0);
+  // C 填位已退役（v20a214 NP214）：函數已刪、入閘標記已清
+  ok('C01_fill_fn_gone', html.indexOf('function press94FillLines(') < 0);
+  ok('C02_no_fill_mark', html.indexOf('press94: "fill"') < 0);
+  ok('C03_gate_still_wired', html.indexOf('press94IsBaseRole(gig94, labelHint94)') >= 0);
 }
 console.log(fails ? ('RESULT FAIL '+fails) : 'RESULT PASS');
 process.exit(fails ? 1 : 0);

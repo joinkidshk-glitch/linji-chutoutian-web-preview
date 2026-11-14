@@ -1,3 +1,4 @@
+# v20a214 rebase 上 main d1239d4 resync：index.html 淨 +358 行，6 個錨點按 difflib 映射重寫（內容逐字核實純漂移；check 名入面嘅舊 L 號係歷史標籤，唔跟住改）。
 # v20a207 resync (part 2).
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），6 個釘行按段 +0／+4／+84 重算。
 # v20a176 ROM176 全面隨機巧遇・靜態測試：接線標記／紅線／玩家面文案／行號釘。
@@ -77,13 +78,13 @@ for fn in ('rom176TryIntercept', 'rom176PlayEncounter', 'rom176DoGiveStarGift', 
 # v20a206 C1 resync：index.html 淨 +22 行（WF4 保底，插入點舊 L41129–41496）；其後釘行各 +22（54302→54324、54670→54692、55809→55831、55903→55925），之前唔郁；qa206/resync206.py difflib 對位核實純漂移。
 # v20a206 C2 resync：index.html 淨 +3 行（WF4 覆寫表頭註解＋3，插入點舊 L41271 之後）；其後釘行各 +3（54324→54327、54692→54695、55831→55834、55925→55928）；qa206/resync206c2.py difflib 對位核實純漂移。
 # v20a207 rebase 上 main 8cecf7f（v206）resync：v206 +25（C1 +22／C2 +3，插入點 ~41129／41271 之後）＋v207 +34；/tmp/verify207.py 73 錨點對位零 mismatch，純漂移。
-ok('釘：NPCS lan 條目 L6152', line(6152).startswith('  lan:{ id:"lan", name:"藍若曦"'))
+ok('釘：NPCS lan 條目 L6152', line(6322).startswith('  lan:{ id:"lan", name:"藍若曦"'))
 ok('釘：載入點 L31712（GIFT_REACT 賦值同行呼叫注入）',
-   'GIFT_REACT = giftReact' in line(31713) and 'rom176ApplyGiftOverrides()' in line(31713))
-ok('釘：ROM176 block 起點 L54896', line(54896).startswith('/* ===== v20a176 ROM176'))
-ok('釘：rom176ApplyGiftOverrides 定義 L55264', line(55264).startswith('function rom176ApplyGiftOverrides()'))
-ok('釘：addLocTalkGiftActs L56403', line(56403).startswith('function addLocTalkGiftActs(add, L, npcId)'))
-ok('釘：openLoc rom176 攔截 L56497', 'rom176TryIntercept(id)' in line(56497))
+   'GIFT_REACT = giftReact' in line(31903) and 'rom176ApplyGiftOverrides()' in line(31903))
+ok('釘：ROM176 block 起點 L54896', line(55254).startswith('/* ===== v20a176 ROM176'))
+ok('釘：rom176ApplyGiftOverrides 定義 L55264', line(55622).startswith('function rom176ApplyGiftOverrides()'))
+ok('釘：addLocTalkGiftActs L56403', line(56761).startswith('function addLocTalkGiftActs(add, L, npcId)'))
+ok('釘：openLoc rom176 攔截 L56497', 'rom176TryIntercept(id)' in line(56855))
 # v20a213 resync：index.html 淨 +199 行，釘行按 difflib 映射重寫（見 qa213/resync213.py）。
 # v20a208 resync：rebase 上 main b7ddb37，釘行按 difflib 映射重寫（54616→54815、54984→55183、56123→56322、56217→56416；6151／31712 唔郁），qa208/resync208_rebase.py 核實純漂移。
 # v20a208 resync：rebase 上 main b7ddb37，釘行按 difflib 映射重寫（54393→54616、54761→54984、55900→56123、55994→56217；6151／31712 唔郁），qa208/resync208_rebase.py 核實純漂移。

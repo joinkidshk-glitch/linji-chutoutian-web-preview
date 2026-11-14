@@ -37,9 +37,10 @@ chk('C1 單一 fellows 行 felBit186 在位（取第一個有 fellows63 嘅類�
     'felCat186' in result_fn and 'fellows63' in result_fn and '.find(' in result_fn)
 chk('C1 單一 fellows 行經同一 helper 出（內容逐字不變）', 'awards63FellowsHtml(felCat186)' in result_fn)
 chk('C1 helper 喺結果卡只呼叫一次（唔係每類一次）', result_fn.count('awards63FellowsHtml') == 1)
-chk('C1 fellows 行喺卡列之後（${catsHtml} 之後、報紙卡之前）',
-    '${catsHtml}' in result_fn and '${felBit186}' in result_fn and 'psr-press' in result_fn
-    and result_fn.index('${catsHtml}') < result_fn.index('${felBit186}') < result_fn.index('psr-press'))
+chk('C1 fellows 行喺類別行之後（v214 報紙版式：內文兩欄入面，catsHtml 之後；press 內容升做報頭大標題，唔再係 psr-press 卡）',
+    '${catsHtml}' in result_fn and '${felBit186}' in result_fn
+    and result_fn.index('${catsHtml}') < result_fn.index('${felBit186}')
+    and 'np214-body2' in result_fn and 'np214-headline' in result_fn)
 chk('C1 冇 fellows 嗰陣唔出空行（felCat186 無就空字串）', '|| null' in result_fn and '""' in result_fn)
 chk('C1 類別卡其餘內容唔郁（kicker／rep／weak／comfort 齊）',
     'repBit62' in result_fn and 'weakBit62' in result_fn and 'comfortBit147' in result_fn)

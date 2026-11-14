@@ -74,8 +74,8 @@ ok('B3：短屏 media query（max-height:780px）印章 24px→20px、收窄 pad
    and '#nb-actions #btn-confirm-plan.is-locked{ font-size:20px; padding:4px 14px 4px 16px; margin:0; }' in src)  # v20a197 B2：700 印章都係 flex:1 佔滿 bar，margin 歸零（舊 margin:4px auto 3px 會令印章收窄置中）
 ok('B3：短屏 nb-actions padding 一併收窄（慳多約 8px）',
    '#nb-actions{ padding:6px 10px calc(6px + env(safe-area-inset-bottom)); }' in src)
-ok('B3：932 印章規則無全局改動（24px 只出現喺 v141 原規則，唔係 BOOK143 段入面改大）',
-   src.count('font-size:24px') == 1)
+ok('B3：932 印章規則無全局改動（24px 只出現喺 v141 原規則＋v214 NP214 報頭，唔係 BOOK143 段入面改大）',
+   src.count('font-size:24px') == 2 and 'font-size:24px; font-weight:900; letter-spacing:1px; color:#b32020;' in src)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')
 sys.exit(1 if fails else 0)

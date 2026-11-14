@@ -1,3 +1,4 @@
+# v20a214 rebase 上 main d1239d4 resync：index.html 淨 +358 行，總行數 61994→62352、DEF 56466→56824、L4862 live 行 4955→5125（difflib 對位核實純漂移，見 qa214/resync214_rebase.py）。
 # v20a207 resync (part 2).
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），總行數 60522→60609、DEF 55018→55102；L4862 錨點 4889 唔郁（喺插入點之前）。
 # v20a203 resync：index.html 淨 +233 行（見 qa203/resync203.py difflib 對位核實純漂移），總行數 61167→61400、DEF 55639→55872。
@@ -85,16 +86,16 @@ def blend(fg, bg, a):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 61994（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199）', src.count('\n') == 61994)
-ok('零行數漂移：openLoc DEF 行 56466（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199，travel114 釘行）',
-   len(lines) >= 56466 and 'function openLoc(id, opts){' in lines[56465])
+ok('零行數漂移：總行數 62352（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358）', src.count('\n') == 62352)
+ok('零行數漂移：openLoc DEF 行 56824（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358，travel114 釘行）',
+   len(lines) >= 56824 and 'function openLoc(id, opts){' in lines[56823])
 # v20a213 rebase 上 main 17c6f69 resync：釘行按 difflib 映射重寫，qa213/resync213_rebase.py 核實純漂移（v211 +42／v212 +39／v213 +199）。
 ok('零行數漂移：L4862 仲係 v169／v171／v173 同行（v181 CSS ＋13，kwan151／tang152 釘行已一併 resync）',
-   len(lines) >= 4954 and 'loc-acts-more171::after' in lines[4954] and 'act-locked171' in lines[4954])
+   len(lines) >= 5125 and 'loc-acts-more171::after' in lines[5124] and 'act-locked171' in lines[5124])
 ok('L4862 註解平衡：/* 數＝*/ 數，鎖住底 rule 唔喺註解入面（v173 曾中招：註解入面再插 /*…*/ 令首個 */ 提早閂註解，殘尾變裸文吞咗鎖住底 rule 嘅 selector，live 底色跌返 #f5e6c0）',
-   lines[4954].count('/*') == lines[4954].count('*/')
-   and lines[4954].rfind('/*', 0, lines[4954].find('#app #loc-sheet.sheet .act.act-locked171{ background'))
-   < lines[4954].rfind('*/', 0, lines[4954].find('#app #loc-sheet.sheet .act.act-locked171{ background')))
+   lines[5124].count('/*') == lines[5124].count('*/')
+   and lines[5124].rfind('/*', 0, lines[5124].find('#app #loc-sheet.sheet .act.act-locked171{ background'))
+   < lines[5124].rfind('*/', 0, lines[5124].find('#app #loc-sheet.sheet .act.act-locked171{ background')))
 
 # --- §1. C1：淡出實色 stop 78% → 60% ---
 ok('C1：淡出漸變實色 stop 已提早到 60%',

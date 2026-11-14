@@ -20,8 +20,30 @@ function extractFn(name){
   return html.slice(i, j+1);
 }
 /* journalText 唔存在嗰陣 newspaperEsc 行自己嘅 escape 分支，毋須 stub。
-   renderMorningPaperHtml 只依賴 newspaperEsc；兩者都係真碼。 */
+   renderMorningPaperHtml 只依賴 newspaperEsc；兩者都係真碼。
+   v20a214 NP214：渲染器而家另外叫 newspaperFullName214（寫全名）＋np214DateLabel
+   （日期正規化，鏈上 fmtNewspaperDate→dateObj／fmtDateShort→displayDateObj→START）——
+   下面一併抽真函數行真路徑；np214DateLabel 經 fmtNewspaperDate 掂 S.dayIndex，
+   所以要 stub 一個 S（dayIndex 0）＋NEWS82_IMGS（冇圖包就唔出圖）。 */
+var S = { dayIndex: 0 };
+var NEWS82_IMGS = null;
+function extractConst(name){
+  const i = html.indexOf('const ' + name + ' =');
+  if(i<0) throw new Error('const not found: '+name);
+  let depth=0, started=false;
+  for(let k=i; k<html.length; k++){
+    const ch=html[k];
+    if(ch==='{'||ch==='['){ depth++; started=true; }
+    else if(ch==='}'||ch===']'){ depth--; if(started&&depth===0) return html.slice(i, k+1)+';'; }
+    else if(ch===';'&&!started) return html.slice(i, k+1);
+  }
+  throw new Error('const end not found: '+name);
+}
 eval(extractFn('newspaperEsc'));
+eval(extractConst('START').replace('const START', 'var START'));
+/* 唔可以用 forEach 回調入面 eval——function 宣告會困喺回調 scope，唔升返 module scope。 */
+var _np214deps = ['dateObj','displayDateObj','fmtDateShort','fmtNewspaperDate','newspaperFullName214','np214DateLabel'];
+for(let _di = 0; _di < _np214deps.length; _di++){ eval(extractFn(_np214deps[_di])); }
 eval(extractFn('renderMorningPaperHtml'));
 
 function clipCount(out){ return (out.match(/paper-kicker/g)||[]).length; }
@@ -37,8 +59,10 @@ function baseEd(extra){
 /* 1. 任務原例：kicker 係 headline 開頭（後接空格續句）→ suppress */
 let out = renderMorningPaperHtml(baseEd({ clipLabel:'電視城臨記班底添新血' }));
 ok('dup prefix kicker suppressed', clipCount(out)===0);
-ok('headline still rendered', out.includes('電視城臨記班底添新血 阿偉獲青睞'));
-ok('dek still rendered', out.includes('何生事務所新簽臨記阿偉'));
+// v20a214 NP214：報紙面寫全名（渲染時換名）——以下三個斷言跟住改口徑：
+//   阿偉→陳偉翔；「何生事務所」係機構名唔改，淨係阿偉換名。
+ok('headline still rendered', out.includes('電視城臨記班底添新血 陳偉翔獲青睞'));
+ok('dek still rendered', out.includes('何生事務所新簽臨記陳偉翔'));
 ok('fame line still rendered', out.includes('聲望 +1'));
 
 /* 2. kicker 同 headline 全同 → suppress */
@@ -55,7 +79,7 @@ ok('non-prefix kicker kept', clipCount(out)===1 && out.includes('獨家直擊'))
 
 /* 5. 反例：kicker 只同 headline 共用個別字、唔成前綴 → 保留 */
 out = renderMorningPaperHtml(baseEd({ clipLabel:'阿偉獲青睞' }));
-ok('suffix-only kicker kept', clipCount(out)===1 && out.includes('阿偉獲青睞'));
+ok('suffix-only kicker kept', clipCount(out)===1 && out.includes('陳偉翔獲青睞')); /* v20a214 NP214：眉題都行全名 */
 
 /* 6. 反例：kicker 長過 headline 且唔係 headline 前綴關係 → 保留 */
 out = renderMorningPaperHtml(baseEd({ clipLabel:'電視城臨記班底添新血 阿偉獲青睞 震驚全城' }));

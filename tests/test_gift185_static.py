@@ -1,3 +1,4 @@
+# v20a214 rebase 上 main d1239d4 resync：index.html 淨 +358 行，總行數 61994→62352（difflib 對位核實純漂移，見 qa214/resync214_rebase.py）。
 # v20a207 resync：index.html 淨 +34 行（見 qa207/resync207.py，73 錨點對位零 mismatch，純漂移）。
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），總行數 60522→60609。
 # v20a203 resync：index.html 淨 +233 行（見 qa203/resync203.py difflib 對位核實純漂移），總行數 61167→61400。
@@ -50,7 +51,7 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 61994（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199）', html.count('\n') == 61994)
+ok('總行數 62352（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358）', html.count('\n') == 62352)
 # v20a213 rebase 上 main 17c6f69 resync：釘行按 difflib 映射重寫，qa213/resync213_rebase.py 核實純漂移（v211 +42／v212 +39／v213 +199）。
 # ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',

@@ -102,8 +102,14 @@ chk('C1 suspense 光池唔郁（lightPool 仲喺度）', 'lightPool(slotCx(i)' i
 # --- C2：結果卡獎盃金底 chip ---
 chk('C2 金底 chip rule 覆蓋 .psr-fellows63',
     '.psr-fellows63 img.ic112' in src and '#f2c14e' in src)
-chk('C2 結果卡 fellows 行用 iconHtml112（唔改資產）',
-    'iconHtml112("🏆")' in slice_fn('awards63FellowsHtml'))
+# v20a214 NP214 ★統一：fellows 得主標記由 🏆 金底 chip（iconHtml112 獎盃圖）改做 ★ 字符＋「★為得主」圖例
+# （v207 C2 嗰個實現被取代；金底 chip CSS rule 本身留喺度，典禮 glamour／reveal 嗰邊仲用緊 iconHtml112("🏆")）。
+# 注意：helper 入面嘅 v214 註解本身提到 iconHtml112("🏆")（講明邊啲唔郁），驗「唔再用」嗰陣要先剝走 /* */ 註解。
+def strip_c(s):
+    return re.sub(r'/\*.*?\*/', '', s, flags=re.S)
+chk('C2 結果卡 fellows 行用 ★ 得主標記（v214 取代 🏆 金底 chip）',
+    '"★ "' in slice_fn('awards63FellowsHtml') and '★為得主' in slice_fn('awards63FellowsHtml')
+    and 'iconHtml112("🏆")' not in strip_c(slice_fn('awards63FellowsHtml')))
 
 # --- C3：結果卡收緊＋結果 modal 放寬 94dvh（旁聽版＋提名版） ---
 awd_css = src[src.find('.awd-sheet .psr-cards'):] if '.awd-sheet .psr-cards' in src else ''

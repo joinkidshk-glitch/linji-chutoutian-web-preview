@@ -31,7 +31,7 @@ ok('覆寫表齊：inviteDek×3／press×3／news×3／朝早報紙×6',
 # --- (2) 頒獎流程接線 ---
 ok('buildAwardResultPack 掛 venue99', 'venue99: (typeof venue99ForCeremony==="function") ? venue99ForCeremony(ceremonyId) : ""' in src)
 ok('請柬卡出場地行', '場地：${pack.venue99}' in src)
-ok('結果卡副題帶場地', '${pack.venue99?(" · "+pack.venue99):""}' in src)
+ok('結果卡副題帶場地', '[pack.displayName||"", pack.year||"", pack.venue99||""]' in src and 'np214-kicker' in src)
 ok('典禮 beats 開場帶場地行', '(venue99 ? ("\\n" + venue99) : "")' in src)
 ok('頒獎 log 記錄場地（手帳獎項頁用）', 'venue99: pack.venue99 || "",' in src)
 ok('獎項頁 when 行帶場地', '(e.venue99 ? (" · " + e.venue99) : "")' in src)
