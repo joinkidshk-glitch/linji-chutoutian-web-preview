@@ -73,7 +73,7 @@ chk('兩輪封頂 out.length >= 3 仲喺度', 'out.length >= 3' in fellows_fn)
 # --- (4) 舞台＋卡片行現行通用路徑 ---
 chk('舞台逐個 fellow 載 PixelLab 幀（loadPx(f.starId, d) 通用）', 'loadPx(f.starId, d)' in play_fn)
 chk('舞台載埋三向幀（south 企立／east／west 行，通用）', '["south", "east", "west"].forEach(d=> loadPx(f.starId, d))' in play_fn)
-chk('卡片用 fellows 通用 builder（唔按 starId 分流）', 'fellows.forEach(f=> cardsData.push' in play_fn)
+chk('卡片用 fellows 通用 builder（唔按 starId 分流；v20a208：搬入 buildCardsData208，變數名 fl／cd）', 'fl.forEach(f=> cd.push' in play_fn)
 chk('卡片冇 poster 嗰陣跌返 CSS 卡（通用規則）', 'awd63-csscard' in play_fn)
 
 # --- (5) 硬規則 ---

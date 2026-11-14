@@ -70,10 +70,12 @@ chk('載唔到跌返 px south 幀（drawPx 剪影降級）', 'drawTuxedo(cx' in 
 
 # --- (4) 贏分支先著 ---
 # v20a181：M4 walkup GIF 區已撤，play 內只剩 reveal 一個 if(best === "won"){（行前＋企定）。
+# v20a208：揭曉分支條件由 pack best 改做而家呢格 outcome（curOutcome208）——多格之夜每格 outcome
+# 唔同，pack best 會令非玩家格揭曉誤行燕尾服分支；「贏分支先著」意圖不變，錨點跟住改名。
 _won_cands = []
 _start = 0
 while True:
-    _wi = play_fn.find('if(best === "won"){', _start)
+    _wi = play_fn.find('if(curOutcome208 === "won"){', _start)
     if _wi < 0:
         break
     _won_cands.append((_wi, slice_brace(play_fn, play_fn.find('{', _wi))))

@@ -88,8 +88,10 @@ chk('helper 全檔只呼叫一次（advance 嗰行）', src.count('awards160Play
 play_fn = slice_fn('awards62PlayCeremony')
 chk('呼叫位喺 awards62PlayCeremony 入面', 'awards160PlayWinAudio();' in play_fn)
 call_lines = [ln for ln in src.split('\n') if 'awards160PlayWinAudio();' in ln]
+# v20a208：觸發條件由 pack best 改做而家呢格 outcome（curOutcome208）——只限玩家格贏嗰格揭曉，
+# 唔係其他格揭曉；「揭曉嗰刻播」意圖不變。
 chk('呼叫行係 reveal＋won 條件（同 spawnConfetti 一行）',
-    len(call_lines) == 1 and 'beats[beatIdx].id === "reveal" && best === "won"' in call_lines[0]
+    len(call_lines) == 1 and 'beats[beatIdx].id === "reveal" && curOutcome208 === "won"' in call_lines[0]
     and 'spawnConfetti()' in call_lines[0])
 chk('呼叫包喺 try/catch 入面（唔可以拖垮典禮）', len(call_lines) == 1 and 'try{ awards160PlayWinAudio(); }catch' in call_lines[0])
 chk('全檔 new Audio 只得一個（helper 獨家）', src.count('new Audio(') == 1)

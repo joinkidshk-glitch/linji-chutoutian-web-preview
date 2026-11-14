@@ -78,8 +78,9 @@ chk('won 企位唔出 canvas 界（左右各留 39px）',
     WON[0] - FIG_W // 2 >= 0 and WON[-1] + FIG_W // 2 <= 480)
 chk('gallery 企位唔出 canvas 界', GAL[0] - FIG_W // 2 >= 0 and GAL[-1] + FIG_W // 2 <= 480)
 chk('舞台冇講台／圓台幾何（LECTERN／講台 x194 唔再出現；退役註解提及除外）', 'LECTERN' not in play_fn and '講台 x194' not in play_fn)
-chk('玩家 slot 仍然係 1（won 4 slots，阿偉 x＝180）',
-    'slots.splice(Math.min(1, slots.length), 0, { kind: "player" })' in play_fn)
+chk('玩家 slot 仍然係 1（won 4 slots，阿偉 x＝180；v20a208：splice 搬入 buildSlots208，初建＋轉格共用）',
+    'sl.splice(Math.min(1, sl.length), 0, { kind: "player" })' in play_fn and
+    'buildSlots208(fellows, winFellow' in play_fn)
 chk('glamour 燕尾服右緣 236／480＝49.2%（<56%，海報 panel 唔重疊）',
     180 + 136 // 2 < 480 * 0.56) # v20a207 B2：dispH 136
 

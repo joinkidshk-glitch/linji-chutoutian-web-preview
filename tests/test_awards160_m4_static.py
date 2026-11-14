@@ -44,11 +44,13 @@ chk('syncWalkup 已撤（定義＋呼叫齊消失）', 'syncWalkup' not in play_
 
 # --- walkup beat 本身唔郁 ---
 chk('beats：walkup 2200ms', 'id: "walkup", ms: 2200' in beats_fn)
-chk('beats：walkup 只限 won 分支', 'if(best === "won")' in beats_fn and beats_fn.find('id: "walkup"') > beats_fn.find('if(best === "won")'))
+# v20a208：beats 分兩條分支（多格夜＋舊單格 fallback），walkup push 各一處，兩處都喺 won guard 入面
+# （多格：if(nc.isFocus && best === "won")；舊單格：if(best === "won")）；「只限 won」意圖不變。
+chk('beats：walkup 只限 won 分支', 'if(nc.isFocus && best === "won") beats.push({ id: "walkup"' in beats_fn and 'if(best === "won")' in beats_fn)
 chk('beats：walkup 喺 reveal 之後', beats_fn.find('id: "walkup"') > beats_fn.find('id: "reveal"'))
 chk('beats：walkup beat caption 係空（文案改由 draw() setCaption）', 'id: "walkup", ms: 2200, caption: ""' in beats_fn)
-chk('beats：gallery／nominated 唔行 walkup（walkup 喺 won guard 入面）',
-    beats_fn.count('id: "walkup"') == 1)
+chk('beats：gallery／nominated 唔行 walkup（walkup 喺 won guard 入面，兩處 push 都係 won 條件）',
+    beats_fn.count('id: "walkup"') == 2)
 
 # --- walkup 改由 canvas 畫（px east 幀） ---
 chk('play：draw 有 walkup case', 'id === "walkup"' in play_fn)

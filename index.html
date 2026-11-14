@@ -47150,6 +47150,8 @@ try{
     rep62: awards62RepWork,
     hints62: awards62SeasonHints,
     beats62: awards62CeremonyBeats,
+    night208: awards208NightCats, /* v20a208：全晚逐格清單（次序＋每格 fellows／得主） */
+    order208: awards208CatRank, /* v20a208：格次序 rank（配角先、主角後、男主角壓軸） */
     venue99: function(id){ return (typeof venue99ForCeremony==="function") ? venue99ForCeremony(id) : ""; },
     play62: awards62PlayCeremony,
     fellows63: awards63Fellows,
@@ -47558,10 +47560,136 @@ function awards62FallbackStage(ctx, W, H){
   /* v20a181：後備舞台＝同一個程式舞台（M1 底圖已撤，唔再分叉；參數 W/H 照舊由 draw() 傳入）。 */
   awards181DrawBase(ctx, W, H, 0);
 }
+/* ===== v20a208：頒獎禮逐格宣佈（逐個獎項慢慢宣佈提名人）=====
+   用戶 2026-11-14 14:39：「動畫要慢慢宣佈提名人的。逐個獎項宣佈提名，再最後公佈結果。
+   然後就處理下個獎項」。
+   實作方式 (a)：擴展 awards62CeremonyBeats 做多格 beat list（每 beat 帶 catIdx／catId 上下文），
+   awards62PlayCeremony 喺格轉換嗰陣重建 slots／卡片／px 預載（applyCatState）。揀 (a) 唔揀 (b)
+   逐格鏈式呼叫嘅原因：(b) 每格要起一個獨立舞台，格與格之間舞台拆走再重建有空隙
+   （awards62CeremonyActive guard 會讀到 false，強制播有機會疊入嚟）；(a) 全晚一個舞台、
+   一個 rAF loop，跳過掣 finish() 即係成晚完，語義天然啱；格次序／每格 beats 全部喺 beats
+   list 一次過睇得晒，logic test 易驗。
+   格次序：配角先、主角後，主角男最後壓軸——film／tv／ad：男配角 → 女配角 → 女主角 → 男主角；
+   music：最佳新人獎 → 最佳女歌手 → 最佳男歌手。理由：配角係綠葉，先暖場；主角壓軸，
+   男主角係成晚最高潮；音樂新人先出道亮相，再到女歌手、男歌手壓軸。
+   每格：格標題 1200ms → 每位提名人一個 beat（2000ms；統籌原文約 1800ms，2000ms 係為咗
+   成晚總時長落返任務範圍：3 格約 38–45 秒、4 格約 45–55 秒；見 NOTES_V20A208.md §2 算式）
+   → 懸念 1400ms → 揭曉 2100ms。玩家格額外保留現有待遇：enter（成晚一次，喺玩家格之前）、
+   walkup 2200（won）、glamour 1800（won 有海報）、comfort 2600（nominated）。
+   open／out 成晚各一次；gallery／推辭路徑同樣行全晚多格（pan 成晚一次開頭，冇 enter／
+   walkup／glamour／comfort）。結果卡＋報紙成晚完先出一次（presentAwardResult／finishSkip
+   流程唔郁）。pack.categories 唔擴大（結果卡食佢）；全晚類別清單由 awardsMvpCategories
+   全表出，非玩家格 fellows 即場由 awards63Fellows 計（seeded，按 catId 獨立可重現）。
+   邊界：某格 fellows 空 → 嗰格一個通用提名 beat＋揭曉 fallback 文案，唔 crash；
+   awardsMvpCategories 回空／pack 冇 ceremonyId → 回 null，beats／player 跌返舊單格行為
+   （舊 logic test 嘅 pack 冇 ceremonyId，照舊綠）。 */
+function awards208CatRank(c){
+  const role = (c && c.role) || "", g = (c && c.gender) || "";
+  if(role === "support") return g === "m" ? 0 : 1;
+  if(role === "newcomer") return 0;
+  if(role === "singer") return g === "f" ? 1 : 2;
+  if(role === "lead") return g === "f" ? 2 : 3;
+  return 9; /* 未知 role／gender 排最後，唔打亂已知格 */
+}
+function awards208NightCats(pack){
+  try{
+    if(!pack || !pack.ceremonyId) return null;
+    if(typeof awardsMvpCategories !== "function") return null;
+    const table = awardsMvpCategories(pack.ceremonyId);
+    if(!Array.isArray(table) || !table.length) return null;
+    let ceremony = null;
+    try{ ceremony = (typeof awardsCeremonyById === "function") ? awardsCeremonyById(pack.ceremonyId) : null; }catch(_e){}
+    if(!ceremony) ceremony = { id: pack.ceremonyId, medium: pack.medium || "", matchTypes: [] };
+    let focus = null;
+    try{ focus = (typeof awards63FocusCat === "function") ? awards63FocusCat(pack) : null; }catch(_e){}
+    const packCats = (pack && Array.isArray(pack.categories)) ? pack.categories : [];
+    const ordered = table.slice().sort((a, b)=> awards208CatRank(a) - awards208CatRank(b));
+    return ordered.map(cat=>{
+      const pc = packCats.find(c=> c && c.id === cat.id) || null;
+      let fellows = (pc && Array.isArray(pc.fellows63)) ? pc.fellows63 : null;
+      if(!fellows){
+        try{ fellows = (typeof awards63Fellows === "function") ? awards63Fellows(ceremony, pack.year, cat.gender || "", cat.id) : []; }catch(_e){ fellows = []; }
+      }
+      fellows = (fellows || []).slice(0, 3);
+      const isFocus = !!(focus && focus.id === cat.id);
+      const outcome = pc ? pc.outcome : "gallery";
+      let winner = null;
+      if(isFocus && pc && pc.outcome === "won") winner = null; /* 玩家格贏：得主係阿偉，唔係對手（同 awardWinner149 回 null 一致） */
+      else if(isFocus && pc && pc.winner63) winner = pc.winner63;
+      else if(fellows.length) winner = fellows[0]; /* 非玩家格／gallery 格得主＝fellows[0] 既定規則 */
+      return { cat: cat, id: cat.id, label: cat.label || cat.id, role: cat.role || "", gender: cat.gender || "",
+        outcome: outcome, isFocus: isFocus, fellows: fellows, winner: winner,
+        repTitle: (isFocus && (pack.repWork62 || (pc && pc.repWorkTitle) || "")) || "" };
+    });
+  }catch(_e){ return null; }
+}
+/* v20a208：提名人 beat 嘅舞台 slot 位置——slots 佈局係 fellows 順序、玩家（只限玩家格）
+   splice 入 min(1, fellows 數) 位。nomPos 係提名名單內次序（玩家格：0＝阿偉，1+＝fellows；
+   其他格：同 fellows 順序）。 */
+function awards208NomineeSlotIdx(nomPos, fellowsCount, isPlayerCat, bestOutcome){
+  if(!isPlayerCat || bestOutcome === "gallery") return nomPos;
+  if(nomPos === 0) return (fellowsCount >= 1) ? 1 : 0;
+  const fi = nomPos - 1;
+  return fi + ((fellowsCount >= 1 && fi >= 1) ? 1 : 0);
+}
 function awards62CeremonyBeats(pack){
   pack = pack || {};
   const name = pack.displayName || "頒獎夜";
   const best = pack.bestOutcome || "gallery";
+  /* v20a208：全晚多格——night 建到就用新流程；建唔到（冇 ceremonyId／全表空）跌返舊單格。 */
+  let night208 = null;
+  try{ night208 = (typeof awards208NightCats === "function") ? awards208NightCats(pack) : null; }catch(_e){}
+  if(night208 && night208.length){
+    const venue99 = pack.venue99 || ((typeof venue99ForCeremony === "function") ? venue99ForCeremony(pack.ceremonyId) : "");
+    const beats = [{ id: "open", ms: 1200, catIdx: -1, catId: "", caption: "—— " + name + " ——" + (venue99 ? ("\n" + venue99) : "") }];
+    if(best === "gallery"){
+      beats.push({ id: "pan", ms: 2000, catIdx: 0, catId: night208[0].id, caption: pack.declined165 ? "今晚你喺屋企睇電視轉播\n台上群星逐一亮相，記住呢晚。" : "今晚你坐喺觀禮席\n睇住台上群星，記住呢晚。" });
+    }
+    let glam208 = false;
+    try{ glam208 = best === "won" && typeof poster59Path === "function" && !!poster59Path(pack.repGigId63 || ""); }catch(_e){}
+    const focusIdx208 = night208.findIndex(n=> n && n.isFocus);
+    night208.forEach((nc, ci)=>{
+      /* enter 成晚一次，喺玩家格之前（唔好每格行一次入場）；玩家格係第一格嗰陣緊接 open。 */
+      if(best !== "gallery" && ci === focusIdx208){
+        beats.push({ id: "enter", ms: 1750, catIdx: ci, catId: nc.id, caption: "提名者魚貫入場，企到台前。" });
+      }
+      beats.push({ id: "catTitle", ms: 1200, catIdx: ci, catId: nc.id, catLabel: nc.label, caption: "—— " + nc.label + " ——" });
+      const nominees = [];
+      if(nc.isFocus && best !== "gallery" && nc.repTitle) nominees.push({ me: true, star: "阿偉", title: nc.repTitle });
+      nc.fellows.forEach(f=>{ if(f && f.star) nominees.push({ me: false, star: f.star, title: f.title || "" }); });
+      if(!nominees.length){
+        beats.push({ id: "nominee", ms: 2000, catIdx: ci, catId: nc.id, catLabel: nc.label, nomineeIdx: -1, nomineeTotal: 0, caption: "入圍名單逐個唱出……" });
+      } else {
+        nominees.forEach((nm, ni)=>{
+          beats.push({ id: "nominee", ms: 2000, catIdx: ci, catId: nc.id, catLabel: nc.label,
+            nomineeIdx: ni, nomineeTotal: nominees.length, star: nm.star, title: nm.title, me: !!nm.me,
+            slotIdx: awards208NomineeSlotIdx(ni, nc.fellows.length, nc.isFocus, best),
+            caption: nm.star + "：《" + (nm.title || "") + "》" });
+        });
+      }
+      beats.push({ id: "suspense", ms: 1400, catIdx: ci, catId: nc.id, catLabel: nc.label, caption: "得獎者是……" });
+      let revealCap;
+      if(nc.isFocus && nc.outcome === "won"){
+        revealCap = iconHtml112("🏆") + " 得獎！\n" + nc.label + (nc.repTitle ? ("：《" + nc.repTitle + "》") : "");
+      } else if(nc.isFocus && nc.outcome === "nominated"){
+        const win = nc.winner;
+        if(win && win.star) revealCap = iconHtml112("🏆") + " " + win.star + "憑《" + (win.title || "") + "》得獎\n" + (nc.repTitle ? ("你嘅《" + nc.repTitle + "》入圍到最後——差少少，下年再嚟。") : "差少少，下年再嚟。");
+        else revealCap = "入圍到最後一輪\n" + (nc.repTitle ? ("《" + nc.repTitle + "》——差少少，下年再嚟。") : "差少少，下年再嚟。");
+      } else {
+        const win = nc.winner;
+        if(win && win.star) revealCap = iconHtml112("🏆") + " " + win.star + "憑《" + (win.title || "") + "》得獎";
+        else revealCap = "今晚嘅得獎者誕生——掌聲屬於台上嗰位。";
+      }
+      beats.push({ id: "reveal", ms: 2100, catIdx: ci, catId: nc.id, catLabel: nc.label, caption: revealCap });
+      if(nc.isFocus && best === "won") beats.push({ id: "walkup", ms: 2200, catIdx: ci, catId: nc.id, caption: "" });
+      if(nc.isFocus && best === "won" && glam208) beats.push({ id: "glamour", ms: 1800, catIdx: ci, catId: nc.id, caption: "" });
+      if(nc.isFocus && best === "nominated"){
+        beats.push({ id: "comfort", ms: 2600, catIdx: ci, catId: nc.id, caption: "何生拍拍你膊頭：「差少少啫，唔緊要，下年再嚟過。」\n阿偉：「……嗯。下年，我要自己行上台。」" });
+      }
+    });
+    beats.push({ id: "out", ms: 500, catIdx: -1, catId: "", caption: "掌聲響起——今晚完滿落幕。" });
+    return beats;
+  }
   let focus = null;
   try{ focus = (typeof awards63FocusCat === "function") ? awards63FocusCat(pack) : null; }catch(_e){}
   const rep = pack.repWork62 || (focus && focus.repWorkTitle) || "";
@@ -47687,17 +47815,52 @@ function awards62PlayCeremony(pack, doneFn){
     const best = (pack && pack.bestOutcome) || "gallery";
     let focus = null;
     try{ focus = (typeof awards63FocusCat === "function") ? awards63FocusCat(pack) : null; }catch(_e){}
-    const fellows = (focus && Array.isArray(focus.fellows63)) ? focus.fellows63.slice(0, 3) : [];
-    const winFellow = (focus && (focus.winner63 || (focus.fellows63 && focus.fellows63[0]))) || null; /* v20a147：gallery 類別 winner63 係 null，得主照 fellows[0] 規則取 fellows63[0]，等揭曉嗰陣得主行前；nominated／won 行為不變 */
-    const repTitle = (pack && pack.repWork62) || (focus && focus.repWorkTitle) || "";
+    /* v20a208：全晚多格狀態——night208 有就每格一個 cat state（初值第 0 格）；冇就舊單格
+       （curCat208＝null，curOutcome208＝pack bestOutcome，fellows／slots 照舊路）。 */
+    let night208 = null;
+    try{ night208 = (typeof awards208NightCats === "function") ? awards208NightCats(pack) : null; }catch(_e){}
+    if(night208 && !night208.length) night208 = null;
+    let curCatIdx208 = -1;
+    let curCat208 = null;
+    let curOutcome208 = best;
+    let fellows = (focus && Array.isArray(focus.fellows63)) ? focus.fellows63.slice(0, 3) : [];
+    let winFellow = (focus && (focus.winner63 || (focus.fellows63 && focus.fellows63[0]))) || null; /* v20a147：gallery 類別 winner63 係 null，得主照 fellows[0] 規則取 fellows63[0]，等揭曉嗰陣得主行前；nominated／won 行為不變 */
+    let repTitle = (pack && pack.repWork62) || (focus && focus.repWorkTitle) || "";
+    if(night208){
+      const first208 = night208[0];
+      fellows = first208.fellows.slice(0, 3);
+      winFellow = first208.winner;
+      repTitle = first208.repTitle;
+      curOutcome208 = first208.outcome;
+      curCatIdx208 = 0;
+      curCat208 = first208;
+    }
     const posterOf = (gid)=>{ try{ return (typeof poster59Path === "function" && gid) ? poster59Path(gid) : ""; }catch(_e){ return ""; } }; const esc = (typeof esc59 === "function") ? esc59 : function(s){ return String(s == null ? "" : s); }; /* v20a181：esc local alias（跟 46182 行同一寫法），本 scope 冇 esc，唔加會 ReferenceError 即死 */
+    /* v20a208：逐格狀態建造（初建＋轉格共用）——slots 佈局同舊 code 一致（fellows 順序、玩家
+       splice 入 min(1, 數) 位）；卡片：玩家格先出阿偉卡（win 旗只限 pack best==="won"），其餘格
+       只出 fellows 卡；單格 gallery 之夜（night208 係 null）照舊唔出卡。 */
+    const buildSlots208 = (fl, wf, withPlayer)=>{
+      const sl = [];
+      fl.forEach(f=> sl.push({ kind: "fellow", f: f, starId: f.starId || "", isWinner: !!(wf && f.star === wf.star && f.title === wf.title) }));
+      if(withPlayer) sl.splice(Math.min(1, sl.length), 0, { kind: "player" });
+      return sl;
+    };
+    const buildCardsData208 = (cs, fl, wf, repT)=>{
+      const cd = [];
+      const showPlayer = night208 ? !!(cs && cs.isFocus) : (best !== "gallery");
+      if(showPlayer && repT) cd.push({ me: true, title: repT, star: "阿偉", poster: posterOf(pack && pack.repGigId63), win: best === "won" });
+      if(night208 || best !== "gallery"){
+        fl.forEach(f=> cd.push({ me: false, title: f.title || "", star: f.star || "", poster: f.poster || posterOf(f.gigId), win: !!(wf && f.star === wf.star && f.title === wf.title) }));
+      }
+      return cd;
+    };
     /* v20a181：橫向舞台文字層（DOM 層 .awd181-*，對齊 480×432 canvas；字唔入 canvas）——v20a207 B2：360→432，% 唔郁
        橫額＝典禮名（pack.displayName）；左數字條＝聲望（S.fame 即時值）；右數字條＝角逐（今屆
        pack.categories 項數，1–2 項）；白牌＝焦點獎項名（focus.label）＋牌內細字代表作／會場名（黃字 fix：搬入白牌，唔再放 43.5%）。
        全部用 esc()，唔抄參考圖任何字。esc 係本函數 local alias（跟 46182 行同一寫法，附喺 posterOf 同行，零行數漂移；本 scope 冇 esc，唔加會 ReferenceError 即死，實駕捉到）。 */
     const awd181Fame = (()=>{ try{ return (typeof S !== "undefined" && S) ? Math.max(0, Math.round(Number(S.fame) || 0)) : 0; }catch(_e){ return 0; } })();
     const awd181Noms = (pack && Array.isArray(pack.categories)) ? pack.categories.length : 0;
-    const awd181Board = (focus && focus.label) || (pack && pack.displayName) || "頒獎夜";
+    const awd181Board = (night208 ? night208[0].label : (focus && focus.label)) || (pack && pack.displayName) || "頒獎夜";
     const awd181Line1 = repTitle ? "《" + repTitle + "》" : "入圍名單逐一揭曉";
     const awd181Line2 = (pack && pack.venue99) || (pack && pack.displayName) || "";
     const awd181Html = '<div class="awd181-banner">' + esc((pack && pack.displayName) ? pack.displayName : "頒獎夜") + "</div>"
@@ -47705,23 +47868,17 @@ function awards62PlayCeremony(pack, doneFn){
       + '<div class="awd181-strip r"><span class="lab"><i class="awd181-ic star"></i>角逐</span><span class="num">' + awd181Noms + "</span></div>"
       + '<div class="awd181-board' + (String(awd181Board).length > 8 || String(awd181Line1).length > 10 || String(awd181Line2).length > 10 ? " long" : "") + '"><span class="awd181-t">' + esc(awd181Board) + "</span>"
       + '<span class="awd181-sub">' + esc(awd181Line1) + (awd181Line2 ? "<br/>" + esc(awd181Line2) : "") + "</span></div>";
-    /* 台位：對手一排＋玩家（旁聽嗰晚玩家唔上台）；得主對手標記 */
-    const slots = [];
-    fellows.forEach(f=> slots.push({ kind: "fellow", f: f, starId: f.starId || "", isWinner: !!(winFellow && f.star === winFellow.star && f.title === winFellow.title) }));
-    if(best !== "gallery") slots.splice(Math.min(1, slots.length), 0, { kind: "player" });
-    const playerSlot = slots.findIndex(s=> s.kind === "player");
-    const winnerSlot = slots.findIndex(s=> s.kind === "fellow" && s.isWinner);
+    /* 台位：對手一排＋玩家（旁聽嗰晚玩家唔上台；多格之夜只限玩家格有玩家位）；得主對手標記 */
+    let slots = buildSlots208(fellows, winFellow, night208 ? !!(curCat208 && curCat208.isFocus) : (best !== "gallery"));
+    let playerSlot = slots.findIndex(s=> s.kind === "player");
+    let winnerSlot = slots.findIndex(s=> s.kind === "fellow" && s.isWinner);
     /* DOM 骨架：canvas＋唱名作品卡列（DOM 層）＋字幕；glamour 海報層另掛喺 stage */
     stage = document.createElement("div");
     stage.className = "awd62-stage";
     let cardsHtml = "";
-    const cardsData = [];
+    let cardsData = buildCardsData208(curCat208, fellows, winFellow, repTitle);
     /* v20a149 B3：卡片加 win 旗（對照上面 winFellow；阿偉自己嗰張只喺 best==="won" 先係得主）。 */
-    if(best !== "gallery"){
-      if(repTitle) cardsData.push({ me: true, title: repTitle, star: "阿偉", poster: posterOf(pack && pack.repGigId63), win: best === "won" });
-      fellows.forEach(f=> cardsData.push({ me: false, title: f.title || "", star: f.star || "", poster: f.poster || posterOf(f.gigId), win: !!(winFellow && f.star === winFellow.star && f.title === winFellow.title) }));
-    }
-    if(cardsData.length){
+    const cardsHtmlFor208 = (cd)=>{
       /* v20a149 B3：冇 poster 嗰陣 csscard 唔再印片名——改做大媒介圖標＋細字典禮名，
          片名只留卡底 .t 一行。 */
       const medLabel182 = { film: "電影", tv: "電視", music: "唱片", ad: "廣告" }[(pack && pack.medium) || ""] || "頒獎";
@@ -47734,18 +47891,22 @@ function awards62PlayCeremony(pack, doneFn){
          每隻 tint 配返同色系深色（按 index 對位，紫卡 keep #241736），成張卡面都帶 tint；
          色板數量／第一 stop／卡面文字唔郁。 */
       const AWDS63_DEEPS184 = ["#241736", "#122a1e", "#2c1518", "#141f2b", "#2a1e0c", "#1b1c38"];
-      cardsHtml = '<div class="awd63-cards">' + cardsData.map((c, ci)=>{
+      return '<div class="awd63-cards">' + cd.map((c, ci)=>{
         const tint182 = AWDS63_TINTS182[ci % AWDS63_TINTS182.length];
         const deep184 = AWDS63_DEEPS184[ci % AWDS63_DEEPS184.length];
         const media = c.poster ? ('<img src="' + c.poster + '" alt="《' + c.title + '》作品圖"/>') : ('<div class="awd63-csscard" style="background:linear-gradient(160deg,' + tint182 + ',' + deep184 + ')"><span class="awd63-cssmono">' + (c.star || "?").charAt(0) + '</span><span class="awd63-cssstar">' + (c.star || "") + '</span><span class="awd63-cssmed">' + medLabel182 + "</span></div>"); /* v20a182 C1 註：星名跟隔籬 .s 行一樣直接印（內部數據，唔經 esc；esc 係局部 helper，play 作用域冇佢）；媒介細行淨留文字——手繪 icon 係深啡線稿，喺深色卡面會變深色方塊 */
         return '<div class="awd63-card' + (c.me ? " me" : "") + (c.win ? " win" : "") + '">' + media + '<div class="t">《' + c.title + '》</div><div class="s">' + c.star + "</div></div>";
       }).join("") + "</div>";
+    };
+    if(cardsData.length){
+      cardsHtml = cardsHtmlFor208(cardsData);
     }
     let glamHtml = "";
     if(beats.some(b=> b.id === "glamour")){
       const wonCat = (pack.categories || []).find(c=> c && c.outcome === "won") || {};
-      glamHtml = '<div class="awd63-glamour"><div class="awd63-glamour-panel"><img src="' + posterOf(pack.repGigId63) + '" alt="《' + repTitle + '》作品圖"/>'
-        + '<div class="cap">' + iconHtml112("🏆") + ' 得獎<br/>' + (wonCat.label || "") + "：《" + repTitle + "》</div></div></div>"; /* v20a166 B1：海報＋cap 入右邊 44% 暗 panel，overlay 左邊透明留位畀燕尾服 canvas */
+      const glamRep208 = (pack && pack.repWork62) || repTitle; /* v20a208：多格之夜初值 repTitle 係第 0 格（非玩家格就係 ""），glamour cap 要用玩家格代表作（pack.repWork62），唔用初值 */
+      glamHtml = '<div class="awd63-glamour"><div class="awd63-glamour-panel"><img src="' + posterOf(pack.repGigId63) + '" alt="《' + glamRep208 + '》作品圖"/>'
+        + '<div class="cap">' + iconHtml112("🏆") + ' 得獎<br/>' + (wonCat.label || "") + "：《" + glamRep208 + "》</div></div></div>"; /* v20a166 B1：海報＋cap 入右邊 44% 暗 panel，overlay 左邊透明留位畀燕尾服 canvas */
     }
     /* v20a181：M4 walkup GIF 退役——行上台改由 canvas 畫（walkup beat 內阿偉用 px east 幀由台側行到中央，
        再換燕尾服捧杯；文案改由 draw() walkup 分支 setCaption，beats.walkup.caption 繼續係 ""，logic test 唔郁）。 */
@@ -47766,7 +47927,7 @@ function awards62PlayCeremony(pack, doneFn){
     const capEl = stage.querySelector(".awd62-caption");
     const skipBtn = stage.querySelector(".awd62-skip");
     const cardsEl = stage.querySelector(".awd63-cards");
-    const cardEls = cardsEl ? Array.prototype.slice.call(cardsEl.querySelectorAll(".awd63-card")) : [];
+    let cardEls = cardsEl ? Array.prototype.slice.call(cardsEl.querySelectorAll(".awd63-card")) : [];
     const glamEl = stage.querySelector(".awd63-glamour");
     /* v20a149 B1：M5 彩紙 GIF 疊加——reveal／comfort／out 期間顯示，其餘收起。 */
     const confImgs149 = stage.querySelectorAll(".awd62-m5fx149");
@@ -47793,6 +47954,8 @@ function awards62PlayCeremony(pack, doneFn){
     };
     ["south", "east", "west"].forEach(d=> loadPx("awei", d));
     fellows.forEach(f=>{ if(f.starId) ["south", "east", "west"].forEach(d=> loadPx(f.starId, d)); });
+    /* v20a208：全晚所有格嘅 fellows 一次過預載（轉格嗰陣唔等載圖，唔會有空窗期畫剪影）。 */
+    if(night208) night208.forEach(nc=> (nc.fellows || []).forEach(f=>{ if(f && f.starId) ["south", "east", "west"].forEach(d=> loadPx(f.starId, d)); }));
     /* v20a160 M6：燕尾服阿偉預載（贏分支先用；載唔到 ok=false，drawFigure 跌返 px south 幀） */
     const tuxRec = { img: null, ok: false };
     try{
@@ -47804,17 +47967,54 @@ function awards62PlayCeremony(pack, doneFn){
     const FLOOR = 314; /* v20a181：橫向重建——木地板 y200–334（深 134px＝37.2% canvas 高）；v20a187 B1 更正：地板改 y228–310（深 82px＝22.8% 高），「佔畫面下半約四成」係讀錯參考圖（實測下半 29%，見 review §4 B1）；人物腳底跟同一常數，行前腳 272；舊 v177 FLOOR 250／圓台講台一併作廢；v20a207 B2：canvas 加高 360→432，地板按比例 y274–372（深 98px＝22.7%），FLOOR 262→314（地板深 41% 處，腳底以下空地板 58px）；行前腳 FLOOR＋10＝324 */
     const slotCx = (i)=>{ if(slots.length === 3) return [75, 240, 405][i]; let cx = 240 + (i - (slots.length - 1) / 2) * 120; return cx; }; /* v20a181：橫向企位——won／nominated 4 slots 60／180／300／420（間距 120，人闊約 48px，罅 72px，中間大段空地板；兩邊各留 36px）；gallery 3 slots 75／240／405（罅 165／165，左／中／右分開企）；v20a207 B2：dispH 112→136，人闊 42→48px */
     /* v20a64：入場走路計劃——左右兩流、深位先行（唔使穿過已企定嘅人）；速度 0.16px/ms，行幀跟方向揀 east／west（v20a181：舊 walkA／walkB 作廢） */
-    const entryPlan = slots.map((s, i)=> ({ side: slotCx(i) <= 240 ? -1 : 1, cx: slotCx(i), from: 0, delay: 0, dur: 0 }));
-    [-1, 1].forEach(side=>{
-      entryPlan.map((p, i)=> i).filter(i=> entryPlan[i].side === side)
-        .sort((a, b)=> side < 0 ? entryPlan[b].cx - entryPlan[a].cx : entryPlan[a].cx - entryPlan[b].cx)
-        .forEach((slotI, rank)=>{
-          const p = entryPlan[slotI];
-          p.from = side < 0 ? -40 : 520;
-          p.delay = rank * 380;
-          p.dur = Math.abs(p.cx - p.from) / 0.16;
-        });
-    });
+    const buildEntryPlan208 = (sl)=>{
+      const ep = sl.map((s, i)=> ({ side: slotCx(i) <= 240 ? -1 : 1, cx: slotCx(i), from: 0, delay: 0, dur: 0 }));
+      [-1, 1].forEach(side=>{
+        ep.map((p, i)=> i).filter(i=> ep[i].side === side)
+          .sort((a, b)=> side < 0 ? ep[b].cx - ep[a].cx : ep[a].cx - ep[b].cx)
+          .forEach((slotI, rank)=>{
+            const p = ep[slotI];
+            p.from = side < 0 ? -40 : 520;
+            p.delay = rank * 380;
+            p.dur = Math.abs(p.cx - p.from) / 0.16;
+          });
+      });
+      return ep;
+    };
+    let entryPlan = buildEntryPlan208(slots);
+    /* v20a208：格轉換——重建 slots／entryPlan／卡片 DOM／白牌，唔拆舞台（guard 唔會見到空隙）。
+       喺 advance() 每次轉 beat 嗰陣行（beat.catIdx 變咗先做嘢）；open／out 嘅 catIdx 係 -1，唔郁。
+       卡片「on」要即刻拎走：新一格嘅卡要等逐位宣佈先逐張出，唔可以沿用上一格 reveal 嗰陣全出嘅狀態。 */
+    const applyCatState208 = (ci)=>{
+      if(!night208 || ci == null || ci < 0 || ci >= night208.length || ci === curCatIdx208) return;
+      const cs = night208[ci];
+      curCatIdx208 = ci; curCat208 = cs;
+      fellows = cs.fellows.slice(0, 3);
+      winFellow = cs.winner;
+      repTitle = cs.repTitle;
+      curOutcome208 = cs.outcome;
+      slots = buildSlots208(fellows, winFellow, !!cs.isFocus);
+      playerSlot = slots.findIndex(s=> s.kind === "player");
+      winnerSlot = slots.findIndex(s=> s.kind === "fellow" && s.isWinner);
+      entryPlan = buildEntryPlan208(slots);
+      cardsData = buildCardsData208(cs, fellows, winFellow, repTitle);
+      if(cardsEl){
+        cardsEl.innerHTML = cardsData.length ? cardsHtmlFor208(cardsData) : "";
+        cardEls = cardsEl ? Array.prototype.slice.call(cardsEl.querySelectorAll(".awd63-card")) : [];
+        cardsEl.classList.remove("on");
+      }
+      try{
+        const bt = stage.querySelector(".awd181-t");
+        if(bt) bt.textContent = cs.label;
+        const bs = stage.querySelector(".awd181-sub");
+        if(bs){
+          const l1 = repTitle ? "《" + repTitle + "》" : "入圍名單逐一揭曉";
+          const l2 = (pack && pack.venue99) || (pack && pack.displayName) || "";
+          bs.innerHTML = esc(l1) + (l2 ? "<br/>" + esc(l2) : "");
+        }
+      }catch(_e){}
+      fellows.forEach(f=>{ if(f && f.starId) ["south", "east", "west"].forEach(d=> loadPx(f.starId, d)); });
+    };
     /* v20a181：PixelLab 幀繪製——128px 原圖人物腳底 y115（v180 錨），dispH 係成張圖顯示高度，
        腳底對齊 floorY，人物高 ≈ dispH×102/128（dispH 136 → 人物約 108px；v20a207 B2：112→136，人物大返）。
        載唔到／冇檔（例如池外主演 starId）就畫中性剪影（PixelLab 比例頭＋身），唔跌返 Q 版。 */
@@ -47896,18 +48096,23 @@ function awards62PlayCeremony(pack, doneFn){
       if(b.id === "names" && Array.isArray(b.lines) && b.lines.length){
         const li = Math.min(b.lines.length - 1, Math.floor((beatTick || 0) / 6));
         if(li !== capLineIdx){ capLineIdx = li; setCaption('<span class="dim">入圍名單</span>\n' + b.lines[li]); }
+      } else if(b.id === "nominee"){
+        /* v20a208：逐位宣佈——字幕讀出嗰位「星：《作品》」，加埋進度（第 n／共 N 位）＋獎項名，唔一次過列晒。 */
+        const prog208 = (b.nomineeTotal > 0 && b.nomineeIdx >= 0) ? (" " + (b.nomineeIdx + 1) + "/" + b.nomineeTotal) : "";
+        setCaption('<span class="dim">入圍名單' + prog208 + (b.catLabel ? " · " + b.catLabel : "") + '</span>\n' + (b.caption || ""));
       } else if(b.id === "reveal"){
         const htmlTxt = String(b.caption || "").replace(/\n/g, "<br/>");
-        setCaption(best === "won" ? ('<span class="gold">' + htmlTxt + "</span>") : htmlTxt);
+        setCaption(curOutcome208 === "won" ? ('<span class="gold">' + htmlTxt + "</span>") : htmlTxt);
       } else {
         setCaption(b.caption || "");
       }
     };
     const syncCards = (b, elapsed)=>{
       if(!cardsEl) return;
-      if(b && (b.id === "names" || b.id === "suspense" || b.id === "reveal" || b.id === "comfort")){ /* v20a147：comfort 期間卡片維持 reveal 狀態可見 */
+      if(b && (b.id === "names" || b.id === "nominee" || b.id === "suspense" || b.id === "reveal" || b.id === "comfort")){ /* v20a147：comfort 期間卡片維持 reveal 狀態可見 */
         cardsEl.classList.add("on");
-        cardEls.forEach((el, i)=> el.classList.toggle("show", b.id !== "names" || elapsed > 60 + i * 180)); /* v20a174 B2：stagger 200＋i*380 → 60＋i*180——第 4 張 600ms 出齊（舊 1382ms），全淡入約 900ms（舊 1897ms） */
+        /* v20a208：nominee beat 嗰陣只出已經宣佈嗰啲卡（第 i 張喺第 i 位宣佈嗰刻先出，唔一次過齊出）；其餘 beat 全出。 */
+        cardEls.forEach((el, i)=> el.classList.toggle("show", b.id === "nominee" ? (b.nomineeIdx >= 0 && i <= b.nomineeIdx) : (b.id !== "names" || elapsed > 60 + i * 180))); /* v20a174 B2：stagger 200＋i*380 → 60＋i*180——第 4 張 600ms 出齊（舊 1382ms），全淡入約 900ms（舊 1897ms） */
       }
     };
     const syncGlamour = (b)=>{ /* v20a174 C2：glamour 期間卡列一併隱藏——同一 choke point，跟 overlay 一齊開／閂，下一 beat（out）即恢復；v168 用 visibility 留位（frame 唔跳但留 174px 死位），v174 改 display:none 收短 frame（glamour 入段／出段 frame 會 recentre，係 C2 接受咗嘅 trade-off） */
@@ -47928,6 +48133,23 @@ function awards62PlayCeremony(pack, doneFn){
       }
       if(id === "pan"){
         slots.forEach((s, i)=> drawFigure(s, i, { alpha: 0.95 }));
+        return;
+      }
+      if(id === "catTitle"){
+        /* v20a208：格標題——新一格嘅提名人企定喺台上面（未宣佈嗰啲卡片仲未出，見 syncCards）。 */
+        slots.forEach((s, i)=> drawFigure(s, i, { alpha: 1 }));
+        return;
+      }
+      if(id === "nominee"){
+        /* v20a208：逐位宣佈——被宣佈嗰位行前半步＋光池，其餘稍暗；卡片嗰邊由 syncCards 跟 nomineeIdx 出。 */
+        const ni208 = (b && b.slotIdx != null) ? b.slotIdx : -1;
+        const fwd208 = Math.min(1, beatElapsed / 500);
+        slots.forEach((s, i)=>{
+          if(i === ni208){
+            lightPool(slotCx(i), s.kind === "player" ? 68 : 62);
+            drawFigure(s, i, { alpha: 1, y: Math.round(10 * fwd208) });
+          } else drawFigure(s, i, { alpha: 0.45 });
+        });
         return;
       }
       if(id === "enter"){
@@ -47970,7 +48192,7 @@ function awards62PlayCeremony(pack, doneFn){
           const dir64 = (cx0 < 240) ? "east" : "west"; /* v20a181：行前向中央 240 集中（舊 212）；行幀跟方向揀 east／west */
           return { x: Math.round(cx0 + (240 - cx0) * 0.22 * p), y: Math.round(10 * p), moving: p < 1, frame: dir64 }; /* v20a181：行前 y＋10，新腳 FLOOR＋10＝272；v20a207 B2：FLOOR 314，新腳 324 */
         };
-        if(best === "won"){
+        if(curOutcome208 === "won"){ /* v20a208：揭曉行邊條分支睇而家呢格嘅 outcome（玩家格贏先行燕尾服捧杯；其他格行對手得主分支），唔再齋睇 pack best */
           const fp = fwd64(playerSlot);
           spotlight207(fp.x, 72, FLOOR + fp.y); /* v20a207 C1：得主 spotlight（舊 lightPool 太淡） */
           slots.forEach((s, i)=>{
@@ -48055,7 +48277,8 @@ function awards62PlayCeremony(pack, doneFn){
       capLineIdx = -1;
       if(beatIdx >= beats.length){ finish(); return; }
       beatStart = performance.now();
-      if(beats[beatIdx].id === "reveal") spawnConfetti(); if(beats[beatIdx].id === "reveal" && best === "won"){ try{ awards160PlayWinAudio(); }catch(_e){} /* v20a160 M9：贏分支揭曉嗰刻播 fanfare＋掌聲（只此一處觸發） */ } /* v20a149 B1：非贏 reveal 都 spawn（舊只限 won） */
+      try{ applyCatState208(beats[beatIdx].catIdx); }catch(_e){} /* v20a208：格轉換嗰陣重建 slots／卡片／px（舞台唔拆，guard 唔見空隙）；open／out 嘅 catIdx 係 -1，唔郁 */
+      if(beats[beatIdx].id === "reveal") spawnConfetti(); if(beats[beatIdx].id === "reveal" && curOutcome208 === "won"){ try{ awards160PlayWinAudio(); }catch(_e){} /* v20a160 M9：贏分支揭曉嗰刻播 fanfare＋掌聲（只此一處觸發；v20a208：只限玩家格贏嗰格揭曉，唔係其他格揭曉） */ } /* v20a149 B1：非贏 reveal 都 spawn（舊只限 won） */
       syncConfetti149(beats[beatIdx]);
       syncGlamour(beats[beatIdx]);
       applyBeatCaption(beats[beatIdx], 0);

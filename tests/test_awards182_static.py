@@ -61,7 +61,7 @@ _pal = re.search(r'AWDS63_TINTS182 = \[[^\]]*\]', play_fn)
 chk('C1 底色 tint palette 在位（≥3 色）', bool(_pal) and len(re.findall(r'"#[0-9a-f]{6}"', _pal.group(0))) >= 3)
 chk('C1 底色 tint 按卡位 index 揀（保證同場唔撞）', 'AWDS63_TINTS182[ci % AWDS63_TINTS182.length]' in play_fn)
 chk('C1 卡面唔再印典禮名（medName149／cssname 已撤）', 'medName149' not in play_fn and 'awd63-cssname' not in src)
-chk('C1 卡片 builder 通用路徑唔郁', 'fellows.forEach(f=> cardsData.push' in play_fn)
+chk('C1 卡片 builder 通用路徑唔郁（v20a208：搬入 buildCardsData208／cardsHtmlFor208，變數名 fl／cd）', 'fl.forEach(f=> cd.push' in play_fn)
 chk('C1 CSS 卡仍係 2:3 框', 'aspect-ratio:2/3' in rule('.awd63-csscard'))
 chk('C1 得主／玩家角標 CSS 唔郁', '.awd63-card.me' in src and '.awd63-card.win' in src)
 
