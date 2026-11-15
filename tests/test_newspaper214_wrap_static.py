@@ -77,7 +77,8 @@ ok('S21_ads_not_in_shorts', 'np214Page2Ads214' in render
    and 'shorts.push' not in render)
 ok('S22_sidebar_kept', '影視娛樂' in render and 'np214-filler-v' in render
    and 'paperSideItemForDay' not in render)
-ok('S23_filler_fallback_kept', "length<=2 ? `<p class=\"np214-filler\"" in render)
+ok('S23_filler_scales_with_shorts', 'p2Fillers216' in render and 'p2FillerN216' in render
+   and '.slice(0, p2FillerN216)' in render and 'length<=1 ? 1' in render)
 
 # ---- (5) 紅線：工人 1／2 範圍唔郁 ----
 ok('S24_core_kept', 'function renderMorningPaperHtml(' in html

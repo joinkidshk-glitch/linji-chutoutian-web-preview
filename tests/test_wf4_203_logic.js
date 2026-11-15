@@ -187,22 +187,22 @@ function approx(a, b){ return Math.abs(a - b) < 1e-3; } // 曲線值 0.033／0.0
 {
   const scene = id => W.wf4Scene105(W.DAILY_EVENTS_WF4.find(e=>e.id===id));
   ok('C2 day05 冰室→茶餐廳圖（唔再係街市）', scene('wf4_ev_day05').includes('bg_loc_cafe_cha.jpg'));
-  ok('C2 day07 電車→街市街景圖（唔再係電話亭／的士）', scene('wf4_ev_day07').includes('bg_wf4_market.jpg'));
+  ok('v20a218 D-B1 day07 電車→電車上層新圖（唔再係街市街景頂住）', scene('wf4_ev_day07').includes('bg_wf4_tram.jpg'));
   ok('C2 day09 唱片舖→唱片舖內景圖（唔再係夜市檔）', scene('wf4_ev_day09').includes('bg_loc_rec_hk.jpg'));
   ok('C2 day11 茶樓→茶餐廳圖（唔再係街市）', scene('wf4_ev_day11').includes('bg_loc_cafe_cha.jpg'));
   ok('C2 day14 片場休息區→獅子山廠圖（唔再係電話亭）', scene('wf4_ev_day14').includes('bg_loc_film_lion.jpg'));
   ok('C2 day15 茶餐廳門口→茶餐廳圖本身（唔再係街市）', scene('wf4_ev_day15').includes('bg_loc_cafe_cha.jpg'));
   ok('C2 st17 士多→街市街景圖（唔再係夜市檔）', scene('wf4_ev_st17').includes('bg_wf4_market.jpg'));
-  ok('v20a206 C2 day19 公園晨運→街市街景圖（唔再係屋企客廳）', scene('wf4_ev_day19').includes('bg_wf4_market.jpg'));
-  ok('v20a206 C2 day22 地鐵站賣唱→街市街景圖（唔再係的士）', scene('wf4_ev_day22').includes('bg_wf4_market.jpg'));
+  ok('v20a218 D-B1 day19 公園晨運→屋邨公園太極新圖（唔再係街市街景頂住）', scene('wf4_ev_day19').includes('bg_wf4_park.jpg'));
+  ok('v20a218 D-B1 day22 地鐵站賣唱→旺角地鐵站夜晚新圖（唔再係街市街景頂住）', scene('wf4_ev_day22').includes('bg_wf4_mtr.jpg'));
   ok('v20a206 C2 day24 電視台信件房→電視台辦公室圖（唔再係屋企客廳）', scene('wf4_ev_day24').includes('bg_loc_tvb_kowloon.jpg'));
   ok('v20a206 C2 day27 海邊散步→海港圖（唔再係的士）', scene('wf4_ev_day27').includes('bg_loc_film_harbour.jpg'));
   ok('v20a206 C2 全面掃描 day10 巴士望海→海港圖（唔再係的士＋747）', scene('wf4_ev_day10').includes('bg_loc_film_harbour.jpg'));
   ok('v20a206 C2 全面掃描 st13 渡輪→海港圖（唔再係的士＋747）', scene('wf4_ev_st13').includes('bg_loc_film_harbour.jpg'));
   ok('v20a206 C2 夜市檔圖淨返 day20／day21', scene('wf4_ev_day20').includes('bg_loc_gift_shop.jpg') && scene('wf4_ev_day21').includes('bg_loc_gift_shop.jpg'));
   const expectNew = {
-    wf4_ev_day17: 'bg_wf4_home.jpg', wf4_ev_day18: 'bg_wf4_market.jpg', wf4_ev_day19: 'bg_wf4_market.jpg',
-    wf4_ev_day20: 'bg_loc_gift_shop.jpg', wf4_ev_day21: 'bg_loc_gift_shop.jpg', wf4_ev_day22: 'bg_wf4_market.jpg',
+    wf4_ev_day17: 'bg_wf4_home.jpg', wf4_ev_day18: 'bg_wf4_market.jpg', wf4_ev_day19: 'bg_wf4_park.jpg',
+    wf4_ev_day20: 'bg_loc_gift_shop.jpg', wf4_ev_day21: 'bg_loc_gift_shop.jpg', wf4_ev_day22: 'bg_wf4_mtr.jpg',
     wf4_ev_day23: 'bg_wf4_market.jpg', wf4_ev_day24: 'bg_loc_tvb_kowloon.jpg', wf4_ev_day25: 'bg_wf4_market.jpg',
     wf4_ev_day26: 'bg_wf4_taxi.jpg', wf4_ev_day27: 'bg_loc_film_harbour.jpg', wf4_ev_day28: 'bg_wf4_home.jpg',
   };

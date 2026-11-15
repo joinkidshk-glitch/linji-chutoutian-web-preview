@@ -9,6 +9,7 @@
 # v20a215 resync：index.html 淨 +140 行（見 qa215/resync215.py difflib 對位核實純漂移），總行數 61795→61935、DEF 56267→56407（名公式補返漏咗嘅 v211 +42；真 DEF 喺 56267 唔係 56225）。
 # v20a216 resync：index.html 淨 +263 行（見 qa216/resync216.py difflib 對位核實純漂移），總行數 62492→62755、DEF 56964→57227。
 # v20a217 resync：標籤遷移 ＋3 行，總行數 62755→62758、DEF 57227→57230。
+# v20a218 resync：index.html 淨 +136 行（見 qa218/resync218.py difflib 對位核實純漂移），總行數 62758→62894、DEF 57230→57350。
 # -*- coding: utf-8 -*-
 # v20a197 resync：index.html 淨 +94 行，總行數 60490→60584、DEF 54986→55080（difflib 對位核實純漂移，見 qa197/resync197.py；B4 補丁再 +9 行）。
 # v20a196 resync：index.html 淨 +83 行，總行數 60490→60573、DEF 54986→55060（difflib 對位核實內容逐字相同，純漂移）。
@@ -92,9 +93,9 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 62758（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3）', src.count('\n') == 62758)
-ok('零行數漂移：openLoc DEF 行 57230（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3，travel114 釘行）',
-   len(lines) >= 57230 and 'function openLoc(id, opts){' in lines[57229])
+ok('零行數漂移：總行數 62894（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136）', src.count('\n') == 62894)
+ok('零行數漂移：openLoc DEF 行 57350（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +120，travel114 釘行）',
+   len(lines) >= 57350 and 'function openLoc(id, opts){' in lines[57349])
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫，qa215 resync 核實純漂移（總行數 62352→62492；DEF 56824→56964）。# --- §1. C1：捲動提示（淡出漸變） ---
 ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',
    '#loc-acts.loc-acts-more171::after' in src
@@ -127,7 +128,7 @@ ok('C2：鎖住態費用欄轉深啡灰 #6b5636（唔再係紅 #C43C2A）',
    '#app #loc-sheet.sheet .act.act-locked171 .cost{ color:#6b5636 !important; }' in src)
 ok('C2：鎖住態標題／hint 微淡（opacity .72）',
    '.act.act-locked171 .n{ opacity:.72; }' in src
-   and '.act.act-locked171 .h{ opacity:.72 !important; }' in src)  # v20a173：.h 加 !important
+   and '.act.act-locked171 .h{ opacity:.72 !important; color:#3a2e22 !important; }' in src)  # v20a173：.h 加 !important；v20a218 D-v173C1：.h 加深色 #3a2e22（對比度 4.63:1）
 _c = contrast('6b5636', 'e6dfcc')
 print('INFO locked cost contrast #6b5636 on #e6dfcc = %.2f:1' % _c)
 ok('C2：鎖住態費用欄對比度 >= 4.5:1（高過 B1 實測 4.21:1，讀得到）', _c >= 4.5)

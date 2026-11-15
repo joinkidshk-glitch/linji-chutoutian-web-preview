@@ -152,14 +152,16 @@ _c165 = src[_c165i:_c165j] if _c165i >= 0 and _c165j > _c165i else ''
 ok('(c) modal 閘唔喺 story165CanPlay——晨鏈續鏈嗰陣 modal 技術上仲開緊（掣 on() 行先、closeModal 行後），擺嗰度會誤擋聽朝強制播（實駕 case C 捉到）；goToMap 掛點靠 render() 重用 #mask，唔使閘',
    _c165 != '' and 'story-play-on' not in _c165 and 'story165ModalOpen' not in _c165
    and 'classList.contains("on")' not in _c165)
-ok('(c) 兩條新掛點都有 try/catch 跌返地圖（強制播出事唔阻返地圖）',
-   'catch(_s165b){}' in bh and 'catch(_s165c){}' in src)
+ok('(c) 三條掛點都有 try/catch 跌返地圖（強制播出事唔阻返地圖）',
+   'catch(_s165b){}' in bh and 'catch(_s165c){}' in src and 'catch(_s165d){}' in src)
 ok('(c) 新掛點唔經 openLoc／唔食額度／唔用 opts.force（v172：只准 ignoreSheetLoc:true）',
    'openLoc(' not in bh and 'travel114TrySpend' not in bh
    and 'force:true' not in src.split('function story165TryForcedPlay(afterCont){')[1][:3000]
    and 'allowDuringPlanner' not in src.split('function story165TryForcedPlay(afterCont){')[1][:3000])
-ok('(c) leaveHomeFromNotebook 唔喺呢票（第三條返地圖路，留返統籌決定——見 NOTES §9）',
-   'story165TryForcedPlay' not in seg('function leaveHomeFromNotebook(mode){', 'document.getElementById("home-back-map").onclick', 2000))
+ok('(c) v20a218：第三條返地圖路 leaveHomeFromNotebook 都掛強制播（map 分支，modal 閘＋try/catch；v165 嗰陣留返統籌決定，v218 一次過修晒）',
+   'story165TryForcedPlay' in seg('function leaveHomeFromNotebook(mode){', 'document.getElementById("home-back-map").onclick', 2000)
+   and 'story165ModalOpen()' in seg('function leaveHomeFromNotebook(mode){', 'document.getElementById("home-back-map").onclick', 2000)
+   and 'catch(_s165d){}' in seg('function leaveHomeFromNotebook(mode){', 'document.getElementById("home-back-map").onclick', 2000))
 
 # --- 十一、基線不變＋範圍 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)

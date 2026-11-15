@@ -49,7 +49,7 @@ defs = d.group(1) if d else ''
 ok('CHOICE47_DEFS block extractable', bool(defs))
 f4line = next((ln for ln in defs.splitlines() if 'F4_stay_mind:' in ln), '')
 g4line = next((ln for ln in defs.splitlines() if 'G4_family_job:' in ln), '')
-ok('F4 gate: 1992 夏 @ agency_ho', 'year:1992' in f4line and 'season:"夏"' in f4line and 'loc:"agency_ho"' in f4line)
+ok('F4 gate: 1992 秋 @ agency_ho', 'year:1992' in f4line and 'season:"秋"' in f4line and 'loc:"agency_ho"' in f4line)
 ok('G4 gate: 1992 冬', 'year:1992' in g4line and 'season:"冬"' in g4line)
 ok('exodus gigs gate: 1992 秋', 'choice47SeasonReached(1992, "秋")' in html)
 ok('season gate via yearSeasonNow', 'yearSeasonNow()' in html[html.index('function choice47SeasonReached('):html.index('function choice47SeasonReached(') + 700])

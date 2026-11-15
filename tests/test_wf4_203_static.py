@@ -72,22 +72,26 @@ table = {}
 if m:
     for em in re.finditer(r'(wf4_ev_\w+):"([^"]+)"', m.group(1)):
         table[em.group(1)] = em.group(2)
-for ev, f in [('wf4_ev_day05', 'bg_loc_cafe_cha.jpg'), ('wf4_ev_day07', 'bg_wf4_market.jpg'),
+for ev, f in [('wf4_ev_day05', 'bg_loc_cafe_cha.jpg'),
               ('wf4_ev_day09', 'bg_loc_rec_hk.jpg'), ('wf4_ev_day11', 'bg_loc_cafe_cha.jpg'),
               ('wf4_ev_day14', 'bg_loc_film_lion.jpg'), ('wf4_ev_day15', 'bg_loc_cafe_cha.jpg'),
               ('wf4_ev_st17', 'bg_wf4_market.jpg')]:
     ok('C2 重映射 %s → %s' % (ev, f), f in table.get(ev, ''))
 for nid in ['wf4_ev_day17', 'wf4_ev_day28']:
     ok('C2 新 day 事件入覆寫表：' + nid, nid in table)
-ok('C2 覆寫表 48 行', len(table) == 48)
+ok('C2 覆寫表 50 行（v20a218 D-B2：＋set32／set33）', len(table) == 50)
 for ev, f in [('wf4_ev_day05', 'bg_loc_cafe_cha.jpg'), ('wf4_ev_day09', 'bg_loc_rec_hk.jpg'),
               ('wf4_ev_day14', 'bg_loc_film_lion.jpg')]:
     ok('C2 重映射目標檔案存在：%s' % f, os.path.isfile(os.path.join(root, 'assets/story/locs', f)))
 # --- v20a206 C2：7 單再重映射＋全面掃描追加 2 單（舊 v203 期望上面已改） ---
-for ev, f in [('wf4_ev_day19', 'bg_wf4_market.jpg'), ('wf4_ev_day22', 'bg_wf4_market.jpg'),
-              ('wf4_ev_day24', 'bg_loc_tvb_kowloon.jpg'), ('wf4_ev_day27', 'bg_loc_film_harbour.jpg'),
+for ev, f in [('wf4_ev_day24', 'bg_loc_tvb_kowloon.jpg'), ('wf4_ev_day27', 'bg_loc_film_harbour.jpg'),
               ('wf4_ev_day10', 'bg_loc_film_harbour.jpg'), ('wf4_ev_st13', 'bg_loc_film_harbour.jpg')]:
     ok('v20a206 C2 重映射 %s → %s' % (ev, f), f in table.get(ev, ''))
+# --- v20a218 D-B1：day07／day19／day22 各補一張新圖（街市圖淨返 st17 等） ---
+for ev, f in [('wf4_ev_day07', 'bg_wf4_tram.jpg'), ('wf4_ev_day19', 'bg_wf4_park.jpg'),
+              ('wf4_ev_day22', 'bg_wf4_mtr.jpg')]:
+    ok('v20a218 D-B1 新圖 %s → %s' % (ev, f), f in table.get(ev, ''))
+    ok('v20a218 D-B1 新圖檔案存在：%s' % f, os.path.isfile(os.path.join(root, 'assets/story/locs', f)))
 ok('v20a206 C2 夜市檔圖唔再一圖四用（淨返 day20／day21）',
    sorted(k for k, v in table.items() if 'bg_loc_gift_shop.jpg' in v) == ['wf4_ev_day20', 'wf4_ev_day21'])
 ok('v20a206 C2 的士圖淨返 st08／st15／day26',

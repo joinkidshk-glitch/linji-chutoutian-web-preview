@@ -74,8 +74,8 @@ chk('B2 光池高 120（蓋過 108px 人仔）', 'F - Math.round(120 * HSC211)' 
 chk('B2 彩紙底界 436（H＋4）', 'p.y > HS211 + 4' in play_fn)
 chk('B2 glamour overlay aspect 跟 canvas（480/432）', 'aspect-ratio:480/432' in css_rule('.awd63-glamour'))
 chk('B2 舊 glamour aspect 480/360 唔再出現', 'aspect-ratio:480/360' not in src)
-chk('B2 stage safe center＋可捲（唔出 viewport 兜底）',
-    'align-items:safe center' in css_rule('.awd62-stage') and 'overflow-y:auto' in css_rule('.awd62-stage'))
+chk('B2 stage 頂釘死 flex-start＋可捲（v20a218 C-C2／v197 B3：safe center 令 frame 隨字幕／卡列收放上下跳，跳過掣跟住跳；flex-start 頂固定，超高照舊捲）',
+    'align-items:flex-start' in css_rule('.awd62-stage') and 'overflow-y:auto' in css_rule('.awd62-stage'))
 
 # --- B3：跳過掣搬去 canvas 右下角，唔遮「角逐」pill ---
 skip_css = css_rule('.awd62-skip')
@@ -137,7 +137,7 @@ chk('C4 影藝獎請柬用「一張席位信」',
 chk('C4 廣告獎請柬用「一張席位信」',
     'award_harbour_ad: "廣告圈年賞將至，今屆喺金禧大酒店大禮堂舉行。你收到一張席位信' in dek)
 chk('C4 「旁聽／入圍席位信」唔再出現', '旁聽／入圍席位信' not in src)
-chk('C4 音樂場寫法唔郁', 'award_golddisc_music: "唱片年終有金碟夜，喺金禧大酒店大禮堂舉行。你收到一張席位信' in dek)
+chk('C4 音樂場寫法（v20a218 C-C1：金碟夜 6 月 1 日，「年終」打架→「年中」）', 'award_golddisc_music: "唱片年中有金碟夜，喺金禧大酒店大禮堂舉行。你收到一張席位信' in dek)
 
 # --- C5：地圖「中環廣告」標籤移離藍塔 ---
 chk('C5 中環廣告 left:51%', 'left:51%;top:calc(57% + 30px)">中環廣告' in src)

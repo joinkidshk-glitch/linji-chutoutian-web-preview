@@ -140,12 +140,23 @@ ok('R2b summary-only falls back to head headline + （續）', htmlSum.indexOf('
 ok('R3a factbox emitted with real data', htmlLong.indexOf('np214-factbox') >= 0
   && htmlLong.indexOf('錄音室拍板》小檔案') >= 0);
 ok('R3a factbox rows are real (works + medium)', htmlLong.indexOf('<b>作品</b>') >= 0 && htmlLong.indexOf('<b>媒介</b>') >= 0);
-/* 實駕修正：無相嗰陣 p1 填充字唔浮動（全闊放正文＋資料格下面），p2 填充字喺 p2 切片數 3；邊欄預告改「同版：」＋截 6 字。 */
+/* 實駕修正：無相嗰陣 p1 填充字唔浮動（全闊放正文＋資料格下面），p2 填充字跟短訊數縮（1 則 1 段、2 則 2 段、3 則以上 0 段；v20a218 C-C1b）；邊欄預告改「同版：」＋截 6 字。 */
 const p1slice216 = htmlLong.slice(0, htmlLong.indexOf('data-np214-page="2"'));
 ok('R3b p1 filler for short dek + no photo, not floated', p1slice216.indexOf('<p class="np214-filler"') >= 0
   && p1slice216.indexOf('np214-filler-left') < 0);
 ok('R3c sidebar carries real preview', htmlLong.indexOf('<span class="np214-sb-tag">同版：</span>陸柏言紅磡開……') >= 0);
-ok('R3d p2 filler is 3 paragraphs', (p2slice.match(/<p class="np214-filler"/g) || []).length === 3);
+ok('R3d p2 filler scales with shorts: 1 short → 1 paragraph (v20a218 C-C1b)', (p2slice.match(/<p class="np214-filler"/g) || []).length === 1);
+const html2short = renderMorningPaperHtml(ed216({ headline: '頭條', dek: '主文一句。',
+  shorts: [{ paperName: '花邊短訊', headline: '短訊一', dek: '內文一。', source: 'side' },
+           { paperName: '花邊短訊', headline: '短訊二', dek: '內文二。', source: 'side' }] }));
+const p2b = html2short.slice(html2short.indexOf('data-np214-page="2"'));
+ok('R3d p2 filler: 2 shorts → 2 paragraphs', (p2b.match(/<p class="np214-filler"/g) || []).length === 2);
+const html3short = renderMorningPaperHtml(ed216({ headline: '頭條', dek: '主文一句。',
+  shorts: [{ paperName: '花邊短訊', headline: '短訊一', dek: '內文一。', source: 'side' },
+           { paperName: '花邊短訊', headline: '短訊二', dek: '內文二。', source: 'side' },
+           { paperName: '花邊短訊', headline: '短訊三', dek: '內文三。', source: 'side' }] }));
+const p2c = html3short.slice(html3short.indexOf('data-np214-page="2"'));
+ok('R3d p2 filler: 3 shorts → 0 paragraphs', (p2c.match(/<p class="np214-filler"/g) || []).length === 0);
 const edRole = buildNewspaperEdition([{ eventKey: 'wrap:g1:39', source: 'wrap', enqueuedDay: 39,
   publishDay: 40, fameDelta: 1, paperName: '娛樂版', headline: '正紙', dek: '正紙內文',
   workTitle: '試片', medium: 'film' }], 40);

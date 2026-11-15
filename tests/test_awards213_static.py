@@ -100,6 +100,19 @@ chk('4：gallery 獎項行冇 stamp 跌返「今晚獎項：」（舊測試逐�
 chk('4：閘句有 stamp 寫實日期', 'awards213DateLabelShort(pack.ceremonyDay213) + "席位：觀禮。"' in gate_fn)
 chk('4：閘句冇 stamp 跌返「今晚席位：觀禮。」', '"今晚席位：觀禮。"' in gate_fn)
 
+# --- 6. v20a218 C-B1/B2：請柬講明預約＋撳出席有 toast＋三處顯示已預約／今晚 ---
+paint_fn = slice_fn('paintBar')
+sync_fn = slice_fn('syncDateChrome')
+chk('6：請柬寫明出席即預約（典禮夜收工之後先播）', '出席即預約' in invite_fn)
+chk('6：撳出席有「已預約席位」toast（同推辭邊對稱）', '已預約席位' in present_fn)
+chk('6：共用提示 helper awards213MapCue213 在位（只限出席，推辭唔出）',
+    'function awards213MapCue213()' in src and 'b.decision !== "attend"' in src)
+chk('6：地圖提示行顯示預約／今晚', 'awards213MapCue213()' in paint_fn and 'awardLine218' in paint_fn)
+chk('6：屋企日期卡顯示預約／今晚', 'awards213MapCue213()' in sync_fn)
+chk('6：典禮日日結板加「今晚」提示', 'awards213MapCue213()' in plan_fn and 'awardCue218' in plan_fn)
+chk('6：C1 金碟夜「年終」→「年中」', '唱片年中有金碟夜' in src)
+chk('6：C4 comfort 只喺最後一個入圍格出一次', 'lastNomIdx147' in src and 'ci === lastNomIdx147' in src)
+
 # --- 5. 唔郁嘅嘢 ---
 chk('唔郁：贏線 0.875', 'AWARDS62_WIN_LINE = 0.875' in src)
 chk('唔郁：典禮本身逐格流程（awards62PlayCeremony 仲在）', 'function awards62PlayCeremony(pack, doneFn)' in src)

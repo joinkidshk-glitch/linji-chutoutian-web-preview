@@ -1,4 +1,5 @@
 # v20a214 rebase 上 main d1239d4 resync：index.html 淨 +358 行，13 個錨點按 difflib 映射重寫（內容逐字核實純漂移；31150→31338 例外：工人 2 拆開 TEXTFIX55_EXACT 成行，6 條新目另起行，舊目巨行落去 31338，B3／B4／B5 子串逐個核實；check 名入面嘅舊 L 號係歷史標籤，唔跟住改）。
+# v20a218 resync：index.html 淨 +136 行（見 qa218/resync218.py difflib 對位核實純漂移），6 個錨點按映射重寫（27557→27565、27590→27598、31376→31408、31384→31417、31385→31418、31427→31460；31376 例外：A1 拆開 TEXTFIX55_EXACT 巨行加 when 條目，舊目落去 31408，B3／B4／B5 子串逐個核實）。
 # v20a216 resync：index.html 淨 +263 行（見 qa216/resync216.py difflib 對位核實純漂移），13 個釘行按映射重寫（＋38，名入面嘅 L25608 等歷史標籤唔郁）。
 # v20a207 resync：index.html 淨 +34 行（C3 +12／cap +5／modal +1／closeModal +1／drawBase +7／spotlight +8；見 qa207/resync207.py，72 錨點對位零 mismatch，純漂移）。
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），釘行按段 +4／+10 重算。
@@ -63,20 +64,20 @@ ok('A9 guanHaimeiUpgradeForbidden 全檔清零', 'guanHaimeiUpgradeForbidden' no
 
 # (3) TEXTFIX55_PHRASES
 ok('B1 PHRASES 關海媚配對已拎走', '["關海媚", "當紅花旦"]' not in html)
-ok('B2 PHRASES 其餘配對唔郁', '["星河電視城", "星河電視台"]' in line(31385) and '["送命題", "辣手問題"]' in line(31385))
+ok('B2 PHRASES 其餘配對唔郁', '["星河電視城", "星河電視台"]' in line(31418) and '["送命題", "辣手問題"]' in line(31418))
 
 # (4) TEXTFIX55_EXACT C13 映射：保留映射，只改 value
-ok('B3 EXACT C13 value 有關海媚', '關海媚提醒頭條係雙刃' in line(31376))
-ok('B4 EXACT C13 value 冇當紅花旦', '嗰位當紅花旦亦提過佢' not in line(31376))
-ok('B5 EXACT 其餘修正原封不動', '1990年冬，娛樂週刊已經寫好緋聞草稿' in line(31376)
-   and '1991年冬，虛構娛樂周刊已寫好緋聞草稿' in line(31376))
+ok('B3 EXACT C13 value 有關海媚', '關海媚提醒頭條係雙刃' in line(31408))
+ok('B4 EXACT C13 value 冇當紅花旦', '嗰位當紅花旦亦提過佢' not in line(31408))
+ok('B5 EXACT 其餘修正原封不動', '1990年冬，娛樂週刊已經寫好緋聞草稿' in line(31408)
+   and '1991年冬，虛構娛樂周刊已寫好緋聞草稿' in line(31408))
 
 # (5) UI 顯示名
-ok('C1 speaker display 改真名', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"關海媚" }' in line(27590))
+ok('C1 speaker display 改真名', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"關海媚" }' in line(27598))
 ok('C2 唔再有稱號 display', 'display:"當紅花旦"' not in html)
-ok('C3 relMap rel_mei 改真名', '["rel_mei","關海媚"]' in line(31427))
-ok('C4 NOTE_EXACT 兩句改真名', '采兒同關海媚嗰邊都近咗啲' in line(31384) and '但采兒同關海媚嗰邊，都冷淡咗' in line(31384))
-ok('C5 NOTE_EXACT 冇殘留稱號', '嗰位當紅花旦' not in line(31384))
+ok('C3 relMap rel_mei 改真名', '["rel_mei","關海媚"]' in line(31460))
+ok('C4 NOTE_EXACT 兩句改真名', '采兒同關海媚嗰邊都近咗啲' in line(31417) and '但采兒同關海媚嗰邊，都冷淡咗' in line(31417))
+ok('C5 NOTE_EXACT 冇殘留稱號', '嗰位當紅花旦' not in line(31417))
 
 # (6) content JSON flag
 for rel in ['content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json',
@@ -94,7 +95,7 @@ for rel in ['content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json',
        'mvpDualHeroineProtected' in txt)
 
 # (7) 唔郁嘅嘢
-ok('E1 speaker registry 留返', '"關海媚":"kwan_hoimei"' in line(27557))
+ok('E1 speaker registry 留返', '"關海媚":"kwan_hoimei"' in line(27565))
 ok('E2 故事散文稱號句唔郁', '嗰位當紅花旦向你微微點咗下頭' in html and '嗰位當紅花旦同你擦身而過' in html)
 ok('E3 12 星名冊規則唔郁', '當紅花旦唔入名冊' in html)
 ok('E4 台柱係指阿偉，唔郁', '成行都嗌你做台柱喇' in html)

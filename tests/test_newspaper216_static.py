@@ -54,7 +54,8 @@ ok('R3_factbox_real_rows', '<b>作品</b>' in fn and '<b>媒介</b>' in fn)
 ok('R3_factbox_wide_inline', '.np214-factbox.np214-factbox-wide .np214-row .np214-v' in html
    and 'display:inline' in seg('.paper-sheet .np214-factbox.np214-factbox-wide .np214-row .np214-v{', '}'))
 ok('R3_p1_filler', 'fillerP1216' in fn and 'np214-filler' in fn and 'np214-filler-left' not in fn)
-ok('R3_p2_filler_x3', fn.count('<p class="np214-filler"') >= 3)
+ok('R3_p2_filler_scales', 'p2Fillers216' in fn and 'p2FillerN216' in fn and '.slice(0, p2FillerN216)' in fn
+   and '金碟夜 唱片銷量' in fn and '電視城 片場 臨記' in fn and '唱片舖 卡式帶' in fn)
 ok('R3_sidebar_preview', 'sidePrev216' in fn and '同版：' in fn)
 ok('R3_edition_passthrough', 'workTitle: head.workTitle' in html and 'roleLabel: role216' in html)
 

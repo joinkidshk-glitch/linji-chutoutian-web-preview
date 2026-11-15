@@ -28,7 +28,7 @@ ok('B1：scenePos146 按圖分流，taxi 圖先加 background-position:center 20
 ok('B1：20% 只出現一次（唔係全局規則）', src.count('background-position:center 20%') == 1)
 ok('B1：v20a148 B1 註解在場（講明 20% 係 review 模擬驗證嘅甜點）', 'v20a148 B1' in src)
 ok('B1：分流行同時認 market 75% 同 taxi 20%（同一條 ternary，唔係兩處分流）',
-   'bg_wf4_market.jpg")>=0 ? ";background-position:center 75%" : scene105 && scene105.indexOf("bg_wf4_taxi.jpg")>=0 ? ";background-position:center 20%" : ""' in src)
+   'bg_wf4_market.jpg")>=0 ? ";background-position:center 75%" : scene105 && scene105.indexOf("bg_wf4_taxi.jpg")>=0 ? ";background-position:center 20%" : scene105 && scene105.indexOf("bg_loc_film_harbour.jpg")>=0 ? ";background-position:center 15%" : ""' in src)
 
 # --- B2 回歸守衛：街市 75% 原封不動 ---
 ok('B2：market 75% 仲喺度', 'background-position:center 75%' in src)

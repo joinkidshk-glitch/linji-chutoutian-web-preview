@@ -3,7 +3,7 @@
 //      揀嗰格第一位未贏過嘅提名人；全格都贏過／得一位提名人就 fallback 沿用 fellows[0]（唔死局）。
 //      玩家格 won（得主係阿偉）唔入 used；玩家格 nominated 嘅 winner63 係正規賽果（結果卡／
 //      報紙／log 都讀 pack.categories），唔喺呢度改，但預先登記，等其他格避開佢。
-//      懸念句輪換（三句循環，第一格沿用「得獎者是……」），時長唔郁。
+//      懸念句輪換（四句輪換，第一格沿用「得獎者是……」），時長唔郁。
 //      fellows 池本身唔郁（淨係改得主揀選）。
 // 反證：對 pristine main 行 → awards208NightCats／awards208CatRank 唔存在 → 乾淨 FAIL。
 // 用法：node tests/test_awards212_logic.js [path-to-index.html]
@@ -21,7 +21,7 @@ const ASSERT_NAMES = [
   'B1 退化 fallback：全格同一組合 → 唔 crash、沿用 fellows[0]',
   'B1 預先登記：玩家格 winner63 组合唔會俾前面嘅格贏走，玩家格得主照舊 winner63',
   'B1 玩家格 won：focus winner null（得主係阿偉），其他格照去重',
-  'B1 懸念句輪換：4 格唔係同一句，第一格沿用「得獎者是……」',
+  'B1 懸念句輪換：4 格各唔相同，第一格沿用「得獎者是……」（v20a218 C-C1 加第四句）',
   'B1 懸念輪換唔改時長：suspense 全部 1400ms、成晚總秒數照舊 50850',
   'B1 揭曉文案跟去重後得主（女主格唔再係陸柏言）',
   'B1 fellows 池本身唔郁：每格 fellows 順序不變（首位照舊）'
@@ -152,9 +152,9 @@ ok('B1 玩家格 won：focus winner null（得主係阿偉），其他格照去�
 /* ---- B1：懸念句輪換＋時長唔郁 ---- */
 const beatsNom = awards62CeremonyBeats(packFilm212('nominated', 'cat_film_lead_m'));
 const susCaps = beatsNom.filter(b=>b.id === 'suspense').map(b=>b.caption);
-ok('B1 懸念句輪換：4 格唔係同一句，第一格沿用「得獎者是……」',
-  susCaps.length === 4 && new Set(susCaps).size === 3 && susCaps[0] === '得獎者是……' &&
-  susCaps.join('|') === '得獎者是……|今晚呢個獎，屬於……|結果揭曉——得獎者是……|得獎者是……');
+ok('B1 懸念句輪換：4 格各唔相同，第一格沿用「得獎者是……」（v20a218 C-C1 加第四句）',
+  susCaps.length === 4 && new Set(susCaps).size === 4 && susCaps[0] === '得獎者是……' &&
+  susCaps.join('|') === '得獎者是……|今晚呢個獎，屬於……|結果揭曉——得獎者是……|邊個攞走呢個獎……');
 ok('B1 懸念輪換唔改時長：suspense 全部 1400ms、成晚總秒數照舊 50850',
   beatsNom.filter(b=>b.id === 'suspense').every(b=>b.ms === 1400) &&
   beatsNom.reduce((a, b)=> a + b.ms, 0) === 50850);

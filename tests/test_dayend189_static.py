@@ -77,6 +77,23 @@ ok('day-end modal gets day-res class (wrap path, for short-screen relief)',
 ok('short-screen relief scoped to day-res modals (92dvh)',
    '#mask.day-res .modal{' in html and '#mask.day-res:not(.tut-on) .modal{' not in html
    and 'min(92dvh,92svh,720px)' in html)
+# v20a218 D-v189B1：92dvh 媒體規則一定要寫喺 v197 B4 嗰條 78dvh 之後——同 selector、同 !important，
+# 寫喺前面會俾 78dvh 蓋死（v218 之前就係咁，700 高嗰陣 modal 得 546px，綠線俾掣欄裁一半）。
+ok('92dvh media block comes AFTER the 78dvh fixed-height rule (else dead)',
+   html.index('#mask.day-res .modal{ height: min(78dvh,78svh,720px) !important; }')
+   < html.index('@media (max-height: 820px){', html.index('#mask.day-res .modal{ height: min(78dvh,78svh,720px) !important; }')))
+# v20a218 D-v189B1：綠線插喺支票之前（唔係 notes.push 排尾）＋支票／fx102 縮細
+ok('green reward line spliced BEFORE the check (not pushed at the end)',
+   "notes.splice(wrapNoteIdx105, 0, '<span class=\"good\">殺青獎勵" in html
+   and "notes.push('<span class=\"good\">殺青獎勵" not in html)
+ok('wrap check narrowed on day-res boards (70% centred, fonts scaled)',
+   '#mask.day-res .chk101{width:70%;margin:10px auto 4px}' in html
+   and '#mask.day-res .chk101 .ck-amt{font-size:.78rem}' in html)
+ok('fx102 film narrowed (200px / 28dvh)',
+   'max-width:200px; max-height:min(28dvh, 170px)' in html)
+# v20a218 D-v189C1：確認 modal 唔係日結板，開之前清 day-res（700 嗰陣確認 modal 應為 546px 唔係 644px）
+ok('confirmWeekAccel clears day-res before opening the confirm modal',
+   'classList.remove("day-res")' in seg('function confirmWeekAccel(', 'function ensureWeekHighlight('))
 
 # ---- 7：confirmWeekAccel 確認流程唔郁 ----
 ok('confirmWeekAccel still exists with 取消／確認加速',

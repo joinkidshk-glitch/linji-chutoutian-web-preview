@@ -12,7 +12,7 @@
 //       40%×(panel 高−20)），兩 viewport 逐 px 等價（932 cap 220／700 cap 193.6，探針核實）。
 // 驗收（實駕量度）：panel 空佔比 47.9%→3.3%（932）／46.3%→3.6%（700）；海報盒唔郁
 //   （932 img 396–616／700 img 390–583）；clearance 36／24 唔跌；底罅 77 唔郁；面完整。
-// 唔郁守衛：B1 地板 y274–372／FLOOR 314（v20a207 B2）；C2 卡罅 24px／角標 10px；C3 out 留人；C4 walkup y＋6；
+// 唔郁守衛：B1 地板 y274–372／FLOOR 314（v20a207 B2）；C2 卡罅 24px／角標 10px；C3 out 留人；C4 walkup y−24（v20a218 C-C4）；
 //   C5 glamour 下移 124px（trade-off，glamour-hide display:none）；C6 glyph −110（2.6 邏輯罅）。
 // 唔郁：fellows 池／對手加權／贏線 0.875／報紙流程／6 beats 順序；唔直改 content pack JSON。
 // 反證：對 pristine main dcf1b72 行 → 新 C1 斷言全部 FAIL（唔 crash）；守衛 pristine 應 PASS。
@@ -128,7 +128,7 @@ const outBlock = outIdx >= 0 ? playSrc.slice(outIdx, playSrc.indexOf('};', outId
 ok('守衛 C3 out 分支照畫人物、alpha 1−step×0.25', outBlock.includes('drawFigure') && outBlock.includes('1 - step * 0.25'));
 const walkIdx = playSrc.indexOf('if(id === "walkup"){');
 const walkBlock = walkIdx >= 0 ? playSrc.slice(walkIdx, playSrc.indexOf('if(id === "out"){', walkIdx)) : '';
-ok('守衛 C4 walkup 行緊 y＋6（只一處）', walkBlock.includes('y: 6') && (walkBlock.match(/y: 6/g) || []).length === 1);
+ok('守衛 C4 walkup 行緊 y−24（只一處）', walkBlock.includes('y: -24') && (walkBlock.match(/y: -24/g) || []).length === 1);
 ok('守衛 C5 glamour-hide 仲係 display:none（v174 trade-off：下移 124px 唔郁）',
   cssRule('.awd63-cards.glamour-hide').includes('display:none'));
 ok('守衛 C6 燕尾服 glyph −129 兩處、舊 −112 唔見（v20a207 B2）', playSrc.includes('FLOOR + fp.y - Math.round(129 * HSC211)') && playSrc.includes('FLOOR - Math.round(129 * HSC211)') && !playSrc.includes('- 112'));

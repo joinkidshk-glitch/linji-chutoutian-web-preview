@@ -6,7 +6,7 @@
 # v20a190 新 C1：panel 縮短貼底（overlay align-items flex-end＋container-type:size），img cap 轉等價
 #   calc(40cqh - 8px)——舊 40% 會對住內容高嘅 panel 失效；以下 C1 斷言跟住更新，結論（海報頂唔壓牌）不變。
 # C2：卡罅 8→24px，角標留 10px 罅。
-# C3：out beat 照畫人物、alpha 跟 step 遞減。C4：walkup 行緊 y＋6。C5：glamour-hide display:none 保留（trade-off）。
+# C3：out beat 照畫人物、alpha 跟 step 遞減。C4：walkup 行緊 y−24（v20a218 C-C4）。C5：glamour-hide display:none 保留（trade-off）。
 # C6：glyph −112→−110（牌底 149.4 到 glyph 頂 152，留 2.6 邏輯罅）；v20a207 B2：−110→−129（牌底 179.3 到 glyph 頂 185，留 5.7 邏輯罅）。
 # 唔郁守衛：FLOOR 314（v20a207 B2）／企位／三行白牌黃字 fix（牌底 179.3）／SAVE key／softRev／?v=。
 # 反證：run against pristine main b1b6092 index -> 新幾何／修法斷言全部 FAIL（唔 crash）；守衛 pristine 應 PASS。
@@ -84,11 +84,11 @@ chk('C3 won 只留燕尾服阿偉（tuxedo）', 'tuxedo: true' in _out and 'best
 chk('C3 其餘跟 comfort 暗度（winnerSlot ? 0.85 : 0.7）', 'winnerSlot ? 0.85 : 0.7' in _out)
 chk('C3 out 仲係 500ms（唔加 beat）', 'id: "out", ms: 500' in src)
 
-# --- C4：walkup y＋6 ---
+# --- C4：walkup y−24（v20a218 C-C4） ---
 _walk_i = play_fn.find('if(id === "walkup"){')
 _walk = play_fn[_walk_i:play_fn.find('if(id === "out"){', _walk_i)] if _walk_i >= 0 else ''
-chk('C4 walkup 行緊 y＋6', 'y: 6' in _walk)
-chk('C4 行完換燕尾服 y 歸 0（y: 6 只出現一次）', _walk.count('y: 6') == 1)
+chk('C4 walkup 行緊 y−24', 'y: -24' in _walk)
+chk('C4 行完換燕尾服 y 歸 0（y: -24 只出現一次）', _walk.count('y: -24') == 1)
 chk('C4 walkup 路徑唔郁（−40 行 1400ms）', '-40 + (targetX + 40) * wp' in _walk and 'beatElapsed / 1400' in _walk)
 
 # --- C5：glamour 下移 trade-off 保留 ---

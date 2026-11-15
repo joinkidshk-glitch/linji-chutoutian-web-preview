@@ -106,10 +106,16 @@ lan_lines = [ln for ln in nocomment.splitlines() if '藍若曦' in ln]
 _lan183_i = nocomment.find('const ROM183_GREET_MET')
 _lan183_j = nocomment.find('function enc79OnWrap', _lan183_i) if _lan183_i >= 0 else -1
 lan_block183 = nocomment[_lan183_i:_lan183_j] if (_lan183_i >= 0 and _lan183_j > _lan183_i) else ''
+# v20a218 申報：TEXTFIX55_EXACT 正規化表（A1 加 6 條 when＋C15 synopsis 1 條）正當地引用佢個名一次——
+# 嗰行係新舊文對照鍵值（「站哪邊」→「企邊」＋年份 1991→1990），唔係新寫嘅歌手向內容；
+# 同行仲有幾十條無關映射（「唱片」等字眼屬於其他條目嘅舊／新文，唔係藍若曦內容）。斷言放寬到包含 TEXTFIX55_EXACT block 入面嘅行。
+_tfix_i = nocomment.find('const TEXTFIX55_EXACT = {')
+_tfix_j = nocomment.find('const TEXTFIX55_OPTS_STORY', _tfix_i) if _tfix_i >= 0 else -1
+tfix_block = nocomment[_tfix_i:_tfix_j] if (_tfix_i >= 0 and _tfix_j > _tfix_i) else ''
 ok('藍若曦 remaining occurrences are engine infra or PA-line content (v20a31)',
-   all(('lan_ruoxi' in ln) or ('lan:"藍若曦' in ln) or ('name:"藍若曦"' in ln) or (ln in lan_block) or ('通告牌' in ln) or (ln in lan_block183) for ln in lan_lines))
+   all(('lan_ruoxi' in ln) or ('lan:"藍若曦' in ln) or ('name:"藍若曦"' in ln) or (ln in lan_block) or ('通告牌' in ln) or (ln in lan_block183) or (ln in tfix_block) for ln in lan_lines))
 ok('藍若曦 occurrences carry no singer framing',
-   all(not any(w in ln for w in ['歌手', '唱片', '狗仔', '宣傳場', '玉女']) for ln in lan_lines))
+   all(not any(w in ln for w in ['歌手', '唱片', '狗仔', '宣傳場', '玉女']) for ln in lan_lines if ln not in tfix_block))
 
 # ---- 玩家面真名掃描（現有 QA 禁用表） ----
 for w in ['張國榮', '陳百強', '梅艷芳', '周潤發', '劉德華']:

@@ -104,8 +104,9 @@ ok('B1(b) 前提：選幕 listOpen 早已用 ignoreSheetLoc（播出同選幕一
    'listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true })' in src)
 
 # --- 六、範圍守衛：唔郁嘅嘢 ---
-ok('範圍：第三條返地圖路 #home-back-map 仍然係 bypass（等用戶決定，呢票唔掂）',
-   'story165TryForcedPlay' not in seg('function leaveHomeFromNotebook(mode){', 'document.getElementById("home-back-map").onclick', 2000))
+ok('範圍：第三條返地圖路 #home-back-map 已掛強制播（v20a218 D-v165：leaveHomeFromNotebook map 分支加掛點，跟 #loc-close 同一寫法）',
+   'story165TryForcedPlay' in seg('function leaveHomeFromNotebook(mode){', 'document.getElementById("home-back-map").onclick', 2000)
+   and 'story165ModalOpen' in seg('function leaveHomeFromNotebook(mode){', 'document.getElementById("home-back-map").onclick', 2000))
 ok('範圍：closeSheet() 本體仍然唔掛強制播',
    'story165TryForcedPlay' not in seg('function closeSheet(opts){', '/* ===== v20a35', 2500))
 ok('範圍：普通 eval 只剩 enterLoc／doTalk 兩處寫 offer（start 已轉交 ignoreSheetLoc，見 §四）',

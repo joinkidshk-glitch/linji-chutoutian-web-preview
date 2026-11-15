@@ -21,7 +21,7 @@ table = {}
 if m:
     for em in re.finditer(r'(wf4_ev_\w+):"([^"]+)"', m.group(1)):
         table[em.group(1)] = em.group(2)
-ok('覆寫表 48 單（48 單無 loc，全覆蓋，v20a203 新 day 事件 12 單入埋表）', len(table) == 48)
+ok('覆寫表 50 單（48 單無 loc＋set32／set33 loc 錯配入表，v20a218 D-B2）', len(table) == 50)
 
 # --- 全部事件 id（DAILY_EVENTS_WF4） ---
 ev_ids = set(re.findall(r'id:"(wf4_ev_\w+)"', html))
@@ -40,8 +40,8 @@ if arr:
             nolocev.add(im.group(1))
 ok('無 loc 事件 48 單（v20a203：18 舊＋18 v193 新 day＋12 v203 新 day）', len(nolocev) == 48)
 leftover = set()
-ok('48 單無 loc＝48 覆寫＋0 留灰（v20a203 新 day 事件入埋表）',
-   nolocev == set(table) | leftover)
+ok('48 單無 loc＋set32／set33＝50 覆寫，0 留灰（v20a218 D-B2：set32／set33 有 loc 但預設圖錯，入表糾正）',
+   set(table) == nolocev | {"wf4_ev_set32", "wf4_ev_set33"} | leftover)
 ok('st05／st08 喺覆寫表（v20a146 補圖，無留灰）',
    {'wf4_ev_st05', 'wf4_ev_st08'} <= set(table))
 
@@ -68,7 +68,8 @@ ok('對話框定高 118px 唔郁（B4）',
 
 # --- 新圖 3 張齊晒＋格式 ---
 for f in ['bg_wf4_home.jpg', 'bg_wf4_booth.jpg', 'bg_wf4_market.jpg',
-          'bg_wf4_karaoke.jpg', 'bg_wf4_taxi.jpg']:
+          'bg_wf4_karaoke.jpg', 'bg_wf4_taxi.jpg', 'bg_wf4_tram.jpg',
+          'bg_wf4_park.jpg', 'bg_wf4_mtr.jpg']:
     p = os.path.join(root, 'assets/story/locs', f)
     ok('新場景圖存在：' + f, os.path.isfile(p))
     if os.path.isfile(p):
@@ -77,12 +78,15 @@ for f in ['bg_wf4_home.jpg', 'bg_wf4_booth.jpg', 'bg_wf4_market.jpg',
         ok('新場景圖 720×1280：' + f, im.size == (720, 1280))
 
 # --- v20a206 C2：7 單再重映射＋全面掃描追加 2 單 ---
-for ev, f in [('wf4_ev_day07', 'bg_wf4_market.jpg'), ('wf4_ev_day09', 'bg_loc_rec_hk.jpg'),
-              ('wf4_ev_st17', 'bg_wf4_market.jpg'), ('wf4_ev_day19', 'bg_wf4_market.jpg'),
-              ('wf4_ev_day22', 'bg_wf4_market.jpg'), ('wf4_ev_day24', 'bg_loc_tvb_kowloon.jpg'),
+for ev, f in [('wf4_ev_day09', 'bg_loc_rec_hk.jpg'),
+              ('wf4_ev_st17', 'bg_wf4_market.jpg'),
+              ('wf4_ev_day24', 'bg_loc_tvb_kowloon.jpg'),
               ('wf4_ev_day27', 'bg_loc_film_harbour.jpg'), ('wf4_ev_day10', 'bg_loc_film_harbour.jpg'),
               ('wf4_ev_st13', 'bg_loc_film_harbour.jpg')]:
     ok('v20a206 C2 重映射 %s → %s' % (ev, f), f in table.get(ev, ''))
+for ev, f in [('wf4_ev_day07', 'bg_wf4_tram.jpg'), ('wf4_ev_day19', 'bg_wf4_park.jpg'),
+              ('wf4_ev_day22', 'bg_wf4_mtr.jpg')]:
+    ok('v20a218 D-B1 新圖 %s → %s' % (ev, f), f in table.get(ev, ''))
 ok('v20a206 C2 夜市檔圖唔再一圖四用（淨返 day20／day21）',
    sorted(k for k, v in table.items() if 'bg_loc_gift_shop.jpg' in v) == ['wf4_ev_day20', 'wf4_ev_day21'])
 ok('v20a206 C2 的士圖淨返 st08／st15／day26',

@@ -1,6 +1,7 @@
 # v20a212 頒獎禮逐格流程修復 static tests：
 # (A1) glamour 期間收起跳過掣（唔遮 cap 作品名尾段），下一格即刻返嚟。
-# (B1) 得主跨格去重（used212／key212／fallback）＋懸念句輪換（SUSPENSE212 三句循環）。
+# (B1) 得主跨格去重（used212／key212／fallback）＋懸念句輪換（SUSPENSE212 四句循環，v20a218 C-C1 加第四句）。
+# v20a218 C-B1：作品層去重（usedTitle212，同一作品唔可以贏兩格，唔理邊個星）。
 # (C1) 格標題嗰陣卡列預先淡入剪影（preview212），frame 唔留黑洞。根因追加：格轉換
 # applyCatState208 舊 code 將成個 <div class="awd63-cards"> 容器塞入 cardsEl.innerHTML，
 # 巢狀第二層冇 .on／.preview212，base rule visibility:hidden 令第 2 格起全部卡片隱形
@@ -50,16 +51,18 @@ chk('A1：cap 文字唔郁（唔係靠縮短文字避遮擋）',
 # --- (B1) 得主跨格去重＋懸念輪換 ---
 chk('B1：used212／key212（星＋作品）在位',
     'const used212 = {}' in night_fn and 'key212' in night_fn)
+chk('B1：作品層去重 usedTitle212（同一作品唔贏兩格，v20a218 C-B1）',
+    'const usedTitle212 = {}' in night_fn and 'usedTitle212[f.title || ""]' in night_fn)
 chk('B1：後格排除已贏組合，揀第一位未贏過嘅提名人',
-    'fellows.find(f=> f && !used212[key212(f)])' in night_fn)
+    'fellows.find(f=> f && !used212[key212(f)] && !usedTitle212[f.title || ""])' in night_fn)
 chk('B1：fallback 沿用 fellows[0]（唔死局）',
     'winner = fellows[0]' in night_fn)
 chk('B1：玩家格 won 得主 null 唔入 used、winner63 豁免（預先登記）',
     'focusPc212' in night_fn and 'winner63' in night_fn)
-chk('B1：懸念句三句輪換（SUSPENSE212，第一格沿用舊句）',
+chk('B1：懸念句四句輪換（SUSPENSE212，第一格沿用舊句；v20a218 C-C1 加第四句）',
     'SUSPENSE212' in beats_fn and 'SUSPENSE212[ci % SUSPENSE212.length]' in beats_fn and
     '"得獎者是……"' in beats_fn and '"今晚呢個獎，屬於……"' in beats_fn and
-    '"結果揭曉——得獎者是……"' in beats_fn)
+    '"結果揭曉——得獎者是……"' in beats_fn and '"邊個攞走呢個獎……"' in beats_fn)
 chk('B1：懸念時長唔郁（1400ms）', 'id: "suspense", ms: 1400' in beats_fn)
 
 # --- (C1) 格標題卡列剪影 ---
@@ -96,6 +99,8 @@ chk('C4：walkup 行經路線上嘅提名人向後褪半步＋淡少少',
     'inPath212' in play_fn and 'slotCx(i) < targetX' in play_fn and 'y: inPath212 ? -10 : 0' in play_fn)
 chk('C4：行到埗即刻還原（wp＝1 嗰陣唔褪唔淡）',
     'wp < 1' in play_fn)
+chk('C4：行入嗰陣阿偉行後排（v20a218 C-C4：先畫、y−24，提名人遮住佢，唔同陸柏言重疊）',
+    'y: -24' in play_fn and 'playerSlot >= 0 && wp < 1' in play_fn)
 
 # --- (C5) 2 位提名人置中收窄 ---
 chk('C5：slots 得 2 位嗰陣置中收窄企位（200／280）',

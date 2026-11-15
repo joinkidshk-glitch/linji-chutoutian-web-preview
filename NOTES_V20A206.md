@@ -155,7 +155,7 @@ PixelLab 花費：**0 次**——純機制，零新生成。
   `day >= (WF4_CFG.pityDay||7) && !wf4SeenAny()` → `wf4PickEvent("day", null)` 強制揀一單未見過嘅 day 事件入 pending（`st.pending`／`pendingDay`），即 return。**唔直接 fire**，行正常 pending 機制，等晨鏈＋典禮閘＋故事鎖全部照舊生效。
 - 保底只會觸發一次：觸發後嗰單經晨鏈播出，seen 非空，條件永遠唔再成立。
 - **唔加頻率**：`pDay`／`pLoc`／迎新曲線／池 113 單全部唔郁（新測試釘死）。
-- 保底 pick（day 7、seen 空、確定性）：`wf4_ev_day09`「唱片舖試聽嗰首歌」（sim 預測，等實駕對返）。
+- 保底 pick（day 7、seen 空）：按當時狀態喺合資格 day 池揀一單，唔係寫死某一單（sim 嗰陣揀到 day09「唱片舖試聽嗰首歌」只係當時狀態下嘅結果，唔係保證）。
 
 ### tick 驗證（NOTES_V20A203 §14 殘留觀察：證偽）
 
@@ -175,8 +175,8 @@ PixelLab 花費：**0 次**——純機制，零新生成。
 | R 實玩（開局 3 日唔入場＋每日 2 地點；same-day／morning 兩種次序一樣） | **3 單**（day 3 set53、day 10 day20、day 22 set35） | day 3 | 零觸發 |
 | S0 零入場（淨靠日骰） | **2 單**（day 4 day25、day 10 day18） | day 4 | 零觸發 |
 | R-skip 對照變體（假設 tick 只跑落點日 0→3→7→9→…） | 1 單（day 3 set53） | day 3 | 零觸發——day 3 已經有 loc 事件，唔需要保底 |
-| F 首 7 日強制日封 tick（morning 次序） | **3 單**（day 7 day09、day 10 day20、day 22 set35） | **day 7** | **派 day7:day09，播出 day 7** |
-| E day 4 pending 播唔出→過期→保底補派（morning 次序；頭 7 日零入場＋day 4／5／6 強制日） | **3 單**（day 7 day09、day 10 day20、day 22 set35） | **day 7** | **派 day7:day09，播出 day 7** |
+| F 首 7 日強制日封 tick（morning 次序） | **3 單**（day 7 day09、day 10 day20、day 22 set35） | **day 7** | **保底補派一單（按當時狀態揀），播出 day 7** |
+| E day 4 pending 播唔出→過期→保底補派（morning 次序；頭 7 日零入場＋day 4／5／6 強制日） | **3 單**（day 7 day09、day 10 day20、day 22 set35） | **day 7** | **保底補派一單（按當時狀態揀），播出 day 7** |
 
 - 預期兌現：**首單一定 ≤ day 7**（保底兜底），**30 日約 2–3 單**（R 3／S0 2／F 3／E 3）。
 - 保底識別方法（唔靠估）：tick 之後 pending 係新設、當日日骰擲唔中、設嗰陣 seen 空——三樣齊先記做保底派單。

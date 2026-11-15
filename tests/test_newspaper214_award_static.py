@@ -153,10 +153,13 @@ try:
     st = subprocess.run(['git', '-C', ROOT, 'status', '--porcelain'], capture_output=True, text=True, timeout=30).stdout
     touched = [l for l in st.splitlines() if l[3:].startswith('content/')]
     # v217 豁免（語言審核，已拍板）：以下 15 個 content JSON 係 v217 語言審核改動；其餘一律唔准郁。
+    # v218 豁免（已拍板修復票）：B3 標題甩字＋A5 教學 locale 兩檔。
     _v217_allowed = {'content/SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json',
         'content/SOFT_RUMOR_BEHAVIOR_GATE_PLAYTEST_FIX_v1.json',
         'content/STUB_RUMOR_FRAGMENTS_v1.json',
         'content/STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json',
+        'content/STUB_NEWSPAPER_MORNING_SOFT_v1.json',
+        'content/tutorial_zh_HK.json',
         'content/events_zh_HK.json', 'content/gift_react_copy.json',
         'content/gigs_1988.json', 'content/gigs_1989.json',
         'content/gigs_1990.json', 'content/gigs_1991.json',

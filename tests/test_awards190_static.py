@@ -9,7 +9,7 @@
 #   兩 viewport 逐 px 等價（932 cap 220／700 cap 193.6）。
 # 驗收（實駕量度）：空佔比 47.9%→3.3%（932）／46.3%→3.6%（700）；海報盒唔郁（932 img 396–616／
 #   700 img 390–583）；clearance 36／24 唔跌；底罅 77 唔郁。
-# 唔郁守衛：B1 地板 y274–372／FLOOR 314（v20a207 B2）；C2 卡罅 24px；C3 out 留人；C4 walkup y＋6；
+# 唔郁守衛：B1 地板 y274–372／FLOOR 314（v20a207 B2）；C2 卡罅 24px；C3 out 留人；C4 walkup y−24（v20a218 C-C4）；
 #   C5 glamour-hide display:none（下移 124px trade-off）；C6 glyph −110。
 # 反證：run against pristine main dcf1b72 index -> 新 C1 斷言全部 FAIL（唔 crash）；守衛 pristine 應 PASS。
 import sys, re
@@ -108,7 +108,7 @@ _out = play_fn[_out_i:play_fn.find('};', _out_i)] if _out_i >= 0 else ''
 chk('守衛 C3 out 分支照畫人物、alpha 1−step×0.25', 'drawFigure' in _out and '1 - step * 0.25' in _out)
 _walk_i = play_fn.find('if(id === "walkup"){')
 _walk = play_fn[_walk_i:play_fn.find('if(id === "out"){', _walk_i)] if _walk_i >= 0 else ''
-chk('守衛 C4 walkup 行緊 y＋6（只一處）', 'y: 6' in _walk and _walk.count('y: 6') == 1)
+chk('守衛 C4 walkup 行緊 y−24（只一處）', 'y: -24' in _walk and _walk.count('y: -24') == 1)
 chk('守衛 C5 glamour-hide 仲係 display:none', 'display:none' in css_rule('.awd63-cards.glamour-hide'))
 chk('守衛 C6 燕尾服 glyph −129 兩處、舊 −112 唔見（v20a207 B2）',
     'FLOOR + fp.y - Math.round(129 * HSC211)' in play_fn and 'FLOOR - Math.round(129 * HSC211)' in play_fn and '- 112' not in play_fn)

@@ -222,8 +222,8 @@ const cleaned = textfix55Walk(JSON.parse(JSON.stringify(OLD_AWARD_STUB)), null, 
 ok("e1 TEXTFIX55_EXACT 走一遍：6 句舊字串全部乾淨（冇碟市／臨記席）",
   !JSON.stringify(cleaned).includes("碟市") && !JSON.stringify(cleaned).includes("臨記席"));
 ok("e2 「金碟夜，碟市多個名」→「金碟夜新人輩出」", cleaned.headline === "金碟夜新人輩出");
-ok("e2b 請柬句「碟市邊個上鏡」→「邊個上台領獎」",
-  cleaned.inviteDek === "唱片年終有金碟夜。你收到一張席位信——邊個上台領獎，席上見。");
+ok("e2b 請柬句「碟市邊個上鏡」→「邊個上台領獎」（v20a218 C-C1：顯示值「年終」→「年中」）",
+  cleaned.inviteDek === "唱片年中有金碟夜。你收到一張席位信——邊個上台領獎，席上見。");
 ok("e2c 旁聽句「碟市點樣叫人名」→「樂壇點樣叫人名」",
   cleaned.galleryLine === "你坐席上，聽人謝唱片公司。你記住樂壇點樣叫人名。");
 ok("e2d 「臨記席都有鏡頭掃過」→「觀禮席都有鏡頭掃過」",

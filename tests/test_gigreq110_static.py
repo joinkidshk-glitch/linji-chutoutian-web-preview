@@ -54,12 +54,20 @@ _v217_allowed = {'content/SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json',
     'content/story_detail_c1_to_c17.json',
     'content/story_detail_rival_mentor.json',
     'content/story_detail_romance_vera_hiu_choi.json'}
+# v218 豁免（review 修復，已拍板）：以下 4 個 content JSON 係 v218 有意改動——
+# STUB_NEWSPAPER_MORNING_SOFT_v1.json（B3 標題「揭入圍」→「揭曉入圍」）、
+# tutorial_zh_HK.json（A5 locale zh-Hant-written→zh-Hant-HK）、
+# gift_react_copy.json（A3「怎麼」×8 成句轉廣東話）＋story_beats_phase1.json
+# （A5 locale）兩檔已喺 v217 豁免集入面，呢度列齊做 v218 範圍記錄。
+_v218_allowed = {'content/STUB_NEWSPAPER_MORNING_SOFT_v1.json',
+    'content/tutorial_zh_HK.json', 'content/gift_react_copy.json',
+    'content/story_beats_phase1.json'}
 try:
     out = subprocess.run(['git', '-C', ROOT, 'diff', '--name-only', 'HEAD', '--', 'content/'],
                          capture_output=True, text=True, timeout=60)
     changed = [l for l in out.stdout.splitlines() if l.strip()]
-    ok('content/*.json 零改動（v157＋v217 豁免以外一律唔准郁）',
-       all(c in _v217_allowed for c in changed))
+    ok('content/*.json 零改動（v157＋v217＋v218 豁免以外一律唔准郁）',
+       all(c in _v217_allowed | _v218_allowed for c in changed))
 except Exception as e:
     ok('content/*.json 零改動（git 檢查失敗：%s）' % e, False)
 

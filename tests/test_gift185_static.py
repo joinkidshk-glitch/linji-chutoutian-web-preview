@@ -1,6 +1,7 @@
 # v20a214 rebase 上 main d1239d4 resync：index.html 淨 +358 行，總行數 61994→62352（difflib 對位核實純漂移，見 qa214/resync214_rebase.py）。
 # v20a216 resync：index.html 淨 +263 行（見 qa216/resync216.py difflib 對位核實純漂移），總行數 62492→62755。
 # v20a217 resync：標籤遷移 ＋3 行（ensureCastingTagsState 識分寸→識做人），總行數 62755→62758。
+# v20a218 resync：index.html 淨 +136 行（見 qa218/resync218.py difflib 對位核實純漂移），總行數 62758→62894。
 # v20a207 resync：index.html 淨 +34 行（見 qa207/resync207.py，73 錨點對位零 mismatch，純漂移）。
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），總行數 60522→60609。
 # v20a203 resync：index.html 淨 +233 行（見 qa203/resync203.py difflib 對位核實純漂移），總行數 61167→61400。
@@ -53,7 +54,7 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 62758（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3）', html.count('\n') == 62758)
+ok('總行數 62894（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136）', html.count('\n') == 62894)
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行（advanceDay tick＋2／whitelist＋1／RELEASE215 block＋130／排序＋4／pullDue 懶掃＋3），difflib 核實純漂移（總行數 62352→62492）。# ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',
    'v20a185 B1+C1' in html and '路線 a' in html)

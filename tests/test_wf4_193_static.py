@@ -85,7 +85,7 @@ m = re.search(r'const WF4_SCENE_OVERRIDE134 = \{(.*?)\};', src, re.S)
 ok('WF4_SCENE_OVERRIDE134 存在', m is not None)
 if m:
     table = set(re.findall(r'(wf4_ev_\w+):"', m.group(1)))
-    ok('覆寫表 48 行（v20a203：36→48，新 day 12 單入表）', len(table) == 48)
+    ok('覆寫表 50 行（v20a203：36→48，新 day 12 單入表；v20a218 D-B2：＋set32／set33）', len(table) == 50)
     for new_id in ['wf4_ev_day05', 'wf4_ev_day16', 'wf4_ev_st12', 'wf4_ev_st17']:
         ok('新 day 事件入覆寫表：' + new_id, new_id in table)
 

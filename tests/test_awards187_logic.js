@@ -9,7 +9,7 @@
 //   calc(40cqh - 8px)——舊 40% 會對住內容高嘅 panel 失效；以下 C1 斷言跟住更新，結論（海報頂唔壓牌）不變。
 // C2：卡罅 8→24px，「你」徽（右出 7px）同隔籬卡 🏆 徽（左出 7px）中間留 10px。
 // C3：out beat 照畫人物、跟 overlay 一齊暗落（alpha＝1−step×0.25；won 只留燕尾服阿偉，其餘跟 comfort 暗度）。
-// C4：walkup 行緊嗰陣 y＋6（行前一格，掠過左邊提名人有前後層次），行完換燕尾服 y 歸 0。
+// C4：walkup 行緊嗰陣 y−24（行後排，唔再由提名人前面穿過；v20a218 C-C4），行完換燕尾服 y 歸 0。
 // C5：glamour frame 下移 124px 係 v174 已接受 trade-off（卡列 display:none 殺死位）——B1 唔郁 frame 高，
 //     評估後 keep：本檔只釘死 trade-off 仲在（glamour-hide display:none），唔當未修。
 // C6：獎盃 glyph −112→−110（牌底 149.4 到 glyph 頂 152，留 2.6 邏輯罅；glyph 底 170 離頭頂 173 仲有 3px）。
@@ -134,13 +134,13 @@ ok('C3 其餘跟 comfort 暗度（player 1／得主 0.85／其他 0.7 再 ×fa�
   outBlock.includes('winnerSlot ? 0.85 : 0.7'));
 ok('C3 out 仲係 500ms（唔加 beat）', beatsSrc.includes('id: "out", ms: 500'));
 
-/* ================= C4：walkup y＋6（play 原文） ================= */
+/* ================= C4：walkup y−24（play 原文，v20a218 C-C4） ================= */
 const walkIdx = playSrc.indexOf('if(id === "walkup"){');
 const walkBlock = walkIdx >= 0 ? playSrc.slice(walkIdx, playSrc.indexOf('if(id === "out"){', walkIdx)) : '';
-ok('C4 walkup 行緊 y＋6（行前一格）', walkBlock.includes('y: 6'));
+ok('C4 walkup 行緊 y−24（行後排，唔穿過提名人）', walkBlock.includes('y: -24'));
 ok('C4 行完換燕尾服 y 歸 0（企定嗰句 x: targetX，冇 y）',
-  walkBlock.includes('x: targetX, hold: true') && (walkBlock.match(/y: 6/g) || []).length === 1);
-ok('C4 walkup 仲係由台左 −40 行 1400ms（路徑唔郁，只加 y）',
+  walkBlock.includes('x: targetX, hold: true') && (walkBlock.match(/y: -24/g) || []).length === 1);
+ok('C4 walkup 仲係由台左 −40 行 1400ms（路徑唔郁，只改 y）',
   walkBlock.includes('-40 + (targetX + 40) * wp') && walkBlock.includes('beatElapsed / 1400'));
 
 /* ================= C5：glamour 下移 trade-off 保留（評估結論） ================= */

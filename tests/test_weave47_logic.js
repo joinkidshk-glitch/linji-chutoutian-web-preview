@@ -161,7 +161,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   function actsText(){ return actsBtns().map(b=>String(b.innerHTML||'')).join('\n'); }
   const TITLE = '何生有句說話想同你講';
 
-  // 1992 春：未到夏，唔出現
+  // 1992 春：未到秋，唔出現
   S = freshS(dayIndexOf(1992, 4, 15)); GIGS = []; els = {}; playedNodes = [];
   openLoc('agency_ho');
   ok('seg1 spring 1992: stay/leave offer NOT shown', actsText().indexOf(TITLE) < 0);
@@ -171,24 +171,29 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   openLoc('agency_ho');
   ok('seg1 1990: stay/leave offer NOT shown', actsText().indexOf(TITLE) < 0);
 
-  // 1992 夏：出現；撳掣 → 真 choice47Play → StoryPlay.start 收到 F4 節點（force）
+  // 1992 夏：未到秋，唔出現（v20a218 A2：閘由夏改秋，跟場面「1990秋起」）
   S = freshS(dayIndexOf(1992, 7, 15)); GIGS = []; els = {}; playedNodes = [];
   openLoc('agency_ho');
-  ok('seg1 summer 1992: stay/leave offer shown at agency', actsText().indexOf(TITLE) >= 0);
+  ok('seg1 summer 1992: stay/leave offer NOT shown (gate moved to autumn)', actsText().indexOf(TITLE) < 0);
+
+  // 1992 秋：出現；撳掣 → 真 choice47Play → StoryPlay.start 收到 F4 節點（force）
+  S = freshS(dayIndexOf(1992, 10, 15)); GIGS = []; els = {}; playedNodes = [];
+  openLoc('agency_ho');
+  ok('seg1 autumn 1992: stay/leave offer shown at agency', actsText().indexOf(TITLE) >= 0);
   const btn = actsBtns().find(b=>String(b.innerHTML||'').indexOf(TITLE) >= 0);
-  ok('seg1 summer 1992: offer button found', !!btn);
+  ok('seg1 autumn 1992: offer button found', !!btn);
   if(btn && btn.onclick) btn.onclick({});
   ok('seg1 click: StoryPlay.start got F4_stay_mind node', playedNodes.length === 1 && playedNodes[0].node.id === 'F4_stay_mind');
   ok('seg1 click: played with force (micro-node path)', !!(playedNodes[0] && playedNodes[0].opts && playedNodes[0].opts.force === true));
   ok('seg1 click: node asks 走定留', !!(playedNodes[0] && JSON.stringify(playedNodes[0].node).indexOf('有冇諗過走') >= 0));
 
   // 答完（旗已寫，段二證明由真 applyChoice 寫入）：再入事務所唔再問
-  S = freshS(dayIndexOf(1992, 8, 1)); S.story.flags.flag_leave_mind = true; GIGS = []; els = {};
+  S = freshS(dayIndexOf(1992, 10, 15)); S.story.flags.flag_leave_mind = true; GIGS = []; els = {};
   openLoc('agency_ho');
   ok('seg1 answered (flag set): offer gone', actsText().indexOf(TITLE) < 0);
 
   // done 把關：done 已記但旗被清（異常檔）都唔再問
-  S = freshS(dayIndexOf(1992, 8, 1)); S.story.done.F4_stay_mind = true; GIGS = []; els = {};
+  S = freshS(dayIndexOf(1992, 10, 15)); S.story.done.F4_stay_mind = true; GIGS = []; els = {};
   openLoc('agency_ho');
   ok('seg1 answered (done set): offer gone', actsText().indexOf(TITLE) < 0);
 
@@ -198,7 +203,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   ok('seg1 catch-up 1993 winter: offer still shown', actsText().indexOf(TITLE) >= 0);
 
   // 其他地點唔出呢條 offer
-  S = freshS(dayIndexOf(1992, 7, 15)); S.locNpc = {}; GIGS = []; els = {};
+  S = freshS(dayIndexOf(1992, 10, 15)); S.locNpc = {}; GIGS = []; els = {};
   openLoc('cafe_cha');
   ok('seg1 other loc: offer NOT shown at cafe', actsText().indexOf(TITLE) < 0);
 })();
@@ -291,9 +296,10 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   ok('seg2 gate: F4 closed in 1992 spring', choice47Available('F4_stay_mind') === false);
   ok('seg2 gate: G4 closed in 1992 spring', choice47Available('G4_family_job') === false);
   S = baseSave(dayIndexOf(1992, 7, 15)); StoryOC.ensure();
-  ok('seg2 gate: F4 open in 1992 summer', choice47Available('F4_stay_mind') === true);
+  ok('seg2 gate: F4 still closed in 1992 summer (v20a218 A2: gate moved to autumn)', choice47Available('F4_stay_mind') === false);
   ok('seg2 gate: G4 still closed in 1992 summer', choice47Available('G4_family_job') === false);
   S = baseSave(dayIndexOf(1992, 10, 15)); StoryOC.ensure();
+  ok('seg2 gate: F4 open in 1992 autumn', choice47Available('F4_stay_mind') === true);
   ok('seg2 gate: G4 still closed in 1992 autumn', choice47Available('G4_family_job') === false);
   S = baseSave(dayIndexOf(1992, 12, 15)); StoryOC.ensure();
   ok('seg2 gate: both open in 1992 winter', choice47Available('F4_stay_mind') === true && choice47Available('G4_family_job') === true);

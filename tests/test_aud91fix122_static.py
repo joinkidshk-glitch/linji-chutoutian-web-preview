@@ -47,8 +47,16 @@ try:
         'content/npc_lines_core.json', 'content/story_beats_phase1.json',
         'content/story_detail_rival_mentor.json',
         'content/story_detail_romance_vera_hiu_choi.json'}
-    ok('content pack JSON 冇俾本包改動（v157＋v217 豁免以外一律唔准郁）',
-       all(p in _v157_allowed | _v217_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
+    # v218 豁免（review 修復，已拍板）：以下 4 個 content JSON 係 v218 有意改動——
+    # STUB_NEWSPAPER_MORNING_SOFT_v1.json（B3 標題「揭入圍」→「揭曉入圍」）、
+    # tutorial_zh_HK.json（A5 locale zh-Hant-written→zh-Hant-HK）、
+    # gift_react_copy.json（A3「怎麼」×8 成句轉廣東話）＋story_beats_phase1.json
+    # （A5 locale）兩檔已喺 v217 豁免集入面，呢度列齊做 v218 範圍記錄。
+    _v218_allowed = {'content/STUB_NEWSPAPER_MORNING_SOFT_v1.json',
+        'content/tutorial_zh_HK.json', 'content/gift_react_copy.json',
+        'content/story_beats_phase1.json'}
+    ok('content pack JSON 冇俾本包改動（v157＋v217＋v218 豁免以外一律唔准郁）',
+       all(p in _v157_allowed | _v217_allowed | _v218_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
 except Exception as e:
     print('SKIP content pack 檢查（git 唔可用：%s）' % e)
 

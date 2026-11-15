@@ -89,6 +89,8 @@ ok('舊 emotion 詞彙正規化 worried→think', dlg106ResolveCategory({ emotio
 ok('舊 expression 詞彙正規化 frown→serious', dlg106ResolveCategory({ expression:'frown', text:'一句冇關鍵字嘅平靜說話' }) === 'serious');
 ok('冇欄就查 map（芬姐句→sad）', dlg106ResolveCategory({ text:FEN }) === 'sad');
 ok('map miss 就行分類器（嬲句→angry）', dlg106ResolveCategory({ text:'你再講！豈有此理，收聲！' }) === 'angry');
+ok('C3：公事句「唔好意思，你嗰場要押後…」唔入 shy（v20a218 D-C3：排期字眼 guard）', dlg106Classify('唔好意思，你嗰場要押後兩位——前面嗰組跳舞嘅超時，我成版牌要重排，你唔好行遠呀。') !== 'shy');
+ok('C3：真正道歉句「唔好意思，借過」照舊入 shy（冇排期字眼）', dlg106Classify('哎呀——唔好意思，唔好意思，借過！') === 'shy');
 ok('全 miss＋冇關鍵字 → neutral', dlg106ResolveCategory({ text:'今日天氣幾好，我哋出發去片場。' }) === 'neutral');
 /* 反證 (c)：垃圾輸入 */
 ok('反證：垃圾 category 認唔到回空', dlg106NormCategory('bogus_cat') === '');
@@ -102,6 +104,8 @@ ok('category→expr 八項逐字啱', Object.keys(EXP).every(k => dlg106ExprFor(
 let c = dlg106Candidates('ho_sang', 'sad');
 ok('候補：expr 先、base 後、?v=20a106', c[0] === 'assets/story/fullbody/ho_sang_sad.webp?v=20a106' && c.some(u => u === 'assets/story/fullbody/ho_sang_base.webp?v=20a106') && c.every(u => u.indexOf('?v=20a106') > 0));
 ok('neutral 候補直入 base（冇 smile 混入）', dlg106Candidates('ho_sang', 'neutral')[0] === 'assets/story/fullbody/ho_sang_base.webp?v=20a106');
+ok('藍若曦 neutral 行 smile（v20a218 D-B1：base 過燦爛，限 lan_ruoxi 一人）', dlg106Candidates('lan_ruoxi', 'neutral')[0] === 'assets/story/fullbody/lan_ruoxi_smile.webp?v=20a106');
+ok('藍若曦 neutral 唔係 base 映射改咗（其他人照舊 base）', dlg106ExprFor('neutral') === 'base' && dlg106ExprFor('neutral', 'lan_ruoxi') === 'smile' && dlg106ExprFor('neutral', 'ho_sang') === 'base');
 global.__tier106 = 2;
 c = dlg106Candidates('awi', 'think');
 ok('阿偉主角期（tier2）行 awi_s2 圖組＋退 awi base 兜底', c[0].indexOf('assets/story/fullbody/awi_s2_think') === 0 && c.some(u => u === 'assets/story/fullbody/awi_base.webp?v=20a106'));

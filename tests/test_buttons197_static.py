@@ -95,6 +95,14 @@ ok('B7：入 plan pane 嗰陣初 paint 分類掣俾 bar 冚住就捲返出嚟（
 ok('C1：選中格 32px（同其餘四格同一條 y，用色／底線區分）',
    '#home-tabs .home-tab.on{ height:32px;' in src
    and '#home-tabs .home-tab.on{ height:38px;' not in src)
+# v20a218 D-v197C1：-1.5px 唔可以淨係喺 .on——使用中嗰格會低 2px（review 實測 y 215 vs 213）；
+# 五格統一搬去 base rule，.on 唔可以再有 margin-bottom:-1.5px。
+_hb = src.index('#home-tabs .home-tab{')
+_ho = src.index('#home-tabs .home-tab.on{', _hb)
+_on_end = src.index('}', _ho)
+ok('C1：-1.5px 五格統一（base rule 有，.on 冇）',
+   'margin-bottom:-1.5px;' in src[_hb:_ho]
+   and 'margin-bottom:-1.5px' not in src[_ho:_on_end])
 
 # --- C2：地圖底部主掣用色區分兩個身份 ---
 ok('C2：「過一日」改紙色＋啡框（「開始今日行程」留返金色實色）',
@@ -124,7 +132,12 @@ ok('C4：全部 modal DOM 次序本身已經係肯定行先（出席→推辭、
 # --- C5：抉擇卡齊高 ---
 ok('C5：抉擇卡最小 64px、短句置中',
    '.story-play .sp-choice{' in src and 'min-height:64px;' in src
+   and 'min-height:44px;padding:8px 10px' not in src
    and 'display:flex;flex-direction:column;justify-content:center;' in src)
+# v20a218 D-v197C5：64px 要寫入 3-class 嗰條 rule——舊版 44px 蓋過咗 2-class 嗰條 64px（specificity 3 vs 2），
+# 抉擇卡 55 vs 70px 高矮不一。
+ok('C5：choices-layout 嗰條 rule 都係 64px（唔係 44px）',
+   '.story-play.sp-choices-layout .sp-choice{\n  min-height:64px;' in src)
 
 # --- C6：通告板 54px 罅＝分組頭 ---
 ok('C6：未達標分組頭做返明顯標題（唔再係無解釋嘅空位）',

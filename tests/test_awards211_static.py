@@ -136,8 +136,8 @@ chk('B7 梯形光柱：上窄（topW＝w×0.5）下闊（botW＝w＋44）',
     'topW211' in sp and 'Math.round(w * 0.5)' in sp and 'botW211 = w + 44' in sp)
 chk('B7 光柱由框頂 y=0 起（moveTo y=0）', 'moveTo(cx - topW211 / 2, 0)' in sp and 'lineTo(cx + topW211 / 2, 0)' in sp)
 chk('B7 光柱到底 F（腳底）', 'lineTo(cx + botW211 / 2, F)' in sp and 'lineTo(cx - botW211 / 2, F)' in sp)
-chk('B7 暖白縱向漸變（createLinearGradient 0→F）',
-    'createLinearGradient(0, 0, 0, F)' in sp and 'rgba(255,244,200,0.42)' in sp)
+chk('B7 暖金縱向漸變（createLinearGradient 0→F；v20a218 C-C3：頂段加暖加濃 0.42→0.60，白牌遮中段都要一眼認到）',
+    'createLinearGradient(0, 0, 0, F)' in sp and 'rgba(255,214,110,0.60)' in sp)
 chk('B7 中央亮芯梯形（方向感）', 'g211b' in sp and 'topW211 * 0.28' in sp)
 chk('B7 腳底光灘仲在（光池＋地面光暈）',
     'F - Math.round(120 * HSC211)' in sp and 'rgba(255,217,104,0.45)' in sp)
