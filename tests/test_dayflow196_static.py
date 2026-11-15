@@ -164,7 +164,7 @@ ok('redline softRev s107 present', 's107' in html)
 ok('redline ?v= v20a10 present', '?v=20a10' in html)
 ok('redline awards soft gate untouched (queueAwardsOnSeasonWindow still gated)',
    'awardsSoftOn()' in html)
-ok('redline C17 gate untouched (weekMin 153 + backstopDay 1096)',
+ok('redline N17 gate untouched (weekMin 153 + backstopDay 1096)',
    'weekMin: 153' in html and 'backstopDay: 1096' in html)
 ok('redline travel cap untouched', 'TRAVEL114_DAILY_CAP = 2' in html)
 ok('redline handbook exits untouched (book70ExitHome / loc-close still exist)',

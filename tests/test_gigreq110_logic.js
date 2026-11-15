@@ -14,7 +14,7 @@
 //   I 錨點：和音家族四張新要求；《櫥窗》過場模特升中但「臨」印問題屬 press94 內容分類，
 //     本測試只斷言 tier，不斷言見報分類（見 audit §5.3 更正）
 // 反證：pristine main（v109）冇 TIER110／REQ110／ovr110Apply → A1–A4 FAIL，
-//   且 C1 會報出 251 張脫節（A 155／B 96），D1 報 14 而唔係 20。
+//   且 N1 會報出 251 張脫節（A 155／B 96），D1 報 14 而唔係 20。
 const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -211,7 +211,7 @@ for(const g of pool.values()){
   const [cls, mr, b, why] = classify(g);
   if(cls) bad.push(g.id + ':' + cls + ':' + why.join(';'));
 }
-ok('C1 全池 471 張 A／B／C 全清零', bad.length === 0, bad.slice(0, 10).join(' | '));
+ok('N1 全池 471 張 A／B／C 全清零', bad.length === 0, bad.slice(0, 10).join(' | '));
 /* 每級中位最高要求（live 年池，sim110 setupYearPool 口徑） */
 function med(a){
   a = [...a].sort((x,y)=>x-y); const n = a.length;
@@ -237,7 +237,7 @@ for(const year of [1990, 1991, 1992]){
   const yp = setupYearPool(year);
   for(const t of ['初','中','高']){
     const ms = yp.filter(g=>g.tier === t && g.req && Object.keys(g.req).length).map(maxReq6);
-    ok('C2 ' + year + ' 年' + t + '級中位最高要求 ' + EXPECT_MED[year][t] + '（落帶）',
+    ok('N2 ' + year + ' 年' + t + '級中位最高要求 ' + EXPECT_MED[year][t] + '（落帶）',
        ms.length > 0 && med(ms) === EXPECT_MED[year][t],
        'n=' + ms.length + ' med=' + med(ms) + ' range=' + (ms.length ? Math.min(...ms) + '–' + Math.max(...ms) : '—'));
   }

@@ -1,9 +1,9 @@
 // v20a89 BR89 邏輯測試：分支補完 S+M
-//  (A) ripple 消費者：C1–C5 文案承諾嘅 ripple 四欄（stress/health/credit/debt）＋tag 真入帳；
+//  (A) ripple 消費者：N1–N5 文案承諾嘅 ripple 四欄（stress/health/credit/debt）＋tag 真入帳；
 //      逐條對返 pack 文案數值，唔多唔少。
 //  (B) 巧遇 grants 條件派發：liu_repay 推辭唔攞債權（改攞風聲卡）、mak_respect 講會驚唔攞人情；
 //      應承先攞返原本嗰筆（id／debtor 逐字同 v88 定版）。
-//  (C) C6F 電影線對稱幕：節點＋閘＋注入器齊；同 C6 等量級（W15、wealth 對稱）。
+//  (C) N6F 電影線對稱幕：節點＋閘＋注入器齊；同 N6 等量級（W15、wealth 對稱）。
 //  (D) 結局呈現回收：八線 ending 旗 → endingInserts410 出返該線句子；提攜債已兌現 → 點名句；
 //      半線 he/be → endingRomanceScene410 分版。
 //  (E) BR89 條件通告：提攜債／情報卡持有先注入，兌現／完成後唔再出；br89OnGigComplete
@@ -47,7 +47,7 @@ function extractBetween(a, b){
 /* ================= (A) ripple 消費者 ================= */
 try{
   const seg = extractBetween('const rp89 =', 'if(typeof apply==="function" && Object.keys(gameDelta).length){');
-  const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'story_detail_c1_to_c17.json'), 'utf8'));
+  const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'story_detail_n1_to_n17.json'), 'utf8'));
   const nodeOf = id => (pack.nodes||[]).find(n=>n.id===id);
   function runRipple(nodeId, choiceId){
     const node = nodeOf(nodeId);
@@ -62,21 +62,21 @@ try{
       seg + '\nreturn { gameDelta, statsApplied, notes, S };');
     return fn(env.eff, env.node, env.gameDelta, env.statsApplied, env.notes, env.S, env.applyCastingTags);
   }
-  // C2_a: stressDelta +1；C2_b: −1（pack 文案數值）
-  let r = runRipple('C2','C2_a'); ok('A1 C2_a ripple stress +1', r.gameDelta.stress===1);
-  r = runRipple('C2','C2_b'); ok('A2 C2_b ripple stress −1', r.gameDelta.stress===-1);
-  // C3_a: credit −1＋stress +2；C3_b: credit +1＋stress +3
-  r = runRipple('C3','C3_a'); ok('A3 C3_a credit −1／stress +2', r.statsApplied.industryCredit===-1 && r.gameDelta.stress===2);
-  r = runRipple('C3','C3_b'); ok('A4 C3_b credit +1／stress +3', r.statsApplied.industryCredit===1 && r.gameDelta.stress===3);
-  // C4_a: debtDelta +1 → 真債一筆（何生）；重行唔好重複入帳
-  r = runRipple('C4','C4_a'); ok('A5 C4_a 入何生人情債', r.S.mockDebts.length===1 && r.S.mockDebts[0].id==='debt_c4_ho_ripple' && r.S.mockDebts[0].creditor==='何生' && r.statsApplied.industryCredit===-1);
-  // C4_b: stress +8＋health −5（→體能）
-  r = runRipple('C4','C4_b'); ok('A6 C4_b stress +8／體能 −5', r.gameDelta.stress===8 && r.gameDelta.stamina===-5);
-  // C1_a/b: 只有 tag／描述欄 → 入沉澱標籤，唔入任何數值（唔加文案冇講嘅懲罰）
-  r = runRipple('C1','C1_a'); ok('A7 C1_a 只入標籤零數值', Object.keys(r.gameDelta).length===0 && !r.statsApplied.industryCredit && r.notes.some(x=>x.indexOf('沉澱標籤')>=0));
-  r = runRipple('C1','C1_b'); ok('A8 C1_b 只入標籤零數值', Object.keys(r.gameDelta).length===0 && r.notes.some(x=>x.indexOf('沉澱標籤')>=0));
-  // C5_c: stressDelta −1
-  r = runRipple('C5','C5_c'); ok('A9 C5_c stress −1', r.gameDelta.stress===-1);
+  // N2_a: stressDelta +1；N2_b: −1（pack 文案數值）
+  let r = runRipple('N2','N2_a'); ok('A1 N2_a ripple stress +1', r.gameDelta.stress===1);
+  r = runRipple('N2','N2_b'); ok('A2 N2_b ripple stress −1', r.gameDelta.stress===-1);
+  // N3_a: credit −1＋stress +2；N3_b: credit +1＋stress +3
+  r = runRipple('N3','N3_a'); ok('A3 N3_a credit −1／stress +2', r.statsApplied.industryCredit===-1 && r.gameDelta.stress===2);
+  r = runRipple('N3','N3_b'); ok('A4 N3_b credit +1／stress +3', r.statsApplied.industryCredit===1 && r.gameDelta.stress===3);
+  // N4_a: debtDelta +1 → 真債一筆（何生）；重行唔好重複入帳
+  r = runRipple('N4','N4_a'); ok('A5 N4_a 入何生人情債', r.S.mockDebts.length===1 && r.S.mockDebts[0].id==='debt_c4_ho_ripple' && r.S.mockDebts[0].creditor==='何生' && r.statsApplied.industryCredit===-1);
+  // N4_b: stress +8＋health −5（→體能）
+  r = runRipple('N4','N4_b'); ok('A6 N4_b stress +8／體能 −5', r.gameDelta.stress===8 && r.gameDelta.stamina===-5);
+  // N1_a/b: 只有 tag／描述欄 → 入沉澱標籤，唔入任何數值（唔加文案冇講嘅懲罰）
+  r = runRipple('N1','N1_a'); ok('A7 N1_a 只入標籤零數值', Object.keys(r.gameDelta).length===0 && !r.statsApplied.industryCredit && r.notes.some(x=>x.indexOf('沉澱標籤')>=0));
+  r = runRipple('N1','N1_b'); ok('A8 N1_b 只入標籤零數值', Object.keys(r.gameDelta).length===0 && r.notes.some(x=>x.indexOf('沉澱標籤')>=0));
+  // N5_c: stressDelta −1
+  r = runRipple('N5','N5_c'); ok('A9 N5_c stress −1', r.gameDelta.stress===-1);
 }catch(e){ ok('A ripple 抽取/執行 ('+e.message+')', false); }
 
 /* ================= (B) grants 條件派發 ================= */
@@ -111,20 +111,20 @@ try{
   ok('B9 beat 定義冇 grants 殘留', !/id:"liu_repay"[^}]*grants\(/.test(html) && !/id:"mak_respect"[^}]*grants\(/.test(html));
 }catch(e){ ok('B grants 抽取/執行 ('+e.message+')', false); }
 
-/* ================= (C) C6F 對稱幕 ================= */
+/* ================= (C) N6F 對稱幕 ================= */
 try{
   const gate = extractConst('STORY_GATE_3Y');
   const nodes = extractConst('STORY_SPINE_NODES_BR89');
   const env = new Function(gate + '\n' + nodes + '\nreturn { STORY_GATE_3Y, STORY_SPINE_NODES_BR89 };')();
-  ok('C1 閘 C6F＝route_film＋W15（同 C6 對稱）', env.STORY_GATE_3Y.C6F && env.STORY_GATE_3Y.C6F.route==='route_film' && env.STORY_GATE_3Y.C6F.weekMin===env.STORY_GATE_3Y.C6.weekMin);
-  const n = env.STORY_SPINE_NODES_BR89.C6F;
-  ok('C2 節點 locId film_lion＋openConditions 對位', n.locId==='film_lion' && n.openConditions.includes('route_film') && n.openConditions.includes('week_min:15'));
-  const ca = n.choices.find(c=>c.id==='C6F_a'), cb = n.choices.find(c=>c.id==='C6F_b');
-  ok('C3 抉擇對稱 C6（接＝wealth 1／唔接＝零）', ca.effects.stats.wealth===1 && Object.keys(cb.effects.stats).length===0 && ca.effects.flags[0]==='flag_studio_follow' && cb.effects.flags[0]==='flag_studio_roam');
-  ok('C4 注入器存在', html.indexOf('function applyStoryBr89Nodes89(')>=0 && html.indexOf('applyStoryBr89Nodes89()')>=0);
-  ok('C5 進度頁有 C6F＋提示表有 C6F', html.indexOf('["C6F",20]')>=0 && html.indexOf('C6F: { playerHint:')>=0);
-  ok('C6 C5 nextHint 已改兩線並陳', html.indexOf('走電影線有「片場跟班」')>=0 && html.indexOf('行電視線先有；係處境劇班底')<0);
-}catch(e){ ok('C C6F 抽取/執行 ('+e.message+')', false); }
+  ok('N1 閘 N6F＝route_film＋W15（同 N6 對稱）', env.STORY_GATE_3Y.N6F && env.STORY_GATE_3Y.N6F.route==='route_film' && env.STORY_GATE_3Y.N6F.weekMin===env.STORY_GATE_3Y.N6.weekMin);
+  const n = env.STORY_SPINE_NODES_BR89.N6F;
+  ok('N2 節點 locId film_lion＋openConditions 對位', n.locId==='film_lion' && n.openConditions.includes('route_film') && n.openConditions.includes('week_min:15'));
+  const ca = n.choices.find(c=>c.id==='N6F_a'), cb = n.choices.find(c=>c.id==='N6F_b');
+  ok('N3 抉擇對稱 N6（接＝wealth 1／唔接＝零）', ca.effects.stats.wealth===1 && Object.keys(cb.effects.stats).length===0 && ca.effects.flags[0]==='flag_studio_follow' && cb.effects.flags[0]==='flag_studio_roam');
+  ok('N4 注入器存在', html.indexOf('function applyStoryBr89Nodes89(')>=0 && html.indexOf('applyStoryBr89Nodes89()')>=0);
+  ok('N5 進度頁有 N6F＋提示表有 N6F', html.indexOf('["N6F",20]')>=0 && html.indexOf('N6F: { playerHint:')>=0);
+  ok('N6 N5 nextHint 已改兩線並陳', html.indexOf('走電影線有「片場跟班」')>=0 && html.indexOf('行電視線先有；係處境劇班底')<0);
+}catch(e){ ok('C N6F 抽取/執行 ('+e.message+')', false); }
 
 /* ================= (D) 結局呈現回收 ================= */
 try{

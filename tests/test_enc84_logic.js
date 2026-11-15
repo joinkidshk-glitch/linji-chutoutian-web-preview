@@ -2,7 +2,7 @@
 //   (1) 註冊：四星入 ENC79_PILOT（12 星齊）／ENC79_DIALOG／ENC79_BEATS／STAGEUP／CAP／WRAP；主副場照設計表；
 //   (2) 五層對白完整性＋句數（dlgCount 口徑同 enc79/83 測試）；
 //   (3) 初遇／心聲／節拍抉擇 fx 接線（label 關鍵字對位）＋實效（慈善債權／收斂凍結旗／緋聞卡）；
-//   (4) 節拍閘：彭 C10 閘＋N17 窗、蘇低級數閘＋合作閘、鍾 F 伏筆段閘＋告別窗、程 E4 報紙閘＋C16 雙旗回收；
+//   (4) 節拍閘：彭 N11 閘＋N17 窗、蘇低級數閘＋合作閘、鍾 F 伏筆段閘＋告別窗、程 E4 報紙閘＋N15 雙旗回收；
 //   (5) 彭少祺樞紐：T1 起每次巧遇恆常漏料生風聲；T0 唔漏；他星 T1 唔漏；漏料目標唔揀未解鎖星（程 1992 前）；
 //   (6) 程天諾出沒：1992 前 P＝0（enc79PresenceP＋逐日種子盤）；1992 春基礎 50%、秋窗 75%；
 //   (7) 鍾楚凝：1992 秋／冬 P 降 25%、1991 秋窗 75%、1992 春基礎 50%；
@@ -184,9 +184,9 @@ ok('實效：唔理出緋聞傳聞卡', S.mockRumors.some(r=>r.id==='rumor_so_go
 
 /* ---- (4) 節拍閘 ---- */
 resetS(310); setFav('pang_siuki', 10);
-ok('彭幫手閘：C10 未做唔開', enc79BeatOpen('pang_siuki', beatOf('pang_siuki','pang_help'))===false);
-_doneNodes.add('C10');
-ok('彭幫手閘：C10 做咗＋T1 開', enc79BeatOpen('pang_siuki', beatOf('pang_siuki','pang_help'))===true);
+ok('彭幫手閘：N11 未做唔開', enc79BeatOpen('pang_siuki', beatOf('pang_siuki','pang_help'))===false);
+_doneNodes.add('N11');
+ok('彭幫手閘：N11 做咗＋T1 開', enc79BeatOpen('pang_siuki', beatOf('pang_siuki','pang_help'))===true);
 resetS(311); setFav('pang_siuki', 45); _ys = { year:1992, season:'秋' };
 ok('彭 N17 閘：1992 秋唔開', enc79BeatOpen('pang_siuki', beatOf('pang_siuki','pang_n17'))===false);
 _ys = { year:1992, season:'冬' };
@@ -211,9 +211,9 @@ resetS(315); setFav('ching_tinlok', 10); _ys = { year:1992, season:'秋' };
 ok('程 E4 閘：報紙未出唔開', enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_e4'))===false);
 S.news82.pub.E4 = 1015;
 ok('程 E4 閘：E4 刊出＋T1 開', enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_e4'))===true);
-ok('程競爭閘：C16 未做開', enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_rival'))===true);
-_doneNodes.add('C16');
-ok('程競爭閘：C16 做咗唔開', enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_rival'))===false);
+ok('程競爭閘：N15 未做開', enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_rival'))===true);
+_doneNodes.add('N15');
+ok('程競爭閘：N15 做咗唔開', enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_rival'))===false);
 S.flags.flag_vocal_train = 1;
 ok('程回收（苦練）：服氣版開／修音版唔開', enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_after_train'))===true && enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_after_polish'))===false);
 delete S.flags.flag_vocal_train; S.flags.flag_vocal_polish = 1;

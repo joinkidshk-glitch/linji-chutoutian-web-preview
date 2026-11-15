@@ -2,7 +2,7 @@
   "meta": {
     "version": "v20a2-stub",
     "softStatus": "≠PASS",
-    "note": "C1–C17 Freeplay slots — CONTENT AUTHORITY for dialogue. C1–C5 triggers synced to Soft sandbox ecology; C6–C17 Soft shells from this file (sandbox may only hold C1–C5). Fill playerFaceLine / beats.lines / choice labels only. Keep nextHint \"\". Soft≠PASS. Framework owns triggers unless re-boarded.｜C1–C5 Soft regen 2026-11-08 qwen3.7-max；旗 choi_spin／choi_dodge 統一；Soft≠PASS｜FULL literal 2026-11-08 agency_ho＋C4 OR",
+    "note": "N1–N17 Freeplay slots — CONTENT AUTHORITY for dialogue. N1–N5 triggers synced to Soft sandbox ecology; N6–N17 Soft shells from this file (sandbox may only hold N1–N5). Fill playerFaceLine / beats.lines / choice labels only. Keep nextHint \"\". Soft≠PASS. Framework owns triggers unless re-boarded.｜N1–N5 Soft regen 2026-11-08 qwen3.7-max；旗 choi_spin／choi_dodge 統一；Soft≠PASS｜FULL literal 2026-11-08 agency_ho＋N4 OR",
     "contentContract": "docs/CONTENT_CONTRACT.md",
     "lockedFlags": [
       "route_tv",
@@ -62,9 +62,9 @@
     ],
     "triggerAuthority": "slots_synced_from_sandbox_ecology",
     "softGateOverlay": true,
-    "scope": "C1-C17",
+    "scope": "N1-N17",
     "c6c17Authority": "slots_for_soft_gate",
-    "lockedFlagsNote": "C1–C5 live; C6–C17 reserved flag ids from story_detail — content bot may set via choices.effects.flags only when filling dialogue.",
+    "lockedFlagsNote": "N1–N5 live; N6–N17 reserved flag ids from story_detail — content bot may set via choices.effects.flags only when filling dialogue.",
     "regen": {
       "date": "2026-11-08",
       "model": "qwen3.7-max",
@@ -76,12 +76,12 @@
       "model": "qwen3.7-max",
       "userChoice": "full_literal_including_gates",
       "status": "Soft≠PASS｜唔 tip LIVE｜?v=20a10｜SAVE 19w",
-      "note": "C1 agency_ho；C4 softLogic OR＋debtMin；餘波 tags／ripple 落地"
+      "note": "N1 agency_ho；N4 softLogic OR＋debtMin；餘波 tags／ripple 落地"
     }
   },
   "nodes": [
     {
-      "beatId": "C1",
+      "beatId": "N1",
       "optional": false,
       "locId": "agency_ho",
       "playerFaceLine": "喺何生事務所，兩條路擺喺眼前，我必須為自己嘅演藝生涯行出第一步。",
@@ -209,7 +209,7 @@
       ],
       "choices": [
         {
-          "id": "C1_a",
+          "id": "N1_a",
           "label": "跟張子駿班底學動作戲",
           "effects": {
             "flags": [
@@ -248,7 +248,7 @@
           ]
         },
         {
-          "id": "C1_b",
+          "id": "N1_b",
           "label": "接電影散工賺快錢",
           "effects": {
             "flags": [
@@ -294,7 +294,7 @@
       "title": "先學做動作戲／先賺"
     },
     {
-      "beatId": "C2",
+      "beatId": "N2",
       "optional": false,
       "locId": "tvb_longmen",
       "playerFaceLine": "聽完星河電視台啲傳聞，我諗住係咪留低聽多兩句，定係趕住去報到。",
@@ -302,7 +302,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C1"
+          "N1"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 4,
@@ -400,7 +400,7 @@
       ],
       "choices": [
         {
-          "id": "C2_a",
+          "id": "N2_a",
           "label": "留低打聽人脈",
           "effects": {
             "flags": [
@@ -433,7 +433,7 @@
           ]
         },
         {
-          "id": "C2_b",
+          "id": "N2_b",
           "label": "趕去電視城跑通告",
           "effects": {
             "flags": [
@@ -473,7 +473,7 @@
       "title": "留人脈／趕通告"
     },
     {
-      "beatId": "C3",
+      "beatId": "N3",
       "optional": false,
       "locId": "tvb_longmen",
       "playerFaceLine": "高俊傑又埋嚟想搶我個好位，我到底要唔要當眾同佢嗌交？",
@@ -481,7 +481,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C2"
+          "N2"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 6,
@@ -596,7 +596,7 @@
       ],
       "choices": [
         {
-          "id": "C3_a",
+          "id": "N3_a",
           "label": "當場發難硬碰",
           "effects": {
             "flags": [
@@ -629,7 +629,7 @@
           ]
         },
         {
-          "id": "C3_b",
+          "id": "N3_b",
           "label": "忍氣吞聲退讓",
           "effects": {
             "flags": [
@@ -669,7 +669,7 @@
       "title": "對對手硬／忍"
     },
     {
-      "beatId": "C4",
+      "beatId": "N4",
       "optional": false,
       "locId": "agency_ho",
       "playerFaceLine": "何生攤開記數簿催數，呢單通宵通告條件咁苛刻，我究竟頂唔頂得順？",
@@ -677,7 +677,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C3"
+          "N3"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 8,
@@ -794,7 +794,7 @@
       ],
       "choices": [
         {
-          "id": "C4_a",
+          "id": "N4_a",
           "label": "果斷拒絕苛刻條件",
           "effects": {
             "flags": [
@@ -824,7 +824,7 @@
           ]
         },
         {
-          "id": "C4_b",
+          "id": "N4_b",
           "label": "咬牙接下通告",
           "effects": {
             "flags": [
@@ -864,7 +864,7 @@
       "title": "何生拒單"
     },
     {
-      "beatId": "C5",
+      "beatId": "N5",
       "optional": false,
       "locId": "tvb_longmen",
       "playerFaceLine": "秋日下午片場小訪，采兒拋出送命題，我點答都好影響我哋嘅交情同情報網。",
@@ -872,7 +872,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C4"
+          "N4"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 9,
@@ -977,7 +977,7 @@
       ],
       "choices": [
         {
-          "id": "C5_a",
+          "id": "N5_a",
           "label": "老實講出所知",
           "effects": {
             "flags": [
@@ -1009,7 +1009,7 @@
           ]
         },
         {
-          "id": "C5_b",
+          "id": "N5_b",
           "label": "打圓場包裝答",
           "effects": {
             "flags": [
@@ -1041,7 +1041,7 @@
           ]
         },
         {
-          "id": "C5_c",
+          "id": "N5_c",
           "label": "藉故迴避不答",
           "effects": {
             "flags": [
@@ -1081,7 +1081,7 @@
       "title": "采兒小訪題"
     },
     {
-      "beatId": "C6",
+      "beatId": "N6",
       "optional": false,
       "locId": "tvb_longmen",
       "playerFaceLine": "",
@@ -1089,7 +1089,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C5"
+          "N5"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 12,
@@ -1113,7 +1113,7 @@
           "emotion": null,
           "expression": null,
           "lines": [
-            "（C6 對白待補）"
+            "（N6 對白待補）"
           ],
           "locId": "tvb_longmen",
           "bg": null
@@ -1121,7 +1121,7 @@
       ],
       "choices": [
         {
-          "id": "C6_a",
+          "id": "N6_a",
           "label": "（選項待補：約 Vera）",
           "effects": {
             "flags": [
@@ -1132,7 +1132,7 @@
           }
         },
         {
-          "id": "C6_b",
+          "id": "N6_b",
           "label": "（選項待補：約曉晴）",
           "effects": {
             "flags": [
@@ -1143,7 +1143,7 @@
           }
         },
         {
-          "id": "C6_c",
+          "id": "N6_c",
           "label": "（選項待補：約采兒）",
           "effects": {
             "flags": [
@@ -1156,7 +1156,7 @@
       ]
     },
     {
-      "beatId": "C7",
+      "beatId": "N7",
       "optional": false,
       "locId": "ad_central",
       "playerFaceLine": "",
@@ -1164,7 +1164,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C6"
+          "N6"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 14,
@@ -1189,7 +1189,7 @@
           "emotion": null,
           "expression": null,
           "lines": [
-            "（C7 對白待補）"
+            "（N7 對白待補）"
           ],
           "locId": "ad_central",
           "bg": null
@@ -1197,7 +1197,7 @@
       ],
       "choices": [
         {
-          "id": "C7_a",
+          "id": "N7_a",
           "label": "（選項待補：拒苛刻）",
           "effects": {
             "flags": [
@@ -1208,7 +1208,7 @@
           }
         },
         {
-          "id": "C7_b",
+          "id": "N7_b",
           "label": "（選項待補：拖一拖）",
           "effects": {
             "flags": [
@@ -1219,7 +1219,7 @@
           }
         },
         {
-          "id": "C7_c",
+          "id": "N7_c",
           "label": "（選項待補：簽）",
           "effects": {
             "flags": [
@@ -1232,7 +1232,7 @@
       ]
     },
     {
-      "beatId": "C8",
+      "beatId": "N9",
       "optional": false,
       "locId": "tvb_longmen",
       "playerFaceLine": "",
@@ -1240,7 +1240,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C7"
+          "N7"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 20,
@@ -1263,7 +1263,7 @@
           "emotion": null,
           "expression": null,
           "lines": [
-            "（C8 對白待補）"
+            "（N9 對白待補）"
           ],
           "locId": "tvb_longmen",
           "bg": null
@@ -1271,7 +1271,7 @@
       ],
       "choices": [
         {
-          "id": "C8_a",
+          "id": "N9_a",
           "label": "（選項待補：商業）",
           "effects": {
             "flags": [
@@ -1282,7 +1282,7 @@
           }
         },
         {
-          "id": "C8_b",
+          "id": "N9_b",
           "label": "（選項待補：文藝）",
           "effects": {
             "flags": [
@@ -1295,7 +1295,7 @@
       ]
     },
     {
-      "beatId": "C9",
+      "beatId": "N10",
       "optional": false,
       "locId": "rec_star",
       "playerFaceLine": "",
@@ -1303,7 +1303,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C8"
+          "N9"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 28,
@@ -1332,7 +1332,7 @@
           "emotion": null,
           "expression": null,
           "lines": [
-            "（C9 對白待補）"
+            "（N10 對白待補）"
           ],
           "locId": "rec_star",
           "bg": null
@@ -1340,7 +1340,7 @@
       ],
       "choices": [
         {
-          "id": "C9_a",
+          "id": "N10_a",
           "label": "（選項待補：公開）",
           "effects": {
             "flags": [
@@ -1351,7 +1351,7 @@
           }
         },
         {
-          "id": "C9_b",
+          "id": "N10_b",
           "label": "（選項待補：模糊）",
           "effects": {
             "flags": [
@@ -1362,7 +1362,7 @@
           }
         },
         {
-          "id": "C9_c",
+          "id": "N10_c",
           "label": "（選項待補：坦白）",
           "effects": {
             "flags": [
@@ -1373,7 +1373,7 @@
           }
         },
         {
-          "id": "C9_d",
+          "id": "N10_d",
           "label": "（選項待補：切斷）",
           "effects": {
             "flags": [
@@ -1386,7 +1386,7 @@
       ]
     },
     {
-      "beatId": "C10",
+      "beatId": "N11",
       "optional": false,
       "locId": "tvb_longmen",
       "playerFaceLine": "",
@@ -1394,7 +1394,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C9"
+          "N10"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 40,
@@ -1418,7 +1418,7 @@
           "emotion": null,
           "expression": null,
           "lines": [
-            "（C10 對白待補）"
+            "（N11 對白待補）"
           ],
           "locId": "tvb_longmen",
           "bg": null
@@ -1426,7 +1426,7 @@
       ],
       "choices": [
         {
-          "id": "C10_a",
+          "id": "N11_a",
           "label": "（選項待補：調停）",
           "effects": {
             "flags": [
@@ -1437,7 +1437,7 @@
           }
         },
         {
-          "id": "C10_b",
+          "id": "N11_b",
           "label": "（選項待補：搶位）",
           "effects": {
             "flags": [
@@ -1448,7 +1448,7 @@
           }
         },
         {
-          "id": "C10_c",
+          "id": "N11_c",
           "label": "（選項待補：讓）",
           "effects": {
             "flags": [
@@ -1461,7 +1461,7 @@
       ]
     },
     {
-      "beatId": "C11",
+      "beatId": "N8",
       "optional": true,
       "locId": "film_lion",
       "playerFaceLine": "",
@@ -1469,7 +1469,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C10"
+          "N11"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 60,
@@ -1497,7 +1497,7 @@
           "emotion": null,
           "expression": null,
           "lines": [
-            "（C11 對白待補）"
+            "（N8 對白待補）"
           ],
           "locId": "film_lion",
           "bg": null
@@ -1505,7 +1505,7 @@
       ],
       "choices": [
         {
-          "id": "C11_a",
+          "id": "N8_a",
           "label": "（選項待補：曝光）",
           "effects": {
             "flags": [
@@ -1516,7 +1516,7 @@
           }
         },
         {
-          "id": "C11_b",
+          "id": "N8_b",
           "label": "（選項待補：層次）",
           "effects": {
             "flags": [
@@ -1529,7 +1529,7 @@
       ]
     },
     {
-      "beatId": "C12",
+      "beatId": "N14",
       "optional": true,
       "locId": "tvb_longmen",
       "playerFaceLine": "",
@@ -1537,7 +1537,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C11"
+          "N8"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 80,
@@ -1561,7 +1561,7 @@
           "emotion": null,
           "expression": null,
           "lines": [
-            "（C12 對白待補）"
+            "（N14 對白待補）"
           ],
           "locId": "tvb_longmen",
           "bg": null
@@ -1569,7 +1569,7 @@
       ],
       "choices": [
         {
-          "id": "C12_a",
+          "id": "N14_a",
           "label": "（選項待補：搶位）",
           "effects": {
             "flags": [
@@ -1580,7 +1580,7 @@
           }
         },
         {
-          "id": "C12_b",
+          "id": "N14_b",
           "label": "（選項待補：顧關係）",
           "effects": {
             "flags": [
@@ -1591,7 +1591,7 @@
           }
         },
         {
-          "id": "C12_c",
+          "id": "N14_c",
           "label": "（選項待補：危機）",
           "effects": {
             "flags": [
@@ -1604,7 +1604,7 @@
       ]
     },
     {
-      "beatId": "C13",
+      "beatId": "N16",
       "optional": true,
       "locId": "cafe_cha",
       "playerFaceLine": "",
@@ -1612,7 +1612,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C11"
+          "N8"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 92,
@@ -1639,7 +1639,7 @@
           "emotion": null,
           "expression": null,
           "lines": [
-            "（C13 對白待補）"
+            "（N16 對白待補）"
           ],
           "locId": "cafe_cha",
           "bg": null
@@ -1647,7 +1647,7 @@
       ],
       "choices": [
         {
-          "id": "C13_a",
+          "id": "N16_a",
           "label": "（選項待補：認）",
           "effects": {
             "flags": [
@@ -1658,7 +1658,7 @@
           }
         },
         {
-          "id": "C13_b",
+          "id": "N16_b",
           "label": "（選項待補：否認）",
           "effects": {
             "flags": [
@@ -1669,7 +1669,7 @@
           }
         },
         {
-          "id": "C13_c",
+          "id": "N16_c",
           "label": "（選項待補：含糊）",
           "effects": {
             "flags": [
@@ -1682,7 +1682,7 @@
       ]
     },
     {
-      "beatId": "C14",
+      "beatId": "N13",
       "optional": true,
       "locId": "ad_central",
       "playerFaceLine": "",
@@ -1690,7 +1690,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C11"
+          "N8"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 88,
@@ -1718,7 +1718,7 @@
           "emotion": null,
           "expression": null,
           "lines": [
-            "（C14 對白待補）"
+            "（N13 對白待補）"
           ],
           "locId": "ad_central",
           "bg": null
@@ -1726,7 +1726,7 @@
       ],
       "choices": [
         {
-          "id": "C14_a",
+          "id": "N13_a",
           "label": "（選項待補：尊重）",
           "effects": {
             "flags": [
@@ -1737,7 +1737,7 @@
           }
         },
         {
-          "id": "C14_b",
+          "id": "N13_b",
           "label": "（選項待補：依賴）",
           "effects": {
             "flags": [
@@ -1748,7 +1748,7 @@
           }
         },
         {
-          "id": "C14_c",
+          "id": "N13_c",
           "label": "（選項待補：拒）",
           "effects": {
             "flags": [
@@ -1761,7 +1761,7 @@
       ]
     },
     {
-      "beatId": "C15",
+      "beatId": "N12",
       "optional": true,
       "locId": "rec_star",
       "playerFaceLine": "",
@@ -1769,7 +1769,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C11"
+          "N8"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 72,
@@ -1798,7 +1798,7 @@
           "emotion": null,
           "expression": null,
           "lines": [
-            "（C15 對白待補）"
+            "（N12 對白待補）"
           ],
           "locId": "rec_star",
           "bg": null
@@ -1806,7 +1806,7 @@
       ],
       "choices": [
         {
-          "id": "C15_a",
+          "id": "N12_a",
           "label": "（選項待補：幫）",
           "effects": {
             "flags": [
@@ -1817,7 +1817,7 @@
           }
         },
         {
-          "id": "C15_b",
+          "id": "N12_b",
           "label": "（選項待補：讓）",
           "effects": {
             "flags": [
@@ -1828,7 +1828,7 @@
           }
         },
         {
-          "id": "C15_c",
+          "id": "N12_c",
           "label": "（選項待補：旁觀）",
           "effects": {
             "flags": [
@@ -1839,7 +1839,7 @@
           }
         },
         {
-          "id": "C15_d",
+          "id": "N12_d",
           "label": "（選項待補：聯姻）",
           "effects": {
             "flags": [
@@ -1852,7 +1852,7 @@
       ]
     },
     {
-      "beatId": "C16",
+      "beatId": "N15",
       "optional": true,
       "locId": "film_harbour",
       "playerFaceLine": "",
@@ -1860,7 +1860,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C11"
+          "N8"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 100,
@@ -1885,7 +1885,7 @@
           "emotion": null,
           "expression": null,
           "lines": [
-            "（C16 對白待補）"
+            "（N15 對白待補）"
           ],
           "locId": "film_harbour",
           "bg": null
@@ -1893,7 +1893,7 @@
       ],
       "choices": [
         {
-          "id": "C16_a",
+          "id": "N15_a",
           "label": "（選項待補：交底片）",
           "effects": {
             "flags": [
@@ -1904,7 +1904,7 @@
           }
         },
         {
-          "id": "C16_b",
+          "id": "N15_b",
           "label": "（選項待補：拒）",
           "effects": {
             "flags": [
@@ -1917,7 +1917,7 @@
       ]
     },
     {
-      "beatId": "C17",
+      "beatId": "N17",
       "optional": true,
       "locId": "agency_ho",
       "playerFaceLine": "",
@@ -1925,7 +1925,7 @@
       "nextHint": "",
       "trigger": {
         "needDone": [
-          "C16"
+          "N15"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 105,
@@ -1948,7 +1948,7 @@
           "emotion": null,
           "expression": null,
           "lines": [
-            "（C17 對白待補）"
+            "（N17 對白待補）"
           ],
           "locId": "agency_ho",
           "bg": null
@@ -1956,7 +1956,7 @@
       ],
       "choices": [
         {
-          "id": "C17_a",
+          "id": "N17_a",
           "label": "（選項待補：結局甲）",
           "effects": {
             "flags": [
@@ -1968,7 +1968,7 @@
           }
         },
         {
-          "id": "C17_b",
+          "id": "N17_b",
           "label": "（選項待補：結局乙）",
           "effects": {
             "flags": [

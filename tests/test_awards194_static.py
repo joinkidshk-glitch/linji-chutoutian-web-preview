@@ -8,7 +8,7 @@
 # 4. 其他 softStatus 讀者唔郁：tutorial overlay 三處、postShoot／報紙／freeplay／休息片
 #    各自 check 繼續回 softStatus:"≠PASS"（嗰啲係成個 soft 框架嘅，唔關頒獎禮事）。
 # 5. 唔郁嘅嘢：SAVE key、softRev s107、?v=v20a10、頒獎禮 header 以外嘅 "no tip LIVE"
-#    （休息片嗰句）、C17 awardResolved 閘。
+#    （休息片嗰句）、N17 awardResolved 閘。
 # 反證: run against pristine main 2374637 index -> v194 標記未入 -> FAIL（唔 crash）。
 # 用法：python3 tests/test_awards194_static.py [path-to-index.html]
 import json
@@ -134,7 +134,7 @@ chk('5：softRev s107 唔郁', 'softRev:"s107"' in src)
 chk('5：awardsCheck version 仲係 v20a10', 'version:"v20a10"' in chk_fn)
 chk('5：休息片 "no tip LIVE" 嗰句仲在（唔關頒獎禮事）',
     'REST SLEEP FX — 8-bit clip inside rest day-end panel; Soft≠PASS; no tip LIVE' in src)
-chk('5：C17 awardResolved 閘唔郁',
+chk('5：N17 awardResolved 閘唔郁',
     'awardResolved: { ceremonyId: "award_singho_tv", year: 1992 }' in src)
 
 print('\nFAILED: %d' % len(fails) if fails else '\nALL PASS')

@@ -1,6 +1,6 @@
 # v20a214 rebase 上 main d1239d4 resync：index.html 淨 +358 行，三錨點按 difflib 映射重寫（內容逐字核實純漂移；check 名入面嘅舊 L 號係歷史標籤，唔跟住改）。
 # v20a216 resync：index.html 淨 +263 行（見 qa216/resync216.py difflib 對位核實純漂移），3 個釘行按映射重寫（＋38）。
-# v20a207 resync：index.html 淨 +34 行（C3 +12／cap +5／modal +1／closeModal +1／drawBase +7／spotlight +8；見 qa207/resync207.py，72 錨點對位零 mismatch，純漂移）。
+# v20a207 resync：index.html 淨 +34 行（N3 +12／cap +5／modal +1／closeModal +1／drawBase +7／spotlight +8；見 qa207/resync207.py，72 錨點對位零 mismatch，純漂移）。
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），normaliser／loader 錨點各 +4；HELD 唔郁（喺插入點之前）。
 # v20a199 resync：index.html 淨 +44 行（DLG199 ＋30／fitApply ＋13／WF4 onload ＋1）；normaliser／loader 錨點按 difflib 映射重算（31512→31555、31656→31699），HELD 唔郁（喺插入點之前）；內容逐字核實純漂移。
 # v20a218 resync：index.html 淨 +136 行，normaliser／loader 錨點按 difflib 映射重算（31866→31899、32012→32045），HELD 唔郁（喺插入點之前）；見 qa218/resync218_pins.py。
@@ -23,7 +23,7 @@
 # v20a172 rebase 上 main e2add29（v174）resync：HELD 唔郁（＜27080）、normaliser／loader ＋5（qa172/resync172c.py difflib 對位核實純漂移）。
 # 用法：python3 tests/test_tang152_static.py [path-to-index.html]
 # v20a176 resync：NPCS ＋7 行（插入點 L6017 之後），三個錨點一律 ＋7（qa176/resync176.py 逐行核實內容逐字相同，純漂移）。
-# v20a183 resync：v183 淨 ＋117 行（C7 CSS ＋2／prefKind ＋1／TryIntercept ＋1／PlayEncounter ＋2／ROM183 block ＋107／確認 modal ＋3／goBit ＋1；difflib 對位核實純漂移，見 qa183/resync183.py）。
+# v20a183 resync：v183 淨 ＋117 行（N7 CSS ＋2／prefKind ＋1／TryIntercept ＋1／PlayEncounter ＋2／ROM183 block ＋107／確認 modal ＋3／goBit ＋1；difflib 對位核實純漂移，見 qa183/resync183.py）。
 # v20a182 resync：v182 淨 ＋17 行全部喺錨點之前，三錨點一律 ＋2（qa182/resync182.py difflib 對位核實純漂移；ok() 名標籤一併更新）。
 # v20a189 resync：index.html 淨 ＋34 行（accel-link CSS ＋15 @~1831／day-res 92dvh media ＋10 @~3235／hint 刪除 −10 @37990／soft map 掣 ＋3／accel link push ＋12／day-res class ＋4；difflib 對位核實純漂移，見 qa189/resync189.py）。
 import json
@@ -145,7 +145,7 @@ ok('pack 唔郁：gift_react 玫瑰原句照喺度（TEXTFIX 改輸出，唔係�
 gift_prefs = load_json('content/gift_prefs.json')
 ok('pack 唔郁：gift_prefs tang 見面閘留返（flag_tang_open）',
    gift_prefs.get('npcs', {}).get('tang', {}).get('requireFlagsAny') == ['flag_tang_open'])
-seed = load_json('content/SOFT_PROGRESS_SEED_C3_C5_DENG_v1.json')
+seed = load_json('content/SOFT_PROGRESS_SEED_N3_N5_DENG_v1.json')
 seed_txt = json.dumps(seed, ensure_ascii=False)
 ok('seed：冇任何種子播 commit／he／be 旗',
    'flag_tang_commit' not in seed_txt and 'flag_tang_he' not in seed_txt and 'flag_tang_be' not in seed_txt)

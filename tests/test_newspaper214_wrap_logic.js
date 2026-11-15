@@ -176,7 +176,7 @@ function saveQ(){}
   ok('E06_story_dek_once', countSub(htmlS, '劇情副題一行。')===1);
   ok('E07_story_no_photo', htmlS.indexOf('<img')<0);
   ok('E08_story_fame', htmlS.indexOf('聲望 +2')>=0);
-  const storyShort = { eventKey:'story:C5:honest', paperName:'娛樂版', headline:'坦率見報', dek:'劇情副題一行。', source:'story' };
+  const storyShort = { eventKey:'story:N5:honest', paperName:'娛樂版', headline:'坦率見報', dek:'劇情副題一行。', source:'story' };
   const htmlSS = renderMorningPaperHtml({ headline:'頭條', dek:'主文。', shorts:[storyShort], fameDelta:0, dateLabel:'1990年1月1日 星期一', paperName:'娛樂版' });
   /* v20a216 R2/R3：標題出兩次（邊欄預告＋第二版大標題）；副題只出一次（第二版副題行，
      短訊列唔重複）。 */

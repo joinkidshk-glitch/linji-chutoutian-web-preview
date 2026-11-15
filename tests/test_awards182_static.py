@@ -1,4 +1,4 @@
-# v20a182 修 v178 設計 review B1＋C1＋C2 static tests：
+# v20a182 修 v178 設計 review B1＋N1＋N2 static tests：
 # B1：獎項頁「同屆提名」行被裁切（fellows 行 scrollW 494 vs 卡 340，成行 31% 唔見）——
 #     提名行獨立 class .awd62-fellows 准換行；日期行繼續用 .awd62-when（nowrap）唔郁。
 # C1：提名卡列三張 CSS 卡一模一樣——卡面改做 fellow 專屬（大字首字＋全名＋媒介細行，
@@ -52,26 +52,26 @@ chk('B1 獎項頁只剩日期行用 .awd62-when（提名行唔再用）', pane_f
 chk('B1 日期行繼續 nowrap（唔郁）', 'white-space:nowrap' in rule('.awd62-item .awd62-when'))
 
 # --- C1：CSS 卡面 fellow 專屬 ---
-chk('C1 CSS 卡仍在 play 內（通用跌返規則唔郁）', 'awd63-csscard' in play_fn)
-chk('C1 卡面有大字首字 span', 'awd63-cssmono' in play_fn and '.awd63-cssmono' in src)
-chk('C1 卡面有全名 span', 'awd63-cssstar' in play_fn and '.awd63-cssstar' in src)
-chk('C1 卡面有媒介細行 span', 'awd63-cssmed' in play_fn and '.awd63-cssmed' in src)
-chk('C1 首字取自星名（charAt(0)）', "charAt(0)" in play_fn)
+chk('N1 CSS 卡仍在 play 內（通用跌返規則唔郁）', 'awd63-csscard' in play_fn)
+chk('N1 卡面有大字首字 span', 'awd63-cssmono' in play_fn and '.awd63-cssmono' in src)
+chk('N1 卡面有全名 span', 'awd63-cssstar' in play_fn and '.awd63-cssstar' in src)
+chk('N1 卡面有媒介細行 span', 'awd63-cssmed' in play_fn and '.awd63-cssmed' in src)
+chk('N1 首字取自星名（charAt(0)）', "charAt(0)" in play_fn)
 _pal = re.search(r'AWDS63_TINTS182 = \[[^\]]*\]', play_fn)
-chk('C1 底色 tint palette 在位（≥3 色）', bool(_pal) and len(re.findall(r'"#[0-9a-f]{6}"', _pal.group(0))) >= 3)
-chk('C1 底色 tint 按卡位 index 揀（保證同場唔撞）', 'AWDS63_TINTS182[ci % AWDS63_TINTS182.length]' in play_fn)
-chk('C1 卡面唔再印典禮名（medName149／cssname 已撤）', 'medName149' not in play_fn and 'awd63-cssname' not in src)
-chk('C1 卡片 builder 通用路徑唔郁（v20a208：搬入 buildCardsData208／cardsHtmlFor208，變數名 fl／cd）', 'fl.forEach(f=> cd.push' in play_fn)
-chk('C1 CSS 卡仍係 2:3 框', 'aspect-ratio:2/3' in rule('.awd63-csscard'))
+chk('N1 底色 tint palette 在位（≥3 色）', bool(_pal) and len(re.findall(r'"#[0-9a-f]{6}"', _pal.group(0))) >= 3)
+chk('N1 底色 tint 按卡位 index 揀（保證同場唔撞）', 'AWDS63_TINTS182[ci % AWDS63_TINTS182.length]' in play_fn)
+chk('N1 卡面唔再印典禮名（medName149／cssname 已撤）', 'medName149' not in play_fn and 'awd63-cssname' not in src)
+chk('N1 卡片 builder 通用路徑唔郁（v20a208：搬入 buildCardsData208／cardsHtmlFor208，變數名 fl／cd）', 'fl.forEach(f=> cd.push' in play_fn)
+chk('N1 CSS 卡仍係 2:3 框', 'aspect-ratio:2/3' in rule('.awd63-csscard'))
 chk('C1 得主／玩家角標 CSS 唔郁', '.awd63-card.me' in src and '.awd63-card.win' in src)
 
 # --- C2：請柬唔行 story 全屏舞台 ---
-chk('C2 presentAwardInvite 開請柬前落 story-play-on', 'classList.remove("story-play-on")' in present_fn)
-chk('C2 同步清 story-play lock', 'setStoryPlayLock(false)' in present_fn)
-chk('C2 modal() 本身唔郁 story-play-on（唔影響 StoryPlay）', 'story-play-on' not in modal_fn)
-chk('C2 請柬加今晚獎項行（真實 categories 數據）', '今晚獎項' in invite_fn and 'pack.categories' in invite_fn)
-chk('C2 請柬接線唔郁（細海報＋同屆提名）', 'awards63InviteBitHtml' in invite_fn)
-chk('C2 請柬邏輯唔郁（出席／推辭＋dismiss 即推辭）', '"出席"' in present_fn and '"推辭"' in present_fn and 'onDismiss: skip' in present_fn)
+chk('N2 presentAwardInvite 開請柬前落 story-play-on', 'classList.remove("story-play-on")' in present_fn)
+chk('N2 同步清 story-play lock', 'setStoryPlayLock(false)' in present_fn)
+chk('N2 modal() 本身唔郁 story-play-on（唔影響 StoryPlay）', 'story-play-on' not in modal_fn)
+chk('N2 請柬加今晚獎項行（真實 categories 數據）', '今晚獎項' in invite_fn and 'pack.categories' in invite_fn)
+chk('N2 請柬接線唔郁（細海報＋同屆提名）', 'awards63InviteBitHtml' in invite_fn)
+chk('N2 請柬邏輯唔郁（出席／推辭＋dismiss 即推辭）', '"出席"' in present_fn and '"推辭"' in present_fn and 'onDismiss: skip' in present_fn)
 chk('C2 出席先播動畫再入結果卡', 'awards62PlayCeremony' in present_fn and 'presentAwardResult' in present_fn)
 
 # --- 硬規則 ---

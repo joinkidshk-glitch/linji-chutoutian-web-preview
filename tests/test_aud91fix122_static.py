@@ -32,12 +32,12 @@ try:
                         capture_output=True, text=True, timeout=30)
     touched = [l[3:] for l in st.stdout.splitlines() if l.strip()]
     # v157 豁免（已拍板，窄化）：只准 content/story_detail_c1_to_c17.json 呢一次改動
-    # （C1–C5 pack nodes[0–4] 重寫，v157 brief＋SCOUT §3.1：C1–C5 無覆寫，loader 成個
+    # （N1–N5 pack nodes[0–4] 重寫，v157 brief＋SCOUT §3.1：N1–N5 無覆寫，loader 成個
     # pack fetch；其餘 content JSON 一律唔准郁）。
     # v217 豁免（語言審核，已拍板）：以下 15 個 content JSON 係 v217 語言審核改動
     # （收科→埋單／高仔→高俊傑／站隊→企邊／NPC＋PHASE1 粵語化等）；其餘一律唔准郁。
     _v157_allowed = {'content/story_detail_c1_to_c17.json'}
-    _v217_allowed = {'content/SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json',
+    _v217_allowed = {'content/SANDBOX_BEHAVIOR_GATE_N1_N5_SOFT_STUB_v1.json',
         'content/SOFT_RUMOR_BEHAVIOR_GATE_PLAYTEST_FIX_v1.json',
         'content/STUB_RUMOR_FRAGMENTS_v1.json',
         'content/STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json',
@@ -55,8 +55,27 @@ try:
     _v218_allowed = {'content/STUB_NEWSPAPER_MORNING_SOFT_v1.json',
         'content/tutorial_zh_HK.json', 'content/gift_react_copy.json',
         'content/story_beats_phase1.json'}
-    ok('content pack JSON 冇俾本包改動（v157＋v217＋v218 豁免以外一律唔准郁）',
-       all(p in _v157_allowed | _v217_allowed | _v218_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
+    # v210 豁免（編號統一 C→N，已拍板）：以下 18 個 content JSON 係 v210 有意改動——
+    # 15 檔內容 C→N 置換（含 3 檔改名，舊名＋新名一併列出，git status 會見到 D 舊名＋?? 新名）。
+    _v210_allowed = {'content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json',
+        'content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.json',
+        'content/MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json',
+        'content/MOCK_STORY_DUAL_MEET_THICKEN_SOFT_v1.json',
+        'content/SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json',
+        'content/SANDBOX_BEHAVIOR_GATE_N1_N5_SOFT_STUB_v1.json',
+        'content/SOFT_PROGRESS_SEED_C3_C5_DENG_v1.json',
+        'content/SOFT_PROGRESS_SEED_DUAL_MEET_THICKEN_v1.json',
+        'content/SOFT_PROGRESS_SEED_N3_N5_DENG_v1.json',
+        'content/STUB_NEWSPAPER_STORY_SOFT_v1.json',
+        'content/STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json',
+        'content/gift_prefs.json', 'content/gift_react_copy.json',
+        'content/story_detail_c1_to_c17.json',
+        'content/story_detail_n1_to_n17.json',
+        'content/story_detail_rival_mentor.json',
+        'content/story_detail_romance_lan_xu.json',
+        'content/story_detail_romance_vera_hiu_choi.json'}
+    ok('content pack JSON 冇俾本包改動（v157＋v217＋v218＋v210 豁免以外一律唔准郁）',
+       all(p in _v157_allowed | _v217_allowed | _v218_allowed | _v210_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
 except Exception as e:
     print('SKIP content pack 檢查（git 唔可用：%s）' % e)
 

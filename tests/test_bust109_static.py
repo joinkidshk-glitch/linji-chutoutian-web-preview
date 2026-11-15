@@ -131,7 +131,7 @@ if os.path.exists(crop199_path):
     with open(crop199_path, encoding="utf-8") as f: crop199 = json.load(f)
     ck("crop199.json 有 2 項（hero_awi／awi_s3）", set(crop199) == {"hero_awi", "awi_s3"})
     for _k in ("hero_awi", "awi_s3"):
-        ck(f"{_k} 新 sha 同舊 crop109 值唔同（C1 真係換咗）",
+        ck(f"{_k} 新 sha 同舊 crop109 值唔同（N1 真係換咗）",
            _k in crop and crop199[_k]["webp_sha256"] != crop[_k]["webp_sha256"])
 else:
     info("qa199/crop199.json 缺席，hero_awi／awi_s3 沿用 crop109.json 比對")

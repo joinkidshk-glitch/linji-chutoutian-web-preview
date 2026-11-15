@@ -10,8 +10,8 @@
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-const storyPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_c1_to_c17.json'), 'utf8'));
-const gateStubPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'behavior_gate_c1_c5.json'), 'utf8'));
+const storyPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_n1_to_n17.json'), 'utf8'));
+const gateStubPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'behavior_gate_n1_n5.json'), 'utf8'));
 
 let fails = [];
 function ok(name, cond){ if(!cond) fails.push(name); console.log((cond ? 'PASS' : 'FAIL') + ' ' + name); }
@@ -146,7 +146,7 @@ function makeEl(){
     extractIIFE('const StoryOC = (()=>{'),
     /* v20a153 B2：spDlgPairIds 開場旁白 look-ahead 令 pair 非空，spDlgCharsHtml
        會 call dlg106HasFullbody／dlg119DedupePair——DLG106/119 段要一併抽入，
-       否則 C1 開場 system beat 就 ReferenceError。 */
+       否則 N1 開場 system beat 就 ReferenceError。 */
     extractSlice('const DLG106_CATEGORIES = ', 'haloUrl:dlg119HaloUrl }; }catch(_e){}'),
     extractIIFE('const StoryPlay = (()=>{'),
   ].join('\n')
@@ -194,65 +194,65 @@ function makeEl(){
     return '';
   }
 
-  /* ---- item 1：C1 真播到結算，解釋要出現；C2 結算唔再出 ---- */
+  /* ---- item 1：N1 真播到結算，解釋要出現；N2 結算唔再出 ---- */
   loadGame(freshSave());
   const open0 = StoryOC.listOpen({ player: true }).open.map(r => r.id);
-  ok('seg1 C1 喺真 offer 列表', open0.includes('C1'));
+  ok('seg1 N1 喺真 offer 列表', open0.includes('N1'));
   __modals = [];
-  const started = StoryPlay.start('C1');
+  const started = StoryPlay.start('N1');
   ok('seg1 StoryPlay.start(C1) 成功', started === true);
   StoryPlay.skipToChoices();
-  StoryPlay.pickChoice('C1_a');
+  StoryPlay.pickChoice('N1_a');
   const body1 = lastResultBody();
-  ok('seg1 C1 結算畫面（真 showResult）有雙軌白話解釋', body1.indexOf('何生提你') >= 0 && body1.indexOf('聲望＝觀眾識唔識你') >= 0);
+  ok('seg1 N1 結算畫面（真 showResult）有雙軌白話解釋', body1.indexOf('何生提你') >= 0 && body1.indexOf('聲望＝觀眾識唔識你') >= 0);
   ok('seg1 解釋旗已燒（只出一次）', S.flags.guidanceDualExplained34 === true);
-  ok('seg1 C1 已完成', StoryOC.isDone('C1') === true);
+  ok('seg1 N1 已完成', StoryOC.isDone('N1') === true);
 
-  /* C2：去到第 4 週＋隔日＋聽過守則傳聞＋通告數（行軟閘真 trigger） */
+  /* N2：去到第 4 週＋隔日＋聽過守則傳聞＋通告數（行軟閘真 trigger） */
   S.dayIndex = 24; /* 第 4 週 */
   S.flags.tvb_rules_gossip = true;
   S.mockRumors.push({ id: 'tvb_rules_gossip', source: '何生事務所', title: '電視城廠景生存守則', text: 'x', state: 'normal' });
   S.story.gigCount = 5;
   atLoc = 'tvb_longmen';
   __modals = [];
-  const started2 = StoryPlay.start('C2');
+  const started2 = StoryPlay.start('N2');
   ok('seg1 StoryPlay.start(C2) 成功（第 4 週＋傳聞＋隔日）', started2 === true);
   if(started2){
     StoryPlay.skipToChoices();
-    StoryPlay.pickChoice('C2_a');
+    StoryPlay.pickChoice('N2_a');
     const body2 = lastResultBody();
-    ok('seg1 C2 結算畫面唔再重出解釋（只出一次）', body2.indexOf('sp-result') >= 0 && body2.indexOf('何生提你') < 0);
+    ok('seg1 N2 結算畫面唔再重出解釋（只出一次）', body2.indexOf('sp-result') >= 0 && body2.indexOf('何生提你') < 0);
   }
 
-  /* ---- item 7(a)：C2 未解鎖嗰陣，picker「即將可出」行要寫明條件＋地點 ---- */
-  loadGame(freshSave({ dayIndex: 8, story: { done: { C1: true }, flags: {}, rel: {}, routes: {}, phase: 'P1', gigCount: 1 } }));
+  /* ---- item 7(a)：N2 未解鎖嗰陣，picker「即將可出」行要寫明條件＋地點 ---- */
+  loadGame(freshSave({ dayIndex: 8, story: { done: { N1: true }, flags: {}, rel: {}, routes: {}, phase: 'P1', gigCount: 1 } }));
   S.flags = { rumorTutorialDone: true };
   __modals = [];
   StoryPlay.playOpenPicker();
   const pickerHtml = __modals.map(m => m.body).join('\n');
   ok('seg7 picker 有即將可出區', pickerHtml.indexOf('即將可出') >= 0);
   const c2RowAt = pickerHtml.indexOf('留人脈／趕通告');
-  ok('seg7 picker 列出 C2', c2RowAt >= 0);
+  ok('seg7 picker 列出 N2', c2RowAt >= 0);
   const c2Row = c2RowAt >= 0 ? pickerHtml.slice(c2RowAt, c2RowAt + 700) : '';
-  ok('seg7 C2 行寫明第 4 週條件（軟閘真文案／週次戳）', c2Row.indexOf('未到第 4 週') >= 0 || /約第4/.test(c2Row));
+  ok('seg7 N2 行寫明第 4 週條件（軟閘真文案／週次戳）', c2Row.indexOf('未到第 4 週') >= 0 || /約第4/.test(c2Row));
   /* v20a71 PROGRESS71 改版：舊斷言驗「開咗去星河電視台播」拼裝碎片——用戶評文法怪，
      v71 改完整子句「（開咗之後，去X就會觸發）」，斷言跟新正確行為改。 */
-  ok('seg7 C2 行寫明去星河電視台觸發（v71 完整子句）', c2Row.indexOf('星河電視台') >= 0 && c2Row.indexOf('開咗之後') >= 0 && c2Row.indexOf('開咗去') < 0);
+  ok('seg7 N2 行寫明去星河電視台觸發（v71 完整子句）', c2Row.indexOf('星河電視台') >= 0 && c2Row.indexOf('開咗之後') >= 0 && c2Row.indexOf('開咗去') < 0);
 
-  /* ---- item 7(c)：主線進度行——C6（三年版閘、非軟閘覆蓋）補地點 ---- */
+  /* ---- item 7(c)：主線進度行——N6（三年版閘、非軟閘覆蓋）補地點 ---- */
   loadGame(freshSave({
     dayIndex: 66,
     /* v20a87 WF5 修正：routes 真 key 係 route_tv（routeHeld 以全名查 st.routes）。
        舊 fixture 寫 { tv: true } 等於冇持有路線——本場景 dayIndex 66（第 10 週）本身未到
        weekMin 15，route 有冇都出同一句「未開」，所以寫錯 key 一直冇被發現（測試盲點）。
-       C6 閘嘅正反驗證改由 test_wf5_87_logic.js 補齊（route＋週數齊備先開、欠 route 唔開）。 */
-    story: { done: { C1: true, C2: true, C3: true, C4: true, C5: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 9 },
+       N6 閘嘅正反驗證改由 test_wf5_87_logic.js 補齊（route＋週數齊備先開、欠 route 唔開）。 */
+    story: { done: { N1: true, N2: true, N3: true, N4: true, N5: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 9 },
   }));
   S.flags = {};
   const prog = storyMainProgressLine();
   /* v20a71 PROGRESS71 改版：舊斷言驗「第N幕即將」碎片頭＋「開咗去…播」拼裝尾——
      用戶評文法怪，v71 全面改完整句子，斷言跟新正確行為改（句子內容由 v71 專測覆蓋）。 */
-  ok('seg7 主線進度行指向下一幕（v71 完整句；v191：C6 加路線後綴）', prog.indexOf('第 6 幕・電視線〈飯堂閒角〉') >= 0 && prog.indexOf('未開') >= 0 && prog.indexOf('即將') < 0);
+  ok('seg7 主線進度行指向下一幕（v71 完整句；v191：N6 加路線後綴）', prog.indexOf('第 6 幕・電視線〈飯堂閒角〉') >= 0 && prog.indexOf('未開') >= 0 && prog.indexOf('即將') < 0);
   ok('seg7 主線進度行講明去星河電視台觸發（v71）', prog.indexOf('星河電視台') >= 0 && prog.indexOf('就會觸發。') >= 0 && prog.indexOf('開咗去') < 0);
 })();
 

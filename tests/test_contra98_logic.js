@@ -4,7 +4,7 @@
 //       三個支線 pack 全部節點頁首年份 ≤1992（全域守門）；
 //       （v20a152：R_tang_ending 已刪，23→22；v20a219：加 R_tang_meet_stub 衞生行，22→23；
 //        全域守門仍讀 romance_tang.json 做 fixture，因為 CONTRA98 表仲有 R_tang_push2／crisis 兩行——見 (1) 段註解）
-//   (2) A-03：spPlayerMeta('C1') 出「主線 · 1990冬」；
+//   (2) A-03：spPlayerMeta('N1') 出「主線 · 1990冬」；
 //   (3) B-01：contra98PrepareNode——對方 commit 已立時 HE choice 換坦白差一步變體（只寫自己 BE 旗、原節點不變）；
 //       冇旗／自己已 commit／非目標節點 → null（零改動）；
 //   (4) C-02/C-03：ENC79_FIRST_ALT98 齊 12 星；contra98EncFirstLocSwap 只喺 at 地點生效、
@@ -51,7 +51,7 @@ eval([
   extractConst('YEARS66_SHIFT'), extractConst('YEARS66_OLD_MIN'), extractConst('YEARS66_TOKEN_RE'),
   extractConst('YEARS66_SKIP_KEYS'), extractConst('YEARS66_YEAR_KEYS'),
   extractFn('years66ShiftYear'), extractFn('years66ShiftText'), extractFn('years66Walk'),
-  extractConst('CONTRA98_WHEN_FIX'), extractConst('CLEAN100_WHEN_FIX'), extractFn('contra98FixNodeWhen'), /* v20a100：contra98FixNodeWhen 兼讀 CLEAN100_WHEN_FIX（C2/C3），抽取要帶埋 */
+  extractConst('CONTRA98_WHEN_FIX'), extractConst('CLEAN100_WHEN_FIX'), extractFn('contra98FixNodeWhen'), /* v20a100：contra98FixNodeWhen 兼讀 CLEAN100_WHEN_FIX（N2/N3），抽取要帶埋 */
   extractFn('spSoftSeasonChar'), extractFn('spPlayerMeta_softSeason'), extractFn('spPlayerMeta'),
   extractFn('contra98PrepareNode'),
   extractConst('ENC79_FIRST_ALT98'), extractFn('contra98EncFirstLocSwap'),
@@ -112,7 +112,7 @@ ok('A: 四個支線 pack 全部節點頁首年份 ≤1992', overYear.length === 
 if(overYear.length) console.log('   overYear:', overYear.slice(0, 8).join(' | '));
 
 /* ---- (2) A-03 ---- */
-ok('A-03: C1 頁首係「主線 · 1990冬」', meta98({ id: 'C1' }, null, '') === '主線 · 1990冬');
+ok('A-03: N1 頁首係「主線 · 1990冬」', meta98({ id: 'N1' }, null, '') === '主線 · 1990冬');
 
 /* ---- (3) B-01 ---- */
 function fakeEnding(id, heId){

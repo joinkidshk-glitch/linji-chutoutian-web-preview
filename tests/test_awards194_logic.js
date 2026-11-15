@@ -8,7 +8,7 @@
 //    探針零副作用（flags／pending／queue／S.pendingAwardPack 前後一致），
 //    已存在嘅 invited 旗標＋pending pack 照原樣還原。
 // 3. awardsSoftOn() 保留、語義唔郁（無 BehaviorGate → false；回 true → true）。
-// 4. 其餘排期邏輯唔郁：done 旗標唔重排、C10 讓路照樣延期台慶、debug force 路照 work。
+// 4. 其餘排期邏輯唔郁：done 旗標唔重排、N11 讓路照樣延期台慶、debug force 路照 work。
 // 反證：對 pristine main 2374637 index 行 → v194 標記未入 → FAIL（唔 crash）。
 // 用法：node tests/test_awards194_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -138,7 +138,7 @@ ok('2：LIVE 夏窗 queue 返 1 張金碟夜（請柬日 5/29，曆法仲係春�
   Array.isArray(q) && q.length === 1 && q[0].ceremonyId === 'award_golddisc_music');
 reset(); S.dayIndex = 334; __season = '秋'; __week = 48;
 q = queueAwardsOnSeasonWindow();
-ok('2：LIVE 冬窗 queue 返 1 張台慶（C10 窗口之外；典禮日 12/1）',
+ok('2：LIVE 冬窗 queue 返 1 張台慶（N11 窗口之外；典禮日 12/1）',
   Array.isArray(q) && q.length === 1 && q[0].ceremonyId === 'award_singho_tv');
 reset(); S.dayIndex = 55; __season = '冬'; __week = 8;
 q = queueAwardsOnSeasonWindow();
@@ -154,10 +154,10 @@ q = queueAwardsOnSeasonWindow();
 ok('3：done 旗標唔重排（春窗返 0）', Array.isArray(q) && q.length === 0);
 reset(); S.dayIndex = 334; __season = '秋'; __week = 48; __c10 = true;
 q = queueAwardsOnSeasonWindow();
-ok('3：C10 窗口內台慶延期（冬窗返 0）', Array.isArray(q) && q.length === 0);
+ok('3：N11 窗口內台慶延期（冬窗返 0）', Array.isArray(q) && q.length === 0);
 __c10 = false;
 q = queueAwardsOnSeasonWindow();
-ok('3：C10 窗口外／讓路完台慶照排（冬窗返 1）',
+ok('3：N11 窗口外／讓路完台慶照排（冬窗返 1）',
   Array.isArray(q) && q.length === 1 && q[0].ceremonyId === 'award_singho_tv');
 reset(); S.dayIndex = 335; __season = '冬'; __week = 48;
 q = queueAwardsOnSeasonWindow({ force: true, forceCeremonyId: 'award_harbour_ad',

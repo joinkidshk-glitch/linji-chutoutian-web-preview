@@ -35,7 +35,7 @@ ok('choice47 commit 窗口仲係 1992 秋', src.count('choice47SeasonReached(199
 ok('choice47 移民空位閘改 1990 秋（v217 D7）', src.count('choice47SeasonReached(1990, "秋")') == 2)
 ok('程天諾預熱 fromYear 1992 齊', 'fromYear:1992' in src)
 ok('結局閘文字 1992 年冬', '去到 1992 年冬、台慶之後嗰晚' in src and '"1992 年冬 · 三年埋單"' in src)  # v20a136：fallback 由「頒獎禮前夕」改做「台慶之後」
-ok('STORY_GATE_3Y C17 yearEq 1992', 'C17: { needDone: ["C13"], weekMin: 153, yearEq: 1992' in src)  # v20a136：閘加 weekMin 153
+ok('STORY_GATE_3Y N17 yearEq 1992', 'N17: { needDone: ["N16"], weekMin: 153, yearEq: 1992' in src)  # v20a136：閘加 weekMin 153
 ok('id 內嵌年份解析 +2 守衛齊', src.count('(y66>=1988 && y66<=1992) ? y66+2 : y66') >= 3)
 ok('SAVE key 不變', 'starVolunteer_map_v19w' in src)
 print('\nFAILURES: ' + str(len(fails)) + ((' -> ' + ' | '.join(fails)) if fails else ''))

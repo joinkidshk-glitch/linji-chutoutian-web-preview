@@ -143,8 +143,8 @@ for(const id of HALF_END){
   /* v20a152：WIRE.romance 冇 tang 槽（romance_tang pack 已停載） */
   const WIRE = { romance: { veraHiuChoi: rom1, lanXu: rom2 }, main: { nodes: [] } };
   const T90x = extractConst('STORY_SPINE_NODES_1990');
-  const TC6x = extractConst('STORY_SPINE_NODES_C6');
-  const run48 = new Function('ROMANCE_LAN_PA_OVERRIDES', 'STORY_SPINE_NODES_1990', 'STORY_SPINE_NODES_C6', 'STORY_WIRE', extractFn('applyStorySpineOverrides48') + '\nreturn applyStorySpineOverrides48();');
+  const TC6x = extractConst('STORY_SPINE_NODES_N6');
+  const run48 = new Function('ROMANCE_LAN_PA_OVERRIDES', 'STORY_SPINE_NODES_1990', 'STORY_SPINE_NODES_N6', 'STORY_WIRE', extractFn('applyStorySpineOverrides48') + '\nreturn applyStorySpineOverrides48();');
   run48(PA, T90x, TC6x, WIRE);
   const run81 = new Function('ROMANCE_WF2_OVERRIDES', 'STORY_WIRE', 'WF2_APPLIED81',
     'const WF2A = WF2_APPLIED81;\n' + extractFn('applyRomanceWf2Overrides81').replace('WF2_APPLIED81', 'WF2A') + '\nreturn applyRomanceWf2Overrides81();');

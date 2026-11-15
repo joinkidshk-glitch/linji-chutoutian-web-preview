@@ -25,7 +25,7 @@ def seg(start, end):
         j = min(len(html), i + 40000)
     return html[i:j]
 
-# ---- 紅線：SAVE key／softRev／?v= 不變；content pack JSON 唔郁（C1／C3 行 runtime 覆寫） ----
+# ---- 紅線：SAVE key／softRev／?v= 不變；content pack JSON 唔郁（N1／N3 行 runtime 覆寫） ----
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
@@ -51,9 +51,9 @@ ok('ROM183 模組標記', 'v20a183 ROM183' in html)
 for fn in ('rom183XuMetBefore183', 'rom183RelVal183', 'rom183RelText183', 'rom183RelLine183',
            'rom183WhoLine183', 'rom183ApplyLineOverrides', 'rom183ApplyGiftReactFix'):
     ok('函數在位：' + fn, ('function ' + fn) in html)
-ok('C1/C6 覆寫呼叫點喺 textfix55SimplePack(d) 之後',
+ok('N1/N6 覆寫呼叫點喺 textfix55SimplePack(d) 之後',
    html.find('rom183ApplyLineOverrides()') > html.find('textfix55SimplePack(d)'))
-ok('C3 覆寫呼叫點喺 textfix55Walk(giftReact) 之後',
+ok('N3 覆寫呼叫點喺 textfix55Walk(giftReact) 之後',
    html.find('rom183ApplyGiftReactFix()') > html.find('textfix55Walk(giftReact'))
 ok('冇自己寫排他鎖／約會系統', 'rom159DateGate' in html and 'function rom159DateGate' not in html)
 ok('giveGift 回傳冇 costsDay:true 殘留', 'costsDay:true' not in html)
@@ -87,29 +87,29 @@ ok('B4 鎖定分支係純文字 div（唔係掣）',
    '<div class="people-next">主線再行前啲先撞到佢</div>' in go_seg)
 
 # ---- C1：三人 greet 粵語版（runtime 覆寫表） ----
-ok('C1 ROM183_PACK_GREET 三句齊', all(x in html for x in
+ok('N1 ROM183_PACK_GREET 三句齊', all(x in html for x in
    ['咦，阿偉？咁啱嘅，喺呢度撞到你。', '咁啱。你今日呢身……算啦，唔講住，行埋嚟傾兩句。',
     '阿偉！啱啱好，我有單嘢想問你——唔係訪問，純粹八卦。']))
-ok('C1 覆寫表經 NPC_LINES greet[0] 注入', 'NL[id].greet[0] = ROM183_PACK_GREET[id]' in html)
+ok('N1 覆寫表經 NPC_LINES greet[0] 注入', 'NL[id].greet[0] = ROM183_PACK_GREET[id]' in html)
 
 # ---- C2：徐寶珊分見過／未見過 ----
-ok('C2 ROM176_GREET.xu 係初遇版（冇春茗）',
+ok('N2 ROM176_GREET.xu 係初遇版（冇春茗）',
    'xu:"徐寶珊：「後生仔，行路望路呀。咦，係你——啱啱先撞到，唔好意思。」"' in html)
-ok('C2 見過版喺 ROM183_GREET_MET', 'ROM183_GREET_MET' in html and '上次春茗撞過嗰個' in html)
-ok('C2 PlayEncounter 分版（metBefore183）', 'metBefore183' in html and 'ROM183_GREET_MET.xu' in html)
-ok('C2 TryIntercept 設旗前捕捉見過未', 'const metBefore183 = rom176WomanMet(pick.key);' in html)
+ok('N2 見過版喺 ROM183_GREET_MET', 'ROM183_GREET_MET' in html and '上次春茗撞過嗰個' in html)
+ok('N2 PlayEncounter 分版（metBefore183）', 'metBefore183' in html and 'ROM183_GREET_MET.xu' in html)
+ok('N2 TryIntercept 設旗前捕捉見過未', 'const metBefore183 = rom176WomanMet(pick.key);' in html)
 
 # ---- C3：反應句粵語 filter（runtime，10 句逐字＋通用 fallback） ----
-ok('C3 EXACT183 覆蓋 10 句（係咪見到／唔該你）',
+ok('N3 EXACT183 覆蓋 10 句（係咪見到／唔該你）',
    '係咪見到我冬天抱住紙杯震' in html and '比咩名牌都實際，唔該你' in html)
-ok('C3 通用 fallback（是不是→係咪／什麼→咩）',
+ok('N3 通用 fallback（是不是→係咪／什麼→咩）',
    'split("是不是").join("係咪")' in html and 'split("什麼").join("咩")' in html)
-ok('C3 覆寫 byKey＋entries 兩份', '(R.entries||[]).forEach(fixEnt);' in html and 'for(const k in R.byKey) fixEnt(R.byKey[k]);' in html)
+ok('N3 覆寫 byKey＋entries 兩份', '(R.entries||[]).forEach(fixEnt);' in html and 'for(const k in R.byKey) fixEnt(R.byKey[k]);' in html)
 
 # ---- C4：海媚開場白冇舞台指示 ----
 greet_seg = seg('const ROM176_GREET = {', 'const ROM176_TEA_LINES')
-ok('C4 ROM176_GREET.mei 冇括號', '（佢望咗你一眼' not in greet_seg)
-ok('C4 NL176 mei greet[1] 淨留「有嘢搵我？」', '"有嘢搵我？"' in html and '（佢望咗你一眼，冇即刻行開。）有嘢搵我？' not in html)
+ok('N4 ROM176_GREET.mei 冇括號', '（佢望咗你一眼' not in greet_seg)
+ok('N4 NL176 mei greet[1] 淨留「有嘢搵我？」', '"有嘢搵我？"' in html and '（佢望咗你一眼，冇即刻行開。）有嘢搵我？' not in html)
 
 # ---- C5：.people-go 對比度 ≥4.5:1（WCAG 計法；底＝rgba(201,162,39,.28) 混米紙 #F2EBD8） ----
 def lum(rgb):
@@ -119,7 +119,7 @@ def lum(rgb):
     r, g, b = rgb
     return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b)
 m = re.search(r'\.people-go, \.debt-empty \.debt-repay-btn\{\s*margin-top:6px;[^}]*?background:rgba\(201,162,39,([\d.]+)\);\s*color:(#[0-9a-fA-F]{6});', html)
-ok('C5 .people-go 規則讀到（深啡字＋加深底）', bool(m))
+ok('N5 .people-go 規則讀到（深啡字＋加深底）', bool(m))
 if m:
     a = float(m.group(1))
     fg = tuple(int(m.group(2)[i:i+2], 16) for i in (1, 3, 5))
@@ -134,24 +134,24 @@ else:
 
 # ---- C6：教學提隨機巧遇 ----
 ok('C6 教學 inline TUT_NPC 有巧遇句', '去他們常出沒的地方，有機會撞到他們——撞到才可以傾談／送禮。' in html)
-ok('C6 runtime 覆寫補 live pack TUT_NPC', 'st.id!=="TUT_NPC"' in html and 'LINE183' in html)
-ok('C6 修正：inline TUT_MAP body 第三句係巧遇句（live 只行四步，TUT_NPC 唔顯示）',
+ok('N6 runtime 覆寫補 live pack TUT_NPC', 'st.id!=="TUT_NPC"' in html and 'LINE183' in html)
+ok('N6 修正：inline TUT_MAP body 第三句係巧遇句（live 只行四步，TUT_NPC 唔顯示）',
    '"去他們常出沒的地方，有機會撞到他們——撞到才可以傾談／送禮。"]' in html)
-ok('C6 runtime 覆寫補 live pack TUT_MAP', 'st.id==="TUT_MAP"' in html and 'st.body.push(LINE183)' in html)
+ok('N6 runtime 覆寫補 live pack TUT_MAP', 'st.id==="TUT_MAP"' in html and 'st.body.push(LINE183)' in html)
 
 # ---- C7：700 禮物選擇器兩欄 ----
-ok('C7 700 media query 兩欄（#gift-pick-list grid 2 欄）',
+ok('N7 700 media query 兩欄（#gift-pick-list grid 2 欄）',
    '@media (max-height:720px)' in html and '#gift-pick-list{ display:grid; grid-template-columns:1fr 1fr;' in html)
 
 # ---- C8：掣名「去找」改「行下」 ----
-ok('C8 掣名改「去 X 行下」', '去 ${homeName||"地圖"} 行下' in html)
-ok('C8 「去找 · 」掣名零殘留', '去找 · ' not in html)
-ok('C8 人脈 sub 句同新掣名一致（撞佢）', '去佢常出沒嘅地方撞佢；撞到先可以傾談／送禮。' in html)
+ok('N9 掣名改「去 X 行下」', '去 ${homeName||"地圖"} 行下' in html)
+ok('N9 「去找 · 」掣名零殘留', '去找 · ' not in html)
+ok('N9 人脈 sub 句同新掣名一致（撞佢）', '去佢常出沒嘅地方撞佢；撞到先可以傾談／送禮。' in html)
 
 # ---- C9：開局 intro 入場唔計額度；travel114 上限唔郁 ----
-ok('C9 intro 入場帶 travelFree:true', 'openLoc(locId, {travelFree:true});' in html)
-ok('C9 TRAVEL114_DAILY_CAP 仲係 2', 'const TRAVEL114_DAILY_CAP = 2;' in html)
-ok('C9 額度閘本身唔郁（被擋 toast 逐字）',
+ok('N10 intro 入場帶 travelFree:true', 'openLoc(locId, {travelFree:true});' in html)
+ok('N10 TRAVEL114_DAILY_CAP 仲係 2', 'const TRAVEL114_DAILY_CAP = 2;' in html)
+ok('N10 額度閘本身唔郁（被擋 toast 逐字）',
    'toast("今日出行額度用完——今日已經去咗 2 個地方，聽日再去。")' in html)
 
 print('---')

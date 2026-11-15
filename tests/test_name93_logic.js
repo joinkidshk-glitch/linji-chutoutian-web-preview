@@ -160,10 +160,10 @@ for(const g of pool.values()){
   if(fm > 17 || pm > 33) overSnap.push(g.id + ':' + fm + '/' + pm);
   if(!LONGFORM_ALLOW.has(g.id) && daysOf(g) > 8) overDays.push(g.id + ':' + daysOf(g));
 }
-ok('C1 全池冇名銜自相矛盾（臨記＋主角類）', contra.length === 0, contra.join(','));
-ok('C2 臨記類崗位日薪唔過上限', overDaily.length === 0, overDaily.join(','));
-ok('C3 臨記類崗位快照唔過上限', overSnap.length === 0, overSnap.join(','));
-ok('C4 臨記類崗位日數唔過 8（白名單除外）', overDays.length === 0, overDays.join(','));
+ok('N1 全池冇名銜自相矛盾（臨記＋主角類）', contra.length === 0, contra.join(','));
+ok('N2 臨記類崗位日薪唔過上限', overDaily.length === 0, overDaily.join(','));
+ok('N3 臨記類崗位快照唔過上限', overSnap.length === 0, overSnap.join(','));
+ok('N4 臨記類崗位日數唔過 8（白名單除外）', overDays.length === 0, overDays.join(','));
 
 /* D 豁免完整：softBridge 保底機制全家族冇俾人郁 */
 const sb88 = [...pool.values()].filter(g => /^gig_1988_soft_bridge_/.test(g.id));

@@ -133,7 +133,7 @@ ok(todayPlanId() === "shoot:sh_live", "今日格活 shoot: 照常回傳");
 
 /* ---------- (3) S-14：回顧記實際執行 ---------- */
 S = { dayIndex: 0, shoots: [], booked: [], flags: {}, execLog105: {} };
-recordExec105Day("story", "C1");
+recordExec105Day("story", "N1");
 recordExec105Day("audition", "《賀歲特輯》拜年群演");
 const m0 = exec105MetaForDay(0);
 ok(!!m0 && m0.name.indexOf("劇情") >= 0 && m0.name.indexOf("試鏡") >= 0,

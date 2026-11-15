@@ -78,36 +78,36 @@ ok('B2：flex 直欄下掣闊度唔郁（.act width:100%＋預設 stretch）',
 ok('B2：organizer 仍然只喺有要事／鎖定／多組嗰陣先重組（早退條件唔郁）',
    'if(!hasUrgent && !hasLocked && groupSet.size <= 1) return;' in src)
 
-# --- §3. C1：名筆句改字（覆寫，唔直改 pack） ---
+# --- §3. N1：名筆句改字（覆寫，唔直改 pack） ---
 fn = fn_body('applyTangGift169')
-ok('C1：applyTangGift169 函數在位', 'function applyTangGift169(){' in src)
-ok('C1：接線喺 GiftShop.ensureSave() 行同行呼叫（零行數漂移，喺 GIFT_REACT 賦值後）',
+ok('N1：applyTangGift169 函數在位', 'function applyTangGift169(){' in src)
+ok('N1：接線喺 GiftShop.ensureSave() 行同行呼叫（零行數漂移，喺 GIFT_REACT 賦值後）',
    'try{ if(typeof GiftShop!=="undefined") GiftShop.ensureSave(); }catch(_g){} try{ if(typeof applyTangGift169==="function") applyTangGift169(); }catch(_t169){}' in src)
-ok('C1：接線喺 textfix55Walk(giftReact) 之前（新句行同一套清洗）',
+ok('N1：接線喺 textfix55Walk(giftReact) 之前（新句行同一套清洗）',
    src.find('applyTangGift169(); }catch(_t169){}') < src.find('textfix55Walk(giftReact, null, null, TEXTFIX55_OPTS_GIFT)'))
-ok('C1：新句全文＝「…靠感情、靠人情辦事的人。」（改字，唔係重寫）',
+ok('N1：新句全文＝「…靠感情、靠人情辦事的人。」（改字，唔係重寫）',
    '鄧麗萍：「名筆。簽名、批檔期、改數字，都用得着。你至少知道我不是靠感情、靠人情辦事的人。」' in fn)
-ok('C1：第一句「名筆。簽名、批檔期、改數字，都用得着。」一字唔郁',
+ok('N1：第一句「名筆。簽名、批檔期、改數字，都用得着。」一字唔郁',
    '名筆。簽名、批檔期、改數字，都用得着。' in fn)
-ok('C1：byKey（tang:gift_fountain_pen:liked）＋entries（GR-tang-pen｜liked）兩邊一齊覆寫',
+ok('N1：byKey（tang:gift_fountain_pen:liked）＋entries（GR-tang-pen｜liked）兩邊一齊覆寫',
    'R.byKey["tang:gift_fountain_pen:liked"]' in fn
    and 'e.id==="GR-tang-pen｜liked"' in fn)
-ok('C1：只喺現句含「感人情書」嗰陣先改（pack 日後已修正唔會俾覆寫返）',
+ok('N1：只喺現句含「感人情書」嗰陣先改（pack 日後已修正唔會俾覆寫返）',
    fn.count('indexOf("感人情書")>=0') == 2)
-ok('C1：唔掂咖啡豆（v167 範圍）', 'gift_coffee_beans' not in fn)
-ok('C1：唔掂 likes／dislikes（純文案覆寫）',
+ok('N1：唔掂咖啡豆（v167 範圍）', 'gift_coffee_beans' not in fn)
+ok('N1：唔掂 likes／dislikes（純文案覆寫）',
    'likes' not in fn and 'dislikes' not in fn)
 
-# --- §4. C2：新貨置頂 ---
-ok('C2：置頂次序＝名筆／計數機／腕表／玫瑰（跟 v164 注入次序）',
+# --- §4. N2：新貨置頂 ---
+ok('N2：置頂次序＝名筆／計數機／腕表／玫瑰（跟 v164 注入次序）',
    'const TOP169 = ["gift_fountain_pen","gift_desk_calculator","gift_dress_watch","gift_rose_premium"];' in fn)
-ok('C2：穩定重排（頭四位＋其餘不變），冪等',
+ok('N2：穩定重排（頭四位＋其餘不變），冪等',
    'const reordered = top.concat(rest);' in fn
    and 'for(let i=0;i<reordered.length;i++) shop.stock[i] = reordered[i];' in fn)
-ok('C2：只郁 shop_street_mk stock 陣，唔郁 count／補貨／舊檔 shopStock',
+ok('N2：只郁 shop_street_mk stock 陣，唔郁 count／補貨／舊檔 shopStock',
    's.shopId==="shop_street_mk"' in fn and 'restock' not in fn
    and 'shopStock' not in fn and 'S.giftMeta' not in fn)
-ok('C2：商店渲染跟 stock 陣次序（shopList map shop.stock）',
+ok('N2：商店渲染跟 stock 陣次序（shopList map shop.stock）',
    'return (shop.stock||[]).map(row=>{' in src)
 
 # --- §5. pack JSON 守門（冇直改） ---

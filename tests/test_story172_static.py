@@ -14,9 +14,9 @@
 #   listOpen 已經用 ignoreSheetLoc。改法係 opt-in：只有 story165TryForcedPlay
 #   傳 { ignoreSheetLoc:true }；其餘 start() call sites 唔傳，行為同以前完全一樣；
 #   普通玩家路徑（掣／autoPushC1IfNeeded）soft 閘原封不動。
-# C1：進度頁鎖行「去 X 先播到呢幕」改做場景資料 framing「（場景：X）」，
+# N1：進度頁鎖行「去 X 先播到呢幕」改做場景資料 framing「（場景：X）」，
 #   同已開放行同一寫法；OR 條件入面嘅「或到 X」一併改做「或（場景：X）」。
-#   （v20a179 取代：v172 review 唯一新項 C1——鎖行括號改做標籤式「場景：X」／
+#   （v20a179 取代：v172 review 唯一新項 N1——鎖行括號改做標籤式「場景：X」／
 #   「或場景：X」，見 test_story179_*；以下兩條斷言已跟住更新，舊括號寫法作廢。）
 #   傳聞提示「（去金龍茶餐廳打聽）」刻意保留——佢講嘅係點滿足「聽到傳聞」呢個
 #   條件（要去邊度打聽），唔係講去邊度觸發呢幕；v20a34 P0-3 刻意將兩者分開寫。
@@ -44,27 +44,27 @@ def seg(a, b, span=6000):
     j = src.find(b, i + len(a)) if b else -1
     return src[i:j] if j > i else src[i:i + span]
 
-# --- 一、C1：鎖行「去 X 先播到呢幕」清零，改做場景資料 framing ---
+# --- 一、N1：鎖行「去 X 先播到呢幕」清零，改做場景資料 framing ---
 stub = seg('function prog71StubItems(id){', 'function prog71Rows(){', 4000)
-ok('C1：鎖行舊觸發句「去 X 先播到呢幕」全檔清零',
+ok('N1：鎖行舊觸發句「去 X 先播到呢幕」全檔清零',
    '"去"+lm[1]+"先播到呢幕"' not in src and '先播到呢幕' not in src)
-ok('C1：「到 X 播」改做場景資料標籤式「場景：X」（v179 取代 v172 括號寫法）',
+ok('N1：「到 X 播」改做場景資料標籤式「場景：X」（v179 取代 v172 括號寫法）',
    '"場景："+lm[1]' in stub and '"（場景："+lm[1]+"）"' not in stub)
-ok('C1：已開放行「（場景：X）」寫法唔變（鎖行同佢對齊，唔係另創新寫法）',
+ok('N1：已開放行「（場景：X）」寫法唔變（鎖行同佢對齊，唔係另創新寫法）',
    '（場景：" + prog71Esc(r.locName) + "）' in src)
 
-# --- 二、C1 掃埋：同一 checklist 其他 remain 項唔留觸發句 ---
-ok('C1：OR 條件「或到 X」改做標籤式「或場景：X」（v179 取代 v172 括號寫法）',
+# --- 二、N1 掃埋：同一 checklist 其他 remain 項唔留觸發句 ---
+ok('N1：OR 條件「或到 X」改做標籤式「或場景：X」（v179 取代 v172 括號寫法）',
    '或場景：$1' in stub and '或（場景：$1）' not in stub and '以下任一達標："+s }' not in stub
    and '以下任一達標："+s.replace(/或到([^／]+)/g, "或場景：$1")' in stub)
 gate = seg('function prog71GateItems(id){', 'function prog71StubItems(id){', 5000)
-ok('C1：兩條 checklist（GateItems C6–C17／StubItems C1–C5）入面無觸發句殘留',
+ok('N1：兩條 checklist（GateItems N6–N17／StubItems N1–N5）入面無觸發句殘留',
    '先播到呢幕' not in gate and '先播到呢幕' not in stub
    and '就會觸發' not in gate and '就會觸發' not in stub
    and '先可以播這幕' not in gate and '先可以播這幕' not in stub)
-ok('C1：傳聞提示「聽到傳聞」刻意保留（條件提示，唔係觸發句——見檔頭註解）',
+ok('N1：傳聞提示「聽到傳聞」刻意保留（條件提示，唔係觸發句——見檔頭註解）',
    '聽到傳聞：' in stub and 'rumorHearHint' in src)
-ok('C1：鎖行其餘條件句唔變（前置／週數／通告／聲望／季節）',
+ok('N1：鎖行其餘條件句唔變（前置／週數／通告／聲望／季節）',
    '"先完成"+(storyActLabel(d)' in stub and '到第 ' in stub and '接通告 ' in stub
    and '要多於' in stub and '等到啱嘅季節' in stub)
 
@@ -89,7 +89,7 @@ ok('B1(b)：全檔只有強制播一路傳 ignoreSheetLoc 入 StoryPlay.start（
    and 'StoryPlay.start(next.id, { ignoreSheetLoc:true })' in src)
 ap = seg('function autoPushC1IfNeeded(opts){', '/* v20a165 STORY165', 1500)
 ok('B1(b)：autoPushC1IfNeeded 普通路徑唔帶 ignoreSheetLoc（soft 閘對玩家路徑原封不動）',
-   'ignoreSheetLoc' not in ap and 'StoryPlay.start("C1")' in ap)
+   'ignoreSheetLoc' not in ap and 'StoryPlay.start("N1")' in ap)
 
 # --- 五、B1(b) 評估嘅承重前提：eval 鏈本身早已識 ignoreSheetLoc ---
 ok('B1(b) 前提：stepLoc 識 opts.ignoreSheetLoc（唔傳就等於以前）',

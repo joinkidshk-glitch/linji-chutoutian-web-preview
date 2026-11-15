@@ -4,7 +4,7 @@
 // 覆蓋：(1) 每張新圖係對應（講者，分類，階段）嘅候補鏈首選——即 runtime
 //         唔會靜靜退 base；(2) 阿偉 s2/s3 階段判定：tier 2→awi_s2、tier 3→awi_s3、
 //         tier 0→awi（s1 回歸）；(3) 真實對白句經 dlg106ResolveCategory
-//         判返對應分類（C1 阿偉 think 句＋每類新表情各一句）；
+//         判返對應分類（N1 阿偉 think 句＋每類新表情各一句）；
 //         (4) 反證：tier 2↔3 切換時首選必須跟住變；未知講者回 []；
 //         垃圾輸入唔 crash、回 neutral。
 // 注意：dlg106Candidates 只係排 URL 次序，唔查檔案存在——檔案存在由
@@ -65,7 +65,7 @@ ok('tier 3 awi serious 首選 awi_s3_serious（舊 s3 圖冇被搶）',
 
 /* ---- (3) 真實對白句分類（經 map lookup；句出自 lines_classified.json） ---- */
 const LINES = [
-  // [講者, 句, 預期分類] —— C1 阿偉 think 句＋每類新表情各一句
+  // [講者, 句, 預期分類] —— N1 阿偉 think 句＋每類新表情各一句
   ['awi', '呢兩條路真係各有千秋，要諗清楚先好決定。', 'think'],
   ['so_jiyan', '阿偉，我接到一套新戲，個角色終於唔使我齋笑，我好緊張又好開心。', 'happy'],
   ['cheung_tsijun', '我睇住你由企唔穩做到企得穩。記住，邊個位都好——唔好丟咗當初捱通宵嗰份心。', 'serious'],

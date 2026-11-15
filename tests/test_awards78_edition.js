@@ -7,12 +7,12 @@
 // 春／夏／秋唔跨年界，屆別年＝曆法年（行為不變）。
 // v20a213（用戶 2026-11-14 18:07 拍板）：排期窗口改做 [典禮日−3, 典禮日]（典禮日＝季節首日），
 // 端到端日子改用窗口內日子（冬 1990 屆 day 334、冬 1991 屆 day 699、春 1991 屆 day 424）；
-// 延期情境改寫：窗口內 C10 讓路完照排同一屆，窗口過咗（day 365）唔再補開。
+// 延期情境改寫：窗口內 N11 讓路完照排同一屆，窗口過咗（day 365）唔再補開。
 // (1) awardsEditionYear 單元：冬 12 月→當年、冬 1/2 月→上一年；其餘季節→曆法年。
 // (2) 端到端 queue：day 334 開 1990 屆（pack.year=1990、旗標 invited）；
 //     標 done 後 day 365、day 400（1991-02-04）唔再開新屆（舊版會開 1991 屆）；
 //     day 699（1991-12-01）開 1991 屆；標 done 後 day 730（1992-01-01）唔重開。
-// (3) C10 延期唔誤殺：窗口內讓路完照排同一屆（屆別年不變）；窗口過咗唔補開。
+// (3) N11 延期唔誤殺：窗口內讓路完照排同一屆（屆別年不變）；窗口過咗唔補開。
 // (4) 非冬季對照：春廣告獎 1991 年 3 月開屆年份＝1991（曆法年，冇被提早／推遲）。
 // 反證：對 v20a77 index 行 → awardsEditionYear 唔存在 → FAIL。
 // 用法：node tests/test_awards78_edition.js [path-to-index.html]
@@ -133,16 +133,16 @@ if(booted){
   queueAwardsOnSeasonWindow();
   ok('day 730（1992-01-01）：1991 屆唔重開', tvPacks().length === 0);
 
-  /* (3) C10 延期情境（v20a213 改寫）：窗口內讓路完照排同一屆；窗口過咗唔補開。
-     註：真實曆法下 C10 窗口（每年第 49–52 週）掂唔到請柬窗口（11/28–12/1 係第 48 週），
-     呢度用 stub 扮 C10 喺窗口內 active，驗延期本身唔改屆別年。 */
+  /* (3) N11 延期情境（v20a213 改寫）：窗口內讓路完照排同一屆；窗口過咗唔補開。
+     註：真實曆法下 N11 窗口（每年第 49–52 週）掂唔到請柬窗口（11/28–12/1 係第 48 週），
+     呢度用 stub 扮 N11 喺窗口內 active，驗延期本身唔改屆別年。 */
   S = freshSave(334);
   softC10WindowActive = function(){ return true; };
   queueAwardsOnSeasonWindow();
-  ok('延期情境：day 334 C10 讓路嗰陣唔排（返 0）', tvPacks().length === 0);
+  ok('延期情境：day 334 N11 讓路嗰陣唔排（返 0）', tvPacks().length === 0);
   softC10WindowActive = function(){ return false; };
   queueAwardsOnSeasonWindow();
-  ok('延期情境：C10 讓路完 day 334 照排，仍然係 1990 屆（冇變第二屆）',
+  ok('延期情境：N11 讓路完 day 334 照排，仍然係 1990 屆（冇變第二屆）',
     tvPacks().length === 1 && tvPacks()[0].year === 1990);
   S = freshSave(365);
   queueAwardsOnSeasonWindow();

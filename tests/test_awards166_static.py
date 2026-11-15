@@ -9,7 +9,7 @@
 # C1（空 caption 隱藏字幕框）：
 # (4) setCaption 單一 choke point：innerHTML 之後按 textContent.trim() 切換 style.display（空→none，有字→""）。
 # (5) 空 caption beats 齊：walkup／glamour／won-out 係 ""；有字 beats（open／reveal／comfort）＋names（lines 填字）唔受影響。
-# 反證：run against pristine main (276ffa1) -> B1／C1 斷言全部 FAIL（唔 crash）。
+# 反證：run against pristine main (276ffa1) -> B1／N1 斷言全部 FAIL（唔 crash）。
 import os, sys
 
 idx_path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
@@ -75,20 +75,20 @@ chk('B1 glamHtml 新位置（canvaswrap 閂標記之後；v20a197 B3：skip 掣�
 chk('B1 walkup GIF 層已撤（v181：改由 canvas 畫，唔再係 stage 尾段 overlay）', '"</div>" + walkupHtml' not in play_fn and '.awd62-walkup160' not in src)
 chk('B1 reveal／glamour／walkup／out 燕尾服唔郁（共 5 處，v187 C3 out 加一處）', play_fn.count('tuxedo: true') == 5)
 
-# --- C1 (4)：setCaption 隱藏空框 ---
+# --- N1 (4)：setCaption 隱藏空框 ---
 sc_i = play_fn.find('const setCaption')
 sc_line = play_fn[sc_i:play_fn.find('\n', sc_i)] if sc_i >= 0 else ''
-chk('C1 setCaption 在場', bool(sc_line))
-chk('C1 setCaption 按 textContent 切換 display', 'style.display' in sc_line and 'textContent' in sc_line and 'trim()' in sc_line)
-chk('C1 空→display:none，有字→display:""', '? "" : "none"' in sc_line)
+chk('N1 setCaption 在場', bool(sc_line))
+chk('N1 setCaption 按 textContent 切換 display', 'style.display' in sc_line and 'textContent' in sc_line and 'trim()' in sc_line)
+chk('N1 空→display:none，有字→display:""', '? "" : "none"' in sc_line)
 
-# --- C1 (5)：空／有字 beats ---
+# --- N1 (5)：空／有字 beats ---
 beats_fn = slice_fn('awards62CeremonyBeats')
 chk('C1 walkup beat caption 係空', 'id: "walkup", ms: 2200, caption: ""' in beats_fn)
 chk('C1 glamour beat caption 係空', 'id: "glamour", ms: 1800, caption: ""' in beats_fn)
 chk('C1 won-out beat caption 係空', 'id: "out", ms: 500, caption: ""' in beats_fn)
-chk('C1 open beat 有字（唔會俾人隱藏）', 'id: "open", ms: 1200, caption: "' in beats_fn)
-chk('C1 reveal 用 revealCap（有字）', 'caption: revealCap' in beats_fn)
+chk('N1 open beat 有字（唔會俾人隱藏）', 'id: "open", ms: 1200, caption: "' in beats_fn)
+chk('N1 reveal 用 revealCap（有字）', 'caption: revealCap' in beats_fn)
 chk('C1 comfort 有字', '差少少啫' in beats_fn)
 chk('C1 names 經 lines 填字（唔係空 caption）', 'applyBeatCaption' in play_fn and '入圍名單' in play_fn)
 

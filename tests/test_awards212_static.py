@@ -66,46 +66,46 @@ chk('B1：懸念句四句輪換（SUSPENSE212，第一格沿用舊句；v20a218 
 chk('B1：懸念時長唔郁（1400ms）', 'id: "suspense", ms: 1400' in beats_fn)
 
 # --- (C1) 格標題卡列剪影 ---
-chk('C1：preview212 剪影 CSS 在位（dimmed 0.22）',
+chk('N1：preview212 剪影 CSS 在位（dimmed 0.22）',
     '.awd63-cards.preview212' in src and 'opacity:.22' in src)
-chk('C1：syncCards 格標題分支加 on＋preview212',
+chk('N1：syncCards 格標題分支加 on＋preview212',
     'b.id === "catTitle"' in play_fn and 'classList.add("preview212")' in play_fn)
-chk('C1：提名 beat 嗰陣除返 preview212（上色上名）',
+chk('N1：提名 beat 嗰陣除返 preview212（上色上名）',
     'classList.remove("preview212")' in play_fn)
-chk('C1 根因：格轉換只換內層卡片（唔巢狀容器）',
+chk('N1 根因：格轉換只換內層卡片（唔巢狀容器）',
     'cardsEl.innerHTML = cardsData.length ? cardsInnerHtmlFor208(cardsData) : ""' in play_fn)
-chk('C1 根因：內層 builder 唔包容器（回傳淨係卡片）',
+chk('N1 根因：內層 builder 唔包容器（回傳淨係卡片）',
     'const cardsInnerHtmlFor208 = (cd)=>{' in play_fn and 'return cd.map((c, ci)=>{' in play_fn)
-chk('C1 根因：建台嗰陣先包容器外殼（唔係格轉換嗰陣）',
+chk('N1 根因：建台嗰陣先包容器外殼（唔係格轉換嗰陣）',
     '\'<div class="awd63-cards">\' + cardsInnerHtmlFor208(cardsData) + "</div>"' in play_fn)
-chk('C1 根因：冇殘留成個容器塞入 innerHTML',
+chk('N1 根因：冇殘留成個容器塞入 innerHTML',
     'cardsEl.innerHTML = cardsData.length ? cardsHtmlFor208(cardsData)' not in play_fn)
 
 # --- (C2) 卡片同字幕同步出 ---
-chk('C2：advance() 嗰刻即刻 syncCards（唔等下一個 rAF tick）',
+chk('N2：advance() 嗰刻即刻 syncCards（唔等下一個 rAF tick）',
     'syncCards(beats[beatIdx], 0)' in play_fn)
-chk('C2：loop 入面 syncCards 照舊（逐 tick 跟進）',
+chk('N2：loop 入面 syncCards 照舊（逐 tick 跟進）',
     'syncCards(b, elapsed)' in play_fn)
 
 # --- (C3) 提名 spotlight 加強 ---
-chk('C3：提名 beat 宣佈嗰位用 spotlight207 光柱（唔再係淡 lightPool）',
+chk('N3：提名 beat 宣佈嗰位用 spotlight207 光柱（唔再係淡 lightPool）',
     'spotlight207(slotCx(i)' in play_fn)
-chk('C3：行前幅度加大（10→16）', '16 * fwd208' in play_fn)
-chk('C3：懸念 beat 照舊 lightPool（唔郁）',
+chk('N3：行前幅度加大（10→16）', '16 * fwd208' in play_fn)
+chk('N3：懸念 beat 照舊 lightPool（唔郁）',
     'lightPool(slotCx(i)' in play_fn)
 
 # --- (C4) walkup 讓路 ---
 chk('C4：walkup 行經路線上嘅提名人向後褪半步＋淡少少',
     'inPath212' in play_fn and 'slotCx(i) < targetX' in play_fn and 'y: inPath212 ? -10 : 0' in play_fn)
-chk('C4：行到埗即刻還原（wp＝1 嗰陣唔褪唔淡）',
+chk('N4：行到埗即刻還原（wp＝1 嗰陣唔褪唔淡）',
     'wp < 1' in play_fn)
-chk('C4：行入嗰陣阿偉行後排（v20a218 C-C4：先畫、y−24，提名人遮住佢，唔同陸柏言重疊）',
+chk('N4：行入嗰陣阿偉行後排（v20a218 C-C4：先畫、y−24，提名人遮住佢，唔同陸柏言重疊）',
     'y: -24' in play_fn and 'playerSlot >= 0 && wp < 1' in play_fn)
 
 # --- (C5) 2 位提名人置中收窄 ---
-chk('C5：slots 得 2 位嗰陣置中收窄企位（200／280）',
+chk('N5：slots 得 2 位嗰陣置中收窄企位（200／280）',
     'if(slots.length === 2) return [200, 280][i]' in play_fn)
-chk('C5：3 位企位唔郁（75／240／405）',
+chk('N5：3 位企位唔郁（75／240／405）',
     'if(slots.length === 3) return [75, 240, 405][i]' in play_fn)
 
 # --- 唔郁嘅機制 ---

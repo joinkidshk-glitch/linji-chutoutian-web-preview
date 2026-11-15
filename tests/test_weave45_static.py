@@ -14,10 +14,10 @@ ok('STORY_GATE_3Y table defined', 'const STORY_GATE_3Y = {' in html)
 m = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)
 block = m.group(1) if m else ''
 ok('gate table block extractable', bool(block))
-for cid in ['C6','C7','C8','C9','C10','C11','C12','C13','C14','C15','C16','C17']:
+for cid in ['N6','N7','N9','N10','N11','N8','N14','N16','N13','N12','N15','N17']:
     ok('gate entry present: '+cid, re.search(r'^\s*'+cid+r'\s*:', block, re.M) is not None)
-for cid in ['C1','C2','C3','C4','C5']:
-    ok('gate entry absent (C1–C5 zero change): '+cid, re.search(r'^\s*'+cid+r'\s*:', block, re.M) is None)
+for cid in ['N1','N2','N3','N4','N5']:
+    ok('gate entry absent (N1–N5 zero change): '+cid, re.search(r'^\s*'+cid+r'\s*:', block, re.M) is None)
 ok('N6 gate: route_tv + weekMin 15', 'route: "route_tv", weekMin: 15' in block)
 ok('N7 gate: creditGt 20 (scaled)', 'creditGt: 20' in block)
 ok('N9 gate: fameGt 28 (scaled)', 'fameGt: 28' in block)
@@ -26,11 +26,11 @@ ok('N13 gate: creditGt 42 (scaled)', 'creditGt: 42' in block)
 ok('N14 gate: fameGt 50 (scaled)', 'fameGt: 50' in block)
 ok('N15 gate: dualGt 125 (scaled)', 'dualGt: 125' in block)
 ok('N17 gate: yearEq 1992 event gate', 'yearEq: 1992' in block)
-ok('prereq chain N9<-N7 (C8 needDone C7)', 'C8:  { needDone: ["C7"]' in block)
-ok('prereq chain N13<-N11 (C14 needDone C10)', 'C14: { needDone: ["C10"]' in block)
-ok('prereq chain N14<-N13 (C12 needDone C14)', 'C12: { needDone: ["C14"]' in block)
-ok('prereq chain N15<-N14 (C16 needDone C12)', 'C16: { needDone: ["C12"]' in block)
-ok('prereq chain N17<-N16 (C17 needDone C13)', 'C17: { needDone: ["C13"]' in block)
+ok('prereq chain N9<-N7 (N9 needDone N7)', 'N9:  { needDone: ["N7"]' in block)
+ok('prereq chain N13<-N11 (N13 needDone N11)', 'N13: { needDone: ["N11"]' in block)
+ok('prereq chain N14<-N13 (N14 needDone N13)', 'N14: { needDone: ["N13"]' in block)
+ok('prereq chain N15<-N14 (N15 needDone N14)', 'N15: { needDone: ["N14"]' in block)
+ok('prereq chain N17<-N16 (N17 needDone N16)', 'N17: { needDone: ["N16"]' in block)
 
 # ---- 評估器＋掛點 ----
 ok('evalGate3Y defined', 'function evalGate3Y(' in html)
@@ -59,13 +59,13 @@ ok('phase remap comment present', '三年版 phase 對照' in html)
 ok('phase: P3 = year 1992 plain', 'if(year>=1992) bump("P3");' in html)
 ok('phase: P5 winter month guard (Dec)', 'month>=12 && season==="冬"' in html)
 ok('phase: P4 autumn from Sep', 'month>=9 && (season==="秋" || season==="冬")' in html)
-ok('phase: five-year P4 rule removed', 'year>=1991 && (isDone("C11")' not in html)
-ok('phase: five-year P3 C10 requirement removed', 'route_indie || st.routes.route_commercial || st.flags.route_indie' not in html)
+ok('phase: five-year P4 rule removed', 'year>=1991 && (isDone("N8")' not in html)
+ok('phase: five-year P3 N11 requirement removed', 'route_indie || st.routes.route_commercial || st.flags.route_indie' not in html)
 
 # ---- 慣例不變 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
 ok('version marker v20a28', 'v20a28' in html)
-ok('content pack JSON untouched by this change (no inline pack edit marker)', 'story_detail_c1_to_c17' in html)
+ok('content pack JSON untouched by this change (no inline pack edit marker)', 'story_detail_n1_to_n17' in html)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')
 sys.exit(1 if fails else 0)

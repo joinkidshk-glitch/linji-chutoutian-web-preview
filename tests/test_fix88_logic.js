@@ -144,24 +144,24 @@ ok('B9 橋接 day-14 進度接到 ≥3/6（實數 '+bridgeAt14+'）', bridgeAt14
 function atDay(di){ const s = deepClone(FRESH); s.dayIndex = di; W.setS(s); }
 const springEntry = pool.find(g=>g.id==='gig_1988_entry_ad_passerby');
 atDay(0);
-ok('C1 春通告 day0（冬）已入提早窗上板（seasonRank>0 但 hidden=false）', W.seasonRank(springEntry, '冬') > 0 && W.gigSeasonHidden88(springEntry, '冬') === false);
+ok('N1 春通告 day0（冬）已入提早窗上板（seasonRank>0 但 hidden=false）', W.seasonRank(springEntry, '冬') > 0 && W.gigSeasonHidden88(springEntry, '冬') === false);
 atDay(165); /* 1990-06-15 夏 */
-ok('C2 春通告上映季過後（6 月中）唔再出現', W.gigSeasonHidden88(springEntry, '夏') === true);
+ok('N2 春通告上映季過後（6 月中）唔再出現', W.gigSeasonHidden88(springEntry, '夏') === true);
 const summerGig = pool1990.find(g=>g.season==='夏');
 atDay(73); /* 1990-03-15 春 */
-ok('C3 夏通告 3 月中未入提早窗（hidden）', !!summerGig && W.gigSeasonHidden88(summerGig, '春') === true);
+ok('N3 夏通告 3 月中未入提早窗（hidden）', !!summerGig && W.gigSeasonHidden88(summerGig, '春') === true);
 atDay(104); /* 1990-04-14 春，距 6 月 1 日 48 日 */
-ok('C4 夏通告 4 月中已入提早窗上板', !!summerGig && W.gigSeasonHidden88(summerGig, '春') === false);
+ok('N4 夏通告 4 月中已入提早窗上板', !!summerGig && W.gigSeasonHidden88(summerGig, '春') === false);
 const cnyBridge = pool.find(g=>g.id==='gig_1988_winter88_bridge_cny_support');
 atDay(257); /* 1990-09-14 秋，距 12 月 1 日 78 日 */
-ok('C5 賀歲通告 9 月中未上板（早過提早窗）', W.gigSeasonHidden88(cnyBridge, '秋') === true);
+ok('N5 賀歲通告 9 月中未上板（早過提早窗）', W.gigSeasonHidden88(cnyBridge, '秋') === true);
 atDay(287); /* 1990-10-14 秋，距 12 月 1 日 48 日 */
-ok('C6 賀歲通告 10 月中已上板（上映前約兩個月）', W.gigSeasonHidden88(cnyBridge, '秋') === false);
+ok('N6 賀歲通告 10 月中已上板（上映前約兩個月）', W.gigSeasonHidden88(cnyBridge, '秋') === false);
 atDay(73);
-ok('C7 賀歲通告唔會喺上映後先出現（3 月已落板）', W.gigSeasonHidden88(cnyBridge, '春') === true);
-ok('C8 上映行：賀歲橋接用 releaseLabel', W.gigReleaseLine88(cnyBridge).includes('賀歲檔'));
+ok('N7 賀歲通告唔會喺上映後先出現（3 月已落板）', W.gigSeasonHidden88(cnyBridge, '春') === true);
+ok('N9 上映行：賀歲橋接用 releaseLabel', W.gigReleaseLine88(cnyBridge).includes('賀歲檔'));
 const springFilm = pool1990.find(g=>g.season==='春' && g.type==='電影');
-ok('C9 上映行：春季電影衍生「預計上映：1990 年春季」', !!springFilm && W.gigReleaseLine88(springFilm) === '預計上映：'+springFilm.year+' 年春季');
+ok('N10 上映行：春季電影衍生「預計上映：1990 年春季」', !!springFilm && W.gigReleaseLine88(springFilm) === '預計上映：'+springFilm.year+' 年春季');
 
 /* ---------- (D) 復活完整性 ---------- */
 let lsOk = 0; const p85 = Object.keys(W.POSTER85_IDS||{});

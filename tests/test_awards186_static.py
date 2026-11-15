@@ -32,16 +32,16 @@ invite_fn = slice_fn('renderAwardInviteHtml')
 helper_fn = slice_fn('awards63FellowsHtml')
 
 # --- C1：同屆提名行只出一次 ---
-chk('C1 逐類別 felBit63 已拎走（map 入面唔再出同屆提名）', 'felBit63' not in result_fn)
-chk('C1 單一 fellows 行 felBit186 在位（取第一個有 fellows63 嘅類別）',
+chk('N1 逐類別 felBit63 已拎走（map 入面唔再出同屆提名）', 'felBit63' not in result_fn)
+chk('N1 單一 fellows 行 felBit186 在位（取第一個有 fellows63 嘅類別）',
     'felCat186' in result_fn and 'fellows63' in result_fn and '.find(' in result_fn)
-chk('C1 單一 fellows 行經同一 helper 出（內容逐字不變）', 'awards63FellowsHtml(felCat186)' in result_fn)
+chk('N1 單一 fellows 行經同一 helper 出（內容逐字不變）', 'awards63FellowsHtml(felCat186)' in result_fn)
 chk('C1 helper 喺結果卡只呼叫一次（唔係每類一次）', result_fn.count('awards63FellowsHtml') == 1)
-chk('C1 fellows 行喺類別行之後（v214 報紙版式：內文兩欄入面，catsHtml 之後；press 內容升做報頭大標題，唔再係 psr-press 卡）',
+chk('N1 fellows 行喺類別行之後（v214 報紙版式：內文兩欄入面，catsHtml 之後；press 內容升做報頭大標題，唔再係 psr-press 卡）',
     '${catsHtml}' in result_fn and '${felBit186}' in result_fn
     and result_fn.index('${catsHtml}') < result_fn.index('${felBit186}')
     and 'np214-body2' in result_fn and 'np214-headline' in result_fn)
-chk('C1 冇 fellows 嗰陣唔出空行（felCat186 無就空字串）', '|| null' in result_fn and '""' in result_fn)
+chk('N1 冇 fellows 嗰陣唔出空行（felCat186 無就空字串）', '|| null' in result_fn and '""' in result_fn)
 chk('C1 類別卡其餘內容唔郁（kicker／rep／weak／comfort 齊）',
     'repBit62' in result_fn and 'weakBit62' in result_fn and 'comfortBit147' in result_fn)
 chk('C1 結果卡 focus 格行先、其餘格維持固定 id 排序（v184 C2 唔郁，v192 C3 疊加）', 'awardsCatsSorted184(pack)' in result_fn)

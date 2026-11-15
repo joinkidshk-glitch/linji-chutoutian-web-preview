@@ -14,14 +14,14 @@
     "parentMockSha8": "d4e23624",
     "parentPlan": "PLAN_STORY_DUAL_MEET_THICKEN_SOFT_v1.md",
     "parentPlanSha8": "832f25ed",
-    "styleSeedRef": "SOFT_PROGRESS_SEED_C3_C5_DENG_v1.json",
+    "styleSeedRef": "SOFT_PROGRESS_SEED_N3_N5_DENG_v1.json",
     "styleSeedSha8": "bd86ed8c",
     "softALock": {
-      "C3": "fame>15 (fameMin=16, fameCompare='>'); R_hiu_meet needDone C3",
-      "C4": "favorMin>=1 @agency_ho AND loc softLogic; R_choi_meet needDone C4",
-      "R_hiu_meet": "needDone C3",
-      "R_choi_meet": "needDone C4",
-      "C5_note": "rival_gao 唔混入 C5（本包雙女 meet 唔測 C5）",
+      "N3": "fame>15 (fameMin=16, fameCompare='>'); R_hiu_meet needDone N3",
+      "N4": "favorMin>=1 @agency_ho AND loc softLogic; R_choi_meet needDone N4",
+      "R_hiu_meet": "needDone N3",
+      "R_choi_meet": "needDone N4",
+      "N5_note": "rival_gao 唔混入 N5（本包雙女 meet 唔測 N5）",
       "chrome": "主線 · 1988{季}；seed.season 優先"
     },
     "depthBeats": 6,
@@ -33,62 +33,62 @@
       "beat": "R_hiu_meet",
       "state": {
         "beatsDone": [
-          "C1",
-          "C2"
+          "N1",
+          "N2"
         ],
         "fame": 16
       },
       "expect": "BLOCKED",
-      "reason": "C3 not in beatsDone, R_hiu_meet requires needDone C3"
+      "reason": "N3 not in beatsDone, R_hiu_meet requires needDone N3"
     },
     {
       "id": "neg_choi_missing_c4",
       "beat": "R_choi_meet",
       "state": {
         "beatsDone": [
-          "C1",
-          "C2",
-          "C3"
+          "N1",
+          "N2",
+          "N3"
         ],
         "favor": {
           "agency_ho": 1
         }
       },
       "expect": "BLOCKED",
-      "reason": "C4 not in beatsDone, R_choi_meet requires needDone C4"
+      "reason": "N4 not in beatsDone, R_choi_meet requires needDone N4"
     },
     {
       "id": "neg_forbid_ho_ge",
-      "beat": "C4",
+      "beat": "N4",
       "state": {
         "favor": {
           "agency_ge": 1
         }
       },
       "expect": "BLOCKED",
-      "reason": "C4 requires favorMin>=1 @agency_ho, agency_ge is forbidden/insufficient"
+      "reason": "N4 requires favorMin>=1 @agency_ho, agency_ge is forbidden/insufficient"
     },
     {
       "id": "neg_choi_favor_0",
-      "beat": "C4",
+      "beat": "N4",
       "state": {
         "beatsDone": [
-          "C1",
-          "C2",
-          "C3"
+          "N1",
+          "N2",
+          "N3"
         ],
         "favor": {
           "agency_ho": 0
         }
       },
       "expect": "BLOCKED",
-      "reason": "C4 requires favorMin>=1 @agency_ho, current is 0"
+      "reason": "N4 requires favorMin>=1 @agency_ho, current is 0"
     }
   ],
   "seeds": [
     {
       "id": "seed_hiu_meet_ready",
-      "title": "曉晴 meet 就緒（C3 done）",
+      "title": "曉晴 meet 就緒（N3 done）",
       "targetBeat": "R_hiu_meet",
       "state": {
         "week": 6,
@@ -103,20 +103,20 @@
         ],
         "season": "spring",
         "beatsDone": [
-          "C1",
-          "C2",
-          "C3"
+          "N1",
+          "N2",
+          "N3"
         ],
         "flags": {},
         "gigCount": 3,
         "rel": {}
       },
       "expect": "Ready to trigger R_hiu_meet. Makeup room context handled in narrative, locId remains tvb_longmen.",
-      "howToUse": "注入 state 後驗證 R_hiu_meet 可開；缺 C3 必須唔開。chrome 讀 seed.season；主線·1988{季}。"
+      "howToUse": "注入 state 後驗證 R_hiu_meet 可開；缺 N3 必須唔開。chrome 讀 seed.season；主線·1988{季}。"
     },
     {
       "id": "seed_choi_meet_ready",
-      "title": "采兒 meet 就緒（C4 done）",
+      "title": "采兒 meet 就緒（N4 done）",
       "targetBeat": "R_choi_meet",
       "state": {
         "week": 8,
@@ -131,21 +131,21 @@
         ],
         "season": "spring",
         "beatsDone": [
-          "C1",
-          "C2",
-          "C3",
-          "C4"
+          "N1",
+          "N2",
+          "N3",
+          "N4"
         ],
         "flags": {},
         "gigCount": 5,
         "rel": {}
       },
       "expect": "Ready to trigger R_choi_meet. Makeup room encounter described in text, locId is cafe_cha.",
-      "howToUse": "注入 state 後驗證 R_choi_meet 可開；缺 C4 或 favor.agency_ho<1 必須唔開。化妝間僅敘事，locId 保持既有。"
+      "howToUse": "注入 state 後驗證 R_choi_meet 可開；缺 N4 或 favor.agency_ho<1 必須唔開。化妝間僅敘事，locId 保持既有。"
     },
     {
       "id": "seed_dual_chain_shortest",
-      "title": "雙女最短鏈就緒（C1–C4）",
+      "title": "雙女最短鏈就緒（N1–N4）",
       "targetBeat": "R_hiu_meet+R_choi_meet",
       "state": {
         "week": 8,
@@ -161,23 +161,23 @@
         ],
         "season": "spring",
         "beatsDone": [
-          "C1",
-          "C2",
-          "C3",
-          "C4"
+          "N1",
+          "N2",
+          "N3",
+          "N4"
         ],
         "flags": {},
         "gigCount": 6,
         "rel": {},
         "milestones": [
-          "C1@week1 cafe_cha",
-          "C2@week4",
-          "C3@week6 fame=16 → R_hiu_meet ready",
-          "C4@week8 favor>=1@agency_ho → R_choi_meet ready"
+          "N1@week1 cafe_cha",
+          "N2@week4",
+          "N3@week6 fame=16 → R_hiu_meet ready",
+          "N4@week8 favor>=1@agency_ho → R_choi_meet ready"
         ]
       },
       "expect": "Both R_hiu_meet and R_choi_meet are ready to open. Shortest path to dual chain thickening.",
-      "howToUse": "端到端抽樣：C1→C4 後兩邊 meet 就緒可開；唔預設已完成 meet；LIVE week-gate 仍 active、唔改。"
+      "howToUse": "端到端抽樣：N1→N4 後兩邊 meet 就緒可開；唔預設已完成 meet；LIVE week-gate 仍 active、唔改。"
     }
   ]
 }

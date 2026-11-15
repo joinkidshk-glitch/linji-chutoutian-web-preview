@@ -3,9 +3,9 @@
 // (2) 再鬥循環：第 1 輪贏→冷卻 90 日→第 2 輪輸→冷卻→第 3 輪贏→終態；門檻 hard 46／endure 34／無態度 40；
 // (3) R6a：逾期掉單（done_＋fail_shoot_）唔結算；
 // (4) 舊檔遷移：won 舊檔轉 none＋nextOpenDay；第 3 輪終態唔郁；
-// (5) R2 快訊：固定日槽、每則一次、C3 未做唔出；
+// (5) R2 快訊：固定日槽、每則一次、N3 未做唔出；
 // (6) R1 狀態行：open 講門檻＋雙軌、冷卻講下一場、終態講三場贏幾場；
-// (7) R3 落選後續：電視劇／電影＋C3＋隨機細先出，每通告一次，決戰通告唔出；
+// (7) R3 落選後續：電視劇／電影＋N3＋隨機細先出，每通告一次，決戰通告唔出；
 // (8) mergeRivalGigs 只注入當輪嗰張。
 // 反證：對 pristine main 行 → RIVAL_FACEOFF_GIGS 得一則／rivalryNewsTick／rivalryStatusLine 唔存在 → 乾淨 FAIL。
 // 用法：node tests/test_rival_rematch_logic.js [path-to-index.html]
@@ -28,10 +28,10 @@ const ASSERT_NAMES = [
   '舊檔遷移：won 舊檔轉 none＋nextOpenDay＝settled＋90、wins 補 1',
   '舊檔遷移：第 3 輪 won 終態唔郁',
   'R2 快訊：day150 出第 1 則、newsIdx 1；同日再行唔重複；day330 出第 2 則',
-  'R2 快訊：C3 未做唔出；未到日子唔出',
+  'R2 快訊：N3 未做唔出；未到日子唔出',
   'R1 狀態行：open 講門檻同雙軌即時值',
   'R1 狀態行：冷卻講下一場日期；終態講三場贏幾場',
-  'R3 落選：電視劇＋C3＋隨機細 → 有行＋閒話入帳',
+  'R3 落選：電視劇＋N3＋隨機細 → 有行＋閒話入帳',
   'R3 落選：同一通告第二次唔再出；決戰通告唔出；隨機大唔出',
   'mergeRivalGigs：open 只注入當輪嗰張；唔開就三張都清走'
 ];
@@ -108,13 +108,13 @@ var enqueueNewspaperItem = function(raw){
 };
 var newspaperEventSeen = function(key){ return seenKeys.has(key); };
 function c3done(){
-  S.story.done.C3 = true;
+  S.story.done.N3 = true;
   S.story.flags.rival_gao_hard = true;
 }
 function score3(){
   c3done();
   S.mockRumors.push({ id:'gao_steal_spotlight' });
-  S.newspaperClippings.push({ topicKey:'rival:gao', eventKeys:['story:C3:hard'] });
+  S.newspaperClippings.push({ topicKey:'rival:gao', eventKeys:['story:N3:hard'] });
 }
 
 /* ---- (1) 通告形狀 ---- */
@@ -145,7 +145,7 @@ rivalryTick();
 r = ensureRivalry();
 ok('第 1 輪贏：結算後返 none、冷卻 90 日、wins 1、報紙 eventKey 無後綴',
   r.faceoffState==='none' && r.nextOpenDay===190 && (r.wins|0)===1 && r.lastResult==='won' &&
-  papers.some(p=>p.eventKey==='story:C3:faceoff_win') &&
+  papers.some(p=>p.eventKey==='story:N3:faceoff_win') &&
   S.mockRumors.some(x=>x && x.id==='rival_faceoff_result'));
 S.dayIndex = 150; // 冷卻期內
 rivalryTick();
@@ -159,7 +159,7 @@ rivalryTick();
 r = ensureRivalry();
 ok('第 2 輪輸：返 none、再冷卻、wins 唔變、報紙 eventKey 有 _r2、傳聞 id 有 _r2',
   r.faceoffState==='none' && r.nextOpenDay===280 && (r.wins|0)===1 && r.lastResult==='lost' &&
-  papers.some(p=>p.eventKey==='story:C3:faceoff_lose_r2') &&
+  papers.some(p=>p.eventKey==='story:N3:faceoff_lose_r2') &&
   S.mockRumors.some(x=>x && x.id==='rival_faceoff_result_r2'));
 S.dayIndex = 280;
 rivalryTick();
@@ -169,7 +169,7 @@ ok('第 3 輪贏：終態 won、wins 2、再行 tick 都唔變',
   (S.wrapHistory = [{ gigId:'gig_rival_gao_faceoff_r3' }], S.fame = 40, S.industryCredit = 10,
    papers = [], seenKeys = new Set(), rivalryTick(),
    (r = ensureRivalry()).faceoffState==='won' && (r.wins|0)===2 &&
-   papers.some(p=>p.eventKey==='story:C3:faceoff_win_r3') &&
+   papers.some(p=>p.eventKey==='story:N3:faceoff_win_r3') &&
    (rivalryTick(), ensureRivalry().faceoffState==='won')));
 
 /* ---- (3) R6a 掉單 ---- */
@@ -184,7 +184,7 @@ let stillOpen = ensureRivalry().faceoffState==='open' && papers.length===0;
 delete S.flags['fail_shoot_gig_rival_gao_faceoff'];
 rivalryTick();
 ok('R6a：掉單（done_＋fail_shoot_）唔結算；清 fail 旗先結算',
-  stillOpen && ensureRivalry().faceoffState==='none' && papers.some(p=>p.eventKey==='story:C3:faceoff_win'));
+  stillOpen && ensureRivalry().faceoffState==='none' && papers.some(p=>p.eventKey==='story:N3:faceoff_win'));
 
 /* ---- (4) 舊檔遷移 ---- */
 S = freshS();
@@ -204,17 +204,17 @@ rivalryNewsTick();
 let n1 = ensureRivalry().newsIdx===0 && papers.length===0;
 S.dayIndex = 150;
 rivalryNewsTick();
-n1 = n1 && ensureRivalry().newsIdx===1 && papers.length===1 && papers[0].eventKey==='story:C3:rival_news_1';
+n1 = n1 && ensureRivalry().newsIdx===1 && papers.length===1 && papers[0].eventKey==='story:N3:rival_news_1';
 rivalryNewsTick();
 n1 = n1 && papers.length===1;
 S.dayIndex = 330;
 rivalryNewsTick();
 ok('R2 快訊：day150 出第 1 則、newsIdx 1；同日再行唔重複；day330 出第 2 則',
-  n1 && ensureRivalry().newsIdx===2 && papers.length===2 && papers[1].eventKey==='story:C3:rival_news_2');
-S = freshS(); S.dayIndex = 500; // C3 未做
+  n1 && ensureRivalry().newsIdx===2 && papers.length===2 && papers[1].eventKey==='story:N3:rival_news_2');
+S = freshS(); S.dayIndex = 500; // N3 未做
 papers = []; seenKeys = new Set();
 rivalryNewsTick();
-ok('R2 快訊：C3 未做唔出；未到日子唔出',
+ok('R2 快訊：N3 未做唔出；未到日子唔出',
   papers.length===0 && ensureRivalry().newsIdx===0 &&
   (S.dayIndex = 100, c3done(), rivalryNewsTick(), papers.length===0));
 
@@ -251,7 +251,7 @@ Math.random = ()=>0.9;
 let gigTv2 = { id:'g_test_tv2', type:'電視劇', title:'《測試劇二》' };
 okR3 = okR3 && rivalTookRoleLine(gigTv2, { gigId:'g_test_tv2', title:'《測試劇二》' })==='';
 Math.random = _rnd;
-ok('R3 落選：電視劇＋C3＋隨機細 → 有行＋閒話入帳', line1.indexOf('高俊傑')>=0 && S.mockRumors.some(x=>x && x.id==='rival_took_g_test_tv'));
+ok('R3 落選：電視劇＋N3＋隨機細 → 有行＋閒話入帳', line1.indexOf('高俊傑')>=0 && S.mockRumors.some(x=>x && x.id==='rival_took_g_test_tv'));
 ok('R3 落選：同一通告第二次唔再出；決戰通告唔出；隨機大唔出', okR3);
 
 /* ---- (8) mergeRivalGigs ---- */

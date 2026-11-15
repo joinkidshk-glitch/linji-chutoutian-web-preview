@@ -1,11 +1,11 @@
 // v20a80 WF1 邏輯測試：劇情豐富化 WF1——後段加厚＋真空帶補幕。
-//   (1) 加厚完整性：C6–C17 每幕 beats ≥8 拍（C17 ≥9）、beats 字數過門檻、resultBeats 合計 ≥150（C17 除外，結局幕 choices 由 ending410 動態重建）；
+//   (1) 加厚完整性：N6–N17 每幕 beats ≥8 拍（N17 ≥9）、beats 字數過門檻、resultBeats 合計 ≥150（N17 除外，結局幕 choices 由 ending410 動態重建）；
 //   (2) 後果拍：每幕每個 choice 都有 resultBeats（揀完有下文）；新第三 choice 旗入 flags_written、幅度唔勁過既有；
-//   (3) 零回歸：既有 beats/choices/resultBeats 對 v136 fixture（tests/fixtures/spine_c6_c17_v136.json）子序列＋前綴保留；
-//       （v20a136：C15/C14/C12/C16/C13 beats 首句 1990→1992、C17 成幕改做頒獎禮之後＋C17_410_a notes「開場」→「散場」，
+//   (3) 零回歸：既有 beats/choices/resultBeats 對 v136 fixture（tests/fixtures/spine_n6_n17_v136.json）子序列＋前綴保留；
+//       （v20a136：N12/N13/N14/N15/N16 beats 首句 1990→1992、N17 成幕改做頒獎禮之後＋N17_410_a notes「開場」→「散場」，
 //       意圖改動，fixture 由 v79 重新生成做 v136；舊 v79 檔留檔。生成器 qa136/gen_fixture136.js）
-//   (4) 補幕 C18/C19：結構（8–10 拍／2 抉擇連後果拍）、地點、when 用舊標籤（YEARS66 +2）、gate entry 規則
-//       （v20a113 改設計：C18 需 C5＋weekMin 48 深冬窗，C19 需 C18＋weekMin 61；1990 年 1 月第 2 週唔再開 C18；
+//   (4) 補幕 N18/N19：結構（8–10 拍／2 抉擇連後果拍）、地點、when 用舊標籤（YEARS66 +2）、gate entry 規則
+//       （v20a113 改設計：N18 需 N5＋weekMin 48 深冬窗，N19 需 N18＋weekMin 61；1990 年 1 月第 2 週唔再開 N18；
 //       舊設計「冇 needDone 唔卡主線」已廢——用戶 2026-11-12 實玩捉到跳步）；
 //   (5) 注入：applyStoryWf1Nodes80 冪等（行兩次唔重複 push、唔覆蓋已有同 id 節點）；
 //   (6) 紅線：14 節點全文冇真人名、冇關海媚名、冇直寫 1991–1994 年份。
@@ -40,14 +40,14 @@ function extractFn(name){
 }
 const T89 = extractConst('STORY_SPINE_NODES_1989');
 const T90 = extractConst('STORY_SPINE_NODES_1990');
-const TC6 = extractConst('STORY_SPINE_NODES_C6');
-const C17N = extractConst('STORY_SPINE_NODE_C17_410');
+const TC6 = extractConst('STORY_SPINE_NODES_N6');
+const C17N = extractConst('STORY_SPINE_NODE_N17_410');
 const WF1 = extractConst('STORY_SPINE_NODES_WF1');
 const GATE = extractConst('STORY_GATE_3Y');
 const CWIN = extractConst('CALIB60_NODE_WINDOWS');
 const CTIT = extractConst('CALIB60_NODE_TITLES');
-const NODES = Object.assign({}, T89, T90, TC6, { C17: C17N }, WF1);
-const fixture = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'spine_c6_c17_v136.json'), 'utf8'));
+const NODES = Object.assign({}, T89, T90, TC6, { N17: C17N }, WF1);
+const fixture = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'spine_n6_n17_v136.json'), 'utf8'));
 
 function beatLines(n){ return (n.beats || []).flatMap(b => b.lines || []); }
 function beatChars(n){ return beatLines(n).join('').length; }
@@ -60,9 +60,9 @@ function isSubseq(sub, full){
 }
 
 /* (1)(2) 加厚完整性 */
-/* v20a157：C15/C16/C13 重寫做 7 拍（設計稿拍數；字數下限不變，仍過門檻），其餘仍 ≥8 拍 */
-const FLOOR = { C6:350, C7:350, C11:350, C8:350, C9:350, C10:350, C15:350, C14:350, C12:350, C16:380, C13:350, C17:420 };
-const BEAT_FLOOR = { C15:7, C16:7, C13:7 };
+/* v20a157：N12/N15/N16 重寫做 7 拍（設計稿拍數；字數下限不變，仍過門檻），其餘仍 ≥8 拍 */
+const FLOOR = { N6:350, N7:350, N8:350, N9:350, N10:350, N11:350, N12:350, N13:350, N14:350, N15:380, N16:350, N17:420 };
+const BEAT_FLOOR = { N12:7, N15:7, N16:7 };
 for(const id of Object.keys(FLOOR)){
   const n = NODES[id];
   ok(id + ' 節點在位', !!n);
@@ -70,26 +70,26 @@ for(const id of Object.keys(FLOOR)){
   const bf = BEAT_FLOOR[id] || 8;
   ok(id + ' beats ≥' + bf + ' 拍（實 ' + (n.beats || []).length + '）', (n.beats || []).length >= bf);
   ok(id + ' beats 字數 ≥' + FLOOR[id] + '（實 ' + beatChars(n) + '）', beatChars(n) >= FLOOR[id]);
-  if(id !== 'C17'){
+  if(id !== 'N17'){
     ok(id + ' resultBeats 合計 ≥150（實 ' + resultChars(n) + '）', resultChars(n) >= 150);
     ok(id + ' 每個 choice 都有後果拍 resultBeats', (n.choices || []).every(c => (c.resultBeats || []).length >= 1));
   }
-  /* C17 豁免：其 choices 播放時由 ending410EveNode 動態重建（帶 ending410Key），靜態 choices 本來就冇 resultBeats */
+  /* N17 豁免：其 choices 播放時由 ending410EveNode 動態重建（帶 ending410Key），靜態 choices 本來就冇 resultBeats */
 }
-/* C17：choices 由 ending410 動態重建，靜態 choices 同 v136 fixture 逐字一致（fixture slim 口徑逐項比） */
+/* N17：choices 由 ending410 動態重建，靜態 choices 同 v136 fixture 逐字一致（fixture slim 口徑逐項比） */
 {
-  let c17ok = (C17N.choices || []).length === fixture.C17.choices.length;
-  fixture.C17.choices.forEach((fc, i) => {
+  let c17ok = (C17N.choices || []).length === fixture.N17.choices.length;
+  fixture.N17.choices.forEach((fc, i) => {
     const nc = (C17N.choices || [])[i] || {};
     if(nc.id !== fc.id || nc.label !== fc.label || JSON.stringify(nc.effects) !== JSON.stringify(fc.effects)) c17ok = false;
     const nRes = (nc.resultBeats || []).map(b => b.lines || []);
     if(JSON.stringify(nRes) !== JSON.stringify(fc.resultLines)) c17ok = false;
   });
-  ok('C17 choices 同 v136 fixture 逐字一致', c17ok);
+  ok('N17 choices 同 v136 fixture 逐字一致', c17ok);
 }
 
 /* (3) 零回歸：對 fixture 子序列／前綴 */
-/* v20a157：C6–C17 全幕重寫，v136 fixture 文本（beats／label／notes／resultBeats）已由設計稿取代——
+/* v20a157：N6–N17 全幕重寫，v136 fixture 文本（beats／label／notes／resultBeats）已由設計稿取代——
    文本子序列／前綴檢查對重寫幕不再適用（新文本斷言改由 tests/test_story157_index_static.py 承接）；
    此處保留機制等價檢查：choices id 順序不變、每抉擇 flags/stats/tags 同 fixture 一致、flags_written 只增不減。 */
 for(const id of Object.keys(fixture)){
@@ -111,7 +111,7 @@ for(const id of Object.keys(fixture)){
 }
 
 /* (2b) 新第三 choice：旗入帳、幅度唔勁過既有 */
-const NEWC = { C7:'C7_c', C11:'C11_c', C9:'C9_c', C14:'C14_c', C12:'C12_c', C13:'C13_c' };
+const NEWC = { N7:'N7_c', N8:'N8_c', N10:'N10_c', N13:'N13_c', N14:'N14_c', N16:'N16_c' };
 for(const [id, cid] of Object.entries(NEWC)){
   const n = NODES[id];
   const nc = (n.choices || []).find(c => c.id === cid);
@@ -126,7 +126,7 @@ for(const [id, cid] of Object.entries(NEWC)){
 }
 
 /* (4) 補幕結構＋閘 */
-for(const id of ['C18', 'C19']){
+for(const id of ['N18', 'N19']){
   const n = NODES[id];
   ok(id + ' 節點在位', !!n);
   if(!n) continue;
@@ -136,15 +136,15 @@ for(const id of ['C18', 'C19']){
   ok(id + ' CALIB60 標題登記', typeof CTIT[id] === 'string' && CTIT[id].length > 0);
   const g = GATE[id];
   ok(id + ' gate entry 在位（yearMin＋seasonIn）', !!g && g.yearMin != null && Array.isArray(g.seasonIn));
-  /* v20a113：補鏈——C18 需 C5＋weekMin 48（深冬窗，1990-12-01 係第 48 週），C19 需 C18＋weekMin 61
+  /* v20a113：補鏈——N18 需 N5＋weekMin 48（深冬窗，1990-12-01 係第 48 週），N19 需 N18＋weekMin 61
      （1991-03-01 春首日係第 61 週；同 pacing.weekMin 一致） */
-  if(id === 'C18') ok('C18 gate 需 C5＋weekMin 48', !!g && JSON.stringify(g.needDone || []) === '["C5"]' && g.weekMin === 48);
-  if(id === 'C19') ok('C19 gate 需 C18＋weekMin 61', !!g && JSON.stringify(g.needDone || []) === '["C18"]' && g.weekMin === 61);
+  if(id === 'N18') ok('N18 gate 需 N5＋weekMin 48', !!g && JSON.stringify(g.needDone || []) === '["N5"]' && g.weekMin === 48);
+  if(id === 'N19') ok('N19 gate 需 N18＋weekMin 61', !!g && JSON.stringify(g.needDone || []) === '["N18"]' && g.weekMin === 61);
 }
-ok('C18 地點＝何生事務所 agency_ho', NODES.C18.locId === 'agency_ho');
-ok('C19 地點＝獅子山製片 film_lion', NODES.C19.locId === 'film_lion');
-ok('C18 when 用舊標籤 1988冬（YEARS66 +2 → 1990冬）', NODES.C18.when === '1988冬');
-ok('C19 when 用舊標籤 1989春（YEARS66 +2 → 1991春）', NODES.C19.when === '1989春');
+ok('N18 地點＝何生事務所 agency_ho', NODES.N18.locId === 'agency_ho');
+ok('N19 地點＝獅子山製片 film_lion', NODES.N19.locId === 'film_lion');
+ok('N18 when 用舊標籤 1988冬（YEARS66 +2 → 1990冬）', NODES.N18.when === '1988冬');
+ok('N19 when 用舊標籤 1989春（YEARS66 +2 → 1991春）', NODES.N19.when === '1989春');
 /* gate 規則模擬（evalGate3Y 對 yearMin/seasonIn/needDone/weekMin 四項嘅文件化行為；
    doneIds＝已完成幕清單，week＝而家週數；預設 done 齊＋週數夠，等舊式呼叫照舊通過） */
 function gatePass(id, year, season, doneIds, week){
@@ -158,26 +158,26 @@ function gatePass(id, year, season, doneIds, week){
   if(g.yearEq != null && year !== g.yearEq) return false;
   return true;
 }
-ok('C18 1990冬 開（C5 已做＋第 48 週）', gatePass('C18', 1990, '冬', ['C5'], 48));
-ok('C18 1990秋 唔開（未入冬）', !gatePass('C18', 1990, '秋', ['C5'], 48));
-ok('C18 1991冬 仍開（yearMin 非 yearEq）', gatePass('C18', 1991, '冬', ['C5'], 100));
-ok('C18 1990冬 第 2 週 唔開（未到第 48 週——v113 舉報個案）', !gatePass('C18', 1990, '冬', ['C5'], 2));
-ok('C18 1990冬 C5 未做 唔開（前置未完成）', !gatePass('C18', 1990, '冬', [], 48));
-ok('C19 1991春 開（C18 已做＋第 61 週）', gatePass('C19', 1991, '春', ['C18'], 61));
-ok('C19 1991春 C18 未做 唔開（前置未完成）', !gatePass('C19', 1991, '春', [], 61));
-ok('C19 1990春 唔開（未夠年份）', !gatePass('C19', 1990, '春', ['C18'], 61));
-ok('C19 1991冬 唔開（過季）', !gatePass('C19', 1991, '冬', ['C18'], 61));
+ok('N18 1990冬 開（N5 已做＋第 48 週）', gatePass('N18', 1990, '冬', ['N5'], 48));
+ok('N18 1990秋 唔開（未入冬）', !gatePass('N18', 1990, '秋', ['N5'], 48));
+ok('N18 1991冬 仍開（yearMin 非 yearEq）', gatePass('N18', 1991, '冬', ['N5'], 100));
+ok('N18 1990冬 第 2 週 唔開（未到第 48 週——v113 舉報個案）', !gatePass('N18', 1990, '冬', ['N5'], 2));
+ok('N18 1990冬 N5 未做 唔開（前置未完成）', !gatePass('N18', 1990, '冬', [], 48));
+ok('N19 1991春 開（N18 已做＋第 61 週）', gatePass('N19', 1991, '春', ['N18'], 61));
+ok('N19 1991春 N18 未做 唔開（前置未完成）', !gatePass('N19', 1991, '春', [], 61));
+ok('N19 1990春 唔開（未夠年份）', !gatePass('N19', 1990, '春', ['N18'], 61));
+ok('N19 1991冬 唔開（過季）', !gatePass('N19', 1991, '冬', ['N18'], 61));
 
 /* (5) 注入冪等 */
 {
   const fnSrc = extractFn('applyStoryWf1Nodes80');
-  const sandbox = { STORY_SPINE_NODES_WF1: WF1, STORY_WIRE: { main: { nodes: [{ id: 'C1' }] } } };
+  const sandbox = { STORY_SPINE_NODES_WF1: WF1, STORY_WIRE: { main: { nodes: [{ id: 'N1' }] } } };
   const run = new Function('STORY_SPINE_NODES_WF1', 'STORY_WIRE', fnSrc + '\nreturn applyStoryWf1Nodes80();');
   const r1 = run(sandbox.STORY_SPINE_NODES_WF1, sandbox.STORY_WIRE);
   const ids1 = sandbox.STORY_WIRE.main.nodes.map(n => n.id);
   const r2 = run(sandbox.STORY_SPINE_NODES_WF1, sandbox.STORY_WIRE);
   const ids2 = sandbox.STORY_WIRE.main.nodes.map(n => n.id);
-  ok('注入首次加入 C18/C19', r1.main === 2 && ids1.includes('C18') && ids1.includes('C19'));
+  ok('注入首次加入 N18/N19', r1.main === 2 && ids1.includes('N18') && ids1.includes('N19'));
   ok('注入冪等（行第二次零新增）', r2.main === 0 && JSON.stringify(ids1) === JSON.stringify(ids2));
 }
 
@@ -188,7 +188,7 @@ ok('C19 1991冬 唔開（過季）', !gatePass('C19', 1991, '冬', ['C18'], 61))
   ok('14 節點全文冇真人名', realNames.every(x => !all.includes(x)));
   ok('全文冇關海媚名（只准稱號）', !all.includes('關海媚'));
   /* 年份紅線只管玩家面欄位；openConditionsNote 等 DEV 註解欄唔出玩家面，排除 */
-  const playerTxt = ['C18', 'C19'].map(id => {
+  const playerTxt = ['N18', 'N19'].map(id => {
     const n = WF1[id];
     return JSON.stringify({ title: n.title, when: n.when, setting: n.setting, synopsis: n.synopsis, beats: n.beats, choices: n.choices });
   }).join('\n');

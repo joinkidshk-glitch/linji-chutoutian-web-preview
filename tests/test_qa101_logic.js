@@ -3,7 +3,7 @@
 //   （ENC79_STARS 定義、S.stars 實際寫入 key、v100 GH 回望 pf100 讀法都係 pang_siuki），
 //   好感路（fav ≥45）喺真存檔永遠讀唔到值。本版修返讀 pang_siuki。
 // 驗證：(1) 好感路：真 id fav 45 → true、fav 44 → false；
-//       (2) 債權路（credit_enc84_pang_patron）同 C10 路不受影響、各自成立；
+//       (2) 債權路（credit_enc84_pang_patron）同 N11 路不受影響、各自成立；
 //       (3) 全判定：綜藝專長弧＋真 id 好感 50 → resolveEnding410 出 GH；
 //           好感得 44 又冇其他兩路 → 唔入 GH（落下一格）。
 // 反證：喺 v20a100 index 上行 → 好感路斷言 FAIL（舊 code 讀錯 key）。
@@ -103,11 +103,11 @@ ok('好感路：pang_siuki fav 44 → false（門檻冇郁）',
 ok('好感路：冇 stars → false 唔 crash',
   end95PangProgress(baseSave({ stars: {} })) === false && end95PangProgress({}) === false);
 
-/* (2) 債權路／C10 路各自成立（不受 key 修復影響） */
+/* (2) 債權路／N11 路各自成立（不受 key 修復影響） */
 ok('債權路：持有 credit_enc84_pang_patron → true（冇好感都得）',
   end95PangProgress(baseSave({ mockCredits: [{ id: 'credit_enc84_pang_patron', amount: 1 }] })) === true);
-ok('C10 路：主線 C10 done → true（冇好感冇債權都得）',
-  end95PangProgress(baseSave({ story: { flags: {}, rel: {}, done: { C10: true }, choices: {} } })) === true);
+ok('N11 路：主線 N11 done → true（冇好感冇債權都得）',
+  end95PangProgress(baseSave({ story: { flags: {}, rel: {}, done: { N11: true }, choices: {} } })) === true);
 ok('三路皆冇 → false',
   end95PangProgress(baseSave({})) === false);
 
@@ -121,15 +121,15 @@ const ghStats = () => stats95({ total: 55,
 }
 {
   const r = R(arc(100, 90, { careerStats95: ghStats(), stars: { pang_siuki: { fav: 44 } } }));
-  ok('全判定：好感 44 又冇債權/C10 → 唔入 GH', r.career !== 'GH');
+  ok('全判定：好感 44 又冇債權/N11 → 唔入 GH', r.career !== 'GH');
 }
 {
   const r = R(arc(100, 90, { careerStats95: ghStats(), mockCredits: [{ id: 'credit_enc84_pang_patron', amount: 1 }] }));
   ok('全判定：債權路單獨 → GH', r.career === 'GH');
 }
 {
-  const r = R(arc(100, 90, { careerStats95: ghStats(), story: { flags: {}, rel: {}, done: { C10: true }, choices: {} } }));
-  ok('全判定：C10 路單獨 → GH', r.career === 'GH');
+  const r = R(arc(100, 90, { careerStats95: ghStats(), story: { flags: {}, rel: {}, done: { N11: true }, choices: {} } }));
+  ok('全判定：N11 路單獨 → GH', r.career === 'GH');
 }
 
 /* ---------- CHK101 支票：大寫金額轉換＋金額保真 ---------- */

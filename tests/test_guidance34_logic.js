@@ -105,7 +105,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
 })();
 
 /* ================================================================
-   段二 (b)：P0-3——真 BehaviorGate（真 LOCS／真 MOCK_ASK）＋真 stub 注入 C2 閘
+   段二 (b)：P0-3——真 BehaviorGate（真 LOCS／真 MOCK_ASK）＋真 stub 注入 N2 閘
    底欄 remain：傳聞步要講明去茶餐廳／事務所打聽（唔指向電視台）；地點步係「播」。
    鎖定說明：連行動名（打聽電視城規矩／請教何生入廠守則）。
    ================================================================ */
@@ -141,8 +141,8 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
     stubRev: 'v1.3.0-full-literal-or', liveWeekGateStillActive: true, tipForbidden: true,
     engineSlice: { flags: { liveWeekGateStillActive: true, tipForbidden: true, rivalGaoMixC5: false, change89to92: false },
       iosSoftHooks: [1,2,3,4,5,6,7] },
-    nodes: [ { beatId:'C2', id:'C2', title:'留人脈／趕通告',
-      trigger: { needDone:['C1'], weekMin:4, gigCountMin:3,
+    nodes: [ { beatId:'N2', id:'N2', title:'留人脈／趕通告',
+      trigger: { needDone:['N1'], weekMin:4, gigCountMin:3,
         rumorAny:['tvb_rules_gossip'], locIdAny:['tvb_longmen','cafe_cha'] } } ]
   });
   ok('b1 stub ingested', !!load.ok);
@@ -151,7 +151,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
     castingTags: [], mockDebts: [], mockRumors: [], wrapHistory: [], flags: {}, npcs: {},
     story: { done:{}, flags:{}, rel:{}, routes:{}, phase:'P1' } };
 
-  const pt = BehaviorGate.progressToward({ beatId:'C2' });
+  const pt = BehaviorGate.progressToward({ beatId:'N2' });
   ok('b2 progressToward returns remain', !!pt && Array.isArray(pt.remain));
   const rumorItem = (pt.remain||[]).find(x=>x.indexOf('未聽聞')===0) || '';
   const locItem = (pt.remain||[]).find(x=>x.indexOf('到')===0) || '';
@@ -160,7 +160,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   ok('b4 rumor step does NOT point at TV station', rumorItem.indexOf('星河電視台') < 0);
   ok('b5 bottom bar loc step marked as play location', locItem === '到星河電視台或金龍茶餐廳播');
 
-  const lock = BehaviorGate.lockedCopy_noEngineeringTerms({ beatId:'C2' });
+  const lock = BehaviorGate.lockedCopy_noEngineeringTerms({ beatId:'N2' });
   ok('b6 lock line names exact ask actions',
      lock.indexOf('未聽聞「電視城廠景生存守則」（去金龍茶餐廳「打聽電視城規矩」或去何生事務所「請教何生入廠守則」）') >= 0);
 })();
@@ -428,7 +428,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
 /* ================================================================
    段六 (f)：P1-1(b)——真 dualTrackExplainHtml34。
    v20a37 改約：舊約「有正 delta 先出」經實機證實喺真路徑永不觸發
-   （C1／C2 揀嘅 effects.stats 全空、delta 永遠 0）；新約係第一次事態
+   （N1／N2 揀嘅 effects.stats 全空、delta 永遠 0）；新約係第一次事態
    結算展示雙軌面板（result 帶 dual 物件）就出、只出一次；冇 result／
    冇 dual 物件唔出亦唔燒旗。真路徑覆核喺 test_verify37_logic.js 段一。
    ================================================================ */
@@ -442,7 +442,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   const rE = dualTrackExplainHtml34({});
   ok('f2 result without dual object: no explainer, flag untouched', rE === '' && !S.flags.guidanceDualExplained34);
   const r0 = dualTrackExplainHtml34({ dual:{ dStage:0, dCredit:0 } });
-  ok('f3 first real settle (zero delta, C1/C2 shape): explainer shown with grounded scale',
+  ok('f3 first real settle (zero delta, N1/N2 shape): explainer shown with grounded scale',
      r0.indexOf('聲望＝觀眾識唔識你') >= 0 && r0.indexOf('15') >= 0 && r0.indexOf('40') >= 0
      && r0.indexOf('信用＝行內人信唔信你') >= 0);
   ok('f4 flag set after showing', S.flags.guidanceDualExplained34 === true);

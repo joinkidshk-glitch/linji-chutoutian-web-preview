@@ -7,7 +7,7 @@
 //     v20a65 FIX65-2 更新：v60 嘅「同 v59 逐蚊一致」紅線已被取代——全弧驗證第二輪實測舊帶（wk13+ $2,400）
 //     令「有工就做」型玩家 wk14 結構性破產、E7 評核支永遠到達唔到；新紅線＝首年緩坡 1100/1300/1500/1700。
 //     1989/1990 加幅正確；散工正薪 fame≥200 ×0.75、補場 $800 不變；
-// (4) 節點漏失：過窗登記／完成除名／C17 收科豁免／normalizeSaveObj 舊檔靜靜補登；
+// (4) 節點漏失：過窗登記／完成除名／N17 收科豁免／normalizeSaveObj 舊檔靜靜補登；
 // (5) 聲樂：預設計劃輪入 train_vocal（演技優先次序保留）、bestTrainJumpForGig frozenVocal 偵測；
 // (6) tutorialFxFingerErr 顯式發布去 window＋fallback 行為。
 // 反證：對 v20a59 index 行 → CALIB60 函數唔存在 → FAIL。
@@ -195,26 +195,26 @@ function missState(dayIndex, done){
 let ms = missState(DAY(1991, 10, 15));
 let newly = calib60MissedScan(ms);
 const newlyIds = newly.map(x => x.id).sort();
-/* v20a80 WF1 改版：補幕 C18（1990 冬窗）／C19（1991 春窗）喺 1991 秋中同樣已過窗，一併登記漏失 */
-ok('1991 秋中：C6（1990 窗）＋C7（夏窗）＋C18／C19（WF1 補幕窗）登記漏失', newlyIds.join() === 'C18,C19,C6,C7');
-ok('漏失紀錄帶標題＋時期（唔劇透）', ms.calib60Missed.C7.title === '暴雨救場' && ms.calib60Missed.C7.whenLabel === '1991 年夏');
-ok('C11（夏／秋窗）秋未完窗唔登記', !ms.calib60Missed.C11);
-ok('C8（秋窗）身處秋季唔登記', !ms.calib60Missed.C8);
-ms.story.done.C7 = true;
+/* v20a80 WF1 改版：補幕 N18（1990 冬窗）／N19（1991 春窗）喺 1991 秋中同樣已過窗，一併登記漏失 */
+ok('1991 秋中：N6（1990 窗）＋N7（夏窗）＋N18／N19（WF1 補幕窗）登記漏失', newlyIds.join() === 'N18,N19,N6,N7');
+ok('漏失紀錄帶標題＋時期（唔劇透）', ms.calib60Missed.N7.title === '暴雨救場' && ms.calib60Missed.N7.whenLabel === '1991 年夏');
+ok('N8（夏／秋窗）秋未完窗唔登記', !ms.calib60Missed.N8);
+ok('N9（秋窗）身處秋季唔登記', !ms.calib60Missed.N9);
+ms.story.done.N7 = true;
 calib60MissedScan(ms);
-ok('其後完成 → 自動除名', !ms.calib60Missed.C7 && !!ms.calib60Missed.C6);
+ok('其後完成 → 自動除名', !ms.calib60Missed.N7 && !!ms.calib60Missed.N6);
 let ms2 = missState(DAY(1991, 6, 1));
 calib60MissedScan(ms2);
-ok('1991 夏初：得 C6 過窗，C7 未', !!ms2.calib60Missed.C6 && !ms2.calib60Missed.C7);
+ok('1991 夏初：得 N6 過窗，N7 未', !!ms2.calib60Missed.N6 && !ms2.calib60Missed.N7);
 let ms3 = missState(DAY(1993, 3, 15)); ms3.ending410 = { kind: 'E1' };
 calib60MissedScan(ms3);
-ok('已收科（ending410）→ C17 唔登記', !ms3.calib60Missed.C17);
+ok('已收科（ending410）→ N17 唔登記', !ms3.calib60Missed.N17);
 let ms4 = missState(DAY(1993, 3, 15));
 calib60MissedScan(ms4);
-ok('未收科過 1992 冬 → C17 登記', !!ms4.calib60Missed.C17);
-const oldSave = { dayIndex: DAY(1991, 10, 15), story: { done: { C6: true } }, stress: 50, fame: 10, stage: 5, acting: 5, industryCreditDelta: 0 };
+ok('未收科過 1992 冬 → N17 登記', !!ms4.calib60Missed.N17);
+const oldSave = { dayIndex: DAY(1991, 10, 15), story: { done: { N6: true } }, stress: 50, fame: 10, stage: 5, acting: 5, industryCreditDelta: 0 };
 const normed = normalizeSaveObj(JSON.parse(JSON.stringify(oldSave)));
-ok('舊檔 normalize 靜靜補登：C7 入回憶、C6（已完成）唔入', !!normed.calib60Missed && !!normed.calib60Missed.C7 && !normed.calib60Missed.C6);
+ok('舊檔 normalize 靜靜補登：N7 入回憶、N6（已完成）唔入', !!normed.calib60Missed && !!normed.calib60Missed.N7 && !normed.calib60Missed.N6);
 
 /* ================= (5) 聲樂 ================= */
 function planState(dayIndex, enrolled, trainCount){

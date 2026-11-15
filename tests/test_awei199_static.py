@@ -1,16 +1,16 @@
-# v20a199 DLG199／C1–C3 靜態守門。
+# v20a199 DLG199／N1–N3 靜態守門。
 # 覆蓋：① B1：DLG199_AWEI_REF_AR＝0.345 寫死喺 index.html，且 ≥ 全庫 awi* 全身圖
 #       實測最大 AR（PIL 量度；將來新圖超過 REF 會 FAIL，唔會靜靜雞打回原形）；
 #       dlg108FitApply 有參考 AR＋天花板兩處呼叫、單人步有 cap、DLG108 匯出有新鍵；
 #       DLG109 身高比表原封不動（阿偉三 tier 1.00／彭少祺 0.85／顧明輝・程天諾 1.05）；
 #       WF4 對話圖有 onload __dlg108Fit。
-#       ② C1：hero_awi／awi_s3 bust sha 同 qa199/crop199.json 一致（awi_s2 唔郁，
+#       ② N1：hero_awi／awi_s3 bust sha 同 qa199/crop199.json 一致（awi_s2 唔郁，
 #       見 test_bust109_static.py 交叉比對）。
-#       ③ C2／C3：兩張新 angry 圖存在＋規格（896×2976、透明底、四角 alpha 0、
+#       ③ N2／N3：兩張新 angry 圖存在＋規格（896×2976、透明底、四角 alpha 0、
 #       米白光邊——同 qa199/samples199/bake199_results.json 交叉比對）；
 #       sha 同 v195 舊版唔同（證明真係換咗）；s1 angry 原封不動（v199 當時唔郁佢；
 #       v20a201 將成個 s1 組重生，awi_angry.webp 已換走，見 test_awei201_static.py；
-#       下面 UNTOUCHED 唔再釘佢）；s2／s3 serious 原封不動（C2 對照基線）。
+#       下面 UNTOUCHED 唔再釘佢）；s2／s3 serious 原封不動（N2 對照基線）。
 #       ④ 反證：checker 食舊值（舊 angry sha／REF 過細）必須報問題。
 #       ⑤ 基線不變：SAVE key／softRev／產品 ?v=。
 # 用法：python3 tests/test_awei199_static.py [path-to-index.html]
@@ -69,7 +69,7 @@ for frag in ['"awi":1.00, "awi_s2":1.00, "awi_s3":1.00', '"pang_siuki":0.85',
 ck("WF4 對話圖有 onload __dlg108Fit",
    'onload="try{window.__dlg108Fit&&window.__dlg108Fit(this)}catch(_e){}" onerror="try{window.__dlg106Err' in src)
 
-# ---------- ② C1 ----------
+# ---------- ② N1 ----------
 def extract_map(name):
     a = src.index("const %s = {" % name)
     b = src.index("};", a) + 2
@@ -113,7 +113,7 @@ for fn, old in OLD_ANGRY.items():
     p = os.path.join(ROOT, "assets", "story", "fullbody", fn)
     ck(f"{fn} 存在", os.path.exists(p))
     if os.path.exists(p):
-        ck(f"{fn} sha 同 v195 舊版唔同（C2／C3 真係換咗）", file_sha(fn) != old)
+        ck(f"{fn} sha 同 v195 舊版唔同（N2／N3 真係換咗）", file_sha(fn) != old)
         try:
             from PIL import Image
             import numpy as np

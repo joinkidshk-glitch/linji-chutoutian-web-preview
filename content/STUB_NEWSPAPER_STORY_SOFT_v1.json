@@ -13,8 +13,8 @@
     "fameKey": "fame",
     "timing": "enqueue_on_story_choice__popup_next_calendar_morning",
     "fameDeltaGuide": {
-      "story_highlight": "依 PLAN §4：C1 +1；C2 +1～+2；C4 harsh +1～+2；C5 honest +2～+3；hiu +1；choi weekly honest +1～+2",
-      "story_mixed": "C3 hard 0～−1；C3 endure 0～+1；C4 refuse 0～−1；C5 spin +1；C5 dodge 0；choi weekly official 0～+1",
+      "story_highlight": "依 PLAN §4：N1 +1；N2 +1～+2；N4 harsh +1～+2；N5 honest +2～+3；hiu +1；choi weekly honest +1～+2",
+      "story_mixed": "N3 hard 0～−1；N3 endure 0～+1；N4 refuse 0～−1；N5 spin +1；N5 dodge 0；choi weekly official 0～+1",
       "note": "數值可調；玩家面用「聲望」，禁「聲量」。內部 key 仍 fameDelta。周刊誠實紙為即時+1之外的次日公開加成。"
     },
     "note": "報紙＝公開娛樂版；傳聞另冊。Soft tip #102 劇情種子；≠PASS；唔 tip LIVE。條件達成入佇列→第二日朝早彈出。引擎 enqueueFromStory＝iOS（非本包）。R_hiu distant＝skip 入報，無模板。",
@@ -48,8 +48,8 @@
     "story_highlight": [
       {
         "id": "np_story_c1_tv_01",
-        "eventKey": "story:C1:route_tv",
-        "storyBeatId": "C1",
+        "eventKey": "story:N1:route_tv",
+        "storyBeatId": "N1",
         "choiceFlag": "route_tv",
         "tone": "pos",
         "paperName": "電視週刊",
@@ -62,8 +62,8 @@
       },
       {
         "id": "np_story_c1_film_01",
-        "eventKey": "story:C1:route_film",
-        "storyBeatId": "C1",
+        "eventKey": "story:N1:route_film",
+        "storyBeatId": "N1",
         "choiceFlag": "route_film",
         "tone": "pos",
         "paperName": "娛樂快報",
@@ -76,8 +76,8 @@
       },
       {
         "id": "np_story_c2_network_01",
-        "eventKey": "story:C2:network",
-        "storyBeatId": "C2",
+        "eventKey": "story:N2:network",
+        "storyBeatId": "N2",
         "choiceFlag": "flag_network_stay",
         "tone": "pos",
         "paperName": "星河娛樂版",
@@ -90,8 +90,8 @@
       },
       {
         "id": "np_story_c2_hustle_01",
-        "eventKey": "story:C2:hustle",
-        "storyBeatId": "C2",
+        "eventKey": "story:N2:hustle",
+        "storyBeatId": "N2",
         "choiceFlag": "flag_hustle_board",
         "tone": "pos",
         "paperName": "電視週刊",
@@ -104,8 +104,8 @@
       },
       {
         "id": "np_story_c4_harsh_01",
-        "eventKey": "story:C4:take_harsh",
-        "storyBeatId": "C4",
+        "eventKey": "story:N4:take_harsh",
+        "storyBeatId": "N4",
         "choiceFlag": "flag_take_harsh_gig",
         "tone": "pos",
         "paperName": "娛樂快報",
@@ -118,8 +118,8 @@
       },
       {
         "id": "np_story_c5_honest_01",
-        "eventKey": "story:C5:honest",
-        "storyBeatId": "C5",
+        "eventKey": "story:N5:honest",
+        "storyBeatId": "N5",
         "choiceFlag": "choi_honest",
         "tone": "pos",
         "paperName": "電視週刊",
@@ -162,8 +162,8 @@
     "story_mixed": [
       {
         "id": "np_story_c3_hard_01",
-        "eventKey": "story:C3:hard",
-        "storyBeatId": "C3",
+        "eventKey": "story:N3:hard",
+        "storyBeatId": "N3",
         "choiceFlag": "rival_gao_hard",
         "tone": "mixed",
         "paperName": "星河娛樂版",
@@ -176,8 +176,8 @@
       },
       {
         "id": "np_story_c3_endure_01",
-        "eventKey": "story:C3:endure",
-        "storyBeatId": "C3",
+        "eventKey": "story:N3:endure",
+        "storyBeatId": "N3",
         "choiceFlag": "rival_gao_endure",
         "tone": "mixed",
         "paperName": "娛樂快報",
@@ -190,8 +190,8 @@
       },
       {
         "id": "np_story_c4_refuse_01",
-        "eventKey": "story:C4:refuse",
-        "storyBeatId": "C4",
+        "eventKey": "story:N4:refuse",
+        "storyBeatId": "N4",
         "choiceFlag": "flag_refuse_gig_with_ho",
         "tone": "mixed",
         "paperName": "娛樂快報",
@@ -204,8 +204,8 @@
       },
       {
         "id": "np_story_c5_spin_01",
-        "eventKey": "story:C5:spin",
-        "storyBeatId": "C5",
+        "eventKey": "story:N5:spin",
+        "storyBeatId": "N5",
         "choiceFlag": "choi_spin",
         "tone": "mixed",
         "paperName": "電視週刊",
@@ -218,8 +218,8 @@
       },
       {
         "id": "np_story_c5_dodge_01",
-        "eventKey": "story:C5:dodge",
-        "storyBeatId": "C5",
+        "eventKey": "story:N5:dodge",
+        "storyBeatId": "N5",
         "choiceFlag": "choi_dodge",
         "tone": "mixed",
         "paperName": "星河娛樂版",

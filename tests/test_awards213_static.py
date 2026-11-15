@@ -1,9 +1,9 @@
 # v20a213 請柬提前 3 日＋典禮改晚上播・static tests：
-# 1. 請柬窗口＝[典禮日−3, 典禮日]（季節配對唔再係閘；week 閘＋C10 讓路照留）。
+# 1. 請柬窗口＝[典禮日−3, 典禮日]（季節配對唔再係閘；week 閘＋N11 讓路照留）。
 # 2. 請柬決定＝預約（book attend／decline），唔即播；晚間播掛喺晨鏈頭＋日結續鏈；典禮日係關鍵日。
 # 3. 報紙 publishDay＝典禮日＋1（override 嗰陣先改，冇 override 照舊 day+1）。
 # 4. 請柬文案有 stamp 寫實日期，冇 stamp 跌返「今晚」。
-# 5. 唔郁嘅嘢：贏線 0.875、獎項表、報紙翌日規則、C10 anti-stack、SAVE key、softRev s107、?v=v20a10。
+# 5. 唔郁嘅嘢：贏線 0.875、獎項表、報紙翌日規則、N11 anti-stack、SAVE key、softRev s107、?v=v20a10。
 # 反證: run against pristine main f58f19c index -> v213 標記未入 -> FAIL（唔 crash）。
 # 用法：python3 tests/test_awards213_static.py [path-to-index.html]
 import re
@@ -65,7 +65,7 @@ chk('1：典禮日＝季節首日（春 3／夏 6／秋 9／冬 12）',
 chk('1：queue 用窗口 [典禮日−3, 典禮日] 判', 'cerDay213 - AWARDS213_LEAD_DAYS' in queue_fn)
 chk('1：queue 唔再用季節配對做閘（請柬日仲係上一季）', '!awardsSeasonMatches(ceremony)' not in queue_fn)
 chk('1：queue week 閘照留（雙保險）', 'awardsWeekOk(ceremony)' in queue_fn)
-chk('1：queue C10 讓路照留（TV only＋ignoreC10）',
+chk('1：queue N11 讓路照留（TV only＋ignoreC10）',
     'softC10WindowActive()' in queue_fn and 'ignoreC10' in queue_fn)
 chk('1：queue 決定咗唔重排（HasBooked 閘）', 'awards213HasBooked(year, ceremony.id)' in queue_fn)
 chk('1：queue 印典禮日＋請柬日 stamp',
@@ -119,7 +119,7 @@ chk('唔郁：典禮本身逐格流程（awards62PlayCeremony 仲在）', 'funct
 chk('唔郁：SAVE key', 'starVolunteer_map_v19w' in src)
 chk('唔郁：softRev s107', 'softRev:"s107"' in src)
 chk('唔郁：?v=v20a10', 'version:"v20a10"' in src)
-chk('唔郁：C10 anti-stack 函數本身唔郁（49–52 週）',
+chk('唔郁：N11 anti-stack 函數本身唔郁（49–52 週）',
     'wkInYear < 49 || wkInYear > 52' in src)
 chk('唔郁：請柬掣仲係「出席／推辭」', '"出席"' in present_fn and '"推辭"' in present_fn)
 

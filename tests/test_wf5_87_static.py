@@ -36,7 +36,7 @@ ok("getFlag alias 註記", "前綴 alias" in idx)
 # F3 標記
 ok("LIVE 補季節", "由同一來源字串補返季節" in idx)
 ok("soft 年份跟 when", "年份跟節點 when" in idx)
-ok("F3d 標籤短路只保留 C1", "標籤短路只保留 C1 本人" in idx)
+ok("F3d 標籤短路只保留 N1", "標籤短路只保留 N1 本人" in idx)
 ok("p3when 期望已更新", '"主線 · 1988秋"' in idx)
 
 # 變體覆寫標記＋call site
@@ -46,8 +46,8 @@ ok("WF5 call site", "applyVariantWf5Overrides87(dengMock, dengPushMock, dualMock
 
 # pack JSON 冇直改（同 v86 出貨副本逐檔 sha 對照）
 # v157 豁免（已拍板，窄化）：story_detail_c1_to_c17.json 只准 nodes[0-4] 改動
-# （C1–C5 重寫，v157 brief＋SCOUT §3.1）；此處改為對照 nodes[5:] sha，證明死版
-# C6–C17 一字唔郁；其餘 7 檔仍逐檔全檔 sha 對照。
+# （N1–N5 重寫，v157 brief＋SCOUT §3.1）；此處改為對照 nodes[5:] sha，證明死版
+# N6–N17 一字唔郁；其餘 7 檔仍逐檔全檔 sha 對照。
 import json
 def sha_nodes_tail(p):
     try:
@@ -80,8 +80,11 @@ for p in packs:
         ok("pack v151 只刪禁令 flag: " + p, base_txt.replace(V151_FLAG_LINE, "") == cur_txt)
     else:
         ok("pack 冇直改: " + p, sha(os.path.join(ROOT, p)) == sha(os.path.join(BASE, p)))
-ok("pack 只改 nodes[0-4]: content/story_detail_c1_to_c17.json",
-   sha_nodes_tail(os.path.join(ROOT, "content/story_detail_c1_to_c17.json"))
+# v20a210：ROOT 檔已改名做 story_detail_n1_to_n17.json（BASE 係 v86 凍結副本，舊名不變）。
+# 注意：呢個尾段對照喺 v210 之後就算 BASE 喺度都唔會過——nodes[5:] 經純改名（79 行逐行核實只係 C<n>→N<m>），
+# 要過就要先將 BASE 尾段按對照表映射再對照；BASE 目錄本身已唔存在（本機已刪），呢個測試喺基線已經係穩定 FAIL，唔喺呢票修。
+ok("pack 只改 nodes[0-4]: content/story_detail_n1_to_n17.json",
+   sha_nodes_tail(os.path.join(ROOT, "content/story_detail_n1_to_n17.json"))
    == sha_nodes_tail(os.path.join(BASE, "content/story_detail_c1_to_c17.json")))
 
 # 審計腳本留底

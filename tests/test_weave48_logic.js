@@ -1,7 +1,7 @@
 // WEAVE_PHASE4_8 邏輯測試（v20a31）：
-// 行真路徑——STORY_SPINE_NODES_1990／STORY_SPINE_NODES_C6／ROMANCE_LAN_PA_OVERRIDES 覆寫
+// 行真路徑——STORY_SPINE_NODES_1990／STORY_SPINE_NODES_N6／ROMANCE_LAN_PA_OVERRIDES 覆寫
 // （applyStorySpineOverrides48 套落真 pack nodes）→ StoryOC.listOpen({player:true}) 真 offer 路徑
-// → StoryOC.applyChoice 真寫入 → story48SettleTick 真結算（C15／C13 債權登記）
+// → StoryOC.applyChoice 真寫入 → story48SettleTick 真結算（N12／N16 債權登記）
 // → COMMIT48 真可用性／真 applyChoice 落旗（commit 互斥／窗口／rel 門檻／crisis 前置）
 // → paperSideItemForDay 真 picker（程天諾預熱年份閘）
 // → newspaperStoryResolve 真函數證明 commit 新旗唔生報紙。
@@ -12,7 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-const pack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_c1_to_c17.json'), 'utf8'));
+const pack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_n1_to_n17.json'), 'utf8'));
 const romVHC = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_romance_vera_hiu_choi.json'), 'utf8'));
 const romLX = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_romance_lan_xu.json'), 'utf8'));
 
@@ -109,16 +109,16 @@ const SRC = [
   extractConst('STORY_GATE_3Y'),
   extractConst('STORY_SPINE_NODES_1989'),
   extractConst('STORY_SPINE_NODES_1990'),
-  extractConst('STORY_SPINE_NODES_C6'),
+  extractConst('STORY_SPINE_NODES_N6'),
   extractConst('ROMANCE_LAN_PA_OVERRIDES'),
   extractConst('STORY_LOC_SOFT'),
   extractConst('STORY_HINT_SOFT'),
   extractConst('STORY_TITLE_SOFT'),
-  extractConst('STORY46_CREDIT_C7'),
-  extractConst('STORY46_CREDIT_C9'),
+  extractConst('STORY46_CREDIT_N7'),
+  extractConst('STORY46_CREDIT_N10'),
   extractConst('STORY46_GIFT_ID'),
-  extractConst('STORY48_CREDIT_C15'),
-  extractConst('STORY48_CREDIT_C13'),
+  extractConst('STORY48_CREDIT_N12'),
+  extractConst('STORY48_CREDIT_N16'),
   extractConst('CHOICE47_SEASON_IDX'),
   extractConst('COMMIT48_NODES'),
   extractConst('COMMIT48_DEFS'),
@@ -132,16 +132,16 @@ const SRC = [
  .replace('const STORY_GATE_3Y =', 'var STORY_GATE_3Y =')
  .replace('const STORY_SPINE_NODES_1989 =', 'var STORY_SPINE_NODES_1989 =')
  .replace('const STORY_SPINE_NODES_1990 =', 'var STORY_SPINE_NODES_1990 =')
- .replace('const STORY_SPINE_NODES_C6 =', 'var STORY_SPINE_NODES_C6 =')
+ .replace('const STORY_SPINE_NODES_N6 =', 'var STORY_SPINE_NODES_N6 =')
  .replace('const ROMANCE_LAN_PA_OVERRIDES =', 'var ROMANCE_LAN_PA_OVERRIDES =')
  .replace('const STORY_LOC_SOFT =', 'var STORY_LOC_SOFT =')
  .replace('const STORY_HINT_SOFT =', 'var STORY_HINT_SOFT =')
  .replace('const STORY_TITLE_SOFT =', 'var STORY_TITLE_SOFT =')
- .replace('const STORY46_CREDIT_C7 =', 'var STORY46_CREDIT_C7 =')
- .replace('const STORY46_CREDIT_C9 =', 'var STORY46_CREDIT_C9 =')
+ .replace('const STORY46_CREDIT_N7 =', 'var STORY46_CREDIT_N7 =')
+ .replace('const STORY46_CREDIT_N10 =', 'var STORY46_CREDIT_N10 =')
  .replace('const STORY46_GIFT_ID =', 'var STORY46_GIFT_ID =')
- .replace('const STORY48_CREDIT_C15 =', 'var STORY48_CREDIT_C15 =')
- .replace('const STORY48_CREDIT_C13 =', 'var STORY48_CREDIT_C13 =')
+ .replace('const STORY48_CREDIT_N12 =', 'var STORY48_CREDIT_N12 =')
+ .replace('const STORY48_CREDIT_N16 =', 'var STORY48_CREDIT_N16 =')
  .replace('const CHOICE47_SEASON_IDX =', 'var CHOICE47_SEASON_IDX =')
  .replace('const COMMIT48_NODES =', 'var COMMIT48_NODES =')
  .replace('const COMMIT48_DEFS =', 'var COMMIT48_DEFS =')
@@ -197,9 +197,9 @@ function canon(o){
 /* ---- 覆寫完整性 ---- */
 loadGame(baseSave());
 {
-  const t = { C15: ['高危替身', 'film_harbour', '麥震東'], C14: ['企邊', 'tvb_longmen', '齊鎮海'],
-              C12: ['樂壇前哨', 'rec_star', '陸柏言'], C16: ['偶像實力之爭', 'rec_star', '程天諾'],
-              C13: ['賀歲片', 'film_cotton', '廖炳星'] };
+  const t = { N12: ['高危替身', 'film_harbour', '麥震東'], N13: ['企邊', 'tvb_longmen', '齊鎮海'],
+              N14: ['樂壇前哨', 'rec_star', '陸柏言'], N15: ['偶像實力之爭', 'rec_star', '程天諾'],
+              N16: ['賀歲片', 'film_cotton', '廖炳星'] };
   let allOk = true;
   Object.keys(t).forEach(id => {
     const n = node(id);
@@ -208,16 +208,16 @@ loadGame(baseSave());
   ok('覆寫完整性：1992 五節點標題／場地／紅星跟主幹', allOk);
   const stale = ['賀歲搶位', '緋聞公關真假', '尊重或包養', '聯姻逼退圈', '舊底片', '金九'];
   let clean = true;
-  ['C12','C13','C14','C15','C16'].forEach(id => { if(stale.some(w => JSON.stringify(node(id)).includes(w))) clean = false; });
+  ['N14','N16','N13','N12','N15'].forEach(id => { if(stale.some(w => JSON.stringify(node(id)).includes(w))) clean = false; });
   ok('覆寫完整性：pack 自創線殘留字串清零（金九舊底片等）', clean);
-  const c6 = node('C6');
-  ok('C6 對齊 Qwen：標題「角落那張桌子」（v157 新標題，v221 書面語改寫）＋場地 tvb_longmen＋無約會旗／無 rel 加成',
+  const c6 = node('N6');
+  ok('N6 對齊 Qwen：標題「角落那張桌子」（v157 新標題，v221 書面語改寫）＋場地 tvb_longmen＋無約會旗／無 rel 加成',
      c6.title === '角落那張桌子' && c6.locId === 'tvb_longmen'
      && !JSON.stringify(c6).includes('date_')
      && (c6.choices || []).every(c => !Object.keys(((c.effects || {}).stats) || {}).some(k => k.startsWith('rel_')))
      && StoryOC.getFlag && c6.flags_written.includes('flag_canteen_grind'));
   const r2 = applyStorySpineOverrides48();
-  ok('覆寫冪等：再套一次 main=6/lan=5、結果不變', r2.main === 6 && r2.lan === 5 && node('C15').title === '高危替身');
+  ok('覆寫冪等：再套一次 main=6/lan=5、結果不變', r2.main === 6 && r2.lan === 5 && node('N12').title === '高危替身');
 }
 
 /* ---- 藍 PA 化：結構層同 pack 逐項一致、文字層零歌手向 ---- */
@@ -264,157 +264,157 @@ loadGame(baseSave());
      (() => { const st = endingRomanceState48(); return ['hiu','choi','vera','lan','xu'].every(k => st[k] && st[k].met === false && st[k].rel === 0 && st[k].committed === false); })());
 }
 
-/* ---- N12＝C15（v20a113：補鏈，需 C10 done） ---- */
+/* ---- N12（v20a113：補鏈，需 N11 done） ---- */
 function c15Save(over){
   return baseSave(Object.assign({
     dayIndex: dayIndexOf(1992, 4, 15), fame: 20,
     castingTags: [{ id: 'tag_action', label: '動作演員' }],
-    story: { flags: {}, rel: {}, done: { C10: true }, choices: {} },
+    story: { flags: {}, rel: {}, done: { N11: true }, choices: {} },
   }, over || {}));
 }
 loadGame(c15Save());
-ok('C15：1992 春＋動作標籤 → offer 喺 film_harbour', !!openRow('C15') && openRow('C15').locId === 'film_harbour');
+ok('N12：1992 春＋動作標籤 → offer 喺 film_harbour', !!openRow('N12') && openRow('N12').locId === 'film_harbour');
 loadGame(c15Save({ story: { flags: {}, rel: {}, done: {}, choices: {} } }));
-ok('C15：C10 未做唔出現', !openIds().includes('C15'));
+ok('N12：N11 未做唔出現', !openIds().includes('N12'));
 loadGame(c15Save({ castingTags: [] }));
-ok('C15：冇動作標籤唔出現', !openIds().includes('C15'));
+ok('N12：冇動作標籤唔出現', !openIds().includes('N12'));
 loadGame(c15Save({ dayIndex: dayIndexOf(1991, 4, 15) }));
-ok('C15：1991 唔出現', !openIds().includes('C15'));
+ok('N12：1991 唔出現', !openIds().includes('N12'));
 loadGame(c15Save({ dayIndex: dayIndexOf(1992, 7, 15) }));
-ok('C15：1992 夏（非春）唔出現', !openIds().includes('C15'));
+ok('N12：1992 夏（非春）唔出現', !openIds().includes('N12'));
 {
   const s = loadGame(c15Save());
-  StoryOC.applyChoice(node('C15'), choice('C15', 'C15_a'));
-  ok('C15_a：done＋flag_stunt_double＋聲量 20→23＋「搏命」標籤',
-     StoryOC.isDone('C15') && !!StoryOC.getFlag('flag_stunt_double') && s.fame === 23 && s.castingTags.some(t => t.label === '搏命'));
+  StoryOC.applyChoice(node('N12'), choice('N12', 'N12_a'));
+  ok('N12_a：done＋flag_stunt_double＋聲量 20→23＋「搏命」標籤',
+     StoryOC.isDone('N12') && !!StoryOC.getFlag('flag_stunt_double') && s.fame === 23 && s.castingTags.some(t => t.label === '搏命'));
   story48SettleTick();
-  ok('C15_a：tick 登記債權 credit_c15_stunt＋ledger credits=1',
+  ok('N12_a：tick 登記債權 credit_c15_stunt＋ledger credits=1',
      s.mockCredits.some(c => c.id === 'credit_c15_stunt') && favorLedgerCounts().credits === 1);
   story48SettleTick();
-  ok('C15_a：tick 重行唔雙計', s.mockCredits.filter(c => c.id === 'credit_c15_stunt').length === 1 && favorLedgerCounts().credits === 1);
+  ok('N12_a：tick 重行唔雙計', s.mockCredits.filter(c => c.id === 'credit_c15_stunt').length === 1 && favorLedgerCounts().credits === 1);
 }
 {
   const s = loadGame(c15Save());
-  StoryOC.applyChoice(node('C15'), choice('C15', 'C15_b'));
+  StoryOC.applyChoice(node('N12'), choice('N12', 'N12_b'));
   story48SettleTick();
-  ok('C15_b：flag_stunt_refuse＋「惜身」標籤＋tick 唔登記債權',
+  ok('N12_b：flag_stunt_refuse＋「惜身」標籤＋tick 唔登記債權',
      !!StoryOC.getFlag('flag_stunt_refuse') && s.castingTags.some(t => t.label === '惜身') && !s.mockCredits.some(c => c.id === 'credit_c15_stunt'));
 }
 
-/* ---- N13＝C14 ---- */
+/* ---- N13 ---- */
 function c14Save(over){
   return baseSave(Object.assign({
     dayIndex: dayIndexOf(1992, 7, 15), fame: 30, industryCreditDelta: 30,
-    story: { flags: {}, rel: {}, done: { C5: true, C7: true, C9: true, C10: true }, choices: {} },
+    story: { flags: {}, rel: {}, done: { N5: true, N7: true, N10: true, N11: true }, choices: {} },
   }, over || {}));
 }
 loadGame(c14Save());
-ok('C14：1992 夏＋C10 done＋信用 47（>42）→ offer', !!openRow('C14'));
+ok('N13：1992 夏＋N11 done＋信用 47（>42）→ offer', !!openRow('N13'));
 loadGame(c14Save({ industryCreditDelta: 25 })); /* 信用 = 17+25 = 42 */
-ok('C14：信用=42（嚴格 >42）唔出現', !openIds().includes('C14'));
-loadGame(c14Save({ story: { flags: {}, rel: {}, done: { C5: true, C7: true, C9: true }, choices: {} } }));
-ok('C14：C10 未做唔出現', !openIds().includes('C14'));
+ok('N13：信用=42（嚴格 >42）唔出現', !openIds().includes('N13'));
+loadGame(c14Save({ story: { flags: {}, rel: {}, done: { N5: true, N7: true, N10: true }, choices: {} } }));
+ok('N13：N11 未做唔出現', !openIds().includes('N13'));
 {
   const s = loadGame(c14Save());
-  StoryOC.applyChoice(node('C14'), choice('C14', 'C14_a'));
-  ok('C14_a：flag_side_tv＋信用 delta 30→32', !!StoryOC.getFlag('flag_side_tv') && s.industryCreditDelta === 32);
+  StoryOC.applyChoice(node('N13'), choice('N13', 'N13_a'));
+  ok('N13_a：flag_side_tv＋信用 delta 30→32', !!StoryOC.getFlag('flag_side_tv') && s.industryCreditDelta === 32);
 }
 {
   const s = loadGame(c14Save());
-  StoryOC.applyChoice(node('C14'), choice('C14', 'C14_b'));
-  ok('C14_b：flag_side_film＋聲量 30→32', !!StoryOC.getFlag('flag_side_film') && s.fame === 32);
+  StoryOC.applyChoice(node('N13'), choice('N13', 'N13_b'));
+  ok('N13_b：flag_side_film＋聲量 30→32', !!StoryOC.getFlag('flag_side_film') && s.fame === 32);
 }
 
-/* ---- N14＝C12 ---- */
+/* ---- N14 ---- */
 function c12Save(over){
   return baseSave(Object.assign({
     dayIndex: dayIndexOf(1992, 10, 15), fame: 55,
-    story: { flags: {}, rel: {}, done: { C10: true, C14: true }, choices: {} },
+    story: { flags: {}, rel: {}, done: { N11: true, N13: true }, choices: {} },
   }, over || {}));
 }
 loadGame(c12Save());
-ok('C12：1992 秋＋C14 done＋聲量 55 → offer 喺 rec_star', !!openRow('C12') && openRow('C12').locId === 'rec_star');
+ok('N14：1992 秋＋N13 done＋聲量 55 → offer 喺 rec_star', !!openRow('N14') && openRow('N14').locId === 'rec_star');
 loadGame(c12Save({ fame: 50 }));
-ok('C12：聲量=50（嚴格 >50）唔出現', !openIds().includes('C12'));
-loadGame(c12Save({ story: { flags: {}, rel: {}, done: { C10: true }, choices: {} } }));
-ok('C12：C14 未做唔出現', !openIds().includes('C12'));
+ok('N14：聲量=50（嚴格 >50）唔出現', !openIds().includes('N14'));
+loadGame(c12Save({ story: { flags: {}, rel: {}, done: { N11: true }, choices: {} } }));
+ok('N14：N13 未做唔出現', !openIds().includes('N14'));
 {
   const s = loadGame(c12Save());
-  StoryOC.applyChoice(node('C12'), choice('C12', 'C12_a'));
-  ok('C12_a：flag_fans_support＋聲量 55→57＋「親和力」標籤',
+  StoryOC.applyChoice(node('N14'), choice('N14', 'N14_a'));
+  ok('N14_a：flag_fans_support＋聲量 55→57＋「親和力」標籤',
      !!StoryOC.getFlag('flag_fans_support') && s.fame === 57 && s.castingTags.some(t => t.label === '親和力'));
 }
 {
   const s = loadGame(c12Save());
-  StoryOC.applyChoice(node('C12'), choice('C12', 'C12_b'));
-  ok('C12_b：flag_fans_avoid＋「高冷」標籤', !!StoryOC.getFlag('flag_fans_avoid') && s.castingTags.some(t => t.label === '高冷'));
+  StoryOC.applyChoice(node('N14'), choice('N14', 'N14_b'));
+  ok('N14_b：flag_fans_avoid＋「高冷」標籤', !!StoryOC.getFlag('flag_fans_avoid') && s.castingTags.some(t => t.label === '高冷'));
 }
 
-/* ---- N15＝C16 ---- */
+/* ---- N15 ---- */
 function c16Save(over){
   return baseSave(Object.assign({
     dayIndex: dayIndexOf(1992, 11, 15), fame: 60, industryCreditDelta: 38,
-    story: { flags: {}, rel: {}, done: { C10: true, C14: true, C12: true }, choices: {} },
+    story: { flags: {}, rel: {}, done: { N11: true, N13: true, N14: true }, choices: {} },
   }, over || {}));
 }
 loadGame(c16Save()); /* 雙軌 = 60 + (32+38) = 130 */
-ok('C16：1992 秋＋C12 done＋雙軌 130（>125）→ offer', !!openRow('C16'));
+ok('N15：1992 秋＋N14 done＋雙軌 130（>125）→ offer', !!openRow('N15'));
 loadGame(c16Save({ industryCreditDelta: 33 })); /* 雙軌 = 60 + 65 = 125 */
-ok('C16：雙軌=125（嚴格 >125）唔出現', !openIds().includes('C16'));
-loadGame(c16Save({ story: { flags: {}, rel: {}, done: { C10: true, C14: true }, choices: {} } }));
-ok('C16：C12 未做唔出現', !openIds().includes('C16'));
+ok('N15：雙軌=125（嚴格 >125）唔出現', !openIds().includes('N15'));
+loadGame(c16Save({ story: { flags: {}, rel: {}, done: { N11: true, N13: true }, choices: {} } }));
+ok('N15：N14 未做唔出現', !openIds().includes('N15'));
 {
   const s = loadGame(c16Save());
-  StoryOC.applyChoice(node('C16'), choice('C16', 'C16_a'));
-  ok('C16_a：flag_vocal_polish＋「偶像派」標籤＋聲量 60→62',
+  StoryOC.applyChoice(node('N15'), choice('N15', 'N15_a'));
+  ok('N15_a：flag_vocal_polish＋「偶像派」標籤＋聲量 60→62',
      !!StoryOC.getFlag('flag_vocal_polish') && s.castingTags.some(t => t.label === '偶像派') && s.fame === 62);
 }
 {
   const s = loadGame(c16Save());
-  StoryOC.applyChoice(node('C16'), choice('C16', 'C16_b'));
-  ok('C16_b：flag_vocal_train＋「實力派」標籤＋信用 delta +2',
+  StoryOC.applyChoice(node('N15'), choice('N15', 'N15_b'));
+  ok('N15_b：flag_vocal_train＋「實力派」標籤＋信用 delta +2',
      !!StoryOC.getFlag('flag_vocal_train') && s.castingTags.some(t => t.label === '實力派') && s.industryCreditDelta === 40);
 }
 
-/* ---- N16＝C13 ---- */
+/* ---- N16 ---- */
 loadGame(baseSave({ dayIndex: dayIndexOf(1992, 12, 15) }));
-ok('C13：1992 冬 → offer 喺 film_cotton', !!openRow('C13') && openRow('C13').locId === 'film_cotton');
+ok('N16：1992 冬 → offer 喺 film_cotton', !!openRow('N16') && openRow('N16').locId === 'film_cotton');
 loadGame(baseSave({ dayIndex: dayIndexOf(1992, 10, 15) }));
-ok('C13：1992 秋唔出現', !openIds().includes('C13'));
+ok('N16：1992 秋唔出現', !openIds().includes('N16'));
 {
   const s = loadGame(baseSave({ dayIndex: dayIndexOf(1992, 12, 15) }));
-  StoryOC.applyChoice(node('C13'), choice('C13', 'C13_a'));
-  ok('C13_a：flag_newyear_improv＋「執生」標籤', !!StoryOC.getFlag('flag_newyear_improv') && s.castingTags.some(t => t.label === '執生'));
+  StoryOC.applyChoice(node('N16'), choice('N16', 'N16_a'));
+  ok('N16_a：flag_newyear_improv＋「執生」標籤', !!StoryOC.getFlag('flag_newyear_improv') && s.castingTags.some(t => t.label === '執生'));
   story48SettleTick();
-  ok('C13_a：tick 登記債權 credit_c13_newyear＋ledger credits=1',
+  ok('N16_a：tick 登記債權 credit_c13_newyear＋ledger credits=1',
      s.mockCredits.some(c => c.id === 'credit_c13_newyear') && favorLedgerCounts().credits === 1);
   story48SettleTick();
-  ok('C13_a：tick 重行唔雙計', favorLedgerCounts().credits === 1);
+  ok('N16_a：tick 重行唔雙計', favorLedgerCounts().credits === 1);
 }
 {
   const s = loadGame(baseSave({ dayIndex: dayIndexOf(1992, 12, 15) }));
-  StoryOC.applyChoice(node('C13'), choice('C13', 'C13_b'));
+  StoryOC.applyChoice(node('N16'), choice('N16', 'N16_b'));
   story48SettleTick();
-  ok('C13_b：flag_newyear_script＋tick 唔登記債權',
+  ok('N16_b：flag_newyear_script＋tick 唔登記債權',
      !!StoryOC.getFlag('flag_newyear_script') && !s.mockCredits.some(c => c.id === 'credit_c13_newyear'));
 }
 
-/* ---- C6 真路徑＋回歸 ---- */
+/* ---- N6 真路徑＋回歸 ---- */
 {
-  const s = loadGame(baseSave({ dayIndex: 98, money: 900, story: { flags: { route_tv: true }, rel: {}, done: { C1: true, C2: true, C3: true, C4: true, C5: true }, choices: {} } }));
-  ok('C6：route_tv＋W15 開（標題已對齊「角落那張桌子」，v157；v221 書面語改寫）', !!openRow('C6') && node('C6').title === '角落那張桌子');
-  StoryOC.applyChoice(node('C6'), choice('C6', 'C6_a'));
-  ok('C6_a：flag_canteen_grind＋微量金錢 900→1400（wealth 1）', !!StoryOC.getFlag('flag_canteen_grind') && s.money === 1400);
+  const s = loadGame(baseSave({ dayIndex: 98, money: 900, story: { flags: { route_tv: true }, rel: {}, done: { N1: true, N2: true, N3: true, N4: true, N5: true }, choices: {} } }));
+  ok('N6：route_tv＋W15 開（標題已對齊「角落那張桌子」，v157；v221 書面語改寫）', !!openRow('N6') && node('N6').title === '角落那張桌子');
+  StoryOC.applyChoice(node('N6'), choice('N6', 'N6_a'));
+  ok('N6_a：flag_canteen_grind＋微量金錢 900→1400（wealth 1）', !!StoryOC.getFlag('flag_canteen_grind') && s.money === 1400);
 }
 {
-  loadGame(baseSave({ dayIndex: 98, story: { flags: { route_tv: true }, rel: {}, done: { C1: true, C2: true, C3: true, C4: true, C5: true }, choices: {} } }));
-  StoryOC.applyChoice(node('C6'), choice('C6', 'C6_b'));
-  ok('C6_b：flag_canteen_quit', !!StoryOC.getFlag('flag_canteen_quit'));
+  loadGame(baseSave({ dayIndex: 98, story: { flags: { route_tv: true }, rel: {}, done: { N1: true, N2: true, N3: true, N4: true, N5: true }, choices: {} } }));
+  StoryOC.applyChoice(node('N6'), choice('N6', 'N6_b'));
+  ok('N6_b：flag_canteen_quit', !!StoryOC.getFlag('flag_canteen_quit'));
 }
 loadGame(baseSave({ dayIndex: 1, fame: 5 }));
-ok('回歸：C1 開局可開', openIds().includes('C1'));
-loadGame(baseSave({ dayIndex: dayIndexOf(1991, 7, 15), story: { flags: {}, rel: {}, done: { C5: true }, choices: {} }, industryCreditDelta: 25 }));
-ok('回歸：C7（4-6）照開', openIds().includes('C7'));
+ok('回歸：N1 開局可開', openIds().includes('N1'));
+loadGame(baseSave({ dayIndex: dayIndexOf(1991, 7, 15), story: { flags: {}, rel: {}, done: { N5: true }, choices: {} }, industryCreditDelta: 25 }));
+ok('回歸：N7（4-6）照開', openIds().includes('N7'));
 
 /* ---- 程天諾預熱：真 paperSideItemForDay 年份閘 ---- */
 {

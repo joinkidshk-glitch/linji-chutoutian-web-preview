@@ -6,7 +6,7 @@
 # v20a191 resync：index.html 淨 +47 行，6 個釘行按段 +2／+9／+47 重算，內容逐字核實純漂移。
 # v20a196 resync：showResult −1／晨鏈＋74／WF4＋63／尾段＋83，5 個釘行按段重算（31583→31582、53416→53490、53784→53858、54923→54997、55017→55091），difflib 對位核實內容逐字相同，純漂移。
 # v20a191 rebase 上 main b3db32f resync：見釘行區註解。
-# v20a183 resync：v183 淨 ＋117 行（C7 CSS ＋2／prefKind ＋1／TryIntercept ＋1／PlayEncounter ＋2／ROM183 block ＋107／確認 modal ＋3／goBit ＋1；difflib 對位核實純漂移，見 qa183/resync183.py）。
+# v20a183 resync：v183 淨 ＋117 行（N7 CSS ＋2／prefKind ＋1／TryIntercept ＋1／PlayEncounter ＋2／ROM183 block ＋107／確認 modal ＋3／goBit ＋1；difflib 對位核實純漂移，見 qa183/resync183.py）。
 # v20a184 rebase 上 main 0f90dc7（v183）resync：v184 淨 ＋16 行（C2 helper＋9／請柬＋1／結果卡＋1／C1 DEEPS＋4／漸變＋1 淨）；＜45748 者唔郁、其後者 ＋16（difflib 對位核實純漂移，見 qa184/resync184_rebase.py）。
 # v20a181 rebase 上 main 9640c6f（v183）resync：6 個釘行按 difflib 映射重算（6032→6045、31536→31549、53053→53061、53421→53429、54560→54568、54654→54662；內容逐字相同，純漂移）。
 # v20a181 第二次 rebase 上 main 77603b3（v184）resync：v184 淨 ＋16（全部喺 45748–46484 之間）；6045／31549 唔郁，53061→53077、53429→53445、54568→54584、54662→54678（difflib 雙基底對位核實純漂移，見 qa181/resync181_rebase2.py）。
@@ -77,20 +77,21 @@ for fn in ('rom176TryIntercept', 'rom176PlayEncounter', 'rom176DoGiveStarGift', 
 # v20a188 resync 補 +29：上一手 +225 計少咗其後再加嘅 NP_WIN 覆寫＋load 呼叫＋gate 行＋debug 入口（淨 +29）；總淨變 +254，總行數 60409；difflib 對位核實全部錨點純漂移，見 qa188/resync188_verify.py。
 # v20a206 C1 resync：index.html 淨 +22 行（WF4 保底，插入點舊 L41129–41496）；其後釘行各 +22（54302→54324、54670→54692、55809→55831、55903→55925），之前唔郁；qa206/resync206.py difflib 對位核實純漂移。
 # v20a206 C2 resync：index.html 淨 +3 行（WF4 覆寫表頭註解＋3，插入點舊 L41271 之後）；其後釘行各 +3（54324→54327、54692→54695、55831→55834、55925→55928）；qa206/resync206c2.py difflib 對位核實純漂移。
-# v20a207 rebase 上 main 8cecf7f（v206）resync：v206 +25（C1 +22／C2 +3，插入點 ~41129／41271 之後）＋v207 +34；/tmp/verify207.py 73 錨點對位零 mismatch，純漂移。
+# v20a207 rebase 上 main 8cecf7f（v206）resync：v206 +25（N1 +22／N2 +3，插入點 ~41129／41271 之後）＋v207 +34；/tmp/verify207.py 73 錨點對位零 mismatch，純漂移。
 ok('釘：NPCS lan 條目 L6152', line(6360).startswith('  lan:{ id:"lan", name:"藍若曦"'))
 ok('釘：載入點 L31712（GIFT_REACT 賦值同行呼叫注入）',
    'GIFT_REACT = giftReact' in line(31963) and 'rom176ApplyGiftOverrides()' in line(31963))
-ok('釘：ROM176 block 起點 L55660', line(55959).startswith('/* ===== v20a176 ROM176'))
-ok('釘：rom176ApplyGiftOverrides 定義 L56028', line(56327).startswith('function rom176ApplyGiftOverrides()'))
-ok('釘：addLocTalkGiftActs L57167', line(57466).startswith('function addLocTalkGiftActs(add, L, npcId)'))
-ok('釘：openLoc rom176 攔截 L57261', 'rom176TryIntercept(id)' in line(57560))
+ok('釘：ROM176 block 起點 L55660', line(55999).startswith('/* ===== v20a176 ROM176'))
+ok('釘：rom176ApplyGiftOverrides 定義 L56028', line(56367).startswith('function rom176ApplyGiftOverrides()'))
+ok('釘：addLocTalkGiftActs L57167', line(57506).startswith('function addLocTalkGiftActs(add, L, npcId)'))
+ok('釘：openLoc rom176 攔截 L57261', 'rom176TryIntercept(id)' in line(57600))
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫（31903 唔郁、55254→55394、55622→55762、56761→56901、56855→56995），核實純漂移。# v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行，6 個釘行按段 +2／+9／+47 重算（6070→6072、31574→31583、53369→53416、53737→53784、54876→54923、54970→55017），difflib 對位核實純漂移。
 # v20a216 resync：釘行按 difflib 映射重寫（6322→6360、31903→31941、55394→55657、55762→56025、56901→57164、56995→57258；L6152／L31712 名唔郁），qa216/resync216.py 核實純漂移。
 # v20a217 resync：標籤遷移 ＋3 行（插入點舊 L45472 之後），釘行各 ＋3（55657→55660、56025→56028、57164→57167、57258→57261）。
 # v20a218 resync：index.html 淨 +136 行，釘行按 difflib 映射重寫（31941→31974、55660→55780、56028→56148、57167→57287、57261→57381；6360 唔郁），見 qa218/resync218_pins.py。
 # v20a219 resync：index.html 淨 +3 行（CONTRA98 stub，插入點舊 L31845 之後）；釘行各 +3（31974→31977、55780→55783、56148→56151、57287→57290、57381→57384；6360 唔郁），difflib 對位核實純漂移，見 qa219/resync219.py。
 # v20a227 resync：index.html 淨 +2 行（WF4 day24 banner 裁切位：註解 1 行→3 行，插入點舊 L41729；chain 原地換值行數不變）；釘行各 +2（55957→55959、56325→56327、57464→57466、57558→57560；6360／31963 唔郁），difflib 對位核實純漂移，見 qa227/resync227.py。
+# v20a210 resync：index.html 淨 +40 行（c2n210MigrateSave ＋36 行＠舊 L36730 之後＋呼叫點 ＋4 行＠舊 L33790）；釘行按 difflib 映射重算（55959→55999、56327→56367、57466→57506、57560→57600；6360／31963 唔郁），difflib 對位核實純漂移。
 
 # ---- 注入呼叫位置（GIFT 賦值之後、同一行） ----
 gi = html.find('GIFT_REACT = giftReact')
@@ -151,8 +152,8 @@ ok('茶聽有女角風聲分支（roll<0.50）', 'rom176TeaTargets()' in html an
 ok('風聲 rumorId 用 romwind:', '"romwind:"+gain.key+":"+day' in html)
 ok('茶餐廳女角行蹤線 6 句', all(x in html for x in ['ROM176_TEA_LINES', '林曉晴呢排多數喺', '周采兒呢幾日成日喺', 'Vera 呢排多數喺', '藍若曦呢排成日喺', '徐寶珊呢幾日多數喺', '關海媚呢排會喺']))
 
-# ---- 海媚閘（C9 主閘，day≥699 退路＝1991-12-01） ----
-ok('海媚閘主閘係 isDone("C9")', 'StoryOC.isDone("C9")' in html)
+# ---- 海媚閘（N10 主閘，day≥699 退路＝1991-12-01） ----
+ok('海媚閘主閘係 isDone("N10")', 'StoryOC.isDone("N10")' in html)
 ok('海媚閘退路 day≥699', '>= 699' in seg('function rom176MeiUnlocked()', 'function rom176WhisperActive'))
 
 # ---- 唔郁嘅嘢 ----

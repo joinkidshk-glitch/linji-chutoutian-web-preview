@@ -58,7 +58,7 @@ const universe = new Map(); // id -> {node, src, gate tokens}
 function addNodes(nodes, src) {
   (nodes || []).forEach(n => { if (n && n.id && !universe.get(n.id)) universe.set(n.id, { node: n, src }); });
 }
-const packMain = loadPack('story_detail_c1_to_c17.json');
+const packMain = loadPack('story_detail_n1_to_n17.json');
 const packRomVHC = loadPack('story_detail_romance_vera_hiu_choi.json');
 const packRomLX = loadPack('story_detail_romance_lan_xu.json');
 const packRomT = loadPack('story_detail_romance_tang.json');
@@ -70,9 +70,9 @@ addNodes(packRomT && packRomT.nodes, 'pack:romance_tang');
 addNodes(packRival && packRival.nodes, 'pack:rival');
 const spine89 = evalConst('STORY_SPINE_NODES_1989');
 const spine90 = evalConst('STORY_SPINE_NODES_1990');
-const spineC6 = evalConst('STORY_SPINE_NODES_C6');
+const spineC6 = evalConst('STORY_SPINE_NODES_N6');
 const spineWF1 = evalConst('STORY_SPINE_NODES_WF1');
-const c17Node = evalConst('STORY_SPINE_NODE_C17_410');
+const c17Node = evalConst('STORY_SPINE_NODE_N17_410');
 const commit48 = evalConst('COMMIT48_NODES');
 const choice47 = evalConst('CHOICE47_NODES');
 [spine89, spine90, spineC6, spineWF1].forEach((t, i) => {

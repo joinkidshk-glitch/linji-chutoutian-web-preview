@@ -11,7 +11,7 @@
     "playerFacingName": "鄧麗萍",
     "note": "Soft≠PASS｜Mock meet only｜push1+ HOLD｜出圖 HOLD｜唔 tip LIVE｜89–92 HOLD｜關海媚不升格｜唔搶曉晴＋采兒必經",
     "softALocked": {
-      "openGate": "C5_done + favorMin>=1 @ agency_ho (align C4 favor)",
+      "openGate": "N5_done + favorMin>=1 @ agency_ho (align N4 favor)",
       "mvpSoftMockMeet": true,
       "meetOnly": true,
       "pushPlusHold": true,
@@ -19,11 +19,11 @@
     },
     "openGate": {
       "needDone": [
-        "C5"
+        "N5"
       ],
       "favorMin": 1,
       "favorTarget": "agency_ho",
-      "alignNote": "與行為閘 C4 favor≥1@agency_ho 咬合；鄧線再開線要求 C5 完成後仍達 favorMin≥1"
+      "alignNote": "與行為閘 N4 favor≥1@agency_ho 咬合；鄧線再開線要求 N5 完成後仍達 favorMin≥1"
     },
     "rel_tang_threshold": 2,
     "rel_tang_threshold_note": "push1+ 用；meet 寫 flag_tang_open；push+ 要 flag_tang_open ∧ rel_tang≥2",
@@ -112,7 +112,7 @@
         "flag_tang_met_wait"
       ],
       "openConditions": [],
-      "openConditionsNote": "meet 節拍 openConditions=[]，可寫入 flag_tang_open；線上開線閘見 meta.openGate（C5＋favorMin≥1@agency_ho）",
+      "openConditionsNote": "meet 節拍 openConditions=[]，可寫入 flag_tang_open；線上開線閘見 meta.openGate（N5＋favorMin≥1@agency_ho）",
       "artId": "rom_tang_meet_soft_hold",
       "artHold": true,
       "parallelOk": true,

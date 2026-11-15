@@ -111,9 +111,9 @@ ok('softC10：第二年第 41 週（絕對 93、年內 41）唔入窗', c10AtWee
   const tut = { steps: [ { id: 'TUT_WELCOME', body: ['1990 年春，你在黃大仙屋邨當臨記起步。', '這階段目標很簡單：先做到有穩定收入。'], bodyAlt: ['你從臨記做起。'] } ] };
   jan67OpeningTextFix(tut);
   ok('教學歡迎卡（body 陣列）：1990 年春 → 1990 年初', tut.steps[0].body[0] === '1990 年初，你在黃大仙屋邨當臨記起步。' && tut.steps[0].body[1].indexOf('穩定收入') >= 0);
-  const story = { main: [ { id: 'C1', when: '1990春 / W1-4' }, { id: 'C2', when: '1990春' }, { id: 'C9', when: '1991冬' } ] };
+  const story = { main: [ { id: 'N1', when: '1990春 / W1-4' }, { id: 'N2', when: '1990春' }, { id: 'N10', when: '1991冬' } ] };
   jan67OpeningTextFix(story);
-  ok('C1 時期標籤：1990春 → 1990冬；其他節點唔郁',
+  ok('N1 時期標籤：1990春 → 1990冬；其他節點唔郁',
     story.main[0].when === '1990冬 / W1-4' && story.main[1].when === '1990春' && story.main[2].when === '1991冬');
   const other = { chapters: [ { id: 'x', open: ['1990 年春，另一段唔關開局事嘅劇情。'] } ] };
   jan67OpeningTextFix(other);
@@ -126,7 +126,7 @@ function v66SaveBase(){
     stress: 10, money: 8000, stamina: 80, industryCreditDelta: 3,
     flags: {}, npcs: {}, board: {}, booked: [], shoots: [ { id: 's1', gigId: 'g', deadlineDay: 210, hiredAtDay: 195, doneDays: 1, totalDays: 5 } ],
     trainCount: {}, enrolled: {}, years66Shifted: 1,
-    story: { gigCount: 2, flags: {}, done: { C1: true }, lastMainDoneDay: 190 },
+    story: { gigCount: 2, flags: {}, done: { N1: true }, lastMainDoneDay: 190 },
     mockDebts: [ { id: 'd1', dueDay: 230, dueDays: 30 } ],
     giftMeta: { lastGiveDay: { npc_a: 100 } },
     conseq61: { reviews: {}, grace: null, sick: null },

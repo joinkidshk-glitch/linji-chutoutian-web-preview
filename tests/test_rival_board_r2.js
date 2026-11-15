@@ -52,10 +52,10 @@ function freshS(){
   return {
     dayIndex:244, fame:5, popularity:3, industryCredit:10,
     money:12000, stress:0,
-    story:{ done:{C1:true,C2:true,C3:true,C4:true,C5:true,C6:true,C7:true,C8:true}, flags:{rival_gao_hard:true} },
+    story:{ done:{N1:true,N2:true,N3:true,N4:true,N5:true,N6:true,N7:true,N9:true}, flags:{rival_gao_hard:true} },
     flags:{rival_gao_hard:true},
     mockRumors:[{id:"gao_steal_spotlight", title:"高俊傑搶鏡"}],
-    newspaperQueue:[], newspaperClippings:[{topicKey:"rival:gao", eventKey:"story:C3"}],
+    newspaperQueue:[], newspaperClippings:[{topicKey:"rival:gao", eventKey:"story:N3"}],
     wrapHistory:[], pendingAud:[],
     npcs:{ rival:6 }
   };

@@ -1,5 +1,5 @@
 # v20a89 BR89 靜態測試：分支補完——紀律（SAVE/softRev/?v= 不變）、模組標記在位、
-# 新內容冇真藝人名、C6F 全套註冊齊、dead-flag 白名單每條有理由。
+# 新內容冇真藝人名、N6F 全套註冊齊、dead-flag 白名單每條有理由。
 # 反證：v88 index 冇 BR89 標記 → FAIL。
 import io, os, json
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
@@ -16,7 +16,7 @@ ok('NOTES_V20A89 文件在位', os.path.exists(os.path.join(ROOT, 'NOTES_V20A89_
 ok('BR89 標記在位', 'v20a89 BR89' in html)
 ok('ripple 消費者在位', 'BR89：ripple 消費者' in html and 'debt_c4_ho_ripple' in html)
 ok('grants 條件派發在位', 'fx:"liu_decline"' in html and 'fx:"mak_accept"' in html)
-ok('C6F 節點＋閘＋注入器齊', 'STORY_SPINE_NODES_BR89' in html and 'C6F: { route: "route_film", weekMin: 15 }' in html and 'applyStoryBr89Nodes89' in html)
+ok('N6F 節點＋閘＋注入器齊', 'STORY_SPINE_NODES_BR89' in html and 'N6F: { route: "route_film", weekMin: 15 }' in html and 'applyStoryBr89Nodes89' in html)
 ok('BR89 條件通告齊（5 張）', all(('id:"gig_br89_%s"' % g) in html for g in ['patron_luk','patron_pang','patron_ching','stunt_ngai','liu_priority']))
 ok('八線結局回收表在位', 'ARC_END89' in html and 'flag_ko_rival_respect' in html and 'flag_lei_ally' in html)
 ok('手帳八線狀態句在位', 'br89ArcStatusHtml' in html and 'BR89_ARC_LINES' in html)

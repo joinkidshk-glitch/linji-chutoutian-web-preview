@@ -323,15 +323,15 @@ function canon(o){
   ok('end95ChainsDone：六鏈標記逐一認到',
     end95ChainsDone(baseSave({ wf3: { luSettled: 1 } })).includes('A') &&
     end95ChainsDone(baseSave({ wf3: { liaoHarvestDone: 1 } })).includes('B') &&
-    end95ChainsDone(baseSave({ story: { flags: {}, rel: {}, done: { C15: true }, choices: {} }, intelFlags: { intel_mak_injury: true } })).includes('C') &&
+    end95ChainsDone(baseSave({ story: { flags: {}, rel: {}, done: { N12: true }, choices: {} }, intelFlags: { intel_mak_injury: true } })).includes('C') &&
     end95ChainsDone(baseSave({ wf3: { yipCreditDone: 1 } })).includes('D') &&
     end95ChainsDone(baseSave({ story: { flags: { flag_gao_ending_stay: true }, rel: {}, done: {}, choices: {} } })).includes('E') &&
     end95ChainsDone(baseSave({ story: { flags: { flag_stay_mind: true }, rel: {}, done: {}, choices: {} } })).includes('F') &&
     end95ChainsDone(baseSave({})).length === 0);
-  ok('end95PangProgress：好感路／債權路／C10 路任一通',
+  ok('end95PangProgress：好感路／債權路／N11 路任一通',
     end95PangProgress(baseSave({ stars: { pang_siuki: { fav: 45 } } })) === true &&
     end95PangProgress(baseSave({ mockCredits: [{ id: 'credit_enc84_pang_patron', amount: 1 }] })) === true &&
-    end95PangProgress(baseSave({ story: { flags: {}, rel: {}, done: { C10: true }, choices: {} } })) === true &&
+    end95PangProgress(baseSave({ story: { flags: {}, rel: {}, done: { N11: true }, choices: {} } })) === true &&
     end95PangProgress(baseSave({ stars: { pang_siuki: { fav: 44 } } })) === false);
 }
 

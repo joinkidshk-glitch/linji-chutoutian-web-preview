@@ -1,8 +1,8 @@
-# v20a222 P3 resync：index.html 淨 -37 行（旁白書面語改寫＋G1／G9 死碼刪除），13 個錨點按段重算（259xx–275xx 段 -13、314xx 段 -14，27598–31403 之間多刪 1 行）；全部錨點逐行核實內容逐字相同，純漂移（C13 EXACT／PHRASES／NOTE_EXACT／speaker／relMap 行內容一字未郁，P3 ROMANCE_OVR 改寫未掂呢啲行）。
+# v20a222 P3 resync：index.html 淨 -37 行（旁白書面語改寫＋G1／G9 死碼刪除），13 個錨點按段重算（259xx–275xx 段 -13、314xx 段 -14，27598–31403 之間多刪 1 行）；全部錨點逐行核實內容逐字相同，純漂移（N16 EXACT／PHRASES／NOTE_EXACT／speaker／relMap 行內容一字未郁，P3 ROMANCE_OVR 改寫未掂呢啲行）。
 # v20a214 rebase 上 main d1239d4 resync：index.html 淨 +358 行，13 個錨點按 difflib 映射重寫（內容逐字核實純漂移；31150→31338 例外：工人 2 拆開 TEXTFIX55_EXACT 成行，6 條新目另起行，舊目巨行落去 31338，B3／B4／B5 子串逐個核實；check 名入面嘅舊 L 號係歷史標籤，唔跟住改）。
 # v20a218 resync：index.html 淨 +136 行（見 qa218/resync218.py difflib 對位核實純漂移），6 個錨點按映射重寫（27557→27565、27590→27598、31376→31408、31384→31417、31385→31418、31427→31460；31376 例外：A1 拆開 TEXTFIX55_EXACT 巨行加 when 條目，舊目落去 31408，B3／B4／B5 子串逐個核實）。
 # v20a216 resync：index.html 淨 +263 行（見 qa216/resync216.py difflib 對位核實純漂移），13 個釘行按映射重寫（＋38，名入面嘅 L25608 等歷史標籤唔郁）。
-# v20a207 resync：index.html 淨 +34 行（C3 +12／cap +5／modal +1／closeModal +1／drawBase +7／spotlight +8；見 qa207/resync207.py，72 錨點對位零 mismatch，純漂移）。
+# v20a207 resync：index.html 淨 +34 行（N3 +12／cap +5／modal +1／closeModal +1／drawBase +7／spotlight +8；見 qa207/resync207.py，72 錨點對位零 mismatch，純漂移）。
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），釘行按段 +4／+10 重算。
 # -*- coding: utf-8 -*-
 # v20a197 resync：index.html 淨 +94 行，全部錨點 difflib 對位核實純漂移（見 qa197/resync197.py）：25659→25714、26000→26055、26003→26058、26004→26059、26005→26060、26048→26103、26267→26322、27213→27268、27246→27301、31020→31075、31028→31083、31029→31084、31071→31126。（B4 補丁再 +9 行，見同檔。）
@@ -14,7 +14,7 @@
 #   (2) kwan_note check 退役（註解化，行數不變；L25909 註解唔再提「關海媚禁令」）；
 #   v20a155 rebase 上 main 9346a8e resync：v155 淨 ＋17（B1 註解 ＋6／B2 註解 ＋7／B3 ＋4），全部錨點再 ＋17；v20a161 rebase 上 bf612bc ＋14（插入段新行 4793-4806，全部錨點再 ＋14，見 qa161/resolve_rebase161_v155.py）。（25744→25761、26081→26098、26129→26146、26349→26366、26084→26101、26085→26102、26086→26103、27290→27307、27323→27340、31037→31054、31045→31062、31046→31063、31088→31105）；內容逐行核實，純漂移。
 #   (3) TEXTFIX55_PHRASES 嗰對 ["關海媚","當紅花旦"] 已拎走，其餘配對唔郁；
-#   (4) TEXTFIX55_EXACT C13 條映射保留，只係 value 改返「關海媚提醒頭條係雙刃」，
+#   (4) TEXTFIX55_EXACT N16 條映射保留，只係 value 改返「關海媚提醒頭條係雙刃」，
 #       其餘 live 修正（1991年冬→1990年冬、虛構娛樂周刊→娛樂週刊）原封不動；
 #   (5) UI 顯示名：SP_SPEAKER_REG display＝「關海媚」、relMap rel_mei＝「關海媚」、
 #       TEXTFIX55_NOTE_EXACT 兩句 outcome note 同樣改返真名；
@@ -22,15 +22,15 @@
 #   (7) 唔郁嘅嘢：speaker registry、故事散文稱號句、12 星名冊規則、SAVE key／softRev／?v=。
 # 反證：喺 pristine main (9c850f9) index 上行 → 多項 FAIL（唔 crash）。
 # v151 落地 resync：v156（9c850f9）先落地，main 行號 +15（L733 插入 15 行），錨點由 e08a070 版 +15。
-# v20a183 resync：v183 淨 ＋117 行（C7 CSS ＋2／prefKind ＋1／TryIntercept ＋1／PlayEncounter ＋2／ROM183 block ＋107／確認 modal ＋3／goBit ＋1；difflib 對位核實純漂移，見 qa183/resync183.py）。
+# v20a183 resync：v183 淨 ＋117 行（N7 CSS ＋2／prefKind ＋1／TryIntercept ＋1／PlayEncounter ＋2／ROM183 block ＋107／確認 modal ＋3／goBit ＋1；difflib 對位核實純漂移，見 qa183/resync183.py）。
 # v20a196 resync：showResult 淨 −1 行，行號 ≥27974 者 −1（31020→31019、31028→31027、31029→31028、31071→31070），difflib 對位核實內容逐字相同，純漂移。
-# v20a182 resync：v182 淨 ＋17 行（B1 CSS＋1／C1 CSS 淨＋1／請柬＋4／presentAwardInvite＋6／C1 JS＋5），十三錨點一律 ＋2（qa182/resync182.py difflib 對位核實純漂移；A8／B2–B5／C1／C3／C4／E1 嗰 7 粒 line() 釘喺第一輪 head -6 截斷睇漏，補核實後一併更新）。
+# v20a182 resync：v182 淨 ＋17 行（B1 CSS＋1／N1 CSS 淨＋1／請柬＋4／presentAwardInvite＋6／N1 JS＋5），十三錨點一律 ＋2（qa182/resync182.py difflib 對位核實純漂移；A8／B2–B5／N1／N3／N4／E1 嗰 7 粒 line() 釘喺第一輪 head -6 截斷睇漏，補核實後一併更新）。
 # v20a160 M4 步 resync：walkup CSS 喺 L802 插入 5 行，全部錨點 ＋5（17 個錨點逐行核實，內容逐字相同，純漂移；其餘 M1／M6／M9 插入點全部喺 L44855 之後，唔影響本檔錨點）。
 # v20a157 rebase 上 main 60b0a8f resync：splice 插入令錨點漂移（＜30831 者 ＋24、≥30831 者 ＋66；qa131/resync_rebase157.py difflib 對位核實：13 個錨點內容逐字相同，純漂移）。
 # v20a149 rebase 上 main 6d08c7c（v171）resync：CSS ＋13，13 個錨點一律 ＋13（qa149/resync_rebase149.py difflib 對位核實內容逐字相同，純漂移）。
 # v20a153 第三輪 rebase 上 main a500536（v149）resync：difflib 對位核實純漂移，code 行錨點按映射重寫（見 qa153/resync_rebase153c.py）。
 # v20a172 rebase 上 main a500536（v149）resync：v149 淨 ＋97（CSS L778／L794 ＋8、L4457 ＋5、典禮區 ＋84），13 個錨點一律 ＋13（qa172/resync172b.py difflib 對位核實，內容逐字相同，純漂移）。
-# v20a172 rebase 上 main e2add29（v174）resync：A 系列唔郁（＜27080）、C1／E1 ＋5、B／C3／C4／C5 ＋5（qa172/resync172c.py difflib 對位核實純漂移）。
+# v20a172 rebase 上 main e2add29（v174）resync：A 系列唔郁（＜27080）、N1／E1 ＋5、B／N3／N4／N5 ＋5（qa172/resync172c.py difflib 對位核實純漂移）。
 # 用法：python3 tests/test_kwan151_static.py [path-to-index.html]
 # v20a176 resync：NPCS ＋7 行（藍／徐／海媚條目，插入點 L6017 之後），全部錨點再 ＋7（qa176/resync176.py 逐行核實內容逐字相同，純漂移）。
 # v20a181 resync：index.html 淨 ＋8（awards CSS ＋13／頒獎禮區淨 −26／尾段 ＋8）；13 個錨點一律 ＋13（difflib 對位核實內容逐字相同，純漂移）。
@@ -67,18 +67,18 @@ ok('A9 guanHaimeiUpgradeForbidden 全檔清零', 'guanHaimeiUpgradeForbidden' no
 ok('B1 PHRASES 關海媚配對已拎走', '["關海媚", "當紅花旦"]' not in html)
 ok('B2 PHRASES 其餘配對唔郁', '["星河電視城", "星河電視台"]' in line(31404) and '["送命題", "辣手問題"]' in line(31404))
 
-# (4) TEXTFIX55_EXACT C13 映射：保留映射，只改 value
-ok('B3 EXACT C13 value 有關海媚', '關海媚提醒頭條係雙刃' in line(31394))
-ok('B4 EXACT C13 value 冇當紅花旦', '嗰位當紅花旦亦提過佢' not in line(31394))
+# (4) TEXTFIX55_EXACT N16 映射：保留映射，只改 value
+ok('B3 EXACT N16 value 有關海媚', '關海媚提醒頭條係雙刃' in line(31394))
+ok('B4 EXACT N16 value 冇當紅花旦', '嗰位當紅花旦亦提過佢' not in line(31394))
 ok('B5 EXACT 其餘修正原封不動', '1990年冬，娛樂週刊已經寫好緋聞草稿' in line(31394)
    and '1991年冬，虛構娛樂周刊已寫好緋聞草稿' in line(31394))
 
 # (5) UI 顯示名
-ok('C1 speaker display 改真名', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"關海媚" }' in line(27585))
-ok('C2 唔再有稱號 display', 'display:"當紅花旦"' not in html)
-ok('C3 relMap rel_mei 改真名', '["rel_mei","關海媚"]' in line(31446))
-ok('C4 NOTE_EXACT 兩句改真名', '采兒同關海媚嗰邊都近咗啲' in line(31403) and '但采兒同關海媚嗰邊，都冷淡咗' in line(31403))
-ok('C5 NOTE_EXACT 冇殘留稱號', '嗰位當紅花旦' not in line(31403))
+ok('N1 speaker display 改真名', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"關海媚" }' in line(27585))
+ok('N2 唔再有稱號 display', 'display:"當紅花旦"' not in html)
+ok('N3 relMap rel_mei 改真名', '["rel_mei","關海媚"]' in line(31446))
+ok('N4 NOTE_EXACT 兩句改真名', '采兒同關海媚嗰邊都近咗啲' in line(31403) and '但采兒同關海媚嗰邊，都冷淡咗' in line(31403))
+ok('N5 NOTE_EXACT 冇殘留稱號', '嗰位當紅花旦' not in line(31403))
 
 # (6) content JSON flag
 for rel in ['content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json',

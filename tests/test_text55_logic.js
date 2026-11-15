@@ -24,7 +24,7 @@ chk('KHM speaker+lines', w1.beats[0].speaker === '關海媚' && w1.beats[0].line
 // A16/A17: effects.notes engine shorthand -> human text
 chk('note ending-parallel strip', TF.textfix55Note('張子駿／文藝線；craft 高。愛情結局另表並存。') === '跟張子駿行文藝線，手藝夠硬。');
 chk('note flag write', TF.textfix55Note('你拒絕咗，信用加一，寫入 flag_ho_trust') === '你拒絕咗，信用加一。');
-chk('note prefix strip', TF.textfix55Note('連 C9；你企出嚟撐佢，信用升。') === '你企出嚟撐佢，信用升。');
+chk('note prefix strip', TF.textfix55Note('連 N10；你企出嚟撐佢，信用升。') === '你企出嚟撐佢，信用升。');
 chk('note rel map', TF.textfix55Note('你幫佢頂住；rel_hiu 大升。') === '你幫佢頂住；曉晴大升。');
 chk('note label strip', TF.textfix55Label('HE：天王接班（連 T6）') === '天王接班');
 // C20: 1990 flash-mob ad gig (real pack strings), whole-field rewrites

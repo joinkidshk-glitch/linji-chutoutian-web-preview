@@ -7,7 +7,7 @@
 #   (3) 檔案層衛生：protagonist／worldview／cast_main／gift_react 正規化；
 #       SP_SPEAKER_REG 關海媚 display＝真名（v151 解禁，舊稱號規則退役）；LOCS 海港廣播 desc 有電台交代；
 #   (4) A-09：NEWS82 E5 第一段已改傳聞框架（盛傳／有傳／密斟），冇直述「相繼過檔」；
-#   (5) TEXTFIX55_EXACT 新五條（C5 秋日×3、C1 星河電視城、C4 一筆勾銷）齊；
+#   (5) TEXTFIX55_EXACT 新五條（N5 秋日×3、N1 星河電視城、N4 一筆勾銷）齊；
 #       pack 原文仍然存在（證明行緊覆寫層、冇直改 pack）；
 #   (6) B-04/B-06 掛點存在（chungPre91 年份閘、gu_n10after 三路換句）；
 #   (7) B-05/B-07/B-08/B-09 結局呈現掛點存在（exodus 鍾楚凝段、GH 三路、E5 新句、曉晴 awardsLog 分版）。
@@ -27,8 +27,8 @@ def ok(name, cond):
 # (1) B-10
 ok('B10 茶水芬姐清零', '茶水芬姐' not in html)
 ok('B10 茶水檔芬姐清零', '茶水檔芬姐' not in html)
-ok('B10 珍姐 C9 糧單句', '茶水珍姐個仔開學要交學費' in html)
-ok('B10 珍姐 C9 糖水句', '珍姐那天還特意留了一碗糖水給你' in html)
+ok('B10 珍姐 N10 糧單句', '茶水珍姐個仔開學要交學費' in html)
+ok('B10 珍姐 N10 糖水句', '珍姐那天還特意留了一碗糖水給你' in html)
 ok('B10 珍姐 醫院糖水句', '茶水檔珍姐唔知喺邊度收到風' in html)
 bad_fen = []
 for i, l in enumerate(lines, 1):
@@ -112,7 +112,7 @@ ok('A09 E5 冇直述過檔句', '相繼過檔，星河電視' not in seg5)
 for k in ['秋日午後片場休息，周采兒攞住筆記本', '秋日午後，片場休息角。', '窗外走廊間中有人行過，帶住幾分星河電視城特有嘅急促。',
           '我特登留畀你。做埋呢單，啲數一筆勾銷。', '片場休息角小訪桌（摺椅、筆記本）；秋日午後；訪問向——周采兒小訪阿偉']:
     ok('T EXACT key: ' + k[:14], k in html)
-packmain = io.open(os.path.join(root, 'content', 'story_detail_c1_to_c17.json'), encoding='utf-8').read()
+packmain = io.open(os.path.join(root, 'content', 'story_detail_n1_to_n17.json'), encoding='utf-8').read()
 ok('T pack 原文保留（覆寫層）', '秋日午後，片場休息角。' in packmain and '啲數一筆勾銷' in packmain)
 
 # (6) B-04/B-06 掛點

@@ -217,7 +217,7 @@ function freshS(day){
     st.pending = 'wf4_ev_set03'; st.pendingDay = 69; st.lastDay = 67; st.locDay = -99; st.locTries = 0;
     return st;
   };
-  global.story165CanPlay = () => ({ id: 'C6F' }); // 強制播 pending（C6F 等播）
+  global.story165CanPlay = () => ({ id: 'N6F' }); // 強制播 pending（N6F 等播）
   let st = staleWithForced();
   ok('v198×v193：強制播 pending＋stale pending 同時存在，入場嗰次 stale pending 要清走',
     W.wf4TryLocEvent('cafe_cha') === false && st.pending === null);

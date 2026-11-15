@@ -51,25 +51,25 @@ play_fn = slice_fn('awards62PlayCeremony')
 hide_css = css_rule('.awd63-cards.glamour-hide')
 chk('C1 glamour-hide CSS 規則在場', bool(hide_css))
 chk('C1 卡列隱藏用 display:none（v174 C2：收短 frame）', 'display:none' in hide_css)
-chk('C1 唔再 visibility:hidden 留位（174px 死位取消）', 'visibility:hidden' not in hide_css)
-chk('C1 .awd63-cards.on 規則跟 v174 B2（常駐 flex＋visibility）', css_rule('.awd63-cards.on') == '.awd63-cards.on{visibility:visible}')
+chk('N1 唔再 visibility:hidden 留位（174px 死位取消）', 'visibility:hidden' not in hide_css)
+chk('N1 .awd63-cards.on 規則跟 v174 B2（常駐 flex＋visibility）', css_rule('.awd63-cards.on') == '.awd63-cards.on{visibility:visible}')
 
 # --- (2) JS：syncGlamour 同條件 toggle ---
 sg_i = play_fn.find('const syncGlamour')
 sg_block = play_fn[sg_i:play_fn.find('const draw', sg_i)] if sg_i >= 0 else ''  # v20a181：syncWalkup 已撤，下一 const 係 draw
-chk('C1 syncGlamour 在場', bool(sg_block))
+chk('N1 syncGlamour 在場', bool(sg_block))
 chk('C1 syncGlamour toggle 卡列 glamour-hide', 'cardsEl.classList.toggle("glamour-hide"' in sg_block)
 chk('C1 卡列 toggle 同 overlay 同條件（淨係 glamour beat）',
     'classList.toggle("on", isGlam212)' in sg_block
     and 'classList.toggle("glamour-hide", isGlam212)' in sg_block)
 chk('C1 cardsEl 有 null guard（gallery 冇卡列唔會爆）', 'if(cardsEl)' in sg_block)
-chk('C1 syncGlamour 註解寫明恢復機制（下一 beat 即恢復）', '下一 beat' in sg_block and '恢復' in sg_block)
-chk('C1 syncGlamour 兩個 call 位齊（init＋advance）', play_fn.count('syncGlamour(beats[') == 2)
+chk('N1 syncGlamour 註解寫明恢復機制（下一 beat 即恢復）', '下一 beat' in sg_block and '恢復' in sg_block)
+chk('N1 syncGlamour 兩個 call 位齊（init＋advance）', play_fn.count('syncGlamour(beats[') == 2)
 
 # --- (3) syncCards 唔郁 ---
 sc_i = play_fn.find('const syncCards')
 sc_block = play_fn[sc_i:play_fn.find('const syncGlamour', sc_i)] if sc_i >= 0 else ''
-chk('C1 syncCards 在場', bool(sc_block))
+chk('N1 syncCards 在場', bool(sc_block))
 chk('C1 syncCards 只喺 names／suspense／reveal／comfort 加 on',
     'b.id === "names"' in sc_block and 'b.id === "suspense"' in sc_block
     and 'b.id === "reveal"' in sc_block and 'b.id === "comfort"' in sc_block)
@@ -95,7 +95,7 @@ chk('C1 won 順序唔變（reveal→walkup→glamour→out）',
     beats_fn.find('id: "reveal"') < beats_fn.find('id: "walkup"') < beats_fn.find('id: "glamour"')
     < beats_fn.rfind('id: "out"'))
 chk('C1 walkup／out 時長唔變', 'id: "walkup", ms: 2200' in beats_fn and 'id: "out", ms: 500' in beats_fn)
-chk('C1 setCaption 空框隱藏唔郁（v166 C1）', 'style.display' in play_fn and 'textContent' in play_fn)
+chk('N1 setCaption 空框隱藏唔郁（v166 C1）', 'style.display' in play_fn and 'textContent' in play_fn)
 
 print('')
 print('FAILED: %d' % len(fails) if fails else 'ALL PASS')

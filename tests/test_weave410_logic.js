@@ -1,6 +1,6 @@
 // WEAVE_PHASE4_10 邏輯測試（v20a33）：結局系統。
-// 行真路徑——STORY_SPINE_NODE_C17_410 覆寫（applyStorySpineOverrides410 套落真 pack nodes）
-// → StoryOC.listOpen 真閘（STORY_GATE_3Y C17：C13 done＋1992 冬）→ ending410EveNode 動態重建
+// 行真路徑——STORY_SPINE_NODE_N17_410 覆寫（applyStorySpineOverrides410 套落真 pack nodes）
+// → StoryOC.listOpen 真閘（STORY_GATE_3Y N17：N16 done＋1992 冬）→ ending410EveNode 動態重建
 // （choices＝endingEveOptions410 相鄰規則）→ StoryOC.applyChoice 真寫入
 // → ending410AfterEveChoice 真組裝（resolveEnding410 判定＋S.ending410 落檔＋modal 逐頁呈現）。
 // resolveEnding410 判定矩陣用合成狀態逐個命中；純函數深等驗證；
@@ -9,7 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-const pack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_c1_to_c17.json'), 'utf8'));
+const pack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_n1_to_n17.json'), 'utf8'));
 const romVHC = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_romance_vera_hiu_choi.json'), 'utf8'));
 const romLX = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_romance_lan_xu.json'), 'utf8'));
 
@@ -159,7 +159,7 @@ const SRC = [
   extractConst('ENDING410_EXODUS_NAME_FALLBACK'),
   extractConst('ENDING410_NPC_NAMES'),
   extractConst('ENDING410_CHOICE_IDS'),
-  extractConst('STORY_SPINE_NODE_C17_410'),
+  extractConst('STORY_SPINE_NODE_N17_410'),
   extractConst('ENDING410_ADJ_RUMOR'),
   /* v20a136：awardResolved 檢查行真 awardsGetFlag（＋ensureAwardsFlags／awardsFlagKey），唔 stub */
   extractFn('function ensureAwardsFlags'),
@@ -192,7 +192,7 @@ const SRC = [
  .replace('const ENDING410_EXODUS_NAME_FALLBACK =', 'var ENDING410_EXODUS_NAME_FALLBACK =')
  .replace('const ENDING410_NPC_NAMES =', 'var ENDING410_NPC_NAMES =')
  .replace('const ENDING410_CHOICE_IDS =', 'var ENDING410_CHOICE_IDS =')
- .replace('const STORY_SPINE_NODE_C17_410 =', 'var STORY_SPINE_NODE_C17_410 =')
+ .replace('const STORY_SPINE_NODE_N17_410 =', 'var STORY_SPINE_NODE_N17_410 =')
  .replace('const ENDING410_ADJ_RUMOR =', 'var ENDING410_ADJ_RUMOR =')
  .replace('const START =', 'var START =')
  .replace('const BehaviorGate =', 'var BehaviorGate =')
@@ -219,7 +219,7 @@ function loadGame(save){
   STORY_WIRE.romance.veraHiuChoi = JSON.parse(JSON.stringify(romVHC));
   STORY_WIRE.romance.lanXu = JSON.parse(JSON.stringify(romLX));
   const r = applyStorySpineOverrides410();
-  if(!(r && r.ok && r.main === 1)) throw new Error('4-10 覆寫應替換 1 個（C17），實際 ' + JSON.stringify(r));
+  if(!(r && r.ok && r.main === 1)) throw new Error('4-10 覆寫應替換 1 個（N17），實際 ' + JSON.stringify(r));
   StoryOC.ensure();
   return S;
 }
@@ -327,20 +327,20 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
 
 /* ================= (b) 觸發閘＋覆寫 ================= */
 {
-  loadGame(baseSave({ dayIndex: dayIndexOf(1991, 12, 15), story: { flags: {}, rel: {}, done: { C13: true }, choices: {} } }));
-  ok('閘：1991 冬（yearEq 唔中）→ C17 唔開', !openIds().includes('C17'));
+  loadGame(baseSave({ dayIndex: dayIndexOf(1991, 12, 15), story: { flags: {}, rel: {}, done: { N16: true }, choices: {} } }));
+  ok('閘：1991 冬（yearEq 唔中）→ N17 唔開', !openIds().includes('N17'));
   loadGame(baseSave({ story: { flags: {}, rel: {}, done: {}, choices: {} } }));
-  ok('閘：1992 冬但 C13 未 done → C17 唔開', !openIds().includes('C17'));
-  loadGame(baseSave({ awardsFlags: { "1992/award_singho_tv": "done" }, story: { flags: {}, rel: {}, done: { C13: true }, choices: {} } }));
-  ok('閘：1992 冬＋C13 done → C17 開', openIds().includes('C17'));
-  loadGame(baseSave({ story: { flags: {}, rel: {}, done: { C13: true }, choices: {} } }));
-  ok('閘：1992 冬＋C13 done 但台慶未有結果 → C17 唔開（v20a136 awardResolved）', !openIds().includes('C17'));
-  const n = node('C17');
-  ok('覆寫：C17 係「三年收科」＋locId tvb_longmen＋有 playerOffer', n.title === '三年埋單' && n.locId === 'tvb_longmen' && !!n.playerOffer);
+  ok('閘：1992 冬但 N16 未 done → N17 唔開', !openIds().includes('N17'));
+  loadGame(baseSave({ awardsFlags: { "1992/award_singho_tv": "done" }, story: { flags: {}, rel: {}, done: { N16: true }, choices: {} } }));
+  ok('閘：1992 冬＋N16 done → N17 開', openIds().includes('N17'));
+  loadGame(baseSave({ story: { flags: {}, rel: {}, done: { N16: true }, choices: {} } }));
+  ok('閘：1992 冬＋N16 done 但台慶未有結果 → N17 唔開（v20a136 awardResolved）', !openIds().includes('N17'));
+  const n = node('N17');
+  ok('覆寫：N17 係「三年收科」＋locId tvb_longmen＋有 playerOffer', n.title === '三年埋單' && n.locId === 'tvb_longmen' && !!n.playerOffer);
   ok('覆寫：舊十檔清零（冇 endingId choices／冇 E01 字串／冇 ending_e 旗）',
      (n.choices || []).every(c => !c.endingId) && !JSON.stringify(n).includes('E01') && !JSON.stringify(n).includes('ending_e'));
   const r2 = applyStorySpineOverrides410();
-  ok('覆寫冪等：再套一次 main=1、標題不變', r2.main === 1 && node('C17').title === '三年埋單');
+  ok('覆寫冪等：再套一次 main=1、標題不變', r2.main === 1 && node('N17').title === '三年埋單');
 }
 
 /* ================= (c) 相鄰規則 ================= */
@@ -384,15 +384,15 @@ function eveKeys(over){
     npcs: { agent: 30, director: 10, colleague: 0, reporter: 0, stylist: 0, rival: 0 },
     mockCredits: [{ id: 'credit_fen_rescue', debtor: '副導演芬姐', title: '芬姐人情', status: '絕響' }, { id: 'credit_c9_crew', debtor: '劇組場務', title: '年尾出頭人情', status: '未收' }],
     favorLedger: { settled: 3, credits: 4, exodus: ['credit_fen_rescue'], counted: {} },
-    story: { flags: { flag_hiu_commit: true, flag_stay_mind: true }, rel: { rel_hiu: 7 }, done: { C13: true, R_hiu_meet: true, R_hiu_crisis: true }, choices: {} }
+    story: { flags: { flag_hiu_commit: true, flag_stay_mind: true }, rel: { rel_hiu: 7 }, done: { N16: true, R_hiu_meet: true, R_hiu_crisis: true }, choices: {} }
   }));
-  const base = node('C17');
+  const base = node('N17');
   const eve = ending410EveNode(base);
   ok('前夕節點：choices 由狀態生成（natural/quit_job 在列）', eve.choices.some(c => c.ending410Key === 'natural') && eve.choices.some(c => c.ending410Key === 'quit_job'));
   ok('前夕節點：eve choices 唔生報紙（newspaperStoryResolve 全 null）', eve.choices.every(c => newspaperStoryResolve(eve, c) === null));
   const natural = eve.choices.find(c => c.ending410Key === 'natural');
   const result = StoryOC.applyChoice(eve, natural);
-  ok('真 applyChoice：C17 落 done＋旗寫入', StoryOC.isDone('C17') && StoryOC.getFlag('flag_ending410_natural'));
+  ok('真 applyChoice：N17 落 done＋旗寫入', StoryOC.isDone('N17') && StoryOC.getFlag('flag_ending410_natural'));
   const handled = ending410AfterEveChoice(eve, natural, result);
   ok('組裝接管：ending410AfterEveChoice 回 true', handled === true);
   ok('落檔：S.ending410 career=E2／romance commit hiu／exodus stay／稱號含甘草王',
@@ -410,7 +410,7 @@ function eveKeys(over){
   const pagesBefore = modalPages410.length;
   const again = ending410AfterEveChoice(eve, natural, result);
   ok('冪等：重入只重開總結頁、唔重複成個流程', again === true && modalPages410.length === pagesBefore + 1 && S.ending410.career === 'E2');
-  ok('收科後唔再開 C17（done）', !openIds().includes('C17'));
+  ok('收科後唔再開 N17（done）', !openIds().includes('N17'));
 }
 {
   /* v20a95 改版：E4 前夕——危機 beats 照插，但 to_backstage 取消（新梯 E4／E3 唔相鄰）；
@@ -419,9 +419,9 @@ function eveKeys(over){
   loadGame(baseSave({
     fame: 55, stage: 0, acting: 0,
     npcs: { agent: 0, director: 45, colleague: 0, reporter: 0, stylist: 0, rival: 0 },
-    story: { flags: {}, rel: {}, done: { C13: true }, choices: {} }
+    story: { flags: {}, rel: {}, done: { N16: true }, choices: {} }
   }));
-  const eve = ending410EveNode(node('C17'));
+  const eve = ending410EveNode(node('N17'));
   ok('E4 前夕：beats 插入形象危機拍', JSON.stringify(eve.beats).includes('頭版'));
   const pick = eve.choices.find(c => c.ending410Key === 'to_backstage');
   ok('E4 前夕（v95）：to_backstage 唔再喺選項列（新梯唔相鄰）', !pick);
@@ -436,9 +436,9 @@ function eveKeys(over){
   modalPages410 = [];
   loadGame(baseSave({
     fame: 10,
-    story: { flags: { flag_leave_mind: true }, rel: {}, done: { C13: true }, choices: {} }
+    story: { flags: { flag_leave_mind: true }, rel: {}, done: { N16: true }, choices: {} }
   }));
-  const eve = ending410EveNode(node('C17'));
+  const eve = ending410EveNode(node('N17'));
   const pick = eve.choices.find(c => c.ending410Key === 'leave_follow');
   const result = StoryOC.applyChoice(eve, pick);
   ending410AfterEveChoice(eve, pick, result);
@@ -448,17 +448,17 @@ function eveKeys(over){
 
 /* ================= (f) 舊存檔相容 ================= */
 {
-  /* 舊檔 A：舊 pack C13 已 done、C17 未播（offer 狀態）→ 行到新流程 */
+  /* 舊檔 A：舊 pack N16 已 done、N17 未播（offer 狀態）→ 行到新流程 */
   loadGame(baseSave({
     awardsFlags: { "1992/award_singho_tv": "done" },
-    story: { flags: { gossip_vague: true }, rel: { rel_choi: 2 }, done: { C13: true }, choices: { C13: 'C13_c' } }
+    story: { flags: { gossip_vague: true }, rel: { rel_choi: 2 }, done: { N16: true }, choices: { N16: 'N16_c' } }
   }));
-  ok('舊檔 A：C17 以新節點開到、唔 crash', openIds().includes('C17') && node('C17').title === '三年埋單');
-  /* 舊檔 B：舊十檔已揀（C17 done＋ending_e01＋career_lock）→ 唔重播、判定／總結唔 crash */
+  ok('舊檔 A：N17 以新節點開到、唔 crash', openIds().includes('N17') && node('N17').title === '三年埋單');
+  /* 舊檔 B：舊十檔已揀（N17 done＋ending_e01＋career_lock）→ 唔重播、判定／總結唔 crash */
   loadGame(baseSave({
-    story: { flags: { ending_e01: true, career_lock: true }, rel: {}, done: { C13: true, C17: true }, choices: { C17: 'C17_e01' } }
+    story: { flags: { ending_e01: true, career_lock: true }, rel: {}, done: { N16: true, N17: true }, choices: { N17: 'N17_e01' } }
   }));
-  ok('舊檔 B：C17 已 done 唔再開', !openIds().includes('C17'));
+  ok('舊檔 B：N17 已 done 唔再開', !openIds().includes('N17'));
   let noCrash = true;
   try{ resolveEnding410(S); endingSummaryHtml410(); }catch(_e){ noCrash = false; }
   ok('舊檔 B：resolve／總結頁唔 crash（未有 S.ending410 照出未埋單版）', noCrash && endingSummaryHtml410().includes('未埋單'));

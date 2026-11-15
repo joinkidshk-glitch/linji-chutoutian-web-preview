@@ -89,8 +89,8 @@ ok('舊 emotion 詞彙正規化 worried→think', dlg106ResolveCategory({ emotio
 ok('舊 expression 詞彙正規化 frown→serious', dlg106ResolveCategory({ expression:'frown', text:'一句冇關鍵字嘅平靜說話' }) === 'serious');
 ok('冇欄就查 map（芬姐句→sad）', dlg106ResolveCategory({ text:FEN }) === 'sad');
 ok('map miss 就行分類器（嬲句→angry）', dlg106ResolveCategory({ text:'你再講！豈有此理，收聲！' }) === 'angry');
-ok('C3：公事句「唔好意思，你嗰場要押後…」唔入 shy（v20a218 D-C3：排期字眼 guard）', dlg106Classify('唔好意思，你嗰場要押後兩位——前面嗰組跳舞嘅超時，我成版牌要重排，你唔好行遠呀。') !== 'shy');
-ok('C3：真正道歉句「唔好意思，借過」照舊入 shy（冇排期字眼）', dlg106Classify('哎呀——唔好意思，唔好意思，借過！') === 'shy');
+ok('N3：公事句「唔好意思，你嗰場要押後…」唔入 shy（v20a218 D-N3：排期字眼 guard）', dlg106Classify('唔好意思，你嗰場要押後兩位——前面嗰組跳舞嘅超時，我成版牌要重排，你唔好行遠呀。') !== 'shy');
+ok('N3：真正道歉句「唔好意思，借過」照舊入 shy（冇排期字眼）', dlg106Classify('哎呀——唔好意思，唔好意思，借過！') === 'shy');
 ok('全 miss＋冇關鍵字 → neutral', dlg106ResolveCategory({ text:'今日天氣幾好，我哋出發去片場。' }) === 'neutral');
 /* 反證 (c)：垃圾輸入 */
 ok('反證：垃圾 category 認唔到回空', dlg106NormCategory('bogus_cat') === '');

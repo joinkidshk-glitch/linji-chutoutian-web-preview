@@ -52,22 +52,22 @@ cap_rule = css_rule('.awd63-glamour .cap')
 # --- 新 C1：panel 縮短貼底（CSS 機制） ---
 chk('C1 overlay 改 align-items:flex-end（唔再 stretch 全高）',
     'align-items:flex-end' in glam_rule and 'align-items:stretch' not in glam_rule)
-chk('C1 overlay 有 container-type:size（cqh 以 overlay 高計）', 'container-type:size' in glam_rule)
-chk('C1 海報 cap 轉 calc(40cqh - 8px)（舊 40% 唔再出現；裸 40cqh 亦唔准）',
+chk('N1 overlay 有 container-type:size（cqh 以 overlay 高計）', 'container-type:size' in glam_rule)
+chk('N1 海報 cap 轉 calc(40cqh - 8px)（舊 40% 唔再出現；裸 40cqh 亦唔准）',
     'max-height:calc(40cqh - 8px)' in panel_img_rule and 'max-height:40%' not in panel_img_rule
     and 'max-height:40cqh' not in panel_img_rule)
-chk('C1 海報 max-width 88% 唔郁', 'max-width:88%' in panel_img_rule)
-chk('C1 海報金框＋光暈唔郁', 'border:4px solid #f2c14e' in panel_img_rule
+chk('N1 海報 max-width 88% 唔郁', 'max-width:88%' in panel_img_rule)
+chk('N1 海報金框＋光暈唔郁', 'border:4px solid #f2c14e' in panel_img_rule
     and 'box-shadow:0 0 34px rgba(242,193,78,.45)' in panel_img_rule)
-chk('C1 panel 闊 44%＋0.93 暗底＋column＋flex-end＋gap 8＋padding 10/12 唔郁',
+chk('N1 panel 闊 44%＋0.93 暗底＋column＋flex-end＋gap 8＋padding 10/12 唔郁',
     'flex:0 0 44%' in panel_rule and 'rgba(10,6,18,.93)' in panel_rule
     and 'flex-direction:column' in panel_rule and 'justify-content:flex-end' in panel_rule
     and 'gap:8px' in panel_rule and 'padding:10px 12px' in panel_rule)
-chk('C1 overlay 仲係 absolute top:0／left:0／width:100%＋aspect 480/432＋pointer-events:none（v20a207 B2）',
+chk('N1 overlay 仲係 absolute top:0／left:0／width:100%＋aspect 480/432＋pointer-events:none（v20a207 B2）',
     'position:absolute' in glam_rule and 'top:0' in glam_rule and 'left:0' in glam_rule
     and 'width:100%' in glam_rule and 'aspect-ratio:480/432' in glam_rule
     and 'pointer-events:none' in glam_rule)
-chk('C1 cap 字體唔郁（19px／行高 1.55，兩行＝58.9px）',
+chk('N1 cap 字體唔郁（19px／行高 1.55，兩行＝58.9px）',
     'font-size:19px' in cap_rule and 'line-height:1.55' in cap_rule)
 
 # --- 新 C1：逐 px 計數（932／700，CSS px） ---
@@ -83,18 +83,18 @@ def geom(overlay_h, panel_bottom, board_bottom):
             'bottom_gap': round(8 + CAP_H + 10)}
 g932 = geom(570, 693, 360)
 g700 = geom(504, 660, 366)
-chk('C1 932 cap＝0.4×570−8＝220（同 v187 舊 cap 逐 px 等價）', g932['cap'] == 220)
-chk('C1 700 cap＝0.4×504−8＝193.6（同 v187 舊 cap 逐 px 等價）', abs(g700['cap'] - 193.6) < 0.01)
+chk('N1 932 cap＝0.4×570−8＝220（同 v187 舊 cap 逐 px 等價）', g932['cap'] == 220)
+chk('N1 700 cap＝0.4×504−8＝193.6（同 v187 舊 cap 逐 px 等價）', abs(g700['cap'] - 193.6) < 0.01)
 chk('C1 932 海報頂 396、離牌底 36px（v187 實測下限）', g932['img_top'] == 396 and g932['clearance'] == 36)
 chk('C1 700 海報頂 390、離牌底 24px（v187 實測下限）', g700['img_top'] == 390 and g700['clearance'] == 24)
-chk('C1 932 空佔比 10／306.9＝3.3% ≤25%（舊 47.9%）', g932['empty_ratio'] <= 0.25 and abs(g932['empty_ratio'] - 0.033) < 0.002)
-chk('C1 700 空佔比 10／280.5＝3.6% ≤25%（舊 46.3%）', g700['empty_ratio'] <= 0.25 and abs(g700['empty_ratio'] - 0.036) < 0.002)
-chk('C1 海報底到 panel 底 77px 唔郁', g932['bottom_gap'] == 77 and g700['bottom_gap'] == 77)
-chk('C1 海報盒唔郁：932 img 396–616、700 img 390–583',
+chk('N1 932 空佔比 10／306.9＝3.3% ≤25%（舊 47.9%）', g932['empty_ratio'] <= 0.25 and abs(g932['empty_ratio'] - 0.033) < 0.002)
+chk('N1 700 空佔比 10／280.5＝3.6% ≤25%（舊 46.3%）', g700['empty_ratio'] <= 0.25 and abs(g700['empty_ratio'] - 0.036) < 0.002)
+chk('N1 海報底到 panel 底 77px 唔郁', g932['bottom_gap'] == 77 and g700['bottom_gap'] == 77)
+chk('N1 海報盒唔郁：932 img 396–616、700 img 390–583',
     g932['img_top'] + 220 == 616 and abs(g700['img_top'] + 193.6 - 583.6) < 0.01)
-chk('C1 panel 底唔郁（932：693；700：660）',
+chk('N1 panel 底唔郁（932：693；700：660）',
     round(693 - g932['content_h'] + g932['content_h']) == 693 and round(660 - g700['content_h'] + g700['content_h']) == 660)
-chk('C1 高身海報（0.5 比例）cap 下闊 106px＜max-width 273px', (220 - 8) * 0.5 == 106 and 106 < 0.88 * (334.4 - 24))
+chk('N1 高身海報（0.5 比例）cap 下闊 106px＜max-width 273px', (220 - 8) * 0.5 == 106 and 106 < 0.88 * (334.4 - 24))
 
 # --- 唔郁守衛：其餘六項 ---
 chk('守衛 B1 地板 y274–372（#d9a75f，深 98px；v20a207 B2）', '#d9a75f' in base_fn and '228 / 360' in base_fn and '310 / 360' in base_fn)

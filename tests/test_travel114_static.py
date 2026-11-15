@@ -133,7 +133,7 @@ ck("drawMap 計 travelLocked114（travel114Remain() <= 0）",
   # v20a161 rebase 上 bf612bc（v155 先落地）resync：START161 淨 +14 行（插入段新行 4793-4806），
 # 行號 ≥4793 者 +14；本檔釘行全部喺插入點之後，一律 +14（difflib 對位＋逐行錨點核實，見 qa161/resolve_rebase161_v155.py）。
 # v20a155 rebase 上 main 9346a8e（v151＋v156）resync：v155 淨 ＋17（B1 註解 ＋6／B2 註解 ＋7／B3 ＋4），全部錨點再 ＋17；COUNT 13／FREE 27 不變，DEF 53601→53618、WRAPPER 44205→44222。
-# v20a157 resync：splice 8 份 fragment（C6/C6F/1989/1990/C17/F4/G4/WF1）＋C17 synopsis 第2段改寫，行號純漂移；/tmp/resync114.py difflib 對位核實：44 個 openLoc( 呼叫點序列逐字一致、內容逐行相同；COUNT 13／FREE 27 不變，DEF 53562→53632、WRAPPER 44171→44241。
+# v20a157 resync：splice 8 份 fragment（N6/N6F/1989/1990/N17/F4/G4/WF1）＋N17 synopsis 第2段改寫，行號純漂移；/tmp/resync114.py difflib 對位核實：44 個 openLoc( 呼叫點序列逐字一致、內容逐行相同；COUNT 13／FREE 27 不變，DEF 53562→53632、WRAPPER 44171→44241。
 # v20a157 rebase 上 main 60b0a8f resync：main v152–v166 淨刪行＋splice 漂移（早段 −191／−185／−184、中段 −137、尾段 −22／−6／−4；qa131/resync_rebase157.py difflib 對位核實：42 個錨點內容逐行相同，純漂移；COUNT 13／FREE 27 不變，DEF 53632→53610、WRAPPER 44241→44104）。
 # v20a146 rebase B1 步 resync：覆寫表加 st05／st08 兩行（其後錨點 ＋2）；qa146/resync_travel114_147.py HEAD 核實：44 個 openLoc( 呼叫點序列逐字一致、內容逐行相同，純漂移；COUNT 13／FREE 27 不變，DEF 53560→53562、WRAPPER 44169→44171。
 # v20a160 rebase 上 main 222a984（v152）M1 步：淨 ＋7 行（M1 底圖常數段）；difflib 核實純漂移（3 replace 段、44 個 openLoc 呼叫點逐字一致、41 個釘行內容逐行相同）；COUNT 13／FREE 27 不變，DEF 53425→53432、WRAPPER 44029 不變。
@@ -154,7 +154,7 @@ ck("drawMap 計 travelLocked114（travel114Remain() <= 0）",
 # v20a186 resync：v186 淨 ＋4 行（結果卡同屆提名行移出逐類別卡，插入點 L45783–45826）；其後錨點各 ＋4（COUNT 58707→58711、58885→58889、59028→59032、59049→59053；FREE 52900 之後 22 處各 ＋4；DEF 54647→54651、WRAPPER 44353 唔郁）；COUNT 12／FREE 34 不變。
 # v20a189 resync：index.html 淨 ＋34 行（accel-link CSS ＋15 @~1831／day-res 92dvh media ＋10 @~3235／hint 刪除 −10 @37990／soft map 掣 ＋3／accel link push ＋12／day-res class ＋4；difflib 對位核實純漂移，見 qa189/resync189.py）。
 # v20a199 resync：index.html 淨 +44 行（DLG199 ＋30／fitApply ＋13／WF4 onload ＋1）；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重算，內容逐字核實純漂移。
-# v20a200 rebase resync：index.html 淨 ＋12 行（C1 註解＋2／提示註解＋1／C2 註解＋分流＋6／nominee 標籤註解＋3；插入點 main L46187／46680／46767／47609；COUNT 12／FREE 34 不變，DEF 55204→55216、WRAPPER 44480 唔郁；qa200/resync200_rebase.py difflib 對位核實純漂移）。
+# v20a200 rebase resync：index.html 淨 ＋12 行（N1 註解＋2／提示註解＋1／N2 註解＋分流＋6／nominee 標籤註解＋3；插入點 main L46187／46680／46767／47609；COUNT 12／FREE 34 不變，DEF 55204→55216、WRAPPER 44480 唔郁；qa200/resync200_rebase.py difflib 對位核實純漂移）。
 # v20a218 resync：index.html 淨 +136 行；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重算，內容逐字核實純漂移（47 個錨點，見 qa218/resync218_pins.py）；COUNT 12／FREE 33 不變，DEF 57230→57350、WRAPPER 45430→45479。
 # v20a219 resync：index.html 淨 +3 行（CONTRA98 表加 stub 行＋註解 2 行，插入點舊 L31845 之後）；其後錨點各 +3（FREE 25 處／COUNT 12 處／DEF 57350→57353／WRAPPER 45479→45482；＜31846 者唔郁），difflib 對位核實純漂移，見 qa219/resync219.py。
 # v20a225 resync：index.html 淨 +272 行（對手線強化 rebase 上 main 719975f）；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重算，內容逐字核實純漂移（47 個錨點，見 qa225/resync225.py）。
@@ -162,17 +162,17 @@ ck("drawMap 計 travelLocked114（travel114Remain() <= 0）",
 # v20a189 rebase 上 main 0c29f03（v188）resync：淨 +254（v188；v190 淨 0）；COUNT／FREE／DEF 按段 +0／+254 映射（COUNT 12／FREE 34 不變，DEF 54685→54939、WRAPPER 44387 唔郁；difflib 對位核實純漂移，見 qa189/resync189_rebase.py）。
 COUNT_LINES = {
     32564,  # ux68GoLoc 手帳「前往」
-    36071,  # 訓練建議「去報名」
-    38225,  # 訓練報名導航
-    39415,  # 進度頁「去現場播劇情」
-    39850,
-    39853,  # 地圖釘 goPin（最近針／後備 L.id）
-    39884,  # 地圖底欄地點掣
-    45074,  # 人情債「去事務所」
-    61647,  # inv72GoShop 去禮品檔
-    61859,  # people72GoLoc
-    62005,  # jobs72GoBoard
-    62026,  # jobs72GoLoc
+    36075,  # 訓練建議「去報名」
+    38265,  # 訓練報名導航
+    39455,  # 進度頁「去現場播劇情」
+    39890,
+    39893,  # 地圖釘 goPin（最近針／後備 L.id）
+    39924,  # 地圖底欄地點掣
+    45114,  # 人情債「去事務所」
+    61687,  # inv72GoShop 去禮品檔
+    61899,  # people72GoLoc
+    62045,  # jobs72GoBoard
+    62066,  # jobs72GoLoc
 }
 # 免費清單（帶旗，唔計）：33 處（舊 34 減 v196 D4 刪走 leaveStory 嗰行 28228；舊 27 減 2 條改行 back176 守衛，加 ROM176 新 8 處＋v183 C9 intro 1 處）
 FREE_LINES = {
@@ -185,35 +185,36 @@ FREE_LINES = {
     31241,
     31242,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
     31345,  # 故事 seed 就緒，系統傳送去劇情地點
-    41845,  # wf4Fire 完（wf4Done，舊旗）
-    44731,  # 人情債流程尾，返去而家身處地點
-    44754,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
-    55782,
-    55901,  # 巧遇播完（encDone，舊旗）
-    55951,  # v176 星巧遇送禮掣 fallback（encDone）
-    56174,  # v176 女角巧遇 def-missing（encDone）
-    56213,  # v176 女角巧遇「行開」（encDone）
-    56219,  # v176 女角巧遇 onDismiss（encDone）
-    56286,  # v176 星送禮 canGive-fail（encDone）
-    56288,  # v176 星送禮冇 item（encDone）
-    56291,  # v176 星送禮冇庫存（encDone）
-    56318,  # v176 星送禮結果 modal go（encDone）
-    57429,  # 劇情播完刷新（refreshLocAfterStory）
-    57803,
-    57825,  # 「劇情已完成」toast 後重開而家身處地點
-    57976,  # 聽完傳聞後 reopen 而家身處地點
-    59613,  # forceRestore（舊旗）
-    61415,  # promptAudition back（返去而家身處地點）
-    61533,
-    61534,
-    61569,
-    61570,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    61595,  # doGiveGift 失敗後重開而家身處地點
-    62476,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
+    41885,  # wf4Fire 完（wf4Done，舊旗）
+    44771,  # 人情債流程尾，返去而家身處地點
+    44794,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
+    55822,
+    55941,  # 巧遇播完（encDone，舊旗）
+    55991,  # v176 星巧遇送禮掣 fallback（encDone）
+    56214,  # v176 女角巧遇 def-missing（encDone）
+    56253,  # v176 女角巧遇「行開」（encDone）
+    56259,  # v176 女角巧遇 onDismiss（encDone）
+    56326,  # v176 星送禮 canGive-fail（encDone）
+    56328,  # v176 星送禮冇 item（encDone）
+    56331,  # v176 星送禮冇庫存（encDone）
+    56358,  # v176 星送禮結果 modal go（encDone）
+    57469,  # 劇情播完刷新（refreshLocAfterStory）
+    57843,
+    57865,  # 「劇情已完成」toast 後重開而家身處地點
+    58016,  # 聽完傳聞後 reopen 而家身處地點
+    59653,  # forceRestore（舊旗）
+    61455,  # promptAudition back（返去而家身處地點）
+    61573,
+    61574,
+    61609,
+    61610,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    61635,  # doGiveGift 失敗後重開而家身處地點
+    62516,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 57529      # function openLoc(id, opts){
-WRAPPER_LINE = 45643  # window.__phase2.openLoc：轉發 opts
+DEF_LINE = 57569      # function openLoc(id, opts){
+WRAPPER_LINE = 45683  # window.__phase2.openLoc：轉發 opts
+# v20a210 resync：index.html 淨 +40 行（c2n210MigrateSave ＋36 行＠舊 L36730 之後＋呼叫點 ＋4 行＠舊 L33790）；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫（FREE ＞36729 者各 +40、＜33790 者唔郁；COUNT 36071→36075（＋4 帶）、其餘 10 處各 +40、32564 唔郁；DEF 57529→57569、WRAPPER 45643→45683），核實純漂移。
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫（COUNT 12／FREE 33 不變；DEF 56824→56964、WRAPPER 45390→45392），核實純漂移。# v20a212 rebase 上 main b1ca47a resync：COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫，qa212/resync212_rebase.py 核實純漂移（v211 +42 段內逐段 shift）。
 # v20a213 rebase 上 main 17c6f69 resync：COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫（以 HEAD :2: 33 針為準，補返合併漏咗嘅 30995；DEF 56466／WRAPPER 45200），qa213/resync213_rebase2.py 核實純漂移。
 # v196 落地合併上 main 2de5026：/tmp/resync_travel114_196d.py difflib 對位核實 51 個呼叫點逐字相同，純漂移（leaveStory 嗰行已喺 v196 刪走）；COUNT 12／FREE 33 不變；DEF 55384／WRAPPER 44647。
@@ -227,13 +228,13 @@ WRAPPER_LINE = 45643  # window.__phase2.openLoc：轉發 opts
 # COUNT／FREE／DEF／WRAPPER 按段 ＋0／＋5／＋10／＋15（grep openLoc( 逐行核對），總數 52 不變。
 # v20a176 rebase 上 main 91f264a（v175）resync：v175 淨 ＋78，COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫（qa176/resync176_rebase.py），總數 52 不變。
 # v20a153 第三輪 rebase 上 main a500536（v149）resync：difflib 對位核實純漂移，COUNT/FREE/DEF/WRAPPER 行號按映射重寫（見 qa153/resync_rebase153c.py）。
-# v20a182 resync：v182 淨 ＋17 行（CSS＋2／請柬＋4／presentAwardInvite＋6／C1 JS＋5）；＜45746 者 ＋2、其後者 ＋17，COUNT 13／FREE 33 不變，DEF 54493→54510、WRAPPER 44335→44337（qa182/resync182.py difflib 對位核實純漂移）。
+# v20a182 resync：v182 淨 ＋17 行（CSS＋2／請柬＋4／presentAwardInvite＋6／N1 JS＋5）；＜45746 者 ＋2、其後者 ＋17，COUNT 13／FREE 33 不變，DEF 54493→54510、WRAPPER 44335→44337（qa182/resync182.py difflib 對位核實純漂移）。
 # v20a172 rebase 上 main a500536（v149）resync：v149 淨 ＋97；＜45594 者 ＋13、典禮區後者 ＋97，DEF 53707→53804、WRAPPER 44187→44200；COUNT 13／FREE 27 不變（qa172/resync172b.py difflib 對位核實）。
 # v20a172 rebase 上 main e2add29（v174）resync：COUNT／FREE 按段 ＋0／＋5／＋10／＋15，DEF 53860→53875、WRAPPER 44235→44250（qa172/resync172c.py difflib 對位核實純漂移）。
 # v20a175 rebase 上 main f09fa1b（v177）resync：index.html 淨 ＋78（CSS ＋10／toast() ＋15／helpers ＋51／adopt ＋2）；錨點逐行核實內容逐字相同，純漂移（＜33710 者 ＋10、33711–44131 者 ＋25、≥44223 者 ＋78；COUNT 13／FREE 27 不變，DEF 53875→53953、WRAPPER 44250→44328）。
 # v20a178 第二次 rebase 上 main 91f264a（v175）resync：v178 ＋25 行（註解＋1／sprite＋3／fellows＋21，插入點新行號 46815／46850／46993；其後者 ＋25、之前者唔郁）；COUNT 13／FREE 27 不變，DEF 53953→53978、WRAPPER 44328 唔郁（qa178/resync178b.py difflib 對位核實純漂移；三檔 rebase 衝突後以 v175 版為底重算）。
 # v20a178 strip 上 91f264a resync：strip 淨 −4 行（註解＋1／sprite＋3，刪除點舊行號 46815／46852–46854；其後者 −4、之前者唔郁）；COUNT 13／FREE 27 不變，DEF 53978→53974、WRAPPER 44328 唔郁（qa178/resync178c.py difflib 對位核實純漂移）。
-# v20a183 resync：v183 淨 ＋117 行（C7 CSS ＋2／prefKind ＋1／TryIntercept ＋1／PlayEncounter ＋2／ROM183 block ＋107／確認 modal ＋3／goBit ＋1；difflib 對位核實純漂移，見 qa183/resync183.py）。
+# v20a183 resync：v183 淨 ＋117 行（N7 CSS ＋2／prefKind ＋1／TryIntercept ＋1／PlayEncounter ＋2／ROM183 block ＋107／確認 modal ＋3／goBit ＋1；difflib 對位核實純漂移，見 qa183/resync183.py）。
 # v20a184 rebase 上 main 0f90dc7（v183）resync：v184 淨 ＋16 行（C2 helper＋9／請柬＋1／結果卡＋1／C1 DEEPS＋4／漸變＋1 淨）；＜45748 者唔郁、其後者 ＋16（difflib 對位核實純漂移，見 qa184/resync184_rebase.py）。
 # v20a184 resync（travel114）：COUNT 12／FREE 34 不變，DEF 54623→54639、WRAPPER 44340 唔郁。
 # v20a176 第三輪 rebase 上 main c682cc2（v178）resync：v178 淨 ＋21（fellows 特別名額＋21，插入點 46993 之後者 ＋21）；COUNT 13／FREE 33 不變，DEF 54472→54493、WRAPPER 44335 唔郁（qa176/resync176_rebase3.py difflib 對位核實純漂移；三檔 rebase 衝突後取 v176 嗰邊，v178 註解行補返）。

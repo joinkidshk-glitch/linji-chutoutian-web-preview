@@ -1,12 +1,12 @@
 // v20a191 STORY191・邏輯／真路徑測試
-// A 進度頁唔再將插入幕排做第 20 幕（C6F 跟 C6、番外錨季節）＋B 場景頂幕號同進度頁同一來源。
-// 覆蓋：(a) C6F／C18／C19 新標籤（進度頁唔再見「第 20 幕」／「第 18 幕」／「第 19 幕」）
+// A 進度頁唔再將插入幕排做第 20 幕（N6F 跟 N6、番外錨季節）＋B 場景頂幕號同進度頁同一來源。
+// 覆蓋：(a) N6F／N18／N19 新標籤（進度頁唔再見「第 20 幕」／「第 18 幕」／「第 19 幕」）
 //       (b) 場景頂幕號同進度頁標籤同一來源（storyActLabel；進度頁行 label＝storyActLabel(id)，
 //           StoryPlay head 呼叫點由靜態測試釘死）
 //       (c) 遠幕合併＋逐項揭曉邏輯未爛（合併行位置／區間、鎖住插入幕唔觸發合併行）
-//       (d) 舊存檔（已有 C6F done 旗）載入後進度頁顯示正確
-//       (e) 前置句＋地圖下一幕提示同樣行共用幕號（C19 前置 C18、C6 路線後綴）
-// v20a198 更新：(c) 語義改咗——鎖住插入幕而家出獨立鎖定行（C2），遠幕合併按段計
+//       (d) 舊存檔（已有 N6F done 旗）載入後進度頁顯示正確
+//       (e) 前置句＋地圖下一幕提示同樣行共用幕號（N19 前置 N18、N6 路線後綴）
+// v20a198 更新：(c) 語義改咗——鎖住插入幕而家出獨立鎖定行（N2），遠幕合併按段計
 //       （新局「第 4–6 幕」＋「第 7–17 幕」）；下面 (c) 斷言已跟新語義改，舊「鎖住插入幕
 //       唔出獨立行」寫法作廢，見 test_story198_logic.js (C2) 覆蓋。
 // 反證：喺 pristine main（v187）index 上行，storyActLabel 唔存在——
@@ -15,15 +15,15 @@
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-const storyPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_c1_to_c17.json'), 'utf8'));
-const gateStubPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'behavior_gate_c1_c5.json'), 'utf8'));
+const storyPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_n1_to_n17.json'), 'utf8'));
+const gateStubPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'behavior_gate_n1_n5.json'), 'utf8'));
 const DEBUG = !!process.env.STORY191_DEBUG;
 
 let fails = [];
 function ok(name, cond){ if(!cond) fails.push(name); console.log((cond ? 'PASS' : 'FAIL') + ' ' + name); }
 
 if(html.indexOf('function storyActLabel(') < 0){
-  ['(a) 插入幕新標籤', '(b) 同一來源', '(c) 遠幕合併＋逐項揭曉', '(d) 舊存檔 C6F done', '(e) 前置句＋地圖提示'].forEach(n=>{
+  ['(a) 插入幕新標籤', '(b) 同一來源', '(c) 遠幕合併＋逐項揭曉', '(d) 舊存檔 N6F done', '(e) 前置句＋地圖提示'].forEach(n=>{
     fails.push(n); console.log('FAIL ' + n + '（pristine：冇 storyActLabel）');
   });
   console.log('STORY191 LOGIC: ' + fails.length + ' FAIL');
@@ -145,14 +145,14 @@ function freshSave(over){
   function loadGame(save){
     S = save; window.S = S;
     STORY_WIRE.main = JSON.parse(JSON.stringify(storyPack));
-    /* v191：fixture 只含 C1–C17；補返真遊戲經 BR89／WF1 注入嘅 C6F／C18／C19 節點
+    /* v191：fixture 只含 N1–N17；補返真遊戲經 BR89／WF1 注入嘅 N6F／N18／N19 節點
        （id／phase／locId／title 跟真節點；playerOffer:true 對應實機狀態——
-       調查報告實駕見到 C6F／C6 入 listOpen open 桶。閘由 STORY_GATE_3Y 評，
+       調查報告實駕見到 N6F／N6 入 listOpen open 桶。閘由 STORY_GATE_3Y 評，
        唔靠節點 openConditions；進度頁標題由 STORY_TITLE_SOFT／calib60 出，唔靠呢度嘅 title）。 */
     STORY_WIRE.main.nodes.push(
-      { id: 'C6F', title: '角落嗰張枱', phase: 'P1.5', locId: 'film_lion', playerOffer: true },
-      { id: 'C18', title: '上岸路', phase: 'P2', locId: 'agency_ho', playerOffer: true },
-      { id: 'C19', title: '賭枱邊', phase: 'P2', locId: 'film_lion', playerOffer: true }
+      { id: 'N6F', title: '角落嗰張枱', phase: 'P1.5', locId: 'film_lion', playerOffer: true },
+      { id: 'N18', title: '上岸路', phase: 'P2', locId: 'agency_ho', playerOffer: true },
+      { id: 'N19', title: '賭枱邊', phase: 'P2', locId: 'film_lion', playerOffer: true }
     );
     BehaviorGate.loadStub_nodes_trigger(JSON.parse(JSON.stringify(gateStubPack)));
     StoryOC.ensure();
@@ -169,82 +169,82 @@ function freshSave(over){
   }
 
   /* ---- (a/b) 標籤函數本身 ---- */
-  ok('(a) C1–C5／C7–C17 用順序號', storyActLabel('C1') === '第 1 幕' && storyActLabel('C5') === '第 5 幕'
-    && storyActLabel('C7') === '第 7 幕' && storyActLabel('C17') === '第 17 幕');
-  ok('(a) C6／C6F 係路線雙生、對稱後綴', storyActLabel('C6') === '第 6 幕・電視線' && storyActLabel('C6F') === '第 6 幕・電影線');
-  ok('(a) C18／C19 係時間錨番外、唔佔順序號', storyActLabel('C18') === '番外・1990 冬' && storyActLabel('C19') === '番外・1991 春');
+  ok('(a) N1–N5／N7–N17 用順序號', storyActLabel('N1') === '第 1 幕' && storyActLabel('N5') === '第 5 幕'
+    && storyActLabel('N7') === '第 7 幕' && storyActLabel('N17') === '第 17 幕');
+  ok('(a) N6／N6F 係路線雙生、對稱後綴', storyActLabel('N6') === '第 6 幕・電視線' && storyActLabel('N6F') === '第 6 幕・電影線');
+  ok('(a) N18／N19 係時間錨番外、唔佔順序號', storyActLabel('N18') === '番外・1990 冬' && storyActLabel('N19') === '番外・1991 春');
   ok('(a) 非主線 id 回空字串（場景頂唔出幕號）', storyActLabel('R_hiu_meet') === '' && storyActLabel('WF4_x') === ''
     && storyActLabel('C20') === '' && storyActLabel('') === '');
-  ok('(b) 插入幕判定', storyActIsInsert('C6F') && storyActIsInsert('C18') && storyActIsInsert('C19')
-    && !storyActIsInsert('C6') && !storyActIsInsert('C17'));
+  ok('(b) 插入幕判定', storyActIsInsert('N6F') && storyActIsInsert('N18') && storyActIsInsert('N19')
+    && !storyActIsInsert('N6') && !storyActIsInsert('N17'));
 
-  /* ---- (a/c) 調查報告 Case A：film-route、第 15 週、C6F 已開放 ---- */
+  /* ---- (a/c) 調查報告 Case A：film-route、第 15 週、N6F 已開放 ---- */
   loadGame(freshSave({
     dayIndex: 98, fame: 30, industryCreditDelta: 30,
-    story: { done: { C1: true, C2: true, C3: true, C4: true, C5: true }, flags: {}, rel: {}, routes: { route_film: true }, phase: 'P2', gigCount: 12 },
+    story: { done: { N1: true, N2: true, N3: true, N4: true, N5: true }, flags: {}, rel: {}, routes: { route_film: true }, phase: 'P2', gigCount: 12 },
   }));
   const rowsA = prog71Rows();
-  ok('(b) prog71Rows 行次序跟播次序（C6、C6F、C18、C19、C7…）',
-    rowsA.map(r=>r.id).join(',') === ['C1','C2','C3','C4','C5','C6','C6F','C18','C19','C7','C8','C9','C10','C11','C12','C13','C14','C15','C16','C17'].join(','));
+  ok('(b) prog71Rows 行次序跟播次序（N6、N6F、N18、N19、N7…）',
+    rowsA.map(r=>r.id).join(',') === ['N1','N2','N3','N4','N5','N6','N6F','N18','N19','N7','N9','N10','N11','N8','N14','N16','N13','N12','N15','N17'].join(','));
   ok('(b) 每一行 label 都等於 storyActLabel(id)（同一來源）',
     rowsA.length === 20 && rowsA.every(r=>r.label === storyActLabel(r.id)));
   const paneA = pane71();
   if(DEBUG) console.log('paneA:', paneA);
-  ok('(a) C6F 開放行係「第 6 幕・電影線：片場跟班」', paneA.indexOf('第 6 幕・電影線') >= 0 && paneA.indexOf('片場跟班') >= 0 && paneA.indexOf('已開放') >= 0);
-  ok('(a) C6 行係「第 6 幕・電視線」（對稱，唔係齋「第 6 幕」）', paneA.indexOf('第 6 幕・電視線') >= 0);
-  ok('(a) C6 行喺 C6F 行之前', paneA.indexOf('第 6 幕・電視線') < paneA.indexOf('第 6 幕・電影線'));
+  ok('(a) N6F 開放行係「第 6 幕・電影線：片場跟班」', paneA.indexOf('第 6 幕・電影線') >= 0 && paneA.indexOf('片場跟班') >= 0 && paneA.indexOf('已開放') >= 0);
+  ok('(a) N6 行係「第 6 幕・電視線」（對稱，唔係齋「第 6 幕」）', paneA.indexOf('第 6 幕・電視線') >= 0);
+  ok('(a) N6 行喺 N6F 行之前', paneA.indexOf('第 6 幕・電視線') < paneA.indexOf('第 6 幕・電影線'));
   noBadNumbers('(a) Case A 進度頁', paneA);
-  ok('(c) v198：鎖住插入幕出獨立鎖定行（C18／C19 標題見到＋有解鎖條件）', paneA.indexOf('番外・1990 冬') >= 0 && paneA.indexOf('上岸路') >= 0 && paneA.indexOf('到第 48 週') >= 0
+  ok('(c) v198：鎖住插入幕出獨立鎖定行（N18／N19 標題見到＋有解鎖條件）', paneA.indexOf('番外・1990 冬') >= 0 && paneA.indexOf('上岸路') >= 0 && paneA.indexOf('到第 48 週') >= 0
     && paneA.indexOf('番外・1991 春') >= 0 && paneA.indexOf('賭枱邊') >= 0 && paneA.indexOf('先完成番外・1990 冬〈上岸路〉') >= 0);
-  ok('(c) v198：鎖住插入行喺 C6F 行之後、C7 行之前', paneA.indexOf('第 6 幕・電影線') < paneA.indexOf('番外・1990 冬')
+  ok('(c) v198：鎖住插入行喺 N6F 行之後、N7 行之前', paneA.indexOf('第 6 幕・電影線') < paneA.indexOf('番外・1990 冬')
     && paneA.indexOf('番外・1991 春') < paneA.indexOf('第 7 幕'));
   ok('(c) v198：鎖住插入行帶 prog71-insert 標記', paneA.indexOf('prog71-row locked prog71-insert') >= 0);
   ok('(c) 遠幕合併行仲喺度、區間啱（第 8–17 幕）', paneA.indexOf('第 8–17 幕') >= 0 && paneA.indexOf('完成前面幕數後逐幕揭曉') >= 0);
-  ok('(c) 合併行喺逐項行之後（唔會提早印喺 C7 上面）', paneA.indexOf('先完成第 5 幕〈采兒小訪題〉') >= 0
+  ok('(c) 合併行喺逐項行之後（唔會提早印喺 N7 上面）', paneA.indexOf('先完成第 5 幕〈采兒小訪題〉') >= 0
     && paneA.indexOf('先完成第 5 幕〈采兒小訪題〉') < paneA.indexOf('第 8–17 幕'));
 
-  /* ---- (d) 舊存檔：C6F 已經 done（調查報告用戶狀態） ---- */
+  /* ---- (d) 舊存檔：N6F 已經 done（調查報告用戶狀態） ---- */
   loadGame(freshSave({
     dayIndex: 98, fame: 30, industryCreditDelta: 30,
-    story: { done: { C1: true, C2: true, C3: true, C4: true, C5: true, C6F: true }, flags: {}, rel: {}, routes: { route_film: true }, phase: 'P2', gigCount: 12 },
+    story: { done: { N1: true, N2: true, N3: true, N4: true, N5: true, N6F: true }, flags: {}, rel: {}, routes: { route_film: true }, phase: 'P2', gigCount: 12 },
   }));
   const paneD = pane71();
   if(DEBUG) console.log('paneD:', paneD);
-  ok('(d) 舊存檔 C6F done 行係「第 6 幕・電影線 ✓ 已完成」', paneD.indexOf('第 6 幕・電影線') >= 0 && paneD.indexOf('✓ 已完成') >= 0);
-  ok('(d) C6F done 行喺 C7 行之前', paneD.indexOf('第 6 幕・電影線') < paneD.indexOf('第 7 幕'));
-  ok('(d) C6 未開放行喺 C6F done 行之前（雙生並排，對得返）', paneD.indexOf('第 6 幕・電視線') >= 0
+  ok('(d) 舊存檔 N6F done 行係「第 6 幕・電影線 ✓ 已完成」', paneD.indexOf('第 6 幕・電影線') >= 0 && paneD.indexOf('✓ 已完成') >= 0);
+  ok('(d) N6F done 行喺 N7 行之前', paneD.indexOf('第 6 幕・電影線') < paneD.indexOf('第 7 幕'));
+  ok('(d) N6 未開放行喺 N6F done 行之前（雙生並排，對得返）', paneD.indexOf('第 6 幕・電視線') >= 0
     && paneD.indexOf('第 6 幕・電視線') < paneD.indexOf('第 6 幕・電影線'));
   noBadNumbers('(d) 舊存檔進度頁', paneD);
 
-  /* ---- (a) C18 已開放（1990 冬、TV 線）——番外行喺 C6 同 C7 之間 ---- */
+  /* ---- (a) N18 已開放（1990 冬、TV 線）——番外行喺 N6 同 N7 之間 ---- */
   loadGame(freshSave({
     dayIndex: 340, fame: 30, industryCreditDelta: 30,
-    story: { done: { C1: true, C2: true, C3: true, C4: true, C5: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 12 },
+    story: { done: { N1: true, N2: true, N3: true, N4: true, N5: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 12 },
   }));
   const paneC18 = pane71();
   if(DEBUG) console.log('paneC18:', paneC18);
-  ok('(a) C18 開放行係「番外・1990 冬：上岸路」', paneC18.indexOf('番外・1990 冬') >= 0 && paneC18.indexOf('上岸路') >= 0 && paneC18.indexOf('已開放') >= 0);
-  ok('(a) C18 行喺 C6 行之後、C7 行之前', paneC18.indexOf('第 6 幕・電視線') < paneC18.indexOf('番外・1990 冬')
+  ok('(a) N18 開放行係「番外・1990 冬：上岸路」', paneC18.indexOf('番外・1990 冬') >= 0 && paneC18.indexOf('上岸路') >= 0 && paneC18.indexOf('已開放') >= 0);
+  ok('(a) N18 行喺 N6 行之後、N7 行之前', paneC18.indexOf('第 6 幕・電視線') < paneC18.indexOf('番外・1990 冬')
     && paneC18.indexOf('番外・1990 冬') < paneC18.indexOf('第 7 幕'));
-  ok('(a) v198：C19 鎖住都出獨立行（賭枱邊見到＋前置句在位）', paneC18.indexOf('賭枱邊') >= 0 && paneC18.indexOf('先完成番外・1990 冬〈上岸路〉') >= 0);
-  ok('(a) v198：C6F 鎖住行講啱條件（行電影線，唔係行電視線）', paneC18.indexOf('行電影線') >= 0 && paneC18.indexOf('行電視線') < 0);
-  noBadNumbers('(a) C18 開放進度頁', paneC18);
+  ok('(a) v198：N19 鎖住都出獨立行（賭枱邊見到＋前置句在位）', paneC18.indexOf('賭枱邊') >= 0 && paneC18.indexOf('先完成番外・1990 冬〈上岸路〉') >= 0);
+  ok('(a) v198：N6F 鎖住行講啱條件（行電影線，唔係行電視線）', paneC18.indexOf('行電影線') >= 0 && paneC18.indexOf('行電視線') < 0);
+  noBadNumbers('(a) N18 開放進度頁', paneC18);
 
-  /* ---- (e) 前置句：C19 前置 C18 用番外標籤 ---- */
+  /* ---- (e) 前置句：N19 前置 N18 用番外標籤 ---- */
   loadGame(freshSave({
     dayIndex: 500, fame: 40, industryCreditDelta: 40,
-    story: { done: { C1: true, C2: true, C3: true, C4: true, C5: true, C18: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 20 },
+    story: { done: { N1: true, N2: true, N3: true, N4: true, N5: true, N18: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 20 },
   }));
-  const gateC19 = prog71GateItems('C19') || [];
+  const gateC19 = prog71GateItems('N19') || [];
   const gateC19Txt = gateC19.map(it=>it.text).join('｜');
   if(DEBUG) console.log('gateC19:', gateC19Txt);
-  ok('(e) C19 前置句係「先完成番外・1990 冬〈上岸路〉」', gateC19Txt.indexOf('先完成番外・1990 冬〈上岸路〉') >= 0);
-  ok('(e) C19 前置句冇「第 18 幕」', gateC19Txt.indexOf('第 18 幕') < 0);
+  ok('(e) N19 前置句係「先完成番外・1990 冬〈上岸路〉」', gateC19Txt.indexOf('先完成番外・1990 冬〈上岸路〉') >= 0);
+  ok('(e) N19 前置句冇「第 18 幕」', gateC19Txt.indexOf('第 18 幕') < 0);
 
   /* ---- (e) 地圖下一幕提示：同一 label 來源 ---- */
   loadGame(freshSave({
     dayIndex: 66,
-    story: { done: { C1: true, C2: true, C3: true, C4: true, C5: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 9 },
+    story: { done: { N1: true, N2: true, N3: true, N4: true, N5: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 9 },
   }));
   const lineE = storyMainProgressLine();
   if(DEBUG) console.log('lineE:', lineE);
@@ -259,9 +259,9 @@ function freshSave(over){
   ok('(c) v198：第一合併行喺插入行之前、第二合併行喺插入行之後', paneFresh.indexOf('第 4–6 幕') < paneFresh.indexOf('番外・1990 冬') && paneFresh.indexOf('番外・1991 春') < paneFresh.indexOf('第 7–17 幕'));
   ok('(c) v198：新遊戲唔再印舊合併行「第 4–17 幕」', paneFresh.indexOf('第 4–17 幕') < 0);
   ok('(c) 新遊戲冇倒轉區間', paneFresh.indexOf('第 18–17 幕') < 0 && paneFresh.indexOf('第 20–17 幕') < 0);
-  ok('(c) v198：新遊戲鎖住插入幕標題見到（C6F／C18／C19）', paneFresh.indexOf('片場跟班') >= 0 && paneFresh.indexOf('上岸路') >= 0 && paneFresh.indexOf('賭枱邊') >= 0);
-  ok('(c) v198：新遊戲 C6F 鎖行講啱條件（行電影線）', paneFresh.indexOf('行電影線') >= 0 && paneFresh.indexOf('行電視線') < 0);
-  ok('(c) 新遊戲 C6 標題唔見（防劇透維持）', paneFresh.indexOf('飯堂閒角') < 0);
+  ok('(c) v198：新遊戲鎖住插入幕標題見到（N6F／N18／N19）', paneFresh.indexOf('片場跟班') >= 0 && paneFresh.indexOf('上岸路') >= 0 && paneFresh.indexOf('賭枱邊') >= 0);
+  ok('(c) v198：新遊戲 N6F 鎖行講啱條件（行電影線）', paneFresh.indexOf('行電影線') >= 0 && paneFresh.indexOf('行電視線') < 0);
+  ok('(c) 新遊戲 N6 標題唔見（防劇透維持）', paneFresh.indexOf('飯堂閒角') < 0);
   noBadNumbers('(c) 新遊戲進度頁', paneFresh);
 })();
 

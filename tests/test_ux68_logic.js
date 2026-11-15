@@ -185,13 +185,13 @@ ok('要事比對：shoot matcher 認得「查看檔期：」掣',
   ux68MatchBtn({ title:'查看檔期：測試片' }, 'shoot:測試片') === true);
 ok('要事比對：gig matcher 認得「接通告：」掣',
   ux68MatchBtn({ title:'接通告：某通告' }, 'gig:某通告') === true);
-/* 節點時窗尾：C7（1991 夏，loc film_harbour）喺 1991 夏任何一日 → nowIdx == endIdx */
+/* 節點時窗尾：N7（1991 夏，loc film_harbour）喺 1991 夏任何一日 → nowIdx == endIdx */
 S = { dayIndex: 365 + 181, trainCount:{}, enrolled:{}, favorDueSettled:{}, shoots:[], board:{}, story:{ done:{} }, calib60Missed:{} }; /* 1991-07-01 夏 */
 _favorDebt = null;
 urg = ux68LocUrgent(LOCS.find(l=>l.id === 'film_harbour'));
-ok('要事：C7 時窗尾喺 film_harbour 出提示', urg.notes.some(n=>n.indexOf('時窗去到今季尾') >= 0));
+ok('要事：N7 時窗尾喺 film_harbour 出提示', urg.notes.some(n=>n.indexOf('時窗去到今季尾') >= 0));
 urg = ux68LocUrgent(LOCS.find(l=>l.id === 'cafe_cha'));
-ok('要事：C7 提示唔會喺 cafe_cha 出', !urg.notes.some(n=>n.indexOf('時窗') >= 0));
+ok('要事：N7 提示唔會喺 cafe_cha 出', !urg.notes.some(n=>n.indexOf('時窗') >= 0));
 
 console.log(fails.length ? ('FAILURES: ' + fails.join(' | ')) : 'ALL PASS');
 process.exit(fails.length ? 1 : 0);

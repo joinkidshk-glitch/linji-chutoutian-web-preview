@@ -4,7 +4,7 @@
   "liveWeekGateStillActive": true,
   "nodes": [
     {
-      "beatId": "C1",
+      "beatId": "N1",
       "optional": false,
       "locId": "agency_ho",
       "trigger": {
@@ -23,10 +23,10 @@
       },
       "flags": {
         "onChoice": {
-          "C1_a": [
+          "N1_a": [
             "route_tv"
           ],
-          "C1_b": [
+          "N1_b": [
             "route_film"
           ]
         }
@@ -35,16 +35,15 @@
       "redStarHook": "可遠觀陸柏言",
       "legacyWeekMin": 1,
       "relockNotes": "FULL字面 2026-11-08：loc=agency_ho 事務所開場（舊 Soft cafe_cha 拍板作廢）；weekMin 地板保留",
-      "nextHint": "",
-      "nodeRipple": "初期活動地圖＋基礎數值傾斜"
+      "nextHint": ""
     },
     {
-      "beatId": "C2",
+      "beatId": "N2",
       "optional": false,
       "locId": "tvb_longmen",
       "trigger": {
         "needDone": [
-          "C1"
+          "N1"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 4,
@@ -63,10 +62,10 @@
       },
       "flags": {
         "onChoice": {
-          "C2_a": [
+          "N2_a": [
             "flag_network_stay"
           ],
-          "C2_b": [
+          "N2_b": [
             "flag_hustle_board"
           ]
         }
@@ -74,17 +73,16 @@
       "playerFaceLine": "聽完星河電視台啲傳聞，我諗住係咪留低聽多兩句，定係趕住去報到。",
       "redStarHook": "聽聞大明星都係咁捱出嚟，廖炳星隨時可以提點兩句。",
       "legacyWeekMin": 4,
-      "relockNotes": "FULL字面：needDone C1；gig≥3；rumor tvb_rules；標籤沉澱 電視城乖仔／片場老油條",
-      "nextHint": "",
-      "nodeRipple": "沉澱標籤：電視城乖仔／片場老油條"
+      "relockNotes": "FULL字面：needDone N1；gig≥3；rumor tvb_rules；標籤沉澱 電視城乖仔／片場老油條",
+      "nextHint": ""
     },
     {
-      "beatId": "C3",
+      "beatId": "N3",
       "optional": false,
       "locId": "tvb_longmen",
       "trigger": {
         "needDone": [
-          "C2"
+          "N2"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 6,
@@ -106,28 +104,27 @@
       },
       "flags": {
         "onChoice": {
-          "C3_a": [
+          "N3_a": [
             "rival_gao_hard"
           ],
-          "C3_b": [
+          "N3_b": [
             "rival_gao_endure"
           ]
         }
       },
-      "playerFaceLine": "高仔又埋嚟想搶我個好位，我到底要唔要當眾同佢嗌交？",
+      "playerFaceLine": "高俊傑又埋嚟想搶我個好位，我到底要唔要當眾同佢嗌交？",
       "redStarHook": "齊鎮海喺不遠處嘅監視器後邊，靜靜雞望住呢邊。",
       "legacyWeekMin": 6,
-      "relockNotes": "FULL字面：fame>15；高仔搶鏡傳聞；業內信用／對手態度 ripple；rival 旗留 C3",
-      "nextHint": "",
-      "nodeRipple": "業內信用同對手態度因呢次衝突產生微妙變化。"
+      "relockNotes": "FULL字面：fame>15；高俊傑搶鏡傳聞；業內信用／對手態度 ripple；rival 旗留 N3",
+      "nextHint": ""
     },
     {
-      "beatId": "C4",
+      "beatId": "N4",
       "optional": false,
       "locId": "agency_ho",
       "trigger": {
         "needDone": [
-          "C3"
+          "N3"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 8,
@@ -146,10 +143,10 @@
       },
       "flags": {
         "onChoice": {
-          "C4_a": [
+          "N4_a": [
             "flag_refuse_gig_with_ho"
           ],
-          "C4_b": [
+          "N4_b": [
             "flag_take_harsh_gig"
           ]
         }
@@ -158,16 +155,15 @@
       "redStarHook": "無",
       "legacyWeekMin": 8,
       "relockNotes": "FULL字面 2026-11-08：softLogic=OR；debtMin=1 或 favorMin=1 或 loc=agency_ho；何生催數；舊 Soft AND 拍板作廢",
-      "nextHint": "",
-      "nodeRipple": "拒單欠落人情債兼跌信用；接單換個捱得標籤但爆壓力傷健康。"
+      "nextHint": ""
     },
     {
-      "beatId": "C5",
+      "beatId": "N5",
       "optional": false,
       "locId": "tvb_longmen",
       "trigger": {
         "needDone": [
-          "C4"
+          "N4"
         ],
         "minDaysAfterPrev": 1,
         "weekMin": 9,
@@ -192,13 +188,13 @@
       },
       "flags": {
         "onChoice": {
-          "C5_a": [
+          "N5_a": [
             "choi_honest"
           ],
-          "C5_b": [
+          "N5_b": [
             "choi_spin"
           ],
-          "C5_c": [
+          "N5_c": [
             "choi_dodge"
           ]
         }
@@ -207,27 +203,26 @@
       "redStarHook": "駱家聲 Band 房後巷嗰晚嘅動靜，似乎牽涉到星河電視台嘅高層。",
       "legacyWeekMin": 9,
       "relockNotes": "FULL字面：秋|冬；choi_*；羈絆／情報共享 ripple；紅星駱家聲；rival_gao 唔混",
-      "nextHint": "",
-      "nodeRipple": "羈絆深度視乎坦誠度，情報共享級別隨答法而升降。"
+      "nextHint": ""
     }
   ],
   "tipForbidden": true,
-  "planRef": "PLAN_STORY_BEHAVIOR_GATE_SOFT_C1_C5_v1.md",
+  "planRef": "PLAN_STORY_BEHAVIOR_GATE_SOFT_N1_N5_v1.md",
   "softBoard": {
     "date": "2026-11-08",
     "by": "用戶 full_literal_including_gates（t380u／t380s1780）",
     "decisions": {
-      "C1_loc": "agency_ho",
+      "N1_loc": "agency_ho",
       "weekMin": "keep_floor",
-      "C3_fame": ">15 (fameMin=16)",
-      "C4": "softLogic=OR; debtMin=1 OR favorMin>=1 OR loc=agency_ho",
-      "C5": "season+loc; rumor soft-priority with seeds; rival_gao HOLD (do not mix into C5); flags choi_*"
+      "N3_fame": ">15 (fameMin=16)",
+      "N4": "softLogic=OR; debtMin=1 OR favorMin>=1 OR loc=agency_ho",
+      "N5": "season+loc; rumor soft-priority with seeds; rival_gao HOLD (do not mix into N5); flags choi_*"
     },
     "supersedes": {
       "date": "2026-11-04",
       "old": {
-        "C1_loc": "cafe_cha",
-        "C4": "favorMin>=1 AND loc=agency_ho"
+        "N1_loc": "cafe_cha",
+        "N4": "favorMin>=1 AND loc=agency_ho"
       },
       "note": "舊 Soft 拍板作廢；跟 FULL 字面"
     },
@@ -276,15 +271,15 @@
       "change89to92": false
     },
     "abLock": {
-      "C1_loc": "agency_ho",
+      "N1_loc": "agency_ho",
       "weekMin": "keep_floor",
-      "C3_fame": ">15 (fameMin=16, fameCompare='>')",
-      "C4": "softLogic=OR; debtMin=1 OR favorMin>=1 OR loc=agency_ho",
-      "C5": "season+loc+rumor soft (rumorSoftPriority); rival_gao HOLD out of C5"
+      "N3_fame": ">15 (fameMin=16, fameCompare='>')",
+      "N4": "softLogic=OR; debtMin=1 OR favorMin>=1 OR loc=agency_ho",
+      "N5": "season+loc+rumor soft (rumorSoftPriority); rival_gao HOLD out of N5"
     },
     "fullLiteralOr": true,
     "c4SoftLogic": "OR",
     "c4DebtMin": 1
   },
-  "alignNote": "2026-11-08 用戶 full_literal_including_gates：C1→agency_ho；C4→OR(debt|favor|loc)；舊 Soft cafe_cha/AND 拍板作廢。Soft≠PASS｜唔 tip LIVE。"
+  "alignNote": "2026-11-08 用戶 full_literal_including_gates：N1→agency_ho；N4→OR(debt|favor|loc)；舊 Soft cafe_cha/AND 拍板作廢。Soft≠PASS｜唔 tip LIVE。"
 }

@@ -2,7 +2,7 @@
 //   (1) 註冊：四星入 ENC79_PILOT／ENC79_DIALOG／ENC79_BEATS／STAGEUP／CAP／WRAP；主副場照設計表；
 //   (2) 五層對白完整性＋句數（dlgCount 口徑同 enc79 測試）；
 //   (3) 初遇／心聲／節拍抉擇 fx 接線（label 關鍵字對位）；
-//   (4) 節拍閘：駱 E4 報紙閘、駱和音歌藝 35 閘、顧 C9 前後閘、齊站隊旗閘、魏還人情債權閘；
+//   (4) 節拍閘：駱 E4 報紙閘、駱和音歌藝 35 閘、顧 N10 前後閘、齊站隊旗閘、魏還人情債權閘；
 //   (5) 顧明輝借錢全週期：入 S.mockCredits＋favorLedger 計數＋扣錢＋due 旗 → enc83GuLoanTick 到期結算
 //       （還款／壞帳兩路同種子一致、記入 S.favorDueSettled、債權移出清單、冪等）；身家太淺唔成債；
 //   (6) 魏詠男大排檔 fx：扣 $150＋開債權；錢唔夠唔扣唔開；
@@ -169,14 +169,14 @@ ok('駱和音閘：歌藝 34 唔開', enc79BeatOpen('lok_gasing', beatOf('lok_ga
 S.vocal = 35;
 ok('駱和音閘：歌藝 35 開', enc79BeatOpen('lok_gasing', beatOf('lok_gasing','lok_help'))===true);
 resetS(102); _ys = { year:1991, season:'秋' }; setFav('gu_mingfai', 25);
-ok('顧 C9 閘：C9 未完 → 預告拍開、N10 後續拍唔開', enc79BeatOpen('gu_mingfai', beatOf('gu_mingfai','gu_tease'))===true && enc79BeatOpen('gu_mingfai', beatOf('gu_mingfai','gu_n10after'))===false);
-_doneNodes.add('C9');
-ok('顧 C9 閘：C9 完成 → 預告拍收、後續拍開', enc79BeatOpen('gu_mingfai', beatOf('gu_mingfai','gu_tease'))===false && enc79BeatOpen('gu_mingfai', beatOf('gu_mingfai','gu_n10after'))===true);
+ok('顧 N10 閘：N10 未完 → 預告拍開、N10 後續拍唔開', enc79BeatOpen('gu_mingfai', beatOf('gu_mingfai','gu_tease'))===true && enc79BeatOpen('gu_mingfai', beatOf('gu_mingfai','gu_n10after'))===false);
+_doneNodes.add('N10');
+ok('顧 N10 閘：N10 完成 → 預告拍收、後續拍開', enc79BeatOpen('gu_mingfai', beatOf('gu_mingfai','gu_tease'))===false && enc79BeatOpen('gu_mingfai', beatOf('gu_mingfai','gu_n10after'))===true);
 resetS(103); setFav('chai_zanhoi', 25);
 ok('齊回收閘：未站隊唔開', enc79BeatOpen('chai_zanhoi', beatOf('chai_zanhoi','chai_repay'))===false);
 S.flags.flag_side_tv = 1;
 ok('齊回收閘：站隊旗（flag_side_tv）開', enc79BeatOpen('chai_zanhoi', beatOf('chai_zanhoi','chai_repay'))===true);
-/* v20a87 WF5：真實 play 入面 C14 抉擇旗經 StoryOC 寫入 S.story.flags（唔係 S.flags）——雙 store 都要開 */
+/* v20a87 WF5：真實 play 入面 N13 抉擇旗經 StoryOC 寫入 S.story.flags（唔係 S.flags）——雙 store 都要開 */
 resetS(103); setFav('chai_zanhoi', 25);
 S.story = { flags: { flag_side_film: 1 } };
 ok('齊回收閘：站隊旗喺 story.flags（真 play store）都開', enc79BeatOpen('chai_zanhoi', beatOf('chai_zanhoi','chai_repay'))===true);

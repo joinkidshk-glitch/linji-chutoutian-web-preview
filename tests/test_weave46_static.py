@@ -14,9 +14,9 @@ ok('STORY_SPINE_NODES_1989 defined', 'const STORY_SPINE_NODES_1989 = {' in html)
 m = re.search(r'const STORY_SPINE_NODES_1989 = \{(.*?)\n\};', html, re.S)
 spine = m.group(1) if m else ''
 ok('spine block extractable', bool(spine))
-for cid, title, loc in [('C7','暴雨救場','film_harbour'), ('C11','選美後台','tvb_longmen'),
-                        ('C8','茶餐廳度橋','cafe_cha'), ('C9','年尾追數','tvb_harbour'),
-                        ('C10','戲路定型','tvb_longmen')]:
+for cid, title, loc in [('N7','暴雨救場','film_harbour'), ('N8','選美後台','tvb_longmen'),
+                        ('N9','茶餐廳度橋','cafe_cha'), ('N10','年尾追數','tvb_harbour'),
+                        ('N11','戲路定型','tvb_longmen')]:
     ok('spine node present: '+cid, re.search(r'^\s*'+cid+r': \{', spine, re.M) is not None)
     seg = spine[spine.index(cid+': {'):] if (cid+': {') in spine else ''
     seg = seg[:1200]
@@ -43,8 +43,8 @@ ok('story46SettleTick defined', 'function story46SettleTick(' in html)
 ok('tick hooked in advanceDay after exodusFenTick',
    html.index('try{ if(typeof exodusFenTick==="function") exodusFenTick(); }catch(_ex){}')
    < html.index('try{ if(typeof story46SettleTick==="function") story46SettleTick(); }catch(_s46){}'))
-ok('credit C7 const', 'id:"credit_c7_rain"' in html and '暴雨救場人情' in html)
-ok('credit C9 const', 'id:"credit_c9_crew"' in html and '年尾出頭人情' in html)
+ok('credit N7 const', 'id:"credit_c7_rain"' in html and '暴雨救場人情' in html)
+ok('credit N10 const', 'id:"credit_c9_crew"' in html and '年尾出頭人情' in html)
 ok('tick notes credits via favorLedgerNoteCredit', html.count('favorLedgerNoteCredit(credit.id, source)') >= 1)
 ok('gift id const = gift_perfume_sample', 'const STORY46_GIFT_ID = "gift_perfume_sample";' in html)
 ok('gift prepared flag handled', 'flag_miss_gift_prepared' in html)
@@ -53,41 +53,41 @@ ok('gift missed flag handled', 'flag_miss_gift_missed' in html)
 # ---- 閘 registry 候選補齊（4-5 NOTES 預告） ----
 gm = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)
 gate = gm.group(1) if gm else ''
-c8line = next((ln for ln in gate.splitlines() if ln.strip().startswith('C8:')), '')
-c15line = next((ln for ln in gate.splitlines() if ln.strip().startswith('C15:')), '')
+c8line = next((ln for ln in gate.splitlines() if ln.strip().startswith('N9:')), '')
+c15line = next((ln for ln in gate.splitlines() if ln.strip().startswith('N12:')), '')
 for cand in ['"tag_comedy"', '"喜劇細胞"', '"tag_action"', '"身手好"']:
-    ok('C8 tagAny candidate: '+cand, cand in c8line)
+    ok('N9 tagAny candidate: '+cand, cand in c8line)
 for cand in ['"tag_action"', '"身手好"']:
-    ok('C15 tagAny candidate: '+cand, cand in c15line)
-ok('gate thresholds unchanged (C7 creditGt 20 / C8 fameGt 28 / C10 dualGt 70)',
+    ok('N12 tagAny candidate: '+cand, cand in c15line)
+ok('gate thresholds unchanged (N7 creditGt 20 / N9 fameGt 28 / N11 dualGt 70)',
    'creditGt: 20' in gate and 'fameGt: 28' in gate and 'dualGt: 70' in gate)
 
 # ---- SOFT 表對齊 ----
 lm = re.search(r'const STORY_LOC_SOFT = \{(.*?)\n\};', html, re.S)
 locs = lm.group(1) if lm else ''
-for cid, loc in [('C7','film_harbour'), ('C8','cafe_cha'), ('C9','tvb_harbour'), ('C10','tvb_longmen'), ('C11','tvb_longmen')]:
+for cid, loc in [('N7','film_harbour'), ('N9','cafe_cha'), ('N10','tvb_harbour'), ('N11','tvb_longmen'), ('N8','tvb_longmen')]:
     ok('STORY_LOC_SOFT '+cid+' -> '+loc, re.search(cid+r': "'+loc+r'"', locs) is not None)
 tm = re.search(r'const STORY_TITLE_SOFT = \{(.*?)\n\};', html, re.S)
 titles = tm.group(1) if tm else ''
-for cid, t in [('C7','暴雨救場'), ('C8','茶餐廳度橋'), ('C9','年尾追數'), ('C10','戲路定型'), ('C11','選美後台')]:
+for cid, t in [('N7','暴雨救場'), ('N9','茶餐廳度橋'), ('N10','年尾追數'), ('N11','戲路定型'), ('N8','選美後台')]:
     ok('STORY_TITLE_SOFT '+cid+' = '+t, (cid+': "'+t+'"') in titles)
 
-# ---- 藍 PA 化：提示表 C7–C11 段清走歌手向 ----
+# ---- 藍 PA 化：提示表 N7–N8 段清走歌手向 ----
 nocomment = re.sub(r'/\*.*?\*/', '', html, flags=re.S)
 hm = re.search(r'const STORY_HINT_SOFT = \{(.*?)\n\};', nocomment, re.S)
 hints = hm.group(1) if hm else ''
 ok('STORY_HINT_SOFT extractable (comments stripped)', bool(hints))
-seg_start = hints.index('C7: { playerHint: "暴雨殺到') if 'C7: { playerHint: "暴雨殺到' in hints else -1  # v157：黑雨→暴雨（時代用語修正）
+seg_start = hints.index('N7: { playerHint: "暴雨殺到') if 'N7: { playerHint: "暴雨殺到' in hints else -1  # v157：黑雨→暴雨（時代用語修正）
 seg = hints[seg_start:] if seg_start >= 0 else ''
-# v20a31（Phase 4-8）申報：STORY_HINT_SOFT 之後加咗 C12–C16 entry，其中 C12／C16 係樂壇節點，
+# v20a31（Phase 4-8）申報：STORY_HINT_SOFT 之後加咗 N14–N15 entry，其中 N14／N15 係樂壇節點，
 # 提示正當地引用「唱片公司」場地（陸柏言／程天諾本業，唔關藍事）。呢段斷言嘅原意係驗
-# C7–C11 段冇藍歌手向殘留，所以範圍收窄到 C15 entry 之前，語義不變。
-seg_end = seg.index('C15: { playerHint:') if 'C15: { playerHint:' in seg else len(seg)
+# N7–N8 段冇藍歌手向殘留，所以範圍收窄到 N12 entry 之前，語義不變。
+seg_end = seg.index('N12: { playerHint:') if 'N12: { playerHint:' in seg else len(seg)
 seg = seg[:seg_end]
-ok('hint C7-C11 segment found', bool(seg))
-ok('hint segment has C11 entry', 'C11: { playerHint:' in seg)
+ok('hint N7-N8 segment found', bool(seg))
+ok('hint segment has N8 entry', 'N8: { playerHint:' in seg)
 for stale in ['藍若曦', '擋狗仔', '狗仔', '雷勁', '唱片', '台慶', '文藝']:
-    ok('hint C7-C11 free of singer-era text: '+stale, stale not in seg)
+    ok('hint N7-N8 free of singer-era text: '+stale, stale not in seg)
 
 # ---- 藍若曦全檔核實（去註解後）：引擎基建＋v20a31 PA 線內容（ROMANCE_LAN_PA_OVERRIDES）之外唔准出現，全部唔准帶歌手向字眼 ----
 # v20a31 申報：藍感情線已按拍板 PA 版上線，佢個名正當地出現喺 PA 覆寫內容入面（場記身份）；
@@ -101,12 +101,12 @@ lan_lines = [ln for ln in nocomment.splitlines() if '藍若曦' in ln]
 # v20a176 申報：ROM176 巧遇系統正當地用佢個名——出沒表註冊（name:"藍若曦"）、開場白（lan:"藍若曦…）、
 # 茶餐廳風聲線（通告牌，PA 線內容）；NPCS 註冊條目同理。斷言放寬到包含呢三個模式；
 # 「零歌手向」嗰半保留不變（通告牌係場記職責，唔係歌手向）。
-# v20a183 申報：ROM183 粵語覆寫表（C3 禮物反應句正規化）正當地引用佢個名一次——覆寫鍵／值都係
+# v20a183 申報：ROM183 粵語覆寫表（N3 禮物反應句正規化）正當地引用佢個名一次——覆寫鍵／值都係
 # 原 pack 句嘅逐字粵語版，唔係新寫嘅歌手向內容。斷言放寬到包含 ROM183 block 入面嘅行。
 _lan183_i = nocomment.find('const ROM183_GREET_MET')
 _lan183_j = nocomment.find('function enc79OnWrap', _lan183_i) if _lan183_i >= 0 else -1
 lan_block183 = nocomment[_lan183_i:_lan183_j] if (_lan183_i >= 0 and _lan183_j > _lan183_i) else ''
-# v20a218 申報：TEXTFIX55_EXACT 正規化表（A1 加 6 條 when＋C15 synopsis 1 條）正當地引用佢個名一次——
+# v20a218 申報：TEXTFIX55_EXACT 正規化表（A1 加 6 條 when＋N12 synopsis 1 條）正當地引用佢個名一次——
 # 嗰行係新舊文對照鍵值（「站哪邊」→「企邊」＋年份 1991→1990），唔係新寫嘅歌手向內容；
 # 同行仲有幾十條無關映射（「唱片」等字眼屬於其他條目嘅舊／新文，唔係藍若曦內容）。斷言放寬到包含 TEXTFIX55_EXACT block 入面嘅行。
 _tfix_i = nocomment.find('const TEXTFIX55_EXACT = {')

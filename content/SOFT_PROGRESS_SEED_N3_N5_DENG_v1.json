@@ -7,11 +7,11 @@
     "tipForbidden": true,
     "artHold": true,
     "eraDeep8992Hold": true,
-    "purpose": "Soft／瀏覽器 QA 抽樣 C3–C5＋鄧 meet／鄧 push1+",
+    "purpose": "Soft／瀏覽器 QA 抽樣 N3–N5＋鄧 meet／鄧 push1+",
     "softPathNote": "本種子只供 Soft／瀏覽器 QA；LIVE week-gate 仍 active、唔改預設",
     "date": "2026-11-04",
     "refs": {
-      "stub": "SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json",
+      "stub": "SANDBOX_BEHAVIOR_GATE_N1_N5_SOFT_STUB_v1.json",
       "stubSha8": "cba0e877",
       "enginePlan": "PLAN_STORY_BEHAVIOR_GATE_ENGINE_SLICE_v1.md",
       "enginePlanSha8": "8450130d",
@@ -23,19 +23,19 @@
       "dengPushMockSha8": "9e5751a4"
     },
     "softALock": {
-      "C1": "loc=cafe_cha; weekMin floor=1",
-      "C2": "needDone C1; weekMin=4; gigCountMin=3; rumor tvb_rules_gossip; loc tvb_longmen|cafe_cha",
-      "C3": "needDone C2; weekMin=6; loc tvb_longmen; rumor gao_steal_spotlight; fame>15 (fameMin=16, fameCompare='>', tag fameMin_16)",
-      "C4": "needDone C3; weekMin=8; loc=agency_ho; favorMin>=1 @ agency_ho AND (favorTarget=agency_ho, softLogic=AND)",
-      "C5": "needDone C4; weekMin=9; loc cafe_cha|tvb_longmen; seasonAny autumn|winter; rumorSoftPriority; rumorAny choi_recent_news,hau_ching_recent_news; rival_gao 唔混入 C5",
-      "deng_R_tang_meet": "needDone C5 + favorMin>=1 @agency_ho; Mock meet only; rel_tang_threshold=2; push+ 另見 push mock",
+      "N1": "loc=cafe_cha; weekMin floor=1",
+      "N2": "needDone N1; weekMin=4; gigCountMin=3; rumor tvb_rules_gossip; loc tvb_longmen|cafe_cha",
+      "N3": "needDone N2; weekMin=6; loc tvb_longmen; rumor gao_steal_spotlight; fame>15 (fameMin=16, fameCompare='>', tag fameMin_16)",
+      "N4": "needDone N3; weekMin=8; loc=agency_ho; favorMin>=1 @ agency_ho AND (favorTarget=agency_ho, softLogic=AND)",
+      "N5": "needDone N4; weekMin=9; loc cafe_cha|tvb_longmen; seasonAny autumn|winter; rumorSoftPriority; rumorAny choi_recent_news,hau_ching_recent_news; rival_gao 唔混入 N5",
+      "deng_R_tang_meet": "needDone N5 + favorMin>=1 @agency_ho; Mock meet only; rel_tang_threshold=2; push+ 另見 push mock",
       "deng_R_tang_push": "flag_tang_open ∧ rel_tang>=2; Mock R_tang_push1/push2/crisis/ending under soft flag; threshold=2; LIVE JSON／week-gate unchanged"
     }
   },
   "negativeChecks": [
     {
       "id": "neg_c3_fame_15",
-      "beat": "C3",
+      "beat": "N3",
       "state": {
         "fame": 15
       },
@@ -44,7 +44,7 @@
     },
     {
       "id": "neg_c3_fame_16_pass",
-      "beat": "C3",
+      "beat": "N3",
       "state": {
         "fame": 16
       },
@@ -57,7 +57,7 @@
     },
     {
       "id": "neg_c4_favor_0",
-      "beat": "C4",
+      "beat": "N4",
       "state": {
         "favor": {
           "agency_ho": 0
@@ -68,7 +68,7 @@
     },
     {
       "id": "neg_c5_season_summer",
-      "beat": "C5",
+      "beat": "N5",
       "state": {
         "season": "summer"
       },
@@ -80,14 +80,14 @@
       "beat": "deng_R_tang_meet",
       "state": {
         "beatsDone": [
-          "C1",
-          "C2",
-          "C3",
-          "C4"
+          "N1",
+          "N2",
+          "N3",
+          "N4"
         ]
       },
       "expect": "FAIL",
-      "reason": "缺 C5 done，無法觸發 R_tang_meet"
+      "reason": "缺 N5 done，無法觸發 R_tang_meet"
     },
     {
       "id": "neg_deng_push_rel_1",
@@ -107,8 +107,8 @@
   "seeds": [
     {
       "id": "seed_c3_ready",
-      "title": "C3 觸發就緒種子 (fame=16, week=6)",
-      "targetBeat": "C3",
+      "title": "N3 觸發就緒種子 (fame=16, week=6)",
+      "targetBeat": "N3",
       "state": {
         "week": 6,
         "day": 1,
@@ -123,20 +123,20 @@
         ],
         "season": "spring",
         "beatsDone": [
-          "C1",
-          "C2"
+          "N1",
+          "N2"
         ],
         "flags": {},
         "gigCount": 3,
         "rel": {}
       },
-      "expect": "可開 C3（其他條件齊）",
-      "howToUse": "注入 state 後推進至 week 6 day 1，驗證 C3 觸發。注意 fame 必須為 16，不可寫 17 或 15；tag 對齊 fameMin_16。"
+      "expect": "可開 N3（其他條件齊）",
+      "howToUse": "注入 state 後推進至 week 6 day 1，驗證 N3 觸發。注意 fame 必須為 16，不可寫 17 或 15；tag 對齊 fameMin_16。"
     },
     {
       "id": "seed_c4_ready",
-      "title": "C4 觸發就緒種子 (favor>=1, week=8)",
-      "targetBeat": "C4",
+      "title": "N4 觸發就緒種子 (favor>=1, week=8)",
+      "targetBeat": "N4",
       "state": {
         "week": 8,
         "day": 1,
@@ -151,21 +151,21 @@
         ],
         "season": "summer",
         "beatsDone": [
-          "C1",
-          "C2",
-          "C3"
+          "N1",
+          "N2",
+          "N3"
         ],
         "flags": {},
         "gigCount": 5,
         "rel": {}
       },
-      "expect": "可開 C4",
-      "howToUse": "注入 state 後推進至 week 8，驗證 C4 觸發。確保 favor.agency_ho >= 1 且 locId 為 agency_ho。"
+      "expect": "可開 N4",
+      "howToUse": "注入 state 後推進至 week 8，驗證 N4 觸發。確保 favor.agency_ho >= 1 且 locId 為 agency_ho。"
     },
     {
       "id": "seed_c5_ready",
-      "title": "C5 觸發就緒種子 (autumn, rumors, week=9)",
-      "targetBeat": "C5",
+      "title": "N5 觸發就緒種子 (autumn, rumors, week=9)",
+      "targetBeat": "N5",
       "state": {
         "week": 9,
         "day": 1,
@@ -180,17 +180,17 @@
         ],
         "season": "autumn",
         "beatsDone": [
-          "C1",
-          "C2",
-          "C3",
-          "C4"
+          "N1",
+          "N2",
+          "N3",
+          "N4"
         ],
         "flags": {},
         "gigCount": 8,
         "rel": {}
       },
-      "expect": "可開 C5；rival_gao 唔混入",
-      "howToUse": "注入 state 後推進至 week 9，驗證 C5 觸發。確保 season 為 autumn 或 winter，且 rumors 包含指定兩項，無 rival_gao。"
+      "expect": "可開 N5；rival_gao 唔混入",
+      "howToUse": "注入 state 後推進至 week 9，驗證 N5 觸發。確保 season 為 autumn 或 winter，且 rumors 包含指定兩項，無 rival_gao。"
     },
     {
       "id": "seed_deng_meet_ready",
@@ -210,11 +210,11 @@
         ],
         "season": "autumn",
         "beatsDone": [
-          "C1",
-          "C2",
-          "C3",
-          "C4",
-          "C5"
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5"
         ],
         "flags": {},
         "gigCount": 10,
@@ -223,7 +223,7 @@
         }
       },
       "expect": "可開 R_tang_meet（Mock）；本種子 rel_tang=0，push+ 唔開；rel_tang_threshold=2",
-      "howToUse": "注入 state 後驗證 R_tang_meet Mock 觸發。確保 C5 已完成且 favor.agency_ho >= 1。"
+      "howToUse": "注入 state 後驗證 R_tang_meet Mock 觸發。確保 N5 已完成且 favor.agency_ho >= 1。"
     },
     {
       "id": "seed_deng_push_ready",
@@ -243,11 +243,11 @@
         ],
         "season": "winter",
         "beatsDone": [
-          "C1",
-          "C2",
-          "C3",
-          "C4",
-          "C5",
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5",
           "R_tang_meet"
         ],
         "flags": {
@@ -279,11 +279,11 @@
         ],
         "season": "autumn",
         "beatsDone": [
-          "C1",
-          "C2",
-          "C3",
-          "C4",
-          "C5"
+          "N1",
+          "N2",
+          "N3",
+          "N4",
+          "N5"
         ],
         "flags": {},
         "gigCount": 10,
@@ -291,11 +291,11 @@
           "rel_tang": 0
         },
         "milestones": [
-          "C1@week1",
-          "C2@week4 (gigCount>=3, tvb_rules_gossip)",
-          "C3@week6 (fame=16, gao_steal_spotlight)",
-          "C4@week8 (favor>=1@agency_ho)",
-          "C5@week9 (autumn, choi/hau rumors)",
+          "N1@week1",
+          "N2@week4 (gigCount>=3, tvb_rules_gossip)",
+          "N3@week6 (fame=16, gao_steal_spotlight)",
+          "N4@week8 (favor>=1@agency_ho)",
+          "N5@week9 (autumn, choi/hau rumors)",
           "deng_R_tang_meet@week10"
         ]
       },

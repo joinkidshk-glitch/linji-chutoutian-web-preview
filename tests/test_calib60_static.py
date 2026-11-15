@@ -68,7 +68,7 @@ sht = slice_fn('setHomeTab')
 chk('setHomeTab allow memory＋render 分支', 'memory:1' in sht and 'renderMemoryPane60()' in sht)
 chk('回憶 CSS 在位', '.mem-item60' in src and '.mem-when60' in src)
 _nw = src[src.find('const CALIB60_NODE_WINDOWS'):src.find('const CALIB60_NODE_TITLES')]
-chk('漏失窗表齊 12 節點', all(re.search(r'\b%s:\s*\{' % n, _nw) for n in ['C6','C7','C8','C9','C10','C11','C12','C13','C14','C15','C16','C17']))
+chk('漏失窗表齊 12 節點', all(re.search(r'\b%s:\s*\{' % n, _nw) for n in ['N6','N7','N9','N10','N11','N8','N14','N16','N13','N12','N15','N17']))
 
 # --- (4) 聲樂 ---
 dwp = slice_fn('defaultWeekPlan')

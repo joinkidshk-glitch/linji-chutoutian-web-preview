@@ -1,9 +1,9 @@
-# v20a192 修 v188 設計 review B1＋C1–C4・static tests：
+# v20a192 修 v188 設計 review B1＋N1–N4・static tests：
 # B1：AWARDS188_NP_WIN＋VENUE99_NP_DEK 生效文案零舊前提（8 款逐款掃描）；
 #     music_02 唔郁；nominee 模板唔入覆寫表。
 # C1：tv lead_m loseLine「還有」→「仲有」；全表 45 行再無「還有」。
-# C2：awards62GateLineHtml 音樂分支刪走（「未唱過歌」唔再出現）；電影／電視閘句在位。
-# C3：renderAwardResultHtml 用 focus 行先（awards63FocusCat＋移頭），其餘格維持
+# N2：awards62GateLineHtml 音樂分支刪走（「未唱過歌」唔再出現）；電影／電視閘句在位。
+# N3：renderAwardResultHtml 用 focus 行先（awards63FocusCat＋移頭），其餘格維持
 #     v184 id 固定排序（awardsCatsSorted184 仲在位）。
 # C4：renderAwardInviteHtml gallery 分支列全 slate（AWARDS188_CATEGORIES＋觀禮標記）；
 #     nominee 路徑仲用固定排序出 pack 類別。
@@ -79,35 +79,35 @@ chk('B1：film_02／ad_02 dek 仲喺 VENUE99 嗰邊（奪得演員獎／奪得�
 chk('B1：nominee 模板唔入覆寫表（np_nom_* 零出現）', 'np_nom_' not in np_table)
 chk('B1：8 款 clipLabel 全部「・得獎」新名', np_table.count('・得獎') == 8)
 
-# --- C1 ---
+# --- N1 ---
 cat_table = slice_const('AWARDS188_CATEGORIES')
-chk('C1：cat_tv_lead_m loseLine 改「仲有下一場」',
+chk('N1：cat_tv_lead_m loseLine 改「仲有下一場」',
     '名單滑過你個名——入圍咗，未抱盃。仲有下一場。' in cat_table)
-chk('C1：全表 45 行再無書面語「還有」', '還有' not in cat_table)
+chk('N1：全表 45 行再無書面語「還有」', '還有' not in cat_table)
 
-# --- C2 ---
+# --- N2 ---
 gate_fn = slice_fn('awards62GateLineHtml')
-chk('C2：音樂閘句「嗰年未唱過歌」刪走', '未唱過歌' not in gate_fn)
-chk('C2：電影／電視版閘句仲在位', '嗰年未做過主角／配角級作品，入圍唔到演員獎' in gate_fn)
-chk('C2：音樂嗰陣唔推角色閘（medium music 守衛）',
+chk('N2：音樂閘句「嗰年未唱過歌」刪走', '未唱過歌' not in gate_fn)
+chk('N2：電影／電視版閘句仲在位', '嗰年未做過主角／配角級作品，入圍唔到演員獎' in gate_fn)
+chk('N2：音樂嗰陣唔推角色閘（medium music 守衛）',
     'music' in gate_fn and '坐觀禮席睇全場' in gate_fn)
 
-# --- C3 ---
+# --- N3 ---
 result_fn = slice_fn('renderAwardResultHtml')
 chk('C3：結果卡用舞台 focus 行先（awards63FocusCat＋移頭）',
     'awards63FocusCat(pack)' in result_fn and 'unshift' in result_fn)
-chk('C3：其餘格維持 v184 id 固定排序（awardsCatsSorted184 仲在位）',
+chk('N3：其餘格維持 v184 id 固定排序（awardsCatsSorted184 仲在位）',
     'awardsCatsSorted184(pack)' in result_fn)
-chk('C3：同屆提名行邏輯唔郁（取第一個有 fellows63 嘅類別）',
+chk('N3：同屆提名行邏輯唔郁（取第一個有 fellows63 嘅類別）',
     'felCat186' in result_fn and 'fellows63' in result_fn)
 
-# --- C4 ---
+# --- N4 ---
 invite_fn = slice_fn('renderAwardInviteHtml')
-chk('C4：gallery 分支列全 slate（AWARDS188_CATEGORIES 表內次序＋觀禮標記）',
+chk('N4：gallery 分支列全 slate（AWARDS188_CATEGORIES 表內次序＋觀禮標記）',
     'AWARDS188_CATEGORIES[pack.ceremonyId]' in invite_fn and '（觀禮）' in invite_fn)
-chk('C4：gallery 分支只喺 tier gallery 先行（nominee 唔郁）',
+chk('N4：gallery 分支只喺 tier gallery 先行（nominee 唔郁）',
     'pack.tier === "gallery"' in invite_fn)
-chk('C4：nominee 路徑仲用固定排序出 pack 類別',
+chk('N4：nominee 路徑仲用固定排序出 pack 類別',
     'awardsCatsSorted184(pack)' in invite_fn)
 
 # --- 唔郁嘅嘢 ---

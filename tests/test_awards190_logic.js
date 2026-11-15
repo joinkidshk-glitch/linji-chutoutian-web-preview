@@ -60,26 +60,26 @@ const panelCss = cssRule('.awd63-glamour-panel');
 const panelImgCss = cssRule('.awd63-glamour-panel>img');
 
 /* ================= 新 C1：panel 縮短貼底（CSS 機制） ================= */
-ok('C1 overlay 改 align-items:flex-end（panel 貼底，唔再 stretch 全高）',
+ok('N1 overlay 改 align-items:flex-end（panel 貼底，唔再 stretch 全高）',
   glamCss.includes('align-items:flex-end') && !glamCss.includes('align-items:stretch'));
-ok('C1 overlay 有 container-type:size（cqh 以 overlay 高計，唔係 viewport）',
+ok('N1 overlay 有 container-type:size（cqh 以 overlay 高計，唔係 viewport）',
   glamCss.includes('container-type:size'));
-ok('C1 海報 cap 轉 calc(40cqh - 8px)（舊 40% 唔再出現；裸 40cqh 亦唔准——會高 8px）',
+ok('N1 海報 cap 轉 calc(40cqh - 8px)（舊 40% 唔再出現；裸 40cqh 亦唔准——會高 8px）',
   panelImgCss.includes('max-height:calc(40cqh - 8px)') && !panelImgCss.includes('max-height:40%') &&
   !panelImgCss.includes('max-height:40cqh'));
-ok('C1 海報 max-width 88% 唔郁（闊 cap 仲在，防闊海報）',
+ok('N1 海報 max-width 88% 唔郁（闊 cap 仲在，防闊海報）',
   panelImgCss.includes('max-width:88%'));
-ok('C1 海報金框＋光暈唔郁', panelImgCss.includes('border:4px solid #f2c14e') &&
+ok('N1 海報金框＋光暈唔郁', panelImgCss.includes('border:4px solid #f2c14e') &&
   panelImgCss.includes('box-shadow:0 0 34px rgba(242,193,78,.45)'));
-ok('C1 panel 闊 44%＋0.93 暗底＋column＋flex-end＋gap 8＋padding 10/12 唔郁',
+ok('N1 panel 闊 44%＋0.93 暗底＋column＋flex-end＋gap 8＋padding 10/12 唔郁',
   panelCss.includes('flex:0 0 44%') && panelCss.includes('rgba(10,6,18,.93)') &&
   panelCss.includes('flex-direction:column') && panelCss.includes('justify-content:flex-end') &&
   panelCss.includes('gap:8px') && panelCss.includes('padding:10px 12px'));
-ok('C1 overlay 仲係 absolute top:0／left:0／width:100%＋aspect 480/432＋pointer-events:none（v20a207 B2）',
+ok('N1 overlay 仲係 absolute top:0／left:0／width:100%＋aspect 480/432＋pointer-events:none（v20a207 B2）',
   glamCss.includes('position:absolute') && glamCss.includes('top:0') && glamCss.includes('left:0') &&
   glamCss.includes('width:100%') && glamCss.includes('aspect-ratio:480/432') &&
   glamCss.includes('pointer-events:none'));
-ok('C1 cap 字體唔郁（19px／行高 1.55，兩行＝58.9px——計數用）',
+ok('N1 cap 字體唔郁（19px／行高 1.55，兩行＝58.9px——計數用）',
   cssRule('.awd63-glamour .cap').includes('font-size:19px') &&
   cssRule('.awd63-glamour .cap').includes('line-height:1.55'));
 
@@ -97,23 +97,23 @@ function geom(overlayH, panelBottom, boardBottom){
     bottomGap: Math.round(8 + CAP_H + 10) };
 }
 const g932 = geom(570, 693, 360), g700 = geom(504, 660, 366);
-ok('C1 932 cap＝0.4×570−8＝220（同 v187 舊 cap 逐 px 等價）', g932.cap === 220);
-ok('C1 700 cap＝0.4×504−8＝193.6（同 v187 舊 cap 逐 px 等價）', Math.abs(g700.cap - 193.6) < 0.01);
+ok('N1 932 cap＝0.4×570−8＝220（同 v187 舊 cap 逐 px 等價）', g932.cap === 220);
+ok('N1 700 cap＝0.4×504−8＝193.6（同 v187 舊 cap 逐 px 等價）', Math.abs(g700.cap - 193.6) < 0.01);
 ok('C1 932 海報頂 396、離牌底 36px（v187 實測下限，唔准細過）',
   g932.imgTop === 396 && g932.clearance === 36);
 ok('C1 700 海報頂 390、離牌底 24px（v187 實測下限，唔准細過）',
   g700.imgTop === 390 && g700.clearance === 24);
-ok('C1 932 空佔比 10／306.9＝3.3% ≤25%（舊 47.9%）', g932.emptyRatio <= 0.25 && Math.abs(g932.emptyRatio - 0.033) < 0.002);
-ok('C1 700 空佔比 10／280.5＝3.6% ≤25%（舊 46.3%）', g700.emptyRatio <= 0.25 && Math.abs(g700.emptyRatio - 0.036) < 0.002);
-ok('C1 海報底到 panel 底 77px 唔郁（caption 嗰段保住，唔變新空位）',
+ok('N1 932 空佔比 10／306.9＝3.3% ≤25%（舊 47.9%）', g932.emptyRatio <= 0.25 && Math.abs(g932.emptyRatio - 0.033) < 0.002);
+ok('N1 700 空佔比 10／280.5＝3.6% ≤25%（舊 46.3%）', g700.emptyRatio <= 0.25 && Math.abs(g700.emptyRatio - 0.036) < 0.002);
+ok('N1 海報底到 panel 底 77px 唔郁（caption 嗰段保住，唔變新空位）',
   g932.bottomGap === 77 && g700.bottomGap === 77);
-ok('C1 海報盒唔郁：932 img 396–616（220 高）、700 img 390–583（193.6 高）',
+ok('N1 海報盒唔郁：932 img 396–616（220 高）、700 img 390–583（193.6 高）',
   g932.imgTop + 220 === 616 && g700.imgTop + 193.6 === 583.6);
-ok('C1 panel 底唔郁（932：693；700：660——淨係頂收上嚟）',
+ok('N1 panel 底唔郁（932：693；700：660——淨係頂收上嚟）',
   Math.round(g932.panelTop + g932.contentH) === 693 && Math.round(g700.panelTop + g700.contentH) === 660);
 /* 高身海報 guard：0.5 比例海報喺新 cap 下闊＝(220−8)×0.5＝106，細過 max-width 88%（273），
    高 cap 照樣箍住，唔會脹到 392 撞牌（裸 40% 失效嗰陣就會）。 */
-ok('C1 高身海報（0.5 比例）cap 下闊 106px＜max-width 273px（唔脹唔撞牌）',
+ok('N1 高身海報（0.5 比例）cap 下闊 106px＜max-width 273px（唔脹唔撞牌）',
   (220 - 8) * 0.5 === 106 && 106 < 0.88 * (334.4 - 24));
 
 /* ================= 唔郁守衛：其餘六項 ================= */

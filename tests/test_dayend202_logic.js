@@ -2,7 +2,7 @@
 //   行真碼：nextDayLabel202／dayEndNextLine202／dayEndDismissNote202／
 //   storyResultDestLine202／dayEndContinueButtons／afterDayModal／
 //   presentStartScheduleConfirm45／presentRestSleepDayEnd；
-//   modal 係 capture stub（唔經 DOM），C2 嘅 StoryPlay render 用靜態測試覆蓋
+//   modal 係 capture stub（唔經 DOM），N2 嘅 StoryPlay render 用靜態測試覆蓋
 //   （render 喺 StoryPlay IIFE 入面，抽唔出嚟 eval）。
 //   反證：對 pristine main（860e790）index 行 → nextDayLabel202 抽唔到，直接 throw → FAIL。
 // 用法：node tests/test_dayend202_logic.js [path-to-index.html]
@@ -212,7 +212,7 @@ eval(extractFn('presentRestSleepDayEnd'));
     m.html.indexOf('dayend-next202') < 0 && m.btns[m.btns.length - 1].label === '撳出面＝回家結算');
 })();
 
-/* ---- (e) 休息卡＋確認 modal：C1 取消返休息卡，dismiss 照跟 D1 ---- */
+/* ---- (e) 休息卡＋確認 modal：N1 取消返休息卡，dismiss 照跟 D1 ---- */
 (function(){
   reset();
   S.dayIndex = 1;

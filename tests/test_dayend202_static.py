@@ -91,30 +91,30 @@ ok('B2 note has no onclick attached (唔可撳)',
    idx(fn_modal, 'role==="note"') < idx(fn_modal, 'btn.onclick'))
 
 # ---- C1：確認 modal 取消掣 ----
-ok('C1 confirm takes onCancel (third arg)',
+ok('N1 confirm takes onCancel (third arg)',
    'function presentStartScheduleConfirm45(onStart, onMap, onCancel){' in html)
-ok('C1 cancel button labelled 取消（返去休息卡）',
+ok('N1 cancel button labelled 取消（返去休息卡）',
    '取消（返去休息卡）' in fn_confirm)
-ok('C1 cancel only rendered when onCancel given (defensive)',
+ok('N1 cancel only rendered when onCancel given (defensive)',
    'if(goCancel) btns45.push' in fn_confirm)
-ok('C1 confirm dismiss note states the D1 rule',
+ok('N1 confirm dismiss note states the D1 rule',
    '撳出面＝開始今日行程' in fn_confirm and '撳出面＝返地圖' in fn_confirm)
-ok('C1 rest card passes onCancel that re-presents the same rest card',
+ok('N1 rest card passes onCancel that re-presents the same rest card',
    'presentStartScheduleConfirm45(proceedSchedule, proceedMap, ()=>{' in fn_rest
    and 'presentRestSleepDayEnd(opts);' in fn_rest)
-ok('C1 confirm title stays a question (家下有真選擇，問句合理)',
+ok('N1 confirm title stays a question (家下有真選擇，問句合理)',
    '<h3>開始今日行程？</h3>' in fn_confirm)
 
 # ---- C2：故事鎖死提示 ----
-ok('C2 StoryPlay render pushes lock hint note into modalBtns',
+ok('N2 StoryPlay render pushes lock hint note into modalBtns',
    '劇情進行中，播完先可以離開' in fn_render
    and 'modalBtns.push({ label:"劇情進行中，播完先可以離開", role:"note" });' in fn_render)
-ok('C2 hint is pushed after the beats/choices branch (兩種 mode 都有)',
+ok('N2 hint is pushed after the beats/choices branch (兩種 mode 都有)',
    idx(fn_render, 'modalBtns.push({ label:"劇情進行中，播完先可以離開", role:"note" });')
    > idx(fn_render, 'modalBtns.push({ label:"下一句"')
    and idx(fn_render, 'modalBtns.push({ label:"劇情進行中，播完先可以離開", role:"note" });')
    > idx(fn_render, 'modalBtns.push({ label:"完成這一節"'))
-ok('C2 enc79 overlay NOT given the lock hint (佢有「點頭離開」出口，唔係鎖死)',
+ok('N2 enc79 overlay NOT given the lock hint (佢有「點頭離開」出口，唔係鎖死)',
    '劇情進行中，播完先可以離開' not in fn_enc79
    and '點頭離開' in fn_enc79)
 

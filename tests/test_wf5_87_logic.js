@@ -58,9 +58,9 @@ function loadPack(f) { return JSON.parse(fs.readFileSync(path.join(ROOT, 'conten
   })();
   ok('F2 ching beats 抽到', !!chingSrc);
   if (!helper || !chingSrc) return;
-  const doneSet = new Set(['C16']);
+  const doneSet = new Set(['N15']);
   const sandbox = {
-    S: { flags: {}, story: { flags: { flag_vocal_train: 1 }, done: { C16: true } } },
+    S: { flags: {}, story: { flags: { flag_vocal_train: 1 }, done: { N15: true } } },
     enc83NodeDone: (id) => doneSet.has(id),
     enc79TierOf: (fav) => (fav >= 70 ? 4 : 0),
   };
@@ -68,16 +68,16 @@ function loadPack(f) { return JSON.parse(fs.readFileSync(path.join(ROOT, 'conten
     helper + '\nreturn ' + chingSrc + ';')(sandbox.S, sandbox.enc83NodeDone, sandbox.enc79TierOf);
   const byId = {}; beats.forEach(b => byId[b.id] = b);
   const st = { fav: 30 };
-  /* C16 揀苦練（flag 只入 story.flags——真實 play 嘅寫入 store）→ after_train 要開 */
+  /* N15 揀苦練（flag 只入 story.flags——真實 play 嘅寫入 store）→ after_train 要開 */
   ok('F2 after_train：story.flags 有 flag_vocal_train → 開', byId.ching_after_train.when(st) === true);
   ok('F2 after_polish：冇 polish 旗 → 唔開', byId.ching_after_polish.when(st) === false);
   /* 旗喺 S.flags（舊存檔／其他寫入路）都要開（雙 store 兼容） */
   sandbox.S.story.flags = {}; sandbox.S.flags = { flag_vocal_polish: 1 };
   ok('F2 after_polish：S.flags 有旗 → 開', byId.ching_after_polish.when(st) === true);
   ok('F2 after_train：兩邊都冇旗 → 唔開', byId.ching_after_train.when(st) === false);
-  /* C16 未完成 → 點都唔開 */
-  doneSet.delete('C16'); sandbox.S.story.flags = { flag_vocal_train: 1 };
-  ok('F2 after_train：C16 未 done → 唔開', byId.ching_after_train.when(st) === false);
+  /* N15 未完成 → 點都唔開 */
+  doneSet.delete('N15'); sandbox.S.story.flags = { flag_vocal_train: 1 };
+  ok('F2 after_train：N15 未 done → 唔開', byId.ching_after_train.when(st) === false);
 })();
 
 /* ================= F1：StoryOC.getFlag alias ================= */
@@ -113,32 +113,32 @@ function loadPack(f) { return JSON.parse(fs.readFileSync(path.join(ROOT, 'conten
   const LIVE = (node) => env.spPlayerMeta(node, null, null);
   const SOFT = (node) => env.spPlayerMeta_softSeasonFrom(node, {});
   /* LIVE：年份＋季節齊（修前：夏／冬節點得裸年份） */
-  ok('F3 LIVE C9 = 1991冬', LIVE({ id: 'C9', eraTag: 'era_1989_winter_pressure', when: '1991冬' }) === '主線 · 1991冬');
-  ok('F3 LIVE C13 = 1992冬', LIVE({ id: 'C13', eraTag: 'era_1990_winter_newyear', when: '1992冬' }) === '主線 · 1992冬');
-  ok('F3 LIVE C7 = 1991夏', LIVE({ id: 'C7', eraTag: 'era_1989_summer_action', when: '1991夏' }) === '主線 · 1991夏');
-  ok('F3 LIVE C14 = 1992夏', LIVE({ id: 'C14', eraTag: 'era_1990_summer_war', when: '1992夏' }) === '主線 · 1992夏');
-  ok('F3 LIVE C8 = 1991秋', LIVE({ id: 'C8', eraTag: 'era_1989_autumn_commercial', when: '1991秋' }) === '主線 · 1991秋');
-  ok('F3 LIVE C15 = 1992春', LIVE({ id: 'C15', eraTag: 'era_1990_spring_action', when: '1992春' }) === '主線 · 1992春');
-  ok('F3 LIVE C6 全年冇季節', LIVE({ id: 'C6', eraTag: 'era_1988_canteen', when: '1990' }) === '主線 · 1990');
-  ok('F3 LIVE C18 = 1990冬', LIVE({ id: 'C18', eraTag: 'era_1988_winter_agency', when: '1990冬' }) === '主線 · 1990冬');
+  ok('F3 LIVE N10 = 1991冬', LIVE({ id: 'N10', eraTag: 'era_1989_winter_pressure', when: '1991冬' }) === '主線 · 1991冬');
+  ok('F3 LIVE N16 = 1992冬', LIVE({ id: 'N16', eraTag: 'era_1990_winter_newyear', when: '1992冬' }) === '主線 · 1992冬');
+  ok('F3 LIVE N7 = 1991夏', LIVE({ id: 'N7', eraTag: 'era_1989_summer_action', when: '1991夏' }) === '主線 · 1991夏');
+  ok('F3 LIVE N13 = 1992夏', LIVE({ id: 'N13', eraTag: 'era_1990_summer_war', when: '1992夏' }) === '主線 · 1992夏');
+  ok('F3 LIVE N9 = 1991秋', LIVE({ id: 'N9', eraTag: 'era_1989_autumn_commercial', when: '1991秋' }) === '主線 · 1991秋');
+  ok('F3 LIVE N12 = 1992春', LIVE({ id: 'N12', eraTag: 'era_1990_spring_action', when: '1992春' }) === '主線 · 1992春');
+  ok('F3 LIVE N6 全年冇季節', LIVE({ id: 'N6', eraTag: 'era_1988_canteen', when: '1990' }) === '主線 · 1990');
+  ok('F3 LIVE N18 = 1990冬', LIVE({ id: 'N18', eraTag: 'era_1988_winter_agency', when: '1990冬' }) === '主線 · 1990冬');
   /* v20a98 CONTRA98 A-03：標籤格式（主線 · YYYY季）不變，但季節跟返開局曆法——
-     START=1990-01-01・冬、開始按鈕寫「1990 年冬」、JAN67 已將 C1 when 改「1990冬」；
+     START=1990-01-01・冬、開始按鈕寫「1990 年冬」、JAN67 已將 N1 when 改「1990冬」；
      原期望「春」係 v67 一月開局改版漏改嗰行硬編碼，屬硬矛盾，已修正為「冬」。 */
-  ok('F3 LIVE C1 批准標籤不變', LIVE({ id: 'C1' }) === '主線 · 1990冬');
+  ok('F3 LIVE N1 批准標籤不變', LIVE({ id: 'N1' }) === '主線 · 1990冬');
   /* F3d：forced session（進度頁「播呢幕」force 播）唔准再短路標籤——修前任何節點都變 1990春 */
   const envF = new Function('START', 'BehaviorGate', 'spIsForcedStory',
     'const YEARS66_SHIFT = 2, YEARS66_OLD_MIN = 1988, YEARS66_OLD_MAX = 1992;\n' +
     shift + '\n' + srcs.join('\n') +
     '\nreturn { spPlayerMeta };'
   )({ y: 1990 }, { featureFlag_softBehaviorGatePreview: () => false }, () => true);
-  ok('F3d forced 播 C9 仍標 1991冬', envF.spPlayerMeta({ id: 'C9', eraTag: 'era_1989_winter_pressure', when: '1991冬' }, null, null) === '主線 · 1991冬');
-  ok('F3d forced 播 C1 仍標 1990冬', envF.spPlayerMeta({ id: 'C1' }, null, null) === '主線 · 1990冬'); /* v20a98 CONTRA98 A-03 同上 */
+  ok('F3d forced 播 N10 仍標 1991冬', envF.spPlayerMeta({ id: 'N10', eraTag: 'era_1989_winter_pressure', when: '1991冬' }, null, null) === '主線 · 1991冬');
+  ok('F3d forced 播 N1 仍標 1990冬', envF.spPlayerMeta({ id: 'N1' }, null, null) === '主線 · 1990冬'); /* v20a98 CONTRA98 A-03 同上 */
   /* soft：年份跟節點 when（修前一律 1990） */
-  ok('F3 soft C9 = 1991冬', SOFT({ id: 'C9', when: '1991冬', eraTag: 'era_1989_winter_pressure' }) === '主線 · 1991冬');
-  ok('F3 soft C13 = 1992冬', SOFT({ id: 'C13', when: '1992冬', eraTag: 'era_1990_winter_newyear' }) === '主線 · 1992冬');
-  ok('F3 soft C15 = 1992春', SOFT({ id: 'C15', when: '1992春', eraTag: 'era_1990_spring_action' }) === '主線 · 1992春');
-  ok('F3 soft C19 = 1991春', SOFT({ id: 'C19', when: '1991春', eraTag: 'era_1989_spring_gamble' }) === '主線 · 1991春');
-  ok('F3 soft C18 = 1990冬', SOFT({ id: 'C18', when: '1990冬', eraTag: 'era_1988_winter_agency' }) === '主線 · 1990冬');
+  ok('F3 soft N10 = 1991冬', SOFT({ id: 'N10', when: '1991冬', eraTag: 'era_1989_winter_pressure' }) === '主線 · 1991冬');
+  ok('F3 soft N16 = 1992冬', SOFT({ id: 'N16', when: '1992冬', eraTag: 'era_1990_winter_newyear' }) === '主線 · 1992冬');
+  ok('F3 soft N12 = 1992春', SOFT({ id: 'N12', when: '1992春', eraTag: 'era_1990_spring_action' }) === '主線 · 1992春');
+  ok('F3 soft N19 = 1991春', SOFT({ id: 'N19', when: '1991春', eraTag: 'era_1989_spring_gamble' }) === '主線 · 1991春');
+  ok('F3 soft N18 = 1990冬', SOFT({ id: 'N18', when: '1990冬', eraTag: 'era_1988_winter_agency' }) === '主線 · 1990冬');
   /* 內置 selfCheck：唔准有新失敗（dual* 四項係 1988 stub 世界嘅舊文字期望，修前修後同樣在列） */
   const chk = env.spPlayerMeta_softSeasonSelfCheck();
   const knownStale = ['dualSeedChrome', 'dualNoSeed', 'choiSpringCal', 'choiAutumnCal'];
@@ -195,13 +195,13 @@ function loadPack(f) { return JSON.parse(fs.readFileSync(path.join(ROOT, 'conten
   ok('變體 采兒 meet 有 M33 口徑（唔害人／獨家）', choiVis.indexOf('唔害人') >= 0 && choiVis.indexOf('獨家') >= 0);
 })();
 
-/* ================= C6 閘 + verify37 fixture ================= */
+/* ================= N6 閘 + verify37 fixture ================= */
 (function () {
   const gate = eval('(' + extractConst('STORY_GATE_3Y') + ')');
-  ok('C6 閘 = route_tv + weekMin 15', gate.C6 && gate.C6.route === 'route_tv' && gate.C6.weekMin === 15);
-  const main = loadPack('story_detail_c1_to_c17.json');
-  const c1 = main.nodes.find(n => n.id === 'C1');
-  ok('C1_a 寫 route_tv（C6 有生產者）', c1.choices.some(c => ((c.effects || {}).flags || []).indexOf('route_tv') >= 0));
+  ok('N6 閘 = route_tv + weekMin 15', gate.N6 && gate.N6.route === 'route_tv' && gate.N6.weekMin === 15);
+  const main = loadPack('story_detail_n1_to_n17.json');
+  const c1 = main.nodes.find(n => n.id === 'N1');
+  ok('N1_a 寫 route_tv（N6 有生產者）', c1.choices.some(c => ((c.effects || {}).flags || []).indexOf('route_tv') >= 0));
   const v37 = fs.readFileSync(path.join(ROOT, 'tests', 'test_verify37_logic.js'), 'utf8');
   ok('verify37 fixture 已改 route_tv', v37.indexOf('routes: { route_tv: true }') >= 0 && v37.indexOf('routes: { tv: true }') < 0);
 })();

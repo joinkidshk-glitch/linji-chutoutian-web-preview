@@ -1,4 +1,4 @@
-// v20a203 WF4 迎新期＋Phase 2 擴池＋B3／C1 文案＋C2 場景圖＋C3 典禮撞強制播邏輯測試。
+// v20a203 WF4 迎新期＋Phase 2 擴池＋B3／N1 文案＋N2 場景圖＋N3 典禮撞強制播邏輯測試。
 // 用法：node tests/test_wf4_203_logic.js [path-to-index.html]
 // 反證：喺 pristine main（6e45cdb＝v193 落地）上行 → 冇 pDayWelcome／wf4EffPDay、
 //   池得 72 單、set17／st17 舊文案、day15 moneyMax 1000、story165CanPlay 冇典禮閘 → 多項乾淨 FAIL（唔 crash）。
@@ -30,7 +30,7 @@ function extractConst(name){
   }
   return html.slice(i, j);
 }
-/* ---- sandbox（同 test_wf4_193_logic.js 形狀，加 C2／C3 stub） ---- */
+/* ---- sandbox（同 test_wf4_193_logic.js 形狀，加 N2／N3 stub） ---- */
 let S;
 let _ys = { year: 1990, season: '春' };
 let _tier = 0;
@@ -52,7 +52,7 @@ function goToMapForBrowse(){}
 function enc79StoryPendingAt(){ return false; }
 function wf4PresentFenFarewell(){ return false; }
 function isStoryPlayActive(){ return false; }
-let _storyOpen = []; // 預設冇主線待播（sim 嗰陣 wf4TryLocEvent 唔 defer）；C3 嗰節先設做 [{id:'C6F'}]
+let _storyOpen = []; // 預設冇主線待播（sim 嗰陣 wf4TryLocEvent 唔 defer）；N3 嗰節先設做 [{id:'N6F'}]
 const StoryOC = { ensure(){}, listOpen(){ return { open: _storyOpen }; } };
 global.document = { querySelector: (sel) => (sel === '.awd62-stage' && _ceremonyOn) ? { node: 1 } : null };
 const NEWS82_SRC = extractConst('NEWS82_EVENTS');
@@ -161,38 +161,38 @@ function approx(a, b){ return Math.abs(a - b) < 1e-3; } // 曲線值 0.033／0.0
     JSON.stringify(byId('wf4_ev_day04')).includes('廿四味') && JSON.stringify(byId('wf4_ev_day04')).includes('涼茶阿婆'));
 }
 
-/* (4) C1：點歌只留一單＋銀包分層閘 */
+/* (4) N1：點歌只留一單＋銀包分層閘 */
 {
   const evs = W.DAILY_EVENTS_WF4;
   const byId = id => evs.find(e=>e.id===id);
   const sing = evs.filter(e=>JSON.stringify(e).includes('點歌')).map(e=>e.id);
-  ok('C1「點歌」全池只留 set21 一單（st15 已改做司機追星往事）',
+  ok('N1「點歌」全池只留 set21 一單（st15 已改做司機追星往事）',
     JSON.stringify(sing) === JSON.stringify(['wf4_ev_set21']));
-  ok('C1 st15 改做司機追星往事（標題／講者／beat 換晒，唔再係點歌）',
+  ok('N1 st15 改做司機追星往事（標題／講者／beat 換晒，唔再係點歌）',
     byId('wf4_ev_st15').title === '的士司機那段追星往事'
     && byId('wf4_ev_st15').beats.some(b=>b.sp==='的士司機')
     && JSON.stringify(byId('wf4_ev_st15')).includes('追星')); // 「追星」喺旁白句（司機講起追星往事）＋司機句講追夢
-  ok('C1 day15 閘改做 moneyMax 200（同 day03 ≤$1000 分層）',
+  ok('N1 day15 閘改做 moneyMax 200（同 day03 ≤$1000 分層）',
     byId('wf4_ev_day15').cond.moneyMax === 200 && byId('wf4_ev_day03').cond.moneyMax === 1000);
   // 分層實證：錢 $500 → day03 出、day15 唔出；錢 $150 → 兩單都出
   S = freshS(100); _ys = { year: 1990, season: '春' }; _tier = 0; S.money = 500;
-  ok('C1 分層：銀包 $500，day03 合資格、day15 唔合資格',
+  ok('N1 分層：銀包 $500，day03 合資格、day15 唔合資格',
     W.wf4CondOk(byId('wf4_ev_day03')) === true && W.wf4CondOk(byId('wf4_ev_day15')) === false);
   S.money = 150;
-  ok('C1 分層：銀包 $150，兩單都合資格（唔係封死咗 day15）',
+  ok('N1 分層：銀包 $150，兩單都合資格（唔係封死咗 day15）',
     W.wf4CondOk(byId('wf4_ev_day03')) === true && W.wf4CondOk(byId('wf4_ev_day15')) === true);
 }
 
-/* (5) C2：場景圖重映射（wf4Scene105 實讀覆寫表） */
+/* (5) N2：場景圖重映射（wf4Scene105 實讀覆寫表） */
 {
   const scene = id => W.wf4Scene105(W.DAILY_EVENTS_WF4.find(e=>e.id===id));
-  ok('C2 day05 冰室→茶餐廳圖（唔再係街市）', scene('wf4_ev_day05').includes('bg_loc_cafe_cha.jpg'));
+  ok('N2 day05 冰室→茶餐廳圖（唔再係街市）', scene('wf4_ev_day05').includes('bg_loc_cafe_cha.jpg'));
   ok('v20a218 D-B1 day07 電車→電車上層新圖（唔再係街市街景頂住）', scene('wf4_ev_day07').includes('bg_wf4_tram.jpg'));
-  ok('C2 day09 唱片舖→唱片舖內景圖（唔再係夜市檔）', scene('wf4_ev_day09').includes('bg_loc_rec_hk.jpg'));
-  ok('C2 day11 茶樓→茶餐廳圖（唔再係街市）', scene('wf4_ev_day11').includes('bg_loc_cafe_cha.jpg'));
-  ok('C2 day14 片場休息區→獅子山廠圖（唔再係電話亭）', scene('wf4_ev_day14').includes('bg_loc_film_lion.jpg'));
-  ok('C2 day15 茶餐廳門口→茶餐廳圖本身（唔再係街市）', scene('wf4_ev_day15').includes('bg_loc_cafe_cha.jpg'));
-  ok('C2 st17 士多→街市街景圖（唔再係夜市檔）', scene('wf4_ev_st17').includes('bg_wf4_market.jpg'));
+  ok('N2 day09 唱片舖→唱片舖內景圖（唔再係夜市檔）', scene('wf4_ev_day09').includes('bg_loc_rec_hk.jpg'));
+  ok('N2 day11 茶樓→茶餐廳圖（唔再係街市）', scene('wf4_ev_day11').includes('bg_loc_cafe_cha.jpg'));
+  ok('N2 day14 片場休息區→獅子山廠圖（唔再係電話亭）', scene('wf4_ev_day14').includes('bg_loc_film_lion.jpg'));
+  ok('N2 day15 茶餐廳門口→茶餐廳圖本身（唔再係街市）', scene('wf4_ev_day15').includes('bg_loc_cafe_cha.jpg'));
+  ok('N2 st17 士多→街市街景圖（唔再係夜市檔）', scene('wf4_ev_st17').includes('bg_wf4_market.jpg'));
   ok('v20a218 D-B1 day19 公園晨運→屋邨公園太極新圖（唔再係街市街景頂住）', scene('wf4_ev_day19').includes('bg_wf4_park.jpg'));
   ok('v20a218 D-B1 day22 地鐵站賣唱→旺角地鐵站夜晚新圖（唔再係街市街景頂住）', scene('wf4_ev_day22').includes('bg_wf4_mtr.jpg'));
   ok('v20a206 C2 day24 電視台信件房→電視台辦公室圖（唔再係屋企客廳）', scene('wf4_ev_day24').includes('bg_loc_tvb_kowloon.jpg'));
@@ -206,24 +206,24 @@ function approx(a, b){ return Math.abs(a - b) < 1e-3; } // 曲線值 0.033／0.0
     wf4_ev_day23: 'bg_wf4_market.jpg', wf4_ev_day24: 'bg_loc_tvb_kowloon.jpg', wf4_ev_day25: 'bg_wf4_market.jpg',
     wf4_ev_day26: 'bg_wf4_taxi.jpg', wf4_ev_day27: 'bg_loc_film_harbour.jpg', wf4_ev_day28: 'bg_wf4_home.jpg',
   };
-  ok('C2 12 單新 day 事件全部有場景圖（唔留灰）',
+  ok('N2 12 單新 day 事件全部有場景圖（唔留灰）',
     Object.entries(expectNew).every(([id, f])=>scene(id).includes(f)));
-  ok('C2 對照：st05 卡拉OK／st08 的士圖唔郁', scene('wf4_ev_st05').includes('bg_wf4_karaoke.jpg') && scene('wf4_ev_st08').includes('bg_wf4_taxi.jpg'));
+  ok('N2 對照：st05 卡拉OK／st08 的士圖唔郁', scene('wf4_ev_st05').includes('bg_wf4_karaoke.jpg') && scene('wf4_ev_st08').includes('bg_wf4_taxi.jpg'));
 }
 
-/* (6) C3：典禮進行中唔開強制播（防兩層疊埋）；典禮完咗故事照開，唔會唔見 */
+/* (6) N3：典禮進行中唔開強制播（防兩層疊埋）；典禮完咗故事照開，唔會唔見 */
 {
   S = freshS(98); _ys = { year: 1990, season: '春' }; _tier = 1;
-  _storyOpen = [{ id: 'C6F' }]; // C6F 待播（v198 defer 嗰套唔影響呢節：CanPlay 只驗典禮閘）
+  _storyOpen = [{ id: 'N6F' }]; // N6F 待播（v198 defer 嗰套唔影響呢節：CanPlay 只驗典禮閘）
   _ceremonyOn = false;
-  ok('C3 冇典禮嗰陣 CanPlay 照返 C6F', W.story165CanPlay() && W.story165CanPlay().id === 'C6F');
-  ok('C3 awards62CeremonyActive 冇 stage 返 false', W.awards62CeremonyActive() === false);
+  ok('N3 冇典禮嗰陣 CanPlay 照返 N6F', W.story165CanPlay() && W.story165CanPlay().id === 'N6F');
+  ok('N3 awards62CeremonyActive 冇 stage 返 false', W.awards62CeremonyActive() === false);
   _ceremonyOn = true; // .awd62-stage 喺 DOM（典禮進行中）
-  ok('C3 awards62CeremonyActive 有 stage 返 true', W.awards62CeremonyActive() === true);
-  ok('C3 典禮進行中 CanPlay 返 null（唔開強制播，唔疊層）', W.story165CanPlay() === null);
+  ok('N3 awards62CeremonyActive 有 stage 返 true', W.awards62CeremonyActive() === true);
+  ok('N3 典禮進行中 CanPlay 返 null（唔開強制播，唔疊層）', W.story165CanPlay() === null);
   _ceremonyOn = false; // 典禮播完，stage 拆走
-  ok('C3 典禮完咗 CanPlay 即刻返 C6F（故事唔會唔見，唔使等下一日）',
-    W.story165CanPlay() && W.story165CanPlay().id === 'C6F');
+  ok('N3 典禮完咗 CanPlay 即刻返 N6F（故事唔會唔見，唔使等下一日）',
+    W.story165CanPlay() && W.story165CanPlay().id === 'N6F');
 }
 
 console.log(fails.length ? ('FAILURES: ' + fails.join(' | ')) : 'ALL PASS');

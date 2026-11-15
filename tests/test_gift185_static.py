@@ -5,6 +5,7 @@
 # v20a219 resync：index.html 淨 +3 行（CONTRA98 stub，插入點舊 L31845 之後），總行數 62894→62897（difflib 對位核實純漂移，見 qa219/resync219.py）。
 # v20a225 resync：index.html 淨 +272 行（對手線強化 rebase 上 main 719975f；difflib 對位核實純漂移，見 qa225/resync225.py），總行數 62860→63132。
 # v20a227 resync：index.html 淨 +2 行（WF4 day24 banner 裁切位：註解 1 行→3 行，插入點舊 L41729；chain 原地換值行數不變），總行數 63132→63134（difflib 對位核實純漂移，見 qa227/resync227.py）。
+# v20a210 resync：index.html 淨 +40 行（舊存檔遷移 c2n210MigrateSave 函數 ＋36 行＠舊 L36730 之後＋呼叫點 ＋4 行＠舊 L33790；difflib 對位核實純漂移），總行數 63134→63174。
 # v20a207 resync：index.html 淨 +34 行（見 qa207/resync207.py，73 錨點對位零 mismatch，純漂移）。
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），總行數 60522→60609。
 # v20a203 resync：index.html 淨 +233 行（見 qa203/resync203.py difflib 對位核實純漂移），總行數 61167→61400。
@@ -13,7 +14,7 @@
 # v20a213 resync：index.html 淨 +199 行（見 qa213/resync213.py difflib 對位核實純漂移），總行數 61714→61913。
 # v20a208 resync：index.html 淨 +223 行（見 qa208/resync208.py difflib 對位核實純漂移；rebase 上 main b7ddb37 後 qa208/resync208_rebase.py 再對位核實），總行數 61491→61714。
 # v20a212 resync：index.html 淨 +39 行（見 qa212/resync212.py difflib 對位核實純漂移），總行數 61714→61753。
-# v20a185 GIFT185 靜態測試：修 v183 review B1（700 尾行俾取消掣欄遮住）＋C1（兩欄卡名「×N」孤兒跌行）。
+# v20a185 GIFT185 靜態測試：修 v183 review B1（700 尾行俾取消掣欄遮住）＋N1（兩欄卡名「×N」孤兒跌行）。
 # v20a197 resync：index.html 淨 +94 行，總行數 60490→60584（difflib 對位核實純漂移，見 qa197/resync197.py；其餘斷言唔郁；B4 補丁再 +9 行）。
 # v20a196 resync：index.html 淨 +83 行，總行數 60490→60573（showResult −1／晨鏈＋74／WF4＋63／尾段＋83 淨計；其餘斷言唔郁）。
 # v20a196 落地合併上 main 2de5026：總行數 60817→60900（v197 ＋94 之上再 ＋83）。
@@ -57,7 +58,7 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 63134（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136＋v219 +3＋v222 −37＋v225 +272＋v227 +2）', html.count('\n') == 63134)
+ok('總行數 63174（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136＋v219 +3＋v222 −37＋v225 +272＋v227 +2＋v210 +40）', html.count('\n') == 63174)
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行（advanceDay tick＋2／whitelist＋1／RELEASE215 block＋130／排序＋4／pullDue 懶掃＋3），difflib 核實純漂移（總行數 62352→62492）。# ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',
    'v20a185 B1+C1' in html and '路線 a' in html)
@@ -65,34 +66,34 @@ ok('B1 .act min-width:0（防 nowrap 名撐闊 grid 軌）',
    '#gift-pick-list .act{ min-width:0 !important; }' in html)
 
 # ---- C1：名 span ellipsis＋數量 span nowrap ----
-ok('C1 .n 行 flex（icon＋名＋數量一行）',
+ok('N1 .n 行 flex（icon＋名＋數量一行）',
    '#gift-pick-list .n{ display:flex !important; align-items:baseline !important; gap:4px !important; }' in html)
-ok('C1 名 span ellipsis＋nowrap＋min-width:0',
+ok('N1 名 span ellipsis＋nowrap＋min-width:0',
    '#gift-pick-list .n .gift-pick-name{ flex:1 1 auto !important; min-width:0 !important; overflow:hidden !important; text-overflow:ellipsis !important; white-space:nowrap !important; }' in html)
-ok('C1 數量 span nowrap＋唔縮',
+ok('N1 數量 span nowrap＋唔縮',
    '#gift-pick-list .n .gift-pick-count{ flex:0 0 auto !important; white-space:nowrap !important; }' in html)
-ok('C1 icon 唔縮（.ic112 flex:0 0 auto）',
+ok('N1 icon 唔縮（.ic112 flex:0 0 auto）',
    '#gift-pick-list .n .ic112{ flex:0 0 auto !important; }' in html)
 
 # ---- openGiftPick row 模板用 spans；舊裸「名 ×N」清走 ----
 pick = seg('function openGiftPick(npcKey, L){', 'function doGiveGift(npcKey, itemId, L){')
-ok('C1 row 模板：名入 .gift-pick-name span',
+ok('N1 row 模板：名入 .gift-pick-name span',
    '<span class="gift-pick-name">${item.name}</span>' in pick)
-ok('C1 row 模板：數量入 .gift-pick-count span',
+ok('N1 row 模板：數量入 .gift-pick-count span',
    '<span class="gift-pick-count">×${count}</span>' in pick)
-ok('C1 row 模板：舊裸「${item.name} ×${count}」已清走',
+ok('N1 row 模板：舊裸「${item.name} ×${count}」已清走',
    '${item.name} ×${count}' not in pick)
-ok('C1 row 模板：「選」掣仲在', '<div class="cost">選</div>' in pick)
-ok('C1 row 模板：偏好標記行唔郁', '偏好標記：${tag}' in pick)
+ok('N1 row 模板：「選」掣仲在', '<div class="cost">選</div>' in pick)
+ok('N1 row 模板：偏好標記行唔郁', '偏好標記：${tag}' in pick)
 
 # ---- v183 C7 兩欄設計原封不動（淨係修遮擋，唔推翻兩欄） ----
-ok('C7 700 media query 兩欄原封不動',
+ok('N7 700 media query 兩欄原封不動',
    '@media (max-height:720px){ #gift-pick-list{ display:grid; grid-template-columns:1fr 1fr; gap:4px 8px; }' in html
    and '#gift-pick-list .act{ margin-bottom:0 !important; padding:6px 8px !important; }' in html)
-ok('C7 取消掣 pinned 規則唔郁', '#modal-btns{' in html and 'position: sticky' in html)
+ok('N7 取消掣 pinned 規則唔郁', '#modal-btns{' in html and 'position: sticky' in html)
 
 # ---- 作用域：淨係 #gift-pick-list，唔郁禮品店 list／其他 .n ----
-ok('C1 規則全部鎖喺 #gift-pick-list 作用域',
+ok('N1 規則全部鎖喺 #gift-pick-list 作用域',
    html.count('gift-pick-name') == 2 and html.count('gift-pick-count') == 2)
 ok('禮品店 list 唔用新 spans（openGiftShop 模板唔郁）',
    '<span class="gift-pick-name">' not in seg('function openGiftShop(shopId, L){', 'function openGiftPick(npcKey, L){'))

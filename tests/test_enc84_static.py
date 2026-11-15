@@ -27,7 +27,7 @@ ok('樞紐標記在位（enc84Hub）', 'enc84Hub' in html)
 ok('蘇收斂凍結：旗設定＋攔截過濾', 'enc84_so_cool_until' in html and html.count('enc84_so_cool_until') >= 2)
 ok('未解鎖星過濾（漏料／茶餐廳／事務所共 3 處 unlockYear）', html.count('s.unlockYear') >= 3)
 ok('程 E4 節拍用 enc83NewsOut("E4")', 'enc83NewsOut("E4")' in html)
-ok('程 C16 旗回收（flag_vocal_train/polish）', 'flag_vocal_train' in html and 'flag_vocal_polish' in html)
+ok('程 N15 旗回收（flag_vocal_train/polish）', 'flag_vocal_train' in html and 'flag_vocal_polish' in html)
 ok('鍾告別窗 gate（1992 秋／冬＋1992）', 'chung_farewell' in html and 'ys.year===1992 && (ys.season==="秋" || ys.season==="冬")' in html)
 ok('fx key 在位（pang_helped/so_cool/so_risk_news）', all(x in html for x in ['pang_helped','so_cool','so_risk_news']))
 

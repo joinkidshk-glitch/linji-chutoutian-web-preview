@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # v20a153 靜態測試：v136 review A1＋B2＋B3。
-# A1：C17 路由改返星河電視台（tvb_longmen）——soft gate 載入嗰陣正規化，唔改 content pack JSON。
-# B2：C17 開場兩句旁白由何生企台——spDlgPairIds 開場旁白預告下一位講者。
-# B3：進度頁次序（v20a191 改版：插入幕跟播次序排喺 C6 之後，唔再排尾扮第 18／19／20 幕；內部 n 保留）。
+# A1：N17 路由改返星河電視台（tvb_longmen）——soft gate 載入嗰陣正規化，唔改 content pack JSON。
+# B2：N17 開場兩句旁白由何生企台——spDlgPairIds 開場旁白預告下一位講者。
+# B3：進度頁次序（v20a191 改版：插入幕跟播次序排喺 N6 之後，唔再排尾扮第 18／19／20 幕；內部 n 保留）。
 # 反證：喺 pristine main（e08a070／v148）index 上行，A1／B2／B3 新斷言要乾淨 FAIL（唔 crash）；
 #      其餘基線斷言（SAVE／softRev／?v=／when 1990冬／410 locId／slots 源頭）喺 pristine 一樣 PASS；
 #      410 setting／synopsis／lockedHint 三句斷言跟 v157 版措辭，喺 e08a070 會 FAIL（措辭係 v157 改嘅，唔係 v153）。
@@ -44,32 +44,32 @@ ok('410 陷阱未郁：setting／synopsis 仲係 1990 年冬末',
    and 'synopsis: "1990 年冬末，頒獎禮之後那晚，星河電視台會議室。何生攤開流程表' in src)
 ok('410 陷阱未郁：lockedHint 仲係 1990 年冬',
    'lockedHint: "1990 年冬、台慶之後才到這一晚。未到就照常跑通告；到了去星河電視台會議室。' in src)
-ok('410 locId／STORY_LOC_SOFT C17 仲係 tvb_longmen',
-   'locId: "tvb_longmen"' in src and 'C17: "tvb_longmen"' in src)
+ok('410 locId／STORY_LOC_SOFT N17 仲係 tvb_longmen',
+   'locId: "tvb_longmen"' in src and 'N17: "tvb_longmen"' in src)
 slots_path = root / 'content' / 'STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json'
 try:
     slots = json.loads(slots_path.read_text(encoding='utf-8'))
-    c17slot = next((n for n in slots['nodes'] if n.get('beatId') == 'C17'), None)
-    ok('slots 源頭未郁（修法喺 code 唔喺 pack）：C17 slot 仲係 agency_ho／cafe_cha',
+    c17slot = next((n for n in slots['nodes'] if n.get('beatId') == 'N17'), None)
+    ok('slots 源頭未郁（修法喺 code 唔喺 pack）：N17 slot 仲係 agency_ho／cafe_cha',
        c17slot is not None and c17slot.get('locId') == 'agency_ho'
        and (c17slot.get('trigger') or {}).get('locIdAny') == ['agency_ho', 'cafe_cha'])
 except Exception as e:
-    ok('slots 源頭未郁（修法喺 code 唔喺 pack）：C17 slot 仲係 agency_ho／cafe_cha', False)
+    ok('slots 源頭未郁（修法喺 code 唔喺 pack）：N17 slot 仲係 agency_ho／cafe_cha', False)
     print('  (slots read error: %s)' % e)
 
-# --- A1：soft gate C17 正規化返 tvb_longmen ---
+# --- A1：soft gate N17 正規化返 tvb_longmen ---
 ok('A1：healC17Loc 喺 BehaviorGate 入面定義', 'function healC17Loc(node)' in src)
 ok('A1：healC17Loc 寫死 tvb_longmen（locId＋trigger.locIdAny）',
    'held.locId = "tvb_longmen"' in src and 'held.trigger.locIdAny = ["tvb_longmen"]' in src)
 ok('A1：applyFreeplaySlots（slots 接線 choke point）有呼 healC17Loc',
-   'healC17Loc("C17")' in func_body(src, 'applyFreeplaySlots'))
+   'healC17Loc("N17")' in func_body(src, 'applyFreeplaySlots'))
 ok('A1：evalTrigger_AND_softRumor 有呼 healC17Loc',
    'healC17Loc(id)' in func_body(src, 'evalTrigger_AND_softRumor'))
 ok('A1：softCanonC17Loc 定義＋強制 tvb_longmen', 'function softCanonC17Loc(node)' in src
    and 'node.locId = "tvb_longmen"' in src)
-ok('A1：故事節點 overlay 唔抄 slot.locId（C17 分支有防禦性正規化）',
-   'if(id==="C17")' in src and 'softCanonC17Loc(storyNode)' in src)
-ok('A1：index.html 冇殘留 C17 agency／cafe 雙門字面',
+ok('A1：故事節點 overlay 唔抄 slot.locId（N17 分支有防禦性正規化）',
+   'if(id==="N17")' in src and 'softCanonC17Loc(storyNode)' in src)
+ok('A1：index.html 冇殘留 N17 agency／cafe 雙門字面',
    '"agency_ho", "cafe_cha"' not in src)
 ok('A1：WF4 入場攔截跟埋主線待播優先（enc79StoryPendingAt guard）',
    (lambda _m: bool(_m) and 'enc79StoryPendingAt(locId)' in src[_m.start():_m.start() + 2000])(
@@ -86,14 +86,14 @@ ok('B2：render 旁白註解已更新（開場旁白由 B2 預告下一位講者
    '由 v20a153 B2 預告下一位講者企台' in src)
 
 # --- B3：進度頁 1–20 順序（v20a191 改版：插入幕唔再排尾扮第 18／19／20 幕） ---
-# v191 顯示次序跟 ORDER165（C6、C6F、C18、C19、C7–C17）；內部 n 保留
-# （C6F=20、C18=18、C19=19）供 far-merge／逐項揭曉邏輯用，行為同 v153 一致。
-# 反證更新：喺 v153 index 上行，新 B3 斷言要乾淨 FAIL（舊排法 C17、C18、C19、C6F）。
+# v191 顯示次序跟 ORDER165（N6、N6F、N18、N19、N7–N17）；內部 n 保留
+# （N6F=20、N18=18、N19=19）供 far-merge／逐項揭曉邏輯用，行為同 v153 一致。
+# 反證更新：喺 v153 index 上行，新 B3 斷言要乾淨 FAIL（舊排法 N17、N18、N19、N6F）。
 m = re.search(r'const order71 = \[(.*?)\];', src, re.S)
 pairs = re.findall(r'\[\s*"([^"]+)"\s*,\s*(\d+)\s*\]', m.group(1)) if m else []
 ok('B3：order71 抽到 20 項', len(pairs) == 20)
-ok('B3：顯示次序跟播次序（C6、C6F、C18、C19、C7–C17）',
-   [i for i, _ in pairs] == ['C%d' % n for n in range(1, 7)] + ['C6F', 'C18', 'C19'] + ['C%d' % n for n in range(7, 18)])
+ok('B3：顯示次序跟播次序（N6、N6F、N18、N19、N7–N17）',
+   [i for i, _ in pairs] == ['N%d' % n for n in range(1, 7)] + ['N6F', 'N18', 'N19'] + ['N7', 'N9', 'N10', 'N11', 'N8', 'N14', 'N16', 'N13', 'N12', 'N15', 'N17'])
 ok('B3：內部 n 保留 1–20（供 far-merge／逐項邏輯用，唔係顯示幕號）',
    sorted(int(n) for _, n in pairs) == list(range(1, 21)))
 ok('B3：插入幕逐項跟幕號唔跟行 index（lastDetailN71 規則）',

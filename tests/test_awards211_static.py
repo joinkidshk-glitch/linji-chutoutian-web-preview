@@ -5,10 +5,10 @@
 #   B2 won 版銷量卡點名得主＋作品（win211：won 類別攞玩家＋代表作，動態，唔寫死）。
 #       v20a214 適配：結果卡改做《維港日報》報紙，第二版用 playerWinLine214／winLine214／metricHead214；
 #       wonCat211／win211／「典禮後仍有人提起」stub 全部退役（見 B2 段）。
-#   C1 won 版同屆提名加玩家一行「阿偉《代表作》🏆」＋圖例（金底 chip 同 v207 C2 一致）。
+#   N1 won 版同屆提名加玩家一行「阿偉《代表作》🏆」＋圖例（金底 chip 同 v207 C2 一致）。
 #       v20a214 適配：★統一＋全名，改做「★ 陳偉翔《代表作》」＋「★為得主」圖例（見 C1 段）。
 #   C2 字幕框高度釘死 93px（3 行上限；基線 names 69／reveal 54–93 來回跳令 frame 跳 7–12px）。
-#   C3 gallery 請柬席位去重（tierBit 唔出，留返 gate 行「今晚席位：觀禮。」；nominee 保留 tierBit）。
+#   N3 gallery 請柬席位去重（tierBit 唔出，留返 gate 行「今晚席位：觀禮。」；nominee 保留 tierBit）。
 #   B7 揭曉 spotlight 改做由上射落嚟嘅梯形光柱（上窄下闊、y=0 到腳底、暖白漸變＋亮芯＋腳底光灘）；dimVeil207 不動。
 # 反證：run against pristine main b7ddb37 -> 全部新斷言 FAIL（唔 crash）；舊守衛 pristine 應 PASS。
 # 註：本檔用字串＋函數切片斷言（跟 v207 寫法），唔寫死行號。
@@ -102,11 +102,11 @@ chk('B2 awardWinner149 本身唔郁（won 回 null 係既定規則）',
     'if(f.outcome === "won") return null;' in slice_fn('awardWinner149'))
 
 # --- C1：won 版同屆提名加玩家一行（v20a214 適配：★＋全名陳偉翔） ---
-chk('C1 won 版加玩家一行（★ 陳偉翔＋代表作，排第一）',
+chk('N1 won 版加玩家一行（★ 陳偉翔＋代表作，排第一）',
     'isWon211' in fel_fn and 'parts.unshift("★ 陳偉翔"' in fel_fn
     and 'c.repWorkTitle' in fel_fn)
-chk('C1 won 版行首有圖例（為得主）', '(win || isWon211)' in fel_fn)
-chk('C1 gallery／提名版 fellows 邏輯唔郁（winner63／fellows[0] fallback 仲在）',
+chk('N1 won 版行首有圖例（為得主）', '(win || isWon211)' in fel_fn)
+chk('N1 gallery／提名版 fellows 邏輯唔郁（winner63／fellows[0] fallback 仲在）',
     'c.winner63 || ((c.outcome === "gallery" && fl[0]) ? fl[0] : null)' in fel_fn)
 
 # --- C2：字幕框高度釘死 93px ---
@@ -120,9 +120,9 @@ chk('C2 卡列留位唔郁（visibility:hidden＋glamour-hide display:none 仲�
 
 # --- C3：gallery 請柬席位去重 ---
 chk('C3 gallery 唔出 tierBit（留返 gate 行）', '(pack.tier === "gallery") ? ""' in inv_fn)
-chk('C3 nominee 保留 tierBit（席位：入圍／提名）', '席位：${pack.tierLabel}' in inv_fn)
-chk('C3 gate 行「今晚席位：觀禮。」仲在', '今晚席位：觀禮。' in slice_fn('awards62GateLineHtml'))
-chk('C3 請柬其餘行唔郁（席位信／獎項行／代表作行）',
+chk('N3 nominee 保留 tierBit（席位：入圍／提名）', '席位：${pack.tierLabel}' in inv_fn)
+chk('N3 gate 行「今晚席位：觀禮。」仲在', '今晚席位：觀禮。' in slice_fn('awards62GateLineHtml'))
+chk('N3 請柬其餘行唔郁（席位信／獎項行／代表作行）',
     '席位信' in src and '今晚獎項' in inv_fn and 'awards63InviteBitHtml(pack)' in inv_fn)
 
 # --- B7：揭曉光柱改做梯形（上窄下闊、框頂到腳底） ---

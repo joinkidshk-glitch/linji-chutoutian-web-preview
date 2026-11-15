@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # v20a81 WF2 靜態測試：感情線廣東話化＋半線差一步收尾＋彭少祺正名。
 # 一、框架在位（覆寫表／apply 函數／WeakSet 守衛／call 位順序：48 藍PA → WF1 → WF2 → TEXTFIX55）
-# 二、正名：彭兆基全檔歸零、彭少祺 ≥34 處、C10 顯示名 key 同步
+# 二、正名：彭兆基全檔歸零、彭少祺 ≥34 處、N11 顯示名 key 同步
 # 三、紅線：SAVE key／softRev／?v= 不變；index 較 v80 基線增長
 # 反證：喺 v20a80 index 上行會 FAIL（冇 WF2 標記、彭兆基 34 處、byte 數唔過）。
 # 用法：python3 tests/test_wf2_81_static.py [path-to-index.html]

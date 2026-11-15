@@ -25,7 +25,7 @@ ok('gigCardHtml locked rate carries gap line', 'gigGapLine34(g)' in card_seg and
 
 # ---- P0-3：死路修正接線＋文案核對 ----
 ok('rumorHearHint helper exists inside BehaviorGate', 'function rumorHearHint(rid, full)' in html)
-hint_seg = seg('function rumorHearHint(rid, full)', '/* 主線 C5 鎖因')
+hint_seg = seg('function rumorHearHint(rid, full)', '/* 主線 N5 鎖因')
 ok('hear hint derives from MOCK_ASK grantsRumorId (no hand-written loc map)',
    'MOCK_ASK' in hint_seg and 'grantsRumorId===rid' in hint_seg)
 pt_seg = seg('function progressToward(node){', 'function softWeekGateShell')
@@ -86,7 +86,7 @@ ok('preview modal renders consequence line from pv.peak', 'stressImpactLine34(pv
 # ---- P1-1(b)：雙軌解釋接線 ----
 ok('dual explainer helper exists', 'function dualTrackExplainHtml34(' in html)
 exp_seg = seg('function dualTrackExplainHtml34(', 'try{\n  window.__dualHud')
-# v20a37 改約：正 delta 門檻經實機證實永不觸發（C1/C2 delta 恆 0）；改為「有真結算 dual 物件＋只出一次旗」
+# v20a37 改約：正 delta 門檻經實機證實永不觸發（N1/N2 delta 恆 0）；改為「有真結算 dual 物件＋只出一次旗」
 ok('explainer gated on real settle dual object + once flag',
    'guidanceDualExplained34' in exp_seg and 'result.dual' in exp_seg)
 ok('explainer scale matches newspaperNameTier thresholds (15 named / 40 titled)',

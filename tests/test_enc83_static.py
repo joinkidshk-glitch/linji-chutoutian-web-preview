@@ -45,7 +45,7 @@ ok('提攜：八星 patron 節拍＋引薦債權齊', all(('credit_enc83_' + k +
 ok('提攜：Phase 1 四星專屬段 merge 入對白 beats', all((k + '_patron') in mod for k in ['luk','liu','mak','yip']))
 ok('駱 E4 時間閘：lok_e4grudge 以 enc83NewsOut("E4") 為閘', 'lok_e4grudge' in mod and 'enc83NewsOut("E4")' in mod)
 ok('駱和音閘：lok_help 歌藝 >= 35', 'lok_help' in mod and '>= 35' in mod)
-ok('顧 N10 閘：gu_tease／gu_n10after 以 C9 為界', 'enc83NodeDone("C9")' in mod)
+ok('顧 N10 閘：gu_tease／gu_n10after 以 N10 為界', 'enc83NodeDone("N10")' in mod)
 ok('齊回收閘：站隊旗 flag_side_*', 'flag_side_film' in mod and 'flag_side_tv' in mod and 'flag_side_undecided' in mod)
 
 # --- 四、對白量同紅線 ---

@@ -11,7 +11,7 @@
 //       (c) 三 tier painted 高仍然 spread ≤1px（DLG199 唔郁，高度正規化無損）；
 //       (d) 單人阿偉同高；非阿偉配對／身高比零影響；
 //       (e) 反證：舊 s1 AR（0.335–0.345）嗰陣 serious／angry spread >14px，
-//       證明呢個測試捉到 C1（唔係量度假象）。
+//       證明呢個測試捉到 N1（唔係量度假象）。
 // 數字來源：PIL 量度全庫 awi* AR（v201 後：s1 全部 0.2800–0.2801；
 // s2／s3 見下面 AR 表）；box 高 932：635.4px、700：518.6px（v199 review 實駕）。
 // 用法：node tests/test_awei201_logic.js [path-to-index.html]
@@ -162,7 +162,7 @@ for(const [pid, par] of Object.entries(PARTNERS)){
   const boxH = BOXH[932];
   for(const emo of ['serious', 'angry']){
     const oldWs = [OLD_S1[emo], ARS[emo].s2, ARS[emo].s3].map(x => widthAt(boxH, x));
-    ok(`反證：舊 s1 ${emo} spread ${spread(oldWs).toFixed(1)}px > 5px（C1 重現）`, spread(oldWs) > 5.0);
+    ok(`反證：舊 s1 ${emo} spread ${spread(oldWs).toFixed(1)}px > 5px（N1 重現）`, spread(oldWs) > 5.0);
   }
 }
 

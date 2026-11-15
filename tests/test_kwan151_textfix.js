@@ -1,8 +1,8 @@
-// v20a151 TEXTFIX logic tests: the C13 synopsis must now come out with
+// v20a151 TEXTFIX logic tests: the N16 synopsis must now come out with
 // 關海媚's real name (no longer rewritten to 當紅花旦), while the rest of
 // the TEXTFIX55 live fixes stay intact.
 // Extraction mirrors tests/test_terms57_logic.js (TEXTFIX block eval).
-// 反證: run against pristine main (e08a070) -> FAIL (C13 value + phrases).
+// 反證: run against pristine main (e08a070) -> FAIL (N16 value + phrases).
 const fs = require('fs');
 const path = process.argv[2] || 'index.html';
 const s = fs.readFileSync(path, 'utf8');
@@ -16,10 +16,10 @@ function chk(name, cond) { if (!cond) fails.push(name); console.log((cond ? 'PAS
 const SRC = '1991年冬，虛構娛樂周刊已寫好緋聞草稿。周采兒要阿偉表態；關海媚提醒頭條是雙刃。承認、否認或模糊帶過，每條路都改寫形象與關係。';
 const EXPECT = '1990年冬，娛樂週刊已經寫好緋聞草稿。周采兒要阿偉表態；關海媚提醒頭條係雙刃。承認、否認定係含糊帶過，每條路都會改寫形象同關係。';
 const out = TF.textfix55Str(SRC, 'synopsis', null, TF.TEXTFIX55_OPTS_STORY);
-chk('C13 synopsis exact value', out === EXPECT);
-chk('C13 out has 關海媚', out.indexOf('關海媚') >= 0);
-chk('C13 out has no 當紅花旦', out.indexOf('當紅花旦') < 0);
-chk('C13 out keeps 1990年冬 fix', out.indexOf('1990年冬，娛樂週刊已經寫好緋聞草稿') === 0);
+chk('N16 synopsis exact value', out === EXPECT);
+chk('N16 out has 關海媚', out.indexOf('關海媚') >= 0);
+chk('N16 out has no 當紅花旦', out.indexOf('當紅花旦') < 0);
+chk('N16 out keeps 1990年冬 fix', out.indexOf('1990年冬，娛樂週刊已經寫好緋聞草稿') === 0);
 
 // PHRASES no longer rewrites her name anywhere
 chk('PHRASES no 關海媚 pair', !TF.TEXTFIX55_PHRASES.some(p => p[0] === '關海媚'));

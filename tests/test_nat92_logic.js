@@ -173,7 +173,7 @@ for(const y of [1990, 1991, 1992]){
       }
     }
   }
-  ok('C1 逐張逐 interval：偏移+拉前+工期日曆日 ≤ interval 長度（違規 '+(bad.slice(0,3).join(',')||'無')+'）', bad.length === 0);
+  ok('N1 逐張逐 interval：偏移+拉前+工期日曆日 ≤ interval 長度（違規 '+(bad.slice(0,3).join(',')||'無')+'）', bad.length === 0);
 }
 
 /* ---------- (D) 開局守衛 ---------- */

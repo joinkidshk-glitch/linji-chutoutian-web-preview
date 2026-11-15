@@ -1,5 +1,5 @@
 # v20a211 B1 resync：雙幾何（矮 480×432／高 480×540，HS211／HSC211＝×1.25）——短基準值不變，高 viewport 按比例換算；見 NOTES_V20A211。
-# v20a187 修 v181 設計 review B1＋C1–C6・static tests（字串＋CSS 規則斷言，跟 v181 寫法）：
+# v20a187 修 v181 設計 review B1＋N1–N6・static tests（字串＋CSS 規則斷言，跟 v181 寫法）：
 # B1：地板 y228–310（深 82px＝22.8% 高；v20a207 B2 resync：地板 y274–372，深 98px＝22.7% 高；地板深／人物高 0.91、腳底以下空地板 58px＝0.54 倍）；
 #     幕布拉長到 y274、燈架跟到 y274、觀眾席 y379–432（深 53px，光點照舊）。
 # C1：glamour 海報下半置中（panel flex-end＋img max-height 40%），海報頂唔再壓白牌。
@@ -61,8 +61,8 @@ chk('B1 FLOOR＝314（v20a207 B2）', 'const FLOOR = Math.round(314 * HSC211)' i
 panel_rule = css_rule('.awd63-glamour-panel')
 panel_img_rule = css_rule('.awd63-glamour-panel>img')
 chk('C1 panel 改 flex-end（海報＋cap 沉底）', 'justify-content:flex-end' in panel_rule)
-chk('C1 海報 max-height 40%→calc(40cqh - 8px)（v20a190 等價轉換；舊 40% 唔再出現）', 'max-height:calc(40cqh - 8px)' in panel_img_rule and 'max-height:40%' not in panel_img_rule and 'max-height:60%' not in panel_img_rule)
-chk('C1 海報 max-width 88% 唔郁', 'max-width:88%' in panel_img_rule)
+chk('N1 海報 max-height 40%→calc(40cqh - 8px)（v20a190 等價轉換；舊 40% 唔再出現）', 'max-height:calc(40cqh - 8px)' in panel_img_rule and 'max-height:40%' not in panel_img_rule and 'max-height:60%' not in panel_img_rule)
+chk('N1 海報 max-width 88% 唔郁', 'max-width:88%' in panel_img_rule)
 chk('C1 海報頂計數 ≥214 邏輯＞牌底 179.3（432−172.8−45；v20a207 B2）', (432 - 0.40 * 432 - 45) > 179.3)
 
 # --- C2：卡罅 8→24px ---
@@ -72,8 +72,8 @@ _gap = int(_m.group(1)) if _m else -1
 chk('C2 卡罅 gap 24px', _gap == 24)
 chk('C2 角標唔撞（gap 24 − 7 − 7 ＝ 10px 罅）', _gap - 7 - 7 == 10)
 chk('C2 卡列總闊 424px ≤ 760 框', 4 * 88 + 3 * _gap <= 760)
-chk('C2 🏆 仲喺左上角（left:-7，唔搬去右上角）', 'left:-7px' in css_rule('.awd63-card.win::after'))
-chk('C2 「你」徽仲喺右上角（right:-7 唔郁）', 'right:-7px' in css_rule('.awd63-card.me::after'))
+chk('N2 🏆 仲喺左上角（left:-7，唔搬去右上角）', 'left:-7px' in css_rule('.awd63-card.win::after'))
+chk('N2 「你」徽仲喺右上角（right:-7 唔郁）', 'right:-7px' in css_rule('.awd63-card.me::after'))
 
 # --- C3：out beat 照畫人物 ---
 _out_i = play_fn.find('if(id === "out"){')
@@ -82,7 +82,7 @@ chk('C3 out 分支畫人物（唔再淨係畫 overlay）', 'drawFigure' in _out)
 chk('C3 人物 alpha 跟 step 遞減（1−step×0.25）', '1 - step * 0.25' in _out)
 chk('C3 won 只留燕尾服阿偉（tuxedo）', 'tuxedo: true' in _out and 'best === "won"' in _out)
 chk('C3 其餘跟 comfort 暗度（winnerSlot ? 0.85 : 0.7）', 'winnerSlot ? 0.85 : 0.7' in _out)
-chk('C3 out 仲係 500ms（唔加 beat）', 'id: "out", ms: 500' in src)
+chk('N3 out 仲係 500ms（唔加 beat）', 'id: "out", ms: 500' in src)
 
 # --- C4：walkup y−24（v20a218 C-C4） ---
 _walk_i = play_fn.find('if(id === "walkup"){')

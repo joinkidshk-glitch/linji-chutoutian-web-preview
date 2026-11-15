@@ -1,7 +1,7 @@
 // v20a100 CLEAN100 邏輯測試（二）：巧遇／結局／醫院／通告——抽真函數行真場景：
 //   (1) B-04：真 enc79BuildScript——鍾楚凝 1990 年（day 100）fav 50：heart 唔播、
 //       opener 封頂 T2；1991 年（day 400）：heart 照播；
-//   (2) B-06：真 enc79BuildScript——顧明輝 gu_n10after 開場按 C9 三路旗分版
+//   (2) B-06：真 enc79BuildScript——顧明輝 gu_n10after 開場按 N10 三路旗分版
 //       （standup／mediate／chase 原句／無旗中性）；
 //   (3) B-05/B-07/B-08/B-09：真結局呈現函數——去留段鍾楚凝回收（要有 farewell 旗）、
 //       GH 三路歸因、E5 新句、曉晴 commit 按 awardsLog 分版；
@@ -105,14 +105,14 @@ function guRun(){
   S.stars.gu_mingfai = { fav: 30, met: true, stage: 99, heartDone: true, beatsDone: {}, poolSeen: {} };
   return stepsText(E.enc79BuildScript('gu_mingfai'));
 }
-S = freshS(100); S.flags.done_C9 = 1;
+S = freshS(100); S.flags.done_N10 = 1;
 S.flags.flag_standup_crew = 1;
 ok('B06 standup 版開場', guRun().indexOf('你企出嚟幫成組人出聲之後') >= 0);
-S = freshS(100); S.flags.done_C9 = 1; S.flags.flag_mediate_gu_debt = 1;
+S = freshS(100); S.flags.done_N10 = 1; S.flags.flag_mediate_gu_debt = 1;
 ok('B06 mediate 版開場', guRun().indexOf('幫顧明輝同何生爭取到分期之後') >= 0);
-S = freshS(100); S.flags.done_C9 = 1; S.flags.flag_chase_for_ho = 1;
+S = freshS(100); S.flags.done_N10 = 1; S.flags.flag_chase_for_ho = 1;
 ok('B06 chase 版原句', guRun().indexOf('追數那場風波過了之後') >= 0);
-S = freshS(100); S.flags.done_C9 = 1;
+S = freshS(100); S.flags.done_N10 = 1;
 ok('B06 無旗中性版', guRun().indexOf('嗰排台慶前後嘅事過咗之後') >= 0);
 
 /* (3) 結局呈現 */
@@ -125,9 +125,9 @@ S = freshS(1090);
 S.stars.pang_siuki = { fav: 60 };
 let gh = E.endingCareerScene410({ career: 'GH' });
 ok('B07 GH 好感路點醒版', gh.indexOf('點醒你') >= 0 && gh.indexOf('慈善騷') < 0);
-S.flags.done_C10 = 1;
+S.flags.done_N11 = 1;
 gh = E.endingCareerScene410({ career: 'GH' });
-ok('B07 GH C10路慈善騷版', gh.indexOf('慈善騷嗰晚開始') >= 0);
+ok('B07 GH N11路慈善騷版', gh.indexOf('慈善騷嗰晚開始') >= 0);
 S = freshS(1090); S.stars.pang_siuki = { fav: 10 };
 gh = E.endingCareerScene410({ career: 'GH' });
 ok('B07 GH 提攜路版', gh.indexOf('彭少祺留低嗰份提攜') >= 0);

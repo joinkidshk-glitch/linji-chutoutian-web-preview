@@ -1,12 +1,12 @@
-// v20a192 修 v188 設計 review B1＋C1–C4・邏輯測試：
+// v20a192 修 v188 設計 review B1＋N1–N4・邏輯測試：
 // B1：8 款贏獎報紙模板（AWARDS188_NP_WIN＋VENUE99_NP_DEK 生效後）零舊前提——
 //     三句對白／茶餐廳食面／臨記生涯／不殺之恩／一句收工了／綠葉／和音／合唱單曲／
 //     涼茶／跌低眼鏡／特別獎全部唔出；music_01 唔寫「新人」（會喺贏最佳男歌手嗰陣出）；
 //     music_02 唯一乾淨款唔郁；nominee 模板唔郁。
 // C1：cat_tv_lead_m loseLine「還有」→「仲有」，其餘 44 行唔含書面語「還有」。
-// C2：awards62GateLineHtml 音樂閘句刪走——music gallery 唔再出「嗰年未唱過歌」，
+// N2：awards62GateLineHtml 音樂閘句刪走——music gallery 唔再出「嗰年未唱過歌」，
 //     跌返「坐觀禮席睇全場」；film／tv 版閘句逐字不變。
-// C3：renderAwardResultHtml 第一行跟舞台 focus（awards63FocusCat）——雙格 pack
+// N3：renderAwardResultHtml 第一行跟舞台 focus（awards63FocusCat）——雙格 pack
 //     focus 格行先，其餘格維持 v184 id 序；同屆提名行仍然只出一次。
 // C4：renderAwardInviteHtml gallery 請柬列全 slate（4 格＋觀禮標記）；nominee 請柬
 //     v20a200 改標籤（「今晚獎項」→「你爭嘅獎項」，v192 殘留已修；slate 唔郁）。
@@ -100,7 +100,7 @@ ok('B1：8 款 clipLabel 全部新名唔郁',
 /* ---- C1：電視男主角 loseLine ---- */
 eval(extractConst('AWARDS188_CATEGORIES').replace('const AWARDS188_CATEGORIES =', 'var AWARDS188_CATEGORIES ='));
 const tvLead = (AWARDS188_CATEGORIES.award_singho_tv || []).find(c => c && c.id === 'cat_tv_lead_m') || {};
-ok('C1：cat_tv_lead_m loseLine「還有」→「仲有」',
+ok('N1：cat_tv_lead_m loseLine「還有」→「仲有」',
   tvLead.loseLine === '名單滑過你個名——入圍咗，未抱盃。仲有下一場。');
 let stillShu = [];
 Object.keys(AWARDS188_CATEGORIES).forEach(k => {
@@ -110,10 +110,10 @@ Object.keys(AWARDS188_CATEGORIES).forEach(k => {
     });
   });
 });
-ok('C1：15 格 45 行文案再無書面語「還有」', stillShu.length === 0);
+ok('N1：15 格 45 行文案再無書面語「還有」', stillShu.length === 0);
 if(stillShu.length) console.log('  still: ' + stillShu.join(' | '));
 
-/* ---- C2：閘句 ---- */
+/* ---- N2：閘句 ---- */
 eval(extractConst('AWARDS62_MEDIUM_LABEL').replace('const AWARDS62_MEDIUM_LABEL =', 'var AWARDS62_MEDIUM_LABEL ='));
 eval(extractFn('awards62GateLineHtml'));
 function gatePack(medium){
@@ -121,15 +121,15 @@ function gatePack(medium){
     gapWorks: 0, gapWin: 0, repTitle: '長篇劇' } };
 }
 const gateMusic = awards62GateLineHtml(gatePack('music'));
-ok('C2：音樂 gallery 唔再出「嗰年未唱過歌」（死文案刪走）', gateMusic.indexOf('未唱過歌') < 0);
-ok('C2：音樂 gallery 跌返「坐觀禮席睇全場」', gateMusic.indexOf('坐觀禮席睇全場') >= 0);
+ok('N2：音樂 gallery 唔再出「嗰年未唱過歌」（死文案刪走）', gateMusic.indexOf('未唱過歌') < 0);
+ok('N2：音樂 gallery 跌返「坐觀禮席睇全場」', gateMusic.indexOf('坐觀禮席睇全場') >= 0);
 const gateFilm = awards62GateLineHtml(gatePack('film'));
-ok('C2：電影版閘句逐字不變', gateFilm.indexOf('嗰年未做過主角／配角級作品，入圍唔到演員獎') >= 0);
+ok('N2：電影版閘句逐字不變', gateFilm.indexOf('嗰年未做過主角／配角級作品，入圍唔到演員獎') >= 0);
 const gateTv = awards62GateLineHtml(gatePack('tv'));
-ok('C2：電視版閘句逐字不變', gateTv.indexOf('嗰年未做過主角／配角級作品，入圍唔到演員獎') >= 0);
+ok('N2：電視版閘句逐字不變', gateTv.indexOf('嗰年未做過主角／配角級作品，入圍唔到演員獎') >= 0);
 const gateNom = awards62GateLineHtml({ medium: 'music',
   standing62: { tier: 'nominee', wraps: 2, wrapMin: 2, dualOk: true, gapWorks: 0, gapWin: 0, repTitle: '大碟' } });
-ok('C2：nominee 分支唔受影響（音樂入圍門檻行照出）', /入圍門檻已達標/.test(gateNom) && /《大碟》/.test(gateNom));
+ok('N2：nominee 分支唔受影響（音樂入圍門檻行照出）', /入圍門檻已達標/.test(gateNom) && /《大碟》/.test(gateNom));
 
 /* ---- C3＋C4：結果卡／請柬呈現層 ---- */
 eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
@@ -156,8 +156,8 @@ function resPack(cats, outcome){
 const dualWon = renderAwardResultHtml(resPack([CAT_SUP, CAT_LEAD], 'won'));
 ok('C3：雙格 won——結果卡第一行＝舞台 focus（男配角先）',
   dualWon.indexOf('最佳男配角') < dualWon.indexOf('最佳男主角'));
-ok('C3：雙格 won——兩張類別卡齊晒', count(dualWon, '最佳男主角') === 1 && count(dualWon, '最佳男配角') === 1);
-ok('C3：雙格 won——同屆提名行仍然只出一次', count(dualWon, '同屆提名') === 1);
+ok('N3：雙格 won——兩張類別卡齊晒', count(dualWon, '最佳男主角') === 1 && count(dualWon, '最佳男配角') === 1);
+ok('N3：雙格 won——同屆提名行仍然只出一次', count(dualWon, '同屆提名') === 1);
 /* 反向 pack 次序：男主角先 → focus 係男主角，結果卡男主角行先（唔係死跟 id 序） */
 const dualWonRev = renderAwardResultHtml(resPack([CAT_LEAD, CAT_SUP], 'won'));
 ok('C3：pack 次序反轉——結果卡跟 focus 走（男主角行先）',
@@ -175,23 +175,23 @@ function invPack(cats, tier, ceremonyId){
 }
 const galFilm = renderAwardInviteHtml(invPack(
   [{ id: 'cat_film_support_m', label: '最佳男配角' }, { id: 'cat_film_lead_m', label: '最佳男主角' }], 'gallery'));
-ok('C4：gallery 請柬列全 slate（電影 4 格男女獎齊）',
+ok('N4：gallery 請柬列全 slate（電影 4 格男女獎齊）',
   /今晚獎項：最佳男主角、最佳女主角、最佳男配角、最佳女配角（觀禮）/.test(galFilm));
 const galMusic = renderAwardInviteHtml(invPack(
   [{ id: 'cat_music_newcomer', label: '最佳新人獎' }, { id: 'cat_music_singer_m', label: '最佳男歌手' }], 'gallery', 'award_golddisc_music'));
-ok('C4：gallery 請柬列全 slate（音樂 3 格男女獎＋新人獎齊）',
+ok('N4：gallery 請柬列全 slate（音樂 3 格男女獎＋新人獎齊）',
   /今晚獎項：最佳男歌手、最佳女歌手、最佳新人獎（觀禮）/.test(galMusic));
 const galAd = renderAwardInviteHtml(invPack(
   [{ id: 'cat_ad_lead_m', label: '最佳廣告男主角' }], 'gallery', 'award_harbour_ad'));
-ok('C4：gallery 請柬列全 slate（廣告 4 格男女獎齊）',
+ok('N4：gallery 請柬列全 slate（廣告 4 格男女獎齊）',
   /今晚獎項：最佳廣告男主角、最佳廣告女主角、最佳廣告男配角、最佳廣告女配角（觀禮）/.test(galAd));
 const nomFilm = renderAwardInviteHtml(invPack(
   [{ id: 'cat_film_support_m', label: '最佳男配角' }, { id: 'cat_film_lead_m', label: '最佳男主角' }], 'nominee'));
 /* v20a200（v192 殘留已修）：nominee 行標籤由「今晚獎項」改做「你爭嘅獎項」，
    slate 照舊淨列你爭嗰 2 格，唔加女獎／觀禮標記。 */
-ok('C4：nominee 請柬唔郁（淨列你爭嗰 2 格，唔加女獎／觀禮標記）',
+ok('N4：nominee 請柬唔郁（淨列你爭嗰 2 格，唔加女獎／觀禮標記）',
   /你爭嘅獎項：最佳男主角、最佳男配角<\/p>/.test(nomFilm) && nomFilm.indexOf('（觀禮）') < 0);
-ok('C4：gallery 請柬女獎只係列名（唔寫阿偉會爭女獎）',
+ok('N4：gallery 請柬女獎只係列名（唔寫阿偉會爭女獎）',
   galFilm.indexOf('女主角') >= 0 && galFilm.indexOf('你爭') < 0);
 
 console.log(fails.length ? ('\nFAILED: ' + fails.length + ' -> ' + fails.join(' | ')) : '\nALL PASS');

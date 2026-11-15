@@ -58,7 +58,7 @@ eval(extractFn('loadFromSlot'));
 const OLD_SAVE_1 = {
   dayIndex: 30, money: 23456, fame: 42, stage: 10, acting: 20,
   stress: 130, popularity: 7, flags: { tutorialDone: true },
-  story: { done: { C1: true }, rel: {}, favor: {} },
+  story: { done: { N1: true }, rel: {}, favor: {} },
   weekPlan: ['rest','rest','rest','rest','rest','rest','rest'],
 };
 const OLD_SAVE_3 = {

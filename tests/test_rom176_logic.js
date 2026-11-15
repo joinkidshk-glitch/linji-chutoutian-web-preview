@@ -4,7 +4,7 @@
 //     （最愛 24 item-specific＋喜歡／唔鍾意 24 tier-generic）＋藍／徐／海媚 NPC_LINES＋PORTRAITS；
 //     注入冪等；唔郁 content pack JSON（靜態測試覆）。
 //   B 女角出沒盤：P=0.50、主場 share 0.65、種子可重現；風聲窗 P≥0.80／share 0.85；
-//     未完成故事節點 offer → P+0.10（上限 0.85）；海媚未解鎖（C9 未完成）P=0。
+//     未完成故事節點 offer → P+0.10（上限 0.85）；海媚未解鎖（N10 未完成）P=0。
 //   C caps＋保底：每日 1 次／每週 3 次／同一位冷卻 2 日／初遇保底 5 日；主線待播優先。
 //   D 女角巧遇 modal：傾談恆出／送禮睇 canGive／約會入口 v159 未落地唔出／行開返 encDone。
 //   E 星送禮：最愛 +4／喜歡 +2／普通 +1／唔鍾意 −2；重複第 2 次起正數減半；
@@ -219,9 +219,9 @@ function presenceOn(day, setup){
   ok('B7 未完成節點 offer → 出沒率上升（P+0.10）', beatDays > daysWithHiu, '節點 ' + beatDays + ' vs 平時 ' + daysWithHiu);
   // 海媚閘
   S = baseSave({ dayIndex: 100 });
-  ok('B8 海媚未解鎖（C9 未完成）P=0', rom176PresenceP('mei').p === 0);
-  __storyDone = { C9: true };
-  ok('B9 海媚解鎖（C9 完成）P=0.50', rom176PresenceP('mei').p === 0.50);
+  ok('B8 海媚未解鎖（N10 未完成）P=0', rom176PresenceP('mei').p === 0);
+  __storyDone = { N10: true };
+  ok('B9 海媚解鎖（N10 完成）P=0.50', rom176PresenceP('mei').p === 0.50);
   __storyDone = {};
   const savedStoryOC = StoryOC;
   StoryOC = null;
@@ -229,8 +229,8 @@ function presenceOn(day, setup){
   ok('B10 海媚退路：done-state 讀唔到＋day<699 → 鎖住', rom176MeiUnlocked() === false);
   S = baseSave({ dayIndex: 699 }); delete S.story.done;
   ok('B11 海媚退路：done-state 讀唔到＋day≥699 → 解鎖', rom176MeiUnlocked() === true);
-  S = baseSave({ dayIndex: 100, story: { done: { C9: true }, rel: {} } });
-  ok('B12 海媚退路：S.story.done 有 C9 → 解鎖', rom176MeiUnlocked() === true);
+  S = baseSave({ dayIndex: 100, story: { done: { N10: true }, rel: {} } });
+  ok('B12 海媚退路：S.story.done 有 N10 → 解鎖', rom176MeiUnlocked() === true);
   StoryOC = savedStoryOC;
   // 風聲 grant
   S = baseSave({ dayIndex: 10 });
@@ -256,29 +256,29 @@ function findDay(pred, max){
 (function(){
   const dPresent = findDay(p=> (p.tvb_longmen || []).indexOf('hiu') >= 0);
   ok('C0 測試前提：搵到曉晴喺長門嘅日子', dPresent >= 0, 'day=' + dPresent);
-  // C1 每日 1 次
+  // N1 每日 1 次
   S = baseSave({ dayIndex: dPresent }); __played = [];
-  ok('C1 每日第 1 次觸發', rom176TryIntercept('tvb_longmen') === true && __played.length === 1);
+  ok('N1 每日第 1 次觸發', rom176TryIntercept('tvb_longmen') === true && __played.length === 1);
   ok('C1b 同日第 2 次唔觸發（每日 1 次）', rom176TryIntercept('tvb_longmen') === false && __played.length === 1);
-  // C2 每週 3 次
+  // N2 每週 3 次
   S = baseSave({ dayIndex: dPresent });
   S.romWeek = { week: weekNumNow(), count: 3 }; __played = [];
-  ok('C2 每週 3 次已滿唔觸發', rom176TryIntercept('tvb_longmen') === false);
+  ok('N2 每週 3 次已滿唔觸發', rom176TryIntercept('tvb_longmen') === false);
   S = baseSave({ dayIndex: dPresent });
   S.romWeek = { week: weekNumNow(), count: 2 }; __played = [];
   ok('C2b 每週 2 次仲觸發到', rom176TryIntercept('tvb_longmen') === true && S.romWeek.count === 3);
-  // C3 冷卻 2 日：將在場者全部設為昨日見過
+  // N3 冷卻 2 日：將在場者全部設為昨日見過
   S = baseSave({ dayIndex: dPresent });
   const here = rom176EnsureDay().presence.tvb_longmen || [];
   S.romLast = {}; here.forEach(k=>{ S.romLast[k] = dPresent - 1; }); __played = [];
-  ok('C3 冷卻中（昨日見過）唔觸發', rom176TryIntercept('tvb_longmen') === false, '在場 ' + here.join(','));
+  ok('N3 冷卻中（昨日見過）唔觸發', rom176TryIntercept('tvb_longmen') === false, '在場 ' + here.join(','));
   S = baseSave({ dayIndex: dPresent });
   const here2 = rom176EnsureDay().presence.tvb_longmen || [];
   S.romLast = {}; here2.forEach(k=>{ S.romLast[k] = dPresent - 3; }); __played = [];
   ok('C3b 冷卻過咗（3 日前）觸發返', rom176TryIntercept('tvb_longmen') === true);
-  // C4 保底：搵長門冇人嘅日子，曉晴未見過、保底 5 日
+  // N4 保底：搵長門冇人嘅日子，曉晴未見過、保底 5 日
   const dEmpty = findDay(p=> !(p.tvb_longmen && p.tvb_longmen.length));
-  ok('C4 測試前提：搵到長門冇人嘅日子', dEmpty >= 0, 'day=' + dEmpty);
+  ok('N4 測試前提：搵到長門冇人嘅日子', dEmpty >= 0, 'day=' + dEmpty);
   S = baseSave({ dayIndex: dEmpty });
   S.romPity = { hiu: { days: 5, day: dEmpty - 1 } }; __played = [];
   ok('C4b 保底 5 日 → 下次入主場保證出沒', rom176TryIntercept('tvb_longmen') === true && __played[0][0] === 'hiu');
@@ -287,15 +287,15 @@ function findDay(pred, max){
   S = baseSave({ dayIndex: dEmpty });
   S.romPity = { hiu: { days: 4, day: dEmpty } }; __played = [];
   ok('C4d 保底 4 日（今日已計）唔保證', rom176TryIntercept('tvb_longmen') === false && __played.length === 0);
-  // C5 主線待播優先
+  // N5 主線待播優先
   S = baseSave({ dayIndex: dPresent });
-  S.mapTips = { tvb_longmen: { kind: 'story', nodeId: 'C2' } }; __played = [];
-  ok('C5 主線待播壓住女角巧遇', rom176TryIntercept('tvb_longmen') === false && __played.length === 0);
-  // C6 觸發入帳：見過旗＋冷卻＋每週計數
+  S.mapTips = { tvb_longmen: { kind: 'story', nodeId: 'N2' } }; __played = [];
+  ok('N5 主線待播壓住女角巧遇', rom176TryIntercept('tvb_longmen') === false && __played.length === 0);
+  // N6 觸發入帳：見過旗＋冷卻＋每週計數
   S = baseSave({ dayIndex: dPresent }); __played = [];
   rom176TryIntercept('tvb_longmen');
-  ok('C6 觸發即計見過旗／冷卻／每週計數', S.flags.gift_met_hiu === true && S.romLast.hiu === dPresent && S.romWeek.count === 1);
-  // C7 rom176WomanMet：旗／節點
+  ok('N6 觸發即計見過旗／冷卻／每週計數', S.flags.gift_met_hiu === true && S.romLast.hiu === dPresent && S.romWeek.count === 1);
+  // N7 rom176WomanMet：旗／節點
   S = baseSave({}); ok('C7a 未見過 → false', rom176WomanMet('hiu') === false);
   S = baseSave({ flags: { gift_met_hiu: true } }); ok('C7b gift_met 旗 → true', rom176WomanMet('hiu') === true);
   S = baseSave({ story: { done: { R_hiu_meet: true }, rel: {} } }); ok('C7c R meet 完成 → true', rom176WomanMet('hiu') === true);

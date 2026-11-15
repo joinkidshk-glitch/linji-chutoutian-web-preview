@@ -1,7 +1,7 @@
 // v20a71 PROGRESS71・邏輯／真路徑測試
 // 段一（gate-on）：真 storyMainProgressLine 組句——多分支×多幕：
-//   A1 新遊戲（gate-off 截圖情境嘅 gate-on 版）A2 用戶截圖本尊情境（C2 未開，通告 0／3）
-//   A3 中段 C6（週數差額）A4 全通近尾 C17 已開放分支 A5 C3「先完成上一幕」分支
+//   A1 新遊戲（gate-off 截圖情境嘅 gate-on 版）A2 用戶截圖本尊情境（N2 未開，通告 0／3）
+//   A3 中段 N6（週數差額）A4 全通近尾 N17 已開放分支 A5 N3「先完成上一幕」分支
 //   斷言：完整句（以「。」收尾）、冇「開咗去…播」拼裝、冇「即將」碎片頭、
 //   冇「 · 」串燒、差額數字同地點名正確。
 // 段二（gate-off）：fallback 路徑（progressToward 唔行嗰陣）組句同樣要完整——
@@ -13,8 +13,8 @@
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-const storyPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_c1_to_c17.json'), 'utf8'));
-const gateStubPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'behavior_gate_c1_c5.json'), 'utf8'));
+const storyPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_n1_to_n17.json'), 'utf8'));
+const gateStubPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'behavior_gate_n1_n5.json'), 'utf8'));
 const DEBUG = !!process.env.PROGRESS71_DEBUG;
 
 let fails = [];
@@ -166,39 +166,41 @@ function sentenceChecks(tag, line){
   if(DEBUG) console.log('A1:', a1);
   sentenceChecks('A1 新遊戲進度行', a1);
 
-  /* ---- A2：用戶截圖本尊情境（C1 已完成、C2 未開、通告 0） ---- */
+  /* ---- A2：用戶截圖本尊情境（N1 已完成、N2 未開、通告 0） ---- */
   loadGame(freshSave({
     dayIndex: 8,
-    story: { done: { C1: true }, flags: {}, rel: {}, routes: {}, phase: 'P1', gigCount: 0 },
+    story: { done: { N1: true }, flags: {}, rel: {}, routes: {}, phase: 'P1', gigCount: 0 },
   }));
   const a2 = storyMainProgressLine();
   if(DEBUG) console.log('A2:', a2);
-  sentenceChecks('A2 C2 未開進度行', a2);
+  sentenceChecks('A2 N2 未開進度行', a2);
   ok('A2：句頭係「下一幕第 2 幕〈留人脈／趕通告〉未開——」', a2.indexOf('下一幕第 2 幕〈留人脈／趕通告〉未開——') === 0);
   ok('A2：通告差額正確（仲差 3 張・而家 0／3）', a2.indexOf('通告仲差 3 張（而家 0／3）') >= 0);
   ok('A2：週數差額正確（未到第 4 週）', a2.indexOf('未到第 4 週') >= 0);
   ok('A2：尾句講明去星河電視台觸發', /去星河電視台就會觸發。$/.test(a2));
 
-  /* ---- A3：中段 C6（三年版閘節點） ----
-     數據現實：progressToward 只覆蓋 stub C1–C5（byId trigger），C6+ 喺 hint 層
+  /* ---- A3：中段 N6（三年版閘節點） ----
+     數據現實：progressToward 只覆蓋 stub N1–N5（byId trigger），N6+ 喺 hint 層
      本來就冇差額數據（判定／數據來源唔改係本包紀律）——hint 只出誠實完整句，
-     唔虛報「條件夠晒」；C6 逐項差額（週數／路線）喺進度頁用 evalGate3Y 列（B2 驗）。 */
+     唔虛報「條件夠晒」；N6 逐項差額（週數／路線）喺進度頁用 evalGate3Y 列（B2 驗）。 */
   loadGame(freshSave({
     dayIndex: 66,
-    story: { done: { C1: true, C2: true, C3: true, C4: true, C5: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 9 },
+    story: { done: { N1: true, N2: true, N3: true, N4: true, N5: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 9 },
   }));
   const a3 = storyMainProgressLine();
   if(DEBUG) console.log('A3:', a3);
-  sentenceChecks('A3 C6 未開進度行', a3);
-  ok('A3：指向第 6 幕・電視線〈飯堂閒角〉（v191：C6 加路線後綴，同 C6F 對稱）', a3.indexOf('第 6 幕・電視線〈飯堂閒角〉') >= 0);
+  sentenceChecks('A3 N6 未開進度行', a3);
+  ok('A3：指向第 6 幕・電視線〈飯堂閒角〉（v191：N6 加路線後綴，同 N6F 對稱）', a3.indexOf('第 6 幕・電視線〈飯堂閒角〉') >= 0);
   ok('A3：冇差額數據嗰陣唔虛報「條件已經夠晒」', a3.indexOf('條件已經夠晒') < 0);
   ok('A3：尾句講明去星河電視台觸發', /去星河電視台就會觸發。$/.test(a3));
 
   /* ---- A4：已開放分支喺段一b（獨立 harness、單節點 pack 構造） ---- */
 
-  /* ---- A4b：主線全完（C1–C16 done）→ 進度行收起（結局由結局閘處理，唔出假句） ---- */
+  /* v20a210 C2N210：種子舊 C id 按對照表改做 N id（換位：C8→N9／C11→N8／C12→N14／C13→N16／C14→N13／C15→N12／C16→N15） */
+  const C2N210 = {C1:'N1',C2:'N2',C3:'N3',C4:'N4',C5:'N5',C6:'N6',C7:'N7',C8:'N9',C9:'N10',C10:'N11',C11:'N8',C12:'N14',C13:'N16',C14:'N13',C15:'N12',C16:'N15',C17:'N17'};
+  /* ---- A4b：主線全完（N1–N15 done）→ 進度行收起（結局由結局閘處理，唔出假句） ---- */
   const doneAll = {};
-  for(let n = 1; n <= 16; n++) doneAll['C' + n] = true;
+  for(let n = 1; n <= 16; n++) doneAll[C2N210['C' + n]] = true;
   loadGame(freshSave({
     dayIndex: 730, fame: 80,
     story: { done: doneAll, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P5', gigCount: 60 },
@@ -207,12 +209,12 @@ function sentenceChecks(tag, line){
   if(DEBUG) console.log('A4b:', JSON.stringify(a4b));
   ok('A4b：主線全完嗰陣進度行係空字串', a4b === '');
 
-  /* ---- A5：C3「先完成上一幕」分支 ---- */
+  /* ---- A5：N3「先完成上一幕」分支 ---- */
   loadGame(freshSave({
     dayIndex: 30,
-    story: { done: { C1: true }, flags: {}, rel: {}, routes: {}, phase: 'P1', gigCount: 0 },
+    story: { done: { N1: true }, flags: {}, rel: {}, routes: {}, phase: 'P1', gigCount: 0 },
   }));
-  /* C2 條件齊（週數／通告數）但未播 → 下一幕目標轉 C3，remain 首項「先完成上一幕」 */
+  /* N2 條件齊（週數／通告數）但未播 → 下一幕目標轉 N3，remain 首項「先完成上一幕」 */
   S.flags.tvb_rules_gossip = true;
   S.mockRumors.push({ id: 'tvb_rules_gossip', source: '何生事務所', title: '電視城廠景生存守則', text: 'x', state: 'normal' });
   S.story.gigCount = 5;
@@ -233,39 +235,39 @@ function sentenceChecks(tag, line){
   ok('B1：第 2 幕逐項——通告連即時進度（0／3）', b1.indexOf('接通告 0／3 張') >= 0);
   ok('B1：第 2 幕逐項——傳聞未達', b1.indexOf('聽到傳聞：') >= 0);
   ok('B1：第 3 幕（第二幕未開放）照列逐項', b1.indexOf('茶餐廳度橋') < 0 && b1.indexOf('先完成第 2 幕〈留人脈／趕通告〉') >= 0);
-  ok('B1：防劇透——遠幕主幹冇標題（v198：C18 前置句提及〈采兒小訪題〉除外，嗰句係解鎖條件唔係劇透）', b1.indexOf('何生拒單') < 0 && b1.indexOf('飯堂閒角') < 0);
+  ok('B1：防劇透——遠幕主幹冇標題（v198：N18 前置句提及〈采兒小訪題〉除外，嗰句係解鎖條件唔係劇透）', b1.indexOf('何生拒單') < 0 && b1.indexOf('飯堂閒角') < 0);
   /* v20a105 S-45：遠幕 boilerplate 合併做一行「第 X–17 幕…逐幕揭曉」，唔再逐幕重複
      v20a198 C2：鎖住插入行截斷遠幕段，按段合併兩行「第 4–6 幕」＋「第 7–17 幕」。 */
   ok('B1：防劇透——遠幕按段合併兩行', b1.indexOf('第 4–6 幕') >= 0 && b1.indexOf('第 7–17 幕') >= 0 && b1.indexOf('完成前面幕數後逐幕揭曉') >= 0 && b1.indexOf('完成前面嘅幕之後，呢幕嘅標題同條件會逐項列出') < 0);
-  ok('B1：v198——鎖住插入幕見到（C6F／C18／C19 標題＋解鎖條件）', b1.indexOf('片場跟班') >= 0 && b1.indexOf('上岸路') >= 0 && b1.indexOf('賭枱邊') >= 0 && b1.indexOf('先完成番外・1990 冬〈上岸路〉') >= 0);
-  ok('B1：v198——C6F 鎖行講啱條件（行電影線）', b1.indexOf('行電影線') >= 0 && b1.indexOf('行電視線') < 0);
+  ok('B1：v198——鎖住插入幕見到（N6F／N18／N19 標題＋解鎖條件）', b1.indexOf('片場跟班') >= 0 && b1.indexOf('上岸路') >= 0 && b1.indexOf('賭枱邊') >= 0 && b1.indexOf('先完成番外・1990 冬〈上岸路〉') >= 0);
+  ok('B1：v198——N6F 鎖行講啱條件（行電影線）', b1.indexOf('行電影線') >= 0 && b1.indexOf('行電視線') < 0);
   ok('B1：成頁冇舊年份', b1.indexOf('1988') < 0 && b1.indexOf('1989') < 0);
   ok('B1：成頁冇關海媚個名', b1.indexOf('關海媚') < 0);
 
-  /* ---- B2：進度頁・中段（C1–C5 已完成、第 6 幕部分達標） ----
+  /* ---- B2：進度頁・中段（N1–N5 已完成、第 6 幕部分達標） ----
      第 13 週：電視線已行（✓）、週數未到 15（○）——部分達標先驗到逐項跟住變。
-     （若週數都達標，C6 會係真開放、唔再係 locked 逐項，嗰態由 B1 open 行覆蓋。） */
+     （若週數都達標，N6 會係真開放、唔再係 locked 逐項，嗰態由 B1 open 行覆蓋。） */
   loadGame(freshSave({
     dayIndex: 90, fame: 30, industryCreditDelta: 30,
-    story: { done: { C1: true, C2: true, C3: true, C4: true, C5: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 12 },
+    story: { done: { N1: true, N2: true, N3: true, N4: true, N5: true }, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P2', gigCount: 12 },
   }));
   const b2 = pane71();
   if(DEBUG) console.log('B2 credit:', syncDualTracks(S).industryCredit);
   ok('B2：已完成幕數正確（✓ 已完成 ×5）', (b2.match(/✓ 已完成/g) || []).length === 5);
   ok('B2：第 6 幕逐項——電視線已達標（✓）', /<li class="ok">✓ 行電視線<\/li>/.test(b2));
   ok('B2：第 6 幕逐項——週數未達連即時進度（第 15 週・而家第 13 週）', /<li class="no">○ 到第 15 週（而家第 13 週）<\/li>/.test(b2));
-  ok('B2：第 7 幕逐項——前置 C5 已達標（✓）', /<li class="ok">✓ 先完成第 5 幕〈采兒小訪題〉<\/li>/.test(b2));
+  ok('B2：第 7 幕逐項——前置 N5 已達標（✓）', /<li class="ok">✓ 先完成第 5 幕〈采兒小訪題〉<\/li>/.test(b2));
   ok('B2：第 7 幕逐項——信用已達標連即時進度', /<li class="ok">✓ 業內信用多於 20（而家 \d+）<\/li>/.test(b2));
   ok('B2：第 7 幕逐項——時窗未到（1991 年夏）', b2.indexOf('時窗：1991 年夏') >= 0);
   ok('B2：防劇透——第 8 幕起冇標題', b2.indexOf('茶餐廳度橋') < 0 && b2.indexOf('年尾追數') < 0);
 
   /* ---- B3：進度頁・錯過登記 ---- */
   const done14 = {};
-  for(let n = 1; n <= 14; n++) done14['C' + n] = true;
-  delete done14.C15;
+  for(let n = 1; n <= 14; n++) done14[C2N210['C' + n]] = true;
+  delete done14.N12;
   loadGame(freshSave({
     dayIndex: 800, fame: 60, industryCreditDelta: 40,
-    calib60Missed: { C15: { title: '高危替身', whenLabel: '1992 年春', week: 118 } },
+    calib60Missed: { N12: { title: '高危替身', whenLabel: '1992 年春', week: 118 } },
     story: { done: done14, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P3', gigCount: 40 },
   }));
   const b3 = pane71();
@@ -289,7 +291,7 @@ function sentenceChecks(tag, line){
   eval(buildSrc());
 
   S = freshSave({
-    story: { done: { C1: true }, flags: {}, rel: {}, routes: {}, phase: 'P1', gigCount: 0 },
+    story: { done: { N1: true }, flags: {}, rel: {}, routes: {}, phase: 'P1', gigCount: 0 },
   });
   window.S = S;
   STORY_WIRE.main = JSON.parse(JSON.stringify(storyPack));
@@ -303,8 +305,8 @@ function sentenceChecks(tag, line){
 
 /* ================= 段一b：A4 已開放分支（單節點 pack） =================
    C 鏈係前置串連，正常存檔入面「有 open 又冇 locked C」幾乎唔會出現
-   （下一幕永遠 locked 住；C17 係結局節點，listOpen 唔入任何桶）。
-   用得一個主線節點嘅 pack 構造：C1 已開放、冇 locked → 行已開放分支。 */
+   （下一幕永遠 locked 住；N17 係結局節點，listOpen 唔入任何桶）。
+   用得一個主線節點嘅 pack 構造：N1 已開放、冇 locked → 行已開放分支。 */
 (function(){
   var window = {};
   var location = { search: '?softBehaviorGate=1' };
@@ -319,12 +321,12 @@ function sentenceChecks(tag, line){
   var S = null;
   eval(buildSrc());
   S = freshSave(); window.S = S;
-  STORY_WIRE.main = { nodes: [JSON.parse(JSON.stringify(storyPack.nodes.find(n => n.id === 'C1')))] };
+  STORY_WIRE.main = { nodes: [JSON.parse(JSON.stringify(storyPack.nodes.find(n => n.id === 'N1')))] };
   BehaviorGate.loadStub_nodes_trigger(JSON.parse(JSON.stringify(gateStubPack)));
   StoryOC.ensure();
   const a4 = storyMainProgressLine();
   if(DEBUG) console.log('A4:', a4);
-  sentenceChecks('A4 C1 已開放進度行', a4);
+  sentenceChecks('A4 N1 已開放進度行', a4);
   ok('A4：已開放完整句（第 1 幕〈先學做動作戲／先賺〉已經開咗）', a4.indexOf('第 1 幕〈先學做動作戲／先賺〉已經開咗') >= 0);
   ok('A4：講明去何生事務所觸發', a4.indexOf('去何生事務所就會觸發。') >= 0);
 })();

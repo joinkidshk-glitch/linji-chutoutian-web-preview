@@ -1,7 +1,7 @@
 {
   "version": "2.3.2",
   "locale": "zh-Hant-written-HK",
-  "source": "DeepSeek romance Lan/Xu Pack2 rev; cast_main; pcSilent; UNLOCK§4; links C9/C14/C15/T6; tang stub→supersededBy R_tang_meet",
+  "source": "DeepSeek romance Lan/Xu Pack2 rev; cast_main; pcSilent; UNLOCK§4; links N10/N13/N12/T6; tang stub→supersededBy R_tang_meet",
   "romanceLines": [
     "lan",
     "xu",
@@ -195,7 +195,7 @@
       "choices": [
         {
           "id": "C_lan_push2_protect",
-          "label": "護她：願意扛公開壓力（連 C9）",
+          "label": "護她：願意扛公開壓力（連 N10）",
           "effects": {
             "flags": [
               "flag_lan_protected"
@@ -209,7 +209,7 @@
         },
         {
           "id": "C_lan_push2_distance",
-          "label": "劃清同事：不認曖昧（連 C9）",
+          "label": "劃清同事：不認曖昧（連 N10）",
           "effects": {
             "flags": [
               "flag_lan_colleague"
@@ -230,7 +230,7 @@
         "flag_lan_sang_together",
         "flag_lan_work_only"
       ],
-      "openConditionsNote": "藍推進2：push1 後；linksMain=C9。",
+      "openConditionsNote": "藍推進2：push1 後；linksMain=N10。",
       "artId": "rom_lan_push2",
       "conflict": null,
       "romanceLine": "lan",
@@ -238,9 +238,9 @@
       "parallelOk": true,
       "pcSilent": true,
       "linksMain": [
-        "C9"
+        "N10"
       ],
-      "conflictNote": "SOFT_NITS: T碼進 conflict；C碼進 linksMain → C9 僅 linksMain"
+      "conflictNote": "SOFT_NITS: T碼進 conflict；C碼進 linksMain → N10 僅 linksMain"
     },
     {
       "id": "R_lan_crisis",
@@ -283,7 +283,7 @@
       "choices": [
         {
           "id": "C_lan_crisis_help",
-          "label": "助抗：陪她面對家族（連 C15）",
+          "label": "助抗：陪她面對家族（連 N12）",
           "effects": {
             "flags": [
               "flag_lan_help",
@@ -299,7 +299,7 @@
         },
         {
           "id": "C_lan_crisis_stepback",
-          "label": "成全／退讓：勸她考慮家族（連 C15）",
+          "label": "成全／退讓：勸她考慮家族（連 N12）",
           "effects": {
             "flags": [
               "flag_lan_stepback",
@@ -324,7 +324,7 @@
         "flag_lan_colleague",
         "flag_lan_sang_together"
       ],
-      "openConditionsNote": "藍危機：推進後；linksMain=C15；家族壓（方向性／playtest 高好感）。",
+      "openConditionsNote": "藍危機：推進後；linksMain=N12；家族壓（方向性／playtest 高好感）。",
       "artId": "rom_lan_crisis",
       "conflict": null,
       "romanceLine": "lan",
@@ -332,9 +332,9 @@
       "parallelOk": true,
       "pcSilent": true,
       "linksMain": [
-        "C15"
+        "N12"
       ],
-      "conflictNote": "SOFT_NITS: C15 僅 linksMain"
+      "conflictNote": "SOFT_NITS: N12 僅 linksMain"
     },
     {
       "id": "R_lan_ending",
@@ -686,7 +686,7 @@
       "choices": [
         {
           "id": "C_xu_crisis_respect",
-          "label": "尊重合作（連 C14／T6）",
+          "label": "尊重合作（連 N13／T6）",
           "effects": {
             "flags": [
               "flag_xu_respect",
@@ -702,7 +702,7 @@
         },
         {
           "id": "C_xu_crisis_depend",
-          "label": "依賴結構（連 C14／T6）",
+          "label": "依賴結構（連 N13／T6）",
           "effects": {
             "flags": [
               "flag_xu_depend",
@@ -718,7 +718,7 @@
         },
         {
           "id": "C_xu_crisis_refuse",
-          "label": "拒絕（連 C14／T6）",
+          "label": "拒絕（連 N13／T6）",
           "effects": {
             "flags": [
               "flag_xu_refuse",
@@ -746,7 +746,7 @@
         "flag_xu_business_only",
         "flag_xu_coop_talk"
       ],
-      "openConditionsNote": "徐危機：push2 後；conflict=T6；linksMain=C14。",
+      "openConditionsNote": "徐危機：push2 後；conflict=T6；linksMain=N13。",
       "artId": "rom_xu_crisis",
       "conflict": "T6",
       "romanceLine": "xu",
@@ -754,9 +754,9 @@
       "parallelOk": true,
       "pcSilent": true,
       "linksMain": [
-        "C14"
+        "N13"
       ],
-      "conflictNote": "SOFT_NITS: T6→conflict；C14→linksMain"
+      "conflictNote": "SOFT_NITS: T6→conflict；N13→linksMain"
     },
     {
       "id": "R_xu_ending",
@@ -927,7 +927,7 @@
     "oral_leftover": [],
     "aw_first_person_lines": 0,
     "deepseek_calls": "prior+rev_lan/xu/tang_steer",
-    "steer": "cast_main persona; flag_<line>_*; no 阿偉「我」beats; C_* ids; links C9/C14/C15/T6",
+    "steer": "cast_main persona; flag_<line>_*; no 阿偉「我」beats; C_* ids; links N10/N13/N12/T6",
     "avg_line_len": 29.0,
     "node_count": 11,
     "lexicon": "COPY_STYLE_HK_LEXICON.md",
@@ -945,7 +945,7 @@
           "R_tang_meet_stub.flags_written 含 flag_tang_open",
           "徐 tier"
         ],
-        "note": "SOFT_NITS_FIX_v2 已修 stub flags_written＋徐 cast tier；本欄清空。鄧節序／出圖／C5 裸旗仍全局 HOLD（非本 pack softHold）。"
+        "note": "SOFT_NITS_FIX_v2 已修 stub flags_written＋徐 cast tier；本欄清空。鄧節序／出圖／N5 裸旗仍全局 HOLD（非本 pack softHold）。"
       }
     },
     "soft_nits_fix_v2_stub_flags": "flags_written=[flag_tang_met]"

@@ -101,7 +101,7 @@ function v65Save(){
   return { dayIndex: 500, fame: 40, popularity: 10, acting: 50, stage: 40, vocal: 30, looks: 30, iq: 25, charm: 25,
     stress: 20, money: 9000, stamina: 80, industryCreditDelta: 5,
     flags: {}, npcs: {}, board: {}, booked: [], shoots: [], trainCount: {}, enrolled: {},
-    story: { gigCount: 3, flags: {}, done: { C1: true } },
+    story: { gigCount: 3, flags: {}, done: { N1: true } },
     conseq61: { reviews: { 1988: { passed: true, dual: 70 }, 1989: { passed: false, dual: 40 } },
       pendingEnding: { kind: 'review', year: 1988, atDay: 300 } },
     ending410: { career: 'E7', careerVariant: 'review1989', earlyEnd: { kind: 'review', year: 1989, floor: 100 } },

@@ -1,6 +1,6 @@
 # v20a207 resync：index.html 淨 +34 行（見 qa207/resync207.py，73 錨點對位零 mismatch，純漂移）。
 # -*- coding: utf-8 -*-
-# v20a197 BUTTONS197 靜態測試：全站掣位 review B1–B7＋C1–C7＋刪 D1 印章掣
+# v20a197 BUTTONS197 靜態測試：全站掣位 review B1–B7＋N1–N7＋刪 D1 印章掣
 # （用戶 2026-11-13 21:11 拍板「一次過修晒」）。
 # 反證：喺 pristine main（2760680）index 上行會 FAIL（冇 BUTTONS197 段）。
 # 用法：python3 tests/test_buttons197_static.py [path-to-index.html]
@@ -92,7 +92,7 @@ ok('B7：入 plan pane 嗰陣初 paint 分類掣俾 bar 冚住就捲返出嚟（
    and 'revealCatTabs197()' in src)
 
 # --- C1：主分頁使用中嗰格唔改大細 ---
-ok('C1：選中格 32px（同其餘四格同一條 y，用色／底線區分）',
+ok('N1：選中格 32px（同其餘四格同一條 y，用色／底線區分）',
    '#home-tabs .home-tab.on{ height:32px;' in src
    and '#home-tabs .home-tab.on{ height:38px;' not in src)
 # v20a218 D-v197C1：-1.5px 唔可以淨係喺 .on——使用中嗰格會低 2px（review 實測 y 215 vs 213）；
@@ -100,43 +100,43 @@ ok('C1：選中格 32px（同其餘四格同一條 y，用色／底線區分）'
 _hb = src.index('#home-tabs .home-tab{')
 _ho = src.index('#home-tabs .home-tab.on{', _hb)
 _on_end = src.index('}', _ho)
-ok('C1：-1.5px 五格統一（base rule 有，.on 冇）',
+ok('N1：-1.5px 五格統一（base rule 有，.on 冇）',
    'margin-bottom:-1.5px;' in src[_hb:_ho]
    and 'margin-bottom:-1.5px' not in src[_ho:_on_end])
 
 # --- C2：地圖底部主掣用色區分兩個身份 ---
-ok('C2：「過一日」改紙色＋啡框（「開始今日行程」留返金色實色）',
+ok('N2：「過一日」改紙色＋啡框（「開始今日行程」留返金色實色）',
    '#v-map .map-hint #map-end-day{' in src
    and 'background:#fffdf6 !important; color:#3a2e22 !important;' in src
    and 'border:2px solid #8a6f4d !important; box-shadow:none !important;' in src)
 
 # --- C3：地點 sheet 行動掣齊高 ---
-ok('C3：行動掣固定 60px 高，標題／描述單行截短',
+ok('N3：行動掣固定 60px 高，標題／描述單行截短',
    'height: 60px !important;' in src
    and 'white-space: nowrap !important;' in src
    and '-webkit-line-clamp: 1 !important;' in src)
 
 # --- C4：肯定／主動作永遠在上 ---
-ok('C4：tut-on 嗰陣非教學 modal 掣一律 order:1（次序跟 DOM；肯定行永遠在上）',
+ok('N4：tut-on 嗰陣非教學 modal 掣一律 order:1（次序跟 DOM；肯定行永遠在上）',
    '#mask.tut-on #modal-btns button{ order:1 !important; }' in src)
-ok('C4：教學掣次序唔郁（.p order:1／.tut-skip order:2／.tut-replay-step order:3）',
+ok('N4：教學掣次序唔郁（.p order:1／.tut-skip order:2／.tut-replay-step order:3）',
    '#mask.tut-on #modal-btns button.tut-skip,' in src
    and 'order: 2 !important;' in src
    and '#mask.tut-on #modal-btns button.tut-replay-step{' in src
    and 'order: 3 !important;' in src)
-ok('C4：全部 modal DOM 次序本身已經係肯定行先（出席→推辭、確定→取消）',
+ok('N4：全部 modal DOM 次序本身已經係肯定行先（出席→推辭、確定→取消）',
    '{ label: "出席", role: "p", on: attend },' in src
    and '{ label: "推辭", role: "g", on: skip }' in src
    and '{ label:"確定過一日", role:"d", on:()=>endBrowseDayGoHome() },' in src)
 
 # --- C5：抉擇卡齊高 ---
-ok('C5：抉擇卡最小 64px、短句置中',
+ok('N5：抉擇卡最小 64px、短句置中',
    '.story-play .sp-choice{' in src and 'min-height:64px;' in src
    and 'min-height:44px;padding:8px 10px' not in src
    and 'display:flex;flex-direction:column;justify-content:center;' in src)
 # v20a218 D-v197C5：64px 要寫入 3-class 嗰條 rule——舊版 44px 蓋過咗 2-class 嗰條 64px（specificity 3 vs 2），
 # 抉擇卡 55 vs 70px 高矮不一。
-ok('C5：choices-layout 嗰條 rule 都係 64px（唔係 44px）',
+ok('N5：choices-layout 嗰條 rule 都係 64px（唔係 44px）',
    '.story-play.sp-choices-layout .sp-choice{\n  min-height:64px;' in src)
 
 # --- C6：通告板 54px 罅＝分組頭 ---
@@ -144,13 +144,13 @@ ok('C6：未達標分組頭做返明顯標題（唔再係無解釋嘅空位）',
    '.gig-locked108{ margin-top:12px; border-top:2px solid #cbb98d; padding-top:0; }' in src
    and '.gig-locked108 summary{ display:block;' in src
    and 'background:#efe6cf; border-bottom:1px solid #cbb98d;' in src)
-ok('C6：開合提示由 CSS ::after 出（▸ 點開睇／▾ 點開收起），唔寫死喺字串',
+ok('N6：開合提示由 CSS ::after 出（▸ 點開睇／▾ 點開收起），唔寫死喺字串',
    '.gig-locked108 summary::after{ content:"  ▸ 點開睇";' in src
    and '.gig-locked108[open] summary::after{ content:"  ▾ 點開收起"; }' in src
    and '——點開睇</summary>`' not in src)
 
 # --- C7：手帳分頁撞名 ---
-ok('C7：sub-tab「行程」改名「本週安排」（主分頁「行程」唔郁）',
+ok('N7：sub-tab「行程」改名「本週安排」（主分頁「行程」唔郁）',
    'id="htab-plan" role="tab" aria-selected="false" data-htab="plan">本週安排</button>' in src
    and 'id="hgroup-plan" role="tab" aria-selected="true" data-hgroup="plan" data-htab="plan">行程</button>' in src)
 

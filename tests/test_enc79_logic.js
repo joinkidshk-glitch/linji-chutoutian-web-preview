@@ -157,7 +157,7 @@ forcePresence('luk_baakyin','film_lion'); S.starDay.triggered = 2;
 ok('每日上限 1 壓制（v20a144：triggered=2 已過上限）', enc79TryIntercept('film_lion')===false && _played.length===0);
 resetS(220); _played = [];
 forcePresence('luk_baakyin','film_lion');
-_storyOpen = [{ id:'C1', __loc:'film_lion' }];
+_storyOpen = [{ id:'N1', __loc:'film_lion' }];
 ok('主線待播壓制：唔播＋出沒保留（doneToday 冇入帳）', (()=>{ const r = enc79TryIntercept('film_lion'); return r===false && _played.length===0 && !S.starDay.doneToday.luk_baakyin && S.stars.luk_baakyin.seen===0; })());
 _storyOpen = [];
 ok('主線播完後同日再入場：出沒仲喺度、可觸發', (()=>{ const r = enc79TryIntercept('film_lion'); return r===true && _played.length===1; })());

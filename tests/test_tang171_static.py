@@ -13,6 +13,7 @@
 # v20a219 resync：index.html 淨 +3 行（CONTRA98 stub，插入點舊 L31845 之後），總行數 62894→62897、DEF 57350→57353（difflib 對位核實純漂移，見 qa219/resync219.py）。
 # v20a225 resync：index.html 淨 +272 行（對手線強化 rebase 上 main 719975f；difflib 對位核實純漂移，見 qa225/resync225.py），總行數 62860→63132、DEF 57316→57527。
 # v20a227 resync：index.html 淨 +2 行（WF4 day24 banner 裁切位：註解 1 行→3 行，插入點舊 L41729；chain 原地換值行數不變），總行數 63132→63134、DEF 57527→57529（difflib 對位核實純漂移，見 qa227/resync227.py）。
+# v20a210 resync：index.html 淨 +40 行（舊存檔遷移 c2n210MigrateSave 函數 ＋36 行＠舊 L36730 之後＋呼叫點 ＋4 行＠舊 L33790；difflib 對位核實純漂移）。總行數 63134→63174、DEF 57529→57569。
 # v20a222 resync：index.html 淨 −37 行（P3 書面語改寫：刪 G1 rumorEcho／echo 物件＋G9 nodeRipple 死碼；其餘 917 句為同行改寫，行數不變），總行數 62897→62860、DEF 57353→57316（內容逐字核實純漂移）。
 # -*- coding: utf-8 -*-
 # v20a197 resync：index.html 淨 +94 行，總行數 60490→60584、DEF 54986→55080（difflib 對位核實純漂移，見 qa197/resync197.py；B4 補丁再 +9 行）。
@@ -67,9 +68,9 @@
 # v20a176 resync：淨 ＋538 行（NPCS ＋7／星收尾掣 ＋12／ROM176 block ＋501／茶聽 ＋12／addLoc −13／openLoc 掛點 ＋5／doGiveGift ＋4／人脈頁 ＋10），總行數 59341→59879、DEF 53860→54379（qa176/resync176.py 逐行核實內容逐字相同，純漂移）。
 # v20a176 rebase 上 main 91f264a（v175）resync：v175 淨 ＋78（CSS ＋10／toast ＋15／prog175 ＋51＋render ＋2），總行數 59894→59972、DEF 54394→54472（qa176/resync176_rebase.py difflib 對位核實純漂移）。
 # v20a176 第三輪 rebase 上 main c682cc2（v178）resync：v178 淨 ＋21（fellows 特別名額＋21；註解＋sprite 來回 ＋4−4 抵消），總行數 59972→59993、DEF 54472→54493（qa176/resync176_rebase3.py difflib 對位核實純漂移；三檔 rebase 衝突後取 v176 嗰邊，v178 註解行補返）。
-# v20a183 resync：v183 淨 ＋117 行（C7 CSS ＋2／prefKind ＋1／TryIntercept ＋1／PlayEncounter ＋2／ROM183 block ＋107／確認 modal ＋3／goBit ＋1；difflib 對位核實純漂移，見 qa183/resync183.py）。
+# v20a183 resync：v183 淨 ＋117 行（N7 CSS ＋2／prefKind ＋1／TryIntercept ＋1／PlayEncounter ＋2／ROM183 block ＋107／確認 modal ＋3／goBit ＋1；difflib 對位核實純漂移，見 qa183/resync183.py）。
 # v20a184 rebase 上 main 0f90dc7（v183）resync：v184 淨 ＋16 行（C2 helper＋9／請柬＋1／結果卡＋1／C1 DEEPS＋4／漸變＋1 淨）；＜45748 者唔郁、其後者 ＋16（difflib 對位核實純漂移，見 qa184/resync184_rebase.py）。
-# v20a182 resync：v182 淨 ＋17 行（CSS＋2／請柬＋4／presentAwardInvite＋6／C1 JS＋5），總行數 59993→60010、DEF 54493→54510（qa182/resync182.py difflib 對位核實純漂移）。
+# v20a182 resync：v182 淨 ＋17 行（CSS＋2／請柬＋4／presentAwardInvite＋6／N1 JS＋5），總行數 59993→60010、DEF 54493→54510（qa182/resync182.py difflib 對位核實純漂移）。
 # v20a189 resync：index.html 淨 ＋34 行（accel-link CSS ＋15 @~1831／day-res 92dvh media ＋10 @~3235／hint 刪除 −10 @37990／soft map 掣 ＋3／accel link push ＋12／day-res class ＋4；difflib 對位核實純漂移，見 qa189/resync189.py）。
 # v20a189 rebase 上 main 0c29f03（v188）resync：DEF 54685→54939（+254，v188；difflib 對位核實純漂移，見 qa189/resync189_rebase.py）。
 import sys
@@ -97,40 +98,40 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 63134（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136＋v219 +3＋v222 −37＋v225 +272＋v227 +2）', src.count('\n') == 63134)
-ok('零行數漂移：openLoc DEF 行 57529（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +120＋v219 +3＋v222 −37＋v225 +211＋v227 +2，travel114 釘行）',
-   len(lines) >= 57529 and 'function openLoc(id, opts){' in lines[57528])
-# v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫，qa215 resync 核實純漂移（總行數 62352→62492；DEF 56824→56964）。# --- §1. C1：捲動提示（淡出漸變） ---
-ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',
+ok('零行數漂移：總行數 63174（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136＋v219 +3＋v222 −37＋v225 +272＋v227 +2＋v210 +40）', src.count('\n') == 63174)
+ok('零行數漂移：openLoc DEF 行 57569（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +120＋v219 +3＋v222 −37＋v225 +211＋v227 +2＋v210 +40，travel114 釘行）',
+   len(lines) >= 57569 and 'function openLoc(id, opts){' in lines[57568])
+# v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫，qa215 resync 核實純漂移（總行數 62352→62492；DEF 56824→56964）。# --- §1. N1：捲動提示（淡出漸變） ---
+ok('N1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',
    '#loc-acts.loc-acts-more171::after' in src
    and 'linear-gradient(to bottom, rgba(248,241,222,0), #f8f1de 60%)' in src)  # v20a173：stop 78%→60%
-ok('C1：漸變唔佔位（sticky＋margin-top:-30px 抵消 30px 高＋margin-bottom:-7px 抵消 7px flex gap）',
+ok('N1：漸變唔佔位（sticky＋margin-top:-30px 抵消 30px 高＋margin-bottom:-7px 抵消 7px flex gap）',
    'position:sticky; bottom:0;' in src and 'height:30px; margin-top:-30px; margin-bottom:-7px;' in src)
-ok('C1：漸變唔攔點擊（pointer-events:none）',
+ok('N1：漸變唔攔點擊（pointer-events:none）',
    '#loc-acts.loc-acts-more171::after' in src and 'pointer-events:none; z-index:5;' in src)
-ok('C1：sync 函數存在（掛 window，openLoc／scroll／resize 都讀到）',
+ok('N1：sync 函數存在（掛 window，openLoc／scroll／resize 都讀到）',
    'window.syncLocActsFade171=function(){' in src)
-ok('C1：sync 條件啱——超出可視高而且未捲到底先掛 class',
+ok('N1：sync 條件啱——超出可視高而且未捲到底先掛 class',
    'a.scrollHeight>a.clientHeight+4 && a.scrollTop+a.clientHeight<a.scrollHeight-4' in src
    and 'a.classList.toggle("loc-acts-more171"' in src)
-ok('C1：scroll listener 已接（捲動嗰陣即時更新提示）',
+ok('N1：scroll listener 已接（捲動嗰陣即時更新提示）',
    'a171.addEventListener("scroll"' in src)
-ok('C1：openLoc 尾＋rAF 有呼叫 sync（渲染完即計一次）',
+ok('N1：openLoc 尾＋rAF 有呼叫 sync（渲染完即計一次）',
    src.count('window.syncLocActsFade171();') >= 4)
-ok('C1：B2 守門——#loc-acts 仲係 flex 直欄＋掣 flex-shrink:0（卡片唔重疊）',
+ok('N1：B2 守門——#loc-acts 仲係 flex 直欄＋掣 flex-shrink:0（卡片唔重疊）',
    '#loc-sheet.sheet.locpanel118 #loc-acts{ display:flex !important; flex-direction:column !important; }' in src
    and '#loc-sheet.sheet.locpanel118 #loc-acts .act{ flex-shrink:0; }' in src)
-ok('C1：B2 守門——badge 仲係入文字欄（v169 修法一字唔郁）',
+ok('N1：B2 守門——badge 仲係入文字欄（v169 修法一字唔郁）',
    'badge 入文字欄' in src)
 
-# --- §2. C2：鎖住態視覺區分 ---
-ok('C2：add() 入面鎖住態加 act-locked171 class',
+# --- §2. N2：鎖住態視覺區分 ---
+ok('N2：add() 入面鎖住態加 act-locked171 class',
    'if(cost105==="庫存空"||cost105==="今日已送") b.className+=" act-locked171";' in src)
-ok('C2：鎖住態 CSS 存在（掣身灰米底＋灰邊框）',
+ok('N2：鎖住態 CSS 存在（掣身灰米底＋灰邊框）',
    '#app #loc-sheet.sheet .act.act-locked171{ background:#e6dfcc !important; border-color:#a89a7c !important; }' in src)
-ok('C2：鎖住態費用欄轉深啡灰 #6b5636（唔再係紅 #C43C2A）',
+ok('N2：鎖住態費用欄轉深啡灰 #6b5636（唔再係紅 #C43C2A）',
    '#app #loc-sheet.sheet .act.act-locked171 .cost{ color:#6b5636 !important; }' in src)
-ok('C2：鎖住態標題／hint 微淡（opacity .72）',
+ok('N2：鎖住態標題／hint 微淡（opacity .72）',
    '.act.act-locked171 .n{ opacity:.72; }' in src
    and '.act.act-locked171 .h{ opacity:.72 !important; color:#3a2e22 !important; }' in src)  # v20a173：.h 加 !important；v20a218 D-v173C1：.h 加深色 #3a2e22（對比度 4.63:1）
 _c = contrast('6b5636', 'e6dfcc')
@@ -139,14 +140,14 @@ ok('C2：鎖住態費用欄對比度 >= 4.5:1（高過 B1 實測 4.21:1，讀得
 ok('C2：只做視覺區分——鎖住態嗰行冇加 disabled（撳落去照有 toast）',
    'act-locked171' in src and all('b.disabled' not in ln and '.disabled=' not in ln
        for ln in lines if 'act-locked171' in ln and 'className' in ln))
-ok('C2：鎖住態點擊行為唔郁——送禮掣撳落去照 toast 原因',
+ok('N2：鎖住態點擊行為唔郁——送禮掣撳落去照 toast 原因',
    'if(!live.ok){ toast(live.reason||"暫不可送"); return; }' in src)
-ok('C2：B1 守門——known105 仲有「庫存空」「今日已送」（費用欄文字唔郁）',
+ok('N2：B1 守門——known105 仲有「庫存空」「今日已送」（費用欄文字唔郁）',
    '"庫存空","今日已送"' in src)
-ok('C2：B1 守門——giftGateBadge 仍然回傳呢兩個狀態字',
+ok('N2：B1 守門——giftGateBadge 仍然回傳呢兩個狀態字',
    'if(/庫存/.test(r)) return "庫存空";' in src
    and 'if(/今天|今日|人情急|先到這裡/.test(r)) return "今日已送";' in src)
-ok('C2：可送態唔郁——.act .cost 仲係紅 #C43C2A 800 weight',
+ok('N2：可送態唔郁——.act .cost 仲係紅 #C43C2A 800 weight',
    '.act .cost{' in src and 'color: var(--stamp-red,#C43C2A) !important;' in src)
 
 print('TOTAL %d PASS %d FAIL %d' % (total[0], total[0] - len(fails), len(fails)))

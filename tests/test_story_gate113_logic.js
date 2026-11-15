@@ -1,11 +1,11 @@
-// v20a113 主線順序閘守門測試：C18／C19 跳步修復。
-//   (1) 鏈守門：全部主線幕 C1–C19（C6／C6F 路線分支可選幕除外）嘅閘必須包含已判斷設計嘅 needDone 鏈；
-//       C1–C5 鏈嚟自 content stub（SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json），C6–C19 鏈嚟自 STORY_GATE_3Y；
-//       C9／C13 預期係無 needDone——刻意恢復節點（防錯過窗口成條關鍵路徑軟鎖），唔係漏網，見 index 註解；
-//   (2) 鏈無環＋前置存在；(3) C18 weekMin 48／C19 weekMin 61（同 pacing 章戳一致）；
-//   (4) 載入遷移 storyGate113Scrub：舉報個案（第 2 週 C1 done＋C18 done）清 C18；合法完成唔誤清；
+// v20a113 主線順序閘守門測試：N18／N19 跳步修復。
+//   (1) 鏈守門：全部主線幕 N1–N19（N6／N6F 路線分支可選幕除外）嘅閘必須包含已判斷設計嘅 needDone 鏈；
+//       N1–N5 鏈嚟自 content stub（SANDBOX_BEHAVIOR_GATE_N1_N5_SOFT_STUB_v1.json），N6–N19 鏈嚟自 STORY_GATE_3Y；
+//       N10／N16 預期係無 needDone——刻意恢復節點（防錯過窗口成條關鍵路徑軟鎖），唔係漏網，見 index 註解；
+//   (2) 鏈無環＋前置存在；(3) N18 weekMin 48／N19 weekMin 61（同 pacing 章戳一致）；
+//   (4) 載入遷移 storyGate113Scrub：舉報個案（第 2 週 N1 done＋N18 done）清 N18；合法完成唔誤清；
 //       週數 forensic（week < weekMin）清；冪等；退化輸入唔炸。
-// 反證：將閘表 copy 入面 C18／C11 嘅 needDone 刪走（模擬舊漏鏈），鏈檢查必須報違規；
+// 反證：將閘表 copy 入面 N18／N8 嘅 needDone 刪走（模擬舊漏鏈），鏈檢查必須報違規；
 //       殘廢版 scrub（乜都唔清）對舉報個案必須交白卷——證明斷言對漏鏈／失效遷移敏感。
 // 用法：node tests/test_story_gate113_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -38,18 +38,18 @@ function extractFn(name){
 const GATE = extractConst('STORY_GATE_3Y');
 const scrubSrc = extractFn('storyGate113Scrub');
 const scrub = new Function(scrubSrc + '\nreturn storyGate113Scrub;')();
-const stub = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json'), 'utf8'));
+const stub = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'SANDBOX_BEHAVIOR_GATE_N1_N5_SOFT_STUB_v1.json'), 'utf8'));
 const stubChain = {};
 for(const n of stub.nodes) stubChain[n.beatId] = (n.trigger && n.trigger.needDone) || [];
 
-/* 已判斷設計嘅預期鏈（v20a113；C9／C13 無 needDone 係刻意，見 index 註解＋NOTES） */
+/* 已判斷設計嘅預期鏈（v20a113；N10／N16 無 needDone 係刻意，見 index 註解＋NOTES） */
 const EXPECT = {
-  C1: [], C2: ['C1'], C3: ['C2'], C4: ['C3'], C5: ['C4'],
-  C7: ['C5'], C8: ['C7'], C9: [], C10: ['C9'], C11: ['C7'], C12: ['C14'],
-  C13: [], C14: ['C10'], C15: ['C10'], C16: ['C12'], C17: ['C13'],
-  C18: ['C5'], C19: ['C18'],
+  N1: [], N2: ['N1'], N3: ['N2'], N4: ['N3'], N5: ['N4'],
+  N7: ['N5'], N9: ['N7'], N10: [], N11: ['N10'], N8: ['N7'], N14: ['N13'],
+  N16: [], N13: ['N11'], N12: ['N11'], N15: ['N14'], N17: ['N16'],
+  N18: ['N5'], N19: ['N18'],
 };
-const EXEMPT = ['C6', 'C6F']; /* 路線分支可選幕，唔當順序主幹鏈 */
+const EXEMPT = ['N6', 'N6F']; /* 路線分支可選幕，唔當順序主幹鏈 */
 function actualNeedDone(id){
   if(stubChain[id] !== undefined) return stubChain[id];
   const g = GATE[id];
@@ -68,14 +68,14 @@ function chainViolations(gate, stubMap){
 
 /* (1) 鏈守門 */
 const v = chainViolations(GATE, stubChain);
-ok('全部主線幕鏈符合已判斷設計（C1–C19，C6／C6F 除外）', v.length === 0);
+ok('全部主線幕鏈符合已判斷設計（N1–N19，N6／N6F 除外）', v.length === 0);
 if(v.length) console.log('  violations: ' + v.join(' | '));
 for(const id of EXEMPT){
   const g = GATE[id];
   ok(id + ' 豁免：路線分支幕（有 route＋weekMin，唔入順序鏈）', !!g && !!g.route && g.weekMin != null);
 }
-ok('C9 無 needDone 係刻意（恢復節點，見 index 註解）', JSON.stringify(actualNeedDone('C9')) === '[]');
-ok('C13 無 needDone 係刻意（恢復節點，見 index 註解）', JSON.stringify(actualNeedDone('C13')) === '[]');
+ok('N10 無 needDone 係刻意（恢復節點，見 index 註解）', JSON.stringify(actualNeedDone('N10')) === '[]');
+ok('N16 無 needDone 係刻意（恢復節點，見 index 註解）', JSON.stringify(actualNeedDone('N16')) === '[]');
 
 /* (2) 鏈無環＋前置存在 */
 {
@@ -100,8 +100,8 @@ ok('C13 無 needDone 係刻意（恢復節點，見 index 註解）', JSON.strin
 }
 
 /* (3) 深冬／春窗週數 */
-ok('C18 weekMin＝48（1990-12-01 第 48 週，同 pacing 章戳一致）', GATE.C18 && GATE.C18.weekMin === 48);
-ok('C19 weekMin＝61（1991-03-01 春首日 第 61 週，同 pacing 章戳一致）', GATE.C19 && GATE.C19.weekMin === 61);
+ok('N18 weekMin＝48（1990-12-01 第 48 週，同 pacing 章戳一致）', GATE.N18 && GATE.N18.weekMin === 48);
+ok('N19 weekMin＝61（1991-03-01 春首日 第 61 週，同 pacing 章戳一致）', GATE.N19 && GATE.N19.weekMin === 61);
 
 /* (4) 載入遷移 */
 function mkSave(dayIndex, doneIds){
@@ -110,39 +110,39 @@ function mkSave(dayIndex, doneIds){
   return { dayIndex: dayIndex, story: { done: done } };
 }
 {
-  const s = mkSave(7, ['C1', 'C18']); /* 舉報個案：第 2 週，C1 done＋C18 done */
+  const s = mkSave(7, ['N1', 'N18']); /* 舉報個案：第 2 週，N1 done＋N18 done */
   const cleared = scrub(s, GATE);
-  ok('舉報個案：載入清走 C18（前置 C5 未做）', cleared.join() === 'C18' && !s.story.done.C18);
-  ok('舉報個案：C1 唔受影響', !!s.story.done.C1);
+  ok('舉報個案：載入清走 N18（前置 N5 未做）', cleared.join() === 'N18' && !s.story.done.N18);
+  ok('舉報個案：N1 唔受影響', !!s.story.done.N1);
 }
 {
-  const s = mkSave(430, ['C1', 'C2', 'C3', 'C4', 'C5', 'C19']); /* 第 62 週，C19 done 但 C18 未做 */
+  const s = mkSave(430, ['N1', 'N2', 'N3', 'N4', 'N5', 'N19']); /* 第 62 週，N19 done 但 N18 未做 */
   const cleared = scrub(s, GATE);
-  ok('C19 無 C18 前置：載入清走 C19', cleared.join() === 'C19' && !s.story.done.C19);
+  ok('N19 無 N18 前置：載入清走 N19', cleared.join() === 'N19' && !s.story.done.N19);
 }
 {
-  const s = mkSave(340, ['C1', 'C2', 'C3', 'C4', 'C5', 'C18']); /* 第 49 週，合法 12 月 C18 */
-  ok('合法 C18（第 49 週＋C5 已做）：唔誤清', scrub(s, GATE).length === 0 && !!s.story.done.C18);
+  const s = mkSave(340, ['N1', 'N2', 'N3', 'N4', 'N5', 'N18']); /* 第 49 週，合法 12 月 N18 */
+  ok('合法 N18（第 49 週＋N5 已做）：唔誤清', scrub(s, GATE).length === 0 && !!s.story.done.N18);
 }
 {
-  const s = mkSave(430, ['C1', 'C2', 'C3', 'C4', 'C5', 'C18', 'C19']); /* 第 62 週，合法 C19 */
-  ok('合法 C19（第 62 週＋C18 已做）：唔誤清', scrub(s, GATE).length === 0 && !!s.story.done.C19);
+  const s = mkSave(430, ['N1', 'N2', 'N3', 'N4', 'N5', 'N18', 'N19']); /* 第 62 週，合法 N19 */
+  ok('合法 N19（第 62 週＋N18 已做）：唔誤清', scrub(s, GATE).length === 0 && !!s.story.done.N19);
 }
 {
-  const s = mkSave(140, ['C1', 'C2', 'C3', 'C4', 'C5', 'C18']); /* 第 21 週：C5 齊但週數 <48→1 月非法播出 */
-  ok('週數 forensic：第 21 週 C18 done 必清（播出一定早過第 48 週）', scrub(s, GATE).join() === 'C18');
+  const s = mkSave(140, ['N1', 'N2', 'N3', 'N4', 'N5', 'N18']); /* 第 21 週：N5 齊但週數 <48→1 月非法播出 */
+  ok('週數 forensic：第 21 週 N18 done 必清（播出一定早過第 48 週）', scrub(s, GATE).join() === 'N18');
 }
 {
-  const s = mkSave(400, ['C11']); /* C11 無 C7 前置 */
-  ok('C11 無 C7 前置：載入清走 C11', scrub(s, GATE).join() === 'C11');
-  const s2 = mkSave(400, ['C15']); /* C15 無 C10 前置 */
-  ok('C15 無 C10 前置：載入清走 C15', scrub(s2, GATE).join() === 'C15');
+  const s = mkSave(400, ['N8']); /* N8 無 N7 前置 */
+  ok('N8 無 N7 前置：載入清走 N8', scrub(s, GATE).join() === 'N8');
+  const s2 = mkSave(400, ['N12']); /* N12 無 N11 前置 */
+  ok('N12 無 N11 前置：載入清走 N12', scrub(s2, GATE).join() === 'N12');
 }
 {
-  const s = mkSave(7, ['C1', 'C18']);
+  const s = mkSave(7, ['N1', 'N18']);
   scrub(s, GATE);
   ok('遷移冪等（行第二次零新增清除）', scrub(s, GATE).length === 0);
-  const clean = mkSave(7, ['C1']);
+  const clean = mkSave(7, ['N1']);
   ok('乾淨舊檔：遷移零動作', scrub(clean, GATE).length === 0);
   ok('退化輸入唔炸（null／空物件／冇 story.done）', JSON.stringify(scrub(null, GATE)) === '[]' && JSON.stringify(scrub({}, GATE)) === '[]' && JSON.stringify(scrub({ story: {} }, GATE)) === '[]');
 }
@@ -150,15 +150,15 @@ function mkSave(dayIndex, doneIds){
 /* 反證 */
 {
   const brokenGate = JSON.parse(JSON.stringify(GATE));
-  delete brokenGate.C18.needDone; brokenGate.C18.weekMin = undefined;
+  delete brokenGate.N18.needDone; brokenGate.N18.weekMin = undefined;
   const mv = chainViolations(brokenGate, stubChain);
-  ok('反證：C18 漏鏈嘅閘表必報違規', mv.some(x => x.indexOf('C18') === 0));
+  ok('反證：N18 漏鏈嘅閘表必報違規', mv.some(x => x.indexOf('N18') === 0));
   const brokenGate2 = JSON.parse(JSON.stringify(GATE));
-  delete brokenGate2.C11.needDone;
-  ok('反證：C11 漏鏈嘅閘表必報違規', chainViolations(brokenGate2, stubChain).some(x => x.indexOf('C11') === 0));
+  delete brokenGate2.N8.needDone;
+  ok('反證：N8 漏鏈嘅閘表必報違規', chainViolations(brokenGate2, stubChain).some(x => x.indexOf('N8') === 0));
   const brokenScrub = function(){ return []; };
-  const s = mkSave(7, ['C1', 'C18']);
-  ok('反證：殘廢版 scrub（乜都唔清）捉唔到舉報個案', brokenScrub(s).length === 0 && !!s.story.done.C18);
+  const s = mkSave(7, ['N1', 'N18']);
+  ok('反證：殘廢版 scrub（乜都唔清）捉唔到舉報個案', brokenScrub(s).length === 0 && !!s.story.done.N18);
 }
 
 console.log(fails.length === 0 ? '\nALL PASS' : '\nFAILURES: ' + fails.join(' | '));

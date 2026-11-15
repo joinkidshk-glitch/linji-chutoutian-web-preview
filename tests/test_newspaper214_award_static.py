@@ -154,7 +154,7 @@ try:
     touched = [l for l in st.splitlines() if l[3:].startswith('content/')]
     # v217 豁免（語言審核，已拍板）：以下 15 個 content JSON 係 v217 語言審核改動；其餘一律唔准郁。
     # v218 豁免（已拍板修復票）：B3 標題甩字＋A5 教學 locale 兩檔。
-    _v217_allowed = {'content/SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json',
+    _v217_allowed = {'content/SANDBOX_BEHAVIOR_GATE_N1_N5_SOFT_STUB_v1.json',
         'content/SOFT_RUMOR_BEHAVIOR_GATE_PLAYTEST_FIX_v1.json',
         'content/STUB_RUMOR_FRAGMENTS_v1.json',
         'content/STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json',
@@ -167,7 +167,26 @@ try:
         'content/story_detail_c1_to_c17.json',
         'content/story_detail_rival_mentor.json',
         'content/story_detail_romance_vera_hiu_choi.json'}
-    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed for l in touched))
+    # v210 豁免（編號統一 C→N，已拍板）：以下 18 個 content JSON 係 v210 有意改動——
+    # 15 檔內容 C→N 置換（含 3 檔改名，舊名＋新名一併列出，git status 會見到 D 舊名＋?? 新名）。
+    _v210_allowed = {'content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json',
+        'content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.json',
+        'content/MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json',
+        'content/MOCK_STORY_DUAL_MEET_THICKEN_SOFT_v1.json',
+        'content/SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json',
+        'content/SANDBOX_BEHAVIOR_GATE_N1_N5_SOFT_STUB_v1.json',
+        'content/SOFT_PROGRESS_SEED_C3_C5_DENG_v1.json',
+        'content/SOFT_PROGRESS_SEED_DUAL_MEET_THICKEN_v1.json',
+        'content/SOFT_PROGRESS_SEED_N3_N5_DENG_v1.json',
+        'content/STUB_NEWSPAPER_STORY_SOFT_v1.json',
+        'content/STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json',
+        'content/gift_prefs.json', 'content/gift_react_copy.json',
+        'content/story_detail_c1_to_c17.json',
+        'content/story_detail_n1_to_n17.json',
+        'content/story_detail_rival_mentor.json',
+        'content/story_detail_romance_lan_xu.json',
+        'content/story_detail_romance_vera_hiu_choi.json'}
+    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed for l in touched))
 except Exception as e:
     ok('X05_content_json_untouched (git unavailable: %s)' % e, False)
 

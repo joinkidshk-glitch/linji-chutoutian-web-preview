@@ -1,4 +1,4 @@
-# Weave Phase 4-8（v20a31）靜態測試：主幹 1990 覆寫／C6 對齊／commit 機制／藍 PA 化／債權／預熱／慣例不變
+# Weave Phase 4-8（v20a31）靜態測試：主幹 1990 覆寫／N6 對齊／commit 機制／藍 PA 化／債權／預熱／慣例不變
 # 用法：python3 tests/test_weave48_static.py [path-to-index.html]
 import sys, pathlib, re
 p = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else pathlib.Path(__file__).resolve().parent.parent / 'index.html'
@@ -19,11 +19,11 @@ def block(decl, endmark):
 
 # ---- 1990 覆寫表 ----
 ok('STORY_SPINE_NODES_1990 defined', 'const STORY_SPINE_NODES_1990 = {' in html)
-spine = block('const STORY_SPINE_NODES_1990 = {', '/* C6 覆寫（Qwen 原案')
+spine = block('const STORY_SPINE_NODES_1990 = {', '/* N6 覆寫（Qwen 原案')
 ok('spine1990 block extractable', bool(spine))
-for cid, title, loc in [('C15','高危替身','film_harbour'), ('C14','企邊','tvb_longmen'),
-                        ('C12','樂壇前哨','rec_star'), ('C16','偶像實力之爭','rec_star'),
-                        ('C13','賀歲片','film_cotton')]:
+for cid, title, loc in [('N12','高危替身','film_harbour'), ('N13','企邊','tvb_longmen'),
+                        ('N14','樂壇前哨','rec_star'), ('N15','偶像實力之爭','rec_star'),
+                        ('N16','賀歲片','film_cotton')]:
     ok('spine node present: '+cid, re.search(r'^\s*'+cid+r': \{', spine, re.M) is not None)
     seg = spine[spine.index(cid+': {'):][:900] if (cid+': {') in spine else ''
     ok('spine '+cid+' title '+title, ('title: "'+title+'"') in seg)
@@ -37,17 +37,17 @@ for flag in ['flag_stunt_double','flag_stunt_refuse','flag_side_tv','flag_side_f
 for tag in ['搏命','惜身','親和力','高冷','偶像派','實力派','執生']:
     ok('spine tag present: '+tag, tag in spine)
 spine_nc = re.sub(r'/\*.*?\*/', '', spine, flags=re.S)
-# 注意：「緋聞」一詞本身唔喺此列——C12 主幹內容正係陸柏言俾緋聞纏身（Qwen 原案前提），屬正當劇情字眼；
+# 注意：「緋聞」一詞本身唔喺此列——N14 主幹內容正係陸柏言俾緋聞纏身（Qwen 原案前提），屬正當劇情字眼；
 # 要驗嘅係 pack 自創節點「緋聞公關真假」成個唔喺度（邏輯測試另有標題級斷言）。
 for stale in ['賀歲搶位','緋聞公關真假','徐寶珊','聯姻','舊底片','金九','關海媚']:
     ok('spine1990 free of pack-line/banned text: '+stale, stale not in spine_nc)
 
-# ---- C6 對齊 ----
-c6blk = block('const STORY_SPINE_NODES_C6 = {', '/* v20a31 WEAVE_PHASE4_8：藍若曦感情線')
-ok('STORY_SPINE_NODES_C6 defined', bool(c6blk))
-ok('C6 title 角落嗰張枱 + loc tvb_longmen（v157 新標題，舊「飯堂閒角」；v221 書面語改寫「角落那張桌子」）', 'title: "角落那張桌子"' in c6blk and 'locId: "tvb_longmen"' in c6blk)
-ok('C6 flags canteen pair', 'flag_canteen_grind' in c6blk and 'flag_canteen_quit' in c6blk)
-ok('C6 no date flags / no rel stats', 'date_' not in c6blk and 'rel_' not in c6blk)
+# ---- N6 對齊 ----
+c6blk = block('const STORY_SPINE_NODES_N6 = {', '/* v20a31 WEAVE_PHASE4_8：藍若曦感情線')
+ok('STORY_SPINE_NODES_N6 defined', bool(c6blk))
+ok('N6 title 角落嗰張枱 + loc tvb_longmen（v157 新標題，舊「飯堂閒角」；v221 書面語改寫「角落那張桌子」）', 'title: "角落那張桌子"' in c6blk and 'locId: "tvb_longmen"' in c6blk)
+ok('N6 flags canteen pair', 'flag_canteen_grind' in c6blk and 'flag_canteen_quit' in c6blk)
+ok('N6 no date flags / no rel stats', 'date_' not in c6blk and 'rel_' not in c6blk)
 
 # ---- 藍 PA 覆寫 ----
 lan = block('const ROMANCE_LAN_PA_OVERRIDES = {', '/* 載入後套用（4-8）')
@@ -91,8 +91,8 @@ ok('story48SettleTick defined', 'function story48SettleTick(' in html)
 ok('tick48 hooked in advanceDay after story46SettleTick',
    html.index('try{ if(typeof story46SettleTick==="function") story46SettleTick(); }catch(_s46){}')
    < html.index('try{ if(typeof story48SettleTick==="function") story48SettleTick(); }catch(_s48){}'))
-ok('credit C15 const', 'id:"credit_c15_stunt"' in html and '高危替身人情' in html)
-ok('credit C13 const', 'id:"credit_c13_newyear"' in html and '賀歲片頂場人情' in html)
+ok('credit N12 const', 'id:"credit_c15_stunt"' in html and '高危替身人情' in html)
+ok('credit N16 const', 'id:"credit_c13_newyear"' in html and '賀歲片頂場人情' in html)
 ok('tick48 grants on spine flags', 'grant("flag_stunt_double"' in html and 'grant("flag_newyear_improv"' in html)
 
 # ---- 程天諾預熱 ----
@@ -106,23 +106,23 @@ ok('preheat: all 程天諾 items fromYear 1992', all('fromYear:1992' in ln or 'f
 # ---- SOFT 表對齊 ----
 lm = re.search(r'const STORY_LOC_SOFT = \{(.*?)\n\};', html, re.S)
 locs = lm.group(1) if lm else ''
-for cid, loc in [('C12','rec_star'), ('C13','film_cotton'), ('C14','tvb_longmen'), ('C15','film_harbour'), ('C16','rec_star'), ('C6','tvb_longmen')]:
+for cid, loc in [('N14','rec_star'), ('N16','film_cotton'), ('N13','tvb_longmen'), ('N12','film_harbour'), ('N15','rec_star'), ('N6','tvb_longmen')]:
     ok('STORY_LOC_SOFT '+cid+' -> '+loc, re.search(cid+r': "'+loc+r'"', locs) is not None)
 tm = re.search(r'const STORY_TITLE_SOFT = \{(.*?)\n\};', html, re.S)
 titles = tm.group(1) if tm else ''
-for cid, t in [('C6','飯堂閒角'), ('C12','樂壇前哨'), ('C13','賀歲片'), ('C14','企邊'), ('C15','高危替身'), ('C16','偶像實力之爭')]:
+for cid, t in [('N6','飯堂閒角'), ('N14','樂壇前哨'), ('N16','賀歲片'), ('N13','企邊'), ('N12','高危替身'), ('N15','偶像實力之爭')]:
     ok('STORY_TITLE_SOFT '+cid+' = '+t, (cid+': "'+t+'"') in titles)
 hm = re.search(r'const STORY_HINT_SOFT = \{(.*?)\n\};', nocomment, re.S)
 hints = hm.group(1) if hm else ''
-for cid in ['C12','C13','C14','C15','C16']:
+for cid in ['N14','N16','N13','N12','N15']:
     ok('STORY_HINT_SOFT has '+cid, (cid+': { playerHint:') in hints)
-ok('hints free of old C6 date-line title', '首次正式約會對象' not in hints)
-ok('C5 nextHint 兩線並陳（v89 BR89 有意改版：C1 film 支補返 C6F 片場跟班，唔再只提飯堂閒角）', '走電影線有「片場跟班」' in hints and '走電視線有「飯堂閒角」' in hints)
+ok('hints free of old N6 date-line title', '首次正式約會對象' not in hints)
+ok('N5 nextHint 兩線並陳（v89 BR89 有意改版：N1 film 支補返 N6F 片場跟班，唔再只提飯堂閒角）', '走電影線有「片場跟班」' in hints and '走電視線有「飯堂閒角」' in hints)
 
-# ---- 閘不變（4-5 門檻；v20a113 例外：C15 補 needDone C10，見下） ----
+# ---- 閘不變（4-5 門檻；v20a113 例外：N12 補 needDone N11，見下） ----
 gm = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)
 gate = gm.group(1) if gm else ''
-for frag in ['C15: { needDone: ["C10"], tagAny:', 'creditGt: 42', 'fameGt: 50', 'dualGt: 125', 'C6:  { route: "route_tv", weekMin: 15 }']:
+for frag in ['N12: { needDone: ["N11"], tagAny:', 'creditGt: 42', 'fameGt: 50', 'dualGt: 125', 'N6:  { route: "route_tv", weekMin: 15 }']:
     ok('gate unchanged fragment: '+frag, frag in gate)
 
 # ---- 玩家面真名掃描（現有 QA 禁用表）＋新 block 禁字 ----

@@ -3,7 +3,7 @@
 # 一、框架在位（WF1 新表／注入函數／call 位順序／YEARS66 walk list／gate／CALIB60／進度頁次序）
 # 二、加厚量（index 較 v79 基線 4,798,020 bytes 大咗；12 幕 beats 序列化後明顯長過 v79）
 # 三、紅線：SAVE key／softRev／?v= 不變；補幕表註解以外節點文本唔直寫真曆年份
-# 反證：喺 v20a79 index 上行會 FAIL（冇 WF1 標記、冇 C18/C19、byte 數唔過基線）。
+# 反證：喺 v20a79 index 上行會 FAIL（冇 WF1 標記、冇 N18/N19、byte 數唔過基線）。
 # 用法：python3 tests/test_wf1_80_static.py [path-to-index.html]
 import sys
 from pathlib import Path
@@ -19,18 +19,18 @@ ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107'
 ok('NOTES_V20A80 在位', (p.parent / 'NOTES_V20A80_WF1.md').exists())
 
 # --- 一、框架 ---
-ok('WF1 補幕表在位', 'const STORY_SPINE_NODES_WF1 = {' in src and 'C18:' in src and 'C19:' in src)
+ok('WF1 補幕表在位', 'const STORY_SPINE_NODES_WF1 = {' in src and 'N18:' in src and 'N19:' in src)
 ok('注入函數在位', 'function applyStoryWf1Nodes80(){' in src)
 i410 = src.find('applyStorySpineOverrides410(); }catch(_sp410){}')
 iwf1 = src.find('applyStoryWf1Nodes80(); }catch(_wf1){}')
 it55 = src.find('textfix55StoryPack(main)', i410)
 ok('call 位順序：410 覆寫 → WF1 注入 → TEXTFIX55 清洗 main', 0 < i410 < iwf1 < it55)
-ok('YEARS66 walk list 含 WF1 表', 'STORY_SPINE_NODE_C17_410, STORY_SPINE_NODES_WF1,' in src)
-ok('gate C18/C19 登記（v20a113 補鏈：C18 需 C5＋weekMin 48，C19 需 C18＋weekMin 61）', 'C18: { needDone: ["C5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] }' in src and 'C19: { needDone: ["C18"], weekMin: 61, yearMin: 1991, seasonIn: ["春"] }' in src)
-ok('CALIB60 時窗登記 C18/C19', 'C18: { year:1990, seasons:["冬"], whenLabel:"1990 年冬" }' in src and 'C19: { year:1991, seasons:["春"], whenLabel:"1991 年春" }' in src)
-ok('CALIB60 標題登記 上岸路／賭枱邊', 'C18:"上岸路"' in src and 'C19:"賭枱邊"' in src)
-ok('進度頁次序：C6F／C18／C19 跟住 C6、喺 C7 之前（v20a191 supersedes v20a153 B3：插入幕唔再排尾扮第 18／19／20 幕；內部 n 保留 18／19／20 供 far-merge／逐項邏輯用）', '["C6",6],["C6F",20],["C18",18],["C19",19],["C7",7]' in src)
-ok('C18/C19 旗已寫入節點 flags_written', 'flag_wf1_studio_dream' in src and 'flag_wf1_gamble_quiet' in src)
+ok('YEARS66 walk list 含 WF1 表', 'STORY_SPINE_NODE_N17_410, STORY_SPINE_NODES_WF1,' in src)
+ok('gate N18/N19 登記（v20a113 補鏈：N18 需 N5＋weekMin 48，N19 需 N18＋weekMin 61）', 'N18: { needDone: ["N5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] }' in src and 'N19: { needDone: ["N18"], weekMin: 61, yearMin: 1991, seasonIn: ["春"] }' in src)
+ok('CALIB60 時窗登記 N18/N19', 'N18: { year:1990, seasons:["冬"], whenLabel:"1990 年冬" }' in src and 'N19: { year:1991, seasons:["春"], whenLabel:"1991 年春" }' in src)
+ok('CALIB60 標題登記 上岸路／賭枱邊', 'N18:"上岸路"' in src and 'N19:"賭枱邊"' in src)
+ok('進度頁次序：N6F／N18／N19 跟住 N6、喺 N7 之前（v20a191 supersedes v20a153 B3：插入幕唔再排尾扮第 18／19／20 幕；內部 n 保留 18／19／20 供 far-merge／逐項邏輯用）', '["N6",6],["N6F",20],["N18",18],["N19",19],["N7",7]' in src)
+ok('N18/N19 旗已寫入節點 flags_written', 'flag_wf1_studio_dream' in src and 'flag_wf1_gamble_quiet' in src)
 
 # --- 二、加厚量 ---
 ok('index 較 v79 基線大（加厚＋補幕文本入檔）', len(src.encode('utf-8')) > 4798020 + 30000)

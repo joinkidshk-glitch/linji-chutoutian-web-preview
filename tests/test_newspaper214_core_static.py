@@ -38,7 +38,7 @@ ok('C06_filler', '.np214-filler' in html and 'blur(1.1px)' in html)
 ok('C07_sidebar', '.np214-sidebar' in html and '影視娛樂' in html)
 ok('C08_page_switch_css', '.np214-page' in html and '.np214-switch' in html)
 ok('C09_pagefoot', '.np214-pagefoot' in html)
-ok('C10_no_new_tilt', html.count('rotate(-2.2deg)') == 2)  # polish48 守衛：NP214 唔准加多個
+ok('N11_no_new_tilt', html.count('rotate(-2.2deg)') == 2)  # polish48 守衛：NP214 唔准加多個
 
 # ---- (2) 幫手函數 ----
 ok('F01_fmt_date', 'function fmtNewspaperDate(' in html)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# v20a191 靜態測試：C6F 幕號問題——A 進度頁唔再將插入幕排做第 20 幕＋B 場景頂加幕號。
-# A：storyActLabel 係唯一幕號來源（C6／C6F 路線雙生、對稱後綴；C18／C19 時間錨番外）；
+# v20a191 靜態測試：N6F 幕號問題——A 進度頁唔再將插入幕排做第 20 幕＋B 場景頂加幕號。
+# A：storyActLabel 係唯一幕號來源（N6／N6F 路線雙生、對稱後綴；N18／N19 時間錨番外）；
 #    order71 顯示次序跟播次序 ORDER165，內部 n 保留供 far-merge／逐項揭曉邏輯用；
 #    進度頁四行模板＋前置句＋地圖下一幕提示全部行共用 label。
 # B：StoryPlay 開場 head 加幕號行（storyActLabel＋prog71Title），只限主線幕；
@@ -53,33 +53,33 @@ def func_body_braces(src_text, fname):
 
 # --- 基線不變 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('ORDER165 播次序不變（C6、C6F、C18、C19、C7…；強制播候選唔郁）',
-   'const ORDER165 = ["C1","C2","C3","C4","C5","C6","C6F","C18","C19","C7"' in src)
-ok('開放條件／閘唔郁', 'C6F: { route: "route_film", weekMin: 15 }' in src
-   and 'C18: { needDone: ["C5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] }' in src
-   and 'C19: { needDone: ["C18"], weekMin: 61, yearMin: 1991, seasonIn: ["春"] }' in src)
+ok('ORDER165 播次序不變（N6、N6F、N18、N19、N7…；強制播候選唔郁）',
+   'const ORDER165 = ["N1","N2","N3","N4","N5","N6","N6F","N18","N19","N7"' in src)
+ok('開放條件／閘唔郁', 'N6F: { route: "route_film", weekMin: 15 }' in src
+   and 'N18: { needDone: ["N5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] }' in src
+   and 'N19: { needDone: ["N18"], weekMin: 61, yearMin: 1991, seasonIn: ["春"] }' in src)
 
 # --- A：共用幕號函數 ---
 label_body = func_body_braces(src, 'storyActLabel')
 ok('A：storyActLabel 定義（唯一幕號來源）', 'function storyActLabel(id){' in src)
-ok('A：C6／C6F 路線雙生、對稱後綴', 'if(s==="C6") return "第 6 幕・電視線";' in label_body
-   and 'if(s==="C6F") return "第 6 幕・電影線";' in label_body)
-ok('A：C18／C19 時間錨番外（跟 CALIB60 whenLabel：1990 年冬／1991 年春）',
-   'if(s==="C18") return "番外・1990 冬";' in label_body
-   and 'if(s==="C19") return "番外・1991 春";' in label_body
-   and 'C18: { year:1990, seasons:["冬"], whenLabel:"1990 年冬" }' in src
-   and 'C19: { year:1991, seasons:["春"], whenLabel:"1991 年春" }' in src)
-ok('A：主幹 C1–C17 用順序號、非主線回空字串', 'if(n>=1 && n<=17) return "第 "+n+" 幕";' in label_body
+ok('A：N6／N6F 路線雙生、對稱後綴', 'if(s==="N6") return "第 6 幕・電視線";' in label_body
+   and 'if(s==="N6F") return "第 6 幕・電影線";' in label_body)
+ok('A：N18／N19 時間錨番外（跟 CALIB60 whenLabel：1990 年冬／1991 年春）',
+   'if(s==="N18") return "番外・1990 冬";' in label_body
+   and 'if(s==="N19") return "番外・1991 春";' in label_body
+   and 'N18: { year:1990, seasons:["冬"], whenLabel:"1990 年冬" }' in src
+   and 'N19: { year:1991, seasons:["春"], whenLabel:"1991 年春" }' in src)
+ok('A：主幹 N1–N17 用順序號、非主線回空字串', 'if(n>=1 && n<=17) return "第 "+n+" 幕";' in label_body
    and '\n  return "";' in label_body)
-ok('A：storyActIsInsert 只認 C6F／C18／C19', 'function storyActIsInsert(id){' in src
-   and 'return id==="C6F" || id==="C18" || id==="C19";' in src)
+ok('A：storyActIsInsert 只認 N6F／N18／N19', 'function storyActIsInsert(id){' in src
+   and 'return id==="N6F" || id==="N18" || id==="N19";' in src)
 
 # --- A：進度頁次序＋行模板 ---
 m = re.search(r'const order71 = \[(.*?)\];', src, re.S)
 pairs = re.findall(r'\[\s*"([^"]+)"\s*,\s*(\d+)\s*\]', m.group(1)) if m else []
 ok('A：order71 抽到 20 項', len(pairs) == 20)
-ok('A：order71 顯示次序跟播次序（C6、C6F、C18、C19、C7–C17）',
-   [i for i, _ in pairs] == ['C%d' % n for n in range(1, 7)] + ['C6F', 'C18', 'C19'] + ['C%d' % n for n in range(7, 18)])
+ok('A：order71 顯示次序跟播次序（N6、N6F、N18、N19、N7–N17）',
+   [i for i, _ in pairs] == ['N%d' % n for n in range(1, 7)] + ['N6F', 'N18', 'N19'] + ['N7', 'N9', 'N10', 'N11', 'N8', 'N14', 'N16', 'N13', 'N12', 'N15', 'N17'])
 ok('A：order71 內部 n 保留 1–20（供 far-merge／逐項邏輯用，唔係顯示幕號）',
    sorted(int(n) for _, n in pairs) == list(range(1, 21)))
 ok('A：prog71Rows 行帶 label（storyActLabel 來源）', 'label:storyActLabel(id)' in src)

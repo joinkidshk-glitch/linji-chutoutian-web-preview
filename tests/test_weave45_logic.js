@@ -142,111 +142,111 @@ function expectGate(id, label, mut, want){
 })();
 
 /* ================= (a)+(e) 閘矩陣：齊條件→開；逐個抽走關鍵條件→唔開 ================= */
-/* N6＝C6：route_tv＋W15+ */
-expectGate('C6', 'route_tv＋W16', compose(at(1990,4,19), (sv)=>{ sv.story.routes.route_tv = true; }), true);
-expectGate('C6', '缺 route', at(1990,6,20), false);
-expectGate('C6', '得 route 但 W14', compose(at(1990,4,5), (sv)=>{ sv.story.routes.route_tv = true; }), false);
-/* N7＝C7：C5 done＋信用>20＋1991 夏 */
-expectGate('C7', '齊條件', compose(at(1991,7,10), withDone('C5'), (sv)=>setCredit(sv,21)), true);
-expectGate('C7', '缺 C5', compose(at(1991,7,10), (sv)=>setCredit(sv,21)), false);
-expectGate('C7', '信用得 20（唔過 >20）', compose(at(1991,7,10), withDone('C5'), (sv)=>setCredit(sv,20)), false);
-expectGate('C7', '1991 春（季節唔啱）', compose(at(1991,4,10), withDone('C5'), (sv)=>setCredit(sv,21)), false);
-expectGate('C7', '1990 夏（年份唔啱）', compose(at(1990,7,10), withDone('C5'), (sv)=>setCredit(sv,21)), false);
-/* N8＝C11：C7 done＋1991 夏／秋（v20a113 補鏈） */
-expectGate('C11', '1991 夏', compose(at(1991,7,10), withDone('C7')), true);
-expectGate('C11', '1991 秋', compose(at(1991,10,10), withDone('C7')), true);
-expectGate('C11', '缺 C7', at(1991,10,10), false);
-expectGate('C11', '1991 春', at(1991,4,10), false);
-expectGate('C11', '1990 夏', at(1990,7,10), false);
-/* N9＝C8：C7 done＋聲量>28＋喜劇/動作標籤＋1991 秋 */
-expectGate('C8', '齊條件（標籤 id 命中）', compose(at(1991,10,10), withDone('C7'), (sv)=>{ sv.fame = 29; sv.castingTags = [{ id:"comedy", label:"喜劇" }]; }), true);
-expectGate('C8', '標籤 label 命中（動作）', compose(at(1991,10,10), withDone('C7'), (sv)=>{ sv.fame = 29; sv.castingTags = [{ label:"動作" }]; }), true);
-expectGate('C8', '標籤字串形（action）', compose(at(1991,10,10), withDone('C7'), (sv)=>{ sv.fame = 29; sv.castingTags = ["action"]; }), true);
-expectGate('C8', '聲量得 28（唔過 >28）', compose(at(1991,10,10), withDone('C7'), (sv)=>{ sv.fame = 28; sv.castingTags = [{ id:"comedy", label:"喜劇" }]; }), false);
-expectGate('C8', '無標籤', compose(at(1991,10,10), withDone('C7'), (sv)=>{ sv.fame = 29; }), false);
-expectGate('C8', '缺 C7', compose(at(1991,10,10), (sv)=>{ sv.fame = 29; sv.castingTags = [{ id:"comedy", label:"喜劇" }]; }), false);
-expectGate('C8', '1991 夏（季節唔啱）', compose(at(1991,7,10), withDone('C7'), (sv)=>{ sv.fame = 29; sv.castingTags = [{ id:"comedy", label:"喜劇" }]; }), false);
-/* N10＝C9：1991 冬 */
-expectGate('C9', '1991 冬', at(1991,12,10), true);
-expectGate('C9', '1991 秋', at(1991,10,10), false);
-expectGate('C9', '1990 冬', at(1990,12,10), false);
-/* N11＝C10：C9 done＋雙軌>70＋1991 冬 */
-expectGate('C10', '齊條件（雙軌 71）', compose(at(1991,12,10), withDone('C9'), (sv)=>setDual(sv,40,71)), true);
-expectGate('C10', '雙軌得 70（唔過 >70）', compose(at(1991,12,10), withDone('C9'), (sv)=>setDual(sv,40,70)), false);
-expectGate('C10', '缺 C9', compose(at(1991,12,10), (sv)=>setDual(sv,40,71)), false);
-/* N12＝C15：C10 done＋動作標籤＋1992 春（v20a113 補鏈） */
-expectGate('C15', '齊條件', compose(at(1992,4,10), withDone('C10'), (sv)=>{ sv.castingTags = [{ id:"action", label:"動作" }]; }), true);
-expectGate('C15', '缺 C10', compose(at(1992,4,10), (sv)=>{ sv.castingTags = [{ id:"action", label:"動作" }]; }), false);
-expectGate('C15', '無動作標籤', at(1992,4,10), false);
-expectGate('C15', '1991 春（年份唔啱）', compose(at(1991,4,10), (sv)=>{ sv.castingTags = [{ id:"action", label:"動作" }]; }), false);
-/* N13＝C14：C10 done＋信用>42＋1992 夏 */
-expectGate('C14', '齊條件（信用 43）', compose(at(1992,7,10), withDone('C10'), (sv)=>setCredit(sv,43)), true);
-expectGate('C14', '信用得 42（唔過 >42）', compose(at(1992,7,10), withDone('C10'), (sv)=>setCredit(sv,42)), false);
-expectGate('C14', '缺 C10', compose(at(1992,7,10), (sv)=>setCredit(sv,43)), false);
-/* N14＝C12：C14 done＋聲量>50＋1992 秋 */
-expectGate('C12', '齊條件（聲量 51）', compose(at(1992,10,10), withDone('C14'), (sv)=>{ sv.fame = 51; }), true);
-expectGate('C12', '聲量得 50（唔過 >50）', compose(at(1992,10,10), withDone('C14'), (sv)=>{ sv.fame = 50; }), false);
-expectGate('C12', '缺 C14', compose(at(1992,10,10), (sv)=>{ sv.fame = 51; }), false);
-/* N15＝C16：C12 done＋雙軌>125＋1992 秋 */
-expectGate('C16', '齊條件（雙軌 126）', compose(at(1992,10,10), withDone('C12'), (sv)=>setDual(sv,60,126)), true);
-expectGate('C16', '雙軌得 125（唔過 >125）', compose(at(1992,10,10), withDone('C12'), (sv)=>setDual(sv,60,125)), false);
-expectGate('C16', '缺 C12', compose(at(1992,10,10), (sv)=>setDual(sv,60,126)), false);
-/* N16＝C13：1992 冬 */
-expectGate('C13', '1992 冬', at(1992,12,10), true);
-expectGate('C13', '1992 秋', at(1992,10,10), false);
-expectGate('C13', '1991 冬', at(1991,12,10), false);
-/* v20a136：C17 要等 1992 屆冬台慶有結果（awardsFlags 1992/award_singho_tv＝done／skipped） */
+/* N6：route_tv＋W15+ */
+expectGate('N6', 'route_tv＋W16', compose(at(1990,4,19), (sv)=>{ sv.story.routes.route_tv = true; }), true);
+expectGate('N6', '缺 route', at(1990,6,20), false);
+expectGate('N6', '得 route 但 W14', compose(at(1990,4,5), (sv)=>{ sv.story.routes.route_tv = true; }), false);
+/* N7：N5 done＋信用>20＋1991 夏 */
+expectGate('N7', '齊條件', compose(at(1991,7,10), withDone('N5'), (sv)=>setCredit(sv,21)), true);
+expectGate('N7', '缺 N5', compose(at(1991,7,10), (sv)=>setCredit(sv,21)), false);
+expectGate('N7', '信用得 20（唔過 >20）', compose(at(1991,7,10), withDone('N5'), (sv)=>setCredit(sv,20)), false);
+expectGate('N7', '1991 春（季節唔啱）', compose(at(1991,4,10), withDone('N5'), (sv)=>setCredit(sv,21)), false);
+expectGate('N7', '1990 夏（年份唔啱）', compose(at(1990,7,10), withDone('N5'), (sv)=>setCredit(sv,21)), false);
+/* N8：N7 done＋1991 夏／秋（v20a113 補鏈） */
+expectGate('N8', '1991 夏', compose(at(1991,7,10), withDone('N7')), true);
+expectGate('N8', '1991 秋', compose(at(1991,10,10), withDone('N7')), true);
+expectGate('N8', '缺 N7', at(1991,10,10), false);
+expectGate('N8', '1991 春', at(1991,4,10), false);
+expectGate('N8', '1990 夏', at(1990,7,10), false);
+/* N9：N7 done＋聲量>28＋喜劇/動作標籤＋1991 秋 */
+expectGate('N9', '齊條件（標籤 id 命中）', compose(at(1991,10,10), withDone('N7'), (sv)=>{ sv.fame = 29; sv.castingTags = [{ id:"comedy", label:"喜劇" }]; }), true);
+expectGate('N9', '標籤 label 命中（動作）', compose(at(1991,10,10), withDone('N7'), (sv)=>{ sv.fame = 29; sv.castingTags = [{ label:"動作" }]; }), true);
+expectGate('N9', '標籤字串形（action）', compose(at(1991,10,10), withDone('N7'), (sv)=>{ sv.fame = 29; sv.castingTags = ["action"]; }), true);
+expectGate('N9', '聲量得 28（唔過 >28）', compose(at(1991,10,10), withDone('N7'), (sv)=>{ sv.fame = 28; sv.castingTags = [{ id:"comedy", label:"喜劇" }]; }), false);
+expectGate('N9', '無標籤', compose(at(1991,10,10), withDone('N7'), (sv)=>{ sv.fame = 29; }), false);
+expectGate('N9', '缺 N7', compose(at(1991,10,10), (sv)=>{ sv.fame = 29; sv.castingTags = [{ id:"comedy", label:"喜劇" }]; }), false);
+expectGate('N9', '1991 夏（季節唔啱）', compose(at(1991,7,10), withDone('N7'), (sv)=>{ sv.fame = 29; sv.castingTags = [{ id:"comedy", label:"喜劇" }]; }), false);
+/* N10：1991 冬 */
+expectGate('N10', '1991 冬', at(1991,12,10), true);
+expectGate('N10', '1991 秋', at(1991,10,10), false);
+expectGate('N10', '1990 冬', at(1990,12,10), false);
+/* N11：N10 done＋雙軌>70＋1991 冬 */
+expectGate('N11', '齊條件（雙軌 71）', compose(at(1991,12,10), withDone('N10'), (sv)=>setDual(sv,40,71)), true);
+expectGate('N11', '雙軌得 70（唔過 >70）', compose(at(1991,12,10), withDone('N10'), (sv)=>setDual(sv,40,70)), false);
+expectGate('N11', '缺 N10', compose(at(1991,12,10), (sv)=>setDual(sv,40,71)), false);
+/* N12：N11 done＋動作標籤＋1992 春（v20a113 補鏈） */
+expectGate('N12', '齊條件', compose(at(1992,4,10), withDone('N11'), (sv)=>{ sv.castingTags = [{ id:"action", label:"動作" }]; }), true);
+expectGate('N12', '缺 N11', compose(at(1992,4,10), (sv)=>{ sv.castingTags = [{ id:"action", label:"動作" }]; }), false);
+expectGate('N12', '無動作標籤', at(1992,4,10), false);
+expectGate('N12', '1991 春（年份唔啱）', compose(at(1991,4,10), (sv)=>{ sv.castingTags = [{ id:"action", label:"動作" }]; }), false);
+/* N13：N11 done＋信用>42＋1992 夏 */
+expectGate('N13', '齊條件（信用 43）', compose(at(1992,7,10), withDone('N11'), (sv)=>setCredit(sv,43)), true);
+expectGate('N13', '信用得 42（唔過 >42）', compose(at(1992,7,10), withDone('N11'), (sv)=>setCredit(sv,42)), false);
+expectGate('N13', '缺 N11', compose(at(1992,7,10), (sv)=>setCredit(sv,43)), false);
+/* N14：N13 done＋聲量>50＋1992 秋 */
+expectGate('N14', '齊條件（聲量 51）', compose(at(1992,10,10), withDone('N13'), (sv)=>{ sv.fame = 51; }), true);
+expectGate('N14', '聲量得 50（唔過 >50）', compose(at(1992,10,10), withDone('N13'), (sv)=>{ sv.fame = 50; }), false);
+expectGate('N14', '缺 N13', compose(at(1992,10,10), (sv)=>{ sv.fame = 51; }), false);
+/* N15：N14 done＋雙軌>125＋1992 秋 */
+expectGate('N15', '齊條件（雙軌 126）', compose(at(1992,10,10), withDone('N14'), (sv)=>setDual(sv,60,126)), true);
+expectGate('N15', '雙軌得 125（唔過 >125）', compose(at(1992,10,10), withDone('N14'), (sv)=>setDual(sv,60,125)), false);
+expectGate('N15', '缺 N14', compose(at(1992,10,10), (sv)=>setDual(sv,60,126)), false);
+/* N16：1992 冬 */
+expectGate('N16', '1992 冬', at(1992,12,10), true);
+expectGate('N16', '1992 秋', at(1992,10,10), false);
+expectGate('N16', '1991 冬', at(1991,12,10), false);
+/* v20a136：N17 要等 1992 屆冬台慶有結果（awardsFlags 1992/award_singho_tv＝done／skipped） */
 function withAwardDone(){ return (sv)=>{ sv.awardsFlags = { "1992/award_singho_tv": "done" }; }; }
-/* N17＝C17：C13 done＋weekMin 153（1992-12-01）＋1992 冬＋台慶有結果（事件閘）；1993-01-01 後 backstop 無條件開 */
-expectGate('C17', '齊條件', compose(at(1992,12,10), withDone('C13'), withAwardDone()), true);
-expectGate('C17', '齊條件但台慶未有結果', compose(at(1992,12,10), withDone('C13')), false);
-expectGate('C17', '缺 C13', compose(at(1992,12,10), withAwardDone()), false);
-expectGate('C17', '1992-01（weekMin 153 未到）', compose(at(1992,1,10), withDone('C13'), withAwardDone()), false);
-expectGate('C17', '1993 冬（backstop 無條件開）', compose(at(1993,12,10), withDone('C13')), true);
-expectGate('C17', '1993 冬＋缺 C13（backstop 照開）', at(1993,12,10), true);
+/* N17：N16 done＋weekMin 153（1992-12-01）＋1992 冬＋台慶有結果（事件閘）；1993-01-01 後 backstop 無條件開 */
+expectGate('N17', '齊條件', compose(at(1992,12,10), withDone('N16'), withAwardDone()), true);
+expectGate('N17', '齊條件但台慶未有結果', compose(at(1992,12,10), withDone('N16')), false);
+expectGate('N17', '缺 N16', compose(at(1992,12,10), withAwardDone()), false);
+expectGate('N17', '1992-01（weekMin 153 未到）', compose(at(1992,1,10), withDone('N16'), withAwardDone()), false);
+expectGate('N17', '1993 冬（backstop 無條件開）', compose(at(1993,12,10), withDone('N16')), true);
+expectGate('N17', '1993 冬＋缺 N16（backstop 照開）', at(1993,12,10), true);
 
 /* 同日禁：同 v17z 口徑，當日播完任一 C* → 覆寫節點都唔入可播；ignorePacing 可豁免 */
 (function(){
   setSave(compose(at(1990,6,20), (sv)=>{ sv.story.routes.route_tv = true; sv.story.lastMainDoneDay = sv.dayIndex; }));
-  const blocked = gateOf('C6');
-  ok('same-day: 當日已播 C* → C6 唔開', blocked.ok === false && blocked.reasons.indexOf('days_after_prev:same_day')>=0);
-  const waived = gateOf('C6', { ignorePacing: true });
+  const blocked = gateOf('N6');
+  ok('same-day: 當日已播 C* → N6 唔開', blocked.ok === false && blocked.reasons.indexOf('days_after_prev:same_day')>=0);
+  const waived = gateOf('N6', { ignorePacing: true });
   ok('same-day: ignorePacing 豁免 → 開', waived.ok === true);
 })();
 
 /* ================= (b) phase 三年版邊界 ================= */
 function phaseAt(mut){ setSave(mut); return StoryOC.recomputePhaseFromProgress(); }
 ok('phase: 1990 年中・無 done → P1', phaseAt(at(1990,6,1)) === 'P1');
-ok('phase: C5 done → P1.5', phaseAt(compose(at(1990,6,1), withDone('C5'))) === 'P1.5');
+ok('phase: N5 done → P1.5', phaseAt(compose(at(1990,6,1), withDone('N5'))) === 'P1.5');
 ok('phase: 1991 年到 → P2', phaseAt(at(1991,1,15)) === 'P2');
 ok('phase: 1992 年頭（1 月，冬尾唔跳級）→ P3', phaseAt(at(1992,1,15)) === 'P3');
 ok('phase: 1992 春 → P3', phaseAt(at(1992,4,15)) === 'P3');
 ok('phase: 1992 秋 → P4', phaseAt(at(1992,10,15)) === 'P4');
 ok('phase: 1992 冬（12 月）→ P5', phaseAt(at(1992,12,15)) === 'P5');
-ok('phase: 1992 春＋C14 done → P4', phaseAt(compose(at(1992,4,15), withDone('C14'))) === 'P4');
-ok('phase: 1992 春＋C13 done → P5', phaseAt(compose(at(1992,4,15), withDone('C13'))) === 'P5');
+ok('phase: 1992 春＋N13 done → P4', phaseAt(compose(at(1992,4,15), withDone('N13'))) === 'P4');
+ok('phase: 1992 春＋N16 done → P5', phaseAt(compose(at(1992,4,15), withDone('N16'))) === 'P5');
 (function(){
   setSave(compose(at(1990,6,1), (sv)=>{ sv.story.phase = 'P3'; }));
   ok('phase: 舊檔 P3 載入後 sync 唔拉低', StoryOC.syncPhaseFromProgress() === 'P3');
-  setSave(compose(at(1990,7,10), withDone('C5'), (sv)=>{ setCredit(sv,21); sv.story.phase = 'P3'; }));
-  const r = gateOf('C7');
-  ok('phase: 舊檔 phase 高都唔會誤開 C7（閘行年份唔行 phase）', r.ok === false);
+  setSave(compose(at(1990,7,10), withDone('N5'), (sv)=>{ setCredit(sv,21); sv.story.phase = 'P3'; }));
+  const r = gateOf('N7');
+  ok('phase: 舊檔 phase 高都唔會誤開 N7（閘行年份唔行 phase）', r.ok === false);
 })();
 
-/* ================= (d) C1–C5 零變化 ================= */
-['C1','C2','C3','C4','C5'].forEach(id=>{
+/* ================= (d) N1–N5 零變化 ================= */
+['N1','N2','N3','N4','N5'].forEach(id=>{
   ok('legacy: '+id+' 無 3Y 覆寫', BehaviorGate.gate3YEntry(id) === null && BehaviorGate.evalGate3Y({ id: id }) === null);
 });
 (function(){
   setSave(at(1990,4,1));
-  const locked = StoryOC.evalNode({ id: 'C5', openConditions: ['C4'] }, {});
-  ok('legacy: C5 行舊 token 閘（缺 C4 唔開）', locked.ok === false && locked.gate3Y === undefined);
-  setSave(compose(at(1990,4,1), withDone('C4')));
-  const open = StoryOC.evalNode({ id: 'C5', openConditions: ['C4'] }, {});
-  ok('legacy: C5 行舊 token 閘（C4 done 開）', open.ok === true && open.gate3Y === undefined);
-  setSave(compose(at(1990,4,10), withDone('C1')));
-  const c2 = StoryOC.evalNode({ id: 'C2', openConditions: ['C1', 'week_min:4'] }, {});
-  ok('legacy: C2 舊 week_min token 閘仍運作', c2.ok === true);
+  const locked = StoryOC.evalNode({ id: 'N5', openConditions: ['N4'] }, {});
+  ok('legacy: N5 行舊 token 閘（缺 N4 唔開）', locked.ok === false && locked.gate3Y === undefined);
+  setSave(compose(at(1990,4,1), withDone('N4')));
+  const open = StoryOC.evalNode({ id: 'N5', openConditions: ['N4'] }, {});
+  ok('legacy: N5 行舊 token 閘（N4 done 開）', open.ok === true && open.gate3Y === undefined);
+  setSave(compose(at(1990,4,10), withDone('N1')));
+  const c2 = StoryOC.evalNode({ id: 'N2', openConditions: ['N1', 'week_min:4'] }, {});
+  ok('legacy: N2 舊 week_min token 閘仍運作', c2.ok === true);
 })();
 
 console.log(fails.length ? ('FAILURES: '+fails.join(' | ')) : 'ALL PASS');

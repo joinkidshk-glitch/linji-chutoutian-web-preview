@@ -10,16 +10,16 @@
 #     後備舞台 H-70→H-110／H-76→H-116、gallery 中央唔再 −36（改 [82,162,262]），見 NOTES_V20A177.md。
 #     v20a181 resync：舞台橫向重建 480×360（4:3）／backing 720×540；FLOOR 250→262（木地板 y200–334，
 #     深 134px）；slotCx 間距 100→120／置中 212→240；人物改 PixelLab 幀 112／116／112；獎盃 glyph
-#     −96／−39→−112／−52；後備舞台改 delegate 去 awards181DrawBase；講台／圓台成批消失（C1 作廢）。
+#     −96／−39→−112／−52；後備舞台改 delegate 去 awards181DrawBase；講台／圓台成批消失（N1 作廢）。
 #     v20a174 rebase 上 main a500536（v149 已落地）：合併後 backing 636×540（邏輯 424×360 ×1.5，
 #     setTransform 1.5 均勻），見 NOTES §9；B1 斷言跟合併態，舊「636 唔入呢票」守衛已作廢。
 # B2 names 卡列跳位＋逐張淡入：(a) 卡列預留高度——.awd63-cards 常駐 flex＋visibility:hidden，
 #     .on 先可見，names 開場 frame 高唔跳；(b) stagger 200＋i*380 → 60＋i*180，第 4 張 600ms 出齊。
-# C1 gallery 中央提名人俾講台遮：v20a181 起舞台冇圓台／講台，呢節作廢——gallery 企位改 [75,240,405]
+# N1 gallery 中央提名人俾講台遮：v20a181 起舞台冇圓台／講台，呢節作廢——gallery 企位改 [75,240,405]
 #     （左／中／右分開企，罅 165px）；won 路 slot 公式置中 240／間距 120。舊 −36 移位繼續唔出現。
 # C2 glamour 174px 隱藏卡列空帶：glamour-hide 由 visibility:hidden 改 display:none，frame 收短，死位取消。
 # 唔郁守衛：cardsData／cardsHtml 唔掂（提名卡人像未拍板）、SAVE key、softRev、?v=。
-# 反證：run against pristine main a500536 -> A1／B1／B2／C1／C2 斷言全部 FAIL（唔 crash）；唔郁守衛 pristine 應 PASS。
+# 反證：run against pristine main a500536 -> A1／B1／B2／N1／N2 斷言全部 FAIL（唔 crash）；唔郁守衛 pristine 應 PASS。
 # （舊反證基底 e8c3a73；rebase 後改用 a500536——pristine 嗰陣已有 v149 636×360 backing＋M5 彩紙，
 #  所以合併態斷言（636×540＋H=360）對佢要乾淨 FAIL。）
 import os, sys
@@ -104,17 +104,17 @@ chk('B2 卡列 beat 清單唔變（names／suspense／reveal／comfort）',
 # --- C1：gallery 中央提名人俾講台遮 ---
 chk('C1 gallery 3 slots 用 [75, 240, 405]（v181：講台已撤，左／中／右分開企）',
     '[75, 240, 405]' in play_fn)
-chk('C1 舊中央 −36 移位唔再出現', 'cx -= 36' not in play_fn)
-chk('C1 won 路 slot 公式置中 240／間距 120（v181）',
+chk('N1 舊中央 −36 移位唔再出現', 'cx -= 36' not in play_fn)
+chk('N1 won 路 slot 公式置中 240／間距 120（v181）',
     '240 + (i - (slots.length - 1) / 2) * 120' in play_fn)
-chk('C1 won 路 slot 唔受中央移位影響（只喺 3 slots 先減）',
+chk('N1 won 路 slot 唔受中央移位影響（只喺 3 slots 先減）',
     'slots.length === 3' in play_fn)
 
 # --- C2：glamour 174px 隱藏卡列空帶 ---
 hide_css = css_rule('.awd63-cards.glamour-hide')
 chk('C2 glamour-hide 改 display:none（frame 收短）', 'display:none' in hide_css)
-chk('C2 唔再 visibility:hidden 留位', 'visibility:hidden' not in hide_css)
-chk('C2 syncGlamour 仍然係單一 choke point（跟 overlay 同條件）',
+chk('N2 唔再 visibility:hidden 留位', 'visibility:hidden' not in hide_css)
+chk('N2 syncGlamour 仍然係單一 choke point（跟 overlay 同條件）',
     'classList.toggle("glamour-hide", isGlam212)' in play_fn)
 chk('C2 下一 beat 恢復機制仲在（toggle，唔係單向加）',
     play_fn.count('syncGlamour(beats[') == 2)

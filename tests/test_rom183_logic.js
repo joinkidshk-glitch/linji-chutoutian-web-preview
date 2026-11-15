@@ -1,4 +1,4 @@
-// v20a183 ROM183 邏輯測試：修 v176 review B1–B4＋C1–C3／C9（B4／C5／C7 另見靜態測試＋實駕）。
+// v20a183 ROM183 邏輯測試：修 v176 review B1–B4＋N1–N3／N10（B4／N5／N7 另見靜態測試＋實駕）。
 // 反證：pristine main (6ed68f8) 冇 ROM183 函數 → 抽取即 throw → FAIL。
 // 用法：node tests/test_rom183_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -205,7 +205,7 @@ function baseSave(over){
     r === true && S.romDay.doneToday.hiu === 'tvb_longmen', 'doneToday=' + JSON.stringify(S.romDay.doneToday));
 })();
 
-/* ---------- C1：pack greet[0] 改粵語（runtime 覆寫）＋C6 教學 ---------- */
+/* ---------- C1：pack greet[0] 改粵語（runtime 覆寫）＋N6 教學 ---------- */
 (function(){
   NPC_LINES = {
     colleague: { greet: ['阿偉，今天在星河電視台廠房碰到你，真巧', '第二句'] },
@@ -218,17 +218,17 @@ function baseSave(over){
   ] };
   TUTORIAL_ZH_HK = null;
   rom183ApplyLineOverrides();
-  ok('C1 三人 greet[0] 變粵語（冇 今天／廠房／甚麼）',
+  ok('N1 三人 greet[0] 變粵語（冇 今天／廠房／甚麼）',
     NPC_LINES.colleague.greet[0].indexOf('今天') < 0 && NPC_LINES.colleague.greet[0].indexOf('廠房') < 0
     && NPC_LINES.stylist.greet[0].indexOf('今天') < 0 && NPC_LINES.reporter.greet[0].indexOf('甚麼') < 0
     && NPC_LINES.colleague.greet[0].indexOf('咁啱') >= 0);
-  ok('C1 greet[1] 之後唔郁', NPC_LINES.colleague.greet[1] === '第二句');
-  ok('C6 教學 TUT_NPC body 加巧遇句',
+  ok('N1 greet[1] 之後唔郁', NPC_LINES.colleague.greet[1] === '第二句');
+  ok('N6 教學 TUT_NPC body 加巧遇句',
     TUTORIAL.steps[1].body[1].indexOf('撞到才可以傾談／送禮') >= 0);
-  ok('C6 修正：TUT_MAP body 加第三句巧遇句（live 只行四步）',
+  ok('N6 修正：TUT_MAP body 加第三句巧遇句（live 只行四步）',
     TUTORIAL.steps[0].body.length === 3 && TUTORIAL.steps[0].body[2].indexOf('撞到才可以傾談／送禮') >= 0);
   rom183ApplyLineOverrides();
-  ok('C1/C6 覆寫冪等（再跑一次唔重複加句）',
+  ok('N1/N6 覆寫冪等（再跑一次唔重複加句）',
     (TUTORIAL.steps[1].body[1].split('撞到才可以傾談').length - 1) === 1
     && TUTORIAL.steps[0].body.length === 3);
 })();
@@ -239,20 +239,20 @@ function baseSave(over){
   NPC_LINES = {};
   S = baseSave({ dayIndex: 6 });
   rom176PlayEncounter('xu', 'ad_central', false);
-  ok('C2 未見過 → 初遇版，冇「上次春茗」',
+  ok('N2 未見過 → 初遇版，冇「上次春茗」',
     __modals.length === 1 && __modals[0].body.indexOf('上次春茗') < 0
     && __modals[0].body.indexOf('啱啱先撞到') >= 0);
   __modals = [];
   rom176PlayEncounter('xu', 'ad_central', true);
-  ok('C2 見過 → 講「上次春茗」',
+  ok('N2 見過 → 講「上次春茗」',
     __modals.length === 1 && __modals[0].body.indexOf('上次春茗') >= 0);
   __modals = []; __storyDone = { R_xu_meet: true };
   rom176PlayEncounter('xu', 'ad_central');
-  ok('C2 唔傳 metBefore 嗰陣跟 R_xu_meet（已播 → 春茗版）',
+  ok('N2 唔傳 metBefore 嗰陣跟 R_xu_meet（已播 → 春茗版）',
     __modals.length === 1 && __modals[0].body.indexOf('上次春茗') >= 0);
   __modals = []; __storyDone = {};
   rom176PlayEncounter('mei', 'ad_adm', false);
-  ok('C4 海媚開場白冇括號舞台指示',
+  ok('N4 海媚開場白冇括號舞台指示',
     __modals.length === 1 && __modals[0].body.indexOf('（佢望咗你一眼') < 0
     && __modals[0].body.indexOf('咁啱，喺呢度撞到你') >= 0);
 })();
@@ -265,16 +265,16 @@ function baseSave(over){
   rom183ApplyGiftReactFix();
   let bad = [];
   GIFT_REACT.entries.forEach(e => (e.lines || []).forEach(ln => { if (ln.indexOf('是不是') >= 0 || ln.indexOf('什麼') >= 0) bad.push(ln); }));
-  ok('C3 55 條反應句再無「是不是」／「什麼」', bad.length === 0, 'bad=' + bad.length);
-  ok('C3 條數不變（55 條，唔加唔減）', GIFT_REACT.entries.length === 55 && before === 55);
+  ok('N3 55 條反應句再無「是不是」／「什麼」', bad.length === 0, 'bad=' + bad.length);
+  ok('N3 條數不變（55 條，唔加唔減）', GIFT_REACT.entries.length === 55 && before === 55);
   const hiuThermos = GIFT_REACT.byKey['hiu:gift_thermos:liked'];
-  ok('C3 曉晴保溫瓶句變粵語（係咪見到／唔該你）',
+  ok('N3 曉晴保溫瓶句變粵語（係咪見到／唔該你）',
     !!hiuThermos && hiuThermos.lines[0].indexOf('係咪見到') >= 0);
   const starEnt = { npcKey: 'liu_bingxing', itemId: 'gift_pineapple_bun_set', pref: 'favorite', lines: ['廖炳星：「菠蘿油加奶茶券！」'] };
   GIFT_REACT.entries.push(starEnt);
   const hiuThermosN = GIFT_REACT.entries.filter(e => e.npcKey === 'hiu' && e.itemId === 'gift_thermos').length;
   rom183ApplyGiftReactFix();
-  ok('C3 星反應句唔受影響＋覆寫冪等', starEnt.lines[0] === '廖炳星：「菠蘿油加奶茶券！」'
+  ok('N3 星反應句唔受影響＋覆寫冪等', starEnt.lines[0] === '廖炳星：「菠蘿油加奶茶券！」'
     && (GIFT_REACT.entries.filter(e => e.npcKey === 'hiu' && e.itemId === 'gift_thermos').length) === hiuThermosN);
 })();
 
@@ -282,13 +282,13 @@ function baseSave(over){
 (function(){
   S = baseSave({ dayIndex: 0 });
   S.travel114 = { day: 0, used: 0 };
-  ok('C9 免費入場（travelFree）唔扣額度',
+  ok('N10 免費入場（travelFree）唔扣額度',
     travel114TrySpend({ travelFree: true }, 'agency_ho') === true && S.travel114.used === 0);
-  ok('C9 計數入場扣 1', travel114TrySpend({}, 'tvb_longmen') === true && S.travel114.used === 1);
-  ok('C9 計數入場扣到上限 2 後擋住',
+  ok('N10 計數入場扣 1', travel114TrySpend({}, 'tvb_longmen') === true && S.travel114.used === 1);
+  ok('N10 計數入場扣到上限 2 後擋住',
     travel114TrySpend({}, 'rec_star') === true && travel114TrySpend({}, 'film_cotton') === false && S.travel114.used === 2);
   S.travel114 = { day: 0, used: 2 };
-  ok('C9 額度用完，免費返程照入得（encDone）',
+  ok('N10 額度用完，免費返程照入得（encDone）',
     travel114TrySpend({ encDone: true }, 'tvb_longmen') === true && S.travel114.used === 2);
 })();
 

@@ -1,4 +1,4 @@
-# v20a203 WF4 迎新期＋Phase 2＋B3／C1／C2／C3 靜態測試。
+# v20a203 WF4 迎新期＋Phase 2＋B3／N1／N2／N3 靜態測試。
 # 用法：python3 tests/test_wf4_203_static.py [path-to-index.html]
 # 反證：喺 pristine main（6e45cdb）上行 → 冇迎新欄位／helpers、池 72、舊文案、
 #   day15 moneyMax 1000、story165CanPlay 冇典禮閘 → 多項乾淨 FAIL。
@@ -38,7 +38,7 @@ ok('事件總數 113', len(ev_ids) == 113)
 for nid in ['wf4_ev_day17', 'wf4_ev_day28', 'wf4_ev_set26', 'wf4_ev_set54']:
     ok('Phase 2 新事件在位：' + nid, nid in ev_ids)
 
-# --- B3／C1：文案去重（逐單 chunk 計，唔係全檔數） ---
+# --- B3／N1：文案去重（逐單 chunk 計，唔係全檔數） ---
 arr = re.search(r'DAILY_EVENTS_WF4\s*=\s*\[(.*?)\n\];', src, re.S)
 ok('DAILY_EVENTS_WF4 陣列搵到', arr is not None)
 chunks = {}
@@ -58,12 +58,12 @@ ok('B3「涼茶」全池只喺 day04（st17 已換場景）',
 ok('B3 st17 係士多豆漿（唔再係涼茶舖）',
    '樓下士多那支豆漿' in chunks.get('wf4_ev_st17', '')
    and '士多阿叔' in chunks.get('wf4_ev_st17', ''))
-ok('C1「點歌」全池只喺 set21 一單（st15 已改做司機追星往事）',
+ok('N1「點歌」全池只喺 set21 一單（st15 已改做司機追星往事）',
    [k for k, c in chunks.items() if '點歌' in c] == ['wf4_ev_set21'])
-ok('C1 st15 係司機追星往事',
+ok('N1 st15 係司機追星往事',
    '的士司機那段追星往事' in chunks.get('wf4_ev_st15', ''))
-ok('C1 day15 閘 moneyMax 200', 'moneyMax:200' in chunks.get('wf4_ev_day15', ''))
-ok('C1 day03 閘仲係 moneyMax 1000（分層對照）', 'moneyMax:1000' in chunks.get('wf4_ev_day03', ''))
+ok('N1 day15 閘 moneyMax 200', 'moneyMax:200' in chunks.get('wf4_ev_day15', ''))
+ok('N1 day03 閘仲係 moneyMax 1000（分層對照）', 'moneyMax:1000' in chunks.get('wf4_ev_day03', ''))
 
 # --- C2：覆寫表 7 單重映射＋12 單新 day 事件 ---
 m = re.search(r'const WF4_SCENE_OVERRIDE134 = \{(.*?)\};', src, re.S)
@@ -76,13 +76,13 @@ for ev, f in [('wf4_ev_day05', 'bg_loc_cafe_cha.jpg'),
               ('wf4_ev_day09', 'bg_loc_rec_hk.jpg'), ('wf4_ev_day11', 'bg_loc_cafe_cha.jpg'),
               ('wf4_ev_day14', 'bg_loc_film_lion.jpg'), ('wf4_ev_day15', 'bg_loc_cafe_cha.jpg'),
               ('wf4_ev_st17', 'bg_wf4_market.jpg')]:
-    ok('C2 重映射 %s → %s' % (ev, f), f in table.get(ev, ''))
+    ok('N2 重映射 %s → %s' % (ev, f), f in table.get(ev, ''))
 for nid in ['wf4_ev_day17', 'wf4_ev_day28']:
-    ok('C2 新 day 事件入覆寫表：' + nid, nid in table)
-ok('C2 覆寫表 50 行（v20a218 D-B2：＋set32／set33）', len(table) == 50)
+    ok('N2 新 day 事件入覆寫表：' + nid, nid in table)
+ok('N2 覆寫表 50 行（v20a218 D-B2：＋set32／set33）', len(table) == 50)
 for ev, f in [('wf4_ev_day05', 'bg_loc_cafe_cha.jpg'), ('wf4_ev_day09', 'bg_loc_rec_hk.jpg'),
               ('wf4_ev_day14', 'bg_loc_film_lion.jpg')]:
-    ok('C2 重映射目標檔案存在：%s' % f, os.path.isfile(os.path.join(root, 'assets/story/locs', f)))
+    ok('N2 重映射目標檔案存在：%s' % f, os.path.isfile(os.path.join(root, 'assets/story/locs', f)))
 # --- v20a206 C2：7 單再重映射＋全面掃描追加 2 單（舊 v203 期望上面已改） ---
 for ev, f in [('wf4_ev_day24', 'bg_loc_tvb_kowloon.jpg'), ('wf4_ev_day27', 'bg_loc_film_harbour.jpg'),
               ('wf4_ev_day10', 'bg_loc_film_harbour.jpg'), ('wf4_ev_st13', 'bg_loc_film_harbour.jpg')]:
@@ -103,14 +103,14 @@ ok('v20a206 C2 的士／夜市／屋企圖唔再派去 7 單錯配場景',
        ('wf4_ev_day22', 'bg_wf4_taxi.jpg'), ('wf4_ev_day24', 'bg_wf4_home.jpg'),
        ('wf4_ev_day27', 'bg_wf4_taxi.jpg')]))
 
-# --- C3：典禮進行中閘住強制播 ---
+# --- N3：典禮進行中閘住強制播 ---
 ok('awards62CeremonyActive 存在（查 .awd62-stage）',
    'function awards62CeremonyActive()' in src and '".awd62-stage"' in src)
 can = src[src.find('function story165CanPlay'):src.find('function story165ModalOpen')]
 ok('story165CanPlay 有典禮閘（awards62CeremonyActive）', 'awards62CeremonyActive()' in can)
-ok('C3 典禮閘排喺 story165NextOpen 之前（閘住先，唔係播完先驗）',
+ok('N3 典禮閘排喺 story165NextOpen 之前（閘住先，唔係播完先驗）',
    0 <= can.find('awards62CeremonyActive()') < can.find('return story165NextOpen()'))
-ok('C3 典禮舞台係全屏 overlay（真人玩家撳唔穿：position:fixed inset:0）',
+ok('N3 典禮舞台係全屏 overlay（真人玩家撳唔穿：position:fixed inset:0）',
    '.awd62-stage{position:fixed;inset:0' in src)
 
 print('TOTAL ' + ('PASS' if not fails else 'FAIL %d' % len(fails)))

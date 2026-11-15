@@ -1,5 +1,5 @@
-# v20a200 修 v194 設計 review C1＋C2・static tests：
-# C1：gap 句加「今年」——邀請函閘句（awards62GateLineHtml）＋季前提示（awards62SeasonHints）
+# v20a200 修 v194 設計 review N1＋N2・static tests：
+# N1：gap 句加「今年」——邀請函閘句（awards62GateLineHtml）＋季前提示（awards62SeasonHints）
 #     兩邊一齊加；計數規則本身唔郁（countYearMediumWraps 繼續按 wrappedDay 曆法年計入嗰屆，
 #     gapWorks＝wrapMin－wraps；跨年唔計係既定口徑）。
 # C2：旁聽請柬 rep 行分流——awards63InviteBitHtml 按 pack.tier === "gallery" 改「入場觀禮」，
@@ -53,40 +53,40 @@ hint_fn = slice_fn('awards62SeasonHints')
 invite_fn = slice_fn('renderAwardInviteHtml')
 rep_fn = slice_fn('awards63InviteBitHtml')
 
-# --- C1：兩邊 gap 句都有「今年」，舊無年份寫法清走 ---
-chk('C1：邀請函閘句 gap 句加「今年」', '今年仲差 " + st.gapWorks' in gate_fn)
-chk('C1：邀請函閘句無年份舊寫法清走', '"仲差 " + st.gapWorks' not in src)
-chk('C1：季前提示 gap 句加「今年」', '今年仲差 " + sd.gapWorks' in hint_fn)
-chk('C1：季前提示無年份舊寫法清走', '：仲差 " + sd.gapWorks' not in src)
-chk('C1：兩邊 gap 句寫法一致（同一個「今年仲差 N 部 X 作品先夠入圍」句式）',
+# --- N1：兩邊 gap 句都有「今年」，舊無年份寫法清走 ---
+chk('N1：邀請函閘句 gap 句加「今年」', '今年仲差 " + st.gapWorks' in gate_fn)
+chk('N1：邀請函閘句無年份舊寫法清走', '"仲差 " + st.gapWorks' not in src)
+chk('N1：季前提示 gap 句加「今年」', '今年仲差 " + sd.gapWorks' in hint_fn)
+chk('N1：季前提示無年份舊寫法清走', '：仲差 " + sd.gapWorks' not in src)
+chk('N1：兩邊 gap 句寫法一致（同一個「今年仲差 N 部 X 作品先夠入圍」句式）',
     gate_fn.count('今年仲差') == 1 and hint_fn.count('今年仲差') == 1)
 
 # --- C1：計數規則本身唔郁 ---
 count_fn = slice_fn('countYearMediumWraps')
-chk('C1：計數繼續按 wrappedDay 曆法年計入嗰屆（跨年唔計，口徑唔郁）',
+chk('N1：計數繼續按 wrappedDay 曆法年計入嗰屆（跨年唔計，口徑唔郁）',
     'awardsYearFromDay(h.wrappedDay!=null ? h.wrappedDay : h.dayIndex)' in count_fn)
-chk('C1：gapWorks 定義唔郁（wrapMin－wraps）',
+chk('N1：gapWorks 定義唔郁（wrapMin－wraps）',
     'gapWorks: Math.max(0, wrapMin - wraps)' in src)
-chk('C1：nominee 分支「嗰年 N 部…爭獎」唔郁',
+chk('N1：nominee 分支「嗰年 N 部…爭獎」唔郁',
     '入圍門檻已達標：嗰年 " + st.wraps' in gate_fn)
-chk('C1：角色閘句「嗰年未做過主角／配角級作品」唔郁',
+chk('N1：角色閘句「嗰年未做過主角／配角級作品」唔郁',
     '嗰年未做過主角／配角級作品，入圍唔到演員獎' in gate_fn)
 
 # --- C2：rep 行按 tier 分流 ---
-chk('C2：rep 行按 pack.tier === "gallery" 分流', 'pack.tier === "gallery"' in rep_fn)
-chk('C2：gallery 嗰陣寫「入場觀禮」', '入場觀禮' in rep_fn)
-chk('C2：nominee／won 照舊寫「爭獎」', '爭獎' in rep_fn)
+chk('N2：rep 行按 pack.tier === "gallery" 分流', 'pack.tier === "gallery"' in rep_fn)
+chk('N2：gallery 嗰陣寫「入場觀禮」', '入場觀禮' in rep_fn)
+chk('N2：nominee／won 照舊寫「爭獎」', '爭獎' in rep_fn)
 def strip_comments(s):
     return re.sub(r'/\*.*?\*/', '', s, flags=re.S)
 
 
-chk('C2：rep 行「爭獎」喺函數內恰好 1 處（淨係非 gallery 分支；註解唔計）',
+chk('N2：rep 行「爭獎」喺函數內恰好 1 處（淨係非 gallery 分支；註解唔計）',
     strip_comments(rep_fn).count('爭獎') == 1)
-chk('C2：fallback 行同樣分流（唔會兜返舊寫法）',
+chk('N2：fallback 行同樣分流（唔會兜返舊寫法）',
     '入場觀禮' in invite_fn and '爭獎' in invite_fn)
-chk('C2：閘句「爭獎」淨係 nominee 分支有（gallery 閘句零爭獎；註解唔計）',
+chk('N2：閘句「爭獎」淨係 nominee 分支有（gallery 閘句零爭獎；註解唔計）',
     strip_comments(gate_fn).count('爭獎') == 1)
-chk('C2：海報＋同屆提名照留（改寫法唔係刪行）',
+chk('N2：海報＋同屆提名照留（改寫法唔係刪行）',
     'awd63-invite-poster' in rep_fn and '同屆提名' in rep_fn)
 
 # --- v192 殘留：nominee 行改標籤唔改 slate；gallery 唔郁 ---

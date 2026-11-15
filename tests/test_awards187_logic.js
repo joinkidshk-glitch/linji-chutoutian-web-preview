@@ -1,5 +1,5 @@
 // v20a211 B1 resync：雙幾何（矮 480×432／高 480×540，HS211／HSC211＝×1.25）——短基準值不變，高 viewport 按比例換算；見 NOTES_V20A211。
-// v20a187 修 v181 設計 review B1＋C1–C6・邏輯測試：
+// v20a187 修 v181 設計 review B1＋N1–N6・邏輯測試：
 // B1：地板收窄 y228–310（深 82px＝22.8% 高；v20a207 B2 resync：地板 y274–372，深 98px＝22.7% 高；
 //     地板深／人物高 98/108≈0.91、腳底以下空地板 58px＝0.54 倍，
 //     貼近參考圖 0.64／0.43 方向；舊 y200–334／134px 係工人 NOTES 讀錯參考圖，見 review §4 B1）。
@@ -14,7 +14,7 @@
 //     評估後 keep：本檔只釘死 trade-off 仲在（glamour-hide display:none），唔當未修。
 // C6：獎盃 glyph −112→−110（牌底 149.4 到 glyph 頂 152，留 2.6 邏輯罅；glyph 底 170 離頭頂 173 仲有 3px）。
 // 唔郁守衛：FLOOR 314（v20a207 B2）／企位／beats 全長／fanfare／彩紙／SAVE key／softRev／?v=。
-// 反證：對 pristine main b1b6092 行 → B1／C1／C2／C3／C4／C6 新斷言全部 FAIL（唔 crash）；守衛 pristine 應 PASS。
+// 反證：對 pristine main b1b6092 行 → B1／N1／N2／N3／N4／N6 新斷言全部 FAIL（唔 crash）；守衛 pristine 應 PASS。
 // 用法：node tests/test_awards187_logic.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -105,11 +105,11 @@ function cssRule(sel){
 const panelCss = cssRule('.awd63-glamour-panel');
 const panelImgCss = cssRule('.awd63-glamour-panel>img');
 ok('C1 glamour panel 改 flex-end（海報＋cap 沉底，唔再垂直置中頂住牌）', panelCss.includes('justify-content:flex-end'));
-ok('C1 海報 max-height 40%→calc(40cqh - 8px)（v20a190 等價轉換；max-width 88% 唔郁）',
+ok('N1 海報 max-height 40%→calc(40cqh - 8px)（v20a190 等價轉換；max-width 88% 唔郁）',
   panelImgCss.includes('max-height:calc(40cqh - 8px)') && panelImgCss.includes('max-width:88%') && !panelImgCss.includes('max-height:40%') && !panelImgCss.includes('max-height:60%'));
 /* 最差情況計數（邏輯單位）：panel 高 432；img ≤172.8；cap 兩行＋padding＋gap 預 45 → 海報頂 ≥214 ＞ 牌底 179.3（v20a207 B2） */
 ok('C1 海報頂計數 ≥214 邏輯＞牌底 179.3（432−172.8−45）', (432 - 0.40 * 432 - 45) > 179.3);
-ok('C1 panel 闊 44%＋0.93 暗底唔郁（v20a190：全高改做貼底縮短，見 test_awards190；牌 z-index 3 照喺上面）',
+ok('N1 panel 闊 44%＋0.93 暗底唔郁（v20a190：全高改做貼底縮短，見 test_awards190；牌 z-index 3 照喺上面）',
   panelCss.includes('flex:0 0 44%') && panelCss.includes('rgba(10,6,18,.93)'));
 
 /* ================= C2：卡罅 8→24px（CSS＋角標計數） ================= */
@@ -119,20 +119,20 @@ const gap = gapM ? Number(gapM[1]) : -1;
 ok('C2 卡罅 gap 24px（舊 8px 唔再出現）', gap === 24);
 ok('C2 角標唔撞：gap 24 − 你徽右出 7 − 🏆 左出 7 ＝ 10px 罅', gap - 7 - 7 === 10);
 ok('C2 卡列總闊 4×88＋3×24＝424px ≤ 760 框', 4 * 88 + 3 * gap <= 760);
-ok('C2 🏆 仲喺左上角（left:-7，唔搬去右上角——免得同「你」徽爭同一個 ::after／同邊）',
+ok('N2 🏆 仲喺左上角（left:-7，唔搬去右上角——免得同「你」徽爭同一個 ::after／同邊）',
   cssRule('.awd63-card.win::after').includes('left:-7px'));
-ok('C2 「你」徽仲喺右上角（right:-7 唔郁）', cssRule('.awd63-card.me::after').includes('right:-7px'));
+ok('N2 「你」徽仲喺右上角（right:-7 唔郁）', cssRule('.awd63-card.me::after').includes('right:-7px'));
 
-/* ================= C3：out beat 照畫人物（play 原文） ================= */
+/* ================= N3：out beat 照畫人物（play 原文） ================= */
 const outIdx = playSrc.indexOf('if(id === "out"){');
 const outBlock = outIdx >= 0 ? playSrc.slice(outIdx, playSrc.indexOf('};', outIdx)) : '';
 ok('C3 out 分支畫人物（唔再淨係畫 overlay）', outBlock.includes('drawFigure'));
-ok('C3 人物 alpha 跟 step 遞減（1−step×0.25，overlay 步進 0.25 唔郁）',
+ok('N3 人物 alpha 跟 step 遞減（1−step×0.25，overlay 步進 0.25 唔郁）',
   outBlock.includes('1 - step * 0.25') && outBlock.includes('step * 0.25'));
 ok('C3 won 只留燕尾服阿偉（跟 glamour 一致，tuxedo）', outBlock.includes('tuxedo: true') && outBlock.includes('best === "won"'));
 ok('C3 其餘跟 comfort 暗度（player 1／得主 0.85／其他 0.7 再 ×fa）',
   outBlock.includes('winnerSlot ? 0.85 : 0.7'));
-ok('C3 out 仲係 500ms（唔加 beat）', beatsSrc.includes('id: "out", ms: 500'));
+ok('N3 out 仲係 500ms（唔加 beat）', beatsSrc.includes('id: "out", ms: 500'));
 
 /* ================= C4：walkup y−24（play 原文，v20a218 C-C4） ================= */
 const walkIdx = playSrc.indexOf('if(id === "walkup"){');

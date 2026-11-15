@@ -1,6 +1,6 @@
 // v20a185 GIFT185 邏輯測試：抽 openGiftPick 嘅真 row 模板 literal，用 stub 評值，
 // 驗渲染出嚟嘅卡片 HTML 結構——卡名入 .gift-pick-name span、數量入 .gift-pick-count span，
-// 名＋×N 同行唔斷行（C1），而唔係舊版裸 `${item.name} ×${count}`（會換行跌孤兒 ×N）。
+// 名＋×N 同行唔斷行（N1），而唔係舊版裸 `${item.name} ×${count}`（會換行跌孤兒 ×N）。
 // 另驗 v185 CSS 規則在位（ellipsis＋nowrap＋grid 軌 min-width:0，B1 路線 a）。
 // 反證：pristine main (01ddcaa) row 模板冇 spans、冇 v185 規則 → 多項 FAIL（唔 crash）。
 // 用法：node tests/test_gift185_logic.js [path-to-index.html]
@@ -51,20 +51,20 @@ if (tplStart >= 0){
   }
 }
 
-// ---- v185 CSS 規則（B1 路線 a：卡片矮返＋唔撐闊 grid 軌；C1：名 ellipsis＋數量 nowrap） ----
+// ---- v185 CSS 規則（B1 路線 a：卡片矮返＋唔撐闊 grid 軌；N1：名 ellipsis＋數量 nowrap） ----
 ok('v185 標記在位', html.includes('v20a185 B1+C1'));
 const nameRule = html.includes('#gift-pick-list .n .gift-pick-name{ flex:1 1 auto !important; min-width:0 !important; overflow:hidden !important; text-overflow:ellipsis !important; white-space:nowrap !important; }');
-ok('C1 名 span：flex:1＋min-width:0＋ellipsis＋nowrap', nameRule);
-ok('C1 數量 span：flex:0 0 auto＋nowrap',
+ok('N1 名 span：flex:1＋min-width:0＋ellipsis＋nowrap', nameRule);
+ok('N1 數量 span：flex:0 0 auto＋nowrap',
   html.includes('#gift-pick-list .n .gift-pick-count{ flex:0 0 auto !important; white-space:nowrap !important; }'));
-ok('C1 .n 行 flex 排（icon＋名＋數量一行）',
+ok('N1 .n 行 flex 排（icon＋名＋數量一行）',
   html.includes('#gift-pick-list .n{ display:flex !important; align-items:baseline !important; gap:4px !important; }'));
-ok('C1 icon 唔縮（.ic112 flex:0 0 auto）',
+ok('N1 icon 唔縮（.ic112 flex:0 0 auto）',
   html.includes('#gift-pick-list .n .ic112{ flex:0 0 auto !important; }'));
 ok('B1 grid 軌唔被 nowrap 名撐闊（.act min-width:0）',
   html.includes('#gift-pick-list .act{ min-width:0 !important; }'));
 // v183 C7 兩欄設計原封不動（淨係修遮擋，唔推翻）
-ok('C7 700 media query 兩欄原封不動',
+ok('N7 700 media query 兩欄原封不動',
   html.includes('@media (max-height:720px){ #gift-pick-list{ display:grid; grid-template-columns:1fr 1fr;'));
 
 console.log(fails ? 'FAILURES: ' + fails : 'ALL PASS');

@@ -140,18 +140,18 @@ ok('舊檔 day746：E1（2 日前）唔歸檔', !S.news82.arc.E1);
 news82Tick();
 ok('舊檔 day746：E1 照常入隊刊出', _enqueued.some(e=>e.worldId==='E1'));
 
-// ---------- 6. C11 追加抉擇 ----------
+// ---------- 6. N8 追加抉擇 ----------
 eval(extractFn('wf3PrepareNode82'));
 _intel = { intel_yip_truth: true };
-const c11 = { id:'C11', choices:[{ id:'C11_a' }, { id:'C11_b' }] };
+const c11 = { id:'N8', choices:[{ id:'N8_a' }, { id:'N8_b' }] };
 const prep = wf3PrepareNode82(c11);
-ok('持有真相 → 追加 C11_d', !!prep && prep.choices.length===3 && prep.choices[2].id==='C11_d');
-ok('C11_d 落旗 flag_yip_warned82', !!prep && prep.choices[2].effects.flags.indexOf('flag_yip_warned82')>=0);
+ok('持有真相 → 追加 N8_d', !!prep && prep.choices.length===3 && prep.choices[2].id==='N8_d');
+ok('N8_d 落旗 flag_yip_warned82', !!prep && prep.choices[2].effects.flags.indexOf('flag_yip_warned82')>=0);
 ok('原節點冇被改（淺拷貝）', c11.choices.length===2);
 _intel = {};
 ok('冇真相 → 唔追加', wf3PrepareNode82(c11)===null);
 _intel = { intel_yip_truth: true };
-ok('其他節點唔受影響', wf3PrepareNode82({ id:'C10', choices:[] })===null);
+ok('其他節點唔受影響', wf3PrepareNode82({ id:'N11', choices:[] })===null);
 ok('已追加過唔重複', wf3PrepareNode82(prep)===null);
 
 // ---------- 7. mergeWf3Gigs：情報先注入、完成即收 ----------
@@ -232,7 +232,7 @@ _storyFlags = { flag_yip_warned82: true };
 wf3SettleTick();
 ok('鏈 D：提點 → 經理人債權', S.mockCredits.some(c=>c.id==='credit_wf3_yip_manager'));
 _storyFlags = { flag_miss_leak: true };
-_storyDone = { C11: true };
+_storyDone = { N8: true };
 _intel = { intel_yip_truth: true };
 wf3SettleTick();
 ok('鏈 D：爆料＋知真相 → 回音報紙', _enqueued.some(e=>e.eventKey==='wf3:yip_echo'));
@@ -269,7 +269,7 @@ ok('M27 餘波對白：過窗唔出', !wf3TalkActionsAt('agency_ho').some(a=>a.i
 S = freshS(500);
 S.wf3 = { luSettled: 1 };
 ok('鏈 A 場務對白：結算後喺星河出', wf3TalkActionsAt('tvb_longmen').some(a=>a.id==='W3_lu_pa'));
-_storyDone = { C15: true };
+_storyDone = { N12: true };
 _storyFlags = { flag_stunt_double: true };
 ok('方小龍傾談：跳咗版', wf3TalkActionsAt('film_harbour').some(a=>a.id==='W3_fong_jump') && !wf3TalkActionsAt('film_harbour').some(a=>a.id==='W3_fong_hold'));
 _storyFlags = {};

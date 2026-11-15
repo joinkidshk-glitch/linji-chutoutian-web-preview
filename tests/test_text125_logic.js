@@ -101,7 +101,7 @@ ok('3 句 text beats 行完 → mode=choices', _sess.mode === 'choices');
 ok('行完之後 currentLine 回 null', currentLine() === null);
 
 /* ---- (2) 舊形不變：lines 多行／line 單句／空 beat ---- */
-_sess = { node: { id: 'C1', beats: [
+_sess = { node: { id: 'N1', beats: [
   { speakerId: 'agent', speaker: '何生', kind: 'npc', lines: ['第一句', '第二句'] },
   { speakerId: 'agent', speaker: '何生', kind: 'npc', line: '單句行' },
   { speakerId: 'agent', speaker: '何生', kind: 'npc' }

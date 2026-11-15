@@ -6,7 +6,7 @@
 # 一、強制播三函數在位（story165NextOpen／CanPlay／TryForcedPlay）
 # 二、掛點：goToMapForBrowse 尾段——kickScheduleIfNeeded 之後、地圖顯示之前
 # 三、守門：手帳未確定順延（唔靜默提交）、結局鎖／劇情進行中唔播
-# 四、選幕：只取 C*／C6F 主線、N 次序、ignoreSheetLoc（唔驗地點）
+# 四、選幕：只取 N*／N6F 主線、N 次序、ignoreSheetLoc（唔驗地點）
 # 五、普通 StoryPlay.start（唔用 opts.force）；omit 節點先寫 offer；唔經 openLoc／唔食額度
 # 六、進度頁「播呢幕」掣拎走（v155 B1 三態根除）；委派一併拎走
 # 七、（刪）home-story-hint 係死碼（v20a71 PART3C 起 enterHome 唔再渲染 storyHomeHintHtml，
@@ -14,7 +14,7 @@
 #    storyMapHintHtml（死 code），實時提示只剩 storyMainProgressLine 嘅「下一幕」句式
 #    ＋進度頁逐行前置句；死碼留返原樣，唔做無謂 churn。
 # 八、頒獎禮：推辭都播典禮——電視直播版（gallery 旁聽弧重用）；得主規則唔變
-# 九、閘條件唔變：C17 weekMin 153＋backstopDay 1096、C18 48、C19 61、額度 cap 2
+# 九、閘條件唔變：N17 weekMin 153＋backstopDay 1096、N18 48、N19 61、額度 cap 2
 # 反證：喺 pristine main（v160，276ffa1）上行會 FAIL（冇 story165 函數／掛點／
 # declined165，進度頁仲有播掣）。
 # 用法：python3 tests/test_story165_static.py [path-to-index.html]
@@ -65,10 +65,10 @@ ok('守門：劇情進行中唔播', 'isStoryPlayActive' in c and '_storyPlayLoc
 n = seg('function story165NextOpen(){', 'function story165CanPlay(){', 2500)
 ok('選幕：用 ignoreSheetLoc 嘅 open 快照（唔驗地點）',
    'listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true })' in n)
-ok('選幕：只取 C*／C6F 主線（唔取 R_／WF4／巧遇）',
-   'r.id==="C6F" || /^C\\d+$/.test(r.id)' in n)
-ok('選幕：N 次序 C1..C6、C6F、C18、C19、C7..C17',
-   '"C1","C2","C3","C4","C5","C6","C6F","C18","C19","C7"' in n)
+ok('選幕：只取 N*／N6F 主線（唔取 R_／WF4／巧遇）',
+   'r.id==="N6F" || /^N\\d+$/.test(r.id)' in n)
+ok('選幕：N 次序 N1..N6、N6F、N18、N19、N7..N17',
+   '"N1","N2","N3","N4","N5","N6","N6F","N18","N19","N7"' in n)
 
 # --- 五、普通 start，唔用 force；唔經 openLoc ---
 t = seg('function story165TryForcedPlay(afterCont){', '/** v17p PLAN 9.1', 3000)
@@ -115,9 +115,9 @@ ok('得主規則唔變：gallery 唱名只列 fellows、得主＝fellows[0]（�
    'gWin = fellows.length ? fellows[0] : null;' in b)
 
 # --- 九、閘條件唔變 ---
-ok('C17 結局閘唔變：weekMin 153＋backstopDay 1096',
+ok('N17 結局閘唔變：weekMin 153＋backstopDay 1096',
    'weekMin: 153' in src and 'backstopDay: 1096' in src)
-ok('C18／C19 前置唔變：weekMin 48／61', 'weekMin: 48' in src and 'weekMin: 61' in src)
+ok('N18／N19 前置唔變：weekMin 48／61', 'weekMin: 48' in src and 'weekMin: 61' in src)
 ok('出行額度唔變：cap 2，計數只喺 openLoc（travel114TrySpend 只一處呼叫）',
    'TRAVEL114_DAILY_CAP = 2' in src and src.count('travel114TrySpend(') == 2)
 

@@ -98,7 +98,7 @@ const anonSteady = newspaperWrapFaceLines(subj, 'steady');
 ok('anon steady dek keeps 不搶戲', anonSteady.dek.includes('不搶戲'));
 
 // ---- 關聯鍵 ----
-ok('topic C3 -> rival:gao', newspaperTopicKey({ eventKey:'story:C3:hard' })==='rival:gao');
+ok('topic N3 -> rival:gao', newspaperTopicKey({ eventKey:'story:N3:hard' })==='rival:gao');
 ok('topic wrap starHint via gigId', newspaperTopicKey({ eventKey:'wrap:gig_lu:12' })==='star:陸柏言');
 ok('topic wrap starHint mai', newspaperTopicKey({ eventKey:'wrap:gig_mai:3', headline:'', dek:'', workTitle:'' })==='star:麥震東');
 ok('topic text scan star', newspaperTopicKey({ headline:'麥震東新片開鏡', dek:'', workTitle:'' })==='star:麥震東');
