@@ -41726,9 +41726,11 @@ function wf4PlayEvent(ev, doneCb){
        （上半截空白招牌，center 橫裁裁出招牌帶＋檔口頂；75% 裁到簷篷＋菜／魚檔，原圖 y 723–1038／1280）；
        的士（bg_wf4_taxi.jpg）20% 偏向 747＋啟德跑道（review 模擬驗證：20% 成架 747 入晒鏡＋跑道燈齊，
        25% 機頂微裁、30% 已出框）。v20a218 D-B3：維港電影（bg_loc_film_harbour.jpg）15% 偏向窗＋天——
-       左緣佈告板頂約原圖 y 42%，15% 手機窗口約 y 11–37%／桌面約 13–25%，兩邊都避開塊板；只限呢三張圖；
+       左緣佈告板頂約原圖 y 42%，15% 手機窗口約 y 11–37%／桌面約 13–25%，兩邊都避開塊板。v20a227 C1：電視台信件房
+       （bg_loc_tvb_kowloon.jpg）80% 偏向枱面信件——原圖 720×1280 直倒；信件疊 y 75.5–82%、打字機 y 61.8–69.8%；
+       center 50% 手機窗口約 y 38–62%（電視牆＋窗，信件零曝光）；80% 窗口約 y 61–85%（打字機＋信件疊＋佈告板底入晒鏡，PIL 模擬驗證）；只限呢四張圖；
        set08／st04 唔加，唔郁共用 .wf4-scene105 嘅 center；舞台版 sp-bg-layer 唔郁。 */
-    const scenePos146 = scene105 && scene105.indexOf("bg_wf4_market.jpg")>=0 ? ";background-position:center 75%" : scene105 && scene105.indexOf("bg_wf4_taxi.jpg")>=0 ? ";background-position:center 20%" : scene105 && scene105.indexOf("bg_loc_film_harbour.jpg")>=0 ? ";background-position:center 15%" : "";
+    const scenePos146 = scene105 && scene105.indexOf("bg_wf4_market.jpg")>=0 ? ";background-position:center 75%" : scene105 && scene105.indexOf("bg_wf4_taxi.jpg")>=0 ? ";background-position:center 20%" : scene105 && scene105.indexOf("bg_loc_film_harbour.jpg")>=0 ? ";background-position:center 15%" : scene105 && scene105.indexOf("bg_loc_tvb_kowloon.jpg")>=0 ? ";background-position:center 80%" : "";
     const sceneHtml105 = scene105 ? `<div class="wf4-scene105" style="background-image:url(&quot;${scene105}&quot;)${scenePos146}" aria-hidden="true"></div>` : "";
     const head = `${sceneHtml105}<h3>${wf4Esc(ev.title||"日常")}</h3><p class="sub">${wf4Esc(ev.setting||"")}</p>`;
     /* v20a108 D-8（二期）：有全身資產講者（阿偉）嘅事件，逐句行 DLG106 舞台；

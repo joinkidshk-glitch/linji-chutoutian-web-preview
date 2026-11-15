@@ -12,6 +12,7 @@
 # v20a218 resync：index.html 淨 +136 行（見 qa218/resync218.py difflib 對位核實純漂移），總行數 62758→62894、DEF 57230→57350。
 # v20a219 resync：index.html 淨 +3 行（CONTRA98 stub，插入點舊 L31845 之後），總行數 62894→62897、DEF 57350→57353（difflib 對位核實純漂移，見 qa219/resync219.py）。
 # v20a225 resync：index.html 淨 +272 行（對手線強化 rebase 上 main 719975f；difflib 對位核實純漂移，見 qa225/resync225.py），總行數 62860→63132、DEF 57316→57527。
+# v20a227 resync：index.html 淨 +2 行（WF4 day24 banner 裁切位：註解 1 行→3 行，插入點舊 L41729；chain 原地換值行數不變），總行數 63132→63134、DEF 57527→57529（difflib 對位核實純漂移，見 qa227/resync227.py）。
 # v20a222 resync：index.html 淨 −37 行（P3 書面語改寫：刪 G1 rumorEcho／echo 物件＋G9 nodeRipple 死碼；其餘 917 句為同行改寫，行數不變），總行數 62897→62860、DEF 57353→57316（內容逐字核實純漂移）。
 # -*- coding: utf-8 -*-
 # v20a197 resync：index.html 淨 +94 行，總行數 60490→60584、DEF 54986→55080、L4862 行 4889→4935（difflib 對位核實純漂移，見 qa197/resync197.py；B4 補丁再 +9 行）。
@@ -93,9 +94,9 @@ def blend(fg, bg, a):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 62860（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136＋v219 +3＋v222 −37＋v225 +272）', src.count('\n') == 63132)
-ok('零行數漂移：openLoc DEF 行 57527（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +120＋v219 +3＋v222 −37＋v225 +211，travel114 釘行）',
-   len(lines) >= 57527 and 'function openLoc(id, opts){' in lines[57526])
+ok('零行數漂移：總行數 63134（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136＋v219 +3＋v222 −37＋v225 +272＋v227 +2）', src.count('\n') == 63134)
+ok('零行數漂移：openLoc DEF 行 57529（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +120＋v219 +3＋v222 −37＋v225 +211＋v227 +2，travel114 釘行）',
+   len(lines) >= 57529 and 'function openLoc(id, opts){' in lines[57528])
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫，qa215 resync 核實純漂移（總行數 62352→62492；DEF 56824→56964）。
 ok('零行數漂移：L4862 仲係 v169／v171／v173 同行（v181 CSS ＋13，kwan151／tang152 釘行已一併 resync）',
    len(lines) >= 5163 and 'loc-acts-more171::after' in lines[5162] and 'act-locked171' in lines[5162])
