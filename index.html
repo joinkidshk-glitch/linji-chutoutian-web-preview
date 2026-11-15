@@ -22434,9 +22434,9 @@ const ROMANCE_LAN_PA_OVERRIDES = {
     artId: "rom_lan_crisis", romanceLine: "lan", arcBeat: "crisis", parallelOk: true, pcSilent: true, playerOffer: false
   },
   R_lan_ending: {
-    id: "R_lan_ending", phase: "P5", title: "最後一版通告牌", when: "1990冬",
+    id: "R_lan_ending", phase: "P5", title: "最後一版通告牌", when: "1990秋",
     setting: "星河電視台後台；年尾大騷煞科嗰晚",
-    eraTag: "era_1990_winter_finale",
+    eraTag: "era_1990_autumn_finale",
     cast: ["藍若曦", "阿偉"],
     synopsis: "年尾大騷煞科。藍若曦照舊幫阿偉撳住個通告牌——由第一日喺廠景門口撞散啲牌，到今晚最後一版。散場嗰陣佢講：第日你唔使我撳牌嗰陣，請返我食飯。嗰一步，行唔行，由阿偉。",
     beats: [
@@ -31834,15 +31834,18 @@ const CONTRA98_WHEN_FIX = {
   A_fong_ending:["1990冬","era_1990_winter_finale"], A_tong_ending:["1990冬","era_1990_winter_finale"],
   A_ho_ending:["1990冬","era_1990_winter_finale"], A_gao_ending:["1990冬","era_1990_winter_finale"],
   A_lei_ending:["1990冬","era_1990_winter_finale"],
-  R_vera_ending:["1990冬","era_1990_winter_finale"], R_hiu_ending:["1990冬","era_1990_winter_finale"],
-  R_choi_ending:["1990冬","era_1990_winter_finale"], R_xu_ending:["1990冬","era_1990_winter_finale"],
+  R_vera_ending:["1990冬","era_1990_winter_finale"], R_hiu_ending:["1990秋","era_1990_autumn_finale"],
+  R_choi_ending:["1990秋","era_1990_autumn_finale"], R_xu_ending:["1990秋","era_1990_autumn_finale"],
   /* v20a152：R_tang_ending 行已刪（感情線收尾取消） */
   A_ko_ending:["1990冬","era_1990_winter"], A_ho_crisis:["1990冬","era_1990_winter"],
-  R_choi_crisis:["1990冬","era_1990_winter_gossip"],
+  R_choi_crisis:["1989冬","era_1989_winter_gossip"],
   A_hakfan_crisis:["1990秋","era_1990_autumn"], A_gao_crisis:["1990秋","era_1990_autumn"],
-  R_vera_crisis:["1990秋","era_1990_autumn_promo"], R_hiu_crisis:["1990秋","era_1990_autumn_anni"],
+  R_vera_crisis:["1990秋","era_1990_autumn_promo"], R_hiu_crisis:["1989秋","era_1989_autumn_anni"],
   R_xu_push2:["1990秋","era_1990_autumn_capital"], R_xu_crisis:["1990秋","era_1990_autumn_capital"],
-  R_tang_push2:["1990秋","era_1990_autumn"], R_tang_crisis:["1990秋","era_1990_autumn_capital"]
+  R_tang_push2:["1990秋","era_1990_autumn"], R_tang_crisis:["1990秋","era_1990_autumn_capital"],
+  /* v20a219：R_tang_meet_stub 衞生——pack 原值 when 1991／eraTag era_1991_autumn_capital，
+     不加表 walk 後變 1993（玩家見唔到，stub 本身永不入玩家列表；只求表內外一致）。 */
+  R_tang_meet_stub:["1989秋","era_1989_autumn_capital"]
 };
 function contra98FixNodeWhen(packs){
   (packs||[]).forEach(p=>{
@@ -42654,7 +42657,7 @@ function choice47FamilyCardHtml(){
    門檻定 6——容許成條鏈有一次「次佳」揀法（例如 meet 揀疏離 0、其餘全取），但任何負值揀法
    （push1 自私 −1／crisis 鬧翻 −2）都會跌出門檻，符合「認真行完條線先有資格」嘅高門檻定位。
    （舊 pack C6 約會 choice 曾經係 +2 rel 來源，已隨 C6 對齊 Qwen 移除，唔再計入。）
-   窗口（commit48，唔係 F4）：1990 年秋起（choice47SeasonReached(1990,"秋")，即 N15 秋末至 N17 冬末；過年唔鎖死），
+   窗口（commit48，唔係 F4）：1992 年秋起（choice47SeasonReached(1992,"秋")，即 N15 秋末至 N17 冬末；過年唔鎖死），
    加前置：該線 crisis 節點已 done（R_hiu_crisis／R_choi_crisis），確保係行到尾段先收束。
    旗名跟 pack 既有先例 flag_hiu_commit／flag_choi_commit（pack R_*_ending
    HE choice 本身都寫呢兩隻旗，兩條路徑寫入同一個旗，4-10 讀取一致；v20a152 起鄧麗萍線已刪，唔再有 flag_tang_commit）。
@@ -42743,7 +42746,7 @@ function commit48Available(id){
   if(choice47StoryFlag(def.otherFlag)) return false;     /* 互斥：已 commit 另一線 */
   if(!choice47StoryDone(def.crisis)) return false;       /* 未行到該線 crisis，唔好提早收束 */
   if(commit48Rel(def.relKey) < COMMIT48_REL_MIN) return false;
-  return choice47SeasonReached(1992, "秋");              /* N15–N17 窗口：1990 秋起，過年唔鎖死 */
+  return choice47SeasonReached(1992, "秋");              /* N15–N17 窗口：1992 秋起，過年唔鎖死 */
 }
 function commit48ActionsAt(locId){
   const out = [];

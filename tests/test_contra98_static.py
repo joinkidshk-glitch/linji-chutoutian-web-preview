@@ -7,6 +7,7 @@
 # 五、紅線守恆：SAVE key／softRev／?v= 不變
 # 反證：喺 v20a97 index 上行會 FAIL（冇 CONTRA98 標記、舊字眼仲喺度）。
 # 用法：python3 tests/test_contra98_static.py [path-to-index.html]
+import re
 import sys
 from pathlib import Path
 p = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent / 'index.html'
@@ -18,7 +19,12 @@ def ok(name, cond):
 
 # 一、A-01/A-02/A-03
 ok('A-03: C1 頁首硬編碼改「冬」', ') || 1990)+"冬"' in src and ') || 1990)+"春"' not in src)
-ok('A-01/02: CONTRA98_WHEN_FIX 表在位（22 節點；v20a152 刪 R_tang_ending）', src.count('"1990冬","era_1990_winter_finale"') >= 11 and 'era_1990_autumn_capital' in src)
+# v20a219：表加 R_tang_meet_stub 衞生行（22→23）；hiu／choi／xu 結局由冬改秋，winter_finale 11→8。
+_m98 = re.search(r'const CONTRA98_WHEN_FIX = \{(.*?)\n\};', src, re.S)
+_fix98 = re.findall(r'\b[A-Za-z_][A-Za-z_0-9]*:\["(?:1989|1990)[秋冬春夏]","era_[^"]+"\]', _m98.group(1)) if _m98 else []
+ok('A-01/02: CONTRA98_WHEN_FIX 表在位（23 節點；v20a219 加 R_tang_meet_stub）',
+   len(_fix98) == 23 and 'R_tang_meet_stub:["1989秋","era_1989_autumn_capital"]' in src
+   and src.count('"1990冬","era_1990_winter_finale"') == 8)
 ok('A-01/02: contra98FixNodeWhen 函數在位', 'function contra98FixNodeWhen(packs)' in src)
 i_fix = src.find('contra98FixNodeWhen([main, rom1, rom2, rival])')  # v20a152：romTang 已停載，唔再入表
 i_walk = src.find('rival, gateStub, dengMock')  # story pack 嗰次 walk（檔入面另有 gift pack walk，唔好混淆）

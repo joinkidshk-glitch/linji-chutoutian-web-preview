@@ -1,9 +1,9 @@
 // v20a98 CONTRA98 邏輯測試：劇情矛盾修復——
-//   (1) A-01/A-02：支線 P4/P5 共 22 節點經 contra98FixNodeWhen＋真 years66Walk 後，
-//       用真 spPlayerMeta 計頁首標籤：全部 1992＋季節正確（P5 全冬；P4 按表秋/冬），冇 1993/1994；
+//   (1) A-01/A-02：支線 P4/P5 共 23 節點經 contra98FixNodeWhen＋真 years66Walk 後，
+//       用真 spPlayerMeta 計頁首標籤：年份按表（危機 1991、其餘 1992）＋季節按表（冬 11／秋 12），冇 1993/1994；
 //       三個支線 pack 全部節點頁首年份 ≤1992（全域守門）；
-//       （v20a152：R_tang_ending 已刪，23→22；全域守門仍讀 romance_tang.json 做 fixture，因為
-//        CONTRA98 表仲有 R_tang_push2／crisis 兩行——見 (1) 段註解）
+//       （v20a152：R_tang_ending 已刪，23→22；v20a219：加 R_tang_meet_stub 衞生行，22→23；
+//        全域守門仍讀 romance_tang.json 做 fixture，因為 CONTRA98 表仲有 R_tang_push2／crisis 兩行——見 (1) 段註解）
 //   (2) A-03：spPlayerMeta('C1') 出「主線 · 1990冬」；
 //   (3) B-01：contra98PrepareNode——對方 commit 已立時 HE choice 換坦白差一步變體（只寫自己 BE 旗、原節點不變）；
 //       冇旗／自己已 commit／非目標節點 → null（零改動）；
@@ -65,27 +65,35 @@ const FIX98 = globalThis.__C98.CONTRA98_WHEN_FIX, fixWhen98 = globalThis.__C98.c
 /* ---- (1) A-01/A-02 ---- */
 /* v20a152：PACK_FILES 留返 story_detail_romance_tang.json 做數據 fixture——CONTRA98_WHEN_FIX
    仲有 R_tang_push2／R_tang_crisis 兩行（業務節點，唔係收尾），佢哋嘅 node 數據只喺呢個檔；
-   呢個係測試 fixture 讀檔，唔係 live 載入（live 停載由 test_tang152_static.py 斷言）。 */
+   呢個係測試 fixture 讀檔，唔係 live 載入（live 停載由 test_tang152_static.py 斷言）。
+   v20a219：fixture 仲要包 R_tang_meet_stub（新加衞生行，node 數據同樣只喺呢個檔）。 */
 const PACK_FILES = ['story_detail_rival_mentor.json', 'story_detail_romance_vera_hiu_choi.json', 'story_detail_romance_lan_xu.json', 'story_detail_romance_tang.json'];
 const packs = PACK_FILES.map(f => JSON.parse(fs.readFileSync(path.join(rootDir, 'content', f), 'utf8')));
 const fixIds = Object.keys(FIX98);
-ok('A: FIX98 齊 22 節點', fixIds.length === 22);
+ok('A: FIX98 齊 23 節點', fixIds.length === 23);
 fixWhen98(packs);
 packs.forEach(p => walk98(p, null));
 packs.forEach(p => (p.nodes || []).forEach(n => { __nodeMap[n.id] = n; }));
-const WINTER_P4 = { A_ko_ending: 1, A_ho_crisis: 1, R_choi_crisis: 1 };
+/* v20a219 顯示值（walk +2 後；見 DECISIONS-2026-11-15「when 欄年份核查結果」）：
+   年份：危機三節點 1991（R_choi_crisis／R_hiu_crisis／R_tang_meet_stub，表值 1989），其餘 20 節點 1992；
+   季節：冬＝7 個 A_ending＋R_vera_ending＋A_ko_ending＋A_ho_crisis＋R_choi_crisis（11），
+   秋＝其餘 12 節點（hiu／choi／xu 三個結局由冬改秋；R_hiu_crisis／R_tang_meet_stub 1991秋）。 */
+const WANT_YEAR98 = { R_choi_crisis: 1991, R_hiu_crisis: 1991, R_tang_meet_stub: 1991 };
+const WANT_SEASON98 = { A_hakfan_ending: '冬', A_tsijun_ending: '冬', A_fong_ending: '冬', A_tong_ending: '冬',
+  A_ho_ending: '冬', A_gao_ending: '冬', A_lei_ending: '冬', R_vera_ending: '冬',
+  A_ko_ending: '冬', A_ho_crisis: '冬', R_choi_crisis: '冬' };
 let badYear = [], badSeason = [];
 for(const id of fixIds){
   const n = __nodeMap[id];
   if(!n){ badYear.push(id + ':missing'); continue; }
   const meta = meta98(n, null, '');
-  if(!/1992/.test(meta) || /199[3-9]|20\d\d/.test(meta)) badYear.push(id + ':' + meta);
-  const wantSeason = (n.phase === 'P5' || WINTER_P4[id]) ? '冬' : '秋';
-  if(meta.indexOf('1992' + wantSeason) < 0) badSeason.push(id + ':' + meta + ' want ' + wantSeason);
+  const wy = WANT_YEAR98[id] || 1992, ws = WANT_SEASON98[id] || '秋';
+  if(meta.indexOf(String(wy)) < 0 || /199[3-9]|20\d\d/.test(meta)) badYear.push(id + ':' + meta);
+  if(meta.indexOf(wy + ws) < 0) badSeason.push(id + ':' + meta + ' want ' + wy + ws);
 }
-ok('A-01/A-02: 22 節點頁首全部 1992（冇 1993/1994）', badYear.length === 0);
+ok('A-01/A-02: 23 節點頁首年份正確（危機 1991、其餘 1992；冇 1993/1994）', badYear.length === 0);
 if(badYear.length) console.log('   badYear:', badYear.join(' | '));
-ok('A-01/A-02: 22 節點季節正確（P5 全冬、P4 按表）', badSeason.length === 0);
+ok('A-01/A-02: 23 節點季節正確（冬 11／秋 12，按表）', badSeason.length === 0);
 if(badSeason.length) console.log('   badSeason:', badSeason.join(' | '));
 /* 全域守門：四 pack 全部節點頁首年份唔過 1992。
    豁免（已逐項查證，唔係漏網）：R_lan_* ——真管線有 ROMANCE_LAN_PA_OVERRIDES 全節點覆寫

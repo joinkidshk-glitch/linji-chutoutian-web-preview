@@ -1,0 +1,32 @@
+=== A. 新表 pipeline：when 顯示值 ===
+PASS R_hiu_crisis when=1991秋
+PASS R_choi_crisis when=1991冬
+PASS R_lan_ending when=1992秋
+PASS R_xu_ending when=1992秋
+PASS R_hiu_ending when=1992秋
+PASS R_choi_ending when=1992秋
+PASS R_tang_meet_stub when=1991秋
+=== B. 新表 pipeline：LIVE 頁首 spPlayerMeta（eraTag 優先路徑） ===
+PASS R_hiu_crisis header=主線 · 1991秋
+PASS R_choi_crisis header=主線 · 1991冬
+PASS R_lan_ending header=主線 · 1992秋
+PASS R_xu_ending header=主線 · 1992秋
+PASS R_hiu_ending header=主線 · 1992秋
+PASS R_choi_ending header=主線 · 1992秋
+PASS R_tang_meet_stub header=主線 · 1991秋
+=== C. 舊表（main 5580f8d）對照：改前值，證明修復有實效 ===
+PASS R_hiu_crisis 舊 when=1992秋
+PASS R_choi_crisis 舊 when=1992冬
+PASS R_lan_ending 舊 when=1992冬
+PASS R_xu_ending 舊 when=1992冬
+PASS R_hiu_ending 舊 when=1992冬
+PASS R_choi_ending 舊 when=1992冬
+PASS R_tang_meet_stub 舊 when=1993
+PASS stub 舊 header=1993秋（1993 bug 實證）
+=== D. 其餘節點顯示值不變（新表 vs 舊表，全四 pack 逐個比對） ===
+PASS 非目標節點 0 差異（共比對 76 個）
+=== E. CONTRA98 其餘表項原封不動 ===
+改動表項：["R_hiu_ending","R_choi_ending","R_xu_ending","R_choi_crisis","R_hiu_crisis"]；新增表項：["R_tang_meet_stub"]
+PASS 只改 5 項＋新增 stub 1 項
+
+ALL PASS

@@ -66,7 +66,7 @@ ok('刪節點：WF2 覆寫表冇 tang 條目', '"R_tang_meet": {' not in src and
 ok('刪節點：WF5 覆寫表冇 R_tang_ending 條目', '  R_tang_ending: {' not in src)
 ok('刪節點：收科回望「盟友以上／嗰個紅圈」已清', '盟友以上' not in src and '嗰個紅圈' not in src)
 ok('刪節點：CONTRA98_WHEN_FIX 冇 R_tang_ending', 'R_tang_ending:["1990' not in src)
-ok('刪節點：CONTRA98 winter_finale 由 12 減到 11', src.count('"1990冬","era_1990_winter_finale"') == 11)
+ok('刪節點：CONTRA98 winter_finale 由 11 減到 8（v20a219：hiu／choi／xu 結局改秋）', src.count('"1990冬","era_1990_winter_finale"') == 8)
 
 # --- 3. DengLine 排片線留返（meet＋push1／push2／crisis，閘門唔郁） ---
 ok('留線：HELD 縮到 3 節（L25817）', lines()[26115].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
@@ -89,9 +89,10 @@ ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
    'DengLine.loadMock(dengMock)' in src and 'DengLine.loadPushMock(dengPushMock)' in src)
 
 # v20a196 resync：showResult 淨 −1 行，兩錨點各 −1（31510→31509、31654→31653），difflib 對位核實內容逐字相同，純漂移。
+# v20a219 resync：index.html 淨 +3 行（CONTRA98 stub，插入點舊 L31845 之後）；winter_finale 11→8（hiu／choi／xu 結局改秋）；normaliseTangStub152 31899→31902、stub 呼叫行 32045→32048（difflib 對位核實純漂移，見 qa219/resync219.py）。
 # --- 4. 載入機制：stub 正規化＋push mock 過濾 ---
-ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[31898].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[32044].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[31901].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[32047].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)
