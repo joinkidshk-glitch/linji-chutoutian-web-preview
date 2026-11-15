@@ -154,7 +154,7 @@ const beatsNom = awards62CeremonyBeats(packFilm212('nominated', 'cat_film_lead_m
 const susCaps = beatsNom.filter(b=>b.id === 'suspense').map(b=>b.caption);
 ok('B1 懸念句輪換：4 格各唔相同，第一格沿用「得獎者是……」（v20a218 C-C1 加第四句）',
   susCaps.length === 4 && new Set(susCaps).size === 4 && susCaps[0] === '得獎者是……' &&
-  susCaps.join('|') === '得獎者是……|今晚呢個獎，屬於……|結果揭曉——得獎者是……|邊個攞走呢個獎……');
+  susCaps.join('|') === '得獎者是……|今晚這個獎，屬於……|結果揭曉——得獎者是……|誰拿走這個獎……');
 ok('B1 懸念輪換唔改時長：suspense 全部 1400ms、成晚總秒數照舊 50850',
   beatsNom.filter(b=>b.id === 'suspense').every(b=>b.ms === 1400) &&
   beatsNom.reduce((a, b)=> a + b.ms, 0) === 50850);

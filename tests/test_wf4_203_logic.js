@@ -146,11 +146,11 @@ function approx(a, b){ return Math.abs(a - b) < 1e-3; } // 曲線值 0.033／0.0
   ok('B3 set17 唔再有「我喊埋一份」', !txt17.includes('我喊埋一份'));
   ok('B3 set17 唔再有「喊戲」', !txt17.includes('喊戲'));
   ok('B3 set17 仲係錄影廠門口歌迷認人（標題／地點唔變）',
-    byId('wf4_ev_set17').title === '錄影廠門口嗰班歌迷' && byId('wf4_ev_set17').loc === 'tvb_longmen');
+    byId('wf4_ev_set17').title === '錄影廠門口那班歌迷' && byId('wf4_ev_set17').loc === 'tvb_longmen');
   const st17 = byId('wf4_ev_st17');
   const txtSt17 = JSON.stringify(st17);
   ok('B3 st17 改做樓下士多豆漿（標題／場景換晒）',
-    st17.title === '樓下士多嗰支豆漿' && st17.setting.includes('士多'));
+    st17.title === '樓下士多那支豆漿' && st17.setting.includes('士多'));
   ok('B3 st17 唔再有涼茶舖／阿婆／廿四味',
     !txtSt17.includes('涼茶') && !txtSt17.includes('廿四味') && !txtSt17.includes('阿婆'));
   ok('B3 st17 講者係士多阿叔（唔係涼茶阿婆）',
@@ -169,7 +169,7 @@ function approx(a, b){ return Math.abs(a - b) < 1e-3; } // 曲線值 0.033／0.0
   ok('C1「點歌」全池只留 set21 一單（st15 已改做司機追星往事）',
     JSON.stringify(sing) === JSON.stringify(['wf4_ev_set21']));
   ok('C1 st15 改做司機追星往事（標題／講者／beat 換晒，唔再係點歌）',
-    byId('wf4_ev_st15').title === '的士司機嗰段追星往事'
+    byId('wf4_ev_st15').title === '的士司機那段追星往事'
     && byId('wf4_ev_st15').beats.some(b=>b.sp==='的士司機')
     && JSON.stringify(byId('wf4_ev_st15')).includes('追星')); // 「追星」喺旁白句（司機講起追星往事）＋司機句講追夢
   ok('C1 day15 閘改做 moneyMax 200（同 day03 ≤$1000 分層）',

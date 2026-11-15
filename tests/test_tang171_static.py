@@ -11,6 +11,7 @@
 # v20a217 resync：標籤遷移 ＋3 行，總行數 62755→62758、DEF 57227→57230。
 # v20a218 resync：index.html 淨 +136 行（見 qa218/resync218.py difflib 對位核實純漂移），總行數 62758→62894、DEF 57230→57350。
 # v20a219 resync：index.html 淨 +3 行（CONTRA98 stub，插入點舊 L31845 之後），總行數 62894→62897、DEF 57350→57353（difflib 對位核實純漂移，見 qa219/resync219.py）。
+# v20a222 resync：index.html 淨 −37 行（P3 書面語改寫：刪 G1 rumorEcho／echo 物件＋G9 nodeRipple 死碼；其餘 917 句為同行改寫，行數不變），總行數 62897→62860、DEF 57353→57316（內容逐字核實純漂移）。
 # -*- coding: utf-8 -*-
 # v20a197 resync：index.html 淨 +94 行，總行數 60490→60584、DEF 54986→55080（difflib 對位核實純漂移，見 qa197/resync197.py；B4 補丁再 +9 行）。
 # v20a196 resync：index.html 淨 +83 行，總行數 60490→60573、DEF 54986→55060（difflib 對位核實內容逐字相同，純漂移）。
@@ -94,9 +95,9 @@ def contrast(fg, bg):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 62897（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136＋v219 +3）', src.count('\n') == 62897)
-ok('零行數漂移：openLoc DEF 行 57353（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +120＋v219 +3，travel114 釘行）',
-   len(lines) >= 57353 and 'function openLoc(id, opts){' in lines[57352])
+ok('零行數漂移：總行數 62860（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136＋v219 +3＋v222 −37）', src.count('\n') == 62860)
+ok('零行數漂移：openLoc DEF 行 57316（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +120＋v219 +3＋v222 −37，travel114 釘行）',
+   len(lines) >= 57316 and 'function openLoc(id, opts){' in lines[57315])
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫，qa215 resync 核實純漂移（總行數 62352→62492；DEF 56824→56964）。# --- §1. C1：捲動提示（淡出漸變） ---
 ok('C1：淡出漸變 CSS 規則存在（loc-acts-more171::after＋linear-gradient）',
    '#loc-acts.loc-acts-more171::after' in src

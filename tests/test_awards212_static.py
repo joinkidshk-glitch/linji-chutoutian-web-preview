@@ -61,8 +61,8 @@ chk('B1：玩家格 won 得主 null 唔入 used、winner63 豁免（預先登記
     'focusPc212' in night_fn and 'winner63' in night_fn)
 chk('B1：懸念句四句輪換（SUSPENSE212，第一格沿用舊句；v20a218 C-C1 加第四句）',
     'SUSPENSE212' in beats_fn and 'SUSPENSE212[ci % SUSPENSE212.length]' in beats_fn and
-    '"得獎者是……"' in beats_fn and '"今晚呢個獎，屬於……"' in beats_fn and
-    '"結果揭曉——得獎者是……"' in beats_fn and '"邊個攞走呢個獎……"' in beats_fn)
+    '"得獎者是……"' in beats_fn and '"今晚這個獎，屬於……"' in beats_fn and
+    '"結果揭曉——得獎者是……"' in beats_fn and '"誰拿走這個獎……"' in beats_fn)
 chk('B1：懸念時長唔郁（1400ms）', 'id: "suspense", ms: 1400' in beats_fn)
 
 # --- (C1) 格標題卡列剪影 ---

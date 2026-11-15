@@ -1,6 +1,13 @@
 // v20a81 WF2 邏輯測試：感情線廣東話化＋半線差一步收尾。
 //   (1) 覆寫表在位：25 節點齊（曉晴／采兒／Vera／徐／藍 各 5；v20a152 鄧麗萍感情線覆寫已刪，唔再計 tang 5 節）；
-//   (2) 語體：30 節點 beats 廣東話標記達門檻、書面語骨幹標記零出現（原版曉晴／采兒／Vera／徐 主體係全書面語）；
+//   (2) 語體（新語言規則，用戶 2026-11-15 11:20 拍板：除咗對白之外全部書面語）：
+//       對白句（speaker 唔係旁白／系統）保留廣東話標記（門檻按 P3 後對白句實測量定：
+//       hiu／choi 15、vera／xu／lan 5、半線 ending 10；實測對白句廣東話標記最低 6
+//       R_vera_crisis、最高 49 R_choi_crisis），對白句書面語骨幹標記零出現；
+//       旁白句（speaker 旁白／系統＋synopsis）書面語骨幹標記 ＞0（即旁白確實轉咗書面語）。
+//       旁白用嘅書面語標記表 WRITTEN_NAR 比骨幹表多四個（她／如果／說／立刻），
+//       因為短旁白未必撞到九個骨幹詞——例如 R_choi_crisis 旁白＋synopsis 全是書面語，
+//       用骨幹表計係 0，用擴充表計係 8。
 //   (3) 采兒 M33：追訪記者質地關鍵字在位（追訪／獨家／查證／通稿＋唔害人飯碗底線）；
 //   (4) 半線收尾：四條 ending beats ≥450 字、各有專屬關鍵字、兩兩 bigram Jaccard <0.35（防範本換名）；
 //       ending synopsis／choice label／notes 冇「確定關係／伴侶／承諾／一齊走下去」；
@@ -58,23 +65,31 @@ const LINES = {
 const ALL = Object.values(LINES).flat();
 const HALF_END = ['R_vera_ending','R_xu_ending','R_lan_ending'];
 function beatText(n){ return (n.beats || []).flatMap(b => b.lines || []).join(''); }
+/* 新語言規則：對白 vs 旁白分開計——對白句 speaker 唔係旁白／系統；旁白句係旁白／系統 beat＋synopsis */
+function dlgText(n){ return (n.beats || []).filter(b => b.speaker !== '旁白' && b.speaker !== '系統').flatMap(b => b.lines || []).join(''); }
+function narText(n){ return (n.beats || []).filter(b => b.speaker === '旁白' || b.speaker === '系統').flatMap(b => b.lines || []).join('') + (n.synopsis || ''); }
 function beatChars(n){ return beatText(n).length; }
 const MARKERS = '嘅喺啲咗冇唔佢哋畀嚟嗰咁嘢喇嘛囉喎㗎呢';
 function markerCount(s){ return [...s].filter(ch => MARKERS.includes(ch)).length; }
 const WRITTEN = ['的','了','沒有','什麼','為什麼','他們','我們','不是','著'];
 function writtenCount(s){ return WRITTEN.reduce((a, w) => a + s.split(w).length - 1, 0); }
+/* 旁白用嘅擴充表：短旁白未必撞到九個骨幹詞，加四個書面語標記（她／如果／說／立刻）；
+   只計旁白，唔影響對白句「書面語骨幹標記 = 0」嗰個骨幹表斷言 */
+const WRITTEN_NAR = WRITTEN.concat(['她','如果','說','立刻']);
+function writtenNarCount(s){ return WRITTEN_NAR.reduce((a, w) => a + s.split(w).length - 1, 0); }
 
 /* (1) 表在位 */
 ok('覆寫表 25 節點齊', ALL.every(id => !!T[id]) && Object.keys(T).length === 25);
 ok('覆寫表冇鄧麗萍感情線（v20a152）', !T.R_tang_meet && !T.R_tang_ending);
 ok('每節點有 beats＋synopsis', ALL.every(id => Array.isArray(T[id].beats) && T[id].beats.length >= 4 && typeof T[id].synopsis === 'string' && T[id].synopsis.length >= 10));
 
-/* (2) 語體 */
+/* (2) 語體——新語言規則：對白留廣東話、旁白轉書面語（分開計，唔再成段一齊計） */
 for(const id of ALL){
-  const txt = beatText(T[id]);
-  const floor = HALF_END.includes(id) ? 60 : (LINES.hiu.includes(id) || LINES.choi.includes(id) ? 25 : 14);
-  ok(id + ' 廣東話標記 ≥' + floor + '（實 ' + markerCount(txt) + '）', markerCount(txt) >= floor);
-  ok(id + ' 書面語骨幹標記 = 0', writtenCount(txt) === 0);
+  const dlg = dlgText(T[id]), nar = narText(T[id]);
+  const floor = HALF_END.includes(id) ? 10 : (LINES.hiu.includes(id) || LINES.choi.includes(id) ? 15 : 5);
+  ok(id + ' 對白廣東話標記 ≥' + floor + '（實 ' + markerCount(dlg) + '）', markerCount(dlg) >= floor);
+  ok(id + ' 對白書面語骨幹標記 = 0', writtenCount(dlg) === 0);
+  ok(id + ' 旁白書面語骨幹標記 > 0（實 ' + writtenNarCount(nar) + '）', writtenNarCount(nar) > 0);
 }
 for(const id of [...LINES.hiu, ...LINES.choi]) ok(id + ' beats ≥300 字（實 ' + beatChars(T[id]) + '）', beatChars(T[id]) >= 300);
 for(const id of [...LINES.vera, ...LINES.xu].filter(x => !x.endsWith('ending'))) ok(id + ' beats ≥200 字（實 ' + beatChars(T[id]) + '）', beatChars(T[id]) >= 200);

@@ -48,18 +48,18 @@ if m:
     ok('冇用現實集體封號原字', '四大天王' not in blk)
     ok('城中四子（原創封號）', '城中四子' in blk)
     ok('E4 新創背景名在場', '杜朗軒' in blk and '簡柏霖' in blk)
-    e1 = re.search(r'id:"E1".*?echo:', blk, re.S)
+    e1 = re.search(r'id:"E1".*?echoDelay:3,', blk, re.S)
     ok('E1 段可抽出', bool(e1))
     if e1:
-        # 只查玩家可見文字列（標題＋三段正文＋echo 句），唔計 day/imgKey 等結構欄
+        # 只查玩家可見文字列（標題＋三段正文），唔計 day/imgKey 等結構欄
         texts = re.findall(r'headline:"([^"]*)"|"([^"]{20,})"', e1.group(0))
         visible = ''.join(a or b for a, b in texts)
         ok('E1 可見文字冇數字（唔寫人數）', not re.search(r'[0-9０-９]', visible))
-    e3 = re.search(r'id:"E3".*?echo:', blk, re.S)
+    e3 = re.search(r'id:"E3".*?echoDelay:3,', blk, re.S)
     ok('E3 段可抽出', bool(e3))
     if e3:
         ok('E3 只准一個數字講法（逾十二億元）', e3.group(0).count('億元') == 1 and '逾十二億元' in e3.group(0))
-    ok('頭版正文冇主角名（阿偉）', all('阿偉' not in re.search(r'id:"%s".*?echo:' % i, blk, re.S).group(0) for i in ['E1', 'E2', 'E3'] if re.search(r'id:"%s".*?echo:' % i, blk, re.S)))
+    ok('頭版正文冇主角名（阿偉）', all('阿偉' not in re.search(r'id:"%s".*?echoDelay:3,' % i, blk, re.S).group(0) for i in ['E1', 'E2', 'E3'] if re.search(r'id:"%s".*?echoDelay:3,' % i, blk, re.S)))
     ok('冇真人名（抽查清單）', not any(n in blk for n in ['劉德華', '張學友', '黎明', '郭富城', '周星馳', '成龍', '周潤發']))
 
 # 鏈 B/C/D 接線

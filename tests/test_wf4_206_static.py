@@ -90,8 +90,8 @@ for name, q in QUOTED:
 
 # --- (e) 8 對重寫在位（新場景／新標題／新 choices，舊單原封不動） ---
 ok('1 set32 係暈車（唔再係瞓覺＋傾偈）',
-   '外景小巴嗰個暈車' in chunks.get('wf4_ev_set32', '')
-   and '開窗畀暈車嗰個吹下風' in chunks.get('wf4_ev_set32', '')
+   '外景小巴那個暈車' in chunks.get('wf4_ev_set32', '')
+   and '開窗畀佢吹下風' in chunks.get('wf4_ev_set32', '')
    and '瞓陣養足精神' not in chunks.get('wf4_ev_set32', ''))
 ok('1 set48 係爆胎（唔再係傾偈）',
    '外景車半路爆胎' in chunks.get('wf4_ev_set48', '')
@@ -99,36 +99,36 @@ ok('1 set48 係爆胎（唔再係傾偈）',
    and '同車上面啲人傾偈' not in chunks.get('wf4_ev_set48', ''))
 ok('1 set23 舊單原封不動（對照）',
    '瞓陣養足精神' in chunks.get('wf4_ev_set23', '')
-   and '同車上面啲人傾偈' in chunks.get('wf4_ev_set23', ''))
+   and '跟車上的人聊天' in chunks.get('wf4_ev_set23', ''))
 ok('2 set35 係潮水搶拍（唔再係望海入戲／望器材）',
    '捲起褲腳行去水邊' in chunks.get('wf4_ev_set35', '')
-   and '幫手搬啲道具上岸' in chunks.get('wf4_ev_set35', '')
+   and '幫忙把那些道具搬上岸' in chunks.get('wf4_ev_set35', '')
    and '望住個海入戲' not in chunks.get('wf4_ev_set35', ''))
 ok('2 set15 舊單原封不動（對照）',
    '望住個海入戲' in chunks.get('wf4_ev_set15', ''))
 ok('3 set54 係排話劇對白（唔再係練歌）',
-   '收工嗰陣嗰段對白' in chunks.get('wf4_ev_set54', '')
-   and '企喺度聽埋成段對白' in chunks.get('wf4_ev_set54', '')
+   '收工時那段對白' in chunks.get('wf4_ev_set54', '')
+   and '站在這裡聽完整段對白' in chunks.get('wf4_ev_set54', '')
    and '練緊新歌' not in chunks.get('wf4_ev_set54', ''))
 ok('4 set42 係排骨飯（唔再係麵）',
-   '電視台飯堂嗰碟排骨飯' in chunks.get('wf4_ev_set42', '')
+   '電視台飯堂那碟排骨飯' in chunks.get('wf4_ev_set42', '')
    and '嗌碟排骨飯慢慢食' in chunks.get('wf4_ev_set42', '')
    and '今日嗰碗麵特別香' not in chunks.get('wf4_ev_set42', ''))
 ok('5 set33 天台 out 已換（唔再係識嘆＋免費福利）',
    '話呢度啲風，係免費嘅福利嚟' not in chunks.get('wf4_ev_set33', '')
-   and '佢哋兩個吹住水' in chunks.get('wf4_ev_set33', ''))
+   and '他們兩個閒聊著' in chunks.get('wf4_ev_set33', ''))
 ok('6 set40 遞工具 out 已換（唔再係燈打靚啲）',
    '話聽日嗰場戲啲燈，幫佢打靚啲' not in chunks.get('wf4_ev_set40', '')
-   and '燈光師較好燈' in chunks.get('wf4_ev_set40', ''))
+   and '燈光師調好燈' in chunks.get('wf4_ev_set40', ''))
 ok('7 day24 係冇名信失物（唔再係認可來信）',
-   '電視台嗰封冇名信' in chunks.get('wf4_ev_day24', '')
+   '電視台那封沒有署名的信' in chunks.get('wf4_ev_day24', '')
    and '幫手貼張告示等人認' in chunks.get('wf4_ev_day24', '')
    and '話佢嗰場戲做得好' not in chunks.get('wf4_ev_day24', '')
    and 'tierMin:1' in chunks.get('wf4_ev_day24', '')
    and 'yearMin:1992' in chunks.get('wf4_ev_day24', ''))
 ok('8 set46 佈告板 out 已換（唔再係記喺心入面）',
    '佢將啲消息記喺心入面' not in chunks.get('wf4_ev_set46', '')
-   and '佢將啲通告逐張睇' in chunks.get('wf4_ev_set46', ''))
+   and '他把那些通告逐張看' in chunks.get('wf4_ev_set46', ''))
 
 # --- (f) fx 數值／schema 唔郁：money ±5..120、stress ±8 以內、其餘 ±1..2 ---
 # 新 41 單必須全合規；舊池有 4 例 pre-existing 例外（v203 前已存在，唔喺 B1 範圍，釘死數目唔多唔少）

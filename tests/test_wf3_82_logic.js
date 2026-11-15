@@ -97,7 +97,7 @@ ok('E6b = 1992-01-21', JSON.stringify(dateOf(750))==='[1992,1,21]');
 ok('E4 = 1992-10-12', JSON.stringify(dateOf(1015))==='[1992,10,12]');
 ok('E3 = 1992-12-28', JSON.stringify(dateOf(1092))==='[1992,12,28]');
 ok('頭版三則 = E1/E2/E3', ['E1','E2','E3'].every(id=>news82IsHead(id)) && ['E6a','E5','E6b','E4'].every(id=>!news82IsHead(id)));
-ok('每則三段正文＋標題＋餘波傳聞', EV.every(e=> Array.isArray(e.paras) && e.paras.length===3 && e.headline && e.echo && e.echo.id && e.echo.text));
+ok('每則三段正文＋標題，冇餘波傳聞（G1 已刪 echo：有 echoDelay 欄、冇 echo 欄）', EV.every(e=> Array.isArray(e.paras) && e.paras.length===3 && e.headline && e.echoDelay===3 && !e.echo && !e.rumorEcho));
 ok('每則有配圖鍵', EV.every(e=> !!e.imgKey));
 ok('E4 沿用 E6 圖（版式重用）', news82EventById('E6b').imgKey==='E6' && news82EventById('E6a').imgKey==='E6');
 ok('日期標籤格式', news82DateLabel(news82EventById('E1'))==='1992 年 1 月 15 日');
@@ -120,9 +120,9 @@ news82Tick();
 ok('餘波未到（刊後 2 日）', !S.mockRumors.some(r=>r.id==='echo_news_e2'));
 S.dayIndex = 661;
 news82Tick();
-ok('餘波刊後 3 日入傳聞', S.mockRumors.some(r=>r.id==='echo_news_e2'));
+ok('餘波刊後 3 日唔入傳聞（G1 已刪 echo）', !S.mockRumors.some(r=>r.id==='echo_news_e2'));
 news82Tick();
-ok('餘波唔重複', S.mockRumors.filter(r=>r.id==='echo_news_e2').length===1);
+ok('餘波唔重複（冇 echo 可重複：重複 tick 亦唔入傳聞）', S.mockRumors.filter(r=>r.id==='echo_news_e2').length===0);
 
 // ---------- 5. 舊檔規則：過期 7 日以上歸檔、7 日內照常刊 ----------
 _clips = []; _enqueued = [];

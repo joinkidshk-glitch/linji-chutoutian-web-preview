@@ -133,10 +133,10 @@ else:
     ok('C5 對比度 ≥4.5:1', False)
 
 # ---- C6：教學提隨機巧遇 ----
-ok('C6 教學 inline TUT_NPC 有巧遇句', '去佢哋常出沒嘅地方，有機會撞到佢哋——撞到先可以傾談／送禮。' in html)
+ok('C6 教學 inline TUT_NPC 有巧遇句', '去他們常出沒的地方，有機會撞到他們——撞到才可以傾談／送禮。' in html)
 ok('C6 runtime 覆寫補 live pack TUT_NPC', 'st.id!=="TUT_NPC"' in html and 'LINE183' in html)
 ok('C6 修正：inline TUT_MAP body 第三句係巧遇句（live 只行四步，TUT_NPC 唔顯示）',
-   '"去佢哋常出沒嘅地方，有機會撞到佢哋——撞到先可以傾談／送禮。"]' in html)
+   '"去他們常出沒的地方，有機會撞到他們——撞到才可以傾談／送禮。"]' in html)
 ok('C6 runtime 覆寫補 live pack TUT_MAP', 'st.id==="TUT_MAP"' in html and 'st.body.push(LINE183)' in html)
 
 # ---- C7：700 禮物選擇器兩欄 ----

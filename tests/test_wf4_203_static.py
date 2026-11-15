@@ -56,12 +56,12 @@ ok('B3「廿四味」全池得 1 處（day04 保留，st17 已換士多豆漿）
 ok('B3「涼茶」全池只喺 day04（st17 已換場景）',
    [k for k, c in chunks.items() if '涼茶' in c] == ['wf4_ev_day04'])
 ok('B3 st17 係士多豆漿（唔再係涼茶舖）',
-   '樓下士多嗰支豆漿' in chunks.get('wf4_ev_st17', '')
+   '樓下士多那支豆漿' in chunks.get('wf4_ev_st17', '')
    and '士多阿叔' in chunks.get('wf4_ev_st17', ''))
 ok('C1「點歌」全池只喺 set21 一單（st15 已改做司機追星往事）',
    [k for k, c in chunks.items() if '點歌' in c] == ['wf4_ev_set21'])
 ok('C1 st15 係司機追星往事',
-   '的士司機嗰段追星往事' in chunks.get('wf4_ev_st15', ''))
+   '的士司機那段追星往事' in chunks.get('wf4_ev_st15', ''))
 ok('C1 day15 閘 moneyMax 200', 'moneyMax:200' in chunks.get('wf4_ev_day15', ''))
 ok('C1 day03 閘仲係 moneyMax 1000（分層對照）', 'moneyMax:1000' in chunks.get('wf4_ev_day03', ''))
 

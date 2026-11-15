@@ -256,7 +256,7 @@ function imgOf(stageHtml){
   clickBtn(0);
   ok('boss03 到抉擇（2 個選擇）', modalCalls.length === 4 && modalCalls[3].labels.length === 2);
   clickBtn(0);
-  ok('boss03 結算舊文字', modalCalls.length === 5 && modalCalls[4].html.includes('常餐走蔥'));
+  ok('boss03 結算舊文字', modalCalls.length === 5 && modalCalls[4].html.includes('常餐不要蔥'));
   clickBtn(0);
   ok('boss03 播完 doneCb 有叫', done3 === true);
 }

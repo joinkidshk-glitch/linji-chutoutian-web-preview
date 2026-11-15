@@ -34,7 +34,7 @@ ok('A-01/02: 載入次序——正規化喺 story years66Walk 之前', 0 <= i_fi
 ok('B-01: contra98PrepareNode 函數在位', 'function contra98PrepareNode(node)' in src)
 ok('B-01: StoryPlay.start 已掛鉤', 'const pn98 = contra98PrepareNode(node)' in src)
 ok('B-01: 坦白變體文案在位', '坦白心意：已經同采兒講明咗' in src and '坦白心意：已經同曉晴講明咗' in src)
-ok('B-02: Vera 危機幕改錄影版 synopsis', '阿偉喺電視台錄完影，Vera 喺後台等佢收工' in src)
+ok('B-02: Vera 危機幕改錄影版 synopsis', '阿偉在電視台錄完影，Vera 在後台等他收工' in src)
 # 注意：「你今晚打歌之後，還要…」係 TEXTFIX55_EXACT 嘅對照鍵（pack 原稿→清洗目標），合法在位；
 # 要清走嘅係 WF2 覆寫自己嗰兩句（synopsis＋「仲要唔要」版首句）。
 ok('B-02: WF2 覆寫打歌稿已清走', '"synopsis": "阿偉去電台打歌' not in src and '你今晚打歌之後，仲要唔要' not in src)

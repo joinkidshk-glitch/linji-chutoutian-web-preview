@@ -26,7 +26,7 @@ const wSpeaker = TF.textfix55Walk({ beats: [{ speaker: '周刊編輯', lines: ['
 chk('B6 speaker walked', wSpeaker.beats[0].speaker === '週刊編輯' && wSpeaker.beats[0].lines[0] === '週刊記者企喺門口。');
 // B1 解鎖: EXACT sentences + lockedHint bare value
 chk('B1 unlock event', TF.textfix55Str('新課程解鎖：魅力課可以報名。', 'lines', null, TF.TEXTFIX55_OPTS_SIMPLE) === '新課程開咗：魅力課可以報名。');
-chk('B1 tutorial title', TF.textfix55Str('訓練解鎖試鏡', 'title', null, TF.TEXTFIX55_OPTS_SIMPLE) === '訓練夠先報得試鏡');
+chk('B1 tutorial title', TF.textfix55Str('訓練解鎖試鏡', 'title', null, TF.TEXTFIX55_OPTS_SIMPLE) === '訓練夠了才報得試鏡');
 const wLock = TF.textfix55Walk({ nodes: [{ lockedHint: '未解鎖' }] }, null, null, TF.TEXTFIX55_OPTS_STORY);
 chk('B1 lockedHint', wLock.nodes[0].lockedHint === '未開放');
 // A3 刷新: refresh hint sentence via EXACT
