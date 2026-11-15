@@ -26,11 +26,12 @@ ok('pack version 不變', pack.get('version') == '1.2.8')
 ok('nodes[0-4] 係 N1-N5', [n.get('id') for n in nodes[:5]] == ['N1', 'N2', 'N3', 'N4', 'N5'])
 
 # --- nodes[5-16] 死版一字唔郁（pristine main e08a070 嘅 sha；v217 語言審核改咗 N6+ 節點文字，sha 重算；
-#      v20a210 編號統一 C→N 純改名，79 行逐行核實全部只係 C<n>→N<m> 對照改名，sha 再重算） ---
+#      v20a210 編號統一 C→N 純改名，79 行逐行核實全部只係 C<n>→N<m> 對照改名，sha 再重算；
+#      v20a231 RW-1 逐句重寫 N6–N9（87 處 JSON 改動，N10–N17 一字未郁），sha 再重算） ---
 tail = json.dumps(nodes[5:], sort_keys=True, ensure_ascii=False)
 ok('nodes[5-16] 同 pristine 一致',
    hashlib.sha256(tail.encode('utf-8')).hexdigest()
-   == '1a0f1be4c9df532693c0281346c898be3a0978cd5975f4660e707de22a396deb')
+   == 'fa09c15b499866c1ae9a8c019e37c7ba125946feadef9ed1b4330c7498504416')
 
 # --- 標題／setting／synopsis 按設計 ---
 ok('標題 N1-N5 按設計（N5 用 TEXTFIX55 淨化形「辣手問題」；v221 書面語改寫：N1「冇價」→「無價」、N5「嘅」→「的」）',
