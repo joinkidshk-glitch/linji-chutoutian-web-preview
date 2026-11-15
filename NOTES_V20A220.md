@@ -38,8 +38,8 @@ AUD_PASS ×3、AUD_STRESS70 ×2、TRAIN_RESULT_stamina ×2、UNLOCK_CHARM／IQ�
 
 ## §3 落地
 
-- 分支 `v20a220` → squash merge → main，（待填 HEAD／線上 bytes／sha）。
-- 工作副本 `linji-work220` 落地後刪除；pristine 對照 `linji-pristine220` 已刪除。
+- 分支 `v20a220` → squash merge → main HEAD `09e7774`；線上核實 5,569,800 bytes、sha `1d3bfeae709c1d5d9e4d9475a9f1ad34417b85d1`，同 main HEAD index.html 完全一致。
+- 工作副本 `linji-work220` 落地後刪除；pristine 對照 `linji-pristine220` 已刪除；分支 `v20a220` 已刪。
 
 ## §4 殘留／跟進
 
