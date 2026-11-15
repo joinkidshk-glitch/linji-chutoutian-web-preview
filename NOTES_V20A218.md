@@ -187,7 +187,10 @@
   **零回歸**。輸出 `/tmp/suite218_A2.txt`、`/tmp/suite218_B2.txt`（ephemeral）。
 - **語法**：`node --check` 全檔 script SYNTAX OK（§6 修復後）。
 - **相關測試逐個直接覆驗**：§2–§5 嗰啲全部 PASS（見各節）。
-- **落地核實**：（待填：線上 bytes／sha、遊戲版本 hash）
+- **落地核實**：main HEAD `49254e2`（squash commit，58 檔，+1023／−265）；push 成功
+  （`e54d9a1..49254e2 main -> main`，第一次 push 斷線 Broken pipe，egress proxy reset，
+  重試成功）；線上 curl 核實 5,569,770 bytes、sha `4eb5203d55fea42b2ebb791b1453059bf6d84711b651f5bb2774b09787ae73c3`，
+  同 main HEAD index.html 完全一致（v217 基線 5,554,079 bytes、sha `4f4cca79`）。
 
 ## §9 殘留（需 live 實駕先判到／等拍板）
 
