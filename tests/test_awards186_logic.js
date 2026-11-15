@@ -54,7 +54,7 @@ try{
 const FEL = [
   { starId: 'yip_manji', star: '葉敏芝', title: '渡輪燈火', gigId: 'gig_x1', poster: '', assigned: true },
   { starId: 'chung_choning', star: '鍾楚凝', title: '星光夜', gigId: 'gig_x2', poster: '', assigned: true },
-  { starId: 'ko_chunkit', star: '高俊傑', title: '潮汐家庭', gigId: 'gig_1989_tv_05', poster: '', assigned: true }
+  { starId: 'ko_chunkit', star: '高俊傑', title: '潮汐家庭', gigId: 'gig_x3', poster: '', assigned: true }
 ];
 const WIN = FEL[0];
 const LIST_TXT = '葉敏芝《渡輪燈火》、鍾楚凝《星光夜》、高俊傑《潮汐家庭》';

@@ -6,6 +6,7 @@
 // (5) 舊 signature（唔傳 gender）行為不變（同一 seed、同一抽籤結果）；每類別 (gender, catId) 可重現。
 // (6) 過濾後池空／零候選 → fellows＝[]，唔 crash。
 // 反證：對 pristine main (v20a193) 行 → AWARDS204_FEMALE_STARS／新池員唔存在 → 乾淨 FAIL。
+// v20a229 B3：fixture id 由舊曆 gig_1988_／gig_1989_ 改做新庫格式 gig_1990_／gig_1991_＋year 欄（YearOf 唔再 +2，舊 id 會對唔上年份）；TEST_STAR／片酬／期望不變。
 // 用法：node tests/test_awards204_logic.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -66,28 +67,28 @@ for(const f of ['awards204StarGender','awards63StarName','awards63AllGigs','awar
   eval(extractFn(f));
 
 var TEST_STAR = {
-  gig_1988_film_harbour_high: '陸柏言',
-  gig_1988_film_cotton_spring_high: '廖炳星',
-  gig_1988_film_cotton_winter_low: '蘇芷茵',
-  gig_1988_film_cotton_spring_mid: '鍾楚凝',
-  gig_1988_film_03: '麥震東',
-  gig_1988_rec_star_spring: '廖炳星',
-  gig_1988_rec_hk_autumn: '蘇芷茵'
+  gig_1990_film_301: '陸柏言',
+  gig_1990_film_302: '廖炳星',
+  gig_1990_film_303: '蘇芷茵',
+  gig_1990_film_304: '鍾楚凝',
+  gig_1990_film_305: '麥震東',
+  gig_1990_rec_301: '廖炳星',
+  gig_1990_rec_302: '蘇芷茵'
 };
 var GIGS = [
-  { id:'gig_1988_film_harbour_high',       type:'電影',   pay:[40000,48000], workTitle:'夜海鎗火' },
-  { id:'gig_1988_film_cotton_spring_high', type:'電影',   pay:[35000,41900], workTitle:'詭校夜話' },
-  { id:'gig_1988_film_cotton_winter_low',  type:'電影',   pay:[30000,36000], workTitle:'冬夜情書' },
-  { id:'gig_1988_film_cotton_spring_mid',  type:'電影',   pay:[25000,30000], workTitle:'胭脂扣影' },
-  { id:'gig_1988_film_03',                 type:'電影',   pay:[8000,10500],  workTitle:'神探闖天關' },
-  { id:'gig_1988_rec_star_spring',         type:'唱片通告', pay:[20000,25000], workTitle:'星夜唱片' },
-  { id:'gig_1988_rec_hk_autumn',           type:'唱片通告', pay:[15000,18000], workTitle:'秋意歌集' },
-  { id:'gig_1989_film_a',                  type:'電影',   pay:[16000,20000], workTitle:'九龍夜行' },
-  { id:'gig_1989_film_b',                  type:'電影',   pay:[9000,12000],  workTitle:'霓裳夜冷' },
-  { id:'gig_1989_film_c',                  type:'電影',   pay:[7000,9000],   workTitle:'半島槍聲' },
-  { id:'gig_1989_rec_a',                   type:'唱片通告', pay:[12000,15000], workTitle:'心曲集' },
-  { id:'gig_1989_rec_b',                   type:'唱片通告', pay:[8000,10000],  workTitle:'夜歌集' },
-  { id:'gig_1989_rec_c',                   type:'唱片通告', pay:[5000,7000],   workTitle:'晨歌集' }
+  { id:'gig_1990_film_301',       type:'電影',   year:1990, pay:[40000,48000], workTitle:'夜海鎗火' },
+  { id:'gig_1990_film_302', type:'電影',   year:1990, pay:[35000,41900], workTitle:'詭校夜話' },
+  { id:'gig_1990_film_303',  type:'電影',   year:1990, pay:[30000,36000], workTitle:'冬夜情書' },
+  { id:'gig_1990_film_304',  type:'電影',   pay:[25000,30000], workTitle:'胭脂扣影' },
+  { id:'gig_1990_film_305',                 type:'電影',   year:1990, pay:[8000,10500],  workTitle:'神探闖天關' },
+  { id:'gig_1990_rec_301',         type:'唱片通告', year:1990, pay:[20000,25000], workTitle:'星夜唱片' },
+  { id:'gig_1990_rec_302',           type:'唱片通告', year:1990, pay:[15000,18000], workTitle:'秋意歌集' },
+  { id:'gig_1991_film_301',                  type:'電影',   year:1991, pay:[16000,20000], workTitle:'九龍夜行' },
+  { id:'gig_1991_film_302',                  type:'電影',   year:1991, pay:[9000,12000],  workTitle:'霓裳夜冷' },
+  { id:'gig_1991_film_303',                  type:'電影',   year:1991, pay:[7000,9000],   workTitle:'半島槍聲' },
+  { id:'gig_1991_rec_301',                   type:'唱片通告', pay:[12000,15000], workTitle:'心曲集' },
+  { id:'gig_1991_rec_302',                   type:'唱片通告', pay:[8000,10000],  workTitle:'夜歌集' },
+  { id:'gig_1991_rec_303',                   type:'唱片通告', pay:[5000,7000],   workTitle:'晨歌集' }
 ];
 var S = { wrapHistory: [] };
 var leadStar59Of = function(g){ return (g && TEST_STAR[g.id]) || ''; };
@@ -179,8 +180,8 @@ ok('男獎類別 fellows 全男＋上限 3', catA1.length <= 3 && catA1.every(f=
 /* ---- (6) 過濾後零候選 → []，唔 crash ---- */
 const savedGigs = GIGS;
 GIGS = [
-  { id:'gig_1988_film_harbour_high', type:'電影', pay:[40000,48000], workTitle:'夜海鎗火' },
-  { id:'gig_1988_film_cotton_spring_high', type:'電影', pay:[35000,41900], workTitle:'詭校夜話' }
+  { id:'gig_1990_film_301', type:'電影', year:1990, pay:[40000,48000], workTitle:'夜海鎗火' },
+  { id:'gig_1990_film_302', type:'電影', pay:[35000,41900], workTitle:'詭校夜話' }
 ];
 let emptyOk = false, emptyRes = null;
 try{ emptyRes = awards63Fellows(CER_FILM, 1990, 'f'); emptyOk = Array.isArray(emptyRes) && emptyRes.length === 0; }catch(_e){ emptyOk = false; }

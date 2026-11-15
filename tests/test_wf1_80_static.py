@@ -32,8 +32,10 @@ ok('CALIB60 標題登記 上岸路／賭枱邊', 'N18:"上岸路"' in src and 'N
 ok('進度頁次序：N6F／N18／N19 跟住 N6、喺 N7 之前（v20a191 supersedes v20a153 B3：插入幕唔再排尾扮第 18／19／20 幕；內部 n 保留 18／19／20 供 far-merge／逐項邏輯用）', '["N6",6],["N6F",20],["N18",18],["N19",19],["N7",7]' in src)
 ok('N18/N19 旗已寫入節點 flags_written', 'flag_wf1_studio_dream' in src and 'flag_wf1_gamble_quiet' in src)
 
-# --- 二、加厚量 ---
-ok('index 較 v79 基線大（加厚＋補幕文本入檔）', len(src.encode('utf-8')) > 4798020 + 30000)
+# --- 二、加厚量（B3：全檔 byte 數已因刪舊通告庫大減，唔再用絕對基線；改釘 WF1 表本身嘅量） ---
+_wf1_i = src.index('const STORY_SPINE_NODES_WF1 = {')
+_wf1_j = src.index('\n};', _wf1_i)
+ok('WF1 補幕表有量（12 幕 beats＋N18/N19，表 >10KB）', len(src[_wf1_i:_wf1_j].encode('utf-8')) > 10000)
 
 print('\n' + ('ALL PASS' if not fails else 'FAILURES: ' + ' | '.join(fails)))
 sys.exit(0 if not fails else 1)

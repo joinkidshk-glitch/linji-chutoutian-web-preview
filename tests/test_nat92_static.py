@@ -6,7 +6,8 @@
 (C) 守衛常量：SPREAD 40、PULL_MAX 24、PULL_OPEN_MAX 30；年初開窗豁免；入門/常駐豁免。
 (D) 紅線：SAVE key / softRev / ?v= 不變；mergeNat92Gigs 走 normalizeGigRecord；NOTES_V20A92 存在；
     NAT92_GIGS 玩家面文案冇禁用詞（真藝名/「聲量」）。
-(E) 入門補位：紅棉/灣仔兩張 NAT92 入門 gig 字面存在（entryTier + boardPriority high）。
+(E) 入門補位（B3）：NAT92_GIGS 已清空；紅棉/灣仔 1990 冬季入門覆蓋由新庫承接，
+    入門標記（entryTier + boardPriority high）由 mergeEntryGigsIntoPool 派發。
 用法：python3 tests/test_nat92_static.py [path-to-index.html]
 """
 import re
@@ -69,7 +70,7 @@ ok("D1 SAVE key 不變", "starVolunteer_map_v19w" in src)
 ok("D2 softRev 不變", '"s107"' in src or "'s107'" in src)
 ok("D3 ?v= 不變", "v20a10" in src)
 mg = extract_fn("mergeNat92Gigs")
-ok("D4 mergeNat92Gigs 經 normalizeGigRecord 入池", "normalizeGigRecord(JSON.parse(JSON.stringify(raw)))" in mg)
+ok("D4 B3 mergeNat92Gigs 係 stub（池已空，回 0；錯峰機制留返）", "return 0" in mg and "function gigBoardPosted92" in src)
 notes = list(base.glob("NOTES_V20A92_*.md"))
 ok("D5 NOTES_V20A92 存在", len(notes) >= 1)
 nat92_txt = re.search(r"const NAT92_GIGS = \[(.*?)\n\];", src, re.S)
@@ -77,9 +78,14 @@ ntxt = nat92_txt.group(1) if nat92_txt else ""
 for banned in ["成龍", "周潤發", "劉德華", "張國榮", "梅艷芳", "林青霞", "王祖賢", "周星馳", "聲量"]:
     ok("D6 NAT92 文案冇禁用詞「" + banned + "」", banned not in ntxt)
 
-ok("E1 紅棉入門 gig 存在", "gig_1988_nat92_cotton_entry" in src and '"film_cotton"' in ntxt)
-ok("E2 灣仔入門 gig 存在", "gig_1988_nat92_wanchai_entry" in src and '"rec_wanchai"' in ntxt)
-ok("E3 入門 gig 帶 entryTier + boardPriority high", ntxt.count("entryTier:true") >= 2 and ntxt.count('boardPriority:"high"') >= 2)
+ok("E0 B3 NAT92_GIGS 已清空", "const NAT92_GIGS = [];" in src)
+# B3：入門補位由新庫承接——1990 冬季紅棉／灣仔各有一張臨記工（入門池篩選對象）
+_new = __import__("json").load(open(base / "content" / "gigs_new.json", encoding="utf-8"))
+_winter = [g for g in _new["gigs"] if g["year"] == 1990 and g["season"] == "冬" and g["tier"] == "臨記"]
+ok("E1 B3 紅棉 1990 冬季有入門工", any(g["id"] == "gig_1990_film_123" and g["loc"] == "film_cotton" for g in _winter))
+ok("E2 B3 灣仔 1990 冬季有入門工", any(g["id"] == "gig_1990_rec_116" and g["loc"] == "rec_wanchai" for g in _winter))
+ok("E3 B3 入門標記由 mergeEntryGigsIntoPool 派發（entryTier + boardPriority high）",
+   "entryTier: true" in extract_fn("mergeEntryGigsIntoPool") and 'boardPriority: "high"' in extract_fn("mergeEntryGigsIntoPool"))
 
 print("FAILURES: " + " | ".join(fails) if fails else "ALL PASS")
 sys.exit(1 if fails else 0)

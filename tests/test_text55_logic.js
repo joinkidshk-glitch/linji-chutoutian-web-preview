@@ -28,12 +28,12 @@ chk('note prefix strip', TF.textfix55Note('連 N10；你企出嚟撐佢，信用
 chk('note rel map', TF.textfix55Note('你幫佢頂住；rel_hiu 大升。') === '你幫佢頂住；曉晴大升。');
 chk('note label strip', TF.textfix55Label('HE：天王接班（連 T6）') === '天王接班');
 // C20: 1990 flash-mob ad gig (real pack strings), whole-field rewrites
-const ad = TF.textfix55GigRecord({ id: 'gig_1990_ad_01', title: '「金時鐘」手錶商場快閃廣告', roleHint: '飾演商場快閃展示手錶的都市青年', blurb: '虛構手錶品牌春檔商場快閃，要乾淨利落的商業臉。', boardNote: '春主推・商場快閃', synopsis: '虛構品牌「金時鐘」在大型商場拍快閃廣告。你戴上手錶走過中庭、對鏡校時間、轉身離去。創意只要「錢可以買時間」的消費節奏，不出現真實商標，也不要現代叫賣口播腔。' });
+const ad = TF.textfix55GigRecord({ id: 'gig_1990_test_401', title: '「金時鐘」手錶商場快閃廣告', roleHint: '飾演商場快閃展示手錶的都市青年', blurb: '虛構手錶品牌春檔商場快閃，要乾淨利落的商業臉。', boardNote: '春主推・商場快閃', synopsis: '虛構品牌「金時鐘」在大型商場拍快閃廣告。你戴上手錶走過中庭、對鏡校時間、轉身離去。創意只要「錢可以買時間」的消費節奏，不出現真實商標，也不要現代叫賣口播腔。' });
 chk('C20 title', ad.title === '「金時鐘」手錶商場推廣');
 chk('C20 boardNote', ad.boardNote === '春・商場推廣枱');
 chk('C20 no anachronism', !/快閃|口播|虛構/.test(ad.title + ad.roleHint + ad.blurb + ad.boardNote + ad.synopsis));
 // softBridge embedded gig: flash wording -> quick-shoot wording
-const brg = TF.textfix55GigRecord({ id: 'g36_90_brg_spr_central', workTitle: '中環快閃檔', title: '《中環快閃檔》廣告熟手', roleHint: '中環快閃拍攝，人流中偷鏡，企位反應要快。', blurb: '中環廣告春季快閃檔，要熟手面孔一日拍晒。', synopsis: '快閃檔全部係偷鏡：人流唔會停，鏡頭唔會等。' });
+const brg = TF.textfix55GigRecord({ id: 'gig_1990_test_402', workTitle: '中環快閃檔', title: '《中環快閃檔》廣告熟手', roleHint: '中環快閃拍攝，人流中偷鏡，企位反應要快。', blurb: '中環廣告春季快閃檔，要熟手面孔一日拍晒。', synopsis: '快閃檔全部係偷鏡：人流唔會停，鏡頭唔會等。' });
 chk('softBridge flash scrubbed', !/快閃/.test(brg.workTitle + brg.title + brg.roleHint + brg.blurb + brg.synopsis) && brg.workTitle === '中環快拍檔');
 // C10-adjacent: shoot hint screenshot -> production stills
 chk('shootHint stills', TF.textfix55GigRecord({ id: 'x', shootHint: '開工前睇返上一集截圖，道具唔好擺錯位。' }).shootHint === '開工前睇返上一集劇照，道具唔好擺錯位。');

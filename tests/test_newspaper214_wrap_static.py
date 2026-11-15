@@ -35,12 +35,10 @@ ok('S05_reward_sheet_kept', 'function presentPostShootReward(' in html)
 ok('S06_poster_helper', 'function np214WrapPoster214(' in html
    and 'np214_poster_' in html and 'poster59Path(gigId)' in html)
 ok('S07_wrap_imgkey', 'imgKey: poster214 ? poster214.key : ""' in wrap)
-ok('S08_poster_files', all(
-    os.path.exists(os.path.join(ROOT, 'assets/posters', 'poster-' + k[4:] + '.webp'))
-    for k in re.findall(r'"(gig_1988_[a-z0-9_]+)": 1', seg('const POSTER85_IDS = {', '};\nfunction poster85File'))))
-m85 = re.search(r'const POSTER85_IDS = \{(.*?)\};', html, re.S)
-ok('S09_poster85_count', m85 is not None and len(re.findall(r'"gig_[^"]+"', m85.group(1))) == 59,
-   'n=%s' % (len(re.findall(r'"gig_[^"]+"', m85.group(1))) if m85 else 'missing'))
+ok('S08_B3_poster85_ids_gone', 'const POSTER85_IDS = {' not in html and 'function poster85File' not in html)
+ok('S08_poster_files_stay_on_disk', os.path.isdir(os.path.join(ROOT, 'assets/posters')) and len(os.listdir(os.path.join(ROOT, 'assets/posters'))) > 0)
+ok('S09_B3_poster85_table_gone_but_files_remain', 'const POSTER85_IDS = {' not in html
+   and len([f for f in os.listdir(os.path.join(ROOT, 'assets/posters')) if f.endswith('.webp')]) == 59)
 ok('S10_no_wf3_key_collision', 'np214_poster_' in html
    and 'np214_poster_' not in seg('const NP214_AWARD_PHOTOS_214 = {', '};'))
 

@@ -6,8 +6,9 @@
 //   (3) B-05/B-07/B-08/B-09：真結局呈現函數——去留段鍾楚凝回收（要有 farewell 旗）、
 //       GH 三路歸因、E5 新句、曉晴 commit 按 awardsLog 分版；
 //   (4) B-10：真 hosp96VisitNote——冇熟人時出珍姐糖水句、冇芬姐字眼；
-//   (5) A-07：真 normalizeGigRecord＋gigReleaseLine88——迎春夜入 label、
-//       真・春季通告冇 label 照衍生「春季」、迎春夜冇 label 時（對照）先係春季。
+//   (5) A-07：真 normalizeGigRecord＋gigReleaseLine88——新庫春季通告 normalize 後
+//       唔加 label（舊 CLEAN100_GIG_RELEASE 表已刪）、照衍生「春季」；有 label 嗰陣照用 label。
+// v20a229 B3：迎春夜舊表項已刪，(5) 改用新庫 gig_1990_film_102（春・電影《碼頭追風》）。
 // 反證：喺 v20a99 index 上行 → 多項 FAIL（chungPre91／beatSeg100／ghOrigin100 等不存在）。
 // 用法：node tests/test_cleanup100_enc.js [path-to-index.html]
 const fs = require('fs');
@@ -79,7 +80,7 @@ eval([
   extractFn('endingFlag410'), extractFn('end95StoryDone'), extractFn('end95Awards'),
   extractFn('endingCareerScene410'), extractFn('endingRomanceScene410'), extractFn('endingExodusScene410'),
   extractFn('hosp96VisitNote'),
-  extractConst('GIG_SEASON_SPAN88'), extractConst('CLEAN100_GIG_RELEASE'),
+  extractConst('GIG_SEASON_SPAN88'),
   extractFn('gigReleaseLine88'), extractFn('normalizeGigRecord'),
   'globalThis.__E = { enc79BuildScript, endingCareerScene410, endingRomanceScene410, endingExodusScene410, hosp96VisitNote, gigReleaseLine88, normalizeGigRecord, ENC79_DIALOG: { chung_choning: ENC84_DLG_chung_choning, gu_mingfai: ENC83_DLG_gu_mingfai }, ENC79_STAGEUP: {}, ENC79_CAP_LINES: {}, ENC79_WRAP_ECHO: {} };',
 ].join('\n'));
@@ -146,14 +147,15 @@ const note = E.hosp96VisitNote(1);
 ok('B10 探病珍姐句', !!note && note.indexOf('茶水檔珍姐') >= 0 && note.indexOf('芬姐') < 0);
 
 /* (5) A-07 */
-const gigsPack = JSON.parse(fs.readFileSync(path.join(rootDir, 'content', 'gigs_1988.json'), 'utf8'));
+const gigsPack = JSON.parse(fs.readFileSync(path.join(rootDir, 'content', 'gigs_new.json'), 'utf8'));
 const gigArr = Array.isArray(gigsPack) ? gigsPack : gigsPack.gigs;
-const springGigRaw = JSON.parse(JSON.stringify(gigArr.find(g => g.id === 'gig_1988_tvb_longmen_spring_high')));
+const springGigRaw = JSON.parse(JSON.stringify(gigArr.find(g => g.id === 'gig_1990_film_102')));
 const springGig = E.normalizeGigRecord(springGigRaw);
-ok('A07 迎春夜 normalize 後有 label', springGig.releaseLabel === '預計播出：1990 年農曆新年特輯');
-ok('A07 迎春夜播出線係新年特輯', E.gigReleaseLine88(springGig) === '預計播出：1990 年農曆新年特輯');
-ok('A07 對照：冇label時衍生春季（證明label先係修復）', E.gigReleaseLine88(springGigRaw) === '預計播出：1988 年春季');
-const otherSpring = gigArr.find(g => g.id !== 'gig_1988_tvb_longmen_spring_high' && g.season === '春');
+ok('A07 新庫春季通告 normalize 後唔加 label（舊表已刪）', !springGig.releaseLabel);
+ok('A07 春季電影衍生「預計上映：1990 年春季」', E.gigReleaseLine88(springGig) === '預計上映：1990 年春季');
+ok('A07 對照：冇label時衍生春季（證明衍生路徑本身正常）', E.gigReleaseLine88(springGigRaw) === '預計上映：1990 年春季');
+ok('A07 有 label 嗰陣照用 label', E.gigReleaseLine88({ releaseLabel: '預計播出：1990 年農曆新年特輯', season: '春', year: 1990, type: '綜藝' }) === '預計播出：1990 年農曆新年特輯');
+const otherSpring = gigArr.find(g => g.id !== 'gig_1990_film_102' && g.season === '春' && g.year === 1990);
 if(otherSpring){
   const oc = E.normalizeGigRecord(JSON.parse(JSON.stringify(otherSpring)));
   ok('A07 其他春季通告冇label冇誤傷', !oc.releaseLabel && E.gigReleaseLine88(oc).indexOf('春季') >= 0);

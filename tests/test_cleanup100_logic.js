@@ -13,6 +13,8 @@
 //       其他星唔受影響；
 //   (7) A-07：真 gigReleaseLine88——有 releaseLabel 用 label（新年特輯）；
 //       真・春季通告冇 label 照衍生「春季」。
+// v20a229 B3：CLEAN100_GIG_RELEASE 表已刪（舊表），normalize 唔再幫通告加 releaseLabel；
+//       gigReleaseLine88 本身留返（label 直通＋季節衍生）。
 // 反證：喺 v20a99 index 上行 → 冇 CLEAN100_* → 抽取即 throw → FAIL。
 // 用法：node tests/test_cleanup100_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -66,14 +68,15 @@ eval([
   extractConst('YEARS66_SKIP_KEYS'), extractConst('YEARS66_YEAR_KEYS'),
   extractFn('years66ShiftYear'), extractFn('years66ShiftText'), extractFn('years66Walk'),
   extractConst('CONTRA98_WHEN_FIX'), extractConst('CLEAN100_WHEN_FIX'), extractFn('contra98FixNodeWhen'),
+  extractConst('GIG_SEASON_SPAN88'),
   extractFn('calendarSeason'),
   extractFn('spSoftSeasonChar'), extractFn('spPlayerMeta'),
   extractConst('STORY_SPINE_NODES_WF1'), extractFn('storyWeekStamp'),
   extractConst('ROMANCE_LAN_PA_OVERRIDES'),
   extractConst('NEWS82_EVENTS'), extractFn('ensureNews82'), extractFn('news82Tick'),
   extractFn('enc79PresenceP'),
-  extractConst('CLEAN100_GIG_RELEASE'), extractFn('gigReleaseLine88'),
-  'globalThis.__C100 = { CLEAN100_WHEN_FIX, contra98FixNodeWhen, years66Walk, spPlayerMeta, STORY_SPINE_NODES_WF1, storyWeekStamp, ROMANCE_LAN_PA_OVERRIDES, NEWS82_EVENTS, ensureNews82, news82Tick, enc79PresenceP, CLEAN100_GIG_RELEASE, gigReleaseLine88 };',
+  extractFn('gigReleaseLine88'),
+  'globalThis.__C100 = { CLEAN100_WHEN_FIX, contra98FixNodeWhen, years66Walk, spPlayerMeta, STORY_SPINE_NODES_WF1, storyWeekStamp, ROMANCE_LAN_PA_OVERRIDES, NEWS82_EVENTS, ensureNews82, news82Tick, enc79PresenceP, gigReleaseLine88 };',
 ].join('\n'));
 const C = globalThis.__C100;
 
@@ -156,9 +159,10 @@ ok('B05 farewell播完 p=0', C.enc79PresenceP(chungDef, 1000).p === 0);
 ok('B05 其他星不受影響', C.enc79PresenceP({ id: 'luk_baakyin', win: [] }, 1000).p === 0.5);
 
 /* (7) A-07 */
-ok('A07 releaseLabel 表有迎春夜', C.CLEAN100_GIG_RELEASE['gig_1988_tvb_longmen_spring_high'] === '預計播出：1990 年農曆新年特輯');
+ok('A07 B3：CLEAN100_GIG_RELEASE 表已刪（index.html 無此常量）', html.indexOf('const CLEAN100_GIG_RELEASE') < 0);
 ok('A07 有label用label', C.gigReleaseLine88({ releaseLabel: '預計播出：1990 年農曆新年特輯', season: '春', year: 1988, type: '綜藝' }) === '預計播出：1990 年農曆新年特輯');
-ok('A07 真春通告照衍生春季', C.gigReleaseLine88({ season: '春', year: 1990, type: '綜藝' }) === '' || true); /* GIG_SEASON_SPAN88 未抽取時回空字串屬環境差異；有 span 時應為春季——真值喺實駕驗 */
+ok('A07 真春通告照衍生春季（綜藝 1990 春）', C.gigReleaseLine88({ season: '春', year: 1990, type: '綜藝' }) === '預計播出：1990 年春季');
+ok('A07 真春電影衍生春季上映線', C.gigReleaseLine88({ season: '春', year: 1990, type: '電影' }) === '預計上映：1990 年春季');
 
 console.log(fails.length ? ('FAILURES: ' + fails.join(' | ')) : 'ALL PASS');
 process.exit(fails.length ? 1 : 0);

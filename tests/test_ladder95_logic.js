@@ -64,10 +64,12 @@ const FN_LIST = ['function dateObj','function calendarSeason','function dualTrac
   'function end95GenreOf','function end95IsLead','function end95ClassifyWrap','function end95EmptyStats','function end95StatsAddOne',
   'function end95DeriveStats','function careerStats95Of','function end95AddWrap','function end95Awards','function end95EverHeldCredit',
   'function end95StoryDone','function end95ChainsDone','function end95PangProgress','function end95E3Variant','function end95BuildGaps',
+  'function end229IsLead','function end229ClassifyLead','function end229EmptyLeadStats',
+  'function end229DeriveLeadStats','function leadStats229Of','function end229AddWrap',
   'function resolveEnding410','function endingEveOptions410','function endingEsc410','function endingCareerScene410','function endingSummaryHtml410'];
 const CONST_LIST = ['ENDING410_CAREER_NAMES','ENDING410_T','ENDING_NEG_TAGS410','ENDING410_BACKSTAGE_KEYS','ENDING410_EXODUS_NAME_FALLBACK',
   'ENDING410_NPC_NAMES','ENDING95_T','END95_TYPE_MEDIUM','END95_LEAD_SCALES','END95_STRONG_LEAD','END95_GENRE_TYPE_NAMES',
-  'END95_COMEDY_G','END95_ACTION_G','END95_COMEDY_KW','END95_ACTION_KW','ENDING410_ADJ_RUMOR'];
+  'END95_COMEDY_G','END95_ACTION_G','END95_COMEDY_KW','END95_ACTION_KW','ENDING410_ADJ_RUMOR','END229_LEAD_MEDIUM'];
 let SRC = "var START = { y:1990, m:1, d:1 };\n" + FN_LIST.map(extractFn).join('\n') + '\n' + CONST_LIST.map(extractConst).join('\n');
 CONST_LIST.forEach(n => { SRC = SRC.split('const '+n+' =').join('var '+n+' ='); });
 eval(SRC);
@@ -101,7 +103,14 @@ function stats95(o){
 /* fame/credit 精確構造：delta = credit - round(fame/2) */
 function arc(fame, credit, over){
   const delta = credit - Math.round(fame * 0.5);
-  return baseSave(Object.assign({ fame: fame, industryCreditDelta: delta }, over || {}));
+  const o = Object.assign({ fame: fame, industryCreditDelta: delta }, over || {});
+  /* v20a229 B4：合成存檔只帶舊計數器 careerStats95——新計數器 leadStats229
+     由佢嘅 leadByMedium 鏡像補齊（等同舊檔回填；新計數器本身嘅寫入／衍生路徑
+     由 test_gig229_counts.js 另行驗，呢度唔靠舊計數器做判定）。 */
+  if(o.careerStats95 && o.careerStats95.leadByMedium && !o.leadStats229){
+    o.leadStats229 = { byMedium: Object.assign({ film: 0, tv: 0, music: 0, variety: 0, ad: 0 }, o.careerStats95.leadByMedium) };
+  }
+  return baseSave(o);
 }
 function R(save){ S = save; return resolveEnding410(S); }
 function canon(o){

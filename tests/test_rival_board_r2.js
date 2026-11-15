@@ -1,6 +1,8 @@
-// P7-board-r2 focused：輸咗第 1 輪 → 冷卻期滿開第 2 輪，
-// gigsForLocSeasonBoard("film_lion","秋") 要有《火線街頭》(r2)，無《霓虹夜影》(r1)；
-// gigsForLocSeasonBoard("tvb_longmen","秋") 唔再有 r1。
+// P7-board-r2 focused（B5）：輸咗第 1 輪 → 冷卻期滿，
+// rivalryTick 輪次次序修正——先閘通告存在，後先＋1 開局（B3 係先＋1 後閘住，冷卻期滿會燒輪次）；
+// GIGS 無新庫通告 gig_1991_film_109 嗰陣，冷卻期滿唔燒輪次（round 留 1、faceoffState 留 none、唔 toast）；
+// GIGS 有呢張通告嗰陣開第 2 輪（round→2、state open、gigId 係新 id、toast 有出）。
+// 板面過濾（觸發前隱藏／觸發後上板）見 tests/test_gig229_trigger.js T4。
 // 用法：node tests/test_rival_board_r2.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -95,29 +97,52 @@ var mergeNat92Gigs = function(){};
 S = freshS();
 S.dayIndex = 243;
 S.rivalry = {score:4, faceoffState:"none", openedDay:150, settledDay:154, stance:"hard",
-  round:1, gigId:"gig_rival_gao_faceoff", nextOpenDay:244, lastResult:"lost", wins:0,
+  round:1, gigId:"gig_rival_stale_r1", nextOpenDay:244, lastResult:"lost", wins:0,
   newsIdx:1, workTitle:"霓虹夜影", settledDual:18};
 GIGS = [{ id:'other_gig', loc:'film_lion', season:'不限', tier:'初', type:'電影' }];
 rivalryTick(); // day 243：未到期，唔開
 ok('冷卻期內（day 243）唔開第 2 輪', S.rivalry.faceoffState === 'none' && S.rivalry.round === 1);
 S.dayIndex = 244;
-rivalryTick(); // 期滿開第 2 輪
-ok('期滿開第 2 輪：round 2、gig r2、作品 火線街頭',
-  S.rivalry.faceoffState === 'open' && S.rivalry.round === 2 &&
-  S.rivalry.gigId === 'gig_rival_gao_faceoff_r2' && S.rivalry.workTitle === '火線街頭');
+rivalryTick(); // 期滿：GIGS 無新庫通告 → 唔燒輪次（B5 次序修正：先閘後＋1）
+ok('B2 B5 期滿無通告：round 唔＋1（留 1）、faceoffState 留 none、gigId／作品名唔郁、唔 toast',
+  S.rivalry.faceoffState === 'none' && S.rivalry.round === 1 &&
+  S.rivalry.gigId === 'gig_rival_stale_r1' && S.rivalry.workTitle === '霓虹夜影' &&
+  toasts.length === 0);
+ok('B3 rivalryGigForRound(2) 回 null（GIGS 無新庫通告）', rivalryGigForRound(2) === null);
+ok('B4 mergeRivalGigs 係 no-op（唔加通告；新庫決戰通告經 trigger 系統上板）',
+  (function(){ const n = GIGS.length; mergeRivalGigs(); return GIGS.length === n && !GIGS.some(g=>/^gig_rival_/.test(g.id)); })());
+
+// (B5) B5 供新庫通告 → 開第 2 輪
+S = freshS();
+S.dayIndex = 244;
+S.rivalry = {score:4, faceoffState:"none", openedDay:150, settledDay:154, stance:"hard",
+  round:1, gigId:"gig_rival_stale_r1", nextOpenDay:244, lastResult:"lost", wins:0,
+  newsIdx:1, workTitle:"霓虹夜影", settledDual:18};
+GIGS = [{ id:'gig_1991_film_109', loc:'film_cotton', season:'秋', tier:'高級', type:'電影', title:'《霓虹夜影》男主角', workTitle:'霓虹夜影' }];
+toasts.length = 0;
+rivalryTick(); // 期滿＋有通告 → 開第 2 輪
+ok('B5 供新庫通告 → 開第 2 輪（round→2、state open、gigId 係新 id、toast 有出）',
+  S.rivalry.round===2 && S.rivalry.faceoffState==='open' && S.rivalry.gigId==='gig_1991_film_109' &&
+  S.rivalry.workTitle==='霓虹夜影' && toasts.length===1 && toasts[0].indexOf('霓虹夜影')>=0);
+ok('B6 開局唔改 nextOpenDay（冷卻只喺結算嗰陣先設：settledDay＋90）', S.rivalry.nextOpenDay===244);
+
+// 還原 B3 播種板面檢查用嘅世界
+S = freshS();
+S.dayIndex = 244;
+S.rivalry = {score:4, faceoffState:"none", openedDay:150, settledDay:154, stance:"hard",
+  round:1, gigId:"gig_rival_stale_r1", nextOpenDay:244, lastResult:"lost", wins:0,
+  newsIdx:1, workTitle:"霓虹夜影", settledDual:18};
+GIGS = [{ id:'other_gig', loc:'film_lion', season:'不限', tier:'初', type:'電影' }];
 
 var filmBoard = gigsForLocSeasonBoard('film_lion', '秋');
 var filmIds = filmBoard.map(g=>g.id);
 console.log('film_lion 板：', JSON.stringify(filmIds));
-ok('film 板有《火線街頭》(r2)', filmIds.indexOf('gig_rival_gao_faceoff_r2') >= 0);
-ok('film 板無《霓虹夜影》(r1)', filmIds.indexOf('gig_rival_gao_faceoff') < 0);
-var r2 = filmBoard.find(g=>g.id==='gig_rival_gao_faceoff_r2');
-ok('r2 作品名／地點正確', !!r2 && r2.workTitle === '火線街頭' && r2.loc === 'film_lion');
-
+ok("B7 film 板冇《火線街頭》(r2)", !filmIds.some(id=>/^gig_rival_/.test(id)));
+ok("B8 film 板冇《霓虹夜影》(r1)", !filmIds.some(id=>/^gig_rival_/.test(id)));
 var tvBoard = gigsForLocSeasonBoard('tvb_longmen', '秋');
 var tvIds = tvBoard.map(g=>g.id);
 console.log('tvb_longmen 板：', JSON.stringify(tvIds));
-ok('星河電視台板唔再有《霓虹夜影》(r1)', tvIds.indexOf('gig_rival_gao_faceoff') < 0);
+ok("B9 星河電視台板唔再有《霓虹夜影》(r1)", !tvIds.some(id=>/^gig_rival_/.test(id)));
 
 console.log('\n' + (fails.length ? ('FAILED: ' + fails.length + ' — ' + fails.join('；')) : 'ALL PASS'));
 process.exit(fails.length ? 1 : 0);

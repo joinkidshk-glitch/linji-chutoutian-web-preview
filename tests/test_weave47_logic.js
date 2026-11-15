@@ -433,8 +433,10 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
 })();
 
 /* ================================================================
-   段四：真 mergeExodusGigs＋真 board——移民潮空位通告（1992 秋起）
-   ＋真 canAudition 接單閘＋真殺青狀態機（booked→wrapHistory→落板）
+   段四：真 mergeExodusGigs＋真 board——B3 中期：EXODUS_GIGS 注入池已清空，
+   merge 一律回 0、板面冇移民潮空位通告（B5 觸發系統補返先有）；接單閘＋
+   殺青狀態機改用新庫中級 gig_1990_film_112（film_harbour／冬／中級）做主體，
+   機制本身不變。
    ================================================================ */
 (function(){
   var window = {};
@@ -470,6 +472,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   eval(extractFn('debtStatusLabel'));
   eval(extractFn('softOverdueFavorDebtLock'));
   eval(extractFn('canAudition'));
+  eval(extractFn('gigPayExact'));
   eval(extractConst('EXODUS_GIGS').replace('const EXODUS_GIGS', 'var EXODUS_GIGS'));
   eval(extractFn('mergeExodusGigs'));
   eval(extractFn('gigsForLocSeasonBoard'));
@@ -480,70 +483,63 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   }
   function boardIds(loc){ return gigsForLocSeasonBoard(loc).map(g => g.id); }
 
-  // v217 D7：移民空位閘由 1992 秋改做 1990 秋（顯示值）——1990 夏之前唔注入，1990 秋起注入
+  // B3：注入池已清空——任何年份 merge 都回 0，板面永遠冇移民潮空位通告
   S = freshS(dayIndexOf(1990, 7, 15)); GIGS = [];
-  ok('seg4 1990 summer: merge returns 0', mergeExodusGigs() === 0);
-  ok('seg4 1990 summer: boards have no exodus gigs',
-     boardIds('tvb_longmen').indexOf('gig_exodus_tv_senior') < 0 && boardIds('film_harbour').indexOf('gig_exodus_film_hand') < 0);
-
-  // 1990 秋：閘開，注入 5
+  ok('seg4 B3：1990 夏 merge 回 0（池已清空）', mergeExodusGigs() === 0 && GIGS.length === 0);
+  ok('seg4 B3：1990 夏板面冇移民潮通告',
+     !boardIds('tvb_longmen').some(id=>/^gig_exodus_/.test(id)) && !boardIds('film_harbour').some(id=>/^gig_exodus_/.test(id)));
   S = freshS(dayIndexOf(1990, 10, 15)); GIGS = [];
-  ok('seg4 1990 autumn: merge injects 5', mergeExodusGigs() === 5 && GIGS.length === 5);
-
-  // 1991 全年：已過閘，注入
+  ok('seg4 B3：1990 秋 merge 回 0（舊版注入 5，池已清空）', mergeExodusGigs() === 0 && GIGS.length === 0);
   S = freshS(dayIndexOf(1991, 12, 15)); GIGS = [];
-  ok('seg4 1991: merge injects 5', mergeExodusGigs() === 5 && GIGS.length === 5);
-  ok('seg4 1991: boards have exodus gigs',
-     boardIds('tvb_longmen').indexOf('gig_exodus_tv_senior') >= 0 && boardIds('film_harbour').indexOf('gig_exodus_film_hand') >= 0);
-
-  // 1992 春／夏：已過閘，注入
+  ok('seg4 B3：1991 merge 回 0', mergeExodusGigs() === 0 && GIGS.length === 0);
+  ok('seg4 B3：1991 板面冇移民潮通告',
+     !boardIds('tvb_longmen').some(id=>/^gig_exodus_/.test(id)) && !boardIds('film_harbour').some(id=>/^gig_exodus_/.test(id)));
   S = freshS(dayIndexOf(1992, 4, 15)); GIGS = [];
-  ok('seg4 1992 spring: injected', mergeExodusGigs() === 5 && GIGS.length === 5);
+  ok('seg4 B3：1992 春 merge 回 0', mergeExodusGigs() === 0 && GIGS.length === 0);
   S = freshS(dayIndexOf(1992, 7, 15)); GIGS = [];
-  ok('seg4 1992 summer: injected', mergeExodusGigs() === 5 && GIGS.length === 5);
-
-  // 1992 秋：注入兩份，各自上返所屬地點板
+  ok('seg4 B3：1992 夏 merge 回 0', mergeExodusGigs() === 0 && GIGS.length === 0);
   S = freshS(dayIndexOf(1992, 10, 15)); GIGS = [];
-  const n = mergeExodusGigs();
-  ok('seg4 1992 autumn: merge injects 5 (v20a36 F7: exodus 2->5)', n === 5 && GIGS.length === 5);
-  ok('seg4 1992 autumn: tv gig on tvb_longmen board', boardIds('tvb_longmen').indexOf('gig_exodus_tv_senior') >= 0);
-  ok('seg4 1992 autumn: film gig on film_harbour board', boardIds('film_harbour').indexOf('gig_exodus_film_hand') >= 0);
-  ok('seg4 1992 autumn: gigs not cross-posted',
-     boardIds('tvb_longmen').indexOf('gig_exodus_film_hand') < 0 && boardIds('film_harbour').indexOf('gig_exodus_tv_senior') < 0);
-  ok('seg4 merge idempotent: second merge keeps 5', mergeExodusGigs() >= 0 && GIGS.filter(g => /^gig_exodus_/.test(g.id)).length === 5);
+  ok('seg4 B3：1992 秋 merge 回 0（舊版注入 5，池已清空）', mergeExodusGigs() === 0 && GIGS.length === 0);
+  ok('seg4 B3：merge 冪等——再行一次仍然 0／冇舊 id', mergeExodusGigs() === 0 && !GIGS.some(g => /^gig_exodus_/.test(g.id)));
+  S = freshS(dayIndexOf(1992, 12, 15)); GIGS = [];
+  ok('seg4 B3：1992 冬 merge 回 0', mergeExodusGigs() === 0 && GIGS.length === 0);
 
-  // 數值校準：中級、定額喺 pay 範圍內、同隱藏通告 $3,100 同量級
-  const tv = GIGS.find(g => g.id === 'gig_exodus_tv_senior');
-  const film = GIGS.find(g => g.id === 'gig_exodus_film_hand');
-  ok('seg4 calibration: both tier 中', tv.tier === '中' && film.tier === '中');
-  ok('seg4 calibration: payExact within pay range',
-     tv.payExact >= tv.pay[0] && tv.payExact <= tv.pay[1] && film.payExact >= film.pay[0] && film.payExact <= film.pay[1]);
-  ok('seg4 calibration: payExact near intel gig $3,100 magnitude',
-     tv.payExact >= 2800 && tv.payExact <= 3600 && film.payExact >= 2400 && film.payExact <= 3300);
-  ok('seg4 calibration: boardNote marks 移民空位 (player-facing)',
-     String(tv.eraTagLabel || '').indexOf('移民空位') >= 0 || String(tv.boardNote || '').indexOf('移民空位') >= 0);
+  // 接單閘＋殺青狀態機（主體改用新庫中級 gig_1990_film_112；沙盒板面用 seasonRank 回退，
+  // 所以冬日先上板；stats 拉滿先過 reqGap，聲望閘先至係變量）
+  const fs47 = require('fs');
+  const path47 = require('path');
+  const packNew47 = JSON.parse(fs47.readFileSync(path47.join(__dirname, '..', 'content', 'gigs_new.json'), 'utf8'));
+  const raw112 = packNew47.gigs.find(g => g.id === 'gig_1990_film_112');
+  const raw113 = packNew47.gigs.find(g => g.id === 'gig_1990_tv_113');
+  const tv = normalizeGigRecord(JSON.parse(JSON.stringify(raw112)));
+  const other = normalizeGigRecord(JSON.parse(JSON.stringify(raw113)));
+  S = freshS(dayIndexOf(1990, 12, 15)); // 冬：主體上板
+  Object.assign(S, { acting: 99, stage: 99, vocal: 99, looks: 99, charm: 99, iq: 99, stamina: 99 });
+  GIGS = [tv, other];
+  ok('seg4 calibration: 主體 tier 中', tv.tier === '中級');
+  ok('seg4 calibration: payExact（中位）喺 pay 範圍內',
+     gigPayExact(tv) >= tv.pay[0] && gigPayExact(tv) <= tv.pay[1]);
+  ok('seg4 calibration: 工期 hint＝days（14 日）', tv.shootDaysHint === 14 && tv.days === 14);
+  ok('seg4 board: 主體喺 film_harbour 板', boardIds('film_harbour').indexOf('gig_1990_film_112') >= 0);
+  ok('seg4 board: 另一張喺 tvb_longmen 板', boardIds('tvb_longmen').indexOf('gig_1990_tv_113') >= 0);
 
   // 接單閘（真 canAudition）：聲望夠 → 可報；唔夠 → 中級 fameFloor 16 硬鎖
-  ok('seg4 audition: fame 20 can audition tv gig', canAudition(tv).ok === true);
+  ok('seg4 audition: fame 20 can audition 中級 gig', canAudition(tv).ok === true);
   S.fame = 5;
   ok('seg4 audition: fame 5 blocked by tier floor', canAudition(tv).ok === false);
   S.fame = 20;
 
   // 殺青狀態機（真函數）：open → booked → wrapped（落板）
   ok('seg4 lifecycle: starts open', gigLifecycleStatus(tv).key === 'open');
-  S.booked = [{ gigId: 'gig_exodus_tv_senior' }];
+  S.booked = [{ gigId: 'gig_1990_film_112' }];
   ok('seg4 lifecycle: booked after 接單', gigLifecycleStatus(tv).key === 'booked');
   S.booked = [];
   // 真殺青結算寫入嘅兩樣權威紀錄：S.flags["done_"+id]（isGigWrapped 讀佢）＋ wrapHistory 一筆
-  S.flags['done_gig_exodus_tv_senior'] = 1;
-  S.wrapHistory = [{ gigId: 'gig_exodus_tv_senior', title: tv.title }];
+  S.flags['done_gig_1990_film_112'] = 1;
+  S.wrapHistory = [{ gigId: 'gig_1990_film_112', title: tv.title }];
   ok('seg4 lifecycle: consumed after wrap', isGigConsumed(tv) === true && gigLifecycleStatus(tv).key === 'wrapped');
-  ok('seg4 lifecycle: wrapped gig leaves the board', boardIds('tvb_longmen').indexOf('gig_exodus_tv_senior') < 0);
-  ok('seg4 lifecycle: other exodus gig still on its board', boardIds('film_harbour').indexOf('gig_exodus_film_hand') >= 0);
-
-  // 1992 冬（過秋）仍然注入（過季唔鎖死）
-  S = freshS(dayIndexOf(1992, 12, 15)); GIGS = [];
-  ok('seg4 1992 winter: still injected', mergeExodusGigs() === 5);
+  ok('seg4 lifecycle: wrapped gig leaves the board', boardIds('film_harbour').indexOf('gig_1990_film_112') < 0);
+  ok('seg4 lifecycle: other gig still on its board', boardIds('tvb_longmen').indexOf('gig_1990_tv_113') >= 0);
 })();
 
 console.log(fails.length ? ('\nFAILED: ' + fails.length + ' -> ' + fails.join(' | ')) : '\nALL PASS (weave47)');

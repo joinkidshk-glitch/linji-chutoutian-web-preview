@@ -1,5 +1,6 @@
 # v20a88 FIX88 靜態測試：修復標記在位、SAVE/softRev/?v= 冇變、NOTES 在位、
-# 四個板面呼叫點全數改用提早窗判準、12 張冬季工 id 齊全、冇真藝人名。
+# 四個板面呼叫點全數改用提早窗判準、B3 冬季入門改由新庫 entryGigPool229 承接、
+# 12 張舊冬季工已刪、冇真藝人名。
 # 反證：v87 index 冇 FIX88 標記 → FAIL。
 import io, os, sys
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
@@ -26,18 +27,21 @@ ok('詳情頁檔期行接線', 'releaseRow88' in html)
 ok('板面函數改用提早窗判準', 'gigSeasonHidden88(g, curSeason)' in html)
 ok('入門池改用提早窗判準', 'gigSeasonHidden88(g, cur)' in html)
 ok('openLoc scrub 改用提早窗判準', 'gigSeasonHidden88(gig, calendarSeason())' in html)
-ok('冬季入門陣列在位', 'const WINTER_ENTRY_GIGS_88 = [' in html)
+ok('B3 冬季入門陣列已刪（WINTER_ENTRY_GIGS_88 唔再存在）', 'WINTER_ENTRY_GIGS_88' not in html)
 ok('冬季橋接陣列＋合併在位', 'const WINTER_BRIDGE_GIGS_88 = [' in html and 'function mergeWinterBridge88()' in html)
-ok('入門合併接入冬季池', 'poolBase88.concat(poolW88)' in html or 'poolW88' in html)
-for gid in ['gig_1988_entry_winter_cny_crew','gig_1988_entry_winter_market_ad','gig_1988_entry_winter_cny_crowd',
-            'gig_1988_entry_winter_cinema_crowd','gig_1988_entry_winter_food_hand','gig_1988_entry_winter_rec_chorus',
-            'gig_1988_winter88_bridge_cny_support','gig_1988_winter88_bridge_lion_dance','gig_1988_winter88_bridge_food_ad',
-            'gig_1988_winter88_bridge_mtv','gig_1988_winter88_bridge_chase','gig_1988_winter88_bridge_tv_unit']:
-    ok('冬季工在位 ' + gid, gid in html)
-seg_start = html.index('v20a88 FIX88-B：冬季入門工')
-seg_end = html.index('const WINTER_BRIDGE_GIGS_88')
+ok('B3 入門合併改由新庫篩出（entryGigPool229）', 'function entryGigPool229(' in html and 'entryGigPool229()' in html)
+ok('B3 12 張舊冬季工已刪', 'gig_1988_entry_winter_' not in html and 'gig_1988_winter88_bridge_' not in html)
+# B3：冬季入門覆蓋由新庫 entryGigPool229 承接——1990 冬季有 16 張臨記工過到開局門檻
+import json as _json
+_pack = _json.load(open(os.path.join(ROOT, 'content', 'gigs_new.json'), encoding='utf-8'))
+_open = {'acting':18,'stage':14,'vocal':14,'looks':22,'charm':16,'iq':20,'stamina':75}
+_winter_entry = [g for g in _pack['gigs'] if g['year']==1990 and g['season']=='冬' and g['tier']=='臨記'
+                 and all(v <= _open.get(k, 0) for k, v in g['req'].items())]
+ok('B3 新庫 1990 冬季入門覆蓋（16 張臨記工過開局門檻）', len(_winter_entry) == 16)
+seg_start = html.index('function entryGigPool229(')
+seg_end = html.index('function mergeEntryGigsIntoPool(')
 seg = html[seg_start:seg_end]
-ok('冬季入門段冇真藝人名', not any(n in seg for n in ['周星馳','劉德華','張國榮','周潤發','梁朝偉','梅艷芳','張曼玉','王祖賢','鍾楚紅','林青霞']))
+ok('入門池段冇真藝人名', not any(n in seg for n in ['周星馳','劉德華','張國榮','周潤發','梁朝偉','梅艷芳','張曼玉','王祖賢','鍾楚紅','林青霞']))
 
 if fails:
     print('FAILURES:', ' | '.join(fails)); sys.exit(1)

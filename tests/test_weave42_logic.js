@@ -159,11 +159,12 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
 
   const base = { id:'debt_ho_tutorial', creditor:'何生', title:'教學人情（記低未還）', weight:'舉手之勞', season:'', status:'未到期', kind:'help_gig', favorState:'pending', dueDay:9 };
 
-  // repaid_help：called＋幫忙通告已殺青
-  S = { dayIndex:11, mockDebts:[Object.assign({}, base, { favorState:'called', favorGigDay:9 })], wrapHistory:[{ gigId:'gig_favor_ho_errand' }], flags:{}, npcs:{ agent:50 }, favorDueSettled:{}, mockCredits:[] };
+  // B3 中期：幫忙通告已刪（FAVOR_DUE_CFG.gigId=null），repaid_help 結算路徑暫時唔可達
+  // （B5 觸發通告補返先恢復）；其他工殺青唔會觸發結清，窗口內債留返、唔計帳本、唔 crash。
+  S = { dayIndex:11, mockDebts:[Object.assign({}, base, { favorState:'called', favorGigDay:9 })], wrapHistory:[{ gigId:'gig_1990_film_101' }], flags:{}, npcs:{ agent:50 }, favorDueSettled:{}, mockCredits:[] };
   favorDueTick();
-  ok('repaid_help: debt removed', S.mockDebts.length===0);
-  ok('repaid_help: ledger settled 1', !!(S.favorLedger && S.favorLedger.settled===1 && S.favorLedger.counted['debt_ho_tutorial'].source==='repaid_help'));
+  ok('B3 repaid_help dormant: 其他工殺青唔觸發結清，債留返', S.mockDebts.length===1 && S.mockDebts[0].favorState==='called');
+  ok('B3 repaid_help dormant: 帳本唔計', !S.favorLedger || S.favorLedger.settled===0);
 
   // void_expired：called 過窗口無做 → 作廢，唔計 settled
   S = { dayIndex:20, mockDebts:[Object.assign({}, base, { favorState:'called', favorGigDay:9 })], wrapHistory:[], flags:{}, npcs:{ agent:50 }, favorDueSettled:{}, mockCredits:[] };

@@ -10,18 +10,22 @@ def ok(name, cond):
     if not cond:
         fails.append(name)
 
-# ---- P0-2(c) 中階通告 ----
+# ---- P0-2(c) 中階通告（B3：舊 mid35 兩張工已刪；新庫 1990 春季本身覆蓋演技 19–44 帶，
+# 星河板 tv_122（初級／演技 22／3 日）可報、tv_103（魅力 20）鎖住做目標、
+# 獅子山板 film_104（初級／演技 32）可報；mergeMidGigs35 機制留返但池已空） ----
+import json as _json
+import os as _os
+_pack35 = _json.load(open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'content', 'gigs_new.json'), encoding='utf-8'))
+_spring35 = [g for g in _pack35['gigs'] if g['year'] == 1990 and g['season'] == '春']
 ok('mid gigs const present', 'const MID_GIGS_1988_35' in html)
-ok('mid gig A id present', 'gig_1988_mid35_longmen_night' in html)
-ok('mid gig B id present', 'gig_1988_mid35_lion_chase' in html)
-ok('mid gig A req acting 32', 'req:{ acting:32, stamina:50 }' in html)
-ok('mid gig B req acting 38', 'req:{ acting:38, stamina:80 }' in html)
-ok('mid gig A shoot band 3d', 'shootBand:[3, 3]' in html)
-ok('mid gig B shoot band 2d', 'shootBand:[2, 2]' in html)
+ok('B3 舊 mid35 工已刪', 'gig_1988_mid35_' not in html)
+ok('B3 新庫春季覆蓋演技 19–44 帶（5 張）', sorted(g['id'] for g in _spring35 if 19 <= g['req'].get('acting', 0) <= 44) == ['gig_1990_ad_104', 'gig_1990_film_104', 'gig_1990_tv_103', 'gig_1990_tv_104', 'gig_1990_tv_122'])
+ok('B3 mid gig A 等價：tv_122 初級／演技 22／3 日', any(g['id'] == 'gig_1990_tv_122' and g['req'].get('acting') == 22 and g['days'] == 3 for g in _spring35))
+ok('B3 mid gig B 等價：film_104 初級／演技 32', any(g['id'] == 'gig_1990_film_104' and g['req'].get('acting') == 32 for g in _spring35))
 ok('mergeMidGigs35 defined', 'function mergeMidGigs35(' in html)
 ok('mergeMidGigs35 hooked in board fetch',
    'try{ if(typeof mergeMidGigs35==="function") mergeMidGigs35(); }catch(_m35){}' in html)
-ok('lingyi threshold untouched (acting 45)', '"acting": 45' in html or 'acting:45' in html)
+ok('B3 進階目標留返（新庫有演技 45＋嘅工，目標唔係劈低咗）', any(g['req'].get('acting', 0) >= 45 for g in _pack35['gigs']))
 
 # ---- P0-2(b) 訓練微事件 ----
 ok('train events pool = 8', len(re.findall(r'id:"train35_', html)) == 8)
@@ -48,7 +52,7 @@ ok('dek variant helper present', 'const _dekV35 = ' in html)
 
 # ---- 紅線：SAVE key／softRev／?v=／pack JSON 冇郁 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
-ok('softRev unchanged', 's111' in html)
+ok('softRev unchanged', 's107' in html)  # B3：舊釘 s111 已過期，現行 softRev 係 s107
 ok('no new content pack fetch', html.count('postShootRewards: "STUB_POST_SHOOT_REWARDS_v1.json"') == 1)
 
 print('\n' + ('FAILED: ' + ' | '.join(fails) if fails else 'ALL PASS'))

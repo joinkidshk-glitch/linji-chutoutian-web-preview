@@ -121,9 +121,12 @@ const END95_COMEDY_G = bindConst("END95_COMEDY_G");
 const END95_ACTION_G = bindConst("END95_ACTION_G");
 const END95_COMEDY_KW = bindConst("END95_COMEDY_KW");
 const END95_ACTION_KW = bindConst("END95_ACTION_KW");
+const END229_LEAD_MEDIUM = bindConst("END229_LEAD_MEDIUM");
 eval(["end95GenreOf","end95IsLead","end95ClassifyWrap","end95EmptyStats","end95StatsAddOne",
  "end95DeriveStats","careerStats95Of","end95AddWrap","end95Awards","end95EverHeldCredit",
- "end95StoryDone","end95ChainsDone","end95PangProgress","end95E3Variant","end95BuildGaps"]
+ "end95StoryDone","end95ChainsDone","end95PangProgress","end95E3Variant","end95BuildGaps",
+ "end229IsLead","end229ClassifyLead","end229EmptyLeadStats",
+ "end229DeriveLeadStats","leadStats229Of","end229AddWrap"]
  .map(n => extractFn(n)).join("\n"));
 eval(extractFn("resolveEnding410"));
 eval(extractFn("endingEsc410"));

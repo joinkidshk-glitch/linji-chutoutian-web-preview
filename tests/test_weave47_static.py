@@ -75,20 +75,11 @@ ok('gigs hook: mergeExodusGigs called in board fn', 'mergeExodusGigs(); }catch(_
 ok('gigs hook AFTER mergeRivalGigs call',
    html.index('mergeRivalGigs(); }catch(_rg){}') < html.index('mergeExodusGigs(); }catch(_xg){}'))
 
-# ---- 空位通告 ----
-g = re.search(r'const EXODUS_GIGS = \[(.*?)\n\];', html, re.S)
-gigs = g.group(1) if g else ''
-ok('EXODUS_GIGS block extractable', bool(gigs))
-for gid, loc, pay in [('gig_exodus_tv_senior', 'tvb_longmen', 'payExact:3300'),
-                      ('gig_exodus_film_hand', 'film_harbour', 'payExact:2900')]:
-    ok('gig present: ' + gid, ('id:"' + gid + '"') in gigs)
-    ok('gig ' + gid + ' loc ' + loc, ('loc:"' + loc + '"') in gigs)
-    ok('gig ' + gid + ' ' + pay, pay in gigs)
-    ok('gig id in NOTES list: ' + gid, gid in notes)
-ok('all five gigs tier 中 (v20a36 F7: exodus 2->5)', gigs.count('tier:"中"') == 5)
-ok('gig copy: 移民空位 framing', '移民' in gigs and '移民空位' in gigs)
-ok('gig tv copy: 原班兩個移民', '原班兩個資深臨記一齊移民' in gigs)
-ok('gig film copy: 武師移民加拿大', '移民去咗加拿大' in gigs)
+# ---- 空位通告（B3 中期：EXODUS_GIGS 已清空，merge 機制留返，B5 觸發系統補返先恢復） ----
+ok('B3 EXODUS_GIGS 已清空', 'const EXODUS_GIGS = [];' in html)
+ok('B3 舊空位通告已刪', 'gig_exodus_' not in html)
+_mg = html[html.index('function mergeExodusGigs('):html.index('function mergeExodusGigs(')+600]
+ok('B3 mergeExodusGigs 留返（空池回 0）', 'return 0' in _mg and '(EXODUS_GIGS||[])' in _mg)
 
 # ---- 玩家面真名／禁用詞掃描（新模組區塊，去註解） ----
 mod_start = html.index('/* ===== Weave Phase 4-7（v20a30）')

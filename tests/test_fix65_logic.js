@@ -7,7 +7,7 @@
        入帳唔夠 → 照倒數；存款夠全費 → 舊路徑解除（兩版都得）。
    (4) FIX65-3 跨媒介補分：多元 fixture（唱片桶＋電影擔正＋電視作品）→ borrow65 = 0.55×0.35×crossQ、
        repPower65 = 0.08×crossQ、base 高過冇補分；專攻 fixture（得電影）→ borrow/repPower 皆 0（曲線唔變）。
-   (5) FIX65-4 提示認級數：代表作 = MTV 男主角（gig_1989_mtv_01 真身形狀）→ 唔出「缺擔正」句、出深度句；
+   (5) FIX65-4 提示認級數：代表作 = MTV 男主角（舊庫 MTV 真身形狀）→ 唔出「缺擔正」句、出深度句；
        代表作係臨記 → 照出「缺擔正」；主軌最弱 → 指主軌（舊 parts 形狀 topQ 兜底唔崩）。
    反證：對 v20a64 index 行——壓力舊值／舊生活費帶／冇 weekEarnIn 解除／冇 borrow65 欄位／冇 awards65IsLeadWork → FAIL。
    用法：node tests/test_fix65_logic.js [path-to-index.html] */
@@ -189,7 +189,7 @@ ok(pEmpty.borrow65 === 0 && pEmpty.worksScore === 0, "本桶冇作品 → borrow
 eval(extractConst("AWARDS65_LEAD_SCALES").replace("const AWARDS65_LEAD_SCALES =", "var AWARDS65_LEAD_SCALES ="));
 eval(extractFn("awards65IsLeadWork"));
 eval(extractFn("awards62WeakHint"));
-const mtvRep = { h: { gigId: "gig_1989_mtv_01" }, g: { id: "gig_1989_mtv_01", roleScale: "mtv", roleLabel: "" }, q: 0.48, title: "樂隊「夜渡」快歌 MTV 男主角" };
+const mtvRep = { h: { gigId: "gig_1990_test_405" }, g: { id: "gig_1990_test_405", roleScale: "mtv", roleLabel: "" }, q: 0.48, title: "樂隊「夜渡」快歌 MTV 男主角" };
 ok(awards65IsLeadWork(mtvRep) === true, "MTV 男主角（roleScale=mtv、靠作品名）判擔正");
 ok(awards65IsLeadWork({ h: {}, g: { roleScale: "film_lead_big", roleLabel: "" }, q: 1, title: "大製作" }) === true, "film_lead_big 判擔正");
 ok(awards65IsLeadWork({ h: {}, g: { roleScale: "mtv", roleLabel: "拍板／遞水助手" }, q: 0.48, title: "《錄音室》拍板助手" }) === false, "幕後拍板助手（同樣 mtv）唔判擔正");

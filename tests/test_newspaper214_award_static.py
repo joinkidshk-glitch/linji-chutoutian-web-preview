@@ -186,7 +186,23 @@ try:
         'content/story_detail_rival_mentor.json',
         'content/story_detail_romance_lan_xu.json',
         'content/story_detail_romance_vera_hiu_choi.json'}
-    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed for l in touched))
+    # v229 豁免（新通告庫 B1，已拍板）：新增 content/gigs_new.json 一檔（240 張新庫，顯示年直寫；舊 pack 唔郁）。
+    _v229_allowed = {'content/gigs_new.json'}
+    # v229 B3 豁免（換庫：刪舊庫＋新庫做唯一來源，已拍板）：以下 15 個舊通告庫 JSON 係 B3 有意刪除
+    # （5 個舊 pack＋6 個舊版檔＋4 個 PATCH 檔；新庫 gigs_new.json 係唯一來源）。
+    _v229_b3_allowed = {'content/gigs_1988.json', 'content/gigs_1989.json',
+        'content/gigs_1990.json', 'content/gigs_1991.json', 'content/gigs_1992.json',
+        'content/gigs_1988_3.2.5-soft.json', 'content/gigs_1988_3.2.7-soft.json',
+        'content/gigs_1988_3.2.8-soft.json', 'content/gigs_1988_3.2.9-soft.json',
+        'content/gigs_1988_3.2.10-soft.json',
+        'content/gigs_1988_v3.2.9_soft_pre_phase_d_vocal_backup.json',
+        'content/PATCH_GIGS_1988_3_2_6_SOFT.json',
+        'content/PATCH_GIGS_1988_3_2_8_SOFT.json',
+        'content/PATCH_GIGS_1988_3_2_9_SOFT.json',
+        'content/PATCH_GIGS_1988_FAVOR_RUMOR_REMAIN21_v1.json'}
+    # v229 B7 豁免（Q11 刪 stub 債，已拍板）：content/STUB_FAVOR_DEBT_SEASON_v1.json 刪 debt_slot_ngai_01 一筆。
+    _v229_b7_allowed = {'content/STUB_FAVOR_DEBT_SEASON_v1.json'}
+    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed for l in touched))
 except Exception as e:
     ok('X05_content_json_untouched (git unavailable: %s)' % e, False)
 

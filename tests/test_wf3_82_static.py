@@ -63,10 +63,10 @@ if m:
     ok('冇真人名（抽查清單）', not any(n in blk for n in ['劉德華', '張學友', '黎明', '郭富城', '周星馳', '成龍', '周潤發']))
 
 # 鏈 B/C/D 接線
-ok('鏈 B 隱藏通告', 'gig_wf3_liao_stage' in src and 'WF3_LIAO_GIG' in src)
-ok('鏈 B 收割通告', 'gig_wf3_liao_harvest' in src)
+ok('B3 鏈 B 隱藏通告已刪（WF3_LIAO_GIG 轉 null）', 'const WF3_LIAO_GIG = null;' in src and 'gig_wf3_' not in src)
+ok('B3 鏈 B 收割通告已刪（WF3_LIAO_HARVEST_GIG 轉 null）', 'const WF3_LIAO_HARVEST_GIG = null;' in src and 'gig_wf3_' not in src)
 ok('mergeWf3Gigs 掛通告板', src.count('mergeWf3Gigs') >= 3)
-ok('試鏡前抉擇（steady/steal）', 'liaoChoice' in src and '企呢個位之前' in src)
+ok('B3 試鏡前抉擇已刪（E28：WF3 試鏡 hook 拎走，B5 先恢復）', 'liaoChoice' not in src and '企呢個位之前' not in src)
 ok('記仇債', 'debt_wf3_liao_grudge' in src and '面子債' in src)
 ok('鏈 A 債權', 'credit_wf3_lu_team' in src)
 ok('鏈 D 提點抉擇 N8_d', '"N8_d"' in src and 'flag_yip_warned82' in src)

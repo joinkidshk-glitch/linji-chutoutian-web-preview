@@ -69,7 +69,7 @@ ok('刪節點：CONTRA98_WHEN_FIX 冇 R_tang_ending', 'R_tang_ending:["1990' not
 ok('刪節點：CONTRA98 winter_finale 由 11 減到 8（v20a219：hiu／choi／xu 結局改秋）', src.count('"1990冬","era_1990_winter_finale"') == 8)
 
 # --- 3. DengLine 排片線留返（meet＋push1／push2／crisis，閘門唔郁） ---
-ok('留線：HELD 縮到 3 節（L25817）', lines()[26102].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
+ok('留線：HELD 縮到 3 節（L25817）', lines()[12668].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
 ok('留線：PUSH_CHROME 有 push1／push2／crisis，冇 ending',
    'R_tang_push1: { chromeSeason:"winter"' in src and 'R_tang_push2: { chromeSeason:"spring"' in src
    and 'R_tang_crisis: { chromeSeason:"autumn"' in src)
@@ -91,9 +91,16 @@ ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
 # v20a196 resync：showResult 淨 −1 行，兩錨點各 −1（31510→31509、31654→31653），difflib 對位核實內容逐字相同，純漂移。
 # v20a219 resync：index.html 淨 +3 行（CONTRA98 stub，插入點舊 L31845 之後）；winter_finale 11→8（hiu／choi／xu 結局改秋）；normaliseTangStub152 31899→31902、stub 呼叫行 32045→32048（difflib 對位核實純漂移，見 qa219/resync219.py）。
 # v20a228 resync：index.html 淨 −170 行（拎走四個存檔遷移函數，見 qa228/delete228.py；刪除區間舊 L31647／31696–31735／31744–31797／32142／33783–33793／36706–36768）；normaliseTangStub152 31888→31793、stub 呼叫行 32034→31939（difflib 對位核實純漂移，見 qa228/resync228.py）。
+# v20a229 resync：index.html 淨 +41 行（新通告庫地基 B1：STORY_WIRE ＋1／sync 新庫優先 ＋5／loader ＋22／normalize ＋14；淨 +41）；HELD 26103→26104、normaliseTangStub152 31793→31799、stub 呼叫行 31939→31966（difflib 對位核實純漂移，見 qa229/resync229.py）。
+# v20a229 B2 resync：index.html 淨 +48 行（真五級引擎，見 qa229/resync229_b2.py）；HELD 26104 唔郁、normaliseTangStub152 31799→31800、stub 呼叫行 31966→31967（difflib 對位核實純漂移）。
+# v20a229 B3 resync：index.html 淨 −15612 行（換庫，見 qa229/resync229_b3.py）；HELD 26104→12667、normaliseTangStub152 31800→18359、stub 呼叫行 31967→18486（difflib 對位核實純漂移）。
+# v20a229 B4 resync：index.html 淨 +103 行（提名計數＋LEAD229，見 qa229/resync229_b4.py）；HELD 12667→12666、normaliseTangStub152 18359→18427、stub 呼叫行 18486→18554（difflib 對位核實純漂移）。
+# v20a229 B5 resync：index.html 淨 +250 行（觸發系統＋BR89 擴充，見 qa229/resync229_b5.py）；3 個釘行全部喺首個 B5 插入點（S 預設 awardsResults，B4 L19849）之前，行號唔郁（difflib 對位核實純漂移）。
+# v20a229 B6 resync：index.html 淨 +332 行（抉擇即派＋定期合約制，見 qa229/resync229_b6.py）；3 個釘行按 difflib 映射重寫（12667→12669、18428→18430、18555→18557；0 個唔郁），difflib 對位核實純漂移。
+# v20a229 B7 resync：index.html 淨 +54 行（報紙分類 A10＋忠告卡 Q6，見 qa229/resync229_b7.py）；3 個釘行按 difflib 映射重寫（全部唔郁；3 個唔郁），difflib 對位核實純漂移。
 # --- 4. 載入機制：stub 正規化＋push mock 過濾 ---
-ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[31792].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[31938].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[18429].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[18556].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)

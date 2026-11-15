@@ -122,6 +122,13 @@ const SRC = [
   extractFn('function end95PangProgress'),
   extractFn('function end95E3Variant'),
   extractFn('function end95BuildGaps'),
+  /* v20a229 B4 LEAD229：resolveEnding410 擔正改讀新計數器 */
+  extractFn('function end229IsLead'),
+  extractFn('function end229ClassifyLead'),
+  extractFn('function end229EmptyLeadStats'),
+  extractFn('function end229DeriveLeadStats'),
+  extractFn('function leadStats229Of'),
+  extractFn('function end229AddWrap'),
   extractFn('function resolveEnding410'),
   extractFn('function endingEveOptions410'),
   extractFn('function applyStorySpineOverrides410'),
@@ -154,6 +161,7 @@ const SRC = [
   extractConst('END95_ACTION_G'),
   extractConst('END95_COMEDY_KW'),
   extractConst('END95_ACTION_KW'),
+  extractConst('END229_LEAD_MEDIUM'),
   extractConst('ENDING_NEG_TAGS410'),
   extractConst('ENDING410_BACKSTAGE_KEYS'),
   extractConst('ENDING410_EXODUS_NAME_FALLBACK'),
@@ -370,6 +378,8 @@ function eveKeys(over){
   const keys7 = eveKeys({ fame: 200, industryCreditDelta: 110,
     awardsLog: [{ medium: 'film', categories: [{ id: 'best', outcome: 'won', repTitle: '某片' }] }],
     careerStats95: { total: 40, byMedium: { film: 20, tv: 20, music: 0, variety: 0, ad: 0 }, leadByMedium: { film: 2, tv: 1, music: 0, variety: 0, ad: 0 }, tvLongLeads: 1, genreIdentified: 0, genreComedy: 0, genreAction: 0, backstageWorks: 0 },
+    /* v20a229 B4：E1 擔正讀新計數器——fixture 要帶埋 leadStats229（同舊計數器一致） */
+    leadStats229: { byMedium: { film: 2, tv: 1, music: 0, variety: 0, ad: 0 } },
     story: { flags: { flag_leave_mind: true }, rel: {}, done: {}, choices: {} } });
   ok('相鄰：leave_mind＋真 E1（v95 質性閘全齊）→ 唔出 leave_follow（只限 E0／E2）', !keys7.includes('leave_follow'));
   ok('相鄰：任何狀態都有 natural＋quit_job', keys7.includes('natural') && keys7.includes('quit_job'));

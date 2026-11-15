@@ -1,8 +1,16 @@
-// v20a63 頒獎禮群星版・邏輯測試：
-// (1) fellows 衍生：嗰年嗰媒介 pack 通告＋LEADSTAR59 主演，按片酬序、每星一部、唔用冇 sprite 嘅主演（彭少祺；v81 正名，sprite 對照仍為 null）。
-// (2) 玩家自己殺青過嘅作品唔會變對手；年份唔串。
-// (3) 冇主演數據（1991）→ 紅星池按媒介兜底：加權隨機（v20a147，頂級紅星機率高啲）、同一 (year, ceremonyId, medium) 可重現（seeded）、唔重複、唔出程天諾（1990 零出場紅線，池內根本冇佢）。
-// (4) beats：入圍揭曉唱出得主星名＋作品；得獎＋有海報先有 glamour beat；冇海報得獎約 11.5 秒（v20a160-m4：加 walkup 2200ms；v64 enter 走路入場後基線 9–10 秒已過時）；入圍落選有 comfort 安慰 beat（v20a147，reveal 之後、out 之前）；旁聽行埋宣佈弧約 9.6 秒，唱名／揭曉唔寫阿偉（v20a147）。
+// v20a63 頒獎禮群星版・邏輯測試（v20a229 B3 新庫版）：
+// (1) fellows 衍生：新庫 gigs_new.json 嗰年嗰媒介作品＋leadStarId 反查主演，按片酬序、
+//     每星一部、唔用冇 sprite 嘅主演（彭少祺；v81 正名，sprite 對照仍為 null——佢嗰張
+//     1990 廣告片酬最高都要排除，證明係 sprite 排除唔係片酬序）。
+//     D-12 之前 poster59Path 一律回空，fellows 全部 poster:''。
+// (2) 玩家自己殺青過嘅作品唔會變對手；年份係顯示年，唔再 +2。
+// (3) 池兜底：真主演唔夠 3 嗰陣（1991 電影女獎得 2 位）→ 紅星池按媒介兜底：加權隨機
+//     （v20a147，頂級紅星機率高啲）、同一 (year, ceremonyId, medium) 可重現（seeded）、
+//     唔重複、唔出程天諾（1990 零出場紅線，池內根本冇佢）。
+// (4) beats：入圍揭曉唱出得主星名＋作品；得獎＋有海報先有 glamour beat——D-12 之前冇海報，
+//     得獎一律冇 glamour、全長約 11.5 秒（v20a160-m4：加 walkup 2200ms）；入圍落選有
+//     comfort 安慰 beat（v20a147，reveal 之後、out 之前）；旁聽行埋宣佈弧約 9.6 秒，
+//     唱名／揭曉唔寫阿偉（v20a147）。
 // (6) v20a147 加權分佈：枚舉 seeds，頂級星首抽佔比明顯高過均勻分佈。
 // (5) focus cat 揀啱（won 優先 won cat、nominated 揀 nominated cat）。
 // 反證：對 v20a62 index 行 → AWARDS63 函數唔存在 → FAIL。
@@ -36,83 +44,69 @@ function extractConst(name){
   throw new Error('const end not found: '+name);
 }
 
-/* ---- 世界 stub ---- */
-var window = {};
-for(const c of ['POSTER59_STAR_IDS','POSTER59_IDS','AWARDS63_POOL','AWARDS63_TIER_WEIGHT'])
+/* ---- 世界：新庫 240 張經真 normalize；真 leadStar59Of／poster59Path／work59WorkOf ---- */
+const tfA = html.indexOf('/* ==== v20a55 TEXTFIX');
+const tfB = html.indexOf('async function refreshCopyPacksFromDisk(){');
+if(tfA < 0 || tfB <= tfA){ console.log('FAIL TEXTFIX55 block not found'); process.exit(1); }
+const TF_SRC = html.slice(tfA, tfB);
+for(const c of ['POSTER59_STAR_IDS','AWARDS63_POOL','AWARDS63_TIER_WEIGHT','AWARDS204_FEMALE_STARS','EMOJI_ICON112'])
   eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
+eval(extractConst('GIG_REQ_KEYS88').replace('const GIG_REQ_KEYS88 =', 'var GIG_REQ_KEYS88 ='));
+for(const f of ['normalizeGigRecord','bridge56NormalizeGig','boardNotePlayerOk','looksLikeEraId','humanizeEraId','dur90CalibrateGig',
+  'leadStar59Of','poster59Path','work59WorkOf','awards63StarName','awards63AllGigs','awards63GigYear','awards63GigPay',
+  'awards63KeySeed','awards63SeededRng','awards63WeightedPick','awards63Fellows','awards63FocusCat','awards62CeremonyBeats',
+  'awards204StarGender','iconHtml112'])
+  eval(TF_SRC + '\n' + extractFn(f));
 
-var TEST_STAR = {
-  gig_1988_film_harbour_high: '陸柏言',
-  gig_1988_film_cotton_spring_high: '廖炳星',
-  gig_1988_film_03: '麥震東',
-  gig_1988_film_01: '廖炳星',
-  gig_1988_ad_central_winter_low: '彭少祺',
-  gig_1988_ad_02: '陸柏言',
-  gig_1988_ad_05: '駱家聲',
-  gig_1988_tv_06: '陸柏言',
-  gig_1988_tv_03: '齊鎮海'
-};
-var GIGS = [
-  { id:'gig_1988_film_harbour_high',        type:'電影',   pay:[40000,48000], workTitle:'夜海鎗火' },
-  { id:'gig_1988_film_cotton_spring_high',  type:'電影',   pay:[35000,41900], workTitle:'詭校夜話' },
-  { id:'gig_1988_film_03',                  type:'電影',   pay:[8000,10500],  workTitle:'神探闖天關' },
-  { id:'gig_1988_film_01',                  type:'電影',   pay:[2000,3500],   workTitle:'陰陽夜更' },
-  { id:'gig_1988_ad_central_winter_low',    type:'廣告',   pay:[1000,1800],   workTitle:'冬日飲品廣告' },
-  { id:'gig_1988_ad_02',                    type:'廣告',   pay:[2500,3250],   workTitle:'龍鳳喜餅賀春照' },
-  { id:'gig_1988_ad_05',                    type:'廣告',   pay:[3000,4000],   workTitle:'夏日汽水廣告' },
-  { id:'gig_1988_tv_06',                    type:'電視劇', pay:[15000,20000], workTitle:'賀歲喜劇笑滿堂' },
-  { id:'gig_1988_tv_03',                    type:'電視劇', pay:[6000,8000],   workTitle:'飛天劍影決雌雄' },
-  { id:'gig_1989_film_a',                   type:'電影',   pay:[16000,20000], workTitle:'九龍夜行' },
-  { id:'gig_1989_film_b',                   type:'電影',   pay:[9000,12000],  workTitle:'霓裳夜冷' },
-  { id:'gig_1989_film_c',                   type:'電影',   pay:[7000,9000],   workTitle:'半島槍聲' }
-];
+const packNew = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'gigs_new.json'), 'utf8'));
+var GIGS = packNew.gigs.map(g => normalizeGigRecord(JSON.parse(JSON.stringify(g))));
 var S = { wrapHistory: [] };
-var leadStar59Of = function(g){ return (g && TEST_STAR[g.id]) || ''; };
-var poster59Path = function(gid){ return (gid && POSTER59_IDS[gid]) ? ('data:poster:'+gid) : ''; };
-var work59WorkOf = function(h, g){ return (g && (g.workTitle || g.title)) || ''; };
-
-/* v128 A5：獎項渲染經 iconHtml112（🏆→trophy 圖）——抽真身入 stub，唔係 mock。 */
-eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
-eval(extractFn('iconHtml112'));
-for(const f of ['awards63StarName','awards63AllGigs','awards63GigYear','awards63GigPay','awards63KeySeed','awards63SeededRng','awards63WeightedPick','awards63Fellows','awards63FocusCat','awards62CeremonyBeats'])
-  eval(extractFn(f));
+var STORY_WIRE = { gigsByYear: { 1990: null, 1991: null, 1992: null } };
 
 const CER_FILM = { id:'award_harbour_film', medium:'film', matchTypes:['電影'] };
 const CER_TV   = { id:'award_singho_tv',    medium:'tv',   matchTypes:['電視劇','綜藝'] };
 const CER_AD   = { id:'award_harbour_ad',   medium:'ad',   matchTypes:['廣告'] };
 
-/* ---- (1) 真主演衍生 ---- */
+/* ---- (1) 真主演衍生（新庫實數） ---- */
 S.wrapHistory = [];
 let fl = awards63Fellows(CER_FILM, 1990);
 ok('1990 電影 fellows 有 3 位', fl.length === 3);
-ok('按片酬序：陸柏言《夜海鎗火》居首', fl[0] && fl[0].star === '陸柏言' && fl[0].title === '夜海鎗火' && fl[0].starId === 'luk_baakyin');
-ok('廖炳星只出現一次（取最高 pay 嗰部《詭校夜話》）', fl.filter(f=>f.star==='廖炳星').length === 1 && fl.some(f=>f.title==='詭校夜話') && !fl.some(f=>f.title==='陰陽夜更'));
-ok('第三位係麥震東《神探闖天關》', fl[2] && fl[2].star === '麥震東');
+ok('按片酬序：麥震東《雪山劍客》居首', fl[0] && fl[0].star === '麥震東' && fl[0].title === '雪山劍客' && fl[0].starId === 'mak_zhendong' && fl[0].gigId === 'gig_1990_film_112');
+ok('廖炳星只出現一次（取最高 pay 嗰部《冬夜茶樓》，唔係《龍鳳茶樓》／《茶樓新丁》）', fl.filter(f=>f.star==='廖炳星').length === 1 && fl.some(f=>f.title==='冬夜茶樓') && !fl.some(f=>f.title==='龍鳳茶樓') && !fl.some(f=>f.title==='茶樓新丁'));
+ok('第三位係陸柏言《義莊夜話》', fl[2] && fl[2].star === '陸柏言' && fl[2].title === '義莊夜話' && fl[2].gigId === 'gig_1990_film_108');
 ok('真主演 fellows assigned=false', fl.every(f=>f.assigned === false));
-ok('有海報嘅 fellow 帶 poster（夜海鎗火係試點十部）', fl[0].poster === 'data:poster:gig_1988_film_harbour_high');
+ok('D-12 之前 fellows 全部冇海報（poster59Path 回空）', fl.every(f=>f.poster === ''));
 
 let flAd = awards63Fellows(CER_AD, 1990);
-ok('廣告 fellows 唔用冇 sprite 嘅彭少祺', !flAd.some(f=>f.gigId==='gig_1988_ad_central_winter_low') && flAd.length >= 2 && flAd.every(f=>f.starId));
+ok('廣告 fellows 唔用冇 sprite 嘅彭少祺（佢嗰張《維港銀行賀年廣告》片酬最高都要排除）',
+  !flAd.some(f=>f.star==='彭少祺') && !flAd.some(f=>f.gigId==='gig_1990_ad_108') && flAd.length === 3 && flAd.every(f=>f.starId));
 
 let flTv = awards63Fellows(CER_TV, 1990);
-ok('電視 fellows：陸柏言＋齊鎮海', flTv.length === 2 && flTv[0].star === '陸柏言' && flTv[1].star === '齊鎮海');
+ok('電視 fellows：麥震東＋陸柏言＋齊鎮海', flTv.length === 3 && flTv[0].star === '麥震東' && flTv[0].title === '火線' && flTv[1].star === '陸柏言' && flTv[2].star === '齊鎮海' && flTv[2].title === '屋企人');
 
 /* ---- (2) 自己作品唔做對手＋年份隔離 ---- */
-S.wrapHistory = [{ gigId:'gig_1988_film_harbour_high' }];
+S.wrapHistory = [{ gigId:'gig_1990_film_112' }];
 fl = awards63Fellows(CER_FILM, 1990);
-ok('玩家殺青過嘅《夜海鎗火》唔做對手', !fl.some(f=>f.title==='夜海鎗火') && fl[0] && fl[0].star === '廖炳星');
+ok('玩家殺青過嘅《雪山劍客》唔做對手', !fl.some(f=>f.title==='雪山劍客') && fl[0] && fl[0].star === '廖炳星');
 S.wrapHistory = [];
-const fl89 = awards63Fellows(CER_FILM, 1991);
-ok('1991 fellows 只用 1991 作品（gig_1989_* id 舊曆編碼，解析 +2）', fl89.length === 3 && fl89.every(f=>/^gig_1989_/.test(f.gigId)));
+const fl91 = awards63Fellows(CER_FILM, 1991);
+ok('1991 fellows 只用 1991 作品（id 內嵌年份已係顯示年，唔再 +2）',
+  fl91.length === 3 && fl91.every(f=>/^gig_1991_/.test(f.gigId)) &&
+  fl91[0].star === '廖炳星' && fl91[0].title === '影壇新星' &&
+  fl91[1].star === '麥震東' && fl91[1].title === '新人第一擊' &&
+  fl91[2].star === '陸柏言' && fl91[2].title === '江河歲月');
 
-/* ---- (3) 池兜底 ---- */
-ok('1991 fellows 全部 assigned=true（池兜底）', fl89.every(f=>f.assigned === true));
-ok('兜底星全部喺電影池內且唔重複', fl89.every(f=>AWARDS63_POOL.film.indexOf(f.starId)>=0) && new Set(fl89.map(f=>f.starId)).size === fl89.length);
-const fl89b = awards63Fellows(CER_FILM, 1991);
-ok('兜底確定性（兩次呼叫結果一致）', JSON.stringify(fl89) === JSON.stringify(fl89b));
+/* ---- (3) 池兜底（1991 電影女獎：真主演得江詩盈一位，魏詠男由池補） ---- */
+const flF91 = awards63Fellows(CER_FILM, 1991, 'f');
+ok('1991 電影女獎得 2 位（江詩盈真主演＋魏詠男池兜底）', flF91.length === 2 &&
+  flF91[0].star === '江詩盈' && flF91[0].starId === 'kong_siying' && flF91[0].assigned === false &&
+  flF91[1].star === '魏詠男' && flF91[1].starId === 'ngai_wingnaam' && flF91[1].assigned === true);
+ok('兜底星喺電影女池內且唔重複', flF91.every(f=>AWARDS63_POOL.film.indexOf(f.starId)>=0) && new Set(flF91.map(f=>f.starId)).size === flF91.length);
+const flF91b = awards63Fellows(CER_FILM, 1991, 'f');
+ok('兜底確定性（兩次呼叫結果一致）', JSON.stringify(flF91) === JSON.stringify(flF91b));
 const poolNames = Object.values(AWARDS63_POOL).flat().map(id=>awards63StarName(id));
 ok('紅星池冇程天諾（紅線）', poolNames.indexOf('程天諾') < 0 && poolNames.every(n=>n));
-ok('任何 fellows 都唔會係程天諾', fl.concat(fl89, flTv, flAd).every(f=>f.star !== '程天諾'));
+ok('任何 fellows 都唔會係程天諾', fl.concat(fl91, flTv, flAd, flF91).every(f=>f.star !== '程天諾'));
 
 /* ---- (5) focus cat ---- */
 const packMix = { bestOutcome:'nominated', categories:[
@@ -122,8 +116,8 @@ const packWon = { bestOutcome:'won', categories:[ { id:'a', outcome:'nominated' 
 ok('focus：won 揀 won cat', awards63FocusCat(packWon).id === 'b');
 
 /* ---- (4) beats ---- */
-const felLuk = { starId:'luk_baakyin', star:'陸柏言', title:'賀歲喜劇笑滿堂', gigId:'gig_1988_tv_06', poster:'', assigned:false };
-const packNom = { displayName:'星河電視獎', bestOutcome:'nominated', repWork62:'飛天劍影決雌雄', repGigId63:'gig_1988_tv_03',
+const felLuk = { starId:'luk_baakyin', star:'陸柏言', title:'賀歲喜劇笑滿堂', gigId:'gig_1990_tv_101', poster:'', assigned:false };
+const packNom = { displayName:'星河電視獎', bestOutcome:'nominated', repWork62:'飛天劍影決雌雄', repGigId63:'gig_1990_tv_101',
   categories:[{ label:'最佳男主角', outcome:'nominated', repWorkTitle:'飛天劍影決雌雄', fellows63:[felLuk], winner63:felLuk }] };
 const beatsNom = awards62CeremonyBeats(packNom);
 const revealNom = beatsNom.find(b=>b.id==='reveal');
@@ -133,18 +127,18 @@ const namesNom = beatsNom.find(b=>b.id==='names');
 ok('唱名 lines 有齊玩家＋對手', !!namesNom && namesNom.lines.some(l=>/阿偉/.test(l)) && namesNom.lines.some(l=>/陸柏言/.test(l)));
 ok('入圍冇 glamour beat（得獎先有）', !beatsNom.some(b=>b.id==='glamour'));
 
-const packWonPoster = { displayName:'維港影藝獎', bestOutcome:'won', repWork62:'夜海鎗火', repGigId63:'gig_1988_film_harbour_high',
-  categories:[{ label:'最佳電影', outcome:'won', repWorkTitle:'夜海鎗火', fellows63:[], winner63:null }] };
-const beatsWP = awards62CeremonyBeats(packWonPoster);
-ok('得獎＋有海報 → 有 glamour beat', beatsWP.some(b=>b.id==='glamour'));
-ok('得獎＋海報全長 > 9 秒（glamour 一擊）', beatsWP.reduce((a,b)=>a+b.ms,0) > 9000);
+const packWonTop = { displayName:'維港影藝獎', bestOutcome:'won', repWork62:'雪山劍客', repGigId63:'gig_1990_film_112',
+  categories:[{ label:'最佳電影', outcome:'won', repWorkTitle:'雪山劍客', fellows63:[], winner63:null }] };
+const beatsWT = awards62CeremonyBeats(packWonTop);
+const totalWT = beatsWT.reduce((a,b)=>a+b.ms,0);
+ok('得獎＋D-12 之前冇海報 → 冇 glamour、全長約 11.5 秒（walkup 2200ms，9350＋2200＝11550）', !beatsWT.some(b=>b.id==='glamour') && totalWT >= 11000 && totalWT <= 12000);
+ok('得獎＋冇海報都有 walkup beat（reveal 之後）', !!beatsWT.find(b=>b.id==='walkup') && beatsWT.find(b=>b.id==='walkup').ms === 2200);
 
-const packWonNoPoster = { displayName:'維港影藝獎', bestOutcome:'won', repWork62:'陰陽夜更', repGigId63:'gig_1988_film_01',
-  categories:[{ label:'最佳電影', outcome:'won', repWorkTitle:'陰陽夜更', fellows63:[], winner63:null }] };
+const packWonNoPoster = { displayName:'維港影藝獎', bestOutcome:'won', repWork62:'大排檔笑話', repGigId63:'gig_1990_film_101',
+  categories:[{ label:'最佳電影', outcome:'won', repWorkTitle:'大排檔笑話', fellows63:[], winner63:null }] };
 const beatsWN = awards62CeremonyBeats(packWonNoPoster);
 const totalWN = beatsWN.reduce((a,b)=>a+b.ms,0);
-ok('得獎＋冇海報 → 冇 glamour、全長約 11.5 秒（v20a160-m4：walkup 2200ms，9350＋2200＝11550）', !beatsWN.some(b=>b.id==='glamour') && totalWN >= 11000 && totalWN <= 12000);
-ok('得獎＋冇海報都有 walkup beat（reveal 之後）', !!beatsWN.find(b=>b.id==='walkup') && beatsWN.find(b=>b.id==='walkup').ms === 2200);
+ok('得獎＋另一部作品都係冇 glamour、全長約 11.5 秒', !beatsWN.some(b=>b.id==='glamour') && totalWN >= 11000 && totalWN <= 12000);
 
 const beatsGal = awards62CeremonyBeats({ displayName:'海港廣告獎', bestOutcome:'gallery', categories:[] });
 const totalGal = beatsGal.reduce((a,b)=>a+b.ms,0);

@@ -5,7 +5,8 @@
 #     south／east／west；12 人 × 3 向，腳底 y115）。
 # (3) 紅星池冇程天諾（1988 零出場紅線）。
 # (4) fellows 接線齊：build pack／log／請柬／結果卡／獎項頁／play（作品卡＋glamour＋對手捧杯）。
-# (5) 海報唔重複編碼：POSTER59_DATA 只得一份 const；新 code 只經 poster59Path 重用。
+# (5) 海報唔重複編碼：B3 已刪 POSTER59_DATA（D-12 新庫 posterBrief 出圖先恢復）；
+#     新 code 只經 poster59Path 重用（stub 一律回空字串，各顯示位用 CSS 卡降級）。
 # (6) 硬規則：SAVE key 不變、v62 評分公式（WIN_LINE）冇郁。
 # 反證: run against a pre-v63 index -> AWARDS63 block missing -> FAIL.
 import sys, re, os
@@ -102,7 +103,7 @@ chk('對手加權：AWARDS63_TIER_WEIGHT＋seeded RNG＋weighted pick（v20a147�
 chk('對手加權：第二輪唔用裸 Math.random（seeded draw）', 'awards63SeededRng(awards63KeySeed' in src)
 
 # --- (5) 海報唔重複編碼 ---
-chk('POSTER59_DATA 只得一份', src.count('const POSTER59_DATA') == 1)
+chk('B3 POSTER59_DATA 已刪（0 份，D-12 先恢復）', src.count('const POSTER59_DATA') == 0)
 chk('海報全經 poster59Path 取用（新 code 冇另嵌海報圖）', src.count('poster59Path') >= 6)
 
 # --- (6) 硬規則 ---

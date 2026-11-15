@@ -120,10 +120,12 @@ if tier:
 # ---- S6：唔改 SAVE／softRev／?v=／pack ----
 ok("S6 SAVE key 仲係 starVolunteer_map_v19w", 'SAVE = "starVolunteer_map_v19w"' in html_text)
 ok("S6 softRev 仲係 s107", 'softRev:"s107"' in html_text or 'SOFT_REV' in html_text)
+# B3：5 個舊 pack 已刪；新庫係唯一來源，playerTierMax 唔入 pack
 for y in ("1988", "1989", "1990", "1991", "1992"):
     p = os.path.join(ROOT, "content", "gigs_%s.json" % y)
-    txt = open(p, encoding="utf-8").read()
-    ok("S6 pack gigs_%s.json 冇 playerTierMax" % y, "playerTierMax" not in txt)
+    ok("S6 B3 舊 pack gigs_%s.json 已刪" % y, not os.path.exists(p))
+txt_new = open(os.path.join(ROOT, "content", "gigs_new.json"), encoding="utf-8").read()
+ok("S6 新庫 gigs_new.json 冇 playerTierMax", "playerTierMax" not in txt_new)
 
 # ---- S7：新圖在位 ----
 for fn in ("awi_s2_angry.webp", "awi_s3_angry.webp"):

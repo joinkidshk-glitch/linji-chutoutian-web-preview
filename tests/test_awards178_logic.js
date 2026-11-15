@@ -9,6 +9,7 @@
 // (5) 唱名：awards63FellowsHtml 有佢嗰陣印得出「高俊傑」。
 // (6) 池／權重唔郁：佢唔入 AWARDS63_POOL，AWARDS63_TIER_WEIGHT 亦冇佢。
 // 反證：對 pristine main 行 → v178 門檻／ko 條款唔存在 → 乾淨 FAIL（唔 crash，exit 1）。
+// v20a229 B3：POSTER59_IDS 已刪（海報舊表），needConsts 唔再抽佢；fixture 係合成 id＋stub，不變。
 // 用法：node tests/test_awards178_logic.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -42,7 +43,7 @@ function extractConst(name){
 /* ---- 抽真函數；抽唔到就每項乾淨 FAIL，唔掟 stack ---- */
 const needFns = ['awards63StarName','awards63AllGigs','awards63GigYear','awards63GigPay',
   'awards63KeySeed','awards63SeededRng','awards63WeightedPick','awards63Fellows','awards63FellowsHtml'];
-const needConsts = ['POSTER59_STAR_IDS','POSTER59_IDS','AWARDS63_POOL','AWARDS63_TIER_WEIGHT','EMOJI_ICON112'];
+const needConsts = ['POSTER59_STAR_IDS','AWARDS63_POOL','AWARDS63_TIER_WEIGHT','EMOJI_ICON112'];
 let missing = false;
 for(const c of needConsts){ const s = extractConst(c); if(s===null){ missing = true; } else { try{ eval(s.replace('const '+c+' =', 'var '+c+' =')); }catch(_e){ missing = true; } } }
 for(const f of needFns){ const s = extractFn(f); if(s===null){ missing = true; } else { try{ eval(s); }catch(_e){ missing = true; } } }

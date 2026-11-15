@@ -52,7 +52,11 @@ pool = slice_const('AWARDS63_POOL')
 weights = slice_const('AWARDS63_TIER_WEIGHT')
 star_ids = slice_const('POSTER59_STAR_IDS')
 female = slice_const('AWARDS204_FEMALE_STARS')
-leadstar = slice_const('LEADSTAR59')
+# v229 B3：LEADSTAR59 表已刪（新庫直接寫 leadStarId），舊檢查會空洞通過，改驗表已刪＋新星喺新庫做過主演
+import json as _json229
+_repo229 = os.path.dirname(os.path.abspath(idx_path))
+_newpack229 = _json229.load(open(os.path.join(_repo229, 'content', 'gigs_new.json'), encoding='utf-8'))
+_lead_ids229 = {g.get('leadStarId') for g in _newpack229['gigs']}
 
 # --- (1) 入池 ---
 chk('v204 標記喺 awards63Fellows／pool 附近', 'v20a204' in src)
@@ -98,8 +102,10 @@ if bad_geo: print('  bad_geo:', bad_geo)
 
 # --- (5) 硬規則 ---
 chk('SAVE key 不變', 'starVolunteer_map_v19w' in src)
-chk('LEADSTAR59 唔加新星（只經第二輪入 fellows）',
-    'lan_ruoxi' not in leadstar and 'shum_yingsuet' not in leadstar and 'kong_siying' not in leadstar)
+chk('LEADSTAR59 表已刪（v229 B3，新庫直接寫 leadStarId）',
+    'const LEADSTAR59 =' not in src and 'LEADSTAR59 =' not in src and 'LEADSTAR59[' not in src)
+chk('新星做過主演（新庫 leadStarId 有 lan_ruoxi／shum_yingsuet／kong_siying）',
+    all(x in _lead_ids229 for x in ['lan_ruoxi', 'shum_yingsuet', 'kong_siying']))
 chk('softRev 不變（s107）', 's107' in src)
 chk('?v= 不變（v20a10）', 'v20a10' in src)
 

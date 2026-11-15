@@ -6,8 +6,9 @@
 //  (C) N6F 電影線對稱幕：節點＋閘＋注入器齊；同 N6 等量級（W15、wealth 對稱）。
 //  (D) 結局呈現回收：八線 ending 旗 → endingInserts410 出返該線句子；提攜債已兌現 → 點名句；
 //      半線 he/be → endingRomanceScene410 分版。
-//  (E) BR89 條件通告：提攜債／情報卡持有先注入，兌現／完成後唔再出；br89OnGigComplete
-//      標記兌現但 status 唔郁（結局人情計數口徑不變）。
+//  (E) BR89 條件通告：B5——BR89_GIGS 注入池已清空，mergeBr89Gigs 本身唔再注入舊通告；
+//      新庫 13 張引薦通告經通用 trigger 系統（triggerGigOn＋板面過濾）上板，
+//      見 tests/test_gig229_trigger.js；br89OnGigComplete 標記兌現但 status 唔郁（結局人情計數口徑不變）。
 //  (F) 情報拼合新 pair＋單卡使用點：MERGE_PAIRS／INTEL_FLAGS／INTEL_USE_POINTS 真註冊；
 //      持卡先有 gigLine／sightLine。
 // 反證：對 v88 index 行 → BR89 符號不存在，抽取即 FAIL。
@@ -138,7 +139,7 @@ try{
   S = baseS(); S.flags['flag_fong_ending_save'] = 1;
   ins = mk(S).endingInserts410({}, favor);
   ok('D2 方小龍 save 旗（S.flags 庫）→ 結局有佢句', ins.some(t=>t.indexOf('方小龍')>=0 && t.indexOf('兄弟情')>=0));
-  S = baseS(); S.mockCredits.push({ id:'credit_enc83_luk_patron', debtor:'陸柏言', title:'天王引薦', line:'x', status:'未收', redeemedBy:'gig_br89_patron_luk' });
+  S = baseS(); S.mockCredits.push({ id:'credit_enc83_luk_patron', debtor:'陸柏言', title:'天王引薦', line:'x', status:'未收', redeemedBy:'patron-gig-redeemed' });
   ins = mk(S).endingInserts410({}, favor);
   ok('D3 提攜債已兌現 → 點名句', ins.some(t=>t.indexOf('陸柏言')>=0 && t.indexOf('兌現')>=0));
   S = baseS();
@@ -170,7 +171,7 @@ try{
     syncNotebookMirror: ()=>{},
   };
   const api = new Function('S','GIGS','window','normalizeGigRecord','MERGE_PAIRS','INTEL_FLAGS','INTEL_USE_POINTS','syncNotebookMirror',
-    modSrc + '\nreturn { BR89_GIGS, mergeBr89Gigs, br89GigOn, br89OnGigComplete, br89HoldsCard, br89CardUsePointForGig, br89CardUsePointForStar, MERGE_PAIRS, INTEL_FLAGS, INTEL_USE_POINTS };'
+    modSrc + '\nreturn { BR89_GIGS, mergeBr89Gigs, br89GigOn, br89OnGigComplete, br89HoldsCard, br89CardUsePointForGig, br89CardUsePointForStar, BR89_PATRON_OF_GIG, MERGE_PAIRS, INTEL_FLAGS, INTEL_USE_POINTS };'
   )(env.S, env.GIGS, env.window, env.normalizeGigRecord, env.MERGE_PAIRS, env.INTEL_FLAGS, env.INTEL_USE_POINTS, env.syncNotebookMirror);
   // (F) 拼合註冊
   ok('F1 新 pair ×2 已註冊', api.MERGE_PAIRS.some(p=>p.merged==='rumor_lok_highlevel_truth') && api.MERGE_PAIRS.some(p=>p.merged==='rumor_chung_farewell_truth'));
@@ -188,22 +189,71 @@ try{
   ok('E1 冇持有 → BR89 通告唔上板', env.GIGS.length===0);
   env.S.mockCredits.push({ id:'credit_enc83_luk_patron', debtor:'陸柏言', title:'天王引薦', line:'陸柏言講過會引薦你。', status:'未收' });
   api.mergeBr89Gigs();
-  ok('E2 持提攜債 → 引薦通告上板', env.GIGS.some(g=>g.id==='gig_br89_patron_luk'));
+  ok('E2 B5：mergeBr89Gigs 本身唔再注入（新庫引薦通告經 trigger 系統上板，見 test_gig229_trigger.js）', env.GIGS.length===0 && !env.GIGS.some(g=>/^gig_br89_/.test(g.id)));
   // 情報卡 → 替身通告
   env.S.mockRumors.push({ id:'rumor_ngai_stunt_tip', state:'normal' });
   api.mergeBr89Gigs();
-  ok('E3 持替身情報卡 → 情報通告上板', env.GIGS.some(g=>g.id==='gig_br89_stunt_ngai'));
-  // 殺青標記兌現：line 追加、status 不變、再 merge 唔再出
-  api.br89OnGigComplete('gig_br89_patron_luk');
+  ok('E3 B5：mergeBr89Gigs 唔出舊情報通告（舊情報通告已刪，新庫對應見 test_gig229_trigger.js）', env.GIGS.length===0 && !env.GIGS.some(g=>/^gig_br89_/.test(g.id)));
+  // 殺青標記兌現：line 追加、status 不變、再 merge 唔再出（通告 id 由留返嘅映射表反查，唔寫死舊 id 字面）
+  const patId = Object.keys(api.BR89_PATRON_OF_GIG).find(k=>api.BR89_PATRON_OF_GIG[k]==='credit_enc83_luk_patron');
+  api.br89OnGigComplete(patId);
   const c = env.S.mockCredits.find(x=>x.id==='credit_enc83_luk_patron');
-  ok('E4 兌現標記＋line 交代＋status 唔郁', c.redeemedBy==='gig_br89_patron_luk' && c.line.indexOf('已兌現')>=0 && c.status==='未收');
+  ok('E4 兌現標記＋line 交代＋status 唔郁', c.redeemedBy===patId && c.line.indexOf('已兌現')>=0 && c.status==='未收');
   api.mergeBr89Gigs();
-  ok('E5 兌現後引薦通告落板', !env.GIGS.some(g=>g.id==='gig_br89_patron_luk'));
-  // 完成旗 → 替身通告唔再出
-  env.S.flags['done_gig_br89_stunt_ngai'] = 1;
+  ok('E5 兌現後引薦通告落板', !env.GIGS.some(g=>g.id===patId));
+  // 完成旗 → 情報通告唔再出（池已空：任何完成旗都唔會令舊通告返嚟）
+  env.S.flags['done_gig_1990_film_101'] = 1;
   api.mergeBr89Gigs();
-  ok('E6 完成後情報通告落板', !env.GIGS.some(g=>g.id==='gig_br89_stunt_ngai'));
+  ok('E6 完成後情報通告落板', !env.GIGS.some(g=>/^gig_br89_/.test(g.id)));
 }catch(e){ ok('E/F BR89 模組抽取/執行 ('+e.message+')', false); }
+
+/* ================= (H) B5：BR89 映射 13 張＋R-4 雙觸發 ================= */
+try{
+  const modSrc = extractBetween('/* =====================================================================\n   v20a89 BR89：分支補完', '/* ---------- WF3-3 地點一次性對白');
+  const env = {
+    S: { flags:{}, mockRumors:[], mockCredits:[], dayIndex: 10 },
+    GIGS: [], window: {},
+    normalizeGigRecord: (g)=> g,
+    MERGE_PAIRS: [], INTEL_FLAGS: {}, INTEL_USE_POINTS: {},
+    syncNotebookMirror: ()=>{},
+  };
+  const api = new Function('S','GIGS','window','normalizeGigRecord','MERGE_PAIRS','INTEL_FLAGS','INTEL_USE_POINTS','syncNotebookMirror',
+    modSrc + '\nreturn { BR89_GIGS, mergeBr89Gigs, br89GigOn, br89OnGigComplete, br89HoldsCard, br89CardUsePointForGig, br89CardUsePointForStar, BR89_PATRON_OF_GIG, MERGE_PAIRS, INTEL_FLAGS, INTEL_USE_POINTS };'
+  )(env.S, env.GIGS, env.window, env.normalizeGigRecord, env.MERGE_PAIRS, env.INTEL_FLAGS, env.INTEL_USE_POINTS, env.syncNotebookMirror);
+  const EXPECT13 = {
+    gig_1991_film_106:'credit_enc83_luk_patron', gig_1991_variety_108:'credit_enc84_pang_patron',
+    gig_1992_rec_102:'credit_enc84_ching_patron', gig_1991_film_107:'credit_enc79_liu_priority',
+    gig_1992_film_102:'credit_enc83_liu_patron', gig_1992_film_103:'credit_enc83_mak_patron',
+    gig_1992_tv_103:'credit_enc83_yip_patron', gig_1991_rec_102:'credit_enc83_gu_patron',
+    gig_1992_tv_104:'credit_enc84_so_patron', gig_1992_film_104:'credit_enc84_chung_patron',
+    gig_1992_rec_103:'credit_enc83_lok_patron', gig_1992_film_105:'credit_enc83_ngai_patron',
+    gig_1992_film_106:'credit_enc83_chai_patron'
+  };
+  ok('H1 BR89 映射 13 張逐對啱（SPEC §3.5A）',
+    Object.keys(api.BR89_PATRON_OF_GIG).length===13 &&
+    Object.keys(EXPECT13).every(k=>api.BR89_PATRON_OF_GIG[k]===EXPECT13[k]));
+  ok('H2 舊 gig_br89_* 已清', !Object.keys(api.BR89_PATRON_OF_GIG).some(k=>/^gig_br89_/.test(k)));
+  // R-4 雙觸發 OR（兩條路獨立驗）
+  const r4 = { id:'gig_1991_rec_102' };
+  env.S.mockCredits.length = 0; env.S.flags = {};
+  ok('H3 R-4 兩條路都冇 → 唔開', api.br89GigOn(r4)===false);
+  env.S.flags.enc83_gu_loan_result = 1;
+  ok('H4 R-4 還錢結算完成（result＝1）→ 開（唔使持債）', api.br89GigOn(r4)===true);
+  env.S.flags.enc83_gu_loan_result = 2;
+  ok('H5 R-4 還錢失敗（result＝2）→ 唔開', api.br89GigOn(r4)===false);
+  env.S.flags = {};
+  env.S.mockCredits.push({ id:'credit_enc83_gu_patron', debtor:'顧明輝', title:'登台引薦', line:'x', status:'未收' });
+  ok('H6 R-4 持債權 → 開', api.br89GigOn(r4)===true);
+  // 兌現標記：標題由新庫 GIGS 反查
+  env.S.mockCredits.length = 0;
+  env.S.mockCredits.push({ id:'credit_enc83_luk_patron', debtor:'陸柏言', title:'天王引薦', line:'x', status:'未收' });
+  env.GIGS.length = 0;
+  env.GIGS.push({ id:'gig_1991_film_106', title:'《江河歲月》男配角' });
+  const patId = Object.keys(api.BR89_PATRON_OF_GIG).find(k=>api.BR89_PATRON_OF_GIG[k]==='credit_enc83_luk_patron');
+  api.br89OnGigComplete(patId);
+  const c = env.S.mockCredits.find(x=>x.id==='credit_enc83_luk_patron');
+  ok('H7 兌現標記標題用新庫名（唔係「引薦通告」）', c.redeemedBy===patId && c.line.indexOf('《江河歲月》')>=0 && c.status==='未收');
+}catch(e){ ok('H BR89 13 張／R-4 抽取/執行 ('+e.message+')', false); }
 
 /* ================= (G) A_ho 寫返 npcs.agent（源碼級） ================= */
 try{

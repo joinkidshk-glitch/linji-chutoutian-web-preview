@@ -88,10 +88,9 @@ for (const m of html.matchAll(/flags\.([A-Za-z0-9_]+)\s*=(?!=)/g)) codeProducers
 for (const m of html.matchAll(/flags\[["']([^"']+)["']\]\s*=(?!=)/g)) { if (!m[1].includes('+')) codeProducers.add(m[1]); }
 for (const m of html.matchAll(/setFlag\(["']([^"']+)["']/g)) codeProducers.add(m[1]);
 for (const m of html.matchAll(/StoryOC\.setFlag\(["']([^"']+)["']/g)) codeProducers.add(m[1]);
-/* gig packs 嘅 effects 旗標（通告抉擇都可以寫旗） */
+/* gig packs 嘅 effects 旗標（通告抉擇都可以寫旗）——B3：舊 pack 已刪，新庫 gigs_new.json 係唯一來源 */
 const gigIds = new Set();
-for (const gf of ['gigs_1988.json', 'gigs_1989.json', 'gigs_1990.json', 'gigs_1991.json', 'gigs_1992.json',
-  'gigs_1988_3.2.5-soft.json', 'gigs_1988_3.2.7-soft.json', 'gigs_1988_3.2.8-soft.json', 'gigs_1988_3.2.9-soft.json', 'gigs_1988_3.2.10-soft.json']) {
+for (const gf of ['gigs_new.json']) {
   const g = loadPack(gf); if (!g) continue;
   const out = { flags: new Set(), strings: new Set() };
   deepCollect(g, out);

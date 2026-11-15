@@ -51,9 +51,10 @@ if "poster59Path" not in wall or "leadStar59Of" not in wall:
     fails.append("worksWallEntries59 被誤傷（作品牆應保留）")
 if html.count("wrapPoster59Html(") < 2:
     fails.append("wrapPoster59Html 調用點消失（殺青流程應照用）")
-# leadStar 數據層保留（選角回填＋殺青好感邏輯照讀）
-if "leadStar59Apply" not in html or "leadStar59Of" not in html:
-    fails.append("leadStar 數據層被誤傷")
+# leadStar 數據層：B3 已刪 leadStar59Apply 回填（新庫 gig 自帶 leadStarId，唔再回填）；
+# leadStar59Of 反查照讀（選角回填＋殺青好感邏輯照讀）
+if "leadStar59Apply" in html or "leadStar59Of" not in html:
+    fails.append("leadStar 數據層被誤傷（B3：leadStar59Apply 應刪、leadStar59Of 應留）")
 
 # 4. 紀律
 if "starVolunteer_map_v19w" not in html: fails.append("SAVE key 變咗")

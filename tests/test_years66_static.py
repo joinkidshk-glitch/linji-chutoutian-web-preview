@@ -24,11 +24,8 @@ ok('CONSEQ61_REVIEWS 鍵 1990/1991', re.search(r'1990:\s*\{\s*floor:\s*45', src)
 ok('E7 場景 variant 用 review1991', 'if(v==="review1991")' in src)
 ok('冇 review1988 殘留字串', 'review1988' not in src)
 ok('生活費年份閘 1991/1992', 'if(yr>=1991){' in src and 'let up = (yr>=1992) ? 600 : 300;' in src)
-ok('gigsByYear 五包 remap 齊', all(s in src for s in [
-    'STORY_WIRE.gigsByYear[1990] = gigsPack;', 'STORY_WIRE.gigsByYear[1991] = gigs1989;',
-    'STORY_WIRE.gigsByYear[1992] = gigs1990;', 'STORY_WIRE.gigsByYear[1993] = gigs1991;',
-    'STORY_WIRE.gigsByYear[1994] = gigs1992;']))
-ok('gigsByYear 初值鍵 1990–1994', 'gigsByYear: { 1990: null, 1991: null, 1992: null, 1993: null, 1994: null }' in src)
+ok('B3 gigsByYear 新庫直寫（三年，唔再五包 remap）', 'STORY_WIRE.gigsByYear[yy] = { version: gigsNew.version' in src and 'STORY_WIRE.gigsByYear[1990] = gigsPack;' not in src and 'STORY_WIRE.gigsByYear[1993] = gigs1991;' not in src)
+ok('B3 gigsByYear 初值鍵 1990–1992（三年）', 'gigsByYear: { 1990: null, 1991: null, 1992: null }' in src and 'gigsByYear: { 1990: null, 1991: null, 1992: null, 1993: null, 1994: null }' not in src)
 ok('移民潮芬姐閘 1991', 'yearSeasonNow().year < 1991) return false' in src)
 ok('移民潮到期式 1991夏/1992', 'const due = (ys.year===1991 && ys.season==="夏") || ys.year>=1992;' in src)
 ok('choice47 commit 窗口仲係 1992 秋', src.count('choice47SeasonReached(1992, "秋")') == 1)
@@ -36,7 +33,7 @@ ok('choice47 移民空位閘改 1990 秋（v217 D7）', src.count('choice47Seaso
 ok('程天諾預熱 fromYear 1992 齊', 'fromYear:1992' in src)
 ok('結局閘文字 1992 年冬', '去到 1992 年冬、台慶之後嗰晚' in src and '"1992 年冬 · 三年埋單"' in src)  # v20a136：fallback 由「頒獎禮前夕」改做「台慶之後」
 ok('STORY_GATE_3Y N17 yearEq 1992', 'N17: { needDone: ["N16"], weekMin: 153, yearEq: 1992' in src)  # v20a136：閘加 weekMin 153
-ok('id 內嵌年份解析 +2 守衛齊', src.count('(y66>=1988 && y66<=1992) ? y66+2 : y66') >= 3)
+ok('id 內嵌年份解析 +2 守衛齊（years66ShiftYear 常量形式＋新庫守衛）', 'function years66ShiftYear' in src and 'YEARS66_OLD_MIN' in src and 'YEARS66_SHIFT' in src and 'isGig229DisplayYear' in src)
 ok('SAVE key 不變', 'starVolunteer_map_v19w' in src)
 print('\nFAILURES: ' + str(len(fails)) + ((' -> ' + ' | '.join(fails)) if fails else ''))
 sys.exit(1 if fails else 0)

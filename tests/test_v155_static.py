@@ -14,7 +14,7 @@ def ok(name, cond):
 
 # --- 基線不變 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('content pack JSON 唔郁（今次唔涉及）', 'content/gigs_1988.json' in src and 'story_detail_n1_to_n17.json' in src)
+ok('content pack JSON（B3：舊 pack 已刪，新庫 gigs_new.json 係唯一來源）', 'content/gigs_new.json' in src and 'content/gigs_1988.json' not in src and 'story_detail_n1_to_n17.json' in src)
 ok('幕次序跟播次序（v191：N6F／N18／N19 跟 N6，唔再排尾扮第 18／19／20 幕）',
    'const order71 = [["N1",1],["N2",2],["N3",3],["N4",4],["N5",5],["N6",6],["N6F",20],["N18",18],["N19",19],["N7",7],["N9",8],["N10",9],["N11",10],["N8",11],["N14",12],["N16",13],["N13",14],["N12",15],["N15",16],["N17",17]];' in src)
 ok('機制說明一字唔郁',

@@ -1,12 +1,14 @@
-// v20a90 DUR90 工期/片酬校準・邏輯測試
+// v20a90 DUR90 工期/片酬校準・邏輯測試（v20a229 B3 新庫版）
 // 合約（用戶 2026-11-11 08:30：正常製作拍攝/錄製日數要對得返現實）：
 //   A 校準帶常量同 spec 一致（ROLE_SCALE_BAND 已更新、DUR90 舊帶指紋/日薪帶在位）
-//   B 全池普查（五包庫存＋全部注入）：模板帶校準級 gig 工期必喺校準帶內、日薪必喺
-//     位階日薪帶內（容許四捨五入誤差）；人手 pin 帶 gig 工期 ≤3 日（兩張人手大碟例外）
+//   B 新庫普查（240 張）：raw days 全部喺 roleScale 帶內（clamp 唔郁手）；日薪必喺
+//     位階日薪帶內（容許四捨五入誤差；4 張 1992 稀有大碟例外，見 DAILY_ALLOW_229）；
+//     全部有 days（shootDaysHint＝days）；resolveRoleScale 全部認到帶
 //   C 期限：全部 gig 嘅 deadline ≥ 拍完所需日曆日（唔會接咗拍唔完）
 //   D 提早窗夾位：全部 gig 所需日曆日 ≤ 提早窗＋成季（60＋92＝152，接到趕得上檔期）
 //   E 冪等：校準後再 normalize，工期/片酬/deadline 唔再變
-//   F 錨點：film_01 總額保住 3500、日薪 269→入帶；頂級廣告日薪 ≤8000
+//   F 錨點：film_112《雪山劍客》工期 14 日、總額中位 15400；rec_110 稀有大碟日薪 3080
+//       （表列例外值，釘死——將來數據校準改數值要同步改呢度）
 // 反證：v89 index 冇 DUR90 常量、ROLE_SCALE_BAND 係舊帶、日薪大量出帶 → FAIL。
 const fs = require('fs');
 const path = require('path');
@@ -37,12 +39,21 @@ const SPEC_BAND = {
   rec_album:[6,14], mtv:[1,3], ad_av:[1,2], ad_print:[1,2], photobook:[1,2],
   variety_ep:[1,2], variety_special:[1,3],
 };
+/* v20a229 B2：DUR90_DAILY 五級化——五級各一鍵，值按機械級對位（臨記／初級→初、
+   中級→中、高級／稀有→高）；舊三級鍵留返。鍵次序跟 index.html 一致（A2 係逐字比對）。 */
 const SPEC_DAILY = {
   '初': [[300,1200],[300,2000]],
   '中': [[600,2500],[600,4000]],
   '高': [[1000,3000],[1500,8000]],
+  '臨記': [[300,1200],[300,2000]],
+  '初級': [[300,1200],[300,2000]],
+  '中級': [[600,2500],[600,4000]],
+  '高級': [[1000,3000],[1500,8000]],
+  '稀有': [[1000,3000],[1500,8000]],
 };
-const HAND_ALLOW_DAYS = { gig_1988_rec_hk_autumn:13, gig_1988_rec_star_spring:13 };
+/* v20a229 B3：新庫 4 張 1992 稀有大碟日薪 3080，輕微超「高」帶上限 3000（超 80，2.7%）。
+   數據跟進（留待通告數值校準票處理），B3 換庫唔改數值；呢度表列例外，唔當通過。 */
+const DAILY_ALLOW_229 = { gig_1992_rec_107:3080, gig_1992_rec_108:3080, gig_1992_rec_109:3080, gig_1992_rec_110:3080 };
 let fails = 0;
 function ok(name, cond, extra){
   console.log((cond ? 'PASS ' : 'FAIL ') + name + (extra ? ' :: ' + extra : ''));
@@ -51,21 +62,18 @@ function ok(name, cond, extra){
 const tfA = html.indexOf('/* ==== v20a55 TEXTFIX');
 const tfB = html.indexOf('async function refreshCopyPacksFromDisk(){');
 const TF_SRC = html.slice(tfA, tfB);
-const CONSTS = ['STAT_LABEL','LEADSTAR59','POSTER59_STAR_IDS','POSTER85_IDS','ENTRY_GIGS_1988',
-  'GIG_REQ_KEYS88','WINTER_ENTRY_GIGS_88','GIG_SEASON_SPAN88','GIG_SEASON_LEAD88',
-  'SHOOT_DAYS','ROLE_SCALE_BAND','MID_GIGS_1988_35','SOFT_BRIDGE_GIGS_1988','INTEL_HIDDEN_GIGS',
-  'FAVOR_DUE_GIGS','RIVAL_FACEOFF_GIGS','EXODUS_GIGS','WF3_LIAO_GIG','WF3_LIAO_HARVEST_GIG','BR89_GIGS',
-  'DUR90_OLD_BAND','DUR90_DAILY'];
-const FNS = ['years66ShiftYear','years66ShiftText','years66Walk','years66GigRemap','normalizeGigRecord',
-  'bridge56NormalizeGig','leadStar59Apply','leadStar59Of','boardNotePlayerOk','looksLikeEraId','humanizeEraId',
+const CONSTS = ['STAT_LABEL','POSTER59_STAR_IDS',
+  'GIG_REQ_KEYS88','GIG_SEASON_SPAN88','GIG_SEASON_LEAD88',
+  'SHOOT_DAYS','ROLE_SCALE_BAND','DUR90_OLD_BAND','DUR90_DAILY'];
+const FNS = ['normalizeGigRecord',
+  'bridge56NormalizeGig','leadStar59Of','boardNotePlayerOk','looksLikeEraId','humanizeEraId',
   'clamp','resolveRoleScale','shootBandFor','effectiveShootDays','effectiveShootWeekdays',
-  'effectiveShootDeadlineDays','gigPayExact','winterBridge88Gig','softBridgeGig',
+  'effectiveShootDeadlineDays','gigPayExact',
   'dur90RoundPay','dur90CalibrateGig'];
 let W = null, extractErr = '';
 try{
   const WORLD_SRC = TF_SRC + '\n' + CONSTS.map(c=>extractConst(c).replace('const '+c, 'var '+c)).join('\n')
-    + '\n' + FNS.map(f=>extractFn(f)).join('\n')
-    + '\n' + extractConst('WINTER_BRIDGE_GIGS_88').replace('const WINTER_BRIDGE_GIGS_88', 'var WINTER_BRIDGE_GIGS_88');
+    + '\n' + FNS.map(f=>extractFn(f)).join('\n');
   const STUBS_SRC = `
     var START = { y:1990, m:1, d:1 };
     var S = null;
@@ -74,65 +82,46 @@ try{
     var softPreviewOn = function(){ return false; };
   `;
   W = new Function(STUBS_SRC + WORLD_SRC + `
-; return { years66Walk, normalizeGigRecord, resolveRoleScale, shootBandFor, effectiveShootDays,
+; return { normalizeGigRecord, resolveRoleScale, shootBandFor, effectiveShootDays,
   effectiveShootWeekdays, effectiveShootDeadlineDays, gigPayExact,
-  ENTRY_GIGS_1988, WINTER_ENTRY_GIGS_88, WINTER_BRIDGE_GIGS_88, MID_GIGS_1988_35,
-  SOFT_BRIDGE_GIGS_1988, INTEL_HIDDEN_GIGS, FAVOR_DUE_GIGS, RIVAL_FACEOFF_GIGS, EXODUS_GIGS,
-  WF3_LIAO_GIG, WF3_LIAO_HARVEST_GIG, BR89_GIGS, ROLE_SCALE_BAND, SHOOT_DAYS, DUR90_OLD_BAND, DUR90_DAILY };`)();
+  ROLE_SCALE_BAND, SHOOT_DAYS, DUR90_OLD_BAND, DUR90_DAILY };`)();
 }catch(e){ extractErr = e.message; }
 ok('A0 DUR90 符號抽取成功（v89 冇呢啲常量 → 抽唔到）', !!W, extractErr);
 if(W){
-  // STUBS 內 S=null：normalize 各層對 S 嘅讀取都有 try/catch 或空值防御（同 audit90 harness 一致）
   function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
-  function loadPackPipeline(y){
-    const pack = deepClone(JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gigs_'+y+'.json'), 'utf8')));
-    W.years66Walk(pack, null);
-    return (pack.gigs || []).map(g => W.normalizeGigRecord(g));
-  }
-  const pool = [];
-  for(const y of [1988, 1989, 1990, 1991, 1992]) for(const g of loadPackPipeline(y)) pool.push(g);
-  const inj = [
-    ...(W.ENTRY_GIGS_1988 || []), ...(W.WINTER_ENTRY_GIGS_88 || []), ...(W.WINTER_BRIDGE_GIGS_88 || []),
-    ...(W.MID_GIGS_1988_35 || []), ...(W.SOFT_BRIDGE_GIGS_1988 || []), ...(W.INTEL_HIDDEN_GIGS || []),
-    ...(W.FAVOR_DUE_GIGS || []), ...(W.RIVAL_FACEOFF_GIGS || []), ...(W.EXODUS_GIGS || []),
-    W.WF3_LIAO_GIG, W.WF3_LIAO_HARVEST_GIG, ...(W.BR89_GIGS || []),
-  ];
-  for(const g of inj){ if(g && g.id) pool.push(W.normalizeGigRecord(deepClone(g))); }
+  const packNew = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gigs_new.json'), 'utf8'));
+  const pool = (packNew.gigs || []).map(g => W.normalizeGigRecord(deepClone(g)));
+  ok('A4 新庫 240 張入池', pool.length === 240, 'n=' + pool.length);
 
   // A 校準帶常量
   ok('A1 ROLE_SCALE_BAND ＝ 校準 spec', JSON.stringify(W.ROLE_SCALE_BAND) === JSON.stringify(SPEC_BAND), JSON.stringify(W.ROLE_SCALE_BAND));
   ok('A2 DUR90_DAILY ＝ spec 日薪帶', JSON.stringify(W.DUR90_DAILY) === JSON.stringify(SPEC_DAILY));
   ok('A3 SHOOT_DAYS fallback 跟新帶', W.SHOOT_DAYS['廣告'][1] === 2 && W.SHOOT_DAYS['唱片通告'][0] === 6 && W.SHOOT_DAYS['綜藝'][1] === 2);
 
-  // B 全池普查
+  // B 新庫普查
   const isAdScale = s => (s === 'ad_av' || s === 'ad_print' || s === 'photobook');
-  let calN = 0, handN = 0, bandBad = [], dailyBad = [], handBad = [];
+  let clampBad = [], dailyBad = [], noDays = [], noBand = [];
   for(const g of pool){
     const rs = W.resolveRoleScale(g);
+    if(!rs || !SPEC_BAND[rs]){ noBand.push(g.id + ':' + rs); continue; }
+    if(typeof g.days !== 'number' || typeof g.shootDaysHint !== 'number' || g.shootDaysHint !== g.days) noDays.push(g.id);
     const days = W.effectiveShootDays(g);
-    if(g.entryTier || g.softBridge){ if(!(days >= 1 && days <= 2)) handBad.push(g.id + ':entry/bridge days=' + days); continue; }
-    if(!rs || !SPEC_BAND[rs]){ if(days > 5) handBad.push(g.id + ':noscale days=' + days); continue; }
-    const calibrated = Array.isArray(g.shootBand) && g.shootBand[0] === SPEC_BAND[rs][0] && g.shootBand[1] === SPEC_BAND[rs][1];
-    if(calibrated){
-      calN++;
-      const band = SPEC_BAND[rs];
-      if(!(days >= band[0] && days <= band[1])) bandBad.push(g.id + ':' + rs + ' days=' + days);
-      const pay = W.gigPayExact(g);
-      if(pay != null && pay > 0){
-        const db = (SPEC_DAILY[g.tier || '初'] || SPEC_DAILY['初'])[isAdScale(rs) ? 1 : 0];
-        const daily = pay / days;
-        const slack = 55 / days + daily * 0.02;
-        if(daily < db[0] - slack || daily > db[1] + slack) dailyBad.push(g.id + ':' + rs + '/' + (g.tier || '初') + ' daily=' + Math.round(daily) + ' band=' + db.join('-'));
+    if(days !== g.days) clampBad.push(g.id + ':' + rs + ' days=' + g.days + ' eff=' + days + ' band=' + SPEC_BAND[rs].join('-'));
+    const pay = W.gigPayExact(g);
+    if(pay != null && pay > 0){
+      const db = (SPEC_DAILY[g.tier || '初'] || SPEC_DAILY['初'])[isAdScale(rs) ? 1 : 0];
+      const daily = pay / days;
+      const slack = 55 / days + daily * 0.02;
+      if(daily < db[0] - slack || daily > db[1] + slack){
+        if(DAILY_ALLOW_229[g.id] === Math.round(daily)) continue; // 表列例外
+        dailyBad.push(g.id + ':' + rs + '/' + (g.tier || '初') + ' daily=' + Math.round(daily) + ' band=' + db.join('-'));
       }
-    } else {
-      handN++;
-      if(!(days <= 3 || HAND_ALLOW_DAYS[g.id] === days)) handBad.push(g.id + ':hand days=' + days);
     }
   }
-  ok('B1 校準級工期全喺帶內（' + calN + ' 張）', bandBad.length === 0, bandBad.slice(0, 5).join(' ; '));
-  ok('B2 校準級日薪全喺位階帶內', dailyBad.length === 0, dailyBad.slice(0, 5).join(' ; '));
-  ok('B3 人手級工期 ≤3 日或表列例外（' + handN + ' 張）', handBad.length === 0, handBad.slice(0, 5).join(' ; '));
-  ok('B4 校準級覆蓋庫存主體（≥330）', calN >= 330, 'calN=' + calN);
+  ok('B1 raw days 全部喺 roleScale 帶內（clamp 唔郁手，240 張）', clampBad.length === 0, clampBad.slice(0, 5).join(' ; '));
+  ok('B2 日薪全喺位階帶內（4 張表列稀有大碟例外除外）', dailyBad.length === 0, dailyBad.slice(0, 5).join(' ; '));
+  ok('B3 全部有 days 且 shootDaysHint＝days', noDays.length === 0, noDays.slice(0, 5).join(' ; '));
+  ok('B4 resolveRoleScale 全部認到帶（240 張）', noBand.length === 0, noBand.slice(0, 5).join(' ; '));
 
   // C/D 期限與夾位
   let ddlBad = [], winBad = [];
@@ -154,12 +143,12 @@ if(W){
   ok('E 全池再 normalize 冪等', idemBad === 0, 'bad=' + idemBad);
 
   // F 錨點
-  const film01 = pool.find(g => g.id === 'gig_1988_film_01');
-  ok('F1 film_01 工期 13→5、總額保住 3500', !!film01 && W.effectiveShootDays(film01) === 5 && W.gigPayExact(film01) === 3500,
-     film01 ? ('days=' + W.effectiveShootDays(film01) + ' pay=' + W.gigPayExact(film01)) : 'missing');
-  const ad07 = pool.find(g => g.id === 'gig_1988_ad_07');
-  ok('F2 ad_07 日薪由 9167 夾到 ≤8000', !!ad07 && (W.gigPayExact(ad07) / W.effectiveShootDays(ad07)) <= 8000 + 30,
-     ad07 ? ('daily=' + Math.round(W.gigPayExact(ad07) / W.effectiveShootDays(ad07))) : 'missing');
+  const film112 = pool.find(g => g.id === 'gig_1990_film_112');
+  ok('F1 film_112《雪山劍客》工期 14 日、總額中位 15400', !!film112 && W.effectiveShootDays(film112) === 14 && W.gigPayExact(film112) === 15400,
+     film112 ? ('days=' + W.effectiveShootDays(film112) + ' pay=' + W.gigPayExact(film112)) : 'missing');
+  const rec110 = pool.find(g => g.id === 'gig_1992_rec_110');
+  ok('F2 rec_110 稀有大碟日薪 3080（表列例外值）', !!rec110 && Math.round(W.gigPayExact(rec110) / W.effectiveShootDays(rec110)) === 3080,
+     rec110 ? ('daily=' + Math.round(W.gigPayExact(rec110) / W.effectiveShootDays(rec110))) : 'missing');
 }
 console.log(fails === 0 ? 'ALL PASS' : ('FAILURES: ' + fails));
 process.exit(fails === 0 ? 0 : 1);

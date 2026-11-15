@@ -73,7 +73,7 @@ for(let i = 0; i < NEED.length; i++){ eval(srcs[NEED[i]]); }
 
 /* R0：殘留填位項 */
 function fillItem(){
-  return { eventKey: 'wrap:gig_1988_entry_rec_clap:38', source: 'wrap', enqueuedDay: 39,
+  return { eventKey: 'wrap:gig_1990_test_403:38', source: 'wrap', enqueuedDay: 39,
     publishDay: 40, fameDelta: 0, paperName: '樂壇速遞',
     headline: '《錄音室拍板》錄音完成 準備派台',
     dek: '唱片《錄音室拍板》錄製完成，唱片公司趕工出貨，趕及檔期推出。',

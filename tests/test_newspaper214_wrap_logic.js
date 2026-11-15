@@ -5,9 +5,9 @@
 //   B named 照舊：入隊＋排期（cardDay+1／publishDay+2）；fame<15 行 #104 淡紙
 //     （「一名臨記」留返）；第一次真點名先加編輯按。
 //   C 空隊列：淨係得 base 殺青到期嗰朝，pullDueNewspaperEdition 回 null，唔彈空報紙。
-//   D 相片：named／anon 殺青報紙用通告作品海報（poster59Path：POSTER59 10 張＋
-//     POSTER85 59 張，共 69 張有海報；其餘唔出相，唔亂配）；key 入 NEWS82_IMGS，
-//     唔撞 WF3（E1–E6）／頒獎（np214_award_*）。
+//   D 相片（B3 中期）：POSTER59_DATA／POSTER85_IDS 已刪，poster59Path 一律回空字串，
+//     np214WrapPoster214 一律回 null——named／anon 殺青報紙暫時全部唔出相（D-12
+//     新庫 posterBrief 出圖先恢復）；唔亂配、唔入 NEWS82_IMGS。
 //   E WF3／story：同一隻 renderMorningPaperHtml——世界事件三段＋相、副題唔重複；
 //     story 單段副題只出一次、冇相；buildNewspaperEdition 排序／摺疊唔郁。
 //   F 第二版厚度：兩格真內容廣告（星光卡拉 OK／金龍茶餐廳，樣本 v11 原文），
@@ -51,7 +51,7 @@ function countSub(s, sub){
 const parts = [
   extractConst('PRESS94_STRONG_NAMED'), extractConst('PRESS94_BASE_LABEL'),
   extractConst('PRESS94_NAMED_LABEL'), extractConst('PRESS94_BASE_SCALES'),
-  extractConst('PRESS94_NAMED_SCALES'), extractConst('POSTER85_IDS'),
+  extractConst('PRESS94_NAMED_SCALES'),
   extractConst('NEWS82_EVENTS'), extractConst('PAPER_NAME_TIER_NAMED'),
   extractConst('PAPER_NAME_TIER_TITLED'),
   extractFn('press94ScaleOf'), extractFn('press94RoleClass'), extractFn('press94IsBaseRole'),
@@ -68,23 +68,25 @@ const parts = [
   extractFn('newspaperDueItems'), extractFn('news82IsHead'), extractFn('news82EventById'),
   extractFn('buildNewspaperEdition'), extractFn('pullDueNewspaperEdition'),
   extractFn('newspaperEsc'), extractFn('renderMorningPaperHtml'),
-  extractFn('poster85File'), extractFn('poster59Path'),
+  extractFn('poster59Path'),
   extractFn('np214WrapPoster214'), extractFn('np214Page2Ads214')
 ];
 ok('extract_all', parts.every(Boolean), parts.map((p,i)=>i+':'+!!p).join(','));
+ok('B3 POSTER85_IDS 已刪', html.indexOf('const POSTER85_IDS')<0);
+ok('B3 poster85File 已刪', html.indexOf('function poster85File(')<0);
 if(parts.every(Boolean)){
   const sandbox = `
 var S = { dayIndex: 2, fame: 20, newspaperQueue: [], newspaperClippings: [], pendingMorningPaper: null, newspaperLastPresentedDay: null, press94FirstNamedDay: 0 };
 var NEWS82_IMGS = { E1: 'data:image/webp;base64,FAKEE1', E2: 'data:image/webp;base64,FAKEE2', E3: 'data:image/webp;base64,FAKEE3', E4: 'data:image/webp;base64,FAKEE4', E5: 'data:image/webp;base64,FAKEE5', E6: 'data:image/webp;base64,FAKEE6' };
-var POSTER59_IDS = { 'gig_1988_film_03': 1 };
-var POSTER59_DATA = { 'gig_1988_film_03': 'data:image/webp;base64,FAKE59' };
+// B3：夾具係 synthetic doubles（roleLabel／roleScale／type 先係分級依據），id 換做新庫格式
+// （poster59Path 已係 stub，POSTER59_IDS／POSTER59_DATA 唔再需要，唔 stub）。
 var GIGS = [
-  { id:'gig_1988_film_04', workTitle:'警網雄風', title:'警網雄風', roleLabel:'男主角', type:'電影', roleScale:'film_lead_big' },
-  { id:'gig_1988_film_03', workTitle:'舊片', title:'舊片', roleLabel:'男主角', type:'電影', roleScale:'film_lead_big' },
-  { id:'gig_1988_ad_01', workTitle:'離境大堂一封信', title:'離境大堂一封信', roleLabel:'機場臨記', type:'廣告', roleScale:'ad_av' },
-  { id:'gig_1988_tv_99', workTitle:'處境劇', title:'處境劇', roleLabel:'男主角', type:'電視劇', roleScale:'tv_lead_long' },
-  { id:'gig_1988_tv_cameo', workTitle:'某劇', title:'《某劇》', roleLabel:'', type:'電視劇', roleScale:'tv_cameo_short' },
-  { id:'gig_1988_rec_99', workTitle:'新碟', title:'新碟', roleLabel:'專輯主唱', type:'唱片通告', roleScale:'rec_album' }
+  { id:'gig_1991_film_109', workTitle:'警網雄風', title:'警網雄風', roleLabel:'男主角', type:'電影', roleScale:'film_lead_big' },
+  { id:'gig_1991_film_110', workTitle:'舊片', title:'舊片', roleLabel:'男主角', type:'電影', roleScale:'film_lead_big' },
+  { id:'gig_1990_ad_112', workTitle:'離境大堂一封信', title:'離境大堂一封信', roleLabel:'機場臨記', type:'廣告', roleScale:'ad_av' },
+  { id:'gig_1991_tv_112', workTitle:'處境劇', title:'處境劇', roleLabel:'男主角', type:'電視劇', roleScale:'tv_lead_long' },
+  { id:'gig_1990_tv_101', workTitle:'某劇', title:'《某劇》', roleLabel:'', type:'電視劇', roleScale:'tv_cameo_short' },
+  { id:'gig_1992_rec_107', workTitle:'新碟', title:'新碟', roleLabel:'專輯主唱', type:'唱片通告', roleScale:'rec_album' }
 ];
 var FREEPLAY_FW = { newspaperStub: { templates: { wrap_success: [
   { id:'w_film', eventKey:'wrap_success.film', medium:'film', paperName:'娛樂版', headline:'', dek:'', clipLabel:'娛樂版・殺青', rumorEcho:'', fameDelta:2 },
@@ -102,14 +104,14 @@ function saveQ(){}
 
   // ---- (a) base 閘 ----
   resetQ(); S.fame = 20; S.press94FirstNamedDay = 0;
-  const b1 = enqueueNewspaperFromWrap(wrapSh('gig_1988_ad_01', '機場臨記', '廣告'), wrapPack(2, '廣告'), { persist:false });
+  const b1 = enqueueNewspaperFromWrap(wrapSh('gig_1990_ad_112', '機場臨記', '廣告'), wrapPack(2, '廣告'), { persist:false });
   ok('A01_base_gig_role_null', b1===null, String(b1 && b1.headline));
   const b2 = enqueueNewspaperFromWrap(wrapSh('gig_unknown_x', '唱片幫工', '唱片通告'), wrapPack(2, '唱片通告'), { persist:false });
   ok('A02_base_label_hint_null', b2===null);
   ok('A03_base_no_queue', S.newspaperQueue.length===0, String(S.newspaperQueue.length));
   const b3 = enqueueNewspaperFromWrap(wrapSh('gig_unknown_x', '唱片幫工', '唱片通告'), wrapPack(2, '唱片通告'), { persist:false });
   ok('A04_base_retry_still_null', b3===null);
-  const b4 = enqueueNewspaperFromWrap(wrapSh('gig_1988_tv_cameo', '', '電視劇', '《某劇》'), wrapPack(2, '電視劇'), { persist:false });
+  const b4 = enqueueNewspaperFromWrap(wrapSh('gig_1990_tv_101', '', '電視劇', '《某劇》'), wrapPack(2, '電視劇'), { persist:false });
   ok('A05_base_scale_only_null', b4===null);
   const b5 = enqueueNewspaperFromWrap({ gigId:'gig_unknown_z', type:'電視劇', title:'《某劇》過海路人', roleLabel:'過海路人' }, wrapPack(2, '電視劇'), { persist:false });
   ok('A06_base_scale_label_null', b5===null);
@@ -118,45 +120,45 @@ function saveQ(){}
 
   // ---- (b) named 照舊＋淡紙「一名臨記」留返 ----
   resetQ(); S.fame = 20; S.press94FirstNamedDay = 0;
-  const n1 = enqueueNewspaperFromWrap(wrapSh('gig_1988_film_04', '男主角', '電影'), wrapPack(2, '電影'), { persist:false });
-  ok('B01_named_enqueued', !!n1 && n1.eventKey==='wrap:gig_1988_film_04:2' && n1.source==='wrap', n1 && n1.eventKey);
+  const n1 = enqueueNewspaperFromWrap(wrapSh('gig_1991_film_109', '男主角', '電影'), wrapPack(2, '電影'), { persist:false });
+  ok('B01_named_enqueued', !!n1 && n1.eventKey==='wrap:gig_1991_film_109:2' && n1.source==='wrap', n1 && n1.eventKey);
   ok('B02_named_schedule', !!n1 && (n1.enqueuedDay|0)===3 && (n1.publishDay|0)===4, n1 && (n1.enqueuedDay+'/'+n1.publishDay));
   ok('B03_named_fame', !!n1 && n1.fameDelta===2, n1 && String(n1.fameDelta));
   ok('B04_first_named_claim', !!n1 && n1.firstPress94===true && String(n1.dek||'').indexOf('編輯按')>=0 && (S.press94FirstNamedDay|0)===2);
-  const n2 = enqueueNewspaperFromWrap(wrapSh('gig_1988_tv_99', '男主角', '電視劇'), wrapPack(3, '電視劇'), { persist:false });
+  const n2 = enqueueNewspaperFromWrap(wrapSh('gig_1991_tv_112', '男主角', '電視劇'), wrapPack(3, '電視劇'), { persist:false });
   ok('B05_second_named_no_claim', !!n2 && n2.firstPress94!==true && String(n2.dek||'').indexOf('編輯按')<0);
   S.fame = 5;
-  const n3 = enqueueNewspaperFromWrap(wrapSh('gig_1988_film_03', '男主角', '電影'), wrapPack(2, '電影'), { persist:false });
+  const n3 = enqueueNewspaperFromWrap(wrapSh('gig_1991_film_110', '男主角', '電影'), wrapPack(2, '電影'), { persist:false });
   ok('B06_anon_still_paper', !!n3 && n3.fameDelta===0, n3 && String(n3.fameDelta));
   ok('B07_anon_keeps_yiming', !!n3 && ((n3.headline||'')+(n3.dek||'')).indexOf('一名臨記')>=0, n3 && (n3.headline||''));
-  ok('B08_anon_has_photo', !!n3 && n3.imgKey==='np214_poster_1988_film_03', n3 && n3.imgKey);
+  ok('B08_B3_anon_no_photo_yet', !!n3 && n3.imgKey==='', n3 && JSON.stringify(n3.imgKey));
   resetQ(); S.fame = 20;
-  const n4 = enqueueNewspaperFromWrap(wrapSh('gig_1988_rec_99', '專輯主唱', '唱片通告'), wrapPack(2, '唱片通告'), { persist:false });
+  const n4 = enqueueNewspaperFromWrap(wrapSh('gig_1992_rec_107', '專輯主唱', '唱片通告'), wrapPack(2, '唱片通告'), { persist:false });
   ok('B09_named_no_poster_no_img', !!n4 && n4.imgKey==='', n4 && JSON.stringify(n4.imgKey));
-  ok('B10_named_with_poster_img', !!n1 && n1.imgKey==='np214_poster_1988_film_04', n1 && n1.imgKey);
+  ok('B10_B3_named_no_poster_yet', !!n1 && n1.imgKey==='', n1 && JSON.stringify(n1.imgKey));
 
   // ---- (c) 空隊列唔出晨報 ----
   resetQ(); S.fame = 20; S.dayIndex = 2;
-  enqueueNewspaperFromWrap(wrapSh('gig_1988_ad_01', '機場臨記', '廣告'), wrapPack(2, '廣告'), { persist:false });
+  enqueueNewspaperFromWrap(wrapSh('gig_1990_ad_112', '機場臨記', '廣告'), wrapPack(2, '廣告'), { persist:false });
   S.dayIndex = 4;
   ok('C01_base_only_no_due', newspaperDueItems(4).length===0);
   ok('C02_base_only_no_edition', pullDueNewspaperEdition()===null);
   ok('C03_base_only_no_pending', !S.pendingMorningPaper);
   resetQ(); S.dayIndex = 6;
-  const n5 = enqueueNewspaperFromWrap(wrapSh('gig_1988_tv_99', '男主角', '電視劇'), wrapPack(6, '電視劇'), { persist:false });
+  const n5 = enqueueNewspaperFromWrap(wrapSh('gig_1991_tv_112', '男主角', '電視劇'), wrapPack(6, '電視劇'), { persist:false });
   S.dayIndex = 7;
   ok('C04_named_not_due_day7', pullDueNewspaperEdition()===null, 'publishDay='+(n5 && n5.publishDay));
   S.dayIndex = 8;
   const edC = pullDueNewspaperEdition();
   ok('C05_named_due_day8', !!edC && String(edC.headline||'').indexOf('處境劇')>=0, edC && edC.headline);
 
-  // ---- (d) 海報 helper ----
-  const p1 = np214WrapPoster214('gig_1988_film_04');
-  ok('D01_poster85_file', !!p1 && p1.key==='np214_poster_1988_film_04' && p1.src==='assets/posters/poster-1988_film_04.webp', p1 && JSON.stringify(p1));
-  ok('D02_poster_registered', NEWS82_IMGS['np214_poster_1988_film_04']==='assets/posters/poster-1988_film_04.webp');
-  ok('D03_poster59_data', (np214WrapPoster214('gig_1988_film_03')||{}).src==='data:image/webp;base64,FAKE59');
-  ok('D04_no_poster_null', np214WrapPoster214('gig_1988_ad_01')===null && np214WrapPoster214('gig_no_such')===null && np214WrapPoster214('')===null && np214WrapPoster214(null)===null);
-  ok('D05_no_key_collision', (np214WrapPoster214('gig_1988_film_04')||{}).key!=='E1' && (np214WrapPoster214('gig_1988_film_04')||{}).key!=='np214_award_awi' && NEWS82_IMGS.E1==='data:image/webp;base64,FAKEE1');
+  // ---- (d) 海報 helper（B3 中期：poster59Path stub → 一律 null，D-12 先恢復） ----
+  const p1 = np214WrapPoster214('gig_1991_film_109');
+  ok('D01_B3_no_poster_yet', p1===null, p1 && JSON.stringify(p1));
+  ok('D02_B3_no_key_registered', NEWS82_IMGS['np214_poster_1991_film_109']===undefined);
+  ok('D03_B3_old_poster59_slot_also_null', np214WrapPoster214('gig_1991_film_110')===null);
+  ok('D04_no_poster_null', np214WrapPoster214('gig_1990_ad_112')===null && np214WrapPoster214('gig_no_such')===null && np214WrapPoster214('')===null && np214WrapPoster214(null)===null);
+  ok('D05_no_key_collision', NEWS82_IMGS.E1==='data:image/webp;base64,FAKEE1' && NEWS82_IMGS['np214_poster_1991_film_109']===undefined);
 
   // ---- (e) WF3／story 渲染 ----
   const worldEd = { headline:'E1頭條', dek:'', paras:['世界第一段。','世界第二段。','世界第三段。'], imgKey:'E1', worldId:'E1', shorts:[], fameDelta:0, dateLabel:'1990年1月1日 星期一', paperName:'娛樂版' };

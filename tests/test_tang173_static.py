@@ -15,6 +15,13 @@
 # v20a227 resync：index.html 淨 +2 行（WF4 day24 banner 裁切位：註解 1 行→3 行，插入點舊 L41729；chain 原地換值行數不變），總行數 63132→63134、DEF 57527→57529（difflib 對位核實純漂移，見 qa227/resync227.py）。
 # v20a210 resync：index.html 淨 +40 行（舊存檔遷移 c2n210MigrateSave 函數 ＋36 行＠舊 L36730 之後＋呼叫點 ＋4 行＠舊 L33790；difflib 對位核實純漂移）。總行數 63134→63174、DEF 57529→57569。
 # v20a228 resync：index.html 淨 −170 行（拎走四個存檔遷移函數，見 qa228/delete228.py；刪除區間舊 L31647／31696–31735／31744–31797／32142／33783–33793／36706–36768），總行數 63174→63004、DEF 57569→57399（difflib 對位核實純漂移，見 qa228/resync228.py）。
+# v20a229 resync：index.html 淨 +41 行（新通告庫地基 B1：STORY_WIRE ＋1／sync 新庫優先 ＋5／loader ＋22／normalize ＋14；淨 +41），總行數 63004→63045、DEF 57399→57440（difflib 對位核實純漂移，見 qa229/resync229.py）。
+# v20a229 B2 resync：index.html 淨 +48 行（真五級引擎，見 qa229/resync229_b2.py），總行數 63045→63093、DEF 57440→57477（difflib 對位核實純漂移）。
+# v20a229 B3 resync：index.html 淨 −15612 行（換庫，見 qa229/resync229_b3.py），總行數 63093→47481、DEF 57477→42947（difflib 對位核實純漂移）。
+# v20a229 B4 resync：index.html 淨 +103 行（提名計數＋LEAD229，見 qa229/resync229_b4.py），總行數 47481→47584、DEF 42947→43049（difflib 對位核實純漂移）。
+# v20a229 B5 resync：index.html 淨 +250 行（觸發系統＋BR89 擴充，見 qa229/resync229_b5.py），總行數 47584→47834、DEF 43049→43292（difflib 對位核實純漂移）。
+# v20a229 B6 resync：index.html 淨 +332 行（抉擇即派＋定期合約制，見 qa229/resync229_b6.py），總行數 47834→48166、DEF 43292→43624（difflib 對位核實純漂移）。
+# v20a229 B7 resync：index.html 淨 +54 行（報紙分類 A10＋忠告卡 Q6，見 qa229/resync229_b7.py），總行數 48166→48220、DEF 43624→43638（difflib 對位核實純漂移）。
 # v20a222 resync：index.html 淨 −37 行（P3 書面語改寫：刪 G1 rumorEcho／echo 物件＋G9 nodeRipple 死碼；其餘 917 句為同行改寫，行數不變），總行數 62897→62860、DEF 57353→57316（內容逐字核實純漂移）。
 # -*- coding: utf-8 -*-
 # v20a197 resync：index.html 淨 +94 行，總行數 60490→60584、DEF 54986→55080、L4862 行 4889→4935（difflib 對位核實純漂移，見 qa197/resync197.py；B4 補丁再 +9 行）。
@@ -96,9 +103,9 @@ def blend(fg, bg, a):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 63004（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136＋v219 +3＋v222 −37＋v225 +272＋v227 +2＋v210 +40＋v228 −170）', src.count('\n') == 63004)
-ok('零行數漂移：openLoc DEF 行 57399（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +120＋v219 +3＋v222 −37＋v225 +211＋v227 +2＋v210 +40＋v228 −170，travel114 釘行）',
-   len(lines) >= 57399 and 'function openLoc(id, opts){' in lines[57398])
+ok('零行數漂移：總行數 48220（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136＋v219 +3＋v222 −37＋v225 +272＋v227 +2＋v210 +40＋v228 −170＋v229 +41＋v229 B2 +48＋v229 B3 −15612＋v229 B4 +103＋v229 B5 +250＋v229 B6 +332＋v229 B7 +54）', src.count('\n') == 48220)
+ok('零行數漂移：openLoc DEF 行 43638（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +120＋v219 +3＋v222 −37＋v225 +211＋v227 +2＋v210 +40＋v228 −170＋v229 +41＋v229 B2 +48＋v229 B3 −15612＋v229 B4 +103＋v229 B5 +243＋v229 B6 +332＋v229 B7 +54，travel114 釘行）',
+   len(lines) >= 43638 and 'function openLoc(id, opts){' in lines[43637])
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫，qa215 resync 核實純漂移（總行數 62352→62492；DEF 56824→56964）。
 ok('零行數漂移：L4862 仲係 v169／v171／v173 同行（v181 CSS ＋13，kwan151／tang152 釘行已一併 resync）',
    len(lines) >= 5163 and 'loc-acts-more171::after' in lines[5162] and 'act-locked171' in lines[5162])

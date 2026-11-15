@@ -34,8 +34,10 @@ ok('彭兆基全檔歸零', src.count('彭兆基') == 0)
 ok('彭少祺 ≥34 處（實 %d）' % src.count('彭少祺'), src.count('彭少祺') >= 34)
 ok('speaker→sprite 對照 key 已同步正名', '"彭少祺": null' in src or '"彭少祺":' in src)
 
-# --- 三、增長 ---
-ok('index 較 v80 基線大（覆寫表入檔）', len(src.encode('utf-8')) > 4854789 + 30000)
+# --- 三、增長（B3：全檔 byte 數已因刪舊通告庫大減，唔再用絕對基線；改釘 WF2 覆寫表本身嘅量） ---
+_wf2_i = src.index('const ROMANCE_WF2_OVERRIDES = {')
+_wf2_j = src.index('\n};', _wf2_i)
+ok('WF2 覆寫表有量（表 >30KB）', len(src[_wf2_i:_wf2_j].encode('utf-8')) > 30000)
 
 print('\n' + ('ALL PASS' if not fails else 'FAILURES: ' + ' | '.join(fails)))
 sys.exit(0 if not fails else 1)

@@ -106,7 +106,7 @@ function v65Save(){
       pendingEnding: { kind: 'review', year: 1988, atDay: 300 } },
     ending410: { career: 'E7', careerVariant: 'review1989', earlyEnd: { kind: 'review', year: 1989, floor: 100 } },
     awardsFlags: { '1988/award_harbour_film': { attended: true } },
-    wrapHistory: [ { gigId: 'gig_1988_film_01', year: 1988, title: '舊作' } ],
+    wrapHistory: [ { gigId: 'gig_1990_test_404', year: 1988, title: '舊作' } ],
     awardsLog: [ { year: 1989, ceremonyId: 'award_singho_tv' } ] };
 }
 /* ================= (6) 新檔：normalizeSaveObj 唔改年份鍵 ================= */
@@ -115,7 +115,7 @@ freshLike.years66Shifted = 1;
 freshLike.conseq61.reviews = { 1990: { passed: true, dual: 88 } };
 freshLike.conseq61.pendingEnding = null;
 freshLike.ending410 = null;
-freshLike.wrapHistory = [ { gigId: 'gig_1988_film_01', year: 1990, title: '新作' } ];
+freshLike.wrapHistory = [ { gigId: 'gig_1990_test_404', year: 1990, title: '新作' } ];
 const keep = normalizeSaveObj(JSON.parse(JSON.stringify(freshLike)));
 ok('新檔（已打戳）：reviews／wrapHistory 原封不動',
   keep.conseq61.reviews[1990] && keep.conseq61.reviews[1990].dual === 88 && keep.wrapHistory[0].year === 1990);

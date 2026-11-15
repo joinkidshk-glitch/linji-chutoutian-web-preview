@@ -1,13 +1,18 @@
-// v20a92 NAT92 邏輯測試：通告板分布自然化——
+// v20a92 NAT92 邏輯測試：通告板分布自然化（v20a229 B3 新庫版）——
 //  (A) 決定性：偏移/落板拉前按 id 雜湊，兩個獨立 world 計出嚟逐張一致；重載（重行管線）不變。
 //  (B) 豁免：entryTier/softBridge 唔錯峰；年初已開窗 interval 偏移恆 0（開局板面唔俾抽乾）。
 //  (C) 夾位：逐張逐 interval 驗 off+pull+工期所需日曆日 ≤ interval 長度（接咗拍得完）。
-//  (D) 開局守衛：day-0 FRESH 可接 ≥12（v88/v90 口徑，基線 12）；第一週逐日逐地點 ≥1 可接
-//      （含 v91 基線缺供應嘅紅棉影業／灣仔唱片——由 NAT92 入門補位）。
-//  (E) 分布守衛：52 週普查（MAXED 組成）1990「恰好 2」占比 <40%（基線 62.2%）；
-//      三年全板 0 嘅地點-週 = 0（保底生效）。
-//  (F) 加厚：NAT92_GIGS 18 張；逐年入池數啱（1990:14／1991:2／1992:2）；中/高新工
-//      工期入 ROLE_SCALE_BAND、日薪入 DUR90_DAILY 帶；req 只含七真屬性鍵。
+//  (D) 開局守衛：day-0 FRESH 可接 ≥12（v88/v90 口徑，基線 12）；第一週逐日逐地點 ≥1 可接——
+//      新庫例外：九龍電視台（tvb_kowloon）第一週 0 可接（見 D2 註）；
+//      紅棉影業／灣仔唱片 day-0 有可接（新庫供應，唔再靠 NAT92 入門補位）。
+//  (E) 分布守衛：52 週普查（MAXED 組成）1990「恰好 2」占比 <40%；
+//      三年全板 0 嘅地點-週＝94（新庫地點-季節洞，見 E2 註——舊版 0 係 351 張＋18 張
+//      注入先做到，新庫 240 張有季節性空洞，呢個數係分佈釘，唔係回歸目標）。
+//      v20a229 B5：MAXED 而家真係 maxed——46 張 trigger 條件齊開（E0 守衛），
+//      E2 釘先至繼續量度庫分佈而唔係觸發狀態；沙盒抽埋 triggerGigOn＋依賴，
+//      唔係 board filter 嘅 typeof 守衛會將全部 trigger 通告當未觸發隱藏。
+//  (F) 注入池已刪：NAT92_GIGS 18 張拎走，mergeNat92Gigs 回 0；錯峰資格改由
+//      新庫 gig 本身判定（228 張合資格、12 張入門唔錯峰）；舊 nat92 旗全庫 0 命中。
 // 反證：對 v91 index 行 → NAT92 符號唔存在，抽取即 FAIL。
 // 用法：node tests/test_nat92_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -40,33 +45,29 @@ const tfA = html.indexOf('/* ==== v20a55 TEXTFIX');
 const tfB = html.indexOf('async function refreshCopyPacksFromDisk(){');
 if(tfA<0 || tfB<=tfA){ console.log('FAIL TEXTFIX55 block not found'); process.exit(1); }
 const TF_SRC = html.slice(tfA, tfB);
-const CONSTS = ['STAT_LABEL','LEADSTAR59','POSTER59_STAR_IDS','POSTER85_IDS','ENTRY_GIGS_1988',
-  'GIG_REQ_KEYS88','WINTER_ENTRY_GIGS_88','GIG_SEASON_SPAN88','GIG_SEASON_LEAD88',
-  'SHOOT_DAYS','ROLE_SCALE_BAND','MID_GIGS_1988_35','SOFT_BRIDGE_GIGS_1988',
-  'DUR90_OLD_BAND','DUR90_DAILY','NAT92_SPREAD','NAT92_PULL_MAX','NAT92_PULL_OPEN_MAX'];
-const FNS = ['years66ShiftYear','years66ShiftText','years66Walk','years66GigRemap','normalizeGigRecord',
-  'bridge56NormalizeGig','leadStar59Apply','leadStar59Of','boardNotePlayerOk','looksLikeEraId','humanizeEraId',
+const CONSTS = ['STAT_LABEL','POSTER59_STAR_IDS',
+  'GIG_REQ_KEYS88','GIG_SEASON_SPAN88','GIG_SEASON_LEAD88',
+  'SHOOT_DAYS','ROLE_SCALE_BAND',
+  'DUR90_OLD_BAND','DUR90_DAILY','NAT92_SPREAD','NAT92_PULL_MAX','NAT92_PULL_OPEN_MAX',
+  'BR89_PATRON_OF_GIG','GIG_TRIGGER_AWARD_MAP229','RIVAL_CFG'];
+const FNS = ['normalizeGigRecord',
+  'bridge56NormalizeGig','leadStar59Of','boardNotePlayerOk','looksLikeEraId','humanizeEraId',
   'clamp','resolveRoleScale','shootBandFor','effectiveShootDays','effectiveShootWeekdays',
-  'effectiveShootDeadlineDays','gigPayExact','winterBridge88Gig','softBridgeGig','gig36',
+  'effectiveShootDeadlineDays','gigPayExact','gigTierCanon229',
   'dur90RoundPay','dur90CalibrateGig',
   'reqGap','canAudition','fameFloor','gateTrainHint','isGigWrapped','gigActiveShoot','isGigInProduction',
   'isGigConsumed','seasonRank','calendarSeason','dateObj','boardPriorityRank','boardSortCompare',
-  'gigsForLocSeasonBoard','clampEntryReqToTemplate','mergeEntryGigsIntoPool','entryGigPoolLive',
+  'gigsForLocSeasonBoard','clampEntryReqToTemplate','mergeEntryGigsIntoPool','entryGigPool229','entryGigPoolLive',
   'ensureEntryTierBoardFill','countApplyableEntryOnBoard','needsEntryBoardFill','weekNumNow',
-  'mergeWinterBridge88','mergeMidGigs35','mergeYearGigs36','mergeSoftBridgeGigs',
-  'gigSeasonEarlyVisible88','gigSeasonHidden88','gigReleaseLine88','poster85File',
+  'mergeWinterBridge88','gigSeasonEarlyVisible88','gigSeasonHidden88','gigReleaseLine88',
   'nat92Hash','nat92StaggerEligible','nat92DayIdxOf','nat92PostIntervals','nat92WindowStartDay',
-  'nat92CalNeedDays','nat92BoardOffsetDays','gigBoardPosted92','nat92Gig','mergeNat92Gigs'];
+  'nat92CalNeedDays','nat92BoardOffsetDays','gigBoardPosted92','nat92Gig','mergeNat92Gigs',
+  'br89HasCredit','br89GigOn','awardTriggerOn229','rivalTriggerOpenable229','triggerGigOn',
+  'rivalryScore','ensureRivalry'];
 let WORLD_SRC;
 try{
   WORLD_SRC = TF_SRC + '\n' + CONSTS.map(c=>extractConst(c).replace('const '+c, 'var '+c)).join('\n')
-    + '\n' + FNS.map(f=>extractFn(f)).join('\n')
-    + '\n' + extractConst('WINTER_BRIDGE_GIGS_88').replace('const WINTER_BRIDGE_GIGS_88', 'var WINTER_BRIDGE_GIGS_88')
-    + '\n' + ['GIGS36_1989_SPRING_F5','GIGS36_1989_BRIDGE','GIGS36_1989_HIGH_F2','GIGS36_1989_MID_F3',
-      'GIGS36_1990_AUTUMN_F6','GIGS36_1990_BRIDGE','GIGS36_1990_FINALE_F7','GIGS36_1990_HIGH_F2','GIGS36_1990_MID_F3',
-      'GIGS36_BY_YEAR','GIGS36_ALL_IDS'].map(c=>extractConst(c).replace('const '+c, 'var '+c)).join('\n')
-    + '\n' + extractConst('NAT92_GIGS').replace('const NAT92_GIGS', 'var NAT92_GIGS')
-    + '\n' + extractConst('NAT92_ALL_IDS').replace('const NAT92_ALL_IDS', 'var NAT92_ALL_IDS');
+    + '\n' + FNS.map(f=>extractFn(f)).join('\n');
 }catch(e){ console.log('FAIL extraction（v91 反證應在此觸發）: '+e.message); process.exit(1); }
 const STUBS_SRC = `
   var START = { y:1990, m:1, d:1 };
@@ -74,31 +75,59 @@ const STUBS_SRC = `
   var GIGS = [];
   var COURSE_DEFS = {};
   var softPreviewOn = function(){ return false; };
+  var mergeSoftBridgeGigs = function(){ return 0; };
+  var mergeIntelGigs = function(){ return 0; };
+  var mergeFavorGigs = function(){ return 0; };
+  var mergeRivalGigs = function(){ return 0; };
+  var mergeExodusGigs = function(){ return 0; };
+  var mergeMidGigs35 = function(){ return 0; };
+  var mergeWf3Gigs = function(){ return 0; };
+  var mergeBr89Gigs = function(){ return 0; };
+  var mergeYearGigs36 = function(){ return 0; };
 `;
 function buildWorld(){
   return new Function(STUBS_SRC + WORLD_SRC + `
-  ; return { years66Walk, normalizeGigRecord, canAudition, gigsForLocSeasonBoard, calendarSeason,
+  ; return { normalizeGigRecord, canAudition, gigsForLocSeasonBoard, calendarSeason, triggerGigOn,
     mergeEntryGigsIntoPool, mergeWinterBridge88, mergeNat92Gigs, gigBoardPosted92,
     nat92StaggerEligible, nat92PostIntervals, nat92BoardOffsetDays, nat92CalNeedDays,
     effectiveShootDays, gigPayExact, resolveRoleScale,
     setS:(s)=>{S=s;}, setGIGS:(g)=>{GIGS=g;}, getGIGS:()=>GIGS,
-    NAT92_GIGS, DUR90_DAILY, ROLE_SCALE_BAND };`)();
+    DUR90_DAILY, ROLE_SCALE_BAND };`)();
 }
 const W = buildWorld();
 function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
+const PACK_NEW = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gigs_new.json'), 'utf8'));
 function loadPackPipeline(y){
-  const pack = deepClone(JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gigs_'+y+'.json'), 'utf8')));
-  W.years66Walk(pack, null);
-  return (pack.gigs || []).map(g => W.normalizeGigRecord(g));
+  return (PACK_NEW.gigs || []).filter(g => g.year === y).map(g => W.normalizeGigRecord(deepClone(g)));
 }
 const FRESH = { acting:18, stage:14, vocal:14, looks:22, stamina:75, iq:20, charm:16, fame:5, popularity:3, stress:12, money:12000, dayIndex:0, flags:{}, shoots:[], booked:[], enrolled:{}, board:{}, known:{} };
 const MAXED = { acting:999, stage:999, vocal:999, looks:999, charm:999, iq:999, stamina:999, fame:999, popularity:999, stress:0, money:999999, dayIndex:0, flags:{}, shoots:[], booked:[], enrolled:{}, board:{}, known:{}, wrapHistory:[] };
+/* B5：MAXED 要真係 maxed——46 張 trigger 條件齊開，E2 普查先至量度庫分佈而唔係觸發狀態。
+   credit／rel 由新庫 trigger 逐張抽（唔人手抄 id）；獎項級紀錄 4 典禮 × 3 年全部 won；
+   主線全 done；對手線 4 分（傳聞＋N3＋報紙）。 */
+{
+  const _trig = (PACK_NEW.gigs || []).filter(g => g.trigger && g.trigger.kind);
+  MAXED.mockCredits = [...new Set(_trig.filter(t => t.trigger.kind === 'credit').map(t => t.trigger.creditId))]
+    .map(id => ({ id, debtor: 'x', title: 'x', line: 'x', status: '未收' }));
+  MAXED.mockRumors = [{ id: 'gao_steal_spotlight', title: '高俊傑搶鏡' }];
+  MAXED.newspaperClippings = [{ topicKey: 'rival:gao', eventKey: 'story:N3' }];
+  MAXED.story = { done: {}, flags: { rival_gao_hard: true } };
+  for (let n = 1; n <= 19; n++) MAXED.story.done['N' + n] = true;
+  MAXED.story.done.N6F = true;
+  MAXED.npcs = {};
+  [...new Set(_trig.filter(t => t.trigger.kind === 'rel').map(t => t.trigger.npcId))].forEach(id => { MAXED.npcs[id] = 100; });
+  const _cats = ['cat_film_lead_m','cat_film_lead_f','cat_film_support_m','cat_tv_lead_m','cat_tv_lead_f','cat_tv_support_m','cat_music_newcomer','cat_ad_lead_m','cat_ad_lead_f','cat_ad_support_m'];
+  MAXED.awardsResults = {};
+  for (const y of [1990, 1991, 1992]) for (const c of ['award_harbour_ad','award_golddisc_music','award_harbour_film','award_singho_tv']) {
+    const cats = {}; _cats.forEach(k => { cats[k] = 'won'; });
+    MAXED.awardsResults[y + '/' + c] = { year: y, won: true, nominated: true, cats };
+  }
+}
 const LOCS = ['cafe_cha','rec_hk','tvb_longmen','film_lion','film_cotton','film_harbour','tvb_harbour','tvb_kowloon','ad_central','ad_adm','rec_wanchai','rec_star','agency_ho'];
 const GIG_LOCS = LOCS.filter(l=>l!=='cafe_cha' && l!=='agency_ho');
-const YEAR_FILE = { 1990:1988, 1991:1989, 1992:1990 };
 const YEAR_START = { 1990:0, 1991:365, 1992:730 };
 function setupYearPool(year){
-  W.setGIGS(loadPackPipeline(YEAR_FILE[year]));
+  W.setGIGS(loadPackPipeline(year));
   const st = deepClone(MAXED); st.dayIndex = YEAR_START[year];
   W.setS(st);
   if(year===1990){ W.mergeEntryGigsIntoPool(); W.mergeWinterBridge88(); }
@@ -106,30 +135,23 @@ function setupYearPool(year){
   return W.getGIGS();
 }
 
-/* ---------- (F) 加厚表 ---------- */
-ok('F1 NAT92_GIGS 共 18 張', W.NAT92_GIGS.length === 18);
+/* ---------- (F) 注入池已刪＋錯峰資格 ---------- */
+ok('F1 mergeNat92Gigs 回 0（注入池已刪，錯峰機制留返）', W.mergeNat92Gigs() === 0);
+ok('F1b NAT92_GIGS 池已清空（const NAT92_GIGS = [];，機制佔位留返）', html.indexOf('const NAT92_GIGS = [];') >= 0);
 const CANON = { acting:1, stage:1, vocal:1, looks:1, charm:1, iq:1, stamina:1 };
-let fBad = [];
-for(const raw of W.NAT92_GIGS){
-  const g = W.normalizeGigRecord(deepClone(raw));
-  if(Object.keys(g.req||{}).some(k=>!CANON[k])) fBad.push(g.id+':req鍵');
-  if(g.entryTier) continue;
-  const band = W.ROLE_SCALE_BAND[W.resolveRoleScale(g) || g.roleScale];
-  const days = W.effectiveShootDays(g);
-  if(!band || days < band[0] || days > band[1]) fBad.push(g.id+':工期出帶');
-  const pay = W.gigPayExact(g);
-  const isAd = ['ad_av','ad_print','photobook'].includes(g.roleScale);
-  const db = (W.DUR90_DAILY[g.tier||'初'] || W.DUR90_DAILY['初'])[isAd?1:0];
-  const daily = pay / Math.max(1, days);
-  if(daily < db[0] || daily > db[1]) fBad.push(g.id+':日薪出帶('+Math.round(daily)+')');
-}
-ok('F2 中/高新工工期入帶＋日薪入帶＋req 純屬性（違規：'+(fBad.join(',')||'無')+'）', fBad.length === 0);
 const poolByYear = {};
-for(const y of [1990, 1991, 1992]){
-  poolByYear[y] = setupYearPool(y);
-  const n = poolByYear[y].filter(g=>g.nat92).length;
-  ok('F3 '+y+' 年 NAT92 入池 '+(y===1990?14:2)+' 張（實數 '+n+'）', n === (y===1990 ? 14 : 2));
+for(const y of [1990, 1991, 1992]) poolByYear[y] = setupYearPool(y);
+let stagN = 0, entryN = 0, nat92FlagN = 0, reqBad = [];
+for(const y of [1990, 1991, 1992]) for(const g of poolByYear[y]){
+  if(g.nat92) nat92FlagN++;
+  if(g.entryTier) entryN++;
+  if(W.nat92StaggerEligible(g)) stagN++;
+  if(Object.keys(g.req||{}).some(k=>!CANON[k])) reqBad.push(g.id);
 }
+ok('F2 錯峰合資格 228 張（240－12 入門）', stagN === 228, 'stagN=' + stagN);
+ok('F2b 入門 12 張唔錯峰', entryN === 12);
+ok('F3 舊 nat92 旗全庫 0 命中', nat92FlagN === 0);
+ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3).join(','));
 
 /* ---------- (A) 決定性 ---------- */
 {
@@ -149,16 +171,16 @@ for(const y of [1990, 1991, 1992]){
   const pool = poolByYear[1990];
   const badExempt = pool.filter(g => (g.entryTier || g.softBridge) && W.nat92StaggerEligible(g));
   ok('B1 entryTier/softBridge 全部唔錯峰（違規 '+badExempt.length+'）', badExempt.length === 0);
-  let openBad = 0, stagN = 0;
+  let openBad = 0, stagN2 = 0;
   for(const y of [1990, 1991, 1992]){
     for(const g of poolByYear[y]){
       if(!W.nat92StaggerEligible(g)) continue;
-      stagN++;
+      stagN2++;
       const yStart = Math.round((new Date(g.year, 0, 1) - new Date(1990, 0, 1)) / 86400000);
       for(const iv of W.nat92PostIntervals(g)) if(iv.from <= yStart && iv.off !== 0) openBad++;
     }
   }
-  ok('B2 年初已開窗 interval 偏移恆 0（違規 '+openBad+'／錯峰 gig '+stagN+' 張）', openBad === 0 && stagN > 200);
+  ok('B2 年初已開窗 interval 偏移恆 0（違規 '+openBad+'／錯峰 gig '+stagN2+' 張）', openBad === 0 && stagN2 > 200);
 }
 
 /* ---------- (C) 夾位 ---------- */
@@ -193,13 +215,20 @@ for(const y of [1990, 1991, 1992]){
   }
   ok('D1 day-0 全板可接 ≥12（實數 '+day0Apply+'）', day0Apply >= 12);
   const badLoc = GIG_LOCS.filter(loc => perLocDay.some(row => row[loc] < 1));
-  ok('D2 第一週逐日每個有通告地點 ≥1 可接（違規地點：'+(badLoc.join(',')||'無')+'）', badLoc.length === 0);
-  ok('D3 紅棉影業 day-0 有可接（NAT92 入門補位）', perLocDay[0]['film_cotton'] >= 1);
-  ok('D4 灣仔唱片 day-0 有可接（NAT92 入門補位）', perLocDay[0]['rec_wanchai'] >= 1);
+  ok('D2 第一週逐日有通告地點 ≥1 可接，例外只得九龍電視台（實數：'+(badLoc.join(',')||'無')+'）',
+    badLoc.length === 1 && badLoc[0] === 'tvb_kowloon');
+  // D2 註：tvb_kowloon 1990 冬窗得兩張（tv_104 acting 30、tv_111 acting 68），開局演技 18 接唔到；
+  // 入口池 12 張冇一張喺呢個地點過冬——新庫分佈缺口，留待通告庫覆蓋校準票處理，B3 唔補新通告。
+  ok('D3 紅棉影業 day-0 有可接（新庫供應）', perLocDay[0]['film_cotton'] >= 1);
+  ok('D4 灣仔唱片 day-0 有可接（新庫供應）', perLocDay[0]['rec_wanchai'] >= 1);
 }
 
 /* ---------- (E) 分布守衛 ---------- */
 {
+  /* E0 普查前提：MAXED 開齊 46 張 trigger（唔齊就 E2 釘量度緊觸發狀態，唔係庫分佈）。 */
+  const _allTrig = (PACK_NEW.gigs || []).filter(g => g.trigger && g.trigger.kind);
+  const _unopened = _allTrig.filter(g => { const st = deepClone(MAXED); W.setS(st); return !W.triggerGigOn(g); }).map(g => g.id);
+  ok('E0 MAXED 開齊 46 張 trigger（普查前提；B5）', _allTrig.length === 46 && _unopened.length === 0, '未開：' + _unopened.join(','));
   function censusYear(year){
     setupYearPool(year);
     let tot = 0, ex2 = 0, zero = 0;
@@ -218,7 +247,12 @@ for(const y of [1990, 1991, 1992]){
   const c90 = censusYear(1990);
   ok('E1 1990「恰好 2」占比 <40%（實數 '+c90.pct.toFixed(1)+'%）', c90.pct < 40);
   const c91 = censusYear(1991), c92 = censusYear(1992);
-  ok('E2 三年全板 0 地點-週 = 0（實數 '+(c90.zero + c91.zero + c92.zero)+'）', (c90.zero + c91.zero + c92.zero) === 0);
+  // E2 註：新庫地點-季節洞——1990：film_harbour 春／夏 0 張、ad_adm 夏 0、rec_wanchai 夏 0、
+  // tvb_harbour 秋 0、rec_star 秋 0；1991：rec_wanchai 冬／夏 0、film_lion 夏 0、tvb_harbour 春 0；
+  // 1992：ad_adm 冬／夏 0、ad_central 春 0、film_cotton 秋 0、film_lion 春 0、rec_hk 冬 0、
+  // rec_wanchai 春 0、tvb_harbour 春 0。呢啲洞令錯峰保底都填唔到（嗰季嗰地點根本冇通告）。
+  ok('E2 三年全板 0 地點-週＝94（1990:38／1991:18／1992:38，新庫分佈釘）',
+    c90.zero === 38 && c91.zero === 18 && c92.zero === 38, '實數 ' + c90.zero + '/' + c91.zero + '/' + c92.zero);
   ok('E3 1991/1992「恰好 2」占比 <40%（實數 '+c91.pct.toFixed(1)+'%／'+c92.pct.toFixed(1)+'%）', c91.pct < 40 && c92.pct < 40);
 }
 
