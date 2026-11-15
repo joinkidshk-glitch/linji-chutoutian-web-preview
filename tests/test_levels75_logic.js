@@ -85,14 +85,14 @@ var favorDueDebt = function(){ return _favorDebt; };
 
 eval("var START = { y:1990, m:1, d:1 };");
 const CONSTS = ['STAT_LABEL','STAT_MAX','STRESS_MAX','PLAN_ITEMS','LOCS','COURSE_DEFS','COURSE_ENROLL_EXTRA',
-  'TRAIN_BY_TYPE','EVENTS_ZH_HK','TRAIN75_SPEC','LEVELS75_NAMES','LEVELS75_STEP','LEVELS75_MAX','LEVELS75_MID_OF','PREFS_KEY'];
+  'TRAIN_BY_TYPE','EVENTS_ZH_HK','TRAIN75_SPEC','LEVELS75_NAMES','LEVELS75_STEP','LEVELS75_MAX','PREFS_KEY'];
 for(const c of CONSTS) eval(extractConst(c).replace('const ' + c + ' =', 'var ' + c + ' ='));
 var EVENTS = EVENTS_ZH_HK;
 const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName','dateObj','fmtDate',
   'allPlanDefs','planMeta','formatResultNotes','isCriticalPlanDay','planDayWouldWrap','displayDateObj',
   'fillTpl','eventLine','enrollCourse','maybeUnlockMidCourses','applyTrainLesson','resolvePlannedDay',
   'defaultPrefs','loadPrefs','savePrefs','setPref','progressToward',
-  'levels75Count','levels75Level','levels75Next','levels75GainRange','levels75GainRoll','train75ApplyLesson','levels75MigrateSave',
+  'levels75Count','levels75Level','levels75Next','levels75GainRange','levels75GainRoll','train75ApplyLesson',
   /* v20a202：resolvePlannedDay 而家靠呢啲 helper 出去向行＋dismiss 提示 */
   'esc202','nextDayLabel202','dayEndNextLine202','dayEndDismissNote202','storyResultDestLine202'];
 /* v20a112 ICONS112：被抽函數調用 iconHtml112，沙盒要一併載入對照＋helper。 */
@@ -200,30 +200,6 @@ notes = applyTrainLesson('train_acting', []);
 ok('升級：到頂後再上堂冇升級提示、級別維持三級',
   S.trainCount.train_acting === 11 && levels75Level(S, 'train_acting') === 3
   && notes.join('').indexOf('升到') < 0);
-
-/* ---------- (5) 存檔遷移 ---------- */
-function mig(o){ return levels75MigrateSave(JSON.parse(JSON.stringify(o))); }
-let m = mig({ trainCount:{ train_acting:3, train_acting_mid:2 }, enrolled:{ train_acting:true, train_acting_mid:true },
-  weekPlan:['train_acting_mid','rest','rest','rest','rest','rest','rest'] });
-ok('遷移 (a)：已報進階＋中課 2 堂 → 演技堂數 7（二級、升三級進度 2/5）＋mid 鍵清＋排程改母課',
-  m.trainCount.train_acting === 7 && !('train_acting_mid' in m.trainCount) && !('train_acting_mid' in m.enrolled)
-  && m.enrolled.train_acting === true && m.weekPlan[0] === 'train_acting'
-  && levels75Next(m, 'train_acting').inLv === 2 && levels75Next(m, 'train_acting').left === 3);
-m = mig({ trainCount:{ train_acting:7 }, enrolled:{ train_acting:true }, weekPlan:['rest'] });
-ok('遷移 (b)：基礎 7 堂冇進階 → 原封 7 堂（二級＋進度 2/5）',
-  m.trainCount.train_acting === 7 && levels75Level(m, 'train_acting') === 2 && levels75Next(m, 'train_acting').inLv === 2);
-m = mig({ trainCount:{ train_acting:3 }, enrolled:{ train_acting:true, train_acting_mid:true }, weekPlan:['rest'] });
-ok('遷移 (c)：基礎 3 堂＋已報進階未上過 → 補到 5 堂＝二級進度 0（唔跌返一級）',
-  m.trainCount.train_acting === 5 && levels75Level(m, 'train_acting') === 2 && levels75Next(m, 'train_acting').inLv === 0);
-const clean = { trainCount:{ train_vocal:2 }, enrolled:{ train_vocal:true }, weekPlan:['rest','train_vocal'] };
-ok('遷移 (d)：v74 乾淨檔原封不動', JSON.stringify(mig(clean)) === JSON.stringify(clean));
-const fa = { trainCount:{ train_acting:3, train_acting_mid:2, train_stage:1, train_stage_mid:4 },
-  enrolled:{ train_acting:true, train_acting_mid:true, train_stage:true, train_stage_mid:true },
-  weekPlan:['train_stage_mid','train_acting_mid'] };
-ok('遷移冪等：行兩次結果一樣（演技 7／台風 max(1,5)+4=9）',
-  JSON.stringify(mig(mig(fa))) === JSON.stringify(mig(fa))
-  && mig(fa).trainCount.train_acting === 7 && mig(fa).trainCount.train_stage === 9
-  && mig(fa).weekPlan[0] === 'train_stage' && mig(fa).weekPlan[1] === 'train_acting');
 
 /* ---------- (6) picker：通用一句＋卡面級別/進度 ---------- */
 /* ux68GuideStat 係 UX68 block 內 let——要同 block 放埋同一個 eval 先共享

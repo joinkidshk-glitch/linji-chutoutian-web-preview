@@ -19825,7 +19825,7 @@ const COURSE_DEFS = {
   train_iq:     { icon:"📚", name:"智商／修養", hint:"讀書觀察", midOf:null },
   train_stamina: { icon:"🥋", name:"武師班", hint:"拳腳／體能", midOf:null },
   /* v20a75 LEVELS75：舊制進階課唔再係獨立課——併入母課二級（見 TRAIN75_SPEC）；
-     COURSE_DEFS 只剩 7 基礎課；舊檔嘅中課痕跡由 levels75MigrateSave 喺載入時遷移。 */
+     COURSE_DEFS 只剩 7 基礎課。 */
 };
 const COURSE_ENROLL_EXTRA = {
   tv: ["train_charm", "train_stage"], /* v20a69 STAGE69：台風訓練補返電視台附帶開放（原先邊度都冇接線，見 NOTES_V20A69） */
@@ -31643,8 +31643,7 @@ function textfix55GigRecord(o){
    年份標籤同玩家面年份字眼，喺載入正規化層 remap +2（唔直接改 content pack JSON；
    先例：TEXTFIX55 清洗層、LEADSTAR59 回填、normalizeGigRecord 正規化）。
    gig 年份只經 normalizeGigRecord 內 years66GigRemap 一處 remap；walker／remap 全部以
-   __y66w 旗冪等，同一物件唔會俾 +2 兩次。舊存檔由 years66MigrateSave 喺 normalizeSaveObj
-   一次性遷移（epoch guard：dayIndex 不變、衍生日期自動 +2、已存絕對年份鍵 remap）。 */
+   __y66w 旗冪等，同一物件唔會俾 +2 兩次。 */
 const YEARS66_SHIFT = 2;
 const YEARS66_OLD_MIN = 1988, YEARS66_OLD_MAX = 1992;
 const YEARS66_TOKEN_RE = /1988|1989|1990|1991|1992/g;
@@ -31693,108 +31692,14 @@ function years66GigRemap(o){
   if(typeof o.limits === "string") o.limits = years66ShiftText(o.limits);
   return o;
 }
-/* 舊存檔遷移（epoch guard）：v65 或更早開嘅檔冇 years66Shifted 印——dayIndex 唔郁（衍生日期
-   靠新 START 自動 +2）；已寫入存檔嘅絕對年份鍵逐項 remap：評核記錄鍵、評核 pending 年份、
-   E7 variant 名、頒獎旗鍵、wrapHistory／awardsLog 年份欄、報紙剪報／佇列入面焗住嘅年份字眼。
-   新檔喺 fresh() 出生已有印，永遠唔會俾呢度 +2。 */
-function years66MigrateSave(o){
-  if(!o || typeof o !== "object" || o.years66Shifted) return o;
-  try{
-    const c = (o.conseq61 && typeof o.conseq61 === "object") ? o.conseq61 : null;
-    if(c && c.reviews && typeof c.reviews === "object"){
-      const nr = {};
-      Object.keys(c.reviews).forEach(k => { const y = Number(k); nr[(isFinite(y) && y >= YEARS66_OLD_MIN && y <= YEARS66_OLD_MAX) ? String(y + YEARS66_SHIFT) : k] = c.reviews[k]; });
-      c.reviews = nr;
-    }
-    if(c && c.pendingEnding && typeof c.pendingEnding === "object" && c.pendingEnding.year != null) c.pendingEnding.year = years66ShiftYear(c.pendingEnding.year);
-    if(o.ending410 && typeof o.ending410 === "object"){
-      const e = o.ending410;
-      if(typeof e.careerVariant === "string"){
-        const m = e.careerVariant.match(/^review(1988|1989)$/);
-        if(m) e.careerVariant = "review" + (Number(m[1]) + YEARS66_SHIFT);
-      }
-      if(e.earlyEnd && typeof e.earlyEnd === "object" && e.earlyEnd.year != null) e.earlyEnd.year = years66ShiftYear(e.earlyEnd.year);
-    }
-    if(o.awardsFlags && typeof o.awardsFlags === "object"){
-      const nf = {};
-      Object.keys(o.awardsFlags).forEach(k => {
-        const parts = k.split("/");
-        const y = Number(parts[0]);
-        nf[(parts.length > 1 && isFinite(y) && y >= YEARS66_OLD_MIN && y <= YEARS66_OLD_MAX) ? String(y + YEARS66_SHIFT) + "/" + parts.slice(1).join("/") : k] = o.awardsFlags[k];
-      });
-      o.awardsFlags = nf;
-    }
-    if(Array.isArray(o.wrapHistory)) o.wrapHistory.forEach(h => { if(h && typeof h === "object" && h.year != null) h.year = years66ShiftYear(h.year); });
-    if(Array.isArray(o.awardsLog)) o.awardsLog.forEach(en => { if(en && typeof en === "object"){ years66Walk(en, null); } }); /* walk 已包 year 鍵 +2，唔好再 explicit set（會雙重推移） */
-    ["newspaperClippings", "newspaperQueue"].forEach(k => { if(Array.isArray(o[k])) o[k].forEach(en => years66Walk(en, null)); });
-    if(o.pendingMorningPaper && typeof o.pendingMorningPaper === "object") years66Walk(o.pendingMorningPaper, null);
-  }catch(_e){}
-  o.years66Shifted = 1;
-  return o;
-}
-
 /* ===== v20a67 JAN67：1 月開局＋足 3 年（用戶 2026-11-10 拍板：1990 年 1 月開局、遊戲時間足 3 年、
    年終評核移第 52／104 週）=====
    START 已改 1990-01-01（星期一，同原設計週一起點夾）；衍生顯示（HUD／報紙／手帳／週結／
    calib60YearOfWeek／awardsCalendarYear）全部由 START／dateObj 衍生，自動跟移。
-   本 block 兩件事：(1) 舊存檔遷移 jan67MigrateSave；(2) 開局季節文字定點修正
-   jan67OpeningTextFix（pack 本體唔改，行 TEXTFIX55／YEARS66 載入修正先例）。
+   本 block 做開局季節文字定點修正 jan67OpeningTextFix（pack 本體唔改，
+   行 TEXTFIX55／YEARS66 載入修正先例）。
    相對節奏（每週結構、節點相對次序、pacing weekMin 下限）一律唔郁；週錨定盤點見
    NOTES_V20A67_JANSTART.md。 */
-/* 1990-01-01 → 1990-03-07 相差 65 日：舊檔（3 月 epoch）dayIndex +65，曆法日期原封不動。 */
-const JAN67_DAY_SHIFT = 65;
-/* 存檔入面以「絕對日數」計嘅戳：dayIndex 郁咗，呢啲唔跟住郁就會即刻打架
-   （拍攝 deadlineDay 會變成已逾期、情報／債項到期日會早 65 日、病倒日程錯位）。
-   規則：allowlist 鍵嘅數值 ≥0 一律 +65（−1 等 unset 哨兵值唔郁）；所有相對關係
-   （deadlineDay − dayIndex 等）逐一不變。複數 Days（deadlineDays／doneDays 等）係
-   「日數」唔係「日戳」，永唔入表。week 計嘅欄（startedWeek／shopWeek 等）唔郁：
-   週數只作資訊／重刷觸發，相差一截只會令商店補貨提早觸發一次，無玩法後果。 */
-const JAN67_DAY_KEYS = {
-  dayIndex:1, deadlineDay:1, hiredAtDay:1, enqueuedDay:1, publishDay:1, wrappedDay:1,
-  dueDay:1, lastMainDoneDay:1, cooldownUntil:1, untilDay:1, newspaperLastPresentedDay:1,
-  seedDay:1, paidDay:1, seedFlavorDay:1, paidFlavorDay:1, lastGiveDay:1
-};
-function jan67ShiftDayValue(v){
-  return (typeof v === "number" && isFinite(v) && v >= 0) ? v + JAN67_DAY_SHIFT : v;
-}
-function jan67ShiftDayStamps(o, depth){
-  if(!o || typeof o !== "object" || depth > 14) return;
-  if(Array.isArray(o)){ for(const it of o) jan67ShiftDayStamps(it, depth + 1); return; }
-  for(const k of Object.keys(o)){
-    const v = o[k];
-    if(JAN67_DAY_KEYS[k]){
-      if(typeof v === "number") o[k] = jan67ShiftDayValue(v);
-      else if(v && typeof v === "object" && !Array.isArray(v)){
-        /* map 形日戳欄（如 giftMeta.lastGiveDay：npcId → 日數）逐值移 */
-        for(const mk of Object.keys(v)) if(typeof v[mk] === "number") v[mk] = jan67ShiftDayValue(v[mk]);
-      }
-      continue;
-    }
-    if(v && typeof v === "object") jan67ShiftDayStamps(v, depth + 1);
-  }
-}
-/* 舊存檔遷移（epoch guard）：冇 startEpoch67 印嘅檔一律當 3 月 epoch 檔處理。
-   喺 normalizeSaveObj 入面、緊貼 years66MigrateSave 之後行（嗰步只 remap 年份鍵、
-   唔掂日數，次序點排都唔打架；但必須早過 calib60MissedScan／conseq61LegacyMark——
-   嗰兩個用新 epoch 解讀 dayIndex）。冪等：打咗印嘅檔（新檔／已遷移檔）唔會二次偏移。
-   評核防重觸：reviews 已記錄狀態原樣保留，settle 只喺直播週轉換觸發，遷移唔會補評；
-   若舊檔進度啱啱過咗新邊界週結嗰一兩日，評核會按 conseq61 一貫「永不追溯」哲學
-   之後由 legacy 標記靜靜補過（唔會補收 E7），詳見 NOTES。 */
-function jan67MigrateSave(o){
-  if(!o || typeof o !== "object" || o.startEpoch67) return o;
-  try{
-    jan67ShiftDayStamps(o, 0);
-    /* conseq61.sick 嘅 from／to 係絕對日程（鍵名太通用，唔入全域 allowlist，呢度點名移） */
-    const c = (o.conseq61 && typeof o.conseq61 === "object") ? o.conseq61 : null;
-    if(c && c.sick && typeof c.sick === "object"){
-      if(typeof c.sick.from === "number") c.sick.from = jan67ShiftDayValue(c.sick.from);
-      if(typeof c.sick.to === "number") c.sick.to = jan67ShiftDayValue(c.sick.to);
-    }
-    /* giftMeta.lastGiveDay（npcId → 日數 map）已由 jan67ShiftDayStamps 嘅 map 分支處理，唔使另行點名 */
-  }catch(_e){}
-  o.startEpoch67 = 1;
-  return o;
-}
 /* 開局季節文字定點修正：開局由春（3 月）變冬（1 月）後，兩句開場白同 N1 時期標籤
    嘅「春」要對返。pack 本體唔改，載入後（YEARS66 walk 之後）行；內嵌 fallback 同
    disk pack 兩條路都覆蓋。句子係全句定點對照，唔會誤傷其他春季內容（春季通告／
@@ -32125,7 +32030,7 @@ async function refreshCopyPacksFromDisk(){
    七課全部三級：一級＝現行基礎數、二級＝現行進階數、三級新訂；每級上滿 5 堂自動
    升一級（用戶嫌 3 堂太快、親自揀 5；一課到頂 10 堂），上堂自動上最高已開放級別。
    級別唔另存欄位——由 S.trainCount[課] 累計堂數衍生（0–4 一級／5–9 二級／10+ 三級），
-   「而家邊級、仲差幾堂升級」隨時計得返；舊進階課點遷移見 levels75MigrateSave。
+   「而家邊級、仲差幾堂升級」隨時計得返。
    增益規格（每課一行）：main 主數值一級 [mLo, mLo+mSpan]，二級 lo+2、三級 lo+4 且
    span+1（七課一致 +4~6→+6~8→+8~11）；sub 附帶（有先算，值＝級數 +1/+2/+3；
    附帶邊個數值跟各課現有數據——演技→台風、台風→魅力、外貌→魅力、智商→演技；
@@ -32139,7 +32044,6 @@ async function refreshCopyPacksFromDisk(){
 const LEVELS75_STEP = 5;
 const LEVELS75_MAX = 3;
 const LEVELS75_NAMES = ["", "一級", "二級", "三級"];
-const LEVELS75_MID_OF = { train_acting_mid: "train_acting", train_stage_mid: "train_stage" };
 const TRAIN75_SPEC = {
   train_acting:  { main:"acting",  mLo:4, mSpan:2, sub:"stage",  sLo:8, sSpan:4 },
   train_stage:   { main:"stage",   mLo:4, mSpan:2, sub:"charm",  sLo:8, sSpan:4 },
@@ -33607,8 +33511,8 @@ function fmtDateShort(){
 function fresh(){
   return {
     dayIndex:0,
-    years66Shifted:1, /* v20a66：新檔出生已係 1990 曆法，存檔遷移唔好掂 */
-    startEpoch67:1, /* v20a67：新檔出生已係 1 月 epoch，JAN67 遷移唔好掂 */
+    years66Shifted:1, /* v20a228：遷移已刪，留印只為存檔格式相容 */
+    startEpoch67:1, /* v20a228：遷移已刪，留印只為存檔格式相容 */
     acting:18, stage:14, vocal:14, looks:22, stamina:75,
     iq:20, charm:16, fame:5, popularity:3, stress:12, money:12000,
     stageVolume:5, industryCredit:10, industryCreditDelta:0,
@@ -33780,17 +33684,6 @@ function normalizeSaveObj(o){
   if(!o.execLog105 || typeof o.execLog105!=="object" || Array.isArray(o.execLog105)) o.execLog105={};
   if(o.weekBoundary105===undefined) o.weekBoundary105=null;
   try{ syncDualTracks(o); }catch(_e){}
-  /* v20a66 YEARS66：舊存檔年份遷移（epoch guard：dayIndex 不變、絕對年份鍵 remap，一次性） */
-  try{ if(typeof years66MigrateSave==="function") years66MigrateSave(o); }catch(_e){}
-  /* v20a67 JAN67：3 月 epoch 舊檔日數偏移遷移（dayIndex +65、絕對日戳同步、曆法日期不變；
-     必須早過下面 calib60MissedScan／conseq61LegacyMark——嗰兩個用新 epoch 解讀 dayIndex） */
-  try{ if(typeof jan67MigrateSave==="function") jan67MigrateSave(o); }catch(_e){}
-  /* v20a75 LEVELS75：舊檔進階課併入級別（中課報名／堂數／weekPlan id 遷移；天然冪等，唔降級） */
-  try{ if(typeof levels75MigrateSave==="function") levels75MigrateSave(o); }catch(_e){}
-  /* v20a210 C2N210：舊檔章節進度 C id→N id 遷移（編號統一：舊存檔 st.done 裸鍵 C<n>、lastMainDoneId、
-     calib60Missed 鍵、flags 嘅 done_C<n>／story_C<n> 全部按同一對照表 remap，含 C6F→N6F；OR 合併、冪等）；
-     必須喺 storyGate113Scrub 之前——嗰個讀 N id 閘 key，遷移遲咗舊進度會認唔到；亦喺 calib60MissedScan 之前 */
-  try{ if(typeof c2n210MigrateSave==="function") c2n210MigrateSave(o); }catch(_e){}
   /* v20a113 GATE113：清走跳步存檔嘅非法 done 標記（前置未滿足／早過窗口嗰陣播出嘅 N18／N19／N8／N12）；
      必須喺 calib60MissedScan 之前——被清走嗰幕若果已過窗，要正確登記做「已錯過」；未過窗就留返未開放狀態 */
   try{ if(typeof storyGate113Scrub==="function") storyGate113Scrub(o); }catch(_e){}
@@ -36703,69 +36596,6 @@ function train75ApplyLesson(cid){
   const rl = eventLine("TRAIN_RESULT_" + String(cid).replace(/^train_/, ""));
   if(rl) out.push(rl);
   return out;
-}
-function levels75MigrateSave(o){
-  /* v20a75 LEVELS75 舊存檔遷移（normalizeSaveObj 載入時行；唔准降級）：
-     舊制進階課（train_acting_mid／train_stage_mid）併入母課級別——
-     已報進階＝母課至少二級（基礎堂數補到 5）；中課堂數計入二級進度；
-     基礎堂數溢出（≥5）本身已係二級，中課堂數疊埋一齊計（唔雙重計數：
-     中課堂本身就係二級堂）。weekPlan 入面嘅中課 id 改返母課，費事排程日
-     冇人認。天然冪等：行完中課鍵（trainCount／enrolled）全清，第二次載入
-     冇痕跡可遷，結果唔變，唔會再跳級。 */
-  if(!o || typeof o !== "object") return o;
-  try{
-    const tc = (o.trainCount && typeof o.trainCount === "object") ? o.trainCount : null;
-    const en = (o.enrolled && typeof o.enrolled === "object") ? o.enrolled : null;
-    Object.keys(LEVELS75_MID_OF).forEach(mid=>{
-      const base = LEVELS75_MID_OF[mid];
-      const m = tc ? (Number(tc[mid]) || 0) : 0;
-      const wasEn = !!(en && en[mid]);
-      if(wasEn && en) en[base] = true;               /* 報咗進階，母課點都算已報 */
-      if((m > 0 || wasEn) && tc)
-        tc[base] = Math.max(Number(tc[base]) || 0, LEVELS75_STEP) + m;
-      if(tc) delete tc[mid];
-      if(en) delete en[mid];
-    });
-    if(Array.isArray(o.weekPlan))
-      o.weekPlan = o.weekPlan.map(x => LEVELS75_MID_OF[x] || x);
-  }catch(_e){}
-  return o;
-}
-function c2n210MigrateSave(o){
-  /* v20a210 C2N210 舊存檔遷移（normalizeSaveObj 載入時行；冪等）：
-     編號統一 C→N：舊存檔主線進度用舊 C id 做 key（markDone 寫 st.done[id] 裸鍵），
-     改名後新 code 全部讀 N id，唔遷移會成個章節進度歸零。
-     遷移範圍：o.story.done 裸鍵 C<n>→N<m>、o.story.lastMainDoneId、
-     o.calib60Missed 鍵、o.flags 嘅 done_C<n>／story_C<n>（舊式防撞讀法，
-     見 softC10WindowActive）。對照表同 rename.py MAP 一致（含 C6F→N6F、
-     換位 C8→N9／C11→N8／C12→N14／C13→N16／C14→N13／C15→N12／C16→N15）。
-     冪等：行完舊 C 鍵全清，第二次載入冇痕跡可遷；新舊鍵並存嗰陣 OR 合併。 */
-  if(!o || typeof o !== "object") return o;
-  try{
-    const MAP210 = {C1:"N1",C2:"N2",C3:"N3",C4:"N4",C5:"N5",C6:"N6",C7:"N7",C8:"N9",C9:"N10",C10:"N11",C11:"N8",C12:"N14",C13:"N16",C14:"N13",C15:"N12",C16:"N15",C17:"N17",C18:"N18",C19:"N19",C6F:"N6F"};
-    const remapKeys = function(obj, prefix){
-      if(!obj || typeof obj !== "object") return;
-      Object.keys(obj).forEach(function(k){
-        const m = k.match(/^(done_|story_)?(C(?:6F|1[0-9]|[1-9]))$/);
-        if(!m) return;
-        const pre = m[1] || "";
-        if(prefix !== undefined && pre !== prefix) return;
-        const nk = pre + MAP210[m[2]];
-        if(nk !== k){ obj[nk] = obj[nk] || obj[k]; delete obj[k]; }
-      });
-    };
-    if(o.story && typeof o.story === "object"){
-      remapKeys(o.story.done, "");
-      if(typeof o.story.lastMainDoneId === "string" && MAP210[o.story.lastMainDoneId])
-        o.story.lastMainDoneId = MAP210[o.story.lastMainDoneId];
-    }
-    remapKeys(o.calib60Missed, "");
-    if(o.flags && typeof o.flags === "object"){
-      remapKeys(o.flags, "done_");
-      remapKeys(o.flags, "story_");
-    }
-  }catch(_e){}
-  return o;
 }
 function maybeUnlockMidCourses(notes){
   /* v20a75 LEVELS75：進階課已併入課程級別（升／降級由 train75ApplyLesson 計堂

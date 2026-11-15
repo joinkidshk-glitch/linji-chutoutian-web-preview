@@ -37,19 +37,18 @@ def hook_ok(s):
     if i < 0: return False
     j = s.find('function saveSummaryFrom(o){', i)
     body = s[i:j if j > 0 else len(s)]
-    a = body.find('levels75MigrateSave(o)')
     b = body.find('storyGate113Scrub(o)')
     c = body.find('calib60MissedScan(o)')
-    return 0 < a < b < c
+    return 0 < b < c and 'MigrateSave' not in body
 ok('storyGate113Scrub 函數在位', 'function storyGate113Scrub(o, gate){' in src)
-ok('接線：normalizeSaveObj 內 levels75 之後、calib60 之前呼叫 scrub', hook_ok(src))
+ok('接線：normalizeSaveObj 內 scrub 在 calib60 之前、冇遷移呼叫（v228）', hook_ok(src))
 
 # --- 反證 ---
 mut = src.replace('N18: { needDone: ["N5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] }',
                   'N18: { yearMin: 1990, seasonIn: ["冬"] }', 1)
 ok('反證：舊版 N18 閘行（漏鏈）必令閘斷言翻轉', not gate_ok(mut))
 mut2 = src.replace('try{ if(typeof storyGate113Scrub==="function") storyGate113Scrub(o); }catch(_e){}', '', 1)
-ok('反證：刪走遷移呼叫必令接線斷言翻轉', not hook_ok(mut2))
+ok('反證：刪走 scrub 呼叫必令接線斷言翻轉', not hook_ok(mut2))
 
 print('\n' + ('ALL PASS' if not fails else 'FAILURES: ' + ' | '.join(fails)))
 sys.exit(0 if not fails else 1)

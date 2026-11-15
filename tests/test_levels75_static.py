@@ -1,4 +1,4 @@
-# v20a75 LEVELS75 static tests：三級制接線齊（數據表／共用核心／遷移掛點／顯示）、
+# v20a75 LEVELS75 static tests：三級制接線齊（數據表／共用核心／顯示，v228：遷移已刪）、
 # 進階課獨立存在清走、紅線（SAVE key／softRev／?v=）冇郁。
 # 反證：喺 v74 index 上行 → LEVELS75 標記全缺 → FAIL。
 import sys
@@ -13,7 +13,7 @@ def chk(name, cond):
 
 # --- 數據表＋衍生 ---
 chk('LEVELS75 block／數據表在位', 'const TRAIN75_SPEC' in src and 'const LEVELS75_STEP = 5' in src
-    and 'const LEVELS75_MAX = 3' in src and 'const LEVELS75_MID_OF' in src)
+    and 'const LEVELS75_MAX = 3' in src)
 chk('TRAIN75_SPEC 七課齊', all(('train_%s:' % k) in src for k in
     ['acting', 'stage', 'vocal', 'looks', 'charm', 'iq', 'stamina']))
 chk('附帶對照：acting→stage／stage→charm／iq→acting／looks→charm',
@@ -21,7 +21,7 @@ chk('附帶對照：acting→stage／stage→charm／iq→acting／looks→charm
 chk('冇附帶三課 sub:null（歌藝／魅力／武師班）', src.count('sub:null') >= 3)
 chk('級別衍生函數齊', all(('function %s(' % f) in src for f in
     ['levels75Count', 'levels75Level', 'levels75Next', 'levels75GainRange', 'levels75GainRoll',
-     'train75ApplyLesson', 'levels75MigrateSave']))
+     'train75ApplyLesson']))
 
 # --- 共用核心：兩路徑一致 ---
 chk('排程路徑行共用核心', 'train75ApplyLesson(id)' in src)
@@ -39,10 +39,10 @@ chk('顯示鏡像 ux68UnlockRule 已刪 mid 個案', 'case "train_acting_mid":' 
 chk('增益顯示改行數據表衍生', 'levels75GainRange(cid, levels75Level(oo, cid))' in src
     and 'applyTrainLesson.toString()' not in src)
 
-# --- 遷移掛點 ---
+# --- 遷移已刪（v228） ---
 i = src.find('function normalizeSaveObj(')
 j = src.find('function loadFromSlot(', i)
-chk('normalizeSaveObj 載入時行遷移', i >= 0 and j > i and 'levels75MigrateSave(o)' in src[i:j])
+chk('normalizeSaveObj 冇遷移呼叫（v228）', i >= 0 and j > i and 'MigrateSave' not in src[i:j])
 
 # --- 顯示：級別＋進度 ---
 chk('picker 卡有級別名＋進度行', 'lvText75' in src and 'prog75' in src and '已到三級' in src and '堂升' in src)

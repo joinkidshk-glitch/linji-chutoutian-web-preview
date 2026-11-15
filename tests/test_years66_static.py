@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# v20a66 YEARS66 靜態測試：epoch／副題／評核鍵／gigsByYear remap／遷移掛點／玩家面年份字眼。
+# v20a66 YEARS66 靜態測試：epoch／副題／評核鍵／gigsByYear remap／玩家面年份字眼（v228：遷移已刪）。
 # 反證：喺 v20a65 index 上行會 FAIL。
 # 用法：python3 tests/test_years66_static.py [path-to-index.html]
 import re, sys
@@ -15,11 +15,11 @@ ok('START epoch = 1990-01-01（v20a67 JAN67 改 1 月開局）', 'const START = 
 ok('開始畫面副題 1990', '<p class="start-sub">1990 · 片場星途</p>' in src)
 ok('新遊戲注腳 1990 年冬（v20a67 開局季節）', '1990 年冬 · 由零開始' in src)
 ok('開場 modal 日期改動態衍生（v20a67）', '· 阿偉的家</h3>' in src and '1990年3月7日' not in src)
-ok('YEARS66 block 存在', '/* ===== v20a66 YEARS66' in src and 'function years66MigrateSave' in src and 'function years66Walk' in src and 'function years66GigRemap' in src)
+ok('YEARS66 block 存在', '/* ===== v20a66 YEARS66' in src and 'function years66Walk' in src and 'function years66GigRemap' in src)
 ok('normalizeGigRecord 掛 years66GigRemap', 'try{ years66GigRemap(o); }catch(_y66){}' in src)
 m = re.search(r'function normalizeSaveObj\(o\)\{(.*?)\n\}', src, re.S)
-ok('normalizeSaveObj 掛 years66MigrateSave', bool(m) and 'years66MigrateSave(o)' in m.group(1))
-ok('fresh() 打 years66Shifted 戳', 'years66Shifted:1,' in src)
+ok('normalizeSaveObj 冇遷移呼叫（v228 已刪四個 MigrateSave）', bool(m) and 'MigrateSave' not in m.group(1))
+ok('fresh() 留 years66Shifted 印（v228：遷移已刪，格式相容）', 'years66Shifted:1,' in src)
 ok('CONSEQ61_REVIEWS 鍵 1990/1991', re.search(r'1990:\s*\{\s*floor:\s*45', src) is not None and re.search(r'1991:\s*\{\s*floor:\s*100', src) is not None)
 ok('E7 場景 variant 用 review1991', 'if(v==="review1991")' in src)
 ok('冇 review1988 殘留字串', 'review1988' not in src)

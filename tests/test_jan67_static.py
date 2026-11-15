@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# v20a67 JAN67 靜態測試：1 月 epoch／JAN67 block／遷移接線次序／評核邊界週／開局季節文字清零。
+# v20a67 JAN67 靜態測試：1 月 epoch／JAN67 block／評核邊界週／開局季節文字清零（v228：遷移已刪）。
 # 反證：喺 v20a66 index 上行會 FAIL。
 # 用法：python3 tests/test_jan67_static.py [path-to-index.html]
 import re, sys
@@ -12,18 +12,14 @@ def ok(name, cond):
     if not cond: fails.append(name)
 
 ok('START epoch = 1990-01-01', 'const START = { y:1990, m:1, d:1 }' in src)
-ok('JAN67 block 存在', '/* ===== v20a67 JAN67' in src and 'function jan67MigrateSave' in src
-   and 'function jan67ShiftDayStamps' in src and 'function jan67OpeningTextFix' in src)
-ok('JAN67_DAY_SHIFT = 65', 'const JAN67_DAY_SHIFT = 65;' in src)
-ok('JAN67_DAY_KEYS 含 lastGiveDay（map 形日戳）', 'paidFlavorDay:1, lastGiveDay:1' in src)
+ok('JAN67 block 存在', '/* ===== v20a67 JAN67' in src and 'function jan67OpeningTextFix' in src)
 ok('fresh() 打 startEpoch67 戳', 'startEpoch67:1,' in src)
 
 m = re.search(r'function normalizeSaveObj\(o\)\{(.*?)\n\}', src, re.S)
 body = m.group(1) if m else ''
-i66 = body.find('years66MigrateSave(o)'); i67 = body.find('jan67MigrateSave(o)')
-imiss = body.find('calib60MissedScan(o)'); ileg = body.find('conseq61LegacyMark(o)')
-ok('遷移接線次序：years66 → jan67 → missedScan/legacyMark',
-   0 <= i66 < i67 < imiss and i67 < ileg)
+ok('normalizeSaveObj 冇遷移呼叫（v228 已刪四個 MigrateSave）', 'MigrateSave' not in body)
+ok('normalizeSaveObj 照舊行 calib60／conseq61（唔依賴遷移）',
+   'calib60MissedScan(o)' in body and 'conseq61LegacyMark(o)' in body)
 
 ok('評核邊界週 52／104', re.search(r'1990:\s*\{\s*floor:\s*45,\s*warnLine:\s*65,\s*boundaryWeek:\s*52\s*\}', src) is not None
    and re.search(r'1991:\s*\{\s*floor:\s*100,\s*warnLine:\s*130,\s*boundaryWeek:\s*104\s*\}', src) is not None)

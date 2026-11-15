@@ -1,4 +1,4 @@
-// v20a66 YEARS66 年份推移邏輯測試：epoch／評核鍵／生活費年份閘／gig 正規化 remap／存檔遷移。
+// v20a66 YEARS66 年份推移邏輯測試：epoch／評核鍵／生活費年份閘／gig 正規化 remap（v228：存檔遷移已刪）。
 // 反證：喺 v20a65 index 上行會 FAIL（START 仍 1988、冇 YEARS66 block、冇遷移）。
 // 用法：node tests/test_years66_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -96,7 +96,7 @@ ok('walk：非年份數字不變（pay 1990）', wIn.nested.pay === 1990);
 years66Walk(wIn, null);
 ok('walk 冪等：二次行唔再移', wIn.year === 1991 && wIn.title === '1991年夏');
 
-/* ================= (5) 存檔遷移（v65 形狀 fixture） ================= */
+/* ================= v65 形狀 fixture（只供下面新檔測試用；遷移已於 v228 刪除） ================= */
 function v65Save(){
   return { dayIndex: 500, fame: 40, popularity: 10, acting: 50, stage: 40, vocal: 30, looks: 30, iq: 25, charm: 25,
     stress: 20, money: 9000, stamina: 80, industryCreditDelta: 5,
@@ -109,25 +109,7 @@ function v65Save(){
     wrapHistory: [ { gigId: 'gig_1988_film_01', year: 1988, title: '舊作' } ],
     awardsLog: [ { year: 1989, ceremonyId: 'award_singho_tv' } ] };
 }
-const mig = normalizeSaveObj(JSON.parse(JSON.stringify(v65Save())));
-ok('遷移：v66 年份 remap 之後 v67 日數 +65（組裝行為；500 → 565）', mig.dayIndex === 565);
-ok('遷移：打上 years66Shifted 戳', mig.years66Shifted === 1);
-ok('遷移：reviews 鍵 1988/1989 → 1990/1991（內容保留）',
-  !mig.conseq61.reviews[1988] && !mig.conseq61.reviews[1989] &&
-  mig.conseq61.reviews[1990] && mig.conseq61.reviews[1990].dual === 70 &&
-  mig.conseq61.reviews[1991] && mig.conseq61.reviews[1991].dual === 40);
-ok('遷移：pendingEnding.year → 1990', mig.conseq61.pendingEnding.year === 1990);
-ok('遷移：careerVariant review1989 → review1991', mig.ending410.careerVariant === 'review1991');
-ok('遷移：earlyEnd.year → 1991', mig.ending410.earlyEnd.year === 1991);
-ok('遷移：awardsFlags 鍵年份 → 1990/', !!mig.awardsFlags['1990/award_harbour_film'] && !mig.awardsFlags['1988/award_harbour_film']);
-ok('遷移：wrapHistory year → 1990、gigId 不變', mig.wrapHistory[0].year === 1990 && mig.wrapHistory[0].gigId === 'gig_1988_film_01');
-ok('遷移：awardsLog year → 1991', mig.awardsLog[0].year === 1991);
-const mig2 = normalizeSaveObj(JSON.parse(JSON.stringify(mig)));
-ok('遷移冪等：再載入唔會二次 +2',
-  mig2.conseq61.reviews[1990] && mig2.conseq61.reviews[1990].dual === 70 && !mig2.conseq61.reviews[1992] &&
-  mig2.wrapHistory[0].year === 1990 && mig2.ending410.careerVariant === 'review1991');
-
-/* ================= (6) 新檔唔受遷移影響 ================= */
+/* ================= (6) 新檔：normalizeSaveObj 唔改年份鍵 ================= */
 const freshLike = v65Save();
 freshLike.years66Shifted = 1;
 freshLike.conseq61.reviews = { 1990: { passed: true, dual: 88 } };
