@@ -100,4 +100,7 @@
 
 ## 6. 落地紀錄
 
-- （待落地後補）
+- 遊戲 commit `c983e7f`（squash commit `22d38e1`，分支 commit `08fe2a1`）；線上 5,554,079 bytes，sha256 `4f4cca79…` 同 repo 一致，已核實（push 後約 2 分鐘部署完成）。
+- 全套 suite：A（pristine v216）309／13、B（工作副本）309／13，FAIL 清單一模一樣（13 個穩定 FAIL）；零回歸。
+- 未做線上實駕（呢票係純文字改動，suite＋全檔舊詞掃描已覆蓋；實駕等用戶／下一輪）。
+- 工作副本已 `git worktree remove`，分支 `v20a217` 已刪。
