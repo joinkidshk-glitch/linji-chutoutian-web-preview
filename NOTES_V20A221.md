@@ -22,7 +22,8 @@
 
 ## §3 落地
 
-- 分支 `v20a221` → squash merge → main，（待填 HEAD／線上 bytes／sha）。
+- 分支 `v20a221` → squash merge → main，main HEAD `7574287`。
+- 線上核實：5,571,851 bytes、sha1 `3b239cafea1b3b5ff8afdffd4754f59ecc7b8190`，同 main HEAD index.html 完全一致。
 - 工作副本 `linji-work221` 落地後刪除；pristine 對照 `linji-pristine221` 已刪除。
 
 ## §4 殘留／跟進
