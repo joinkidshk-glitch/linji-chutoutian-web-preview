@@ -36978,6 +36978,7 @@ function advanceDay(){
   /* v20a83 ENC83：顧明輝借錢到期結算 tick（同 favorDueTick 並列，行 favor 帳本／結算登記） */
   try{ if(typeof enc83GuLoanTick==="function") enc83GuLoanTick(); }catch(_gl){}
   try{ if(typeof rivalryTick==="function") rivalryTick(); }catch(_rv){}
+  try{ if(typeof rivalryNewsTick==="function") rivalryNewsTick(); }catch(_rn){}
   try{ if(typeof exodusFenTick==="function") exodusFenTick(); }catch(_ex){}
   try{ if(typeof story46SettleTick==="function") story46SettleTick(); }catch(_s46){}
   try{ if(typeof story48SettleTick==="function") story48SettleTick(); }catch(_s48){}
@@ -42272,8 +42273,19 @@ function applyRivalWf4Overrides86(){
    贏：業內信用 +3（industryCreditDelta）＋報紙點名寫你贏咗（fameDelta +2、eventKey story:C3:faceoff_win
    → topicKey rival:gao，連載接得返 C3 嗰期）＋高俊傑好感 +3（服氣）。
    輸：人氣 −1（細懲罰，唔羞辱）＋高俊傑好感 −1＋報紙寫佢先拔頭籌但畀你留「輸得起」口碑。
-   結算後 faceoffState 落 won／lost 終態：通告落板、唔再重複觸發；報紙剪報＋手帳傳聞各留一痕。 ===== */
-const RIVAL_CFG = { gigId:"gig_rival_gao_faceoff", rumorId:"gao_steal_spotlight", resultRumorId:"rival_faceoff_result", openScore:3, winDualBase:40, hardMod:6, endureMod:-6, winCredit:3, winPaperFame:2, losePop:1 };
+   結算後第 1／2 輪冷卻 90 日再開下一輪，第 3 輪先落 won／lost 終態（見下面對手線強化票註解）；報紙剪報＋手帳傳聞各留一痕。 ===== */
+const RIVAL_CFG = { gigId:"gig_rival_gao_faceoff", rumorId:"gao_steal_spotlight", resultRumorId:"rival_faceoff_result", openScore:3, winDualBase:40, hardMod:6, endureMod:-6, winCredit:3, winPaperFame:2, losePop:1, rematchCooldownDays:90, maxRounds:3 };
+/* 對手線強化票：決戰唔再一次過終態——第 1／2 輪結算後冷卻 90 日再開下一輪（第 3 輪先終態）。
+   舊檔遷移：之前已 won／lost 嘅舊檔，ensureRivalry 將佢哋轉返 "none"＋nextOpenDay＝settledDay＋90，
+   等下一輪自然開；門檻 40±6、贏輸效果每輪一樣，唔加難度。 */
+function rivalryGigForRound(round){
+  try{
+    const list = (typeof RIVAL_FACEOFF_GIGS!=="undefined" && Array.isArray(RIVAL_FACEOFF_GIGS)) ? RIVAL_FACEOFF_GIGS : [];
+    const want = round>=3 ? "gig_rival_gao_faceoff_r3" : (round===2 ? "gig_rival_gao_faceoff_r2" : RIVAL_CFG.gigId);
+    return list.find(g=>g && g.id===want) || list[0] || null;
+  }catch(_e){ return null; }
+}
+function rivalryRoundSuffix(round){ return (round && round>1) ? ("_r"+round) : ""; }
 const RIVAL_FACEOFF_GIGS = [
   {
     id:"gig_rival_gao_faceoff",
@@ -42304,7 +42316,94 @@ const RIVAL_FACEOFF_GIGS = [
     hard:0.1,
     tier:"初",
     stars:1,
-    applyDeadlineDays:6,
+    shootDaysHint:1,
+    shootHint:"同高俊傑同場試演：企位要正、台詞要穩，唔好畀佢搶咗節奏。",
+    roleScale:"tv_cameo_short",
+    shootBand:[1, 1],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:14,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["與高俊傑同場爭位，殺青分勝負"] },
+    storyKeys:["rival_gao_faceoff"],
+    tagOnComplete:["唔怯場"],
+    rumorKeys:[],
+    favorDelta:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  },
+  {
+    id:"gig_rival_gao_faceoff_r2",
+    year:1988,
+    season:"不限",
+    type:"電影",
+    genreLabel:"電影",
+    loc:"film_lion",
+    workTitle:"火線街頭",
+    title:"《火線街頭》新人爭位試演",
+    roleLabel:"爭位試演",
+    director:"監製",
+    roleHint:"同高俊傑爭同一個有台詞嘅企位，監製唔淨睇邊個大聲——聲望、台風、同行內口碑，一次過睇晒。",
+    blurb:"星河電影組新片《火線街頭》有個有台詞嘅企位，監製淨係喺你同高俊傑之間揀一個。上次未分勝負，今次同場試演，拍晒成場，邊個企得穩、交到戲，個位就係邊個嘅。",
+    synopsis:"清水灣星河片場，《火線街頭》試演日。高俊傑一早到咗，紅皮褸一手插袋，笑笑口講：「上次你贏咗，今次我唔會再讓。」監製講明：兩個輪流同主角對一場，睇聲望、睇台風、睇行內口碑點寫你。拍完嗰日，結果自然分曉。",
+    eraTag:"era_1988_tv",
+    discoverNote:"高俊傑再落戰書嘅爭位試演，殺青嗰日分勝負。",
+    boardPriority:"high",
+    boardNote:"爭位試演",
+    seasonWeight:1,
+    req:{},
+    pay:[1100, 1300],
+    payExact:1200,
+    breachFee:100,
+    fame:[1, 2],
+    popularity:[1, 2],
+    stressDeltaHint:"中",
+    hard:0.1,
+    tier:"初",
+    stars:1,
+    shootDaysHint:1,
+    shootHint:"同高俊傑同場試演：企位要正、台詞要穩，唔好畀佢搶咗節奏。",
+    roleScale:"film_support_small",
+    shootBand:[1, 1],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:14,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["與高俊傑同場爭位，殺青分勝負"] },
+    storyKeys:["rival_gao_faceoff"],
+    tagOnComplete:["唔怯場"],
+    rumorKeys:[],
+    favorDelta:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  },
+  {
+    id:"gig_rival_gao_faceoff_r3",
+    year:1988,
+    season:"不限",
+    type:"電視劇",
+    genreLabel:"電視劇",
+    loc:"tvb_kowloon",
+    workTitle:"再見江湖",
+    title:"《再見江湖》新人爭位試演",
+    roleLabel:"爭位試演",
+    director:"監製",
+    roleHint:"同高俊傑爭同一個有台詞嘅企位，監製唔淨睇邊個大聲——聲望、台風、同行內口碑，一次過睇晒。",
+    blurb:"星河電視台新劇《再見江湖》有個有台詞嘅企位，監製淨係喺你同高俊傑之間揀一個。鬥咗兩場，仲未分高下——今次同場試演，拍晒成場，邊個企得穩、交到戲，個位就係邊個嘅。",
+    synopsis:"九龍城星河電視城，《再見江湖》試演日。高俊傑一早到咗，紅皮褸一手插袋，笑笑口講：「鬥到第三場，邊個企得穩，邊個就係一哥。」監製講明：兩個輪流同主角對一場，睇聲望、睇台風、睇行內口碑點寫你。拍完嗰日，結果自然分曉。",
+    eraTag:"era_1988_tv",
+    discoverNote:"高俊傑第三次落戰書嘅爭位試演，殺青嗰日分勝負。",
+    boardPriority:"high",
+    boardNote:"爭位試演",
+    seasonWeight:1,
+    req:{},
+    pay:[1100, 1300],
+    payExact:1200,
+    breachFee:100,
+    fame:[1, 2],
+    popularity:[1, 2],
+    stressDeltaHint:"中",
+    hard:0.1,
+    tier:"初",
+    stars:1,
     shootDaysHint:1,
     shootHint:"同高俊傑同場試演：企位要正、台詞要穩，唔好畀佢搶咗節奏。",
     roleScale:"tv_cameo_short",
@@ -42328,6 +42427,22 @@ function ensureRivalry(){
   }
   if(S.rivalry.faceoffState==null) S.rivalry.faceoffState = "none";
   if(S.rivalry.score==null) S.rivalry.score = 0;
+  if(S.rivalry.round==null) S.rivalry.round = 1;
+  if(S.rivalry.gigId==null) S.rivalry.gigId = RIVAL_CFG.gigId;
+  if(S.rivalry.nextOpenDay==null) S.rivalry.nextOpenDay = null;
+  if(S.rivalry.lastResult==null) S.rivalry.lastResult = "";
+  if(S.rivalry.wins==null) S.rivalry.wins = 0;
+  if(S.rivalry.newsIdx==null) S.rivalry.newsIdx = 0;
+  if(S.rivalry.workTitle==null) S.rivalry.workTitle = "";
+  /* 舊檔遷移：第 1／2 輪已結算嘅舊檔（won／lost、未有 nextOpenDay）轉返 "none"，等再鬥循環接手；
+     第 3 輪終態唔郁。 */
+  if((S.rivalry.faceoffState==="won" || S.rivalry.faceoffState==="lost") && (S.rivalry.round|0) < RIVAL_CFG.maxRounds && S.rivalry.nextOpenDay==null){
+    S.rivalry.lastResult = S.rivalry.faceoffState;
+    if(S.rivalry.lastResult==="won" && !(S.rivalry.wins>0)) S.rivalry.wins = 1;
+    S.rivalry.faceoffState = "none";
+    const settled = (S.rivalry.settledDay!=null) ? (S.rivalry.settledDay|0) : ((S.dayIndex|0) - RIVAL_CFG.rematchCooldownDays);
+    S.rivalry.nextOpenDay = settled + RIVAL_CFG.rematchCooldownDays;
+  }
   return S.rivalry;
 }
 function rivalryStance(){
@@ -42338,6 +42453,13 @@ function rivalryStance(){
     if(sf.rival_gao_endure || gf.rival_gao_endure) return "endure";
   }catch(_e){}
   return "";
+}
+function rivalryC3Done(){
+  try{
+    const done = (S.story && S.story.done) || {};
+    const sf = (S.story && S.story.flags) || {};
+    return !!(done.C3 || sf.rival_gao_hard || sf.rival_gao_endure || (S.flags && (S.flags.rival_gao_hard || S.flags.rival_gao_endure)));
+  }catch(_e){ return false; }
 }
 function rivalryScore(){
   let n = 0;
@@ -42365,43 +42487,52 @@ function rivalryWinThreshold(stance){
   if(stance==="endure") t += RIVAL_CFG.endureMod;
   return t;
 }
-function rivalryFaceoffPaper(win){
+function rivalryFaceoffPaper(win, round){
   try{
     if(typeof enqueueNewspaperItem!=="function") return null;
     const tier = (typeof newspaperNameTier==="function") ? newspaperNameTier() : "named";
     const ref = (typeof newspaperPlayerRef==="function") ? newspaperPlayerRef(tier) : "阿偉";
+    const r = (typeof ensureRivalry==="function") ? ensureRivalry() : null;
+    const rd = (round!=null ? round : (r ? (r.round|0) : 1)) || 1;
+    const suffix = rivalryRoundSuffix(rd);
+    const work = (r && r.workTitle) || "霓虹夜影";
+    const again = rd>1 ? "再" : "";
     if(win){
       return enqueueNewspaperItem({
-        eventKey:"story:C3:faceoff_win", source:"story", fameDelta:RIVAL_CFG.winPaperFame,
+        eventKey:"story:C3:faceoff_win"+suffix, source:"story", fameDelta:RIVAL_CFG.winPaperFame,
         paperName:"娛樂版",
-        headline:"新人爭位分曉："+ref+"壓過高俊傑",
-        dek:"《霓虹夜影》爭位試演塵埃落定，"+ref+"憑走位同台風攞到嗰個有台詞嘅企位。高俊傑收工嗰陣撂低一句：「下次唔會咁易。」——講完自己都笑，似係服氣多過唔忿氣。",
+        headline:"新人爭位"+again+"分曉："+ref+"壓過高俊傑",
+        dek:"《"+work+"》爭位試演塵埃落定，"+ref+"憑走位同台風攞到嗰個有台詞嘅企位。高俊傑收工嗰陣撂低一句：「下次唔會咁易。」——講完自己都笑，似係服氣多過唔忿氣。",
         clipLabel:"爭位試演・勝",
-        workTitle:"霓虹夜影"
+        workTitle:work
       });
     }
     return enqueueNewspaperItem({
-      eventKey:"story:C3:faceoff_lose", source:"story", fameDelta:0,
+      eventKey:"story:C3:faceoff_lose"+suffix, source:"story", fameDelta:0,
       paperName:"娛樂版",
-      headline:"新人爭位：高俊傑先拔頭籌",
-      dek:"《霓虹夜影》爭位試演，高俊傑快半步攞到個位，收工仲笑笑口同場務講：「都話咗我快。」不過"+ref+"今次只係差少少，監製臨走講咗句：「嗰個後生仔，記住佢。」——輸一場唔緊要，行內最怕係冇人記得你輸過。",
+      headline:"新人爭位"+again+"鬥：高俊傑先拔頭籌",
+      dek:"《"+work+"》爭位試演，高俊傑快半步攞到個位，收工仲笑笑口同場務講：「都話咗我快。」不過"+ref+"今次只係差少少，監製臨走講咗句：「嗰個後生仔，記住佢。」——輸一場唔緊要，行內最怕係冇人記得你輸過。",
       clipLabel:"爭位試演・負",
-      workTitle:"霓虹夜影"
+      workTitle:work
     });
   }catch(_e){ return null; }
 }
-function rivalryResultRumor(win){
+function rivalryResultRumor(win, round){
   try{
     if(typeof S==="undefined" || !S) return;
     if(typeof ensureMockJournal==="function") ensureMockJournal();
     if(!Array.isArray(S.mockRumors)) S.mockRumors = [];
-    if(S.mockRumors.some(r=>r && r.id===RIVAL_CFG.resultRumorId)) return;
+    const r = (typeof ensureRivalry==="function") ? ensureRivalry() : null;
+    const rd = (round!=null ? round : (r ? (r.round|0) : 1)) || 1;
+    const id = RIVAL_CFG.resultRumorId + rivalryRoundSuffix(rd);
+    if(S.mockRumors.some(x=>x && x.id===id)) return;
+    const work = (r && r.workTitle) || "霓虹夜影";
     S.mockRumors.unshift({
-      id:RIVAL_CFG.resultRumorId, source:"片場休息區",
+      id:id, source:"片場休息區",
       title: win ? "爭位試演：阿偉贏咗" : "爭位試演：高俊傑快半步",
       text: win
-        ? "《霓虹夜影》爭位試演，阿偉壓過高俊傑攞到個位。高俊傑撂話下次再鬥，睇得出佢服氣。"
-        : "《霓虹夜影》爭位試演，高俊傑快半步攞到位。阿偉輸得起，監製都記住咗佢個名。",
+        ? "《"+work+"》爭位試演，阿偉壓過高俊傑攞到個位。高俊傑撂話下次再鬥，睇得出佢服氣。"
+        : "《"+work+"》爭位試演，高俊傑快半步攞到位。阿偉輸得起，監製都記住咗佢個名。",
       state:"normal", season:""
     });
   }catch(_e){}
@@ -42416,27 +42547,50 @@ function rivalryTick(){
     const today = S.dayIndex|0;
     r.score = rivalryScore();
     if(r.faceoffState==="none"){
-      if(r.score >= RIVAL_CFG.openScore){
+      if(r.score >= RIVAL_CFG.openScore && today >= (r.nextOpenDay||0)){
+        /* 再鬥：第 2／3 輪由冷卻期滿觸發，輪次＋1、換當輪通告；第 1 輪 nextOpenDay 係 null，照舊。 */
+        if(r.nextOpenDay!=null) r.round = Math.min(((r.round|0)||1)+1, RIVAL_CFG.maxRounds);
+        const gig = rivalryGigForRound(r.round|0);
+        r.gigId = (gig && gig.id) || RIVAL_CFG.gigId;
+        r.workTitle = (gig && gig.workTitle) || "霓虹夜影";
         r.faceoffState = "open";
         r.openedDay = today;
         r.stance = rivalryStance();
-        try{ toast("高俊傑喺清水灣片場走廊截住你：「嗰次未分勝負，唔好話我冇畀機會你——《霓虹夜影》有個位，我同你一齊爭，邊個攞到就邊個企正。星河電影組通告欄見。」"); }catch(_t){}
+        try{
+          if((r.round|0)>1){
+            toast(r.lastResult==="won"
+              ? "高俊傑喺片場走廊截住你：「上次你贏咗，今次我唔會再讓——《"+r.workTitle+"》有個位，我同你一齊爭，邊個攞到就邊個企正。通告欄見。」"
+              : "高俊傑喺片場走廊截住你：「上次我快半步，敢唔敢再嚟一次——《"+r.workTitle+"》有個位，我同你一齊爭，邊個攞到就邊個企正。通告欄見。」");
+          }else{
+            toast("高俊傑喺清水灣片場走廊截住你：「嗰次未分勝負，唔好話我冇畀機會你——《霓虹夜影》有個位，我同你一齊爭，邊個攞到就邊個企正。星河電影組通告欄見。」");
+          }
+        }catch(_t){}
         try{ saveQ(); }catch(_s){}
       }
       return;
     }
     if(r.faceoffState==="open"){
+      const gid = r.gigId || RIVAL_CFG.gigId;
       let wrapped = false;
-      try{ wrapped = (S.wrapHistory||[]).some(w=>w && w.gigId===RIVAL_CFG.gigId); }catch(_w){}
-      if(!wrapped && S.flags && S.flags["done_"+RIVAL_CFG.gigId]) wrapped = true;
+      try{ wrapped = (S.wrapHistory||[]).some(w=>w && w.gigId===gid); }catch(_w){}
+      /* R6a：逾期掉單（failShootOverdue 同時寫 done_ 旗）唔當殺青，唔好誤結算。 */
+      if(!wrapped && S.flags && S.flags["done_"+gid] && !S.flags["fail_shoot_"+gid]) wrapped = true;
       if(!wrapped) return;
       const dual = (typeof readDualTracks==="function") ? readDualTracks(S) : { stageVolume:(Number(S.fame)||0), industryCredit:0 };
       const dualSum = (Number(dual.stageVolume)||0) + (Number(dual.industryCredit)||0);
       const stance = r.stance || rivalryStance();
       const win = dualSum >= rivalryWinThreshold(stance);
-      r.faceoffState = win ? "won" : "lost";
+      const round = (r.round|0)||1;
+      r.lastResult = win ? "won" : "lost";
+      if(win) r.wins = (r.wins|0)+1;
       r.settledDay = today;
       r.settledDual = dualSum;
+      if(round < RIVAL_CFG.maxRounds){
+        r.faceoffState = "none";
+        r.nextOpenDay = today + RIVAL_CFG.rematchCooldownDays;
+      }else{
+        r.faceoffState = win ? "won" : "lost";
+      }
       if(win){
         S.industryCreditDelta = (Number(S.industryCreditDelta)||0) + RIVAL_CFG.winCredit;
         try{ if(typeof syncDualTracks==="function") syncDualTracks(S); }catch(_dt){}
@@ -42447,37 +42601,75 @@ function rivalryTick(){
         try{ bumpNpc("rival", -1); }catch(_b){}
         try{ toast("試演結果出咗：高俊傑快半步攞咗個位。佢笑得好得意，臨走都補咗句：「你都唔差，下次再嚟。」——輸咗一場，人氣跌少少，唔傷元氣。"); }catch(_t){}
       }
-      try{ rivalryFaceoffPaper(win); }catch(_p){}
-      try{ rivalryResultRumor(win); }catch(_r){}
+      try{ rivalryFaceoffPaper(win, round); }catch(_p){}
+      try{ rivalryResultRumor(win, round); }catch(_r){}
       try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
       try{ saveQ(); }catch(_s){}
     }
   }catch(_e){}
 }
-/* 跟 mergeIntelGigs／mergeFavorGigs 同一注入模式：faceoffState==="open" 先將爭位試演注入 GIGS，
-   結算後（won／lost）移除，確保唔會重複觸發；試鏡落選唔會令通告消失（未殺青就唔算消費，可再報）。 */
+/* 對手線強化票 R2：高俊傑定期上報——6 則固定日槽快訊（約每半年一則），C3 完成先開始；
+   每則一生一次，每次 tick 最多發一則（遲做 C3 唔會一次過補發晒）。跟 NEWS82 固定日程先例，
+   但唔用世界事件通道：行 story 通道、eventKey 用 story:C3 前綴，自動接返 rival:gao 連載句；
+   fameDelta 0、唔傳 rumorEcho（G1-proof）。 */
+const RIVAL_NEWS_SLOTS = [
+  { day:150, work:"夜闌燈火", headline:"高俊傑新劇擔正男主角", dek:"星河電視台新劇《夜闌燈火》開鏡，高俊傑首次擔正男主角。台內有人話，佢係近年升得最快嘅新人。" },
+  { day:330, work:"", headline:"高俊傑登上雜誌封面", dek:"最新一期娛樂雜誌封面係高俊傑。訪問入面佢話，今年接咗三部戲，忙到連睡覺都要排期。" },
+  { day:510, work:"望海潮", headline:"高俊傑簽約演出新片", dek:"星河電影組公布，高俊傑簽約演出新片《望海潮》，同組監製話佢係肯捱、肯學嗰類新人。" },
+  { day:690, work:"風雨同路", headline:"高俊傑主演劇集收視報捷", dek:"高俊傑主演嘅《風雨同路》收視一路向上，報紙話佢已經係新一代小生，片約排到出年。" },
+  { day:870, work:"", headline:"高俊傑遠赴外地拍外景", dek:"高俊傑跟組遠赴外地拍外景，臨行前話，返嚟嗰陣會帶一套新戲返嚟。" },
+  { day:1020, work:"", headline:"賀歲片開鏡 高俊傑有份", dek:"來年賀歲片開鏡，卡士有高俊傑一份。監製話，佢係票房保證之一，今次個位，邊個都唔讓。" }
+];
+function rivalryNewsTick(){
+  try{
+    if(typeof S==="undefined" || !S) return;
+    const r = ensureRivalry();
+    if(!r) return;
+    if(!(typeof rivalryC3Done==="function" ? rivalryC3Done() : false)) return;
+    const idx = r.newsIdx|0;
+    if(idx >= RIVAL_NEWS_SLOTS.length) return;
+    const today = S.dayIndex|0;
+    const slot = RIVAL_NEWS_SLOTS[idx];
+    if(!slot || today < slot.day) return;
+    if(typeof enqueueNewspaperItem!=="function") return;
+    const key = "story:C3:rival_news_"+(idx+1);
+    const it = enqueueNewspaperItem({
+      eventKey:key, source:"story", fameDelta:0,
+      paperName:"娛樂版", headline:slot.headline, dek:slot.dek, clipLabel:"對手快訊", workTitle:slot.work||""
+    });
+    if(it || (typeof newspaperEventSeen==="function" && newspaperEventSeen(key))) r.newsIdx = idx+1;
+  }catch(_e){}
+}
+/* 跟 mergeIntelGigs／mergeFavorGigs 同一注入模式：faceoffState==="open" 先將當輪爭位試演注入 GIGS，
+   結算後（第 1／2 輪返 "none" 等冷卻、第 3 輪 won／lost 終態）移除，確保唔會重複觸發；試鏡落選唔會令通告消失（未殺青就唔算消費，可再報）。 */
 function mergeRivalGigs(){
   try{
     if(typeof GIGS==="undefined" || !Array.isArray(GIGS)) return 0;
     const ids = {};
     (RIVAL_FACEOFF_GIGS||[]).forEach(g=>{ if(g && g.id) ids[g.id] = 1; });
     let active = false;
-    try{ const r = ensureRivalry(); active = !!(r && r.faceoffState==="open"); }catch(_e){}
+    let curGig = null;
+    try{
+      const r = ensureRivalry();
+      active = !!(r && r.faceoffState==="open");
+      if(active) curGig = rivalryGigForRound(r.round|0) || null;
+    }catch(_e){}
     if(!active){
       const before = GIGS.length;
       GIGS = GIGS.filter(g=>!(g && ids[g.id]));
       if(GIGS.length!==before){ try{ window.GIGS = GIGS; }catch(_w){} }
       return 0;
     }
+    if(!curGig) return 0;
+    /* 開緊嗰陣都要清走上一輪殘留嘅舊通告（冷卻期內玩家可能一次都冇開過板，舊嗰張仲喺 GIGS 入面）。 */
+    const beforeFilter = GIGS.length;
+    GIGS = GIGS.filter(g=>!(g && ids[g.id] && g.id!==curGig.id));
+    const norm = normalizeGigRecord(Object.assign({}, curGig, { rivalFaceoffGig:true }));
+    const i = GIGS.findIndex(g=>g && g.id===curGig.id);
     let n = 0;
-    (RIVAL_FACEOFF_GIGS||[]).forEach(raw=>{
-      if(!raw || !raw.id) return;
-      const norm = normalizeGigRecord(Object.assign({}, raw, { rivalFaceoffGig:true }));
-      const i = GIGS.findIndex(g=>g && g.id===raw.id);
-      if(i<0){ GIGS.push(norm); n++; }
-      else GIGS[i] = norm;
-    });
-    try{ window.GIGS = GIGS; }catch(_w){}
+    if(i<0){ GIGS.push(norm); n++; }
+    else GIGS[i] = norm;
+    if(GIGS.length!==beforeFilter || n){ try{ window.GIGS = GIGS; }catch(_w){} }
     return n;
   }catch(_e){ return 0; }
 }
@@ -47446,6 +47638,20 @@ function renderAwardResultHtml(pack){
      喺卡列之後獨立一行；唔改數據／判定／得主標記。 */
   const felCat186 = cats.find(c=>c && Array.isArray(c.fellows63) && c.fellows63.length) || null;
   const felBit186 = felCat186 ? (()=>{ try{ return awards63FellowsHtml(felCat186); }catch(_e){ return ""; } })() : "";
+  /* 對手線強化票 R4：同屆提名有高俊傑嗰陣，結果卡加一句同場對照（只睇玩家有提名嘅類別；唔改數據／判定／得主標記）。 */
+  const rivalHeadBit = (()=>{
+    try{
+      const hc = (cats||[]).find(c=>c && (c.outcome==="won" || c.outcome==="nominated") && Array.isArray(c.fellows63) && c.fellows63.some(f=>f && f.star==="高俊傑"));
+      if(!hc) return "";
+      if(hc.outcome==="won") return '<p class="psr-fellows63">今屆同高俊傑同場提名，你贏咗呢一場。</p>';
+      let wStar = "";
+      try{
+        const w = hc.winner63;
+        wStar = (w && typeof w==="object" && w.star) ? w.star : ((typeof w==="string" && w) ? w : ((hc.fellows63[0] && hc.fellows63[0].star) || ""));
+      }catch(_w){}
+      return '<p class="psr-fellows63">今屆同高俊傑同場提名，獎落'+esc214(wStar||"對手")+'手，下年再鬥。</p>';
+    }catch(_e){ return ""; }
+  })();
   /* v20a214 NP214：結果卡改做一張報紙公佈（v11 樣本版式：報頭 A、兩欄、書面語、全名、
      遊戲日期、黑白半調相、★得主標記），唔再係票根式卡片。esc214 係本地轉義（渲染時先換
      全名：阿偉→陳偉翔；舊測試沙盒抽唔到 newspaperEsc／newspaperFullName214 嗰陣跌返
@@ -47526,7 +47732,7 @@ function renderAwardResultHtml(pack){
       ${photoFigure214(photo214)}
       ${factRows214 ? `<aside class="np214-factbox"><h4>${esc214((pack.displayName||"頒獎夜")+"小檔案")}</h4>${factRows214}</aside>` : ""}
       ${(photo214 || factRows214) ? `<p class="np214-filler np214-filler-left" aria-hidden="true">金碟夜 唱片銷量 樂壇頒獎 歌壇新人 專輯榜上 典禮掌聲 大禮堂 電台 唱片鋪 夏季 歌手 專輯 紅地毯 晚禮服 歌迷 歡呼 閃光燈</p>` : ""}
-      <div class="np214-body2">${catsHtml}${felBit186}</div>
+      <div class="np214-body2">${catsHtml}${felBit186}${rivalHeadBit}</div>
     </div>${sidebar214}</div>
     ${pagefoot214("第一版 · 頒獎結果")}
     ${hasMetric214 ? `<div class="np214-switchrow"><button type="button" class="np214-switch" onclick="np214ShowPage(this,2)">第二版 →</button></div>` : ""}
@@ -48297,6 +48503,11 @@ function awards62CeremonyBeats(pack){
             slotIdx: awards208NomineeSlotIdx(ni, nc.fellows.length, nc.isFocus, best),
             caption: nm.star + "：《" + (nm.title || "") + "》" });
         });
+      }
+      /* 對手線強化票 R4：玩家提名格又有高俊傑同場嗰陣，揭曉前加一格對決 beat（通用 caption 顯示，唔改卡片／時序）。 */
+      if(nc.isFocus && best !== "gallery"){
+        const koF208 = (nc.fellows||[]).find(f=>f && f.star==="高俊傑");
+        if(koF208) beats.push({ id:"rival", ms:2000, catIdx:ci, catId:nc.id, catLabel:nc.label, caption:"同場有高俊傑《"+(koF208.title||"")+"》——今晚呢個獎，係你哋兩個嘅對決。" });
       }
       beats.push({ id: "suspense", ms: 1400, catIdx: ci, catId: nc.id, catLabel: nc.label, caption: SUSPENSE212[ci % SUSPENSE212.length] });
       let revealCap;
@@ -61089,6 +61300,31 @@ function chk101Html(opts){
   </figure>`;
 }
 
+/* 對手線強化票 R3：試鏡落選後續——C3 之後，電視劇／電影落選約三分之一機會嗰個位畀咗高俊傑；
+   手帳閒話留一則（每通告一次），落選文案加一句。純 flavor，唔改分數／計分／落選懲罰。
+   決戰通告本身唔計（落選仲可以再報，唔可以話個位已經畀咗佢）。 */
+function rivalTookRoleLine(gig, rec){
+  try{
+    if(!gig || !rec) return "";
+    if(gig.rivalFaceoffGig || (gig.id||"").indexOf("gig_rival_gao_faceoff")===0) return "";
+    if(gig.type!=="電視劇" && gig.type!=="電影") return "";
+    if(!(typeof rivalryC3Done==="function" ? rivalryC3Done() : false)) return "";
+    if(typeof ensureMockJournal==="function") ensureMockJournal();
+    if(!Array.isArray(S.mockRumors)) S.mockRumors = [];
+    const id = "rival_took_"+(gig.id||rec.gigId||"");
+    if(S.mockRumors.some(x=>x && x.id===id)) return "";
+    if(Math.random() >= 0.35) return "";
+    const title = rec.title || gig.title || "";
+    S.mockRumors.unshift({
+      id:id, source:"片場休息區",
+      title:"嗰個位畀咗高俊傑",
+      text:title+"嗰個位，你落選之後，監製最後用咗高俊傑。佢收工嗰陣仲同人講，呢個位邊個企得穩就邊個嘅。",
+      state:"normal", season:""
+    });
+    try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
+    return "<p>嗰個位最後畀咗高俊傑。監製收工嗰陣講，佢企位企得穩。</p>";
+  }catch(_e){ return ""; }
+}
 function aud91PresentOne(rec, next){
   /* 先喺清單剔除：結果已定死，呈現只係揭曉，唔受 modal 點閂影響 */
   S.pendingAud = aud91Ensure().filter(p=>p!==rec);
@@ -61151,17 +61387,19 @@ function aud91PresentOne(rec, next){
   const failLine = eventLine("AUD_FAIL",{title:rec.title})||"未獲錄用——不會開工。";
   notes.push(`<span class="bad">${failLine}</span>`);
   aud91LogPush({ day:S.dayIndex|0, title:rec.title, ok:false, signPay:0, balance:0 });
+  let rivalTookHtml = "";
+  try{ rivalTookHtml = rivalTookRoleLine(gig, rec); }catch(_e){}
   paintBar(); drawMap();
   if(presentAudFailSettlement({
     gigTitle: rec.title,
     chancePct: rec.chancePct,
-    notesHtml: "",
+    notesHtml: rivalTookHtml,
     thenFn: cont
   })){
     saveQ();
     return;
   }
-  modal(`<h3>何生來電</h3><p><b>${rec.title}</b></p><p>何生打嚟：「嗰邊有回音喇——今次冇你份，唔使等喇。」</p>${formatResultNotes(notes)}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
+  modal(`<h3>何生來電</h3><p><b>${rec.title}</b></p><p>何生打嚟：「嗰邊有回音喇——今次冇你份，唔使等喇。」</p>${formatResultNotes(notes)}${rivalTookHtml}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
     {label:"繼續", role:"p", on:cont}
   ], {onDismiss: cont});
   saveQ();
@@ -61500,6 +61738,39 @@ function showStats(){
       <p style="font-size:.78rem;color:var(--muted)">已報名訓練：${p.enrollLine}</p>`,[{label:"關閉",role:"g"}]);
   }catch(_e2){}
 }
+/* 對手線強化票 R1：手帳人脈頁高俊傑行嘅對抗狀態——讀 S.rivalry＋開閘進度＋當輪門檻＋雙軌即時值，
+   唔顯示原始分數（rivalryScore 係開閘進度 0–3，唔係實力分）。舊檔由 ensureRivalry 補預設值。 */
+function rivalryStatusLine(){
+  try{
+    if(typeof S==="undefined" || !S) return "";
+    const r = (typeof ensureRivalry==="function") ? ensureRivalry() : null;
+    if(!r) return "";
+    const st = r.faceoffState || "none";
+    const round = (r.round|0)||1;
+    if(st==="open"){
+      const stance = r.stance || ((typeof rivalryStance==="function") ? rivalryStance() : "");
+      const th = (typeof rivalryWinThreshold==="function") ? rivalryWinThreshold(stance) : RIVAL_CFG.winDualBase;
+      let dual = 0;
+      try{
+        const d = (typeof readDualTracks==="function") ? readDualTracks(S) : null;
+        dual = d ? ((Number(d.stageVolume)||0) + (Number(d.industryCredit)||0)) : ((Number(S.fame)||0) + (Number(S.industryCredit)||0));
+      }catch(_d){}
+      const work = r.workTitle || "霓虹夜影";
+      return `<div class="people-next">對抗：《${work}》爭位試演進行中——雙軌合共 ${th} 先贏到佢，而家你係 ${dual}。</div>`;
+    }
+    if(st==="won" || st==="lost"){
+      return `<div class="people-next">對抗：三場爭位鬥完，你贏咗 ${r.wins|0} 場。</div>`;
+    }
+    if(r.nextOpenDay!=null && r.lastResult){
+      const when = (typeof fmtNewspaperDate==="function") ? fmtNewspaperDate(r.nextOpenDay|0) : "";
+      const last = r.lastResult==="won" ? "上次爭位你贏咗" : "上次爭位佢快半步";
+      return `<div class="people-next">對抗：${last}——下一場約咗 ${when} 之後。</div>`;
+    }
+    const sc = (typeof rivalryScore==="function") ? rivalryScore() : 0;
+    if(sc>0) return `<div class="people-next">對抗：未分勝負——風聲同報紙愈嚟愈多，決戰就快開。</div>`;
+    return `<div class="people-next">對抗：未分勝負——你哋仲未正面交過手。</div>`;
+  }catch(_e){ return ""; }
+}
 /* v20a72 MENU72：人脈內容產生器（原選單 modal 內容原封搬入手帳人情組「人脈」
    子頁；NPC 列／好感心／解鎖提示／「去找」掣全部保留）。 */
 function people72Html(){
@@ -61535,7 +61806,8 @@ function people72Html(){
         haunt176 = `<div class="people-next">${met176 ? "常喺" : "多數喺"}${homeName||"佢常去嘅地方"}出沒</div>`;
       }
     }
-    return `<div class="people-row" style="margin:8px 0;display:flex;gap:8px;align-items:flex-start"><img src="${PORTRAITS[n.face]}" alt="" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/><span style="flex:1"><b>${n.name}</b> · ${n.role}<br><span class="gold">${h} ${v}／100</span>${nextLine}${haunt176}${rel183}${goBit}</span></div>`;
+    const rivalryLine = (n.id==="rival" && typeof rivalryStatusLine==="function") ? rivalryStatusLine() : "";
+    return `<div class="people-row" style="margin:8px 0;display:flex;gap:8px;align-items:flex-start"><img src="${PORTRAITS[n.face]}" alt="" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/><span style="flex:1"><b>${n.name}</b> · ${n.role}<br><span class="gold">${h} ${v}／100</span>${nextLine}${rivalryLine}${haunt176}${rel183}${goBit}</span></div>`;
   }).join("");
   return `<h3 class="jobs72-h">人脈</h3><p class="people-next">好感夠就傾多啲：閒談 10 · 忠告 25 · 情報 40</p><p class="sub" style="font-size:.75rem">去佢常出沒嘅地方撞佢；撞到先可以傾談／送禮。</p>${html}` + ((typeof br89ArcStatusHtml==="function") ? br89ArcStatusHtml() : "") + ((typeof enc79PeopleHtml==="function") ? enc79PeopleHtml() : "");
 }

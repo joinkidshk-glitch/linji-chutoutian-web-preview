@@ -2,9 +2,9 @@
 // 合約（audit110.md；內容優先定級）：
 //   A OVR110 對照表在位：TIER110 96 個 id、REQ110 246 個 id、ovr110Apply 函數；
 //     normalizeGigRecord 喺 NAME93 呼叫之後呼叫 ovr110Apply（唔係池後加工）
-//   B 覆蓋：改動表全部 id 都喺全池（去重 469 張）存在；觸及去重 273 張
+//   B 覆蓋：改動表全部 id 都喺全池（去重 471 張）存在；觸及去重 273 張
 //     （審計 §1 寫 281 係筆誤：96+246−重疊 69＝273，見 NOTES 殘留）
-//   C 一致性（審計覆核標準，classify 移植自 audit110.py）：全池 469 張 A／B／C 全清零；
+//   C 一致性（審計覆核標準，classify 移植自 audit110.py）：全池 471 張 A／B／C 全清零；
 //     每級中位最高要求落帶（1990 初 20／中 70／高 130；1991 18／65／147.5；1992 18／66.5／172.5）
 //   D 開局 day-0 全板可接 20（底線 ≥12；唔寫死上限——+6 全部係入門初工，見 audit §8.1）
 //   E 第 2 週 rec_hk 板：零訓練 2／8、歌藝 1 堂後 3／8、再加台風 1 堂後 4／8
@@ -135,7 +135,7 @@ for(const g of inj){ if(g && g.id) addPool(W.normalizeGigRecord(deepClone(g))); 
 for(const y of Object.keys(W.GIGS36_BY_YEAR || {})){
   for(const g of (W.GIGS36_BY_YEAR[y] || [])){ if(g && g.id) addPool(W.normalizeGigRecord(deepClone(g))); }
 }
-ok('B0 全池去重 469 張', pool.size === 469, 'n=' + pool.size);
+ok('B0 全池去重 471 張', pool.size === 471, 'n=' + pool.size);
 const TIER_IDS = Object.keys(W.TIER110 || {});
 const REQ_IDS = Object.keys(W.REQ110 || {});
 const touched = new Set([...TIER_IDS, ...REQ_IDS]);
@@ -211,7 +211,7 @@ for(const g of pool.values()){
   const [cls, mr, b, why] = classify(g);
   if(cls) bad.push(g.id + ':' + cls + ':' + why.join(';'));
 }
-ok('C1 全池 469 張 A／B／C 全清零', bad.length === 0, bad.slice(0, 10).join(' | '));
+ok('C1 全池 471 張 A／B／C 全清零', bad.length === 0, bad.slice(0, 10).join(' | '));
 /* 每級中位最高要求（live 年池，sim110 setupYearPool 口徑） */
 function med(a){
   a = [...a].sort((x,y)=>x-y); const n = a.length;
