@@ -37,8 +37,8 @@ ok('gift_react_copy.json 唔郁（55 條原封不動，仲有「是不是」—�
    len(react.get('entries', [])) == 55
    and sum(1 for e in react['entries'] for ln in e.get('lines', []) if '是不是' in ln or '什麼' in ln) == 10)
 npc_lines = json.loads(io.open(os.path.join(root, 'content/npc_lines_core.json'), encoding='utf-8').read())
-ok('npc_lines_core.json 唔郁（colleague greet[0] 仲係書面語原文——粵語化行 runtime）',
-   npc_lines['colleague']['greet'][0] == '阿偉，今天在星河電視台廠房碰到你，真巧')
+ok('npc_lines_core.json 已粵語化（v217：colleague greet[0] 係廣東話原文）',
+   npc_lines['colleague']['greet'][0] == '阿偉，今日喺星河電視台廠房撞到你，真係巧')
 tut = json.loads(io.open(os.path.join(root, 'content/tutorial_zh_HK.json'), encoding='utf-8').read())
 tut_npc = [s for s in tut['steps'] if s['id'] == 'TUT_NPC'][0]
 ok('tutorial_zh_HK.json 唔郁（TUT_MAP body 冇巧遇句——行 runtime 注入）',

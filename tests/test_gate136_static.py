@@ -81,7 +81,7 @@ ok("提示表 C17 行係台慶之後＋1990 年冬（源頭）",
    bool(m17) and "台慶之後" in m17.group(0) and "1990 年冬" in m17.group(0) and "1992" not in m17.group(0))
 f4 = block('F4_stay_mind: {', 'G4_family_job: {')
 g4 = block('G4_family_job: {', '};\nconst CHOICE47_DEFS')
-ok("CHOICE47 F4 玩家面年份係舊曆 1990（1990 夏）", "1992" not in f4 and "1990夏起" in f4 and "1990 年夏天" in f4)
+ok("CHOICE47 F4 玩家面年份係舊曆 1990（1990 秋）", "1992" not in f4 and "1990秋起" in f4 and "1990 年秋" in f4)
 ok("CHOICE47 G4 玩家面年份係舊曆 1990（1990 冬）", "1992" not in g4 and "1990冬起" in g4 and "1990 年年尾" in g4)
 
 # ---- D. 邀請流程 ----

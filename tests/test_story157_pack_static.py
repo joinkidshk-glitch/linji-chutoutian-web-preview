@@ -25,16 +25,16 @@ ok('pack 有 17 個 nodes', len(nodes) == 17)
 ok('pack version 不變', pack.get('version') == '1.2.8')
 ok('nodes[0-4] 係 C1-C5', [n.get('id') for n in nodes[:5]] == ['C1', 'C2', 'C3', 'C4', 'C5'])
 
-# --- nodes[5-16] 死版一字唔郁（pristine main e08a070 嘅 sha） ---
+# --- nodes[5-16] 死版一字唔郁（pristine main e08a070 嘅 sha；v217 語言審核改咗 C6+ 節點文字，sha 重算） ---
 tail = json.dumps(nodes[5:], sort_keys=True, ensure_ascii=False)
 ok('nodes[5-16] 同 pristine 一致',
    hashlib.sha256(tail.encode('utf-8')).hexdigest()
-   == '5b464d608f7cd5da1039a23bdeea65f966a21cbf380bb5580358a6b65947b912')
+   == 'fa95df5f95980ee4b717fada623962523de07c98d6d96e53eaed1df063c8bf7c')
 
 # --- 標題／setting／synopsis 按設計 ---
 ok('標題 C1-C5 按設計（C5 用 TEXTFIX55 淨化形「辣手問題」）',
    [n.get('title') for n in nodes[:5]]
-   == ['第一日：冇價', '後巷聽古', '高仔搶鏡', '何生攤記數簿', '采兒嘅辣手問題'])
+   == ['第一日：冇價', '後巷聽古', '高俊傑搶鏡', '何生攤記數簿', '采兒嘅辣手問題'])
 ok('setting 按設計',
    [n.get('setting') for n in nodes[:5]]
    == ['何生事務所', '片場後巷／附近茶餐廳', '星河片場廠景／休息角／茶水間',
@@ -48,7 +48,7 @@ ok('synopsis 係設計首段（唔含「現行…」DEV 段落／N-code）',
 ok('beats 數 C1-C5', [len(n['beats']) for n in nodes[:5]] == [16, 9, 10, 11, 9])
 ok('beat 行數 C1-C5', [sum(len(b['lines']) for b in n['beats']) for n in nodes[:5]]
    == [19, 12, 12, 12, 11])
-ALLOWED_SPEAKERS = {'系統', '何生', '阿偉', '張子駿', '老臨記', '副導', '高仔', '周采兒'}
+ALLOWED_SPEAKERS = {'系統', '何生', '阿偉', '張子駿', '老臨記', '副導', '高俊傑', '周采兒'}
 ALLOWED_EMOTIONS = {'neutral', 'calm', 'tense', 'angry', 'warm', 'tired',
                     'smirk', 'worried', 'soft', 'firm'}
 for n in nodes[:5]:
@@ -104,8 +104,8 @@ EXPECTED = {
     'C1_b': (['route_film'], {}, [], {'tag': '片場散工起步', 'creditDelta': 0, 'rivalAttitude': 'neutral', 'debtDelta': 0, 'stressDelta': 0, 'healthDelta': 0, 'bondDepth': 'initial', 'intelShare': 'low', 'mapTilt': '電影片場散工', 'statTilt': '現金快、人脈易散'}),
     'C2_a': (['flag_network_stay'], {}, ['片場老油條'], {'tag': '片場老油條', 'stressDelta': 1}),
     'C2_b': (['flag_hustle_board'], {}, ['電視城乖仔'], {'tag': '電視城乖仔', 'stressDelta': -1}),
-    'C3_a': (['rival_gao_hard'], {}, [], {'creditDelta': -1, 'rivalAttitude': '高仔記仇，往後處處針對', 'stressDelta': 2}),
-    'C3_b': (['rival_gao_endure'], {}, [], {'creditDelta': 1, 'rivalAttitude': '高仔覺得你好蝦，變本加厲', 'stressDelta': 3}),
+    'C3_a': (['rival_gao_hard'], {}, [], {'creditDelta': -1, 'rivalAttitude': '高俊傑記仇，往後處處針對', 'stressDelta': 2}),
+    'C3_b': (['rival_gao_endure'], {}, [], {'creditDelta': 1, 'rivalAttitude': '高俊傑覺得你好蝦，變本加厲', 'stressDelta': 3}),
     'C4_a': (['flag_refuse_gig_with_ho'], {}, [], {'debtDelta': 1, 'creditDelta': -1}),
     'C4_b': (['flag_take_harsh_gig'], {}, ['捱得'], {'tag': '捱得', 'stressDelta': 8, 'healthDelta': -5}),
     'C5_a': (['choi_honest'], {}, [], {'bondDepth': '坦誠加深', 'intelShare': '互相分享近況級', 'stressDelta': 1}),

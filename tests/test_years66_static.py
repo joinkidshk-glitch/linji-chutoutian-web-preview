@@ -31,9 +31,10 @@ ok('gigsByYear 五包 remap 齊', all(s in src for s in [
 ok('gigsByYear 初值鍵 1990–1994', 'gigsByYear: { 1990: null, 1991: null, 1992: null, 1993: null, 1994: null }' in src)
 ok('移民潮芬姐閘 1991', 'yearSeasonNow().year < 1991) return false' in src)
 ok('移民潮到期式 1991夏/1992', 'const due = (ys.year===1991 && ys.season==="夏") || ys.year>=1992;' in src)
-ok('choice47 窗口 1992 秋', src.count('choice47SeasonReached(1992, "秋")') >= 3)
+ok('choice47 commit 窗口仲係 1992 秋', src.count('choice47SeasonReached(1992, "秋")') == 1)
+ok('choice47 移民空位閘改 1990 秋（v217 D7）', src.count('choice47SeasonReached(1990, "秋")') == 2)
 ok('程天諾預熱 fromYear 1992 齊', 'fromYear:1992' in src)
-ok('結局閘文字 1992 年冬', '去到 1992 年冬、台慶之後嗰晚' in src and '"1992 年冬 · 三年收科"' in src)  # v20a136：fallback 由「頒獎禮前夕」改做「台慶之後」
+ok('結局閘文字 1992 年冬', '去到 1992 年冬、台慶之後嗰晚' in src and '"1992 年冬 · 三年埋單"' in src)  # v20a136：fallback 由「頒獎禮前夕」改做「台慶之後」
 ok('STORY_GATE_3Y C17 yearEq 1992', 'C17: { needDone: ["C13"], weekMin: 153, yearEq: 1992' in src)  # v20a136：閘加 weekMin 153
 ok('id 內嵌年份解析 +2 守衛齊', src.count('(y66>=1988 && y66<=1992) ? y66+2 : y66') >= 3)
 ok('SAVE key 不變', 'starVolunteer_map_v19w' in src)

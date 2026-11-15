@@ -152,7 +152,19 @@ ok('X04_wrap_untouched_fn', 'function enqueueNewspaperFromWrap(' in html and 'fu
 try:
     st = subprocess.run(['git', '-C', ROOT, 'status', '--porcelain'], capture_output=True, text=True, timeout=30).stdout
     touched = [l for l in st.splitlines() if l[3:].startswith('content/')]
-    ok('X05_content_json_untouched', touched == [])
+    # v217 豁免（語言審核，已拍板）：以下 15 個 content JSON 係 v217 語言審核改動；其餘一律唔准郁。
+    _v217_allowed = {'content/SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json',
+        'content/SOFT_RUMOR_BEHAVIOR_GATE_PLAYTEST_FIX_v1.json',
+        'content/STUB_RUMOR_FRAGMENTS_v1.json',
+        'content/STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json',
+        'content/events_zh_HK.json', 'content/gift_react_copy.json',
+        'content/gigs_1988.json', 'content/gigs_1989.json',
+        'content/gigs_1990.json', 'content/gigs_1991.json',
+        'content/npc_lines_core.json', 'content/story_beats_phase1.json',
+        'content/story_detail_c1_to_c17.json',
+        'content/story_detail_rival_mentor.json',
+        'content/story_detail_romance_vera_hiu_choi.json'}
+    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed for l in touched))
 except Exception as e:
     ok('X05_content_json_untouched (git unavailable: %s)' % e, False)
 

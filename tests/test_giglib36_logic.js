@@ -198,7 +198,11 @@ function seasonBoardCount(year, season, month, stats){
   S = baseState(dayIndexOf(1991,10,15), { acting:50, fame:25 });
   GIGS = loadPack(1989).gigs.map(normalizeGigRecord);
   gigsForLocSeasonBoard('rec_hk', '秋');
-  ok('e-no exodus gigs in 1991', !exoIds.some(id=>GIGS.some(g=>g.id===id)));
+  ok('e-exodus gigs injected in 1991 too (v217 D7: gate moved to 1990 autumn)', exoIds.every(id=>GIGS.some(g=>g.id===id)));
+  S = baseState(dayIndexOf(1990,7,15), { acting:50, fame:25 });
+  GIGS = loadPack(1989).gigs.map(normalizeGigRecord);
+  gigsForLocSeasonBoard('rec_hk', '夏');
+  ok('e-no exodus gigs before 1990 autumn', !exoIds.some(id=>GIGS.some(g=>g.id===id)));
   S = baseState(dayIndexOf(1992,12,15), { acting:90, stage:40, fame:55, iq:32 });
   GIGS = loadPack(1990).gigs.map(normalizeGigRecord);
   const lionWinter = gigsForLocSeasonBoard('film_lion', '冬');

@@ -43,7 +43,7 @@ m = re.search(r'apply\(\{([^}]*)\}\)', eb)
 chk('提早休息 apply 冇 stamina（只減壓）', bool(m) and 'stamina' not in m.group(1) and 'stress:-' in m.group(1))
 
 # --- 文案：減壓向 ---
-chk('休息睡覺 hint 改減壓向', 'name:"休息睡覺", hint:"瞓足一日 · 大減壓"' in src)
+chk('休息瞓覺 hint 改減壓向', 'name:"休息瞓覺", hint:"瞓足一日 · 大減壓"' in src)
 chk('收拾房間 hint 改減壓向', 'name:"收拾房間", hint:"執屋 · 小減壓"' in src)
 chk('舊 hint「大回復體能」已清', '大回復體能' not in src)
 chk('doRest 掣標籤改「減壓」', 'add("休息室歇陣","減壓","+1日"' in src)

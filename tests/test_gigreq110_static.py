@@ -42,12 +42,24 @@ ok('OVR110 段冇真藝人名', not any(n in seg for n in ['周星馳','劉德�
 # content pack JSON 唔准俾本包改動（OVR110 一律行 normalize 層）
 # v157 豁免（已拍板，窄化）：只准 content/story_detail_c1_to_c17.json 呢一次改動
 # （C1–C5 pack nodes[0–4] 重寫，v157 brief＋SCOUT §3.1；其餘 content JSON 一律唔准郁）。
+# v217 豁免（語言審核，已拍板）：以下 15 個 content JSON 係 v217 語言審核改動；其餘一律唔准郁。
+_v217_allowed = {'content/SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json',
+    'content/SOFT_RUMOR_BEHAVIOR_GATE_PLAYTEST_FIX_v1.json',
+    'content/STUB_RUMOR_FRAGMENTS_v1.json',
+    'content/STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json',
+    'content/events_zh_HK.json', 'content/gift_react_copy.json',
+    'content/gigs_1988.json', 'content/gigs_1989.json',
+    'content/gigs_1990.json', 'content/gigs_1991.json',
+    'content/npc_lines_core.json', 'content/story_beats_phase1.json',
+    'content/story_detail_c1_to_c17.json',
+    'content/story_detail_rival_mentor.json',
+    'content/story_detail_romance_vera_hiu_choi.json'}
 try:
     out = subprocess.run(['git', '-C', ROOT, 'diff', '--name-only', 'HEAD', '--', 'content/'],
                          capture_output=True, text=True, timeout=60)
     changed = [l for l in out.stdout.splitlines() if l.strip()]
-    ok('content/*.json 零改動（v157 只豁免 story_detail_c1_to_c17.json）',
-       all(c == 'content/story_detail_c1_to_c17.json' for c in changed))
+    ok('content/*.json 零改動（v157＋v217 豁免以外一律唔准郁）',
+       all(c in _v217_allowed for c in changed))
 except Exception as e:
     ok('content/*.json 零改動（git 檢查失敗：%s）' % e, False)
 

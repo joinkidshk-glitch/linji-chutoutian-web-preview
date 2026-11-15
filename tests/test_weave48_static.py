@@ -21,7 +21,7 @@ def block(decl, endmark):
 ok('STORY_SPINE_NODES_1990 defined', 'const STORY_SPINE_NODES_1990 = {' in html)
 spine = block('const STORY_SPINE_NODES_1990 = {', '/* C6 覆寫（Qwen 原案')
 ok('spine1990 block extractable', bool(spine))
-for cid, title, loc in [('C15','高危替身','film_harbour'), ('C14','站隊','tvb_longmen'),
+for cid, title, loc in [('C15','高危替身','film_harbour'), ('C14','企邊','tvb_longmen'),
                         ('C12','樂壇前哨','rec_star'), ('C16','偶像實力之爭','rec_star'),
                         ('C13','賀歲片','film_cotton')]:
     ok('spine node present: '+cid, re.search(r'^\s*'+cid+r': \{', spine, re.M) is not None)
@@ -110,7 +110,7 @@ for cid, loc in [('C12','rec_star'), ('C13','film_cotton'), ('C14','tvb_longmen'
     ok('STORY_LOC_SOFT '+cid+' -> '+loc, re.search(cid+r': "'+loc+r'"', locs) is not None)
 tm = re.search(r'const STORY_TITLE_SOFT = \{(.*?)\n\};', html, re.S)
 titles = tm.group(1) if tm else ''
-for cid, t in [('C6','飯堂閒角'), ('C12','樂壇前哨'), ('C13','賀歲片'), ('C14','站隊'), ('C15','高危替身'), ('C16','偶像實力之爭')]:
+for cid, t in [('C6','飯堂閒角'), ('C12','樂壇前哨'), ('C13','賀歲片'), ('C14','企邊'), ('C15','高危替身'), ('C16','偶像實力之爭')]:
     ok('STORY_TITLE_SOFT '+cid+' = '+t, (cid+': "'+t+'"') in titles)
 hm = re.search(r'const STORY_HINT_SOFT = \{(.*?)\n\};', nocomment, re.S)
 hints = hm.group(1) if hm else ''

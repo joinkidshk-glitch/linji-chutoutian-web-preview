@@ -145,8 +145,8 @@ function approx(a, b){ return Math.abs(a - b) < 1e-3; } // 曲線值 0.033／0.0
   const txt17 = JSON.stringify(byId('wf4_ev_set17'));
   ok('B3 set17 唔再有「我喊埋一份」', !txt17.includes('我喊埋一份'));
   ok('B3 set17 唔再有「喊戲」', !txt17.includes('喊戲'));
-  ok('B3 set17 仲係錄影廠門口粉絲認人（標題／地點唔變）',
-    byId('wf4_ev_set17').title === '錄影廠門口嗰班粉絲' && byId('wf4_ev_set17').loc === 'tvb_longmen');
+  ok('B3 set17 仲係錄影廠門口歌迷認人（標題／地點唔變）',
+    byId('wf4_ev_set17').title === '錄影廠門口嗰班歌迷' && byId('wf4_ev_set17').loc === 'tvb_longmen');
   const st17 = byId('wf4_ev_st17');
   const txtSt17 = JSON.stringify(st17);
   ok('B3 st17 改做樓下士多豆漿（標題／場景換晒）',

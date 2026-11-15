@@ -336,11 +336,11 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
   loadGame(baseSave({ story: { flags: {}, rel: {}, done: { C13: true }, choices: {} } }));
   ok('閘：1992 冬＋C13 done 但台慶未有結果 → C17 唔開（v20a136 awardResolved）', !openIds().includes('C17'));
   const n = node('C17');
-  ok('覆寫：C17 係「三年收科」＋locId tvb_longmen＋有 playerOffer', n.title === '三年收科' && n.locId === 'tvb_longmen' && !!n.playerOffer);
+  ok('覆寫：C17 係「三年收科」＋locId tvb_longmen＋有 playerOffer', n.title === '三年埋單' && n.locId === 'tvb_longmen' && !!n.playerOffer);
   ok('覆寫：舊十檔清零（冇 endingId choices／冇 E01 字串／冇 ending_e 旗）',
      (n.choices || []).every(c => !c.endingId) && !JSON.stringify(n).includes('E01') && !JSON.stringify(n).includes('ending_e'));
   const r2 = applyStorySpineOverrides410();
-  ok('覆寫冪等：再套一次 main=1、標題不變', r2.main === 1 && node('C17').title === '三年收科');
+  ok('覆寫冪等：再套一次 main=1、標題不變', r2.main === 1 && node('C17').title === '三年埋單');
 }
 
 /* ================= (c) 相鄰規則 ================= */
@@ -453,7 +453,7 @@ function eveKeys(over){
     awardsFlags: { "1992/award_singho_tv": "done" },
     story: { flags: { gossip_vague: true }, rel: { rel_choi: 2 }, done: { C13: true }, choices: { C13: 'C13_c' } }
   }));
-  ok('舊檔 A：C17 以新節點開到、唔 crash', openIds().includes('C17') && node('C17').title === '三年收科');
+  ok('舊檔 A：C17 以新節點開到、唔 crash', openIds().includes('C17') && node('C17').title === '三年埋單');
   /* 舊檔 B：舊十檔已揀（C17 done＋ending_e01＋career_lock）→ 唔重播、判定／總結唔 crash */
   loadGame(baseSave({
     story: { flags: { ending_e01: true, career_lock: true }, rel: {}, done: { C13: true, C17: true }, choices: { C17: 'C17_e01' } }
@@ -461,7 +461,7 @@ function eveKeys(over){
   ok('舊檔 B：C17 已 done 唔再開', !openIds().includes('C17'));
   let noCrash = true;
   try{ resolveEnding410(S); endingSummaryHtml410(); }catch(_e){ noCrash = false; }
-  ok('舊檔 B：resolve／總結頁唔 crash（未有 S.ending410 照出未收科版）', noCrash && endingSummaryHtml410().includes('未收科'));
+  ok('舊檔 B：resolve／總結頁唔 crash（未有 S.ending410 照出未埋單版）', noCrash && endingSummaryHtml410().includes('未埋單'));
 }
 
 console.log('\nweave410 logic: ' + pass + ' passed, ' + fail + ' failed');

@@ -8,6 +8,7 @@
 # v20a212 resync：index.html 淨 +39 行（見 qa212/resync212.py difflib 對位核實純漂移），總行數 61714→61753、DEF 56186→56225。
 # v20a215 resync：index.html 淨 +140 行（見 qa215/resync215.py difflib 對位核實純漂移），總行數 61795→61935、DEF 56267→56407（名公式補返漏咗嘅 v211 +42；真 DEF 喺 56267 唔係 56225）。
 # v20a216 resync：index.html 淨 +263 行（見 qa216/resync216.py difflib 對位核實純漂移），總行數 62492→62755、DEF 56964→57227、L4862 5125→5163。
+# v20a217 resync：標籤遷移 ＋3 行，總行數 62755→62758、DEF 57227→57230。
 # -*- coding: utf-8 -*-
 # v20a197 resync：index.html 淨 +94 行，總行數 60490→60584、DEF 54986→55080、L4862 行 4889→4935（difflib 對位核實純漂移，見 qa197/resync197.py；B4 補丁再 +9 行）。
 # v20a191 resync：index.html 淨 +47 行，總行數 60155→60202、DEF 54651→54698、L4862→L4864。
@@ -88,9 +89,9 @@ def blend(fg, bg, a):
 
 # --- 紀律：SAVE key／softRev／?v= 不變；零行數漂移 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('零行數漂移：總行數 62755（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263）', src.count('\n') == 62755)
-ok('零行數漂移：openLoc DEF 行 57227（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263，travel114 釘行）',
-   len(lines) >= 57227 and 'function openLoc(id, opts){' in lines[57226])
+ok('零行數漂移：總行數 62758（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3）', src.count('\n') == 62758)
+ok('零行數漂移：openLoc DEF 行 57230（v193 55639＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3，travel114 釘行）',
+   len(lines) >= 57230 and 'function openLoc(id, opts){' in lines[57229])
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫，qa215 resync 核實純漂移（總行數 62352→62492；DEF 56824→56964）。
 ok('零行數漂移：L4862 仲係 v169／v171／v173 同行（v181 CSS ＋13，kwan151／tang152 釘行已一併 resync）',
    len(lines) >= 5163 and 'loc-acts-more171::after' in lines[5162] and 'act-locked171' in lines[5162])

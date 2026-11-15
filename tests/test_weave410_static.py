@@ -35,12 +35,12 @@ ok('半線 commit 定性處理（romance 只認 hiu/choi committed）',
 # ---- C17 覆寫 ----
 node = block('const STORY_SPINE_NODE_C17_410 = {', 'function applyStorySpineOverrides410')
 ok('C17 override node defined', bool(node))
-for frag in ['title: "三年收科"', 'locId: "tvb_longmen"', 'playerOffer:', 'flag_ending410_natural', 'flag_ending410_quit_job']:
+for frag in ['title: "三年埋單"', 'locId: "tvb_longmen"', 'playerOffer:', 'flag_ending410_natural', 'flag_ending410_quit_job']:
     ok('C17 override fragment: '+frag, frag in node)
 ok('C17 override free of old ten-ending ids', all(x not in node for x in ['C17_e01', 'ending_e01', 'endings_catalog', 'E01']))
 ok('applyStorySpineOverrides410 defined + wired in refreshCopyPacksFromDisk',
    'function applyStorySpineOverrides410()' in blk and 'applyStorySpineOverrides410();' in html)
-ok('C17 SOFT tables aligned', 'C17: "tvb_longmen",' in html and 'C17: "三年收科",' in html and 'C17: { playerHint: "台慶之後' in html)
+ok('C17 SOFT tables aligned', 'C17: "tvb_longmen",' in html and 'C17: "三年埋單",' in html and 'C17: { playerHint: "台慶之後' in html)
 gm = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)
 gate = gm.group(1) if gm else ''
 # v20a136：C17 閘搬去 1992 年 12 月——weekMin 153＋等冬台慶有結果＋1993-01-01 backstop。

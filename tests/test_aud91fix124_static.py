@@ -35,9 +35,21 @@ try:
     # v157 豁免（已拍板，窄化）：只准 content/story_detail_c1_to_c17.json 呢一次改動
     # （C1–C5 pack nodes[0–4] 重寫，v157 brief＋SCOUT §3.1：C1–C5 無覆寫，loader 成個
     # pack fetch；其餘 content JSON 一律唔准郁）。
+    # v217 豁免（語言審核，已拍板）：以下 15 個 content JSON 係 v217 語言審核改動
+    # （收科→埋單／高仔→高俊傑／站隊→企邊／NPC＋PHASE1 粵語化等）；其餘一律唔准郁。
     _v157_allowed = {'content/story_detail_c1_to_c17.json'}
-    ok('content pack JSON 冇俾本包改動（v157 只豁免 story_detail_c1_to_c17.json）',
-       all(p in _v157_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
+    _v217_allowed = {'content/SANDBOX_BEHAVIOR_GATE_C1_C5_SOFT_STUB_v1.json',
+        'content/SOFT_RUMOR_BEHAVIOR_GATE_PLAYTEST_FIX_v1.json',
+        'content/STUB_RUMOR_FRAGMENTS_v1.json',
+        'content/STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json',
+        'content/events_zh_HK.json', 'content/gift_react_copy.json',
+        'content/gigs_1988.json', 'content/gigs_1989.json',
+        'content/gigs_1990.json', 'content/gigs_1991.json',
+        'content/npc_lines_core.json', 'content/story_beats_phase1.json',
+        'content/story_detail_rival_mentor.json',
+        'content/story_detail_romance_vera_hiu_choi.json'}
+    ok('content pack JSON 冇俾本包改動（v157＋v217 豁免以外一律唔准郁）',
+       all(p in _v157_allowed | _v217_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
 except Exception as e:
     print('SKIP content pack 檢查（git 唔可用：%s）' % e)
 

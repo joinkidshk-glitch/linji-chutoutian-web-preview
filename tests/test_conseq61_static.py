@@ -82,7 +82,7 @@ ok('case "E7"' in scene, "endingCareerScene410 有 E7 場景")
 for word in ("bankrupt", "review1991"):
     ok(word in scene, "E7 場景有 variant：" + word)
 summ = fn_body("endingSummaryHtml410", src)
-ok("提早收科" in summ, "總結頁有 E7 提早收科標題分支")
+ok("提早埋單" in summ, "總結頁有 E7 提早埋單標題分支")
 ok("renderClippingsPane" in src and "提早收場" in src, "剪報卡有 E7 日期分支")
 
 # --- 紀律：E7 唔入判定表、E6 規則冇郁 ---

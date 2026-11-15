@@ -218,7 +218,7 @@ console.log("[2] 評核：警告先行＋邊界判場");
 {
   S = heaSave(); S.ending410 = { career: "E1" };
   conseq61SettleEval(S, 52);
-  ok(!S.conseq61.pendingEnding && !S.conseq61.reviews[1990], "已收科存檔：評核全跳過");
+  ok(!S.conseq61.pendingEnding && !S.conseq61.reviews[1990], "已埋單存檔：評核全跳過");
 }
 
 /* ---------- (3) 破產寬限 ---------- */
@@ -277,7 +277,7 @@ console.log("[4] 舊檔：唔追溯收場");
   ok(!n2.conseq61.reviews[1990], "1990 年中檔：評核未到，唔標記");
   const ended = baseSave(); ended.dayIndex = 100; ended.ending410 = { career: "E0" };
   const n3 = normalizeSaveObj(ended);
-  ok(n3.conseq61.reviews[1990].legacy === true && n3.conseq61.reviews[1991].legacy === true, "已收科檔：兩個評核點都標記");
+  ok(n3.conseq61.reviews[1990].legacy === true && n3.conseq61.reviews[1991].legacy === true, "已埋單檔：兩個評核點都標記");
 }
 
 /* ---------- (5) 呈現：強制收場寫 ending410 ---------- */
@@ -292,8 +292,8 @@ console.log("[5] 呈現：E7 寫入＋總結頁＋判定表紀律");
   ok(modalCalls.length === 1 && modalCalls[0].html.includes("事務所評核") && modalCalls[0].html.includes("記數簿"), "事業場景第一頁（評核文案）");
   ok(conseq61PresentForcedEnding() === false, "冪等：第二次 present 唔重出");
   const sum = endingSummaryHtml410();
-  ok(sum.includes("1990 年尾評核・提早收科・手帳總結"), "總結頁標題跟收場原因");
-  ok(!sum.includes(">三年收科・手帳總結<") && sum.includes("唔係你揀嘅"), "唔扮三年收科＋講明唔係自願");
+  ok(sum.includes("1990 年尾評核・提早埋單・手帳總結"), "總結頁標題跟收場原因");
+  ok(!sum.includes(">三年埋單・手帳總結<") && sum.includes("唔係你揀嘅"), "唔扮三年埋單＋講明唔係自願");
 }
 {
   S = baseSave(); S.money = 0; modalCalls = [];

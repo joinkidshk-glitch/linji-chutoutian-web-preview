@@ -474,17 +474,27 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   }
   function boardIds(loc){ return gigsForLocSeasonBoard(loc).map(g => g.id); }
 
-  // 1991 全年：唔注入
-  S = freshS(dayIndexOf(1991, 12, 15)); GIGS = [];
-  ok('seg4 1991: merge returns 0', mergeExodusGigs() === 0);
-  ok('seg4 1991: boards have no exodus gigs',
+  // v217 D7：移民空位閘由 1992 秋改做 1990 秋（顯示值）——1990 夏之前唔注入，1990 秋起注入
+  S = freshS(dayIndexOf(1990, 7, 15)); GIGS = [];
+  ok('seg4 1990 summer: merge returns 0', mergeExodusGigs() === 0);
+  ok('seg4 1990 summer: boards have no exodus gigs',
      boardIds('tvb_longmen').indexOf('gig_exodus_tv_senior') < 0 && boardIds('film_harbour').indexOf('gig_exodus_film_hand') < 0);
 
-  // 1992 春／夏：唔注入
+  // 1990 秋：閘開，注入 5
+  S = freshS(dayIndexOf(1990, 10, 15)); GIGS = [];
+  ok('seg4 1990 autumn: merge injects 5', mergeExodusGigs() === 5 && GIGS.length === 5);
+
+  // 1991 全年：已過閘，注入
+  S = freshS(dayIndexOf(1991, 12, 15)); GIGS = [];
+  ok('seg4 1991: merge injects 5', mergeExodusGigs() === 5 && GIGS.length === 5);
+  ok('seg4 1991: boards have exodus gigs',
+     boardIds('tvb_longmen').indexOf('gig_exodus_tv_senior') >= 0 && boardIds('film_harbour').indexOf('gig_exodus_film_hand') >= 0);
+
+  // 1992 春／夏：已過閘，注入
   S = freshS(dayIndexOf(1992, 4, 15)); GIGS = [];
-  ok('seg4 1992 spring: not injected', mergeExodusGigs() === 0 && GIGS.length === 0);
+  ok('seg4 1992 spring: injected', mergeExodusGigs() === 5 && GIGS.length === 5);
   S = freshS(dayIndexOf(1992, 7, 15)); GIGS = [];
-  ok('seg4 1992 summer: not injected', mergeExodusGigs() === 0 && GIGS.length === 0);
+  ok('seg4 1992 summer: injected', mergeExodusGigs() === 5 && GIGS.length === 5);
 
   // 1992 秋：注入兩份，各自上返所屬地點板
   S = freshS(dayIndexOf(1992, 10, 15)); GIGS = [];
