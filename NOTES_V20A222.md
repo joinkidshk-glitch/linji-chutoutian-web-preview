@@ -32,7 +32,9 @@
 
 ## §3 落地
 
-（待填）
+- main HEAD `7d31427`（squash merge，31 檔，888 增／867 減）；push main 成功（`3e8dfba..7d31427`）。
+- 線上核實（2026-11-15，落地後約 4 分鐘）：https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/ —— **5,570,610 bytes，sha1 `dc328d985edd776383958d305016b645c9c2fb43`**，同本地 main index.html 逐 byte 一致。抽查：書面語「去他們常出沒的地方」線上 2 處、廣東話舊句「去佢哋常出沒嘅地方」0 處、新 TUT_MAP 首句「地圖上標示的地點，都是你可以前往的地方」線上 2 處。
+- 工作副本 `linji-work222`＋pristine `linji-pristine222`＋分支 `v20a222` 已刪。
 
 ## §4 殘留／跟進
 
