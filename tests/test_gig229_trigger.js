@@ -1,12 +1,12 @@
 // v20a229 B5 觸發系統＋BR89 擴充測試（A6／A7；SPEC §2.4／§3.5；AUDIT229 §5／§7／§8；DECISIONS D-4／D-7／D-11／D-14）
-//   T0 新庫 46 張 trigger 形狀逐種齊（kind 必填欄齊全）
+//   T0 新庫 47 張 trigger 形狀逐種齊（kind 必填欄齊全）
 //   T1 六種 kind 各一例：credit／award／fame／story／rel／rival（觸發前 false、觸發後 true）
 //   T2 R-4 雙觸發 OR：持債權／還錢結算（enc83_gu_loan_result＝1）兩條路各驗一次
 //   T3 獎項級紀錄 S.awardsResults：recordAwardResult 寫入＋獎項級／典禮級觸發判定（4 張缺口按裁定行典禮級）
 //   T4 板面：觸發前無、觸發後有；已觸發唔受 gigBoardPosted92 再擋（stagger stub 返 false 照上板）；標「引薦／邀約」
 //   T5 D-11 通知：首次上板先 toast 一次（引薦＝何生轉告、其餘＝情報站）；未入季節窗／未觸發唔通知
 //   T6 G-L2／G-NGAI-3 經新 trigger 系統開到
-//   T7 D-14：mergeIntelGigs 改源 T2（唔再讀 intel_lu_burst）；新庫無《星夜迷離》，唔留雙重閘
+//   T7 D-14：mergeIntelGigs 改源 T2（唔再讀 intel_lu_burst）；v232 新庫補寫《星夜迷離》做第 241 張（rel luk_baakyin ≥25），INTEL_HIDDEN_GIGS 池留空，唔留雙重閘
 //   T8 BR89 映射 13 張逐對錨點＋獎項對照表 15 個 id 齊
 //   T9 G-9：1992 年金碟夜喺遊戲期內（夏），1992 年唱片 award 觸發開得到
 //   T10 trigger 過 normalizeGigRecord 唔跌（年份＋trigger 齊全）
@@ -47,7 +47,7 @@ const gigById = id => gigs.find(g=>g.id===id);
 
 /* ---------- T0：trigger 形狀 ---------- */
 const trig = gigs.filter(g=>g.trigger && g.trigger.kind);
-ok('T0 觸發通告 46 張', trig.length===46, 'n='+trig.length);
+ok('T0 觸發通告 47 張', trig.length===47, 'n='+trig.length);
 const shapeBad = trig.filter(g=>{
   const t = g.trigger;
   if(t.kind==='credit') return !(typeof t.creditId==='string' && t.creditId && typeof t.creditOwner==='string');
@@ -157,6 +157,14 @@ S.npcs.luk_baakyin = 59;
 ok('T1 rel 59 → 唔開', triggerGigOn(gRel)===false);
 S.npcs.luk_baakyin = 60;
 ok('T1 rel 60 → 開', triggerGigOn(gRel)===true);
+
+S = freshS();
+const gRel25 = gigById('gig_1991_tv_122'); /* v232《星夜迷離》rel luk_baakyin ≥25（T2） */
+S.npcs.luk_baakyin = 24;
+ok('T1 rel 24 →《星夜迷離》唔開', triggerGigOn(gRel25)===false);
+S.npcs.luk_baakyin = 25;
+ok('T1 rel 25 →《星夜迷離》開（T2）', triggerGigOn(gRel25)===true);
+ok('T1《星夜迷離》標籤＝邀約', triggerGigLabel229(gRel25)==='邀約');
 
 S = freshS();
 const gRival = gigById('gig_1991_film_109'); /* rival ≥3 */
@@ -284,7 +292,10 @@ GIGS = [deepClone(gigById('gig_1992_film_114'))];
 ok('T6 G-L2 上板（film_lion，1992 夏）', gigsForLocSeasonBoard('film_lion', '夏').some(g=>g.id==='gig_1992_film_114'));
 
 /* ---------- T7：D-14 intel 改源 ---------- */
-ok('T7 新庫無《星夜迷離》通告（唔留雙重閘）', !gigs.some(g=>(g.title||'').indexOf('星夜迷離')>=0));
+const gXingye = gigs.filter(g=>(g.title||'').indexOf('星夜迷離')>=0);
+ok('T7 v232 新庫有《星夜迷離》通告（第 241 張，經通用 trigger 系統）', gXingye.length===1 && gXingye[0].id==='gig_1991_tv_122');
+ok('T7《星夜迷離》觸發＝陸好感 ≥25（T2）', gXingye.length===1 && gXingye[0].trigger && gXingye[0].trigger.kind==='rel' && gXingye[0].trigger.npcId==='luk_baakyin' && gXingye[0].trigger.relMin===25);
+ok('T7 唔留雙重閘：INTEL_HIDDEN_GIGS 池留空（舊注入路唔會再加一張）', html.indexOf('const INTEL_HIDDEN_GIGS = []')>=0);
 const intelSrc = extractFn('mergeIntelGigs') || '';
 ok('T7 mergeIntelGigs 唔再讀 intel_lu_burst', intelSrc.indexOf('intel_lu_burst')<0);
 ok('T7 mergeIntelGigs 改讀陸柏言 T2（enc79TierOf）', intelSrc.indexOf('enc79TierOf')>=0 && intelSrc.indexOf('luk_baakyin')>=0);
@@ -357,7 +368,7 @@ try{
   }).join('\n') + '\n' + FNS.map(f=>extractFn(f) || '').join('\n');
   const W = new Function('var START = { y:1990, m:1, d:1 }; var S = null; var GIGS = [];\n' + WORLD_SRC + '\n; return { normalizeGigRecord };')();
   const normedTrig = deepClone(trig).map(g=>{ g.__y66w = 1; return W.normalizeGigRecord(g); });
-  ok('T10 normalize 後 46 張 trigger 全部留返', normedTrig.every(g=>g.trigger && g.trigger.kind));
+  ok('T10 normalize 後 47 張 trigger 全部留返', normedTrig.every(g=>g.trigger && g.trigger.kind));
   ok('T10 normalize 後 trigger 內容一字唔郁', normedTrig.every((g,i)=>JSON.stringify(g.trigger)===JSON.stringify(trig[i].trigger)));
   ok('T10 normalize 後年份唔郁', normedTrig.every((g,i)=>g.year===trig[i].year));
 }catch(e){ ok('T10 normalize 沙盒 ('+e.message+')', false); }

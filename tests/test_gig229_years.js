@@ -6,7 +6,7 @@
 //     index.html 入面冇舊 pack 檔名字面
 //   C 新 pack 年份唔郁：載入層打旗＋normalize 守衛兩道防線，1990／1991／1992 各有數；
 //     兩次 normalize 冪等；玩家面文字欄年份 token 唔變
-//   D days→shootDaysHint 映射：抽 20 張跨 roleScale＋全數 240 張，
+//   D days→shootDaysHint 映射：抽 20 張跨 roleScale＋全數 241 張，
 //     effectiveShootDays 全部等於 days；新 gig 全部有 days
 //   E 舊表已刪：TIER110／REQ110／NAME93／LEADSTAR59／CLEAN100 全部唔喺 index.html，
 //     normalize 入面亦無佢哋嘅呼叫
@@ -108,7 +108,7 @@ for(const y of [1990, 1991, 1992]){
   W2.setBy(by);
   W2.sync(true);
   const gigs = W2.getGIGS();
-  const want = { 1990: 94, 1991: 79, 1992: 67 }[y];
+  const want = { 1990: 94, 1991: 80, 1992: 67 }[y];
   ok('A6 sync ' + y + ' 年揀新庫（' + want + ' 張、年份全部 ' + y + '、版本 gigs_new v1）',
      gigs.length === want && gigs.every(g=>g.year === y) && W2.getVer() === 'gigs_new v1',
      'n=' + gigs.length + ' ver=' + W2.getVer());
@@ -142,28 +142,28 @@ for(const f of ['gigs_1988.json', 'gigs_1989.json', 'gigs_1990.json', 'gigs_1991
 /* ---------- C 新 pack 年份唔郁 ---------- */
 const newPack = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gigs_new.json'), 'utf8'));
 const newGigs = newPack.gigs || [];
-ok('C0 gigs_new.json 240 張、id 唯一', newGigs.length === 240 &&
-   new Set(newGigs.map(g=>g.id)).size === 240, 'n=' + newGigs.length);
+ok('C0 gigs_new.json 241 張、id 唯一', newGigs.length === 241 &&
+   new Set(newGigs.map(g=>g.id)).size === 241, 'n=' + newGigs.length);
 /* C1：模擬 loader——打旗＋按年分組，再 normalize */
 const stamped = deepClone(newGigs);
 const byYear = { 1990: [], 1991: [], 1992: [] };
 stamped.forEach(g=>{ g.__y66w = 1; if(byYear[g.year]) byYear[g.year].push(g); });
-ok('C1 loader 分組 1990／1991／1992 = 94／79／67',
-   byYear[1990].length === 94 && byYear[1991].length === 79 && byYear[1992].length === 67,
+ok('C1 loader 分組 1990／1991／1992 = 94／80／67',
+   byYear[1990].length === 94 && byYear[1991].length === 80 && byYear[1992].length === 67,
    [1990, 1991, 1992].map(y=>y + ':' + byYear[y].length).join(' '));
 const normedStamped = stamped.map(g=>W.normalizeGigRecord(g));
 const yearBad = normedStamped.filter((g, i)=>g.year !== newGigs[i].year);
-ok('C2 打旗後 normalize：240 張年份全部唔郁', yearBad.length === 0,
+ok('C2 打旗後 normalize：241 張年份全部唔郁', yearBad.length === 0,
    yearBad.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 /* C3：唔打旗、直接 normalize——normalize 層守衛都要擋住 */
 const normedRaw = deepClone(newGigs).map(g=>W.normalizeGigRecord(g));
 const rawBad = normedRaw.filter((g, i)=>g.year !== newGigs[i].year);
-ok('C3 無旗直接 normalize：240 張年份全部唔郁（守衛）', rawBad.length === 0,
+ok('C3 無旗直接 normalize：241 張年份全部唔郁（守衛）', rawBad.length === 0,
    rawBad.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 /* C4：冪等——兩次 normalize 年份唔變 */
 const normedTwice = normedStamped.map(g=>W.normalizeGigRecord(deepClone(g)));
 const twiceBad = normedTwice.filter((g, i)=>g.year !== newGigs[i].year);
-ok('C4 兩次 normalize：240 張年份全部唔郁', twiceBad.length === 0,
+ok('C4 兩次 normalize：241 張年份全部唔郁', twiceBad.length === 0,
    twiceBad.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 /* C5：玩家面文字欄年份 token 唔變（唔可以由 walker／remap 偷偷 +2） */
 const TEXT_FIELDS = ['title','workTitle','roleLabel','roleHint','blurb','synopsis','boardNote','shootHint','discoverNote'];
@@ -206,10 +206,10 @@ ok('D1 抽 20 張跨 roleScale：shootDaysHint＝days＝effectiveShootDays',
    'n=' + sample20.length + ' scales=' + new Set(sample20.map(g=>g.roleScale)).size +
    ' bad=' + sampleBad.slice(0, 3).map(g=>g.id + ':' + g.days + '/' + g.shootDaysHint + '/' + W.effectiveShootDays(g)).join(','));
 const allHintBad = normedStamped.filter(g=>g.shootDaysHint !== g.days);
-ok('D2 全數 240 張 shootDaysHint＝days', allHintBad.length === 0,
+ok('D2 全數 241 張 shootDaysHint＝days', allHintBad.length === 0,
    allHintBad.slice(0, 3).map(g=>g.id + ':' + g.days + '/' + g.shootDaysHint).join(','));
 const allEffBad = normedStamped.filter(g=>W.effectiveShootDays(g) !== g.days);
-ok('D3 全數 240 張 effectiveShootDays＝days', allEffBad.length === 0,
+ok('D3 全數 241 張 effectiveShootDays＝days', allEffBad.length === 0,
    allEffBad.slice(0, 3).map(g=>g.id + ':' + g.days + '/' + W.effectiveShootDays(g)).join(','));
 const twiceHintBad = normedTwice.filter(g=>g.shootDaysHint !== g.days);
 ok('D4 兩次 normalize：hint 仍然＝days', twiceHintBad.length === 0,

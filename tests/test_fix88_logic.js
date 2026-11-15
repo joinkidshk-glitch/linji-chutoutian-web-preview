@@ -1,5 +1,5 @@
 // v20a88 FIX88 邏輯測試：通告荒修復包（v20a229 B3 新庫版）——
-//  (A) 幻影門檻根治：新庫 240 張行真載入管線（normalizeGigRecord）後，
+//  (A) 幻影門檻根治：新庫 241 張行真載入管線（normalizeGigRecord）後，
 //      每張 gig 嘅 req 只准含七個真屬性鍵；滿屬狀態下 reqGap 零缺項。
 //      另加 reqGap 防禦：未經 normalize 嘅快照 gig 帶 __y66w 都唔可以鎖死玩家。
 //  (B) 冬季供應：day 0 冬季新玩家普查（真 gigsForLocSeasonBoard＋canAudition）——
@@ -99,7 +99,7 @@ for(const y of [1990, 1991, 1992]){
     if(W.reqGap(g).missing !== 0) unpassable++;
   }
 }
-ok('A1 新庫 240 張全行管線（實數 '+totalGigs+'）', totalGigs === 240);
+ok('A1 新庫 241 張全行管線（實數 '+totalGigs+'）', totalGigs === 241);
 ok('A2 管線後 req 非屬性鍵殘留 = 0（實數 '+badKeyGigs+'）', badKeyGigs === 0);
 ok('A3 滿屬狀態下 reqGap 缺項 = 0 張（實數 '+unpassable+'）', unpassable === 0);
 W.setS(deepClone(FRESH));

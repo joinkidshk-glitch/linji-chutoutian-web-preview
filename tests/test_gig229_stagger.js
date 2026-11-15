@@ -11,7 +11,7 @@
 //       dayIndex 365–729，唔係 YEARS66＋2 移後兩年
 //   S4 gigBoardPosted92 真函數（S.dayIndex）：秋 gig post 前一日 false、post 當日 true、last 之後 false；
 //       冬 gig 兩窗之間（day 300）false、第二窗 post 當日 true
-//   S5 全庫掃描 240 張：全部 nat92StaggerEligible；每張喺自己年份內至少有一日上板（唔會永久隱藏）；
+//   S5 全庫掃描 241 張：全部 nat92StaggerEligible；每張喺自己年份內至少有一日上板（唔會永久隱藏）；
 //       全部 interval 唔出 [年首−60 日, 年尾]（無＋2 漏移）；off ∈ [0,39]、pull ∈ [0,30]
 //   S6 gigReleaseLine88：1990 秋 gig 顯示「1990 年秋季」，唔係 1992 年
 // 反證：對 B1 前（舊曆＋walker＋2）index 行 → S3／S5 interval 全部移後兩年 FAIL；
@@ -144,7 +144,7 @@ try{
 /* ---------- S5：全庫掃描 ---------- */
 try{
   const inelig = gigs.filter(g=>!nat92StaggerEligible(g));
-  ok('S5 240 張全部 nat92StaggerEligible', inelig.length===0, inelig.slice(0,3).map(g=>g.id).join(','));
+  ok('S5 241 張全部 nat92StaggerEligible', inelig.length===0, inelig.slice(0,3).map(g=>g.id).join(','));
   let noPostDay = [], outOfYear = [], offBad = [], pullBad = [];
   for(const g of gigs){
     const ivs = nat92PostIntervals(g);

@@ -8,11 +8,11 @@
 //  (E) 分布守衛：52 週普查（MAXED 組成）1990「恰好 2」占比 <40%；
 //      三年全板 0 嘅地點-週＝94（新庫地點-季節洞，見 E2 註——舊版 0 係 351 張＋18 張
 //      注入先做到，新庫 240 張有季節性空洞，呢個數係分佈釘，唔係回歸目標）。
-//      v20a229 B5：MAXED 而家真係 maxed——46 張 trigger 條件齊開（E0 守衛），
+//      v20a229 B5：MAXED 而家真係 maxed——47 張 trigger 條件齊開（E0 守衛，v232 補寫《星夜迷離》第 241 張），
 //      E2 釘先至繼續量度庫分佈而唔係觸發狀態；沙盒抽埋 triggerGigOn＋依賴，
 //      唔係 board filter 嘅 typeof 守衛會將全部 trigger 通告當未觸發隱藏。
 //  (F) 注入池已刪：NAT92_GIGS 18 張拎走，mergeNat92Gigs 回 0；錯峰資格改由
-//      新庫 gig 本身判定（228 張合資格、12 張入門唔錯峰）；舊 nat92 旗全庫 0 命中。
+//      新庫 gig 本身判定（229 張合資格、12 張入門唔錯峰）；舊 nat92 旗全庫 0 命中。
 // 反證：對 v91 index 行 → NAT92 符號唔存在，抽取即 FAIL。
 // 用法：node tests/test_nat92_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -102,7 +102,7 @@ function loadPackPipeline(y){
 }
 const FRESH = { acting:18, stage:14, vocal:14, looks:22, stamina:75, iq:20, charm:16, fame:5, popularity:3, stress:12, money:12000, dayIndex:0, flags:{}, shoots:[], booked:[], enrolled:{}, board:{}, known:{} };
 const MAXED = { acting:999, stage:999, vocal:999, looks:999, charm:999, iq:999, stamina:999, fame:999, popularity:999, stress:0, money:999999, dayIndex:0, flags:{}, shoots:[], booked:[], enrolled:{}, board:{}, known:{}, wrapHistory:[] };
-/* B5：MAXED 要真係 maxed——46 張 trigger 條件齊開，E2 普查先至量度庫分佈而唔係觸發狀態。
+/* B5：MAXED 要真係 maxed——47 張 trigger 條件齊開，E2 普查先至量度庫分佈而唔係觸發狀態。
    credit／rel 由新庫 trigger 逐張抽（唔人手抄 id）；獎項級紀錄 4 典禮 × 3 年全部 won；
    主線全 done；對手線 4 分（傳聞＋N3＋報紙）。 */
 {
@@ -148,7 +148,7 @@ for(const y of [1990, 1991, 1992]) for(const g of poolByYear[y]){
   if(W.nat92StaggerEligible(g)) stagN++;
   if(Object.keys(g.req||{}).some(k=>!CANON[k])) reqBad.push(g.id);
 }
-ok('F2 錯峰合資格 228 張（240－12 入門）', stagN === 228, 'stagN=' + stagN);
+ok('F2 錯峰合資格 229 張（241－12 入門）', stagN === 229, 'stagN=' + stagN);
 ok('F2b 入門 12 張唔錯峰', entryN === 12);
 ok('F3 舊 nat92 旗全庫 0 命中', nat92FlagN === 0);
 ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3).join(','));
@@ -225,10 +225,10 @@ ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3
 
 /* ---------- (E) 分布守衛 ---------- */
 {
-  /* E0 普查前提：MAXED 開齊 46 張 trigger（唔齊就 E2 釘量度緊觸發狀態，唔係庫分佈）。 */
+  /* E0 普查前提：MAXED 開齊 47 張 trigger（唔齊就 E2 釘量度緊觸發狀態，唔係庫分佈）。 */
   const _allTrig = (PACK_NEW.gigs || []).filter(g => g.trigger && g.trigger.kind);
   const _unopened = _allTrig.filter(g => { const st = deepClone(MAXED); W.setS(st); return !W.triggerGigOn(g); }).map(g => g.id);
-  ok('E0 MAXED 開齊 46 張 trigger（普查前提；B5）', _allTrig.length === 46 && _unopened.length === 0, '未開：' + _unopened.join(','));
+  ok('E0 MAXED 開齊 47 張 trigger（普查前提；B5）', _allTrig.length === 47 && _unopened.length === 0, '未開：' + _unopened.join(','));
   function censusYear(year){
     setupYearPool(year);
     let tot = 0, ex2 = 0, zero = 0;

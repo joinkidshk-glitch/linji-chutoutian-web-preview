@@ -1,7 +1,7 @@
 // v20a229 B7：報紙分類 A10＋作品圖規則 A9＋忠告卡 Q6＋stub 債 Q11・邏輯／靜態測試
 // A10 合約（SPEC §2.2.1A＋A10）：新庫 category 係報紙分類權威——作品→named（配角級以上出報），
 //   臨記通告／補拍通告→base（殺青唔出報紙）。press94RoleClass 加 category 先行，唔改通告數據。
-//   逐張驗新庫 240 張（mtv 50 張逐張定分類，唔成批預設）；舊數據（無 category）行返文字／scale 層。
+//   逐張驗新庫 241 張（mtv 50 張逐張定分類，唔成批預設）；舊數據（無 category）行返文字／scale 層。
 // A9 合約（v90 規則沿用）：接通告頁面唔出成品海報／主演名；完成後場合（殺青／作品牆／頒獎／結局）
 //   保留海報位。B3 將 poster59Path 轉咗 stub（回 ""，D-12 出圖批先恢復）——呢批唔恢復海報圖。
 // Q6 合約（支線補完 Q6，用戶 2026-11-15 21:43）：憑 rumor_chung_advice 卡，下一次文藝片試鏡
@@ -55,13 +55,13 @@ ok('A10_extract', parts.every(Boolean));
 if(parts.every(Boolean)){
   eval(parts.join('\n'));
   const gigs = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/gigs_new.json'), 'utf8')).gigs;
-  ok('A10_newlib_240', gigs.length===240, 'n='+gigs.length);
+  ok('A10_newlib_241', gigs.length===241, 'n='+gigs.length);
   // 逐張驗：category 作品→named，其餘→base
   const bad = gigs.filter(g=>press94RoleClass(g)!==(g.category==='作品'?'named':'base'));
-  ok('A10_all240_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
-  ok('A10_named_141_base_99',
+  ok('A10_all241_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
+  ok('A10_named_141_base_100',
     gigs.filter(g=>press94RoleClass(g)==='named').length===141 &&
-    gigs.filter(g=>press94RoleClass(g)==='base').length===99);
+    gigs.filter(g=>press94RoleClass(g)==='base').length===100);
   // mtv 50 張逐張定分類：22 named（作品）／28 base（臨記通告），逐張對 category
   const mtv = gigs.filter(g=>g.roleScale==='mtv');
   ok('A10_mtv_50', mtv.length===50, 'n='+mtv.length);

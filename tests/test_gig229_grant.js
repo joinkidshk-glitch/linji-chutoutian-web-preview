@@ -1,5 +1,5 @@
 // v20a229 B6 抉擇即派＋定期合約制測試（A8／A12；SPEC §3.7／附錄 A；AUDIT229 §8／§10；DECISIONS Q7／D-5）
-//   T0 18 張即派 id 齊（主線 5＋支線 13）＋新庫仍 240 張（無新增通告；《星夜迷離》0 命中）
+//   T0 18 張即派 id 齊（主線 5＋支線 13）＋新庫 241 張（v232 補寫《星夜迷離》第 241 張）
 //   T1 主線 5 映射：抉擇→記低指定 gig、dueDay＝聽日（N4／N5／N6_a／N6F_a／N18；N6_b／N6F_b 唔派）
 //   T2 支線 11 live 映射：廖／顧／麥初遇各 3（關鍵字命中＋兜底）＋廖 Beat2（W3_ho_liao_a／b）；2 個 draft 存在但無 hook 觸發
 //   T3 冪等：同一張記低兩次得一筆；派發一次後唔再派
@@ -108,15 +108,15 @@ eval(extractFn('isGigInProduction'));
 eval(extractFn('isGigConsumed'));
 eval(extractFn('payWrapNote'));
 
-/* ---------- T0：18 張 id 齊＋新庫仍 240 張 ---------- */
+/* ---------- T0：18 張 id 齊＋新庫 241 張 ---------- */
 const MAIN18 = ['gig_1990_film_114','gig_1990_tv_122','gig_1990_tv_105','gig_1990_film_110','gig_1990_tv_121'];
 const SIDE13 = ['gig_1990_tv_114','gig_1990_tv_115','gig_1990_tv_116','gig_1990_tv_117','gig_1990_tv_118',
   'gig_1990_rec_112','gig_1990_rec_111','gig_1990_rec_113','gig_1991_rec_111','gig_1991_rec_112',
   'gig_1990_film_116','gig_1990_film_117','gig_1990_film_115'];
-ok('T0 新庫仍 240 張', gigs.length===240, 'n='+gigs.length);
+ok('T0 新庫 241 張', gigs.length===241, 'n='+gigs.length);
 ok('T0 主線 5 張 id 齊', MAIN18.every(id=>!!gigById(id)));
 ok('T0 支線 13 張 id 齊', SIDE13.every(id=>!!gigById(id)));
-ok('T0 《星夜迷離》新庫 0 命中', gigs.filter(g=>(g.title||'').indexOf('星夜迷離')>=0).length===0);
+ok('T0 《星夜迷離》新庫有且只有 1 張（v232 第 241 張）', gigs.filter(g=>(g.title||'').indexOf('星夜迷離')>=0).length===1 && gigById('gig_1991_tv_122'));
 ok('T0 GRANT229_CHOICE 7 鍵', Object.keys(GRANT229_CHOICE).length===7, Object.keys(GRANT229_CHOICE).join(','));
 ok('T0 GRANT229_ENC79 9 行', GRANT229_ENC79.length===9);
 ok('T0 GRANT229_DRAFT 2 鍵', Object.keys(GRANT229_DRAFT).length===2);
