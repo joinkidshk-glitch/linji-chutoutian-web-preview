@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 # v20a80 WF1 靜態測試：劇情豐富化 WF1——後段加厚＋真空帶補幕。
-# 一、框架在位（WF1 新表／注入函數／call 位順序／YEARS66 walk list／gate／CALIB60／進度頁次序）
-# 二、加厚量（index 較 v79 基線 4,798,020 bytes 大咗；12 幕 beats 序列化後明顯長過 v79）
-# 三、紅線：SAVE key／softRev／?v= 不變；補幕表註解以外節點文本唔直寫真曆年份
-# 反證：喺 v20a79 index 上行會 FAIL（冇 WF1 標記、冇 N18/N19、byte 數唔過基線）。
+# v20a234：內嵌補幕表＋注入函數已刪——N18／N19 由 content/story_detail_n1_to_n17.json 直出，唯一來源。
+# 一、框架在位（pack N18/N19／gate／CALIB60／進度頁次序）
+# 二、加厚量（pack N18/N19 節點量）
+# 三、紅線：SAVE key／softRev／?v= 不變；補幕節點文本唔直寫真曆年份
+# 反證：喺 v20a79 index 上行會 FAIL（冇 N18/N19、byte 數唔過基線）。
 # 用法：python3 tests/test_wf1_80_static.py [path-to-index.html]
-import sys
+import json, sys
 from pathlib import Path
 p = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent / 'index.html'
 src = p.read_text(encoding='utf-8')
+pack = json.loads((Path(__file__).resolve().parent.parent / 'content' / 'story_detail_n1_to_n17.json').read_text(encoding='utf-8'))
+nodes = {n['id']: n for n in pack.get('nodes', [])}
 fails = []
 def ok(name, cond):
     print(('PASS ' if cond else 'FAIL ') + name)
@@ -19,23 +22,23 @@ ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107'
 ok('NOTES_V20A80 在位', (p.parent / 'NOTES_V20A80_WF1.md').exists())
 
 # --- 一、框架 ---
-ok('WF1 補幕表在位', 'const STORY_SPINE_NODES_WF1 = {' in src and 'N18:' in src and 'N19:' in src)
-ok('注入函數在位', 'function applyStoryWf1Nodes80(){' in src)
-i410 = src.find('applyStorySpineOverrides410(); }catch(_sp410){}')
-iwf1 = src.find('applyStoryWf1Nodes80(); }catch(_wf1){}')
-it55 = src.find('textfix55StoryPack(main)', i410)
-ok('call 位順序：410 覆寫 → WF1 注入 → TEXTFIX55 清洗 main', 0 < i410 < iwf1 < it55)
-ok('YEARS66 walk list 含 WF1 表', 'STORY_SPINE_NODE_N17_410, STORY_SPINE_NODES_WF1,' in src)
+ok('WF1 補幕節點喺 pack（N18/N19，v20a234 唯一來源）',
+   nodes.get('N18') is not None and nodes.get('N19') is not None
+   and nodes['N18'].get('title') == '上岸路' and nodes['N19'].get('title') == '賭枱邊')
+ok('內嵌 WF1 表＋注入函數已刪（v20a234）',
+   'const STORY_SPINE_NODES_WF1 = {' not in src and 'function applyStoryWf1Nodes80(){' not in src
+   and 'applyStoryWf1Nodes80();' not in src and 'STORY_SPINE_NODES_WF1' not in src)
+ok('pack N18/N19 id 唯一（唔再靠注入去重）',
+   [n['id'] for n in pack['nodes']].count('N18') == 1 and [n['id'] for n in pack['nodes']].count('N19') == 1)
 ok('gate N18/N19 登記（v20a113 補鏈：N18 需 N5＋weekMin 48，N19 需 N18＋weekMin 61）', 'N18: { needDone: ["N5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] }' in src and 'N19: { needDone: ["N18"], weekMin: 61, yearMin: 1991, seasonIn: ["春"] }' in src)
 ok('CALIB60 時窗登記 N18/N19', 'N18: { year:1990, seasons:["冬"], whenLabel:"1990 年冬" }' in src and 'N19: { year:1991, seasons:["春"], whenLabel:"1991 年春" }' in src)
 ok('CALIB60 標題登記 上岸路／賭枱邊', 'N18:"上岸路"' in src and 'N19:"賭枱邊"' in src)
 ok('進度頁次序：N6F／N18／N19 跟住 N6、喺 N7 之前（v20a191 supersedes v20a153 B3：插入幕唔再排尾扮第 18／19／20 幕；內部 n 保留 18／19／20 供 far-merge／逐項邏輯用）', '["N6",6],["N6F",20],["N18",18],["N19",19],["N7",7]' in src)
 ok('N18/N19 旗已寫入節點 flags_written', 'flag_wf1_studio_dream' in src and 'flag_wf1_gamble_quiet' in src)
 
-# --- 二、加厚量（B3：全檔 byte 數已因刪舊通告庫大減，唔再用絕對基線；改釘 WF1 表本身嘅量） ---
-_wf1_i = src.index('const STORY_SPINE_NODES_WF1 = {')
-_wf1_j = src.index('\n};', _wf1_i)
-ok('WF1 補幕表有量（12 幕 beats＋N18/N19，表 >10KB）', len(src[_wf1_i:_wf1_j].encode('utf-8')) > 10000)
+# --- 二、加厚量（B3：全檔 byte 數已因刪舊通告庫大減，唔再用絕對基線；改釘 pack N18/N19 節點本身嘅量） ---
+_wf1 = json.dumps([nodes['N18'], nodes['N19']], ensure_ascii=False)
+ok('WF1 補幕節點有量（12 幕 beats＋N18/N19，兩節點 >10KB）', len(_wf1.encode('utf-8')) > 10000)
 
 print('\n' + ('ALL PASS' if not fails else 'FAILURES: ' + ' | '.join(fails)))
 sys.exit(0 if not fails else 1)

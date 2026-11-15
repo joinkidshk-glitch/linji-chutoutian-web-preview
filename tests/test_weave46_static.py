@@ -1,42 +1,41 @@
-# Weave Phase 4-6（v20a29）靜態測試：主幹 1989 節點覆寫／結算 tick 接線／藍 PA 化／慣例不變
+# Weave Phase 4-6（v20a29）靜態測試：主幹 1989 節點／結算 tick 接線／藍 PA 化／慣例不變
+# v20a234：內嵌覆寫表已刪——N7–N11 由 content/story_detail_n1_to_n17.json 直出，唯一來源。
+# 本檔改由 JSON pack 斷言同一批節點內容（標題／場地／紅星／旗／舊線清零），其餘部分不變。
 # 用法：python3 tests/test_weave46_static.py [path-to-index.html]
-import sys, pathlib, re
+import sys, pathlib, re, json
 p = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else pathlib.Path(__file__).resolve().parent.parent / 'index.html'
 html = p.read_text(encoding='utf-8')
+pack = json.loads((pathlib.Path(__file__).resolve().parent.parent / 'content' / 'story_detail_n1_to_n17.json').read_text(encoding='utf-8'))
+nodes = {n['id']: n for n in pack.get('nodes', [])}
 fails = []
 def ok(name, cond):
     print(('PASS' if cond else 'FAIL') + ' ' + name)
     if not cond:
         fails.append(name)
 
-# ---- 覆寫表本體 ----
-ok('STORY_SPINE_NODES_1989 defined', 'const STORY_SPINE_NODES_1989 = {' in html)
-m = re.search(r'const STORY_SPINE_NODES_1989 = \{(.*?)\n\};', html, re.S)
-spine = m.group(1) if m else ''
-ok('spine block extractable', bool(spine))
+# ---- 主幹節點本體（JSON pack，v20a234 唯一來源） ----
+spine = json.dumps([nodes.get(k) for k in ('N7', 'N8', 'N9', 'N10', 'N11')], ensure_ascii=False)
+ok('pack N7-N11 五節點在位', all(nodes.get(k) for k in ('N7', 'N8', 'N9', 'N10', 'N11')))
 for cid, title, loc in [('N7','暴雨救場','film_harbour'), ('N8','選美後台','tvb_longmen'),
                         ('N9','茶餐廳度橋','cafe_cha'), ('N10','年尾追數','tvb_harbour'),
                         ('N11','戲路定型','tvb_longmen')]:
-    ok('spine node present: '+cid, re.search(r'^\s*'+cid+r': \{', spine, re.M) is not None)
-    seg = spine[spine.index(cid+': {'):] if (cid+': {') in spine else ''
-    seg = seg[:1200]
-    ok('spine '+cid+' title '+title, ('title: "'+title+'"') in seg)
-    ok('spine '+cid+' locId '+loc, ('locId: "'+loc+'"') in seg)
+    ok('pack node present: '+cid, nodes.get(cid) is not None)
+    ok('pack '+cid+' title '+title, nodes.get(cid, {}).get('title') == title)
+    ok('pack '+cid+' locId '+loc, nodes.get(cid, {}).get('locId') == loc)
 for star in ['魏詠男', '葉敏芝', '廖炳星', '顧明輝', '彭少祺']:
-    ok('spine star present: '+star, star in spine)
+    ok('pack star present: '+star, star in spine)
 for flag in ['flag_rain_rescue','flag_rain_shelter','flag_miss_cover','flag_miss_leak',
              'flag_bing_bridge','flag_bing_background','flag_chase_for_ho','flag_standup_crew',
              'flag_role_gangster','flag_role_cop']:
-    ok('spine flag present: '+flag, flag in spine)
-# 舊 pack 線關鍵字唔應入覆寫內容（雷勁合約／藍若曦狗仔／商業文藝／台慶位）
+    ok('pack flag present: '+flag, flag in spine)
+# 舊 pack 線關鍵字唔應入主幹內容（雷勁合約／藍若曦狗仔／商業文藝／台慶位）
 for stale in ['雷勁', '藍若曦', '狗仔', '台慶位', '文藝線']:
-    ok('spine free of stale pack line: '+stale, stale not in spine)
+    ok('pack free of stale pack line: '+stale, stale not in spine)
 
-# ---- 套用函數＋掛點 ----
-ok('applyStorySpineOverrides46 defined', 'function applyStorySpineOverrides46(' in html)
-ok('override hook present', 'try{ applyStorySpineOverrides46(); }catch(_sp46){}' in html)
-ok('override hook after STORY_WIRE.main assignment',
-   html.index('STORY_WIRE.main = main;') < html.index('try{ applyStorySpineOverrides46(); }catch(_sp46){}'))
+# ---- 內嵌覆寫已刪（v20a234） ----
+for ident in ['const STORY_SPINE_NODES_1989 = {', 'function applyStorySpineOverrides46(',
+              'try{ applyStorySpineOverrides46(); }catch(_sp46){}']:
+    ok('inline override removed: '+ident, ident not in html)
 
 # ---- 結算 tick＋債權＋禮物 ----
 ok('story46SettleTick defined', 'function story46SettleTick(' in html)
@@ -93,7 +92,7 @@ for stale in ['藍若曦', '擋狗仔', '狗仔', '雷勁', '唱片', '台慶', 
 # v20a31 申報：藍感情線已按拍板 PA 版上線，佢個名正當地出現喺 PA 覆寫內容入面（場記身份）；
 # 原斷言「只准引擎基建」按新現實放寬到「基建＋PA 覆寫表」，「零歌手向」嗰半保留不變。
 _lan_i = nocomment.find('const ROMANCE_LAN_PA_OVERRIDES = {')
-_lan_j = nocomment.find('function applyStorySpineOverrides48', _lan_i) if _lan_i >= 0 else -1
+_lan_j = nocomment.find('function applyRomanceLanOverrides48', _lan_i) if _lan_i >= 0 else -1
 lan_block = nocomment[_lan_i:_lan_j] if (_lan_i >= 0 and _lan_j > _lan_i) else ''
 lan_lines = [ln for ln in nocomment.splitlines() if '藍若曦' in ln]
 # v20a33 申報：Phase 4-10 結局「差一步」場景（藍 PA 版：收尾加班戲撳通告牌）正當地用佢個名一次，
@@ -127,7 +126,8 @@ for w in ['關海媚', '陳淑芬', '施南生', 'Ho哥', 'Ho 哥']:
 # ---- 慣例不變 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)
 ok('version marker v20a29', 'v20a29' in html)
-ok('content pack not edited inline (override mechanism only)', 'STORY_SPINE_NODES_1989[node.id]' in html)
+ok('no inline override mechanism remains (v20a234: JSON pack is sole source)',
+   'applyStorySpineOverrides' not in html and 'STORY_SPINE_NODES_1989' not in html)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')
 sys.exit(1 if fails else 0)

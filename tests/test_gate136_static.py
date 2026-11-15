@@ -45,11 +45,15 @@ ok("CONSEQ61_REVIEWS 有 1992 條目（155／195／156）",
    "1992: { floor: 155, warnLine: 195, boundaryWeek: 156 }" in src)
 
 # ---- C. 文案 ----
-# 語義關鍵（v20a136 實駕捉到）：STORY_SPINE_NODES_1990／STORY_SPINE_NODE_N17_410／STORY_HINT_SOFT／
-# CHOICE47_NODES 全部經 years66Walk 載入 +2（源頭寫舊曆 1990 → 玩家面顯示 1992）。
-# 所以呢啲表入面玩家面年份字串源頭必須係 1990，「1992」出現即係顯示 1994（錯）。
+# 語義關鍵（v20a136 實駕捉到）：JSON pack 主線節點／STORY_HINT_SOFT／CHOICE47_NODES
+# 全部經 years66Walk 載入 +2（源頭寫舊曆 1990 → 玩家面顯示 1992）。
+# 所以呢啲來源入面玩家面年份字串源頭必須係 1990，「1992」出現即係顯示 1994（錯）。
+# v20a234：內嵌覆寫表已刪，N17／N12–N16 來源由內嵌表改做 JSON pack（同一批舊曆值，逐字同步）；
+# pack 主線節點經 refreshCopyPacksFromDisk 嘅 [main, rom1, rom2, rival, ...] walk（L18562 一帶）。
 # 唔經 walk 嘅 code 字串（結局總結 fallback、endingEveOptions410 note、閘表）先至直接寫 1992。
-c17 = strip_comments(block("const STORY_SPINE_NODE_N17_410 = {", "function applyStorySpineOverrides410"))
+pack = json.load(open(os.path.join(ROOT, "content", "story_detail_n1_to_n17.json"), encoding="utf-8"))
+pack_nodes = {n.get("id"): n for n in (pack.get("nodes") or [])}
+c17 = json.dumps(pack_nodes.get("N17"), ensure_ascii=False)
 ok("N17 節點「頒獎禮前夕」只剩對白否定句（v157：何生「唔係頒獎禮前夕——獎已經頒完」；舊 synopsis 第2段 DEV 註解已刪）",
    c17.count("頒獎禮前夕") == 1 and "唔係頒獎禮前夕" in c17)
 ok("N17 節點玩家面年份係舊曆 1990（walk +2 → 顯示 1992），無「1992」",
@@ -58,18 +62,17 @@ ok("N17 節點係 1990 冬（源頭）＋台慶之後＋散場（v157：場景�
    '"1990冬"' in c17 and "era_1990_winter_finale" in c17 and "冬台慶剛剛完" in c17
    and "台慶之後，何生在星河電視台會議室等你" in c17 and "頒獎禮散場" in c17)
 ok("N17 節點無「試咪／開場之前」", "試咪" not in c17 and "開場之前" not in c17)
-ok("N17 節點經 years66Walk（1990 源頭先會顯示 1992）",
-   "[STORY_SPINE_NODES_1989, STORY_SPINE_NODES_1990, STORY_SPINE_NODE_N17_410" in src
-   and "years66Walk(t, null)" in src)
-ok("N17 pacing.weekMin＝153（章戳約第153週）", "weekMin: 153" in c17)
+ok("N17 節點經 years66Walk（1990 源頭先會顯示 1992）：pack main 喺載入 walk 清單",
+   "[main, rom1, rom2, rival, gateStub, dengMock, dengPushMock, dualMock].forEach" in src
+   and "years66Walk(p, null)" in src)
+ok("N17 pacing.weekMin＝153（章戳約第153週）", (pack_nodes.get("N17", {}).get("pacing") or {}).get("weekMin") == 153)
 ok("結局總結 fallback 改做台慶之後嗰晚（唔經 walk，源頭寫 1992）",
    "台慶之後嗰晚，先係埋單嗰陣" in src and "頒獎禮前夕嗰晚，先係埋單嗰陣" not in src)
 ok("動態重建選項 note 係散場（endingEveOptions410，唔經 walk）",
    "頒獎禮散場，他站回他站慣的那個位置。" in src)  # v233 RW-2：第二人稱廣東話→第三人稱書面語，「散場」事實不變
 ok("全檔無「頒獎禮開場」", "頒獎禮開場" not in src)
-n1990 = strip_comments(block("const STORY_SPINE_NODES_1990 = {", "/* N6 覆寫"))
-n1990 = n1990.replace("const STORY_SPINE_NODES_1990 = {", "")
-ok("STORY_SPINE_NODES_1990 區塊（N12/N13/N14/N15/N16）玩家面年份係舊曆 1990，無「1992」",
+n1990 = json.dumps([pack_nodes.get(k) for k in ("N12", "N13", "N14", "N15", "N16")], ensure_ascii=False)
+ok("pack N12/N13/N14/N15/N16 玩家面年份係舊曆 1990，無「1992」",
    "1990" in n1990 and "1992" not in n1990)
 ok("N16 節點係 1990 冬（源頭）＋era_1990_winter_newyear",
    '"1990冬"' in n1990 and "era_1990_winter_newyear" in n1990)

@@ -1,6 +1,6 @@
 // v20a219 harness：模擬真實載入 pipeline，斷言 when 顯示值。
 // 抽取全部係 index.html 入面嘅真函數／真表（唔係手抄邏輯）：
-//   ROMANCE_LAN_PA_OVERRIDES + applyStorySpineOverrides48（PA）
+//   ROMANCE_LAN_PA_OVERRIDES + applyRomanceLanOverrides48（PA，v20a234 改名；主線覆寫已刪）
 //   normaliseTangStub152 → contra98FixNodeWhen（CONTRA98_WHEN_FIX＋CLEAN100_WHEN_FIX）
 //   → years66Walk（years66ShiftText／ShiftYear／SKIP_KEYS／TOKEN_RE）
 // 顯示值查兩層：(a) 節點 when（walk 後）；(b) 實播頁首 spPlayerMeta（LIVE 預設路徑，
@@ -71,7 +71,7 @@ function extractConstStmt(src, name) {
 
 // --- 抽取（新版） ------------------------------------------------------------
 // 共用部分（兩版相同，git diff 證實零改動）：YEARS66、contra98 函數本體、
-// normaliseTangStub152、applyStorySpineOverrides48 函數本體、spPlayerMeta 簇。
+// normaliseTangStub152、applyRomanceLanOverrides48 函數本體、spPlayerMeta 簇。
 const codeCommon = [
   extractConstStmt(htmlNew, 'YEARS66_SHIFT'),
   extractConstStmt(htmlNew, 'YEARS66_OLD_MIN'),
@@ -84,7 +84,7 @@ const codeCommon = [
   extractConstObj(htmlNew, 'CLEAN100_WHEN_FIX'),
   extractFn(htmlNew, 'function contra98FixNodeWhen('),
   extractFn(htmlNew, 'function normaliseTangStub152('),
-  extractFn(htmlNew, 'function applyStorySpineOverrides48('),
+  extractFn(htmlNew, 'function applyRomanceLanOverrides48('),
   // spPlayerMeta 簇：spSoftSeasonChar 起至 spPlayerMeta 尾（含 dualMeetChromePrefersSeed）
   extractFn(htmlNew, 'function spSoftSeasonChar('),
   extractFn(htmlNew, 'function spSoftLane('),
@@ -113,8 +113,6 @@ function makeCtx() {
     S: { dayIndex: 0 },
     calendarSeason: () => '冬',
     STORY_WIRE: { main: { nodes: [] }, romance: {} },
-    STORY_SPINE_NODES_1990: {},
-    STORY_SPINE_NODES_C6: {},
   };
   vm.createContext(ctx);
   return ctx;
@@ -123,7 +121,7 @@ function makeCtx() {
 function loadPacks() {
   const read = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'content', f), 'utf8'));
   return {
-    main: read('story_detail_c1_to_c17.json'),
+    main: read('story_detail_n1_to_n17.json'),
     rom1: read('story_detail_romance_vera_hiu_choi.json'),
     rom2: read('story_detail_romance_lan_xu.json'),
     rival: read('story_detail_rival_mentor.json'),
@@ -131,7 +129,7 @@ function loadPacks() {
 }
 
 // 真實次序（refreshCopyPacksFromDisk）：
-//   STORY_WIRE 賦值 → applyStorySpineOverrides48（PA）→ normaliseTangStub152
+//   STORY_WIRE 賦值 → applyRomanceLanOverrides48（PA）→ normaliseTangStub152
 //   → textfix（唔影響 when）→ contra98FixNodeWhen → years66Walk
 function runPipeline(htmlCode) {
   const ctx = makeCtx();
@@ -140,7 +138,7 @@ function runPipeline(htmlCode) {
   ctx.STORY_WIRE.main = packs.main;
   ctx.STORY_WIRE.romance = { veraHiuChoi: packs.rom1, lanXu: packs.rom2 };
   ctx.STORY_WIRE.rival = packs.rival;
-  vm.runInContext('applyStorySpineOverrides48();', ctx);
+  vm.runInContext('applyRomanceLanOverrides48();', ctx);
   vm.runInContext('normaliseTangStub152(' + 'STORY_WIRE.romance.lanXu' + ');', ctx);
   vm.runInContext('contra98FixNodeWhen([STORY_WIRE.main, STORY_WIRE.romance.veraHiuChoi, STORY_WIRE.romance.lanXu, STORY_WIRE.rival]);', ctx);
   vm.runInContext('[STORY_WIRE.main, STORY_WIRE.romance.veraHiuChoi, STORY_WIRE.romance.lanXu, STORY_WIRE.rival].forEach(p=>years66Walk(p, null));', ctx);

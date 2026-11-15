@@ -3,7 +3,7 @@
 //       N2／N3 頁首（真 spPlayerMeta）＝「主線 · 1990冬」；N1 不受影響；
 //   (2) A-05/A-06：spPlayerMeta 對 N5／A-06 五節點用當下曆法（day 0→1990冬、day 75→1990春、
 //       R_xu_meet day 800→1992春）；一般節點唔受影響（用返 eraTag 路徑）；
-//   (3) A-12：STORY_SPINE_NODES_WF1 嘅 N18/N19 pacing.weekMin＝48／61，經 walk＋
+//   (3) A-12：JSON pack 嘅 N18/N19 pacing.weekMin＝48／61，經 walk＋
 //       storyWeekStamp 出「第 48 週／第 61 週」；其他 WF1 節點 weekMin 原封；
 //   (4) B-03：ROMANCE_LAN_PA_OVERRIDES R_lan_push1 冇 stats.music、主抉擇 stage:1；
 //       flag_family_marriage 兩抉擇保留（唔拆旗決定）＋flags_written 不變；
@@ -71,12 +71,12 @@ eval([
   extractConst('GIG_SEASON_SPAN88'),
   extractFn('calendarSeason'),
   extractFn('spSoftSeasonChar'), extractFn('spPlayerMeta'),
-  extractConst('STORY_SPINE_NODES_WF1'), extractFn('storyWeekStamp'),
+  extractFn('storyWeekStamp'),
   extractConst('ROMANCE_LAN_PA_OVERRIDES'),
   extractConst('NEWS82_EVENTS'), extractFn('ensureNews82'), extractFn('news82Tick'),
   extractFn('enc79PresenceP'),
   extractFn('gigReleaseLine88'),
-  'globalThis.__C100 = { CLEAN100_WHEN_FIX, contra98FixNodeWhen, years66Walk, spPlayerMeta, STORY_SPINE_NODES_WF1, storyWeekStamp, ROMANCE_LAN_PA_OVERRIDES, NEWS82_EVENTS, ensureNews82, news82Tick, enc79PresenceP, gigReleaseLine88 };',
+  'globalThis.__C100 = { CLEAN100_WHEN_FIX, contra98FixNodeWhen, years66Walk, spPlayerMeta, storyWeekStamp, ROMANCE_LAN_PA_OVERRIDES, NEWS82_EVENTS, ensureNews82, news82Tick, enc79PresenceP, gigReleaseLine88 };',
 ].join('\n'));
 const C = globalThis.__C100;
 
@@ -105,19 +105,16 @@ const other = C.spPlayerMeta({ id: 'N10', when: '1988冬 / W40', eraTag: 'era_19
 ok('A06 一般節點行返舊路徑', other === '主線 · 1990冬');
 S.dayIndex = 0;
 
-/* (3) A-12 */
-ok('A12 N18 weekMin=48', C.STORY_SPINE_NODES_WF1.N18.pacing.weekMin === 48);
-ok('A12 N19 weekMin=61', C.STORY_SPINE_NODES_WF1.N19.pacing.weekMin === 61);
-const wf1copy = JSON.parse(JSON.stringify({ N18: C.STORY_SPINE_NODES_WF1.N18, N19: C.STORY_SPINE_NODES_WF1.N19 }));
+/* (3) A-12（v20a234：WF1 內嵌表已刪，N18/N19 由 JSON pack 直出） */
+const n18 = mainPack.nodes.find(n => n.id === 'N18'), n19 = mainPack.nodes.find(n => n.id === 'N19');
+ok('A12 N18 weekMin=48', n18 && n18.pacing.weekMin === 48);
+ok('A12 N19 weekMin=61', n19 && n19.pacing.weekMin === 61);
+const wf1copy = JSON.parse(JSON.stringify({ N18: n18, N19: n19 }));
 C.years66Walk(wf1copy, null);
 ok('A12 N18 章戳第48週', C.storyWeekStamp(wf1copy.N18).indexOf('約第48週') >= 0);
 ok('A12 N19 章戳第61週', C.storyWeekStamp(wf1copy.N19).indexOf('約第61週') >= 0);
-const othersUntouched = Object.keys(C.STORY_SPINE_NODES_WF1).every(k => {
-  if(k === 'N18' || k === 'N19') return true;
-  const wm = C.STORY_SPINE_NODES_WF1[k].pacing && C.STORY_SPINE_NODES_WF1[k].pacing.weekMin;
-  return wm === undefined || wm === null || [96, 110].indexOf(wm) < 0 || true;
-});
-ok('A12 WF1 其他節點存在（冇誤刪）', Object.keys(C.STORY_SPINE_NODES_WF1).length >= 2 && othersUntouched);
+ok('A12 pack N18/N19 各一（冇重複注入）',
+   mainPack.nodes.filter(n => n.id === 'N18').length === 1 && mainPack.nodes.filter(n => n.id === 'N19').length === 1);
 
 /* (4) B-03 */
 const push1 = C.ROMANCE_LAN_PA_OVERRIDES.R_lan_push1;

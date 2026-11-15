@@ -1,8 +1,12 @@
-# Weave Phase 4-8（v20a31）靜態測試：主幹 1990 覆寫／N6 對齊／commit 機制／藍 PA 化／債權／預熱／慣例不變
+# Weave Phase 4-8（v20a31）靜態測試：主幹 1990 節點／N6 對齊／commit 機制／藍 PA 化／債權／預熱／慣例不變
+# v20a234：內嵌覆寫表已刪——N12–N16／N6 由 content/story_detail_n1_to_n17.json 直出，唯一來源；
+# 藍 PA 覆寫（ROMANCE_LAN_PA_OVERRIDES＋applyRomanceLanOverrides48）保留。
 # 用法：python3 tests/test_weave48_static.py [path-to-index.html]
-import sys, pathlib, re
+import sys, pathlib, re, json
 p = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else pathlib.Path(__file__).resolve().parent.parent / 'index.html'
 html = p.read_text(encoding='utf-8')
+pack = json.loads((pathlib.Path(__file__).resolve().parent.parent / 'content' / 'story_detail_n1_to_n17.json').read_text(encoding='utf-8'))
+nodes = {n['id']: n for n in pack.get('nodes', [])}
 fails = []
 def ok(name, cond):
     print(('PASS' if cond else 'FAIL') + ' ' + name)
@@ -17,40 +21,38 @@ def block(decl, endmark):
     j = html.find(endmark, i)
     return html[i:j] if j > i else ''
 
-# ---- 1990 覆寫表 ----
-ok('STORY_SPINE_NODES_1990 defined', 'const STORY_SPINE_NODES_1990 = {' in html)
-spine = block('const STORY_SPINE_NODES_1990 = {', '/* N6 覆寫（Qwen 原案')
-ok('spine1990 block extractable', bool(spine))
+# ---- 1990 主幹節點（JSON pack，v20a234 唯一來源） ----
+spine = json.dumps([nodes.get(k) for k in ('N12', 'N13', 'N14', 'N15', 'N16')], ensure_ascii=False)
+ok('pack N12-N16 五節點在位', all(nodes.get(k) for k in ('N12', 'N13', 'N14', 'N15', 'N16')))
 for cid, title, loc in [('N12','高危替身','film_harbour'), ('N13','企邊','tvb_longmen'),
                         ('N14','樂壇前哨','rec_star'), ('N15','偶像實力之爭','rec_star'),
                         ('N16','賀歲片','film_cotton')]:
-    ok('spine node present: '+cid, re.search(r'^\s*'+cid+r': \{', spine, re.M) is not None)
-    seg = spine[spine.index(cid+': {'):][:900] if (cid+': {') in spine else ''
-    ok('spine '+cid+' title '+title, ('title: "'+title+'"') in seg)
-    ok('spine '+cid+' locId '+loc, ('locId: "'+loc+'"') in seg)
+    ok('pack node present: '+cid, nodes.get(cid) is not None)
+    ok('pack '+cid+' title '+title, nodes.get(cid, {}).get('title') == title)
+    ok('pack '+cid+' locId '+loc, nodes.get(cid, {}).get('locId') == loc)
 for star in ['麥震東', '齊鎮海', '陸柏言', '程天諾', '廖炳星']:
-    ok('spine star present: '+star, star in spine)
+    ok('pack star present: '+star, star in spine)
 for flag in ['flag_stunt_double','flag_stunt_refuse','flag_side_tv','flag_side_film',
              'flag_fans_support','flag_fans_avoid','flag_vocal_polish','flag_vocal_train',
              'flag_newyear_improv','flag_newyear_script']:
-    ok('spine flag present: '+flag, flag in spine)
+    ok('pack flag present: '+flag, flag in spine)
 for tag in ['搏命','惜身','親和力','高冷','偶像派','實力派','執生']:
-    ok('spine tag present: '+tag, tag in spine)
-spine_nc = re.sub(r'/\*.*?\*/', '', spine, flags=re.S)
+    ok('pack tag present: '+tag, tag in spine)
+spine_nc = spine
 # 注意：「緋聞」一詞本身唔喺此列——N14 主幹內容正係陸柏言俾緋聞纏身（Qwen 原案前提），屬正當劇情字眼；
 # 要驗嘅係 pack 自創節點「緋聞公關真假」成個唔喺度（邏輯測試另有標題級斷言）。
 for stale in ['賀歲搶位','緋聞公關真假','徐寶珊','聯姻','舊底片','金九','關海媚']:
-    ok('spine1990 free of pack-line/banned text: '+stale, stale not in spine_nc)
+    ok('pack1990 free of pack-line/banned text: '+stale, stale not in spine_nc)
 
-# ---- N6 對齊 ----
-c6blk = block('const STORY_SPINE_NODES_N6 = {', '/* v20a31 WEAVE_PHASE4_8：藍若曦感情線')
-ok('STORY_SPINE_NODES_N6 defined', bool(c6blk))
-ok('N6 title 角落嗰張枱 + loc tvb_longmen（v157 新標題，舊「飯堂閒角」；v221 書面語改寫「角落那張桌子」）', 'title: "角落那張桌子"' in c6blk and 'locId: "tvb_longmen"' in c6blk)
+# ---- N6 對齊（JSON pack） ----
+c6blk = json.dumps(nodes.get('N6'), ensure_ascii=False)
+ok('pack N6 defined', nodes.get('N6') is not None)
+ok('N6 title 角落嗰張枱 + loc tvb_longmen（v157 新標題，舊「飯堂閒角」；v221 書面語改寫「角落那張桌子」）', nodes.get('N6', {}).get('title') == '角落那張桌子' and nodes.get('N6', {}).get('locId') == 'tvb_longmen')
 ok('N6 flags canteen pair', 'flag_canteen_grind' in c6blk and 'flag_canteen_quit' in c6blk)
 ok('N6 no date flags / no rel stats', 'date_' not in c6blk and 'rel_' not in c6blk)
 
 # ---- 藍 PA 覆寫 ----
-lan = block('const ROMANCE_LAN_PA_OVERRIDES = {', '/* 載入後套用（4-8）')
+lan = block('const ROMANCE_LAN_PA_OVERRIDES = {', '/* ================= BR89')
 ok('ROMANCE_LAN_PA_OVERRIDES defined', bool(lan))
 for nid in ['R_lan_meet','R_lan_push1','R_lan_push2','R_lan_crisis','R_lan_ending']:
     ok('lan PA node present: '+nid, re.search(r'^\s*'+nid+r': \{', lan, re.M) is not None)
@@ -61,11 +63,12 @@ for stale in ['唱片店','錄音室','合唱','狗仔','緋聞','聯姻','豪�
 for pa in ['場記', '通告牌']:
     ok('lan PA carries PA framing: '+pa, pa in lan_nc)
 
-# ---- 套用函數＋掛點 ----
-ok('applyStorySpineOverrides48 defined', 'function applyStorySpineOverrides48(' in html)
-ok('override48 hook present', 'try{ applyStorySpineOverrides48(); }catch(_sp48){}' in html)
-ok('override48 hook after romance.lanXu assignment',
-   html.index('STORY_WIRE.romance.lanXu = rom2;') < html.index('try{ applyStorySpineOverrides48(); }catch(_sp48){}'))
+# ---- 藍 PA 覆寫函數（v20a234：主線嗰半已刪，只留 lan 嗰半，改名 applyRomanceLanOverrides48） ----
+ok('applyRomanceLanOverrides48 defined', 'function applyRomanceLanOverrides48(' in html)
+ok('lan override hook present', 'try{ applyRomanceLanOverrides48(); }catch(_sp48){}' in html)
+ok('lan override hook after romance.lanXu assignment',
+   html.index('STORY_WIRE.romance.lanXu = rom2;') < html.index('try{ applyRomanceLanOverrides48(); }catch(_sp48){}'))
+ok('no main-line override remains', 'STORY_SPINE_NODES_1990' not in html and 'STORY_SPINE_NODES_N6' not in html and 'applyStorySpineOverrides' not in html)
 
 # ---- commit 機制 ----
 ok('COMMIT48_NODES defined', 'const COMMIT48_NODES = {' in html)

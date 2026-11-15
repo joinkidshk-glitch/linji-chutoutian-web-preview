@@ -14,6 +14,9 @@ const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const storyPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_n1_to_n17.json'), 'utf8'));
+// v20a234：內嵌主線表已刪，N6 setting 正本而家係 live pack（C3 斷言用）；storyPack fixture 唔郁（其他段用）。
+const livePack = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'story_detail_n1_to_n17.json'), 'utf8'));
+const liveN6 = (livePack.nodes || []).find(n => n && n.id === 'N6');
 const gateStubPack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'behavior_gate_n1_n5.json'), 'utf8'));
 const DEBUG = !!process.env.STORY198_DEBUG;
 
@@ -293,7 +296,7 @@ ok('(C1) storyMainProgressLine 仲行共用幕號', html.indexOf('storyActLabel(
   ok('(C3) 冇路線名嘅 setting 原樣唔郁', storySettingStripRoute198('何生事務所 · 1990 年 · 冬夜') === '何生事務所 · 1990 年 · 冬夜'
     && storySettingStripRoute198('') === '' && storySettingStripRoute198(null) === '');
   ok('(C3) 唔郁 setting 資料本身（節點原字仲有路線名）',
-    html.indexOf('setting: "星河電視台飯堂 · 1988 年 · 電視線：角落那張桌子"') >= 0
+    liveN6 && liveN6.setting === '星河電視台飯堂 · 1988 年 · 電視線：角落那張桌子'
     && html.indexOf('setting: "獅子山製片廠 · 1988 年 · 電影線：佈景板後面那個位置"') >= 0);
 
   /* ---- C2：film-route 第 15 週（N6F 已開放，N18／N19 鎖住） ---- */

@@ -7,9 +7,9 @@
 //   (4) 補幕 N18/N19：結構（8–10 拍／2 抉擇連後果拍）、地點、when 用舊標籤（YEARS66 +2）、gate entry 規則
 //       （v20a113 改設計：N18 需 N5＋weekMin 48 深冬窗，N19 需 N18＋weekMin 61；1990 年 1 月第 2 週唔再開 N18；
 //       舊設計「冇 needDone 唔卡主線」已廢——用戶 2026-11-12 實玩捉到跳步）；
-//   (5) 注入：applyStoryWf1Nodes80 冪等（行兩次唔重複 push、唔覆蓋已有同 id 節點）；
+//   (5) v20a234：注入已刪——N18/N19 由 JSON pack 直出，pack 自帶且 id 唯一；
 //   (6) 紅線：14 節點全文冇真人名、冇關海媚名、冇直寫 1991–1994 年份。
-// 反證：喺 v20a79 index 上行 → 冇 STORY_SPINE_NODES_WF1 → 抽取即 throw → FAIL。
+// 反證：喺 v20a79 pack 上行會 FAIL（冇 N18/N19／beats 唔夠數）。
 // 用法：node tests/test_wf1_80_logic.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -38,15 +38,13 @@ function extractFn(name){
   }
   return html.slice(i, j + 1);
 }
-const T89 = extractConst('STORY_SPINE_NODES_1989');
-const T90 = extractConst('STORY_SPINE_NODES_1990');
-const TC6 = extractConst('STORY_SPINE_NODES_N6');
-const C17N = extractConst('STORY_SPINE_NODE_N17_410');
-const WF1 = extractConst('STORY_SPINE_NODES_WF1');
+/* v20a234：節點由 JSON pack 直出，唯一來源（內嵌表＋注入函數已刪） */
+const packMain = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'story_detail_n1_to_n17.json'), 'utf8'));
+const NODES = {};
+(packMain.nodes || []).forEach(n => { if (n && n.id) NODES[n.id] = n; });
 const GATE = extractConst('STORY_GATE_3Y');
 const CWIN = extractConst('CALIB60_NODE_WINDOWS');
 const CTIT = extractConst('CALIB60_NODE_TITLES');
-const NODES = Object.assign({}, T89, T90, TC6, { N17: C17N }, WF1);
 const fixture = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'spine_n6_n17_v136.json'), 'utf8'));
 
 function beatLines(n){ return (n.beats || []).flatMap(b => b.lines || []); }
@@ -78,6 +76,7 @@ for(const id of Object.keys(FLOOR)){
 }
 /* N17：choices 由 ending410 動態重建，靜態 choices 同 v136 fixture 逐字一致（fixture slim 口徑逐項比） */
 {
+  const C17N = NODES.N17;
   let c17ok = (C17N.choices || []).length === fixture.N17.choices.length;
   fixture.N17.choices.forEach((fc, i) => {
     const nc = (C17N.choices || [])[i] || {};
@@ -168,17 +167,12 @@ ok('N19 1991春 N18 未做 唔開（前置未完成）', !gatePass('N19', 1991, 
 ok('N19 1990春 唔開（未夠年份）', !gatePass('N19', 1990, '春', ['N18'], 61));
 ok('N19 1991冬 唔開（過季）', !gatePass('N19', 1991, '冬', ['N18'], 61));
 
-/* (5) 注入冪等 */
+/* (5) v20a234：注入已刪——pack 自帶 N18/N19 且 id 唯一，唔再靠注入去重 */
 {
-  const fnSrc = extractFn('applyStoryWf1Nodes80');
-  const sandbox = { STORY_SPINE_NODES_WF1: WF1, STORY_WIRE: { main: { nodes: [{ id: 'N1' }] } } };
-  const run = new Function('STORY_SPINE_NODES_WF1', 'STORY_WIRE', fnSrc + '\nreturn applyStoryWf1Nodes80();');
-  const r1 = run(sandbox.STORY_SPINE_NODES_WF1, sandbox.STORY_WIRE);
-  const ids1 = sandbox.STORY_WIRE.main.nodes.map(n => n.id);
-  const r2 = run(sandbox.STORY_SPINE_NODES_WF1, sandbox.STORY_WIRE);
-  const ids2 = sandbox.STORY_WIRE.main.nodes.map(n => n.id);
-  ok('注入首次加入 N18/N19', r1.main === 2 && ids1.includes('N18') && ids1.includes('N19'));
-  ok('注入冪等（行第二次零新增）', r2.main === 0 && JSON.stringify(ids1) === JSON.stringify(ids2));
+  const ids = (packMain.nodes || []).map(n => n.id);
+  ok('pack 自帶 N18/N19（唔使注入）', ids.includes('N18') && ids.includes('N19'));
+  ok('pack N18/N19 id 唯一（注入冪等已無意義）', ids.filter(x => x === 'N18').length === 1 && ids.filter(x => x === 'N19').length === 1);
+  ok('pack 有 19 個 nodes（N1–N19 齊）', (packMain.nodes || []).length === 19);
 }
 
 /* (6) 紅線 */
@@ -189,7 +183,7 @@ ok('N19 1991冬 唔開（過季）', !gatePass('N19', 1991, '冬', ['N18'], 61))
   ok('全文冇關海媚名（只准稱號）', !all.includes('關海媚'));
   /* 年份紅線只管玩家面欄位；openConditionsNote 等 DEV 註解欄唔出玩家面，排除 */
   const playerTxt = ['N18', 'N19'].map(id => {
-    const n = WF1[id];
+    const n = NODES[id];
     return JSON.stringify({ title: n.title, when: n.when, setting: n.setting, synopsis: n.synopsis, beats: n.beats, choices: n.choices });
   }).join('\n');
   ok('補幕玩家面欄位冇直寫 1991–1994（年份靠 +2）', !/199[1-4]/.test(playerTxt));

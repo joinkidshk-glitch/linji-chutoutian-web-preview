@@ -15,6 +15,9 @@ from pathlib import Path
 p = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent / 'index.html'
 src = p.read_text(encoding='utf-8')
 root = p.parent
+# v20a234：內嵌 N17_410 表已刪，410 陷阱值嘅正本而家係 JSON pack（舊曆 1990冬，載入 YEARS66 +2 先變 1992冬）。
+pack = json.loads((root / 'content' / 'story_detail_n1_to_n17.json').read_text(encoding='utf-8'))
+n17 = next((n for n in pack['nodes'] if n.get('id') == 'N17'), None)
 fails = []
 
 
@@ -36,16 +39,18 @@ def func_body(src_text, fname):
 
 # --- 基線不變 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('410 陷阱未郁：when 仲係 1990冬', 'when: "1990冬"' in src)
+ok('410 陷阱未郁：when 仲係 1990冬', n17 is not None and n17.get('when') == '1990冬')
 ok('410 陷阱未郁：setting／synopsis 仲係 1990 年冬末',
    # v157 重寫改咗 410措辭（後台化妝間→會議室；「台慶頒獎禮之後」→「頒獎禮之後嗰晚」），
    # 斷言跟返 v157 版措辭；v153 冇郁過呢個節點。
-   'setting: "星河電視台會議室；1990 年冬末，冬台慶剛剛完' in src
-   and 'synopsis: "1990 年冬末，頒獎禮之後那晚，星河電視台會議室。何生攤開流程表' in src)
+   n17 is not None
+   and (n17.get('setting') or '').startswith('星河電視台會議室；1990 年冬末，冬台慶剛剛完')
+   and (n17.get('synopsis') or '').startswith('1990 年冬末，頒獎禮之後那晚，星河電視台會議室。何生攤開流程表'))
 ok('410 陷阱未郁：lockedHint 仲係 1990 年冬',
-   'lockedHint: "1990 年冬、台慶之後才到這一晚。未到就照常跑通告；到了去星河電視台會議室。' in src)
+   n17 is not None
+   and (n17.get('lockedHint') or '').startswith('1990 年冬、台慶之後才到這一晚。未到就照常跑通告；到了去星河電視台會議室。'))
 ok('410 locId／STORY_LOC_SOFT N17 仲係 tvb_longmen',
-   'locId: "tvb_longmen"' in src and 'N17: "tvb_longmen"' in src)
+   n17 is not None and n17.get('locId') == 'tvb_longmen' and 'N17: "tvb_longmen"' in src)
 slots_path = root / 'content' / 'STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json'
 try:
     slots = json.loads(slots_path.read_text(encoding='utf-8'))

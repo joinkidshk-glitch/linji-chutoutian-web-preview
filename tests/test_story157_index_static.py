@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 # v20a157 index.html 側靜態測試（整合員）。
-# 覆蓋：STORY_SPINE_NODES_1989／1990／N6／BR89／WF1、STORY_SPINE_NODE_N17_410、
-# CHOICE47_NODES.F4_stay_mind／G4_family_job —— key 數目／次序、新 synopsis／beats
-# 關鍵句、閘／choice 旗／stats 同 live 一致、ERA 修正句存在、舊句消失、年份舊曆寫法、
-# effects.notes 零數字承諾、零「聲量」／「Ho哥」／真人名。
+# v20a234：內嵌覆寫表已刪——N6–N19 由 content/story_detail_n1_to_n17.json 直出，唯一來源。
+# 本檔改由 JSON pack 讀 N6–N19 節點（BR89 N6F／STORY_GATE_3Y／F4／G4 仍喺 index.html 抽出），
+# 其餘斷言（key 數目／beats 數／關鍵句／閘／旗／stats／ERA／年份舊曆／notes／禁用詞）全部保留。
 # 反證：喺 pristine main（e08a070／v148）index.html 上行會乾淨 FAIL（標題／beats 數／
 # 旗 stats 唔同），唔 crash。
 # 用法：python3 tests/test_story157_index_static.py [path-to-index.html]
@@ -76,7 +75,24 @@ def extract_key(key):
     return html[m.end() - 1:end]
 
 
-# ---- 用 node vm 將 spans 轉做 JSON（唔手寫 JS parser） ----
+# ---- 主線節點由 JSON pack 讀（v20a234 唯一來源） ----
+_pack = json.load(open(os.path.join(ROOT, "content", "story_detail_n1_to_n17.json"), encoding="utf-8"))
+_pack_nodes = {n["id"]: n for n in _pack["nodes"]}
+T1989 = {k: _pack_nodes[k] for k in ["N7", "N8", "N9", "N10", "N11"]}
+T1990 = {k: _pack_nodes[k] for k in ["N12", "N13", "N14", "N15", "N16"]}
+TC6 = {"N6": _pack_nodes["N6"]}
+TWF1 = {k: _pack_nodes[k] for k in ["N18", "N19"]}
+N17 = _pack_nodes["N17"]
+# 第 6 節年份舊曆檢查用嘅 span：JSON  dumps（同舊 inline span 同口徑：成組節點全文）
+spans = {
+    "T1989": json.dumps(T1989, ensure_ascii=False),
+    "T1990": json.dumps(T1990, ensure_ascii=False),
+    "TC6": json.dumps(TC6, ensure_ascii=False),
+    "TWF1": json.dumps(TWF1, ensure_ascii=False),
+    "N17": json.dumps(N17, ensure_ascii=False),
+}
+
+# ---- 用 node vm 將 index.html 側 spans 轉做 JSON（唔手寫 JS parser） ----
 NODE_DUMP = r"""
 const fs = require("fs");
 const vm = require("vm");
@@ -95,15 +111,9 @@ for (const f of JSON.parse(process.argv[1])) {
 console.log(JSON.stringify(out));
 """
 
-spans = {}
 tmp = tempfile.mkdtemp(prefix="t157_")
 specs = [
-    ("T1989", "STORY_SPINE_NODES_1989"),
-    ("T1990", "STORY_SPINE_NODES_1990"),
-    ("TC6", "STORY_SPINE_NODES_N6"),
     ("TBR89", "STORY_SPINE_NODES_BR89"),
-    ("TWF1", "STORY_SPINE_NODES_WF1"),
-    ("N17", "STORY_SPINE_NODE_N17_410"),
     ("GATE", "STORY_GATE_3Y"),
 ]
 files = []
@@ -124,9 +134,8 @@ r = subprocess.run(["node", "-e", NODE_DUMP, json.dumps(files)],
 assert r.returncode == 0, "node dump failed: " + r.stderr[:2000]
 D = json.loads(r.stdout)
 
-T1989, T1990 = D["T1989"], D["T1990"]
-TC6, TBR89, TWF1 = D["TC6"], D["TBR89"], D["TWF1"]
-N17, GATE = D["N17"], D["GATE"]
+TBR89 = D["TBR89"]
+GATE = D["GATE"]
 F4, G4 = D["F4_stay_mind"], D["G4_family_job"]
 
 ALL_NODES = {}
@@ -273,8 +282,9 @@ ok("ERA§2 N8 Beat2 降級做口頭提點", "唔係規矩，係呢度嘅做法" 
    and "司儀企正中嗰塊板" not in blob(T1989["N8"]))
 ok("ERA§2 N8 synopsis 唔再叫規矩", "後台規矩只有一句" not in T1989["N8"]["synopsis"])
 ok("ERA M39「一成」無殘留", "一成" not in blob(F4) and "回流比例" not in blob(F4))
-ok("STORY_HINT_SOFT.N17 會議室",
-   "台慶之後，何生在星河電視台會議室等你" in html and "到了去星河電視台會議室" in html
+ok("N17 會議室（pack playerHint／lockedHint；v20a234：內嵌表已刪，改由 JSON 驗）",
+   "台慶之後，何生在星河電視台會議室等你" in N17.get("playerHint", "")
+   and "到了去星河電視台會議室" in N17.get("lockedHint", "")
    and "何生喺後台等你" not in html)
 ok("Q4 endingInserts410 嗰排閒角",
    "電視台飯堂嗰排閒角" in html and "電視台飯堂嗰季閒角" not in html)

@@ -1,9 +1,9 @@
 // WEAVE_PHASE4_6 邏輯測試（v20a29）：
-// 行真路徑——STORY_SPINE_NODES_1989 覆寫（applyStorySpineOverrides46 套落真 pack nodes）
+// 行真路徑——JSON pack 主幹節點（v20a234：內嵌覆寫表已刪，N7–N11 由 pack 直出，唯一來源）
 // → StoryOC.listOpen({player:true}) 真 offer 路徑 → StoryOC.applyChoice 真寫入
 // → story46SettleTick 真結算（債權登記＋N8 見面禮互動）。
 // 閘行 STORY_GATE_3Y／BehaviorGate.evalGate3Y 真函數（4-5 已落地，今步唔改閘，只補 registry tag 候選）。
-// pack 用 repo content/story_detail_n1_to_n17.json 嘅真副本（tests/fixtures/）；
+// pack 用 repo content/story_detail_n1_to_n17.json 嘅 live 副本；
 // loader 將成個 JSON 做 STORY_WIRE.main，測試照砌。
 // stub：window/location/localStorage/saveQ/toast/syncNotebookMirror；apply（引擎 stats 落地，
 // 語義照 applyChoice 內置 fallback：直接累加 S 欄位）；applyCastingTags（照引擎 fallback 形狀：
@@ -12,7 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-const pack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_n1_to_n17.json'), 'utf8'));
+const pack = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'story_detail_n1_to_n17.json'), 'utf8'));
 
 let pass = 0, fail = 0;
 function ok(name, cond){
@@ -87,20 +87,17 @@ const SRC = [
   extractFn('function favorLedgerNoteCredit'),
   extractFn('function favorLedgerCounts'),
   extractConst('STORY_GATE_3Y'),
-  extractConst('STORY_SPINE_NODES_1989'),
   extractConst('STORY_LOC_SOFT'),
   extractConst('STORY_HINT_SOFT'),
   extractConst('STORY_TITLE_SOFT'),
   extractConst('STORY46_CREDIT_N7'),
   extractConst('STORY46_CREDIT_N10'),
   extractConst('STORY46_GIFT_ID'),
-  extractFn('function applyStorySpineOverrides46'),
   extractFn('function story46SettleTick'),
   extractIIFE('const BehaviorGate = (function(){'),
   extractIIFE('const StoryOC = (()=>{'),
 ].join('\n')
  .replace('const STORY_GATE_3Y =', 'var STORY_GATE_3Y =')
- .replace('const STORY_SPINE_NODES_1989 =', 'var STORY_SPINE_NODES_1989 =')
  .replace('const STORY_LOC_SOFT =', 'var STORY_LOC_SOFT =')
  .replace('const STORY_HINT_SOFT =', 'var STORY_HINT_SOFT =')
  .replace('const STORY_TITLE_SOFT =', 'var STORY_TITLE_SOFT =')
@@ -127,8 +124,6 @@ function baseSave(over){
 function loadGame(save){
   S = save;
   STORY_WIRE.main = JSON.parse(JSON.stringify(pack));
-  const r = applyStorySpineOverrides46();
-  if(!(r && r.ok && r.replaced === 5)) throw new Error('覆寫應替換 5 個節點，實際 ' + JSON.stringify(r));
   StoryOC.ensure();
   return S;
 }
@@ -141,7 +136,7 @@ function choice(nodeId, choiceId){
   return c;
 }
 
-/* ---- 覆寫完整性 ---- */
+/* ---- 主幹節點完整性（v20a234：pack 直出，唔再經覆寫） ---- */
 loadGame(baseSave());
 {
   const t = { N7: ['暴雨救場', 'film_harbour', '魏詠男'], N8: ['選美後台', 'tvb_longmen', '葉敏芝'],
@@ -153,9 +148,7 @@ loadGame(baseSave());
     if(!n || n.title !== t[id][0] || n.locId !== t[id][1] || !JSON.stringify(n).includes(t[id][2]) || !n.playerOffer) allOk = false;
     if(n && JSON.stringify(n).includes('藍若曦')) allOk = false;
   });
-  ok('覆寫完整性：五節點標題／場地／紅星跟主幹，內容無舊歌手線人物', allOk);
-  const r2 = applyStorySpineOverrides46();
-  ok('覆寫冪等：再套一次 replaced=5、結果不變', r2.ok && r2.replaced === 5 && node('N7').title === '暴雨救場');
+  ok('主幹完整性：五節點標題／場地／紅星跟主幹，內容無舊歌手線人物', allOk);
 }
 
 /* ---- N7 ---- */

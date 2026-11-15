@@ -9,12 +9,16 @@
 # 反證：喺 pristine（v191）index 上行，B1／N2／N3 新斷言要乾淨 FAIL（唔 crash）；
 #      其餘基線斷言（SAVE／softRev／?v=／閘唔郁）喺 pristine 一樣 PASS。
 # 用法：python3 tests/test_story198_static.py [path-to-index.html]
+import json
 import re
 import sys
 from pathlib import Path
 
 p = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent / 'index.html'
 src = p.read_text(encoding='utf-8')
+# v20a234：內嵌主線表已刪，N6 setting 正本而家係 JSON pack；N6F 仲係內嵌 BR89 表。
+pack = json.loads((p.parent / 'content' / 'story_detail_n1_to_n17.json').read_text(encoding='utf-8'))
+n6 = next((n for n in pack['nodes'] if n.get('id') == 'N6'), None)
 fails = []
 
 
@@ -117,7 +121,7 @@ strip = func_body_braces(src, 'storySettingStripRoute198')
 ok('N3：head 經 storySettingStripRoute198 出場景行', 'storySettingStripRoute198(n.setting)' in sp)
 ok('N3：helper 剝走「電影線：」同「電視線：」', '.replace(/電影線：/g,"")' in strip and '.replace(/電視線：/g,"")' in strip)
 ok('N3：節點 setting 資料本身唔郁（N6／N6F 原字仲有路線名）',
-   'setting: "星河電視台飯堂 · 1988 年 · 電視線：角落那張桌子"' in src
+   n6 is not None and n6.get('setting') == '星河電視台飯堂 · 1988 年 · 電視線：角落那張桌子'
    and 'setting: "獅子山製片廠 · 1988 年 · 電影線：佈景板後面那個位置"' in src)
 ok('N3：幕號行仲喺度（路線名只係由場景行拎走，唔係成個 head 拎走）',
    'sp-act191' in sp and 'storyActLabel(n.id)' in sp)

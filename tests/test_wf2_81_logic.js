@@ -11,7 +11,7 @@
 //   (3) 采兒 M33：追訪記者質地關鍵字在位（追訪／獨家／查證／通稿＋唔害人飯碗底線）；
 //   (4) 半線收尾：四條 ending beats ≥450 字、各有專屬關鍵字、兩兩 bigram Jaccard <0.35（防範本換名）；
 //       ending synopsis／choice label／notes 冇「確定關係／伴侶／承諾／一齊走下去」；
-//   (5) merge 行為：以 v80 fixture 起假 pack → 行真 applyStorySpineOverrides48（藍 PA）→ applyRomanceWf2Overrides81，
+//   (5) merge 行為：以 v80 fixture 起假 pack → 行真 applyRomanceLanOverrides48（藍 PA，v20a234 改名）→ applyRomanceWf2Overrides81，
 //       斷言 beats/synopsis 已換、choices id/flags/stats 同 fixture 逐項一致（半線 ending 只准 label/notes 變）、
 //       flags_written/openConditions 不變、stub 冇被掂（v20a152：stub 改由 rom2 提供續斷言）、冪等（行兩次 applied 25→0）；
 //   (6) commit 回歸：COMMIT48_DEFS 同 v80 fixture 逐字一致、COMMIT48_REL_MIN=6、節點在位；
@@ -142,10 +142,9 @@ for(const id of HALF_END){
   ]};
   /* v20a152：WIRE.romance 冇 tang 槽（romance_tang pack 已停載） */
   const WIRE = { romance: { veraHiuChoi: rom1, lanXu: rom2 }, main: { nodes: [] } };
-  const T90x = extractConst('STORY_SPINE_NODES_1990');
-  const TC6x = extractConst('STORY_SPINE_NODES_N6');
-  const run48 = new Function('ROMANCE_LAN_PA_OVERRIDES', 'STORY_SPINE_NODES_1990', 'STORY_SPINE_NODES_N6', 'STORY_WIRE', extractFn('applyStorySpineOverrides48') + '\nreturn applyStorySpineOverrides48();');
-  run48(PA, T90x, TC6x, WIRE);
+  /* v20a234：主線覆寫已刪，lan 嗰半改名 applyRomanceLanOverrides48（只讀 STORY_WIRE.romance.lanXu；PA 表經參數傳入） */
+  const run48 = new Function('ROMANCE_LAN_PA_OVERRIDES', 'STORY_WIRE', extractFn('applyRomanceLanOverrides48') + '\nreturn applyRomanceLanOverrides48();');
+  run48(PA, WIRE);
   const run81 = new Function('ROMANCE_WF2_OVERRIDES', 'STORY_WIRE', 'WF2_APPLIED81',
     'const WF2A = WF2_APPLIED81;\n' + extractFn('applyRomanceWf2Overrides81').replace('WF2_APPLIED81', 'WF2A') + '\nreturn applyRomanceWf2Overrides81();');
   const appliedSet = new WeakSet();

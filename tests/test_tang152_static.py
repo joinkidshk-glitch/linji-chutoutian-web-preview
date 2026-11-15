@@ -69,7 +69,7 @@ ok('刪節點：CONTRA98_WHEN_FIX 冇 R_tang_ending', 'R_tang_ending:["1990' not
 ok('刪節點：CONTRA98 winter_finale 由 11 減到 8（v20a219：hiu／choi／xu 結局改秋）', src.count('"1990冬","era_1990_winter_finale"') == 8)
 
 # --- 3. DengLine 排片線留返（meet＋push1／push2／crisis，閘門唔郁） ---
-ok('留線：HELD 縮到 3 節（L25817）', lines()[12668].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
+ok('留線：HELD 縮到 3 節（L25817）', lines()[10005].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
 ok('留線：PUSH_CHROME 有 push1／push2／crisis，冇 ending',
    'R_tang_push1: { chromeSeason:"winter"' in src and 'R_tang_push2: { chromeSeason:"spring"' in src
    and 'R_tang_crisis: { chromeSeason:"autumn"' in src)
@@ -98,9 +98,10 @@ ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
 # v20a229 B5 resync：index.html 淨 +250 行（觸發系統＋BR89 擴充，見 qa229/resync229_b5.py）；3 個釘行全部喺首個 B5 插入點（S 預設 awardsResults，B4 L19849）之前，行號唔郁（difflib 對位核實純漂移）。
 # v20a229 B6 resync：index.html 淨 +332 行（抉擇即派＋定期合約制，見 qa229/resync229_b6.py）；3 個釘行按 difflib 映射重寫（12667→12669、18428→18430、18555→18557；0 個唔郁），difflib 對位核實純漂移。
 # v20a229 B7 resync：index.html 淨 +54 行（報紙分類 A10＋忠告卡 Q6，見 qa229/resync229_b7.py）；3 個釘行按 difflib 映射重寫（全部唔郁；3 個唔郁），difflib 對位核實純漂移。
+# v20a234 resync：index.html 淨 −2869 行（刪五個內嵌主線表＋覆寫函數／載入呼叫）；3 個釘行按 difflib 映射重寫（HELD 12669→10006、normaliseTangStub152 18430→15563、stub 呼叫行 18557→15686；stub 呼叫行另 −2 因 46 呼叫＋註解拎走），內容逐字核實純漂移。
 # --- 4. 載入機制：stub 正規化＋push mock 過濾 ---
-ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[18429].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[18556].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[15562].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[15685].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)

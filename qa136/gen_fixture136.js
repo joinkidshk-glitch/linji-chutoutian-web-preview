@@ -1,28 +1,14 @@
-// 由現行 index.html 重新生成 wf1_80 回歸 fixture（v136 版）。
+// 由現行 content/story_detail_n1_to_n17.json 重新生成 wf1_80 回歸 fixture（v136 版）。
+// v20a234：內嵌覆寫表已刪，節點由 JSON pack 讀。
 // 形狀同 v79 fixture 一致：{ id: { beatLines: [[...],...], choices: [{id,label,effects,resultLines}], flags_written: [...] } }
 // 只喺意圖改動文案之後先跑；生成後即跑 test_wf1_80_logic.js 核實。
 // 用法：node qa136/gen_fixture136.js
 const fs = require('fs');
 const path = require('path');
-const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-function extractConst(name){
-  const i = html.indexOf('const ' + name + ' =');
-  if(i < 0) throw new Error('const not found: ' + name);
-  let depth = 0, started = false, j = i;
-  for(; j < html.length; j++){
-    const c = html[j];
-    if(c === '{' || c === '['){ depth++; started = true; }
-    else if(c === '}' || c === ']'){ depth--; if(started && depth === 0){ j++; break; } }
-  }
-  return eval('(' + html.slice(html.indexOf('=', i) + 1, j) + ')');
-}
-const T89 = extractConst('STORY_SPINE_NODES_1989');
-const T90 = extractConst('STORY_SPINE_NODES_1990');
-const TC6 = extractConst('STORY_SPINE_NODES_C6');
-const C17N = extractConst('STORY_SPINE_NODE_C17_410');
-const WF1 = extractConst('STORY_SPINE_NODES_WF1');
-const NODES = Object.assign({}, T89, T90, TC6, { C17: C17N }, WF1);
-const IDS = ['C6','C7','C11','C8','C9','C10','C15','C14','C12','C16','C13','C17'];
+const pack = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'story_detail_n1_to_n17.json'), 'utf8'));
+const NODES = {};
+(pack.nodes || []).forEach(n => { if (n && n.id) NODES[n.id] = n; });
+const IDS = ['N6','N7','N8','N9','N10','N11','N12','N13','N14','N15','N16','N17'];
 const out = {};
 for(const id of IDS){
   const n = NODES[id];

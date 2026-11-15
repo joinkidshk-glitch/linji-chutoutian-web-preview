@@ -1,6 +1,7 @@
 // WEAVE_PHASE4_8 邏輯測試（v20a31）：
-// 行真路徑——STORY_SPINE_NODES_1990／STORY_SPINE_NODES_N6／ROMANCE_LAN_PA_OVERRIDES 覆寫
-// （applyStorySpineOverrides48 套落真 pack nodes）→ StoryOC.listOpen({player:true}) 真 offer 路徑
+// 行真路徑——JSON pack 主幹節點（v20a234：內嵌覆寫表已刪，N12–N16／N6 由 pack 直出，唯一來源）
+// ＋ ROMANCE_LAN_PA_OVERRIDES 藍 PA 化（applyRomanceLanOverrides48 套落 lanXu）
+// → StoryOC.listOpen({player:true}) 真 offer 路徑
 // → StoryOC.applyChoice 真寫入 → story48SettleTick 真結算（N12／N16 債權登記）
 // → COMMIT48 真可用性／真 applyChoice 落旗（commit 互斥／窗口／rel 門檻／crisis 前置）
 // → paperSideItemForDay 真 picker（程天諾預熱年份閘）
@@ -12,7 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-const pack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_n1_to_n17.json'), 'utf8'));
+const pack = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'story_detail_n1_to_n17.json'), 'utf8'));
 const romVHC = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_romance_vera_hiu_choi.json'), 'utf8'));
 const romLX = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_romance_lan_xu.json'), 'utf8'));
 
@@ -99,17 +100,13 @@ const SRC = [
   extractFn('function commit48ActionsAt'),
   extractFn('function commit48Play'),
   extractFn('function endingRomanceState48'),
-  extractFn('function applyStorySpineOverrides46'),
-  extractFn('function applyStorySpineOverrides48'),
+  extractFn('function applyRomanceLanOverrides48'),
   extractFn('function story46SettleTick'),
   extractFn('function story48SettleTick'),
   extractFn('function newspaperStoryLists'),
   extractFn('function newspaperStoryResolve'),
   extractFn('function paperSideItemForDay'),
   extractConst('STORY_GATE_3Y'),
-  extractConst('STORY_SPINE_NODES_1989'),
-  extractConst('STORY_SPINE_NODES_1990'),
-  extractConst('STORY_SPINE_NODES_N6'),
   extractConst('ROMANCE_LAN_PA_OVERRIDES'),
   extractConst('STORY_LOC_SOFT'),
   extractConst('STORY_HINT_SOFT'),
@@ -130,9 +127,6 @@ const SRC = [
   extractIIFE('const StoryOC = (()=>{'),
 ].join('\n')
  .replace('const STORY_GATE_3Y =', 'var STORY_GATE_3Y =')
- .replace('const STORY_SPINE_NODES_1989 =', 'var STORY_SPINE_NODES_1989 =')
- .replace('const STORY_SPINE_NODES_1990 =', 'var STORY_SPINE_NODES_1990 =')
- .replace('const STORY_SPINE_NODES_N6 =', 'var STORY_SPINE_NODES_N6 =')
  .replace('const ROMANCE_LAN_PA_OVERRIDES =', 'var ROMANCE_LAN_PA_OVERRIDES =')
  .replace('const STORY_LOC_SOFT =', 'var STORY_LOC_SOFT =')
  .replace('const STORY_HINT_SOFT =', 'var STORY_HINT_SOFT =')
@@ -154,8 +148,8 @@ const SRC = [
 eval(SRC);
 var displayDateObj = function(){ return dateObj(); };
 
-ok('harness: StoryOC/applyStorySpineOverrides48/commit48 載入',
-   typeof StoryOC === 'object' && typeof applyStorySpineOverrides48 === 'function' && typeof commit48Available === 'function');
+ok('harness: StoryOC/applyRomanceLanOverrides48/commit48 載入',
+   typeof StoryOC === 'object' && typeof applyRomanceLanOverrides48 === 'function' && typeof commit48Available === 'function');
 ok('harness: COMMIT48_REL_MIN = 6（鏈頂 7 校準）', COMMIT48_REL_MIN === 6);
 
 function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1990, 2, 7)) / 86400000); }
@@ -173,10 +167,8 @@ function loadGame(save){
   STORY_WIRE.main = JSON.parse(JSON.stringify(pack));
   STORY_WIRE.romance.veraHiuChoi = JSON.parse(JSON.stringify(romVHC));
   STORY_WIRE.romance.lanXu = JSON.parse(JSON.stringify(romLX));
-  const r46 = applyStorySpineOverrides46();
-  if(!(r46 && r46.ok && r46.replaced === 5)) throw new Error('4-6 覆寫應替換 5 個，實際 ' + JSON.stringify(r46));
-  const r48 = applyStorySpineOverrides48();
-  if(!(r48 && r48.main === 6 && r48.lan === 5)) throw new Error('4-8 覆寫應 main=6/lan=5，實際 ' + JSON.stringify(r48));
+  const r48 = applyRomanceLanOverrides48();
+  if(!(r48 && r48.lan === 5)) throw new Error('4-8 藍 PA 覆寫應 lan=5，實際 ' + JSON.stringify(r48));
   StoryOC.ensure();
   return S;
 }
@@ -194,7 +186,7 @@ function canon(o){
   return JSON.stringify(o);
 }
 
-/* ---- 覆寫完整性 ---- */
+/* ---- 主幹完整性（v20a234：pack 直出，唔再經覆寫） ---- */
 loadGame(baseSave());
 {
   const t = { N12: ['高危替身', 'film_harbour', '麥震東'], N13: ['企邊', 'tvb_longmen', '齊鎮海'],
@@ -205,19 +197,19 @@ loadGame(baseSave());
     const n = node(id);
     if(!n || n.title !== t[id][0] || n.locId !== t[id][1] || !JSON.stringify(n).includes(t[id][2]) || !n.playerOffer) allOk = false;
   });
-  ok('覆寫完整性：1992 五節點標題／場地／紅星跟主幹', allOk);
+  ok('主幹完整性：1992 五節點標題／場地／紅星跟主幹', allOk);
   const stale = ['賀歲搶位', '緋聞公關真假', '尊重或包養', '聯姻逼退圈', '舊底片', '金九'];
   let clean = true;
   ['N14','N16','N13','N12','N15'].forEach(id => { if(stale.some(w => JSON.stringify(node(id)).includes(w))) clean = false; });
-  ok('覆寫完整性：pack 自創線殘留字串清零（金九舊底片等）', clean);
+  ok('主幹完整性：pack 自創線殘留字串清零（金九舊底片等）', clean);
   const c6 = node('N6');
   ok('N6 對齊 Qwen：標題「角落那張桌子」（v157 新標題，v221 書面語改寫）＋場地 tvb_longmen＋無約會旗／無 rel 加成',
      c6.title === '角落那張桌子' && c6.locId === 'tvb_longmen'
      && !JSON.stringify(c6).includes('date_')
      && (c6.choices || []).every(c => !Object.keys(((c.effects || {}).stats) || {}).some(k => k.startsWith('rel_')))
      && StoryOC.getFlag && c6.flags_written.includes('flag_canteen_grind'));
-  const r2 = applyStorySpineOverrides48();
-  ok('覆寫冪等：再套一次 main=6/lan=5、結果不變', r2.main === 6 && r2.lan === 5 && node('N12').title === '高危替身');
+  const r2 = applyRomanceLanOverrides48();
+  ok('藍 PA 覆寫冪等：再套一次 lan=5、結果不變', r2.lan === 5 && node('N12').title === '高危替身');
 }
 
 /* ---- 藍 PA 化：結構層同 pack 逐項一致、文字層零歌手向 ---- */

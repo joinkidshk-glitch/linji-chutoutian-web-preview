@@ -22,11 +22,10 @@ ok('NOTES_V20A81 在位', (p.parent / 'NOTES_V20A81_WF2.md').exists())
 ok('WF2 覆寫表在位', 'const ROMANCE_WF2_OVERRIDES = {' in src and 'R_hiu_meet' in src and 'R_tang_ending": {' not in src)  # v20a152：鄧麗萍感情線覆寫已刪
 ok('apply 函數在位', 'function applyRomanceWf2Overrides81(){' in src)
 ok('冪等守衛 WeakSet 在位', 'const WF2_APPLIED81 = new WeakSet();' in src)
-i48 = src.find('applyStorySpineOverrides48(); }catch(_sp48){}')
-iwf1 = src.find('applyStoryWf1Nodes80(); }catch(_wf1){}')
+i48 = src.find('applyRomanceLanOverrides48(); }catch(_sp48){}')
 iwf2 = src.find('applyRomanceWf2Overrides81(); }catch(_wf2){}')
-it55 = src.find('textfix55StoryPack(rom1)', iwf1)
-ok('call 位順序：48 藍PA → WF1 → WF2 → TEXTFIX55 rom1', 0 < i48 < iwf1 < iwf2 < it55)
+it55 = src.find('textfix55StoryPack(rom1)', i48)
+ok('call 位順序：48 藍PA → WF2 → TEXTFIX55 rom1（v20a234：WF1 注入已刪，N18/N19 由 pack 直出）', 0 < i48 < iwf2 < it55)
 ok('覆寫表定義早過 call 位', 0 < src.find('const ROMANCE_WF2_OVERRIDES') < iwf2)
 
 # --- 二、彭少祺正名 ---

@@ -68,17 +68,9 @@ addNodes(packRomVHC && packRomVHC.nodes, 'pack:romance_vhc');
 addNodes(packRomLX && packRomLX.nodes, 'pack:romance_lx');
 addNodes(packRomT && packRomT.nodes, 'pack:romance_tang');
 addNodes(packRival && packRival.nodes, 'pack:rival');
-const spine89 = evalConst('STORY_SPINE_NODES_1989');
-const spine90 = evalConst('STORY_SPINE_NODES_1990');
-const spineC6 = evalConst('STORY_SPINE_NODES_N6');
-const spineWF1 = evalConst('STORY_SPINE_NODES_WF1');
-const c17Node = evalConst('STORY_SPINE_NODE_N17_410');
+/* v20a234：內嵌覆寫表已刪——主線節點由 pack 直出，唔再另加 spine 節點 */
 const commit48 = evalConst('COMMIT48_NODES');
 const choice47 = evalConst('CHOICE47_NODES');
-[spine89, spine90, spineC6, spineWF1].forEach((t, i) => {
-  if (t && !t.__evalError) Object.values(t).forEach(n => addNodes([n], 'spine' + i));
-});
-if (c17Node && !c17Node.__evalError) addNodes([c17Node.node || c17Node], 'spine:c17');
 if (commit48 && !commit48.__evalError) Object.values(commit48).forEach(n => addNodes([n], 'commit48'));
 if (choice47 && !choice47.__evalError) Object.values(choice47).forEach(n => addNodes([n], 'choice47'));
 

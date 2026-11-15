@@ -6,7 +6,7 @@
   （dlg106ResolveCategory：beat emotion 欄 → 嵌入 map → 關鍵詞分類器，經 node 實跑），
   加來源可達性：
     LIVE beats（非 resultBeats）→ 生；ENC 巧遇 → 生；
-    pack 節點未被 spine 覆寫（C6–C17 主幹＋R_lan_* 覆寫集之外）→ 生；
+    pack 節點（主幹由 JSON 直出；R_lan_* 覆寫集之外）→ 生；
     NPC_LINES_CORE／NPC_TIER_LINES（傾談 modal 靜態 bust，唔行 dlg106 loader）→ 死；
     cast_main.json（index.html 出現 0 次，從未載入）→ 死；
     gift_react（reactionLine 只出純文字 <p>，冇圖）→ 死；
@@ -140,13 +140,11 @@ def top_level_keys(obj_src):
     return keys
 
 OVERRIDE = set()
-for const_name in ["STORY_SPINE_NODES_1989", "STORY_SPINE_NODES_1990",
-                   "STORY_SPINE_NODES_C6", "ROMANCE_LAN_PA_OVERRIDES"]:
-    blk = extract_const_block(const_name)
-    ks = top_level_keys(blk)
-    OVERRIDE |= set(ks)
-    print(f"override {const_name}: {sorted(ks)}")
-OVERRIDE.add("C17")
+# v20a234：內嵌主線覆寫表已刪，pack 節點全部由 JSON 直出、唔再被覆寫；
+# 剩低嘅覆寫集只有藍 PA 化（ROMANCE_LAN_PA_OVERRIDES：R_lan_* 五節點）。
+blk = extract_const_block("ROMANCE_LAN_PA_OVERRIDES")
+if blk is not None:
+    OVERRIDE |= set(top_level_keys(blk))
 print("OVERRIDE set:", sorted(OVERRIDE))
 
 # text -> list of occurrence dicts

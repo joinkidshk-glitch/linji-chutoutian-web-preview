@@ -1,5 +1,6 @@
 // WEAVE_PHASE4_10 邏輯測試（v20a33）：結局系統。
-// 行真路徑——STORY_SPINE_NODE_N17_410 覆寫（applyStorySpineOverrides410 套落真 pack nodes）
+// 行真路徑——JSON pack N17 前夕節點（v20a234：內嵌覆寫表已刪，N17 由 pack 直出，唯一來源）
+// ＋ ending410EveNode 動態重建（beats 加料＋choices 由 endingEveOptions410 生成）
 // → StoryOC.listOpen 真閘（STORY_GATE_3Y N17：N16 done＋1992 冬）→ ending410EveNode 動態重建
 // （choices＝endingEveOptions410 相鄰規則）→ StoryOC.applyChoice 真寫入
 // → ending410AfterEveChoice 真組裝（resolveEnding410 判定＋S.ending410 落檔＋modal 逐頁呈現）。
@@ -9,7 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-const pack = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_n1_to_n17.json'), 'utf8'));
+const pack = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'story_detail_n1_to_n17.json'), 'utf8'));
 const romVHC = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_romance_vera_hiu_choi.json'), 'utf8'));
 const romLX = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_romance_lan_xu.json'), 'utf8'));
 
@@ -131,7 +132,6 @@ const SRC = [
   extractFn('function end229AddWrap'),
   extractFn('function resolveEnding410'),
   extractFn('function endingEveOptions410'),
-  extractFn('function applyStorySpineOverrides410'),
   extractFn('function ending410EveNode'),
   extractFn('function endingEsc410'),
   extractFn('function endingCareerScene410'),
@@ -167,7 +167,6 @@ const SRC = [
   extractConst('ENDING410_EXODUS_NAME_FALLBACK'),
   extractConst('ENDING410_NPC_NAMES'),
   extractConst('ENDING410_CHOICE_IDS'),
-  extractConst('STORY_SPINE_NODE_N17_410'),
   extractConst('ENDING410_ADJ_RUMOR'),
   /* v20a136：awardResolved 檢查行真 awardsGetFlag（＋ensureAwardsFlags／awardsFlagKey），唔 stub */
   extractFn('function ensureAwardsFlags'),
@@ -200,7 +199,6 @@ const SRC = [
  .replace('const ENDING410_EXODUS_NAME_FALLBACK =', 'var ENDING410_EXODUS_NAME_FALLBACK =')
  .replace('const ENDING410_NPC_NAMES =', 'var ENDING410_NPC_NAMES =')
  .replace('const ENDING410_CHOICE_IDS =', 'var ENDING410_CHOICE_IDS =')
- .replace('const STORY_SPINE_NODE_N17_410 =', 'var STORY_SPINE_NODE_N17_410 =')
  .replace('const ENDING410_ADJ_RUMOR =', 'var ENDING410_ADJ_RUMOR =')
  .replace('const START =', 'var START =')
  .replace('const BehaviorGate =', 'var BehaviorGate =')
@@ -208,7 +206,7 @@ const SRC = [
 eval(SRC);
 var displayDateObj = function(){ return dateObj(); };
 
-ok('harness: 結局系統函數載入', typeof resolveEnding410 === 'function' && typeof endingEveOptions410 === 'function' && typeof applyStorySpineOverrides410 === 'function');
+ok('harness: 結局系統函數載入', typeof resolveEnding410 === 'function' && typeof endingEveOptions410 === 'function' && typeof ending410EveNode === 'function');
 
 function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1990, 0, 1)) / 86400000); }  // v20a136：epoch 跟真 START 1990-01-01（舊 1990-03-07 令 week 短 9）
 function baseSave(over){
@@ -226,8 +224,6 @@ function loadGame(save){
   STORY_WIRE.main = JSON.parse(JSON.stringify(pack));
   STORY_WIRE.romance.veraHiuChoi = JSON.parse(JSON.stringify(romVHC));
   STORY_WIRE.romance.lanXu = JSON.parse(JSON.stringify(romLX));
-  const r = applyStorySpineOverrides410();
-  if(!(r && r.ok && r.main === 1)) throw new Error('4-10 覆寫應替換 1 個（N17），實際 ' + JSON.stringify(r));
   StoryOC.ensure();
   return S;
 }
@@ -333,7 +329,7 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
   ok('差一步門檻：rel 3 <4 → solo', r2.romance.kind === 'solo');
 }
 
-/* ================= (b) 觸發閘＋覆寫 ================= */
+/* ================= (b) 觸發閘＋pack N17 ================= */
 {
   loadGame(baseSave({ dayIndex: dayIndexOf(1991, 12, 15), story: { flags: {}, rel: {}, done: { N16: true }, choices: {} } }));
   ok('閘：1991 冬（yearEq 唔中）→ N17 唔開', !openIds().includes('N17'));
@@ -344,11 +340,11 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
   loadGame(baseSave({ story: { flags: {}, rel: {}, done: { N16: true }, choices: {} } }));
   ok('閘：1992 冬＋N16 done 但台慶未有結果 → N17 唔開（v20a136 awardResolved）', !openIds().includes('N17'));
   const n = node('N17');
-  ok('覆寫：N17 係「三年收科」＋locId tvb_longmen＋有 playerOffer', n.title === '三年埋單' && n.locId === 'tvb_longmen' && !!n.playerOffer);
-  ok('覆寫：舊十檔清零（冇 endingId choices／冇 E01 字串／冇 ending_e 旗）',
+  ok('N17 由 pack 直出：係「三年收科」＋locId tvb_longmen＋有 playerOffer', n.title === '三年埋單' && n.locId === 'tvb_longmen' && !!n.playerOffer);
+  ok('舊十檔清零（冇 endingId choices／冇 E01 字串／冇 ending_e 旗）',
      (n.choices || []).every(c => !c.endingId) && !JSON.stringify(n).includes('E01') && !JSON.stringify(n).includes('ending_e'));
-  const r2 = applyStorySpineOverrides410();
-  ok('覆寫冪等：再套一次 main=1、標題不變', r2.main === 1 && node('N17').title === '三年埋單');
+  ok('N17 pack 靜態 choices 係保底兩則（natural／quit_job）',
+     JSON.stringify((n.choices || []).map(c => c.ending410Key)) === '["natural","quit_job"]');
 }
 
 /* ================= (c) 相鄰規則 ================= */

@@ -18,6 +18,10 @@ import io, json, os, re, sys
 html_path = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), '..', 'index.html')
 root = os.path.dirname(os.path.abspath(html_path))
 html = io.open(html_path, encoding='utf-8').read()
+# v20a234：內嵌主線表已刪，N10 兩句嘅正本而家係 JSON pack。
+pack = json.load(io.open(os.path.join(root, 'content', 'story_detail_n1_to_n17.json'), encoding='utf-8'))
+n10 = next((n for n in pack['nodes'] if n.get('id') == 'N10'), None)
+n10_text = json.dumps(n10, ensure_ascii=False) if n10 else ''
 lines = html.split('\n')
 fails = []
 def ok(name, cond):
@@ -27,8 +31,8 @@ def ok(name, cond):
 # (1) B-10
 ok('B10 茶水芬姐清零', '茶水芬姐' not in html)
 ok('B10 茶水檔芬姐清零', '茶水檔芬姐' not in html)
-ok('B10 珍姐 N10 糧單句', '茶水珍姐個仔開學要交學費' in html)
-ok('B10 珍姐 N10 糖水句', '珍姐那天還特意留了一碗糖水給他' in html)  # v233 RW-2：第二人稱→第三人稱（「給你」→「給他」），糖水句本身不變
+ok('B10 珍姐 N10 糧單句', '茶水珍姐個仔開學要交學費' in n10_text)
+ok('B10 珍姐 N10 糖水句', '珍姐那天還特意留了一碗糖水給他' in n10_text)  # v233 RW-2：第二人稱→第三人稱（「給你」→「給他」），糖水句本身不變
 ok('B10 珍姐 醫院糖水句', '茶水檔珍姐唔知喺邊度收到風' in html)
 bad_fen = []
 for i, l in enumerate(lines, 1):
