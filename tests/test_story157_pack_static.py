@@ -32,17 +32,17 @@ ok('nodes[5-16] 同 pristine 一致',
    == 'fa95df5f95980ee4b717fada623962523de07c98d6d96e53eaed1df063c8bf7c')
 
 # --- 標題／setting／synopsis 按設計 ---
-ok('標題 C1-C5 按設計（C5 用 TEXTFIX55 淨化形「辣手問題」）',
+ok('標題 C1-C5 按設計（C5 用 TEXTFIX55 淨化形「辣手問題」；v221 書面語改寫：C1「冇價」→「無價」、C5「嘅」→「的」）',
    [n.get('title') for n in nodes[:5]]
-   == ['第一日：冇價', '後巷聽古', '高俊傑搶鏡', '何生攤記數簿', '采兒嘅辣手問題'])
+   == ['第一日：無價', '後巷聽古', '高俊傑搶鏡', '何生攤記數簿', '采兒的辣手問題'])
 ok('setting 按設計',
    [n.get('setting') for n in nodes[:5]]
    == ['何生事務所', '片場後巷／附近茶餐廳', '星河片場廠景／休息角／茶水間',
        '何生事務所', '片場休息角小訪桌（摺椅、筆記本），秋日午後'])
 ok('synopsis 係設計首段（唔含「現行…」DEV 段落／N-code）',
    all('現行' not in n.get('synopsis', '') for n in nodes[:5])
-   and '上一幕教佢「冇價」' in nodes[1].get('synopsis', '')
-   and '第一日出現過嘅記數簿' in nodes[3].get('synopsis', ''))
+   and '上一幕教他「冇價」' in nodes[1].get('synopsis', '')
+   and '第一天出現過的記數簿' in nodes[3].get('synopsis', ''))
 
 # --- beats：設計 Beat 1-5 按講者分拆（設計 script beat 8/8/8/8/9；引擎 beat 數見 manifest） ---
 ok('beats 數 C1-C5', [len(n['beats']) for n in nodes[:5]] == [16, 9, 10, 11, 9])
@@ -140,8 +140,8 @@ ok('resultBeats beat 數',
 ok('resultBeats 行數',
    [[sum(len(r['lines']) for r in c['resultBeats']) for c in n['choices']] for n in nodes[:5]]
    == [[7, 6], [6, 5], [5, 5], [5, 5], [5, 5, 5]])
-CLOSING = {'C1': '保母車', 'C2': '摺凳上面坐住嗰個', 'C3': '報紙會連載',
-           'C4': '呢行人人都有本數', 'C5': '週刊'}
+CLOSING = {'C1': '保母車', 'C2': '摺凳上坐著的那個', 'C3': '報紙會連載',
+           'C4': '這一行人人都有本數', 'C5': '週刊'}
 for n in nodes[:5]:
     ok('%s 每個 choice 嘅 resultBeats 尾段有 Beat 7 收尾' % n['id'],
        all(CLOSING[n['id']] in json.dumps(c['resultBeats'], ensure_ascii=False)

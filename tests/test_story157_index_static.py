@@ -164,31 +164,31 @@ def blob(node):
     return json.dumps(node, ensure_ascii=False)
 
 
-ok("C6 標題＋synopsis 新寫", TC6["C6"]["title"] == "角落嗰張枱"
-   and "每集都 call 你" in TC6["C6"]["synopsis"] and "一簽一季" not in blob(TC6["C6"]))
-ok("C6F 標題＋synopsis 同 C6 一致", TBR89["C6F"]["title"] == "角落嗰張枱"
+ok("C6 標題＋synopsis 新寫", TC6["C6"]["title"] == "角落那張桌子"
+   and "每集都找你" in TC6["C6"]["synopsis"] and "一簽一季" not in blob(TC6["C6"]))
+ok("C6F 標題＋synopsis 同 C6 一致", TBR89["C6F"]["title"] == "角落那張桌子"
    and TBR89["C6F"]["synopsis"] == TC6["C6"]["synopsis"])
 ok("C6 Beat5 Q1 已潤飾（無 route 旗術語）",
-   "第一日嗰個選擇" in blob(TC6["C6"]) and "route 旗" not in blob(TC6["C6"]))
+   "第一天那個選擇" in blob(TC6["C6"]) and "route 旗" not in blob(TC6["C6"]))
 ok("C7 穿幫修正：暴雨唔係黑雨", "天文台話有暴雨" in blob(T1989["C7"]) and "黑雨" not in blob(T1989["C7"]))
 ok("C11 synopsis＋Beat2 信任代價", "帶眼帶耳" in T1989["C11"]["synopsis"]
-   and "後台啲人望你" in blob(T1989["C11"]))
+   and "後台的人看你的眼神" in blob(T1989["C11"]))
 ok("C8 紙仔係劇本", "紙仔" in blob(T1989["C8"]) and "紙仔就係劇本" in blob(T1989["C8"])
    or "紙仔" in blob(T1989["C8"]))
 ok("C9 顧明輝紅完之後", "紅完之後" in blob(T1989["C9"]) or "紅係" in blob(T1989["C9"]))
-ok("C10 戲路定型＋第一次有個種類", "第一次有個「種類」" in T1989["C10"]["synopsis"])
+ok("C10 戲路定型＋第一次有個種類", "第一次有了「種類」" in T1989["C10"]["synopsis"])
 ok("C15 傷唔係勳章係一筆數", "唔係勳章，係一筆數" in blob(T1990["C15"]))
-ok("C14 挖角潮尾水", "挖角潮打到尾水" in blob(T1990["C14"]) and "白熱化" not in blob(T1990["C14"]))
+ok("C14 挖角潮尾水", "挖角潮打到尾聲" in blob(T1990["C14"]) and "白熱化" not in blob(T1990["C14"]))
 ok("C12 K 房句照用", "首歌唔入 K 房" in blob(T1990["C12"]))
 ok("C16 修音定苦練", "苦練" in blob(T1990["C16"]) and "修音" in blob(T1990["C16"]))
-ok("C13 未揭盅口徑", "出年年初一先上畫" in blob(T1990["C13"]) and "票房要等出年先知" in blob(T1990["C13"]))
+ok("C13 未揭盅口徑", "明年年初一才上映" in blob(T1990["C13"]) and "票房要等明年才知道" in blob(T1990["C13"]))
 ok("C17 會議室場景", "星河電視台會議室" in C17["setting"] and "後台" not in C17["setting"])
-ok("C17 台灣資金風聲照用", "台灣嗰邊啲水，冇以前咁鬆手喇" in blob(C17))
-ok("C17 彩紙仲喺走廊", "彩紙仲喺走廊" in blob(C17))
-ok("C17 synopsis：頒獎禮之後嗰晚", "頒獎禮之後嗰晚" in C17["synopsis"])
+ok("C17 台灣資金風聲照用", "台灣那邊的資金沒有以前那麼寬鬆" in blob(C17))
+ok("C17 彩紙仲喺走廊", "彩紙還在走廊" in blob(C17))
+ok("C17 synopsis：頒獎禮之後嗰晚", "頒獎禮之後那晚" in C17["synopsis"])
 ok("C17 synopsis 無 DEV 註解（舊版文案／重寫）", "舊版文案" not in C17["synopsis"] and "重寫" not in C17["synopsis"])
-ok("C17 最後一則係收尾過場句", "親手圈嗰一格" in C17["beats"][-1].get("lines", [""])[-1]
-   or "親手圈嗰一格" in json.dumps(C17["beats"][-1], ensure_ascii=False))
+ok("C17 最後一則係收尾過場句", "親手圈那一格" in C17["beats"][-1].get("lines", [""])[-1]
+   or "親手圈那一格" in json.dumps(C17["beats"][-1], ensure_ascii=False))
 ok("F4 太空人＋回流零星口吻", "太空人" in blob(F4) and "間中都會聽到" in blob(F4)
    and "呢年開始" not in blob(F4))
 ok("F4 回流句 6 處（3 beats＋3 notes）", blob(F4).count("間中都會聽到") == 6)
@@ -274,7 +274,7 @@ ok("ERA§2 C11 Beat2 降級做口頭提點", "唔係規矩，係呢度嘅做法"
 ok("ERA§2 C11 synopsis 唔再叫規矩", "後台規矩只有一句" not in T1989["C11"]["synopsis"])
 ok("ERA M39「一成」無殘留", "一成" not in blob(F4) and "回流比例" not in blob(F4))
 ok("STORY_HINT_SOFT.C17 會議室",
-   "台慶之後，何生喺會議室等你" in html and "到咗去星河電視台會議室" in html
+   "台慶之後，何生在星河電視台會議室等你" in html and "到了去星河電視台會議室" in html
    and "何生喺後台等你" not in html)
 ok("Q4 endingInserts410 嗰排閒角",
    "電視台飯堂嗰排閒角" in html and "電視台飯堂嗰季閒角" not in html)

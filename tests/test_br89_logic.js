@@ -123,7 +123,7 @@ try{
   ok('C3 抉擇對稱 C6（接＝wealth 1／唔接＝零）', ca.effects.stats.wealth===1 && Object.keys(cb.effects.stats).length===0 && ca.effects.flags[0]==='flag_studio_follow' && cb.effects.flags[0]==='flag_studio_roam');
   ok('C4 注入器存在', html.indexOf('function applyStoryBr89Nodes89(')>=0 && html.indexOf('applyStoryBr89Nodes89()')>=0);
   ok('C5 進度頁有 C6F＋提示表有 C6F', html.indexOf('["C6F",20]')>=0 && html.indexOf('C6F: { playerHint:')>=0);
-  ok('C6 C5 nextHint 已改兩線並陳', html.indexOf('行電影線有「片場跟班」')>=0 && html.indexOf('行電視線先有；係處境劇班底')<0);
+  ok('C6 C5 nextHint 已改兩線並陳', html.indexOf('走電影線有「片場跟班」')>=0 && html.indexOf('行電視線先有；係處境劇班底')<0);
 }catch(e){ ok('C C6F 抽取/執行 ('+e.message+')', false); }
 
 /* ================= (D) 結局呈現回收 ================= */

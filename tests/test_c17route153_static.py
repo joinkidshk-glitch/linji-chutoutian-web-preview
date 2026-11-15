@@ -40,10 +40,10 @@ ok('410 陷阱未郁：when 仲係 1990冬', 'when: "1990冬"' in src)
 ok('410 陷阱未郁：setting／synopsis 仲係 1990 年冬末',
    # v157 重寫改咗 410措辭（後台化妝間→會議室；「台慶頒獎禮之後」→「頒獎禮之後嗰晚」），
    # 斷言跟返 v157 版措辭；v153 冇郁過呢個節點。
-   'setting: "星河電視台會議室；1990 年冬末，冬台慶啱啱完' in src
-   and 'synopsis: "1990 年冬末，頒獎禮之後嗰晚，星河電視台會議室。何生攤開流程表' in src)
+   'setting: "星河電視台會議室；1990 年冬末，冬台慶剛剛完' in src
+   and 'synopsis: "1990 年冬末，頒獎禮之後那晚，星河電視台會議室。何生攤開流程表' in src)
 ok('410 陷阱未郁：lockedHint 仲係 1990 年冬',
-   'lockedHint: "1990 年冬、台慶之後先到呢一晚。未到就照常跑通告；到咗去星河電視台會議室。' in src)
+   'lockedHint: "1990 年冬、台慶之後才到這一晚。未到就照常跑通告；到了去星河電視台會議室。' in src)
 ok('410 locId／STORY_LOC_SOFT C17 仲係 tvb_longmen',
    'locId: "tvb_longmen"' in src and 'C17: "tvb_longmen"' in src)
 slots_path = root / 'content' / 'STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json'

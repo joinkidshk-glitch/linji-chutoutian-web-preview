@@ -45,7 +45,7 @@ for stale in ['賀歲搶位','緋聞公關真假','徐寶珊','聯姻','舊底�
 # ---- C6 對齊 ----
 c6blk = block('const STORY_SPINE_NODES_C6 = {', '/* v20a31 WEAVE_PHASE4_8：藍若曦感情線')
 ok('STORY_SPINE_NODES_C6 defined', bool(c6blk))
-ok('C6 title 角落嗰張枱 + loc tvb_longmen（v157 新標題，舊「飯堂閒角」）', 'title: "角落嗰張枱"' in c6blk and 'locId: "tvb_longmen"' in c6blk)
+ok('C6 title 角落嗰張枱 + loc tvb_longmen（v157 新標題，舊「飯堂閒角」；v221 書面語改寫「角落那張桌子」）', 'title: "角落那張桌子"' in c6blk and 'locId: "tvb_longmen"' in c6blk)
 ok('C6 flags canteen pair', 'flag_canteen_grind' in c6blk and 'flag_canteen_quit' in c6blk)
 ok('C6 no date flags / no rel stats', 'date_' not in c6blk and 'rel_' not in c6blk)
 
@@ -117,7 +117,7 @@ hints = hm.group(1) if hm else ''
 for cid in ['C12','C13','C14','C15','C16']:
     ok('STORY_HINT_SOFT has '+cid, (cid+': { playerHint:') in hints)
 ok('hints free of old C6 date-line title', '首次正式約會對象' not in hints)
-ok('C5 nextHint 兩線並陳（v89 BR89 有意改版：C1 film 支補返 C6F 片場跟班，唔再只提飯堂閒角）', '行電影線有「片場跟班」' in hints and '行電視線有「飯堂閒角」' in hints)
+ok('C5 nextHint 兩線並陳（v89 BR89 有意改版：C1 film 支補返 C6F 片場跟班，唔再只提飯堂閒角）', '走電影線有「片場跟班」' in hints and '走電視線有「飯堂閒角」' in hints)
 
 # ---- 閘不變（4-5 門檻；v20a113 例外：C15 補 needDone C10，見下） ----
 gm = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)

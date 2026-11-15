@@ -117,8 +117,8 @@ strip = func_body_braces(src, 'storySettingStripRoute198')
 ok('C3：head 經 storySettingStripRoute198 出場景行', 'storySettingStripRoute198(n.setting)' in sp)
 ok('C3：helper 剝走「電影線：」同「電視線：」', '.replace(/電影線：/g,"")' in strip and '.replace(/電視線：/g,"")' in strip)
 ok('C3：節點 setting 資料本身唔郁（C6／C6F 原字仲有路線名）',
-   'setting: "星河電視台飯堂 · 1988 年 · 電視線：角落嗰張枱"' in src
-   and 'setting: "獅子山製片廠 · 1988 年 · 電影線：佈景板後面嗰個位"' in src)
+   'setting: "星河電視台飯堂 · 1988 年 · 電視線：角落那張桌子"' in src
+   and 'setting: "獅子山製片廠 · 1988 年 · 電影線：佈景板後面那個位置"' in src)
 ok('C3：幕號行仲喺度（路線名只係由場景行拎走，唔係成個 head 拎走）',
    'sp-act191' in sp and 'storyActLabel(n.id)' in sp)
 

@@ -56,7 +56,7 @@ for m in re.finditer('關海媚', outside):
 chk('KHM outside tables only in QA/registry contexts', ctx_ok)
 chk('KHM cleaner pattern removed (v151)', '"關海媚", "當紅花旦"' not in block)
 # A8: undefined jargon in story hint overrides replaced
-chk('A8 hint overrides natural', outside.count('雙軌總和夠數') == 0 and '聲望同信用總和夠數' in src)
+chk('A8 hint overrides natural', outside.count('雙軌總和夠數') == 0 and '聲望和信用總和足夠' in src)
 # item name unified
 chk('item name unified outside tables', '淡香氛樣品瓶' not in outside and '淡香水試用裝' in outside)
 

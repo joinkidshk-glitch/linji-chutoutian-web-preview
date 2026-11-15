@@ -55,8 +55,8 @@ ok("C17 節點「頒獎禮前夕」只剩對白否定句（v157：何生「唔�
 ok("C17 節點玩家面年份係舊曆 1990（walk +2 → 顯示 1992），無「1992」",
    "1990" in c17 and "1992" not in c17)
 ok("C17 節點係 1990 冬（源頭）＋台慶之後＋散場（v157：場景改會議室，台慶之後＝冬台慶啱啱完）",
-   '"1990冬"' in c17 and "era_1990_winter_finale" in c17 and "冬台慶啱啱完" in c17
-   and "台慶之後，何生喺星河電視台會議室等你" in c17 and "頒獎禮散場" in c17)
+   '"1990冬"' in c17 and "era_1990_winter_finale" in c17 and "冬台慶剛剛完" in c17
+   and "台慶之後，何生在星河電視台會議室等你" in c17 and "頒獎禮散場" in c17)
 ok("C17 節點無「試咪／開場之前」", "試咪" not in c17 and "開場之前" not in c17)
 ok("C17 節點經 years66Walk（1990 源頭先會顯示 1992）",
    "[STORY_SPINE_NODES_1989, STORY_SPINE_NODES_1990, STORY_SPINE_NODE_C17_410" in src

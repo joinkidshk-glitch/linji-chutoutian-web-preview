@@ -36,8 +36,8 @@ ok('B-02: Vera 首句改錄完影', '你今晚錄完影之後，仲要唔要趕�
 
 # 三、C-01/C-04
 ok('C-01: STORY_LOC_SOFT.C4 改 agency_ho', 'C4: "agency_ho", /* v20a98 CONTRA98 C-01' in src)
-ok('C-01: C3 nextHint 改事務所', '開咗先去何生事務所。' in src)
-ok('C-01: C4 lockedHint 改事務所', '開咗再去事務所聽何生講。' in src)
+ok('C-01: C3 nextHint 改事務所', '開啟後先去何生事務所。' in src)
+ok('C-01: C4 lockedHint 改事務所', '開啟後再去事務所聽何生說。' in src)
 ok('C-01: 舊「中環廣告聽何生講」已清走', '去中環廣告聽何生講' not in src)
 ok('C-04: 渡輪燈火 synopsis 值改海港廣播', '": "海港廣播長篇，你飾演渡輪水手「阿海」' in src)
 ok('C-04: 商場歲月 synopsis 值改海港廣播', '": "海港廣播長篇，你飾演百貨少掌櫃「阿邦」' in src)
