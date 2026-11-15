@@ -64,7 +64,7 @@ for key in ['"natural"', '"quit_job"', '"quit_leave"', '"to_backstage"', '"to_su
 ok('E4->E3 eve branch removed (v95 ladder adjacency)', 'base.career==="E4" && endingBackstageClose410(s)' not in opts_blk)
 ok('E2->E3 eve branch retained (v95)', 'base.career==="E2" && endingE3Eligible410(s)' in opts_blk)
 ok('leave_follow gated to E0/E2', 'base.career==="E0" || base.career==="E2"' in opts_blk)
-ok('quit options carry explicit consequence wording', '唔再係呢行嘅人' in opts_blk and '唔再返呢行' in opts_blk)
+ok('quit options carry explicit consequence wording', '不再是這一行的人' in opts_blk and '不再回這一行' in opts_blk)  # v233 RW-2：廣東話→書面語，退圈後果字眼本身不變
 
 # ---- 呈現組裝 ----
 for fn in ['function endingCareerScene410', 'function endingRomanceScene410', 'function endingExodusScene410',

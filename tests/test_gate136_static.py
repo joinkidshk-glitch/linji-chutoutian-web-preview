@@ -65,7 +65,7 @@ ok("N17 pacing.weekMin＝153（章戳約第153週）", "weekMin: 153" in c17)
 ok("結局總結 fallback 改做台慶之後嗰晚（唔經 walk，源頭寫 1992）",
    "台慶之後嗰晚，先係埋單嗰陣" in src and "頒獎禮前夕嗰晚，先係埋單嗰陣" not in src)
 ok("動態重建選項 note 係散場（endingEveOptions410，唔經 walk）",
-   "頒獎禮散場，你企返你企慣嗰個位。" in src)
+   "頒獎禮散場，他站回他站慣的那個位置。" in src)  # v233 RW-2：第二人稱廣東話→第三人稱書面語，「散場」事實不變
 ok("全檔無「頒獎禮開場」", "頒獎禮開場" not in src)
 n1990 = strip_comments(block("const STORY_SPINE_NODES_1990 = {", "/* N6 覆寫"))
 n1990 = n1990.replace("const STORY_SPINE_NODES_1990 = {", "")
@@ -114,8 +114,9 @@ for n in (nodes if isinstance(nodes, list) else []):
         break
 if c17p is None and isinstance(pack, dict):
     c17p = (pack.get("N17") or {})
-ok("pack N17 when／pacing 唔郁（1992收束／W105-108＋weekMin 105）",
-   c17p is not None and "1992收束" in str(c17p.get("when", "")) and (c17p.get("pacing") or {}).get("weekMin") == 105)
+# v233 RW-2：JSON N17 已按內嵌表正本同步（取代死 pack 節點）——when 由舊 pack「1992收束 / W105-108」改做內嵌正本「1990冬」（舊曆，載入 +2 變 1992 冬），pacing.weekMin 由 105 改做 153（同內嵌 N17／STORY_GATE_3Y 一致），prevMain 由 N15 改做 N16。斷言跟正本，唔再釘死 pack 舊值。
+ok("pack N17 when／pacing 跟內嵌正本（1990冬／weekMin 153／prevMain N16）",
+   c17p is not None and "1990冬" in str(c17p.get("when", "")) and (c17p.get("pacing") or {}).get("weekMin") == 153 and (c17p.get("pacing") or {}).get("prevMain") == "N16")
 
 if fails:
     print("FAILURES: " + " | ".join(fails))

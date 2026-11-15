@@ -172,7 +172,7 @@ ok("N6 Beat5 Q1 已潤飾（無 route 旗術語）",
    "第一天那個選擇" in blob(TC6["N6"]) and "route 旗" not in blob(TC6["N6"]))
 ok("N7 穿幫修正：暴雨唔係黑雨", "天文台說有暴雨" in blob(T1989["N7"]) and "黑雨" not in blob(T1989["N7"]))
 ok("N8 synopsis＋Beat2 信任代價", "帶眼帶耳" in T1989["N8"]["synopsis"]
-   and "後台的人看你的眼神" in blob(T1989["N8"]))
+   and "後台的人看他的眼神" in blob(T1989["N8"]))  # v233 RW-2：第二人稱→第三人稱
 ok("N9 紙仔係劇本", "紙仔" in blob(T1989["N9"]) and "紙仔就係劇本" in blob(T1989["N9"])
    or "紙仔" in blob(T1989["N9"]))
 ok("N10 顧明輝紅完之後", "紅完之後" in blob(T1989["N10"]) or "紅係" in blob(T1989["N10"]))
@@ -192,8 +192,8 @@ ok("N17 最後一則係收尾過場句", "親手圈那一格" in N17["beats"][-1
 ok("F4 太空人＋回流零星口吻", "太空人" in blob(F4) and "間中都會聽到" in blob(F4)
    and "呢年開始" not in blob(F4))
 ok("F4 回流句 6 處（3 beats＋3 notes）", blob(F4).count("間中都會聽到") == 6)
-ok("G4 標題＋阿媽文職", G4["title"] == "阿媽煲咗湯" and "表叔喺銀行嗰邊" in blob(G4)
-   and "薦到一份文職" in blob(G4))
+ok("G4 標題＋阿媽文職", G4["title"] == "阿媽煲咗湯" and "表叔在銀行那邊" in blob(G4)
+   and "薦到一份文職" in blob(G4))  # v233 RW-2：廣東話→書面語（「喺銀行嗰邊」→「在銀行那邊」）
 
 # ---- 4. 閘／choice 旗／stats 同 live 一致 ----
 ok("閘 N6/N6F route＋weekMin 15",

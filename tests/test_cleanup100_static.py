@@ -28,7 +28,7 @@ def ok(name, cond):
 ok('B10 茶水芬姐清零', '茶水芬姐' not in html)
 ok('B10 茶水檔芬姐清零', '茶水檔芬姐' not in html)
 ok('B10 珍姐 N10 糧單句', '茶水珍姐個仔開學要交學費' in html)
-ok('B10 珍姐 N10 糖水句', '珍姐那天還特意留了一碗糖水給你' in html)
+ok('B10 珍姐 N10 糖水句', '珍姐那天還特意留了一碗糖水給他' in html)  # v233 RW-2：第二人稱→第三人稱（「給你」→「給他」），糖水句本身不變
 ok('B10 珍姐 醫院糖水句', '茶水檔珍姐唔知喺邊度收到風' in html)
 bad_fen = []
 for i, l in enumerate(lines, 1):

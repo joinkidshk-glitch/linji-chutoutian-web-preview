@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # v20a157 C1-N5 pack 重寫靜態測試（pack 分檔組）。
-# 落點：content/story_detail_n1_to_n17.json nodes[0-4]；nodes[5-16] 一字唔郁。
+# 落點：content/story_detail_n1_to_n17.json nodes[0-4]；nodes[5:]（N6–N19）一字唔郁（v233 起含 N18／N19）。
 # 反證：喺 pristine main（e08a070／v148）pack 上行會 FAIL（標題／beats 數／notes 全唔同），唔 crash。
 # 用法：python3 tests/test_story157_pack_static.py [path-to-pack-json]
 import hashlib
@@ -21,17 +21,18 @@ def ok(name, cond):
 
 
 nodes = pack.get('nodes', [])
-ok('pack 有 17 個 nodes', len(nodes) == 17)
+ok('pack 有 19 個 nodes', len(nodes) == 19)  # v233 RW-2：N18／N19 新增（內嵌 WF1 表同步入 pack）
 ok('pack version 不變', pack.get('version') == '1.2.8')
 ok('nodes[0-4] 係 N1-N5', [n.get('id') for n in nodes[:5]] == ['N1', 'N2', 'N3', 'N4', 'N5'])
 
 # --- nodes[5-16] 死版一字唔郁（pristine main e08a070 嘅 sha；v217 語言審核改咗 N6+ 節點文字，sha 重算；
 #      v20a210 編號統一 C→N 純改名，79 行逐行核實全部只係 C<n>→N<m> 對照改名，sha 再重算；
-#      v20a231 RW-1 逐句重寫 N6–N9（87 處 JSON 改動，N10–N17 一字未郁），sha 再重算） ---
+#      v20a231 RW-1 逐句重寫 N6–N9（87 處 JSON 改動，N10–N17 一字未郁），sha 再重算；
+#      v20a233 RW-2 逐句重寫 N6–N19 內嵌表＋同步返 JSON（N6–N17 取代死 pack 節點、新增 N18／N19），sha 再重算） ---
 tail = json.dumps(nodes[5:], sort_keys=True, ensure_ascii=False)
 ok('nodes[5-16] 同 pristine 一致',
    hashlib.sha256(tail.encode('utf-8')).hexdigest()
-   == 'fa09c15b499866c1ae9a8c019e37c7ba125946feadef9ed1b4330c7498504416')
+   == '1be6aa08d6574537f8c6b209b41045f4efe09ec1f692a6f6028932860a8c12b7')
 
 # --- 標題／setting／synopsis 按設計 ---
 ok('標題 N1-N5 按設計（N5 用 TEXTFIX55 淨化形「辣手問題」；v221 書面語改寫：N1「冇價」→「無價」、N5「嘅」→「的」）',
