@@ -170,3 +170,10 @@
     FAIL 清單以重跑為準（`cd ""` 喺呢個 bash 係 no-op exit 0，所以第一次計數本身
     係喺正確目錄跑出嚟嘅，但逐行紀錄已失，唔作準）。
 - **未落地**：無 push、無 merge、無刪工作副本；等統籌落地。
+
+## §8 落地核實（2026-11-15）
+
+- **落地**：squash merge `v20a223` → main，commit `91e6365`，已 push（`cb4ea21..91e6365 main -> main`）；`git fsck` 無異常。
+- **線上核實**：`curl` https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/index.html ＝ **5,572,129 bytes、sha1 `9dada4c95e0dd548c53ba46da30cc9369d2e3a68`**，同 `git show HEAD:index.html` 完全一致，部署已生效。
+- **落地次序說明**：本票以 v223 落地；v222 另一票（`linji-work222`）落地嗰陣仍在途，落地次序將會係 v221 → v223 → v222（編號同落地次序輕微錯位，係平行票競爭所致，內容無影響）。
+- **工作副本**：`git worktree remove ~/workspace/linji-work219`＋刪分支 `v20a223`，落地即清（見跟進 commit）。
