@@ -111,7 +111,7 @@ ok('B06 standup 版開場', guRun().indexOf('你企出嚟幫成組人出聲之�
 S = freshS(100); S.flags.done_C9 = 1; S.flags.flag_mediate_gu_debt = 1;
 ok('B06 mediate 版開場', guRun().indexOf('幫顧明輝同何生爭取到分期之後') >= 0);
 S = freshS(100); S.flags.done_C9 = 1; S.flags.flag_chase_for_ho = 1;
-ok('B06 chase 版原句', guRun().indexOf('追數嗰場風波過咗之後') >= 0);
+ok('B06 chase 版原句', guRun().indexOf('追數那場風波過了之後') >= 0);
 S = freshS(100); S.flags.done_C9 = 1;
 ok('B06 無旗中性版', guRun().indexOf('嗰排台慶前後嘅事過咗之後') >= 0);
 
