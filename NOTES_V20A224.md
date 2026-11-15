@@ -23,9 +23,14 @@
 - **實駕**（Playwright headless，390×844，http.server）：新開局載入 **零 pageerror**；① C11 抉擇掣 live PASS——`StoryPlay.start("C11", {force:true})` 行到抉擇屏，第一掣「掩護佳麗：擋開記者，送她入更衣室…」（舊句「送佢入更衣室」0 處）；② gift unmet live PASS——`GiftShop.canGive("hiu")` 同 `("choi")` 皆回 `{ok:false, reason:"需要先完成對應的相遇劇情，或與對方成功傾談一次。"}`；③ R_hiu_meet——見 §4（瀏覽器環境故障，改用 Node 驗證真函數＋真數據 PASS）。
 - **diff**：`index.html` 108 行（54 舊／54 新；實質 58 句 index 改寫＋2 鏡像）＋3 個 JSON＋2 個測試檔；`index.html` 5,570,610 → **5,570,727 bytes**（＋117，淨新舊句長度差）。
 
-## §3 落地
+## §3 落地（2026-11-15，收尾工人補）
 
-- （落地後補：main HEAD、push、線上 bytes／sha、抽查。）
+- **核實重跑**：recount v4.1 GRAND **100／42**（P1 0／0、P2 35／23、P3 62／19、P3* 3／0；G1 echo 1 entry／5 markers；G10 簡體 0），同 §2 預期逐項一致。grep：「點頭話你」0／0、「call 他」0／0、新 unmet 句 index.html 2 處＋gift JSON 1 處、舊 unmet／舊 call 句 0 處、「今天沒有人傳呼他」story_detail 2 處。語法：2 個 inline script 塊（共 4,492,860 字元）vm.Script 全部 SYNTAX-OK，3 個 JSON 有效；index.html 5,570,727 bytes。
+- **全套 suite B**：in-memory runner **301／21**；13 項 pre-existing FAIL 同基線逐項一致（flash51／giglib36／pacing35／poster59／rumor49／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wf5_87／wrap38）。多出嘅 8 項（bust109／dlg107／dlg119／dlg123／dlg126／dlg127／dlg138／story157）全部係**環境假失敗**，唔係回歸：8 個檔全部用 `tempfile.mkdtemp`，全部死喺 `_get_default_tempdir` probe（沙箱寫入限速 EPERM），未讀到任何 repo 內容就已經 FAIL；預設 `tempfile.tempdir` 之後 story157 行到下一步先再 EPERM 死喺寫 temp 檔。wf4_206（另一更新 pin）PASS；story157 更新 pin 句「天文台說有暴雨」index.html 內 1 處、舊句 0 處。結論：內容真實結果 **309／13 零回歸**（同 §2 前工人第二跑一致）。
+- **實駕**：Chromium 仍 SIGTRAP（兩次嘗試：Playwright 預設路徑版本不符＋明確路徑 `chrome-headless-shell` SIGTRAP，同 §4 環境故障一致），按 brief 停手，沿用前工人實駕證據（C11＋gift PASS）。R_hiu_meet 用 `/tmp/verify_rhiu.js`（Node vm）**重跑 PASS**（第 8 行新句在位）。
+- **落地**：main 落地嗰陣仍係 `9ce1f4e`，唔使 rebase。分支 commit `0e34da3` → checkout main → `git merge --squash v20a224` → main commit **`2ae46c0`**（訊息同分支 commit）→ `git push origin main`（`9ce1f4e..2ae46c0`）。線上核實：`curl` https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/index.html ＝ **5,570,727 bytes、sha1 `3857aed97ce4854391874dbd5c2fec92a9c5eecf`**，同 `git show HEAD:index.html` 完全一致，部署已生效。
+- **落地過程環境問題**：`git add` 初頭連續失敗（`unable to write loose object file: EPERM`；strace 證實 git 嘅 4096-byte write() 被拒；連 8-byte 寫入都失敗，bucket 乾塘）。之後 service 重啟清咗 /tmp（`/tmp/verify_rhiu.js` 等臨時腳本已失，R_hiu 重跑係重啟前做嘅；`run_suite224.py` 等亦失），重啟後寫入限速重置，`git add`／commit／push 全部一次過成功。`.wtest_1601` 全程冇郁。
+- **分支**：本地 `v20a224` 已刪。
 
 ## §4 殘留／跟進
 
