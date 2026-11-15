@@ -141,7 +141,7 @@ ok('resultBeats beat 數',
 ok('resultBeats 行數',
    [[sum(len(r['lines']) for r in c['resultBeats']) for c in n['choices']] for n in nodes[:5]]
    == [[7, 6], [6, 5], [5, 5], [5, 5], [5, 5, 5]])
-CLOSING = {'N1': '保母車', 'N2': '摺凳上坐著的那個', 'N3': '報紙會連載',
+CLOSING = {'N1': '保母車', 'N2': '坐在摺凳上的那個人', 'N3': '報紙會連載',
            'N4': '這一行人人都有本數', 'N5': '週刊'}
 for n in nodes[:5]:
     ok('%s 每個 choice 嘅 resultBeats 尾段有 Beat 7 收尾' % n['id'],
