@@ -170,7 +170,7 @@ ok("C6F 標題＋synopsis 同 C6 一致", TBR89["C6F"]["title"] == "角落那張
    and TBR89["C6F"]["synopsis"] == TC6["C6"]["synopsis"])
 ok("C6 Beat5 Q1 已潤飾（無 route 旗術語）",
    "第一天那個選擇" in blob(TC6["C6"]) and "route 旗" not in blob(TC6["C6"]))
-ok("C7 穿幫修正：暴雨唔係黑雨", "天文台話有暴雨" in blob(T1989["C7"]) and "黑雨" not in blob(T1989["C7"]))
+ok("C7 穿幫修正：暴雨唔係黑雨", "天文台說有暴雨" in blob(T1989["C7"]) and "黑雨" not in blob(T1989["C7"]))
 ok("C11 synopsis＋Beat2 信任代價", "帶眼帶耳" in T1989["C11"]["synopsis"]
    and "後台的人看你的眼神" in blob(T1989["C11"]))
 ok("C8 紙仔係劇本", "紙仔" in blob(T1989["C8"]) and "紙仔就係劇本" in blob(T1989["C8"])

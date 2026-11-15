@@ -91,11 +91,11 @@ for name, q in QUOTED:
 # --- (e) 8 對重寫在位（新場景／新標題／新 choices，舊單原封不動） ---
 ok('1 set32 係暈車（唔再係瞓覺＋傾偈）',
    '外景小巴那個暈車' in chunks.get('wf4_ev_set32', '')
-   and '開窗畀佢吹下風' in chunks.get('wf4_ev_set32', '')
+   and '開窗給他吹吹風' in chunks.get('wf4_ev_set32', '')
    and '瞓陣養足精神' not in chunks.get('wf4_ev_set32', ''))
 ok('1 set48 係爆胎（唔再係傾偈）',
    '外景車半路爆胎' in chunks.get('wf4_ev_set48', '')
-   and '幫手遞工具畀司機' in chunks.get('wf4_ev_set48', '')
+   and '幫忙遞工具給司機' in chunks.get('wf4_ev_set48', '')
    and '同車上面啲人傾偈' not in chunks.get('wf4_ev_set48', ''))
 ok('1 set23 舊單原封不動（對照）',
    '瞓陣養足精神' in chunks.get('wf4_ev_set23', '')
