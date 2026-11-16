@@ -63,13 +63,13 @@ const FN_LIST = ['function dateObj','function calendarSeason','function dualTrac
   'function endingRomance410','function endingE2Eligible410','function endingE3Eligible410','function endingBackstageClose410',
   'function end95GenreOf','function end95IsLead','function end95ClassifyWrap','function end95EmptyStats','function end95StatsAddOne',
   'function end95DeriveStats','function careerStats95Of','function end95AddWrap','function end95Awards','function end95EverHeldCredit',
-  'function end95StoryDone','function end95ChainsDone','function end95PangProgress','function end95E3Variant','function end95BuildGaps',
+  'function end95StoryDone','function end95ChainsDone','function end95SpineDone','function end95PangProgress','function end95E3Variant','function end95BuildGaps',
   'function end229IsLead','function end229ClassifyLead','function end229EmptyLeadStats',
   'function end229DeriveLeadStats','function leadStats229Of','function end229AddWrap',
   'function resolveEnding410','function endingEveOptions410','function endingEsc410','function endingCareerScene410','function endingSummaryHtml410'];
 const CONST_LIST = ['ENDING410_CAREER_NAMES','ENDING410_T','ENDING_NEG_TAGS410','ENDING410_BACKSTAGE_KEYS','ENDING410_EXODUS_NAME_FALLBACK',
   'ENDING410_NPC_NAMES','ENDING95_T','END95_TYPE_MEDIUM','END95_LEAD_SCALES','END95_STRONG_LEAD','END95_GENRE_TYPE_NAMES',
-  'END95_COMEDY_G','END95_ACTION_G','END95_COMEDY_KW','END95_ACTION_KW','ENDING410_ADJ_RUMOR','END229_LEAD_MEDIUM'];
+  'END95_COMEDY_G','END95_ACTION_G','END95_COMEDY_KW','END95_ACTION_KW','ENDING410_ADJ_RUMOR','END229_LEAD_MEDIUM','SPINE95_REQUIRED'];
 let SRC = "var START = { y:1990, m:1, d:1 };\n" + FN_LIST.map(extractFn).join('\n') + '\n' + CONST_LIST.map(extractConst).join('\n');
 CONST_LIST.forEach(n => { SRC = SRC.split('const '+n+' =').join('var '+n+' ='); });
 eval(SRC);
@@ -119,6 +119,10 @@ function canon(o){
   return JSON.stringify(o);
 }
 
+/* v20a249：E1 質性閘 ③ 由主線鏈改做主線脊骨（B-4 讀法甲）——「近乎完美」fixture
+   要行完整條脊骨（N1–N17＋N6 電視線；N6F 電影線二揀一，呢度用 N6）。 */
+const SPINE95_DONE = { N1:true, N2:true, N3:true, N4:true, N5:true, N6:true, N7:true, N8:true, N9:true, N10:true, N11:true, N12:true, N13:true, N14:true, N15:true, N16:true, N17:true };
+
 /* ============ 校準弧 1：正常強弧（fullarc3 正常弧實測錨）→ SS 一線巨星 ============ */
 {
   const st = arc(181, 210, {
@@ -133,7 +137,7 @@ function canon(o){
   });
   const r = R(st);
   ok('弧1 正常強弧：雙軌 391（fame 181／credit 210）', r.snapshot.dual === 391 && r.snapshot.fame === 181 && r.snapshot.credit === 210);
-  ok('弧1：冇獎＋冇鏈 → 落 SS 一線巨星（唔自然上 E1）', r.career === 'SS' && r.ladder95.hasWin === false && r.ladder95.chains.length === 0);
+  ok('弧1：冇獎＋脊骨未行完 → 落 SS 一線巨星（唔自然上 E1）', r.career === 'SS' && r.ladder95.hasWin === false && r.ladder95.chains.length === 0 && r.ladder95.spine95.done === false);
   ok('弧1：差邊瓣第一句講差個獎', /獎/.test(r.gaps95[0] || ''));
 }
 
@@ -146,10 +150,11 @@ function canon(o){
       tvLongLeads: 2, genreIdentified: 36, genreComedy: 9, genreAction: 9 }),
     awardsLog: [{ medium: 'film', categories: [{ id: 'w', outcome: 'won', repTitle: '丙片' }] }],
     wf3: { liaoHarvestDone: 1 },
+    story: { flags: {}, rel: {}, done: SPINE95_DONE, choices: {} },
   });
   const r = R(st);
   ok('弧2 近乎完美弧：雙軌 405 → E1 天王接班', r.career === 'E1' && r.snapshot.dual === 405);
-  ok('弧2：質性閘三件齊（獎／兩媒介擔正／鏈 B）', r.ladder95.hasWin === true && r.ladder95.leadMedia.length === 3 && r.ladder95.chains.join() === 'B');
+  ok('弧2：質性閘三件齊（獎／兩媒介擔正／脊骨行完）', r.ladder95.hasWin === true && r.ladder95.leadMedia.length === 3 && r.ladder95.spine95.done === true && r.ladder95.chains.join() === 'B');
   ok('弧2：E1 差邊瓣＝不差嗰句', r.gaps95.length === 1 && /不差/.test(r.gaps95[0]));
 }
 
@@ -162,6 +167,7 @@ function canon(o){
       tvLongLeads: 2, genreIdentified: 30, genreComedy: 8, genreAction: 8 }),
     awardsLog: [{ medium: 'film', categories: [{ id: 'w', outcome: 'won', repTitle: '丙片' }] }],
     wf3: { liaoHarvestDone: 1 },
+    story: { flags: {}, rel: {}, done: SPINE95_DONE, choices: {} },
   });
   const r350 = R(mk(180));
   ok('E1 邊界：雙軌 350＋全閘 → E1', r350.career === 'E1' && r350.snapshot.dual === 350);
@@ -174,7 +180,7 @@ function canon(o){
       tvLongLeads: 2, genreIdentified: 36, genreComedy: 9, genreAction: 9 }),
     awardsLog: [{ medium: 'film', categories: [{ id: 'w', outcome: 'won', repTitle: '丙片' }] }],
   }));
-  ok('E1 閘拆解：雙軌 405＋獎＋擔正、鏈 0 → SS，差邊瓣講主線未行到尾', rNoChain.career === 'SS' && rNoChain.gaps95.some(g => /主線/.test(g)));
+  ok('E1 閘拆解：雙軌 405＋獎＋擔正、脊骨未行完 → SS，差邊瓣講主線未行到尾', rNoChain.career === 'SS' && rNoChain.gaps95.some(g => /主線/.test(g)));
   const rOneLead = R(arc(190, 215, {
     careerStats95: stats95({ total: 100,
       byMedium: { film: 60, tv: 15, music: 12, variety: 7, ad: 6 },
@@ -186,6 +192,21 @@ function canon(o){
   /* 雙軌 405 本身已過 SS 線（SS 排喺專長格之前，係「未齊 E1 質性閘」嘅頂格）→ 落 SS 而唔係 FK；
      差邊瓣要講明差擔正媒介嗰瓣。 */
   ok('E1 閘拆解：只得一種媒介擔正 → 唔上 E1（落 SS），差邊瓣講擔正', rOneLead.career === 'SS' && rOneLead.gaps95.some(g => /擔正/.test(g)));
+}
+
+/* ============ v20a249：end95SpineDone 單元（讀法甲：17 位置＋N6/N6F 二揀一；N18/N19 唔計） ============ */
+{
+  const full = { N1:true, N2:true, N3:true, N4:true, N5:true, N6:true, N7:true, N8:true, N9:true, N10:true, N11:true, N12:true, N13:true, N14:true, N15:true, N16:true, N17:true };
+  const spineOf = (done) => end95SpineDone(baseSave({ story: { flags: {}, rel: {}, done: done, choices: {} } }));
+  ok('spine：全齊（電視線 N6）→ done', spineOf(full).done === true && spineOf(full).missing.length === 0);
+  const film = Object.assign({}, full, { N6: false, N6F: true });
+  ok('spine：電影線（得 N6F、冇 N6）→ done', spineOf(film).done === true);
+  const noN9 = Object.assign({}, full); delete noN9.N9;
+  ok('spine：漏 N9 → 唔 done，missing 列 N9', spineOf(noN9).done === false && spineOf(noN9).missing.join() === 'N9');
+  const noN6 = Object.assign({}, full); delete noN6.N6;
+  ok('spine：N6＋N6F 皆無 → 唔 done，missing 列 N6/N6F', spineOf(noN6).done === false && spineOf(noN6).missing.join() === 'N6/N6F');
+  ok('spine：乜都冇 → 唔 done', spineOf({}).done === false && spineOf({}).missing.length === 17);
+  ok('spine：清單係 16 項＋N6/N6F（N18/N19 唔計）', SPINE95_REQUIRED.length === 16 && SPINE95_REQUIRED.indexOf('N18') < 0 && SPINE95_REQUIRED.indexOf('N19') < 0);
 }
 
 /* ============ 校準弧 3：電影專長弧 → FK 影壇天王 ============ */

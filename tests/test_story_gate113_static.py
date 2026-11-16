@@ -43,6 +43,29 @@ def hook_ok(s):
 ok('storyGate113Scrub 函數在位', 'function storyGate113Scrub(o, gate){' in src)
 ok('接線：normalizeSaveObj 內 scrub 在 calib60 之前、冇遷移呼叫（v228）', hook_ok(src))
 
+# --- 四、v20a249 LIVE tip：evalNode 唔再以 gatePath() 閘住 stub 分支；sentinel 回 false ---
+def evalnode_seg(s):
+    i = s.find('function evalNode(node, opts){')
+    j = s.find('function iterNodes(){', i)
+    return s[i:j if j > 0 else len(s)]
+ev = evalnode_seg(src)
+ok('v249 LIVE tip：evalNode 有 live 路徑（coversNode 即行 stub trigger，唔查 gatePath）',
+   '} else if(typeof BehaviorGate!=="undefined" && BehaviorGate.coversNode(node)){' in ev
+   and 'return BehaviorGate.evalTrigger_AND_softRumor(node, opts);' in ev)
+ok('v249 LIVE tip：Deng 守衛維持喺 soft 分支（唔郁）',
+   'BehaviorGate.gatePath()==="soft"' in ev)
+def livefn_seg(s):
+    i = s.find('function liveWeekGateStillActive(){')
+    return s[i:i+600]
+ok('v249 LIVE tip：liveWeekGateStillActive() 回 false', 'return false;' in livefn_seg(src))
+ok('v249 GRANT229：N4 收窄到 N4_b、N18 收窄到 N18_a、N5:* 不動',
+   '"N4:N4_b":' in src and '"N18:N18_a":' in src and '"N5:*":' in src
+   and '"N4:*":' not in src and '"N18:*":' not in src)
+ok('v249 E1：end95SpineDone 在位＋e1Qual95 用 spine95.done',
+   'function end95SpineDone(st){' in src and 'leadMedia95.length >= 2 && spine95.done' in src)
+ok('v249 E1：snapshot／ladder95 有 spine95',
+   'spine95: { done: spine95.done, missing: spine95.missing.slice() }' in src)
+
 # --- 反證 ---
 mut = src.replace('N18: { needDone: ["N5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] }',
                   'N18: { yearMin: 1990, seasonIn: ["冬"] }', 1)

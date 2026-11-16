@@ -137,15 +137,11 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   eval(SRC);
   ok('b0 harness: BehaviorGate loaded', typeof BehaviorGate === 'object' && typeof BehaviorGate.progressToward === 'function');
 
-  const load = BehaviorGate.loadStub_nodes_trigger({
-    stubRev: 'v1.3.0-full-literal-or', liveWeekGateStillActive: true, tipForbidden: true,
-    engineSlice: { flags: { liveWeekGateStillActive: true, tipForbidden: true, rivalGaoMixC5: false, change89to92: false },
-      iosSoftHooks: [1,2,3,4,5,6,7] },
-    nodes: [ { beatId:'N2', id:'N2', title:'留人脈／趕通告',
-      trigger: { needDone:['N1'], weekMin:4, gigCountMin:3,
-        rumorAny:['tvb_rules_gossip'], locIdAny:['tvb_longmen','cafe_cha'] } } ]
-  });
-  ok('b1 stub ingested', !!load.ok);
+  /* v20a249：讀真 stub file，唔再手寫 inline copy（免 drift；舊 inline 係盤點誤判根源之一）。 */
+  const stubReal = JSON.parse(fs.readFileSync(require('path').join(__dirname, '..', 'content', 'SANDBOX_BEHAVIOR_GATE_N1_N5_SOFT_STUB_v1.json'), 'utf8'));
+  const load = BehaviorGate.loadStub_nodes_trigger(stubReal);
+  ok('b1 stub ingested (real file)', !!load.ok);
+  ok('b1b real stub has N1–N5', load.n === 5);
 
   S = { dayIndex: 8, fame: 0, stage: 0, acting: 0, stress: 0, industryCreditDelta: 0,
     castingTags: [], mockDebts: [], mockRumors: [], wrapHistory: [], flags: {}, npcs: {},
@@ -163,6 +159,30 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   const lock = BehaviorGate.lockedCopy_noEngineeringTerms({ beatId:'N2' });
   ok('b6 lock line names exact ask actions',
      lock.indexOf('未聽聞「電視城廠景生存守則」（去金龍茶餐廳「打聽電視城規矩」或去何生事務所「請教何生入廠守則」）') >= 0);
+
+  /* v20a249 LIVE tip：flag off（location.search=""）嗰陣，N1–N5 一樣行 stub trigger
+     （evalNode 唔再查 gatePath）。呢度用 opts.ctx 明確傳入狀態，直接驗評估器。 */
+  ok('b7 coversNode: N2/N5 covered, N6 not', BehaviorGate.coversNode({ id:'N2' }) === true && BehaviorGate.coversNode({ id:'N5' }) === true && BehaviorGate.coversNode({ id:'N6' }) === false);
+  const ctxN2 = { week:4, dayIndex:30, lastMainDoneDay:20, atLoc:'tvb_longmen', done:{ N1:true }, gigCount:3, rumors:['tvb_rules_gossip'] };
+  ok('b8 live-path N2: gigCount 3 + heard rumor passes (flag off)',
+     BehaviorGate.evalTrigger_AND_softRumor('N2', { ctx: ctxN2 }).ok === true);
+  ok('b9 live-path N2: gigCount 2 fails',
+     BehaviorGate.evalTrigger_AND_softRumor('N2', { ctx: Object.assign({}, ctxN2, { gigCount:2 }) }).ok === false);
+  ok('b10 live-path N2: no rumor fails',
+     BehaviorGate.evalTrigger_AND_softRumor('N2', { ctx: Object.assign({}, ctxN2, { rumors:[] }) }).ok === false);
+  const ctxN3 = { week:6, dayIndex:30, lastMainDoneDay:20, atLoc:'tvb_longmen', done:{ N2:true }, rumors:['gao_steal_spotlight'], fame:15 };
+  ok('b11 live-path N3: fame 15 fails (need >15)',
+     BehaviorGate.evalTrigger_AND_softRumor('N3', { ctx: ctxN3 }).ok === false);
+  ok('b12 live-path N3: fame 16 passes',
+     BehaviorGate.evalTrigger_AND_softRumor('N3', { ctx: Object.assign({}, ctxN3, { fame:16 }) }).ok === true);
+  const ctxN5 = { week:36, dayIndex:250, lastMainDoneDay:240, atLoc:'cafe_cha', done:{ N4:true }, rumors:['choi_recent_news'], season:'秋' };
+  ok('b13 live-path N5: autumn + seed passes, no carve-out (seasonAny matches P-01)',
+     BehaviorGate.evalTrigger_AND_softRumor('N5', { ctx: ctxN5 }).ok === true);
+  ok('b14 live-path N5: summer fails',
+     BehaviorGate.evalTrigger_AND_softRumor('N5', { ctx: Object.assign({}, ctxN5, { season:'夏' }) }).ok === false);
+  ok('b15 live-path N5: no seed fails',
+     BehaviorGate.evalTrigger_AND_softRumor('N5', { ctx: Object.assign({}, ctxN5, { rumors:[] }) }).ok === false);
+  ok('b16 LIVE tip sentinel false', BehaviorGate.liveWeekGateStillActive() === false);
 })();
 
 /* ================================================================

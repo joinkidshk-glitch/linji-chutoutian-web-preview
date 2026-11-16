@@ -120,6 +120,7 @@ const SRC = [
   extractFn('function end95EverHeldCredit'),
   extractFn('function end95StoryDone'),
   extractFn('function end95ChainsDone'),
+  extractFn('function end95SpineDone'),
   extractFn('function end95PangProgress'),
   extractFn('function end95E3Variant'),
   extractFn('function end95BuildGaps'),
@@ -161,6 +162,7 @@ const SRC = [
   extractConst('END95_ACTION_G'),
   extractConst('END95_COMEDY_KW'),
   extractConst('END95_ACTION_KW'),
+  extractConst('SPINE95_REQUIRED'),
   extractConst('END229_LEAD_MEDIUM'),
   extractConst('ENDING_NEG_TAGS410'),
   extractConst('ENDING410_BACKSTAGE_KEYS'),
@@ -375,14 +377,16 @@ function eveKeys(over){
   const keys6 = eveKeys({ fame: 10, story: { flags: { flag_leave_mind: true }, rel: {}, done: {}, choices: {} } });
   ok('v235：leave_mind＋E0 → 唔出 leave_follow，只留 quit_leave（走）', !keys6.includes('leave_follow') && keys6.includes('quit_leave'));
   /* v20a235：leave_follow 成個刪除——下面 E1 狀態只係覆核「任何狀態都有 natural＋quit_job、
-     冇 leave_mind 就唔出 quit_leave」，唔再係 leave_follow 嘅出唔出前提。 */
+     冇 leave_mind 就唔出 quit_leave」，唔再係 leave_follow 嘅出唔出前提。
+     v20a249：呢個 fixture 嘅 story.done 係空，E1 質性閘 ③（主線脊骨）唔齊，嚴格講唔係「真 E1」；
+     選項生成唔讀 career，所以斷言不變，只改註解，唔好將佢當 E1 狀態用。 */
   const keys7 = eveKeys({ fame: 200, industryCreditDelta: 110,
     awardsLog: [{ medium: 'film', categories: [{ id: 'best', outcome: 'won', repTitle: '某片' }] }],
     careerStats95: { total: 40, byMedium: { film: 20, tv: 20, music: 0, variety: 0, ad: 0 }, leadByMedium: { film: 2, tv: 1, music: 0, variety: 0, ad: 0 }, tvLongLeads: 1, genreIdentified: 0, genreComedy: 0, genreAction: 0, backstageWorks: 0 },
     /* v20a229 B4：E1 擔正讀新計數器——fixture 要帶埋 leadStats229（同舊計數器一致） */
     leadStats229: { byMedium: { film: 2, tv: 1, music: 0, variety: 0, ad: 0 } },
     story: { flags: { flag_leave_mind: true }, rel: {}, done: {}, choices: {} } });
-  ok('v235：leave_mind＋真 E1（v95 質性閘全齊）→ 選項得返 natural／quit_job／quit_leave 三則', JSON.stringify(keys7) === '["natural","quit_job","quit_leave"]');
+  ok('v235：leave_mind＋高數值狀態 → 選項得返 natural／quit_job／quit_leave 三則', JSON.stringify(keys7) === '["natural","quit_job","quit_leave"]');
   ok('相鄰：任何狀態都有 natural＋quit_job', keys7.includes('natural') && keys7.includes('quit_job'));
   ok('相鄰：冇 leave_mind → 唔出 quit_leave', !eveKeys({ fame: 10 }).includes('quit_leave'));
 }

@@ -7777,9 +7777,10 @@ const StoryOC = (()=>{
       }
     }catch(_g3){}
     /* One switch. gatePath() calls featureFlag_softBehaviorGatePreview only — no second query/localStorage parse.
-       "soft": N1–N5 stub trigger/evalOrder, plus the existing Deng guards in this block.
-       "live" (flag off, or BehaviorGate missing): fall through to the LIVE week-gate below (openConditions / pacing.weekMin).
-       liveWeekGateStillActive() stays true on both paths until an explicit LIVE tip. Soft off does not inject softSeed. */
+       v20a249 LIVE tip (D8)：N1–N5 stub trigger 正式做 live——stub 已載入（coversNode）即行
+       evalTrigger_AND_softRumor，唔再查 gatePath()。soft flag 只留作測試開關。
+       "live"（stub 未載入／N6–N19）：跌返下面嘅 LIVE week-gate（openConditions / pacing.weekMin）。
+       liveWeekGateStillActive() 自 v249 起回 false。Soft off does not inject softSeed. */
     try{
       if(typeof BehaviorGate!=="undefined" && BehaviorGate.gatePath()==="soft"){
         if(typeof DengLine!=="undefined" && DengLine.isPush && DengLine.isPush(node)){
@@ -7791,6 +7792,10 @@ const StoryOC = (()=>{
           return BehaviorGate.heldEval(node);
         }
         if(BehaviorGate.coversNode(node)) return BehaviorGate.evalTrigger_AND_softRumor(node, opts);
+      } else if(typeof BehaviorGate!=="undefined" && BehaviorGate.coversNode(node)){
+        /* v20a249：live 路徑——N1–N5 行 stub trigger。DengLine 守衛維持喺 soft 分支唔郁，
+           live 升格前亦唔行佢哋。stub 未載入嗰陣 coversNode 回 false，自動跌返 live week-gate。 */
+        return BehaviorGate.evalTrigger_AND_softRumor(node, opts);
       }
     }catch(_soft){}
     let andTok = Array.isArray(node.openConditions) ? node.openConditions.slice() : [];
@@ -8333,8 +8338,10 @@ const StoryOC = (()=>{
 
 /* BEHAVIOR_GATE_START v19w — One switch model. Soft≠PASS. Do not tip LIVE. ?v= stays 19w. SAVE stays starVolunteer_map_v19w.
    featureFlag_softBehaviorGatePreview = Soft behavior-gate path (opt-in). Sole parser of ?softBehaviorGate=1 / ?softPreview=1 / localStorage starVolunteer_softBehaviorGatePreview=1.
-   liveWeekGateStillActive = LIVE week-gate sentinel. Default authority until an explicit LIVE tip. This Soft tip does not retire it; the function stays true.
-   gatePath() → "soft"|"live" by calling that flag only. Soft on: N1–N5 and the existing Deng/dual/seed/chrome guards use stub trigger/evalOrder. Soft off / non-Soft: week-gate only; softSeed must not inject.
+   liveWeekGateStillActive = LIVE week-gate sentinel. v20a249 LIVE tip (D8) 已落實：N1–N5 stub
+   trigger 正式做 live，呢個函數自 v249 起回 false。stub file／slice 入面嘅同名字段維持 true
+   （loadStub 驗證用，唔係呢個函數）。
+   gatePath() → "soft"|"live" by calling that flag only. Soft on: Deng/dual/seed/chrome guards use stub trigger/evalOrder. Soft flag 只留作測試開關；N1–N5 live 亦行 stub trigger。
    Hooks follow stub engineSlice.iosSoftHooks, not PLAN §7 names. */
 const BehaviorGate = (function(){
   let stub = null;
@@ -8342,10 +8349,10 @@ const BehaviorGate = (function(){
   const ENG = /trigger|fameMin|weekMin|locId|softLogic|need_done|needDone|rumorSoft|favorMin|favorTarget|openConditions|rel_tang|flag_/i;
 
   function liveWeekGateStillActive(){
-    /* LIVE week-gate sentinel. Stays true until an explicit LIVE tip. Soft preview does not retire it.
-       Flag off still reads openConditions / pacing.weekMin. selfCheck live_fn requires === true.
-       Stub and slice liveWeekGateStillActive / tipForbidden stay true. */
-    return true;
+    /* v20a249 LIVE tip (D8)：N1–N5 stub trigger 已升格做 live，LIVE week-gate 退役，回 false。
+       Stub file／slice 嘅 liveWeekGateStillActive 欄位維持 true（loadStub／selfCheck 驗證 stub 數據用），
+       唔係呢個函數嘅回傳值。 */
+    return false;
   }
   function featureFlag_softBehaviorGatePreview(){
     /* Soft behavior-gate path, opt-in, default off. This is the only query/localStorage parser for the switch.
@@ -8359,8 +8366,8 @@ const BehaviorGate = (function(){
   }
   function gatePath(){
     /* Shared name for Soft now and a future LIVE tip. Does not read the URL or localStorage itself.
-       "soft" = featureFlag_softBehaviorGatePreview() (stub trigger / evalOrder).
-       "live" = LIVE week-gate. liveWeekGateStillActive() remains true on both paths. */
+       "soft" = featureFlag_softBehaviorGatePreview() (stub trigger / evalOrder + Deng guards).
+       "live" = N1–N5 行 stub trigger（v20a249 LIVE tip）、其餘行 LIVE week-gate；soft flag 只供測試用。 */
     return featureFlag_softBehaviorGatePreview() ? "soft" : "live";
   }
 
@@ -9033,11 +9040,11 @@ const BehaviorGate = (function(){
     });
     if(stub.engineSlice.flags.change89to92!==false) bad("89");
     if(stub.liveWeekGateStillActive!==true || stub.tipForbidden!==true) bad("live_still");
-    if(liveWeekGateStillActive()!==true) bad("live_fn");
-    /* Confluence: path follows the one flag. "soft" must not flip the LIVE sentinel. */
+    if(liveWeekGateStillActive()!==false) bad("live_fn"); /* v20a249 LIVE tip：week-gate 已退役，sentinel 係 false */
+    /* Confluence: path follows the one flag. v20a249 起 sentinel 恆 false（LIVE tip 落實），soft flag 唔會改變佢。 */
     if(gatePath()!==(featureFlag_softBehaviorGatePreview() ? "soft" : "live")) bad("gate_path");
     if(gatePath()!=="soft" && gatePath()!=="live") bad("gate_path_value");
-    if(liveWeekGateStillActive()!==true) bad("soft_retires_live");
+    if(liveWeekGateStillActive()!==false) bad("live_tipped");
     const order = ((stub.engineSlice && stub.engineSlice.evalOrder) || []).join(">");
     if(order!=="needDone>minDaysAfterPrev>weekMin_floor>locIdAny>favor_AND_loc>fameCompare>gigCountMin>seasonAny>rumorSoftPriority>tagAny>relAny") bad("eval_order");
     if(sample("N1", Object.assign({}, base, { week:1, atLoc:"cafe_cha" })).ok!==false) bad("c1_old_cafe");
@@ -12204,7 +12211,7 @@ function tutorialPhase2Steps56SelfCheck(){
     if(/Ho哥|Ho 哥/.test(face)) fails.push("ho_title");
     if(String(pack.step6 && pack.step6.favorDebtSettleLine||"").indexOf("何生")<0) fails.push("ho_name");
   }
-  if(typeof BehaviorGate!=="undefined" && BehaviorGate.liveWeekGateStillActive()!==true) fails.push("live_fn");
+  if(typeof BehaviorGate!=="undefined" && BehaviorGate.liveWeekGateStillActive()!==false) fails.push("live_fn"); /* v20a249 LIVE tip：week-gate 已退役 */
   if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
   if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
   if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
@@ -12982,7 +12989,8 @@ function end95StoryDone(st, id){
   if(s.flags && Number(s.flags["done_" + id]) > 0) return true;
   return false;
 }
-/* 主線鏈完成（E1 質性閘 ③）：按各鏈既有收尾標記判定，任一即算行完一條。
+/* 主線鏈完成（v20a249 起唔再係 E1 質性閘 ③——E1 改用 end95SpineDone 主線脊骨；
+   此函數只留作診斷／其他呈現用）：按各鏈既有收尾標記判定，任一即算行完一條。
    A 陸柏言替工收割／B 廖炳星收割結算／C 麥震東知情替身線（N12＋傷情情報）／
    D 葉敏芝疑雲線收尾／E 高俊傑線結局旗／F 鏈 F 第 4 拍去留抉擇。 */
 function end95ChainsDone(st){
@@ -12996,6 +13004,17 @@ function end95ChainsDone(st){
   if(endingFlag410(s, "flag_gao_ending_break") || endingFlag410(s, "flag_gao_ending_respect") || endingFlag410(s, "flag_gao_ending_stay")) out.push("E");
   if(endingFlag410(s, "flag_stay_mind") || endingFlag410(s, "flag_leave_mind")) out.push("F");
   return out;
+}
+/* v20a249 E1 full-spine（B-4：行完整條 N1–N17 脊骨）：
+   17 個位置全部 done 先算行完；N6/N6F 路線互斥，二揀一（N1 路線抉擇永久鎖定，
+   AND 要求會令 E1 永遠無人攞到）；N18/N19 係 WF1 補幕，唔計。
+   讀取 reuse end95StoryDone（S.story.done 或 S.flags["done_"+id]），唔寫狀態。 */
+const SPINE95_REQUIRED = ["N1","N2","N3","N4","N5","N7","N8","N9","N10","N11","N12","N13","N14","N15","N16","N17"];
+function end95SpineDone(st){
+  const missing = [];
+  SPINE95_REQUIRED.forEach(id=>{ if(!end95StoryDone(st, id)) missing.push(id); });
+  if(!end95StoryDone(st, "N6") && !end95StoryDone(st, "N6F")) missing.push("N6/N6F");
+  return { done: missing.length === 0, missing: missing };
 }
 /* 彭少祺線進展（GH 閘）：好感到拍檔段（fav ≥45＝T3）／T4 提攜債權／主線 N11 同佢圓場嗰幕，任一即算。 */
 function end95PangProgress(st){
@@ -13024,7 +13043,7 @@ function end95BuildGaps(ctx){
   if(!ctx.hasWin) lines.push("獎，你未曾拿過——頒獎禮那幾晚，你依然坐在台下。");
   if((ctx.leadMediaCount | 0) <= 0) lines.push("擔正，你未曾站上那個位置——哪種媒介都沒有。");
   else if(ctx.leadMediaCount < 2) lines.push("擔正，你只在一邊擔正過——還欠另一種媒介。");
-  if(!ctx.chains || !ctx.chains.length) lines.push("那幾條行內主線，你一條也未走到尾——天王那一格，不是單靠接工作堆出來的。");
+  if(ctx.spine && !ctx.spine.done) lines.push("主線尚欠 " + ctx.spine.missing.join("、") + " 未完成——天王那一格，要走完整條主線，單靠接工作是堆不出來的。");
   if((ctx.dual | 0) < T.e1Dual) lines.push("聲望與信用合計，你還差 " + (T.e1Dual - (ctx.dual | 0)) + " 才到天王那條線。");
   if((ctx.fame | 0) < T.e1Fame) lines.push("聲望還差 " + (T.e1Fame - (ctx.fame | 0)) + "。");
   if((ctx.credit | 0) < T.e1Credit) lines.push("信用還差 " + (T.e1Credit - (ctx.credit | 0)) + "。");
@@ -13054,22 +13073,23 @@ function resolveEnding410(st, opts){
   const stats95 = careerStats95Of(s);
   const awards95 = end95Awards(s);
   const chains95 = end95ChainsDone(s);
+  const spine95 = end95SpineDone(s); /* v20a249：E1 質性閘 ③ 由主線鏈改做主線脊骨（B-4 讀法甲） */
   /* v20a229 B4 LEAD229：擔正讀新計數器（SPEC §2.9），唔再讀舊計數器嗰個闊定義。 */
   const lead229 = leadStats229Of(s);
   const leadMedia95 = ["film", "tv", "music", "variety", "ad"].filter(m => (lead229.byMedium[m] || 0) >= 1);
   const total95 = Math.max(0, stats95.total | 0);
   const share95 = n => total95 > 0 ? ((Number(n) || 0) / total95) : 0;
   const genreShare95 = n => stats95.genreIdentified > 0 ? ((Number(n) || 0) / stats95.genreIdentified) : 0;
-  const e1Qual95 = awards95.hasWin && leadMedia95.length >= 2 && chains95.length >= 1;
+  const e1Qual95 = awards95.hasWin && leadMedia95.length >= 2 && spine95.done;
   let career = "E0", variant = "";
   if(fame>=T95.e1Fame && credit>=T95.e1Credit && sum>=T95.e1Dual && neg<=T95.e1NegMax && e1Qual95){
-    career = "E1"; reasons.push("E1：聲望 "+fame+"≥"+T95.e1Fame+"、信用 "+credit+"≥"+T95.e1Credit+"、雙軌 "+sum+"≥"+T95.e1Dual+"、負標籤 "+neg+"≤"+T95.e1NegMax+"＋質性閘全齊（獎 "+awards95.wins+"／擔正媒介 "+leadMedia95.length+"／主線鏈 "+chains95.join("")+"）");
+    career = "E1"; reasons.push("E1：聲望 "+fame+"≥"+T95.e1Fame+"、信用 "+credit+"≥"+T95.e1Credit+"、雙軌 "+sum+"≥"+T95.e1Dual+"、負標籤 "+neg+"≤"+T95.e1NegMax+"＋質性閘全齊（獎 "+awards95.wins+"／擔正媒介 "+leadMedia95.length+"／主線脊骨已走完）");
   } else if(fame>=T.e4Fame && credit<T.e4CreditBelow){
     career = "E4";
     variant = (favor.creditsHeld>=T.e4RescueCredits) ? "rescued" : "sunk";
     reasons.push("E4：聲望 "+fame+"≥"+T.e4Fame+"、信用 "+credit+"<"+T.e4CreditBelow+"；債權持有 "+favor.creditsHeld+" → "+(variant==="rescued"?"沉唔死版":"真沉版"));
   } else if(sum>=T95.ssDual && fame>=T95.ssFame && credit>=T95.ssCredit && neg<=T95.ssNegMax){
-    career = "SS"; reasons.push("SS 一線巨星：雙軌 "+sum+"≥"+T95.ssDual+"、聲望 "+fame+"≥"+T95.ssFame+"、信用 "+credit+"≥"+T95.ssCredit+"、負標籤 "+neg+"≤"+T95.ssNegMax+"（未齊 E1 質性閘：獎 "+(awards95.hasWin?"有":"冇")+"／擔正媒介 "+leadMedia95.length+"／主線鏈 "+chains95.length+"）");
+    career = "SS"; reasons.push("SS 一線巨星：雙軌 "+sum+"≥"+T95.ssDual+"、聲望 "+fame+"≥"+T95.ssFame+"、信用 "+credit+"≥"+T95.ssCredit+"、負標籤 "+neg+"≤"+T95.ssNegMax+"（未齊 E1 質性閘：獎 "+(awards95.hasWin?"有":"冇")+"／擔正媒介 "+leadMedia95.length+"／主線脊骨 "+(spine95.done?"已走完":"尚欠 "+spine95.missing.join("、"))+"）");
   } else if(sum>=T95.fkDual && share95(stats95.byMedium.film)>=T95.fkFilmShare && (lead229.byMedium.film||0)>=T95.fkFilmLeads){
     career = "FK"; reasons.push("FK 影壇天王：雙軌 "+sum+"≥"+T95.fkDual+"、電影佔比 "+Math.round(share95(stats95.byMedium.film)*100)+"%≥50%、電影擔正 "+(lead229.byMedium.film||0)+"≥"+T95.fkFilmLeads);
   } else if(sum>=T95.tkDual && share95(stats95.byMedium.tv)>=T95.tkTvShare && (lead229.byMedium.tv||0)>=T95.tkTvLongLeads){
@@ -13126,19 +13146,20 @@ function resolveEnding410(st, opts){
   const titleName95 = (career==="E3" && variant) ? variant : (ENDING410_CAREER_NAMES[career] || career);
   const title = titleName95 + "・" + exodusWord;
   const gaps95 = end95BuildGaps({ career: career, fame: fame, credit: credit, dual: sum,
-    hasWin: awards95.hasWin, leadMediaCount: leadMedia95.length, chains: chains95 });
+    hasWin: awards95.hasWin, leadMediaCount: leadMedia95.length, chains: chains95, spine: spine95 });
   return {
     career: career, careerVariant: variant, baseCareer: baseCareer, baseVariant: baseVariant,
     romance: romance, exodus: exodus, title: title, reasons: reasons,
     gaps95: gaps95,
     ladder95: { total: total95, byMedium: Object.assign({}, stats95.byMedium), leadByMedium: Object.assign({}, lead229.byMedium),
       tvLongLeads: (lead229.byMedium.tv || 0), genreIdentified: stats95.genreIdentified, genreComedy: stats95.genreComedy, genreAction: stats95.genreAction,
-      leadMedia: leadMedia95.slice(), chains: chains95.slice(), hasWin: awards95.hasWin, musicHonor: awards95.musicHonor },
+      leadMedia: leadMedia95.slice(), chains: chains95.slice(), spine95: { done: spine95.done, missing: spine95.missing.slice() }, hasWin: awards95.hasWin, musicHonor: awards95.musicHonor },
     snapshot: {
       fame: fame, credit: credit, dual: sum, negTags: neg,
       settled: favor.settled, creditsTotal: favor.creditsTotal, creditsHeld: favor.creditsHeld,
       exodusNames: favor.exodusNames.slice(), agentRel: agentRel, directorRel: directorRel,
-      backstageTags: endingBackstageTagCount410(s)
+      backstageTags: endingBackstageTagCount410(s),
+      spine95: { done: spine95.done, missing: spine95.missing.slice() }
     }
   };
 }
@@ -25587,11 +25608,11 @@ function mergeTriggerGigs(locId){
    Rival 第 2／3 輪 rematch（唔重寫，留返之後）。 */
 /* 主線／WF3 抉擇即派表：key＝nodeId:choiceId（"*"＝該節點任何選項）。N-1–N-5 各派指定 1 張。 */
 const GRANT229_CHOICE = {
-  "N4:*":  { gigId:"gig_1990_film_114", source:"N4", reason:"昨晚嗰場浸水戲，副導話你肯捱，今朝有組開夜戲要人。" },
+  "N4:N4_b":  { gigId:"gig_1990_film_114", source:"N4", reason:"昨晚嗰場浸水戲，副導話你肯捱，今朝有組開夜戲要人。" },
   "N5:*":  { gigId:"gig_1990_tv_122", source:"N5", reason:"采兒嗰邊傳嚟消息，記者會現場要個特約演員，何生話你去頂住。" },
   "N6:N6_a":  { gigId:"gig_1990_tv_105", source:"N6", reason:"處境劇嗰邊留咗你做固定閒角，今朝正式簽長期合約。", contract:true },
   "N6F:N6F_a":{ gigId:"gig_1990_film_110", source:"N6", reason:"大製作嗰邊留咗你做固定跟班，今朝正式簽長期合約。", contract:true },
-  "N18:*": { gigId:"gig_1990_tv_121", source:"N18", reason:"何生問你想學幕後定專心幕前——跟組學嘢嗰邊，今朝有位留畀你。" },
+  "N18:N18_a": { gigId:"gig_1990_tv_121", source:"N18", reason:"何生問你想學幕後定專心幕前——跟組學嘢嗰邊，今朝有位留畀你。" },
   "W3_ho_liao:W3_ho_liao_a": { gigId:"gig_1990_tv_117", source:"廖炳星支線", reason:"何生今朝話，喜劇組嗰邊有個替身雜務位留咗畀你，聽朝去報到。" },
   "W3_ho_liao:W3_ho_liao_b": { gigId:"gig_1990_tv_118", source:"廖炳星支線", reason:"何生今朝話，喜劇組嗰邊有個替身雜務位留咗畀你，聽朝去報到。" }
 };
@@ -39554,7 +39575,7 @@ try{
     check: function(){
       const fails = [];
       if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
-      try{ if(typeof BehaviorGate!=="undefined" && BehaviorGate.liveWeekGateStillActive()!==true) fails.push("live_fn"); }catch(_e){ fails.push("live_fn"); }
+      try{ if(typeof BehaviorGate!=="undefined" && BehaviorGate.liveWeekGateStillActive()!==false) fails.push("live_fn"); }catch(_e){ fails.push("live_fn"); } /* v20a249 LIVE tip：week-gate 已退役 */
       const stars = phase3Stars();
       if(stars.length<4) fails.push("count");
       if(!STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan")) fails.push("so_jiyan_pin");

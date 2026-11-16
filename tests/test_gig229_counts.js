@@ -216,13 +216,13 @@ ok('B11 wrap＋PSR 鏡像同一殺青 → 取 max 係 1，唔係 2', countYearMe
     'function endingRomance410','function endingE2Eligible410','function endingE3Eligible410','function endingBackstageClose410',
     'function end95GenreOf','function end95IsLead','function end95ClassifyWrap','function end95EmptyStats','function end95StatsAddOne',
     'function end95DeriveStats','function careerStats95Of','function end95AddWrap','function end95Awards','function end95EverHeldCredit',
-    'function end95StoryDone','function end95ChainsDone','function end95PangProgress','function end95E3Variant','function end95BuildGaps',
+    'function end95StoryDone','function end95ChainsDone','function end95SpineDone','function end95PangProgress','function end95E3Variant','function end95BuildGaps',
     'function end229IsLead','function end229ClassifyLead','function end229EmptyLeadStats',
     'function end229DeriveLeadStats','function leadStats229Of','function end229AddWrap',
     'function resolveEnding410','function endingEveOptions410','function endingEsc410','function endingCareerScene410','function endingSummaryHtml410'];
   const CONST_LIST = ['ENDING410_CAREER_NAMES','ENDING410_T','ENDING_NEG_TAGS410','ENDING410_BACKSTAGE_KEYS','ENDING410_EXODUS_NAME_FALLBACK',
     'ENDING410_NPC_NAMES','ENDING95_T','END95_TYPE_MEDIUM','END95_LEAD_SCALES','END95_STRONG_LEAD','END95_GENRE_TYPE_NAMES',
-    'END95_COMEDY_G','END95_ACTION_G','END95_COMEDY_KW','END95_ACTION_KW','ENDING410_ADJ_RUMOR','END229_LEAD_MEDIUM'];
+    'END95_COMEDY_G','END95_ACTION_G','END95_COMEDY_KW','END95_ACTION_KW','ENDING410_ADJ_RUMOR','END229_LEAD_MEDIUM','SPINE95_REQUIRED'];
   let SRC = 'var START = { y:1990, m:1, d:1 };\n' + FN_LIST.map(n => extractFn(n.replace(/^function /, ''))).join('\n') + '\n' + CONST_LIST.map(extractConst).join('\n');
   CONST_LIST.forEach(n => { SRC = SRC.split('const '+n+' =').join('var '+n+' ='); });
   eval(SRC);
@@ -260,7 +260,9 @@ ok('B11 wrap＋PSR 鏡像同一殺青 → 取 max 係 1，唔係 2', countYearMe
         leadByMedium: { film: 0, tv: 0, music: 0, variety: 0, ad: 0 },
         tvLongLeads: 0, genreIdentified: 36, genreComedy: 9, genreAction: 9 }),
       leadStats229: { byMedium: { film: 1, tv: 1, music: 0, variety: 0, ad: 0 } },
-      awardsLog: win, wf3: { liaoHarvestDone: 1 }
+      awardsLog: win, wf3: { liaoHarvestDone: 1 },
+      /* v20a249：E1 質性閘 ③ 改做主線脊骨——fixture 要行完整條脊骨先上 E1 */
+      story: { flags: {}, rel: {}, done: { N1:true, N2:true, N3:true, N4:true, N5:true, N6:true, N7:true, N8:true, N9:true, N10:true, N11:true, N12:true, N13:true, N14:true, N15:true, N16:true, N17:true }, choices: {} }
     });
     const r = R(st);
     ok('F1 E1：舊計數器零擔正、新計數器兩媒介擔正 → 照上 E1（讀新唔讀舊）',

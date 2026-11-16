@@ -1,6 +1,6 @@
 // v20a229 B6 抉擇即派＋定期合約制測試（A8／A12；SPEC §3.7／附錄 A；AUDIT229 §8／§10；DECISIONS Q7／D-5）
 //   T0 18 張即派 id 齊（主線 5＋支線 13）＋新庫 241 張（v232 補寫《星夜迷離》第 241 張）
-//   T1 主線 5 映射：抉擇→記低指定 gig、dueDay＝聽日（N4／N5／N6_a／N6F_a／N18；N6_b／N6F_b 唔派）
+//   T1 主線 5 映射：抉擇→記低指定 gig、dueDay＝聽日（N4_b／N5／N6_a／N6F_a／N18_a；N4_a／N18_b／N6_b／N6F_b 唔派；v249 收窄 N4:*→N4:N4_b、N18:*→N18:N18_a）
 //   T2 支線 11 live 映射：廖／顧／麥初遇各 3（關鍵字命中＋兜底）＋廖 Beat2（W3_ho_liao_a／b）；2 個 draft 存在但無 hook 觸發
 //   T3 冪等：同一張記低兩次得一筆；派發一次後唔再派
 //   T4 翌日先到期：今日 dueList 空、聽日有
@@ -129,11 +129,13 @@ function choiceMaps(nodeId, choiceId, wantGig){
   const q = S.grant229Queue;
   return r && q.length===1 && q[0].gigId===wantGig && q[0].dueDay===11;
 }
-ok('T1 N4 任一選項→film_114', choiceMaps('N4','N4_x','gig_1990_film_114'));
+ok('T1 N4_b 接下→film_114', choiceMaps('N4','N4_b','gig_1990_film_114'));
+ok('T1 N4_a 拒絕→唔派', (function(){ freshS(10); return grant229RecordFromChoice({id:'N4'},{id:'N4_a'})===false && S.grant229Queue.length===0; })());
 ok('T1 N5 任一選項→tv_122', choiceMaps('N5','N5_x','gig_1990_tv_122'));
 ok('T1 N6_a→tv_105（合約）', choiceMaps('N6','N6_a','gig_1990_tv_105'));
 ok('T1 N6F_a→film_110（合約）', choiceMaps('N6F','N6F_a','gig_1990_film_110'));
-ok('T1 N18 任一選項→tv_121', choiceMaps('N18','N18_x','gig_1990_tv_121'));
+ok('T1 N18_a 學幕後→tv_121', choiceMaps('N18','N18_a','gig_1990_tv_121'));
+ok('T1 N18_b 專心幕前→唔派', (function(){ freshS(10); return grant229RecordFromChoice({id:'N18'},{id:'N18_b'})===false && S.grant229Queue.length===0; })());
 freshS(10);
 ok('T1 N6_b 唔接→唔派', grant229RecordFromChoice({id:'N6'},{id:'N6_b'})===false && S.grant229Queue.length===0);
 freshS(10);
@@ -172,8 +174,8 @@ ok('T2 draft 錯 key→false', grant229RecordDraft('gu_nope')===false);
 
 /* ---------- T3：冪等 ---------- */
 freshS(10);
-grant229RecordFromChoice({id:'N4'},{id:'N4_a'});
-ok('T3 同一張記低兩次得一筆', grant229RecordFromChoice({id:'N4'},{id:'N4_a'})===false && S.grant229Queue.length===1);
+grant229RecordFromChoice({id:'N4'},{id:'N4_b'});
+ok('T3 同一張記低兩次得一筆', grant229RecordFromChoice({id:'N4'},{id:'N4_b'})===false && S.grant229Queue.length===1);
 freshS(10);
 grant229Record('gig_1990_film_114','N4','test');
 S.dayIndex = 11;
@@ -183,7 +185,7 @@ ok('T3 派完唔再派（delivered 旗＋queue 空）', grant229PresentDue(()=>{
 
 /* ---------- T4：翌日先到期 ---------- */
 freshS(10);
-grant229RecordFromChoice({id:'N4'},{id:'N4_a'});
+grant229RecordFromChoice({id:'N4'},{id:'N4_b'});
 ok('T4 今日 dueList 空', grant229DueList().length===0);
 S.dayIndex = 11;
 ok('T4 聽日 dueList 有', grant229DueList().length===1 && grant229DueList()[0].gigId==='gig_1990_film_114');
@@ -267,7 +269,7 @@ ok('T8 非合約 shoot→尾糧 0', contract229WrapRemainder({gigId:'gig_1990_fi
 
 /* ---------- T9／T10：派發全程＋唔經試鏡 ---------- */
 freshS(10);
-grant229RecordFromChoice({id:'N4'},{id:'N4_a'});
+grant229RecordFromChoice({id:'N4'},{id:'N4_b'});
 S.dayIndex = 11; modalCalls = 0; stepCalls = 0; lastModal = null; lastToast = null;
 ok('T9 普通通告：何生電話呈現', grant229PresentDue(()=>{ stepCalls++; })===true && modalCalls===1 && stepCalls===1);
 ok('T9 modal 講何生來電＋簽約金', lastModal && lastModal.html.indexOf('何生來電')>=0 && lastModal.html.indexOf('簽約金')>=0);
