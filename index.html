@@ -25616,26 +25616,26 @@ const GRANT229_CHOICE = {
   "W3_ho_liao:W3_ho_liao_b": { gigId:"gig_1990_tv_210", source:"廖炳星支線", reason:"何生今朝話，喜劇組嗰邊有個替身雜務位留咗畀你，聽朝去報到。" }
 };
 /* 支線初遇即派表（enc79 seg＋選項關鍵字，配對次序跟 enc79ChoiceFx：先命中關鍵字，否則落最後一項兜底）。
-   1990 電視喜劇替身雜務 5 張（tv_114–118）＋1990–91 唱片和音 5 張（rec_111／112／113＋1991_rec_111／112，
-   淨計「和音歌手」，演唱會和音歌手唔計）＋1990 電影動作替身 3 張（film_115／116／117）。
-   池內按季節排序派（春→夏→秋→冬），跟劇情時間推進對齊；唔隨機抽。 */
+   v255 重對：1990 電視喜劇替身雜務 3 張（tv_217–219，NEW）＋1990 唱片和音 3 張（rec_209／201 REUSE、rec_210 NEW，
+   淨計「和音歌手」，演唱會和音歌手唔計）＋1990 電影動作替身 3 張（film_211 REUSE、film_213／214 NEW）。
+   池內按季節排序派（春→夏），跟劇情時間推進對齊；唔隨機抽。 */
 const GRANT229_ENC79 = [
-  { seg:"first:liu_bingxing", key:"笑出聲", gigId:"gig_1990_tv_114", source:"廖炳星初遇", reason:"星哥嗰組聽朝開工，副導話你聽朝去喜劇組報到，替身雜務，準時啲，唔好遲到。" },
-  { seg:"first:liu_bingxing", key:"好笑", gigId:"gig_1990_tv_115", source:"廖炳星初遇", reason:"星哥嗰組聽朝開工，副導話你聽朝去喜劇組報到，替身雜務，準時啲，唔好遲到。" },
-  { seg:"first:liu_bingxing", key:"", gigId:"gig_1990_tv_116", source:"廖炳星初遇", reason:"星哥嗰組聽朝開工，副導話你聽朝去喜劇組報到，替身雜務，準時啲，唔好遲到。" },
-  { seg:"first:gu_mingfai", key:"聽", gigId:"gig_1990_rec_112", source:"顧明輝初遇", reason:"電台嗰邊聽朝有個和音班開工，話你去聽下，唔使唱住，先聽人哋點唱。" },
-  { seg:"first:gu_mingfai", key:"招呼", gigId:"gig_1990_rec_111", source:"顧明輝初遇", reason:"電台嗰邊聽朝有個和音班開工，話你去聽下，唔使唱住，先聽人哋點唱。" },
-  { seg:"first:gu_mingfai", key:"", gigId:"gig_1990_rec_113", source:"顧明輝初遇", reason:"電台嗰邊聽朝有個和音班開工，話你去聽下，唔使唱住，先聽人哋點唱。" },
-  { seg:"first:mak_zhendong", key:"放低", gigId:"gig_1990_film_116", source:"麥震東初遇", reason:"動作組聽朝要替身，副導話你聽朝去報到，企定個位，唔好俾人搶走。" },
-  { seg:"first:mak_zhendong", key:"堅持", gigId:"gig_1990_film_117", source:"麥震東初遇", reason:"動作組聽朝要替身，副導話你聽朝去報到，企定個位，唔好俾人搶走。" },
-  { seg:"first:mak_zhendong", key:"", gigId:"gig_1990_film_115", source:"麥震東初遇", reason:"動作組聽朝要替身，副導話你聽朝去報到，企定個位，唔好俾人搶走。" }
+  { seg:"first:liu_bingxing", key:"笑出聲", gigId:"gig_1990_tv_217", source:"廖炳星初遇", reason:"星哥嗰組聽朝開工，副導話你聽朝去喜劇組報到，替身雜務，準時啲，唔好遲到。" },
+  { seg:"first:liu_bingxing", key:"好笑", gigId:"gig_1990_tv_218", source:"廖炳星初遇", reason:"星哥嗰組聽朝開工，副導話你聽朝去喜劇組報到，替身雜務，準時啲，唔好遲到。" },
+  { seg:"first:liu_bingxing", key:"", gigId:"gig_1990_tv_219", source:"廖炳星初遇", reason:"星哥嗰組聽朝開工，副導話你聽朝去喜劇組報到，替身雜務，準時啲，唔好遲到。" },
+  { seg:"first:gu_mingfai", key:"聽", gigId:"gig_1990_rec_209", source:"顧明輝初遇", reason:"電台嗰邊聽朝有個和音班開工，話你去聽下，唔使唱住，先聽人哋點唱。" },
+  { seg:"first:gu_mingfai", key:"招呼", gigId:"gig_1990_rec_201", source:"顧明輝初遇", reason:"電台嗰邊聽朝有個和音班開工，話你去聽下，唔使唱住，先聽人哋點唱。" },
+  { seg:"first:gu_mingfai", key:"", gigId:"gig_1990_rec_210", source:"顧明輝初遇", reason:"電台嗰邊聽朝有個和音班開工，話你去聽下，唔使唱住，先聽人哋點唱。" },
+  { seg:"first:mak_zhendong", key:"放低", gigId:"gig_1990_film_211", source:"麥震東初遇", reason:"動作組聽朝要替身，副導話你聽朝去報到，企定個位，唔好俾人搶走。" },
+  { seg:"first:mak_zhendong", key:"堅持", gigId:"gig_1990_film_213", source:"麥震東初遇", reason:"動作組聽朝要替身，副導話你聽朝去報到，企定個位，唔好俾人搶走。" },
+  { seg:"first:mak_zhendong", key:"", gigId:"gig_1990_film_214", source:"麥震東初遇", reason:"動作組聽朝要替身，副導話你聽朝去報到，企定個位，唔好俾人搶走。" }
 ];
 /* 草稿抉擇即派（顧明輝 Beat 2「應承一世唔掂／問回他」：攻略設計草稿，遊戲未有呢個抉擇，
    gu_promise_clean／gu_ask_back 全 repo 0 命中）。兩張 1991 和音先留喺表入面，唔經任何現成
    hook 觸發；第日實裝嗰個抉擇嗰陣，呼叫 grant229RecordDraft(key) 即可啟用，唔使改本表。 */
 const GRANT229_DRAFT = {
-  gu_promise_clean: { gigId:"gig_1991_rec_111", source:"顧明輝支線", reason:"你應承咗佢，佢第二朝就話電台嗰邊有個和音錄音位，等你去唱下，熟習下錄音室。" },
-  gu_ask_back: { gigId:"gig_1991_rec_112", source:"顧明輝支線", reason:"你問到佢答唔到，佢唔嬲——話你肯問，先係當佢係人。和音位一樣有你份。" }
+  gu_promise_clean: { gigId:"gig_1991_rec_201", source:"顧明輝支線", reason:"你應承咗佢，佢第二朝就話電台嗰邊有個和音錄音位，等你去唱下，熟習下錄音室。" },
+  gu_ask_back: { gigId:"gig_1991_rec_207", source:"顧明輝支線", reason:"你問到佢答唔到，佢唔嬲——話你肯問，先係當佢係人。和音位一樣有你份。" }
 };
 /* 定期合約通告（D-5）：只得 N6_a／N6F_a 兩張。認 id，唔認 boardNote 文案（文案係展示層）。 */
 const CONTRACT229_GIGS = { gig_1990_tv_107:1, gig_1990_film_113:1 };

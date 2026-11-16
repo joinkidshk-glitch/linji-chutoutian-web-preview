@@ -36,7 +36,7 @@ eval(extractConstVar('GRANT229_CHOICE'));
 const keys = Object.keys(GRANT229_CHOICE);
 ok('GRANT229 34 鍵', keys.length === 34, keys.length);
 ok('GRANT229 無 wildcard', !keys.some(k => k.endsWith(':*')));
-ok('GRANT229 全部 gigId 喺 269 張庫入面', keys.every(k => !!gigById(GRANT229_CHOICE[k].gigId)), keys.filter(k => !gigById(GRANT229_CHOICE[k].gigId)).join(','));
+ok('GRANT229 全部 gigId 喺 276 張庫入面', keys.every(k => !!gigById(GRANT229_CHOICE[k].gigId)), keys.filter(k => !gigById(GRANT229_CHOICE[k].gigId)).join(','));
 ok('GRANT229 N9_a 重用 103（廖炳星引薦 gig，舊 107）', GRANT229_CHOICE['N9:N9_a'].gigId === 'gig_1991_film_103');
 ok('GRANT229 N5_a／N5_b 共享 tv_205', GRANT229_CHOICE['N5:N5_a'].gigId === 'gig_1990_tv_205' && GRANT229_CHOICE['N5:N5_b'].gigId === 'gig_1990_tv_205');
 ok('GRANT229 17 個新 reason 全部非空（何生傳呼口吻）', ['N7:N7_a','N7:N7_b','N7:N7_c','N8:N8_a','N8:N8_b','N8:N8_c','N9:N9_a','N9:N9_b','N10:N10_a','N10:N10_b','N10:N10_c','N11:N11_a','N11:N11_b','N12:N12_a','N12:N12_b','N19:N19_a','N19:N19_b'].every(k => (GRANT229_CHOICE[k].reason || '').length > 10));

@@ -1,7 +1,7 @@
 // v20a229 B7：報紙分類 A10＋作品圖規則 A9＋忠告卡 Q6＋stub 債 Q11・邏輯／靜態測試
 // A10 合約（SPEC §2.2.1A＋A10）：新庫 category 係報紙分類權威——作品→named（配角級以上出報），
 //   臨記通告／補拍通告→base（殺青唔出報紙）。press94RoleClass 加 category 先行，唔改通告數據。
-//   逐張驗新庫 269 張（mtv 34 張逐張定分類，唔成批預設）；舊數據（無 category）行返文字／scale 層。
+//   逐張驗新庫 276 張（mtv 36 張逐張定分類，唔成批預設）；舊數據（無 category）行返文字／scale 層。
 //   v252：替身守門行先——9 張作品 roleLabel／title 有「替身」照樣 base（press94RoleClass 註解原文明寫）。
 // A9 合約（v90 規則沿用）：接通告頁面唔出成品海報／主演名；完成後場合（殺青／作品牆／頒獎／結局）
 //   保留海報位。B3 將 poster59Path 轉咗 stub（回 ""，D-12 出圖批先恢復）——呢批唔恢復海報圖。
@@ -56,26 +56,26 @@ ok('A10_extract', parts.every(Boolean));
 if(parts.every(Boolean)){
   eval(parts.join('\n'));
   const gigs = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/gigs_new.json'), 'utf8')).gigs;
-  ok('A10_newlib_269', gigs.length===269, 'n='+gigs.length);
+  ok('A10_newlib_276', gigs.length===276, 'n='+gigs.length);
   // 逐張驗：category 作品→named（替身守門 9 張例外→base），其餘→base
   const isStunt = g=>((g.roleLabel||'').indexOf('替身')>=0 || (g.title||'').replace(/^《[^》]*》/, '').indexOf('替身')>=0);
   const expectClass = g=>((g.category==='作品' && !isStunt(g)) ? 'named' : 'base');
   const bad = gigs.filter(g=>press94RoleClass(g)!==expectClass(g));
-  ok('A10_all269_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
-  ok('A10_named_144_base_125',
+  ok('A10_all276_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
+  ok('A10_named_144_base_132',
     gigs.filter(g=>press94RoleClass(g)==='named').length===144 &&
-    gigs.filter(g=>press94RoleClass(g)==='base').length===125);
+    gigs.filter(g=>press94RoleClass(g)==='base').length===132);
   const stuntWorks = gigs.filter(g=>g.category==='作品' && isStunt(g));
   ok('A10_stunt_gate_9', stuntWorks.length===9 && stuntWorks.every(g=>press94RoleClass(g)==='base'),
     stuntWorks.map(g=>g.id).join(','));
-  // mtv 34 張逐張定分類：18 named（作品）／16 base（臨記通告），逐張對 category
+  // mtv 36 張逐張定分類：18 named（作品）／18 base（臨記通告，含 v255 兩張新和音），逐張對 category
   const mtv = gigs.filter(g=>g.roleScale==='mtv');
-  ok('A10_mtv_34', mtv.length===34, 'n='+mtv.length);
+  ok('A10_mtv_36', mtv.length===36, 'n='+mtv.length);
   const mtvBad = mtv.filter(g=>press94RoleClass(g)!==expectClass(g));
   ok('A10_mtv_each', mtvBad.length===0, mtvBad.map(g=>g.id).join(','));
-  ok('A10_mtv_18named_16base',
+  ok('A10_mtv_18named_18base',
     mtv.filter(g=>press94RoleClass(g)==='named').length===18 &&
-    mtv.filter(g=>press94RoleClass(g)==='base').length===16);
+    mtv.filter(g=>press94RoleClass(g)==='base').length===18);
   // 抽 20 張驗分類（含文字層會誤判嗰啲）
   const sample = [
     ['gig_1990_ad_202', 'base'],   // 臨記通告寫「廣告主角」
