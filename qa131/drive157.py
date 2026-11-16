@@ -327,6 +327,15 @@ JS_D157_HELPERS = """() => {
   window.__d157_year = () => { const d = S.dayIndex; return 1990 + (d>=730?2 : d>=365?1 : 0); };
   window.__d157_echo89 = () => {
     const ECHO89 = [
+      ["flag_side_tv", "站隊那場波，你選擇留在星河——由臨記捱出頭的地方，你沒有忘本。"],
+      ["flag_side_film", "站隊那場波，你選擇跟電影公司那邊行——那一步踏出去，就沒有回頭路。"],
+      ["flag_side_undecided", "站隊那場波，你兩邊都沒有應死——門開得久，會自己關上，這句你到埋單都記得。"],
+      ["flag_stay_mind", "何生問你走定留那個黃昏，你說不走——這裡先是你的地方，這句你沒有收回。"],
+      ["flag_leave_mind", "何生問你走定留那個黃昏，你老實說有想過走——想過，不出奇；戲一日未拍完，一日都要照拍。"],
+      ["flag_undecided_mind", "何生問你走定留那個黃昏，你說未想過——未想過，都是一種答法。"],
+      ["flag_vocal_polish", "錄音室那晚，你選擇靠修音——快而準的那條路，你行過，知道它通去哪裡。"],
+      ["flag_vocal_train", "錄音室那晚，你選擇苦練唱功——汗換回來的聲音，站得穩，行得遠。"],
+      ["flag_newyear_improv", "賀歲那次，你臨場爆肚，接住廖炳星那句——那兩句救回全組人那日的工，全組都記得。"],
       ["flag_role_cop", "你第一個給人記住的戲路，是警察——站得穩的那種正氣，成了你的招牌之一。"],
       ["flag_role_gangster", "你第一個給人記住的戲路，是黑幫——狠的那段落足力，那種狠勁，成了你的招牌之一。"],
       ["flag_fans_mediate", "樂壇前哨那場風波，你站中間調停——記者和歌迷都給你面子，那天之後，行內人對你改觀。"],
@@ -353,7 +362,7 @@ JS_D157_HELPERS = """() => {
     ];
     const out = []; let n = 0;
     for (const [flag, line] of ECHO89) {
-      if (n >= 3) break;
+      if (n >= 4) break;
       const ok = !!((S.story && S.story.flags && S.story.flags[flag]) || (S.flags && S.flags[flag]) || (S.story && S.story.routes && S.story.routes[flag]));
       if (ok) { out.push(line); n++; }
     }
@@ -549,7 +558,7 @@ try:
         audit["network_flags_live"] = pg.evaluate(
             "() => ({stay: __d157_flag('flag_network_stay'), hustle: __d157_flag('flag_hustle_board')})")
         # wf1 四旗 -> ECHO89：endingInserts410 係 IIFE-internal（L30082），
-        # 用 __d157_echo89 等價重演（同一張表＋同一 endingFlag410 口徑＋上限 3）。
+        # 用 __d157_echo89 等價重演（同一張表＋同一 endingFlag410 口徑＋上限 4）。
         audit["wf1_echo"] = pg.evaluate("""() => {
           S.story.flags.flag_wf1_studio_dream = true;
           S.story.flags.flag_wf1_steady_craft = true;

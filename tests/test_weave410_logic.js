@@ -142,6 +142,10 @@ const SRC = [
   extractFn('function endingSummaryHtml410'),
   extractFn('function showEndingSummary410'),
   extractFn('function ending410AfterEveChoice'),
+  /* v20a253：湯場 hook——ending410AfterEveChoice 而家只記 pending＋起 N17_epi，
+     判定要等 ending410AfterEpi410（湯場播完）先行。 */
+  extractFn('function ending410AfterEpi410'),
+  extractFn('function ending410ResolvePresent410'),
   extractConst('STORY_GATE_3Y'),
   extractConst('STORY_LOC_SOFT'),
   extractConst('STORY_HINT_SOFT'),
@@ -342,7 +346,7 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
   loadGame(baseSave({ story: { flags: {}, rel: {}, done: { N16: true }, choices: {} } }));
   ok('閘：1992 冬＋N16 done 但台慶未有結果 → N17 唔開（v20a136 awardResolved）', !openIds().includes('N17'));
   const n = node('N17');
-  ok('N17 由 pack 直出：係「三年收科」＋locId tvb_longmen＋有 playerOffer', n.title === '三年埋單' && n.locId === 'tvb_longmen' && !!n.playerOffer);
+  ok('N17 由 pack 直出：標題「意向」＋locId tvb_longmen＋有 playerOffer', n.title === '意向' && n.locId === 'tvb_longmen' && !!n.playerOffer);
   ok('N17 pack synopsis 對齊 v235 新規則：冇「六個意向」／「只鎖事業」殘留，今晚只問走定留',
      !n.synopsis.includes('六個意向') && !n.synopsis.includes('只鎖事業') && n.synopsis.includes('今晚只問一題：走，還是留'));
   ok('N17 pack flags_written 冇死旗（to_backstage／to_support／leave_follow 已清）',
@@ -410,6 +414,10 @@ function eveKeys(over){
   ok('真 applyChoice：N17 落 done＋旗寫入', StoryOC.isDone('N17') && StoryOC.getFlag('flag_ending410_natural'));
   const handled = ending410AfterEveChoice(eve, natural, result);
   ok('組裝接管：ending410AfterEveChoice 回 true', handled === true);
+  /* v20a253：湯場先播——前夕揀完 pending 已記、結局未揭盅；播完先埋單。 */
+  ok('v253 湯場：前夕揀完 pending 已記（結局未揭盅）', S.flags.pendingEnding410Epi === 'natural' && !S.ending410);
+  ending410AfterEpi410(node('N17_epi'));
+  ok('v253 湯場：播完 pending 已清＋N17_epi 落 done', !S.flags.pendingEnding410Epi && StoryOC.isDone('N17_epi'));
   ok('落檔：S.ending410 career=E2／romance commit hiu／exodus stay／稱號含甘草王',
      S.ending410 && S.ending410.career === 'E2' && S.ending410.romanceKind === 'commit' && S.ending410.romanceLine === 'hiu'
      && S.ending410.exodus === 'stay' && S.ending410.title.indexOf('甘草王') === 0);
@@ -417,6 +425,8 @@ function eveKeys(over){
   modalPages410[0].buttons[0].on();
   ok('呈現第二頁：感情段（曉晴 commit）＋去留段＋個人化插入（芬姐絕響）',
      modalPages410.length >= 2 && modalPages410[1].html.includes('林曉晴') && modalPages410[1].html.includes('芬姐'));
+  ok('v253 ECHO89：flag_stay_mind 新回望句在第二頁（插陣列最前＋上限 4，先睇到）',
+     modalPages410[1].html.includes('何生問你走定留那個黃昏，你說不走'));
   modalPages410[1].buttons[0].on();
   const sum = modalPages410[modalPages410.length - 1].html;
   ok('總結頁五元素齊：稱號卡／雙軌／人情總帳／走咗名單（芬姐）／感情＋去留行',
@@ -426,6 +436,29 @@ function eveKeys(over){
   const again = ending410AfterEveChoice(eve, natural, result);
   ok('冪等：重入只重開總結頁、唔重複成個流程', again === true && modalPages410.length === pagesBefore + 1 && S.ending410.career === 'E2');
   ok('收科後唔再開 N17（done）', !openIds().includes('N17'));
+}
+{
+  /* v20a253：N16 債權 credit_c13_newyear 結局頁兌現——副導嗰句＋1993 優先試鏡位＋redeemedBy 標示；
+     標示喺判定之後先生效：snapshot creditsHeld 照計 c13（live 口徑下已兌現債權仍計數）。 */
+  modalPages410 = [];
+  loadGame(baseSave({
+    fame: 40, stage: 50, acting: 35,
+    npcs: { agent: 30, director: 10, colleague: 0, reporter: 0, stylist: 0, rival: 0 },
+    mockCredits: [{ id: 'credit_c13_newyear', debtor: '賀歲片場務組', title: '賀歲片頂場人情', status: '未收' }],
+    story: { flags: { flag_newyear_improv: true }, rel: {}, done: { N16: true }, choices: {} }
+  }));
+  const eve = ending410EveNode(node('N17'));
+  const nat = eve.choices.find(c => c.ending410Key === 'natural');
+  const result = StoryOC.applyChoice(eve, nat);
+  ending410AfterEveChoice(eve, nat, result);
+  ok('v253 N16 兌現：湯場播緊嗰陣未揭盅', !S.ending410 && S.flags.pendingEnding410Epi === 'natural');
+  ending410AfterEpi410(node('N17_epi'));
+  modalPages410[0].buttons[0].on();
+  const c13 = S.mockCredits.find(c => c.id === 'credit_c13_newyear');
+  ok('v253 N16 兌現：副導嗰句＋1993 優先試鏡位在第二頁', modalPages410.length >= 2 && modalPages410[1].html.includes('出年賀歲片開拍，第一個打俾你') && modalPages410[1].html.includes('1993 年賀歲片優先試鏡位'));
+  ok('v253 N16 兌現：redeemedBy 已標示（ending_c13_newyear）', c13 && c13.redeemedBy === 'ending_c13_newyear');
+  ok('v253 N16 兌現：snapshot creditsHeld 照計 c13（標示唔反改計數）', S.ending410 && S.ending410.creditsHeld === 1);
+  ok('v253 N16 兌現：通用已兌現行唔會重複出 c13（濾除）', modalPages410[1].html.indexOf('那次引薦試鏡，是他開聲') < 0);
 }
 {
   /* v20a95 改版：E4 前夕——危機 beats 照插，但 to_backstage 取消（新梯 E4／E3 唔相鄰）；
@@ -443,6 +476,7 @@ function eveKeys(over){
   const nat = eve.choices.find(c => c.ending410Key === 'natural');
   const result = StoryOC.applyChoice(eve, nat);
   ending410AfterEveChoice(eve, nat, result);
+  ending410AfterEpi410(node('N17_epi'));  /* v253：湯場播完先埋單 */
   ok('E4 順其自然：落檔 career=E4／sunk（債權 0）', S.ending410.career === 'E4' && S.ending410.careerVariant === 'sunk');
   ok('E4 呈現：泡沫場景（頭版出街嗰朝）', modalPages410[0].html.includes('頭版出街'));
 }
@@ -463,6 +497,7 @@ function eveKeys(over){
   const nat = eve.choices.find(c => c.ending410Key === 'natural');
   const result = StoryOC.applyChoice(eve, nat);
   ending410AfterEveChoice(eve, nat, result);
+  ending410AfterEpi410(node('N17_epi'));  /* v253：湯場播完先埋單 */
   ok('v235 去留：揀留低 → exodus=stay／稱號「留下來的人」／career 照 E2（事業唔郁）',
      S.ending410.exodus === 'stay' && S.ending410.title.indexOf('留下來的人') >= 0 && S.ending410.career === 'E2');
   modalPages410[0].buttons[0].on();
@@ -481,6 +516,7 @@ function eveKeys(over){
   const pick = eve.choices.find(c => c.ending410Key === 'quit_leave');
   const result = StoryOC.applyChoice(eve, pick);
   ending410AfterEveChoice(eve, pick, result);
+  ending410AfterEpi410(node('N17_epi'));  /* v253：湯場播完先埋單 */
   modalPages410[0].buttons[0].on();
   ok('quit_leave：career=E6／遠走版／exodus=leave、呈現有啟德', S.ending410.career === 'E6' && S.ending410.careerVariant === '遠走' && S.ending410.exodus === 'leave' && JSON.stringify(modalPages410.map(p => p.html)).includes('啟德'));
 }
@@ -492,7 +528,7 @@ function eveKeys(over){
     awardsFlags: { "1992/award_singho_tv": "done" },
     story: { flags: { gossip_vague: true }, rel: { rel_choi: 2 }, done: { N16: true }, choices: { N16: 'N16_c' } }
   }));
-  ok('舊檔 A：N17 以新節點開到、唔 crash', openIds().includes('N17') && node('N17').title === '三年埋單');
+  ok('舊檔 A：N17 以新節點開到、唔 crash', openIds().includes('N17') && node('N17').title === '意向');
   /* 舊檔 B：舊十檔已揀（N17 done＋ending_e01＋career_lock）→ 唔重播、判定／總結唔 crash */
   loadGame(baseSave({
     story: { flags: { ending_e01: true, career_lock: true }, rel: {}, done: { N16: true, N17: true }, choices: { N17: 'N17_e01' } }

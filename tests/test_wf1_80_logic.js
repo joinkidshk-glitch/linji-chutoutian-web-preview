@@ -1,3 +1,4 @@
+// v20a253 resync：pack 21→22 個 nodes（story JSON 加 N17_epi 節點）；斷言名＋數字一併改。
 // v20a80 WF1 邏輯測試：劇情豐富化 WF1——後段加厚＋真空帶補幕。
 //   (1) 加厚完整性：N6–N17 每幕 beats ≥8 拍（N17 ≥9）、beats 字數過門檻、resultBeats 合計 ≥150（N17 除外，結局幕 choices 由 ending410 動態重建）；
 //   (2) 後果拍：每幕每個 choice 都有 resultBeats（揀完有下文）；新第三 choice 旗入 flags_written、幅度唔勁過既有；
@@ -180,7 +181,7 @@ ok('N19 1991冬 唔開（過季）', !gatePass('N19', 1991, '冬', ['N18'], 61))
   const ids = (packMain.nodes || []).map(n => n.id);
   ok('pack 自帶 N18/N19（唔使注入）', ids.includes('N18') && ids.includes('N19'));
   ok('pack N18/N19 id 唯一（注入冪等已無意義）', ids.filter(x => x === 'N18').length === 1 && ids.filter(x => x === 'N19').length === 1);
-  ok('pack 有 21 個 nodes（N1–N19＋N6F＋closeup39 齊，v251 closeup39 加入）', (packMain.nodes || []).length === 21);
+  ok('pack 有 22 個 nodes（N1–N19＋N6F＋closeup39＋N17_epi 齊，v251 closeup39 加入、v253 N17_epi 加入）', (packMain.nodes || []).length === 22);
 }
 
 /* (6) 紅線 */

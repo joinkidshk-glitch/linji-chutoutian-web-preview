@@ -34,12 +34,17 @@ function extractConstVar(name) {
 /* ---------- 1. GRANT229 全表 ---------- */
 eval(extractConstVar('GRANT229_CHOICE'));
 const keys = Object.keys(GRANT229_CHOICE);
-ok('GRANT229 34 鍵', keys.length === 34, keys.length);
+/* v20a253 統籌：GRANT229 34→44 鍵（C 組 10 鍵；N13_c 不派）。 */
+ok('GRANT229 44 鍵', keys.length === 44, keys.length);
 ok('GRANT229 無 wildcard', !keys.some(k => k.endsWith(':*')));
-ok('GRANT229 全部 gigId 喺 276 張庫入面', keys.every(k => !!gigById(GRANT229_CHOICE[k].gigId)), keys.filter(k => !gigById(GRANT229_CHOICE[k].gigId)).join(','));
+ok('GRANT229 全部 gigId 喺 282 張庫入面', keys.every(k => !!gigById(GRANT229_CHOICE[k].gigId)), keys.filter(k => !gigById(GRANT229_CHOICE[k].gigId)).join(','));
 ok('GRANT229 N9_a 重用 103（廖炳星引薦 gig，舊 107）', GRANT229_CHOICE['N9:N9_a'].gigId === 'gig_1991_film_103');
 ok('GRANT229 N5_a／N5_b 共享 tv_205', GRANT229_CHOICE['N5:N5_a'].gigId === 'gig_1990_tv_205' && GRANT229_CHOICE['N5:N5_b'].gigId === 'gig_1990_tv_205');
 ok('GRANT229 17 個新 reason 全部非空（何生傳呼口吻）', ['N7:N7_a','N7:N7_b','N7:N7_c','N8:N8_a','N8:N8_b','N8:N8_c','N9:N9_a','N9:N9_b','N10:N10_a','N10:N10_b','N10:N10_c','N11:N11_a','N11:N11_b','N12:N12_a','N12:N12_b','N19:N19_a','N19:N19_b'].every(k => (GRANT229_CHOICE[k].reason || '').length > 10));
+/* v20a253 C 組 10 鍵：N13_a tv_114／N13_b film_102／N14_a rec_111／N14_b rec_201／N14_c ad_109／N15_a ad_110／N15_b rec_202／N16_a film_113／N16_b film_104／N16_c ad_111；N13_c 不派。 */
+ok('GRANT229 C 組 10 鍵對照', GRANT229_CHOICE['N13:N13_a'].gigId==='gig_1992_tv_114' && GRANT229_CHOICE['N13:N13_b'].gigId==='gig_1992_film_102' && GRANT229_CHOICE['N14:N14_a'].gigId==='gig_1992_rec_111' && GRANT229_CHOICE['N14:N14_b'].gigId==='gig_1992_rec_201' && GRANT229_CHOICE['N14:N14_c'].gigId==='gig_1992_ad_109' && GRANT229_CHOICE['N15:N15_a'].gigId==='gig_1992_ad_110' && GRANT229_CHOICE['N15:N15_b'].gigId==='gig_1992_rec_202' && GRANT229_CHOICE['N16:N16_a'].gigId==='gig_1992_film_113' && GRANT229_CHOICE['N16:N16_b'].gigId==='gig_1992_film_104' && GRANT229_CHOICE['N16:N16_c'].gigId==='gig_1992_ad_111');
+ok('GRANT229 C 組 10 個 reason 全部非空', ['N13:N13_a','N13:N13_b','N14:N14_a','N14:N14_b','N14:N14_c','N15:N15_a','N15:N15_b','N16:N16_a','N16:N16_b','N16:N16_c'].every(k => (GRANT229_CHOICE[k].reason || '').length > 10));
+ok('GRANT229 N13_c 不派', !('N13:N13_c' in GRANT229_CHOICE));
 
 /* ---------- 2. 三筆債權 trigger gig 板面開關 ---------- */
 var S = null;

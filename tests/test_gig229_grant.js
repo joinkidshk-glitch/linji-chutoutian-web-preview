@@ -1,11 +1,13 @@
 // v20a229 B6 抉擇即派＋定期合約制測試（A8／A12；SPEC §3.7／附錄 A；AUDIT229 §8／§10；DECISIONS Q7／D-5）
-//   T0 44 張即派 id 齊（主線 31＋支線 13）＋新庫 276 張（v255：ENC79 9 張＋DRAFT 2 張重對完成——
+//   T0 44 張即派 id 齊（主線 31＋支線 13）＋新庫 282 張（v255：ENC79 9 張＋DRAFT 2 張重對完成——
 //       REUSE 4 張（rec_209／rec_201／film_211／1991_rec_201）＋NEW 7 張（tv_217／218／219、rec_210、
-//       film_213／214、1991_rec_207）；11 張舊 id 已唔喺新庫，映射已改指新 id，實機初遇／draft 即派 live）
-//   T1 主線 32 映射：抉擇→記低指定 gig、dueDay＝聽日（同上；v252 新 id：N1 tv_201／film_201、N2 film_202／tv_202、
+//       film_213／214、1991_rec_207）；11 張舊 id 已唔喺新庫，映射已改指新 id，實機初遇／draft 即派 live；
+//       v253 C 組再加 6 張新 gig，庫 276→282）
+//   T1 主線 42 映射：抉擇→記低指定 gig、dueDay＝聽日（同上；v252 新 id：N1 tv_201／film_201、N2 film_202／tv_202、
 //       N3 tv_203／tv_204、N4 ad_206／film_203、N5 tv_205／tv_205／tv_206、N6 tv_107 合約、N6F film_113 合約、
 //       N18 tv_208／tv_110、N7 film_104／tv_107／tv_201、N8 variety_109／rec_205／rec_206、N9 film_103／film_201、
-//       N10 film_105／film_202／tv_202、N11 film_106／film_107、N12 film_201／tv_103、N19 tv_104／tv_105）
+//       N10 film_105／film_202／tv_202、N11 film_106／film_107、N12 film_201／tv_103、N19 tv_104／tv_105；
+//       v253 C 組 10：N13 tv_114／film_102、N14 rec_111／rec_201／ad_109、N15 ad_110／rec_202、N16 film_113／film_104／ad_111；N13_c 不派）
 //   T2 支線：ENC79 廖／顧／麥初遇各 3（關鍵字命中＋兜底，映射表揀啱新 id，實機 record 派得出——v255 live）
 //       ＋廖 Beat2（W3_ho_liao_a／b → tv_209／tv_210，live）＋2 個 draft 目標 live（入口派得出，仍無呼叫點）
 //   T3 冪等：同一張記低兩次得一筆；派發一次後唔再派
@@ -113,8 +115,47 @@ eval(extractFn('isGigWrapped'));
 eval(extractFn('isGigInProduction'));
 eval(extractFn('isGigConsumed'));
 eval(extractFn('payWrapNote'));
+/* ---------- T11 D7 抽取：殺青計數＋作品牆＋提名計數（真函數，v253 工人 C） ---------- */
+eval(extractConstVar('START'));
+eval(extractConstVar('END95_TYPE_MEDIUM'));
+eval(extractConstVar('END95_LEAD_SCALES'));
+eval(extractConstVar('END95_STRONG_LEAD'));
+eval(extractConstVar('END95_GENRE_TYPE_NAMES'));
+eval(extractConstVar('END95_COMEDY_G'));
+eval(extractConstVar('END95_ACTION_G'));
+eval(extractConstVar('END95_COMEDY_KW'));
+eval(extractConstVar('END95_ACTION_KW'));
+eval(extractConstVar('ENDING410_BACKSTAGE_KEYS'));
+eval(extractConstVar('END229_LEAD_MEDIUM'));
+eval(extractConstVar('POSTER59_STAR_IDS'));
+eval(extractFn('awardsCalendarYear'));
+eval(extractFn('awardsYearFromDay'));
+eval(extractFn('gig229CategoryOf'));
+eval(extractFn('countYearMediumWraps'));
+eval(extractFn('end95GenreOf'));
+eval(extractFn('end95IsLead'));
+eval(extractFn('end95ClassifyWrap'));
+eval(extractFn('end95EmptyStats'));
+eval(extractFn('end95StatsAddOne'));
+eval(extractFn('end95DeriveStats'));
+eval(extractFn('careerStats95Of'));
+eval(extractFn('end95AddWrap'));
+eval(extractFn('end229IsLead'));
+eval(extractFn('end229ClassifyLead'));
+eval(extractFn('end229EmptyLeadStats'));
+eval(extractFn('end229DeriveLeadStats'));
+eval(extractFn('leadStats229Of'));
+eval(extractFn('end229AddWrap'));
+eval(extractFn('work59GigLookup'));
+eval(extractFn('work59IsNamed'));
+eval(extractFn('work59WorkOf'));
+eval(extractFn('work59RoleOf'));
+eval(extractFn('work59YearOf'));
+eval(extractFn('poster59Path'));
+eval(extractFn('leadStar59Of'));
+eval(extractFn('worksWallEntries59'));
 
-/* ---------- T0：44 張 id 齊＋新庫 276 張 ---------- */
+/* ---------- T0：44 張 id 齊＋新庫 282 張 ---------- */
 const MAIN31 = ['gig_1990_tv_201','gig_1990_film_201','gig_1990_film_202','gig_1990_tv_202','gig_1990_tv_203','gig_1990_tv_204','gig_1990_ad_206','gig_1990_film_203','gig_1990_tv_205','gig_1990_tv_206','gig_1990_tv_107','gig_1990_film_113','gig_1990_tv_208','gig_1990_tv_110',
   'gig_1991_film_104','gig_1991_tv_107','gig_1991_tv_201','gig_1991_variety_109','gig_1991_rec_205','gig_1991_rec_206','gig_1991_film_103','gig_1991_film_201','gig_1991_film_105','gig_1991_film_202','gig_1991_tv_202','gig_1991_film_106','gig_1991_film_107','gig_1992_film_201','gig_1992_tv_103','gig_1991_tv_104','gig_1991_tv_105'];
 /* v255：11 張舊 id 仲係唔喺新庫（已刪）；映射已改指新 id（REUSE 4＋NEW 7），舊 id 只留喺呢度做反證。 */
@@ -127,7 +168,7 @@ const SIDE_DEAD11 = ['gig_1990_tv_114','gig_1990_tv_115','gig_1990_tv_116',
   'gig_1990_film_116','gig_1990_film_117','gig_1990_film_115',
   'gig_1991_rec_111','gig_1991_rec_112'];
 const SIDE_W3_2 = ['gig_1990_tv_209','gig_1990_tv_210'];
-ok('T0 新庫 276 張', gigs.length===276, 'n='+gigs.length);
+ok('T0 新庫 282 張', gigs.length===282, 'n='+gigs.length);
 ok('T0 主線 31 張 id 齊', MAIN31.every(id=>!!gigById(id)));
 ok('T0 支線 W3 2 張 id 齊', SIDE_W3_2.every(id=>!!gigById(id)));
 ok('T0 ENC79／DRAFT 11 張舊 id 已唔喺新庫（v255：已刪，映射改指新 id）', SIDE_DEAD11.every(id=>!gigById(id)),
@@ -136,7 +177,7 @@ ok('T0 ENC79 9 行指住 live 新 id（REUSE 4＋NEW 7）', GRANT229_ENC79.every
 ok('T0 DRAFT 2 鍵指住 live 新 id', Object.values(GRANT229_DRAFT).every(v=>SIDE_LIVE11.indexOf(v.gigId)>=0));
 ok('T0 11 張新 id 全部喺庫', SIDE_LIVE11.every(id=>!!gigById(id)));
 ok('T0 《星夜迷離》新庫有且只有 1 張（v232 補寫，v252 重編號 tv_122→tv_203）', gigs.filter(g=>(g.title||'').indexOf('星夜迷離')>=0).length===1 && gigById('gig_1991_tv_203'));
-ok('T0 GRANT229_CHOICE 34 鍵', Object.keys(GRANT229_CHOICE).length===34, Object.keys(GRANT229_CHOICE).join(','));
+ok('T0 GRANT229_CHOICE 44 鍵', Object.keys(GRANT229_CHOICE).length===44, Object.keys(GRANT229_CHOICE).join(','));
 ok('T0 GRANT229_ENC79 9 行', GRANT229_ENC79.length===9);
 ok('T0 GRANT229_DRAFT 2 鍵', Object.keys(GRANT229_DRAFT).length===2);
 ok('T0 CONTRACT229_GIGS 只得 N-3／N-4', Object.keys(CONTRACT229_GIGS).length===2 && CONTRACT229_GIGS.gig_1990_tv_107===1 && CONTRACT229_GIGS.gig_1990_film_113===1);
@@ -178,6 +219,16 @@ ok('T1 N11_a 黑幫→film_106', choiceMaps('N11','N11_a','gig_1991_film_106'));
 ok('T1 N11_b 探長→film_107', choiceMaps('N11','N11_b','gig_1991_film_107'));
 ok('T1 N12_a 跳→film_201', choiceMaps('N12','N12_a','gig_1992_film_201'));
 ok('T1 N12_b 拒接→tv_103', choiceMaps('N12','N12_b','gig_1992_tv_103'));
+ok('T1 N13_a 企邊電視台→tv_114', choiceMaps('N13','N13_a','gig_1992_tv_114'));
+ok('T1 N13_b 企邊電影公司→film_102', choiceMaps('N13','N13_b','gig_1992_film_102'));
+ok('T1 N14_a 主打歌MV→rec_111', choiceMaps('N14','N14_a','gig_1992_rec_111'));
+ok('T1 N14_b 樂壇洗牌→rec_201', choiceMaps('N14','N14_b','gig_1992_rec_201'));
+ok('T1 N14_c 頒獎禮前哨→ad_109', choiceMaps('N14','N14_c','gig_1992_ad_109'));
+ok('T1 N15_a 櫥窗少年→ad_110', choiceMaps('N15','N15_a','gig_1992_ad_110'));
+ok('T1 N15_b 影展主題歌→rec_202', choiceMaps('N15','N15_b','gig_1992_rec_202'));
+ok('T1 N16_a 賀歲大鑊→film_113', choiceMaps('N16','N16_a','gig_1992_film_113'));
+ok('T1 N16_b 笑爆賀歲→film_104', choiceMaps('N16','N16_b','gig_1992_film_104'));
+ok('T1 N16_c 聖誕中環→ad_111', choiceMaps('N16','N16_c','gig_1992_ad_111'));
 ok('T1 N19_a 本份→tv_104', choiceMaps('N19','N19_a','gig_1991_tv_104'));
 ok('T1 N19_b 偷師→tv_105', choiceMaps('N19','N19_b','gig_1991_tv_105'));
 freshS(10);
@@ -185,7 +236,7 @@ ok('T1 N6_b 唔接→唔派', grant229RecordFromChoice({id:'N6'},{id:'N6_b'})===
 freshS(10);
 ok('T1 N6F_b 唔接→唔派', grant229RecordFromChoice({id:'N6F'},{id:'N6F_b'})===false && S.grant229Queue.length===0);
 freshS(10);
-ok('T1 無關抉擇→唔派', grant229RecordFromChoice({id:'N13'},{id:'N13_a'})===false && S.grant229Queue.length===0);
+ok('T1 無關抉擇→唔派', grant229RecordFromChoice({id:'N13'},{id:'N13_c'})===false && S.grant229Queue.length===0);
 
 /* ---------- T2：支線 11 live 映射＋2 draft dormant ---------- */
 /* v255：ENC79 9 行＋DRAFT 2 鍵已重對新庫（REUSE 4＋NEW 7）。呢度分兩層驗：
@@ -364,6 +415,45 @@ ok('T9 合約 shoot 有 contract229（2 週×$4,900）', S.shoots.length===1 && 
 ok('T9 合約紀錄 active', S.contracts229.length===1 && S.contracts229[0].status==='active' && S.contracts229[0].totalPay===9800);
 ok('T9 合約獲聘後 isGigConsumed true', isGigConsumed(gigById('gig_1990_tv_107'))===true);
 ok('T10 合約派發唔經試鏡', S.pendingAud.length===0 && S.booked.length===0);
+
+/* ---------- T11 D7：作品類即派 gig 殺青計一個作品（v253 工人 C） ----------
+   作品類：gig_1991_film_104《半張船票》男配角（N7_a 即派，category 作品，tier 中級）。
+   全鏈：grant229RecordFromChoice(N7,N7_a) → 翌日 grant229PresentDue 派發 → shoot 入行程 →
+   殺青結算（生產同一時機：end95AddWrap＋end229AddWrap → wrapHistory.unshift）→
+   careerStats95.total＋1、作品牆有佢、countYearMediumWraps(['電影'],1991) 計 1。
+   對照：臨記通告類同樣流程 → total 照＋1，但作品牆／提名計數唔計（category 分流）。 */
+function wrapSettleD7(sh){
+  const g = gigById(sh.gigId);
+  end95AddWrap(S, g, sh);
+  end229AddWrap(S, g);
+  S.wrapHistory = S.wrapHistory || [];
+  S.wrapHistory.unshift({
+    gigId: sh.gigId, title: sh.title, type: sh.type || "",
+    workTitle: g ? (g.workTitle || "") : "", roleLabel: g ? (g.roleLabel || "") : "", year: g ? (g.year || 0) : 0,
+    category: g ? (g.category || "") : "", roleScale: g ? (g.roleScale || "") : "",
+    totalDays: sh.totalDays || 0, pay: sh.pay || 0, fame: sh.fame || 0,
+    popularity: sh.popularity != null ? sh.popularity : 0,
+    wrappedDay: S.dayIndex | 0, rating: "順利殺青"
+  });
+}
+const gig104 = gigById('gig_1991_film_104');
+ok('T11 film_104 係作品類男配角（N7_a 即派目標）', !!gig104 && gig104.category === '作品' && gig104.type === '電影' && gig104.roleScale === 'film_support_main', gig104 && (gig104.category + '/' + gig104.type + '/' + gig104.roleScale));
+freshS(10);
+ok('T11 grant：N7_a 記低 film_104（dueDay＝聽日）', grant229RecordFromChoice({ id: 'N7' }, { id: 'N7_a' }) === true && S.grant229Queue.length === 1 && S.grant229Queue[0].gigId === 'gig_1991_film_104' && S.grant229Queue[0].dueDay === 11);
+S.dayIndex = 11; modalCalls = 0;
+ok('T11 派發：翌日何生電話派 film_104', grant229PresentDue(() => {}) === true && S.shoots.length === 1 && S.shoots[0].gigId === 'gig_1991_film_104');
+S.dayIndex = 400; /* 1991-02-04：殺青年份入 1991 提名池 */
+wrapSettleD7(S.shoots[0]);
+ok('T11 殺青：careerStats95.total＋1（byMedium.film＋1）', careerStats95Of(S).total === 1 && careerStats95Of(S).byMedium.film === 1);
+ok('T11 殺青：作品牆有《半張船票》（男配角）', worksWallEntries59().some(e => e.gigId === 'gig_1991_film_104' && e.work === '半張船票' && e.role === '男配角'));
+ok('T11 殺青：1991 年電影提名計數＋1', countYearMediumWraps(['電影'], 1991) === 1);
+const extraGig = gigs.find(g => g.category === '臨記通告' && g.type === '電影');
+ok('T11 對照：庫入面有臨記通告類電影 gig', !!extraGig, extraGig && extraGig.id);
+const shExtra = { id: 'sh_test_' + extraGig.id, gigId: extraGig.id, title: extraGig.title, type: extraGig.type, totalDays: extraGig.days || 0, pay: 0, fame: 0, popularity: 0 };
+wrapSettleD7(shExtra);
+ok('T11 對照：臨記通告殺青 total 照＋1（total＝2）', careerStats95Of(S).total === 2);
+ok('T11 對照：臨記通告唔入作品牆', !worksWallEntries59().some(e => e.gigId === extraGig.id) && worksWallEntries59().length === 1);
+ok('T11 對照：臨記通告唔計提名數（1991 電影仍係 1）', countYearMediumWraps(['電影'], 1991) === 1);
 
 /* ---------- 尾 ---------- */
 console.log(fails.length ? ('\nFAILURES: '+fails.length+' :: '+fails.join(' | ')) : '\nALL PASS');

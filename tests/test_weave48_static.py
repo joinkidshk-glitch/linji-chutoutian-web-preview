@@ -25,9 +25,9 @@ def block(decl, endmark):
 # ---- 1990 主幹節點（JSON pack，v20a234 唯一來源） ----
 spine = json.dumps([nodes.get(k) for k in ('N12', 'N13', 'N14', 'N15', 'N16')], ensure_ascii=False)
 ok('pack N12-N16 五節點在位', all(nodes.get(k) for k in ('N12', 'N13', 'N14', 'N15', 'N16')))
-for cid, title, loc in [('N12','墊','film_harbour'), ('N13','企邊','tvb_longmen'),  # v251：N12 新短詞標題（pack 側；STORY_TITLE_SOFT fallback 表唔郁，見下）
-                        ('N14','樂壇前哨','rec_star'), ('N15','偶像實力之爭','rec_star'),
-                        ('N16','賀歲片','film_cotton')]:
+for cid, title, loc in [('N12','墊','film_harbour'), ('N13','高爾夫球','tvb_longmen'),  # v253：N13／N15／N16 新短詞標題（pack 側；STORY_TITLE_SOFT fallback 表唔郁，見下）
+                        ('N14','樂壇前哨','rec_star'), ('N15','錄音室','rec_star'),
+                        ('N16','飛紙仔','film_cotton')]:
     ok('pack node present: '+cid, nodes.get(cid) is not None)
     ok('pack '+cid+' title '+title, nodes.get(cid, {}).get('title') == title)
     ok('pack '+cid+' locId '+loc, nodes.get(cid, {}).get('locId') == loc)
@@ -113,7 +113,7 @@ for cid, loc in [('N14','rec_star'), ('N16','film_cotton'), ('N13','tvb_longmen'
     ok('STORY_LOC_SOFT '+cid+' -> '+loc, re.search(cid+r': "'+loc+r'"', locs) is not None)
 tm = re.search(r'const STORY_TITLE_SOFT = \{(.*?)\n\};', html, re.S)
 titles = tm.group(1) if tm else ''
-for cid, t in [('N6','飯堂閒角'), ('N14','樂壇前哨'), ('N16','賀歲片'), ('N13','企邊'), ('N12','高危替身'), ('N15','偶像實力之爭')]:
+for cid, t in [('N6','飯堂閒角'), ('N14','樂壇前哨'), ('N16','飛紙仔'), ('N13','高爾夫球'), ('N12','高危替身'), ('N15','錄音室')]:  # v253：SOFT 表跟新短詞標題
     ok('STORY_TITLE_SOFT '+cid+' = '+t, (cid+': "'+t+'"') in titles)
 hm = re.search(r'const STORY_HINT_SOFT = \{(.*?)\n\};', nocomment, re.S)
 hints = hm.group(1) if hm else ''

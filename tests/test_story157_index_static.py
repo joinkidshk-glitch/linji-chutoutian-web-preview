@@ -84,6 +84,7 @@ TC6 = {"N6": _pack_nodes["N6"]}
 TBR89 = {"N6F": _pack_nodes["N6F"]}  # v20a250：N6F 由 JSON pack 直出（內嵌 BR89 表已刪）
 TWF1 = {k: _pack_nodes[k] for k in ["N18", "N19"]}
 N17 = _pack_nodes["N17"]
+EPI = _pack_nodes["N17_epi"]  # v253 工人 C：湯場獨立節點（N17 尾 4 拍搬出嚟）
 # 第 6 節年份舊曆檢查用嘅 span：JSON  dumps（同舊 inline span 同口徑：成組節點全文）
 spans = {
     "T1989": json.dumps(T1989, ensure_ascii=False),
@@ -153,13 +154,13 @@ ok("N6F 由 JSON 出（1 key）", list(TBR89.keys()) == ["N6F"])
 ok("WF1 表 2 keys 次序 N18/N19", list(TWF1.keys()) == ["N18", "N19"])
 ok("CHOICE47 F4/G4 在位", F4.get("id") == "F4_stay_mind" and G4.get("id") == "G4_family_job")
 
-# ---- 2. beats／choices 數目（設計稿＋manifest 對照；v251：N8–N12／N19 加鋪墊場面，N9 13 唔係設計稿嘅 8） ----
+# ---- 2. beats／choices 數目（設計稿＋manifest 對照；v251：N8–N12／N19 加鋪墊場面，N9 13 唔係設計稿嘅 8；v253：N13–N17 加鋪墊場面） ----
 ok("beats 數 1989 N7/N8/N9/N10/N11",
    [len(T1989[k]["beats"]) for k in ["N7", "N8", "N9", "N10", "N11"]] == [9, 12, 13, 15, 12])
 ok("beats 數 1990 N12/N13/N14/N15/N16",
-   [len(T1990[k]["beats"]) for k in ["N12", "N13", "N14", "N15", "N16"]] == [10, 9, 12, 7, 7])
+   [len(T1990[k]["beats"]) for k in ["N12", "N13", "N14", "N15", "N16"]] == [10, 13, 16, 10, 11])
 ok("beats 數 N6/N6F", (len(TC6["N6"]["beats"]), len(TBR89["N6F"]["beats"])) == (10, 8))
-ok("beats 數 N17", len(N17["beats"]) == 15)
+ok("beats 數 N17", len(N17["beats"]) == 15)  # v253 工人 C：湯場 4 拍搬去 N17_epi（19→15）
 ok("beats 數 N18/N19", (len(TWF1["N18"]["beats"]), len(TWF1["N19"]["beats"])) == (10, 11))  # v251：N19 加鋪墊場面→11
 ok("beats 數 F4/G4", (len(F4["beats"]), len(G4["beats"])) == (4, 4))
 ok("choices 數",
@@ -196,12 +197,20 @@ ok("N17 台灣資金風聲照用", "台灣那邊的資金沒有以前那麼寬�
 ok("N17 彩紙仲喺走廊", "彩紙還在走廊" in blob(N17))
 ok("N17 synopsis：頒獎禮之後嗰晚", "頒獎禮之後那晚" in N17["synopsis"])
 ok("N17 synopsis 無 DEV 註解（舊版文案／重寫）", "舊版文案" not in N17["synopsis"] and "重寫" not in N17["synopsis"])
-ok("N17 最後一則係收尾過場句", "寫滿他三年行過的路" in N17["beats"][-1].get("lines", [""])[-1]
-   or "寫滿他三年行過的路" in json.dumps(N17["beats"][-1], ensure_ascii=False))
+ok("N17 會議室收尾過場句仍在第 15 拍（v253 工人 C：湯場搬去 N17_epi，會議室收尾係 N17 最後一則）",
+   "寫滿他三年行過的路" in json.dumps(N17["beats"][14], ensure_ascii=False))
+ok("N17 尾聲湯場搬去獨立節點 N17_epi（v253 工人 C：阿媽＋返屋企食湯，4 拍；playerOffer:false，唔入玩家列表）",
+   EPI["title"] == "返屋企食湯" and EPI.get("playerOffer") is False
+   and len(EPI["beats"]) == 4 and len(EPI["choices"]) == 0
+   and "阿媽煲了湯" in json.dumps(EPI["beats"][0], ensure_ascii=False)
+   and "返嚟食飯就得" in json.dumps(EPI["beats"], ensure_ascii=False)
+   and "唔好餓親自己" in json.dumps(EPI["beats"], ensure_ascii=False)
+   and "寫滿我三年行過嘅路" in json.dumps(EPI["beats"][3], ensure_ascii=False)
+   and "圈格" not in json.dumps(EPI["beats"], ensure_ascii=False))
 ok("F4 太空人＋回流零星口吻", "太空人" in blob(F4) and "間中都會聽到" in blob(F4)
    and "呢年開始" not in blob(F4))
 ok("F4 回流句 6 處（3 beats＋3 notes）", blob(F4).count("間中都會聽到") == 6)
-ok("G4 標題＋阿媽文職", G4["title"] == "阿媽煲咗湯" and "表叔在銀行那邊" in blob(G4)
+ok("G4 標題＋阿媽文職", G4["title"] == "一碗湯" and "表叔在銀行那邊" in blob(G4)
    and "薦到一份文職" in blob(G4))  # v233 RW-2：廣東話→書面語（「喺銀行嗰邊」→「在銀行那邊」）
 
 # ---- 4. 閘／choice 旗／stats 同 live 一致 ----

@@ -38,7 +38,7 @@ ok('半線 commit 定性處理（romance 只認 hiu/choi committed）',
 # ---- N17 前夕（JSON pack，v20a234 唯一來源） ----
 node = json.dumps(nodes.get('N17'), ensure_ascii=False)
 ok('N17 pack node defined', nodes.get('N17') is not None)
-for frag in ['三年埋單', 'tvb_longmen', 'flag_ending410_natural', 'flag_ending410_quit_job']:
+for frag in ['意向', 'tvb_longmen', 'flag_ending410_natural', 'flag_ending410_quit_job']:
     ok('N17 pack fragment: '+frag, frag in node)
 ok('N17 pack free of old ten-ending ids', all(x not in node for x in ['N17_e01', 'ending_e01', 'endings_catalog', 'E01']))
 ok('N17 pack synopsis 對齊 v235 新規則（冇六個意向／只鎖事業）',
@@ -54,7 +54,7 @@ ok('N17 pack flags_written 冇死旗（to_backstage／to_support／leave_follow 
 ok('N17 inline override removed (v20a234)',
    'const STORY_SPINE_NODE_N17_410 = {' not in html and 'function applyStorySpineOverrides410()' not in html
    and 'applyStorySpineOverrides410();' not in html)
-ok('N17 SOFT tables aligned', 'N17: "tvb_longmen",' in html and 'N17: "三年埋單",' in html and 'N17: { playerHint: "台慶之後' in html)
+ok('N17 SOFT tables aligned', 'N17: "tvb_longmen",' in html and 'N17: "意向",' in html and 'N17: { playerHint: "台慶之後' in html)
 gm = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)
 gate = gm.group(1) if gm else ''
 # v20a136：N17 閘搬去 1992 年 12 月——weekMin 153＋等冬台慶有結果＋1993-01-01 backstop。
