@@ -341,13 +341,18 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
   ok('閘：1992 冬＋N16 done 但台慶未有結果 → N17 唔開（v20a136 awardResolved）', !openIds().includes('N17'));
   const n = node('N17');
   ok('N17 由 pack 直出：係「三年收科」＋locId tvb_longmen＋有 playerOffer', n.title === '三年埋單' && n.locId === 'tvb_longmen' && !!n.playerOffer);
+  ok('N17 pack synopsis 對齊 v235 新規則：冇「六個意向」／「只鎖事業」殘留，今晚只問走定留',
+     !n.synopsis.includes('六個意向') && !n.synopsis.includes('只鎖事業') && n.synopsis.includes('今晚只問一題：走，還是留'));
+  ok('N17 pack flags_written 冇死旗（to_backstage／to_support／leave_follow 已清）',
+     !(n.flags_written || []).some(f => f === 'flag_ending410_to_backstage' || f === 'flag_ending410_to_support' || f === 'flag_ending410_leave_follow')
+     && (n.flags_written || []).includes('flag_ending410_quit_leave'));
   ok('舊十檔清零（冇 endingId choices／冇 E01 字串／冇 ending_e 旗）',
      (n.choices || []).every(c => !c.endingId) && !JSON.stringify(n).includes('E01') && !JSON.stringify(n).includes('ending_e'));
   ok('N17 pack 靜態 choices 係保底兩則（natural／quit_job）',
      JSON.stringify((n.choices || []).map(c => c.ending410Key)) === '["natural","quit_job"]');
 }
 
-/* ================= (c) 相鄰規則 ================= */
+/* ================= (c) 去留規則（v20a235：結局由三年數值計出，前夕唯一問題係去留） ================= */
 function eveKeys(over){
   S = baseSave(over);
   return endingEveOptions410(S).map(o => o.key);
@@ -364,20 +369,20 @@ function eveKeys(over){
     npcs: { agent: 0, director: 60, colleague: 0, reporter: 0, stylist: 0, rival: 0 } });
   ok('相鄰：E4 已有債權 2（沉唔死版）→ 唔出 to_backstage', !keys3.includes('to_backstage'));
   const keys4 = eveKeys({ fame: 40, stage: 50, acting: 35, npcs: { agent: 0, director: 60, colleague: 0, reporter: 0, stylist: 0, rival: 0 } });
-  ok('相鄰：E2 同時合 E3 資格 → 出 to_backstage（前夕分流）', keys4.includes('to_backstage'));
+  ok('v235：E2 同時合 E3 資格 → 唔再出 to_backstage（結局唔畀臨尾揀格）', !keys4.includes('to_backstage'));
   const keys5 = eveKeys({ fame: 30, stage: 60, acting: 50, npcs: { agent: 0, director: 65, colleague: 0, reporter: 0, stylist: 0, rival: 0 } });
   ok('相鄰：E3 但聲量 30 唔合 E2 → 唔出 to_support', !keys5.includes('to_support'));
   const keys6 = eveKeys({ fame: 10, story: { flags: { flag_leave_mind: true }, rel: {}, done: {}, choices: {} } });
-  ok('相鄰：leave_mind＋E0 → 出 leave_follow＋quit_leave', keys6.includes('leave_follow') && keys6.includes('quit_leave'));
-  /* v20a95：leave_follow 唔出嘅前提要真・E1 狀態（舊狀態雙軌 131 新梯只係 E2，會出 leave_follow）——
-     改用齊質性閘嘅 E1 狀態：聲望 200／信用 210／雙軌 410＋獎＋兩媒介擔正＋鏈 F 旗。 */
+  ok('v235：leave_mind＋E0 → 唔出 leave_follow，只留 quit_leave（走）', !keys6.includes('leave_follow') && keys6.includes('quit_leave'));
+  /* v20a235：leave_follow 成個刪除——下面 E1 狀態只係覆核「任何狀態都有 natural＋quit_job、
+     冇 leave_mind 就唔出 quit_leave」，唔再係 leave_follow 嘅出唔出前提。 */
   const keys7 = eveKeys({ fame: 200, industryCreditDelta: 110,
     awardsLog: [{ medium: 'film', categories: [{ id: 'best', outcome: 'won', repTitle: '某片' }] }],
     careerStats95: { total: 40, byMedium: { film: 20, tv: 20, music: 0, variety: 0, ad: 0 }, leadByMedium: { film: 2, tv: 1, music: 0, variety: 0, ad: 0 }, tvLongLeads: 1, genreIdentified: 0, genreComedy: 0, genreAction: 0, backstageWorks: 0 },
     /* v20a229 B4：E1 擔正讀新計數器——fixture 要帶埋 leadStats229（同舊計數器一致） */
     leadStats229: { byMedium: { film: 2, tv: 1, music: 0, variety: 0, ad: 0 } },
     story: { flags: { flag_leave_mind: true }, rel: {}, done: {}, choices: {} } });
-  ok('相鄰：leave_mind＋真 E1（v95 質性閘全齊）→ 唔出 leave_follow（只限 E0／E2）', !keys7.includes('leave_follow'));
+  ok('v235：leave_mind＋真 E1（v95 質性閘全齊）→ 選項得返 natural／quit_job／quit_leave 三則', JSON.stringify(keys7) === '["natural","quit_job","quit_leave"]');
   ok('相鄰：任何狀態都有 natural＋quit_job', keys7.includes('natural') && keys7.includes('quit_job'));
   ok('相鄰：冇 leave_mind → 唔出 quit_leave', !eveKeys({ fame: 10 }).includes('quit_leave'));
 }
@@ -420,7 +425,7 @@ function eveKeys(over){
 }
 {
   /* v20a95 改版：E4 前夕——危機 beats 照插，但 to_backstage 取消（新梯 E4／E3 唔相鄰）；
-     揀 natural 落 E4 真沉版呈現（債權 0）。E2⇄E3 分流由 (c) 段 keys4／keys5 继续守。 */
+     v20a235：E2⇄E3 分流成個刪除，由 (c) 段 keys4／keys5 守住唔出。揀 natural 落 E4 真沉版呈現（債權 0）。 */
   modalPages410 = [];
   loadGame(baseSave({
     fame: 55, stage: 0, acting: 0,
@@ -438,18 +443,42 @@ function eveKeys(over){
   ok('E4 呈現：泡沫場景（頭版出街嗰朝）', modalPages410[0].html.includes('頭版出街'));
 }
 {
-  /* leave_follow：事業不變、去留轉 leave */
+  /* v20a235 去留軸修復：諗過走（flag_leave_mind）但前夕揀留低（natural）→ exodus 必須係 stay，
+     唔再係 undecided（舊行為：得 flag_stay_mind 先兜底，留低嗰個會出「未說出口的人」）。
+     狀態：E2（聲量40／信用42）＋flag_leave_mind，刻意唔帶 flag_stay_mind。 */
+  modalPages410 = [];
+  loadGame(baseSave({
+    fame: 40, stage: 50, acting: 35,
+    npcs: { agent: 30, director: 10, colleague: 0, reporter: 0, stylist: 0, rival: 0 },
+    story: { flags: { flag_leave_mind: true }, rel: {}, done: { N16: true }, choices: {} }
+  }));
+  const eve = ending410EveNode(node('N17'));
+  ok('v235 去留：leave_mind 玩家嘅前夕選項得返 natural／quit_job／quit_leave', JSON.stringify(eve.choices.map(c => c.ending410Key)) === '["natural","quit_job","quit_leave"]');
+  ok('v235 CHOICE_IDS：三個動態選項照順序映射 N17_410_a／b／c（唔會錯位／唔會索取 ids[5]）',
+     JSON.stringify(eve.choices.map(c => c.id)) === '["N17_410_a","N17_410_b","N17_410_c"]');
+  const nat = eve.choices.find(c => c.ending410Key === 'natural');
+  const result = StoryOC.applyChoice(eve, nat);
+  ending410AfterEveChoice(eve, nat, result);
+  ok('v235 去留：揀留低 → exodus=stay／稱號「留下來的人」／career 照 E2（事業唔郁）',
+     S.ending410.exodus === 'stay' && S.ending410.title.indexOf('留下來的人') >= 0 && S.ending410.career === 'E2');
+  modalPages410[0].buttons[0].on();
+  ok('v235 去留：第二頁去留段寫留低，唔出「未說出口」／「未表態」',
+     modalPages410[1].html.includes('1993') && !JSON.stringify(modalPages410.map(p => p.html)).includes('未說出口') && !JSON.stringify(modalPages410.map(p => p.html)).includes('未表態'));
+}
+{
+  /* v20a235：quit_leave（走）——E6 遠走版；leave_follow 已刪，事業不變＋去留轉 leave 嗰條舊路唔再存在 */
   modalPages410 = [];
   loadGame(baseSave({
     fame: 10,
     story: { flags: { flag_leave_mind: true }, rel: {}, done: { N16: true }, choices: {} }
   }));
   const eve = ending410EveNode(node('N17'));
-  const pick = eve.choices.find(c => c.ending410Key === 'leave_follow');
+  ok('v235：leave_follow 唔再喺選項列', !eve.choices.some(c => c.ending410Key === 'leave_follow'));
+  const pick = eve.choices.find(c => c.ending410Key === 'quit_leave');
   const result = StoryOC.applyChoice(eve, pick);
   ending410AfterEveChoice(eve, pick, result);
   modalPages410[0].buttons[0].on();
-  ok('leave_follow：career 照 E0、exodus=leave、呈現有啟德', S.ending410.career === 'E0' && S.ending410.exodus === 'leave' && JSON.stringify(modalPages410.map(p => p.html)).includes('啟德'));
+  ok('quit_leave：career=E6／遠走版／exodus=leave、呈現有啟德', S.ending410.career === 'E6' && S.ending410.careerVariant === '遠走' && S.ending410.exodus === 'leave' && JSON.stringify(modalPages410.map(p => p.html)).includes('啟德'));
 }
 
 /* ================= (f) 舊存檔相容 ================= */

@@ -80,11 +80,11 @@ for fn in ('rom176TryIntercept', 'rom176PlayEncounter', 'rom176DoGiveStarGift', 
 # v20a207 rebase 上 main 8cecf7f（v206）resync：v206 +25（N1 +22／N2 +3，插入點 ~41129／41271 之後）＋v207 +34；/tmp/verify207.py 73 錨點對位零 mismatch，純漂移。
 ok('釘：NPCS lan 條目 L6152', line(6360).startswith('  lan:{ id:"lan", name:"藍若曦"'))
 ok('釘：載入點 L31712（GIFT_REACT 賦值同行呼叫注入）',
-   'GIFT_REACT = giftReact' in line(15634) and 'rom176ApplyGiftOverrides()' in line(15634))
-ok('釘：ROM176 block 起點 L55660', line(39199).startswith('/* ===== v20a176 ROM176'))
-ok('釘：rom176ApplyGiftOverrides 定義 L56028', line(39567).startswith('function rom176ApplyGiftOverrides()'))
-ok('釘：addLocTalkGiftActs L57167', line(40706).startswith('function addLocTalkGiftActs(add, L, npcId)'))
-ok('釘：openLoc rom176 攔截 L57261', 'rom176TryIntercept(id)' in line(40800))
+   'GIFT_REACT = giftReact' in line(15610) and 'rom176ApplyGiftOverrides()' in line(15610))
+ok('釘：ROM176 block 起點 L55660', line(39175).startswith('/* ===== v20a176 ROM176'))
+ok('釘：rom176ApplyGiftOverrides 定義 L56028', line(39543).startswith('function rom176ApplyGiftOverrides()'))
+ok('釘：addLocTalkGiftActs L57167', line(40682).startswith('function addLocTalkGiftActs(add, L, npcId)'))
+ok('釘：openLoc rom176 攔截 L57261', 'rom176TryIntercept(id)' in line(40776))
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫（31903 唔郁、55254→55394、55622→55762、56761→56901、56855→56995），核實純漂移。# v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行，6 個釘行按段 +2／+9／+47 重算（6070→6072、31574→31583、53369→53416、53737→53784、54876→54923、54970→55017），difflib 對位核實純漂移。
 # v20a216 resync：釘行按 difflib 映射重寫（6322→6360、31903→31941、55394→55657、55762→56025、56901→57164、56995→57258；L6152／L31712 名唔郁），qa216/resync216.py 核實純漂移。
 # v20a217 resync：標籤遷移 ＋3 行（插入點舊 L45472 之後），釘行各 ＋3（55657→55660、56025→56028、57164→57167、57258→57261）。
@@ -101,6 +101,7 @@ ok('釘：openLoc rom176 攔截 L57261', 'rom176TryIntercept(id)' in line(40800)
 # v20a229 B6 resync：index.html 淨 +332 行（抉擇即派＋定期合約制，見 qa229/resync229_b6.py）；釘行按 difflib 映射重寫（18499→18501、41722→42054、42090→42422、43229→43561、43323→43655；1 個唔郁），difflib 對位核實純漂移。
 # v20a229 B7 resync：index.html 淨 +54 行（報紙分類 A10＋忠告卡 Q6，見 qa229/resync229_b7.py）；釘行按 difflib 映射重寫（42054→42068、42422→42436、43561→43575、43655→43669；2 個唔郁），difflib 對位核實純漂移。
 # v20a234 resync：index.html 淨 −2869 行（刪五個內嵌主線表＋覆寫函數／載入呼叫；刪除區間舊 L6603–7666／7667–8676／8677–8880／9012–9389／16611–16814，全部喺載入點之前；載入點另 −2 行因 46／410／WF1 呼叫＋註解拎走）；釘行按 difflib 映射重寫（18501→15634、42068→39199、42436→39567、43575→40706、43669→40800；6360 唔郁），內容逐字核實純漂移。
+# v20a235 resync：index.html 淨 −24 行（N17 前夕刪三選項）；釘行按 difflib 映射重寫（15634→15610、39199→39175、39567→39543、40706→40682、40800→40776；6360 唔郁），內容逐字核實純漂移。
 
 # ---- 注入呼叫位置（GIFT 賦值之後、同一行） ----
 gi = html.find('GIFT_REACT = giftReact')

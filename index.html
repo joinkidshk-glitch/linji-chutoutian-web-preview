@@ -11431,7 +11431,7 @@ const StoryPlay = (()=>{
       }
     }
     try{ if(node && (node.id==="N1" || node.beatId==="N1") && typeof softCanonC1Face==="function") node = softCanonC1Face(node); }catch(_c1){}
-    /* v20a33 WEAVE_PHASE4_10：N17 前夕節點按當下狀態重建（beats 加料＋choices 行相鄰規則生成） */
+    /* v20a33 WEAVE_PHASE4_10：N17 前夕節點按當下狀態重建（beats 加料＋choices 按去留規則生成：留低／收山／走） */
     try{ if(node && node.id==="N17" && typeof ending410EveNode==="function") node = ending410EveNode(node) || node; }catch(_e410s){}
     try{ node = applyFamilySafeToNode(node) || node; }catch(_fs){}
     _sess = {
@@ -13385,7 +13385,8 @@ function wrapTrajNotePool49(){
 /* ===== Weave Phase 4-10（v20a33）：結局系統——三軸總帳制（結局設計專檔 linji-endings-design.md）。
    架構：resolveEnding410(S, opts) 純函數按專檔 §2 判定表上而下計事業軸（E6 只認 opts 主動入口）；
    感情軸（commit 旗／半線差一步素材）＋去留軸（鏈 F 旗）做修飾；前夕場景（N17 覆寫節點）嘅
-   選項由 endingEveOptions410 按狀態生成，只准相鄰行一格（專檔 §3）；揀完由
+   選項由 endingEveOptions410 按狀態生成——v20a235 新規則：結局由三年數值計出，前夕唯一問題
+   係去留（走唔走），唔郁事業格；揀完由
    ending410AfterEveChoice 組裝呈現（事業場景→感情→去留→個人化插入→手帳總結頁），
    結果寫入 S.ending410 持久保存，N17 done 之後唔再重複觸發，總結頁喺手帳剪報頁隨時重睇。
    判定唔用 trajectoryOf49（嗰個係 4-9 呈現分類）；軌跡只准用喺稱號／報紙稱呼呢類呈現銜接。
@@ -13905,18 +13906,14 @@ function resolveEnding410(st, opts){
     }
   };
 }
-/* 前夕抉擇選項生成（專檔 §3 相鄰規則）：集合按狀態生成，唔寫死。
-   - natural：順其自然（原判定），永遠有；
+/* 前夕抉擇選項生成（v20a235 新規則：結局由三年數值計出，前夕唯一問題係去留，走唔走，唔郁事業格）。
+   - natural：順其自然（留低；原判定照計），永遠有；
    - quit_job：接屋企穩陣工 → E6（玩家主動入口，永遠有，文案寫明後果）；
-   - quit_leave：移民離場 → E6 遠走版（只限鏈 F 第 4 拍諗過走嘅人）；
-   - to_backstage：E2 同時合 E3 資格 → 前夕分流去 E3（v20a95 起 E4→E3 取消：新梯唔再相鄰）；
-   - to_support：E3 同時合 E2 資格 → 行一格返 E2（爭男配）；
-   - leave_follow：flag_leave_mind＋原判定 E0／E2 → 事業不變，去留軸轉移民版。
-   任何選項都唔會令事業結局跳多過一格（quit 係專檔明文嘅主動離場，唔受格數限）。 */
+   - quit_leave：移民離場 → E6 遠走版（只限鏈 F 第 4 拍諗過走嘅人）。
+   舊相鄰規則（to_backstage／to_support／leave_follow）已於 v20a235 刪除：結局唔再畀玩家臨尾揀格。 */
 function endingEveOptions410(st, baseRes){
   const s = st || (typeof S!=="undefined" ? S : null) || {};
-  const base = baseRes || resolveEnding410(s);
-  const favor = endingFavor410(s);
+  void baseRes; /* v20a235：去留三則唔再讀原判定——baseRes 只留參數位，兼容舊呼叫（ending410EveNode／測試傳兩個參數）。 */
   const out = [];
   out.push({ key: "natural", label: "順其自然：照這三年的路，走到哪裡就是哪裡", note: "不強求，不回頭——頒獎禮散場，他站回他站慣的那個位置。"  /* v20a136：N17 成幕改做頒獎禮之後（動態重建選項，靜態節點 notes 嗰句同步改咗） */ });
   if(endingFlag410(s, "flag_family_job_accept")){
@@ -13927,21 +13924,10 @@ function endingEveOptions410(st, baseRes){
   if(endingFlag410(s, "flag_leave_mind")){
     out.push({ key: "quit_leave", label: "走：移民離場——放棄今晚，不再回這一行", note: "講明先：選這個，他會在啟德上機，這一行的事，留在香港。（退圈・遠走）" });
   }
-  /* v20a95 LADDER95：E4→E3 舊選項取消——新梯入面 E4 同 E3 之間隔住成段中段梯，
-     按拍板「相鄰跟新梯上下格計」唔再算相鄰；E4 前夕分支保留 rescued／sunk 兩版（債權門檻不變）。 */
-  if(base.career==="E2" && endingE3Eligible410(s)){
-    out.push({ key: "to_backstage", label: "轉幕後：不爭幕前那格，進去做班底", note: "他有幕後的本錢——站前還是站後，今晚選一次。" });
-  }
-  if(base.career==="E3" && endingE2Eligible410(s)){
-    out.push({ key: "to_support", label: "爭回幕前：站回鏡頭前，爭個男配角", note: "幕後站得穩，幕前也還沒試盡——走回一格，站出去。" });
-  }
-  if(endingFlag410(s, "flag_leave_mind") && (base.career==="E0" || base.career==="E2")){
-    out.push({ key: "leave_follow", label: "跟著去：戲照埋單，但年尾他會上機走", note: "事業怎樣收尾都好，去留那一題，今晚一併答了：走。" });
-  }
   return out;
 }
 /* ===== N17 前夕：JSON pack 節點係骨架＋保底選項（natural／quit_job）；真正播出嗰陣
-   StoryPlay.start 嘅 N17 hook 會用 ending410EveNode 按當下狀態重建 beats／choices（選項集合＝相鄰規則）。
+   StoryPlay.start 嘅 N17 hook 會用 ending410EveNode 按當下狀態重建 beats／choices（選項集合＝去留三則：留低／收山／走）。
    v20a234：內嵌覆寫表已刪，N17 由 JSON pack 直出，唯一來源。
    舊存檔若已 done N17（舊十檔路徑揀過），節點照樣 done，唔會重播、唔會 crash。 ===== */
 const ENDING410_CHOICE_IDS = ["N17_410_a", "N17_410_b", "N17_410_c", "N17_410_d", "N17_410_e", "N17_410_f"];
@@ -14361,7 +14347,7 @@ function showEndingSummary410(){
   }catch(_e){}
 }
 /* 前夕抉擇之後嘅流程（由 StoryPlay.pickChoice 嘅 N17 hook 呼叫；回 true＝已接管呈現，唔行通用結算）：
-   按玩家揀嗰格計最終結局（相鄰覆寫喺呢度套用）→ 寫 S.ending410 → 逐頁呈現。冪等：已有
+   按玩家揀嘅去留計最終結局（事業格照三年數值計，唔郁；quit 入口覆寫 E6）→ 寫 S.ending410 → 逐頁呈現。冪等：已有
    S.ending410 嗰陣只重開總結頁，唔重複成個流程。 */
 function ending410AfterEveChoice(node, choice, result){
   try{
@@ -14369,23 +14355,13 @@ function ending410AfterEveChoice(node, choice, result){
     if(S.ending410){ showEndingSummary410(); return true; }
     const key = choice.ending410Key || "";
     if(!key) return false;
-    const base = resolveEnding410(S);
     let opts = {};
     if(key==="quit_job") opts = { quit: "job" };
     else if(key==="quit_leave") opts = { quit: "leave" };
-    else if(key==="leave_follow") opts = { exodus: "leave" };
+    /* v20a235：留低本身就係表態留低——natural 明確覆寫去留軸做 stay，唔再靠 flag_stay_mind
+       兜底；諗過走（flag_leave_mind）但揀留低嘅人，結局頁唔再出「未說出口」。 */
+    else if(key==="natural") opts = { exodus: "stay" };
     const res = resolveEnding410(S, opts);
-    if(key==="to_backstage" && res.career!=="E6"){
-      res.career = "E3";
-      res.careerVariant = (base.career==="E4") ? "由泡沫轉幕後" : "前夕轉幕後";
-      res.reasons.push("前夕抉擇：由 " + base.career + " 相鄰行一格 → E3（幕後）");
-      res.title = (ENDING410_CAREER_NAMES.E3) + "・" + (res.exodus==="leave" ? "遠走的人" : (res.exodus==="stay" ? "留下來的人" : "未說出口的人"));
-    } else if(key==="to_support" && res.career!=="E6"){
-      res.career = "E2";
-      res.careerVariant = "前夕爭男配";
-      res.reasons.push("前夕抉擇：由 " + base.career + " 相鄰行一格 → E2（甘草）");
-      res.title = (ENDING410_CAREER_NAMES.E2) + "・" + (res.exodus==="leave" ? "遠走的人" : (res.exodus==="stay" ? "留下來的人" : "未說出口的人"));
-    }
     const favor = endingFavor410(S);
     S.ending410 = {
       career: res.career, careerVariant: res.careerVariant || "",

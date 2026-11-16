@@ -28,11 +28,12 @@ ok('nodes[0-4] 係 N1-N5', [n.get('id') for n in nodes[:5]] == ['N1', 'N2', 'N3'
 # --- nodes[5-16] 死版一字唔郁（pristine main e08a070 嘅 sha；v217 語言審核改咗 N6+ 節點文字，sha 重算；
 #      v20a210 編號統一 C→N 純改名，79 行逐行核實全部只係 C<n>→N<m> 對照改名，sha 再重算；
 #      v20a231 RW-1 逐句重寫 N6–N9（87 處 JSON 改動，N10–N17 一字未郁），sha 再重算；
-#      v20a233 RW-2 逐句重寫 N6–N19 內嵌表＋同步返 JSON（N6–N17 取代死 pack 節點、新增 N18／N19），sha 再重算） ---
+#      v20a233 RW-2 逐句重寫 N6–N19 內嵌表＋同步返 JSON（N6–N17 取代死 pack 節點、新增 N18／N19），sha 再重算；
+#      v20a235 結局唔畀玩家揀（N17 synopsis 六意向→走定留＋flags_written 刪三死旗；beats 一字未郁），sha 再重算） ---
 tail = json.dumps(nodes[5:], sort_keys=True, ensure_ascii=False)
 ok('nodes[5-16] 同 pristine 一致',
    hashlib.sha256(tail.encode('utf-8')).hexdigest()
-   == '1be6aa08d6574537f8c6b209b41045f4efe09ec1f692a6f6028932860a8c12b7')
+   == '7adfea57abd947f6c4569cf7fed805028e4b66a85cfc249b211ec3b652b11e99')
 
 # --- 標題／setting／synopsis 按設計 ---
 ok('標題 N1-N5 按設計（N5 用 TEXTFIX55 淨化形「辣手問題」；v221 書面語改寫：N1「冇價」→「無價」、N5「嘅」→「的」）',

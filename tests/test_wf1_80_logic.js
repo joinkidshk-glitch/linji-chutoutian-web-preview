@@ -106,7 +106,15 @@ for(const id of Object.keys(fixture)){
     if(JSON.stringify(fe.tags || []) !== JSON.stringify(ne.tags || [])) fxOk = false;
   }
   ok(id + ' 既有 choices flags/stats/tags 同 v136 fixture 一致（label／notes／resultBeats 文本由 v157 重寫）', fxOk);
-  ok(id + ' flags_written ⊇ v136 fixture', (f.flags_written || []).every(x => (n.flags_written || []).includes(x)));
+  /* v20a235：N17 例外——相鄰規則成個刪除，to_backstage／to_support／leave_follow 三個抉擇唔再存在，
+     對應三支 flag_ending410_* 永遠寫唔到，flags_written 刻意由六減三（只增不減嗰條 invariant 喺呢度唔適用）；
+     其餘節點維持 ⊇。 */
+  if(id === 'N17'){
+    ok(id + ' flags_written ＝ v235 三則（natural／quit_job／quit_leave）',
+       JSON.stringify(n.flags_written || []) === JSON.stringify(['flag_ending410_natural', 'flag_ending410_quit_job', 'flag_ending410_quit_leave']));
+  } else {
+    ok(id + ' flags_written ⊇ v136 fixture', (f.flags_written || []).every(x => (n.flags_written || []).includes(x)));
+  }
 }
 
 /* (2b) 新第三 choice：旗入帳、幅度唔勁過既有 */
