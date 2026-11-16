@@ -12,7 +12,7 @@
 //   (3) 采兒 M33：追訪記者質地關鍵字在位（追訪／獨家／查證／通稿＋唔害人飯碗底線）；
 //   (4) 半線收尾：四條 ending beats ≥450 字、各有專屬關鍵字、兩兩 bigram Jaccard <0.35（防範本換名）；
 //       ending synopsis／choice label／notes 冇「確定關係／伴侶／承諾／一齊走下去」；
-//   (5) merge 行為：以 v80 fixture 起假 pack → 行真 applyRomanceLanOverrides48（藍 PA，v20a234 改名）→ applyRomanceWf2Overrides81，
+//   (5) merge 行為：以 v80 fixture 起假 pack（lan 節點用 content JSON 真身，v20a242）→ applyRomanceWf2Overrides81，
 //       斷言 beats/synopsis 已換、choices id/flags/stats 同 fixture 逐項一致（半線 ending 只准 label/notes 變）、
 //       flags_written/openConditions 不變、stub 冇被掂（v20a152：stub 改由 rom2 提供續斷言）、冪等（行兩次 applied 10→0，v241）；
 //   (6) commit 回歸：COMMIT48_DEFS 同 v80 fixture 逐字一致、COMMIT48_REL_MIN=6、節點在位；
@@ -49,7 +49,6 @@ function extractFn(name){
   return html.slice(i, j + 1);
 }
 const T = extractConst('ROMANCE_WF2_OVERRIDES');
-const PA = extractConst('ROMANCE_LAN_PA_OVERRIDES');
 /* v20a241：hiu／choi／xu 15 條已由覆寫表刪入 JSON——合併視圖 SRC：表入面有就用表，冇就用 JSON pack（兩邊逐條核實一致）。 */
 const _lanxu = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'story_detail_romance_lan_xu.json'), 'utf8'));
 const _vhc = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'story_detail_romance_vera_hiu_choi.json'), 'utf8'));
@@ -138,11 +137,11 @@ for(const id of HALF_END){
   ok(id + ' synopsis/label/notes 冇承諾字眼', ban.every(b => texts.every(t => !String(t || '').includes(b))));
   ok(id + ' choiceText 兩條齊', ['he', 'be'].every(k => Object.keys(ct).some(cid => cid.endsWith('_' + k))));
 }
-/* 藍：PA 原句保留（加厚唔改原句） */
+/* 藍：JSON 原句保留（加厚唔改原句；v20a242：PA 表已刪，原句來源改做 content JSON） */
 {
-  const paLines = Object.values(PA).flatMap(n => (n.beats || []).flatMap(b => b.lines || []));
+  const jsonLines = _lanxu.nodes.filter(n => n.id.startsWith('R_lan_')).flatMap(n => (n.beats || []).flatMap(b => b.lines || []));
   const lanText = LINES.lan.map(id => beatText(T[id])).join('\n');
-  ok('藍 PA 版原 lines 全數保留（' + paLines.length + ' 句）', paLines.every(l => lanText.includes(l)));
+  ok('藍 JSON 版原 lines 全數保留（' + jsonLines.length + ' 句）', jsonLines.every(l => lanText.includes(l)));
 }
 /* v20a152：「鄧：數字不變」段已刪——R_tang_* 唔再喺 WF2 表入面（排片數字留喺 DengLine mock／WF5 業務覆寫，見 test_tang152_static.py）。 */
 
@@ -153,15 +152,13 @@ for(const id of HALF_END){
   const rom1 = { nodes: Object.keys(fixture.packNodes).filter(id => /_(hiu|choi|vera)_/.test(id)).map(id => mkNode(id, fixture.packNodes[id])) };
   const rom2 = { nodes: [
     ...Object.keys(fixture.packNodes).filter(id => id.startsWith('R_xu_')).map(id => mkNode(id, fixture.packNodes[id])),
-    ...LINES.lan.map(id => ({ id, synopsis: 'pack 原版', beats: [{ speaker: '旁白', lines: ['pack 原版'] }], choices: [{ id: 'X', label: 'X', effects: {} }], flags_written: [], openConditions: [] })),
+    ...LINES.lan.map(id => clone(_lanxu.nodes.find(n => n.id === id))), /* v20a242：LAN 表已刪，lan 節點用 content JSON 真身（唔再靠 PA 表轉換） */
     /* v20a152：R_tang_meet_stub 唔再經 romTang 入嚟，改由 rom2 提供，續斷言 stub 唔被掂 */
     ...Object.keys(fixture.packNodes).filter(id => id === 'R_tang_meet_stub').map(id => mkNode(id, fixture.packNodes[id])),
   ]};
   /* v20a152：WIRE.romance 冇 tang 槽（romance_tang pack 已停載） */
   const WIRE = { romance: { veraHiuChoi: rom1, lanXu: rom2 }, main: { nodes: [] } };
-  /* v20a234：主線覆寫已刪，lan 嗰半改名 applyRomanceLanOverrides48（只讀 STORY_WIRE.romance.lanXu；PA 表經參數傳入） */
-  const run48 = new Function('ROMANCE_LAN_PA_OVERRIDES', 'STORY_WIRE', extractFn('applyRomanceLanOverrides48') + '\nreturn applyRomanceLanOverrides48();');
-  run48(PA, WIRE);
+  /* v20a242：LAN 覆寫表已刪，lan 節點已係 content JSON 真身，唔再經 applyRomanceLanOverrides48 轉換 */
   const run81 = new Function('ROMANCE_WF2_OVERRIDES', 'STORY_WIRE', 'WF2_APPLIED81',
     'const WF2A = WF2_APPLIED81;\n' + extractFn('applyRomanceWf2Overrides81').replace('WF2_APPLIED81', 'WF2A') + '\nreturn applyRomanceWf2Overrides81();');
   const appliedSet = new WeakSet();

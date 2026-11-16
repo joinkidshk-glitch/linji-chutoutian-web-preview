@@ -5,8 +5,9 @@
 //       R_xu_meet day 800→1992春）；一般節點唔受影響（用返 eraTag 路徑）；
 //   (3) A-12：JSON pack 嘅 N18/N19 pacing.weekMin＝48／61，經 walk＋
 //       storyWeekStamp 出「第 48 週／第 61 週」；其他 WF1 節點 weekMin 原封；
-//   (4) B-03：ROMANCE_LAN_PA_OVERRIDES R_lan_push1 冇 stats.music、主抉擇 stage:1；
+//   (4) B-03：content/story_detail_romance_lan_xu.json R_lan_push1 冇 stats.music、主抉擇 stage:1；
 //       flag_family_marriage 兩抉擇保留（唔拆旗決定）＋flags_written 不變；
+//       （v20a242：ROMANCE_LAN_PA_OVERRIDES 已刪，JSON 唯一來源；stage 修正已入 JSON）
 //   (5) A-08：真 news82Tick——day 1015 未做 N15 → E4 唔刊；做完 N15 → 照刊；
 //       舊檔 ensureNews82 唔好搶先歸檔 E4；其他事件（E5 day 532）照常；
 //   (6) B-05：真 enc79PresenceP——鍾楚凝 farewell 未播 1992秋 p=0.25、播完 p=0；
@@ -72,11 +73,10 @@ eval([
   extractFn('calendarSeason'),
   extractFn('spSoftSeasonChar'), extractFn('spPlayerMeta'),
   extractFn('storyWeekStamp'),
-  extractConst('ROMANCE_LAN_PA_OVERRIDES'),
   extractConst('NEWS82_EVENTS'), extractFn('ensureNews82'), extractFn('news82Tick'),
   extractFn('enc79PresenceP'),
   extractFn('gigReleaseLine88'),
-  'globalThis.__C100 = { CLEAN100_WHEN_FIX, contra98FixNodeWhen, years66Walk, spPlayerMeta, storyWeekStamp, ROMANCE_LAN_PA_OVERRIDES, NEWS82_EVENTS, ensureNews82, news82Tick, enc79PresenceP, gigReleaseLine88 };',
+  'globalThis.__C100 = { CLEAN100_WHEN_FIX, contra98FixNodeWhen, years66Walk, spPlayerMeta, storyWeekStamp, NEWS82_EVENTS, ensureNews82, news82Tick, enc79PresenceP, gigReleaseLine88 };',
 ].join('\n'));
 const C = globalThis.__C100;
 
@@ -116,14 +116,17 @@ ok('A12 N19 章戳第61週', C.storyWeekStamp(wf1copy.N19).indexOf('約第61週'
 ok('A12 pack N18/N19 各一（冇重複注入）',
    mainPack.nodes.filter(n => n.id === 'N18').length === 1 && mainPack.nodes.filter(n => n.id === 'N19').length === 1);
 
-/* (4) B-03 */
-const push1 = C.ROMANCE_LAN_PA_OVERRIDES.R_lan_push1;
+/* (4) B-03（v20a242：覆寫表已刪，讀 content JSON 直出） */
+const lanPack = JSON.parse(fs.readFileSync(path.join(rootDir, 'content', 'story_detail_romance_lan_xu.json'), 'utf8'));
+const lanById = {};
+lanPack.nodes.forEach(n => { if(n.id.startsWith('R_lan_')) lanById[n.id] = n; });
+const push1 = lanById.R_lan_push1;
 const allStats = [];
-(function collect(o){ if(!o || typeof o !== 'object') return; if(o.stats) allStats.push(o.stats); Object.keys(o).forEach(k => collect(o[k])); })(C.ROMANCE_LAN_PA_OVERRIDES);
+(function collect(o){ if(!o || typeof o !== 'object') return; if(o.stats) allStats.push(o.stats); Object.keys(o).forEach(k => collect(o[k])); })(lanById);
 ok('B03 全藍線冇 stats.music', allStats.every(s => !('music' in s)));
 const sang = (push1.choices || []).find(c => (c.effects && c.effects.flags || []).indexOf('flag_lan_sang_together') >= 0);
 ok('B03 一齊捱過抉擇 stage:1', !!(sang && sang.effects.stats.stage === 1 && sang.effects.stats.rel_lan === 2));
-const crisis = C.ROMANCE_LAN_PA_OVERRIDES.R_lan_crisis;
+const crisis = lanById.R_lan_crisis;
 const famFlags = (crisis.choices || []).map(c => (c.effects && c.effects.flags) || []).filter(f => f.indexOf('flag_family_marriage') >= 0);
 ok('B03 flag_family_marriage 保留兩抉擇（唔拆）', famFlags.length === 2);
 ok('B03 crisis flags_written 不變', JSON.stringify(crisis.flags_written) === JSON.stringify(['flag_family_help', 'flag_family_marriage', 'flag_lan_help', 'flag_lan_stepback']));

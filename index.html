@@ -6597,139 +6597,8 @@ const STORY_GATE_3Y = {
      鎖定原因逐項顯示「到第 61 週」。 */
   N19: { needDone: ["N18"], weekMin: 61, yearMin: 1991, seasonIn: ["春"] },
 };
-/* v20a31 WEAVE_PHASE4_8：藍若曦感情線 PA 化覆寫（story_detail_romance_lan_xu.json 嘅 R_lan_* 五節點）。
-   藍身份已拍板＝電視台 PA／場記（跟結局專檔 PA 版）；pack 現行係玉女歌手＋豪門聯姻版
-   （唱片店狗仔／錄音室合唱／緋聞情侶檔／豪門聯姻／退圈登機證），成條線同 PA 版撞晒。
-   處理跟 4-6 pack N10 先例：index 側覆寫成個節點嘅文字層（title／setting／synopsis／beats／choice label），
-   結構層原封不動——node id／phase／openConditions／openConditionsAny／artId／romanceLine／arcBeat／
-   choice id／effects（flags＋stats）／flags_written 全部照 pack，令狀態鏈（ocAny 旗鏈、S.story.rel.rel_lan、
-   done 標記）同 4-10 結局讀取完全唔受影響。唔直接改 content pack JSON。
-   遺留旗名說明：flag_lan_sang_together（原「合唱」）同 flag_family_marriage（原「聯姻」）係 pack 既有
-   狀態旗名，ocAny 鏈同舊存檔都引用緊，唔改名；PA 版入面佢哋只係鏈上標記，唔再代表唱歌／婚姻內容。
-   R_xu_*（徐寶珊，富豪千金）同專檔一致、無歌手向內容，唔使覆寫；R_tang_meet_stub 唔經呢張覆寫表——
-   v20a152 起佢改做純公事介紹（見載入正規化 normaliseTangStub152：synopsis／抉擇 label／notes 重寫做排片聯絡，
-   TEXTFIX55 舊開閘條目已刪；結構層 flags／stats 唔郁）。
-   v20a100 CLEAN100 B-03：(1) R_lan_push1「一齊捱過」抉擇殘留 stats.music——藍已 PA 化、
-   嗰幕係對通告牌／走位冇唱歌，music 鍵 applyChoice 連映射都冇（落 story.soft 死數），
-   改做 stage（台風）+1，同場另一抉擇嘅 music:0 一併改 stage:0。(2) flag_family_marriage
-   俾 crisis 兩抉擇共用（企佢嗰邊／勸佢行）——查實全 index 冇任何讀取方（ocAny 鏈、結局
-   判定、回望都唔讀佢；讀取方只有三隻真旗 rel 結算同 flag_lan_commit 等），純粹係寫入留痕
-   v20a241 核實：LAN 表 5 節點同 JSON 唔一致（cast／beats／choices／playerOffer／when／eraTag／
-   openConditionsNote／linksMain／conflictNote），唔可以刪，成張表保留；同步 JSON 係另一票。
-   嘅鏈上標記，拆旗要郁 flags_written 一致性同舊檔語義而零收益，決定唔拆（理由入 NOTES）。 */
-const ROMANCE_LAN_PA_OVERRIDES = {
-  R_lan_meet: {
-    id: "R_lan_meet", phase: "P2", title: "通告牌下的人", when: "1989",
-    setting: "星河電視台廠景門口；趕開早班，人多車多",
-    eraTag: "era_1989_spring",
-    cast: ["藍若曦", "阿偉"],
-    synopsis: "藍若曦是星河電視台的場記。那天早上廠景門口人擠人，她抱著一疊通告牌和流程表，給人撞得散落一地。阿偉幫手執返，又按住牌子派給排隊的臨記。她那句多謝和那個眼神，阿偉記到現在。",
-    beats: [
-      { speaker: "藍若曦", lines: ["哎呀——唔好意思，唔好意思，借過！（成疊通告牌同流程表，俾人一撞，散晒一地）"] },
-      { speaker: "藍若曦", lines: ["多謝你呀。我叫藍若曦，呢度啲人個個叫我阿藍——場記嚟㗎，專幫人撳通告牌、嗌人埋位。"] },
-      { speaker: "藍若曦", lines: ["你嗰組仲差一個位未派……嗱，我幫你留返，你晏啲嚟簽到啦。唔好同人講係我留㗎。"] }
-    ],
-    choices: [
-      { id: "C_lan_meet_warm", label: "動手幫忙：幫她按牌派通告",
-        effects: { flags: ["flag_lan_met_warm"], stats: { rel_lan: 1 }, notes: "阿偉肯出手幫忙，藍若曦對他留下不錯的第一印象。" } },
-      { id: "C_lan_meet_cool", label: "客氣疏離：只幫忙撿回那些牌",
-        effects: { flags: ["flag_lan_met_cool"], stats: { rel_lan: 0 }, notes: "阿偉只幫忙撿回牌子，沒有多走一步，兩個人保持距離。" } }
-    ],
-    conflict: null,
-    flags_written: ["flag_lan_met_cool", "flag_lan_met_warm"],
-    openConditions: ["phase_P2"], openConditionsAny: null,
-    openConditionsNote: "藍若曦（電視台場記）認識：P2 電視台班底接觸季（方向性）。",
-    artId: "rom_lan_meet", romanceLine: "lan", arcBeat: "meet", parallelOk: true, pcSilent: true, playerOffer: false
-  },
-  R_lan_push1: {
-    id: "R_lan_push1", phase: "P2", title: "台慶那版通告牌", when: "1989秋",
-    setting: "星河電視台後台走廊；台慶大騷綵排，成版通告牌亂到七彩",
-    eraTag: "era_1989_autumn",
-    cast: ["藍若曦", "阿偉"],
-    synopsis: "台慶大騷綵排，流程改了又改。藍若曦一個人對著整版通告牌和幾十個單位的出場次序，忙到連飯都沒有時間吃。阿偉那場排在尾段，他可以站在那裏等自己那部分，也可以走過去幫她對位查漏。",
-    beats: [
-      { speaker: "藍若曦", lines: ["唔好意思，你嗰場要押後兩位——前面嗰組跳舞嘅超時，我成版牌要重排，你唔好行遠呀。"] },
-      { speaker: "藍若曦", lines: ["唔使陪我捱㗎，你去食飯先啦。我呢啲場記命，邊有資格準時食飯——啲人埋晒位，我先有得坐。"] },
-      { speaker: "藍若曦", lines: ["（佢笑住將一張改到花晒嘅流程表遞過嚟）你真係肯幫手？咁你幫我睇住呢幾格，我去嗌人埋位。"] }
-    ],
-    choices: [
-      { id: "C_lan_push1_serious", label: "認真幫忙：陪她對完整版牌",
-        effects: { flags: ["flag_lan_sang_together"], stats: { rel_lan: 2, stage: 1 }, notes: "阿偉陪她對完整版牌，兩個人一齊捱過台慶。" } },
-      { id: "C_lan_push1_work", label: "只顧自己那場：對完自己的那格就走",
-        effects: { flags: ["flag_lan_work_only"], stats: { rel_lan: 0, stage: 0 }, notes: "阿偉只對完自己的那格就走，公事公辦，界線分明。" } }
-    ],
-    conflict: null,
-    flags_written: ["flag_lan_sang_together", "flag_lan_work_only"],
-    openConditions: [], openConditionsAny: ["flag_lan_met_warm", "flag_lan_met_cool"],
-    artId: "rom_lan_push1", romanceLine: "lan", arcBeat: "push", parallelOk: true, pcSilent: true, playerOffer: false
-  },
-  R_lan_push2: {
-    id: "R_lan_push2", phase: "P2", title: "走廊的風聲", when: "1989",
-    setting: "電視台化妝間外走廊；台慶之後，閒話開始傳",
-    eraTag: "era_1989_gossip",
-    cast: ["藍若曦", "阿偉"],
-    synopsis: "台慶之後，有人在茶水間說，藍若曦排位時「偏幫」阿偉，他才經常有好位置。閒話傳到她耳裏，她沒有出聲，照舊按牌。阿偉知道之後，要選擇怎樣站：站出來講明，還是劃清界線避嫌。",
-    beats: [
-      { speaker: "藍若曦", emotion: "serious", lines: ["你都聽到嗰啲講法啦？我冇偏幫你——你嗰陣企得穩、又從來唔遲到，我先排你嗰格，係咁多。"] },
-      { speaker: "藍若曦", lines: ["你唔使出頭㗎。場記俾人講兩句，唔痛唔癢。你而家先啱啱企穩，唔好為我惹麻煩。"] },
-      { speaker: "藍若曦", lines: ["（佢望住塊通告牌，笑得有啲勉）做呢行，女人做場記，講咩都有人有意見。你明就得㗎喇。"] }
-    ],
-    choices: [
-      { id: "C_lan_push2_protect", label: "站出來：當著別人講明是自己站得穩，不關她的事",
-        effects: { flags: ["flag_lan_protected"], stats: { rel_lan: 2, fame: -1 }, notes: "阿偉站出來護她，講明位置是自己站穩得來的，名聲要付一點代價。" } },
-      { id: "C_lan_push2_distance", label: "劃清界線：之後少往她那邊靠近",
-        effects: { flags: ["flag_lan_colleague"], stats: { rel_lan: 0 }, notes: "阿偉之後少往她那邊靠近，兩個人劃清界線。" } }
-    ],
-    conflict: null,
-    flags_written: ["flag_lan_colleague", "flag_lan_protected"],
-    openConditions: [], openConditionsAny: ["flag_lan_sang_together", "flag_lan_work_only"],
-    artId: "rom_lan_push2", romanceLine: "lan", arcBeat: "push", parallelOk: true, pcSilent: true, playerOffer: false
-  },
-  R_lan_crisis: {
-    id: "R_lan_crisis", phase: "P4", title: "調組令", when: "1990秋",
-    setting: "電視台人事部走廊；一張調組令，成層樓都知",
-    eraTag: "era_1990_autumn_transfer",
-    cast: ["藍若曦", "阿偉"],
-    synopsis: "外判製作公司高薪請藍若曦過去做製作助理，人工高一些，但要立刻離開星河，還要簽長約。她家裏人又天天催她趁年輕轉一份穩妥文職。她站在人事部門口，那張紙握得皺了。她沒有問阿偉意見，只是想說給一個會明白的人聽。",
-    beats: [
-      { speaker: "藍若曦", emotion: "think", lines: ["外判嗰邊開嘅人工，多我而家一半。屋企人話，唔去就係傻——女仔做場記做到幾多歲呀，佢哋咁講。"] },
-      { speaker: "藍若曦", lines: ["但係嗰度冇呢版通告牌，冇你哋呢班人……我係咪好唔爭氣？一份工啫，我居然唔捨得成層後台。"] },
-      { speaker: "藍若曦", lines: ["你唔使答我㗎。我只係想講畀一個……會明嘅人聽。成個電視台，得你會企喺度聽我講晒。"] }
-    ],
-    choices: [
-      { id: "C_lan_crisis_help", label: "陪她爭取：和她一起向上面說，留在星河跟大騷",
-        effects: { flags: ["flag_lan_help", "flag_family_help", "flag_family_marriage"], stats: { rel_lan: 2, fame: -1 }, notes: "阿偉站在她那邊，和她一起爭取留在星河。" } },
-      { id: "C_lan_crisis_stepback", label: "勸她為前途著想：去吧，不要為這裏耽誤自己",
-        effects: { flags: ["flag_lan_stepback", "flag_family_marriage"], stats: { rel_lan: -1 }, notes: "阿偉勸她為前途著想，退後一步，讓她走。" } }
-    ],
-    conflict: null,
-    flags_written: ["flag_family_help", "flag_family_marriage", "flag_lan_help", "flag_lan_stepback"],
-    openConditions: [], openConditionsAny: ["flag_lan_protected", "flag_lan_colleague", "flag_lan_sang_together"],
-    artId: "rom_lan_crisis", romanceLine: "lan", arcBeat: "crisis", parallelOk: true, pcSilent: true, playerOffer: false
-  },
-  R_lan_ending: {
-    id: "R_lan_ending", phase: "P5", title: "最後一版通告牌", when: "1990秋",
-    setting: "星河電視台後台；年尾大騷煞科那晚",
-    eraTag: "era_1990_autumn_finale",
-    cast: ["藍若曦", "阿偉"],
-    synopsis: "年尾大騷煞科，藍若曦照舊幫阿偉按住通告牌，由第一天在廠景門口撞散那些牌，到今晚最後一版。散場時，她把那頓飯說成一個約定，說完就轉身叫人埋位。那句話留在了走廊，誰都沒有接下去。",
-    beats: [
-      { speaker: "藍若曦", lines: ["嗱，最後一版牌喇。你嗰格，我排得靚靚仔仔——唔好話我偏幫你喎，係你自己企得穩。"] },
-      { speaker: "藍若曦", lines: ["第日你唔使人撳牌嗰陣……請返我食飯啦。一餐就夠，唔使山珍海味——茶餐廳都得。"] },
-      { speaker: "藍若曦", lines: ["（佢笑住轉身去嗌下一組埋位，嗰句說話，留咗喺走廊度，冇人接。）"] }
-    ],
-    choices: [
-      { id: "C_lan_ending_he", label: "講明心意：那頓飯，不必等到將來",
-        effects: { flags: ["flag_lan_he", "flag_lan_commit"], stats: { rel_lan: 3 }, notes: "可與事業結局並存。" } },
-      { id: "C_lan_ending_be", label: "收起那一步：微微一笑，當作一個約定",
-        effects: { flags: ["flag_lan_be"], stats: { rel_lan: -2 }, notes: "可與事業結局並存。" } }
-    ],
-    conflict: null,
-    flags_written: ["flag_lan_be", "flag_lan_commit", "flag_lan_he"],
-    openConditions: ["phase_P5"], openConditionsAny: ["flag_lan_help", "flag_lan_stepback", "flag_family_help", "flag_family_yield", "flag_family_standby", "flag_lan_protected"],
-    artId: "rom_lan_ending", romanceLine: "lan", arcBeat: "ending", parallelOk: false, pcSilent: true, playerOffer: false
-  }
-};
+/* v20a242：ROMANCE_LAN_PA_OVERRIDES 已刪（R_lan_* 五節點由 content/story_detail_romance_lan_xu.json 直出，唯一來源）；
+   playerOffer／stage 修正已入 JSON；crisis／ending 年份經 CONTRA98_WHEN_FIX（1990秋，載入顯示 1992秋）。 */
 
 /* ================= BR89（v20a89）：N1 route_film 對稱下游——N6F《片場跟班》 =================
    背景（真分支審計 #2）：N1 揀電視線有專屬節點 N6《飯堂閒角》，揀電影線乜都冇，
@@ -7559,21 +7428,6 @@ function applyVariantWf5Overrides87(){
   return applied;
 }
 
-/* v20a234：主線內嵌覆寫表已刪（N6–N19 由 JSON pack 直出，唯一來源）；呢個函數只留藍 PA 化嗰半：
-   ROMANCE_LAN_PA_OVERRIDES 五節點入 STORY_WIRE.romance.lanXu。冪等；lanXu 未載入就 no-op。
-   呼叫點喺 refreshCopyPacksFromDisk 賦值 romance 之後。 */
-function applyRomanceLanOverrides48(){
-  const out = { ok:true, lan:0 };
-  try{
-    const lx = (typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.romance) ? STORY_WIRE.romance.lanXu : null;
-    if(lx && Array.isArray(lx.nodes)){
-      lx.nodes.forEach((node, i)=>{
-        if(node && ROMANCE_LAN_PA_OVERRIDES[node.id]){ lx.nodes[i] = ROMANCE_LAN_PA_OVERRIDES[node.id]; out.lan++; }
-      });
-    }
-  }catch(_e){ out.ok = false; }
-  return out;
-}
 /** 平行 meet：playerOffer 預設 false；首次入 loc／傾談先開 offer */
 const STORY_MEET_SOFT = {
   R_vera_meet: { npc: "stylist", locs: ["ad_central","ad_adm","rec_star","rec_wanchai"] },
@@ -14866,6 +14720,9 @@ const CONTRA98_WHEN_FIX = {
   A_hakfan_crisis:["1990秋","era_1990_autumn"], A_gao_crisis:["1990秋","era_1990_autumn"],
   R_vera_crisis:["1990秋","era_1990_autumn_promo"], R_hiu_crisis:["1989秋","era_1989_autumn_anni"],
   R_xu_push2:["1990秋","era_1990_autumn_capital"], R_xu_crisis:["1990秋","era_1990_autumn_capital"],
+  /* v20a242：LAN 表已刪，R_lan_crisis／ending JSON when 係顯示值（1991春／1992），唔加表 walk 後變 1993春／1994；
+     沿用舊表值（1990秋）入表，載入顯示 1992秋，同刪表前一致。 */
+  R_lan_crisis:["1990秋","era_1990_autumn_transfer"], R_lan_ending:["1990秋","era_1990_autumn_finale"],
   R_tang_push2:["1990秋","era_1990_autumn"], R_tang_crisis:["1990秋","era_1990_autumn_capital"],
   /* v20a219：R_tang_meet_stub 衞生——pack 原值 when 1991／eraTag era_1991_autumn_capital，
      不加表 walk 後變 1993（玩家見唔到，stub 本身永不入玩家列表；只求表內外一致）。 */
@@ -15038,8 +14895,7 @@ async function refreshCopyPacksFromDisk(){
     STORY_WIRE.romance.lanXu = rom2;
     /* v20a152：romance.tang 槽已刪（見 STORY_WIRE 初始化） */
     STORY_WIRE.rival = rival;
-    /* v20a31：藍 PA 化覆寫（只剩 lanXu 嗰半；main 嗰半已隨內嵌表刪除） */
-    try{ applyRomanceLanOverrides48(); }catch(_sp48){}
+    /* v20a242：ROMANCE_LAN_PA_OVERRIDES 已刪，JSON 做唯一來源，唔再呼叫 applyRomanceLanOverrides48。 */
     try{ applyStoryBr89Nodes89(); }catch(_b89){}
     try{ applyRomanceWf2Overrides81(); }catch(_wf2){}
     /* v20a241：RIVAL_WF4_OVERRIDES 已刪，JSON 做唯一來源，唔再呼叫 applyRivalWf4Overrides86。 */

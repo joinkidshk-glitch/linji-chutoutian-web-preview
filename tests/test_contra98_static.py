@@ -20,10 +20,11 @@ def ok(name, cond):
 # 一、A-01/A-02/A-03
 ok('A-03: N1 頁首硬編碼改「冬」', ') || 1990)+"冬"' in src and ') || 1990)+"春"' not in src)
 # v20a219：表加 R_tang_meet_stub 衞生行（22→23）；hiu／choi／xu 結局由冬改秋，winter_finale 11→8。
+# v20a242：表加 R_lan_crisis／R_lan_ending 兩行（LAN 覆寫表已刪，JSON when 係顯示值，walk 後會越界；23→25）。
 _m98 = re.search(r'const CONTRA98_WHEN_FIX = \{(.*?)\n\};', src, re.S)
 _fix98 = re.findall(r'\b[A-Za-z_][A-Za-z_0-9]*:\["(?:1989|1990)[秋冬春夏]","era_[^"]+"\]', _m98.group(1)) if _m98 else []
-ok('A-01/02: CONTRA98_WHEN_FIX 表在位（23 節點；v20a219 加 R_tang_meet_stub）',
-   len(_fix98) == 23 and 'R_tang_meet_stub:["1989秋","era_1989_autumn_capital"]' in src
+ok('A-01/02: CONTRA98_WHEN_FIX 表在位（25 節點；v20a242 加 R_lan_crisis／R_lan_ending）',
+   len(_fix98) == 25 and 'R_tang_meet_stub:["1989秋","era_1989_autumn_capital"]' in src
    and src.count('"1990冬","era_1990_winter_finale"') == 8)
 ok('A-01/02: contra98FixNodeWhen 函數在位', 'function contra98FixNodeWhen(packs)' in src)
 i_fix = src.find('contra98FixNodeWhen([main, rom1, rom2, rival])')  # v20a152：romTang 已停載，唔再入表

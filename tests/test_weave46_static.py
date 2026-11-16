@@ -88,11 +88,13 @@ ok('hint segment has N8 entry', 'N8: { playerHint:' in seg)
 for stale in ['藍若曦', '擋狗仔', '狗仔', '雷勁', '唱片', '台慶', '文藝']:
     ok('hint N7-N8 free of singer-era text: '+stale, stale not in seg)
 
-# ---- 藍若曦全檔核實（去註解後）：引擎基建＋v20a31 PA 線內容（ROMANCE_LAN_PA_OVERRIDES）之外唔准出現，全部唔准帶歌手向字眼 ----
+# ---- 藍若曦全檔核實（去註解後）：引擎基建＋v20a31 PA 線內容（WF2 覆寫表入面嘅 R_lan_* 五節點）之外唔准出現，全部唔准帶歌手向字眼 ----
 # v20a31 申報：藍感情線已按拍板 PA 版上線，佢個名正當地出現喺 PA 覆寫內容入面（場記身份）；
 # 原斷言「只准引擎基建」按新現實放寬到「基建＋PA 覆寫表」，「零歌手向」嗰半保留不變。
-_lan_i = nocomment.find('const ROMANCE_LAN_PA_OVERRIDES = {')
-_lan_j = nocomment.find('function applyRomanceLanOverrides48', _lan_i) if _lan_i >= 0 else -1
+# v20a242：ROMANCE_LAN_PA_OVERRIDES 已刪，PA 線內容而家喺 WF2 覆寫表（R_lan_* 五節點）＋content JSON；
+#   呢段改用 WF2 表做容器（synopsis／beats 同 JSON 一致）。
+_lan_i = nocomment.find('const ROMANCE_WF2_OVERRIDES = {')
+_lan_j = nocomment.find('function applyRomanceWf2Overrides81', _lan_i) if _lan_i >= 0 else -1
 lan_block = nocomment[_lan_i:_lan_j] if (_lan_i >= 0 and _lan_j > _lan_i) else ''
 lan_lines = [ln for ln in nocomment.splitlines() if '藍若曦' in ln]
 # v20a33 申報：Phase 4-10 結局「差一步」場景（藍 PA 版：收尾加班戲撳通告牌）正當地用佢個名一次，

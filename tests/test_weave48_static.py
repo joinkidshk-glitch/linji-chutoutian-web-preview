@@ -1,6 +1,7 @@
-# Weave Phase 4-8（v20a31）靜態測試：主幹 1990 節點／N6 對齊／commit 機制／藍 PA 化／債權／預熱／慣例不變
+# Weave Phase 4-8（v20a31）靜態測試：主幹 1990 節點／N6 對齊／commit 機制／藍 PA 線／債權／預熱／慣例不變
 # v20a234：內嵌覆寫表已刪——N12–N16／N6 由 content/story_detail_n1_to_n17.json 直出，唯一來源；
-# 藍 PA 覆寫（ROMANCE_LAN_PA_OVERRIDES＋applyRomanceLanOverrides48）保留。
+# v20a242：藍 PA 覆寫（ROMANCE_LAN_PA_OVERRIDES＋applyRomanceLanOverrides48）已刪——
+#   R_lan_* 五節點由 content/story_detail_romance_lan_xu.json 直出，唯一來源。
 # 用法：python3 tests/test_weave48_static.py [path-to-index.html]
 import sys, pathlib, re, json
 p = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else pathlib.Path(__file__).resolve().parent.parent / 'index.html'
@@ -51,23 +52,22 @@ ok('N6 title 角落嗰張枱 + loc tvb_longmen（v157 新標題，舊「飯堂�
 ok('N6 flags canteen pair', 'flag_canteen_grind' in c6blk and 'flag_canteen_quit' in c6blk)
 ok('N6 no date flags / no rel stats', 'date_' not in c6blk and 'rel_' not in c6blk)
 
-# ---- 藍 PA 覆寫 ----
-lan = block('const ROMANCE_LAN_PA_OVERRIDES = {', '/* ================= BR89')
-ok('ROMANCE_LAN_PA_OVERRIDES defined', bool(lan))
+# ---- 藍 PA 線（v20a242：覆寫表已刪，R_lan_* 由 content JSON 直出，唯一來源） ----
+ok('ROMANCE_LAN_PA_OVERRIDES 已刪（去註解後）', 'ROMANCE_LAN_PA_OVERRIDES' not in nocomment)
+ok('applyRomanceLanOverrides48 已刪（去註解後）', 'applyRomanceLanOverrides48' not in nocomment)
+ok('lan override hook 已刪', 'applyRomanceLanOverrides48();' not in html)
+lanpack = json.loads((pathlib.Path(__file__).resolve().parent.parent / 'content' / 'story_detail_romance_lan_xu.json').read_text(encoding='utf-8'))
+lan_nodes = {n['id']: n for n in lanpack.get('nodes', []) if n['id'].startswith('R_lan_')}
 for nid in ['R_lan_meet','R_lan_push1','R_lan_push2','R_lan_crisis','R_lan_ending']:
-    ok('lan PA node present: '+nid, re.search(r'^\s*'+nid+r': \{', lan, re.M) is not None)
-ok('lan PA block touches neither Vera nor Xu', 'R_vera' not in lan and 'R_xu' not in lan)
-lan_nc = re.sub(r'/\*.*?\*/', '', lan, flags=re.S)
+    ok('lan JSON node present: '+nid, nid in lan_nodes)
+lan_txt = json.dumps([{k: n[k] for k in ('title', 'setting', 'synopsis', 'beats', 'choices') if k in n} for n in lan_nodes.values()], ensure_ascii=False)
 for stale in ['唱片店','錄音室','合唱','狗仔','緋聞','聯姻','豪門','退圈','登機證','玉女','歌手']:
-    ok('lan PA free of singer-version text: '+stale, stale not in lan_nc)
+    ok('lan JSON free of singer-version text: '+stale, stale not in lan_txt)
 for pa in ['場記', '通告牌']:
-    ok('lan PA carries PA framing: '+pa, pa in lan_nc)
-
-# ---- 藍 PA 覆寫函數（v20a234：主線嗰半已刪，只留 lan 嗰半，改名 applyRomanceLanOverrides48） ----
-ok('applyRomanceLanOverrides48 defined', 'function applyRomanceLanOverrides48(' in html)
-ok('lan override hook present', 'try{ applyRomanceLanOverrides48(); }catch(_sp48){}' in html)
-ok('lan override hook after romance.lanXu assignment',
-   html.index('STORY_WIRE.romance.lanXu = rom2;') < html.index('try{ applyRomanceLanOverrides48(); }catch(_sp48){}'))
+    ok('lan JSON carries PA framing: '+pa, pa in lan_txt)
+ok('lan JSON beats 6/5/5/5/9', [len(lan_nodes[n].get('beats', [])) for n in ['R_lan_meet','R_lan_push1','R_lan_push2','R_lan_crisis','R_lan_ending']] == [6,5,5,5,9])
+ok('lan JSON playerOffer 全部 false', all(lan_nodes[n].get('playerOffer') is False for n in lan_nodes))
+ok('lan JSON push1 stage（唔係 music）', all('music' not in json.dumps(c.get('effects', {}).get('stats', {}), ensure_ascii=False) for n in lan_nodes.values() for c in n.get('choices', [])))
 ok('no main-line override remains', 'STORY_SPINE_NODES_1990' not in html and 'STORY_SPINE_NODES_N6' not in html and 'applyStorySpineOverrides' not in html)
 
 # ---- commit 機制 ----
@@ -131,7 +131,7 @@ for frag in ['N12: { needDone: ["N11"], tagAny:', 'creditGt: 42', 'fameGt: 50', 
 # ---- 玩家面真名掃描（現有 QA 禁用表）＋新 block 禁字 ----
 for w in ['張國榮', '陳百強', '梅艷芳', '周潤發', '劉德華']:
     ok('no real star name in file: '+w, w not in html)
-newblocks_nc = re.sub(r'/\*.*?\*/', '', spine + c6blk + lan + cmt, flags=re.S)
+newblocks_nc = re.sub(r'/\*.*?\*/', '', spine + c6blk + lan_txt + cmt, flags=re.S)
 for w in ['關海媚', '陳淑芬', '施南生', 'Ho哥', 'Ho 哥']:
     ok('new player text free of QA-banned: '+w, w not in newblocks_nc)
 

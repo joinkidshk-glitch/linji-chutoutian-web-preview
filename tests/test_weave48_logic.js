@@ -1,6 +1,6 @@
 // WEAVE_PHASE4_8 邏輯測試（v20a31）：
 // 行真路徑——JSON pack 主幹節點（v20a234：內嵌覆寫表已刪，N12–N16／N6 由 pack 直出，唯一來源）
-// ＋ ROMANCE_LAN_PA_OVERRIDES 藍 PA 化（applyRomanceLanOverrides48 套落 lanXu）
+// ＋ 藍 PA 線由 content/story_detail_romance_lan_xu.json 直出（v20a242：ROMANCE_LAN_PA_OVERRIDES 已刪，JSON 唯一來源）
 // → StoryOC.listOpen({player:true}) 真 offer 路徑
 // → StoryOC.applyChoice 真寫入 → story48SettleTick 真結算（N12／N16 債權登記）
 // → COMMIT48 真可用性／真 applyChoice 落旗（commit 互斥／窗口／rel 門檻／crisis 前置）
@@ -15,7 +15,7 @@ const path = require('path');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const pack = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'story_detail_n1_to_n17.json'), 'utf8'));
 const romVHC = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_romance_vera_hiu_choi.json'), 'utf8'));
-const romLX = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'story_detail_romance_lan_xu.json'), 'utf8'));
+const romLX = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'story_detail_romance_lan_xu.json'), 'utf8'));
 
 let pass = 0, fail = 0;
 function ok(name, cond){
@@ -100,14 +100,12 @@ const SRC = [
   extractFn('function commit48ActionsAt'),
   extractFn('function commit48Play'),
   extractFn('function endingRomanceState48'),
-  extractFn('function applyRomanceLanOverrides48'),
   extractFn('function story46SettleTick'),
   extractFn('function story48SettleTick'),
   extractFn('function newspaperStoryLists'),
   extractFn('function newspaperStoryResolve'),
   extractFn('function paperSideItemForDay'),
   extractConst('STORY_GATE_3Y'),
-  extractConst('ROMANCE_LAN_PA_OVERRIDES'),
   extractConst('STORY_LOC_SOFT'),
   extractConst('STORY_HINT_SOFT'),
   extractConst('STORY_TITLE_SOFT'),
@@ -127,7 +125,6 @@ const SRC = [
   extractIIFE('const StoryOC = (()=>{'),
 ].join('\n')
  .replace('const STORY_GATE_3Y =', 'var STORY_GATE_3Y =')
- .replace('const ROMANCE_LAN_PA_OVERRIDES =', 'var ROMANCE_LAN_PA_OVERRIDES =')
  .replace('const STORY_LOC_SOFT =', 'var STORY_LOC_SOFT =')
  .replace('const STORY_HINT_SOFT =', 'var STORY_HINT_SOFT =')
  .replace('const STORY_TITLE_SOFT =', 'var STORY_TITLE_SOFT =')
@@ -148,8 +145,8 @@ const SRC = [
 eval(SRC);
 var displayDateObj = function(){ return dateObj(); };
 
-ok('harness: StoryOC/applyRomanceLanOverrides48/commit48 載入',
-   typeof StoryOC === 'object' && typeof applyRomanceLanOverrides48 === 'function' && typeof commit48Available === 'function');
+ok('harness: StoryOC/commit48 載入',
+   typeof StoryOC === 'object' && typeof commit48Available === 'function');
 ok('harness: COMMIT48_REL_MIN = 6（鏈頂 7 校準）', COMMIT48_REL_MIN === 6);
 
 function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(1990, 2, 7)) / 86400000); }
@@ -167,8 +164,6 @@ function loadGame(save){
   STORY_WIRE.main = JSON.parse(JSON.stringify(pack));
   STORY_WIRE.romance.veraHiuChoi = JSON.parse(JSON.stringify(romVHC));
   STORY_WIRE.romance.lanXu = JSON.parse(JSON.stringify(romLX));
-  const r48 = applyRomanceLanOverrides48();
-  if(!(r48 && r48.lan === 5)) throw new Error('4-8 藍 PA 覆寫應 lan=5，實際 ' + JSON.stringify(r48));
   StoryOC.ensure();
   return S;
 }
@@ -208,48 +203,44 @@ loadGame(baseSave());
      && !JSON.stringify(c6).includes('date_')
      && (c6.choices || []).every(c => !Object.keys(((c.effects || {}).stats) || {}).some(k => k.startsWith('rel_')))
      && StoryOC.getFlag && c6.flags_written.includes('flag_canteen_grind'));
-  const r2 = applyRomanceLanOverrides48();
-  ok('藍 PA 覆寫冪等：再套一次 lan=5、結果不變', r2.lan === 5 && node('N12').title === '高危替身');
 }
 
-/* ---- 藍 PA 化：結構層同 pack 逐項一致、文字層零歌手向 ---- */
+/* ---- 藍 PA 線（v20a242：覆寫表已刪，R_lan_* 由 content JSON 直出，唯一來源） ---- */
 {
-  const packLan = {};
-  romLX.nodes.forEach(n => { packLan[n.id] = n; });
-  /* v20a100 CLEAN100 B-03：pack 側 R_lan_push1 stats.music 正規化（見下面比較處註解） */
-  const normStats100 = (id, pc) => {
-    const st = Object.assign({}, ((pc || {}).effects || {}).stats || {});
-    if(id === 'R_lan_push1' && ('music' in st)){ st.stage = st.music; delete st.music; }
-    return st;
-  };
-  let structOk = true, proseOk = true;
+  const lanNodes = {};
+  STORY_WIRE.romance.lanXu.nodes.forEach(n => { if(n.id.startsWith('R_lan_')) lanNodes[n.id] = n; });
+  const ids = ['R_lan_meet','R_lan_push1','R_lan_push2','R_lan_crisis','R_lan_ending'];
   const singerWords = ['唱片店', '錄音室', '合唱', '狗仔', '緋聞', '聯姻', '豪門', '退圈', '登機證', '唱歌', '歌手', '情侶檔'];
-  Object.keys(ROMANCE_LAN_PA_OVERRIDES).forEach(id => {
-    const o = ROMANCE_LAN_PA_OVERRIDES[id], p = packLan[id];
-    if(!p){ structOk = false; return; }
-    if(o.phase !== p.phase || o.artId !== p.artId || o.romanceLine !== p.romanceLine || o.arcBeat !== p.arcBeat) structOk = false;
-    if(canon(o.openConditions || []) !== canon(p.openConditions || [])) structOk = false;
-    if(canon(o.openConditionsAny || null) !== canon(p.openConditionsAny || null)) structOk = false;
-    if(canon((o.flags_written || []).slice().sort()) !== canon((p.flags_written || []).slice().sort())) structOk = false;
-    if((o.choices || []).length !== (p.choices || []).length) structOk = false;
-    (o.choices || []).forEach((c, i) => {
-      const pc = (p.choices || [])[i];
-      if(!pc || c.id !== pc.id) structOk = false;
-      /* effects 嘅狀態部分（flags＋stats）必須同 pack 逐項一致；notes 係玩家可見文字，
-         屬文字層——pack 原 notes 有歌手向字眼（合唱推進／狗仔護航／助抗聯姻），已改寫，另行驗零歌手向 */
-      /* v20a100 CLEAN100 B-03 唯一例外：R_lan_push1 兩抉擇嘅 stats.music 係 PA 化漏網嘅
-         歌手向殘留（嗰幕係對通告牌、冇唱歌；music 鍵連 applyChoice 映射都冇），已改 stage。
-         比較前將 pack 嗰兩處 music 正規化做 stage；其餘全部仍須逐項一致。 */
-      else if(canon((c.effects || {}).flags || []) !== canon((pc.effects || {}).flags || [])
-           || canon((c.effects || {}).stats || {}) !== canon(normStats100(id, pc))) structOk = false;
-      else if(singerWords.some(w => String((c.effects || {}).notes || '').includes(w))) proseOk = false;
+  let structOk = true, proseOk = true;
+  const wantBeats = { R_lan_meet: 6, R_lan_push1: 5, R_lan_push2: 5, R_lan_crisis: 5, R_lan_ending: 9 };
+  const wantPhase = { R_lan_meet: 'P2', R_lan_push1: 'P2', R_lan_push2: 'P2', R_lan_crisis: 'P4', R_lan_ending: 'P5' };
+  ids.forEach(id => {
+    const n = lanNodes[id];
+    if(!n){ structOk = false; return; }
+    if((n.beats || []).length !== wantBeats[id]) structOk = false;
+    if(n.playerOffer !== false) structOk = false;
+    if(n.phase !== wantPhase[id]) structOk = false;
+    if(!n.artId || n.romanceLine !== 'lan' || !n.arcBeat) structOk = false;
+    if((n.choices || []).length !== 2) structOk = false;
+    (n.choices || []).forEach(c => {
+      const st = ((c.effects || {}).stats) || {};
+      if('music' in st) structOk = false;
+      if(singerWords.some(w => String((c.effects || {}).notes || '').includes(w))) proseOk = false;
     });
-    const prose = JSON.stringify({ t: o.title, s: o.setting, y: o.synopsis, b: o.beats, l: (o.choices || []).map(c => c.label) });
+    const prose = JSON.stringify({ t: n.title, s: n.setting, y: n.synopsis, b: n.beats, l: (n.choices || []).map(c => c.label) });
     if(singerWords.some(w => prose.includes(w))) proseOk = false;
-    if(!prose.includes('藍若曦')) proseOk = false;
+    if(!prose.includes('藍若曦') || (!prose.includes('場記') && !prose.includes('通告牌'))) proseOk = false;
   });
-  ok('藍 PA：五節點結構層（phase/oc/choice id/effects/旗）同 pack 逐項一致', structOk);
-  ok('藍 PA：文字層零歌手向字眼（唱片店/錄音室/合唱/狗仔/緋聞/聯姻/豪門…）', proseOk);
+  ok('藍 PA：五節點 JSON 直出（beats 6/5/5/5/9、playerOffer false、結構層齊）', structOk);
+  ok('藍 PA：文字層零歌手向字眼（唱片店/錄音室/合唱/狗仔/緋聞/聯姻/豪門…）＋PA 框架在位', proseOk);
+  const p1 = lanNodes.R_lan_push1;
+  const sang = (p1.choices || []).find(c => (c.effects && c.effects.flags || []).indexOf('flag_lan_sang_together') >= 0);
+  ok('藍 PA：push1「一齊捱過」抉擇 stage:1（v20a100 修正已入 JSON，唔再靠覆寫表）',
+     !!(sang && sang.effects.stats.stage === 1 && sang.effects.stats.rel_lan === 2));
+  const end = lanNodes.R_lan_ending;
+  ok('藍 PA：ending 抉擇 label／notes 係 JSON（RW-3）版',
+     end.choices[0].label === '接住那個約定：那頓飯，我記住，不會失約'
+     && end.choices[1].label === '收起那一步：笑著，當作一個約定');
   const xu = STORY_WIRE.romance.lanXu.nodes.find(n => n.id === 'R_xu_meet');
   ok('藍 PA：R_xu_* 無被覆寫（徐寶珊維持富豪千金原線）', !!xu && xu.title === '春茗初遇');
   ok('半線狀態可讀：endingRomanceState48 五線齊（空存檔全 false/0）',
