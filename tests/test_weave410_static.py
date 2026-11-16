@@ -96,7 +96,7 @@ ok('v235：to_backstage／to_support 呈現覆寫已刪（res.career 唔再喺�
    'res.career = "E3"' not in blk and 'res.career = "E2"' not in blk and '由泡沫轉幕後' not in blk and '前夕爭男配' not in blk)
 ok('v235：leave_follow 組裝分支已刪', 'key==="leave_follow"' not in blk)
 ok('summary: title card + favor totals + who-left list',
-   'ending410-title' in blk and '人情總帳' in blk and '邊啲人走咗' in blk and '差啲嗰條路' not in blk and 'ENDING410_ADJ_RUMOR' in blk)
+   'ending410-title' in blk and '人情總帳' in blk and '哪些人離開了' in blk and '差啲嗰條路' not in blk and 'ENDING410_ADJ_RUMOR' in blk)
 ok('clippings pane review card wired', 'ending410-review-btn' in html and 'showEndingSummary410()' in html)
 ok('summary CSS present', '.ending410-title-card' in html and '.ending410-title{' in html)
 
@@ -107,10 +107,10 @@ for w in ['張國榮', '陳百強', '梅艷芳', '周潤發', '劉德華']:
     ok('no real star name in file: '+w, w not in html)
 for w in ['關海媚', '陳淑芬', '施南生', 'Ho哥', 'Ho 哥']:
     ok('new player text free of QA-banned: '+w, w not in blk_nc)
-ok('關海媚只以稱號遠觀（當紅花旦）', '嗰位當紅花旦' in blk_nc)
-ok('Vera 差一步跟造型師版（領口／妝髮）', '整理領口同妝髮' in blk_nc)
-ok('藍差一步跟 PA 版（通告牌／食飯約定）', '撳住個通告牌' in blk_nc and '請返我食飯' in blk_nc)
-ok('徐寶珊差一步（買唔起／買唔到）', '買唔起' in blk_nc and '買唔到' in blk_nc)
+ok('關海媚只以稱號遠觀（當紅花旦）', '那位當紅花旦' in blk_nc)
+ok('Vera 差一步跟造型師版（領口／妝髮）', '整理領口和妝髮' in blk_nc)
+ok('藍差一步跟 PA 版（通告牌／食飯約定）', '按住通告牌' in blk_nc and '請返我食飯' in blk_nc)
+ok('徐寶珊差一步（買唔起／買唔到）', '買不起' in blk_nc and '買不到' in blk_nc)
 ok('三段差一步唔共用範本（各有專屬場景函數分支）',
    'almost" && r.line==="vera"' in blk and 'almost" && r.line==="lan"' in blk and 'almost" && r.line==="xu"' in blk)
 

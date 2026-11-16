@@ -119,21 +119,21 @@ ok('B06 無旗中性版', guRun().indexOf('嗰排台慶前後嘅事過咗之後'
 /* (3) 結局呈現 */
 S = freshS(1090);
 S.stars.chung_choning = { beatsDone: { chung_farewell: 1000 } };
-ok('B05 去留回收鍾楚凝', E.endingExodusScene410({ exodus: 'stay' }, { exodusNames: [] }).indexOf('鍾楚凝嗰班機') >= 0);
+ok('B05 去留回收鍾楚凝', E.endingExodusScene410({ exodus: 'stay' }, { exodusNames: [] }).indexOf('鍾楚凝那班機') >= 0);
 S.stars.chung_choning = { beatsDone: {} };
-ok('B05 冇farewell冇回收', E.endingExodusScene410({ exodus: 'stay' }, { exodusNames: [] }).indexOf('鍾楚凝嗰班機') < 0);
+ok('B05 冇farewell冇回收', E.endingExodusScene410({ exodus: 'stay' }, { exodusNames: [] }).indexOf('鍾楚凝那班機') < 0);
 S = freshS(1090);
 S.stars.pang_siuki = { fav: 60 };
 let gh = E.endingCareerScene410({ career: 'GH' });
 ok('B07 GH 好感路點醒版', gh.indexOf('點醒你') >= 0 && gh.indexOf('慈善騷') < 0);
 S.flags.done_N11 = 1;
 gh = E.endingCareerScene410({ career: 'GH' });
-ok('B07 GH N11路慈善騷版', gh.indexOf('慈善騷嗰晚開始') >= 0);
+ok('B07 GH N11路慈善騷版', gh.indexOf('慈善騷那一晚開始') >= 0);
 S = freshS(1090); S.stars.pang_siuki = { fav: 10 };
 gh = E.endingCareerScene410({ career: 'GH' });
-ok('B07 GH 提攜路版', gh.indexOf('彭少祺留低嗰份提攜') >= 0);
+ok('B07 GH 提攜路版', gh.indexOf('彭少祺留下的那份提攜') >= 0);
 const e5 = E.endingCareerScene410({ career: 'E5' });
-ok('B09 E5 新句冇虛構', e5.indexOf('嗰種光，你認得') >= 0 && e5.indexOf('攞咗新人獎') < 0);
+ok('B09 E5 新句冇虛構', e5.indexOf('那種光，你認得') >= 0 && e5.indexOf('攞咗新人獎') < 0);
 S = freshS(1090); S.awardsLog = [];
 let hiu = E.endingRomanceScene410({ career: 'E2', romance: { line: 'hiu', kind: 'commit' } });
 ok('B08 曉晴冇win冇獎座', hiu.indexOf('獎座') < 0 && hiu.indexOf('一個攞獎') < 0);

@@ -296,7 +296,7 @@ console.log("[5] 呈現：E7 寫入＋總結頁＋判定表紀律");
   ok(conseq61PresentForcedEnding() === false, "冪等：第二次 present 唔重出");
   const sum = endingSummaryHtml410();
   ok(sum.includes("1990 年尾評核・提早埋單・手帳總結"), "總結頁標題跟收場原因");
-  ok(!sum.includes(">三年埋單・手帳總結<") && sum.includes("唔係你揀嘅"), "唔扮三年埋單＋講明唔係自願");
+  ok(!sum.includes(">三年埋單・手帳總結<") && sum.includes("不是你選的"), "唔扮三年埋單＋講明唔係自願");
 }
 {
   S = baseSave(); S.money = 0; modalCalls = [];

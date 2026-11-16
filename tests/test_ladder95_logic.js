@@ -150,7 +150,7 @@ function canon(o){
   const r = R(st);
   ok('弧2 近乎完美弧：雙軌 405 → E1 天王接班', r.career === 'E1' && r.snapshot.dual === 405);
   ok('弧2：質性閘三件齊（獎／兩媒介擔正／鏈 B）', r.ladder95.hasWin === true && r.ladder95.leadMedia.length === 3 && r.ladder95.chains.join() === 'B');
-  ok('弧2：E1 差邊瓣＝冇差嗰句', r.gaps95.length === 1 && /冇差/.test(r.gaps95[0]));
+  ok('弧2：E1 差邊瓣＝不差嗰句', r.gaps95.length === 1 && /不差/.test(r.gaps95[0]));
 }
 
 /* E1 邊界：雙軌 350＋全閘 → E1；349＋全閘 → SS＋差距句 */
@@ -359,7 +359,7 @@ function canon(o){
   S.ending410 = { career: 'SS', title: r.title, romanceAxis: 'none', exodusAxis: 'stay',
     snapshot: r.snapshot, gaps95: r.gaps95, careerVariant: null };
   const sum = endingSummaryHtml410(S);
-  ok('總結頁：SS 稱號卡＋差邊瓣句在場', sum.includes('一線巨星') && sum.includes('回望嗰一格'));
+  ok('總結頁：SS 稱號卡＋差邊瓣句在場', sum.includes('一線巨星') && sum.includes('回望那一格'));
   const keys = endingEveOptions410(S, resolveEnding410(S)).map(c => c.key);
   ok('前夕：SS 冇相鄰分流選項（只有 natural／quit／leave 系）', !keys.includes('to_backstage') && !keys.includes('to_support') && keys.includes('natural'));
 }

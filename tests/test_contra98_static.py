@@ -55,7 +55,7 @@ ok('C-04: GIG_EXACT 已刪', 'const TEXTFIX55_GIG_EXACT' not in src)
 ok('C-02: enc79BuildScript 收 locId', 'function enc79BuildScript(starId, forceFirst, locId)' in src)
 ok('C-02: caller 傳 locId', 'enc79BuildScript(starId, !wasMet, locId)' in src)
 ok('C-02: ENC79_FIRST_ALT98 表在位', 'const ENC79_FIRST_ALT98 = {' in src)
-ok('C-02: sightings 葉敏芝行改唱片公司舞蹈房', '喺唱片公司舞蹈房鏡前練舞' in src and 'locHint:"唱片公司舞蹈房"' in src)
+ok('C-02: sightings 葉敏芝行改唱片公司舞蹈房', '在唱片公司舞蹈房鏡前練舞' in src and 'locHint:"唱片公司舞蹈房"' in src)
 
 # 五、守恆
 ok('守恆: SAVE key 不變', 'starVolunteer_map_v19w' in src)

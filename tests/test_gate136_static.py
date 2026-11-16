@@ -66,8 +66,8 @@ ok("N17 節點經 years66Walk（1990 源頭先會顯示 1992）：pack main 喺�
    "[main, rom1, rom2, rival, gateStub, dengMock, dengPushMock, dualMock].forEach" in src
    and "years66Walk(p, null)" in src)
 ok("N17 pacing.weekMin＝153（章戳約第153週）", (pack_nodes.get("N17", {}).get("pacing") or {}).get("weekMin") == 153)
-ok("結局總結 fallback 改做台慶之後嗰晚（唔經 walk，源頭寫 1992）",
-   "台慶之後嗰晚，先係埋單嗰陣" in src and "頒獎禮前夕嗰晚，先係埋單嗰陣" not in src)
+ok("結局總結 fallback 改做台慶之後那一晚（唔經 walk，源頭寫 1992）",
+   "台慶之後那一晚，才是埋單的時候" in src and "頒獎禮前夕嗰晚，先係埋單嗰陣" not in src)
 ok("動態重建選項 note 係散場（endingEveOptions410，唔經 walk）",
    "頒獎禮散場，他站回他站慣的那個位置。" in src)  # v233 RW-2：第二人稱廣東話→第三人稱書面語，「散場」事實不變
 ok("全檔無「頒獎禮開場」", "頒獎禮開場" not in src)

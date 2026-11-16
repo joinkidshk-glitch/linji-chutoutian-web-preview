@@ -286,8 +286,8 @@ ok("N17 會議室（pack playerHint／lockedHint；v20a234：內嵌表已刪，�
    "台慶之後，何生在星河電視台會議室等你" in N17.get("playerHint", "")
    and "到了去星河電視台會議室" in N17.get("lockedHint", "")
    and "何生喺後台等你" not in html)
-ok("Q4 endingInserts410 嗰排閒角",
-   "電視台飯堂嗰排閒角" in html and "電視台飯堂嗰季閒角" not in html)
+ok("Q4 endingInserts410 那排閒角",
+   "電視台飯堂那排閒角" in html and "電視台飯堂嗰季閒角" not in html)
 ok("全檔零黑雨", "黑雨" not in html)
 ok("N6／N6F 零嗰季", "嗰季" not in blob(TC6["N6"]) and "嗰季" not in blob(TBR89["N6F"]))
 

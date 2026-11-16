@@ -31,7 +31,7 @@ ok('移民潮到期式 1991夏/1992', 'const due = (ys.year===1991 && ys.season=
 ok('choice47 commit 窗口仲係 1992 秋', src.count('choice47SeasonReached(1992, "秋")') == 1)
 ok('choice47 移民空位閘改 1990 秋（v217 D7）', src.count('choice47SeasonReached(1990, "秋")') == 2)
 ok('程天諾預熱 fromYear 1992 齊', 'fromYear:1992' in src)
-ok('結局閘文字 1992 年冬', '去到 1992 年冬、台慶之後嗰晚' in src and '"1992 年冬 · 三年埋單"' in src)  # v20a136：fallback 由「頒獎禮前夕」改做「台慶之後」
+ok('結局閘文字 1992 年冬', '去到 1992 年冬、台慶之後那一晚' in src and '"1992 年冬 · 三年埋單"' in src)  # v20a136：fallback 由「頒獎禮前夕」改做「台慶之後」
 ok('STORY_GATE_3Y N17 yearEq 1992', 'N17: { needDone: ["N16"], weekMin: 153, yearEq: 1992' in src)  # v20a136：閘加 weekMin 153
 ok('id 內嵌年份解析 +2 守衛齊（years66ShiftYear 常量形式＋新庫守衛）', 'function years66ShiftYear' in src and 'YEARS66_OLD_MIN' in src and 'YEARS66_SHIFT' in src and 'isGig229DisplayYear' in src)
 ok('SAVE key 不變', 'starVolunteer_map_v19w' in src)

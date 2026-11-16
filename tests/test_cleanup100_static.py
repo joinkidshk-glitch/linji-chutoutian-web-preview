@@ -125,9 +125,9 @@ ok('B04 heart 閘引用 chungPre91', 'D.heart && !(starId==="chung_choning" && c
 ok('B06 gu_n10after 三路換句', 'beatSeg100' in html and 'flag_standup_crew' in html and '嗰排台慶前後嘅事過咗之後' in html)
 
 # (7) 結局呈現掛點
-ok('B05 結局回收鍾楚凝段', '鍾楚凝嗰班機，你冇去送' in html and 'bdC100.chung_farewell' in html)
-ok('B07 GH 三路歸因', 'ghOrigin100' in html and '彭少祺留低嗰份提攜' in html)
-ok('B09 E5 冇無中生有句', '你手底下兩個新人，一個入圍，一個攞咗新人獎' not in html and '嗰種光，你認得' in html)
+ok('B05 結局回收鍾楚凝段', '鍾楚凝那班機，你沒有去送' in html and 'bdC100.chung_farewell' in html)
+ok('B07 GH 三路歸因', 'ghOrigin100' in html and '彭少祺留下的那份提攜' in html)
+ok('B09 E5 冇無中生有句', '你手底下兩個新人，一個入圍，一個攞咗新人獎' not in html and '那種光，你認得' in html)
 ok('B08 曉晴按awardsLog分版', 'won100' in html and 'end95Awards' in html and '你哋兩個一個攞獎、一個入圍' not in html)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')

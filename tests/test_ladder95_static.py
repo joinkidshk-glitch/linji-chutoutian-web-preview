@@ -27,7 +27,7 @@ for nm in ['SS: "一線巨星"', 'FK: "影壇天王"', 'TK: "電視天王"', 'SK
     ok('名冊新格 ' + nm, nm in html)
 ok('E3 變體函數在位', 'function end95E3Variant(st, stats, favor)' in html)
 ok('差邊瓣函數在位', 'function end95BuildGaps(ctx)' in html)
-ok('總結頁差邊瓣呈現在位', '回望嗰一格' in html)
+ok('總結頁差邊瓣呈現在位', '回望那一格' in html)
 ok('E4→E3 舊相鄰分支已移除', 'base.career==="E4" && endingBackstageClose410(s)' not in html)
 ok('resolve 輸出 gaps95/ladder95', 'gaps95: gaps95,' in html and 'ladder95: { total: total95' in html)
 seg_start = html.find('v20a95 LADDER95')

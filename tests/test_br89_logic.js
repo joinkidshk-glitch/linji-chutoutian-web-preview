@@ -144,7 +144,7 @@ try{
   ok('D3 提攜債已兌現 → 點名句', ins.some(t=>t.indexOf('陸柏言')>=0 && t.indexOf('兌現')>=0));
   S = baseS();
   ins = mk(S).endingInserts410({}, favor);
-  ok('D4 冇旗 → 冇八線句（唔好亂出）', !ins.some(t=>t.indexOf('高俊傑同你鬥足')>=0 || t.indexOf('方小龍嗰次意外')>=0));
+  ok('D4 冇旗 → 冇八線句（唔好亂出）', !ins.some(t=>t.indexOf('高俊傑與你鬥足')>=0 || t.indexOf('方小龍那次意外')>=0));
   // 半線 he/be 分版
   const rec = { career:'E0', romance:{ line:'vera', kind:'almost' } };
   S = baseS(); S.story.flags['flag_vera_be'] = 1;
@@ -153,11 +153,11 @@ try{
   const deTxt = mk(S).endingRomanceScene410(rec);
   S = baseS(); S.story.flags['flag_vera_he'] = 1;
   const heTxt = mk(S).endingRomanceScene410(rec);
-  ok('D5 Vera be 版 ≠ 預設版', beTxt !== deTxt && beTxt.indexOf('唔再係你')>=0);
-  ok('D6 Vera he 版有留白句 ≠ 預設版', heTxt !== deTxt && heTxt.indexOf('留返')>=0);
+  ok('D5 Vera be 版 ≠ 預設版', beTxt !== deTxt && beTxt.indexOf('不再是你')>=0);
+  ok('D6 Vera he 版有留白句 ≠ 預設版', heTxt !== deTxt && heTxt.indexOf('留到不必再怕')>=0);
   S = baseS(); S.flags['flag_xu_be'] = 1;
   const xuBe = mk(S).endingRomanceScene410({ career:'E0', romance:{ line:'xu', kind:'almost' } });
-  ok('D7 徐寶珊 be 版（退禮物）', xuBe.indexOf('原封退返')>=0);
+  ok('D7 徐寶珊 be 版（退禮物）', xuBe.indexOf('原封退回')>=0);
 }catch(e){ ok('D 結局呈現抽取/執行 ('+e.message+')', false); }
 
 /* ================= (E)+(F) BR89 模組（通告／拼合／卡使用點） ================= */
@@ -181,7 +181,7 @@ try{
   ok('F4 冇卡冇使用點', api.br89CardUsePointForGig({ title:'彭少祺台慶騷', workTitle:'台慶大騷' })===null);
   env.S.mockRumors.push({ id:'rumor_pang_show_tip', state:'normal' });
   const cp = api.br89CardUsePointForGig({ title:'彭少祺台慶騷', workTitle:'台慶大騷' });
-  ok('F5 持卡 → 通告情報行', !!cp && cp.line.indexOf('台慶大騷缺個台上助理')>=0);
+  ok('F5 持卡 → 通告情報行', !!cp && cp.line.indexOf('台慶大騷缺一名台上助理')>=0);
   ok('F6 持卡 → 巧遇提示行', !!api.br89CardUsePointForStar('pang_siuki'));
   ok('F7 唔關事嘅星冇提示行', api.br89CardUsePointForStar('luk_baakyin')===null);
   // (E) 通告注入：冇債權冇卡 → 空板
