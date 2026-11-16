@@ -1,5 +1,5 @@
 // v20a88 FIX88 邏輯測試：通告荒修復包（v20a229 B3 新庫版）——
-//  (A) 幻影門檻根治：新庫 241 張行真載入管線（normalizeGigRecord）後，
+//  (A) 幻影門檻根治：新庫 251 張行真載入管線（normalizeGigRecord）後，
 //      每張 gig 嘅 req 只准含七個真屬性鍵；滿屬狀態下 reqGap 零缺項。
 //      另加 reqGap 防禦：未經 normalize 嘅快照 gig 帶 __y66w 都唔可以鎖死玩家。
 //  (B) 冬季供應：day 0 冬季新玩家普查（真 gigsForLocSeasonBoard＋canAudition）——
@@ -8,7 +8,7 @@
 //      橋接池已清空（WINTER_BRIDGE_GIGS_88＝[]，merge 唔加嘢）。
 //  (C) 提早窗：賀歲（冬）通告上映前約兩個月已上板、上映季過後唔再出現；
 //      春／夏通告同樣行提早窗；上映行 gigReleaseLine88 口徑正確。
-//  (D) 主演反查完整性：新庫 141 張作品全部有 leadStarId，leadStar59Of 全部反查到
+//  (D) 主演反查完整性：新庫 142 張作品（除 129 主演未定外）全部有 leadStarId，leadStar59Of 全部反查到
 //      中文名（含名冊外補位彭少祺／程天諾）；入門池 day0 冬季非空。
 // 反證：對 v87 index 行 → FIX88 符號（GIG_REQ_KEYS88／gigSeasonHidden88）
 //      唔存在，抽取即 FAIL。
@@ -99,7 +99,7 @@ for(const y of [1990, 1991, 1992]){
     if(W.reqGap(g).missing !== 0) unpassable++;
   }
 }
-ok('A1 新庫 241 張全行管線（實數 '+totalGigs+'）', totalGigs === 241);
+ok('A1 新庫 251 張全行管線（實數 '+totalGigs+'）', totalGigs === 251);
 ok('A2 管線後 req 非屬性鍵殘留 = 0（實數 '+badKeyGigs+'）', badKeyGigs === 0);
 ok('A3 滿屬狀態下 reqGap 缺項 = 0 張（實數 '+unpassable+'）', unpassable === 0);
 W.setS(deepClone(FRESH));
@@ -117,7 +117,7 @@ W.mergeWinterBridge88();
 const pool = W.getGIGS();
 const entryTier = pool.filter(g => g.entryTier);
 ok('B1 入口池 12 張入池（新庫篩出，entryTier）', entryTier.length === 12 && entryTier.every(g=>pool.some(x=>x.id===g.id)));
-ok('B2 橋接池已清空（mergeWinterBridge88 唔加嘢，池維持 '+poolSizeAfterEntry+' 張）', W.getGIGS().length === poolSizeAfterEntry && poolSizeAfterEntry === 94);
+ok('B2 橋接池已清空（mergeWinterBridge88 唔加嘢，池維持 '+poolSizeAfterEntry+' 張）', W.getGIGS().length === poolSizeAfterEntry && poolSizeAfterEntry === 104);
 const LOCS = ['cafe_cha','rec_hk','tvb_longmen','film_lion','film_cotton','film_harbour','tvb_harbour','tvb_kowloon','ad_central','ad_adm','rec_wanchai','rec_star','agency_ho'];
 function census(state){
   W.setS(deepClone(state));
@@ -170,8 +170,8 @@ ok('N10 上映行：春季電影衍生「預計上映：1990 年春季」', !!sp
 /* ---------- (D) 主演反查完整性 ---------- */
 const allPool = [1990, 1991, 1992].flatMap(y => loadPackPipeline(y));
 const works = allPool.filter(g => g.category === '作品');
-ok('D1 新庫 141 張作品全部有 leadStarId，leadStar59Of 全部反查到中文名',
-  works.length === 141 && works.every(g=>g.leadStarId) && works.every(g=>W.leadStar59Of(g)));
+ok('D1 新庫 142 張作品除《冬日單元劇》主演未定外全部有 leadStarId，leadStar59Of 全部反查到中文名（v250：gig_1990_tv_129 leadStarId null 已知，等選角拍板）',
+  works.length === 142 && works.filter(g=>g.id !== 'gig_1990_tv_129').every(g=>g.leadStarId) && works.filter(g=>g.leadStarId).every(g=>W.leadStar59Of(g)));
 ok('D1b 名冊外補位：彭少祺／程天諾照反查到',
   W.leadStar59Of(allPool.find(g=>g.id==='gig_1990_ad_105')) === '彭少祺' &&
   W.leadStar59Of(allPool.find(g=>g.id==='gig_1992_rec_102')) === '程天諾');

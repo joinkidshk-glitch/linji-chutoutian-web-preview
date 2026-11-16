@@ -145,8 +145,9 @@ function freshSave(over){
   function loadGame(save){
     S = save; window.S = S;
     STORY_WIRE.main = JSON.parse(JSON.stringify(storyPack));
-    /* v191：fixture 只含 N1–N17；補返真遊戲經 BR89／WF1 注入嘅 N6F／N18／N19 節點
-       （id／phase／locId／title 跟真節點；playerOffer:true 對應實機狀態——
+    /* v191：fixture 只含 N1–N17；補返 pack 入面嘅 N6F／N18／N19 節點
+       （v20a250：N6F 已由 JSON pack 直出，唔再經 BR89 注入；呢度補節點只係因為
+       fixture 係舊副本——id／phase／locId／title 跟真節點；playerOffer:true 對應實機狀態——
        調查報告實駕見到 N6F／N6 入 listOpen open 桶。閘由 STORY_GATE_3Y 評，
        唔靠節點 openConditions；進度頁標題由 STORY_TITLE_SOFT／calib60 出，唔靠呢度嘅 title）。 */
     STORY_WIRE.main.nodes.push(

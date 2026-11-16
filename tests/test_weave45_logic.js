@@ -142,8 +142,9 @@ function expectGate(id, label, mut, want){
 })();
 
 /* ================= (a)+(e) 閘矩陣：齊條件→開；逐個抽走關鍵條件→唔開 ================= */
-/* N6：route_tv＋W15+ */
-expectGate('N6', 'route_tv＋W16', compose(at(1990,4,19), (sv)=>{ sv.story.routes.route_tv = true; }), true);
+/* N6：route_tv＋W15+＋needDone N5（v20a250） */
+expectGate('N6', 'route_tv＋W16＋N5 已做', compose(at(1990,4,19), withDone('N5'), (sv)=>{ sv.story.routes.route_tv = true; }), true);
+expectGate('N6', 'route_tv＋W16 但 N5 未做→鎖（v20a250 needDone）', compose(at(1990,4,19), (sv)=>{ sv.story.routes.route_tv = true; }), false);
 expectGate('N6', '缺 route', at(1990,6,20), false);
 expectGate('N6', '得 route 但 W14', compose(at(1990,4,5), (sv)=>{ sv.story.routes.route_tv = true; }), false);
 /* N7：N5 done＋信用>20＋1991 夏 */
@@ -207,7 +208,7 @@ expectGate('N17', '1993 冬＋缺 N16（backstop 照開）', at(1993,12,10), tru
 
 /* 同日禁：同 v17z 口徑，當日播完任一 C* → 覆寫節點都唔入可播；ignorePacing 可豁免 */
 (function(){
-  setSave(compose(at(1990,6,20), (sv)=>{ sv.story.routes.route_tv = true; sv.story.lastMainDoneDay = sv.dayIndex; }));
+  setSave(compose(at(1990,6,20), withDone('N5'), (sv)=>{ sv.story.routes.route_tv = true; sv.story.lastMainDoneDay = sv.dayIndex; }));
   const blocked = gateOf('N6');
   ok('same-day: 當日已播 C* → N6 唔開', blocked.ok === false && blocked.reasons.indexOf('days_after_prev:same_day')>=0);
   const waived = gateOf('N6', { ignorePacing: true });

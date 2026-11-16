@@ -198,8 +198,8 @@ loadGame(baseSave());
   ['N14','N16','N13','N12','N15'].forEach(id => { if(stale.some(w => JSON.stringify(node(id)).includes(w))) clean = false; });
   ok('主幹完整性：pack 自創線殘留字串清零（金九舊底片等）', clean);
   const c6 = node('N6');
-  ok('N6 對齊 Qwen：標題「角落那張桌子」（v157 新標題，v221 書面語改寫）＋場地 tvb_longmen＋無約會旗／無 rel 加成',
-     c6.title === '角落那張桌子' && c6.locId === 'tvb_longmen'
+  ok('N6 對齊 Qwen：標題「角落那張枱」（v250 新短詞標題）＋場地 tvb_longmen＋無約會旗／無 rel 加成',
+     c6.title === '角落那張枱' && c6.locId === 'tvb_longmen'
      && !JSON.stringify(c6).includes('date_')
      && (c6.choices || []).every(c => !Object.keys(((c.effects || {}).stats) || {}).some(k => k.startsWith('rel_')))
      && StoryOC.getFlag && c6.flags_written.includes('flag_canteen_grind'));
@@ -385,7 +385,7 @@ ok('N16：1992 秋唔出現', !openIds().includes('N16'));
 /* ---- N6 真路徑＋回歸 ---- */
 {
   const s = loadGame(baseSave({ dayIndex: 98, money: 900, story: { flags: { route_tv: true }, rel: {}, done: { N1: true, N2: true, N3: true, N4: true, N5: true }, choices: {} } }));
-  ok('N6：route_tv＋W15 開（標題已對齊「角落那張桌子」，v157；v221 書面語改寫）', !!openRow('N6') && node('N6').title === '角落那張桌子');
+  ok('N6：route_tv＋W15 開（標題已對齊「角落那張枱」，v250）', !!openRow('N6') && node('N6').title === '角落那張枱');
   StoryOC.applyChoice(node('N6'), choice('N6', 'N6_a'));
   ok('N6_a：flag_canteen_grind＋微量金錢 900→1400（wealth 1）', !!StoryOC.getFlag('flag_canteen_grind') && s.money === 1400);
 }

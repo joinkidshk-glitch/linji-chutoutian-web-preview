@@ -55,7 +55,8 @@ def func_body_braces(src_text, fname):
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
 ok('ORDER165 播次序不變（N6、N6F、N18、N19、N7…；強制播候選唔郁）',
    'const ORDER165 = ["N1","N2","N3","N4","N5","N6","N6F","N18","N19","N7"' in src)
-ok('開放條件／閘唔郁', 'N6F: { route: "route_film", weekMin: 15 }' in src
+ok('開放條件／閘唔郁（v20a250：N6／N6F 加 needDone N5）', 'N6F: { needDone: ["N5"], route: "route_film", weekMin: 15 }' in src
+   and 'N6:  { needDone: ["N5"], route: "route_tv", weekMin: 15 }' in src
    and 'N18: { needDone: ["N5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] }' in src
    and 'N19: { needDone: ["N18"], weekMin: 61, yearMin: 1991, seasonIn: ["春"] }' in src)
 

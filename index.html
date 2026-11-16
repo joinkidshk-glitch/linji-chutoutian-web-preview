@@ -6491,11 +6491,10 @@ const STORY_HINT_SOFT = {
   N2: { playerHint: "星河片場後巷有人約飯；通告欄又貼了新單。", lockedHint: "約第4週起，且隔一日之後才開啟。未到之前不必專程到後巷等候——先照常跑通告；開啟後再去星河片場後巷。", nextHint: "下一幕「對對手硬／忍」——約第6週起、隔一日之後；開啟後留意星河電影組通告欄。" },
   N3: { playerHint: "星河電影組通告欄前氣氛緊張，有人看著你的名牌。", lockedHint: "約第6週起，且隔一日之後才開啟。未到之前不必特意去盯著通告欄——先照常開工；開啟後再去星河電影組通告欄。", nextHint: "下一幕「何生拒單」——約第8週起、隔一日之後；開啟後先去何生事務所。" },
   N4: { playerHint: "何生檯面有份通告紙等你表態。", lockedHint: "約第8週起，且隔一日之後才開啟。未到之前不必專程去事務所——先照常跑通告；開啟後再去事務所聽何生說。", nextHint: "下一幕「采兒小訪題」——約第9週起；還要與周采兒處好關係，或等到夏季台慶籌備季。" },
-  N5: { playerHint: "片場邊有小訪位，筆記本已經打開。", lockedHint: "約第9週起才輪到這一幕。采兒／台慶未登場前：可在片場多露面，與周采兒混個臉熟（關係約到2），或等到初夏台慶籌備季（約夏初、台慶前）；兩者具備其一即可。未到週數就照常跑通告，不必猜測下一步。", nextHint: "下一幕——第15週起：走電視線有「飯堂閒角」（處境劇固定閒角），走電影線有「片場跟班」（大製作固定跟班）；接不接由你決定。未到之前照常跑通告。" },
+  N5: { playerHint: "片場邊有小訪位，筆記本已經打開。", lockedHint: "約第36週起、秋天才輪到這一幕。先完成上一幕，入秋後去片場休息角找周采兒做小訪。未到週數就照常跑通告，不必猜測下一步。", nextHint: "下一幕——第15週起：走電視線有「飯堂閒角」（處境劇固定閒角），走電影線有「片場跟班」（大製作固定跟班）；接不接由你決定。未到之前照常跑通告。" },
   /* v20a31 WEAVE_PHASE4_8：N6 內容對齊 Qwen 原案（電視城飯堂閒角：熬日子／走人），唔再係 pack 自創約會線；
      舊約會版嘅 date_* 旗／rel 加成隨覆寫移除（commit 門檻已按新 rel 經濟校準，見 NOTES_V20A31）。 */
-  N6: { playerHint: "飯堂那邊，處境劇班底想找一個固定閒角——沒有台詞那種。", lockedHint: "第15週起、走電視線（route_tv）才開啟。未到之前照常跑通告；開啟後去星河電視台飯堂那邊看看。", nextHint: "下一幕「暴雨救場」——1989 年夏，業內信用足夠才有人叫你出手救場；開啟後去維港電影外景場。" },
-  N6F: { playerHint: "片場那邊，大製作想簽一個固定跟班——由開鏡跟到殺青那種。", lockedHint: "第15週起、走電影線（route_film）才開啟。未到之前照常跑通告；開啟後去獅子山製片那邊看看。", nextHint: "下一幕「暴雨救場」——業內信用足夠才有人叫你出手救場；開啟後去維港電影外景場。" },
+  N6: { playerHint: "飯堂那邊，處境劇班底想找一個固定閒角——沒有台詞那種。", lockedHint: "先完成「采兒小訪題」那一幕，之後才開啟（第15週起、走電視線）。未到之前照常跑通告；開啟後去星河電視台飯堂那邊看看。", nextHint: "下一幕「暴雨救場」——1989 年夏，業內信用足夠才有人叫你出手救場；開啟後去維港電影外景場。" },
   /* v20a29 WEAVE_PHASE4_6：N7–N8 提示改跟三年版主幹 §2（舊 N7–N11 提示屬 pack 自創線，已由覆寫節點取代）。
      藍若曦舊線（擋狗仔／唱片場）全數移除——藍身份已拍板係電視台 PA／場記，唔再出歌手向提示。 */
   N7: { playerHint: "暴雨殺到，外景場亂成一團，副導演叫人救場。", lockedHint: "1989 年夏天才有這場暴雨外景，還要完成采兒小訪、業內信用足夠才有人叫你幫忙。未到之前照常跑通告；開啟後去維港電影外景場。", nextHint: "下一幕「茶餐廳度橋」——1989 年秋，聲望足夠、有喜劇或動作標籤才觸發；開啟後去金龍茶餐廳。" },
@@ -6536,10 +6535,10 @@ const STORY_TITLE_SOFT = {
    逐個判斷——N8←N7 補鏈、N12←N11 補鏈；N10／N16 刻意唔鏈（恢復節點，防錯過窗口成條關鍵路徑軟鎖，
    見各幕註解）；N6／N6F 係路線分支可選幕，唔當順序主幹鏈。守門測試見 tests/test_story_gate113_logic.js。 */
 const STORY_GATE_3Y = {
-  /* N6（1990 全年・可選）：route_tv；W15+ */
-  N6:  { route: "route_tv", weekMin: 15 },
-  /* v20a89 BR89：N6F 電影線對稱幕（route_film；W15+），補返 N1 film 支嘅專屬下游 */
-  N6F: { route: "route_film", weekMin: 15 },
+  /* N6（1990 全年・可選）：route_tv；W15+；v20a250：加 needDone N5（N5 秋開之後先開，W15 只係下限） */
+  N6:  { needDone: ["N5"], route: "route_tv", weekMin: 15 },
+  /* v20a89 BR89：N6F 電影線對稱幕（route_film；W15+），補返 N1 film 支嘅專屬下游；v20a250：加 needDone N5，同 N6 對稱 */
+  N6F: { needDone: ["N5"], route: "route_film", weekMin: 15 },
   /* N7（1991 夏）：前置 N5；信用 > 20 */
   N7:  { needDone: ["N5"], creditGt: 20, yearMin: 1991, seasonIn: ["夏"] },
   /* N8（1991 夏末／秋・選美後台）：「攜帶特定禮物」屬內容層，4-6 對照時處理，唔入閘
@@ -6586,7 +6585,7 @@ const STORY_GATE_3Y = {
   /* WF1 補幕：1990冬（真空帶前段）
      v20a113：補 needDone N5＋weekMin 48——舊閘得 yearMin＋seasonIn，1990 年 1 月計做冬，第 2 週去
      事務所已經開得（用戶 2026-11-12 實玩捉到跳步）。weekMin 48 實數：1990-12-01＝dayIndex 334＝
-     第 48 週（week＝floor(day/7)+1），係 1990 年 12 月第一個週次；同 JSON pack N18 pacing.weekMin＝48 一致（v20a100 A-12 章戳「約第48週」）。N5 自身 weekMin 9，N5 完成
+     第 48 週（week＝floor(day/7)+1），係 1990 年 12 月第一個週次；同 JSON pack N18 pacing.weekMin＝48 一致（v20a100 A-12 章戳「約第48週」）。N5 自身 weekMin 36，N5 完成
      先至有資格；yearMin 保持 1990 唔轉 yearEq（codebase 慣例係 yearMin，N17 例外；殘留：理論上
      每年冬天都重開，同 CALIB60 單一窗口顯示有落差，係全庫 yearMin 閘共有嘅既有模式，留待以後整體檢討）。 */
   N18: { needDone: ["N5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] },
@@ -6599,203 +6598,6 @@ const STORY_GATE_3Y = {
 };
 /* v20a242：ROMANCE_LAN_PA_OVERRIDES 已刪（R_lan_* 五節點由 content/story_detail_romance_lan_xu.json 直出，唯一來源）；
    playerOffer／stage 修正已入 JSON；crisis／ending 年份經 CONTRA98_WHEN_FIX（1990秋，載入顯示 1992秋）。 */
-
-/* ================= BR89（v20a89）：N1 route_film 對稱下游——N6F《片場跟班》 =================
-   背景（真分支審計 #2）：N1 揀電視線有專屬節點 N6《飯堂閒角》，揀電影線乜都冇，
-   playerHint 仲寫到兩邊都有後續咁。N6F 同 N6 等量級：同週數（W15）、同抉擇形狀
-   （接固定位＝安穩＋wealth 1／唔接＝繼續搏）、電影側場景（獅子山製片・大製作跟班）。
-   注入跟 WF1 慣例，唔直改 pack；閘入 STORY_GATE_3Y（route_film＋weekMin 15）。 */
-const STORY_SPINE_NODES_BR89 = {
-  N6F: {
-    id: "N6F",
-    phase: "P1.5",
-    title: "角落那張桌子",
-    when: "1988",
-    setting: "獅子山製片廠 · 1988 年 · 電影線：佈景板後面那個位置",
-    locId: "film_lion",
-    eraTag: "era_1988_film",
-    cast: [
-      "阿偉",
-      "何生",
-      "電影組副導",
-      "場務大佬根叔",
-      "老臨記昌叔"
-    ],
-    synopsis: "處境劇班底想留他做固定閒角：每集都找他，長期做下去月月有薪水，代價是每集坐在飯堂角落那張桌子，沒有台詞、沒有近鏡。大製作想留他做固定跟班：由開鏡跟到殺青，天天有工作，代價是整期困在片場，佈景板後面那個位置就是他的位置。坐下就有薪水，但坐下那一刻，你是否還記得自己想站起來。", /* DEV：舊 synopsis 含設計術語「N1 二選一的對稱下游」，已移出玩家欄位；設計原意見 git 歷史（v231 前版本）。主線 synopsis 無玩家面渲染點（listOpen 只用 title／playerHint／lockedHint／nextHint；actionsAt 只用 R_hiu／R_choi meet）。 */
-    playerOffer: "大製作想留你做固定跟班——跟一組戲跟到殺青，定繼續跑？",
-    playerHint: "片場那邊，大製作想留一個固定跟班——由開鏡跟到殺青那種。",
-    lockedHint: "第15週起、走電影線（route_film）才開。未到就照常跑通告；開了去獅子山製片那邊看一下。",
-    nextHint: "",
-    beats: [
-      {
-        speaker: "系統",
-        kind: "system",
-        lines: [
-          "1988 年，第 15 週起。阿偉入行幾個月，開始有人認得他那張臉。這天何生帶他去獅子山製片廠見一個班底——開的價很簡單：固定位置，天天有工作，不用再等電話。",
-          "等電話那種日子，阿偉熟悉。沒有戲那天就沒有薪水，早上起床第一件事是望著傳呼機——這就是臨記階梯最底那格的日常。今天有人告訴他，這種日子可以結束。"
-        ]
-      },
-      {
-        speaker: "系統",
-        kind: "system",
-        lines: [
-          "獅子山製片廠。大製作《廠景歲月》趕著開鏡，佈景板、燈架、成箱成箱的戲服——整個廠都是跑來跑去的人。"
-        ]
-      },
-      {
-        speaker: "場務大佬根叔",
-        kind: "npc",
-        lines: [
-          "跟班嗰個位，唔係企鏡頭前面嗰種威，係全組開工你開工、全組收工你先走嗰種攰。",
-          "不過有一樣好：成組人由場務到主角，你跟足一期，個個都認得你嗰張面。呢行，認得你，先至會嗌你。"
-        ]
-      },
-      {
-        speaker: "何生",
-        kind: "npc",
-        lines: [
-          "阿偉，嗰邊大製作想留你做固定跟班，就係由開鏡跟到殺青，日日返嗰組報到嗰個。",
-          "人工唔高，不過跟足一期，唔使餐餐等電話——代價係成期困喺廠入面，出面有咩好戲，你都接唔到。你點睇？"
-        ]
-      },
-      {
-        speaker: "老臨記昌叔",
-        kind: "npc",
-        lines: [
-          "後生仔，跟班嗰張凳，我都坐過——唔係，片場冇凳坐㗎，企到收工嗰種。",
-          "跟得足一期戲，你學到嘅唔係演戲，係成個廠點樣運作。邊個嗌水、邊個嗌停、邊個唔出聲但最惡——你跟完一期，全部知晒。"
-        ]
-      },
-      {
-        speaker: "電影組副導",
-        kind: "npc",
-        lines: [
-          "嗰個位最緊要準時同唔好多問。跟得穩，下一期開戲，我第一個寫你個名落去。"
-        ]
-      },
-      {
-        speaker: "系統",
-        kind: "system",
-        lines: [
-          "你望著整個廠：主角那邊有專人服侍，導演那邊圍著一班人——跟班那個位置，在佈景板後面，燈光照不到那裡。"
-        ]
-      },
-      {
-        speaker: "系統",
-        kind: "system",
-        lines: [
-          "何生望著你，等你那句。這個抉擇開哪一幕，N1 那時已經定了——電影線走片場。這裡選的，是坐下還是走人。",
-          "老實說：這兩個選法，今天只改你那期怎麼過，不改之後哪一幕開——開哪一幕是第一天那個選擇決定的，那個才是真分支。這裡不假裝有分叉，坐下還是走人，是阿偉對自己的交代，不是對劇情的交代。"
-        ]
-      }
-    ],
-    choices: [
-      {
-        id: "N6F_a",
-        label: "C · 電影線：接固定跟班，一期安穩",
-        effects: {
-          flags: [
-            "flag_studio_follow"
-          ],
-          stats: {
-            wealth: 1
-          },
-          tags: [],
-          notes: "你接了大製作固定跟班：跟足一期，天天回那組報到。接著那段日子，你天天準時報到，根叔收工時撥了一支煙給你，副導演叫人時也開始叫你的名字，不再叫「嗰個後生仔」。那個位置你跟還是不跟，片場那邊都會照常開工；你那期怎麼過，自己知道。"
-        },
-        resultBeats: [
-          {
-            speaker: "電影組副導",
-            lines: [
-              "好，聽朝六點廠門口等，唔好遲。你嗰個位，以後就係你跟開嗰組。"
-            ]
-          },
-          {
-            speaker: "何生",
-            lines: [
-              "唔好睇小佈景板後面嗰個位——幾多大星，都係喺片場跟出嚟㗎。"
-            ]
-          },
-          {
-            speaker: "系統",
-            lines: [
-              "接著那個月，你天天準時報到。第三個星期，根叔收工時撥了一支煙給你，叫你不要那麼拼命——片場裡面，這就是認人；副導演叫人時，也開始叫你的名字，不再叫「嗰個後生仔」。"
-            ]
-          },
-          {
-            speaker: "系統",
-            lines: [
-              "那個位置你跟還是不跟，片場那邊都會照常開工。你那期怎麼過，自己知道。",
-              "阿偉走出片場，回頭看了一眼。佈景板後面那個位置還在那裡——它不會走，它在等下一個肯跟的人。"
-            ]
-          }
-        ]
-      },
-      {
-        id: "N6F_b",
-        label: "D · 電影線：不接，繼續跑通告找機會",
-        effects: {
-          flags: [
-            "flag_studio_roam"
-          ],
-          stats: {},
-          tags: [],
-          notes: "你沒有接那個跟班位置——安穩留給別人，你繼續拼。你走出廠門時，跟班那個位置已經有第二個人站了進去；有次回獅子山做散工，走過佈景板後面，那個年輕人正在那裡學你那時一樣，望著主角那邊出神。那個位置你跟還是不跟，片場那邊都會照常開工；你那期怎麼過，自己知道。"
-        },
-        resultBeats: [
-          {
-            speaker: "何生",
-            lines: [
-              "後生仔心頭高，唔怪你。片場咁大，你慢慢行——唔好後悔就得。"
-            ]
-          },
-          {
-            speaker: "系統",
-            lines: [
-              "你走出廠門時，跟班那個位置，已經有第二個人站了進去。"
-            ]
-          },
-          {
-            speaker: "系統",
-            lines: [
-              "之後那段日子通告有一天沒一天。有次回獅子山做散工，你走過佈景板後面，跟班那個年輕人正在那裡學你那時一樣，望著主角那邊出神。"
-            ]
-          },
-          {
-            speaker: "系統",
-            lines: [
-              "那個位置你跟還是不跟，片場那邊都會照常開工。你那期怎麼過，自己知道。",
-              "阿偉走出片場，回頭看了一眼。佈景板後面那個位置還在那裡——它不會走，它在等下一個肯跟的人。"
-            ]
-          }
-        ]
-      }
-    ],
-    conflict: null,
-    flags_written: [
-      "flag_studio_follow",
-      "flag_studio_roam"
-    ],
-    openConditions: [
-      "route_film",
-      "week_min:15"
-    ],
-    openConditionsAny: null,
-    openConditionsNote: "三年版閘以 STORY_GATE_3Y 為準（route_film＋W15）；同 N6 對稱，接固定位／走人二擇。"
-  }
-};
-function applyStoryBr89Nodes89(){
-  const out = { ok: true, main: 0 };
-  try{
-    if(typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.main && Array.isArray(STORY_WIRE.main.nodes)){
-      const have = {}; STORY_WIRE.main.nodes.forEach(n=>{ if(n && n.id) have[n.id]=1; });
-      Object.keys(STORY_SPINE_NODES_BR89).forEach(id=>{
-        if(!have[id]){ STORY_WIRE.main.nodes.push(STORY_SPINE_NODES_BR89[id]); out.main++; }
-      });
-    }
-  }catch(_e){ out.ok = false; }
-  return out;
-}
 
 /* ================= WF2（v20a81）：感情線廣東話化＋半線差一步收尾 覆寫表 =================
    做法（同 WF1 慣例）：唔直改 content pack JSON；載入時以欄位級 merge 注入——
@@ -9019,7 +8821,7 @@ const BehaviorGate = (function(){
     if(c5flags.indexOf("rival_gao")>=0) bad("c5_rival_mix");
     if((c5.trigger.seasonAny||[]).join()!=="autumn,winter") bad("c5_season");
     if(c5.trigger.rumorSoftPriority!==true || c5.trigger.rumorSeedsRequired!==true) bad("c5_rumor_flags");
-    const c5base = { week:9, done:{ N4:true }, dayIndex:50, lastMainDoneDay:40, rumors:["choi_recent_news"] };
+    const c5base = { week:36, done:{ N4:true }, dayIndex:250, lastMainDoneDay:240, rumors:["choi_recent_news"] };
     if(sample("N5", Object.assign({}, c5base, { atLoc:"cafe_cha", season:"秋" })).ok!==true) bad("c5_autumn");
     if(sample("N5", Object.assign({}, c5base, { atLoc:"tvb_longmen", season:"winter", rumors:["hau_ching_recent_news"] })).ok!==true) bad("c5_winter");
     if(sample("N5", Object.assign({}, c5base, { atLoc:"cafe_cha", season:"夏" })).ok!==false) bad("c5_summer");
@@ -14838,7 +14640,7 @@ async function refreshCopyPacksFromDisk(){
     /* v20a152：romance.tang 槽已刪（見 STORY_WIRE 初始化） */
     STORY_WIRE.rival = rival;
     /* v20a242：ROMANCE_LAN_PA_OVERRIDES 已刪，JSON 做唯一來源，唔再呼叫 applyRomanceLanOverrides48。 */
-    try{ applyStoryBr89Nodes89(); }catch(_b89){}
+    /* v20a250：STORY_SPINE_NODES_BR89 已刪，N6F 由 content/story_detail_n1_to_n17.json 直出，唯一來源，唔再呼叫 applyStoryBr89Nodes89。 */
     try{ applyRomanceWf2Overrides81(); }catch(_wf2){}
     /* v20a241：RIVAL_WF4_OVERRIDES 已刪，JSON 做唯一來源，唔再呼叫 applyRivalWf4Overrides86。 */
     /* v20a55 TEXTFIX：pack 載入之後、其餘載入之前，清洗劇情包文字 */
@@ -16237,7 +16039,8 @@ function storyGate113Scrub(o, gate){
         for(var i=0;i<e.needDone.length;i++){ if(!done[e.needDone[i]]){ bad = true; break; } }
       }
       if(!bad && e.weekMin != null && week < Number(e.weekMin)) bad = true;
-      if(bad){ delete done[id]; cleared.push(id); }
+      /* v20a250 祖父條款：N6／N6F 喺 v249 規則下第 15 週開、N5 要第 36 週先開，合法舊檔必然有 done.N6／N6F 而無 done.N5；新加嘅 needDone N5 只管將來開閘，唔倒清舊完成紀錄（清走仲會令 calib60Missed 誤報）。新檔唔受影響：evalGate 開閘嗰陣仍然要 N5 先做。 */
+      if(bad && !((id==="N6" || id==="N6F") && week >= Number(e.weekMin))){ delete done[id]; cleared.push(id); }
     });
   }catch(_e113){}
   return cleared;
@@ -25606,13 +25409,23 @@ function mergeTriggerGigs(locId){
    玩家唔做＝拍攝逾期掉單（現有 processOverdueShoots 路：扣違約金＋聲望／壓力，合約自動閂）。
    唔郁：《星夜迷離》（新庫 0 命中，另開票補寫，唔加第 241 張）；FAVOR_DUE 幫忙通告（gigId 繼續 null）；
    Rival 第 2／3 輪 rematch（唔重寫，留返之後）。 */
-/* 主線／WF3 抉擇即派表：key＝nodeId:choiceId（"*"＝該節點任何選項）。N-1–N-5 各派指定 1 張。 */
+/* 主線／WF3 抉擇即派表：key＝nodeId:choiceId（"*"＝該節點任何選項）。v20a250：N1–N5／N18 按抉擇派指定通告；N5:* 已拆做 N5_a／b／c。 */
 const GRANT229_CHOICE = {
+  "N1:N1_a":  { gigId:"gig_1990_tv_124", source:"N1", reason:"張子駿嗰邊肯教你，聽日準時去電視城動作組報到，跟組雜務，搬道具、遞水、跟場，唔好遲到。" },
+  "N1:N1_b":  { gigId:"gig_1990_film_124", source:"N1", reason:"片場嗰邊趕住開，賀歲片場要個趕檔場務助手，朝早去、夜晚收現金，記住自己執生。" },
+  "N2:N2_a":  { gigId:"gig_1990_film_125", source:"N2", reason:"老臨記話聽晚有組開夜戲要人，陰陽夜更要個動作替身，戴上面具頂替主角走位。" },
+  "N2:N2_b":  { gigId:"gig_1990_tv_125", source:"N2", reason:"電視城嗰邊要人，街景臨記臨時群演，準時到，副導第一個嗌你個名，保住單通告先。" },
+  "N3:N3_a":  { gigId:"gig_1990_tv_127", source:"N3", reason:"聽日有組要動作替身，幽林魅影夜追逐，企定個位，唔好俾人搶走。" },
+  "N3:N3_b":  { gigId:"gig_1990_tv_128", source:"N3", reason:"聽日有組要街坊群戲，靈異屋邨夜話，企旁邊配合主角走避，尋日嗰場一 take 過，做得穩陣。" },
+  "N4:N4_a":  { gigId:"gig_1990_ad_117", source:"N4", reason:"呢單你自己揀嘅，便利店短片要個廣告路人 B，行過鏡頭兩次就收工，呢筆數我記低。" },
   "N4:N4_b":  { gigId:"gig_1990_film_114", source:"N4", reason:"昨晚嗰場浸水戲，副導話你肯捱，今朝有組開夜戲要人。" },
-  "N5:*":  { gigId:"gig_1990_tv_122", source:"N5", reason:"采兒嗰邊傳嚟消息，記者會現場要個特約演員，何生話你去頂住。" },
+  "N5:N5_a":  { gigId:"gig_1990_tv_130", source:"N5", reason:"采兒嗰邊傳嚟消息，記者會外景要個特約演員，何生話你聽日去頂住。" },
+  "N5:N5_b":  { gigId:"gig_1990_tv_130", source:"N5", reason:"采兒嗰邊傳嚟消息，記者會外景要個特約演員，何生話你聽日去頂住。" },
+  "N5:N5_c":  { gigId:"gig_1990_tv_131", source:"N5", reason:"天星碼頭嗰邊要過海人潮，聽日去企位走過鏡頭，充場面都要企穩陣。" },
   "N6:N6_a":  { gigId:"gig_1990_tv_105", source:"N6", reason:"處境劇嗰邊留咗你做固定閒角，今朝正式簽長期合約。", contract:true },
   "N6F:N6F_a":{ gigId:"gig_1990_film_110", source:"N6", reason:"大製作嗰邊留咗你做固定跟班，今朝正式簽長期合約。", contract:true },
   "N18:N18_a": { gigId:"gig_1990_tv_121", source:"N18", reason:"何生問你想學幕後定專心幕前——跟組學嘢嗰邊，今朝有位留畀你。" },
+  "N18:N18_b": { gigId:"gig_1990_tv_129", source:"N18", reason:"何生話冬日單元劇嗰邊有個鄰里配角留畀你，有對白，串起幾場戲，幕前嗰份功夫，做實佢先。" },
   "W3_ho_liao:W3_ho_liao_a": { gigId:"gig_1990_tv_117", source:"廖炳星支線", reason:"何生今朝話，喜劇組嗰邊有個替身雜務位留咗畀你，聽朝去報到。" },
   "W3_ho_liao:W3_ho_liao_b": { gigId:"gig_1990_tv_118", source:"廖炳星支線", reason:"何生今朝話，喜劇組嗰邊有個替身雜務位留咗畀你，聽朝去報到。" }
 };

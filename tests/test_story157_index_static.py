@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # v20a157 index.html 側靜態測試（整合員）。
 # v20a234：內嵌覆寫表已刪——N6–N19 由 content/story_detail_n1_to_n17.json 直出，唯一來源。
-# 本檔改由 JSON pack 讀 N6–N19 節點（BR89 N6F／STORY_GATE_3Y／F4／G4 仍喺 index.html 抽出），
-# 其餘斷言（key 數目／beats 數／關鍵句／閘／旗／stats／ERA／年份舊曆／notes／禁用詞）全部保留。
+# v20a250：BR89 N6F 亦由 JSON pack 直出（內嵌表＋注入器已刪），本檔改由 JSON pack 讀 N6F 節點，
+# STORY_GATE_3Y／F4／G4 仍喺 index.html 抽出；其餘斷言（key 數目／beats 數／關鍵句／閘／旗／stats／ERA／年份舊曆／notes／禁用詞）全部保留。
 # 反證：喺 pristine main（e08a070／v148）index.html 上行會乾淨 FAIL（標題／beats 數／
 # 旗 stats 唔同），唔 crash。
 # 用法：python3 tests/test_story157_index_static.py [path-to-index.html]
@@ -81,6 +81,7 @@ _pack_nodes = {n["id"]: n for n in _pack["nodes"]}
 T1989 = {k: _pack_nodes[k] for k in ["N7", "N8", "N9", "N10", "N11"]}
 T1990 = {k: _pack_nodes[k] for k in ["N12", "N13", "N14", "N15", "N16"]}
 TC6 = {"N6": _pack_nodes["N6"]}
+TBR89 = {"N6F": _pack_nodes["N6F"]}  # v20a250：N6F 由 JSON pack 直出（內嵌 BR89 表已刪）
 TWF1 = {k: _pack_nodes[k] for k in ["N18", "N19"]}
 N17 = _pack_nodes["N17"]
 # 第 6 節年份舊曆檢查用嘅 span：JSON  dumps（同舊 inline span 同口徑：成組節點全文）
@@ -113,7 +114,6 @@ console.log(JSON.stringify(out));
 
 tmp = tempfile.mkdtemp(prefix="t157_")
 specs = [
-    ("TBR89", "STORY_SPINE_NODES_BR89"),
     ("GATE", "STORY_GATE_3Y"),
 ]
 files = []
@@ -122,6 +122,7 @@ for key, name in specs:
     open(p, "w", encoding="utf-8").write(extract_const(name) + "\n")
     files.append({"path": p, "key": key, "name": name})
     spans[key] = extract_const(name)
+spans["TBR89"] = json.dumps(TBR89, ensure_ascii=False)  # v20a250：N6F span 由 JSON pack 嚟，唔再喺 index.html 抽內嵌表
 # CHOICE47 keys（object literal 形）
 for key in ("F4_stay_mind", "G4_family_job"):
     p = os.path.join(tmp, key + ".js")
@@ -134,7 +135,6 @@ r = subprocess.run(["node", "-e", NODE_DUMP, json.dumps(files)],
 assert r.returncode == 0, "node dump failed: " + r.stderr[:2000]
 D = json.loads(r.stdout)
 
-TBR89 = D["TBR89"]
 GATE = D["GATE"]
 F4, G4 = D["F4_stay_mind"], D["G4_family_job"]
 
@@ -149,7 +149,7 @@ ok("1989 表 5 keys 次序 N7/N8/N9/N10/N11",
 ok("1990 表 5 keys 次序 N12/N13/N14/N15/N16",
    list(T1990.keys()) == ["N12", "N13", "N14", "N15", "N16"])
 ok("N6 表 1 key", list(TC6.keys()) == ["N6"])
-ok("BR89 表 1 key", list(TBR89.keys()) == ["N6F"])
+ok("N6F 由 JSON 出（1 key）", list(TBR89.keys()) == ["N6F"])
 ok("WF1 表 2 keys 次序 N18/N19", list(TWF1.keys()) == ["N18", "N19"])
 ok("CHOICE47 F4/G4 在位", F4.get("id") == "F4_stay_mind" and G4.get("id") == "G4_family_job")
 
@@ -173,9 +173,9 @@ def blob(node):
     return json.dumps(node, ensure_ascii=False)
 
 
-ok("N6 標題＋synopsis 新寫", TC6["N6"]["title"] == "角落那張桌子"
+ok("N6 標題＋synopsis 新寫", TC6["N6"]["title"] == "角落那張枱"
    and "每集都找他" in TC6["N6"]["synopsis"] and "一簽一季" not in blob(TC6["N6"]))
-ok("N6F 標題＋synopsis 同 N6 一致", TBR89["N6F"]["title"] == "角落那張桌子"
+ok("N6F 標題＋synopsis 同 N6 一致", TBR89["N6F"]["title"] == "角落那張枱"
    and TBR89["N6F"]["synopsis"] == TC6["N6"]["synopsis"])
 ok("N6 Beat5 Q1 已潤飾（無 route 旗術語）",
    "第一天那個選擇" in blob(TC6["N6"]) and "route 旗" not in blob(TC6["N6"]))
@@ -205,9 +205,11 @@ ok("G4 標題＋阿媽文職", G4["title"] == "阿媽煲咗湯" and "表叔在�
    and "薦到一份文職" in blob(G4))  # v233 RW-2：廣東話→書面語（「喺銀行嗰邊」→「在銀行那邊」）
 
 # ---- 4. 閘／choice 旗／stats 同 live 一致 ----
-ok("閘 N6/N6F route＋weekMin 15",
+ok("閘 N6/N6F route＋weekMin 15＋needDone N5（v20a250）",
    GATE["N6"].get("route") == "route_tv" and GATE["N6"].get("weekMin") == 15
-   and GATE["N6F"].get("route") == "route_film" and GATE["N6F"].get("weekMin") == 15)
+   and GATE["N6"].get("needDone") == ["N5"]
+   and GATE["N6F"].get("route") == "route_film" and GATE["N6F"].get("weekMin") == 15
+   and GATE["N6F"].get("needDone") == ["N5"])
 ok("閘 N8 需 N7、N12 需 N11",
    GATE["N8"].get("needDone") == ["N7"] and GATE["N12"].get("needDone") == ["N11"])
 ok("閘 N17 weekMin 153＋1992 冬",

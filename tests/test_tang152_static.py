@@ -1,3 +1,4 @@
+# v20a250 resync：index.html 淨 -187 行（刪 BR89 內嵌表 197 行＋soft N6F 條目 1 行；GRANT229 ＋10；scrub 祖父條款註解 ＋1）；3 個釘行按 difflib 映射重寫（9219→9021、14725→14527、14847→14649），內容逐字核實純漂移；名入面嘅 Lxxxxx 歷史標籤唔郁。
 # v20a249 resync：index.html 淨 +21 行（GRANT229 收窄＋E1 脊骨＋D8 升格）；3 個釘行按 difflib 映射重寫（9212→9219、14704→14725、14826→14847；lines() 0-based 索引 9211→9218、14703→14724、14825→14846），內容逐字核實純漂移；check 名入面嘅舊 L 號係歷史標籤，唔跟住改。
 # RW-7A resync：index.html 淨 −69 行（刪 TEXTFIX 死映射＋gig 清洗層）；3 個釘行按 difflib 映射重寫（14772→14704、14894→14826；9212 唔郁），內容逐字核實純漂移；另 EXACT #2（腕表句）因 tang152 釘死已還原，唔再刪。
 # v20a236 resync：index.html 淨 +146 行（reconfirm 接線 11 處）；釘行按 difflib 映射重寫，內容逐字核實純漂移，見 qa236/resync236.py。
@@ -73,7 +74,7 @@ ok('刪節點：CONTRA98_WHEN_FIX 冇 R_tang_ending', 'R_tang_ending:["1990' not
 ok('刪節點：CONTRA98 winter_finale 由 11 減到 8（v20a219：hiu／choi／xu 結局改秋）', src.count('"1990冬","era_1990_winter_finale"') == 8)
 
 # --- 3. DengLine 排片線留返（meet＋push1／push2／crisis，閘門唔郁） ---
-ok('留線：HELD 縮到 3 節（L25817）', lines()[9218].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
+ok('留線：HELD 縮到 3 節（L25817）', lines()[9020].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
 ok('留線：PUSH_CHROME 有 push1／push2／crisis，冇 ending',
    'R_tang_push1: { chromeSeason:"winter"' in src and 'R_tang_push2: { chromeSeason:"spring"' in src
    and 'R_tang_crisis: { chromeSeason:"autumn"' in src)
@@ -107,8 +108,8 @@ ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
 # v20a235 resync：index.html 淨 −24 行（N17 前夕刪三選項）；3 個釘行按 difflib 映射重寫（normaliseTangStub152 15563→15539、stub 呼叫行 15686→15662；HELD 10006 唔郁），內容逐字核實純漂移。
 # v20a242 resync：index.html 淨 −144 行（刪 LAN 覆寫表；刪除區間舊 L6597–6735／7559–7579／15038–15045）；3 個釘行按段重算（HELD 9358→9212，−146；normaliseTangStub152 14926→14783，−143；stub 呼叫行 15049→14905，−144），內容逐字核實純漂移。
 # --- 4. 載入機制：stub 正規化＋push mock 過濾 ---
-ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[14724].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[14846].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[14526].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[14648].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)

@@ -1,7 +1,7 @@
 // v20a90 DUR90 工期/片酬校準・邏輯測試（v20a229 B3 新庫版）
 // 合約（用戶 2026-11-11 08:30：正常製作拍攝/錄製日數要對得返現實）：
 //   A 校準帶常量同 spec 一致（ROLE_SCALE_BAND 已更新、DUR90 舊帶指紋/日薪帶在位）
-//   B 新庫普查（241 張）：raw days 全部喺 roleScale 帶內（clamp 唔郁手）；日薪必喺
+//   B 新庫普查（251 張）：raw days 全部喺 roleScale 帶內（clamp 唔郁手）；日薪必喺
 //     位階日薪帶內（容許四捨五入誤差；4 張 1992 稀有大碟＋1 張《星夜迷離》例外，見 DAILY_ALLOW_229）；
 //     全部有 days（shootDaysHint＝days）；resolveRoleScale 全部認到帶
 //   C 期限：全部 gig 嘅 deadline ≥ 拍完所需日曆日（唔會接咗拍唔完）
@@ -92,7 +92,7 @@ if(W){
   function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
   const packNew = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gigs_new.json'), 'utf8'));
   const pool = (packNew.gigs || []).map(g => W.normalizeGigRecord(deepClone(g)));
-  ok('A4 新庫 241 張入池', pool.length === 241, 'n=' + pool.length);
+  ok('A4 新庫 251 張入池', pool.length === 251, 'n=' + pool.length);
 
   // A 校準帶常量
   ok('A1 ROLE_SCALE_BAND ＝ 校準 spec', JSON.stringify(W.ROLE_SCALE_BAND) === JSON.stringify(SPEC_BAND), JSON.stringify(W.ROLE_SCALE_BAND));
@@ -119,10 +119,10 @@ if(W){
       }
     }
   }
-  ok('B1 raw days 全部喺 roleScale 帶內（clamp 唔郁手，241 張）', clampBad.length === 0, clampBad.slice(0, 5).join(' ; '));
+  ok('B1 raw days 全部喺 roleScale 帶內（clamp 唔郁手，251 張）', clampBad.length === 0, clampBad.slice(0, 5).join(' ; '));
   ok('B2 日薪全喺位階帶內（5 張表列例外除外：4 張稀有大碟＋《星夜迷離》）', dailyBad.length === 0, dailyBad.slice(0, 5).join(' ; '));
   ok('B3 全部有 days 且 shootDaysHint＝days', noDays.length === 0, noDays.slice(0, 5).join(' ; '));
-  ok('B4 resolveRoleScale 全部認到帶（241 張）', noBand.length === 0, noBand.slice(0, 5).join(' ; '));
+  ok('B4 resolveRoleScale 全部認到帶（251 張）', noBand.length === 0, noBand.slice(0, 5).join(' ; '));
 
   // C/D 期限與夾位
   let ddlBad = [], winBad = [];

@@ -1,3 +1,4 @@
+# v20a250 resync：index.html 淨 -187 行（刪 BR89 內嵌表 197 行＋soft N6F 條目 1 行；GRANT229 ＋10；scrub 祖父條款註解 ＋1）；總行數 44392→44205；釘行按 difflib 映射重寫，內容逐字核實純漂移。
 # v20a249 resync：index.html 淨 +21 行（GRANT229 收窄＋E1 脊骨＋D8 升格）；總行數 44371→44392（標籤 44382→44403，鏈尾加 ＋v249 +21）。
 # castmig resync：index.html 淨 −13 行（刪 ensureCastingTagsState() 舊存檔遷移 loop，舊 L27840–27852；函數本身留返）；總行數期望鏈尾加 ＋castmig −13（標籤 44395→44382，斷言 44384→44371）。
 # v20a236 resync：index.html 淨 +146 行（reconfirm 接線 11 處）；釘行按 difflib 映射重寫，內容逐字核實純漂移，見 qa236/resync236.py。
@@ -72,7 +73,7 @@ def seg(start, end):
 ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
-ok('總行數 44403（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136＋v219 +3＋v222 −37＋v225 +272＋v227 +2＋v210 +40＋v228 −170＋v229 +41＋v229 B2 +48＋v229 B3 −15612＋v229 B4 +103＋v229 B5 +250＋v229 B6 +332＋v229 B7 +54＋v234 −2869＋v235 −24＋v236 +146＋v241b −6＋v241 −859＋v242 −144＋v243 −11＋RW-7A −69＋castmig −13＋v249 +21）', html.count('\n') == 44392)
+ok('總行數 44206（v193 61167＋v203 +233＋v204 +32＋v206 C1 +22＋v206 C2 +3＋v207 +34＋v208 +223＋v211 +42＋v212 +39＋v213 +199＋v214 +358＋v215 +140＋v216 +263＋v217 +3＋v218 +136＋v219 +3＋v222 −37＋v225 +272＋v227 +2＋v210 +40＋v228 −170＋v229 +41＋v229 B2 +48＋v229 B3 −15612＋v229 B4 +103＋v229 B5 +250＋v229 B6 +332＋v229 B7 +54＋v234 −2869＋v235 −24＋v236 +146＋v241b −6＋v241 −859＋v242 −144＋v243 −11＋RW-7A −69＋castmig −13＋v249 +21）', html.count('\n') == 44205)
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行（advanceDay tick＋2／whitelist＋1／RELEASE215 block＋130／排序＋4／pullDue 懶掃＋3），difflib 核實純漂移（總行數 62352→62492）。# ---- B1：路線 a 標記＋grid 軌防撐闊 ----
 ok('B1 v185 標記在位（路線 a：唔靠碌，一眼全見）',
    'v20a185 B1+C1' in html and '路線 a' in html)

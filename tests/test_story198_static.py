@@ -16,9 +16,10 @@ from pathlib import Path
 
 p = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent / 'index.html'
 src = p.read_text(encoding='utf-8')
-# v20a234：內嵌主線表已刪，N6 setting 正本而家係 JSON pack；N6F 仲係內嵌 BR89 表。
+# v20a234：內嵌主線表已刪，N6 setting 正本而家係 JSON pack；v20a250：N6F 亦由 JSON pack 直出（內嵌 BR89 表已刪）。
 pack = json.loads((p.parent / 'content' / 'story_detail_n1_to_n17.json').read_text(encoding='utf-8'))
 n6 = next((n for n in pack['nodes'] if n.get('id') == 'N6'), None)
+n6f = next((n for n in pack['nodes'] if n.get('id') == 'N6F'), None)
 fails = []
 
 
@@ -57,7 +58,8 @@ def func_body_braces(src_text, fname):
 
 # --- 基線不變 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('開放條件／閘唔郁', 'N6F: { route: "route_film", weekMin: 15 }' in src
+ok('開放條件／閘唔郁（v20a250：N6／N6F 加 needDone N5）', 'N6F: { needDone: ["N5"], route: "route_film", weekMin: 15 }' in src
+   and 'N6:  { needDone: ["N5"], route: "route_tv", weekMin: 15 }' in src
    and 'N18: { needDone: ["N5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] }' in src
    and 'N19: { needDone: ["N18"], weekMin: 61, yearMin: 1991, seasonIn: ["春"] }' in src)
 ok('WF4 事件池唔郁（boss01 之外嘅事件唔掂）', 'wf4_ev_cha01' in src and 'wf4_ev_boss02' in src
@@ -120,9 +122,9 @@ sp = src[src.index('const StoryPlay = (()=>{'):src.index('const StoryPlay = (()=
 strip = func_body_braces(src, 'storySettingStripRoute198')
 ok('N3：head 經 storySettingStripRoute198 出場景行', 'storySettingStripRoute198(n.setting)' in sp)
 ok('N3：helper 剝走「電影線：」同「電視線：」', '.replace(/電影線：/g,"")' in strip and '.replace(/電視線：/g,"")' in strip)
-ok('N3：節點 setting 資料本身唔郁（N6／N6F 原字仲有路線名）',
-   n6 is not None and n6.get('setting') == '星河電視台飯堂 · 1988 年 · 電視線：角落那張桌子'
-   and 'setting: "獅子山製片廠 · 1988 年 · 電影線：佈景板後面那個位置"' in src)
+ok('N3：節點 setting 資料本身唔郁（N6／N6F 原字仲有路線名；v20a250：兩者正本都係 JSON pack）',
+   n6 is not None and n6.get('setting') == '星河電視台飯堂 · 1988 年 · 電視線：角落那張枱'
+   and n6f is not None and n6f.get('setting') == '獅子山製片廠 · 1988 年 · 電影線：佈景板後面那個位置')
 ok('N3：幕號行仲喺度（路線名只係由場景行拎走，唔係成個 head 拎走）',
    'sp-act191' in sp and 'storyActLabel(n.id)' in sp)
 

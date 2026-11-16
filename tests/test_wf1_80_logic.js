@@ -180,7 +180,7 @@ ok('N19 1991冬 唔開（過季）', !gatePass('N19', 1991, '冬', ['N18'], 61))
   const ids = (packMain.nodes || []).map(n => n.id);
   ok('pack 自帶 N18/N19（唔使注入）', ids.includes('N18') && ids.includes('N19'));
   ok('pack N18/N19 id 唯一（注入冪等已無意義）', ids.filter(x => x === 'N18').length === 1 && ids.filter(x => x === 'N19').length === 1);
-  ok('pack 有 19 個 nodes（N1–N19 齊）', (packMain.nodes || []).length === 19);
+  ok('pack 有 20 個 nodes（N1–N19＋N6F 齊，v250 N6F 搬入 JSON）', (packMain.nodes || []).length === 20);
 }
 
 /* (6) 紅線 */

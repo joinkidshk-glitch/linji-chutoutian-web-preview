@@ -3,7 +3,7 @@
 //  (B) 豁免：entryTier/softBridge 唔錯峰；年初已開窗 interval 偏移恆 0（開局板面唔俾抽乾）。
 //  (C) 夾位：逐張逐 interval 驗 off+pull+工期所需日曆日 ≤ interval 長度（接咗拍得完）。
 //  (D) 開局守衛：day-0 FRESH 可接 ≥12（v88/v90 口徑，基線 12）；第一週逐日逐地點 ≥1 可接——
-//      新庫例外：九龍電視台（tvb_kowloon）第一週 0 可接（見 D2 註）；
+//      v250 起九龍電視台第一週有可接（即派新通告填咗缺口，見 D2 註）；
 //      紅棉影業／灣仔唱片 day-0 有可接（新庫供應，唔再靠 NAT92 入門補位）。
 //  (E) 分布守衛：52 週普查（MAXED 組成）1990「恰好 2」占比 <40%；
 //      三年全板 0 嘅地點-週＝94（新庫地點-季節洞，見 E2 註——舊版 0 係 351 張＋18 張
@@ -12,7 +12,7 @@
 //      E2 釘先至繼續量度庫分佈而唔係觸發狀態；沙盒抽埋 triggerGigOn＋依賴，
 //      唔係 board filter 嘅 typeof 守衛會將全部 trigger 通告當未觸發隱藏。
 //  (F) 注入池已刪：NAT92_GIGS 18 張拎走，mergeNat92Gigs 回 0；錯峰資格改由
-//      新庫 gig 本身判定（229 張合資格、12 張入門唔錯峰）；舊 nat92 旗全庫 0 命中。
+//      新庫 gig 本身判定（239 張合資格、12 張入門唔錯峰）；舊 nat92 旗全庫 0 命中。
 // 反證：對 v91 index 行 → NAT92 符號唔存在，抽取即 FAIL。
 // 用法：node tests/test_nat92_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -148,7 +148,7 @@ for(const y of [1990, 1991, 1992]) for(const g of poolByYear[y]){
   if(W.nat92StaggerEligible(g)) stagN++;
   if(Object.keys(g.req||{}).some(k=>!CANON[k])) reqBad.push(g.id);
 }
-ok('F2 錯峰合資格 229 張（241－12 入門）', stagN === 229, 'stagN=' + stagN);
+ok('F2 錯峰合資格 239 張（251－12 入門）', stagN === 239, 'stagN=' + stagN);
 ok('F2b 入門 12 張唔錯峰', entryN === 12);
 ok('F3 舊 nat92 旗全庫 0 命中', nat92FlagN === 0);
 ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3).join(','));
@@ -215,10 +215,11 @@ ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3
   }
   ok('D1 day-0 全板可接 ≥12（實數 '+day0Apply+'）', day0Apply >= 12);
   const badLoc = GIG_LOCS.filter(loc => perLocDay.some(row => row[loc] < 1));
-  ok('D2 第一週逐日有通告地點 ≥1 可接，例外只得九龍電視台（實數：'+(badLoc.join(',')||'無')+'）',
-    badLoc.length === 1 && badLoc[0] === 'tvb_kowloon');
-  // D2 註：tvb_kowloon 1990 冬窗得兩張（tv_104 acting 30、tv_111 acting 68），開局演技 18 接唔到；
-  // 入口池 12 張冇一張喺呢個地點過冬——新庫分佈缺口，留待通告庫覆蓋校準票處理，B3 唔補新通告。
+  ok('D2 第一週逐日每個通告地點 ≥1 可接（v250：九龍電視台缺口由即派新通告填咗，實數：'+(badLoc.join(',')||'無')+'）',
+    badLoc.length === 0);
+  // D2 註：v250 之前 tvb_kowloon 1990 冬窗得兩張（tv_104 acting 30、tv_111 acting 68），開局演技 18 接唔到，
+  // 第一週 0 可接；v250 即派新通告 6 張落喺 tvb_kowloon（tv_124／125／127／128／130／131，1990 春，低門檻），
+  // 缺口由劇情通告填咗，唔再係分佈缺口。
   ok('D3 紅棉影業 day-0 有可接（新庫供應）', perLocDay[0]['film_cotton'] >= 1);
   ok('D4 灣仔唱片 day-0 有可接（新庫供應）', perLocDay[0]['rec_wanchai'] >= 1);
 }

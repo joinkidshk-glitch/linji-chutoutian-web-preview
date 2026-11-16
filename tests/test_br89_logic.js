@@ -112,18 +112,18 @@ try{
   ok('B9 beat 定義冇 grants 殘留', !/id:"liu_repay"[^}]*grants\(/.test(html) && !/id:"mak_respect"[^}]*grants\(/.test(html));
 }catch(e){ ok('B grants 抽取/執行 ('+e.message+')', false); }
 
-/* ================= (C) N6F 對稱幕 ================= */
+/* ================= (C) N6F 對稱幕（v20a250：內嵌表已刪，JSON 做唯一來源） ================= */
 try{
   const gate = extractConst('STORY_GATE_3Y');
-  const nodes = extractConst('STORY_SPINE_NODES_BR89');
-  const env = new Function(gate + '\n' + nodes + '\nreturn { STORY_GATE_3Y, STORY_SPINE_NODES_BR89 };')();
-  ok('N1 閘 N6F＝route_film＋W15（同 N6 對稱）', env.STORY_GATE_3Y.N6F && env.STORY_GATE_3Y.N6F.route==='route_film' && env.STORY_GATE_3Y.N6F.weekMin===env.STORY_GATE_3Y.N6.weekMin);
-  const n = env.STORY_SPINE_NODES_BR89.N6F;
-  ok('N2 節點 locId film_lion＋openConditions 對位', n.locId==='film_lion' && n.openConditions.includes('route_film') && n.openConditions.includes('week_min:15'));
+  const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'story_detail_n1_to_n17.json'), 'utf8'));
+  const env = new Function(gate + '\nreturn { STORY_GATE_3Y };')();
+  ok('N1 閘 N6F＝route_film＋W15＋needDone N5（同 N6 對稱）', env.STORY_GATE_3Y.N6F && env.STORY_GATE_3Y.N6F.route==='route_film' && env.STORY_GATE_3Y.N6F.weekMin===env.STORY_GATE_3Y.N6.weekMin && JSON.stringify(env.STORY_GATE_3Y.N6F.needDone)==='["N5"]');
+  const n = (pack.nodes||[]).find(x=>x.id==='N6F');
+  ok('N2 節點由 JSON 出：locId film_lion＋openConditions 對位', !!n && n.locId==='film_lion' && n.openConditions.includes('route_film') && n.openConditions.includes('week_min:15'));
   const ca = n.choices.find(c=>c.id==='N6F_a'), cb = n.choices.find(c=>c.id==='N6F_b');
   ok('N3 抉擇對稱 N6（接＝wealth 1／唔接＝零）', ca.effects.stats.wealth===1 && Object.keys(cb.effects.stats).length===0 && ca.effects.flags[0]==='flag_studio_follow' && cb.effects.flags[0]==='flag_studio_roam');
-  ok('N4 注入器存在', html.indexOf('function applyStoryBr89Nodes89(')>=0 && html.indexOf('applyStoryBr89Nodes89()')>=0);
-  ok('N5 進度頁有 N6F＋提示表有 N6F', html.indexOf('["N6F",20]')>=0 && html.indexOf('N6F: { playerHint:')>=0);
+  ok('N4 內嵌表＋注入器已刪（v20a250）', html.indexOf('const STORY_SPINE_NODES_BR89')<0 && html.indexOf('function applyStoryBr89Nodes89(')<0 && html.indexOf('applyStoryBr89Nodes89()')<0);
+  ok('N5 進度頁有 N6F＋JSON 節點有 playerHint（soft 表 N6F 條目已刪）', html.indexOf('["N6F",20]')>=0 && !!n.playerHint && html.indexOf('N6F: { playerHint:')<0);
   ok('N6 N5 nextHint 已改兩線並陳', html.indexOf('走電影線有「片場跟班」')>=0 && html.indexOf('行電視線先有；係處境劇班底')<0);
 }catch(e){ ok('C N6F 抽取/執行 ('+e.message+')', false); }
 

@@ -174,7 +174,8 @@ chk('B6 speaker alias kept+added', '"周刊編輯":"shadow_male","週刊編輯":
 # v20a75 改版：進階課已併入級別，舊 unlock 句『進階演技課開放咗』唔再存在——
 # 改驗 v75 升級提示句『升到二級』（措辭跟用戶拍板）。
 chk('B1 journal unlock wording', '手帳「訓練」開放了' in src and '升到${LEVELS75_NAMES' in src and '進階演技課開放咗' not in src)
-chk('B3 romance ladder wording', '（關係約到2）' in src)
+# v20a250：N18 標題改做用戶拍板短詞「將來」（CALIB60  fallback 表「上岸路」唔郁，另見 L35）。
+chk('B3 N5 開閘措辭（v250：舊「關係約到2」替代閘隨 P-01／D10 刪除，改驗新鎖文「約第36週起」）', '約第36週起' in src)
 chk('B3 /100 好感 kept', '點好感就開到「' in src)
 
 # ---- C-class vocabulary untouched (spot presence) ----

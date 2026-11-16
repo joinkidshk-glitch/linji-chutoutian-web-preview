@@ -58,8 +58,9 @@ def livefn_seg(s):
     i = s.find('function liveWeekGateStillActive(){')
     return s[i:i+600]
 ok('v249 LIVE tip：liveWeekGateStillActive() 回 false', 'return false;' in livefn_seg(src))
-ok('v249 GRANT229：N4 收窄到 N4_b、N18 收窄到 N18_a、N5:* 不動',
-   '"N4:N4_b":' in src and '"N18:N18_a":' in src and '"N5:*":' in src
+ok('v250 GRANT229：N4 收窄到 N4_b、N18 收窄到 N18_a、N5:* 已拆做 N5_a／b／c',
+   '"N4:N4_b":' in src and '"N18:N18_a":' in src and '"N5:*":' not in src
+   and '"N5:N5_a":' in src and '"N5:N5_b":' in src and '"N5:N5_c":' in src
    and '"N4:*":' not in src and '"N18:*":' not in src)
 ok('v249 E1：end95SpineDone 在位＋e1Qual95 用 spine95.done',
    'function end95SpineDone(st){' in src and 'leadMedia95.length >= 2 && spine95.done' in src)

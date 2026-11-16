@@ -21,7 +21,7 @@ def ok(name, cond):
 
 
 nodes = pack.get('nodes', [])
-ok('pack 有 19 個 nodes', len(nodes) == 19)  # v233 RW-2：N18／N19 新增（內嵌 WF1 表同步入 pack）
+ok('pack 有 20 個 nodes', len(nodes) == 20)  # v250：N6F 由內嵌 BR89 表搬入 JSON（19→20）
 ok('pack version 不變', pack.get('version') == '1.2.8')
 ok('nodes[0-4] 係 N1-N5', [n.get('id') for n in nodes[:5]] == ['N1', 'N2', 'N3', 'N4', 'N5'])
 
@@ -33,14 +33,14 @@ ok('nodes[0-4] 係 N1-N5', [n.get('id') for n in nodes[:5]] == ['N1', 'N2', 'N3'
 #      v20a235 結局唔畀玩家揀（N17 synopsis 六意向→走定留＋flags_written 刪三死旗；beats 一字未郁），sha 再重算） ---
 #      v20a244 RW-7 試讀修復（N5／N6／N15／N17／N18 synopsis 各改一句，僅文字；其餘一字未郁），sha 再重算） ---
 tail = json.dumps(nodes[5:], sort_keys=True, ensure_ascii=False)
-ok('nodes[5-16] 同 pristine 一致',
+ok('nodes[5:] 同 v250 一致（N6 新標題＋N6F 搬入＋N6 lockedHint）',
    hashlib.sha256(tail.encode('utf-8')).hexdigest()
-   == 'ca1eee316e6726a04a20b486e6c4f56df0f14352baaccea40f6eda666178c202')
+   == 'd84739897589394a75686820ce4f22a929d69040cf21d9457177d616703b47a1')
 
 # --- 標題／setting／synopsis 按設計 ---
-ok('標題 N1-N5 按設計（N5 用 TEXTFIX55 淨化形「辣手問題」；v221 書面語改寫：N1「冇價」→「無價」、N5「嘅」→「的」）',
+ok('標題 N1-N5 按設計（v250 新短詞標題：通告板／後巷／正中央／記數簿／筆記本）',
    [n.get('title') for n in nodes[:5]]
-   == ['第一日：無價', '後巷聽古', '高俊傑搶鏡', '何生攤記數簿', '周采兒的辣手問題'])
+   == ['通告板', '後巷', '正中央', '記數簿', '筆記本'])
 ok('setting 按設計',
    [n.get('setting') for n in nodes[:5]]
    == ['何生事務所', '片場後巷／附近茶餐廳', '星河片場廠景／休息角／茶水間',
@@ -93,8 +93,8 @@ GATES = {
            {'weekMin': 6, 'minDaysAfterPrev': 1, 'when': '1988春 / W6-8', 'prevMain': 'N2'}),
     'N4': (['N3', 'week_min:8', 'days_after_prev:1'],
            {'weekMin': 8, 'minDaysAfterPrev': 1, 'when': '1988春 / W8-9', 'prevMain': 'N3'}),
-    'N5': (['N4', 'week_min:9', 'days_after_prev:1'],
-           {'weekMin': 9, 'minDaysAfterPrev': 1, 'when': '1988秋 / W9-10', 'prevMain': 'N4'}),
+    'N5': (['N4', 'week_min:36', 'days_after_prev:1'],
+           {'weekMin': 36, 'minDaysAfterPrev': 1, 'when': '1988秋 / W36', 'prevMain': 'N4'}),
 }
 for n in nodes[1:5]:
     oc, pacing = GATES[n['id']]
@@ -111,7 +111,7 @@ EXPECTED = {
     'N2_a': (['flag_network_stay'], {}, ['片場老油條'], {'tag': '片場老油條', 'stressDelta': 1}),
     'N2_b': (['flag_hustle_board'], {}, ['電視城乖仔'], {'tag': '電視城乖仔', 'stressDelta': -1}),
     'N3_a': (['rival_gao_hard'], {}, [], {'creditDelta': -1, 'rivalAttitude': '高俊傑記仇，往後處處針對', 'stressDelta': 2}),
-    'N3_b': (['rival_gao_endure'], {}, [], {'creditDelta': 1, 'rivalAttitude': '高俊傑覺得你好蝦，變本加厲', 'stressDelta': 3}),
+    'N3_b': (['rival_gao_endure'], {}, [], {'creditDelta': 1, 'rivalAttitude': '高俊傑覺得他好欺負，變本加厲', 'stressDelta': 3}),  # v250：ripple 描述欄第二人稱「你好蝦」→第三人稱書面語「他好欺負」
     'N4_a': (['flag_refuse_gig_with_ho'], {}, [], {'debtDelta': 1, 'creditDelta': -1}),
     'N4_b': (['flag_take_harsh_gig'], {}, ['捱得'], {'tag': '捱得', 'stressDelta': 8, 'healthDelta': -5}),
     'N5_a': (['choi_honest'], {}, [], {'bondDepth': '坦誠加深', 'intelShare': '互相分享近況級', 'stressDelta': 1}),

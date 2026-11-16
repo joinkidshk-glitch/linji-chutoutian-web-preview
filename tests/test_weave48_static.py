@@ -48,7 +48,7 @@ for stale in ['賀歲搶位','緋聞公關真假','徐寶珊','聯姻','舊底�
 # ---- N6 對齊（JSON pack） ----
 c6blk = json.dumps(nodes.get('N6'), ensure_ascii=False)
 ok('pack N6 defined', nodes.get('N6') is not None)
-ok('N6 title 角落嗰張枱 + loc tvb_longmen（v157 新標題，舊「飯堂閒角」；v221 書面語改寫「角落那張桌子」）', nodes.get('N6', {}).get('title') == '角落那張桌子' and nodes.get('N6', {}).get('locId') == 'tvb_longmen')
+ok('N6 title 角落那張枱 + loc tvb_longmen（v250 新短詞標題，舊「角落那張桌子」）', nodes.get('N6', {}).get('title') == '角落那張枱' and nodes.get('N6', {}).get('locId') == 'tvb_longmen')
 ok('N6 flags canteen pair', 'flag_canteen_grind' in c6blk and 'flag_canteen_quit' in c6blk)
 ok('N6 no date flags / no rel stats', 'date_' not in c6blk and 'rel_' not in c6blk)
 
@@ -125,7 +125,7 @@ ok('N5 nextHint 兩線並陳（v89 BR89 有意改版：N1 film 支補返 N6F 片
 # ---- 閘不變（4-5 門檻；v20a113 例外：N12 補 needDone N11，見下） ----
 gm = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)
 gate = gm.group(1) if gm else ''
-for frag in ['N12: { needDone: ["N11"], tagAny:', 'creditGt: 42', 'fameGt: 50', 'dualGt: 125', 'N6:  { route: "route_tv", weekMin: 15 }']:
+for frag in ['N12: { needDone: ["N11"], tagAny:', 'creditGt: 42', 'fameGt: 50', 'dualGt: 125', 'N6:  { needDone: ["N5"], route: "route_tv", weekMin: 15 }']:
     ok('gate unchanged fragment: '+frag, frag in gate)
 
 # ---- 玩家面真名掃描（現有 QA 禁用表）＋新 block 禁字 ----

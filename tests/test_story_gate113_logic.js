@@ -133,6 +133,16 @@ function mkSave(dayIndex, doneIds){
   ok('週數 forensic：第 21 週 N18 done 必清（播出一定早過第 48 週）', scrub(s, GATE).join() === 'N18');
 }
 {
+  const s = mkSave(140, ['N1', 'N2', 'N3', 'N4', 'N6']); /* 第 21 週：v249 規則下 N6 第 15 週開、N5 要第 36 週先開，合法舊檔有 done.N6 而無 done.N5 */
+  ok('v250 祖父條款：舊檔 N6 done 無 N5 唔清走（needDone 新加，只管將來開閘）', scrub(s, GATE).length === 0 && !!s.story.done.N6);
+  const s2 = mkSave(140, ['N1', 'N2', 'N3', 'N4', 'N6F']);
+  ok('v250 祖父條款：舊檔 N6F done 無 N5 唔清走', scrub(s2, GATE).length === 0 && !!s2.story.done.N6F);
+  const s3 = mkSave(98, ['N1', 'N6']); /* 第 15 週：週數啱啱到下限但 N5 未做——祖父條款照保（weekMin 已達，淨 needDone 未齊） */
+  ok('v250 祖父條款：第 15 週 N6 done 照保', scrub(s3, GATE).length === 0 && !!s3.story.done.N6);
+  const s4 = mkSave(70, ['N1', 'N6']); /* 第 11 週：weekMin 15 未到，播出不可能，照清（祖父條款唔包週數違規） */
+  ok('v250 祖父條款唔包週數違規：第 11 週 N6 done 照清', scrub(s4, GATE).join() === 'N6' && !s4.story.done.N6);
+}
+{
   const s = mkSave(400, ['N8']); /* N8 無 N7 前置 */
   ok('N8 無 N7 前置：載入清走 N8', scrub(s, GATE).join() === 'N8');
   const s2 = mkSave(400, ['N12']); /* N12 無 N11 前置 */

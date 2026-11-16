@@ -16,7 +16,10 @@ ok('NOTES_V20A89 文件在位', os.path.exists(os.path.join(ROOT, 'NOTES_V20A89_
 ok('BR89 標記在位', 'v20a89 BR89' in html)
 ok('ripple 消費者在位', 'BR89：ripple 消費者' in html and 'debt_c4_ho_ripple' in html)
 ok('grants 條件派發在位', 'fx:"liu_decline"' in html and 'fx:"mak_accept"' in html)
-ok('N6F 節點＋閘＋注入器齊', 'STORY_SPINE_NODES_BR89' in html and 'N6F: { route: "route_film", weekMin: 15 }' in html and 'applyStoryBr89Nodes89' in html)
+ok('N6F 節點由 JSON 出＋閘有 needDone N5＋內嵌表／注入器已刪（v20a250）',
+   'N6F: { needDone: ["N5"], route: "route_film", weekMin: 15 }' in html
+   and 'const STORY_SPINE_NODES_BR89' not in html and 'function applyStoryBr89Nodes89' not in html
+   and any(n.get('id') == 'N6F' for n in json.load(open(os.path.join(ROOT, 'content', 'story_detail_n1_to_n17.json'), encoding='utf-8'))['nodes']))
 BR89_13 = [('1991_film_106', 'enc83_luk_patron'), ('1991_variety_108', 'enc84_pang_patron'),
   ('1992_rec_102', 'enc84_ching_patron'), ('1991_film_107', 'enc79_liu_priority'),
   ('1992_film_102', 'enc83_liu_patron'), ('1992_film_103', 'enc83_mak_patron'),
