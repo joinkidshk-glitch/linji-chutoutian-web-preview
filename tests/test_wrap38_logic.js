@@ -144,8 +144,8 @@ function noRepeatWithin(seq, w){
   const sb = psrSandbox();
   const build = sb.api.buildPostShootRewardPack;
   sb.api.augmentPostShootRewards35();
-  const NIGHT_STUDIO_HEAD = '深宵廠景煞科，新面孔企到尾';
-  const OUTDOOR_DAY_HEAD = '外景煞科，新人臨記跟足全程';
+  const NIGHT_STUDIO_HEAD = '深宵廠景煞科，新面孔留到散場';
+  const OUTDOOR_DAY_HEAD = '外景煞科，新人臨記全程跟貼';
 
   /* 碼頭日間外景（電視劇）：夜晚廠景卡永不出現 */
   let ferryBad = 0;

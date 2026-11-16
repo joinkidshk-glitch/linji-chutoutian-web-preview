@@ -133,11 +133,11 @@ chk('N3 closeModal 清 awd-sheet-on', 'awd-sheet-on' in slice_fn('closeModal'))
 m = re.search(r'const VENUE99_INVITE_DEK = \{(.*?)\};', src, re.S)
 dek = m.group(1) if m else ''
 chk('N4 影藝獎請柬用「一張席位信」',
-    'award_harbour_film: "影圈年獎將至，今屆喺金禧大酒店大禮堂舉行。你收到一張席位信' in dek)
+    'award_harbour_film: "影圈年獎將至，今屆於金禧大酒店大禮堂舉行。阿偉收到一張席位信' in dek)
 chk('N4 廣告獎請柬用「一張席位信」',
-    'award_harbour_ad: "廣告圈年賞將至，今屆喺金禧大酒店大禮堂舉行。你收到一張席位信' in dek)
+    'award_harbour_ad: "廣告圈年賞將至，今屆於金禧大酒店大禮堂舉行。阿偉收到一張席位信' in dek)
 chk('N4 「旁聽／入圍席位信」唔再出現', '旁聽／入圍席位信' not in src)
-chk('C4 音樂場寫法（v20a218 C-C1：金碟夜 6 月 1 日，「年終」打架→「年中」）', 'award_golddisc_music: "唱片年中有金碟夜，喺金禧大酒店大禮堂舉行。你收到一張席位信' in dek)
+chk('C4 音樂場寫法（v20a218 C-C1：金碟夜 6 月 1 日，「年終」打架→「年中」）', 'award_golddisc_music: "唱片年中有金碟夜，於金禧大酒店大禮堂舉行。阿偉收到一張席位信' in dek)
 
 # --- C5：地圖「中環廣告」標籤移離藍塔 ---
 chk('N5 中環廣告 left:51%', 'left:51%;top:calc(57% + 30px)">中環廣告' in src)

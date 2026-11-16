@@ -120,10 +120,10 @@ gigsub = seg('const TEXTFIX55_GIG_SUB = [', 'const TEXTFIX57_GIG_REQ')
 ok('T02_gigsub_rule', '["夜半靈異主題曲主唱", "夜半靈異"]' in gigsub)
 venue = seg('const VENUE99_INVITE_DEK = {', 'const VENUE99_NEWS_LINE')
 venue += seg('const VENUE99_NEWS_LINE = {', 'const venue99ApplyOverlay')
-ok('T03_venue99_clean', '邊個上台領獎' in venue and '陳偉翔嘅名第一次出現' in venue
+ok('T03_venue99_clean', '誰上台領獎' in venue and '陳偉翔的名字第一次出現' in venue
    and '掌聲未完' in venue and '碟市' not in strip_comments(venue) and '臨記席' not in strip_comments(venue))
 awd188 = strip_comments(seg('const AWARDS188_CATEGORIES = {', 'function awards188ApplyNpOverlay('))
-ok('T04_awards188_clean', '樂壇點樣叫人名' in awd188 and '樂壇仲有下一更' in awd188
+ok('T04_awards188_clean', '樂壇怎樣叫人的名字' in awd188 and '錄音室還有下一更' in awd188
    and '碟市' not in awd188 and '臨記席' not in awd188)
 pick = strip_comments(seg('function awardsPickPressNews(', 'function awardsMetricEchoLabel('))
 ok('T05_pick_clean', '觀禮席都有鏡頭掃過' in pick and '臨記席' not in pick)

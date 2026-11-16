@@ -1,7 +1,7 @@
 # v20a192 修 v188 設計 review B1＋N1–N4・static tests：
 # B1：AWARDS188_NP_WIN＋VENUE99_NP_DEK 生效文案零舊前提（8 款逐款掃描）；
 #     music_02 唔郁；nominee 模板唔入覆寫表。
-# C1：tv lead_m loseLine「還有」→「仲有」；全表 45 行再無「還有」。
+# C1（v240 改）：tv lead_m loseLine 用書面語「還有下一場」；「還有」只准出現喺 3 條 loseLine。舊「仲有」寫法隨語言規則（2026-11-15）退役。
 # N2：awards62GateLineHtml 音樂分支刪走（「未唱過歌」唔再出現）；電影／電視閘句在位。
 # N3：renderAwardResultHtml 用 focus 行先（awards63FocusCat＋移頭），其餘格維持
 #     v184 id 固定排序（awardsCatsSorted184 仲在位）。
@@ -50,7 +50,7 @@ def slice_const(name):
     return ''
 
 # --- 反證守衛：v192 標記唔在就乾淨 FAIL，唔好逐項誤判 ---
-NEED192 = ['阿偉憑實力跑出', '仲有下一場', '阿偉奪獎贏街坊票']
+NEED192 = ['陳偉翔憑實力跑出', '還有下一場', '陳偉翔奪獎贏街坊票']
 missing192 = [s for s in NEED192 if s not in src]
 if missing192:
     for m in missing192:
@@ -73,7 +73,7 @@ chk('B1：VENUE99 報紙 dek（film_02／ad_02）零舊前提',
 chk('B1：music_01 唔寫「新人」（headline＋dek 都唔可以有新人二字）',
     '新人奪獎' not in np_table and '新人' not in
     np_table[np_table.find('np_win_music_01'):np_table.find('np_win_music_02')])
-chk('B1：music_02 唯一乾淨款唔郁', '金碟夜 阿偉奪獎 樂壇多把靚聲' in np_table)
+chk('B1：music_02 唯一乾淨款唔郁', '金碟夜 陳偉翔奪獎 樂壇多把靚聲' in np_table)
 chk('B1：film_02／ad_02 dek 仲喺 VENUE99 嗰邊（奪得演員獎／奪得廣告獎）',
     '奪得演員獎' in venue_dek and '奪得廣告獎' in venue_dek)
 chk('B1：nominee 模板唔入覆寫表（np_nom_* 零出現）', 'np_nom_' not in np_table)
@@ -81,9 +81,10 @@ chk('B1：8 款 clipLabel 全部「・得獎」新名', np_table.count('・得�
 
 # --- N1 ---
 cat_table = slice_const('AWARDS188_CATEGORIES')
-chk('N1：cat_tv_lead_m loseLine 改「仲有下一場」',
-    '名單滑過你個名——入圍咗，未抱盃。仲有下一場。' in cat_table)
-chk('N1：全表 45 行再無書面語「還有」', '還有' not in cat_table)
+chk('N1：cat_tv_lead_m loseLine 書面語（v240：入圍了，未抱盃，還有下一場）',
+    '名單滑過阿偉的名字。入圍了，未抱盃，還有下一場。' in cat_table)
+chk('N1：書面語「還有」只出現喺 3 條 loseLine', cat_table.count('還有') == 3
+    and '錄音室還有下一更' in cat_table and '他還有下一場戲' in cat_table)
 
 # --- N2 ---
 gate_fn = slice_fn('awards62GateLineHtml')

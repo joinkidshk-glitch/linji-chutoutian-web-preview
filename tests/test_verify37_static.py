@@ -38,7 +38,7 @@ ok('item2b metrics single-draw (no double postShootPickTemplate for metrics)',
 # ---- item 2c：增補池冇具名作品 ----
 pool_seg = seg('const PSR_EXTRA_TEMPLATES_35', 'const _psrLastPick35')
 ok('item2c extra pool has no named work 夜班廠景', '夜班廠景' not in pool_seg)
-ok('item2c fixed card present (深宵廠景煞科)', '深宵廠景煞科，新面孔企到尾' in pool_seg)
+ok('item2c fixed card present (深宵廠景煞科)', '深宵廠景煞科，新面孔留到散場' in pool_seg)
 
 # ---- item 3：獲聘文案講明殺青後入帳（兩條路徑＋手帳頁） ----
 # v20a91 AUD91 改版註：試鏡改為「等公佈先揭曉」，兩條試鏡入口（doAudition／手帳 job:）

@@ -99,11 +99,11 @@ chk('殘留：非 gallery 分支唔再用「今晚獎項」做標籤',
 chk('唔郁：SAVE key', 'starVolunteer_map_v19w' in src)
 chk('唔郁：softRev s107', 'softRev:"s107"' in src)
 chk('唔郁：?v=v20a10', 'version:"v20a10"' in src)
-WIN8 = ['維港影藝獎揭曉 阿偉 奪演員獎', '影藝獎夜 阿偉奪獎成焦點',
-        '星河台慶夜 演員獎爆冷由阿偉奪得', '台慶夜 阿偉奪獎贏街坊票',
-        '星河金碟夜 阿偉奪獎跑出', '金碟夜 阿偉奪獎 樂壇多把靚聲',
-        '維港街招賞 阿偉跑出', '街外一鏡 阿偉奪獎贏掌聲']
-chk('唔郁：8 款贏獎報紙 headline 逐字不變（v192 已驗；模板用 {playerName} 代位）',
+WIN8 = ['維港影藝獎揭曉 阿偉 奪演員獎', '影藝獎夜 陳偉翔奪獎成焦點',
+        '星河台慶夜 演員獎爆冷由阿偉奪得', '台慶夜 陳偉翔奪獎贏街坊票',
+        '星河金碟夜 陳偉翔奪獎跑出', '金碟夜 陳偉翔奪獎 樂壇多把靚聲',
+        '維港街招賞 阿偉跑出', '街外一鏡 陳偉翔奪獎贏掌聲']
+chk('唔郁：8 款贏獎報紙 headline 逐字對版（v240：5 款改用全名陳偉翔；模板用 {playerName} 代位）',
     all((h in src) or (h.replace('阿偉', '{playerName}') in src) for h in WIN8))
 
 print('\nFAILED: %d' % len(fails) if fails else '\nALL PASS')

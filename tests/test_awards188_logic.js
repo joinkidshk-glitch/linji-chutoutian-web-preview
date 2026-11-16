@@ -200,7 +200,7 @@ ok('awardsMvpCategories 行覆寫表（film 4／music 3／tv 4／ad 4）',
   && awardsMvpCategories('award_harbour_ad').length === 4);
 ok('awardsStubCategory 行覆寫表（label／lines 由新表出）',
   awardsStubCategory('award_harbour_film','cat_film_lead_m').label === '最佳男主角'
-  && /影藝獎台上念到你個名/.test(awardsStubCategory('award_harbour_film','cat_film_lead_m').winLine));
+  && /影藝獎台上唱出阿偉的名字/.test(awardsStubCategory('award_harbour_film','cat_film_lead_m').winLine));
 
 /* ================= (2) 角色判定 ================= */
 function roleOf(gigId, year){

@@ -3,7 +3,7 @@
 //     三句對白／茶餐廳食面／臨記生涯／不殺之恩／一句收工了／綠葉／和音／合唱單曲／
 //     涼茶／跌低眼鏡／特別獎全部唔出；music_01 唔寫「新人」（會喺贏最佳男歌手嗰陣出）；
 //     music_02 唯一乾淨款唔郁；nominee 模板唔郁。
-// C1：cat_tv_lead_m loseLine「還有」→「仲有」，其餘 44 行唔含書面語「還有」。
+// C1（v240 改）：tv lead_m loseLine 用書面語「還有下一場」；「還有」只准出現喺 3 條 loseLine（singer_m／film lead_m／tv lead_m，跟 RW-4 stub 平行句）。舊「仲有」寫法隨語言規則（2026-11-15）退役。
 // N2：awards62GateLineHtml 音樂閘句刪走——music gallery 唔再出「嗰年未唱過歌」，
 //     跌返「坐觀禮席睇全場」；film／tv 版閘句逐字不變。
 // N3：renderAwardResultHtml 第一行跟舞台 focus（awards63FocusCat）——雙格 pack
@@ -42,7 +42,7 @@ function extractConst(name){
 }
 
 /* 反證守衛：v192 嘢唔存在嗰陣乾淨 FAIL（逐項列出），唔好等 extraction 喺頂層 throw 崩潰。 */
-const NEED192 = ['阿偉憑實力跑出', '仲有下一場', '阿偉奪獎贏街坊票', '（觀禮）'];
+const NEED192 = ['陳偉翔憑實力跑出', '還有下一場', '陳偉翔奪獎贏街坊票', '（觀禮）'];
 let missing192 = NEED192.filter(s => html.indexOf(s) < 0);
 if(missing192.length){
   missing192.forEach(m=>{ fails.push('反證：' + m + ' 唔存在'); console.log('FAIL 反證：' + m + ' 唔存在（pristine main 預期，v192 未入）'); });
@@ -83,13 +83,13 @@ const byId = {};
 npWinAfter.forEach(t => { byId[t.id] = t; });
 ok('B1：music_01 唔寫「新人」（贏最佳男歌手嗰陣唔可以係新人獎）',
   (byId.np_win_music_01.headline || '').indexOf('新人') < 0 && (byId.np_win_music_01.dek || '').indexOf('新人') < 0);
-ok('B1：music_02 唯一乾淨款唔郁', byId.np_win_music_02.headline === '金碟夜 阿偉奪獎 樂壇多把靚聲');
+ok('B1：music_02 頭條用全名陳偉翔（v240B 覆寫層重寫）', byId.np_win_music_02.headline === '金碟夜 陳偉翔奪獎 樂壇多把靚聲');
 ok('B1：film_01 dek 憑實力跑出（唔寫戲份）', (byId.np_win_film_01.dek || '').indexOf('憑實力跑出') >= 0);
-ok('B1：film_02 headline 奪獎成焦點（唔寫茶餐廳／封王）', byId.np_win_film_02.headline === '影藝獎夜 阿偉奪獎成焦點');
+ok('B1：film_02 headline 奪獎成焦點（唔寫茶餐廳／封王）', byId.np_win_film_02.headline === '影藝獎夜 陳偉翔奪獎成焦點');
 ok('B1：tv_01 dek 多謝台前幕後（唔寫不殺之恩）', (byId.np_win_tv_01.dek || '').indexOf('多謝台前幕後') >= 0);
-ok('B1：tv_02 headline／dek 通用（唔寫一句對白／綠葉）', byId.np_win_tv_02.headline === '台慶夜 阿偉奪獎贏街坊票');
+ok('B1：tv_02 headline／dek 通用（唔寫一句對白／綠葉）', byId.np_win_tv_02.headline === '台慶夜 陳偉翔奪獎贏街坊票');
 ok('B1：ad_01 dek 憑廣告突圍（唔寫具體產品）', (byId.np_win_ad_01.dek || '').indexOf('憑廣告突圍') >= 0);
-ok('B1：ad_02 headline 奪獎贏掌聲（唔寫跌低眼鏡）', byId.np_win_ad_02.headline === '街外一鏡 阿偉奪獎贏掌聲');
+ok('B1：ad_02 headline 奪獎贏掌聲（唔寫跌低眼鏡）', byId.np_win_ad_02.headline === '街外一鏡 陳偉翔奪獎贏掌聲');
 ok('B1：ad_02 dek 奪得廣告獎（VENUE99 嗰邊，唔寫特別獎／綠葉）', (byId.np_win_ad_02.dek || '').indexOf('奪得廣告獎') >= 0);
 ok('B1：film_02 dek 奪得演員獎（VENUE99 嗰邊，唔寫臨記生涯）', (byId.np_win_film_02.dek || '').indexOf('奪得演員獎') >= 0);
 ok('B1：4 款 nominee 模板唔郁（覆寫唔掂 nominee）',
@@ -100,8 +100,10 @@ ok('B1：8 款 clipLabel 全部新名唔郁',
 /* ---- C1：電視男主角 loseLine ---- */
 eval(extractConst('AWARDS188_CATEGORIES').replace('const AWARDS188_CATEGORIES =', 'var AWARDS188_CATEGORIES ='));
 const tvLead = (AWARDS188_CATEGORIES.award_singho_tv || []).find(c => c && c.id === 'cat_tv_lead_m') || {};
-ok('N1：cat_tv_lead_m loseLine「還有」→「仲有」',
-  tvLead.loseLine === '名單滑過你個名——入圍咗，未抱盃。仲有下一場。');
+ok('N1：cat_tv_lead_m loseLine 書面語（v240：入圍了，未抱盃，還有下一場）',
+  tvLead.loseLine === '名單滑過阿偉的名字。入圍了，未抱盃，還有下一場。');
+/* v240：書面語「還有」係啱嘅——只准出現喺 3 條 loseLine（跟 RW-4 stub 平行句：singer_m／film lead_m／tv lead_m）。
+   舊檢查 ban「還有」係 v192 粵語化要求，隨語言規則（2026-11-15 旁白書面語）退役。 */
 let stillShu = [];
 Object.keys(AWARDS188_CATEGORIES).forEach(k => {
   (AWARDS188_CATEGORIES[k] || []).forEach(c => {
@@ -110,7 +112,9 @@ Object.keys(AWARDS188_CATEGORIES).forEach(k => {
     });
   });
 });
-ok('N1：15 格 45 行文案再無書面語「還有」', stillShu.length === 0);
+ok('N1：書面語「還有」只出現喺 3 條 loseLine（singer_m／film lead_m／tv lead_m）',
+  stillShu.length === 3 && stillShu.indexOf('cat_music_singer_m:loseLine') >= 0
+  && stillShu.indexOf('cat_film_lead_m:loseLine') >= 0 && stillShu.indexOf('cat_tv_lead_m:loseLine') >= 0);
 if(stillShu.length) console.log('  still: ' + stillShu.join(' | '));
 
 /* ---- N2：閘句 ---- */
