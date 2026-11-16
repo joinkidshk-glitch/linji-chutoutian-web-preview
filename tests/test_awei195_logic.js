@@ -8,10 +8,11 @@
 //       (c) tier 3 跨年：3 部真男主角＋fame≥70 → 1992 照出 s3
 //       (d) 舊檔 backfill（normalizeSaveObj）：冇 playerTierMax、有 1991 lead 旗 →
 //           載入後寫 2；3 lead＋fame≥70 → 3；冪等（已有值唔郁）
-//       (e) 假男主角陷阱：gig_1990_film_107（label 男主角、roleScale film_support_small）
-//           完成旗 → tier 唔升（1，配角級，fame 5）
+//       (e) 假男主角陷阱（v252 新形）：label 男主角唔等於真男主角——新庫 7 個假 label 全部係 MTV
+//           （roleScale mtv，lead／support 兩邊都唔計）。gig_1990_rec_108《月夜影》MV 男主角完成旗 →
+//           tier 0（fame 5，乜都唔計）；舊樣本 film_107 而家係動作替身，唔再係假 label 案例。
 //       (f) 年庫未載入嗰陣唔寫錯值（留空）＋dlg106AweiStem 懶回填（packs 到齊先補 2）
-//       (g) 全池口徑：1990 年庫 normalize 後真男主角得 0 部、1991 年 5 部、1992 年 12 部
+//       (g) 全池口徑：1990 年庫 normalize 後真男主角得 0 部、1991 年 7 部、1992 年 7 部
 // 反證：喺 pristine main（f2a6b0c）index 上行，enc195BackfillTierMax 唔存在——
 //       本檔唔 crash，逐組印 FAIL 後 exit 1。
 // 用法：node tests/test_awei195_logic.js（AWEI195_DEBUG=1 印實際輸出）
@@ -115,15 +116,18 @@ if(DEBUG) console.log('lead92:', LEAD92.length, LEAD92.join(','));
 
 /* ---- (g) 全池口徑：新庫按年真男主角數 ---- */
 ok('(g) 1990 年庫 normalize 後真男主角得 0 部（臨記／初級年，第一部男主角要到 1991）', LEAD90.length === 0, 'n=' + LEAD90.length);
-ok('(g) 1991 年庫得 5 部真男主角', LEAD91.length === 5, 'n=' + LEAD91.length + ' ' + LEAD91.join(','));
-ok('(g) 1992 年庫得 12 部真男主角', LEAD92.length === 12, 'n=' + LEAD92.length);
-ok('(g) gig_1990_film_107 係假男主角（label 男主角、roleScale film_support_small）',
-  (() => { const g = gigsOfYear(1990).find(x => x.id === 'gig_1990_film_107');
+ok('(g) 1991 年庫得 7 部真男主角', LEAD91.length === 7, 'n=' + LEAD91.length + ' ' + LEAD91.join(','));
+ok('(g) 1992 年庫得 7 部真男主角', LEAD92.length === 7, 'n=' + LEAD92.length + ' ' + LEAD92.join(','));
+ok('(g) gig_1990_rec_108 係假男主角（label 男主角、roleScale mtv）',
+  (() => { const g = gigsOfYear(1990).find(x => x.id === 'gig_1990_rec_108');
     return g && /男主角/.test(String(g.roleLabel || '')) && !/lead/.test(String(g.roleScale || '')); })());
-ok('(g) gig_1991_film_109 係真男主角', LEAD91.indexOf('gig_1991_film_109') >= 0);
+ok('(g) gig_1990_film_107 而家係動作替身，唔再係假男主角 label 案例',
+  (() => { const g = gigsOfYear(1990).find(x => x.id === 'gig_1990_film_107');
+    return g && g.roleLabel === '動作替身' && g.roleScale === 'film_support_small'; })());
+ok('(g) gig_1991_film_102 係真男主角', LEAD91.indexOf('gig_1991_film_102') >= 0);
 
 /* ---- (a) 即時 tier 跨年跌（根因重現）＋最高紀錄頂住 ---- */
-let saveA = freshSave({ dayIndex: 400, fame: 30, flags: { done_gig_1991_film_109: 1 } });
+let saveA = freshSave({ dayIndex: 400, fame: 30, flags: { done_gig_1991_film_102: 1 } });
 setLive(saveA, 1991);
 ok('(a) 1991 年即時 tier 係 2（做完一部真男主角）', W.enc79PlayerTier() === 2);
 ok('(a) 1991 年 stem 係 awi_s2', W.dlg106AweiStem() === 'awi_s2');
@@ -135,7 +139,7 @@ setLive(saveA, 1990);
 ok('(a) 1990 年 stem 照係 awi_s2', W.dlg106AweiStem() === 'awi_s2');
 
 /* ---- (b) enc195RecordTierMax：殺青寫入點呼叫嘅 helper ---- */
-let saveB = freshSave({ fame: 30, flags: { done_gig_1991_film_109: 1 } });
+let saveB = freshSave({ fame: 30, flags: { done_gig_1991_film_102: 1 } });
 setLive(saveB, 1991);
 W.enc195RecordTierMax();
 ok('(b) 殺青 lead 後 playerTierMax=2', saveB.flags.playerTierMax === 2, 'v=' + saveB.flags.playerTierMax);
@@ -160,11 +164,11 @@ ok('(c) 1991 年 3 部 lead＋fame 70 → 即時 tier 3', W.enc79PlayerTier() ==
 W.enc195RecordTierMax();
 ok('(c) 殺青後 playerTierMax=3', saveC.flags.playerTierMax === 3);
 setLive(saveC, 1992);
-ok('(c) 1992 年即時 tier 跌返（當年庫 12 部 lead、全部未做）', W.enc79PlayerTier() < 3, 'live=' + W.enc79PlayerTier());
+ok('(c) 1992 年即時 tier 跌返（當年庫 7 部 lead、全部未做）', W.enc79PlayerTier() < 3, 'live=' + W.enc79PlayerTier());
 ok('(c) 1992 年 stem 照係 awi_s3', W.dlg106AweiStem() === 'awi_s3');
 
 /* ---- (d) 舊檔 backfill：經 normalizeSaveObj 載入 ---- */
-let oldD = freshSave({ dayIndex: 500, fame: 30, flags: { done_gig_1991_film_109: 1 } });
+let oldD = freshSave({ dayIndex: 500, fame: 30, flags: { done_gig_1991_film_102: 1 } });
 delete oldD.flags.playerTierMax;
 const backD = W.normalizeSaveObj(oldD);
 ok('(d) 舊檔（1991 lead、1992 年）載入後 playerTierMax=2', backD.flags.playerTierMax === 2, 'v=' + backD.flags.playerTierMax);
@@ -181,13 +185,13 @@ const backD0 = W.normalizeSaveObj(oldD0);
 ok('(d) 未做過主角嘅舊檔回填 0', backD0.flags.playerTierMax === 0, 'v=' + backD0.flags.playerTierMax);
 
 /* ---- (e) 假男主角陷阱：label 男主角、roleScale 係 support → 唔會計 lead、唔會上 s2 ---- */
-// 註：gig_1990_film_107 係 film_support_small，support 計 tier 1（s1 臨記樣，
-// 同 tier 0 同一個 stem）；關鍵係唔會誤升做 tier 2／s2。
-let saveE = freshSave({ dayIndex: 500, fame: 5, flags: { done_gig_1990_film_107: 1 } });
+// 註：gig_1990_rec_108 係 mtv，lead／support 兩邊都唔計（tier 0，s1 臨記樣，
+// 同 tier 1 同一個 stem）；關鍵係唔會誤升做 tier 2／s2。
+let saveE = freshSave({ dayIndex: 500, fame: 5, flags: { done_gig_1990_rec_108: 1 } });
 const backE = W.normalizeSaveObj(saveE);
-ok('(e) 淨做 gig_1990_film_107（假男主角）→ backfill 1（配角級，唔係 2）', backE.flags.playerTierMax === 1, 'v=' + backE.flags.playerTierMax);
+ok('(e) 淨做 gig_1990_rec_108（假男主角）→ backfill 0（乜都唔計，唔係 2）', backE.flags.playerTierMax === 0, 'v=' + backE.flags.playerTierMax);
 setLive(saveE, 1990);
-ok('(e) 假男主角即時 tier 都係 1（1990 年庫入面都唔計 lead）', W.enc79PlayerTier() === 1);
+ok('(e) 假男主角即時 tier 都係 0（1990 年庫入面都唔計 lead）', W.enc79PlayerTier() === 0);
 ok('(e) 假男主角 stem 係 awi（s1，唔會變 s2）', W.dlg106AweiStem() === 'awi');
 let saveE2 = freshSave({ fame: 5, flags: { done_gig_1990_film_107: 1, done_gig_1990_film_101: 1, done_gig_1992_rec_103: 1 } });
 const backE2 = W.normalizeSaveObj(saveE2);
@@ -196,8 +200,8 @@ ok('(e) 假男主角＋配角＋MTV 男主角 label 一齊都係 1（仲係配�
 /* ---- (f) 年庫未齊唔寫錯值＋懶回填 ---- */
 W.setWIRE({ gigsByYear: { 1990: null, 1991: null, 1992: null } });
 ok('(f) 年庫未載入嗰陣 enc195TierFromAllYears 回 null（唔估）',
-  W.enc195TierFromAllYears({ done_gig_1991_film_109: 1 }, 30) === null);
-let saveF = freshSave({ dayIndex: 500, fame: 30, flags: { done_gig_1991_film_109: 1 } });
+  W.enc195TierFromAllYears({ done_gig_1991_film_102: 1 }, 30) === null);
+let saveF = freshSave({ dayIndex: 500, fame: 30, flags: { done_gig_1991_film_102: 1 } });
 const backF = W.normalizeSaveObj(saveF);
 ok('(f) 年庫未齊嗰陣 backfill 留空（唔寫 0）', backF.flags.playerTierMax === undefined, 'v=' + backF.flags.playerTierMax);
 wirePacks(); //  packs 到齊（實機：boot 完成先讀檔／先播對話）

@@ -36,9 +36,9 @@ eval(extractConstVar('GRANT229_CHOICE'));
 const keys = Object.keys(GRANT229_CHOICE);
 ok('GRANT229 34 鍵', keys.length === 34, keys.length);
 ok('GRANT229 無 wildcard', !keys.some(k => k.endsWith(':*')));
-ok('GRANT229 全部 gigId 喺 267 張庫入面', keys.every(k => !!gigById(GRANT229_CHOICE[k].gigId)), keys.filter(k => !gigById(GRANT229_CHOICE[k].gigId)).join(','));
-ok('GRANT229 N9_a 重用 107', GRANT229_CHOICE['N9:N9_a'].gigId === 'gig_1991_film_107');
-ok('GRANT229 N5_a／N5_b 共享 tv_130', GRANT229_CHOICE['N5:N5_a'].gigId === 'gig_1990_tv_130' && GRANT229_CHOICE['N5:N5_b'].gigId === 'gig_1990_tv_130');
+ok('GRANT229 全部 gigId 喺 269 張庫入面', keys.every(k => !!gigById(GRANT229_CHOICE[k].gigId)), keys.filter(k => !gigById(GRANT229_CHOICE[k].gigId)).join(','));
+ok('GRANT229 N9_a 重用 103（廖炳星引薦 gig，舊 107）', GRANT229_CHOICE['N9:N9_a'].gigId === 'gig_1991_film_103');
+ok('GRANT229 N5_a／N5_b 共享 tv_205', GRANT229_CHOICE['N5:N5_a'].gigId === 'gig_1990_tv_205' && GRANT229_CHOICE['N5:N5_b'].gigId === 'gig_1990_tv_205');
 ok('GRANT229 17 個新 reason 全部非空（何生傳呼口吻）', ['N7:N7_a','N7:N7_b','N7:N7_c','N8:N8_a','N8:N8_b','N8:N8_c','N9:N9_a','N9:N9_b','N10:N10_a','N10:N10_b','N10:N10_c','N11:N11_a','N11:N11_b','N12:N12_a','N12:N12_b','N19:N19_a','N19:N19_b'].every(k => (GRANT229_CHOICE[k].reason || '').length > 10));
 
 /* ---------- 2. 三筆債權 trigger gig 板面開關 ---------- */
@@ -51,7 +51,7 @@ eval(extractFn('triggerGigOn'));
 function freshSCredits(ids) {
   S = { dayIndex: 500, flags: {}, mockCredits: ids.map(id => ({ id, debtor: 'x', title: 'x', line: 'x', status: '未收' })) };
 }
-const CRED_GIGS = { credit_c7_rain: 'gig_1991_tv_120', credit_c9_crew: 'gig_1991_film_108', credit_c15_stunt: 'gig_1992_film_113' };
+const CRED_GIGS = { credit_c7_rain: 'gig_1991_tv_204', credit_c9_crew: 'gig_1991_film_108', credit_c15_stunt: 'gig_1992_film_203' };
 for (const [cid, gid] of Object.entries(CRED_GIGS)) {
   freshSCredits([cid]);
   ok(`trigger ${gid} 持 ${cid} → 上板`, triggerGigOn(gigById(gid)) === true);
@@ -114,11 +114,16 @@ ok('settle：flag_stunt_double → credit_c15_stunt 入帳', S.mockCredits.some(
 var BR89_GIGS = [];
 eval(extractFn('br89OnGigComplete'));
 S = { flags: {}, mockCredits: [{ id: 'credit_c7_rain', debtor: 'x', title: 'x', line: 'x', status: '未收' }] };
-br89OnGigComplete('gig_1991_tv_120');
+br89OnGigComplete('gig_1991_tv_204');
 ok('殺青鉤：通用 credit gig 唔設 redeemedBy（現況缺口，見報告 §3）', !S.mockCredits[0].redeemedBy);
+S.mockCredits = [{ id: 'credit_enc83_mak_patron', debtor: 'x', title: 'x', line: 'x', status: '未收' }];
+br89OnGigComplete('gig_1992_film_103');
+ok('殺青鉤：BR89 映射內 gig（film_103／1992）殺青 → redeemedBy 有標記', S.mockCredits[0].redeemedBy === 'gig_1992_film_103');
+/* v252 缺口：新庫廖引薦 gig（film_103／1991，N9_a 重用）唔喺 BR89 映射入面，殺青鉤唔會標記 credit_enc79_liu_priority
+   做已兌現——映射漂移嘅後果，見 trigger 測試 T8＋報告；修復要改 index.html 映射。 */
 S.mockCredits = [{ id: 'credit_enc79_liu_priority', debtor: 'x', title: 'x', line: 'x', status: '未收' }];
-br89OnGigComplete('gig_1991_film_107');
-ok('殺青鉤：BR89 107 殺青 → redeemedBy 有標記', S.mockCredits[0].redeemedBy === 'gig_1991_film_107');
+br89OnGigComplete('gig_1991_film_103');
+ok('殺青鉤：新庫廖引薦 gig（film_103／1991）唔喺映射 → 唔標記（缺口已釘）', !S.mockCredits[0].redeemedBy);
 
 /* ---------- 5. GATE 表靜態對照（D8 附錄 K4） ---------- */
 eval(extractConstVar('STORY_GATE_3Y'));

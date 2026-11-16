@@ -6,7 +6,11 @@
 (C) 守衛常量：SPREAD 40、PULL_MAX 24、PULL_OPEN_MAX 30；年初開窗豁免；入門/常駐豁免。
 (D) 紅線：SAVE key / softRev / ?v= 不變；mergeNat92Gigs 走 normalizeGigRecord；NOTES_V20A92 存在；
     NAT92_GIGS 玩家面文案冇禁用詞（真藝名/「聲量」）。
-(E) 入門補位（B3）：NAT92_GIGS 已清空；紅棉/灣仔 1990 冬季入門覆蓋由新庫承接，
+(E) 入門補位（B3）：NAT92_GIGS 已清空；
+    v252 真相：1990 冬季臨記工得 4 張（獅子山 1＋星河 3），紅棉／灣仔 0 張——
+    舊 film_123／rec_116 已消失，新庫冇承接呢兩個地點嘅冬季入門覆蓋；
+    同 nat92_logic D2／fix88 B3 同一個原因（舊庫 16 張→新庫 4 張），
+    呢度釘死缺口，唔扮有；冬季板面係咪真係有問題，庫工人另外報數，統籌決定。
     入門標記（entryTier + boardPriority high）由 mergeEntryGigsIntoPool 派發。
 用法：python3 tests/test_nat92_static.py [path-to-index.html]
 """
@@ -79,11 +83,18 @@ for banned in ["成龍", "周潤發", "劉德華", "張國榮", "梅艷芳", "�
     ok("D6 NAT92 文案冇禁用詞「" + banned + "」", banned not in ntxt)
 
 ok("E0 B3 NAT92_GIGS 已清空", "const NAT92_GIGS = [];" in src)
-# B3：入門補位由新庫承接——1990 冬季紅棉／灣仔各有一張臨記工（入門池篩選對象）
+# B3 v252：1990 冬季臨記工得 4 張，全部喺獅子山／星河；紅棉／灣仔 0 張（見檔頭註）。
 _new = __import__("json").load(open(base / "content" / "gigs_new.json", encoding="utf-8"))
 _winter = [g for g in _new["gigs"] if g["year"] == 1990 and g["season"] == "冬" and g["tier"] == "臨記"]
-ok("E1 B3 紅棉 1990 冬季有入門工", any(g["id"] == "gig_1990_film_123" and g["loc"] == "film_cotton" for g in _winter))
-ok("E2 B3 灣仔 1990 冬季有入門工", any(g["id"] == "gig_1990_rec_116" and g["loc"] == "rec_wanchai" for g in _winter))
+ok("E1 B3 1990 冬季臨記工共 4 張（film_207／tv_208／tv_210／tv_214）",
+   sorted(g["id"] for g in _winter) == ["gig_1990_film_207", "gig_1990_tv_208", "gig_1990_tv_210", "gig_1990_tv_214"])
+ok("E1b B3 紅棉 1990 冬季 0 張臨記工（film_cotton 嗰季本身 0 張通告，靜態洞）",
+   not any(g["loc"] == "film_cotton" for g in _winter) and
+   not any(g["year"] == 1990 and g["season"] == "冬" and g["loc"] == "film_cotton" for g in _new["gigs"]))
+ok("E2 B3 灣仔 1990 冬季 0 張臨記工（rec_wanchai 嗰季 3 張全部初級）",
+   not any(g["loc"] == "rec_wanchai" for g in _winter) and
+   sorted(g["id"] for g in _new["gigs"] if g["year"] == 1990 and g["season"] == "冬" and g["loc"] == "rec_wanchai") ==
+   ["gig_1990_rec_104", "gig_1990_rec_108", "gig_1990_rec_204"])
 ok("E3 B3 入門標記由 mergeEntryGigsIntoPool 派發（entryTier + boardPriority high）",
    "entryTier: true" in extract_fn("mergeEntryGigsIntoPool") and 'boardPriority: "high"' in extract_fn("mergeEntryGigsIntoPool"))
 

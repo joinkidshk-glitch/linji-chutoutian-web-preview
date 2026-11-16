@@ -7,8 +7,8 @@
 //       窗首＝季首−60 日＝1990-07-03（含）可見、1990-07-02 隱；季尾 1990-11-30 可見、1990-12-01 隱
 //   S2 gigSeasonHidden88：當季唔藏；錯季未入窗藏；錯季入提早窗唔藏
 //   S3 nat92PostIntervals 錨定顯示年：1990 春 gig_1990_film_102 開局已上板（off＝0、post＝0）；
-//       1990 冬 gig_1990_film_101 有兩個 interval；1991 秋 gig_1991_film_104 interval 落喺 1991 年
-//       dayIndex 365–729，唔係 YEARS66＋2 移後兩年
+//       1990 冬 gig_1990_film_101 有兩個 interval；1991 秋 gig_1991_film_101 interval 落喺 1991 年
+//       dayIndex 365–729，唔係 YEARS66＋2 移後兩年（v252：舊 film_104《半張船票》已改做夏季）
 //   S4 gigBoardPosted92 真函數（S.dayIndex）：秋 gig post 前一日 false、post 當日 true、last 之後 false；
 //       冬 gig 兩窗之間（day 300）false、第二窗 post 當日 true
 //   S5 全庫掃描 241 張：全部 nat92StaggerEligible；每張喺自己年份內至少有一日上板（唔會永久隱藏）；
@@ -75,7 +75,7 @@ try{
 const autumn90 = gigById('gig_1990_film_106'); /* 1990 秋 */
 const winter90 = gigById('gig_1990_film_101'); /* 1990 冬 */
 const spring90 = gigById('gig_1990_film_102'); /* 1990 春 */
-const autumn91 = gigById('gig_1991_film_104'); /* 1991 秋 */
+const autumn91 = gigById('gig_1991_film_101'); /* 1991 秋《江河歲月》 */
 ok('S 樣本 gig 齊（秋90／冬90／春90／秋91）', !!(autumn90 && winter90 && spring90 && autumn91));
 
 /* ---------- S1：提早窗邊界（秋 1990：季首 1990-09-01，窗首＝季首−60 日＝1990-07-03） ---------- */

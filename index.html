@@ -15400,7 +15400,8 @@ const POSTER59_STAR_IDS = {
   "麥震東": "mak_zhendong", "魏詠男": "ngai_wingnaam", "鍾楚凝": "chung_choning",
   "蘇芷茵": "so_jiyan", "駱家聲": "lok_gasing", "顧明輝": "gu_mingfai",
   "葉敏芝": "yip_manji", "藍若曦": "lan_ruoxi", "沈映雪": "shum_yingsuet",
-  "江詩盈": "kong_siying", "彭少祺": null
+  "江詩盈": "kong_siying", "彭少祺": "pang_siuki",
+  "胡美琳": "wu_meilam", "韓秀婷": "hon_sauting"
 };
 function poster59Path(gigId){
   /* v20a229 B3：舊海報（POSTER59_DATA／POSTER85_IDS）已刪；新庫 posterBrief 出圖另開批（D-12）。
@@ -15490,6 +15491,7 @@ function worksWallEntries59(){
       year: work59YearOf(h, g),
       type: (g && g.type) || h.type || "",
       leadStar: leadStar59Of(g || { id: h.gigId, leadStar: h.leadStar }),
+      castLine: (typeof work59CastLineOf === "function") ? work59CastLineOf(g, h) : "",
       poster: poster59Path(h.gigId)
     });
   });
@@ -15500,7 +15502,10 @@ function workCard59Html(e){
   const media = e.poster
     ? ('<div class="work-media59">' + cssCard + '<img class="work-poster59" src="' + e.poster + '" alt="《' + esc59(e.work) + '》作品圖" loading="lazy" onerror="this.remove()"/></div>')
     : ('<div class="work-media59">' + cssCard + '</div>');
-  const star = e.leadStar ? ('<div class="work-meta59">主演：' + esc59(e.leadStar) + '</div>') : "";
+  /* v20a252 CAST252：作品牆「主演」行改陣容行（SPEC §2.3）：有 castLine（新庫 cast／singer／host）
+     出陣容行；無新欄位（舊庫／舊檔）跌返舊制 leadStar59Of 行，唔壞舊檔。 */
+  const star = e.castLine ? ('<div class="work-meta59">' + esc59(e.castLine) + '</div>')
+    : (e.leadStar ? ('<div class="work-meta59">主演：' + esc59(e.leadStar) + '</div>') : "");
   const yr = e.year ? (e.year + " 年") : "";
   const meta2 = [yr, e.role ? ("阿偉：" + e.role) : ""].filter(Boolean).join(" · ");
   return '<div class="work-card59">' + media + '<div class="work-name59">《' + esc59(e.work) + '》</div>' + star
@@ -18140,6 +18145,163 @@ function gigIssuerFigure30v2(g){
   }catch(_e){}
   return { src:"assets/story/fullbody/ho_sang_base.webp?v=20a106", name:"何生", org:"何生事務所", role:"你的經理人" };
 }
+/* ===== v20a252 CAST252：通告詳情頁按類型分流＋作品牆陣容行（SPEC-v2 §6.2／§2.3，D-v2-6／D-v2-3）=====
+   新庫欄位（cast／product／singer／host／guests／segments）由呢度讀；舊庫 gig 無呢啲欄位
+   嗰陣一律唔顯示、唔爆錯。玩家嗰格一律標「應徵中」；null 唔係玩家格嗰陣係「從缺」。
+   星名對照自帶全表（唔依賴 POSTER59_STAR_IDS，A1 工人改名冊表嗰陣呢度唔使跟住改）。
+   唱片注意：新庫 singer 逢玩家做主唱都照填監製星（gig_1990_rec_107 等 9 張），
+   SPEC §6.2／§2.3 寫明唱片行出 singer 名，呢度跟 SPEC，唔擅自改做「應徵中」。 */
+const CAST252_STAR_NAMES = {
+  luk_baakyin:"陸柏言", so_jiyan:"蘇芷茵", mak_zhendong:"麥震東", liu_bingxing:"廖炳星",
+  chung_choning:"鍾楚凝", lok_gasing:"駱家聲", chai_zanhoi:"齊鎮海", ngai_wingnaam:"魏詠男",
+  gu_mingfai:"顧明輝", yip_manji:"葉敏芝", ching_tinlok:"程天諾", pang_siuki:"彭少祺",
+  kong_siying:"江詩盈", lan_ruoxi:"藍若曦", shum_yingsuet:"沈映雪",
+  wu_meilam:"胡美琳", hon_sauting:"韓秀婷"
+};
+function starName252Of(id){
+  if(id == null) return "";
+  return CAST252_STAR_NAMES[String(id)] || "";
+}
+function gigPlayerCastSlot252(g){
+  /* 玩家喺四角佔邊格：由 roleLabel 推導（SPEC §2.2），唔靠「邊格係 null」——null 亦可以係
+     從缺（F 產品男主角格、N3 爭位格、全女班例外）。只認作品類電影／電視／廣告；臨記／補拍唔佔格。 */
+  if(!g || g.category !== "作品") return null;
+  const t = (typeof gigGenreLabel === "function") ? gigGenreLabel(g) : (g.type || "");
+  if(t !== "電影" && t !== "電視劇" && t !== "廣告") return null;
+  const rl = String(g.roleLabel || "").trim();
+  if(rl){
+    if(rl.indexOf("主角") >= 0) return "leadM";
+    if(rl.indexOf("配角") >= 0) return "supportM";
+    return null;
+  }
+  /* roleLabel 缺失先至用 roleScale 兜底（只認主角／主要配角兩檔，客串唔佔格）。 */
+  const rs = String(g.roleScale || "");
+  if(rs === "film_lead_big" || rs === "tv_lead_long") return "leadM";
+  if(rs === "film_support_main" || rs === "tv_support_main") return "supportM";
+  return null;
+}
+function gigCastSlotValue252(g, slot){
+  /* 一格嘅顯示值：有星出星名；null 係玩家格出「應徵中」；null 唔係玩家格出「從缺」；
+     星 id 認唔到回 ""（呼叫方成行隱藏）。 */
+  const c = (g && g.cast && typeof g.cast === "object") ? g.cast : null;
+  if(!c || !(slot in c)) return "";
+  const v = c[slot];
+  if(v != null && String(v) !== "") return starName252Of(v);
+  if(gigPlayerCastSlot252(g) === slot) return "應徵中";
+  return "從缺";
+}
+function gigCastDetailRows252(g){
+  /* 詳情頁按類型分流（SPEC §6.2）：電影／電視四角、廣告代言＋產品＋適合性別、
+     唱片主唱＋歌曲類型＋形式、綜藝主持＋嘉賓＋環節；臨記唔顯示陣容；補拍只顯示原製作名。
+     唔相關欄位留 null 且永不渲染；無新欄位（舊庫）回 ""，唔爆錯。 */
+  if(!g || typeof g !== "object") return "";
+  const esc = (typeof esc59 === "function") ? esc59 : function(s){ return String(s == null ? "" : s); };
+  const row = function(k, v){
+    if(v == null || String(v) === "") return "";
+    return '<div class="cn-sum-row"><span class="k">' + k + '</span><span class="v">' + esc(v) + '</span></div>';
+  };
+  const cat = g.category || "";
+  const t = (typeof gigGenreLabel === "function") ? gigGenreLabel(g) : (g.type || "");
+  if(cat === "補拍通告"){
+    return row("原製作", g.workTitle ? ("《" + String(g.workTitle) + "》") : "");
+  }
+  if(cat !== "作品") return ""; /* 臨記通告（§6.3）／舊庫未分類：一律唔顯示陣容。 */
+  if(t === "電影" || t === "電視劇"){
+    if(!g.cast || typeof g.cast !== "object") return "";
+    const slots = [["男主角", "leadM"], ["女主角", "leadF"], ["男配角", "supportM"], ["女配角", "supportF"]];
+    let rows = "";
+    slots.forEach(function(pair){ rows += row(pair[0], gigCastSlotValue252(g, pair[1])); });
+    if(!rows) return "";
+    return '<div class="cn-lab">已公布陣容</div>' + rows;
+  }
+  if(t === "廣告"){
+    const c = (g.cast && typeof g.cast === "object") ? g.cast : null;
+    let lead = "";
+    if(c){
+      if(c.leadM != null && String(c.leadM) !== "") lead = starName252Of(c.leadM);
+      else if(c.leadF != null && String(c.leadF) !== "") lead = starName252Of(c.leadF);
+      else if(gigPlayerCastSlot252(g) === "leadM") lead = "應徵中";
+    }
+    let out = row("代言人", lead);
+    const prod = [g.product ? String(g.product) : "", g.productKind ? ("（" + String(g.productKind) + "）") : "", g.brand ? String(g.brand) : ""].filter(Boolean).join(" · ");
+    out += row("產品", prod);
+    const pg = String(g.productGender || "").toUpperCase();
+    out += row("適合性別", pg === "M" ? "男" : pg === "F" ? "女" : pg === "N" ? "中性" : "");
+    if(!out) return "";
+    return '<div class="cn-lab">代言資料</div>' + out;
+  }
+  if(t === "唱片通告"){
+    let singer = "";
+    if(g.singer != null && String(g.singer) !== "") singer = starName252Of(g.singer);
+    else if(String(g.roleLabel || "").indexOf("主唱") >= 0) singer = "應徵中";
+    const sg = String(g.singerGender || "").toUpperCase();
+    if(singer && (sg === "M" || sg === "F")) singer += (sg === "M" ? "（男）" : "（女）");
+    let out = row("主唱歌手", singer);
+    out += row("歌曲類型", g.songType ? String(g.songType) : "");
+    out += row("形式", g.format ? String(g.format) : "");
+    if(!out) return "";
+    return '<div class="cn-lab">唱片資料</div>' + out;
+  }
+  if(t === "綜藝"){
+    let host = "";
+    if(g.host != null && String(g.host) !== "") host = starName252Of(g.host);
+    else if(g.host == null && String(g.roleLabel || "").indexOf("主持") >= 0) host = "應徵中";
+    let out = row("主持", host);
+    const guests = Array.isArray(g.guests) ? g.guests.map(starName252Of).filter(Boolean) : [];
+    out += row("嘉賓陣容", guests.length ? guests.join("、") : "");
+    const segs = Array.isArray(g.segments) ? g.segments.map(function(s){ return String(s); }).filter(Boolean) : [];
+    out += row("環節", segs.length ? segs.join("、") : "");
+    if(!out) return "";
+    return '<div class="cn-lab">節目資料</div>' + out;
+  }
+  return "";
+}
+function work59CastLineOf(g, h){
+  /* 作品牆／履歷陣容行（SPEC §2.3）：電影／電視「主演：leadM 名或阿偉、leadF 名」；
+     廣告「代言：lead 名」；唱片「主唱：singer 名」；綜藝「主持：host 名」。
+     玩家嗰格（null＋roleLabel 對得上）顯示「阿偉」；從缺嗰格唔出。無新欄位回 ""，
+     呼叫方跌返舊制 leadStar59Of 行（舊檔相容）。 */
+  if(!g || typeof g !== "object") return "";
+  const roleLabel = String((h && h.roleLabel) || g.roleLabel || "");
+  const t = (typeof gigGenreLabel === "function") ? gigGenreLabel(g) : (g.type || "");
+  const hasCast = !!(g.cast && typeof g.cast === "object");
+  if(t === "電影" || t === "電視劇"){
+    if(!hasCast) return "";
+    const names = [];
+    if(g.cast.leadM != null && String(g.cast.leadM) !== ""){
+      const n = starName252Of(g.cast.leadM); if(n) names.push(n);
+    } else if(roleLabel.indexOf("男主角") >= 0){
+      names.push("阿偉");
+    }
+    if(g.cast.leadF != null && String(g.cast.leadF) !== ""){
+      const n = starName252Of(g.cast.leadF); if(n) names.push(n);
+    }
+    return names.length ? ("主演：" + names.join("、")) : "";
+  }
+  if(t === "廣告"){
+    if(!hasCast) return "";
+    let lead = "";
+    if(g.cast.leadM != null && String(g.cast.leadM) !== "") lead = starName252Of(g.cast.leadM);
+    else if(g.cast.leadF != null && String(g.cast.leadF) !== "") lead = starName252Of(g.cast.leadF);
+    else if(roleLabel.indexOf("主角") >= 0) lead = "阿偉";
+    return lead ? ("代言：" + lead) : "";
+  }
+  if(t === "唱片通告"){
+    if(g.singer != null && String(g.singer) !== ""){
+      const n = starName252Of(g.singer); return n ? ("主唱：" + n) : "";
+    }
+    if(("singer" in g) && roleLabel.indexOf("主唱") >= 0) return "主唱：阿偉";
+    return "";
+  }
+  if(t === "綜藝"){
+    if(g.host != null && String(g.host) !== ""){
+      const n = starName252Of(g.host); return n ? ("主持：" + n) : "";
+    }
+    if(("host" in g) && roleLabel.indexOf("主持") >= 0) return "主持：阿偉";
+    return "";
+  }
+  return "";
+}
 function castingNoticeDetailHtml(g){
   /* v19f PLAN_GIG_MV3_ALIGN_v1 Phase B label nits；類型 lab＋角色職位；limits 空隱藏；內容等劇本 HANDOFF */
   const work=gigWorkTitle(g);
@@ -18164,7 +18326,8 @@ function castingNoticeDetailHtml(g){
   const breachRow108=(()=>{ try{ return (typeof gigBreachFee==="function" && gigBreachFee(g)!=null) ? `<div class="cn-sum-row"><span class="k">違約金</span><span class="v">${breachStr}</span></div>` : ""; }catch(_e){ return ""; } })();
   /* v20a117 S-30 DEDUP117：condParts（詳細區「條件」表）隨詳細區刪除——同摘要區
      要求格（reqGridHtml，現／要對照）同一組數，只係冇現值，純重複。 */
-  const syn = g.synopsis ? String(g.synopsis) : "（劇組未附劇情簡介）";
+  /* v20a252 CAST252：簡介按 §6.2——臨記通告顯示 blurb（散工簡介），其餘顯示 synopsis。 */
+  const syn = (g.category === "臨記通告" && g.blurb) ? String(g.blurb) : (g.synopsis ? String(g.synopsis) : "（劇組未附劇情簡介）");
   /* S-30v2：發出人英雄區＋星級／職位合併行＋要求格。數值／機制零改動；現值讀 S，同已刪詳細區舊 condParts 一樣。 */
   const issuer30v2 = gigIssuerFigure30v2(g);
   const heroHtml30v2 = `<div class="cn-issuer30v2" role="img" aria-label="${issuer30v2.name} · ${issuer30v2.org}"><img class="cn-issuer-img30v2" src="${issuer30v2.src}" alt="${issuer30v2.name}" onerror="this.closest('.cn-issuer30v2').style.display='none'"><div class="cn-issuer-cap30v2"><b>${issuer30v2.name}</b><span>${issuer30v2.org} · ${issuer30v2.role}</span></div></div>`;
@@ -18230,7 +18393,12 @@ function castingNoticeDetailHtml(g){
      唔救返就會成張卡冇晒簡介，故一併搬入摘要，markup 原樣搬（.notice_synopsis_frame CSS 照用）。
      順序：事實行尾（預計播出之後）、差距／情報／var-note 之前。 */
   const directorReal117 = gigDirectorRealName117(g);
-  const directorRow117 = directorReal117 ? `<div class="cn-sum-row"><span class="k">導演</span><span class="v">${directorReal117}</span></div>` : "";
+  /* v20a252 CAST252：導演行只喺電影／電視作品出（SPEC §6.2；廣告／唱片／綜藝／臨記／補拍唔出。
+     附帶修好 3 張綜藝作品 director「評判組」誤出導演行——嗰個唔係真名。 */
+  const directorType252 = (typeof gigGenreLabel === "function") ? gigGenreLabel(g) : (g.type || "");
+  const directorRow117 = (directorReal117 && g.category === "作品" && (directorType252 === "電影" || directorType252 === "電視劇")) ? `<div class="cn-sum-row"><span class="k">導演</span><span class="v">${directorReal117}</span></div>` : "";
+  /* v20a252 CAST252：詳情頁按類型分流欄位（SPEC §6.2，見 gigCastDetailRows252）。 */
+  const castRows252 = (typeof gigCastDetailRows252 === "function") ? gigCastDetailRows252(g) : "";
   const weeklyRow117 = (total > 1) ? weeklyBlock : "";
   const synopsisFrame117 = `<div class="notice_synopsis_frame">
       <div class="cn-lab">劇情簡介</div>
@@ -18281,6 +18449,7 @@ function castingNoticeDetailHtml(g){
       ${limitsHtml}
       ${directorRow117}
       ${producerLine}
+      ${castRows252}
       ${weeklyRow117}
       ${synopsisFrame117}
       ${sumGaps}
@@ -25411,40 +25580,40 @@ function mergeTriggerGigs(locId){
    Rival 第 2／3 輪 rematch（唔重寫，留返之後）。 */
 /* 主線／WF3 抉擇即派表：key＝nodeId:choiceId（"*"＝該節點任何選項）。v20a250：N1–N5／N18 按抉擇派指定通告；N5:* 已拆做 N5_a／b／c。v20a251：加 N7–N12／N19 共 17 鍵（B 組），全表 34 鍵，無 wildcard。 */
 const GRANT229_CHOICE = {
-  "N1:N1_a":  { gigId:"gig_1990_tv_124", source:"N1", reason:"張子駿嗰邊肯教你，聽日準時去電視城動作組報到，跟組雜務，搬道具、遞水、跟場，唔好遲到。" },
-  "N1:N1_b":  { gigId:"gig_1990_film_124", source:"N1", reason:"片場嗰邊趕住開，賀歲片場要個趕檔場務助手，朝早去、夜晚收現金，記住自己執生。" },
-  "N2:N2_a":  { gigId:"gig_1990_film_125", source:"N2", reason:"老臨記話聽晚有組開夜戲要人，陰陽夜更要個動作替身，戴上面具頂替主角走位。" },
-  "N2:N2_b":  { gigId:"gig_1990_tv_125", source:"N2", reason:"電視城嗰邊要人，街景臨記臨時群演，準時到，副導第一個嗌你個名，保住單通告先。" },
-  "N3:N3_a":  { gigId:"gig_1990_tv_127", source:"N3", reason:"聽日有組要動作替身，幽林魅影夜追逐，企定個位，唔好俾人搶走。" },
-  "N3:N3_b":  { gigId:"gig_1990_tv_128", source:"N3", reason:"聽日有組要街坊群戲，靈異屋邨夜話，企旁邊配合主角走避，尋日嗰場一 take 過，做得穩陣。" },
-  "N4:N4_a":  { gigId:"gig_1990_ad_117", source:"N4", reason:"呢單你自己揀嘅，便利店短片要個廣告路人 B，行過鏡頭兩次就收工，呢筆數我記低。" },
-  "N4:N4_b":  { gigId:"gig_1990_film_114", source:"N4", reason:"昨晚嗰場浸水戲，副導話你肯捱，今朝有組開夜戲要人。" },
-  "N5:N5_a":  { gigId:"gig_1990_tv_130", source:"N5", reason:"采兒嗰邊傳嚟消息，記者會外景要個特約演員，何生話你聽日去頂住。" },
-  "N5:N5_b":  { gigId:"gig_1990_tv_130", source:"N5", reason:"采兒嗰邊傳嚟消息，記者會外景要個特約演員，何生話你聽日去頂住。" },
-  "N5:N5_c":  { gigId:"gig_1990_tv_131", source:"N5", reason:"天星碼頭嗰邊要過海人潮，聽日去企位走過鏡頭，充場面都要企穩陣。" },
-  "N6:N6_a":  { gigId:"gig_1990_tv_105", source:"N6", reason:"處境劇嗰邊留咗你做固定閒角，今朝正式簽長期合約。", contract:true },
-  "N6F:N6F_a":{ gigId:"gig_1990_film_110", source:"N6", reason:"大製作嗰邊留咗你做固定跟班，今朝正式簽長期合約。", contract:true },
-  "N18:N18_a": { gigId:"gig_1990_tv_121", source:"N18", reason:"何生問你想學幕後定專心幕前——跟組學嘢嗰邊，今朝有位留畀你。" },
-  "N18:N18_b": { gigId:"gig_1990_tv_129", source:"N18", reason:"何生話冬日單元劇嗰邊有個鄰里配角留畀你，有對白，串起幾場戲，幕前嗰份功夫，做實佢先。" },
-  "N7:N7_a":  { gigId:"gig_1991_film_122", source:"N7", reason:"隔籬組要人——《半張船票》碼頭夜戲，企外景捱夜。落雨嗰日肯搬嘢嗰個，副導指明要你。" },
-  "N7:N7_b":  { gigId:"gig_1991_tv_123", source:"N7", reason:"聽日有組要人留影——《街角照相館》，企定，個樣乾淨就得。尋日嗰場近鏡，導演話拍得靚。" },
-  "N7:N7_c":  { gigId:"gig_1991_tv_124", source:"N7", reason:"今晚有單夜更——《碼頭茶餐廳》夜更侍應，聽人話別唔多嘴。識分工，呢行鍾意。" },
+  "N1:N1_a":  { gigId:"gig_1990_tv_201", source:"N1", reason:"張子駿嗰邊肯教你，聽日準時去電視城動作組報到，跟組雜務，搬道具、遞水、跟場，唔好遲到。" },
+  "N1:N1_b":  { gigId:"gig_1990_film_201", source:"N1", reason:"片場嗰邊趕住開，賀歲片場要個趕檔場務助手，朝早去、夜晚收現金，記住自己執生。" },
+  "N2:N2_a":  { gigId:"gig_1990_film_202", source:"N2", reason:"老臨記話聽晚有組開夜戲要人，陰陽夜更要個動作替身，戴上面具頂替主角走位。" },
+  "N2:N2_b":  { gigId:"gig_1990_tv_202", source:"N2", reason:"電視城嗰邊要人，街景臨記臨時群演，準時到，副導第一個嗌你個名，保住單通告先。" },
+  "N3:N3_a":  { gigId:"gig_1990_tv_203", source:"N3", reason:"聽日有組要動作替身，幽林魅影夜追逐，企定個位，唔好俾人搶走。" },
+  "N3:N3_b":  { gigId:"gig_1990_tv_204", source:"N3", reason:"聽日有組要街坊群戲，靈異屋邨夜話，企旁邊配合主角走避，尋日嗰場一 take 過，做得穩陣。" },
+  "N4:N4_a":  { gigId:"gig_1990_ad_206", source:"N4", reason:"呢單你自己揀嘅，便利店短片要個廣告路人 B，行過鏡頭兩次就收工，呢筆數我記低。" },
+  "N4:N4_b":  { gigId:"gig_1990_film_203", source:"N4", reason:"昨晚嗰場浸水戲，副導話你肯捱，今朝有組開夜戲要人。" },
+  "N5:N5_a":  { gigId:"gig_1990_tv_205", source:"N5", reason:"采兒嗰邊傳嚟消息，記者會外景要個特約演員，何生話你聽日去頂住。" },
+  "N5:N5_b":  { gigId:"gig_1990_tv_205", source:"N5", reason:"采兒嗰邊傳嚟消息，記者會外景要個特約演員，何生話你聽日去頂住。" },
+  "N5:N5_c":  { gigId:"gig_1990_tv_206", source:"N5", reason:"天星碼頭嗰邊要過海人潮，聽日去企位走過鏡頭，充場面都要企穩陣。" },
+  "N6:N6_a":  { gigId:"gig_1990_tv_107", source:"N6", reason:"處境劇嗰邊留咗你做固定閒角，今朝正式簽長期合約。", contract:true },
+  "N6F:N6F_a":{ gigId:"gig_1990_film_113", source:"N6", reason:"大製作嗰邊留咗你做固定跟班，今朝正式簽長期合約。", contract:true },
+  "N18:N18_a": { gigId:"gig_1990_tv_208", source:"N18", reason:"何生問你想學幕後定專心幕前——跟組學嘢嗰邊，今朝有位留畀你。" },
+  "N18:N18_b": { gigId:"gig_1990_tv_110", source:"N18", reason:"何生話冬日單元劇嗰邊有個鄰里配角留畀你，有對白，串起幾場戲，幕前嗰份功夫，做實佢先。" },
+  "N7:N7_a":  { gigId:"gig_1991_film_104", source:"N7", reason:"隔籬組要人——《半張船票》碼頭夜戲，企外景捱夜。落雨嗰日肯搬嘢嗰個，副導指明要你。" },
+  "N7:N7_b":  { gigId:"gig_1991_tv_107", source:"N7", reason:"聽日有組要人留影——《街角照相館》，企定，個樣乾淨就得。尋日嗰場近鏡，導演話拍得靚。" },
+  "N7:N7_c":  { gigId:"gig_1991_tv_201", source:"N7", reason:"今晚有單夜更——《碼頭茶餐廳》夜更侍應，聽人話別唔多嘴。識分工，呢行鍾意。" },
   "N8:N8_a":  { gigId:"gig_1991_variety_109", source:"N8", reason:"聽晚《咪高峰夜》卡拉OK擂台要個暖場——唱一首，企定，唔好講錯嘢。後台有人話你口密又識做，監製第一個諗起你。" },
-  "N8:N8_b":  { gigId:"gig_1991_rec_117", source:"N8", reason:"電台嗰邊要人陪坐——《打歌期電台訪問陪坐》，坐喺主打歌星隔籬，偶有一句回應就得。唔好講多句。" },
-  "N8:N8_c":  { gigId:"gig_1991_rec_118", source:"N8", reason:"唱片舖簽唱會要人助陣——《唱片舖簽唱會助陣排隊區主持》，帶粉絲排隊，場面唔好亂。尋日嗰招引開記者，醒目。" },
-  "N9:N9_a":  { gigId:"gig_1991_film_107", source:"N9", reason:"聽日有組笑匠班底要個拍檔配角——《笑住過肥年・外傳》，星哥嗰邊話肯認橋嗰個先學到橋。" },
-  "N9:N9_b":  { gigId:"gig_1991_film_123", source:"N9", reason:"聽日有單過場——《棉廠秋單》送布疋青年，聽導演走位就得。穩陣，唔搶風頭，啱你。" },
-  "N10:N10_a": { gigId:"gig_1991_film_124", source:"N10", reason:"聽日有單江湖短打要個收數拍檔——《年尾追數人》，把口講到明嗰種。呢單，信得過你先俾你。" },
-  "N10:N10_b": { gigId:"gig_1991_film_125", source:"N10", reason:"團年夜嗰組要個廚房幫工——《團年夜》賀歲前哨，趕菜嗰種。嗰晚多得你出聲，珍姐話呢單留返俾你。" },
-  "N10:N10_c": { gigId:"gig_1991_tv_125", source:"N10", reason:"歲晚有單處境要臨記群戲——《歲晚》搶通告嗰場，企喺通告板前面。分期嗰單，糧單上面多咗個期，成組人嗰口氣落返嚟。" },
-  "N11:N11_a": { gigId:"gig_1991_film_126", source:"N11", reason:"聽日有組江湖片要個講數二佬——《龍虎夜廟街》，狠嗰段落足力嗰種。選角導演話呢種戲，呢兩年有排拍。" },
-  "N11:N11_b": { gigId:"gig_1991_film_127", source:"N11", reason:"聽日有組警匪片要個夜班軍裝——《沙田夜巡》，企得穩嗰種。探長後生版，選角嗰邊第一個就諗起你。" },
-  "N12:N12_a": { gigId:"gig_1992_film_120", source:"N12", reason:"聽日有組外銷動作要個碼頭追擊替身——《虎門夜襲》，跑跳翻滾基礎。嗰一躍一 take 過，武指話呢份人情，成個動作組記住你。" },
-  "N12:N12_b": { gigId:"gig_1992_tv_120", source:"N12", reason:"過幾日有單文戲入面嘅動作戲——《武館少年》新入門師弟，練基本拳。嗰日你肯講真話，武指先敢俾啲要分寸嘅位你做。" },
-  "N19:N19_a": { gigId:"gig_1991_tv_126", source:"N19", reason:"聽日有組公益單元要個夜班清潔工——《街燈下》阿強，默默清掃，少對白多眼神。尋日你企枱邊，成日冇出過聲又冇走過位，企得穩。" },
-  "N19:N19_b": { gigId:"gig_1991_tv_127", source:"N19", reason:"聽日有組單元要個讀信嘅碼頭工人——《半頁信》，幾乎冇對白，但係成場戲嘅眼神都喺佢身上。老臨記話識睇成個局點行嘅臨記，先讀得出嗰封信。" },
-  "W3_ho_liao:W3_ho_liao_a": { gigId:"gig_1990_tv_117", source:"廖炳星支線", reason:"何生今朝話，喜劇組嗰邊有個替身雜務位留咗畀你，聽朝去報到。" },
-  "W3_ho_liao:W3_ho_liao_b": { gigId:"gig_1990_tv_118", source:"廖炳星支線", reason:"何生今朝話，喜劇組嗰邊有個替身雜務位留咗畀你，聽朝去報到。" }
+  "N8:N8_b":  { gigId:"gig_1991_rec_205", source:"N8", reason:"電台嗰邊要人陪坐——《打歌期電台訪問陪坐》，坐喺主打歌星隔籬，偶有一句回應就得。唔好講多句。" },
+  "N8:N8_c":  { gigId:"gig_1991_rec_206", source:"N8", reason:"唱片舖簽唱會要人助陣——《唱片舖簽唱會助陣排隊區主持》，帶粉絲排隊，場面唔好亂。尋日嗰招引開記者，醒目。" },
+  "N9:N9_a":  { gigId:"gig_1991_film_103", source:"N9", reason:"聽日有組笑匠班底要個拍檔配角——《笑住過肥年・外傳》，星哥嗰邊話肯認橋嗰個先學到橋。" },
+  "N9:N9_b":  { gigId:"gig_1991_film_201", source:"N9", reason:"聽日有單過場——《棉廠秋單》送布疋青年，聽導演走位就得。穩陣，唔搶風頭，啱你。" },
+  "N10:N10_a": { gigId:"gig_1991_film_105", source:"N10", reason:"聽日有單江湖短打要個收數拍檔——《年尾追數人》，把口講到明嗰種。呢單，信得過你先俾你。" },
+  "N10:N10_b": { gigId:"gig_1991_film_202", source:"N10", reason:"團年夜嗰組要個廚房幫工——《團年夜》賀歲前哨，趕菜嗰種。嗰晚多得你出聲，珍姐話呢單留返俾你。" },
+  "N10:N10_c": { gigId:"gig_1991_tv_202", source:"N10", reason:"歲晚有單處境要臨記群戲——《歲晚》搶通告嗰場，企喺通告板前面。分期嗰單，糧單上面多咗個期，成組人嗰口氣落返嚟。" },
+  "N11:N11_a": { gigId:"gig_1991_film_106", source:"N11", reason:"聽日有組江湖片要個講數二佬——《龍虎夜廟街》，狠嗰段落足力嗰種。選角導演話呢種戲，呢兩年有排拍。" },
+  "N11:N11_b": { gigId:"gig_1991_film_107", source:"N11", reason:"聽日有組警匪片要個夜班軍裝——《沙田夜巡》，企得穩嗰種。探長後生版，選角嗰邊第一個就諗起你。" },
+  "N12:N12_a": { gigId:"gig_1992_film_201", source:"N12", reason:"聽日有組外銷動作要個碼頭追擊替身——《虎門夜襲》，跑跳翻滾基礎。嗰一躍一 take 過，武指話呢份人情，成個動作組記住你。" },
+  "N12:N12_b": { gigId:"gig_1992_tv_103", source:"N12", reason:"過幾日有單文戲入面嘅動作戲——《武館少年》新入門師弟，練基本拳。嗰日你肯講真話，武指先敢俾啲要分寸嘅位你做。" },
+  "N19:N19_a": { gigId:"gig_1991_tv_104", source:"N19", reason:"聽日有組公益單元要個夜班清潔工——《街燈下》阿強，默默清掃，少對白多眼神。尋日你企枱邊，成日冇出過聲又冇走過位，企得穩。" },
+  "N19:N19_b": { gigId:"gig_1991_tv_105", source:"N19", reason:"聽日有組單元要個讀信嘅碼頭工人——《半頁信》，幾乎冇對白，但係成場戲嘅眼神都喺佢身上。老臨記話識睇成個局點行嘅臨記，先讀得出嗰封信。" },
+  "W3_ho_liao:W3_ho_liao_a": { gigId:"gig_1990_tv_209", source:"廖炳星支線", reason:"何生今朝話，喜劇組嗰邊有個替身雜務位留咗畀你，聽朝去報到。" },
+  "W3_ho_liao:W3_ho_liao_b": { gigId:"gig_1990_tv_210", source:"廖炳星支線", reason:"何生今朝話，喜劇組嗰邊有個替身雜務位留咗畀你，聽朝去報到。" }
 };
 /* 支線初遇即派表（enc79 seg＋選項關鍵字，配對次序跟 enc79ChoiceFx：先命中關鍵字，否則落最後一項兜底）。
    1990 電視喜劇替身雜務 5 張（tv_114–118）＋1990–91 唱片和音 5 張（rec_111／112／113＋1991_rec_111／112，
@@ -25468,8 +25637,8 @@ const GRANT229_DRAFT = {
   gu_promise_clean: { gigId:"gig_1991_rec_111", source:"顧明輝支線", reason:"你應承咗佢，佢第二朝就話電台嗰邊有個和音錄音位，等你去唱下，熟習下錄音室。" },
   gu_ask_back: { gigId:"gig_1991_rec_112", source:"顧明輝支線", reason:"你問到佢答唔到，佢唔嬲——話你肯問，先係當佢係人。和音位一樣有你份。" }
 };
-/* 定期合約通告（D-5）：只得 N-3／N-4 兩張。認 id，唔認 boardNote 文案（文案係展示層）。 */
-const CONTRACT229_GIGS = { gig_1990_tv_105:1, gig_1990_film_110:1 };
+/* 定期合約通告（D-5）：只得 N6_a／N6F_a 兩張。認 id，唔認 boardNote 文案（文案係展示層）。 */
+const CONTRACT229_GIGS = { gig_1990_tv_107:1, gig_1990_film_113:1 };
 function grant229Ensure(){
   try{
     if(typeof S==="undefined" || !S) return false;
@@ -28775,11 +28944,14 @@ function awardsEvalTier(ceremony, year, forceTier){
 }
 /* ===== v20a188 AWARDS188：獎項全部改名＋提名跟角色掛鈎 =====
    用戶 2026-11-13 18:34 拍板：電影／電視／音樂三組跟真實獎項名，廣告組由助手定。
-   新表 15 個，取代 schema／stub 舊 10 個（舊組別後綴、舊人氣獎、生造名拎走）。
+   新表 16 個，取代 schema／stub 舊 10 個（舊組別後綴、舊人氣獎、生造名拎走）。
+   v20a252 D-v2-1：加「最佳司儀」一格（台慶，role:"host"，中性，matchTypes ["綜藝"]）；
+   電視演技四格 matchTypes 剔走綜藝——綜藝主持唔計最佳男主角／男配角。
    唔郁 content pack JSON——呢張覆寫表喺 index.html 載入層攞優先權（awardsMvpCategories／
    awardsStubCategory 先讀呢度，冇先跌返 schema（stub 類別已刪，見 RW-7）；舊測試環境冇呢個 const 就行舊路）。
    典禮名、提名門檻（嗰年嗰媒介殺青夠數＋雙軌一條達標）、對手加權、贏線 0.875、報紙流程全部唔郁。
-   role：lead（做過主角）／support（做過配角）／singer（唱過歌）／newcomer（新人獎＝唱過歌＋嗰媒介首年）。
+   role：lead（做過主角）／support（做過配角）／singer（唱過歌）／newcomer（新人獎＝唱過歌＋嗰媒介首年）／
+   host（做過綜藝主持，v20a252 D-v2-1）。
    gender：阿偉係男仔，女主角／女配角／女歌手只係典禮獎項表嘅完整 slate，永遠唔入玩家提名池。
    判定「做過嗰個位」用現有數據：awards62YearWorks（嗰年嗰媒介殺青，帶 gig；年份口徑跟計分同款：
    殺青日曆年；wrapHistory 上限 90，舊檔截斷咗嘅救唔返）；主角沿用遊戲既有判準
@@ -28840,22 +29012,26 @@ const AWARDS188_CATEGORIES = {
       galleryLine:"阿偉坐在後排，看綠葉上台。他記住行內怎樣叫配角的名字。" }
   ],
   award_singho_tv: [
-    { id:"cat_tv_lead_m", label:"最佳男主角", primaryTrack:"stageVolume", matchTypes:["電視劇","綜藝"], metricEcho:"ratings", role:"lead", gender:"m",
+    { id:"cat_tv_lead_m", label:"最佳男主角", primaryTrack:"stageVolume", matchTypes:["電視劇"], metricEcho:"ratings", role:"lead", gender:"m",
       winLine:"台上唱出阿偉的名字。燈光耀眼，他聽見自己的心跳。",
       loseLine:"名單滑過阿偉的名字。入圍了，未抱盃，還有下一場。",
       galleryLine:"阿偉坐在後排，聽見掌聲。今晚，他記住行內怎樣叫人的名字。" },
-    { id:"cat_tv_lead_f", label:"最佳女主角", primaryTrack:"stageVolume", matchTypes:["電視劇","綜藝"], metricEcho:"ratings", role:"lead", gender:"f",
+    { id:"cat_tv_lead_f", label:"最佳女主角", primaryTrack:"stageVolume", matchTypes:["電視劇"], metricEcho:"ratings", role:"lead", gender:"f",
       winLine:"台上唱出女主角的名字。台慶夜掌聲最響那一刻，屬於台上那位。",
       loseLine:"女主角一格入圍了，未抱盃。收視會過去，下一套劇再來過。",
       galleryLine:"阿偉坐在後排，聽見掌聲。今晚，他記住行內怎樣叫人的名字。" },
-    { id:"cat_tv_support_m", label:"最佳男配角", primaryTrack:"industryCredit", matchTypes:["電視劇","綜藝"], metricEcho:"ratings", role:"support", gender:"m",
+    { id:"cat_tv_support_m", label:"最佳男配角", primaryTrack:"industryCredit", matchTypes:["電視劇"], metricEcho:"ratings", role:"support", gender:"m",
       winLine:"台上唱出阿偉的名字。配角也有人記得。今晚，綠葉站到台中央。",
       loseLine:"入圍了，未抱盃。劇裡他撐住全場。劇外下一套再來。",
       galleryLine:"阿偉坐在後排，看綠葉上台。他記住行內怎樣叫配角的名字。" },
-    { id:"cat_tv_support_f", label:"最佳女配角", primaryTrack:"industryCredit", matchTypes:["電視劇","綜藝"], metricEcho:"ratings", role:"support", gender:"f",
+    { id:"cat_tv_support_f", label:"最佳女配角", primaryTrack:"industryCredit", matchTypes:["電視劇"], metricEcho:"ratings", role:"support", gender:"f",
       winLine:"台上唱出女配角的名字。劇裡她撐住全場。今晚，她站到台中央。",
       loseLine:"女配角一格入圍了，未抱盃。下一套劇，她再爭劇裡那道光。",
-      galleryLine:"阿偉坐在後排，看綠葉上台。他記住行內怎樣叫配角的名字。" }
+      galleryLine:"阿偉坐在後排，看綠葉上台。他記住行內怎樣叫配角的名字。" },
+    { id:"cat_tv_host", label:"最佳司儀", primaryTrack:"stageVolume", matchTypes:["綜藝"], metricEcho:"ratings", role:"host", gender:"",
+      winLine:"台上唱出阿偉的名字。咪高峰一刻，全場掌聲為他而起。",
+      loseLine:"入圍了，未抱盃。台慶夜仲長，下一場騷再爭。",
+      galleryLine:"阿偉坐在後排，看司儀控場。他記住行內怎樣叫主持的名字。" }
   ]
 };
 /* 玩家係男仔（阿偉）：女獎項永遠唔入提名池。 */
@@ -28890,26 +29066,55 @@ function awards188IsLead(w){
     return false;
   }catch(_e){ return false; }
 }
+/* v20a252 D-v2-3／A4：玩家嗰格由 gig.cast 讀（玩家佔嗰格寫 null），唔再齋靠 roleLabel 字串。
+   cast 齊嗰陣交叉核對——roleLabel 話係咩位＋cast 嗰格係 null 先認（兩邊唔夾就唔認，
+   寧可唔提名都唔好提名錯格；從缺 null／爭位 null 唔會誤認，因為 roleLabel 唔啱）。
+   綜藝主持讀頂層 host 欄（玩家主持嗰陣 host 寫 null，同 cast 邏輯一樣）。
+   冇 cast／冇 host 欄（舊檔／舊 gig）跌返舊字串規則，舊行為不變。
+   回 "lead"／"support"／"host"／""。 */
+function awards188PlayerCastSlot(w){
+  try{
+    if(!w) return "";
+    const g = w.g || null, h = w.h || null;
+    const rl = String((g && g.roleLabel) || (h && h.roleLabel) || "");
+    const rs = String((g && g.roleScale) || (h && h.roleScale) || "");
+    const type = String((h && h.type) || (g && g.type) || "");
+    if(/替身/.test(rl)) return ""; /* 替身唔佔四格，唔係 lead／support／host */
+    const saysLead = /男主角|女主角|主角|主演|擔正|領銜/.test(rl);
+    const saysSupport = /support/.test(rs) || /配角|男配/.test(rl);
+    const saysHost = /主持/.test(rl);
+    if(type === "綜藝"){
+      if(!saysHost) return "";
+      if(g && ("host" in g)) return g.host == null ? "host" : "";
+      return "host";
+    }
+    const cast = (g && g.cast && typeof g.cast === "object") ? g.cast : null;
+    if(cast){
+      if(saysLead && cast.leadM == null) return "lead";
+      if(saysSupport && cast.supportM == null) return "support";
+      return "";
+    }
+    if(saysLead) return "lead";
+    if(saysSupport) return "support";
+    return "";
+  }catch(_e){ return ""; }
+}
 function awards188IsSupport(w){
   try{
     if(!w) return false;
-    const g = w.g || null, h = w.h || null;
-    const rs = String((g && g.roleScale) || (h && h.roleScale) || "");
-    const rl = String((g && g.roleLabel) || (h && h.roleLabel) || "");
-    if(/替身/.test(rl)) return false; /* 替身唔係配角 */
-    if(/support/.test(rs)) return true;
-    if(/配角|男配/.test(rl)) return true;
-    return false;
+    return awards188PlayerCastSlot(w) === "support";
   }catch(_e){ return false; }
 }
-/* 嗰件作品算咩位：lead／support／singer／""。唱片通告桶任何作品都算唱過歌
-   （主唱／和音／MTV 都係開過聲）；綜藝／臨記／替身／武師等唔係 lead 亦唔係 support。 */
+/* 嗰件作品算咩位：lead／support／singer／host／""。唱片通告桶任何作品都算唱過歌
+   （主唱／和音／MTV 都係開過聲）；綜藝主持算 host（v20a252 D-v2-1）；綜藝嘉賓／伴舞、
+   臨記／替身／武師等唔係 lead 亦唔係 support。 */
 function awards188WorkRole(w){
   try{
     if(!w) return "";
     const g = w.g || null, h = w.h || null;
     const type = String((h && h.type) || (g && g.type) || "");
     if(type === "唱片通告") return "singer";
+    if(awards188PlayerCastSlot(w) === "host") return "host";
     if(awards188IsLead(w)) return "lead";
     if(awards188IsSupport(w)) return "support";
     return "";
@@ -28948,6 +29153,15 @@ function awards188CatEligible(cat, ceremony, year, works){
     for(let i = 0; i < ws.length; i++){ if(awards188WorkRole(ws[i]) === "singer"){ sang = true; break; } }
     if(!sang) return false;
     return !awards188HadEarlierWork(ceremony, year);
+  }
+  if(role === "host"){
+    /* v20a252 D-v2-1：最佳司儀——嗰年做過綜藝主持先入圍（嘉賓／伴舞唔計）；唔可以跌去
+       下面「冇 role 標記唔閘」嗰句，否則無主持經驗都入圍。 */
+    const ws = works || ((typeof awards62YearWorks === "function") ? awards62YearWorks(ceremony, year) : []);
+    for(let i = 0; i < ws.length; i++){
+      if(awards188WorkRole(ws[i]) === "host") return true;
+    }
+    return false;
   }
   return true; /* 冇 role 標記嘅類別（舊表）唔閘 */
 }
@@ -31269,35 +31483,22 @@ const AWARDS160_TUXEDO_AWEI = "assets/story/awards/awei_tuxedo.png";
 /* ===== v20a63 AWARDS63：頒獎禮群星版 =====
    像素角色 v63 原用「真立繪像素化」衍生；v20a64 起成套換做 Q 版人仔；v20a181 起 Q 版池成批清走，改做
    PixelLab character 幀（assets/story/awards/px_<starId>_<dir>.png，south 企立／east／west 行入場）：
-   阿偉跟定版造型（黑碎瀏海、深藍西裝褸＋白恤衫開領、冇呔）；紅星池＝POSTER59_STAR_IDS 嗰 13 位
-   （v20a204：舊 10 位＋藍若曦／沈映雪／江詩盈；程天諾唔喺池內——1990 零出場紅線，任何年份都唔派佢）。
-   提名對手（fellows）由嗰年嗰媒介新庫通告＋leadStarId 主演衍生；冇主演數據就按媒介喺紅星池兜底配對（加權隨機，v20a147）。
+   阿偉跟定版造型（黑碎瀏海、深藍西裝褸＋白恤衫開領、冇呔）；有 sprite 嘅星＝POSTER59_STAR_IDS
+   入面值唔係 null 嗰啲（v20a204：舊 10 位＋藍若曦／沈映雪／江詩盈；彭少祺 null／程天諾唔入表——
+   1990 零出場紅線，任何年份都唔派佢；胡美琳／韓秀婷／彭少祺 sprite 由 Poster 工人接線，一入表即計）。
+   v20a252 D-v2-2／D-v2-3：提名對手（fellows）只讀嗰年嗰格新庫通告嘅真陣容——電影／電視／廣告讀
+   cast 四角（leadM／leadF／supportM／supportF）、唱片讀 singer、新人獎讀 singer（混合）、綜藝讀 host；
+   第二輪池抽兜底（AWARDS63_POOL＋AWARDS63_TIER_WEIGHT＋awards63WeightedPick，v20a147）同高俊傑
+   特別名額（v20a178）一併刪除，唔留 dormant——唔夠 3 個對手就回少過 3 個，係庫唔合格嘅信號，
+   引擎唔填數。leadStarId 已退役，呢度唔再讀。
    海報利用：唱名作品卡列（DOM 層，海報縮圖／CSS 片名卡）＋得獎 glamour 全屏海報＋請柬細海報——全部重用 poster59Path 既有 data URI，唔重複編碼。 */
-const AWARDS63_POOL = {
-  film:  ["luk_baakyin", "liu_bingxing", "mak_zhendong", "chai_zanhoi", "lok_gasing", "ngai_wingnaam", "kong_siying"],
-  tv:    ["chai_zanhoi", "yip_manji", "luk_baakyin", "chung_choning"],
-  music: ["lok_gasing", "gu_mingfai", "liu_bingxing", "lan_ruoxi", "shum_yingsuet"],
-  ad:    ["so_jiyan", "chung_choning", "luk_baakyin", "ngai_wingnaam", "gu_mingfai"]
-};
-/* v20a204：女星補入池——藍若曦（玉女歌手）＋沈映雪（抒情歌后）入音樂池；
-   江詩盈（文藝片女主角）入電影池。入池後 music 2 女／5、film 2 女／7。 */
-/* v20a147：第二輪兜底配對改加權隨機——頂級紅星出現機率高啲，唔係固定人選。
-   星級來源：紅星名冊 PLAN_ERA_STAR_TARGETS_v1.md「巔峰年」——巔峰 1990–92＝當紅頂級 ×3
-   （陸柏言 1990、蘇芷茵 1991、廖炳星 1992、駱家聲 1990、葉敏芝 1992）；
-   1988–89＝上一代當紅 ×2（麥震東 1988、齊鎮海 1988、鍾楚凝 1989）；
-   1984–85＝過氣 ×1（魏詠男 1985、顧明輝 1984）。
-   池外星（程天諾等）唔入池，唔使權重。分佈見 tests/test_awards63_logic.js §147。 */
-const AWARDS63_TIER_WEIGHT = {
-  luk_baakyin: 3, so_jiyan: 3, liu_bingxing: 3, lok_gasing: 3, yip_manji: 3,
-  mak_zhendong: 2, chai_zanhoi: 2, chung_choning: 2,
-  ngai_wingnaam: 1, gu_mingfai: 1,
-  lan_ruoxi: 3, shum_yingsuet: 3, kong_siying: 3 /* v20a204：三位新入池女星都係巔峰 1990–92＝×3 */
-};
-/* v20a204：女性 id 集（性別分流用；預設男，唔使列男表）。7 位女星：
-   蘇芷茵／鍾楚凝／魏詠男／葉敏芝（舊 4 位）＋藍若曦／沈映雪／江詩盈（新入池 3 位）。 */
+/* v20a204：女性 id 集（性別分流用；預設男，唔使列男表）。9 位女星：
+   蘇芷茵／鍾楚凝／魏詠男／葉敏芝（舊 4 位）＋藍若曦／沈映雪／江詩盈（新入池 3 位）
+   ＋胡美琳／韓秀婷（v20a252 D-v2-1，F1 新星）。 */
 const AWARDS204_FEMALE_STARS = {
   so_jiyan: 1, chung_choning: 1, ngai_wingnaam: 1, yip_manji: 1,
-  lan_ruoxi: 1, shum_yingsuet: 1, kong_siying: 1
+  lan_ruoxi: 1, shum_yingsuet: 1, kong_siying: 1,
+  wu_meilam: 1, hon_sauting: 1
 };
 function awards204StarGender(starId){
   return (starId && AWARDS204_FEMALE_STARS[starId]) ? "f" : "m";
@@ -31316,20 +31517,6 @@ function awards63SeededRng(seed){
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
-}
-function awards63WeightedPick(pool, used, rng){
-  /* 由未用過嘅池星按 AWARDS63_TIER_WEIGHT 抽一粒（缺值當 1）；池抽乾就返 ""。 */
-  let total = 0;
-  const avail = [];
-  (pool || []).forEach(sid=>{
-    if(!sid || used[sid]) return;
-    const w = Number(AWARDS63_TIER_WEIGHT[sid]) || 1;
-    if(w > 0){ avail.push({ sid: sid, w: w }); total += w; }
-  });
-  if(!avail.length || total <= 0) return "";
-  let r = rng() * total;
-  for(let i = 0; i < avail.length; i++){ r -= avail[i].w; if(r <= 0) return avail[i].sid; }
-  return avail[avail.length - 1].sid;
 }
 function awards63StarName(starId){
   try{
@@ -31370,17 +31557,67 @@ function awards63GigPay(g){
   if(Array.isArray(g.pay)) return Number(g.pay[1] != null ? g.pay[1] : g.pay[0]) || 0;
   return Number(g.pay) || 0;
 }
+function awards63HasSprite(starId){
+  /* 有 sprite ＝ POSTER59_STAR_IDS 有呢個 id 且值唔係 null。彭少祺（null）／程天諾（唔入表）
+     唔計；胡美琳／韓秀婷／彭少祺 sprite 由 Poster 工人接線，一入表即自動計入，呢度唔寫死名單。 */
+  if(!starId) return false;
+  try{
+    const ids = (typeof POSTER59_STAR_IDS !== "undefined" && POSTER59_STAR_IDS) || {};
+    return Object.keys(ids).some(k=> ids[k] === starId);
+  }catch(_e){ return false; }
+}
+function awards63CatSlot(catId){
+  /* 由獎項格推導對手來源格：先讀 AWARDS188_CATEGORIES 定義（role＋gender＋matchTypes），
+     讀唔到就按 catId 字尾推導。回 { kind, gender, types }，kind＝cast 四角／singer／newcomer／host；
+     回 null＝唔識呢格（調用方行 medium fallback）。 */
+  const id = String(catId || "");
+  let role = "", g = "", types = null;
+  try{
+    if(typeof AWARDS188_CATEGORIES !== "undefined" && AWARDS188_CATEGORIES){
+      const keys = Object.keys(AWARDS188_CATEGORIES);
+      for(let i = 0; i < keys.length; i++){
+        const list = AWARDS188_CATEGORIES[keys[i]] || [];
+        const hit = list.find(c=> c && c.id === id);
+        if(hit){ role = hit.role || ""; g = hit.gender || ""; types = hit.matchTypes || null; break; }
+      }
+    }
+  }catch(_e){}
+  if(!role && id){
+    if(/_lead_m$/.test(id)){ role = "lead"; g = "m"; }
+    else if(/_lead_f$/.test(id)){ role = "lead"; g = "f"; }
+    else if(/_support_m$/.test(id)){ role = "support"; g = "m"; }
+    else if(/_support_f$/.test(id)){ role = "support"; g = "f"; }
+    else if(/singer_m/.test(id)){ role = "singer"; g = "m"; }
+    else if(/singer_f/.test(id)){ role = "singer"; g = "f"; }
+    else if(/newcomer/.test(id)){ role = "newcomer"; g = ""; }
+    else if(/host/.test(id)){ role = "host"; g = ""; }
+  }
+  if(!role) return null;
+  let kind = "";
+  if(role === "lead") kind = (g === "f") ? "leadF" : "leadM";
+  else if(role === "support") kind = (g === "f") ? "supportF" : "supportM";
+  else if(role === "singer") kind = "singer";
+  else if(role === "newcomer") kind = "newcomer";
+  else if(role === "host") kind = "host";
+  else return null;
+  return { kind: kind, gender: g || "", types: types };
+}
 function awards63Fellows(ceremony, year, gender, catId){
-  /* v20a204：性別分流——第三參數 gender 可選（"m"／"f"／""／唔傳＝唔過濾，舊行為不變）。
-     第一輪真主演＋第二輪池抽都只取啱性別嘅星；高俊傑特別名額（男）唔入女獎；
-     seed 加埋 gender＋catId，每類別獨立可重現，男女唔共用同一隨機序列。 */
+  /* v20a252 D-v2-2／D-v2-3：對手提名只讀新庫真陣容——每格取 3 個，按作品片酬序、每位星只取一部。
+     電影／電視／廣告：cast 嗰格；唱片：singer（按 singerGender 分流）；新人獎：singer 混合；
+     最佳司儀：綜藝 host（中性，唔分性別）。只計 category 係作品嘅通告（臨記／補拍唔入池；
+     無 category 嘅舊檔／fixture 當作品計，同 countYearMediumWraps 口徑一致）。玩家自己殺青
+     嘅作品唔計（ownIds）。冇 sprite 嘅星（彭少祺 null／程天諾唔入表／胡美琳／韓秀婷未接線）
+     唔產生對手。唔夠 3 個就回少過 3 個，唔兜底。
+     舊 signature（唔傳 catId）fallback：按 medium＋gender 由 cast 四角／singer 收集，唔用池抽。 */
   ceremony = ceremony || {};
   gender = (gender === "f" || gender === "m") ? gender : "";
-  const genderOk204 = (sid)=> !gender || awards204StarGender(sid) === gender;
+  const slot = awards63CatSlot(catId);
+  const slotGender = (slot && slot.gender) || gender;
+  const typeList = (slot && slot.types && slot.types.length) ? slot.types : ((ceremony && ceremony.matchTypes) || []);
   const types = {};
-  ((ceremony && ceremony.matchTypes) || []).forEach(t=>{ if(t) types[String(t)] = true; });
+  typeList.forEach(t=>{ if(t) types[String(t)] = true; });
   if(!Object.keys(types).length) return [];
-  const medium = ceremony.medium || "";
   const ownIds = {};
   try{ (((typeof S !== "undefined" && S) || {}).wrapHistory || []).forEach(h=>{ if(h && h.gigId) ownIds[h.gigId] = true; }); }catch(_e){}
   const cands = [];
@@ -31388,75 +31625,56 @@ function awards63Fellows(ceremony, year, gender, catId){
     if(year != null && awards63GigYear(g) !== year) return;
     if(!types[String(g.type || "")]) return;
     if(ownIds[g.id]) return;
+    if(g.category && g.category !== "作品") return;
     let title = "";
     try{ title = (typeof work59WorkOf === "function") ? work59WorkOf(null, g) : (g.workTitle || g.title || ""); }catch(_e2){}
     title = String(title || "").trim();
     if(!title) return;
-    let starName = "", starId = "";
-    try{ starName = (typeof leadStar59Of === "function") ? String(leadStar59Of(g) || "").split("、")[0] : ""; }catch(_e3){}
-    if(starName){
-      try{ starId = ((typeof POSTER59_STAR_IDS !== "undefined" && POSTER59_STAR_IDS) || {})[starName] || ""; }catch(_e4){}
-      if(!starId) return; /* 有主演但冇像素 sprite（如彭少祺）→ 唔攞嚟做對手，免得有名冇樣 */
+    let starId = "";
+    if(slot){
+      if(slot.kind === "singer" || slot.kind === "newcomer"){
+        starId = String(g.singer || "");
+        if(!starId) return;
+        if(slot.kind === "singer" && slotGender && String(g.singerGender || "").toLowerCase() !== slotGender) return;
+      }else if(slot.kind === "host"){
+        starId = String(g.host || "");
+        if(!starId) return;
+      }else{
+        const cast = (g.cast && typeof g.cast === "object") ? g.cast : null;
+        if(!cast) return;
+        starId = String(cast[slot.kind] || "");
+        if(!starId) return;
+      }
+    }else{
+      /* 唔傳 catId 嘅舊呼叫：音樂讀 singer，其餘媒介讀 cast 四角（按 gender 過濾）。 */
+      const medium = ceremony.medium || "";
+      if(medium === "music"){
+        starId = String(g.singer || "");
+        if(!starId) return;
+        if(gender && String(g.singerGender || "").toLowerCase() !== gender) return;
+      }else{
+        const cast = (g.cast && typeof g.cast === "object") ? g.cast : null;
+        if(!cast) return;
+        const keys = gender === "f" ? ["leadF", "supportF"] : (gender === "m" ? ["leadM", "supportM"] : ["leadM", "leadF", "supportM", "supportF"]);
+        for(let i = 0; i < keys.length; i++){ if(cast[keys[i]]){ starId = String(cast[keys[i]]); break; } }
+        if(!starId) return;
+      }
     }
+    if(!awards63HasSprite(starId)) return;
+    const starName = awards63StarName(starId);
+    if(!starName) return;
     cands.push({ g: g, title: title, star: starName, starId: starId, pay: awards63GigPay(g) });
   });
-  cands.sort((a, b)=> b.pay - a.pay);
+  cands.sort((a, b)=> (b.pay - a.pay) || (String(a.g.id) < String(b.g.id) ? -1 : (String(a.g.id) > String(b.g.id) ? 1 : 0)));
   const used = {};
   const out = [];
   const posterOf = (gid)=>{ try{ return (typeof poster59Path === "function") ? poster59Path(gid) : ""; }catch(_e){ return ""; } };
-  /* 第一輪：真主演對手（按片酬序、每位星只取一部；v20a204：性別唔啱就跳過） */
   cands.forEach(c=>{
     if(out.length >= 3) return;
-    if(!c.starId || used[c.starId]) return;
-    if(!genderOk204(c.starId)) return;
+    if(used[c.starId]) return;
     used[c.starId] = true;
     out.push({ starId: c.starId, star: c.star, title: c.title, gigId: c.g.id, poster: posterOf(c.g.id), assigned: false });
   });
-  /* 第二輪：冇主演數據嘅作品 → 紅星池按星級加權隨機抽（v20a147；頂級紅星機率高啲，唔係固定人選）。
-     同一 (year, ceremonyId, medium) 用同一 seed，可重現；結果喺排程嗰刻計好存入 pack，唔用裸 Math.random()。 */
-  if(out.length < 3){
-    const poolAll = AWARDS63_POOL[medium] || AWARDS63_POOL.film;
-    const pool = gender ? poolAll.filter(sid=> awards204StarGender(sid) === gender) : poolAll;
-    /* seed：舊式呼叫（唔傳 gender／catId）沿用舊三元 seed，抽籤結果同舊版一致；
-       傳咗 gender／catId 先加落 seed——每類別獨立可重現，男女唔共用同一序列。 */
-    const seedParts204 = [year, ceremony && ceremony.id, medium];
-    if(gender) seedParts204.push(gender);
-    if(catId) seedParts204.push(catId);
-    const rng = awards63SeededRng(awards63KeySeed(seedParts204.join("/")));
-    cands.forEach(c=>{
-      if(out.length >= 3) return;
-      if(c.starId) return;
-      const sid = awards63WeightedPick(pool, used, rng);
-      if(!sid) return;
-      used[sid] = true;
-      out.push({ starId: sid, star: awards63StarName(sid), title: c.title, gigId: c.g.id, poster: posterOf(c.g.id), assigned: true });
-    });
-  }
-  /* v20a178 同輩對手特別名額：高俊傑（ko_chunkit）——1991 年起先入池，seeded 抽選，概率 0.5。
-     佢唔係紅星（POSTER59_STAR_IDS／AWARDS63_POOL 刻意唔加佢），所以唔行第一／二輪；
-     掛靠一張冇主演嘅作品；滿 3 嗰陣只可以取代第二輪兜底位（assigned:true，繼承嗰個位嘅
-     title／gigId／poster），唔逼走第一輪真主演；冇啱嘅 cand 嗰陣唔入。 */
-  if(year >= 1991 && gender !== "f" && !out.some(f=> f && f.starId === "ko_chunkit")){
-    const koParts204 = [year, ceremony && ceremony.id, medium];
-    if(gender) koParts204.push(gender);
-    if(catId) koParts204.push(catId);
-    koParts204.push("ko");
-    const koRng = awards63SeededRng(awards63KeySeed(koParts204.join("/")));
-    if(koRng() < 0.5){
-      const usedGig = {};
-      out.forEach(f=>{ if(f && f.gigId) usedGig[f.gigId] = true; });
-      const freeNoLead = cands.filter(c=> !c.starId && !usedGig[c.g.id]);
-      if(out.length < 3 && freeNoLead.length){
-        const c = freeNoLead[0];
-        out.push({ starId: "ko_chunkit", star: "高俊傑", title: c.title, gigId: c.g.id, poster: posterOf(c.g.id), assigned: true });
-      } else if(out.length === 3){
-        const last = out[out.length - 1];
-        if(last && last.assigned){
-          out[out.length - 1] = { starId: "ko_chunkit", star: "高俊傑", title: last.title, gigId: last.gigId, poster: last.poster, assigned: true };
-        }
-      }
-    }
-  }
   return out;
 }
 function awards63FocusCat(pack){
@@ -38656,15 +38874,37 @@ function rom183ApplyGiftReactFix(){ /* C3：55 條女角反應句過粵語 filte
 }
 
 /* ---------- 殺青回望（resolvePlannedDay 掛點） ---------- */
+/* v20a252 D-v2-4：殺青好感四角分格——讀 gig.cast 四角（leadM／leadF＝主角格，
+   supportM／supportF＝配角格）：好評主角 +3／配角 +1，劣評主角 +1／配角 0。
+   好／劣判定沿用舊制：sh.fame（殺青聲望，scheduleShoot 存入 shoot record）
+   <= 1 視為劣評，其餘為好評——sh 並無評價／劣評專屬欄位。
+   null 格＝玩家格或從缺，跳過；非 ENC79_STARS 名冊嘅星（藍若曦／江詩盈／
+   沈映雪／胡美琳／韓秀婷）冇 enc79 好感狀態位，跳過（舊制同樣唔加）。
+   舊庫 gig 無 cast 欄位嗰陣跌返舊制：leadStarId 單一主演，好評 +3／劣評 +1。 */
 function enc79OnWrap(sh){
   try{
     if(!sh || !sh.gigId) return;
     const g = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
-    const sid = g && g.leadStarId;
-    if(!sid || !enc79StarDef(sid)) return;
-    const st = enc79StarState(sid);
-    st.workedWith = true; st.wrapEcho = true;
-    enc79AddFav(sid, ((Number(sh.fame)||0) <= 1) ? 1 : 3, "wrap");
+    if(!g) return;
+    const bad = ((Number(sh.fame)||0) <= 1); /* 劣評（舊制沿用：fame<=1） */
+    const seen = {};
+    const grant = (sid, delta)=>{
+      if(!sid || seen[sid] || !enc79StarDef(sid)) return; /* null 格／重複格／名冊外跳過 */
+      seen[sid] = 1;
+      const st = enc79StarState(sid);
+      st.workedWith = true; st.wrapEcho = true; /* 合作標記：同組就算數，唔理加幾多 */
+      enc79AddFav(sid, delta, "wrap"); /* wrap 唔計每週軟頂，仍受級數上限（enc79AddFav 內） */
+    };
+    if(g.cast && typeof g.cast==="object"){
+      /* 新庫四角分格：主角格行先，同一星佔兩格只計主角格一次（現庫 267 張零重複） */
+      grant(g.cast.leadM, bad ? 1 : 3);
+      grant(g.cast.leadF, bad ? 1 : 3);
+      grant(g.cast.supportM, bad ? 0 : 1);
+      grant(g.cast.supportF, bad ? 0 : 1);
+      return;
+    }
+    /* 舊庫 fallback：無 cast 欄位，沿用舊制單一主演 leadStarId */
+    grant(g.leadStarId, bad ? 1 : 3);
   }catch(_e){}
 }
 /* ---------- 人脈頁紅星段 ---------- */

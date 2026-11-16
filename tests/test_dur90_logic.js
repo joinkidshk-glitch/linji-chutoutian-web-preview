@@ -1,15 +1,17 @@
 // v20a90 DUR90 工期/片酬校準・邏輯測試（v20a229 B3 新庫版）
 // 合約（用戶 2026-11-11 08:30：正常製作拍攝/錄製日數要對得返現實）：
 //   A 校準帶常量同 spec 一致（ROLE_SCALE_BAND 已更新、DUR90 舊帶指紋/日薪帶在位）
-//   B 新庫普查（267 張）：raw days 全部喺 roleScale 帶內（clamp 唔郁手）；日薪必喺
-//     位階日薪帶內（容許四捨五入誤差；4 張 1992 稀有大碟＋1 張《星夜迷離》例外，見 DAILY_ALLOW_229）；
+//   B 新庫普查（269 張）：raw days 全部喺 roleScale 帶內（clamp 唔郁手）；日薪必喺
+//     位階日薪帶內（容許四捨五入誤差；表列例外已清零，見 DAILY_ALLOW_229——舊 5 個例外值
+//     全部同現數據唔符，已退役，唔再豁免任何一張）；
 //     全部有 days（shootDaysHint＝days）；resolveRoleScale 全部認到帶
 //   C 期限：全部 gig 嘅 deadline ≥ 拍完所需日曆日（唔會接咗拍唔完）
 //   D 提早窗夾位：全部 gig 所需日曆日 ≤ 提早窗＋成季（60＋92＝152，接到趕得上檔期）
 //   E 冪等：校準後再 normalize，工期/片酬/deadline 唔再變
-//   F 錨點：film_112《雪山劍客》工期 14 日、總額中位 15400；rec_110 稀有大碟日薪 3080
-//       （表列例外值，釘死——將來數據校準改數值要同步改呢度）；v232《星夜迷離》日薪 3100
-//       （攻略定價 $3,100，表列例外，同上釘死）
+//   F 錨點（v252 重寫，舊庫錨點全數作廢）：film_112 係《西環月色》愛情青春男配角，工期 4 日、
+//       總額中位 2600；《雪山劍客》呢個名新庫根本唔存在，最接近係《雪山雙劍傳》（film_111／1991，
+//       6 日／3900）；rec_110 係稀有 MTV《黃昏之約》男主角，日薪 2750（入帶，唔再係例外）；
+//       《星夜迷離》而家係 tv_203，日薪 675（入帶）。將來數據校準改數值要同步改呢度。
 // 反證：v89 index 冇 DUR90 常量、ROLE_SCALE_BAND 係舊帶、日薪大量出帶 → FAIL。
 const fs = require('fs');
 const path = require('path');
@@ -52,9 +54,14 @@ const SPEC_DAILY = {
   '高級': [[1000,3000],[1500,8000]],
   '稀有': [[1000,3000],[1500,8000]],
 };
-/* v20a229 B3：新庫 4 張 1992 稀有大碟日薪 3080，輕微超「高」帶上限 3000（超 80，2.7%）。
-   數據跟進（留待通告數值校準票處理），B3 換庫唔改數值；呢度表列例外，唔當通過。 */
-const DAILY_ALLOW_229 = { gig_1992_rec_107:3080, gig_1992_rec_108:3080, gig_1992_rec_109:3080, gig_1992_rec_110:3080, gig_1991_tv_122:3100 }; /* v232：《星夜迷離》攻略定價 $3,100（通宵緊急替工），表列例外 */
+/* v252 重推導：舊表列例外 5 個值全部同現數據唔符，已退役——
+   rec_107／1992 實際日薪 1210（中級 MTV，帶 [600,2500]，入帶）、rec_108／1992 實際 2200
+   （高級 MTV，帶 [1000,3000]，入帶）、rec_109／1992 實際 2200（高級大碟，帶 [1000,3000]，入帶）、
+   rec_110／1992 實際 2750（稀有 MTV，DUR90 高帶 [1000,3000] 及稀有帶 [2000,4000] 雙雙入帶；舊 3080
+   超 DUR90 上限，係舊庫稀有大碟遺留，唔可以為咗就佢將日薪改出帶）、《星夜迷離》舊 tv_122 已唔存在，
+   而家 tv_203 日薪 675（初級 tv_cameo_short，帶 [300,1200]，入帶）。現庫 0 張出帶，例外表清零；
+   機制留返（將來真有出帶先再填表，唔可以靜默豁免）。 */
+const DAILY_ALLOW_229 = {};
 let fails = 0;
 function ok(name, cond, extra){
   console.log((cond ? 'PASS ' : 'FAIL ') + name + (extra ? ' :: ' + extra : ''));
@@ -92,7 +99,7 @@ if(W){
   function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
   const packNew = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gigs_new.json'), 'utf8'));
   const pool = (packNew.gigs || []).map(g => W.normalizeGigRecord(deepClone(g)));
-  ok('A4 新庫 267 張入池', pool.length === 267, 'n=' + pool.length);
+  ok('A4 新庫 269 張入池', pool.length === 269, 'n=' + pool.length);
 
   // A 校準帶常量
   ok('A1 ROLE_SCALE_BAND ＝ 校準 spec', JSON.stringify(W.ROLE_SCALE_BAND) === JSON.stringify(SPEC_BAND), JSON.stringify(W.ROLE_SCALE_BAND));
@@ -119,10 +126,10 @@ if(W){
       }
     }
   }
-  ok('B1 raw days 全部喺 roleScale 帶內（clamp 唔郁手，267 張）', clampBad.length === 0, clampBad.slice(0, 5).join(' ; '));
-  ok('B2 日薪全喺位階帶內（5 張表列例外除外：4 張稀有大碟＋《星夜迷離》）', dailyBad.length === 0, dailyBad.slice(0, 5).join(' ; '));
+  ok('B1 raw days 全部喺 roleScale 帶內（clamp 唔郁手，269 張）', clampBad.length === 0, clampBad.slice(0, 5).join(' ; '));
+  ok('B2 日薪全喺位階帶內（表列例外 0 張）', dailyBad.length === 0, dailyBad.slice(0, 5).join(' ; '));
   ok('B3 全部有 days 且 shootDaysHint＝days', noDays.length === 0, noDays.slice(0, 5).join(' ; '));
-  ok('B4 resolveRoleScale 全部認到帶（267 張）', noBand.length === 0, noBand.slice(0, 5).join(' ; '));
+  ok('B4 resolveRoleScale 全部認到帶（269 張）', noBand.length === 0, noBand.slice(0, 5).join(' ; '));
 
   // C/D 期限與夾位
   let ddlBad = [], winBad = [];
@@ -143,13 +150,28 @@ if(W){
   for(const g of pool){ const g2 = W.normalizeGigRecord(g); if(snap(g) !== snap(g2)) idemBad++; }
   ok('E 全池再 normalize 冪等', idemBad === 0, 'bad=' + idemBad);
 
-  // F 錨點
+  // F 錨點（v252 重寫）
   const film112 = pool.find(g => g.id === 'gig_1990_film_112');
-  ok('F1 film_112《雪山劍客》工期 14 日、總額中位 15400', !!film112 && W.effectiveShootDays(film112) === 14 && W.gigPayExact(film112) === 15400,
+  ok('F1 film_112《西環月色》男配角工期 4 日、總額中位 2600', !!film112 && W.effectiveShootDays(film112) === 4 && W.gigPayExact(film112) === 2600,
      film112 ? ('days=' + W.effectiveShootDays(film112) + ' pay=' + W.gigPayExact(film112)) : 'missing');
+  const noSnowSword = pool.filter(g => (g.title || '').indexOf('雪山劍客') >= 0);
+  const snowTwin = pool.find(g => g.id === 'gig_1991_film_111');
+  ok('F1b《雪山劍客》已唔喺新庫；最接近《雪山雙劍傳》（film_111／1991）6 日／3900',
+     noSnowSword.length === 0 && !!snowTwin && W.effectiveShootDays(snowTwin) === 6 && W.gigPayExact(snowTwin) === 3900,
+     snowTwin ? ('days=' + W.effectiveShootDays(snowTwin) + ' pay=' + W.gigPayExact(snowTwin)) : 'missing');
   const rec110 = pool.find(g => g.id === 'gig_1992_rec_110');
-  ok('F2 rec_110 稀有大碟日薪 3080（表列例外值）', !!rec110 && Math.round(W.gigPayExact(rec110) / W.effectiveShootDays(rec110)) === 3080,
+  ok('F2 rec_110《黃昏之約》MV 男主角日薪 2750（稀有 MTV，入帶，唔再係表列例外）',
+     !!rec110 && Math.round(W.gigPayExact(rec110) / W.effectiveShootDays(rec110)) === 2750 && !(rec110.id in DAILY_ALLOW_229),
      rec110 ? ('daily=' + Math.round(W.gigPayExact(rec110) / W.effectiveShootDays(rec110))) : 'missing');
+  const xingye = pool.find(g => g.id === 'gig_1991_tv_203');
+  ok('F2b《星夜迷離》（tv_203）日薪 675（入帶，唔再係表列例外；舊 tv_122 已唔存在）',
+     !!xingye && Math.round(W.gigPayExact(xingye) / W.effectiveShootDays(xingye)) === 675 && !pool.find(g => g.id === 'gig_1991_tv_122'),
+     xingye ? ('daily=' + Math.round(W.gigPayExact(xingye) / W.effectiveShootDays(xingye))) : 'missing');
+  const oldAllow = [['gig_1992_rec_107', 1210], ['gig_1992_rec_108', 2200], ['gig_1992_rec_109', 2200]];
+  ok('F2c 舊 3080 例外值已退役（rec_107 1210／rec_108 2200／rec_109 2200，全部入帶）',
+     oldAllow.every(([id, daily]) => { const g = pool.find(x => x.id === id); return g && Math.round(W.gigPayExact(g) / W.effectiveShootDays(g)) === daily; }) &&
+     Object.keys(DAILY_ALLOW_229).length === 0,
+     oldAllow.map(([id]) => { const g = pool.find(x => x.id === id); return id + '=' + (g ? Math.round(W.gigPayExact(g) / W.effectiveShootDays(g)) : 'missing'); }).join(', '));
 }
 console.log(fails === 0 ? 'ALL PASS' : ('FAILURES: ' + fails));
 process.exit(fails === 0 ? 0 : 1);

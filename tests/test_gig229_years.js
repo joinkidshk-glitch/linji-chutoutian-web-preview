@@ -6,7 +6,7 @@
 //     index.html 入面冇舊 pack 檔名字面
 //   C 新 pack 年份唔郁：載入層打旗＋normalize 守衛兩道防線，1990／1991／1992 各有數；
 //     兩次 normalize 冪等；玩家面文字欄年份 token 唔變
-//   D days→shootDaysHint 映射：抽 20 張跨 roleScale＋全數 267 張，
+//   D days→shootDaysHint 映射：抽 20 張跨 roleScale＋全數 269 張，
 //     effectiveShootDays 全部等於 days；新 gig 全部有 days
 //   E 舊表已刪：TIER110／REQ110／NAME93／LEADSTAR59／CLEAN100 全部唔喺 index.html，
 //     normalize 入面亦無佢哋嘅呼叫
@@ -103,14 +103,14 @@ for(const y of [1990, 1991, 1992]){
   const by = {};
   for(const yy of [1990, 1991, 1992]){
     const gs = _newPackA6.gigs.filter(g=>g.year === yy).map(g=>{ const c = deepClone(g); c.__y66w = 1; return c; });
-    by[yy] = { version: 'gigs_new v1', year: yy, gigs: gs };
+    by[yy] = { version: 'gigs_new v2', year: yy, gigs: gs };
   }
   W2.setBy(by);
   W2.sync(true);
   const gigs = W2.getGIGS();
-  const want = { 1990: 104, 1991: 94, 1992: 69 }[y];
-  ok('A6 sync ' + y + ' 年揀新庫（' + want + ' 張、年份全部 ' + y + '、版本 gigs_new v1）',
-     gigs.length === want && gigs.every(g=>g.year === y) && W2.getVer() === 'gigs_new v1',
+  const want = { 1990: 105, 1991: 94, 1992: 70 }[y];
+  ok('A6 sync ' + y + ' 年揀新庫（' + want + ' 張、年份全部 ' + y + '、版本 gigs_new v2）',
+     gigs.length === want && gigs.every(g=>g.year === y) && W2.getVer() === 'gigs_new v2',
      'n=' + gigs.length + ' ver=' + W2.getVer());
 }
 {
@@ -124,12 +124,12 @@ for(const y of [1990, 1991, 1992]){
 {
   /* 缺年跌返較早一年：1991 缺庫 → 用 1990（104 張、年份 1990） */
   const W2 = makeSyncSandbox(1991);
-  const by = { 1990: { version: 'gigs_new v1', year: 1990, gigs: _newPackA6.gigs.filter(g=>g.year === 1990).map(g=>{ const c = deepClone(g); c.__y66w = 1; return c; }) } };
+  const by = { 1990: { version: 'gigs_new v2', year: 1990, gigs: _newPackA6.gigs.filter(g=>g.year === 1990).map(g=>{ const c = deepClone(g); c.__y66w = 1; return c; }) } };
   W2.setBy(by);
   W2.sync(true);
   const gigs = W2.getGIGS();
-  ok('A6 1991 缺庫跌返 1990（104 張、年份 1990）',
-     gigs.length === 104 && gigs.every(g=>g.year === 1990), 'n=' + gigs.length);
+  ok('A6 1991 缺庫跌返 1990（105 張、年份 1990）',
+     gigs.length === 105 && gigs.every(g=>g.year === 1990), 'n=' + gigs.length);
 }
 
 /* ---------- B 舊 pack 已刪 ---------- */
@@ -142,28 +142,29 @@ for(const f of ['gigs_1988.json', 'gigs_1989.json', 'gigs_1990.json', 'gigs_1991
 /* ---------- C 新 pack 年份唔郁 ---------- */
 const newPack = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gigs_new.json'), 'utf8'));
 const newGigs = newPack.gigs || [];
-ok('C0 gigs_new.json 267 張、id 唯一', newGigs.length === 267 &&
-   new Set(newGigs.map(g=>g.id)).size === 267, 'n=' + newGigs.length);
+ok('C0 gigs_new.json 269 張、版本 gigs_new v2、id 唯一', newGigs.length === 269 &&
+   newPack.version === 'gigs_new v2' &&
+   new Set(newGigs.map(g=>g.id)).size === 269, 'n=' + newGigs.length + ' ver=' + newPack.version);
 /* C1：模擬 loader——打旗＋按年分組，再 normalize */
 const stamped = deepClone(newGigs);
 const byYear = { 1990: [], 1991: [], 1992: [] };
 stamped.forEach(g=>{ g.__y66w = 1; if(byYear[g.year]) byYear[g.year].push(g); });
-ok('C1 loader 分組 1990／1991／1992 = 104／94／69',
-   byYear[1990].length === 104 && byYear[1991].length === 94 && byYear[1992].length === 69,
+ok('C1 loader 分組 1990／1991／1992 = 105／94／70',
+   byYear[1990].length === 105 && byYear[1991].length === 94 && byYear[1992].length === 70,
    [1990, 1991, 1992].map(y=>y + ':' + byYear[y].length).join(' '));
 const normedStamped = stamped.map(g=>W.normalizeGigRecord(g));
 const yearBad = normedStamped.filter((g, i)=>g.year !== newGigs[i].year);
-ok('C2 打旗後 normalize：267 張年份全部唔郁', yearBad.length === 0,
+ok('C2 打旗後 normalize：269 張年份全部唔郁', yearBad.length === 0,
    yearBad.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 /* C3：唔打旗、直接 normalize——normalize 層守衛都要擋住 */
 const normedRaw = deepClone(newGigs).map(g=>W.normalizeGigRecord(g));
 const rawBad = normedRaw.filter((g, i)=>g.year !== newGigs[i].year);
-ok('C3 無旗直接 normalize：267 張年份全部唔郁（守衛）', rawBad.length === 0,
+ok('C3 無旗直接 normalize：269 張年份全部唔郁（守衛）', rawBad.length === 0,
    rawBad.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 /* C4：冪等——兩次 normalize 年份唔變 */
 const normedTwice = normedStamped.map(g=>W.normalizeGigRecord(deepClone(g)));
 const twiceBad = normedTwice.filter((g, i)=>g.year !== newGigs[i].year);
-ok('C4 兩次 normalize：267 張年份全部唔郁', twiceBad.length === 0,
+ok('C4 兩次 normalize：269 張年份全部唔郁', twiceBad.length === 0,
    twiceBad.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 /* C5：玩家面文字欄年份 token 唔變（唔可以由 walker／remap 偷偷 +2） */
 const TEXT_FIELDS = ['title','workTitle','roleLabel','roleHint','blurb','synopsis','boardNote','shootHint','discoverNote'];
@@ -206,10 +207,10 @@ ok('D1 抽 20 張跨 roleScale：shootDaysHint＝days＝effectiveShootDays',
    'n=' + sample20.length + ' scales=' + new Set(sample20.map(g=>g.roleScale)).size +
    ' bad=' + sampleBad.slice(0, 3).map(g=>g.id + ':' + g.days + '/' + g.shootDaysHint + '/' + W.effectiveShootDays(g)).join(','));
 const allHintBad = normedStamped.filter(g=>g.shootDaysHint !== g.days);
-ok('D2 全數 267 張 shootDaysHint＝days', allHintBad.length === 0,
+ok('D2 全數 269 張 shootDaysHint＝days', allHintBad.length === 0,
    allHintBad.slice(0, 3).map(g=>g.id + ':' + g.days + '/' + g.shootDaysHint).join(','));
 const allEffBad = normedStamped.filter(g=>W.effectiveShootDays(g) !== g.days);
-ok('D3 全數 267 張 effectiveShootDays＝days', allEffBad.length === 0,
+ok('D3 全數 269 張 effectiveShootDays＝days', allEffBad.length === 0,
    allEffBad.slice(0, 3).map(g=>g.id + ':' + g.days + '/' + W.effectiveShootDays(g)).join(','));
 const twiceHintBad = normedTwice.filter(g=>g.shootDaysHint !== g.days);
 ok('D4 兩次 normalize：hint 仍然＝days', twiceHintBad.length === 0,

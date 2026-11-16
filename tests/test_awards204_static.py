@@ -1,7 +1,8 @@
-# v20a204 補女星入獎池＋提名人性別分流 static tests：
-# (1) 入池：POSTER59_STAR_IDS 加 3 名；AWARDS63_POOL music＋2、film＋1；權重三位 ×3。
-# (2) 性別分流：AWARDS204_FEMALE_STARS 7 位；awards63Fellows 第三參數 gender＋逐類別 seed；
-#     第一輪／第二輪／高俊傑三處有性別閘。
+# v20a204 補女星入獎池＋提名人性別分流 static tests（v20a252 D-v2-2／D-v2-3 cast 模型重寫）：
+# (1) 入池：POSTER59_STAR_IDS 加 3 名（＋F1 新星胡美琳／韓秀婷）；新星喺新庫陣容入面
+#     （cast／singer）；權重表已刪（fellows 按片酬序，唔加權）。
+# (2) 性別分流：AWARDS204_FEMALE_STARS 9 位；awards63Fellows 第三參數 gender＋catId；
+#     第一輪按 cast 格分流（awards63CatSlot）；唔再有第二輪池抽；高俊傑名額已刪。
 # (3) buildAwardResultPack 逐類別計 fellows（c.gender／c.id），唔再全 pack 共用同一份；
 #     類別物件帶 gender。
 # (4) 舞台 px：新星 9 檔齊（3 人 × south／east／west），128×128、腳底 y115、高 102px。
@@ -48,34 +49,42 @@ def slice_const(name):
 
 fellows_fn = slice_fn('awards63Fellows')
 build_fn = slice_fn('buildAwardResultPack')
-pool = slice_const('AWARDS63_POOL')
-weights = slice_const('AWARDS63_TIER_WEIGHT')
 star_ids = slice_const('POSTER59_STAR_IDS')
 female = slice_const('AWARDS204_FEMALE_STARS')
-# v229 B3：LEADSTAR59 表已刪（新庫直接寫 leadStarId），舊檢查會空洞通過，改驗表已刪＋新星喺新庫做過主演
+# v229 B3：LEADSTAR59 表已刪（新庫直接寫 leadStarId），舊檢查會空洞通過，改驗表已刪＋新星喺新庫陣容
+# v20a252 D-v2-3：leadStarId 已退役——新星改驗 cast／singer 欄位
 import json as _json229
 _repo229 = os.path.dirname(os.path.abspath(idx_path))
 _newpack229 = _json229.load(open(os.path.join(_repo229, 'content', 'gigs_new.json'), encoding='utf-8'))
-_lead_ids229 = {g.get('leadStarId') for g in _newpack229['gigs']}
+_cast_ids229 = {v for g in _newpack229['gigs'] if isinstance(g.get('cast'), dict) for v in g['cast'].values() if v}
+_singer_ids229 = {g.get('singer') for g in _newpack229['gigs'] if g.get('singer')}
+_host_ids229 = {g.get('host') for g in _newpack229['gigs'] if g.get('host')}
 
 # --- (1) 入池 ---
 chk('v204 標記喺 awards63Fellows／pool 附近', 'v20a204' in src)
 chk('POSTER59_STAR_IDS 加藍若曦／沈映雪／江詩盈', all(x in star_ids for x in
     ['"藍若曦": "lan_ruoxi"', '"沈映雪": "shum_yingsuet"', '"江詩盈": "kong_siying"']))
-chk('音樂池加 lan_ruoxi＋shum_yingsuet', 'lan_ruoxi' in pool and 'shum_yingsuet' in pool)
-chk('電影池加 kong_siying', 'kong_siying' in pool)
-chk('權重三位都係 ×3', all(x in weights for x in ['lan_ruoxi: 3', 'shum_yingsuet: 3', 'kong_siying: 3']))
+chk('POSTER59_STAR_IDS 加胡美琳／韓秀婷（v20a252 F1）', all(x in star_ids for x in
+    ['"胡美琳": "wu_meilam"', '"韓秀婷": "hon_sauting"']))
+chk('新星喺新庫唱片陣容入面（singer 有 lan_ruoxi＋shum_yingsuet）',
+    'lan_ruoxi' in _singer_ids229 and 'shum_yingsuet' in _singer_ids229)
+chk('新星喺新庫電影陣容入面（cast 有 kong_siying）', 'kong_siying' in _cast_ids229)
+chk('權重表已刪（fellows 按片酬序，唔加權）',
+    'const AWARDS63_TIER_WEIGHT' not in src and 'AWARDS63_TIER_WEIGHT' not in fellows_fn)
 
 # --- (2) 性別分流 ---
 chk('AWARDS204_FEMALE_STARS 在位', 'const AWARDS204_FEMALE_STARS' in src)
-chk('女性集齊 7 位 id', all(x in female for x in
-    ['so_jiyan', 'chung_choning', 'ngai_wingnaam', 'yip_manji', 'lan_ruoxi', 'shum_yingsuet', 'kong_siying']))
+chk('女性集齊 9 位 id', all(x in female for x in
+    ['so_jiyan', 'chung_choning', 'ngai_wingnaam', 'yip_manji', 'lan_ruoxi', 'shum_yingsuet', 'kong_siying', 'wu_meilam', 'hon_sauting']))
 chk('awards63Fellows 簽名加 gender＋catId（舊 2 參呼叫兼容）',
     'function awards63Fellows(ceremony, year, gender, catId)' in src)
-chk('第一輪有性別閘', 'genderOk204(c.starId)' in fellows_fn)
-chk('第二輪池先按性別過濾', 'poolAll.filter' in fellows_fn and 'awards204StarGender' in fellows_fn)
-chk('高俊傑唔入女獎（gender !== "f" 閘）', 'gender !== "f"' in fellows_fn)
-chk('seed 加 gender／catId（每類別獨立）', 'seedParts204' in fellows_fn and 'catId' in fellows_fn)
+chk('第一輪按 cast 格分流（awards63CatSlot＋singerGender）',
+    'awards63CatSlot' in fellows_fn and 'slot.kind' in fellows_fn and 'singerGender' in fellows_fn)
+chk('唔再有第二輪池抽（fellows 單趟按片酬序，唔兜底）',
+    'poolAll' not in fellows_fn and 'AWARDS63_POOL' not in fellows_fn and 'awards63WeightedPick' not in fellows_fn)
+chk('高俊傑名額已刪（ko_chunkit 唔喺 fellows 入面）', 'ko_chunkit' not in fellows_fn)
+chk('fellows 確定性（唔用 seeded draw／Math.random）',
+    'awards63SeededRng' not in fellows_fn and 'Math.random' not in fellows_fn)
 
 # --- (3) build pack 逐類別計 ---
 chk('類別物件帶 gender', 'gender: cat.gender' in build_fn)
@@ -104,8 +113,8 @@ if bad_geo: print('  bad_geo:', bad_geo)
 chk('SAVE key 不變', 'starVolunteer_map_v19w' in src)
 chk('LEADSTAR59 表已刪（v229 B3，新庫直接寫 leadStarId）',
     'const LEADSTAR59 =' not in src and 'LEADSTAR59 =' not in src and 'LEADSTAR59[' not in src)
-chk('新星做過主演（新庫 leadStarId 有 lan_ruoxi／shum_yingsuet／kong_siying）',
-    all(x in _lead_ids229 for x in ['lan_ruoxi', 'shum_yingsuet', 'kong_siying']))
+chk('新星喺新庫陣容入面（cast／singer 有 lan_ruoxi／shum_yingsuet／kong_siying）',
+    all(x in _cast_ids229 or x in _singer_ids229 for x in ['lan_ruoxi', 'shum_yingsuet', 'kong_siying']))
 chk('softRev 不變（s107）', 's107' in src)
 chk('?v= 不變（v20a10）', 'v20a10' in src)
 

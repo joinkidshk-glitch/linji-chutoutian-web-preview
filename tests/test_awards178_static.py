@@ -1,8 +1,7 @@
-# v20a178 高俊傑上頒獎禮 static tests（淨入池邏輯；sprite 衍生已按用戶 2026-11-13 15:11 方向剝走，
-# 舞台圖由 v180 接手「全部換做 PixelLab character 直接用」）：
-# (1) v178 條款喺 awards63Fellows 入面：v178 標記＋1991 年閘＋ko_chunkit＋「高俊傑」直接寫名。
-# (2) 池／權重唔郁：AWARDS63_POOL、AWARDS63_TIER_WEIGHT 入面冇 ko_chunkit。
-# (3) 上限唔郁：awards63Fellows 入面仲有 out.length >= 3 兩輪封頂。
+# v20a178 高俊傑上頒獎禮 static tests（v20a252 D-v2-2：特別名額已刪——重寫做退役測試）：
+# (1) v178 條款已刪：awards63Fellows 入面無 ko_chunkit／「高俊傑」／1991 年閘。
+# (2) 池／權重已刪：AWARDS63_POOL、AWARDS63_TIER_WEIGHT 唔喺 index.html（唔留 dormant）。
+# (3) 上限唔郁：awards63Fellows 入面仲有 out.length >= 3 封頂。
 # (4) 舞台＋卡片行現行通用路徑，唔另起一套：舞台 loadPx(f.starId, d) 逐個 fellow 載 PixelLab 幀
 #     （south／east／west 三向；v20a181 起 Q 版 loadSpr／walkA／walkB 成批退役）；
 #     卡片 cardsData 用 fellows.forEach 通用 builder（poster 有就用 poster，冇就 CSS 卡）。
@@ -53,22 +52,20 @@ def slice_const(name):
 
 fellows_fn = slice_fn('awards63Fellows')
 play_fn = slice_fn('awards62PlayCeremony')
-pool = slice_const('AWARDS63_POOL')
-weights = slice_const('AWARDS63_TIER_WEIGHT')
 star_ids = slice_const('POSTER59_STAR_IDS')
 
-# --- (1) v178 條款在位 ---
-chk('v178 標記喺 awards63Fellows 入面', 'v20a178' in fellows_fn)
-chk('1991 年閘（year >= 1991）', '1991' in fellows_fn)
-chk('特別名額 starId ko_chunkit', 'ko_chunkit' in fellows_fn)
-chk('星名直接寫「高俊傑」', '高俊傑' in fellows_fn)
+# --- (1) v178 條款已刪（D-v2-2） ---
+chk('v178 特別名額已刪（fellows 入面無 ko_chunkit）', 'ko_chunkit' not in fellows_fn)
+chk('fellows 入面無「高俊傑」直接寫名', '高俊傑' not in fellows_fn)
+chk('唔再有 1991 年閘（年份唔喺 fellows 入面）', '1991' not in fellows_fn)
 
-# --- (2) 池／權重唔郁 ---
-chk('佢唔入 AWARDS63_POOL', 'ko_chunkit' not in pool)
-chk('AWARDS63_TIER_WEIGHT 冇佢', 'ko_chunkit' not in weights)
+# --- (2) 池／權重已刪（唔留 dormant） ---
+chk('AWARDS63_POOL 已刪', 'const AWARDS63_POOL' not in src)
+chk('AWARDS63_TIER_WEIGHT 已刪', 'const AWARDS63_TIER_WEIGHT' not in src)
+chk('awards63WeightedPick 已刪', 'function awards63WeightedPick(' not in src)
 
 # --- (3) 上限唔郁 ---
-chk('兩輪封頂 out.length >= 3 仲喺度', 'out.length >= 3' in fellows_fn)
+chk('封頂 out.length >= 3 仲喺度', 'out.length >= 3' in fellows_fn)
 
 # --- (4) 舞台＋卡片行現行通用路徑 ---
 chk('舞台逐個 fellow 載 PixelLab 幀（loadPx(f.starId, d) 通用）', 'loadPx(f.starId, d)' in play_fn)

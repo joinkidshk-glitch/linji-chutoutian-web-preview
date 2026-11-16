@@ -1,14 +1,18 @@
 // v20a229 B5 觸發系統＋BR89 擴充測試（A6／A7；SPEC §2.4／§3.5；AUDIT229 §5／§7／§8；DECISIONS D-4／D-7／D-11／D-14）
-//   T0 新庫 47 張 trigger 形狀逐種齊（kind 必填欄齊全）
-//   T1 六種 kind 各一例：credit／award／fame／story／rel／rival（觸發前 false、觸發後 true）
-//   T2 R-4 雙觸發 OR：持債權／還錢結算（enc83_gu_loan_result＝1）兩條路各驗一次
-//   T3 獎項級紀錄 S.awardsResults：recordAwardResult 寫入＋獎項級／典禮級觸發判定（4 張缺口按裁定行典禮級）
+//   T0 新庫 33 張 trigger 形狀逐種齊（kind 必填欄齊全；credit 23／fame 5／rel 3／rival 1／story 1，award 0——
+//       v252 新庫已無 award kind；award 機制見 T1／T3 合成樣本。稀有級 21 張，當中 6 張有 trigger）
+//   T1 六種 kind 各一例：credit／award／fame／story／rel／rival（觸發前 false、觸發後 true；
+//       award 嗰例用合成樣本——攞舊庫 gig_1991_film_111 原 trigger，一字唔改，因為新庫 0 張 award 樣本）
+//   T2 R-4 雙觸發 OR：持債權／還錢結算（enc83_gu_loan_result＝1）兩條路各驗一次（合成樣本——
+//       舊庫 gig_1991_rec_102 原 trigger；新庫顧引薦 gig 已改做 gig_1992_rec_105，行通用 credit 規則，
+//       無 R-4 接線，見 T2b＋報告；BR89 映射／br89GigOn 硬編碼仲指住舊 id）
+//   T3 獎項級紀錄 S.awardsResults：recordAwardResult 寫入＋獎項級／典禮級觸發判定（合成樣本——舊庫 6 張 award gig 原 trigger）
 //   T4 板面：觸發前無、觸發後有；已觸發唔受 gigBoardPosted92 再擋（stagger stub 返 false 照上板）；標「引薦／邀約」
 //   T5 D-11 通知：首次上板先 toast 一次（引薦＝何生轉告、其餘＝情報站）；未入季節窗／未觸發唔通知
 //   T6 G-L2／G-NGAI-3 經新 trigger 系統開到
-//   T7 D-14：mergeIntelGigs 改源 T2（唔再讀 intel_lu_burst）；v232 新庫補寫《星夜迷離》做第 241 張（rel luk_baakyin ≥25），INTEL_HIDDEN_GIGS 池留空，唔留雙重閘
+//   T7 D-14：mergeIntelGigs 改源 T2（唔再讀 intel_lu_burst）；v232 新庫補寫《星夜迷離》做第 241 張（rel luk_baakyin ≥25），INTEL_HIDDEN_GIGS 池留空，唔留雙重閘（v252 重編號 tv_122→tv_203）
 //   T8 BR89 映射 13 張逐對錨點＋獎項對照表 15 個 id 齊
-//   T9 G-9：1992 年金碟夜喺遊戲期內（夏），1992 年唱片 award 觸發開得到
+//   T9 G-9：1992 年金碟夜喺遊戲期內（夏），1992 年唱片 award 觸發開得到（合成樣本，見 T3）
 //   T10 trigger 過 normalizeGigRecord 唔跌（年份＋trigger 齊全）
 //   T11 真季節窗：1991 秋觸發通告喺 1991-09-01 入窗、1991-01-01 未入窗
 // 反證：對 B4 index 行 → T1／T4／T5 抽唔到 triggerGigOn 即 FAIL。
@@ -47,7 +51,7 @@ const gigById = id => gigs.find(g=>g.id===id);
 
 /* ---------- T0：trigger 形狀 ---------- */
 const trig = gigs.filter(g=>g.trigger && g.trigger.kind);
-ok('T0 觸發通告 47 張', trig.length===47, 'n='+trig.length);
+ok('T0 觸發通告 33 張', trig.length===33, 'n='+trig.length);
 const shapeBad = trig.filter(g=>{
   const t = g.trigger;
   if(t.kind==='credit') return !(typeof t.creditId==='string' && t.creditId && typeof t.creditOwner==='string');
@@ -59,7 +63,10 @@ const shapeBad = trig.filter(g=>{
   return true;
 });
 ok('T0 六種 kind 形狀齊（必填欄全部有）', shapeBad.length===0, shapeBad.slice(0,3).map(g=>g.id).join(','));
-ok('T0 稀有級 23 張全部有 trigger', gigs.filter(g=>g.tier==='稀有').every(g=>g.trigger && g.trigger.kind));
+const rareGigs = gigs.filter(g=>g.tier==='稀有');
+ok('T0 稀有級 21 張、其中 6 張有 trigger（稀有≠觸發閘，新庫真相）',
+  rareGigs.length===21 && rareGigs.filter(g=>g.trigger && g.trigger.kind).length===6,
+  'rare=' + rareGigs.length + ' withTrig=' + rareGigs.filter(g=>g.trigger && g.trigger.kind).length);
 
 /* ---------- eval 沙盒：trigger 模組 ---------- */
 eval(extractConstVar('BR89_PATRON_OF_GIG'));
@@ -120,17 +127,18 @@ function freshS(){
 
 /* ---------- T1：六種 kind 各一例 ---------- */
 S = freshS();
-const gCredit = gigById('gig_1991_film_106'); /* 陸引薦 credit_enc83_luk_patron */
+const gCredit = gigById('gig_1991_film_101'); /* 陸引薦 credit_enc83_luk_patron（《江河歲月》，舊 film_106 同名同 trigger 搬咗過嚟） */
 ok('T1 credit 未持債 → 唔開', triggerGigOn(gCredit)===false);
 S.mockCredits.push({ id:'credit_enc83_luk_patron', debtor:'陸柏言', title:'天王引薦', line:'x', status:'未收' });
 ok('T1 credit 持債 → 開', triggerGigOn(gCredit)===true);
-S.mockCredits[0].redeemedBy = 'gig_1991_film_106';
+S.mockCredits[0].redeemedBy = 'gig_1991_film_101';
 ok('T1 credit 已兌現 → 唔再開', triggerGigOn(gCredit)===false);
 S.mockCredits[0].redeemedBy = undefined;
 ok('T1 credit 標籤＝引薦', triggerGigLabel229(gCredit)==='引薦');
 
 S = freshS();
-const gAward = gigById('gig_1991_film_111'); /* award_film_best_actor 得獎 */
+/* v252 新庫 0 張 award kind：用合成樣本，trigger 同舊庫 gig_1991_film_111 一字一樣（award_film_best_actor 得獎），驗 index.html awardTriggerOn229 機制本身。 */
+const gAward = { id:'gig_1991_film_111', trigger:{ kind:'award', awardId:'award_film_best_actor', result:'得獎' } };
 ok('T1 award 未得獎 → 唔開', triggerGigOn(gAward)===false);
 S.awardsResults['1991/award_harbour_film'] = { year:1991, won:false, nominated:true, cats:{ cat_film_lead_m:'nominated' } };
 ok('T1 award 只提名 → 得獎觸發唔開', triggerGigOn(gAward)===false);
@@ -139,27 +147,27 @@ ok('T1 award 得獎 → 開', triggerGigOn(gAward)===true);
 ok('T1 award 標籤＝邀約', triggerGigLabel229(gAward)==='邀約');
 
 S = freshS();
-const gFame = gigById('gig_1991_ad_108'); /* fame ≥40 */
+const gFame = gigById('gig_1991_film_209'); /* fame ≥40（大製作武打替身；舊 ad_108 已改做高級、無 trigger） */
 S.fame = 39;
 ok('T1 fame 39 → 唔開', triggerGigOn(gFame)===false);
 S.fame = 40;
 ok('T1 fame 40 → 開', triggerGigOn(gFame)===true);
 
 S = freshS();
-const gStory = gigById('gig_1992_tv_117'); /* story N13 */
+const gStory = gigById('gig_1992_film_205'); /* story N13（古裝武俠頂位替身；舊 tv_117 已唔喺庫） */
 ok('T1 story N13 未完成 → 唔開', triggerGigOn(gStory)===false);
 S.story.done.N13 = true;
 ok('T1 story N13 完成 → 開', triggerGigOn(gStory)===true);
 
 S = freshS();
-const gRel = gigById('gig_1992_tv_118'); /* rel luk_baakyin ≥60 */
+const gRel = gigById('gig_1992_tv_203'); /* rel luk_baakyin ≥60（台慶晚會頂位群演；舊 tv_118 已唔喺庫） */
 S.npcs.luk_baakyin = 59;
 ok('T1 rel 59 → 唔開', triggerGigOn(gRel)===false);
 S.npcs.luk_baakyin = 60;
 ok('T1 rel 60 → 開', triggerGigOn(gRel)===true);
 
 S = freshS();
-const gRel25 = gigById('gig_1991_tv_122'); /* v232《星夜迷離》rel luk_baakyin ≥25（T2） */
+const gRel25 = gigById('gig_1991_tv_203'); /* v232《星夜迷離》rel luk_baakyin ≥25（T2；v252 重編號 tv_122→tv_203） */
 S.npcs.luk_baakyin = 24;
 ok('T1 rel 24 →《星夜迷離》唔開', triggerGigOn(gRel25)===false);
 S.npcs.luk_baakyin = 25;
@@ -167,7 +175,7 @@ ok('T1 rel 25 →《星夜迷離》開（T2）', triggerGigOn(gRel25)===true);
 ok('T1《星夜迷離》標籤＝邀約', triggerGigLabel229(gRel25)==='邀約');
 
 S = freshS();
-const gRival = gigById('gig_1991_film_109'); /* rival ≥3 */
+const gRival = gigById('gig_1991_film_102'); /* rival ≥3（《霓虹夜影》男主角，爭位格；舊 film_109 已改做 credit） */
 ok('T1 rival 0 分 → 唔開', triggerGigOn(gRival)===false);
 S.mockRumors.push({ id:'gao_steal_spotlight', title:'高俊傑搶鏡' });
 S.story.done.N3 = true;
@@ -184,7 +192,10 @@ ok('T1 未識 kind 唔開（fail closed）', triggerGigOn({ id:'x', trigger:{ ki
 
 /* ---------- T2：R-4 雙觸發 OR ---------- */
 S = freshS();
-const gR4 = gigById('gig_1991_rec_102'); /* 顧登台暖場 */
+/* v252：舊庫 R-4 樣本 gig_1991_rec_102 已無 trigger（新庫改做《鄉謠》民謠配唱）；
+   但 BR89 映射＋br89GigOn 硬編碼仲指住呢個 id，R-4 雙觸發 OR 機制本身仲喺 index.html。
+   用合成樣本（id＋trigger 同舊庫一字一樣）驗機制；新庫接班者 gig_1992_rec_105 另驗通用規則（見 T2b）。 */
+const gR4 = { id:'gig_1991_rec_102', trigger:{ kind:'credit', creditId:'credit_enc83_gu_patron', creditOwner:'顧明輝' } }; /* 顧登台暖場（合成樣本） */
 ok('T2 R-4 兩條路都冇 → 唔開', triggerGigOn(gR4)===false && br89GigOn(gR4)===false);
 S.mockCredits.push({ id:'credit_enc83_gu_patron', debtor:'顧明輝', title:'登台引薦', line:'x', status:'未收' });
 ok('T2 R-4 路一：持債權 → 開', triggerGigOn(gR4)===true && br89GigOn(gR4)===true);
@@ -198,6 +209,20 @@ S.flags.enc83_gu_loan_result = 1;
 S.flags['done_gig_1991_rec_102'] = 1;
 ok('T2 R-4 完成後唔再開（done_ 旗）', triggerGigOn(gR4)===false);
 
+/* ---------- T2b：新庫顧引薦 gig（gig_1992_rec_105，通用 credit 規則） ---------- */
+S = freshS();
+const gR4b = gigById('gig_1992_rec_105'); /* 顧明輝引薦情歌大碟主唱，credit_enc83_gu_patron */
+ok('T2b 新庫顧 gig 喺庫入面、係 credit_enc83_gu_patron', !!gR4b && gR4b.trigger && gR4b.trigger.kind==='credit' && gR4b.trigger.creditId==='credit_enc83_gu_patron');
+ok('T2b 新庫顧 gig 未持債 → 唔開', triggerGigOn(gR4b)===false);
+S.mockCredits.push({ id:'credit_enc83_gu_patron', debtor:'顧明輝', title:'登台引薦', line:'x', status:'未收' });
+ok('T2b 新庫顧 gig 持債 → 開（通用規則）', triggerGigOn(gR4b)===true);
+S.mockCredits.length = 0;
+ok('T2b 新庫顧 gig 債權拎走 → 唔開', triggerGigOn(gR4b)===false);
+/* 注意：還錢結算路（enc83_gu_loan_result＝1）只接線喺舊 id gig_1991_rec_102（br89GigOn 硬編碼），
+   新庫 rec_105 行通用規則，唔識呢條路——接線缺口，見報告，唔喺呢度扮佢識。 */
+S.flags.enc83_gu_loan_result = 1;
+ok('T2b 新庫顧 gig 還錢結算旗唔開（接線缺口，釘死）', triggerGigOn(gR4b)===false);
+
 /* ---------- T3：獎項級紀錄＋典禮級觸發 ---------- */
 S = freshS();
 const recPack = { year:1991, ceremonyId:'award_harbour_film', skipped:false,
@@ -206,94 +231,103 @@ const rec = recordAwardResult(recPack);
 ok('T3 recordAwardResult 寫入年／典禮 key', !!rec && !!S.awardsResults['1991/award_harbour_film'], JSON.stringify(S.awardsResults));
 ok('T3 won／nominated 旗＋cats 齊', rec.won===true && rec.nominated===true && rec.cats.cat_film_lead_m==='won' && rec.cats.cat_film_lead_f==='nominated' && !rec.cats.cat_film_support_m);
 ok('T3 commitAwardToLog 調用 recordAwardResult（唯一結算點）', (extractFn('commitAwardToLog')||'').indexOf('recordAwardResult(pack)')>=0);
+/* v252 新庫 0 張 award kind：以下 6 個樣本全部合成，trigger 同舊庫原 gig 一字一樣，驗 awardTriggerOn229 機制本身。 */
+const SYN_AWARD = {
+  filmNewcomer91:{ id:'gig_1991_film_112', trigger:{ kind:'award', awardId:'award_film_best_newcomer', result:'提名' } },
+  musicAlbum92:{ id:'gig_1992_rec_107', trigger:{ kind:'award', awardId:'award_music_best_album', result:'得獎' } },
+  musicSong92:{ id:'gig_1992_rec_108', trigger:{ kind:'award', awardId:'award_music_best_song', result:'得獎' } },
+  musicNewcomer92:{ id:'gig_1992_rec_109', trigger:{ kind:'award', awardId:'award_music_best_newcomer', result:'提名' } },
+  adNewcomer92:{ id:'gig_1992_ad_107', trigger:{ kind:'award', awardId:'award_ad_best_newcomer', result:'提名' } },
+  filmActor92:{ id:'gig_1992_film_110', trigger:{ kind:'award', awardId:'award_film_best_actor', result:'得獎' } }
+};
 S = freshS();
 S.awardsResults['1991/award_harbour_film'] = { year:1991, won:false, nominated:true, cats:{ cat_film_lead_f:'nominated' } };
-ok('T3 典禮級：電影新人獎提名（gig_1991_film_112）→ 影藝獎嗰屆有提名就開', triggerGigOn(gigById('gig_1991_film_112'))===true);
+ok('T3 典禮級：電影新人獎提名（合成 gig_1991_film_112）→ 影藝獎嗰屆有提名就開', triggerGigOn(SYN_AWARD.filmNewcomer91)===true);
 S = freshS();
 S.awardsResults['1992/award_golddisc_music'] = { year:1992, won:true, nominated:true, cats:{ cat_music_singer_m:'won' } };
-ok('T3 典禮級：音樂大碟得獎（gig_1992_rec_107）→ 金碟夜嗰屆有得獎就開', triggerGigOn(gigById('gig_1992_rec_107'))===true);
-ok('T3 典禮級：音樂歌曲得獎（gig_1992_rec_108）→ 同屆得獎就開', triggerGigOn(gigById('gig_1992_rec_108'))===true);
+ok('T3 典禮級：音樂大碟得獎（合成 gig_1992_rec_107）→ 金碟夜嗰屆有得獎就開', triggerGigOn(SYN_AWARD.musicAlbum92)===true);
+ok('T3 典禮級：音樂歌曲得獎（合成 gig_1992_rec_108）→ 同屆得獎就開', triggerGigOn(SYN_AWARD.musicSong92)===true);
 S = freshS();
 S.awardsResults['1992/award_golddisc_music'] = { year:1992, won:false, nominated:true, cats:{ cat_music_newcomer:'nominated' } };
-ok('T3 典禮級得獎唔可以靠提名開（只提名 → 大碟得獎唔開）', triggerGigOn(gigById('gig_1992_rec_107'))===false);
-ok('T3 獎項級：音樂新人獎提名（gig_1992_rec_109）→ cat_music_newcomer 提名就開', triggerGigOn(gigById('gig_1992_rec_109'))===true);
+ok('T3 典禮級得獎唔可以靠提名開（只提名 → 大碟得獎唔開）', triggerGigOn(SYN_AWARD.musicAlbum92)===false);
+ok('T3 獎項級：音樂新人獎提名（合成 gig_1992_rec_109）→ cat_music_newcomer 提名就開', triggerGigOn(SYN_AWARD.musicNewcomer92)===true);
 S = freshS();
 S.awardsResults['1992/award_harbour_ad'] = { year:1992, won:false, nominated:true, cats:{ cat_ad_support_m:'nominated' } };
-ok('T3 典禮級：廣告新人獎提名（gig_1992_ad_107）→ 廣告賞嗰屆有提名就開', triggerGigOn(gigById('gig_1992_ad_107'))===true);
+ok('T3 典禮級：廣告新人獎提名（合成 gig_1992_ad_107）→ 廣告賞嗰屆有提名就開', triggerGigOn(SYN_AWARD.adNewcomer92)===true);
 S = freshS();
 S.awardsResults['1991/award_harbour_film'] = { year:1991, won:true, nominated:true, cats:{ cat_film_lead_m:'won' } };
 S.awardsResults['1992/award_harbour_film'] = { year:1992, won:false, nominated:false, cats:{} };
-ok('T3 舊屆紀錄唔俾新屆覆寫（1991 贏咗，1992 gallery 照開 1992 秋通告）', triggerGigOn(gigById('gig_1992_film_110'))===true);
+ok('T3 舊屆紀錄唔俾新屆覆寫（1991 贏咗，1992 gallery 照開 1992 秋通告，合成 gig_1992_film_110）', triggerGigOn(SYN_AWARD.filmActor92)===true);
 
 /* ---------- T4：板面（過濾＋錯峰豁免＋標籤） ---------- */
 S = freshS();
 const boardGigs = [
-  deepClone(gigById('gig_1991_film_106')), /* credit，未觸發 */
-  deepClone(gigs.find(g=>g.loc==='film_cotton' && !g.trigger)), /* 普通板上 */
+  deepClone(gigById('gig_1991_film_101')), /* credit，未觸發（《江河歲月》，film_harbour） */
+  deepClone(gigs.find(g=>g.loc==='film_harbour' && !g.trigger)), /* 普通板上 */
 ];
 GIGS = boardGigs;
 gigBoardPosted92 = function(){ return true; }; /* 先放行錯峰，淨驗觸發過濾 */
-let board = gigsForLocSeasonBoard('film_cotton', '秋').map(g=>g.id);
-ok('T4 觸發前板面無引薦通告（普通通告照有）', board.indexOf('gig_1991_film_106')<0 && board.length===1, JSON.stringify(board));
+let board = gigsForLocSeasonBoard('film_harbour', '秋').map(g=>g.id);
+ok('T4 觸發前板面無引薦通告（普通通告照有）', board.indexOf('gig_1991_film_101')<0 && board.length===1, JSON.stringify(board));
 S.mockCredits.push({ id:'credit_enc83_luk_patron', debtor:'陸柏言', title:'天王引薦', line:'x', status:'未收' });
 gigBoardPosted92 = function(){ return false; }; /* 再閘死錯峰，驗已觸發豁免 */
-board = gigsForLocSeasonBoard('film_cotton', '秋').map(g=>g.id);
-ok('T4 觸發後上板（gigBoardPosted92 stub 返 false 照上——錯峰豁免）', board.indexOf('gig_1991_film_106')>=0, JSON.stringify(board));
+board = gigsForLocSeasonBoard('film_harbour', '秋').map(g=>g.id);
+ok('T4 觸發後上板（gigBoardPosted92 stub 返 false 照上——錯峰豁免）', board.indexOf('gig_1991_film_101')>=0, JSON.stringify(board));
 ok('T4 普通通告唔享豁免（stagger 返 false → 照擋）', (function(){
-  S = freshS(); GIGS = [deepClone(gigs.find(g=>g.loc==='film_cotton' && !g.trigger))];
-  return gigsForLocSeasonBoard('film_cotton', '秋').length===0;
+  S = freshS(); GIGS = [deepClone(gigs.find(g=>g.loc==='film_harbour' && !g.trigger))];
+  return gigsForLocSeasonBoard('film_harbour', '秋').length===0;
 })());
 S = freshS();
 S.mockCredits.push({ id:'credit_enc83_luk_patron', debtor:'陸柏言', title:'天王引薦', line:'x', status:'未收' });
-GIGS = [deepClone(gigById('gig_1991_film_106'))];
-board = gigsForLocSeasonBoard('film_cotton', '秋');
+GIGS = [deepClone(gigById('gig_1991_film_101'))];
+board = gigsForLocSeasonBoard('film_harbour', '秋');
 ok('T4 短卡／詳情卡有引薦標籤位（gt-trigger／bp-tag trig）', html.indexOf('gt-trigger')>=0 && html.indexOf('bp-tag trig')>=0 && board.length===1 && triggerGigLabel229(board[0])==='引薦');
 ok('T4 mergeTriggerGigs 掛入 gigsForLocSeasonBoard 開頭', (extractFn('gigsForLocSeasonBoard')||'').indexOf('mergeTriggerGigs(locId)')>=0);
 
 /* ---------- T5：D-11 通知 ---------- */
 S = freshS();
 toasts.length = 0;
-GIGS = [deepClone(gigById('gig_1991_film_106'))];
-ok('T5 未觸發 → 唔通知', mergeTriggerGigs('film_cotton')===0 && toasts.length===0);
+GIGS = [deepClone(gigById('gig_1991_film_101'))];
+ok('T5 未觸發 → 唔通知', mergeTriggerGigs('film_harbour')===0 && toasts.length===0);
 S.mockCredits.push({ id:'credit_enc83_luk_patron', debtor:'陸柏言', title:'天王引薦', line:'x', status:'未收' });
-ok('T5 引薦類首次上板 → 何生轉告一次', mergeTriggerGigs('film_cotton')===1 && toasts.length===1 && toasts[0].indexOf('何生轉告')===0 && toasts[0].indexOf('陸柏言')>=0 && toasts[0].indexOf('紅棉影業')>=0, toasts[0]||'');
-ok('T5 第二次開板唔再通知（冪等）', mergeTriggerGigs('film_cotton')===0 && toasts.length===1);
+ok('T5 引薦類首次上板 → 何生轉告一次', mergeTriggerGigs('film_harbour')===1 && toasts.length===1 && toasts[0].indexOf('何生轉告')===0 && toasts[0].indexOf('陸柏言')>=0 && toasts[0].indexOf('維港電影')>=0, toasts[0]||'');
+ok('T5 第二次開板唔再通知（冪等）', mergeTriggerGigs('film_harbour')===0 && toasts.length===1);
 S = freshS();
 toasts.length = 0;
 S.fame = 60;
-GIGS = [deepClone(gigById('gig_1992_film_111'))]; /* fame 60，film_lion */
+GIGS = [deepClone(gigById('gig_1991_film_210'))]; /* fame ≥40，film_lion（暑期大製作頂位） */
 ok('T5 非引薦類 → 情報站口徑', mergeTriggerGigs('film_lion')===1 && toasts.length===1 && toasts[0].indexOf('情報站')===0 && toasts[0].indexOf('邀約通告')>=0, toasts[0]||'');
 S = freshS();
 toasts.length = 0;
 S.mockCredits.push({ id:'credit_enc83_luk_patron', debtor:'陸柏言', title:'天王引薦', line:'x', status:'未收' });
-GIGS = [deepClone(gigById('gig_1991_film_106'))];
+GIGS = [deepClone(gigById('gig_1991_film_101'))];
 gigSeasonHidden88 = function(){ return true; }; /* 未入季節窗 */
-ok('T5 未入季節窗 → 唔通知住（等入窗先講）', mergeTriggerGigs('film_cotton')===0 && toasts.length===0 && !S.flags['triggerNotified_gig_1991_film_106']);
+ok('T5 未入季節窗 → 唔通知住（等入窗先講）', mergeTriggerGigs('film_harbour')===0 && toasts.length===0 && !S.flags['triggerNotified_gig_1991_film_101']);
 gigSeasonHidden88 = function(){ return false; };
-ok('T5 入窗之後先通知', mergeTriggerGigs('film_cotton')===1 && toasts.length===1);
+ok('T5 入窗之後先通知', mergeTriggerGigs('film_harbour')===1 && toasts.length===1);
 S = freshS();
 toasts.length = 0;
 S.mockCredits.push({ id:'credit_enc83_luk_patron', debtor:'陸柏言', title:'天王引薦', line:'x', status:'未收' });
-GIGS = [deepClone(gigById('gig_1991_film_106'))];
+GIGS = [deepClone(gigById('gig_1991_film_101'))];
 ok('T5 唔同地點開板唔通知（loc 對唔上）', mergeTriggerGigs('film_lion')===0 && toasts.length===0);
 
 /* ---------- T6：G-L2／G-NGAI-3 ---------- */
 S = freshS();
-ok('T6 G-L2 未持債 → 唔開', triggerGigOn(gigById('gig_1992_film_114'))===false);
+ok('T6 G-L2 未持債 → 唔開', triggerGigOn(gigById('gig_1992_film_202'))===false);
 S.mockCredits.push({ id:'credit_wf3_comedy_crew', debtor:'廖炳星', title:'喜劇組熟人', line:'x', status:'未收' });
-ok('T6 G-L2 持 credit_wf3_comedy_crew → 開（唔經舊 WF3 池）', triggerGigOn(gigById('gig_1992_film_114'))===true);
+ok('T6 G-L2 持 credit_wf3_comedy_crew → 開（唔經舊 WF3 池）', triggerGigOn(gigById('gig_1992_film_202'))===true);
 S = freshS();
 ok('T6 G-NGAI-3 未持債 → 唔開', triggerGigOn(gigById('gig_1992_film_101'))===false);
 S.mockCredits.push({ id:'credit_enc83_ngai_meal', debtor:'魏詠男', title:'一餐飯', line:'x', status:'未收' });
 ok('T6 G-NGAI-3 持 credit_enc83_ngai_meal → 開（唔經舊 FAVOR_DUE 池）', triggerGigOn(gigById('gig_1992_film_101'))===true);
 S = freshS();
 S.mockCredits.push({ id:'credit_wf3_comedy_crew', debtor:'廖炳星', title:'喜劇組熟人', line:'x', status:'未收' });
-GIGS = [deepClone(gigById('gig_1992_film_114'))];
-ok('T6 G-L2 上板（film_lion，1992 夏）', gigsForLocSeasonBoard('film_lion', '夏').some(g=>g.id==='gig_1992_film_114'));
+GIGS = [deepClone(gigById('gig_1992_film_202'))];
+ok('T6 G-L2 上板（film_lion，1992 夏）', gigsForLocSeasonBoard('film_lion', '夏').some(g=>g.id==='gig_1992_film_202'));
 
 /* ---------- T7：D-14 intel 改源 ---------- */
 const gXingye = gigs.filter(g=>(g.title||'').indexOf('星夜迷離')>=0);
-ok('T7 v232 新庫有《星夜迷離》通告（第 241 張，經通用 trigger 系統）', gXingye.length===1 && gXingye[0].id==='gig_1991_tv_122');
+ok('T7 v232 新庫有《星夜迷離》通告（第 241 張，經通用 trigger 系統；v252 重編號 tv_122→tv_203）', gXingye.length===1 && gXingye[0].id==='gig_1991_tv_203');
 ok('T7《星夜迷離》觸發＝陸好感 ≥25（T2）', gXingye.length===1 && gXingye[0].trigger && gXingye[0].trigger.kind==='rel' && gXingye[0].trigger.npcId==='luk_baakyin' && gXingye[0].trigger.relMin===25);
 ok('T7 唔留雙重閘：INTEL_HIDDEN_GIGS 池留空（舊注入路唔會再加一張）', html.indexOf('const INTEL_HIDDEN_GIGS = []')>=0);
 const intelSrc = extractFn('mergeIntelGigs') || '';
@@ -323,7 +357,21 @@ const br89Keys = Object.keys(BR89_PATRON_OF_GIG);
 ok('T8 BR89 映射 13 張', br89Keys.length===13, 'n='+br89Keys.length);
 ok('T8 BR89 13 對逐對啱（SPEC §3.5A）', br89Keys.every(k=>BR89_PATRON_OF_GIG[k]===BR89_EXPECT[k]) && Object.keys(BR89_EXPECT).every(k=>BR89_PATRON_OF_GIG[k]===BR89_EXPECT[k]));
 ok('T8 舊 gig_br89_* id 已清', !br89Keys.some(k=>/^gig_br89_/.test(k)) && html.indexOf('gig_br89_patron_luk')<0);
-ok('T8 13 張 BR89 通告全部喺新庫入面', br89Keys.every(k=>!!gigById(k)));
+ok('T8 BR89 13 張入面 12 張喺新庫、1 張已消失', br89Keys.filter(k=>!!gigById(k)).length===12 && !gigById('gig_1991_variety_108'),
+  'missing=gig_1991_variety_108');
+/* v252 真相：BR89 映射（index.html）仲係舊庫 13 對，同新庫 credit trigger 0 張對得上——
+   3 張錯配（rec_102/1992 應係 lok 唔係 ching、film_103/1992 應係 liu 唔係 mak、tv_104/1992 應係 chai 唔係 so；
+   呢 3 張行 br89GigOn 會驗錯債權，持真債都開唔到）、9 張目標已無 credit trigger、1 張消失。
+   新庫 13 筆債權嘅真 gig：luk→film_101/1991、liu_priority→film_103/1991、liu→film_109/1991＋film_103/1992、
+   mak→film_110/1991、ngai→film_111/1991、chung→tv_108/1991、pang→variety_203/1991、so→ad_102/1991、
+   lok→rec_102/1992、gu→rec_105/1992、ching→rec_106/1992、chai→tv_104/1992、yip→tv_105/1992。
+   修復要改 index.html BR89_PATRON_OF_GIG（唔係測試範圍）；呢度釘死漂移，唔扮對得上。 */
+const br89Match = br89Keys.filter(k=>{ const g = gigById(k); return g && g.trigger && g.trigger.kind==='credit' && g.trigger.creditId===BR89_PATRON_OF_GIG[k]; });
+const br89Mismatch = br89Keys.filter(k=>{ const g = gigById(k); return g && g.trigger && g.trigger.kind==='credit' && g.trigger.creditId!==BR89_PATRON_OF_GIG[k]; });
+const br89NoTrig = br89Keys.filter(k=>{ const g = gigById(k); return g && !(g.trigger && g.trigger.kind==='credit'); });
+ok('T8 BR89 映射同新庫 credit trigger 0 張對得上（漂移已釘，見註）',
+  br89Match.length===0 && br89Mismatch.length===3 && br89NoTrig.length===9,
+  'match=' + br89Match.length + ' mismatch=' + br89Mismatch.join(',') + ' noTrig=' + br89NoTrig.length);
 ok('T8 G-G2「觸發通告變 26 張」唔喺 code／註解入面', html.indexOf('變 26 張')<0);
 const awardMap = GIG_TRIGGER_AWARD_MAP229;
 ok('T8 獎項對照表 15 個新庫 id 齊', Object.keys(awardMap).length===15);
@@ -349,7 +397,8 @@ ok('T9 1992 金碟夜係夏季典禮（weekMinSoft 16，約 1992 年 6 月，遊
   !!gold && gold.season==='夏' && Number(gold.weekMinSoft)===16);
 S = freshS();
 S.awardsResults['1992/award_golddisc_music'] = { year:1992, won:true, nominated:true, cats:{ cat_music_singer_m:'won' } };
-ok('T9 1992 金碟夜得獎 → 1992 秋／冬唱片觸發通告開得到', triggerGigOn(gigById('gig_1992_rec_107'))===true && triggerGigOn(gigById('gig_1992_rec_108'))===true);
+ok('T9 1992 金碟夜得獎 → 1992 秋／冬唱片觸發通告開得到（合成樣本，見 T3）',
+  triggerGigOn(SYN_AWARD.musicAlbum92)===true && triggerGigOn(SYN_AWARD.musicSong92)===true);
 
 /* ---------- T10：trigger 過 normalize 唔跌 ---------- */
 try{
@@ -368,7 +417,7 @@ try{
   }).join('\n') + '\n' + FNS.map(f=>extractFn(f) || '').join('\n');
   const W = new Function('var START = { y:1990, m:1, d:1 }; var S = null; var GIGS = [];\n' + WORLD_SRC + '\n; return { normalizeGigRecord };')();
   const normedTrig = deepClone(trig).map(g=>{ g.__y66w = 1; return W.normalizeGigRecord(g); });
-  ok('T10 normalize 後 47 張 trigger 全部留返', normedTrig.every(g=>g.trigger && g.trigger.kind));
+  ok('T10 normalize 後 33 張 trigger 全部留返', normedTrig.every(g=>g.trigger && g.trigger.kind));
   ok('T10 normalize 後 trigger 內容一字唔郁', normedTrig.every((g,i)=>JSON.stringify(g.trigger)===JSON.stringify(trig[i].trigger)));
   ok('T10 normalize 後年份唔郁', normedTrig.every((g,i)=>g.year===trig[i].year));
 }catch(e){ ok('T10 normalize 沙盒 ('+e.message+')', false); }
@@ -381,7 +430,7 @@ try{
   eval(extractFn('gigSeasonEarlyVisible88'));
   eval(extractFn('gigSeasonHidden88'));
   var dateObj = function(){ return new Date(1991, 8, 1); }; /* 1991-09-01 */
-  const gAutumn = gigById('gig_1991_film_109'); /* 1991 秋 */
+  const gAutumn = gigById('gig_1991_film_101'); /* 1991 秋《江河歲月》（舊 film_109 已改做 credit 春） */
   ok('T11 1991 秋觸發通告喺 1991-09-01 入季節窗', gigSeasonHidden88(gAutumn, '秋')===false);
   dateObj = function(){ return new Date(1991, 0, 1); }; /* 1991-01-01 */
   ok('T11 1991 秋觸發通告喺 1991-01-01 未入季節窗', gigSeasonHidden88(gAutumn, '冬')===true);

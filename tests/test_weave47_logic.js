@@ -435,8 +435,11 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
 /* ================================================================
    段四：真 mergeExodusGigs＋真 board——B3 中期：EXODUS_GIGS 注入池已清空，
    merge 一律回 0、板面冇移民潮空位通告（B5 觸發系統補返先有）；接單閘＋
-   殺青狀態機改用新庫中級 gig_1990_film_112（film_harbour／冬／中級）做主體，
+   殺青狀態機改用新庫中級 gig_1990_film_110（film_harbour／冬／中級）做主體，
    機制本身不變。
+   v252：舊主體 film_112 改做《西環月色》初級／秋／4 日，1990-12-15 冬板唔上板；
+   舊配角 tv_113 改落九龍電視台（tvb_kowloon），唔喺星河板；主體改 film_110
+   （《鐵血幹探》武打配角，中級／冬／12 日）、配角改 tv_110（《冬日鄰里情》，星河板冬）。
    ================================================================ */
 (function(){
   var window = {};
@@ -509,19 +512,19 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   const fs47 = require('fs');
   const path47 = require('path');
   const packNew47 = JSON.parse(fs47.readFileSync(path47.join(__dirname, '..', 'content', 'gigs_new.json'), 'utf8'));
-  const raw112 = packNew47.gigs.find(g => g.id === 'gig_1990_film_112');
-  const raw113 = packNew47.gigs.find(g => g.id === 'gig_1990_tv_113');
-  const tv = normalizeGigRecord(JSON.parse(JSON.stringify(raw112)));
-  const other = normalizeGigRecord(JSON.parse(JSON.stringify(raw113)));
+  const raw110 = packNew47.gigs.find(g => g.id === 'gig_1990_film_110');
+  const rawTv110 = packNew47.gigs.find(g => g.id === 'gig_1990_tv_110');
+  const tv = normalizeGigRecord(JSON.parse(JSON.stringify(raw110)));
+  const other = normalizeGigRecord(JSON.parse(JSON.stringify(rawTv110)));
   S = freshS(dayIndexOf(1990, 12, 15)); // 冬：主體上板
   Object.assign(S, { acting: 99, stage: 99, vocal: 99, looks: 99, charm: 99, iq: 99, stamina: 99 });
   GIGS = [tv, other];
   ok('seg4 calibration: 主體 tier 中', tv.tier === '中級');
   ok('seg4 calibration: payExact（中位）喺 pay 範圍內',
      gigPayExact(tv) >= tv.pay[0] && gigPayExact(tv) <= tv.pay[1]);
-  ok('seg4 calibration: 工期 hint＝days（14 日）', tv.shootDaysHint === 14 && tv.days === 14);
-  ok('seg4 board: 主體喺 film_harbour 板', boardIds('film_harbour').indexOf('gig_1990_film_112') >= 0);
-  ok('seg4 board: 另一張喺 tvb_longmen 板', boardIds('tvb_longmen').indexOf('gig_1990_tv_113') >= 0);
+  ok('seg4 calibration: 工期 hint＝days（12 日）', tv.shootDaysHint === 12 && tv.days === 12);
+  ok('seg4 board: 主體喺 film_harbour 板', boardIds('film_harbour').indexOf('gig_1990_film_110') >= 0);
+  ok('seg4 board: 另一張喺 tvb_longmen 板', boardIds('tvb_longmen').indexOf('gig_1990_tv_110') >= 0);
 
   // 接單閘（真 canAudition）：聲望夠 → 可報；唔夠 → 中級 fameFloor 16 硬鎖
   ok('seg4 audition: fame 20 can audition 中級 gig', canAudition(tv).ok === true);
@@ -531,15 +534,15 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
 
   // 殺青狀態機（真函數）：open → booked → wrapped（落板）
   ok('seg4 lifecycle: starts open', gigLifecycleStatus(tv).key === 'open');
-  S.booked = [{ gigId: 'gig_1990_film_112' }];
+  S.booked = [{ gigId: 'gig_1990_film_110' }];
   ok('seg4 lifecycle: booked after 接單', gigLifecycleStatus(tv).key === 'booked');
   S.booked = [];
   // 真殺青結算寫入嘅兩樣權威紀錄：S.flags["done_"+id]（isGigWrapped 讀佢）＋ wrapHistory 一筆
-  S.flags['done_gig_1990_film_112'] = 1;
-  S.wrapHistory = [{ gigId: 'gig_1990_film_112', title: tv.title }];
+  S.flags['done_gig_1990_film_110'] = 1;
+  S.wrapHistory = [{ gigId: 'gig_1990_film_110', title: tv.title }];
   ok('seg4 lifecycle: consumed after wrap', isGigConsumed(tv) === true && gigLifecycleStatus(tv).key === 'wrapped');
-  ok('seg4 lifecycle: wrapped gig leaves the board', boardIds('film_harbour').indexOf('gig_1990_film_112') < 0);
-  ok('seg4 lifecycle: other gig still on its board', boardIds('tvb_longmen').indexOf('gig_1990_tv_113') >= 0);
+  ok('seg4 lifecycle: wrapped gig leaves the board', boardIds('film_harbour').indexOf('gig_1990_film_110') < 0);
+  ok('seg4 lifecycle: other gig still on its board', boardIds('tvb_longmen').indexOf('gig_1990_tv_110') >= 0);
 })();
 
 console.log(fails.length ? ('\nFAILED: ' + fails.length + ' -> ' + fails.join(' | ')) : '\nALL PASS (weave47)');

@@ -1,7 +1,13 @@
 // v20a229 B6 抉擇即派＋定期合約制測試（A8／A12；SPEC §3.7／附錄 A；AUDIT229 §8／§10；DECISIONS Q7／D-5）
-//   T0 44 張即派 id 齊（主線 31＋支線 13）＋新庫 267 張（v251 補寫 16 張即派新通告；N9_a 重用現有 107）
-//   T1 主線 32 映射：抉擇→記低指定 gig、dueDay＝聽日（N1_a／N1_b／N2_a／N2_b／N3_a／N3_b／N4_a／N4_b／N5_a／N5_b／N5_c／N6_a／N6F_a／N18_a／N18_b；N7_a／N7_b／N7_c／N8_a／N8_b／N8_c／N9_a／N9_b／N10_a／N10_b／N10_c／N11_a／N11_b／N12_a／N12_b／N19_a／N19_b；N6_b／N6F_b 唔派；v249 收窄 N4:*→N4:N4_b、N18:*→N18:N18_a；v250 拆 N5:* 做 N5_a／b／c；v251 加 N7–N12／N19 共 17 鍵）
-//   T2 支線 11 live 映射：廖／顧／麥初遇各 3（關鍵字命中＋兜底）＋廖 Beat2（W3_ho_liao_a／b）；2 個 draft 存在但無 hook 觸發
+//   T0 44 張即派 id 齊（主線 31＋支線 13）＋新庫 269 張（v252 全庫重編號：舊 109–131 → 201+；
+//       主線 31 張全部有新 id；支線 W3 2 張有新 id，ENC79 9 張＋DRAFT 2 張舊 id 已唔喺新庫——
+//       index.html GRANT229_ENC79／GRANT229_DRAFT 映射未更新，實機初遇／draft 即派死，見 T0 釘＋報告）
+//   T1 主線 32 映射：抉擇→記低指定 gig、dueDay＝聽日（同上；v252 新 id：N1 tv_201／film_201、N2 film_202／tv_202、
+//       N3 tv_203／tv_204、N4 ad_206／film_203、N5 tv_205／tv_205／tv_206、N6 tv_107 合約、N6F film_113 合約、
+//       N18 tv_208／tv_110、N7 film_104／tv_107／tv_201、N8 variety_109／rec_205／rec_206、N9 film_103／film_201、
+//       N10 film_105／film_202／tv_202、N11 film_106／film_107、N12 film_201／tv_103、N19 tv_104／tv_105）
+//   T2 支線：ENC79 廖／顧／麥初遇各 3（關鍵字命中＋兜底，映射表揀啱舊 id，但目標已唔喺新庫，實機 record 拒絕——
+//       見 T0 釘）＋廖 Beat2（W3_ho_liao_a／b → tv_209／tv_210，live）＋2 個 draft 目標已死，入口拒絕
 //   T3 冪等：同一張記低兩次得一筆；派發一次後唔再派
 //   T4 翌日先到期：今日 dueList 空、聽日有
 //   T5 派發守衛：已殺青／拍攝中／等消息中／已預約 → 靜靜跳過（queue 清走、唔出電話）；gig 唔存在 → 跳過
@@ -108,20 +114,29 @@ eval(extractFn('isGigInProduction'));
 eval(extractFn('isGigConsumed'));
 eval(extractFn('payWrapNote'));
 
-/* ---------- T0：44 張 id 齊＋新庫 267 張 ---------- */
-const MAIN31 = ['gig_1990_tv_124','gig_1990_film_124','gig_1990_film_125','gig_1990_tv_125','gig_1990_tv_127','gig_1990_tv_128','gig_1990_ad_117','gig_1990_film_114','gig_1990_tv_130','gig_1990_tv_131','gig_1990_tv_105','gig_1990_film_110','gig_1990_tv_121','gig_1990_tv_129',
-  'gig_1991_film_122','gig_1991_tv_123','gig_1991_tv_124','gig_1991_variety_109','gig_1991_rec_117','gig_1991_rec_118','gig_1991_film_107','gig_1991_film_123','gig_1991_film_124','gig_1991_film_125','gig_1991_tv_125','gig_1991_film_126','gig_1991_film_127','gig_1992_film_120','gig_1992_tv_120','gig_1991_tv_126','gig_1991_tv_127'];
-const SIDE13 = ['gig_1990_tv_114','gig_1990_tv_115','gig_1990_tv_116','gig_1990_tv_117','gig_1990_tv_118',
-  'gig_1990_rec_112','gig_1990_rec_111','gig_1990_rec_113','gig_1991_rec_111','gig_1991_rec_112',
-  'gig_1990_film_116','gig_1990_film_117','gig_1990_film_115'];
-ok('T0 新庫 267 張', gigs.length===267, 'n='+gigs.length);
+/* ---------- T0：44 張 id 齊＋新庫 269 張 ---------- */
+const MAIN31 = ['gig_1990_tv_201','gig_1990_film_201','gig_1990_film_202','gig_1990_tv_202','gig_1990_tv_203','gig_1990_tv_204','gig_1990_ad_206','gig_1990_film_203','gig_1990_tv_205','gig_1990_tv_206','gig_1990_tv_107','gig_1990_film_113','gig_1990_tv_208','gig_1990_tv_110',
+  'gig_1991_film_104','gig_1991_tv_107','gig_1991_tv_201','gig_1991_variety_109','gig_1991_rec_205','gig_1991_rec_206','gig_1991_film_103','gig_1991_film_201','gig_1991_film_105','gig_1991_film_202','gig_1991_tv_202','gig_1991_film_106','gig_1991_film_107','gig_1992_film_201','gig_1992_tv_103','gig_1991_tv_104','gig_1991_tv_105'];
+/* v252 真相：ENC79 9 張＋DRAFT 2 張舊 id 已隨全庫重編號消失，新庫無接班者（同名舊作已刪）；
+   GRANT229_ENC79／GRANT229_DRAFT 喺 index.html 未更新，仲指住呢 11 張死 id——實機初遇／draft 即派死。
+   呢度釘死「11 張死、邊 11 張死」，唔係當佢哋存在；修復要改 index.html 映射（唔係測試範圍）。 */
+const SIDE_DEAD11 = ['gig_1990_tv_114','gig_1990_tv_115','gig_1990_tv_116',
+  'gig_1990_rec_112','gig_1990_rec_111','gig_1990_rec_113',
+  'gig_1990_film_116','gig_1990_film_117','gig_1990_film_115',
+  'gig_1991_rec_111','gig_1991_rec_112'];
+const SIDE_W3_2 = ['gig_1990_tv_209','gig_1990_tv_210'];
+ok('T0 新庫 269 張', gigs.length===269, 'n='+gigs.length);
 ok('T0 主線 31 張 id 齊', MAIN31.every(id=>!!gigById(id)));
-ok('T0 支線 13 張 id 齊', SIDE13.every(id=>!!gigById(id)));
-ok('T0 《星夜迷離》新庫有且只有 1 張（v232 補寫）', gigs.filter(g=>(g.title||'').indexOf('星夜迷離')>=0).length===1 && gigById('gig_1991_tv_122'));
+ok('T0 支線 W3 2 張 id 齊', SIDE_W3_2.every(id=>!!gigById(id)));
+ok('T0 ENC79／DRAFT 11 張舊 id 已唔喺新庫（index.html 映射未更新，見註）', SIDE_DEAD11.every(id=>!gigById(id)),
+   'dead=' + SIDE_DEAD11.filter(id=>!gigById(id)).length + '/11');
+ok('T0 ENC79 9 行仲指住死 id（映射未更新，釘死）', GRANT229_ENC79.every(r=>SIDE_DEAD11.indexOf(r.gigId)>=0));
+ok('T0 DRAFT 2 鍵仲指住死 id（映射未更新，釘死）', Object.values(GRANT229_DRAFT).every(v=>SIDE_DEAD11.indexOf(v.gigId)>=0));
+ok('T0 《星夜迷離》新庫有且只有 1 張（v232 補寫，v252 重編號 tv_122→tv_203）', gigs.filter(g=>(g.title||'').indexOf('星夜迷離')>=0).length===1 && gigById('gig_1991_tv_203'));
 ok('T0 GRANT229_CHOICE 34 鍵', Object.keys(GRANT229_CHOICE).length===34, Object.keys(GRANT229_CHOICE).join(','));
 ok('T0 GRANT229_ENC79 9 行', GRANT229_ENC79.length===9);
 ok('T0 GRANT229_DRAFT 2 鍵', Object.keys(GRANT229_DRAFT).length===2);
-ok('T0 CONTRACT229_GIGS 只得 N-3／N-4', Object.keys(CONTRACT229_GIGS).length===2 && CONTRACT229_GIGS.gig_1990_tv_105===1 && CONTRACT229_GIGS.gig_1990_film_110===1);
+ok('T0 CONTRACT229_GIGS 只得 N-3／N-4', Object.keys(CONTRACT229_GIGS).length===2 && CONTRACT229_GIGS.gig_1990_tv_107===1 && CONTRACT229_GIGS.gig_1990_film_113===1);
 
 /* ---------- T1：主線 32 映射 ---------- */
 function choiceMaps(nodeId, choiceId, wantGig){
@@ -130,38 +145,38 @@ function choiceMaps(nodeId, choiceId, wantGig){
   const q = S.grant229Queue;
   return r && q.length===1 && q[0].gigId===wantGig && q[0].dueDay===11;
 }
-ok('T1 N1_a→tv_124', choiceMaps('N1','N1_a','gig_1990_tv_124'));
-ok('T1 N1_b→film_124', choiceMaps('N1','N1_b','gig_1990_film_124'));
-ok('T1 N2_a→film_125', choiceMaps('N2','N2_a','gig_1990_film_125'));
-ok('T1 N2_b→tv_125', choiceMaps('N2','N2_b','gig_1990_tv_125'));
-ok('T1 N3_a→tv_127', choiceMaps('N3','N3_a','gig_1990_tv_127'));
-ok('T1 N3_b→tv_128', choiceMaps('N3','N3_b','gig_1990_tv_128'));
-ok('T1 N4_a 拒絕→ad_117', choiceMaps('N4','N4_a','gig_1990_ad_117'));
-ok('T1 N4_b 接下→film_114', choiceMaps('N4','N4_b','gig_1990_film_114'));
-ok('T1 N5_a→tv_130', choiceMaps('N5','N5_a','gig_1990_tv_130'));
-ok('T1 N5_b→tv_130（與 N5_a 共享）', choiceMaps('N5','N5_b','gig_1990_tv_130'));
-ok('T1 N5_c→tv_131', choiceMaps('N5','N5_c','gig_1990_tv_131'));
-ok('T1 N6_a→tv_105（合約）', choiceMaps('N6','N6_a','gig_1990_tv_105'));
-ok('T1 N6F_a→film_110（合約）', choiceMaps('N6F','N6F_a','gig_1990_film_110'));
-ok('T1 N18_a 學幕後→tv_121', choiceMaps('N18','N18_a','gig_1990_tv_121'));
-ok('T1 N18_b 專心幕前→tv_129', choiceMaps('N18','N18_b','gig_1990_tv_129'));
-ok('T1 N7_a 救場→film_122', choiceMaps('N7','N7_a','gig_1991_film_122'));
-ok('T1 N7_b 保妝→tv_123', choiceMaps('N7','N7_b','gig_1991_tv_123'));
-ok('T1 N7_c 兩頭→tv_124', choiceMaps('N7','N7_c','gig_1991_tv_124'));
+ok('T1 N1_a→tv_201', choiceMaps('N1','N1_a','gig_1990_tv_201'));
+ok('T1 N1_b→film_201', choiceMaps('N1','N1_b','gig_1990_film_201'));
+ok('T1 N2_a→film_202', choiceMaps('N2','N2_a','gig_1990_film_202'));
+ok('T1 N2_b→tv_202', choiceMaps('N2','N2_b','gig_1990_tv_202'));
+ok('T1 N3_a→tv_203', choiceMaps('N3','N3_a','gig_1990_tv_203'));
+ok('T1 N3_b→tv_204', choiceMaps('N3','N3_b','gig_1990_tv_204'));
+ok('T1 N4_a 拒絕→ad_206', choiceMaps('N4','N4_a','gig_1990_ad_206'));
+ok('T1 N4_b 接下→film_203', choiceMaps('N4','N4_b','gig_1990_film_203'));
+ok('T1 N5_a→tv_205', choiceMaps('N5','N5_a','gig_1990_tv_205'));
+ok('T1 N5_b→tv_205（與 N5_a 共享）', choiceMaps('N5','N5_b','gig_1990_tv_205'));
+ok('T1 N5_c→tv_206', choiceMaps('N5','N5_c','gig_1990_tv_206'));
+ok('T1 N6_a→tv_107（合約）', choiceMaps('N6','N6_a','gig_1990_tv_107'));
+ok('T1 N6F_a→film_113（合約）', choiceMaps('N6F','N6F_a','gig_1990_film_113'));
+ok('T1 N18_a 學幕後→tv_208', choiceMaps('N18','N18_a','gig_1990_tv_208'));
+ok('T1 N18_b 專心幕前→tv_110', choiceMaps('N18','N18_b','gig_1990_tv_110'));
+ok('T1 N7_a 救場→film_104', choiceMaps('N7','N7_a','gig_1991_film_104'));
+ok('T1 N7_b 保妝→tv_107', choiceMaps('N7','N7_b','gig_1991_tv_107'));
+ok('T1 N7_c 兩頭→tv_201', choiceMaps('N7','N7_c','gig_1991_tv_201'));
 ok('T1 N8_a 掩護→variety_109', choiceMaps('N8','N8_a','gig_1991_variety_109'));
-ok('T1 N8_b 爆料→rec_117', choiceMaps('N8','N8_b','gig_1991_rec_117'));
-ok('T1 N8_c 引開→rec_118', choiceMaps('N8','N8_c','gig_1991_rec_118'));
-ok('T1 N9_a 認橋→film_107（重用廖炳星引薦 gig）', choiceMaps('N9','N9_a','gig_1991_film_107'));
-ok('T1 N9_b 背景→film_123', choiceMaps('N9','N9_b','gig_1991_film_123'));
-ok('T1 N10_a 追數→film_124', choiceMaps('N10','N10_a','gig_1991_film_124'));
-ok('T1 N10_b 出頭→film_125', choiceMaps('N10','N10_b','gig_1991_film_125'));
-ok('T1 N10_c 拖→tv_125', choiceMaps('N10','N10_c','gig_1991_tv_125'));
-ok('T1 N11_a 黑幫→film_126', choiceMaps('N11','N11_a','gig_1991_film_126'));
-ok('T1 N11_b 探長→film_127', choiceMaps('N11','N11_b','gig_1991_film_127'));
-ok('T1 N12_a 跳→film_120', choiceMaps('N12','N12_a','gig_1992_film_120'));
-ok('T1 N12_b 拒接→tv_120', choiceMaps('N12','N12_b','gig_1992_tv_120'));
-ok('T1 N19_a 本份→tv_126', choiceMaps('N19','N19_a','gig_1991_tv_126'));
-ok('T1 N19_b 偷師→tv_127', choiceMaps('N19','N19_b','gig_1991_tv_127'));
+ok('T1 N8_b 爆料→rec_205', choiceMaps('N8','N8_b','gig_1991_rec_205'));
+ok('T1 N8_c 引開→rec_206', choiceMaps('N8','N8_c','gig_1991_rec_206'));
+ok('T1 N9_a 認橋→film_103（重用廖炳星引薦 gig）', choiceMaps('N9','N9_a','gig_1991_film_103'));
+ok('T1 N9_b 背景→film_201', choiceMaps('N9','N9_b','gig_1991_film_201'));
+ok('T1 N10_a 追數→film_105', choiceMaps('N10','N10_a','gig_1991_film_105'));
+ok('T1 N10_b 出頭→film_202', choiceMaps('N10','N10_b','gig_1991_film_202'));
+ok('T1 N10_c 拖→tv_202', choiceMaps('N10','N10_c','gig_1991_tv_202'));
+ok('T1 N11_a 黑幫→film_106', choiceMaps('N11','N11_a','gig_1991_film_106'));
+ok('T1 N11_b 探長→film_107', choiceMaps('N11','N11_b','gig_1991_film_107'));
+ok('T1 N12_a 跳→film_201', choiceMaps('N12','N12_a','gig_1992_film_201'));
+ok('T1 N12_b 拒接→tv_103', choiceMaps('N12','N12_b','gig_1992_tv_103'));
+ok('T1 N19_a 本份→tv_104', choiceMaps('N19','N19_a','gig_1991_tv_104'));
+ok('T1 N19_b 偷師→tv_105', choiceMaps('N19','N19_b','gig_1991_tv_105'));
 freshS(10);
 ok('T1 N6_b 唔接→唔派', grant229RecordFromChoice({id:'N6'},{id:'N6_b'})===false && S.grant229Queue.length===0);
 freshS(10);
@@ -170,32 +185,47 @@ freshS(10);
 ok('T1 無關抉擇→唔派', grant229RecordFromChoice({id:'N13'},{id:'N13_a'})===false && S.grant229Queue.length===0);
 
 /* ---------- T2：支線 11 live 映射＋2 draft dormant ---------- */
-function enc79Maps(seg, label, wantGig){
+/* v252：ENC79 映射表本身未改，9 個初遇映射仲指住舊 id；但目標 gig 已唔喺新庫，
+   grant229Record（有存在檢查）會拒絕，實機初遇派唔出。呢度分兩層驗：
+   (a) 映射表揀啱邊張（跟 grant229RecordFromEnc79 同一規則：關鍵字命中，否則兜底最後一行空 key）；
+   (b) 實機 record 拒絕（唔派空頭支票，queue 空）。修復要改 index.html 映射指向新庫 gig。 */
+function enc79Pick(seg, label){
+  const rows = GRANT229_ENC79.filter(r=>r && r.seg===seg);
+  for(let i=0;i<rows.length;i++){ const k = String(rows[i].key||''); if(k && label.indexOf(k)>=0) return rows[i].gigId; }
+  const fb = rows[rows.length-1];
+  return (fb && !String(fb.key||'')) ? fb.gigId : null;
+}
+function enc79Dead(seg, label){
   freshS(10);
   const r = grant229RecordFromEnc79(seg, label);
-  const q = S.grant229Queue;
-  return r && q.length===1 && q[0].gigId===wantGig && q[0].dueDay===11;
+  return r===false && S.grant229Queue.length===0;
 }
-ok('T2 廖 笑出聲→tv_114', enc79Maps('first:liu_bingxing','忍唔住笑出聲','gig_1990_tv_114'));
-ok('T2 廖 好笑→tv_115', enc79Maps('first:liu_bingxing','大膽講邊句橋好笑啲','gig_1990_tv_115'));
-ok('T2 廖 簽名（兜底）→tv_116', enc79Maps('first:liu_bingxing','想攞簽名影相留念','gig_1990_tv_116'));
-ok('T2 顧 聽舊歌→rec_112', enc79Maps('first:gu_mingfai','靜靜站在那裡，聽他哼完那段舊歌','gig_1990_rec_112'));
-ok('T2 顧 打招呼→rec_111', enc79Maps('first:gu_mingfai','點頭打個招呼，不打擾','gig_1990_rec_111'));
-ok('T2 顧 走先（兜底）→rec_113', enc79Maps('first:gu_mingfai','先走，不要讓人見到我和他站在一起','gig_1990_rec_113'));
-ok('T2 麥 放低支水→film_116', enc79Maps('first:mak_zhendong','放低支水喺佢身邊就走','gig_1990_film_116'));
-ok('T2 麥 堅持遞到手→film_117', enc79Maps('first:mak_zhendong','堅持遞到佢手','gig_1990_film_117'));
-ok('T2 麥 問傷勢（兜底）→film_115', enc79Maps('first:mak_zhendong','開口問佢傷勢','gig_1990_film_115'));
+const ENC79_CASES = [
+  ['first:liu_bingxing','忍唔住笑出聲','gig_1990_tv_114'],
+  ['first:liu_bingxing','大膽講邊句橋好笑啲','gig_1990_tv_115'],
+  ['first:liu_bingxing','想攞簽名影相留念','gig_1990_tv_116'],
+  ['first:gu_mingfai','靜靜站在那裡，聽他哼完那段舊歌','gig_1990_rec_112'],
+  ['first:gu_mingfai','點頭打個招呼，不打擾','gig_1990_rec_111'],
+  ['first:gu_mingfai','先走，不要讓人見到我和他站在一起','gig_1990_rec_113'],
+  ['first:mak_zhendong','放低支水喺佢身邊就走','gig_1990_film_116'],
+  ['first:mak_zhendong','堅持遞到佢手','gig_1990_film_117'],
+  ['first:mak_zhendong','開口問佢傷勢','gig_1990_film_115']
+];
+ENC79_CASES.forEach(c=>{
+  ok('T2 初遇映射揀啱 ' + c[2] + '（' + c[0] + '）', enc79Pick(c[0], c[1])===c[2]);
+  ok('T2 初遇實機派唔出（目標已唔喺庫，record 拒絕）' + c[2], enc79Dead(c[0], c[1]));
+});
 freshS(10);
-ok('T2 廖 Beat2 a→tv_117', grant229RecordFromChoice({id:'W3_ho_liao'},{id:'W3_ho_liao_a'}) && S.grant229Queue[0].gigId==='gig_1990_tv_117');
+ok('T2 廖 Beat2 a→tv_209', grant229RecordFromChoice({id:'W3_ho_liao'},{id:'W3_ho_liao_a'}) && S.grant229Queue[0].gigId==='gig_1990_tv_209');
 freshS(10);
-ok('T2 廖 Beat2 b→tv_118', grant229RecordFromChoice({id:'W3_ho_liao'},{id:'W3_ho_liao_b'}) && S.grant229Queue[0].gigId==='gig_1990_tv_118');
+ok('T2 廖 Beat2 b→tv_210', grant229RecordFromChoice({id:'W3_ho_liao'},{id:'W3_ho_liao_b'}) && S.grant229Queue[0].gigId==='gig_1990_tv_210');
 ok('T2 draft 兩張 1991 和音喺 GRANT229_DRAFT', GRANT229_DRAFT.gu_promise_clean.gigId==='gig_1991_rec_111' && GRANT229_DRAFT.gu_ask_back.gigId==='gig_1991_rec_112');
 freshS(10);
 grant229RecordFromEnc79('first:gu_mingfai','靜靜站在那裡，聽他哼完那段舊歌');
-ok('T2 draft 唔經初遇 hook 觸發（1991 id 唔會由 enc79 派）', S.grant229Queue.length===1 && S.grant229Queue[0].gigId==='gig_1990_rec_112');
+ok('T2 draft 唔經初遇 hook 觸發（目標已死，queue 空，1991 draft id 更加唔會出現）', S.grant229Queue.length===0);
 ok('T2 html 入面 grant229RecordDraft 得定義＋註解，唔經任何 hook 呼叫', (html.split('grant229RecordDraft(').length-1)===2);
 freshS(10);
-ok('T2 draft 入口本身行得通（日後抉擇實裝即啟用）', grant229RecordDraft('gu_promise_clean') && S.grant229Queue[0].gigId==='gig_1991_rec_111');
+ok('T2 draft 目標已唔喺庫 → 入口拒絕（唔派空頭支票）', grant229RecordDraft('gu_promise_clean')===false && S.grant229Queue.length===0);
 ok('T2 draft 錯 key→false', grant229RecordDraft('gu_nope')===false);
 
 /* ---------- T3：冪等 ---------- */
@@ -203,7 +233,7 @@ freshS(10);
 grant229RecordFromChoice({id:'N4'},{id:'N4_b'});
 ok('T3 同一張記低兩次得一筆', grant229RecordFromChoice({id:'N4'},{id:'N4_b'})===false && S.grant229Queue.length===1);
 freshS(10);
-grant229Record('gig_1990_film_114','N4','test');
+grant229Record('gig_1990_film_203','N4','test');
 S.dayIndex = 11;
 let stepCalls = 0;
 ok('T3 派發一次', grant229PresentDue(()=>{ stepCalls++; })===true && stepCalls===1 && S.grant229Queue.length===0);
@@ -214,56 +244,56 @@ freshS(10);
 grant229RecordFromChoice({id:'N4'},{id:'N4_b'});
 ok('T4 今日 dueList 空', grant229DueList().length===0);
 S.dayIndex = 11;
-ok('T4 聽日 dueList 有', grant229DueList().length===1 && grant229DueList()[0].gigId==='gig_1990_film_114');
+ok('T4 聽日 dueList 有', grant229DueList().length===1 && grant229DueList()[0].gigId==='gig_1990_film_203');
 
 /* ---------- T5：派發守衛 ---------- */
 function guardCase(setup){
   freshS(10);
-  grant229Record('gig_1990_film_114','N4','test');
+  grant229Record('gig_1990_film_203','N4','test');
   S.dayIndex = 11;
   setup();
   modalCalls = 0; stepCalls = 0;
   const r = grant229PresentDue(()=>{ stepCalls++; });
   return { r:r, q:S.grant229Queue.length, modal:modalCalls, step:stepCalls, shoots:S.shoots.length };
 }
-let g = guardCase(()=>{ S.flags['done_gig_1990_film_114']=1; });
+let g = guardCase(()=>{ S.flags['done_gig_1990_film_203']=1; });
 ok('T5 已殺青→跳過', g.r===false && g.q===0 && g.modal===0 && g.shoots===0);
-g = guardCase(()=>{ S.shoots.push({id:'sh_x', gigId:'gig_1990_film_114'}); });
+g = guardCase(()=>{ S.shoots.push({id:'sh_x', gigId:'gig_1990_film_203'}); });
 ok('T5 拍攝中→跳過', g.r===false && g.q===0 && g.modal===0 && g.shoots===1);
-g = guardCase(()=>{ S.pendingAud.push({gigId:'gig_1990_film_114'}); });
+g = guardCase(()=>{ S.pendingAud.push({gigId:'gig_1990_film_203'}); });
 ok('T5 等消息中→跳過', g.r===false && g.q===0 && g.modal===0);
-g = guardCase(()=>{ S.booked.push({gigId:'gig_1990_film_114'}); });
+g = guardCase(()=>{ S.booked.push({gigId:'gig_1990_film_203'}); });
 ok('T5 已預約試鏡→跳過', g.r===false && g.q===0 && g.modal===0);
 freshS(10);
-grant229Record('gig_1990_film_114','N4','test');
+grant229Record('gig_1990_film_203','N4','test');
 S.dayIndex = 11;
 S.grant229Queue[0].gigId = 'gig_no_such';
 modalCalls = 0;
 ok('T5 gig 唔存在→跳過', grant229PresentDue(()=>{})===false && S.grant229Queue.length===0 && modalCalls===0);
 
-/* ---------- T5b：N9_a 防撞——107 同時係廖炳星引薦 gig（trigger credit_enc79_liu_priority）。
-   已持有／已殺青嗰陣，第二朝即派靜默跳過，唔重派／唔出電話（見 V251_C_REPORT §2） ---------- */
+/* ---------- T5b：N9_a 防撞——film_103 同時係廖炳星引薦 gig（trigger credit_enc79_liu_priority）。
+   已持有／已殺青嗰陣，第二朝即派靜默跳過，唔重派／唔出電話（見 V251_C_REPORT §2；v252 重編號 107→103） ---------- */
 freshS(10);
 grant229RecordFromChoice({id:'N9'},{id:'N9_a'});
 S.dayIndex = 11;
-S.shoots.push({id:'sh_107', gigId:'gig_1991_film_107'});
+S.shoots.push({id:'sh_103', gigId:'gig_1991_film_103'});
 modalCalls = 0; stepCalls = 0;
-ok('T5b N9_a 107 已持有（引薦攞咗）→跳過', grant229PresentDue(()=>{ stepCalls++; })===false && S.grant229Queue.length===0 && modalCalls===0 && stepCalls===0);
+ok('T5b N9_a 103 已持有（引薦攞咗）→跳過', grant229PresentDue(()=>{ stepCalls++; })===false && S.grant229Queue.length===0 && modalCalls===0 && stepCalls===0);
 freshS(10);
 grant229RecordFromChoice({id:'N9'},{id:'N9_a'});
 S.dayIndex = 11;
-S.flags['done_gig_1991_film_107']=1;
+S.flags['done_gig_1991_film_103']=1;
 modalCalls = 0; stepCalls = 0;
-ok('T5b N9_a 107 已殺青→跳過', grant229PresentDue(()=>{ stepCalls++; })===false && S.grant229Queue.length===0 && modalCalls===0 && stepCalls===0);
+ok('T5b N9_a 103 已殺青→跳過', grant229PresentDue(()=>{ stepCalls++; })===false && S.grant229Queue.length===0 && modalCalls===0 && stepCalls===0);
 
 /* ---------- T6：合約條款 ---------- */
-let t6a = contract229Terms(gigById('gig_1990_tv_105'));
+let t6a = contract229Terms(gigById('gig_1990_tv_107'));
 ok('T6 N-3 2 週×$4,900＝$9,800', t6a && t6a.weeks===2 && t6a.weeklyPay===4900 && t6a.totalPay===9800, JSON.stringify(t6a));
-let t6b = contract229Terms(gigById('gig_1990_film_110'));
-ok('T6 N-4 2 週×$4,200＝$8,400', t6b && t6b.weeks===2 && t6b.weeklyPay===4200 && t6b.totalPay===8400, JSON.stringify(t6b));
-let t6c = grant229HireTerms(gigById('gig_1990_film_114'));
-ok('T6 普通通告：簽約金三成、聲望中位數', t6c && t6c.contract===false && t6c.pay===600 && t6c.signPay===180 && t6c.fame===12, JSON.stringify(t6c));
-let t6d = grant229HireTerms(gigById('gig_1990_tv_105'));
+let t6b = contract229Terms(gigById('gig_1990_film_113'));
+ok('T6 N-4 2 週×$3,900＝$7,800（pay [7200,8400] 中位 7800／12 日 2 週）', t6b && t6b.weeks===2 && t6b.weeklyPay===3900 && t6b.totalPay===7800, JSON.stringify(t6b));
+let t6c = grant229HireTerms(gigById('gig_1990_film_203'));
+ok('T6 普通通告：簽約金三成、聲望中位數（pay [550,650] 中位 600／fame [5,10] 中位 8）', t6c && t6c.contract===false && t6c.pay===600 && t6c.signPay===180 && t6c.fame===8, JSON.stringify(t6c));
+let t6d = grant229HireTerms(gigById('gig_1990_tv_107'));
 ok('T6 合約通告：無簽約金、帶週糧條款', t6d && t6d.contract===true && t6d.signPay===0 && t6d.weeks===2 && t6d.weeklyPay===4900 && t6d.totalPay===9800, JSON.stringify(t6d));
 
 /* ---------- T7：週結算 ---------- */
@@ -277,7 +307,7 @@ function contractSetup(gigId){
   contract229Start(gig, sh, terms);
   return { gig:gig, sh:sh, c:S.contracts229[0] };
 }
-let s7 = contractSetup('gig_1990_tv_105');
+let s7 = contractSetup('gig_1990_tv_107');
 ok('T7 合約紀錄開咗（active）', s7.c && s7.c.status==='active' && s7.c.weeks===2 && s7.c.weeklyPay===4900);
 ok('T7 無拍攝進展→唔出糧', contract229WeeklyTick()===0 && S.money===12000 && s7.c.paidTotal===0);
 s7.sh.doneDays = 5;
@@ -286,27 +316,27 @@ ok('T7 同一進展再 tick→唔重複出', contract229WeeklyTick()===0 && S.mo
 s7.sh.doneDays = 14;
 ok('T7 第二週進展→出第二週糧，總額 $9,800 封頂', contract229WeeklyTick()===1 && S.money===21800 && s7.c.paidTotal===9800);
 ok('T7 付清後再 tick→0（唔超總額）', contract229WeeklyTick()===0 && S.money===21800);
-let s7b = contractSetup('gig_1990_film_110');
+let s7b = contractSetup('gig_1990_film_113');
 s7b.sh.doneDays = 6;
 contract229WeeklyTick();
-ok('T7 N-4 第一週 $4,200', S.money===16200 && s7b.c.paidTotal===4200);
+ok('T7 N-4 第一週 $3,900', S.money===15900 && s7b.c.paidTotal===3900);
 S.shoots = [];
 contract229WeeklyTick();
 ok('T7 shoot 消失→合約閂埋（ended）', s7b.c.status==='ended');
 
 /* ---------- T8：殺青尾糧 ---------- */
-let s8 = contractSetup('gig_1990_tv_105');
+let s8 = contractSetup('gig_1990_tv_107');
 s8.sh.doneDays = 7; contract229WeeklyTick(); /* 已付一半 $4,900 */
 ok('T8 已付一半→殺青尾糧一半 $4,900', contract229WrapRemainder(s8.sh)===4900);
 ok('T8 殺青後合約 done', s8.c.status==='done');
 ok('T8 尾糧字句講尾糧唔講餘額', payWrapNote(s8.sh).indexOf('尾糧')>=0 && payWrapNote(s8.sh).indexOf('餘額')<0, payWrapNote(s8.sh));
 ok('T8 拍攝卡字句講長期合約＋週糧', contract229CardLine(s8.sh).indexOf('長期合約')>=0 && contract229CardLine(s8.sh).indexOf('每週')>=0, contract229CardLine(s8.sh));
 ok('T8 再計尾糧→0', contract229WrapRemainder(s8.sh)===0);
-let s8b = contractSetup('gig_1990_film_110');
-s8b.sh.doneDays = 6; contract229WeeklyTick(); /* 第一週 $4,200 */
-s8b.sh.doneDays = 12; contract229WeeklyTick(); /* 第二週 $4,200，付清 */
+let s8b = contractSetup('gig_1990_film_113');
+s8b.sh.doneDays = 6; contract229WeeklyTick(); /* 第一週 $3,900 */
+s8b.sh.doneDays = 12; contract229WeeklyTick(); /* 第二週 $3,900，付清 */
 ok('T8 付清→殺青尾糧 0', contract229WrapRemainder(s8b.sh)===0 && s8b.c.status==='done');
-ok('T8 非合約 shoot→尾糧 0', contract229WrapRemainder({gigId:'gig_1990_film_114'})===0);
+ok('T8 非合約 shoot→尾糧 0', contract229WrapRemainder({gigId:'gig_1990_film_203'})===0);
 
 /* ---------- T9／T10：派發全程＋唔經試鏡 ---------- */
 freshS(10);
@@ -315,8 +345,8 @@ S.dayIndex = 11; modalCalls = 0; stepCalls = 0; lastModal = null; lastToast = nu
 ok('T9 普通通告：何生電話呈現', grant229PresentDue(()=>{ stepCalls++; })===true && modalCalls===1 && stepCalls===1);
 ok('T9 modal 講何生來電＋簽約金', lastModal && lastModal.html.indexOf('何生來電')>=0 && lastModal.html.indexOf('簽約金')>=0);
 ok('T9 簽約金 $180 已入帳', S.money===12180 && S.weekEarn===180);
-ok('T9 shoot 入行程（signedPaid＝三成）', S.shoots.length===1 && S.shoots[0].gigId==='gig_1990_film_114' && S.shoots[0].signedPaid===180 && !S.shoots[0].contract229);
-ok('T9 獲聘後 isGigConsumed true（板面鎖死）', isGigConsumed(gigById('gig_1990_film_114'))===true);
+ok('T9 shoot 入行程（signedPaid＝三成）', S.shoots.length===1 && S.shoots[0].gigId==='gig_1990_film_203' && S.shoots[0].signedPaid===180 && !S.shoots[0].contract229);
+ok('T9 獲聘後 isGigConsumed true（板面鎖死）', isGigConsumed(gigById('gig_1990_film_203'))===true);
 ok('T10 派發唔經試鏡（pendingAud／booked 皆空）', S.pendingAud.length===0 && S.booked.length===0);
 ok('T10 toast 有通告名', lastToast && lastToast.indexOf('水塘夜戲')>=0, String(lastToast));
 
@@ -328,7 +358,7 @@ ok('T9 合約 modal 講長期合約＋每週出糧', lastModal && lastModal.html
 ok('T9 合約：無簽約金入帳', S.money===12000 && S.weekEarn===0);
 ok('T9 合約 shoot 有 contract229（2 週×$4,900）', S.shoots.length===1 && S.shoots[0].contract229 && S.shoots[0].contract229.weeks===2 && S.shoots[0].contract229.weeklyPay===4900 && S.shoots[0].signedPaid===0);
 ok('T9 合約紀錄 active', S.contracts229.length===1 && S.contracts229[0].status==='active' && S.contracts229[0].totalPay===9800);
-ok('T9 合約獲聘後 isGigConsumed true', isGigConsumed(gigById('gig_1990_tv_105'))===true);
+ok('T9 合約獲聘後 isGigConsumed true', isGigConsumed(gigById('gig_1990_tv_107'))===true);
 ok('T10 合約派發唔經試鏡', S.pendingAud.length===0 && S.booked.length===0);
 
 /* ---------- 尾 ---------- */

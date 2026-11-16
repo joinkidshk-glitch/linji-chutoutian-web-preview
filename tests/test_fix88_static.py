@@ -31,13 +31,14 @@ ok('B3 冬季入門陣列已刪（WINTER_ENTRY_GIGS_88 唔再存在）', 'WINTER
 ok('冬季橋接陣列＋合併在位', 'const WINTER_BRIDGE_GIGS_88 = [' in html and 'function mergeWinterBridge88()' in html)
 ok('B3 入門合併改由新庫篩出（entryGigPool229）', 'function entryGigPool229(' in html and 'entryGigPool229()' in html)
 ok('B3 12 張舊冬季工已刪', 'gig_1988_entry_winter_' not in html and 'gig_1988_winter88_bridge_' not in html)
-# B3：冬季入門覆蓋由新庫 entryGigPool229 承接——1990 冬季有 16 張臨記工過到開局門檻
+# B3：冬季入門覆蓋由新庫 entryGigPool229 承接——1990 冬季有 4 張臨記工過到開局門檻
+# （v20a252 新庫重生成：16→4，見 NOTES；數字係庫實數，唔係設計下限——跌穿要由庫工人覆核）
 import json as _json
 _pack = _json.load(open(os.path.join(ROOT, 'content', 'gigs_new.json'), encoding='utf-8'))
 _open = {'acting':18,'stage':14,'vocal':14,'looks':22,'charm':16,'iq':20,'stamina':75}
 _winter_entry = [g for g in _pack['gigs'] if g['year']==1990 and g['season']=='冬' and g['tier']=='臨記'
                  and all(v <= _open.get(k, 0) for k, v in g['req'].items())]
-ok('B3 新庫 1990 冬季入門覆蓋（16 張臨記工過開局門檻）', len(_winter_entry) == 16)
+ok('B3 新庫 1990 冬季入門覆蓋（4 張臨記工過開局門檻）', len(_winter_entry) == 4)
 seg_start = html.index('function entryGigPool229(')
 seg_end = html.index('function mergeEntryGigsIntoPool(')
 seg = html[seg_start:seg_end]

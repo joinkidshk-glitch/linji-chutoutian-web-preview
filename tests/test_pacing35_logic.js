@@ -47,10 +47,12 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
 /* ================================================================
    段一 (a)：P0-2(c)——第 3 週、演技 ~35 嘅真狀態行真通告板
    B3：舊 mid35 兩張工（GIGS36 中階池）已刪；新庫 1990 春季本身就覆蓋
-   演技 19–44 帶（5 張），P0-2(c) 要嘅「第 3 週有進階工可報、又有一步之遙
-   嘅目標」由新庫原生承接——星河板 tv_122（初級／演技 22／3 日）可報、
-   tv_103（魅力 20）鎖住做目標、獅子山板 film_104（初級／演技 32）可報；
+   演技 19–44 帶（3 張），P0-2(c) 要嘅「第 3 週有進階工可報、又有一步之遙
+   嘅目標」由新庫原生承接——星河板 tv_205（初級／演技 22／3 日）可報、
+   variety_207（歌藝 18、gap 4）鎖住做目標、獅子山板 film_111（初級／演技 15）可報；
    mergeMidGigs35 機制留返但池已空，係 no-op。
+   v252：舊 tv_122 已消失（重編號後無此 id）、舊 film_104 改做夏季《水遠山長》、
+   舊 tv_103 改做《一屋人》男配角（演技 15，已可報，唔再係目標）；三個角色全部按新庫重揀。
    ================================================================ */
 (function(){
   var S = { dayIndex: dayIndexOf(1990,3,21), acting:35, iq:22, stamina:120, looks:22, charm:16,
@@ -73,23 +75,23 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   const pack35 = JSON.parse(fs.readFileSync(require('path').join(__dirname, '..', 'content', 'gigs_new.json'), 'utf8'));
   GIGS = pack35.gigs.filter(g => g.year === 1990).map(g => normalizeGigRecord(JSON.parse(JSON.stringify(g))));
 
-  ok('a0 B3：新庫 1990 春季覆蓋演技 19–44 帶（5 張，舊 mid35 要補嘅窿已由新庫原生填補）',
+  ok('a0 B3：新庫 1990 春季覆蓋演技 19–44 帶（3 張，舊 mid35 要補嘅窿已由新庫原生填補）',
     JSON.stringify(GIGS.filter(g=>g.season==='春' && g.req && g.req.acting>18 && g.req.acting<45).map(g=>g.id).sort())
-    === JSON.stringify(['gig_1990_ad_104','gig_1990_film_104','gig_1990_tv_103','gig_1990_tv_104','gig_1990_tv_122']));
+    === JSON.stringify(['gig_1990_ad_105','gig_1990_film_103','gig_1990_tv_205']));
 
   const boardLongmen = gigsForLocSeasonBoard('tvb_longmen', '春');
-  const midA = boardLongmen.find(g=>g.id==='gig_1990_tv_122');
-  ok('a1 mid gig A (tv_122 初級《記者會現場》) on longmen spring board', !!midA);
+  const midA = boardLongmen.find(g=>g.id==='gig_1990_tv_205');
+  ok('a1 mid gig A (tv_205 初級《台前幕後》特約演員) on longmen spring board', !!midA);
   ok('a2 mid gig A auditionable at acting35/iq22/stamina120', !!midA && canAudition(midA).ok===true);
   ok('a3 mid gig A shoot days = 3', !!midA && midA.days===3 && midA.shootDaysHint===3 && effectiveShootDays(midA)===3);
-  const tv103 = boardLongmen.find(g=>g.id==='gig_1990_tv_103');
-  ok('a4 step-up goal still locked at acting35/charm16 (tv_103 魅力 20)', !!tv103 && canAudition(tv103).ok===false);
+  const stepUp = boardLongmen.find(g=>g.id==='gig_1990_variety_207');
+  ok('a4 step-up goal still locked at acting35/vocal14 (variety_207 歌藝 18)', !!stepUp && canAudition(stepUp).ok===false);
 
   const boardLion = gigsForLocSeasonBoard('film_lion', '春');
-  const midB = boardLion.find(g=>g.id==='gig_1990_film_104');
-  ok('a5 mid gig B (film_104 初級《士多風波》) on lion spring board', !!midB);
+  const midB = boardLion.find(g=>g.id==='gig_1990_film_111');
+  ok('a5 mid gig B (film_111 初級《笑聲滿堂紅》男配角) on lion spring board', !!midB);
   ok('a6 mid gig B auditionable at acting35 (gap 0)', !!midB && gigGapTotal34(midB)===0 && canAudition(midB).ok===true);
-  ok('a7 near-miss preserved: tv_103 gap total = 4 (charm 16 -> 20)', !!tv103 && gigGapTotal34(tv103)===4);
+  ok('a7 near-miss preserved: variety_207 gap total = 4 (vocal 14 -> 18)', !!stepUp && gigGapTotal34(stepUp)===4);
 
   const beforeLen = GIGS.length;
   S.dayIndex = dayIndexOf(1991,3,21);

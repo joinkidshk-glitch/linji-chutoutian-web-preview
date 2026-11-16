@@ -1,7 +1,8 @@
 // v20a229 B7：報紙分類 A10＋作品圖規則 A9＋忠告卡 Q6＋stub 債 Q11・邏輯／靜態測試
 // A10 合約（SPEC §2.2.1A＋A10）：新庫 category 係報紙分類權威——作品→named（配角級以上出報），
 //   臨記通告／補拍通告→base（殺青唔出報紙）。press94RoleClass 加 category 先行，唔改通告數據。
-//   逐張驗新庫 267 張（mtv 50 張逐張定分類，唔成批預設）；舊數據（無 category）行返文字／scale 層。
+//   逐張驗新庫 269 張（mtv 34 張逐張定分類，唔成批預設）；舊數據（無 category）行返文字／scale 層。
+//   v252：替身守門行先——9 張作品 roleLabel／title 有「替身」照樣 base（press94RoleClass 註解原文明寫）。
 // A9 合約（v90 規則沿用）：接通告頁面唔出成品海報／主演名；完成後場合（殺青／作品牆／頒獎／結局）
 //   保留海報位。B3 將 poster59Path 轉咗 stub（回 ""，D-12 出圖批先恢復）——呢批唔恢復海報圖。
 // Q6 合約（支線補完 Q6，用戶 2026-11-15 21:43）：憑 rumor_chung_advice 卡，下一次文藝片試鏡
@@ -55,43 +56,48 @@ ok('A10_extract', parts.every(Boolean));
 if(parts.every(Boolean)){
   eval(parts.join('\n'));
   const gigs = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/gigs_new.json'), 'utf8')).gigs;
-  ok('A10_newlib_267', gigs.length===267, 'n='+gigs.length);
-  // 逐張驗：category 作品→named，其餘→base
-  const bad = gigs.filter(g=>press94RoleClass(g)!==(g.category==='作品'?'named':'base'));
-  ok('A10_all267_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
-  ok('A10_named_151_base_116',
-    gigs.filter(g=>press94RoleClass(g)==='named').length===151 &&
-    gigs.filter(g=>press94RoleClass(g)==='base').length===116);
-  // mtv 52 張逐張定分類：22 named（作品）／30 base（臨記通告），逐張對 category（v251：rec_117／rec_118 兩張 mtv 臨記通告）
+  ok('A10_newlib_269', gigs.length===269, 'n='+gigs.length);
+  // 逐張驗：category 作品→named（替身守門 9 張例外→base），其餘→base
+  const isStunt = g=>((g.roleLabel||'').indexOf('替身')>=0 || (g.title||'').replace(/^《[^》]*》/, '').indexOf('替身')>=0);
+  const expectClass = g=>((g.category==='作品' && !isStunt(g)) ? 'named' : 'base');
+  const bad = gigs.filter(g=>press94RoleClass(g)!==expectClass(g));
+  ok('A10_all269_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
+  ok('A10_named_144_base_125',
+    gigs.filter(g=>press94RoleClass(g)==='named').length===144 &&
+    gigs.filter(g=>press94RoleClass(g)==='base').length===125);
+  const stuntWorks = gigs.filter(g=>g.category==='作品' && isStunt(g));
+  ok('A10_stunt_gate_9', stuntWorks.length===9 && stuntWorks.every(g=>press94RoleClass(g)==='base'),
+    stuntWorks.map(g=>g.id).join(','));
+  // mtv 34 張逐張定分類：18 named（作品）／16 base（臨記通告），逐張對 category
   const mtv = gigs.filter(g=>g.roleScale==='mtv');
-  ok('A10_mtv_52', mtv.length===52, 'n='+mtv.length);
-  const mtvBad = mtv.filter(g=>press94RoleClass(g)!==(g.category==='作品'?'named':'base'));
+  ok('A10_mtv_34', mtv.length===34, 'n='+mtv.length);
+  const mtvBad = mtv.filter(g=>press94RoleClass(g)!==expectClass(g));
   ok('A10_mtv_each', mtvBad.length===0, mtvBad.map(g=>g.id).join(','));
-  ok('A10_mtv_22named_30base',
-    mtv.filter(g=>press94RoleClass(g)==='named').length===22 &&
-    mtv.filter(g=>press94RoleClass(g)==='base').length===30);
+  ok('A10_mtv_18named_16base',
+    mtv.filter(g=>press94RoleClass(g)==='named').length===18 &&
+    mtv.filter(g=>press94RoleClass(g)==='base').length===16);
   // 抽 20 張驗分類（含文字層會誤判嗰啲）
   const sample = [
-    ['gig_1990_ad_110', 'base'],   // 臨記通告寫「廣告主角」
-    ['gig_1990_ad_109', 'base'],   // 臨記通告「平面模特兒」
-    ['gig_1992_film_117', 'base'], // 臨記通告 roleLabel「配角」（N13 觸發試鏡場）
-    ['gig_1990_film_121', 'base'], // 臨記通告「搬運工人」
-    ['gig_1990_rec_114', 'base'],  // mtv 臨記「幕後代唱歌手」
-    ['gig_1990_rec_116', 'base'],  // mtv 臨記「酒廊歌手」
-    ['gig_1991_variety_108', 'base'], // 臨記「台慶大騷台上助理」
-    ['gig_1990_variety_107', 'base'], // mtv 臨記歌舞劇助演
-    ['gig_1990_rec_111', 'base'],  // mtv 臨記「和音歌手」
-    ['gig_1990_film_114', 'base'], // N-1 種子，臨記通告
-    ['gig_1990_rec_104', 'named'], // mtv 作品「情歌男主唱」
-    ['gig_1990_rec_106', 'named'], // mtv 作品「搖滾主唱」
-    ['gig_1992_rec_103', 'named'], // mtv 作品「MV男主角」
-    ['gig_1991_film_106', 'named'],// 作品《江河歲月》男配角（文藝片）
-    ['gig_1990_tv_105', 'named'],  // N-3 種子，作品固定配角
-    ['gig_1990_film_110', 'named'],// N-4 種子，作品男配角
-    ['gig_1990_tv_122', 'base'],   // N-2 種子，臨記通告特約演員
-    ['gig_1990_tv_121', 'base'],   // N-5 種子，臨記通告場務助手
-    ['gig_1990_film_120', 'base'], // 文藝 genre 但臨記通告「路人」
-    ['gig_1992_film_104', 'named'],// 作品《離港那天》男配角
+    ['gig_1990_ad_202', 'base'],   // 臨記通告寫「廣告主角」
+    ['gig_1990_ad_201', 'base'],   // 臨記通告「平面模特兒」
+    ['gig_1990_film_103', 'base'], // 作品但「動作替身」→替身守門恒 base（舊 film_117 臨記「配角」已無接班者）
+    ['gig_1990_film_206', 'base'], // 臨記通告「搬運工人」
+    ['gig_1990_rec_202', 'base'],  // mtv 臨記「幕後代唱歌手」
+    ['gig_1990_rec_204', 'base'],  // mtv 臨記「酒廊歌手」
+    ['gig_1991_variety_203', 'base'], // 臨記「台慶大騷台上助理」
+    ['gig_1990_variety_202', 'base'], // 臨記歌舞劇助演（新庫 variety roleScale 已唔係 mtv）
+    ['gig_1990_rec_201', 'base'],  // mtv 臨記「和音歌手」
+    ['gig_1990_film_203', 'base'], // N4_b《水塘夜戲》，臨記通告
+    ['gig_1990_rec_104', 'named'], // mtv 作品「合唱配唱歌手」
+    ['gig_1990_rec_106', 'named'], // mtv 作品「快歌男主唱」
+    ['gig_1992_rec_103', 'named'], // mtv 作品「合唱男歌手」
+    ['gig_1991_film_106', 'named'],// 作品《龍虎夜廟街》男配角
+    ['gig_1990_tv_105', 'named'],  // 作品《夜半來客》武師
+    ['gig_1990_film_110', 'named'],// 作品《鐵血幹探》武打配角
+    ['gig_1990_tv_216', 'base'],   // 臨記通告特約演員
+    ['gig_1990_tv_201', 'base'],   // 臨記通告場務助手
+    ['gig_1990_film_204', 'base'], // 臨記通告「路人」（新庫已無文藝 genre 臨記通告）
+    ['gig_1992_film_104', 'named'],// 作品《笑爆賀歲》男配角
   ];
   const byId = {};
   gigs.forEach(g=>{ byId[g.id]=g; });

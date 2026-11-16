@@ -1,18 +1,20 @@
-// v20a63 頒獎禮群星版・邏輯測試（v20a229 B3 新庫版）：
-// (1) fellows 衍生：新庫 gigs_new.json 嗰年嗰媒介作品＋leadStarId 反查主演，按片酬序、
-//     每星一部、唔用冇 sprite 嘅主演（彭少祺；v81 正名，sprite 對照仍為 null——佢嗰張
-//     1990 廣告片酬最高都要排除，證明係 sprite 排除唔係片酬序）。
-//     D-12 之前 poster59Path 一律回空，fellows 全部 poster:''。
+// v20a63 頒獎禮群星版・邏輯測試（v20a229 B3 新庫版；v20a252 D-v2-2／D-v2-3 cast 模型重寫）：
+// (1) fellows 衍生：只讀嗰年嗰格新庫通告嘅真陣容——電影／電視／廣告讀 cast 四角、
+//     唱片讀 singer、新人獎讀 singer（混合）、最佳司儀讀 host；按片酬序、每星一部、
+//     唔用冇 sprite 嘅主演（程天諾唔入 POSTER59_STAR_IDS）；彭少祺 sprite 已接線，
+//     唔再排除。D-12 之前 poster59Path 一律回空，fellows 全部 poster:''。
 // (2) 玩家自己殺青過嘅作品唔會變對手；年份係顯示年，唔再 +2。
-// (3) 池兜底：真主演唔夠 3 嗰陣（1991 電影女獎得 2 位）→ 紅星池按媒介兜底：加權隨機
-//     （v20a147，頂級紅星機率高啲）、同一 (year, ceremonyId, medium) 可重現（seeded）、
-//     唔重複、唔出程天諾（1990 零出場紅線，池內根本冇佢）。
+// (3) 唔夠 3 個唔兜底（D-v2-2）：池抽（AWARDS63_POOL＋AWARDS63_TIER_WEIGHT＋
+//     awards63WeightedPick）同高俊傑特別名額（v20a178）一併刪除，唔留 dormant——
+//     候選唔夠 3 個就回少過 3 個，assigned 永遠 false；格分流由 catId 經
+//     awards63CatSlot 決定（leadM／leadF／supportM／supportF／singer／newcomer／host）。
 // (4) beats：入圍揭曉唱出得主星名＋作品；得獎＋有海報先有 glamour beat——D-12 之前冇海報，
 //     得獎一律冇 glamour、全長約 11.5 秒（v20a160-m4：加 walkup 2200ms）；入圍落選有
 //     comfort 安慰 beat（v20a147，reveal 之後、out 之前）；旁聽行埋宣佈弧約 9.6 秒，
 //     唱名／揭曉唔寫阿偉（v20a147）。
-// (6) v20a147 加權分佈：枚舉 seeds，頂級星首抽佔比明顯高過均勻分佈。
 // (5) focus cat 揀啱（won 優先 won cat、nominated 揀 nominated cat）。
+// (6) 確定性：同一輸入兩次呼叫結果一致；舊 signature（唔傳 gender／catId）＝傳 ""；
+//     每星只取一部（片酬最高嗰部）。
 // 反證：對 v20a62 index 行 → AWARDS63 函數唔存在 → FAIL。
 // 用法：node tests/test_awards63_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -44,17 +46,17 @@ function extractConst(name){
   throw new Error('const end not found: '+name);
 }
 
-/* ---- 世界：新庫 240 張經真 normalize；真 leadStar59Of／poster59Path／work59WorkOf ---- */
+/* ---- 世界：新庫 269 張經真 normalize；真 leadStar59Of／poster59Path／work59WorkOf ---- */
 const tfA = html.indexOf('/* ==== v20a55 TEXTFIX');
 const tfB = html.indexOf('async function refreshCopyPacksFromDisk(){');
 if(tfA < 0 || tfB <= tfA){ console.log('FAIL TEXTFIX55 block not found'); process.exit(1); }
 const TF_SRC = html.slice(tfA, tfB);
-for(const c of ['POSTER59_STAR_IDS','AWARDS63_POOL','AWARDS63_TIER_WEIGHT','AWARDS204_FEMALE_STARS','EMOJI_ICON112'])
+for(const c of ['POSTER59_STAR_IDS','AWARDS188_CATEGORIES','AWARDS204_FEMALE_STARS','EMOJI_ICON112'])
   eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
 eval(extractConst('GIG_REQ_KEYS88').replace('const GIG_REQ_KEYS88 =', 'var GIG_REQ_KEYS88 ='));
 for(const f of ['normalizeGigRecord','bridge56NormalizeGig','boardNotePlayerOk','looksLikeEraId','humanizeEraId','dur90CalibrateGig',
   'leadStar59Of','poster59Path','work59WorkOf','awards63StarName','awards63AllGigs','awards63GigYear','awards63GigPay',
-  'awards63KeySeed','awards63SeededRng','awards63WeightedPick','awards63Fellows','awards63FocusCat','awards62CeremonyBeats',
+  'awards63CatSlot','awards63HasSprite','awards63Fellows','awards63FocusCat','awards62CeremonyBeats',
   'awards204StarGender','iconHtml112'])
   eval(TF_SRC + '\n' + extractFn(f));
 
@@ -66,47 +68,86 @@ var STORY_WIRE = { gigsByYear: { 1990: null, 1991: null, 1992: null } };
 const CER_FILM = { id:'award_harbour_film', medium:'film', matchTypes:['電影'] };
 const CER_TV   = { id:'award_singho_tv',    medium:'tv',   matchTypes:['電視劇','綜藝'] };
 const CER_AD   = { id:'award_harbour_ad',   medium:'ad',   matchTypes:['廣告'] };
+const CER_MUS  = { id:'award_golddisc_music', medium:'music', matchTypes:['唱片通告'] };
 
-/* ---- (1) 真主演衍生（新庫實數） ---- */
+/* ---- (1) 真陣容衍生（新庫實數，cast／singer／host） ---- */
 S.wrapHistory = [];
 let fl = awards63Fellows(CER_FILM, 1990);
 ok('1990 電影 fellows 有 3 位', fl.length === 3);
-ok('按片酬序：麥震東《雪山劍客》居首', fl[0] && fl[0].star === '麥震東' && fl[0].title === '雪山劍客' && fl[0].starId === 'mak_zhendong' && fl[0].gigId === 'gig_1990_film_112');
-ok('廖炳星只出現一次（取最高 pay 嗰部《冬夜茶樓》，唔係《龍鳳茶樓》／《茶樓新丁》）', fl.filter(f=>f.star==='廖炳星').length === 1 && fl.some(f=>f.title==='冬夜茶樓') && !fl.some(f=>f.title==='龍鳳茶樓') && !fl.some(f=>f.title==='茶樓新丁'));
-ok('第三位係陸柏言《義莊夜話》', fl[2] && fl[2].star === '陸柏言' && fl[2].title === '義莊夜話' && fl[2].gigId === 'gig_1990_film_108');
-ok('真主演 fellows assigned=false', fl.every(f=>f.assigned === false));
+ok('按片酬序：廖炳星《笑匠出山》居首', fl[0] && fl[0].star === '廖炳星' && fl[0].title === '笑匠出山' && fl[0].starId === 'liu_bingxing' && fl[0].gigId === 'gig_1990_film_109');
+ok('廖炳星只出現一次（每星一部，取最高 pay 嗰部）', fl.filter(f=>f.star==='廖炳星').length === 1);
+ok('第三位係麥震東《鐵血拳手》', fl[2] && fl[2].star === '麥震東' && fl[2].title === '鐵血拳手' && fl[2].gigId === 'gig_1990_film_103');
+ok('fellows assigned 一律 false（冇第二輪，唔再有 assigned=true）', fl.every(f=>f.assigned === false));
 ok('D-12 之前 fellows 全部冇海報（poster59Path 回空）', fl.every(f=>f.poster === ''));
 
 let flAd = awards63Fellows(CER_AD, 1990);
-ok('廣告 fellows 唔用冇 sprite 嘅彭少祺（佢嗰張《維港銀行賀年廣告》片酬最高都要排除）',
-  !flAd.some(f=>f.star==='彭少祺') && !flAd.some(f=>f.gigId==='gig_1990_ad_108') && flAd.length === 3 && flAd.every(f=>f.starId));
+ok('廣告 fellows：彭少祺 sprite 已接線，唔再排除（《守望相助》居首）',
+  flAd.length === 3 && flAd[0].star === '彭少祺' && flAd[0].title === '守望相助' && flAd[0].gigId === 'gig_1990_ad_108' && flAd.every(f=>f.starId));
 
 let flTv = awards63Fellows(CER_TV, 1990);
-ok('電視 fellows：麥震東＋陸柏言＋齊鎮海', flTv.length === 3 && flTv[0].star === '麥震東' && flTv[0].title === '火線' && flTv[1].star === '陸柏言' && flTv[2].star === '齊鎮海' && flTv[2].title === '屋企人');
+ok('電視 fellows：陸柏言＋麥震東＋齊鎮海', flTv.length === 3 && flTv[0].star === '陸柏言' && flTv[0].title === '兄弟有義氣' && flTv[1].star === '麥震東' && flTv[1].title === '雷霆幹探' && flTv[2].star === '齊鎮海' && flTv[2].title === '劍嘯山河');
 
 /* ---- (2) 自己作品唔做對手＋年份隔離 ---- */
-S.wrapHistory = [{ gigId:'gig_1990_film_112' }];
+S.wrapHistory = [{ gigId:'gig_1990_film_109' }];
 fl = awards63Fellows(CER_FILM, 1990);
-ok('玩家殺青過嘅《雪山劍客》唔做對手', !fl.some(f=>f.title==='雪山劍客') && fl[0] && fl[0].star === '廖炳星');
+ok('玩家殺青過嘅《笑匠出山》唔做對手', !fl.some(f=>f.title==='笑匠出山') && fl[0] && fl[0].star === '陸柏言');
 S.wrapHistory = [];
 const fl91 = awards63Fellows(CER_FILM, 1991);
 ok('1991 fellows 只用 1991 作品（id 內嵌年份已係顯示年，唔再 +2）',
   fl91.length === 3 && fl91.every(f=>/^gig_1991_/.test(f.gigId)) &&
-  fl91[0].star === '廖炳星' && fl91[0].title === '影壇新星' &&
-  fl91[1].star === '麥震東' && fl91[1].title === '新人第一擊' &&
-  fl91[2].star === '陸柏言' && fl91[2].title === '江河歲月');
+  fl91[0].star === '魏詠男' && fl91[0].title === '劍嘯長空' &&
+  fl91[1].star === '陸柏言' && fl91[1].title === '江河歲月' &&
+  fl91[2].star === '廖炳星' && fl91[2].title === '笑住過肥年・外傳');
+ok('任何 fellows 都唔會係程天諾（唔入 POSTER59_STAR_IDS，冇 sprite）',
+  fl.concat(fl91, flTv, flAd).every(f=>f.star !== '程天諾' && f.starId !== 'ching_tinlok'));
 
-/* ---- (3) 池兜底（1991 電影女獎：真主演得江詩盈一位，魏詠男由池補） ---- */
-const flF91 = awards63Fellows(CER_FILM, 1991, 'f');
-ok('1991 電影女獎得 2 位（江詩盈真主演＋魏詠男池兜底）', flF91.length === 2 &&
-  flF91[0].star === '江詩盈' && flF91[0].starId === 'kong_siying' && flF91[0].assigned === false &&
-  flF91[1].star === '魏詠男' && flF91[1].starId === 'ngai_wingnaam' && flF91[1].assigned === true);
-ok('兜底星喺電影女池內且唔重複', flF91.every(f=>AWARDS63_POOL.film.indexOf(f.starId)>=0) && new Set(flF91.map(f=>f.starId)).size === flF91.length);
-const flF91b = awards63Fellows(CER_FILM, 1991, 'f');
-ok('兜底確定性（兩次呼叫結果一致）', JSON.stringify(flF91) === JSON.stringify(flF91b));
-const poolNames = Object.values(AWARDS63_POOL).flat().map(id=>awards63StarName(id));
-ok('紅星池冇程天諾（紅線）', poolNames.indexOf('程天諾') < 0 && poolNames.every(n=>n));
-ok('任何 fellows 都唔會係程天諾', fl.concat(fl91, flTv, flAd, flF91).every(f=>f.star !== '程天諾'));
+/* ---- (3) 格分流由 catId 決定＋唔夠 3 個唔兜底 ---- */
+const flLeadF = awards63Fellows(CER_FILM, 1990, 'f', 'cat_film_lead_f');
+ok('女主角格：只出女星（鍾楚凝＋胡美琳＋魏詠男）', flLeadF.length === 3 &&
+  flLeadF[0].star === '鍾楚凝' && flLeadF[1].star === '胡美琳' && flLeadF[2].star === '魏詠男' &&
+  flLeadF.every(f=>awards204StarGender(f.starId) === 'f'));
+const flLeadM = awards63Fellows(CER_FILM, 1990, 'm', 'cat_film_lead_m');
+ok('男主角格：只出男星（廖炳星＋陸柏言＋麥震東）', flLeadM.length === 3 &&
+  flLeadM[0].star === '廖炳星' && flLeadM[1].star === '陸柏言' && flLeadM[2].star === '麥震東');
+const flSupM = awards63Fellows(CER_FILM, 1990, 'm', 'cat_film_support_m');
+const flSupF = awards63Fellows(CER_FILM, 1990, 'f', 'cat_film_support_f');
+ok('配角格讀 support 角（男：陸柏言＋麥震東＋齊鎮海；女：韓秀婷＋魏詠男＋鍾楚凝）',
+  flSupM.length === 3 && flSupM[0].star === '陸柏言' && flSupM[1].star === '麥震東' && flSupM[2].star === '齊鎮海' &&
+  flSupF.length === 3 && flSupF[0].star === '韓秀婷' && flSupF[1].star === '魏詠男' && flSupF[2].star === '鍾楚凝');
+ok('主角格同配角格唔同人（格分流，唔係同一份名單）',
+  JSON.stringify(flLeadM.map(f=>f.starId)) !== JSON.stringify(flSupM.map(f=>f.starId)));
+const flHost = awards63Fellows(CER_TV, 1990, '', 'cat_tv_host');
+ok('最佳司儀格讀 host（陸柏言＋彭少祺＋顧明輝，中性唔分性別）', flHost.length === 3 &&
+  flHost[0].star === '陸柏言' && flHost[0].title === '台慶大匯演' &&
+  flHost[1].star === '彭少祺' && flHost[2].star === '顧明輝');
+const flSingF = awards63Fellows(CER_MUS, 1990, 'f', 'cat_music_singer_f');
+ok('女歌手格讀 singer＋singerGender（沈映雪＋韓秀婷＋藍若曦）', flSingF.length === 3 &&
+  flSingF[0].star === '沈映雪' && flSingF[1].star === '韓秀婷' && flSingF[2].star === '藍若曦' &&
+  flSingF.every(f=>awards204StarGender(f.starId) === 'f'));
+const flSingM = awards63Fellows(CER_MUS, 1990, 'm', 'cat_music_singer_m');
+ok('男歌手格讀 singer（顧明輝＋駱家聲＋陸柏言）', flSingM.length === 3 &&
+  flSingM[0].star === '顧明輝' && flSingM[1].star === '駱家聲' && flSingM[2].star === '陸柏言');
+const flNew = awards63Fellows(CER_MUS, 1990, '', 'cat_music_newcomer');
+ok('新人獎讀 singer 混合（男女齊）', flNew.length === 3 &&
+  flNew.some(f=>awards204StarGender(f.starId) === 'f') && flNew.some(f=>awards204StarGender(f.starId) === 'm'));
+/* 唔夠 3 個唔兜底：受限世界得 2 張候選作品 → 回 2 個，唔填數 */
+const savedGigs = GIGS;
+GIGS = packNew.gigs.filter(g=>g.id === 'gig_1990_film_109' || g.id === 'gig_1990_film_110')
+  .map(g=>normalizeGigRecord(JSON.parse(JSON.stringify(g))));
+const flShort = awards63Fellows(CER_FILM, 1990, 'm', 'cat_film_lead_m');
+ok('唔夠 3 個唔兜底（得 2 張候選 → 回 2 個，唔填池星）', flShort.length === 2 &&
+  flShort[0].star === '廖炳星' && flShort[1].star === '陸柏言' && flShort.every(f=>f.assigned === false));
+GIGS = [];
+ok('零候選 → fellows=[]，唔 crash', Array.isArray(awards63Fellows(CER_FILM, 1990)) && awards63Fellows(CER_FILM, 1990).length === 0);
+GIGS = savedGigs;
+const fellowsSrc = extractFn('awards63Fellows');
+ok('fellows 唔用池抽／權重／seeded draw／高俊傑名額（D-v2-2，唔留 dormant）',
+  fellowsSrc.indexOf('AWARDS63_POOL') < 0 && fellowsSrc.indexOf('AWARDS63_TIER_WEIGHT') < 0 &&
+  fellowsSrc.indexOf('awards63WeightedPick') < 0 && fellowsSrc.indexOf('awards63SeededRng') < 0 &&
+  fellowsSrc.indexOf('Math.random') < 0 && fellowsSrc.indexOf('ko_chunkit') < 0);
+ok('AWARDS63_POOL／AWARDS63_TIER_WEIGHT／awards63WeightedPick 已刪（全檔零殘留）',
+  html.indexOf('const AWARDS63_POOL') < 0 && html.indexOf('const AWARDS63_TIER_WEIGHT') < 0 &&
+  html.indexOf('function awards63WeightedPick(') < 0);
 
 /* ---- (5) focus cat ---- */
 const packMix = { bestOutcome:'nominated', categories:[
@@ -151,31 +192,13 @@ const beatsGalF = awards62CeremonyBeats(packGalF);
 ok('旁聽唱名只列對手（有 fellows 嗰陣）', !!(beatsGalF.find(b=>b.id==='names')) && beatsGalF.find(b=>b.id==='names').lines.some(l=>/陸柏言/.test(l)) && !beatsGalF.find(b=>b.id==='names').lines.some(l=>/阿偉/.test(l)));
 ok('旁聽揭曉唱出得主（fellows[0]）', !!(beatsGalF.find(b=>b.id==='reveal')) && /陸柏言/.test(beatsGalF.find(b=>b.id==='reveal').caption) && /《賀歲喜劇笑滿堂》/.test(beatsGalF.find(b=>b.id==='reveal').caption));
 
-/* ---- (6) v20a147 加權隨機分佈 ---- */
-// 頂級＝權重 3（名冊巔峰 1990–92）；首抽理論佔比：film 12/17≈71%、tv 6/10=60%、music 12/13≈92%、ad 6/10=60%。
-// 均勻分佈會係 film 57%、tv 50%、music 80%、ad 40%。枚舉 2000 粒 seed 計實測佔比。
-// （v20a204：film 加江詩盈 ×3、music 加藍若曦／沈映雪 ×3，理論值跟住改；tv／ad 不變。）
-const TIER_TOP147 = new Set(['luk_baakyin','so_jiyan','liu_bingxing','lok_gasing','yip_manji','lan_ruoxi','shum_yingsuet','kong_siying']);
-function firstPickShare147(medium, n){
-  const pool = AWARDS63_POOL[medium];
-  let top = 0;
-  for(let i = 0; i < n; i++){
-    const rng = awards63SeededRng(awards63KeySeed('1991/award_probe_' + medium + '_' + i + '/' + medium));
-    const sid = awards63WeightedPick(pool, {}, rng);
-    if(TIER_TOP147.has(sid)) top++;
-  }
-  return top / n;
-}
-const SHARE147 = { film:[0.71,0.57], tv:[0.60,0.50], music:[0.92,0.80], ad:[0.60,0.40] };
-for(const m of ['film','tv','music','ad']){
-  const s = firstPickShare147(m, 2000);
-  console.log('  加權首抽佔比 ' + m + ': ' + (s*100).toFixed(1) + '%（理論 ' + (SHARE147[m][0]*100).toFixed(0) + '%，均勻 ' + (SHARE147[m][1]*100).toFixed(0) + '%）');
-  ok('加權：' + m + ' 頂級星首抽佔比明顯高過均勻', s > SHARE147[m][1] + 0.05 && Math.abs(s - SHARE147[m][0]) < 0.06);
-}
-ok('加權：同一 key 同一 pick（seeded 可重現）', awards63WeightedPick(AWARDS63_POOL.film, {}, awards63SeededRng(awards63KeySeed('1991/award_harbour_film/film'))) === awards63WeightedPick(AWARDS63_POOL.film, {}, awards63SeededRng(awards63KeySeed('1991/award_harbour_film/film'))));
-ok('加權：唔抽已經用過嘅星', (()=>{ const used = { luk_baakyin:true, liu_bingxing:true, lok_gasing:true }; const got = awards63WeightedPick(AWARDS63_POOL.film, used, awards63SeededRng(12345)); return got && !used[got]; })());
-ok('加權：池抽乾返空字串', awards63WeightedPick(AWARDS63_POOL.tv, { chai_zanhoi:true, yip_manji:true, luk_baakyin:true, chung_choning:true }, awards63SeededRng(1)) === '');
-ok('加權：權重表齊晒池內 13 星', Object.values(AWARDS63_POOL).flat().every(id=>AWARDS63_TIER_WEIGHT[id] != null));
+/* ---- (6) 確定性（冇 seeded draw，同一輸入同一結果） ---- */
+const oldFilm = awards63Fellows(CER_FILM, 1990);
+const oldFilmEmpty = awards63Fellows(CER_FILM, 1990, '');
+ok('舊 signature（唔傳 gender）＝傳 ""（同一結果）', JSON.stringify(oldFilm) === JSON.stringify(oldFilmEmpty));
+ok('舊 signature 兩次呼叫一致（確定性，唔靠 seed）', JSON.stringify(awards63Fellows(CER_FILM, 1991)) === JSON.stringify(awards63Fellows(CER_FILM, 1991)));
+ok('同類別兩次呼叫一致（(gender, catId) 可重現）',
+  JSON.stringify(awards63Fellows(CER_FILM, 1991, 'm', 'cat_film_lead_m')) === JSON.stringify(awards63Fellows(CER_FILM, 1991, 'm', 'cat_film_lead_m')));
 
 console.log('');
 console.log(fails.length ? ('FAILED: '+fails.length+' -> '+fails.join(' | ')) : 'ALL PASS');

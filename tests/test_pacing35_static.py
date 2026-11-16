@@ -11,17 +11,18 @@ def ok(name, cond):
         fails.append(name)
 
 # ---- P0-2(c) 中階通告（B3：舊 mid35 兩張工已刪；新庫 1990 春季本身覆蓋演技 19–44 帶，
-# 星河板 tv_122（初級／演技 22／3 日）可報、tv_103（魅力 20）鎖住做目標、
-# 獅子山板 film_104（初級／演技 32）可報；mergeMidGigs35 機制留返但池已空） ----
+# 星河板 tv_205（初級／演技 22／3 日）可報、variety_207（歌藝 18、gap 4）鎖住做目標、
+# 獅子山板 film_111（初級／演技 15）可報；mergeMidGigs35 機制留返但池已空） ----
+# v252：舊 tv_122 已消失、舊 film_104 改做夏季、舊 tv_103 改做《一屋人》男配角（演技 15，已可報）。
 import json as _json
 import os as _os
 _pack35 = _json.load(open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'content', 'gigs_new.json'), encoding='utf-8'))
 _spring35 = [g for g in _pack35['gigs'] if g['year'] == 1990 and g['season'] == '春']
 ok('mid gigs const present', 'const MID_GIGS_1988_35' in html)
 ok('B3 舊 mid35 工已刪', 'gig_1988_mid35_' not in html)
-ok('B3 新庫春季覆蓋演技 19–44 帶（5 張）', sorted(g['id'] for g in _spring35 if 19 <= g['req'].get('acting', 0) <= 44) == ['gig_1990_ad_104', 'gig_1990_film_104', 'gig_1990_tv_103', 'gig_1990_tv_104', 'gig_1990_tv_122'])
-ok('B3 mid gig A 等價：tv_122 初級／演技 22／3 日', any(g['id'] == 'gig_1990_tv_122' and g['req'].get('acting') == 22 and g['days'] == 3 for g in _spring35))
-ok('B3 mid gig B 等價：film_104 初級／演技 32', any(g['id'] == 'gig_1990_film_104' and g['req'].get('acting') == 32 for g in _spring35))
+ok('B3 新庫春季覆蓋演技 19–44 帶（3 張）', sorted(g['id'] for g in _spring35 if 19 <= g['req'].get('acting', 0) <= 44) == ['gig_1990_ad_105', 'gig_1990_film_103', 'gig_1990_tv_205'])
+ok('B3 mid gig A 等價：tv_205 初級／演技 22／3 日', any(g['id'] == 'gig_1990_tv_205' and g['req'].get('acting') == 22 and g['days'] == 3 for g in _spring35))
+ok('B3 mid gig B 等價：film_111 初級／演技 15（獅子山春板、gap 0）', any(g['id'] == 'gig_1990_film_111' and g['req'].get('acting') == 15 for g in _spring35))
 ok('mergeMidGigs35 defined', 'function mergeMidGigs35(' in html)
 ok('mergeMidGigs35 hooked in board fetch',
    'try{ if(typeof mergeMidGigs35==="function") mergeMidGigs35(); }catch(_m35){}' in html)

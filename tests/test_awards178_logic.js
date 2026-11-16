@@ -1,13 +1,12 @@
-// v20a178 高俊傑上頒獎禮・邏輯測試（入池邏輯部分；sprite／卡片圖像部分等 character 到咗先補）：
-// (1) 1990 年池冇佢：四媒介 × 多個 ceremony id 掃一轉，fellows 入面永遠冇 ko_chunkit／高俊傑。
-// (2) 1991 年起有機會入池：1991／1992 同一個掃法，至少有一個組合有佢，亦至少有一個組合冇佢
-//     （seeded 抽選，唔係逢場必出，唔係永遠唔出）。
-// (3) 入池嗰陣結構齊：starId ko_chunkit、star 高俊傑（直接寫名——awards63StarName 查唔到佢，
-//     POSTER59_STAR_IDS 刻意唔加佢，嗰個 map 係海報／主演邏輯）、title／gigId 非空、assigned true。
-// (4) 上限唔郁：任何年份 fellows ≤ 3；第一輪真主演永遠唔會俾佢逼走（只可以取代第二輪兜底位，
-//     或者喺未滿 3 嗰陣補位；三個都係第一輪真主演嗰陣佢唔入）。
-// (5) 唱名：awards63FellowsHtml 有佢嗰陣印得出「高俊傑」。
-// (6) 池／權重唔郁：佢唔入 AWARDS63_POOL，AWARDS63_TIER_WEIGHT 亦冇佢。
+// v20a178 高俊傑上頒獎禮・邏輯測試（v20a252 D-v2-2：特別名額已刪——重寫做退役測試）：
+// (1) 特別名額已刪：全年掃描，fellows 入面永遠冇 ko_chunkit／高俊傑（唔係有出有唔出，
+//     係零出現）；awards63Fellows 入面無 ko 條款、無 1991 年閘。
+// (2) 程天諾同樣唔入（唔喺 POSTER59_STAR_IDS，冇 sprite）。
+// (3) 入池嗰陣結構齊：starId／star／title／gigId 非空、assigned 一律 false。
+// (4) 上限唔郁：任何年份 fellows ≤ 3；第一輪真主演齊晒（2 張真主演＋零兜底 →
+//     回 2 個，唔會補位，唔會俾人逼走）。
+// (5) 唱名：awards63FellowsHtml 有真主演嗰陣印得出佢哋個名。
+// (6) 池／權重已刪：AWARDS63_POOL／AWARDS63_TIER_WEIGHT 唔喺 index.html。
 // 反證：對 pristine main 行 → v178 門檻／ko 條款唔存在 → 乾淨 FAIL（唔 crash，exit 1）。
 // v20a229 B3：POSTER59_IDS 已刪（海報舊表），needConsts 唔再抽佢；fixture 係合成 id＋stub，不變。
 // 用法：node tests/test_awards178_logic.js [path-to-index.html]
@@ -42,36 +41,28 @@ function extractConst(name){
 
 /* ---- 抽真函數；抽唔到就每項乾淨 FAIL，唔掟 stack ---- */
 const needFns = ['awards63StarName','awards63AllGigs','awards63GigYear','awards63GigPay',
-  'awards63KeySeed','awards63SeededRng','awards63WeightedPick','awards63Fellows','awards63FellowsHtml'];
-const needConsts = ['POSTER59_STAR_IDS','AWARDS63_POOL','AWARDS63_TIER_WEIGHT','EMOJI_ICON112'];
+  'awards63CatSlot','awards63HasSprite','awards63Fellows','awards63FellowsHtml'];
+const needConsts = ['POSTER59_STAR_IDS','AWARDS188_CATEGORIES','AWARDS204_FEMALE_STARS','EMOJI_ICON112'];
 let missing = false;
 for(const c of needConsts){ const s = extractConst(c); if(s===null){ missing = true; } else { try{ eval(s.replace('const '+c+' =', 'var '+c+' =')); }catch(_e){ missing = true; } } }
 for(const f of needFns){ const s = extractFn(f); if(s===null){ missing = true; } else { try{ eval(s); }catch(_e){ missing = true; } } }
 try{ eval(extractFn('iconHtml112')); }catch(_e){ missing = true; }
 if(missing){
-  ok('v178 入池邏輯在位（awards63Fellows＋AWARDS63_POOL 等抽得到）', false);
-  ok('1990 年池冇高俊傑', false);
-  ok('1991 年起有機會入池（有出有唔出）', false);
-  ok('入池嗰陣結構齊（starId／star／title／gigId／assigned）', false);
-  ok('上限 3＋第一輪真主演唔會俾佢逼走', false);
-  ok('唱名印得出「高俊傑」', false);
-  ok('佢唔入 AWARDS63_POOL／AWARDS63_TIER_WEIGHT', false);
+  ok('v178 退役：在位嘅係 cast 模型 fellows（awards63Fellows＋AWARDS188_CATEGORIES 等抽得到）', false);
+  ok('全年掃描零高俊傑', false);
+  ok('全年掃描零程天諾', false);
+  ok('入池嗰陣結構齊（starId／star／title／gigId／assigned=false）', false);
+  ok('上限 3＋第一輪真主演齊晒（唔補位）', false);
+  ok('唱名印得出真主演名', false);
+  ok('AWARDS63_POOL／AWARDS63_TIER_WEIGHT 已刪', false);
   console.log('\nFAILED: ' + fails.length);
   process.exit(1);
 }
 
-/* ---- 世界 stub ---- */
-var TEST_STAR = {
-  gig_1991_film_lead1: '陸柏言',
-  gig_1991_film_lead2: '廖炳星',
-  gig_1991_film_duo1: '陸柏言',
-  gig_1991_film_duo2: '廖炳星',
-  gig_1990_film_lead1: '陸柏言',
-  gig_1992_tv_lead1: '齊鎮海'
-};
+/* ---- 世界 stub（cast 模型：fixture 自帶 cast／singer／host） ---- */
 function mkGigs(){
   const g = [];
-  // 每媒介每年：2 張有主演（第一輪料）＋4 張冇主演（第二輪／高俊傑掛靠料）
+  // 每媒介每年：2 張有陣容（第一輪料）＋4 張無陣容（唔產生對手，唔兜底）
   const media = [
     { medium:'film', type:'電影', cer:'award_harbour_film' },
     { medium:'tv', type:'電視劇', cer:'award_singho_tv' },
@@ -80,19 +71,23 @@ function mkGigs(){
   ];
   [1990, 1991, 1992].forEach(y=>{
     media.forEach((m, mi)=>{
-      g.push({ id:'gig_'+y+'_'+m.medium+'_lead1', type:m.type, year:y, pay:[30000,40000], workTitle:y+'年'+m.medium+'主演作一' });
-      g.push({ id:'gig_'+y+'_'+m.medium+'_lead2', type:m.type, year:y, pay:[20000,30000], workTitle:y+'年'+m.medium+'主演作二' });
-      for(let k=1;k<=4;k++) g.push({ id:'gig_'+y+'_'+m.medium+'_nolead'+k, type:m.type, year:y, pay:[5000+k*1000,8000+k*1000], workTitle:y+'年'+m.medium+'無主演作'+k });
+      if(m.medium === 'music'){
+        g.push({ id:'gig_'+y+'_'+m.medium+'_lead1', type:m.type, year:y, pay:[30000,40000], workTitle:y+'年'+m.medium+'主演作一', singer:'luk_baakyin', singerGender:'m' });
+        g.push({ id:'gig_'+y+'_'+m.medium+'_lead2', type:m.type, year:y, pay:[20000,30000], workTitle:y+'年'+m.medium+'主演作二', singer:'so_jiyan', singerGender:'f' });
+      }else{
+        g.push({ id:'gig_'+y+'_'+m.medium+'_lead1', type:m.type, year:y, pay:[30000,40000], workTitle:y+'年'+m.medium+'主演作一',
+          cast:{ leadM:'luk_baakyin', leadF:'so_jiyan', supportM:null, supportF:null } });
+        g.push({ id:'gig_'+y+'_'+m.medium+'_lead2', type:m.type, year:y, pay:[20000,30000], workTitle:y+'年'+m.medium+'主演作二',
+          cast:{ leadM:'liu_bingxing', leadF:'chung_choning', supportM:null, supportF:null } });
+      }
+      for(let k=1;k<=4;k++) g.push({ id:'gig_'+y+'_'+m.medium+'_nolead'+k, type:m.type, year:y, pay:[5000+k*1000,8000+k*1000], workTitle:y+'年'+m.medium+'無主演作'+k,
+        cast:{ leadM:null, leadF:null, supportM:null, supportF:null } });
     });
   });
-  // 1991 film 特別場（§4 minimal 場景用獨立 id，唔同 generic 嗰批撞 id）
-  g.push({ id:'gig_1991_film_duo1', type:'電影', year:1991, pay:[90000,100000], workTitle:'1991電影真主演一' });
-  g.push({ id:'gig_1991_film_duo2', type:'電影', year:1991, pay:[80000,90000], workTitle:'1991電影真主演二' });
   return g;
 }
 var GIGS = mkGigs();
 var S = { wrapHistory: [] };
-var leadStar59Of = function(g){ return (g && TEST_STAR[g.id]) || ''; };
 var poster59Path = function(gid){ return ''; };
 var work59WorkOf = function(h, g){ return (g && (g.workTitle || g.title)) || ''; };
 
@@ -108,71 +103,72 @@ function fellowsFor(year, cerId, medium, type){
   return awards63Fellows({ id:cerId, medium:medium, matchTypes:[type] }, year);
 }
 const hasKo = (fl)=> (fl||[]).some(f=> f && (f.starId==='ko_chunkit' || f.star==='高俊傑'));
+const hasTinlok = (fl)=> (fl||[]).some(f=> f && (f.starId==='ching_tinlok' || f.star==='程天諾'));
 
-/* ---- (1) 1990 年池冇佢 ---- */
-let ko1990 = 0, total1990 = 0, overCap = 0;
-for(const c of CERS) for(const id of CER_IDS){
-  const fl = fellowsFor(1990, id, c.medium, c.type);
-  total1990++;
-  if(hasKo(fl)) ko1990++;
-  if(fl.length > 3) overCap++;
-}
-ok('1990 年池冇高俊傑（'+total1990+' 組合零出現）', ko1990 === 0);
-
-/* ---- (2) 1991 年起有機會入池 ---- */
-let ko91 = 0, total91 = 0;
-for(const y of [1991, 1992]) for(const c of CERS) for(const id of CER_IDS){
+/* ---- (1) 全年掃描零高俊傑（特別名額已刪） ---- */
+let koCount = 0, totalSweep = 0, overCap = 0, structBad = 0, allFellows = [];
+for(const y of [1990, 1991, 1992]) for(const c of CERS) for(const id of CER_IDS){
   const fl = fellowsFor(y, id, c.medium, c.type);
-  total91++;
-  if(hasKo(fl)) ko91++;
+  totalSweep++;
+  if(hasKo(fl)) koCount++;
   if(fl.length > 3) overCap++;
+  fl.forEach(f=>{
+    allFellows.push(f);
+    if(!(f.starId && f.star && f.title && f.gigId && f.assigned === false)) structBad++;
+  });
 }
-ok('1991 年起有機會入池（'+ko91+'/'+total91+' 組合有佢，唔係零亦唔係全部）', ko91 > 0 && ko91 < total91);
+ok('全年掃描零高俊傑（'+totalSweep+' 組合，特別名額已刪）', koCount === 0);
+
+/* ---- (2) 程天諾同樣唔入 ---- */
+let tinlokCount = 0;
+for(const y of [1990, 1991, 1992]) for(const c of CERS) for(const id of CER_IDS){
+  if(hasTinlok(fellowsFor(y, id, c.medium, c.type))) tinlokCount++;
+}
+ok('全年掃描零程天諾（唔喺 POSTER59_STAR_IDS，冇 sprite）', tinlokCount === 0);
 
 /* ---- (3) 入池嗰陣結構齊 ---- */
-let koEntries = [];
-for(const y of [1991, 1992]) for(const c of CERS) for(const id of CER_IDS){
-  fellowsFor(y, id, c.medium, c.type).forEach(f=>{ if(f && f.starId==='ko_chunkit') koEntries.push(f); });
-}
-const structOk = koEntries.length > 0 && koEntries.every(f=>
-  f.star === '高俊傑' && typeof f.title === 'string' && f.title.length > 0 &&
-  typeof f.gigId === 'string' && f.gigId.length > 0 && f.assigned === true);
-ok('入池嗰陣結構齊（starId／star／title／gigId／assigned，'+koEntries.length+' 個樣本）', structOk);
+ok('入池嗰陣結構齊（starId／star／title／gigId 非空、assigned 一律 false，'+allFellows.length+' 個樣本）',
+  allFellows.length > 0 && structBad === 0);
 
-/* ---- (4) 上限 3＋第一輪真主演唔會俾佢逼走 ---- */
+/* ---- (4) 上限 3＋第一輪真主演齊晒（唔補位） ---- */
 ok('上限 3（全年掃描零超標）', overCap === 0);
-// Minimal 場景：2 張真主演（duo1／duo2）＋3 張冇主演 → 第一輪出 2 位，第二輪補 1 位湊夠 3。
-// 高俊傑嗰步只能取代第二輪兜底位（繼承嗰個位嘅作品），唔可以逼走真主演。
-let leadKept = true, leadChecked = 0;
+// Minimal 場景：2 張真主演（duo1／duo2，leadM）＋3 張無陣容 → 回 2 位真主演，唔補位。
+let duoOk = false;
 const savedGigs = GIGS;
 GIGS = [
-  { id:'gig_1991_film_duo1', type:'電影', year:1991, pay:[90000,100000], workTitle:'1991電影真主演一' },
-  { id:'gig_1991_film_duo2', type:'電影', year:1991, pay:[80000,90000], workTitle:'1991電影真主演二' },
-  { id:'gig_1991_film_nl1', type:'電影', year:1991, pay:[10000,12000], workTitle:'1991電影無主演作一' },
-  { id:'gig_1991_film_nl2', type:'電影', year:1991, pay:[9000,11000], workTitle:'1991電影無主演作二' },
-  { id:'gig_1991_film_nl3', type:'電影', year:1991, pay:[8000,10000], workTitle:'1991電影無主演作三' }
+  { id:'gig_1991_film_duo1', type:'電影', year:1991, pay:[90000,100000], workTitle:'1991電影真主演一',
+    cast:{ leadM:'luk_baakyin', leadF:null, supportM:null, supportF:null } },
+  { id:'gig_1991_film_duo2', type:'電影', year:1991, pay:[80000,90000], workTitle:'1991電影真主演二',
+    cast:{ leadM:'liu_bingxing', leadF:null, supportM:null, supportF:null } },
+  { id:'gig_1991_film_nl1', type:'電影', year:1991, pay:[10000,12000], workTitle:'1991電影無主演作一',
+    cast:{ leadM:null, leadF:null, supportM:null, supportF:null } },
+  { id:'gig_1991_film_nl2', type:'電影', year:1991, pay:[9000,11000], workTitle:'1991電影無主演作二',
+    cast:{ leadM:null, leadF:null, supportM:null, supportF:null } },
+  { id:'gig_1991_film_nl3', type:'電影', year:1991, pay:[8000,10000], workTitle:'1991電影無主演作三',
+    cast:{ leadM:null, leadF:null, supportM:null, supportF:null } }
 ];
-for(const id of CER_IDS){
-  const fl = fellowsFor(1991, id, 'film', '電影');
-  if(hasKo(fl)){
-    leadChecked++;
-    const stars = fl.map(f=> f.star);
-    if(!stars.includes('陸柏言') || !stars.includes('廖炳星')) leadKept = false;
-  }
-}
+const flDuo = fellowsFor(1991, 'award_probe_0', 'film', '電影');
+duoOk = flDuo.length === 2 && flDuo[0].star === '陸柏言' && flDuo[1].star === '廖炳星' &&
+  flDuo.every(f=>f.assigned === false);
 GIGS = savedGigs;
-ok('第一輪真主演唔會俾佢逼走（'+leadChecked+' 場有佢在場核實）', leadChecked > 0 && leadKept);
+ok('第一輪真主演齊晒（2 張真主演＋零兜底 → 回 2 個，唔補位）', duoOk);
+// fellows 函數入面無 ko 條款、無年份閘
+const fellowsSrc = extractFn('awards63Fellows') || '';
+ok('fellows 入面無 ko 條款、無 1991 年閘（D-v2-2）',
+  fellowsSrc.indexOf('ko_chunkit') < 0 && fellowsSrc.indexOf('高俊傑') < 0 && fellowsSrc.indexOf('1991') < 0);
 
 /* ---- (5) 唱名：用真實入池樣本，冇樣本就 FAIL（唔用假 sample 頂住） ---- */
 let htmlOut = '';
 try{
-  if(koEntries[0]) htmlOut = awards63FellowsHtml({ fellows63:[koEntries[0], { star:'陸柏言', title:'試作二' }], winner63:null, outcome:'gallery' });
+  if(allFellows[0]) htmlOut = awards63FellowsHtml({ fellows63:[allFellows[0], { star:'陸柏言', title:'試作二' }], winner63:null, outcome:'gallery' });
 }catch(_e){ htmlOut = ''; }
-ok('唱名印得出「高俊傑」', koEntries.length > 0 && htmlOut.indexOf('高俊傑') >= 0);
+ok('唱名印得出真主演名', allFellows.length > 0 && htmlOut.indexOf(allFellows[0].star) >= 0);
 
-/* ---- (6) 池／權重唔郁＋星名要直接寫 ---- */
-ok('佢唔入 AWARDS63_POOL／AWARDS63_TIER_WEIGHT', JSON.stringify(AWARDS63_POOL).indexOf('ko_chunkit') < 0 && !('ko_chunkit' in AWARDS63_TIER_WEIGHT));
-ok('awards63StarName 查唔到佢（所以 star 要直接寫「高俊傑」）', awards63StarName('ko_chunkit') === '');
+/* ---- (6) 池／權重已刪＋星名查唔到佢 ---- */
+ok('AWARDS63_POOL／AWARDS63_TIER_WEIGHT 已刪（D-v2-2，唔留 dormant）',
+  html.indexOf('const AWARDS63_POOL') < 0 && html.indexOf('const AWARDS63_TIER_WEIGHT') < 0 &&
+  html.indexOf('function awards63WeightedPick(') < 0);
+ok('awards63StarName 查唔到佢（唔喺 POSTER59_STAR_IDS）', awards63StarName('ko_chunkit') === '');
 
 console.log('');
 console.log(fails.length ? ('FAILED: ' + fails.length) : 'ALL PASS');

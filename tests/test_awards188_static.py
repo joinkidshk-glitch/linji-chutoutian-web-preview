@@ -1,5 +1,5 @@
 # v20a188 頒獎獎項改名＋提名掛鈎 static tests：
-# 新獎項表 15 個（覆寫表 AWARDS188_CATEGORIES，唔郁 content pack JSON）；舊 10 個 label／
+# 新獎項表 16 個（覆寫表 AWARDS188_CATEGORIES，唔郁 content pack JSON；v20a252 D-v2-1 加最佳司儀）；舊 10 個 label／
 # 舊 category id 喺 index.html 零殘留（TEXTFIX55 遷移表 keys 除外——嗰啲係舊文案對照鍵，
 # 唔係玩家面獎項名，留返做舊檔遷移）；報紙模板兩款 win dek 已改新獎項名（VENUE99），
 # 另加 AWARDS188_NP_WIN 覆寫表蓋晒 pack 8 款 win 模板嘅 headline／dek／clipLabel；
@@ -54,25 +54,25 @@ OLD_IDS = ['cat_newcomer_ad', 'cat_street_recall', 'cat_newcomer_disc', 'cat_pop
            'cat_variety_spark', 'cat_ensemble']
 NEW_LABELS = ['最佳廣告男主角', '最佳廣告女主角', '最佳廣告男配角', '最佳廣告女配角',
               '最佳男歌手', '最佳女歌手', '最佳新人獎',
-              '最佳男主角', '最佳女主角', '最佳男配角', '最佳女配角']
+              '最佳男主角', '最佳女主角', '最佳男配角', '最佳女配角', '最佳司儀']
 NEW_IDS = ['cat_ad_lead_m', 'cat_ad_lead_f', 'cat_ad_support_m', 'cat_ad_support_f',
            'cat_music_singer_m', 'cat_music_singer_f', 'cat_music_newcomer',
            'cat_film_lead_m', 'cat_film_lead_f', 'cat_film_support_m', 'cat_film_support_f',
-           'cat_tv_lead_m', 'cat_tv_lead_f', 'cat_tv_support_m', 'cat_tv_support_f']
+           'cat_tv_lead_m', 'cat_tv_lead_f', 'cat_tv_support_m', 'cat_tv_support_f', 'cat_tv_host']
 
 table = slice_const('AWARDS188_CATEGORIES')
 
-# --- 新表 15 個 ---
+# --- 新表 16 個 ---
 chk('新表：AWARDS188_CATEGORIES 在位', bool(table))
-chk('新表：共 15 個獎項 id', table.count('id:"cat_') == 15)
+chk('新表：共 16 個獎項 id', table.count('id:"cat_') == 16)
 chk('新表：四典禮齊（ad／music／film／tv）',
     all(k in table for k in ['award_harbour_ad', 'award_golddisc_music', 'award_harbour_film', 'award_singho_tv']))
-chk('新表：15 個新 id 齊', all(i in table for i in NEW_IDS))
-chk('新表：15 個新 label 齊', all(l in table for l in NEW_LABELS))
-chk('新表：每獎有 winLine／loseLine／galleryLine（各 15）',
-    table.count('winLine:') == 15 and table.count('loseLine:') == 15 and table.count('galleryLine:') == 15)
-chk('新表：role 欄齊（lead／support／singer／newcomer）',
-    all(r in table for r in ['role:"lead"', 'role:"support"', 'role:"singer"', 'role:"newcomer"']))
+chk('新表：16 個新 id 齊', all(i in table for i in NEW_IDS))
+chk('新表：16 個新 label 齊', all(l in table for l in NEW_LABELS))
+chk('新表：每獎有 winLine／loseLine／galleryLine（各 16）',
+    table.count('winLine:') == 16 and table.count('loseLine:') == 16 and table.count('galleryLine:') == 16)
+chk('新表：role 欄齊（lead／support／singer／newcomer／host）',
+    all(r in table for r in ['role:"lead"', 'role:"support"', 'role:"singer"', 'role:"newcomer"', 'role:"host"']))
 chk('新表：gender 欄齊（m／f／空）', 'gender:"m"' in table and 'gender:"f"' in table and 'gender:""' in table)
 chk('新表：唔含舊組別後綴／舊人氣獎', '臨記組' not in table and '最受歡迎' not in table)
 chk('新表：唔含 10 個舊生造名（＋街外一鏡嘅字變體）', all(o not in table for o in OLD_LABELS))
@@ -127,8 +127,8 @@ chk('接線：角色閘函數齊（WorkRole／IsLead／IsSupport／HadEarlierWor
                            'function awards188CatEligible(', 'function awards188EligibleCats(']))
 chk('接線：主角判準沿用既有 helper（end95IsLead＋awards65IsLeadWork，唔另起一套）',
     'end95IsLead' in slice_fn('awards188IsLead') and 'awards65IsLeadWork' in slice_fn('awards188IsLead'))
-chk('接線：替身 guard 在位（替身唔係主角／配角）',
-    slice_fn('awards188IsLead').count('替身') >= 2 and '替身' in slice_fn('awards188IsSupport'))
+chk('接線：替身 guard 在位（替身唔係主角／配角／主持——主角判準＋cast 交叉核對）',
+    slice_fn('awards188IsLead').count('替身') >= 2 and '替身' in slice_fn('awards188PlayerCastSlot'))
 chk('接線：請柬門檻行講明角色閘原因（v192 C2：音樂版死文案刪走，淨低電影／電視版閘句）',
     '未做過主角／配角級作品' in gate_fn and '未唱過歌' not in gate_fn)
 chk('接線：__awards 暴露 table188／eligible188（實駕探針用）',

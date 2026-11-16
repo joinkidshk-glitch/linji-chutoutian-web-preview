@@ -1,8 +1,10 @@
 // v20a188 頒獎獎項改名＋提名掛鈎・邏輯測試：
-// (1) 新獎項表 15 個逐個斷言（id／label／winLine／loseLine／galleryLine 存在、廣東話、
-//     唔含舊組別後綴／舊人氣獎／10 個舊生造名；role／gender 欄位齊）。
-// (2) 角色判定 awards188WorkRole：主角／配角／歌手／臨記／替身陷阱（tv_lead_long＋替身雜務、
-//     film_lead_big＋主要替身唔可以當主角）。
+// (1) 新獎項表 16 個逐個斷言（id／label／winLine／loseLine／galleryLine 存在、廣東話、
+//     唔含舊組別後綴／舊人氣獎／10 個舊生造名；role／gender 欄位齊；v20a252 D-v2-1 加
+//     最佳司儀一格 cat_tv_host，role:"host"，中性）。
+// (2) 角色判定 awards188WorkRole：主角／配角／歌手／主持／臨記／替身陷阱（tv_lead_long＋替身雜務、
+//     film_lead_big＋主要替身唔可以當主角）；配角／主持位由 cast／host 交叉核對（D-v2-3／A4：
+//     玩家佔嗰格寫 null 先認）。
 // (3) role-based 閘 awards188EligibleCats：臨記開局唔入圍男主角、做過主角先入圍男主角、
 //     做過配角先入圍男配角、音樂獎要唱過歌先入圍、新人獎要係首年、女獎項永遠唔入玩家池。
 // (4) 端到端 buildAwardResultPack（唔 forceTier）：臨記檔 tier 跌返 gallery、主角檔 tier nominee
@@ -42,7 +44,7 @@ function extractConst(name){
 /* 反證守衛：v188 嘢唔存在嗰陣乾淨 FAIL（逐項列出），唔好等 extractConst／extractFn
    喺頂層 throw 崩潰。放喺任何 extraction 之前。 */
 const NEED188_CONSTS = ['AWARDS188_CATEGORIES','AWARDS188_PLAYER_GENDER','AWARDS188_NP_WIN'];
-const NEED188_FNS = ['awards188IsLead','awards188IsSupport','awards188WorkRole','awards188HadEarlierWork',
+const NEED188_FNS = ['awards188IsLead','awards188IsSupport','awards188PlayerCastSlot','awards188WorkRole','awards188HadEarlierWork',
   'awards188CatEligible','awards188EligibleCats','awards188ApplyNpOverlay'];
 let missing188 = [];
 NEED188_CONSTS.forEach(c=>{ if(html.indexOf('const '+c+' =')<0) missing188.push(c); });
@@ -74,6 +76,10 @@ var TEST_GIGS = {
   gig_tv_cameo:    { id:'gig_tv_cameo',    roleScale:'tv_cameo_short',    stars:1, pay:[300,500],     type:'電視劇', workTitle:'客串工', roleLabel:'客串途人' },
   gig_tv_standin:  { id:'gig_tv_standin',  roleScale:'tv_lead_long',      stars:4, pay:[15000,20000], type:'電視劇', workTitle:'替身劇', roleLabel:'替身雜務' },
   gig_var:         { id:'gig_var',         roleScale:'variety_ep',        stars:2, pay:[2000,3000],  type:'綜藝', workTitle:'綜藝集', roleLabel:'遊戲嘉賓' },
+  gig_var_host:    { id:'gig_var_host',    roleScale:'variety_special',   stars:3, pay:[4000,6000],  type:'綜藝', workTitle:'綜藝晚會', roleLabel:'主持', host:null },
+  gig_var_host_other:{ id:'gig_var_host_other', roleScale:'variety_special', stars:3, pay:[4000,6000], type:'綜藝', workTitle:'嘉賓之夜', roleLabel:'主持', host:'pang_siuki' },
+  gig_film_sup_castmine: { id:'gig_film_sup_castmine', roleScale:'film_support_main', stars:4, pay:[12000,18000], type:'電影', workTitle:'配角戲（玩家位）', roleLabel:'男配角', cast:{ leadM:'luk_baakyin', leadF:null, supportM:null, supportF:null } },
+  gig_film_sup_castother:{ id:'gig_film_sup_castother', roleScale:'film_support_main', stars:4, pay:[12000,18000], type:'電影', workTitle:'配角戲（星佔位）', roleLabel:'男配角', cast:{ leadM:'luk_baakyin', leadF:null, supportM:'mak_zhendong', supportF:null } },
   gig_ad_lead:     { id:'gig_ad_lead',     roleScale:'ad_lead',           stars:4, pay:[15000,20000], type:'廣告', workTitle:'大品牌廣告', roleLabel:'廣告男主角' },
   gig_ad_sup:      { id:'gig_ad_sup',      roleScale:'ad_support',        stars:3, pay:[8000,10000],  type:'廣告', workTitle:'配角廣告', roleLabel:'廣告配角' },
   gig_ad_extra:    { id:'gig_ad_extra',    roleScale:'ad_extra_day',      stars:1, pay:[300,500],     type:'廣告', workTitle:'路人廣告', roleLabel:'廣告路人' },
@@ -140,7 +146,7 @@ const FNS = ['awardsCopyLine','awardsSchemaTiers','awardsGigCount','countYearMed
   'awards62WeakHint','awards62WrapMin','awards62Standing','awards62GateLineHtml',
   'awards62ScoreParts','awardsScoreCategory','buildAwardResultPack',
   'press94ScaleOf','end95IsLead','awards65IsLeadWork',
-  'awards188IsLead','awards188IsSupport','awards188WorkRole','awards188HadEarlierWork',
+  'awards188IsLead','awards188IsSupport','awards188PlayerCastSlot','awards188WorkRole','awards188HadEarlierWork',
   'awards188CatEligible','awards188EligibleCats'];
 eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
 eval(extractFn('iconHtml112'));
@@ -162,25 +168,25 @@ const EXPECTED_LABELS = {
   award_harbour_ad: ['最佳廣告男主角','最佳廣告女主角','最佳廣告男配角','最佳廣告女配角'],
   award_golddisc_music: ['最佳男歌手','最佳女歌手','最佳新人獎'],
   award_harbour_film: ['最佳男主角','最佳女主角','最佳男配角','最佳女配角'],
-  award_singho_tv: ['最佳男主角','最佳女主角','最佳男配角','最佳女配角']
+  award_singho_tv: ['最佳男主角','最佳女主角','最佳男配角','最佳女配角','最佳司儀']
 };
 
-/* ================= (1) 新獎項表 15 個 ================= */
+/* ================= (1) 新獎項表 16 個 ================= */
 let allCats = [];
 Object.keys(AWARDS188_CATEGORIES).forEach(k=>{ (AWARDS188_CATEGORIES[k]||[]).forEach(c=>allCats.push(c)); });
-ok('表：共 15 個獎項', allCats.length === 15);
+ok('表：共 16 個獎項', allCats.length === 16);
 Object.keys(EXPECTED_LABELS).forEach(k=>{
   const got = (AWARDS188_CATEGORIES[k]||[]).map(c=>c.label);
   ok('表：'+k+' labels 齊（'+EXPECTED_LABELS[k].length+' 個）',
     got.length === EXPECTED_LABELS[k].length && EXPECTED_LABELS[k].every(l=>got.indexOf(l) >= 0));
 });
 const ids188 = allCats.map(c=>c.id);
-ok('表：id 全部唔同', new Set(ids188).size === 15);
+ok('表：id 全部唔同', new Set(ids188).size === 16);
 let tableOk = true;
 allCats.forEach(c=>{
   if(!c.id || !c.label || !c.winLine || !c.loseLine || !c.galleryLine) tableOk = false;
   if(!/[\u4e00-\u9fff]/.test(c.winLine) || !/[\u4e00-\u9fff]/.test(c.loseLine) || !/[\u4e00-\u9fff]/.test(c.galleryLine)) tableOk = false;
-  if(['lead','support','singer','newcomer'].indexOf(c.role) < 0) tableOk = false;
+  if(['lead','support','singer','newcomer','host'].indexOf(c.role) < 0) tableOk = false;
   if(['m','f',''].indexOf(c.gender) < 0) tableOk = false;
   if(['stageVolume','industryCredit'].indexOf(c.primaryTrack) < 0) tableOk = false;
   [c.label, c.winLine, c.loseLine, c.galleryLine].forEach(t=>{
@@ -193,10 +199,13 @@ ok('表：女獎項齊（每典禮都有女主角／女配角／女歌手，淨�
   ['cat_film_lead_f','cat_film_support_f','cat_tv_lead_f','cat_tv_support_f',
    'cat_ad_lead_f','cat_ad_support_f','cat_music_singer_f'].every(id=>ids188.indexOf(id) >= 0)
   && ids188.indexOf('cat_music_newcomer') >= 0);
-ok('awardsMvpCategories 行覆寫表（film 4／music 3／tv 4／ad 4）',
+ok('表：最佳司儀在位（cat_tv_host，role host，中性，matchTypes 綜藝）',
+  ids188.indexOf('cat_tv_host') >= 0 &&
+  (AWARDS188_CATEGORIES['award_singho_tv']||[]).some(c=>c.id==='cat_tv_host' && c.role==='host' && c.gender==='' && JSON.stringify(c.matchTypes)==='["綜藝"]'));
+ok('awardsMvpCategories 行覆寫表（film 4／music 3／tv 5／ad 4）',
   awardsMvpCategories('award_harbour_film').length === 4
   && awardsMvpCategories('award_golddisc_music').length === 3
-  && awardsMvpCategories('award_singho_tv').length === 4
+  && awardsMvpCategories('award_singho_tv').length === 5
   && awardsMvpCategories('award_harbour_ad').length === 4);
 ok('awardsStubCategory 行覆寫表（label／lines 由新表出）',
   awardsStubCategory('award_harbour_film','cat_film_lead_m').label === '最佳男主角'
@@ -217,6 +226,10 @@ ok('判定：電視配角 → support', roleOf('gig_tv_sup') === 'support');
 ok('判定：電視客串 → ""', roleOf('gig_tv_cameo') === '');
 ok('判定：tv_lead_long＋替身雜務 → ""（替身陷阱）', roleOf('gig_tv_standin') === '');
 ok('判定：綜藝嘉賓 → ""（綜藝唔係演員獎）', roleOf('gig_var') === '');
+ok('判定：綜藝主持（host 寫 null＝玩家位）→ host', roleOf('gig_var_host') === 'host');
+ok('判定：綜藝主持位係人哋（host 有星）→ ""', roleOf('gig_var_host_other') === '');
+ok('判定：配角位係玩家（cast supportM 寫 null）→ support', roleOf('gig_film_sup_castmine') === 'support');
+ok('判定：配角位係人哋（cast supportM 有星）→ ""（cast 交叉核對）', roleOf('gig_film_sup_castother') === '');
 ok('判定：廣告男主角 → lead', roleOf('gig_ad_lead') === 'lead');
 ok('判定：廣告配角 → support', roleOf('gig_ad_sup') === 'support');
 ok('判定：廣告路人 → ""', roleOf('gig_ad_extra') === '');
@@ -245,6 +258,8 @@ S.wrapHistory = [ wrap('gig_var', 1990), wrap('gig_var', 1990) ];
 ok('閘：齋做綜藝 → 電視 eligible 空', elig('award_singho_tv', 1990).length === 0);
 S.wrapHistory = [ wrap('gig_tv_lead', 1990) ];
 ok('閘：電視男主角 → 只得 cat_tv_lead_m', JSON.stringify(elig('award_singho_tv', 1990)) === JSON.stringify(['cat_tv_lead_m']));
+S.wrapHistory = [ wrap('gig_var_host', 1990) ];
+ok('閘：做過綜藝主持 → 只得 cat_tv_host（最佳司儀）', JSON.stringify(elig('award_singho_tv', 1990)) === JSON.stringify(['cat_tv_host']));
 S.wrapHistory = [];
 ok('閘：冇唱過歌 → 音樂 eligible 空', elig('award_golddisc_music', 1990).length === 0);
 S.wrapHistory = [ wrap('gig_rec', 1990) ];
