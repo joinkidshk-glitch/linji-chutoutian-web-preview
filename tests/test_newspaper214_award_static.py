@@ -202,7 +202,9 @@ try:
         'content/PATCH_GIGS_1988_FAVOR_RUMOR_REMAIN21_v1.json'}
     # v229 B7 豁免（Q11 刪 stub 債，已拍板）：content/STUB_FAVOR_DEBT_SEASON_v1.json 刪 debt_slot_ngai_01 一筆。
     _v229_b7_allowed = {'content/STUB_FAVOR_DEBT_SEASON_v1.json'}
-    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed for l in touched))
+    # v239 豁免（語言重寫 RW-4，已拍板）：頒獎＋殺青兩檔逐句重寫（晨報／故事報紙兩檔已喺 v217／v210 豁免入面）。
+    _v239_allowed = {'content/STUB_AWARDS_CEREMONY_v1.json', 'content/STUB_POST_SHOOT_REWARDS_v1.json'}
+    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed for l in touched))
 except Exception as e:
     ok('X05_content_json_untouched (git unavailable: %s)' % e, False)
 

@@ -90,8 +90,10 @@ try:
         'content/PATCH_GIGS_1988_FAVOR_RUMOR_REMAIN21_v1.json'}
     # v229 B7 豁免（Q11 刪 stub 債，已拍板）：content/STUB_FAVOR_DEBT_SEASON_v1.json 刪 debt_slot_ngai_01 一筆（支線補完 Q11，用戶 2026-11-15 21:46）。
     _v229_b7_allowed = {'content/STUB_FAVOR_DEBT_SEASON_v1.json'}
-    ok('content pack JSON 冇俾本包改動（v157＋v217＋v218＋v210＋v229／B3／B7 豁免以外一律唔准郁）',
-       all(p in _v157_allowed | _v217_allowed | _v218_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
+    # v239 豁免（語言重寫 RW-4，已拍板）：頒獎＋殺青兩檔逐句重寫（晨報／故事報紙兩檔已喺 v217／v210 豁免入面）。
+    _v239_allowed = {'content/STUB_AWARDS_CEREMONY_v1.json', 'content/STUB_POST_SHOOT_REWARDS_v1.json'}
+    ok('content pack JSON 冇俾本包改動（v157＋v217＋v218＋v210＋v229／B3／B7＋v239 豁免以外一律唔准郁）',
+       all(p in _v157_allowed | _v217_allowed | _v218_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
 except Exception as e:
     print('SKIP content pack 檢查（git 唔可用：%s）' % e)
 
