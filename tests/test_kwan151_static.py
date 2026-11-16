@@ -25,8 +25,8 @@
 #   (2) kwan_note check 退役（註解化，行數不變；L25909 註解唔再提「關海媚禁令」）；
 #   v20a155 rebase 上 main 9346a8e resync：v155 淨 ＋17（B1 註解 ＋6／B2 註解 ＋7／B3 ＋4），全部錨點再 ＋17；v20a161 rebase 上 bf612bc ＋14（插入段新行 4793-4806，全部錨點再 ＋14，見 qa161/resolve_rebase161_v155.py）。（25744→25761、26081→26098、26129→26146、26349→26366、26084→26101、26085→26102、26086→26103、27290→27307、27323→27340、31037→31054、31045→31062、31046→31063、31088→31105）；內容逐行核實，純漂移。
 #   (3) TEXTFIX55_PHRASES 嗰對 ["關海媚","當紅花旦"] 已拎走，其餘配對唔郁；
-#   (4) TEXTFIX55_EXACT N16 條映射保留，只係 value 改返「關海媚提醒頭條係雙刃」，
-#       其餘 live 修正（1991年冬→1990年冬、虛構娛樂周刊→娛樂週刊）原封不動；
+#   (4) RW-9 (C)：TEXTFIX55_EXACT N16 條映射已刪（逆向：書面→廣東話）；來源 synopsis
+#       已重寫做書面語（見 tests/fixtures/story_detail_n1_to_n17.json N16），walk 原樣輸出；
 #   (5) UI 顯示名：SP_SPEAKER_REG display＝「關海媚」、relMap rel_mei＝「關海媚」、
 #       TEXTFIX55_NOTE_EXACT 兩句 outcome note 同樣改返真名；
 #   (6) content JSON 四處 guanHaimeiUpgradeForbidden 已清，mvpDualHeroineProtected 留返；
@@ -82,10 +82,10 @@ ok('B1 PHRASES 關海媚配對已拎走', '["關海媚", "當紅花旦"]' not in
 ok('B2 PHRASES 其餘配對唔郁', '["星河電視城", "星河電視台"]' in line(14382) and '["送命題", "辣手問題"]' in line(14382))
 
 # (4) TEXTFIX55_EXACT N16 映射：保留映射，只改 value
-ok('B3 EXACT N16 value 有關海媚', '關海媚提醒頭條係雙刃' in line(14372))
+ok('B3 EXACT N16 映射已刪（RW-9）', '1991年冬，虛構娛樂周刊已寫好緋聞草稿' not in line(14372) and '關海媚提醒頭條係雙刃' not in line(14372))
 ok('B4 EXACT N16 value 冇當紅花旦', '嗰位當紅花旦亦提過佢' not in line(14372))
-ok('B5 EXACT 其餘修正原封不動', '1990年冬，娛樂週刊已經寫好緋聞草稿' in line(14372)
-   and '1991年冬，虛構娛樂周刊已寫好緋聞草稿' in line(14372))
+ok('B5 EXACT N16 舊 key／value 全部清走（RW-9）', '1990年冬，娛樂週刊已經寫好緋聞草稿' not in line(14372)
+   and '1991年冬，虛構娛樂周刊已寫好緋聞草稿' not in line(14372))
 
 # (5) UI 顯示名
 ok('N1 speaker display 改真名', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"關海媚" }' in line(10694))
