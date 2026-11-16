@@ -89,7 +89,7 @@ ok('B5 EXACT 其餘修正原封不動', '1990年冬，娛樂週刊已經寫好�
 # (5) UI 顯示名
 ok('N1 speaker display 改真名', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"關海媚" }' in line(10694))
 ok('N2 唔再有稱號 display', 'display:"當紅花旦"' not in html)
-ok('N3 relMap rel_mei 改真名', '["rel_mei","關海媚"]' in line(14432))
+ok('N3 relMap rel_mei 改真名', '["rel_mei","關海媚"]' in line(14428))
 ok('N4 NOTE_EXACT 兩句改真名', '采兒同關海媚嗰邊都近咗啲' in line(14389) and '但采兒同關海媚嗰邊，都冷淡咗' in line(14389))
 ok('N5 NOTE_EXACT 冇殘留稱號', '嗰位當紅花旦' not in line(14389))
 

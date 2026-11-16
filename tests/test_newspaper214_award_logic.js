@@ -53,8 +53,7 @@ const FN_NAMES = ["fmtNewspaperDate", "newspaperEsc", "newspaperFullName214",
 const CONST_NAMES = ["START", "NP214_AWARD_PHOTOS_214",
   "TEXTFIX55_EXACT", "TEXTFIX55_PHRASES", "TEXTFIX57_EXACT", "TEXTFIX57_PHRASES",
   "TEXTFIX55_SKIP_KEYS", "TEXTFIX57_KEY_RENAME", "TEXTFIX55_NOTE_EXACT", "TEXTFIX55_OPTS_SIMPLE",
-  "TEXTFIX55_GIG_EXACT", "TEXTFIX55_GIG_SUB", "TEXTFIX57_GIG_REQ", "TEXTFIX55_GIG_PHRASES",
-  "TEXTFIX55_POLICY_KW", "TEXTFIX55_ERA_KW"];
+  "TEXTFIX57_GIG_REQ"];
 const missing = [];
 for (const n of FN_NAMES) if (!extractFn(n)) missing.push(n);
 for (const n of CONST_NAMES) if (!extractConst(n)) missing.push(n);
@@ -229,10 +228,11 @@ ok("e2c 旁聽句「碟市點樣叫人名」→「樂壇點樣叫人名」",
 ok("e2d 「臨記席都有鏡頭掃過」→「觀禮席都有鏡頭掃過」",
   cleaned.newsLine2 === "台慶頒獎夜散場：觀禮席都有鏡頭掃過。");
 ok("e3 「碟市掌聲未完」→「掌聲未完」", cleaned.newsLine === "金碟夜散場：掌聲未完。");
-ok("e4 GIG_SUB：workTitle「夜半靈異主題曲主唱」→「夜半靈異」",
-  textfix55GigField("夜半靈異主題曲主唱", "workTitle") === "夜半靈異");
-ok("e5 GIG_SUB：title「《夜半靈異主題曲主唱》主唱」→「《夜半靈異》主唱」",
-  textfix55GigField("《夜半靈異主題曲主唱》主唱", "title") === "《夜半靈異》主唱");
+// v20a243 RW-6：TEXTFIX55 GIG_SUB 已刪（舊通告庫專用；新庫無夜半靈異職銜，0 命中）。舊字串直出。
+ok("e4 v243 GIG_SUB deleted: workTitle passes through",
+  textfix55GigField("夜半靈異主題曲主唱", "workTitle") === "夜半靈異主題曲主唱");
+ok("e5 v243 GIG_SUB deleted: title passes through",
+  textfix55GigField("《夜半靈異主題曲主唱》主唱", "title") === "《夜半靈異主題曲主唱》主唱");
 // ---- (f) 報紙路徑零 🏆／零術語 ----
 ok("f1 渲染結果零 🏆", !outNom.includes("🏆") && !outWon.includes("🏆") && !outGal.includes("🏆") && !outGalOther.includes("🏆"));
 ok("f2 渲染結果零碟市／臨記席", !outNom.includes("碟市") && !outNom.includes("臨記席") && !outWon.includes("碟市"));

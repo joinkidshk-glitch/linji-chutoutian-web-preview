@@ -4,7 +4,7 @@
 - ★統一：awards63FellowsHtml 得主標記由 🏆 金底 chip 改做 ★＋「★為得主」圖例（報紙／頒獎結果路徑）
 - 相片：兩張 webp 灰階細檔喺 assets/story/newspaper/；晨報 enqueueNewspaperFromAward 傳 imgKey
 - 術語：inline 模板「碟市／臨記席」只可以留喺 TEXTFIX55_EXACT 嘅舊字串 key 入面（載入正規化）＋註解；
-  「夜半靈異主題曲主唱」只可以留喺 TEXTFIX55_GIG_SUB 規則／內嵌 fallback 數據（載入正規化），唔可以出現喺渲染路徑
+  「夜半靈異主題曲主唱」v20a243 已隨 TEXTFIX55_GIG_SUB 一併刪除，唔可以出現喺 index.html 任何位置
 - presentAwardResult 唔再叫 toast；「收下這晚」＋awardSheet 保留
 - 舊守衛：SAVE key／?v=／softRev 不變；content/*.json 冇改過；enqueueNewspaperFromWrap／press94* 唔郁
 反證：pristine main f58f19c 冇 np214AwardPhoto214／冇 np214- 版式 → FAIL。
@@ -111,13 +111,14 @@ ok('P08_award_enqueue_photo', 'np214AwardPhoto214(pack, opts)' in seg('function 
 ok('P09_enqueue_stores_imgkey', 'imgKey: String(raw.imgKey' in html)
 
 # ---- (4) 術語掃蕩 ----
-exact = seg('const TEXTFIX55_EXACT = {', 'const TEXTFIX55_GIG_EXACT')
+exact = seg('const TEXTFIX55_EXACT = {', 'const TEXTFIX55_SKIP_KEYS = {')
 ok('T01_exact_new_strings',
    '邊個上台領獎' in exact and '樂壇點樣叫人名' in exact and '金碟夜新人輩出' in exact
    and '陳偉翔嘅名第一次出現喺典禮側記' in exact and '金碟夜散場：掌聲未完' in exact
    and '台慶頒獎夜散場：觀禮席都有鏡頭掃過' in exact)
-gigsub = seg('const TEXTFIX55_GIG_SUB = [', 'const TEXTFIX57_GIG_REQ')
-ok('T02_gigsub_rule', '["夜半靈異主題曲主唱", "夜半靈異"]' in gigsub)
+# v20a243 RW-6：TEXTFIX55_GIG_SUB 已刪（舊通告庫專用；新庫無夜半靈異職銜，0 命中）。
+# 「夜半靈異主題曲主唱」唔可以出現喺 index.html 任何位置。
+ok('T02_gigsub_deleted_v243', 'const TEXTFIX55_GIG_SUB' not in html and '夜半靈異主題曲主唱' not in html)
 venue = seg('const VENUE99_INVITE_DEK = {', 'const VENUE99_NEWS_LINE')
 venue += seg('const VENUE99_NEWS_LINE = {', 'const venue99ApplyOverlay')
 ok('T03_venue99_clean', '誰上台領獎' in venue and '陳偉翔的名字第一次出現' in venue
@@ -134,7 +135,7 @@ rest = remove_const('TEXTFIX55_EXACT')
 rest = strip_comments(rest)
 ok('T07_global_no_disc_market', '碟市' not in rest)
 ok('T08_global_no_extra_seat', '臨記席' not in rest)
-# 「夜半靈異主題曲主唱」只可以留喺 GIG_SUB 規則＋內嵌 fallback 數據（載入正規化），渲染路徑唔可以有
+# 「夜半靈異主題曲主唱」v20a243 已隨 TEXTFIX55_GIG_SUB 一併刪除，唔可以出現喺 index.html 任何位置
 render_paths = fn + fel + pick + metric + seg('function enqueueNewspaperFromAward(', 'function newspaperStoryLists()')
 ok('T09_no_bad_worktitle_in_render', '夜半靈異主題曲主唱' not in render_paths)
 ok('T10_no_bad_worktitle_in_awards188', '夜半靈異主題曲主唱' not in awd188)
@@ -215,7 +216,9 @@ try:
         'content/events_zh_HK.json', 'content/gift_prefs.json', 'content/gift_react_copy.json',
         'content/items_gifts.json', 'content/npc_lines_core.json', 'content/story_beats_phase1.json',
         'content/tutorial_zh_HK.json'}
-    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed for l in touched))
+    # v243 豁免（語言重寫 RW-6，已拍板）：content/gigs_new.json 逐句重寫（241 張新庫覆核）。
+    _v243_allowed = {'content/gigs_new.json'}
+    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v243_allowed for l in touched))
 except Exception as e:
     ok('X05_content_json_untouched (git unavailable: %s)' % e, False)
 

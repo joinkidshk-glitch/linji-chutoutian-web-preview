@@ -46,9 +46,10 @@ ok('C-01: STORY_LOC_SOFT.N4 改 agency_ho', 'N4: "agency_ho", /* v20a98 CONTRA98
 ok('C-01: N3 nextHint 改事務所', '開啟後先去何生事務所。' in src)
 ok('C-01: N4 lockedHint 改事務所', '開啟後再去事務所聽何生說。' in src)
 ok('C-01: 舊「中環廣告聽何生講」已清走', '去中環廣告聽何生講' not in src)
-ok('C-04: 渡輪燈火 synopsis 值改海港廣播', '": "海港廣播長篇，你飾演渡輪水手「阿海」' in src)
-ok('C-04: 商場歲月 synopsis 值改海港廣播', '": "海港廣播長篇，你飾演百貨少掌櫃「阿邦」' in src)
-ok('C-04: blurb 修正條目在位', '"星河長篇正劇男主！整季貫穿，廠期與外景都要鎖。": "海港廣播長篇正劇男主！整季貫穿，廠期與外景都要鎖。"' in src)
+# v20a243 RW-6：GIG_EXACT 已刪（舊通告庫專用；新庫無阿海／阿邦故事，0 命中）——C-04 修正無新庫目標，改為守衛舊錯字串唔再出現
+ok('C-04: 舊「星河長篇正劇」已清走', '星河長篇正劇' not in src)
+ok('C-04: 舊「星河電視台長篇」已清走', '星河電視台長篇' not in src)
+ok('C-04: GIG_EXACT 已刪', 'const TEXTFIX55_GIG_EXACT' not in src)
 
 # 四、C-02
 ok('C-02: enc79BuildScript 收 locId', 'function enc79BuildScript(starId, forceFirst, locId)' in src)
