@@ -2,10 +2,22 @@
 # 用法：python3 tests/test_text108_static.py [path-to-index.html]
 # 反證意識：每項同時驗「新寫法在」＋「舊寫法不在」（舊寫法出現即 FAIL）。
 # 覆核項（S-3/10/19/23/24/28/35/37/39/44/45）只釘 v105 既定寫法仍在位，唔重驗 v105 細節。
-import os, sys
+import os, sys, json
 
 path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
 html = open(path, encoding='utf-8').read()
+tut_json = json.load(open(os.path.join(os.path.dirname(path) or '.', 'content', 'tutorial_zh_HK.json'), encoding='utf-8'))
+tut_json_text = ' '.join(b for s in tut_json.get('steps', []) for b in s.get('body', []))
+tut_bodies = [b for s in tut_json.get('steps', []) for b in s.get('body', [])]
+# v241：JSON 做唯一來源——v108 新句直接寫入 content/tutorial_zh_HK.json（steps body／bodyAlt＋toasts body／bodyAlt），
+# 唔再經 TEXTFIX55_EXACT 覆寫。tut_all 覆蓋全部教學句（新句檢查＋舊句已清檢查都用佢）。
+tut_all_list = ([b for s in tut_json.get('steps', []) for b in (s.get('body', []) + s.get('bodyAlt', []))]
+    + [b for t in tut_json.get('toasts', {}).values() for b in (t.get('body', []) + t.get('bodyAlt', []))])
+tut_all = ' '.join(tut_all_list)
+def gone_cleared(g):
+    # 舊句已清＝live pack 入面冇，或者出現嗰句完整 pack 句係 TEXTFIX55_EXACT key（玩家見新句）
+    if g not in tut_all: return True
+    return any(g in b and ('"%s":' % b) in html for b in tut_all_list)
 fails = []
 
 def ok(name, cond):
@@ -34,7 +46,11 @@ ok('S-26 旗標 seenLocWhoHint26 落 S.flags', 'seenLocWhoHint26' in html)
 ok('S-26 長句只出現一次（唔係每板重複寫死）', html.count('暫時未見熟人（熟人會隨日子／時段出入；地圖標亮＝在場）') == 1)
 
 # ---- S-42：系統 modal 文案潤飾（TUTORIAL_ZH_HK 系統組） ----
-tut = seg('const TUTORIAL_ZH_HK', 'let TUTORIAL = TUTORIAL_ZH_HK')
+# v241b: inline TUTORIAL_ZH_HK deleted (JSON sole source); the 13 new sentences now live
+# as TEXTFIX55_EXACT values in index.html, the 12 gone sentences must be absent everywhere.
+# v241：B 將新句寫入 JSON 嗰陣自行改寫，偏離 v108 定稿——已按已刪 EXACT 值逐句還原 v108 新句入 JSON；
+# 13 新句改查 tut_all（JSON 全文），唔再查 index.html（EXACT 值已隨死映射一併刪除）。
+tut = tut_all
 for new_s in ('地圖上標示的地點，都是你可以前往的地方',
               '在茶餐廳或者事務所「打聽」不耗日',
               '通告欄可以免費先看',
@@ -55,24 +71,20 @@ for gone in ('獲聘後，拍攝日已排進行程。', '開工前看手帳和�
              '地圖上的地點，就是你可以去的地方', '通告欄可先免費查看',
              '記數簿記收支；行程記拍攝與本週安排', '教學先到這裡（可跳過；選單可重看）。',
              '下一步：訓練／通告欄／進度。', '社交與觀察課就會開放'):
-    ok('S-42 舊電報句已清「' + gone[:14] + '」', gone not in tut)
-ok('S-42 何生組唔郁（TUT_WELCOME 仍係何生）', '"id":"TUT_WELCOME","speaker":"何生"' in tut)
+    ok('S-42 舊電報句已清「' + gone[:14] + '」', gone_cleared(gone))
+ok('S-42 何生組唔郁（TUT_WELCOME 仍係何生）',
+   any(s.get('id') == 'TUT_WELCOME' and s.get('speaker') == '何生' for s in tut_json.get('steps', [])))
 
-# ---- S-42（live 路徑）：覆寫表 TEXTFIX55_EXACT —— live 教學行 content/tutorial_zh_HK.json，
-#    經 textfix55SimplePack 清洗；inline const 只係 fallback。pack 異文必須喺表入面，否則實駕仍見舊句。
-#    v20a222 P3 補漏：pack 值同步做書面語（之前 pack 值仲係 v108 廣東話，實機教學句仍見廣東話），
-#    所以呢度釘嘅 pack 值係書面語版（同 inline 新句一致）。
-ok('S-42 live：pack 異文「製作日」覆寫在位',
-   '"獲聘後，製作日已排進行程。": "獲聘之後，拍攝日已經排進了行程。"' in html)
-ok('S-42 live：pack 異文「選單事態」覆寫在位（順帶修正做進度掣）',
-   '"建議：先訓練或看通告欄，再打開選單「事態」——第一段故事會接著出現。": "建議你先去訓練，或者看看通告欄，再按地圖上的「進度」掣——第一段故事會接著出現。"' in html)
-ok('S-42 live：pack 異文「事態」bodyAlt 覆寫在位',
-   '"下一步：訓練／通告欄／事態。": "下一步：去訓練，或者看看通告欄和進度。"' in html)
-ok('S-42 live：pack 異文 TRAIN 覆寫在位',
-   '"到對應地點報名訓練，提升能力來解鎖試鏡門檻。": "去對應地點報名訓練，能力達標才報到試鏡門檻。"' in html)
-ok('S-42 live：3 個既有覆寫值已更新（MAPalt／NPCbody／NPCalt）',
-   '"訓練解鎖試鏡；打聽免費不耗日（試玩閘下傾談／送禮亦不耗日）。": "訓練夠數才報得試鏡；打聽、傾談和送禮都不耗日（茶錢另計）。"' in html
-   and '"打聽免費。正式版傾談／送禮佔一日；試玩閘下亦不耗日。": "傾談和送禮都不佔日子（茶錢另計）。"' in html)
+# ---- S-42（live 路徑）：v241：JSON 做唯一來源——v108 新句已直接寫入 content/tutorial_zh_HK.json，
+#    6 個舊 EXACT 覆寫（源頭舊句已唔喺任何 content pack）隨死映射一併刪除；呢度改釘「舊 key 已清＋新值喺 JSON」。
+#    （舊覆寫值即係而家 JSON 入面嘅新句，逐條對過，一字不差。）
+for _k, _v in (('獲聘後，製作日已排進行程。', '獲聘之後，拍攝日已經排進了行程。'),
+               ('建議：先訓練或看通告欄，再打開選單「事態」——第一段故事會接著出現。', '建議你先去訓練，或者看看通告欄，再按地圖上的「進度」掣——第一段故事會接著出現。'),
+               ('下一步：訓練／通告欄／事態。', '下一步：去訓練，或者看看通告欄和進度。'),
+               ('到對應地點報名訓練，提升能力來解鎖試鏡門檻。', '去對應地點報名訓練，能力達標才報到試鏡門檻。'),
+               ('訓練解鎖試鏡；打聽免費不耗日（試玩閘下傾談／送禮亦不耗日）。', '訓練夠數才報得試鏡；打聽、傾談和送禮都不耗日（茶錢另計）。'),
+               ('打聽免費。正式版傾談／送禮佔一日；試玩閘下亦不耗日。', '傾談和送禮都不佔日子（茶錢另計）。')):
+    ok('S-42 live：舊覆寫已刪＋新句喺 JSON「' + _k[:12] + '」', ('"%s":' % _k) not in html and _v in tut_all)
 
 # ---- S-49：完結一日統一叫「過一日」 ----
 ok('S-49 地圖金掣＝過一日', '>過一日</button>' in html)
@@ -89,7 +101,7 @@ ok('S-50 設定 modal 關閉掣＝關閉', 'label:"關閉"' in body_of('function
 ok('S-50 全檔再冇 label:"完成"', 'label:"完成"' not in html)
 
 # ---- S-15：提早休息＝小休級，同全日休息分名（數值唔郁） ----
-ok('S-15 確認框講明小休', '呢次只係小休，減壓有限，唔似得瞓足一日咁將壓力清零' in html)
+ok('S-15 確認框講明小休', '這次只是小休，減壓有限，不像睡足一日那樣將壓力清零' in html)
 ok('S-15 確認框舊句「等同休息」已清', '等同休息' not in html)
 ok('S-15 提早休息日結板標題＝小休', '小休（週${wd}）' in html)
 ok('S-15 全日休息標題仍係「休息」（doRest／週計劃 rest 日）',
@@ -104,10 +116,10 @@ ok('S-41 出報機制唔郁（enqueue／出報日相關函數仍在）',
    'function buildNewspaperEdition' in html and 'function enqueueNewspaper' in html)
 
 # ---- S-47：作品牆文案唔再承諾做唔到嘅嘢 ----
-ok('S-47 空牆新句在位', '有作品圖嘅製作，殺青之後，佢嘅作品圖就會黐喺呢面牆度' in html)
-ok('S-47 空牆講明電視特輯冇海報', '冇海報嘅製作（例如電視特輯）' in html)
+ok('S-47 空牆新句在位', '有作品圖的製作，殺青之後，它的作品圖就會黐在這面牆上' in html)
+ok('S-47 空牆講明電視特輯冇海報', '沒有海報的製作（例如電視特輯）' in html)
 ok('S-47 空牆舊承諾已清', '接到有名有姓嘅製作，殺青之後，佢嘅作品圖就會黐喺呢面牆度' not in html)
-ok('S-47 有牆備註已加限定', '有作品圖嘅殺青製作會收錄喺度' in html)
+ok('S-47 有牆備註已加限定', '有作品圖的殺青製作會收錄在這裡' in html)
 ok('S-47 有牆備註舊句已清', '殺青作品會收錄喺度。早期做臨記' not in html)
 
 # ---- 覆核項：v105 既定寫法仍在位（走樣即 FAIL） ----
@@ -121,7 +133,7 @@ ok('覆核 S-19 確定行程唔再彈壓力 modal', 'commitPlanAndGo();' in body
 ok('覆核 S-19 壓力影響句係完整句子', '已經爆煲邊緣' in body_of('function stressImpactLine34', 1500))
 ok('覆核 S-23 費用欄正規化在位', 'cost105 = "免費"' in html)
 ok('覆核 S-24 事務所信任行冇結局配方', '江湖撈家' not in body_of('function enc79HoTrustLine', 1200))
-ok('覆核 S-24 人情頁有江湖路指向（統籌裁決分工）', '第日自有一條江湖路畀你行' in html)
+ok('覆核 S-24 人情頁有江湖路指向（統籌裁決分工）', '日後自有一條江湖路給阿偉走' in html)
 ok('覆核 S-28 未達標格式「現值／需 X（差 N）」', '／需 ${b.need}（差 ${b.gap}）' in html)
 hired = seg('function aud91PresentOne', '/* 落選')
 ok('覆核 S-35 獲聘 modal 有簽約金行', '簽約金 $ ${signPay' in hired)

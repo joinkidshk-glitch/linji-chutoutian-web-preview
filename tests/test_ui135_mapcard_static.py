@@ -36,8 +36,8 @@ ok('劇情卡唔喺模板', 'storyMapHintHtml' not in tpl and 'map-hint-story' n
 
 # 4. 合併行在：計劃＋出行同一行，兩個動態位齊全；額度用完變體同樣併入
 ok('合併行：今日＋計劃名', '今日：<b>${planName135}</b>' in tpl)
-ok('合併行：仲可以去 N 個地方', '仲可以去 ${rem135} 個地方' in tpl)
-ok('合併行：額度用完變體', '出行額度已用完，聽日再去' in tpl)
+ok('合併行：還可以去 N 個地方', '還可以去 ${rem135} 個地方' in tpl)
+ok('合併行：額度用完變體', '出行額度已用完，明日再去' in tpl)
 ok('合併行：舊分行寫法唔見', '今日計劃：' not in tpl and '今日出行：' not in tpl)
 
 # 5. 保留嘅嘢：日期＋週數、audLine108、過一日掣（行為唔變）

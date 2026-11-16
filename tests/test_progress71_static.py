@@ -28,14 +28,14 @@ ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107'
 # v20a198 C1：storyMapHintHtml／refreshMapHintStory 已拎走（死 code），段界改用下一個函數 wireHomeStoryHint。
 prog = seg('function storyMainProgressLine(){', 'function wireHomeStoryHint(){')
 ok('PROGRESS71 標記存在', 'PROGRESS71' in src and 'PROGRESS71：組句全面改版' in prog)
-ok('進度行冇「開咗去」拼裝碎片', '開咗去' not in prog)
+ok('進度行冇「開了去」拼裝碎片', '開了去' not in prog)
 ok('進度行冇「即將」碎片頭', '即將' not in prog)
 ok('進度行冇 locBit37 舊拼裝', 'locBit37' not in prog)
-ok('進度行用完整句部件（未開——／仲差／就會觸發）',
-   all(s in prog for s in ['未開——', '通告仲差 ', '就會觸發。', '已經開咗']))
-ok('進度行有「條件已經夠晒」守衛句（只喺閘數據在手嗰陣先講）', '條件已經夠晒' in prog)
+ok('進度行用完整句部件（未開——／還差／就會觸發）',
+   all(s in prog for s in ['未開——', '通告還差 ', '就會觸發。', '已經開了']))
+ok('進度行有「條件已經夠了」守衛句（只喺閘數據在手嗰陣先講）', '條件已經夠了' in prog)
 picker = segN('function playOpenPicker(){', 30000)
-ok('劇情列表兄弟句改完整子句（開咗之後…就會觸發）', '開咗之後' in picker and '開咗去' not in picker)
+ok('劇情列表兄弟句改完整子句（開了之後…就會觸發）', '開了之後' in picker and '開了去' not in picker)
 
 # --- 一（續）、v20a198 C1：地圖 hint renderer 已拎走（死 code），進度入口改行地圖「進度」掣＋手帳進度子頁 ---
 ok('v198 C1：地圖 hint renderer 已拎走', 'function storyMapHintHtml(){' not in src and 'function refreshMapHintStory(){' not in src)

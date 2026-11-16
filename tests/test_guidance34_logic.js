@@ -332,7 +332,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   markRumorTutorialDone('done');
   renderDebtPane();
   const h = box.innerHTML;
-  ok('d1 debt pane intro line present', h.indexOf('呢頁記住邊個欠你、你欠邊個') >= 0);
+  ok('d1 debt pane intro line present', h.indexOf('這頁記住誰欠阿偉、阿偉欠誰') >= 0);
   ok('d2 family debt card present', h.indexOf('data-debt-id="debt_family_home"') >= 0);
   ok('d3 tutorial debt seeded by real tutorial-done path', h.indexOf('data-debt-id="debt_ho_tutorial"') >= 0);
   ok('d4 origin: family home', h.indexOf('來歷：你出嚟做臨記嗰陣應承屋企嘅') >= 0);

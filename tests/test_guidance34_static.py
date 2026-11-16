@@ -1,5 +1,5 @@
 # 引導包（v20a34）靜態測試：接線斷言＋P0-3 指引文案核對＋壓力真碼分支釘住。
-import re, sys
+import re, sys, json, os
 html = open(sys.argv[1] if len(sys.argv)>1 else 'index.html', encoding='utf-8').read()
 fails = []
 def ok(name, cond):
@@ -39,9 +39,17 @@ grant_locs = re.findall(r'(\w+):\s*\[\s*\{[^]]*?grantsRumorId:"tvb_rules_gossip"
 ok('tvb_rules granted only at cafe_cha + agency_ho', sorted(set(grant_locs)) == ['agency_ho', 'cafe_cha'])
 ok('no guidance text sends player to TV station to hear rules',
    '星河電視台聽' not in html and '去星河電視台打聽' not in html and '電視台打聽電視城規矩' not in html)
-tut_seg = seg('const TUTORIAL_ZH_HK', 'const EVENTS_ZH_HK')
+# v241b: inline TUTORIAL_ZH_HK deleted (JSON sole source); check live JSON + EXACT override instead
+_tut_dir = os.path.dirname(sys.argv[1]) if len(sys.argv) > 1 else '.'
+tut_json = json.load(open(os.path.join(_tut_dir, 'content', 'tutorial_zh_HK.json'), encoding='utf-8'))
+tut_map = next(s for s in tut_json['steps'] if s['id'] == 'TUT_MAP')
+tut_map_body = ' '.join(tut_map.get('body', []))
 # v20a108 TEXT108 S-42：TUT_MAP 舊句「茶餐廳／事務所「打聽」不耗日」改寫做完整句，意思不變（打聽唔耗日＋傳聞入手帳）
-ok('tutorial ask guidance names only cafe/agency (both have ask)', '在茶餐廳或者事務所「打聽」不耗日' in tut_seg)
+# v241：v108 新句已直接寫入 JSON（舊 EXACT 覆寫隨死映射刪除）；查 JSON 新句，唔再查舊句。
+ok('tutorial ask guidance names only cafe/agency (both have ask)', '在茶餐廳或者事務所「打聽」不耗日' in tut_map_body)
+ok('tutorial ask guidance EXACT override removed (dead map deleted, JSON carries written form)',
+   '"能力不夠就去報名訓練；茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。":' not in html
+   and '能力未夠，就去報名訓練；在茶餐廳或者事務所「打聽」不耗日，打聽回來的傳聞會記入手帳。' in tut_map_body)
 
 # ---- P0-4：過一日掣接線 ----
 # v20a108 TEXT108 S-49：地圖金掣舊名「逛完・過一日」退役，統一叫「過一日」
@@ -59,7 +67,7 @@ ok('debt origin table exists with four opening debts',
        ['debt_family_home', 'card_ho_spring', 'card_zhang_spring', 'debt_ho_tutorial']))
 debt_seg = seg('function renderDebtPane(){', 'function playPushDoor()')
 ok('debt pane renders origin lines for season + mock cards', debt_seg.count('DEBT_ORIGIN_LINES34') >= 3 and '來歷：' in debt_seg)
-ok('debt pane intro line present', '呢頁記住邊個欠你、你欠邊個' in debt_seg)
+ok('debt pane intro line present', '這頁記住誰欠阿偉、阿偉欠誰' in debt_seg)
 rumor_seg = seg('function renderRumorPane(){', 'function seasonCollectToast()')
 ok('rumor pane intro line present', '呢頁係你聽返嚟嘅傳聞碎片' in rumor_seg)
 ok('rumor card source falls back (paperFrag 報紙花邊 / default 街坊傳聞)',

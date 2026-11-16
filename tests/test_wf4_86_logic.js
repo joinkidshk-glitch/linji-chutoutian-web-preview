@@ -62,18 +62,17 @@ eval(NEWS82_SRC.replace('const NEWS82_EVENTS', 'global.NEWS82_EVENTS'));
 const NEWS82_EVENTS = global.NEWS82_EVENTS;
 
 const parts = [];
-['DAILY_EVENTS_WF4','WF4_CFG','WF4_FX_LABEL','WF4_FRAG_SEEDS','WF4_FEN_INTRO_NODE','RIVAL_WF4_OVERRIDES','WF4_RIVAL_APPLIED86']
+['DAILY_EVENTS_WF4','WF4_CFG','WF4_FX_LABEL','WF4_FRAG_SEEDS','WF4_FEN_INTRO_NODE']
   .forEach(n => parts.push(extractConst(n)));
 ['wf4Ensure','wf4Hash','wf4Rand','wf4NewsDay','wf4YearSeason','wf4Tier','wf4BaseOk','wf4CondOk','wf4PickEvent',
  'wf4ApplyFx','wf4Esc','wf4PlayEvent','wf4FxLine236','confirmChoice236','wf4Fire','wf4DailyTick','wf4TryLocEvent','wf4PresentPending','wf4SeedFrags',
- 'wf4FenIntroDone','wf4FenActionsAt','wf4FenPlay','wf4FenFarewellArm','wf4FenFarewellNode','wf4PresentFenFarewell',
- 'applyRivalWf4Overrides86'].forEach(n => parts.push(extractFn(n)));
+ 'wf4FenIntroDone','wf4FenActionsAt','wf4FenPlay','wf4FenFarewellArm','wf4FenFarewellNode','wf4PresentFenFarewell'].forEach(n => parts.push(extractFn(n)));
 /* v203 helpers（pristine 冇）：抽唔到就用 stub 頂住，等斷言乾淨 FAIL，唔好成個測試 crash */
 ['wf4EffPDay','wf4EffPLoc'].forEach(n => {
   try { parts.push(extractFn(n)); }
   catch(e) { parts.push('function ' + n + '(){ return NaN; }'); }
 });
-eval(parts.join('\n') + '; global.__W = { DAILY_EVENTS_WF4, WF4_CFG, WF4_FRAG_SEEDS, RIVAL_WF4_OVERRIDES, wf4Ensure, wf4BaseOk, wf4CondOk, wf4PickEvent, wf4Fire, wf4DailyTick, wf4TryLocEvent, wf4PresentPending, wf4SeedFrags, wf4FenActionsAt, wf4FenFarewellArm, wf4FenFarewellNode, wf4PresentFenFarewell, applyRivalWf4Overrides86 };');
+eval(parts.join('\n') + '; global.__W = { DAILY_EVENTS_WF4, WF4_CFG, WF4_FRAG_SEEDS, wf4Ensure, wf4BaseOk, wf4CondOk, wf4PickEvent, wf4Fire, wf4DailyTick, wf4TryLocEvent, wf4PresentPending, wf4SeedFrags, wf4FenActionsAt, wf4FenFarewellArm, wf4FenFarewellNode, wf4PresentFenFarewell };');
 const W = global.__W;
 
 function freshS(day){
@@ -238,30 +237,26 @@ function freshS(day){
   ok('舊檔 catch-up 補播送別戲', W.wf4PresentFenFarewell() === true && _playedNodes.some(n => n.id === 'WF4_fen_farewell'));
 }
 
-/* (7) 對手線覆寫 */
+/* (7) 對手線做深——v241：覆寫表已刪，20 節點由 JSON pack 直出（逐條核實同舊覆寫值一致） */
 {
   const packPath = path.join(path.dirname(htmlPath), 'content', 'story_detail_rival_mentor.json');
   const pack = JSON.parse(fs.readFileSync(packPath, 'utf8'));
-  const before = JSON.parse(JSON.stringify(pack));
-  global.STORY_WIRE = { rival: pack };
-  const applied = applyRivalWf4Overrides86();
-  ok('覆寫命中 20 節點', applied === 20);
   const byId = {}; pack.nodes.forEach(n => byId[n.id] = n);
-  const bById = {}; before.nodes.forEach(n => bById[n.id] = n);
-  const four = Object.keys(W.RIVAL_WF4_OVERRIDES);
+  const four = Object.keys(byId).filter(id => /^(A_ko_|A_tsijun_|A_fong_|A_ho_)/.test(id));
+  ok('覆寫表／apply 函數已刪（v241，JSON 做唯一來源）',
+    html.indexOf('const RIVAL_WF4_OVERRIDES') === -1 && html.indexOf('function applyRivalWf4Overrides86') === -1
+    && html.includes('RIVAL_WF4_OVERRIDES 已刪'));
   ok('四線齊（ko/tsijun/fong/ho 各 5）', ['A_ko_','A_tsijun_','A_fong_','A_ho_'].every(p => four.filter(id => id.startsWith(p)).length === 5));
-  let beatsOk = true, choiceOk = true;
+  let beatsOk = true, mechOk = true;
   for(const id of four){
-    const n = byId[id], b = bById[id];
+    const n = byId[id];
     if(!n || !Array.isArray(n.beats) || n.beats.length < 5) beatsOk = false;
-    if(JSON.stringify(n.choices) !== JSON.stringify(b.choices)) choiceOk = false;
-    if(JSON.stringify(n.flags_written) !== JSON.stringify(b.flags_written)) choiceOk = false;
+    if(!n || !Array.isArray(n.choices) || !n.choices.length || !Array.isArray(n.flags_written)) mechOk = false;
   }
-  ok('20 節點 beats 增至 ≥5 拍', beatsOk);
-  ok('choices／flags_written 逐字冇郁', choiceOk);
+  ok('20 節點 beats ≥5 拍（JSON 直出）', beatsOk);
+  ok('choices／flags_written 在位（機制層完整）', mechOk);
   const lei = byId['A_lei_meet'];
-  ok('其餘線冇俾覆寫掂到', !!lei && JSON.stringify(lei.beats) === JSON.stringify(bById['A_lei_meet'].beats));
-  ok('覆寫冪等（第二次 0）', applyRivalWf4Overrides86() === 0);
+  ok('其餘線維持原骨架（A_lei_meet beats <5 拍，冇做深）', !!lei && Array.isArray(lei.beats) && lei.beats.length < 5);
   const koTxt = JSON.stringify(byId['A_ko_meet'].beats);
   ok('改寫係廣東話口語（唔再書面語）', koTxt.includes('喇') && !koTxt.includes('那個位置我早已排好'));
 }

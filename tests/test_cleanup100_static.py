@@ -98,7 +98,7 @@ ok('H gift 藍 PA 措辭到位', '今晚開工前先偷吃一粒' in gj and '跟
 ok('H gift 冇聯姻壓力標籤', '聯姻壓力' not in gj)
 ok('H speaker 關海媚真名display (v151)', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"關海媚" }' in html)
 ok('H speaker 唔再用稱號display (v151)', 'display:"當紅花旦"' not in html)
-ok('H 海港廣播 desc 電台交代', '海港電台嘅錄音室' in html)
+ok('H 海港廣播 desc 電台交代', '海港電台的錄音室' in html)
 
 # (3b) B-11 自檢夾具：seed/calendar 四條期望值已對返 START 1990；when 分支 p3when 維持 1988（節點自帶年份）
 ok('B11 dualSeedChrome 1990', '"支線 · 1990春"' in html and 'dualSeedChrome' in html)

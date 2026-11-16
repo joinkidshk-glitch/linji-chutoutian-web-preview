@@ -360,8 +360,8 @@ function findDay(pred, max){
   ok('E3b 送最愛：fav +4、扣庫存、記 giftHist、記 lastGiveDay', S.stars.luk_baakyin.fav === 4
     && S.inventory.gift_coffee_beans === 1 && S.stars.luk_baakyin.giftHist.gift_coffee_beans === 1
     && S.giftMeta.lastGiveDay.rel_luk_baakyin === 30);
-  ok('E3c 結果 modal 講明「好感 +4」＋「送禮唔計日子」', __modals.length === 1
-    && __modals[0].body.indexOf('好感 +4') >= 0 && __modals[0].body.indexOf('送禮唔計日子') >= 0);
+  ok('E3c 結果 modal 講明「好感 +4」＋「送禮不計日子」', __modals.length === 1
+    && __modals[0].body.indexOf('好感 +4') >= 0 && __modals[0].body.indexOf('送禮不計日子') >= 0);
   ok('E3d 同日再送唔得（每日每星 1 份）', rom176CanGiveStarGift('luk_baakyin') === false);
   ok('E3e 翌日送得返', (function(){ S.dayIndex = 31; return rom176CanGiveStarGift('luk_baakyin') === true; })());
   // E4 週軟頂共用（enc／beat／gift 同一池 10）

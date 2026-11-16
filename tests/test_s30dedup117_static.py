@@ -55,7 +55,7 @@ ok('D2 製作人：改行摘要區 cn-sum-row（文字不變）',
    '<div class="cn-sum-row"><span class="k">製作人</span><span class="v">${p}</span></div>' in html)
 ok('D2 每週開工：只喺 total>1 先出', '(total > 1) ? weeklyBlock' in b)
 ok('D2 每週開工：原句保留（每週最多 N 日＋實際只需 N 日條件）',
-   '每週最多 ${weekly} 日' in b and '實際只需通告 ${total} 日（唔係每週做滿）' in b)
+   '每週最多 ${weekly} 日' in b and '實際只需通告 ${total} 日（不是每週做滿）' in b)
 ok('D2 劇情簡介：搬入摘要（原樣 markup，唔係刪除）',
    'const synopsisFrame117' in b and '劇情簡介' in b and '${synopsisFrame117}' in b)
 ok('D2 POSTER90 標記註保留（詳情頁仍唔出成品海報／主演行）', 'POSTER90' in b)

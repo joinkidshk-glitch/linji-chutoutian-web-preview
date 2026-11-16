@@ -85,9 +85,9 @@ var favorDueDebt = function(){ return _favorDebt; };
 
 eval("var START = { y:1990, m:1, d:1 };");
 const CONSTS = ['STAT_LABEL','STAT_MAX','STRESS_MAX','PLAN_ITEMS','LOCS','COURSE_DEFS','COURSE_ENROLL_EXTRA',
-  'TRAIN_BY_TYPE','EVENTS_ZH_HK','TRAIN75_SPEC','LEVELS75_NAMES','LEVELS75_STEP','LEVELS75_MAX','PREFS_KEY'];
+  'TRAIN_BY_TYPE','TRAIN75_SPEC','LEVELS75_NAMES','LEVELS75_STEP','LEVELS75_MAX','PREFS_KEY'];
 for(const c of CONSTS) eval(extractConst(c).replace('const ' + c + ' =', 'var ' + c + ' ='));
-var EVENTS = EVENTS_ZH_HK;
+var EVENTS = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'events_zh_HK.json'), 'utf8')); /* v241b: inline EVENTS_ZH_HK deleted, JSON is sole source */
 const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName','dateObj','fmtDate',
   'allPlanDefs','planMeta','formatResultNotes','isCriticalPlanDay','planDayWouldWrap','displayDateObj',
   'fillTpl','eventLine','enrollCourse','maybeUnlockMidCourses','applyTrainLesson','resolvePlannedDay',

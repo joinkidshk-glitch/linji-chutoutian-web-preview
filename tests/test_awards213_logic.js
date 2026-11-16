@@ -310,10 +310,10 @@ ok('6：冇 stamp 請柬跌返「今晚獎項」（舊測試逐字期望唔郁�
   galInviteOld.indexOf('今晚獎項：最佳男歌手、最佳女歌手、最佳新人獎（觀禮）') >= 0);
 const gateStamped = awards62GateLineHtml(musicPack(true));
 ok('6：有 stamp 閘句寫實日期（6月1日席位）',
-  gateStamped.indexOf('6月1日席位：觀禮。今年仲差 1 部唱片作品先夠入圍（而家 0/1）。') >= 0);
+  gateStamped.indexOf('6月1日席位：觀禮。今年還差 1 部唱片作品先夠入圍（現在 0/1）。') >= 0);
 const gateOld = awards62GateLineHtml(musicPack(false));
 ok('6：冇 stamp 閘句跌返「今晚席位」',
-  gateOld.indexOf('今晚席位：觀禮。今年仲差 1 部唱片作品先夠入圍（而家 0/1）。') >= 0);
+  gateOld.indexOf('今晚席位：觀禮。今年還差 1 部唱片作品先夠入圍（現在 0/1）。') >= 0);
 
 console.log(fails.length ? ('\nFAILED: ' + fails.length) : '\nALL PASS');
 process.exit(fails.length ? 1 : 0);

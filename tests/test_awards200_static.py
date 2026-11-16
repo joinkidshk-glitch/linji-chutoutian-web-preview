@@ -40,7 +40,7 @@ def slice_fn(name):
 
 
 # --- 反證守衛：v200 標記唔在就乾淨 FAIL，唔好逐項誤判 ---
-NEED200 = ['今年仲差 ', '入場觀禮', '你爭嘅獎項']
+NEED200 = ['今年還差 ', '入場觀禮', '你爭嘅獎項']
 missing200 = [s for s in NEED200 if s not in src]
 if missing200:
     for m in missing200:
@@ -54,12 +54,12 @@ invite_fn = slice_fn('renderAwardInviteHtml')
 rep_fn = slice_fn('awards63InviteBitHtml')
 
 # --- N1：兩邊 gap 句都有「今年」，舊無年份寫法清走 ---
-chk('N1：邀請函閘句 gap 句加「今年」', '今年仲差 " + st.gapWorks' in gate_fn)
+chk('N1：邀請函閘句 gap 句加「今年」', '今年還差 " + st.gapWorks' in gate_fn)
 chk('N1：邀請函閘句無年份舊寫法清走', '"仲差 " + st.gapWorks' not in src)
-chk('N1：季前提示 gap 句加「今年」', '今年仲差 " + sd.gapWorks' in hint_fn)
+chk('N1：季前提示 gap 句加「今年」', '今年還差 " + sd.gapWorks' in hint_fn)
 chk('N1：季前提示無年份舊寫法清走', '：仲差 " + sd.gapWorks' not in src)
 chk('N1：兩邊 gap 句寫法一致（同一個「今年仲差 N 部 X 作品先夠入圍」句式）',
-    gate_fn.count('今年仲差') == 1 and hint_fn.count('今年仲差') == 1)
+    gate_fn.count('今年還差') == 1 and hint_fn.count('今年還差') == 1)
 
 # --- C1：計數規則本身唔郁 ---
 count_fn = slice_fn('countYearMediumWraps')

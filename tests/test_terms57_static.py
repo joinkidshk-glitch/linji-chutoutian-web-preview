@@ -160,7 +160,7 @@ chk('A1 menu label（v77 劇情掣已移除）', 'class="menu-story"' not in src
 chk('A1 no 事態 text node', '>事態<' not in src and '>事態 <' not in src)
 
 # ---- spot outcomes ----
-chk('A3 board toast', '廣告通告欄更新咗：有新通告' in src and '通告欄更新咗' in src)
+chk('A3 board toast', '廣告通告欄更新了：有新通告' in src and '通告欄更新了' in src)
 chk('B5 deposit wording', '"存款不足 $"+fee+"——債項未清。"' in src and '存款亦不足 $200' in src)
 chk('B7 成數 note x2（v128 A4 N9 刪咗落選 modal 嗰份，原 x3）', src.count('成數受表現／壓力／信用影響') == 2)
 chk('B7 success-rate labels kept', '成功率約' in src)
@@ -172,7 +172,7 @@ chk('B2 legacy save migration', '舊存檔標籤改名遷移' in src)
 chk('B6 speaker alias kept+added', '"周刊編輯":"shadow_male","週刊編輯":"shadow_male"' in src)
 # v20a75 改版：進階課已併入級別，舊 unlock 句『進階演技課開放咗』唔再存在——
 # 改驗 v75 升級提示句『升到二級』（措辭跟用戶拍板）。
-chk('B1 journal unlock wording', '手帳「訓練」開放咗' in src and '升到${LEVELS75_NAMES' in src and '進階演技課開放咗' not in src)
+chk('B1 journal unlock wording', '手帳「訓練」開放了' in src and '升到${LEVELS75_NAMES' in src and '進階演技課開放咗' not in src)
 chk('B3 romance ladder wording', '（關係約到2）' in src)
 chk('B3 /100 好感 kept', '點好感就開到「' in src)
 

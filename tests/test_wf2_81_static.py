@@ -19,7 +19,13 @@ ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107'
 ok('NOTES_V20A81 在位', (p.parent / 'NOTES_V20A81_WF2.md').exists())
 
 # --- 一、框架 ---
-ok('WF2 覆寫表在位', 'const ROMANCE_WF2_OVERRIDES = {' in src and 'R_hiu_meet' in src and 'R_tang_ending": {' not in src)  # v20a152：鄧麗萍感情線覆寫已刪
+_wf2_i = src.index('const ROMANCE_WF2_OVERRIDES = {')
+_wf2_j = src.index('\n};', _wf2_i)
+_wf2_region = src[_wf2_i:_wf2_j]
+ok('WF2 覆寫表在位（v241：剩 vera+lan 10 條；hiu/choi/xu 已刪入 JSON）',
+   'const ROMANCE_WF2_OVERRIDES = {' in src and '"R_vera_meet": {' in _wf2_region and '"R_lan_meet": {' in _wf2_region
+   and '"R_hiu_meet": {' not in _wf2_region and '"R_choi_meet": {' not in _wf2_region and '"R_xu_meet": {' not in _wf2_region
+   and 'R_tang_ending": {' not in src)  # v20a152：鄧麗萍感情線覆寫已刪
 ok('apply 函數在位', 'function applyRomanceWf2Overrides81(){' in src)
 ok('冪等守衛 WeakSet 在位', 'const WF2_APPLIED81 = new WeakSet();' in src)
 i48 = src.find('applyRomanceLanOverrides48(); }catch(_sp48){}')
@@ -33,10 +39,8 @@ ok('彭兆基全檔歸零', src.count('彭兆基') == 0)
 ok('彭少祺 ≥34 處（實 %d）' % src.count('彭少祺'), src.count('彭少祺') >= 34)
 ok('speaker→sprite 對照 key 已同步正名', '"彭少祺": null' in src or '"彭少祺":' in src)
 
-# --- 三、增長（B3：全檔 byte 數已因刪舊通告庫大減，唔再用絕對基線；改釘 WF2 覆寫表本身嘅量） ---
-_wf2_i = src.index('const ROMANCE_WF2_OVERRIDES = {')
-_wf2_j = src.index('\n};', _wf2_i)
-ok('WF2 覆寫表有量（表 >30KB）', len(src[_wf2_i:_wf2_j].encode('utf-8')) > 30000)
+# --- 三、增長（B3：全檔 byte 數已因刪舊通告庫大減，唔再用絕對基線；改釘 WF2 覆寫表本身嘅量；v241 瘦身後剩 10 條） ---
+ok('WF2 覆寫表有量（v241 瘦身後 10 條，表 >15KB，實 %d）' % len(_wf2_region.encode('utf-8')), len(_wf2_region.encode('utf-8')) > 15000)
 
 print('\n' + ('ALL PASS' if not fails else 'FAILURES: ' + ' | '.join(fails)))
 sys.exit(0 if not fails else 1)

@@ -75,7 +75,7 @@ ok('chip 舊 title 文案清零', '有可播劇情 · ' not in src and '"劇情�
 rp = seg('function renderProgressPane71(){', '/* === v20a71', 9000)
 ok('進度頁：已開放行唔再出「播呢幕」掣（v165：首播唔經掣）',
    'data-prog77-play="' not in rp and '>播呢幕</button>' not in rp and 'here77' not in rp)
-ok('進度頁：已開放行寫「返地圖嗰陣就會播出」', '返地圖嗰陣就會播出' in rp)
+ok('進度頁：已開放行寫「返回地圖時就會播出」', '返回地圖時就會播出' in rp)
 ok('進度頁：舊「去 X 就會觸發」／「你而家喺」文案清零',
    '"去"+prog71Esc(r.locName)+"就會觸發。"' not in rp and '你而家喺' not in rp)
 ok('進度頁：舊「開劇情列表播」提示已改寫', '開劇情列表播' not in rp and '劇情列表' not in rp)

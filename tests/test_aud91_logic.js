@@ -71,13 +71,13 @@ var flushWeekAccelSummary = function(){};
 var FREEPLAY_FW = { _pendingPostShootReward: null, postShootRewards: null };
 var _weekAccel = false;
 var planSelDay = 0; var planCat = 'browse'; var planDraft = null; var planBackup = null;
-var EVENTS = null;
+var EVENTS = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'events_zh_HK.json'), 'utf8')); /* v241b: inline EVENTS_ZH_HK deleted, JSON is sole source */
 var GIGS = [];
 var S = null;
 var tickDay = function(){ S.dayIndex += 1; return { ended: false, summary: null }; };
 
 eval("var START = { y:1990, m:1, d:1 };");
-for (const c of ['STAT_LABEL','STAT_MAX','STRESS_MAX','EVENTS_ZH_HK','SHOOT_DAY_BY_TYPE','TRAIN_EVENTS_35','SET_CHOICES_35','MOCK_RUMOR_SEEDS','COURSE_DEFS','PLAN_ITEMS'])
+for (const c of ['STAT_LABEL','STAT_MAX','STRESS_MAX','SHOOT_DAY_BY_TYPE','TRAIN_EVENTS_35','SET_CHOICES_35','MOCK_RUMOR_SEEDS','COURSE_DEFS','PLAN_ITEMS'])
   eval(extractConst(c).replace('const ' + c + ' =', 'var ' + c + ' ='));
 eval(extractConst('AUD91_CAP').replace('const AUD91_CAP =', 'var AUD91_CAP ='));
 eval("var _aud91Presenting = false;");

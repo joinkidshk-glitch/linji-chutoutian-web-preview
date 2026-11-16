@@ -80,8 +80,8 @@ ok('B2 rest card: dismiss note pushed to btns before modal()',
 ok('B1 showResult: dest line right after <h3>劇情結算</h3>',
    '`<h3>劇情結算</h3>${storyResultDestLine202()}' in fn_result)
 ok('B2 dismiss note wording covers all three destinations',
-   '撳出面＝繼續跑聽日行程' in fn_helpers and '撳出面＝返地圖' in fn_helpers
-   and '撳出面＝回家結算' in fn_helpers)
+   '撳外面＝繼續跑明日行程' in fn_helpers and '撳外面＝返回地圖' in fn_helpers
+   and '撳外面＝回家結算' in fn_helpers)
 
 # ---- B2：modal() role:"note" 支援 ----
 ok('B2 modal() renders role:"note" as a plain div (唔係掣)',
@@ -93,12 +93,12 @@ ok('B2 note has no onclick attached (唔可撳)',
 # ---- C1：確認 modal 取消掣 ----
 ok('N1 confirm takes onCancel (third arg)',
    'function presentStartScheduleConfirm45(onStart, onMap, onCancel){' in html)
-ok('N1 cancel button labelled 取消（返去休息卡）',
-   '取消（返去休息卡）' in fn_confirm)
+ok('N1 cancel button labelled 取消（返回休息卡）',
+   '取消（返回休息卡）' in fn_confirm)
 ok('N1 cancel only rendered when onCancel given (defensive)',
    'if(goCancel) btns45.push' in fn_confirm)
 ok('N1 confirm dismiss note states the D1 rule',
-   '撳出面＝開始今日行程' in fn_confirm and '撳出面＝返地圖' in fn_confirm)
+   '撳外面＝開始今日行程' in fn_confirm and '撳外面＝返回地圖' in fn_confirm)
 ok('N1 rest card passes onCancel that re-presents the same rest card',
    'presentStartScheduleConfirm45(proceedSchedule, proceedMap, ()=>{' in fn_rest
    and 'presentRestSleepDayEnd(opts);' in fn_rest)
@@ -107,15 +107,15 @@ ok('N1 confirm title stays a question (家下有真選擇，問句合理)',
 
 # ---- C2：故事鎖死提示 ----
 ok('N2 StoryPlay render pushes lock hint note into modalBtns',
-   '劇情進行中，播完先可以離開' in fn_render
-   and 'modalBtns.push({ label:"劇情進行中，播完先可以離開", role:"note" });' in fn_render)
+   '劇情進行中，播完才可以離開' in fn_render
+   and 'modalBtns.push({ label:"劇情進行中，播完才可以離開", role:"note" });' in fn_render)
 ok('N2 hint is pushed after the beats/choices branch (兩種 mode 都有)',
-   idx(fn_render, 'modalBtns.push({ label:"劇情進行中，播完先可以離開", role:"note" });')
+   idx(fn_render, 'modalBtns.push({ label:"劇情進行中，播完才可以離開", role:"note" });')
    > idx(fn_render, 'modalBtns.push({ label:"下一句"')
-   and idx(fn_render, 'modalBtns.push({ label:"劇情進行中，播完先可以離開", role:"note" });')
+   and idx(fn_render, 'modalBtns.push({ label:"劇情進行中，播完才可以離開", role:"note" });')
    > idx(fn_render, 'modalBtns.push({ label:"完成這一節"'))
 ok('N2 enc79 overlay NOT given the lock hint (佢有「點頭離開」出口，唔係鎖死)',
-   '劇情進行中，播完先可以離開' not in fn_enc79
+   '劇情進行中，播完才可以離開' not in fn_enc79
    and '點頭離開' in fn_enc79)
 
 # ---- CSS ----

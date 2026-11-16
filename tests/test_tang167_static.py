@@ -93,10 +93,10 @@ by = react.get('byKey', {})
 ok('唔郁人：新函數只掂 tang 咖啡鍵，冇其他 NPC 咖啡鍵',
    all((':%s:gift_coffee_beans' % n) not in fn for n in ('choi', 'vera', 'hiu', 'xu', 'lan', 'mei'))
    and 'tang:gift_coffee_beans:liked' in fn)
-ok('唔郁人：采兒咖啡 :liked 句仲喺 pack（GR-choi-coffee｜liked，原文不變）',
+ok('唔郁人：采兒咖啡 :liked 句仲喺 pack（GR-choi-coffee｜liked；v241 輕口語重寫，見 RW5_WORKLOG）',
    by.get('choi:gift_coffee_beans:liked', {}).get('id') == 'GR-choi-coffee｜liked'
    and by.get('choi:gift_coffee_beans:liked', {}).get('lines', [None])[0] ==
-       '周采兒：「蘭芳的豆？你有做功課。夜更截稿前，就靠這個提神。」')
+       '周采兒：「蘭芳嘅豆？你有做功課。夜更截稿前，就靠呢個提神。」')
 ok('唔郁人：注入冪等（byKey 已有唔重加、entries 已有唔重加）',
    'if(!R.byKey[key]){' in fn
    and 'if(!R.entries.some(e=>e && e.id==="GR-tang-coffee｜liked")) R.entries.push(ent);' in fn)

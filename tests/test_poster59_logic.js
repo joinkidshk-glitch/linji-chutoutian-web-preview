@@ -162,7 +162,7 @@ const findGig = id=>PACK_NEW.gigs.find(g=>g.id===id);
   ok('wall html: 顯示主演＋崗位', wallHtml.indexOf('主演：廖炳星')>=0 && wallHtml.indexOf('阿偉：男配角')>=0);
   ok('wall html: 臨記通告／補拍唔入牆', wallHtml.indexOf('片場門口')<0 && wallHtml.indexOf('雨夜追逐戲')<0);
   S.wrapHistory = [];
-  ok('wall html: 空牆有提示', worksWallHtml59().indexOf('仲未有作品入牆')>=0);
+  ok('wall html: 空牆有提示', worksWallHtml59().indexOf('還未有作品入牆')>=0);
   /* entryTier 旗照舊排除 */
   GIGS = [Object.assign({}, JSON.parse(JSON.stringify(findGig('gig_1990_film_101'))), { entryTier:true })];
   STORY_WIRE = { gigsByYear:{} };

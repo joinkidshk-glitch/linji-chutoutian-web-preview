@@ -93,8 +93,19 @@ try:
     _v229_b7_allowed = {'content/STUB_FAVOR_DEBT_SEASON_v1.json'}
     # v239 豁免（語言重寫 RW-4，已拍板）：頒獎＋殺青兩檔逐句重寫（晨報／故事報紙兩檔已喺 v217／v210 豁免入面）。
     _v239_allowed = {'content/STUB_AWARDS_CEREMONY_v1.json', 'content/STUB_POST_SHOOT_REWARDS_v1.json'}
-    ok('content pack JSON 冇俾本包改動（v157＋v217＋v218＋v210＋v229／B3／B7＋v239 豁免以外一律唔准郁）',
-       all(p in _v157_allowed | _v217_allowed | _v218_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
+    # v241 豁免（語言重寫 RW-5A，已拍板）：以下 14 個 content JSON 係 RW-5A 語言重寫改動
+    # （JSON 包組逐句重寫：events／npc／tutorial／beats／gift_react／gift_prefs／items／
+    #  freeplay／favor／casting／era／dualMock／dualSeed／sandbox）；其餘一律唔准郁。
+    _v241_allowed = {'content/MOCK_STORY_DUAL_MEET_THICKEN_SOFT_v1.json',
+        'content/SANDBOX_BEHAVIOR_GATE_N1_N5_SOFT_STUB_v1.json',
+        'content/SOFT_PROGRESS_SEED_DUAL_MEET_THICKEN_v1.json',
+        'content/STUB_CASTING_TAGS_v1.json', 'content/STUB_ERA_STARS_MVP_v1.json',
+        'content/STUB_FAVOR_DEBT_SEASON_v1.json', 'content/STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json',
+        'content/events_zh_HK.json', 'content/gift_prefs.json', 'content/gift_react_copy.json',
+        'content/items_gifts.json', 'content/npc_lines_core.json', 'content/story_beats_phase1.json',
+        'content/tutorial_zh_HK.json'}
+    ok('content pack JSON 冇俾本包改動（v157＋v217＋v218＋v210＋v229／B3／B7＋v239＋v241 豁免以外一律唔准郁）',
+       all(p in _v157_allowed | _v217_allowed | _v218_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
 except Exception as e:
     print('SKIP content pack 檢查（git 唔可用：%s）' % e)
 

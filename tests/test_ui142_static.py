@@ -32,18 +32,18 @@ ok('A1 英雄區負 margin -100px 唔郁', 'margin-bottom:-100px' in html)
 
 # --- A2a：進度頁星途寄語 ---
 ok('A2a renderProgress71 有星途寄語填補區塊', 'prog71-next142' in html)
-ok('A2a 填補區塊有未完成口吻', '都係之後嗰幕嘅伏線' in html)
-ok('A2a 填補區塊有行晒口吻', '十七幕行晒' in html)
+ok('A2a 填補區塊有未完成口吻', '都是之後那幕的伏線' in html)
+ok('A2a 填補區塊有走完口吻', '十七幕走完了' in html)
 ok('A2a 填補區塊 CSS 存在', '.prog71-next142{' in html)
 ok('A2a 填補區塊係虛線框（唔係實色佔位卡）', 'border:1px dashed' in html and '.prog71-next142' in html)
 ok('A2a 進度頁遠幕合併卡原文唔郁', '完成前面幕數後逐幕揭曉' in html)
 
 # --- A2b：作品牆空畫框；兩段機制說明一字唔郁 ---
-OLD_P = '仲未有作品入牆。有作品圖嘅製作，殺青之後，佢嘅作品圖就會黐喺呢面牆度；冇海報嘅製作（例如電視特輯），完成咗只會記入拍攝簿，唔會上牆。由臨記做到主角，成幅牆就係你嘅履歷。'
-ok('A2b 作品牆空狀態原文一字唔郁', OLD_P in html)
+OLD_P = '還未有作品入牆。有作品圖的製作，殺青之後，它的作品圖就會黐在這面牆上；沒有海報的製作（例如電視特輯），完成了只會記入拍攝簿，不會上牆。由臨記做到主角，整幅牆就是阿偉的履歷。'
+ok('A2b 作品牆空狀態文案（RW-5 書面語）', OLD_P in html)
 ok('A2b 空狀態有示意畫框容器', 'works-frames142' in html)
 ok('A2b 示意畫框係 3 個', html.count('class="works-frame142"') == 3)
-ok('A2b 示意畫框有「黐喺呢度」一句', '完成作品後，佢嘅作品圖會黐喺呢度' in html)
+ok('A2b 示意畫框有「黐在這裡」一句', '完成作品後，它的作品圖會黐在這裡' in html)
 ok('A2b 畫框 CSS 存在（虛線金框＋3/4 比例）', '.works-frames142{' in html and 'aspect-ratio:3/4' in html)
 ok('A2b 空畫框只喺空狀態出現（有作品嗰陣唔出）', 'worksWallHtml59' in html and 'works-frames142' in html.split('worksWallHtml59')[1][:1500])
 

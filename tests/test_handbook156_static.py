@@ -55,11 +55,11 @@ ok('B1 獎項：有內容嗰陣唔出佔位框（log.map 段冇 empty156）', 'e
 # --- B1：剪報空狀態 ---
 clip_empty = seg_between('function renderClippingsPane(){', 'wireEndingBtn();', src)
 ok('B1 剪報：空狀態原文一字唔郁', '未有剪報' in src and '殺青、頒獎或劇情見報之後' in src)
-ok('B1 剪報：闊框「等你第一張剪報」＋三格虛線框＋引導句',
-   'empty156-wide' in clip_empty and '等你第一張剪報' in clip_empty
+ok('B1 剪報：闊框「等第一張剪報」＋三格虛線框＋引導句',
+   'empty156-wide' in clip_empty and '等第一張剪報' in clip_empty
    and 'empty156-frames cols3' in clip_empty
    and clip_empty.count('<div class="empty156-frame">') == 3
-   and '第一張剪報一到，就會黐喺呢度；之後逐張疊上去。' in clip_empty)
+   and '第一張剪報一到，就會黐在這裡；之後逐張疊上去。' in clip_empty)
 clip_full = seg_between('box.innerHTML = endingCard + rows.map', 'function newspaperCheck(){', src)
 ok('B1 剪報：有內容嗰陣唔出佔位框（rows.map 段冇 empty156）', 'empty156' not in clip_full)
 

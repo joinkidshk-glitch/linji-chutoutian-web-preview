@@ -37,7 +37,7 @@ function extractConst(name){
 }
 
 /* 反證守衛：v200 嘢唔存在嗰陣乾淨 FAIL（逐項列出），唔好等 extraction 喺頂層 throw 崩潰。 */
-const NEED200 = ['今年仲差 ', '入場觀禮', '你爭嘅獎項'];
+const NEED200 = ['今年還差 ', '入場觀禮', '你爭嘅獎項'];
 let missing200 = NEED200.filter(s => html.indexOf(s) < 0);
 if(missing200.length){
   missing200.forEach(m=>{ fails.push('反證：' + m + ' 唔存在'); console.log('FAIL 反證：' + m + ' 唔存在（pristine main 預期，v200 未入）'); });
@@ -57,12 +57,12 @@ function gapPack(medium, wraps, wrapMin, dualOk){
 /* v194 C1 原案：上一年做過 2 部廣告、呢屆 0 部 → 邀請函話 0/1 */
 const gapAd = awards62GateLineHtml(gapPack('ad', 0, 1, true));
 ok('N1：邀請函 gap 句有「今年」（廣告 0/1 原案逐字）',
-  gapAd.indexOf('今晚席位：觀禮。今年仲差 1 部廣告作品先夠入圍（而家 0/1）。') >= 0);
+  gapAd.indexOf('今晚席位：觀禮。今年還差 1 部廣告作品先夠入圍（現在 0/1）。') >= 0);
 ok('N1：邀請函 gap 句唔再係無年份嘅舊寫法',
   gapAd.indexOf('觀禮。仲差 1 部') < 0);
 const gapFilm = awards62GateLineHtml(gapPack('film', 1, 2, true));
 ok('N1：電影版 gap 句同樣有「今年」（1/2）',
-  gapFilm.indexOf('今年仲差 1 部電影作品先夠入圍（而家 1/2）') >= 0);
+  gapFilm.indexOf('今年還差 1 部電影作品先夠入圍（現在 1/2）') >= 0);
 /* 計數口徑唔郁：同年夠數嗰陣唔出 gap 句，跌返角色閘句 */
 const noGap = awards62GateLineHtml(gapPack('film', 2, 2, true));
 ok('N1：夠數嗰陣唔出 gap 句（角色閘句照出，計數唔郁）',
@@ -90,7 +90,7 @@ var awards62Standing = function(cer, y){
 eval(extractFn('awards62SeasonHints'));
 const hintAd = awards62SeasonHints({}, 0) || '';
 ok('N1：季前提示 gap 句有「今年」，同邀請函講法一致',
-  hintAd.indexOf('今季就係「維港街招・年度廣告賞」：今年仲差 1 部廣告作品先夠入圍——呢排接廣告通告要留神。') >= 0);
+  hintAd.indexOf('今季就係「維港街招・年度廣告賞」：今年還差 1 部廣告作品先夠入圍——近來接廣告通告要留神。') >= 0);
 
 /* ---- C2：rep 行分流 ---- */
 var poster59Path = function(){ return ''; };
@@ -125,7 +125,7 @@ ok('N2：成張 gallery 請柬零「爭獎」（rep 行＋閘句＋其他行都�
 ok('N2：成張 gallery 請柬有「入場觀禮」',
   galInvite.indexOf('你今年憑《過江龍》入場觀禮。') >= 0);
 ok('N2：gallery 請柬 gap 句有「今年」',
-  galInvite.indexOf('今年仲差 1 部電影作品先夠入圍（而家 0/1）') >= 0);
+  galInvite.indexOf('今年還差 1 部電影作品先夠入圍（現在 0/1）') >= 0);
 ok('N2：gallery 請柬席位去重（v211 C3：刪「席位：旁聽席」，只留閘句「今晚席位：觀禮。」）＋全 slate＋（觀禮）唔郁',
   galInvite.indexOf('席位：旁聽席') < 0 &&
   galInvite.indexOf('今晚席位：觀禮。') >= 0 &&

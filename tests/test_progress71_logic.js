@@ -175,7 +175,7 @@ function sentenceChecks(tag, line){
   if(DEBUG) console.log('A2:', a2);
   sentenceChecks('A2 N2 未開進度行', a2);
   ok('A2：句頭係「下一幕第 2 幕〈留人脈／趕通告〉未開——」', a2.indexOf('下一幕第 2 幕〈留人脈／趕通告〉未開——') === 0);
-  ok('A2：通告差額正確（仲差 3 張・而家 0／3）', a2.indexOf('通告仲差 3 張（而家 0／3）') >= 0);
+  ok('A2：通告差額正確（還差 3 張・現在 0／3）', a2.indexOf('通告還差 3 張（現在 0／3）') >= 0);
   ok('A2：週數差額正確（未到第 4 週）', a2.indexOf('未到第 4 週') >= 0);
   ok('A2：尾句講明去星河電視台觸發', /去星河電視台就會觸發。$/.test(a2));
 
@@ -229,9 +229,9 @@ function sentenceChecks(tag, line){
   if(DEBUG) console.log('B1 len:', b1.length);
   /* v20a165 STORY165：已開放行唔再講「去 X 就會觸發」（地點唔再係觸發條件），改「返地圖
      嗰陣就會播出」＋場景地點；「播呢幕」掣已拎走。 */
-  ok('B1：第 1 幕已開放＋標題＋場景地點（v165：返地圖就會播出）', b1.indexOf('第 1 幕') >= 0 && b1.indexOf('先學做動作戲') >= 0 && b1.indexOf('已開放') >= 0 && b1.indexOf('返地圖嗰陣就會播出') >= 0 && b1.indexOf('場景：何生事務所') >= 0 && b1.indexOf('去何生事務所就會觸發') < 0);
+  ok('B1：第 1 幕已開放＋標題＋場景地點（v165：返回地圖時就會播出）', b1.indexOf('第 1 幕') >= 0 && b1.indexOf('先學做動作戲') >= 0 && b1.indexOf('已開放') >= 0 && b1.indexOf('返回地圖時就會播出') >= 0 && b1.indexOf('場景：何生事務所') >= 0 && b1.indexOf('去何生事務所就會觸發') < 0);
   ok('B1：第 2 幕逐項——前置旗未達', b1.indexOf('先完成第 1 幕〈先學做動作戲／先賺〉') >= 0);
-  ok('B1：第 2 幕逐項——週數連即時進度（第 4 週・而家第 1 週）', b1.indexOf('到第 4 週（而家第 1 週）') >= 0);
+  ok('B1：第 2 幕逐項——週數連即時進度（第 4 週・現在第 1 週）', b1.indexOf('到第 4 週（現在第 1 週）') >= 0);
   ok('B1：第 2 幕逐項——通告連即時進度（0／3）', b1.indexOf('接通告 0／3 張') >= 0);
   ok('B1：第 2 幕逐項——傳聞未達', b1.indexOf('聽到傳聞：') >= 0);
   ok('B1：第 3 幕（第二幕未開放）照列逐項', b1.indexOf('茶餐廳度橋') < 0 && b1.indexOf('先完成第 2 幕〈留人脈／趕通告〉') >= 0);
@@ -255,7 +255,7 @@ function sentenceChecks(tag, line){
   if(DEBUG) console.log('B2 credit:', syncDualTracks(S).industryCredit);
   ok('B2：已完成幕數正確（✓ 已完成 ×5）', (b2.match(/✓ 已完成/g) || []).length === 5);
   ok('B2：第 6 幕逐項——電視線已達標（✓）', /<li class="ok">✓ 行電視線<\/li>/.test(b2));
-  ok('B2：第 6 幕逐項——週數未達連即時進度（第 15 週・而家第 13 週）', /<li class="no">○ 到第 15 週（而家第 13 週）<\/li>/.test(b2));
+  ok('B2：第 6 幕逐項——週數未達連即時進度（第 15 週・現在第 13 週）', /<li class="no">○ 到第 15 週（現在第 13 週）<\/li>/.test(b2));
   ok('B2：第 7 幕逐項——前置 N5 已達標（✓）', /<li class="ok">✓ 先完成第 5 幕〈采兒小訪題〉<\/li>/.test(b2));
   ok('B2：第 7 幕逐項——信用已達標連即時進度', /<li class="ok">✓ 業內信用多於 20（而家 \d+）<\/li>/.test(b2));
   ok('B2：第 7 幕逐項——時窗未到（1991 年夏）', b2.indexOf('時窗：1991 年夏') >= 0);
@@ -327,7 +327,7 @@ function sentenceChecks(tag, line){
   const a4 = storyMainProgressLine();
   if(DEBUG) console.log('A4:', a4);
   sentenceChecks('A4 N1 已開放進度行', a4);
-  ok('A4：已開放完整句（第 1 幕〈先學做動作戲／先賺〉已經開咗）', a4.indexOf('第 1 幕〈先學做動作戲／先賺〉已經開咗') >= 0);
+  ok('A4：已開放完整句（第 1 幕〈先學做動作戲／先賺〉已經開了）', a4.indexOf('第 1 幕〈先學做動作戲／先賺〉已經開了') >= 0);
   ok('A4：講明去何生事務所觸發', a4.indexOf('去何生事務所就會觸發。') >= 0);
 })();
 
@@ -373,7 +373,7 @@ function sentenceChecks(tag, line){
       /* P2：報咗演技入門 → 排入掣出現；未開放課仍然冇排入掣 */
       S = freshS({ enrolled: { train_acting: true }, trainCount: { train_acting: 2 } });
       const p2 = train71PickerHtml('fill');
-      ok('P2：已報名課有排入掣（全日）', p2.indexOf('data-t71pick="train_acting"') >= 0 && p2.indexOf('全日排呢堂') >= 0);
+      ok('P2：已報名課有排入掣（全日）', p2.indexOf('data-t71pick="train_acting"') >= 0 && p2.indexOf('全日排這堂') >= 0);
       ok('P2：未開放課冇排入掣', p2.indexOf('data-t71pick="train_acting_mid"') < 0);
       ok('P2：已報名徽章＋已練次數', p2.indexOf('已開放') >= 0 && p2.indexOf('已練 2 次') >= 0);
       ok('P2(v73)：有已報名就唔出零報名總說明', p2.indexOf('你仲未報名任何課程') < 0);
@@ -396,7 +396,7 @@ function sentenceChecks(tag, line){
       S = freshS({ enrolled: { train_acting: true }, homeEditable: false });
       const p4 = train71PickerHtml('day');
       ok('P4：唯讀嗰陣冇排入掣', p4.indexOf('data-t71pick') < 0);
-      ok('P4：唯讀嗰陣有說明（編輯行程嗰陣排）', p4.indexOf('編輯行程嗰陣排呢堂') >= 0);
+      ok('P4：唯讀嗰陣有說明（編輯行程時排這堂）', p4.indexOf('編輯行程時排這堂') >= 0);
 
       /* P5(v73)：附帶組分流——魅力組主修（魅力訓練）未開放隱藏；附帶外貌課
          未報名嗰陣喺摺疊入面只出純文字句；報咗名就出細排入掣 */

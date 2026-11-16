@@ -66,7 +66,7 @@ ok('N1：傳聞提示「聽到傳聞」刻意保留（條件提示，唔係觸�
    '聽到傳聞：' in stub and 'rumorHearHint' in src)
 ok('N1：鎖行其餘條件句唔變（前置／週數／通告／聲望／季節）',
    '"先完成"+(storyActLabel(d)' in stub and '到第 ' in stub and '接通告 ' in stub
-   and '要多於' in stub and '等到啱嘅季節' in stub)
+   and '需要多於' in stub and '等到合適的季節' in stub)
 
 # --- 三、B1(a)：live 模式驗證要求有耐久記錄 ---
 ok('B1(a)：NOTES 寫明驗強制播必須行 live 模式（無 softPreview）',

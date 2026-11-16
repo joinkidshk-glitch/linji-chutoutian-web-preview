@@ -45,8 +45,8 @@ def css_block(selector):
 
 # --- 基線不變 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('開放行場景文案仲喺度（返地圖嗰陣就會播出＋場景）',
-   '返地圖嗰陣就會播出' in src and '（場景：' in src)
+ok('開放行場景文案仲喺度（返回地圖時就會播出＋場景）',
+   '返回地圖時就會播出' in src and '（場景：' in src)
 ok('B01 提示字句本身唔變（已用預設行程 · 到何生事務所可播開局劇情）',
    '已用預設行程 · 到' in src and '可播開局劇情' in src)
 
@@ -55,7 +55,7 @@ m = re.search(r'const openBody = .*?;', src)
 open_body_line = m.group(0) if m else ''
 ok('N1：openBody 抽到', bool(open_body_line))
 ok('N1：note 冇咗「已經開放——」', '已經開放' not in open_body_line)
-ok('N1：note 仲係「返地圖嗰陣就會播出。」', '返地圖嗰陣就會播出。' in open_body_line)
+ok('N1：note 仲係「返回地圖時就會播出。」', '返回地圖時就會播出。' in open_body_line)
 ok('N1：tag 嗰粒「已開放」保留',
    '<span class="prog71-tag open">已開放</span>' in src)
 ok('N1：開放行得返一次「開放」狀態字（tag 嗰粒；note 唔再講）',

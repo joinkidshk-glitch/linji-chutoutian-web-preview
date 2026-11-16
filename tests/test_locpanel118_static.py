@@ -218,7 +218,7 @@ for fn in ("travel114State", "travel114Remain", "travel114IsFree", "travel114Try
        "locpanel118" not in extract_fn(fn))
 ck("openLoc 額度閘原文不變（travel114TrySpend＋被擋 toast）",
    'travel114TrySpend(opts, id)' in openloc and
-   'toast("今日出行額度用完——今日已經去咗 2 個地方，聽日再去。")' in openloc)
+   'toast("今日出行額度用完——今日已經去了 2 個地方，明日再去。")' in openloc)
 ck("openLoc 入面冇寫入 residentNpc（舊註解提及唔計，只禁賦值）",
    "residentNpc:" not in openloc and "residentNpc =" not in openloc)
 

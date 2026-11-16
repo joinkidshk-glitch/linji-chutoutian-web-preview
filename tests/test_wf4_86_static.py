@@ -38,8 +38,9 @@ ok('wf4TryLocEvent 掛 openLoc（巧遇攔截之後）',
 ok('openLoc 有 wf4Done 繞過旗', 'opts.wf4Done' in src)
 ok('wf4SeedFrags 掛 ensureMockJournal', 'wf4SeedFrags(); }catch(_e){}' in src)
 ok('exodusFenTick 有送別戲 arm', 'wf4FenFarewellArm(wroteOff, exodused)' in src)
-ok('applyRivalWf4Overrides86 掛 pack 載入（WF2 之後）',
-   src.find('applyRomanceWf2Overrides81(); }catch(_wf2){}') < src.find('applyRivalWf4Overrides86(); }catch(_wf4r){}') > 0)
+ok('v241：RIVAL_WF4_OVERRIDES／applyRivalWf4Overrides86 已刪（JSON 做唯一來源）',
+   'const RIVAL_WF4_OVERRIDES' not in src and 'function applyRivalWf4Overrides86' not in src
+   and 'RIVAL_WF4_OVERRIDES 已刪' in src)
 ok('芬姐相識場掛地點 sheet', 'wf4FenActionsAt(L.id)' in src and 'wf4FenPlay(act.id)' in src)
 
 # 閘門精神：baseOk 齊四閘
@@ -63,11 +64,15 @@ ok('芬姐送別戲節點（啟德）', 'WF4_fen_farewell' in src and '啟德送
 ok('霞姐命名（boss 事件＋debtor）', '老闆娘叫霞姐' in src and '金龍茶餐廳老闆娘霞姐' in src)
 ok('霞姐弧三場齊', all(x in src for x in ['wf4_ev_boss01', 'wf4_ev_boss02', 'wf4_ev_boss03']))
 
-# 對手線覆寫
-rival_region = src[src.find('const RIVAL_WF4_OVERRIDES'):src.find('const WF4_RIVAL_APPLIED86')]
-ok('RIVAL_WF4_OVERRIDES 20 節點', len(re.findall(r'A_(?:ko|tsijun|fong|ho)_[a-z0-9]+: \{', rival_region)) == 20)
-ok('覆寫只換 beats／synopsis（apply 函數冇掂 choices）',
-   'applyRivalWf4Overrides86' in src and 'node.beats = ov.beats.map' in src)
+# 對手線覆寫已刪（v241）：20 節點由 JSON pack 直出
+import json
+_rival_pack = json.loads(open(os.path.join(root, 'content', 'story_detail_rival_mentor.json'), encoding='utf-8').read())
+_rival_by = {n['id']: n for n in _rival_pack.get('nodes', [])}
+_rival_four = [i for i in _rival_by if re.match(r'A_(ko|tsijun|fong|ho)_', i)]
+ok('對手線 20 節點喺 JSON pack（四線各 5，beats ≥5 拍，choices 在位）',
+   len(_rival_four) == 20 and all(len(_rival_by[i].get('beats', [])) >= 5 for i in _rival_four)
+   and all(isinstance(_rival_by[i].get('choices'), list) and _rival_by[i]['choices'] for i in _rival_four)
+   and all(len([i for i in _rival_four if i.startswith('A_%s_' % p)]) == 5 for p in ('ko', 'tsijun', 'fong', 'ho')))
 
 # 紅線：成個 WF4 區塊冇真人名／時代錯誤詞
 blk = src[src.find('const DAILY_EVENTS_WF4'):src.find('/* ===== Weave Phase 3-3')]

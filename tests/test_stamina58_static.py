@@ -1,9 +1,11 @@
 # v20a58 擴展 static tests: 新課程「武師班」九處接線齊全、數值同同級課程對齊、
 # 週結三處 stamina 暗加已收、相關文案唔再承諾瞓覺回體能、硬規則（SAVE key）冇郁。
 # 反證: run against the rest-only (pre-extension) index -> 課程不存在＋暗加仍在 -> FAIL.
-import sys
+import sys, json, os
 
 src = open(sys.argv[1] if len(sys.argv) > 1 else 'index.html', encoding='utf-8').read()
+_evpath = os.path.join(os.path.dirname(sys.argv[1]) if len(sys.argv) > 1 else '.', 'content', 'events_zh_HK.json')
+_ev = json.load(open(_evpath, encoding='utf-8'))  # v241b: inline EVENTS_ZH_HK deleted, JSON is sole source
 fails = []
 
 def chk(name, cond):
@@ -14,8 +16,8 @@ def chk(name, cond):
 # --- 新課程接線（9 處） ---
 chk('COURSE_DEFS: train_stamina 武師班', 'train_stamina: { icon:"🥋", name:"武師班", hint:"拳腳／體能", midOf:null }' in src)
 chk('COURSE_ENROLL_EXTRA: film 附帶武師班', 'film: ["train_iq", "train_stamina"]' in src)
-chk('EVENTS: TRAIN_RESULT_stamina 有句', '"TRAIN_RESULT_stamina":[' in src)
-chk('EVENTS: UNLOCK_STAMINA 有句', '"UNLOCK_STAMINA":[' in src)
+chk('EVENTS: TRAIN_RESULT_stamina 有句', 'TRAIN_RESULT_stamina' in _ev)
+chk('EVENTS: UNLOCK_STAMINA 有句', 'UNLOCK_STAMINA' in _ev)
 chk('courseForStatKey: stamina → train_stamina', 'stamina:"train_stamina", fame:null' in src)
 chk('preferredLocForTrainTarget: train_stamina 分支（電影地點）', 'if(courseId==="train_stamina")' in src and '"film_lion"' in src)
 chk('maybeUnlockMidCourses: 累計 3 堂開放', 'if(total>=3 && !en.train_stamina)' in src)
@@ -33,7 +35,7 @@ chk('高壓分支：刪 stamina +4', 'pushFlavor(apply({stamina:4}))' not in src
 
 # --- 文案唔再承諾瞓覺回體能 ---
 chk('WEEKEND_SOFT 舊句已清（體能慢慢回來）', '體能慢慢回來' not in src and '先把體能養回來' not in src)
-chk('WEEKEND_SOFT 新句（養精神）', '先把精神養回來' in src)
+chk('WEEKEND_SOFT 新句（養體能，live JSON 寫法）', '先把體能養回來' in ' '.join(_ev.get('WEEKEND_SOFT', [])))
 chk('WEEKEND_SOFT fallback 已改（壓力稍降）', '週末休息，壓力稍降。' in src and '週末休息，體能回升。' not in src)
 chk('WEEK_LOW_STA 已刪「瞓夠回體能」暗示', '開工前先睡夠' not in src)
 chk('低體能警告句保留（提示性質唔係回復承諾）', '體能見底，宜減輕通告。' in src)

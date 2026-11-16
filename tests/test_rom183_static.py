@@ -71,7 +71,7 @@ ok('B2 prefKind 最愛回 favorite', 'if((pref.favorites||[]).indexOf(itemId)>=0
 ok('B2 calcDelta 最愛同喜歡同數', '(kind==="liked" || kind==="favorite")' in html)
 ok('B2 reactionEntry 最愛查 :liked', '(pref==="favorite" ? "liked" : pref)' in html)
 ok('B2 選擇器標記「★ 最愛」', '"★ 最愛"' in html)
-ok('B2 確認 modal 有最愛句', '★ 最愛：佢最鍾意呢樣禮物。' in html)
+ok('B2 確認 modal 有最愛句', '★ 最愛：他最喜歡這份禮物。' in html)
 
 # ---- B3：行開後在場行跟返巧遇盤 ----
 ok('B3 doneToday 記地點（唔係 1）', 'sd.doneToday[pick.key] = locId;' in html)
@@ -135,8 +135,11 @@ else:
 # ---- C6：教學提隨機巧遇 ----
 ok('C6 教學 inline TUT_NPC 有巧遇句', '去他們常出沒的地方，有機會撞到他們——撞到才可以傾談／送禮。' in html)
 ok('N6 runtime 覆寫補 live pack TUT_NPC', 'st.id!=="TUT_NPC"' in html and 'LINE183' in html)
-ok('N6 修正：inline TUT_MAP body 第三句係巧遇句（live 只行四步，TUT_NPC 唔顯示）',
-   '"去他們常出沒的地方，有機會撞到他們——撞到才可以傾談／送禮。"]' in html)
+# v241b: inline TUT_MAP 已刪（JSON 做唯一來源）；live TUT_MAP 只有兩句，巧遇句由 runtime LINE183 補入
+tut_json = json.load(open(os.path.join(root, 'content', 'tutorial_zh_HK.json'), encoding='utf-8'))
+tut_map_body = next(s for s in tut_json['steps'] if s['id'] == 'TUT_MAP')['body']
+ok('N6 修正：live TUT_MAP 只有兩句，巧遇句由 runtime LINE183 補入（inline 已刪）',
+   len(tut_map_body) == 2 and '去他們常出沒的地方，有機會撞到他們——撞到才可以傾談／送禮。' in html)
 ok('N6 runtime 覆寫補 live pack TUT_MAP', 'st.id==="TUT_MAP"' in html and 'st.body.push(LINE183)' in html)
 
 # ---- C7：700 禮物選擇器兩欄 ----
@@ -152,7 +155,7 @@ ok('N9 人脈 sub 句同新掣名一致（撞佢）', '去佢常出沒嘅地方�
 ok('N10 intro 入場帶 travelFree:true', 'openLoc(locId, {travelFree:true});' in html)
 ok('N10 TRAVEL114_DAILY_CAP 仲係 2', 'const TRAVEL114_DAILY_CAP = 2;' in html)
 ok('N10 額度閘本身唔郁（被擋 toast 逐字）',
-   'toast("今日出行額度用完——今日已經去咗 2 個地方，聽日再去。")' in html)
+   'toast("今日出行額度用完——今日已經去了 2 個地方，明日再去。")' in html)
 
 print('---')
 print('FAILURES: %d' % len(fails) if fails else 'ALL PASS')

@@ -250,7 +250,7 @@ function makeEl(){
   ok('seg7 N2 行寫明第 4 週條件（軟閘真文案／週次戳）', c2Row.indexOf('未到第 4 週') >= 0 || /約第4/.test(c2Row));
   /* v20a71 PROGRESS71 改版：舊斷言驗「開咗去星河電視台播」拼裝碎片——用戶評文法怪，
      v71 改完整子句「（開咗之後，去X就會觸發）」，斷言跟新正確行為改。 */
-  ok('seg7 N2 行寫明去星河電視台觸發（v71 完整子句）', c2Row.indexOf('星河電視台') >= 0 && c2Row.indexOf('開咗之後') >= 0 && c2Row.indexOf('開咗去') < 0);
+  ok('seg7 N2 行寫明去星河電視台觸發（v71 完整子句）', c2Row.indexOf('星河電視台') >= 0 && c2Row.indexOf('開了之後') >= 0 && c2Row.indexOf('開了去') < 0);
 
   /* ---- item 7(c)：主線進度行——N6（三年版閘、非軟閘覆蓋）補地點 ---- */
   loadGame(freshSave({
@@ -266,7 +266,7 @@ function makeEl(){
   /* v20a71 PROGRESS71 改版：舊斷言驗「第N幕即將」碎片頭＋「開咗去…播」拼裝尾——
      用戶評文法怪，v71 全面改完整句子，斷言跟新正確行為改（句子內容由 v71 專測覆蓋）。 */
   ok('seg7 主線進度行指向下一幕（v71 完整句；v191：N6 加路線後綴）', prog.indexOf('第 6 幕・電視線〈飯堂閒角〉') >= 0 && prog.indexOf('未開') >= 0 && prog.indexOf('即將') < 0);
-  ok('seg7 主線進度行講明去星河電視台觸發（v71）', prog.indexOf('星河電視台') >= 0 && prog.indexOf('就會觸發。') >= 0 && prog.indexOf('開咗去') < 0);
+  ok('seg7 主線進度行講明去星河電視台觸發（v71）', prog.indexOf('星河電視台') >= 0 && prog.indexOf('就會觸發。') >= 0 && prog.indexOf('開了去') < 0);
 })();
 
 /* ================================================================
@@ -418,13 +418,13 @@ function makeEl(){
   var FREEPLAY_FW = { _pendingPostShootReward: null, postShootRewards: null };
   var _weekAccel = false;
   var planSelDay = 0; var planCat = 'browse'; var planDraft = null; var planBackup = null;
-  var EVENTS = null;
+  var EVENTS = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'events_zh_HK.json'), 'utf8')); /* v241b: inline EVENTS_ZH_HK deleted, JSON is sole source */
   var GIGS = [];
   var S = null;
   var tickDay = function(){ S.dayIndex += 1; return { ended: false, summary: null }; };
 
   eval("var START = { y:1988, m:3, d:7 };");
-  const CONSTS = ['STAT_LABEL','STAT_MAX','STRESS_MAX','EVENTS_ZH_HK','SHOOT_DAY_BY_TYPE','TRAIN_EVENTS_35','SET_CHOICES_35','MOCK_RUMOR_SEEDS','COURSE_DEFS','PLAN_ITEMS'];
+  const CONSTS = ['STAT_LABEL','STAT_MAX','STRESS_MAX','SHOOT_DAY_BY_TYPE','TRAIN_EVENTS_35','SET_CHOICES_35','MOCK_RUMOR_SEEDS','COURSE_DEFS','PLAN_ITEMS'];
   for(const c of CONSTS) eval(extractConst(c).replace('const ' + c + ' =', 'var ' + c + ' ='));
   const FNS = ['R','clamp','statHardMax','apply','bumpNpc','planMeta','isGigWrapped','isGigInProduction','planCatForId','shootDeadlineHud','shootRemain','reqGap','gigActiveShoot','weekdayIdx','weekdayName','dateObj','fmtDate',
     'fillTpl','pick','eventLine','shootDayLine','formatResultNotes','shootDailyDelta','maybeUnlockMidCourses',
@@ -481,8 +481,10 @@ function makeEl(){
   Math.random = realRandom;
   const hireBody = __modals.map(m => m.body).join('\n');
   ok('seg3 v91 公佈鏈行完（continuation 有行、pending 清空）', contCalled91 === true && (S.pendingAud || []).length === 0);
-  /* v20a101 改版：F4 精煉將公佈句改為「殺青嗰日先入帳」（刪重複括號），斷言跟新句。 */
-  ok('seg3 獲聘對話有講明「殺青嗰日先入帳」', hireBody.indexOf('殺青嗰日先入帳') >= 0);
+  /* v20a101 改版：F4 精煉將公佈句改為「殺青嗰日先入帳」（刪重複括號），斷言跟新句。
+     v241b 更正：該句只喺已刪嘅 inline EVENTS_ZH_HK fallback 出現過；live 行 JSON pack，
+     獲聘 modal 講明餘額「殺青當日才入帳」＋聲望／人氣「殺青嗰日先結算」——斷言跟 live 句。 */
+  ok('seg3 獲聘對話有講明餘額「殺青當日才入帳」', hireBody.indexOf('殺青當日才入帳') >= 0);
   ok('seg3 獲聘對話聲望 +5／人氣 +17（同 shoot record 同源）', hireBody.indexOf('聲望 +5') >= 0 && hireBody.indexOf('人氣 +17') >= 0);
   ok('seg3 獲聘嗰刻聲望未入帳（S.fame 仍 17）', S.fame === 17 && S.popularity === 10);
   ok('seg3 v91 簽約金 270 公佈嗰刻已入帳（900 嘅三成）', S.money === 5270);

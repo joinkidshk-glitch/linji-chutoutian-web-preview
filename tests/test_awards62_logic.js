@@ -211,7 +211,7 @@ let sd = awards62Standing(TV, 1989);
 ok('standing: 差 1 部入圍', sd.gapWorks === 1 && sd.wrapMin === 2);
 S._season = '秋'; /* 電視獎喺冬：d=1 下季 */
 let h = awards62SeasonHints(S, 30);
-ok('季前提示：下季差一部電視作品 → 出聲', !!h && /下季就係/.test(h) && /仲差 1 部電視作品/.test(h));
+ok('季前提示：下季差一部電視作品 → 出聲', !!h && /下季就係/.test(h) && /還差 1 部電視作品/.test(h));
 S.wrapHistory = [ wrap('gig_tvlead', 1989), wrap('gig_tv2', 1989) ];
 h = awards62SeasonHints(S, 30);
 ok('已入圍但離贏線遠 → 靜默（唔嘈）', h === null);
@@ -220,7 +220,7 @@ S.wrapHistory = [ wrap('gig_tvlead', 1989), wrap('gig_tv2', 1989) ];
 sd = awards62Standing(TV, 1989);
 ok('勁玩家 standing 到贏線帶', sd.tier === 'nominee' && sd.gapWin <= 0.15);
 h = awards62SeasonHints(S, 30);
-ok('季前提示：接近贏線 → 出聲指路', !!h && /接近贏嗰格|大熱/.test(h));
+ok('季前提示：接近贏線 → 出聲指路', !!h && /接近贏那格|大熱/.test(h));
 S = baseSave(); S._season = '冬'; S._year = 1989; S.fame = 30;
 S.awardsFlags = { '1989/award_singho_tv': 'done' }; /* 今季電視獎已完，淨返春季廣告獎有缺口 */
 S.wrapHistory = [ wrap('gig_tvlead', 1989) ]; /* 廣告作品 0 部：冇跨年擋就會出提示 */
@@ -285,7 +285,7 @@ S = baseSave(); S.fame = 0;
 S.wrapHistory = [];
 const packLow = buildAwardResultPack({ ceremonyId:'award_singho_tv', year:1989 });
 const gateLow = awards62GateLineHtml(packLow);
-ok('請柬門檻行：新人出差額', /仲差 2 部電視作品/.test(gateLow));
+ok('請柬門檻行：新人出差額', /還差 2 部電視作品/.test(gateLow));
 
 /* ================= (9) v20a147 D4 重做校準：窗口＋年份口徑＋贏線 =================
    上一手 0.90 只對理論檔有效——觀測全弧最佳 base 0.748 喺 0.82／0.90 之下贏率都係 0%。

@@ -85,7 +85,7 @@ ok('v196 D3：播之前寫續鏈 slot（預設 map）',
 rp = seg('function renderProgressPane71(){', '/* === v20a71', 9000)
 ok('進度頁：冇「播呢幕」掣（data-prog77-play／here77 清零）',
    'data-prog77-play="' not in rp and '>播呢幕</button>' not in rp and 'here77' not in rp)
-ok('進度頁：已開放行寫「返地圖嗰陣就會播出」', '返地圖嗰陣就會播出' in rp)
+ok('進度頁：已開放行寫「返回地圖時就會播出」', '返回地圖時就會播出' in rp)
 ok('進度頁：舊「去 X 就會觸發」／「你而家喺」文案清零',
    '"去"+prog71Esc(r.locName)+"就會觸發。"' not in rp and '你而家喺' not in rp)
 ok('播掣委派已拎走', 'closest("[data-prog77-play]")' not in src and '_progList77' not in src)

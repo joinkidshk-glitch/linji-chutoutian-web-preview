@@ -88,7 +88,7 @@
   "seeds": [
     {
       "id": "seed_hiu_meet_ready",
-      "title": "曉晴 meet 就緒（N3 done）",
+      "title": "曉晴見面就緒（N3 已完成）",
       "targetBeat": "R_hiu_meet",
       "state": {
         "week": 6,
@@ -112,11 +112,11 @@
         "rel": {}
       },
       "expect": "Ready to trigger R_hiu_meet. Makeup room context handled in narrative, locId remains tvb_longmen.",
-      "howToUse": "注入 state 後驗證 R_hiu_meet 可開；缺 N3 必須唔開。chrome 讀 seed.season；主線·1988{季}。"
+      "howToUse": "注入狀態後驗證 R_hiu_meet 可開；缺少 N3 必須不開。chrome 讀 seed.season；主線·1988{季}。"
     },
     {
       "id": "seed_choi_meet_ready",
-      "title": "采兒 meet 就緒（N4 done）",
+      "title": "采兒見面就緒（N4 已完成）",
       "targetBeat": "R_choi_meet",
       "state": {
         "week": 8,
@@ -141,7 +141,7 @@
         "rel": {}
       },
       "expect": "Ready to trigger R_choi_meet. Makeup room encounter described in text, locId is cafe_cha.",
-      "howToUse": "注入 state 後驗證 R_choi_meet 可開；缺 N4 或 favor.agency_ho<1 必須唔開。化妝間僅敘事，locId 保持既有。"
+      "howToUse": "注入狀態後驗證 R_choi_meet 可開；缺少 N4 或 favor.agency_ho<1 必須不開。化妝間僅作敘事，locId 保持既有。"
     },
     {
       "id": "seed_dual_chain_shortest",
@@ -177,7 +177,7 @@
         ]
       },
       "expect": "Both R_hiu_meet and R_choi_meet are ready to open. Shortest path to dual chain thickening.",
-      "howToUse": "端到端抽樣：N1→N4 後兩邊 meet 就緒可開；唔預設已完成 meet；LIVE week-gate 仍 active、唔改。"
+      "howToUse": "端到端抽樣：N1→N4 後兩邊見面就緒可開；不預設已完成見面；LIVE week-gate 仍 active、不改。"
     }
   ]
 }

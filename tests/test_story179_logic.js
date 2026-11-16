@@ -44,8 +44,8 @@ ok('N3 鎖行：單地點改做標籤式「場景：星河電視台」', c3.inde
 ok('N3 鎖行：成列冇「（場景：」括號寫法', c3.every(function(t){ return t.indexOf('（場景：') < 0; }));
 ok('N3 鎖行：其餘條件句唔變（前置／週數／聲望）',
   c3.indexOf('先完成第 2 幕〈N2〉') >= 0
-  && c3.indexOf('到第 6 週（而家第 4 週）') >= 0
-  && c3.indexOf('聲望要多於 15（而家 5）') >= 0);
+  && c3.indexOf('到第 6 週（現在第 4 週）') >= 0
+  && c3.indexOf('聲望需要多於 15（現在 5）') >= 0);
 
 /* C4：OR 行 */
 CASES.N4 = { done:false, needDone:['N3'], weekMin:8, week:4, gigNeed:0, gigHave:0,

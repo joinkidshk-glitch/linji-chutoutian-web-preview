@@ -123,7 +123,7 @@ ok('S-34 btn_leave 透明淺色', 'button.btn_leave,\n#mask:not(.tut-on) #modal-
 ok('S-34 舊鮮橙離開掣已蓋過', 'background:#e07020 !important; color:#fff !important; border:2px solid #a04810 !important;' in html and 'background:transparent !important; color:#7a6248 !important;' in html)
 
 # S-36 地圖底部卡等試鏡回音行
-ok('S-36 audLine108 在 paintBar', '等緊 ${_n} 張試鏡回音' in html)
+ok('S-36 audLine108 在 paintBar', '等候 ${_n} 張試鏡回音' in html)
 ok('S-36 有先顯示（pendingAud 計數）', '(S.pendingAud||[]).length' in html)
 ok('S-36 aud 行樣式', '.map-hint-aud108{ display:block;' in html)
 
