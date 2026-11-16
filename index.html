@@ -27837,19 +27837,6 @@ function freeplayNormalizeStarId(id){
 function ensureCastingTagsState(){
   if(!S || typeof S!=="object") return [];
   if(!Array.isArray(S.castingTags)) S.castingTags = [];
-  /* v20a57：舊存檔標籤改名遷移（動作演員→身手好、大牌→耍大牌）；v20a217 加識分寸→識做人；冪等，每次讀取順手正規化。 */
-  for(let i = 0; i < S.castingTags.length; i++){
-    const t = S.castingTags[i];
-    if(t === "動作演員") S.castingTags[i] = "身手好";
-    else if(t === "大牌") S.castingTags[i] = "耍大牌";
-    else if(t === "識分寸") S.castingTags[i] = "識做人"; /* v20a217：標籤改名（語言審核 W2） */
-    else if(t && typeof t === "object"){
-      if(t.label === "動作演員") t.label = "身手好";
-      else if(t.label === "大牌") t.label = "耍大牌";
-      else if(t.label === "識分寸") t.label = "識做人";
-      if(t.id === "識分寸") t.id = "識做人";
-    }
-  }
   return S.castingTags;
 }
 function castingTagRegistry(){

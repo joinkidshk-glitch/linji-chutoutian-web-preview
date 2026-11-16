@@ -164,9 +164,10 @@ chk('A3 board toast', '廣告通告欄更新了：有新通告' in src and '通�
 chk('B5 deposit wording', '"存款不足 $"+fee+"——債項未清。"' in src and '存款亦不足 $200' in src)
 chk('B7 成數 note x2（v128 A4 N9 刪咗落選 modal 嗰份，原 x3）', src.count('成數受表現／壓力／信用影響') == 2)
 chk('B7 success-rate labels kept', '成功率約' in src)
-chk('B2 gate/tag values renamed', src.count('"身手好"') >= 6)
+chk('B2 gate/tag values renamed (castmig: migration assignments gone, 6→4)', src.count('"身手好"') >= 4)
 chk('B2 ending neg tags', '["八卦", "耍大牌", "高冷", "爛片"]' in src)
-chk('B2 legacy save migration', '舊存檔標籤改名遷移' in src)
+chk('B2 legacy save migration removed (castmig)', '舊存檔標籤改名遷移' not in src)
+chk('B2 castingTags accessor kept (castmig)', 'function ensureCastingTagsState(){' in src)
 # v20a119 DLG119：周刊編輯／週刊編輯兩個寫法保留，目標由 generic_mag_editor
 # 改指 shadow_male（無名角色一律剪影；LEGACY 兩寫法齊全，見 tests/test_dlg119_static.py）。
 chk('B6 speaker alias kept+added', '"周刊編輯":"shadow_male","週刊編輯":"shadow_male"' in src)
