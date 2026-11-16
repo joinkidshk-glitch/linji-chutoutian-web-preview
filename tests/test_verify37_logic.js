@@ -1,6 +1,6 @@
 // v20a37 驗證修復包・邏輯／真路徑測試
 // 宗旨（吸取 v20a34/35 教訓）：唔齋 call 被修函數餵假數據——每段都行玩家真路徑：
-//   段一：真 StoryOC.listOpen offer → 真 StoryPlay.start/skipToChoices/pickChoice → 真 showResult 畫面（捕捉 modal body）
+//   段一：真 StoryOC.listOpen offer → 真 StoryPlay.start/skipToChoices/pickChoice（v236 兩步：確認框＋確定）→ 真 showResult 畫面（捕捉 modal body）
 //   段二：真 buildPostShootRewardPack 組裝 ×30＋真 newspaperWrapFaceLines
 //   段三：真 doAudition（v91：入 pending）→ 撥到公佈日真 aud91PresentDue 揭曉獲聘 → 真 resolvePlannedDay 逐日行到殺青（item 3/5/6b）＋真訓練日 ×20（item 6a）
 //   段四：真 renderNotebook（DOM stub 捕捉標頭）
@@ -148,6 +148,8 @@ function makeEl(){
        會 call dlg106HasFullbody／dlg119DedupePair——DLG106/119 段要一併抽入，
        否則 N1 開場 system beat 就 ReferenceError。 */
     extractSlice('const DLG106_CATEGORIES = ', 'haloUrl:dlg119HaloUrl }; }catch(_e){}'),
+    /* v20a236 RECONFIRM236：pickChoice 行真 confirmChoice236（只靠 modal stub）。 */
+    extractFn('function confirmChoice236'),
     extractIIFE('const StoryPlay = (()=>{'),
   ].join('\n')
    .replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 =')
@@ -193,6 +195,15 @@ function makeEl(){
     }
     return '';
   }
+  /* v20a236：pickChoice 改兩步——撳選項先彈確認框，撳「確定」先真正落決定。 */
+  function pressConfirm236(){
+    const m = __modals[__modals.length - 1];
+    ok('236：撳選項後出確認框（reconfirm236＋返去／確定兩掣）',
+      !!m && m.body.indexOf('reconfirm236') >= 0 &&
+      (m.btns || []).map(b=>b.label).join('/') === '返去揀過/確定');
+    const b = (m.btns || []).find(x=>x.label==='確定');
+    if(b && b.on) b.on();
+  }
 
   /* ---- item 1：N1 真播到結算，解釋要出現；N2 結算唔再出 ---- */
   loadGame(freshSave());
@@ -203,6 +214,7 @@ function makeEl(){
   ok('seg1 StoryPlay.start(C1) 成功', started === true);
   StoryPlay.skipToChoices();
   StoryPlay.pickChoice('N1_a');
+  pressConfirm236();
   const body1 = lastResultBody();
   ok('seg1 N1 結算畫面（真 showResult）有雙軌白話解釋', body1.indexOf('何生提你') >= 0 && body1.indexOf('聲望＝觀眾識唔識你') >= 0);
   ok('seg1 解釋旗已燒（只出一次）', S.flags.guidanceDualExplained34 === true);
@@ -220,6 +232,7 @@ function makeEl(){
   if(started2){
     StoryPlay.skipToChoices();
     StoryPlay.pickChoice('N2_a');
+    pressConfirm236();
     const body2 = lastResultBody();
     ok('seg1 N2 結算畫面唔再重出解釋（只出一次）', body2.indexOf('sp-result') >= 0 && body2.indexOf('何生提你') < 0);
   }

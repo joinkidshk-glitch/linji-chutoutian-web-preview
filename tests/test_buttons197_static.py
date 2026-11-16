@@ -124,9 +124,10 @@ ok('N4：教學掣次序唔郁（.p order:1／.tut-skip order:2／.tut-replay-st
    and 'order: 2 !important;' in src
    and '#mask.tut-on #modal-btns button.tut-replay-step{' in src
    and 'order: 3 !important;' in src)
+# v20a236 resync：請柬出席／推辭掣改兩步——on 由直接 attend／skip 改做開確認框再確定（掣本身次序唔郁：出席行先、推辭行後）。
 ok('N4：全部 modal DOM 次序本身已經係肯定行先（出席→推辭、確定→取消）',
-   '{ label: "出席", role: "p", on: attend },' in src
-   and '{ label: "推辭", role: "g", on: skip }' in src
+   '{ label: "出席", role: "p", on: ()=>{' in src
+   and '{ label: "推辭", role: "g", on: ()=>{' in src
    and '{ label:"確定過一日", role:"d", on:()=>endBrowseDayGoHome() },' in src)
 
 # --- C5：抉擇卡齊高 ---

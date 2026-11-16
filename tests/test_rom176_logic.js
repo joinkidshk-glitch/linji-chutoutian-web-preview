@@ -303,6 +303,7 @@ function findDay(pred, max){
 
 /* ---------- D 女角巧遇 modal（真 rom176PlayEncounter） ---------- */
 (function(){
+  eval(extractFn('confirmChoice236')); /* v20a236：傾談掣行真確認框（只靠 modal stub） */
   eval(extractFn('rom176PlayEncounter'));
   __modals = []; __doTalkCalls = []; __openLocCalls = []; __giftPickCalls = [];
   __canGive = false;
@@ -314,6 +315,11 @@ function findDay(pred, max){
   ok('D3 greet 用注入 NPC_LINES（唔係 "……"）', __modals[0].body.indexOf('通告牌嗰邊啱啱先改完') >= 0);
   ok('D4 肖像係注入 fullbody 圖', __modals[0].body.indexOf('lan_ruoxi_base.webp') >= 0);
   __modals[0].btns[0].on();
+  /* v20a236：撳傾談先出確認框，撳「確定」先行 doTalk。 */
+  ok('D5a 撳傾談先出確認框（reconfirm236＋返去／確定兩掣）', __modals.length === 2
+    && __modals[1].body.indexOf('reconfirm236') >= 0
+    && __modals[1].btns.map(b=>b.label).join('/') === '返去揀過/確定');
+  __modals[1].btns.find(b=>b.label==='確定').on();
   ok('D5 撳傾談 → doTalk（npcId lan）＋設返程旗', __doTalkCalls.length === 1 && __doTalkCalls[0].npcId === 'lan'
     && rom176BackOpts().encDone === true);
   __modals = []; __openLocCalls = [];

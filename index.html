@@ -12134,6 +12134,25 @@ const StoryPlay = (()=>{
     render();
   }
 
+  /* v20a236 RECONFIRM236：抉擇後果提示——選項 effects.notes（經 playerNotes 過濾工程字眼）
+     ＋數值預覽（跟抉擇屏同一寫法：演技→業內信用提升／金錢→金錢增加）；N17 前夕加不可更改提示。 */
+  function storyChoiceConsequence236(n, choice){
+    const bits = [];
+    try{
+      const rawNote = choice.effects && choice.effects.notes ? String(choice.effects.notes) : "";
+      if(rawNote){ const clean = playerNotes({ notes:[rawNote] }).join(""); if(clean) bits.push(esc(clean)); }
+    }catch(_e){}
+    try{
+      const st = (choice.effects && choice.effects.stats) || {};
+      const prev = [];
+      if(Number(st.craft)>0) prev.push("業內信用將會提升");
+      if(Number(st.wealth)>0) prev.push("金錢將會增加");
+      if(prev.length) bits.push(esc(prev.join("、")) + "。");
+    }catch(_e){}
+    if(n && n.id==="N17") bits.push("去留決定一旦落定，不可更改。");
+    return bits.length ? bits.join("<br>") : "此選擇將會即時生效。";
+  }
+
   function pickChoice(choiceId){
     if(!_sess) return;
     if(choiceId==null || choiceId===""){ toast("無效選項"); return; }
@@ -12141,16 +12160,29 @@ const StoryPlay = (()=>{
     let choice = (n.choices||[]).find(c=>c.id===choiceId);
     if(!choice && /^\d+$/.test(String(choiceId))) choice = (n.choices||[])[Number(choiceId)];
     if(!choice){ toast("無效選項"); return; }
-    const result = StoryOC.applyChoice(n, choice);
-    /* v20a33 WEAVE_PHASE4_10：N17 前夕抉擇唔行通用結算——直接入結局呈現組裝（寫 S.ending410＋逐頁呈現） */
-    try{
-      if(n && n.id==="N17" && typeof ending410AfterEveChoice==="function" && ending410AfterEveChoice(n, choice, result)){
+    /* v20a236 RECONFIRM236：reconfirm 一定要喺 applyChoice 之前——applyChoice 第一句
+       就寫旗／改數值／markDone／saveQ，之後 _sess=null 鎖死，事後確認已經太遲。
+       N17 前夕（留低／收山／走）同一條路：applyChoice 喺 ending410 hook 之前寫
+       flag_ending410_*＋markDone("N17")＋saveQ，確認放喺 pickChoice 先有效。
+       「返去」行 render() 返抉擇屏（_sess 未郁，mode 仲係 choices），零副作用。
+       「再諗下」類選項本身都係一個 choice，照樣要確認，唔係確認本身。 */
+    confirmChoice236({
+      choiceLabel: choice.label || choice.id,
+      consequence: storyChoiceConsequence236(n, choice),
+      onConfirm: ()=>{
+        const result = StoryOC.applyChoice(n, choice);
+        /* v20a33 WEAVE_PHASE4_10：N17 前夕抉擇唔行通用結算——直接入結局呈現組裝（寫 S.ending410＋逐頁呈現） */
+        try{
+          if(n && n.id==="N17" && typeof ending410AfterEveChoice==="function" && ending410AfterEveChoice(n, choice, result)){
+            _sess = null;
+            return;
+          }
+        }catch(_e410p){}
+        showResult(n, choice, result);
         _sess = null;
-        return;
-      }
-    }catch(_e410p){}
-    showResult(n, choice, result);
-    _sess = null;
+      },
+      onCancel: ()=>{ render(); }
+    });
   }
 
   function relDisplayName(rawKey){
@@ -14900,13 +14932,18 @@ function hosp96TreatGate(id){
       <p>去仁康醫院睇急症、吊針食特效藥（<b class="gold">$${fee}</b>）：今日照唞，但聽日就好返，慳返 ${saved} 日病假。唔去，就留喺屋企慢慢唞，唔使錢。</p>`,
       [
         { label:`去醫院治療（−$${fee}）`, role:"p", on:()=>{
-          S.money = (Number(S.money)||0) - fee;
-          c.sick.hosp96Treated = true;
-          c.sick.days = today - c.sick.from + 1; /* 病程改寫成今日完結，結算文案對得返 */
-          c.sick.to = today;
-          try{ paintBar(); }catch(_e){}
-          try{ saveQ(); }catch(_e){}
-          doResolve();
+          /* v20a236 RECONFIRM236：治療先確認後扣 $600＋改寫病程（首個選擇 modal 本身係抉擇屏，呢度係確認一步）。 */
+          confirmChoice236({ choiceLabel: "去醫院治療", consequence: `即時扣款 $${fee}，病程將於今日完結，慳返 ${saved} 日病假。`,
+            onConfirm: ()=>{
+              S.money = (Number(S.money)||0) - fee;
+              c.sick.hosp96Treated = true;
+              c.sick.days = today - c.sick.from + 1; /* 病程改寫成今日完結，結算文案對得返 */
+              c.sick.to = today;
+              try{ paintBar(); }catch(_e){}
+              try{ saveQ(); }catch(_e){}
+              doResolve();
+            },
+            onCancel: ()=>{ hosp96TreatGate(id); } });
         } },
         { label:"留喺屋企休養", role:"g", on:doResolve }
       ], { onDismiss:doResolve });
@@ -20676,6 +20713,30 @@ function confirmSpendDay(actionLabel, onYes, opts){
   ]);
 }
 
+/* ===== v20a236 RECONFIRM236：共用抉擇再確認 =====
+   全 repo 原本 0 個 reconfirm：StoryPlay pickChoice／WF4／ENC79／買禮物／打聽／
+   傾談／還債／頒獎請柬／醫院治療全部撳落去即刻生效。呢個 helper 係唯一確認口：
+   撳選項 → 彈確認（選項原文＋後果提示）→ 「確定」先真正落決定；
+   「返去揀過」／撳遮罩（onDismiss）→ 行 onCancel 返去選項列，唔留任何副作用
+   （唔扣日、唔寫旗、唔播下一句、唔 save）。確認文案用書面語（語言規則 G2）。
+   掣序跟 confirmSpendDay／送禮確認：取消類行先，「確定」行後。
+   consequence 由呼叫方傳入已排好嘅 HTML（數值先 esc）；body 帶 reconfirm236
+   標記，等測試 stub 認得出呢個係確認框。 */
+function confirmChoice236(opts){
+  opts = opts || {};
+  const esc236 = (s)=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  const label = String(opts.choiceLabel||"");
+  const consequence = String(opts.consequence||"");
+  const onConfirm = opts.onConfirm, onCancel = opts.onCancel;
+  modal(`<div class="reconfirm236"><h3>確認選擇</h3>
+    <p>你選擇了「<b>${esc236(label)}</b>」。</p>
+    ${consequence?`<p class="sub">${consequence}</p>`:""}
+    <p class="sub">確定後便會即時生效；如想更改，請返回重新選擇。</p></div>`,[
+    {label:"返去揀過", role:"g", on:()=>{ if(typeof onCancel==="function") onCancel(); }},
+    {label:"確定", role:"p", on:()=>{ if(typeof onConfirm==="function") onConfirm(); }}
+  ], { onDismiss:()=>{ if(typeof onCancel==="function") onCancel(); } });
+}
+
 function tickDay(){
   /* v20a78 LOCK78：已結局唔再行日結算（同 advanceDay 硬閘雙保險） */
   if(typeof ending78Locked==="function" && ending78Locked()) return {ended:false, summary:null};
@@ -24796,6 +24857,19 @@ function wf4PickEvent(trig, locId){
     return pool[Math.floor(r * pool.length) % pool.length];
   }catch(_e){ return null; }
 }
+/* v20a236 RECONFIRM236：WF4 抉擇後果提示——fx 數值逐項譯做書面語（未知鍵照 key 出，唔靜默吞）。 */
+function wf4FxLine236(fx){
+  const LABEL236 = { stress:"壓力", stamina:"體能", money:"金錢", fame:"聲望", popularity:"人氣", acting:"演技", charm:"魅力", stage:"台風", iq:"智商", looks:"外貌" };
+  const bits = [];
+  try{
+    Object.keys(fx||{}).forEach(k=>{
+      const v = Number(fx[k]);
+      if(!v) return;
+      bits.push((LABEL236[k]||k) + " " + (v>0?"+":"") + v);
+    });
+  }catch(_e){}
+  return bits.length ? ("此選擇將會令" + bits.join("、") + "。") : "此選擇將會即時生效。";
+}
 function wf4ApplyFx(fx){
   const notes = [];
   try{
@@ -25014,7 +25088,11 @@ function wf4PlayEvent(ev, doneCb){
     const decide = ()=>{
       if(Array.isArray(ev.choices) && ev.choices.length){
         modal(head + `<p class="sub">嗰下，你會點做？</p>`,
-          ev.choices.map(ch=>({ label:ch.label, role:"p", on:()=>{ result(ch.out, ch.fx); } })),
+          ev.choices.map(ch=>({ label:ch.label, role:"p", on:()=>{
+            /* v20a236 RECONFIRM236：抉擇本身先確認，確定先行 result→wf4ApplyFx；
+               wf4Fire 嘅 seen 封印喺事件開播前已經寫好，呢度唔郁封印時序。 */
+            confirmChoice236({ choiceLabel: ch.label, consequence: wf4FxLine236(ch.fx), onConfirm: ()=>{ result(ch.out, ch.fx); }, onCancel: ()=>{ decide(); } });
+          } })),
           { onDismiss:()=>{ finish(); } });
       } else {
         result(ev.tail || "", ev.fx);
@@ -27883,16 +27961,26 @@ function openDebtRepaySheet(debtId, L, opts){
   };
   if(gate.giftId){
     btns.push({ label:"禮物還："+d.title, role:"p", on:()=>{
-      const r=applyMockAsk("agency_ho","act_ho_repay",{ debtId:d.id, mode:"gift", giftId:gate.giftId });
-      toast((r&&r.toast)||(r&&r.ok===false?"還唔到——再試一次":"已還清"));
-      after();
+      /* v20a236 RECONFIRM236：還債先確認後扣禮物（applyMockAsk 本體唔郁）。 */
+      confirmChoice236({ choiceLabel: "以禮物還「"+d.title+"」", consequence: "庫存將會扣減一件禮物，債項隨即清還。",
+        onConfirm: ()=>{
+          const r=applyMockAsk("agency_ho","act_ho_repay",{ debtId:d.id, mode:"gift", giftId:gate.giftId });
+          toast((r&&r.toast)||(r&&r.ok===false?"還唔到——再試一次":"已還清"));
+          after();
+        },
+        onCancel: ()=>{ openDebtRepaySheet(debtId, L, opts); } });
     }});
   }
   if(gate.cashOk){
     btns.push({ label:"現金 $200 還："+d.title, role:"p", on:()=>{
-      const r=applyMockAsk("agency_ho","act_ho_repay",{ debtId:d.id, mode:"cash" });
-      toast((r&&r.toast)||(r&&r.ok===false?"還唔到——再試一次":"已還清"));
-      after();
+      /* v20a236 RECONFIRM236：還債先確認後扣款（applyMockAsk 本體唔郁）。 */
+      confirmChoice236({ choiceLabel: "以現金 $200 還「"+d.title+"」", consequence: "即時扣款 $200，債項隨即清還。",
+        onConfirm: ()=>{
+          const r=applyMockAsk("agency_ho","act_ho_repay",{ debtId:d.id, mode:"cash" });
+          toast((r&&r.toast)||(r&&r.ok===false?"還唔到——再試一次":"已還清"));
+          after();
+        },
+        onCancel: ()=>{ openDebtRepaySheet(debtId, L, opts); } });
     }});
   }
   if(gate.softFree && !gate.giftId && !gate.cashOk){
@@ -31041,9 +31129,17 @@ function presentAwardInvite(pack, thenFn){
     }catch(_e){ finishSkip(); }
   };
   try{
+    /* v20a236 RECONFIRM236：出席／推辭都先確認，確定先寫 S.awardBooked213（v213 預約）或即播；
+       遮罩行為唔郁（onDismiss 照＝推辭）。「返去」重開請柬。 */
     modal(renderAwardInviteHtml(pack), [
-      { label: "出席", role: "p", on: attend },
-      { label: "推辭", role: "g", on: skip }
+      { label: "出席", role: "p", on: ()=>{
+        confirmChoice236({ choiceLabel: "出席「"+(pack.displayName||"頒獎典禮")+"」", consequence: "將預約席位，典禮將於典禮日晚上舉行。",
+          onConfirm: attend, onCancel: ()=>{ presentAwardInvite(pack, thenFn); } });
+      } },
+      { label: "推辭", role: "g", on: ()=>{
+        confirmChoice236({ choiceLabel: "推辭「"+(pack.displayName||"頒獎典禮")+"」", consequence: "將推辭席位，典禮當晚不會親身出席。",
+          onConfirm: skip, onCancel: ()=>{ presentAwardInvite(pack, thenFn); } });
+      } }
     ], { onDismiss: skip, keepSheetContent:true });
     return true;
   }catch(_e){ cont(); return false; }
@@ -39128,16 +39224,37 @@ function enc79PlayEncounter(starId, locId, wasMet){
         const b = document.createElement("button");
         b.type = "button"; b.className = "e79-btn e79-choice"; b.textContent = opt.label;
         b.onclick = ()=>{
+          /* v20a236 RECONFIRM236：巧遇 overlay 唔行 modal()（overlay 本身唔係 modal，
+             上面再開 modal 會俾 mask 蓋住）——確認直接喺 overlay 行內做：改行文＋換兩掣。
+             後果提示行 enc79ChoiceFx 預覽（好感加減；有 fx 嗰啲附帶進一步後果）。
+             「返去」行 render() 返返抉擇列（idx 未郁，零副作用）；「確定」先行原本嗰串
+             （加好感→runChoiceFx→即派→播下一句）。 */
           const fx = enc79ChoiceFx(step.seg, opt.label);
-          if(fx && fx.fav) enc79AddFav(starId, fx.fav, "enc");
-          if(fx && fx.fx) enc79RunChoiceFx(fx.fx);
-          /* v20a229 B6 A8：支線抉擇即派——初遇抉擇落定嗰晚記低指定種類嗰張通告（見 GRANT229_ENC79）。 */
-          try{ if(typeof grant229RecordFromEnc79==="function") grant229RecordFromEnc79(step.seg, opt.label); }catch(_g229){}
-          if(step.segFx){ try{ step.segFx(); }catch(_g){} }
-          const extra = (opt.lines||[]).map(ln=>({ who:ln[0], text:ln[1], seg:step.seg, segFx:null }));
-          built.steps.splice(idx+1, 0, ...extra);
-          idx++;
-          render();
+          const fav236 = (fx && typeof fx.fav==="number") ? ("好感 " + (fx.fav>0?"+":"") + fx.fav) : "";
+          const fx236 = (fx && fx.fx) ? "此選擇附帶進一步後果。" : "";
+          const con236 = [fav236, fx236].filter(Boolean).join("；");
+          paintDlg106(step);
+          nameEl.textContent = def.name;
+          lineEl.textContent = "確定選擇「" + opt.label + "」？" + (con236 ? "（" + con236 + "）" : "");
+          rowEl.innerHTML = "";
+          const back236 = document.createElement("button");
+          back236.type = "button"; back236.className = "e79-btn"; back236.textContent = "返去揀過";
+          back236.onclick = ()=>{ render(); };
+          const ok236 = document.createElement("button");
+          ok236.type = "button"; ok236.className = "e79-btn e79-choice"; ok236.textContent = "確定";
+          ok236.onclick = ()=>{
+            if(fx && fx.fav) enc79AddFav(starId, fx.fav, "enc");
+            if(fx && fx.fx) enc79RunChoiceFx(fx.fx);
+            /* v20a229 B6 A8：支線抉擇即派——初遇抉擇落定嗰晚記低指定種類嗰張通告（見 GRANT229_ENC79）。 */
+            try{ if(typeof grant229RecordFromEnc79==="function") grant229RecordFromEnc79(step.seg, opt.label); }catch(_g229){}
+            if(step.segFx){ try{ step.segFx(); }catch(_g){} }
+            const extra = (opt.lines||[]).map(ln=>({ who:ln[0], text:ln[1], seg:step.seg, segFx:null }));
+            built.steps.splice(idx+1, 0, ...extra);
+            idx++;
+            render();
+          };
+          rowEl.appendChild(back236);
+          rowEl.appendChild(ok236);
         };
         rowEl.appendChild(b);
       });
@@ -39421,7 +39538,13 @@ function rom176PlayEncounter(key, locId, metBefore183){
   try{ if(typeof GiftShop!=="undefined") canGift = !!GiftShop.canGive(key).ok; }catch(_e){ canGift = false; }
   const hasDate = (typeof rom159DateGate==="function");
   const btns = [
-    { label:"傾談", role:"p", on:()=>{ rom176SetEncounter({ kind:"woman", key:key, locId:locId }); doTalk(def.npcId, L); } },
+    { label:"傾談", role:"p", on:()=>{ rom176SetEncounter({ kind:"woman", key:key, locId:locId });
+      /* v20a236 RECONFIRM236：傾談先確認（doTalk 本體唔郁）；「返去」重開呢個巧遇 modal，唔會跌返地圖蝕咗今次撞到。 */
+      confirmChoice236({ choiceLabel: "與"+def.name+"傾談",
+        consequence: (typeof softTalkCostsDay==="function" && softTalkCostsDay()) ? "傾談將會耗用一日，壓力亦會上升。" : "傾談不耗用日子，壓力將會上升。",
+        onConfirm: ()=>doTalk(def.npcId, L),
+        onCancel: ()=>{ try{ rom176PlayEncounter(key, locId, metBefore183); }catch(_e){} } });
+    } },
   ];
   if(canGift) btns.push({ label:"送禮", role:"p", on:()=>{ rom176SetEncounter({ kind:"woman", key:key, locId:locId }); openGiftPick(key, L); } });
   /* 約會入口只喺 v159 已落地嗰陣先出（defensive check；v176 唔自己寫約會系統）。落地嗰陣駁返 rom159DateGate 實簽名。 */
@@ -40684,7 +40807,13 @@ function addLocTalkGiftActs(add, L, npcId){
   /* v20a176 ROM176：六位女角唔再喺地點板傾談／送禮——要撞到先傾得／送得（明星志願嗰套）。
      非女角（導演／對手／何生）傾談掣不變；鄧麗萍送禮掣唔喺呢度（agency_ho 專屬段）。 */
   if(npcId && !(typeof rom176IsWomanNpc==="function" && rom176IsWomanNpc(npcId)))
-    add(`同${NPCS[npcId].name}傾談`, talkHintLabel(), talkCostLabel(), ()=>doTalk(npcId,L), "act-priority");
+    add(`同${NPCS[npcId].name}傾談`, talkHintLabel(), talkCostLabel(), ()=>{
+      /* v20a236 RECONFIRM236：傾談先確認（doTalk 本體唔郁；LIVE 耗一日／壓力上升照舊）。 */
+      confirmChoice236({ choiceLabel: "與"+NPCS[npcId].name+"傾談",
+        consequence: (typeof softTalkCostsDay==="function" && softTalkCostsDay()) ? "傾談將會耗用一日，壓力亦會上升。" : "傾談不耗用日子，壓力將會上升。",
+        onConfirm: ()=>doTalk(npcId, L),
+        onCancel: ()=>{ try{ openLoc(L.id, {travelFree:true}); }catch(_e){} } });
+    }, "act-priority");
 }
 function addLocBridgeActs(add, L){
   const bridgeShown = {};
@@ -41187,6 +41316,12 @@ function openLoc(id, opts){
           return;
         }
         if(heard){ toast("呢單已經聽過——入手帳「傳聞」再睇。"); return; }
+        /* v20a236 RECONFIRM236：打聽先確認後扣茶錢／寫卡（applyMockAsk 本體唔郁；事務所打聽即加何生人情照舊）。 */
+        const cost236 = (Number(def.moneyCost)||0)>0 ? ("即時支付茶錢 $"+(Number(def.moneyCost)||0)+"。") : "";
+        const cons236 = cost236 + (L.id==="agency_ho" ? "何生人情將會增加。" : "行動一旦確認便會即時生效。");
+        const reopen236 = ()=>{ try{ if(L) openLoc(L.id, {travelFree:true}); }catch(_e2){} };
+        confirmChoice236({ choiceLabel: def.title, consequence: cons236,
+          onConfirm: ()=>{
         const r=applyMockAsk(L.id, def.id);
         try{ paintBar(); }catch(_e){}
         const reopen = ()=>{ try{ if(L) openLoc(L.id, {travelFree:true}); }catch(_e2){} };
@@ -41210,6 +41345,8 @@ function openLoc(id, opts){
           /* v19z10：dismiss／toast 後一定恢復地點選單 */
           setTimeout(reopen, 0);
         }
+          },
+          onCancel: reopen236 });
       }, heard ? "act-ask act-ask-heard" : "act-priority act-ask");
     });
     /* v20a22：hub 地點補返傾談／送禮（同非 hub 共用 helper）＋通告入口。
@@ -43728,11 +43865,20 @@ function openGiftShop(shopId, L){
     box.querySelectorAll("[data-buy]").forEach(btn=>{
       btn.addEventListener("click", ()=>{
         const id = btn.getAttribute("data-buy");
-        const res = GiftShop.buyItem(shopId, id);
-        if(!res.ok){ toast(res.reason||"買唔到"); return; }
-        toast(`已買下「${res.name}」−$${res.price}`);
-        paintBar();
-        openGiftShop(shopId, L);
+        const it = GiftShop.itemById(id);
+        /* v20a236 RECONFIRM236：買禮物先確認後扣錢（buyItem 本體唔郁，確認嗰陣再驗貨存／銀包）。 */
+        confirmChoice236({
+          choiceLabel: "購買「" + ((it&&it.name)||id) + "」",
+          consequence: "即時扣款 $" + (Number(it&&it.price)||0).toLocaleString() + "，禮物會存入庫存。",
+          onConfirm: ()=>{
+            const res = GiftShop.buyItem(shopId, id);
+            if(!res.ok){ toast(res.reason||"買唔到"); return; }
+            toast(`已買下「${res.name}」−$${res.price}`);
+            paintBar();
+            openGiftShop(shopId, L);
+          },
+          onCancel: ()=>{ openGiftShop(shopId, L); }
+        });
       });
     });
   }

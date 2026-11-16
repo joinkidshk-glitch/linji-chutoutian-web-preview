@@ -1,3 +1,4 @@
+# v20a236 resync：index.html 淨 +146 行（reconfirm 接線 11 處）；釘行按 difflib 映射重寫，內容逐字核實純漂移，見 qa236/resync236.py。
 # v20a214 rebase 上 main d1239d4 resync：index.html 淨 +358 行，6 個錨點按 difflib 映射重寫（內容逐字核實純漂移；check 名入面嘅舊 L 號係歷史標籤，唔跟住改）。
 # v20a207 resync (part 2).
 # v20a195 resync：index.html 淨 +87 行（見 qa195/resync195.py difflib 對位核實純漂移），6 個釘行按段 +0／+4／+84 重算。
@@ -80,11 +81,11 @@ for fn in ('rom176TryIntercept', 'rom176PlayEncounter', 'rom176DoGiveStarGift', 
 # v20a207 rebase 上 main 8cecf7f（v206）resync：v206 +25（N1 +22／N2 +3，插入點 ~41129／41271 之後）＋v207 +34；/tmp/verify207.py 73 錨點對位零 mismatch，純漂移。
 ok('釘：NPCS lan 條目 L6152', line(6360).startswith('  lan:{ id:"lan", name:"藍若曦"'))
 ok('釘：載入點 L31712（GIFT_REACT 賦值同行呼叫注入）',
-   'GIFT_REACT = giftReact' in line(15610) and 'rom176ApplyGiftOverrides()' in line(15610))
-ok('釘：ROM176 block 起點 L55660', line(39175).startswith('/* ===== v20a176 ROM176'))
-ok('釘：rom176ApplyGiftOverrides 定義 L56028', line(39543).startswith('function rom176ApplyGiftOverrides()'))
-ok('釘：addLocTalkGiftActs L57167', line(40682).startswith('function addLocTalkGiftActs(add, L, npcId)'))
-ok('釘：openLoc rom176 攔截 L57261', 'rom176TryIntercept(id)' in line(40776))
+   'GIFT_REACT = giftReact' in line(15647) and 'rom176ApplyGiftOverrides()' in line(15647))
+ok('釘：ROM176 block 起點 L55660', line(39292).startswith('/* ===== v20a176 ROM176'))
+ok('釘：rom176ApplyGiftOverrides 定義 L56028', line(39666).startswith('function rom176ApplyGiftOverrides()'))
+ok('釘：addLocTalkGiftActs L57167', line(40805).startswith('function addLocTalkGiftActs(add, L, npcId)'))
+ok('釘：openLoc rom176 攔截 L57261', 'rom176TryIntercept(id)' in line(40905))
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫（31903 唔郁、55254→55394、55622→55762、56761→56901、56855→56995），核實純漂移。# v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行，6 個釘行按段 +2／+9／+47 重算（6070→6072、31574→31583、53369→53416、53737→53784、54876→54923、54970→55017），difflib 對位核實純漂移。
 # v20a216 resync：釘行按 difflib 映射重寫（6322→6360、31903→31941、55394→55657、55762→56025、56901→57164、56995→57258；L6152／L31712 名唔郁），qa216/resync216.py 核實純漂移。
 # v20a217 resync：標籤遷移 ＋3 行（插入點舊 L45472 之後），釘行各 ＋3（55657→55660、56025→56028、57164→57167、57258→57261）。

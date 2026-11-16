@@ -5,6 +5,7 @@
 // 4. 報紙 publishDay＝典禮日＋1（唔係播嗰陣 dayIndex＋1）。
 // 5. 舊存檔 pending 請柬遷移：還原後照彈，決定嗰陣典禮日取屆別季節首日（過期當今晚）；
 //    決定咗就唔會由旗標重建返請柬。未知 ceremonyId 嘅合成 pack 保留舊即播行為。
+// 2b. v20a236：出席／推辭決定改兩步——撳掣先彈確認框，撳「確定」先寫預約／即播。
 // 6. 請柬文案：有 stamp 寫實日期（6月1日獎項／席位＋典禮夜行），冇 stamp 跌返「今晚」。
 // 7. 典禮日係關鍵日（唔可以靜默加速掠過）。
 // 反證：對 pristine main f58f19c index 行 → v213 標記未入 → FAIL（唔 crash）。
@@ -105,12 +106,22 @@ for(const f of ['awardsCalendarYear', 'awardsEditionYear', 'awardsCeremonies',
   'queueAwardsOnSeasonWindow', 'awardsCatsSorted184', 'renderAwardInviteHtml',
   'awards62GateLineHtml', 'awards63InviteBitHtml', 'presentAwardInvite',
   'ensureNewspaperQueue', 'ensureNewspaperClippings', 'newspaperEventSeen',
-  'enqueueNewspaperItem', 'enqueueNewspaperFromAward', 'isCriticalPlanDay'])
+  'enqueueNewspaperItem', 'enqueueNewspaperFromAward', 'isCriticalPlanDay',
+  'confirmChoice236'])
   eval(extractFn(f));
 eval(extractConst('AWARDS213_LEAD_DAYS').replace('const AWARDS213_LEAD_DAYS =', 'var AWARDS213_LEAD_DAYS ='));
 eval(extractConst('AWARDS213_SEASON_MONTH').replace('const AWARDS213_SEASON_MONTH =', 'var AWARDS213_SEASON_MONTH ='));
 eval(extractConst('AWARDS62_MEDIUM_LABEL').replace('const AWARDS62_MEDIUM_LABEL =', 'var AWARDS62_MEDIUM_LABEL ='));
 eval(extractConst('AWARDS188_CATEGORIES').replace('const AWARDS188_CATEGORIES =', 'var AWARDS188_CATEGORIES ='));
+
+/* v20a236：請柬決定改兩步——撳出席／推辭先彈確認框，撳「確定」先真正落決定。 */
+function pressConfirm236(){
+  ok('236：撳掣後出確認框（reconfirm236＋返去／確定兩掣）',
+    !!modalCaptured && String(modalCaptured.html || '').indexOf('reconfirm236') >= 0 &&
+    (modalCaptured.btns || []).map(b=>b.label).join('/') === '返去揀過/確定');
+  const b = (modalCaptured.btns || []).find(x=>x.label==='確定');
+  if(b && b.on) b.on();
+}
 
 function reset(){
   S.dayIndex = 148; S.awardsFlags = {}; S.awardsLog = []; S.pendingAwardPack = null;
@@ -154,6 +165,7 @@ ok('2：請柬 modal 彈出（出席／推辭掣齊）',
   presentAwardInvite(pack, function(){ contN++; }) === true &&
   modalCaptured && modalCaptured.btns.map(b => b.label).join('/') === '出席/推辭');
 modalCaptured.btns[0].on(); /* 出席 */
+pressConfirm236();
 ok('2：出席＝預約（S.awardBooked213：attend＋典禮日 151），唔即播典禮',
   S.awardBooked213 && S.awardBooked213.decision === 'attend' &&
   S.awardBooked213.ceremonyDay === 151 && play62Calls.length === 0);
@@ -179,6 +191,7 @@ pack = musicPack(true);
 contN = 0;
 presentAwardInvite(pack, function(){ contN++; });
 modalCaptured.btns[1].on(); /* 推辭 */
+pressConfirm236();
 ok('2：推辭＝預約 decline（典禮日 151），唔即播',
   S.awardBooked213 && S.awardBooked213.decision === 'decline' && play62Calls.length === 0 && contN === 1);
 S.dayIndex = 152;
@@ -207,11 +220,13 @@ const fakePack = { ceremonyId: 'award_test_invite', year: 1988, displayName: '�
 contN = 0;
 presentAwardInvite(fakePack, function(){ contN++; });
 modalCaptured.btns[0].on();
+pressConfirm236();
 ok('2：合成 pack 出席照舊即播（唔入 booking）',
   play62Calls.length === 1 && S.awardBooked213 === null && contN === 1);
 reset();
 presentAwardInvite(fakePack, function(){ contN++; });
 modalCaptured.btns[1].on();
+pressConfirm236();
 ok('2：合成 pack 推辭照舊即播電視版（log＋declined 報紙）',
   play62Calls.length === 1 && logCalls.length === 1 && S.newspaperQueue.length === 1 && S.awardBooked213 === null);
 
@@ -249,6 +264,7 @@ ok('4：舊存檔 pending 請柬還原返（唔會唔見）',
 contN = 0;
 presentAwardInvite(oldPack, function(){ contN++; });
 modalCaptured.btns[0].on();
+pressConfirm236();
 ok('4：舊請柬決定嗰陣典禮日＝屆別季節首日（151，唔係 build 日亂估）',
   S.awardBooked213 && S.awardBooked213.ceremonyDay === 151 && contN === 1);
 S.dayIndex = 152;

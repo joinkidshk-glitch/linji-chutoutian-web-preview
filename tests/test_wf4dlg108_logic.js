@@ -71,10 +71,18 @@ const UI40_STAND = { awi: 'data:image/png;base64,STUB108AWI' };
 
 /* ---- WF4 真身 ---- */
 const evs = eval(extractConst('DAILY_EVENTS_WF4').replace('const DAILY_EVENTS_WF4', 'let __evs108') + '\n;__evs108');
-const __wf4code108 = ['wf4Scene105','wf4PlayEvent','wf4ApplyFx','wf4Esc',
+const __wf4code108 = ['wf4Scene105','wf4PlayEvent','wf4ApplyFx','wf4Esc','wf4FxLine236','confirmChoice236',
  'wf4SpeakerId108','wf4OnTableIds108','wf4DlgExtraCands108','wf4DlgCharsHtml108','wf4BeatStageHtml108'
 ].map(n => extractFn(n)).join('\n');
 eval(__wf4code108); /* 頂層直接 eval：function 宣告入模組作用域（forEach 回呼內 eval 唔會漏出） */
+
+/* v20a236：WF4 抉擇改兩步——撳選項先彈確認框，撳「確定」先行 result。 */
+function clickConfirm236(){
+  const c = modalCalls[modalCalls.length - 1];
+  ok('236：撳選項後出確認框（reconfirm236＋返去／確定兩掣）',
+    c.html.indexOf('reconfirm236') >= 0 && c.labels.join('/') === '返去揀過/確定');
+  clickBtn(1);
+}
 
 const NEW108 = ['wf4_ev_cha02','wf4_ev_home01','wf4_ev_st01','wf4_ev_st03','wf4_ev_boss01','wf4_ev_boss02','wf4_ev_boss03','wf4_ev_day02'];
 const byId = id => evs.find(e => e.id === id);
@@ -226,7 +234,10 @@ function imgOf(stageHtml){
   clickBtn(0);
   ok('set01 到抉擇（2 個選擇）', modalCalls.length === 3 && modalCalls[2].labels.length === 2);
   clickBtn(0);
-  ok('set01 結算有 out 文案', modalCalls.length === 4 && modalCalls[3].html.includes('好意頭'));
+  ok('set01 撳選項後先出確認框（未結算、fx 未入帳）', modalCalls.length === 4
+    && modalCalls[3].html.indexOf('reconfirm236') >= 0 && S.stress === 30 && S.fame === 10);
+  clickConfirm236();
+  ok('set01 結算有 out 文案', modalCalls.length === 5 && modalCalls[4].html.includes('好意頭'));
   clickBtn(0);
   ok('set01 播完 doneCb 有叫', done === true);
   ok('set01 揀項 fx 入帳（stress 30→28、fame 10→11）', S.stress === 28 && S.fame === 11);
@@ -256,7 +267,9 @@ function imgOf(stageHtml){
   clickBtn(0);
   ok('boss03 到抉擇（2 個選擇）', modalCalls.length === 4 && modalCalls[3].labels.length === 2);
   clickBtn(0);
-  ok('boss03 結算舊文字', modalCalls.length === 5 && modalCalls[4].html.includes('常餐不要蔥'));
+  ok('boss03 撳選項後先出確認框（未結算）', modalCalls.length === 5 && modalCalls[4].html.indexOf('reconfirm236') >= 0);
+  clickConfirm236();
+  ok('boss03 結算舊文字', modalCalls.length === 6 && modalCalls[5].html.includes('常餐不要蔥'));
   clickBtn(0);
   ok('boss03 播完 doneCb 有叫', done3 === true);
 }

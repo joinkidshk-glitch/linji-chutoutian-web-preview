@@ -4,7 +4,8 @@
    (2) 體檢：hosp96State 防禦初始化；生效期內 conseq61DailyTick 用有效壓力（−10）計連續日
        ——95 連兩日唔病、100 連兩日照病（唔係無敵）、過期後回復本體；冇體檢時行為同 v95 一致
    (3) 付費治療 gate：出選擇 modal；揀醫扣 $600＋今日變最後一日（resolve 行康復路徑）；
-       揀唞唔扣錢照病；最後一日／已醫／週加速／冇病唔接管；唔夠錢出資訊版 modal
+       揀唞唔扣錢照病；最後一日／已醫／週加速／冇病唔接管；唔夠錢出資訊版 modal。
+       v20a236：揀醫改兩步——先出確認框，撳「確定」先扣錢；撳「返去」零副作用。
    (4) 探病：病程第一日按最高好感出探病旁白＋好感 +2；第二日唔再出；全 0 好感出芬姐版
    (5) 醫院 sheet：體檢購買扣錢＋寫 checkupUntil；生效中出「生效中」掣；唔夠錢擋；非醫院唔出掣
    用法：node tests/test_loc96_logic.js [path-to-index.html]（對 v20a95 index 行會 FAIL＝反證） */
@@ -80,6 +81,7 @@ eval(extractFn("loc96RemapGiftShop"));
 eval(extractFn("hosp96CheckupActive"));
 eval(extractFn("hosp96EffStress"));
 eval(extractFn("hosp96TreatGate"));
+eval(extractFn("confirmChoice236")); /* v20a236：治療確認框真身（只靠 modal stub） */
 eval(extractFn("hosp96VisitNote"));
 eval(extractFn("loc96AddSheetActs"));
 
@@ -158,6 +160,11 @@ S = mkSick(baseSave(), 10, 12); S.stress = 88; modalCalls = []; afterDayCalls = 
 ok(hosp96TreatGate("rest") === true && modalCalls.length === 1, "病程中：gate 接管出選擇");
 ok(modalCalls[0].btns.length === 2, "選擇有兩個掣（醫／唞）");
 modalCalls[0].btns[0].on();
+/* v20a236：揀醫先彈確認框，撳「確定」先扣 $600。 */
+ok(modalCalls.length === 2 && modalCalls[1].html.indexOf("reconfirm236") >= 0, "236：揀醫出確認框");
+const treatOk236 = (modalCalls[1].btns || []).find(b => b.label === "確定");
+ok(!!treatOk236 && modalCalls[1].btns.map(b => b.label).join("/") === "返去揀過/確定", "236：確認框有返去／確定兩掣");
+treatOk236.on();
 ok(S.money === 5000 - LOC96_CFG.treatFee, "揀醫：扣 $600");
 ok(S.conseq61.sick === null, "揀醫：今日結算後病程完結（聽日好返）");
 ok(S.conseq61.cooldownUntil > 10, "揀醫：照入病癒冷卻");
@@ -180,6 +187,17 @@ ok(hosp96TreatGate("rest") === true && modalCalls.length === 1, "唔夠錢：gat
 ok(modalCalls[0].btns.length === 1 && modalCalls[0].html.indexOf("唔夠畀") >= 0, "唔夠錢：文案講明醫唔起");
 modalCalls[0].btns[0].on();
 ok(S.money === 100 && S.conseq61.sick.done[10] === true, "唔夠錢：照病假結算、冇扣錢");
+
+/* v20a236：確認框撳「返去」＝零副作用（唔扣錢、病程唔郁、唔結算、返去選擇） */
+S = mkSick(baseSave(), 10, 12); modalCalls = []; afterDayCalls = [];
+hosp96TreatGate("rest");
+modalCalls[0].btns[0].on();
+ok(modalCalls.length === 2 && modalCalls[1].html.indexOf("reconfirm236") >= 0, "236：揀醫出確認框");
+const back236 = (modalCalls[1].btns || []).find(b => b.label === "返去揀過");
+ok(!!back236, "236：確認框有「返去揀過」掣");
+back236.on();
+ok(S.money === 5000 && !!S.conseq61.sick && afterDayCalls.length === 0, "236：返去唔扣錢、病程唔郁、唔結算");
+ok(modalCalls.length === 3 && modalCalls[2].html.indexOf("病到燶") >= 0, "236：返去重開治療選擇");
 
 /* ---------- (4) 探病 ---------- */
 console.log("[4] 探病場景");

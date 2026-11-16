@@ -50,7 +50,8 @@ function apply(fx){
   }
   return notes;
 }
-function modal(h, buttons, opts){ if(buttons && buttons[0] && buttons[0].on) buttons[0].on(); }
+/* v20a236：確認框（reconfirm236）唔撳第一掣「返去揀過」（會無限返去抉擇）——撳「確定」；其他 modal 照舊撳第一掣。 */
+function modal(h, buttons, opts){ const b = (String(h||'').indexOf('reconfirm236')>=0) ? ((buttons||[]).find(x=>x.label==='確定')||buttons[0]) : buttons[0]; if(b && b.on) b.on(); }
 function openLoc(id, opts){ _openedLocs.push([id, opts]); }
 function goToMapForBrowse(){ _mapReturns++; }
 const StoryPlay = { start(node, opts){ _playedNodes.push(node); return true; } };
@@ -64,7 +65,7 @@ const parts = [];
 ['DAILY_EVENTS_WF4','WF4_CFG','WF4_FX_LABEL','WF4_FRAG_SEEDS','WF4_FEN_INTRO_NODE','RIVAL_WF4_OVERRIDES','WF4_RIVAL_APPLIED86']
   .forEach(n => parts.push(extractConst(n)));
 ['wf4Ensure','wf4Hash','wf4Rand','wf4NewsDay','wf4YearSeason','wf4Tier','wf4BaseOk','wf4CondOk','wf4PickEvent',
- 'wf4ApplyFx','wf4Esc','wf4PlayEvent','wf4Fire','wf4DailyTick','wf4TryLocEvent','wf4PresentPending','wf4SeedFrags',
+ 'wf4ApplyFx','wf4Esc','wf4PlayEvent','wf4FxLine236','confirmChoice236','wf4Fire','wf4DailyTick','wf4TryLocEvent','wf4PresentPending','wf4SeedFrags',
  'wf4FenIntroDone','wf4FenActionsAt','wf4FenPlay','wf4FenFarewellArm','wf4FenFarewellNode','wf4PresentFenFarewell',
  'applyRivalWf4Overrides86'].forEach(n => parts.push(extractFn(n)));
 /* v203 helpers（pristine 冇）：抽唔到就用 stub 頂住，等斷言乾淨 FAIL，唔好成個測試 crash */
