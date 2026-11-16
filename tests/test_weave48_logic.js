@@ -184,7 +184,7 @@ function canon(o){
 /* ---- 主幹完整性（v20a234：pack 直出，唔再經覆寫） ---- */
 loadGame(baseSave());
 {
-  const t = { N12: ['高危替身', 'film_harbour', '麥震東'], N13: ['企邊', 'tvb_longmen', '齊鎮海'],
+  const t = { N12: ['墊', 'film_harbour', '麥震東'], N13: ['企邊', 'tvb_longmen', '齊鎮海'],
               N14: ['樂壇前哨', 'rec_star', '陸柏言'], N15: ['偶像實力之爭', 'rec_star', '程天諾'],
               N16: ['賀歲片', 'film_cotton', '廖炳星'] };
   let allOk = true;

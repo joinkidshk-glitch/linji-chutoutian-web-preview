@@ -148,7 +148,7 @@ for(const y of [1990, 1991, 1992]) for(const g of poolByYear[y]){
   if(W.nat92StaggerEligible(g)) stagN++;
   if(Object.keys(g.req||{}).some(k=>!CANON[k])) reqBad.push(g.id);
 }
-ok('F2 錯峰合資格 239 張（251－12 入門）', stagN === 239, 'stagN=' + stagN);
+ok('F2 錯峰合資格 255 張（267－12 入門）', stagN === 255, 'stagN=' + stagN);
 ok('F2b 入門 12 張唔錯峰', entryN === 12);
 ok('F3 舊 nat92 旗全庫 0 命中', nat92FlagN === 0);
 ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3).join(','));
@@ -252,8 +252,10 @@ ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3
   // tvb_harbour 秋 0、rec_star 秋 0；1991：rec_wanchai 冬／夏 0、film_lion 夏 0、tvb_harbour 春 0；
   // 1992：ad_adm 冬／夏 0、ad_central 春 0、film_cotton 秋 0、film_lion 春 0、rec_hk 冬 0、
   // rec_wanchai 春 0、tvb_harbour 春 0。呢啲洞令錯峰保底都填唔到（嗰季嗰地點根本冇通告）。
-  ok('E2 三年全板 0 地點-週＝94（1990:38／1991:18／1992:38，新庫分佈釘）',
-    c90.zero === 38 && c91.zero === 18 && c92.zero === 38, '實數 ' + c90.zero + '/' + c91.zero + '/' + c92.zero);
+  // E2 註（v251）：film_lion 夏（1991，film_122《半張船票》）＋film_lion 春（1992，film_120《虎門夜襲》）
+  // 兩個洞由即派新通告填咗：1991 18→13、1992 38→33；1990 唔郁（新通告全部 1991／1992）。
+  ok('E2 三年全板 0 地點-週＝84（1990:38／1991:13／1992:33，新庫分佈釘）',
+    c90.zero === 38 && c91.zero === 13 && c92.zero === 33, '實數 ' + c90.zero + '/' + c91.zero + '/' + c92.zero);
   ok('E3 1991/1992「恰好 2」占比 <40%（實數 '+c91.pct.toFixed(1)+'%／'+c92.pct.toFixed(1)+'%）', c91.pct < 40 && c92.pct < 40);
 }
 

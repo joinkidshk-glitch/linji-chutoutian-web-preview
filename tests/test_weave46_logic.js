@@ -139,9 +139,9 @@ function choice(nodeId, choiceId){
 /* ---- 主幹節點完整性（v20a234：pack 直出，唔再經覆寫） ---- */
 loadGame(baseSave());
 {
-  const t = { N7: ['暴雨救場', 'film_harbour', '魏詠男'], N8: ['選美後台', 'tvb_longmen', '葉敏芝'],
-              N9: ['茶餐廳度橋', 'cafe_cha', '廖炳星'], N10: ['年尾追數', 'tvb_harbour', '顧明輝'],
-              N11: ['戲路定型', 'tvb_longmen', '彭少祺'] };
+  const t = { N7: ['暴雨', 'film_harbour', '魏詠男'], N8: ['化妝間', 'tvb_longmen', '葉敏芝'],
+              N9: ['卡座', 'cafe_cha', '廖炳星'], N10: ['酒廊', 'tvb_harbour', '顧明輝'],
+              N11: ['黑西裝與舊風褸', 'tvb_longmen', '彭少祺'] };
   let allOk = true;
   Object.keys(t).forEach(id => {
     const n = node(id);

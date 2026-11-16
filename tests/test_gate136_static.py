@@ -72,8 +72,10 @@ ok("動態重建選項 note 係散場（endingEveOptions410，唔經 walk）",
    "頒獎禮散場，他站回他站慣的那個位置。" in src)  # v233 RW-2：第二人稱廣東話→第三人稱書面語，「散場」事實不變
 ok("全檔無「頒獎禮開場」", "頒獎禮開場" not in src)
 n1990 = json.dumps([pack_nodes.get(k) for k in ("N12", "N13", "N14", "N15", "N16")], ensure_ascii=False)
-ok("pack N12/N13/N14/N15/N16 玩家面年份係舊曆 1990，無「1992」",
-   "1990" in n1990 and "1992" not in n1990)
+# v251：N12 openConditionsNote 唯一一處「1992 春」係 DEV 面閘說明（STORY_GATE_3Y yearMin 係顯示年份 1992，
+# 同 TWF1 N19 note「1991 春」同一類例外；openConditionsNote 喺 TEXTFIX55_SKIP_KEYS，唔經 walk、唔出玩家面）
+ok("pack N12/N13/N14/N15/N16 玩家面年份係舊曆 1990（N12 閘 note 一處「1992 春」例外）",
+   "1990" in n1990 and n1990.count("1992") == 1 and "1992 春" in n1990)
 ok("N16 節點係 1990 冬（源頭）＋era_1990_winter_newyear",
    '"1990冬"' in n1990 and "era_1990_winter_newyear" in n1990)
 for cid, season in [("N12", "春"), ("N13", "夏"), ("N14", "秋"), ("N15", "秋末"), ("N16", "冬")]:

@@ -21,7 +21,7 @@ def ok(name, cond):
 
 
 nodes = pack.get('nodes', [])
-ok('pack 有 20 個 nodes', len(nodes) == 20)  # v250：N6F 由內嵌 BR89 表搬入 JSON（19→20）
+ok('pack 有 21 個 nodes', len(nodes) == 21)  # v251：closeup39 加入（20→21）
 ok('pack version 不變', pack.get('version') == '1.2.8')
 ok('nodes[0-4] 係 N1-N5', [n.get('id') for n in nodes[:5]] == ['N1', 'N2', 'N3', 'N4', 'N5'])
 
@@ -31,11 +31,12 @@ ok('nodes[0-4] 係 N1-N5', [n.get('id') for n in nodes[:5]] == ['N1', 'N2', 'N3'
 #      v20a244 RW-7 工人 B：N17 beats 揀格文案重寫（6 拍），sha 再重算） ---
 #      v20a233 RW-2 逐句重寫 N6–N19 內嵌表＋同步返 JSON（N6–N17 取代死 pack 節點、新增 N18／N19），sha 再重算；
 #      v20a235 結局唔畀玩家揀（N17 synopsis 六意向→走定留＋flags_written 刪三死旗；beats 一字未郁），sha 再重算） ---
-#      v20a244 RW-7 試讀修復（N5／N6／N15／N17／N18 synopsis 各改一句，僅文字；其餘一字未郁），sha 再重算） ---
+#      v20a244 RW-7 試讀修復（N5／N6／N15／N17／N18 synopsis 各改一句，僅文字；其餘一字未郁），sha 再重算；
+#      v20a251 中期批（closeup39 插入 nodes[7]＋N7–N12／N19 新短詞標題＋7 個鋪墊場面＋N19 artId story_c19＋N8／N19 文案微調），sha 再重算） ---
 tail = json.dumps(nodes[5:], sort_keys=True, ensure_ascii=False)
-ok('nodes[5:] 同 v250 一致（N6 新標題＋N6F 搬入＋N6 lockedHint）',
+ok('nodes[5:] 同 v251 一致（closeup39＋N7–N12／N19 新標題＋鋪墊場面）',
    hashlib.sha256(tail.encode('utf-8')).hexdigest()
-   == 'd84739897589394a75686820ce4f22a929d69040cf21d9457177d616703b47a1')
+   == 'f5446e0d373e7582a96789cd38d00016cbda6625ca1b4a3bd77ca25dcee11183')
 
 # --- 標題／setting／synopsis 按設計 ---
 ok('標題 N1-N5 按設計（v250 新短詞標題：通告板／後巷／正中央／記數簿／筆記本）',

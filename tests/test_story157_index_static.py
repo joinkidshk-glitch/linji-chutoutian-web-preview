@@ -153,14 +153,14 @@ ok("N6F 由 JSON 出（1 key）", list(TBR89.keys()) == ["N6F"])
 ok("WF1 表 2 keys 次序 N18/N19", list(TWF1.keys()) == ["N18", "N19"])
 ok("CHOICE47 F4/G4 在位", F4.get("id") == "F4_stay_mind" and G4.get("id") == "G4_family_job")
 
-# ---- 2. beats／choices 數目（設計稿＋manifest 對照；N9 係 10 唔係設計稿嘅 8） ----
+# ---- 2. beats／choices 數目（設計稿＋manifest 對照；v251：N8–N12／N19 加鋪墊場面，N9 13 唔係設計稿嘅 8） ----
 ok("beats 數 1989 N7/N8/N9/N10/N11",
-   [len(T1989[k]["beats"]) for k in ["N7", "N8", "N9", "N10", "N11"]] == [9, 9, 10, 9, 8])
+   [len(T1989[k]["beats"]) for k in ["N7", "N8", "N9", "N10", "N11"]] == [9, 12, 13, 15, 12])
 ok("beats 數 1990 N12/N13/N14/N15/N16",
-   [len(T1990[k]["beats"]) for k in ["N12", "N13", "N14", "N15", "N16"]] == [7, 9, 12, 7, 7])
+   [len(T1990[k]["beats"]) for k in ["N12", "N13", "N14", "N15", "N16"]] == [10, 9, 12, 7, 7])
 ok("beats 數 N6/N6F", (len(TC6["N6"]["beats"]), len(TBR89["N6F"]["beats"])) == (10, 8))
 ok("beats 數 N17", len(N17["beats"]) == 15)
-ok("beats 數 N18/N19", (len(TWF1["N18"]["beats"]), len(TWF1["N19"]["beats"])) == (10, 10))
+ok("beats 數 N18/N19", (len(TWF1["N18"]["beats"]), len(TWF1["N19"]["beats"])) == (10, 11))  # v251：N19 加鋪墊場面→11
 ok("beats 數 F4/G4", (len(F4["beats"]), len(G4["beats"])) == (4, 4))
 ok("choices 數",
    [len(ALL_NODES[k]["choices"]) for k in
@@ -303,6 +303,11 @@ for key, span in spans.items():
         n91 = span.count("1991")
         ok("WF1 表年份：只得 legacy openConditionsNote 一處 1991",
            n91 == 1 and "1991 春" in span and span.count("1992") == 0 and span.count("1993") == 0)
+    elif key == "T1990":
+        # v251 例外：T1990 N12 openConditionsNote 一處「1992 春」——DEV 面閘說明（STORY_GATE_3Y yearMin 係顯示年份 1992），
+        # 同 TWF1 N19 note「1991 春」同一類例外；openConditionsNote 喺 TEXTFIX55_SKIP_KEYS，唔經 walk、唔出玩家面
+        ok("1990 表年份：只得 N12 openConditionsNote 一處 1992",
+           span.count("1992") == 1 and "1992 春" in span and span.count("1991") == 0 and span.count("1993") == 0)
     elif key in ("F4_stay_mind", "G4_family_job"):
         ok("%s 零 1991／1992／1993" % key,
            "1991" not in span and "1992" not in span and "1993" not in span)

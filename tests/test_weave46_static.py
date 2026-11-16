@@ -16,9 +16,9 @@ def ok(name, cond):
 # ---- 主幹節點本體（JSON pack，v20a234 唯一來源） ----
 spine = json.dumps([nodes.get(k) for k in ('N7', 'N8', 'N9', 'N10', 'N11')], ensure_ascii=False)
 ok('pack N7-N11 五節點在位', all(nodes.get(k) for k in ('N7', 'N8', 'N9', 'N10', 'N11')))
-for cid, title, loc in [('N7','暴雨救場','film_harbour'), ('N8','選美後台','tvb_longmen'),
-                        ('N9','茶餐廳度橋','cafe_cha'), ('N10','年尾追數','tvb_harbour'),
-                        ('N11','戲路定型','tvb_longmen')]:
+for cid, title, loc in [('N7','暴雨','film_harbour'), ('N8','化妝間','tvb_longmen'),
+                        ('N9','卡座','cafe_cha'), ('N10','酒廊','tvb_harbour'),
+                        ('N11','黑西裝與舊風褸','tvb_longmen')]:  # v251 新短詞標題（pack 側；STORY_TITLE_SOFT fallback 表唔郁，見下）
     ok('pack node present: '+cid, nodes.get(cid) is not None)
     ok('pack '+cid+' title '+title, nodes.get(cid, {}).get('title') == title)
     ok('pack '+cid+' locId '+loc, nodes.get(cid, {}).get('locId') == loc)

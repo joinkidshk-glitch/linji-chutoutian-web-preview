@@ -62,6 +62,15 @@ ok('v250 GRANT229：N4 收窄到 N4_b、N18 收窄到 N18_a、N5:* 已拆做 N5_
    '"N4:N4_b":' in src and '"N18:N18_a":' in src and '"N5:*":' not in src
    and '"N5:N5_a":' in src and '"N5:N5_b":' in src and '"N5:N5_c":' in src
    and '"N4:*":' not in src and '"N18:*":' not in src)
+ok('v251 GRANT229：B 組 17 鍵齊（N7×3／N8×3／N9×2／N10×3／N11×2／N12×2／N19×2），無 wildcard',
+   all(('"N%d:%s":' % (n, c)) in src for n, c in
+       [(7, 'N7_a'), (7, 'N7_b'), (7, 'N7_c'), (8, 'N8_a'), (8, 'N8_b'), (8, 'N8_c'),
+        (9, 'N9_a'), (9, 'N9_b'), (10, 'N10_a'), (10, 'N10_b'), (10, 'N10_c'),
+        (11, 'N11_a'), (11, 'N11_b'), (12, 'N12_a'), (12, 'N12_b'),
+        (19, 'N19_a'), (19, 'N19_b')])
+   and '"N7:*":' not in src and '"N8:*":' not in src and '"N9:*":' not in src
+   and '"N10:*":' not in src and '"N11:*":' not in src and '"N12:*":' not in src
+   and '"N19:*":' not in src)
 ok('v249 E1：end95SpineDone 在位＋e1Qual95 用 spine95.done',
    'function end95SpineDone(st){' in src and 'leadMedia95.length >= 2 && spine95.done' in src)
 ok('v249 E1：snapshot／ladder95 有 spine95',

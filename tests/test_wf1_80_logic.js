@@ -4,7 +4,7 @@
 //   (3) 零回歸：既有 beats/choices/resultBeats 對 v136 fixture（tests/fixtures/spine_n6_n17_v136.json）子序列＋前綴保留；
 //       （v20a136：N12/N13/N14/N15/N16 beats 首句 1990→1992、N17 成幕改做頒獎禮之後＋N17_410_a notes「開場」→「散場」，
 //       意圖改動，fixture 由 v79 重新生成做 v136；舊 v79 檔留檔。生成器 qa136/gen_fixture136.js）
-//   (4) 補幕 N18/N19：結構（8–10 拍／2 抉擇連後果拍）、地點、when 用舊標籤（YEARS66 +2）、gate entry 規則
+//   (4) 補幕 N18/N19：結構（8–11 拍／2 抉擇連後果拍；v251：N19 加鋪墊場面→11 拍）、地點、when 用舊標籤（YEARS66 +2）、gate entry 規則
 //       （v20a113 改設計：N18 需 N5＋weekMin 48 深冬窗，N19 需 N18＋weekMin 61；1990 年 1 月第 2 週唔再開 N18；
 //       舊設計「冇 needDone 唔卡主線」已廢——用戶 2026-11-12 實玩捉到跳步）；
 //   (5) v20a234：注入已刪——N18/N19 由 JSON pack 直出，pack 自帶且 id 唯一；
@@ -137,7 +137,7 @@ for(const id of ['N18', 'N19']){
   const n = NODES[id];
   ok(id + ' 節點在位', !!n);
   if(!n) continue;
-  ok(id + ' beats 8–10 拍（實 ' + n.beats.length + '）', n.beats.length >= 8 && n.beats.length <= 10);
+  ok(id + ' beats 8–11 拍（實 ' + n.beats.length + '）', n.beats.length >= 8 && n.beats.length <= 11);  // v251：N19 加鋪墊場面→11 拍
   ok(id + ' 2 抉擇＋每抉擇後果拍 ≥2', (n.choices || []).length === 2 && n.choices.every(c => (c.resultBeats || []).length >= 2));
   ok(id + ' CALIB60 時窗登記', !!CWIN[id]);
   ok(id + ' CALIB60 標題登記', typeof CTIT[id] === 'string' && CTIT[id].length > 0);
@@ -180,7 +180,7 @@ ok('N19 1991冬 唔開（過季）', !gatePass('N19', 1991, '冬', ['N18'], 61))
   const ids = (packMain.nodes || []).map(n => n.id);
   ok('pack 自帶 N18/N19（唔使注入）', ids.includes('N18') && ids.includes('N19'));
   ok('pack N18/N19 id 唯一（注入冪等已無意義）', ids.filter(x => x === 'N18').length === 1 && ids.filter(x => x === 'N19').length === 1);
-  ok('pack 有 20 個 nodes（N1–N19＋N6F 齊，v250 N6F 搬入 JSON）', (packMain.nodes || []).length === 20);
+  ok('pack 有 21 個 nodes（N1–N19＋N6F＋closeup39 齊，v251 closeup39 加入）', (packMain.nodes || []).length === 21);
 }
 
 /* (6) 紅線 */

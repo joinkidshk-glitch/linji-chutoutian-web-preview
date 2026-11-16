@@ -25,7 +25,7 @@ def block(decl, endmark):
 # ---- 1990 主幹節點（JSON pack，v20a234 唯一來源） ----
 spine = json.dumps([nodes.get(k) for k in ('N12', 'N13', 'N14', 'N15', 'N16')], ensure_ascii=False)
 ok('pack N12-N16 五節點在位', all(nodes.get(k) for k in ('N12', 'N13', 'N14', 'N15', 'N16')))
-for cid, title, loc in [('N12','高危替身','film_harbour'), ('N13','企邊','tvb_longmen'),
+for cid, title, loc in [('N12','墊','film_harbour'), ('N13','企邊','tvb_longmen'),  # v251：N12 新短詞標題（pack 側；STORY_TITLE_SOFT fallback 表唔郁，見下）
                         ('N14','樂壇前哨','rec_star'), ('N15','偶像實力之爭','rec_star'),
                         ('N16','賀歲片','film_cotton')]:
     ok('pack node present: '+cid, nodes.get(cid) is not None)

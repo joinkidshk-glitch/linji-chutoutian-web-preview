@@ -24,7 +24,7 @@ ok('NOTES_V20A80 在位', (p.parent / 'NOTES_V20A80_WF1.md').exists())
 # --- 一、框架 ---
 ok('WF1 補幕節點喺 pack（N18/N19，v20a234 唯一來源）',
    nodes.get('N18') is not None and nodes.get('N19') is not None
-   and nodes['N18'].get('title') == '將來' and nodes['N19'].get('title') == '賭枱邊')
+   and nodes['N18'].get('title') == '將來' and nodes['N19'].get('title') == '賭枱')  # v251：N19 新短詞標題
 ok('內嵌 WF1 表＋注入函數已刪（v20a234）',
    'const STORY_SPINE_NODES_WF1 = {' not in src and 'function applyStoryWf1Nodes80(){' not in src
    and 'applyStoryWf1Nodes80();' not in src and 'STORY_SPINE_NODES_WF1' not in src)
