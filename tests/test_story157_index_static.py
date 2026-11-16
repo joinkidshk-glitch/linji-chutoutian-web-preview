@@ -174,7 +174,7 @@ def blob(node):
 
 
 ok("N6 標題＋synopsis 新寫", TC6["N6"]["title"] == "角落那張桌子"
-   and "每集都找你" in TC6["N6"]["synopsis"] and "一簽一季" not in blob(TC6["N6"]))
+   and "每集都找他" in TC6["N6"]["synopsis"] and "一簽一季" not in blob(TC6["N6"]))
 ok("N6F 標題＋synopsis 同 N6 一致", TBR89["N6F"]["title"] == "角落那張桌子"
    and TBR89["N6F"]["synopsis"] == TC6["N6"]["synopsis"])
 ok("N6 Beat5 Q1 已潤飾（無 route 旗術語）",
@@ -196,8 +196,8 @@ ok("N17 台灣資金風聲照用", "台灣那邊的資金沒有以前那麼寬�
 ok("N17 彩紙仲喺走廊", "彩紙還在走廊" in blob(N17))
 ok("N17 synopsis：頒獎禮之後嗰晚", "頒獎禮之後那晚" in N17["synopsis"])
 ok("N17 synopsis 無 DEV 註解（舊版文案／重寫）", "舊版文案" not in N17["synopsis"] and "重寫" not in N17["synopsis"])
-ok("N17 最後一則係收尾過場句", "親手圈那一格" in N17["beats"][-1].get("lines", [""])[-1]
-   or "親手圈那一格" in json.dumps(N17["beats"][-1], ensure_ascii=False))
+ok("N17 最後一則係收尾過場句", "寫滿他三年行過的路" in N17["beats"][-1].get("lines", [""])[-1]
+   or "寫滿他三年行過的路" in json.dumps(N17["beats"][-1], ensure_ascii=False))
 ok("F4 太空人＋回流零星口吻", "太空人" in blob(F4) and "間中都會聽到" in blob(F4)
    and "呢年開始" not in blob(F4))
 ok("F4 回流句 6 處（3 beats＋3 notes）", blob(F4).count("間中都會聽到") == 6)

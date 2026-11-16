@@ -103,7 +103,7 @@ ok('朝早報紙 TV 模板全不變', ['np_win_tv_01', 'np_win_tv_02', 'np_nom_t
 }));
 /* stub 其餘欄位冇俾覆寫誤傷：displayName／分類文本原樣 */
 ok('ceremony displayName 不變', FW.awardsStub.ceremonies.every(c => c.displayName === cer0(c.id).displayName));
-ok('分類 winLine 不變', FW.awardsStub.categories.award_harbour_film[0].winLine === awardsStubRaw.categories.award_harbour_film[0].winLine);
+ok('RW-7: stub categories 已刪', !FW.awardsStub.categories && !awardsStubRaw.categories);
 
 /* ---- (3) 典禮 beats 開場 ---- */
 const beatsFilm = awards62CeremonyBeats({ displayName: '維港影藝獎', bestOutcome: 'gallery', ceremonyId: 'award_harbour_film', venue99: '金禧大酒店・大禮堂', categories: [] });

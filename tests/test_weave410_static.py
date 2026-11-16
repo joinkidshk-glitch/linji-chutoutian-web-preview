@@ -44,7 +44,11 @@ ok('N17 pack free of old ten-ending ids', all(x not in node for x in ['N17_e01',
 ok('N17 pack synopsis 對齊 v235 新規則（冇六個意向／只鎖事業）',
    '六個意向' not in nodes['N17']['synopsis'] and '只鎖事業' not in nodes['N17']['synopsis']
    and '今晚只問一題：走，還是留' in nodes['N17']['synopsis'])
-# 註：beats 第 13 拍仲有「六個意向，鎖一個」舊文案——v235 唔改 beats 劇情本身（見 brief），留待另票處理，唔計入呢個斷言。
+# v20a244 RW-7 工人 B：beats 第 13 拍「六個意向，鎖一個」舊文案已重寫（連同第 3／6／9／14／15 拍揀格寫法一併改做埋單口徑）；以下斷言覆蓋 beats 全文。
+ok('N17 pack beats 對齊 v235 新規則（冇六個意向／隔壁那格／親手圈那一格）',
+   '六個意向' not in json.dumps(nodes['N17']['beats'], ensure_ascii=False)
+   and '隔壁那格' not in json.dumps(nodes['N17']['beats'], ensure_ascii=False)
+   and '親手圈那一格' not in json.dumps(nodes['N17']['beats'], ensure_ascii=False))
 ok('N17 pack flags_written 冇死旗（to_backstage／to_support／leave_follow 已清）',
    all(x not in node for x in ['flag_ending410_to_backstage', 'flag_ending410_to_support', 'flag_ending410_leave_follow']))
 ok('N17 inline override removed (v20a234)',

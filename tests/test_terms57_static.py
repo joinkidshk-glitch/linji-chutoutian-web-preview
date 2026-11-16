@@ -24,7 +24,7 @@ chk('TEXTFIX55 block present', 0 <= a < b)
 region = src[a:b] if 0 <= a < b else ''
 outside = (src[:a] + src[b:]) if 0 <= a < b else src
 
-chk('TEXTFIX57 tables present in region', 'TEXTFIX57_EXACT' in region and 'TEXTFIX57_PHRASES' in region and 'TEXTFIX57_GIG_REQ' in region and 'TEXTFIX57_KEY_RENAME' in region)
+chk('TEXTFIX57 tables present in region', 'TEXTFIX57_EXACT' in region and 'TEXTFIX57_PHRASES' in region and 'TEXTFIX57_KEY_RENAME' in region)
 chk('TEXTFIX57 hooks wired', 'TEXTFIX57_EXACT, t' in region and 'TEXTFIX57_PHRASES' in region and 'FW.castingTagsReg' in region)
 
 # ---- compact JS string tokenizer (skips // and /* */ comments) ----

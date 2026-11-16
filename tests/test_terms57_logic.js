@@ -7,11 +7,11 @@ const s = fs.readFileSync(path, 'utf8');
 const a = s.indexOf('/* ==== v20a55 TEXTFIX');
 const b = s.indexOf('async function refreshCopyPacksFromDisk(){');
 if (a < 0 || b < 0 || b <= a) { console.log('FAIL TEXTFIX block not found'); process.exit(1); }
-const TF = eval(s.slice(a, b) + '\n;({ TEXTFIX55_OPTS_STORY, TEXTFIX55_OPTS_SIMPLE, TEXTFIX57_EXACT, TEXTFIX57_PHRASES, TEXTFIX57_GIG_REQ, textfix55Str, textfix55Walk, textfix55GigRecord, textfix55Freeplay });');
+const TF = eval(s.slice(a, b) + '\n;({ TEXTFIX55_OPTS_STORY, TEXTFIX55_OPTS_SIMPLE, TEXTFIX57_EXACT, TEXTFIX57_PHRASES, textfix55Str, textfix55Walk, textfix55Freeplay });');
 let fails = [];
 function chk(name, cond) { if (!cond) fails.push(name); console.log((cond ? 'PASS ' : 'FAIL ') + name); }
 
-chk('TEXTFIX57 tables present', !!TF.TEXTFIX57_EXACT && Array.isArray(TF.TEXTFIX57_PHRASES) && Array.isArray(TF.TEXTFIX57_GIG_REQ));
+chk('TEXTFIX57 tables present', !!TF.TEXTFIX57_EXACT && Array.isArray(TF.TEXTFIX57_PHRASES));
 
 // A1 事態->劇情 (phrase, incl. compound 相遇事態)
 chk('A1 相遇事態', TF.textfix55Str('相遇事態', 'category', null, TF.TEXTFIX55_OPTS_SIMPLE) === '相遇劇情');
@@ -44,13 +44,7 @@ chk('B2 registry labelToId keys', reg.labelToId['身手好'] === 'tag_action' &&
 const FW = { castingTagsReg: { tags: [{ id: 'tag_action', label: '動作演員' }], labelToId: { '動作演員': 'tag_action' } } };
 TF.textfix55Freeplay(FW);
 chk('B2 freeplay wiring', FW.castingTagsReg.tags[0].label === '身手好' && FW.castingTagsReg.labelToId['身手好'] === 'tag_action');
-// B4 體力->體能: gig requirement fragments only; prose kept
-const gig = TF.textfix55GigRecord({ id: 'gx', shootHint: '極考體力與走位，需高度專注。', synopsis: '外景日曬體力消耗大，記得補水；呢張要體力與耐性。', blurb: '屬高強度體力活，量力而為。', limits: { notes: '高強度體力要求' } });
-chk('B4 req pair in hint', gig.shootHint.indexOf('體能與走位') >= 0);
-chk('B4 req pair in synopsis', gig.synopsis.indexOf('體能與耐性') >= 0);
-chk('B4 prose 體力消耗 kept', gig.synopsis.indexOf('體力消耗大') >= 0);
-chk('B4 prose 體力活 kept', gig.blurb.indexOf('體力活') >= 0);
-chk('B4 體力要求 in notes', gig.limits.notes.indexOf('體能要求') >= 0);
+// RW-7：體力→體能要求表＋通告清洗層已刪（無呼叫者；新庫 0 命中）。B4 檢查一併刪走。
 
 console.log(fails.length ? ('FAILURES: ' + fails.join(', ')) : 'ALL PASS');
 process.exit(fails.length ? 1 : 0);

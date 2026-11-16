@@ -3,7 +3,7 @@
 - renderAwardResultHtml 行 v11 報紙版式（維港日報、日期＝典禮日＋1、兩版、得主相、版尾），唔再係票根式卡片
 - ★統一：awards63FellowsHtml 得主標記由 🏆 金底 chip 改做 ★＋「★為得主」圖例（報紙／頒獎結果路徑）
 - 相片：兩張 webp 灰階細檔喺 assets/story/newspaper/；晨報 enqueueNewspaperFromAward 傳 imgKey
-- 術語：inline 模板「碟市／臨記席」只可以留喺 TEXTFIX55_EXACT 嘅舊字串 key 入面（載入正規化）＋註解；
+- 術語：RW-7 起「碟市／臨記席」唔可以再喺 EXACT key／玩家面字串出現，只可以留喺 /* */ 註解（T07/T08 會攞走註解再掃）；
   「夜半靈異主題曲主唱」v20a243 已隨 TEXTFIX55_GIG_SUB 一併刪除，唔可以出現喺 index.html 任何位置
 - presentAwardResult 唔再叫 toast；「收下這晚」＋awardSheet 保留
 - 舊守衛：SAVE key／?v=／softRev 不變；content/*.json 冇改過；enqueueNewspaperFromWrap／press94* 唔郁
@@ -112,10 +112,8 @@ ok('P09_enqueue_stores_imgkey', 'imgKey: String(raw.imgKey' in html)
 
 # ---- (4) 術語掃蕩 ----
 exact = seg('const TEXTFIX55_EXACT = {', 'const TEXTFIX55_SKIP_KEYS = {')
-ok('T01_exact_new_strings',
-   '邊個上台領獎' in exact and '樂壇點樣叫人名' in exact and '金碟夜新人輩出' in exact
-   and '陳偉翔嘅名第一次出現喺典禮側記' in exact and '金碟夜散場：掌聲未完' in exact
-   and '台慶頒獎夜散場：觀禮席都有鏡頭掃過' in exact)
+# RW-7：NP214 6 條已刪——舊 key（碟市／臨記席）唔再喺 EXACT 段；新字串喺 stub／VENUE99／AWARDS188 直出（見 T03–T06）。
+ok('T01_np214_deleted', '碟市' not in exact and '臨記席' not in exact)
 # v20a243 RW-6：TEXTFIX55_GIG_SUB 已刪（舊通告庫專用；新庫無夜半靈異職銜，0 命中）。
 # 「夜半靈異主題曲主唱」唔可以出現喺 index.html 任何位置。
 ok('T02_gigsub_deleted_v243', 'const TEXTFIX55_GIG_SUB' not in html and '夜半靈異主題曲主唱' not in html)
@@ -218,7 +216,9 @@ try:
         'content/tutorial_zh_HK.json'}
     # v243 豁免（語言重寫 RW-6，已拍板）：content/gigs_new.json 逐句重寫（241 張新庫覆核）。
     _v243_allowed = {'content/gigs_new.json'}
-    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v243_allowed for l in touched))
+    # v244 豁免（語言重寫 RW-7 工人 B，已拍板）：content/cast_main.json 2 處簡體「周刊」→「週刊」。
+    _v244_allowed = {'content/cast_main.json'}
+    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v243_allowed | _v244_allowed for l in touched))
 except Exception as e:
     ok('X05_content_json_untouched (git unavailable: %s)' % e, False)
 

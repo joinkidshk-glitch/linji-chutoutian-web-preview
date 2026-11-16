@@ -1,3 +1,4 @@
+# RW-7A resync：index.html 淨 −69 行（刪 TEXTFIX 死映射＋gig 清洗層）；3 個釘行按 difflib 映射重寫（14772→14704、14894→14826；9212 唔郁），內容逐字核實純漂移；另 EXACT #2（腕表句）因 tang152 釘死已還原，唔再刪。
 # v20a236 resync：index.html 淨 +146 行（reconfirm 接線 11 處）；釘行按 difflib 映射重寫，內容逐字核實純漂移，見 qa236/resync236.py。
 # v20a214 rebase 上 main d1239d4 resync：index.html 淨 +358 行，三錨點按 difflib 映射重寫（內容逐字核實純漂移；check 名入面嘅舊 L 號係歷史標籤，唔跟住改）。
 # v20a216 resync：index.html 淨 +263 行（見 qa216/resync216.py difflib 對位核實純漂移），3 個釘行按映射重寫（＋38）。
@@ -105,8 +106,8 @@ ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
 # v20a235 resync：index.html 淨 −24 行（N17 前夕刪三選項）；3 個釘行按 difflib 映射重寫（normaliseTangStub152 15563→15539、stub 呼叫行 15686→15662；HELD 10006 唔郁），內容逐字核實純漂移。
 # v20a242 resync：index.html 淨 −144 行（刪 LAN 覆寫表；刪除區間舊 L6597–6735／7559–7579／15038–15045）；3 個釘行按段重算（HELD 9358→9212，−146；normaliseTangStub152 14926→14783，−143；stub 呼叫行 15049→14905，−144），內容逐字核實純漂移。
 # --- 4. 載入機制：stub 正規化＋push mock 過濾 ---
-ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[14771].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[14893].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[14703].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[14825].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)

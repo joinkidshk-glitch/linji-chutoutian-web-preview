@@ -4,7 +4,7 @@
 // ＋ TEXTFIX55／TEXTFIX57 載入正規化（術語掃蕩）。
 // 段：(a) 報紙版式 (b) 保留項（focus 先／同屆提名一次／安慰行／代表作／weakHint／聲望信用行）
 //     (c) v211 意圖（metric 第二版用真數據、★圖例、唔再 toast）
-//     (d) 相片揀相 (e) 術語正規化（TEXTFIX55_EXACT 6 條＋GIG_SUB 夜半靈異）
+//     (d) 相片揀相 (e) 術語正規化（RW-7：NP214 6 條已刪，現行字串直出）
 //     (f) 報紙路徑零 🏆／零「典禮後仍有人提起」／零碟市／臨記席
 // 用法：node tests/test_newspaper214_award_logic.js
 // 反證：對 pristine main（冇 np214AwardPhoto214／冇 np214- 版式）乾淨 FAIL，唔 crash。
@@ -48,12 +48,10 @@ function extractConst(name) {
 const FN_NAMES = ["fmtNewspaperDate", "newspaperEsc", "newspaperFullName214",
   "awardsCatsSorted184", "awards63FocusCat", "awards63FellowsHtml",
   "awardWinner149", "awardWinLine149", "np214AwardPhoto214", "renderAwardResultHtml",
-  "textfix55Walk", "textfix55Str", "textfix55Note", "textfix55Label",
-  "textfix55DropSents", "textfix55GigField"];
+  "textfix55Walk", "textfix55Str", "textfix55Note", "textfix55Label"];
 const CONST_NAMES = ["START", "NP214_AWARD_PHOTOS_214",
   "TEXTFIX55_EXACT", "TEXTFIX55_PHRASES", "TEXTFIX57_EXACT", "TEXTFIX57_PHRASES",
-  "TEXTFIX55_SKIP_KEYS", "TEXTFIX57_KEY_RENAME", "TEXTFIX55_NOTE_EXACT", "TEXTFIX55_OPTS_SIMPLE",
-  "TEXTFIX57_GIG_REQ"];
+  "TEXTFIX55_SKIP_KEYS", "TEXTFIX57_KEY_RENAME", "TEXTFIX55_NOTE_EXACT", "TEXTFIX55_OPTS_SIMPLE"];
 const missing = [];
 for (const n of FN_NAMES) if (!extractFn(n)) missing.push(n);
 for (const n of CONST_NAMES) if (!extractConst(n)) missing.push(n);
@@ -208,7 +206,8 @@ ok("d9 NEWS82_IMGS 冇嗰陣跌返常量路徑（assets/story/newspaper/）",
     return p && p.src === "assets/story/newspaper/photo_awi_ceremony.webp";
   })());
 // ---- (e) 術語正規化 ----
-/* 呢 6 句係 STUB_AWARDS_CEREMONY_v1.json 嘅真實舊字串（TEXTFIX55_EXACT 嘅 key，一字唔差先對得上）。 */
+// RW-7：NP214 6 條已刪（stub 舊字串唔再係 EXACT key；現行字串喺 stub／AWARDS188 直寫新句）。
+// 舊字串而家直出（唔再轉換）；現行字串逐字不變、含新術語、零舊術語。
 const OLD_AWARD_STUB = {
   inviteDek: "唱片年終有金碟夜。你收到一張席位信——碟市邊個上鏡，席上見。",
   headline: "金碟夜，碟市多個名",
@@ -217,22 +216,19 @@ const OLD_AWARD_STUB = {
   galleryLine: "你坐席上，聽人謝唱片公司。你記住碟市點樣叫人名。",
   newsLine2: "台慶頒獎夜散場：臨記席都有鏡頭掃過。"
 };
-const cleaned = textfix55Walk(JSON.parse(JSON.stringify(OLD_AWARD_STUB)), null, null, TEXTFIX55_OPTS_SIMPLE);
-ok("e1 TEXTFIX55_EXACT 走一遍：6 句舊字串全部乾淨（冇碟市／臨記席）",
-  !JSON.stringify(cleaned).includes("碟市") && !JSON.stringify(cleaned).includes("臨記席"));
-ok("e2 「金碟夜，碟市多個名」→「金碟夜新人輩出」", cleaned.headline === "金碟夜新人輩出");
-ok("e2b 請柬句「碟市邊個上鏡」→「邊個上台領獎」（v20a218 C-C1：顯示值「年終」→「年中」）",
-  cleaned.inviteDek === "唱片年中有金碟夜。你收到一張席位信——邊個上台領獎，席上見。");
-ok("e2c 旁聽句「碟市點樣叫人名」→「樂壇點樣叫人名」",
-  cleaned.galleryLine === "你坐席上，聽人謝唱片公司。你記住樂壇點樣叫人名。");
-ok("e2d 「臨記席都有鏡頭掃過」→「觀禮席都有鏡頭掃過」",
-  cleaned.newsLine2 === "台慶頒獎夜散場：觀禮席都有鏡頭掃過。");
-ok("e3 「碟市掌聲未完」→「掌聲未完」", cleaned.newsLine === "金碟夜散場：掌聲未完。");
-// v20a243 RW-6：TEXTFIX55 GIG_SUB 已刪（舊通告庫專用；新庫無夜半靈異職銜，0 命中）。舊字串直出。
-ok("e4 v243 GIG_SUB deleted: workTitle passes through",
-  textfix55GigField("夜半靈異主題曲主唱", "workTitle") === "夜半靈異主題曲主唱");
-ok("e5 v243 GIG_SUB deleted: title passes through",
-  textfix55GigField("《夜半靈異主題曲主唱》主唱", "title") === "《夜半靈異主題曲主唱》主唱");
+const NEW_AWARD_STUB = {
+  inviteDek: "唱片年中有金碟夜，阿偉收到一張席位信。誰上台領獎，席上見分曉。",
+  headline: "金碟夜，樂壇新人輩出",
+  dek: "星河金碟夜結束，陳偉翔的名字第一次出現在典禮側記上。",
+  newsLine: "金碟夜散場，掌聲未完。",
+  galleryLine: "阿偉坐在席上，聽人答謝唱片公司。他記住樂壇怎樣叫人的名字。",
+  newsLine2: "台慶頒獎夜散場，鏡頭掃過觀禮席。"
+};
+const cleanedOld = textfix55Walk(JSON.parse(JSON.stringify(OLD_AWARD_STUB)), null, null, TEXTFIX55_OPTS_SIMPLE);
+const cleanedNew = textfix55Walk(JSON.parse(JSON.stringify(NEW_AWARD_STUB)), null, null, TEXTFIX55_OPTS_SIMPLE);
+ok("e1 RW-7: old NP214 strings pass through unchanged (mappings deleted)", JSON.stringify(cleanedOld) === JSON.stringify(OLD_AWARD_STUB));
+ok("e2 RW-7: current strings pass through unchanged", JSON.stringify(cleanedNew) === JSON.stringify(NEW_AWARD_STUB));
+ok("e3 RW-7: current strings carry new terms, no old terms", cleanedNew.inviteDek.indexOf("席上見分曉") >= 0 && cleanedNew.headline.indexOf("樂壇新人輩出") >= 0 && cleanedNew.dek.indexOf("陳偉翔的名字第一次出現") >= 0 && cleanedNew.newsLine.indexOf("掌聲未完") >= 0 && cleanedNew.galleryLine.indexOf("樂壇怎樣叫人的名字") >= 0 && cleanedNew.newsLine2.indexOf("觀禮席") >= 0 && !JSON.stringify(cleanedNew).includes("碟市") && !JSON.stringify(cleanedNew).includes("臨記席"));
 // ---- (f) 報紙路徑零 🏆／零術語 ----
 ok("f1 渲染結果零 🏆", !outNom.includes("🏆") && !outWon.includes("🏆") && !outGal.includes("🏆") && !outGalOther.includes("🏆"));
 ok("f2 渲染結果零碟市／臨記席", !outNom.includes("碟市") && !outNom.includes("臨記席") && !outWon.includes("碟市"));
