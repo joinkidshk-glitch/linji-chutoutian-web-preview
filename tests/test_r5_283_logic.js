@@ -3,9 +3,9 @@
 // 用法：node tests/test_r5_283_logic.js [path-to-index.html]
 // 核心結論：
 //   A——殺青鉤加通用分支 genericCreditOnGigComplete283，讀 gig.trigger.creditId 標記，
-//     模式照抄 br89OnGigComplete；BR89 14 張留返 br89 標，唔補入 BR89 map；
+//     模式照抄 br89OnGigComplete；BR89 15 張留返 br89 標，唔補入 BR89 map（v284：film_114 第 15 對）；
 //     film_202 雖有 trigger.creditId 但喺 BR89 map 入面，通用分支跳過，唔重複標。
-//   H——creditRedeemLine283：BR89 14 張由 BR89_PATRON_OF_GIG 反查＋通用 9 張由
+//   H——creditRedeemLine283：BR89 15 張由 BR89_PATRON_OF_GIG 反查＋通用 8 張由
 //     CREDIT_REDEEM_GIG283 對照＋v158 兩條渠道寫類別名；只喺未兌現嗰陣出。
 const fs = require('fs');
 const path = require('path');
@@ -62,27 +62,26 @@ const br89CallIdx = html.indexOf('br89OnGigComplete(sh.gigId)');
 const genCallIdx = html.indexOf('genericCreditOnGigComplete283(sh.gigId)');
 ok('(0) hook_br89_call_in_place', br89CallIdx > 0, '殺青鉤仍有 br89 呼叫');
 ok('(0) hook_generic_call_after_br89', genCallIdx > br89CallIdx && (genCallIdx - br89CallIdx) < 500, '通用分支呼叫喺 br89 之後（相鄰兩行）');
-ok('(0) br89_map_still_14_pairs', Object.keys(BR89_PATRON_OF_GIG).length === 14, 'BR89 map 維持 14 對，無補入通用 9 張');
-const nineGigs = ['gig_1991_tv_204','gig_1991_film_108','gig_1992_film_203','gig_1991_film_112','gig_1992_tv_106','gig_1991_tv_106','gig_1992_tv_201','gig_1992_film_101','gig_1991_film_109'];
-ok('(0) nine_not_in_br89_map', nineGigs.every(g=>!(g in BR89_PATRON_OF_GIG)), '通用 9 張無一喺 BR89 map 入面');
-ok('(0) redeem_gig_map_9_entries', Object.keys(CREDIT_REDEEM_GIG283).length === 9, 'CREDIT_REDEEM_GIG283 9 個對照');
+ok('(0) br89_map_15_pairs', Object.keys(BR89_PATRON_OF_GIG).length === 15, 'BR89 map 15 對（v284 加 film_114），通用 8 張無補入');
+const eightGigs = ['gig_1991_tv_204','gig_1991_film_108','gig_1992_film_203','gig_1992_tv_106','gig_1991_tv_106','gig_1992_tv_201','gig_1992_film_101','gig_1991_film_109'];
+ok('(0) eight_not_in_br89_map', eightGigs.every(g=>!(g in BR89_PATRON_OF_GIG)), '通用 8 張無一喺 BR89 map 入面（v284：film_112 已拆 trigger）');
+ok('(0) redeem_gig_map_8_entries', Object.keys(CREDIT_REDEEM_GIG283).length === 8, 'CREDIT_REDEEM_GIG283 8 個對照（v284：lu_team 已清）');
 ok('(0) redeem_text_map_2_entries', Object.keys(CREDIT_REDEEM_TEXT283).length === 2, 'CREDIT_REDEEM_TEXT283 2 條渠道');
 ok('(0) credit_card_calls_redeem_line', html.includes('creditRedeemLine283(c)'), 'creditCardHtml 呼叫 creditRedeemLine283(c)');
-ok('(0) credit_trigger_gigs_still_23', allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 23, '通告庫 kind:credit 仍係 23 張（14 BR89＋9 通用），無刪通告');
+ok('(0) credit_trigger_gigs_still_23', allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 23, '通告庫 kind:credit 仍係 23 張（15 BR89＋8 通用：film_112 拆走＋film_114 加入）');
 
-// ---------- (1) A：通用 9 張逐張殺青標記 ----------
-const nine = [
+// ---------- (1) A：通用 8 張逐張殺青標記（v284：film_112 已拆 trigger，唔再經通用分支） ----------
+const eight = [
   ['gig_1991_tv_204', 'credit_c7_rain', '通宵追捕'],
   ['gig_1991_film_108', 'credit_c9_crew', '月夜酒廊'],
   ['gig_1992_film_203', 'credit_c15_stunt', '江湖復仇'],
-  ['gig_1991_film_112', 'credit_wf3_lu_team', '夜半無人聲'],
   ['gig_1992_tv_106', 'credit_wf3_yip_manager', '冬日情書'],
   ['gig_1991_tv_106', 'credit_enc79_yip_manager', '鬼馬經理人'],
   ['gig_1992_tv_201', 'credit_fen_rescue', '芬姐茶檔'],
   ['gig_1992_film_101', 'credit_enc83_ngai_meal', '武館風波'],
   ['gig_1991_film_109', 'credit_enc83_liu_patron', '笑聲震天響'],
 ];
-nine.forEach(([gid, cid, titlePart])=>{
+eight.forEach(([gid, cid, titlePart])=>{
   S = { mockCredits: [{ id: cid, debtor: 'test', title: 'test', line: '原句。' }] };
   mirrorCalls = 0;
   ok('(1) A_mark_' + gid + '_redeemedBy', (genericCreditOnGigComplete283(gid), S.mockCredits[0].redeemedBy === gid), cid + ' → redeemedBy=' + gid);
@@ -147,7 +146,7 @@ br89Expect.forEach(([cid, titlePart])=>{
   const line = creditRedeemLine283({ id: cid });
   ok('(2) H_br89_' + cid, line.includes('可以換：') && line.includes(titlePart), cid + ' → 可以換：…' + titlePart + '…');
 });
-nine.forEach(([gid, cid, titlePart])=>{
+eight.forEach(([gid, cid, titlePart])=>{
   const line = creditRedeemLine283({ id: cid });
   ok('(2) H_generic_' + cid, line.includes('可以換：') && line.includes(titlePart), cid + ' → 可以換：…' + titlePart + '…');
 });

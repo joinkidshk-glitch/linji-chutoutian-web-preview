@@ -5,6 +5,7 @@
 //   (4) 節拍閘：駱 E4 報紙閘、駱和音歌藝 35 閘、顧 N10 前後閘、齊站隊旗閘、魏還人情債權閘；
 //   (5) 顧明輝借錢全週期：入 S.mockCredits＋favorLedger 計數＋扣錢＋due 旗 → enc83GuLoanTick 到期結算
 //       （還款／壞帳兩路同種子一致、記入 S.favorDueSettled、債權移出清單、冪等）；身家太淺唔成債；
+//       v284 R5-G：還款路授登台引薦債權 credit_enc83_gu_patron（enc79GrantCredit 去重，冪等）；壞帳路唔授。
 //   (6) 魏詠男大排檔 fx：扣 $150＋開債權；錢唔夠唔扣唔開；
 //   (7) 齊鎮海 fx：勸停出避禍傳聞卡／沉默出撻朵傳聞卡；
 //   (8) T4 提攜：八星齊（Phase 1 四星補入）——T4 先開、節拍完成 grants 入引薦債權＋帳本計數；
@@ -197,11 +198,20 @@ ok('借錢：未到期唔結算', !S.flags.enc83_gu_loan_result && S.mockCredits
 S.dayIndex = 428; enc83GuLoanTick();
 const expectRepay = enc79Rand('gu83loan:400') < 0.3;
 ok('借錢到期：結算記入 favorDueSettled＋債權移出清單', !!S.favorDueSettled['credit_enc83_gu_loan'] && !S.mockCredits.some(c=>c.id==='credit_enc83_gu_loan'));
-ok('借錢到期：結果同種子一致（'+(expectRepay?'還款':'壞帳')+'路，v267：唔再出卡）', expectRepay
+ok('借錢到期：結果同種子一致（'+(expectRepay?'還款':'壞帳')+'路，v267：唔再出傳聞卡）', expectRepay
   ? (S.flags.enc83_gu_loan_result===1 && S.favorDueSettled['credit_enc83_gu_loan'].result==='repaid_loan' && S.money===2000 && S.mockRumors.length===0)
   : (S.flags.enc83_gu_loan_result===2 && S.favorDueSettled['credit_enc83_gu_loan'].result==='void_loan' && S.money===1600 && S.mockRumors.length===0));
+ok('借錢到期：還款路授登台引薦債權（v284 R5-G）／壞帳路唔授', expectRepay
+  ? S.mockCredits.some(c=>c.id==='credit_enc83_gu_patron' && c.debtor==='顧明輝' && c.title==='登台引薦')
+  : !S.mockCredits.some(c=>c.id==='credit_enc83_gu_patron'));
 const moneyAfterSettle = S.money; enc83GuLoanTick();
 ok('借錢：重複 tick 冪等（唔重複結算）', S.money===moneyAfterSettle);
+ok('借錢：重複 tick 唔重複授引薦債權', S.mockCredits.filter(c=>c.id==='credit_enc83_gu_patron').length<=1);
+resetS(400); _ledger = null; S.money = 2000;
+S.mockCredits.push({ id:'credit_enc83_gu_patron', debtor:'顧明輝', title:'登台引薦', line:'舊卡。', status:'未收' });
+enc79RunChoiceFx(enc79ChoiceFx('beat:gu_loan','借，一口應承').fx);
+S.dayIndex = 428; enc83GuLoanTick();
+ok('借錢到期：已持登台引薦卡 → 還錢唔重複授（v284 R5-G 冪等）', S.mockCredits.filter(c=>c.id==='credit_enc83_gu_patron').length===1);
 resetS(500); S.money = 2000;
 enc79RunChoiceFx(enc79ChoiceFx('beat:gu_loan','借一半，留返啲畀自己').fx);
 ok('借一半：金額減半 $200＋lvl 旗', S.money===1800 && S.flags.enc83_gu_loan_amt===200 && S.flags.enc83_gu_loan_lvl===2);

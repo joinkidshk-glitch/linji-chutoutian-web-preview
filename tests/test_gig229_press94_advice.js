@@ -56,14 +56,14 @@ ok('A10_extract', parts.every(Boolean));
 if(parts.every(Boolean)){
   eval(parts.join('\n'));
   const gigs = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/gigs_new.json'), 'utf8')).gigs;
-  ok('A10_newlib_288', gigs.length===288, 'n='+gigs.length);
+  ok('A10_newlib_289', gigs.length===289, 'n='+gigs.length);
   // 逐張驗：category 作品→named（替身守門 9 張例外→base），其餘→base
   const isStunt = g=>((g.roleLabel||'').indexOf('替身')>=0 || (g.title||'').replace(/^《[^》]*》/, '').indexOf('替身')>=0);
   const expectClass = g=>((g.category==='作品' && !isStunt(g)) ? 'named' : 'base');
   const bad = gigs.filter(g=>press94RoleClass(g)!==expectClass(g));
-  ok('A10_all288_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
-  ok('A10_named_155_base_133',
-    gigs.filter(g=>press94RoleClass(g)==='named').length===155 &&
+  ok('A10_all289_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
+  ok('A10_named_156_base_133',
+    gigs.filter(g=>press94RoleClass(g)==='named').length===156 &&
     gigs.filter(g=>press94RoleClass(g)==='base').length===133);
   const stuntWorks = gigs.filter(g=>g.category==='作品' && isStunt(g));
   ok('A10_stunt_gate_9', stuntWorks.length===9 && stuntWorks.every(g=>press94RoleClass(g)==='base'),

@@ -26421,7 +26421,8 @@ function br89HasCredit(id){
    G-G2 只係加多一條觸發條件，唔開新通告（DECISIONS.md D-7 更正）。
    v20a274 取代票：上面 6 對由新開 5 張（film_211／film_212／film_206／film_213／rec_205）＋rec_111 接駁取代，
    舊 6 張 trigger 已拆，變普通板通告；總數維持 13 對。
-   v20a279 G-L2：加第 14 對 gig_1992_film_202《笑到最後》→喜劇組債權（兌現，唔係提攜；收割完成授債權，呢張殺青先標 redeemedBy）。 */
+   v20a279 G-L2：加第 14 對 gig_1992_film_202《笑到最後》→喜劇組債權（兌現，唔係提攜；收割完成授債權，呢張殺青先標 redeemedBy）。
+   v20a284 R5-F：加第 15 對 gig_1992_film_114《海角歸人》→陸柏言引薦債權（同 film_101 同一筆，1992 春接力；H 經反查自動出兩張名）。 */
 const BR89_PATRON_OF_GIG = {
   gig_1991_film_101:"credit_enc83_luk_patron", gig_1991_variety_203:"credit_enc84_pang_patron",
   gig_1992_rec_106:"credit_enc84_ching_patron", gig_1991_film_103:"credit_enc79_liu_priority",
@@ -26430,7 +26431,8 @@ const BR89_PATRON_OF_GIG = {
   gig_1991_ad_102:"credit_enc84_so_patron", gig_1991_film_213:"credit_enc84_chung_patron",
   gig_1992_rec_111:"credit_enc83_lok_patron", gig_1991_film_212:"credit_enc83_ngai_patron",
   gig_1992_film_206:"credit_enc83_chai_patron",
-  gig_1992_film_202:"credit_wf3_comedy_crew" /* v20a279 G-L2：喜劇組債權兌現 gig《笑到最後》——殺青經 br89OnGigComplete 標 redeemedBy，兌現後落板（收割完成授債權嗰陣唔標，見 wf3SettleTick） */
+  gig_1992_film_202:"credit_wf3_comedy_crew" /* v20a279 G-L2：喜劇組債權兌現 gig《笑到最後》——殺青經 br89OnGigComplete 標 redeemedBy，兌現後落板（收割完成授債權嗰陣唔標，見 wf3SettleTick） */,
+  gig_1992_film_114:"credit_enc83_luk_patron" /* v20a284 R5-F：陸引薦第二張《海角歸人》（1992 春）——film_101（1991 秋）窗口只到 1991-11-30，授出要好感 70，分散玩嘅玩家多數 1992 先上到；同一筆債權兩張兌現通告，殺青邊張都標 redeemedBy，另一張自動落板（br89GigOn 讀同一筆債權嘅 redeemedBy）。 */
 };
 const BR89_GIGS = []; /* v20a229 B3：內容已刪；B5 起 BR89 引薦通告由新庫供應，經通用 trigger 系統
   （mergeTriggerGigs＋triggerGigOn）上板，mergeBr89Gigs 只留返做空池 no-op，BR89_PATRON_OF_GIG
@@ -26532,9 +26534,10 @@ function genericCreditOnGigComplete283(gigId){
 /* v20a283 R5-H：債權卡「可以換」對照——通用 credit-trigger 9 張嘅 creditId→gigId；
    BR89 14 張由 BR89_PATRON_OF_GIG 反查（唔另抄一份表，免兩邊漂移）。credit_enc83_liu_patron
    雙 gig（BR89《吉星笑哈哈》＋通用《笑聲震天響》）兩邊都列得出，creditRedeemLine283 會一併出。 */
+/* v20a284 R5-C：credit_wf3_lu_team 嗰行已刪——gig_1991_film_112《夜半無人聲》改做普通板通告，死 trigger 拆走；舊存檔持有嗰筆債權嘅卡唔再出「可以換」行。 */
 const CREDIT_REDEEM_GIG283 = {
   credit_c7_rain:"gig_1991_tv_204", credit_c9_crew:"gig_1991_film_108",
-  credit_c15_stunt:"gig_1992_film_203", credit_wf3_lu_team:"gig_1991_film_112",
+  credit_c15_stunt:"gig_1992_film_203",
   credit_wf3_yip_manager:"gig_1992_tv_106", credit_enc79_yip_manager:"gig_1991_tv_106",
   credit_fen_rescue:"gig_1992_tv_201", credit_enc83_ngai_meal:"gig_1992_film_101",
   credit_enc83_liu_patron:"gig_1991_film_109"
@@ -27674,6 +27677,16 @@ function mockAskDefs(locId){
       if(canHelp){
         out = out.map(d=> d.id==="act_cha_help_clear"
           ? Object.assign({}, d, { hint:"老闆娘今日唔夠人手，幫佢執枱沖茶頂一陣，佢會記你一份人情。", choiceHint:"老闆娘今日唔夠人手，幫佢執枱沖茶頂一陣，佢會記你一份人情。" })
+          : d);
+      }
+    }
+    if(locId==="cafe_cha" && typeof enc79CafeHelpHeld284==="function"){
+      /* v20a284 R5-E：持霞姐人情嗰陣，飲茶掣講明可多打聽幾多次（每次消耗一筆）。 */
+      const held284 = enc79CafeHelpHeld284();
+      if(held284.length){
+        const note284 = " 霞姐人情 ×" + held284.length + "：今日可多打聽 " + held284.length + " 次（每次消耗一筆）。";
+        out = out.map(d=> d.id==="act_cha_hall_tea"
+          ? Object.assign({}, d, { hint:String(d.hint||"") + note284, choiceHint:String(d.choiceHint||d.hint||"") + note284 })
           : d);
       }
     }
@@ -40568,13 +40581,50 @@ function enc79PayTea(def){
   try{ refreshMoneyHud(); }catch(_e){}
   return { ok:true, note:"已付茶錢 $"+cost+"（結餘 $"+(Number(S.money)||0).toLocaleString()+"）。" };
 }
+/* v20a284 R5-E：霞姐情報貨幣——每筆執漏人情＝茶餐廳一日多打聽一次（用完消耗）。
+   幫手授出嘅 credit_enc79_cafe_help_<dayIndex> 本身唔計結局數（v20a259 R1），呢度只係
+   讀佢做情報貨幣：飲茶聽八卦每日上限 2 次用晒之後，每多一筆就多打聽一次，每次消耗
+   一筆；情報用現成風聲池（星名＋地點＋3 日有效），唔新寫專屬八卦。消耗寫法照抄
+   br89OnGigComplete：標 redeemedBy＋line 加已兌現句，卡留返喺手帳「已兌現」組。 */
+function enc79CafeHelpHeld284(){
+  try{
+    const list = (typeof S!=="undefined" && S && Array.isArray(S.mockCredits)) ? S.mockCredits : [];
+    return list.filter(c=>c && typeof c.id==="string" && c.id.indexOf("credit_enc79_cafe_help_")===0 && !c.redeemedBy && c.status!=="絕響");
+  }catch(_e){ return []; }
+}
+function enc79ConsumeCafeHelp284(credit){
+  try{
+    if(!credit || credit.redeemedBy) return false;
+    credit.redeemedBy = "cafe_help_intel";
+    credit.line = String(credit.line||"") + "（已兌現：霞姐情報，茶餐廳多打聽一次。）";
+    try{ syncNotebookMirror(); }catch(_m){}
+    return true;
+  }catch(_e){ return false; }
+}
 function enc79TeaListen(def){
   const cap = (typeof softSocialDailyCap==="function") ? softSocialDailyCap("tea") : { ok:true };
-  if(!cap.ok) return { ok:false, toast:cap.reason };
+  /* v20a284 R5-E：每日 2 次用晒之後，持霞姐人情就多打聽一次（每筆一次，用完消耗）。 */
+  let cafeCredit284 = null;
+  if(!cap.ok){
+    const held284 = (typeof enc79CafeHelpHeld284==="function") ? enc79CafeHelpHeld284() : [];
+    if(!held284.length) return { ok:false, toast:cap.reason };
+    cafeCredit284 = held284[0];
+  }
   /* 先定收穫（未持有保底：抽到已持有唔計數、唔收錢） */
   const day = S.dayIndex|0;
   const roll = Math.random();
   let gain = null;
+  if(cafeCredit284){
+    /* 霞姐情報：用現成風聲池，保底一單星風聲（星名＋地點＋3 日有效）。 */
+    const targets284 = ENC79_STARS.filter(s=> !enc79WhisperActive(s.id) && !(s.unlockYear && ((yearSeasonNow()||{}).year||0) < s.unlockYear));
+    if(targets284.length){
+      const t284 = targets284[Math.floor(Math.random()*targets284.length)];
+      gain = { kind:"whisper", starId:t284.id };
+    } else {
+      /* 行內靜靜哋：唔消耗，唔收茶錢，留返第日用。 */
+      return { ok:false, toast:"霞姐話：今日行內靜靜哋，冇咩大風聲，呢筆人情留返第日用。" };
+    }
+  }
   if(roll < 0.35){
     /* v20a84 ENC84：風聲目標唔揀未解鎖嘅星（程天諾 1992 前） */
     const targets = ENC79_STARS.filter(s=> !enc79WhisperActive(s.id) && !(s.unlockYear && ((yearSeasonNow()||{}).year||0) < s.unlockYear));
@@ -40611,6 +40661,11 @@ function enc79TeaListen(def){
     toastMsg = "伙記擦枱嗰陣漏咗句風聲：" + (defStar ? defStar.name : "") + "呢幾日會喺" + (defStar ? enc79LocName(defStar.primary) : "") + "出沒，3 日內有效。";
     intelTitle = "風聲：" + (defStar ? defStar.name : "") + "行蹤";
     intelText = toastMsg;
+    if(cafeCredit284 && typeof enc79ConsumeCafeHelp284==="function" && enc79ConsumeCafeHelp284(cafeCredit284)){
+      const left284 = (typeof enc79CafeHelpHeld284==="function") ? enc79CafeHelpHeld284().length : 0;
+      toastMsg += " 霞姐人情已用一筆（尚餘 " + left284 + " 筆）。";
+      intelText = toastMsg;
+    }
   } else if(gain.kind==="romwhisper"){
     const nm176 = (typeof rom176WomanName==="function") ? rom176WomanName(gain.key) : gain.key;
     try{ if(typeof rom176GrantWhisper==="function") rom176GrantWhisper(gain.key, "tea"); }catch(_w176){}
@@ -40742,7 +40797,10 @@ function enc83GuLoanTick(){
       f.enc83_gu_loan_result = 1;
       S.money = (Number(S.money)||0) + amt;
       settled["credit_enc83_gu_loan"] = { result:"repaid_loan", day: today };
-      try{ toast("顧明輝還清咗嗰筆錢（$"+amt+"）。", { sub:"行內人講：佢呢排企返直咗個人。" }); }catch(_t){}
+      /* v20a284 R5-G：還錢授一筆登台引薦債權（enc79GrantCredit 去重：gu_patron beat 已授過就唔重複授）。 */
+      let granted284 = false;
+      try{ granted284 = !!enc79GrantCredit({ id:"credit_enc83_gu_patron", debtor:"顧明輝", title:"登台引薦", line:"顧明輝寫咗張卡片畀你：嗰位登台班主係佢舊相識，你攞住張卡去搵佢，佢會畀個機會你。", status:"未收" }); }catch(_g284){}
+      try{ toast("顧明輝還清咗嗰筆錢（$"+amt+"）。", { sub: granted284 ? "行內人講：佢呢排企返直咗個人。佢寫咗張登台引薦卡片畀你，話班主係佢舊相識。" : "行內人講：佢呢排企返直咗個人。" }); }catch(_t){}
     } else {
       f.enc83_gu_loan_result = 2;
       settled["credit_enc83_gu_loan"] = { result:"void_loan", day: today };
