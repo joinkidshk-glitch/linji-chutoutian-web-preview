@@ -50,4 +50,7 @@
 - 逐檔重跑全部 PASS 後，全套第二跑 341／9。resync 腳本本身係 /tmp 臨時檔，唔入 repo。
 
 ## 8. 落地記錄（統籌補）
-- （待填）
+- main HEAD `08ad7d1`（squash merge v276，15 檔，+301/−107）；常駐 clone＋GitHub `ls-remote` 一致，已推 main；工作副本 `linji-work276` 已刪；分支 `v20a276` 留喺常駐 clone 做紀錄。合併期間 main 無郁過（base `d68a6a0`），無 rebase。
+- Pages：推 main 後等傳播約 4 分鐘，curl 核實主頁 **HTTP 200，4,619,453 bytes，sha256 `65062762…`，同本地逐字節一致**；`v=20a276` 喺 served HTML 有命中；`assets/icons/icon_peak.png?v=20a276` HTTP 200，9,777 bytes，sha256 `d1a78c94…` 同本地一致（v276 實色塔版）。
+- 全套 suite：**TOTAL PASS 341 FAIL 9**（基線 340／9＋新檔 1 項，零回歸）。
+- SAVE key／softRev／`?v=20a10` 無改動。無改 `~/MEMORY.md`。
