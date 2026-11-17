@@ -96,7 +96,7 @@ try:
             continue  # v111：通告負責人立繪（S-30v2 卡上人物），唔係對話舞台角色，唔入身高重測
         im = Image.open(p)
         files[os.path.basename(p)[:-5]] = round(im.size[0] / im.size[1], 4)
-    ck("真檔數目 216 張（109 唔加圖；96＋v119 DLG119 7 張 webp＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情＋v138 37 張新表情＋v195 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；3 張 halo 係 png，唔入呢個數；v111 boss_* 11 張另計，唔入身高重測）", len(files) == 216)
+    ck("真檔數目 212 張（109 唔加圖；96＋v119 DLG119 7 張 webp＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情＋v138 37 張新表情＋v195 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；v268 刪 vera 4 張；3 張 halo 係 png，唔入呢個數；v111 boss_* 11 張另計，唔入身高重測）", len(files) == 212)
     bases = {k[:-5]: v for k, v in files.items() if k.endswith("_base")}
     def near(name, got, want, tol=0.001):
         ck("闊高比 %s＝%.3f（實量 %.3f）" % (name, got, want), abs(got - want) <= tol)
@@ -111,8 +111,10 @@ try:
     ck(f"重測：阿偉×彭少祺 60% 基礎淨空 {g_ap:.1f}px（≥12，矮咗更鬆）", g_ap >= 12)
     g_ag = gap_scaled(bases["awi"], 1.00, bases["gu_mingfai"], 1.05, W * 0.04)
     ck(f"重測：阿偉×顧明輝 60% 基礎淨空 {g_ag:.1f}px（≥12，高 63% 照計闊度）", g_ag >= 12)
-    g_fv = gap_scaled(bases["fong_siulung"], 1.00, bases["vera"], 1.00, 12)
-    ck(f"重測：方小龍＋Vera 60% 基礎淨空 {g_fv:.1f}px（＜12，自動收細照觸發）", g_fv < 12)
+    # v20a268：方小龍＋Vera 配對已刪——vera_base.webp 已刪（Vera 感情線節點由 JSON 刪除）；
+    #   改用最闊配對方小龍＋老年影 dim（0.413＋0.400，淨空 −33.6px，同樣 ＜12，自動收細照觸發）。
+    g_fv = gap_scaled(bases["fong_siulung"], 1.00, bases["shadow_elder_dim"], 1.00, 12)
+    ck(f"重測：方小龍＋老年影 dim 60% 基礎淨空 {g_fv:.1f}px（＜12，自動收細照觸發）", g_fv < 12)
     info("身高比表：矮 0.85×1／高 1.05×2／中 1.00×36；渲染高 51%／63%／60%")
 except ImportError:
     warns.append("PIL 未裝：跳過真檔重測")

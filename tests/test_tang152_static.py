@@ -1,3 +1,7 @@
+# v20a268 resync：index.html 淨 −236 行（WF2 Vera 覆寫 −233／MEET_SOFT −1／SCENE_OVERRIDE154 −1／CONTRA98 R_tang_push2／crisis 行 −1）；
+# 3 個釘行按 difflib 映射重寫（HELD 9521→9287、normaliseTangStub152 14975→14739、stub 呼叫行 15102→14866；
+# 內容逐字相同，純漂移，見 qa268/resync268.py）；winter_finale 計數 8→7（CONTRA98 R_vera_ending 段刪）；
+# §6 改寫：romance_tang.json 由「停載留檔」改為「成檔刪除」。
 # v20a267 resync：傳聞系統刪除，淨 −1399 行；3 個釘行按內容重對（HELD [9742]→[9521]、normaliseTangStub152 [15420]→[14975]、stub 呼叫行 [15547]→[15102]；內容逐字相同，ok() 名內歷史行號標籤不變）。
 # v20a266 resync：index.html 淨 +328 行（V158 block ＋284／StoryPlay hook ＋1／載入呼叫 ＋1／enc158 hook ＋42）；釘行按 difflib 映射重寫，內容逐字相同，純漂移。
 # v20a265 resync：index.html 淨 +378 行；3 個釘行按 difflib 映射重寫（9140→9459、14803→15136、14929→15262），內容逐字相同，純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁。
@@ -81,10 +85,10 @@ ok('刪節點：WF2 覆寫表冇 tang 條目', '"R_tang_meet": {' not in src and
 ok('刪節點：WF5 覆寫表冇 R_tang_ending 條目', '  R_tang_ending: {' not in src)
 ok('刪節點：收科回望「盟友以上／嗰個紅圈」已清', '盟友以上' not in src and '嗰個紅圈' not in src)
 ok('刪節點：CONTRA98_WHEN_FIX 冇 R_tang_ending', 'R_tang_ending:["1990' not in src)
-ok('刪節點：CONTRA98 winter_finale 由 11 減到 8（v20a219：hiu／choi／xu 結局改秋）', src.count('"1990冬","era_1990_winter_finale"') == 8)
+ok('刪節點：CONTRA98 winter_finale 由 8 減到 7（v20a268：R_vera_ending 段刪）', src.count('"1990冬","era_1990_winter_finale"') == 7)
 
 # --- 3. DengLine 排片線留返（meet＋push1／push2／crisis，閘門唔郁） ---
-ok('留線：HELD 縮到 3 節（L25817）', lines()[9521].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
+ok('留線：HELD 縮到 3 節（L25817）', lines()[9287].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
 ok('留線：PUSH_CHROME 有 push1／push2／crisis，冇 ending',
    'R_tang_push1: { chromeSeason:"winter"' in src and 'R_tang_push2: { chromeSeason:"spring"' in src
    and 'R_tang_crisis: { chromeSeason:"autumn"' in src)
@@ -118,8 +122,8 @@ ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
 # v20a235 resync：index.html 淨 −24 行（N17 前夕刪三選項）；3 個釘行按 difflib 映射重寫（normaliseTangStub152 15563→15539、stub 呼叫行 15686→15662；HELD 10006 唔郁），內容逐字核實純漂移。
 # v20a242 resync：index.html 淨 −144 行（刪 LAN 覆寫表；刪除區間舊 L6597–6735／7559–7579／15038–15045）；3 個釘行按段重算（HELD 9358→9212，−146；normaliseTangStub152 14926→14783，−143；stub 呼叫行 15049→14905，−144），內容逐字核實純漂移。
 # --- 4. 載入機制：stub 正規化＋push mock 過濾 ---
-ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[14975].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[15102].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[14739].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[14866].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)
@@ -151,13 +155,12 @@ ok('TEXTFIX：共用條目「可與事業結局並存。」留返（lan／xu／v
 ok('TEXTFIX：實用禮物句留返', '鄧麗萍：「實用。我鍾意睇得見、計得到嘅誠意。」' in src)
 ok('TEXTFIX：relMap 冇 rel_tang 項', '["rel_tang","鄧麗萍"]' not in src)
 
-# --- 6. content pack JSON 冇直改（原檔照有舊數據，證明係停載／過濾唔係改檔） ---
+# --- 6. v20a268：romance_tang.json 成檔刪除（v152 停載留檔 → v268 刪檔；其餘 pack 照舊唔郁） ---
 def load_json(rel):
     return json.loads((ROOT / rel).read_text(encoding='utf-8'))
-rom_tang = load_json('content/story_detail_romance_tang.json')
-ok('pack 唔郁：romance_tang.json 照有 R_tang_ending＋commit／he／be（停載，唔係刪檔）',
-   any(n.get('id') == 'R_tang_ending' for n in rom_tang.get('nodes', []))
-   and 'flag_tang_commit' in json.dumps(rom_tang, ensure_ascii=False))
+ok('pack 已刪：romance_tang.json 唔再存在', not (ROOT / 'content/story_detail_romance_tang.json').exists())
+ok('pack 已刪：index 零提及檔名', 'story_detail_romance_tang.json' not in src)
+ok('pack 已刪：loader 零提及檔名', 'get("story_detail_romance_tang.json")' not in src)
 push_mock = load_json('content/MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json')
 ok('pack 唔郁：push mock 照有 4 節連 R_tang_ending（載入過濾，唔係改檔）',
    len(push_mock.get('beats', [])) == 4 and any(b.get('id') == 'R_tang_ending' for b in push_mock.get('beats', [])))

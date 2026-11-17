@@ -1,470 +1,12 @@
 {
-  "version": "1.3.1",
+  "version": "1.3.2",
   "locale": "zh-Hant-written-HK",
-  "source": "DeepSeek romance Vera/Hiu/Choi; UNLOCK§4 + MASTER§5–6 + HK_LEXICON; parallel until commit",
+  "source": "DeepSeek romance Hiu/Choi; UNLOCK§4 + MASTER§5–6 + HK_LEXICON; parallel until commit",
   "romanceLines": [
-    "vera",
     "hiu",
     "choi"
   ],
   "nodes": [
-    {
-      "id": "R_vera_meet",
-      "phase": "P1",
-      "title": "造型間初遇",
-      "when": "1988春夏",
-      "setting": "星河電視台造型間／試裝",
-      "eraTag": "era_1988_spring_grassroot",
-      "cast": [
-        "阿偉",
-        "Vera"
-      ],
-      "synopsis": "阿偉第一次到星河電視台試造型，Vera 是當值的造型師。她一眼看出阿偉的草根氣質，語氣帶點挑剔，卻又忍不住給了一句忠告，留下一個懸念。",
-      "beats": [
-        {
-          "speaker": "Vera",
-          "lines": [
-            "你就是新來的臨記？這件襯衫顏色太鮮，鏡頭前會搶戲，換一件素色的。"
-          ]
-        },
-        {
-          "speaker": "旁白",
-          "lines": [
-            "阿偉說自己第一次來試造型，不太懂規矩，請她直接告訴他怎樣穿就好。"
-          ]
-        },
-        {
-          "speaker": "Vera",
-          "lines": [
-            "規矩就是：你站在鏡頭前，觀眾第一眼看到的是整體感覺，不是你的演技。"
-          ]
-        },
-        {
-          "speaker": "旁白",
-          "lines": [
-            "阿偉問她，這身打扮給她的第一感覺是什麼。"
-          ]
-        },
-        {
-          "speaker": "Vera",
-          "lines": [
-            "很草根，但眼神有火。這種矛盾，用得好就是你的特色。"
-          ]
-        },
-        {
-          "speaker": "旁白",
-          "lines": [
-            "阿偉多謝她肯講真話，並說會記住這句。"
-          ]
-        }
-      ],
-      "choices": [
-        {
-          "id": "C_vera_meet_warm",
-          "label": "暖場：多謝提點，虛心請教",
-          "effects": {
-            "flags": [
-              "flag_vera_met_warm"
-            ],
-            "stats": {
-              "rel_vera": 1,
-              "craft": 1
-            },
-            "notes": ""
-          }
-        },
-        {
-          "id": "C_vera_meet_cold",
-          "label": "冷淡：點頭就走，趕下一個通告",
-          "effects": {
-            "flags": [
-              "flag_vera_met_cold"
-            ],
-            "stats": {
-              "rel_vera": 0,
-              "fame": 1
-            },
-            "notes": ""
-          }
-        }
-      ],
-      "flags_written": [
-        "flag_vera_met_cold",
-        "flag_vera_met_warm"
-      ],
-      "openConditions": [],
-      "openConditionsNote": "vera 認識節；phase 見節點。無額外旗閘。",
-      "artId": "rom_vera_meet",
-      "conflict": null,
-      "romanceLine": "vera",
-      "arcBeat": "meet",
-      "parallelOk": true,
-      "playerOffer": false
-    },
-    {
-      "id": "R_vera_push1",
-      "phase": "P1.5",
-      "title": "形象會議",
-      "when": "1988秋",
-      "setting": "星河電視台形象會議室／試造型",
-      "eraTag": "era_1988_autumn_unit",
-      "cast": [
-        "阿偉",
-        "Vera"
-      ],
-      "synopsis": "電視台為阿偉安排形象改造，Vera 負責主導。兩人在會議上討論風格方向，阿偉的投入程度影響 Vera 對他的觀感。",
-      "beats": [
-        {
-          "speaker": "Vera",
-          "lines": [
-            "這次形象改造，我想保留你的草根味，但加一點都市感，你覺得怎樣？"
-          ]
-        },
-        {
-          "speaker": "旁白",
-          "lines": [
-            "阿偉說信她的眼光，不過不想變成另一個人，觀眾認得他才重要。"
-          ]
-        },
-        {
-          "speaker": "Vera",
-          "lines": [
-            "放心，我只是幫你整理，不是要你扮高級。你肯不肯花時間試多幾套？"
-          ]
-        },
-        {
-          "speaker": "旁白",
-          "lines": [
-            "阿偉答應，請她約時間，他會盡量配合。"
-          ]
-        },
-        {
-          "speaker": "Vera",
-          "lines": [
-            "好，那我們下星期再試一次，到時我會準備幾套不同的配搭。"
-          ]
-        }
-      ],
-      "choices": [
-        {
-          "id": "C_vera_push1_cooperate",
-          "label": "認真配合：花時間試造型",
-          "effects": {
-            "flags": [
-              "flag_vera_cooperate"
-            ],
-            "stats": {
-              "rel_vera": 2,
-              "craft": 1
-            },
-            "notes": ""
-          }
-        },
-        {
-          "id": "C_vera_push1_perfunctory",
-          "label": "敷衍：隨便試一套就算",
-          "effects": {
-            "flags": [
-              "flag_vera_perfunctory"
-            ],
-            "stats": {
-              "rel_vera": 0,
-              "fame": 1
-            },
-            "notes": ""
-          }
-        }
-      ],
-      "flags_written": [
-        "flag_vera_cooperate",
-        "flag_vera_perfunctory"
-      ],
-      "openConditions": [],
-      "openConditionsAny": [
-        "flag_vera_met_warm",
-        "flag_vera_met_cold"
-      ],
-      "openConditionsNote": "vera 推進1：meet 任一結果旗後（OR）。",
-      "artId": "rom_vera_push1",
-      "conflict": null,
-      "romanceLine": "vera",
-      "arcBeat": "push",
-      "parallelOk": true
-    },
-    {
-      "id": "R_vera_push2",
-      "phase": "P2",
-      "title": "茶餐廳小聚",
-      "when": "1989",
-      "setting": "茶餐廳小聚",
-      "eraTag": "era_1989_spring",
-      "cast": [
-        "阿偉",
-        "Vera"
-      ],
-      "synopsis": "阿偉與 Vera 在茶餐廳偶遇，難得坐下來閒聊。Vera 問起阿偉的過去，阿偉可以選擇坦白心事，還是只談工作。",
-      "beats": [
-        {
-          "speaker": "Vera",
-          "lines": [
-            "很少見你一個人來茶餐廳，今天不用趕通告嗎？"
-          ]
-        },
-        {
-          "speaker": "旁白",
-          "lines": [
-            "阿偉說剛剛拍完一場戲，趁有空檔來吃個下午茶，並反問她近況。"
-          ]
-        },
-        {
-          "speaker": "Vera",
-          "lines": [
-            "我剛從服裝間出來，順便來買杯奶茶。你近來好像很搏命。"
-          ]
-        },
-        {
-          "speaker": "旁白",
-          "lines": [
-            "阿偉說不搏命不行，機會不是經常有的。"
-          ]
-        },
-        {
-          "speaker": "Vera",
-          "lines": [
-            "除了工作，你有沒有其他想做的事？"
-          ]
-        }
-      ],
-      "choices": [
-        {
-          "id": "C_vera_push2_honest",
-          "label": "坦白心事：講自己的過去與夢想",
-          "effects": {
-            "flags": [
-              "flag_vera_honest"
-            ],
-            "stats": {
-              "rel_vera": 2,
-              "craft": 1
-            },
-            "notes": ""
-          }
-        },
-        {
-          "id": "C_vera_push2_work",
-          "label": "只談工作：保持專業距離",
-          "effects": {
-            "flags": [
-              "flag_vera_worktalk"
-            ],
-            "stats": {
-              "rel_vera": 1,
-              "fame": 1
-            },
-            "notes": ""
-          }
-        }
-      ],
-      "flags_written": [
-        "flag_vera_honest",
-        "flag_vera_worktalk"
-      ],
-      "openConditions": [],
-      "openConditionsAny": [
-        "flag_vera_cooperate",
-        "flag_vera_perfunctory"
-      ],
-      "openConditionsNote": "vera 推進2：push1 任一結果旗後（OR）。",
-      "artId": "rom_vera_push2",
-      "conflict": null,
-      "romanceLine": "vera",
-      "arcBeat": "push",
-      "parallelOk": true
-    },
-    {
-      "id": "R_vera_crisis",
-      "phase": "P4",
-      "title": "打歌後台的抉擇",
-      "when": "1991秋",
-      "setting": "打歌現場後台／電台",
-      "eraTag": "era_1991_autumn_promo",
-      "cast": [
-        "阿偉",
-        "Vera"
-      ],
-      "synopsis": "阿偉在電台打歌，Vera 在後台等他。她問阿偉幾時得閒見面，阿偉要在陪伴她與趕下一個通告之間作出選擇。",
-      "beats": [
-        {
-          "speaker": "Vera",
-          "lines": [
-            "你今晚打歌之後，還要趕下一個通告嗎？"
-          ]
-        },
-        {
-          "speaker": "旁白",
-          "lines": [
-            "阿偉說本來有約，但如果她有事，他可以推遲。"
-          ]
-        },
-        {
-          "speaker": "Vera",
-          "lines": [
-            "你幾時得閒見我？我們好像很久沒有好好坐下來說話了。"
-          ]
-        },
-        {
-          "speaker": "旁白",
-          "lines": [
-            "阿偉說知道最近真的太忙，但不是故意冷落她。"
-          ]
-        },
-        {
-          "speaker": "Vera",
-          "lines": [
-            "我明白你的事業重要，但有時候我也需要你在我身邊。"
-          ]
-        }
-      ],
-      "choices": [
-        {
-          "id": "C_vera_crisis_stay",
-          "label": "陪她：推遲通告，留下來陪 Vera",
-          "effects": {
-            "flags": [
-              "flag_vera_stay"
-            ],
-            "stats": {
-              "rel_vera": 2,
-              "trust": 1
-            },
-            "notes": "T5 選陪伴；rel_vera／trust 升。"
-          }
-        },
-        {
-          "id": "C_vera_crisis_work",
-          "label": "趕通告：先顧打歌與形象",
-          "effects": {
-            "flags": [
-              "flag_vera_workfirst"
-            ],
-            "stats": {
-              "music": 1,
-              "rel_vera": -2
-            },
-            "notes": "T5 選事業；music 升，rel_vera 跌。"
-          }
-        }
-      ],
-      "flags_written": [
-        "flag_vera_stay",
-        "flag_vera_workfirst"
-      ],
-      "openConditions": [],
-      "openConditionsAny": [
-        "flag_vera_honest",
-        "flag_vera_worktalk"
-      ],
-      "openConditionsNote": "Vera 危機：push2 後；衝突 T5（打歌期陪伴邊界）。",
-      "artId": "rom_vera_crisis",
-      "conflict": "T5",
-      "romanceLine": "vera",
-      "arcBeat": "crisis",
-      "parallelOk": true
-    },
-    {
-      "id": "R_vera_ending",
-      "phase": "P5",
-      "title": "造型間收工",
-      "when": "1992",
-      "setting": "造型間收工",
-      "eraTag": "era_1992_finale",
-      "cast": [
-        "阿偉",
-        "Vera"
-      ],
-      "synopsis": "阿偉與 Vera 在造型間收工後獨處。兩人回望過去幾年的點滴，阿偉可以選擇確定關係，還是保持現狀。",
-      "beats": [
-        {
-          "speaker": "Vera",
-          "lines": [
-            "今天收工了，你還要趕下場嗎？"
-          ]
-        },
-        {
-          "speaker": "旁白",
-          "lines": [
-            "阿偉說不趕了，今晚留下來陪她。"
-          ]
-        },
-        {
-          "speaker": "Vera",
-          "lines": [
-            "這幾年看著你由臨記走到這裡，我其實很替你高興。"
-          ]
-        },
-        {
-          "speaker": "旁白",
-          "lines": [
-            "阿偉說如果沒有她幫忙整理形象，他可能還是那個草根臨記。"
-          ]
-        },
-        {
-          "speaker": "Vera",
-          "lines": [
-            "那你自己？有沒有想過我們之間是什麼關係？"
-          ]
-        }
-      ],
-      "choices": [
-        {
-          "id": "C_vera_ending_he",
-          "label": "確定關係：與 Vera 一起走下去",
-          "effects": {
-            "flags": [
-              "flag_vera_he",
-              "flag_vera_commit"
-            ],
-            "stats": {
-              "rel_vera": 3
-            },
-            "notes": "HE：信任形象夥伴；可與事業結局並存。"
-          }
-        },
-        {
-          "id": "C_vera_ending_be",
-          "label": "保持距離：專注事業，感情隨緣",
-          "effects": {
-            "flags": [
-              "flag_vera_be"
-            ],
-            "stats": {
-              "rel_vera": -2
-            },
-            "notes": "BE：工具化／疏離；可與事業結局並存。"
-          }
-        }
-      ],
-      "flags_written": [
-        "flag_vera_be",
-        "flag_vera_commit",
-        "flag_vera_he"
-      ],
-      "openConditions": [
-        "phase_P5"
-      ],
-      "openConditionsAny": [
-        "flag_vera_stay",
-        "flag_vera_workfirst",
-        "flag_vera_honest",
-        "flag_vera_worktalk"
-      ],
-      "openConditionsNote": "Vera 結局：P5；建議危機或 push2 後。HE＝flag_vera_he＋flag_vera_commit；BE＝flag_vera_be。",
-      "artId": "rom_vera_ending",
-      "conflict": null,
-      "romanceLine": "vera",
-      "arcBeat": "ending",
-      "parallelOk": false
-    },
     {
       "id": "R_hiu_meet",
       "phase": "P1",
@@ -1474,7 +1016,6 @@
     "oral_leftover": [],
     "deepseek_calls": 5,
     "models": {
-      "vera": "deepseek-chat",
       "hiu": "deepseek-chat",
       "choi": "deepseek-chat",
       "expand_hiu": "deepseek-chat",
@@ -1482,9 +1023,8 @@
     },
     "lexicon": "COPY_STYLE_HK_LEXICON.md",
     "avg_line_len": 26.1,
-    "node_count": 15,
+    "node_count": 10,
     "lines": {
-      "vera": 5,
       "hiu": 5,
       "choi": 5
     },
@@ -1529,27 +1069,23 @@
     "player_beats": "speaker「我」→旁白（第三人稱阿偉）",
     "wiring_openConditions": {
       "version": "v2",
-      "nodesWithOC": 15,
+      "nodesWithOC": 10,
       "softHoldCleared": [
-        "裸前綴 flags",
-        "Vera speaker 阿偉對白"
+        "裸前綴 flags"
       ],
       "softHoldRemain": [
         "鄧節序並放（他包）",
         "出圖"
       ]
-    },
-    "pcSilent_vera": "speaker「阿偉」→旁白（第三人稱敘；pcSilent 維持原值）"
+    }
   },
   "models": {
-    "vera": "deepseek-chat",
     "hiu": "deepseek-chat",
     "choi": "deepseek-chat",
     "expand_hiu": "deepseek-chat",
     "expand_choi": "deepseek-chat"
   },
   "finish_reasons": {
-    "vera": "stop",
     "hiu": "stop",
     "choi": "stop",
     "expand_hiu": "stop",
@@ -1563,7 +1099,8 @@
   },
   "edits": [
     "v1.2 wiring：15 節補 openConditions／Any／Note；對白與裸前綴旗未改（Soft HOLD）",
-    "v1.3 SOFT_NITS_FIX_v2：hiu／choi 裸旗→flag_；Vera speaker 阿偉→旁白第三人稱；qa.flagAlias 改遷移註",
-    "v1.3.1 PLAYER_OFFER_MEET_v1：R_vera/hiu/choi_meet playerOffer=false（平行 meet 唔自動推）"
+    "v1.3 SOFT_NITS_FIX_v2：hiu／choi 裸旗→flag_；qa.flagAlias 改遷移註",
+    "v1.3.1 PLAYER_OFFER_MEET_v1：R_hiu/choi_meet playerOffer=false（平行 meet 唔自動推）",
+    "v1.3.2 v268：刪 5 節已出局感情線（hiu／choi 10 節留返，JSON 唯一來源不變）"
   ]
 }

@@ -6725,7 +6725,7 @@ let STORY_WIRE = {
   gigsYearActive: null,
   gigsByYear: { 1990: null, 1991: null, 1992: null },
   main: null,
-  romance: { veraHiuChoi: null, lanXu: null }, /* v20a152：tang 槽已刪——story_detail_romance_tang.json 唔再載入，鄧麗萍感情線取消 */
+  romance: { veraHiuChoi: null, lanXu: null }, /* v20a152：tang 槽已刪——鄧麗萍感情線取消（v268：pack 檔已刪） */
   rival: null,
   errors: [],
   fetchedAt: null,
@@ -6891,242 +6891,9 @@ const STORY_GATE_3Y = {
    內容：曉晴／采兒主體對白全翻廣東話（采兒兼按 M33 升級為新派週刊追訪記者）；
    Vera／徐寶珊／藍若曦／鄧麗萍四條半線各節點加厚，ending 各寫成場專屬差一步戲
    v20a241：R_hiu_*／R_choi_*／R_xu_* 各 5 條（共 15 條）已刪——覆寫值同 JSON 逐條核實一致，JSON 做唯一來源；
-   R_vera_* 5 條保留（同 JSON 唔一致，Vera 已刪，v159 範圍）；R_lan_* 5 條保留（刪咗會令 LAN 表嘅 beats／synopsis 浮面）。
+   R_vera_* 5 條已刪（v268：Vera 感情線節點由 JSON 刪除，覆寫表同步清走）；R_lan_* 5 條保留（刪咗會令 LAN 表嘅 beats／synopsis 浮面）。
    （Vera 領口／徐 禮物扯平／藍 通告牌約定／鄧 排片表紅圈），互不相同、唔用範本。 */
 const ROMANCE_WF2_OVERRIDES = {
- "R_vera_meet": {
-  "synopsis": "阿偉第一次去星河電視台造型間試裝，Vera 一眼就看出他身上那股草根味，挑剔之餘也給了他一句受用的忠告。",
-  "beats": [
-   {
-    "speaker": "Vera",
-    "lines": [
-     "你就係新嚟嗰個臨記？件恤衫顏色太搶喇，企喺鏡頭前面會搶晒主角風頭，換件素色啲嚟。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "阿偉第一次試造型，站在衣架前面有些手忙腳亂，索性請 Vera 有話直說，怎樣搭配才算合規矩。"
-    ]
-   },
-   {
-    "speaker": "Vera",
-    "lines": [
-     "規矩好簡單：你企到鏡頭前面，觀眾第一眼睇到嘅係成個感覺，唔係你嗰套演技，衫錯咗就成場輸晒。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "阿偉望一望鏡子裡面的自己，問 Vera 這身打扮給她的第一感覺到底是怎樣。"
-    ]
-   },
-   {
-    "speaker": "Vera",
-    "lines": [
-     "好草根，土氣未除，不過對眼有火。呢種矛盾用得好，就係你嘅特色，唔好亂咁抹走佢。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "阿偉點頭記下，說謝謝她肯說真話，這句他會放在心裡，不會當作耳邊風。"
-    ]
-   }
-  ]
- },
- "R_vera_push1": {
-  "synopsis": "電視台為阿偉開形象會議，Vera 主導改造方向，想留住他的草根味再添一點都市感，兩個人約好再試幾套搭配。",
-  "beats": [
-   {
-    "speaker": "Vera",
-    "lines": [
-     "今次形象改造，我想留返你嗰陣草根味，再加返少少都市感，你自己點睇先？"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "阿偉說信得過 Vera 的眼光，只是不想改到變成另一個人，觀眾認得他那種親切感才最重要。"
-    ]
-   },
-   {
-    "speaker": "Vera",
-    "lines": [
-     "放心，我只係幫你執整齊，唔會要你扮高級扮有錢。領口、袖口呢啲細位，鏡頭最誠實㗎。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "Vera 拿起幾套衣服逐套給阿偉試，又問他肯不肯花多一些時間，試遍不同搭配再定案。"
-    ]
-   },
-   {
-    "speaker": "Vera",
-    "lines": [
-     "肯試先好，造型唔係求其套上身就算，要企定畀我睇清楚輪廓同氣質夾唔夾先得㗎。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "阿偉立刻答應，說下星期再來試過，幾套都試齊，時間方面他會盡量配合 Vera 的安排。"
-    ]
-   }
-  ]
- },
- "R_vera_push2": {
-  "synopsis": "兩個人在茶餐廳偶遇，坐下來喝茶閒聊，Vera 留意到阿偉近來拚命到停不下來，順口問起他工作以外的心思。",
-  "beats": [
-   {
-    "speaker": "Vera",
-    "lines": [
-     "好少見你一個人嚟茶餐廳喎，今日唔使趕通告咩？坐低飲杯奶茶先啦。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "阿偉說剛剛拍完一場戲，趁著空檔過來吃個下午茶，順口反問 Vera 近來忙不忙。"
-    ]
-   },
-   {
-    "speaker": "Vera",
-    "lines": [
-     "我啱啱喺服裝間執完衫，順路買杯奶茶咋。你近排好搏命喎，場場都見你衝到最前。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "阿偉苦笑，說不拚命不行，臨記機會不是經常有，停一停就怕被人忘記。"
-    ]
-   },
-   {
-    "speaker": "Vera",
-    "lines": [
-     "我明你心急，不過人唔係鐵打㗎。除咗工作，你仲有冇其他想做嘅事，想去嘅地方？"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "阿偉被她問得愣了一下，捏著茶杯想了一陣，一時間竟然答不上來，只笑著搖頭。"
-    ]
-   }
-  ]
- },
- "R_vera_crisis": {
-  "synopsis": "阿偉在電視台錄完影，Vera 在後台等他收工，趁空檔說起兩個人很久沒有好好坐下來閒聊那種失落。" /* v20a98 CONTRA98 B-02：原稿「去電台打歌」同 TEXTFIX55 既定清洗口徑打架，改返錄影版 */,
-  "beats": [
-   {
-    "speaker": "Vera",
-    "lines": [
-     "你今晚錄完影之後，仲要唔要趕下一個通告？定係可以留低陪我坐陣先？"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "阿偉說本來約了人談事情，不過如果 Vera 有事要說，那邊可以推遲一點，不用急著走。"
-    ]
-   },
-   {
-    "speaker": "Vera",
-    "lines": [
-     "你幾時先得閒見我？我哋好似好耐冇好好坐低傾過偈，成日都係後台撞到講兩句就算。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "阿偉聽得出她語氣裡面有一點失落，連忙認錯，說最近真的太忙，不是有心冷落她。"
-    ]
-   },
-   {
-    "speaker": "Vera",
-    "lines": [
-     "我明你事業要緊，亦都冇諗住阻你。不過有時我都會想，你忙完嗰陣，身邊有我喺度。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "後台外面傳來催場聲，阿偉望著 Vera，想說些什麼，最後只點頭說會記住這番話。"
-    ]
-   }
-  ]
- },
- "R_vera_ending": {
-  "synopsis": "頒獎禮後台造型間裡面，阿偉臨出場之前，Vera 幫他做最後造型，手停在領口那一秒，整間房靜了下來。",
-  "beats": [
-   {
-    "speaker": "Vera",
-    "lines": [
-     "企定啲，頸都唔好擰嚟擰去。領口歪咗一吋，鏡頭影落去就會放大十倍，今晚咁大場面，一啲差錯都唔可以有㗎。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "造型間外面人來人往，催場聲、腳步聲亂成一片，進到來這間小房間反而靜了下來。阿偉站在大鏡前面，西裝筆挺，任由 Vera 繞著他補妝、掃粉、整理頭髮。"
-    ]
-   },
-   {
-    "speaker": "Vera",
-    "lines": [
-     "你肩頭硬到好似擔住成副擔挑咁。放鬆啲啦，今晚嗌你上台，唔係叫你企後排充場面，係真係要你企喺燈光最光嗰度畀全場睇㗎。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "Vera 說完伸手去扶正阿偉的領口，又順著衣領抹平褶痕。指尖碰到領口邊緣那時，她的手忽然停住，停在那裡沒有立刻收回，呼吸都好像慢了下來。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "整間房靜得聽得見外面遠遠的掌聲。阿偉在鏡子裡面望著 Vera，Vera 也抬眼望回他，兩個人都知道再往前走一步，不是說笑，之後所有事都會不同。"
-    ]
-   },
-   {
-    "speaker": "Vera",
-    "lines": [
-     "我喺呢行做咗咁耐，企得穩靠嘅就係分寸，邊啲嘢做得、邊啲嘢唔過界，我心入面清楚。我唔肯攞自己嘅專業嚟賭，更加唔肯攞你今晚嘅前途嚟賭，你明唔明？"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "外面忽然喊起阿偉的名字，一聲緊過一聲，催他出去準備。阿偉垂下眼睛，手在身側微微抬起過，最後都沒有抓住 Vera 那隻手，只站定等她收回手。"
-    ]
-   },
-   {
-    "speaker": "旁白",
-    "lines": [
-     "Vera 先慢慢鬆開手，指尖離開領口那時停多半秒，接著在阿偉背後輕輕推他一把，幫他抹平最後一道衣褶，才垂下眼睛拿起檯面那支粉掃。"
-    ]
-   },
-   {
-    "speaker": "Vera",
-    "lines": [
-     "去啦，唔好失禮人。今晚企穩啲，行出去就唔好回頭，我喺後台，會睇住你企到最光嗰位㗎。"
-    ]
-   }
-  ],
-  "choiceText": {
-   "C_vera_ending_he": {
-    "label": "留下那句心照，帶著餘溫走出去",
-    "notes": "兩個人沒有說破也沒有往前走，只是在領口邊停過那一秒，會靜靜跟著阿偉走上台，留在心裡很久。"
-   },
-   "C_vera_ending_be": {
-    "label": "收回心神，退回工作距離",
-    "notes": "Vera 收手收得乾淨俐落，阿偉也望回台口那邊，那晚之後兩個人之間只剩下工作上的分寸和禮貌。"
-   }
-  }
- },
  "R_lan_meet": {
   "synopsis": "藍若曦是星河電視台的場記。那天早上廠景門口人擠人，她抱著一疊通告牌和流程表，給人撞得散落一地。阿偉幫手執返，又按住牌子派給排隊的臨記。她那句多謝和那個眼神，阿偉記到現在。",
   "beats": [
@@ -7803,7 +7570,6 @@ function applyVariantWf5Overrides87(){
 
 /** 平行 meet：playerOffer 預設 false；首次入 loc／傾談先開 offer */
 const STORY_MEET_SOFT = {
-  R_vera_meet: { npc: "stylist", locs: ["ad_central","ad_adm","rec_star","rec_wanchai"] },
   R_hiu_meet: { npc: "colleague", locs: ["tvb_longmen","tvb_harbour","tvb_kowloon","rec_hk"] },
   R_choi_meet: { npc: "reporter", locs: ["rec_star","film_cotton","tvb_harbour","ad_adm"] },
   A_ko_meet: { npc: "rival", locs: ["tvb_longmen","tvb_kowloon","ad_central","film_lion"] },
@@ -8248,7 +8014,7 @@ const StoryOC = (()=>{
     push("romance_vera_hiu_choi", "R感情1", w.romance && w.romance.veraHiuChoi && w.romance.veraHiuChoi.nodes);
     push("romance_lan_xu", "R感情2", w.romance && w.romance.lanXu && w.romance.lanXu.nodes);
     push("romance_yip_so", "R感情3", w.romance && w.romance.yipSo && w.romance.yipSo.nodes); /* v20a159 ROM159：葉／蘇新線 */
-    /* v20a152：romance_tang 已刪——story_detail_romance_tang.json 唔再載入；鄧麗萍線只行 DengLine 排片層 */
+    /* v20a152：romance_tang 已刪——鄧麗萍線只行 DengLine 排片層（v268：pack 檔已刪） */
     push("rival", "A對手導師", w.rival && w.rival.nodes);
     return out;
   }
@@ -11231,13 +10997,12 @@ const StoryPlay = (()=>{
   function spResolveBgKey(beat, node){
     beat = beat || {}; node = node || {};
     /* v20a154 B2：單人舞台補場景圖（跟 v134 WF4_SCENE_OVERRIDE134 做法，逐節點覆寫）。
-       R_vera_meet：重用現成圖 bg_loc_tvb_longmen（星河電視台內景：佈告板＋放衫手推車＋
-       盆栽，同一棟樓；v103 年代重製版）。
+    /* v20a154 B2：單人舞台補場景圖（跟 v134 WF4_SCENE_OVERRIDE134 做法，逐節點覆寫）。
+       R_hiu_ending：新圖 bg_154_rooftop（廠景天台，參照 Greg Girard 1989 年九龍天台實拍，
        R_hiu_ending：新圖 bg_154_rooftop（廠景天台，參照 Greg Girard 1989 年九龍天台實拍，
        參照相存 ~/workspace/linji-work154/refs/ref_rooftop_girard1989.webp）。
        兩節點都冇 locId，冇覆寫就會跌返 bg_generic_interior（灰色虛空）。 */
     const STORY_SCENE_OVERRIDE154 = {
-      "R_vera_meet":"bg_loc_tvb_longmen",
       "R_hiu_ending":"bg_154_rooftop"
     };
     const nid154 = (node && (node.id || node.nodeId)) || "";
@@ -14905,18 +14670,17 @@ const CONTRA98_WHEN_FIX = {
   A_fong_ending:["1990冬","era_1990_winter_finale"], A_tong_ending:["1990冬","era_1990_winter_finale"],
   A_ho_ending:["1990冬","era_1990_winter_finale"], A_gao_ending:["1990冬","era_1990_winter_finale"],
   A_lei_ending:["1990冬","era_1990_winter_finale"],
-  R_vera_ending:["1990冬","era_1990_winter_finale"], R_hiu_ending:["1990秋","era_1990_autumn_finale"],
+  R_hiu_ending:["1990秋","era_1990_autumn_finale"],
   R_choi_ending:["1990秋","era_1990_autumn_finale"], R_xu_ending:["1990秋","era_1990_autumn_finale"],
   /* v20a152：R_tang_ending 行已刪（感情線收尾取消） */
   A_ko_ending:["1990冬","era_1990_winter"], A_ho_crisis:["1990冬","era_1990_winter"],
   R_choi_crisis:["1989冬","era_1989_winter_gossip"],
   A_hakfan_crisis:["1990秋","era_1990_autumn"], A_gao_crisis:["1990秋","era_1990_autumn"],
-  R_vera_crisis:["1990秋","era_1990_autumn_promo"], R_hiu_crisis:["1989秋","era_1989_autumn_anni"],
+  R_hiu_crisis:["1989秋","era_1989_autumn_anni"],
   R_xu_push2:["1990秋","era_1990_autumn_capital"], R_xu_crisis:["1990秋","era_1990_autumn_capital"],
   /* v20a242：LAN 表已刪，R_lan_crisis／ending JSON when 係顯示值（1991春／1992），唔加表 walk 後變 1993春／1994；
      沿用舊表值（1990秋）入表，載入顯示 1992秋，同刪表前一致。 */
   R_lan_crisis:["1990秋","era_1990_autumn_transfer"], R_lan_ending:["1990秋","era_1990_autumn_finale"],
-  R_tang_push2:["1990秋","era_1990_autumn"], R_tang_crisis:["1990秋","era_1990_autumn_capital"],
   /* v20a219：R_tang_meet_stub 衞生——pack 原值 when 1991／eraTag era_1991_autumn_capital，
      不加表 walk 後變 1993（玩家見唔到，stub 本身永不入玩家列表；只求表內外一致）。 */
   R_tang_meet_stub:["1989秋","era_1989_autumn_capital"]
@@ -15021,7 +14785,7 @@ async function refreshCopyPacksFromDisk(){
       get("story_detail_romance_vera_hiu_choi.json"),
       get("story_detail_romance_lan_xu.json"),
       get("story_detail_romance_yip_so.json"), /* v20a159 ROM159：葉敏芝／蘇芷茵新線（Vera／海媚出局後入局） */
-      /* v20a152：story_detail_romance_tang.json 已停載（鄧麗萍感情線取消；排片線行 DengLine mock） */
+      /* v20a152：romance_tang 已停載（鄧麗萍感情線取消；排片線行 DengLine mock；v268：pack 檔已刪） */
       get("story_detail_rival_mentor.json"),
       get("items_gifts.json"),
       get("shops.json"),

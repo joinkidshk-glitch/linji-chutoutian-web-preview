@@ -221,7 +221,9 @@ try:
     # RW-8 豁免（語言重寫 RW-8 工人 D，已拍板）：content/MOCK_UI_PHASE3_STAR_CASTING_v1.json 描述類轉書面語
     # （soft-path mock 同步 live STAR_SIGHTINGS 改動：4 星 × silhouetteDesc／distanceLine／rumorTeaser＋hooks 重複行）。
     _rw8_allowed = {'content/MOCK_UI_PHASE3_STAR_CASTING_v1.json'}
-    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v243_allowed | _v244_allowed | _rw8_allowed for l in touched))
+    # v268 豁免（角色刪除，已拍板）：content/story_detail_romance_tang.json 成檔刪除；vera_hiu_choi.json 已改（v217／v210 豁免集已有佢）。
+    _v268_allowed = {'content/story_detail_romance_tang.json'}
+    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v243_allowed | _v244_allowed | _rw8_allowed | _v268_allowed for l in touched))
 except Exception as e:
     ok('X05_content_json_untouched (git unavailable: %s)' % e, False)
 

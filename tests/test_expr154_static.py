@@ -3,8 +3,8 @@
 #     ＋ DLG154_CACHE 只覆蓋呢 6 個 stem（其餘 29 張唔郁、cache-buster 唔升）
 # B1：plate 填滿到底（source 斷言：stage-inner 底留位清零、modal-inner 底留位清零、
 #     dlg106-plate 高 170px＋底 pad 61px、掣列漸變透明；基底 118px 規則保留）
-# B2：STORY_SCENE_OVERRIDE154（R_vera_meet→bg_loc_tvb_longmen 現成圖、
-#     R_hiu_ending→bg_154_rooftop 新圖）＋ spBgClass 接受 bg_154_ ＋ 兩圖檔存在
+# B2：STORY_SCENE_OVERRIDE154（R_hiu_ending→bg_154_rooftop 新圖）＋ spBgClass 接受 bg_154_ ＋ 兩圖檔存在
+#     （v20a268：R_vera_meet→bg_loc_tvb_longmen 已刪——R_vera_* 節點由 JSON 刪除）
 # B3：舊行 if(stem119) bright = "1" 已刪，影聽者跟正常 bright 計算（source 斷言）
 # 不變量：SAVE key／softRev／產品 ?v= 不變
 # 量度方法（同 review／measure154_gen2.json）：
@@ -97,8 +97,8 @@ ck("B1 基底 118px 規則保留（覆寫係限定範圍，唔係刪基底）",
    "height:118px" in src)
 
 # ---------- B2：單人舞台場景圖 ----------
-ck("B2 STORY_SCENE_OVERRIDE154 有 R_vera_meet→bg_loc_tvb_longmen（重用現成圖）",
-   '"R_vera_meet":"bg_loc_tvb_longmen"' in src)
+ck("B2 STORY_SCENE_OVERRIDE154 冇 R_vera_meet（v268：節點已刪，覆寫同步清走）",
+   '"R_vera_meet":"bg_loc_tvb_longmen"' not in src)
 ck("B2 STORY_SCENE_OVERRIDE154 有 R_hiu_ending→bg_154_rooftop（新圖）",
    '"R_hiu_ending":"bg_154_rooftop"' in src)
 ck("B2 spResolveBgKey 查覆寫表優先（node id）",

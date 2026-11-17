@@ -111,8 +111,10 @@ try:
     # RW-8 豁免（語言重寫 RW-8 工人 D，已拍板）：content/MOCK_UI_PHASE3_STAR_CASTING_v1.json 描述類轉書面語
     # （soft-path mock 同步 live STAR_SIGHTINGS 改動：4 星 × silhouetteDesc／distanceLine／rumorTeaser＋hooks 重複行）。
     _rw8_allowed = {'content/MOCK_UI_PHASE3_STAR_CASTING_v1.json'}
-    ok('content pack JSON 冇俾本包改動（v157＋v217＋v218＋v210＋v229／B3／B7＋v239＋v241＋v244＋RW-8 豁免以外一律唔准郁）',
-       all(p in _v157_allowed | _v217_allowed | _v218_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v244_allowed | _rw8_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
+    # v268 豁免（角色刪除，已拍板）：content/story_detail_romance_tang.json 成檔刪除；vera_hiu_choi.json 已改（v217／v210 豁免集已有佢）。
+    _v268_allowed = {'content/story_detail_romance_tang.json'}
+    ok('content pack JSON 冇俾本包改動（v157＋v217＋v218＋v210＋v229／B3／B7＋v239＋v241＋v244＋RW-8＋v268 豁免以外一律唔准郁）',
+       all(p in _v157_allowed | _v217_allowed | _v218_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v244_allowed | _rw8_allowed | _v268_allowed for p in touched if p.startswith('content/') and p.endswith('.json')))
 except Exception as e:
     print('SKIP content pack 檢查（git 唔可用：%s）' % e)
 

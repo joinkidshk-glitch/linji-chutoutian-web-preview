@@ -176,6 +176,12 @@ star_ids = re.findall(r'id:"([^"]+)"', m_stars.group(1)) if m_stars else []
 ck(f"紅星 12 個（{len(star_ids)}）全部有 BUST109_EXTRA 鍵",
    len(star_ids) == 12 and set(star_ids) <= set(EXTRA))
 for k, stem in PORTRAITS_STEM.items():
+    # v20a268：vera 例外——PORTRAITS.npc_vera bust（base64）留返，但全身 vera_base.webp 已刪
+    # （Vera 感情線節點由 JSON 刪除；spBustCandidates 動態砌檔名，live 永遠唔會砌到 vera）。
+    if stem == "vera":
+        ck("全身基本款 vera_base.webp 已刪（v268：PORTRAITS bust 留返，全身檔唔留）",
+           not os.path.exists(os.path.join(ROOT, "assets", "story", "fullbody", stem + "_base.webp")))
+        continue
     ck(f"全身基本款 {stem}_base.webp 喺磁碟",
        os.path.exists(os.path.join(ROOT, "assets", "story", "fullbody", stem + "_base.webp")))
 for stem in ["awi_s2", "awi_s3"] + STARS:

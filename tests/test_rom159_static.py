@@ -1,3 +1,6 @@
+# v20a268 resync：index.html 淨 −236 行（WF2 Vera 覆寫 −233／MEET_SOFT −1／SCENE_OVERRIDE154 −1／CONTRA98 R_tang 行 −1）；
+# 7 個釘行按 difflib 映射重寫（25431→25195、8480→8246、26265→26029、10950→10716、15050→14814、26180→25944、全佳註解 25459→25223；
+# 內容逐字相同，純漂移，見 qa268/resync268.py；ok() 名內歷史行號標籤不變）。
 # v20a267 resync：傳聞系統刪除，淨 −1399 行；7 個釘行按內容重對（26135→25431、8623→8480、26969→26265、11171→10950、15495→15050、26884→26180、全佳註解 26163→25459；內容逐字相同，ok() 名內歷史行號標籤不變）。
 # v20a266 resync：index.html 淨 +328 行（V158 block ＋284／StoryPlay hook ＋1／載入呼叫 ＋1／enc158 hook ＋42）；釘行按 difflib 映射重寫，內容逐字相同，純漂移。
 # v20a265 resync：index.html 淨 +378 行；6 個釘行＋全佳行按 difflib 映射重寫（25499→25849、8020→8339、26333→26683、10553→10886、14877→15210、26248→26598、全佳 25527→25877），內容逐字相同，純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁。
@@ -145,19 +148,19 @@ ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committ
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25499", line_has(25431, "v20a159 ROM159 Phase 1"))
-ok("行號釘 bumpRel 凍結鉤 8020", line_has(8480, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(26265, "COMMIT48_NODES.CMT_lan_commit"))
-ok("行號釘 StoryPlay 預備鉤 10553", line_has(10950, "rom159PrepareNode(node)"))
-ok("行號釘載入覆寫呼叫 14877", line_has(15050, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26248", line_has(26180, "function rom159SoMeetGate"))
+ok("行號釘 ROM159 block 頭 25499", line_has(25195, "v20a159 ROM159 Phase 1"))
+ok("行號釘 bumpRel 凍結鉤 8020", line_has(8246, "rom159GainAllowed(k)"))
+ok("行號釘 CMT_lan_commit 26333", line_has(26029, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 StoryPlay 預備鉤 10553", line_has(10716, "rom159PrepareNode(node)"))
+ok("行號釘載入覆寫呼叫 14877", line_has(14814, "rom159ApplyGiftOverrides()"))
+ok("行號釘 rom159SoMeetGate 26248", line_has(25944, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25459 - 1])  # v20a159 整合：B1＋B2 後行號 +86
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25223 - 1])  # v20a159 整合：B1＋B2 後行號 +86
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）
@@ -212,11 +215,10 @@ if _crisis:
     ok("藍 crisis help rel+2／fame-1 不變",
        _c["choices"][0]["effects"]["stats"] == {"rel_lan": 2, "fame": -1})
 
-# pack JSON 冇直改（同 pristine main 逐檔 sha 對照；lan_xu 已改唔入清單，見上面針對性斷言）
+# pack JSON 冇直改（同 pristine main 逐檔 sha 對照；lan_xu 已改唔入清單，見上面針對性斷言；
+# v20a268：vera_hiu_choi.json＋romance_tang.json 唔入清單——vera 檔已減 5 個 R_vera_* 節點，tang 檔已刪；見下面精確替代斷言）
 packs = [
     "content/story_detail_n1_to_n17.json",
-    "content/story_detail_romance_vera_hiu_choi.json",
-    "content/story_detail_romance_tang.json",
     "content/story_detail_rival_mentor.json",
     "content/gift_prefs.json",
     "content/gift_react_copy.json",
@@ -226,6 +228,19 @@ packs = [
 ]
 for p in packs:
     ok("pack 冇直改: " + p, sha(os.path.join(ROOT, p)) == hashlib.sha256(_read_pristine_bytes(p)).hexdigest())
+
+# v20a268 精確替代斷言：vera_hiu_choi.json ＝ pristine 版減 5 個 R_vera_* 節點（metadata 清零另行講明）；tang 檔唔存在
+_vhc_now = json.load(open(os.path.join(ROOT, "content", "story_detail_romance_vera_hiu_choi.json"), encoding="utf8"))
+_vhc_pris = json.loads(_read_pristine("content/story_detail_romance_vera_hiu_choi.json"))
+_vhc_now_ids = [n["id"] for n in _vhc_now.get("nodes", [])]
+_vhc_pris_ids = [n["id"] for n in _vhc_pris.get("nodes", [])]
+ok("v268 vera_hiu_choi：nodes 15→10（hiu／choi 各 5 條留返）",
+   len(_vhc_now_ids) == 10 and len(_vhc_pris_ids) == 15
+   and _vhc_now_ids == [i for i in _vhc_pris_ids if not i.startswith("R_vera_")])
+ok("v268 vera_hiu_choi：檔內 vera／Vera 零殘留",
+   "vera" not in json.dumps(_vhc_now, ensure_ascii=False).lower())
+ok("v268 vera_hiu_choi：metadata version 1.3.2", _vhc_now.get("version") == "1.3.2")
+ok("v268 romance_tang.json 檔已刪", not os.path.exists(os.path.join(ROOT, "content", "story_detail_romance_tang.json")))
 
 # ---- pristine 反證：同一批標記對 pristine main 應該全部唔存在（乾淨 FAIL，唔 crash） ----
 pris_missing = [m for m in markers if m in pris]

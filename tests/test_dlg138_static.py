@@ -1,6 +1,7 @@
 # v20a195 resync：加 2 張 angry 表情（awi_s2／s3_angry），fullbody 總數 207→209、真檔 182→184。
-# v20a138 DLG138 靜態守門：37 張新表情圖入庫＋檔名／映射／實線句數／焗邊。
-# 覆蓋：① 37 張新資產本地存在＋檔名一字唔差＋WebP 檔頭＋fullbody 總數 209（v195：207＋2 張 angry 表情）
+# v20a138 DLG138 靜態守門：36 張新表情圖入庫＋檔名／映射／實線句數／焗邊。
+# （v20a268：37→36，vera_serious.webp 已刪——Vera 感情線節點由 JSON 刪除，佢嘅實線句數隨之歸零；fullbody 目錄總數 241→237，v268 刪咗 4 張 vera 全身圖；焗邊報告 qa138/bake_results138.json 保持 37 張，因為 bake 檔本身無改。）
+# 覆蓋：① 36 張新資產本地存在＋檔名一字唔差＋WebP 檔頭＋fullbody 總數 237（v195：207＋2 張 angry 表情；v265 加 32 張衫圖；v268 刪 vera 4 張）
 #       ② 每張新圖有對應可達（live）實線句數（句數來源：qa138/verdict138.json，
 #          reachable occurrence × runtime 分類；唔係 corpus 句數——v127 教訓）
 #       ③ 反證：檢查函數食缺檔／改錯名嘅檔案集必須報缺；另做真實
@@ -17,7 +18,7 @@
 #          9 句係 extra_ad_fen 旁白重複誤歸（盤點 bug），另 lin_hiu_serious 1 句＋
 #          tsui_poushan_serious 2 句經真分類器覆核判死（pack 句永遠播唔到：
 #          R_hiu_meet 俾 DualMeet 閘＋mock 加厚版換走；R_xu_* 運行版廣東話
-#          文本分類唔出 serious）。真 live 實線 54 句；覆蓋 515＋54＝569／593＝95.9%。
+#          文本分類唔出 serious）。真 live 實線 53 句（v268：vera_serious 1 句已刪）；覆蓋 515＋53＝568／593＝95.8%。
 #          嗰 2 張死圖照舊入庫（跟 v127 前例：檔案留低等內容／引擎修復票
 #          加返條 serious 台詞嗰陣即刻用得，唔使重生），但實線句數記 0。
 # 用法：python3 tests/test_dlg138_static.py [path-to-index.html]
@@ -83,7 +84,7 @@ NEW = [
     ("ngai_wingnaam_think.webp", "ngai_wingnaam", "think", 1),
     ("so_jiyan_surprise.webp", "so_jiyan", "surprise", 1),
     ("tsui_poushan_serious.webp", "tsui_poushan", "serious", 0),  # 死圖：運行版 17 句 live 徐寶珊句 serious 0
-    ("vera_serious.webp", "vera", "serious", 1),
+    # v20a268：("vera_serious.webp", "vera", "serious", 1) 已刪——Vera 感情線節點由 JSON 刪除
 ]
 CAT2EXPR = {"happy": "smile", "neutral": "base", "serious": "serious",
             "sad": "sad", "surprise": "surprise", "shy": "shy",
@@ -116,9 +117,9 @@ def check_new_assets(names):
 if os.path.isdir(FB):
     names = set(os.listdir(FB))
     missing = check_new_assets(names)
-    ck("37 張新資產全部喺 assets/story/fullbody/", not missing)
+    ck("36 張新資產全部喺 assets/story/fullbody/", not missing)
     if missing: info("缺新資產：" + ", ".join(missing))
-    ck("fullbody 總數 170→207→209→241（v127 後 170 張＋v138 37 張新表情＋v195 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情））", len([f for f in names if f.endswith((".webp", ".png"))]) == 241)
+    ck("fullbody 總數 170→207→209→241→237（v127 後 170 張＋v138 37 張新表情＋v195 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；v268 刪 vera 4 張 base／smile／serious／angry）", len([f for f in names if f.endswith((".webp", ".png"))]) == 237)
     for fn, _sp, _cat, n in NEW:
         p = os.path.join(FB, fn)
         ok = os.path.isfile(p) and os.path.getsize(p) > 50000
@@ -131,8 +132,8 @@ if os.path.isdir(FB):
             ck(f"{fn} 判死：實線句數 0（檔案留低等修復票，見 addendum）", n == 0)
         else:
             ck(f"{fn} 有對應可達實線句數 {n} 句（唔係死圖）", n > 0)
-    ck("新圖對應可達實線句數合計（真 live 54 句）",
-       sum(n for _f, _sp, _c, n in NEW) == 54)
+    ck("新圖對應可達實線句數合計（真 live 53 句）",
+       sum(n for _f, _sp, _c, n in NEW) == 53)
     ck("死檔 7 張全部唔存在（唔生成死圖）", all(d not in names for d in DEAD))
     ck("判死已入庫 2 張檔案存在（留低等修復票）", all(d in names for d in DEAD_SHIPPED))
 else:
@@ -143,9 +144,9 @@ ck("反證：檔案集抽走一張（in-memory）→ checker 必須報缺",
    check_new_assets(set(f for f, _, _, _ in NEW) - {"ngai_wingnaam_think.webp"}) == ["ngai_wingnaam_think.webp"])
 ck("反證：檔案集改錯名（lok_gasing_shy→lok_gasing_shy2）→ checker 必須報缺",
    check_new_assets(set(f for f, _, _, _ in NEW) - {"lok_gasing_shy.webp"} | {"lok_gasing_shy2.webp"}) == ["lok_gasing_shy.webp"])
-ck("反證：空檔案集 → checker 報齊 37 張缺失",
-   len(check_new_assets(set())) == 37)
-# 真實臨時目錄負向測試：抄 36 張去 temp dir，checker 讀磁碟必須 FAIL 其中一張
+ck("反證：空檔案集 → checker 報齊 36 張缺失",
+   len(check_new_assets(set())) == 36)
+# 真實臨時目錄負向測試：抄 35 張去 temp dir，checker 讀磁碟必須 FAIL 其中一張
 # （對 pristine main 跑嗰陣新檔根本唔存在，跳過磁碟段——in-memory 反證已覆蓋，唔准 crash）
 tmp = tempfile.mkdtemp(prefix="dlg138neg_")
 try:
@@ -155,10 +156,10 @@ try:
                 continue
             shutil.copy(os.path.join(FB, fn), os.path.join(tmp, fn))
         disk_names = set(os.listdir(tmp))
-        ck("反證（真磁碟）：temp 目錄得 36 張 → checker 報缺 ho_sang_surprise.webp",
+        ck("反證（真磁碟）：temp 目錄得 35 張 → checker 報缺 ho_sang_surprise.webp",
            check_new_assets(disk_names) == ["ho_sang_surprise.webp"])
         shutil.copy(os.path.join(FB, "ho_sang_surprise.webp"), os.path.join(tmp, "ho_sang_surprise.webp"))
-        ck("反證對照：temp 目錄補返第 37 張 → checker 報零缺失",
+        ck("反證對照：temp 目錄補返第 36 張 → checker 報零缺失",
            check_new_assets(set(os.listdir(tmp))) == [])
     else:
         info("SKIP 磁碟反證：新資產唔齊（pristine 對照），in-memory 反證已覆蓋")

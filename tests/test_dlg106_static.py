@@ -102,13 +102,18 @@ if not os.path.isdir(FB):
          "88 張焗邊圖未入庫；本節只申報唔 FAIL。入庫後重跑本測試，缺檔即 FAIL。")
 else:
     # v20a119 DLG119：generic_cinema_asst 係別名鍵，圖走 shadow_male（唔係自己 stem 嘅 base 檔）。
+    # v20a268：vera 係豁免鍵——DLG106_GAZE 登記留返（resolver 仲靠佢回 candidate 路徑，見 test_dlg138_logic.js），
+    #   但全身 vera_base.webp 已刪（Vera 感情線節點由 JSON 刪除），唔計入資產檢查。
     STEM_ALIAS = {"generic_cinema_asst": "shadow_male"}
+    STEM_SKIP = {"vera"}
     missing = []
     for stem in STEMS:
+        if stem in STEM_SKIP:
+            continue
         disk = STEM_ALIAS.get(stem, stem)
         if not (os.path.isfile(os.path.join(FB, disk + "_base.webp")) or os.path.isfile(os.path.join(FB, disk + "_base.png"))):
             missing.append(stem + "_base")
-    ck("名冊 37 角＋阿偉 s2/s3 全部有 fullbody base 資產（generic_cinema_asst 計 shadow_male 別名）", not missing)
+    ck("名冊 37 角（vera 除外）＋阿偉 s2/s3 全部有 fullbody base 資產（generic_cinema_asst 計 shadow_male 別名；vera：v268 刪檔，見上）", not missing)
     if missing: info("缺 base 資產：" + ", ".join(missing))
     nfiles = len([f for f in os.listdir(FB) if f.endswith((".webp", ".png"))])
     info("fullbody 資產檔數：" + str(nfiles))
