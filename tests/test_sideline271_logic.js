@@ -154,7 +154,7 @@ ok('fx 1.17：麥初遇——放低支水 +2／堅持遞到手 +1／開口問傷
 ok('fx 陸 foreshadow：守口 +2／講兩句 -2', enc79ChoiceFx('beat:luk_foreshadow','守口如瓶，乜都唔講').fav===2 && enc79ChoiceFx('beat:luk_foreshadow','同人講兩句，話佢壓力大到掟嘢').fav===-2);
 ok('fx 釘位：gu_loan 唔借 → 無 fx、fav -2', (()=>{ const c=enc79ChoiceFx('beat:gu_loan','不借，這筆錢我真的幫不了'); return !c.fx && c.fav===-2; })());
 ok('fx 釘位：liu_repay／mak_respect fx＋fav 不變', (()=>{ const a=enc79ChoiceFx('beat:liu_repay','多謝受落'); const b=enc79ChoiceFx('beat:liu_repay','推辭講自己排緊期'); const c=enc79ChoiceFx('beat:mak_respect','應承隨時候命'); const d=enc79ChoiceFx('beat:mak_respect','老實講自己會驚'); return a.fx==='liu_accept' && a.fav===2 && b.fx==='liu_decline' && b.fav===1 && c.fx==='mak_accept' && c.fav===4 && d.fx==='mak_honest' && d.fav===2; })());
-ok('fx 釘位：heart 廖／顧 fav 不變（笑話 1／認真 2；天光 3／其他 1）', enc79ChoiceFx('heart:liu_bingxing','用笑話接住').fav===1 && enc79ChoiceFx('heart:liu_bingxing','認真回應').fav===2 && enc79ChoiceFx('heart:gu_mingfai','陪佢坐到天光，唔出聲').fav===3);
+ok('fx 釘位：heart 廖／顧 fav 不變（笑話 1／認真 2；天亮 3／其他 1）', enc79ChoiceFx('heart:liu_bingxing','用笑話接住').fav===1 && enc79ChoiceFx('heart:liu_bingxing','認真回應').fav===2 && enc79ChoiceFx('heart:gu_mingfai','陪他坐到天亮，不出聲').fav===3);
 
 /* ---- (3) 節拍閘 ---- */
 function openBeat(sid, id){ return enc79BeatOpen(sid, beatOf(sid, id)); }

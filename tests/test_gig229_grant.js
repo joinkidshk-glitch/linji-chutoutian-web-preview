@@ -276,7 +276,7 @@ ok('T2 draft 兩張 1991 和音喺 GRANT229_DRAFT', GRANT229_DRAFT.gu_promise_cl
 freshS(10);
 grant229RecordFromEnc79('first:gu_mingfai','靜靜站在那裡，聽他哼完那段舊歌');
 ok('T2 draft 唔經初遇 hook 觸發（初遇只派 rec_209，1991 draft id 唔會出現）', S.grant229Queue.length===1 && S.grant229Queue[0].gigId==='gig_1990_rec_209' && !S.grant229Queue.some(q=>q.gigId==='gig_1991_rec_201' || q.gigId==='gig_1991_rec_207'));
-ok('T2 html 入面 grant229RecordDraft 得定義＋註解，唔經任何 hook 呼叫', (html.split('grant229RecordDraft(').length-1)===2);
+ok('T2 v273：grant229RecordDraft 得定義＋註解＋enc79RunChoiceFx 呼叫點（顧 Beat 2 即派，gu_promise_clean／gu_ask_back）', (html.split('grant229RecordDraft(').length-1)===3 && html.includes('grant229RecordDraft(fx)'));
 freshS(10);
 ok('T2 draft gu_promise_clean 入口派得出（→1991_rec_201）', grant229RecordDraft('gu_promise_clean')===true && S.grant229Queue.length===1 && S.grant229Queue[0].gigId==='gig_1991_rec_201');
 freshS(10);

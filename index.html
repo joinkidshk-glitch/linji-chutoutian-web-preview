@@ -26728,9 +26728,9 @@ const GRANT229_ENC79 = [
   { seg:"beat:mak_respect", key:"驚", gigId:"gig_1992_film_107", source:"麥震東支線", reason:"武指話，你話驚，佢話驚仲企得穩先係夠膽。《劍氣長虹》動作替身，聽朝去片場報到，先去做替身，慢慢企返穩。" },
   { seg:"beat:liu_repay", key:"推辭", gigId:"gig_1991_film_109", source:"廖炳星支線", reason:"星哥話，你推辭嗰句識諗人哋處境，更加難得。期嘅事佢嚟夾，夾到之前，《笑聲震天響》男配角，聽朝去片場報到，先去做住先。" }
 ];
-/* 草稿抉擇即派（顧明輝 Beat 2「應承一世唔掂／問回他」：攻略設計草稿，遊戲未有呢個抉擇，
-   gu_promise_clean／gu_ask_back 全 repo 0 命中）。兩張 1991 和音先留喺表入面，唔經任何現成
-   hook 觸發；第日實裝嗰個抉擇嗰陣，呼叫 grant229RecordDraft(key) 即可啟用，唔使改本表。 */
+/* 草稿抉擇即派（顧明輝 Beat 2「應承一世唔掂／問回他」：v20a273 1.14 已實裝——gu_tease 兩選項
+   經 enc79ChoiceFx fx＋enc79RunChoiceFx 呼叫 grant229RecordDraft(key) 啟用；兩張 1991 和音
+   唔經 GRANT229_ENC79 表，呢度係唯一映射，唔使改本表。 */
 const GRANT229_DRAFT = {
   gu_promise_clean: { gigId:"gig_1991_rec_201", source:"顧明輝支線", reason:"你應承咗佢，佢第二朝就話電台嗰邊有個和音錄音位，等你去唱下，熟習下錄音室。" },
   gu_ask_back: { gigId:"gig_1991_rec_207", source:"顧明輝支線", reason:"你問到佢答唔到，佢唔嬲——話你肯問，先係當佢係人。和音位一樣有你份。" }
@@ -26803,7 +26803,8 @@ function grant229RecordFromEnc79(segKey, label){
   }catch(_e){ return false; }
 }
 function grant229RecordDraft(draftKey){
-  /* 草稿抉擇專用入口：GRANT229_DRAFT 嘅 key 由將來實裝嗰個抉擇嗰陣傳入。現時無呼叫點。 */
+  /* 草稿抉擇專用入口：GRANT229_DRAFT 嘅 key 由實裝嗰個抉擇嗰陣傳入。v20a273 起呼叫點：
+     enc79RunChoiceFx（gu_promise_clean／gu_ask_back，顧 Beat 2 天台抉擇）。 */
   try{
     const row = (typeof GRANT229_DRAFT!=="undefined" && GRANT229_DRAFT) ? GRANT229_DRAFT[String(draftKey||"")] : null;
     if(!row) return false;
@@ -36410,6 +36411,24 @@ const ENC83_DLG_gu_mingfai = {
         ["A", "你講……賭呀？"],
         ["S", "賭，係戒唔甩嘅。你唔好睇我而家笑得出嚟，嗰張枱一嗌我，我個心就郁。"],
         ["S", "後生仔，你記住我呢句：嗰樣嘢，你一世都唔好掂。"]
+      ],
+      choices: [
+        {
+          label: "應承他，自己一世都不碰賭",
+          flags: ["gu_promise_clean"],
+          lines: [
+            ["A", "明輝哥，我應承你：嗰樣嘢，我一世都唔掂。"],
+            ["S", "……你咁講，我信你。後生仔，唔好行我呢條路。"]
+          ]
+        },
+        {
+          label: "問回他：「那你自己呢？」",
+          flags: ["gu_ask_back"],
+          lines: [
+            ["A", "明輝哥，咁你自己呢？"],
+            ["S", "……你問到我答唔到。呢個問題，我自己都問咗自己好多次。"]
+          ]
+        }
       ]
     },
     gu_loan: {
@@ -38361,7 +38380,7 @@ function enc79BoardHasActionGig(){
 }
 const ENC79_BEATS = {
   luk_baakyin:[
-    { id:"luk_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year===1990 && enc79TierOf(st.fav)<=1; }, },
+    { id:"luk_foreshadow", when(st){ return !((S.flags||{}).luk_kept_secret || (S.flags||{}).luk_loose_talk); }, }, /* v20a273 (e)：放寬——唔再限 1990／tier≤1（用戶 2026-11-17 19:52 拍板放寬）。殺青回望（enc79OnWrap 主角格 +3）可以唔經巧遇將好感推上 tier 3+，任何 tier 上限都會留低一條鎖死路；呢拍一生一次、排第一，遲遇只係推遲 intel／tease 一次，唔會再鎖死 luk_kept_secret／heart。 */
     { id:"luk_intel", when(st){ return enc79TierOf(st.fav)>=2; } },
     { id:"luk_tease", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=2 && ys.year===1991 && !(S.flags||{}).luk_cover_night && !(S.flags||{}).luk_absent_night; }, grants(){ try{ if(typeof grant229Record==="function") grant229Record("gig_1991_tv_203", "陸柏言支線", "場務話，今晚嗰組要人頂成晚，陸柏言嗰邊點名要你去。《星夜迷離》臨時替工，聽朝去電視城報到，夜半追逐場面，翻騰落地要穩陣。"); }catch(_g){} } }, /* v20a271：頂一晚新機制——tease 播出嗰晚記低替工通告，第二朝何生電話派（見 NOTES §5） */
     { id:"luk_thanks", when(st){ try{ return enc79TierOf(st.fav)>=2 && !!(S.flags||{}).luk_cover_night; }catch(_e){ return false; } } }, /* v20a271：頂過嗰晚先有句唔該 */
@@ -38438,24 +38457,26 @@ function enc79ChoiceFx(segKey, label){
   /* ===== v20a83 ENC83：Phase 2 四星選項效果（label 關鍵字由 ENC83 對白鎖定） ===== */
   if(segKey==="first:ngai_wingnaam"){ if(has("汽水")) return { fav:5 }; if(has("紙巾")) return { fav:1 }; return { fav:-2 }; }
   if(segKey==="first:gu_mingfai"){ if(has("聽")) return { fav:2 }; if(has("招呼")) return { fav:1 }; return { fav:0 }; } /* v20a271 1.13：好感差異（WORKORDER 建議值）——聽哼舊歌＋2／點頭打招呼＋1／走先＋0 */
-  if(segKey==="first:lok_gasing"){ if(has("撐")) return { fav:3 }; if(has("點頭")) return { fav:1 }; return { fav:-2 }; }
+  if(segKey==="first:lok_gasing"){ if(has("好話")) return { fav:3 }; if(has("點頭")) return { fav:1 }; return { fav:-2 }; } /* v20a273 (c)：關鍵字跟 live label「出聲為他說句好話」——舊「撐」對唔上，撐佢嗰邊錯得 -2 */
   if(segKey==="first:chai_zanhoi"){ if(has("答得出")) return { fav:3 }; if(has("唔記得")) return { fav:1 }; return { fav:-2 }; }
   if(segKey==="heart:ngai_wingnaam") return { fav: has("認真")?3:1 };
-  if(segKey==="heart:gu_mingfai") return { fav: has("天光")?3:1 };
-  if(segKey==="heart:lok_gasing") return { fav: has("聽")?3:1 };
+  if(segKey==="heart:gu_mingfai") return { fav: has("天亮")?3:1 }; /* v20a273 (a)：關鍵字跟 live label「陪他坐到天亮，不出聲」——舊「天光」對唔上，永遠只加 +1 */
+  if(segKey==="heart:lok_gasing") return { fav: has("彈完整首")?3:1 }; /* v20a273 (c)：舊 has("聽") 兩選項都含「聽」（「讚他那首歌好聽」有「聽」字），讚嗰邊錯加 +3；改精準關鍵字分返 +3／+1 */
   if(segKey==="heart:chai_zanhoi") return { fav: has("真話")?3:1 };
   if(segKey==="beat:ngai_help"){ if(has("大排檔")) return { fav:5, fx:"ngai_meal" }; if(has("熱茶")) return { fav:1 }; return { fav:-2 }; }
   if(segKey==="beat:ngai_repay") return { fav: has("認真")?3:1 };
   if(segKey==="beat:gu_loan"){ if(has("一口應承")) return { fav:4, fx:"gu_loan_full" }; if(has("一半")) return { fav:2, fx:"gu_loan_half" }; return { fav:-2 }; }
   if(segKey==="beat:gu_n10after"){ if(has("岸")) return { fav:3 }; if(has("賭")) return { fav:2 }; return { fav:1 }; }
+  /* v20a273 1.14：顧 Beat 2 天台抉擇——應承／問返，兩邊 +2（WORKORDER 無寫好感數字；分化靠旗＋分開即派），fx 經 enc79RunChoiceFx 行 GRANT229_DRAFT */
+  if(segKey==="beat:gu_tease"){ if(has("應承")) return { fav:2, fx:"gu_promise_clean" }; if(has("自己呢")) return { fav:2, fx:"gu_ask_back" }; return { fav:1 }; }
   if(segKey==="beat:lok_help"){ if(has("試")) return { fav:5 }; return { fav:1 }; }
   if(segKey==="beat:lok_e4grudge"){ if(has("勸")) return { fav:3 }; if(has("鬧")) return { fav:1 }; return { fav:1 }; }
   if(segKey==="beat:chai_choice"){ if(has("勸")) return { fav:3, fx:"chai_advise" }; return { fav:0, fx:"chai_silent" }; }
   /* ===== v20a84 ENC84：Phase 3 四星選項效果（label 關鍵字由 ENC84 對白鎖定） ===== */
   if(segKey==="first:pang_siuki"){ if(has("記性")) return { fav:3 }; if(has("指教")) return { fav:1 }; return { fav:-2 }; }
-  if(segKey==="first:so_jiyan"){ if(has("護住")) return { fav:3 }; if(has("讓開")) return { fav:1 }; return { fav:-2 }; }
+  if(segKey==="first:so_jiyan"){ if(has("護著")) return { fav:3 }; if(has("讓開")) return { fav:1 }; return { fav:-2 }; } /* v20a273 (c)：關鍵字跟 live label「護著她進升降機」——舊「護住」對唔上，護住嗰邊錯得 -2 */
   if(segKey==="first:chung_choning"){ if(has("受教")) return { fav:3 }; if(has("點頭")) return { fav:1 }; return { fav:-2 }; }
-  if(segKey==="first:ching_tinlok"){ if(has("練到天光")) return { fav:3 }; if(has("遞支水")) return { fav:1 }; return { fav:-2 }; }
+  if(segKey==="first:ching_tinlok"){ if(has("練到天亮")) return { fav:3 }; if(has("遞一瓶水")) return { fav:1 }; return { fav:-2 }; } /* v20a273 (c)：關鍵字跟 live label「練到天亮」／「遞一瓶水」——舊「天光」／「遞支水」對唔上，三選全部錯得 -2 */
   if(segKey==="heart:pang_siuki") return { fav: has("聽")?3:1 };
   if(segKey==="heart:so_jiyan") return { fav: has("認真")?3:1 };
   if(segKey==="heart:chung_choning") return { fav: has("出聲")?3:1 };
@@ -38491,6 +38512,10 @@ function enc79RunChoiceFx(fx){
       enc83GuLoanStart(1);
     } else if(fx==="gu_loan_half"){
       enc83GuLoanStart(2);
+    }
+    /* v20a273 1.14：顧 Beat 2 天台抉擇即派分開——經 GRANT229_DRAFT（rec_201／rec_207），第二朝何生電話派 */
+    if(fx==="gu_promise_clean" || fx==="gu_ask_back"){
+      try{ if(typeof grant229RecordDraft==="function") grant229RecordDraft(fx); }catch(_g){}
     }
     /* ===== v20a84 ENC84：Phase 3 抉擇實效（行現有帳本／傳聞池／旗標，唔另起系統） ===== */
     if(fx==="pang_helped"){
@@ -38605,6 +38630,10 @@ function enc79BuildScript(starId, forceFirst, locId){
     if(beat.id==="gu_loan" && typeof enc87StoryFlag==="function" && enc87StoryFlag("flag_mediate_gu_debt")){
       pushLines([["S","阿偉，開口之前講句舊事：上次台慶嗰單數，你幫我同何生爭取到分期，我一直記喺心。今日呢筆，我唔當你係外人，先至嚟同你開口。"]], "beat:gu_loan_med89", null);
     }
+    /* v20a273 1.14：顧 Beat 2 讀返——應承過一世唔掂，借錢開口嗰陣認返 */
+    if(beat.id==="gu_loan" && (S.flags||{}).gu_promise_clean){
+      pushLines([["S","你嗰日應承過我，今日我先敢同你開口。"]], "beat:gu_loan_promise273", null);
+    }
     /* v20a100 CLEAN100 B-06：gu_n10after 原開場寫死「追數嗰場風波」，但 N10 有三路
        （代何生追數／企出嚟幫劇組／幫顧明輝爭取分期）——冇行嗰路唔好當發生咗。
        按玩家實際行嗰路換開場第一句，其餘 beat 內容不變（「冇俾嗰張枱食埋」係
@@ -38645,7 +38674,12 @@ function enc79BuildScript(starId, forceFirst, locId){
     }
     pushSeg(beatSeg100, "beat:"+beat.id, ()=>{ const s2=enc79StarState(starId); s2.beatsDone[beat.id]=((S&&S.dayIndex)|0); try{ beat.grants && beat.grants(); }catch(_g){} });
   } else if(tier>=3 && !st.heartDone && D.heart && !(starId==="chung_choning" && chungPre91) && !(starId==="luk_baakyin" && !(S.flags||{}).luk_kept_secret)){ /* v20a271：陸 heart 加閘 T3＋luk_kept_secret（守口先有交心） */
-    pushSeg(D.heart, "heart:"+starId, ()=>{ const s2=enc79StarState(starId); s2.heartDone = true; enc79AddFav(starId, 2, "beat"); });
+    /* v20a273 1.14：顧 Beat 2 讀返——問返「咁你自己呢」，交心嗰陣認返 */
+    let heartSeg273 = D.heart;
+    if(starId==="gu_mingfai" && (S.flags||{}).gu_ask_back && Array.isArray(D.heart.lines) && D.heart.lines.length){
+      heartSeg273 = { lines: [D.heart.lines[0], ["S","你嗰日問我，我自己呢——我答你唔到，而家我答你：我輸咗。"]].concat(D.heart.lines.slice(1)), choices: D.heart.choices || null };
+    }
+    pushSeg(heartSeg273, "heart:"+starId, ()=>{ const s2=enc79StarState(starId); s2.heartDone = true; enc79AddFav(starId, 2, "beat"); });
   } else {
     const band = tier<=1 ? "T1" : (tier===2 ? "T2" : "T3");
     const pool = (D.pool && D.pool[band]) || [];

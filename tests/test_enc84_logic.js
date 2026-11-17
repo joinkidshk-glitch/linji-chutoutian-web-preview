@@ -165,9 +165,9 @@ ok('四星總句數 >= 480', total84>=480);
 
 /* ---- (3) 抉擇 fx 接線＋實效 ---- */
 ok('初遇 fx：彭記性 +3／指教 +1／客套 -2', enc79ChoiceFx('first:pang_siuki','佩服佢記性：彭生，你記性真係冇得頂').fav===3 && enc79ChoiceFx('first:pang_siuki','客氣回應：係呀，我係阿偉，多多指教').fav===1 && enc79ChoiceFx('first:pang_siuki','覺得太假：唔使咁客套啦').fav===-2);
-ok('初遇 fx：蘇護住 +3／讓開 +1／介紹 -2', enc79ChoiceFx('first:so_jiyan','護住佢入升降機，一句都唔多講').fav===3 && enc79ChoiceFx('first:so_jiyan','讓開企埋一邊，唔阻人做嘢').fav===1 && enc79ChoiceFx('first:so_jiyan','趁機介紹自己，想攞個機會').fav===-2);
+ok('初遇 fx：蘇護著 +3／讓開 +1／介紹 -2', enc79ChoiceFx('first:so_jiyan','護著她進升降機，一句也不多說').fav===3 && enc79ChoiceFx('first:so_jiyan','讓開站到一邊，不阻礙別人工作').fav===1 && enc79ChoiceFx('first:so_jiyan','趁機介紹自己，想攞個機會').fav===-2);
 ok('初遇 fx：鍾受教 +3／點頭 +1／頂返 -2', enc79ChoiceFx('first:chung_choning','企正啲，虛心受教：多謝鍾小姐指點').fav===3 && enc79ChoiceFx('first:chung_choning','點頭多謝，唔出聲').fav===1 && enc79ChoiceFx('first:chung_choning','唔忿氣，頂返佢一句').fav===-2);
-ok('初遇 fx：程練到天光 +3／遞支水 +1／笑佢 -2', enc79ChoiceFx('first:ching_tinlok','講自己當年點捱：俾人笑嗰陣，我都係練到天光').fav===3 && enc79ChoiceFx('first:ching_tinlok','靜靜遞支水俾佢，唔出聲').fav===1 && enc79ChoiceFx('first:ching_tinlok','笑佢唱功：你唱嗰兩句真係唔掂').fav===-2);
+ok('初遇 fx：程練到天亮 +3／遞一瓶水 +1／笑佢 -2', enc79ChoiceFx('first:ching_tinlok','說自己當年怎樣熬：被人笑的時候，我也是練到天亮').fav===3 && enc79ChoiceFx('first:ching_tinlok','靜靜遞一瓶水給他，不出聲').fav===1 && enc79ChoiceFx('first:ching_tinlok','笑他的唱功：你唱那兩句真的不行').fav===-2);
 ok('心聲 fx：四星最佳 +3／次選 +1', enc79ChoiceFx('heart:pang_siuki','靜靜聽佢講晒').fav===3 && enc79ChoiceFx('heart:pang_siuki','笑住話佢諗多咗').fav===1
   && enc79ChoiceFx('heart:so_jiyan','認真同佢講：你做得到').fav===3 && enc79ChoiceFx('heart:so_jiyan','笑住話佢諗太多').fav===1
   && enc79ChoiceFx('heart:chung_choning','靜靜聽，唔出聲').fav===3 && enc79ChoiceFx('heart:chung_choning','問佢會唔會返嚟').fav===1
