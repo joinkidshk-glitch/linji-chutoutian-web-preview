@@ -71,7 +71,7 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   const fam = (S.mockDebts||[]).filter(d=>d.id==='debt_family_home');
   ok('new save: family debt seeded exactly once', fam.length===1);
   ok('new save: family debt is the FIRST and only debt at start', S.mockDebts.length===1 && S.mockDebts[0].id==='debt_family_home');
-  ok('new save: family debt shape', fam.length===1 && fam[0].creditor==='屋企／阿媽' && fam[0].amount===600 && fam[0].status==='未到期' && fam[0].dueDay==null);
+  ok('new save: family debt shape', fam.length===1 && fam[0].creditor==='屋企／阿媽' && fam[0].amount===60 && fam[0].status==='未到期' && fam[0].dueDay==null);
   ensureMockJournal();
   ok('new save: reseed guard — still one after re-ensure', (S.mockDebts||[]).filter(d=>d.id==='debt_family_home').length===1);
 
@@ -133,7 +133,7 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
 
   S = { dayIndex:0, money:5000, inventory:{}, npcs:{ agent:50 }, board:{}, flags:{}, mockDebts:[], mockRumors:[], mockCredits:[], favorDueSettled:{}, mockSeasonCleared:{} };
   ok('seed returns true first time', ensureFamilyHomeDebt()===true && famCount()===1);
-  ok('seed: cycle0 = 今個月家用 $600', S.mockDebts[0].title==='今個月家用' && S.mockDebts[0].amount===600);
+  ok('seed: cycle0 = 今個月家用 $60', S.mockDebts[0].title==='今個月家用' && S.mockDebts[0].amount===60);
 
   adv(10); // dayIndex 10，仍係 1990 年 1 月；advanceDay 每日行 ensureFamilyHomeDebt
   ok('same month, debt present: no reseed', famCount()===1 && S.dayIndex===10);
@@ -152,7 +152,7 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   adv(11); // dayIndex 31 = 1990-02-01：跨月補種
   ok('next month: reseeded exactly once', famCount()===1 && S.dayIndex===31);
   const d2 = S.mockDebts.find(d=>d.id==='debt_family_home');
-  ok('next month: cycle rotated to 交租 $800', d2.title==='今期幫補交租' && d2.amount===800);
+  ok('next month: cycle rotated to 交租 $80', d2.title==='今期幫補交租' && d2.amount===80);
   ensureFamilyHomeDebt(); ensureFamilyHomeDebt();
   ok('reseed idempotent on repeated ensure', famCount()===1);
 

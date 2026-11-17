@@ -13,7 +13,7 @@
 //   T3 冪等：同一張記低兩次得一筆；派發一次後唔再派
 //   T4 翌日先到期：今日 dueList 空、聽日有
 //   T5 派發守衛：已殺青／拍攝中／等消息中／已預約 → 靜靜跳過（queue 清走、唔出電話）；gig 唔存在 → 跳過
-//   T6 合約條款：N-3 2 週×$4,900＝$9,800；N-4 2 週×$4,200＝$8,400
+//   T6 合約條款：N-3 2 週×$490＝$980；N-4 2 週×$390＝$780（v261 ÷10）
 //   T7 週結算：有拍攝進展先出糧（入 S.money＋S.weekEarn）、無進展唔出、shoot 消失閂合約、尾週找尾數唔超總額
 //   T8 殺青尾糧：已付一半→尾數一半；付清→0；合約閂埋（status done）；payWrapNote／contract229CardLine 字句唔提簽約金餘額
 //   T9 派發全程：何生電話 modal→直接獲聘入行程（shoot 入 S.shoots、signedPaid＝三成；合約 shoot.contract229 齊、signedPaid＝0）；獲聘後 isGigConsumed true（板面鎖死）
@@ -343,13 +343,13 @@ ok('T5b N9_a 103 已殺青→跳過', grant229PresentDue(()=>{ stepCalls++; })==
 
 /* ---------- T6：合約條款 ---------- */
 let t6a = contract229Terms(gigById('gig_1990_tv_107'));
-ok('T6 N-3 2 週×$4,900＝$9,800', t6a && t6a.weeks===2 && t6a.weeklyPay===4900 && t6a.totalPay===9800, JSON.stringify(t6a));
+ok('T6 N-3 2 週×$490＝$980', t6a && t6a.weeks===2 && t6a.weeklyPay===490 && t6a.totalPay===980, JSON.stringify(t6a));
 let t6b = contract229Terms(gigById('gig_1990_film_113'));
-ok('T6 N-4 2 週×$3,900＝$7,800（pay [7200,8400] 中位 7800／12 日 2 週）', t6b && t6b.weeks===2 && t6b.weeklyPay===3900 && t6b.totalPay===7800, JSON.stringify(t6b));
+ok('T6 N-4 2 週×$390＝$780（pay [720,840] 中位 780／12 日 2 週）', t6b && t6b.weeks===2 && t6b.weeklyPay===390 && t6b.totalPay===780, JSON.stringify(t6b));
 let t6c = grant229HireTerms(gigById('gig_1990_film_203'));
-ok('T6 普通通告：簽約金三成、聲望中位數（pay [550,650] 中位 600／fame [5,10] 中位 8）', t6c && t6c.contract===false && t6c.pay===600 && t6c.signPay===180 && t6c.fame===8, JSON.stringify(t6c));
+ok('T6 普通通告：簽約金三成、聲望中位數（pay [55,65] 中位 60／fame [5,10] 中位 8）', t6c && t6c.contract===false && t6c.pay===60 && t6c.signPay===18 && t6c.fame===8, JSON.stringify(t6c));
 let t6d = grant229HireTerms(gigById('gig_1990_tv_107'));
-ok('T6 合約通告：無簽約金、帶週糧條款', t6d && t6d.contract===true && t6d.signPay===0 && t6d.weeks===2 && t6d.weeklyPay===4900 && t6d.totalPay===9800, JSON.stringify(t6d));
+ok('T6 合約通告：無簽約金、帶週糧條款', t6d && t6d.contract===true && t6d.signPay===0 && t6d.weeks===2 && t6d.weeklyPay===490 && t6d.totalPay===980, JSON.stringify(t6d));
 
 /* ---------- T7：週結算 ---------- */
 function contractSetup(gigId){
@@ -363,33 +363,33 @@ function contractSetup(gigId){
   return { gig:gig, sh:sh, c:S.contracts229[0] };
 }
 let s7 = contractSetup('gig_1990_tv_107');
-ok('T7 合約紀錄開咗（active）', s7.c && s7.c.status==='active' && s7.c.weeks===2 && s7.c.weeklyPay===4900);
+ok('T7 合約紀錄開咗（active）', s7.c && s7.c.status==='active' && s7.c.weeks===2 && s7.c.weeklyPay===490);
 ok('T7 無拍攝進展→唔出糧', contract229WeeklyTick()===0 && S.money===12000 && s7.c.paidTotal===0);
 s7.sh.doneDays = 5;
-ok('T7 有進展→出第一週糧 $4,900（入錢＋入週收入）', contract229WeeklyTick()===1 && S.money===16900 && S.weekEarn===4900 && s7.c.paidTotal===4900 && s7.c.paidWeeks===1);
-ok('T7 同一進展再 tick→唔重複出', contract229WeeklyTick()===0 && S.money===16900);
+ok('T7 有進展→出第一週糧 $490（入錢＋入週收入）', contract229WeeklyTick()===1 && S.money===12490 && S.weekEarn===490 && s7.c.paidTotal===490 && s7.c.paidWeeks===1);
+ok('T7 同一進展再 tick→唔重複出', contract229WeeklyTick()===0 && S.money===12490);
 s7.sh.doneDays = 14;
-ok('T7 第二週進展→出第二週糧，總額 $9,800 封頂', contract229WeeklyTick()===1 && S.money===21800 && s7.c.paidTotal===9800);
-ok('T7 付清後再 tick→0（唔超總額）', contract229WeeklyTick()===0 && S.money===21800);
+ok('T7 第二週進展→出第二週糧，總額 $980 封頂', contract229WeeklyTick()===1 && S.money===12980 && s7.c.paidTotal===980);
+ok('T7 付清後再 tick→0（唔超總額）', contract229WeeklyTick()===0 && S.money===12980);
 let s7b = contractSetup('gig_1990_film_113');
 s7b.sh.doneDays = 6;
 contract229WeeklyTick();
-ok('T7 N-4 第一週 $3,900', S.money===15900 && s7b.c.paidTotal===3900);
+ok('T7 N-4 第一週 $390', S.money===12390 && s7b.c.paidTotal===390);
 S.shoots = [];
 contract229WeeklyTick();
 ok('T7 shoot 消失→合約閂埋（ended）', s7b.c.status==='ended');
 
 /* ---------- T8：殺青尾糧 ---------- */
 let s8 = contractSetup('gig_1990_tv_107');
-s8.sh.doneDays = 7; contract229WeeklyTick(); /* 已付一半 $4,900 */
-ok('T8 已付一半→殺青尾糧一半 $4,900', contract229WrapRemainder(s8.sh)===4900);
+s8.sh.doneDays = 7; contract229WeeklyTick(); /* 已付一半 $490 */
+ok('T8 已付一半→殺青尾糧一半 $490', contract229WrapRemainder(s8.sh)===490);
 ok('T8 殺青後合約 done', s8.c.status==='done');
 ok('T8 尾糧字句講尾糧唔講餘額', payWrapNote(s8.sh).indexOf('尾糧')>=0 && payWrapNote(s8.sh).indexOf('餘額')<0, payWrapNote(s8.sh));
 ok('T8 拍攝卡字句講長期合約＋週糧', contract229CardLine(s8.sh).indexOf('長期合約')>=0 && contract229CardLine(s8.sh).indexOf('每週')>=0, contract229CardLine(s8.sh));
 ok('T8 再計尾糧→0', contract229WrapRemainder(s8.sh)===0);
 let s8b = contractSetup('gig_1990_film_113');
-s8b.sh.doneDays = 6; contract229WeeklyTick(); /* 第一週 $3,900 */
-s8b.sh.doneDays = 12; contract229WeeklyTick(); /* 第二週 $3,900，付清 */
+s8b.sh.doneDays = 6; contract229WeeklyTick(); /* 第一週 $390 */
+s8b.sh.doneDays = 12; contract229WeeklyTick(); /* 第二週 $390，付清 */
 ok('T8 付清→殺青尾糧 0', contract229WrapRemainder(s8b.sh)===0 && s8b.c.status==='done');
 ok('T8 非合約 shoot→尾糧 0', contract229WrapRemainder({gigId:'gig_1990_film_203'})===0);
 
@@ -399,8 +399,8 @@ grant229RecordFromChoice({id:'N4'},{id:'N4_b'});
 S.dayIndex = 11; modalCalls = 0; stepCalls = 0; lastModal = null; lastToast = null;
 ok('T9 普通通告：何生電話呈現', grant229PresentDue(()=>{ stepCalls++; })===true && modalCalls===1 && stepCalls===1);
 ok('T9 modal 講何生來電＋簽約金', lastModal && lastModal.html.indexOf('何生來電')>=0 && lastModal.html.indexOf('簽約金')>=0);
-ok('T9 簽約金 $180 已入帳', S.money===12180 && S.weekEarn===180);
-ok('T9 shoot 入行程（signedPaid＝三成）', S.shoots.length===1 && S.shoots[0].gigId==='gig_1990_film_203' && S.shoots[0].signedPaid===180 && !S.shoots[0].contract229);
+ok('T9 簽約金 $18 已入帳', S.money===12018 && S.weekEarn===18);
+ok('T9 shoot 入行程（signedPaid＝三成）', S.shoots.length===1 && S.shoots[0].gigId==='gig_1990_film_203' && S.shoots[0].signedPaid===18 && !S.shoots[0].contract229);
 ok('T9 獲聘後 isGigConsumed true（板面鎖死）', isGigConsumed(gigById('gig_1990_film_203'))===true);
 ok('T10 派發唔經試鏡（pendingAud／booked 皆空）', S.pendingAud.length===0 && S.booked.length===0);
 ok('T10 toast 有通告名', lastToast && lastToast.indexOf('水塘夜戲')>=0, String(lastToast));
@@ -411,8 +411,8 @@ S.dayIndex = 11; modalCalls = 0; stepCalls = 0; lastModal = null;
 ok('T9 合約通告：何生電話呈現', grant229PresentDue(()=>{ stepCalls++; })===true && modalCalls===1 && stepCalls===1);
 ok('T9 合約 modal 講長期合約＋每週出糧', lastModal && lastModal.html.indexOf('長期合約')>=0 && lastModal.html.indexOf('每週')>=0);
 ok('T9 合約：無簽約金入帳', S.money===12000 && S.weekEarn===0);
-ok('T9 合約 shoot 有 contract229（2 週×$4,900）', S.shoots.length===1 && S.shoots[0].contract229 && S.shoots[0].contract229.weeks===2 && S.shoots[0].contract229.weeklyPay===4900 && S.shoots[0].signedPaid===0);
-ok('T9 合約紀錄 active', S.contracts229.length===1 && S.contracts229[0].status==='active' && S.contracts229[0].totalPay===9800);
+ok('T9 合約 shoot 有 contract229（2 週×$490）', S.shoots.length===1 && S.shoots[0].contract229 && S.shoots[0].contract229.weeks===2 && S.shoots[0].contract229.weeklyPay===490 && S.shoots[0].signedPaid===0);
+ok('T9 合約紀錄 active', S.contracts229.length===1 && S.contracts229[0].status==='active' && S.contracts229[0].totalPay===980);
 ok('T9 合約獲聘後 isGigConsumed true', isGigConsumed(gigById('gig_1990_tv_107'))===true);
 ok('T10 合約派發唔經試鏡', S.pendingAud.length===0 && S.booked.length===0);
 

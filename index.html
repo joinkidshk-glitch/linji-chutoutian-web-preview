@@ -14019,7 +14019,7 @@ const GiftShop = (function(){
        ※ v20a100 CLEAN100 B-10：茶水檔嗰位同鏈 F 副導演芬姐係兩個人（用戶拍板），
        （B-10）茶水檔嗰位改稱「珍姐」；「芬姐」全遊戲只指副導演（鏈 F／1991 夏離港）。
    新狀態收喺 S.hosp96（防禦式初始化，舊檔自動補）。唔改 SAVE key／softRev／?v=／pack JSON。 */
-const LOC96_CFG = { treatFee:600, checkupFee:500, checkupDays:28, checkupShield:10 };
+const LOC96_CFG = { treatFee:60, checkupFee:50, checkupDays:28, checkupShield:10 };
 function hosp96State(st){
   const s = st || (typeof S!=="undefined" ? S : null);
   if(!s || typeof s!=="object") return null;
@@ -14859,7 +14859,7 @@ async function refreshCopyPacksFromDisk(){
    span+1（七課一致 +4~6→+6~8→+8~11）；sub 附帶（有先算，值＝級數 +1/+2/+3；
    附帶邊個數值跟各課現有數據——演技→台風、台風→魅力、外貌→魅力、智商→演技；
    歌藝／魅力／武師班現行冇附帶，唔發明）；stress 壓力一級 [sLo, sLo+sSpan]，
-   每級 lo+2（七課一致 +8~12→+10~14→+12~16）；fee800＝外貌課學費 $800（各級
+   每級 lo+2（七課一致 +8~12→+10~14→+12~16）；fee800＝外貌課學費 $80（各級
    不變，跟現行，唔加價）。耗時維持 1 日。
    v20a76 UNIFY76（用戶 2026-11-10 17:28 拍板統一）：v75 曾保留外貌／魅力／智商
    三課一級 +3~5、壓力跟各課自己帶（偏差已交代）；用戶揀返統一全表——三課主增益
@@ -14899,7 +14899,7 @@ function levels75GainRange(cid, lv){
   const mLo = sp.mLo + (lv - 1) * 2, mSpan = sp.mSpan + (lv === 3 ? 1 : 0);
   out[sp.main] = [mLo, mLo + mSpan];
   if(sp.sub) out[sp.sub] = [lv, lv];
-  if(sp.fee800) out.money = [-800, -800];
+  if(sp.fee800) out.money = [-80, -80];
   const sLo = sp.sLo + (lv - 1) * 2;
   out.stress = [sLo, sLo + sp.sSpan];
   return out;
@@ -14913,7 +14913,7 @@ function levels75GainRoll(cid, lv){
   const mLo = sp.mLo + (lv - 1) * 2, mSpan = sp.mSpan + (lv === 3 ? 1 : 0);
   g[sp.main] = mLo + R(0, mSpan);
   if(sp.sub) g[sp.sub] = lv;
-  if(sp.fee800) g.money = -Math.min(800, (typeof S !== "undefined" && S) ? (Number(S.money) || 0) : 0);
+  if(sp.fee800) g.money = -Math.min(80, (typeof S !== "undefined" && S) ? (Number(S.money) || 0) : 0);
   const sLo = sp.sLo + (lv - 1) * 2;
   g.stress = sLo + R(0, sp.sSpan);
   return g;
@@ -16013,7 +16013,7 @@ function fresh(){
     years66Shifted:1, /* v20a228：遷移已刪，留印只為存檔格式相容 */
     startEpoch67:1, /* v20a228：遷移已刪，留印只為存檔格式相容 */
     acting:18, stage:14, vocal:14, looks:22, stamina:75,
-    iq:20, charm:16, fame:5, popularity:3, stress:12, money:12000,
+    iq:20, charm:16, fame:5, popularity:3, stress:12, money:1200,
     stageVolume:5, industryCredit:10, industryCreditDelta:0,
     npcs:{colleague:8,director:4,stylist:5,rival:6,reporter:3,agent:12},
     board:{},
@@ -17840,10 +17840,10 @@ function gigBreachFee(g){
   const P=gigPayExact(g);
   if(P==null || P<=0) return null;
   const high = (g.tier==="高級" || g.tier==="稀有" || g.tier==="高");
-  /* v20a229 B2 真五級：高級／稀有行高分支（60%、下限 $1000）；臨記／初級／中級行
-     一般分支（50%、下限 $500）。舊 高 照行高分支。 */
+  /* v20a229 B2 真五級：高級／稀有行高分支（60%、下限 $100）；臨記／初級／中級行
+     一般分支（50%、下限 $50）。舊 高 照行高分支。 */
   let fee = high ? Math.round(P*0.6/100)*100 : Math.round(P*0.5/100)*100;
-  fee = Math.max(fee, high ? 1000 : 500);
+  fee = Math.max(fee, high ? 100 : 50);
   fee = Math.min(fee, P);
   return fee;
 }
@@ -19612,27 +19612,27 @@ function livingCostBand(w){
   /* v20a65 FIX65-2：首年（wk1–43，至第一次年終評核）生活費改緩坡。全弧驗證第二輪實測：
      初級收入係 lumpy 型（乾旱週零入帳、殺青週先有糧，實測週均約 $1,000–1,400），舊表 wk13 起
      跳上 $2,400（LIVE 更係 wk5 起），「有工就做」型玩家會喺 wk14 前結構性破產，E7 評核支
-     永遠到達唔到。新表首年 $1,100→$1,700 緩升；wk44+ 維持 full 帶，CALIB60 年份／聲望
+     永遠到達唔到。新表首年 $110→$170 緩升；wk44+ 維持 full 帶，CALIB60 年份／聲望
      加級照舊疊加，後期經濟不變。
      v20a67 JAN67 盤點：評核已移去 wk52，但緩坡週段唔跟移——緩坡嘅用途係保開局現金流，
-     唔係同評核週對位；wk43→44 銜接（$1,700→$2,400）同 v66 時代嘅跳幅一致（v66 嗰陣
+     唔係同評核週對位；wk43→44 銜接（$170→$240）同 v66 時代嘅跳幅一致（v66 嗰陣
      wk44 仲要疊 CALIB60 1991 加級、跳幅更大），1 月 epoch 下 CALIB60 年加級改由真
-     日曆年觸發（wk54 起 +$300），全年總生活費比 v66 微降，唔構成罅，金額一律唔郁。 */
-  if(week>=1 && week<=4) band = { lo:950, hi:1250, mid:1100, label:"$950–1,250（開局優惠）", tier:"early" };
-  else if(week>=5 && week<=12) band = { lo:1150, hi:1450, mid:1300, label:"$1,150–1,450（首年緩坡）", tier:"y1_a" };
-  else if(week>=13 && week<=26) band = { lo:1350, hi:1650, mid:1500, label:"$1,350–1,650（首年緩坡）", tier:"y1_b" };
-  else if(week>=27 && week<=43) band = { lo:1550, hi:1850, mid:1700, label:"$1,550–1,850（首年緩坡）", tier:"y1_c" };
-  else band = { lo:2000, hi:2800, mid:2400, label:"$2,000–2,800", tier:"full" };
+     日曆年觸發（wk54 起 +$30），全年總生活費比 v66 微降，唔構成罅，金額一律唔郁。 */
+  if(week>=1 && week<=4) band = { lo:95, hi:125, mid:110, label:"$95–125（開局優惠）", tier:"early" };
+  else if(week>=5 && week<=12) band = { lo:115, hi:145, mid:130, label:"$115–145（首年緩坡）", tier:"y1_a" };
+  else if(week>=13 && week<=26) band = { lo:135, hi:165, mid:150, label:"$135–165（首年緩坡）", tier:"y1_b" };
+  else if(week>=27 && week<=43) band = { lo:155, hi:185, mid:170, label:"$155–185（首年緩坡）", tier:"y1_c" };
+  else band = { lo:200, hi:280, mid:240, label:"$200–280", tier:"full" };
   /* v20a60 CALIB60-2：生活費隨年份＋名氣遞增（全弧報告 §6.2.5——gate-on 錢全程唔構成決策）。
-     只限 1991 年起：1991 +$300／1992 +$600；同年 fame≥120 再 +$200、fame≥250 再 +$400（取高嗰級，唔疊加）。
+     只限 1991 年起：1991 +$30／1992 +$60；同年 fame≥120 再 +$20、fame≥250 再 +$40（取高嗰級，唔疊加）。
      1990 年（新人期）完全唔經呢段——同 v20a59 逐蚊一致，守住「唔好餓死新人」紅線（gate-off 弧試過 $0 死局）。
      年份以嗰週第一日嘅真日曆計（calib60YearOfWeek），預覽下週（w+1）同實際扣款同一個數。 */
   try{
     const yr = (typeof calib60YearOfWeek==="function") ? calib60YearOfWeek(week) : 1990;
     if(yr>=1991){
-      let up = (yr>=1992) ? 600 : 300;
+      let up = (yr>=1992) ? 60 : 30;
       const f = Number((typeof S!=="undefined" && S) ? S.fame : 0)||0;
-      if(f>=250) up += 400; else if(f>=120) up += 200;
+      if(f>=250) up += 40; else if(f>=120) up += 20;
       if(up>0){
         const lo = band.lo+up, hi = band.hi+up;
         band = { lo:lo, hi:hi, mid:band.mid+up, tier:band.tier+"_cal60",
@@ -19792,7 +19792,7 @@ function settleWeek(){
   if(S.fame>=50 && !S.flags.mid){
     S.flags.mid=true;
     /* 里程碑獎金要入帳；金額大字由 stripSettleMoneyNoise 清走 */
-    pushFlavor(apply({money:5000,charm:2,popularity:3}));
+    pushFlavor(apply({money:500,charm:2,popularity:3}));
     pushFlavor(`<span class="good">聲望破 50：雜誌想訪問阿偉。（獎金已入袋）</span>`);
   }
   if(S.fame>=80 && !S.flags.high){ S.flags.high=true; bumpNpc("director",8); pushFlavor(apply({popularity:5})); pushFlavor(`<span class="good">阿偉成了城中熱話。</span>`); }
@@ -22883,7 +22883,7 @@ function mergeIntelGigs(){
    舊存檔兼容：dueDay 喺 favorDueTick／手帳渲染首次見到嗰日回填（當日 +7），唔會一讀檔即到期；
    結清／作廢／用其他方法清走（例如現金還）都會記入 S.favorDueSettled，教學債日後被補種都唔會重行到期流程。
    v20a254 D3：幫忙通告已恢復（FAVOR_DUE_GIGS 恢復 v20a17 原裝 special gig、gigId 填返 gig_favor_ho_errand）；到期前現金／禮物還款路照舊，幫忙通告係第三條路。 ===== */
-const FAVOR_DUE_CFG = { debtId:"debt_ho_tutorial", gigId:"gig_favor_ho_errand" /* v20a254 D3：幫忙通告恢復——v20a229 B3 刪咗 code-side 幫忙通告（gigId null、FAVOR_DUE_GIGS []），B5 核實新庫 240 張 0 命中；今次唔入庫存（新庫版幫忙通告無 trigger kind 可接，亦唔郁 282 張計數／六批驗證），恢復 v20a17 原裝 special gig 接線（id／《晨光劇場》臨時人手／事務所板／$400 定額／1 日／4 日窗；v20a260：payExact 由 $500 改 $400、pay 由 [450,550] 改 [320,400]，仿照真實 1990 臨記價 $30–40，遊戲經濟 ×10，見 RESEARCH.md；pay 區間完全喺臨記帶 $250–400 內，hi/lo=1.25 啱啱合規；tier 由舊「初」改新五級「臨記」＋補 category「臨記通告」；刪死 data favorDelta；eraTag 唔再寫 era_* id）。favorDueTick 嘅 wrapped 檢查（wrapHistory／done_ 旗）＋mergeFavorGigs 注入＋rel +2／−3 全部照舊機制行。 */, dueDays:7, windowDays:4 };
+const FAVOR_DUE_CFG = { debtId:"debt_ho_tutorial", gigId:"gig_favor_ho_errand" /* v20a254 D3：幫忙通告恢復——v20a229 B3 刪咗 code-side 幫忙通告（gigId null、FAVOR_DUE_GIGS []），B5 核實新庫 240 張 0 命中；今次唔入庫存（新庫版幫忙通告無 trigger kind 可接，亦唔郁 282 張計數／六批驗證），恢復 v20a17 原裝 special gig 接線（id／《晨光劇場》臨時人手／事務所板／$40 定額／1 日／4 日窗；v20a260：payExact 由 $500 改 $400、pay 由 [450,550] 改 [320,400]，仿照真實 1990 臨記價 $30–40，遊戲經濟 ×10，見 RESEARCH.md；pay 區間完全喺臨記帶 $25–40 內，hi/lo=1.25 啱啱合規；tier 由舊「初」改新五級「臨記」＋補 category「臨記通告」；刪死 data favorDelta；eraTag 唔再寫 era_* id）。favorDueTick 嘅 wrapped 檢查（wrapHistory／done_ 旗）＋mergeFavorGigs 注入＋rel +2／−3 全部照舊機制行。 */, dueDays:7, windowDays:4 };
 const FAVOR_DUE_GIGS = [
   {
     id:"gig_favor_ho_errand",
@@ -22905,8 +22905,8 @@ const FAVOR_DUE_GIGS = [
     boardNote:"還人情",
     seasonWeight:1,
     req:{},
-    pay:[320, 400],
-    payExact:400,
+    pay:[32, 40],
+    payExact:40,
     breachFee:0,
     fame:[0, 0],
     popularity:[0, 1],
@@ -23156,10 +23156,10 @@ function favorLedgerCounts(){
    - 週結算 flavor：只喺「新一期播種嗰週」或「還清嗰週」出一行（settleWeek 經 familyHomeSettleLines 消費一次性標記）。 ===== */
 const FAMILY_HOME_DEBT_ID = "debt_family_home";
 const FAMILY_HOME_CYCLES = [
-  { title:"今個月家用", amount:600, season:"阿媽話：屋企水電租食乜都要使，你嗰份家用有心就得，唔使同人比，遲幾日都唔緊要。" },
-  { title:"今期幫補交租", amount:800, season:"包租婆又嚟拍門。阿媽話：租嗰份你幫補到幾多就幾多，唔好死頂——屋企點都要有個瓦遮頭。" },
-  { title:"阿媽覆診藥費", amount:450, season:"阿媽膝頭痛去覆診，藥費嗰筆佢話自己搞得掂。你知佢份人，講「搞得掂」嗰陣，即係想你幫輕下。" },
-  { title:"屋企換雪櫃嗰份", amount:700, season:"雪櫃壞到漏水，阿爸話齋用住先。阿媽偷偷留字條：有餘錢就夾份換咗佢，唔好俾阿爸知係你出嗰份。" },
+  { title:"今個月家用", amount:60, season:"阿媽話：屋企水電租食乜都要使，你嗰份家用有心就得，唔使同人比，遲幾日都唔緊要。" },
+  { title:"今期幫補交租", amount:80, season:"包租婆又嚟拍門。阿媽話：租嗰份你幫補到幾多就幾多，唔好死頂——屋企點都要有個瓦遮頭。" },
+  { title:"阿媽覆診藥費", amount:45, season:"阿媽膝頭痛去覆診，藥費嗰筆佢話自己搞得掂。你知佢份人，講「搞得掂」嗰陣，即係想你幫輕下。" },
+  { title:"屋企換雪櫃嗰份", amount:70, season:"雪櫃壞到漏水，阿爸話齋用住先。阿媽偷偷留字條：有餘錢就夾份換咗佢，唔好俾阿爸知係你出嗰份。" },
 ];
 const FAMILY_HOME_SEED_FLAVOR = "屋企嗰邊：月頭到，阿媽冇提過半句，只係將新一期嗰筆記入手帳——屋企人唔會開口催數，記低就算。";
 const FAMILY_HOME_PAID_FLAVOR = "屋企嗰邊：今個月嗰筆交咗。阿媽冇多講，只係嗰晚煲多咗個湯——屋企人嘅放心，從來唔係用口講嘅。";
@@ -23586,7 +23586,7 @@ const DAILY_EVENTS_WF4 = [
   ],
   choices:[
     { label:"照舊坐低食常餐", fx:{ stress:-4 }, out:"常餐不要蔥，奶茶照舊。阿偉那晚吃得特別慢——這裡的東西，沒有因為他紅了而變過味道。" },
-    { label:"請全場飲杯茶", fx:{ money:-60, charm:1, stress:-3 }, out:"整場茶客笑得喧鬧不已。霞姐收錢的時候搖頭說他傻小子，轉頭又幫他那杯多加一勺煉奶。" }
+    { label:"請全場飲杯茶", fx:{ money:-40, charm:1, stress:-3 }, out:"整場茶客笑得喧鬧不已。霞姐收錢的時候搖頭說他傻小子，轉頭又幫他那杯多加一勺煉奶。" }
   ] },
 { id:"wf4_ev_st05", grp:"街頭", trig:"day",
   title:"K房霸著咪克風的那晚", setting:"佐敦一間卡拉OK，收工之後",
@@ -23657,7 +23657,7 @@ const DAILY_EVENTS_WF4 = [
     {sp:"昌叔", tx:"阿偉，你大個仔咗喎。嗰邊係安穩嘅，不過晚晚食完飯，坐喺屋企望住個電視，就會諗起呢度啲宵夜檔。"}
   ],
   choices:[
-    { label:"請他吃碗雲吞麵", fx:{ money:-15, stress:-3 }, out:"昌叔吃得眼眶濕潤，說那邊沒有這種味道。他臨走時說，下次回來，可能就不走了。" },
+    { label:"請他吃碗雲吞麵", fx:{ money:-10, stress:-3 }, out:"昌叔吃得眼眶濕潤，說那邊沒有這種味道。他臨走時說，下次回來，可能就不走了。" },
     { label:"問他會不會回來住", fx:{ charm:1, stress:-2 }, out:"昌叔笑著搖頭，又點頭，說人到了那裡才知道，哪裡都不是十全十美。最重要，心安的地方就是家。" }
   ] },
 { id:"wf4_ev_day01", grp:"日常", trig:"day",
@@ -39360,9 +39360,9 @@ function enc83GuLoanStart(lvl){
     if(typeof S==="undefined" || !S) return;
     const money = Number(S.money)||0;
     let amt = Math.round(money * 0.2 / 10) * 10;
-    amt = Math.max(0, Math.min(5000, amt));
+    amt = Math.max(0, Math.min(500, amt));
     if(lvl===2) amt = Math.ceil(amt/2);
-    if(amt < 50){
+    if(amt < 5){
       try{ toast("顧明輝擺擺手：你而家都唔容易，呢筆錢，我唔借喇。"); }catch(_t){}
       return;
     }
@@ -41011,7 +41011,7 @@ const SET_CHOICES_35 = [
     ] },
   { id:"set35_night", scene:"夜班拍到凌晨，成組人都冇晒電，你都眼瞓到就嚟企住瞓著。",
     options:[
-      { label:"買罐咖啡頂住", result:"你去自動販賣機買咗罐咖啡，一啖灌落去，成個人醒返，嗰場夜戲順利過關。", delta:{ money:-20, stamina:5 } },
+      { label:"買罐咖啡頂住", result:"你去自動販賣機買咗罐咖啡，一啖灌落去，成個人醒返，嗰場夜戲順利過關。", delta:{ money:-3, stamina:5 } },
       { label:"趁空檔瞇一陣", result:"你趁轉景嗰陣喺道具箱邊瞇咗十分鐘，醒返嗰陣精神返唔少。", delta:{ stress:-4 } }
     ] }
 ];

@@ -1,8 +1,8 @@
 /* v20a65 FIX65 修復包 — 邏輯測試（抽 index.html 真函數喺沙盒行）：
    (1) FIX65-1 用戶拍板規則：全日休息（排程 rest／doRest）delta = −S.stress → 休息後壓力 == 0
        （抽真表達式行）；入水維持原值（拍攝日 10–14）；部分休息保留。
-   (2) FIX65-2 生活費首年緩坡：wk2/8/20/35 mid = 1100/1300/1500/1700；wk44+ full 2400；
-       CALIB60 加幅保留（1989 wk50 = 2700、1990 wk100 = 3000）。
+   (2) FIX65-2 生活費首年緩坡：wk2/8/20/35 mid = 110/130/150/170；wk44+ full 240（v261 ÷10）；
+       CALIB60 加幅保留（1989 wk50 = 270、1990 wk100 = 300）。
    (3) FIX65-2 寬限入帳解除：grace 中、本週入帳 ≥ 下週費、結算後存款 >0 → 解除（舊版 2 參數呼叫唔解除）；
        入帳唔夠 → 照倒數；存款夠全費 → 舊路徑解除（兩版都得）。
    (4) FIX65-3 跨媒介補分：多元 fixture（唱片桶＋電影擔正＋電視作品）→ borrow65 = 0.55×0.35×crossQ、
@@ -99,15 +99,15 @@ ok(src.includes("stress:-(6+R(0,4))"), "部分休息（家務）−(6+R(0,4)) �
 eval(extractFn("livingCostWeekNum"));
 eval(extractFn("livingCostBand"));
 S = { fame: 0 };
-ok(livingCostBand(2).mid === 1100, "wk2 生活費 mid 1100（舊 1600）");
-ok(livingCostBand(8).mid === 1300, "wk8 生活費 mid 1300（舊 soft 1900／LIVE 2400）");
-ok(livingCostBand(20).mid === 1500, "wk20 生活費 mid 1500（舊 2400）");
-ok(livingCostBand(35).mid === 1700, "wk35 生活費 mid 1700（舊 2400）");
-ok(livingCostBand(44).mid === 2700, "wk44 已入 1991：full 帶 2400＋年份加幅 300 = 2700（後期規則冇郁）");
-ok(livingCostBand(50).mid === 2700, "1991 wk50 = 2400+300（CALIB60 加幅保留）");
-ok(livingCostBand(100).mid === 3000, "1992 wk100 = 2400+600（CALIB60 加幅保留）");
+ok(livingCostBand(2).mid === 110, "wk2 生活費 mid 110（舊 160）");
+ok(livingCostBand(8).mid === 130, "wk8 生活費 mid 130（舊 soft 190／LIVE 240）");
+ok(livingCostBand(20).mid === 150, "wk20 生活費 mid 150（舊 240）");
+ok(livingCostBand(35).mid === 170, "wk35 生活費 mid 170（舊 240）");
+ok(livingCostBand(44).mid === 270, "wk44 已入 1991：full 帶 240＋年份加幅 30 = 270（後期規則冇郁）");
+ok(livingCostBand(50).mid === 270, "1991 wk50 = 240+30（CALIB60 加幅保留）");
+ok(livingCostBand(100).mid === 300, "1992 wk100 = 240+60（CALIB60 加幅保留）");
 SOFT = true;
-ok(livingCostBand(8).mid === 1300 && livingCostBand(35).mid === 1700, "soft 預覽同 LIVE 同一緩坡");
+ok(livingCostBand(8).mid === 130 && livingCostBand(35).mid === 170, "soft 預覽同 LIVE 同一緩坡");
 SOFT = false;
 
 /* ---------- (3) FIX65-2 寬限入帳解除 ---------- */
@@ -121,25 +121,25 @@ function graceSave(money, weeksLeft){
            conseq61: { reviews: {}, streak80: 0, streak90: 0, peak90: 0, cooldownUntil: 0,
                        grace: { weeksLeft: weeksLeft, startedWeek: 9 }, sick: null, pendingEnding: null } };
 }
-/* 入帳解除：存款 $300（< 全費 1500）、本週入帳 $2000 ≥ 1500、存款 >0 → 解除 */
-let g = graceSave(300, 3);
-let lines = conseq61SettleEval(g, 10, 2000);
+/* 入帳解除：存款 $30（< 全費 $130；w=10 → 下週 w11，wk5–12 帶中位數 130）、本週入帳 $200 ≥ $130、存款 >0 → 解除 */
+let g = graceSave(30, 3);
+let lines = conseq61SettleEval(g, 10, 200);
 ok(g.conseq61.grace === null && lines.join("").indexOf("寬限警報解除") >= 0,
-   "寬限入帳解除：入帳 $2000 ≥ 下週費 $1500 ＋ 存款 $300 >0 → 解除（舊版冇呢條路）");
+   "寬限入帳解除：入帳 $200 ≥ 下週費 $130 ＋ 存款 $30 >0 → 解除（舊版冇呢條路）");
 /* 反例：入帳唔夠 → 照倒數 */
-g = graceSave(300, 3);
-lines = conseq61SettleEval(g, 10, 1000);
-ok(g.conseq61.grace && g.conseq61.grace.weeksLeft === 2, "入帳 $1000 < 1500 → 唔解除、倒數 3→2");
+g = graceSave(30, 3);
+lines = conseq61SettleEval(g, 10, 100);
+ok(g.conseq61.grace && g.conseq61.grace.weeksLeft === 2, "入帳 $100 < $130 → 唔解除、倒數 3→2");
 /* 反例：入帳夠但存款 = 0（冇返正數）→ 唔解除 */
 g = graceSave(0, 3);
-lines = conseq61SettleEval(g, 10, 2000);
+lines = conseq61SettleEval(g, 10, 200);
 ok(g.conseq61.grace && g.conseq61.grace.weeksLeft === 2, "入帳夠但結算後存款 $0 → 唔解除（防即入即出）");
 /* 舊路徑：存款夠全費 → 解除 */
-g = graceSave(2000, 3);
+g = graceSave(200, 3);
 lines = conseq61SettleEval(g, 10, 0);
-ok(g.conseq61.grace === null, "存款 $2000 ≥ 全費 → 舊路徑照解除");
+ok(g.conseq61.grace === null, "存款 $200 ≥ 全費 → 舊路徑照解除");
 /* 冇傳第三參數（舊呼叫形狀）→ 唔好崩、唔好誤解除 */
-g = graceSave(300, 3);
+g = graceSave(30, 3);
 lines = conseq61SettleEval(g, 10);
 ok(g.conseq61.grace && g.conseq61.grace.weeksLeft === 2, "冇 weekEarnIn → 行舊邏輯倒數（唔崩）");
 

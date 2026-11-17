@@ -5,7 +5,7 @@
 //     1990 年尾 dual/ fame/ credit 全部過 E1 門檻有餘（唔改 resolveEnding410 門檻）；
 // (3) 生活費年份＋名氣遞增：1988 全年（wk1–43）首年緩坡＋wk44+ full 帶＋CALIB60 年份/名氣加幅。
 //     v20a65 FIX65-2 更新：v60 嘅「同 v59 逐蚊一致」紅線已被取代——全弧驗證第二輪實測舊帶（wk13+ $2,400）
-//     令「有工就做」型玩家 wk14 結構性破產、E7 評核支永遠到達唔到；新紅線＝首年緩坡 1100/1300/1500/1700。
+//     令「有工就做」型玩家 wk14 結構性破產、E7 評核支永遠到達唔到；新紅線＝首年緩坡 110/130/150/170（v261 ÷10）。
 //     1989/1990 加幅正確；散工正薪 fame≥200 ×0.75、補場 $800 不變；
 // (4) 節點漏失：過窗登記／完成除名／N17 收科豁免／normalizeSaveObj 舊檔靜靜補登；
 // (5) 聲樂：預設計劃輪入 train_vocal（演技優先次序保留）、bestTrainJumpForGig frozenVocal 偵測；
@@ -152,11 +152,11 @@ ok('Arc C fame/credit 終點過 E1 單項門檻（60/55）', calC.atEnd.fame >= 
 
 /* ================= (3) 經濟 ================= */
 function livingCostBandV59(w, soft){ /* v20a65 FIX65-2：預期值改首年緩坡（soft 與否一致）；函數名保留歷史 */
-  if(w>=1 && w<=4) return 1100;
-  if(w>=5 && w<=12) return 1300;
-  if(w>=13 && w<=26) return 1500;
-  if(w>=27 && w<=43) return 1700;
-  return 2400;
+  if(w>=1 && w<=4) return 110;
+  if(w>=5 && w<=12) return 130;
+  if(w>=13 && w<=26) return 150;
+  if(w>=27 && w<=43) return 170;
+  return 240;
 }
 let econOk = true;
 for(let wk = 1; wk <= 43; wk++){
@@ -168,13 +168,13 @@ for(let wk = 1; wk <= 43; wk++){
   }
 }
 softPreviewOn = function(){ return false; };
-ok('紅線（v20a65 更新；v20a66 年份 +2）：1990（wk1–43）×soft×fame 生活費＝首年緩坡 1100/1300/1500/1700', econOk);
+ok('紅線（v20a65 更新；v20a66 年份 +2）：1990（wk1–43）×soft×fame 生活費＝首年緩坡 110/130/150/170', econOk);
 S = baseSave(); S.fame = 0;
-ok('1991 wk50 生活費 2400+300 = 2700', livingCostBand(50).mid === 2700);
-S.fame = 130; ok('1991 wk50 fame 130 → 2900（+成名 200）', livingCostBand(50).mid === 2900);
-S.fame = 300; ok('1991 wk50 fame 300 → 3100（+成名 400）', livingCostBand(50).mid === 3100);
-S.fame = 0;   ok('1992 wk100 生活費 2400+600 = 3000', livingCostBand(100).mid === 3000);
-S.fame = 260; ok('1992 wk100 fame 260 → 3400', livingCostBand(100).mid === 3400);
+ok('1991 wk50 生活費 240+30 = 270', livingCostBand(50).mid === 270);
+S.fame = 130; ok('1991 wk50 fame 130 → 290（+成名 20）', livingCostBand(50).mid === 290);
+S.fame = 300; ok('1991 wk50 fame 300 → 310（+成名 40）', livingCostBand(50).mid === 310);
+S.fame = 0;   ok('1992 wk100 生活費 240+60 = 300', livingCostBand(100).mid === 300);
+S.fame = 260; ok('1992 wk100 fame 260 → 340', livingCostBand(100).mid === 340);
 S.fame = 0;   ok('1989 標籤講明物價', livingCostBand(50).label.indexOf('1991 年物價') >= 0);
 ok('livingCostEstimate = band mid（預覽/扣款一致）', livingCostEstimate(50) === livingCostBand(50).mid);
 

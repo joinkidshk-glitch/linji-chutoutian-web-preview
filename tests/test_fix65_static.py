@@ -64,7 +64,7 @@ ok("graceWeeks: 4" in cfg, "寬限 4 週（冇郁）")
 # --- FIX65-2 生活費緩坡＋寬限解除 ---
 ok("FIX65-2" in src, "FIX65-2 標記在位")
 lcb = fn_body("livingCostBand")
-for m in ("mid:1100", "mid:1300", "mid:1500", "mid:1700", "mid:2400"):
+for m in ("mid:110", "mid:130", "mid:150", "mid:170", "mid:240"):
     ok(m in lcb, "生活費帶含 " + m)
 ok("yr>=1992" in lcb and "f>=250" in lcb, "CALIB60 年份/聲望加級保留")
 se = fn_body("conseq61SettleEval")

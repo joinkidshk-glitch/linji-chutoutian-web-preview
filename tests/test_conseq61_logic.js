@@ -243,7 +243,7 @@ console.log("[3] 破產寬限：起／倒數／暫停／解除／用盡");
 {
   S = baseSave(); S.money = 0;
   conseq61SettleEval(S, 20);
-  S.money = 5000; /* ≥ 下週生活費估算（1990 帶 $2400） */
+  S.money = 5000; /* ≥ 下週生活費估算（1990 帶 $240；v261 ÷10） */
   const l = conseq61SettleEval(S, 21);
   ok(!S.conseq61.grace && !S.conseq61.pendingEnding && l.some(t => t.includes("解除")), "寬限內翻上水 → 解除警報，唔收場");
   S = baseSave(); S.money = 0;

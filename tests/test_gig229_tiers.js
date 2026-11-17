@@ -6,7 +6,7 @@
 //   C gigTierKey 五級各自一格（臨記 extra／初級 junior／中級 mid／高級 senior／稀有 rare），
 //     臨記 ≠ 初級；舊 初→junior／中→mid／高→senior 照舊；gigTierCanon229 舊三級對位
 //   D resolveRoleScale fallback 認齊五級；未認得嘅 tier 安全 fallback（唔 throw、唔靜默升格，跌返最低帶）
-//   E gigBreachFee：高級／稀有行高分支（60%／下限 $1000）；臨記／初級／中級行一般分支（50%／下限 $500）
+//   E gigBreachFee：高級／稀有行高分支（60%／下限 $100）；臨記／初級／中級行一般分支（50%／下限 $50）（v261 ÷10）
 //   F gigDifficultyStars：高級／稀有 5 星、中級 4 星、臨記／初級按 hard 2／3 星
 //   G aud91WaitDays：臨記／初級短工 1–2 日、高級／稀有 3–4 日、中級 2–3 日
 //   H DUR90_DAILY 五級各一鍵（值按機械級對位），舊三級鍵留返
@@ -170,12 +170,12 @@ function breachOf(tier){
 for(const [tier, want] of [['臨記',5500],['初級',5500],['中級',5500],['高級',6600],['稀有',6600],['初',5500],['中',5500],['高',6600]]){
   ok('E gigBreachFee ' + tier + ' = $' + want, breachOf(tier) === want, 'got=' + breachOf(tier));
 }
-// 下限：總額 $1500 嗰陣 60%（$900）唔夠下限 → 高分支 $1000（min(fee,P) 唔會再壓低佢）；
-// 總額 $800 嗰陣 50%（$400）唔夠下限 → 一般分支 $500。
-ok('E9 gigBreachFee 高級細額下限 $1000', W.gigBreachFee({ tier:'高級', pay:[1400, 1600] }) === 1000,
-   'got=' + W.gigBreachFee({ tier:'高級', pay:[1400, 1600] }));
-ok('E10 gigBreachFee 臨記細額下限 $500', W.gigBreachFee({ tier:'臨記', pay:[700, 900] }) === 500,
-   'got=' + W.gigBreachFee({ tier:'臨記', pay:[700, 900] }));
+// 下限：總額 $150 嗰陣 60%（$90）唔夠下限 → 高分支 $100（min(fee,P) 唔會再壓低佢）；
+// 總額 $80 嗰陣 50%（$40）唔夠下限 → 一般分支 $50。
+ok('E9 gigBreachFee 高級細額下限 $100', W.gigBreachFee({ tier:'高級', pay:[140, 160] }) === 100,
+   'got=' + W.gigBreachFee({ tier:'高級', pay:[140, 160] }));
+ok('E10 gigBreachFee 臨記細額下限 $50', W.gigBreachFee({ tier:'臨記', pay:[70, 90] }) === 50,
+   'got=' + W.gigBreachFee({ tier:'臨記', pay:[70, 90] }));
 
 /* ---------- F gigDifficultyStars ---------- */
 for(const [gig, want] of [

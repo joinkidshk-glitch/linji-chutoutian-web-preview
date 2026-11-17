@@ -13,8 +13,8 @@ def ok(cond, msg):
     if not cond: fails.append(msg)
 
 ok("v20a96 LOC96" in src, "LOC96 模組標記在位")
-ok("const LOC96_CFG = { treatFee:600, checkupFee:500, checkupDays:28, checkupShield:10 }" in src,
-   "LOC96 數字定案（治療 600／體檢 500・28 日・寬容 10）")
+ok("const LOC96_CFG = { treatFee:60, checkupFee:50, checkupDays:28, checkupShield:10 }" in src,
+   "LOC96 數字定案（治療 60／體檢 50・28 日・寬容 10；v261 ÷10）")
 
 # --- 新地點登記 ---
 ok('id:"gift_shop", name:"廟街禮品", area:"油麻地", type:"shop"' in src and "x:43, y:35" in src,

@@ -155,17 +155,17 @@ _weekAccel = false;
 /* 已醫過：唔接管 */
 S = mkSick(baseSave(), 10, 12, { hosp96Treated: true }); modalCalls = [];
 ok(hosp96TreatGate("rest") === false && modalCalls.length === 0, "已醫過：gate 唔再接管");
-/* 揀醫：扣 $600、今日變最後一日、行康復路徑 */
+/* 揀醫：扣 $60、今日變最後一日、行康復路徑 */
 S = mkSick(baseSave(), 10, 12); S.stress = 88; modalCalls = []; afterDayCalls = [];
 ok(hosp96TreatGate("rest") === true && modalCalls.length === 1, "病程中：gate 接管出選擇");
 ok(modalCalls[0].btns.length === 2, "選擇有兩個掣（醫／唞）");
 modalCalls[0].btns[0].on();
-/* v20a236：揀醫先彈確認框，撳「確定」先扣 $600。 */
+/* v20a236：揀醫先彈確認框，撳「確定」先扣 $60。 */
 ok(modalCalls.length === 2 && modalCalls[1].html.indexOf("reconfirm236") >= 0, "236：揀醫出確認框");
 const treatOk236 = (modalCalls[1].btns || []).find(b => b.label === "確定");
 ok(!!treatOk236 && modalCalls[1].btns.map(b => b.label).join("/") === "返去揀過/確定", "236：確認框有返去／確定兩掣");
 treatOk236.on();
-ok(S.money === 5000 - LOC96_CFG.treatFee, "揀醫：扣 $600");
+ok(S.money === 5000 - LOC96_CFG.treatFee, "揀醫：扣 $60");
 ok(S.conseq61.sick === null, "揀醫：今日結算後病程完結（聽日好返）");
 ok(S.conseq61.cooldownUntil > 10, "揀醫：照入病癒冷卻");
 ok(afterDayCalls.length === 1 && afterDayCalls[0].title.indexOf("病倒休養") === 0, "揀醫：照出行程結算卡");
@@ -182,11 +182,11 @@ hosp96TreatGate("rest");
 modalCalls[0].opts.onDismiss();
 ok(S.money === 5000 && !!S.conseq61.sick && S.conseq61.sick.done[10] === true, "dismiss：照病假結算、冇扣錢");
 /* 唔夠錢：資訊版 modal（一個掣），撳完照結算 */
-S = mkSick(baseSave(), 10, 12); S.money = 100; modalCalls = []; afterDayCalls = [];
+S = mkSick(baseSave(), 10, 12); S.money = 10; modalCalls = []; afterDayCalls = [];
 ok(hosp96TreatGate("rest") === true && modalCalls.length === 1, "唔夠錢：gate 照接管出資訊版");
 ok(modalCalls[0].btns.length === 1 && modalCalls[0].html.indexOf("唔夠畀") >= 0, "唔夠錢：文案講明醫唔起");
 modalCalls[0].btns[0].on();
-ok(S.money === 100 && S.conseq61.sick.done[10] === true, "唔夠錢：照病假結算、冇扣錢");
+ok(S.money === 10 && S.conseq61.sick.done[10] === true, "唔夠錢：照病假結算、冇扣錢");
 
 /* v20a236：確認框撳「返去」＝零副作用（唔扣錢、病程唔郁、唔結算、返去選擇） */
 S = mkSick(baseSave(), 10, 12); modalCalls = []; afterDayCalls = [];
@@ -241,14 +241,14 @@ ok(S.money === 1000 && modalCalls.length >= 1, "S-25：撳體檢唔即扣、先�
 const ckBtn105 = (modalCalls[modalCalls.length - 1].btns || []).find(b => String(b.label).indexOf("確認付款") >= 0);
 ok(!!ckBtn105, "S-25：確認框有「確認付款」掣");
 ckBtn105.on();
-ok(S.money === 1000 - LOC96_CFG.checkupFee, "買體檢：確認後扣 $500");
+ok(S.money === 1000 - LOC96_CFG.checkupFee, "買體檢：確認後扣 $50");
 ok(S.hosp96.checkupUntil === 10 + LOC96_CFG.checkupDays, "買體檢：checkupUntil＝今日＋28");
 adds = sheetRun("hospital");
 ok(adds.filter(a => a.title.indexOf("生效中") >= 0).length === 1 && adds.every(a => a.title !== "身體檢查"), "生效中：出「生效中」掣、唔重複賣");
-S = baseSave(); S.money = 100;
+S = baseSave(); S.money = 10;
 adds = sheetRun("hospital");
 adds.find(a => a.title === "身體檢查").on();
-ok(S.money === 100 && !(S.hosp96 && S.hosp96.checkupUntil > 0), "唔夠錢：買唔到體檢、冇扣錢");
+ok(S.money === 10 && !(S.hosp96 && S.hosp96.checkupUntil > 0), "唔夠錢：買唔到體檢、冇扣錢");
 ok(sheetRun("cafe_cha").length === 0 && sheetRun("gift_shop").length === 0, "非醫院地點：唔出醫院掣");
 
 console.log(`\nLOC96 logic: ${pass} pass, ${fail} fail`);

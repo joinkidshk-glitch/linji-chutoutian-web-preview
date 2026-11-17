@@ -38,7 +38,7 @@ ok('advanceDay 掛 enc83GuLoanTick（同 favorDueTick 並列）', 'enc83GuLoanTi
 # --- 三、接線 ---
 mod = seg('/* ===== v20a83 ENC83：紅星巧遇 Phase 2', '/* ===== ENC83 模組完 ===== */', 300000)
 ok('模組段抽取成功（>8KB）', len(mod) > 8000)
-ok('借錢：入 mockCredits 帳本（credit_enc83_gu_loan）＋身家比例金額', 'credit_enc83_gu_loan' in mod and 'enc79GrantCredit' in mod and 'Math.min(5000' in mod)
+ok('借錢：入 mockCredits 帳本（credit_enc83_gu_loan）＋身家比例金額', 'credit_enc83_gu_loan' in mod and 'enc79GrantCredit' in mod and 'Math.min(500' in mod)
 ok('借錢：到期結算記入 favorDueSettled（ensureFavorDueSettled）', 'ensureFavorDueSettled()' in mod and 'repaid_loan' in mod and 'void_loan' in mod)
 ok('借錢：冇另起 mockDebts 債系統（模組冇寫 mockDebts）', 'mockDebts' not in mod)
 ok('提攜：八星 patron 節拍＋引薦債權齊', all(('credit_enc83_' + k + '_patron') in mod for k in ['luk','liu','mak','yip','ngai','gu','lok','chai']))

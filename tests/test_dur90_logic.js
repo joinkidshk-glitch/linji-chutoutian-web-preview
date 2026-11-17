@@ -8,10 +8,10 @@
 //   C 期限：全部 gig 嘅 deadline ≥ 拍完所需日曆日（唔會接咗拍唔完）
 //   D 提早窗夾位：全部 gig 所需日曆日 ≤ 提早窗＋成季（60＋92＝152，接到趕得上檔期）
 //   E 冪等：校準後再 normalize，工期/片酬/deadline 唔再變
-//   F 錨點（v252 重寫，舊庫錨點全數作廢）：film_112 係《西環月色》愛情青春男配角，工期 4 日、
-//       總額中位 2600；《雪山劍客》呢個名新庫根本唔存在，最接近係《雪山雙劍傳》（film_111／1991，
-//       6 日／3900）；rec_110 係稀有 MTV《黃昏之約》男主角，日薪 2750（入帶，唔再係例外）；
-//       《星夜迷離》而家係 tv_203，日薪 675（入帶）。將來數據校準改數值要同步改呢度。
+//   F 錨點（v252 重寫，舊庫錨點全數作廢；v261 ÷10）：film_112 係《西環月色》愛情青春男配角，工期 4 日、
+//       總額中位 260；《雪山劍客》呢個名新庫根本唔存在，最接近係《雪山雙劍傳》（film_111／1991，
+//       6 日／390）；rec_110 係稀有 MTV《黃昏之約》男主角，日薪 275（入帶，唔再係例外）；
+//       《星夜迷離》而家係 tv_203，日薪 68（入帶）。將來數據校準改數值要同步改呢度。
 // 反證：v89 index 冇 DUR90 常量、ROLE_SCALE_BAND 係舊帶、日薪大量出帶 → FAIL。
 const fs = require('fs');
 const path = require('path');
@@ -54,12 +54,24 @@ const SPEC_DAILY = {
   '高級': [[1000,3000],[1500,8000]],
   '稀有': [[1000,3000],[1500,8000]],
 };
+/* v20a261：B2 普查改用 SPEC §7.1 新日薪帶（臨記 25–40／初級 50–90／中級 90–160／
+   高級 160–300／稀有 200–400；庫內實測 282 張全部落帶，見 §6.2 驗證）。
+   SPEC_DAILY 保持原值——佢係 A2 逐字比對 live DUR90_DAILY 嘅舊帶；live DUR90_DAILY
+   本身係舊庫校準兜底（註解明言「新庫唔行 DUR90 指紋校準，呢度係兜底，唔係新庫片酬來源」），
+   v261 冇郁佢，呢度亦唔郁。捨入寬容同步 ÷10（55→5.5；新庫 pay 捨入到 $1）。 */
+const SPEC_TIER_DAILY = {
+  '臨記': [25, 40],
+  '初級': [50, 90],
+  '中級': [90, 160],
+  '高級': [160, 300],
+  '稀有': [200, 400],
+};
 /* v252 重推導：舊表列例外 5 個值全部同現數據唔符，已退役——
-   rec_107／1992 實際日薪 1210（中級 MTV，帶 [600,2500]，入帶）、rec_108／1992 實際 2200
-   （高級 MTV，帶 [1000,3000]，入帶）、rec_109／1992 實際 2200（高級大碟，帶 [1000,3000]，入帶）、
-   rec_110／1992 實際 2750（稀有 MTV，DUR90 高帶 [1000,3000] 及稀有帶 [2000,4000] 雙雙入帶；舊 3080
-   超 DUR90 上限，係舊庫稀有大碟遺留，唔可以為咗就佢將日薪改出帶）、《星夜迷離》舊 tv_122 已唔存在，
-   而家 tv_203 日薪 675（初級 tv_cameo_short，帶 [300,1200]，入帶）。現庫 0 張出帶，例外表清零；
+   rec_107／1992 實際日薪 121（中級 MTV，新帶 [90,160]，入帶）、rec_108／1992 實際 220
+   （高級 MTV，新帶 [160,300]，入帶）、rec_109／1992 實際 220（高級大碟，新帶 [160,300]，入帶）、
+   rec_110／1992 實際 275（稀有 MTV，新帶 [200,400] 入帶；舊 2750 對應舊稀有帶 [2000,4000]，
+   3080 係更舊庫遺留值）、《星夜迷離》舊 tv_122 已唔存在，
+   而家 tv_203 日薪 68（初級 tv_cameo_short，新帶 [50,90]，入帶）。現庫 0 張出帶，例外表清零；
    機制留返（將來真有出帶先再填表，唔可以靜默豁免）。 */
 const DAILY_ALLOW_229 = {};
 let fails = 0;
@@ -107,7 +119,6 @@ if(W){
   ok('A3 SHOOT_DAYS fallback 跟新帶', W.SHOOT_DAYS['廣告'][1] === 2 && W.SHOOT_DAYS['唱片通告'][0] === 6 && W.SHOOT_DAYS['綜藝'][1] === 2);
 
   // B 新庫普查
-  const isAdScale = s => (s === 'ad_av' || s === 'ad_print' || s === 'photobook');
   let clampBad = [], dailyBad = [], noDays = [], noBand = [];
   for(const g of pool){
     const rs = W.resolveRoleScale(g);
@@ -117,9 +128,9 @@ if(W){
     if(days !== g.days) clampBad.push(g.id + ':' + rs + ' days=' + g.days + ' eff=' + days + ' band=' + SPEC_BAND[rs].join('-'));
     const pay = W.gigPayExact(g);
     if(pay != null && pay > 0){
-      const db = (SPEC_DAILY[g.tier || '初'] || SPEC_DAILY['初'])[isAdScale(rs) ? 1 : 0];
+      const db = SPEC_TIER_DAILY[g.tier || '初級'] || SPEC_TIER_DAILY['初級'];
       const daily = pay / days;
-      const slack = 55 / days + daily * 0.02;
+      const slack = 5.5 / days + daily * 0.02;
       if(daily < db[0] - slack || daily > db[1] + slack){
         if(DAILY_ALLOW_229[g.id] === Math.round(daily)) continue; // 表列例外
         dailyBad.push(g.id + ':' + rs + '/' + (g.tier || '初') + ' daily=' + Math.round(daily) + ' band=' + db.join('-'));
@@ -152,23 +163,23 @@ if(W){
 
   // F 錨點（v252 重寫）
   const film112 = pool.find(g => g.id === 'gig_1990_film_112');
-  ok('F1 film_112《西環月色》男配角工期 4 日、總額中位 2600', !!film112 && W.effectiveShootDays(film112) === 4 && W.gigPayExact(film112) === 2600,
+  ok('F1 film_112《西環月色》男配角工期 4 日、總額中位 260', !!film112 && W.effectiveShootDays(film112) === 4 && W.gigPayExact(film112) === 260,
      film112 ? ('days=' + W.effectiveShootDays(film112) + ' pay=' + W.gigPayExact(film112)) : 'missing');
   const noSnowSword = pool.filter(g => (g.title || '').indexOf('雪山劍客') >= 0);
   const snowTwin = pool.find(g => g.id === 'gig_1991_film_111');
-  ok('F1b《雪山劍客》已唔喺新庫；最接近《雪山雙劍傳》（film_111／1991）6 日／3900',
-     noSnowSword.length === 0 && !!snowTwin && W.effectiveShootDays(snowTwin) === 6 && W.gigPayExact(snowTwin) === 3900,
+  ok('F1b《雪山劍客》已唔喺新庫；最接近《雪山雙劍傳》（film_111／1991）6 日／390',
+     noSnowSword.length === 0 && !!snowTwin && W.effectiveShootDays(snowTwin) === 6 && W.gigPayExact(snowTwin) === 390,
      snowTwin ? ('days=' + W.effectiveShootDays(snowTwin) + ' pay=' + W.gigPayExact(snowTwin)) : 'missing');
   const rec110 = pool.find(g => g.id === 'gig_1992_rec_110');
-  ok('F2 rec_110《黃昏之約》MV 男主角日薪 2750（稀有 MTV，入帶，唔再係表列例外）',
-     !!rec110 && Math.round(W.gigPayExact(rec110) / W.effectiveShootDays(rec110)) === 2750 && !(rec110.id in DAILY_ALLOW_229),
+  ok('F2 rec_110《黃昏之約》MV 男主角日薪 275（稀有 MTV，入帶，唔再係表列例外）',
+     !!rec110 && Math.round(W.gigPayExact(rec110) / W.effectiveShootDays(rec110)) === 275 && !(rec110.id in DAILY_ALLOW_229),
      rec110 ? ('daily=' + Math.round(W.gigPayExact(rec110) / W.effectiveShootDays(rec110))) : 'missing');
   const xingye = pool.find(g => g.id === 'gig_1991_tv_203');
-  ok('F2b《星夜迷離》（tv_203）日薪 675（入帶，唔再係表列例外；舊 tv_122 已唔存在）',
-     !!xingye && Math.round(W.gigPayExact(xingye) / W.effectiveShootDays(xingye)) === 675 && !pool.find(g => g.id === 'gig_1991_tv_122'),
+  ok('F2b《星夜迷離》（tv_203）日薪 68（入帶，唔再係表列例外；舊 tv_122 已唔存在）',
+     !!xingye && Math.round(W.gigPayExact(xingye) / W.effectiveShootDays(xingye)) === 68 && !pool.find(g => g.id === 'gig_1991_tv_122'),
      xingye ? ('daily=' + Math.round(W.gigPayExact(xingye) / W.effectiveShootDays(xingye))) : 'missing');
-  const oldAllow = [['gig_1992_rec_107', 1210], ['gig_1992_rec_108', 2200], ['gig_1992_rec_109', 2200]];
-  ok('F2c 舊 3080 例外值已退役（rec_107 1210／rec_108 2200／rec_109 2200，全部入帶）',
+  const oldAllow = [['gig_1992_rec_107', 121], ['gig_1992_rec_108', 220], ['gig_1992_rec_109', 220]];
+  ok('F2c 舊 3080 例外值已退役（rec_107 121／rec_108 220／rec_109 220，全部入帶）',
      oldAllow.every(([id, daily]) => { const g = pool.find(x => x.id === id); return g && Math.round(W.gigPayExact(g) / W.effectiveShootDays(g)) === daily; }) &&
      Object.keys(DAILY_ALLOW_229).length === 0,
      oldAllow.map(([id]) => { const g = pool.find(x => x.id === id); return id + '=' + (g ? Math.round(W.gigPayExact(g) / W.effectiveShootDays(g)) : 'missing'); }).join(', '));

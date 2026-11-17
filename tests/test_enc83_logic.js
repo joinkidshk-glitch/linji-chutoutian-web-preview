@@ -205,9 +205,9 @@ ok('借錢：重複 tick 冪等（唔重複結算）', S.money===moneyAfterSettl
 resetS(500); S.money = 2000;
 enc79RunChoiceFx(enc79ChoiceFx('beat:gu_loan','借一半，留返啲畀自己').fx);
 ok('借一半：金額減半 $200＋lvl 旗', S.money===1800 && S.flags.enc83_gu_loan_amt===200 && S.flags.enc83_gu_loan_lvl===2);
-resetS(600); S.money = 100;
+resetS(600); S.money = 10;
 enc79RunChoiceFx(enc79ChoiceFx('beat:gu_loan','借，一口應承').fx);
-ok('身家太淺（$100→借出 $20 < $50）：唔成債、唔扣錢', S.money===100 && !S.mockCredits.some(c=>c.id==='credit_enc83_gu_loan') && !S.flags.enc83_gu_loan_due);
+ok('身家太淺（$10→借出 $2 < $5）：唔成債、唔扣錢', S.money===10 && !S.mockCredits.some(c=>c.id==='credit_enc83_gu_loan') && !S.flags.enc83_gu_loan_due);
 
 /* ---- (6) 魏大排檔 fx ---- */
 resetS(700); S.money = 500;

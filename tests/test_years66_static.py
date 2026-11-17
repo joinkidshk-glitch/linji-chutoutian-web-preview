@@ -23,7 +23,7 @@ ok('fresh() 留 years66Shifted 印（v228：遷移已刪，格式相容）', 'ye
 ok('CONSEQ61_REVIEWS 鍵 1990/1991', re.search(r'1990:\s*\{\s*floor:\s*45', src) is not None and re.search(r'1991:\s*\{\s*floor:\s*100', src) is not None)
 ok('E7 場景 variant 用 review1991', 'if(v==="review1991")' in src)
 ok('冇 review1988 殘留字串', 'review1988' not in src)
-ok('生活費年份閘 1991/1992', 'if(yr>=1991){' in src and 'let up = (yr>=1992) ? 600 : 300;' in src)
+ok('生活費年份閘 1991/1992', 'if(yr>=1991){' in src and 'let up = (yr>=1992) ? 60 : 30;' in src)
 ok('B3 gigsByYear 新庫直寫（三年，唔再五包 remap）', 'STORY_WIRE.gigsByYear[yy] = { version: gigsNew.version' in src and 'STORY_WIRE.gigsByYear[1990] = gigsPack;' not in src and 'STORY_WIRE.gigsByYear[1993] = gigs1991;' not in src)
 ok('B3 gigsByYear 初值鍵 1990–1992（三年）', 'gigsByYear: { 1990: null, 1991: null, 1992: null }' in src and 'gigsByYear: { 1990: null, 1991: null, 1992: null, 1993: null, 1994: null }' not in src)
 ok('移民潮芬姐閘 1991', 'yearSeasonNow().year < 1991) return false' in src)
