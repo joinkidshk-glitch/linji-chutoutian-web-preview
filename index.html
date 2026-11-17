@@ -21487,6 +21487,8 @@ function resolvePlannedDay(id){
         try{ if(typeof enc79OnWrap==="function") enc79OnWrap(sh); }catch(_e79w){}
         /* v20a89 BR89：引薦通告殺青 → 提攜債權標記兌現 */
         try{ if(typeof br89OnGigComplete==="function") br89OnGigComplete(sh.gigId); }catch(_b89w){}
+        /* v20a283 R5-A：通用 credit-trigger 通告殺青 → 債權標記兌現（BR89 14 張以外） */
+        try{ if(typeof genericCreditOnGigComplete283==="function") genericCreditOnGigComplete283(sh.gigId); }catch(_g283){}
         try{ noteWeekHighlight("gig", sh.title||sh.gigId); }catch(_wh){}
         try{
           if(typeof softPreviewOn==="function" && softPreviewOn()){
@@ -26484,6 +26486,80 @@ function br89OnGigComplete(gigId){
     }
   }catch(_e){}
 }
+/* v20a283 R5-A：通用 credit-trigger 通告殺青 → 債權標記兌現。
+   BR89 14 張（引薦地圖）行 br89OnGigComplete；其餘 kind:"credit" 觸發通告（故事／一次性
+   trigger，SPEC §3.5 嗰 9 張）行呢度——讀 gig 嘅 trigger.creditId 標記，唔補入 BR89 map
+   （BR89 係引薦語義，呢 9 張係故事／一次性 trigger，語義唔同）。gig_1992_film_202 雖有
+   trigger.creditId，但佢喺 BR89 map 入面，留返 br89 標，呢度跳過，唔重複標。 */
+function gigRecordById283(gigId){
+  /* 按 gig id 反查通告記錄——先查當年 GIGS，再查 STORY_WIRE.gigsByYear 三年全庫
+     （GIGS 只得當年，跨年殺青／跨年債權卡唔可以跌返去搵唔到）。 */
+  try{
+    if(!gigId) return null;
+    const list = (typeof GIGS!=="undefined" && Array.isArray(GIGS)) ? GIGS : [];
+    let g = list.find(x=>x && x.id===gigId) || null;
+    if(!g && typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.gigsByYear){
+      const by = STORY_WIRE.gigsByYear;
+      for(const yy of [1990,1991,1992]){
+        const pack = by[yy];
+        if(pack && Array.isArray(pack.gigs)){ const f = pack.gigs.find(x=>x && x.id===gigId); if(f){ g = f; break; } }
+      }
+    }
+    return g;
+  }catch(_e){ return null; }
+}
+function gigTitleById283(gigId){
+  try{
+    const g = gigRecordById283(gigId);
+    return g ? (g.title||gigId) : gigId;
+  }catch(_e){ return gigId; }
+}
+function genericCreditOnGigComplete283(gigId){
+  try{
+    if(!gigId || typeof S==="undefined" || !S || !Array.isArray(S.mockCredits)) return;
+    if(typeof BR89_PATRON_OF_GIG!=="undefined" && BR89_PATRON_OF_GIG && BR89_PATRON_OF_GIG[gigId]) return;
+    const g = gigRecordById283(gigId);
+    const cid = (g && g.trigger && typeof g.trigger==="object") ? g.trigger.creditId : null;
+    if(!cid) return;
+    const c = S.mockCredits.find(x=>x && x.id===cid);
+    if(c && !c.redeemedBy){
+      c.redeemedBy = gigId;
+      c.line = String(c.line||"") + "（已兌現：" + gigTitleById283(gigId) + "，呢份提攜真係落咗袋。）";
+      try{ syncNotebookMirror(); }catch(_m){}
+    }
+  }catch(_e){}
+}
+/* v20a283 R5-H：債權卡「可以換」對照——通用 credit-trigger 9 張嘅 creditId→gigId；
+   BR89 14 張由 BR89_PATRON_OF_GIG 反查（唔另抄一份表，免兩邊漂移）。credit_enc83_liu_patron
+   雙 gig（BR89《吉星笑哈哈》＋通用《笑聲震天響》）兩邊都列得出，creditRedeemLine283 會一併出。 */
+const CREDIT_REDEEM_GIG283 = {
+  credit_c7_rain:"gig_1991_tv_204", credit_c9_crew:"gig_1991_film_108",
+  credit_c15_stunt:"gig_1992_film_203", credit_wf3_lu_team:"gig_1991_film_112",
+  credit_wf3_yip_manager:"gig_1992_tv_106", credit_enc79_yip_manager:"gig_1991_tv_106",
+  credit_fen_rescue:"gig_1992_tv_201", credit_enc83_ngai_meal:"gig_1992_film_101",
+  credit_enc83_liu_patron:"gig_1991_film_109"
+};
+/* v20a283 R5-H：v158 兩條免試鏡渠道——兌現係類別（武打／司儀通告），唔係單一通告，寫類別名。 */
+const CREDIT_REDEEM_TEXT283 = {
+  credit_enc79_mak_wuzhi:"武打通告免試鏡", credit_enc84_pang_charity:"司儀通告免試鏡"
+};
+function creditRedeemLine283(c){
+  /* 債權卡「可以換：」一行。只喺未兌現嗰陣出——已兌現卡 c.line 已有「已兌現：…」一句＋狀態「已兌現」。 */
+  try{
+    if(!c || c.redeemedBy) return "";
+    const ids = [];
+    if(typeof BR89_PATRON_OF_GIG!=="undefined" && BR89_PATRON_OF_GIG){
+      Object.keys(BR89_PATRON_OF_GIG).forEach(gid=>{ if(BR89_PATRON_OF_GIG[gid]===c.id) ids.push(gid); });
+    }
+    const gg = (typeof CREDIT_REDEEM_GIG283!=="undefined" && CREDIT_REDEEM_GIG283) ? CREDIT_REDEEM_GIG283[c.id] : null;
+    if(gg && ids.indexOf(gg)<0) ids.push(gg);
+    const titles = ids.map(gid=>gigTitleById283(gid)).filter(Boolean);
+    if(titles.length) return '<p class="debt-redeem">可以換：' + titles.map(t=>journalText(t)).join("／") + '</p>';
+    const tx = (typeof CREDIT_REDEEM_TEXT283!=="undefined" && CREDIT_REDEEM_TEXT283) ? CREDIT_REDEEM_TEXT283[c.id] : null;
+    if(tx) return '<p class="debt-redeem">可以換：' + journalText(tx) + '</p>';
+    return "";
+  }catch(_e){ return ""; }
+}
 /* ===== v20a229 B5：通用 trigger 系統（A6；SPEC §2.4／§3.5D；AUDIT229 §7／§8）=====
    新庫 46 張觸發通告（credit 22／award 9／fame 8／story 4／rel 2／rival 1）全部係 pack 內
    嘅普通 GIGS 成員——唔經 merge 注入（syncGigsForCalendarYear 年切會重建 GIGS，注入式
@@ -28062,7 +28138,7 @@ function renderDebtPane(){
     const ex = c.status==="絕響";
     const redeemed = !!c.redeemedBy;
     const status = ex ? "絕響" : (redeemed ? "已兌現" : "未收");
-    return `<article class="debt-row credit-row${ex?" debt-exodus":""}" data-credit-id="${journalText(c.id)}"><p class="debt-who">欠你人情：${journalText(c.debtor||"")}</p><p class="debt-title">${journalText(c.title||"")}</p><p class="collect-line">${journalText(c.line||"")}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span>${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:""}</article>`;
+    return `<article class="debt-row credit-row${ex?" debt-exodus":""}" data-credit-id="${journalText(c.id)}"><p class="debt-who">欠你人情：${journalText(c.debtor||"")}</p><p class="debt-title">${journalText(c.title||"")}</p><p class="collect-line">${journalText(c.line||"")}</p>${(typeof creditRedeemLine283==="function")?creditRedeemLine283(c):""}<span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span>${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:""}</article>`;
   };
   const creditGroup=(list, head)=> list.length ? `<p class="pane-intro">${journalText(head)}</p>` + list.map(creditCardHtml).join("") : "";
   const allCredits=(S.mockCredits||[]).filter(c=>!!c);

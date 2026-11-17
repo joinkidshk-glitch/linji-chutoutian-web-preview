@@ -10,6 +10,7 @@
 # v20a278 resync：index.html 淨 +527 行；4 個釘行按 difflib 映射重算（39119→39635、39477→39993、40638→41165、40794→41321；內容逐字核實純漂移，見 qa278/resync278.py）。
 # v20a280 resync：index.html 淨 +38 行（sideline280GrantCompletion helper ＋37 @舊 L38870 之後＋ngai_vouch fx 行 ＋1 @舊 L39065；15 處 grants() 單行原地改，行數不變）；釘行按 difflib 映射重算（插入點之前唔郁、38870–39064 者 ＋37、其後者 ＋38；本批全部受影響釘行喺 ＋38 區），內容逐行核實純漂移（見 qa280/resync280.py）。
 # v20a279 resync：index.html 淨 +99 行；4 個釘行各 ＋97（插入點全部喺釘行之前：tick＋47／DLG＋33／registry＋1／ChoiceFx＋2／RunChoiceFx＋4／trigger＋9／BR89＋1），difflib 對位核實內容逐字相同，純漂移；L55647 等名唔郁。
+# v20a283 resync：index.html 淨 +76 行（殺青鉤通用分支 ＋2＠舊 L21490 之後／R5-A＋H 新函數＋對照表 ＋74＠舊 L26493 之後；4 個釘行各 ＋76，全部喺插入點之後），內容逐字核實純漂移；L55647 等名唔郁。
 # v20a268 resync：index.html 淨 −236 行（WF2 Vera 覆寫 −233／MEET_SOFT −1／SCENE_OVERRIDE154 −1／CONTRA98 R_tang 行 −1）；5 個釘行全部喺刪除點之後，一律 −236（15048→14812、39169→38933、39527→39291、40670→40434、40826→40590）；內容逐行核實純漂移；L55647／L31712 等名唔郁。
 # v20a162 resync：釘行各 ＋118（插入點全部喺釘行之前）；difflib 對位核實內容逐字相同，純漂移；L55647 等名唔郁；6431／14875 喺改動點之前唔郁。
 # v20a159 resync：index.html 淨 +1235 行（Phase 1＋A＋B1＋B2）；6 個釘行按內容實量重寫（6389→6431、14767→14875、38534→39649、38907→40024、40067→41184、40167→41332），內容逐字核實純漂移；ok() 名入面嘅 Lxxxxx 歷史標籤唔郁。內容改動：costsDay 檢查改行去註解版（兩處命中都係「殘留已拎走」註解）；茶餐廳行蹤線 6→4 句（Vera／海媚出局）；排他鎖／約會系統斷言改認 ROM159 Phase 1 已定義（舊斷言「未定義」已過時）。
@@ -112,10 +113,10 @@ for fn in ('rom176TryIntercept', 'rom176PlayEncounter', 'rom176DoGiveStarGift', 
 ok('釘：NPCS lan 條目 L6152', line(6325).startswith('  lan:{ id:"lan", name:"藍若曦"'))
 ok('釘：載入點 L31712（GIFT_REACT 賦值同行呼叫注入）',
    'GIFT_REACT = giftReact' in line(14813) and 'rom176ApplyGiftOverrides()' in line(14813))
-ok('釘：ROM176 block 起點 L55647', line(39770).startswith('/* ===== v20a176 ROM176'))
-ok('釘：rom176ApplyGiftOverrides 定義 L56015', line(40128).startswith('function rom176ApplyGiftOverrides()'))
-ok('釘：addLocTalkGiftActs L57154', line(41300).startswith('function addLocTalkGiftActs(add, L, npcId)'))
-ok('釘：openLoc rom176 攔截 L57248', 'rom176TryIntercept(id)' in line(41456))
+ok('釘：ROM176 block 起點 L55647', line(39846).startswith('/* ===== v20a176 ROM176'))
+ok('釘：rom176ApplyGiftOverrides 定義 L56015', line(40204).startswith('function rom176ApplyGiftOverrides()'))
+ok('釘：addLocTalkGiftActs L57154', line(41376).startswith('function addLocTalkGiftActs(add, L, npcId)'))
+ok('釘：openLoc rom176 攔截 L57248', 'rom176TryIntercept(id)' in line(41532))
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫（31903 唔郁、55254→55394、55622→55762、56761→56901、56855→56995），核實純漂移。# v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行，6 個釘行按段 +2／+9／+47 重算（6070→6072、31574→31583、53369→53416、53737→53784、54876→54923、54970→55017），difflib 對位核實純漂移。
 # v20a216 resync：釘行按 difflib 映射重寫（6322→6360、31903→31941、55394→55657、55762→56025、56901→57164、56995→57258；L6152／L31712 名唔郁），qa216/resync216.py 核實純漂移。
 # v20a217 resync：標籤遷移 ＋3 行（插入點舊 L45472 之後），釘行各 ＋3（55657→55660、56025→56028、57164→57167、57258→57261）。

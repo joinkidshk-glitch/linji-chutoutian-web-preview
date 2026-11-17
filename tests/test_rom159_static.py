@@ -7,6 +7,7 @@
 # v20a267 resync：傳聞系統刪除，淨 −1399 行；7 個釘行按內容重對（26135→25431、8623→8480、26969→26265、11171→10950、15495→15050、26884→26180、全佳註解 26163→25459；內容逐字相同，ok() 名內歷史行號標籤不變）。
 # v20a266 resync：index.html 淨 +328 行（V158 block ＋284／StoryPlay hook ＋1／載入呼叫 ＋1／enc158 hook ＋42）；釘行按 difflib 映射重寫，內容逐字相同，純漂移。
 # v20a265 resync：index.html 淨 +378 行；6 個釘行＋全佳行按 difflib 映射重寫（25499→25849、8020→8339、26333→26683、10553→10886、14877→15210、26248→26598、全佳 25527→25877），內容逐字相同，純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁。
+# v20a283 resync：index.html 淨 +76 行（殺青鉤通用分支 ＋2＠舊 L21490 之後／R5-A＋H 新函數＋對照表 ＋74＠舊 L26493 之後；3 個釘行＋全佳行各 ＋2，全部喺第二插入點之前），內容逐字核實純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁。
 # v20a139 resync：pristine 改由 git show 846e952（v154 main HEAD，v159 落地前最後一個 main）讀，唔再用 ~/workspace/linji-repo（佢個 main 而家已經係 v159，唔再係 pristine）；反證＋pack 對照不變。
 # v20a159 ROM159 Phase 1＋v159 感情線重排 static 測試：紀律釘（SAVE/softRev/?v=、pack JSON 冇直改）
 # ＋修復標記在場＋pristine 反證（同一批斷言對 pristine main 乾淨 FAIL，唔 crash）。
@@ -151,19 +152,19 @@ ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committ
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25499", line_has(25202, "v20a159 ROM159 Phase 1"))
+ok("行號釘 ROM159 block 頭 25499", line_has(25204, "v20a159 ROM159 Phase 1"))
 ok("行號釘 bumpRel 凍結鉤 8020", line_has(8247, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(26036, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 CMT_lan_commit 26333", line_has(26038, "COMMIT48_NODES.CMT_lan_commit"))
 ok("行號釘 StoryPlay 預備鉤 10553", line_has(10717, "rom159PrepareNode(node)"))
 ok("行號釘載入覆寫呼叫 14877", line_has(14815, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26248", line_has(25951, "function rom159SoMeetGate"))
+ok("行號釘 rom159SoMeetGate 26248", line_has(25953, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25230 - 1])  # v20a159 整合：B1＋B2 後行號 +86
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25232 - 1])  # v20a159 整合：B1＋B2 後行號 +86
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）
