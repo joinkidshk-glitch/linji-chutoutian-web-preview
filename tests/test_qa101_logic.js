@@ -51,7 +51,7 @@ var modal = function(){};
 var GIGS = [];
 
 const FN_LIST = ['function dateObj','function calendarSeason','function dualTrackNumbers','function readDualTracks','function syncDualTracks',
-  'function endingFlag410','function endingDual410','function endingNegTagCount410','function endingBackstageTagCount410','function endingFavor410',
+  'function endingFlag410','function endingDual410','function endingNegTagCount410','function endingBackstageTagCount410','function favorCreditCountsAsHeld','function endingFavor410', // v259 R1＋R2
   'function endingRomance410','function endingE2Eligible410','function endingE3Eligible410','function endingBackstageClose410',
   'function end95GenreOf','function end95IsLead','function end95ClassifyWrap','function end95EmptyStats','function end95StatsAddOne',
   'function end95DeriveStats','function careerStats95Of','function end95AddWrap','function end95Awards','function end95EverHeldCredit',

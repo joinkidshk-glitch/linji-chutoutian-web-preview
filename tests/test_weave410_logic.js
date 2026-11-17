@@ -87,6 +87,7 @@ const SRC = [
   extractFn('function storyHintPack'),
   extractFn('function storyNodeLocId'),
   extractFn('function ensureFavorLedger'),
+  extractFn('function favorCreditCountsAsHeld'), // v259 R1＋R2：favorLedgerCounts／endingFavor410 共用 filter
   extractFn('function favorLedgerCounts'),
   extractFn('function choice47StoryFlag'),
   extractFn('function choice47StoryDone'),
@@ -439,7 +440,8 @@ function eveKeys(over){
 }
 {
   /* v20a253：N16 債權 credit_c13_newyear 結局頁兌現——副導嗰句＋1993 優先試鏡位＋redeemedBy 標示；
-     標示喺判定之後先生效：snapshot creditsHeld 照計 c13（live 口徑下已兌現債權仍計數）。 */
+     標示喺判定之後先生效：snapshot creditsHeld 照計 c13（c13 嗰陣未兌現；v20a259 R2 之後，
+     判定之前已經兌現嘅債權唔再計 creditsHeld）。 */
   modalPages410 = [];
   loadGame(baseSave({
     fame: 40, stage: 50, acting: 35,

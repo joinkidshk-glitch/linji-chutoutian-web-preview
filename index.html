@@ -12516,13 +12516,22 @@ function endingBackstageTagCount410(st){
   });
   return n;
 }
-/* 唯讀鏡像 favorLedgerCounts()：settled／exodus 讀 st.favorLedger、creditsHeld 數 st.mockCredits 未絕響數。
+/* 唯讀鏡像 favorLedgerCounts()：settled／exodus 讀 st.favorLedger、creditsHeld 數「故事債權、未兌現、
+   未絕響」（見 favorCreditCountsAsHeld；v20a259 R1＋R2）。
    唔用 ensure（嗰個會 backfill 寫入）；生產環境 ledger 早已被日常 tick ensure 過，數值一致。 */
+/* v20a259 R1＋R2：creditsHeld 只計故事債權——茶餐廳幫手債權（credit_enc79_cafe_help_*，
+   免費每日農場）同已兌現債權（有 redeemedBy）唔計結局數。endingFavor410／favorLedgerCounts 共用。 */
+function favorCreditCountsAsHeld(c){
+  if(!c || c.status==="絕響") return false;
+  if(typeof c.id==="string" && c.id.indexOf("credit_enc79_cafe_help_")===0) return false;
+  if(c.redeemedBy) return false;
+  return true;
+}
 function endingFavor410(st){
   const s = st || {};
   const L = (s.favorLedger && typeof s.favorLedger==="object" && !Array.isArray(s.favorLedger)) ? s.favorLedger : null;
   const credits = Array.isArray(s.mockCredits) ? s.mockCredits : [];
-  const held = credits.filter(c=>c && c.status!=="絕響");
+  const held = credits.filter(favorCreditCountsAsHeld);
   const exodusIds = (L && Array.isArray(L.exodus)) ? L.exodus.slice() : [];
   const exodusNames = exodusIds.map(id=>{
     const c = credits.find(x=>x && x.id===id);
@@ -13288,8 +13297,9 @@ function endingInserts410(rec, favor){
   /* v20a253：N16 賀歲片債權 credit_c13_newyear 結局頁兌現——玩家持有未兌現債權行到結局頁，
      副導嗰句兌現做 1993 年賀歲片優先試鏡位（遊戲期外，結局文案交代）。標示 redeemedBy
      ＝「ending_c13_newyear」（BR89 口徑哨兵值，防之後經 gig 重複兌現）；標示喺結局判定
-     之後先生效——endingFavor410／favorLedgerCounts 唔讀 redeemedBy，計數唔會被反改。
-     注意：live 口徑下已兌現債權仍計入 creditsHeld，文案唔可以寫「兌現後唔再計結局數」。 */
+     之後先生效——快照（S.ending410）喺標示之前已經計好，c13 嗰陣未兌現，照計。
+     v20a259 R2 之後：結局判定之前已經兌現嘅債權唔再計 creditsHeld；c13 呢筆例外只係因為
+     標示遲過快照，唔係口徑例外。 */
   try{
     const credits16 = (typeof S!=="undefined" && S && S.mockCredits) || [];
     const c13 = credits16.find(c=>c && c.id==="credit_c13_newyear" && c.status!=="絕響");
@@ -13401,6 +13411,21 @@ function endingSummaryHtml410(){
   if(!rec) return "<h3>三年埋單</h3><p>未埋單——去到 1992 年冬、台慶之後那一晚，才是埋單的時候。</p>";
   const favorLine = "已清人情 " + (rec.settled|0) + " 筆 · 持有債權 " + (rec.creditsHeld|0) + " 份"
     + ((rec.exodusNames && rec.exodusNames.length) ? " · 絕響 " + rec.exodusNames.length + " 筆" : "");
+  /* v20a259 R4：結局頁人情分佈——故事債權／茶餐廳幫手／已兌現分開計（live 讀 S.mockCredits；
+     絕響唔入三組，絕響數喺 favorLine／goneLine 已經有；三組全空唔出呢行）。 */
+  const favorBreak = (()=>{
+    try{
+      const cs = (typeof S!=="undefined" && S && Array.isArray(S.mockCredits)) ? S.mockCredits : [];
+      let story=0, cafe=0, red=0;
+      cs.forEach(c=>{ if(!c) return;
+        if(c.redeemedBy) red++;
+        else if(typeof c.id==="string" && c.id.indexOf("credit_enc79_cafe_help_")===0) cafe++;
+        else if(c.status!=="絕響") story++;
+      });
+      if(!story && !cafe && !red) return "";
+      return "<p>人情債權分佈：故事債權 " + story + " 份 · 茶餐廳幫手 " + cafe + " 份 · 已兌現 " + red + " 份</p>";
+    }catch(_e){ return ""; }
+  })();
   const goneLine = (rec.exodusNames && rec.exodusNames.length)
     ? ("<p><b>哪些人離開了：</b>" + rec.exodusNames.map(endingEsc410).join("、") + "——人已不在香港，人情成絕響。</p>")
     : "<p><b>哪些人離開了：</b>你那班人，暫時還齊齊整整留在香港。</p>";
@@ -13418,6 +13443,7 @@ function endingSummaryHtml410(){
     + (rec.careerVariant ? "（" + endingEsc410(rec.careerVariant) + "版）" : "") + "</p></div>"
     + "<p>幕前聲望 <b>" + (rec.fame|0) + "</b> · 業內信用 <b>" + (rec.credit|0) + "</b> · 雙軌總和 <b>" + (rec.dual|0) + "</b></p>"
     + "<p><b>人情總帳：</b>" + endingEsc410(favorLine) + "</p>"
+    + favorBreak
     + goneLine
     + "<p><b>感情：</b>" + endingEsc410(romLine) + "</p>"
     + "<p><b>去留：</b>" + endingEsc410(exoLine) + "</p>"
@@ -23033,8 +23059,9 @@ function mergeFavorGigs(){
    背景：mockDebts 係單向「玩家欠人」模型，債清咗就移除、無持久總帳；favorDueSettled 只記教學債、
    mockSeasonCleared 只記季節卡 id——結局判定（E4 未用債權 ≥2、E5 已清債＋債權 ≥6）計唔出。
    今票補帳本：S.favorLedger = { settled, credits, exodus:[], counted:{} }。
-   - settled：已清債總數（一般還款現金／禮物、教學債幫忙結清、提早還 closed_other、季節卡還清、
-     芬姐離港勾銷）。**過期作廢（void_expired）唔計**——嗰個唔係「清」，係賴咗／失約，計入會呃結局判定。
+   - settled：已清債總數（只計真係還清：一般還款現金／禮物、教學債幫忙結清、提早還 closed_other、
+     季節卡還清）。**勾銷／作廢／過期唔做唔計**——移民勾銷（exodus_writeoff）、廖面子債收割過期
+     （wf3_harvest_expired）、過期作廢（void_expired）都唔係「清」，計入會呃結局判定（v20a259 R3）。
    - credits：曾獲債權（人哋欠玩家）總數。今票唯一來源係芬姐債權種子；日後其他債權來源照 note 入帳。
      特別講明：SEASON_COLLECT 喺程式實際語義係「玩家欠債主」嘅季節債（卡面原文「你欠我嗰筆數」、
      仲款掣係玩家畀 $200／禮物），所以季節卡還清計 settled，唔計 credits。
@@ -23073,9 +23100,13 @@ function ensureFavorLedger(){
   }
   return L;
 }
+/* v20a259 R3：settled 只計真係還清（還錢／還季節卡／幫忙結清／提早還）。勾銷／作廢／過期唔做
+   （exodus_writeoff／wf3_harvest_expired／void_expired）唔係「清」，一律唔入帳本——
+   呢啲來源直接拒絕，唔登記、唔計數（等日後同一筆債真係還清嗰陣先計）。 */
 function favorLedgerNoteSettled(id, source){
   try{
     if(!id) return false;
+    if(source==="exodus_writeoff" || source==="wf3_harvest_expired" || source==="void_expired") return false;
     const L = ensureFavorLedger();
     if(L.counted[id]){
       /* 回填同真結清同一 session 撞車嗰陣（結清寫入先於首次 ensure）：數唔加，
@@ -23101,11 +23132,12 @@ function favorLedgerNoteCredit(id, source){
     return true;
   }catch(_e){ return false; }
 }
-/* 結局判定用讀取口：settled＝已清債總數、credits＝曾獲債權總數、creditsHeld＝手上未絕響債權數 */
+/* 結局判定用讀取口：settled＝已清債總數（只計真係還清，v20a259 R3）、credits＝曾獲債權總數、
+   creditsHeld＝手上故事債權未兌現數（見 favorCreditCountsAsHeld；v20a259 R1＋R2） */
 function favorLedgerCounts(){
   const L = ensureFavorLedger();
   let held = 0;
-  try{ held = (Array.isArray(S.mockCredits) ? S.mockCredits : []).filter(c=>c && c.status!=="絕響").length; }catch(_e){}
+  try{ held = (Array.isArray(S.mockCredits) ? S.mockCredits : []).filter(favorCreditCountsAsHeld).length; }catch(_e){}
   let open = 0;
   /* v20a26：屋企債唔入人情簿讀口——openDebts 只計圈內債，免結局判定計錯屋企嗰筆 */
   try{ open = (Array.isArray(S.mockDebts) ? S.mockDebts : []).filter(d=>d && d.id!=="debt_family_home" && d.status!=="絕響").length; }catch(_e){}
@@ -23326,7 +23358,7 @@ function exodusFenTick(){
       const d = S.mockDebts.find(x=>x && x.id===EXODUS_FEN_DEBT.id);
       if(d){
         S.mockDebts = S.mockDebts.filter(x=>x!==d);
-        favorLedgerNoteSettled(EXODUS_FEN_DEBT.id, "exodus_writeoff");
+        /* v20a259 R3：移民勾銷唔係「還清」，唔入帳本 settled（債銷咗，數唔計）。 */
         wroteOff = true;
       }
     }
@@ -26479,7 +26511,7 @@ function wf3SettleTick(){
         st.liaoHarvestDone = 1;
         st.liaoHarvestExpired = 1;
         S.mockDebts = (S.mockDebts||[]).filter(d=>!(d && d.id==="debt_wf3_liao_grudge"));
-        try{ favorLedgerNoteSettled("debt_wf3_liao_grudge", "wf3_harvest_expired"); }catch(_fl){}
+        /* v20a259 R3：收割過期唔做，唔係「還清」，唔入帳本 settled（債銷咗，數唔計；信用照扣 −2）。 */
         S.industryCredit = Math.max(0, (Number(S.industryCredit)||0) - 2);
         try{ if(typeof syncDualTracks==="function") syncDualTracks(S); }catch(_e){}
         try{ toast("還人情嗰份工，你冇去。", { sub:"廖炳星嗰邊冇再開聲——呢啲機會，過咗就冇。行內信用 −2。" }); }catch(_t){}
@@ -27364,12 +27396,21 @@ function renderDebtPane(){
     const origin34 = ORIGIN34[c.id] ? `<p class="debt-origin">來歷：${journalText(ORIGIN34[c.id])}</p>` : "";
     return `<article class="debt-row season-card" data-collect-id="${journalText(c.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(c.title)}</p><p class="collect-line">${journalText(c.line)}</p>${origin34}<p class="debt-amt">${journalText(amt)}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${repayBtn(c.id,true)}</article>`;
   }).join("");
-  /* v20a25：債權段（人哋欠玩家，S.mockCredits）；絕響＝灰階＋「人已不在香港」，無還款／收取掣 */
-  const creditHtml=(S.mockCredits||[]).map(c=>{
+  /* v20a259 R4：債權段分三組顯示——故事債權／茶餐廳幫手／已兌現（絕響＝灰階＋「人已不在香港」，
+     無還款／收取掣；絕響債權歸故事債權組）。每組非空先出標題行；已兌現卡狀態寫「已兌現」。 */
+  const creditCardHtml=(c)=>{
     if(!c) return "";
     const ex = c.status==="絕響";
-    return `<article class="debt-row credit-row${ex?" debt-exodus":""}" data-credit-id="${journalText(c.id)}"><p class="debt-who">欠你人情：${journalText(c.debtor||"")}</p><p class="debt-title">${journalText(c.title||"")}</p><p class="collect-line">${journalText(c.line||"")}</p><span class="debt-status" data-tone="${journalText(ex?"絕響":"未收")}">${ex?"絕響":"未收"}</span>${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:""}</article>`;
-  }).join("");
+    const redeemed = !!c.redeemedBy;
+    const status = ex ? "絕響" : (redeemed ? "已兌現" : "未收");
+    return `<article class="debt-row credit-row${ex?" debt-exodus":""}" data-credit-id="${journalText(c.id)}"><p class="debt-who">欠你人情：${journalText(c.debtor||"")}</p><p class="debt-title">${journalText(c.title||"")}</p><p class="collect-line">${journalText(c.line||"")}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span>${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:""}</article>`;
+  };
+  const creditGroup=(list, head)=> list.length ? `<p class="pane-intro">${journalText(head)}</p>` + list.map(creditCardHtml).join("") : "";
+  const allCredits=(S.mockCredits||[]).filter(c=>!!c);
+  const isCafeCredit=(c)=> typeof c.id==="string" && c.id.indexOf("credit_enc79_cafe_help_")===0;
+  const creditHtml=creditGroup(allCredits.filter(c=>!c.redeemedBy && !isCafeCredit(c)), "故事債權")
+    + creditGroup(allCredits.filter(c=>!c.redeemedBy && isCafeCredit(c)), "茶餐廳幫手")
+    + creditGroup(allCredits.filter(c=>!!c.redeemedBy), "已兌現");
   const rows=S.mockDebts||[];
   const debtCards=rows.map(d=>{
     const status = debtStatusLabel(d.status);

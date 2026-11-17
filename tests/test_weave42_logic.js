@@ -30,7 +30,7 @@ function extractConst(name){
   }
   return html.slice(i, j+1)+';';
 }
-const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNoteCredit','favorLedgerCounts'].map(extractFn).join('\n');
+const LEDGER_SRC = ['favorCreditCountsAsHeld','ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNoteCredit','favorLedgerCounts'].map(extractFn).join('\n'); // v259：加 favorCreditCountsAsHeld（R1＋R2 共用 filter）
 
 /* ================================================================
    段一：帳本基本＋舊檔回填（favorDueSettled／mockSeasonCleared 推斷；作廢唔計）
@@ -261,14 +261,14 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   S.dayIndex = 545; // 1991 夏（1991-06-30；v20a67 1 月 epoch 重對位）
   exodusFenTick();
   ok('exodus: debt written off (removed)', !S.mockDebts.some(d=>d.id==='debt_fen_standin'));
-  ok('exodus: write-off counts settled with source', S.favorLedger.settled===1 && S.favorLedger.counted['debt_fen_standin'].source==='exodus_writeoff');
+  ok('exodus: write-off does NOT count settled (v259 R3)', S.favorLedger.settled===0 && !S.favorLedger.counted['debt_fen_standin']);
   const cred = S.mockCredits.find(c=>c.id==='credit_fen_rescue');
   ok('exodus: credit becomes 絕響', !!cred && cred.status==='絕響');
   ok('exodus: ledger.exodus lists credit', S.favorLedger.exodus.indexOf('credit_fen_rescue')>=0);
   ok('exodus: intel frag added', S.mockRumors.some(r=>r.id==='rumor_fen_exodus_tip'));
   ok('exodus: toast fired once with write-off main', toastCalls.length===1 && toastCalls[0].m.indexOf('一筆勾銷')>=0);
   exodusFenTick();
-  ok('exodus: fires only once', toastCalls.length===1 && S.favorLedger.settled===1);
+  ok('exodus: fires only once', toastCalls.length===1 && S.favorLedger.settled===0); // v259 R3：勾銷唔計 settled
 
   // 觸發前已還清筆債（帳本已有結清紀錄、債行已移除）→ 只剩絕響分支，唔雙計
   S = saveAt(370); toastCalls = [];
@@ -298,7 +298,7 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   // catch-up：存檔已喺 1990（更新前跨咗年）→ 補種＋即時觸發
   S = saveAt(760); toastCalls = []; // 1992-01-30（已過觸發窗，catch-up）
   exodusFenTick();
-  ok('catch-up 1990: fired with write-off', !!S.exodusFenFired && S.favorLedger.settled===1 && toastCalls.length===1);
+  ok('catch-up 1990: fired with write-off', !!S.exodusFenFired && S.favorLedger.settled===0 && toastCalls.length===1); // v259 R3：勾銷唔計 settled
 })();
 
 /* ================================================================

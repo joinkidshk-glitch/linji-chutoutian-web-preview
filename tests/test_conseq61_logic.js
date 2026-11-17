@@ -105,6 +105,7 @@ eval(extractFn("endingFlag410"));
 eval(extractFn("endingDual410"));
 eval(extractFn("endingNegTagCount410"));
 eval(extractFn("endingBackstageTagCount410"));
+eval(extractFn("favorCreditCountsAsHeld")); // v259 R1＋R2：endingFavor410 共用 filter
 eval(extractFn("endingFavor410"));
 eval(extractFn("endingRomance410"));
 eval(extractFn("endingE2Eligible410"));
