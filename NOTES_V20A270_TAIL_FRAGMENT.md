@@ -70,7 +70,13 @@ refreshCopyPacksFromDisk();
 
 ## 落地
 
-待填（main HEAD、Pages 核實）。
+- main HEAD `e742377`（常駐 clone＋GitHub `ls-remote` 一致，已推 main；工作副本 `linji-work270` 已刪；
+  分支 `v20a270` 留喺常駐 clone 做紀錄）。
+- 合併後喺 main 重跑新檔＋三檔鏈測試，全部 PASS；合併後 main `index.html` 45,372 行，`</html>` ×1。
+- Pages：等傳播後 curl——**HTTP 200，4,606,741 bytes，同本地 index.html 逐字節一致**
+  （sha256 `6ec8fa90…`），live `</html>` ×1、`</script>` ×2、`refreshCopyPacksFromDisk();` ×1。
+  （傳播前一刻 curl 到嘅舊版係 4,606,807 bytes，相差 66 bytes，即係刪走嗰 8 行。）
+- 新基線 **335／9**（v269 334／9＋新檔 1；九項 FAIL 全部已知 pre-existing，零回歸）。
 
 ## 實機驗證
 
