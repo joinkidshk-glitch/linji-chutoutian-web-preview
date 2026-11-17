@@ -60,7 +60,7 @@ ok('D1 FAVOR_DUE_GIGS 得 1 張、id 啱', Array.isArray(FAVOR_DUE_GIGS) && FAVO
 const g = FAVOR_DUE_GIGS[0];
 ok('D1 幫忙通告係臨記通告、事務所板、4 日窗、1 日工', g.loc==='agency_ho' && g.tier==='臨記' && g.category==='臨記通告' && g.applyDeadlineDays===4 && g.shootDaysHint===1);
 ok('D1 標題無年份數字', !/\d{4}/.test(g.title) && g.title.indexOf('晨光劇場')>=0);
-ok('D1 片酬 $500 定額、hi ≤ lo×1.25', g.payExact===500 && Array.isArray(g.pay) && g.pay[1] <= g.pay[0]*1.25, JSON.stringify(g.pay));
+ok('D1 片酬 $400 定額、hi ≤ lo×1.25', g.payExact===400 && Array.isArray(g.pay) && g.pay[1] <= g.pay[0]*1.25, JSON.stringify(g.pay));
 ok('D1 無 req、無死 data favorDelta', Object.keys(g.req||{}).length===0 && !('favorDelta' in g));
 
 /* ---------- D2：到期 → 叫數 → 上板 ---------- */

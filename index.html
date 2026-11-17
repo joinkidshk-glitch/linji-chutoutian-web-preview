@@ -22883,7 +22883,7 @@ function mergeIntelGigs(){
    舊存檔兼容：dueDay 喺 favorDueTick／手帳渲染首次見到嗰日回填（當日 +7），唔會一讀檔即到期；
    結清／作廢／用其他方法清走（例如現金還）都會記入 S.favorDueSettled，教學債日後被補種都唔會重行到期流程。
    v20a254 D3：幫忙通告已恢復（FAVOR_DUE_GIGS 恢復 v20a17 原裝 special gig、gigId 填返 gig_favor_ho_errand）；到期前現金／禮物還款路照舊，幫忙通告係第三條路。 ===== */
-const FAVOR_DUE_CFG = { debtId:"debt_ho_tutorial", gigId:"gig_favor_ho_errand" /* v20a254 D3：幫忙通告恢復——v20a229 B3 刪咗 code-side 幫忙通告（gigId null、FAVOR_DUE_GIGS []），B5 核實新庫 240 張 0 命中；今次唔入庫存（新庫版幫忙通告無 trigger kind 可接，亦唔郁 282 張計數／六批驗證），恢復 v20a17 原裝 special gig 接線（id／《晨光劇場》臨時人手／事務所板／$500 定額／1 日／4 日窗不變；tier 由舊「初」改新五級「臨記」＋補 category「臨記通告」；刪死 data favorDelta；eraTag 唔再寫 era_* id）。favorDueTick 嘅 wrapped 檢查（wrapHistory／done_ 旗）＋mergeFavorGigs 注入＋rel +2／−3 全部照舊機制行。 */, dueDays:7, windowDays:4 };
+const FAVOR_DUE_CFG = { debtId:"debt_ho_tutorial", gigId:"gig_favor_ho_errand" /* v20a254 D3：幫忙通告恢復——v20a229 B3 刪咗 code-side 幫忙通告（gigId null、FAVOR_DUE_GIGS []），B5 核實新庫 240 張 0 命中；今次唔入庫存（新庫版幫忙通告無 trigger kind 可接，亦唔郁 282 張計數／六批驗證），恢復 v20a17 原裝 special gig 接線（id／《晨光劇場》臨時人手／事務所板／$400 定額／1 日／4 日窗；v20a260：payExact 由 $500 改 $400、pay 由 [450,550] 改 [320,400]，仿照真實 1990 臨記價 $30–40，遊戲經濟 ×10，見 RESEARCH.md；pay 區間完全喺臨記帶 $250–400 內，hi/lo=1.25 啱啱合規；tier 由舊「初」改新五級「臨記」＋補 category「臨記通告」；刪死 data favorDelta；eraTag 唔再寫 era_* id）。favorDueTick 嘅 wrapped 檢查（wrapHistory／done_ 旗）＋mergeFavorGigs 注入＋rel +2／−3 全部照舊機制行。 */, dueDays:7, windowDays:4 };
 const FAVOR_DUE_GIGS = [
   {
     id:"gig_favor_ho_errand",
@@ -22905,8 +22905,8 @@ const FAVOR_DUE_GIGS = [
     boardNote:"還人情",
     seasonWeight:1,
     req:{},
-    pay:[450, 550],
-    payExact:500,
+    pay:[320, 400],
+    payExact:400,
     breachFee:0,
     fame:[0, 0],
     popularity:[0, 1],
