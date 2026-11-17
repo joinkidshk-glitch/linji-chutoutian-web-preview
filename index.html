@@ -7523,6 +7523,290 @@ function applyRomanceWf2Overrides81(){
   }
   return applied;
 }
+/* ===== v20a266：林曉晴《留低》覆寫層（ROMANCE_V158_OVERRIDES，v158 WIP 移植）。
+   來源：舊工作副本 linji-work158 未落地 WIP（base v148），逐字抽出再適配現行 main：
+   (1) openConditions C→N（C4→N4、C8→N9、C9→N10、C12→N14；C 節點號已死）；
+   (2) 5 段 synopsis 由廣東話口語改寫做香港式書面語（beats 對白維持廣東話）；
+   (3) packs 刪 rom.tang（v152 已刪鄧麗萍感情線）；
+   (4) CONTRA98_WHEN_FIX 兩項（crisis 1989秋／ending 1990秋）已由 v223 落地，呢度唔郁。
+   設計：romance-revamp-draft.md §1 林曉晴《留低》（兩封信→同場搶通告→夜班交心→廠景天台收尾）；
+   v159 明確留低 R_hiu_* 唔郁，等呢票跟進。 ===== */
+const ROMANCE_V158_OVERRIDES = {
+ "R_hiu_meet": {
+  "beats": [
+   {
+    "lines": [
+     "你係咪今日先嚟呢個廠景㗎？我頭先聽到助導講，下晝嗰場戲要多幾個臨記喎。",
+     "如果你有興趣，我可以幫你問下，不過你要快啲決定喇，啲位好快就畀人搶晒㗎。"
+    ],
+    "speaker": "林曉晴"
+   },
+   {
+    "lines": [
+     "阿偉多謝佢肯報料，順口叫咗句靚女，問佢係咪平時都係咁周圍打聽。",
+     "佢笑住話唔好亂叫，靚女呢個朵，叫得多會折墮，不過佢都係應承咗，話可以交換情報。"
+    ],
+    "speaker": "旁白"
+   },
+   {
+    "lines": [
+     "好啊，我平時就係靠咁樣互相通報，先接到多啲工咋。",
+     "不過你要記住呀，有啲助導好揀擇㗎，你要打聽清楚佢哋鍾意啲咩先，費事白行一趟。"
+    ],
+    "speaker": "林曉晴"
+   },
+   {
+    "lines": [
+     "阿偉點頭話會小心，仲讚佢肯分享，唔係個個都咁好心㗎，喺呢行有個伴點都好啲。",
+     "佢答應之後一有消息，第一時間就話佢知，大家互相幫忙。"
+    ],
+    "speaker": "旁白"
+   },
+   {
+    "lines": [
+     "咁就咁話喇。對喇，你叫咩名呀？我之後點搵你呀？",
+     "我平時多數喺通告欄附近等消息，你嚟嗰度搵我就得喇。"
+    ],
+    "speaker": "林曉晴"
+   }
+  ],
+  "synopsis": "阿偉在廠景休息角認識了同期臨記林曉晴。她主動走過來談通告情報，阿偉順口叫她一聲「靚女」，兩個人約好交換消息，互相照應。"
+ },
+ "R_hiu_push1": {
+  "beats": [
+   {
+    "lines": [
+     "阿偉，今晚你得唔得閒？我想搵個人傾下，呢兩封信，我睇咗成晚都未諗掂。",
+     "一封係公司寄嚟嘅，一封係屋企寄嚟嘅。兩封都話要我即刻覆，覆錯一步，成個人生唔同晒。"
+    ],
+    "speaker": "林曉晴"
+   },
+   {
+    "lines": [
+     "佢將兩封信攤喺枱面，一封印住公司名，一封係屋企人嘅字跡，邊封都唔輕。",
+     "阿偉望住佢，佢隻手一路㩒住兩封信，好似㩒住自己兩條路咁。"
+    ],
+    "speaker": "旁白"
+   },
+   {
+    "lines": [
+     "公司嗰封，話想簽我做玉女，三年約，人工唔錯，但三年入面唔准拍拖，唔准接其他公司嘅戲。",
+     "屋企嗰封，話阿爸阿媽諗住走，問我跟唔跟埋去。佢哋話，呢邊捱臨記，捱到幾時先有出頭日。"
+    ],
+    "speaker": "林曉晴"
+   },
+   {
+    "lines": [
+     "阿偉拎起公司嗰封信，睇到入面寫住：簽咗，就係公司嘅玉女，乖乖女形象，唔准行差踏錯半步。",
+     "屋企嗰封就得幾行字：阿女，呢邊留唔住人，你自己諗清楚，跟我哋走，定係留低。"
+    ],
+    "speaker": "旁白"
+   },
+   {
+    "lines": [
+     "簽玉女，我驚一簽就定型，以後人哋淨係記得我係玉女，唔記得我識演戲。",
+     "跟屋企走，我又唔捨得呢邊，呢邊先係我發夢嗰個地方，行到呢步，點捨得走。"
+    ],
+    "speaker": "林曉晴"
+   },
+   {
+    "lines": [
+     "佢講到呢度停咗停，望住阿偉，好似等佢講句話，邊句都好，等佢唔使自己一個揀。",
+     "枱面兩封信，一封係前途，一封係屋企，邊封重啲，佢自己都唔知。"
+    ],
+    "speaker": "旁白"
+   },
+   {
+    "lines": [
+     "阿偉，你話啦，我應該點揀？留低慢慢捱，簽咗佢，定係跟屋企走？",
+     "你講咩我都聽，不過你要諗清楚先好講，呢個決定，我會記一世。"
+    ],
+    "speaker": "林曉晴"
+   }
+  ],
+  "synopsis": "秋天，曉晴收到兩封信——一封是公司的玉女約，一封是家裡人問她跟不跟著走。她找阿偉商量，阿偉一句話，隨時改寫她兩條路。",
+  "choices": [
+   { "id": "C_hiu_push1_a", "label": "勸佢留低，慢慢捱", "effects": { "flags": ["hiu_deal_refused"], "stats": { "rel_hiu": 2 }, "notes": "" } },
+   { "id": "C_hiu_push1_b", "label": "勸佢簽玉女約", "effects": { "flags": ["hiu_deal_signed"], "stats": { "rel_hiu": 0, "standing": 1 }, "notes": "" } },
+   { "id": "C_hiu_push1_c", "label": "勸佢跟屋企走", "effects": { "flags": ["hiu_family_go"], "stats": { "rel_hiu": -1 }, "notes": "" } }
+  ],
+  "flags_written": ["hiu_deal_refused", "hiu_deal_signed", "hiu_family_go"],
+  "phase": "P1",
+  "openConditions": ["N4"],
+  "openConditionsAny": ["flag_hiu_meet_exchange", "flag_hiu_meet_distant"]
+ },
+ "R_hiu_push2": {
+  "beats": [
+   {
+    "lines": [
+     "今晚呢班夜班真係攰到死，又凍又眼瞓，好彩總算殺青喇。你之後有咩打算呀？",
+     "我聽講附近有間糖水舖開到好夜，不如一齊去食啲嘢囉？"
+    ],
+    "speaker": "林曉晴"
+   },
+   {
+    "lines": [
+     "阿偉都覺得肚餓，笑住問佢，平時唔係急住返屋企嘅咩。",
+     "佢話自己唔趕時間，可以慢慢傾，順便交換下最近啲消息。"
+    ],
+    "speaker": "旁白"
+   },
+   {
+    "lines": [
+     "嗰日試鏡之後，我成晚瞓唔到，諗住如果嗰個角色係你攞到，我會唔會嬲你。",
+     "諗到最後，我發現我嬲唔到你。因為嗰日你肯企喺度，同我一齊爭，已經好夠。"
+    ],
+    "speaker": "林曉晴"
+   },
+   {
+    "lines": [
+     "阿偉話佢都係咁諗，嗰個角色邊個攞到都好，最緊要係兩個人仲企得埋，唔好為咗一個角色散咗。",
+     "佢話呢行咁大，機會唔止一個，但肯同你一齊捱夜班嘅人，冇幾個。"
+    ],
+    "speaker": "旁白"
+   },
+   {
+    "lines": [
+     "你講得啱。呢行捱得耐，先知邊個會留低，邊個會走。",
+     "阿偉，我哋講好，無論將來點，都唔好為咗一個角色，唔認得對方。"
+    ],
+    "speaker": "林曉晴"
+   }
+  ],
+  "synopsis": "夜班殺青之後，兩個人一起收拾東西，那日爭角色時的心結，在收工路上慢慢說開。",
+  "choices": [
+   { "id": "C_hiu_push2_a", "label": "我哋一齊捱", "effects": { "flags": ["hiu_promise_together"], "stats": { "rel_hiu": 2 }, "notes": "" } },
+   { "id": "C_hiu_push2_b", "label": "你自己決定，我撐你", "effects": { "flags": ["hiu_promise_support"], "stats": { "rel_hiu": 0 }, "notes": "" } }
+  ],
+  "flags_written": ["hiu_promise_together", "hiu_promise_support"],
+  "phase": "P2",
+  "openConditions": ["N10"],
+  "openConditionsAny": ["hiu_given_role", "hiu_lost_role", "flag_hiu_crisis_yield", "flag_hiu_crisis_fight", "flag_hiu_push1_help", "flag_hiu_push1_self"],
+  "when": "1989冬"
+ },
+ "R_hiu_crisis": {
+  "beats": [
+   {
+    "lines": [
+     "估唔到會喺度撞到你，呢個角色對我嚟講好重要㗎，我準備咗好耐喇。",
+     "我知你都好想要呢個機會，但最後得一個會揀得中，你會點做呀？"
+    ],
+    "speaker": "林曉晴"
+   },
+   {
+    "lines": [
+     "阿偉話佢明佢心情，個角色咁難得，邊個唔想爭呀，不過大家都係專業嘅，應該公平競爭。",
+     "佢話無論結果點，都唔想影響返兩個人嘅關係，朋友唔係咁易識到㗎。"
+    ],
+    "speaker": "旁白"
+   },
+   {
+    "lines": [
+     "你講得啱，我哋係應該公平競爭嘅。不過我真係好需要呢個角色，希望你明啦。",
+     "如果我輸咗，我可能會好唔開心，但我唔會怪你㗎。"
+    ],
+    "speaker": "林曉晴"
+   },
+   {
+    "lines": [
+     "阿偉話佢理解，自己都會盡力去試，冇理由留手㗎，留手反而對佢唔住。",
+     "無論邊個揀中，都應該替對方開心先啱，佢提議不如專心準備，攞出最好嗰面出嚟。"
+    ],
+    "speaker": "旁白"
+   },
+   {
+    "lines": [
+     "兩位，準備入嚟喇。入到去唔使緊張，自然啲就得㗎喇。",
+     "評審會睇你哋臨場反應，放鬆啲心情，當平時演戲咁就得喇。"
+    ],
+    "speaker": "助導"
+   }
+  ],
+  "synopsis": "在試鏡走廊碰上，兩個人原來正在爭同一個重要角色，要直接競爭。這段關係立刻受到考驗。",
+  "choices": [
+   { "id": "C_hiu_crisis_a", "label": "成全她", "effects": { "flags": ["flag_hiu_crisis_yield", "hiu_given_role"], "stats": { "rel_hiu": 2, "standing": -1 }, "notes": "" } },
+   { "id": "C_hiu_crisis_b", "label": "硬搶同場", "effects": { "flags": ["flag_hiu_crisis_fight", "hiu_lost_role"], "stats": { "rel_hiu": -2, "standing": 2 }, "notes": "" } }
+  ],
+  "flags_written": ["flag_hiu_crisis_yield", "flag_hiu_crisis_fight", "hiu_given_role", "hiu_lost_role"],
+  "phase": "P2",
+  "openConditions": ["N9"],
+  "openConditionsAny": ["hiu_deal_refused", "hiu_deal_signed", "hiu_family_go", "flag_hiu_push2_date", "flag_hiu_push2_friend", "flag_hiu_push1_help", "flag_hiu_push1_self"]
+ },
+ "R_hiu_ending": {
+  "beats": [
+   {
+    "lines": [
+     "嗰陣你叫我唔好簽，我聽你話。今日，我終於有返個屬於自己嘅角色，唔係人哋派畀我嘅玉女，係我自己爭返嚟嘅。",
+     "嗰陣我以為留低慢慢捱，係最傻嘅揀法。而家我先知，傻嗰個，捱到最後先有得笑。"
+    ],
+    "speaker": "林曉晴"
+   },
+   {
+    "lines": [
+     "天台風大，佢企喺欄杆邊，望住下面啲燈，成個人鬆晒。",
+     "阿偉望住佢，諗起嗰陣兩封信攤喺枱面嗰晚，佢話邊句都好，等佢唔使自己一個揀。"
+    ],
+    "speaker": "旁白"
+   },
+   {
+    "lines": [
+     "呢個角色，我爭返嚟喇。你嗰日成全我，我記住。呢份人情，我用成個事業還返畀你。",
+     "不過，我唔想淨係還人情。我想問你，我哋之間，除咗人情，仲有冇其他嘢。"
+    ],
+    "speaker": "林曉晴"
+   },
+   {
+    "lines": [
+     "嗰晚你話我哋一齊捱，我記住咗。捱到而家，我哋真係一齊捱到嚟呢度喇。",
+     "咁，之後嗰段路，我哋係咪一齊行落去？"
+    ],
+    "speaker": "林曉晴"
+   },
+   {
+    "lines": [
+     "佢望住阿偉，等佢開口。呢句說話，佢等咗幾年，今晚，佢唔想再等。",
+     "阿偉知道，呢句答覆，唔係淨係答今晚，係答埋之後嗰幾年。"
+    ],
+    "speaker": "旁白"
+   }
+  ],
+  "synopsis": "在廠景天台，兩個人回想這幾年一起捱過來的日子，曉晴提起那晚兩封信的事，以及她爭回來的那個角色。",
+  "phase": "P4",
+  "openConditions": ["phase_P4", "N14"],
+  "openConditionsAny": ["hiu_promise_together", "hiu_promise_support", "flag_hiu_crisis_yield", "flag_hiu_crisis_fight", "flag_hiu_push2_date", "flag_hiu_push2_friend"]
+ }
+}
+const V158_APPLIED158 = new WeakSet();
+function applyRomanceV158Overrides158(){
+  const rom = (typeof STORY_WIRE !== "undefined" && STORY_WIRE && STORY_WIRE.romance) || {};
+  const packs = [rom.veraHiuChoi, rom.lanXu]; /* v20a266：tang 槽已刪（v152 鄧麗萍感情線取消） */
+  let applied = 0;
+  for(const pack of packs){
+    if(!pack || !Array.isArray(pack.nodes)) continue;
+    for(const node of pack.nodes){
+      if(!node || typeof node !== "object") continue;
+      const ov = ROMANCE_V158_OVERRIDES[node.id];
+      if(!ov) continue;
+      if(V158_APPLIED158.has(node)) continue;
+      if(typeof ov.synopsis === "string" && ov.synopsis) node.synopsis = ov.synopsis;
+      if(Array.isArray(ov.beats) && ov.beats.length){
+        node.beats = ov.beats.map(b => ({ speaker: b.speaker, lines: (b.lines || []).slice() }));
+      }
+      if(Array.isArray(ov.choices) && ov.choices.length){
+        node.choices = ov.choices.map(c => Object.assign({}, c, { effects: JSON.parse(JSON.stringify(c.effects || {})) }));
+      }
+      if(Array.isArray(ov.flags_written)) node.flags_written = ov.flags_written.slice();
+      if(Array.isArray(ov.openConditions)) node.openConditions = ov.openConditions.slice();
+      if(Array.isArray(ov.openConditionsAny)) node.openConditionsAny = ov.openConditionsAny.slice();
+      if(typeof ov.phase === "string" && ov.phase) node.phase = ov.phase;
+      if(typeof ov.when === "string" && ov.when) node.when = ov.when;
+      V158_APPLIED158.add(node);
+      applied++;
+    }
+  }
+  return applied;
+}
+
 
 /* ===== v20a87 WF5：soft 變體層文本對齊（WF2 遺留）。
    soft 行為閘模式下，曉晴／采兒 meet 走 DualMeet 層、成條鄧麗萍線走 DengLine 層——兩層自帶
@@ -10883,6 +11167,7 @@ const StoryPlay = (()=>{
     /* v20a82 WF3：節點預備鉤——N8 持有葉敏芝疑雲真相時追加提點抉擇 N8_d（淺拷貝） */
     try{ if(typeof wf3PrepareNode82==="function"){ const pn82 = wf3PrepareNode82(node); if(pn82) node = pn82; } }catch(_w3p){}
     try{ if(typeof contra98PrepareNode==="function"){ const pn98 = contra98PrepareNode(node); if(pn98) node = pn98; } }catch(_c98p){} /* v20a98 CONTRA98 B-01 */
+    try{ if(typeof enc158PrepareNode==="function"){ const pn158 = enc158PrepareNode(node); if(pn158) node = pn158; } }catch(_c158p){} /* v20a266：曉晴《留低》支線變體（contra98 之後，唔郁 choices；v158 層移植） */
     try{ if(typeof rom159PrepareNode==="function"){ const pn159 = rom159PrepareNode(node); if(pn159) node = pn159; } }catch(_r159p){} /* v20a159 ROM159：排他鎖＋采兒公開／低調 */
     if(!opts.force){
       if(StoryOC.isStubNode && StoryOC.isStubNode(node)){ toast("此節不開放"); return false; }
@@ -15255,6 +15540,7 @@ async function refreshCopyPacksFromDisk(){
     /* v20a242：ROMANCE_LAN_PA_OVERRIDES 已刪，JSON 做唯一來源，唔再呼叫 applyRomanceLanOverrides48。 */
     /* v20a250：STORY_SPINE_NODES_BR89 已刪，N6F 由 content/story_detail_n1_to_n17.json 直出，唯一來源，唔再呼叫 applyStoryBr89Nodes89。 */
     try{ applyRomanceWf2Overrides81(); }catch(_wf2){}
+    try{ applyRomanceV158Overrides158(); }catch(_v158){} /* v20a266：曉晴《留低》重排層（WF2 之後、textfix55 之前；v158 層移植，C→N＋synopsis 書面語） */
     /* v20a241：RIVAL_WF4_OVERRIDES 已刪，JSON 做唯一來源，唔再呼叫 applyRivalWf4Overrides86。 */
     /* v20a55 TEXTFIX：pack 載入之後、其餘載入之前，清洗劇情包文字 */
     /* v20a152：先將 R_tang_meet_stub 正規化做純公事介紹（見 normaliseTangStub152），再行 TEXTFIX——
@@ -27958,6 +28244,48 @@ function contra98PrepareNode(node){
       });
     });
     return copy;
+  }catch(_e){ return null; }
+}
+function enc158PrepareNode(node){
+  try{
+    if(!node || (node.id!=="R_hiu_crisis" && node.id!=="R_hiu_ending")) return null;
+    if(typeof enc87StoryFlag!=="function") return null;
+    if(!Array.isArray(node.beats) || node.beats.length < 5) return null;
+    const has = (f)=> !!enc87StoryFlag(f);
+    const copy = Object.assign({}, node);
+    copy.beats = node.beats.map(b => ({ speaker: b.speaker, lines: (b.lines || []).slice() }));
+    if(node.id==="R_hiu_crisis"){
+      let open158 = null;
+      if(has("hiu_deal_refused")) open158 = { speaker:"林曉晴", lines:[ "嗰陣你叫我留低，唔好簽，我聽你話。呢個角色，我捱咗咁耐先等到，你話，我爭唔爭？", "我知你都想要，不過今次，我真係唔想讓。" ] };
+      else if(has("hiu_deal_signed")) open158 = { speaker:"林曉晴", lines:[ "嗰陣你叫我簽，我簽咗。公司話呢個角色啱我，叫我嚟試，不過我心入面，仲係掛住嗰陣你嗰句。", "你都嚟試呢個角色㗎？我哋……又撞埋一齊喇。" ] };
+      else if(has("hiu_family_go")) open158 = { speaker:"林曉晴", lines:[ "嗰陣你叫我跟屋企走，我差啲就買咗機票。不過臨上機嗰陣，我返轉頭喇。", "呢個角色，係我留低嘅理由。你話，我係咪傻？" ] };
+      if(!open158) return null;
+      copy.beats[0] = open158;
+      return copy;
+    }
+    /* R_hiu_ending：事業收尾 beats[0..2] 按 deal 旗、收口 beat[3] 按 promise 旗、導入 beat[4] 不變（走收尾成組換 5 beats） */
+    if(has("hiu_family_go")){
+      copy.beats = [
+        { speaker:"旁白", lines:[ "啟德機場，廣播嗌住最後召集，曉晴拖住行李，返過頭望住阿偉。", "佢話屋企人喺入面等緊，架機唔等人，呢一別，唔知幾時先再見。" ] },
+        { speaker:"林曉晴", lines:[ "嗰陣你叫我跟屋企走，我聽你話。不過我上機之前，想返嚟見你一面，話返句唔該你先走。", "呢幾年，你係我喺呢行識到最好嘅人。我走喇，你要捱落去，捱到出頭嗰日，寫封信話返畀我知。" ] },
+        { speaker:"林曉晴", lines:[ "你唔使送我入去喇，喺呢度講句再見就得。", "如果將來我返嚟，見到你企喺台上面，我會話返畀人知，嗰個係我識嘅阿偉。" ] },
+        { speaker:"旁白", lines:[ "佢講完拖住行李行入閘口，冇再回頭。阿偉企喺原地，望住佢個背影愈行愈遠。", "機場嘅風好大，廣播又嗌多一次，阿偉知道，呢一別，唔係話走就走得返。" ] },
+        { speaker:"旁白", lines:[ "阿偉返到屋企，枱面仲放住佢臨走嗰陣留低嗰張相，背面寫住：捱落去。", "佢望住張相，諗起佢嗰句——如果將來返嚟，見到你企喺台上面。呢句說話，佢應唔應承？" ] }
+      ];
+      return copy;
+    }
+    let changed158 = false;
+    if(has("hiu_deal_signed")){
+      copy.beats[0] = { speaker:"林曉晴", lines:[ "嗰陣你叫我簽，我簽咗。公司俾我嘅玉女形象，係幾風光，出街有人認得，影相有人叫我笑。", "但每逢我想接啲有血有肉嘅角色，公司就話唔啱形象，叫我乖乖哋，唔好行差踏錯。" ] };
+      copy.beats[1] = { speaker:"旁白", lines:[ "天台風大，佢企喺欄杆邊，望住下面啲燈，笑得有啲攰。", "阿偉望住佢，諗起嗰陣兩封信攤喺枱面嗰晚，佢話邊句都好，等佢唔使自己一個揀。" ] };
+      copy.beats[2] = { speaker:"林曉晴", lines:[ "呢條路係我自己揀嘅，我唔怪你。不過有陣時，我會諗，如果嗰陣我冇簽，今日會唔會唔同。", "你唔使答我。我淨係想你知，我而家企喺呢度，唔係玉女，淨係林曉晴。" ] };
+      changed158 = true;
+    }
+    if(has("hiu_promise_support")){
+      copy.beats[3] = { speaker:"林曉晴", lines:[ "嗰晚你話我自己決定，你撐我，我記住咗。呢句說話，比起一齊捱，仲難講出口。", "我唔知我哋會行到去邊，不過有你呢句，我行邊條路都唔驚。" ] };
+      changed158 = true;
+    }
+    return changed158 ? copy : null;
   }catch(_e){ return null; }
 }
 function wf3PrepareNode82(node){
