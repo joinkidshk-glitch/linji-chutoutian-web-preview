@@ -37,6 +37,7 @@ ok('nodes[0-4] 係 N1-N5', [n.get('id') for n in nodes[:5]] == ['N1', 'N2', 'N3'
 #      v20a253 收尾批工人 C（N14 四處跟夏／秋閘＋N17 湯場 4 拍搬去獨立節點 N17_epi，N17 19→15 拍），sha 再重算） ---
 #      v20a256 N6F 第二人稱轉第三人稱（10 句系統旁白／notes，照 V250_DIALOGUE_DELTA §3.4；其餘一字未郁），sha 再重算） ---
 #      v20a254 統籌收尾（N6F lockedHint 標題引用「采兒小訪題」→「筆記本」，跟新短詞標題；其餘一字未郁），sha 再重算） ---
+#      v20a258 N4 改夏（when／openConditions／pacing 8→22，N4 係 nodes[3]，nodes[5:] sha 唔受影響；其餘一字未郁） ---
 tail = json.dumps(nodes[5:], sort_keys=True, ensure_ascii=False)
 ok('nodes[5:] 同 v254 一致（N6F lockedHint 標題引用跟新標題；其餘同 v256）',
    hashlib.sha256(tail.encode('utf-8')).hexdigest()
@@ -96,8 +97,8 @@ GATES = {
            {'weekMin': 4, 'minDaysAfterPrev': 1, 'when': '1988春 / W4-5', 'prevMain': 'N1'}),
     'N3': (['N2', 'week_min:6', 'days_after_prev:1'],
            {'weekMin': 6, 'minDaysAfterPrev': 1, 'when': '1988春 / W6-8', 'prevMain': 'N2'}),
-    'N4': (['N3', 'week_min:8', 'days_after_prev:1'],
-           {'weekMin': 8, 'minDaysAfterPrev': 1, 'when': '1988春 / W8-9', 'prevMain': 'N3'}),
+    'N4': (['N3', 'week_min:22', 'days_after_prev:1'],
+           {'weekMin': 22, 'minDaysAfterPrev': 1, 'when': '1988夏 / W22-23', 'prevMain': 'N3'}),
     'N5': (['N4', 'week_min:36', 'days_after_prev:1'],
            {'weekMin': 36, 'minDaysAfterPrev': 1, 'when': '1988秋 / W36', 'prevMain': 'N4'}),
 }

@@ -8792,7 +8792,7 @@ const BehaviorGate = (function(){
     if(lockedCopy_noEngineeringTerms()!=="暫未能報") bad("lock_copy");
     if(ENG.test(lockedCopy_noEngineeringTerms())) bad("lock_engineering");
     if(nextHint_neverShow()!=="") bad("nextHint");
-    const floors = { N1:1, N2:4, N3:6, N4:8, N5:9 };
+    const floors = { N1:1, N2:4, N3:6, N4:22, N5:9 };
     Object.keys(floors).forEach(id=>{
       const n = byId[id];
       if(!n || Number(n.trigger.weekMin)!==floors[id]) bad("week_floor:"+id);
@@ -8816,7 +8816,7 @@ const BehaviorGate = (function(){
     if(sample("N3", Object.assign({}, c3base, { fame:17 })).ok!==true) bad("c3_fame17");
     const c3flags = JSON.stringify((c3&&c3.flags)||{});
     if(c3flags.indexOf("rival_gao_hard")<0 || c3flags.indexOf("rival_gao_endure")<0) bad("c3_rival_flags");
-    const c4base = { week:8, done:{ N3:true }, dayIndex:40, lastMainDoneDay:30, debt:0 };
+    const c4base = { week:22, done:{ N3:true }, dayIndex:40, lastMainDoneDay:30, debt:0 };
     if(byId.N4.trigger.softLogic!=="OR" || byId.N4.trigger.favorTarget!=="agency_ho" || byId.N4.trigger.favorMin!==1 || Number(byId.N4.trigger.debtMin)!==1) bad("c4_contract");
     /* FULL OR：loc=agency_ho 單獨可開；或 debt≥1；或 favor≥1（Soft 近似左肢） */
     if(sample("N4", Object.assign({}, c4base, { atLoc:"agency_ho", favor:0, debt:0 })).ok!==true) bad("c4_loc_only");
