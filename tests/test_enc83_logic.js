@@ -155,7 +155,7 @@ ok('四星總句數 >= 480', total83>=480);
 
 /* ---- (3) 抉擇 fx 接線 ---- */
 ok('初遇 fx：魏汽水 +5／紙巾 +1／行開 -2', enc79ChoiceFx('first:ngai_wingnaam','拎支汽水俾佢，陪佢坐一陣').fav===5 && enc79ChoiceFx('first:ngai_wingnaam','放低包紙巾就走，唔打擾').fav===1 && enc79ChoiceFx('first:ngai_wingnaam','當冇睇到，行開算').fav===-2);
-ok('初遇 fx：顧聽歌 +3／齊答得出 +3／駱撐 +3', enc79ChoiceFx('first:gu_mingfai','靜靜企喺度，聽佢哼埋嗰段舊歌').fav===3 && enc79ChoiceFx('first:chai_zanhoi','一口答得出：左三步，望返城門').fav===3 && enc79ChoiceFx('first:lok_gasing','出聲撐佢一句：啲歌係好聽嘅').fav===3);
+ok('初遇 fx：顧聽歌 +2（v271 WORKORDER 建議值）／齊答得出 +3／駱撐 +3', enc79ChoiceFx('first:gu_mingfai','靜靜企喺度，聽佢哼埋嗰段舊歌').fav===2 && enc79ChoiceFx('first:chai_zanhoi','一口答得出：左三步，望返城門').fav===3 && enc79ChoiceFx('first:lok_gasing','出聲撐佢一句：啲歌係好聽嘅').fav===3);
 ok('心聲 fx：顧陪到天光 +3', enc79ChoiceFx('heart:gu_mingfai','陪佢坐到天光，唔出聲').fav===3);
 ok('借錢 fx：一口應承 → gu_loan_full／借一半 → gu_loan_half', (()=>{ const a=enc79ChoiceFx('beat:gu_loan','借，一口應承'); const b=enc79ChoiceFx('beat:gu_loan','借一半，留返啲畀自己'); const c=enc79ChoiceFx('beat:gu_loan','唔借，呢筆錢我真係幫唔到'); return a.fx==='gu_loan_full' && a.fav===4 && b.fx==='gu_loan_half' && b.fav===2 && !c.fx && c.fav===-2; })());
 

@@ -19688,6 +19688,8 @@ function advanceDay(){
   try{ if(typeof wf4DailyTick==="function") wf4DailyTick(); }catch(_w4t){}
   /* v20a83 ENC83：顧明輝借錢到期結算 tick（同 favorDueTick 並列，行 favor 帳本／結算登記） */
   try{ if(typeof enc83GuLoanTick==="function") enc83GuLoanTick(); }catch(_gl){}
+  /* v20a271：陸柏言唔接替工偵測 tick（同 enc83GuLoanTick 並列） */
+  try{ if(typeof enc271LukAbsentTick==="function") enc271LukAbsentTick(); }catch(_lk271){}
   try{ if(typeof rivalryTick==="function") rivalryTick(); }catch(_rv){}
   try{ if(typeof rivalryNewsTick==="function") rivalryNewsTick(); }catch(_rn){}
   try{ if(typeof exodusFenTick==="function") exodusFenTick(); }catch(_ex){}
@@ -21463,6 +21465,7 @@ function resolvePlannedDay(id){
         if(sh.type==="電視劇"||sh.type==="綜藝") bumpNpc("colleague",3+R(0,2));
         if(sh.type==="廣告") bumpNpc("stylist",2);
         S.flags["done_"+sh.gigId]=(S.flags["done_"+sh.gigId]||0)+1;
+        try{ if(sh.gigId==="gig_1991_tv_203"){ S.flags.luk_cover_night=1; delete S.flags.luk_absent_night; } }catch(_lk271){} /* v20a271：頂陸柏言嗰晚替工殺青 → 立 luk_cover_night；遲做都補救，清走 luk_absent_night（見 NOTES §5；一行寫法：下一行即係 TIER195 record call，awei195 S4 釘住 3 行內要有 record） */
         /* v20a195 TIER195：殺青記最高 tier（升咗就唔跌返）。 */
         try{ if(typeof enc195RecordTierMax==="function") enc195RecordTierMax(); }catch(_t195){}
         S.weekGigsDone = (Number(S.weekGigsDone)||0) + 1;
@@ -34964,6 +34967,7 @@ const ENC79_DLG_luk_baakyin = {
     choices: [
       {
         label: "雙手遞返，唔多口",
+        flags: ["luk_first_quiet"],
         lines: [
           ["A", "陸先生，你本劇本，頁數冇亂到。"],
           ["N", "保鑣接過去，陸柏言連頭也沒有點，轉身便走。"]
@@ -34971,6 +34975,7 @@ const ENC79_DLG_luk_baakyin = {
       },
       {
         label: "趁機介紹自己",
+        flags: ["luk_first_pushy"],
         lines: [
           ["A", "陸先生，我叫阿偉呀，我喺呢度做臨記㗎。"],
           ["S", "臨記咁多個，我記唔晒。唔好阻住走廊。"]
@@ -35046,6 +35051,7 @@ const ENC79_DLG_luk_baakyin = {
     choices: [
       {
         label: "靜靜聽落去",
+        flags: ["luk_confidant"],
         lines: [
           ["A", "（呢啲嘢，佢應該冇同幾多個人講過。）我聽住，你慢慢講。"],
           ["S", "……多謝。肯靜靜聽我講晒嘅人，真係冇幾個。"]
@@ -35120,6 +35126,27 @@ const ENC79_DLG_luk_baakyin = {
         ["N", "門打開，成疊劇本被他掃到地上，PA立刻把阿偉拉到一邊。"],
         ["N", "PA：你唔好出聲呀，佢呢排瞓得好差，脾氣嚟到邊個都唔敢埋身。"],
         ["A", "（瞓得差到咁……天王都係人嚟啫。）"]
+      ],
+      choices: [
+        {
+          label: "守口如瓶，乜都唔講",
+          flags: ["luk_kept_secret"],
+          lines: [
+            ["A", "（呢啲嘢，我當冇聽過。）"],
+            ["N", "PA 望住阿偉，鬆一口氣，低聲講咗句唔該。"],
+            ["N", "PA：佢呢排真係攰到癲，你唔講出去，已經係幫緊佢。"],
+            ["A", "放心，我把口好密嘅。"]
+          ]
+        },
+        {
+          label: "同人講兩句，話佢壓力大到掟嘢",
+          flags: ["luk_loose_talk"],
+          lines: [
+            ["A", "（呢單嘢，茶水間嗰班一定想知。）"],
+            ["N", "轉個頭，茶水間已經有人傳：天王排練排到掟劇本，瞓得好差，脾氣嚟到邊個都唔敢埋身。"],
+            ["N", "嗰晚收工，連場務都問阿偉，係咪真係親眼見到。"]
+          ]
+        }
       ]
     },
     luk_intel: {
@@ -35175,6 +35202,25 @@ const ENC79_DLG_luk_baakyin = {
         ["S", "我嗰棒，唔會交俾唔捱得嘅人。你，而家有嗰個資格企埋嚟。"],
         ["A", "柏言哥，我會行落去，唔會丟你架。"],
         ["S", "好。唔使多謝我，行好你自己嗰段路就得。"]
+      ]
+    },
+    luk_finale_cold: {
+      lines: [
+        ["N", "1992年冬天，頒獎禮場外，人聲鼎沸，陸柏言喺後台出嚟，見到阿偉，腳步慢咗一慢，但冇停低。"],
+        ["S", "偉翔，行到今日呢步，唔容易。"],
+        ["A", "柏言哥……"],
+        ["S", "有啲路，係自己揀嘅。行好你自己嗰段路就得。"],
+        ["N", "佢講完就轉身入返後台，保鑣今次冇點頭，淨係企埋一邊，等佢行過。"]
+      ]
+    },
+    luk_patron_cold: {
+      lines: [
+        ["S", "偉翔，呢句你聽住：下次嗰套大製作開鏡，試鏡名單，我唔會親自加你個名落去。"],
+        ["A", "柏言哥，我……"],
+        ["S", "唔係我唔肯幫你。係呢行，信得過先有得講。嗰晚嘅事，我記得。"],
+        ["S", "你想人哋再信你，唔係靠把口，係靠下一次，企返穩。"],
+        ["A", "我明喇。"],
+        ["N", "佢講完轉身去排戲，保鑣今次企返埋嚟，隔開咗你同佢之間嗰段路。"]
       ]
     }
   }
@@ -35278,6 +35324,7 @@ const ENC79_DLG_liu_bingxing = {
     choices: [
       {
         label: "認真回應",
+        flags: ["liu_heart_earnest"],
         lines: [
           ["A", "前輩，以後邊個再咁講你，我會記得你今日講嘅嘢。錢可以再搵，肯頂住成班人嘅人唔多。"],
           ["S", "（望住阿偉，點點頭）好，呢句我收。"]
@@ -35285,6 +35332,7 @@ const ENC79_DLG_liu_bingxing = {
       },
       {
         label: "用笑話接住",
+        flags: ["liu_heart_joke"],
         lines: [
           ["A", "前輩，你放心，你啲積蓄冇白使，起碼換到成組人而家見到你都叫大佬。"],
           ["S", "（大笑）哈！你小子，識用笑話接招喎。不過……多謝你。"]
@@ -36272,6 +36320,7 @@ const ENC83_DLG_gu_mingfai = {
     choices: [
       {
         label: "陪他坐到天亮，不出聲",
+        flags: ["gu_heart_sit"],
         lines: [
           ["A", "（我冇講嘢，將佢杯凍茶推開，叫伙計換過杯熱嘅，陪佢坐到街燈熄。）"],
           ["S", "……唔該你。唔出聲嗰種陪法，先係最難得。"]
@@ -36279,6 +36328,7 @@ const ENC83_DLG_gu_mingfai = {
       },
       {
         label: "勸他戒賭，重新來過",
+        flags: ["gu_heart_quit"],
         lines: [
           ["A", "明輝哥，認咗係第一步。賭真係唔好再掂喇，你把聲仲喺度，仲可以重新嚟過。"],
           ["S", "重新嚟過……好，我記住你呢句。做唔做到，我都要試一次俾自己睇。"]
@@ -38310,7 +38360,10 @@ const ENC79_BEATS = {
   luk_baakyin:[
     { id:"luk_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year===1990 && enc79TierOf(st.fav)<=1; }, },
     { id:"luk_intel", when(st){ return enc79TierOf(st.fav)>=2; } },
-    { id:"luk_finale", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=4 && ys.year===1992 && ys.season==="冬"; }, grants(){ try{ S.flags=S.flags||{}; S.flags.enc79_luk_finale=1; }catch(_e){} } },
+    { id:"luk_tease", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=2 && ys.year===1991 && !(S.flags||{}).luk_cover_night && !(S.flags||{}).luk_absent_night; }, grants(){ try{ if(typeof grant229Record==="function") grant229Record("gig_1991_tv_203", "陸柏言支線", "場務話，今晚嗰組要人頂成晚，陸柏言嗰邊點名要你去。《星夜迷離》臨時替工，聽朝去電視城報到，夜半追逐場面，翻騰落地要穩陣。"); }catch(_g){} } }, /* v20a271：頂一晚新機制——tease 播出嗰晚記低替工通告，第二朝何生電話派（見 NOTES §5） */
+    { id:"luk_thanks", when(st){ try{ return enc79TierOf(st.fav)>=2 && !!(S.flags||{}).luk_cover_night; }catch(_e){ return false; } } }, /* v20a271：頂過嗰晚先有句唔該 */
+    { id:"luk_finale_cold", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=4 && ys.year===1992 && ys.season==="冬" && ((S.flags||{}).luk_absent_night || (S.flags||{}).luk_loose_talk); } }, /* v20a271：冷版收科（冇頂夜／講咗出去） */
+    { id:"luk_finale", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=4 && ys.year===1992 && ys.season==="冬" && !((S.flags||{}).luk_absent_night || (S.flags||{}).luk_loose_talk); }, grants(){ try{ S.flags=S.flags||{}; S.flags.enc79_luk_finale=1; }catch(_e){} } },
   ],
   liu_bingxing:[
     { id:"liu_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year<=1991 && enc79TierOf(st.fav)<=1 && enc83NodeDone("C8"); }, }, /* v20a269：N9 開口（C8＝N9） */
@@ -38359,8 +38412,8 @@ function enc79ChoiceFx(segKey, label){
   const t = String(label||"");
   const has = (s)=> t.indexOf(s)>=0;
   if(segKey==="first:luk_baakyin"){ if(has("唔多口")||has("雙手")) return { fav:3 }; if(has("介紹")) return { fav:1 }; return { fav:-2 }; }
-  if(segKey==="first:liu_bingxing"){ if(has("好笑")) return { fav:3 }; if(has("笑出聲")) return { fav:1 }; return { fav:-2 }; }
-  if(segKey==="first:mak_zhendong"){ if(has("放低")) return { fav:3 }; if(has("堅持")) return { fav:1 }; return { fav:-2 }; }
+  if(segKey==="first:liu_bingxing"){ if(has("好笑")) return { fav:2 }; if(has("笑出聲")) return { fav:2 }; return { fav:0 }; } /* v20a271 1.10：好感差異（WORKORDER 建議值）——笑出聲＋2／講邊句橋＋2／攞簽名影相＋0 */
+  if(segKey==="first:mak_zhendong"){ if(has("放低")) return { fav:2 }; /* 堅持遞到手／開口問傷勢皆 +1 */ return { fav:1 }; } /* v20a271 1.17：好感差異（WORKORDER 建議值）——放低支水＋2／堅持遞到手＋1／開口問傷勢＋1 */
   if(segKey==="first:yip_manji"){ if(has("唔出聲")) return { fav:3 }; if(has("頂返")||has("頂嘴")) return { fav:-2 }; return { fav:1 }; }
   if(segKey==="heart:luk_baakyin") return { fav: has("聽")?3:1 };
   if(segKey==="heart:liu_bingxing") return { fav: has("笑")?1:2 };
@@ -38369,6 +38422,8 @@ function enc79ChoiceFx(segKey, label){
   if(segKey==="beat:luk_thanks") return { fav: has("笑")?2:4 };
   /* v20a269：廖 clash 新抉擇（企邊邊） */
   if(segKey==="beat:liu_clash"){ if(has("廖炳星")) return { fav:2 }; if(has("導演")) return { fav:-1 }; return { fav:1 }; }
+  /* v20a271：陸 foreshadow 新抉擇（守口／講兩句）——旗行 DLG flags 欄位，呢度只回 fav */
+  if(segKey==="beat:luk_foreshadow"){ if(has("守口")) return { fav:2 }; if(has("講兩句")) return { fav:-2 }; return { fav:1 }; }
   /* v20a89 BR89：liu_repay／mak_respect 債權改條件派發（審計 #9）——以前 beat.grants 無條件派，
      推辭／講會驚照攞債權；而家跟返抉擇行 fx 通道派，grants 已由 beat 定義移除。fav 數值維持原值。 */
   if(segKey==="beat:liu_repay"){ if(has("推")||has("排緊")) return { fav:1, fx:"liu_decline" }; return { fav:2, fx:"liu_accept" }; }
@@ -38379,7 +38434,7 @@ function enc79ChoiceFx(segKey, label){
   }
   /* ===== v20a83 ENC83：Phase 2 四星選項效果（label 關鍵字由 ENC83 對白鎖定） ===== */
   if(segKey==="first:ngai_wingnaam"){ if(has("汽水")) return { fav:5 }; if(has("紙巾")) return { fav:1 }; return { fav:-2 }; }
-  if(segKey==="first:gu_mingfai"){ if(has("聽")) return { fav:3 }; if(has("招呼")) return { fav:1 }; return { fav:-2 }; }
+  if(segKey==="first:gu_mingfai"){ if(has("聽")) return { fav:2 }; if(has("招呼")) return { fav:1 }; return { fav:0 }; } /* v20a271 1.13：好感差異（WORKORDER 建議值）——聽哼舊歌＋2／點頭打招呼＋1／走先＋0 */
   if(segKey==="first:lok_gasing"){ if(has("撐")) return { fav:3 }; if(has("點頭")) return { fav:1 }; return { fav:-2 }; }
   if(segKey==="first:chai_zanhoi"){ if(has("答得出")) return { fav:3 }; if(has("唔記得")) return { fav:1 }; return { fav:-2 }; }
   if(segKey==="heart:ngai_wingnaam") return { fav: has("認真")?3:1 };
@@ -38566,8 +38621,27 @@ function enc79BuildScript(starId, forceFirst, locId){
     if(beat.id==="mak_patron" && (S.flags||{}).mak_kept_secret && Array.isArray(beatSeg100.lines) && beatSeg100.lines.length){
       beatSeg100 = { lines: [beatSeg100.lines[0], ["S","嗰陣你應承幫我守秘密，你真係守到而家——呢份口密，我信得過。"]].concat(beatSeg100.lines.slice(1)), choices: beatSeg100.choices || null };
     }
+    /* v20a271：支線旗讀取變體——陸 foreshadow 認返初遇揀法；廖／顧 patron 認返交心揀法 */
+    if(beat.id==="luk_foreshadow" && Array.isArray(beatSeg100.lines) && beatSeg100.lines.length){
+      let pre271 = null;
+      if((S.flags||{}).luk_first_quiet) pre271 = ["N","（排練室入面嗰把聲，阿偉認得——走廊嗰陣，佢遞返劇本嗰陣，陸柏言連望都冇望佢一眼。）"];
+      else if((S.flags||{}).luk_first_pushy) pre271 = ["N","（排練室入面嗰把聲，阿偉認得——走廊嗰陣，佢話自己叫阿偉，陸柏言話臨記咁多個，記唔晒。）"];
+      if(pre271) beatSeg100 = { lines: [pre271].concat(beatSeg100.lines), choices: beatSeg100.choices || null };
+    }
+    if(beat.id==="liu_patron" && Array.isArray(beatSeg100.lines) && beatSeg100.lines.length){
+      let v271 = null;
+      if((S.flags||{}).liu_heart_earnest) v271 = ["S","你嗰日認真回我嗰句，我收到。肯頂住成班人嘅人唔多，你係其中一個。"];
+      else if((S.flags||{}).liu_heart_joke) v271 = ["S","你嗰日用笑話接我嗰句，我笑完先諗返——識笑，唔代表唔認真。"];
+      if(v271) beatSeg100 = { lines: [beatSeg100.lines[0], v271].concat(beatSeg100.lines.slice(1)), choices: beatSeg100.choices || null };
+    }
+    if(beat.id==="gu_patron" && Array.isArray(beatSeg100.lines) && beatSeg100.lines.length){
+      let v271g = null;
+      if((S.flags||{}).gu_heart_sit) v271g = ["S","嗰晚你陪我坐到天光，咩都冇講——嗰種陪法，我記住。"];
+      else if((S.flags||{}).gu_heart_quit) v271g = ["S","嗰晚你話『把聲仲喺度，仲可以重新嚟過』，我返去諗咗成晚。你講得啱。"];
+      if(v271g) beatSeg100 = { lines: [beatSeg100.lines[0], v271g].concat(beatSeg100.lines.slice(1)), choices: beatSeg100.choices || null };
+    }
     pushSeg(beatSeg100, "beat:"+beat.id, ()=>{ const s2=enc79StarState(starId); s2.beatsDone[beat.id]=((S&&S.dayIndex)|0); try{ beat.grants && beat.grants(); }catch(_g){} });
-  } else if(tier>=3 && !st.heartDone && D.heart && !(starId==="chung_choning" && chungPre91)){
+  } else if(tier>=3 && !st.heartDone && D.heart && !(starId==="chung_choning" && chungPre91) && !(starId==="luk_baakyin" && !(S.flags||{}).luk_kept_secret)){ /* v20a271：陸 heart 加閘 T3＋luk_kept_secret（守口先有交心） */
     pushSeg(D.heart, "heart:"+starId, ()=>{ const s2=enc79StarState(starId); s2.heartDone = true; enc79AddFav(starId, 2, "beat"); });
   } else {
     const band = tier<=1 ? "T1" : (tier===2 ? "T2" : "T3");
@@ -39911,6 +39985,22 @@ function enc83GuLoanTick(){
     try{ saveQ(); }catch(_s){}
   }catch(_e){}
 }
+/* v20a271：陸柏言「唔接替工」偵測 tick——luk_tease 播出後 28 日內冇接／冇做 gig_1991_tv_203《星夜迷離》臨時替工，
+   立 luk_absent_night（Beat 5 行冷版）。殺青 wrap 設 luk_cover_night 嗰陣會清走呢支旗（遲做都補救）。 */
+function enc271LukAbsentTick(){
+  try{
+    if(typeof S==="undefined" || !S || !S.flags) return;
+    const f = S.flags;
+    if(f.luk_absent_night || f.luk_cover_night) return;
+    if(Number(f["done_gig_1991_tv_203"])>0) return;
+    if(Number(f["fail_shoot_gig_1991_tv_203"])>0) return;
+    if(((S.shoots||[]).some(sh=>sh && sh.gigId==="gig_1991_tv_203"))) return;
+    const st = (typeof enc79StarState==="function") ? enc79StarState("luk_baakyin") : null;
+    const teaseDay = st && st.beatsDone ? Number(st.beatsDone.luk_tease)||0 : 0;
+    if(!teaseDay) return;
+    if(((S.dayIndex|0) - teaseDay) >= 28) f.luk_absent_night = 1;
+  }catch(_e){}
+}
 /* ---------- Phase 2 四星註冊（對白／試點旗／框架文案） ---------- */
 try{ if(typeof ENC83_DLG_ngai_wingnaam!=="undefined"){ ENC79_DIALOG.ngai_wingnaam = ENC83_DLG_ngai_wingnaam; ENC79_PILOT.ngai_wingnaam = 1; } }catch(_e){}
 try{ if(typeof ENC83_DLG_gu_mingfai!=="undefined"){ ENC79_DIALOG.gu_mingfai = ENC83_DLG_gu_mingfai; ENC79_PILOT.gu_mingfai = 1; } }catch(_e){}
@@ -39953,7 +40043,8 @@ try{ const D=ENC79_DIALOG.yip_manji; if(D && D.beats) D.beats.yip_patron = { lin
   ["A","多謝你。我會記住呢份人情。"],
   ["N","佢講完就行開。今次，冇帶刺——一步都冇。"]
 ] }; }catch(_e){}
-try{ ENC79_BEATS.luk_baakyin.push({ id:"luk_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc83_luk_patron", debtor:"陸柏言", title:"天王引薦", line:"陸柏言親自開口：下次大製作試鏡，名單會有你個名。呢份人情，成行冇幾個人有。", status:"未收" }); } }); }catch(_e){}
+try{ ENC79_BEATS.luk_baakyin.push({ id:"luk_patron_cold", when(st){ return enc79TierOf(st.fav)>=4 && ((S.flags||{}).luk_absent_night || (S.flags||{}).luk_loose_talk); } }); }catch(_e){} /* v20a271：冷版提攜（排喺暖版之前 shadow；無 credit） */
+try{ ENC79_BEATS.luk_baakyin.push({ id:"luk_patron", when(st){ return enc79TierOf(st.fav)>=4 && !((S.flags||{}).luk_absent_night || (S.flags||{}).luk_loose_talk); }, grants(){ enc79GrantCredit({ id:"credit_enc83_luk_patron", debtor:"陸柏言", title:"天王引薦", line:"陸柏言親自開口：下次大製作試鏡，名單會有你個名。呢份人情，成行冇幾個人有。", status:"未收" }); } }); }catch(_e){} /* v20a271：暖版加排除式閘（冇頂夜／講咗出去唔開，行冷版） */
 try{ ENC79_BEATS.liu_bingxing.push({ id:"liu_patron", when(st){ return enc79TierOf(st.fav)>=4 && !((S.flags||{}).enc79_liu_declined || (S.flags||{}).enc79_liu_clash_script); }, grants(){ enc79GrantCredit({ id:"credit_enc83_liu_patron", debtor:"廖炳星", title:"喜劇組引薦", line:"廖炳星同導演講好咗：佢下套新戲開鏡，有個有對白嘅位，留畀你去試。", status:"未收" }); } }); }catch(_e){} /* v20a269：暖版加排除式閘（推辭／企導演邊唔開，行冷版） */
 try{ ENC79_BEATS.mak_zhendong.push({ id:"mak_patron", when(st){ return enc79TierOf(st.fav)>=4 && !(S.flags||{}).enc79_mak_honest; }, grants(){ enc79GrantCredit({ id:"credit_enc83_mak_patron", debtor:"麥震東", title:"武行引薦", line:"麥震東喺武指嗰行開咗口：第日有大組開武打戲，會推你入去跟組學嘢。", status:"未收" }); } }); }catch(_e){} /* v20a269：暖版加排除式閘（老實講會驚唔開，行冷版） */
 try{ ENC79_BEATS.yip_manji.push({ id:"yip_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc83_yip_patron", debtor:"葉敏芝", title:"試鏡引薦", line:"葉敏芝經理人嗰邊打咗招呼：你去嗰套時裝劇試鏡嗰日，監製會認真睇你嗰場。", status:"未收" }); } }); }catch(_e){}
