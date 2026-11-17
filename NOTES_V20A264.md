@@ -31,7 +31,7 @@ v139 換入嘅 `assets/fx/fx_train_c.mp4`（PixelLab character-animation 版，9
 
 - 新檔 `tests/test_fx264_static.py`（18 項，全 PASS）：trainC `?v=20a264`、其餘 5 條仲係 `?v=20a139`、新片 byte 數＋sha256、逐幀像素檢查（頭盔 tan 清零、兩點亮度回復木色、背景逐幀靜態 ≤25）、紅線三項。
 - `tests/test_fx139_static.py` 同步更新 train_c 嘅 byte 數＋sha（舊值留註解），其餘不變，全 PASS。
-- 全套 suite：**327／10，零回歸**（基線 326／10；新測試 test_fx264_static.py 加 1 PASS；10 項 FAIL 同基線完全一致，全部 pre-existing：flash51／rumor49／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wf5_87／wrap38）。
+- 全套 suite：**327／10，零回歸**（基線 326／10；新測試 test_fx264_static.py 加 1 PASS；10 項 FAIL 同基線完全一致，全部 pre-existing：flash51／rumor49／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wf5_87／wrap38）。**合併後 main 實測 328／10**：我開工期間 v158 落咗地（dacb3d8，加咗一檔測試），合併後 main＝326＋v264 一檔＋v158 一檔，FAIL 十項不變，零回歸。
 
 ## 歷史備註
 
