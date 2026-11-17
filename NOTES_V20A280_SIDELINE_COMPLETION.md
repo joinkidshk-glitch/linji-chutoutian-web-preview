@@ -81,3 +81,9 @@
 ## §8 已接受偏差
 
 - **顧／麥早開 patron 之後先揀冷版，理論上獎勵已派出**——同債權本身喺 live v269 閘嘅鬆動一致，唔重構。顧：patron 閘讀 `gu_n10_warned`（N10 後事件）同 `enc83_gu_loan_refused`；如果玩家攞咗 patron 之後先行冷邊，helper 已經喺 patron grants 嗰陣派咗。麥同理（`enc79_mak_honest` 係 Beat 4 旗，patron 喺 Beat 5 之後先開——實際上麥線 patron 喺 respect beat 之後，honest 旗落喺 patron 之前，所以麥線唔受影響；顧線 N10 後事件可以喺 patron 之後先發生，係真正嘅邊緣情況）。
+
+## 落地記錄（post-merge）
+- main HEAD `cc0a8ca`（squash merge v280，2026-11-18）
+- 全套 suite：**345／9**（9 項全部係已知 pre-existing FAIL：flash51／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wf5_87／wrap38；基線 344／9＋新測試檔 1 個）
+- GitHub Pages 核實：主頁 200、4,678,453 bytes、與本地 index.html byte-identical
+- 工作副本 `linji-work280` 已刪
