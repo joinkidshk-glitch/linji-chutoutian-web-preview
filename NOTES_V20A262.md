@@ -40,7 +40,9 @@ v159 落地嗰陣 6 張新約會場景圖出咗像素風，同現成 15 張平�
 
 ## 落地
 
--
+- 分支 `v262`（commit `4ecbf9b`）由 9b1e6f0（v159）rebase 上 f3a08c3（v139）後合併；squash merge 入 main，commit `947cf56`，已推 GitHub（`git ls-remote` 核實 `947cf56`）。
+- Pages 核實（推後約 4 分鐘）：6 張圖 URL 全部 HTTP 200，sha256 同本地一致（airport `925e7ff5b75b`、beach `bf8dc0b8de2f`、cinema `58541ecfe0a9`、harbour `9b7281dd8ed2`、lounge `aafbfd755fb1`、peak `7e79d9711bf8`）。
+- 工作副本 `linji-work262` 已刪。
 
 ## 押後
 
