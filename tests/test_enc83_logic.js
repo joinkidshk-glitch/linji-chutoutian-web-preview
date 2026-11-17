@@ -133,7 +133,7 @@ ok('出沒窗外：齊 1991 春得基礎 50%', (()=>{ _ys={year:1991,season:'春
 /* ---- (2) 五層完整性＋句數 ---- */
 const EXPECT_BEATS = {
   ngai_wingnaam: ['ngai_intel','ngai_help','ngai_repay','ngai_patron'],
-  gu_mingfai: ['gu_foreshadow','gu_tease','gu_loan','gu_after_repay','gu_after_default','gu_n10after','gu_patron'],
+  gu_mingfai: ['gu_foreshadow','gu_tease','gu_loan','gu_after_repay','gu_after_default','gu_n10after','gu_patron_cold','gu_patron'], /* v20a269：冷版提攜排暖版之前 */
   lok_gasing: ['lok_foreshadow','lok_intel','lok_help','lok_recover','lok_e4grudge','lok_patron'],
   chai_zanhoi: ['chai_intel','chai_choice','chai_repay','chai_patron'],
 };
