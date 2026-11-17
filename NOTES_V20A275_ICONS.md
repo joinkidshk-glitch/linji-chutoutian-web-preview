@@ -61,3 +61,11 @@
 - Cache-buster：`iconHtml112` 出嘅 `<img>` 同現成 43 隻一樣無 per-asset `?v=`（只係 seal 圖有）；
   4 隻係新檔，無舊版緩存問題，唔使升。
 - 紅線：SAVE key／softRev／`?v=20a10` 無改動。
+
+## 6. 落地記錄
+
+- main `2569d19`（squash merge v275），已推 GitHub，`ls-remote` 一致。
+- Pages 核實：主頁 HTTP 200，4,618,539 bytes，sha256 同本地 `index.html` 逐字節一致；
+  `assets/icons/icon_wave.png` HTTP 200，13,246 bytes，sha256 同本地一致。
+- 工作副本 `linji-work275` 已刪；草稿 `~/workspace/icons275-draft/` 已清。
+- 分支 `v20a275` 留喺常駐 clone 做紀錄。
