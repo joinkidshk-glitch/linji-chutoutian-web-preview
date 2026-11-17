@@ -1,3 +1,4 @@
+# v20a276 resync：index.html 淨 +1 行（#loc-title 米紙圓底 chip 新規則，插入點舊 L4010）；本檔釘行／鏈尾一律 +1，內容逐字核實純漂移。
 # v20a268 resync：index.html 淨 −236 行（WF2 Vera 覆寫 −233／MEET_SOFT −1／SCENE_OVERRIDE154 −1／CONTRA98 R_tang_push2／crisis 行 −1）；
 # 3 個釘行按 difflib 映射重寫（HELD 9521→9287、normaliseTangStub152 14975→14739、stub 呼叫行 15102→14866；
 # 內容逐字相同，純漂移，見 qa268/resync268.py）；winter_finale 計數 8→7（CONTRA98 R_vera_ending 段刪）；
@@ -88,7 +89,7 @@ ok('刪節點：CONTRA98_WHEN_FIX 冇 R_tang_ending', 'R_tang_ending:["1990' not
 ok('刪節點：CONTRA98 winter_finale 由 8 減到 7（v20a268：R_vera_ending 段刪）', src.count('"1990冬","era_1990_winter_finale"') == 7)
 
 # --- 3. DengLine 排片線留返（meet＋push1／push2／crisis，閘門唔郁） ---
-ok('留線：HELD 縮到 3 節（L25817）', lines()[9287].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
+ok('留線：HELD 縮到 3 節（L25817）', lines()[9288].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
 ok('留線：PUSH_CHROME 有 push1／push2／crisis，冇 ending',
    'R_tang_push1: { chromeSeason:"winter"' in src and 'R_tang_push2: { chromeSeason:"spring"' in src
    and 'R_tang_crisis: { chromeSeason:"autumn"' in src)
@@ -122,8 +123,8 @@ ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
 # v20a235 resync：index.html 淨 −24 行（N17 前夕刪三選項）；3 個釘行按 difflib 映射重寫（normaliseTangStub152 15563→15539、stub 呼叫行 15686→15662；HELD 10006 唔郁），內容逐字核實純漂移。
 # v20a242 resync：index.html 淨 −144 行（刪 LAN 覆寫表；刪除區間舊 L6597–6735／7559–7579／15038–15045）；3 個釘行按段重算（HELD 9358→9212，−146；normaliseTangStub152 14926→14783，−143；stub 呼叫行 15049→14905，−144），內容逐字核實純漂移。
 # --- 4. 載入機制：stub 正規化＋push mock 過濾 ---
-ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[14739].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[14866].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[14740].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[14867].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)
