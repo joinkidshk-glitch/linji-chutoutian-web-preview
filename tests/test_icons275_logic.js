@@ -63,7 +63,7 @@ for(const [id, em] of LOCS275){
 for(const [, em, stem] of LOCS275){
   const out = iconHtml112(em);
   ok('render ' + em + ' -> icon_' + stem + '.png',
-    out === '<img class="ic112" src="assets/icons/icon_' + stem + '.png?v=20a276" alt="" aria-hidden="true"/>');
+    out === '<img class="ic112" src="assets/icons/icon_' + stem + '.png?v=20a277" alt="" aria-hidden="true"/>'); /* v20a277：cache-buster 升（peak 重畫） */
   ok('render ' + em + ' output has no raw emoji', !out.includes(em));
 }
 

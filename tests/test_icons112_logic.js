@@ -64,7 +64,7 @@ const EXPECT = {
 for(const [em, stem] of Object.entries(EXPECT)){
   const out = iconHtml112(em);
   ok('map ' + em + ' -> icon_' + stem + '.png',
-    out === '<img class="ic112" src="assets/icons/icon_' + stem + '.png?v=20a276" alt="" aria-hidden="true"/>');
+    out === '<img class="ic112" src="assets/icons/icon_' + stem + '.png?v=20a277" alt="" aria-hidden="true"/>'); /* v20a277：cache-buster 升（peak 重畫） */
 }
 // ✅ 行 CSS，唔係 <img>
 ok('map ✅ -> css check', iconHtml112('✅') === '<span class="ic-check112" aria-hidden="true">✓</span>');

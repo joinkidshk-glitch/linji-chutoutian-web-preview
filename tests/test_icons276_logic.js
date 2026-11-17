@@ -3,10 +3,14 @@
 //   落場景相上面偏細偏暗；列掣圖示 13px 落深藍／深啡掣底幾乎隱形；山頂發射塔
 //   喺細尺寸下睇唔到。
 //   釘死：(1) #loc-title img.ic112 係 36px 米紙圓底 chip（畫芯 30px）；
-//   (2) .map-area-list button img.ic112 係 22px 米紙圓底 chip（畫芯 18px）；
-//   (3) iconHtml112() 輸出帶 per-asset cache-buster ?v=20a276；
-//   (4) icon_peak.png 256×256 RGBA，發射塔區實色剪影（塔區深色像素 >1000，
-//       v275 格仔塔 910）；其餘 3 隻圖 sha256 同 v275 一致，唔郁；
+//   (2) v20a277 修訂：.map-area-list button img.ic112 22px chip 規則已刪——
+//       嗰行掣自 v20a43 起 #app #map-area-list{ display:none !important; }
+//      （用戶 2026-11-09 拍板刪走底部快捷列），規則永遠食唔到，係死 CSS；
+//       #map-area-list 本身嘅 display:none 唔郁；
+//   (3) iconHtml112() 輸出帶 per-asset cache-buster ?v=20a277（v277 升）；
+//   (4) icon_peak.png 256×256 RGBA，v277 重畫：支塔做主體（橫臂 x40–216、
+//       塔底闊 140、塔高 206；塔區深色像素 2895，v276 實色塔 1138）；
+//       其餘 3 隻圖 sha256 同 v275 一致，唔郁；
 //   (5) 其餘 .ic112 用法原樣（base 1.15em；day-row／cat-tab／act-item 規則唔郁）。
 // 用法：node tests/test_icons276_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -38,20 +42,15 @@ if(titleRule){
   ok('title icon box-sizing border-box', /box-sizing:\s*border-box/.test(titleRule));
 }
 
-// ---- (2) 地圖列掣圖示 22px 米紙圓底 chip ----
-const btnRule = cssRule('.map-area-list button img.ic112');
-ok('css .map-area-list button img.ic112 exists', btnRule !== null);
-if(btnRule){
-  ok('list button icon 22px chip', /height:\s*22px/.test(btnRule) && /width:\s*22px/.test(btnRule));
-  ok('list button icon padding 2px (art 18px)', /padding:\s*2px/.test(btnRule));
-  ok('list button icon cream chip #f8f1de', /background:\s*#f8f1de/i.test(btnRule));
-  ok('list button icon round chip', /border-radius:\s*50%/.test(btnRule));
-  ok('list button icon box-sizing border-box', /box-sizing:\s*border-box/.test(btnRule));
-}
+// ---- (2) v20a277：地圖列掣 22px chip 規則已刪（死 CSS） ----
+// 嗰行掣自 v20a43 起 #app #map-area-list{ display:none !important; }，規則
+// 永遠食唔到；刪規則唔等於恢復嗰行掣——display:none 本身要留喺度。
+ok('dead css .map-area-list button img.ic112 removed', cssRule('.map-area-list button img.ic112') === null);
+ok('#map-area-list stays display:none (v20a43, do NOT revive)', /#app #map-area-list\{\s*display:none !important;/.test(html));
 
-// ---- (3) iconHtml112() 輸出帶 ?v=20a276 ----
+// ---- (3) iconHtml112() 輸出帶 ?v=20a277 ----
 const m = html.match(/function iconHtml112\(v\)\{[\s\S]*?src="assets\/icons\/icon_'\+stem\+'\.png([^"]*)"/);
-ok('iconHtml112 src has cache-buster ?v=20a276', !!m && m[1] === '?v=20a276');
+ok('iconHtml112 src has cache-buster ?v=20a277', !!m && m[1] === '?v=20a277');
 
 // ---- (4) 山頂圖：256×256 RGBA＋實色塔；其餘 3 隻 sha256 唔郁 ----
 function pngInfo(p){
@@ -61,10 +60,12 @@ function pngInfo(p){
 }
 const peak = pngInfo(path.join(root, 'assets', 'icons', 'icon_peak.png'));
 ok('peak 256x256 RGBA', peak.w === 256 && peak.h === 256 && peak.depth === 8 && peak.type === 6);
-ok('peak sha is v276 solid version',
-  peak.sha === 'd1a78c9418fe58263ac20d3bf2a1f12e32a8ffe2c97f81f5971a320b2dce9b4e');
-// 塔區（x112–144，y48–142）深色像素：v275 格仔塔 910，v276 實色剪影 1138。
-// 塔區（x112–144，y48–142）深色像素：v275 格仔塔 910，v276 實色剪影 1138。
+ok('peak sha is v277 redrawn version',
+  peak.sha === '945fe0c929e35085b04feccef762d14ab45e5c5e93ddf21a8a9787b65813cc84');
+// 塔區（x112–144，y48–142）深色像素：v275 格仔塔 910，v276 實色剪影 1138，
+// v277 重畫支塔做主體 2895。
+// 塔區（x112–144，y48–142）深色像素：v275 格仔塔 910，v276 實色剪影 1138，
+// v277 重畫支塔做主體 2895。
 // 純 Node 解 PNG（IHDR＋IDAT inflate＋逐行反濾鏡），唔靠 PIL／shell。
 const zlib = require('zlib');
 function pngPixels(p){
@@ -109,7 +110,7 @@ let towerPx = 0;
 for(let y = 48; y <= 142; y++)
   for(let x = 112; x <= 144; x++)
     if(peakPx.px[(y * 256 + x) * 4 + 3] > 10) towerPx++;
-ok('peak tower zone solid (>1000 dark px, v275 lattice was 910)', towerPx > 1000);
+ok('peak tower zone solid (>2000 dark px, v276 solid was 1138)', towerPx > 2000);
 const UNCHANGED = {
   wave: '7cb34640278f702f9a93eba0dd7a41dd9f9f1dff9fd621b258b5a4eeeb0f4952',
   beach: '9cd624d1e1508695dea3025340cf741afde53378b02ba6f810caac3bcf4bae41',

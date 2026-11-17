@@ -4008,7 +4008,7 @@ body.day-res-open .day-row{
 .act-item .ai img.ic112{ height:1.25em; width:1.25em; }
 .psr-icon img.ic112{ height:1.15em; width:1.15em; vertical-align:-0.25em; }
 #loc-title img.ic112{ height:36px; width:36px; box-sizing:border-box; padding:3px; background:#f8f1de; border-radius:50%; vertical-align:-0.6em; } /* v20a276：標題圖示放大＋加亮——20px 深啡線落場景相上面對比度低（瀏覽器 2026-11-17 實機：偏細偏暗）；36px 圓底 chip（米紙 #f8f1de，跟 .btnrow／標題字同一暖紙色），畫芯 30px；跟 v20a174 獎盃金底 chip 同一解法（唔改圖標線稿本身） */
-.map-area-list button img.ic112{ height:22px; width:22px; box-sizing:border-box; padding:2px; background:#f8f1de; border-radius:50%; vertical-align:-0.6em; } /* v20a276：地圖列掣圖示同款處理——13px 深啡線落深藍／深啡掣底（rgba(20,36,56,.85)／rgba(40,28,12,.92)）幾乎隱形；22px 圓底 chip，畫芯 18px */
+/* v20a277：刪 .map-area-list button img.ic112 22px chip 規則——嗰行掣自 v20a43 起 #app #map-area-list{ display:none !important; }（用戶 2026-11-09 拍板刪走底部快捷列），規則永遠食唔到，係死 CSS；#map-area-list 本身嘅 display:none 唔郁。 */
 .ic-check112{ color:#2e7d32; font-weight:800; }
 .fav-dots112{ display:inline-flex; gap:3px; vertical-align:-1px; margin-right:2px; }
 .fav-dots112 i{ width:9px; height:9px; border-radius:50%; background:transparent; border:1.5px solid #b98a4a; }
@@ -17787,7 +17787,7 @@ function iconHtml112(v){
     if(v==null || v==="") return "";
     if(v==="✅") return '<span class="ic-check112" aria-hidden="true">✓</span>';
     const stem = EMOJI_ICON112[v] || EMOJI_ICON112[String(v).replace(/️/g, "")] || EMOJI_ICON112[String(v) + "️"];
-    if(stem) return '<img class="ic112" src="assets/icons/icon_'+stem+'.png?v=20a276" alt="" aria-hidden="true"/>'; /* v20a276：per-asset cache-buster——icon_peak.png 內容改咗（格仔塔改實色剪影），無 ?v= 舊玩家會繼續用緩存舊圖；跟 fullbody ?v=20a106 同一做法 */
+    if(stem) return '<img class="ic112" src="assets/icons/icon_'+stem+'.png?v=20a277" alt="" aria-hidden="true"/>'; /* v20a277：per-asset cache-buster——icon_peak.png 內容改咗（支塔畫大做主體，v276 實色塔太細），無 ?v= 舊玩家會繼續用緩存舊圖；跟 fullbody ?v=20a106 同一做法 */
     if(v==="·") return "·";
     return (typeof esc==="function") ? esc(String(v)) : String(v);
   }catch(_e){ return ""; }
