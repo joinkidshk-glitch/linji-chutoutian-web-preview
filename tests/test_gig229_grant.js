@@ -2,7 +2,7 @@
 //   T0 44 張即派 id 齊（主線 31＋支線 13）＋新庫 282 張（v255：ENC79 9 張＋DRAFT 2 張重對完成——
 //       REUSE 4 張（rec_209／rec_201／film_211／1991_rec_201）＋NEW 7 張（tv_217／218／219、rec_210、
 //       film_213／214、1991_rec_207）；11 張舊 id 已唔喺新庫，映射已改指新 id，實機初遇／draft 即派 live；
-//       v253 C 組再加 6 張新 gig，庫 276→282）
+//       v253 C 組再加 6 張新 gig，庫 276→282；v20a158 再加 8 行支線抉擇即派（顧／麥／廖，ENC79 9→17））
 //   T1 主線 42 映射：抉擇→記低指定 gig、dueDay＝聽日（同上；v252 新 id：N1 tv_201／film_201、N2 film_202／tv_202、
 //       N3 tv_203／tv_204、N4 ad_206／film_203、N5 tv_205／tv_205／tv_206、N6 tv_107 合約、N6F film_113 合約、
 //       N18 tv_208／tv_110、N7 film_104／tv_107／tv_201、N8 variety_109／rec_205／rec_206、N9 film_103／film_201、
@@ -173,12 +173,12 @@ ok('T0 主線 31 張 id 齊', MAIN31.every(id=>!!gigById(id)));
 ok('T0 支線 W3 2 張 id 齊', SIDE_W3_2.every(id=>!!gigById(id)));
 ok('T0 ENC79／DRAFT 11 張舊 id 已唔喺新庫（v255：已刪，映射改指新 id）', SIDE_DEAD11.every(id=>!gigById(id)),
    'dead=' + SIDE_DEAD11.filter(id=>!gigById(id)).length + '/11');
-ok('T0 ENC79 9 行指住 live 新 id（REUSE 4＋NEW 7）', GRANT229_ENC79.every(r=>SIDE_LIVE11.indexOf(r.gigId)>=0));
+ok('T0 ENC79 原 9 行指住 live 新 id（REUSE 4＋NEW 7；v20a158 新 8 行另見 test_sideline158_logic.js T7）', GRANT229_ENC79.slice(0,9).every(r=>SIDE_LIVE11.indexOf(r.gigId)>=0));
 ok('T0 DRAFT 2 鍵指住 live 新 id', Object.values(GRANT229_DRAFT).every(v=>SIDE_LIVE11.indexOf(v.gigId)>=0));
 ok('T0 11 張新 id 全部喺庫', SIDE_LIVE11.every(id=>!!gigById(id)));
 ok('T0 《星夜迷離》新庫有且只有 1 張（v232 補寫，v252 重編號 tv_122→tv_203）', gigs.filter(g=>(g.title||'').indexOf('星夜迷離')>=0).length===1 && gigById('gig_1991_tv_203'));
 ok('T0 GRANT229_CHOICE 44 鍵', Object.keys(GRANT229_CHOICE).length===44, Object.keys(GRANT229_CHOICE).join(','));
-ok('T0 GRANT229_ENC79 9 行', GRANT229_ENC79.length===9);
+ok('T0 GRANT229_ENC79 17 行（原 9＋v20a158 支線抉擇 8 行）', GRANT229_ENC79.length===17);
 ok('T0 GRANT229_DRAFT 2 鍵', Object.keys(GRANT229_DRAFT).length===2);
 ok('T0 CONTRACT229_GIGS 只得 N-3／N-4', Object.keys(CONTRACT229_GIGS).length===2 && CONTRACT229_GIGS.gig_1990_tv_107===1 && CONTRACT229_GIGS.gig_1990_film_113===1);
 

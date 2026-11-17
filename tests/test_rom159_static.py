@@ -138,22 +138,23 @@ ok("鏈 D yip_choice 有 R_yip_push1 guard", 'StoryOC.isDone("R_yip_push1")' in 
 ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committed' in idx and 'rom.so.committed' in idx)
 
 # 行號釘（靜態寫死；2026-11-17 整合重測：B1＋B2 cherry-pick 後移位，改動移位要同步更新呢度）
+# v20a158 resync：釘行各 ＋15（插入點全部喺釘行之前：gigCardHtml＋4／詳情頁＋11；GRANT229_ENC79 喺釘行之後，唔計）；difflib 對位核實內容逐字相同，純漂移。
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25484", line_has(25484, "v20a159 ROM159 Phase 1"))
+ok("行號釘 ROM159 block 頭 25499", line_has(25499, "v20a159 ROM159 Phase 1"))
 ok("行號釘 bumpRel 凍結鉤 8020", line_has(8020, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26318", line_has(26318, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 CMT_lan_commit 26333", line_has(26333, "COMMIT48_NODES.CMT_lan_commit"))
 ok("行號釘 StoryPlay 預備鉤 10553", line_has(10553, "rom159PrepareNode(node)"))
 ok("行號釘載入覆寫呼叫 14877", line_has(14877, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26233", line_has(26233, "function rom159SoMeetGate"))
+ok("行號釘 rom159SoMeetGate 26248", line_has(26248, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25512 - 1])  # v20a159 整合：B1＋B2 後行號 +86
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25527 - 1])  # v20a159 整合：B1＋B2 後行號 +86
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）

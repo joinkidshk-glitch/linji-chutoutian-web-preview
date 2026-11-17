@@ -17907,6 +17907,10 @@ function gigCardHtml(g, opts){
   /* Weave Phase 1-3：持有對應拼合情報嗰陣，通告卡多一行情報提示（無情報就完全唔顯示）。 */
   let intelHtml = "";
   try{ const il = (typeof intelLineForGig==="function") ? intelLineForGig(g) : ""; if(il) intelHtml = `<div class="discover-note">情報：${il}</div>`; }catch(_e){}
+  /* v20a158：人情免試鏡渠道適用嗰陣，卡面多一行金色提示（只喺 canAudition 過關嗰陣出；
+     渠道本身見 favor158ChannelForGig，掛喺 promptAudition 附近）。 */
+  let favor158Html = "";
+  try{ const fh = (typeof favor158ChannelHintHtml==="function") ? favor158ChannelHintHtml(g) : ""; if(fh) favor158Html = fh; }catch(_e){}
   /* PLAN §3 meta：酬勞 · 拍攝／錄音約 N 日 · 逢週… · 獲聘後 N 日內完成 */
   const metaBits=[];
   {
@@ -17966,7 +17970,7 @@ function gigCardHtml(g, opts){
   /* v20a229 B5 觸發標籤：已觸發上板嘅通告標「引薦」（credit）／「邀約」（其餘五種）。 */
   let trigBit = "";
   try{ const tl = (typeof triggerGigLabel229==="function") ? triggerGigLabel229(g) : ""; if(tl) trigBit = ` <span class="bp-tag trig">${tl}</span>`; }catch(_e){}
-  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+badge94.label):""}${seasonBit}${bpBit}${bridgeBit}${trigBit}</div><b class="g-title">${g.title}</b>${bridgeNote}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}</div>`;
+  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+badge94.label):""}${seasonBit}${bpBit}${bridgeBit}${trigBit}</div><b class="g-title">${g.title}</b>${bridgeNote}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}${favor158Html}</div>`;
 }
 
 /* ===== v19c PLAN_GIG_PAY_EXACT_v1 + PLAN_GIG_BREACH_FEE_v1（顯示派生；引擎逾期可掛） ===== */
@@ -18888,11 +18892,22 @@ function openCastingNoticeDetail(g, L){
     if(softEntry){
       body += `<p class="var-note">去試鏡要用一日，結果等何生通知。</p>`;
     }
+    /* v20a158：人情免試鏡渠道——金色提示行＋用人情掣（只喺 canAudition 過關嗰陣出；
+       用咗就保證獲聘、唔使試鏡，聽朝何生打嚟通知；人情用一次即清）。 */
+    const ch158 = (typeof favor158ChannelForGig==="function") ? favor158ChannelForGig(g) : null;
+    if(ch158){
+      body += `<p class="gold">${ch158.hint}</p>`;
+    }
     btns.push({label: softEntry ? "去試鏡" : copy.readyLabel, role:"p", on:()=>{
       confirmSpendDay(softEntry
         ? `去試鏡：${g.title||"通告"}`
         : `接通告：${g.title||"通告"}`, ()=>doAudition(g, L));
     }});
+    if(ch158){
+      btns.push({label:"用人情免試鏡", role:"p", on:()=>{
+        if(typeof favor158UseChannel==="function") favor158UseChannel(g, L);
+      }});
+    }
   } else {
     const lockedBtn = {label:copy.lockedLabel, role:"g", cls:"cast-locked", stay:true, on:(btn)=>{
       if(copy.shake && btn){
@@ -26997,7 +27012,22 @@ const GRANT229_ENC79 = [
   { seg:"first:gu_mingfai", key:"", gigId:"gig_1990_rec_210", source:"顧明輝初遇", reason:"電台嗰邊聽朝有個和音班開工，話你去聽下，唔使唱住，先聽人哋點唱。" },
   { seg:"first:mak_zhendong", key:"放低", gigId:"gig_1990_film_211", source:"麥震東初遇", reason:"動作組聽朝要替身，副導話你聽朝去報到，企定個位，唔好俾人搶走。" },
   { seg:"first:mak_zhendong", key:"堅持", gigId:"gig_1990_film_213", source:"麥震東初遇", reason:"動作組聽朝要替身，副導話你聽朝去報到，企定個位，唔好俾人搶走。" },
-  { seg:"first:mak_zhendong", key:"", gigId:"gig_1990_film_214", source:"麥震東初遇", reason:"動作組聽朝要替身，副導話你聽朝去報到，企定個位，唔好俾人搶走。" }
+  { seg:"first:mak_zhendong", key:"", gigId:"gig_1990_film_214", source:"麥震東初遇", reason:"動作組聽朝要替身，副導話你聽朝去報到，企定個位，唔好俾人搶走。" },
+  /* v20a158：顧／麥／廖支線抉擇即派（草稿 batch1-liao-gu-mak.md 改寫做實際對位 gig 嘅標題；
+     hook 同初遇一樣，經 L39606 grant229RecordFromEnc79(step.seg, opt.label) substring 匹配——
+     key 逐個對過 live 選項 label（gu_n10after「恭喜他，終於上岸」／「提醒他以後不要再碰賭」、
+     gu_loan「借，一口應承」／「借一半，留一些給自己」／兜底「不借，這筆錢我真的幫不了」、
+     mak_respect「應承隨時候命」／「老實講自己會驚」、liu_repay「推辭講自己排緊期」）。
+     film_107 係 1992 年《劍氣長虹》動作替身，唔係 1991 年《沙田夜巡》（N11_b 目標，唔撞）。
+     film_108／film_109 本身已有 credit trigger，即派唔理 trigger，唔郁佢哋。 */
+  { seg:"beat:gu_n10after", key:"岸", gigId:"gig_1992_rec_103", source:"顧明輝支線", reason:"明輝哥話，佢上返岸，第一個諗起你。《齊心同行》合唱男歌手，聽朝去錄音室報到，呢個位係佢開口幫你問返嚟嘅，唱好啲，唔好失禮。" },
+  { seg:"beat:gu_n10after", key:"賭", gigId:"gig_1992_rec_104", source:"顧明輝支線", reason:"明輝哥話，你提佢唔好再掂賭，佢記住。《銀幕影》主題曲配唱歌手，聽朝去錄音室報到，呢個位係佢幫你問返嚟嘅，唱返啲開心嘅嘢。" },
+  { seg:"beat:gu_loan", key:"一口應承", gigId:"gig_1991_rec_107", source:"顧明輝支線", reason:"你一口應承借錢俾佢，佢話呢份情唔會白受。《情濃款款》大碟主唱，聽朝去錄音室報到，唱片公司嗰邊佢已經打過招呼。" },
+  { seg:"beat:gu_loan", key:"一半", gigId:"gig_1991_rec_104", source:"顧明輝支線", reason:"你借一半，留返啲畀自己，佢話咁先係識諗。《快歌飛揚》快歌和音歌手，聽朝去錄音室報到，呢個位係佢幫你問返嚟嘅，先去熟習下錄音室。" },
+  { seg:"beat:gu_loan", key:"", gigId:"gig_1991_rec_106", source:"顧明輝支線", reason:"你嗰次冇借，佢話明白，唔怪你。《並肩前行》新人合唱男歌手，聽朝去錄音室報到，呢個位係佢留返俾你嘅，唱好啲，唔好失禮。" },
+  { seg:"beat:mak_respect", key:"隨時候命", gigId:"gig_1991_film_108", source:"麥震東支線", reason:"武指話，你嗰日肯頂，今日先有呢個位。《月夜酒廊》男配角，聽朝去片場報到，呢個位係佢認住你，先至推你去嘅。" },
+  { seg:"beat:mak_respect", key:"驚", gigId:"gig_1992_film_107", source:"麥震東支線", reason:"武指話，你話驚，佢話驚仲企得穩先係夠膽。《劍氣長虹》動作替身，聽朝去片場報到，先去做替身，慢慢企返穩。" },
+  { seg:"beat:liu_repay", key:"推辭", gigId:"gig_1991_film_109", source:"廖炳星支線", reason:"星哥話，你推辭嗰句識諗人哋處境，更加難得。期嘅事佢嚟夾，夾到之前，《笑聲震天響》男配角，聽朝去片場報到，先去做住先。" }
 ];
 /* 草稿抉擇即派（顧明輝 Beat 2「應承一世唔掂／問回他」：攻略設計草稿，遊戲未有呢個抉擇，
    gu_promise_clean／gu_ask_back 全 repo 0 命中）。兩張 1991 和音先留喺表入面，唔經任何現成
@@ -43907,7 +43937,9 @@ function aud91WaitPhrase(wait){
 function aud91CreatePending(gig, L, pre){
   aud91Ensure();
   const days = (pre && pre.days!=null) ? pre.days : shootSpanFor(gig);
-  const wait = aud91WaitDays(gig, days);
+  /* v20a158：人情免試鏡直聘（favor158）傳入 pre.revealDay＝翌日（即日＋1），唔行 aud91WaitDays 2–4 日等待；
+     revealDay 翌日＝聽朝晨鏈 aud91PresentDue 呈現（同 GRANT229 即派模式：dueDay 即日＋1）。其餘路徑照舊。 */
+  const wait = (pre && pre.revealDay!=null) ? Math.max(0, (pre.revealDay|0)-(S.dayIndex|0)) : aud91WaitDays(gig, days);
   const pr = (pre && pre.payRoll) || null;
   const rec = {
     gigId: gig.id, title: gig.title||"", type: gig.type||"", tier: gig.tier||"初",
@@ -43924,7 +43956,8 @@ function aud91CreatePending(gig, L, pre){
     days: days,
     fxActing: (pre && pre.fxActing) || 0, fxStress: (pre && pre.fxStress) || 0,
     fxFame: (pre && pre.fxFame) || 0, fxStressFail: (pre && pre.fxStressFail) || 0,
-    via: (pre && pre.via) || "board"
+    via: (pre && pre.via) || "board",
+    favorLabel: (pre && pre.favorLabel) || "" /* v20a158：免試鏡直聘嗰陣，公佈 modal 何生嗰句讀呢個名（紅棉武指／彭少祺） */
   };
   S.pendingAud.push(rec);
   return rec;
@@ -43940,6 +43973,8 @@ function aud91DueList(){
 }
 /* 手帳「等消息」行用：試鏡咗幾多日＋大約回音講法 */
 function aud91PendingHint(rec){
+  /* v20a158：人情免試鏡直聘（via favor158）唔係試鏡，唔講「試鏡咗幾多日」。 */
+  try{ if(rec && rec.via==="favor158") return "何生聽朝會打嚟話你知——免試鏡，直接獲聘"; }catch(_e){}
   const waited = Math.max(0, (S.dayIndex|0) - (rec.audDay|0));
   const left = (rec.revealDay|0) - (S.dayIndex|0);
   const when = left<=0 ? "應該就快有回音" : (left===1 ? "聽日應該有回音" : ("呢"+(left===2?"兩":left)+"日應該有回音"));
@@ -44089,7 +44124,8 @@ function aud91PresentOne(rec, next){
        刪走 payContractNote 重複段）；(3) 之後點：殺青結算行（標籤改「結算」，
        內容係聲望／人氣，唔再用「入帳」誤導）。成功率行同「能力達標有加成；
        信用／人脈微幅加分」含糊行成段刪走（結果已出，唔再講成數）。 */
-    notes.push(`<span class="good">${eventLine("AUD_PASS",{title:rec.title, shootDays:rec.days})||("試鏡通過，拍攝 "+rec.days+" 日")}</span>`);
+    /* v20a158：人情免試鏡直聘（via favor158）唔係試鏡通過，唔講「試鏡通過」；何生嗰句講明邊邊應承咗直接用你。 */
+    notes.push(`<span class="good">${(rec.via==="favor158") ? ("免試鏡直接獲聘，拍攝 "+rec.days+" 日") : (eventLine("AUD_PASS",{title:rec.title, shootDays:rec.days})||("試鏡通過，拍攝 "+rec.days+" 日"))}</span>`);
     if(rec.fxActing || rec.fxStress) notes.push(...apply({acting: rec.fxActing||0, stress: rec.fxStress||0}));
     const pay = Number(rec.pay)||0;
     const signPay = Math.round(pay*0.3); /* 簽約金＝合約額三成，公佈嗰刻即付 */
@@ -44120,7 +44156,7 @@ function aud91PresentOne(rec, next){
         ? "劇組通知：獲聘，簽約金已入帳。入手帳看行程開工，餘額殺青入帳。"
         : phase3CastCopy().successToast);
       modal(`<h3>獲聘！ ${rec.title}</h3>
-        <p>何生打嚟：「嗰邊開完會——用你。簽約金已經過數，拍攝日而家排。」</p>
+        <p>${(rec.via==="favor158" && rec.favorLabel) ? ("何生打嚟：「"+rec.favorLabel+"嗰邊應承咗，直接用你，唔使試鏡。簽約金已經過數，拍攝日而家排。」") : "何生打嚟：「嗰邊開完會——用你。簽約金已經過數，拍攝日而家排。」"}</p>
         ${formatResultNotes(notes)}
         ${chk101SignHtml}
         <p class="gold">已簽約——返回手帳查看行程，再開工。</p>
@@ -44209,6 +44245,135 @@ function chungAdviceTipForAudition229(gig){
 }
 function chungAdviceSpend229(){
   try{ if(typeof S!=="undefined" && S){ S.flags = S.flags||{}; S.flags.chungAdviceSpent229 = 1; } }catch(_e){}
+}
+
+/* ===== v20a158：人情免試鏡渠道（G-M1 武指照應＋G-PANG-1 彭慈善）=====
+   兩條渠道共用一個模式（跟 Q6 忠告卡同一掛點風格）：
+   - 持有指定債權（未兌現、未絕響）＋通告啱類別＋canAudition(gig).ok → 詳情頁／通告卡出金色提示行，
+     詳情頁多一個「用人情免試鏡」掣；用咗就保證獲聘（p=1），跳過試鏡日同等消息等待。
+   - 兌現：即刻用嗰刻消耗債權（照 br89OnGigComplete 模式：redeemedBy＋line 附加「已兌現」＋
+     syncNotebookMirror，v259 口徑下唔再計結局數、唔可以重用）；同時經 aud91CreatePending
+     記一筆 ok:true、revealDay 翌日（即日＋1；pre.revealDay 覆寫，唔行 2–4 日等待）嘅等消息記錄，
+     聽朝晨鏈 aud91PresentDue 呈現（沿用 GRANT229 即派模式），簽約金跟 v91 獲聘流程
+     （片酬 30% 即付、餘額殺青入帳，見 aud91PresentOne）。
+   - 唔耗日：用人情係打個電話，唔係去試鏡，唔行 confirmSpendDay／tickDay。
+   - 唔做嘅嘢：武師班本身已免費，「一堂免費」替代方案無意義，只做免試鏡；「台風放寬」未定，
+     彭渠道只做免試鏡。渠道唔繞過 canAudition 硬閘（聲望／能力未合照樣唔提供）。 */
+const FAVOR158_MAK_CREDIT_ID = "credit_enc79_mak_wuzhi";
+const FAVOR158_PANG_CREDIT_ID = "credit_enc84_pang_charity";
+function favor158CreditHeld(creditId){
+  /* 持有＝喺 S.mockCredits 入面＋未絕響＋未兌現（br89HasCredit＋br89GigOn 同一口徑）。 */
+  try{
+    if(typeof S==="undefined" || !S || !Array.isArray(S.mockCredits)) return null;
+    const c = S.mockCredits.find(x=>x && x.id===creditId);
+    if(!c) return null;
+    if(c.status==="絕響") return null;
+    if(c.redeemedBy) return null;
+    return c;
+  }catch(_e){ return null; }
+}
+function isMakWuzhiGig158(gig){
+  /* G-M1：武打通告——genre 動作／武俠＋category 作品（新庫 20 張；臨記散工 category 係「臨記通告」，
+     例如 gig_1990_film_206 碼頭搬運，唔入）。 */
+  if(!gig) return false;
+  return (gig.genre==="動作" || gig.genre==="武俠") && gig.category==="作品";
+}
+function isPangCharityGig158(gig){
+  /* G-PANG-1：司儀類通告——type 綜藝＋roleLabel 含「主持」（新庫 5 張）。 */
+  if(!gig) return false;
+  return gig.type==="綜藝" && String(gig.roleLabel||"").indexOf("主持")>=0;
+}
+function favor158ChannelForGig(gig){
+  try{
+    if(!gig) return null;
+    /* 渠道只喺 canAudition(gig).ok 嗰陣提供，唔繞過聲望／能力硬閘。 */
+    if(typeof canAudition==="function" && !canAudition(gig).ok) return null;
+    if(isMakWuzhiGig158(gig) && favor158CreditHeld(FAVOR158_MAK_CREDIT_ID)){
+      return { creditId:FAVOR158_MAK_CREDIT_ID, debtor:"紅棉武指", shortLabel:"武指照應",
+        hint:"人情可用：武指照應——紅棉武指認住你，此武打通告無須試鏡，直接獲聘。" };
+    }
+    if(isPangCharityGig158(gig) && favor158CreditHeld(FAVOR158_PANG_CREDIT_ID)){
+      return { creditId:FAVOR158_PANG_CREDIT_ID, debtor:"彭少祺", shortLabel:"慈善騷頂班",
+        hint:"人情可用：慈善騷頂班——彭少祺開聲引薦，此司儀通告無須試鏡，直接獲聘。" };
+    }
+    return null;
+  }catch(_e){ return null; }
+}
+function favor158ChannelHintHtml(gig){
+  try{
+    const ch = (typeof favor158ChannelForGig==="function") ? favor158ChannelForGig(gig) : null;
+    if(!ch) return "";
+    return `<p class="gold">${ch.hint}</p>`;
+  }catch(_e){ return ""; }
+}
+function favor158SpendCredit(creditId, gig){
+  /* 消耗債權：照 br89OnGigComplete 模式（redeemedBy＋line 附加「已兌現」＋syncNotebookMirror）。 */
+  try{
+    if(!creditId || typeof S==="undefined" || !S || !Array.isArray(S.mockCredits)) return false;
+    const c = S.mockCredits.find(x=>x && x.id===creditId);
+    if(!c || c.redeemedBy) return false;
+    c.redeemedBy = gig ? gig.id : creditId;
+    c.line = String(c.line||"") + "（已兌現：" + (gig ? (gig.title||"通告") : "通告") + "，用人情免試鏡直接獲聘。）";
+    try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
+    return true;
+  }catch(_e){ return false; }
+}
+function favor158UseChannel(gig, L){
+  /* 詳情頁掣入口：先確認（人情用一次即清），確認先行 favor158RedeemChannel。 */
+  try{
+    if(!gig) return false;
+    const ch = (typeof favor158ChannelForGig==="function") ? favor158ChannelForGig(gig) : null;
+    if(!ch){ try{ toast("呢份人情用唔到喺呢張通告。"); }catch(_t){} return false; }
+    if(typeof modal==="function"){
+      modal(`<h3>用人情免試鏡</h3><p>用咗「${ch.shortLabel}」呢份人情，「${gig.title||"呢張通告"}」無須試鏡，直接獲聘；何生聽朝會打嚟通知你，簽約金到時一併入帳。</p><p class="gold">呢份人情用一次就冇——用咗之後，手帳唔會再見到佢。</p>`,[
+        {label:"確認使用", role:"p", on:()=>{ if(typeof favor158RedeemChannel==="function") favor158RedeemChannel(gig, L); }},
+        {label:"取消", role:"g", on:()=>{ try{ if(typeof openCastingNoticeDetail==="function") openCastingNoticeDetail(gig, L); }catch(_d){} }}
+      ]);
+    }
+    return true;
+  }catch(_e){ return false; }
+}
+function favor158RedeemChannel(gig, L){
+  /* 兌現：守衛（渠道＋未等緊消息＋等消息未滿 3 張）→ 記 ok:true／revealDay 翌日（即日＋1）嘅 pending
+     → 消耗債權 → 通告落板／預約清走 → 話玩家知聽朝何生會打嚟。唔耗日。 */
+  try{
+    if(!gig) return false;
+    const ch = (typeof favor158ChannelForGig==="function") ? favor158ChannelForGig(gig) : null;
+    if(!ch){ try{ toast("呢份人情用唔到喺呢張通告。"); }catch(_t){} return false; }
+    if(typeof aud91PendingOf==="function" && aud91PendingOf(gig.id)){
+      try{ toast("呢張通告已經試咗鏡——而家等緊劇組回音，何生會打嚟通知你。"); }catch(_t){}
+      return false;
+    }
+    if(typeof S!=="undefined" && S && Array.isArray(S.pendingAud) && typeof AUD91_CAP==="number" && S.pendingAud.length>=AUD91_CAP){
+      try{ toast("手頭已經有 "+AUD91_CAP+" 張通告等緊消息——等埋回音先再用人情，唔好一次過報太多。"); }catch(_t){}
+      return false;
+    }
+    const days = (typeof shootSpanFor==="function") ? shootSpanFor(gig) : (Number(gig.days)||0);
+    const payRoll = (typeof rollAuditionPay==="function") ? rollAuditionPay(gig) : null;
+    const fr = (gig.fame && gig.fame.length) ? gig.fame : [0,0];
+    const fame = (typeof R==="function") ? R(Number(fr[0])||0, Number(fr[1])||0) : (Number(fr[0])||0);
+    const pop = (gig.popularity && gig.popularity.length)
+      ? ((typeof R==="function") ? R(Number(gig.popularity[0])||0, Number(gig.popularity[1])||0) : (Number(gig.popularity[0])||0))
+      : Math.max(1, Math.round(fame*0.7) + ((typeof R==="function") ? R(0,2) : 0));
+    const rec = (typeof aud91CreatePending==="function")
+      ? aud91CreatePending(gig, L, { ok:true, p:1, days:days, payRoll:payRoll, fame:fame, pop:pop,
+          fxActing:((typeof R==="function")?R(0,1):0), fxStress:8+((typeof R==="function")?R(0,4):0),
+          via:"favor158", favorLabel:ch.debtor, revealDay:(S.dayIndex|0)+1 })
+      : null;
+    if(!rec) return false;
+    if(typeof favor158SpendCredit==="function") favor158SpendCredit(ch.creditId, gig);
+    /* 同 doAudition 睇齊：通告落板＋預約清走，唔好畀玩家等消息嗰陣再報多次。 */
+    try{ if(L && S && S.board && Array.isArray(S.board[L.id])) S.board[L.id] = S.board[L.id].filter(id=>id!==gig.id); }catch(_b){}
+    try{ if(typeof S!=="undefined" && S) S.booked = (S.booked||[]).filter(b=>b && b.gigId!==gig.id); }catch(_b){}
+    try{ if(typeof clearJobFromPlans==="function") clearJobFromPlans(gig.id); }catch(_j){}
+    try{ if(typeof saveQ==="function") saveQ(); }catch(_s){}
+    if(typeof modal==="function"){
+      modal(`<h3>用人情免試鏡</h3><p>何生已經打去${ch.debtor}嗰邊講咗聲——「${gig.title||"呢張通告"}」唔使試鏡，直接獲聘。</p><p class="gold">聽朝何生會打嚟通知你，簽約金到時一併入帳；餘額殺青嗰日先入帳。呢份人情已經用咗。</p>`,[
+        {label:"好", role:"p", on:()=>{ try{ if(L && typeof doScout==="function") doScout(L); }catch(_d){} }}
+      ]);
+    }
+    return true;
+  }catch(_e){ return false; }
 }
 
 function doAudition(gig, L){
