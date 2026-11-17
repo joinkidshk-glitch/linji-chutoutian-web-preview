@@ -36,9 +36,10 @@ ok('B2：手寫字體 17px、未選褪色 #a08a68、選中紅墨圈（%23c0452c 
    and '#home-subtabs .hsub-group:not([data-hsubgroup="plan"]) .home-tab.on{ background:transparent' in src)
 ok('B2：四組容器同 plan 組一樣排版（gap 22px、左 inset 46px）',
    '#home-subtabs .hsub-group:not([data-hsubgroup="plan"]){ justify-content:flex-start; gap:22px; padding:4px 12px 4px 46px' in src)
-ok('B2：四組 subtab 掣仲齊（作品／獎項／回憶／記數／標籤／庫存／傳聞／剪報／人情債／人脈）',
+# v20a162：手帳 tab 玩家面「標籤」→「稱號」（內部 id htab-tags／home-pane-tags／tags-list 唔郁）。
+ok('B2：四組 subtab 掣仲齊（作品／獎項／回憶／記數／稱號／庫存／傳聞／剪報／人情債／人脈）',
    all(('>%s</button>' % s) in src for s in
-       ['作品', '獎項', '回憶', '記數', '標籤', '庫存', '傳聞', '剪報', '人情債', '人脈']))
+       ['作品', '獎項', '回憶', '記數', '稱號', '庫存', '傳聞', '剪報', '人情債', '人脈']))
 
 # --- B1：編輯態掣群紙面化 ---
 ok('B1：快捷四掣改紙標籤＋手寫字（直屬 > button，唔搶訓練選擇器掣；15px 要 !important 蓋 v17l）',

@@ -34,7 +34,9 @@ chk('RW-7: gig clean fn removed', 'textfix55GigRecord(o)' not in src and 'textfi
 chk('call: phase3 star sightings looks', 'textfix55SimplePack(data)' in src and 'TEXTFIX55_STAR_LOOKS[st.starId]' in src)
 
 # A1/A2: journal dev text
-chk('A1 journal empty-state natural', '暫時未有選角標籤' in src and '[DEV] 選角標籤' not in src)
+# v20a162：dev 分支空狀態「暫時未有選角標籤。」隨閘一併刪除；真空狀態留返
+# 「暫時未有選角印象。」嗰句（renderCastingTagsPane 玩家分支原有文案）。
+chk('A1 journal empty-state natural', '暫時未有選角印象' in src and '[DEV] 選角標籤' not in src)
 chk('A1 dev label gone everywhere', src.count('[DEV]') == 0)
 # A6: trial-gate wording out of display source (patterns may remain in tables)
 chk('A6 no trial-gate outside tables', '試玩閘' not in outside)

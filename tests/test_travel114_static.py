@@ -1,3 +1,4 @@
+# v20a162 resync：index.html 淨 +118 行；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫（＜27941 者唔郁、28292／28325／28654 各 −21、WRAPPER 29223→29204（−19，TITLES162 block 在其後）、≥29344 者各 ＋118；DEF 41329→41447）；內容逐行核實純漂移；openLoc( 呼叫點總數不變。
 # v20a139 resync：index.html 淨 +6 行（actFx102Html 加 6 個 ?v=20a139 early return，插入點舊 L43040）；COUNT／FREE 其後錨點各 +6（COUNT 44426／44638／44796／44817、FREE 44159／44303／44304／44348／44349／44374／45267），之前唔郁；DEF 41299／WRAPPER 29193 唔郁；內容逐行核實純漂移。
 # v20a159 resync：index.html 淨 +1235 行（感情線大改＋約會層：地點 15→21，ROM159 約會揀場＋約會場景）；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫（/tmp/resync114_159.py：全部 47 處舊錨點內容逐行相同，純漂移；DEF 40136→41299、WRAPPER 28088→29193）；新 3 處 openLoc( 呼叫點全部係 v159 約會返程（rom159OpenDatePicker 取消／dismiss＋rom159DateScene go fallback），全部帶 travelFree:true 字面，歸入 FREE（返去而家身處地點，唔係新入場，同其他 modal 取消返程同一理據）；openLoc( 呼叫點總數 53→56。
 # v20a163 resync：index.html 淨 −33 行（刪 #map-stress-tip：CSS −7＠舊 L3494–3500／story-play-lock 死規則行合併 −1＠舊 L4055–4056／HTML 元素 −1＠舊 L6031／drawMap() 呼叫 −1＠舊 L22365／updateMapStressTip() 函數 −23＠舊 L41473–41495）；釘行按 difflib 映射重寫，內容逐字核實純漂移；ok() 名入面嘅 Lxxxxx 歷史標籤唔郁。
@@ -184,11 +185,11 @@ COUNT_LINES = {
     22696,
     22699,  # 地圖釘 goPin（最近針／後備 L.id）
     22730,  # 地圖底欄地點掣
-    28654,  # 人情債「去事務所」
-    44597,  # inv72GoShop 去禮品檔
-    44809,  # people72GoLoc
-    44967,  # jobs72GoBoard
-    44988,  # jobs72GoLoc
+    28633,  # 人情債「去事務所」
+    44715,  # inv72GoShop 去禮品檔
+    44927,  # people72GoLoc
+    45085,  # jobs72GoBoard
+    45106,  # jobs72GoLoc
 }
 # v20a158 resync：index.html 淨 +165 行（gigCardHtml 提示＋4／詳情頁渠道掣＋11／GRANT229_ENC79 8 行＋註解 7＝＋15／aud91CreatePending＋3／aud91PendingHint＋2／aud91PresentOne＋1／v20a158 渠道 block＋129；見 qa158/resync158.py difflib 對位核實內容逐字相同，純漂移；openLoc( 呼叫點總數不變）。
 # v20a243 resync：index.html 淨 −11 行（刪 TEXTFIX55 GIG 五組，刪除區間舊 L14413–14417／14576–14578／14588–14589／14593–14596）；其後錨點各 −11，之前唔郁；內容逐行核實純漂移。
@@ -208,36 +209,36 @@ FREE_LINES = {
     26098,  # v159 rom159OpenDatePicker「取消」返去而家身處地點（travelFree）
     26099,  # v159 rom159OpenDatePicker onDismiss 返去而家身處地點（travelFree）
     26175,  # v159 rom159DateScene go fallback（runScheduleFromToday 失敗）返去而家身處地點（travelFree）
-    28292,  # 人情債流程尾，返去而家身處地點
-    28325,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
-    39479,
-    39598,  # 巧遇播完（encDone，舊旗）
-    39671,  # v176 星巧遇送禮掣 fallback（encDone）
-    39896,  # v176 女角巧遇 def-missing（encDone）
-    39940,  # v176 女角巧遇「行開」（encDone）
-    39946,  # v176 女角巧遇 onDismiss（encDone）
-    40013,  # v176 星送禮 canGive-fail（encDone）
-    40015,  # v176 星送禮冇 item（encDone）
-    40018,  # v176 星送禮冇庫存（encDone）
-    40045,  # v176 星送禮結果 modal go（encDone）
-    41177,  # 劇情播完刷新（refreshLocAfterStory）
-    41224,  # v236 傾談確認「返去」重開地點（travelFree，唔計額度）
-    41605,
-    41627,  # 「劇情已完成」toast 後重開而家身處地點
-    41779,  # v236 打聽確認「返去」重開地點（travelFree，唔計額度）
-    41784,  # 聽完傳聞後 reopen 而家身處地點
-    42712,  # forceRestore（舊旗）
-    44201,  # promptAudition back（返去而家身處地點）
-    44474,
-    44475,
-    44519,
-    44520,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    44545,  # doGiveGift 失敗後重開而家身處地點
-    45438,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
+    28271,  # 人情債流程尾，返去而家身處地點
+    28304,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
+    39597,
+    39716,  # 巧遇播完（encDone，舊旗）
+    39789,  # v176 星巧遇送禮掣 fallback（encDone）
+    40014,  # v176 女角巧遇 def-missing（encDone）
+    40058,  # v176 女角巧遇「行開」（encDone）
+    40064,  # v176 女角巧遇 onDismiss（encDone）
+    40131,  # v176 星送禮 canGive-fail（encDone）
+    40133,  # v176 星送禮冇 item（encDone）
+    40136,  # v176 星送禮冇庫存（encDone）
+    40163,  # v176 星送禮結果 modal go（encDone）
+    41295,  # 劇情播完刷新（refreshLocAfterStory）
+    41342,  # v236 傾談確認「返去」重開地點（travelFree，唔計額度）
+    41723,
+    41745,  # 「劇情已完成」toast 後重開而家身處地點
+    41897,  # v236 打聽確認「返去」重開地點（travelFree，唔計額度）
+    41902,  # 聽完傳聞後 reopen 而家身處地點
+    42830,  # forceRestore（舊旗）
+    44319,  # promptAudition back（返去而家身處地點）
+    44592,
+    44593,
+    44637,
+    44638,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    44663,  # doGiveGift 失敗後重開而家身處地點
+    45556,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 41329      # function openLoc(id, opts){
-WRAPPER_LINE = 29223  # window.__phase2.openLoc：轉發 opts
+DEF_LINE = 41447      # function openLoc(id, opts){
+WRAPPER_LINE = 29204  # window.__phase2.openLoc：轉發 opts
 # v241b resync：index.html 淨 −6 行（刪四個內嵌 fallback 表：NPC_LINES_CORE／EVENTS_ZH_HK／STORY_BEATS_PHASE1／TUTORIAL_ZH_HK；UI 201 對逐句重寫行數不變）；COUNT／FREE／DEF／WRAPPER 按 difflib 對位映射重寫，47 處錨點內容逐行相同（3 處錨點行內 toast／reason 字串隨 RW-5 改寫：41148→41142、41170→41164「唔使再播」→「不必再播」，43932→43926「送唔成」→「送不成」）；openLoc( 呼叫點總數 53 不變；DEF 40874→40868、WRAPPER 28882→28878。
 # v20a241 resync：index.html 淨 −859 行（刪 WF4 覆寫表全數＋WF2 hiu/choi/xu 15 條；見 qa241/resync241.js）；COUNT／FREE／DEF／WRAPPER 按映射重寫（中段 −646、WF4 塊之後 −859；DEF 40868→40009、WRAPPER 28878→28019），47 處錨點內容逐行相同，純漂移；openLoc( 呼叫點總數 53 不變。
 # v20a242 resync：index.html 淨 −144 行（刪 LAN 覆寫表：表 139→8 行、函數 21→6 行、CONTRA98 ＋3 行、載入呼叫 8→7 行；刪除區間舊 L6597–6735／7559–7579／15038–15045）；COUNT／FREE／DEF／WRAPPER 按段 shift 重算（＜6597 唔郁、6736–7558 −131、7580–14865 −146、14872–15037 −143、≥15046 −144），47 處錨點內容逐行相同，純漂移；openLoc( 呼叫點總數 53 不變；DEF 40009→39865、WRAPPER 28019→27875。

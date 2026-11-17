@@ -6136,7 +6136,7 @@ body.day-res-open .day-row{
         </div>
         <div class="hsub-group" data-hsubgroup="status">
           <button type="button" class="home-tab hsub" id="htab-ledger" role="tab" aria-selected="false" data-htab="ledger">記數</button>
-          <button type="button" class="home-tab hsub" id="htab-tags" role="tab" aria-selected="false" data-htab="tags">標籤</button>
+          <button type="button" class="home-tab hsub" id="htab-tags" role="tab" aria-selected="false" data-htab="tags">稱號</button>
           <button type="button" class="home-tab hsub" id="htab-inv" role="tab" aria-selected="false" data-htab="inv">庫存</button>
         </div>
         <div class="hsub-group" data-hsubgroup="news">
@@ -27938,13 +27938,6 @@ function favorPressure(){
   const label=n<=0?"輕":(n===1?"緊":"頂住");
   return { n, label, season };
 }
-function freeplayDevTagsOn(){
-  try{
-    if(typeof location!=="undefined" && location && /(?:\?|&)devTags=1(?:&|$)/.test(String(location.search||""))) return true;
-    if(typeof localStorage!=="undefined" && localStorage.getItem("starVolunteer_devTags")==="1") return true;
-  }catch(_e){}
-  return false;
-}
 function castingTagsEarnedLabels(){
   const out=[];
   const seen=Object.create(null);
@@ -27976,20 +27969,6 @@ function ensureWeakSeals(){
   const earned = castingTagsEarnedLabels();
   const marks = earned.length ? earned.slice(0, 8) : [];
   el.innerHTML = marks.map(name=>`<span>${journalText(name)}</span>`).join("");
-  try{ syncDevTagsTabVisibility(); }catch(_e){}
-}
-function syncDevTagsTabVisibility(){
-  const tab=document.getElementById("htab-tags");
-  const pane=document.getElementById("home-pane-tags");
-  const show = freeplayDevTagsOn();
-  if(tab){
-    tab.hidden = !show;
-    tab.style.display = show ? "" : "none";
-    tab.setAttribute("aria-hidden", show ? "false" : "true");
-  }
-  if(pane && !show){
-    pane.classList.remove("on");
-  }
 }
 function mockIntelHits(actionKey){
   /* 情報刷新 B：跟週數同未清人情債搖，唔係次次有新料。唔改日／銀碼／閘。 */
@@ -28778,7 +28757,6 @@ function setHomeTab(tab){
      v20a6 已同記數同頁，唔使加子頁。 */
   if(tab === "guide" || tab === "train"){ tab = "plan"; }
   const allow={ plan:1, ledger:1, rumor:1, clippings:1, debt:1, tags:1, works:1, awards:1, memory:1, progress:1, people:1, inv:1 }; /* v20a60 CALIB60-3：加「回憶」頁；v20a62 AWARDS62-7：加「獎項」頁；v20a71 PROGRESS71：加「進度」頁；v20a72 MENU72：加「人脈」「庫存」頁 */
-  if(tab==="tags" && typeof freeplayDevTagsOn==="function" && !freeplayDevTagsOn()) tab="plan";
   if(!allow[tab]) tab="plan";
   applyPhase2Steps56TabLabel();
   try{ book70SyncTabGroups(tab); }catch(_grp){}
@@ -29113,7 +29091,10 @@ function renderProgressPane71(){
       if((r.id==="N18" || r.id==="N19" || r.id==="N6F") && r.state==="locked" && lastDetailN71 >= (r.n|0) - 1) detailSet71[r.id] = 1;
     });
   }
-  const html = ['<div class="prog71-wrap"><h3 class="prog71-h">主線進度</h3><p class="prog71-intro">逐幕列出開放條件與阿偉目前的進度：✓ 是已達標，○ 是未達。完成一幕，之後的幕會逐漸揭曉。</p>'];
+  /* v20a162 TITLES162：進度頁頂加一行現時稱號（同稱號頁同一來源；一行，唔推爆摺線） */
+  let progTitleLine162 = "";
+  try{ progTitleLine162 = '<p class="prog71-note" style="margin-top:2px">'+prog71Esc(titles162ProgressLine162())+'</p>'; }catch(_e){}
+  const html = ['<div class="prog71-wrap"><h3 class="prog71-h">主線進度</h3><p class="prog71-intro">逐幕列出開放條件與阿偉目前的進度：✓ 是已達標，○ 是未達。完成一幕，之後的幕會逐漸揭曉。</p>' + progTitleLine162];
   let farMerged105 = false; /* v20a105 UI105 S-45 */
   /* v20a198 C2：遠幕合併按「段」計——鎖住插入行（而家常駐可見，見下面 detail 分支）
      截斷遠幕連續段，每段各自合併（新局：「第 4–6 幕」＋「第 7–17 幕」），唔再全頁
@@ -29318,28 +29299,166 @@ function applyGigTagOnComplete(gigId){
     return applyCastingTags(tags, { from: "gig:"+String(gigId||""), applyDual:true });
   }catch(_e){ return []; }
 }
+/* ===== v20a162 TITLES162：稱號／標籤頁（用戶 2026-11-13 08:12／08:14 拍板）。
+   (1) 手帳「標籤」頁開放：freeplayDevTagsOn／syncDevTagsTabVisibility 三處閘已拎走
+       （定義＋setHomeTab 彈回＋pane 空狀態）；?devTags=1 之後只係無操作，同一頁照常顯示。
+       DEV 資訊冇丟失：pane 嘅 dev 分支同玩家分支由頭到尾渲染同一份 earned list
+       （debt-row 文章），從來冇渲染過 registry 工程數據（deltas／hidden 旗等）。
+   (2) Tag 卡正經化：label＋來源（from 解返人話）＋軌跡組（TRAJ49_TAG_SETS 分組邏輯，
+       唯讀，唔改 TRAJ49）。from 係 "story-ripple:<id>"／"story:<id>"／"gig:<id>"；
+       at 係現實時間戳，唔係遊戲日期，唔顯示。舊存檔純字串條目／冇 from／解唔到嘅 id，
+       淨係顯示 label＋軌跡組，唔假裝有來源。hidden 標籤繼續唔出。
+       ensureWeakSeals() 嘅 ~8% 淡印係手帳 planner 上面嘅 ambient 裝飾，留返唔郁；
+       可讀卡面由呢頁承載。
+   (3) 稱號區（同一頁）：現時稱號（報紙點名級＋軌跡提示）／結局梯即時位置／已攞獎項數目＋跳轉。
+       梯即時位置：live 唯讀呼叫 resolveEnding410(S)（唔傳 opts，唔掂 E6／去留軸），
+       淨係取 career／careerVariant（經 ENDING410_CAREER_NAMES 做格名）＋ ladder95 三項質性事實
+       （獎／擔正媒介數／主線鏈）；gaps95 嘅句子唔逐字照搬——佢哋係結局回望口吻
+       （「頒獎禮嗰幾晚，你仲係坐喺台下面嗰個」）唔啱 live 語境，數字行（「仲差 N」）
+       更加唔准出玩家面；同一組質性事實改由 ladder95 以現在式重述，零數字承諾。
+       早期（未有 wrap、stats 空）career 係 E0——誠實顯示「浮沉未定」，唔扮有格。
+   (4) 進度頁頂一行現時稱號（titles162ProgressLine162），同呢頁同一來源。 ===== */
+const TRAJ162_LABEL = { idol:"偶像", craft:"實力派", support:"甘草", backstage:"幕後", jianghu:"江湖" };
+const TRAJ162_GROUP_LABEL = { support:"甘草組", backstage:"幕後組", jianghu:"江湖組" };
+/* 標籤來源解返人話：story[-ripple]:<nodeId> → 主線節點標題；gig:<gigId> → 通告名。
+   解唔到（冇 from／舊存檔／id 唔存在）回 null，卡面唔假裝有來源。唯讀。 */
+function castingTagSourceLabel162(from){
+  const f = String(from||"").trim();
+  if(!f) return null;
+  let kind = "", id = "";
+  if(f.indexOf("story-ripple:")===0){ kind="story"; id=f.slice("story-ripple:".length); }
+  else if(f.indexOf("story:")===0){ kind="story"; id=f.slice("story:".length); }
+  else if(f.indexOf("gig:")===0){ kind="gig"; id=f.slice("gig:".length); }
+  else return null;
+  id = String(id||"").trim();
+  if(!id) return null;
+  if(kind==="story"){
+    let t = "";
+    try{ const n = (typeof StoryOC!=="undefined" && StoryOC.findNodeRaw) ? StoryOC.findNodeRaw(id) : null; t = (n && (n.title||n.mapTipTitle)) || ""; }catch(_e){}
+    if(!t && typeof STORY_TITLE_SOFT!=="undefined") t = STORY_TITLE_SOFT[id] || "";
+    return t ? ("主線「"+String(t)+"」") : null;
+  }
+  try{ const g = (typeof work59GigLookup==="function") ? work59GigLookup(id) : null; const t = g ? (g.workTitle || g.title || "") : ""; return t ? ("通告《"+String(t)+"》") : null; }catch(_e){ return null; }
+}
+/* 單一標籤所屬軌跡組：重用 TRAJ49_TAG_SETS 子串命中（同 trajTagCounts49 同一邏輯），唯讀。
+   優先序同 trajectoryOf49 嘅 tie-break 一致：幕後＞江湖＞甘草；唔屬任何組回 null。 */
+function castingTagTrajGroup162(t){
+  const strs = (t==null) ? [] : (typeof t==="string") ? [String(t)] : [t.id, t.label].filter(x=>x!=null && String(x)!=="").map(x=>String(x));
+  if(!strs.length) return null;
+  const hit = k => (TRAJ49_TAG_SETS[k]||[]).some(key=> strs.some(x=> x.indexOf(key)>=0));
+  if(hit("backstage")) return "backstage";
+  if(hit("jianghu")) return "jianghu";
+  if(hit("support")) return "support";
+  return null;
+}
+/* 現時稱號（報紙點名級＋軌跡提示）：報紙點名門檻 15／40 唔郁；軌跡未定型回 null，唔硬派。 */
+function titles162Current162(){
+  const fame = (typeof S!=="undefined" && S) ? (Number(S.fame)||0) : 0;
+  const tier = (typeof newspaperNameTier==="function") ? newspaperNameTier(fame) : "named";
+  let ref = (typeof newspaperPlayerRef==="function") ? newspaperPlayerRef(tier) : "阿偉";
+  let traj = null;
+  try{ traj = (typeof trajectoryOf49==="function") ? trajectoryOf49() : null; }catch(_e){ traj = null; }
+  if(traj && tier!=="anon" && typeof newspaperTrajRef49==="function"){
+    const tr = newspaperTrajRef49(traj, tier);
+    if(tr) ref = tr;
+  }
+  return { tier: tier, ref: ref, traj: traj };
+}
+/* 結局梯即時位置（唯讀）：resolveEnding410(S) 唔傳 opts；淨取 career／variant／ladder95 三項質性事實。
+   數字行一律唔出；早期 career E0 誠實顯示「浮沉未定」。失敗（S 未齊）回 null，成段唔出。 */
+function titles162Ladder162(){
+  try{
+    if(typeof resolveEnding410!=="function") return null;
+    const res = resolveEnding410((typeof S!=="undefined") ? S : {});
+    if(!res || !res.career) return null;
+    const name = (res.career==="E3" && res.careerVariant) ? res.careerVariant : (ENDING410_CAREER_NAMES[res.career] || res.career);
+    const lad = res.ladder95 || {};
+    const hasWin = !!lad.hasWin;
+    const leadN = Array.isArray(lad.leadMedia) ? lad.leadMedia.length : 0;
+    const chains = Array.isArray(lad.chains) ? lad.chains.length : 0;
+    const rows = [];
+    rows.push(hasWin ? "獎：攞過獎。" : "獎：仲未攞過獎。");
+    rows.push(leadN<=0 ? "擔正：未試過企正嗰個位。" : (leadN<2 ? "擔正：只係喺一種媒介企過正。" : "擔正：已經喺唔止一種媒介企過正。"));
+    rows.push(chains<=0 ? "主線：未行完一條行內主線。" : "主線：有主線行到尾。");
+    return { career: res.career, name: name, rows: rows };
+  }catch(_e){ return null; }
+}
+/* 已攞獎項數目（重用 end95Awards(S).wins，讀 S.awardsLog；唔複製獎項頁）。 */
+function titles162Awards162(){
+  try{ const a = (typeof end95Awards==="function") ? end95Awards((typeof S!=="undefined") ? S : {}) : null; return a ? (a.wins|0) : 0; }catch(_e){ return 0; }
+}
+/* 進度頁頂一行現時稱號（同稱號頁同一來源）。 */
+function titles162ProgressLine162(){
+  const c = titles162Current162();
+  const trajBit = c.traj ? ("・行緊「"+(TRAJ162_LABEL[c.traj]||c.traj)+"」路") : "・軌跡未定型";
+  return "現時稱號："+c.ref+trajBit;
+}
 function renderCastingTagsPane(){
   const box = document.getElementById("tags-list");
   if(!box) return;
-  /* Player default: no engineering tag spreadsheet. DEV (?devTags=1) may list earned tags. */
-  if(!freeplayDevTagsOn()){
-    box.innerHTML = `<div class="tags-empty debt-empty"><p>暫時未有選角印象。</p><p class="sub" style="margin-top:8px">接多啲唔同戲路嘅通告，行內人會開始用幾個字記住你。</p></div>`;
-    return;
-  }
+  const esc = (typeof journalText==="function") ? journalText : function(s){ return String(s==null?"":s); };
+  let html = "";
+  /* (3a) 現時稱號 */
+  try{
+    const c = titles162Current162();
+    const trajLine = c.traj
+      ? ("行內人開始覺得你行緊「"+(TRAJ162_LABEL[c.traj]||c.traj)+"」嗰條路。")
+      : "行緊邊條路，仲未定型——多接唔同戲路嘅工，路會自己浮出嚟。";
+    html += '<h3 class="jobs72-h">稱號</h3>'
+      + '<p style="margin:0 0 2px">現時稱號：<b>'+esc(c.ref)+'</b></p>'
+      + '<p class="sub" style="margin:0 0 10px">'+esc(trajLine)+'</p>';
+  }catch(_e){}
+  /* (3b) 結局梯即時位置 */
+  try{
+    const lad = titles162Ladder162();
+    if(lad){
+      html += '<p class="gold" style="margin:10px 0 6px">而家行到邊格</p>'
+        + '<p class="sub" style="margin:0 0 4px">呢個係而家行到邊一格，唔係結局預告——格會隨你之後嘅工同選擇郁。</p>'
+        + '<p style="margin:0 0 4px">而家行到：<b>'+esc(lad.name)+'</b></p>'
+        + lad.rows.map(r=>'<p class="sub" style="margin:0">'+esc(r)+'</p>').join("");
+    }
+  }catch(_e){}
+  /* (3c) 已攞獎項數目＋跳去獎項頁（重用 setHomeTab("awards")，唔複製獎項頁） */
+  try{
+    const wins = titles162Awards162();
+    html += '<p class="gold" style="margin:10px 0 6px">獎項</p>'
+      + '<p style="margin:0 0 6px">'+(wins>0 ? ("已經攞過獎（"+wins+" 次典禮）。") : "未攞過獎。")+'</p>'
+      + '<button type="button" class="pane-go72 titles162-goawards">去獎項頁睇入圍同得獎紀錄</button>';
+  }catch(_e){}
+  /* (2) 已攞標籤卡：label＋來源＋軌跡組；hidden 唔出；舊存檔純字串／冇 from／解唔到唔假裝有來源 */
+  html += '<p class="gold" style="margin:14px 0 6px">已攞標籤</p>';
   const list = ensureCastingTagsState();
-  const visible = list.filter(t=>{
-    const m = castingTagMeta(t && (t.id||t.label));
-    return !(m && m.hidden);
+  const seen = Object.create(null);
+  const visible = [];
+  list.forEach(t=>{
+    if(t==null) return;
+    const m = castingTagMeta((typeof t==="string") ? t : (t.id||t.label));
+    if(m && m.hidden) return;
+    const lab = String((m && m.label) || ((typeof t==="string") ? t : (t.label||t.id||""))).trim();
+    if(!lab || seen[lab]) return;
+    seen[lab]=1;
+    visible.push(t);
   });
   if(!visible.length){
-    box.innerHTML = `<div class="tags-empty debt-empty"><p>暫時未有選角標籤。</p><p class="sub" style="margin-top:8px">接多啲唔同戲路嘅通告，行內人會開始用幾個字記住你。</p></div>`;
-    return;
+    html += `<div class="tags-empty debt-empty"><p>暫時未有選角印象。</p><p class="sub" style="margin-top:8px">接多啲唔同戲路嘅通告，行內人會開始用幾個字記住你。</p></div>`;
+  } else {
+    html += visible.map(t=>{
+      const m = castingTagMeta((typeof t==="string") ? t : (t.id||t.label));
+      const lab = esc(m.label || ((typeof t==="string") ? t : (t.label||t.id)));
+      const from = (t && typeof t==="object") ? t.from : "";
+      const src = castingTagSourceLabel162(from);
+      const grp = castingTagTrajGroup162(t);
+      const bits = [];
+      if(src) bits.push("嚟自"+src);
+      if(grp) bits.push(TRAJ162_GROUP_LABEL[grp]);
+      return `<article class="debt-row"><p class="debt-title">${lab}</p>`
+        + (bits.length ? `<p class="debt-meta sub">${bits.map(esc).join(" · ")}</p>` : `<p class="debt-meta sub">選角標籤</p>`)
+        + `</article>`;
+    }).join("");
   }
-  box.innerHTML = visible.map(t=>{
-    const m = castingTagMeta(t.id||t.label);
-    const lab = journalText(m.label || t.label || t.id);
-    return `<article class="debt-row"><p class="debt-title">${lab}</p><p class="debt-meta sub">選角標籤</p></article>`;
-  }).join("");
+  box.innerHTML = html;
+  const go = box.querySelector(".titles162-goawards");
+  if(go) go.onclick = ()=>{ try{ setHomeTab("awards"); }catch(_e){} };
 }
 function freeplayRumorPlaceholderText(frag){
   const t = frag && String(frag.text||"").trim();
@@ -35503,7 +35622,6 @@ async function loadFreeplayFramework(){
   try{ seedFreeplayFavorDebt(); }catch(_e){}
   try{ applyFreeplaySlotsToSoftGate(); }catch(_e){}
   try{ ensureWeakSeals(); }catch(_e){}
-  try{ syncDevTagsTabVisibility(); }catch(_e){}
   try{ ensureAwardsLog(); ensureAwardsFlags(); }catch(_e){}
   try{ flushPendingStoryPapers(); }catch(_e){}
   return FREEPLAY_FW;
