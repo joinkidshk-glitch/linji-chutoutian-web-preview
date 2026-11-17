@@ -1,5 +1,5 @@
-# v20a118 LOCPANEL118 靜態守門：地點面板重設計（15 地點全量，純呈現層）。
-# 覆蓋：① HTML 元素齊（pill／負責人／名牌／名牌列）② 15 地點負責人覆蓋——11 間
+# v20a118 LOCPANEL118 靜態守門：地點面板重設計（17 地點全量，純呈現層；v265 加服裝店／屋企）。
+# 覆蓋：① HTML 元素齊（pill／負責人／名牌／名牌列）② 17 地點負責人覆蓋（15 舊＋v265 2 新）——11 間
 #       機構老闆經 GIG_ISSUER_FIGURE_MAP30V2 對照表（唔 hardcode boss 檔路徑）＋何生
 #       （S-30 fallback 同一來源）＋霞姐／禮品檔名牌＋醫院 null ③ 唔用何生頂替任何
 #       地點負責人 ④ 額度 pill 文案逐字＋扣後數字＋「已到埗」行只喺扣數嗰陣出
@@ -71,12 +71,15 @@ ck("新元素喺 #loc-sheet 入面",
 ck("新元素唔喺 #loc-acts 入面（ux68 重排唔會掂佢哋）",
    src.find('id="loc-owner118"') < src.find('id="loc-acts"'))
 
-# ---------- 2. 15 地點負責人覆蓋 ----------
+# ---------- 2. 17 地點負責人覆蓋（15 舊＋v265 2 新） ----------
 LOCS15 = ["film_lion", "rec_hk", "tvb_longmen", "tvb_kowloon", "tvb_harbour",
           "film_cotton", "film_harbour", "ad_central", "ad_adm", "rec_wanchai",
           "rec_star", "cafe_cha", "agency_ho", "gift_shop", "hospital"]
 for lid in LOCS15:
     ck("LOCS 有 %s" % lid, ('id:"%s"' % lid) in src)
+# v20a265：2 新點（服裝店／屋企）入 LOCS；負責人：服裝店老闆娘暫無企立圖、屋企唔開 sheet，一律 null。
+for lid in ("clothing_shop", "home"):
+    ck("LOCS 有 %s（v265）" % lid, ('id:"%s"' % lid) in src)
 owner_src = extract_fn("locpanel118OwnerFor")
 map_src = extract_const_obj("GIG_ISSUER_FIGURE_MAP30V2")
 ORGS11 = ["film_lion", "rec_hk", "tvb_longmen", "tvb_kowloon", "tvb_harbour",
@@ -95,10 +98,13 @@ ck("cafe_cha 分支：霞姐企立圖＋名牌（v20a131 B1）", 'locId==="cafe_
 ck("gift_shop 分支：老闆娘企立圖＋名牌、唔憑空起名（v20a131 B1）",
    'locId==="gift_shop"' in owner_src and "廟街禮品檔" in owner_src
    and "gift_lady_base.webp" in owner_src)
-ck("負責人函數再冇 noFig（v20a131 B1 之後 15 地點全部有圖或 null）",
+ck("負責人函數再冇 noFig（v20a131 B1 之後 17 地點全部有圖或 null）",
    "noFig" not in owner_src)
 ck("hospital 分支：return null（唔出人、連名牌都唔出）",
    'locId==="hospital"' in owner_src and "return null" in owner_src)
+ck("v265 分支：clothing_shop／home 返 null（服裝店老闆娘暫無企立圖／屋企唔開地點 sheet）",
+   'locId==="clothing_shop"' in owner_src and 'locId==="home"' in owner_src
+   and owner_src.count("return null") >= 3)
 ck("gigIssuerFigure30v2 呼叫只喺 agency_ho 分支出現（唔用何生頂替其他地點）",
    owner_src.count("gigIssuerFigure30v2(") == 1
    and owner_src.find("gigIssuerFigure30v2(") > owner_src.find('locId==="agency_ho"'))
@@ -191,13 +197,21 @@ ck("CSS 有 .act-ic118＋.act-txt118 規則（v17k first-child 規則失效後�
    ".act-ic118" in src and ".act-txt118" in src)
 
 # ---------- 6. 場景圖 15/15 齊晒（v118 補埋 gift_shop／hospital；素底留做後備機制） ----------
+# v20a265 COSTUME265 resync：bg_loc_ 15→16（加服裝店；圖檔由另一工人平行生成，呢度只斷言路徑，
+# 唔斷言檔案存在，免次序耦合）；屋企用現成 bg_wf4_home.jpg（已入庫，斷言路徑＋實存）。
 bg_src = extract_const_obj("LOC_SHEET_BG")
-ck("LOC_SHEET_BG 有 15 張（v118 補齊 gift_shop／hospital）",
-   len(re.findall(r'^\s*(\w+):"assets/story/locs/bg_loc_', bg_src, re.M)) == 15)
+ck("LOC_SHEET_BG 有 16 張 bg_loc_（v118 15 張＋v265 服裝店）",
+   len(re.findall(r'^\s*(\w+):"assets/story/locs/bg_loc_', bg_src, re.M)) == 16)
 for lid in LOCS15:
     ck("LOC_SHEET_BG 有 %s" % lid, ('%s:"assets/story/locs/bg_loc_%s.jpg?v=20a104"' % (lid, lid)) in bg_src)
     ck("場景圖檔實存 assets/story/locs/bg_loc_%s.jpg（720×1280）" % lid,
        os.path.isfile(os.path.join(ROOT, "assets", "story", "locs", "bg_loc_%s.jpg" % lid)))
+ck("LOC_SHEET_BG 有 clothing_shop（路徑已寫；檔案由另一工人平行生成，唔斷言實存）",
+   'clothing_shop:"assets/story/locs/bg_loc_clothing_shop.jpg"' in bg_src)
+ck("LOC_SHEET_BG 有 home（屋企用現成 bg_wf4_home.jpg，唔使新圖）",
+   'home:"assets/story/locs/bg_wf4_home.jpg"' in bg_src)
+ck("屋企場景圖檔實存 assets/story/locs/bg_wf4_home.jpg",
+   os.path.isfile(os.path.join(ROOT, "assets", "story", "locs", "bg_wf4_home.jpg")))
 ck("CSS 有 locpanel118-nobg 素底後備規則（將來有地點冇圖即自動行素底）",
    "locpanel118-nobg" in src)
 ck("render 仍按 LOC_SHEET_BG 有無切換素底態（後備機制唔刪）",

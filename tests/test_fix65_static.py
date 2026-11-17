@@ -36,7 +36,7 @@ def fn_body(name):
 
 # --- FIX65-1 用戶拍板規則（2026-11-10）：全日休息清零、入水原值 ---
 ok("FIX65-1" in src, "FIX65-1 標記在位")
-ok(src.count("apply({stress:-S.stress})") == 2, "兩條全日休息路徑清零（排程 rest＋doRest）")
+ok(src.count("apply({stress:-S.stress})") == 3, "三條全日休息路徑清零（排程 rest＋doRest＋v265 瞓覺 reskin）")
 ok("-(18+R(0,8))" not in src, "舊排程休息公式 −(18+R(0,8)) 已被清零取代")
 ok("-(14+R(0,8))" not in src, "舊 doRest 公式 −(14+R(0,8)) 已被清零取代")
 ok("stress:-(4+R(0,4))" in src, "部分休息（提早返屋企）保留")

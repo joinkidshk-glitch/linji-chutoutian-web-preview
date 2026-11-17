@@ -40,8 +40,8 @@ ok('A helper 掣序：返去揀過／確定', '返去揀過' in helper and '"確
 ok('A helper onDismiss 等同返去（行 onCancel）', 'onDismiss' in helper and 'onCancel' in helper)
 ok('A helper 選項原文有 esc', 'esc236' in helper and '&lt;' in helper)
 
-# 11 個呼叫點＋1 個定義＝12 次 'confirmChoice236('（pickChoice／WF4／還債×2／請柬×2／傾談×2／打聽／買禮物／治療）
-ok('A 呼叫點齊 11 處（＋定義＝12）', html.count('confirmChoice236(') == 12)
+# 12 個呼叫點＋1 個定義＝13 次 'confirmChoice236('（pickChoice／WF4／還債×2／請柬×2／傾談×2／打聽／買禮物／治療／v265 買衫）
+ok('A 呼叫點齊 12 處（＋定義＝13）', html.count('confirmChoice236(') == 13)
 
 # ---- B. 故事側 ----
 pick = fn_block('function pickChoice(choiceId){')
@@ -84,6 +84,8 @@ ok('C4 還債禮物／現金兩掣都先確認', html.count('confirmChoice236({ 
 ok('C5 請柬出席／推辭都先確認', 'confirmChoice236({ choiceLabel: "出席「' in html and 'confirmChoice236({ choiceLabel: "推辭「' in html)
 ok('C5 請柬遮罩行為唔郁（onDismiss 照＝推辭）', '{ onDismiss: skip, keepSheetContent:true }' in html)
 ok('C6 醫院治療先確認後扣 $600', 'confirmChoice236({ choiceLabel: "去醫院治療"' in html)
+cshop = block_between('function openClothingShop265(L){', 'function renderWardrobe265(')
+ok('C7 買衫先確認後扣錢（v265）', 'confirmChoice236({' in cshop and 'buyCostume265(id)' in cshop)
 
 # ---- D. 唔准郁 ----
 ok('D 送禮確認仲在（唔重複加）', '確認送禮' in html)

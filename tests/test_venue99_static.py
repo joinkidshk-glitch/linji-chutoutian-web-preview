@@ -44,7 +44,7 @@ md = re.findall(r'<div class="md97"[^>]*>([^<]+)</div>', src)
 ok('地區名恰好 0 個（v137 已拎走；酒店標籤唔計入地區名）', len(md) == 0)
 locs_seg = src.split('const LOCS')[1].split('const NPCS')[0] if 'const LOCS' in src else ''
 ok('LOCS 冇金禧（唔開新地點、冇熱區）', '金禧' not in locs_seg and 'venue99' not in locs_seg)
-ok('LOCS 15→21 個地點（v159 加 6 個約會新點）', locs_seg.count('{ id:"') == 21)
+ok('LOCS 15→21→23 個地點（v159 加 6 個約會新點；v265 加花園街成衣店／阿偉屋企）', locs_seg.count('{ id:"') == 23)
 
 # --- (4) pack JSON 冇直改（場地只經 index 覆寫） ---
 stub = (p.resolve().parent / 'content' / 'STUB_AWARDS_CEREMONY_v1.json').read_text(encoding='utf-8')

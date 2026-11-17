@@ -133,7 +133,7 @@ ok("DATES 塊無 Vera", "Vera" not in block)
 # --- locId 全部係已知地點或 date_* 新點（date_* 係 B2 工人加緊嘅 LOCS，呢度唔斷言佢哋已在 LOCS） ---
 lm = re.search(r"const LOCS = \[(.*?)\n\];", idx, re.S)
 locs_ids = set(re.findall(r'\{ id:"([^"]+)"', lm.group(1))) if lm else set()
-ok("LOCS 塊抽得到（21 個：15 舊＋6 約會新點）", len(locs_ids) == 21)  # v20a159 整合：B2 加 6 點
+ok("LOCS 塊抽得到（23 個：15 舊＋6 約會新點＋v265 2 新點）", len(locs_ids) == 23)  # v20a159 整合：B2 加 6 點；v265 加服裝店／屋企 2 點
 for key in sorted(entries):
     loc = entries[key]["locId"]
     ok("locId 已知或 date_* 新點: %s=%s" % (key, loc),

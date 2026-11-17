@@ -35,15 +35,17 @@ ok('gate wired to start button only', 'indexOf("開始今日")>=0) return Object
 ok('home-settle button stays ungated', 'indexOf("回家結算")>=0) return Object.assign({}, b, { on: goSchedule })' in ps)
 ok('gate checks flag', 'opts.confirmStartSchedule' in ps)
 
-# ---- 旗標呼叫點：三處日結卡，冇多冇少 ----
+# ---- 旗標呼叫點：四處日結卡，冇多冇少（v265 瞓覺加第四處） ----
 n_flag = len(re.findall(r'confirmStartSchedule:\s*true', html))
-ok('flag passed at exactly 3 day-end call sites', n_flag == 3)
+ok('flag passed at exactly 4 day-end call sites', n_flag == 4)
 eb = seg('function endBrowseDayGoHome(', 'function confirmEarlyRestFromMenu(')
 ok('flag at early-rest card (endBrowseDayGoHome)', 'confirmStartSchedule: true' in eb)
 rp = seg('function resolvePlannedDay(', 'function autoPushC1IfNeeded(')
 ok('flag at planned-rest card (resolvePlannedDay)', 'confirmStartSchedule: true' in rp)
 dr = seg('function doRest(', 'function tipGig(')
 ok('flag at location-rest card (doRest)', 'confirmStartSchedule: true' in dr)
+sl = seg('function costume265Sleep(', 'function openClothingShop265(')
+ok('flag at sleep card (costume265Sleep)', 'confirmStartSchedule: true' in sl)
 
 # ---- 唔加確認嘅路徑保持原狀 ----
 pl = seg('function playRestSleepFx(', 'function restSleepFxCheck(')

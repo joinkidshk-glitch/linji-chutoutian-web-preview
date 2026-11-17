@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # v20a159 MAP159（B2：約會層＋6 新地點）靜態測試：
-# 一、LOCS 21 個（15 原有零改動＋6 新點欄位齊全）
-# 二、地圖層切換（片場層 15／約會層 6 新＋茶記＋廟街；切換唔耗額度）
+# 一、LOCS 23 個（15 原有零改動＋6 新點欄位齊全＋v265 服裝店／屋企 2 新點）
+# v20a265 COSTUME265 resync：地點 21→23（片場層 15→17：花園街成衣店／阿偉屋企）；
+# 墨字地名 21→23；新點同最近同層舊點距離 ≥7.5%（跨層唔計——兩層永不同時顯示）。
+# 二、地圖層切換（片場層 17／約會層 6 新＋茶記＋廟街；切換唔耗額度）
 # 三、地點 sheet（bg 對照表 6 行＋404 漸變 fallback＋約會對象列讀 ROM159_WOMEN spots）
 # 四、日常用途（tertiary 第三出沒點；p／share／上限／冷卻數字零改動）
 # 五、出行額度（入新地點計 1 次；層切換唔計；唔加新豁免）
@@ -21,13 +23,13 @@ def ok(name, cond):
 # --- 基線不變 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
 
-# --- (1) LOCS 21 個：15 原有＋6 新點 ---
+# --- (1) LOCS 23 個：15 原有＋6 新點＋v265 2 新點 ---
 m = re.search(r'const LOCS = \[(.*?)\n\];', src, re.S)
 ok('搵到 LOCS', bool(m))
 locs_seg = m.group(1) if m else ''
 entries = re.findall(r'\{ id:"(\w+)",(.*?)\},', locs_seg, re.S)
 ids = [e[0] for e in entries]
-ok('LOCS 21 個（15＋6）', len(ids) == 21)
+ok('LOCS 23 個（15＋6＋2）', len(ids) == 23)
 EXP15 = {
     'film_lion': (52, 12), 'rec_hk': (30, 24), 'tvb_longmen': (41, 14), 'tvb_kowloon': (37, 45),
     'tvb_harbour': (90, 15), 'film_cotton': (68, 11), 'film_harbour': (80, 18), 'ad_central': (64, 57),
@@ -66,14 +68,19 @@ for k, (nm, area, region, x, y) in EXP6.items():
         new_ok = False
 ok('6 新點欄位齊全（id／name／area／type／region／x／y／desc／layer）', new_ok)
 # 新點唔撞舊點／唔入 CLUSTER 7.5% fan-out 圈（基底冇新點嗰陣直接 FAIL，唔 crash）
+# v20a265：只計同層——片場層新點同約會層舊點永不同時顯示（drawMap 只畫當前層），
+# 跨層距離唔入呢個斷言（成衣店 (24,30) 同約會層戲院 (22,32) 只差 2.8%，同層先至撞）。
 mind = 999.0
 if all(k in by_id for k in EXP6):
     for k in EXP6:
         for o, f in by_id.items():
             if o == k: continue
+            # v20a265：跨層唔計——date 點只同 date 層點＋約會層共享點（茶記／廟街）比較
+            # （片場層新點唔入；共享點冇 layer 欄，要顯式認 id）
+            if f.get('layer') != 'date' and o not in ('cafe_cha', 'gift_shop'): continue
             d = math.hypot(by_id[k]['x'] - f['x'], by_id[k]['y'] - f['y'])
             mind = min(mind, d)
-ok('新點同最近舊點距離 ≥7.5%（唔撞針／唔觸發 fan-out）', mind >= 7.5)
+ok('新點同最近同層舊點距離 ≥7.5%（唔撞針／唔觸發 fan-out）', mind >= 7.5)
 _lounge_seg = locs_seg.split('date_lounge')[1].split('date_cinema')[0] if 'date_lounge' in locs_seg else ''
 ok('酒廊唔係卡拉OK（1990 年未有多房式 K 場；文案唔寫卡拉OK／K 房）',
    'date_lounge' in locs_seg and '卡拉OK' not in _lounge_seg
@@ -93,10 +100,12 @@ ok('切換唔耗出行額度（handler 入面冇 travel114TrySpend）',
 ok('約會層唔包事務所／醫院',
    'agency_ho' not in src[src.find('MAP159_DATE_LAYER_SHARED'):src.find('MAP159_DATE_LAYER_SHARED') + 80]
    and 'hospital' not in src[src.find('MAP159_DATE_LAYER_SHARED'):src.find('MAP159_DATE_LAYER_SHARED') + 80])
-# 墨字地名 21 個（15 舊＋6 新）
+# 墨字地名 23 個（15 舊＋6 新＋v265 2 新）
 mn = re.findall(r'<div class="mn68"[^>]*>([^<]+)</div>', src)
-ok('墨字地名 21 個（15＋6）', len(mn) == 21)
+ok('墨字地名 23 個（15＋6＋2）', len(mn) == 23)
 ok('6 新點墨字地名齊', all(k in by_id and by_id[k]['name'] in mn for k in EXP6))
+ok('v265 2 新點墨字地名齊（花園街成衣店／阿偉屋企）',
+   '花園街成衣店' in mn and '阿偉屋企' in mn)
 
 # --- (3) 地點 sheet：bg 對照表＋404 fallback＋約會對象列 ---
 mb = re.search(r'const LOC_SHEET_BG = \{(.*?)\n\};', src, re.S)

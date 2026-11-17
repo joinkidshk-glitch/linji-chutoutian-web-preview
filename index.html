@@ -4180,6 +4180,23 @@ body.day-res-open .day-row{
   border:1px solid rgba(60,40,20,.22); border-radius:8px;
 }
 .rest-sleep-inline .rest-sleep-cap{ display:none; }
+/* v20a265 COSTUME265：瞓覺日結卡「zzz」浮字（行入屋企＋浮字，唔畫瞓低身體，唔用 fx_rest.mp4） */
+.sleep265-zzz{ display:flex; justify-content:center; gap:.35em; margin:6px 0 2px; }
+.sleep265-zzz span{ font-size:1.9rem; font-weight:700; color:#6b4f2a; display:inline-block; animation:sleep265float 2.2s ease-in-out infinite; }
+.sleep265-zzz span:nth-child(2){ animation-delay:.35s; }
+.sleep265-zzz span:nth-child(3){ animation-delay:.7s; }
+@keyframes sleep265float{ 0%,100%{ transform:translateY(0); opacity:.55; } 50%{ transform:translateY(-8px); opacity:1; } }
+.sleep265-cap{ text-align:center; font-size:.92rem; color:#6b4f2a; margin:2px 0 8px; }
+/* v20a265 COSTUME265：手帳行程頁底——瞓覺／衣櫃掣列＋衣櫃區 */
+.home265-row{ display:flex; gap:8px; margin:10px 0 0; }
+.home265-row button{ flex:1; min-height:44px; }
+.wardrobe265{ margin:10px 0 0; padding:10px 12px; background:#f8f1de; border:1px solid rgba(120,95,60,.45); border-radius:10px; }
+.wardrobe265-h{ margin:0 0 6px; font-size:1rem; }
+.wardrobe265-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; border-top:1px dashed rgba(120,95,60,.35); }
+.wardrobe265-row.is-eq{ background:rgba(201,168,118,.18); border-radius:6px; padding:8px 6px; }
+.wardrobe265-row .n{ font-weight:700; }
+.wardrobe265-row .h{ font-size:.82rem; color:#6b4f2a; }
+.wardrobe265-row button{ flex-shrink:0; min-height:36px; padding:4px 14px; }
 /* v20a102 FX102：行程像素動畫嵌日結板（拍攝/錄音/試鏡/訓練；造法同 rest-sleep-inline） */
 .act-fx102{
   margin:0 0 8px; display:flex; justify-content:center;
@@ -6059,7 +6076,10 @@ body.day-res-open .day-row{
               <div class="mn68" style="left:15%;top:calc(86% - 20px)">何生事務所</div>
               <div class="mn68" style="left:28.4%;top:calc(35% - 104px)">廟街禮品</div>
               <div class="mn68" style="left:43%;top:calc(73% + 52px)">仁康醫院</div>
-              <!-- v20a159 MAP159：約會層 6 個墨字地名（格式跟足上面 15 個；label 位置跟 LOCS 座標，避開附近標籤） -->
+              <!-- v20a265 COSTUME265：片場層 17 個墨字地名（15 舊＋花園街成衣店／阿偉屋企 2 新；label 位置跟 LOCS 座標） -->
+              <div class="mn68" style="left:24%;top:calc(30% - 52px)">花園街成衣店</div>
+              <div class="mn68" style="left:20%;top:calc(44% + 34px)">阿偉屋企</div>
+              <!-- v20a159 MAP159：約會層 6 個墨字地名（格式跟足上面 17 個；label 位置跟 LOCS 座標，避開附近標籤） -->
               <div class="mn68" style="left:58%;top:calc(40% - 52px)">尖沙咀海傍</div>
               <div class="mn68" style="left:52%;top:calc(63% + 34px)">山頂</div>
               <div class="mn68" style="left:74%;top:calc(60% - 52px)">酒廊唱歌</div>
@@ -6187,6 +6207,14 @@ body.day-res-open .day-row{
           <div class="act-list" id="act-list"></div>
         </div>
       </div>
+      <!-- v20a265 COSTUME265：屋企新增——① 瞓覺掣（只限今日未耗嗰陣出，見 wireHome265）
+           ② 衣櫃入口（撳開下面 #wardrobe265 區，著緊／擁有／換衫；換衫免費即時唔耗日）。
+           其餘手帳內容一字唔郁；呢度只係入口，唔係第二套手帳。 -->
+      <div class="home265-row" id="home265-row">
+        <button type="button" class="paper" id="btn-sleep265">瞓覺</button>
+        <button type="button" class="paper" id="btn-wardrobe265">衣櫃</button>
+      </div>
+      <div class="wardrobe265" id="wardrobe265" hidden></div>
       <!-- v20a71 PART3B：「訓練一覽」摺疊段成段移除（用戶 13:30）——訓練資訊改入
            排程選擇流程（全日訓練選擇器 #nb-train71-wrap＋逐日活動欄訓練分類）。 -->
       <div class="nb-actions" id="nb-actions">
@@ -6391,8 +6419,16 @@ const LOCS = [
     desc:"廟街夜市最旺那檔禮品檔：花、果籃、卡帶、蛋撻，送人自用都齊，老闆娘記性好得嚇人。" },
   { id:"hospital", name:"仁康醫院", area:"薄扶林", type:"med", region:"island", x:43, y:73, emoji:"🏥",
     desc:"白十字大樓，門口長泊著一部救護車。平時無人想來，病到燶透時，才知這裡有多重要。" },
+  /* v20a265 COSTUME265：服裝店＋屋企上地圖（設計檔 ~/workspace/linji-costume-home/DESIGN.md §2／§3）。
+     片場層 15→17。落位：成衣店 (24,30) 旺角花園街一帶，離 rec_hk (30,24) 8.5%、cafe_cha (15,16)
+     16.7%，唔入 CLUSTER 7.5% fan-out 圈；屋企 (20,44) 深水埗一帶，離 tvb_kowloon (37,45) 17.0%。
+     兩個新點都唔設 layer（預設片場層），唔入約會層。 */
+  { id:"clothing_shop", name:"花園街成衣店", area:"旺角", type:"shop", region:"kln", x:24, y:30, emoji:"✨",
+    desc:"花園街成衣檔：掛滿衫嘅鐵架、帆布頂，價錢貼地，新人由平衫買起、慢慢買貴衫。" },
+  { id:"home", name:"阿偉屋企", area:"深水埗", type:"home", region:"kln", x:20, y:44, emoji:"🏠",
+    desc:"深水埗唐樓，阿偉屋企。返嚟唔計出行額度；入面就係行程手帳，可以瞓覺、換衫。" },
   /* v20a159 MAP159：約會層 6 個新地點（草稿 §3.2；Q8 修訂：酒廊唱歌唔係卡拉OK）。
-     layer:"date"；片場層 15 個唔設 layer（預設片場層，現有欄位零改動）。
+     layer:"date"；片場層 17 個唔設 layer（預設片場層，現有欄位零改動）。
      落位理據（對住 hk_map_v6.jpg 實圖＋現有 15 點座標，全部新點同最近舊點距離 ≥10%、
      唔撞 label、唔入 CLUSTER 7.5% fan-out 圈）：
      · 海傍 (58,40)：南九龍海邊，夜市檔／紅樓旁邊水邊位，離 gift_shop 15.8%、tvb_kowloon 21.6%。
@@ -6437,6 +6473,289 @@ const NPCS = {
   agent:{ id:"agent", name:"何生", role:"經理人", face:"npc_ho",
     homes:["ad_central","tvb_kowloon","film_cotton","rec_wanchai"] },
 };
+/* ===== v20a265 COSTUME265：服裝系統 P1（設計檔 ~/workspace/linji-costume-home/DESIGN.md §1）=====
+   12 件全表（價錢係 v261 經濟重做逐項重錨值，全套 $6,270；唔好用舊價）。
+   P1 服裝店只賣 4 件（shop:true：#1／#4／#10／#8）；其餘 8 件數據入表但店唔賣（P2）。
+   unlock：{fame} 聲望／{tier} 級數（enc79PlayerTier 口徑，取 max(即時, 最高紀錄)）／
+   {vocal} 歌藝／{acting} 演技；null＝無鎖。stem＝全身圖組字首（assets/story/fullbody/<stem>_<expr>.webp）。
+   鐵律（§1.3／§0.2）：衫嘅加成係「有效數值」，只喺檢查嗰刻計，永遠唔寫入 S.*——唔經 applyCalib60、
+   唔入訓練／拍攝日／殺青加成、唔計聲望／信用／結局判定、唔影響 enc79PlayerTier。 */
+const COSTUME265 = [
+  { id:"c1",  name:"乾淨白恤衫＋牛仔褲", cat:"日常", price:120,  bonus:{ looks:1, charm:1 },                 unlock:null,               stem:"awi_c1",  shop:true },
+  { id:"c2",  name:"街坊波鞋套裝",       cat:"日常", price:150,  bonus:{ stamina:1, looks:1 },               unlock:null,               stem:"awi_c2",  shop:false },
+  { id:"c3",  name:"黑皮褸",             cat:"日常", price:300,  bonus:{ looks:2, charm:1 },                 unlock:{ fame:15 },        stem:"awi_c3",  shop:false },
+  { id:"c4",  name:"合身深藍西裝",       cat:"正式", price:600,  bonus:{ looks:2, charm:2 },                 unlock:{ fame:25 },        stem:"awi_c4",  shop:true },
+  { id:"c5",  name:"灰色三件頭",         cat:"正式", price:900,  bonus:{ looks:3, charm:2, stage:1 },        unlock:{ tier:1 },         stem:"awi_c5",  shop:false },
+  { id:"c6",  name:"晚宴禮服",           cat:"正式", price:1500, bonus:{ looks:3, charm:3, stage:1 },        unlock:{ tier:2, fame:40 }, stem:"awi_c6",  shop:false },
+  { id:"c7",  name:"牛仔舞台服",         cat:"舞台", price:250,  bonus:{ stage:2, vocal:2 },                 unlock:{ vocal:20 },       stem:"awi_c7",  shop:false },
+  { id:"c8",  name:"亮片舞台裝",         cat:"舞台", price:500,  bonus:{ stage:3, charm:1 },                 unlock:{ vocal:25 },       stem:"awi_c8",  shop:true },
+  { id:"c9",  name:"閃粉舞衣",           cat:"舞台", price:800,  bonus:{ stage:3, charm:2, vocal:1 },        unlock:{ tier:2 },         stem:"awi_c9",  shop:false },
+  { id:"c10", name:"武師練功服",         cat:"戲行", price:150,  bonus:{ stamina:2, acting:1 },              unlock:null,               stem:"awi_c10", shop:true },
+  { id:"c11", name:"民初長衫",           cat:"戲行", price:400,  bonus:{ acting:3, stage:1 },                unlock:{ acting:35 },      stem:"awi_c11", shop:false },
+  { id:"c12", name:"古裝戲服",           cat:"戲行", price:600,  bonus:{ acting:2, looks:2 },                unlock:{ acting:30 },      stem:"awi_c12", shop:false },
+];
+const COSTUME265_MAX_PER_STAT = 4; /* R4：每圍有效加成上限 +4（單件最高 +3） */
+const COSTUME265_EXPRS = ["base","angry","sad","serious","shy","smile","surprise","think"];
+function costume265ById(id){ try{ return (COSTUME265||[]).find(c=>c && c.id===id) || null; }catch(_e){ return null; } }
+function costume265EnsureWardrobe(st){
+  const s = st || (typeof S!=="undefined" ? S : null);
+  if(!s || typeof s!=="object") return null;
+  if(!s.wardrobe || typeof s.wardrobe!=="object" || Array.isArray(s.wardrobe)) s.wardrobe = { owned:[], equipped:null };
+  if(!Array.isArray(s.wardrobe.owned)) s.wardrobe.owned = [];
+  if(typeof s.wardrobe.equipped!=="string") s.wardrobe.equipped = null;
+  return s.wardrobe;
+}
+/* 解鎖用級數：跟 dlg106AweiStem 同一條「升咗就唔跌返」規則（max(即時 tier, 最高紀錄)），
+   唔好用即時 tier——跨年換年庫嗰陣即時 tier 會跌（v195 根因），唔可以令買得嘅衫突然鎖返。 */
+function costume265Tier(){
+  try{
+    const live = (typeof enc79PlayerTier==="function") ? enc79PlayerTier()|0 : 0;
+    const mx = (typeof S!=="undefined" && S && S.flags) ? (Number(S.flags.playerTierMax)||0) : 0;
+    return Math.max(live, mx);
+  }catch(_e){ return 0; }
+}
+function costume265UnlockReason(c){
+  if(!c || !c.unlock) return "";
+  const u = c.unlock, parts = [];
+  const TIER265 = ["臨記","配角","主角","天王"];
+  try{
+    if(u.fame!=null && (Number(S&&S.fame)||0) < u.fame) parts.push("聲望 ≥ "+u.fame);
+    if(u.tier!=null && costume265Tier() < u.tier) parts.push("級數 ≥ "+(TIER265[u.tier]||u.tier)+"（"+u.tier+" 級）");
+    if(u.vocal!=null && (Number(S&&S.vocal)||0) < u.vocal) parts.push("歌藝 ≥ "+u.vocal);
+    if(u.acting!=null && (Number(S&&S.acting)||0) < u.acting) parts.push("演技 ≥ "+u.acting);
+  }catch(_e){}
+  return parts.join("＋");
+}
+function costume265Unlocked(c){ return costume265UnlockReason(c) === ""; }
+function costume265EquippedDef(){
+  try{
+    const w = costume265EnsureWardrobe();
+    if(!w || !w.equipped) return null;
+    return costume265ById(w.equipped);
+  }catch(_e){ return null; }
+}
+/* 每圍有效加成（上限 +4；單件最高 +3，呢度係將來多件來源嗰陣嘅保險）。純計算，唔寫 S.*。 */
+function costume265BonusMap(){
+  const out = {};
+  try{
+    const d = costume265EquippedDef();
+    if(!d) return out;
+    for(const [k,v] of Object.entries(d.bonus||{})){
+      const n = Number(v)||0;
+      if(n>0) out[k] = Math.min(COSTUME265_MAX_PER_STAT, n);
+    }
+  }catch(_e){}
+  return out;
+}
+function costume265EffStat(key){
+  const base = (typeof S!=="undefined" && S) ? (Number(S[key])||0) : 0;
+  try{ return base + ((costume265BonusMap()[key])||0); }catch(_e){ return base; }
+}
+function costume265BonusText(c){
+  if(!c) return "";
+  const order = ["acting","stage","vocal","looks","charm","stamina"];
+  const lab = (typeof STAT_LABEL!=="undefined" && STAT_LABEL) ? STAT_LABEL : {};
+  return order.filter(k=>c.bonus && c.bonus[k]).map(k=>((lab[k]||k)+" +"+c.bonus[k])).join("、");
+}
+function buyCostume265(id){
+  const c = costume265ById(id);
+  if(!c) return { ok:false, reason:"找不到這件衫" };
+  if(!c.shop) return { ok:false, reason:"這件衫暫未有售" };
+  const w = costume265EnsureWardrobe();
+  if(!w) return { ok:false, reason:"衣櫃未準備好" };
+  if(w.owned.indexOf(id)>=0) return { ok:false, reason:"已經擁有" };
+  const lock = costume265UnlockReason(c);
+  if(lock) return { ok:false, reason:"未合要求："+lock };
+  const price = Number(c.price)||0;
+  if((S.money||0) < price) return { ok:false, reason:"口袋裡的數目不夠——先去趕一兩個通告吧。" };
+  S.money = (S.money||0) - price;
+  w.owned.push(id);
+  try{ if(typeof refreshMoneyHud==="function") refreshMoneyHud(); }catch(_e){}
+  try{ saveQ(); }catch(_e){}
+  return { ok:true, reason:"", price, name:c.name };
+}
+function costume265Equip(id){
+  const w = costume265EnsureWardrobe();
+  if(!w) return false;
+  if(id==null || id===""){
+    w.equipped = null;
+    try{ saveQ(); }catch(_e){}
+    try{ renderWardrobe265(); }catch(_e){}
+    return true;
+  }
+  if(w.owned.indexOf(id)<0) return false;
+  const c = costume265ById(id);
+  if(!c) return false;
+  w.equipped = id;
+  try{ saveQ(); }catch(_e){}
+  try{ renderWardrobe265(); }catch(_e){}
+  return true;
+}
+/* 瞓覺掣 gate：只限今日未耗（唔係強制行程日）、未結局、唔係劇情進行中、唔係編排行程嗰陣。
+   強制日（shoot:/job:）嗰陣唔出掣——嗰日已經排定，瞓覺唔可以頂走佢。 */
+function costume265SleepAvailable(){
+  try{
+    if(typeof S==="undefined" || !S) return false;
+    if(S.homeEditable) return false;
+    if(typeof ending78Locked==="function" && ending78Locked()) return false;
+    if(typeof isStoryPlayActive==="function" && isStoryPlayActive()) return false;
+    if(typeof _storyPlayLocked!=="undefined" && _storyPlayLocked) return false;
+    if(typeof todayIsForcedDay==="function" && todayIsForcedDay()) return false;
+    return true;
+  }catch(_e){ return false; }
+}
+/* 瞓覺 ＝ 全日休息 reskin（設計 §3.3 硬規則）：同一條數（壓力清零、耗一日），
+   只係呈現唔同——行入屋企＋「zzz」浮字，唔畫瞓低身體，唔用 fx_rest.mp4。
+   撳之前出確認（跟 confirmEarlyRestFromMenu 嗰套：講明「今日就咁完咗，聽朝見」）。
+   瞓覺嗰日已經 tick 咗，唔可以再排訓練／通告／小休，唔可以同全日休息疊加。 */
+function costume265Sleep(){
+  try{
+    if(typeof isStoryPlayActive==="function" && isStoryPlayActive()){ toast("劇情進行中，完成對白才可以繼續。"); return; }
+  }catch(_e){}
+  try{ if(typeof _storyPlayLocked!=="undefined" && _storyPlayLocked){ toast("劇情進行中，完成對白才可以繼續。"); return; } }catch(_e2){}
+  if(typeof kickScheduleIfNeeded==="function" && kickScheduleIfNeeded()) return;
+  if(!costume265SleepAvailable()){ toast("今日已經排定行程，瞓唔到。"); return; }
+  modal(`<h3>瞓覺？</h3><p>今日就咁完咗，聽朝見。瞓足一日，壓力清零。</p>`,[
+    { label:"取消", role:"g" },
+    { label:"瞓覺", role:"p", on:()=>{
+      if(!costume265SleepAvailable()){ toast("今日已經排定行程，瞓唔到。"); return; }
+      try{ if(typeof hosp96TreatGate==="function" && hosp96TreatGate((typeof todayPlanId==="function") ? todayPlanId() : null)) return; }catch(_h96){}
+      try{ if(typeof conseq61IsSickToday==="function" && conseq61IsSickToday() && typeof conseq61ResolveSickDay==="function" && conseq61ResolveSickDay((typeof todayPlanId==="function") ? todayPlanId() : null)) return; }catch(_sk61){}
+      try{ closeSheet(); }catch(_e3){}
+      try{ closeModal(); }catch(_e4){}
+      try{ writeTodayPlan("rest"); }catch(_e5){}
+      const wd = weekdayName(weekdayIdx(S.dayIndex));
+      const notes = apply({stress:-S.stress}); /* 全日休息同一條數：壓力清零（v65 拍板） */
+      try{ if(typeof recordExec105Day==="function") recordExec105Day("rest"); }catch(_e6){}
+      const {ended, summary} = tickDay();
+      const showSleep = ()=>{
+        try{
+          presentRestSleepDayEnd({
+            title: `瞓覺（週${wd}）`,
+            notes, ended, summary,
+            confirmStartSchedule: true,
+            sleep265: true
+          });
+        }catch(_e7){
+          afterDayModal(formatRestSleepDeltas(notes), `瞓覺（週${wd}）`, null, ended, summary, {});
+        }
+      };
+      try{
+        if(typeof presentDueMorningPaper==="function" && presentDueMorningPaper(showSleep)) return;
+      }catch(_np){}
+      showSleep();
+    } }
+  ]);
+}
+function openClothingShop265(L){
+  /* 服裝店 sheet：抄 openGiftShop 買賣流程（查擁有→查錢→扣錢→入 S.wardrobe.owned→saveQ()，買嘢唔耗日）。
+     P1 只賣 4 件（shop:true）；其餘 8 件唔喺度出。鎖住嗰陣卡面寫明要求。 */
+  const rows = (COSTUME265||[]).filter(c=>c && c.shop);
+  const w = costume265EnsureWardrobe();
+  const owned = (w && w.owned) || [];
+  const body = rows.map(c=>{
+    const has = owned.indexOf(c.id)>=0;
+    const lock = costume265UnlockReason(c);
+    const afford = (S.money||0) >= (Number(c.price)||0);
+    const disabled = has || !!lock || !afford;
+    const why = has ? "已擁有" : (lock ? ("未合要求："+lock) : (!afford ? "不夠錢" : "有售"));
+    return `<button type="button" class="act ${disabled?"dim":""}" data-buy265="${c.id}" ${disabled?"disabled":""} style="width:100%;margin:0 0 8px;text-align:left">
+      <div><div class="n">${c.name}</div>
+      <div class="h">${costume265BonusText(c)} · $${(Number(c.price)||0).toLocaleString()} · ${why}</div></div>
+      <div class="cost">${disabled?(has?"已擁有":(lock?"鎖住":"——")):"買下"}</div>
+    </button>`;
+  }).join("") || `<p class="sub">本週暫無貨。</p>`;
+  try{ closeSheet(); }catch(_e){}
+  modal(`<h3>花園街成衣店</h3>
+    <p class="sub">旺角花園街 · 買入不耗日 · 著衫加成只喺接通告／試鏡嗰陣計</p>
+    <p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>
+    <div id="clothing-shop265-list">${body}</div>`,[
+      {label:"關閉", role:"g", on:()=>{ if(L) openLoc(L.id, {travelFree:true}); }}
+    ], {onDismiss:()=>{ if(L) openLoc(L.id, {travelFree:true}); }});
+  const box = document.getElementById("clothing-shop265-list");
+  if(box){
+    box.querySelectorAll("[data-buy265]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const id = btn.getAttribute("data-buy265");
+        const c = costume265ById(id);
+        confirmChoice236({
+          choiceLabel: "購買「" + ((c&&c.name)||id) + "」",
+          consequence: "即時扣款 $" + (Number(c&&c.price)||0).toLocaleString() + "，衫會存入衣櫃；返屋企衣櫃先著得。",
+          onConfirm: ()=>{
+            const res = buyCostume265(id);
+            if(!res.ok){ toast(res.reason||"買不到"); return; }
+            toast(`已買下「${res.name}」−$${res.price}`);
+            try{ paintBar(); }catch(_e){}
+            openClothingShop265(L);
+          },
+          onCancel: ()=>{ openClothingShop265(L); }
+        });
+      });
+    });
+  }
+}
+/* 衣櫃區（手帳行程頁底）：著緊邊套／擁有嘅衫／換衫。換衫免費、即時、唔耗日、唔耗出行額度。
+   由 renderNotebook 尾段呼叫；容器 #wardrobe265 唔喺度就靜默唔做（舊 DOM 相容）。 */
+function renderWardrobe265(){
+  const box = document.getElementById("wardrobe265");
+  if(!box) return;
+  const w = costume265EnsureWardrobe();
+  const owned = (w && w.owned) || [];
+  const eq = costume265EquippedDef();
+  const eqName = eq ? eq.name : "階段造型（跟級數）";
+  const eqBonus = eq ? costume265BonusText(eq) : "";
+  const rows = (COSTUME265||[]).map(c=>{
+    const has = owned.indexOf(c.id)>=0;
+    const isEq = eq && eq.id===c.id;
+    const lock = has ? "" : costume265UnlockReason(c);
+    const tag = isEq ? "著緊" : (has ? "擁有" : (c.shop ? "花園街成衣店有售" : "稍後推出"));
+    const btn = isEq
+      ? `<button type="button" class="paper" data-unequip265="1">除低</button>`
+      : (has ? `<button type="button" class="paper" data-equip265="${c.id}">著上</button>` : "");
+    return `<div class="wardrobe265-row${isEq?" is-eq":""}"><div><div class="n">${c.name}</div><div class="h">${c.cat} · ${costume265BonusText(c)} · $${(Number(c.price)||0).toLocaleString()} · ${tag}${lock?(" · 未合要求："+lock):""}</div></div>${btn}</div>`;
+  }).join("");
+  box.innerHTML = `<h3 class="wardrobe265-h">衣櫃</h3>`
+    + `<p class="sub">而家著緊：<b>${eqName}</b>${eqBonus?("（"+eqBonus+"）"):""}</p>`
+    + `<p class="sub">換衫免費、即時，唔耗日；加成只喺接通告／試鏡嗰陣計，唔會寫入能力值。</p>`
+    + rows;
+  box.querySelectorAll("[data-equip265]").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const id = b.getAttribute("data-equip265");
+      if(costume265Equip(id)){
+        try{ const img=document.getElementById("home-awi"); if(img && typeof bust109HeroSrc==="function"){ const h=bust109HeroSrc(); if(h) img.src=h; } }catch(_e){}
+        toast("換好衫");
+      }
+    });
+  });
+  box.querySelectorAll("[data-unequip265]").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      if(costume265Equip(null)){
+        try{ const img=document.getElementById("home-awi"); if(img && typeof bust109HeroSrc==="function"){ const h=bust109HeroSrc(); if(h) img.src=h; } }catch(_e){}
+        toast("除低，返去階段造型");
+      }
+    });
+  });
+}
+function wireHome265(){
+  /* 瞓覺掣／衣櫃入口接線（renderNotebook 尾段呼叫；每 render 一次重新綁定，冪等）。 */
+  try{
+    const sleepBtn = document.getElementById("btn-sleep265");
+    if(sleepBtn){
+      sleepBtn.style.display = costume265SleepAvailable() ? "" : "none";
+      sleepBtn.onclick = ()=>{ try{ costume265Sleep(); }catch(_e){} };
+    }
+    const wBtn = document.getElementById("btn-wardrobe265");
+    if(wBtn){
+      wBtn.onclick = ()=>{
+        const box = document.getElementById("wardrobe265");
+        if(!box) return;
+        box.hidden = !box.hidden;
+        if(!box.hidden){ try{ renderWardrobe265(); }catch(_e){} }
+      };
+    }
+  }catch(_e){}
+}
+
 
 const STAT_LABEL = {acting:"演技",stage:"台風",vocal:"歌藝",looks:"外貌",stamina:"體能",iq:"智商",charm:"魅力",fame:"幕前聲望",popularity:"人氣",stress:"壓力"};
 /* ===== v20a229 B3：舊入口池／內嵌 fallback 已刪 =====
@@ -6486,7 +6805,7 @@ function enrolledCourseCta(courseId){
 let S=null, atLoc=null, mapRegion="all"; /* v19z20: region filter retired; always all */
 let mapShowAllLocs=false; /* v19z20: idle pins dimmed unless true */
 /* ===== v20a159 MAP159：地圖分兩層（草稿 §3.2）=====
-   片場層（"set"，預設）：15 個原有地點。約會層（"date"）：6 個新點＋金龍茶餐廳
+   片場層（"set"，預設）：17 個原有地點。約會層（"date"）：6 個新點＋金龍茶餐廳
    ＋廟街禮品。何生事務所／仁康醫院唔入約會層。
    層狀態只係 transient（唔入 save）；切換唔耗出行額度、唔刷新成個地圖狀態，
    只係 drawMap 重繪一次＋paintBar 更新掣面文字。 */
@@ -10128,6 +10447,12 @@ function dlg106ExprFor(category, speakerId){
    v20a195 TIER195：讀 max(即時 tier, 最高紀錄 playerTierMax)——升咗就唔跌返。 */
 function dlg106AweiStem(){
   try{
+    /* v20a265 COSTUME265：著緊衫嗰陣用衫嘅表情組代替階段組（有著衫 → 衫嘅 stem，冇 → 階段 stem）。
+       衫圖未入庫嗰陣 dlg106Candidates 嘅候補鏈會跌返階段 stem（awi），唔出破圖。 */
+    if(typeof costume265EquippedDef==="function"){
+      const cd = costume265EquippedDef();
+      if(cd && cd.stem) return cd.stem;
+    }
     /* v20a195 TIER195：舊檔第一次讀造型嗰陣懶回填最高紀錄（packs 未齊嗰陣載入、
        playerTierMax 留空嗰種）；已有數字就即返，唔再掃年庫。 */
     if(typeof enc195EnsureTierMax==="function") enc195EnsureTierMax();
@@ -10140,6 +10465,14 @@ function dlg106AweiStem(){
   return "awi";
 }
 function bust109HeroSrc(){
+  /* v20a265 COSTUME265：著緊衫嗰陣頁頭用衫嘅 base 全身圖（#home-awi 56×74 object-fit:cover 置頂裁切，
+     同 v109 240×312 頭肩裁切同一做法——取全身圖上段）；衫圖未入庫嗰陣 enterHome 嘅 onerror 跌返階段 bust。 */
+  try{
+    if(typeof costume265EquippedDef==="function"){
+      const cd = costume265EquippedDef();
+      if(cd && cd.stem) return "assets/story/fullbody/"+cd.stem+"_base.webp";
+    }
+  }catch(_e){}
   /* v20a109 BUST109：頁頭阿偉像跟成長級數（同 dlg106AweiStem 一條規則：tier 2→s2、3→s3，
      其餘／判定唔到→s1＝PORTRAITS.hero_awi）。BUST109_EXTRA／PORTRAITS 缺失嗰陣退返
      另一邊，兩邊都冇先回 ""，唔出破圖。 */
@@ -16211,6 +16544,9 @@ function fresh(){
     lastAdRefreshWeek:0,
     mapTips:{},
     inventory:{},
+    /* v20a265 COSTUME265：衣櫃（owned 已擁有衫 id 陣列／equipped 著緊衫 id 或 null）。
+       加成係有效數值，唔寫入七圍——呢欄只記擁有／著緊。 */
+    wardrobe:{ owned:[], equipped:null },
     giftMeta:{ lastGiveDay:{}, weekGiftGain:{}, givenCount:{}, shopStock:{}, shopWeek:0 },
     /* v19u：傳聞／人情債只係手帳 Mock，唔入週數閘 */
     mockRumors:[],
@@ -16334,6 +16670,10 @@ function storyGate113Scrub(o, gate){
 function normalizeSaveObj(o){
   if(!o||typeof o!=="object") return null;
   if(!o.inventory||typeof o.inventory!=="object")o.inventory={};
+  /* v20a265 COSTUME265：舊檔補衣櫃預設（owned:[]／equipped:null＝著返階段造型，零行為改變）。 */
+  if(!o.wardrobe||typeof o.wardrobe!=="object"||Array.isArray(o.wardrobe)) o.wardrobe={ owned:[], equipped:null };
+  if(!Array.isArray(o.wardrobe.owned)) o.wardrobe.owned=[];
+  if(typeof o.wardrobe.equipped!=="string") o.wardrobe.equipped=null;
   if(!o.giftMeta||typeof o.giftMeta!=="object")o.giftMeta={lastGiveDay:{},weekGiftGain:{},givenCount:{},shopStock:{},shopWeek:0};
   if(!Array.isArray(o.wrapHistory))o.wrapHistory=[];
   /* v20a95 LADDER95：舊檔回填履歷計數種子（以 wrapHistory 最近 30 條衍生，係下限唔係全史）；
@@ -17531,7 +17871,9 @@ function reqGap(gig){
        （內嵌注入／舊檔快照）帶住 __y66w 等工程鍵，都唔可以再鎖死玩家。 */
     if(typeof GIG_REQ_KEYS88!=="undefined" && !GIG_REQ_KEYS88[k]) continue;
     keys++;
-    const have=S[k]||0;
+    /* v20a265 COSTUME265：門檻檢查用有效數值（底數＋衫嘅加成，每圍上限 +4）——
+       著衫先至過到門檻；加成永遠唔寫入 S.*，唔入訓練／拍攝／殺青／結局判定。 */
+    const have=(typeof costume265EffStat==="function") ? costume265EffStat(k) : (S[k]||0);
     if(have>=v) matched++;
     else { missing++; totalShort += (v-have); }
   }
@@ -18624,8 +18966,11 @@ function castingNoticeDetailHtml(g){
     const cells=[];
     const floor30v2=(typeof fameFloor==="function") ? fameFloor(g) : 0;
     const push30v2=(key,lab,need)=>{
-      const cur=Number(S&&S[key])||0, ok=cur>=need;
-      cells.push(`<div class="cn-req-cell ${ok?"ok":"no"}"><div class="cn-req-top"><span class="cn-req-lab">${lab}</span><span class="cn-req-mark">${ok?"✓":"✕"}</span></div><div class="cn-req-val">現 ${cur} ／ 要 ${need}</div></div>`);
+      /* v20a265 COSTUME265：卡面「現／要」顯示有效數值，標明衫嘅貢獻（衫 +N）。 */
+      const cur=(typeof costume265EffStat==="function") ? costume265EffStat(key) : (Number(S&&S[key])||0);
+      const bonus265=(typeof costume265BonusMap==="function") ? ((costume265BonusMap()[key])||0) : 0;
+      const ok=cur>=need;
+      cells.push(`<div class="cn-req-cell ${ok?"ok":"no"}"><div class="cn-req-top"><span class="cn-req-lab">${lab}</span><span class="cn-req-mark">${ok?"✓":"✕"}</span></div><div class="cn-req-val">現 ${cur} ／ 要 ${need}${bonus265?` · 衫 +${bonus265}`:""}</div></div>`);
     };
     if(floor30v2>0) push30v2("fame",(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲望",floor30v2);
     const ORDER30v2=["acting","vocal","stage","charm","looks","stamina","iq"];
@@ -18757,7 +19102,8 @@ function gigMissingReqGaps(g){
   }catch(_e){}
   Object.entries((g && g.req)||{}).forEach(([k,v])=>{
     const need=Number(v)||0;
-    const cur=Number(S && S[k])||0;
+    /* v20a265 COSTUME265：差距顯示都用有效數值（同 reqGap 一致，唔好一邊話夠、一邊話差）。 */
+    const cur=(typeof costume265EffStat==="function") ? costume265EffStat(k) : (Number(S && S[k])||0);
     if(cur<need) gaps.push({ key:k, label:(STAT_LABEL&&STAT_LABEL[k])||k, need, cur, gap:need-cur });
   });
   gaps.sort((a,b)=> (b.gap-a.gap) || String(a.key).localeCompare(String(b.key)));
@@ -20627,6 +20973,9 @@ function renderNotebook(){
   } else {
     toggleCopyPanel(false);
   }
+  /* v20a265 COSTUME265：瞓覺掣／衣櫃入口接線＋衣櫃區渲染（手帳行程頁底）。 */
+  try{ wireHome265(); }catch(_w265){}
+  try{ renderWardrobe265(); }catch(_w265r){}
 }
 
 function enterHome(summary, editable, initialTab){
@@ -20681,7 +21030,8 @@ function enterHome(summary, editable, initialTab){
   try{ if(typeof planCatForId==="function") planCat = planCatForId(planDraft[planSelDay]); }catch(_e){}
   show("v-home");
   const img=document.getElementById("home-awi");
-  if(img){ const h109=(typeof bust109HeroSrc==="function") ? bust109HeroSrc() : ((typeof PORTRAITS!=="undefined" && PORTRAITS) ? PORTRAITS.hero_awi : ""); if(h109) img.src=h109; }
+  /* v20a265 COSTUME265：衫圖未入庫（另一工人平行生成）嗰陣 onerror 跌返階段 bust，唔出破圖。 */
+  if(img){ img.onerror=function(){ try{ this.onerror=null; if(typeof PORTRAITS!=="undefined" && PORTRAITS && PORTRAITS.hero_awi) this.src=PORTRAITS.hero_awi; }catch(_e){} }; const h109=(typeof bust109HeroSrc==="function") ? bust109HeroSrc() : ((typeof PORTRAITS!=="undefined" && PORTRAITS) ? PORTRAITS.hero_awi : ""); if(h109) img.src=h109; }
   document.getElementById("home-date").textContent = `${fmtDate()} · 黃大仙`;
   const hs = document.getElementById("home-stats");
   if(hs){
@@ -22600,7 +22950,7 @@ function drawMap(){
     return { hasNpc, boardList, boardN, canBoardN, tip, hasTip, isStoryTip, hasBoard, hasStar, starName, hasAction };
   }
   /* v19z3／v19z20：近針扇形錯開（略加大半徑減重疊） */
-  /* v20a159 MAP159：只顯示當前層嘅地點（片場層 15 個／約會層 6 新＋茶記＋廟街）；
+  /* v20a159 MAP159：只顯示當前層嘅地點（片場層 17 個／約會層 6 新＋茶記＋廟街）；
      底欄 #map-area-list 同最近針解析都食同一個 visible，唔使逐處改。 */
   const visible = LOCS.filter(map159LocVisible);
   const placed = visible.map(L=>({ L, x:Number(L.x)||0, y:Number(L.y)||0 }));
@@ -22734,7 +23084,7 @@ function drawMap(){
   /* v20a137 MAP137：地點名＋會場標籤即場定位（cover 換算；見 positionMapLabels137）。 */
   try{ if(typeof positionMapLabels137==="function") positionMapLabels137(); }catch(_e){}
   /* v20a159 MAP159：墨字地名（.mn68）跟層走——另一層嘅名唔可以留喺地圖上面。
-     mn68 冇 data-loc 欄（唔郁上面 15 個舊 div），按文字對 LOCS 名；
+     mn68 冇 data-loc 欄（唔郁上面 17 個舊 div），按文字對 LOCS 名；
      唔係地點名嘅 div（例如會場標籤）唔郁。 */
   try{
     const visNames = {};
@@ -25505,7 +25855,7 @@ function endingRomanceState48(){
        （toast＋手帳／地點 modal）＋手帳人脈頁鎖定狀態＋鎖定後其他女角行為表；
        鎖定唔影響事業線（通告／訓練／頒獎禮／結局事業軸照行）。
    (2) 約會系統——三入口（地點面板約／傾談後即場約／手帳人脈頁 Call 機約）；
-       每人 3 專屬地點＋金龍茶餐廳通用（現有 15 地點，唔發明新地點；事務所／醫院唔做約會地點）；
+       每人 3 專屬地點＋金龍茶餐廳通用（現有片場層地點，唔發明新地點；事務所／醫院唔做約會地點）；
        約會耗一日、使茶錢級數（約之前見到價錢）；每人每週 1 次、一星期只約一個人；
        約會本身唔加分，場內抉擇先加減（好 +1／差 -1）；撞期（拍攝日／試鏡日）用簡化版 C10 模式。
        簡化說明（寫死喺度，唔好日後當 bug）：草稿話「約定聽日」，實裝做即日赴約——
@@ -41474,6 +41824,14 @@ function openLoc(id, opts){
   if(spent118){
     try{ locpanel118SpentVisit = { loc:id, day:(typeof S!=="undefined" && S) ? (Number(S.dayIndex)||0) : 0 }; }catch(_e){}
   }
+  /* v20a265 COSTUME265：屋企唔開地點 sheet——入面就係手帳畫面（同一套 tabs／數據源，唔複製第二份 UI）。
+     入屋企唔計出行額度（travel114IsFree("home") 守衛已存在，上面閘口已經放行）；唔擲巧遇／WF4 事件；
+     返地圖行 book70ExitHome 恆常出口（手帳頂部「返回地圖」掣），唔加新出口。 */
+  if(id==="home"){
+    atLoc = null;
+    try{ enterHome(null, false); }catch(_e){}
+    return;
+  }
   /* v20a176 ROM176：女角巧遇攔截——行先過星巧遇（同一入場只觸發一個；有女角嗰陣星唔彈）。
      opts.encDone 同星一樣係巧遇播完返入嚟嘅繞過旗；forceRestore 還原路徑唔觸發。 */
   if(!opts.forceRestore && !opts.encDone && typeof rom176TryIntercept==="function"){
@@ -41956,6 +42314,10 @@ function openLoc(id, opts){
       }
     }
   }catch(_gs){}
+  /* v20a265 COSTUME265：服裝店買衫掣（買賣流程行 openClothingShop265，抄 openGiftShop；入店計 1 次出行）。 */
+  try{
+    if(L.id==="clothing_shop") add("買衫", "花園街成衣店","免費", ()=>openClothingShop265(L), "act-priority");
+  }catch(_cs265){}
   /* v20a96 LOC96：醫院專屬服務（身體檢查）；禮品店除買禮物外冇其他服務掣 */
   try{ if(typeof loc96AddSheetActs==="function") loc96AddSheetActs(add, L); }catch(_l96s){}
   /* v20a96 LOC96：通告欄只出喺有通告板嘅工作地點（新地點 shop／med 冇板，唔出空板掣） */
@@ -42034,10 +42396,16 @@ const LOC_SHEET_BG = {
   rec_star:"assets/story/locs/bg_loc_rec_star.jpg?v=20a104",
   /* v20a118 LOCPANEL118：廟街禮品＋仁康醫院場景圖補齊（另一統籌一次生成，QC 全 pass，
      720×1280、無字、無真人樣；真實參照＋SOURCES 存 linji-locpanel/scene_new/refs/）。
-     15 地點場景圖齊晒；gift_shop 檔名跟 locId（bg_loc_gift_shop.jpg），唔用生成嗰陣
+     17 地點場景圖（v118 補齊 gift_shop／hospital 兩張；v265 加服裝店 bg_loc_clothing_shop.jpg——
+     圖檔由另一工人生成緊，路徑已寫、未到之前 applyLocSheetBg 探測到 404 會行中性漸變底；
+     屋企用現成 bg_wf4_home.jpg，唔使新圖）；gift_shop 檔名跟 locId（bg_loc_gift_shop.jpg），唔用生成嗰陣
      嘅 bg_loc_gift_temple.jpg 原名。 */
   gift_shop:"assets/story/locs/bg_loc_gift_shop.jpg?v=20a104",
   hospital:"assets/story/locs/bg_loc_hospital.jpg?v=20a104",
+  /* v20a265 COSTUME265：服裝店圖 bg_loc_clothing_shop.jpg 由另一工人生成緊，路徑照寫（未到之前
+     applyLocSheetBg 探測到 404 會行中性漸變底，唔爆 error）；屋企用現成 bg_wf4_home.jpg，唔使新圖。 */
+  clothing_shop:"assets/story/locs/bg_loc_clothing_shop.jpg",
+  home:"assets/story/locs/bg_wf4_home.jpg",
   /* v20a159 MAP159：約會層 6 張新場景圖（圖檔由 C 工人出緊，呢個 clone 未有——
      對照表照寫呢啲檔名；圖 404 嗰陣 applyLocSheetBg 會用中性漸變底頂住，
      唔用第二個地點嘅圖、唔爆 error。檔名唔加 ?v= 參數，C 工人出圖嗰陣原名入庫即啱。 */
@@ -42060,9 +42428,9 @@ function applyLocSheetBg(locId){
     sheet.classList.remove("loc-bg-missing159");
     /* v20a159 MAP159：新地點圖檔由 C 工人出緊，呢個 clone 未有——圖 404 嗰陣
        用中性漸變底頂住（同 bg_generic_interior 同一套米紙漸變，唔用第二個地點
-       嘅圖頂住，唔爆 error）。只對 bg_159_ 待出圖做 preload 檢查；現有 15 張
-       實檔唔行呢條路，免多一次請求。 */
-    if(url.indexOf("bg_159_")>=0){
+       嘅圖頂住，唔爆 error）。只對 bg_159_ 待出圖＋v265 服裝店待出圖做 preload 檢查；現有
+       15 張實檔唔行呢條路，免多一次請求。 */
+    if(url.indexOf("bg_159_")>=0 || url.indexOf("bg_loc_clothing_shop.jpg")>=0){
       try{
         const probe=new Image();
         probe.onerror=()=>{ try{ bg.style.backgroundImage="linear-gradient(160deg,#ebe2d4 0%,#d8cbb8 55%,#c9b8a0 100%)"; sheet.classList.add("loc-bg-missing159"); }catch(_e){} };
@@ -42076,7 +42444,7 @@ function applyLocSheetBg(locId){
   }
 }
 /* ===== v20a118 LOCPANEL118：地點面板重設計（純呈現層）=====
-   15 地點全量：額度 pill＋負責人企位＋名牌＋米紙選項卡＋選項手繪圖標。
+   17 地點全量：額度 pill＋負責人企位＋名牌＋米紙選項卡＋選項手繪圖標。
    零行為改動：選項行為／數值／額度計數一律唔郁（v114 規則不變；閘口照舊喺 openLoc 內）。
    負責人來源（Phase 1 mapping，6 點未決用預設）：
    · 11 間機構老闆：跟 GIG_ISSUER_FIGURE_MAP30V2 對照表行（唔 hardcode boss 檔路徑，v116
@@ -42086,8 +42454,10 @@ function applyLocSheetBg(locId){
    · cafe_cha：霞姐有圖（v20a131 B1，xia_jie_base.webp），企位＋名牌「霞姐 · 金龍茶餐廳老闆娘」。
    · gift_shop：老闆娘無名但有圖（v20a131 B1，gift_lady_base.webp），企位＋名牌「老闆娘 · 廟街禮品檔」，唔憑空起名。
    · hospital：冇設定，唔出人、連名牌都唔出。
+   · clothing_shop（v20a265）：成衣店老闆娘暫無企立圖，return null（跟 hospital 同例；有圖再接）。
+   · home（v20a265）：屋企唔開地點 sheet（行 enterHome 手帳），唔經呢度，return null。
    · 唔准用何生 fallback 頂替任何地點負責人（S-30 fallback 只係通告卡後備）。
-   冇場景圖地點：現時 15 地點場景圖齊晒（v118 補埋 gift_shop／hospital 兩張）；
+   冇場景圖地點：現時 17 地點場景圖齊晒（v118 補埋 gift_shop／hospital 兩張；v265 服裝店圖待入庫、屋企用 bg_wf4_home.jpg）；
    locpanel118-nobg 素底態留返做後備機制——將來有地點 LOC_SHEET_BG 冇 key 即自動行素底，
    唔使改呢度。
    額度 pill 讀 S.travel114（入場嗰刻已扣，顯示扣後數字）；「✓ 已到埗」行喺今次探訪
@@ -42114,6 +42484,8 @@ function locpanel118OwnerFor(locId){
     if(locId==="cafe_cha") return { src:"assets/story/fullbody/xia_jie_base.webp?v=20a131", name:"霞姐", sub:"金龍茶餐廳老闆娘" }; /* v20a131 B1：霞姐企立圖入庫，恢復企位＋名牌 */
     if(locId==="gift_shop") return { src:"assets/story/fullbody/gift_lady_base.webp?v=20a131", name:"老闆娘", sub:"廟街禮品檔" }; /* v20a131 B1：禮品老闆娘企立圖入庫，恢復企位＋名牌 */
     if(locId==="hospital") return null;
+    if(locId==="clothing_shop") return null; /* v20a265：成衣店老闆娘暫無企立圖（跟 hospital 同例；有圖再接） */
+    if(locId==="home") return null; /* v20a265：屋企唔開地點 sheet，唔經呢度 */
     const m=(typeof GIG_ISSUER_FIGURE_MAP30V2!=="undefined" && GIG_ISSUER_FIGURE_MAP30V2) ? GIG_ISSUER_FIGURE_MAP30V2[locId] : null;
     if(m && m.src) return { src:m.src, name:m.name, sub:(m.org||"")+(m.role||"") };
   }catch(_e){}
@@ -43023,6 +43395,12 @@ function presentStartScheduleConfirm45(onStart, onMap, onCancel){
   modal(`<h3>開始今日行程？</h3><p>將會開始 ${dateTxt} 的行程。</p><p>${consequence}</p>`, btns45,
     { onDismiss: ()=>{ try{ if(mapNext45) goMap(); else goStart(); }catch(_e){} } });
 }
+/* v20a265 COSTUME265：瞓覺日結卡呈現——行入屋企＋「zzz」浮字（用戶 2026-11-12 定落），
+   唔畫瞓低身體，唔用 fx_rest.mp4（嗰個係「休息」嘅呈現，兩者唔好撈埋）。 */
+function sleep265ZzzHtml(){
+  return `<div class="sleep265-zzz" aria-hidden="true"><span>z</span><span>z</span><span>z</span></div>`
+    + `<p class="sleep265-cap">瞓足一日，壓力清零。</p>`;
+}
 /** Compact rest day-end: title + in-panel video + numeric deltas only + CTA. */
 function presentRestSleepDayEnd(opts){
   opts = opts || {};
@@ -43100,7 +43478,7 @@ function presentRestSleepDayEnd(opts){
       return Object.assign({}, b, { on: ()=> finish((typeof orig==="function") ? orig : (()=>{ try{ if(nextDayIsMap()) proceedMap(); else proceedSchedule(); }catch(_e){ proceedMap(); } })) });
     });
   }catch(_e){}
-  const body = restSleepFxHtml() + formatRestSleepDeltas(notes);
+  const body = (opts.sleep265 ? sleep265ZzzHtml() : restSleepFxHtml()) + formatRestSleepDeltas(notes);
   const gold = ended ? `<p class="gold">一週完結 → 回家結算</p>` : "";
   /* v20a196 D1／D7：dismiss 跟下一日行程——排程日＝繼續跑下一日，逛逛日＝返地圖。 */
   const dismissFn = ended ? goSchedule : ()=>{ try{ if(nextDayIsMap()) goMap(); else goSchedule(); }catch(_e){ goMap(); } };
