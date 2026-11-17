@@ -24,11 +24,12 @@ for stem in ['map','sleep','mic','tea','clapper','fitness','home','news','gift',
              'martial','broom','sick','phone','mood','star','sparkle',
              'trophy','gift_pineapple','gift_eggtart','gift_thermos','gift_hairclip',
              'gift_memopad','gift_cassette','gift_sweetbox','gift_perfume',
-             'gift_pen','gift_calculator','gift_watch','gift_rose']:
+             'gift_pen','gift_calculator','gift_watch','gift_rose',
+             'wave','peak','beach','plane']:
     ok('map has stem ' + stem, stem in stems)
-ok('map has 39 stems', len(stems) == 39)
+ok('map has 43 stems', len(stems) == 43)
 
-# ---- 2. 39 隻圖標檔案齊（12 樣本＋14 新圖＋v128 A5 補 9：🏆＋禮物 8 隻＋v164 補 4：名筆／計數機／腕表／玫瑰） ----
+# ---- 2. 43 隻圖標檔案齊（12 樣本＋14 新圖＋v128 A5 補 9：🏆＋禮物 8 隻＋v164 補 4：名筆／計數機／腕表／玫瑰＋v275 補 4：海浪／山頂／沙灘／飛機） ----
 for stem in sorted(stems):
     ok('file assets/icons/icon_' + stem + '.png', os.path.isfile(os.path.join(root, 'assets', 'icons', 'icon_' + stem + '.png')))
 

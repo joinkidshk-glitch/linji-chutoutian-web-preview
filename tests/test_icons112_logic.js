@@ -1,4 +1,4 @@
-// v20a159 resync：地點 15→21，6 個約會新點帶 4 隻新 emoji 欄位值（🌊🌃🏖️✈️；🎤🎬 早已有手繪圖標）；fieldVals 37→41；4 隻新 emoji 無手繪圖標，iconHtml112 實機 passthrough 原樣顯示，跟段二 🔒💡📋👤 先例入 passthrough 清單（手繪圖標係 follow-up 票，唔偽造圖檔、唔加假 EMOJI_ICON112 條目）。
+// v20a275：4 隻約會新點 emoji（🌊🌃🏖️✈️）補手繪圖標（icon_wave／icon_peak／icon_beach／icon_plane），由段二 passthrough 清單移入段一映射；fieldVals 維持 41。
 // v20a112 ICONS112 圖標組・邏輯測試：中央對照 iconHtml112()＋S-46 favDots112() 真路徑。
 //   段一：審計對照表 32 個欄位值逐個映射（31 個→正確圖檔，✅→CSS 勾）。
 //   段二：欄位值以外嘅 emoji 原樣通過（🏆🔒💡🍍 等留低嗰批唔准誤換）。
@@ -47,7 +47,7 @@ try{
 }
 eval(code);
 
-// ---- 段一：44 個欄位值逐個映射（審計 notes_icon_audit.md §2＋v128 A5：🏆＋禮物 8 隻補圖） ----
+// ---- 段一：48 個欄位值逐個映射（審計 notes_icon_audit.md §2＋v128 A5：🏆＋禮物 8 隻補圖＋v275：約會 4 隻補圖） ----
 const EXPECT = {
   '🗺️':'map', '😴':'sleep', '🌙':'sleep', '🎤':'mic', '☕':'tea',
   '🎬':'clapper', '🎥':'clapper', '💪':'fitness', '🏠':'home', '📰':'news',
@@ -58,7 +58,8 @@ const EXPECT = {
   '🏆':'trophy', '🍍':'gift_pineapple', '🧁':'gift_eggtart', '🧴':'gift_thermos',
   '📎':'gift_hairclip', '📝':'gift_memopad', '📼':'gift_cassette', '🍬':'gift_sweetbox',
   '🌸':'gift_perfume',
-  '🖊️':'gift_pen', '🧮':'gift_calculator', '⌚':'gift_watch', '🌹':'gift_rose'
+  '🖊️':'gift_pen', '🧮':'gift_calculator', '⌚':'gift_watch', '🌹':'gift_rose',
+  '🌊':'wave', '🌃':'peak', '🏖️':'beach', '✈️':'plane'
 };
 for(const [em, stem] of Object.entries(EXPECT)){
   const out = iconHtml112(em);
@@ -72,10 +73,9 @@ ok('map ✅ has no img', !iconHtml112('✅').includes('<img'));
 const fieldVals = new Set();
 for(const m of html.matchAll(/(?:icon|emoji)\s*:\s*"([^"]*)"/g)) fieldVals.add(m[1]);
 ok('field values enumerated (41 incl · = 40 emoji + placeholder)', fieldVals.size === 41);
-// v159：4 隻約會新點 emoji（🌊🌃🏖️✈️）未有手繪圖標，實機 passthrough 原樣顯示，唔入「有圖」覆蓋檢查，改由段二 passthrough 清單鎖住。
-const PASSTHROUGH159 = ['🌊', '🌃', '🏖️', '✈️'];
+// v275：4 隻約會新點 emoji 已補圖，入「有圖」覆蓋檢查（PASSTHROUGH159 清單已刪）。
 for(const v of [...fieldVals].sort()){
-  if(v === '✅' || v === '·' || PASSTHROUGH159.includes(v)) continue;
+  if(v === '✅' || v === '·') continue;
   ok('field value covered: ' + v, iconHtml112(v).includes('<img class="ic112"'));
 }
 // ---- 段二：留低嗰批原樣通過 ----
@@ -83,10 +83,7 @@ for(const v of [...fieldVals].sort()){
 for(const em of ['🔒', '💡', '📋', '👤']){
   ok('passthrough ' + em, iconHtml112(em) === em);
 }
-// v159：4 隻約會新點 emoji 未有手繪圖標（手繪圖標係 follow-up 票），實機 passthrough 正常顯示，原樣通過。
-for(const em of PASSTHROUGH159){
-  ok('passthrough v159 ' + em, iconHtml112(em) === em);
-}
+// v275：4 隻約會新點 emoji 已補圖，唔再 passthrough（上面段一映射＋覆蓋檢查已釘死）。
 ok('passthrough · placeholder', iconHtml112('·') === '·');
 ok('empty -> empty', iconHtml112('') === '' && iconHtml112(null) === '' && iconHtml112(undefined) === '');
 // ---- 段三：favDots112 ----
