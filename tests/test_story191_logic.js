@@ -191,7 +191,7 @@ function freshSave(over){
     rowsA.length === 20 && rowsA.every(r=>r.label === storyActLabel(r.id)));
   const paneA = pane71();
   if(DEBUG) console.log('paneA:', paneA);
-  ok('(a) N6F 開放行係「第 6 幕・電影線：片場跟班」', paneA.indexOf('第 6 幕・電影線') >= 0 && paneA.indexOf('片場跟班') >= 0 && paneA.indexOf('已開放') >= 0);
+  ok('(a) N6F 開放行係「第 6 幕・電影線：角落那張枱」', paneA.indexOf('第 6 幕・電影線') >= 0 && paneA.indexOf('角落那張枱') >= 0 && paneA.indexOf('已開放') >= 0);
   ok('(a) N6 行係「第 6 幕・電視線」（對稱，唔係齋「第 6 幕」）', paneA.indexOf('第 6 幕・電視線') >= 0);
   ok('(a) N6 行喺 N6F 行之前', paneA.indexOf('第 6 幕・電視線') < paneA.indexOf('第 6 幕・電影線'));
   noBadNumbers('(a) Case A 進度頁', paneA);
@@ -201,8 +201,8 @@ function freshSave(over){
     && paneA.indexOf('番外・1991 春') < paneA.indexOf('第 7 幕'));
   ok('(c) v198：鎖住插入行帶 prog71-insert 標記', paneA.indexOf('prog71-row locked prog71-insert') >= 0);
   ok('(c) 遠幕合併行仲喺度、區間啱（第 8–17 幕）', paneA.indexOf('第 8–17 幕') >= 0 && paneA.indexOf('完成前面幕數後逐幕揭曉') >= 0);
-  ok('(c) 合併行喺逐項行之後（唔會提早印喺 N7 上面）', paneA.indexOf('先完成第 5 幕〈采兒小訪題〉') >= 0
-    && paneA.indexOf('先完成第 5 幕〈采兒小訪題〉') < paneA.indexOf('第 8–17 幕'));
+  ok('(c) 合併行喺逐項行之後（唔會提早印喺 N7 上面）', paneA.indexOf('先完成第 5 幕〈筆記本〉') >= 0
+    && paneA.indexOf('先完成第 5 幕〈筆記本〉') < paneA.indexOf('第 8–17 幕'));
 
   /* ---- (d) 舊存檔：N6F 已經 done（調查報告用戶狀態） ---- */
   loadGame(freshSave({
@@ -249,8 +249,8 @@ function freshSave(over){
   }));
   const lineE = storyMainProgressLine();
   if(DEBUG) console.log('lineE:', lineE);
-  ok('(e) 地圖提示指向「第 6 幕・電視線〈飯堂閒角〉」', lineE.indexOf('第 6 幕・電視線〈飯堂閒角〉') >= 0);
-  ok('(e) 地圖提示冇舊寫法「第 6 幕〈飯堂閒角〉」', lineE.indexOf('第 6 幕〈飯堂閒角〉') < 0);
+  ok('(e) 地圖提示指向「第 6 幕・電視線〈角落那張枱〉」', lineE.indexOf('第 6 幕・電視線〈角落那張枱〉') >= 0);
+  ok('(e) 地圖提示冇舊寫法「第 6 幕〈角落那張枱〉」', lineE.indexOf('第 6 幕〈角落那張枱〉') < 0);
 
   /* ---- (c) 遠幕合併＋逐項揭曉：新遊戲 ---- */
   loadGame(freshSave());
@@ -260,9 +260,9 @@ function freshSave(over){
   ok('(c) v198：第一合併行喺插入行之前、第二合併行喺插入行之後', paneFresh.indexOf('第 4–6 幕') < paneFresh.indexOf('番外・1990 冬') && paneFresh.indexOf('番外・1991 春') < paneFresh.indexOf('第 7–17 幕'));
   ok('(c) v198：新遊戲唔再印舊合併行「第 4–17 幕」', paneFresh.indexOf('第 4–17 幕') < 0);
   ok('(c) 新遊戲冇倒轉區間', paneFresh.indexOf('第 18–17 幕') < 0 && paneFresh.indexOf('第 20–17 幕') < 0);
-  ok('(c) v198：新遊戲鎖住插入幕標題見到（N6F／N18／N19）', paneFresh.indexOf('片場跟班') >= 0 && paneFresh.indexOf('上岸路') >= 0 && paneFresh.indexOf('賭枱邊') >= 0);
+  ok('(c) v198：新遊戲鎖住插入幕標題見到（N6F／N18／N19）', paneFresh.indexOf('角落那張枱') >= 0 && paneFresh.indexOf('上岸路') >= 0 && paneFresh.indexOf('賭枱邊') >= 0);
   ok('(c) v198：新遊戲 N6F 鎖行講啱條件（行電影線）', paneFresh.indexOf('行電影線') >= 0 && paneFresh.indexOf('行電視線') < 0);
-  ok('(c) 新遊戲 N6 標題唔見（防劇透維持）', paneFresh.indexOf('飯堂閒角') < 0);
+  ok('(c) 新遊戲 N6 電視線行唔見（防劇透維持；N6／N6F 同標題，改驗路線行）', paneFresh.indexOf('第 6 幕・電視線') < 0);
   noBadNumbers('(c) 新遊戲進度頁', paneFresh);
 })();
 

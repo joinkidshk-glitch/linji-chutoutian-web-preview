@@ -6512,16 +6512,18 @@ const STORY_HINT_SOFT = {
   N17: { playerHint: "台慶之後，何生在會議室等你——三年，是時候埋單。", lockedHint: "1990 年冬、台慶之後才到這一晚。未到之前照常跑通告；到了就去星河電視台會議室。", nextHint: "" },
 };
 const STORY_TITLE_SOFT = {
-  N1: "先學做動作戲／先賺", N2: "留人脈／趕通告", N3: "對對手硬／忍", N4: "何生拒單", N5: "采兒小訪題",
-  N6: "飯堂閒角",
-  N6F: "片場跟班",
+  N1: "通告板", N2: "後巷", N3: "正中央", N4: "記數簿", N5: "筆記本",
+  N6: "角落那張枱",
+  N6F: "角落那張枱",
   /* v20a29：N7–N8 標題改跟三年版主幹（覆寫節點 title 為準，呢度係 need_done 提示等後備用字） */
-  N7: "暴雨救場", N9: "茶餐廳度橋", N10: "年尾追數", N11: "戲路定型", N8: "選美後台",
+  /* v20a254：SOFT N7–N12 跟已拍板新短詞標題（暴雨／化妝間／卡座／酒廊／黑西裝與舊風褸／墊；
+     N13–N17 v20a253 已啱；N1–N6／N6F v20a254 一併跟新標題——prog71Title 讀 SOFT 優先、永不跌返 node.title，摘要字會當標題顯示。） */
+  N7: "暴雨", N9: "卡座", N10: "酒廊", N11: "黑西裝與舊風褸", N8: "化妝間",
   /* v20a31：N14–N15 標題跟三年版主幹
      v20a253：N13／N15／N16／N17 跟攻略新短詞標題（高爾夫球／錄音室／飛紙仔／意向）；N14 不變。
      SOFT 唔係純 fallback——進度／下一幕提示／prog71Title 係 SOFT 優先於 node.title，唔跟會半遮新標題。
      CALIB60_NODE_TITLES（回憶頁）同 HINT nextHint 內嘅舊章名一併跟。 */
-  N14: "樂壇前哨", N16: "飛紙仔", N13: "高爾夫球", N12: "高危替身", N15: "錄音室",
+  N14: "樂壇前哨", N16: "飛紙仔", N13: "高爾夫球", N12: "墊", N15: "錄音室",
   /* v20a33：N17 舊名「最終定位／結算」（十檔任揀）由「三年埋單」取代 */
   N17: "意向",
 };
@@ -22854,9 +22856,54 @@ function mergeIntelGigs(){
    避免 soft 逾期鎖（softOverdueFavorDebtLock）誤鎖幫忙通告本身。
    舊存檔兼容：dueDay 喺 favorDueTick／手帳渲染首次見到嗰日回填（當日 +7），唔會一讀檔即到期；
    結清／作廢／用其他方法清走（例如現金還）都會記入 S.favorDueSettled，教學債日後被補種都唔會重行到期流程。
-   v20a229 B3：幫忙通告內容已刪（FAVOR_DUE_GIGS 清空、gigId 轉 null）；到期前只剩現金／禮物還款路，B5 觸發系統供新庫觸發通告嗰陣先恢復幫忙通告。 ===== */
-const FAVOR_DUE_CFG = { debtId:"debt_ho_tutorial", gigId:null /* v20a229 B3：幫忙通告已刪，B5 觸發系統供新庫觸發通告嗰陣先填返；v20a229 B5 核實：新庫 240 張入面冇教學債幫忙通告嘅對應（0 命中），gigId 繼續留 null——到期前只剩現金／禮物還款路，幫忙通告要補寫新庫版先至恢復，見 B5 回報跟進項 */, dueDays:7, windowDays:4 };
-const FAVOR_DUE_GIGS = []; /* v20a229 B3：內容已刪；mergeFavorGigs 機制留返。 */
+   v20a254 D3：幫忙通告已恢復（FAVOR_DUE_GIGS 恢復 v20a17 原裝 special gig、gigId 填返 gig_favor_ho_errand）；到期前現金／禮物還款路照舊，幫忙通告係第三條路。 ===== */
+const FAVOR_DUE_CFG = { debtId:"debt_ho_tutorial", gigId:"gig_favor_ho_errand" /* v20a254 D3：幫忙通告恢復——v20a229 B3 刪咗 code-side 幫忙通告（gigId null、FAVOR_DUE_GIGS []），B5 核實新庫 240 張 0 命中；今次唔入庫存（新庫版幫忙通告無 trigger kind 可接，亦唔郁 282 張計數／六批驗證），恢復 v20a17 原裝 special gig 接線（id／《晨光劇場》臨時人手／事務所板／$500 定額／1 日／4 日窗不變；tier 由舊「初」改新五級「臨記」＋補 category「臨記通告」；刪死 data favorDelta；eraTag 唔再寫 era_* id）。favorDueTick 嘅 wrapped 檢查（wrapHistory／done_ 旗）＋mergeFavorGigs 注入＋rel +2／−3 全部照舊機制行。 */, dueDays:7, windowDays:4 };
+const FAVOR_DUE_GIGS = [
+  {
+    id:"gig_favor_ho_errand",
+    year:1988,
+    season:"不限",
+    type:"電視劇",
+    genreLabel:"電視劇",
+    category:"臨記通告",
+    loc:"agency_ho",
+    workTitle:"晨光劇場",
+    title:"幫忙通告：《晨光劇場》臨時人手",
+    roleLabel:"幫忙頂位",
+    director:"何生",
+    roleHint:"何生個客嗰組臨時唔夠人，你去頂一更，聽場務安排做嘢就得。",
+    blurb:"何生留畀你嘅幫忙通告：唔係派工，係還人情。佢個客嗰組今晚唔夠人手，你去頂一更，做完嗰筆人情就清咗。",
+    synopsis:"何生事務所轉介嘅電視台單元劇《晨光劇場》今晚開廠，臨時唔夠臨記企位。何生第一時間諗起你——唔使試鏡，去到報何生個名，聽場務指示頂一更，收工即結。",
+    discoverNote:"何生留畀你還人情嘅幫忙通告，做完即清嗰筆人情債。",
+    boardPriority:"high",
+    boardNote:"還人情",
+    seasonWeight:1,
+    req:{},
+    pay:[450, 550],
+    payExact:500,
+    breachFee:0,
+    fame:[0, 0],
+    popularity:[0, 1],
+    stressDeltaHint:"低",
+    hard:0.1,
+    tier:"臨記",
+    stars:1,
+    applyDeadlineDays:4,
+    shootDaysHint:1,
+    shootHint:"報何生個名入廠，聽場務安排頂位，做完一更就收工。",
+    roleScale:"tv_cameo_short",
+    shootBand:[1, 1],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:7,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["還人情幫忙，即日開工"] },
+    storyKeys:["favor_ho_errand"],
+    tagOnComplete:[],
+    rumorKeys:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  }
+]; /* v20a254 D3：FAVOR_DUE_GIGS 恢復（v20a17 原裝，見上）；mergeFavorGigs 機制不變——favorState==="called" 且喺 4 日窗口內先注入 GIGS，其餘時間移除。 */
 function favorDueDebt(){
   try{
     if(typeof S==="undefined" || !S || !Array.isArray(S.mockDebts)) return null;
@@ -25453,17 +25500,31 @@ function br89HasCredit(id){
   try{ return !!((typeof S!=="undefined" && S && S.mockCredits) || []).some(c=>c && c.id===id && c.status!=="絕響"); }catch(_e){ return false; }
 }
 /* v20a229 B5：BR89 映射擴充到 13 張（SPEC §3.5A；VERIFICATION.md §4.1 #1–13）。
-   key 係新庫通告 id（唔再係舊 code-side id），value 係對應債權 id。
-   R-4（gig_1991_rec_102 顧登台暖場）另有第二條觸發路（還錢結算完成），見 br89GigOn——
+   v20a254：重對——舊映射係舊庫（a39ad34，267 張）id，新庫 v252 起 id 全部重洗，
+   舊 13 對同新庫 credit trigger 0 張對得上（v252 T8 釘死：3 張錯配、9 張目標已無
+   trigger、1 張消失 gig_1991_variety_108）。今次逐對由舊庫原意（舊 title＋trigger）
+   ＋新庫全文搜尋重對，13 張全部 REUSE 新庫已有 credit-trigger gig，0 張新開：
+   舊《江河歲月》→新 gig_1991_film_101（同名）、《台慶大騷》→gig_1991_variety_203
+   （同名）、《夜場匯演》→gig_1992_rec_106（同名）、《笑住過肥年・外傳》→
+   gig_1991_film_103（同名）、《笑星大作戰》（廖 1992 電影）→gig_1992_film_103
+   《吉星笑哈哈》（賀歲喜劇，廖 leadM；新庫另有 gig_1991_film_109 亦係同一債權，
+   行通用 credit 規則，BR89 表只取一張 canonical）、《鐵拳出擊》（麥）→
+   gig_1991_film_110《鐵拳王》、「對手戲」（葉）→gig_1992_tv_105《摩登一家人》、
+   《夜總會暖場夜》（顧）→gig_1992_rec_105《當年情懷》、《愛在陽光下》（蘇）→
+   gig_1991_ad_102《秀髮如瀑》、《離港那天》（鍾）→gig_1991_tv_108《深秋情緣》、
+   《主打歌》MV（駱）→gig_1992_rec_102《硬漢柔情》、《鐵橋風雲》（魏）→
+   gig_1991_film_111《雪山雙劍傳》、《油麻地夜班》（齊）→gig_1992_tv_104
+   《滬上往事》。每對 trigger.creditId 逐張對過新庫，13／13 啱。
+   R-4（gig_1992_rec_105 顧《當年情懷》）另有第二條觸發路（還錢結算完成），見 br89GigOn——
    G-G2 只係加多一條觸發條件，唔開新通告（DECISIONS.md D-7 更正）。 */
 const BR89_PATRON_OF_GIG = {
-  gig_1991_film_106:"credit_enc83_luk_patron", gig_1991_variety_108:"credit_enc84_pang_patron",
-  gig_1992_rec_102:"credit_enc84_ching_patron", gig_1991_film_107:"credit_enc79_liu_priority",
-  gig_1992_film_102:"credit_enc83_liu_patron", gig_1992_film_103:"credit_enc83_mak_patron",
-  gig_1992_tv_103:"credit_enc83_yip_patron", gig_1991_rec_102:"credit_enc83_gu_patron",
-  gig_1992_tv_104:"credit_enc84_so_patron", gig_1992_film_104:"credit_enc84_chung_patron",
-  gig_1992_rec_103:"credit_enc83_lok_patron", gig_1992_film_105:"credit_enc83_ngai_patron",
-  gig_1992_film_106:"credit_enc83_chai_patron"
+  gig_1991_film_101:"credit_enc83_luk_patron", gig_1991_variety_203:"credit_enc84_pang_patron",
+  gig_1992_rec_106:"credit_enc84_ching_patron", gig_1991_film_103:"credit_enc79_liu_priority",
+  gig_1992_film_103:"credit_enc83_liu_patron", gig_1991_film_110:"credit_enc83_mak_patron",
+  gig_1992_tv_105:"credit_enc83_yip_patron", gig_1992_rec_105:"credit_enc83_gu_patron",
+  gig_1991_ad_102:"credit_enc84_so_patron", gig_1991_tv_108:"credit_enc84_chung_patron",
+  gig_1992_rec_102:"credit_enc83_lok_patron", gig_1991_film_111:"credit_enc83_ngai_patron",
+  gig_1992_tv_104:"credit_enc83_chai_patron"
 };
 const BR89_GIGS = []; /* v20a229 B3：內容已刪；B5 起 BR89 引薦通告由新庫供應，經通用 trigger 系統
   （mergeTriggerGigs＋triggerGigOn）上板，mergeBr89Gigs 只留返做空池 no-op，BR89_PATRON_OF_GIG
@@ -25473,10 +25534,12 @@ function br89GigOn(raw){
     if(!raw || !raw.id || typeof S==="undefined" || !S) return false;
     if(S.flags && S.flags["done_"+raw.id]) return false;
     const cid = BR89_PATRON_OF_GIG[raw.id];
-    /* v20a229 B5 R-4 雙觸發 OR（G-G2）：顧登台暖場除咗持 credit_enc83_gu_patron，
+    /* v20a229 B5 R-4 雙觸發 OR（G-G2）：顧《當年情懷》除咗持 credit_enc83_gu_patron，
        還錢結算完成（enc83_gu_loan_result＝1 還錢）亦開——任一成立就開。還錢嗰陣筆借錢債權
-       已經由 mockCredits 拎走，所以還錢路只讀結算旗，唔讀債權。 */
-    if(raw.id==="gig_1991_rec_102"){
+       已經由 mockCredits 拎走，所以還錢路只讀結算旗，唔讀債權。
+       v20a254：接線由舊 id gig_1991_rec_102（新庫已改做《鄉謠》，無 trigger）搬去
+       新庫顧引薦 gig gig_1992_rec_105。 */
+    if(raw.id==="gig_1992_rec_105"){
       try{
         const lr = (typeof enc83Flag==="function") ? enc83Flag("enc83_gu_loan_result") : ((S.flags||{}).enc83_gu_loan_result);
         if(Number(lr)===1) return true;
@@ -41174,7 +41237,7 @@ function nat92Gig(spec){
     shootDeadlineDays: spec.days + 14,
     limits: { gender: "any", licenses: [], groupOnly: false, notes: [] },
     storyKeys: spec.storyKeys || [], tagOnComplete: spec.tagOnComplete || [],
-    rumorKeys: [], favorDelta: [], boardHookMode: "normal", isKeyGig: false,
+    rumorKeys: [], boardHookMode: "normal", isKeyGig: false,
     industryCreditMin: null, requiresCastingTagAny: null, nat92: true
   };
   return o;

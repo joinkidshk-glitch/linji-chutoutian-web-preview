@@ -113,7 +113,7 @@ for cid, loc in [('N14','rec_star'), ('N16','film_cotton'), ('N13','tvb_longmen'
     ok('STORY_LOC_SOFT '+cid+' -> '+loc, re.search(cid+r': "'+loc+r'"', locs) is not None)
 tm = re.search(r'const STORY_TITLE_SOFT = \{(.*?)\n\};', html, re.S)
 titles = tm.group(1) if tm else ''
-for cid, t in [('N6','飯堂閒角'), ('N14','樂壇前哨'), ('N16','飛紙仔'), ('N13','高爾夫球'), ('N12','高危替身'), ('N15','錄音室')]:  # v253：SOFT 表跟新短詞標題
+for cid, t in [('N6','角落那張枱'), ('N14','樂壇前哨'), ('N16','飛紙仔'), ('N13','高爾夫球'), ('N12','墊'), ('N15','錄音室')]:  # v253：SOFT 表跟新短詞標題；v20a254：N12 高危替身→墊、N6 飯堂閒角→角落那張枱
     ok('STORY_TITLE_SOFT '+cid+' = '+t, (cid+': "'+t+'"') in titles)
 hm = re.search(r'const STORY_HINT_SOFT = \{(.*?)\n\};', nocomment, re.S)
 hints = hm.group(1) if hm else ''

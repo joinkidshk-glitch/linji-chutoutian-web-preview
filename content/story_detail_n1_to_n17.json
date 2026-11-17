@@ -48,7 +48,7 @@
           "speaker": "何生",
           "kind": "npc",
           "lines": [
-            "一份跟張子駿的班底學動作戲，勝在穩陣，不過人工來得慢。另一份去電影片場做散工，錢來得快，但人脈隨時散水。",
+            "一份係跟張子駿個班底學做動作戲，勝在穩陣，不過人工就真係慢熱。另一份係去電影片場做散工，錢就快，但人脈隨時散水。",
             "我唔會呃你，兩條路嘅價錢都喺度。電視城嗰邊，星河開緊套武俠劇，要武行跟班——吊威也、做替身，學到嘢，但捱得耐。片場嗰邊，套賭片趕住開，賭枱邊要人，朝早去、夜晚收現金，錢快，但嗰邊唔會有人記得你個名。"
           ]
         },
@@ -276,7 +276,7 @@
       "aftermathHint": "決定好路線，準備迎接新的挑戰。",
       "journalCandidate": "入行第一日，何生俾咗兩條路我揀，呢個決定會影響我之後嘅發展。",
       "redStarHook": "可遠觀陸柏言",
-      "nodeRipple": "初期活動地圖＋基礎數值傾斜"
+      "nodeRipple": null
     },
     {
       "id": "N2",
@@ -477,7 +477,7 @@
       "aftermathHint": "煙味散去，新一天的片場生活就要開始。",
       "journalCandidate": "片場後巷嘅老臨記，講咗啲星河電視台嘅秘辛。",
       "redStarHook": "聽說大明星都是這樣捱出來的，廖炳星隨時可以提點兩句。",
-      "nodeRipple": "沉澱標籤：電視城乖仔／片場老油條"
+      "nodeRipple": null
     },
     {
       "id": "N3",
@@ -682,7 +682,7 @@
       "aftermathHint": "拍完這場戲，阿偉先回休息室喝口水。",
       "journalCandidate": "今日喺廠景同高俊傑對上，呢行真係步步為營。",
       "redStarHook": "齊鎮海在不遠處的 mon 後面，悄悄看著這邊。",
-      "nodeRipple": "業內信用同對手態度因呢次衝突產生微妙變化。"
+      "nodeRipple": null
     },
     {
       "id": "N4",
@@ -893,7 +893,7 @@
       "aftermathHint": "處理好何生這邊，先出去透口氣，想想下一步。",
       "journalCandidate": "何生用記數簿壓我接通宵爛job，呢單人情債真係難還。",
       "redStarHook": "無",
-      "nodeRipple": "拒單欠落人情債兼跌信用；接單換個捱得標籤但爆壓力傷健康。"
+      "nodeRipple": null
     },
     {
       "id": "N5",
@@ -1143,7 +1143,7 @@
       "aftermathHint": "小訪結束，收拾心情準備埋位。",
       "journalCandidate": "采兒喺片場休息角做小訪，問咗啲敏感嘢，我嘅答法影響咗我哋嘅關係。",
       "redStarHook": "駱家聲 Band 房後巷那晚的動靜，似乎牽涉到星河電視台的高層。",
-      "nodeRipple": "羈絆深度視乎坦誠度，情報共享級別隨答法而升降。"
+      "nodeRipple": null
     },
     {
       "id": "N6",
@@ -1529,7 +1529,7 @@
       "locId": "film_lion",
       "playerOffer": "大製作想留你做固定跟班——跟一組戲跟到殺青，定繼續跑？",
       "playerHint": "片場那邊，大製作想留一個固定跟班——由開鏡跟到殺青那種。",
-      "lockedHint": "先完成「采兒小訪題」那一幕，之後才開（第15週起、走電影線）。未到就照常跑通告；開了去獅子山製片那邊看一下。",
+      "lockedHint": "先完成「筆記本」那一幕，之後才開（第15週起、走電影線）。未到就照常跑通告；開了去獅子山製片那邊看一下。",
       "nextHint": "",
       "aftermathHint": "那個位置你跟還是不跟，片場那邊都會照常開工；你那期怎麼過，自己知道。",
       "journalCandidate": "佈景板後面嗰個位，我嗰陣揀咗跟，定行返出去。",
@@ -4512,11 +4512,12 @@
       "N12",
       "N15",
       "N17",
+      "N17_epi",
       "N18",
       "N19"
     ],
     "missing": [],
-    "count": 21
+    "count": 22
   },
   "qa": {
     "endings_names_ok": true,
@@ -4532,7 +4533,7 @@
       "avg_line_len": 30.5,
       "beat_counts": {
         "N15": 10,
-        "N17": 19
+        "N17": 15
       },
       "endings_names_ok": true,
       "effects_note": "N15 flag_vocal_polish/train; N17 ending410 natural/quit_job + dynamic quit_leave, 結局由三年數值計出"

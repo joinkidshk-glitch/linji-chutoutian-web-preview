@@ -20,16 +20,16 @@ ok('N6F 節點由 JSON 出＋閘有 needDone N5＋內嵌表／注入器已刪（
    'N6F: { needDone: ["N5"], route: "route_film", weekMin: 15 }' in html
    and 'const STORY_SPINE_NODES_BR89' not in html and 'function applyStoryBr89Nodes89' not in html
    and any(n.get('id') == 'N6F' for n in json.load(open(os.path.join(ROOT, 'content', 'story_detail_n1_to_n17.json'), encoding='utf-8'))['nodes']))
-BR89_13 = [('1991_film_106', 'enc83_luk_patron'), ('1991_variety_108', 'enc84_pang_patron'),
-  ('1992_rec_102', 'enc84_ching_patron'), ('1991_film_107', 'enc79_liu_priority'),
-  ('1992_film_102', 'enc83_liu_patron'), ('1992_film_103', 'enc83_mak_patron'),
-  ('1992_tv_103', 'enc83_yip_patron'), ('1991_rec_102', 'enc83_gu_patron'),
-  ('1992_tv_104', 'enc84_so_patron'), ('1992_film_104', 'enc84_chung_patron'),
-  ('1992_rec_103', 'enc83_lok_patron'), ('1992_film_105', 'enc83_ngai_patron'),
-  ('1992_film_106', 'enc83_chai_patron')]
+BR89_13 = [('1991_film_101', 'enc83_luk_patron'), ('1991_variety_203', 'enc84_pang_patron'),
+  ('1992_rec_106', 'enc84_ching_patron'), ('1991_film_103', 'enc79_liu_priority'),
+  ('1992_film_103', 'enc83_liu_patron'), ('1991_film_110', 'enc83_mak_patron'),
+  ('1992_tv_105', 'enc83_yip_patron'), ('1992_rec_105', 'enc83_gu_patron'),
+  ('1991_ad_102', 'enc84_so_patron'), ('1991_tv_108', 'enc84_chung_patron'),
+  ('1992_rec_102', 'enc83_lok_patron'), ('1991_film_111', 'enc83_ngai_patron'),
+  ('1992_tv_104', 'enc83_chai_patron')]
 ok('B5 BR89 提攜映射 13 張（新庫 id；SPEC §3.5A；舊 gig_br89_* 已清）',
    all(('gig_%s:"credit_%s"' % (g, c)) in html for g, c in BR89_13) and 'gig_br89_' not in html)
-ok('B5 R-4 雙觸發在位（還錢結算 enc83_gu_loan_result＝1 亦開）', 'enc83_gu_loan_result' in html and 'gig_1991_rec_102' in html)
+ok('B5 R-4 雙觸發在位（還錢結算 enc83_gu_loan_result＝1 亦開）', 'enc83_gu_loan_result' in html and 'gig_1992_rec_105' in html)
 ok('八線結局回收表在位', 'ARC_END89' in html and 'flag_ko_rival_respect' in html and 'flag_lei_ally' in html)
 ok('手帳八線狀態句在位', 'br89ArcStatusHtml' in html and 'BR89_ARC_LINES' in html)
 ok('新拼合 pair 在位', 'pair_br89_lok_truth' in html and 'pair_br89_chung_farewell' in html)

@@ -121,14 +121,14 @@ eval(extractFn('br89OnGigComplete'));
 S = { flags: {}, mockCredits: [{ id: 'credit_c7_rain', debtor: 'x', title: 'x', line: 'x', status: '未收' }] };
 br89OnGigComplete('gig_1991_tv_204');
 ok('殺青鉤：通用 credit gig 唔設 redeemedBy（現況缺口，見報告 §3）', !S.mockCredits[0].redeemedBy);
-S.mockCredits = [{ id: 'credit_enc83_mak_patron', debtor: 'x', title: 'x', line: 'x', status: '未收' }];
+S.mockCredits = [{ id: 'credit_enc83_liu_patron', debtor: 'x', title: 'x', line: 'x', status: '未收' }];
 br89OnGigComplete('gig_1992_film_103');
 ok('殺青鉤：BR89 映射內 gig（film_103／1992）殺青 → redeemedBy 有標記', S.mockCredits[0].redeemedBy === 'gig_1992_film_103');
-/* v252 缺口：新庫廖引薦 gig（film_103／1991，N9_a 重用）唔喺 BR89 映射入面，殺青鉤唔會標記 credit_enc79_liu_priority
-   做已兌現——映射漂移嘅後果，見 trigger 測試 T8＋報告；修復要改 index.html 映射。 */
+/* v20a254 修復：新庫廖優先 gig（film_103／1991《笑住過肥年・外傳》）已入 BR89 映射，
+   殺青鉤會標記 credit_enc79_liu_priority 做已兌現——v252 缺口已補，唔再係缺口。 */
 S.mockCredits = [{ id: 'credit_enc79_liu_priority', debtor: 'x', title: 'x', line: 'x', status: '未收' }];
 br89OnGigComplete('gig_1991_film_103');
-ok('殺青鉤：新庫廖引薦 gig（film_103／1991）唔喺映射 → 唔標記（缺口已釘）', !S.mockCredits[0].redeemedBy);
+ok('殺青鉤：新庫廖優先 gig（film_103／1991）喺映射 → 有標記（v252 缺口已修）', S.mockCredits[0].redeemedBy === 'gig_1991_film_103');
 
 /* ---------- 5. GATE 表靜態對照（D8 附錄 K4） ---------- */
 eval(extractConstVar('STORY_GATE_3Y'));

@@ -68,7 +68,7 @@ for cid, loc in [('N7','film_harbour'), ('N9','cafe_cha'), ('N10','tvb_harbour')
     ok('STORY_LOC_SOFT '+cid+' -> '+loc, re.search(cid+r': "'+loc+r'"', locs) is not None)
 tm = re.search(r'const STORY_TITLE_SOFT = \{(.*?)\n\};', html, re.S)
 titles = tm.group(1) if tm else ''
-for cid, t in [('N7','暴雨救場'), ('N9','茶餐廳度橋'), ('N10','年尾追數'), ('N11','戲路定型'), ('N8','選美後台')]:
+for cid, t in [('N7','暴雨'), ('N9','卡座'), ('N10','酒廊'), ('N11','黑西裝與舊風褸'), ('N8','化妝間')]:  # v20a254：SOFT 跟已拍板新短詞標題
     ok('STORY_TITLE_SOFT '+cid+' = '+t, (cid+': "'+t+'"') in titles)
 
 # ---- 藍 PA 化：提示表 N7–N8 段清走歌手向 ----

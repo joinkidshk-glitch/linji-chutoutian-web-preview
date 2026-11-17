@@ -36,10 +36,11 @@ ok('nodes[0-4] 係 N1-N5', [n.get('id') for n in nodes[:5]] == ['N1', 'N2', 'N3'
 #      v20a253 收尾批工人 B（N13–N17 鋪墊場面 5 個＋N13／N15／N16／N17 新短詞標題＋N14 when 春末＋N17 qa.phase5 更新），sha 再重算） ---
 #      v20a253 收尾批工人 C（N14 四處跟夏／秋閘＋N17 湯場 4 拍搬去獨立節點 N17_epi，N17 19→15 拍），sha 再重算） ---
 #      v20a256 N6F 第二人稱轉第三人稱（10 句系統旁白／notes，照 V250_DIALOGUE_DELTA §3.4；其餘一字未郁），sha 再重算） ---
+#      v20a254 統籌收尾（N6F lockedHint 標題引用「采兒小訪題」→「筆記本」，跟新短詞標題；其餘一字未郁），sha 再重算） ---
 tail = json.dumps(nodes[5:], sort_keys=True, ensure_ascii=False)
-ok('nodes[5:] 同 v256 一致（N6F 第二人稱轉第三人稱，照 §3.4；其餘同 v253）',
+ok('nodes[5:] 同 v254 一致（N6F lockedHint 標題引用跟新標題；其餘同 v256）',
    hashlib.sha256(tail.encode('utf-8')).hexdigest()
-   == 'e2580c74b7439ea03a34ea81459122b57ecfebb43326b5679991baeeff57e50d')
+   == '6e2f307b9e3023281e87012ca4ae89f59e7184f3169577a85dda267ca9f8a63c')
 
 # --- 標題／setting／synopsis 按設計 ---
 ok('標題 N1-N5 按設計（v250 新短詞標題：通告板／後巷／正中央／記數簿／筆記本）',

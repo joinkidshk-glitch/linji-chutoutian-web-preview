@@ -174,7 +174,7 @@ function sentenceChecks(tag, line){
   const a2 = storyMainProgressLine();
   if(DEBUG) console.log('A2:', a2);
   sentenceChecks('A2 N2 未開進度行', a2);
-  ok('A2：句頭係「下一幕第 2 幕〈留人脈／趕通告〉未開——」', a2.indexOf('下一幕第 2 幕〈留人脈／趕通告〉未開——') === 0);
+  ok('A2：句頭係「下一幕第 2 幕〈後巷〉未開——」', a2.indexOf('下一幕第 2 幕〈後巷〉未開——') === 0);
   ok('A2：通告差額正確（還差 3 張・現在 0／3）', a2.indexOf('通告還差 3 張（現在 0／3）') >= 0);
   ok('A2：週數差額正確（未到第 4 週）', a2.indexOf('未到第 4 週') >= 0);
   ok('A2：尾句講明去星河電視台觸發', /去星河電視台就會觸發。$/.test(a2));
@@ -190,7 +190,7 @@ function sentenceChecks(tag, line){
   const a3 = storyMainProgressLine();
   if(DEBUG) console.log('A3:', a3);
   sentenceChecks('A3 N6 未開進度行', a3);
-  ok('A3：指向第 6 幕・電視線〈飯堂閒角〉（v191：N6 加路線後綴，同 N6F 對稱）', a3.indexOf('第 6 幕・電視線〈飯堂閒角〉') >= 0);
+  ok('A3：指向第 6 幕・電視線〈角落那張枱〉（v191：N6 加路線後綴，同 N6F 對稱）', a3.indexOf('第 6 幕・電視線〈角落那張枱〉') >= 0);
   ok('A3：冇差額數據嗰陣唔虛報「條件已經夠晒」', a3.indexOf('條件已經夠晒') < 0);
   ok('A3：尾句講明去星河電視台觸發', /去星河電視台就會觸發。$/.test(a3));
 
@@ -229,17 +229,17 @@ function sentenceChecks(tag, line){
   if(DEBUG) console.log('B1 len:', b1.length);
   /* v20a165 STORY165：已開放行唔再講「去 X 就會觸發」（地點唔再係觸發條件），改「返地圖
      嗰陣就會播出」＋場景地點；「播呢幕」掣已拎走。 */
-  ok('B1：第 1 幕已開放＋標題＋場景地點（v165：返回地圖時就會播出）', b1.indexOf('第 1 幕') >= 0 && b1.indexOf('先學做動作戲') >= 0 && b1.indexOf('已開放') >= 0 && b1.indexOf('返回地圖時就會播出') >= 0 && b1.indexOf('場景：何生事務所') >= 0 && b1.indexOf('去何生事務所就會觸發') < 0);
-  ok('B1：第 2 幕逐項——前置旗未達', b1.indexOf('先完成第 1 幕〈先學做動作戲／先賺〉') >= 0);
+  ok('B1：第 1 幕已開放＋標題＋場景地點（v165：返回地圖時就會播出）', b1.indexOf('第 1 幕') >= 0 && b1.indexOf('通告板') >= 0 && b1.indexOf('已開放') >= 0 && b1.indexOf('返回地圖時就會播出') >= 0 && b1.indexOf('場景：何生事務所') >= 0 && b1.indexOf('去何生事務所就會觸發') < 0);
+  ok('B1：第 2 幕逐項——前置旗未達', b1.indexOf('先完成第 1 幕〈通告板〉') >= 0);
   ok('B1：第 2 幕逐項——週數連即時進度（第 4 週・現在第 1 週）', b1.indexOf('到第 4 週（現在第 1 週）') >= 0);
   ok('B1：第 2 幕逐項——通告連即時進度（0／3）', b1.indexOf('接通告 0／3 張') >= 0);
   ok('B1：第 2 幕逐項——傳聞未達', b1.indexOf('聽到傳聞：') >= 0);
-  ok('B1：第 3 幕（第二幕未開放）照列逐項', b1.indexOf('茶餐廳度橋') < 0 && b1.indexOf('先完成第 2 幕〈留人脈／趕通告〉') >= 0);
-  ok('B1：防劇透——遠幕主幹冇標題（v198：N18 前置句提及〈采兒小訪題〉除外，嗰句係解鎖條件唔係劇透）', b1.indexOf('何生拒單') < 0 && b1.indexOf('飯堂閒角') < 0);
+  ok('B1：第 3 幕（第二幕未開放）照列逐項', b1.indexOf('卡座') < 0 && b1.indexOf('先完成第 2 幕〈後巷〉') >= 0);
+  ok('B1：防劇透——遠幕主幹冇標題（v198：N18 前置句提及〈筆記本〉除外，嗰句係解鎖條件唔係劇透）', b1.indexOf('記數簿') < 0 && b1.indexOf('第 6 幕・電視線〈角落那張枱〉') < 0);
   /* v20a105 S-45：遠幕 boilerplate 合併做一行「第 X–17 幕…逐幕揭曉」，唔再逐幕重複
      v20a198 C2：鎖住插入行截斷遠幕段，按段合併兩行「第 4–6 幕」＋「第 7–17 幕」。 */
   ok('B1：防劇透——遠幕按段合併兩行', b1.indexOf('第 4–6 幕') >= 0 && b1.indexOf('第 7–17 幕') >= 0 && b1.indexOf('完成前面幕數後逐幕揭曉') >= 0 && b1.indexOf('完成前面嘅幕之後，呢幕嘅標題同條件會逐項列出') < 0);
-  ok('B1：v198——鎖住插入幕見到（N6F／N18／N19 標題＋解鎖條件）', b1.indexOf('片場跟班') >= 0 && b1.indexOf('上岸路') >= 0 && b1.indexOf('賭枱邊') >= 0 && b1.indexOf('先完成番外・1990 冬〈上岸路〉') >= 0);
+  ok('B1：v198——鎖住插入幕見到（N6F／N18／N19 標題＋解鎖條件）', b1.indexOf('角落那張枱') >= 0 && b1.indexOf('上岸路') >= 0 && b1.indexOf('賭枱邊') >= 0 && b1.indexOf('先完成番外・1990 冬〈上岸路〉') >= 0);
   ok('B1：v198——N6F 鎖行講啱條件（行電影線）', b1.indexOf('行電影線') >= 0 && b1.indexOf('行電視線') < 0);
   ok('B1：成頁冇舊年份', b1.indexOf('1988') < 0 && b1.indexOf('1989') < 0);
   ok('B1：成頁冇關海媚個名', b1.indexOf('關海媚') < 0);
@@ -256,10 +256,10 @@ function sentenceChecks(tag, line){
   ok('B2：已完成幕數正確（✓ 已完成 ×5）', (b2.match(/✓ 已完成/g) || []).length === 5);
   ok('B2：第 6 幕逐項——電視線已達標（✓）', /<li class="ok">✓ 行電視線<\/li>/.test(b2));
   ok('B2：第 6 幕逐項——週數未達連即時進度（第 15 週・現在第 13 週）', /<li class="no">○ 到第 15 週（現在第 13 週）<\/li>/.test(b2));
-  ok('B2：第 7 幕逐項——前置 N5 已達標（✓）', /<li class="ok">✓ 先完成第 5 幕〈采兒小訪題〉<\/li>/.test(b2));
+  ok('B2：第 7 幕逐項——前置 N5 已達標（✓）', /<li class="ok">✓ 先完成第 5 幕〈筆記本〉<\/li>/.test(b2));
   ok('B2：第 7 幕逐項——信用已達標連即時進度', /<li class="ok">✓ 業內信用多於 20（而家 \d+）<\/li>/.test(b2));
   ok('B2：第 7 幕逐項——時窗未到（1991 年夏）', b2.indexOf('時窗：1991 年夏') >= 0);
-  ok('B2：防劇透——第 8 幕起冇標題', b2.indexOf('茶餐廳度橋') < 0 && b2.indexOf('年尾追數') < 0);
+  ok('B2：防劇透——第 8 幕起冇標題', b2.indexOf('卡座') < 0 && b2.indexOf('酒廊') < 0);
 
   /* ---- B3：進度頁・錯過登記 ---- */
   const done14 = {};
@@ -267,11 +267,11 @@ function sentenceChecks(tag, line){
   delete done14.N12;
   loadGame(freshSave({
     dayIndex: 800, fame: 60, industryCreditDelta: 40,
-    calib60Missed: { N12: { title: '高危替身', whenLabel: '1992 年春', week: 118 } },
+    calib60Missed: { N12: { title: '墊', whenLabel: '1992 年春', week: 118 } },  /* v20a254：SOFT N12 高危替身→墊（live calib60MissedScan 經 calib60NodeTitle→JSON 亦係「墊」） */
     story: { done: done14, flags: {}, rel: {}, routes: { route_tv: true }, phase: 'P3', gigCount: 40 },
   }));
   const b3 = pane71();
-  ok('B3：第 15 幕顯示已錯過＋時窗標籤', b3.indexOf('高危替身') >= 0 && b3.indexOf('已錯過') >= 0 && b3.indexOf('1992 年春') >= 0);
+  ok('B3：第 15 幕顯示已錯過＋時窗標籤', b3.indexOf('墊') >= 0 && b3.indexOf('已錯過') >= 0 && b3.indexOf('1992 年春') >= 0);
   ok('B3：成頁冇舊年份', b3.indexOf('1988') < 0 && b3.indexOf('1989') < 0);
 })();
 
@@ -299,7 +299,7 @@ function sentenceChecks(tag, line){
   const line = storyMainProgressLine();
   if(DEBUG) console.log('GATEOFF:', line);
   sentenceChecks('段二 gate-off 進度行', line);
-  ok('段二：指向第 2 幕〈留人脈／趕通告〉', line.indexOf('第 2 幕〈留人脈／趕通告〉') >= 0);
+  ok('段二：指向第 2 幕〈後巷〉', line.indexOf('第 2 幕〈後巷〉') >= 0);
   ok('段二：冇數據嗰陣唔虛報「條件夠晒」', line.indexOf('條件已經夠晒') < 0);
 })();
 
@@ -327,7 +327,7 @@ function sentenceChecks(tag, line){
   const a4 = storyMainProgressLine();
   if(DEBUG) console.log('A4:', a4);
   sentenceChecks('A4 N1 已開放進度行', a4);
-  ok('A4：已開放完整句（第 1 幕〈先學做動作戲／先賺〉已經開了）', a4.indexOf('第 1 幕〈先學做動作戲／先賺〉已經開了') >= 0);
+  ok('A4：已開放完整句（第 1 幕〈通告板〉已經開了）', a4.indexOf('第 1 幕〈通告板〉已經開了') >= 0);
   ok('A4：講明去何生事務所觸發', a4.indexOf('去何生事務所就會觸發。') >= 0);
 })();
 

@@ -244,7 +244,7 @@ function makeEl(){
   StoryPlay.playOpenPicker();
   const pickerHtml = __modals.map(m => m.body).join('\n');
   ok('seg7 picker 有即將可出區', pickerHtml.indexOf('即將可出') >= 0);
-  const c2RowAt = pickerHtml.indexOf('留人脈／趕通告');
+  const c2RowAt = pickerHtml.indexOf('留人脈／趕通告');  /* v20a254：picker 讀 frozen fixture（tests/fixtures/story_detail_n1_to_n17.json，17 節點舊快照），N2 標題仍係舊摘要；live JSON＋SOFT 已係「後巷」，由 progress71／story191 驗新標題。 */
   ok('seg7 picker 列出 N2', c2RowAt >= 0);
   const c2Row = c2RowAt >= 0 ? pickerHtml.slice(c2RowAt, c2RowAt + 700) : '';
   ok('seg7 N2 行寫明第 4 週條件（軟閘真文案／週次戳）', c2Row.indexOf('未到第 4 週') >= 0 || /約第4/.test(c2Row));
@@ -265,7 +265,7 @@ function makeEl(){
   const prog = storyMainProgressLine();
   /* v20a71 PROGRESS71 改版：舊斷言驗「第N幕即將」碎片頭＋「開咗去…播」拼裝尾——
      用戶評文法怪，v71 全面改完整句子，斷言跟新正確行為改（句子內容由 v71 專測覆蓋）。 */
-  ok('seg7 主線進度行指向下一幕（v71 完整句；v191：N6 加路線後綴）', prog.indexOf('第 6 幕・電視線〈飯堂閒角〉') >= 0 && prog.indexOf('未開') >= 0 && prog.indexOf('即將') < 0);
+  ok('seg7 主線進度行指向下一幕（v71 完整句；v191：N6 加路線後綴）', prog.indexOf('第 6 幕・電視線〈角落那張枱〉') >= 0 && prog.indexOf('未開') >= 0 && prog.indexOf('即將') < 0);
   ok('seg7 主線進度行講明去星河電視台觸發（v71）', prog.indexOf('星河電視台') >= 0 && prog.indexOf('就會觸發。') >= 0 && prog.indexOf('開了去') < 0);
 })();
 
