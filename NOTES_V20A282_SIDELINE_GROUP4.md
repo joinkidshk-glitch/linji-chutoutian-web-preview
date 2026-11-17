@@ -82,3 +82,9 @@ WORKORDER 4.2 話 code 舊寫「1990 年秋末」（repo L19947／L19948／L2175
 
 - 攻略側（parent artifact.edit）：WORKORDER 4.1 L3413 澄清註、4.2 L3688 定稿註（見上「跟進畀 parent」，唔好照 WORKORDER 原寫法）、L5023 改「1992 年–1992 年冬」（已確認）、4.3 Q11 三行刪（L2931／L2964／L5293）、4.4／4.5 無改動。
 - 用戶 2026-11-18 06:32 新指令：**儀表板停做每版更新**——v282 唔派儀表板 builder；另「不要再停下來」，排隊繼續做。
+
+## Landing record
+
+- main HEAD `0dacdf3`（squash merge v282；base `fbf66a4` v281）。
+- Suite 346／9（9 項已知 pre-existing FAIL，零回歸；＋1 係新測試檔）。
+- Pages 核實：主頁 200、4,678,577 bytes、與本地 index.html byte-identical；線上「企邊那場波」×3、「站隊」0。
