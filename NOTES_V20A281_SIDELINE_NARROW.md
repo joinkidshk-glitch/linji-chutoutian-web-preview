@@ -1,6 +1,6 @@
 # NOTES_V20A281 — 收尾獎勵信用收窄（v280 跟進）
 
-- 版本：v281。Base：main `37c1a28`（v280，suite 345／9）。
+- 版本：v281。Base：main `37c1a28`（v280，suite 345／9）。落地：main `ed68bd6`，suite 345／9，Pages byte-identical（4,678,577 bytes）。
 - 拍板：用戶 2026-11-18 05:45 揀收窄（delta ＋2→＋1，令每線信用淨 ＋2）。
 
 ## 改動（index.html，行數淨 ±0）
