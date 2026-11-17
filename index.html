@@ -38869,11 +38869,11 @@ function enc79GrantCredit(credit){
 }
 /* ===== v20a280 SIDELINE280：支線收尾獎勵（WORKORDER §12／PLAN §12；DECISIONS Q10 已批）。
    暖版完成＝該線人情債權（現行已有）＋聲望 ＋2／信用 ＋2＋專屬引薦通告（憑債權上板，見 BR89_PATRON_OF_GIG）。
-   數字用建議值原樣（＋2／＋2；九線全暖 ＋18／＋18）。只餵現有結局輸入（人情數→E4／E5、聲望／信用→E2、
+   數字：聲望 ＋2／信用淨 ＋2（v20a281 收窄：delta ＋1＋派生 ＋1；九線全暖 ＋18／＋18）。只餵現有結局輸入（人情數→E4／E5、聲望／信用→E2、
    作品通告→E1 雙軌／擔正媒介數），唔自創結局條件；結局門檻（3.10）核實一致，唔改。
    寫入：聲望行 S.fame 直加（一次性敘事獎勵，唔經 CALIB60 遞減，見 CALIB60 註解）；
    信用行 S.industryCreditDelta 直加（派生信用嘅直接寫入通道，殺青反響同一路）。
-   派生值註：＋2 聲望令 baseCredit ＋1（fame×0.5），連 ＋2 delta，readDualTracks 嘅 industryCredit 實際 ＋3。
+   派生值註：＋2 聲望令 baseCredit ＋1（fame×0.5），連 ＋1 delta，readDualTracks 嘅 industryCredit 實際 ＋2（v20a281 收窄：delta ＋2→＋1；舊版每線實際 ＋3，九線 ＋27）。
    暖版判定跟 live 實際落旗／授債權點（見 NOTES_V20A280）：顧／麥 live 無 Beat 5 抉擇，暖版＝patron 閘本身；
    廖／駱／魏／齊／彭／鍾／程用正面暖旗（草稿旗 liu_stand_92／gu_patron_take／mak_follow_big live 0 命中，唔用）。
    呼叫點：各線暖版 patron grants()（魏行 ngai_vouch fx）＋收尾 beat grants()（liu_clash／lok_e4grudge／
@@ -38899,7 +38899,7 @@ function sideline280GrantCompletion(lineKey){
     if(!warm) return false;
     S.flags[doneKey] = 1;
     S.fame = (Number(S.fame)||0) + 2;
-    S.industryCreditDelta = (Number(S.industryCreditDelta)||0) + 2;
+    S.industryCreditDelta = (Number(S.industryCreditDelta)||0) + 1;
     try{ if(typeof syncDualTracks==="function") syncDualTracks(S); }catch(_e){}
     return true;
   }catch(_e){ return false; }

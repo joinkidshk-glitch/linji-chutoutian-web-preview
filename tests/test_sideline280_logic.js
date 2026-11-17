@@ -1,10 +1,10 @@
 // v20a280 支線收尾獎勵邏輯測試（WORKORDER §12／PLAN §12：九條線統一框架）：
-//   (1) helper 單元：九線暖版各派 ＋2／＋2、只派一次、冷版／缺一唔派；
+//   (1) helper 單元：九線暖版各派聲望 ＋2／信用 delta ＋1（淨 ＋2）、只派一次、冷版／缺一唔派；
 //   (2) patron grants() 整合：暖版授債權＋派獎勵、冷版閘唔開、魏行 ngai_vouch fx、彭／齊債權照授但獎勵唔派；
 //   (3) 補派點：patron 早開 → 收尾 beat／heart 後補派；收尾先啱 → patron 唔重複派；
 //   (4) 專屬引薦通告接駁：九線 10 張全部新庫在位＋BR89 映射＋trigger 對位（0 張新開）；舊 id 唔喺度；
 //   (5) 3.10 結局門檻未郁：E1／E2／E4／E5 數字＋E2 邊界 live 行為；
-//   (6) 九線全暖合計 ＋18／＋18（派生信用 ＋27）；
+//   (6) 九線全暖合計 ＋18／＋18（delta ＋9＋派生 ＋9；v20a281 收窄，原派生信用 ＋27）；
 //   (7) 靜態 guard：helper 一次、call sites 18 處、草稿旗唔入 code、唔改 SAVE key／softRev／?v=、通告庫仍 288 張。
 // 反證：喺 pristine（v20a279）index 上行 → (1)(2)(3) helper／grants 鉤乾淨 FAIL；(4) 映射在位但獎勵無；(5)(6)(7) 部分 PASS（門檻本來就啱）。
 // 用法：node tests/test_sideline280_logic.js [path-to-index.html]
@@ -132,12 +132,12 @@ const PATRON280 = {
 };
 
 /* ---- (1) helper 單元 ---- */
-ok('(1) 暖版九線：helper 各派聲望 ＋2／信用 delta ＋2＋已派標記', (()=> {
+ok('(1) 暖版九線：helper 各派聲望 ＋2／信用 delta ＋1（淨 ＋2）＋已派標記', (()=> {
   let good = true;
   for(const line of ['liu','gu','mak','lok','ngai','chai','pang','chung','ching']){
     resetS(1000); warmFlags280(line);
     const r = sideline280GrantCompletion(line);
-    if(!(r===true && S.fame===2 && S.industryCreditDelta===2 && S.flags['sideline280_'+line]===1)) good = false;
+    if(!(r===true && S.fame===2 && S.industryCreditDelta===1 && S.flags['sideline280_'+line]===1)) good = false;
   }
   return good;
 })());
@@ -145,7 +145,7 @@ ok('(1) 只派一次：同一線再呼叫唔再加', (()=> {
   resetS(1001); warmFlags280('lok');
   sideline280GrantCompletion('lok');
   const r2 = sideline280GrantCompletion('lok');
-  return r2===false && S.fame===2 && S.industryCreditDelta===2;
+  return r2===false && S.fame===2 && S.industryCreditDelta===1;
 })());
 ok('(1) 冷版唔派：廖企導演邊／推辭、顧拒借／提賭、麥老實講會驚', (()=> {
   let good = true;
@@ -191,12 +191,12 @@ ok('(1) 錯過成段唔派：齊唔出聲（repay 唔開）、彭嚟唔到（交
   const b = sideline280GrantCompletion('pang')===false && S.fame===0;
   return a && b;
 })());
-ok('(1) 派生值：＋2 聲望＋＋2 delta → readDualTracks 信用 ＋3（fame×0.5 帶多 ＋1）', (()=> {
+ok('(1) 派生值：＋2 聲望＋＋1 delta → readDualTracks 信用 ＋2（v20a281 收窄；fame×0.5 派生 ＋1）', (()=> {
   resetS(1014); warmFlags280('lok');
   const before = readDualTracks(S).industryCredit;
   sideline280GrantCompletion('lok');
   const after = readDualTracks(S).industryCredit;
-  return before===0 && after===3 && S.fame===2 && S.industryCreditDelta===2;
+  return before===0 && after===2 && S.fame===2 && S.industryCreditDelta===1;
 })());
 ok('(1) 未知線 key 唔派唔寫入', (()=>{ resetS(1015); return sideline280GrantCompletion('nope')===false && S.fame===0; })());
 
@@ -207,7 +207,7 @@ ok('(2) 暖版 patron grants()：八線授債權＋派 ＋2／＋2', (()=> {
     const [sid, pid, cid] = PATRON280[line];
     resetS(1020); setFav(sid, 70); metStar(sid); warmFlags280(line);
     beatOf(sid, pid).grants();
-    if(!(enc83HasCredit(cid)===true && S.fame===2 && S.industryCreditDelta===2 && S.flags['sideline280_'+line]===1)) bad.push(line);
+    if(!(enc83HasCredit(cid)===true && S.fame===2 && S.industryCreditDelta===1 && S.flags['sideline280_'+line]===1)) bad.push(line);
   }
   if(bad.length) console.log('  (2) bad: ' + bad.join(','));
   return bad.length===0;
@@ -225,9 +225,9 @@ ok('(2) 暖版 patron 閘：冷旗在位 → 六線暖版 patron 唔開（credit
 })());
 ok('(2) 魏 ngai_vouch fx：照實講授債權＋派 ＋2／＋2；再跑唔重複', (()=> {
   resetS(1022); enc79RunChoiceFx('ngai_vouch');
-  const a = enc83HasCredit('credit_enc83_ngai_patron')===true && S.fame===2 && S.industryCreditDelta===2 && S.flags.sideline280_ngai===1;
+  const a = enc83HasCredit('credit_enc83_ngai_patron')===true && S.fame===2 && S.industryCreditDelta===1 && S.flags.sideline280_ngai===1;
   enc79RunChoiceFx('ngai_vouch');
-  const b = S.fame===2 && S.industryCreditDelta===2 && S.mockCredits.length===1;
+  const b = S.fame===2 && S.industryCreditDelta===1 && S.mockCredits.length===1;
   return a && b;
 })());
 ok('(2) 魏 ngai_patron 仍然無 grants()（債權改行 fx 通道，v278 不變）', beatOf('ngai_wingnaam','ngai_patron') && typeof beatOf('ngai_wingnaam','ngai_patron').grants==='undefined');
@@ -251,14 +251,14 @@ ok('(3) 廖：patron 早開（未嗌交）唔派；Beat 5 企佢嗰邊後 clash 
   const early = S.fame===0 && !S.flags.sideline280_liu;
   S.flags.enc79_liu_clash_stand = 1;
   beatOf('liu_bingxing','liu_clash').grants();
-  return early && S.fame===2 && S.industryCreditDelta===2 && S.flags.sideline280_liu===1;
+  return early && S.fame===2 && S.industryCreditDelta===1 && S.flags.sideline280_liu===1;
 })());
 ok('(3) 廖：Beat 5 先企佢嗰邊 → clash 派；patron 之後唔重複派', (()=> {
   resetS(1031); setFav('liu_bingxing',70); metStar('liu_bingxing');
   S.flags.enc79_liu_clash_stand = 1;
   beatOf('liu_bingxing','liu_clash').grants();
   beatOf('liu_bingxing','liu_patron').grants();
-  return S.fame===2 && S.industryCreditDelta===2;
+  return S.fame===2 && S.industryCreditDelta===1;
 })());
 ok('(3) 駱：patron 早開（E4 未出）唔派；e4grudge 勸佢後補派；講出去嗰陣補派都唔派', (()=> {
   resetS(1032); setFav('lok_gasing',70); metStar('lok_gasing');
@@ -266,7 +266,7 @@ ok('(3) 駱：patron 早開（E4 未出）唔派；e4grudge 勸佢後補派；�
   const early = S.fame===0 && !S.flags.sideline280_lok;
   S.flags.lok_calm_truth = 1;
   beatOf('lok_gasing','lok_e4grudge').grants();
-  const paid = S.fame===2 && S.industryCreditDelta===2;
+  const paid = S.fame===2 && S.industryCreditDelta===1;
   resetS(1033); S.flags.lok_calm_truth = 1; S.flags.lok_loose_row = 1;
   beatOf('lok_gasing','lok_e4grudge').grants();
   return early && paid && S.fame===0 && !S.flags.sideline280_lok;
@@ -278,7 +278,7 @@ ok('(3) 齊：patron 早開（未試新角）唔派；repay 試新角後補派',
   const early = S.fame===0 && !S.flags.sideline280_chai;
   S.flags.chai_try_new = 1;
   beatOf('chai_zanhoi','chai_repay').grants();
-  return early && S.fame===2 && S.industryCreditDelta===2;
+  return early && S.fame===2 && S.industryCreditDelta===1;
 })());
 ok('(3) 彭：patron 早開（未食麵）唔派；n17 食麵後補派', (()=> {
   resetS(1035); setFav('pang_siuki',70); metStar('pang_siuki');
@@ -287,7 +287,7 @@ ok('(3) 彭：patron 早開（未食麵）唔派；n17 食麵後補派', (()=> {
   const early = S.fame===0 && !S.flags.sideline280_pang;
   S.flags.pang_noodle_night = 1;
   beatOf('pang_siuki','pang_n17').grants();
-  return early && S.fame===2 && S.industryCreditDelta===2;
+  return early && S.fame===2 && S.industryCreditDelta===1;
 })());
 ok('(3) 程：patron 早開（未企慢路）唔派；e4 撐練嗰陣未齊唔派，heart 企慢路後 helper 補派', (()=> {
   resetS(1036); setFav('ching_tinlok',70); metStar('ching_tinlok');
@@ -297,7 +297,7 @@ ok('(3) 程：patron 早開（未企慢路）唔派；e4 撐練嗰陣未齊唔�
   beatOf('ching_tinlok','ching_e4').grants();
   const mid = S.fame===0 && !S.flags.sideline280_ching;
   S.flags.ching_stand_slow = 1;
-  const paid = sideline280GrantCompletion('ching')===true && S.fame===2 && S.industryCreditDelta===2;
+  const paid = sideline280GrantCompletion('ching')===true && S.fame===2 && S.industryCreditDelta===1;
   return early && mid && paid;
 })());
 ok('(3) heart 補派點在位：enc79BuildScript heart 回調有 chai／pang／chung／ching 四線守衛呼叫', (()=> {
@@ -312,7 +312,7 @@ ok('(3) heart segFx 真行：ching heart 完成（企慢路已落）→ helper �
   const heartStep = (built && built.steps || []).find(s=>s.seg==='heart:ching_tinlok' && typeof s.segFx==='function'); /* 抉擇段嘅 segFx 掛喺 choice step（最後一步），唔係第一句 */
   if(!heartStep || typeof heartStep.segFx!=='function') return false;
   heartStep.segFx();
-  return S.fame===2 && S.industryCreditDelta===2 && S.flags.sideline280_ching===1;
+  return S.fame===2 && S.industryCreditDelta===1 && S.flags.sideline280_ching===1;
 })());
 ok('(3) 收尾 beats grants 在位：liu_clash／lok_e4grudge／chai_repay／pang_n17／ching_e4 全部有 grants()', ['liu_bingxing|liu_clash','lok_gasing|lok_e4grudge','chai_zanhoi|chai_repay','pang_siuki|pang_n17','ching_tinlok|ching_e4'].every(pair=>{ const [sid, bid] = pair.split('|'); const b = beatOf(sid, bid); return b && typeof b.grants==='function'; }));
 
@@ -353,7 +353,7 @@ ok('(5) E4 救回門檻 ≥2 筆未用債權，唔放寬', ENDING410_T.e4RescueC
 ok('(5) E5：已清債＋持有 ≥6＋何生 rel ≥60', ENDING410_T.e5FavorTotal===6 && ENDING410_T.e5AgentRel===60 && html.indexOf('(favor.settled + favor.creditsHeld)>=T.e5FavorTotal && agentRel>=T.e5AgentRel')>=0);
 
 /* ---- (6) 九線全暖合計 ---- */
-ok('(6) 九線全暖：聲望 ＋18／信用 delta ＋18／派生信用 ＋27', (()=> {
+ok('(6) 九線全暖：聲望 ＋18／信用 delta ＋9／派生信用 ＋18（v20a281 收窄）', (()=> {
   resetS(1060);
   let good = true;
   for(const line of ['liu','gu','mak','lok','ngai','chai','pang','chung','ching']){
@@ -361,7 +361,16 @@ ok('(6) 九線全暖：聲望 ＋18／信用 delta ＋18／派生信用 ＋27', 
     if(sideline280GrantCompletion(line)!==true) good = false;
   }
   const derived = readDualTracks(S).industryCredit;
-  return good && S.fame===18 && S.industryCreditDelta===18 && derived===27;
+  return good && S.fame===18 && S.industryCreditDelta===9 && derived===18;
+})());
+
+/* ---- (6b) v20a281：每線信用淨 ＋2 機制 ---- */
+ok('(6b) 每線信用淨 ＋2：＋2 聲望經 baseCredit 派生 ＋1 ＋ delta ＋1 ＝ ＋2', (()=> {
+  resetS(1061); warmFlags280('ching');
+  const before = readDualTracks(S).industryCredit;
+  if(sideline280GrantCompletion('ching')!==true) return false;
+  const after = readDualTracks(S).industryCredit;
+  return before===0 && after===2 && S.fame===2 && S.industryCreditDelta===1 && after-before===2;
 })());
 
 /* ---- (7) 靜態 guard ---- */
