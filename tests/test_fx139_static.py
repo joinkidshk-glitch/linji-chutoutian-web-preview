@@ -27,8 +27,8 @@ CLIPS = {
                   'e52dc3c864456c4e796c6013782c69665215183f72774822deb6943f79f0c4e1'),
     'train_b':   ('fx_train_b.mp4', 47894,
                   'cc9cd2493f8f5fffa4e5a9d2e987f0163da1469cec8419eaa7d6ba736bc8ed23'),
-    'train_c':   ('fx_train_c.mp4', 49172,
-                  'e85a57b13636ee08552785c0b4b47eaa98ef26f9e7140746ae32a62d864e4499'),
+    'train_c':   ('fx_train_c.mp4', 48129,
+                  '071da765ed84fc77e05eff5f9bf10142f62b30b082c53cc4f3a4ffb84d46635e'),  # v20a264 機械修補版（舊 49172／e85a57b1…）
 }
 for kind, (fname, size, sha) in CLIPS.items():
     p = os.path.join(root, 'assets', 'fx', fname)
