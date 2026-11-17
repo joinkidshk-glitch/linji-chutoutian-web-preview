@@ -85,3 +85,10 @@ gig_1992_rec_111:lok / gig_1991_film_212:ngai / gig_1992_film_206:chai
 - SPEC-v2（`~/workspace/linji-gig-redesign/regen-v2/SPEC-v2.md`，repo 外）§1 數字已滯後：總數 282→287、作品 159→164、電影 1991 年 16→19 張／1992 年 13→14 張、唱片 1992 年 11→12 張、中級 64→68、高級 19→20。呢票無改 SPEC，留統籌決定係咪跟改。
 - 顧 gig format 用「單曲」（庫內唱片 format 只有單曲／大碟／MTV／卡拉OK 四種，登台暖場無專屬 format；roleScale 用 mtv，peer 係 `gig_1991_rec_203` 演唱會和音 2 日制）。
 - 1991 年真男主角 8 部、武打 matcher 22 張，係新 gig 嘅直接後果，唔係回歸。
+
+## 9. 落地記錄（統籌補）
+- squash merge `d306815`，已推 main；`git ls-remote` 核實一致。
+- 統籌獨立重跑全套 suite：339／9（FAIL 九項同基線逐項一致，零回歸）。
+- Pages 核實：HTTP 200，4,618,396 bytes，sha256 `0c74fa04…` 同本地逐字節一致；新 gig id 有命中。
+- SPEC-v2 §1 數字已由統籌同步（總數 287、作品 164、中級 68、高級 20、電影 1991 年 19 張／1992 年 14 張、唱片 1992 年 12 張）。
+- 工作副本 `linji-work274` 已刪；分支 `v20a274` 留喺常駐 clone 做紀錄。
