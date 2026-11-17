@@ -159,11 +159,16 @@ ck("spDlgPairIds 對白路行 dlg119DedupePair",
 ck("dlg119DedupePair 定義喺 DLG106 模組內（logic test 抽得到）",
    "function dlg119DedupePair(pair){" in src)
 
-# ---------- ⑤ 聽者影 _dim＋唔加 0.60 ----------
+# ---------- ⑤ 聽者影 _dim＋影聽者變暗 0.60 ----------
+# v20a154 B3：v119 嗰句「影唔加 brightness filter（bright 一律 "1"）」已作廢——
+# 影聽者跟返正常 bright 計算（對白／旁白 0.6、電話 0.8），得影講者先至係 1。
+# （聽者繼續用 _dim 資產，焗入 ×0.78，實效約 0.47；filter 讀數 0.60。）
 ck("spDlgCharsHtml 影行 dlg119Candidates（講者 base／聽者 _dim）",
    "cands = dlg119Candidates(stem119, !isActive);" in src)
-ck("影唔加 brightness filter（bright 一律 \"1\"）",
-   'if(stem119) bright = "1";' in src)
+ck("v20a154 B3：舊行 if(stem119) bright = \"1\" 已刪（影聽者唔再一律全光）",
+   'if(stem119) bright = "1";' not in src)
+ck("v20a154 B3：影講者／聽者跟正常 bright 計算（註釋有寫）",
+   "v20a154 B3" in src and "bright" in src)
 ck("影貼光暈層（人物背後、底圖之上）",
    "dlg119HaloUrl(stem119)" in src and 'class="dlg119-halo ' in src)
 ck("光暈 CSS 齊（同人物幾何、唔入 fit 計算）",

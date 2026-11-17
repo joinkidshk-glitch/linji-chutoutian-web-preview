@@ -4451,6 +4451,44 @@ body.day-res-open .day-row{
   border-top:0;
 }
 /* === v20a41 皮膚層完 === */
+/* === v20a154 B1：主線舞台 plate 填滿到底（跟巧遇 .e79-box） ===
+   實量基線（430x932／430x700）：plate bottom 844／612，離 viewport 底 88px；
+   88px = .sp-stage-inner padding-bottom 66px ＋ #modal-inner padding-bottom 12px
+   （L3506 規則，(2,2,0) 蓋過 L4218 padding:0）＋ .modal 外圍 10px inset。
+   修法（只限對白／旁白模式，抉擇屏唔郁）：
+   (1) .sp-stage-inner padding-bottom 66px → safe-area（即測試環境 0）；
+   (2) #modal-inner padding-bottom 12px → 0（:not(.tut-on) 拼滿 (2,2,0)，靠後排位置贏 L3506）；
+   (3) .dlg106-plate 高 118 → 170px：內容 96px＋上 pad 10px＋底 pad 61px＋border 2px
+       （box-sizing 全域 border-box；底 pad 61px = #modal-btns 高，文字唔俾掣列遮）；
+       舊 bust 路徑 .sp-plate 同樣加底 pad 61px；
+   (4) #modal-btns 漸變 → transparent，唔好喺米白 plate 底染深色。
+   落地後 plate bottom = modal 底（922@932／690@700），離 viewport 剩 10px
+   （.modal 外圍 inset，成個 modal 四邊一樣，唔係 plate 缺口）。
+   人物腳底 bottom:10%，plate 頂 726→752@932，仍遮小腿中段以下，v108 遮腿設計不變。 */
+/* v20a154 B1 (1)：舞台內層底留位清零 */
+#mask.story-play-on:has(.sp-mode-dialogue) .story-play .sp-stage-inner,
+#mask.story-play-on:has(.sp-mode-narration) .story-play .sp-stage-inner{
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+/* v20a154 B1 (2)：modal 內層底留位清零（只限故事播放，唔影響其他 modal） */
+#mask.story-play-on:not(.tut-on) #modal-inner{
+  padding-bottom:0;
+}
+/* v20a154 B1 (3)：plate 加高＋底留位避掣列 */
+#mask.story-play-on:has(.sp-mode-dialogue) .story-play .dlg106-plate,
+#mask.story-play-on:has(.sp-mode-narration) .story-play .dlg106-plate{
+  height:170px;
+  padding-bottom:calc(61px + env(safe-area-inset-bottom,0px));
+}
+#mask.story-play-on:has(.sp-mode-dialogue) .story-play .sp-stage-inner .sp-plate,
+#mask.story-play-on:has(.sp-mode-narration) .story-play .sp-stage-inner .sp-plate{
+  padding-bottom:calc(61px + env(safe-area-inset-bottom,0px));
+}
+/* v20a154 B1 (4)：掣列漸變透明（plate 底唔染深色） */
+#mask.story-play-on:has(.sp-mode-dialogue) #modal-btns,
+#mask.story-play-on:has(.sp-mode-narration) #modal-btns{
+  background:transparent;
+}
 /* === v20a43 新 UI 皮膚層（大地圖：刪底部快捷列＋地圖放大＋釘改隱形熱區） ===
    用戶 2026-11-09 指示：(1) 地圖下面地點快捷列成行刪走；(2) 地圖再大啲；
    (3) 地圖上嘅釘太醜，成個唔要——改隱形熱區，篤建築本身入地點。
@@ -10085,9 +10123,18 @@ function dlg106Candidates(speakerId, category){
   const stem = dlg106StemFor(speakerId);
   const out = [];
   const push = (u)=>{ if(u && out.indexOf(u)<0) out.push(u); };
+  /* v20a154 A1：6 張重生表情（陸柏言 angry/sad/smile、麥震東 angry/smile、
+     鍾楚凝 angry）沿用同一路徑＋升 cache-buster，app 按路徑快取、舊圖會殘留。
+     其餘表情／boss 圖／影圖維持 ?v=20a106 唔郁。 */
+  const DLG154_CACHE = {
+    "luk_baakyin_angry":"20a154","luk_baakyin_sad":"20a154","luk_baakyin_smile":"20a154",
+    "mak_zhendong_angry":"20a154","mak_zhendong_smile":"20a154",
+    "chung_choning_angry":"20a154"
+  };
   const addStem = (st, ex)=>{
-    push("assets/story/fullbody/"+st+"_"+ex+".webp?v=20a106");
-    push("assets/story/fullbody/"+st+"_"+ex+".png?v=20a106");
+    const v = DLG154_CACHE[st+"_"+ex] || "20a106";
+    push("assets/story/fullbody/"+st+"_"+ex+".webp?v="+v);
+    push("assets/story/fullbody/"+st+"_"+ex+".png?v="+v);
   };
   if(expr!=="base") addStem(stem, expr);
   addStem(stem, "base");
@@ -10703,6 +10750,18 @@ const StoryPlay = (()=>{
   }
   function spResolveBgKey(beat, node){
     beat = beat || {}; node = node || {};
+    /* v20a154 B2：單人舞台補場景圖（跟 v134 WF4_SCENE_OVERRIDE134 做法，逐節點覆寫）。
+       R_vera_meet：重用現成圖 bg_loc_tvb_longmen（星河電視台內景：佈告板＋放衫手推車＋
+       盆栽，同一棟樓；v103 年代重製版）。
+       R_hiu_ending：新圖 bg_154_rooftop（廠景天台，參照 Greg Girard 1989 年九龍天台實拍，
+       參照相存 ~/workspace/linji-work154/refs/ref_rooftop_girard1989.webp）。
+       兩節點都冇 locId，冇覆寫就會跌返 bg_generic_interior（灰色虛空）。 */
+    const STORY_SCENE_OVERRIDE154 = {
+      "R_vera_meet":"bg_loc_tvb_longmen",
+      "R_hiu_ending":"bg_154_rooftop"
+    };
+    const nid154 = (node && (node.id || node.nodeId)) || "";
+    if(nid154 && STORY_SCENE_OVERRIDE154[nid154]) return STORY_SCENE_OVERRIDE154[nid154];
     if(beat.bg && String(beat.bg).trim()){
       const bg = String(beat.bg).trim();
       if(/^bg_loc_/.test(bg) || /^bg_c1_/.test(bg) || /^bg_generic_/.test(bg)) return bg;
@@ -10716,7 +10775,7 @@ const StoryPlay = (()=>{
   }
   function spBgClass(beat, node){
     const key = spResolveBgKey(beat, node);
-    if(/^bg_loc_/.test(key) || key==="bg_generic_interior" || /^bg_c1_/.test(key)) return key;
+    if(/^bg_loc_/.test(key) || key==="bg_generic_interior" || /^bg_c1_/.test(key) || /^bg_154_/.test(key)) return key;
     return "bg_generic_interior";
   }
   function spBgImageCandidates(bgKey){
@@ -11098,7 +11157,11 @@ const StoryPlay = (()=>{
       const cat = isActive ? cur.dlgCat : "neutral";
       /* v20a119 DLG119：影唔行表情候補鏈＋唔接 bust 後備——講者 base／聽者 _dim 版
          （明暗焗入圖，唔用 CSS brightness 一刀切）；光暈貼喺人物背後、底圖之上，
-         講者／聽者同一層。影唔用 brightness filter：bright 一律 "1"。 */
+         講者／聽者同一層。
+         v20a154 B3：影聽者跟返正常 bright 計算（對白／旁白模式 0.6、電話 0.8）；
+         得影講者（對白模式 active）先至係 1。聽者繼續用 _dim 資產（焗入 ×0.78），
+         所以影聽者實效約 0.78×0.6≈0.47，filter 讀數係 0.60（review 量度方法）。
+         v119 嗰句「影唔加 brightness filter（bright 一律 "1"）」已作廢。 */
       const stem119 = (typeof dlg119ShadowAsset==="function") ? dlg119ShadowAsset(slot.id) : null;
       let cands;
       if(stem119){
@@ -11112,7 +11175,8 @@ const StoryPlay = (()=>{
       let bright = "0.6", z = 3;
       if(mode106==="phone"){ bright = "0.8"; z = 3; }
       else if(mode106!=="narration" && isActive){ bright = "1"; z = 4; }
-      if(stem119) bright = "1";
+      /* v20a154 B3：影講者／聽者一律跟返上面正常 bright 計算，唔再一刀切 bright=1。
+         （舊嘅 stem119 一律 bright 1 嗰行已刪；電話模式影講者同真人講者一樣係 0.8。） */
       const halo119 = stem119
         ? `<img class="dlg119-halo ${slot.pos}" src="${esc(dlg119HaloUrl(stem119))}" alt="" data-dlg-id="${esc(slot.id)}" draggable="false" style="z-index:2" onerror="this.style.visibility='hidden'"/>`
         : "";

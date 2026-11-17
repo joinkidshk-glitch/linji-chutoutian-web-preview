@@ -32,6 +32,9 @@ eval(code + '\n;({DLG106_GAZE,DLG106_EMOTION_MAP,DLG106_CAT_TO_EXPR})');
 
 const first = (sp, cat) => dlg106Candidates(sp, cat)[0];
 const V = '?v=20a106';
+// v20a154 A1：6 張重生表情沿用同一路徑＋升 cache-buster 至 20a154
+// （陸柏言 angry/sad/smile、麥震東 angry/smile、鍾楚凝 angry；其餘 31 張維持 20a106）。
+const V154 = '?v=20a154';
 const NEW = [
   // [speaker, category, 預期首選]
   ['chai_zanhoi', 'angry', `assets/story/fullbody/chai_zanhoi_angry.webp${V}`],
@@ -41,7 +44,7 @@ const NEW = [
   ['cheung_hakfan', 'serious', `assets/story/fullbody/cheung_hakfan_serious.webp${V}`],
   ['cheung_tsijun', 'sad', `assets/story/fullbody/cheung_tsijun_sad.webp${V}`],
   ['cheung_tsijun', 'think', `assets/story/fullbody/cheung_tsijun_think.webp${V}`],
-  ['chung_choning', 'angry', `assets/story/fullbody/chung_choning_angry.webp${V}`],
+  ['chung_choning', 'angry', `assets/story/fullbody/chung_choning_angry.webp${V154}`],
   ['crew_laolinji', 'serious', `assets/story/fullbody/crew_laolinji_serious.webp${V}`],
   ['extra_ad_fen', 'sad', `assets/story/fullbody/extra_ad_fen_sad.webp${V}`],
   ['extra_ad_fen', 'serious', `assets/story/fullbody/extra_ad_fen_serious.webp${V}`],
@@ -58,11 +61,11 @@ const NEW = [
   ['lok_gasing', 'happy', `assets/story/fullbody/lok_gasing_smile.webp${V}`],
   ['lok_gasing', 'surprise', `assets/story/fullbody/lok_gasing_surprise.webp${V}`],
   ['lui_ging', 'serious', `assets/story/fullbody/lui_ging_serious.webp${V}`],
-  ['luk_baakyin', 'angry', `assets/story/fullbody/luk_baakyin_angry.webp${V}`],
-  ['luk_baakyin', 'sad', `assets/story/fullbody/luk_baakyin_sad.webp${V}`],
-  ['luk_baakyin', 'happy', `assets/story/fullbody/luk_baakyin_smile.webp${V}`],
-  ['mak_zhendong', 'angry', `assets/story/fullbody/mak_zhendong_angry.webp${V}`],
-  ['mak_zhendong', 'happy', `assets/story/fullbody/mak_zhendong_smile.webp${V}`],
+  ['luk_baakyin', 'angry', `assets/story/fullbody/luk_baakyin_angry.webp${V154}`],
+  ['luk_baakyin', 'sad', `assets/story/fullbody/luk_baakyin_sad.webp${V154}`],
+  ['luk_baakyin', 'happy', `assets/story/fullbody/luk_baakyin_smile.webp${V154}`],
+  ['mak_zhendong', 'angry', `assets/story/fullbody/mak_zhendong_angry.webp${V154}`],
+  ['mak_zhendong', 'happy', `assets/story/fullbody/mak_zhendong_smile.webp${V154}`],
   ['ngai_wingnaam', 'angry', `assets/story/fullbody/ngai_wingnaam_angry.webp${V}`],
   ['ngai_wingnaam', 'serious', `assets/story/fullbody/ngai_wingnaam_serious.webp${V}`],
   ['ngai_wingnaam', 'happy', `assets/story/fullbody/ngai_wingnaam_smile.webp${V}`],

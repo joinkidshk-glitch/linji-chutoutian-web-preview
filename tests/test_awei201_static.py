@@ -14,8 +14,8 @@
 #       ⑤ hero_awi bust 由新 base 重裁：sha 同 qa201/crop201.json 一致，唔等於
 #       crop199 舊值；awi_s3 bust 唔郁。
 #       ⑥ 反證：checker 食舊 s1 sha／舊 AR 必須報問題。
-#       ⑦ 基線不變：SAVE key／softRev／產品 ?v=；同路徑覆蓋、loader 零改動
-#       （?v=20a106 不變，見 NOTES 快取一節：GitHub Pages max-age=600）。
+#       ⑦ 基線不變：SAVE key／softRev／產品 ?v=；同路徑覆蓋、loader 預設 ?v=20a106 不變
+#       （v20a154 例外：6 張重生表情經 DLG154_CACHE 升 ?v=20a154，其餘唔郁；見 NOTES 快取一節：GitHub Pages max-age=600）。
 # 用法：python3 tests/test_awei201_static.py [path-to-index.html]
 import base64, glob, hashlib, json, os, re, sys
 
@@ -86,8 +86,9 @@ def file_sha(fn):
 ck("SAVE key 不變", "starVolunteer_map_v19w" in src)
 ck("softRev 不變", "s107" in src)
 ck("產品 ?v= 不變", "v20a10" in src)
-ck("loader 零改動：fullbody ?v= 仍係 20a106（同路徑覆蓋，唔使新檔名）",
-   "assets/story/fullbody/\"+st+\"_\"+ex+\".webp?v=20a106" in src)
+ck("loader：fullbody ?v= 預設仍係 20a106，6 張 v154 經 DLG154_CACHE 升 20a154（同路徑覆蓋，唔使新檔名）",
+   "assets/story/fullbody/\"+st+\"_\"+ex+\".webp?v=\"+v" in src
+   and 'DLG154_CACHE[st+"_"+ex] || "20a106"' in src)
 
 # ---------- ① s1 8 張重生：AR／尺寸／sha／透明底／光邊 ----------
 try:
