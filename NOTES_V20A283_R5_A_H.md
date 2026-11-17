@@ -65,5 +65,7 @@ index.html 淨 **+76 行**（殺青鉤通用分支 ＋2＠舊 L21490 之後／R5
 
 ## 合併
 
-- 工作副本 `linji-work283`（clone 式），分支 `v20a283`。
-- （落地後補：squash merge commit、main HEAD、suite TOTAL、Pages 核實。）
+- 工作副本 `linji-work283`（clone 式），分支 `v20a283`（commit `6a4f911`）。
+- 合併：常駐 clone `git fetch <副本> v20a283` 再 `git merge --squash FETCH_HEAD`（注意：唔可以直接 fetch 副本嘅 main——副本 main 停留喺 base，改動喺分支度；第一次 fetch main 誤判 "Already up to date"，改 fetch 分支名先啱）。
+- Squash merge commit `494bb09`，已推 main；`git ls-remote` 一致。Suite：**347／9**（基線 346／9＋新測試檔 1 項；九項 FAIL 同基線一模一樣，零回歸）。通告庫維持 288 張。
+- Pages 核實：HTTP 200、4,683,089 bytes，同本地 index.html byte-identical。
