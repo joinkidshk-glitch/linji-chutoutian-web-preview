@@ -66,7 +66,7 @@ if m:
 ok('B3 鏈 B 隱藏通告已刪（WF3_LIAO_GIG 轉 null）', 'const WF3_LIAO_GIG = null;' in src and 'gig_wf3_' not in src)
 ok('B3 鏈 B 收割通告已刪（WF3_LIAO_HARVEST_GIG 轉 null）', 'const WF3_LIAO_HARVEST_GIG = null;' in src and 'gig_wf3_' not in src)
 ok('v267 mergeWf3Gigs 已刪（唔再掛通告板）', 'mergeWf3Gigs' not in src)
-ok('B3 試鏡前抉擇已刪（E28：WF3 試鏡 hook 拎走，B5 先恢復）', 'liaoChoice' not in src and '企呢個位之前' not in src)
+ok('B3 試鏡前抉擇唔返（E28 hook 拎走；liaoChoice 改行 ENC79 beat liu_steal 落旗，v20a279）', '企呢個位之前' not in src and 'liaoChoice' in src and 'liu_steal' in src)
 ok('記仇債', 'debt_wf3_liao_grudge' in src and '面子債' in src)
 ok('鏈 A 債權', 'credit_wf3_lu_team' in src)
 ok('鏈 D 提點抉擇 N8_d', '"N8_d"' in src and 'flag_yip_warned82' in src)

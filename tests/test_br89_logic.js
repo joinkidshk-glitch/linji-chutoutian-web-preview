@@ -203,7 +203,7 @@ try{
   ok('E6 完成後情報通告落板', !env.GIGS.some(g=>/^gig_br89_/.test(g.id)));
 }catch(e){ ok('E/F BR89 模組抽取/執行 ('+e.message+')', false); }
 
-/* ================= (H) B5：BR89 映射 13 張＋R-4 雙觸發 ================= */
+/* ================= (H) B5：BR89 映射 14 張＋R-4 雙觸發 ================= */
 try{
   const modSrc = extractBetween('/* =====================================================================\n   v20a89 BR89：分支補完', '/* ---------- WF3-3 地點一次性對白');
   const env = {
@@ -223,10 +223,10 @@ try{
     gig_1992_tv_105:'credit_enc83_yip_patron', gig_1992_rec_205:'credit_enc83_gu_patron',
     gig_1991_ad_102:'credit_enc84_so_patron', gig_1991_film_213:'credit_enc84_chung_patron',
     gig_1992_rec_111:'credit_enc83_lok_patron', gig_1991_film_212:'credit_enc83_ngai_patron',
-    gig_1992_film_206:'credit_enc83_chai_patron'
+    gig_1992_film_206:'credit_enc83_chai_patron', gig_1992_film_202:'credit_wf3_comedy_crew'
   };
-  ok('H1 BR89 映射 13 張逐對啱（SPEC §3.5A）',
-    Object.keys(api.BR89_PATRON_OF_GIG).length===13 &&
+  ok('H1 BR89 映射 14 張逐對啱（SPEC §3.5A）',
+    Object.keys(api.BR89_PATRON_OF_GIG).length===14 &&
     Object.keys(EXPECT13).every(k=>api.BR89_PATRON_OF_GIG[k]===EXPECT13[k]));
   ok('H2 舊 gig_br89_* 已清', !Object.keys(api.BR89_PATRON_OF_GIG).some(k=>/^gig_br89_/.test(k)));
   // R-4 雙觸發 OR（兩條路獨立驗；v20a274：顧引薦 gig 由 gig_1992_rec_105《當年情懷》搬去新 gig_1992_rec_205《夜總會登台暖場》）

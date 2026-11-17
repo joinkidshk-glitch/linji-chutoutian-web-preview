@@ -104,9 +104,9 @@ const OLD6 = ['gig_1991_film_110', 'gig_1992_rec_102', 'gig_1991_film_111',
   'gig_1992_tv_104', 'gig_1991_tv_108', 'gig_1992_rec_105'];
 
 /* ---------- A：庫對位 ---------- */
-ok('A1 庫 287 張', gigs.length===287, 'n='+gigs.length);
+ok('A1 庫 288 張', gigs.length===288, 'n='+gigs.length);
 const trig = gigs.filter(g=>g.trigger && g.trigger.kind);
-ok('A1 trigger 33 張（credit 23）', trig.length===33 && trig.filter(g=>g.trigger.kind==='credit').length===23,
+ok('A1 trigger 34 張（credit 23）', trig.length===34 && trig.filter(g=>g.trigger.kind==='credit').length===23,
   'trig='+trig.length+' credit='+trig.filter(g=>g.trigger.kind==='credit').length);
 ok('A2 每筆債權只兌現一張（新 6 對）', NEW6.every(([c, id])=>{
   const hits = gigs.filter(g=>g.trigger && g.trigger.kind==='credit' && g.trigger.creditId===c);
@@ -180,12 +180,13 @@ const EXPECT13 = {
   gig_1992_tv_105:'credit_enc83_yip_patron', gig_1992_rec_205:'credit_enc83_gu_patron',
   gig_1991_ad_102:'credit_enc84_so_patron', gig_1991_film_213:'credit_enc84_chung_patron',
   gig_1992_rec_111:'credit_enc83_lok_patron', gig_1991_film_212:'credit_enc83_ngai_patron',
-  gig_1992_film_206:'credit_enc83_chai_patron'
+  gig_1992_film_206:'credit_enc83_chai_patron',
+  gig_1992_film_202:'credit_wf3_comedy_crew'
 };
-ok('D1 BR89 映射 13 張逐對啱（v274 新對位）',
-  Object.keys(BR89_PATRON_OF_GIG).length===13 &&
+ok('D1 BR89 映射 14 張逐對啱（v274 新對位＋v279 收割鏈）',
+  Object.keys(BR89_PATRON_OF_GIG).length===14 &&
   Object.keys(EXPECT13).every(k=>BR89_PATRON_OF_GIG[k]===EXPECT13[k]));
-ok('D2 BR89 13 張全部喺庫＋trigger.creditId 對位',
+ok('D2 BR89 14 張全部喺庫＋trigger.creditId 對位',
   Object.keys(BR89_PATRON_OF_GIG).every(id=>{ const g=gigById(id);
     return !!g && g.trigger && g.trigger.kind==='credit' && g.trigger.creditId===BR89_PATRON_OF_GIG[id]; }));
 ok('D3 舊 6 張 id 唔再喺 BR89 映射入面', OLD6.every(id=>!(id in BR89_PATRON_OF_GIG)));

@@ -55,7 +55,7 @@ const SPEC_DAILY = {
   '稀有': [[1000,3000],[1500,8000]],
 };
 /* v20a261：B2 普查改用 SPEC §7.1 新日薪帶（臨記 25–40／初級 50–90／中級 90–160／
-   高級 160–300／稀有 200–400；庫內實測 287 張全部落帶，見 §6.2 驗證）。
+   高級 160–300／稀有 200–400；庫內實測 288 張全部落帶，見 §6.2 驗證）。
    SPEC_DAILY 保持原值——佢係 A2 逐字比對 live DUR90_DAILY 嘅舊帶；live DUR90_DAILY
    本身係舊庫校準兜底（註解明言「新庫唔行 DUR90 指紋校準，呢度係兜底，唔係新庫片酬來源」），
    v261 冇郁佢，呢度亦唔郁。捨入寬容同步 ÷10（55→5.5；新庫 pay 捨入到 $1）。 */
@@ -111,7 +111,7 @@ if(W){
   function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
   const packNew = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gigs_new.json'), 'utf8'));
   const pool = (packNew.gigs || []).map(g => W.normalizeGigRecord(deepClone(g)));
-  ok('A4 新庫 287 張入池', pool.length === 287, 'n=' + pool.length);
+  ok('A4 新庫 288 張入池', pool.length === 288, 'n=' + pool.length);
 
   // A 校準帶常量
   ok('A1 ROLE_SCALE_BAND ＝ 校準 spec', JSON.stringify(W.ROLE_SCALE_BAND) === JSON.stringify(SPEC_BAND), JSON.stringify(W.ROLE_SCALE_BAND));
@@ -137,10 +137,10 @@ if(W){
       }
     }
   }
-  ok('B1 raw days 全部喺 roleScale 帶內（clamp 唔郁手，287 張）', clampBad.length === 0, clampBad.slice(0, 5).join(' ; '));
+  ok('B1 raw days 全部喺 roleScale 帶內（clamp 唔郁手，288 張）', clampBad.length === 0, clampBad.slice(0, 5).join(' ; '));
   ok('B2 日薪全喺位階帶內（表列例外 0 張）', dailyBad.length === 0, dailyBad.slice(0, 5).join(' ; '));
   ok('B3 全部有 days 且 shootDaysHint＝days', noDays.length === 0, noDays.slice(0, 5).join(' ; '));
-  ok('B4 resolveRoleScale 全部認到帶（287 張）', noBand.length === 0, noBand.slice(0, 5).join(' ; '));
+  ok('B4 resolveRoleScale 全部認到帶（288 張）', noBand.length === 0, noBand.slice(0, 5).join(' ; '));
 
   // C/D 期限與夾位
   let ddlBad = [], winBad = [];

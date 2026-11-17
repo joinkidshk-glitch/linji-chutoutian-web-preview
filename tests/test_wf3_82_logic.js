@@ -147,8 +147,8 @@ ok('v267 mergeWf3Gigs 已刪', html.indexOf('mergeWf3Gigs')<0);
 ok('v267 mergeIntelGigs 已刪', html.indexOf('mergeIntelGigs')<0);
 ok('v267 INTEL_HIDDEN_GIGS 已刪', html.indexOf('INTEL_HIDDEN_GIGS')<0);
 
-// ---------- 8. wf3SettleTick：B3 中期——鏈 A／鏈 B 結算塊已隨舊通告一併刪
-// （E20），殺青任何工都唔再觸發嗰兩路結算；收割窗／收割完成路徑同樣休眠；
+// ---------- 8. wf3SettleTick：B3 中期——鏈 A 結算塊已隨舊通告一併刪（照舊休眠）；
+// 鏈 B v20a279 還原：抉擇結算（穩陣＋2／搶鏡＋$800＋記仇債）＋收割窗＋收割完成（清債＋授債權）全部返嚟；
 // 收割過期、鏈 D、方小龍路徑唔掂通告，照舊行。 ----------
 eval(extractFn('ensureWf3'));
 eval(extractFn('wf3GrantCredit'));
@@ -163,39 +163,39 @@ ok('B3 鏈 A 休眠：唔再有報紙角度入隊', !_enqueued.some(e=>e.eventKe
 ok('B3 鏈 A 休眠：唔再有傳聞伏筆', !S.mockRumors.some(r=>r.id==='rumor_wf3_lu_pa_favor'));
 wf3SettleTick();
 ok('B3 鏈 A 休眠：重複 tick 照舊乜都冇', S.mockCredits.filter(c=>c.id==='credit_wf3_lu_team').length===0);
-// 鏈 B 穩陣（已刪）
+// 鏈 B 穩陣（v20a279 還原：抉擇結算喺 tick 做一次）
 _enqueued = [];
 S = freshS(300);
 S.wf3 = { liaoChoice:'steady' };
 S.wrapHistory = [{ gigId:'gig_1990_film_101', wrappedDay:299 }];
 const credBefore = S.industryCredit;
 wf3SettleTick();
-ok('B3 鏈 B 穩陣休眠：信用唔再 +2', S.industryCredit===credBefore);
-ok('B3 鏈 B 穩陣休眠：唔再有報紙好評角度', !_enqueued.some(e=>e.eventKey==='wf3:liao_steady'));
-// 鏈 B 搶鏡＋記仇＋收割（已刪）
+ok('B3 鏈 B 穩陣：信用 +2', S.industryCredit===credBefore+2);
+ok('B3 鏈 B 穩陣：報紙好評角度入隊', _enqueued.some(e=>e.eventKey==='wf3:liao_steady'));
+// 鏈 B 搶鏡＋記仇＋收割（v20a279 還原）
 _enqueued = [];
 S = freshS(300);
 S.wf3 = { liaoChoice:'steal' };
 S.wrapHistory = [{ gigId:'gig_1990_film_101', wrappedDay:299 }];
 const moneyBefore = S.money;
 wf3SettleTick();
-ok('B3 鏈 B 搶鏡休眠：唔再有額外片酬', S.money===moneyBefore);
-ok('B3 鏈 B 搶鏡休眠：唔再記仇債', !S.mockDebts.some(x=>x.id==='debt_wf3_liao_grudge') && !S.wf3.grudgeDue);
-ok('B3 鏈 B 搶鏡休眠：唔再有報紙內訌角度', !_enqueued.some(e=>e.eventKey==='wf3:liao_steal'));
+ok('B3 鏈 B 搶鏡：額外片酬 +$800', S.money===moneyBefore+800);
+ok('B3 鏈 B 搶鏡：記仇債＋grudgeDue＝day+14', S.mockDebts.some(x=>x.id==='debt_wf3_liao_grudge') && S.wf3.grudgeDue===314);
+ok('B3 鏈 B 搶鏡：報紙內訌角度入隊', _enqueued.some(e=>e.eventKey==='wf3:liao_steal'));
 S.dayIndex = 313;
 wf3SettleTick();
 ok('收割窗未到期唔開', !S.wf3.liaoHarvest);
 S.dayIndex = 314;
 wf3SettleTick();
-ok('B3 記仇債到期 → 收割窗唔開（收割路徑已刪）', !S.wf3.liaoHarvest);
-// 收割完成（已刪）：就算債＋窗齊晒，殺青任何工都唔清債／唔派喜劇組債權
+ok('B3 記仇債到期 → 收割窗開（gigDay 314／window 7）', !!S.wf3.liaoHarvest && S.wf3.liaoHarvest.gigDay===314 && S.wf3.liaoHarvest.window===7);
+// 收割完成（v20a279 還原）：收割通告殺青 → 清債＋授喜劇組債權
 S = freshS(316);
 S.wf3 = { liaoChoice:'steal', liaoSettled:1, grudgeDue:314, liaoHarvest:{ gigDay:314, window:7 } };
 S.mockDebts = [{ id:'debt_wf3_liao_grudge' }];
-S.wrapHistory = [{ gigId:'gig_1990_film_101', wrappedDay:316 }];
+S.wrapHistory = [{ gigId:'gig_1991_film_214', wrappedDay:316 }];
 wf3SettleTick();
-ok('B3 收割休眠：殺青唔清記仇債、唔派喜劇組債權', S.mockDebts.some(d=>d.id==='debt_wf3_liao_grudge') && !S.mockCredits.some(c=>c.id==='credit_wf3_comedy_crew'));
-ok('B3 收割休眠：唔再有情報渠道傳聞', !S.mockRumors.some(r=>r.id==='rumor_wf3_comedy_crew'));
+ok('B3 收割完成：殺青清記仇債、派喜劇組債權', !S.mockDebts.some(d=>d.id==='debt_wf3_liao_grudge') && S.mockCredits.some(c=>c.id==='credit_wf3_comedy_crew'));
+ok('B3 收割完成：傳聞系統已刪，完成唔寫傳聞', !S.mockRumors.some(r=>r.id==='rumor_wf3_comedy_crew'));
 // 收割過期
 S = freshS(300);
 S.wf3 = { liaoChoice:'steal', liaoSettled:1, grudgeDue:290, liaoHarvest:{ gigDay:290, window:7 } };

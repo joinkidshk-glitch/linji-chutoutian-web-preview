@@ -56,15 +56,15 @@ ok('A10_extract', parts.every(Boolean));
 if(parts.every(Boolean)){
   eval(parts.join('\n'));
   const gigs = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/gigs_new.json'), 'utf8')).gigs;
-  ok('A10_newlib_287', gigs.length===287, 'n='+gigs.length);
+  ok('A10_newlib_288', gigs.length===288, 'n='+gigs.length);
   // 逐張驗：category 作品→named（替身守門 9 張例外→base），其餘→base
   const isStunt = g=>((g.roleLabel||'').indexOf('替身')>=0 || (g.title||'').replace(/^《[^》]*》/, '').indexOf('替身')>=0);
   const expectClass = g=>((g.category==='作品' && !isStunt(g)) ? 'named' : 'base');
   const bad = gigs.filter(g=>press94RoleClass(g)!==expectClass(g));
-  ok('A10_all287_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
-  ok('A10_named_155_base_132',
+  ok('A10_all288_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
+  ok('A10_named_155_base_133',
     gigs.filter(g=>press94RoleClass(g)==='named').length===155 &&
-    gigs.filter(g=>press94RoleClass(g)==='base').length===132);
+    gigs.filter(g=>press94RoleClass(g)==='base').length===133);
   const stuntWorks = gigs.filter(g=>g.category==='作品' && isStunt(g));
   ok('A10_stunt_gate_9', stuntWorks.length===9 && stuntWorks.every(g=>press94RoleClass(g)==='base'),
     stuntWorks.map(g=>g.id).join(','));
@@ -108,7 +108,7 @@ if(parts.every(Boolean)){
   ok('A10_sample20', sampleBad.length===0, sampleBad.join('; '));
   // 補拍通告→base
   const reshoot = gigs.filter(g=>g.category==='補拍通告');
-  ok('A10_reshoot_6_base', reshoot.length===6 && reshoot.every(g=>press94RoleClass(g)==='base'), 'n='+reshoot.length);
+  ok('A10_reshoot_7_base', reshoot.length===7 && reshoot.every(g=>press94RoleClass(g)==='base'), 'n='+reshoot.length);
   // 舊數據（無 category）行返文字／scale 層，唔回歸
   ok('A10_legacy_stunt_base', press94RoleClass({roleLabel:'男主角主要替身', resolvedScale:'film_support_main', band:[10,18]})==='base');
   ok('A10_legacy_cameo_base', press94RoleClass({roleLabel:'', roleScale:'tv_cameo_short', title:'《某劇》'})==='base');

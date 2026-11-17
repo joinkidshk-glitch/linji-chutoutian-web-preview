@@ -304,7 +304,7 @@ NEW8.forEach(c=>{
 ok('T7 8 張 id 全部喺新庫', NEW8.every(c=>!!gigById(c[2])));
 ok('T7 8 張 id 兩兩唔同', new Set(NEW8.map(c=>c[2])).size===8);
 ok('T7 8 張唔撞 GRANT229_CHOICE', NEW8.every(c=>!Object.values(GRANT229_CHOICE).some(v=>v.gigId===c[2])));
-ok('T7 8 張唔撞 BR89 13 對', NEW8.every(c=>!Object.keys(BR89_PATRON_OF_GIG).some(id=>id===c[2])));
+ok('T7 8 張唔撞 BR89 14 對', NEW8.every(c=>!Object.keys(BR89_PATRON_OF_GIG).some(id=>id===c[2])));
 ok('T7 8 張唔撞 GRANT229_DRAFT', NEW8.every(c=>!Object.values(GRANT229_DRAFT).some(v=>v.gigId===c[2])));
 ok('T7 8 張唔撞原有 ENC79 9 行',
   NEW8.every(c=>!GRANT229_ENC79.slice(0,9).some(r=>r.gigId===c[2])));
@@ -333,10 +333,11 @@ const BR89_EXPECTED = {
   gig_1992_tv_105:"credit_enc83_yip_patron", gig_1992_rec_205:"credit_enc83_gu_patron",
   gig_1991_ad_102:"credit_enc84_so_patron", gig_1991_film_213:"credit_enc84_chung_patron",
   gig_1992_rec_111:"credit_enc83_lok_patron", gig_1991_film_212:"credit_enc83_ngai_patron",
-  gig_1992_film_206:"credit_enc83_chai_patron"
+  gig_1992_film_206:"credit_enc83_chai_patron",
+  gig_1992_film_202:"credit_wf3_comedy_crew"
 };
-ok('T8 BR89 13 對（v20a274 取代後）',
-  Object.keys(BR89_PATRON_OF_GIG).length===13 &&
+ok('T8 BR89 14 對（v20a279 收割鏈）',
+  Object.keys(BR89_PATRON_OF_GIG).length===14 &&
   Object.keys(BR89_EXPECTED).every(k=>BR89_PATRON_OF_GIG[k]===BR89_EXPECTED[k]));
 
 /* ---------- T9：靜態＋舊路徑 ---------- */

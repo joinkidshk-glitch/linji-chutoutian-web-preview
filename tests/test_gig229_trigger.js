@@ -1,5 +1,5 @@
 // v20a229 B5 觸發系統＋BR89 擴充測試（A6／A7；SPEC §2.4／§3.5；AUDIT229 §5／§7／§8；DECISIONS D-4／D-7／D-11／D-14）
-//   T0 新庫 33 張 trigger 形狀逐種齊（kind 必填欄齊全；credit 23／fame 5／rel 3／rival 1／story 1，award 0——
+//   T0 新庫 34 張 trigger 形狀逐種齊（kind 必填欄齊全；credit 23／fame 5／rel 3／rival 1／story 1／wf3harvest 1，award 0——
 //       v252 新庫已無 award kind；award 機制見 T1／T3 合成樣本。稀有級 21 張，當中 6 張有 trigger）
 //   T1 六種 kind 各一例：credit／award／fame／story／rel／rival（觸發前 false、觸發後 true；
 //       award 嗰例用合成樣本——攞舊庫 gig_1991_film_111 原 trigger，一字唔改，因為新庫 0 張 award 樣本）
@@ -50,7 +50,7 @@ const gigById = id => gigs.find(g=>g.id===id);
 
 /* ---------- T0：trigger 形狀 ---------- */
 const trig = gigs.filter(g=>g.trigger && g.trigger.kind);
-ok('T0 觸發通告 33 張', trig.length===33, 'n='+trig.length);
+ok('T0 觸發通告 34 張', trig.length===34, 'n='+trig.length);
 const shapeBad = trig.filter(g=>{
   const t = g.trigger;
   if(t.kind==='credit') return !(typeof t.creditId==='string' && t.creditId && typeof t.creditOwner==='string');
@@ -59,9 +59,10 @@ const shapeBad = trig.filter(g=>{
   if(t.kind==='story') return !(typeof t.nodeId==='string' && /^N\d+$/.test(t.nodeId));
   if(t.kind==='rel') return !(typeof t.npcId==='string' && typeof t.relMin==='number');
   if(t.kind==='rival') return !(typeof t.rivalScoreMin==='number');
+  if(t.kind==='wf3harvest') return false; /* v20a279：收割窗唔使額外欄位，窗狀態讀 S.wf3.liaoHarvest */
   return true;
 });
-ok('T0 六種 kind 形狀齊（必填欄全部有）', shapeBad.length===0, shapeBad.slice(0,3).map(g=>g.id).join(','));
+ok('T0 七種 kind 形狀齊（必填欄全部有）', shapeBad.length===0, shapeBad.slice(0,3).map(g=>g.id).join(','));
 const rareGigs = gigs.filter(g=>g.tier==='稀有');
 ok('T0 稀有級 21 張、其中 6 張有 trigger（稀有≠觸發閘，新庫真相）',
   rareGigs.length===21 && rareGigs.filter(g=>g.trigger && g.trigger.kind).length===6,
@@ -349,25 +350,26 @@ const BR89_EXPECT = {
   gig_1992_tv_105:'credit_enc83_yip_patron', gig_1992_rec_205:'credit_enc83_gu_patron',
   gig_1991_ad_102:'credit_enc84_so_patron', gig_1991_film_213:'credit_enc84_chung_patron',
   gig_1992_rec_111:'credit_enc83_lok_patron', gig_1991_film_212:'credit_enc83_ngai_patron',
-  gig_1992_film_206:'credit_enc83_chai_patron'
+  gig_1992_film_206:'credit_enc83_chai_patron', gig_1992_film_202:'credit_wf3_comedy_crew'
 };
 const br89Keys = Object.keys(BR89_PATRON_OF_GIG);
-ok('T8 BR89 映射 13 張', br89Keys.length===13, 'n='+br89Keys.length);
-ok('T8 BR89 13 對逐對啱（SPEC §3.5A）', br89Keys.every(k=>BR89_PATRON_OF_GIG[k]===BR89_EXPECT[k]) && Object.keys(BR89_EXPECT).every(k=>BR89_PATRON_OF_GIG[k]===BR89_EXPECT[k]));
+ok('T8 BR89 映射 14 張', br89Keys.length===14, 'n='+br89Keys.length);
+ok('T8 BR89 14 對逐對啱（SPEC §3.5A）', br89Keys.every(k=>BR89_PATRON_OF_GIG[k]===BR89_EXPECT[k]) && Object.keys(BR89_EXPECT).every(k=>BR89_PATRON_OF_GIG[k]===BR89_EXPECT[k]));
 ok('T8 舊 gig_br89_* id 已清', !br89Keys.some(k=>/^gig_br89_/.test(k)) && html.indexOf('gig_br89_patron_luk')<0);
-ok('T8 BR89 13 張全部喺新庫（v20a254 重對後，舊消失 id gig_1991_variety_108 已換 gig_1991_variety_203）', br89Keys.filter(k=>!!gigById(k)).length===13 && !gigById('gig_1991_variety_108'),
+ok('T8 BR89 14 張全部喺新庫（v20a254 重對後，舊消失 id gig_1991_variety_108 已換 gig_1991_variety_203）', br89Keys.filter(k=>!!gigById(k)).length===14 && !gigById('gig_1991_variety_108'),
   'missing=gig_1991_variety_108');
 /* v20a254 修復：BR89 映射由舊庫 13 對重對做新庫 13 對（全部 REUSE 新庫已有 credit-trigger
    gig，0 張新開；舊《江河歲月》等 4 張同名直對，其餘 9 張按舊 title＋全文＋trigger 逐對
    還原——詳見 index.html BR89 註解）。廖炳星引薦有兩張新庫 gig（film_109／1991＋
    film_103／1992），BR89 表只取 film_103（1992 電影，同舊年＋媒介）做 canonical，
    film_109 行通用 credit 規則照開。
-   v20a274：上面 13 對之中 6 對由新開 5 張＋rec_111 接駁取代（舊 6 張 trigger 已拆），總數維持 13 對。 */
+   v20a274：上面 13 對之中 6 對由新開 5 張＋rec_111 接駁取代（舊 6 張 trigger 已拆），總數維持 13 對。
+   v20a279：加第 14 對 gig_1992_film_202《笑到最後》→credit_wf3_comedy_crew（喜劇組債權兌現，唔係提攜）。 */
 const br89Match = br89Keys.filter(k=>{ const g = gigById(k); return g && g.trigger && g.trigger.kind==='credit' && g.trigger.creditId===BR89_PATRON_OF_GIG[k]; });
 const br89Mismatch = br89Keys.filter(k=>{ const g = gigById(k); return g && g.trigger && g.trigger.kind==='credit' && g.trigger.creditId!==BR89_PATRON_OF_GIG[k]; });
 const br89NoTrig = br89Keys.filter(k=>{ const g = gigById(k); return g && !(g.trigger && g.trigger.kind==='credit'); });
-ok('T8 BR89 映射同新庫 credit trigger 13 張全部對得上（v20a274 取代）',
-  br89Match.length===13 && br89Mismatch.length===0 && br89NoTrig.length===0,
+ok('T8 BR89 映射同新庫 credit trigger 14 張全部對得上（v20a274 取代＋v20a279 G-L2）',
+  br89Match.length===14 && br89Mismatch.length===0 && br89NoTrig.length===0,
   'match=' + br89Match.length + ' mismatch=' + br89Mismatch.join(',') + ' noTrig=' + br89NoTrig.length);
 ok('T8 G-G2「觸發通告變 26 張」唔喺 code／註解入面', html.indexOf('變 26 張')<0);
 const awardMap = GIG_TRIGGER_AWARD_MAP229;
@@ -414,7 +416,7 @@ try{
   }).join('\n') + '\n' + FNS.map(f=>extractFn(f) || '').join('\n');
   const W = new Function('var START = { y:1990, m:1, d:1 }; var S = null; var GIGS = [];\n' + WORLD_SRC + '\n; return { normalizeGigRecord };')();
   const normedTrig = deepClone(trig).map(g=>{ g.__y66w = 1; return W.normalizeGigRecord(g); });
-  ok('T10 normalize 後 33 張 trigger 全部留返', normedTrig.every(g=>g.trigger && g.trigger.kind));
+  ok('T10 normalize 後 34 張 trigger 全部留返', normedTrig.every(g=>g.trigger && g.trigger.kind));
   ok('T10 normalize 後 trigger 內容一字唔郁', normedTrig.every((g,i)=>JSON.stringify(g.trigger)===JSON.stringify(trig[i].trigger)));
   ok('T10 normalize 後年份唔郁', normedTrig.every((g,i)=>g.year===trig[i].year));
 }catch(e){ ok('T10 normalize 沙盒 ('+e.message+')', false); }

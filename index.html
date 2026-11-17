@@ -26418,7 +26418,8 @@ function br89HasCredit(id){
    R-4（gig_1992_rec_205 顧《夜總會登台暖場》）另有第二條觸發路（還錢結算完成），見 br89GigOn——
    G-G2 只係加多一條觸發條件，唔開新通告（DECISIONS.md D-7 更正）。
    v20a274 取代票：上面 6 對由新開 5 張（film_211／film_212／film_206／film_213／rec_205）＋rec_111 接駁取代，
-   舊 6 張 trigger 已拆，變普通板通告；總數維持 13 對。 */
+   舊 6 張 trigger 已拆，變普通板通告；總數維持 13 對。
+   v20a279 G-L2：加第 14 對 gig_1992_film_202《笑到最後》→喜劇組債權（兌現，唔係提攜；收割完成授債權，呢張殺青先標 redeemedBy）。 */
 const BR89_PATRON_OF_GIG = {
   gig_1991_film_101:"credit_enc83_luk_patron", gig_1991_variety_203:"credit_enc84_pang_patron",
   gig_1992_rec_106:"credit_enc84_ching_patron", gig_1991_film_103:"credit_enc79_liu_priority",
@@ -26426,7 +26427,8 @@ const BR89_PATRON_OF_GIG = {
   gig_1992_tv_105:"credit_enc83_yip_patron", gig_1992_rec_205:"credit_enc83_gu_patron",
   gig_1991_ad_102:"credit_enc84_so_patron", gig_1991_film_213:"credit_enc84_chung_patron",
   gig_1992_rec_111:"credit_enc83_lok_patron", gig_1991_film_212:"credit_enc83_ngai_patron",
-  gig_1992_film_206:"credit_enc83_chai_patron"
+  gig_1992_film_206:"credit_enc83_chai_patron",
+  gig_1992_film_202:"credit_wf3_comedy_crew" /* v20a279 G-L2：喜劇組債權兌現 gig《笑到最後》——殺青經 br89OnGigComplete 標 redeemedBy，兌現後落板（收割完成授債權嗰陣唔標，見 wf3SettleTick） */
 };
 const BR89_GIGS = []; /* v20a229 B3：內容已刪；B5 起 BR89 引薦通告由新庫供應，經通用 trigger 系統
   （mergeTriggerGigs＋triggerGigOn）上板，mergeBr89Gigs 只留返做空池 no-op，BR89_PATRON_OF_GIG
@@ -26569,6 +26571,13 @@ function triggerGigOn(g){
         if(!held) return false;
         return !(S.mockCredits||[]).some(c=>c && c.id===t.creditId && c.redeemedBy);
       }
+      case "wf3harvest": {
+        /* v20a279 G-L2：收割窗通告（gig_1991_film_214《笑住過肥年》夜景補拍）——讀 S.wf3.liaoHarvest（wf3SettleTick 到期開窗），
+           窗內（gigDay＋7 日）先開；唔經 BR89／credit 規則，唔使持債權。直接讀 S.wf3，唔依賴 ensureWf3（測試沙盒／triggerGigOn 單獨抽取都行）。 */
+        const st = (typeof S!=="undefined" && S && typeof S.wf3==="object") ? S.wf3 : null;
+        if(!st || !st.liaoHarvest || st.liaoHarvestDone) return false;
+        return (S.dayIndex|0) <= ((st.liaoHarvest.gigDay|0) + (st.liaoHarvest.window||7));
+      }
       case "award":
         return (typeof awardTriggerOn229==="function") ? awardTriggerOn229(t.awardId, t.result) : false;
       case "fame":
@@ -26621,7 +26630,8 @@ function mergeTriggerGigs(locId){
       if(S.flags["triggerNotified_"+g.id]) return;
       if(typeof triggerGigOn!=="function" || !triggerGigOn(g)) return;
       try{
-        if(cur && typeof gigSeasonHidden88==="function" && gigSeasonHidden88(g, cur)) return;
+        /* v20a279 G-L2：收割窗通告（wf3harvest）豁免季節閘——同 gigsForLocSeasonBoard 一致，窗開喺冬都照通知。 */
+        if(!(g.trigger.kind==="wf3harvest") && cur && typeof gigSeasonHidden88==="function" && gigSeasonHidden88(g, cur)) return;
       }catch(_e){}
       S.flags["triggerNotified_"+g.id] = 1;
       n++;
@@ -27419,6 +27429,41 @@ function wf3SettleTick(){
     const day = S.dayIndex|0;
     StoryOC.ensure();
 
+    /* --- 鏈 B：Beat 3 抉擇結算（v20a279 還原；v267 刪走嗰段。抉擇本身改行 ENC79 beat liu_steal 落旗 liaoChoice，
+           結算照原設計喺 tick 做一次：穩陣→信用 +2＋報紙好評；搶鏡→+$800＋報紙內訌＋記面子債（14 日後到期）。原 v82 嗰段係殺青結算，
+           而家抉擇改咗平台，無戲可殺青，改為抉擇後翌日 tick 結算；dueDay 由抉擇翌日＋14 計。 --- */
+    if(st.liaoChoice && !st.liaoSettled){
+      st.liaoSettled = 1;
+      if(st.liaoChoice==="steady"){
+        S.industryCredit = Math.max(0, (Number(S.industryCredit)||0) + 2);
+        try{ if(typeof syncDualTracks==="function") syncDualTracks(S); }catch(_e){}
+        try{
+          enqueueNewspaperItem({ eventKey:"wf3:liao_steady", source:"story", enqueuedDay: day, publishDay: day+1,
+            paperName:"維港日報", headline:"劇組和氣收場　新人獲讚",
+            dek:"賀歲喜劇《笑住過肥年》殺青，劇組上下和氣收場。有份參與拍攝的新人陳偉翔獲劇組讚賞，指他守本分、肯捱，值得留意。",
+            clipLabel:"" }, { persist:false });
+        }catch(_e){}
+        try{ toast("呢場戲，你企返自己個位，劇組上下都順氣。", { sub:"行內信用 +2；聽朝報紙會有好評。" }); }catch(_t){}
+      } else if(st.liaoChoice==="steal"){
+        S.money = (Number(S.money)||0) + 800;
+        if(!Array.isArray(S.mockDebts)) S.mockDebts = [];
+        if(!S.mockDebts.some(d=>d && d.id==="debt_wf3_liao_grudge")){
+          let _season = "";
+          try{ _season = (typeof calendarSeason==="function") ? calendarSeason() : ""; }catch(_sc){}
+          S.mockDebts.push({ id:"debt_wf3_liao_grudge", creditor:"廖炳星一方", title:"面子債・廖炳星嗰組記住咗", weight:"記仇型", season:_season, status:"未到期", dueDay: day+14 });
+        }
+        st.grudgeDue = day + 14;
+        try{
+          enqueueNewspaperItem({ eventKey:"wf3:liao_steal", source:"story", enqueuedDay: day, publishDay: day+1,
+            paperName:"維港日報", headline:"新人搶鏡惹不滿　劇組傳出內訌聲",
+            dek:"賀歲喜劇《笑住過肥年》拍攝期間傳出不快：有指一名新人臨場加戲搶鏡，令同場演員不滿，劇組事後要開會協調。涉事新人未有回應。",
+            clipLabel:"" }, { persist:false });
+        }catch(_e){}
+        try{ toast("嗰場戲你加咗幾句，劇組多補咗 $800。", { sub:"不過，廖炳星嗰組記住咗呢筆面子債，十四日後到期，到時要還。" }); }catch(_t){}
+      }
+      try{ saveQ(); }catch(_s){}
+    }
+
     /* --- 鏈 B：記仇債到期 → 收割窗；收割殺青／過期 --- */
     if(st.grudgeDue && !st.liaoHarvest && !st.liaoHarvestDone && !st.grudgeClosed){
       const debt = (S.mockDebts||[]).find(d=>d && d.id==="debt_wf3_liao_grudge");
@@ -27432,8 +27477,20 @@ function wf3SettleTick(){
       }
     }
     if(st.liaoHarvest && !st.liaoHarvestDone){
-      /* v20a267：收割通告已刪，wrapped 死分支連 grant 一齊刪；只留過期分支。 */
-      if(day > ((st.liaoHarvest.gigDay|0) + (st.liaoHarvest.window||7))){
+      /* v20a279：收割完成還原（v267 刪走嗰段 wrapped 分支；傳聞唔還原，傳聞系統已刪）。完成行先、過期行後：
+         窗內殺青收割通告（wrapHistory 有 gig_1991_film_214）就算數——清債＋計 settled＋授喜劇組債權。
+         注意：呢度唔標 redeemedBy——喜劇組債權嘅兌現留返 gig_1992_film_202《笑到最後》殺青嗰陣
+         經 br89OnGigComplete 標（見 BR89_PATRON_OF_GIG 第 14 對），收割完成嗰陣標咗，兌現通告就永遠唔開。 */
+      if((S.wrapHistory||[]).some(x=>x && x.gigId==="gig_1991_film_214")){
+        st.liaoHarvestDone = 1;
+        S.mockDebts = (S.mockDebts||[]).filter(d=>!(d && d.id==="debt_wf3_liao_grudge"));
+        try{ if(typeof favorLedgerNoteSettled==="function") favorLedgerNoteSettled("debt_wf3_liao_grudge", "wf3_harvest"); }catch(_fl){}
+        if(wf3GrantCredit({ id:"credit_wf3_comedy_crew", debtor:"喜劇組場務", title:"人情債權・喜劇組熟人", stamp:"還人情",
+          line:"嗰晚通宵補拍你企足全晚冇走過，喜劇組場務收工嗰陣拍你膊頭：「嗰筆數，一筆勾銷。以後我哋組開戲，會記得你呢啲肯捱嘅人。」", status:"未收" }, "wf3_harvest")){
+          try{ toast("嗰晚通宵補拍，你企足全晚。", { sub:"喜劇組場務：嗰筆數，一筆勾銷。以後我哋組開戲，會記得你。人情債權已記入手帳。" }); }catch(_t){}
+        }
+        try{ saveQ(); }catch(_s){}
+      } else if(day > ((st.liaoHarvest.gigDay|0) + (st.liaoHarvest.window||7))){
         st.liaoHarvestDone = 1;
         st.liaoHarvestExpired = 1;
         S.mockDebts = (S.mockDebts||[]).filter(d=>!(d && d.id==="debt_wf3_liao_grudge"));
@@ -35491,6 +35548,39 @@ const ENC79_DLG_liu_bingxing = {
         ["S", "（笑住搖頭）講到呢度就夠，講多咗就唔係笑話，係麻煩喇。"]
       ]
     },
+    /* v20a279 G-L2：Beat 3 搶鏡抉擇（還原；原試鏡前 modal 已隨隱藏通告刪走，轉 ENC79 beat）。
+       場景照原設計：賀歲喜劇《笑住過肥年》茶樓一場，呢個位係金主讓出嚟先有嘅，成組人都知。 */
+    liu_steal: {
+      lines: [
+        ["N", "1991 年秋，紅棉影業片場，《笑住過肥年》正在拍攝茶樓一場。"],
+        ["N", "阿偉飾演茶樓新請的夥計，只有一句對白，站在廖炳星身旁上菜。呢個位，本來係金主讓出嚟先有嘅，成組人都知。"],
+        ["S", "阿偉，聽住，呢場你唔使做多嘢，企定，遞碟，上菜，收聲就得。"],
+        ["A", "知，星哥。"],
+        ["N", "開機之前，你忽然諗到一句可以頂返去嘅笑位——講咗，全場會笑；唔講，乜事都冇。"],
+        ["S", "（望住阿偉）諗咩呀？埋位喇。"],
+        ["A", "……"],
+        ["N", "全組人等緊你。呢句，講定唔講，你自己揀。"]
+      ],
+      choices: [
+        {
+          label: "照劇本演，企返自己個位",
+          flags: ["enc79_liu_steady"],
+          lines: [
+            ["A", "星哥，呢句我唔接。我企返自己個位，上菜，收聲。"],
+            ["S", "（點一點頭）好。識企自己個位嘅人，先至行得遠。"]
+          ]
+        },
+        {
+          label: "搏一搏，自己加戲搶鏡",
+          flags: ["enc79_liu_steal"],
+          lines: [
+            ["A", "星哥，對唔住，呢句我接——"],
+            ["S", "（眼神一沉，冇出聲，轉身行返埋位。）"],
+            ["N", "嗰句笑位，你接咗，全場笑咗。但廖炳星行開嗰陣，冇望你一眼。"]
+          ]
+        }
+      ]
+    },
     liu_repay: {
       lines: [
         ["S", "阿偉，我認人㗎，邊個肯用心做戲，我心入面有本帳。"],
@@ -38815,6 +38905,7 @@ const ENC79_BEATS = {
     { id:"liu_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year<=1991 && enc79TierOf(st.fav)<=1 && enc83NodeDone("C8"); }, }, /* v20a269：N9 開口（C8＝N9） */
     { id:"liu_intel", when(st){ return enc79TierOf(st.fav)>=2; } },
     { id:"liu_tease", when(st){ return enc79BoardHasStar("liu_bingxing"); } },
+    { id:"liu_steal", when(st){ const ys=yearSeasonNow(); return ys.year===1991 && ys.season==="秋" && enc79TierOf(st.fav)>=2 && !(S.wf3 && S.wf3.liaoChoice) && enc83NodeDone("C8"); } }, /* v20a279 G-L2：Beat 3 搶鏡抉擇——1991 秋＋N9 已完成（C8）先開，排喺 liu_repay 之前保 PLAN 次序；問過一次（liaoChoice）就唔再開，1991 冬之後閘口關閉，liu_repay 照開 */
     { id:"liu_repay", when(st){ return enc79TierOf(st.fav)>=2; } /* v20a89：債權改由 enc79ChoiceFx／RunChoiceFx 按抉擇派（liu_accept 先派），唔再無條件 grants */ },
     { id:"liu_clash", when(st){ const ys=yearSeasonNow(); return ys.year===1992 && ys.season==="冬" && enc83NodeDone("C13"); } }, /* v20a269：N16 再開口（C13＝N16） */
     { id:"liu_patron_cold", when(st){ return enc79TierOf(st.fav)>=4 && ((S.flags||{}).enc79_liu_declined || (S.flags||{}).enc79_liu_clash_script); } }, /* v20a269：冷版提攜（排喺暖版之前 shadow；無 credit） */
@@ -38873,6 +38964,8 @@ function enc79ChoiceFx(segKey, label){
   /* v20a89 BR89：liu_repay／mak_respect 債權改條件派發（審計 #9）——以前 beat.grants 無條件派，
      推辭／講會驚照攞債權；而家跟返抉擇行 fx 通道派，grants 已由 beat 定義移除。fav 數值維持原值。 */
   if(segKey==="beat:liu_repay"){ if(has("推")||has("排緊")) return { fav:1, fx:"liu_decline" }; return { fav:2, fx:"liu_accept" }; }
+  /* v20a279 G-L2：Beat 3 搶鏡抉擇——搶鏡 +1（行冷版路，見 PLAN §1 Beat 3）、照劇本演 +2 */
+  if(segKey==="beat:liu_steal"){ if(has("搶鏡")||has("搏一搏")) return { fav:1, fx:"liu_steal" }; return { fav:2, fx:"liu_steady" }; }
   if(segKey==="beat:mak_respect"){ if(has("驚")) return { fav:2, fx:"mak_honest" }; return { fav:4, fx:"mak_accept" }; }
   if(segKey==="beat:yip_choice"){
     if(has("守口")) return { fav:4, fx:"yip_kept" };
@@ -38936,6 +39029,10 @@ function enc79RunChoiceFx(fx){
       enc79GrantCredit({ id:"credit_enc79_liu_priority", debtor:"廖炳星", title:"新戲優先試鏡人情", line:"廖炳星講過：下次佢有新戲開鏡，試鏡名單第一批會有你個名。呢份人情，佢記住。", status:"未收" });
     } else if(fx==="mak_accept"){
       enc79GrantCredit({ id:"credit_enc79_mak_wuzhi", debtor:"紅棉武指", title:"武指照應人情", line:"武指嗰邊認咗你：第日有高危位開工，會第一時間諗起你，安全功夫亦會睇實你。", status:"未收" });
+    }
+    /* v20a279 G-L2：Beat 3 搶鏡抉擇只落旗 liaoChoice；信用／片酬／報紙／記仇債照原設計由 wf3SettleTick 翌日結算一次，唔喺呢度派。 */
+    if(fx==="liu_steal" || fx==="liu_steady"){
+      try{ const st = (typeof ensureWf3==="function") ? ensureWf3() : null; if(st) st.liaoChoice = (fx==="liu_steal") ? "steal" : "steady"; }catch(_e){}
     }
     /* mak_honest：老實講會驚——武指記住你夠直，但照應嗰份人情唔喺呢度派（只有好感，見 enc79ChoiceFx） */
     /* ===== v20a83 ENC83：Phase 2 抉擇實效（行現有帳本／傳聞池，唔另起系統） ===== */
@@ -42526,8 +42623,10 @@ function gigsForLocSeasonBoard(locId, curSeason){
     /* v20a229 B5 觸發系統（D-4）：有 trigger 嘅通告，未觸發唔上板；已觸發嘅跳過 NAT92 錯峰
        再擋（照季節上板），季節窗（gigSeasonHidden88 嗰關）照舊。 */
     if(g.trigger && (typeof triggerGigOn==="function" ? !triggerGigOn(g) : true)) return false;
-    /* v20a88：錯季硬藏改提早窗判準（typeof 防禦：抽函數測試沙盒冇 88 函數時回退 v18k 語義） */
-    if(typeof gigSeasonHidden88==="function" ? gigSeasonHidden88(g, curSeason) : seasonRank(g, curSeason)>0) return false;
+    /* v20a88：錯季硬藏改提早窗判準（typeof 防禦：抽函數測試沙盒冇 88 函數時回退 v18k 語義）
+       v20a279 G-L2：收割窗通告（wf3harvest）豁免季節閘——佢嘅檔期就係 7 日收割窗本身（由 S.wf3.liaoHarvest 計），唔係上映季；
+       遲秋先搶鏡嘅玩家，窗開喺冬都照上板。其他 trigger 通告照舊跟季節窗。 */
+    if(!(g.trigger && g.trigger.kind==="wf3harvest" && typeof triggerGigOn==="function" && triggerGigOn(g)) && (typeof gigSeasonHidden88==="function" ? gigSeasonHidden88(g, curSeason) : seasonRank(g, curSeason)>0)) return false;
     /* v20a92 NAT92：未到上板日／已落板嘅庫存通告唔上板（typeof 防禦：冇 92 函數時唔生效）；
        已觸發通告豁免——觸發嗰刻就係上板嗰刻，唔好再俾 0–39 日開窗偏移／落板拉前擋死。 */
     if(!(g.trigger && typeof triggerGigOn==="function" && triggerGigOn(g)) && typeof gigBoardPosted92==="function" && !gigBoardPosted92(g)) return false;

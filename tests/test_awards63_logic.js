@@ -46,7 +46,7 @@ function extractConst(name){
   throw new Error('const end not found: '+name);
 }
 
-/* ---- 世界：新庫 287 張經真 normalize；真 leadStar59Of／poster59Path／work59WorkOf ---- */
+/* ---- 世界：新庫 288 張經真 normalize；真 leadStar59Of／poster59Path／work59WorkOf ---- */
 const tfA = html.indexOf('/* ==== v20a55 TEXTFIX');
 const tfB = html.indexOf('async function refreshCopyPacksFromDisk(){');
 if(tfA < 0 || tfB <= tfA){ console.log('FAIL TEXTFIX55 block not found'); process.exit(1); }
