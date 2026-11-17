@@ -4,7 +4,7 @@
 //   T1 六種 kind 各一例：credit／award／fame／story／rel／rival（觸發前 false、觸發後 true；
 //       award 嗰例用合成樣本——攞舊庫 gig_1991_film_111 原 trigger，一字唔改，因為新庫 0 張 award 樣本）
 //   T2 R-4 雙觸發 OR：持債權／還錢結算（enc83_gu_loan_result＝1）兩條路各驗一次（真 gig
-//       gig_1992_rec_105；v20a254 接線由舊 id gig_1991_rec_102 搬去 rec_105）
+//       gig_1992_rec_205；v20a274 接線由 rec_105 搬去新顧引薦 gig rec_205）
 //   T3 獎項級紀錄 S.awardsResults：recordAwardResult 寫入＋獎項級／典禮級觸發判定（合成樣本——舊庫 6 張 award gig 原 trigger）
 //   T4 板面：觸發前無、觸發後有；已觸發唔受 gigBoardPosted92 再擋（stagger stub 返 false 照上板）；標「引薦／邀約」
 //   T5 D-11 通知：首次上板先 toast 一次（引薦＝何生轉告、其餘＝情報站）；未入季節窗／未觸發唔通知
@@ -192,9 +192,9 @@ ok('T1 未識 kind 唔開（fail closed）', triggerGigOn({ id:'x', trigger:{ ki
 
 /* ---------- T2：R-4 雙觸發 OR ---------- */
 S = freshS();
-/* v20a254：R-4 接線已由舊 id gig_1991_rec_102（新庫改做《鄉謠》，無 trigger）搬去
-   新庫顧引薦 gig gig_1992_rec_105《當年情懷》；用真 gig 驗機制，唔再用合成樣本。 */
-const gR4 = gigById('gig_1992_rec_105'); /* 顧明輝引薦情歌大碟主唱，credit_enc83_gu_patron */
+/* v20a274：R-4 接線已由 gig_1992_rec_105《當年情懷》（trigger 已拆，變普通板通告）搬去
+   新顧引薦 gig gig_1992_rec_205《夜總會登台暖場》；用真 gig 驗機制，唔再用合成樣本。 */
+const gR4 = gigById('gig_1992_rec_205'); /* 顧明輝引薦夜總會登台暖場，credit_enc83_gu_patron */
 ok('T2 R-4 兩條路都冇 → 唔開', triggerGigOn(gR4)===false && br89GigOn(gR4)===false);
 S.mockCredits.push({ id:'credit_enc83_gu_patron', debtor:'顧明輝', title:'登台引薦', line:'x', status:'未收' });
 ok('T2 R-4 路一：持債權 → 開', triggerGigOn(gR4)===true && br89GigOn(gR4)===true);
@@ -205,19 +205,19 @@ ok('T2 R-4 路二：還錢結算完成（result＝1）→ 開', triggerGigOn(gR4
 S.flags.enc83_gu_loan_result = 2;
 ok('T2 R-4 還錢失敗（result＝2）→ 唔開', triggerGigOn(gR4)===false);
 S.flags.enc83_gu_loan_result = 1;
-S.flags['done_gig_1992_rec_105'] = 1;
+S.flags['done_gig_1992_rec_205'] = 1;
 ok('T2 R-4 完成後唔再開（done_ 旗）', triggerGigOn(gR4)===false);
 
-/* ---------- T2b：新庫顧引薦 gig（gig_1992_rec_105，通用 credit 規則） ---------- */
+/* ---------- T2b：新庫顧引薦 gig（gig_1992_rec_205，通用 credit 規則） ---------- */
 S = freshS();
-const gR4b = gigById('gig_1992_rec_105'); /* 顧明輝引薦情歌大碟主唱，credit_enc83_gu_patron */
+const gR4b = gigById('gig_1992_rec_205'); /* 顧明輝引薦夜總會登台暖場，credit_enc83_gu_patron */
 ok('T2b 新庫顧 gig 喺庫入面、係 credit_enc83_gu_patron', !!gR4b && gR4b.trigger && gR4b.trigger.kind==='credit' && gR4b.trigger.creditId==='credit_enc83_gu_patron');
 ok('T2b 新庫顧 gig 未持債 → 唔開', triggerGigOn(gR4b)===false);
 S.mockCredits.push({ id:'credit_enc83_gu_patron', debtor:'顧明輝', title:'登台引薦', line:'x', status:'未收' });
 ok('T2b 新庫顧 gig 持債 → 開（通用規則）', triggerGigOn(gR4b)===true);
 S.mockCredits.length = 0;
 ok('T2b 新庫顧 gig 債權拎走 → 唔開', triggerGigOn(gR4b)===false);
-/* v20a254：還錢結算路已接線去新庫 rec_105（br89GigOn R-4 硬編碼跟住搬），
+/* v20a274：還錢結算路已接線去新顧引薦 gig rec_205（br89GigOn R-4 硬編碼跟住搬），
    唔再係接線缺口——見 T2 路二。 */
 S.flags.enc83_gu_loan_result = 1;
 ok('T2b 新庫顧 gig 還錢結算旗 → 開（R-4 第二條路）', triggerGigOn(gR4b)===true);
@@ -345,11 +345,11 @@ ok('T7 星好感跌返 0 →《星夜迷離》唔開', triggerGigOn(gigById('gig
 const BR89_EXPECT = {
   gig_1991_film_101:'credit_enc83_luk_patron', gig_1991_variety_203:'credit_enc84_pang_patron',
   gig_1992_rec_106:'credit_enc84_ching_patron', gig_1991_film_103:'credit_enc79_liu_priority',
-  gig_1992_film_103:'credit_enc83_liu_patron', gig_1991_film_110:'credit_enc83_mak_patron',
-  gig_1992_tv_105:'credit_enc83_yip_patron', gig_1992_rec_105:'credit_enc83_gu_patron',
-  gig_1991_ad_102:'credit_enc84_so_patron', gig_1991_tv_108:'credit_enc84_chung_patron',
-  gig_1992_rec_102:'credit_enc83_lok_patron', gig_1991_film_111:'credit_enc83_ngai_patron',
-  gig_1992_tv_104:'credit_enc83_chai_patron'
+  gig_1992_film_103:'credit_enc83_liu_patron', gig_1991_film_211:'credit_enc83_mak_patron',
+  gig_1992_tv_105:'credit_enc83_yip_patron', gig_1992_rec_205:'credit_enc83_gu_patron',
+  gig_1991_ad_102:'credit_enc84_so_patron', gig_1991_film_213:'credit_enc84_chung_patron',
+  gig_1992_rec_111:'credit_enc83_lok_patron', gig_1991_film_212:'credit_enc83_ngai_patron',
+  gig_1992_film_206:'credit_enc83_chai_patron'
 };
 const br89Keys = Object.keys(BR89_PATRON_OF_GIG);
 ok('T8 BR89 映射 13 張', br89Keys.length===13, 'n='+br89Keys.length);
@@ -361,11 +361,12 @@ ok('T8 BR89 13 張全部喺新庫（v20a254 重對後，舊消失 id gig_1991_va
    gig，0 張新開；舊《江河歲月》等 4 張同名直對，其餘 9 張按舊 title＋全文＋trigger 逐對
    還原——詳見 index.html BR89 註解）。廖炳星引薦有兩張新庫 gig（film_109／1991＋
    film_103／1992），BR89 表只取 film_103（1992 電影，同舊年＋媒介）做 canonical，
-   film_109 行通用 credit 規則照開。 */
+   film_109 行通用 credit 規則照開。
+   v20a274：上面 13 對之中 6 對由新開 5 張＋rec_111 接駁取代（舊 6 張 trigger 已拆），總數維持 13 對。 */
 const br89Match = br89Keys.filter(k=>{ const g = gigById(k); return g && g.trigger && g.trigger.kind==='credit' && g.trigger.creditId===BR89_PATRON_OF_GIG[k]; });
 const br89Mismatch = br89Keys.filter(k=>{ const g = gigById(k); return g && g.trigger && g.trigger.kind==='credit' && g.trigger.creditId!==BR89_PATRON_OF_GIG[k]; });
 const br89NoTrig = br89Keys.filter(k=>{ const g = gigById(k); return g && !(g.trigger && g.trigger.kind==='credit'); });
-ok('T8 BR89 映射同新庫 credit trigger 13 張全部對得上（v20a254 修復）',
+ok('T8 BR89 映射同新庫 credit trigger 13 張全部對得上（v20a274 取代）',
   br89Match.length===13 && br89Mismatch.length===0 && br89NoTrig.length===0,
   'match=' + br89Match.length + ' mismatch=' + br89Mismatch.join(',') + ' noTrig=' + br89NoTrig.length);
 ok('T8 G-G2「觸發通告變 26 張」唔喺 code／註解入面', html.indexOf('變 26 張')<0);

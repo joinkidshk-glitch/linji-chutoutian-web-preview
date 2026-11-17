@@ -1,5 +1,5 @@
 // v20a158 人情免試鏡渠道＋支線抉擇即派測試（G-M1 武指照應／G-PANG-1 彭慈善／GRANT229_ENC79 加 8 行）
-//   T1 兩條渠道 matcher：武打＝genre 動作／武俠＋category 作品（新庫 20 張；臨記散工唔入，
+//   T1 兩條渠道 matcher：武打＝genre 動作／武俠＋category 作品（新庫 22 張；臨記散工唔入，
 //       例 gig_1990_film_206 碼頭搬運）；司儀＝type 綜藝＋roleLabel 含「主持」（新庫 5 張）
 //   T2 渠道供應條件：持有未兌現債權＋啱類別＋canAudition ok 先有；冇債權／已兌現／絕響／
 //       閘未過／錯類別 → 冇；金色提示行只喺有渠道嗰陣出
@@ -142,7 +142,7 @@ eval(extractFn('favor158RedeemChannel'));
 
 /* ---------- T1：matcher ---------- */
 const makMatches = gigs.filter(isMakWuzhiGig158);
-ok('T1 武打 matcher：新庫 20 張（動作／武俠＋作品）', makMatches.length===20, makMatches.map(g=>g.id).join(','));
+ok('T1 武打 matcher：新庫 22 張（動作／武俠＋作品）', makMatches.length===22, makMatches.map(g=>g.id).join(','));
 ok('T1 武打 matcher：gig_1990_film_206 碼頭搬運（臨記通告）唔入', !isMakWuzhiGig158(gigById('gig_1990_film_206')));
 ok('T1 武打 matcher：臨記動作替身 film_211／213／214 唔入', ['gig_1990_film_211','gig_1990_film_213','gig_1990_film_214'].every(id=>!isMakWuzhiGig158(gigById(id))));
 ok('T1 武打 matcher：電視動作 tv_102 入', isMakWuzhiGig158(gigById('gig_1990_tv_102')));
@@ -325,17 +325,17 @@ ok('T7 顧 Beat 2 DRAFT 兩行繼續 dormant（唔經初遇 hook 觸發）',
   Object.keys(GRANT229_DRAFT).length===2 && GRANT229_DRAFT.gu_promise_clean.gigId==='gig_1991_rec_201' &&
   GRANT229_DRAFT.gu_ask_back.gigId==='gig_1991_rec_207');
 
-/* ---------- T8：BR89 13 對原封不動 ---------- */
+/* ---------- T8：BR89 13 對（v20a274 取代後） ---------- */
 const BR89_EXPECTED = {
   gig_1991_film_101:"credit_enc83_luk_patron", gig_1991_variety_203:"credit_enc84_pang_patron",
   gig_1992_rec_106:"credit_enc84_ching_patron", gig_1991_film_103:"credit_enc79_liu_priority",
-  gig_1992_film_103:"credit_enc83_liu_patron", gig_1991_film_110:"credit_enc83_mak_patron",
-  gig_1992_tv_105:"credit_enc83_yip_patron", gig_1992_rec_105:"credit_enc83_gu_patron",
-  gig_1991_ad_102:"credit_enc84_so_patron", gig_1991_tv_108:"credit_enc84_chung_patron",
-  gig_1992_rec_102:"credit_enc83_lok_patron", gig_1991_film_111:"credit_enc83_ngai_patron",
-  gig_1992_tv_104:"credit_enc83_chai_patron"
+  gig_1992_film_103:"credit_enc83_liu_patron", gig_1991_film_211:"credit_enc83_mak_patron",
+  gig_1992_tv_105:"credit_enc83_yip_patron", gig_1992_rec_205:"credit_enc83_gu_patron",
+  gig_1991_ad_102:"credit_enc84_so_patron", gig_1991_film_213:"credit_enc84_chung_patron",
+  gig_1992_rec_111:"credit_enc83_lok_patron", gig_1991_film_212:"credit_enc83_ngai_patron",
+  gig_1992_film_206:"credit_enc83_chai_patron"
 };
-ok('T8 BR89 13 對原封不動',
+ok('T8 BR89 13 對（v20a274 取代後）',
   Object.keys(BR89_PATRON_OF_GIG).length===13 &&
   Object.keys(BR89_EXPECTED).every(k=>BR89_PATRON_OF_GIG[k]===BR89_EXPECTED[k]));
 

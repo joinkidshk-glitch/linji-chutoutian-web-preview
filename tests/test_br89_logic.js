@@ -219,18 +219,18 @@ try{
   const EXPECT13 = {
     gig_1991_film_101:'credit_enc83_luk_patron', gig_1991_variety_203:'credit_enc84_pang_patron',
     gig_1992_rec_106:'credit_enc84_ching_patron', gig_1991_film_103:'credit_enc79_liu_priority',
-    gig_1992_film_103:'credit_enc83_liu_patron', gig_1991_film_110:'credit_enc83_mak_patron',
-    gig_1992_tv_105:'credit_enc83_yip_patron', gig_1992_rec_105:'credit_enc83_gu_patron',
-    gig_1991_ad_102:'credit_enc84_so_patron', gig_1991_tv_108:'credit_enc84_chung_patron',
-    gig_1992_rec_102:'credit_enc83_lok_patron', gig_1991_film_111:'credit_enc83_ngai_patron',
-    gig_1992_tv_104:'credit_enc83_chai_patron'
+    gig_1992_film_103:'credit_enc83_liu_patron', gig_1991_film_211:'credit_enc83_mak_patron',
+    gig_1992_tv_105:'credit_enc83_yip_patron', gig_1992_rec_205:'credit_enc83_gu_patron',
+    gig_1991_ad_102:'credit_enc84_so_patron', gig_1991_film_213:'credit_enc84_chung_patron',
+    gig_1992_rec_111:'credit_enc83_lok_patron', gig_1991_film_212:'credit_enc83_ngai_patron',
+    gig_1992_film_206:'credit_enc83_chai_patron'
   };
   ok('H1 BR89 映射 13 張逐對啱（SPEC §3.5A）',
     Object.keys(api.BR89_PATRON_OF_GIG).length===13 &&
     Object.keys(EXPECT13).every(k=>api.BR89_PATRON_OF_GIG[k]===EXPECT13[k]));
   ok('H2 舊 gig_br89_* 已清', !Object.keys(api.BR89_PATRON_OF_GIG).some(k=>/^gig_br89_/.test(k)));
-  // R-4 雙觸發 OR（兩條路獨立驗；v20a254：顧引薦 gig 由舊 id gig_1991_rec_102 搬去新庫 gig_1992_rec_105）
-  const r4 = { id:'gig_1992_rec_105' };
+  // R-4 雙觸發 OR（兩條路獨立驗；v20a274：顧引薦 gig 由 gig_1992_rec_105《當年情懷》搬去新 gig_1992_rec_205《夜總會登台暖場》）
+  const r4 = { id:'gig_1992_rec_205' };
   env.S.mockCredits.length = 0; env.S.flags = {};
   ok('H3 R-4 兩條路都冇 → 唔開', api.br89GigOn(r4)===false);
   env.S.flags.enc83_gu_loan_result = 1;

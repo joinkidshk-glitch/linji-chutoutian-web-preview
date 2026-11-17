@@ -12,7 +12,7 @@
 //           （roleScale mtv，lead／support 兩邊都唔計）。gig_1990_rec_108《月夜影》MV 男主角完成旗 →
 //           tier 0（fame 5，乜都唔計）；舊樣本 film_107 而家係動作替身，唔再係假 label 案例。
 //       (f) 年庫未載入嗰陣唔寫錯值（留空）＋dlg106AweiStem 懶回填（packs 到齊先補 2）
-//       (g) 全池口徑：1990 年庫 normalize 後真男主角得 0 部、1991 年 7 部、1992 年 7 部
+//       (g) 全池口徑：1990 年庫 normalize 後真男主角得 0 部、1991 年 8 部、1992 年 7 部
 // 反證：喺 pristine main（f2a6b0c）index 上行，enc195BackfillTierMax 唔存在——
 //       本檔唔 crash，逐組印 FAIL 後 exit 1。
 // 用法：node tests/test_awei195_logic.js（AWEI195_DEBUG=1 印實際輸出）
@@ -116,7 +116,7 @@ if(DEBUG) console.log('lead92:', LEAD92.length, LEAD92.join(','));
 
 /* ---- (g) 全池口徑：新庫按年真男主角數 ---- */
 ok('(g) 1990 年庫 normalize 後真男主角得 0 部（臨記／初級年，第一部男主角要到 1991）', LEAD90.length === 0, 'n=' + LEAD90.length);
-ok('(g) 1991 年庫得 7 部真男主角', LEAD91.length === 7, 'n=' + LEAD91.length + ' ' + LEAD91.join(','));
+ok('(g) 1991 年庫得 8 部真男主角', LEAD91.length === 8, 'n=' + LEAD91.length + ' ' + LEAD91.join(','));
 ok('(g) 1992 年庫得 7 部真男主角', LEAD92.length === 7, 'n=' + LEAD92.length + ' ' + LEAD92.join(','));
 ok('(g) gig_1990_rec_108 係假男主角（label 男主角、roleScale mtv）',
   (() => { const g = gigsOfYear(1990).find(x => x.id === 'gig_1990_rec_108');

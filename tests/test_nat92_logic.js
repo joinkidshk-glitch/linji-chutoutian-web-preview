@@ -7,7 +7,7 @@
 //      紅棉影業／灣仔唱片 day-0 有可接（新庫供應，唔再靠 NAT92 入門補位）。
 //  (E) 分布守衛：52 週普查（MAXED 組成）1990「恰好 2」占比 <40%；
 //      三年全板 0 嘅地點-週＝70（新庫地點-季節洞＋錯峰空窗，見 E2 註——舊版 0 係 351 張＋18 張
-//      注入先做到，新庫 282 張有季節性空洞，呢個數係分佈釘，唔係回歸目標）。
+//      注入先做到，新庫 287 張有季節性空洞，呢個數係分佈釘，唔係回歸目標）。
 //      v20a229 B5：MAXED 而家真係 maxed——33 張 trigger 條件齊開（E0 守衛，v232 補寫《星夜迷離》第 241 張；v252 新庫 award 0 張），
 //      E2 釘先至繼續量度庫分佈而唔係觸發狀態；沙盒抽埋 triggerGigOn＋依賴，
 //      唔係 board filter 嘅 typeof 守衛會將全部 trigger 通告當未觸發隱藏。
@@ -148,7 +148,7 @@ for(const y of [1990, 1991, 1992]) for(const g of poolByYear[y]){
   if(W.nat92StaggerEligible(g)) stagN++;
   if(Object.keys(g.req||{}).some(k=>!CANON[k])) reqBad.push(g.id);
 }
-ok('F2 錯峰合資格 270 張（282－12 入門）', stagN === 270, 'stagN=' + stagN);
+ok('F2 錯峰合資格 275 張（287－12 入門）', stagN === 275, 'stagN=' + stagN);
 ok('F2b 入門 12 張唔錯峰', entryN === 12);
 ok('F3 舊 nat92 旗全庫 0 命中', nat92FlagN === 0);
 ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3).join(','));

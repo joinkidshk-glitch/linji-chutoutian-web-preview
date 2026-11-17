@@ -1,8 +1,8 @@
 // v20a229 B6 抉擇即派＋定期合約制測試（A8／A12；SPEC §3.7／附錄 A；AUDIT229 §8／§10；DECISIONS Q7／D-5）
-//   T0 44 張即派 id 齊（主線 31＋支線 13）＋新庫 282 張（v255：ENC79 9 張＋DRAFT 2 張重對完成——
+//   T0 44 張即派 id 齊（主線 31＋支線 13）＋新庫 287 張（v255：ENC79 9 張＋DRAFT 2 張重對完成——
 //       REUSE 4 張（rec_209／rec_201／film_211／1991_rec_201）＋NEW 7 張（tv_217／218／219、rec_210、
 //       film_213／214、1991_rec_207）；11 張舊 id 已唔喺新庫，映射已改指新 id，實機初遇／draft 即派 live；
-//       v253 C 組再加 6 張新 gig，庫 276→282；v20a158 再加 8 行支線抉擇即派（顧／麥／廖，ENC79 9→17））
+//       v253 C 組再加 6 張新 gig，庫 276→282；v20a274 再加 5 張引薦 gig，庫 282→287；v20a158 再加 8 行支線抉擇即派（顧／麥／廖，ENC79 9→17））
 //   T1 主線 42 映射：抉擇→記低指定 gig、dueDay＝聽日（同上；v252 新 id：N1 tv_201／film_201、N2 film_202／tv_202、
 //       N3 tv_203／tv_204、N4 ad_206／film_203、N5 tv_205／tv_205／tv_206、N6 tv_107 合約、N6F film_113 合約、
 //       N18 tv_208／tv_110、N7 film_104／tv_107／tv_201、N8 variety_109／rec_205／rec_206、N9 film_103／film_201、
@@ -155,7 +155,7 @@ eval(extractFn('poster59Path'));
 eval(extractFn('leadStar59Of'));
 eval(extractFn('worksWallEntries59'));
 
-/* ---------- T0：44 張 id 齊＋新庫 282 張 ---------- */
+/* ---------- T0：44 張 id 齊＋新庫 287 張 ---------- */
 const MAIN31 = ['gig_1990_tv_201','gig_1990_film_201','gig_1990_film_202','gig_1990_tv_202','gig_1990_tv_203','gig_1990_tv_204','gig_1990_ad_206','gig_1990_film_203','gig_1990_tv_205','gig_1990_tv_206','gig_1990_tv_107','gig_1990_film_113','gig_1990_tv_208','gig_1990_tv_110',
   'gig_1991_film_104','gig_1991_tv_107','gig_1991_tv_201','gig_1991_variety_109','gig_1991_rec_205','gig_1991_rec_206','gig_1991_film_103','gig_1991_film_201','gig_1991_film_105','gig_1991_film_202','gig_1991_tv_202','gig_1991_film_106','gig_1991_film_107','gig_1992_film_201','gig_1992_tv_103','gig_1991_tv_104','gig_1991_tv_105'];
 /* v255：11 張舊 id 仲係唔喺新庫（已刪）；映射已改指新 id（REUSE 4＋NEW 7），舊 id 只留喺呢度做反證。 */
@@ -168,7 +168,7 @@ const SIDE_DEAD11 = ['gig_1990_tv_114','gig_1990_tv_115','gig_1990_tv_116',
   'gig_1990_film_116','gig_1990_film_117','gig_1990_film_115',
   'gig_1991_rec_111','gig_1991_rec_112'];
 const SIDE_W3_2 = ['gig_1990_tv_209','gig_1990_tv_210'];
-ok('T0 新庫 282 張', gigs.length===282, 'n='+gigs.length);
+ok('T0 新庫 287 張', gigs.length===287, 'n='+gigs.length);
 ok('T0 主線 31 張 id 齊', MAIN31.every(id=>!!gigById(id)));
 ok('T0 支線 W3 2 張 id 齊', SIDE_W3_2.every(id=>!!gigById(id)));
 ok('T0 ENC79／DRAFT 11 張舊 id 已唔喺新庫（v255：已刪，映射改指新 id）', SIDE_DEAD11.every(id=>!gigById(id)),

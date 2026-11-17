@@ -26408,22 +26408,24 @@ function br89HasCredit(id){
    gig_1991_film_103（同名）、《笑星大作戰》（廖 1992 電影）→gig_1992_film_103
    《吉星笑哈哈》（賀歲喜劇，廖 leadM；新庫另有 gig_1991_film_109 亦係同一債權，
    行通用 credit 規則，BR89 表只取一張 canonical）、《鐵拳出擊》（麥）→
-   gig_1991_film_110《鐵拳王》、「對手戲」（葉）→gig_1992_tv_105《摩登一家人》、
-   《夜總會暖場夜》（顧）→gig_1992_rec_105《當年情懷》、《愛在陽光下》（蘇）→
-   gig_1991_ad_102《秀髮如瀑》、《離港那天》（鍾）→gig_1991_tv_108《深秋情緣》、
-   《主打歌》MV（駱）→gig_1992_rec_102《硬漢柔情》、《鐵橋風雲》（魏）→
-   gig_1991_film_111《雪山雙劍傳》、《油麻地夜班》（齊）→gig_1992_tv_104
+   gig_1991_film_211《武館群英》（麥）、「對手戲」（葉）→gig_1992_tv_105《摩登一家人》、
+   《夜總會暖場夜》（顧）→gig_1992_rec_205《夜總會登台暖場》、《愛在陽光下》（蘇）→
+   gig_1991_ad_102《秀髮如瀑》、《離港那天》（鍾）→gig_1991_film_213《秋日絮語》、
+   《主打歌》MV（駱）→gig_1992_rec_111《主打歌》MV、《鐵橋風雲》（魏）→
+   gig_1991_film_212《鐵橋風雲》、《油麻地夜班》（齊）→gig_1992_film_206
    《滬上往事》。每對 trigger.creditId 逐張對過新庫，13／13 啱。
-   R-4（gig_1992_rec_105 顧《當年情懷》）另有第二條觸發路（還錢結算完成），見 br89GigOn——
-   G-G2 只係加多一條觸發條件，唔開新通告（DECISIONS.md D-7 更正）。 */
+   R-4（gig_1992_rec_205 顧《夜總會登台暖場》）另有第二條觸發路（還錢結算完成），見 br89GigOn——
+   G-G2 只係加多一條觸發條件，唔開新通告（DECISIONS.md D-7 更正）。
+   v20a274 取代票：上面 6 對由新開 5 張（film_211／film_212／film_206／film_213／rec_205）＋rec_111 接駁取代，
+   舊 6 張 trigger 已拆，變普通板通告；總數維持 13 對。 */
 const BR89_PATRON_OF_GIG = {
   gig_1991_film_101:"credit_enc83_luk_patron", gig_1991_variety_203:"credit_enc84_pang_patron",
   gig_1992_rec_106:"credit_enc84_ching_patron", gig_1991_film_103:"credit_enc79_liu_priority",
-  gig_1992_film_103:"credit_enc83_liu_patron", gig_1991_film_110:"credit_enc83_mak_patron",
-  gig_1992_tv_105:"credit_enc83_yip_patron", gig_1992_rec_105:"credit_enc83_gu_patron",
-  gig_1991_ad_102:"credit_enc84_so_patron", gig_1991_tv_108:"credit_enc84_chung_patron",
-  gig_1992_rec_102:"credit_enc83_lok_patron", gig_1991_film_111:"credit_enc83_ngai_patron",
-  gig_1992_tv_104:"credit_enc83_chai_patron"
+  gig_1992_film_103:"credit_enc83_liu_patron", gig_1991_film_211:"credit_enc83_mak_patron",
+  gig_1992_tv_105:"credit_enc83_yip_patron", gig_1992_rec_205:"credit_enc83_gu_patron",
+  gig_1991_ad_102:"credit_enc84_so_patron", gig_1991_film_213:"credit_enc84_chung_patron",
+  gig_1992_rec_111:"credit_enc83_lok_patron", gig_1991_film_212:"credit_enc83_ngai_patron",
+  gig_1992_film_206:"credit_enc83_chai_patron"
 };
 const BR89_GIGS = []; /* v20a229 B3：內容已刪；B5 起 BR89 引薦通告由新庫供應，經通用 trigger 系統
   （mergeTriggerGigs＋triggerGigOn）上板，mergeBr89Gigs 只留返做空池 no-op，BR89_PATRON_OF_GIG
@@ -26433,12 +26435,12 @@ function br89GigOn(raw){
     if(!raw || !raw.id || typeof S==="undefined" || !S) return false;
     if(S.flags && S.flags["done_"+raw.id]) return false;
     const cid = BR89_PATRON_OF_GIG[raw.id];
-    /* v20a229 B5 R-4 雙觸發 OR（G-G2）：顧《當年情懷》除咗持 credit_enc83_gu_patron，
+    /* v20a229 B5 R-4 雙觸發 OR（G-G2）：顧《夜總會登台暖場》除咗持 credit_enc83_gu_patron，
        還錢結算完成（enc83_gu_loan_result＝1 還錢）亦開——任一成立就開。還錢嗰陣筆借錢債權
        已經由 mockCredits 拎走，所以還錢路只讀結算旗，唔讀債權。
-       v20a254：接線由舊 id gig_1991_rec_102（新庫已改做《鄉謠》，無 trigger）搬去
-       新庫顧引薦 gig gig_1992_rec_105。 */
-    if(raw.id==="gig_1992_rec_105"){
+       v20a274：接線由 gig_1992_rec_105《當年情懷》（trigger 已拆，變普通板通告）搬去
+       新顧引薦 gig gig_1992_rec_205《夜總會登台暖場》。 */
+    if(raw.id==="gig_1992_rec_205"){
       try{
         const lr = (typeof enc83Flag==="function") ? enc83Flag("enc83_gu_loan_result") : ((S.flags||{}).enc83_gu_loan_result);
         if(Number(lr)===1) return true;
