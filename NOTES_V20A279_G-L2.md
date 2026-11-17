@@ -69,3 +69,9 @@
 - `liaoChoice` 全檔出現：tick 結算＋完成分支讀、RunChoiceFx 寫、beat 閘讀、測試
 - `credit_wf3_comedy_crew` code 側 3 處：結局鏈 B 讀位（L12914）＋tick 授出＋BR89 map 值
 - 結局鏈 B 而家完成得到：`liaoHarvestDone` 經收割完成設 1（以前只喺過期分支設，永遠到唔到）
+
+## 落地記錄（post-merge）
+- main HEAD `b243f2a`（squash merge v279，2026-11-18）
+- 全套 suite：**344／9**（9 項全部係已知 pre-existing FAIL：flash51／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wf5_87／wrap38；基線 343／9＋新測試檔 1 個）
+- GitHub Pages 核實：主頁 200、4,674,100 bytes、與本地 index.html byte-identical
+- 工作副本 `linji-work279` 已刪
