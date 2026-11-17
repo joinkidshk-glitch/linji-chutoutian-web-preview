@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 """v20a61 CONSEQ61 後果包 — 靜態鎖
 鎖住：CONSEQ61 主 блок 在位＋參數、全部接線點（advanceDay/settleWeek/enterHome/
-resolvePlannedDay/goToMapForBrowse/endBrowseDayGoHome/normalizeSaveObj/planMeta/
-updateMapStressTip）、E7 結局呈現接入、SAVE key/softRev 紀律、
+resolvePlannedDay/goToMapForBrowse/endBrowseDayGoHome/normalizeSaveObj/planMeta）、
+E7 結局呈現接入、SAVE key/softRev 紀律、
 resolveEnding410 判定表冇 E7（E7 只准由強制收場路徑寫入）。
+v20a163：updateMapStressTip／#map-stress-tip 已刪（地圖底部提示成條拎走，
+用戶 2026-11-13 08:23 拍板），唔再係接線點；警告層改由 settleWeek ≥80 旁白承載。
 用法：python3 tests/test_conseq61_static.py [path-to-index.html]
 """
 import re
@@ -72,8 +74,10 @@ nso = fn_body("normalizeSaveObj", src)
 ok("conseq61LegacyMark" in nso, "normalizeSaveObj 接舊檔評核標記")
 pm = fn_body("planMeta", src)
 ok('"sick61"' in pm and "病假" in pm, "planMeta 有 sick61 病假格")
-ust = fn_body("updateMapStressTip", src)
-ok("身體警號" in ust and "streak80" in ust, "updateMapStressTip 有連續高壓身體警號分支")
+# v20a163：地圖底部壓力提示成條拎走——updateMapStressTip／#map-stress-tip
+# 唔再存在；警告層改由 settleWeek ≥80 身體警號旁白承載（上面已鎖）。
+ok("function updateMapStressTip" not in src and "map-stress-tip" not in src,
+   "v163：updateMapStressTip／#map-stress-tip 已刪（地圖底部提示成條拎走）")
 
 # --- E7 呈現接入 ---
 ok('E7: "未紅先收"' in src, "ENDING410_CAREER_NAMES 有 E7 未紅先收")

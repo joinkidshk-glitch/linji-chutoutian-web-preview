@@ -3491,13 +3491,6 @@ body.day-res-open .day-row{
   content:"載入地點…"; display:block; padding:10px 4px; color:#8a7355; font-size:.8rem; font-weight:700;
 }
 #loc-sheet.loc-hydrating .acts > *{ visibility:hidden }
-#map-stress-tip{
-  display:none; margin:6px 10px 0; padding:6px 10px; border-radius:10px;
-  background:rgba(180,60,40,.12); border:1px solid rgba(180,60,40,.35);
-  color:#6a2a1a; font-size:.74rem; font-weight:700; line-height:1.35;
-}
-#map-stress-tip.on{ display:block }
-#map-stress-tip.warn{ background:rgba(180,100,20,.14); border-color:rgba(180,100,20,.4); color:#6a4010 }
 /* Soft FX polish only. These nodes mount when gatePath()==="soft" (tutorialPhase2FxOn). No new PNG.
    finger: sit lower so the sprite is not biased up toward the HUD. lift: existing shadow PNG was faint (max alpha ~90).
    pulse: smaller scale swing + light blur so the hard ring does not read jagged.
@@ -4052,8 +4045,7 @@ body.day-res-open .day-row{
 #app.story-play-lock #map-legend,
 #app.story-play-lock #map-hint,
 #app.story-play-lock .map-hint,
-#app.story-play-lock #map-focus-bar,
-#app.story-play-lock #map-stress-tip{
+#app.story-play-lock #map-focus-bar{
   pointer-events: none !important;
 }
 
@@ -6028,7 +6020,6 @@ body.day-res-open .day-row{
         </div>
       </div>
       <div class="map-hint" id="map-hint"><b>載入中…</b></div>
-      <div id="map-stress-tip" role="status" aria-live="polite"></div>
       <div id="map-money-tip" class="map-money-tip" role="status" aria-live="polite" hidden></div>
     </div>
     <!-- v17y: sheet is sibling of map-wrap so absolute bottom pins to #v-map, not mid flex/scroll -->
@@ -22362,7 +22353,6 @@ function positionMapLabels137(){
   }catch(_e){}
 }
 function drawMap(){
-  try{ updateMapStressTip(); }catch(_st){}
   const img=document.getElementById("map-img");
   if(img && !img.src) img.src = (typeof MAP_IMG!=="undefined" && MAP_IMG) ? MAP_IMG : "assets/hk_map.jpg";
   const box=document.getElementById("map-pins");
@@ -41469,29 +41459,6 @@ function applyTrainLesson(courseId, notes){
   /* v20a35 節奏包 P0-2(b)：訓練微事件（即場堂入口；手帳排程堂喺 resolvePlannedDay 接） */
   try{ if(typeof maybeTrainEvent35==="function") maybeTrainEvent35(notes, courseId); }catch(_te35){}
   return notes;
-}
-function updateMapStressTip(){
-  const el = document.getElementById("map-stress-tip");
-  if(!el) return;
-  const st = Number(S && S.stress) || 0;
-  /* v20a61 CONSEQ61-2 警告層：連續 2 日收市 ≥80 又仍然高壓 → 身體警號（行將病倒） */
-  try{
-    if(st >= 80 && S && S.conseq61 && (Number(S.conseq61.streak80)||0) >= 2 && !S.conseq61.sick){
-      el.className = "on";
-      el.textContent = "身體警號：連續多日高壓（"+st+"），個人開始燶透——再谷下去會病倒，病倒那幾日行程會全部作廢。";
-      return;
-    }
-  }catch(_e){}
-  if(st >= 70){
-    el.className = "on";
-    el.textContent = "壓力偏高（"+st+"）：宜休息。全日訓練前會再確認。";
-  } else if(st >= 60){
-    el.className = "on warn";
-    el.textContent = "壓力漸升（"+st+"）：地圖上留意休息室／休息安排。";
-  } else {
-    el.className = "";
-    el.textContent = "";
-  }
 }
 function doEnroll(L){
   // costs a day — enroll = first lesson (stat gains today)
