@@ -83,3 +83,15 @@ A/B 對照（36px 米紙圓 chip、場景色底）：左＝v276 舊圖（細天�
 - 刪：`draw_peak277.py`（繪圖腳本，用完即刪，幾何已記喺 §1）。
 
 ## 8. 落地記錄（統籌補）
+
+- 新 main HEAD `3adf5cf`（squash merge v277，base `9772022`，合併期間 main 無郁過，
+  無 rebase）；GitHub `ls-remote` 一致，已推 main；工作副本 `linji-work277` 已刪；
+  分支 `v20a277` 留喺常駐 clone 做紀錄。
+- 全套 suite（工作副本獨立重跑）：**TOTAL PASS 342 FAIL 9**（基線 341／9＋新檔 1 項），
+  FAIL 九項同基線逐項一致（flash51／slot50／soft_tip_111_restore／start53／
+  weave43_static／weave44_static／weave49_static／wf5_87／wrap38），零回歸。
+- Pages：推 main 後等傳播約 4 分鐘，curl 核實主頁 HTTP 200、字節數／sha256 同本地
+  逐字節一致；`assets/icons/icon_peak.png?v=20a277` HTTP 200、sha256 同本地一致
+  （v277 重畫版）。
+- QC 教訓：v276 統籌隔離渲染隱藏元素話得；今次 A/B 對照喺 36px 米紙圓 chip＋
+  場景色底做（真實可見嘅標題處境），舊圖讀做座山、新圖一眼認得出係發射塔。
