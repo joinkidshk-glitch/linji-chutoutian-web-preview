@@ -20674,7 +20674,10 @@ function enterHome(summary, editable, initialTab){
   }catch(_pe253){}
   /* v20a6：允許呼叫方指定初始分頁（選單「狀態」→記數），避免先 plan 再 setTimeout 搶跑 */
   const _homeTab = (initialTab && typeof initialTab==="string") ? initialTab : "plan";
-  setHomeTab(_homeTab);
+  /* v20a272：setHomeTab 加防禦——tab 切換失敗唔可以拖死成個入屋流程
+     （renderNotebook／wireHome265／saveQ）。v267 殘留裸呼叫曾令 enterHome
+     喺呢度掟錯，行程空白＋瞓覺／衣櫃無接線。 */
+  try{ setHomeTab(_homeTab); }catch(_e){}
   renderNotebook();
   try{ revealCatTabs197(); }catch(_r197){} /* v20a197 B7：入屋初 paint，分類掣俾 bar 冚住就捲返出嚟 */
   try{ wireHomeStoryHint(); paintStoryEntryHints(); }catch(_e){}
@@ -28126,7 +28129,7 @@ function setHomeTab(tab){
   if(tab === "guide" || tab === "train"){ tab = "plan"; }
   const allow={ plan:1, ledger:1, clippings:1, debt:1, tags:1, works:1, awards:1, memory:1, progress:1, people:1, inv:1 }; /* v20a60 CALIB60-3：加「回憶」頁；v20a62 AWARDS62-7：加「獎項」頁；v20a71 PROGRESS71：加「進度」頁；v20a72 MENU72：加「人脈」「庫存」頁 */
   if(!allow[tab]) tab="plan";
-  applyPhase2Steps56TabLabel();
+  /* v20a272：傳聞教學函數 applyPhase2Steps56TabLabel 已隨 v267 刪走，呢度殘留嘅裸呼叫會掟 ReferenceError，令成個 setHomeTab 死晒（tab 撳落去毫無反應）——刪走。 */
   try{ book70SyncTabGroups(tab); }catch(_grp){}
   ["plan","ledger","clippings","debt","people","tags","inv","works","awards","memory","progress"].forEach(id=>{
     const pane=document.getElementById("home-pane-"+id);
