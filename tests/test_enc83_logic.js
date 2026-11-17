@@ -132,10 +132,10 @@ ok('出沒窗外：齊 1991 春得基礎 50%', (()=>{ _ys={year:1991,season:'春
 
 /* ---- (2) 五層完整性＋句數 ---- */
 const EXPECT_BEATS = {
-  ngai_wingnaam: ['ngai_intel','ngai_help','ngai_repay','ngai_patron'],
+  ngai_wingnaam: ['ngai_intel','ngai_help','ngai_repay','ngai_rain','ngai_patron_cold','ngai_patron'], /* v20a278：新 beat ngai_rain（repay 之後）＋冷版 patron（暖版前） */
   gu_mingfai: ['gu_foreshadow','gu_tease','gu_loan','gu_after_repay','gu_after_default','gu_n10after','gu_patron_cold','gu_patron'], /* v20a269：冷版提攜排暖版之前 */
-  lok_gasing: ['lok_foreshadow','lok_intel','lok_help','lok_recover','lok_e4grudge','lok_patron'],
-  chai_zanhoi: ['chai_intel','chai_choice','chai_repay','chai_patron'],
+  lok_gasing: ['lok_foreshadow','lok_intel','lok_help','lok_cover','lok_recover','lok_e4grudge','lok_patron_cold','lok_patron_cover','lok_patron'], /* v20a278：新 beat lok_cover（help 之後）＋冷版／翻唱收尾（暖版前） */
+  chai_zanhoi: ['chai_intel','chai_fear','chai_choice','chai_repay','chai_patron_cold','chai_patron'], /* v20a278：新 beat chai_fear（intel 之後）＋冷版 patron（暖版前） */
 };
 let total83 = 0;
 for(const sid of P2){
@@ -147,7 +147,7 @@ for(const sid of P2){
     && D.heart && D.heart.lines.length>=5 && D.heart.choices.length===2
     && ['T1','T2','T3'].every(t=> D.pool && Array.isArray(D.pool[t]) && D.pool[t].length>=2));
   ok('節拍表順序＋對白節拍齊：'+sid, JSON.stringify((ENC79_BEATS[sid]||[]).map(b=>b.id))===JSON.stringify(EXPECT_BEATS[sid])
-    && EXPECT_BEATS[sid].every(bid=> D.beats && D.beats[bid] && (D.beats[bid].lines||[]).length>=3));
+    && EXPECT_BEATS[sid].every(bid=> D.beats && D.beats[bid] && dlgCount(D.beats[bid])>=3)); /* v20a278：計埋 choices 行數（chai_fear 1 行正文＋4 行選項對白） */
   ok('句數 >= 115：'+sid+'（'+c+'）', c>=115);
 }
 console.log('Phase 2 四星對白句數（lines 元素計）：' + total83);
@@ -237,6 +237,8 @@ for(const sid of P1.concat(P2)){
   const picked = enc79PickBeat(sid);
   ok('提攜 T4 開＋排鏈節拍之後：'+sid, !!picked && picked.id===PATRON_BEAT[sid]);
   if(picked && picked.grants) picked.grants();
+  /* v20a278：魏提攜債權改行抉擇 fx——grants() 已拆，揀「照實講」先授（ngai_vouch） */
+  if(sid==='ngai_wingnaam' && picked && picked.id==='ngai_patron') enc79RunChoiceFx(enc79ChoiceFx('beat:ngai_patron','照實講：佢得，佢企得穩').fx);
   ok('提攜入帳：引薦債權＋帳本計數：'+sid, S.mockCredits.some(c=>c.id===PATRON_CREDIT[sid]) && ensureFavorLedger().credits>=1);
   const D = ENC79_DIALOG[sid];
   ok('提攜對白在位：'+sid, !!D && !!D.beats && Object.keys(D.beats).some(k=>k.endsWith('_patron') && (D.beats[k].lines||[]).length>=5));

@@ -283,7 +283,7 @@ ok('T6 shoot 入行程（signedPaid＝簽約金）', S.shoots.length===1 && S.sh
 ok('T6 呈現後 pending 清走', S.pendingAud.length===0);
 
 /* ---------- T7：GRANT229_ENC79 加 8 行 ---------- */
-ok('T7 全表 17 行（原 9＋新 8）', GRANT229_ENC79.length===17, 'n='+GRANT229_ENC79.length);
+ok('T7 全表 74 行（原 17＋v20a278 六線 57）', GRANT229_ENC79.length===74, 'n='+GRANT229_ENC79.length);
 const NEW8 = [
   ['beat:gu_n10after', '恭喜他，終於上岸', 'gig_1992_rec_103'],
   ['beat:gu_n10after', '提醒他以後不要再碰賭', 'gig_1992_rec_104'],
@@ -320,7 +320,7 @@ freshS(10);
 ok('T7 gu_n10after 兜底？無空 key 行→唔派',
   grant229RecordFromEnc79('beat:gu_n10after', '唔知講咩')===false && S.grant229Queue.length===0);
 ok('T7 新 8 行 reason 全部有實際對位 gig 標題',
-  GRANT229_ENC79.slice(9).every(r=>{ const g=gigById(r.gigId); return g && r.reason.indexOf(g.title)>=0; }));
+  GRANT229_ENC79.slice(9, 17).every(r=>{ const g=gigById(r.gigId); return g && r.reason.indexOf(g.title)>=0; }));
 ok('T7 顧 Beat 2 DRAFT 兩行繼續 dormant（唔經初遇 hook 觸發）',
   Object.keys(GRANT229_DRAFT).length===2 && GRANT229_DRAFT.gu_promise_clean.gigId==='gig_1991_rec_201' &&
   GRANT229_DRAFT.gu_ask_back.gigId==='gig_1991_rec_207');

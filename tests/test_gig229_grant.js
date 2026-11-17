@@ -178,7 +178,7 @@ ok('T0 DRAFT 2 鍵指住 live 新 id', Object.values(GRANT229_DRAFT).every(v=>SI
 ok('T0 11 張新 id 全部喺庫', SIDE_LIVE11.every(id=>!!gigById(id)));
 ok('T0 《星夜迷離》新庫有且只有 1 張（v232 補寫，v252 重編號 tv_122→tv_203）', gigs.filter(g=>(g.title||'').indexOf('星夜迷離')>=0).length===1 && gigById('gig_1991_tv_203'));
 ok('T0 GRANT229_CHOICE 44 鍵', Object.keys(GRANT229_CHOICE).length===44, Object.keys(GRANT229_CHOICE).join(','));
-ok('T0 GRANT229_ENC79 17 行（原 9＋v20a158 支線抉擇 8 行）', GRANT229_ENC79.length===17);
+ok('T0 GRANT229_ENC79 74 行（原 17＋v20a278 六線 57 行）', GRANT229_ENC79.length===74);
 ok('T0 GRANT229_DRAFT 2 鍵', Object.keys(GRANT229_DRAFT).length===2);
 ok('T0 CONTRACT229_GIGS 只得 N-3／N-4', Object.keys(CONTRACT229_GIGS).length===2 && CONTRACT229_GIGS.gig_1990_tv_107===1 && CONTRACT229_GIGS.gig_1990_film_113===1);
 
