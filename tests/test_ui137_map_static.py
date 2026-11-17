@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# v20a159 resync：地點 15→21（MAP159 B2 加 6 個約會新點：尖沙咀海傍／山頂／酒廊唱歌／旺角戲院／淺水灣／啟德機場）；.mn68 標籤數 15→21、地名 set 加 6 新名；舊 15 個 LOCS 座標逐一核實唔郁。
 # v20a137 MAP137 靜態測試：地圖 cover 放大＋拎走地區名細字層。
 # 反證：喺 v135 index 上行會 FAIL（仲係 contain、冇 cover 換算、地區名 12 個）。
 # 用法：python3 tests/test_ui137_map_static.py [path-to-index.html]
@@ -83,12 +84,13 @@ _dist_seg = src[src.index('id="map-districts97"'):src.index('id="map-districts97
 ok('地區層入面淨低金禧大酒店', '金禧大酒店' in _dist_seg and '中環' not in _dist_seg
    and '灣仔' not in _dist_seg and '銅鑼灣' not in _dist_seg)
 
-# --- (4) 地點名 15 個原封、LOCS 零改動 ---
+# --- (4) 地點名 21 個（v159 加 6 個約會新點）、舊 15 個 LOCS 座標零改動 ---
 mn = re.findall(r'<div class="mn68"[^>]*>([^<]+)</div>', src)
-ok('方案 B 地點標籤恰好 15 個', len(mn) == 15)
-ok('15 個地點名齊', set(mn) == {
+ok('方案 B 地點標籤恰好 21 個', len(mn) == 21)
+ok('21 個地點名齊（舊 15＋v159 加 6 個約會新點）', set(mn) == {
     '獅子山製片', '香江唱片', '星河電視台', '九龍電視台', '海港廣播', '紅棉影業', '維港電影',
-    '中環廣告', '金鐘創意', '灣仔唱片', '天星音樂', '金龍茶餐廳', '何生事務所', '廟街禮品', '仁康醫院'})
+    '中環廣告', '金鐘創意', '灣仔唱片', '天星音樂', '金龍茶餐廳', '何生事務所', '廟街禮品', '仁康醫院',
+    '尖沙咀海傍', '山頂', '酒廊唱歌', '旺角戲院', '淺水灣', '啟德機場'})
 EXP_LOCS = {
     'film_lion': (52, 12), 'rec_hk': (30, 24), 'tvb_longmen': (41, 14), 'tvb_kowloon': (37, 45),
     'tvb_harbour': (90, 15), 'film_cotton': (68, 11), 'film_harbour': (80, 18), 'ad_central': (64, 57),
@@ -99,7 +101,7 @@ for lid, (ex, ey) in EXP_LOCS.items():
     line = next((ln for ln in src.split('\n') if f'id:"{lid}"' in ln), '')
     m = re.search(r'x:(\d+), y:(\d+)', line)
     if not m or (int(m.group(1)), int(m.group(2))) != (ex, ey): locs_ok = False
-ok('LOCS 15 地點座標零改動（圖 % 係 source of truth）', locs_ok)
+ok('LOCS 舊 15 地點座標零改動（圖 % 係 source of truth）', locs_ok)
 ok('熱區仍 52px（v43 定案唔郁）', 'width:52px !important' in v43 and 'height:52px !important' in v43)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')

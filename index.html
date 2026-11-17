@@ -4229,6 +4229,18 @@ body.day-res-open .day-row{
   box-shadow:0 1px 3px rgba(26,20,16,.2);
   padding:2px 9px; font-weight:700;
 }
+/* v20a159 MAP159：地圖層切換掣（#map-hint 行尾，米紙 pill，跟 #map-show-all-locs 同一語言；
+   約會層態加深色，等玩家一眼分到而家邊層） */
+#app #map-layer159{
+  background:#fdf8ea; color:#5c4a1f;
+  border:1px solid var(--gold); border-radius:999px;
+  box-shadow:0 1px 3px rgba(26,20,16,.2);
+  padding:2px 9px; font-weight:700; cursor:pointer; margin-left:6px;
+  font-size:.68rem; white-space:nowrap;
+}
+#app #map-layer159[aria-pressed="true"]{
+  background:#2e3448; color:#FFE7A0; border-color:var(--gold);
+}
 
 /* --- .chip：米紙牌＋金邊＋柔和陰影（全域） --- */
 #app .chip{
@@ -6047,6 +6059,13 @@ body.day-res-open .day-row{
               <div class="mn68" style="left:15%;top:calc(86% - 20px)">何生事務所</div>
               <div class="mn68" style="left:28.4%;top:calc(35% - 104px)">廟街禮品</div>
               <div class="mn68" style="left:43%;top:calc(73% + 52px)">仁康醫院</div>
+              <!-- v20a159 MAP159：約會層 6 個墨字地名（格式跟足上面 15 個；label 位置跟 LOCS 座標，避開附近標籤） -->
+              <div class="mn68" style="left:58%;top:calc(40% - 52px)">尖沙咀海傍</div>
+              <div class="mn68" style="left:52%;top:calc(63% + 34px)">山頂</div>
+              <div class="mn68" style="left:74%;top:calc(60% - 52px)">酒廊唱歌</div>
+              <div class="mn68" style="left:22%;top:calc(32% + 31px)">旺角戲院</div>
+              <div class="mn68" style="left:55%;top:calc(92% - 52px)">淺水灣</div>
+              <div class="mn68" style="left:78%;top:calc(38% - 52px)">啟德機場</div>
             </div>
             <!-- v20a97 MAP97 地區名細字層（落位表見 NOTES_V20A97_MAP97.md）——
                  v20a137 MAP137：用戶 2026-11-12 21:04 拍板大地圖唔要地區名，12 個地區 div 已刪；
@@ -6372,6 +6391,29 @@ const LOCS = [
     desc:"廟街夜市最旺那檔禮品檔：花、果籃、卡帶、蛋撻，送人自用都齊，老闆娘記性好得嚇人。" },
   { id:"hospital", name:"仁康醫院", area:"薄扶林", type:"med", region:"island", x:43, y:73, emoji:"🏥",
     desc:"白十字大樓，門口長泊著一部救護車。平時無人想來，病到燶透時，才知這裡有多重要。" },
+  /* v20a159 MAP159：約會層 6 個新地點（草稿 §3.2；Q8 修訂：酒廊唱歌唔係卡拉OK）。
+     layer:"date"；片場層 15 個唔設 layer（預設片場層，現有欄位零改動）。
+     落位理據（對住 hk_map_v6.jpg 實圖＋現有 15 點座標，全部新點同最近舊點距離 ≥10%、
+     唔撞 label、唔入 CLUSTER 7.5% fan-out 圈）：
+     · 海傍 (58,40)：南九龍海邊，夜市檔／紅樓旁邊水邊位，離 gift_shop 15.8%、tvb_kowloon 21.6%。
+     · 山頂 (52,63)：港島西高位，中環藍塔以西綠坡，離 ad_central 13.4%、hospital 13.5%。
+     · 酒廊 (74,60)：中環／金鐘之間山坡，離 ad_central 10.4%、ad_adm 11%。
+     · 戲院 (22,32)：旺角西面空地，近 rec_hk（旺角）11.3%，離 cafe_cha 17.5%。
+     · 淺水灣 (55,92)：港島南岸底邊，離 agency_ho 31.7%、rec_star 27.8%。
+     · 啟德 (78,38)：東九龍跑道尖端，離 film_harbour 20.1%、date_harbour 20.1%。
+     type:"date"——唔行通告板／訓練／休息室嗰啲工作地點掣（openLoc 只認 film/tv/music/ad）。 */
+  { id:"date_harbour", name:"尖沙咀海傍", area:"尖沙咀", type:"date", region:"kln", x:58, y:40, emoji:"🌊", layer:"date",
+    desc:"尖沙咀海傍，維港海風迎面，對岸燈火映照水面，適合慢慢散步。" },
+  { id:"date_peak", name:"山頂", area:"山頂", type:"date", region:"island", x:52, y:63, emoji:"🌃", layer:"date",
+    desc:"山頂可俯瞰全城夜景，纜車站旁燈火如星，整個香港盡在腳下。" },
+  { id:"date_lounge", name:"酒廊唱歌", area:"中環", type:"date", region:"island", x:74, y:60, emoji:"🎤", layer:"date",
+    desc:"中環酒廊燈光昏黃，駐場歌手彈着結他唱慢歌，適合坐下來慢慢談心。" },
+  { id:"date_cinema", name:"旺角戲院", area:"旺角", type:"date", region:"kln", x:22, y:32, emoji:"🎬", layer:"date",
+    desc:"旺角戲院門口貼滿手繪海報，散場時人潮湧出，門前永遠熱鬧。" },
+  { id:"date_beach", name:"淺水灣", area:"淺水灣", type:"date", region:"island", x:55, y:92, emoji:"🏖️", layer:"date",
+    desc:"淺水灣沙灘水清沙幼，泳棚與更衣室維持舊貌，假日遊人較多。" },
+  { id:"date_airport", name:"啟德機場", area:"九龍城", type:"date", region:"kln", x:78, y:38, emoji:"✈️", layer:"date",
+    desc:"啟德機場跑道伸入維港，飛機低飛越過九龍城上空，轟鳴聲不絕於耳。" },
 ];
 
 const NPCS = {
@@ -6443,6 +6485,32 @@ function enrolledCourseCta(courseId){
 
 let S=null, atLoc=null, mapRegion="all"; /* v19z20: region filter retired; always all */
 let mapShowAllLocs=false; /* v19z20: idle pins dimmed unless true */
+/* ===== v20a159 MAP159：地圖分兩層（草稿 §3.2）=====
+   片場層（"set"，預設）：15 個原有地點。約會層（"date"）：6 個新點＋金龍茶餐廳
+   ＋廟街禮品。何生事務所／仁康醫院唔入約會層。
+   層狀態只係 transient（唔入 save）；切換唔耗出行額度、唔刷新成個地圖狀態，
+   只係 drawMap 重繪一次＋paintBar 更新掣面文字。 */
+let map159Layer="set";
+const MAP159_DATE_LAYER_SHARED=["cafe_cha","gift_shop"]; /* 約會層共享點：茶餐廳（通用約會）＋廟街（夜市） */
+function map159LocLayer(L){ try{ return (L && L.layer) ? L.layer : "set"; }catch(_e){ return "set"; } }
+function map159LocVisible(L){
+  if(!L) return false;
+  const layer = (typeof map159Layer!=="undefined" && map159Layer) ? map159Layer : "set";
+  if(layer==="date") return map159LocLayer(L)==="date" || MAP159_DATE_LAYER_SHARED.indexOf(L.id)>=0;
+  return map159LocLayer(L)!=="date";
+}
+function map159LayerBtnHtml(){
+  const isDate = (typeof map159Layer!=="undefined" && map159Layer==="date");
+  return `<button type="button" class="map-layer159" id="map-layer159" aria-pressed="${isDate?"true":"false"}" title="切換地圖層次，不耗出行額度">${isDate?"約會層 · 切返片場":"片場層 · 切去約會"}</button>`;
+}
+/* 第三出沒點（tertiary）——6 個新點嘅日常用途（草稿 §3.2：每個新地點除咗約會要有日常用途）。
+   出沒率 p／主場 share／上限／冷卻數字一律唔郁：tertiary 唔食主場／副場嘅份——只喺
+   本來唔出沒嘅日子（out roll 唔中），以 20% 機率去第三點；主場／副場出現率同以前一字不差，
+   同一日只可以喺一個地方。roll 寫死喺 enc79EnsureDay／rom176EnsureDay 入面，唔可以抽做
+   共用 helper——enc79／rom176 嘅 logic test 係逐個函數抽取 eval，共用 helper 會令佢哋 ReferenceError。
+   分配（每人一個第三點，六個新點各有一人；跟草稿 §3.2 分配表）：
+   ENC79：葉敏芝→酒廊、蘇芷茵→海傍；
+   ROM176：林曉晴→啟德、周采兒→戲院、藍若曦→淺水灣、徐寶珊→山頂。 */
 
 function R(a,b){return a+Math.floor(Math.random()*(b-a+1))}
 function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v))}
@@ -7006,7 +7074,13 @@ const ROMANCE_WF2_OVERRIDES = {
    {
     "speaker": "藍若曦",
     "lines": [
-     "外判嗰邊開嘅人工，多我而家一半。屋企人話，唔去就係傻——女仔做場記做到幾多歲呀，佢哋咁講。"
+     "阿爸今日親自嚟，等我收工，話要同我食飯——其實係想話我聽，場記呢份工做到幾多歲，叫我一個月內轉文職。"
+    ]
+   },
+   {
+    "speaker": "藍若曦",
+    "lines": [
+     "佢話女仔捱夜捱到咁，唔係辦法。外判嗰邊開嘅人工，多我而家一半，屋企人個個都話，唔去就係傻。"
     ]
    },
    {
@@ -7713,6 +7787,7 @@ const StoryOC = (()=>{
     push("main", "C主線", w.main && w.main.nodes);
     push("romance_vera_hiu_choi", "R感情1", w.romance && w.romance.veraHiuChoi && w.romance.veraHiuChoi.nodes);
     push("romance_lan_xu", "R感情2", w.romance && w.romance.lanXu && w.romance.lanXu.nodes);
+    push("romance_yip_so", "R感情3", w.romance && w.romance.yipSo && w.romance.yipSo.nodes); /* v20a159 ROM159：葉／蘇新線 */
     /* v20a152：romance_tang 已刪——story_detail_romance_tang.json 唔再載入；鄧麗萍線只行 DengLine 排片層 */
     push("rival", "A對手導師", w.rival && w.rival.nodes);
     return out;
@@ -7939,8 +8014,15 @@ const StoryOC = (()=>{
     if(!st || !key) return 0;
     let k = String(key);
     if(!k.startsWith("rel_")) k = "rel_"+k;
+    /* v20a159 ROM159：排他鎖——鎖定後，非鎖定女角嘅 rel 凍結（加減都唔計入）；
+       判斷經 rom159GainAllowed（內含舊檔遷移：未鎖但有人已 ≥5 即鎖最高嗰位）。 */
+    try{
+      if(typeof rom159GainAllowed==="function" && !rom159GainAllowed(k)){ return (typeof st.rel[k]==="number" ? st.rel[k] : 0); }
+    }catch(_e){}
     const next = (typeof st.rel[k]==="number" ? st.rel[k] : 0) + (Number(delta)||0);
     st.rel[k] = next;
+    /* v20a159 ROM159：首次衝上 rel 5 即鎖定；rel 4 首次軟提示（見 rom159CheckLock）。 */
+    try{ if(typeof rom159CheckLock==="function") rom159CheckLock(k, next); }catch(_e){}
     try{ saveQ(); }catch(_e){}
     return next;
   }
@@ -10468,6 +10550,7 @@ const StoryPlay = (()=>{
     /* v20a82 WF3：節點預備鉤——N8 持有葉敏芝疑雲真相時追加提點抉擇 N8_d（淺拷貝） */
     try{ if(typeof wf3PrepareNode82==="function"){ const pn82 = wf3PrepareNode82(node); if(pn82) node = pn82; } }catch(_w3p){}
     try{ if(typeof contra98PrepareNode==="function"){ const pn98 = contra98PrepareNode(node); if(pn98) node = pn98; } }catch(_c98p){} /* v20a98 CONTRA98 B-01 */
+    try{ if(typeof rom159PrepareNode==="function"){ const pn159 = rom159PrepareNode(node); if(pn159) node = pn159; } }catch(_r159p){} /* v20a159 ROM159：排他鎖＋采兒公開／低調 */
     if(!opts.force){
       if(StoryOC.isStubNode && StoryOC.isStubNode(node)){ toast("此節不開放"); return false; }
       if(StoryOC.isDone(node.id)){ toast("這幕已完成"); return false; }
@@ -12620,7 +12703,9 @@ function endingRomance410(st){
     choi: line("R_choi_meet", "rel_choi", "R_choi_crisis", "flag_choi_commit"),
     vera: line("R_vera_meet", "rel_vera", "R_vera_crisis", "flag_vera_commit"),
     lan:  line("R_lan_meet",  "rel_lan",  "R_lan_crisis",  "flag_lan_commit"),
-    xu:   line("R_xu_meet",   "rel_xu",   "R_xu_crisis",   "flag_xu_commit")
+    xu:   line("R_xu_meet",   "rel_xu",   "R_xu_crisis",   "flag_xu_commit"),
+    yip:  line("R_yip_meet",  "rel_yip",  "R_yip_crisis",  "flag_yip_commit"),
+    so:   line("R_so_meet",   "rel_so",   "R_so_crisis",   "flag_so_commit")
   };
 }
 function endingE2Eligible410(st){
@@ -13001,13 +13086,17 @@ function resolveEnding410(st, opts){
     variant = (opts.quit==="leave") ? "遠走" : ((baseCareer==="E4") ? "心灰" : "安穩");
     reasons.push("E6：玩家主動入口（"+(opts.quit==="leave"?"移民離場":"接屋企穩陣工")+"）覆蓋原判定 "+baseCareer);
   }
-  /* 感情軸：完整線 commit 優先；半線（Vera／藍／徐）就算 pack ending 寫過同名旗，
-     按專檔定性唔入 commit，只做差一步素材（見 4-8 NOTES）。 */
+  /* 感情軸：完整線 commit 優先（六人全部可 commit；Vera 已出局，唔入 commit，只做差一步素材——
+     舊檔 rel_vera 仲喺度嗰陣，「almost」嗰邊照讀，見下面）。 */
   let romance = { line: null, kind: "solo", rel: 0 };
   if(rom.hiu.committed) romance = { line: "hiu", kind: "commit", rel: rom.hiu.rel };
   else if(rom.choi.committed) romance = { line: "choi", kind: "commit", rel: rom.choi.rel };
+  else if(rom.lan.committed) romance = { line: "lan", kind: "commit", rel: rom.lan.rel };
+  else if(rom.xu.committed) romance = { line: "xu", kind: "commit", rel: rom.xu.rel };
+  else if(rom.yip.committed) romance = { line: "yip", kind: "commit", rel: rom.yip.rel };
+  else if(rom.so.committed) romance = { line: "so", kind: "commit", rel: rom.so.rel };
   else {
-    const order = ["hiu", "choi", "vera", "lan", "xu"];
+    const order = ["hiu", "choi", "vera", "lan", "xu", "yip", "so"];
     let best = null;
     order.forEach(k=>{
       const L = rom[k];
@@ -13215,7 +13304,7 @@ function endingRomanceScene410(rec){
   /* v20a89 BR89：半線結局呈現按玩家喺差一步嗰幕嘅 he/be 抉擇分版（審計 #5）——
      以前無論嗰幕點揀，結局頁都係同一段；而家 be＝親手放下版、he＝留有餘地版、
      冇去到嗰幕＝原版。判定（邊條線做 almost）完全唔郁，只分呈現文字。 */
-  const BR89_HEBE_FLAGS = ["flag_vera_he","flag_vera_be","flag_lan_he","flag_lan_be","flag_xu_he","flag_xu_be","flag_hiu_he","flag_hiu_be","flag_choi_he","flag_choi_be"];
+  const BR89_HEBE_FLAGS = ["flag_vera_he","flag_vera_be","flag_lan_he","flag_lan_be","flag_xu_he","flag_xu_be","flag_hiu_he","flag_hiu_be","flag_choi_he","flag_choi_be","flag_yip_he","flag_yip_be","flag_so_he","flag_so_be"];
   const heBe89 = (line)=>{ try{ const st = (typeof S!=="undefined") ? S : null; if(!st) return ""; const beF = "flag_"+line+"_be", heF = "flag_"+line+"_he"; if(BR89_HEBE_FLAGS.includes(beF) && endingFlag410(st, beF)) return "be"; if(BR89_HEBE_FLAGS.includes(heF) && endingFlag410(st, heF)) return "he"; }catch(_e){} return ""; };
   if(r.kind==="almost" && r.line==="vera"){
     const v = heBe89("vera");
@@ -13884,6 +13973,13 @@ const GiftShop = (function(){
     const pref = prefFor(npcKey);
     const sys = (GIFT_REACT && GIFT_REACT.system) || {};
     if(!pref) return { ok:false, reason:"此線暫未開放送禮" };
+    /* v20a159 ROM159：排他鎖——鎖定後其他女角唔收禮（禮物唔扣，唔好令玩家蝕咗先知鎖咗）。 */
+    try{
+      if(typeof rom159GiftBlocked==="function"){
+        const blk = rom159GiftBlocked(npcKey);
+        if(blk) return { ok:false, reason:blk };
+      }
+    }catch(_e){}
     if(!flagOk(npcKey)){
       if(npcKey==="tang") return { ok:false, reason:sys.tangLocked||"院線那邊，還未到送禮的時候。" };
       /* v19z4：傾談後永不用「沒打過照面」；講明真實門檻 */
@@ -13944,6 +14040,8 @@ const GiftShop = (function(){
     const by = (GIFT_REACT && GIFT_REACT.byKey) || {};
     const prefKey = (pref==="dislike") ? "dislike" : (pref==="favorite" ? "liked" : pref); /* v20a183 B2：最愛查句行 :liked（女角 pack 得 :liked 句） */
     let ent = by[npcKey+":"+itemId+":"+prefKey];
+    /* v20a159 ROM159：最愛無專屬句 → 退回同 item 嘅喜歡句，唔好直接跌去普通句。 */
+    if(!ent && prefKey==="favorite") ent = by[npcKey+":"+itemId+":liked"];
     if(!ent && prefKey!=="neutral"){
       /* 缺專屬 → 同角任意 neutral（同 item 優先，否則首條） */
       ent = by[npcKey+":"+itemId+":neutral"];
@@ -14006,6 +14104,13 @@ const GiftShop = (function(){
   }
   function giveGift(npcKey, itemId){
     ensureSave();
+    /* v20a159 ROM159：鎖定拒收第二道防線（canGive 已擋；此處再擋一次，防將來有呼叫方繞過 canGive）。 */
+    try{
+      if(typeof rom159GiftBlocked==="function"){
+        const blk = rom159GiftBlocked(npcKey);
+        if(blk) return { ok:false, reason:blk };
+      }
+    }catch(_e){}
     const gate = canGive(npcKey);
     if(!gate.ok) return { ok:false, reason:gate.reason };
     if(invCount(itemId)<=0) return { ok:false, reason:"庫存沒有這件禮物" };
@@ -14032,6 +14137,8 @@ const GiftShop = (function(){
     const before = (typeof StoryOC!=="undefined") ? StoryOC.getRel(relKey) - applied : 0;
     const after = (typeof StoryOC!=="undefined") ? StoryOC.getRel(relKey) : before+applied;
     try{ saveQ(); }catch(_e){}
+    /* v20a159 ROM159：送禮唔耗日（現行唔耗日規則）——拎走 costsDay:true 殘留值，
+       回傳唔再帶呢個欄，唔好兩邊唔同。呼叫方（doGiveGift）一向睇 softSocialCostsDay，唔睇呢欄。 */
     return {
       ok:true, reason:"", itemId, name:(itemById(itemId)||{}).name||itemId,
       kind, delta:applied, softcap, line, relKey, before, after
@@ -14731,7 +14838,7 @@ async function refreshCopyPacksFromDisk(){
   const bust = encodeURIComponent(typeof SAVE!=="undefined"?SAVE:Date.now());
   const get = (name)=> fetch(contentFetchUrl(base+name+"?v="+bust)).then(r=>r.ok?r.json():null).catch(()=>null);
   try{
-    const [a,b,c,d, gigsNew, main, rom1, rom2, rival, giftItems, giftShops, giftPrefs, giftReact, gateStub, dengMock, dengPushMock, dualMock, newsImgs] = await Promise.all([
+    const [a,b,c,d, gigsNew, main, rom1, rom2, rom3, rival, giftItems, giftShops, giftPrefs, giftReact, gateStub, dengMock, dengPushMock, dualMock, newsImgs] = await Promise.all([
       get("npc_lines_core.json"),
       get("events_zh_HK.json"),
       get("story_beats_phase1.json"),
@@ -14740,6 +14847,7 @@ async function refreshCopyPacksFromDisk(){
       get("story_detail_n1_to_n17.json"),
       get("story_detail_romance_vera_hiu_choi.json"),
       get("story_detail_romance_lan_xu.json"),
+      get("story_detail_romance_yip_so.json"), /* v20a159 ROM159：葉敏芝／蘇芷茵新線（Vera／海媚出局後入局） */
       /* v20a152：story_detail_romance_tang.json 已停載（鄧麗萍感情線取消；排片線行 DengLine mock） */
       get("story_detail_rival_mentor.json"),
       get("items_gifts.json"),
@@ -14765,6 +14873,8 @@ async function refreshCopyPacksFromDisk(){
     try{ if(typeof loc96RemapGiftShop==="function") loc96RemapGiftShop(); }catch(_l96){}
     if(giftPrefs && giftPrefs.npcs) GIFT_PREFS = giftPrefs; try{ if(typeof applyTangGift164==="function") applyTangGift164(); }catch(_t164){}
     if(giftReact && (giftReact.byKey || giftReact.entries)) GIFT_REACT = giftReact; try{ if(typeof applyTangGift167==="function") applyTangGift167(); }catch(_t167){} try{ if(typeof rom176ApplyGiftOverrides==="function") rom176ApplyGiftOverrides(); }catch(_r176){}
+    /* v20a159 ROM159：載入後即套喜好分層覆寫（唔直改 pack JSON；必須喺 GIFT_PREFS／GIFT_REACT 兩句賦值之後。 */
+    try{ if(typeof rom159ApplyGiftOverrides==="function") rom159ApplyGiftOverrides(); }catch(_g159){}
     try{ if(typeof GiftShop!=="undefined") GiftShop.ensureSave(); }catch(_g){} try{ if(typeof applyTangGift169==="function") applyTangGift169(); }catch(_t169){}
     /* v20a55 TEXTFIX：載入即清洗玩家面文字（審計 linji-text-audit） */
     try{ textfix55SimplePack(a); }catch(_t55){}
@@ -14806,6 +14916,7 @@ async function refreshCopyPacksFromDisk(){
     /* v20a234：主線節點由 JSON pack 直出，唔再經內嵌覆寫表（N6–N19 唯一來源）；N18／N19 已喺 pack 入面，唔使注入。 */
     STORY_WIRE.romance.veraHiuChoi = rom1;
     STORY_WIRE.romance.lanXu = rom2;
+    STORY_WIRE.romance.yipSo = rom3; /* v20a159 ROM159：葉／蘇新 pack */
     /* v20a152：romance.tang 槽已刪（見 STORY_WIRE 初始化） */
     STORY_WIRE.rival = rival;
     /* v20a242：ROMANCE_LAN_PA_OVERRIDES 已刪，JSON 做唯一來源，唔再呼叫 applyRomanceLanOverrides48。 */
@@ -14816,11 +14927,11 @@ async function refreshCopyPacksFromDisk(){
     /* v20a152：先將 R_tang_meet_stub 正規化做純公事介紹（見 normaliseTangStub152），再行 TEXTFIX——
        舊開閘字串已改寫，TEXTFIX55 嘅舊開閘條目對唔上源字串，已刪。 */
     try{ normaliseTangStub152(rom2); }catch(_t152){}
-    try{ textfix55StoryPack(main); textfix55StoryPack(rom1); textfix55StoryPack(rom2); textfix55StoryPack(rival); textfix55RivalSpeakers(rival); }catch(_t55){}
+    try{ textfix55StoryPack(main); textfix55StoryPack(rom1); textfix55StoryPack(rom2); textfix55StoryPack(rom3); textfix55StoryPack(rival); textfix55RivalSpeakers(rival); }catch(_t55){}
     try{ textfix55StoryPack(gateStub); textfix55StoryPack(dengMock); textfix55StoryPack(dengPushMock); textfix55StoryPack(dualMock); }catch(_t55){}
     /* v20a66 YEARS66：劇情包年份 remap（TEXTFIX 之後行，pack 年份字眼一併 +2） */
-    try{ if(typeof contra98FixNodeWhen==="function") contra98FixNodeWhen([main, rom1, rom2, rival]); }catch(_c98w){} /* v20a98 CONTRA98：支線節點時期標籤正規化，須喺 years66Walk 之前 */
-    try{ if(typeof years66Walk==="function"){ [main, rom1, rom2, rival, gateStub, dengMock, dengPushMock, dualMock].forEach(p=>{ try{ years66Walk(p, null); }catch(_y66){} }); } }catch(_y66){}
+    try{ if(typeof contra98FixNodeWhen==="function") contra98FixNodeWhen([main, rom1, rom2, rom3, rival]); }catch(_c98w){} /* v20a98 CONTRA98：支線節點時期標籤正規化，須喺 years66Walk 之前 */
+    try{ if(typeof years66Walk==="function"){ [main, rom1, rom2, rom3, rival, gateStub, dengMock, dengPushMock, dualMock].forEach(p=>{ try{ years66Walk(p, null); }catch(_y66){} }); } }catch(_y66){}
     /* v20a67 JAN67：N1 時期標籤季節對位（when「1990春」→「1990冬」，只限 N1） */
     try{ if(typeof jan67OpeningTextFix==="function") jan67OpeningTextFix(main, 0); }catch(_j67){}
     /* v20a87 WF5：soft 變體層（DengLine／DualMeet）文本對齊——loadMock 之前套用（同 textfix55／years66 先例） */
@@ -14853,6 +14964,7 @@ async function refreshCopyPacksFromDisk(){
     if(!main) STORY_WIRE.errors.push("story_detail_n1_to_n17.json 未載入");
     if(!rom1) STORY_WIRE.errors.push("romance vera/hiu/choi 未載入");
     if(!rom2) STORY_WIRE.errors.push("romance lan/xu 未載入");
+    if(!rom3) STORY_WIRE.errors.push("romance yip/so 未載入"); /* v20a159 ROM159 */
     /* v20a152：romance tang 已停載，唔再報「未載入」（唔係錯誤） */
     if(!rival) STORY_WIRE.errors.push("rival_mentor 未載入");
     STORY_WIRE.softStubOk = true;
@@ -14873,7 +14985,7 @@ async function refreshCopyPacksFromDisk(){
       const high = (GIGS||[]).filter(g=>g.boardPriority==="high").length;
       console.info("[WIRING]", "gigs", (GIGS||[]).length, "year", STORY_WIRE.gigsYearActive, "fromFile", STORY_WIRE.gigsFromFile, "high", high,
         "C", main && main.nodes && main.nodes.length,
-        "R", [rom1,rom2].reduce((n,p)=>n+((p&&p.nodes&&p.nodes.length)||0),0),
+        "R", [rom1,rom2,rom3].reduce((n,p)=>n+((p&&p.nodes&&p.nodes.length)||0),0),
         "A", rival && rival.nodes && rival.nodes.length,
         STORY_WIRE.errors.length? STORY_WIRE.errors : "ok");
     }
@@ -15925,7 +16037,7 @@ function showWireDebug(){
   const high = sorted.filter(g=>g.boardPriority==="high");
   const locLongmen = (typeof LOCS!=="undefined" && LOCS.find(l=>l.id==="tvb_longmen"));
   const mainN = w.main && w.main.nodes ? w.main.nodes.length : 0;
-  const rCount = ["veraHiuChoi","lanXu"].reduce((n,k)=>{ /* v20a152：tang 已刪 */
+  const rCount = ["veraHiuChoi","lanXu","yipSo"].reduce((n,k)=>{ /* v20a152：tang 已刪；v20a159 ROM159：加 yipSo */
     const p = w.romance && w.romance[k]; return n + ((p && p.nodes && p.nodes.length) || 0);
   }, 0);
   const aCount = w.rival && w.rival.nodes ? w.rival.nodes.length : 0;
@@ -20506,6 +20618,8 @@ function enterHome(summary, editable, initialTab){
   /* v20a78 LOCK78：已結局嘅手帳只准唯讀回顧（作品牆／回憶／剪報），唔准再編排行程 */
   if(typeof ending78Locked==="function" && ending78Locked()) editable = false;
   closeSheet(); closeModal();
+  /* v20a159 ROM159：排他鎖／軟提示待發通知（入屋嗰刻彈一次）。 */
+  try{ if(typeof rom159FlushNotices==="function") rom159FlushNotices(); }catch(_e){}
   // v18l: surface overdue drops queued during tickDay
   try{
     const drops = takeShootDropNotes();
@@ -22239,7 +22353,11 @@ function paintBar(){
       let awardLine218 = "";
       try{ const _cue218 = (typeof awards213MapCue213==="function") ? awards213MapCue213() : ""; if(_cue218) awardLine218 = `<span class="map-hint-aud108">${_cue218}</span>`; }catch(_e){}
       /* v20a135 MAP135：灰色規則行、劇情卡、地點篩選掣已拎走；出行已併入 planLine（上）。 */
-      return `<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${audLine108}${awardLine218}${startToday}`;
+      /* v20a159 MAP159：層切換掣生喺 #map-hint 行尾（paintBar 每次重寫 innerHTML，掣面文字跟層走；
+         委派掛喺 #map-hint 上，見 wireMapLayer159；切換唔耗出行額度）。 */
+      let layerBtn159 = "";
+      try{ if(typeof map159LayerBtnHtml==="function") layerBtn159 = map159LayerBtnHtml(); }catch(_e159){}
+      return `<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${audLine108}${awardLine218}${startToday}${layerBtn159}`;
     })();
   try{
     const stBtn=document.getElementById("map-start-today");
@@ -22467,7 +22585,9 @@ function drawMap(){
     return { hasNpc, boardList, boardN, canBoardN, tip, hasTip, isStoryTip, hasBoard, hasStar, starName, hasAction };
   }
   /* v19z3／v19z20：近針扇形錯開（略加大半徑減重疊） */
-  const visible = LOCS.slice();
+  /* v20a159 MAP159：只顯示當前層嘅地點（片場層 15 個／約會層 6 新＋茶記＋廟街）；
+     底欄 #map-area-list 同最近針解析都食同一個 visible，唔使逐處改。 */
+  const visible = LOCS.filter(map159LocVisible);
   const placed = visible.map(L=>({ L, x:Number(L.x)||0, y:Number(L.y)||0 }));
   const CLUSTER = 7.5; /* % distance */
   const claimed = new Set();
@@ -22598,6 +22718,18 @@ function drawMap(){
   }catch(_e){}
   /* v20a137 MAP137：地點名＋會場標籤即場定位（cover 換算；見 positionMapLabels137）。 */
   try{ if(typeof positionMapLabels137==="function") positionMapLabels137(); }catch(_e){}
+  /* v20a159 MAP159：墨字地名（.mn68）跟層走——另一層嘅名唔可以留喺地圖上面。
+     mn68 冇 data-loc 欄（唔郁上面 15 個舊 div），按文字對 LOCS 名；
+     唔係地點名嘅 div（例如會場標籤）唔郁。 */
+  try{
+    const visNames = {};
+    visible.forEach(L=>{ visNames[L.name]=1; });
+    document.querySelectorAll(".map-names68 .mn68").forEach(el=>{
+      const t = (el.textContent||"").trim();
+      if(!t) return;
+      el.style.display = visNames[t] ? "" : "none";
+    });
+  }catch(_e){}
 }
 
 let _modalDismiss=null;
@@ -25295,6 +25427,15 @@ function commit48Available(id){
   if(choice47StoryFlag(def.otherFlag)) return false;     /* 互斥：已 commit 另一線 */
   if(!choice47StoryDone(def.crisis)) return false;       /* 未行到該線 crisis，唔好提早收束 */
   if(commit48Rel(def.relKey) < COMMIT48_REL_MIN) return false;
+  /* v20a159 ROM159：排他鎖——只可以 commit 鎖定嗰位。未鎖（舊檔／未行過 bumpRel）嗰陣
+     rom159LockedWho 內含遷移：有人已 ≥5 即鎖佢；六人都未到 5 就唔開 offer。 */
+  try{
+    if(typeof rom159LockedWho==="function"){
+      const who = rom159LockedWho();
+      const mine = (typeof rom159RelKeyWho==="function") ? rom159RelKeyWho(def.relKey) : null;
+      if(!who || (mine && who!==mine)) return false;
+    }
+  }catch(_e){}
   return choice47SeasonReached(1992, "秋");              /* N15–N17 窗口：1992 秋起，過年唔鎖死 */
 }
 function commit48ActionsAt(locId){
@@ -25320,20 +25461,984 @@ function commit48Play(id){
    pack R_*_ending HE 路徑寫入，兩邊一致）；半線 Vera／藍／徐嘅 pack ending 旗同名並存，
    結局專檔定性（半線唔入 commit、只做差一步）由 4-10 判定嗰陣處理，呢度只如實回報。 */
 function endingRomanceState48(){
-  const line = (meetId, relKey, crisisId, commitFlag)=>{
+  const line = (meetId, relKey, crisisId, commitFlag, publicFlag)=>{
     let met = false, crisisDone = false;
     try{ met = choice47StoryDone(meetId); }catch(_e){}
     try{ crisisDone = choice47StoryDone(crisisId); }catch(_e){}
-    return { met:met, rel:commit48Rel(relKey), crisisDone:crisisDone, committed:choice47StoryFlag(commitFlag) };
+    const out = { met:met, rel:commit48Rel(relKey), crisisDone:crisisDone, committed:choice47StoryFlag(commitFlag) };
+    /* v20a159 ROM159：采兒 HE 公開／低調二揀一——公開嗰邊寫 flag_choi_public，結局讀取口如實回報，
+       等 4-10 判定／結局呈現嗰陣分辨（公開＝上咗頭條，低調＝忍住唔講）。 */
+    if(publicFlag) out.public = choice47StoryFlag(publicFlag);
+    return out;
   };
   return {
     hiu:  line("R_hiu_meet",  "rel_hiu",  "R_hiu_crisis",  "flag_hiu_commit"),
-    choi: line("R_choi_meet", "rel_choi", "R_choi_crisis", "flag_choi_commit"),
+    choi: line("R_choi_meet", "rel_choi", "R_choi_crisis", "flag_choi_commit", "flag_choi_public"),
     vera: line("R_vera_meet", "rel_vera", "R_vera_crisis", "flag_vera_commit"),
     lan:  line("R_lan_meet",  "rel_lan",  "R_lan_crisis",  "flag_lan_commit"),
-    xu:   line("R_xu_meet",   "rel_xu",   "R_xu_crisis",   "flag_xu_commit")
+    xu:   line("R_xu_meet",   "rel_xu",   "R_xu_crisis",   "flag_xu_commit"),
+    yip:  line("R_yip_meet",  "rel_yip",  "R_yip_crisis",  "flag_yip_commit"),
+    so:   line("R_so_meet",   "rel_so",   "R_so_crisis",   "flag_so_commit")
   };
 }
+/* ===== v20a159 ROM159 Phase 1：感情線重排實裝（曉晴／采兒／Vera） =====
+   設計來源：~/workspace/linji-story-sidelines/romance-revamp-draft.md（六人全部可 commit）。
+   已拍板（照做）：排他鎖 rel 5 鎖定、rel 6 commit；鎖定後唔可以轉，crisis BE 唔解鎖；
+   海媚身份台柱為主、傳媒人做底（Phase 3）；實裝次序曉晴／采兒／Vera 先，藍／徐 Phase 2，海媚 Phase 3。
+   本期範圍：
+   (1) 排他鎖系統——bumpRel 中央凍結＋首次衝 5 鎖定＋rel 4 軟提示＋rel 5 即場提示
+       （toast＋手帳／地點 modal）＋手帳人脈頁鎖定狀態＋鎖定後其他女角行為表；
+       鎖定唔影響事業線（通告／訓練／頒獎禮／結局事業軸照行）。
+   (2) 約會系統——三入口（地點面板約／傾談後即場約／手帳人脈頁 Call 機約）；
+       每人 3 專屬地點＋金龍茶餐廳通用（現有 15 地點，唔發明新地點；事務所／醫院唔做約會地點）；
+       約會耗一日、使茶錢級數（約之前見到價錢）；每人每週 1 次、一星期只約一個人；
+       約會本身唔加分，場內抉擇先加減（好 +1／差 -1）；撞期（拍攝日／試鏡日）用簡化版 C10 模式。
+       簡化說明（寫死喺度，唔好日後當 bug）：草稿話「約定聽日」，實裝做即日赴約——
+       約會耗嘅就係今日，唔寫入聽日排程（排程引擎冇「聽日約會」槽位，硬寫會撞爛 weekPlan）；
+       邀約文案一律寫「今日收工」，唔寫「聽日」。
+       電話約入口亦簡化：Call 機約唔另開電話亭畫面——交換電話號碼後，喺屋企手帳「人脈」頁
+       撳「Call 機約佢」即開同一個約會選擇器（Call 機留言本身唔耗日，約會本身耗一日）。
+   (3) 送禮分層（只做三人）：曉晴最愛 2（菠蘿油／蛋撻）其餘喜歡；采兒加 2 樣 dislike
+       （香水／時裝雜誌）；Vera 最愛 2（時裝雜誌／香水）＋髮夾喜歡。分層經載入後覆寫
+       （rom159ApplyGiftOverrides），唔直改 gift_prefs.json／gift_react_copy.json。
+       機制沿用現行（每日每人 1 份、每週軟頂 +2、重複減半、唔耗日；costsDay:true 殘留已拎走）。
+   (4) 三條弧線：pack R_*_ending 已有專屬 HE／BE（唔改 pack）；本期補 Vera 嘅 CMT
+       commit offer（CMT_vera_commit，1992 秋＠天星音樂）＋commit 閘加排他鎖條件＋
+       R_*_ending 開播前預備鉤（鎖咗第二個嗰陣 HE 換「坦白」差一步 BE；采兒 HE 拆公開／低調二揀一）。
+   (5) 撞到上限：每人每週傾談 3 次（有未完成節點 offer 喺該地點嗰陣照傾得，唔卡劇情）。
+   數字定值（全部喺呢個 block＋NOTES_V20A159_P1.md，唔寫入設計文件）：
+   約會價錢見 ROM159_DATES；徐寶珊價錢表見 ROM159_XU_PRICES（Phase 2 先開，呢期只定價）；
+   約會抉擇好 +1／差 -1；撞到上限每人每週 3 次；排他鎖 rel 5、commit 門檻 rel 6（沿用 COMMIT48）。
+   「全佳 7 分」查實：唔係獨立閘門——係 rel 累積上限 7（meet 1＋push1 2＋push2 2＋crisis 2），
+   見 COMMIT48 註解「理論最高 7」＋branch-audit；門檻照舊係 6，7 只係校準說明，唔另設閘。
+   紀律：唔改 SAVE key／softRev／?v=；唔直改 content pack JSON；唔掂 12 星巧遇（ENC79）；
+   唔掂鄧麗萍（v152 刪緊）；R_hiu_* 故事節點本身唔郁（v158 支線票嗰邊）。
+   海媚嗰行：名禁令由 v151 拎走——未落地之前，呢個 block 唔寫佢真名，玩家面一律用稱號。
+   v20a159 ROM159（本分支）：Vera／海媚出局，葉敏芝／蘇芷茵入局；CMT_vera_commit 已刪，改補
+   CMT_lan／xu／yip／so；送禮分層擴至六人；ending commit 分支六人（見 resolveEnding410）；藍 crisis
+   豪門旗已清（見 story_detail_romance_lan_xu.json R_lan_crisis）。 */
+const ROM159_LOCK_REL = 5;
+const ROM159_ENC_CAP = 3;
+const ROM159_DATE_PER_WEEK = 1;
+const ROM159_WOMEN = {
+  hiu:  { key:"hiu",  relKey:"rel_hiu",  name:"林曉晴", npcId:"colleague", phase:1, meet:"R_hiu_meet",
+          spots:["hiu_roof","hiu_location","hiu_market","hiu_harbour","hiu_beach","hiu_airport","hiu_cafe"] },
+  choi: { key:"choi", relKey:"rel_choi", name:"周采兒", npcId:"reporter",  phase:1, meet:"R_choi_meet",
+          spots:["choi_premiere","choi_radio","choi_cafe","choi_lounge","choi_cinema"] },
+  lan:  { key:"lan",  relKey:"rel_lan",  name:"藍若曦", npcId:"lan", phase:1, meet:"R_lan_meet",
+          spots:["lan_studio","lan_ktv","lan_rec","lan_lounge","lan_beach","lan_cafe"] },
+  xu:   { key:"xu",   relKey:"rel_xu",   name:"徐寶珊", npcId:"xu", phase:1, meet:"R_xu_meet",
+          spots:["xu_central","xu_adm","xu_premiere","xu_star","xu_peak","xu_cinema","xu_cafe"] },
+  yip:  { key:"yip",  relKey:"rel_yip",  name:"葉敏芝", npcId:null, phase:2, meet:"R_yip_meet",
+          spots:["yip_rec","yip_ktv","yip_peak","yip_cinema","yip_lounge","yip_cafe"] },
+  so:   { key:"so",   relKey:"rel_so",   name:"蘇芷茵", npcId:null, phase:3, meet:"R_so_meet",
+          spots:["so_rec","so_central","so_harbour","so_airport","so_beach","so_cafe"] }
+}; /* v20a159 ROM159：Vera／海媚出局，葉敏芝／蘇芷茵入局；最終六人，37 場。DATES 條目見 ROM159_DATES（B1）。 */
+const ROM159_DATES = {
+  hiu_roof:     { who:"hiu", locId:"tvb_longmen", label:"廠景天台", cost:4,
+    intro:"收工之後，天台得返風聲同廠景燈。曉晴話，呢度係佢最靜得落嚟嘅地方。",
+    good:{ label:"講返廠景嗰啲辛苦事，一齊笑", line:"佢笑住話：「原來你都記得嗰晚通宵嗰單嘢。」兩個人企喺天台，似係成個廠景都係佢哋嘅。" },
+    bad:{ label:"淨係講自己幾辛苦", line:"佢聽住聽住，望咗望下面：「係呀，呢行邊個唔辛苦。」話題就咁凍咗。" } },
+  hiu_location: { who:"hiu", locId:"film_lion", label:"獅子山外景", cost:4,
+    intro:"獅子山腳，外景收工，兩個人行去搭車嗰陣，順便行多一陣。",
+    good:{ label:"陪佢行埋成段路，唔催", line:"佢話好少有人陪佢行路返屋企——「平時個個都趕住走。」" },
+    bad:{ label:"催佢快啲，話自己趕住返屋企", line:"佢哦一聲，加快腳步。嗰段路，忽然變得好長。" } },
+  hiu_market:   { who:"hiu", locId:"gift_shop", label:"廟街夜市", cost:20,
+    intro:"廟街夜市，人聲同鑊氣夾埋一齊。曉晴話，行夜市先係放工。",
+    good:{ label:"買串魚蛋，兩個人分住食", line:"佢咬住魚蛋笑：「臨記約會就係咁，唔使扮嘢。」" },
+    bad:{ label:"嫌夜市污糟，叫佢去第二度", line:"佢望住你：「呢度就係我放工嘅地方喎。」" } },
+  hiu_cafe:     { who:"hiu", locId:"cafe_cha", label:"金龍茶餐廳", cost:45,
+    intro:"金龍茶餐廳老位，兩杯奶茶，一碟菠蘿油。收工食飯，就係咁簡單。",
+    good:{ label:"記得佢飲奶茶唔加糖", line:"佢有啲意外：「你記得我飲奶茶唔加糖？」" },
+    bad:{ label:"淨係講通告，唔問佢近況", line:"佢攪住杯奶茶，冇再出聲。" } },
+  hiu_harbour:  { who:"hiu", locId:"date_harbour", label:"尖沙咀海傍", cost:6,
+    intro:"尖沙咀海傍，收工之後行過嚟，海風吹住，維港對面啲燈逐盞著起。曉晴話，行海傍係佢收工之後最平嘅享受。",
+    good:{ label:"行到盡頭，先講留低嗰件事", line:"佢望住對岸，細聲講：「其實我屋企問過我，要唔要跟佢哋走。我話，我想留低試多一陣。」你話：「留低啦，呢度先係我哋嘅地方。」" },
+    bad:{ label:"叫佢跟屋企走，唔好捱", line:"佢停低腳步：「你都覺得我應該走？」海風吹過，兩個人忽然冇嘢好講。" } },
+  hiu_beach:    { who:"hiu", locId:"date_beach", label:"淺水灣沙灘", cost:6,
+    intro:"淺水灣沙灘，收工之後兩個人搭車過嚟，坐喺沙上面，乜都唔做。曉晴話，呢度係佢唞氣嘅地方。",
+    good:{ label:"陪佢坐到天黑，唔催住走", line:"佢話好少有人肯陪佢坐成個下晝——「個個都話沙灘曬，趕住走。」你話：「曬先至似放假。」" },
+    bad:{ label:"嫌沙灘曬，催佢返屋企", line:"佢拍走沙：「係呀，我都知曬。」嗰日剩低嘅時間，佢冇再講過嘢。" } },
+  hiu_airport:  { who:"hiu", locId:"date_airport", label:"啟德機場", cost:6,
+    intro:"啟德機場，兩個人企喺觀景台睇飛機升降。曉晴話，佢細個嗰陣成日諗，飛機上面嗰啲人去邊。",
+    good:{ label:"話俾佢聽，留低都係一種揀", line:"佢望住架飛機升上天：「有啲人走，有啲人留低。留低嗰啲，唔係冇得揀，係揀咗呢度。」你點頭：「我都係咁揀。」" },
+    bad:{ label:"話走先係出路，留低係蝕底", line:"佢望住跑道，冇出聲。過咗好耐，佢先話：「或者你啱。但係我唔想聽呢句。」" } },
+  choi_premiere:{ who:"choi", locId:"film_cotton", label:"紅棉首映", cost:58,
+    intro:"首映散場，人群慢慢散。采兒冇即刻走，話想聽你點睇呢套戲。",
+    good:{ label:"講真話，唔係講好聽", line:"佢點頭：「你講嘢唔兜圈，我先至鍾意同你講戲。」" },
+    bad:{ label:"淨係讚，句句都係場面話", line:"佢笑咗笑：「你呢啲說話，我訪問嗰陣聽過一百次。」" } },
+  choi_radio:   { who:"choi", locId:"tvb_harbour", label:"海港廣播", cost:4,
+    intro:"電台訪問做完，咪熄咗，兩個人喺走廊慢慢行。",
+    good:{ label:"問佢寫稿嗰陣最難係咩", line:"佢話好少有人問佢寫嘢嗰陣諗咩——「個個都係問我有咩料。」" },
+    bad:{ label:"問佢有冇獨家料", line:"佢望住你：「你約我出嚟，都係為咗料？」" } },
+  choi_cafe:    { who:"choi", locId:"cafe_cha", label:"金龍茶餐廳", cost:45,
+    intro:"茶餐廳，采兒叫咗兩杯奶茶，記者簿收埋咗——今晚唔係訪問。",
+    good:{ label:"講返自己嘅嘢，唔係講人哋嘅嘢", line:"佢話：「你肯講自己嘅嘢，我先信你唔係嚟攞料。」" },
+    bad:{ label:"成晚都係打聽邊個邊個", line:"佢收埋笑容：「今晚我唔係記者，你唔使當我係。」" } },
+  choi_lounge:  { who:"choi", locId:"date_lounge", label:"酒廊唱歌", cost:50,
+    intro:"酒廊，燈光暗暗哋，台上有人唱緊歌。采兒話，收工之後嚟呢度，唔使講嘢，聽歌就得。",
+    good:{ label:"點首佢鍾意嘅歌，認真唱", line:"你唱完，佢拍手：「你唱歌唔算好聽，但係你肯唱真嘅，唔係扮嘢。」佢話，記者最識分真假。" },
+    bad:{ label:"成晚都係問佢邊單新聞有料", line:"佢放低杯嘢：「嚟酒廊你都問料？今晚我唔係記者。」" } },
+  choi_cinema:  { who:"choi", locId:"date_cinema", label:"旺角戲院", cost:58,
+    intro:"旺角戲院，散場嗰陣人潮湧出嚟。采兒話，佢睇戲唔係為咗消閒，係為咗學人哋點講故事。",
+    good:{ label:"散場認真同佢講呢套戲好定唔好", line:"佢點頭：「你講嘢唔兜圈，好就話好，唔好就話唔好——我做記者，最憎聽場面話。」" },
+    bad:{ label:"睇戲途中不停問佢邊個明星有緋聞", line:"佢望住銀幕，冇理你。散場嗰陣，佢話：「你約我睇戲，定係約我返工？」" } },
+  lan_studio:   { who:"lan", locId:"tvb_longmen", label:"星河廠景", cost:4,
+    intro:"星河電視台廠景，收工之後，廠入面得返啲燈同埋未收走嘅佈景。若曦話，呢度就係佢每日企嘅地方。",
+    good:{ label:"記得佢成日幫人遞嘢，話佢辛苦", line:"佢怔一怔：「你留意到我成日遞嘢？個個都淨係記得佢哋自己要啲乜。」佢笑住話，今日終於有人記得佢。" },
+    bad:{ label:"當佢係跑腿，叫佢幫你拎嘢", line:"佢哦一聲，幫你拎咗。行開嗰陣，佢細聲講：「收工喇，我都係人嚟㗎。」" } },
+  lan_ktv:      { who:"lan", locId:"tvb_kowloon", label:"九龍電視台", cost:4,
+    intro:"九龍電視台，輪班交更嗰陣，佢啱啱由錄影廠行出嚟，膊頭仲孭住個大袋。若曦話，PA 輪班就係咁，邊度缺人就去邊度。",
+    good:{ label:"問佢輪班攰唔攰，唔講工作", line:"佢話好少有人問佢攰唔攰——「個個都係問我，邊個明星今日嚟。」你話：「咁你呢？你今日點？」" },
+    bad:{ label:"叫佢幫你打聽邊個監製請人", line:"佢望住你：「你約我出嚟，係為咗打聽嘢？」佢冇嬲，但係笑容收返。" } },
+  lan_rec:      { who:"lan", locId:"rec_hk", label:"香江唱片錄音室", cost:4,
+    intro:"香江唱片錄音室，門外嗰盞紅燈熄咗。若曦話，佢有次喺呢度唱咗半首歌，唱到一半就俾人叫咗出去遞嘢。",
+    good:{ label:"叫佢唱埋嗰半首，話你信佢識唱", line:"佢望住支咪，細聲話：「嗰半首，我成日都想唱埋佢。」你話：「咁唱啦，呢度冇人會叫你去遞嘢。」" },
+    bad:{ label:"話佢唱歌唔啱，叫佢專心做返 PA", line:"佢點頭，冇出聲。行出錄音室嗰陣，佢話：「係呀，我都知。」嗰句嘢，輕到差啲聽唔到。" } },
+  lan_lounge:   { who:"lan", locId:"date_lounge", label:"酒廊唱歌", cost:50,
+    intro:"酒廊，台上有人唱緊舊歌。若曦話，佢收工之後成日想嚟呢度——唔係為咗飲嘢，係為咗唱歌。",
+    good:{ label:"叫佢唱首自己鍾意嘅歌，唔係應酬歌", line:"佢唱完，成個酒廊靜咗一靜，之後有人拍手。佢返埋嚟，細聲話：「我第一次唔係為咗人哋唱歌。」" },
+    bad:{ label:"叫佢唱啲應酬歌，氹下啲客", line:"佢望住你：「你都覺得我唱歌，係為咗氹人？」佢冇唱，成晚都冇再開聲。" } },
+  lan_beach:    { who:"lan", locId:"date_beach", label:"淺水灣沙灘", cost:6,
+    intro:"淺水灣沙灘，佢收工之後搭車過嚟，坐喺沙上面，鞋都唔著。若曦話，呢度係佢唞氣嘅地方，冇人會叫佢遞嘢。",
+    good:{ label:"陪佢靜靜坐，唔催佢講嘢", line:"佢話：「呢度好靜，靜到我聽到自己諗乜。」你冇催佢，等佢慢慢講，講佢想唱歌嗰件事。" },
+    bad:{ label:"催佢快啲返去，話聽日仲要開工", line:"佢拍走啲沙，企起身：「係呀，聽日仲要開工。」佢行返去巴士站嗰陣，背脊挺得好直。" } },
+  lan_cafe:     { who:"lan", locId:"cafe_cha", label:"金龍茶餐廳", cost:45,
+    intro:"金龍茶餐廳，收工之後，兩杯奶茶，一碟菠蘿油。若曦話，佢最鍾意呢度——唔使扮，唔使趕。",
+    good:{ label:"記得佢收工鍾意食菠蘿油加奶茶", line:"佢有啲意外：「你記得我收工鍾意食乜？」你話：「你每次收工都係咁叫，我記得。」" },
+    bad:{ label:"淨係講自己今日幾辛苦", line:"佢攪住杯奶茶，冇出聲。過咗一陣，佢話：「你辛苦，我都辛苦——咁邊個聽邊個講？」" } },
+  xu_central:   { who:"xu", locId:"ad_central", label:"中環廣告", cost:4,
+    intro:"中環廣告公司樓下，寶珊啱啱開完會行出嚟，成身都係嗰種唔可以遲到嘅氣勢。佢話，呢度就係佢嘅世界。",
+    good:{ label:"唔講錢，淨係問佢今日點", line:"佢怔一怔：「你約我出嚟，唔係問我攞生意？」你話：「我就係想問你，今日點。」佢笑咗，笑得有啲唔慣。" },
+    bad:{ label:"問佢攞生意，叫佢介紹客", line:"佢點頭，客氣得好似對客：「好，我叫秘書覆你。」講完，佢就行返入大廈。" } },
+  xu_adm:       { who:"xu", locId:"ad_adm", label:"金鐘創意", cost:4,
+    intro:"金鐘創意公司門口，寶珊同個客講完電話行出嚟，仲拎住疊文件。佢話，佢每日就係咁，喺呢啲地方行嚟行去。",
+    good:{ label:"欣賞佢諗嘢快，唔係欣賞佢有錢", line:"佢望住你：「你唔係第一個讚我嘅人，但係你係第一個讚我諗嘢快、唔係讚我識搵錢嘅人。」" },
+    bad:{ label:"叫佢幫你諗掂份合約，免費", line:"佢笑住搖頭：「我諗嘢係要收錢㗎。」佢講笑咁講，但係你聽得出，佢唔鍾意俾人當免費。" } },
+  xu_premiere:  { who:"xu", locId:"film_cotton", label:"紅棉首映", cost:58,
+    intro:"紅棉影業首映，紅地氈兩邊都係人。寶珊著住套晚裝行入場，佢話，首映呢啲場合，佢每年都要去幾次。",
+    good:{ label:"陪佢睇戲，成晚唔講生意", line:"散場嗰陣，佢話：「今晚你一句生意都冇講過。你知唔知，成晚都冇人咁對我？」" },
+    bad:{ label:"成晚都係講廣告，問佢邊個客啱", line:"佢望住銀幕，冇理你。散場嗰陣，佢話：「你約我睇首映，定係約我開會？」" } },
+  xu_star:      { who:"xu", locId:"rec_star", label:"天星商場活動", cost:6,
+    intro:"天星音樂商場活動，台下圍滿人，寶珊企喺台邊睇住成個活動行。佢話，呢啲商場騷，佢成日都要睇住。",
+    good:{ label:"企佢身邊，唔搶風頭，唔借佢上位", line:"佢話：「你企喺我身邊，乜都唔攞，乜都唔問——你係第一個。」你話：「我嚟，係因為你喺度。」" },
+    bad:{ label:"叫佢介紹啲商場老闆畀你識", line:"佢望住台上，冇出聲。活動完咗，佢話：「下次你想識人，唔使經我。」" } },
+  xu_peak:      { who:"xu", locId:"date_peak", label:"山頂", cost:6,
+    intro:"山頂，夜晚成個維港喺腳下。寶珊話，佢好少上嚟——上嚟呢度，乜嘢生意都唔使諗。",
+    good:{ label:"陪佢睇夜景，唔講工作", line:"佢望住對岸啲燈：「喺呢度睇落去，成個香港都好細，細到我啲煩惱都變得好細。」你話：「咁咪幾好。」" },
+    bad:{ label:"上到山頂都係講生意經", line:"佢望住夜景，冇出聲。過咗好耐，佢話：「上到嚟呢度，你都係講生意——咁你同我啲客有咩分別？」" } },
+  xu_cinema:    { who:"xu", locId:"date_cinema", label:"旺角戲院", cost:58,
+    intro:"旺角戲院，寶珊話，佢好耐冇試過咁——買張飛，排隊入場，乜都唔使諗，淨係睇戲。",
+    good:{ label:"睇戲嗰陣唔講錢，淨係講套戲", line:"散場嗰陣，佢話：「今晚我唔係徐寶珊，唔係廣告界嗰個徐寶珊，我淨係一個睇戲嘅人。」" },
+    bad:{ label:"計較戲飛貴，話唔值", line:"佢望住你：「你計較嗰幾十蚊？」佢冇嬲，但係嗰晚剩低嘅時間，佢冇再講過嘢。" } },
+  xu_cafe:      { who:"xu", locId:"cafe_cha", label:"金龍茶餐廳", cost:45,
+    intro:"金龍茶餐廳，寶珊坐低嗰陣，成間舖頭啲人都望住佢。佢話，佢好少嚟呢啲地方——唔係睇唔起，係冇人陪佢嚟。",
+    good:{ label:"同佢食茶記，唔扮嘢，唔當佢係貴客", line:"佢咬住菠蘿油，笑咗：「你冇因為我係邊個，就叫多幾碟貴嘢。你當我係普通人——呢樣嘢，冇人做過。」" },
+    bad:{ label:"嫌茶記唔襯佢，話下次去高級餐廳", line:"佢放低筷子：「你覺得呢度唔襯我？」佢冇嬲，但係你聽得出，佢唔鍾意俾人話佢唔襯呢度。" } },
+  yip_rec:      { who:"yip", locId:"rec_hk", label:"香江唱片", cost:4,
+    intro:"香江唱片，訓練班落堂，敏芝仲喺課室對住塊鏡練緊對白。佢話，佢每日就係咁練，練到有人信佢識做戲為止。",
+    good:{ label:"講佢練戲辛苦，唔係淨係讚佢靚", line:"佢停低，望住你：「你睇到我練緊戲？個個都淨係睇到我塊面，你係第一個話我練得辛苦嘅人。」" },
+    bad:{ label:"淨係讚佢靚，話佢天生就係做明星", line:"佢笑咗笑，嗰種應酬式嘅笑：「係呀，個個都係咁講。」佢返轉頭，繼續對住塊鏡練。" } },
+  yip_ktv:      { who:"yip", locId:"tvb_kowloon", label:"九龍電視台", cost:4,
+    intro:"九龍電視台，選美後台，啲佳麗行嚟行去，化妝師忙到飛起。敏芝話，呢度就係佢出身嘅地方——人哋記得佢個樣先，唔記得佢識做戲。",
+    good:{ label:"記得佢識做戲，唔係淨係記得佢個樣", line:"佢話：「喺呢度，個個都話我靚。你係第一個同我講，話我上次嗰場戲做得好。」" },
+    bad:{ label:"當佢係花瓶，叫佢笑多啲俾人睇", line:"佢笑咗，嗰種練過嘅笑：「係呀，我識笑。」笑完，佢就冇再講嘢。" } },
+  yip_peak:     { who:"yip", locId:"date_peak", label:"山頂", cost:6,
+    intro:"山頂，夜晚成個香港喺腳下。敏芝話，佢想企高啲睇返自己——喺下面，個個都淨係睇到佢個樣。",
+    good:{ label:"陪佢企高啲，話佢唔止塊面", line:"佢望住對岸：「喺呢度睇落去，我先至覺得自己大個咗——唔係個樣大個咗，係個人大個咗。」你話：「你本來就唔止塊面。」" },
+    bad:{ label:"叫佢認命做花瓶，話咁先搵到食", line:"佢望住夜景，冇出聲。過咗好耐，佢先話：「或者你啱。但係我唔想認命。」" } },
+  yip_cinema:   { who:"yip", locId:"date_cinema", label:"旺角戲院", cost:58,
+    intro:"旺角戲院，敏芝話，佢睇戲唔係為咗拍拖，係為咗學戲——睇人哋點樣用一個眼神，講成句對白。",
+    good:{ label:"睇完認真同佢講邊場戲做得好", line:"佢點頭：「你識睇戲，唔係淨係睇明星。你講嗰場，我都覺得係成套戲最好嘅一場。」" },
+    bad:{ label:"睇戲淨係睇明星，話邊個邊個靚", line:"佢望住銀幕，冇理你。散場嗰陣，佢話：「你睇戲，淨係睇塊面？」" } },
+  yip_lounge:   { who:"yip", locId:"date_lounge", label:"酒廊唱歌", cost:50,
+    intro:"酒廊，台上有人唱緊歌。敏芝話，佢收工之後成日想嚟呢度練歌——喺呢度唱，冇人會話佢係選美出身，唔識唱歌。",
+    good:{ label:"叫佢唱首自己鍾意嘅歌，唔使理人點睇", line:"佢唱完，返埋嚟，細聲話：「我第一次唔係為咗比賽唱歌，係為咗自己唱。」" },
+    bad:{ label:"叫佢唱啲應酬歌，氹下啲客", line:"佢望住你：「你都覺得我唱歌，係為咗氹人？」佢冇唱，成晚都冇再開聲。" } },
+  yip_cafe:     { who:"yip", locId:"cafe_cha", label:"金龍茶餐廳", cost:45,
+    intro:"金龍茶餐廳，練歌練到半夜，兩個人過嚟食個宵夜。敏芝話，練完歌食碗雲吞麵，係佢最鍾意嘅收尾。",
+    good:{ label:"記得佢練歌練到半夜，問佢攰唔攰", line:"佢話：「你記得我練歌練到半夜？個個都淨係記得我幾時上台，冇人記得我練到幾夜。」" },
+    bad:{ label:"問佢選美嗰啲八卦，唔問佢練歌", line:"佢攪住碗麵，冇出聲。過咗一陣，佢話：「你對我啲八卦，仲有興趣過對我練歌？」" } },
+  so_rec:       { who:"so", locId:"rec_wanchai", label:"灣仔唱片", cost:4,
+    intro:"灣仔唱片大堂，芷茵啱啱由錄音室行出嚟，身邊仲有兩個助手跟住。佢話，呢度就係佢每日企嘅地方——大堂、錄音室、影樓，行嚟行去。",
+    good:{ label:"當佢係演員，問佢嗰場戲點諗", line:"佢怔一怔：「你問我嗰場戲點諗？個個都淨係問我，嗰個廣告幾時出街。」你話：「我想聽你講戲，唔係聽你講廣告。」" },
+    bad:{ label:"當佢係公仔，叫佢笑一個俾你睇", line:"佢笑咗，嗰種練過嘅笑，靚到無懈可擊。笑完，佢話：「係呀，我識笑。」" } },
+  so_central:   { who:"so", locId:"ad_central", label:"中環廣告", cost:4,
+    intro:"中環廣告公司，芷茵啱啱影完一輯廣告相行出嚟，化妝仲未落。佢話，廣告場合就係咁，影完一個，仲有下一個。",
+    good:{ label:"唔講廣告，淨係問佢今日攰唔攰", line:"佢望住你：「你唔問我，嗰個廣告幾時出街？」你話：「我想問你，今日攰唔攰。」佢細聲話：「攰。但係冇人問過我。」" },
+    bad:{ label:"叫佢介紹廣告商畀你識", line:"佢點頭，客氣得好似對客：「好，我叫經理人覆你。」講完，佢就行返入影樓。" } },
+  so_harbour:   { who:"so", locId:"date_harbour", label:"尖沙咀海傍", cost:6,
+    intro:"尖沙咀海傍，夜晚冇記者，冇閃光燈，得返海風同維港啲燈。芷茵話，佢好少嚟呢啲地方——嚟得，係因為呢度冇人會認得佢。",
+    good:{ label:"陪佢唔做樣，靜靜行", line:"佢話：「喺呢度，我唔使笑，唔使企定定俾人影。我第一次覺得，自己唔係一件擺設。」你話：「你本來就唔係。」" },
+    bad:{ label:"叫佢笑返個玉女樣，話咁先靚", line:"佢笑咗，嗰種練過嘅笑。笑完，佢望住海：「係呀，我識笑——但係喺呢度，我唔想笑。」" } },
+  so_airport:   { who:"so", locId:"date_airport", label:"啟德機場", cost:6,
+    intro:"啟德機場，觀景台冇乜人，飛機一架接一架升降。芷茵話，佢鍾意嚟呢度——飛機上面嗰啲人，冇人識佢係邊個。",
+    good:{ label:"陪佢睇飛機，聽佢講真話", line:"佢望住架飛機升上天：「有時我諗，如果我唔係蘇芷茵，我會係邊個。」你話：「你係邊個，都係你自己話事。」" },
+    bad:{ label:"講佢啲緋聞，問佢係咪真", line:"佢望住跑道，冇出聲。過咗好耐，佢先話：「你約我出嚟，都係為咗問呢啲？」" } },
+  so_beach:     { who:"so", locId:"date_beach", label:"淺水灣沙灘", cost:6,
+    intro:"淺水灣沙灘，佢著住件普通恤衫，冇化妝，冇助手跟住。芷茵話，呢度係佢少數可以唔做樣嘅地方——沙灘上面，冇記者會跟到嚟。",
+    good:{ label:"陪佢靜靜坐，唔叫佢扮嘢", line:"佢話：「喺呢度，我唔使諗住自己係邊個，唔使諗住笑得啱唔啱。」你話：「咁咪幾好，今日你淨係蘇芷茵。」" },
+    bad:{ label:"叫佢著靚啲，話萬一俾人影到都好睇", line:"佢拍走啲沙，企起身：「你都係咁諗——我去邊度，都要預咗俾人影。」" } },
+  so_cafe:      { who:"so", locId:"cafe_cha", label:"金龍茶餐廳", cost:45,
+    intro:"金龍茶餐廳，芷茵坐低嗰陣，仲望咗望門口——冇記者跟到嚟，佢先至鬆一口氣。佢話，呢度係佢少數唔使扮嘅地方。",
+    good:{ label:"同佢食茶記，佢唔使扮玉女", line:"佢咬住菠蘿油，笑得好放鬆：「喺呢度，我唔使諗住自己係玉女，我淨係一個食緊嘢嘅人。」" },
+    bad:{ label:"問佢玉女殼入面係點，係咪好辛苦做戲", line:"佢放低筷子：「你都係想聽我講殼入面啲嘢？」佢冇嬲，但係嗰晚剩低嘅時間，佢冇再講過真話。" } }
+};
+/* 徐寶珊價錢表（Phase 2 先開約會，呢期只定價，唔接線）：中環／金鐘場合貴啲，茶餐廳平啲——
+   價錢本身就講到兩個人嘅世界唔同（草稿 §3.3）。 */
+const ROM159_XU_PRICES = { ad_central:150, ad_adm:140, film_cotton:120, rec_star:100, cafe_cha:35 };
+const ROM159_GIFT_OVERRIDES = {
+  favorites: {
+    hiu:["gift_pineapple_bun_set","gift_egg_tart_box"],
+    choi:["gift_coffee_beans","gift_memo_pad"],
+    lan:["gift_handmade_sweet","gift_cassette_indie"],
+    xu:["gift_thermos","gift_cassette_indie"],
+    yip:["gift_cassette_indie","gift_coffee_beans"],
+    so:["gift_cassette_indie","gift_memo_pad"]
+  },
+  /* v20a159 ROM159：喜歡層（pack lan likes 原本就係最愛兩樣，要改寫先分到層；yip／so pack 無條目，由 rom159ApplyGiftOverrides 建立）。 */
+  likes: {
+    lan:["gift_pineapple_bun_set","gift_egg_tart_box","gift_thermos"],
+    xu:["gift_coffee_beans","gift_memo_pad"],
+    yip:["gift_hair_clip_set","gift_thermos"],
+    so:["gift_handmade_sweet","gift_thermos","gift_coffee_beans"]
+  },
+  dislikesAdd: {
+    choi:["gift_perfume_sample","gift_fashion_mag"],
+    lan:["gift_perfume_sample"],
+    yip:["gift_perfume_sample","gift_fashion_mag"],
+    so:["gift_perfume_sample","gift_fashion_mag"]
+  }, /* xu 唔鍾意［菠蘿油，甜品盒，蛋撻］pack 已有，唔使加 */
+  react: [
+    { npcKey:"hiu", itemId:"gift_pineapple_bun_set", pref:"liked",
+      lines:["林曉晴：「菠蘿油加奶茶？你真係知臨記靠乜吊命。朝早空腹等埋位，就靠呢個頂住肚。」"],
+      narration:"臨記早餐，等埋位嘅命根——送呢個，等於你記得佢係臨記，唔係記得佢塊面。" },
+    { npcKey:"hiu", itemId:"gift_egg_tart_box", pref:"liked",
+      lines:["林曉晴：「一盒蛋撻？分畀成組人食啦——等埋位嗰陣，個個都要食嘢。」"],
+      narration:"佢鍾意嘅唔係蛋撻，係有人記得成組人都要食嘢。" },
+    { npcKey:"choi", itemId:"gift_coffee_beans", pref:"liked",
+      lines:["周采兒：「不過這包豆，我會煮完才睡。」"],
+      narration:"熬夜寫稿嘅人先識得咖啡豆好。" },
+    { npcKey:"choi", itemId:"gift_memo_pad", pref:"liked",
+      lines:["周采兒：「呢種禮物我鍾意。坦白，又用得著。」"],
+      narration:"記者嘅工具——送一本空白拍紙簿，等於話你知佢係靠寫嘢食飯，唔係靠八卦食飯。" },
+    { npcKey:"choi", itemId:"gift_perfume_sample", pref:"dislike",
+      lines:["周采兒：「香水？你當我係一般女仔？」"],
+      narration:"做樣、唔真——送香水畀佢，等於話你唔識佢係邊個。" },
+    { npcKey:"choi", itemId:"gift_fashion_mag", pref:"dislike",
+      lines:["周采兒：「時裝雜誌？我係記者，唔係封面女郎。」"],
+      narration:"佢憎人當佢係一般女仔——送雜誌畀佢，等於話你唔識佢係邊個。" },
+    { npcKey:"lan", itemId:"gift_handmade_sweet", pref:"liked",
+      lines:["藍若曦：「手作甜品？……你記得我鍾意食甜嘅？收工之後食返粒，個人先定返落嚟。」"],
+      narration:"場記捱夜，甜嘢係佢收工之後嘅慰藉——送呢個，等於你記得佢捱開夜。" },
+    { npcKey:"lan", itemId:"gift_cassette_indie", pref:"liked",
+      lines:["藍若曦：「呢隻卡帶……你邊度搵返嚟？錄音室嗰邊成日播，我聽到識背。」"],
+      narration:"佢想唱歌，但係未有人認真聽佢唱——送卡帶，等於你聽到佢想行嗰條路。" },
+    { npcKey:"lan", itemId:"gift_perfume_sample", pref:"dislike",
+      lines:["藍若曦：「香水？我日日喺廠景跑嚟跑去，噴香水做咩？」"],
+      narration:"場記唔係封面女郎——送香水畀佢，等於你將佢當咗另一個人。" },
+    { npcKey:"xu", itemId:"gift_thermos", pref:"liked",
+      lines:["徐寶珊：「保溫瓶好。做廣告呢行，開會開到半夜，有啖熱嘢飲先企得穩。」"],
+      narration:"佢要嘅係實用，唔係心意包裝——保溫瓶啱佢，啱到佢唔使多講。" },
+    { npcKey:"xu", itemId:"gift_cassette_indie", pref:"liked",
+      lines:["徐寶珊：「呢隻卡帶……你識聽呢啲？唔錯，有品味。」"],
+      narration:"佢唔係淨係識講數——音樂佢都識聽，送啱呢隻，等於你見到佢另一面。" },
+    { npcKey:"xu", itemId:"gift_pineapple_bun_set", pref:"dislike",
+      lines:["徐寶珊：「菠蘿油？唔好意思，我唔食呢啲。」"],
+      narration:"佢嘅世界唔係茶餐廳——送街坊嘢，等於你唔識佢係邊個。" },
+    { npcKey:"xu", itemId:"gift_handmade_sweet", pref:"dislike",
+      lines:["徐寶珊：「手作甜品？心意收到，不過我唔食甜嘢。」"],
+      narration:"送甜嘢畀佢，等於你唔知佢每日食咩、做咩。" },
+    { npcKey:"xu", itemId:"gift_egg_tart_box", pref:"dislike",
+      lines:["徐寶珊：「蛋撻？唔該，不過我趕住開會，冇時間食。」"],
+      narration:"佢要嘅係準時同效率，唔係一盒蛋撻。" },
+    { npcKey:"yip", itemId:"gift_cassette_indie", pref:"liked",
+      lines:["葉敏芝：「呢隻卡帶……你識聽呢啲？選美嗰邊個個淨係識聽流行榜，你唔同。」"],
+      narration:"佢唔係淨係識行台——音樂佢都有自己一套，送啱呢隻，等於你識佢。" },
+    { npcKey:"yip", itemId:"gift_coffee_beans", pref:"liked",
+      lines:["葉敏芝：「咖啡豆啱，訓練捱夜就係靠呢啲。你記得我捱開夜，算你有心。」"],
+      narration:"訓練班嗰啲夜晚，咖啡係佢頂住嗰陣嘅嘢。" },
+    { npcKey:"yip", itemId:"gift_perfume_sample", pref:"dislike",
+      lines:["葉敏芝：「香水？唔好意思——你係咪將我同邊個撈亂咗？我而家最唔想就係俾人當係花瓶。」"],
+      narration:"星層嗰陣，香水係佢最愛；感情線呢度，香水即係你將佢當花瓶——同一樣禮物，兩條線兩個意思。" },
+    { npcKey:"yip", itemId:"gift_fashion_mag", pref:"dislike",
+      lines:["葉敏芝：「時裝雜誌？我日日俾人影相，仲要睇呢啲？」"],
+      narration:"佢想人識佢，唔係識佢塊面。" },
+    { npcKey:"so", itemId:"gift_cassette_indie", pref:"liked",
+      lines:["蘇芷茵：「呢隻卡帶……你聽得出我想唱咩？唔係玉女嗰套，係我自己想唱嗰隻。」"],
+      narration:"卡帶入面係佢真正想唱嘅歌，唔係公司派嗰隻。" },
+    { npcKey:"so", itemId:"gift_memo_pad", pref:"liked",
+      lines:["蘇芷茵：「拍紙簿好。我成日要記低突然諗到嘅旋律，唔記低就會唔見咗。」"],
+      narration:"佢記旋律，唔記八卦。" },
+    { npcKey:"so", itemId:"gift_perfume_sample", pref:"dislike",
+      lines:["蘇芷茵：「香水……唔好意思，我唔係嗰種人。你係咪將我當咗玉女海報嗰個？」"],
+      narration:"星層嗰陣，香水係佢最愛；感情線呢度，香水即係你只係識佢塊面——同一樣禮物，兩條線兩個意思。" },
+    { npcKey:"so", itemId:"gift_fashion_mag", pref:"dislike",
+      lines:["蘇芷茵：「時裝雜誌？我唔睇呢啲。你留返自己睇啦。」"],
+      narration:"佢唔想俾人當係封面女郎。" }
+  ]
+}; /* v20a159 ROM159：刪 vera；加 lan／xu／yip／so 分層。react 最愛一律存 :liked——reactionEntry 最愛查句行 :liked（v20a183 B2），Phase 1 存 :favorite 嗰 4 條查唔到，呢版一併改返。 */
+function rom159Week(){
+  try{ if(typeof GiftShop!=="undefined" && GiftShop.weekNow) return GiftShop.weekNow(); }catch(_e){}
+  try{ if(typeof weekNumNow==="function") return weekNumNow(); }catch(_e){}
+  try{ return Math.floor(((typeof S!=="undefined" && S && S.dayIndex)||0)/7)+1; }catch(_e){ return 1; }
+}
+function rom159State(){
+  try{
+    if(typeof S==="undefined" || !S) return { week:0, enc:{}, dates:{}, dateWeekWho:null, phone:{}, softWarn:{} };
+    if(!S.romance159 || typeof S.romance159!=="object") S.romance159 = {};
+    const st = S.romance159;
+    if(!st.enc || typeof st.enc!=="object") st.enc = {};
+    if(!st.dates || typeof st.dates!=="object") st.dates = {};
+    if(!st.phone || typeof st.phone!=="object") st.phone = {};
+    if(!st.softWarn || typeof st.softWarn!=="object") st.softWarn = {};
+    const w = rom159Week();
+    if(st.week !== w){ st.week = w; st.enc = {}; st.dates = {}; st.dateWeekWho = null; }
+    return st;
+  }catch(_e){ return { week:0, enc:{}, dates:{}, dateWeekWho:null, phone:{}, softWarn:{} }; }
+}
+function rom159RelKeyWho(relKey){
+  const k = String(relKey||"").replace(/^rel_/,"");
+  return ROM159_WOMEN[k] ? k : null;
+}
+function rom159RelOf(who){
+  try{
+    const w = ROM159_WOMEN[who]; if(!w) return 0;
+    if(typeof StoryOC!=="undefined" && StoryOC.getRel) return Number(StoryOC.getRel(w.relKey))||0;
+  }catch(_e){}
+  try{ return Number((S && S.story && S.story.rel && S.story.rel[ROM159_WOMEN[who].relKey]))||0; }catch(_e){ return 0; }
+}
+function rom159EnsureLock(){
+  try{
+    if(typeof S==="undefined" || !S) return null;
+    const f = S.flags || (S.flags = {});
+    if(f.flag_romance_locked) return f.romance_locked_who || null;
+    const order = ["hiu","choi","lan","xu","yip","so"]; /* v20a159 ROM159：Vera／海媚出局，葉／蘇入局 */
+    let best = null, bestVal = ROM159_LOCK_REL - 1;
+    order.forEach(w=>{ const v = rom159RelOf(w); if(v > bestVal){ bestVal = v; best = w; } });
+    if(!best) return null;
+    f.flag_romance_locked = true;
+    f.romance_locked_who = best;
+    const st = rom159State();
+    st.lockDay = S.dayIndex|0;
+    try{ saveQ(); }catch(_e){}
+    return best;
+  }catch(_e){ return null; }
+}
+function rom159LockedWho(){
+  try{
+    if(typeof S==="undefined" || !S) return null;
+    rom159EnsureLock();
+    const f = S.flags||{};
+    if(!f.flag_romance_locked) return null;
+    const who = f.romance_locked_who;
+    return (who && ROM159_WOMEN[who]) ? who : null;
+  }catch(_e){ return null; }
+}
+function rom159SetLock(who, silent){
+  try{
+    if(!who || !ROM159_WOMEN[who]) return false;
+    if(typeof S==="undefined" || !S) return false;
+    const f = S.flags || (S.flags = {});
+    if(f.flag_romance_locked && f.romance_locked_who===who) return false;
+    f.flag_romance_locked = true;
+    f.romance_locked_who = who;
+    const st = rom159State();
+    st.lockDay = S.dayIndex|0;
+    if(!silent){
+      st.pendingNotice = { type:"lock", who:who };
+      try{ if(typeof toast==="function") toast("你心入面已經有人喇——" + ROM159_WOMEN[who].name + "。其他人唔會再同你親近落去。"); }catch(_e){}
+    }
+    try{ saveQ(); }catch(_e){}
+    return true;
+  }catch(_e){ return false; }
+}
+function rom159GainAllowed(relKey){
+  try{
+    const who = rom159RelKeyWho(relKey);
+    if(!who) return true;
+    const locked = rom159LockedWho();
+    if(!locked) return true;
+    return locked===who;
+  }catch(_e){ return true; }
+}
+function rom159CheckLock(relKey, next){
+  try{
+    const who = rom159RelKeyWho(relKey);
+    if(!who) return;
+    /* v20a159 修正（T2 實駕捉到）：唔可以先行 rom159EnsureLock——遷移見到剛衝上 5 嗰位
+       會靜默鎖咗，食咗即場鎖定通知＋toast（鎖定旗照立，但 pendingNotice／toast 全失）。
+       先用原始旗判斷門檻，鎖定通知經 rom159SetLock 出；遷移只留返舊檔／非 bumpRel
+       路徑（直接寫入 rel ≥5）嗰陣靜默補鎖。 */
+    const lockedRaw = !!(typeof S!=="undefined" && S && S.flags && S.flags.flag_romance_locked);
+    if(!lockedRaw && next>=ROM159_LOCK_REL){ rom159SetLock(who, false); return; }
+    if(!lockedRaw && next>=ROM159_LOCK_REL-1){
+      const st = rom159State();
+      if(!(st.softWarn||{})[who]){
+        st.softWarn = st.softWarn||{}; st.softWarn[who] = 1;
+        st.pendingNotice = { type:"soft", who:who };
+        try{ if(typeof toast==="function") toast("你哋越嚟越近……再行落去，就要揀喇。"); }catch(_e){}
+        try{ saveQ(); }catch(_e){}
+      }
+    }
+    rom159EnsureLock();
+  }catch(_e){}
+}
+function rom159FlushNotices(){
+  try{
+    if(typeof S==="undefined" || !S) return false;
+    const st = rom159State();
+    const n = st.pendingNotice;
+    if(!n || !n.who || !ROM159_WOMEN[n.who]) return false;
+    if(typeof isStoryPlayActive==="function" && isStoryPlayActive()) return false;
+    try{
+      const mask = document.getElementById("mask");
+      if(mask && mask.classList && mask.classList.contains("on")) return false;
+    }catch(_e){}
+    st.pendingNotice = null;
+    const w = ROM159_WOMEN[n.who];
+    const body = n.type==="lock"
+      ? `<h3>你心入面已經有人喇</h3><p>由今日起，你揀咗<b>${w.name}</b>。其他人唔會再同你親近落去——傾談只係傾偈，禮物唔會再收，約會約唔到。</p><p class="sub">一次遊戲只可以揀一個，鎖定之後唔可以轉；就算之後揀咗保持距離，都唔可以返轉頭追第二個。呢個就係揀咗嘅代價。</p><p class="sub">事業嗰邊唔受影響：通告、訓練、頒獎禮照行。</p>`
+      : `<h3>你哋越嚟越近……</h3><p>你同<b>${w.name}</b>行到呢一步，再行落去，就要揀喇。邊個先到下一步，排他鎖就鎖邊個。</p><p class="sub">想轉人，趁而家。鎖定之後就唔可以轉。</p>`;
+    try{ if(typeof modal==="function") modal(body, [{label:"知道喇", role:"p"}]); }catch(_e){}
+    try{ saveQ(); }catch(_e){}
+    return true;
+  }catch(_e){ return false; }
+}
+function rom159GiftBlocked(npcKey){
+  try{
+    const who = rom159RelKeyWho("rel_"+npcKey);
+    if(!who) return null;
+    const locked = rom159LockedWho();
+    if(!locked || locked===who) return null;
+    return "心領喇——你心入面已經有人（" + ROM159_WOMEN[locked].name + "），佢唔會再收你嘅禮物。禮物留返，冇扣到。";
+  }catch(_e){ return null; }
+}
+function rom159ApplyGiftOverrides(){
+  try{
+    if(typeof GIFT_PREFS==="undefined" || !GIFT_PREFS || !GIFT_PREFS.npcs) return false;
+    const npcs = GIFT_PREFS.npcs;
+    if(npcs.hiu && Array.isArray(npcs.hiu.favorites)) return false;
+    /* v20a159 ROM159：葉／蘇 pack 無條目——先建立，再覆寫（唔直改 gift_prefs.json）。
+       requireFlagsAny＝初遇旗：葉／蘇唔行 ROM176 撞到，gift_met_* 唔會寫，靠 meet 旗開送禮閘。 */
+    const NEW159 = {
+      yip:{ relKey:"rel_yip", displayName:"葉敏芝", mapNpcId:null,
+        requireFlagsAny:["flag_yip_met_warm","flag_yip_met_cool"] },
+      so:{ relKey:"rel_so", displayName:"蘇芷茵", mapNpcId:null,
+        requireFlagsAny:["flag_so_met_warm","flag_so_met_cool"] }
+    };
+    Object.keys(NEW159).forEach(k=>{
+      if(!npcs[k]) npcs[k] = { relKey:NEW159[k].relKey, displayName:NEW159[k].displayName,
+        mapNpcId:NEW159[k].mapNpcId, likes:[], dislikes:[], requireFlagsAny:NEW159[k].requireFlagsAny.slice() };
+    });
+    Object.keys(ROM159_GIFT_OVERRIDES.favorites||{}).forEach(k=>{
+      if(npcs[k]) npcs[k].favorites = (ROM159_GIFT_OVERRIDES.favorites[k]||[]).slice();
+    });
+    Object.keys(ROM159_GIFT_OVERRIDES.likes||{}).forEach(k=>{
+      if(npcs[k]) npcs[k].likes = (ROM159_GIFT_OVERRIDES.likes[k]||[]).slice();
+    });
+    Object.keys(ROM159_GIFT_OVERRIDES.dislikesAdd||{}).forEach(k=>{
+      if(!npcs[k]) return;
+      const add = ROM159_GIFT_OVERRIDES.dislikesAdd[k]||[];
+      const cur = Array.isArray(npcs[k].dislikes) ? npcs[k].dislikes.slice() : [];
+      add.forEach(id=>{ if(cur.indexOf(id)<0) cur.push(id); });
+      npcs[k].dislikes = cur;
+    });
+    if(typeof GIFT_REACT!=="undefined" && GIFT_REACT){
+      if(!GIFT_REACT.byKey || typeof GIFT_REACT.byKey!=="object") GIFT_REACT.byKey = {};
+      if(!Array.isArray(GIFT_REACT.entries)) GIFT_REACT.entries = [];
+      (ROM159_GIFT_OVERRIDES.react||[]).forEach(r=>{
+        if(!r || !r.npcKey || !r.itemId || !r.pref) return;
+        const key = r.npcKey+":"+r.itemId+":"+r.pref;
+        const ent = { npcKey:r.npcKey, itemId:r.itemId, pref:r.pref, lines:(r.lines||[]).slice(), narration:r.narration||"" };
+        GIFT_REACT.byKey[key] = ent;
+        GIFT_REACT.entries.push(ent);
+      });
+    }
+    return true;
+  }catch(_e){ return false; }
+}
+function rom159TalkCapped(npcId, L){
+  try{
+    const rk = (typeof GiftShop!=="undefined" && GiftShop.romanceKeyFromMapNpc) ? GiftShop.romanceKeyFromMapNpc(npcId) : null;
+    if(!rk || !ROM159_WOMEN[rk]) return false;
+    const st = rom159State();
+    if((Number((st.enc||{})[rk])||0) < ROM159_ENC_CAP) return false;
+    if(L && L.id && typeof StoryOC!=="undefined"){
+      try{
+        StoryOC.ensure();
+        const hits = StoryOC.iterNodes().filter(function(h){
+          if(!h || !h.node || !h.node.id) return false;
+          if(StoryOC.isDone(h.node.id)) return false;
+          if(typeof storyNodeLocId==="function" && storyNodeLocId(h.node)!==L.id) return false;
+          return StoryOC.hasPlayerOffer(h.node, h.pack);
+        });
+        if(hits.length) return false;
+      }catch(_e){}
+    }
+    return true;
+  }catch(_e){ return false; }
+}
+function rom159RecordTalk(npcId){
+  try{
+    const rk = (typeof GiftShop!=="undefined" && GiftShop.romanceKeyFromMapNpc) ? GiftShop.romanceKeyFromMapNpc(npcId) : null;
+    if(!rk || !ROM159_WOMEN[rk]) return false;
+    const st = rom159State();
+    st.enc = st.enc||{};
+    st.enc[rk] = (Number(st.enc[rk])||0)+1;
+    try{ saveQ(); }catch(_e){}
+    return true;
+  }catch(_e){ return false; }
+}
+function rom159HasPhone(who){
+  try{ const st = rom159State(); return !!((st.phone||{})[who]); }catch(_e){ return false; }
+}
+function rom159PhoneExchange(who){
+  try{
+    const w = ROM159_WOMEN[who]; if(!w) return false;
+    const st = rom159State();
+    if((st.phone||{})[who]) return false;
+    st.phone = st.phone||{}; st.phone[who] = 1;
+    try{ saveQ(); }catch(_e){}
+    return true;
+  }catch(_e){ return false; }
+}
+function rom159TalkButtons(npcId, L){
+  try{
+    const rk = (typeof GiftShop!=="undefined" && GiftShop.romanceKeyFromMapNpc) ? GiftShop.romanceKeyFromMapNpc(npcId) : null;
+    if(!rk || !ROM159_WOMEN[rk]) return [];
+    const out = [];
+    const w = ROM159_WOMEN[rk];
+    if(w.spots && w.spots.length){
+      out.push({ label:"約佢出街", role:"p", on:()=>{ rom159OpenDatePicker(rk, L); } });
+    }
+    if(!rom159HasPhone(rk)){
+      out.push({ label:"交換電話號碼", role:"g", stay:true, on:()=>{
+        if(rom159PhoneExchange(rk)) toast("你哋交換咗 Call 機號碼——之後喺屋企，手帳「人脈」嗰版可以 Call 佢約出街。");
+      } });
+    }
+    return out;
+  }catch(_e){ return []; }
+}
+function rom159DateGate(who, spot){
+  try{
+    const w = ROM159_WOMEN[who];
+    if(!w) return { ok:false, reason:"呢條線呢期未開。" };
+    if(!w.spots || !w.spots.length) return { ok:false, reason:"呢條線呢期未開約會（Phase 2／3 先開）。" };
+    let met = false;
+    try{
+      if(typeof GiftShop!=="undefined" && GiftShop.talkMetOk && GiftShop.talkMetOk(who)) met = true;
+    }catch(_e){}
+    if(!met){
+      try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(w.meet)) met = true; }catch(_e){}
+    }
+    if(!met) return { ok:false, reason:"要先見過面／傾過偈，先約得出街。" };
+    const locked = rom159LockedWho();
+    if(locked && locked!==who) return { ok:false, reason:"你心入面已經有人喇（" + ROM159_WOMEN[locked].name + "），約唔到第二個。" };
+    const st = rom159State();
+    if((Number((st.dates||{})[who])||0) >= ROM159_DATE_PER_WEEK) return { ok:false, reason:"今個星期已經約過佢一次——下星期再約。" };
+    if(st.dateWeekWho && st.dateWeekWho!==who) return { ok:false, reason:"今個星期已經約咗" + (ROM159_WOMEN[st.dateWeekWho]?ROM159_WOMEN[st.dateWeekWho].name:st.dateWeekWho) + "——一星期只可以約一個人。" };
+    if(spot){
+      const cost = Number(spot.cost)||0;
+      if((typeof S!=="undefined" && S && (S.money||0)) < cost) return { ok:false, reason:"銀包唔夠——呢度約會要 $" + cost + "，先去趕返兩個通告。" };
+    }
+    return { ok:true, reason:"" };
+  }catch(_e){ return { ok:false, reason:"暫時約唔到。" }; }
+}
+function rom159DateButtonInfo(rk){
+  try{
+    const w = ROM159_WOMEN[rk];
+    if(!w || !w.spots || !w.spots.length) return { show:false, ok:false, title:"", hint:"", cost:"", reason:"" };
+    const gate = rom159DateGate(rk, null);
+    const minCost = Math.min.apply(null, w.spots.map(id=>Number((ROM159_DATES[id]&&ROM159_DATES[id].cost)||0)));
+    return {
+      show:true, ok:gate.ok,
+      title:"約" + w.name + "出街",
+      hint: gate.ok ? ("約會耗一日 · " + w.spots.length + " 個地方揀，$" + minCost + " 起") : gate.reason,
+      cost:"耗一日",
+      reason:gate.reason
+    };
+  }catch(_e){ return { show:false, ok:false, title:"", hint:"", cost:"", reason:"" }; }
+}
+function rom159OpenDatePicker(who, L){
+  try{
+    const w = ROM159_WOMEN[who];
+    if(!w) return false;
+    const gate = rom159DateGate(who, null);
+    if(!gate.ok){ toast(gate.reason||"暫時約唔到"); return false; }
+    const rows = w.spots.map(id=>{
+      const sp = ROM159_DATES[id];
+      if(!sp) return "";
+      const locName = (typeof LOCS!=="undefined" && LOCS) ? ((LOCS.find(l=>l.id===sp.locId)||{}).name || sp.label) : sp.label;
+      return `<button type="button" class="act act-priority" data-date-spot="${id}" style="width:100%;margin:0 0 8px;text-align:left">
+        <div><div class="n">${locName} · $${sp.cost}</div>
+        <div class="h">${sp.label}：${sp.intro}</div></div>
+        <div class="cost">約</div>
+      </button>`;
+    }).join("");
+    modal(`<h3>約${w.name}出街</h3>
+      <p class="sub">約會用一日，嗰日唔可以接通告、唔可以訓練。約之前睇清楚使幾多，唔好約完先發現唔夠錢。</p>
+      <p class="sub">每人每週最多約一次；一星期只可以約一個人。約會本身唔加分，場內講啱定講錯，先至決定關係郁唔郁。</p>
+      <div id="rom159-date-list">${rows}</div>`,[
+      {label:"取消", role:"g", on:()=>{ if(L) openLoc(L.id, {travelFree:true}); }}
+    ], {onDismiss:()=>{ if(L) openLoc(L.id, {travelFree:true}); }});
+    const box = document.getElementById("rom159-date-list");
+    if(box){
+      box.querySelectorAll("[data-date-spot]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const id = btn.getAttribute("data-date-spot");
+          const sp = ROM159_DATES[id];
+          if(sp) rom159ConfirmDate(who, sp, L);
+        });
+      });
+    }
+    return true;
+  }catch(_e){ return false; }
+}
+function rom159TodayConflict(){
+  try{
+    if(typeof S==="undefined" || !S || !Array.isArray(S.weekPlan)) return null;
+    const wd = (typeof weekdayIdx==="function") ? weekdayIdx(S.dayIndex) : ((S.dayIndex|0)%7);
+    const slot = String(S.weekPlan[wd]||"");
+    if(slot.indexOf("shoot:")===0){
+      const sid = slot.slice(6);
+      const sh = (S.shoots||[]).find(x=>x && x.id===sid);
+      return { kind:"shoot", title:(sh && (sh.title||sh.gigId)) || "拍攝", id:sid };
+    }
+    if(slot.indexOf("job:")===0){
+      const gid = slot.slice(4);
+      const b = (S.booked||[]).find(x=>x && x.gigId===gid);
+      return { kind:"audition", title:(b && (b.title||b.gigId)) || "試鏡", id:gid };
+    }
+    return null;
+  }catch(_e){ return null; }
+}
+function rom159ConfirmDate(who, spot, L){
+  try{
+    const gate = rom159DateGate(who, spot);
+    if(!gate.ok){ toast(gate.reason||"暫時約唔到"); return false; }
+    const conf = rom159TodayConflict();
+    if(conf){
+      modal(`<h3>撞期</h3><p>今日原本要${conf.kind==="shoot"?"拍攝":"試鏡"}：<b>${conf.title}</b>。去約會，即係嗰日開唔到工，檔期會拖後，限期嗰邊有壓力。</p><p class="sub">揀陪佢，事業嗰邊有代價；揀事業，佢嗰邊會冷淡啲。</p>`,[
+        {label:"陪佢去約會", role:"p", on:()=>rom159RunDate(who, spot, L)},
+        {label:"開工行先（好感 -1）", role:"g", on:()=>{
+          try{ if(typeof StoryOC!=="undefined" && StoryOC.bumpRel) StoryOC.bumpRel(ROM159_WOMEN[who].relKey, -1); }catch(_e){}
+          toast("你推咗今次約會。");
+        }}
+      ]);
+      return true;
+    }
+    return rom159RunDate(who, spot, L);
+  }catch(_e){ return false; }
+}
+function rom159RunDate(who, spot, L){
+  try{
+    const w = ROM159_WOMEN[who]; if(!w || !spot) return false;
+    const cost = Number(spot.cost)||0;
+    if((typeof S==="undefined" || !S || (S.money||0) < cost)){ toast("銀包唔夠——呢度約會要 $" + cost + "，先去趕返兩個通告。"); return false; }
+    S.money = (S.money||0) - cost;
+    try{ if(typeof refreshMoneyHud==="function") refreshMoneyHud(); }catch(_e){}
+    const st = rom159State();
+    st.dates = st.dates||{}; st.dates[who] = (Number(st.dates[who])||0)+1;
+    st.dateWeekWho = who;
+    try{ if(typeof recordExec105Day==="function") recordExec105Day("social"); }catch(_e){}
+    try{ if(typeof writeTodayPlan==="function") writeTodayPlan("rom159_date"); }catch(_e){}
+    let ended=false, summary=null;
+    try{ const t = tickDay(); ended=!!t.ended; summary=t.summary; }catch(_e){}
+    try{ if(typeof paintBar==="function") paintBar(); }catch(_e){}
+    try{ if(typeof drawMap==="function") drawMap(); }catch(_e){}
+    rom159DateScene(who, spot, L, ended, summary);
+    try{ saveQ(); }catch(_e){}
+    return true;
+  }catch(_e){ return false; }
+}
+function rom159DateScene(who, spot, L, ended, summary){
+  try{
+    const w = ROM159_WOMEN[who]; if(!w || !spot) return false;
+    const go = ()=>{
+      if(ended){ try{ enterHome(summary, true); }catch(_e){} }
+      else { try{ runScheduleFromToday(); }catch(_e){ if(L){ try{ openLoc(L.id, {travelFree:true}); }catch(_e2){} } } }
+    };
+    const showResult = (delta, line)=>{
+      let nv = 0;
+      try{ if(typeof StoryOC!=="undefined" && StoryOC.getRel) nv = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
+      const deltaTxt = delta>0 ? "好感 +1（而家 " + nv + "）" : (delta<0 ? "好感 -1（而家 " + nv + "）" : "好感 ±0");
+      modal(`<h3>約會 · ${w.name}</h3><p>${line}</p><p class="gold">${deltaTxt}</p>${ended?`<p class="gold">一週完結 → 回家結算，計劃下週</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()} · 約會用咗一日</p>`,
+        [{label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}], {onDismiss: go});
+    };
+    modal(`<h3>約會 · ${w.name}（${spot.label}）</h3><p>${spot.intro}</p><p class="sub">揀一句回應——講啱咗，兩個人近啲；講錯咗，佢會冷淡啲。</p>`,[
+      {label: spot.good.label, role:"p", on:()=>{
+        try{ if(typeof StoryOC!=="undefined" && StoryOC.bumpRel) StoryOC.bumpRel(w.relKey, 1); }catch(_e){}
+        showResult(1, spot.good.line);
+      }},
+      {label: spot.bad.label, role:"g", on:()=>{
+        try{ if(typeof StoryOC!=="undefined" && StoryOC.bumpRel) StoryOC.bumpRel(w.relKey, -1); }catch(_e){}
+        showResult(-1, spot.bad.line);
+      }}
+    ], {onDismiss: go});
+    return true;
+  }catch(_e){ return false; }
+}
+function rom159PeopleHtml(){
+  try{
+    if(typeof S==="undefined" || !S) return "";
+    const locked = rom159LockedWho();
+    const st = rom159State();
+    const rows = Object.keys(ROM159_WOMEN).map(k=>{
+      const w = ROM159_WOMEN[k];
+      const rel = rom159RelOf(k);
+      let met = rel>0;
+      try{ if(!met && typeof GiftShop!=="undefined" && GiftShop.talkMetOk && GiftShop.talkMetOk(k)) met = true; }catch(_e){}
+      try{ if(!met && w.meet && typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(w.meet)) met = true; }catch(_e){}
+      let committed = false, be = false;
+      try{
+        if(typeof enc87StoryFlag==="function"){ committed = enc87StoryFlag("flag_"+k+"_commit"); be = enc87StoryFlag("flag_"+k+"_be"); }
+        else if(S.story && S.story.flags){ committed = !!S.story.flags["flag_"+k+"_commit"]; be = !!S.story.flags["flag_"+k+"_be"]; }
+      }catch(_e){}
+      let line = "";
+      if(!met) line = "未見過面。";
+      else if(committed) line = "已經一齊咗。";
+      else if(be) line = "保持距離收科——呢鋪唔會再一齊。";
+      else if(locked===k) line = "心入面嗰位（已鎖定，唔可以轉）。";
+      else if(locked) line = "佢知你心入面已經有人——關係唔會再親近落去。";
+      else if(rel>=4) line = "你哋越嚟越近……再行落去，就要揀喇。";
+      else if(rel>0) line = "認識咗，關係 " + rel + "。";
+      else line = "見過面，仲係普通朋友。";
+      if(k==="so" && !met && typeof rom159SoMeetGate==="function" && !rom159SoMeetGate()){
+        line = "未見過面。佢係已成名嘅女星——你而家仲係臨記，佢唔會同你講呢啲。"; /* v20a159 ROM159：蘇層級閘提示，唔靜默 */
+      }
+      let extra = "";
+      if(w.spots && w.spots.length){
+        const enc = Number((st.enc||{})[k])||0;
+        const dt = Number((st.dates||{})[k])||0;
+        const ph = rom159HasPhone(k);
+        extra = `<div class="people-next">今個星期：撞到 ${enc}／${ROM159_ENC_CAP} 次 · 約會 ${dt}／${ROM159_DATE_PER_WEEK} 次 · 電話 ${ph?"已交換":"未交換"}</div>`;
+        if(ph){
+          const g = rom159DateGate(k, null);
+          extra += `<div class="people-next"><button type="button" class="rom159-call" data-who="${k}">Call 機約佢出街</button>${g.ok?"":` <span class="sub">${g.reason||""}</span>`}</div>`;
+        }
+      } else if(w.phase>1){
+        extra = `<div class="people-next">呢條線 Phase ${w.phase} 先開（呢期未開約會／送禮分層）。</div>`;
+      }
+      return `<div class="people-row" style="margin:6px 0"><span style="flex:1"><b>${w.name}</b> · 關係 ${rel}<br><span class="sub">${line}</span>${extra}</span></div>`;
+    }).join("");
+    const lockLine = locked
+      ? `<p class="sub">排他鎖：你心入面已經係<b>${ROM159_WOMEN[locked].name}</b>。鎖定之後，一次遊戲只可以揀一個，唔可以轉；就算之後揀咗保持距離，都唔可以返轉頭追第二個。事業嗰邊唔受影響。</p>`
+      : `<p class="sub">排他鎖：邊個先到關係 5，鎖就鎖邊個；鎖定之前，六個人可以平行培養。</p>`;
+    return `<h3 class="jobs72-h" style="margin-top:14px">感情線</h3>` + lockLine + rows;
+  }catch(_e){ return ""; }
+}
+/* v20a159 ROM159：蘇層級閘——R_so_meet 要求阿偉級數 ≥配角（enc79PlayerTier()>=1）。
+   出錯嗰陣 fail-open（唔可以因為讀唔到 tier 而鎖死條線）。 */
+function rom159SoMeetGate(){
+  try{
+    if(typeof enc79PlayerTier==="function") return Number(enc79PlayerTier())>=1;
+  }catch(_e){}
+  return true;
+}
+function rom159PrepareNode(node){
+  try{
+    if(!node || !node.id) return null;
+    /* v20a159 ROM159：蘇層級閘——R_so_meet 要求配角或以上；未過就播 gate 變體（唔係真 meet）。
+       變體用獨立 id（R_so_meet_gate）：播完只 mark 嗰個 phantom id，真 R_so_meet 唔會被消耗，
+       tier 夠咗可以再嚟播真 meet；若果用返同一個 id，gate 嗰次會 markDone，條線就永久鎖死。
+       將來補 meet offer 接線嗰陣，offer 之前要先查 rom159SoMeetGate()，唔好齋靠呢度。 */
+    if(node.id==="R_so_meet" && typeof rom159SoMeetGate==="function" && !rom159SoMeetGate()){
+      return {
+        id:"R_so_meet_gate", title:"大堂嗰支咪", when:node.when||"", phase:node.phase||"P3",
+        setting:"灣仔唱片大堂；蘇芷茵錄完音出嚟，記者喺大堂等",
+        synopsis:"蘇芷茵錄完音出嚟，記者喺大堂等住。阿偉企喺嗰頭，佢望咗佢一眼，笑得好專業——嗰下笑，唔係邀請，係距離。",
+        beats:[
+          { speaker:"旁白", lines:["灣仔唱片大堂，蘇芷茵錄完音出嚟，記者已經喺大堂等咗成粒鐘。阿偉手上拿著要搬去錄音室的道具箱，就站在大堂那頭。"] },
+          { speaker:"蘇芷茵", lines:["你而家仲係臨記，我唔會同你講呢啲。等你企穩啲先啦——唔係我睇唔起臨記，係我身邊太多人想借我上位。"] }
+        ],
+        choices:[
+          { id:"C_so_gate_ok", label:"明白，遲啲再講",
+            effects:{ flags:["flag_so_gate_seen"], stats:{ rel_so:0 }, notes:"層級閘未開：阿偉仲係臨記，蘇芷茵唔會同佢交心。只記低見過呢一面，唔開感情線；真 meet 留返 tier 夠咗再播。" } }
+        ],
+        flags_written:["flag_so_gate_seen"],
+        openConditions:["phase_P3"], openConditionsAny:null,
+        romanceLine:"so", arcBeat:"meet", parallelOk:true, pcSilent:true, playerOffer:true
+      };
+    }
+    if(node.id!=="R_hiu_ending" && node.id!=="R_choi_ending" && node.id!=="R_lan_ending" && node.id!=="R_xu_ending" && node.id!=="R_yip_ending" && node.id!=="R_so_ending") return null;
+    const map = { R_hiu_ending:"hiu", R_choi_ending:"choi", R_lan_ending:"lan", R_xu_ending:"xu", R_yip_ending:"yip", R_so_ending:"so" }; /* v20a159 ROM159：六人 ending，刪 vera；唔擴充嗰陣鎖定後經 pack ending HE 可繞過排他鎖 */
+    const who = map[node.id];
+    const myCommit = "flag_"+who+"_commit";
+    const myBe = "flag_"+who+"_be";
+    const locked = (typeof rom159LockedWho==="function") ? rom159LockedWho() : null;
+    const committed = (typeof enc87StoryFlag==="function") ? enc87StoryFlag(myCommit) : false;
+    if(committed) return null;
+    const heId = { hiu:"C_hiu_ending_he", choi:"C_choi_ending_he", lan:"C_lan_ending_he", xu:"C_xu_ending_he", yip:"C_yip_ending_he", so:"C_so_ending_he" }[who];
+    if(!Array.isArray(node.choices) || !node.choices.some(c=>c && c.id===heId)) return null;
+    /* 鎖咗第二個 → HE 換成「坦白」差一步變體（只寫自己線 BE 旗，唔寫 commit）。
+       跟 v20a98 CONTRA98 先例（commit 旗已立嗰陣佢會先換，呢度守嘅係「鎖咗未 commit」嗰段）。 */
+    if(locked && locked!==who){
+      const otherName = (ROM159_WOMEN[locked] && ROM159_WOMEN[locked].name) || locked;
+      const copy = Object.assign({}, node);
+      copy.choices = node.choices.map(c=>{
+        if(!c || c.id!==heId) return c;
+        return Object.assign({}, c, {
+          label:"坦白心意：已經同" + otherName + "講明咗",
+          effects:Object.assign({}, c.effects||{}, { flags:[myBe], stats:{}, notes:"差一步：阿偉已經同" + otherName + "講明咗。呢晚佢對" + ROM159_WOMEN[who].name + "坦白——兩個人企到好近，最後都係冇行埋嗰一步。" })
+        });
+      });
+      return copy;
+    }
+    /* 采兒 HE：公開／低調二揀一（兩種都係 HE，代價唔同——公開 fame +1，引嚟頭條壓力；
+       低調要長期忍住唔講。pack choice 本身冇 resultBeats，notes 就係收尾文案，唔另加。 */
+    if(node.id==="R_choi_ending"){
+      if(node.choices.some(c=>c && (c.id==="C_choi_ending_he_public" || c.id==="C_choi_ending_he_quiet"))) return null;
+      const copy = Object.assign({}, node);
+      const out = [];
+      node.choices.forEach(c=>{
+        if(!c || c.id!==heId){ out.push(c); return; }
+        out.push(Object.assign({}, c, {
+          id:"C_choi_ending_he_public",
+          label:"公開：唔否認，亦唔炒作",
+          effects:Object.assign({}, c.effects||{}, { flags:["flag_choi_he","flag_choi_commit","flag_choi_public"], stats:{rel_choi:3, fame:1}, notes:"公開真情：頭條會寫，但兩個人唔再呃自己。" })
+        }));
+        out.push(Object.assign({}, c, {
+          id:"C_choi_ending_he_quiet",
+          label:"低調：關係係真，唔使周圍講",
+          effects:Object.assign({}, c.effects||{}, { flags:["flag_choi_he","flag_choi_commit"], stats:{rel_choi:3}, notes:"低調真情：唔公開炒作，唔否認關係——要長期忍住唔講。" })
+        }));
+      });
+      copy.choices = out;
+      return copy;
+    }
+    return null;
+  }catch(_e){ return null; }
+}
+/* v20a159 ROM159：藍／徐／葉／蘇嘅 CMT commit offer（1992 秋窗）——跟 CMT_hiu／CMT_choi
+   同一結構（rel 6＋crisis done＋1992 秋窗＋排他鎖，見 commit48Available）。Vera 嗰個已刪
+   （Vera 出局）。otherFlag 係 null：六人互斥靠排他鎖把關（commit48Available 內鎖檢查），
+   單一 otherFlag 唔可以覆蓋六人；choice47StoryFlag(null) 已驗證安全（回 false，唔 throw）。
+   speakerId 對照：藍 lan_ruoxi／徐 tsui_poushan／葉 yip_manji／蘇 so_jiyan。 */
+COMMIT48_NODES.CMT_lan_commit = {
+  id:"CMT_lan_commit", title:"錄音室門口", when:"1992秋起", locId:"rec_hk",
+  setting:"香江唱片錄音室；1992 年秋，錄完半首歌之後",
+  synopsis:"由通告牌下初遇到錄音室企出嚟唱歌——藍若曦由場記行到台前。嗰晚錄完，佢冇跟大隊走，喺錄音室門口等你。",
+  playerOffer:"若曦喺錄音室門口等你，話有句說話想講清楚。",
+  beats:[
+    { speakerId:"", speaker:"", kind:"system", text:"1992 年秋。香江唱片錄音室，半首歌錄完，燈光未熄——藍若曦企喺門口，望住塊通告牌，冇跟大隊走。" },
+    { speakerId:"lan_ruoxi", speaker:"藍若曦", kind:"npc", text:"阿偉，你記唔記得第一次見？我抱住成疊通告牌俾人撞散晒，你幫我一張一張執返，仲用背脊幫我擋住人流。" },
+    { speakerId:"lan_ruoxi", speaker:"藍若曦", kind:"npc", text:"呢幾年，我由嗌人埋位，嗌到自己企出嚟唱歌——邊個位要點排、邊句歌要點唱，我全部記得。得一件事，我從來冇同人講過：我想有人企喺我隔籬，唔係等我嗌埋位，係等我收工。" },
+    { speakerId:"player", speaker:"阿偉", kind:"player", text:"（佢講到咁白。行前一步，佢就唔再只係「場記阿藍」；企喺度，呢句說話可能永遠都冇人再同佢講。）" }
+  ],
+  choices:[
+    { id:"CMT_lan_a", label:"行前一步：同佢講明，以後唔止係拍檔",
+      effects:{ flags:["flag_lan_commit"], notes:"你同若曦講明咗。佢第一次唔係叫你埋位，而係同你講：「你今日唔使等我嗌，企喺我隔籬就得。」" },
+      resultBeats:[
+        { speakerId:"lan_ruoxi", speaker:"藍若曦", kind:"npc", text:"……好。咁以後收工，你唔准自己一個走——等埋我。" },
+        { speakerId:"", speaker:"", kind:"system", text:"佢行喺你側邊，冇再避開人哋嘅眼光。" }
+      ] },
+    { id:"CMT_lan_b", label:"再諗下：呢啲嘢，等我諗清楚先",
+      effects:{ notes:"你冇畀到答案佢。佢笑咗笑，嗰種笑，你喺片場見過好多次——演員嗰種，收得好快嘅笑。" },
+      resultBeats:[
+        { speakerId:"lan_ruoxi", speaker:"藍若曦", kind:"npc", text:"唔緊要。呢行，最唔缺嘅就係等——等通告、等埋位、等人諗清楚。" },
+        { speakerId:"", speaker:"", kind:"system", text:"佢自己一個行咗出去。你嗰句「諗清楚」，仲有冇機會講第二次，冇人知。" }
+      ] }
+  ],
+  flags_written:["flag_lan_commit"]
+};
+COMMIT48_NODES.CMT_xu_commit = {
+  id:"CMT_xu_commit", title:"中環廣告大堂", when:"1992秋起", locId:"ad_central",
+  setting:"中環廣告；1992 年秋，收工時分",
+  synopsis:"由廣告公司樓下初遇到肯將合作以外嘅嘢講出口——徐寶珊呢行咁耐，第一次有人唔係嚟傾生意。嗰晚收工，佢喺大堂等你。",
+  playerOffer:"寶珊喺中環廣告大堂等你，話有句說話想講清楚。",
+  beats:[
+    { speakerId:"", speaker:"", kind:"system", text:"1992 年秋。中環廣告，收工時分——徐寶珊企喺大堂，冇即刻走，望住門口，似係等人。" },
+    { speakerId:"tsui_poushan", speaker:"徐寶珊", kind:"npc", text:"阿偉，你記唔記得第一次見？你行路唔望路，撞到我，仲問我喺度做咩——我嗰陣以為你係邊個客戶派嚟嘅細路。" },
+    { speakerId:"tsui_poushan", speaker:"徐寶珊", kind:"npc", text:"呢幾年，我見客見到麻木——邊個客戶要咩、邊單生意點傾，我全部記得。得一件事，我從來冇同人講過：我想有人唔係嚟同我傾生意，係嚟等我收工。" },
+    { speakerId:"player", speaker:"阿偉", kind:"player", text:"（佢講到咁白。行前一步，佢就唔再只係「廣告公司嗰個徐小姐」；企喺度，呢句說話可能永遠都冇人再同佢講。）" }
+  ],
+  choices:[
+    { id:"CMT_xu_a", label:"行前一步：同佢講明，以後唔止係合作關係",
+      effects:{ flags:["flag_xu_commit"], notes:"你同寶珊講明咗。佢第一次唔係同你講數，而係同你講：「你今日唔使扮客，企喺我隔籬就得。」" },
+      resultBeats:[
+        { speakerId:"tsui_poushan", speaker:"徐寶珊", kind:"npc", text:"……好。咁以後收工，你唔准自己一個走——等埋我。" },
+        { speakerId:"", speaker:"", kind:"system", text:"佢行喺你側邊，冇再避開人哋嘅眼光。" }
+      ] },
+    { id:"CMT_xu_b", label:"再諗下：呢啲嘢，等我諗清楚先",
+      effects:{ notes:"你冇畀到答案佢。佢笑咗笑，嗰種笑，你喺片場見過好多次——演員嗰種，收得好快嘅笑。" },
+      resultBeats:[
+        { speakerId:"tsui_poushan", speaker:"徐寶珊", kind:"npc", text:"唔緊要。呢行，最唔缺嘅就係等——等客、等開會、等人諗清楚。" },
+        { speakerId:"", speaker:"", kind:"system", text:"佢自己一個行咗出去。你嗰句「諗清楚」，仲有冇機會講第二次，冇人知。" }
+      ] }
+  ],
+  flags_written:["flag_xu_commit"]
+};
+COMMIT48_NODES.CMT_yip_commit = {
+  id:"CMT_yip_commit", title:"選美後台", when:"1992秋起", locId:"tvb_kowloon",
+  setting:"九龍電視台選美後台；1992 年秋，決賽之後",
+  synopsis:"由後台門口嗰次擋記者，到相片風波嗰晚——葉敏芝呢兩年，學識咗唔再扮。嗰晚決賽之後，佢喺後台等你。",
+  playerOffer:"敏芝喺選美後台等你，話有句說話想講清楚。",
+  beats:[
+    { speakerId:"", speaker:"", kind:"system", text:"1992 年秋。九龍電視台選美後台，決賽之後，燈光未熄——葉敏芝企喺化妝間門口，望住條走廊，冇跟大隊走。" },
+    { speakerId:"yip_manji", speaker:"葉敏芝", kind:"npc", text:"阿偉，你記唔記得第一次見？記者圍住我，你企出嚟話訓練班唔接受訪問——嗰陣我連你叫咩名都唔知。" },
+    { speakerId:"yip_manji", speaker:"葉敏芝", kind:"npc", text:"呢兩年，我扮過好多嘢——扮唔在乎、扮冇人企我嗰邊、扮咩都冇發生過。扮到而家，我唔想再扮喇。我想有人企喺我隔籬，唔係一次，係以後都係。" },
+    { speakerId:"player", speaker:"阿偉", kind:"player", text:"（佢講到咁白。行前一步，佢就唔再只係「選美嗰個葉敏芝」；企喺度，呢句說話可能永遠都冇人再同佢講。）" }
+  ],
+  choices:[
+    { id:"CMT_yip_a", label:"行前一步：同佢講明，以後都企佢嗰邊",
+      effects:{ flags:["flag_yip_commit"], notes:"你同敏芝講明咗。佢第一次唔係扮唔在乎，而係同你講：「你今日唔使擋記者，企喺我隔籬就得。」" },
+      resultBeats:[
+        { speakerId:"yip_manji", speaker:"葉敏芝", kind:"npc", text:"……好。咁以後收工，你唔准自己一個走——等埋我。" },
+        { speakerId:"", speaker:"", kind:"system", text:"佢行喺你側邊，冇再避開人哋嘅眼光。" }
+      ] },
+    { id:"CMT_yip_b", label:"再諗下：呢啲嘢，等我諗清楚先",
+      effects:{ notes:"你冇畀到答案佢。佢笑咗笑，嗰種笑，你喺片場見過好多次——演員嗰種，收得好快嘅笑。" },
+      resultBeats:[
+        { speakerId:"yip_manji", speaker:"葉敏芝", kind:"npc", text:"唔緊要。呢行，最唔缺嘅就係等——等通告、等埋位、等人諗清楚。" },
+        { speakerId:"", speaker:"", kind:"system", text:"佢自己一個行咗出去。你嗰句「諗清楚」，仲有冇機會講第二次，冇人知。" }
+      ] }
+  ],
+  flags_written:["flag_yip_commit"]
+};
+COMMIT48_NODES.CMT_so_commit = {
+  id:"CMT_so_commit", title:"灣仔唱片大堂", when:"1992秋起", locId:"rec_wanchai",
+  setting:"灣仔唱片；1992 年秋，錄完轉型嗰首歌之後",
+  synopsis:"由大堂嗰支咪，到佢錄完轉型嗰首歌——蘇芷茵呢兩年，學識咗揀自己條路。嗰晚錄完，佢喺大堂等你。",
+  playerOffer:"芷茵喺灣仔唱片大堂等你，話有句說話想講清楚。",
+  beats:[
+    { speakerId:"", speaker:"", kind:"system", text:"1992 年秋。灣仔唱片，轉型嗰首歌錄完，燈光未熄——蘇芷茵企喺大堂，望住門口，冇跟大隊走。" },
+    { speakerId:"so_jiyan", speaker:"蘇芷茵", kind:"npc", text:"阿偉，你記唔記得第一次見？記者支咪伸到我面前，你企出嚟擋住佢——嗰陣我以為你又係嚟搏見報嗰啲人。" },
+    { speakerId:"so_jiyan", speaker:"蘇芷茵", kind:"npc", text:"呢兩年，我做玉女做到麻木——邊首歌要點唱、邊句說話要點講，公司全部幫我諗好。得一件事，公司幫我諗唔到：我想有人當我係演員，當我係歌手，唔係當我係一張海報。" },
+    { speakerId:"player", speaker:"阿偉", kind:"player", text:"（佢講到咁白。行前一步，佢就唔再只係「玉女蘇芷茵」；企喺度，呢句說話可能永遠都冇人再同佢講。）" }
+  ],
+  choices:[
+    { id:"CMT_so_a", label:"行前一步：同佢講明，以後唔止係識咗咁簡單",
+      effects:{ flags:["flag_so_commit"], notes:"你同芷茵講明咗。佢第一次唔係笑住做玉女，而係同你講：「你今日唔使擋鏡頭，企喺我隔籬就得。」" },
+      resultBeats:[
+        { speakerId:"so_jiyan", speaker:"蘇芷茵", kind:"npc", text:"……好。咁以後收工，你唔准自己一個走——等埋我。" },
+        { speakerId:"", speaker:"", kind:"system", text:"佢行喺你側邊，冇再避開人哋嘅眼光。" }
+      ] },
+    { id:"CMT_so_b", label:"再諗下：呢啲嘢，等我諗清楚先",
+      effects:{ notes:"你冇畀到答案佢。佢笑咗笑，嗰種笑，你喺片場見過好多次——演員嗰種，收得好快嘅笑。" },
+      resultBeats:[
+        { speakerId:"so_jiyan", speaker:"蘇芷茵", kind:"npc", text:"唔緊要。呢行，最唔缺嘅就係等——等通告、等出碟、等人諗清楚。" },
+        { speakerId:"", speaker:"", kind:"system", text:"佢自己一個行咗出去。你嗰句「諗清楚」，仲有冇機會講第二次，冇人知。" }
+      ] }
+  ],
+  flags_written:["flag_so_commit"]
+};
+COMMIT48_DEFS.CMT_lan_commit = { loc:"rec_hk", relKey:"rel_lan", crisis:"R_lan_crisis",
+  flag:"flag_lan_commit", otherFlag:null,
+  actTitle:"若曦喺錄音室門口等你",
+  actHint:"錄完半首歌之後佢冇跟大隊走——有句說話，佢想同你講清楚。" };
+COMMIT48_DEFS.CMT_xu_commit = { loc:"ad_central", relKey:"rel_xu", crisis:"R_xu_crisis",
+  flag:"flag_xu_commit", otherFlag:null,
+  actTitle:"寶珊喺中環廣告大堂等你",
+  actHint:"收工時分佢冇即刻走——有句說話，佢想同你講清楚。" };
+COMMIT48_DEFS.CMT_yip_commit = { loc:"tvb_kowloon", relKey:"rel_yip", crisis:"R_yip_crisis",
+  flag:"flag_yip_commit", otherFlag:null,
+  actTitle:"敏芝喺選美後台等你",
+  actHint:"決賽之後佢冇跟大隊走——有句說話，佢想同你講清楚。" };
+COMMIT48_DEFS.CMT_so_commit = { loc:"rec_wanchai", relKey:"rel_so", crisis:"R_so_crisis",
+  flag:"flag_so_commit", otherFlag:null,
+  actTitle:"芷茵喺灣仔唱片大堂等你",
+  actHint:"錄完轉型嗰首歌之後佢冇跟大隊走——有句說話，佢想同你講清楚。" };
 /* ===== Weave Phase 4-8（v20a31）：主幹節點債權結算 tick（掛 advanceDay，喺 story46SettleTick 之後）。
    跟 4-6 pattern（mockCredits＋favorLedger 雙重冪等）：
    1) N12 揀「做高危替身」→ 動作組／武指欠玩家一份人情：credit_c15_stunt。
@@ -37497,13 +38602,13 @@ const ENC79_STARS = [
   { id:"luk_baakyin",  name:"陸柏言", primary:"film_lion",   secondary:"rec_star",    area:"片場嗰邊",     win:[[1992,"夏"],[1992,"秋"]] },
   { id:"liu_bingxing", name:"廖炳星", primary:"cafe_cha",    secondary:"film_cotton", area:"茶餐廳嗰邊",   win:[[1992,"秋"],[1992,"冬"]] },
   { id:"ngai_wingnaam",name:"魏詠男", primary:"film_harbour",secondary:"agency_ho",   area:"片場嗰邊",     win:[[1991,"春"],[1991,"夏"]] },
-  { id:"yip_manji",    name:"葉敏芝", primary:"rec_hk",      secondary:"tvb_kowloon", area:"唱片公司嗰邊", win:[[1991,"夏"],[1991,"秋"]] },
+  { id:"yip_manji",    name:"葉敏芝", primary:"rec_hk",      secondary:"tvb_kowloon", tertiary:"date_lounge", area:"唱片公司嗰邊", win:[[1991,"夏"],[1991,"秋"]] },
   { id:"mak_zhendong", name:"麥震東", primary:"film_cotton", secondary:"film_lion",   area:"片場嗰邊",     win:[[1991,"冬"],[1992,"春"]] },
   { id:"lok_gasing",   name:"駱家聲", primary:"tvb_longmen", secondary:"rec_hk",      area:"電視台嗰邊",   win:[[1992,"春"],[1992,"夏"]] },
   { id:"pang_siuki",   name:"彭少祺", primary:"ad_central",  secondary:"tvb_longmen", area:"廣告界嗰邊",   win:[] },
   { id:"chung_choning",name:"鍾楚凝",primary:"rec_star",    secondary:"ad_adm",      area:"唱片公司嗰邊", win:[[1991,"秋"]] },
   { id:"gu_mingfai",   name:"顧明輝", primary:"tvb_harbour", secondary:"cafe_cha",    area:"電台嗰邊",     win:[[1991,"秋"],[1991,"冬"]] },
-  { id:"so_jiyan",     name:"蘇芷茵", primary:"rec_wanchai", secondary:"ad_central",  area:"唱片公司嗰邊", win:[[1991,"春"]] },
+  { id:"so_jiyan",     name:"蘇芷茵", primary:"rec_wanchai", secondary:"ad_central",  tertiary:"date_harbour", area:"唱片公司嗰邊", win:[[1991,"春"]] },
   { id:"chai_zanhoi",  name:"齊鎮海", primary:"tvb_longmen", secondary:"tvb_harbour", area:"電視台嗰邊",   win:[[1990,"春"],[1990,"夏"],[1992,"春"],[1992,"夏"]] },
   { id:"ching_tinlok", name:"程天諾", primary:"rec_star",    secondary:"rec_hk",      area:"唱片公司嗰邊", win:[[1992,"秋"],[1992,"冬"]], unlockYear:1992 },
 ];
@@ -37731,7 +38836,14 @@ function enc79EnsureDay(){
   for(const def of ENC79_STARS){
     const { p, share } = enc79PresenceP(def, day);
     if(!(p>0)) continue;
-    if(enc79Rand("enc79:"+day+":"+def.id+":out") >= p) continue;
+    /* v20a159 MAP159：第三出沒點——本來唔出沒嘅日子（out roll 唔中），以 20% 機率去第三點
+       （收工後先去嘅消閒地方）。主場／副場出現率同以前一字不差（p／share 數字零改動，
+       rom176 B2／B3／B5／B6 嗰啲率測試唔受影響）；同一日只可以喺一個地方（partition 唔變）。 */
+    if(enc79Rand("enc79:"+day+":"+def.id+":out") >= p){
+      if(def.tertiary && enc79Rand("enc79:"+day+":"+def.id+":tert") < 0.20)
+        (presence[def.tertiary] = presence[def.tertiary] || []).push(def.id);
+      continue;
+    }
     const loc = (enc79Rand("enc79:"+day+":"+def.id+":loc") < share) ? def.primary : def.secondary;
     (presence[loc] = presence[loc] || []).push(def.id);
   }
@@ -37863,7 +38975,10 @@ const ENC79_BEATS = {
   ],
   yip_manji:[
     { id:"yip_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year===1991 && enc79TierOf(st.fav)>=1; }, grants(){ enc79GrantRumorCard({ id:"rumor_yip_writeup_heard", source:"電視台後台", title:"葉敏芝寫真安排", text:"後台聽到葉敏芝經理人講緊下個月嘅寫真安排，語氣強勢，佢本人冇乜出聲。呢單嘢，行內遲早會傳開。" }); } },
-    { id:"yip_choice", when(st){ const ys=yearSeasonNow(); return ys.year>=1991 && enc79TierOf(st.fav)>=2; } },
+    { id:"yip_choice", when(st){ const ys=yearSeasonNow(); if(ys.year<1991 || enc79TierOf(st.fav)<2) return false;
+      /* v20a159 ROM159：同一抉擇已喺感情線 R_yip_push1 播過就唔再開星層版（鏈 D 第 3 拍改編做 R_yip_push1；星層四拍其餘留返，見 NOTES）。 */
+      try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone("R_yip_push1")) return false; }catch(_e){}
+      return true; } },
     { id:"yip_rival", when(st){ return enc79TierOf(st.fav)>=1 && enc79PlayerTier()<=1; } },
     { id:"yip_stand", when(st){ try{ return enc79TierOf(st.fav)>=3 && (S.flags||{}).enc79_yip_kept; }catch(_e){ return false; } }, grants(){ const others = ENC79_STARS.filter(s=>s.id!=="yip_manji"); const t = others[enc79Hash("yipstand:"+((S&&S.dayIndex)|0)) % others.length]; if(t) enc79GrantWhisper(t.id, "star", "葉敏芝"); } },
   ],
@@ -38541,31 +39656,25 @@ function enc79PlayEncounter(starId, locId, wasMet){
    dayIndex≥335 只係 done-state 讀唔到嗰陣嘅退路（code 閘話 N10 開 1991 冬，同設計 fallback 假設嘅 1990-12-01 差一年，見 NOTES）。
    傾談經現行 doTalk——注意：main 入面 doTalk 加嘅係 S.npcs 人情，唔係 S.story.rel；rel 只靠送禮＋劇情節點升（見 NOTES／模擬）。 ===== */
 const ROM176_WOMEN = [
-  { key:"hiu",  npcId:"colleague", name:"林曉晴", primary:"tvb_longmen", secondary:"tvb_kowloon" },
-  { key:"choi", npcId:"reporter",  name:"周采兒", primary:"rec_star",    secondary:"film_cotton" },
-  { key:"vera", npcId:"stylist",   name:"Vera",   primary:"ad_central",  secondary:"ad_adm" },
-  { key:"lan",  npcId:"lan",       name:"藍若曦", primary:"tvb_longmen", secondary:"tvb_kowloon" },
-  { key:"xu",   npcId:"xu",        name:"徐寶珊", primary:"ad_central",  secondary:"ad_adm" },
-  { key:"mei",  npcId:"mei",       name:"關海媚", primary:"ad_adm",      secondary:"rec_hk" },
-];
+  { key:"hiu",  npcId:"colleague", name:"林曉晴", primary:"tvb_longmen", secondary:"tvb_kowloon", tertiary:"date_airport" },
+  { key:"choi", npcId:"reporter",  name:"周采兒", primary:"rec_star",    secondary:"film_cotton", tertiary:"date_cinema" },
+  { key:"lan",  npcId:"lan",       name:"藍若曦", primary:"tvb_longmen", secondary:"tvb_kowloon", tertiary:"date_beach" },
+  { key:"xu",   npcId:"xu",        name:"徐寶珊", primary:"ad_central",  secondary:"ad_adm",      tertiary:"date_peak" },
+]; /* v20a159 ROM159：Vera／海媚出局（四位女角）。NPCS mei／vera 條目留返，唔喺呢度刪。 */
 const ROM176_P = 0.50, ROM176_SHARE = 0.65, ROM176_DAILY_CAP = 1, ROM176_WEEKLY_CAP = 3, ROM176_COOLDOWN = 2, ROM176_PITY_DAYS = 5;
-const ROM176_MEET_NODES = { hiu:["R_hiu_meet"], choi:["R_choi_meet"], vera:["R_vera_meet"], lan:["R_lan_meet"], xu:["R_xu_meet"], mei:[] };
+const ROM176_MEET_NODES = { hiu:["R_hiu_meet"], choi:["R_choi_meet"], lan:["R_lan_meet"], xu:["R_xu_meet"], yip:["R_yip_meet"], so:["R_so_meet"] }; /* v20a159 ROM159：刪 vera，加 yip／so（葉／蘇初遇節點） */
 const ROM176_GREET = {
   hiu:"曉晴：「咦，阿偉？咁啱嘅，喺呢度撞到你。」",
   choi:"采兒：「阿偉！啱啱好，我有單嘢想問你——唔係訪問，純粹八卦。」",
-  vera:"Vera：「咁啱。你今日呢身……算啦，唔講住，行埋嚟傾兩句。」",
   lan:"藍若曦：「阿偉？通告牌嗰邊啱啱先改完，你咁啱行過嚟……係咪有嘢想問？」",
   xu:"徐寶珊：「後生仔，行路望路呀。咦，係你——啱啱先撞到，唔好意思。」", /* v20a183 C2：初遇版，唔預設春茗；見過版喺 ROM183_GREET_MET */
-  mei:"關海媚：「咁啱，喺呢度撞到你。」", /* v20a183 C4：刪括號舞台指示，淨留對白 */
-};
+}; /* v20a159 ROM159：Vera／海媚出局，刪 vera／mei 問候句（讀者由 ROM176_WOMEN 派生，刪後無讀取位） */
 const ROM176_TEA_LINES = {
   hiu:"化妝師話，林曉晴呢排多數喺星河電視台廠景出沒，收工會喺附近行下。",
   choi:"有個娛樂版同事漏口風：周采兒呢幾日成日喺天星音樂嗰頭蒲，話跟緊一單料。",
-  vera:"造型助理講，Vera 呢排多數喺中環廣告嗰邊出沒，話接咗幾單急妝。",
   lan:"場務話，藍若曦呢排成日喺星河電視台通告牌前面企，話幫手執位。",
   xu:"廣告公司樓下個看更話，徐寶珊呢幾日多數喺中環廣告嗰邊出入，行得好急。",
-  mei:"金鐘創意嗰邊有人講，關海媚呢排會喺金鐘嗰頭出現——台柱行蹤，唔係日日有。",
-};
+}; /* v20a159 ROM159：Vera／海媚出局，刪 vera／mei 風聲句（讀者由 ROM176_WOMEN 派生，刪後無讀取位） */
 /* 巧遇返程守衛：由女角／紅星巧遇入面行出嚟嘅傾談／送禮，返地點嗰陣唔可以再擲一次巧遇
    （同一入場只觸發一個）。rom176BackOpts() 喺 doTalk／doGiveGift／openGiftPick 嘅返程共用：
    旗在就食咗佢返 { encDone:true }，唔在就原樣 { travelFree:true }。 */
@@ -38600,6 +39709,7 @@ function rom176WhisperActive(key){
 }
 function rom176BeatOpen(key){
   try{
+    if(key==="so" && typeof rom159SoMeetGate==="function" && !rom159SoMeetGate()) return false; /* v20a159 ROM159：蘇層級閘未開，唔當有開 beat（meet-offer 檢查位） */
     if(typeof StoryOC==="undefined" || !StoryOC.findNodeRaw || !StoryOC.evalNode) return false;
     const ids = [];
     (ROM176_MEET_NODES[key]||[]).forEach(n=>ids.push(n));
@@ -38636,7 +39746,14 @@ function rom176EnsureDay(){
   for(const w of ROM176_WOMEN){
     const ps = rom176PresenceP(w.key, day);
     if(!(ps.p>0)) continue;
-    if(enc79Rand("rom176:"+day+":"+w.key+":out") >= ps.p) continue;
+    /* v20a159 MAP159：第三出沒點——本來唔出沒嘅日子（out roll 唔中），以 20% 機率去第三點
+       （收工後先去嘅消閒地方）。主場／副場出現率同以前一字不差（p／share 數字零改動，
+       rom176 B2／B3／B5／B6 嗰啲率測試唔受影響）；同一日只可以喺一個地方（partition 唔變）。 */
+    if(enc79Rand("rom176:"+day+":"+w.key+":out") >= ps.p){
+      if(w.tertiary && enc79Rand("rom176:"+day+":"+w.key+":tert") < 0.20)
+        (presence[w.tertiary] = presence[w.tertiary] || []).push(w.key);
+      continue;
+    }
     const loc = (enc79Rand("rom176:"+day+":"+w.key+":loc") < ps.share) ? w.primary : w.secondary;
     (presence[loc] = presence[loc] || []).push(w.key);
   }
@@ -40066,7 +41183,7 @@ function locPanelNpcId(L){
 }
 function addLocTalkGiftActs(add, L, npcId){
   // 人物／情報置頂，減少要滾先撳
-  /* v20a176 ROM176：六位女角唔再喺地點板傾談／送禮——要撞到先傾得／送得（明星志願嗰套）。
+  /* v20a176 ROM176：四位女角唔再喺地點板傾談／送禮——要撞到先傾得／送得（明星志願嗰套）。
      非女角（導演／對手／何生）傾談掣不變；鄧麗萍送禮掣唔喺呢度（agency_ho 專屬段）。 */
   if(npcId && !(typeof rom176IsWomanNpc==="function" && rom176IsWomanNpc(npcId)))
     add(`同${NPCS[npcId].name}傾談`, talkHintLabel(), talkCostLabel(), ()=>{
@@ -40133,12 +41250,60 @@ function addLocGigActs(add, L, gigs, bridgeShown){
     });
   }catch(_e){}
 }
+/* ===== v20a159 MAP159：地點 sheet 約會對象列 =====
+   邊個女角喺呢度約得，讀 ROM159_WOMEN 各人 spots（A／B1 工人擁有，呢度只讀唔改）：
+   spots 入面可以直接係 locId（新寫法），或者係 ROM159_DATES 嘅 key（Phase 1 寫法，
+   經 ROM159_DATES 轉 locId）——兩種寫法都認，A／B1 換寫法嗰陣 sheet 自動跟。
+   條件唔啱嗰陣掣留返講原因（rom159DateGate 嘅 reason 做 hint，撳落去
+   rom159OpenDatePicker 會再 toast 原因），唔靜默消失。約會耗一日＋使錢照現成機制。 */
+function rom159WomenAtLoc(locId){
+  const out = [];
+  try{
+    if(typeof ROM159_WOMEN==="undefined" || !ROM159_WOMEN) return out;
+    Object.keys(ROM159_WOMEN).forEach(k=>{
+      const w = ROM159_WOMEN[k];
+      if(!w || !Array.isArray(w.spots)) return;
+      const hit = w.spots.some(sp=>{
+        if(sp===locId) return true;
+        const d = (typeof ROM159_DATES!=="undefined" && ROM159_DATES) ? ROM159_DATES[sp] : null;
+        return !!(d && d.locId===locId);
+      });
+      if(hit && out.indexOf(k)<0) out.push(k);
+    });
+  }catch(_e){}
+  return out;
+}
+function addRom159DateActs(add, L){
+  try{
+    if(!L || typeof ROM159_WOMEN==="undefined" || !ROM159_WOMEN) return;
+    const keys = rom159WomenAtLoc(L.id);
+    if(!keys.length) return;
+    keys.forEach(rk=>{
+      const w = ROM159_WOMEN[rk];
+      if(!w) return;
+      let gate = { ok:false, reason:"" };
+      try{ if(typeof rom159DateGate==="function") gate = rom159DateGate(rk, null) || gate; }catch(_e){}
+      let hint = gate.ok ? "約會耗一日" : (gate.reason || "暫時約唔到");
+      try{
+        if(typeof rom159DateButtonInfo==="function"){
+          const info = rom159DateButtonInfo(rk);
+          if(info && info.show && info.hint && info.hint.indexOf("$0")<0) hint = info.hint;
+        }
+      }catch(_e){}
+      add("約" + w.name + "出街", hint, "+1日", ()=>{
+        try{ if(typeof rom159OpenDatePicker==="function") rom159OpenDatePicker(rk, L); }catch(_e){ toast("暫時約唔到"); }
+      }, gate.ok ? "act-priority" : "");
+    });
+  }catch(_e){}
+}
 function openLoc(id, opts){
   opts = opts || {};
   /* v20a78 LOCK78：已結局唔再開地點 sheet（接通告／傾談／送禮等行動一律擋）。
      結局係終局狀態，forceRestore 還原路徑都唔准繞過——冇合法流程要喺結局後還原 sheet。 */
   if(typeof ending78Gate==="function" && ending78Gate()) return;
   if(isStoryPlayActive() && !opts.forceRestore){ toast("劇情進行中，完成對白才可以繼續。"); return; }
+  /* v20a159 ROM159：排他鎖／軟提示待發通知（rel 5 即場提示 modal；劇情進行中嗰陣唔彈）。 */
+  try{ if(typeof rom159FlushNotices==="function") rom159FlushNotices(); }catch(_e){}
   if(!opts.forceRestore && todayIsForcedDay()){
     closeSheet();
     kickScheduleIfNeeded();
@@ -40616,6 +41781,9 @@ function openLoc(id, opts){
        通告入口唔 hardcode 地點：用 gigsForLocSeasonBoard 判斷，有 gig 先出——
        cafe_cha 平時無 gig 就自動唔顯示；事務所一有幫忙通告（人情到期注入）即刻有板開。 */
     addLocTalkGiftActs(add, L, npcId);
+    /* v20a159 MAP159：hub 地點約會對象列（金龍茶餐廳：曉晴／采兒／Vera 經 ROM159_DATES；
+       事務所冇人約得，helper 會回空，唔出掣）。 */
+    try{ addRom159DateActs(add, L); }catch(_e159){}
     try{
       const hubGigs = (typeof gigsForLocSeasonBoard==="function") ? gigsForLocSeasonBoard(L.id, calendarSeason()) : [];
       if(hubGigs && hubGigs.length){
@@ -40627,6 +41795,9 @@ function openLoc(id, opts){
   } else {
   /* v20a22：傾談／送禮抽咗做共用 helper（hub 分支共用同一套） */
   addLocTalkGiftActs(add, L, npcId);
+  /* v20a159 MAP159：非 hub 地點約會對象列（6 個新點＋廟街禮品：讀 ROM159_WOMEN spots；
+     新點而家未有 ROM159_DATES 條目，A／B1 落地嗰陣自動出掣）。 */
+  try{ addRom159DateActs(add, L); }catch(_e159){}
   /* v18d 原為 rec_hk 附設小賣；v20a96 LOC96：禮物店獨立做 gift_shop 地點，
      shopAtLoc 跟正規化後嘅 locId 行——唱片公司唔再出呢個掣，新店先出。 */
   try{
@@ -40719,6 +41890,15 @@ const LOC_SHEET_BG = {
      嘅 bg_loc_gift_temple.jpg 原名。 */
   gift_shop:"assets/story/locs/bg_loc_gift_shop.jpg?v=20a104",
   hospital:"assets/story/locs/bg_loc_hospital.jpg?v=20a104",
+  /* v20a159 MAP159：約會層 6 張新場景圖（圖檔由 C 工人出緊，呢個 clone 未有——
+     對照表照寫呢啲檔名；圖 404 嗰陣 applyLocSheetBg 會用中性漸變底頂住，
+     唔用第二個地點嘅圖、唔爆 error。檔名唔加 ?v= 參數，C 工人出圖嗰陣原名入庫即啱。 */
+  date_harbour:"assets/story/locs/bg_159_harbour.jpg",
+  date_peak:"assets/story/locs/bg_159_peak.jpg",
+  date_lounge:"assets/story/locs/bg_159_lounge.jpg",
+  date_cinema:"assets/story/locs/bg_159_cinema.jpg",
+  date_beach:"assets/story/locs/bg_159_beach.jpg",
+  date_airport:"assets/story/locs/bg_159_airport.jpg",
 };
 function applyLocSheetBg(locId){
   const sheet=document.getElementById("loc-sheet");
@@ -40729,6 +41909,18 @@ function applyLocSheetBg(locId){
     bg.style.backgroundImage='url("'+url+'")';
     bg.hidden=false;
     sheet.classList.add("has-loc-bg");
+    sheet.classList.remove("loc-bg-missing159");
+    /* v20a159 MAP159：新地點圖檔由 C 工人出緊，呢個 clone 未有——圖 404 嗰陣
+       用中性漸變底頂住（同 bg_generic_interior 同一套米紙漸變，唔用第二個地點
+       嘅圖頂住，唔爆 error）。只對 bg_159_ 待出圖做 preload 檢查；現有 15 張
+       實檔唔行呢條路，免多一次請求。 */
+    if(url.indexOf("bg_159_")>=0){
+      try{
+        const probe=new Image();
+        probe.onerror=()=>{ try{ bg.style.backgroundImage="linear-gradient(160deg,#ebe2d4 0%,#d8cbb8 55%,#c9b8a0 100%)"; sheet.classList.add("loc-bg-missing159"); }catch(_e){} };
+        probe.src=url;
+      }catch(_e){}
+    }
   } else {
     bg.style.backgroundImage="";
     bg.hidden=true;
@@ -42480,6 +43672,8 @@ function giftCostLabel(){
 function giftGateBadge(gate){
   if(gate && gate.ok) return giftCostLabel();
   const r = String((gate && gate.reason) || "");
+  /* v20a159 ROM159：鎖定拒收唔係「未開放」，係「已鎖定」。 */
+  if(/已經有人/.test(r)) return "已鎖定";
   if(/庫存/.test(r)) return "庫存空";
   if(/今天|今日|人情急|先到這裡/.test(r)) return "今日已送";
   return "未開放";
@@ -42502,6 +43696,10 @@ function doTalk(npcId, L){
   try{ ensureLocSheetInteractive(); }catch(_e){}
   const npc=NPCS[npcId];
   if(!npc){ toast("這裡暫時見不到熟人。"); return; }
+  /* v20a159 ROM159：每人每週撞到上限 3 次（有未完成節點 offer 喺呢個地點嗰陣照傾得，唔卡劇情）。 */
+  try{
+    if(typeof rom159TalkCapped==="function" && rom159TalkCapped(npcId, L)){ toast("今個星期已經見過佢幾次——佢話下星期再傾過。"); return; }
+  }catch(_e){}
   /* v19z3 soft：每日免費傾談上限 */
   if(!softTalkCostsDay()){
     const cap = softSocialDailyCap("talk");
@@ -42526,6 +43724,8 @@ function doTalk(npcId, L){
     });
     try{ saveQ(); }catch(_e){}
   }catch(_e){}
+  /* v20a159 ROM159：傾談成功計一次撞到（每週上限見 rom159TalkCapped）。 */
+  try{ if(typeof rom159RecordTalk==="function") rom159RecordTalk(npcId); }catch(_e){}
   const gained=bumpNpc(npcId, 3+R(0,4));
   try{ noteWeekHighlight("talk", (npc && npc.name) || npcId); }catch(_wh){}
   const tip=tipGig(npc);
@@ -42597,9 +43797,12 @@ function doTalk(npcId, L){
       ${extraHtml||""}
       ${ended?`<p class="gold">一週完結 → 回家結算，計劃下週</p>`:""}
       <p style="margin-top:8px;font-size:.75rem;color:var(--muted)">${dayNote}</p>
-    </div>`,[
-      {label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}
-    ]);
+    </div>`,(()=>{
+      /* v20a159 ROM159：傾談結果加「約佢出街」＋「交換電話號碼」（只限感情線女角）。 */
+      const btns = [{label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}];
+      try{ if(typeof rom159TalkButtons==="function") rom159TalkButtons(npcId, L).forEach(b=>btns.push(b)); }catch(_e){}
+      return btns;
+    })());
   };
   /* v19z6：林曉晴首次傾談加長（2–3 句＋選擇） */
   S.flags = S.flags||{};
@@ -43387,7 +44590,7 @@ function people72Html(){
     const rivalryLine = (n.id==="rival" && typeof rivalryStatusLine==="function") ? rivalryStatusLine() : "";
     return `<div class="people-row" style="margin:8px 0;display:flex;gap:8px;align-items:flex-start"><img src="${PORTRAITS[n.face]}" alt="" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/><span style="flex:1"><b>${n.name}</b> · ${n.role}<br><span class="gold">${h} ${v}／100</span>${nextLine}${rivalryLine}${haunt176}${rel183}${goBit}</span></div>`;
   }).join("");
-  return `<h3 class="jobs72-h">人脈</h3><p class="people-next">好感夠就傾多啲：閒談 10 · 忠告 25 · 情報 40</p><p class="sub" style="font-size:.75rem">去佢常出沒嘅地方撞佢；撞到先可以傾談／送禮。</p>${html}` + ((typeof br89ArcStatusHtml==="function") ? br89ArcStatusHtml() : "") + ((typeof enc79PeopleHtml==="function") ? enc79PeopleHtml() : "");
+  return `<h3 class="jobs72-h">人脈</h3><p class="people-next">好感夠就傾多啲：閒談 10 · 忠告 25 · 情報 40</p><p class="sub" style="font-size:.75rem">去佢常出沒嘅地方撞佢；撞到先可以傾談／送禮。</p>${html}` + ((typeof br89ArcStatusHtml==="function") ? br89ArcStatusHtml() : "") + ((typeof enc79PeopleHtml==="function") ? enc79PeopleHtml() : "") + ((typeof rom159PeopleHtml==="function") ? rom159PeopleHtml() : "");
 }
 /* v20a89 BR89：對手／導師八線手帳狀態句（真分支審計 #6）——八線人物大半唔喺
    NPCS／紅星名冊，手帳以前完全唔提佢哋行到邊；而家共用一格：未開始唔出、
@@ -43442,6 +44645,16 @@ function renderPeoplePane(){
     btn.onclick = (ev)=>{
       try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){}
       try{ people72GoLoc(btn); }catch(_e){}
+    };
+  });
+  /* v20a159 ROM159：人脈頁「Call 機約佢出街」掣（交換電話號碼後先出）。 */
+  box.querySelectorAll(".rom159-call").forEach(btn=>{
+    btn.onclick = (ev)=>{
+      try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){}
+      try{
+        const who = btn.getAttribute("data-who");
+        if(typeof rom159OpenDatePicker==="function") rom159OpenDatePicker(who, null);
+      }catch(_e){}
     };
   });
 }
@@ -44204,6 +45417,20 @@ function cont(){
     try{ toast(mapShowAllLocs ? "已顯示全部地點" : "只顯示有事做嘅地點", {closeSheet:false}); }catch(_e){}
   });
 })();
+/* v20a159 MAP159：層切換掣委派（跟 wireMapShowAllLocs 同一寫法，掛喺 #map-hint 上；
+   paintBar 重寫 innerHTML 都唔會甩；切換唔耗出行額度、唔刷新成個地圖狀態，
+   只係 drawMap 重繪一次＋paintBar 更新掣面文字）。 */
+(function wireMapLayer159(){
+  const host=document.getElementById("map-hint");
+  if(!host) return;
+  host.addEventListener("click", (e)=>{
+    const btn=(e.target && e.target.closest) ? e.target.closest("#map-layer159") : null;
+    if(!btn) return;
+    map159Layer = (map159Layer==="date") ? "set" : "date";
+    try{ drawMap(); }catch(_e){}
+    try{ paintBar(); }catch(_e){}
+  });
+})();
 
 document.getElementById("home-tabs").onclick=e=>{
   const btn=e.target.closest("button[data-htab]"); if(!btn) return;
@@ -44703,6 +45930,14 @@ function applyTangGift169(){
     }
   }catch(_e){}
   return 1;
+}
+refreshCopyPacksFromDisk();
+})();
+
+</script>
+</body>
+</html>
+1;
 }
 refreshCopyPacksFromDisk();
 })();

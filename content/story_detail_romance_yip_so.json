@@ -1,0 +1,906 @@
+{
+  "conditionSchema": {
+    "conflictConvention": "T→conflict；C→linksMain（Soft）",
+    "semantics": "openConditions＝AND 清單（全過才開）；空 []＝無額外閘（仍受 phase／when 約束）。openConditionsAny＝可選 OR 清單：若有，須至少中一項，並與 openConditions 同時成立。tokens：C*／R_*／A_*＝該節完成；flag_*／裸前綴／route_*＝旗標真；rel_*_threshold＝關係數值達門檻（見 thresholds 或檔級，playtest）；phase_P*＝當前 phase 已達；era_*／season_*＝季節／時代軟匹配。與 Tang 陣列 schema 相容；Tang push 仍只用 openConditions AND。",
+    "version": 1
+  },
+  "edits": [
+    "v1.0 v159：新寫 10 節點（葉 5＋蘇 5）；葉掛 N8；蘇層級閘 runtime（rom159SoMeetGate）"
+  ],
+  "locale": "zh-Hant-written-HK",
+  "nodes": [
+    {
+      "arcBeat": "meet",
+      "artId": "rom_yip_meet",
+      "beats": [
+        {
+          "lines": [
+            "訓練班啱啱完，化妝間門口已經企滿記者。閃光燈一下一下咁閃，有人舉住咪伸過頭頂，只為問多一句私事。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "唔好意思，訓練班而家唔接受訪問。大家讓一讓，我哋要返去換衫。"
+          ],
+          "speaker": "葉敏芝"
+        },
+        {
+          "lines": [
+            "沒有人讓開。葉敏芝給人堵在門口，進退兩難，手上那疊訓練筆記快要給人撞散。阿偉就站在走廊那頭，手上拿著要送去道具房的箱子。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "（佢望咗阿偉一眼，冇出聲，只係企定咗，唔再退。）"
+          ],
+          "speaker": "葉敏芝"
+        },
+        {
+          "lines": [
+            "阿偉知道，只要他走開，這件事就與他無關。只要他站出來，就要自己擋下那些咪和鏡頭。"
+          ],
+          "speaker": "旁白"
+        }
+      ],
+      "cast": [
+        "葉敏芝"
+      ],
+      "choices": [
+        {
+          "effects": {
+            "flags": [
+              "flag_yip_met_warm"
+            ],
+            "notes": "阿偉企出嚟擋記者，葉敏芝記低呢個人。第一次見面，佢企咗喺佢嗰邊。",
+            "stats": {
+              "rel_yip": 1
+            }
+          },
+          "id": "C_yip_meet_warm",
+          "label": "企出嚟擋記者：話記者聽訓練班唔接受訪問"
+        },
+        {
+          "effects": {
+            "flags": [
+              "flag_yip_met_cool"
+            ],
+            "notes": "阿偉企埋一邊，冇惹麻煩。葉敏芝自己應付過去，兩個人只係點過頭。",
+            "stats": {
+              "rel_yip": 0
+            }
+          },
+          "id": "C_yip_meet_cool",
+          "label": "企埋一邊：唔惹麻煩，等人散"
+        }
+      ],
+      "conflict": null,
+      "eraTag": "era_1989_summer",
+      "flags_written": [
+        "flag_yip_met_cool",
+        "flag_yip_met_warm"
+      ],
+      "id": "R_yip_meet",
+      "linksMain": [
+        "N8"
+      ],
+      "openConditions": [
+        "phase_P2"
+      ],
+      "openConditionsNote": "葉敏芝認識：P2；掛 N8 選美後台。",
+      "parallelOk": true,
+      "pcSilent": true,
+      "phase": "P2",
+      "playerOffer": false,
+      "romanceLine": "yip",
+      "setting": "九龍電視台選美後台；初賽訓練班，記者喺化妝間外等",
+      "synopsis": "阿偉做臨記，派去選美訓練班跑腿。那天訓練完，記者湧到化妝間門口，圍住參選佳麗問私事。葉敏芝給人堵在門口，走不開。阿偉站在那裏，要選擇擋還是不擋。",
+      "title": "後台門口",
+      "when": "1989夏"
+    },
+    {
+      "arcBeat": "push",
+      "artId": "rom_yip_push1",
+      "beats": [
+        {
+          "lines": [
+            "初賽之後，有個熟面孔喺走廊拉住阿偉，話想打聽下後台嗰晚發生過咩事。佢笑住話，講兩句啫，唔會話係你講。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "（佢喺走廊嗰頭望住阿偉，冇行過嚟，冇出聲。嗰晚佢同阿偉講過嘅嘢，得佢哋兩個人知。）"
+          ],
+          "speaker": "葉敏芝"
+        },
+        {
+          "lines": [
+            "阿偉知道，這兩句話一講出去，明天就會變成報紙上的一段。葉敏芝望住佢，等佢開口。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "你想講就講啦。我唔會怪你——不過你講咗之後，我哋以後就唔使再講嘢。"
+          ],
+          "speaker": "葉敏芝"
+        }
+      ],
+      "cast": [
+        "葉敏芝"
+      ],
+      "choices": [
+        {
+          "effects": {
+            "flags": [
+              "flag_yip_kept_secret"
+            ],
+            "notes": "守口：葉敏芝記低呢個人情。經理人人情債權由 ENC79 鏈 D 嗰拍（yip_choice 守口 fx）兌現，呢度唔重複派，免得同一筆人情派兩次。",
+            "stats": {
+              "rel_yip": 2
+            }
+          },
+          "id": "C_yip_push1_keep",
+          "label": "守口：咩都唔講，話自己咩都唔知"
+        },
+        {
+          "effects": {
+            "flags": [
+              "flag_yip_leaked"
+            ],
+            "notes": "放料：換一個順水人情，但「把口唔穩」標籤種子寫入，葉敏芝以後唔會再同佢講心底話；crisis 嗰陣冇得拗。",
+            "ripple": {
+              "tag": "把口唔穩"
+            },
+            "stats": {
+              "rel_yip": -1
+            }
+          },
+          "id": "C_yip_push1_leak",
+          "label": "放料：講兩句後台嘢，換個順水人情"
+        }
+      ],
+      "conflict": null,
+      "eraTag": "era_1989_autumn",
+      "flags_written": [
+        "flag_yip_kept_secret",
+        "flag_yip_leaked"
+      ],
+      "id": "R_yip_push1",
+      "linksMain": [
+        "N8"
+      ],
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_yip_met_warm",
+        "flag_yip_met_cool"
+      ],
+      "openConditionsNote": "葉推進1：meet 後；鏈 D 第 3 拍改編。",
+      "parallelOk": true,
+      "pcSilent": true,
+      "phase": "P2",
+      "playerOffer": false,
+      "romanceLine": "yip",
+      "setting": "選美後台走廊；初賽之後，有人想問阿偉後台發生過咩事",
+      "synopsis": "選美初賽之後，有人拉住阿偉，想問他後台那晚發生過什麼事。葉敏芝那晚同他講過的話，只有他們兩個人知。阿偉要選擇：守住，還是講出去。",
+      "title": "守口如瓶",
+      "when": "1989秋"
+    },
+    {
+      "arcBeat": "push",
+      "artId": "rom_yip_push2",
+      "beats": [
+        {
+          "lines": [
+            "茶水間嗰邊有人講，葉敏芝入圍係靠關係，唔係憑實力。講嘢嗰個笑住話，選美呢啲嘢，邊個唔係咁。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "（佢企喺門口，聽到晒，冇入去，冇出聲，轉身行返去訓練室。）"
+          ],
+          "speaker": "葉敏芝"
+        },
+        {
+          "lines": [
+            "阿偉望住佢個背影。佢知道，呢句話唔駁，聽日就會變成「大家都係咁講」。駁，就要自己企出嚟，俾人記住佢係邊個。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "你唔使出頭㗎。呢啲嘢，愈駁愈多人講——不過，如果你真係企出嚟，我會記得。"
+          ],
+          "speaker": "葉敏芝"
+        }
+      ],
+      "cast": [
+        "葉敏芝"
+      ],
+      "choices": [
+        {
+          "effects": {
+            "flags": [
+              "flag_yip_stand"
+            ],
+            "notes": "阿偉當眾企葉敏芝嗰邊，講明入圍係憑訓練。名聲要付一點代價，但佢記低呢一下。",
+            "stats": {
+              "fame": -1,
+              "rel_yip": 2
+            }
+          },
+          "id": "C_yip_push2_stand",
+          "label": "企出嚟：當眾講明佢係憑訓練入圍，唔係靠關係"
+        },
+        {
+          "effects": {
+            "flags": [
+              "flag_yip_quiet"
+            ],
+            "notes": "阿偉唔出聲，費事惹事。葉敏芝冇怪佢，但呢一下，佢冇企到佢嗰邊。",
+            "stats": {
+              "rel_yip": 0
+            }
+          },
+          "id": "C_yip_push2_quiet",
+          "label": "唔出聲：當作聽唔到，費事惹事"
+        }
+      ],
+      "conflict": null,
+      "eraTag": "era_1990_spring",
+      "flags_written": [
+        "flag_yip_stand",
+        "flag_yip_quiet"
+      ],
+      "id": "R_yip_push2",
+      "linksMain": null,
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_yip_kept_secret",
+        "flag_yip_leaked"
+      ],
+      "openConditionsNote": "葉推進2：push1 後。",
+      "parallelOk": true,
+      "pcSilent": true,
+      "phase": "P3",
+      "playerOffer": false,
+      "romanceLine": "yip",
+      "setting": "電視台茶水間；有人話葉敏芝靠關係先入圍",
+      "synopsis": "有人在茶水間說，葉敏芝入圍是靠關係，不是憑實力。話傳到她耳裏，她沒有出聲，照舊去訓練。阿偉聽到之後，要選擇當眾企出來，還是當作聽不到。",
+      "title": "企你嗰邊",
+      "when": "1990春"
+    },
+    {
+      "arcBeat": "crisis",
+      "artId": "rom_yip_crisis",
+      "beats": [
+        {
+          "lines": [
+            "決賽前夕，一張後台相片流出咗。報紙話，係葉敏芝自己放料搏見報。嗰張相嘅角度，只有嗰晚喺後台嗰兩個人先影得到。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "嗰晚得你同我喺度。你話我聽——你有冇同人講過？我唔係怪你，我只係想知，今次我仲有冇得拗。"
+          ],
+          "speaker": "葉敏芝"
+        },
+        {
+          "lines": [
+            "阿偉望住佢。呢句答覆一出，之後發生咩事就定晒——守得住口嗰個，手上有證據；放過料嗰個，講咩都冇人信。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "你唔使諗住氹我。我識分邊句真、邊句假——你講，我聽住。"
+          ],
+          "speaker": "葉敏芝"
+        }
+      ],
+      "cast": [
+        "葉敏芝"
+      ],
+      "choices": [
+        {
+          "effects": {
+            "flags": [
+              "flag_yip_cleared"
+            ],
+            "notes": "自證：假設 push1 守口（flag_yip_kept_secret），手上有證據。放料線玩家揀呢項，敘事上等同講大話——引擎冇條件抉擇機制，呢個係已知寬鬆處，留待收緊；ending HE 路線由 flag_yip_cleared 開。",
+            "stats": {
+              "rel_yip": 2
+            }
+          },
+          "id": "C_yip_crisis_clear",
+          "label": "自證：我冇講過。證據喺呢度，嗰晚我哋講咩，我記得清清楚楚"
+        },
+        {
+          "effects": {
+            "flags": [
+              "flag_yip_be_route"
+            ],
+            "notes": "認錯：直入 BE 路線。佢以後唔會再信阿偉守得住口；ending 嗰陣 HE 選擇敘事上唔成立，見 R_yip_ending 註解。",
+            "stats": {
+              "rel_yip": -1
+            }
+          },
+          "id": "C_yip_crisis_admit",
+          "label": "認錯：我認，嗰陣我嘴快，同人提過兩句"
+        }
+      ],
+      "conflict": null,
+      "eraTag": "era_1990_summer",
+      "flags_written": [
+        "flag_yip_cleared",
+        "flag_yip_be_route"
+      ],
+      "id": "R_yip_crisis",
+      "linksMain": null,
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_yip_stand",
+        "flag_yip_quiet"
+      ],
+      "openConditionsNote": "葉危機：push2 後；守口先有證據自證，放料就冇得拗。",
+      "parallelOk": true,
+      "pcSilent": true,
+      "phase": "P4",
+      "playerOffer": false,
+      "romanceLine": "yip",
+      "setting": "選美決賽前夕；後台相片流出，有人話係葉敏芝自己放料",
+      "synopsis": "決賽前夕，一張後台相片流出，有人說是葉敏芝自己放料搏見報。葉敏芝來找阿偉——那晚後台只有他們兩個人在。她問他：你有沒有同人講過？阿偉要老實回答。",
+      "title": "流出嗰張相",
+      "when": "1990夏"
+    },
+    {
+      "arcBeat": "ending",
+      "artId": "rom_yip_ending",
+      "beats": [
+        {
+          "lines": [
+            "決賽之後，後台散得七七八八，燈一盞一盞調暗。葉敏芝企喺化妝間門口，等阿偉行過嚟。由第一日佢企出嚟擋記者，到今晚，佢企過佢嗰邊幾多次，佢全部都記得。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "我唔想再扮喇。唔想扮咩都唔在乎，唔想扮身邊冇人企——呢兩年，我扮得夠喇。"
+          ],
+          "speaker": "葉敏芝"
+        },
+        {
+          "lines": [
+            "她望住他，等他開口。這句話問出口，就沒有得收回。阿偉知道，答咗，就係認真；唔答，就係繼續扮。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "你肯唔肯企喺我嗰邊？唔係一次，係以後都係——公開企，唔使收收埋埋。"
+          ],
+          "speaker": "葉敏芝"
+        },
+        {
+          "lines": [
+            "阿偉點了點頭，還是搖了搖頭——那一下，兩個人都記得。"
+          ],
+          "speaker": "旁白"
+        }
+      ],
+      "cast": [
+        "葉敏芝"
+      ],
+      "choices": [
+        {
+          "effects": {
+            "flags": [
+              "flag_yip_he",
+              "flag_yip_commit"
+            ],
+            "notes": "HE：正式成為情侶、拍拖。公開企喺佢嗰邊，唔再係一次嘅幫忙。若 flag_yip_be_route 已寫，揀 HE 敘事上唔成立——引擎冇條件抉擇機制，屬已知寬鬆，commit offer 嗰陣 rel 門檻＋排他鎖會再把關。",
+            "stats": {
+              "rel_yip": 3
+            }
+          },
+          "id": "C_yip_ending_he",
+          "label": "企埋去：以後都企你嗰邊，公開企，唔使收收埋埋"
+        },
+        {
+          "effects": {
+            "flags": [
+              "flag_yip_be"
+            ],
+            "notes": "BE：繼續扮。佢唔會再問第二次，阿偉亦唔會再有機會企過去。",
+            "stats": {
+              "rel_yip": -2
+            }
+          },
+          "id": "C_yip_ending_be",
+          "label": "繼續扮：笑著話，以後有需要再搵我"
+        }
+      ],
+      "conflict": null,
+      "eraTag": "era_1990_autumn",
+      "flags_written": [
+        "flag_yip_be",
+        "flag_yip_commit",
+        "flag_yip_he"
+      ],
+      "id": "R_yip_ending",
+      "linksMain": null,
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_yip_cleared",
+        "flag_yip_be_route",
+        "flag_yip_stand"
+      ],
+      "openConditionsNote": "葉結局：P5；1992 秋窗。HE／BE＋flag_yip_commit。",
+      "parallelOk": false,
+      "pcSilent": true,
+      "phase": "P5",
+      "playerOffer": false,
+      "romanceLine": "yip",
+      "setting": "選美決賽之後；後台散場，佢叫住阿偉",
+      "synopsis": "決賽之後，後台的人散得七七八八。葉敏芝叫住阿偉，話以後唔想再扮——唔想再扮咩都唔在乎，唔想再扮身邊冇人企。佢問阿偉：你肯唔肯企喺我嗰邊，唔係一次，係以後都係？",
+      "title": "企你嗰邊",
+      "when": "1990秋"
+    },
+    {
+      "arcBeat": "meet",
+      "artId": "rom_so_meet",
+      "beats": [
+        {
+          "lines": [
+            "灣仔唱片大堂，蘇芷茵錄完音出嚟，記者已經喺大堂等咗成粒鐘。支咪伸到佢面前，問佢點解咁耐都唔出新歌，係咪公司雪藏佢。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "唔好意思，今日唔接受訪問。我趕住去下一個通告，唔該借過。"
+          ],
+          "speaker": "蘇芷茵"
+        },
+        {
+          "lines": [
+            "沒有人讓開。鏡頭對住佢塊面，佢笑住，笑得有啲硬。阿偉手上拿著要搬去錄音室的道具箱，就站在大堂那頭。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "（佢望咗阿偉一眼，冇出聲。嗰下眼神，唔係求救，係叫佢唔好多事。）"
+          ],
+          "speaker": "蘇芷茵"
+        },
+        {
+          "lines": [
+            "阿偉知道，只要他行開，這件事就與他無關。只要他站出來，就要自己擋下那些咪和鏡頭——而她未必多謝他。"
+          ],
+          "speaker": "旁白"
+        }
+      ],
+      "cast": [
+        "蘇芷茵"
+      ],
+      "choices": [
+        {
+          "effects": {
+            "flags": [
+              "flag_so_met_warm"
+            ],
+            "notes": "阿偉擋住鏡頭，蘇芷茵行得開。佢冇多謝佢，但記低呢個人。",
+            "stats": {
+              "rel_so": 1
+            }
+          },
+          "id": "C_so_meet_warm",
+          "label": "擋住鏡頭：話記者聽大堂唔畀影，叫佢哋行開"
+        },
+        {
+          "effects": {
+            "flags": [
+              "flag_so_met_cool"
+            ],
+            "notes": "阿偉行開，唔惹事。蘇芷茵自己應付過去，兩個人只係點過頭。",
+            "stats": {
+              "rel_so": 0
+            }
+          },
+          "id": "C_so_meet_cool",
+          "label": "行開：唔想惹事，等人散"
+        }
+      ],
+      "conflict": null,
+      "eraTag": "era_1989_spring",
+      "flags_written": [
+        "flag_so_met_cool",
+        "flag_so_met_warm"
+      ],
+      "id": "R_so_meet",
+      "linksMain": null,
+      "openConditions": [
+        "phase_P3"
+      ],
+      "openConditionsNote": "蘇芷茵認識：P3；灣仔唱片大堂。R_so_meet 另有 runtime 層級閘（配角或以上先開，見 rom159SoMeetGate）。",
+      "parallelOk": true,
+      "pcSilent": true,
+      "phase": "P3",
+      "playerOffer": false,
+      "romanceLine": "so",
+      "setting": "灣仔唱片大堂；蘇芷茵錄完音出嚟，記者喺大堂等",
+      "synopsis": "阿偉做臨記，派去灣仔唱片大堂幫手搬道具。蘇芷茵錄完音出嚟，記者在大堂等住，支咪伸到佢面前，問佢點解咁耐都唔出新歌。阿偉站在那裏，要選擇擋還是不擋。",
+      "title": "大堂嗰支咪",
+      "when": "1989春"
+    },
+    {
+      "arcBeat": "push",
+      "artId": "rom_so_push1",
+      "beats": [
+        {
+          "lines": [
+            "收工之後，錄音室外走廊靜晒。蘇芷茵一個人企喺度，冇走，望住窗外條街。阿偉經過，佢忽然開口，好似同自己講嘢多過同阿偉講。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "做玉女好攰㗎。你知唔知，每日都要笑住，講啲連自己都唔信嘅嘢——講到自己都唔記得，我原本係想點唱歌。"
+          ],
+          "speaker": "蘇芷茵"
+        },
+        {
+          "lines": [
+            "阿偉停低。佢知道，呢句話唔係講畀記者聽，唔係講畀經理人聽——係講畀一個啱啱識，唔會拎去賣錢嘅人聽。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "你唔使答我。我只係……好耐冇同人講過呢句。講完，我聽日又要笑住返去做玉女。"
+          ],
+          "speaker": "蘇芷茵"
+        }
+      ],
+      "cast": [
+        "蘇芷茵"
+      ],
+      "choices": [
+        {
+          "effects": {
+            "flags": [
+              "flag_so_confided"
+            ],
+            "notes": "阿偉淨係聽，唔勸。佢第一次有人肯聽佢講玉女個殼有幾攰，而唔係叫佢忍。",
+            "stats": {
+              "rel_so": 2
+            }
+          },
+          "id": "C_so_push1_listen",
+          "label": "聽佢講落去：唔勸，淨係聽"
+        },
+        {
+          "effects": {
+            "flags": [
+              "flag_so_kept_distance"
+            ],
+            "notes": "阿偉勸佢忍下。佢笑住應咗聲，轉身行開——嗰句心底話，佢唔會再講第二次。",
+            "stats": {
+              "rel_so": 0
+            }
+          },
+          "id": "C_so_push1_endure",
+          "label": "勸佢忍下：做呢行就係咁，忍下就過"
+        }
+      ],
+      "conflict": null,
+      "eraTag": "era_1989_summer",
+      "flags_written": [
+        "flag_so_confided",
+        "flag_so_kept_distance"
+      ],
+      "id": "R_so_push1",
+      "linksMain": null,
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_so_met_warm",
+        "flag_so_met_cool"
+      ],
+      "openConditionsNote": "蘇推進1：meet 後。",
+      "parallelOk": true,
+      "pcSilent": true,
+      "phase": "P3",
+      "playerOffer": false,
+      "romanceLine": "so",
+      "setting": "灣仔唱片錄音室外走廊；收工之後，佢一個人企喺度",
+      "synopsis": "收工之後，蘇芷茵一個人站在錄音室外的走廊，沒有走。阿偉經過，她忽然開口：做玉女好攰，每日都要笑住，講啲連自己都唔信嘅嘢。阿偉要選擇：聽佢講落去，還是勸她忍一忍。",
+      "title": "玉女個殼",
+      "when": "1989夏"
+    },
+    {
+      "arcBeat": "push",
+      "artId": "rom_so_push2",
+      "beats": [
+        {
+          "lines": [
+            "中環廣告公司樓下，蘇芷茵叫住阿偉。佢個樣唔似平時嗰個笑住嘅玉女，似一個俾人話完、唔知點算嘅女仔。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "經理人話，叫我唔好再同你來往。佢話，你而家仲係臨記，同你行埋一齊，會影響我個形象。"
+          ],
+          "speaker": "蘇芷茵"
+        },
+        {
+          "lines": [
+            "她把那句話原原本本講給阿偉聽，沒有加一句自己的意見。阿偉知道，這句話她講出口，就是把決定推給他。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "你話呢？如果你話算啦，我就聽佢話——如果你話唔算，我就繼續見你。不過你要諗清楚，繼續見我，對你冇著數。"
+          ],
+          "speaker": "蘇芷茵"
+        }
+      ],
+      "cast": [
+        "蘇芷茵"
+      ],
+      "choices": [
+        {
+          "effects": {
+            "flags": [
+              "flag_so_stayed"
+            ],
+            "notes": "阿偉叫佢繼續見。經理人嗰句，兩個人一齊頂住。",
+            "stats": {
+              "rel_so": 2
+            }
+          },
+          "id": "C_so_push2_stay",
+          "label": "繼續見：經理人話歸佢話，我哋繼續見"
+        },
+        {
+          "effects": {
+            "flags": [
+              "flag_so_obeyed"
+            ],
+            "notes": "阿偉叫佢聽經理人話。佢應咗聲，冇再講嘢——距離，就係咁劃出嚟。",
+            "stats": {
+              "rel_so": 0
+            }
+          },
+          "id": "C_so_push2_obey",
+          "label": "聽經理人：佢講得啱，我哋保持距離好啲"
+        }
+      ],
+      "conflict": null,
+      "eraTag": "era_1990_spring",
+      "flags_written": [
+        "flag_so_stayed",
+        "flag_so_obeyed"
+      ],
+      "id": "R_so_push2",
+      "linksMain": null,
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_so_confided",
+        "flag_so_kept_distance"
+      ],
+      "openConditionsNote": "蘇推進2：push1 後。",
+      "parallelOk": true,
+      "pcSilent": true,
+      "phase": "P4",
+      "playerOffer": false,
+      "romanceLine": "so",
+      "setting": "中環廣告公司樓下；經理人警告佢，唔好再同一個臨記來往",
+      "synopsis": "蘇芷茵的經理人警告她：不要再同一個臨記來往，會影響玉女形象。她來找阿偉，把那句話原原本本講給他聽。阿偉要選擇：叫她繼續見，還是叫她聽經理人的話。",
+      "title": "經理人嗰句",
+      "when": "1990春"
+    },
+    {
+      "arcBeat": "crisis",
+      "artId": "rom_so_crisis",
+      "beats": [
+        {
+          "lines": [
+            "灣仔唱片會議室，公司畀蘇芷茵一個機會：唱一首唔係玉女風格嘅歌。冒險，但可能係佢一直想要嗰條路；安全，就係繼續做玉女，做到冇人記得佢原本想點唱歌。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "我問過好多人，個個都叫我諗清楚——即係叫我唔好冒險。得你一個未問，我而家問你：你話，我應唔應該冒呢個險？"
+          ],
+          "speaker": "蘇芷茵"
+        },
+        {
+          "lines": [
+            "阿偉望住佢。呢句答覆一出，佢行邊條路就定晒。撐佢，佢可能跌低；勸佢安全，佢可能一世都唔會再問。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "你唔使諗住氹我開心。你講真心話——我信你講嗰句，唔信其他人。"
+          ],
+          "speaker": "蘇芷茵"
+        }
+      ],
+      "cast": [
+        "蘇芷茵"
+      ],
+      "choices": [
+        {
+          "effects": {
+            "flags": [
+              "flag_so_took_risk"
+            ],
+            "notes": "撐佢冒險：HE 路線。佢行出玉女個殼嗰一步，阿偉係企喺佢嗰邊嗰個人。",
+            "stats": {
+              "rel_so": 2
+            }
+          },
+          "id": "C_so_crisis_risk",
+          "label": "撐佢冒險：呢個就係你想要嗰條路，去唱"
+        },
+        {
+          "effects": {
+            "flags": [
+              "flag_so_played_safe"
+            ],
+            "notes": "勸佢安全：BE 路線。佢聽日又會笑住返去做玉女，嗰句心底話，唔會再講。",
+            "stats": {
+              "rel_so": -1
+            }
+          },
+          "id": "C_so_crisis_safe",
+          "label": "勸佢安全：玉女做得好地地，唔好冒險"
+        }
+      ],
+      "conflict": null,
+      "eraTag": "era_1990_summer",
+      "flags_written": [
+        "flag_so_took_risk",
+        "flag_so_played_safe"
+      ],
+      "id": "R_so_crisis",
+      "linksMain": null,
+      "openConditions": [],
+      "openConditionsAny": [
+        "flag_so_stayed",
+        "flag_so_obeyed"
+      ],
+      "openConditionsNote": "蘇危機：push2 後；撐佢冒險＝HE 路線，勸佢安全＝BE 路線。",
+      "parallelOk": true,
+      "pcSilent": true,
+      "phase": "P4",
+      "playerOffer": false,
+      "romanceLine": "so",
+      "setting": "灣仔唱片會議室；公司畀佢一個轉型機會，要唱一首唔係玉女風格嘅歌",
+      "synopsis": "公司給蘇芷茵一個轉型機會：唱一首不是玉女風格的歌，冒險，但可能是她一直想要的路。她來問阿偉：撐她冒險，還是勸她安全？阿偉一句話，會決定她行邊條路。",
+      "title": "轉型嗰個機會",
+      "when": "1990夏"
+    },
+    {
+      "arcBeat": "ending",
+      "artId": "rom_so_ending",
+      "beats": [
+        {
+          "lines": [
+            "年尾，蘇芷茵錄完轉型嗰首歌，錄音室外走廊靜晒。佢叫住阿偉，個樣唔似平時嗰個笑住嘅玉女，似一個啱啱揀完自己條路嘅人。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "呢首歌，我唱咗我想唱嘅嘢。由今日起，我唔想再有人叫我玉女——我想人當我係演員，當我係歌手，當我係一個會揀自己條路嘅人。"
+          ],
+          "speaker": "蘇芷茵"
+        },
+        {
+          "lines": [
+            "她望住他，等他開口。這句話問出口，就沒有得收回。阿偉知道，答咗，就係認真；唔答，佢聽日又會笑住返去做玉女。"
+          ],
+          "speaker": "旁白"
+        },
+        {
+          "lines": [
+            "你肯唔肯同我拍拖？唔係偷偷哋，係認認真真——你企我隔籬，我企你隔籬，俾人見到都唔怕。"
+          ],
+          "speaker": "蘇芷茵"
+        },
+        {
+          "lines": [
+            "阿偉點了點頭，還是搖了搖頭——那一下，兩個人都記得。"
+          ],
+          "speaker": "旁白"
+        }
+      ],
+      "cast": [
+        "蘇芷茵"
+      ],
+      "choices": [
+        {
+          "effects": {
+            "flags": [
+              "flag_so_he",
+              "flag_so_commit"
+            ],
+            "notes": "HE：正式成為情侶、拍拖。佢唔再係玉女殼入面嗰個人，阿偉係企喺佢隔籬嗰個。",
+            "stats": {
+              "rel_so": 3
+            }
+          },
+          "id": "C_so_ending_he",
+          "label": "應承佢：認認真真拍拖，俾人見到都唔怕"
+        },
+        {
+          "effects": {
+            "flags": [
+              "flag_so_be"
+            ],
+            "notes": "BE：繼續做玉女。嗰首轉型歌錄完，冇人再提；佢聽日又會笑住返去，嗰句心底話，唔會再講。",
+            "stats": {
+              "rel_so": -2
+            }
+          },
+          "id": "C_so_ending_be",
+          "label": "叫佢繼續做玉女：呢條路太險，返去安全嗰邊好啲"
+        }
+      ],
+      "conflict": null,
+      "eraTag": "era_1990_autumn",
+      "flags_written": [
+        "flag_so_be",
+        "flag_so_commit",
+        "flag_so_he"
+      ],
+      "id": "R_so_ending",
+      "linksMain": null,
+      "openConditions": [
+        "phase_P5"
+      ],
+      "openConditionsAny": [
+        "flag_so_took_risk",
+        "flag_so_played_safe",
+        "flag_so_stayed"
+      ],
+      "openConditionsNote": "蘇結局：P5；1992 秋窗。HE／BE＋flag_so_commit。",
+      "parallelOk": false,
+      "pcSilent": true,
+      "phase": "P5",
+      "playerOffer": false,
+      "romanceLine": "so",
+      "setting": "灣仔唱片錄音室；年尾，佢錄完轉型嗰首歌，叫住阿偉",
+      "synopsis": "年尾，蘇芷茵錄完轉型那首歌，叫住阿偉。她說，以後不要再當她是玉女——當她是一個演員，一個歌手，一個會揀自己條路的人。她問阿偉：你肯唔肯同我拍拖，唔係偷偷哋，係認認真真？",
+      "title": "當我係演員",
+      "when": "1990秋"
+    }
+  ],
+  "qa": {
+    "aw_first_person_lines": 0,
+    "banned_scan_body": "pass",
+    "node_count": 10,
+    "notes": "R_yip_push1＝鏈 D 第 3 拍改編（星層 ENC79 yip_choice 留返，見 index.html 註解）；R_yip_crisis／R_yip_ending 自證分流寫喺 effects.notes（引擎冇條件抉擇機制，屬已知寬鬆）；R_so_meet 層級閘喺 runtime，唔喺 openConditions（StoryOC 冇 tier token）",
+    "oral_leftover": [],
+    "steer": "v159 romance revamp；flag_<line>_*；no 阿偉「我」beats；C_* ids；葉掛 N8；蘇層級閘見 rom159SoMeetGate（runtime）"
+  },
+  "romanceLines": [
+    "yip",
+    "so"
+  ],
+  "rule": "玩家=阿偉，對白不寫阿偉「我」；確定前可平行；HE／BE 與事業並存；HE 必須係正式成為情侶、拍拖；BE 唔解鎖。",
+  "source": "v159 romance revamp：葉敏芝《企你嗰邊》／蘇芷茵《當我係演員》；Vera／關海媚出局後新入局兩線；鏈 D 第 3 拍改編做 R_yip_push1（星層 ENC79 嗰拍留返，見 index.html 註解）",
+  "version": "1.0.0"
+}

@@ -251,10 +251,10 @@ function baseSave(over){
   ok('N2 唔傳 metBefore 嗰陣跟 R_xu_meet（已播 → 春茗版）',
     __modals.length === 1 && __modals[0].body.indexOf('上次春茗') >= 0);
   __modals = []; __storyDone = {};
-  rom176PlayEncounter('mei', 'ad_adm', false);
-  ok('N4 海媚開場白冇括號舞台指示',
+  rom176PlayEncounter('lan', 'tvb_longmen', false); /* v20a159 ROM159：海媚出局，改用藍若曦（同一機制：開場白冇括號舞台指示） */
+  ok('N4 藍若曦開場白冇括號舞台指示',
     __modals.length === 1 && __modals[0].body.indexOf('（佢望咗你一眼') < 0
-    && __modals[0].body.indexOf('咁啱，喺呢度撞到你') >= 0);
+    && __modals[0].body.indexOf('通告牌嗰邊啱啱先改完') >= 0);
 })();
 
 /* ---------- C3：55 條女角反應句過粵語 filter ---------- */

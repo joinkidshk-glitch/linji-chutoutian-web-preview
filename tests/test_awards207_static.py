@@ -1,3 +1,4 @@
+# v20a159 resync：地點 15→21（MAP159 B2 加 6 個約會新點）；.mn68 標籤數 15→21。
 # v20a211 B1 resync：雙幾何（矮 480×432／高 480×540，HS211／HSC211＝×1.25）——短基準值不變，高 viewport 按比例換算；見 NOTES_V20A211。
 # v20a207：v204 設計 review 七項修復（B2／B3／N1–N5；B1 唔修，見 NOTES §1）。
 #   B2 舞台放大：邏輯 480×360→480×432（10:9）／backing 720×540→720×648／FLOOR 262→314
@@ -142,7 +143,7 @@ chk('C4 音樂場寫法（v20a218 C-C1：金碟夜 6 月 1 日，「年終」打
 # --- C5：地圖「中環廣告」標籤移離藍塔 ---
 chk('N5 中環廣告 left:51%', 'left:51%;top:calc(57% + 30px)">中環廣告' in src)
 chk('N5 中環廣告舊 left:60% 唔再出現', 'left:60%;top:calc(57% + 30px)">中環廣告' not in src)
-chk('N5 地圖標籤仲係 15 個', src.count('class="mn68"') == 15)
+chk('N5 地圖標籤 15→21 個（v159 加 6 個約會新點）', src.count('class="mn68"') == 21)
 chk('N5 其餘標籤唔郁（金鐘創意／灣仔唱片）',
     'left:85%;top:calc(60% + 28px)">金鐘創意' in src and 'left:68%;top:calc(77% + 34px)">灣仔唱片' in src)
 

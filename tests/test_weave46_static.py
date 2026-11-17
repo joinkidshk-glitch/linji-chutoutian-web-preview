@@ -113,10 +113,28 @@ lan_block183 = nocomment[_lan183_i:_lan183_j] if (_lan183_i >= 0 and _lan183_j >
 _tfix_i = nocomment.find('const TEXTFIX55_EXACT = {')
 _tfix_j = nocomment.find('const TEXTFIX55_OPTS_STORY', _tfix_i) if _tfix_i >= 0 else -1
 tfix_block = nocomment[_tfix_i:_tfix_j] if (_tfix_i >= 0 and _tfix_j > _tfix_i) else ''
+# v20a159 申報：ROM159 感情線重排嘅六人對照表（ROM159_WOMEN）正當地用藍若曦個名一次
+# （藍 Phase 2 先實裝，呢期只係數據表＋價錢表，唔係歌手向內容）；「零歌手向」嗰半保留不變。
+_r159_i = nocomment.find('const ROM159_WOMEN = {')
+_r159_j = nocomment.find('const ROM159_DATES = {', _r159_i) if _r159_i >= 0 else -1
+rom159_block = nocomment[_r159_i:_r159_j] if (_r159_i >= 0 and _r159_j > _r159_i) else ''
+# v20a159 申報：ROM159 送禮分層覆寫表（ROM159_GIFT_OVERRIDES.react）正當地用佢個名——
+# 3 條禮物反應對白（甜品／卡帶／香水），純粹送禮反應句，唔係歌手向內容。
+# 「零歌手向」嗰半保留不變（呢 3 句唔含歌手／唱片／狗仔／宣傳場／玉女）。
+_rg_i = nocomment.find('const ROM159_GIFT_OVERRIDES = {')
+_rg_j = nocomment.find('function rom159ApplyGiftOverrides(){', _rg_i) if _rg_i >= 0 else -1
+rom159_gift_block = nocomment[_rg_i:_rg_j] if (_rg_i >= 0 and _rg_j > _rg_i) else ''
+# v20a159 申報：CMT_lan_commit（1992 秋窗 commit offer）係用戶已拍板嘅藍弧線《企出嚟》
+# HE 前置場面（PA→錄音室半首歌→企出嚟唱歌）：setting／synopsis 正當地寫「香江唱片錄音室，
+# 半首歌錄完」，「唱片」呢個字喺呢個節點係已拍板內容，唔係未經批准嘅歌手向殘留。
+# 豁免範圍只限呢一個節點，其餘行「零歌手向」保留不變。
+_cmt_i = nocomment.find('COMMIT48_NODES.CMT_lan_commit = {')
+_cmt_j = nocomment.find('COMMIT48_NODES.CMT_xu_commit = {', _cmt_i) if _cmt_i >= 0 else -1
+cmt_lan_block = nocomment[_cmt_i:_cmt_j] if (_cmt_i >= 0 and _cmt_j > _cmt_i) else ''
 ok('藍若曦 remaining occurrences are engine infra or PA-line content (v20a31)',
-   all(('lan_ruoxi' in ln) or ('lan:"藍若曦' in ln) or ('name:"藍若曦"' in ln) or (ln in lan_block) or ('通告牌' in ln) or (ln in lan_block183) or (ln in tfix_block) for ln in lan_lines))
+   all(('lan_ruoxi' in ln) or ('lan:"藍若曦' in ln) or ('name:"藍若曦"' in ln) or (ln in lan_block) or ('通告牌' in ln) or (ln in lan_block183) or (ln in tfix_block) or (ln in rom159_block) or (ln in rom159_gift_block) for ln in lan_lines))
 ok('藍若曦 occurrences carry no singer framing',
-   all(not any(w in ln for w in ['歌手', '唱片', '狗仔', '宣傳場', '玉女']) for ln in lan_lines if ln not in tfix_block))
+   all(not any(w in ln for w in ['歌手', '唱片', '狗仔', '宣傳場', '玉女']) for ln in lan_lines if ln not in tfix_block and ln not in cmt_lan_block))
 
 # ---- 玩家面真名掃描（現有 QA 禁用表） ----
 for w in ['張國榮', '陳百強', '梅艷芳', '周潤發', '劉德華']:

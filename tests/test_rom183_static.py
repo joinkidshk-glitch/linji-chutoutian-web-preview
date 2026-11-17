@@ -6,6 +6,7 @@ import io, json, math, os, re, sys
 path = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
 html = io.open(path, encoding='utf-8').read()
 lines = html.split('\n')
+nocomment = re.sub(r'/\*.*?\*/', '', html, flags=re.S)  # v20a159：costsDay 檢查用（兩處命中都係 /* */ 註解）
 root = os.path.dirname(os.path.abspath(path))
 fails = []
 def ok(name, cond):
@@ -55,8 +56,8 @@ ok('N1/N6 覆寫呼叫點喺 textfix55SimplePack(d) 之後',
    html.find('rom183ApplyLineOverrides()') > html.find('textfix55SimplePack(d)'))
 ok('N3 覆寫呼叫點喺 textfix55Walk(giftReact) 之後',
    html.find('rom183ApplyGiftReactFix()') > html.find('textfix55Walk(giftReact'))
-ok('冇自己寫排他鎖／約會系統', 'rom159DateGate' in html and 'function rom159DateGate' not in html)
-ok('giveGift 回傳冇 costsDay:true 殘留', 'costsDay:true' not in html)
+ok('排他鎖／約會系統由 ROM159 定義一次（ROM183 只呼叫，唔自己寫）', html.count('function rom159DateGate') == 1 and html.count('function rom159EnsureLock') == 1)  # v20a159：Phase 1 已定義，舊斷言「未定義」過時
+ok('giveGift 回傳冇 costsDay:true 殘留', 'costsDay:true' not in nocomment)  # v20a159：兩處命中都係「殘留已拎走」註解，code 已無
 
 # ---- B1：感情進度顯示（讀 S.story.rel，淨顯示） ----
 ppl = seg('function people72Html(){', 'function br89ArcStatusHtml')
@@ -64,7 +65,7 @@ ok('B1 人脈頁女角行有感情進度行', 'rom183RelLine183(rk176)' in ppl a
 ok('B1 rel 讀 S.story.rel（唔讀 S.npcs）',
    'S.story.rel["rel_"+key]' in html or "S.story.rel['rel_'+key]" in html or 'S.story.rel' in seg('function rom183RelVal183', 'function rom183RelText183'))
 ok('B1 巧遇 modal 有好感細字', 'rom183RelText183(key)' in html and '而家好感 ' in html)
-ok('B1 冇改鎖邏輯（flag_romance_locked 零新增）', html.count('flag_romance_locked') == 0)
+ok('B1 冇改鎖邏輯（flag_romance_locked 只喺 ROM159 鎖函數，B1 段零出現）', 'flag_romance_locked' not in ppl and html.count('flag_romance_locked') == 6)  # v20a159：Phase 1 引入鎖旗 6 處（rom159EnsureLock／GainAllowed），B1 只讀 rel 唔掂鎖
 
 # ---- B2：最愛獨立標記 ----
 ok('B2 prefKind 最愛回 favorite', 'if((pref.favorites||[]).indexOf(itemId)>=0) return "favorite";' in html)

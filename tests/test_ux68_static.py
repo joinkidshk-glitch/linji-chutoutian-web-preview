@@ -1,3 +1,4 @@
+# v20a159 resync：地點 15→21（MAP159 B2 加 6 個約會新點；位置逐個對 index.html 實量：海傍 58%/40%/−52、山頂 52%/63%/+34、酒廊 74%/60%/−52、戲院 22%/32%/+31、淺水灣 55%/92%/−52、啟德 78%/38%/−52）。
 # v20a214 rebase 上 main d1239d4 resync：主檔 5524996 bytes，上限 5,510,000→5,565,000（NP214 報紙重做有意增長，見 qa214/resync214_rebase.py）。
 # v20a225 resync：主檔 5586915 bytes，上限 5,630,000 不變（對手線強化 rebase 上 main 719975f）。
 # v20a207 resync：index.html 淨 +34 行（見 qa207/resync207.py，73 錨點對位零 mismatch，純漂移）。
@@ -72,14 +73,14 @@ ok('sheet 標題加地區、desc 唔重複', 'document.getElementById("loc-title
 
 # --- (3) 地圖墨字地名（方案 B 定版：index-alt-b.html） ---
 # v128 A1：星河電視台改 plain top（left:26%;top:2%，唔再用 calc 扣 50px）——regex 要識
-# plain top（記做 sign "+"、px "0"），其餘 14 個繼續 calc 格式。
+# plain top（記做 sign "+"、px "0"），其餘 20 個繼續 calc 格式。
 labels = re.findall(r'<div class="mn68" style="left:([0-9.]+)%;top:(?:calc\((\d+)% ([+-]) (\d+)px\)|([0-9.]+)%)">([^<]+)</div>', src)
 labels = [(t[0], t[1] or t[4], t[2] or '+', t[3] or '0', t[5]) for t in labels]
-ok('地圖有 15 個墨字標籤（v20a96 LOC96 加海傍禮品＋仁康醫院）', len(labels) == 15)
+ok('地圖有 21 個墨字標籤（v20a96 LOC96 加海傍禮品＋仁康醫院；v159 加 6 個約會新點）', len(labels) == 21)
 lm = re.search(r'const LOCS = \[(.*?)\n\];', src, re.S)
 locs = re.findall(r'\{ id:"(\w+)", name:"([^"]+)"', lm.group(1) if lm else '')
 loc_names = [n for _, n in locs]
-ok('標籤文字同 LOCS 地點名逐個對得上', sorted(t[4] for t in labels) == sorted(loc_names) and len(loc_names) == 15)
+ok('標籤文字同 LOCS 地點名逐個對得上', sorted(t[4] for t in labels) == sorted(loc_names) and len(loc_names) == 21)
 spec = {
     '獅子山製片': ('54', '12', '-', '52'), '香江唱片': ('29.2', '24', '+', '31'),
     '星河電視台': ('26', '2', '+', '0'), '九龍電視台': ('36', '45', '-', '52'),
@@ -92,6 +93,10 @@ spec = {
     # v20a108 UI108 S-7：維港電影 76%/+44 → 80%/+38（避開九龍城）、廟街禮品 46% → 44%
     # v20a142 B1：4 張標籤由花紋底微調去附近乾淨底（PIL 計分：香江 sd 49.8→27.1、廟街 47.6→25.6、海港 67.0→2.7、金龍 3.0→2.9；LOCS 熱區座標唔郁）
     '廟街禮品': ('28.4', '35', '-', '104'), '仁康醫院': ('43', '73', '+', '52'),
+    # v20a159 MAP159 B2：6 個約會新點標籤位置（對 index.html .mn68 div 實量）
+    '尖沙咀海傍': ('58', '40', '-', '52'), '山頂': ('52', '63', '+', '34'),
+    '酒廊唱歌': ('74', '60', '-', '52'), '旺角戲院': ('22', '32', '+', '31'),
+    '淺水灣': ('55', '92', '-', '52'), '啟德機場': ('78', '38', '-', '52'),
 }
 got = {t[4]: (t[0], t[1], t[2], t[3]) for t in labels}
 ok('標籤位置同定版樣板（v4 貼建築位）逐個一致', got == spec)

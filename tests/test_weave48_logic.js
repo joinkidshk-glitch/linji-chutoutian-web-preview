@@ -212,7 +212,7 @@ loadGame(baseSave());
   const ids = ['R_lan_meet','R_lan_push1','R_lan_push2','R_lan_crisis','R_lan_ending'];
   const singerWords = ['唱片店', '錄音室', '合唱', '狗仔', '緋聞', '聯姻', '豪門', '退圈', '登機證', '唱歌', '歌手', '情侶檔'];
   let structOk = true, proseOk = true;
-  const wantBeats = { R_lan_meet: 6, R_lan_push1: 5, R_lan_push2: 5, R_lan_crisis: 5, R_lan_ending: 9 };
+  const wantBeats = { R_lan_meet: 6, R_lan_push1: 5, R_lan_push2: 5, R_lan_crisis: 6, R_lan_ending: 9 }; /* v20a159 ROM159：crisis 重寫加一拍（阿爸親自到電視台），5→6 */
   const wantPhase = { R_lan_meet: 'P2', R_lan_push1: 'P2', R_lan_push2: 'P2', R_lan_crisis: 'P4', R_lan_ending: 'P5' };
   ids.forEach(id => {
     const n = lanNodes[id];
@@ -231,7 +231,7 @@ loadGame(baseSave());
     if(singerWords.some(w => prose.includes(w))) proseOk = false;
     if(!prose.includes('藍若曦') || (!prose.includes('場記') && !prose.includes('通告牌'))) proseOk = false;
   });
-  ok('藍 PA：五節點 JSON 直出（beats 6/5/5/5/9、playerOffer false、結構層齊）', structOk);
+  ok('藍 PA：五節點 JSON 直出（beats 6/5/5/6/9、playerOffer false、結構層齊）', structOk);
   ok('藍 PA：文字層零歌手向字眼（唱片店/錄音室/合唱/狗仔/緋聞/聯姻/豪門…）＋PA 框架在位', proseOk);
   const p1 = lanNodes.R_lan_push1;
   const sang = (p1.choices || []).find(c => (c.effects && c.effects.flags || []).indexOf('flag_lan_sang_together') >= 0);

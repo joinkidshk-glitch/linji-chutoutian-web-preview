@@ -291,13 +291,13 @@
       "phase": "P4",
       "title": "調組令",
       "when": "1991春",
-      "setting": "電視台人事部走廊；一張調組令，成層樓都知",
+      "setting": "電視台人事部走廊；阿爸喺門口等佢收工",
       "eraTag": "era_1991_spring_family",
       "cast": [
         "藍若曦",
         "藍父"
       ],
-      "synopsis": "外判製作公司高薪請藍若曦過去做製作助理，人工高一些，但要立刻離開星河，還要簽長約。她家裏人又天天催她趁年輕轉一份穩妥文職。她站在人事部門口，那張紙握得皺了。她沒有問阿偉意見，只是想說給一個會明白的人聽。",
+      "synopsis": "阿爸親自到電視台等藍若曦收工，要她一個月內轉一份穩妥文職。外判製作公司開出高出一半的人工，屋企人個個都話，唔去就係傻。可是那份工沒有通告牌，沒有這班人。她站在人事部門口，那張紙握得皺了。她沒有問阿偉意見，只是想說給一個會明白的人聽。",
       "beats": [
         {
           "speaker": "旁白",
@@ -308,7 +308,13 @@
         {
           "speaker": "藍若曦",
           "lines": [
-            "外判嗰邊開嘅人工，多我而家一半。屋企人話，唔去就係傻——女仔做場記做到幾多歲呀，佢哋咁講。"
+            "阿爸今日親自嚟，等我收工，話要同我食飯——其實係想話我聽，場記呢份工做到幾多歲，叫我一個月內轉文職。"
+          ]
+        },
+        {
+          "speaker": "藍若曦",
+          "lines": [
+            "佢話女仔捱夜捱到咁，唔係辦法。外判嗰邊開嘅人工，多我而家一半，屋企人個個都話，唔去就係傻。"
           ]
         },
         {
@@ -333,18 +339,17 @@
       "choices": [
         {
           "id": "C_lan_crisis_help",
-          "label": "陪她爭取：和她一起向上面說，留在星河跟大騷",
+          "label": "陪她爭取：和她一起向阿爸講明，她想留在星河跟大騷",
           "effects": {
             "flags": [
               "flag_lan_help",
-              "flag_family_help",
-              "flag_family_marriage"
+              "flag_family_help"
             ],
             "stats": {
               "rel_lan": 2,
               "fame": -1
             },
-            "notes": "阿偉站在她那邊，和她一起爭取留在星河。"
+            "notes": "阿偉站在她那邊，和她一起頂住屋企壓力，爭取留在星河。"
           }
         },
         {
@@ -352,8 +357,7 @@
           "label": "勸她為前途著想：去吧，不要為這裏耽誤自己",
           "effects": {
             "flags": [
-              "flag_lan_stepback",
-              "flag_family_marriage"
+              "flag_lan_stepback"
             ],
             "stats": {
               "rel_lan": -1
@@ -364,7 +368,6 @@
       ],
       "flags_written": [
         "flag_family_help",
-        "flag_family_marriage",
         "flag_lan_help",
         "flag_lan_stepback"
       ],
@@ -374,7 +377,7 @@
         "flag_lan_colleague",
         "flag_lan_sang_together"
       ],
-      "openConditionsNote": "藍危機：推進後；linksMain=N12；家族壓（方向性／playtest 高好感）。",
+      "openConditionsNote": "藍危機：推進後；linksMain=N12；屋企／阿爸壓（方向性／playtest 高好感）。",
       "artId": "rom_lan_crisis",
       "conflict": null,
       "romanceLine": "lan",

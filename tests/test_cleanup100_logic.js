@@ -127,9 +127,10 @@ ok('B03 全藍線冇 stats.music', allStats.every(s => !('music' in s)));
 const sang = (push1.choices || []).find(c => (c.effects && c.effects.flags || []).indexOf('flag_lan_sang_together') >= 0);
 ok('B03 一齊捱過抉擇 stage:1', !!(sang && sang.effects.stats.stage === 1 && sang.effects.stats.rel_lan === 2));
 const crisis = lanById.R_lan_crisis;
-const famFlags = (crisis.choices || []).map(c => (c.effects && c.effects.flags) || []).filter(f => f.indexOf('flag_family_marriage') >= 0);
-ok('B03 flag_family_marriage 保留兩抉擇（唔拆）', famFlags.length === 2);
-ok('B03 crisis flags_written 不變', JSON.stringify(crisis.flags_written) === JSON.stringify(['flag_family_help', 'flag_family_marriage', 'flag_lan_help', 'flag_lan_stepback']));
+/* v20a159 ROM159：crisis 由豪門／聯姻改做屋企／阿爸壓力，flag_family_marriage 兩抉擇都刪；help 寫 flag_family_help＋flag_lan_help，stepback 寫 flag_lan_stepback。 */
+const famFlags = (crisis.choices || []).map(c => (c.effects && c.effects.flags) || []).filter(f => f.indexOf('flag_family_help') >= 0);
+ok('B03 屋企壓力：help 寫 flag_family_help（唔再係豪門聯姻旗）', famFlags.length === 1);
+ok('B03 crisis flags_written 不變（新版）', JSON.stringify(crisis.flags_written) === JSON.stringify(['flag_family_help', 'flag_lan_help', 'flag_lan_stepback']));
 
 /* (5) A-08 */
 function freshNews(day){ S = { dayIndex: day, stars: {}, news82: null, mockRumors: [] }; __enqueued = []; }

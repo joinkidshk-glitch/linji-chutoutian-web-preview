@@ -1,3 +1,4 @@
+// v20a159 resync：地點 15→21（MAP159 B2：LOC_SHEET_BG 加 6 行 bg_159_* 約會場景檔）；抽數 15→21。
 // v20a105 ENC105 邏輯測試：巧遇資產組 D-2／D-3——
 //   (1) 12 星逐個：enc79StandCandidates 第一候補＝企立檔（路徑逐字對版）＋實檔存在；
 //       bust 做後備；候補尾＝入庫剪影檔＋內嵌 SVG 兜底（全失敗都唔會冇人）。
@@ -40,7 +41,7 @@ ok('名冊抽到 12 星', STARS.length === 12);
 const locBlock = html.slice(html.indexOf('const LOC_SHEET_BG = {'), html.indexOf('};', html.indexOf('const LOC_SHEET_BG = {')));
 const LOC_SHEET_BG = {};
 for(const mm of locBlock.matchAll(/(\w+):"([^"]+)"/g)) LOC_SHEET_BG[mm[1]] = mm[2];
-ok('LOC_SHEET_BG 抽到 15 地點', Object.keys(LOC_SHEET_BG).length === 15);
+ok('LOC_SHEET_BG 抽到 21 地點（舊 15＋v159 加 6 個 bg_159_* 約會場景）', Object.keys(LOC_SHEET_BG).length === 21);
 /* ---- sandbox stubs（UI40 用哨兵值，方便分辨場景來源；silhouette 跟真函數 5 星範圍） ---- */
 const UI40_SCENE = { cafe: 'UI40::cafe', agency: 'UI40::agency', studio: 'UI40::studio', startv: 'UI40::startv', recording: 'UI40::recording' };
 const UI40_BG_BY_KEY = { bg_loc_cafe_cha: 'cafe', bg_loc_agency_ho: 'agency', bg_loc_film_lion: 'studio', bg_loc_film_cotton: 'studio', bg_loc_film_harbour: 'studio', bg_loc_tvb_longmen: 'startv', bg_loc_rec_hk: 'recording', bg_loc_rec_wanchai: 'recording', bg_loc_rec_star: 'recording' };

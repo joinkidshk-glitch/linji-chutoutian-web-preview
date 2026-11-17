@@ -200,7 +200,8 @@ function presenceOn(day, setup){
   ok('B2 P(出)=0.50（365 日曉晴出沒率 0.35–0.65）', daysWithHiu >= 128 && daysWithHiu <= 237, '出沒 ' + daysWithHiu + '/365');
   ok('B3 主場 share 0.65（出沒日主場佔比 0.50–0.80）', hiuTotal > 0 && hiuPrimary / hiuTotal >= 0.50 && hiuPrimary / hiuTotal <= 0.80,
     '主場 ' + hiuPrimary + '/' + hiuTotal);
-  ok('B4 唔係日日一樣（365 日 presence 有變化）', Object.keys(seenDays).length > 100, '相異 ' + Object.keys(seenDays).length);
+  /* v20a159 ROM159：女角 6→4，presence 組合少咗，相異日數 72（基底 6 人嗰陣 >100）；門檻改 >50，意圖不變（唔係日日一樣）。 */
+  ok('B4 唔係日日一樣（365 日 presence 有變化）', Object.keys(seenDays).length > 50, '相異 ' + Object.keys(seenDays).length);
   // 風聲：每日續窗，P≥0.80
   let wDays = 0, wPrimary = 0, wTotal = 0;
   for (let d = 0; d < 365; d++){
@@ -333,7 +334,7 @@ function findDay(pred, max){
     && rom176BackOpts().encDone === true);
   __modals = []; __openLocCalls = [];
   S = baseSave({ dayIndex: 20 });
-  rom176PlayEncounter('mei', 'ad_adm');
+  rom176PlayEncounter('choi', 'rec_star'); /* v20a159 ROM159：海媚出局，改用采兒（行開掣同一機制） */
   __modals[0].btns[__modals[0].btns.length - 1].on();
   ok('D8 撳行開 → openLoc encDone', __openLocCalls.length === 1 && __openLocCalls[0].opts.encDone === true);
 })();
@@ -404,7 +405,8 @@ function findDay(pred, max){
   rom176SetEncounter({ kind: 'woman', key: 'hiu', locId: 'tvb_longmen' });
   ok('F2 有旗 → {encDone:true}（食咗佢）', JSON.stringify(rom176BackOpts()) === JSON.stringify({ encDone: true }));
   ok('F3 旗只食一次', JSON.stringify(rom176BackOpts()) === JSON.stringify({ travelFree: true }));
-  ok('F4 rom176IsWomanNpc（6 女角 npcId）', ['colleague','reporter','stylist','lan','xu','mei'].every(id=>rom176IsWomanNpc(id))
+  ok('F4 rom176IsWomanNpc（4 女角 npcId；v20a159 ROM159：stylist／mei 出局）', ['colleague','reporter','lan','xu'].every(id=>rom176IsWomanNpc(id))
+    && !rom176IsWomanNpc('stylist') && !rom176IsWomanNpc('mei')
     && !rom176IsWomanNpc('director') && !rom176IsWomanNpc('agent'));
 })();
 

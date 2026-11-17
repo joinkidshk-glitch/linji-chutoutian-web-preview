@@ -27,7 +27,7 @@ ok('A-01/02: CONTRA98_WHEN_FIX 表在位（25 節點；v20a242 加 R_lan_crisis�
    len(_fix98) == 25 and 'R_tang_meet_stub:["1989秋","era_1989_autumn_capital"]' in src
    and src.count('"1990冬","era_1990_winter_finale"') == 8)
 ok('A-01/02: contra98FixNodeWhen 函數在位', 'function contra98FixNodeWhen(packs)' in src)
-i_fix = src.find('contra98FixNodeWhen([main, rom1, rom2, rival])')  # v20a152：romTang 已停載，唔再入表
+i_fix = src.find('contra98FixNodeWhen([main, rom1, rom2, rom3, rival])')  # v20a152：romTang 已停載，唔再入表；v20a159 ROM159：加 rom3
 i_walk = src.find('rival, gateStub, dengMock')  # story pack 嗰次 walk（檔入面另有 gift pack walk，唔好混淆）
 ok('A-01/02: 載入次序——正規化喺 story years66Walk 之前', 0 <= i_fix < i_walk)
 
