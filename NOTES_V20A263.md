@@ -42,7 +42,9 @@ v262 驗收只對咗主體同年代（中銀大廈啱），冇對風格參數，
 
 ## 落地
 
-- （待填：squash merge commit、push、Pages 核實、刪工作副本）
+- 分支 `v263`（commits `5ae55de`＋`fa190cb`）squash merge 入 main，commit `5281d53`，已推 GitHub（`git ls-remote` 核實 `5281d53`；第一次 push 撞 egress proxy 斷線，重試即成功，係已知間歇問題）。
+- Pages 核實（推後約 4 分鐘）：6 張圖 URL 全部 HTTP 200，sha256 同本地一致（見下文）。
+- 工作副本 `linji-work263` 已刪，分支 `v263` 已刪。
 
 ## 押後
 
