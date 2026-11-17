@@ -36,14 +36,15 @@ ok('事業組分段＝作品＋獎項＋回憶', all(s in career for s in ['id="
 # v20a72 MENU72 改版：選單「庫存」歸入近況組做子頁（用戶一門原則），故近況組
 # 分段由「記數＋標籤」變「記數＋標籤＋庫存」；人情組新增分段列「人情債＋人脈」。
 ok('近況組分段＝記數＋標籤＋庫存（v72 改版）', all(s in status for s in ['id="htab-ledger"', 'id="htab-tags"', 'id="htab-inv"']))
-ok('消息組分段＝傳聞＋剪報', all(s in news for s in ['id="htab-rumor"', 'id="htab-clippings"']))
+ok('消息組分段＝剪報（v267：傳聞子頁已刪）', all(s in news for s in ['id="htab-clippings"']) and 'id="htab-rumor"' not in news)
 ok('人情組分段＝人情債＋人脈（v72 新增）', all(s in favor for s in ['id="htab-debt"', 'id="htab-people"']))
-ok('子頁 pane 全部保留（11 個，v72 加 people／inv）', all(('id="home-pane-%s"' % s) in src for s in
-   ['plan','ledger','rumor','clippings','debt','people','tags','inv','works','awards','memory']))
-ok('分組映射 BOOK70_TAB_GROUP 齊 11 子頁（v72 加 inv／people）',
+ok('子頁 pane 全部保留（10 個，v267 刪傳聞頁）', all(('id="home-pane-%s"' % s) in src for s in
+   ['plan','ledger','clippings','debt','people','tags','inv','works','awards','memory']))
+ok('分組映射 BOOK70_TAB_GROUP 齊 10 子頁（v267 刪 rumor）',
    'const BOOK70_TAB_GROUP' in src and all(s in src for s in
    ['plan:"plan"', 'works:"career"', 'awards:"career"', 'memory:"career"', 'ledger:"status"',
-    'tags:"status"', 'inv:"status"', 'rumor:"news"', 'clippings:"news"', 'debt:"favor"', 'people:"favor"']))
+    'tags:"status"', 'inv:"status"', 'clippings:"news"', 'debt:"favor"', 'people:"favor"'])
+   and 'rumor:"news"' not in src)
 ok('分組同步＋子頁點擊接線（book70SyncTabGroups／home-subtabs onclick）',
    'function book70SyncTabGroups' in src and '_homeSubtabsEl' in src and 'book70SyncTabGroups(tab)' in src)
 ok('大類掣 data-htab 跟組內記憶子頁（舊呼叫／自檢兼容）', 'book70GroupSub[g] || BOOK70_GROUP_FIRST[g]' in src)

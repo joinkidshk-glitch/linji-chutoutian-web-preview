@@ -18,7 +18,7 @@ ok('N1 dev 修訂字已刪', '本頁修訂 s107' not in html)
 ok('N1 #start-soft-tip 元素保留（有真玩家內容）', 'id="start-soft-tip"' in html)
 
 # N15-1：通告詳情「💡 有情報」改手繪 sparkle 圖標
-ok('N15-1 有情報用 sparkle 手繪圖', 'iconHtml112("✨")' in html and '💡 有情報' not in html)
+ok('v267 N15-1 有情報行已隨 intelLineForGig 一併刪（唔再有 💡／✨ 情報行）', '💡 有情報' not in html and 'iconHtml112("✨")' not in html)
 
 # 🔒：冇 lock 線圖標，用 CSS 畫鎖
 # （舊版已有 .sp-lock-ico class，但係包住 🔒 emoji；新版 span 掏空＋CSS 畫鎖身＋鎖扣。）

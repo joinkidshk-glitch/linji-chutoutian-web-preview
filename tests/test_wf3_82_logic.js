@@ -34,15 +34,16 @@ function extractConst(name){
 var saveQ = ()=>{};
 var syncNotebookMirror = ()=>{};
 var ensureMockJournal = ()=>{};
-var toast = ()=>{};
+var _toasts = [];
+var toast = (m,o)=>{ _toasts.push(String(m||'') + ' ' + String((o&&o.sub)||'')); };
 var modal = ()=>{};
 var syncDualTracks = ()=>{};
 var _clips = [];
 var ensureNewspaperClippings = ()=> _clips;
 var _enqueued = [];
 var enqueueNewspaperItem = (item)=>{ _enqueued.push(item); return item; };
-var _intel = {};
-var hasIntelFlag = (f)=> !!_intel[f];
+var enc79TierOf = (fav)=> fav>=70?4: fav>=45?3: fav>=25?2: fav>=10?1:0;
+var enc79StarState = (id)=> (S && S.stars && S.stars[id]) ? S.stars[id] : {fav:0};
 var ensureFavorLedger = ()=> ({ settled:0, credits:0, exodus:[], counted:{} });
 var favorLedgerNoteCredit = ()=>{};
 var favorLedgerNoteSettled = ()=>{};
@@ -56,27 +57,14 @@ var StoryOC = {
 var S = null;
 function freshS(day){
   return { dayIndex: day||0, fame:0, money:1000, industryCredit:10,
-    mockRumors:[], mockCredits:[], mockDebts:[], wrapHistory:[], flags:{}, story:{ done:{}, flags:{} } };
+    mockRumors:[], mockCredits:[], mockDebts:[], wrapHistory:[], flags:{}, stars:{}, story:{ done:{}, flags:{} } };
 }
 
-// ---------- 1. 情報使用點（鏈 B gigLine 補返＋鏈 D 新使用點） ----------
-eval(extractConst('INTEL_USE_POINTS').replace('const INTEL_USE_POINTS', 'globalThis.INTEL_USE_POINTS'));
-const UP = globalThis.INTEL_USE_POINTS;
-ok('鏈 B gigLine 非空（原為空字串）', typeof UP.rumor_liao_bingxing_money.gigLine==='string' && UP.rumor_liao_bingxing_money.gigLine.length>=20);
-ok('鏈 B gigLine 講到水喉／金主', /水喉|金主/.test(UP.rumor_liao_bingxing_money.gigLine));
-ok('鏈 D 葉敏芝使用點存在且非空', !!UP.rumor_yip_rumor_truth && UP.rumor_yip_rumor_truth.gigLine.length>=20);
-ok('鏈 D 顧明輝使用點存在且非空', !!UP.rumor_ku_overwork_truth && UP.rumor_ku_overwork_truth.gigLine.length>=20);
-
-// ---------- 2. 新拼合對＋情報旗 ----------
-eval(extractConst('MERGE_PAIRS').replace('const MERGE_PAIRS', 'globalThis.MERGE_PAIRS'));
-eval(extractConst('INTEL_FLAGS').replace('const INTEL_FLAGS', 'globalThis.INTEL_FLAGS'));
-const PAIRS = globalThis.MERGE_PAIRS, FLAGS = globalThis.INTEL_FLAGS;
-const pair = (a,b)=> PAIRS.find(p=> (p.a===a && p.b===b) || (p.a===b && p.b===a));
-ok('yip 經典對（聽聞×聽聞）', (()=>{ const p = pair('rumor_yip_plasticsurgery_summer','rumor_yip_writeup_heard'); return !!p && p.merged==='rumor_yip_rumor_truth'; })());
-ok('yip 跨系統對（報紙×聽聞）', (()=>{ const p = pair('paperfrag_yip_swimsuit','rumor_yip_plasticsurgery_summer'); return !!p && p.merged==='rumor_yip_rumor_truth'; })());
-ok('ku 跨系統對（報紙×聽聞）', (()=>{ const p = pair('paperfrag_ku_wrap','rumor_ku_overwork_summer'); return !!p && p.merged==='rumor_ku_overwork_truth'; })());
-ok('intel flags: yip', FLAGS.rumor_yip_rumor_truth==='intel_yip_truth');
-ok('intel flags: ku', FLAGS.rumor_ku_overwork_truth==='intel_ku_overwork');
+// ---------- 1. v20a267：情報使用點／拼合對／情報旗已刪 ----------
+ok('v267 INTEL_USE_POINTS 已刪', html.indexOf('INTEL_USE_POINTS')<0);
+ok('v267 MERGE_PAIRS 已刪', html.indexOf('MERGE_PAIRS')<0);
+ok('v267 INTEL_FLAGS 已刪', html.indexOf('INTEL_FLAGS')<0);
+ok('v267 hasIntelFlag 已刪', html.indexOf('hasIntelFlag')<0);
 
 // ---------- 3. 報紙事件表：日期／級別／結構 ----------
 eval(extractConst('NEWS82_EVENTS').replace('const NEWS82_EVENTS', 'globalThis.NEWS82_EVENTS'));
@@ -140,43 +128,30 @@ ok('舊檔 day746：E1（2 日前）唔歸檔', !S.news82.arc.E1);
 news82Tick();
 ok('舊檔 day746：E1 照常入隊刊出', _enqueued.some(e=>e.worldId==='E1'));
 
-// ---------- 6. N8 追加抉擇 ----------
+// ---------- 6. N8 追加抉擇（v20a267：無條件——N8 係選美後台，葉敏芝疑雲本身就係嗰場題材） ----------
 eval(extractFn('wf3PrepareNode82'));
-_intel = { intel_yip_truth: true };
 const c11 = { id:'N8', choices:[{ id:'N8_a' }, { id:'N8_b' }] };
 const prep = wf3PrepareNode82(c11);
-ok('持有真相 → 追加 N8_d', !!prep && prep.choices.length===3 && prep.choices[2].id==='N8_d');
+ok('N8_d 無條件追加', !!prep && prep.choices.length===3 && prep.choices[2].id==='N8_d');
 ok('N8_d 落旗 flag_yip_warned82', !!prep && prep.choices[2].effects.flags.indexOf('flag_yip_warned82')>=0);
 ok('原節點冇被改（淺拷貝）', c11.choices.length===2);
-_intel = {};
-ok('冇真相 → 唔追加', wf3PrepareNode82(c11)===null);
-_intel = { intel_yip_truth: true };
+ok('唔使情報都追加（第二個新節點一樣）', !!wf3PrepareNode82({ id:'N8', choices:[{ id:'N8_a' }] }));
 ok('其他節點唔受影響', wf3PrepareNode82({ id:'N11', choices:[] })===null);
 ok('已追加過唔重複', wf3PrepareNode82(prep)===null);
 
-// ---------- 7. mergeWf3Gigs：B3 中期——WF3_LIAO_GIG／WF3_LIAO_HARVEST_GIG 已係 null，
-// mergeWf3Gigs 係 stub（回 0），有冇情報都唔注入、唔出舊 id、唔 crash（B5 觸發系統補返先恢復）。 ----------
-var GIGS = [];
-var normalizeGigRecord = (g)=> Object.assign({}, g);
+// ---------- 7. v20a267：mergeWf3Gigs／mergeIntelGigs 已刪；WF3_LIAO_GIG 常數留返 null ----------
 eval(extractConst('WF3_LIAO_GIG').replace('const WF3_LIAO_GIG', 'globalThis.WF3_LIAO_GIG'));
 eval(extractConst('WF3_LIAO_HARVEST_GIG').replace('const WF3_LIAO_HARVEST_GIG', 'globalThis.WF3_LIAO_HARVEST_GIG'));
-eval(extractFn('mergeWf3Gigs'));
-ok('B3 WF3_LIAO_GIG／WF3_LIAO_HARVEST_GIG 已係 null', globalThis.WF3_LIAO_GIG===null && globalThis.WF3_LIAO_HARVEST_GIG===null);
-S = freshS(100);
-_intel = {};
-ok('B3 冇情報 → merge 回 0，隱藏通告唔出現', mergeWf3Gigs()===0 && !GIGS.some(g=>/^gig_wf3_/.test(g.id)));
-_intel = { intel_liao_money: true };
-ok('B3 有情報 → merge 照舊回 0，唔注入（池已清空，B5 補返）', mergeWf3Gigs()===0 && GIGS.length===0 && !GIGS.some(g=>/^gig_wf3_/.test(g.id)));
-S.flags['done_gig_1990_film_101'] = 1;
-mergeWf3Gigs();
-ok('B3 完成旗亦唔會令舊通告上板', !GIGS.some(g=>/^gig_wf3_/.test(g.id)));
+ok('B3 WF3_LIAO_GIG／WF3_LIAO_HARVEST_GIG 仲係 null', globalThis.WF3_LIAO_GIG===null && globalThis.WF3_LIAO_HARVEST_GIG===null);
+ok('v267 mergeWf3Gigs 已刪', html.indexOf('mergeWf3Gigs')<0);
+ok('v267 mergeIntelGigs 已刪', html.indexOf('mergeIntelGigs')<0);
+ok('v267 INTEL_HIDDEN_GIGS 已刪', html.indexOf('INTEL_HIDDEN_GIGS')<0);
 
 // ---------- 8. wf3SettleTick：B3 中期——鏈 A／鏈 B 結算塊已隨舊通告一併刪
 // （E20），殺青任何工都唔再觸發嗰兩路結算；收割窗／收割完成路徑同樣休眠；
 // 收割過期、鏈 D、方小龍路徑唔掂通告，照舊行。 ----------
 eval(extractFn('ensureWf3'));
 eval(extractFn('wf3GrantCredit'));
-eval(extractFn('wf3GrantRumor'));
 eval(extractFn('wf3SettleTick'));
 // 鏈 A（已刪）：殺青任何工都唔再結算
 _clips = []; _enqueued = [];
@@ -235,21 +210,21 @@ S = freshS(400);
 _storyFlags = { flag_yip_warned82: true };
 wf3SettleTick();
 ok('鏈 D：提點 → 經理人債權', S.mockCredits.some(c=>c.id==='credit_wf3_yip_manager'));
-_storyFlags = { flag_miss_leak: true };
+_storyFlags = { flag_miss_leak: true, flag_yip_warned82: true };
 _storyDone = { N8: true };
-_intel = { intel_yip_truth: true };
 wf3SettleTick();
-ok('鏈 D：爆料＋知真相 → 回音報紙', _enqueued.some(e=>e.eventKey==='wf3:yip_echo'));
+ok('鏈 D：爆料＋提點過（flag_yip_warned82） → 回音報紙', _enqueued.some(e=>e.eventKey==='wf3:yip_echo'));
 // 方小龍情報卡
 S = freshS(500);
 _storyDone = { A_fong_push1: true };
 _storyFlags = {};
-_intel = {};
+_toasts = [];
 wf3SettleTick();
-ok('方小龍中階卡（A_fong_push1）', S.mockRumors.some(r=>r.id==='rumor_wf3_fong_mid'));
+ok('方小龍中階提示（A_fong_push1）：直接 toast 武行口風，唔寫卡', _toasts.join(' ').indexOf('武行口風')>=0 && !S.mockRumors.some(r=>r.id==='rumor_wf3_fong_mid'));
 _storyDone = { A_fong_crisis: true };
+_toasts = [];
 wf3SettleTick();
-ok('方小龍高階卡（A_fong_crisis）', S.mockRumors.some(r=>r.id==='rumor_wf3_fong_high'));
+ok('方小龍高階提示（A_fong_crisis）：直接 toast 高危預警，唔寫卡', _toasts.join(' ').indexOf('高危預警')>=0 && !S.mockRumors.some(r=>r.id==='rumor_wf3_fong_high'));
 
 // ---------- 9. WF3_TALK 可用性 ----------
 eval(extractConst('WF3_TALK_NODES').replace('const WF3_TALK_NODES', 'globalThis.WF3_TALK_NODES'));
@@ -261,10 +236,11 @@ eval(extractFn('wf3TalkDone'));
 eval(extractFn('wf3TalkAvailable'));
 eval(extractFn('wf3TalkActionsAt'));
 S = freshS(100);
-_intel = {};
-ok('何生鏈 B 對白：冇情報唔出', wf3TalkActionsAt('agency_ho').length===0);
-_intel = { intel_liao_money: true };
-ok('何生鏈 B 對白：有情報先出', wf3TalkActionsAt('agency_ho').some(a=>a.id==='W3_ho_liao'));
+ok('何生鏈 B 對白：未見過廖（tier 0）唔出', wf3TalkActionsAt('agency_ho').length===0);
+S.stars.liu_bingxing = { fav: 9 };
+ok('何生鏈 B 對白：fav 9（tier 0）仲唔出', !wf3TalkActionsAt('agency_ho').some(a=>a.id==='W3_ho_liao'));
+S.stars.liu_bingxing = { fav: 10 };
+ok('何生鏈 B 對白：見過廖（tier 1，fav 10）先出', wf3TalkActionsAt('agency_ho').some(a=>a.id==='W3_ho_liao'));
 S.news82 = { pub:{ E1: 740 }, arc:{}, echoDone:{} };
 S.dayIndex = 750;
 ok('M27 餘波對白：刊後 28 日內出（何生＋廖）', wf3TalkActionsAt('agency_ho').some(a=>a.id==='W3_ho_m27') && wf3TalkActionsAt('film_cotton').some(a=>a.id==='W3_liao_m27'));

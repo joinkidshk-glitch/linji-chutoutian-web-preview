@@ -3,7 +3,7 @@
 // 跟 v20a22 教訓行真路徑：真 gigBoardTeaserHtml＋真 canAudition 鏈、真 BehaviorGate
 // progressToward／softLockPlayerLine（真 stub 注入）、真 paintBar→真 confirmEarlyRestFromMenu
 // →真 endBrowseDayGoHome（tickDay 係全遊戲共用結算引擎、本包唔郁佢，只以計數 stub
-// 驗「行咗一次、日＋1」呢個接駁契約）、真 renderDebtPane／renderRumorPane、
+// 驗「行咗一次、日＋1」呢個接駁契約）、真 renderDebtPane（v267：renderRumorPane 已刪）、
 // 真 chance() 驗壓力折減比率、真 showStressPreviewModal。
 // 用法：node tests/test_guidance34_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -149,39 +149,38 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
 
   const pt = BehaviorGate.progressToward({ beatId:'N2' });
   ok('b2 progressToward returns remain', !!pt && Array.isArray(pt.remain));
-  const rumorItem = (pt.remain||[]).find(x=>x.indexOf('未聽聞')===0) || '';
   const locItem = (pt.remain||[]).find(x=>x.indexOf('到')===0) || '';
-  ok('b3 bottom bar rumor step names hear locations (cafe+agency, short form)',
-     rumorItem === '未聽聞「電視城廠景生存守則」（去金龍茶餐廳或何生事務所打聽）');
-  ok('b4 rumor step does NOT point at TV station', rumorItem.indexOf('星河電視台') < 0);
+  ok('b3 bottom bar 唔再有傳聞步驟（v267：N2 唔使聽傳聞）',
+     !(pt.remain||[]).some(x=>x.indexOf('未聽聞')===0));
+  ok('b4 remain 唔提傳聞', (pt.remain||[]).join('').indexOf('傳聞') < 0);
   ok('b5 bottom bar loc step marked as play location', locItem === '到星河電視台或金龍茶餐廳播');
 
   const lock = BehaviorGate.lockedCopy_noEngineeringTerms({ beatId:'N2' });
-  ok('b6 lock line names exact ask actions',
-     lock.indexOf('未聽聞「電視城廠景生存守則」（去金龍茶餐廳「打聽電視城規矩」或去何生事務所「請教何生入廠守則」）') >= 0);
+  ok('b6 lock line 唔再提傳聞（v267：傳聞步驟已刪）',
+     lock.indexOf('未聽聞') < 0);
 
   /* v20a249 LIVE tip：flag off（location.search=""）嗰陣，N1–N5 一樣行 stub trigger
      （evalNode 唔再查 gatePath）。呢度用 opts.ctx 明確傳入狀態，直接驗評估器。 */
   ok('b7 coversNode: N2/N5 covered, N6 not', BehaviorGate.coversNode({ id:'N2' }) === true && BehaviorGate.coversNode({ id:'N5' }) === true && BehaviorGate.coversNode({ id:'N6' }) === false);
   const ctxN2 = { week:4, dayIndex:30, lastMainDoneDay:20, atLoc:'tvb_longmen', done:{ N1:true }, gigCount:3, rumors:['tvb_rules_gossip'] };
-  ok('b8 live-path N2: gigCount 3 + heard rumor passes (flag off)',
-     BehaviorGate.evalTrigger_AND_softRumor('N2', { ctx: ctxN2 }).ok === true);
+  ok('b8 live-path N2: gigCount 3 passes（v267：唔使聽傳聞，flag off）',
+     BehaviorGate.evalTrigger_AND('N2', { ctx: ctxN2 }).ok === true);
   ok('b9 live-path N2: gigCount 2 fails',
-     BehaviorGate.evalTrigger_AND_softRumor('N2', { ctx: Object.assign({}, ctxN2, { gigCount:2 }) }).ok === false);
-  ok('b10 live-path N2: no rumor fails',
-     BehaviorGate.evalTrigger_AND_softRumor('N2', { ctx: Object.assign({}, ctxN2, { rumors:[] }) }).ok === false);
+     BehaviorGate.evalTrigger_AND('N2', { ctx: Object.assign({}, ctxN2, { gigCount:2 }) }).ok === false);
+  ok('b10 live-path N2: no rumor passes（v267：傳聞閘已刪）',
+     BehaviorGate.evalTrigger_AND('N2', { ctx: Object.assign({}, ctxN2, { rumors:[] }) }).ok === true);
   const ctxN3 = { week:6, dayIndex:30, lastMainDoneDay:20, atLoc:'tvb_longmen', done:{ N2:true }, rumors:['gao_steal_spotlight'], fame:15 };
   ok('b11 live-path N3: fame 15 fails (need >15)',
-     BehaviorGate.evalTrigger_AND_softRumor('N3', { ctx: ctxN3 }).ok === false);
+     BehaviorGate.evalTrigger_AND('N3', { ctx: ctxN3 }).ok === false);
   ok('b12 live-path N3: fame 16 passes',
-     BehaviorGate.evalTrigger_AND_softRumor('N3', { ctx: Object.assign({}, ctxN3, { fame:16 }) }).ok === true);
+     BehaviorGate.evalTrigger_AND('N3', { ctx: Object.assign({}, ctxN3, { fame:16 }) }).ok === true);
   const ctxN5 = { week:36, dayIndex:250, lastMainDoneDay:240, atLoc:'cafe_cha', done:{ N4:true }, rumors:['choi_recent_news'], season:'秋' };
   ok('b13 live-path N5: autumn + seed passes, no carve-out (seasonAny matches P-01)',
-     BehaviorGate.evalTrigger_AND_softRumor('N5', { ctx: ctxN5 }).ok === true);
+     BehaviorGate.evalTrigger_AND('N5', { ctx: ctxN5 }).ok === true);
   ok('b14 live-path N5: summer fails',
-     BehaviorGate.evalTrigger_AND_softRumor('N5', { ctx: Object.assign({}, ctxN5, { season:'夏' }) }).ok === false);
-  ok('b15 live-path N5: no seed fails',
-     BehaviorGate.evalTrigger_AND_softRumor('N5', { ctx: Object.assign({}, ctxN5, { rumors:[] }) }).ok === false);
+     BehaviorGate.evalTrigger_AND('N5', { ctx: Object.assign({}, ctxN5, { season:'夏' }) }).ok === false);
+  ok('b15 live-path N5: no seed passes（v267：傳聞閘已刪）',
+     BehaviorGate.evalTrigger_AND('N5', { ctx: Object.assign({}, ctxN5, { rumors:[] }) }).ok === true);
   ok('b16 LIVE tip sentinel false', BehaviorGate.liveWeekGateStillActive() === false);
 })();
 
@@ -266,7 +265,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
 
 /* ================================================================
    段四 (d)：P0-5——真 renderDebtPane（開局四筆債各有來歷行＋頁面總說明）
-   ＋真 renderRumorPane（來源標示跟真 source／預設＋頁面總說明）
+   （v267：renderRumorPane 已刪，改驗消失）
    ================================================================ */
 (function(){
   var box = { innerHTML:'', onclick:null, contains:()=>true, querySelectorAll:()=>[] };
@@ -341,15 +340,13 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   eval(extractFn('renderDebtPane'));
 
   eval(extractFn('isHoCreditorDebt'));
-  eval(extractFn('rumorTutorialDone'));
-  eval(extractFn('markRumorTutorialDone'));
   /* 開局第 3 日（1990-01-03，冬；v20a67 起 1 月開局，當季卡＝冬季對）：跟真玩家路徑——ensureMockJournal 尾播屋企債
-     （呢度直接行真 ensureFamilyHomeDebt）、拼合教學完成 markRumorTutorialDone 入教學債 */
+     （呢度直接行真 ensureFamilyHomeDebt）；教學債直接補種 MOCK_DEBT_TUTORIAL（v267：markRumorTutorialDone 已刪） */
   S = { dayIndex: 2, fame: 0, npcs:{}, favorDueSettled:{}, mockSeasonCleared:{},
     mockDebts:[], mockCredits:[], mockRumors:[], newspaperClippings:[],
     story:{ done:{}, flags:{} }, flags:{} };
   ensureFamilyHomeDebt();
-  markRumorTutorialDone('done');
+  S.mockDebts.push(Object.assign({}, MOCK_DEBT_TUTORIAL));
   renderDebtPane();
   const h = box.innerHTML;
   ok('d1 debt pane intro line present', h.indexOf('這頁記住誰欠阿偉、阿偉欠誰') >= 0);
@@ -361,30 +358,9 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   ok('d7 origin: tutorial debt', h.indexOf('來歷：何生手把手教你入行規矩嗰份人情') >= 0);
   ok('d8 exactly four origin lines on opening pane', (h.split('來歷：').length - 1) === 4);
 
-  /* ---- 傳聞頁 ---- */
-  var applyPhase2Steps56TabLabel = ()=>{};
-  var phase2Steps56CoachHtml = ()=> '';
-  var phase2Steps56Copy = ()=> null;
-  var heardPickIds = ()=> [];
-  var tutorialPhase2FxOn = ()=> false;
-  var displayRumor = (r)=> r; /* 家庭友善過濾係 PR#109 範疇（test_p03_filter 覆蓋）；呢度只驗來源顯示 */
-  eval(extractConst('RUMOR_STATE_ZH').replace('const RUMOR_STATE_ZH', 'globalThis.__RSZ34d'));
-  var RUMOR_STATE_ZH = globalThis.__RSZ34d;
-  eval(extractConstLine('WEAK_WHISPER').replace('const WEAK_WHISPER', 'var WEAK_WHISPER'));
-  eval(extractFn('rumorStateLabel'));
-  eval(extractFn('renderRumorPane'));
-  S.mockRumors = [
-    { id:'tvb_rules_gossip', source:'金龍茶餐廳', title:'電視城廠景生存守則', text:'聽聞入廠拍劇最忌遲到。', state:'normal', season:'' },
-    { id:'paperfrag_lu_concert', paperFrag:true, title:'陸柏言開演唱會', text:'報紙花邊寫道：陸柏言開演唱會。', state:'normal', season:'' },
-    { id:'rumor_sourceless', title:'唔知邊度聽返嚟', text:'一則冇來源欄嘅舊碎片。', state:'normal', season:'' }
-  ];
-  renderRumorPane();
-  const rh = box.innerHTML;
-  ok('d9 rumor pane intro line present', rh.indexOf('呢頁係你聽返嚟嘅傳聞碎片') >= 0);
-  ok('d10 rumor card shows real source', rh.indexOf('來源：金龍茶餐廳') >= 0);
-  ok('d11 paper fragment without source shows 報紙花邊', rh.indexOf('來源：報紙花邊') >= 0);
-  ok('d12 sourceless card shows neutral default', rh.indexOf('來源：街坊傳聞') >= 0);
-  ok('d13 no empty/undefined source rendered', rh.indexOf('來源：</p>') < 0 && rh.indexOf('undefined') < 0);
+  /* ---- 傳聞頁已刪（v267） ---- */
+  ok('d9 傳聞頁／渲染函數全部消失', ['renderRumorPane','displayRumor','rumorStateLabel','RUMOR_STATE_ZH','WEAK_WHISPER','markRumorTutorialDone','rumorTutorialDone','home-pane-rumor'].every(n=> html.indexOf(n) < 0));
+  ok('d10 打聽結果改做直接情報（applyMockAsk 回 intelText，唔寫卡）', html.indexOf('intelText') >= 0 && html.indexOf('grantsRumorId') < 0 && html.indexOf('mockRumors') < 0);
 })();
 
 /* ================================================================

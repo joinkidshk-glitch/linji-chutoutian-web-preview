@@ -14,7 +14,6 @@
         "locIdAny": [
           "agency_ho"
         ],
-        "rumorAny": [],
         "favorMin": 0,
         "tagAny": [],
         "seasonAny": [],
@@ -51,9 +50,6 @@
           "tvb_longmen",
           "cafe_cha"
         ],
-        "rumorAny": [
-          "tvb_rules_gossip"
-        ],
         "favorMin": 0,
         "tagAny": [],
         "seasonAny": [],
@@ -88,9 +84,6 @@
         "weekMin": 6,
         "locIdAny": [
           "tvb_longmen"
-        ],
-        "rumorAny": [
-          "gao_steal_spotlight"
         ],
         "favorMin": 0,
         "tagAny": [
@@ -131,7 +124,6 @@
         "locIdAny": [
           "agency_ho"
         ],
-        "rumorAny": [],
         "favorMin": 1,
         "debtMin": 1,
         "tagAny": [],
@@ -171,10 +163,6 @@
           "cafe_cha",
           "tvb_longmen"
         ],
-        "rumorAny": [
-          "choi_recent_news",
-          "hau_ching_recent_news"
-        ],
         "favorMin": 0,
         "tagAny": [],
         "seasonAny": [
@@ -182,9 +170,7 @@
           "winter"
         ],
         "gigCountMin": 0,
-        "relAny": [],
-        "rumorSoftPriority": true,
-        "rumorSeedsRequired": true
+        "relAny": []
       },
       "flags": {
         "onChoice": {
@@ -249,13 +235,12 @@
       "fameCompare",
       "gigCountMin",
       "seasonAny",
-      "rumorSoftPriority",
       "tagAny",
       "relAny"
     ],
     "iosSoftHooks": [
       "loadStub_nodes_trigger",
-      "evalTrigger_AND_softRumor",
+      "evalTrigger_AND",
       "featureFlag_softBehaviorGatePreview",
       "lockedCopy_noEngineeringTerms",
       "leaveWhenLocked_暫未能報_離開",
@@ -275,7 +260,7 @@
       "weekMin": "keep_floor",
       "N3_fame": ">15 (fameMin=16, fameCompare='>')",
       "N4": "softLogic=OR; debtMin=1 OR favorMin>=1 OR loc=agency_ho",
-      "N5": "season+loc+rumor soft (rumorSoftPriority); rival_gao HOLD out of N5"
+      "N5": "season+loc; rival_gao HOLD out of N5"
     },
     "fullLiteralOr": true,
     "c4SoftLogic": "OR",

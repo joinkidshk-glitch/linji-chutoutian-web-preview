@@ -9,7 +9,7 @@
 //     1989/1990 加幅正確；散工正薪 fame≥200 ×0.75、補場 $800 不變；
 // (4) 節點漏失：過窗登記／完成除名／N17 收科豁免／normalizeSaveObj 舊檔靜靜補登；
 // (5) 聲樂：預設計劃輪入 train_vocal（演技優先次序保留）、bestTrainJumpForGig frozenVocal 偵測；
-// (6) tutorialFxFingerErr 顯式發布去 window＋fallback 行為。
+// (6) v20a267：tutorialFxFingerErr 已刪（傳聞教學 fx 一併刪除），本節退役。
 // 反證：對 v20a59 index 行 → CALIB60 函數唔存在 → FAIL。
 // 用法：node tests/test_calib60_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -55,8 +55,7 @@ const FNS = ['R','clamp','statHardMax','dualTrackNumbers','syncDualTracks','appl
   'calib60BandScale','calib60ScaleFor','calib60BankedGain','calib60FameGain','calib60ScaleDelta','applyCalib60',
   'calib60YearOfWeek','weekNumNow','livingCostWeekNum','livingCostBand','livingCostRoll','livingCostEstimate','takeSoftBridgePay',
   'calib60SeasonIdx','calib60NowSeasonIdx','calib60NodeTitle','calib60MissedScan','normalizeSaveObj',
-  'defaultWeekPlan','fameFloor','gigMissingReqGaps','courseForStatKey','preferredLocForTrainTarget','bestTrainJumpForGig',
-  'tutorialFxFingerErr'];
+  'defaultWeekPlan','fameFloor','gigMissingReqGaps','courseForStatKey','preferredLocForTrainTarget','bestTrainJumpForGig'];
 for(const f of FNS) eval(extractFn(f));
 Math.random = function(){ return 0; };
 
@@ -245,22 +244,6 @@ ok('目標建議：練過 1 堂 → frozenVocal = false', !!jumpV2 && jumpV2.fro
 S = planState(30, {}, {}); S.acting = 10; S.vocal = 14;
 const jumpA = bestTrainJumpForGig({ req: { acting: 80, vocal: 20 } });
 ok('目標建議：最大缺口係演技 → frozenVocal = false', !!jumpA && jumpA.gap.key === 'acting' && jumpA.frozenVocal === false);
-
-/* ================= (6) tutorialFx ================= */
-const assignStmt = (function(){
-  const i = html.indexOf('try{ window.tutorialFxFingerErr = tutorialFxFingerErr; }');
-  return i >= 0 ? html.slice(i, html.indexOf('catch(_e){}', i) + 'catch(_e){}'.length) : '';
-})();
-ok('tutorialFx: window 發布句存在', assignStmt.length > 0);
-window = {};
-eval(assignStmt);
-ok('tutorialFx: window.tutorialFxFingerErr 係函數', typeof window.tutorialFxFingerErr === 'function');
-const fakeImg = { src: 'assets/ui-physical/tutorial-fx/fx_drag_finger.png',
-  getAttribute(k){ return k === 'src' ? this.src : (k === 'data-fx-fallback' ? 'assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png' : null); } };
-window.tutorialFxFingerErr(fakeImg);
-ok('tutorialFx: 404 時換去 fallback 圖', fakeImg.src.indexOf('fx_drag_finger_proc.png') >= 0);
-window.tutorialFxFingerErr(fakeImg);
-ok('tutorialFx: 已係 fallback 唔再loop', fakeImg.src.indexOf('fx_drag_finger_proc.png') >= 0);
 
 console.log(fails.length ? ('\nFAILURES: ' + fails.length) : '\nALL PASS');
 process.exit(fails.length ? 1 : 0);

@@ -62,17 +62,17 @@ eval(NEWS82_SRC.replace('const NEWS82_EVENTS', 'global.NEWS82_EVENTS'));
 const NEWS82_EVENTS = global.NEWS82_EVENTS;
 
 const parts = [];
-['DAILY_EVENTS_WF4','WF4_CFG','WF4_FX_LABEL','WF4_FRAG_SEEDS','WF4_FEN_INTRO_NODE']
+['DAILY_EVENTS_WF4','WF4_CFG','WF4_FX_LABEL','WF4_FEN_INTRO_NODE']
   .forEach(n => parts.push(extractConst(n)));
 ['wf4Ensure','wf4Hash','wf4Rand','wf4NewsDay','wf4YearSeason','wf4Tier','wf4BaseOk','wf4CondOk','wf4PickEvent',
- 'wf4ApplyFx','wf4Esc','wf4PlayEvent','wf4FxLine236','confirmChoice236','wf4Fire','wf4DailyTick','wf4TryLocEvent','wf4PresentPending','wf4SeedFrags',
+ 'wf4ApplyFx','wf4Esc','wf4PlayEvent','wf4FxLine236','confirmChoice236','wf4Fire','wf4DailyTick','wf4TryLocEvent','wf4PresentPending',
  'wf4FenIntroDone','wf4FenActionsAt','wf4FenPlay','wf4FenFarewellArm','wf4FenFarewellNode','wf4PresentFenFarewell'].forEach(n => parts.push(extractFn(n)));
 /* v203 helpers（pristine 冇）：抽唔到就用 stub 頂住，等斷言乾淨 FAIL，唔好成個測試 crash */
 ['wf4EffPDay','wf4EffPLoc'].forEach(n => {
   try { parts.push(extractFn(n)); }
   catch(e) { parts.push('function ' + n + '(){ return NaN; }'); }
 });
-eval(parts.join('\n') + '; global.__W = { DAILY_EVENTS_WF4, WF4_CFG, WF4_FRAG_SEEDS, wf4Ensure, wf4BaseOk, wf4CondOk, wf4PickEvent, wf4Fire, wf4DailyTick, wf4TryLocEvent, wf4PresentPending, wf4SeedFrags, wf4FenActionsAt, wf4FenFarewellArm, wf4FenFarewellNode, wf4PresentFenFarewell };');
+eval(parts.join('\n') + '; global.__W = { DAILY_EVENTS_WF4, WF4_CFG, wf4Ensure, wf4BaseOk, wf4CondOk, wf4PickEvent, wf4Fire, wf4DailyTick, wf4TryLocEvent, wf4PresentPending, wf4FenActionsAt, wf4FenFarewellArm, wf4FenFarewellNode, wf4PresentFenFarewell };');
 const W = global.__W;
 
 function freshS(day){
@@ -192,22 +192,11 @@ function freshS(day){
   S.stress = 60; ok('home01 高壓先出', W.wf4CondOk(home01) === true);
 }
 
-/* (5) 碎片庫補完 */
+/* (5) 碎片庫已刪（v267：傳聞頁刪咗，WF4 氛圍碎片一併刪；氛圍靠 WF4 事件本身＋報紙） */
 {
-  S = freshS(0); _ys = { year:1990, season:'冬' };
-  W.wf4SeedFrags();
-  const y90 = S.mockRumors.filter(r => r.id.startsWith('rumor_wf4_'));
-  ok('1990 冬種入合資格碎片（≥3，含冬季限定）', y90.length >= 3 && y90.some(r => r.id === 'rumor_wf4_airport_winter'));
-  const n0 = S.mockRumors.length;
-  W.wf4SeedFrags();
-  ok('補種冪等（第二次零新增）', S.mockRumors.length === n0);
-  _ys = { year:1991, season:'春' }; W.wf4SeedFrags();
-  _ys = { year:1992, season:'春' }; W.wf4SeedFrags();
-  const all = S.mockRumors.filter(r => r.id.startsWith('rumor_wf4_'));
-  ok('跨年累積碎片 ≥17', all.length >= 17);
-  const txt = JSON.stringify(all);
-  ok('碎片含 Call 機／傳呼 ≥4 條', (txt.match(/Call機|傳呼/g) || []).length >= 4);
-  ok('碎片含大哥大 ≥3 條', (txt.match(/大哥大/g) || []).length >= 3);
+  ok('WF4 碎片庫已刪（WF4_FRAG_SEEDS／wf4SeedFrags 消失）', html.indexOf('WF4_FRAG_SEEDS')<0 && html.indexOf('wf4SeedFrags')<0);
+  ok('WF4 碎片 id 零殘留', html.indexOf('rumor_wf4_')<0);
+  ok('WF4 日常事件池仲喺度（氛圍靠事件本身）', Array.isArray(W.DAILY_EVENTS_WF4) && W.DAILY_EVENTS_WF4.length>0);
 }
 
 /* (6) 芬姐小弧 */
@@ -265,7 +254,7 @@ function freshS(day){
 {
   S = freshS(50); delete S.wf4;
   let threw = false;
-  try{ W.wf4Ensure(); W.wf4DailyTick(); W.wf4SeedFrags(); W.wf4PresentPending(); }catch(e){ threw = true; }
+  try{ W.wf4Ensure(); W.wf4DailyTick(); W.wf4PresentPending(); }catch(e){ threw = true; }
   ok('舊檔（冇 S.wf4）全套 entry 唔 crash', !threw && !!S.wf4);
 }
 

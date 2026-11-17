@@ -116,7 +116,6 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   const FNS = ['clamp','statHardMax','apply','bumpNpc','maybeTrainEvent35'];
   for(let i=0;i<FNS.length;i++) eval(extractFn(FNS[i]));
   eval(extractConst('TRAIN_EVENTS_35').replace('const TRAIN_EVENTS_35', 'var TRAIN_EVENTS_35'));
-  eval(extractConst('MOCK_RUMOR_SEEDS').replace('const MOCK_RUMOR_SEEDS', 'var MOCK_RUMOR_SEEDS'));
 
   ok('b0 event pool size = 8', TRAIN_EVENTS_35.length===8);
 
@@ -137,17 +136,19 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   Math.random = realRandom;
   ok('b3 demo event applies acting +1', hit2===true && S.acting===beforeActing+1);
 
-  // 情報碎片：訓練八卦（index 0）→ 攞到真 catalog 碎片；再觸發同則 → 行 fallback 人氣 +1
+  // 情報碎片：訓練八卦（index 0）→ v267：碎片卡已刪，直接行 fallback 人氣 +1、唔寫卡
+  // （b1 用真隨機，可能已經行過人氣事件，呢度用相對量度，唔釘死絕對值）
   S.dayIndex = 22; S.flags.trainEvSince35 = 3; S.flags.trainEvLastId35 = 'zzz';
   Math.random = ()=> 0.0;
+  const popBefore3 = S.popularity;
   const hit3 = maybeTrainEvent35([], 'train_iq');
-  ok('b4 gossip event grants catalog frag', hit3===true && S.mockRumors.some(r=>r.id==='gao_steal_spotlight'));
+  ok('b4 gossip event -> fallback popularity +1, no card', hit3===true && S.popularity===popBefore3+1 && S.mockRumors.length===0);
   S.dayIndex = 23; S.flags.trainEvSince35 = 3; S.flags.trainEvLastId35 = 'zzz';
   const beforePop = S.popularity;
   const hit4 = maybeTrainEvent35([], 'train_iq');
   Math.random = realRandom;
-  ok('b5 gossip repeat -> fallback popularity +1, no duplicate frag',
-    hit4===true && S.popularity===beforePop+1 && S.mockRumors.filter(r=>r.id==='gao_steal_spotlight').length===1);
+  ok('b5 gossip repeat -> fallback popularity +1 again, no card',
+    hit4===true && S.popularity===beforePop+1 && S.mockRumors.length===0);
 
   // 節奏：12 個訓練日（逐日推 dayIndex），事件數介乎保底與每日上限之間
   let evCount = 0;

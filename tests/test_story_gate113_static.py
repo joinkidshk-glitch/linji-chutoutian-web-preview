@@ -51,7 +51,7 @@ def evalnode_seg(s):
 ev = evalnode_seg(src)
 ok('v249 LIVE tip：evalNode 有 live 路徑（coversNode 即行 stub trigger，唔查 gatePath）',
    '} else if(typeof BehaviorGate!=="undefined" && BehaviorGate.coversNode(node)){' in ev
-   and 'return BehaviorGate.evalTrigger_AND_softRumor(node, opts);' in ev)
+   and 'return BehaviorGate.evalTrigger_AND(node, opts);' in ev)
 ok('v249 LIVE tip：Deng 守衛維持喺 soft 分支（唔郁）',
    'BehaviorGate.gatePath()==="soft"' in ev)
 def livefn_seg(s):

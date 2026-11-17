@@ -47,10 +47,6 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   var S = null;
   eval(extractConst('START').replace('const START', 'globalThis.__START1'));
   var START = globalThis.__START1;
-  eval(extractConst('MERGE_FRAGS').replace('const MERGE_FRAGS', 'globalThis.__MF1'));
-  var MERGE_FRAGS = globalThis.__MF1;
-  eval(extractConst('EXODUS_RUMOR_SEEDS').replace('const EXODUS_RUMOR_SEEDS', 'globalThis.__ERS1'));
-  var EXODUS_RUMOR_SEEDS = globalThis.__ERS1;
   eval(extractConst('EXODUS_FEN_DEBT').replace('const EXODUS_FEN_DEBT', 'globalThis.__EFD1'));
   var EXODUS_FEN_DEBT = globalThis.__EFD1;
   eval(extractConst('EXODUS_FEN_CREDIT').replace('const EXODUS_FEN_CREDIT', 'globalThis.__EFC1'));

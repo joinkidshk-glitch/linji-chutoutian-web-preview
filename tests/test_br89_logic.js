@@ -9,8 +9,8 @@
 //  (E) BR89 條件通告：B5——BR89_GIGS 注入池已清空，mergeBr89Gigs 本身唔再注入舊通告；
 //      新庫 13 張引薦通告經通用 trigger 系統（triggerGigOn＋板面過濾）上板，
 //      見 tests/test_gig229_trigger.js；br89OnGigComplete 標記兌現但 status 唔郁（結局人情計數口徑不變）。
-//  (F) 情報拼合新 pair＋單卡使用點：MERGE_PAIRS／INTEL_FLAGS／INTEL_USE_POINTS 真註冊；
-//      持卡先有 gigLine／sightLine。
+// (F) v20a267：情報拼合／單卡使用點已刪（MERGE_PAIRS／INTEL_FLAGS／INTEL_USE_POINTS／
+//      br89HoldsCard／br89CardUsePointForGig／br89CardUsePointForStar 全部刪除）。
 // 反證：對 v88 index 行 → BR89 符號不存在，抽取即 FAIL。
 // 用法：node tests/test_br89_logic.js [path-to-index.html]
 const fs = require('fs');
@@ -86,11 +86,10 @@ try{
   const sandbox = {
     S: { flags:{}, dayIndex: 100, mockRumors: [], mockCredits: [] },
     enc79GrantCredit: (c)=>{ grants.push(c); return true; },
-    enc79GrantRumorCard: (c)=>{ cards.push(c); return true; },
   };
   const src = extractFn('enc79ChoiceFx') + '\n' + extractFn('enc79RunChoiceFx');
-  const api = new Function('S','enc79GrantCredit','enc79GrantRumorCard',
-    src + '\nreturn { enc79ChoiceFx, enc79RunChoiceFx };')(sandbox.S, sandbox.enc79GrantCredit, sandbox.enc79GrantRumorCard);
+  const api = new Function('S','enc79GrantCredit',
+    src + '\nreturn { enc79ChoiceFx, enc79RunChoiceFx };')(sandbox.S, sandbox.enc79GrantCredit);
   // 路由：標籤 → fx
   ok('B1 liu 應承 → liu_accept', api.enc79ChoiceFx('beat:liu_repay', '多謝受落').fx==='liu_accept');
   ok('B2 liu 推辭 → liu_decline', api.enc79ChoiceFx('beat:liu_repay', '推辭講自己排緊期').fx==='liu_decline');
@@ -101,7 +100,7 @@ try{
   ok('B5 liu_accept 派返原債權', grants.length===1 && grants[0].id==='credit_enc79_liu_priority' && grants[0].debtor==='廖炳星');
   grants.length = 0; cards.length = 0;
   api.enc79RunChoiceFx('liu_decline');
-  ok('B6 liu_decline 唔派債權、改派風聲卡', grants.length===0 && cards.length===1 && cards[0].id==='rumor_liu_priority_passed');
+  ok('B6 liu_decline 乜都唔派（v267：風聲卡已刪，推辭唔再有卡）', grants.length===0 && cards.length===0);
   grants.length = 0; cards.length = 0;
   api.enc79RunChoiceFx('mak_accept');
   ok('B7 mak_accept 派返原債權', grants.length===1 && grants[0].id==='credit_enc79_mak_wuzhi');
@@ -170,20 +169,17 @@ try{
     MERGE_PAIRS: [], INTEL_FLAGS: {}, INTEL_USE_POINTS: {},
     syncNotebookMirror: ()=>{},
   };
-  const api = new Function('S','GIGS','window','normalizeGigRecord','MERGE_PAIRS','INTEL_FLAGS','INTEL_USE_POINTS','syncNotebookMirror',
-    modSrc + '\nreturn { BR89_GIGS, mergeBr89Gigs, br89GigOn, br89OnGigComplete, br89HoldsCard, br89CardUsePointForGig, br89CardUsePointForStar, BR89_PATRON_OF_GIG, MERGE_PAIRS, INTEL_FLAGS, INTEL_USE_POINTS };'
-  )(env.S, env.GIGS, env.window, env.normalizeGigRecord, env.MERGE_PAIRS, env.INTEL_FLAGS, env.INTEL_USE_POINTS, env.syncNotebookMirror);
-  // (F) 拼合註冊
-  ok('F1 新 pair ×2 已註冊', api.MERGE_PAIRS.some(p=>p.merged==='rumor_lok_highlevel_truth') && api.MERGE_PAIRS.some(p=>p.merged==='rumor_chung_farewell_truth'));
-  ok('F2 情報旗映射齊', api.INTEL_FLAGS['rumor_lok_highlevel_truth']==='intel_lok_truth' && api.INTEL_FLAGS['rumor_chung_farewell_truth']==='intel_chung_leave');
-  ok('F3 使用點齊', !!(api.INTEL_USE_POINTS['rumor_lok_highlevel_truth'] && api.INTEL_USE_POINTS['rumor_chung_farewell_truth']));
-  // (F) 單卡使用點：冇卡 → null；有卡 → 出行
-  ok('F4 冇卡冇使用點', api.br89CardUsePointForGig({ title:'彭少祺台慶騷', workTitle:'台慶大騷' })===null);
-  env.S.mockRumors.push({ id:'rumor_pang_show_tip', state:'normal' });
-  const cp = api.br89CardUsePointForGig({ title:'彭少祺台慶騷', workTitle:'台慶大騷' });
-  ok('F5 持卡 → 通告情報行', !!cp && cp.line.indexOf('台慶大騷缺一名台上助理')>=0);
-  ok('F6 持卡 → 巧遇提示行', !!api.br89CardUsePointForStar('pang_siuki'));
-  ok('F7 唔關事嘅星冇提示行', api.br89CardUsePointForStar('luk_baakyin')===null);
+  const api = new Function('S','GIGS','window','normalizeGigRecord','syncNotebookMirror',
+    modSrc + '\nreturn { BR89_GIGS, mergeBr89Gigs, br89GigOn, br89OnGigComplete, BR89_PATRON_OF_GIG };'
+  )(env.S, env.GIGS, env.window, env.normalizeGigRecord, env.syncNotebookMirror);
+  // (F) v267：拼合系統／單卡使用點已刪
+  ok('F1 MERGE_PAIRS 已刪', html.indexOf('MERGE_PAIRS')<0);
+  ok('F2 INTEL_FLAGS 已刪', html.indexOf('INTEL_FLAGS')<0);
+  ok('F3 INTEL_USE_POINTS 已刪', html.indexOf('INTEL_USE_POINTS')<0);
+  ok('F4 br89HoldsCard 已刪', html.indexOf('br89HoldsCard')<0);
+  ok('F5 br89CardUsePointForGig 已刪', html.indexOf('br89CardUsePointForGig')<0);
+  ok('F6 br89CardUsePointForStar 已刪', html.indexOf('br89CardUsePointForStar')<0);
+  ok('F7 intelLineForGig／intelSightLineFor 已刪', html.indexOf('intelLineForGig')<0 && html.indexOf('intelSightLineFor')<0);
   // (E) 通告注入：冇債權冇卡 → 空板
   env.GIGS.length = 0; api.mergeBr89Gigs();
   ok('E1 冇持有 → BR89 通告唔上板', env.GIGS.length===0);
@@ -217,9 +213,9 @@ try{
     MERGE_PAIRS: [], INTEL_FLAGS: {}, INTEL_USE_POINTS: {},
     syncNotebookMirror: ()=>{},
   };
-  const api = new Function('S','GIGS','window','normalizeGigRecord','MERGE_PAIRS','INTEL_FLAGS','INTEL_USE_POINTS','syncNotebookMirror',
-    modSrc + '\nreturn { BR89_GIGS, mergeBr89Gigs, br89GigOn, br89OnGigComplete, br89HoldsCard, br89CardUsePointForGig, br89CardUsePointForStar, BR89_PATRON_OF_GIG, MERGE_PAIRS, INTEL_FLAGS, INTEL_USE_POINTS };'
-  )(env.S, env.GIGS, env.window, env.normalizeGigRecord, env.MERGE_PAIRS, env.INTEL_FLAGS, env.INTEL_USE_POINTS, env.syncNotebookMirror);
+  const api = new Function('S','GIGS','window','normalizeGigRecord','syncNotebookMirror',
+    modSrc + '\nreturn { BR89_GIGS, mergeBr89Gigs, br89GigOn, br89OnGigComplete, BR89_PATRON_OF_GIG };'
+  )(env.S, env.GIGS, env.window, env.normalizeGigRecord, env.syncNotebookMirror);
   const EXPECT13 = {
     gig_1991_film_101:'credit_enc83_luk_patron', gig_1991_variety_203:'credit_enc84_pang_patron',
     gig_1992_rec_106:'credit_enc84_ching_patron', gig_1991_film_103:'credit_enc79_liu_priority',
@@ -258,7 +254,7 @@ try{
 /* ================= (G) A_ho 寫返 npcs.agent（源碼級） ================= */
 try{
   ok('G1 HO89 表齊（meet/push/crisis/ending）', html.indexOf('A_ho_ending:{ flag_ho_mentor_complete:6')>=0 && html.indexOf('flag_ho_big_bet:3')>=0 && html.indexOf('bumpNpc("agent", dv)')>=0);
-  ok('G2 gu_loan 讀 mediate 旗＋情報卡', html.indexOf('enc87StoryFlag("flag_mediate_gu_debt")')>=0 && html.indexOf('br89HoldsCard("rumor_gu_money_heard")')>=0);
+  ok('G2 gu_loan 讀 mediate 旗＋顧明輝 tier ≥1（v267：情報卡閘改 tier 閘）', html.indexOf('enc87StoryFlag("flag_mediate_gu_debt")')>=0 && html.indexOf('if(beat.id==="gu_loan" && tier>=1)')>=0 && html.indexOf('br89HoldsCard("rumor_gu_money_heard")')<0);
   ok('G3 魏詠男讀 rain_split 旗', html.indexOf('flag:"flag_rain_split"')>=0);
   ok('G4 芬姐送別讀相識旗', html.indexOf('fenFlag("flag_wf4_fen_tea")')>=0 && html.indexOf('fenFlag("flag_wf4_fen_help")')>=0);
 }catch(e){ ok('G 源碼檢查 ('+e.message+')', false); }

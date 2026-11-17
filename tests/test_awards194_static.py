@@ -116,8 +116,8 @@ chk('3：全檔 softStatus:"≠PASS" 仲有 6 處（其他 check 嘅 return 唔�
     src.count('softStatus:"≠PASS"') == 6)
 
 # --- 4. 其他 softStatus 讀者唔郁 ---
-chk('4：tutorial overlay 讀 softStatus 三處仲在',
-    src.count('pack.meta.softStatus!=="≠PASS"') == 3)
+chk('4：tutorial overlay 讀 softStatus 三處已隨傳聞教學一併刪（v267）',
+    src.count('pack.meta.softStatus!=="≠PASS"') == 0)
 chk('4：postShootRewardCheck 繼續回 ≠PASS',
     'softStatus:"≠PASS"' in slice_fn('postShootRewardCheck'))
 chk('4：newspaperCheck 繼續回 ≠PASS',

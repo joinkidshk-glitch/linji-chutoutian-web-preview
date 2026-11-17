@@ -23,20 +23,19 @@ ok('doScout computes closest without reordering shown', 'closest34' in scout_seg
 card_seg = seg('function gigCardHtml(', '/* ===== v19c PLAN_GIG_PAY_EXACT')
 ok('gigCardHtml locked rate carries gap line', 'gigGapLine34(g)' in card_seg and 'req-gap' in card_seg)
 
-# ---- P0-3：死路修正接線＋文案核對 ----
-ok('rumorHearHint helper exists inside BehaviorGate', 'function rumorHearHint(rid, full)' in html)
-hint_seg = seg('function rumorHearHint(rid, full)', '/* 主線 N5 鎖因')
-ok('hear hint derives from MOCK_ASK grantsRumorId (no hand-written loc map)',
-   'MOCK_ASK' in hint_seg and 'grantsRumorId===rid' in hint_seg)
+# ---- P0-3：死路修正接線＋文案核對（v20a267：傳聞提示／拼合已刪，打聽改直接講情報） ----
+ok('v267 rumorHearHint helper 已刪', 'function rumorHearHint' not in html and 'rumorHearHint' not in html)
+ok('v267 MOCK_ASK 唔再派傳聞卡（grantsRumorId 清零）', 'grantsRumorId' not in html)
 pt_seg = seg('function progressToward(node){', 'function softWeekGateShell')
-ok('progressToward rumor step carries short hear hint', 'rumorHearHint((trig.rumorAny||[])[0], false)' in pt_seg)
+ok('progressToward 冇傳聞步驟', 'rumorAny' not in pt_seg and 'rumorHearHint' not in pt_seg)
 ok('progressToward loc step marked as play loc', 'remain.push("到"+names.join("或")+"播")' in pt_seg)
 lock_seg = seg('function softLockPlayerLine(node){', 'function lockedCopy_noEngineeringTerms')
-ok('softLockPlayerLine rumor bit carries full hear hint', 'rumorHearHint((trig.rumorAny||[])[0], true)' in lock_seg)
-# 核對清單（靜態層面）：MOCK_ASK 只有茶餐廳／事務所派 tvb_rules_gossip；電視台冇打聽行動
-ask_seg = seg('const MOCK_ASK = {', 'function normalizeRumorGrant')
-grant_locs = re.findall(r'(\w+):\s*\[\s*\{[^]]*?grantsRumorId:"tvb_rules_gossip"', ask_seg)
-ok('tvb_rules granted only at cafe_cha + agency_ho', sorted(set(grant_locs)) == ['agency_ho', 'cafe_cha'])
+ok('softLockPlayerLine 冇傳聞位', 'rumorAny' not in lock_seg and 'rumorHearHint' not in lock_seg)
+# 核對清單（靜態層面）：MOCK_ASK 只有茶餐廳／事務所派 tvb_rules 情報；電視台冇打聽行動
+ask_seg = seg('const MOCK_ASK = {', 'function applyMockAsk(')
+ok('MOCK_ASK 五個行動直接帶情報文字', ask_seg.count('intelText:') >= 5)
+intel_locs = re.findall(r'(\w+):\s*\[\s*\{[^]]*?intelText:"入廠拍劇最忌遲到', ask_seg)
+ok('tvb_rules 情報只喺 cafe_cha + agency_ho', sorted(set(intel_locs)) == ['agency_ho', 'cafe_cha'])
 ok('no guidance text sends player to TV station to hear rules',
    '星河電視台聽' not in html and '去星河電視台打聽' not in html and '電視台打聽電視城規矩' not in html)
 # v241b: inline TUTORIAL_ZH_HK deleted (JSON sole source); check live JSON + EXACT override instead
@@ -49,7 +48,9 @@ tut_map_body = ' '.join(tut_map.get('body', []))
 ok('tutorial ask guidance names only cafe/agency (both have ask)', '在茶餐廳或者事務所「打聽」不耗日' in tut_map_body)
 ok('tutorial ask guidance EXACT override removed (dead map deleted, JSON carries written form)',
    '"能力不夠就去報名訓練；茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。":' not in html
-   and '能力未夠，就去報名訓練；在茶餐廳或者事務所「打聽」不耗日，打聽回來的傳聞會記入手帳。' in tut_map_body)
+   and '能力未夠，就去報名訓練；在茶餐廳或者事務所「打聽」不耗日，打聽得來的情報會直接告訴你。' in tut_map_body)
+ok('v267 tutorial 唔再話傳聞記入手帳（情報站：直接講）',
+   '打聽回來的傳聞會記入手帳' not in tut_map_body and '傳聞會記入手帳' not in html)
 
 # ---- P0-4：過一日掣接線 ----
 # v20a108 TEXT108 S-49：地圖金掣舊名「逛完・過一日」退役，統一叫「過一日」
@@ -68,10 +69,9 @@ ok('debt origin table exists with four opening debts',
 debt_seg = seg('function renderDebtPane(){', 'function playPushDoor()')
 ok('debt pane renders origin lines for season + mock cards', debt_seg.count('DEBT_ORIGIN_LINES34') >= 3 and '來歷：' in debt_seg)
 ok('debt pane intro line present', '這頁記住誰欠阿偉、阿偉欠誰' in debt_seg)
-rumor_seg = seg('function renderRumorPane(){', 'function seasonCollectToast()')
-ok('rumor pane intro line present', '呢頁係你聽返嚟嘅傳聞碎片' in rumor_seg)
-ok('rumor card source falls back (paperFrag 報紙花邊 / default 街坊傳聞)',
-   'r.paperFrag ? "報紙花邊" : "街坊傳聞"' in rumor_seg and 'r.source ||' in rumor_seg)
+ok('v267 renderRumorPane 已刪', 'function renderRumorPane(' not in html)
+ok('v267 傳聞頁介紹句已刪', '呢頁係你聽返嚟嘅傳聞碎片' not in html)
+ok('v267 傳聞卡來源 fallback 已刪', '街坊傳聞' not in html)
 ok('debt data structures untouched (no origin field written into debt rows)',
    'origin34' not in seg('function ensureFamilyHomeDebt(){', '/* 還清屋企債'))
 

@@ -70,7 +70,7 @@ ok('S18_ads_two_boxes', html.count('<div class="np214-adbox">') == 2)
 ok('S19_ads_wired_once', html.count('np214Page2Ads214()') == 2)  # 定義 1 次＋渲染器插入呼叫 1 次
 ok('S20_adbox_css_reused', '.paper-sheet .np214-adbox{' in html
    and '.paper-sheet .np214-adbox .np214-ad-name{' in html)
-render = seg('function renderMorningPaperHtml(', 'function pushNewspaperRumor(')
+render = seg('function renderMorningPaperHtml(', 'function commitMorningPaper(')  # v20a267：pushNewspaperRumor 已刪，改以其後函數做段尾
 ok('S21_ads_not_in_shorts', 'np214Page2Ads214' in render
    and 'shorts.push' not in render)
 ok('S22_sidebar_kept', '影視娛樂' in render and 'np214-filler-v' in render

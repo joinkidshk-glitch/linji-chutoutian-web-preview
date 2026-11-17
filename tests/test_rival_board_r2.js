@@ -37,7 +37,7 @@ eval(extractConst('RIVAL_FACEOFF_GIGS'));
 eval(extractConst('RIVAL_NEWS_SLOTS'));
 for(const f of ['ensureRivalry','rivalryStance','rivalryC3Done','rivalryScore','rivalryWinThreshold',
   'rivalryGigForRound','rivalryRoundSuffix','rivalryTick','rivalryNewsTick','rivalryFaceoffPaper',
-  'rivalryResultRumor','mergeRivalGigs','rivalryStatusLine','rivalTookRoleLine',
+  'mergeRivalGigs','rivalryStatusLine','rivalTookRoleLine',
   'normalizeGigRecord','seasonRank','gigSeasonHidden88','gigSeasonEarlyVisible88',
   'gigBoardPosted92','nat92StaggerEligible','nat92PostIntervals','isGigConsumed',
   'boardSortCompare','boardPriorityRank','boardNotePlayerOk','looksLikeEraId','humanizeEraId',
@@ -56,7 +56,6 @@ function freshS(){
     money:12000, stress:0,
     story:{ done:{N1:true,N2:true,N3:true,N4:true,N5:true,N6:true,N7:true,N9:true}, flags:{rival_gao_hard:true} },
     flags:{rival_gao_hard:true},
-    mockRumors:[{id:"gao_steal_spotlight", title:"高俊傑搶鏡"}],
     newspaperQueue:[], newspaperClippings:[{topicKey:"rival:gao", eventKey:"story:N3"}],
     wrapHistory:[], pendingAud:[],
     npcs:{ rival:6 }

@@ -32,7 +32,7 @@ ok('B5 BR89 提攜映射 13 張（新庫 id；SPEC §3.5A；舊 gig_br89_* 已�
 ok('B5 R-4 雙觸發在位（還錢結算 enc83_gu_loan_result＝1 亦開）', 'enc83_gu_loan_result' in html and 'gig_1992_rec_105' in html)
 ok('八線結局回收表在位', 'ARC_END89' in html and 'flag_ko_rival_respect' in html and 'flag_lei_ally' in html)
 ok('手帳八線狀態句在位', 'br89ArcStatusHtml' in html and 'BR89_ARC_LINES' in html)
-ok('新拼合 pair 在位', 'pair_br89_lok_truth' in html and 'pair_br89_chung_farewell' in html)
+ok('v267 新拼合 pair 已刪（MERGE_PAIRS 隨傳聞系統刪除）', 'pair_br89_lok_truth' not in html and 'pair_br89_chung_farewell' not in html and 'MERGE_PAIRS' not in html)
 ok('A_ho 寫返 npcs 在位', 'HO89' in html and 'bumpNpc("agent", dv)' in html)
 # 新內容冇真藝人名（抽 BR89 新寫段落粗查常見真名）
 for real in ['陳百強', '張國榮', '梅艷芳', '周潤發', '劉德華', '梁朝偉', '王祖賢', '林青霞', '鍾楚紅', '張曼玉']:

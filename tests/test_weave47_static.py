@@ -83,7 +83,7 @@ ok('B3 mergeExodusGigs 留返（空池回 0）', 'return 0' in _mg and '(EXODUS_
 
 # ---- 玩家面真名／禁用詞掃描（新模組區塊，去註解） ----
 mod_start = html.index('/* ===== Weave Phase 4-7（v20a30）')
-mod_end = html.index('const MERGE_FRAGS = [')
+mod_end = html.index('const SEASON_COLLECT = [')  # v20a267：MERGE_FRAGS 已刪，模組段尾改以其後常數做界
 mod = re.sub(r'/\*.*?\*/', '', html[mod_start:mod_end], flags=re.S)
 for w in ['張國榮', '陳百強', '梅艷芳', '周潤發', '劉德華', '關海媚', 'Ho哥', 'Ho 哥']:
     ok('module player text free of banned: ' + w, w not in mod)

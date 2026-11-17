@@ -64,12 +64,13 @@ ok('N5 多地點鎖行：改做標籤式「場景：金龍茶餐廳或星河電�
   c5.indexOf('場景：金龍茶餐廳或星河電視台') >= 0);
 ok('N5 多地點鎖行：成列冇「（場景：」括號寫法', c5.every(function(t){ return t.indexOf('（場景：') < 0; }));
 
-/* 守衛：傳聞提示等其餘 remain 項唔變 */
+/* 守衛（v267）：傳聞提示已刪——「未聽聞」remain 項唔再變做「聽到傳聞」提示
+   （progressToward 唔再出傳聞項，呢條係死路；就算餵入都只會原樣直出） */
 CASES.C3b = { done:false, needDone:[], weekMin:0, week:0, gigNeed:0, gigHave:0,
   remain:['未聽聞「高仔片場搶鏡」（去金龍茶餐廳打聽）'] };
 const c3b = texts('C3b');
-ok('守衛：傳聞提示「聽到傳聞」唔變（條件提示，唔係觸發句）',
-  c3b.indexOf('聽到傳聞：「高仔片場搶鏡」（去金龍茶餐廳打聽）') >= 0);
+ok('守衛：傳聞提示「聽到傳聞」已刪（v267：N2 唔使聽傳聞）',
+  c3b.every(function(t){ return t.indexOf('聽到傳聞') < 0; }));
 
 console.log(fails.length ? ('STORY179 LOGIC: ' + fails.length + ' FAIL -> ' + fails.join(' | ')) : 'STORY179 LOGIC: ALL PASS');
 process.exit(fails.length ? 1 : 0);

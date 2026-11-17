@@ -80,8 +80,8 @@ chk('詳情頁聲樂凍結提示行', 'cn-train-jump-frozen60' in ocd and '從�
 chk('凍結提示 CSS 在位', '.cn-train-jump-frozen60' in src)
 
 # --- (5) tutorialFx ---
-chk('tutorialFxFingerErr 發布去 window', 'window.tutorialFxFingerErr = tutorialFxFingerErr' in src)
-chk('tutorial fx img 仍用具名 handler', 'onerror="tutorialFxFingerErr(this)"' in src)
+chk('v267 tutorialFxFingerErr 已刪（傳聞教學 fx 一併刪除）', 'tutorialFxFingerErr' not in src)
+chk('v267 tutorial fx img 具名 handler 已刪', 'onerror="tutorialFxFingerErr(this)"' not in src)
 
 # --- 硬規則 ---
 chk('SAVE key 冇郁', 'starVolunteer_map_v19w' in src)

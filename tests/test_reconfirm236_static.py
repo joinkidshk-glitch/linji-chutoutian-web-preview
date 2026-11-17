@@ -90,7 +90,7 @@ ok('C7 買衫先確認後扣錢（v265）', 'confirmChoice236({' in cshop and 'b
 # ---- D. 唔准郁 ----
 ok('D 送禮確認仲在（唔重複加）', '確認送禮' in html)
 ok('D 接通告／試鏡確認仲在（confirmSpendDay）', 'function confirmSpendDay(actionLabel, onYes, opts){' in html)
-ok('D 傳聞拼合確認仲在（requestMergeConfirm）', 'function requestMergeConfirm' in html or 'requestMergeConfirm(' in html)
+ok('D 傳聞拼合確認已刪（v267：requestMergeConfirm 隨傳聞系統刪除）', 'function requestMergeConfirm' not in html and 'requestMergeConfirm(' not in html)
 ok('D 體檢確認仲在（buyCheckup105）', 'function buyCheckup105' in html or 'buyCheckup105(' in html)
 ok('D resolveEnding410 定義仲在', 'function resolveEnding410(' in html)
 

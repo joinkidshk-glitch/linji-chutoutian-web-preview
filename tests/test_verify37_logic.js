@@ -424,7 +424,7 @@ function makeEl(){
   var tickDay = function(){ S.dayIndex += 1; return { ended: false, summary: null }; };
 
   eval("var START = { y:1988, m:3, d:7 };");
-  const CONSTS = ['STAT_LABEL','STAT_MAX','STRESS_MAX','SHOOT_DAY_BY_TYPE','TRAIN_EVENTS_35','SET_CHOICES_35','MOCK_RUMOR_SEEDS','COURSE_DEFS','PLAN_ITEMS'];
+  const CONSTS = ['STAT_LABEL','STAT_MAX','STRESS_MAX','SHOOT_DAY_BY_TYPE','TRAIN_EVENTS_35','SET_CHOICES_35','COURSE_DEFS','PLAN_ITEMS'];
   for(const c of CONSTS) eval(extractConst(c).replace('const ' + c + ' =', 'var ' + c + ' ='));
   const FNS = ['R','clamp','statHardMax','apply','bumpNpc','planMeta','isGigWrapped','isGigInProduction','planCatForId','shootDeadlineHud','shootRemain','reqGap','gigActiveShoot','weekdayIdx','weekdayName','dateObj','fmtDate',
     'fillTpl','pick','eventLine','shootDayLine','formatResultNotes','shootDailyDelta','maybeUnlockMidCourses',
@@ -661,12 +661,12 @@ function makeEl(){
   var _storyPlayLocked = false;
   var S = null;
   eval("var START = { y:1988, m:3, d:7 };");
-  const CONSTS = ['MOCK_ASK','MOCK_RUMOR_SEEDS','MERGE_FRAGS','MOCK_TOAST','SEASON_COLLECT','FAVOR_DUE_CFG'];
+  const CONSTS = ['MOCK_ASK','MOCK_TOAST','SEASON_COLLECT','FAVOR_DUE_CFG'];
   for(const c of CONSTS) eval(extractConst(c).replace('const ' + c + ' =', 'var ' + c + ' ='));
   const FNS = ['R','clamp','statHardMax','apply','bumpNpc','weekNumNow','dateObj','calendarSeason','yearSeasonNow',
-    'healMayDebtCopy','ensureMockJournal','rumorStateLabel','familySafeRumorText','displayRumor',
+    'healMayDebtCopy','ensureMockJournal',
     'debtCreditorName','ensureSeasonDebtClearedBag','favorLedgerNoteSettled','ensureFavorLedger',
-    'mockAskDefs','mockIntelHits','mockAskAlreadyHeard','applyMockAsk'];
+    'mockAskDefs','mockAskAlreadyHeard','applyMockAsk'];
   for(const f of FNS) eval(extractFn('function ' + f + '('));
 
   function askSave(){
@@ -676,17 +676,16 @@ function makeEl(){
       favorLedger: null, mockAskNonce: 1, story: { gigCount: 0, flags: {}, done: {} },
     };
   }
-  /* 喺何生事務所請教何生 → 來源要係何生事務所，唔係種子寫死嘅金龍茶餐廳 */
+  /* v267：打聽變情報站——結果直接出情報文字，唔寫卡；已問過鎖住 */
   S = askSave();
-  applyMockAsk('agency_ho', 'act_ho_tvb_rules');
-  const fromAgency = (S.mockRumors || []).find(r => r && r.id === 'tvb_rules_gossip');
-  ok('seg9 事務所聽返嚟嘅傳聞有入帳', !!fromAgency);
-  ok('seg9 來源跟實際地點（何生事務所）', !!fromAgency && fromAgency.source === '何生事務所');
-  /* 喺金龍茶餐廳打聽 → 來源係金龍茶餐廳 */
+  const rAgency = applyMockAsk('agency_ho', 'act_ho_tvb_rules');
+  ok('seg9 事務所打聽直接出情報文字（唔寫卡）', !!rAgency && rAgency.ok && rAgency.intelText === '入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。' && rAgency.rumorId === null);
+  ok('seg9 打聽已問記錄寫入 S.intelAsked', S.intelAsked && S.intelAsked['act_ho_tvb_rules'] === 2);
+  /* 喺金龍茶餐廳打聽 → 同一情報文字 */
   S = askSave();
-  applyMockAsk('cafe_cha', 'act_cha_tvb_rules');
-  const fromCafe = (S.mockRumors || []).find(r => r && r.id === 'tvb_rules_gossip');
-  ok('seg9 茶餐廳聽返嚟來源係金龍茶餐廳', !!fromCafe && fromCafe.source === '金龍茶餐廳');
+  const rCafe = applyMockAsk('cafe_cha', 'act_cha_tvb_rules');
+  ok('seg9 茶餐廳打聽同一情報文字', !!rCafe && rCafe.ok && rCafe.intelText === '入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。');
+  ok('seg9 打聽第二次鎖住（已經聽過）', (()=>{ const r2 = applyMockAsk('cafe_cha', 'act_cha_tvb_rules'); return r2 && r2.ok === false && r2.alreadyHeard === true; })());
 })();
 
 console.log(fails.length ? ('\nVERIFY37 LOGIC: ' + fails.length + ' FAIL -> ' + fails.join(' | ')) : '\nVERIFY37 LOGIC: ALL PASS');

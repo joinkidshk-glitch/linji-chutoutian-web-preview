@@ -36,7 +36,7 @@ ok('wf4PresentPending 掛共用晨鏈 morningChain196（晨報之後，帶鏈續
 ok('wf4TryLocEvent 掛 openLoc（巧遇攔截之後）',
    src.find('enc79TryIntercept(id)) return') < src.find('wf4TryLocEvent(id)) return') and 'wf4TryLocEvent(id)) return' in src)
 ok('openLoc 有 wf4Done 繞過旗', 'opts.wf4Done' in src)
-ok('wf4SeedFrags 掛 ensureMockJournal', 'wf4SeedFrags(); }catch(_e){}' in src)
+ok('v267 wf4SeedFrags 已刪（傳聞碎片播種隨傳聞系統刪除）', 'wf4SeedFrags' not in src)
 ok('exodusFenTick 有送別戲 arm', 'wf4FenFarewellArm(wroteOff, exodused)' in src)
 ok('v241：RIVAL_WF4_OVERRIDES／applyRivalWf4Overrides86 已刪（JSON 做唯一來源）',
    'const RIVAL_WF4_OVERRIDES' not in src and 'function applyRivalWf4Overrides86' not in src
@@ -47,11 +47,8 @@ ok('芬姐相識場掛地點 sheet', 'wf4FenActionsAt(L.id)' in src and 'wf4FenP
 for gate in ['ending78Locked', 'todayIsForcedDay', 'conseq61IsSickToday', 'wf4NewsDay']:
     ok('wf4BaseOk 含閘 ' + gate, gate in src[src.find('function wf4BaseOk'):src.find('function wf4BaseOk')+700])
 
-# 碎片庫
-ok('WF4_FRAG_SEEDS 18 條', len(re.findall(r'id:"rumor_wf4_', src)) == 18)
-frag_region = src[src.find('const WF4_FRAG_SEEDS'):src.find('function wf4SeedFrags')]
-ok('碎片含 Call 機／傳呼 ≥5 處', len(re.findall(r'Call機|傳呼', frag_region)) >= 5)
-ok('碎片含大哥大 ≥3 處', len(re.findall(r'大哥大', frag_region)) >= 3)
+# 碎片庫（v267：WF4 傳聞碎片庫已刪）
+ok('v267 WF4_FRAG_SEEDS 已刪', 'WF4_FRAG_SEEDS' not in src and 'rumor_wf4_' not in src)
 
 # 花邊補完
 side_region = src[src.find('const PAPER_SIDE_ITEMS'):src.find('function paperSideItemForDay')]

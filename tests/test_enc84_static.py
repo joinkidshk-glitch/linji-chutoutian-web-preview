@@ -22,7 +22,7 @@ ok('四星節拍表註冊', all(('ENC79_BEATS.' + s + ' = [') in html for s in P
 ok('ENC84 模組標記在位', 'v20a84 ENC84：紅星巧遇 Phase 3' in html and 'ENC84 模組完' in html)
 ok('T4 提攜四星債權 id', all(('credit_enc84_' + s.split('_')[0] + '_patron') in html for s in P3))
 ok('彭慈善債權 id', 'credit_enc84_pang_charity' in html)
-ok('傳聞卡 id 齊（情報×3／F 伏筆／告別／程預知／蘇緋聞）', all(x in html for x in ['rumor_pang_show_tip','rumor_so_ad_tip','rumor_chung_director_tip','rumor_chung_canada_heard','rumor_chung_advice','rumor_ching_rehearse','rumor_so_gossip_risk']))
+ok('v267 傳聞卡 id 全刪（情報改直接 toast，唔寫卡）', all(x not in html for x in ['rumor_pang_show_tip','rumor_so_ad_tip','rumor_chung_director_tip','rumor_chung_canada_heard','rumor_chung_advice','rumor_ching_rehearse','rumor_so_gossip_risk']))
 ok('樞紐標記在位（enc84Hub）', 'enc84Hub' in html)
 ok('蘇收斂凍結：旗設定＋攔截過濾', 'enc84_so_cool_until' in html and html.count('enc84_so_cool_until') >= 2)
 ok('未解鎖星過濾（漏料／茶餐廳／事務所共 3 處 unlockYear）', html.count('s.unlockYear') >= 3)

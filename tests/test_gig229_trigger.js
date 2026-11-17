@@ -75,7 +75,7 @@ eval(extractConstVar('RIVAL_FACEOFF_GIGS'));
 for(const f of ['br89HasCredit','br89GigOn','awardTriggerOn229','rivalTriggerOpenable229',
   'triggerGigOn','triggerGigLabel229','triggerGigLocName229','mergeTriggerGigs',
   'ensureAwardsResults','recordAwardResult','rivalryScore','ensureRivalry',
-  'rivalryGigForRound','enc79TierOf','mergeIntelGigs','gigsForLocSeasonBoard']){
+  'rivalryGigForRound','enc79TierOf','gigsForLocSeasonBoard']){
   const src = extractFn(f);
   if(!src){ ok('抽取 function '+f, false); }
   else eval(src);
@@ -98,11 +98,8 @@ var gigSeasonHidden88 = function(){ return false; };
 var gigBoardPosted92 = function(){ return false; };
 var isGigConsumed = function(){ return false; };
 var boardSortCompare = function(){ return 0; };
-var hasIntelFlag = function(){ return true; }; /* T7 證明用：就算佢返 true，D-14 改源後 mergeIntelGigs 都唔讀佢 */
 var normalizeGigRecord = function(g){ return g; };
-var INTEL_HIDDEN_GIGS = [];
 var mergeSoftBridgeGigs = function(){};
-var mergeIntelGigsStub = mergeIntelGigs;
 var mergeFavorGigs = function(){};
 var mergeWf3Gigs = function(){};
 var mergeBr89Gigs = function(){};
@@ -116,7 +113,7 @@ function freshS(){
   return {
     dayIndex: 600, fame: 0, popularity: 0, industryCredit: 0, money: 12000, stress: 0,
     story: { done: {}, flags: {}, rel: {} },
-    flags: {}, npcs: {}, mockCredits: [], mockDebts: [], mockRumors: [],
+    flags: {}, npcs: {}, stars: {}, mockCredits: [], mockDebts: [], mockRumors: [],
     newspaperClippings: [], wrapHistory: [], pendingAud: [],
     awardsLog: [], awardsFlags: {}, awardsResults: {},
     rivalry: { score: 0, faceoffState: 'none', openedDay: null, settledDay: null, stance: '',
@@ -168,18 +165,22 @@ ok('T1 rel 60 → 開', triggerGigOn(gRel)===true);
 S = freshS();
 const gRel25 = gigById('gig_1991_tv_203'); /* v232《星夜迷離》rel luk_baakyin ≥25（T2；v252 重編號 tv_122→tv_203） */
 S.npcs.luk_baakyin = 24;
-ok('T1 rel 24 →《星夜迷離》唔開', triggerGigOn(gRel25)===false);
+ok('T1 rel 24 →《星夜迷離》唔開（舊 npcs 兜底）', triggerGigOn(gRel25)===false);
 S.npcs.luk_baakyin = 25;
-ok('T1 rel 25 →《星夜迷離》開（T2）', triggerGigOn(gRel25)===true);
+ok('T1 rel 25 →《星夜迷離》開（T2，舊 npcs 兜底）', triggerGigOn(gRel25)===true);
+S = freshS();
+S.stars.luk_baakyin = { fav: 24 };
+ok('T1 rel 星好感 24 →《星夜迷離》唔開（S.stars 主路徑）', triggerGigOn(gRel25)===false);
+S.stars.luk_baakyin = { fav: 25 };
+ok('T1 rel 星好感 25 →《星夜迷離》開（S.stars 主路徑，唔靠 S.npcs）', triggerGigOn(gRel25)===true);
 ok('T1《星夜迷離》標籤＝邀約', triggerGigLabel229(gRel25)==='邀約');
 
 S = freshS();
 const gRival = gigById('gig_1991_film_102'); /* rival ≥3（《霓虹夜影》男主角，爭位格；舊 film_109 已改做 credit） */
 ok('T1 rival 0 分 → 唔開', triggerGigOn(gRival)===false);
-S.mockRumors.push({ id:'gao_steal_spotlight', title:'高俊傑搶鏡' });
 S.story.done.N3 = true;
 S.newspaperClippings.push({ topicKey:'rival:gao', eventKey:'story:N3' });
-ok('T1 rival 4 分（傳聞＋N3＋報紙）→ 開', triggerGigOn(gRival)===true && rivalryScore()===4);
+ok('T1 rival 3 分（N3＋報紙；傳聞分已刪）→ 開', triggerGigOn(gRival)===true && rivalryScore()===3);
 S.rivalry.nextOpenDay = 9999;
 ok('T1 rival 冷卻期內 → 唔開', triggerGigOn(gRival)===false);
 S.rivalry.nextOpenDay = null;
@@ -323,23 +324,22 @@ S.mockCredits.push({ id:'credit_wf3_comedy_crew', debtor:'廖炳星', title:'喜
 GIGS = [deepClone(gigById('gig_1992_film_202'))];
 ok('T6 G-L2 上板（film_lion，1992 夏）', gigsForLocSeasonBoard('film_lion', '夏').some(g=>g.id==='gig_1992_film_202'));
 
-/* ---------- T7：D-14 intel 改源 ---------- */
+/* ---------- T7：D-14——v20a267：mergeIntelGigs／INTEL_HIDDEN_GIGS 已刪；
+   《星夜迷離》只行通用 rel trigger（星好感 S.stars），唔留雙重閘 ---------- */
 const gXingye = gigs.filter(g=>(g.title||'').indexOf('星夜迷離')>=0);
 ok('T7 v232 新庫有《星夜迷離》通告（第 241 張，經通用 trigger 系統；v252 重編號 tv_122→tv_203）', gXingye.length===1 && gXingye[0].id==='gig_1991_tv_203');
 ok('T7《星夜迷離》觸發＝陸好感 ≥25（T2）', gXingye.length===1 && gXingye[0].trigger && gXingye[0].trigger.kind==='rel' && gXingye[0].trigger.npcId==='luk_baakyin' && gXingye[0].trigger.relMin===25);
-ok('T7 唔留雙重閘：INTEL_HIDDEN_GIGS 池留空（舊注入路唔會再加一張）', html.indexOf('const INTEL_HIDDEN_GIGS = []')>=0);
-const intelSrc = extractFn('mergeIntelGigs') || '';
-ok('T7 mergeIntelGigs 唔再讀 intel_lu_burst', intelSrc.indexOf('intel_lu_burst')<0);
-ok('T7 mergeIntelGigs 改讀陸柏言 T2（enc79TierOf）', intelSrc.indexOf('enc79TierOf')>=0 && intelSrc.indexOf('luk_baakyin')>=0);
+ok('T7 唔留雙重閘：mergeIntelGigs 已刪', html.indexOf('mergeIntelGigs')<0);
+ok('T7 唔留雙重閘：INTEL_HIDDEN_GIGS 已刪', html.indexOf('INTEL_HIDDEN_GIGS')<0);
+ok('T7 唔留雙重閘：gig_intel_lu_standin 已清', html.indexOf('gig_intel_lu_standin')<0);
 S = freshS();
 GIGS = [];
-INTEL_HIDDEN_GIGS = [{ id:'gig_intel_lu_standin', title:'《星夜迷離》臨時替工', loc:'tvb_longmen', season:'夏', year:1991, tier:'初級', type:'電視劇' }];
-S.npcs.luk_baakyin = 10;
-ok('T7 T1（fav 10）→ 唔開（就算 hasIntelFlag 返 true）', mergeIntelGigs()===0 && GIGS.length===0);
-S.npcs.luk_baakyin = 25;
-ok('T7 T2（fav 25）→ 開', mergeIntelGigs()===1 && GIGS.some(g=>g.id==='gig_intel_lu_standin'));
-S.npcs.luk_baakyin = 0;
-ok('T7 跌返 T0 → 移除', mergeIntelGigs()===0 && !GIGS.some(g=>g.id==='gig_intel_lu_standin'));
+S.stars.luk_baakyin = { fav: 10 };
+ok('T7 星好感 10（T1）→《星夜迷離》唔開', triggerGigOn(gigById('gig_1991_tv_203'))===false);
+S.stars.luk_baakyin = { fav: 25 };
+ok('T7 星好感 25（T2）→《星夜迷離》開（triggerGigOn 主路徑）', triggerGigOn(gigById('gig_1991_tv_203'))===true);
+S.stars.luk_baakyin = { fav: 0 };
+ok('T7 星好感跌返 0 →《星夜迷離》唔開', triggerGigOn(gigById('gig_1991_tv_203'))===false);
 
 /* ---------- T8：BR89 13 張＋獎項對照表 ---------- */
 const BR89_EXPECT = {

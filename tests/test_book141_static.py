@@ -79,9 +79,9 @@ ok('「還原」掣鎖定態改 disabled 灰態留喺原位（v20a197 B2：唔�
    'resetBtn.style.display = "inline-block"' in src and '#btn-reset-plan:disabled' in src)
 
 # --- 內容面板唔郁 ---
-ok('內容面板 id 全保留（plan／ledger／rumor／clippings／debt／people／tags／inv／works／awards／memory／progress）',
+ok('內容面板 id 全保留（plan／ledger／clippings／debt／people／tags／inv／works／awards／memory／progress；v267 刪傳聞頁）',
    all(('id="home-pane-%s"' % s) in src for s in
-   ['plan', 'ledger', 'rumor', 'clippings', 'debt', 'people', 'tags', 'inv', 'works', 'awards', 'memory', 'progress']))
+   ['plan', 'ledger', 'clippings', 'debt', 'people', 'tags', 'inv', 'works', 'awards', 'memory', 'progress']))
 ok('行程 pane 內 notebook＋nb-actions 仲喺度', 'id="notebook"' in src and 'id="nb-actions"' in src)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')

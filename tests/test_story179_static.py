@@ -67,7 +67,7 @@ ok('N1：全檔只剩已開放行一處用「（場景：」括號寫法（code 
 ok('N1：鎖行其餘條件句唔變（前置／週數／通告／聲望／季節）',
    '"先完成"+(storyActLabel(d)' in stub and '到第 ' in stub and '接通告 ' in stub
    and '需要多於' in stub and '等到合適的季節' in stub)
-ok('N1：傳聞提示「聽到傳聞」刻意保留', '聽到傳聞：' in stub)
+ok('N1：傳聞提示「聽到傳聞」已刪（v267：N2 唔使聽傳聞）', '聽到傳聞：' not in stub)
 ok('N1：鎖行舊觸發句繼續清零（去 X 先播到／就會觸發）',
    '先播到呢幕' not in stub and '就會觸發' not in stub)
 

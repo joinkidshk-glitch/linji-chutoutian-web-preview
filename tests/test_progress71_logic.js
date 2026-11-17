@@ -214,9 +214,7 @@ function sentenceChecks(tag, line){
     dayIndex: 30,
     story: { done: { N1: true }, flags: {}, rel: {}, routes: {}, phase: 'P1', gigCount: 0 },
   }));
-  /* N2 條件齊（週數／通告數）但未播 → 下一幕目標轉 N3，remain 首項「先完成上一幕」 */
-  S.flags.tvb_rules_gossip = true;
-  S.mockRumors.push({ id: 'tvb_rules_gossip', source: '何生事務所', title: '電視城廠景生存守則', text: 'x', state: 'normal' });
+  /* N2 條件齊（週數／通告數，v267：唔使聽傳聞）但未播 → 下一幕目標轉 N3，remain 首項「先完成上一幕」 */
   S.story.gigCount = 5;
   const a5 = storyMainProgressLine();
   if(DEBUG) console.log('A5:', a5);
@@ -233,7 +231,7 @@ function sentenceChecks(tag, line){
   ok('B1：第 2 幕逐項——前置旗未達', b1.indexOf('先完成第 1 幕〈通告板〉') >= 0);
   ok('B1：第 2 幕逐項——週數連即時進度（第 4 週・現在第 1 週）', b1.indexOf('到第 4 週（現在第 1 週）') >= 0);
   ok('B1：第 2 幕逐項——通告連即時進度（0／3）', b1.indexOf('接通告 0／3 張') >= 0);
-  ok('B1：第 2 幕逐項——傳聞未達', b1.indexOf('聽到傳聞：') >= 0);
+  ok('B1：第 2 幕逐項——傳聞行已刪（v267：N2 唔使聽傳聞）', b1.indexOf('聽到傳聞：') < 0 && b1.indexOf('未聽聞') < 0);
   ok('B1：第 3 幕（第二幕未開放）照列逐項', b1.indexOf('卡座') < 0 && b1.indexOf('先完成第 2 幕〈後巷〉') >= 0);
   ok('B1：防劇透——遠幕主幹冇標題（v198：N18 前置句提及〈筆記本〉除外，嗰句係解鎖條件唔係劇透）', b1.indexOf('記數簿') < 0 && b1.indexOf('第 6 幕・電視線〈角落那張枱〉') < 0);
   /* v20a105 S-45：遠幕 boilerplate 合併做一行「第 X–17 幕…逐幕揭曉」，唔再逐幕重複

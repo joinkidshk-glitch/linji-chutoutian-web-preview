@@ -235,8 +235,8 @@ function presenceOn(day, setup){
   StoryOC = savedStoryOC;
   // 風聲 grant
   S = baseSave({ dayIndex: 10 });
-  ok('B13 grantWhisper 寫入 3 日窗＋手帳', rom176GrantWhisper('hiu', 'tea') === true
-    && S.romWhispers.hiu.until === 12 && S.mockRumors.length === 1 && S.mockRumors[0].id === 'romwind:hiu:10');
+  ok('B13 grantWhisper 寫入 3 日窗（v267：唔寫卡）', rom176GrantWhisper('hiu', 'tea') === true
+    && S.romWhispers.hiu.until === 12 && S.mockRumors.length === 0);
   ok('B14 風聲未過期 active／過期失效', rom176WhisperActive('hiu') === true
     && (function(){ S.dayIndex = 13; return rom176WhisperActive('hiu') === false; })());
   ok('B15 tea targets 唔包已有風聲／未解鎖海媚', (function(){

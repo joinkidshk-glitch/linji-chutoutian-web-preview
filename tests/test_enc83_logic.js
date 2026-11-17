@@ -102,7 +102,7 @@ const consts = names.map(n=> asVar(extractConst(n), n)).join('\n')
   + '\n' + P1.map(sid=>{ const cn = (sid==='yip_manji') ? 'yip_manzi' : sid; return asVar(extractDlg('ENC79_DLG_' + cn), 'ENC79_DLG_' + cn) + '\nENC79_DIALOG["' + sid + '"] = ENC79_DLG_' + cn + ';'; }).join('\n')
   + '\n' + P2.map(sid=> asVar(extractDlg('ENC83_DLG_' + sid), 'ENC83_DLG_' + sid) + '\n' + asVar(extractDlg('ENC83_FRAME_' + sid), 'ENC83_FRAME_' + sid)).join('\n');
 /* v20a87 WF5：chai_repay 改經 enc87StoryFlag 雙 store 讀劇情旗，抽取清單補入（斷言語義不變：S.flags 有旗照開） */
-const fns = ['ensureFavorDueSettled','enc87StoryFlag','enc79StarDef','enc79LocName','enc79Hash','enc79Rand','enc79EnsureStars','enc79StarState','enc79TierOf','enc79PlayerTier','enc79FavCap','enc79AddFav','enc79InWindow','enc79WhisperActive','enc79PresenceP','enc79EnsureDay','enc79PresenceAt','enc79GrantWhisper','enc79GrantFrag','enc79GrantRumorCard','enc79GrantCredit','enc79HasMerged','enc79BoardHasStar','enc79BoardHasActionGig','enc79BeatOpen','enc79AnyBeatOpen','enc79PickBeat','enc79ChoiceFx','enc79RunChoiceFx','enc79NormSeg','enc79StoryPendingAt','enc79TryIntercept','enc79DistanceLook','enc79OnWrap','enc79PaperWhisper','enc79HoTrustLine','enc79HelpAvailable','enc79MockAskBranch','enc79PayTea','enc79TeaListen','enc79HelpClear','enc79AgencyWind','enc79BuildScript'];
+const fns = ['ensureFavorDueSettled','enc87StoryFlag','enc79StarDef','enc79LocName','enc79Hash','enc79Rand','enc79EnsureStars','enc79StarState','enc79TierOf','enc79PlayerTier','enc79FavCap','enc79AddFav','enc79InWindow','enc79WhisperActive','enc79PresenceP','enc79EnsureDay','enc79PresenceAt','enc79GrantWhisper','enc79GrantCredit','enc79BoardHasStar','enc79BoardHasActionGig','enc79BeatOpen','enc79AnyBeatOpen','enc79PickBeat','enc79ChoiceFx','enc79RunChoiceFx','enc79NormSeg','enc79StoryPendingAt','enc79TryIntercept','enc79DistanceLook','enc79OnWrap','enc79PaperWhisper','enc79HoTrustLine','enc79HelpAvailable','enc79MockAskBranch','enc79PayTea','enc79TeaListen','enc79HelpClear','enc79AgencyWind','enc79BuildScript'];
 const iMod = html.indexOf('/* ===== v20a83 ENC83：紅星巧遇 Phase 2');
 const iModEnd = html.indexOf('/* ===== ENC83 模組完 ===== */', iMod);
 if(iMod < 0 || iModEnd < 0) throw new Error('ENC83 module not found');
@@ -197,9 +197,9 @@ ok('借錢：未到期唔結算', !S.flags.enc83_gu_loan_result && S.mockCredits
 S.dayIndex = 428; enc83GuLoanTick();
 const expectRepay = enc79Rand('gu83loan:400') < 0.3;
 ok('借錢到期：結算記入 favorDueSettled＋債權移出清單', !!S.favorDueSettled['credit_enc83_gu_loan'] && !S.mockCredits.some(c=>c.id==='credit_enc83_gu_loan'));
-ok('借錢到期：結果同種子一致（'+(expectRepay?'還款':'壞帳')+'路）', expectRepay
-  ? (S.flags.enc83_gu_loan_result===1 && S.favorDueSettled['credit_enc83_gu_loan'].result==='repaid_loan' && S.money===2000 && S.mockRumors.some(r=>r.id==='rumor_gu_loan_repaid'))
-  : (S.flags.enc83_gu_loan_result===2 && S.favorDueSettled['credit_enc83_gu_loan'].result==='void_loan' && S.money===1600 && S.mockRumors.some(r=>r.id==='rumor_gu_loan_gone')));
+ok('借錢到期：結果同種子一致（'+(expectRepay?'還款':'壞帳')+'路，v267：唔再出卡）', expectRepay
+  ? (S.flags.enc83_gu_loan_result===1 && S.favorDueSettled['credit_enc83_gu_loan'].result==='repaid_loan' && S.money===2000 && S.mockRumors.length===0)
+  : (S.flags.enc83_gu_loan_result===2 && S.favorDueSettled['credit_enc83_gu_loan'].result==='void_loan' && S.money===1600 && S.mockRumors.length===0));
 const moneyAfterSettle = S.money; enc83GuLoanTick();
 ok('借錢：重複 tick 冪等（唔重複結算）', S.money===moneyAfterSettle);
 resetS(500); S.money = 2000;
@@ -217,13 +217,13 @@ resetS(701); S.money = 100;
 enc79RunChoiceFx('ngai_meal');
 ok('大排檔：錢唔夠 $150 → 唔扣唔開債權', S.money===100 && !S.mockCredits.some(c=>c.id==='credit_enc83_ngai_meal'));
 
-/* ---- (7) 齊 fx 傳聞卡 ---- */
+/* ---- (7) 齊 fx（v267：傳聞卡已刪） ---- */
 resetS(710);
 enc79RunChoiceFx('chai_advise');
-ok('齊勸停：出避禍傳聞卡', S.mockRumors.some(r=>r.id==='rumor_chai_drama_dodged'));
+ok('齊勸停：唔再出卡（避禍傳聞卡已刪）', S.mockRumors.length===0);
 resetS(711);
 enc79RunChoiceFx('chai_silent');
-ok('齊沉默：出撻朵傳聞卡', S.mockRumors.some(r=>r.id==='rumor_chai_drama_flop'));
+ok('齊沉默：唔再出卡（撻朵傳聞卡已刪）', S.mockRumors.length===0);
 
 /* ---- (8) T4 提攜（八星） ---- */
 const PATRON_BEAT = { luk_baakyin:'luk_patron', liu_bingxing:'liu_patron', mak_zhendong:'mak_patron', yip_manji:'yip_patron', ngai_wingnaam:'ngai_patron', gu_mingfai:'gu_patron', lok_gasing:'lok_patron', chai_zanhoi:'chai_patron' };

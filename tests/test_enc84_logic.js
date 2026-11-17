@@ -105,7 +105,7 @@ const consts = names.map(n=> asVar(extractConst(n), n)).join('\n')
   + '\n' + P1.map(sid=>{ const cn = (sid==='yip_manji') ? 'yip_manzi' : sid; return asVar(extractDlg('ENC79_DLG_' + cn), 'ENC79_DLG_' + cn) + '\nENC79_DIALOG["' + sid + '"] = ENC79_DLG_' + cn + ';'; }).join('\n')
   + '\n' + P2.map(sid=> asVar(extractDlg('ENC83_DLG_' + sid), 'ENC83_DLG_' + sid) + '\n' + asVar(extractDlg('ENC83_FRAME_' + sid), 'ENC83_FRAME_' + sid)).join('\n')
   + '\n' + P3.map(sid=> asVar(extractDlg('ENC84_DLG_' + sid), 'ENC84_DLG_' + sid) + '\n' + asVar(extractDlg('ENC84_FRAME_' + sid), 'ENC84_FRAME_' + sid)).join('\n');
-const fns = ['ensureFavorDueSettled','enc79StarDef','enc79LocName','enc79Hash','enc79Rand','enc79EnsureStars','enc79StarState','enc79TierOf','enc79PlayerTier','enc79FavCap','enc79AddFav','enc79InWindow','enc79WhisperActive','enc79PresenceP','enc79EnsureDay','enc79PresenceAt','enc79GrantWhisper','enc79GrantFrag','enc79GrantRumorCard','enc79GrantCredit','enc79HasMerged','enc79BoardHasStar','enc79BoardHasActionGig','enc79BeatOpen','enc79AnyBeatOpen','enc79PickBeat','enc79ChoiceFx','enc79RunChoiceFx','enc79NormSeg','enc79StoryPendingAt','enc79TryIntercept','enc79DistanceLook','enc79OnWrap','enc79PaperWhisper','enc79HoTrustLine','enc79HelpAvailable','enc79MockAskBranch','enc79PayTea','enc79TeaListen','enc79HelpClear','enc79AgencyWind','enc79BuildScript','enc79PeopleHtml','enc79StandCandidates','enc79SheetPresence'];
+const fns = ['ensureFavorDueSettled','enc79StarDef','enc79LocName','enc79Hash','enc79Rand','enc79EnsureStars','enc79StarState','enc79TierOf','enc79PlayerTier','enc79FavCap','enc79AddFav','enc79InWindow','enc79WhisperActive','enc79PresenceP','enc79EnsureDay','enc79PresenceAt','enc79GrantWhisper','enc79GrantCredit','enc79BoardHasStar','enc79BoardHasActionGig','enc79BeatOpen','enc79AnyBeatOpen','enc79PickBeat','enc79ChoiceFx','enc79RunChoiceFx','enc79NormSeg','enc79StoryPendingAt','enc79TryIntercept','enc79DistanceLook','enc79OnWrap','enc79PaperWhisper','enc79HoTrustLine','enc79HelpAvailable','enc79MockAskBranch','enc79PayTea','enc79TeaListen','enc79HelpClear','enc79AgencyWind','enc79BuildScript','enc79PeopleHtml','enc79StandCandidates','enc79SheetPresence'];
 const iMod83 = html.indexOf('/* ===== v20a83 ENC83：紅星巧遇 Phase 2');
 const iMod83End = html.indexOf('/* ===== ENC83 模組完 ===== */', iMod83);
 if(iMod83 < 0 || iMod83End < 0) throw new Error('ENC83 module not found');
@@ -180,7 +180,7 @@ ok('實效：慈善頂班入引薦債權＋帳本計數', S.mockCredits.some(c=>
 enc79RunChoiceFx('so_cool');
 ok('實效：收斂 set 凍結旗（day+21）', (S.flags||{}).enc84_so_cool_until===321);
 enc79RunChoiceFx('so_risk_news');
-ok('實效：唔理出緋聞傳聞卡', S.mockRumors.some(r=>r.id==='rumor_so_gossip_risk'));
+ok('實效：唔理唔再出卡（v267：緋聞傳聞卡已刪）', S.mockRumors.length===0);
 
 /* ---- (4) 節拍閘 ---- */
 resetS(310); setFav('pang_siuki', 10);
@@ -219,13 +219,8 @@ ok('程回收（苦練）：服氣版開／修音版唔開', enc79BeatOpen('chin
 delete S.flags.flag_vocal_train; S.flags.flag_vocal_polish = 1;
 ok('程回收（修音）：修音版開／服氣版唔開', enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_after_polish'))===true && enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_after_train'))===false);
 resetS(316);
-ok('節拍 grants：情報／伏筆／忠告／預知卡齊入傳聞池', (()=>{ 
-  beatOf('pang_siuki','pang_intel').grants(); beatOf('so_jiyan','so_intel').grants();
-  beatOf('chung_choning','chung_intel').grants(); beatOf('chung_choning','chung_f_clue').grants();
-  beatOf('chung_choning','chung_farewell').grants(); beatOf('ching_tinlok','ching_rival').grants();
-  const ids = S.mockRumors.map(r=>r.id);
-  return ['rumor_pang_show_tip','rumor_so_ad_tip','rumor_chung_director_tip','rumor_chung_canada_heard','rumor_chung_advice','rumor_ching_rehearse'].every(id=>ids.indexOf(id)>=0);
-})());
+ok('節拍 grants：五張預告卡已刪（v267：grants 唔再存在）', [['pang_siuki','pang_intel'],['so_jiyan','so_intel'],['chung_choning','chung_intel'],['chung_choning','chung_f_clue'],['ching_tinlok','ching_rival']].every(([sid,bid])=> !beatOf(sid,bid).grants) && S.mockRumors.length===0);
+ok('節拍 grants：鍾告別忠告改記旗（Q6，唔寫卡）', (()=>{ beatOf('chung_choning','chung_farewell').grants(); return S.flags.chungAdviceHeld229===1 && S.mockRumors.length===0; })());
 
 /* ---- (5) 彭少祺樞紐 ---- */
 resetS(400); _ys = { year:1991, season:'春' };
@@ -235,7 +230,7 @@ enc79EnsureStars(); S.stars.pang_siuki.met = true; setFav('pang_siuki', 10);
   const leak = built && built.steps.find(s=>s.seg==='leak:pang_siuki');
   ok('樞紐：彭 T1 巧遇恆常有漏料步', !!leak);
   if(leak && leak.segFx) leak.segFx();
-  ok('樞紐：漏料真生風聲（whisper 窗＋風聲卡）', Object.keys(S.starWhispers||{}).length>=1 && S.mockRumors.some(r=>r.wind===true));
+  ok('樞紐：漏料真生風聲（whisper 窗，唔寫卡）', Object.keys(S.starWhispers||{}).length>=1 && S.mockRumors.length===0);
 }
 resetS(401); _ys = { year:1991, season:'春' };
 enc79EnsureStars(); S.stars.pang_siuki.met = true; setFav('pang_siuki', 3);

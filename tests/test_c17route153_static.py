@@ -68,8 +68,8 @@ ok('A1：healC17Loc 寫死 tvb_longmen（locId＋trigger.locIdAny）',
    'held.locId = "tvb_longmen"' in src and 'held.trigger.locIdAny = ["tvb_longmen"]' in src)
 ok('A1：applyFreeplaySlots（slots 接線 choke point）有呼 healC17Loc',
    'healC17Loc("N17")' in func_body(src, 'applyFreeplaySlots'))
-ok('A1：evalTrigger_AND_softRumor 有呼 healC17Loc',
-   'healC17Loc(id)' in func_body(src, 'evalTrigger_AND_softRumor'))
+ok('A1：evalTrigger_AND 有呼 healC17Loc',
+   'healC17Loc(id)' in func_body(src, 'evalTrigger_AND'))
 ok('A1：softCanonC17Loc 定義＋強制 tvb_longmen', 'function softCanonC17Loc(node)' in src
    and 'node.locId = "tvb_longmen"' in src)
 ok('A1：故事節點 overlay 唔抄 slot.locId（N17 分支有防禦性正規化）',

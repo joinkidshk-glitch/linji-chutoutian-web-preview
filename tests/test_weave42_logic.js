@@ -189,10 +189,6 @@ const LEDGER_SRC = ['favorCreditCountsAsHeld','ensureFavorLedger','favorLedgerNo
   var S = null;
   eval(extractConst('START').replace('const START', 'globalThis.__START4'));
   var START = globalThis.__START4;
-  eval(extractConst('MERGE_FRAGS').replace('const MERGE_FRAGS', 'globalThis.__MF4'));
-  var MERGE_FRAGS = globalThis.__MF4;
-  eval(extractConst('EXODUS_RUMOR_SEEDS').replace('const EXODUS_RUMOR_SEEDS', 'globalThis.__ERS4'));
-  var EXODUS_RUMOR_SEEDS = globalThis.__ERS4;
   eval(extractConst('EXODUS_FEN_DEBT').replace('const EXODUS_FEN_DEBT', 'globalThis.__EFD4'));
   var EXODUS_FEN_DEBT = globalThis.__EFD4;
   eval(extractConst('EXODUS_FEN_CREDIT').replace('const EXODUS_FEN_CREDIT', 'globalThis.__EFC4'));
@@ -244,8 +240,6 @@ const LEDGER_SRC = ['favorCreditCountsAsHeld','ensureFavorLedger','favorLedgerNo
   var EXODUS_FEN_DEBT = globalThis.__EFD5;
   eval(extractConst('EXODUS_FEN_CREDIT').replace('const EXODUS_FEN_CREDIT', 'globalThis.__EFC5'));
   var EXODUS_FEN_CREDIT = globalThis.__EFC5;
-  eval(extractConst('EXODUS_FEN_INTEL').replace('const EXODUS_FEN_INTEL', 'globalThis.__EFI5'));
-  var EXODUS_FEN_INTEL = globalThis.__EFI5;
   eval(extractFn('dateObj'));
   eval(extractFn('calendarSeason'));
   eval(extractFn('yearSeasonNow'));
@@ -265,7 +259,7 @@ const LEDGER_SRC = ['favorCreditCountsAsHeld','ensureFavorLedger','favorLedgerNo
   const cred = S.mockCredits.find(c=>c.id==='credit_fen_rescue');
   ok('exodus: credit becomes 絕響', !!cred && cred.status==='絕響');
   ok('exodus: ledger.exodus lists credit', S.favorLedger.exodus.indexOf('credit_fen_rescue')>=0);
-  ok('exodus: intel frag added', S.mockRumors.some(r=>r.id==='rumor_fen_exodus_tip'));
+  ok('exodus: 情報唔寫卡（v267：芬姐口風改 toast 副文）', S.mockRumors.length===0 && toastCalls[0].opts && String(toastCalls[0].opts.sub||'').indexOf('片場口風')>=0);
   ok('exodus: toast fired once with write-off main', toastCalls.length===1 && toastCalls[0].m.indexOf('一筆勾銷')>=0);
   exodusFenTick();
   ok('exodus: fires only once', toastCalls.length===1 && S.favorLedger.settled===0); // v259 R3：勾銷唔計 settled
@@ -286,7 +280,7 @@ const LEDGER_SRC = ['favorCreditCountsAsHeld','ensureFavorLedger','favorLedgerNo
   S.exodusFenSeeded = true; // 種子旗已置，兩項均已處理完／唔在場
   exodusFenTick();
   ok('exodus neither: toast still fires', toastCalls.length===1);
-  ok('exodus neither: intel frag still added', S.mockRumors.some(r=>r.id==='rumor_fen_exodus_tip'));
+  ok('exodus neither: 唔寫卡', S.mockRumors.length===0);
   ok('exodus neither: no phantom counts', favorLedgerCounts().settled===0);
 
   // 1989 春未到夏：唔觸發

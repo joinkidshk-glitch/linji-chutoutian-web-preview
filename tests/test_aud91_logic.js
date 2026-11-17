@@ -77,7 +77,7 @@ var S = null;
 var tickDay = function(){ S.dayIndex += 1; return { ended: false, summary: null }; };
 
 eval("var START = { y:1990, m:1, d:1 };");
-for (const c of ['STAT_LABEL','STAT_MAX','STRESS_MAX','SHOOT_DAY_BY_TYPE','TRAIN_EVENTS_35','SET_CHOICES_35','MOCK_RUMOR_SEEDS','COURSE_DEFS','PLAN_ITEMS'])
+for (const c of ['STAT_LABEL','STAT_MAX','STRESS_MAX','SHOOT_DAY_BY_TYPE','TRAIN_EVENTS_35','SET_CHOICES_35','COURSE_DEFS','PLAN_ITEMS'])
   eval(extractConst(c).replace('const ' + c + ' =', 'var ' + c + ' ='));
 eval(extractConst('AUD91_CAP').replace('const AUD91_CAP =', 'var AUD91_CAP ='));
 eval("var _aud91Presenting = false;");

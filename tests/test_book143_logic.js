@@ -40,10 +40,11 @@ ok('subtab 切換共用 setHomeTab（delegate 到 button[data-htab]，唔分組�
   html.includes('_homeSubtabsEl.onclick=e=>{')
   && html.includes('const btn=e.target.closest("button[data-htab]"); if(!btn) return;')
   && html.includes('setHomeTab(btn.getAttribute("data-htab"))'));
-ok('四組 subtab 掣 data-htab 齊（works／awards／memory／ledger／tags／inv／rumor／clippings／debt／people）',
+ok('四組 subtab 掣 data-htab 齊（works／awards／memory／ledger／tags／inv／clippings／debt／people；v267：rumor 已刪）',
   ['data-htab="works"', 'data-htab="awards"', 'data-htab="memory"', 'data-htab="ledger"',
-   'data-htab="tags"', 'data-htab="inv"', 'data-htab="rumor"', 'data-htab="clippings"',
-   'data-htab="debt"', 'data-htab="people"'].every(s => html.includes(s)));
+   'data-htab="tags"', 'data-htab="inv"', 'data-htab="clippings"',
+   'data-htab="debt"', 'data-htab="people"'].every(s => html.includes(s))
+  && !html.includes('data-htab="rumor"'));
 
 console.log(fails.length ? ('FAILURES: ' + fails.join(' | ')) : 'ALL PASS');
 process.exit(fails.length ? 1 : 0);

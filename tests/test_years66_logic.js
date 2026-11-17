@@ -53,7 +53,7 @@ const FNS = ['R','clamp','statHardMax','dualTrackNumbers','syncDualTracks','appl
   'calib60YearOfWeek','weekNumNow','livingCostWeekNum','livingCostBand','livingCostRoll','livingCostEstimate','takeSoftBridgePay',
   'calib60SeasonIdx','calib60NowSeasonIdx','calib60NodeTitle','calib60MissedScan','normalizeSaveObj',
   'defaultWeekPlan','fameFloor','gigMissingReqGaps','courseForStatKey','preferredLocForTrainTarget','bestTrainJumpForGig',
-  'tutorialFxFingerErr','dateObj','looksLikeEraId','humanizeEraId','normalizeGigRecord'];
+  'dateObj','looksLikeEraId','humanizeEraId','normalizeGigRecord'];
 for(const f of FNS) eval(extractFn(f));
 Math.random = function(){ return 0; };
 

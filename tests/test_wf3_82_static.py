@@ -65,7 +65,7 @@ if m:
 # 鏈 B/C/D 接線
 ok('B3 鏈 B 隱藏通告已刪（WF3_LIAO_GIG 轉 null）', 'const WF3_LIAO_GIG = null;' in src and 'gig_wf3_' not in src)
 ok('B3 鏈 B 收割通告已刪（WF3_LIAO_HARVEST_GIG 轉 null）', 'const WF3_LIAO_HARVEST_GIG = null;' in src and 'gig_wf3_' not in src)
-ok('mergeWf3Gigs 掛通告板', src.count('mergeWf3Gigs') >= 3)
+ok('v267 mergeWf3Gigs 已刪（唔再掛通告板）', 'mergeWf3Gigs' not in src)
 ok('B3 試鏡前抉擇已刪（E28：WF3 試鏡 hook 拎走，B5 先恢復）', 'liaoChoice' not in src and '企呢個位之前' not in src)
 ok('記仇債', 'debt_wf3_liao_grudge' in src and '面子債' in src)
 ok('鏈 A 債權', 'credit_wf3_lu_team' in src)
@@ -74,7 +74,7 @@ ok('鏈 D 經理人債權（同 enc79 分開）', 'credit_wf3_yip_manager' in sr
 ok('wf3PrepareNode82 掛 StoryPlay', src.count('wf3PrepareNode82') >= 3)
 ok('WF3_TALK 六節點', all(('W3_' + s) in src for s in ['ho_liao', 'ho_m27', 'liao_m27', 'lu_pa', 'fong_jump', 'fong_hold']))
 ok('WF3_TALK 掛地點 sheet', 'wf3TalkActionsAt' in src)
-ok('方小龍情報卡', 'rumor_wf3_fong_mid' in src and 'rumor_wf3_fong_high' in src)
+ok('方小龍情報改直接 toast（唔寫卡）', '方小龍漏咗啲武行口風畀你' in src and '方小龍壓低聲，提咗你一單高危預警' in src and 'rumor_wf3_fong_mid' not in src and 'rumor_wf3_fong_high' not in src)
 
 # 花邊池／碎片（同 logic 測試分工：呢度只查存在性，數量喺 logic／weave32 查）
 ok('花邊新登記 9 則 id 齊', all(('id:"side_' + s + '"') in src for s in ['yip_swimsuit', 'ku_wrap', 'boxoffice_record', 'poach_rumor', 'comedy_king', 'singer_contest', 'astronaut_family', 'taiwan_money', 'own_studio']))

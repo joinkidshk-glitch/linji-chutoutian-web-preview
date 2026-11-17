@@ -5,10 +5,10 @@
 //   v252：替身守門行先——9 張作品 roleLabel／title 有「替身」照樣 base（press94RoleClass 註解原文明寫）。
 // A9 合約（v90 規則沿用）：接通告頁面唔出成品海報／主演名；完成後場合（殺青／作品牆／頒獎／結局）
 //   保留海報位。B3 將 poster59Path 轉咗 stub（回 ""，D-12 出圖批先恢復）——呢批唔恢復海報圖。
-// Q6 合約（支線補完 Q6，用戶 2026-11-15 21:43）：憑 rumor_chung_advice 卡，下一次文藝片試鏡
+// Q6 合約（支線補完 Q6，用戶 2026-11-15 21:43）：憑 S.flags.chungAdviceHeld229 旗，下一次文藝片試鏡
 //   多一句鍾楚凝嘅忠告做提示；效果就係呢句提示本身，唔加數字加成；用一次即清。
 //   文藝片＝genre 文藝＋電影／電視劇＋category 作品。派發層照舊（ENC79_BEATS chung_farewell），
-//   唔掛傳聞拼合路（MERGE_PAIRS／INTEL_USE_POINTS）。
+//   v20a267：傳聞系統刪除，忠告卡改記旗（唔再寫 S.mockRumors 卡）。
 // Q11 合約（支線補完 Q11，用戶 2026-11-15 21:46）：刪 debt_slot_ngai_01 stub 債。
 const fs = require('fs');
 const path = require('path');
@@ -137,9 +137,9 @@ ok('A9_poster59Path_stub_empty', /function poster59Path\(gigId\)\{\s*\/\*[\s\S]*
 const workCard = segFn('function workCard59Html');
 ok('A9_workcard_css_fallback', workCard.includes('work-csscard59') && !workCard.includes('<img class="work-poster59" src=""'));
 
-// ---- Q6：忠告卡 ----
+// ---- Q6：忠告（v20a267：卡改記旗，CHUNG_ADVICE_CARD_ID229 已刪） ----
 const q6parts = [
-  extractConst('CHUNG_ADVICE_CARD_ID229'), extractConst('CHUNG_ADVICE_TEXT229'),
+  extractConst('CHUNG_ADVICE_TEXT229'),
   extractFn('chungAdviceCardHeld229'), extractFn('isWenyiAuditionGig229'),
   extractFn('chungAdviceTipForAudition229'), extractFn('chungAdviceSpend229'),
 ];
@@ -153,8 +153,8 @@ if(q6parts.every(Boolean)){
   const wenyiExtra = {genre:'文藝', type:'電影', category:'臨記通告', roleLabel:'路人'};
   const comedyWork = {genre:'喜劇', type:'電影', category:'作品', roleLabel:'男主角'};
   const wenyiAd = {genre:'文藝', type:'廣告', category:'作品', roleLabel:'男主角'};
-  global.S = { flags:{}, mockRumors:[{id:'rumor_chung_advice', source:'鍾楚凝', title:'鍾楚凝的忠告', text:'x'}] };
-  ok('Q6_held_with_card', chungAdviceCardHeld229()===true);
+  global.S = { flags:{ chungAdviceHeld229: 1 }, mockRumors:[] };
+  ok('Q6_held_with_flag', chungAdviceCardHeld229()===true);
   ok('Q6_wenyi_film_is_wenyi', isWenyiAuditionGig229(wenyiWork)===true);
   ok('Q6_wenyi_tv_is_wenyi', isWenyiAuditionGig229(wenyiTv)===true);
   ok('Q6_wenyi_extra_not_wenyi', isWenyiAuditionGig229(wenyiExtra)===false);
@@ -168,11 +168,11 @@ if(q6parts.every(Boolean)){
   chungAdviceSpend229();
   ok('Q6_spent_flag_set', S.flags.chungAdviceSpent229===1);
   ok('Q6_second_wenyi_no_tip', chungAdviceTipForAudition229(wenyiWork)==='');
-  ok('Q6_card_kept_in_rumors', S.mockRumors.some(r=>r.id==='rumor_chung_advice'), '卡本身留喺 S.mockRumors，唔刪除');
-  // 無卡唔出
+  ok('Q6_held_flag_kept_after_spend', S.flags.chungAdviceHeld229===1, '用完只記 spent，held 旗留返（唔刪除）');
+  // 無旗唔出
   global.S = { flags:{}, mockRumors:[] };
-  ok('Q6_no_card_no_tip', chungAdviceTipForAudition229(wenyiWork)==='');
-  ok('Q6_no_card_not_held', chungAdviceCardHeld229()===false);
+  ok('Q6_no_flag_no_tip', chungAdviceTipForAudition229(wenyiWork)==='');
+  ok('Q6_no_flag_not_held', chungAdviceCardHeld229()===false);
   // 掛點：兩條試鏡路都有接線；派發層照舊；唔掛拼合路
   const doAud = segFn('function doAudition');
   ok('Q6_hook_doAudition', doAud.includes('chungAdviceTipForAudition229') && doAud.includes('chungAdviceSpend229') && doAud.includes('鍾楚凝的忠告'));
@@ -180,9 +180,9 @@ if(q6parts.every(Boolean)){
   ok('Q6_spend_no_number_bonus', spendSrc.includes('chungAdviceSpent229') && !/acting|fame|chance|stress/.test(spendSrc));
   const planned = html.slice(html.indexOf('else if(id.startsWith("job:"))'), html.indexOf('else if(id.startsWith("job:"))')+6000);
   ok('Q6_hook_planned_job', planned.includes('chungAdviceTipForAudition229') && planned.includes('鍾楚凝的忠告'));
-  ok('Q6_grant_unchanged', html.includes('enc79GrantRumorCard({ id:"rumor_chung_advice"'));
-  const mergeSeg = html.slice(html.indexOf('pair_br89_chung_farewell')-200, html.indexOf('pair_br89_chung_farewell')+1200);
-  ok('Q6_merge_pairs_untouched', mergeSeg.includes('rumor_chung_advice') && !mergeSeg.includes('chungAdviceTipForAudition229') && !mergeSeg.includes('CHUNG_ADVICE'));
+  ok('Q6_grant_is_flag', html.includes('S.flags.chungAdviceHeld229 = 1'), 'chung_farewell 派發改記旗，唔再派卡');
+  ok('Q6_no_rumor_card', !html.includes('rumor_chung_advice'));
+  ok('Q6_merge_pairs_gone', html.indexOf('MERGE_PAIRS')<0 && html.indexOf('pair_br89_chung_farewell')<0, '傳聞拼合系統已刪，Q6 唔掛拼合路係自然結果');
   ok('Q6_advice_text_is_chung_line', ADVICE_TEXT229.indexOf('諗通咗')>=0);
 }
 

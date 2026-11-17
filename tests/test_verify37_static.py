@@ -78,7 +78,7 @@ ok('item8 board teaser uses board line', 'gigGapBoardLine37(g)' in html)
 
 # ---- item 9：傳聞來源跟行動地點 ----
 ask_seg = seg('function applyMockAsk(', 'function mockAskAlreadyHeard')
-ok('item9 rumor source prefers action source', 'const rumorSource = def.source || (catalog && catalog.source)' in ask_seg)
+ok('item9 打聽結果直接講情報（v267：唔經傳聞卡）', 'const intelText = (def && def.intelText)' in ask_seg and 'rumorSource' not in ask_seg and 'rumorId:null' in ask_seg)
 
 # ---- 紅線：SAVE key／softRev／?v= 冇郁 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)

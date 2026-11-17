@@ -3378,18 +3378,6 @@ body.day-res-open .day-row{
   flex:1 1 auto; min-height:0; overflow:auto; padding:2px 2px 16px;
   -webkit-overflow-scrolling:touch;
 }
-.rumor-card{
-  position:relative;
-  /* P0-3（v20a11）：改用文件流直向排版，來源／標題／內文逐層落，唔再靠疊位就位。 */
-  display:flex; flex-direction:column;
-  background:#f6e2aa; color:#1A1410; border-radius:12px;
-  border:1px dashed rgba(107,78,46,.55);
-  box-shadow:0 2px 0 rgba(26,20,16,.16);
-  padding:12px 14px; margin:0 0 10px;
-}
-.rumor-card .rumor-src{ margin:0 0 6px; font-size:.72rem; font-weight:800; color:#6b4e2e; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
-.rumor-seed-tag{ display:inline-block; margin-left:6px; padding:1px 6px; border-radius:999px; background:#e8d4a8; color:#5a4018; font-size:.65rem; font-weight:800; }
-.rumor-card p{ margin:0; font-size:.84rem; line-height:1.45; font-weight:700 }
 .debt-row{
   background:#fff8e8; color:#1A1410; border-radius:12px;
   border:1px solid rgba(196,60,42,.35);
@@ -3399,27 +3387,13 @@ body.day-res-open .day-row{
 .debt-row .debt-who{ margin:0 0 4px; font-weight:800; font-size:.86rem }
 .debt-row .debt-title{ margin:0; font-weight:900; font-size:.9rem }
 .debt-row .debt-meta,.debt-row .debt-note{ margin:6px 0 0; font-size:.75rem; line-height:1.4; color:#5a4328 }
-.debt-status,.rumor-state{
+.debt-status{
   display:inline-block; margin-top:8px; padding:2px 8px; border-radius:999px;
   font-size:.72rem; font-weight:800; line-height:1.4;
 }
-.rumor-state{ background:#fff8e8; color:#6b4e2e }
 .debt-status[data-tone="未到期"]{ background:#e5f0ea; color:#1f7a5c }
 .debt-status[data-tone="就嚟到期"]{ background:#f3e0a8; color:#6b4e2e }
 .debt-status[data-tone="已逾期"]{ background:#f3d0c8; color:#8a2a22 }
-.rumor-card .rumor-title{ margin:0 0 4px; font-weight:900; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden }
-.rumor-card.is-picked{ outline:2px solid #6b4e2e; background:#f3d48a }
-.rumor-card.is-glow,.rumor-card.is-near{
-  box-shadow:0 0 0 2px #C9A227, 0 0 14px rgba(201,162,39,.72);
-}
-.rumor-card.can-pick{ cursor:pointer }
-.rumor-card.is-stamped{ position:relative; padding-right:86px }
-.rumor-stamp{
-  position:absolute; right:8px; bottom:8px; width:68px; height:68px; border-radius:50%;
-  border:3px solid #C43C2A; color:#C43C2A; background:rgba(255,248,232,.72);
-  display:flex; align-items:center; justify-content:center; text-align:center;
-  font-size:.68rem; font-weight:900; line-height:1.15; transform:rotate(-14deg); pointer-events:none;
-}
 .season-banner{
   margin:0 0 8px; padding:8px 10px; border-radius:12px;
   background:rgba(255,248,232,.9); color:#6b4e2e; font-size:.78rem; font-weight:800;
@@ -3450,32 +3424,7 @@ body.day-res-open .day-row{
 .weak-seals span:nth-child(4){ right:14%; top:68%; transform:rotate(-8deg) }
 .weak-seals span:nth-child(5){ left:28%; top:78% }
 .weak-seals span:nth-child(6){ right:8%; top:16%; transform:rotate(8deg) }
-.weak-whisper{
-  margin:8px 2px 0; font-size:.68rem; line-height:1.35; font-weight:700;
-  color:#6b4e2e; opacity:.45;
-}
-.rumor-merge{ position:sticky; top:0; z-index:1; margin:0 0 8px }
-.rumor-merge button{
-  width:100%; min-height:44px; border:0; border-radius:12px; cursor:pointer;
-  background:#6b4e2e; color:#fff8e8; font:inherit; font-weight:800;
-}
-.rumor-hint{ margin:0 0 8px; font-size:.75rem; font-weight:700; color:#6b4e2e }
 /* Soft Phase2 steps 5–6. Coach copy always; FX images only when the Soft gate mounts them. */
-.tut-phase2-coach{
-  position:relative;
-  background:#fff8e8; color:#1A1410; border-radius:12px;
-  border:1px solid rgba(107,78,46,.45);
-  padding:10px 12px; margin:0 0 8px;
-}
-.tut-phase2-coach:has(.tut-fx-pulse){ padding-left:34px; }
-.tut-phase2-coach p{ margin:0 0 4px; font-size:.78rem; font-weight:700; line-height:1.4; color:#5a4328 }
-.tut-phase2-coach p:last-child{ margin:0 }
-.tut-skip-row{ margin-top:8px !important }
-.tut-skip-btn{
-  appearance:none; border:1px solid #c4a574; background:#fff8e8; color:#5a4328;
-  border-radius:999px; padding:4px 12px; font-size:.72rem; font-weight:800; cursor:pointer;
-}
-.tut-skip-btn:active{ transform:scale(.98) }
 .act-story-done{ opacity:.72 }
 .act-story-done .n{ color:#6b5a40 }
 .settle-notes, #settle-body, .train-result-notes{ white-space:pre-line; line-height:1.45 }
@@ -3495,63 +3444,10 @@ body.day-res-open .day-row{
    finger: sit lower so the sprite is not biased up toward the HUD. lift: existing shadow PNG was faint (max alpha ~90).
    pulse: smaller scale swing + light blur so the hard ring does not read jagged.
    needs GD pack: fx_drag_finger_proc.png stays the abstract onerror spare. Do not fake a replacement. */
-.tut-phase2-coach .tut-fx-pulse{
-  position:absolute; left:8px; top:8px; width:22px; height:22px;
-  object-fit:contain; pointer-events:none;
-  filter:blur(.45px);
-  animation:tutFxPulse 1.35s ease-in-out infinite;
-}
-.tut-fx-drag{
-  position:relative; height:86px; margin:0 0 8px; pointer-events:none;
-}
-.tut-fx-drag .tut-fx-path{
-  position:absolute; left:8%; top:8px; width:62%; height:70px; object-fit:contain;
-}
-.tut-fx-drag .tut-fx-finger{
-  position:absolute; left:4px; top:10px; width:68px; height:68px; object-fit:contain;
-  transform-origin:22% 78%;
-  animation:tutFxFinger 1.1s ease-in-out infinite;
-}
 /* Replaced <img>: width/height auto keeps the PNG intrinsic box (slot 360×200,
    edge 420×280) and drops the over-constrained inset edge, so the frame
    overflows onto the next card. Explicit size stretches the same PNG to the
    card ±6px. No new asset. */
-.rumor-card .tut-fx-slot,
-.rumor-card .tut-fx-edge{
-  position:absolute;
-  left:-6px; right:-6px; top:-6px; bottom:-6px;
-  width:calc(100% + 12px);
-  height:calc(100% + 12px);
-  max-width:none;
-  max-height:none;
-  box-sizing:border-box;
-  object-fit:fill;
-  pointer-events:none;
-  z-index:2;
-}
-.rumor-card .tut-fx-lift{
-  display:none; position:absolute; left:8%; right:8%; bottom:-6px; height:20px;
-  object-fit:fill; pointer-events:none; z-index:0;
-  mix-blend-mode:multiply;
-  filter:contrast(1.45) brightness(.62);
-}
-.rumor-card.is-picked .tut-fx-lift,
-.rumor-card.is-lifting .tut-fx-lift{ display:block; }
-#home-pane-rumor{ position:relative; }
-.tut-fx-merge{
-  display:none; position:absolute; left:50%; top:22%; width:168px; height:168px;
-  margin-left:-84px; z-index:4; pointer-events:none;
-}
-.tut-fx-merge.on{ display:block; }
-.tut-fx-merge img{ width:100%; height:100%; object-fit:contain; }
-.tut-fx-merge-inline{ position:relative; height:148px; margin:0 0 8px; }
-.tut-fx-merge-inline .tut-fx-burst,
-.tut-fx-merge-inline .tut-fx-stamp{
-  position:absolute; left:50%; top:0; width:140px; height:140px;
-  margin-left:-70px; object-fit:contain; pointer-events:none;
-}
-.tut-fx-merge-inline .tut-fx-burst{ animation:tutFxBurst .72s ease forwards; }
-.tut-fx-merge-inline .tut-fx-stamp{ opacity:0; animation:tutFxStamp .4s ease .72s forwards; }
 .era-sil-far{
   display:block; width:min(180px, 52vw); max-height:42vh; height:auto;
   object-fit:contain; margin:2px auto 10px; background:transparent; pointer-events:none;
@@ -3574,14 +3470,13 @@ body.day-res-open .day-row{
   0%{ opacity:0; transform:scale(.8) rotate(-8deg); }
   100%{ opacity:1; transform:scale(1) rotate(-8deg); }
 }
-.debt-empty,.rumor-empty,.tags-empty{ text-align:center }
+.debt-empty,.tags-empty{ text-align:center }
 .debt-stamp{
   width:76px; height:76px; margin:16px auto 8px; border-radius:50%;
   border:4px solid #4A8F7A; color:#1f7a5c; background:rgba(74,143,122,.12);
   display:flex; align-items:center; justify-content:center;
   font-weight:900; letter-spacing:.12em; transform:rotate(-8deg);
 }
-#home-pane-rumor.on .journal-scroll,
 #home-pane-debt.on .journal-scroll{ animation:mockFadeIn .8s ease }
 @keyframes mockFadeIn{ from{ opacity:0 } to{ opacity:1 } }
 .push-door{
@@ -4082,7 +3977,6 @@ body.day-res-open .day-row{
 #home-tabs .home-tab{ flex:1 1 0; min-width:3.2em; }
 #htab-ledger{ order:2; }
 #htab-plan{ order:1; }
-#htab-rumor{ order:3; }
 #htab-debt{ order:4; }
 #htab-tags{ order:5; }
 #home-pane-ledger .ledger-wrap{ flex:1 1 auto; min-height:0; overflow:auto; padding:4px 2px 16px; -webkit-overflow-scrolling:touch; }
@@ -4776,17 +4670,6 @@ body.day-res-open .day-row{
 #app #clippings-list .clip-card{
   margin-left:5px; margin-right:5px;
 }
-/* (4) 傳聞頁說明對比：.pane-intro base 規則（行首段）係深啡字 #5a4328 配
-       半透明金底 rgba(201,162,39,.12)——嗰款式係為淺色頁面而設；但傳聞頁
-       唔喺米色 .notebook 入面，係直接坐喺 #v-home 深色底
-       （#2a1f1a→#0a1424）上面，半透明底透出深底＝深啡字配深啡底讀唔到。
-       只限傳聞頁：換實色米紙底＋深字，對比同傳聞卡（#f6e2aa）一致；
-       人情債頁同樣用 .pane-intro 但唔喺今次範圍，唔郁。 */
-#home-pane-rumor .pane-intro{
-  background:#fff8e8;
-  color:#3a2a18;
-  border-color:rgba(201,162,39,.65);
-}
 /* === v20a48 打磨完 === */
 /* === v20a214 NP214：晨報核心渲染器（v11 樣本版式）===
    只係 .paper-sheet 入面嘅報紙版面：報頭 A「維港日報」＋日期行＋大標題＋副題＋
@@ -4988,24 +4871,6 @@ body.day-res-open .day-row{
    NP214 眉題跟樣本行左對齊，喺呢度蓋返。聲望行／附註沿用舊置中規則，唔郁。 */
 #mask.paper-on .paper-sheet .np214-kicker{ text-align:left; }
 /* === v20a214 NP214 完 === */
-/* === v20a49 傳聞頁提示行對比 ===
-   .rumor-hint base 規則（主 style 段）只有深啡字 #6b4e2e、冇 background——
-   同 v20a48 修嘅 .pane-intro 同類病，仲要連半透明金底都冇：全透明底直接
-   透出 #v-home 深色底（#2a1f1a→#0a1424），深啡字配深啡底讀唔到（實機
-   驗收附帶發現：「點兩張剛聽聞，拉埋再確認。」放大先勉强睇清）。
-   .rumor-hint 全檔只喺 renderRumorPane 兩個分支出現（揀齊兩張時嘅
-   glow 提示＋未揀齊時嘅操作提示），兩處都入 #rumor-list，即傳聞頁內，
-   其他頁冇用呢個 class。修法同 v20a48 .pane-intro 同一語言：只限傳聞頁
-   換實色米紙底＋深字＋金邊，幾何（padding／radius）跟返 .pane-intro base，
-   hint 本身嘅 margin／字款由 base 規則保留。 */
-#home-pane-rumor .rumor-hint{
-  background:#fff8e8;
-  color:#3a2a18;
-  border:1px solid rgba(201,162,39,.65);
-  border-radius:8px;
-  padding:6px 8px;
-}
-/* === v20a49 完 === */
 
 /* === v20a52 開始畫面重設計＋改名《臨記埋位》 ===
    舊開始畫面＝米紙卡＋品牌圖卡＋膠囊掣，係「網頁卡片」語言；今期跟返
@@ -5434,8 +5299,7 @@ body.day-res-open .day-row{
    (D) 故意淡化（保留＋保地板，判斷清單）：進度頁 far/missed 行
        opacity .62（3.59–4.21，≥3）；唯讀詳細卡 .act-item:disabled
        opacity .55——其 .ah 額外加深至 #241a10，合成後 ≈3.46 保地板；
-       確定掣 is-locked（disabled，3.82）；傳聞頁 .weak-whisper 鬼影字
-       opacity .45，提亮色後 ≈3.16（opacity 所限純色到唔到 4.5）；
+       確定掣 is-locked（disabled，3.82）；
        季節印章 .season-mark 係裝飾水印字（opacity .35，純色數學上限
        ≈2.36）唔郁，旁邊正文合格。
    像素核實假陽性（唔使修）：確定掣金漸變 11.25、剪報紙卡 h4 15.33／
@@ -5449,7 +5313,6 @@ body.day-res-open .day-row{
 #home-pane-ledger .ledger-enroll{ color:#c3b096; }
 #home-pane-people .people-next{ color:#c3b096; }
 #home-pane-debt .pane-intro{ color:#e6d7ae; }
-.weak-whisper{ color:#e0d3ac; }
 #v-home .home-top .txt .home-money:not(.money-warn):not(.money-critical):not(.money-broke),
 #v-home .home-top .txt .home-stats-line .hs-i.home-money:not(.money-warn):not(.money-critical):not(.money-broke){ color:#e3c565 !important; }
 .day-row .nm .plan-hint{ color:#59452a; }
@@ -5890,7 +5753,6 @@ body.day-res-open .day-row{
    （v142 範圍）唔郁——呢度淨係補返八組 journal-scroll。 */
 #home-pane-ledger .journal-scroll,
 #home-pane-inv .journal-scroll,
-#home-pane-rumor .journal-scroll,
 #home-pane-clippings .journal-scroll,
 #home-pane-debt .journal-scroll,
 #home-pane-people .journal-scroll,
@@ -5903,14 +5765,13 @@ body.day-res-open .day-row{
 }
 /* B2 附帶：三處為深底加嘅淺字覆寫，喺紙面還原返墨色（同 v131 B2 做法）——
    ledger-enroll #c3b096／people-next #c3b096／debt pane-intro #e6d7ae；
-   傳聞頁 .pane-intro／.rumor-hint 本身已經係實色米紙底＋深字（v20a48／v20a49），唔郁。 */
+   傳聞頁已刪（v20a267），相關覆寫一併移除。 */
 #home-pane-ledger .ledger-enroll{ color:#6b4e2e; }
 #home-pane-people .people-next{ color:#6b4e2e; }
 #home-pane-debt .pane-intro{ color:#5a4328; }
 /* B2 附帶（續）：v76 為深底加嘅淺字覆寫仲有三處喺新紙面頁——.jobs72-h（庫存／人脈標題，
    #ecdfc2 喺紙面淡到睇唔到，實駕 crop 核實）同進度頁 .prog71-h／.prog71-intro；
-   跟 v131 做法，喺紙面頁範圍內還原返墨色。傳聞頁 .weak-whisper 係故意淡化嘅鬼影字
-   （v76 判斷清單保留），唔郁。記數簿 h3 繼承 pane 墨色、debt／rumor 無 h3，唔使郁。 */
+   跟 v131 做法，喺紙面頁範圍內還原返墨色。記數簿 h3 繼承 pane 墨色、debt 無 h3，唔使郁。 */
 #home-pane-inv .jobs72-h, #home-pane-people .jobs72-h{ color:#43301c; }
 #home-pane-progress .prog71-h{ color:#43301c; }
 #home-pane-progress .prog71-intro{ color:#8a755a; }
@@ -6141,7 +6002,7 @@ body.day-res-open .day-row{
         <button type="button" class="home-tab on" id="hgroup-plan" role="tab" aria-selected="true" data-hgroup="plan" data-htab="plan">行程</button>
         <button type="button" class="home-tab" id="hgroup-career" role="tab" aria-selected="false" data-hgroup="career" data-htab="works">事業</button>
         <button type="button" class="home-tab" id="hgroup-status" role="tab" aria-selected="false" data-hgroup="status" data-htab="ledger">近況</button>
-        <button type="button" class="home-tab" id="hgroup-news" role="tab" aria-selected="false" data-hgroup="news" data-htab="rumor">消息</button>
+        <button type="button" class="home-tab" id="hgroup-news" role="tab" aria-selected="false" data-hgroup="news" data-htab="clippings">消息</button>
         <button type="button" class="home-tab" id="hgroup-favor" role="tab" aria-selected="false" data-hgroup="favor" data-htab="debt">人情</button>
       </div>
       <div class="home-subtabs" id="home-subtabs" aria-label="手帳分類">
@@ -6160,7 +6021,6 @@ body.day-res-open .day-row{
           <button type="button" class="home-tab hsub" id="htab-inv" role="tab" aria-selected="false" data-htab="inv">庫存</button>
         </div>
         <div class="hsub-group" data-hsubgroup="news">
-          <button type="button" class="home-tab hsub" id="htab-rumor" role="tab" aria-selected="false" data-htab="rumor">傳聞</button>
           <button type="button" class="home-tab hsub" id="htab-clippings" role="tab" aria-selected="false" data-htab="clippings">剪報</button>
         </div>
         <div class="hsub-group" data-hsubgroup="favor">
@@ -6225,9 +6085,6 @@ body.day-res-open .day-row{
       </div>
       <div class="home-pane" id="home-pane-ledger">
         <div class="ledger-wrap journal-scroll" id="ledger-list" aria-label="記數簿"></div>
-      </div>
-      <div class="home-pane" id="home-pane-rumor">
-        <div class="journal-scroll" id="rumor-list" aria-label="傳聞"></div>
       </div>
       <div class="home-pane" id="home-pane-clippings">
         <div class="journal-scroll" id="clippings-list" aria-label="剪報"></div>
@@ -8294,7 +8151,7 @@ const StoryOC = (()=>{
     }catch(_g3){}
     /* One switch. gatePath() calls featureFlag_softBehaviorGatePreview only — no second query/localStorage parse.
        v20a249 LIVE tip (D8)：N1–N5 stub trigger 正式做 live——stub 已載入（coversNode）即行
-       evalTrigger_AND_softRumor，唔再查 gatePath()。soft flag 只留作測試開關。
+       evalTrigger_AND，唔再查 gatePath()。soft flag 只留作測試開關。
        "live"（stub 未載入／N6–N19）：跌返下面嘅 LIVE week-gate（openConditions / pacing.weekMin）。
        liveWeekGateStillActive() 自 v249 起回 false。Soft off does not inject softSeed. */
     try{
@@ -8307,11 +8164,11 @@ const StoryOC = (()=>{
         if(typeof DengLine!=="undefined" && DengLine.isMeet(node) && !DengLine.openGate().ok){
           return BehaviorGate.heldEval(node);
         }
-        if(BehaviorGate.coversNode(node)) return BehaviorGate.evalTrigger_AND_softRumor(node, opts);
+        if(BehaviorGate.coversNode(node)) return BehaviorGate.evalTrigger_AND(node, opts);
       } else if(typeof BehaviorGate!=="undefined" && BehaviorGate.coversNode(node)){
         /* v20a249：live 路徑——N1–N5 行 stub trigger。DengLine 守衛維持喺 soft 分支唔郁，
            live 升格前亦唔行佢哋。stub 未載入嗰陣 coversNode 回 false，自動跌返 live week-gate。 */
-        return BehaviorGate.evalTrigger_AND_softRumor(node, opts);
+        return BehaviorGate.evalTrigger_AND(node, opts);
       }
     }catch(_soft){}
     let andTok = Array.isArray(node.openConditions) ? node.openConditions.slice() : [];
@@ -8870,7 +8727,7 @@ const StoryOC = (()=>{
 const BehaviorGate = (function(){
   let stub = null;
   const byId = Object.create(null);
-  const ENG = /trigger|fameMin|weekMin|locId|softLogic|need_done|needDone|rumorSoft|favorMin|favorTarget|openConditions|rel_tang|flag_/i;
+  const ENG = /trigger|fameMin|weekMin|locId|softLogic|need_done|needDone|favorMin|favorTarget|openConditions|rel_tang|flag_/i;
 
   function liveWeekGateStillActive(){
     /* v20a249 LIVE tip (D8)：N1–N5 stub trigger 已升格做 live，LIVE week-gate 退役，回 false。
@@ -8960,38 +8817,6 @@ const BehaviorGate = (function(){
     const n = byId[nodeId(node)];
     return (n && n.playerFaceLine) || "";
   }
-  function rumorPlayerTitle(id){
-    const map = {
-      tvb_rules_gossip:"「電視城廠景生存守則」",
-      gao_steal_spotlight:"「高俊傑片場搶鏡」",
-      choi_recent_news:"「采兒近期動向」",
-      hau_ching_recent_news:"「曉晴近期動向」",
-    };
-    return map[id] || "相關傳聞";
-  }
-  /* v20a34 引導包 P0-3：傳聞「去邊度聽」提示——由 MOCK_ASK 邊啲行動 grantsRumorId
-     真係派呢塊傳聞反推地點＋行動名，唔靠手寫對照，免再出現「叫人去星河電視台
-     聽守則、但嗰度冇打聽掣」呢種死路（電視城守則只有茶餐廳「打聽電視城規矩」同
-     事務所「請教何生入廠守則」派到）。full=連行動名（鎖定說明用）；短版只列地點
-     ＋「打聽」（底欄空間有限）。無行動派到就回 ""（呼叫方維持舊文案）。 */
-  function rumorHearHint(rid, full){
-    try{
-      if(typeof MOCK_ASK==="undefined" || !MOCK_ASK || !rid) return "";
-      const fullParts=[], locNames=[];
-      Object.keys(MOCK_ASK).forEach(locId=>{
-        (MOCK_ASK[locId]||[]).forEach(a=>{
-          if(a && a.grantsRumorId===rid){
-            const nm = locPlayerName(locId);
-            if(locNames.indexOf(nm)<0) locNames.push(nm);
-            fullParts.push("去"+nm+"「"+(a.title||"打聽")+"」");
-          }
-        });
-      });
-      if(!locNames.length) return "";
-      if(full) return fullParts.join("或");
-      return "去"+locNames.join("或")+"打聽";
-    }catch(_e){ return ""; }
-  }
   /* 主線 N5 鎖因：秋或冬＋同支線小訪分開。唔好只寫「檔期未到該季」。 */
   function c5SeasonLockLine(season){
     const now = season ? ("目前是"+season+"。") : "";
@@ -9053,14 +8878,6 @@ const BehaviorGate = (function(){
     if(!stepSeason(trig, ctx)){
       if(id==="N5") bits.push(c5SeasonLockLine(ctx.season));
       else bits.push("檔期未到該季");
-    }
-    if(!stepRumor(trig, ctx)){
-      const titles = (trig.rumorAny||[]).map(rumorPlayerTitle);
-      if(titles.length){
-        /* v20a34 引導包 P0-3：補埋去邊度聽（跟 rumorHearHint 真行動），唔好淨叫人「未聽聞」又唔講去邊聽 */
-        const hint = rumorHearHint((trig.rumorAny||[])[0], true);
-        bits.push("未聽聞"+titles.join("或")+(hint ? "（"+hint+"）" : ""));
-      }
     }
     if(!bits.length) return "";
     return "劇情未開放："+bits.join("；")+"。";
@@ -9124,23 +8941,6 @@ const BehaviorGate = (function(){
       /* v19z31：取 max，避免 soft seed 寫死 0／未增量令 N2 gigCountMin 永遠唔達 */
       return Math.max(fromStory, fromFlags);
     }catch(_e){ return 0; }
-  }
-  function liveRumors(){
-    const out = [];
-    const push = (id)=>{ if(id && out.indexOf(id)<0) out.push(String(id)); };
-    try{
-      if(typeof S==="undefined" || !S) return out;
-      (S.mockRumors||[]).forEach(r=>{ if(r) push(r.id||r.key); });
-      if(S.notebook && Array.isArray(S.notebook.rumors)) S.notebook.rumors.forEach(r=>{ if(r) push(r.id||r.key); });
-      const bag = S.story && S.story.rumors;
-      if(Array.isArray(bag)) bag.forEach(push);
-      else if(bag && typeof bag==="object") Object.keys(bag).forEach(k=>{ if(bag[k]) push(k); });
-      const sf = (S.story && S.story.flags) || {};
-      Object.keys(sf).forEach(k=>{ if(sf[k]) push(k); });
-      const f = S.flags || {};
-      Object.keys(f).forEach(k=>{ if(f[k]) push(k); });
-    }catch(_e){}
-    return out;
   }
   function liveFlags(){
     try{
@@ -9234,7 +9034,6 @@ const BehaviorGate = (function(){
       debt: raw.debt!=null ? Number(raw.debt) : null,
       gigCount: raw.gigCount!=null ? Number(raw.gigCount) : null,
       season: raw.season!=null ? raw.season : (has ? "" : liveSeason()),
-      rumors: Array.isArray(raw.rumors) ? raw.rumors.slice() : (has ? [] : liveRumors()),
       done: raw.done || null,
       tags: Array.isArray(raw.tags) ? raw.tags.slice() : (has ? [] : liveTags()),
       rel: Array.isArray(raw.rel) ? raw.rel.slice() : [],
@@ -9320,15 +9119,6 @@ const BehaviorGate = (function(){
     if(!cur) return false;
     return list.some(s=>seasonKeyOf(s)===cur);
   }
-  function stepRumor(trig, ctx){
-    const list = trig.rumorAny||[];
-    const seedsRequired = !!trig.rumorSeedsRequired;
-    const heard = list.filter(id=>(ctx.rumors||[]).indexOf(id)>=0);
-    if(seedsRequired && !list.length) return false;
-    if(!list.length) return true;
-    /* Soft priority does not bypass season or loc; a required seed must be heard. */
-    return heard.length>0;
-  }
   function stepTag(trig, ctx){
     const tags = trig.tagAny||[];
     if(!tags.length) return true;
@@ -9352,12 +9142,11 @@ const BehaviorGate = (function(){
     fameCompare: stepFame,
     gigCountMin: stepGig,
     seasonAny: stepSeason,
-    rumorSoftPriority: stepRumor,
     tagAny: stepTag,
     relAny: stepRel,
   };
 
-  function evalTrigger_AND_softRumor(nodeOrId, opts){
+  function evalTrigger_AND(nodeOrId, opts){
     const id = nodeId(nodeOrId);
     try{ healC1Loc(id); }catch(_c1){}
     try{ healC17Loc(id); }catch(_c17){} /* v20a153 A1 */
@@ -9487,7 +9276,7 @@ const BehaviorGate = (function(){
     return list.filter(f=>f.indexOf("rival_gao")<0);
   }
   function sample(beatId, ctx){
-    return evalTrigger_AND_softRumor(beatId, { ctx: ctx||{} });
+    return evalTrigger_AND(beatId, { ctx: ctx||{} });
   }
   function selfCheck(){
     const fails = [];
@@ -9496,10 +9285,10 @@ const BehaviorGate = (function(){
     if(!stub) return { ok:false, fails:fails };
     const hooks = api;
     const want = (stub && stub.engineSlice && stub.engineSlice.iosSoftHooks) || [];
-    const got = ["loadStub_nodes_trigger","evalTrigger_AND_softRumor","featureFlag_softBehaviorGatePreview","lockedCopy_noEngineeringTerms","leaveWhenLocked_暫未能報_離開","nextHint_neverShow","rivalGao_onlyC3ChoiceFlags"];
+    const got = ["loadStub_nodes_trigger","evalTrigger_AND","featureFlag_softBehaviorGatePreview","lockedCopy_noEngineeringTerms","leaveWhenLocked_暫未能報_離開","nextHint_neverShow","rivalGao_onlyC3ChoiceFlags"];
     if(want.join("|")!==got.join("|")) bad("hook_names");
     got.forEach(n=>{ if(typeof hooks[n]!=="function") bad("missing_hook:"+n); });
-    ["hook_preEvaluate","hook_softLogicAND_resolve","hook_rumorSoftPriority_check","hook_fameCompare_eval","hook_postEvaluate"].forEach(n=>{
+    ["hook_preEvaluate","hook_softLogicAND_resolve","hook_fameCompare_eval","hook_postEvaluate"].forEach(n=>{
       if(typeof hooks[n]==="function") bad("plan_section7_name:"+n);
     });
     if(featureFlag_softBehaviorGatePreview()!==false && typeof location==="undefined") bad("flag_default");
@@ -9513,18 +9302,19 @@ const BehaviorGate = (function(){
     });
     const c1 = byId.N1;
     if(!c1 || c1.locId!=="agency_ho" || (c1.trigger.locIdAny||[]).join()!=="agency_ho") bad("c1_loc");
-    const base = { dayIndex:40, lastMainDoneDay:10, gigCount:0, fame:0, favor:0, debt:0, rumors:[], season:"春" };
+    const base = { dayIndex:40, lastMainDoneDay:10, gigCount:0, fame:0, favor:0, debt:0, season:"春" };
     if(sample("N1", Object.assign({}, base, { week:1, atLoc:"agency_ho" })).ok!==true) bad("c1_pass");
     if(sample("N1", Object.assign({}, base, { week:1, atLoc:"cafe_cha" })).ok!==false) bad("c1_wrong_loc");
     if(sample("N1", Object.assign({}, base, { week:1, atLoc:"tvb_longmen" })).ok!==false) bad("c1_wrong_loc_tvb");
-    const c2ok = { week:4, atLoc:"cafe_cha", done:{ N1:true }, gigCount:3, rumors:["tvb_rules_gossip"], dayIndex:20, lastMainDoneDay:10 };
+    const c2ok = { week:4, atLoc:"cafe_cha", done:{ N1:true }, gigCount:3, dayIndex:20, lastMainDoneDay:10 };
     if(sample("N2", c2ok).ok!==true) bad("c2_pass");
     if(sample("N2", Object.assign({}, c2ok, { gigCount:2 })).ok!==false) bad("c2_gigs");
-    if(sample("N2", Object.assign({}, c2ok, { rumors:[] })).ok!==false) bad("c2_rumor");
+    /* v20a267：傳聞閘已刪，N2 唔使聽傳聞先開 */
+    if(sample("N2", Object.assign({}, c2ok, { rumors:[] })).ok!==true) bad("c2_no_rumor_needed");
     if(sample("N2", Object.assign({}, c2ok, { week:3 })).ok!==false) bad("c2_week");
     const c3 = byId.N3;
     if(!c3 || c3.trigger.fameMin!==16 || c3.trigger.fameCompare!==">" || (c3.trigger.tagAny||[]).indexOf("fameMin_16")<0) bad("c3_contract");
-    const c3base = { week:6, atLoc:"tvb_longmen", done:{ N2:true }, dayIndex:30, lastMainDoneDay:20, rumors:["gao_steal_spotlight"] };
+    const c3base = { week:6, atLoc:"tvb_longmen", done:{ N2:true }, dayIndex:30, lastMainDoneDay:20 };
     if(sample("N3", Object.assign({}, c3base, { fame:15 })).ok!==false) bad("c3_fame15");
     if(sample("N3", Object.assign({}, c3base, { fame:16 })).ok!==true) bad("c3_fame16");
     if(sample("N3", Object.assign({}, c3base, { fame:17 })).ok!==true) bad("c3_fame17");
@@ -9542,17 +9332,17 @@ const BehaviorGate = (function(){
     const c5flags = JSON.stringify((c5&&c5.flags)||{});
     if(c5flags.indexOf("rival_gao")>=0) bad("c5_rival_mix");
     if((c5.trigger.seasonAny||[]).join()!=="autumn,winter") bad("c5_season");
-    if(c5.trigger.rumorSoftPriority!==true || c5.trigger.rumorSeedsRequired!==true) bad("c5_rumor_flags");
-    const c5base = { week:36, done:{ N4:true }, dayIndex:250, lastMainDoneDay:240, rumors:["choi_recent_news"] };
+    const c5base = { week:36, done:{ N4:true }, dayIndex:250, lastMainDoneDay:240 };
     if(sample("N5", Object.assign({}, c5base, { atLoc:"cafe_cha", season:"秋" })).ok!==true) bad("c5_autumn");
-    if(sample("N5", Object.assign({}, c5base, { atLoc:"tvb_longmen", season:"winter", rumors:["hau_ching_recent_news"] })).ok!==true) bad("c5_winter");
+    if(sample("N5", Object.assign({}, c5base, { atLoc:"tvb_longmen", season:"winter" })).ok!==true) bad("c5_winter");
     if(sample("N5", Object.assign({}, c5base, { atLoc:"cafe_cha", season:"夏" })).ok!==false) bad("c5_summer");
     const c5lock = c5SeasonLockLine("夏");
     if(c5lock.indexOf("采兒小訪題")<0 || c5lock.indexOf("秋或冬")<0 || c5lock.indexOf("週刊小訪")<0) bad("c5_lock_names");
     if(c5lock.indexOf("片場採訪角")>=0) bad("c5_old_side_title");
     if(c5lock.indexOf("噂")>=0 || c5lock.indexOf("檔期未到該季")>=0) bad("c5_lock_vague");
     if(ENG.test(c5lock)) bad("c5_lock_eng");
-    if(sample("N5", Object.assign({}, c5base, { atLoc:"cafe_cha", season:"秋", rumors:[] })).ok!==false) bad("c5_need_seed");
+    /* v20a267：傳聞閘已刪，N5 唔使聽傳聞先開 */
+    if(sample("N5", Object.assign({}, c5base, { atLoc:"cafe_cha", season:"秋", rumors:[] })).ok!==true) bad("c5_no_rumor_needed");
     if(sample("N5", Object.assign({}, c5base, { atLoc:"ad_central", season:"秋" })).ok!==false) bad("c5_loc");
     const stripped = rivalGao_onlyC3ChoiceFlags({ id:"N5" }, null, ["choi_honest","rival_gao_hard"]);
     if(stripped.indexOf("rival_gao_hard")>=0 || stripped.indexOf("choi_honest")<0) bad("rival_strip");
@@ -9570,14 +9360,11 @@ const BehaviorGate = (function(){
     if(gatePath()!=="soft" && gatePath()!=="live") bad("gate_path_value");
     if(liveWeekGateStillActive()!==false) bad("live_tipped");
     const order = ((stub.engineSlice && stub.engineSlice.evalOrder) || []).join(">");
-    if(order!=="needDone>minDaysAfterPrev>weekMin_floor>locIdAny>favor_AND_loc>fameCompare>gigCountMin>seasonAny>rumorSoftPriority>tagAny>relAny") bad("eval_order");
+    if(order!=="needDone>minDaysAfterPrev>weekMin_floor>locIdAny>favor_AND_loc>fameCompare>gigCountMin>seasonAny>tagAny>relAny") bad("eval_order");
     if(sample("N1", Object.assign({}, base, { week:1, atLoc:"cafe_cha" })).ok!==false) bad("c1_old_cafe");
     const fame15 = sample("N3", Object.assign({}, c3base, { fame:15 }));
     if(fame15.ok!==false || (fame15.reasons||[])[0]!=="fameCompare") bad("c3_fame15_step");
     if(sample("N4", Object.assign({}, c4base, { atLoc:"agency_ho", favor:1, done:{ N2:true } })).ok!==false) bad("c4_skip_c3");
-    if((c5.trigger.rumorAny||[]).some(r=>String(r).indexOf("rival_gao")>=0)) bad("c5_rival_in_rumorAny");
-    if(sample("N5", Object.assign({}, c5base, { atLoc:"cafe_cha", season:"秋", rumors:["rival_gao"] })).ok!==false) bad("c5_rival_gao");
-    if(sample("N5", Object.assign({}, c5base, { atLoc:"cafe_cha", season:"winter", rumors:["rival_gao_hard"] })).ok!==false) bad("c5_rival_flag_rumor");
     ["N1","N2","N3","N4","N5"].forEach(id=>{
       const face = String(byId[id].playerFaceLine||"");
       if(/Ho\s*哥|陳淑芬|施南生/.test(face)) bad("face_banned:"+id);
@@ -9587,7 +9374,7 @@ const BehaviorGate = (function(){
   }
 
 
-  /** v19z20／v20a8：玩家可讀進度（通告／週／傳聞／地點／人情／聲望），唔洩漏 nextHint pacing 長文 */
+  /** v19z20／v20a8：玩家可讀進度（通告／週／地點／人情／聲望），唔洩漏 nextHint pacing 長文 */
   function progressToward(node){
     const id = nodeId(node);
     try{ healC1Loc(node); }catch(_c1){}
@@ -9610,14 +9397,6 @@ const BehaviorGate = (function(){
       if(!stepWeek(trig, ctx)) remain.push("第"+week+"／"+weekMin+"週");
       if(gigNeed>0 && !stepGig(trig, ctx)) remain.push("通告 "+Math.min(gigHave,gigNeed)+"／"+gigNeed);
       else if(gigNeed>0) remain.push("通告 "+Math.min(gigHave,gigNeed)+"／"+gigNeed+"✓");
-      if(!stepRumor(trig, ctx)){
-        const titles = (trig.rumorAny||[]).map(rumorPlayerTitle);
-        if(titles.length){
-          /* v20a34 引導包 P0-3：底欄補短版「去邊度打聽」，同播幕地點分開寫，免誤讀做去電視台聽守則 */
-          const hint = rumorHearHint((trig.rumorAny||[])[0], false);
-          remain.push("未聽聞"+titles.join("或")+(hint ? "（"+hint+"）" : ""));
-        }
-      }
       if(!stepLoc(trig, ctx, {})){
         const names = (trig.locIdAny||[]).map(locPlayerName);
         /* v20a34 引導包 P0-3：呢啲係「播呢幕」嘅地點，加「播」字同聽傳聞嘅地點分返開 */
@@ -9711,7 +9490,7 @@ const BehaviorGate = (function(){
     loadStub_nodes_trigger: loadStub_nodes_trigger,
     applyFreeplaySlots: applyFreeplaySlots,
     stubNode: stubNode,
-    evalTrigger_AND_softRumor: evalTrigger_AND_softRumor,
+    evalTrigger_AND: evalTrigger_AND,
     featureFlag_softBehaviorGatePreview: featureFlag_softBehaviorGatePreview,
     liveWeekGateStillActive: liveWeekGateStillActive,
     gatePath: gatePath,
@@ -12587,227 +12366,13 @@ const StoryPlay = (()=>{
 
 let TUTORIAL = {};
 const TUT_MAIN_IDS = ["TUT_WELCOME","TUT_MAP","TUT_BOARD","TUT_DONE"]; /* v19z10：≤4 核心步；TRAIN／NPC／NOTEBOOK 併入文案 */
-/* PLAN 5ba79338: step 5 drag-guide and step 6 merge FX. Soft tip mounts tutorial-fx PNGs only when gatePath()==="soft". Modal scroll is separate. No new Soft flag. Soft≠PASS. Do not tip LIVE. ?v= stays 19w.
-   behaviorGate "not_bound": tutorial Phase2 Soft does not force-bind BehaviorGate C stubs. Not a feature-flag confluence gap (#17). Do not wire teaching steps to C stubs. */
-const TUTORIAL_PHASE2_SOFT_NITS = {
-  step5_drag_guide: "soft",
-  step6_merge_fx: "soft",
-  behaviorGate: "not_bound",
-  modalScroll: "soft",
-  artHold: false,
-  fxNits: "finger略偏HUD；proc抽象只備；lift shadow淡；pulse jagged",
-  /* CSS polish on the existing Soft FX mount: finger position, lift multiply/contrast, pulse blur + smaller scale.
-     proc抽象只備 still needs GD pack (fx_drag_finger_proc.png). No stand-in asset. */
-};
-try{ window.__tutorialSoftNits = TUTORIAL_PHASE2_SOFT_NITS; }catch(_e){}
 
-/* Soft tutorial Phase2 FX. Same gate as the steps 5–6 copy overlay. Soft off / LIVE mounts nothing. ?v= stays 19w. */
-function tutorialPhase2FxOn(){
-  try{ return tutorialPhase2Steps56SoftOn(); }catch(_e){ return false; }
-}
-function tutorialFxUrl(file){
-  return "assets/ui-physical/tutorial-fx/"+file+"?v=20a8";
-}
-function tutorialFxFingerErr(img){
-  const fb = img && img.getAttribute("data-fx-fallback");
-  if(!fb || String(img.getAttribute("src")||"").indexOf("fx_drag_finger_proc.png")>=0) return;
-  img.src = fb;
-}
-/* v20a60 CALIB60-5：inline onerror 係全域查找——全弧 Arc C 實測出 `tutorialFxFingerErr is not defined`
-   （手指圖 404 嗰陣 handler 未掛上全域）。顯式發布去 window，保證幾時觸發都搵到；
-   其餘圖嘅 onerror 一律用 self-contained 寫法（this.style…），只有呢個係具名函數，要特別照顧。 */
-try{ window.tutorialFxFingerErr = tutorialFxFingerErr; }catch(_e){}
-function tutorialFxImg(cls, file){
-  const src = journalText(tutorialFxUrl(file));
-  const extra = file==="fx_drag_finger.png"
-    ? ` data-fx-fallback="${journalText(tutorialFxUrl("fx_drag_finger_proc.png"))}" onerror="tutorialFxFingerErr(this)"`
-    : "";
-  return `<img class="${cls}" src="${src}" alt="" draggable="false"${extra}>`;
-}
-function tutorialPhase2DragGuideHtml(){
-  if(!tutorialPhase2FxOn()) return "";
-  return `<div class="tut-fx-drag" data-fx="step5" aria-hidden="true">${tutorialFxImg("tut-fx-path","fx_drag_path_arrow.png")}${tutorialFxImg("tut-fx-finger","fx_drag_finger.png")}</div>`;
-}
-function tutorialMergeFxHtml(kind){
-  if(!tutorialPhase2FxOn() || kind!=="ok") return "";
-  return `<div class="tut-fx-merge-inline" data-fx="step6-ok" aria-hidden="true">${tutorialFxImg("tut-fx-burst","fx_merge_burst.png")}${tutorialFxImg("tut-fx-stamp","fx_merge_stamp_ok.png")}</div>`;
-}
-function playTutorialPhase2MergeFx(kind){
-  if(!tutorialPhase2FxOn()) return;
-  const host = document.getElementById("home-pane-rumor") || document.getElementById("v-home");
-  if(!host) return;
-  let layer = document.getElementById("tut-fx-merge");
-  if(!layer){
-    layer = document.createElement("div");
-    layer.id = "tut-fx-merge";
-    layer.className = "tut-fx-merge";
-    layer.setAttribute("aria-hidden","true");
-    host.appendChild(layer);
-  }
-  clearTimeout(playTutorialPhase2MergeFx._t);
-  clearTimeout(playTutorialPhase2MergeFx._t2);
-  const paint = (file, cls)=>{
-    layer.className = "tut-fx-merge on "+cls;
-    layer.innerHTML = tutorialFxImg("tut-fx-merge-art", file);
-  };
-  if(kind==="ok"){
-    paint("fx_merge_burst.png","is-burst");
-    playTutorialPhase2MergeFx._t = setTimeout(()=>{
-      paint("fx_merge_stamp_ok.png","is-stamp");
-      playTutorialPhase2MergeFx._t2 = setTimeout(()=>{ layer.className = "tut-fx-merge"; layer.innerHTML = ""; }, 900);
-    }, 720);
-  } else {
-    paint("fx_merge_fail_mark.png","is-fail");
-    playTutorialPhase2MergeFx._t = setTimeout(()=>{ layer.className = "tut-fx-merge"; layer.innerHTML = ""; }, 900);
-  }
-}
-
-/* Soft tutorial Phase2 steps 5–6 copy overlay. Soft≠PASS.
-   Prefer content/MOCK_TUTORIAL_PHASE2_STEPS_5_6_COPY_SOFT_v1.json (same bust as other content fetches; page ?v= stays 19w).
-   Player strings apply only when gatePath()==="soft". Never writes TUTORIAL or tutorial_zh_HK.json.
-   Step 5/6 FX use that same Soft gate. Default finger is fx_drag_finger.png; proc is the onerror fallback only. */
-const TUTORIAL_PHASE2_STEPS56_FILE = "MOCK_TUTORIAL_PHASE2_STEPS_5_6_COPY_SOFT_v1.json";
-let TUTORIAL_PHASE2_STEPS56_OVERLAY = null;
-function tutorialPhase2Steps56SoftOn(){
-  try{
-    return typeof BehaviorGate!=="undefined" && BehaviorGate.gatePath()==="soft";
-  }catch(_e){ return false; }
-}
-function phase2Steps56PlayerLine(raw){
-  const s = String(raw==null ? "" : raw).trim();
-  if(!s) return "";
-  if(/Ho哥|Ho 哥|locId|reqKey|overlayOnly|phase2_step|softBehaviorGate|tutorial_zh_HK/i.test(s)) return "";
-  return s;
-}
-function phase2Steps56Copy(){
-  if(!tutorialPhase2Steps56SoftOn()) return null;
-  const pack = TUTORIAL_PHASE2_STEPS56_OVERLAY;
-  if(!pack || !pack.meta || pack.meta.overlayOnly!==true || pack.meta.softStatus!=="≠PASS") return null;
-  if(!pack.step5 || !pack.step6) return null;
-  return pack;
-}
-function phase2Steps56Line(stepKey, field, fallback){
-  const pack = phase2Steps56Copy();
-  if(!pack) return fallback;
-  const line = phase2Steps56PlayerLine(pack[stepKey] && pack[stepKey][field]);
-  return line || fallback;
-}
-function applyPhase2Steps56TabLabel(){
-  const label = phase2Steps56Line("step5", "tabHint", "傳聞");
-  const btn = document.getElementById("htab-rumor");
-  const list = document.getElementById("rumor-list");
-  if(btn) btn.textContent = label;
-  if(list) list.setAttribute("aria-label", label);
-}
-function rumorTutorialDone(){
-  try{
-    if(typeof location!=="undefined" && /(?:\?|&)skipTutorials=1(?:&|$)/.test(String(location.search||""))) return true;
-  }catch(_e){}
-  try{ return !!(S && S.flags && S.flags.rumorTutorialDone); }catch(_e){ return false; }
-}
-function markRumorTutorialDone(reason){
-  try{
-    S.flags = S.flags || {};
-    if(S.flags.rumorTutorialDone) return;
-    S.flags.rumorTutorialDone = true;
-    S.flags.rumorTutorialDoneReason = String(reason||"done");
-    ensureMockJournal();
-    if(!(S.mockDebts||[]).some(d=>d && isHoCreditorDebt(d)) && typeof MOCK_DEBT_TUTORIAL!=="undefined"){
-      S.mockDebts.unshift(Object.assign({}, MOCK_DEBT_TUTORIAL));
-    }
-    syncNotebookMirror();
-    saveQ();
-  }catch(_e){}
-}
-function skipRumorTutorial(){
-  markRumorTutorialDone("skip");
-  toast("已跳過傳聞教學。之後可喺手帳「傳聞」再試拼合。");
-  try{ renderRumorPane(); }catch(_e){}
-}
-function phase2Steps56CoachHtml(mergeOn){
-  const pack = phase2Steps56Copy();
-  if(!pack || !pack.step5) return "";
-  if(rumorTutorialDone()) return "";
-  const keys = mergeOn ? ["coachOpen","coachDragHint","slotHintReady"] : ["coachOpen","coachDragHint"];
-  const bits = keys.map(k=>phase2Steps56PlayerLine(pack.step5[k])).filter(Boolean);
-  if(!bits.length) return "";
-  const pulse = tutorialPhase2FxOn() ? tutorialFxImg("tut-fx-pulse","fx_coach_pulse_dot.png") : "";
-  const skipLab = phase2Steps56PlayerLine(pack.step5.skipLabel) || phase2Steps56PlayerLine(pack.buttons && pack.buttons.skipLabel) || "跳過教學";
-  const skip = `<p class="tut-skip-row"><button type="button" class="tut-skip-btn" id="rumor-tut-skip">${journalText(skipLab)}</button></p>`;
-  return `<div class="tut-phase2-coach">${pulse}${bits.map(t=>`<p>${journalText(t)}</p>`).join("")}${skip}</div>`;
-}
-function loadTutorialPhase2Steps56Overlay(pack){
-  if(!pack || typeof pack!=="object") return { ok:false, reason:"file" };
-  if(!pack.meta || pack.meta.overlayOnly!==true) return { ok:false, reason:"overlayOnly" };
-  if(pack.meta.softStatus!=="≠PASS") return { ok:false, reason:"softStatus" };
-  if(!pack.step5 || !pack.step6) return { ok:false, reason:"steps" };
-  TUTORIAL_PHASE2_STEPS56_OVERLAY = pack;
-  try{ applyPhase2Steps56TabLabel(); }catch(_e){}
-  try{
-    const pane = document.getElementById("home-pane-rumor");
-    if(pane && pane.classList.contains("on") && typeof renderRumorPane==="function") renderRumorPane();
-  }catch(_e){}
-  return { ok:true, file:TUTORIAL_PHASE2_STEPS56_FILE, overlayOnly:true };
-}
 /* 頁面 ?v= 同 SAVE key 唔郁。rev 只係令 CDN 唔再交 #98 之前嘅 JSON（金龍 N1／主線 chrome）。 */
 function contentFetchUrl(url){
   const u = String(url||"");
   if(!u || /(?:\?|&)rev=s99(?:&|$)/.test(u)) return u;
   return u + (u.indexOf("?")>=0 ? "&" : "?") + "rev=s99";
 }
-async function preferFileTutorialPhase2Steps56(){
-  const bust = encodeURIComponent(typeof SAVE!=="undefined" ? SAVE : "19w");
-  try{
-    const r = await fetch(contentFetchUrl("content/"+TUTORIAL_PHASE2_STEPS56_FILE+"?v="+bust));
-    if(!r.ok) return loadTutorialPhase2Steps56Overlay(null);
-    return loadTutorialPhase2Steps56Overlay(await r.json());
-  }catch(_e){
-    return { ok:false, reason:"fetch" };
-  }
-}
-function tutorialPhase2Steps56SelfCheck(){
-  const fails = [];
-  const pack = TUTORIAL_PHASE2_STEPS56_OVERLAY;
-  if(!pack) fails.push("file");
-  else {
-    if(!pack.meta || pack.meta.overlayOnly!==true) fails.push("overlayOnly");
-    if(!pack.meta || pack.meta.softStatus!=="≠PASS") fails.push("softStatus");
-    ["coachOpen","coachDragHint","slotHintEmpty","slotHintReady","tabHint"].forEach(k=>{
-      if(!phase2Steps56PlayerLine(pack.step5 && pack.step5[k])) fails.push("step5."+k);
-    });
-    ["confirmTitle","confirmBody","confirmLabel","cancelLabel","successStampLine","failToast","noPairHint","mergeGlowHint","favorDebtSettleLine","closeSettleLabel"].forEach(k=>{
-      if(!phase2Steps56PlayerLine(pack.step6 && pack.step6[k])) fails.push("step6."+k);
-    });
-    const face = JSON.stringify({ step5:pack.step5, step6:pack.step6, buttons:pack.buttons||null });
-    if(/Ho哥|Ho 哥/.test(face)) fails.push("ho_title");
-    if(String(pack.step6 && pack.step6.favorDebtSettleLine||"").indexOf("何生")<0) fails.push("ho_name");
-  }
-  if(typeof BehaviorGate!=="undefined" && BehaviorGate.liveWeekGateStillActive()!==false) fails.push("live_fn"); /* v20a249 LIVE tip：week-gate 已退役 */
-  if((typeof TUT_MAIN_IDS!=="undefined" ? TUT_MAIN_IDS : []).join()!=="TUT_WELCOME,TUT_MAP,TUT_BOARD,TUT_DONE") fails.push("main_ids");
-  if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
-  if(!TUTORIAL_PHASE2_SOFT_NITS || TUTORIAL_PHASE2_SOFT_NITS.step5_drag_guide!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.step6_merge_fx!=="soft" || TUTORIAL_PHASE2_SOFT_NITS.artHold!==false) fails.push("fx_hold");
-  if(tutorialFxUrl("fx_drag_finger.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger.png?v=20a8") fails.push("fx_finger");
-  if(tutorialFxUrl("fx_drag_finger_proc.png")!=="assets/ui-physical/tutorial-fx/fx_drag_finger_proc.png?v=20a8") fails.push("fx_proc");
-  ["fx_drag_path_arrow.png","fx_slot_highlight.png","fx_card_lift_shadow.png","fx_coach_pulse_dot.png","fx_merge_edge_glow.png","fx_merge_burst.png","fx_merge_stamp_ok.png","fx_merge_fail_mark.png"].forEach(f=>{
-    if(tutorialFxUrl(f)!=="assets/ui-physical/tutorial-fx/"+f+"?v=20a8") fails.push("fx_file");
-  });
-  if(tutorialPhase2FxOn()!==tutorialPhase2Steps56SoftOn()) fails.push("fx_gate");
-  if(TUTORIAL && TUTORIAL.meta && TUTORIAL.meta.overlayOnly) fails.push("tut_overwritten");
-  return { ok:fails.length===0, fails:fails, soft:tutorialPhase2Steps56SoftOn(), overlayOnly:true };
-}
-try{
-  window.__tutorialPhase2Steps56 = {
-    file: TUTORIAL_PHASE2_STEPS56_FILE,
-    overlayOnly: true,
-    softOn: tutorialPhase2Steps56SoftOn,
-    pack: function(){ return TUTORIAL_PHASE2_STEPS56_OVERLAY; },
-    copy: phase2Steps56Copy,
-    preferFile: preferFileTutorialPhase2Steps56,
-    selfCheck: tutorialPhase2Steps56SelfCheck,
-    fxOn: tutorialPhase2FxOn,
-    fxUrl: tutorialFxUrl,
-  };
-}catch(_e){}
 
 
 function fillTpl(s, vars){
@@ -14967,13 +14532,10 @@ function applySoftSeedState(seed){
   S.story.done = done;
   S.story.favor = Object.assign({}, st.favor||{});
   S.story.gigCount = Number(st.gigCount)||0;
-  S.story.rumors = (st.rumors||[]).map(String);
   S.story.rel = Object.assign({}, S.story.rel||{}, st.rel||{});
   S.story.flags = Object.assign({}, S.story.flags||{});
-  S.story.rumors.forEach(id=>{ S.story.flags[id] = true; });
   S.story.lastMainDoneDay = Math.max(0, S.dayIndex - 1);
   S.flags = S.flags || {};
-  S.story.rumors.forEach(id=>{ S.flags[id] = true; });
   Object.keys(st.flags||{}).forEach(k=>{ S.flags[k] = st.flags[k]; S.story.flags[k] = st.flags[k]; });
   const seasonKey = (st.season && String(st.season)) || (SOFT_SEED_SEASON[seed.id] || "");
   S.softSeasonOverride = seasonKey;
@@ -15097,7 +14659,6 @@ const TEXTFIX55_EXACT = {"電視城臨記班底添新血": "入行消息：電�
    出報機制（enqueue／出報日）冇郁。exact 命中會喺 phrase 替換前直接回傳，所以眉題用「電視台」同 phrase 後嘅標題一致。 */
 const TEXTFIX55_NOTE_EXACT = {"T5 選陪伴；rel_vera／trust 升。": "你留低陪佢，Vera 記喺心入面。", "T5 選事業；music 升，rel_vera 跌。": "你趕去下一個通告，事業行先，Vera 嗰邊就冷咗落嚟。", "可與事業結局並存。": "呢段感情點收尾，事業嗰邊照常行落去。", "公開承認；fame 升，rel_choi／rel_mei 微升，公開戀愛壓力開始。": "你公開承認，名氣升咗；采兒同關海媚嗰邊都近咗啲，但公開戀愛嘅壓力亦開始嚟。", "對外否認；形象暫穩，但 rel_choi／rel_mei 下滑。": "你對外否認，形象暫時穩住；但采兒同關海媚嗰邊，都冷淡咗。", "張子駿／文藝線；craft 高。愛情結局另表並存。": "跟張子駿行文藝線，手藝夠硬。"};
 const TEXTFIX55_PHRASES = [["星河電視城", "星河電視台"], ["電視城廠景", "電視台廠景"], ["上座率", "入座率"], ["互懟", "駁火"], ["送命題", "辣手問題"], ["Hau Ching", "曉晴"]];
-const TEXTFIX55_RUMORS = ["金龍茶餐廳成班臨記吹水，話星河電視台就嚟開套大古裝，嗰排會請好多臨記。", "何生事務所出面張通告欄又更新咗，話星河電視台籌備緊一齣民初劇，急住請特約演員。", "有人話陸柏言呢排為咗新劇日夜顛倒，成日自己一個喺片場走廊踱嚟踱去揣摩角色，睇落攰到燶。", "廖炳星嗰日喺金龍茶餐廳同幾個幕後飲茶，講到嚟緊接嗰套戲，笑到見牙唔見眼，好有信心咁話。", "魏詠男嗰日喺電視台附近買汽水消暑，聽講佢試緊一套時裝喜劇嘅造型，想轉下戲路。", "葉敏芝為咗劇集主題曲，喺錄音室錄到深夜，監製聽完讚不絕口，話首歌實上到流行榜。", "陸柏言拍戲嗰陣同燈光組嘈咗兩句，場面有啲尷尬；佢之後主動道歉，話自己入戲太深，唔好意思。", "深夜有人見到陸柏言自己一個喺酒館飲酒，似係有心事；聽講劇本成日改，佢都幾大壓力。", "廖炳星同一個知名導演喺茶餐廳角落密斟咗兩個鐘，神情認真——出面估佢哋傾緊一套警匪大片嘅主角人選。", "有套重頭劇突然話換第二男主角，原先嗰個話撞咗期做唔到；而家個個都估廖炳星會頂上。", "麥震東拍飛車戲嗰陣整親手臂，擦傷流咗啲血；導演即刻停工半日，等佢唞下先。", "麥震東整親之後死都唔肯去醫院檢查，話小事，唔想拖慢成組進度。", "星河廠景入面規矩多，新人要謹言慎行；拍緊戲嗰陣亂咁走位，隨時俾副導演鬧到飛起。", "臨記高俊傑喺群戲嗰陣刻意搶鏡，惹到主角唔高興；聽講劇組已經將佢列入黑名單，呢排唔使旨意有工開。", "采兒呢排頻頻出入何生事務所，唔知係幫週刊追緊咩大料，定係有咩新搞作。", "曉晴嗰日喺茶餐廳同電視台高層食晏，傾得好投契；聽講佢爭緊一個綜藝節目嘅常駐嘉賓位。"];
 /* ==== v20a57 TERMS：術語清理第二輪 ====
    A 類：事態→劇情、聲量→聲望、周刊→週刊（PHRASES，喺 55 phrases 之後行）；點擊→撳。
    B 類有限度：解鎖成句走 EXACT；標籤值改名（動作演員→身手好、大牌→耍大牌）靠 EXACT 全字串
@@ -15239,12 +14800,6 @@ function textfix55Freeplay(FW){
           st.silhouetteDesc = TEXTFIX55_STAR_LOOKS[st.starId];
         }
       }
-    }
-  }catch(_e){}
-  try{
-    const rf = FW.rumorFrags;
-    if(rf && Array.isArray(rf.fragments)){
-      rf.fragments.forEach((f, i)=>{ if(f && TEXTFIX55_RUMORS[i]) f.text = TEXTFIX55_RUMORS[i]; });
     }
   }catch(_e){}
   try{ if(FW.castingTagsReg) textfix55Walk(FW.castingTagsReg, null, null, TEXTFIX55_OPTS_SIMPLE); }catch(_e){}
@@ -15563,8 +15118,7 @@ async function refreshCopyPacksFromDisk(){
           Promise.resolve(loadFreeplayFramework()).then(function(){
             try{ applyFreeplaySlotsToSoftGate(); }catch(_e){}
             try{ seedFreeplayFavorDebt(); }catch(_e){}
-            try{ seedFreeplayRumorShells(); }catch(_e){}
-          });
+                    });
         } else if(typeof applyFreeplaySlotsToSoftGate==="function"){
           applyFreeplaySlotsToSoftGate();
         }
@@ -15614,8 +15168,6 @@ async function refreshCopyPacksFromDisk(){
     STORY_WIRE.contentPhase = "error";
     /* file:// 或離線：保留內嵌 snapshots */
   }
-  try{ await preferFileTutorialPhase2Steps56(); }catch(_s56){}
-  try{ textfix55SimplePack(TUTORIAL_PHASE2_STEPS56_OVERLAY); }catch(_t55){}
   try{
     if(typeof S!=="undefined" && S && typeof paintBar==="function") paintBar();
   }catch(_paintFault){}
@@ -16834,17 +16386,15 @@ function fresh(){
        加成係有效數值，唔寫入七圍——呢欄只記擁有／著緊。 */
     wardrobe:{ owned:[], equipped:null },
     giftMeta:{ lastGiveDay:{}, weekGiftGain:{}, givenCount:{}, shopStock:{}, shopWeek:0 },
-    /* v19u：傳聞／人情債只係手帳 Mock，唔入週數閘 */
-    mockRumors:[],
+    /* v19u：人情債只係手帳 Mock，唔入週數閘 */
     mockDebts:[],
+    intelAsked:{}, /* v20a267：打聽已問記錄（action id → day）；情報站直接顯示情報文字，唔寫卡 */
     mockSeasonCleared:{},
     /* v20a25 Weave Phase 4-2：債權（人哋欠玩家）清單＋人情總帳；舊存檔由 ensureFavorLedger() 回填，唔改 SAVE key */
     mockCredits:[],
     favorLedger:{ settled:0, credits:0, exodus:[], counted:{} },
     exodusFenSeeded:false,
     exodusFenFired:false,
-    /* v20a16 Weave Phase 2-1：情報旗（拼合情報正式化）；舊存檔由 ensureIntelFlags() 回填，唔改 SAVE key */
-    intelFlags:{},
     /* v20a0 Freeplay：選角標籤沉澱（label 或 id） */
     castingTags:[],
     /* v20a4：殺青獎勵／傳媒反響履歷 */
@@ -17188,13 +16738,6 @@ function familySafeCafeAct(def){
     });
   }
   return def;
-}
-function familySafeRumorText(r){
-  if(!r || !contentFilterOn()) return r;
-  const o=Object.assign({}, r);
-  if(o.title) o.title=String(o.title).replace(/買醉/g,"夜歸散心").replace(/抽煙|食煙/g,"歇息");
-  if(o.text) o.text=String(o.text).replace(/買醉/g,"夜歸散心").replace(/飲到爛醉/g,"坐到好夜").replace(/抽煙|食煙/g,"歇息");
-  return o;
 }
 function openSettingsModal(){
   const p=loadPrefs();
@@ -18532,9 +18075,8 @@ function gigCardHtml(g, opts){
   const role = g.roleHint ? `<div class="role">角色：${g.roleHint}</div>` : "";
   /* v20a90 POSTER90：通告卡係「完成之前」場合，唔出主演行（理由同詳情頁，見
      openCastingNoticeDetail 註）；主演名只准完成後場合出現。leadStar 數據唔郁。 */
-  /* Weave Phase 1-3：持有對應拼合情報嗰陣，通告卡多一行情報提示（無情報就完全唔顯示）。 */
+  /* v20a267：傳聞拼合已刪，通告卡唔出情報行。 */
   let intelHtml = "";
-  try{ const il = (typeof intelLineForGig==="function") ? intelLineForGig(g) : ""; if(il) intelHtml = `<div class="discover-note">情報：${il}</div>`; }catch(_e){}
   /* v20a158：人情免試鏡渠道適用嗰陣，卡面多一行金色提示（只喺 canAudition 過關嗰陣出；
      渠道本身見 favor158ChannelForGig，掛喺 promptAudition 附近）。 */
   let favor158Html = "";
@@ -18884,9 +18426,8 @@ function gigBoardTeaserHtml(g, opts){
   const castCopy = phase3CastCopy();
   const badgeText = boardState==="locked" ? castCopy.lockedTag : (boardState==="ready" ? castCopy.readyTag : st.label);
   const badgeCls = (st.alt || boardState==="locked") ? "gt-badge done" : "gt-badge";
-  /* Weave 修復（v20a22）：短卡只出輕量標記，成句情報留返詳情頁／gigCardHtml，先唔好塞爆短卡。 */
+  /* v20a267：傳聞拼合已刪，短卡唔出情報標記。 */
   let intelMark = "";
-  try{ if(typeof intelLineForGig==="function" && intelLineForGig(g)) intelMark = `<div class="gt-intel">${iconHtml112("✨")} 有情報</div>`; }catch(_e){}
   /* v20a34 引導包 P0-1：鎖定短卡直接列差額，唔使逐張點入詳情先知欠幾多；
      齊條件（ready）卡唔加字。opts.closest 由 doScout 計（全板差額最少嗰張）先傳入。 */
   let gapHtml = "";
@@ -19336,10 +18877,8 @@ function castingNoticeDetailHtml(g){
       sumGaps = `<div class="cn-sum-gaps"><span class="gap-ok">✓ 條件已達標，可接通告</span></div>`;
     }
   }catch(_e){}
-  /* Weave 修復（v20a22）：詳情頁係玩家實際會開嚟睇嘅模板，摘要區要同 gigCardHtml 一樣出情報行，
-     否則 Phase 1-3 拼合情報喺詳情頁隱形（試玩斷鏈）。有情報先出，無就完全唔顯示。 */
+  /* v20a267：傳聞拼合已刪，詳情頁唔出情報行。 */
   let intelHtml = "";
-  try{ const il = (typeof intelLineForGig==="function") ? intelLineForGig(g) : ""; if(il) intelHtml = `<div class="discover-note">情報：${il}</div>`; }catch(_e){}
   return `${heroHtml30v2}<div class="notice_sheet_frame cn-paper30v2" data-gid="${g.id}">
     <div class="notice_poster_wall" aria-hidden="true"></div>
     <div class="notice_header_orange cn-paper30-head">
@@ -20629,7 +20168,7 @@ function settleWeek(){
   try{
     /* v19z20：週結後清本週返看標記（下週重計） */
     S.flags = S.flags||{};
-    S.flags.weekHighlight = { week: (typeof weekNumNow==="function"?weekNumNow():1)+1, rumor:"", talk:"", gig:"", story:"" };
+    S.flags.weekHighlight = { week: (typeof weekNumNow==="function"?weekNumNow():1)+1, talk:"", gig:"", story:"" };
   }catch(_wh){}
   /* v20a60 CALIB60-3：主線節點過窗未觸發 → 登記回憶＋結算出一行（唔改觸發條件；登記趕喺 saveQ 前入檔） */
   try{
@@ -21804,7 +21343,7 @@ function ensureWeekHighlight(){
   S.flags = S.flags||{};
   const w = (typeof weekNumNow==="function") ? weekNumNow() : 1;
   if(!S.flags.weekHighlight || S.flags.weekHighlight.week!==w){
-    S.flags.weekHighlight = { week:w, rumor:"", talk:"", gig:"", story:"" };
+    S.flags.weekHighlight = { week:w, talk:"", gig:"", story:"" };
   }
   return S.flags.weekHighlight;
 }
@@ -21813,10 +21352,7 @@ function noteWeekHighlight(kind, label){
     const h = ensureWeekHighlight();
     let s = String(label||"").replace(/<[^>]+>/g,"").trim();
     if(!s) return;
-    /* P0-3（v20a12）：週回顧顯示嘅傳聞標題同卡面一致，存入前先行 displayRumor 過濾。 */
-    if(kind==="rumor"){ try{ const d = displayRumor({title:s}); if(d && d.title) s = String(d.title); }catch(_e){} }
-    if(kind==="rumor") h.rumor = s.slice(0,28);
-    else if(kind==="talk") h.talk = s.slice(0,20);
+    if(kind==="talk") h.talk = s.slice(0,20);
     else if(kind==="gig") h.gig = s.slice(0,28);
     else if(kind==="story") h.story = s.slice(0,28);
   }catch(_e){}
@@ -21826,7 +21362,6 @@ function weekBestReplayLine(){
     const h = ensureWeekHighlight();
     if(h.story) return `本週焦點：劇情「${h.story}」`;
     if(h.gig) return `本週焦點：通告「${h.gig}」`;
-    if(h.rumor) return `本週焦點：傳聞「${h.rumor}」`;
     if(h.talk) return `本週焦點：同${h.talk}傾談`;
     const gigs = Math.max(0, Number(S.weekGigsDone)||0);
     if(gigs>0) return `本週焦點：完成 ${gigs} 單通告`;
@@ -22768,7 +22303,6 @@ function storyMainProgressLine(){
         if(/^通告\s*\d+／\d+/.test(s)) return;           /* 通告改用結構化差額子句 */
         const lm71 = s.match(/^到(.+)播$/);
         if(lm71){ remainLocNames71 = lm71[1]; return; }  /* 播點收去尾句，唔再做碎片 */
-        if(s.indexOf("未聽聞")===0){ diffs71.push("要先聽到傳聞"+s.slice(3)); return; }
         if(s.indexOf("要到秋或冬")>=0){ seasonLine71 = s; return; }  /* N5 季節鎖本身係完整句，獨立成句 */
         if(s==="檔期未到該季"){ diffs71.push("要等到合適的季節"); return; }
         const fm71 = s.match(/^何生人情\s*(\d+)／(\d+)$/);
@@ -23535,183 +23069,17 @@ function closeModal(){
 
 /* v19u Phase 2：手帳 Mock 跟 MOCK_UI_PHASE2。唔過日、唔改銀碼／fame／週數閘／硬鎖／通告庫。 */
 const MOCK_TOAST = {
-  rumorGained:"聽到新八卦，快啲記落手帳！",
   debtAdded:"欠落人情債，記住搵機會還。",
   debtCleared:"人情還清，無債一身輕。",
-  mergeSuccess:"碎料拼埋一齊，真相呼之欲出。",
   seasonCollectHint:"轉季啦，啲數記住清，唔好等債主上門。",
 };
 const MOCK_EMPTY = {
-  rumors:"本仔靜雞雞，去金龍茶餐廳飲杯茶聽下風啦。",
   debts:"人情清晒，行路都輕啲。",
 };
-const MERGE_FLOW = {
-  noPairHint:"呢兩單嘢牛頭唔搭馬嘴，夾硬嚟都冇用。",
-  failToast:"諗到一半斷咗思路，遲啲再算。",
-  successStampLine:"啪！蓋個印，呢單嘢有頭緒喇。",
-  confirmLabel:"確認拼合",
-  cancelLabel:"取消",
-  glow:"兩張卡拉埋，邊緣泛起微光。",
-};
-const MERGE_PAIRS = [
-  { pairId:"pair_lu_baiyan_breakdown", a:"rumor_lu_baiyan_angry", b:"rumor_lu_baiyan_drunk", merged:"rumor_lu_baiyan_breakdown",
-    title:"陸柏言情緒失控疑雲", text:"陸柏言喺片場發完脾氣，半夜又喺蘭桂坊飲到爛醉，睇嚟佢最近頂住好大壓力，隨時會爆鑊。" },
-  { pairId:"pair_liao_bingxing_money", a:"rumor_liao_bingxing_talk", b:"rumor_liao_bingxing_recast", merged:"rumor_liao_bingxing_money",
-    title:"廖炳星帶錢入組傳聞", text:"廖炳星同導演密談完就突然換角，圈內都傳佢係帶住資金入組，難怪咁巴閉。" },
-  { pairId:"pair_mai_zhendong_hide_injury", a:"rumor_mai_zhendong_hurt", b:"rumor_mai_zhendong_refuse_doc", merged:"rumor_mai_zhendong_hide_injury",
-    title:"麥震東隱瞞傷情搏上位", text:"麥震東喺片場整親又死都唔肯睇醫生，明顯係想隱瞞傷情搏表現，真係夠狠。" },
-  /* Weave Phase 3-2（v20a20）：跨系統對——報紙碎片（報載）× 聽聞碎片 → 同一條 merged 情報。
-     merged id 同經典對一致，拼到照樣行 setIntelFlag／情報使用點；文案按報載證據改寫。 */
-  { pairId:"pair_paper_lu_concert", a:"paperfrag_lu_concert", b:"rumor_lu_baiyan_angry", merged:"rumor_lu_baiyan_breakdown",
-    title:"陸柏言情緒失控疑雲", text:"陸柏言喺片場發完脾氣，報紙又寫佢紅館開唱迫在眉睫、黃牛飛炒起，睇嚟佢頂住好大壓力，隨時會爆鑊。" },
-  { pairId:"pair_paper_liao_newfilm", a:"paperfrag_liao_newfilm", b:"rumor_liao_bingxing_talk", merged:"rumor_liao_bingxing_money",
-    title:"廖炳星帶錢入組傳聞", text:"廖炳星同導演密談完，報紙就寫佢新片喺清水灣開鏡、影迷塞爆閘口，圈內都傳佢係帶住資金入組，難怪咁巴閉。" },
-  { pairId:"pair_paper_mak_wrap", a:"paperfrag_mak_wrap", b:"rumor_mai_zhendong_hurt", merged:"rumor_mai_zhendong_hide_injury",
-    title:"麥震東隱瞞傷情搏上位", text:"麥震東喺片場整親，報紙又寫佢連煞科宴都缺席、劇組只肯講佢唔舒服，明顯係想隱瞞傷情搏表現，真係夠狠。" },
-  /* v20a82 WF3 鏈 D 新拼合：葉敏芝疑雲真相——兩對（聽聞×聽聞／報紙×聽聞）指向同一 merged，
-     真相係兩件無關事俾人縫埋：鼻影係化妝間強光、寫真係經理人安排另有脈絡。 */
-  { pairId:"pair_yip_rumor_truth", a:"rumor_yip_plasticsurgery_summer", b:"rumor_yip_writeup_heard", merged:"rumor_yip_rumor_truth",
-    title:"葉敏芝疑雲真相", text:"你將兩單嘢拉埋一齊諗，先至發現根本係誤會縫出嚟：嗰張相鼻影怪，係化妝間強光打落嚟；寫真集嗰件事，係經理人一早安排好嘅宣傳，兩單嘢本身冇關係，俾人夾硬縫成一單「疑雲」。" },
-  { pairId:"pair_paper_yip_swimsuit", a:"paperfrag_yip_swimsuit", b:"rumor_yip_plasticsurgery_summer", merged:"rumor_yip_rumor_truth",
-    title:"葉敏芝疑雲真相", text:"報紙寫佢寫真集加印，你再對返茶餐廳聽返嚟嗰單「疑雲」，先至拼得通：寫真係經理人安排嘅宣傳，相入面嗰個鼻影係化妝間強光——兩件無關事，俾人縫埋做一單疑雲。" },
-  { pairId:"pair_paper_ku_wrap", a:"paperfrag_ku_wrap", b:"rumor_ku_overwork_summer", merged:"rumor_ku_overwork_truth",
-    title:"顧明輝軋戲真相", text:"你拼返成件事：顧明輝一日軋三組，唔係貪錢開工，係早年簽落嘅舊約綁死，唔軋就違約賠錢；佢喺車房瞓著嗰次，係真係頂唔順，唔係hea做。" },
-];
-/* ===== Weave Phase 1-3（v20a15）：拼合情報「使用點」——拼完唔再係死資訊。
-   零新狀態：直接讀手帳入面 state:"merged" 嗰行拼合傳聞（Phase 2 先至正式化 intel_* 旗）。
-   使用點有兩個現有表面：通告板卡片（跟 starHint 對位）＋紅星遠觀（對白升級）。 ===== */
-const INTEL_USE_POINTS = {
-  rumor_lu_baiyan_breakdown: { starName:"陸柏言", starId:"luk_baakyin",
-    gigLine:"陸柏言狀態不穩，這組隨時要人頂替——這種時候入組，最容易被人記住。",
-    sightLine:"你把整件事拼合起來之後再看他——那種走路姿勢不是大牌的派頭，是被壓力逼到盡頭的樣子。" },
-  rumor_liao_bingxing_money: { starName:"廖炳星", starId:"liu_bingxing",
-    /* v20a82 WF3 鏈 B 補拍：gigLine 由空字串補返實質使用點（鏈 B 1.5/6 嘅主因） */
-    gigLine:"這組現在有金主撐腰，那個好位置是金主讓出來的，才輪到你站上去；懂事的話就不要搶鏡，得罪金主沒有好處。",
-    sightLine:"你知道他帶錢入組，再看他在那裡度橋，那份專注之中，帶點「我要證明俾人睇」的味道。" },
-  /* v20a82 WF3 鏈 D 新情報使用點 */
-  rumor_yip_rumor_truth: { starName:"葉敏芝", starId:"yip_manji",
-    gigLine:"你知道那單疑雲是誤會拼湊出來的——同場時不要跟著別人起鬨，守口如瓶就是本事；選美後台若有機會，提點他一句，人情遠勝一場戲。",
-    sightLine:"你知道那單疑雲的真相，再看她站在台上面對記者，那份硬淨之中，帶點不知所措的慌張。" },
-  rumor_ku_overwork_truth: { starName:"顧明輝", starId:"gu_mingfai",
-    gigLine:"你知道他軋三組不是貪錢，是舊約綁死他，沒得選擇——同場時不要在別人面前提起，給他留點體面。",
-    sightLine:"你知道他為何軋戲軋到睡著，再看他站在台門外向歌迷揮手時的笑容，才明白甚麼叫敬業到盡頭。" },
-  rumor_mai_zhendong_hide_injury: { starName:"麥震東", starId:"mak_zhendong",
-    gigLine:"麥震東有傷在身還在死頂，這組動作戲的風險可能被人低估了——接之前，先想清楚自己能否頂住。",
-    sightLine:"你知道他有傷。再看他站得這樣直，你才發現——他連站著，都在死頂。" }
-};
-/* ===== Weave Phase 2-1（v20a16）：情報旗正式化。
-   拼合情報由「即場掃 merged 行」升級為有命名旗，存 S.intelFlags（新存檔 fresh() 預設 {}，
-   舊存檔由 ensureIntelFlags() 按已拼合行回填，唔改 SAVE key）。
-   hasMergedIntel 改行旗＋保留掃行 fallback，Phase 1-3 嘅使用點介面唔變。 ===== */
-const INTEL_FLAGS = {
-  rumor_lu_baiyan_breakdown: "intel_lu_burst",
-  rumor_liao_bingxing_money: "intel_liao_money",
-  rumor_mai_zhendong_hide_injury: "intel_mak_injury",
-  /* v20a82 WF3 鏈 D 新情報旗 */
-  rumor_yip_rumor_truth: "intel_yip_truth",
-  rumor_ku_overwork_truth: "intel_ku_overwork",
-};
-function ensureIntelFlags(){
-  if(typeof S==="undefined" || !S) return {};
-  if(!S.intelFlags || typeof S.intelFlags!=="object" || Array.isArray(S.intelFlags)) S.intelFlags = {};
-  /* 舊存檔回填：升級前已經拼合咗嘅情報，照樣置旗（值記低取得日同回填標記） */
-  try{
-    const rows = Array.isArray(S.mockRumors) ? S.mockRumors : [];
-    for(const mid in INTEL_FLAGS){
-      const fname = INTEL_FLAGS[mid];
-      if(!S.intelFlags[fname] && rows.some(r=> r && r.id===mid && r.state==="merged")){
-        S.intelFlags[fname] = { day:(typeof S.dayIndex==="number" ? S.dayIndex : 0), backfilled:true };
-      }
-    }
-  }catch(_e){}
-  return S.intelFlags;
-}
-function setIntelFlag(mergedId){
-  const fname = INTEL_FLAGS[mergedId];
-  if(!fname || typeof S==="undefined" || !S) return false;
-  const flags = ensureIntelFlags();
-  if(!flags[fname]) flags[fname] = { day:(typeof S.dayIndex==="number" ? S.dayIndex : 0) };
-  return true;
-}
-function hasIntelFlag(flagName){
-  try{ return !!ensureIntelFlags()[flagName]; }catch(_e){ return false; }
-}
-function hasMergedIntel(mergedId){
-  /* v20a16：先睇情報旗（ensureIntelFlags 會順手回填舊存檔），再 fallback 掃 merged 行 */
-  try{
-    const fname = INTEL_FLAGS[mergedId];
-    if(fname && ensureIntelFlags()[fname]) return true;
-  }catch(_e){}
-  try{ if(typeof ensureMockJournal==="function") ensureMockJournal(); }catch(_e){}
-  const rows = (typeof S!=="undefined" && S && S.mockRumors) || [];
-  return rows.some(r=> r && r.id===mergedId && r.state==="merged");
-}
-function intelLineForGig(g){
-  if(!g) return "";
-  /* v20a89 BR89：單卡使用點（持卡即生效，唔使拼合；按通告文本認星名） */
-  if(typeof br89CardUsePointForGig==="function"){
-    const cp = br89CardUsePointForGig(g);
-    if(cp && cp.line) return cp.line;
-  }
-  if(!g.starHint || !g.starHint.name) return "";
-  for(const id in INTEL_USE_POINTS){
-    const up = INTEL_USE_POINTS[id];
-    if(up && up.gigLine && up.starName===g.starHint.name && hasMergedIntel(id)) return up.gigLine;
-  }
-  return "";
-}
-function intelSightLineFor(starId){
-  for(const id in INTEL_USE_POINTS){
-    const up = INTEL_USE_POINTS[id];
-    if(up && up.sightLine && up.starId===starId && hasMergedIntel(id)) return up.sightLine;
-  }
-  /* v20a89 BR89：單卡使用點（巧遇提示行） */
-  if(typeof br89CardUsePointForStar==="function"){
-    const cp = br89CardUsePointForStar(starId);
-    if(cp && cp.line) return cp.line;
-  }
-  return "";
-}
-/* ===== Weave Phase 2-1（v20a16）：鏈 A 隱藏通告。
-   跟 mergeSoftBridgeGigs 同一注入模式：mergeIntelGigs() 喺 gigsForLocSeasonBoard 開頭呼叫，
-   持有 intel_lu_burst 先將替工通告注入 GIGS（上板／試鏡／拍攝／殺青全部行現有管線），
-   無旗就移除，確保平時完全唔顯示。通告命名平實，唔劇透拼合內容。
-   v20a229 B3：隱藏通告內容已刪（INTEL_HIDDEN_GIGS 清空）；mergeIntelGigs 機制留返，B5 觸發系統重用。
-   v20a229 B5 D-14 改源：唔再讀 intel_lu_burst（傳聞拼合旗）——改按攻略定稿「T2＋週期開」：
-   陸柏言好感 tier ≥2（enc79TierOf，fav ≥25）嗰陣開，發現途徑行情報站打聽（只係提示，唔係開閘條件）。
-   核實：新庫 240 張入面冇《星夜迷離》呢張通告（0 命中），所以呢度改閘唔會留雙重閘；
-   池本身留空——陸支線 Beat 3 替工通告要補寫新庫版先至真係上到板（見 B5 回報跟進項）。 ===== */
-const INTEL_HIDDEN_GIGS = []; /* v20a229 B3：內容已刪；mergeIntelGigs 機制留返。 */
-function mergeIntelGigs(){
-  try{
-    if(typeof GIGS==="undefined" || !Array.isArray(GIGS)) return 0;
-    const ids = {};
-    (INTEL_HIDDEN_GIGS||[]).forEach(g=>{ if(g && g.id) ids[g.id] = 1; });
-    let held = false;
-    try{
-      const fav = (typeof S!=="undefined" && S && S.npcs) ? (Number(S.npcs.luk_baakyin)||0) : 0;
-      held = (typeof enc79TierOf==="function") ? enc79TierOf(fav)>=2 : fav>=25;
-    }catch(_e){}
-    if(!held){
-      const before = GIGS.length;
-      GIGS = GIGS.filter(g=>!(g && ids[g.id]));
-      if(GIGS.length!==before){ try{ window.GIGS = GIGS; }catch(_w){} }
-      return 0;
-    }
-    let n = 0;
-    (INTEL_HIDDEN_GIGS||[]).forEach(raw=>{
-      if(!raw || !raw.id) return;
-      const norm = normalizeGigRecord(Object.assign({}, raw, { intelGig:true }));
-      const i = GIGS.findIndex(g=>g && g.id===raw.id);
-      if(i<0){ GIGS.push(norm); n++; }
-      else GIGS[i] = norm;
-    });
-    try{ window.GIGS = GIGS; }catch(_w){}
-    return n;
-  }catch(_e){ return 0; }
-}
+/* ===== v20a267：傳聞拼合／情報旗／鏈 A 隱藏通告已刪。星夜迷離歸宿：新庫 gig_1991_tv_203
+   經通用 trigger（kind:"rel"，npcId:"luk_baakyin"，relMin:25），triggerGigOn 讀星好感（S.stars）。 ===== */
 /* ===== Weave Phase 2-2（v20a17）：人情到期觸發（幫忙通告型，先做一筆）。
-   揀現有數據最齊嗰筆：教學債 debt_ho_tutorial（債主何生；拼合教學完成即記債；
+   揀現有數據最齊嗰筆：教學債 debt_ho_tutorial（債主何生；人情頁補種；
    手帳人情頁有顯示、本身有現金／禮物還款路徑；何生有完整好感系統 S.npcs.agent＋bumpNpc）。
    做法：畀呢筆債加 dueDay（成立後 7 日）＋kind:"help_gig"；到期嗰日何生開一張「幫忙通告」
    （mergeFavorGigs 條件注入，行現有通告管線）；4 日內殺青＝人情結清（何生好感 +2）；
@@ -23859,7 +23227,7 @@ function favorDueTick(){
     }
   }catch(_e){}
 }
-/* 跟 mergeIntelGigs 同一注入模式：favorState==="called" 且喺窗口內先將幫忙通告注入 GIGS，
+/* 跟 mergeTriggerGigs 同一注入模式：favorState==="called" 且喺窗口內先將幫忙通告注入 GIGS，
    其餘時間移除，確保平時完全唔顯示；殺青後 isGigConsumed 亦會自然落板。 */
 function mergeFavorGigs(){
   try{
@@ -24111,7 +23479,6 @@ function familyEchoNoteText(){
    事件 tick 會先補種再即時觸發（catch-up），唔會靜默錯過。 ===== */
 const EXODUS_FEN_DEBT = { id:"debt_fen_standin", creditor:"副導演芬姐", title:"芬姐頂更人情", weight:"頂更一晚", season:"芬姐話：嗰晚你病到面青，唔係我幫你頂咗嗰更，你嗰日份人工同印象都無晒。呢筆記住先，唔使急住還。", status:"未到期" };
 const EXODUS_FEN_CREDIT = { id:"credit_fen_rescue", debtor:"副導演芬姐", title:"芬姐欠你嗰次救場", line:"清水灣外景嗰日亂到七彩，你二話不說落手幫我頂到收工。呢個人情我記住，遲啲還返你。", status:"未收" };
-const EXODUS_FEN_INTEL = { id:"rumor_fen_exodus_tip", source:"副導演芬姐", title:"芬姐臨走嘅口風", text:"芬姐臨上機前講：清水灣新廠嗰邊開棚唔夠人，副導四圍借臨記，呢排有經驗嘅臨記唔愁無工開，叫你醒目啲，睇實通告欄。", state:"normal", season:"" };
 function seedExodusFenPair(){
   try{
     if(typeof S==="undefined" || !S) return false;
@@ -24207,10 +23574,7 @@ function exodusFenTick(){
         exodused = true;
       }
     }
-    if(Array.isArray(S.mockRumors) && !S.mockRumors.some(r=>r && r.id===EXODUS_FEN_INTEL.id)){
-      S.mockRumors.push(Object.assign({}, EXODUS_FEN_INTEL, { seeded:true }));
-    }
-    let main, sub = "臨走佢漏咗句片場口風畀你，已記入手帳傳聞。";
+    let main, sub = "臨走佢漏咗句片場口風畀你。";
     if(wroteOff && exodused){ main = "副導演芬姐移民溫哥華，臨走將你嗰筆人情一筆勾銷。"; sub = "佢欠你嗰筆亦成絕響（人已不在香港）；"+sub; }
     else if(wroteOff){ main = "副導演芬姐移民溫哥華，臨走將你嗰筆人情一筆勾銷。"; }
     else if(exodused){ main = "副導演芬姐移民溫哥華，佢欠你嗰筆人情成咗絕響。"; }
@@ -25348,54 +24712,7 @@ function wf4PresentPending(cont, opts){
   }catch(_e){ return false; }
 }
 
-/* ---------- WF4 碎片庫補完：Call 機／大哥大（原本零次）＋日常質地／地名／行規。
-   跟 EXODUS_RUMOR_SEEDS 同形狀同種法（ensureMockJournal 內 wf4SeedFrags 冪等補種，固定 id 去重）；
-   season 只喺首個合資格年份生效：種入嗰陣先計季節，過季唔追種嗰年（記 seededYears 防跨年重覆試）。 ---------- */
-const WF4_FRAG_SEEDS = [
-  { id:"rumor_wf4_pager_code", source:"金龍茶餐廳", title:"傳呼密碼熱潮", text:"年輕人個個袋裏藏著一本傳呼密碼簿，520、3344 說得滾瓜爛熟——沒有 Call 機的人，只好站在電話亭旁等運氣。", state:"normal", season:"", yearMin:1990 },
-  { id:"rumor_wf4_pager_job", source:"金龍茶餐廳", title:"覆台小姐這行好找工作", text:"傳呼台的招聘廣告登滿整版，說覆台小姐要口齒伶俐又能捱夜——滿街年輕女子排隊應徵，說這行是新興行業。", state:"normal", season:"", yearMin:1990 },
-  { id:"rumor_wf4_pager_set", source:"片場休息區", title:"副導的 Call 機沒有停過", text:"副導的 Call 機整個早上響個不停，一時說哪個臨記臨時缺席，一時說哪組改了更——沒有了這部機器，整張通告表也不用排了。", state:"normal", season:"", yearMin:1991 },
-  { id:"rumor_wf4_pager_love", source:"金龍茶餐廳", title:"用Call機傳情", text:"茶客笑說，現在的年輕人拍拖不寫信了，傳一個密碼過去，對方對著簿子查了又查，查到那三個字，臉都紅了。", state:"normal", season:"", yearMin:1991 },
-  { id:"rumor_wf4_brick_price", source:"金龍茶餐廳", title:"大哥大跌價都有排貴", text:"電器店說大哥大新款上市，舊款跌了一些價錢——跌了也要一萬多元，還未計算月費。茶客說買得起的那些人，大多是買來擺設，不是買來打電話。", state:"normal", season:"", yearMin:1991 },
-  { id:"rumor_wf4_brick_boss", source:"片場休息區", title:"監製部的大哥大經常沒電", text:"監製部的大哥大說兩句就沒電，經常要借電話亭打回公司——有人笑說這部機器最大的用途，是開會時放在桌上，不出聲也夠氣派。", state:"normal", season:"", yearMin:1992 },
-  { id:"rumor_wf4_brick_signal", source:"金龍茶餐廳", title:"入廠收不到訊號", text:"清水灣那邊訊號差，大哥大進了廠就經常斷線，副導氣得說不如改回傳呼加電話亭，起碼不會說到一半便沒了下文。", state:"normal", season:"", yearMin:1992 },
-  { id:"rumor_wf4_karaoke_contest", source:"金龍茶餐廳", title:"卡拉OK大賽又來了", text:"佐敦那間卡拉OK舉辦歌唱大賽，說冠軍有機會簽約唱片公司——一班年輕人每晚去霸房練歌，茶餐廳伙計說他們連吃常餐都哼著歌走進來。", state:"normal", season:"", yearMin:1991 },
-  { id:"rumor_wf4_bing_sut", source:"金龍茶餐廳", title:"冰室那時的菠蘿油", text:"老字號冰室的菠蘿油和紅豆冰，臨記們收工經常去光顧——有人說那裏的味道，幾十年沒有變過，吃的是回憶。", state:"normal", season:"", yearMin:1990 },
-  { id:"rumor_wf4_ld_rent", source:"金龍茶餐廳", title:"LD舖租碟排行榜", text:"旺角LD店貼了一張租碟榜，出租最旺的那些，十套有七套是動作片；年輕人說買不起機器，租碟回家慢慢看也過足癮。", state:"normal", season:"", yearMin:1991 },
-  { id:"rumor_wf4_astronaut_bills", source:"金龍茶餐廳", title:"太空人的電話費", text:"做太空人的那位茶客嘆道，長途電話費貴過交租，一個月打幾次，一次說不到十分鐘——掛線那一刻，整桌人都靜了下來。", state:"normal", season:"", yearMin:1991 },
-  { id:"rumor_wf4_wedding_feast", source:"金龍茶餐廳", title:"酒樓散席一張難求", text:"酒樓經理說近來那些散席訂到了明年，十圍有八圍都是餞行——吃到尾聲，總有幾個相擁而哭，經理說他們看見也覺得心酸。", state:"normal", season:"", yearMin:1991 },
-  { id:"rumor_wf4_market_rent", source:"金龍茶餐廳", title:"街市檔租又加", text:"街市魚檔阿姐抱怨檔租又加，說再加下去，那些魚要賣貴兩元一斤才回本——師奶們聽到立刻起哄，說日後買餸又要精打細算。", state:"normal", season:"", yearMin:1992 },
-  { id:"rumor_wf4_crew_scatter", source:"片場休息區", title:"幕後散班去邊度", text:"有燈光師收工時說，近來經常聽到誰誰散班轉行，有些去了那邊，有些轉去做裝修——他說這行的手藝，去到哪裏都不會餓死人。", state:"normal", season:"", yearMin:1992 },
-  { id:"rumor_wf4_returnee", source:"金龍茶餐廳", title:"走了又回來的那些人", text:"茶客說起，有些人去了那邊兩三年又回來，說始終吃不慣那邊的東西，回來後在大排檔吃一碗雲吞麵，吃到眼眶濕潤。", state:"normal", season:"", yearMin:1992 },
-  { id:"rumor_wf4_boxoffice_talk", source:"金龍茶餐廳", title:"人人談票房數字", text:"現在的茶客談戲，不再只談誰演得好，開口閉口都是票房多少千萬——有人說數字大不代表那部戲好看，那些人笑著沒有反駁他。", state:"normal", season:"", yearMin:1992 },
-  { id:"rumor_wf4_reunion_dinner", source:"金龍茶餐廳", title:"親戚飯局那句問題", text:"過年飯局，親戚總有人問那句：『你哋走唔走呀？』——問的那個通常已經拿了表，答的那些就顧左右而言他，多夾一塊雞就算了。", state:"normal", season:"冬", yearMin:1991 },
-  { id:"rumor_wf4_airport_winter", source:"金龍茶餐廳", title:"年尾機場特別多人", text:"的士司機說年尾那陣子，晚上載人去啟德特別多，有些是回來過年，有些是過完年便不再回來——他說不用問，一看那些行李便知道。", state:"normal", season:"冬", yearMin:1990 }
-];
-function wf4SeedFrags(){
-  try{
-    if(typeof S==="undefined" || !S) return 0;
-    if(!Array.isArray(S.mockRumors)) S.mockRumors = [];
-    const ys = wf4YearSeason();
-    const st = wf4Ensure(); if(!st) return 0;
-    if(!st.fragYears || typeof st.fragYears!=="object") st.fragYears = {};
-    let added = 0;
-    for(const seed of WF4_FRAG_SEEDS){
-      if(!seed) continue;
-      if(S.mockRumors.some(r=>r && r.id===seed.id)) continue;
-      if(seed.yearMin && ys.year < seed.yearMin) continue;
-      if(seed.season){
-        const tag = seed.id + "@" + ys.year;
-        if(st.fragYears[tag]) continue;
-        st.fragYears[tag] = 1;
-        if(ys.season !== seed.season) continue;
-      }
-      S.mockRumors.push({ id:seed.id, source:seed.source, title:seed.title, text:seed.text, state:"normal", season:"", seeded:true });
-      added++;
-    }
-    return added;
-  }catch(_e){ return 0; }
-}
-
+/* v20a267：WF4 碎片庫已刪。 ---------- */
 /* ---------- WF4 配角小弧 1：芬姐——相識場（地點動作）＋離港送別戲（exodusFenTick arm，晨報後呈現）。
    跟鏈 F 既定安排：芬姐係次要角色，兩場都係短戲，唔搶主線；送別戲用 StoryPlay 播（一次性節點，經
    applyChoice 標完成），內容跟 exodusFenTick 嘅帳本結果分變體（勾銷／絕響／中性）。 ---------- */
@@ -25528,12 +24845,13 @@ function wf4PresentFenFarewell(afterCont){
 
 /* ===== Weave Phase 3-3（v20a21）：高俊傑競爭線收割（鏈 E，串聯規劃最後一步）。
    建基於現有足跡，唔另起爐灶：高俊傑係現有 core NPC（NPC_LINES.rival／S.npcs.rival）；
-   傳聞種子 gao_steal_spotlight（茶餐廳 act_cha_gao_spotlight 拎到）；主線 N3 係同佢正面交鋒
+   茶餐廳打聽高俊傑搶鏡事（act_cha_gao_spotlight）係呢條線嘅引子；主線 N3 係同佢正面交鋒
    （S.story.done.N3，揀 hard／endure 寫 S.story.flags rival_gao_hard／rival_gao_endure）；
    N3 見報後剪報 topicKey 係 rival:gao（Phase 3-1）；采兒內幕對白早已預告呢條競爭線。
-   累積（衍生計分，唔逐次加，舊檔讀入即計返）：聽過搶鏡傳聞 +1、N3 交鋒過 +2、報紙連載寫過 +1，
-   夠 3 分開正面決戰。收割形式揀「競爭通告」：行現有通告管線＋mergeRivalGigs 條件注入
-   （同 mergeIntelGigs／mergeFavorGigs 同一模式），因為通告欄先係佢成日同你爭嘅地方，
+   累積（衍生計分，唔逐次加，舊檔讀入即計返）：N3 交鋒過 +2、報紙連載寫過 +1，
+   夠 3 分開正面決戰。（v20a267：聽過搶鏡傳聞 +1 已刪，傳聞系統刪除。）
+   收割形式揀「競爭通告」：行現有通告管線＋mergeRivalGigs 條件注入
+   （同 mergeTriggerGigs／mergeFavorGigs 同一模式），因為通告欄先係佢成日同你爭嘅地方，
    而且殺青偵測（wrapHistory）有現成結算點；唔揀二選一事件，免再開一條事件通道。
    勝負唔靠試鏡隨機 roll：殺青後由 rivalryTick 按當時雙軌（幕前聲量＋業內信用）判定——
    門檻 40；N3 揀 hard（出盡力壓佢）佢記仇出盡力，門檻 +6；揀 endure（留一線）佢冇出盡力，門檻 −6。
@@ -25613,7 +24931,6 @@ function rivalryScore(){
   let n = 0;
   try{
     if(typeof S==="undefined" || !S) return 0;
-    if(Array.isArray(S.mockRumors) && S.mockRumors.some(r=>r && r.id===RIVAL_CFG.rumorId)) n += 1;
     const sf = (S.story && S.story.flags) || {};
     const done = (S.story && S.story.done) || {};
     if(done.N3 || sf.rival_gao_hard || sf.rival_gao_endure || (S.flags && (S.flags.rival_gao_hard || S.flags.rival_gao_endure))) n += 2;
@@ -25664,26 +24981,6 @@ function rivalryFaceoffPaper(win, round){
       workTitle:work
     });
   }catch(_e){ return null; }
-}
-function rivalryResultRumor(win, round){
-  try{
-    if(typeof S==="undefined" || !S) return;
-    if(typeof ensureMockJournal==="function") ensureMockJournal();
-    if(!Array.isArray(S.mockRumors)) S.mockRumors = [];
-    const r = (typeof ensureRivalry==="function") ? ensureRivalry() : null;
-    const rd = (round!=null ? round : (r ? (r.round|0) : 1)) || 1;
-    const id = RIVAL_CFG.resultRumorId + rivalryRoundSuffix(rd);
-    if(S.mockRumors.some(x=>x && x.id===id)) return;
-    const work = (r && r.workTitle) || "霓虹夜影";
-    S.mockRumors.unshift({
-      id:id, source:"片場休息區",
-      title: win ? "爭位試演：阿偉贏咗" : "爭位試演：高俊傑快半步",
-      text: win
-        ? "《"+work+"》爭位試演，阿偉壓過高俊傑攞到個位。高俊傑撂話下次再鬥，睇得出佢服氣。"
-        : "《"+work+"》爭位試演，高俊傑快半步攞到位。阿偉輸得起，監製都記住咗佢個名。",
-      state:"normal", season:""
-    });
-  }catch(_e){}
 }
 function rivalryTick(){
   try{
@@ -25756,7 +25053,6 @@ function rivalryTick(){
         try{ toast("試演結果出咗：高俊傑快半步攞咗個位。佢笑得好得意，臨走都補咗句：「你都唔差，下次再嚟。」——輸咗一場，人氣跌少少，唔傷元氣。"); }catch(_t){}
       }
       try{ rivalryFaceoffPaper(win, round); }catch(_p){}
-      try{ rivalryResultRumor(win, round); }catch(_r){}
       try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
       try{ saveQ(); }catch(_s){}
     }
@@ -25794,7 +25090,7 @@ function rivalryNewsTick(){
     if(it || (typeof newspaperEventSeen==="function" && newspaperEventSeen(key))) r.newsIdx = idx+1;
   }catch(_e){}
 }
-/* 跟 mergeIntelGigs／mergeFavorGigs 同一注入模式：faceoffState==="open" 先將當輪爭位試演注入 GIGS，
+/* 跟 mergeTriggerGigs／mergeFavorGigs 同一注入模式：faceoffState==="open" 先將當輪爭位試演注入 GIGS，
    結算後（第 1／2 輪返 "none" 等冷卻、第 3 輪 won／lost 終態）移除，確保唔會重複觸發；試鏡落選唔會令通告消失（未殺青就唔算消費，可再報）。
    v20a229 B5：決戰通告改由新庫供應（RIVAL_CFG.gigId＝gig_1991_film_109），經通用 trigger 系統
    （trigger kind rival）上板；呢度只留返舊池 no-op，唔再注入。 */
@@ -27120,7 +26416,7 @@ function story48SettleTick(){
   }catch(_e){}
 }
 /* ===== Weave Phase 4-7（v20a30）：鏈 F 第 5 拍——移民潮空位通告（1990 秋起）。
-   mergeExodusGigs 跟 mergeIntelGigs／mergeFavorGigs／mergeRivalGigs 同一條件注入模式，
+   mergeExodusGigs 跟 mergeTriggerGigs／mergeFavorGigs／mergeRivalGigs 同一條件注入模式，
    掛喺 gigsForLocSeasonBoard 同一呼叫點；閘＝choice47SeasonReached(1990, "秋")。
    數值校準（詳見 NOTES_V20A30）：兩份都係「中」級、定額各 $3,300／$2,900——同 2-1 隱藏通告
    $3,100 同量級，畀到「資深臨記頂位」嘅上位感，但只高過同級一般通告少少；聲量／人氣
@@ -27318,26 +26614,17 @@ function news82PublishedDay(worldId){
   }catch(_e){ return -1; }
 }
 
-/* ---------- WF3-2 鏈 B 專屬通告（v20a229 B3 已刪：WF3_LIAO_GIG／WF3_LIAO_HARVEST_GIG 轉 null；mergeWf3Gigs 留返做 stub，B5 觸發系統接新庫嗰陣先恢復） ---------- */
+/* ---------- WF3-2 鏈 B 專屬通告（v20a229 B3 已刪：WF3_LIAO_GIG／WF3_LIAO_HARVEST_GIG 轉 null；v20a267：鏈 B 收割改行新庫觸發通告） ---------- */
 const WF3_LIAO_GIG = null; /* v20a229 B3：內容已刪。 */
 const WF3_LIAO_HARVEST_GIG = null; /* v20a229 B3：內容已刪。 */
-function mergeWf3Gigs(){
-  /* v20a229 B3：WF3 劇情通告（WF3_LIAO_GIG／WF3_LIAO_HARVEST_GIG）已刪；
-     B5 觸發系統會用新庫觸發通告重新接呢個注入點，嗰陣先恢復實作。 */
-  return 0;
-}
 /* =====================================================================
    v20a89 BR89：分支補完——條件通告＋情報卡使用點（真分支審計 #4／#10）
    (1) 提攜債具名兌現：陸柏言／彭少祺／程天諾三位星嘅 T4 提攜債權，持有期間
        各開一張「引薦通告」；殺青嗰陣債權標記已兌現（line 追加交代＋redeemed 欄），
        結局總結會點名邊位提攜過你。status 唔郁（結局人情計數口徑原封不動）。
-   (2) 魏詠男替身情報卡（rumor_ngai_stunt_tip）開一張情報通告：持卡先上板。
-   (3) 駱家聲／鍾楚凝兩對死卡接入拼合（新 MERGE_PAIRS＋情報旗＋使用點）；
-       其餘單卡加 INTEL_CARD_USE_POINTS89（通告卡情報行／巧遇提示行）。
+   (2) 魏詠男替身情報卡已刪（v20a267：傳聞系統刪除，情報通告一併取消）。
+   (3) 駱家聲／鍾楚凝死卡拼合＋單卡使用點已刪（v20a267：傳聞系統刪除）。
    ===================================================================== */
-function br89HoldsCard(id){
-  try{ return !!((typeof S!=="undefined" && S && S.mockRumors) || []).some(r=>r && r.id===id); }catch(_e){ return false; }
-}
 function br89HasCredit(id){
   try{ return !!((typeof S!=="undefined" && S && S.mockCredits) || []).some(c=>c && c.id===id && c.status!=="絕響"); }catch(_e){ return false; }
 }
@@ -27515,8 +26802,14 @@ function triggerGigOn(g){
         return (Number(S.fame)||0) >= (Number(t.fameMin)||0);
       case "story":
         return !!((S.story && S.story.done) || {})[String(t.nodeId||"")];
-      case "rel":
-        return Number((S.npcs||{})[String(t.npcId||"")]||0) >= (Number(t.relMin)||0);
+      case "rel": { /* v20a267：星好感活喺 S.stars（enc79），S.npcs 從未寫入星 id——讀星好感為主，S.npcs 只作舊存檔兜底 */
+        let v = Number((S.npcs||{})[String(t.npcId||"")]||0);
+        try{
+          if(typeof enc79StarState==="function"){ const st = enc79StarState(String(t.npcId||"")); if(st && typeof st.fav==="number") v = Math.max(v, st.fav); }
+          else if(S.stars && S.stars[String(t.npcId||"")] && typeof S.stars[String(t.npcId||"")].fav==="number") v = Math.max(v, S.stars[String(t.npcId||"")].fav);
+        }catch(_e){}
+        return v >= (Number(t.relMin)||0);
+      }
       case "rival":
         return (typeof rivalTriggerOpenable229==="function") ? rivalTriggerOpenable229(t.rivalScoreMin) : false;
       default:
@@ -27928,66 +27221,17 @@ function contract229CardLine(sh){
     return `長期合約 · 每週 $${Number(c.weeklyPay||0).toLocaleString()} 出糧（已付 $${Number(c.paidTotal||0).toLocaleString()}／共 $${Number(c.totalPay||0).toLocaleString()}）· 殺青計作品`;
   }catch(_e){ return ""; }
 }
-/* ---------- 情報卡使用點：新拼合對＋單卡下游 ---------- */
-try{
-  if(typeof MERGE_PAIRS!=="undefined" && Array.isArray(MERGE_PAIRS)){
-    if(!MERGE_PAIRS.some(p=>p && p.merged==="rumor_lok_highlevel_truth")){
-      MERGE_PAIRS.push({ pairId:"pair_br89_lok_truth", a:"rumor_lok_grudge_heard", b:"rumor_lok_music_tip", merged:"rumor_lok_highlevel_truth", title:"駱家聲同高層不和・內情", text:"兩單風聲拼埋，整件事就清楚了：駱家聲與台裡高層那場不和，不是為了錢，而是他想自己挑選劇本、挑選拍檔。高層覺得他耍大牌，他覺得高層把他當棋子。監製那邊，是他如今唯一還願意回去談的門路。" });
-    }
-    if(!MERGE_PAIRS.some(p=>p && p.merged==="rumor_chung_farewell_truth")){
-      MERGE_PAIRS.push({ pairId:"pair_br89_chung_farewell", a:"rumor_chung_canada_heard", b:"rumor_chung_advice", merged:"rumor_chung_farewell_truth", title:"鍾楚凝離港安排・內情", text:"兩單風聲拼埋，鍾楚凝的安排就清楚了：楓葉卡那邊手續正在辦，她不是立刻就走，是等手頭上那部戲埋尾才起行。她勸你那句「及早諗定自己條路」，不是客套——是過來人說的真話。" });
-    }
-  }
-  if(typeof INTEL_FLAGS!=="undefined" && INTEL_FLAGS){
-    if(!INTEL_FLAGS["rumor_lok_highlevel_truth"]) INTEL_FLAGS["rumor_lok_highlevel_truth"] = "intel_lok_truth";
-    if(!INTEL_FLAGS["rumor_chung_farewell_truth"]) INTEL_FLAGS["rumor_chung_farewell_truth"] = "intel_chung_leave";
-  }
-  if(typeof INTEL_USE_POINTS!=="undefined" && INTEL_USE_POINTS){
-    if(!INTEL_USE_POINTS["rumor_lok_highlevel_truth"]) INTEL_USE_POINTS["rumor_lok_highlevel_truth"] = { starName:"駱家聲", starId:"lok_gasing", gigLine:"情報：駱家聲與高層為挑選劇本和拍檔鬧僵，監製那邊是唯一還能談得攏的門路——與他有關的電視通告，站在監製那邊穩妥些。", sightLine:"你拼合了那單內情：駱家聲與高層不和，是爭取挑選劇本和拍檔的自主權。" };
-    if(!INTEL_USE_POINTS["rumor_chung_farewell_truth"]) INTEL_USE_POINTS["rumor_chung_farewell_truth"] = { starName:"鍾楚凝", starId:"chung_choning", gigLine:"情報：鍾楚凝正在辦理離港手續，會等手頭那部戲埋尾才走——她接的戲不會開天窗，但之後不要再預留她的檔期。", sightLine:"你拼合了那單內情：鍾楚凝不是立刻就走，等那部戲埋尾才起行前往加拿大。" };
-  }
-}catch(_e){}
-/* 單卡使用點（唔使拼合，持卡即生效）：通告卡情報行＋巧遇提示行 */
-const INTEL_CARD_USE_POINTS89 = {
-  rumor_pang_show_tip: { starName:"彭少祺", starId:"pang_siuki", gigLine:"情報：台慶大騷缺一名台上助理，要反應快、笑容夠——彭少祺那邊的大騷通告，你站在這個位置最合適。", sightLine:"你聽過風聲：台慶大騷缺台上助理，彭少祺會幫忙挑人。" },
-  rumor_so_ad_tip: { starName:"蘇芷茵", starId:"so_jiyan", gigLine:"情報：有廣告商想找玉女歌手搭檔拍廣告，出價不差——廣告通告見到這個組合，不要等。", sightLine:"你聽過風聲：有廣告商想找蘇芷茵搭檔拍廣告。" },
-  rumor_chai_tv_tip: { starName:"齊鎮海", starId:"chai_zanhoi", gigLine:"情報：齊鎮海嫌電視台合約綁得太死，正密謀跳槽——他那台的通告檔期要留神，隨時有變。", sightLine:"你聽過風聲：齊鎮海對電視台那份合約很有意見，跳槽傳聞從未停過。" },
-  rumor_chung_director_tip: { starName:"鍾楚凝", starId:"chung_choning", gigLine:"情報：有位出名挑剔的文藝片導演正在找女主角搭檔試鏡，要沉得住氣那種——文藝片通告見到這位導演的名字，不要怕悶。", sightLine:"你聽過風聲：那位文藝片導演挑人出名嚴格，鍾楚凝也是這樣被他挑中的。" },
-  rumor_ching_rehearse: { starName:"程天諾", starId:"ching_tinlok", gigLine:"情報：程天諾半夜收工還去練歌房練唱，那種拚命的做法才能站得穩——錄音或登台通告撞見他，不要跟他比熬夜。", sightLine:"你聽過：程天諾收工後半夜還去練歌房，拚盡全力。" },
-  rumor_gu_comeback: { starName:"顧明輝", starId:"gu_mingfai", gigLine:"情報：顧明輝密謀復出駐唱，想找個年輕人搭檔暖場——駐唱或匯演通告見到他的名字，就是一個近身機會。", sightLine:"你聽過風聲：顧明輝想復出駐唱，還在找搭檔暖場。" }
-};
-function br89CardUsePointForGig(gig){
-  try{
-    if(!gig) return null;
-    const hay = [gig.id, gig.title, gig.workTitle, gig.director, gig.leadStar, gig.genreLabel, gig.type].filter(Boolean).join(" ");
-    for(const cid of Object.keys(INTEL_CARD_USE_POINTS89)){
-      const up = INTEL_CARD_USE_POINTS89[cid];
-      if(up && up.starName && hay.includes(up.starName) && br89HoldsCard(cid)) return { id:cid, starName:up.starName, line:up.gigLine };
-    }
-  }catch(_e){}
-  return null;
-}
-function br89CardUsePointForStar(starId){
-  try{
-    for(const cid of Object.keys(INTEL_CARD_USE_POINTS89)){
-      const up = INTEL_CARD_USE_POINTS89[cid];
-      if(up && up.starId===starId && br89HoldsCard(cid)) return { id:cid, starName:up.starName, line:up.sightLine };
-    }
-  }catch(_e){}
-  return null;
-}
-
 /* ---------- WF3-3 地點一次性對白（CHOICE47 模式：openLoc 行動項＋StoryPlay force 播） ---------- */
 const WF3_TALK_NODES = {
   W3_ho_liao: {
-    id:"W3_ho_liao", title:"何生提點：嗰組有水喉", when:"拼到廖炳星情報後", locId:"agency_ho",
+    id:"W3_ho_liao", title:"何生提點：嗰組有水喉", when:"識咗廖炳星之後", locId:"agency_ho",
     setting:"何生事務所；收工時分",
-    synopsis:"何生見阿偉拼到廖炳星嗰單情報，壓低聲提點佢嗰個靚位嘅來歷。",
+    synopsis:"何生見阿偉識咗廖炳星嗰組啲人，壓低聲提點佢嗰個靚位嘅來歷。",
     playerOffer:"何生叫你坐低，有句說話同你講。",
     beats:[
       { speakerId:"agent", speaker:"何生", kind:"npc", text:"阿偉，你返嚟嗰陣面口唔同晒喎。係咪喺紅棉嗰邊，聽到啲咩呀？" },
       { speakerId:"player", speaker:"阿偉", kind:"player", text:"冇乜……淨係知廖炳星嗰組，今次好似唔同平時咁開戲。" },
-      { speakerId:"agent", speaker:"何生", kind:"npc", text:"你拼到嗰單嘢，算你醒目。嗰組而家有水喉，識做就唔好得罪人。" },
+      { speakerId:"agent", speaker:"何生", kind:"npc", text:"你聽到嗰啲嘢，算你醒目。嗰組而家有水喉，識做就唔好得罪人。" },
       { speakerId:"agent", speaker:"何生", kind:"npc", text:"同你講明啦，你企到嗰個靚位，唔係監製睇中你，係金主嗰邊讓出嚟嘅。原本嗰個位，一早內定咗畀人，係出錢嗰個點頭，話唔爭呢個鏡，先至空到出嚟。" },
       { speakerId:"agent", speaker:"何生", kind:"npc", text:"即係話，你企嘅唔係一個位，係人哋畀面先有嘅一個位。你喺嗰度搶一搶鏡，人哋唔會話你叻，只會話你唔識做，唔識做人。" },
       { speakerId:"agent", speaker:"何生", kind:"npc", text:"記住，呢行食飯，唔係下下要出位。有時企得穩、唔出事，先至有人下次再叫你。" }
@@ -28145,8 +27389,10 @@ const WF3_TALK_NODES = {
 };
 const WF3_TALK_DEFS = {
   W3_ho_liao: { loc:"agency_ho", actTitle:"何生壓低聲，有句說話同你講",
-    actHint:"關於廖炳星嗰組——你拼到嘅內情，佢想提點你點用。",
-    avail(){ try{ return hasIntelFlag("intel_liao_money"); }catch(_e){ return false; } } },
+    actHint:"關於廖炳星嗰組——何生有句說話想提點你。",
+    /* v20a267：傳聞拼合已刪；改閘做廖炳星 enc79 tier ≥1（fav ≥10，見過廖就開）。
+       注意：星好感活喺 S.stars.liu_bingxing.fav（S.npcs 從未寫入星 id，唔讀嗰邊）。 */
+    avail(){ try{ let f = 0; if(typeof enc79StarState==="function"){ const st = enc79StarState("liu_bingxing"); f = (st && Number(st.fav)) || 0; } else if(S && S.stars && S.stars.liu_bingxing){ f = Number(S.stars.liu_bingxing.fav)||0; } return (typeof enc79TierOf==="function" ? enc79TierOf(f) : (f>=10?1:0)) >= 1; }catch(_e){ return false; } } },
   W3_ho_m27: { loc:"agency_ho", actTitle:"何生提你嗰排開工低調啲",
     actHint:"上街件事之後，行頭氣氛唔同晒。",
     avail(){ return wf3M27WindowOpen(); } },
@@ -28291,7 +27537,7 @@ function enc158PrepareNode(node){
 function wf3PrepareNode82(node){
   try{
     if(!node || node.id!=="N8") return null;
-    if(typeof hasIntelFlag!=="function" || !hasIntelFlag("intel_yip_truth")) return null;
+    /* v20a267：N8_d 改做無條件——N8 係選美後台，葉敏芝整容疑雲本身就係嗰場嘅題材，玩家喺場內聽到風聲就夠。 */
     if(!Array.isArray(node.choices)) return null;
     if(node.choices.some(c=>c && c.id==="N8_d")) return null;
     const copy = Object.assign({}, node);
@@ -28302,7 +27548,7 @@ function wf3PrepareNode82(node){
         flags:["flag_yip_warned82"],
         stats:{ industryCredit:1 },
         tags:["守口如瓶"],
-        notes:"阿偉手上有拼合返嚟嘅內情，知疑雲係幾句傳聞夾硬縫埋嘅誤會；喺後台冇人嗰陣，低聲提點佢本人，等佢同經理人早啲有準備，唔好等報紙出街先至被動。"
+        notes:"後台啲風聲聽嚟聽去，你聽得出疑雲係幾句傳聞夾硬縫埋嘅誤會；喺後台冇人嗰陣，低聲提點佢本人，等佢同經理人早啲有準備，唔好等報紙出街先至被動。"
       },
       resultBeats:[
         { speaker:"葉敏芝", speakerId:"yip_manji", lines:["你……你點會知嗰單嘢係假㗎？我呢排俾人問到，我自己都唔知點答呀……"] },
@@ -28332,16 +27578,6 @@ function wf3GrantCredit(credit, source){
     return true;
   }catch(_e){ return false; }
 }
-function wf3GrantRumor(row){
-  try{
-    try{ ensureMockJournal(); }catch(_e){}
-    S.mockRumors = S.mockRumors || [];
-    if(S.mockRumors.some(r=>r && r.id===row.id)) return false;
-    S.mockRumors.unshift(Object.assign({}, row));
-    try{ syncNotebookMirror(); }catch(_m){}
-    return true;
-  }catch(_e){ return false; }
-}
 function wf3SettleTick(){
   try{
     if(typeof S==="undefined" || !S || typeof StoryOC==="undefined") return;
@@ -28363,18 +27599,8 @@ function wf3SettleTick(){
       }
     }
     if(st.liaoHarvest && !st.liaoHarvestDone){
-      const wrapped = false; /* v20a229 B3：收割通告已刪（B5 觸發系統接新庫嗰陣，呢度改讀新觸發通告 id） */
-      if(wrapped){
-        st.liaoHarvestDone = 1;
-        S.mockDebts = (S.mockDebts||[]).filter(d=>!(d && d.id==="debt_wf3_liao_grudge"));
-        try{ favorLedgerNoteSettled("debt_wf3_liao_grudge", "wf3_harvest"); }catch(_fl){}
-        wf3GrantCredit({ id:"credit_wf3_comedy_crew", debtor:"喜劇組場務", title:"人情債權・喜劇組熟人", stamp:"還人情",
-          line:"嗰晚通宵補拍你企足全晚冇走過，喜劇組場務收工嗰陣拍你膊頭：「嗰筆數，一筆勾銷。以後我哋組開戲，會記得你呢啲肯捱嘅人。」", status:"未收" }, "wf3_harvest");
-        wf3GrantRumor({ id:"rumor_wf3_comedy_crew", source:"喜劇組場務", title:"喜劇組班底情報",
-          text:"喜劇組場務同你熟咗，漏咗啲口風：邊個監製開喜劇先搵邊班底、邊組出糧最準時，佢一清二楚——以後有呢類消息，佢會預先漏畀你。", state:"normal", season:"" });
-        try{ toast("嗰筆面子債，還清喇。", { sub:"喜劇組嗰班人，而家當你係熟人——人情債權同情報渠道都記入手帳。" }); }catch(_t){}
-        try{ saveQ(); }catch(_s){}
-      } else if(day > ((st.liaoHarvest.gigDay|0) + (st.liaoHarvest.window||7))){
+      /* v20a267：收割通告已刪，wrapped 死分支連 grant 一齊刪；只留過期分支。 */
+      if(day > ((st.liaoHarvest.gigDay|0) + (st.liaoHarvest.window||7))){
         st.liaoHarvestDone = 1;
         st.liaoHarvestExpired = 1;
         S.mockDebts = (S.mockDebts||[]).filter(d=>!(d && d.id==="debt_wf3_liao_grudge"));
@@ -28398,7 +27624,7 @@ function wf3SettleTick(){
     /* --- 鏈 D 拍 4：N8 爆料收尾＋當時已知真相 → 報紙回音（唔寫名，你知係講你） --- */
     if(!st.yipEchoDone && StoryOC.isDone("N8") && StoryOC.getFlag("flag_miss_leak")){
       let knew = false;
-      try{ knew = hasIntelFlag("intel_yip_truth"); }catch(_e){}
+      try{ knew = !!(typeof StoryOC!=="undefined" && StoryOC.getFlag && StoryOC.getFlag("flag_yip_warned82")); }catch(_e){}
       if(knew){
         st.yipEchoDone = 1;
         try{
@@ -28414,35 +27640,21 @@ function wf3SettleTick(){
     /* --- 方小龍武行情報卡（佢條渠道：A_fong 線進度交付，唔用 S.npcs 句池） --- */
     if(!st.fongCardMid && StoryOC.isDone("A_fong_push1")){
       st.fongCardMid = 1;
-      if(wf3GrantRumor({ id:"rumor_wf3_fong_mid", source:"方小龍", title:"邊組缺替身",
-        text:"「阿偉，我同你講，近排有幾個組都缺替身人手，嗌極都唔夠人。你得閒就留意下通告欄，見到武行嗰啲工唔好怕辛苦就走開——缺人嗰陣入到位，先至學到嘢、先至有人記得你。」", state:"normal", season:"" })){
-        try{ toast("方小龍漏咗啲武行口風畀你。", { sub:"已記入手帳傳聞：「邊組缺替身」。" }); }catch(_t){}
-      }
+      try{ toast("方小龍漏咗啲武行口風畀你。", { sub:"「阿偉，我同你講，近排有幾個組都缺替身人手，嗌極都唔夠人。你得閒就留意下通告欄，見到武行嗰啲工唔好怕辛苦就走開——缺人嗰陣入到位，先至學到嘢、先至有人記得你。」" }); }catch(_t){}
       try{ saveQ(); }catch(_s){}
     }
     if(!st.fongCardHigh){
       let high = false;
-      try{ high = StoryOC.isDone("A_fong_crisis") || (StoryOC.isDone("N12") && hasIntelFlag("intel_mak_injury")); }catch(_e){}
+      try{ high = StoryOC.isDone("A_fong_crisis"); }catch(_e){}
       if(high){
         st.fongCardHigh = 1;
-        if(wf3GrantRumor({ id:"rumor_wf3_fong_high", source:"方小龍", title:"高危通告預警",
-          text:"「有啲嘢我淨係同你講。近排嗰類高處跌落嚟嘅高危鏡頭多咗，有啲組啲墊位出名求其，墊唔夠就嗌人跳。你接嗰啲工之前，睇清楚先好應承，唔好人哋嗌你就衝——有啲傷，唔係瞞得住一世㗎，瞞到幾時得幾時咋。」", state:"normal", season:"" })){
-          try{ toast("方小龍壓低聲，提咗你一單高危預警。", { sub:"已記入手帳傳聞：「高危通告預警」。" }); }catch(_t){}
-        }
+        try{ toast("方小龍壓低聲，提咗你一單高危預警。", { sub:"「有啲嘢我淨係同你講。近排嗰類高處跌落嚟嘅高危鏡頭多咗，有啲組啲墊位出名求其，墊唔夠就嗌人跳。你接嗰啲工之前，睇清楚先好應承，唔好人哋嗌你就衝——有啲傷，唔係瞞得住一世㗎，瞞到幾時得幾時咋。」" }); }catch(_t){}
         try{ saveQ(); }catch(_s){}
       }
     }
   }catch(_e){}
 }
 
-const MERGE_FRAGS = [
-  { id:"rumor_lu_baiyan_angry", source:"場務八卦", title:"陸柏言片場發脾氣", text:"陸柏言喺片場無端端發火，鬧到成個場靜晒。" },
-  { id:"rumor_lu_baiyan_drunk", source:"酒保閒聊", title:"陸柏言深夜買醉", text:"有人見到陸柏言半夜喺蘭桂坊飲到爛醉。" },
-  { id:"rumor_liao_bingxing_talk", source:"茶水姐傳聞", title:"廖炳星同導演密談", text:"廖炳星同導演喺房傾咗成個鐘，出嚟個個面色古怪。" },
-  { id:"rumor_liao_bingxing_recast", source:"選角導演漏口風", title:"劇組突然換角", text:"原本定咗嘅男二突然換人，聽講係帶資入組。" },
-  { id:"rumor_mai_zhendong_hurt", source:"武師目擊", title:"麥震東片場整親", text:"麥震東拍動作戲跌親，行路一拐一拐。" },
-  { id:"rumor_mai_zhendong_refuse_doc", source:"製片助理抱怨", title:"麥震東拒睇醫生", text:"製片叫麥震東去醫院，佢死都唔肯，話唔想耽誤進度。" },
-];
 const SEASON_COLLECT = [
   { id:"card_ho_spring", season:"春", creditor:"何生", title:"何生春季數", line:"春天萬物生長，你欠我嗰筆數都係時候發下芽，清一清啦。", status:"就嚟到期" },
   { id:"card_zhang_spring", season:"春", creditor:"道具組老張", title:"老張開春器材數", line:"開春大吉，劇組要添置新道具，你之前借咗嗰啲器材錢，係時候還返。", status:"未到期" },
@@ -28460,48 +27672,12 @@ const DEBT_FUZZY = {
   "絕響":"人已不在香港，呢筆人情收唔返，亦唔使再記掛。",
 };
 const WEAK_MARKS = ["捱得","識做","耍大牌","爛仔","守口如瓶","搏出位"];
-const WEAK_WHISPER = "呢個臨記真係捱得，連拍三個大夜都頂得住，後生仔可造之材。";
-const RUMOR_STATE_ZH = {
-  normal:"剛聽聞", fresh:"剛聽聞", heard:"剛聽聞", new:"剛聽聞",
-  teased:"已知", known:"已知", partial:"已知",
-  merged:"已拼合", combined:"已拼合",
-};
-function rumorStateLabel(state){
-  return RUMOR_STATE_ZH[String(state||"normal")] || "剛聽聞";
-}
 function debtStatusLabel(status){
   return ({ "未到期":1, "就嚟到期":1, "已逾期":1, "絕響":1 })[status] ? status : "未到期";
 }
-const MOCK_RUMOR_SEEDS = [
-  { id:"tvb_rules_gossip", source:"金龍茶餐廳", title:"電視城廠景生存守則", text:"聽聞入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。", state:"normal", season:"" },
-  { id:"gao_steal_spotlight", source:"片場休息區", title:"高俊傑片場搶鏡", text:"高俊傑昨日拍戲時擅自加戲搶鏡，遭導演當場斥責。", state:"normal", season:"" },
-  { id:"choi_recent_news", source:"何生事務所", title:"采兒近期動向", text:"采兒最近密密接拍賀歲片，據聞更想物色新臨記做替身。", state:"normal", season:"" },
-  { id:"hau_ching_recent_news", source:"金龍茶餐廳", title:"曉晴近期動向", text:"曉晴剛拍畢古裝劇，近期轉接時裝喜劇，急需反應敏捷的臨記。", state:"normal", season:"" },
-  { id:"rumor_luk_arrogant_spring", source:"金龍茶餐廳", title:"陸柏言嫌飯盒難食", text:"聽講陸柏言嫌劇組飯盒，當眾掟落垃圾桶，副導嚇到不敢出聲。", state:"normal", season:"春（開年大戲）" },
-  { id:"rumor_liu_heatstroke_summer", source:"片場休息區", title:"廖炳星外景中暑", text:"廖炳星夏天拍古裝穿住厚甲，中咗暑入醫院，劇組要改期。", state:"teased", season:"夏（酷熱外景）" },
-  { id:"rumor_mak_stealrole_autumn", source:"何生事務所", title:"麥震東暗搶角色", text:"麥震東請監製食海鮮，第二日原本定咗嘅男二就換咗佢做。", state:"normal", season:"秋（海鮮當造）" },
-  { id:"rumor_chai_drunk_winter", source:"金龍茶餐廳", title:"齊鎮海飲酒誤事", text:"齊鎮海昨晚去蘭桂坊飲大咗，今朝早通告遲到兩個鐘，導演鬧爆佢。", state:"merged", season:"冬（聖誕派對）" },
-  { id:"rumor_lok_secretlove_spring", source:"金龍茶餐廳後巷", title:"駱家聲秘戀新花旦", text:"駱家聲收工成日接蘇芷茵放工，兩人去咗大埔食糖水，有說有笑。", state:"teased", season:"春（春心蕩漾）" },
-  { id:"rumor_yip_plasticsurgery_summer", source:"片場化妝間", title:"葉敏芝整容爆煲", text:"葉敏芝個鼻透光，化妝姐話佢去韓國執過，叫大家唔好講出去。", state:"normal", season:"夏（強光拍攝）" },
-  { id:"rumor_ngai_argue_autumn", source:"何生事務所", title:"魏詠男同監製嗌交", text:"魏詠男嫌劇本改得太多，同監製喺房嗌交，聽到掟嘢聲。", state:"teased", season:"秋（度期衝突）" },
-  { id:"rumor_pang_gambling_winter", source:"金龍茶餐廳", title:"彭少祺賭錢輸身家", text:"彭少祺去澳門賭大細輸咗幾十萬，要問何生借周轉，何生無好面色。", state:"normal", season:"冬（年尾賭風）" },
-  { id:"rumor_chung_invest_spring", source:"何生事務所", title:"鍾楚凝帶資進組", text:"鍾楚凝阿爸係地產商，投資咗套新戲，條件係要阿女做女一。", state:"merged", season:"春（新戲開鏡）" },
-  { id:"rumor_ku_overwork_summer", source:"金龍茶餐廳", title:"顧明輝軋戲爆煲", text:"顧明輝一日軋三組戲，喺車房瞓著咗錯過通告，幾邊導演都嬲。", state:"normal", season:"夏（拍攝旺季）" },
-];
-/* ===== Weave Phase 4-1（v20a24）：鏈 F 移民潮第 1 拍——1989 年起茶餐廳氛圍碎片。
-   純襯底：唔入 MERGE_PAIRS、唔置任何情報旗、無 fameDelta（跟一般種子形狀）。
-   由 ensureMockJournal 喺 yearSeasonNow().year>=1991 時補種（固定 id 去重，只入一次，舊檔唔重複）。
-   文案守則：市井口吻＋泛稱／虛構人物；唔用真藝名；顯示經 displayRumor（家庭友善過濾一致）。 ===== */
-const EXODUS_RUMOR_SEEDS = [
-  { id:"rumor_exodus_setdresser_van", source:"金龍茶餐廳", title:"場記全家去溫哥華", text:"聽講隔離組個場記全家去咗溫哥華，臨走嗰晚成組人喺廟街大排檔同佢食咗餐送行飯。", state:"normal", season:"" },
-  { id:"rumor_exodus_sell_flat", source:"金龍茶餐廳", title:"邊個賣咗層樓", text:"鄰枱個燈光師話，佢表哥賣咗層樓，攞住筆錢一家大細過去加拿大重新嚟過，話層樓唔賣唔夠錢落地。", state:"normal", season:"" },
-  { id:"rumor_exodus_cha_keeper", source:"金龍茶餐廳", title:"阿成做到月底就走", text:"金龍伙記阿成話做到月底就唔做，表姐喺多倫多幫佢搵到位，老闆娘愁住去邊度搵人頂佢嗰更。", state:"normal", season:"" },
-  { id:"rumor_exodus_airport_runs", source:"金龍茶餐廳", title:"夜晚車人去送機", text:"的士佬吹水話，近排夜晚成日車人去啟德送機，一個月車咗四五轉，個個上車都眼濕濕，落車就講「第日過去探你」。", state:"normal", season:"" },
-  { id:"rumor_exodus_crew_shortage", source:"金龍茶餐廳", title:"片場開始唔夠人", text:"副導嚟飲茶呻，兩個武師一個場務都話年尾走，開新戲要周圍借人，話而家人手一日少過一日。", state:"normal", season:"" },
-  { id:"rumor_exodus_passport_talk", source:"金龍茶餐廳", title:"人人研究入籍", text:"茶客講移民講到口水花噴噴，有人話唔係想走，係買個保險，攞住本外國護照，瞓覺都安樂啲。", state:"normal", season:"" },
-];
+/* v20a267：鏈 F 茶餐廳氛圍碎片已刪；鏈 F 氛圍靠鏈 F 本身＋報紙。 */
 const MOCK_DEBT_SEEDS = [
-  /* v19w playtest：開局唔再塞逾期債；教學完成拼合後先可記一筆「何生教學債」 */
+  /* v19w playtest：開局唔再塞逾期債；教學債由人情頁補種 */
 ];
 const MOCK_DEBT_TUTORIAL = { id:"debt_ho_tutorial", creditor:"何生", title:"教學人情（記低未還）", weight:"舉手之勞", season:"何生話：呢筆人情記低，稍後有禮物或現金再還。", status:"未到期" };
 
@@ -28509,18 +27685,17 @@ const MOCK_ASK = {
   cafe_cha:[
     { id:"act_cha_hall_tea", title:"大堂飲茶聽八卦", hint:"花 $15 茶錢，隔籬枱可能有料。", choiceHint:"花 $15 茶錢，隔籬枱可能有料。", cost:"$15 茶錢", toast:"聽到啲碎料，似乎有搞作。", resultHint:"隔離枱講緊某當紅小生嘅軼事⋯⋯", source:"金龍茶餐廳", moneyCost:15 },
     { id:"act_cha_help_clear", title:"幫手執漏", hint:"老闆娘唔夠人手嗰陣，幫佢頂一陣，佢會記你一份人情。", cost:"幫手", toast:"執完枱，老闆娘記低你一份人情。", source:"金龍茶餐廳" },
-    { id:"act_cha_tvb_rules", title:"打聽電視城規矩", hint:"向茶餐廳伙記打聽入廠禁忌", cost:"請伙記飲凍檸茶", toast:"伙記低聲透露廠景潛規則。", source:"金龍茶餐廳", grantsRumorId:"tvb_rules_gossip" },
-    { id:"act_cha_gao_spotlight", title:"打聽高俊傑搶鏡事", hint:"向茶客打聽高俊傑片場八卦", cost:"請茶客食西多士", toast:"鄰桌燈光師爆料高俊傑所為。", source:"金龍茶餐廳", grantsRumorId:"gao_steal_spotlight" },
-    { id:"act_cha_hiu_news", title:"打聽曉晴近況", hint:"向化妝師打聽曉晴動向", cost:"請化妝師飲咖啡", toast:"化妝師指曉晴轉拍時裝喜劇。", source:"金龍茶餐廳", grantsRumorId:"hau_ching_recent_news" },
+    { id:"act_cha_tvb_rules", title:"打聽電視城規矩", hint:"向茶餐廳伙記打聽入廠禁忌", cost:"請伙記飲凍檸茶", toast:"伙記低聲透露廠景潛規則。", source:"金龍茶餐廳", intelText:"入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。" },
+    { id:"act_cha_gao_spotlight", title:"打聽高俊傑搶鏡事", hint:"向茶客打聽高俊傑片場八卦", cost:"請茶客食西多士", toast:"鄰桌燈光師爆料高俊傑所為。", source:"金龍茶餐廳", intelText:"高俊傑昨日拍戲時擅自加戲搶鏡，遭導演當場斥責。" },
+    { id:"act_cha_hiu_news", title:"打聽曉晴近況", hint:"向化妝師打聽曉晴動向", cost:"請化妝師飲咖啡", toast:"化妝師指曉晴轉拍時裝喜劇。", source:"金龍茶餐廳", intelText:"曉晴剛拍畢古裝劇，近期轉接時裝喜劇，急需反應敏捷的臨記。" },
   ],
   agency_ho:[
-    { id:"act_ho_tvb_rules", title:"請教何生入廠守則", hint:"向經理人請教電視台規矩", cost:"遞包萬寶路畀何生", toast:"何生提點數招廠景生存之道。", source:"何生事務所", grantsRumorId:"tvb_rules_gossip" },
-    { id:"act_ho_choi_news", title:"詢問采兒近況", hint:"向何生打聽采兒最新動向", cost:"免費", toast:"何生透露采兒正籌備新戲。", source:"何生事務所", grantsRumorId:"choi_recent_news" },
+    { id:"act_ho_tvb_rules", title:"請教何生入廠守則", hint:"向經理人請教電視台規矩", cost:"遞包萬寶路畀何生", toast:"何生提點數招廠景生存之道。", source:"何生事務所", intelText:"入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。" },
+    { id:"act_ho_choi_news", title:"詢問采兒近況", hint:"向何生打聽采兒最新動向", cost:"免費", toast:"何生透露采兒正籌備新戲。", source:"何生事務所", intelText:"采兒最近頻密接拍賀歲片，更想物色新臨記做替身。" },
     { id:"act_ho_repay", title:"還人情 / 送禮", hint:"揀一筆何生人情債，用現金或庫存禮物還。", choiceHint:"揀一筆何生人情債，用現金或庫存禮物還。", cost:"禮物／現金", toast:"何生收低，話「大家自己人」。", resultHint:"何生心情好咗，提咗句年尾有筍盤。", source:"何生事務所", repay:true },
     { id:"act_ho_rumor", title:"聽風聲", hint:"何生每日有一單真風聲：邊位紅星呢幾日會出沒、邊套戲就嚟開鏡。", cost:"無", toast:"何生壓低聲講咗一單真風聲。", source:"何生事務所" },
   ],
 };
-let mockMergePick = [];
 function mockAskDefs(locId){
   const raw = MOCK_ASK[locId] || null;
   if(!raw || !Array.isArray(raw)) return raw;
@@ -28542,9 +27717,6 @@ function mockAskDefs(locId){
 function journalText(s){
   return String(s==null?"":s).replace(/[&<>"']/g, ch=>({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[ch]));
 }
-function displayRumor(r){
-  try{ return (typeof familySafeRumorText==="function") ? familySafeRumorText(r) : r; }catch(_e){ return r; }
-}
 function healMayDebtCopy(d){
   /* id stays debt_may_winter_makeup; player-facing May → 化妝姐美兒 */
   if(!d || d.id!=="debt_may_winter_makeup") return;
@@ -28556,55 +27728,17 @@ function healMayDebtCopy(d){
 function syncNotebookMirror(){
   if(!S) return;
   if(!S.notebook || typeof S.notebook!=="object" || Array.isArray(S.notebook)) S.notebook={};
-  S.notebook.rumors = S.mockRumors;
   S.notebook.debts = S.mockDebts;
 }
 function ensureMockJournal(){
   if(!S) return;
-  if(!S.mockJournalSeeded){
-    /* v19z10：新檔唔預填 MOCK_RUMOR_SEEDS（避免打聽一開局「已聽過」）；只放拼合教學碎片並標教學預置 */
-    S.mockRumors = MERGE_FRAGS.map(frag=>({
-      id:frag.id, source:frag.source, title:frag.title, text:frag.text,
-      state:"normal", season:"", seeded:true, tutorialSeed:true
-    }));
-    S.mockDebts = []; /* v19w：開局人情債清空，避免 Day1 已逾期 */
-    S.mockJournalSeeded = true;
-  }
-  if(!Array.isArray(S.mockRumors)) S.mockRumors=[];
   if(!Array.isArray(S.mockDebts)) S.mockDebts=[];
   S.mockDebts.forEach(healMayDebtCopy);
-  for(let i=MERGE_FRAGS.length-1;i>=0;i--){
-    const frag=MERGE_FRAGS[i];
-    if(!S.mockRumors.some(r=>r && r.id===frag.id)){
-      S.mockRumors.unshift({ id:frag.id, source:frag.source, title:frag.title, text:frag.text, state:"normal", season:"", seeded:true, tutorialSeed:true });
-    }
-  }
-  /* Weave Phase 4-1（v20a24）：鏈 F 第 1 拍——1989 年起補種移民潮氛圍碎片。
-     年份閘行真日曆（yearSeasonNow）；1990 年完全唔入池。固定 id 去重，舊檔跨年後只補一次。 */
-  if(typeof yearSeasonNow==="function" && typeof EXODUS_RUMOR_SEEDS!=="undefined" && yearSeasonNow().year>=1991){
-    for(const seed of EXODUS_RUMOR_SEEDS){
-      if(seed && !S.mockRumors.some(r=>r && r.id===seed.id)){
-        S.mockRumors.push({ id:seed.id, source:seed.source, title:seed.title, text:seed.text, state:"normal", season:"", seeded:true });
-      }
-    }
-  }
-  /* Weave Phase 4-2（v20a25）：人情簿確保＋舊檔回填；鏈 F 第 2 拍芬姐人情對 1989 年起播種（冪等）。 */
+  /* v20a267：傳聞播種全部移除；呢度只留人情債／帳本／屋企債初始化。 */
   try{ if(typeof ensureFavorLedger==="function") ensureFavorLedger(); }catch(_e){}
   try{ if(typeof seedExodusFenPair==="function") seedExodusFenPair(); }catch(_e){}
-  /* v20a86 WF4：碎片庫補完補種（Call 機／大哥大／日常質地；冪等、固定 id 去重） */
-  try{ if(typeof wf4SeedFrags==="function") wf4SeedFrags(); }catch(_e){}
-  /* Weave Phase 4-3（v20a26）：鏈 G 屋企恆常債播種（新檔／舊檔首次載入都經呢度；跨月補種另有 advanceDay 入口，冪等）。 */
   try{ if(typeof ensureFamilyHomeDebt==="function") ensureFamilyHomeDebt(); }catch(_e){}
   syncNotebookMirror();
-}
-function findMergePair(idA, idB){
-  return MERGE_PAIRS.find(p=>(p.a===idA && p.b===idB) || (p.a===idB && p.b===idA)) || null;
-}
-function heardPickIds(){
-  return mockMergePick.filter(id=>{
-    const row=(S.mockRumors||[]).find(r=>r && r.id===id);
-    return row && rumorStateLabel(row.state)==="剛聽聞";
-  });
 }
 function favorPressure(){
   /* 顯示用。唔寫 S.stress、唔鎖通告、唔改閘。 */
@@ -28647,14 +27781,6 @@ function ensureWeakSeals(){
   const earned = castingTagsEarnedLabels();
   const marks = earned.length ? earned.slice(0, 8) : [];
   el.innerHTML = marks.map(name=>`<span>${journalText(name)}</span>`).join("");
-}
-function mockIntelHits(actionKey){
-  /* 情報刷新 B：跟週數同未清人情債搖，唔係次次有新料。唔改日／銀碼／閘。 */
-  const week = (typeof weekNumNow==="function") ? weekNumNow() : 1;
-  const debts = (S.mockDebts||[]).length;
-  S.mockAskNonce = (Number(S.mockAskNonce)||0) + 1;
-  const mix = (week * 5 + debts * 3 + S.mockAskNonce * 7 + String(actionKey||"").length) % 5;
-  return mix <= 1;
 }
 function debtCreditorName(d){
   if(!d) return "";
@@ -28760,7 +27886,7 @@ function applyMockAsk(locId, actionId, repayOpt){
   let payNote="";
   /* v19z6：已聽過傳聞唔再扣茶／重複登記 */
   if(!def.repay && typeof mockAskAlreadyHeard==="function" && mockAskAlreadyHeard(def)){
-    return { ok:false, toast:"這單已經聽過——入手帳「傳聞」再看。", alreadyHeard:true };
+    return { ok:false, toast:"呢單情報已經聽過。", alreadyHeard:true };
   }
   const moneyCost = Number(def.moneyCost)||0;
   const isTea = !def.repay && (moneyCost>0 || def.id==="act_cha_hall_tea");
@@ -28862,39 +27988,14 @@ function applyMockAsk(locId, actionId, repayOpt){
     }
     try{ refreshMoneyHud(); }catch(_e){}
   }
-  const grantId = def.grantsRumorId ? String(def.grantsRumorId) : "";
-  const catalog = grantId ? (MOCK_RUMOR_SEEDS||[]).find(r=>r && r.id===grantId) : null;
-  const unlockId = grantId || ("hint:"+def.id);
-  const existing = (S.mockRumors||[]).find(r=>r && r.id===unlockId);
-  const anyCafeLanded = (S.mockRumors||[]).some(r=>r && String(r.id||"").indexOf("hint:act_cha_")===0);
-  const forceCafe = !grantId && locId==="cafe_cha" && !!(def.resultHint||def.hint) && !existing && (def.id==="act_cha_hall_tea" || !anyCafeLanded);
-  const hit = !!((grantId || def.hint || def.resultHint) && (grantId || forceCafe || mockIntelHits(def.id)));
-  const rumorText = (catalog && catalog.text) || def.resultHint || def.hint || "";
-  const rumorTitle = (catalog && catalog.title) || def.title;
-  /* v20a37 驗證修復（查證 9）：來源要跟玩家實際聽到嘅地點。舊碼 catalog（種子固定值）
-     優先——tvb_rules_gossip 種子寫死「金龍茶餐廳」，玩家就算喺何生事務所經
-     act_ho_tvb_rules 請教何生聽返嚟，卡面都照顯示金龍茶餐廳。
-     def.source 就係嗰個行動本身嘅地點（每個打聽行動都有），改以佢優先；
-     冇行動來源先 fallback 種子值。唔使改數據結構。 */
-  const rumorSource = def.source || (catalog && catalog.source) || "";
-  if(hit){
-    if(!existing){
-      S.mockRumors.unshift({
-        id:unlockId, source:rumorSource, title:rumorTitle, text:rumorText, state:"normal", season:(catalog && catalog.season)||"",
-        fromAsk:true, heardByAsk:true
-      });
-      try{ noteWeekHighlight("rumor", rumorTitle||unlockId); }catch(_wh){}
-      added = true;
-    } else if(rumorStateLabel(existing.state)!=="已拼合"){
-      const before = rumorStateLabel(existing.state);
-      existing.state = "normal";
-      existing.text = rumorText || existing.text;
-      existing.source = rumorSource || existing.source;
-      existing.title = rumorTitle || existing.title;
-      existing.fromAsk = true;
-      existing.heardByAsk = true;
-      if(before!=="剛聽聞") updated = true;
-    }
+  /* v20a267：打聽變情報站——結果直接顯示情報文字，唔寫傳聞卡。已問過嘅行動由
+     mockAskAlreadyHeard（讀 S.intelAsked）鎖住，呢度再防一次。 */
+  const intelText = (def && def.intelText) || def.resultHint || def.hint || "";
+  const intelTitle = (def && def.title) || "";
+  if(intelText && !mockAskAlreadyHeard(def)){
+    S.intelAsked = S.intelAsked || {};
+    S.intelAsked[def.id] = (S.dayIndex|0);
+    added = true;
   }
   let favorNote = "";
   if(locId==="agency_ho"){
@@ -28904,17 +28005,10 @@ function applyMockAsk(locId, actionId, repayOpt){
   }
   syncNotebookMirror();
   try{ saveQ(); }catch(_e){}
-  let toastMsg = cleared ? MOCK_TOAST.debtCleared : ((added||updated) ? MOCK_TOAST.rumorGained : def.toast);
+  let toastMsg = cleared ? MOCK_TOAST.debtCleared : (added ? intelText : def.toast);
   if(cleared && def.resultHint) toastMsg = MOCK_TOAST.debtCleared + " " + def.resultHint;
   if(payNote) toastMsg = payNote + (toastMsg ? " "+toastMsg : "");
   if(favorNote) toastMsg = favorNote + (toastMsg ? " "+toastMsg : "");
-  if(added && def.resultHint && def.id==="act_cha_hall_tea") toastMsg = (payNote?payNote+" ":"") + def.resultHint + "（已記入手帳）";
-  /* v19z3：傳聞 toast 帶短標題 */
-  if((added||updated) && rumorTitle){
-    /* P0-3（v20a12）：toast 短標題同卡面一致，行 displayRumor 過濾，唔好一邊原文一邊軟化。 */
-    const safeRumorTitle = (function(){ try{ const d = displayRumor({title:rumorTitle}); return (d && d.title) || rumorTitle; }catch(_e){ return rumorTitle; } })();
-    toastMsg = `傳聞「${safeRumorTitle}」——快點記入手帳` + (payNote ? " · "+payNote : "");
-  }
   /* v19z6：成功先計入每日上限（失敗／已聽過唔扣次數） */
   try{
     if(!def.repay){
@@ -28925,7 +28019,7 @@ function applyMockAsk(locId, actionId, repayOpt){
       }
     }
   }catch(_cap){}
-  return { ok:true, added, updated, cleared, toast:toastMsg, rumorId: (added||updated) ? unlockId : (existing&&hit ? unlockId : null) };
+  return { ok:true, added, updated, cleared, toast:toastMsg, rumorId:null, intelTitle, intelText: added ? intelText : "" };
 }
 /** v19z10：還指定債；fromJournal=true 時唔強跳何生事務所 */
 function openDebtRepaySheet(debtId, L, opts){
@@ -28996,177 +28090,6 @@ function openHoRepaySheet(L){
   }));
   opts.push({ label:"取消", role:"g" });
   modal("<h3>還人情</h3><p>揀一筆何生人情債。</p>", opts);
-}
-function toggleRumorPick(id){
-  ensureMockJournal();
-  const row = (S.mockRumors||[]).find(r=>r && r.id===id);
-  if(!row || rumorStateLabel(row.state)!=="剛聽聞") return;
-  const i = mockMergePick.indexOf(id);
-  if(i>=0) mockMergePick.splice(i, 1);
-  else {
-    if(mockMergePick.length>=2) mockMergePick.shift();
-    mockMergePick.push(id);
-  }
-  renderRumorPane();
-}
-function mergePickedRumors(){
-  ensureMockJournal();
-  const ids = heardPickIds();
-  if(ids.length<2){
-    const fail = phase2Steps56Line("step6", "failToast", MERGE_FLOW.failToast);
-    toast(fail);
-    playTutorialPhase2MergeFx("fail");
-    return { ok:false, toast:fail };
-  }
-  const pair = findMergePair(ids[0], ids[1]);
-  if(!pair){
-    mockMergePick = [];
-    renderRumorPane();
-    const miss = phase2Steps56Line("step6", "noPairHint", MERGE_FLOW.noPairHint);
-    playTutorialPhase2MergeFx("fail");
-    modal(`<h3>拼合未成</h3>
-      <p>${journalText(miss)}</p>
-      <p class="sub">呢兩單未見關聯——試吓同一個人／同一事件嘅「剛聽聞」卡。</p>`,[
-      {label:"我知道了", role:"p"}
-    ]);
-    return { ok:false, toast:miss };
-  }
-  ids.forEach(id=>{
-    const row = S.mockRumors.find(r=>r && r.id===id);
-    if(row) row.state = "merged";
-  });
-  if(!S.mockRumors.some(r=>r && r.id===pair.merged)){
-    S.mockRumors.unshift({
-      id:pair.merged, source:"手帳", title:pair.title, text:pair.text, state:"merged", season:"", stamp:true,
-    });
-  }
-  /* v20a16：拼合完成即置情報旗（鏈 A 隱藏通告等使用點行旗，唔再淨靠掃行） */
-  try{ setIntelFlag(pair.merged); }catch(_e){}
-  mockMergePick = [];
-  syncNotebookMirror();
-  try{ saveQ(); }catch(_e){}
-  /* P0-4（v20a11）：先標記教學完成，先至重繪傳聞頁。
-     舊順序 render 嗰陣 rumorTutorialDone 仲係 false，Step-5 拖曳教學（手指＋虛線箭咀）
-     同目標卡高亮會重新掛上，之後無人再 render，殘留喺卡面遮住內容。 */
-  try{ markRumorTutorialDone("merge"); }catch(_e){}
-  renderRumorPane();
-  const stamp = phase2Steps56Line("step6", "successStampLine", MERGE_FLOW.successStampLine);
-  toast(stamp);
-  playTutorialPhase2MergeFx("ok");
-  const settle = phase2Steps56Copy() ? phase2Steps56Line("step6", "favorDebtSettleLine", "") : "";
-  if(settle){
-    const closeLabel = phase2Steps56Line("step6", "closeSettleLabel", "知道了");
-    const settleNote = /教學|何生/.test(String(settle))
-      ? settle
-      : "（教學備註）何生早前記低嘅人情債——唔係拼合生出嚟；稍後可去事務所還。";
-    modal(`${tutorialMergeFxHtml("ok")}<p>${journalText(settleNote)}</p><p class="sub">拼合只整理傳聞，唔會新欠人情。</p>`, [{ label:closeLabel, role:"p" }]);
-  }
-  return { ok:true, toast:stamp, merged:pair.merged, settle:!!settle };
-}
-function requestMergeConfirm(){
-  ensureMockJournal();
-  const ids = heardPickIds();
-  if(ids.length<2){
-    const fail = phase2Steps56Line("step6", "failToast", MERGE_FLOW.failToast);
-    toast(fail);
-    playTutorialPhase2MergeFx("fail");
-    return { ok:false, toast:fail };
-  }
-  const rows = ids.map(id=>S.mockRumors.find(r=>r && r.id===id));
-  /* P0-3（v20a12）：確認彈窗標題要行返 displayRumor（家庭友善過濾），同卡面一致。
-     舊寫法直接用原文 rows[i].title，過濾開時會出現彈窗「深夜買醉」vs 卡面「深夜夜歸散心」嘅不一致。 */
-  const dRows = rows.map(r=>{ try{ return r ? (displayRumor(r)||r) : r; }catch(_e){ return r; } });
-  const title = phase2Steps56Line("step6", "confirmTitle", "確認拼合");
-  const body = phase2Steps56Copy() ? phase2Steps56Line("step6", "confirmBody", "") : "";
-  const bodyHtml = body ? `<p>${journalText(body)}</p>` : "";
-  const cancel = phase2Steps56Line("step6", "cancelLabel", MERGE_FLOW.cancelLabel);
-  const confirm = phase2Steps56Line("step6", "confirmLabel", MERGE_FLOW.confirmLabel);
-  modal(`<h3>${journalText(title)}</h3>${bodyHtml}<p>${journalText(dRows[0]&&dRows[0].title)}</p><p>${journalText(dRows[1]&&dRows[1].title)}</p>`, [
-    { label:cancel, role:"g" },
-    { label:confirm, role:"p", on:()=>mergePickedRumors() },
-  ]);
-  return { ok:true, pending:true };
-}
-function renderRumorPane(){
-  const box=document.getElementById("rumor-list");
-  if(!box) return;
-  applyPhase2Steps56TabLabel();
-  ensureMockJournal();
-  /* v20a34 引導包 P0-5(c)：傳聞頁白話總說明（教學 coach 係步驟指示，唔係頁面用途說明，兩者唔重複） */
-  const intro34=`<p class="pane-intro">呢頁係你聽返嚟嘅傳聞碎片：每張都寫明喺邊度聽返嚟。揀兩張相關嘅可以拼合成情報——開到隱藏通告，喺重要場面亦幫到你應對。</p>`;
-  const rows=S.mockRumors||[];
-  if(!rows.length){
-    box.innerHTML=intro34+phase2Steps56CoachHtml(false)+`<article class="rumor-card rumor-empty"><p class="rumor-src">傳聞</p><p>${journalText(MOCK_EMPTY.rumors)}</p></article>`;
-    return;
-  }
-  ensureWeakSeals();
-  const heard = rows.filter(r=>rumorStateLabel(r.state)==="剛聽聞");
-  const picks = heardPickIds();
-  const mergeOn = picks.length>=2;
-  const softCopy = phase2Steps56Copy();
-  const hint = mergeOn
-    ? `<p class="rumor-hint">${journalText(phase2Steps56Line("step6", "mergeGlowHint", MERGE_FLOW.glow))}</p>`
-    : (heard.length>=2 && !softCopy ? `<p class="rumor-hint">點兩張剛聽聞，拉埋再確認。</p>` : "");
-  const merge = mergeOn ? `<div class="rumor-merge"><button type="button" id="rumor-merge-btn">${journalText(phase2Steps56Line("step6", "confirmLabel", MERGE_FLOW.confirmLabel))}</button></div>` : "";
-  const whisper = `<p class="weak-whisper">${journalText(WEAK_WHISPER)}</p>`;
-  const fxOn = tutorialPhase2FxOn();
-  /* Step-5 target slot, same lifetime as the drag guide. Still mounts while
-     Phase2 teaching is open; skip/merge (rumorTutorialDone) drops it. Edge glow is separate. */
-  const slotRow = (!mergeOn && fxOn && !rumorTutorialDone()) ? (heard.find(r=>picks.indexOf(r.id)<0) || heard[0] || null) : null;
-  const slotId = slotRow ? slotRow.id : "";
-  const drag = (fxOn && !mergeOn && heard.length && !rumorTutorialDone()) ? tutorialPhase2DragGuideHtml() : "";
-  box.innerHTML = intro34 + phase2Steps56CoachHtml(mergeOn) + drag + hint + merge + rows.map(raw=>{
-    const r = displayRumor(raw) || raw;
-    const label = rumorStateLabel(r.state);
-    const picked = picks.indexOf(r.id)>=0;
-    const can = label==="剛聽聞";
-    const glow = mergeOn && picked ? " is-glow" : "";
-    const stamp = r.stamp ? `<span class="rumor-stamp" aria-hidden="true">有頭緒</span>` : "";
-    let fx = "";
-    if(fxOn && can){
-      fx += tutorialFxImg("tut-fx-lift","fx_card_lift_shadow.png");
-      if(r.id===slotId) fx += tutorialFxImg("tut-fx-slot","fx_slot_highlight.png");
-      if(glow) fx += tutorialFxImg("tut-fx-edge","fx_merge_edge_glow.png");
-    }
-    const seedTag = (r.tutorialSeed || r.seeded) ? `<span class="rumor-seed-tag">街坊傳聞</span>` : "";
-    /* v20a34 引導包 P0-5(a)：來源一律顯示——跟返張卡實際 source 欄；冇 source 嘅
-       報紙碎片用返佢嘅出處「報紙花邊」，其餘用中性預設「街坊傳聞」，唔亂作來源。 */
-    const src34 = r.source || (r.paperFrag ? "報紙花邊" : "街坊傳聞");
-    return `<article class="rumor-card${picked?" is-picked":""}${glow}${can?" can-pick":""}${r.stamp?" is-stamped":""}" data-rumor-id="${journalText(r.id)}"><p class="rumor-src">來源：${journalText(src34)}${seedTag}</p><p class="rumor-title">${journalText(r.title)}</p><p>${journalText(r.text)}</p><span class="rumor-state">${journalText(label)}</span>${r.season?`<p class="debt-note">${journalText(r.season)}</p>`:""}${stamp}${fx}</article>`;
-  }).join("") + whisper;
-  box.querySelectorAll(".rumor-card.can-pick").forEach(el=>{
-    const id = el.getAttribute("data-rumor-id");
-    let hold=0;
-    el.addEventListener("pointerdown", ()=>{
-      clearTimeout(hold);
-      el.classList.add("is-lifting");
-      hold=setTimeout(()=>{
-        el.classList.add("is-near");
-        if(tutorialPhase2FxOn() && !el.querySelector(".tut-fx-edge")){
-          el.insertAdjacentHTML("beforeend", tutorialFxImg("tut-fx-edge","fx_merge_edge_glow.png"));
-        }
-      }, 420);
-    });
-    const clearHold=()=>{
-      clearTimeout(hold);
-      el.classList.remove("is-lifting");
-      if(el.classList.contains("is-near")){
-        el.classList.remove("is-near");
-        if(!el.classList.contains("is-glow")){
-          const edge = el.querySelector(".tut-fx-edge");
-          if(edge) edge.remove();
-        }
-      }
-    };
-    el.addEventListener("pointerup", clearHold);
-    el.addEventListener("pointercancel", clearHold);
-    el.addEventListener("pointerleave", clearHold);
-    el.addEventListener("click", ()=>toggleRumorPick(id));
-  });
-  const mergeBtn=document.getElementById("rumor-merge-btn");
-  if(mergeBtn) mergeBtn.onclick=()=>requestMergeConfirm();
-  const skipBtn=document.getElementById("rumor-tut-skip");
-  if(skipBtn) skipBtn.onclick=(ev)=>{ try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){} skipRumorTutorial(); };
 }
 function seasonCollectToast(){
   if(!S) return "";
@@ -29364,9 +28287,9 @@ function playPushDoor(){
    一級只顯示五大類（行程／事業／近況／消息／人情）；子頁 id 同 pane 全部不變，
    分組只係導航層；組內記住上次開嗰個子頁（session 內）。恆常出口：唔再跟行程掣
    嘅顯示／標籤走（舊制根因見 syncHomeTabExit 註解）。 */
-const BOOK70_TAB_GROUP = { plan:"plan", train:"plan", progress:"plan", works:"career", awards:"career", memory:"career", ledger:"status", tags:"status", inv:"status", rumor:"news", clippings:"news", debt:"favor", people:"favor" };
-const BOOK70_GROUP_FIRST = { plan:"plan", career:"works", status:"ledger", news:"rumor", favor:"debt" };
-const book70GroupSub = { plan:"plan", career:"works", status:"ledger", news:"rumor", favor:"debt" };
+const BOOK70_TAB_GROUP = { plan:"plan", train:"plan", progress:"plan", works:"career", awards:"career", memory:"career", ledger:"status", tags:"status", inv:"status", clippings:"news", debt:"favor", people:"favor" };
+const BOOK70_GROUP_FIRST = { plan:"plan", career:"works", status:"ledger", news:"clippings", favor:"debt" };
+const book70GroupSub = { plan:"plan", career:"works", status:"ledger", news:"clippings", favor:"debt" };
 function book70SyncTabGroups(tab){
   const grp = BOOK70_TAB_GROUP[tab] || "plan";
   if(book70GroupSub[grp]) book70GroupSub[grp] = tab;
@@ -29434,11 +28357,11 @@ function setHomeTab(tab){
      原選單 modal 頁歸入手帳（選單一門原則）；拍攝簿併入 works 頁、狀態早於
      v20a6 已同記數同頁，唔使加子頁。 */
   if(tab === "guide" || tab === "train"){ tab = "plan"; }
-  const allow={ plan:1, ledger:1, rumor:1, clippings:1, debt:1, tags:1, works:1, awards:1, memory:1, progress:1, people:1, inv:1 }; /* v20a60 CALIB60-3：加「回憶」頁；v20a62 AWARDS62-7：加「獎項」頁；v20a71 PROGRESS71：加「進度」頁；v20a72 MENU72：加「人脈」「庫存」頁 */
+  const allow={ plan:1, ledger:1, clippings:1, debt:1, tags:1, works:1, awards:1, memory:1, progress:1, people:1, inv:1 }; /* v20a60 CALIB60-3：加「回憶」頁；v20a62 AWARDS62-7：加「獎項」頁；v20a71 PROGRESS71：加「進度」頁；v20a72 MENU72：加「人脈」「庫存」頁 */
   if(!allow[tab]) tab="plan";
   applyPhase2Steps56TabLabel();
   try{ book70SyncTabGroups(tab); }catch(_grp){}
-  ["plan","ledger","rumor","clippings","debt","people","tags","inv","works","awards","memory","progress"].forEach(id=>{
+  ["plan","ledger","clippings","debt","people","tags","inv","works","awards","memory","progress"].forEach(id=>{
     const pane=document.getElementById("home-pane-"+id);
     if(pane) pane.classList.toggle("on", id===tab);
   });
@@ -29449,7 +28372,6 @@ function setHomeTab(tab){
   if(tab==="ledger"){
     try{ renderLedgerPane(); }catch(_e){}
   }
-  if(tab==="rumor") renderRumorPane();
   if(tab==="clippings"){
     try{ renderClippingsPane(); }catch(_e){}
   }
@@ -29643,7 +28565,6 @@ function prog71StubItems(id){
        v165 強制播；去嗰度只係場景設定）。v20a179：鎖行唔用括號孤兒句，改做
        標籤式「場景：X」——拎走括號，同隔籬條件句分返開；已開放行完整句式唔郁。 */
     if(lm){ items.push({ ok:false, text:"場景："+lm[1] }); return; }
-    if(s.indexOf("未聽聞")===0){ items.push({ ok:false, text:"聽到傳聞："+s.slice(3) }); return; }
     if(s.indexOf("要到秋或冬")>=0){ items.push({ ok:false, text:s.replace(/。$/,"") }); return; }
     if(s==="檔期未到該季"){ items.push({ ok:false, text:"等到合適的季節" }); return; }
     /* v20a172 C1：OR 條件入面嘅地點同樣只係場景資料，唔留「去 X」觸發句。
@@ -29885,12 +28806,8 @@ try{
     setTab: function(tab){ setHomeTab(tab); },
     openLedger: function(){ try{ showStats(); }catch(_e){} },
     ask: function(locId, actionId){ return applyMockAsk(locId, actionId); },
-    journal: function(){ ensureMockJournal(); return { rumors:(S.notebook&&S.notebook.rumors)||[], debts:(S.notebook&&S.notebook.debts)||[] }; },
+    journal: function(){ ensureMockJournal(); return { debts:(S.notebook&&S.notebook.debts)||[] }; },
     sheetOpen: function(){ const s=document.getElementById("loc-sheet"); return !!(s&&s.classList.contains("on")); },
-    stateLabel: function(state){ return rumorStateLabel(state); },
-    pickRumor: function(id){ toggleRumorPick(id); return mockMergePick.slice(); },
-    merge: function(){ return mergePickedRumors(); },
-    confirmMerge: function(){ return requestMergeConfirm(); },
     pressure: function(){ ensureMockJournal(); return favorPressure(); },
     fingerprint: phase2GateFingerprint,
     gigs: function(){ return { version: STORY_WIRE && STORY_WIRE.gigsVersion, n:(GIGS||[]).length }; },
@@ -29902,7 +28819,6 @@ const FREEPLAY_FW = {
   version: "v20a10",
   schema: null,
   eraStars: null,
-  rumorFrags: null,
   favorDebt: null,
   castingTagsReg: null,
   storySlots: null,
@@ -30138,11 +29054,6 @@ function renderCastingTagsPane(){
   const go = box.querySelector(".titles162-goawards");
   if(go) go.onclick = ()=>{ try{ setHomeTab("awards"); }catch(_e){} };
 }
-function freeplayRumorPlaceholderText(frag){
-  const t = frag && String(frag.text||"").trim();
-  if(t) return t;
-  return "聽講圈內近排有啲風聲，講到邊個就嚟有大動作——係邊個，仲未有人肯講實。";
-}
 function freeplaySeasonAllows(seasonAny){
   const list = Array.isArray(seasonAny) ? seasonAny : [];
   if(!list.length) return true;
@@ -30151,29 +29062,6 @@ function freeplaySeasonAllows(seasonAny){
   const KEY = { "春":"spring","夏":"summer","秋":"autumn","冬":"winter", spring:"spring", summer:"summer", autumn:"autumn", winter:"winter" };
   const curK = KEY[cur] || "";
   return list.some(s=> (KEY[s]||"") === curK);
-}
-function seedFreeplayRumorShells(){
-  try{
-    if(!S) return;
-    ensureMockJournal();
-    const frags = (FREEPLAY_FW.rumorFrags && FREEPLAY_FW.rumorFrags.fragments) || [];
-    if(!frags.length) return;
-    S.mockRumors = S.mockRumors || [];
-    frags.forEach(f=>{
-      if(!f || !f.id) return;
-      if((S.mockRumors||[]).some(r=>r && r.id===f.id)) return;
-      /* Empty text = no auto-seed (anti spam). Non-empty + season allows → journal. */
-      if(!String(f.text||"").trim()) return;
-      if(!freeplaySeasonAllows(f.seasonAny)) return;
-      S.mockRumors.push({
-        id:f.id, source:f.source||"傳聞", title:f.title||f.id,
-        text: freeplayRumorPlaceholderText(f), state:f.state||"seed",
-        season:(f.seasonAny&&f.seasonAny[0])||"",
-        mergeGroup:f.mergeGroup||"", phase2PairId:f.phase2PairId||""
-      });
-    });
-    try{ syncNotebookMirror(); }catch(_e){}
-  }catch(_e){}
 }
 function mapFreeplayDebtStatus(st){
   const s = String(st||"");
@@ -34911,8 +33799,8 @@ function newspaperDueItems(day){
   return ensureNewspaperQueue().filter(it=>it && (it.publishDay|0) <= today);
 }
 /* ===== Weave Phase 1-1（v20a13）：報紙「花邊短訊」——唔關阿偉事嘅時代花邊，純靜態輪替。
-   來源：串聯規劃鏈 D 上半＋§4.5 地名／質地碎片庫。Phase 1 只顯示；入傳聞池已喺 Phase 3-2（v20a20）落地：
-   有 id 並登記 SIDE_PAPER_FRAGS 嗰三則（陸柏言／廖炳星／麥震東線）見報後入池做報紙碎片，其餘維持唔入池。
+   來源：串聯規劃鏈 D 上半＋§4.5 地名／質地碎片庫。v20a267：傳聞池已刪；有 id 嗰三則
+   （陸柏言／廖炳星／麥震東線）見報後經 enc79PaperWhisper 直開 3 日風聲窗，其餘純顯示。
    文案守則：虛構紅星名＋真地名＋日常質地；唔用真藝名；家庭友善用字。 ===== */
 const PAPER_SIDE_ITEMS = [
   { id:"side_lu_concert", h:"陸柏言紅磡開唱未公佈，黃牛票價已經高企", d:"歌迷連夜於紅磡體育館外排隊，場外士多表示，近日絲襪奶茶銷量亦見上升。" },
@@ -34937,7 +33825,7 @@ const PAPER_SIDE_ITEMS = [
   { h:"啟德機場送機大堂日日人山人海", d:"有送機者表示，如今前往機場並非旅行，而是送別親戚，此一送別，不知何時再見。", fromYear:1992 },
   { h:"賀歲片搶檔期傳得沸沸揚揚，院線排片煞費思量", d:"哪套賀歲、哪套押後，戲院經理表示，排至聖誕仍未排妥，年尾將有一番忙碌。" },
   { id:"side_mak_wrap", h:"麥震東新片煞科宴缺席，劇組稱其身體不適", d:"監製表示，他拍至煞科當日仍在吊威也，是否身體不適，無人肯多言。" },
-  /* v20a82 WF3 鏈 D 擴充：花邊池 19→28 則，其中 9 則新登記入池做報紙碎片（見 SIDE_PAPER_FRAGS）。
+  /* v20a82 WF3 鏈 D 擴充：花邊池 19→28 則。
      文案按年代映射庫 M34/M10/M19/M28/M37/M22/M14 寫，數字唔寫死、台灣資金只寫風聲。 */
   { id:"side_yip_swimsuit", h:"葉敏芝泳裝寫真未出街先轟動，經理人稱為宣傳安排", d:"唱片公司鄰近的書報攤表示，海報尚未張貼，已有人詢問何時有貨；經理人強調，寫真乃一早安排的宣傳，籲各界勿妄加揣測。", fromYear:1991 },
   { id:"side_ku_wrap", h:"顧明輝新劇煞科，劇組稱其近來清減不少", d:"煞科宴上他敬酒至最後亦未坐下，有幕後人員表示，他近來一日走幾組，回到家中站著亦能入睡，不知是敬業，還是別無選擇。" },
@@ -34969,41 +33857,6 @@ function paperSideItemForDay(day){
   const it = pool[Math.abs(day|0) % pool.length];
   if(!it) return null;
   return { eventKey:"", paperName:"花邊短訊", headline:it.h, dek:it.d, clipLabel:"", fameDelta:0, source:"side", sideId:it.id||"" };
-}
-/* ===== Weave Phase 3-2（v20a20）：報紙花邊入傳聞池——跨系統拼合（串聯規劃鏈 D）。
-   花邊池入面只有同現有情報線有關聯嘅三則（有 id 並喺 SIDE_PAPER_FRAGS 登記）先入池：
-   見報後喺 pushNewspaperRumor 生成一塊「報紙碎片」入 S.mockRumors（來源「報紙花邊」、
-   state normal＝剛聽聞、可揀選），標題／內文照剪報紙原文，玩家可以留起份報紙嚟拼。
-   碎片 id 固定（唔跟 edition id），同一則花邊重複見報都只入池一次（跟報紙去重口徑）。
-   拼合行現有 MERGE_PAIRS 跨系統對：報紙碎片 × 指定聽聞碎片 → 同一條 merged 情報、照樣置情報旗。
-   其餘花邊無登記，一律維持 Phase 1 口徑：純 flavor、唔入池，唔塞爆傳聞頁。 ===== */
-const SIDE_PAPER_FRAGS = {
-  side_lu_concert: "paperfrag_lu_concert",
-  side_liao_newfilm: "paperfrag_liao_newfilm",
-  side_mak_wrap: "paperfrag_mak_wrap",
-  /* v20a82 WF3 鏈 D：入池碎片 3→12 則 */
-  side_yip_swimsuit: "paperfrag_yip_swimsuit",
-  side_ku_wrap: "paperfrag_ku_wrap",
-  side_boxoffice_record: "paperfrag_boxoffice_record",
-  side_poach_rumor: "paperfrag_poach_rumor",
-  side_comedy_king: "paperfrag_comedy_king",
-  side_singer_contest: "paperfrag_singer_contest",
-  side_astronaut_family: "paperfrag_astronaut_family",
-  side_taiwan_money: "paperfrag_taiwan_money",
-  side_own_studio: "paperfrag_own_studio",
-};
-function paperSideFragmentFor(s){
-  if(!s || s.source!=="side") return null;
-  const fragId = SIDE_PAPER_FRAGS[String(s.sideId||"")];
-  if(!fragId) return null;
-  const head = String(s.headline||"").trim();
-  if(!head) return null;
-  return {
-    id: fragId,
-    paperFrag: true,
-    headline: head,
-    dek: String(s.dek||"").trim() || ("報紙花邊寫道：「"+head+"」。")
-  };
 }
 /* ===== Weave Phase 3-1（v20a19）：報紙連載口吻——報紙記得上一份自己寫過嘅主話題。
    關聯鍵（topicKey）優先序：①劇情 N3 高俊傑競爭線（eventKey story:N3:*）②通告 starHint 紅星名
@@ -35178,7 +34031,7 @@ function buildNewspaperEdition(batch, day){
     });
   }
   /* Weave Phase 1-1：每份報紙尾加一則花邊短訊（靜態輪替，唔計聲望）。
-     Phase 3-2 起：有關聯嘅三則花邊會喺 pushNewspaperRumor 入傳聞池做報紙碎片。 */
+     v20a267：有關聯嘅三則花邊見報嗰陣經 enc79PaperWhisper 直開風聲窗，唔入傳聞池。 */
   const sideItem = (typeof paperSideItemForDay==="function") ? paperSideItemForDay(day) : null;
   if(sideItem) shorts.push(sideItem);
   /* v20a218 C4：第二版得一則短訊嗰陣補多一則花邊（隔日輪替，標題唔重複），
@@ -35421,70 +34274,6 @@ function renderMorningPaperHtml(edition){
   ${page2}
   </div>${fameLine}`;
 }
-function pushNewspaperRumor(edition){
-  if(!S || !edition) return;
-  try{ ensureMockJournal(); }catch(_e){}
-  S.mockRumors = S.mockRumors || [];
-  /* #106：頭條 id 照舊。短訊另計，summary「同日還有 N 則」唔入傳聞。空 echo 用現有後備句。 */
-  const base = "paper_"+String(edition.id||"");
-  const rows = [{
-    id: base,
-    headline: edition.headline || "一則娛樂版",
-    rumorEcho: edition.rumorEcho || ""
-  }];
-  (edition.shorts||[]).forEach((s, i)=>{
-    if(!s || s.source==="summary") return;
-    if(s.source==="side"){
-      /* Weave Phase 3-2（v20a20）：有關聯嘅花邊（SIDE_PAPER_FRAGS 有登記）入池做報紙碎片；
-         無關聯花邊維持唔入池。碎片唔計聲望（fameDelta 0 不變）、唔行 echo 後備句。 */
-      const frag = (typeof paperSideFragmentFor==="function") ? paperSideFragmentFor(s) : null;
-      if(frag) rows.push(frag);
-      return;
-    }
-    const key = String(s.eventKey||"").trim() || ("s"+i);
-    rows.push({
-      id: base+"_"+key,
-      headline: s.headline || "一則娛樂版",
-      rumorEcho: s.rumorEcho || ""
-    });
-  });
-  let added = false;
-  rows.forEach(row=>{
-    if(S.mockRumors.some(r=>r && r.id===row.id)) return;
-    if(row.paperFrag){
-      /* 報紙碎片：標明來源係報紙，state normal＝剛聽聞（可揀嚟同聽聞碎片跨系統拼合）。
-         顯示一律經 renderRumorPane／確認彈窗嘅 displayRumor 過濾（守 P0-3）。 */
-      S.mockRumors.unshift({
-        id: row.id,
-        source: "報紙花邊",
-        title: row.headline,
-        text: row.dek,
-        state: "normal",
-        season: "",
-        fromPaper: true,
-        paperFrag: true
-      });
-      /* v20a79 ENC79：花邊點名嗰位星（陸／廖／麥）→ 同步開 3 日風聲窗（風聲來源二：報紙花邊） */
-      try{ if(typeof enc79PaperWhisper==="function") enc79PaperWhisper(row.id); }catch(_e79p){}
-      added = true;
-      return;
-    }
-    const head = row.headline || "一則娛樂版";
-    const echo = String(row.rumorEcho||"").trim();
-    const text = echo || ("街外報紙寫道：「"+head+"」。茶餐廳有人照著念。這是公開版面，不是圈內耳語。");
-    S.mockRumors.unshift({
-      id: row.id,
-      source: "報紙",
-      title: "報紙都寫了",
-      text: text,
-      state: "teased",
-      season: "",
-      fromPaper: true
-    });
-    added = true;
-  });
-  if(added){ try{ syncNotebookMirror(); }catch(_e){} }
-}
 function commitMorningPaper(edition, opts){
   opts = opts || {};
   if(!S || !edition) return;
@@ -35527,7 +34316,8 @@ function commitMorningPaper(edition, opts){
     });
     if(clips.length>40) clips.length = 40;
   }
-  try{ pushNewspaperRumor(edition); }catch(_e){}
+  /* v20a267：傳聞池已刪；報紙花邊只開風聲（3 張具名碎片經 enc79PaperWhisper 直開風聲窗，其餘純顯示）。 */
+  try{ if(edition && Array.isArray(edition.shorts)) for(const sh of edition.shorts){ if(sh && sh.source==="side" && sh.sideId) enc79PaperWhisper(sh.sideId); } }catch(_e){}
   S.pendingMorningPaper = null;
   S.newspaperLastPresentedDay = S.dayIndex|0;
   /* v20a27：鏈 G 第 2 拍——報紙點名跨級偵測（屋企回音），趕喺 saveQ 之前行，
@@ -35652,7 +34442,6 @@ function newspaperCheck(){
     const html = renderMorningPaperHtml(ed);
     if(html.indexOf("聲量")>=0) fails.push("copy_volume");
     if(html.indexOf("聲望")<0) fails.push("copy_fame");
-    if(!(S.mockRumors||[]).some(r=>r && r.source==="報紙" && r.state==="teased")) fails.push("rumor_hook");
     enqueueNewspaperItem({ eventKey:"wrap:g3:1", source:"wrap", enqueuedDay:1, publishDay:2, fameDelta:1, paperName:"娛樂版", headline:"丁", dek:"四" }, { persist:false });
     if(pullDueNewspaperEdition()) fails.push("not_due");
     S.dayIndex = 0;
@@ -35761,7 +34550,6 @@ function newspaperCheck(){
       if(newspaperStoryFavor("agency_ho")!==favor0) fails.push("story_favor");
       if((S.story.rel.rel_choi|0)!==1) fails.push("story_rel");
       if(enqueueNewspaperFromStory({ id:"N5" }, { id:"N5_a", effects:{ flags:["choi_honest"] } }, { persist:false })) fails.push("story_dedupe");
-      S.mockRumors = [];
       S.dayIndex = 1;
       const edStory = pullDueNewspaperEdition();
       if(!edStory || edStory.headline.indexOf("坦率")<0) fails.push("story_edition");
@@ -35770,13 +34558,11 @@ function newspaperCheck(){
       commitMorningPaper(edStory, { persist:false });
       if((Number(S.fame)||0)!==fameBefore+3) fails.push("story_commit_fame");
       if(!(S.newspaperClippings||[]).length) fails.push("story_clip");
-      if(!(S.mockRumors||[]).some(r=>r && r.source==="報紙" && r.state==="teased" && String(r.text||"").indexOf("坦白")>=0)) fails.push("story_rumor");
       commitMorningPaper(edStory, { persist:false });
       if((Number(S.fame)||0)!==fameBefore+3) fails.push("story_commit_twice");
       S.newspaperQueue = [];
       S.newspaperClippings = [];
       S.pendingMorningPaper = null;
-      S.mockRumors = [];
       S.dayIndex = 0;
       const dodge = enqueueNewspaperFromStory({ id:"N5" }, { id:"N5_c", effects:{ flags:["choi_dodge"] } }, { persist:false });
       if(!dodge || dodge.eventKey!=="story:N5:dodge" || dodge.fameDelta!==0) fails.push("story_dodge");
@@ -35816,7 +34602,6 @@ function newspaperCheck(){
     S.newspaperClippings = [];
     S.pendingMorningPaper = null;
     S.newspaperLastPresentedDay = null;
-    S.mockRumors = [];
     S.dayIndex = 40;
     /* R0a：舊隊列殘留填位項（直接塞入 S.newspaperQueue，模擬 v214 之前入隊嘅舊存檔）
        一經讀取就成類清走，唔出報紙。標記經物件屬性加，唔用字面寫法。 */
@@ -35950,7 +34735,6 @@ function newspaperCheck(){
     S.newspaperClippings = [];
     S.pendingMorningPaper = null;
     S.newspaperLastPresentedDay = null;
-    S.mockRumors = [];
     S.dayIndex = 2;
     try{ if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = false; }catch(_ps){}
     const ferrySh = { gigId:"gig_1990_test_102", type:"電視劇", title:"《天星碼頭》過海人潮", workTitle:"天星碼頭", roleLabel:"過海路人" };
@@ -35981,7 +34765,6 @@ function newspaperCheck(){
     S.newspaperClippings = [];
     S.pendingMorningPaper = null;
     S.newspaperLastPresentedDay = null;
-    S.mockRumors = [];
     S.dayIndex = 2;
     S.fame = 14;
     const fadePack = { dayIndex:2, gigType:"電影", pressSeed:{ paperName:"娛樂快報" } };
@@ -36052,7 +34835,6 @@ function newspaperCheck(){
     S.newspaperClippings = [];
     S.pendingMorningPaper = null;
     S.newspaperLastPresentedDay = null;
-    S.mockRumors = [];
     S.fame = 20;
     S.dayIndex = 2;
     S.press94FirstNamedDay = 0;
@@ -36104,8 +34886,7 @@ function newspaperCheck(){
         S.newspaperClippings = [];
         S.pendingMorningPaper = null;
         S.newspaperLastPresentedDay = null;
-        S.mockRumors = [];
-        S.dayIndex = 189;
+          S.dayIndex = 189;
         S.fame = 73;
         S.story = S.story || { done:{}, flags:{}, rel:{}, routes:{}, phase:"P1" };
         S.story.done = S.story.done || {};
@@ -36165,13 +34946,12 @@ function newspaperCheck(){
       try{ if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = false; }catch(_ps105c){}
       if(_opened105){ try{ closeModal(); }catch(_cm105b){} }
     }
-    /* #106：合版年賞頭條＋N3 爭執＋廠景交換。一次收下要三則報紙傳聞，重收唔再加。 */
+    /* #106：合版年賞頭條＋N3 爭執＋廠景交換。一次收下三則報紙，重收唔再加聲望；傳聞池已刪，唔再經傳聞行入池。 */
     if(storyStub && storyStub.templates){
       S.newspaperQueue = [];
       S.newspaperClippings = [];
       S.pendingMorningPaper = null;
       S.newspaperLastPresentedDay = null;
-      S.mockRumors = [];
       S.dayIndex = 10;
       S.story = S.story || { done:{}, flags:{}, rel:{}, routes:{}, phase:"P1" };
       const favor106 = newspaperStoryFavor("agency_ho");
@@ -36197,49 +34977,16 @@ function newspaperCheck(){
       if(!shortC3 || String(shortC3.rumorEcho||"").indexOf("爭吵")<0) fails.push("combo_short_c3");
       if(!shortHiu || String(shortHiu.rumorEcho||"").indexOf("休息角")<0) fails.push("combo_short_hiu");
       if(shorts106.some(s=>s && s.source==="summary")) fails.push("combo_summary");
-      const echoText106 = (echo, headline)=>{
-        const e = String(echo||"").trim();
-        const h = headline || "一則娛樂版";
-        return e || ("街外報紙寫道：「"+h+"」。茶餐廳有人照著念。這是公開版面，不是圈內耳語。");
-      };
-      const paperRumors106 = ()=> (S.mockRumors||[]).filter(r=>r && r.source==="報紙" && r.state==="teased");
       const fame106 = Number(S.fame)||0;
       commitMorningPaper(ed106, { persist:false });
-      const rows106 = paperRumors106();
-      if(rows106.length!==3) fails.push("combo_rumor_n");
-      const texts106 = rows106.map(r=>String(r.text||""));
-      const want106 = [
-        echoText106(ed106 && ed106.rumorEcho, ed106 && ed106.headline),
-        echoText106(shortC3 && shortC3.rumorEcho, shortC3 && shortC3.headline),
-        echoText106(shortHiu && shortHiu.rumorEcho, shortHiu && shortHiu.headline)
-      ];
-      want106.forEach((w,i)=>{ if(texts106.indexOf(w)<0) fails.push("combo_echo_"+i); });
-      if(texts106.join("").indexOf("爭吵")<0 || texts106.join("").indexOf("休息角")<0) fails.push("combo_echo_bits");
-      const ids106 = rows106.map(r=>r.id);
-      if(ids106.length!==(new Set(ids106)).size) fails.push("combo_ids");
-      if(!ed106 || ids106.indexOf("paper_"+ed106.id)<0) fails.push("combo_head_id");
-      if(!ed106 || ids106.indexOf("paper_"+ed106.id+"_story:N3:hard")<0) fails.push("combo_c3_id");
-      if(!ed106 || ids106.indexOf("paper_"+ed106.id+"_story:R_hiu_meet:exchange")<0) fails.push("combo_hiu_id");
       commitMorningPaper(ed106, { persist:false });
-      if(paperRumors106().length!==3) fails.push("combo_rumor_twice");
-      try{ pushNewspaperRumor(ed106); }catch(_pr106){ fails.push("combo_push_twice"); }
-      if(paperRumors106().length!==3) fails.push("combo_rumor_push_twice");
       if((Number(S.fame)||0)!==fame106+(Number(ed106&&ed106.fameDelta)||0)) fails.push("combo_fame");
       if(newspaperStoryFavor("agency_ho")!==favor106) fails.push("combo_favor_after");
-      S.mockRumors = [];
-      pushNewspaperRumor({
-        id: "np_fallback_106",
-        headline: "通告見報",
-        shorts: [
-          { eventKey:"", headline:"劇情見報", source:"story", fameDelta:0 },
-          { headline:"同日還有 2 則", source:"summary", fameDelta:0 }
-        ]
-      });
-      const fb106 = (S.mockRumors||[]).filter(r=>r && r.source==="報紙" && r.state==="teased");
-      if(fb106.length!==2) fails.push("combo_fallback_n");
-      if(!fb106.some(r=>r && r.id==="paper_np_fallback_106" && String(r.text||"").indexOf("街外報紙寫道：「通告見報」")===0)) fails.push("combo_fallback_head");
-      if(!fb106.some(r=>r && r.id==="paper_np_fallback_106_s0" && String(r.text||"").indexOf("街外報紙寫道：「劇情見報」")===0)) fails.push("combo_fallback_short");
-      if(fb106.some(r=>r && String(r.text||"").indexOf("同日還有")>=0)) fails.push("combo_fallback_summary");
+      /* v20a267：傳聞池已刪；具名花邊見報直開風聲窗（改驗 commitMorningPaper → enc79PaperWhisper 路徑）。 */
+      const edSide106 = { id:"np_side_106", headline:"陸柏言紅磡開唱未公佈，黃牛票價已經高企", fameDelta:0, shorts:[{ source:"side", sideId:"side_lu_concert", headline:"陸柏言紅磡開唱", dek:"歌迷排隊。" }] };
+      S.starWhispers = {};
+      commitMorningPaper(edSide106, { persist:false });
+      if(!(typeof enc79WhisperActive==="function" && enc79WhisperActive("luk_baakyin"))) fails.push("combo_side_whisper");
     }
   }catch(_err){ fails.push("throw:"+(_err&&_err.message||_err)); }
   finally{
@@ -36269,7 +35016,6 @@ async function loadFreeplayFramework(){
   const files = {
     schema: "SCHEMA_FREEPLAY_FRAMEWORK_v1.json",
     eraStars: "STUB_ERA_STARS_MVP_v1.json",
-    rumorFrags: "STUB_RUMOR_FRAGMENTS_v1.json",
     favorDebt: "STUB_FAVOR_DEBT_SEASON_v1.json",
     castingTagsReg: "STUB_CASTING_TAGS_v1.json",
     storySlots: "STUB_STORY_BEATS_FREEPLAY_SLOTS_v1.json",
@@ -36296,7 +35042,6 @@ async function loadFreeplayFramework(){
   try{ if(typeof years66Walk==="function") years66Walk(FREEPLAY_FW, null); }catch(_y66){} /* v20a66 YEARS66 */
   try{ freeplayApplyEraStarStubOverlay(); }catch(_e){}
   try{ if(typeof augmentPostShootRewards35==="function") augmentPostShootRewards35(); }catch(_e){}
-  try{ seedFreeplayRumorShells(); }catch(_e){}
   try{ seedFreeplayFavorDebt(); }catch(_e){}
   try{ applyFreeplaySlotsToSoftGate(); }catch(_e){}
   try{ ensureWeakSeals(); }catch(_e){}
@@ -36318,7 +35063,6 @@ try{
     stars: function(){ return ((FREEPLAY_FW.eraStars&&FREEPLAY_FW.eraStars.stars)||[]).map(s=>freeplayNormalizeStarId(s.starId)); },
     slots: function(){ return FREEPLAY_FW.storySlots; },
     favorDebt: function(){ return FREEPLAY_FW.favorDebt; },
-    rumorFrags: function(){ return FREEPLAY_FW.rumorFrags; },
     rosterPlanned: function(){
       try{ return ((FREEPLAY_FW.schema&&FREEPLAY_FW.schema.eraStarsMvp&&FREEPLAY_FW.schema.eraStarsMvp.rosterPlanned)||[]).slice(); }catch(_e){ return []; }
     },
@@ -36338,6 +35082,8 @@ try{
     },
     check: function(){
       const fails=[];
+      /* v20a267：SAVE 紅線守門（原 tutorialPhase2Steps56SelfCheck 嗰行隨傳聞教學一併刪咗，搬返嚟呢度）。 */
+      if(typeof SAVE!=="undefined" && SAVE!=="starVolunteer_map_v19w") fails.push("save");
       if(FREEPLAY_FW.version!=="v20a10") fails.push("ver");
       const ids=["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji"];
       ids.forEach(id=>{ if(typeof STAR_SIGHTINGS!=="undefined" && !STAR_SIGHTINGS.some(s=>s.starId===id)) fails.push("star:"+id); });
@@ -36357,7 +35103,6 @@ try{
         if(/<h3>狀態<\/h3>/.test(src) || /modal\(`<h3>狀態/.test(src)) fails.push("ui:stats_modal_status");
         if(!/enterHome\([^)]*"ledger"/.test(src) && src.indexOf('"ledger"')<0) fails.push("ui:stats_not_ledger");
       }catch(_e){ fails.push("ui:stats_probe"); }
-      if(!document.getElementById("home-pane-rumor")) fails.push("ui:rumor");
       if(!document.getElementById("home-pane-clippings")) fails.push("ui:clippings");
       if(!document.getElementById("htab-clippings")) fails.push("ui:htab_clippings");
       if(!document.getElementById("home-pane-debt")) fails.push("ui:debt");
@@ -36377,9 +35122,8 @@ try{
           const c3 = BehaviorGate.stubNode("N3");
           const slotC3 = nodes.find(n=>n&&n.beatId==="N3");
           if(c3 && slotC3 && slotC3.trigger){
-            const a = JSON.stringify(c3.trigger.rumorAny||[]);
-            const b = JSON.stringify(slotC3.trigger.rumorAny||[]);
-            if(a!==b) fails.push("slots_gate_sync:N3");
+            /* v20a267：傳聞閘已刪，改對 weekMin（stub 同 slots 觸發要同步）。 */
+            if(Number(c3.trigger.weekMin)!==Number(slotC3.trigger.weekMin)) fails.push("slots_gate_sync:N3");
           }
         }
       }catch(_e){ fails.push("slots_wire"); }
@@ -39674,18 +38418,11 @@ function enc79EnsureDay(){
     (presence[loc] = presence[loc] || []).push(def.id);
   }
   S.starDay = { day, presence, triggered:0, doneToday:{} };
-  /* 風聲過期：刪窗＋傳聞卡轉舊聞 */
+  /* 風聲過期：刪窗（v20a267：風聲唔再寫傳聞卡，淨係 S.starWhispers 狀態） */
   try{
     for(const sid in S.starWhispers){
       const w = S.starWhispers[sid];
       if(w && (Number(w.until)||0) < day) delete S.starWhispers[sid];
-    }
-    if(Array.isArray(S.mockRumors)){
-      for(const r of S.mockRumors){
-        if(r && r.wind && typeof r.windUntil==="number" && r.windUntil < day && !r.windOld){
-          r.windOld = true; r.season = "舊聞（已過期）";
-        }
-      }
     }
   }catch(_e){}
   return S.starDay;
@@ -39697,50 +38434,18 @@ function enc79PresenceAt(locId){
 }
 /* ---------- 風聲 ---------- */
 function enc79GrantWhisper(starId, sourceKind, leakerName){
+  /* v20a267：風聲只寫 state（S.starWhispers，3 日窗），唔寫傳聞卡；情報文字由呼叫方直接顯示。 */
   try{
     if(typeof S==="undefined" || !S) return false;
     const def = enc79StarDef(starId); if(!def) return false;
-    enc79EnsureStars(); ensureMockJournal();
+    enc79EnsureStars();
     const day = S.dayIndex|0;
     const until = day + 2; /* 今日起 3 日窗（day..day+2） */
-    const had = enc79WhisperActive(starId);
     S.starWhispers[starId] = { until, src: sourceKind || "tea" };
-    if(had) return true; /* 同星同時最多 1 條：只延長，唔出新卡 */
-    const locName = enc79LocName(def.primary);
-    const text = sourceKind==="paper" ? ("報紙花邊寫道：「"+def.name+"連日喺"+locName+"一帶出現。」想撞佢，呢幾日去嗰頭行下。")
-      : sourceKind==="agency" ? ("何生提你："+def.name+"呢幾日多喺"+locName+"出沒，得閒過去行下，可能撞到。")
-      : sourceKind==="star" ? ((leakerName||"有人")+"臨走漏咗句：「"+def.name+"呢排會喺"+locName+"出現。」")
-      : ("茶餐廳伙記漏口風：聽講"+def.name+"呢幾日會喺"+locName+"出沒，想撞佢就趁早。");
-    S.mockRumors.unshift({ id:"wind:"+starId+":"+day, source:"風聲", title:"風聲："+def.name+"行蹤", text, state:"teased", season:"風聲 · 3 日內有效", wind:true, windUntil:until, fromAsk:true });
-    try{ syncNotebookMirror(); }catch(_m){}
     return true;
   }catch(_e){ return false; }
 }
 /* ---------- 碎片／債權發放（行現有帳本） ---------- */
-function enc79GrantFrag(fragId){
-  try{
-    if(typeof S==="undefined" || !S) return false;
-    ensureMockJournal();
-    const frag = (typeof MERGE_FRAGS!=="undefined" ? MERGE_FRAGS : []).find(f=>f.id===fragId);
-    if(frag){
-      if(!S.mockRumors.some(r=>r && r.id===fragId)){
-        S.mockRumors.unshift({ id:frag.id, source:frag.source, title:frag.title, text:frag.text, state:"normal", season:"", seeded:true });
-      }
-      return true;
-    }
-    return false;
-  }catch(_e){ return false; }
-}
-function enc79GrantRumorCard(card){
-  try{
-    if(typeof S==="undefined" || !S || !card || !card.id) return false;
-    ensureMockJournal();
-    if(S.mockRumors.some(r=>r && r.id===card.id)) return false;
-    S.mockRumors.unshift({ id:card.id, source:card.source||"巧遇聽聞", title:card.title||"", text:card.text||"", state:"normal", season:"", seeded:true });
-    try{ syncNotebookMirror(); }catch(_m){}
-    return true;
-  }catch(_e){ return false; }
-}
 function enc79GrantCredit(credit){
   try{
     if(typeof S==="undefined" || !S || !credit || !credit.id) return false;
@@ -39754,7 +38459,6 @@ function enc79GrantCredit(credit){
   }catch(_e){ return false; }
 }
 /* ---------- 鏈節拍（Phase 1 四星；requires 只引用現有狀態） ---------- */
-function enc79HasMerged(id){ try{ return (typeof hasMergedIntel==="function") ? hasMergedIntel(id) : false; }catch(_e){ return false; } }
 function enc79BoardHasStar(starId){
   try{
     const board = (S && S.board) || {};
@@ -39781,26 +38485,26 @@ function enc79BoardHasActionGig(){
 }
 const ENC79_BEATS = {
   luk_baakyin:[
-    { id:"luk_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year===1990 && enc79TierOf(st.fav)<=1; }, grants(){ enc79GrantFrag("rumor_lu_baiyan_angry"); } },
-    { id:"luk_intel", when(st){ return enc79TierOf(st.fav)>=2 && enc79HasMerged("rumor_lu_baiyan_breakdown"); } },
+    { id:"luk_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year===1990 && enc79TierOf(st.fav)<=1; }, },
+    { id:"luk_intel", when(st){ return enc79TierOf(st.fav)>=2; } },
     { id:"luk_finale", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=4 && ys.year===1992 && ys.season==="冬"; }, grants(){ try{ S.flags=S.flags||{}; S.flags.enc79_luk_finale=1; }catch(_e){} } },
   ],
   liu_bingxing:[
-    { id:"liu_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year<=1991 && enc79TierOf(st.fav)<=1; }, grants(){ enc79GrantFrag("rumor_liao_bingxing_talk"); } },
+    { id:"liu_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year<=1991 && enc79TierOf(st.fav)<=1; }, },
     { id:"liu_intel", when(st){ return enc79TierOf(st.fav)>=2; } },
     { id:"liu_tease", when(st){ return enc79BoardHasStar("liu_bingxing"); } },
-    { id:"liu_repay", when(st){ return enc79TierOf(st.fav)>=2 && enc79HasMerged("rumor_liao_bingxing_money"); } /* v20a89：債權改由 enc79ChoiceFx／RunChoiceFx 按抉擇派（liu_accept 先派），唔再無條件 grants */ },
+    { id:"liu_repay", when(st){ return enc79TierOf(st.fav)>=2; } /* v20a89：債權改由 enc79ChoiceFx／RunChoiceFx 按抉擇派（liu_accept 先派），唔再無條件 grants */ },
     { id:"liu_clash", when(st){ const ys=yearSeasonNow(); return ys.year===1992 && ys.season==="冬"; } },
   ],
   mak_zhendong:[
-    { id:"mak_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year<=1991 && enc79TierOf(st.fav)<=1; }, grants(){ enc79GrantFrag("rumor_mai_zhendong_hurt"); } },
-    { id:"mak_intel", when(st){ return enc79TierOf(st.fav)>=2 && enc79HasMerged("rumor_mai_zhendong_hide_injury"); } },
+    { id:"mak_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year<=1991 && enc79TierOf(st.fav)<=1; }, },
+    { id:"mak_intel", when(st){ return enc79TierOf(st.fav)>=2; } },
     { id:"mak_tease", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=1 && ((ys.year===1992 && ys.season==="春") || enc79BoardHasActionGig()); } },
-    { id:"mak_respect", when(st){ return enc79TierOf(st.fav)>=2 && !!st.workedWith && enc79HasMerged("rumor_mai_zhendong_hide_injury"); } /* v20a89：債權改按抉擇派（mak_accept 先派），唔再無條件 grants */ },
+    { id:"mak_respect", when(st){ return enc79TierOf(st.fav)>=2 && !!st.workedWith; } /* v20a89：債權改按抉擇派（mak_accept 先派），唔再無條件 grants */ },
     { id:"mak_visit", when(st){ try{ const c=(S&&S.conseq61)||{}; const cu=Number(c.cooldownUntil)||0; const day=(S&&S.dayIndex)|0; return !!c.sick || (cu>0 && day-cu<=45 && day-cu>=-14); }catch(_e){ return false; } } },
   ],
   yip_manji:[
-    { id:"yip_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year===1991 && enc79TierOf(st.fav)>=1; }, grants(){ enc79GrantRumorCard({ id:"rumor_yip_writeup_heard", source:"電視台後台", title:"葉敏芝寫真安排", text:"後台聽到葉敏芝經理人講緊下個月嘅寫真安排，語氣強勢，佢本人冇乜出聲。呢單嘢，行內遲早會傳開。" }); } },
+    { id:"yip_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year===1991 && enc79TierOf(st.fav)>=1; }, },
     { id:"yip_choice", when(st){ const ys=yearSeasonNow(); if(ys.year<1991 || enc79TierOf(st.fav)<2) return false;
       /* v20a159 ROM159：同一抉擇已喺感情線 R_yip_push1 播過就唔再開星層版（鏈 D 第 3 拍改編做 R_yip_push1；星層四拍其餘留返，見 NOTES）。 */
       try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone("R_yip_push1")) return false; }catch(_e){}
@@ -39883,14 +38587,10 @@ function enc79RunChoiceFx(fx){
       enc79GrantCredit({ id:"credit_enc79_yip_manager", debtor:"葉敏芝經理人", title:"守口人情", line:"嗰次你把口夠穩，葉敏芝經理人記住咗。行內有咩好位，佢會漏返句風聲畀你。", status:"未收" });
     } else if(fx==="yip_leaked"){
       S.flags = S.flags || {}; S.flags.enc79_yip_leaked = (S.dayIndex|0);
-      enc79GrantRumorCard({ id:"rumor_yip_photo_leak", source:"場務閒聊", title:"寫真安排傳開咗", text:"葉敏芝寫真安排單料，唔知點解傳到成個場都知。有人話，係嗰日同佢傾過偈嘅臨記講出去嘅。" });
     }
     /* ===== v20a89 BR89：條件派發（審計 #9）——債權跟返玩家點揀先派 ===== */
     if(fx==="liu_accept"){
       enc79GrantCredit({ id:"credit_enc79_liu_priority", debtor:"廖炳星", title:"新戲優先試鏡人情", line:"廖炳星講過：下次佢有新戲開鏡，試鏡名單第一批會有你個名。呢份人情，佢記住。", status:"未收" });
-    } else if(fx==="liu_decline"){
-      /* 推辭：優先試鏡嗰格讓返出去，只留一句風聲（邊個接咗嗰格） */
-      enc79GrantRumorCard({ id:"rumor_liu_priority_passed", source:"片場風聲", title:"廖炳星嗰格試鏡位", text:"廖炳星新戲嗰個優先試鏡位，你嗰日推咗，後嚟俾咗另一個後生仔。星哥冇嬲，只係講咗句：機會呢家嘢，過咗就唔等人。" });
     } else if(fx==="mak_accept"){
       enc79GrantCredit({ id:"credit_enc79_mak_wuzhi", debtor:"紅棉武指", title:"武指照應人情", line:"武指嗰邊認咗你：第日有高危位開工，會第一時間諗起你，安全功夫亦會睇實你。", status:"未收" });
     }
@@ -39906,10 +38606,6 @@ function enc79RunChoiceFx(fx){
       enc83GuLoanStart(1);
     } else if(fx==="gu_loan_half"){
       enc83GuLoanStart(2);
-    } else if(fx==="chai_advise"){
-      enc79GrantRumorCard({ id:"rumor_chai_drama_dodged", source:"電視城風聲", title:"齊鎮海推咗套爛劇", text:"嗰套高價爛劇，最後齊鎮海冇接。行內人話佢醒目：呢啲戲，接咗就係一世污點，人工幾高都補唔返。" });
-    } else if(fx==="chai_silent"){
-      enc79GrantRumorCard({ id:"rumor_chai_drama_flop", source:"報紙花邊", title:"齊鎮海新劇捱轟", text:"齊鎮海接嗰套新劇出咗街，俾報紙同觀眾鬧到飛起。一哥嗰晚喺電視城走廊企咗好耐，一句聲都冇出。" });
     }
     /* ===== v20a84 ENC84：Phase 3 抉擇實效（行現有帳本／傳聞池／旗標，唔另起系統） ===== */
     if(fx==="pang_helped"){
@@ -39917,8 +38613,6 @@ function enc79RunChoiceFx(fx){
     } else if(fx==="so_cool"){
       S.flags = S.flags || {}; S.flags.enc84_so_cool_until = ((S.dayIndex|0) + 21);
       try{ toast("你同蘇芷茵保持返距離，經理人嗰邊冇再出聲。", { sub:"呢排唔好行咁埋，過一排先算。" }); }catch(_t){}
-    } else if(fx==="so_risk_news"){
-      enc79GrantRumorCard({ id:"rumor_so_gossip_risk", source:"報紙花邊", title:"玉女同後生仔行得埋？", text:"有份花邊寫道：玉女歌手蘇芷茵近日同一個臨記出身嘅後生仔行得好埋。經理人公司冇回應。呢啲風聲吹兩日就散——但當事人心入面有數。" });
     }
   }catch(_e){}
 }
@@ -40018,9 +38712,9 @@ function enc79BuildScript(starId, forceFirst, locId){
   }catch(_e){}
   const beat = enc79PickBeat(starId);
   if(beat && D.beats && D.beats[beat.id]){
-    /* v20a89 BR89：gu_loan 前置讀旗（審計 #7／#10）——事先聽聞佢撲水（情報卡下游）
+    /* v20a89 BR89：gu_loan 前置（審計 #7／#10）——同顧明輝熟啲（enc79 tier ≥1，見過佢）
        或 N10 幫佢同何生爭取過分期（flag_mediate_gu_debt 嘅下游），開口嗰陣內容分版。 */
-    if(beat.id==="gu_loan" && typeof br89HoldsCard==="function" && br89HoldsCard("rumor_gu_money_heard")){
+    if(beat.id==="gu_loan" && tier>=1){
       pushLines([["N","（你早聽人講過：顧明輝呢排四圍撲水。佢今日約你出嚟嗰陣，你心入面已經有數——佢唔係嚟敘舊咁簡單。）"]], "beat:gu_loan_pre89", null);
     }
     if(beat.id==="gu_loan" && typeof enc87StoryFlag==="function" && enc87StoryFlag("flag_mediate_gu_debt")){
@@ -40586,11 +39280,6 @@ function rom176EnsureDay(){
   S.romDay = { day, presence, triggered:0, doneToday:{} };
   try{
     for(const k in S.romWhispers){ const x = S.romWhispers[k]; if(x && (Number(x.until)||0) < day) delete S.romWhispers[k]; }
-    if(Array.isArray(S.mockRumors)){
-      for(const r of S.mockRumors){
-        if(r && r.wind && r.id && String(r.id).indexOf("romwind:")===0 && typeof r.windUntil==="number" && r.windUntil < day && !r.windOld){ r.windOld = true; r.season = "舊聞（已過期）"; }
-      }
-    }
   }catch(_e){}
   return S.romDay;
 }
@@ -40600,26 +39289,14 @@ function rom176PresenceAt(locId){
   return (sd.presence[locId] || []).slice();
 }
 function rom176GrantWhisper(key, sourceKind, leakerName){
+  /* v20a267：女角風聲只寫 state（S.romWhispers，3 日窗），唔寫傳聞卡；情報文字由呼叫方直接顯示。 */
   try{
     if(typeof S==="undefined" || !S) return false;
     const def = rom176WomanDef(key); if(!def) return false;
-    if(typeof ensureMockJournal==="function") ensureMockJournal();
     const day = S.dayIndex|0;
     const until = day + 2;
-    const had = rom176WhisperActive(key);
     if(!S.romWhispers || typeof S.romWhispers!=="object") S.romWhispers = {};
     S.romWhispers[key] = { until, src: sourceKind || "tea" };
-    if(had) return true;
-    const locName = (typeof enc79LocName==="function") ? enc79LocName(def.primary) : def.primary;
-    const text = (sourceKind==="tea" && ROM176_TEA_LINES[key])
-      ? ROM176_TEA_LINES[key]
-      : (sourceKind==="woman"
-        ? ((leakerName||"有人")+"臨走漏咗句：「"+def.name+"呢排會喺"+locName+"出現。」")
-        : ("茶餐廳伙記漏口風：聽講"+def.name+"呢幾日會喺"+locName+"出沒，想撞佢就趁早。"));
-    if(Array.isArray(S.mockRumors)){
-      S.mockRumors.unshift({ id:"romwind:"+key+":"+day, source:"風聲", title:"風聲："+def.name+"行蹤", text, state:"teased", season:"風聲 · 3 日內有效", wind:true, windUntil:until, fromAsk:true });
-    }
-    try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
     return true;
   }catch(_e){ return false; }
 }
@@ -41160,10 +39837,10 @@ function enc79PeopleHtml(){
     return '<h3 class="jobs72-h" style="margin-top:14px">紅星</h3><p class="sub" style="font-size:.75rem">紅星唔係熟人，冇得專程去揾：聽風聲、去常出沒嘅地方撞。撞到嗰陣可以傾偈、送禮。</p>' + rows;
   }catch(_e){ return ""; }
 }
-/* ---------- 報紙花邊 → 風聲（pushNewspaperRumor 掛點） ---------- */
-function enc79PaperWhisper(fragId){
-  const map = { paperfrag_lu_concert:"luk_baakyin", paperfrag_liao_newfilm:"liu_bingxing", paperfrag_mak_wrap:"mak_zhendong" };
-  const sid = map[fragId];
+/* ---------- 報紙花邊 → 風聲（v20a267：傳聞池已刪；具名花邊直接開 3 日風聲窗，其餘花邊純顯示） ---------- */
+function enc79PaperWhisper(sideId){
+  const map = { side_lu_concert:"luk_baakyin", side_liao_newfilm:"liu_bingxing", side_mak_wrap:"mak_zhendong" };
+  const sid = map[sideId];
   if(sid) enc79GrantWhisper(sid, "paper");
 }
 /* ---------- 何生信任進度（事務所 loc-who 追加入口） ---------- */
@@ -41215,7 +39892,6 @@ function enc79PayTea(def){
   return { ok:true, note:"已付茶錢 $"+cost+"（結餘 $"+(Number(S.money)||0).toLocaleString()+"）。" };
 }
 function enc79TeaListen(def){
-  ensureMockJournal();
   const cap = (typeof softSocialDailyCap==="function") ? softSocialDailyCap("tea") : { ok:true };
   if(!cap.ok) return { ok:false, toast:cap.reason };
   /* 先定收穫（未持有保底：抽到已持有唔計數、唔收錢） */
@@ -41239,15 +39915,9 @@ function enc79TeaListen(def){
     }
   }
   if(!gain){
-    const pool = [];
-    for(const f of ((typeof MERGE_FRAGS!=="undefined") ? MERGE_FRAGS : [])) pool.push({ id:f.id, source:f.source, title:f.title, text:f.text, season:"" });
-    for(const f of ((typeof MOCK_RUMOR_SEEDS!=="undefined") ? MOCK_RUMOR_SEEDS : [])) pool.push({ id:f.id, source:f.source, title:f.title, text:f.text, season:f.season||"" });
-    for(const f of ENC79_TEA_POOL) pool.push(f);
-    const unowned = pool.filter(c=> !(S.mockRumors||[]).some(r=> r && r.id===c.id && (r.heardByAsk || r.fromAsk || rumorStateLabel(r.state)==="已拼合")));
-    if(unowned.length){
-      const c = unowned[Math.floor(Math.random()*unowned.length)];
-      gain = { kind:"frag", card:c };
-    }
+    /* v20a267：傳聞卡已刪；冇風聲嗰陣直接講一句茶餐廳情報／風物文字，唔寫卡。 */
+    const c = ENC79_TEA_POOL[Math.floor(Math.random()*ENC79_TEA_POOL.length)];
+    if(c) gain = { kind:"talk", card:c };
   }
   if(!gain){
     const targets = ENC79_STARS.filter(s=> !enc79WhisperActive(s.id) && !(s.unlockYear && ((yearSeasonNow()||{}).year||0) < s.unlockYear));
@@ -41257,25 +39927,29 @@ function enc79TeaListen(def){
   const pay = enc79PayTea(def);
   if(!pay.ok) return pay;
   let toastMsg = "";
+  let intelTitle = "", intelText = "";
   if(gain.kind==="whisper"){
     enc79GrantWhisper(gain.starId, "tea");
     const defStar = enc79StarDef(gain.starId);
-    toastMsg = "伙記擦枱嗰陣漏咗句風聲：" + (defStar ? defStar.name : "") + "呢幾日會出沒——記入手帳「傳聞 · 風聲」。";
+    toastMsg = "伙記擦枱嗰陣漏咗句風聲：" + (defStar ? defStar.name : "") + "呢幾日會喺" + (defStar ? enc79LocName(defStar.primary) : "") + "出沒，3 日內有效。";
+    intelTitle = "風聲：" + (defStar ? defStar.name : "") + "行蹤";
+    intelText = toastMsg;
   } else if(gain.kind==="romwhisper"){
     const nm176 = (typeof rom176WomanName==="function") ? rom176WomanName(gain.key) : gain.key;
     try{ if(typeof rom176GrantWhisper==="function") rom176GrantWhisper(gain.key, "tea"); }catch(_w176){}
-    toastMsg = "伙記擦枱嗰陣漏咗句風聲：" + nm176 + "呢幾日會出沒——記入手帳「傳聞 · 風聲」。";
+    toastMsg = "伙記擦枱嗰陣漏咗句風聲：" + nm176 + "呢幾日會出沒，3 日內有效。";
+    intelTitle = "風聲：" + nm176 + "行蹤";
+    intelText = toastMsg;
   } else {
     const c = gain.card;
-    S.mockRumors.unshift({ id:c.id, source:c.source||def.source||"金龍茶餐廳", title:c.title, text:c.text, state:"normal", season:c.season||"", fromAsk:true, heardByAsk:true });
-    try{ noteWeekHighlight("rumor", c.title||c.id); }catch(_wh){}
-    toastMsg = "傳聞「" + c.title + "」——快啲記落手帳";
+    toastMsg = c.text;
+    intelTitle = c.title || "茶餐廳情報";
+    intelText = c.text;
   }
   try{ softSocialDailyUse("tea"); }catch(_cap){}
-  syncNotebookMirror();
   try{ saveQ(); }catch(_e){}
   if(pay.note) toastMsg = pay.note + " " + toastMsg;
-  return { ok:true, added:true, updated:false, cleared:false, toast:toastMsg, rumorId: gain.kind==="frag" ? gain.card.id : (gain.kind==="romwhisper" ? ("romwind:"+gain.key+":"+day) : ("wind:"+gain.starId+":"+day)) };
+  return { ok:true, added:true, updated:false, cleared:false, toast:toastMsg, rumorId:null, intelTitle, intelText };
 }
 function enc79HelpClear(def){
   ensureMockJournal();
@@ -41291,7 +39965,6 @@ function enc79HelpClear(def){
   return { ok:true, added:false, updated:false, cleared:false, toast:"你幫老闆娘執漏頂咗一陣，佢記低你一份人情（手帳「人情」有記）。", rumorId:null };
 }
 function enc79AgencyWind(def){
-  ensureMockJournal();
   try{ if(typeof softPreviewOn==="function" && softPreviewOn() && typeof softSocialDailyCap==="function"){ const c = softSocialDailyCap("ask"); if(!c.ok) return { ok:false, toast:c.reason }; } }catch(_cap){}
   try{ if(typeof StoryOC!=="undefined") StoryOC.ensure(); }catch(_e){}
   const gained = bumpNpc("agent", 3+R(0,2));
@@ -41299,6 +39972,8 @@ function enc79AgencyWind(def){
   const day = S.dayIndex|0;
   S.flags = S.flags || {};
   let toastMsg = "";
+  let intelTitle = "", intelText = "";
+  let intelAdded = false;
   if(S.flags.enc79AgencyWindDay === day){
     toastMsg = "何生擺擺手：「今日啲風聲講完喇，明日再嚟。」";
   } else {
@@ -41310,7 +39985,7 @@ function enc79AgencyWind(def){
     const t = targets.length ? targets[enc79Hash("agencywind:"+day) % targets.length] : null;
     if(t){
       enc79GrantWhisper(t.id, "agency");
-      toastMsg = "何生壓低聲：「" + t.name + "呢幾日會喺" + enc79LocName(t.primary) + "出沒——記入手帳「傳聞 · 風聲」，趁個窗去撞下。」";
+      toastMsg = "何生壓低聲：「" + t.name + "呢幾日會喺" + enc79LocName(t.primary) + "出沒，3 日內有效，趁個窗去撞下。」"; intelTitle = "風聲："+t.name+"行蹤"; intelText = toastMsg; intelAdded = true;
     } else {
       toastMsg = "何生話：呢幾日行內靜靜哋，冇咩大風聲。";
     }
@@ -41325,9 +40000,8 @@ function enc79AgencyWind(def){
     }catch(_e){}
   }
   try{ if(typeof softPreviewOn==="function" && softPreviewOn()) softSocialDailyUse("ask"); }catch(_cap){}
-  syncNotebookMirror();
   try{ saveQ(); }catch(_e){}
-  return { ok:true, added:false, updated:false, cleared:false, toast:(favorNote ? favorNote+" " : "") + toastMsg, rumorId:null };
+  return { ok:true, added:intelAdded, updated:false, cleared:false, toast:(favorNote ? favorNote+" " : "") + toastMsg, rumorId:null, intelTitle, intelText };
 }
 
 /* ===== ENC79 模組完 ===== */
@@ -41391,12 +40065,10 @@ function enc83GuLoanTick(){
       f.enc83_gu_loan_result = 1;
       S.money = (Number(S.money)||0) + amt;
       settled["credit_enc83_gu_loan"] = { result:"repaid_loan", day: today };
-      enc79GrantRumorCard({ id:"rumor_gu_loan_repaid", source:"報紙花邊", title:"顧明輝還清舊債", text:"顧明輝嗰筆拖咗成個月嘅數，居然還清晒。行內人跌晒眼鏡——佢啲歌迷話，歌王呢排成個人企返直咗。" });
       try{ toast("顧明輝還清咗嗰筆錢（$"+amt+"）。", { sub:"行內人講：佢呢排企返直咗個人。" }); }catch(_t){}
     } else {
       f.enc83_gu_loan_result = 2;
       settled["credit_enc83_gu_loan"] = { result:"void_loan", day: today };
-      enc79GrantRumorCard({ id:"rumor_gu_loan_gone", source:"茶餐廳風聲", title:"顧明輝唔知去咗邊", text:"顧明輝嗰筆數到期冇還，人又唔見咗。有人話見過佢喺碼頭嗰頭出現，有人話佢去咗好遠嘅地方——冇人知真定假。" });
       try{ toast("顧明輝嗰筆錢，到期冇還。", { sub:"人又唔見咗。呢筆數，怕且要當交學費。" }); }catch(_t){}
     }
     try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
@@ -41451,30 +40123,30 @@ try{ ENC79_BEATS.mak_zhendong.push({ id:"mak_patron", when(st){ return enc79Tier
 try{ ENC79_BEATS.yip_manji.push({ id:"yip_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc83_yip_patron", debtor:"葉敏芝", title:"試鏡引薦", line:"葉敏芝經理人嗰邊打咗招呼：你去嗰套時裝劇試鏡嗰日，監製會認真睇你嗰場。", status:"未收" }); } }); }catch(_e){}
 /* ---------- Phase 2 四星鏈節拍（requires 只引用現有狀態；提攜排最尾） ---------- */
 ENC79_BEATS.ngai_wingnaam = [
-  { id:"ngai_intel", when(st){ return enc79TierOf(st.fav)>=2; }, grants(){ enc79GrantRumorCard({ id:"rumor_ngai_stunt_tip", source:"魏詠男", title:"邊組缺替身", text:"魏詠男講起：而家肯用打女嘅導演冇幾個，但動作組嗰邊長期缺肯捱嘅替身。有料嘅人，去嗰邊敲門，好過喺大組等運到。" }); } },
+  { id:"ngai_intel", when(st){ return enc79TierOf(st.fav)>=2; }, },
   { id:"ngai_help", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=2 && ys.year>=1991; } },
   { id:"ngai_repay", when(st){ return enc79TierOf(st.fav)>=2 && enc83HasCredit("credit_enc83_ngai_meal"); } },
   { id:"ngai_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc83_ngai_patron", debtor:"魏詠男", title:"打女引薦", line:"魏詠男畀咗個電話你：嗰位導演仲肯開武打戲，你打過去，提我個名，佢會見你一面。", status:"未收" }); } },
 ];
 ENC79_BEATS.gu_mingfai = [
-  { id:"gu_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year===1991 && enc79TierOf(st.fav)>=1; }, grants(){ enc79GrantRumorCard({ id:"rumor_gu_money_heard", source:"電台後台", title:"顧明輝財務告急", text:"後台有人講：顧明輝最近四圍撲水。歌迷見到嗰個笑容，同佢收工之後嗰個樣，完全係兩回事。" }); } },
+  { id:"gu_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year===1991 && enc79TierOf(st.fav)>=1; }, grants(){ toast("後台有人講：顧明輝最近四圍撲水。歌迷見到嗰個笑容，同佢收工之後嗰個樣，完全係兩回事。"); } },
   { id:"gu_tease", when(st){ const ys=yearSeasonNow(); return ys.year===1991 && enc79TierOf(st.fav)>=2 && !enc83NodeDone("N10"); } },
   { id:"gu_loan", when(st){ const ys=yearSeasonNow(); return ys.year>=1991 && enc79TierOf(st.fav)>=2; } },
   { id:"gu_after_repay", when(st){ return enc83Flag("enc83_gu_loan_result")===1; } },
   { id:"gu_after_default", when(st){ return enc83Flag("enc83_gu_loan_result")===2; } },
-  { id:"gu_n10after", when(st){ return enc79TierOf(st.fav)>=2 && enc83NodeDone("N10"); }, grants(){ enc79GrantRumorCard({ id:"rumor_gu_comeback", source:"報紙花邊", title:"顧明輝夜總會駐唱翻身", text:"曾經嘅歌王顧明輝，呢排喺夜總會駐唱，晚晚滿座。有人話佢唱返舊歌嗰陣，台下啲老歌迷喊到收唔到聲。" }); } },
+  { id:"gu_n10after", when(st){ return enc79TierOf(st.fav)>=2 && enc83NodeDone("N10"); }, },
   { id:"gu_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc83_gu_patron", debtor:"顧明輝", title:"登台引薦", line:"顧明輝寫咗張卡片畀你：嗰位登台班主係佢舊相識，你攞住張卡去搵佢，佢會畀個機會你。", status:"未收" }); } },
 ];
 ENC79_BEATS.lok_gasing = [
-  { id:"lok_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year===1990 && enc79TierOf(st.fav)>=1; }, grants(){ enc79GrantRumorCard({ id:"rumor_lok_grudge_heard", source:"電視台走廊", title:"駱家聲得罪高層", text:"錄影廠走廊傳開：駱家聲為咗一首原創歌，同高層嗌到面紅耳赤。高層嗰句「唔聽話就冇騷出」，成層樓都聽到。" }); } },
-  { id:"lok_intel", when(st){ return enc79TierOf(st.fav)>=2; }, grants(){ enc79GrantRumorCard({ id:"rumor_lok_music_tip", source:"駱家聲", title:"樂壇邊個真邊個假", text:"駱家聲講：而家榜上嗰啲，一半係真唱，一半係修返嚟嘅。邊個有料，入錄音室聽一 Take 就知。" }); } },
+  { id:"lok_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year===1990 && enc79TierOf(st.fav)>=1; }, },
+  { id:"lok_intel", when(st){ return enc79TierOf(st.fav)>=2; }, },
   { id:"lok_help", when(st){ return enc79TierOf(st.fav)>=3 && ((Number((typeof S!=="undefined"&&S&&S.vocal))||0) >= 35); } },
   { id:"lok_recover", when(st){ const ys=yearSeasonNow(); return ys.year===1992 && enc79TierOf(st.fav)>=2; } },
   { id:"lok_e4grudge", when(st){ return enc79TierOf(st.fav)>=1 && enc83NewsOut("E4"); } },
   { id:"lok_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc83_lok_patron", debtor:"駱家聲", title:"監製引薦", line:"駱家聲塞咗張唱片監製嘅卡片畀你：佢哋唔收我啲歌，但你個人，佢哋會收。去敲門啦。", status:"未收" }); } },
 ];
 ENC79_BEATS.chai_zanhoi = [
-  { id:"chai_intel", when(st){ return enc79TierOf(st.fav)>=2; }, grants(){ enc79GrantRumorCard({ id:"rumor_chai_tv_tip", source:"齊鎮海", title:"電視城人事風聲", text:"齊鎮海講：台慶爭位邊個叻唔係重點，對台嗰邊密密挖角先係真風聲。邊個會走、邊個會留，佢心入面有本數。" }); } },
+  { id:"chai_intel", when(st){ return enc79TierOf(st.fav)>=2; }, },
   { id:"chai_choice", when(st){ const ys=yearSeasonNow(); return ys.year===1992 && enc79TierOf(st.fav)>=2; } },
   { id:"chai_repay", when(st){ return enc79TierOf(st.fav)>=2 && (enc87StoryFlag("flag_side_film") || enc87StoryFlag("flag_side_tv") || enc87StoryFlag("flag_side_undecided") || enc83NodeDone("N13")); } },
   { id:"chai_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc83_chai_patron", debtor:"齊鎮海", title:"一哥引薦", line:"齊鎮海同監製打咗聲招呼：你去試鏡嗰日，提一哥個名，嗰道門會為你開。", status:"未收" }); } },
@@ -41518,27 +40190,27 @@ function enc87StoryFlag(k){
   return false;
 }
 ENC79_BEATS.pang_siuki = [
-  { id:"pang_intel", when(st){ return enc79TierOf(st.fav)>=2; }, grants(){ enc79GrantRumorCard({ id:"rumor_pang_show_tip", source:"彭少祺", title:"大騷缺人風聲", text:"彭少祺講：嚟緊個台慶大騷，後台缺個肯捱又醒目嘅助手位，監製嗰邊出名好相與，肯畀新人試。你嗰日去後台留個名，好過坐喺度等運到。" }); } },
+  { id:"pang_intel", when(st){ return enc79TierOf(st.fav)>=2; }, },
   { id:"pang_help", when(st){ return enc79TierOf(st.fav)>=1 && enc83NodeDone("N11"); } },
   { id:"pang_n17", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=3 && ys.year===1992 && ys.season==="冬"; } },
   { id:"pang_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc84_pang_patron", debtor:"彭少祺", title:"司儀引薦", line:"彭少祺喺大騷監製面前提咗你個名：嗰個後生仔唔係齋企喺度嗰啲臨記，畀個機會佢企上台試下。", status:"未收" }); } },
 ];
 ENC79_BEATS.so_jiyan = [
-  { id:"so_intel", when(st){ return enc79TierOf(st.fav)>=2; }, grants(){ enc79GrantRumorCard({ id:"rumor_so_ad_tip", source:"蘇芷茵", title:"廣告代言風聲", text:"蘇芷茵私下講：有個飲品品牌嚟緊換代言，嗰間廣告公司班人好相與，肯畀新人試鏡。你想行廣告嗰邊，去嗰頭敲下門，好過亂咁撞。" }); } },
+  { id:"so_intel", when(st){ return enc79TierOf(st.fav)>=2; }, },
   { id:"so_risk", when(st){ return enc79TierOf(st.fav)>=2 && enc79PlayerTier()<=1; } },
   { id:"so_wrap", when(st){ return enc79TierOf(st.fav)>=2 && !!st.workedWith; } },
   { id:"so_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc84_so_patron", debtor:"蘇芷茵", title:"對手戲引薦", line:"蘇芷茵向嗰位肯畀佢轉型嘅導演開咗口：佢嗰場對手戲，想同你做。嗰邊點咗頭——呢個機會，係佢幫你爭返嚟嘅。", status:"未收" }); } },
 ];
 ENC79_BEATS.chung_choning = [
   { id:"chung_review", when(st){ return enc79TierOf(st.fav)>=1; } },
-  { id:"chung_intel", when(st){ return enc79TierOf(st.fav)>=2; }, grants(){ enc79GrantRumorCard({ id:"rumor_chung_director_tip", source:"鍾楚凝", title:"邊個導演識用演員", text:"鍾楚凝講：嗰位拍文藝片嘅導演，試鏡嗰陣唔睇你靚唔靚，淨係睇你入唔入到戲。你去試嗰邊，唔好賣口乖，企定定演一段，佢就知你有冇料。" }); } },
-  { id:"chung_f_clue", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=3 && ys.year>=1991; }, grants(){ enc79GrantRumorCard({ id:"rumor_chung_canada_heard", source:"後台走廊", title:"鍾楚凝的安排", text:"後台有人低聲講：鍾楚凝嗰邊，加拿大嘅手續好似辦緊。冇人敢當面問佢——佢嗰種人，走定留，都唔會敲鑼打鼓。" }); } },
-  { id:"chung_farewell", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=2 && ys.year===1992 && (ys.season==="秋" || ys.season==="冬"); }, grants(){ enc79GrantRumorCard({ id:"rumor_chung_advice", source:"鍾楚凝", title:"鍾楚凝的忠告", text:"鍾楚凝臨走留低一句演技忠告畀你，你記咗喺心入面——第日試鏡嗰陣，諗起佢點講。佢嗰種人，一句說話，唔會同幾多個人講。" }); } },
+  { id:"chung_intel", when(st){ return enc79TierOf(st.fav)>=2; }, },
+  { id:"chung_f_clue", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=3 && ys.year>=1991; }, },
+  { id:"chung_farewell", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=2 && ys.year===1992 && (ys.season==="秋" || ys.season==="冬"); }, grants(){ (function(){ try{ S.flags = S.flags || {}; S.flags.chungAdviceHeld229 = 1; }catch(_e){} })(); } },
   { id:"chung_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc84_chung_patron", debtor:"鍾楚凝", title:"影后引薦", line:"鍾楚凝臨行前向嗰位導演提過你個名，留低一句：嗰個後生仔，有戲。佢嗰種人，一句好話，重過成版廣告。", status:"未收" }); } },
 ];
 ENC79_BEATS.ching_tinlok = [
   { id:"ching_e4", when(st){ return enc79TierOf(st.fav)>=1 && enc83NewsOut("E4"); } },
-  { id:"ching_rival", when(st){ return enc79TierOf(st.fav)>=1 && !enc83NodeDone("N15"); }, grants(){ enc79GrantRumorCard({ id:"rumor_ching_rehearse", source:"天星音樂", title:"程天諾半夜練唱", text:"唱片公司啲人講：程天諾俾人笑靠修音之後，晚晚喺舞蹈室練唱，練到保安鎖門。走音都唔停，由頭嚟過——呢個後生仔，唔服輸。" }); } },
+  { id:"ching_rival", when(st){ return enc79TierOf(st.fav)>=1 && !enc83NodeDone("N15"); }, },
   { id:"ching_after_train", when(st){ return enc83NodeDone("N15") && enc87StoryFlag("flag_vocal_train"); } },
   { id:"ching_after_polish", when(st){ return enc83NodeDone("N15") && enc87StoryFlag("flag_vocal_polish"); } },
   { id:"ching_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc84_ching_patron", debtor:"程天諾", title:"同輩引薦", line:"程天諾喺佢嗰組監製面前幫你講咗句好話：嗰位前輩係真材實料，畀佢試下，你唔會後悔。", status:"未收" }); } },
@@ -41807,21 +40479,9 @@ function eraSightParagraphs(star){
 function openStarSighting(star){
   if(!star) return { ok:false };
   const heard = playSightChime();
-  try{
-    ensureMockJournal();
-    const rid = "sight:"+star.starId;
-    if(star.rumorTeaser && !(S.mockRumors||[]).some(r=>r && r.id===rid)){
-      S.mockRumors.unshift({
-        id:rid, source:star.locHint, title:star.displayName, text:star.rumorTeaser, state:"normal", season:"",
-      });
-      syncNotebookMirror();
-      try{ saveQ(); }catch(_e){}
-    }
-  }catch(_e){}
   const flavor = star.distanceLine || star.distanceLook || "只能遠望，時機未到，不要走近。";
-  /* Weave Phase 1-3：拼到呢位紅星嘅情報之後，遠觀多一段「知內情」嘅望法。 */
+  /* v20a267：傳聞拼合已刪，遠觀唔寫卡、唔出情報段。 */
   let intelPara = "";
-  try{ const il = (typeof intelSightLineFor==="function") ? intelSightLineFor(star.starId) : ""; if(il) intelPara = `<p>${journalText(il)}</p>`; }catch(_e){}
   modal(`<h3>遠觀 · ${journalText(star.displayName)}</h3>
     <p class="sub">${journalText(flavor)}</p>
     ${softSilhouetteFarHtml(star)}${eraSightParagraphs(star)}${intelPara}
@@ -42195,25 +40855,6 @@ function openLoc(id, opts){
       }
     }
   }
-  /* v19z31 soft：通往 N2 缺 tvb_rules_gossip 時提示可打聽／請教 */
-  try{
-    if(typeof softPreviewOn==="function" && softPreviewOn() && (id==="cafe_cha" || id==="agency_ho")){
-      const w = (typeof weekNumNow==="function") ? weekNumNow() : 1;
-      let c1=false; try{ c1=!!(StoryOC && StoryOC.isDone && StoryOC.isDone("N1")); }catch(_e){}
-      let hasR=false;
-      try{
-        if(typeof BehaviorGate!=="undefined" && BehaviorGate.readCtx){
-          const rum = BehaviorGate.readCtx({}).rumors || [];
-          hasR = rum.indexOf("tvb_rules_gossip")>=0;
-        }
-        if(!hasR) hasR = !!(S.flags && S.flags.tvb_rules_gossip);
-      }catch(_e){}
-      if(c1 && w>=3 && !hasR && !S.flags._hintedTvbRules){
-        S.flags._hintedTvbRules = true;
-        toast(id==="cafe_cha" ? "可「打聽電視城規矩」→ 會有第2幕情報" : "可「請教何生入廠守則」→ 會有第2幕情報");
-      }
-    }
-  }catch(_e){}
   // Scrub stale board rows from current S only (done / shooting / missing)
   S.board[L.id]=(S.board[L.id]||[]).filter(gid=>{
     const gig=GIGS.find(g=>g.id===gid);
@@ -42559,7 +41200,7 @@ function openLoc(id, opts){
       let hintFace = face + (softPreviewOn() && !def.repay && !heard ? " · 不耗日" : "");
       if(heard){
         askCost = "已聽過";
-        hintFace = "這單傳聞已記入手帳";
+        hintFace = "呢單情報已經聽過。";
       } else if(isTeaAct){
         try{
           const tc = softSocialDailyCap("tea");
@@ -42576,7 +41217,7 @@ function openLoc(id, opts){
           openHoRepaySheet(L);
           return;
         }
-        if(heard){ toast("這單已經聽過——入手帳「傳聞」再看。"); return; }
+        if(heard){ toast("呢單情報已經聽過。"); return; }
         /* v20a236 RECONFIRM236：打聽先確認後扣茶錢／寫卡（applyMockAsk 本體唔郁；事務所打聽即加何生人情照舊）。 */
         const cost236 = (Number(def.moneyCost)||0)>0 ? ("即時支付茶錢 $"+(Number(def.moneyCost)||0)+"。") : "";
         const cons236 = cost236 + (L.id==="agency_ho" ? "何生人情將會增加。" : "行動一旦確認便會即時生效。");
@@ -42586,19 +41227,13 @@ function openLoc(id, opts){
         const r=applyMockAsk(L.id, def.id);
         try{ paintBar(); }catch(_e){}
         const reopen = ()=>{ try{ if(L) openLoc(L.id, {travelFree:true}); }catch(_e2){} };
-        if(r && r.ok && (r.added || r.updated || r.rumorId)){
-          const title = (r.rumorId && (S.mockRumors||[]).find(x=>x&&x.id===r.rumorId));
-          const rumTitle = (title && title.title) || def.title || "新傳聞";
-          const rumText = (title && title.text) || def.resultHint || def.hint || "";
+        if(r && r.ok && (r.added || r.intelText)){
+          const rumTitle = (r.intelTitle) || def.title || "情報";
+          const rumText = (r.intelText) || def.resultHint || def.hint || "";
           const short = String(rumText||"").slice(0, 72) + (String(rumText||"").length>72?"…":"");
-          modal(`<h3>聽到八卦</h3>
+          modal(`<h3>打聽到情報</h3>
             <p><b>${rumTitle}</b></p>
-            <p class="sub">${short||"已記入傳聞。"}</p>
-            <p class="gold">已記入傳聞</p>`,[
-            {label:"去傳聞拼合", role:"p", on:()=>{
-              try{ enterHome(null, false); }catch(_e){}
-              setTimeout(()=>{ try{ setHomeTab("rumor"); }catch(_e){} }, 40);
-            }},
+            <p class="sub">${short||""}</p>`,[
             {label:"我知道了", role:"g", on:reopen}
           ], {onDismiss: reopen});
         } else {
@@ -42973,7 +41608,7 @@ function closeSheet(opts){
    P1-6：長工（≥4 日）拍攝日輕量抉擇（本段 SET_CHOICES_35）。P0-6 文案池喺
    augmentPostShootRewards35＋newspaperWrapFaceLines 變體（各自位置）。 ===== */
 
-/* --- P0-2(c)：1988 春中階通告（mergeMidGigs35，跟 mergeIntelGigs 同一條件注入模式） ---
+/* --- P0-2(c)：1988 春中階通告（mergeMidGigs35，跟 mergeTriggerGigs 同一條件注入模式） ---
    門檻坐演技 32／38（入門 15 與《靈異》45 之間）、酬勞 $950／$1,060（入門 $550–$950 與
    《靈異》$1,150 之間）、拍攝 3 日／2 日（短過《靈異》9 日）。只限 1990 年注入：
    跨年後 GIGS 換年庫，呢兩張唔好喺 1989 春板面翻生。
@@ -43051,21 +41686,9 @@ function maybeTrainEvent35(notes, courseId){
     S.flags.trainEvLastId35 = ev.id;
     notes.push(`<span class="gold">課堂小插曲：</span>${ev.line}`);
     if(ev.fragId){
-      let granted = false;
-      try{
-        if(Array.isArray(S.mockRumors) && !S.mockRumors.some(r=>r && r.id===ev.fragId)){
-          const seed = (typeof MOCK_RUMOR_SEEDS!=="undefined" ? MOCK_RUMOR_SEEDS : []).find(r=>r && r.id===ev.fragId);
-          if(seed){
-            S.mockRumors.unshift({ id:seed.id, source:seed.source, title:seed.title, text:seed.text, state:"normal", season:seed.season||"", seeded:true, fromTrain35:true });
-            granted = true;
-            notes.push(`<span class="var-note">手帳多咗一張傳聞碎片：「${seed.title}」——去手帳睇下拼唔拼得埋。</span>`);
-          }
-        }
-      }catch(_fe){}
-      if(!granted){
-        if(ev.fragFallbackLine) notes.push(`<span class="var-note">${ev.fragFallbackLine}</span>`);
-        if(ev.fragFallback) notes.push(...apply(ev.fragFallback));
-      }
+      /* v20a267：傳聞碎片卡已刪；有 fragId 嗰陣直接行 fallback 文案／後果，唔寫卡。 */
+      if(ev.fragFallbackLine) notes.push(`<span class="var-note">${ev.fragFallbackLine}</span>`);
+      if(ev.fragFallback) notes.push(...apply(ev.fragFallback));
     }
     if(ev.delta) notes.push(...apply(ev.delta));
     return true;
@@ -43392,9 +42015,7 @@ function mergeNat92Gigs(){
  *  舊三級按機械級對位（初→初級／中→中級／高→高級），其餘同季卡無 take 上限一併上板。（v20a229 B2） */
 function gigsForLocSeasonBoard(locId, curSeason){
   try{ if(typeof mergeSoftBridgeGigs==="function") mergeSoftBridgeGigs(); }catch(_br){}
-  try{ if(typeof mergeIntelGigs==="function") mergeIntelGigs(); }catch(_ig){}
   try{ if(typeof mergeFavorGigs==="function") mergeFavorGigs(); }catch(_fg){}
-  try{ if(typeof mergeWf3Gigs==="function") mergeWf3Gigs(); }catch(_w3g){}
   try{ if(typeof mergeBr89Gigs==="function") mergeBr89Gigs(); }catch(_b89g){}
   try{ if(typeof mergeRivalGigs==="function") mergeRivalGigs(); }catch(_rg){}
   try{ if(typeof mergeExodusGigs==="function") mergeExodusGigs(); }catch(_xg){}
@@ -44494,16 +43115,10 @@ function softSocialDailyUse(kind){
 }
 /** 金龍打聽：玩家真係聽過／已拼合先鎖；教學預置唔算已聽過 */
 function mockAskAlreadyHeard(def){
+  /* v20a267：打聽已問鎖——讀 S.intelAsked（action id → day），問過即鎖，唔經傳聞卡。 */
   if(!def || def.repay) return false;
   try{
-    ensureMockJournal();
-    const grantId = def.grantsRumorId ? String(def.grantsRumorId) : "";
-    const unlockId = grantId || ("hint:"+def.id);
-    const existing = (S.mockRumors||[]).find(r=>r && r.id===unlockId);
-    if(!existing) return false;
-    if(existing.fromAsk || existing.heardByAsk) return true;
-    const lab = rumorStateLabel(existing.state);
-    return lab==="已拼合";
+    return !!(S && S.intelAsked && S.intelAsked[def.id] !== undefined);
   }catch(_e){ return false; }
 }
 function softPreviewOn(){
@@ -44920,19 +43535,8 @@ function rivalTookRoleLine(gig, rec){
     if(gig.rivalFaceoffGig) return "";
     if(gig.type!=="電視劇" && gig.type!=="電影") return "";
     if(!(typeof rivalryC3Done==="function" ? rivalryC3Done() : false)) return "";
-    if(typeof ensureMockJournal==="function") ensureMockJournal();
-    if(!Array.isArray(S.mockRumors)) S.mockRumors = [];
-    const id = "rival_took_"+(gig.id||rec.gigId||"");
-    if(S.mockRumors.some(x=>x && x.id===id)) return "";
     if(Math.random() >= 0.35) return "";
     const title = rec.title || gig.title || "";
-    S.mockRumors.unshift({
-      id:id, source:"片場休息區",
-      title:"嗰個位畀咗高俊傑",
-      text:title+"嗰個位，你落選之後，監製最後用咗高俊傑。佢收工嗰陣仲同人講，呢個位邊個企得穩就邊個嘅。",
-      state:"normal", season:""
-    });
-    try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
     return "<p>嗰個位最後畀咗高俊傑。監製收工嗰陣講，佢企位企得穩。</p>";
   }catch(_e){ return ""; }
 }
@@ -45038,22 +43642,19 @@ function promptAudition(gig, L){
 }
 
 /* ===== v20a229 B7 Q6 忠告卡（支線補完 Q6，用戶 2026-11-15 21:43 拍板）=====
-   憑 rumor_chung_advice 卡，下一次文藝片試鏡多一句鍾楚凝嘅忠告做提示。
+   憑 S.flags.chungAdviceHeld229（v20a267：傳聞系統刪除，chung_farewell 嗰句忠告改記旗，
+   唔再經傳聞卡），下一次文藝片試鏡多一句鍾楚凝嘅忠告做提示。
    效果就係呢句提示本身，唔加數字加成，唔做純收藏。文藝片＝genre 文藝＋電影／電視劇
    ＋category 作品（文藝製作入面做路人／接待員嗰啲臨記工唔算——嗰啲角色冇人物可諗，
    忠告講「諗下嗰個人點解咁做」唔適用）。語義：用一次即清——試鏡嗰刻用咗就標記
-   S.flags.chungAdviceSpent229，下一次文藝片試鏡唔再出。派發層照舊（ENC79_BEATS
-   chung_farewell 派 rumor_chung_advice）；唔掛傳聞拼合路（MERGE_PAIRS／
-   INTEL_USE_POINTS），張卡本身留喺 S.mockRumors 唔刪除，等傳聞刪除票嗰陣一併處理。
+   S.flags.chungAdviceSpent229，下一次文藝片試鏡唔再出。
    掛點：試鏡流程兩條執行路——即場 doAudition（完成 modal）＋手帳排程 job: 分支。 */
-const CHUNG_ADVICE_CARD_ID229 = "rumor_chung_advice";
 const CHUNG_ADVICE_TEXT229 = "唔好學人哋點演，你要諗下嗰個人點解咁做，諗通咗，你點企、點望、點停，都自然係佢，唔係你扮佢。";
 function chungAdviceCardHeld229(){
   try{
     if(typeof S==="undefined" || !S) return false;
     if(S.flags && S.flags.chungAdviceSpent229) return false;
-    const rs = Array.isArray(S.mockRumors) ? S.mockRumors : [];
-    return rs.some(r=>r && r.id===CHUNG_ADVICE_CARD_ID229);
+    return !!(S.flags && S.flags.chungAdviceHeld229);
   }catch(_e){ return false; }
 }
 function isWenyiAuditionGig229(gig){
@@ -45220,8 +43821,8 @@ function doAudition(gig, L){
     if(L) openCastingNoticeDetail(gig, L);
     return;
   }
-  /* v20a229 B7 Q6：忠告卡——呢次係文藝片試鏡＋持有 rumor_chung_advice 卡，先出提示，
-     用一次即清（標記嗰刻就清，唔等公佈日）。唔係文藝片／冇卡／已用過，唔出。
+  /* v20a229 B7 Q6：忠告——呢次係文藝片試鏡＋持有忠告（S.flags.chungAdviceHeld229），先出提示，
+     用一次即清（標記嗰刻就清，唔等公佈日）。唔係文藝片／冇忠告／已用過，唔出。
      typeof 守衛跟 repo 抽函數測試慣例：單獨抽 doAudition 出嚟跑嗰陣 helper 未必在場，行返無提示舊行為。 */
   const advice229 = (typeof chungAdviceTipForAudition229==="function") ? chungAdviceTipForAudition229(gig) : "";
   if(advice229 && typeof chungAdviceSpend229==="function") chungAdviceSpend229();
@@ -46003,7 +44604,7 @@ function showTutLocStage(kind){
   const train = kind==="train";
   const html = train
     ? `<h3 class="tut-board-h">星河電視台 · 九龍塘</h3><p class="board-lead">到片場報名訓練。報名之後，按鈕會改成「進行演技訓練」。</p><div class="act" style="pointer-events:none;margin-top:8px"><div><div class="n">報名：旁聽對戲／綵排</div><div class="h">開放手帳「演技訓練」</div></div><div class="cost">+1日</div></div>`
-    : `<h3 class="tut-board-h">金龍茶餐廳 · 油麻地</h3><p class="board-lead">打聽不耗日。打聽電視城規矩後，傳聞會記入手帳。</p><div class="act" style="pointer-events:none;margin-top:8px"><div><div class="n">打聽電視城規矩</div><div class="h">向茶餐廳伙記打聽入廠禁忌</div></div><div class="cost">一杯凍檸茶</div></div>`;
+    : `<h3 class="tut-board-h">金龍茶餐廳 · 油麻地</h3><p class="board-lead">打聽不耗日。打聽電視城規矩後，情報會直接告訴你。</p><div class="act" style="pointer-events:none;margin-top:8px"><div><div class="n">打聽電視城規矩</div><div class="h">向茶餐廳伙記打聽入廠禁忌</div></div><div class="cost">一杯凍檸茶</div></div>`;
   el.innerHTML=html;
   el.classList.add("on");
   el.setAttribute("aria-hidden","true");

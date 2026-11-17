@@ -35,7 +35,7 @@ ok('v143 B1 紙標籤／B2 其餘四組 subtab 規則仲喺度',
    and '#home-subtabs .hsub-group:not([data-hsubgroup="plan"]) .home-tab.on::after' in src)
 
 # --- B2：其餘八組 pane 底換紙面（跟 v131 B2 事業三頁同一套） ---
-for pane in ('ledger', 'inv', 'rumor', 'clippings', 'debt', 'people', 'tags', 'progress'):
+for pane in ('ledger', 'inv', 'clippings', 'debt', 'people', 'tags', 'progress'):
     ok('B2：#home-pane-%s .journal-scroll 入紙面組' % pane,
        ('#home-pane-%s .journal-scroll' % pane) in seg)
 ok('B2：紙面係事業頁同一套（#f3e6c8＋金邊 #c4a574＋圓角 14px＋padding 12px 10px 16px）',
@@ -50,8 +50,8 @@ ok('B2 續：v76 淺字覆寫 .jobs72-h（庫存／人脈標題）＋進度頁 .
    '#home-pane-inv .jobs72-h, #home-pane-people .jobs72-h{ color:#43301c; }' in seg
    and '#home-pane-progress .prog71-h{ color:#43301c; }' in seg
    and '#home-pane-progress .prog71-intro{ color:#8a755a; }' in seg)
-ok('B2 續：傳聞頁 .weak-whisper 故意淡化鬼影字冇新規則（v76 保留決定；段入面得註解提及）',
-   '.weak-whisper{' not in seg)
+ok('B2 續：v267 傳聞頁＋.weak-whisper 鬼影字成段刪走（唔留淡化規則）',
+   '.weak-whisper{' not in src and '#home-pane-rumor' not in src)
 ok('B2：事業三頁（works／awards／memory）唔喺 BOOK145 段入面——唔同 v142 撞',
    'home-pane-works' not in seg and 'home-pane-awards' not in seg and 'home-pane-memory' not in seg)
 ok('B2：v131 事業三頁紙面規則本身仲喺度',

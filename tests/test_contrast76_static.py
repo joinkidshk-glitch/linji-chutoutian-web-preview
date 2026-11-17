@@ -27,7 +27,7 @@ chk('拍攝簿條目 .req 提亮（限作品頁）', '#home-pane-works .req{ col
 chk('記數簿報名行提亮', '#home-pane-ledger .ledger-enroll{ color:#c3b096; }' in src)
 chk('人脈提示提亮', '#home-pane-people .people-next{ color:#c3b096; }' in src)
 chk('人情債引言提亮（v48 留低嗰頁）', '#home-pane-debt .pane-intro{ color:#e6d7ae; }' in src)
-chk('傳聞鬼影字提亮（保 opacity .45 淡化）', '.weak-whisper{ color:#e0d3ac; }' in src)
+chk('v267 傳聞鬼影字已刪（.weak-whisper 隨傳聞頁刪除）', '.weak-whisper' not in src)
 chk('jobs72 副行 inline 色改淺（4 處）', src.count('color:#b3a284') >= 4)
 
 # --- (C) 金錢晶片：提亮＋狀態色排除 ---
@@ -47,7 +47,7 @@ chk('壓力綠字加深', '#v-home .home-summary .good, #v-home .nb-live-stress 
 
 # --- (D) 故意淡化：原淡化機制冇被誤改 ---
 chk('進度 far/missed 行 opacity .62 保留', '.prog71-row.far' in src and 'opacity:.62' in src)
-chk('.weak-whisper opacity .45 保留', 'color:#6b4e2e; opacity:.45;' in src)
+chk('v267 .weak-whisper opacity 規則已刪', '.weak-whisper' not in src)
 chk('.act-item:disabled opacity .55 保留', '.act-item:disabled{opacity:.55}' in src)
 chk('確定掣 is-locked 樣式冇郁（disabled 判斷項）', 'is-locked' in src)
 

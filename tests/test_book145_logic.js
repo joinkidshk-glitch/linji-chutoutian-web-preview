@@ -27,16 +27,18 @@ ok('B3：未報名提示邏輯仲喺度（train73-note／train73-zero 純文字�
   html.includes('train73-note train73-zero') && html.includes('你仲未報名任何課程'));
 
 // --- B2：pane 切換 handler 共用 setHomeTab（八組同事業組同一條路） ---
-ok('B2：八組 pane 嘅 HTML id 全部仲喺度（ledger／inv／rumor／clippings／debt／people／tags／progress）',
-  ['home-pane-ledger', 'home-pane-inv', 'home-pane-rumor', 'home-pane-clippings',
+ok('B2：七組 pane 嘅 HTML id 全部仲喺度（ledger／inv／clippings／debt／people／tags／progress；v267：rumor 已刪）',
+  ['home-pane-ledger', 'home-pane-inv', 'home-pane-clippings',
    'home-pane-debt', 'home-pane-people', 'home-pane-tags', 'home-pane-progress']
-    .every(id => html.includes('id="' + id + '"')));
+    .every(id => html.includes('id="' + id + '"'))
+  && !html.includes('id="home-pane-rumor"'));
 ok('B2：subtab 切換 handler 仲喺度（setHomeTab／htab id 齊）',
   html.includes('setHomeTab') && html.includes('id="htab-ledger"')
   && html.includes('id="htab-clippings"') && html.includes('id="htab-people"')
   && html.includes('id="htab-progress"'));
-ok('B2：各 pane 渲染函數仲喺度（renderClippingsPane／renderInvPane／renderRumorPane 唔郁）',
-  html.includes('function renderClippingsPane()') && html.includes('function renderInvPane()'));
+ok('B2：各 pane 渲染函數仲喺度（renderClippingsPane／renderInvPane 唔郁；renderRumorPane 已刪）',
+  html.includes('function renderClippingsPane()') && html.includes('function renderInvPane()')
+  && !html.includes('function renderRumorPane'));
 
 // --- B1：鎖定邏輯唔郁（淨係 CSS 收起兩行，DOM／文字／is-locked 照舊；v20a197 B2＋D1：經 helper 互換 button／span） ---
 ok('B1：鎖定態邏輯仲喺度（syncConfirmPlanStamp197 切鎖定印章＋「行程已定」）',

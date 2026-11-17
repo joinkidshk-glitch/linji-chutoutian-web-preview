@@ -49,7 +49,7 @@ ok('dedupe: clip gated by kickDup', '!kickDup' in fn)
 ok('presentDueMorningPaper untouched (paperSheet opt kept)', 'paperSheet: true' in html)
 
 # ---- (4) 傳聞頁說明對比（作用域只限傳聞頁） ----
-ok('rumor intro solid bg fix', '#home-pane-rumor .pane-intro' in v48 and 'background:#fff8e8' in v48 and 'color:#3a2a18' in v48)
+ok('v267 rumor intro 規則已刪（傳聞頁唔再存在）', '#home-pane-rumor .pane-intro' not in v48 and '#home-pane-rumor' not in html)
 # v20a76 CONTRAST76 supersede：v48 當時明文留低人情債頁唔郁；v76 全手帳普查
 # 量到該引言 1.24:1 讀唔到，用戶拍板一次修清——已加深底亮字規則，斷言跟住改。
 ok('debt pane intro restyled by v76 CONTRAST76', '#home-pane-debt .pane-intro{ color:#e6d7ae; }' in html)

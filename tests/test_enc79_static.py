@@ -32,18 +32,18 @@ ok('名冊 12 星＋主場副場表', 'const ENC79_STARS =' in src and 'ching_ti
 ok('S.stars lazy-init', 'function enc79EnsureStars()' in src and 'S.starDay' in src)
 ok('出沒盤：日種子＋冷卻＋上限常數', 'ENC79_COOLDOWN = 3' in src and 'ENC79_DAILY_CAP = 1' in src and 'ENC79_WEEKLY_CAP = 2' in src and 'function enc79EnsureDay()' in src)
 ok('好感：五段＋級數上限＋週軟頂', 'ENC79_FAV_CAPS = [30,55,80,100]' in src and 'ENC79_WEEK_SOFT_CAP = 10' in src and 'function enc79AddFav(' in src)
-ok('風聲：grant＋傳聞頁來源「風聲」', 'function enc79GrantWhisper(' in src and 'source:"風聲"' in src)
+ok('風聲：grant 只寫 state（S.starWhispers，3 日窗），唔再寫傳聞卡', 'function enc79GrantWhisper(' in src and 'source:"風聲"' not in src and 'S.starWhispers[starId]' in src)
 ok('攔截掛點：openLoc 入面 encDone 繞過＋先行', 'opts.encDone' in src and 'enc79TryIntercept(id)' in src)
 ok('主線壓制：storyPending 檢查在位', 'function enc79StoryPendingAt(' in src)
 ok('初遇保底：主場 5 日計數', 'homeVisits' in src and '>=5' in src)
 ok('對話殼：全屏 overlay＋企立候補＋場景底', 'enc79-overlay' in src and 'function enc79StandCandidates(' in src and 'function enc79SceneSrc(' in src)
 ok('殺青掛點：resolvePlannedDay 入面 enc79OnWrap', 'enc79OnWrap(sh)' in src)
 ok('人脈頁：紅星段＋未遇剪影＋範疇（唔畀名）', 'function enc79PeopleHtml()' in src and '？？？' in src and '常喺' in src)
-ok('報紙花邊 → 風聲掛點', 'enc79PaperWhisper(row.id)' in src)
+ok('報紙花邊 → 風聲掛點（v267：commitMorningPaper 直叫 enc79PaperWhisper(sh.sideId)）', 'enc79PaperWhisper(sh.sideId)' in src and 'function enc79PaperWhisper(sideId)' in src)
 
 # --- 二、處置表 ---
 i_ask = src.find('const MOCK_ASK =')
-i_ask_end = src.find('let mockMergePick', i_ask)
+i_ask_end = src.find('function applyMockAsk(', i_ask)  # v20a267：mockMergePick 已刪，改以其後函數做段尾
 ask = src[i_ask:i_ask_end]
 ok('刪掣：後巷食煙／打招呼唔喺 MOCK_ASK', 'act_cha_alley_smoke' not in ask and 'act_ho_greet' not in ask)
 ok('執漏：改真功能（冇假壓力、文案改幫手人情）', '壓力上升' not in ask and 'title:"幫手執漏"' in ask)
@@ -56,7 +56,7 @@ ok('護欄：事務所 loc-who 有何生信任進度（數字＋下一階提示�
 ok('S-24 護欄：事務所信任行唔再攤結局配方（冇「江湖撈家」字樣）', '江湖撈家' not in seg('function enc79HoTrustLine(', '/* ---------- 處置表', 3000))
 ok('護欄（105 裁決）：E5 指向喺人情頁定性承載（江湖路＋信任/清債/債權方向）', '江湖路' in seg('function renderDebtPane(', '', 6000) and '信任儲得夠深' in seg('function renderDebtPane(', '', 6000))
 ok('護欄：聽風聲保留何生人情增益（bumpNpc agent）', 'bumpNpc("agent", 3+R(0,2))' in seg('function enc79AgencyWind(', '/* ----------', 4000))
-ok('閘匙保留：茶餐廳三粒＋事務所采兒／守則', ask.count('grantsRumorId:') >= 5 and 'choi_recent_news' in ask and 'hau_ching_recent_news' in ask and 'gao_steal_spotlight' in ask)
+ok('閘匙保留：茶餐廳三粒＋事務所采兒／守則（v267：grantsRumorId 改 intelText，行動 id 唔郁）', ask.count('intelText:') >= 5 and 'act_ho_choi_news' in ask and 'act_cha_hiu_news' in ask and 'act_cha_gao_spotlight' in ask)
 
 # --- 三、遠觀退場 ---
 ok('openLoc 唔再出遠觀掣', 'addStarSighting(L.id, add);' not in src)

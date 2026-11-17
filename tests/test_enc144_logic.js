@@ -38,7 +38,6 @@ function extractConst(name){
 }
 /* ---- sandbox ---- */
 let S;
-let _merged = {};
 let _week = 3;
 let _ys = { year: 1990, season: '春' };
 let _storyOpen = [];
@@ -47,28 +46,17 @@ const GIGS = [
   { id:'g_test_sup', roleScale:'film_support_main', genreLabel:'動作片', type:'電影', title:'測試配角戲', workTitle:'測試配角戲' },
 ];
 const LOCS = [ {id:'film_lion', name:'獅子山製片'}, {id:'cafe_cha', name:'金龍茶餐廳'}, {id:'rec_star', name:'天星音樂'}, {id:'film_cotton', name:'紅棉影業'}, {id:'rec_hk', name:'香江唱片'}, {id:'tvb_kowloon', name:'九龍電視台'} ];
-const MERGE_FRAGS = [
-  { id:'rumor_lu_baiyan_angry', source:'場務八卦', title:'陸柏言片場發脾氣', text:'…' },
-  { id:'rumor_liao_bingxing_talk', source:'茶水姐傳聞', title:'廖炳星同導演密談', text:'…' },
-  { id:'rumor_mai_zhendong_hurt', source:'武師目擊', title:'麥震東片場整親', text:'…' },
-];
-const MOCK_RUMOR_SEEDS = [
-  { id:'tvb_rules_gossip', source:'金龍茶餐廳', title:'電視城廠景生存守則', text:'…', season:'' },
-  { id:'gao_steal_spotlight', source:'片場休息區', title:'高仔片場搶鏡', text:'…', season:'' },
-];
 function resetS(day){
   S = { dayIndex: day||0, fame: 0, money: 500, flags: {}, npcs: { agent: 0 }, mockRumors: [], mockDebts: [], mockCredits: [], board: {}, shoots: [], mapTips: {} };
   _merged = {};
 }
 function weekNumNow(){ return _week; }
 function yearSeasonNow(){ return _ys; }
-function hasMergedIntel(id){ return !!_merged[id]; }
 function ensureMockJournal(){ if(!Array.isArray(S.mockRumors)) S.mockRumors=[]; if(!Array.isArray(S.mockDebts)) S.mockDebts=[]; }
 function syncNotebookMirror(){}
 function saveQ(){}
 function refreshMoneyHud(){}
 function noteWeekHighlight(){}
-function rumorStateLabel(state){ return ({ normal:'剛聽聞', fresh:'剛聽聞', teased:'已知', merged:'已拼合' })[String(state||'normal')] || '剛聽聞'; }
 function R(a,b){ return a; }
 function bumpNpc(id, d){ const b = S.npcs[id]||0; S.npcs[id] = Math.min(100, b+d); return S.npcs[id]-b; }
 let _ledger = null;
@@ -103,7 +91,7 @@ const consts = names.map(n=> asVar(extractConst(n), n)).join('\n')
       try{ return asVar(extractDlg('ENC79_DLG_' + sid), 'ENC79_DLG_' + sid) + '\nENC79_DIALOG["' + (sid==='yip_manzi' ? 'yip_manji' : sid) + '"] = ENC79_DLG_' + sid + ';'; }
       catch(e){ return ''; }
     }).join('\n');
-const fns = ['enc79StarDef','enc79LocName','enc79Hash','enc79Rand','enc79EnsureStars','enc79StarState','enc79TierOf','enc79PlayerTier','enc79FavCap','enc79AddFav','enc79InWindow','enc79WhisperActive','enc79PresenceP','enc79EnsureDay','enc79PresenceAt','enc79GrantWhisper','enc79GrantFrag','enc79GrantRumorCard','enc79GrantCredit','enc79HasMerged','enc79BoardHasStar','enc79BoardHasActionGig','enc79BeatOpen','enc79AnyBeatOpen','enc79PickBeat','enc79ChoiceFx','enc79RunChoiceFx','enc79NormSeg','enc79StoryPendingAt','enc79TryIntercept','enc79DistanceLook','enc79OnWrap','enc79PaperWhisper','enc79HoTrustLine','enc79HelpAvailable','enc79MockAskBranch','enc79PayTea','enc79TeaListen','enc79HelpClear','enc79AgencyWind','enc79BuildScript'];
+const fns = ['enc79StarDef','enc79LocName','enc79Hash','enc79Rand','enc79EnsureStars','enc79StarState','enc79TierOf','enc79PlayerTier','enc79FavCap','enc79AddFav','enc79InWindow','enc79WhisperActive','enc79PresenceP','enc79EnsureDay','enc79PresenceAt','enc79GrantWhisper','enc79GrantCredit','enc79BoardHasStar','enc79BoardHasActionGig','enc79BeatOpen','enc79AnyBeatOpen','enc79PickBeat','enc79ChoiceFx','enc79RunChoiceFx','enc79NormSeg','enc79StoryPendingAt','enc79TryIntercept','enc79DistanceLook','enc79OnWrap','enc79PaperWhisper','enc79HoTrustLine','enc79HelpAvailable','enc79MockAskBranch','enc79PayTea','enc79TeaListen','enc79HelpClear','enc79AgencyWind','enc79BuildScript'];
 eval(consts + '\n' + fns.map(extractFn).join('\n'));
 
 

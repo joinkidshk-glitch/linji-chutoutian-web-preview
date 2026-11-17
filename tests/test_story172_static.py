@@ -62,8 +62,8 @@ ok('N1：兩條 checklist（GateItems N6–N17／StubItems N1–N5）入面無�
    '先播到呢幕' not in gate and '先播到呢幕' not in stub
    and '就會觸發' not in gate and '就會觸發' not in stub
    and '先可以播這幕' not in gate and '先可以播這幕' not in stub)
-ok('N1：傳聞提示「聽到傳聞」刻意保留（條件提示，唔係觸發句——見檔頭註解）',
-   '聽到傳聞：' in stub and 'rumorHearHint' in src)
+ok('N1：傳聞提示「聽到傳聞」已隨傳聞閘一併清走（v267：鎖行唔再有傳聞條件）',
+   '聽到傳聞' not in src and 'rumorHearHint' not in src and '未聽聞' not in src)
 ok('N1：鎖行其餘條件句唔變（前置／週數／通告／聲望／季節）',
    '"先完成"+(storyActLabel(d)' in stub and '到第 ' in stub and '接通告 ' in stub
    and '需要多於' in stub and '等到合適的季節' in stub)
@@ -98,8 +98,8 @@ ok('B1(b) 前提：stepLoc 識 opts.ignoreSheetLoc（唔傳就等於以前）',
 ok('B1(b) 前提：stepFavor（OR／AND 人情＋地點）同樣識 opts.ignoreSheetLoc',
    'function stepFavor(trig, ctx, opts){' in src
    and '(opts && opts.ignoreSheetLoc)' in src)
-ok('B1(b) 前提：evalNode soft 支路原樣轉交 opts 去 evalTrigger_AND_softRumor',
-   'BehaviorGate.evalTrigger_AND_softRumor(node, opts)' in src)
+ok('B1(b) 前提：evalNode soft 支路原樣轉交 opts 去 evalTrigger_AND',
+   'BehaviorGate.evalTrigger_AND(node, opts)' in src)
 ok('B1(b) 前提：選幕 listOpen 早已用 ignoreSheetLoc（播出同選幕一致，唔係新語義）',
    'listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true })' in src)
 

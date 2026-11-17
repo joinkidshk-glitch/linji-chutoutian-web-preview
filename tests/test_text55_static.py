@@ -28,7 +28,7 @@ if _rs >= 0 and _re > _rs:
 # call sites
 chk('call: copy packs cleaned', 'textfix55SimplePack(giftItems)' in src and 'TEXTFIX55_OPTS_GIFT' in src)
 chk('call: story packs cleaned', 'textfix55StoryPack(main)' in src and 'textfix55RivalSpeakers(rival)' in src)
-chk('call: tutorial overlay cleaned', 'textfix55SimplePack(TUTORIAL_PHASE2_STEPS56_OVERLAY)' in src)
+chk('v267 call: tutorial overlay call 已隨傳聞教學一併刪', 'textfix55SimplePack(TUTORIAL_PHASE2_STEPS56_OVERLAY)' not in src and 'TUTORIAL_PHASE2_STEPS56_OVERLAY' not in src)
 chk('call: freeplay cleaned', 'textfix55Freeplay(FREEPLAY_FW)' in src)
 chk('RW-7: gig clean fn removed', 'textfix55GigRecord(o)' not in src and 'textfix55GigField' not in src and 'textfix55DropSents' not in src)
 chk('call: phase3 star sightings looks', 'textfix55SimplePack(data)' in src and 'TEXTFIX55_STAR_LOOKS[st.starId]' in src)
