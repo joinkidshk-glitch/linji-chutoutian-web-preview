@@ -115,6 +115,10 @@
 - 更新：`test_enc83_logic.js`（駱／顧 label 同步）、`test_enc84_logic.js`（蘇／程 label 同步）、`test_sideline271_logic.js`（顧 heart label 同步）、`test_gig229_grant.js` T2（改做 v273 接線現實）。
 - Resync（index.html 淨 +34；段邊界 main 座標：≤26803 ＋0、26804–36410 ＋1、36411–38465 ＋19、38466–38492 ＋21、38493–38605 ＋25、38606–38646 ＋29、≥38647 ＋34）：`test_gift185_static.py`、`test_tang171_static.py`、`test_tang173_static.py`（總行數鏈＋v273 +34；openLoc DEF 40716→40750）、`test_rom176_static.py`（4 釘行各 +34，內容逐行核實純漂移）、`test_travel114_static.py`（DEF／WRAPPER＋FREE 26 處＋COUNT 5 處按段重算，逐對命中一次，單次掃描 dict 查表）。另 v272 中途落地，分支 rebase 上 `f2d3dfb`（零衝突），resync 在新基線上重做。
 
+## 落地記錄
+
+- main `c5d7aa4`（squash merge v273，2026-11-17）。GitHub Pages 核實：主頁 HTTP 200、4,618,115 bytes、sha256 `e788eb6224e3d43cd24b405a2914efa3c929dd6ef66b8ca072afab0a7fa2fc46`，同本地 `index.html` 完全一致。工作副本 `linji-work273` 已刪。
+
 ## 留跟進票（唔入 v273）
 
 1. 六線 draft Beat 1–5 抉擇樹全面實裝（(c) 發現：草稿旗 repo 0 命中；連同 GRANT229_ENC79 六線 beat 行、G-LOK-2／G-NGAI-4／G-CHAI-2／G-PANG-2、2.17–2.20）。
