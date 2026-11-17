@@ -43,7 +43,8 @@ ok('REST src 仲係 fx_rest.mp4',
 ok('休息片 cache-buster ?v=20a129',
    '"v=20a129"' in html and
    'REST_SLEEP_FX_SRC)?"&":"?") + "v=20a129"' in html)
-ok('其餘 7 條 fx 片仲係 ?v=20a10',
+# v20a139 有意改變：其餘 6 條 fx 片改行 ?v=20a139 early return，共用行只剩 fx_rest 行
+ok('共用行 ?v=20a10 仲喺度（v139 後淨係 fx_rest 行佢）',
    'const src = src0 + "?v=20a10";' in html)
 
 # 紅線：SAVE key／softRev／產品 ?v= 冇郁

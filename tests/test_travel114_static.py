@@ -1,3 +1,4 @@
+# v20a139 resync：index.html 淨 +6 行（actFx102Html 加 6 個 ?v=20a139 early return，插入點舊 L43040）；COUNT／FREE 其後錨點各 +6（COUNT 44426／44638／44796／44817、FREE 44159／44303／44304／44348／44349／44374／45267），之前唔郁；DEF 41299／WRAPPER 29193 唔郁；內容逐行核實純漂移。
 # v20a159 resync：index.html 淨 +1235 行（感情線大改＋約會層：地點 15→21，ROM159 約會揀場＋約會場景）；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫（/tmp/resync114_159.py：全部 47 處舊錨點內容逐行相同，純漂移；DEF 40136→41299、WRAPPER 28088→29193）；新 3 處 openLoc( 呼叫點全部係 v159 約會返程（rom159OpenDatePicker 取消／dismiss＋rom159DateScene go fallback），全部帶 travelFree:true 字面，歸入 FREE（返去而家身處地點，唔係新入場，同其他 modal 取消返程同一理據）；openLoc( 呼叫點總數 53→56。
 # v20a163 resync：index.html 淨 −33 行（刪 #map-stress-tip：CSS −7＠舊 L3494–3500／story-play-lock 死規則行合併 −1＠舊 L4055–4056／HTML 元素 −1＠舊 L6031／drawMap() 呼叫 −1＠舊 L22365／updateMapStressTip() 函數 −23＠舊 L41473–41495）；釘行按 difflib 映射重寫，內容逐字核實純漂移；ok() 名入面嘅 Lxxxxx 歷史標籤唔郁。
 # COUNT／FREE／DEF／WRAPPER 按段 shift 重算（＜3494 唔郁、3501–4055 −7、4057–6030 −8、6032–22364 −9、22366–41472 −10、≥41496 −33），內容逐行核實純漂移；openLoc( 呼叫點總數不變。
@@ -184,10 +185,10 @@ COUNT_LINES = {
     22684,  # 地圖釘 goPin（最近針／後備 L.id）
     22715,  # 地圖底欄地點掣
     28624,  # 人情債「去事務所」
-    44426,  # inv72GoShop 去禮品檔
-    44638,  # people72GoLoc
-    44796,  # jobs72GoBoard
-    44817,  # jobs72GoLoc
+    44432,  # inv72GoShop 去禮品檔
+    44644,  # people72GoLoc
+    44802,  # jobs72GoBoard
+    44823,  # jobs72GoLoc
 }
 # v20a243 resync：index.html 淨 −11 行（刪 TEXTFIX55 GIG 五組，刪除區間舊 L14413–14417／14576–14578／14588–14589／14593–14596）；其後錨點各 −11，之前唔郁；內容逐行核實純漂移。
 # 免費清單（帶旗，唔計）：38 處（舊 35 加 v159 約會返程新 3 處；舊 34 減 v196 D4 刪走 leaveStory 嗰行 28228；舊 27 減 2 條改行 back176 守衛，加 ROM176 新 8 處＋v183 C9 intro 1 處）
@@ -225,13 +226,13 @@ FREE_LINES = {
     41749,  # v236 打聽確認「返去」重開地點（travelFree，唔計額度）
     41754,  # 聽完傳聞後 reopen 而家身處地點
     42682,  # forceRestore（舊旗）
-    44159,  # promptAudition back（返去而家身處地點）
-    44303,
-    44304,
-    44348,
-    44349,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    44374,  # doGiveGift 失敗後重開而家身處地點
-    45267,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
+    44165,  # promptAudition back（返去而家身處地點）
+    44309,
+    44310,
+    44354,
+    44355,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    44380,  # doGiveGift 失敗後重開而家身處地點
+    45273,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
 DEF_LINE = 41299      # function openLoc(id, opts){

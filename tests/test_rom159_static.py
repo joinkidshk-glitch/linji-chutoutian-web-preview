@@ -1,21 +1,41 @@
+# v20a139 resync：pristine 改由 git show 846e952（v154 main HEAD，v159 落地前最後一個 main）讀，唔再用 ~/workspace/linji-repo（佢個 main 而家已經係 v159，唔再係 pristine）；反證＋pack 對照不變。
 # v20a159 ROM159 Phase 1＋v159 感情線重排 static 測試：紀律釘（SAVE/softRev/?v=、pack JSON 冇直改）
 # ＋修復標記在場＋pristine 反證（同一批斷言對 pristine main 乾淨 FAIL，唔 crash）。
 # 用法：python3 tests/test_rom159_static.py
-# 反證行法：ROM159_PRISTINE=~/workspace/linji-repo python3 tests/test_rom159_static.py
-#   → 會 FAIL（pristine 冇 ROM159 標記，符合預期）；預設行 work159 index 應該全 PASS。
+# 反證行法：ROM159_PRISTINE=<dir> python3 tests/test_rom159_static.py
+#   （<dir> 係一個 v159 之前嘅 index.html 副本；會 FAIL，符合預期）。
+# 預設：pristine 由 git show 846e952（v154 main HEAD）讀，唔再用 ~/workspace/linji-repo。
 # 注意：行號釘 2026-11-17 重新量度（舊值喺基底已經唔啱——量度值同舊釘差成萬行，
 #   舊釘大概係更舊佈局；改動移位要同步更新呢度）。
 import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-PRISTINE = os.path.expanduser(os.environ.get("ROM159_PRISTINE", "~/workspace/linji-repo"))
+# pristine 來源：環境變數 ROM159_PRISTINE 指定目錄優先；否則由 git 讀 846e952
+#（v154 main HEAD，v159 落地前最後一個 main——resident clone 個 main 而家已經係 v159 之後）。
+_PRISTINE_COMMIT = "846e952"
+_PRISTINE_DIR = os.environ.get("ROM159_PRISTINE")
+
+
+def _read_pristine_bytes(rel):
+    if _PRISTINE_DIR:
+        return open(os.path.join(os.path.expanduser(_PRISTINE_DIR), rel), "rb").read()
+    r = subprocess.run(["git", "-C", ROOT, "show", _PRISTINE_COMMIT + ":" + rel],
+                       capture_output=True, timeout=60)
+    if r.returncode != 0:
+        raise RuntimeError("pristine git show 失敗：" + r.stderr.decode("utf8", "replace").strip())
+    return r.stdout
+
+
+def _read_pristine(rel):
+    return _read_pristine_bytes(rel).decode("utf8")
 idx = open(os.path.join(ROOT, "index.html"), encoding="utf8").read()
 idx_lines = idx.split("\n")
-pris = open(os.path.join(PRISTINE, "index.html"), encoding="utf8").read()
+pris = _read_pristine("index.html")
 fails = []
 skipped = []
 total = [0]
@@ -201,7 +221,7 @@ packs = [
     "content/cast_main.json",
 ]
 for p in packs:
-    ok("pack 冇直改: " + p, sha(os.path.join(ROOT, p)) == sha(os.path.join(PRISTINE, p)))
+    ok("pack 冇直改: " + p, sha(os.path.join(ROOT, p)) == hashlib.sha256(_read_pristine_bytes(p)).hexdigest())
 
 # ---- pristine 反證：同一批標記對 pristine main 應該全部唔存在（乾淨 FAIL，唔 crash） ----
 pris_missing = [m for m in markers if m in pris]
