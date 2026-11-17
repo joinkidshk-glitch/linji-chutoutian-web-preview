@@ -171,3 +171,15 @@
 
 - G-L2（`credit_wf3_comedy_crew` 授出路徑，等用戶拍板）；G-NGAI-3（武館老闆情報）；G-PANG-1 具體放寬數字；收尾獎勵數字（Q10 建議值未定稿）；Q4 code 提示文字 L6782–6783「1990 年秋末」未同步（N15 應為 1992 年秋末，攻略 live 版為準）；§1–§3 C→B 升級（1.10／1.11／1.13／1.14／1.17）；第 ③ 組收尾獎勵、第 ④ 組 §14、第 ⑤ 組 §15、R5 人情兌現（另票）；攻略側改動（parent 做）；鍾 Beat 3 報紙花邊回音（`rumor_chung_canada_heard`／`rumor_chung_farewell_truth` live 0 命中，v267 刪傳聞；`enc79PaperWhisper` 有無覆蓋「講出去」碎片未核實）；鍾規模三處講法出入（紅星章五段 vs 舊分批表 3–4 幕 vs 總則 4–5 幕，等用戶拍板）。
 - **新增（本票）**：駱／魏／齊冷版 heart 對白（草稿只寫「行冷版交心」，無對白；暖版已加排除式閘，冷版待設計寫對白）；五線暖版收科（好收尾）對白有草稿但無 beat（`lok_patron` 等暖版 beat 係引薦場面，收科係 N17 之夜另一場面；將來 finale-beat 票）；齊 FRAME cap／wrap 按 try_new／play_safe 分流（FRAME 機制本身唔喺 v278 改）；駱 heart stand_original 變體（草稿話「歌係自己嘅」嗰句變第一句，但 live heart 段六已有呢句，點變體待定，唔好靜默重複）；彭 heart 1992 年閘（草稿話 T3＋1992，但 live heart 分支無年份閘，六線通用；本票唔改，記低）；彭 n17 brushed_off 變體（草稿有變體描述但無逐字替換稿，改開場流程要自行寫句；旗後果由 pang_finale_cold 閘承接）；程 ching_e4 N15 旗變體（草稿話 N15 苦練／修音改變佢對「功夫就要追得上個名」嘅回應，但嗰句係抉擇後對白，改抉擇後行唔係 v269 開場插入模式，要另設計）；程 patron 閘同草稿出入（草稿 Beat 5 暖版閘係 T4＋`flag_vocal_train`＋`ching_back_train`＋`ching_stand_slow` 三旗齊備；v278 用 v269 排除式——暖版開只要 train 旗＋無壞旗，唔要求 back_train／stand_slow；如用戶要嚴格版，要改閘）；彭 pang_help showed_up／late 閘（草稿話遲咗嗰陣 Beat 3 唔開，但 live pang_help 閘係 N11，v278 無加閘，遲咗照可頂班；即派行已分流）。
+
+## §7 落地記錄（統籌補）
+
+- 新 main HEAD `7aa0151`（squash merge v278，base `d26a59f`，合併期間 main 無郁過，
+  無 rebase）；GitHub 已推 main；工作副本 `linji-work278` 已刪；
+  分支 `v20a278` 留喺常駐 clone 做紀錄。
+- 全套 suite（工作副本獨立重跑）：**TOTAL PASS 343 FAIL 9**（基線 342／9＋新檔 1 項），
+  FAIL 九項同基線逐項一致（flash51／slot50／soft_tip_111_restore／start53／
+  weave43_static／weave44_static／weave49_static／wf5_87／wrap38），零回歸。
+- Pages：推 main 後等傳播約 4 分鐘，curl 核實主頁 HTTP 200、byte-identical（同本地
+  `index.html` 逐字節一致）；v278 標記（`lok_patron_cold`／`ngai_rain`／`chai_fear`）
+  線上線下各 18 處，一致。
