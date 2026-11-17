@@ -70,7 +70,9 @@
 
 ## 合併＋Pages
 
-- （待補）合併 commit：／Pages 核實：／工作副本已刪：
+- 合併 commit：`c53aa38`（main，2026-11-18，squash merge 自工作分支 `v284` 兩 commits `7c5c17b`＋`ce654ed`；26 檔，+886／−134）。`git push origin main`：61e5d4f..c53aa38，ls-remote 一致。
+- Pages 核實（推 main 後約 4 分鐘）：HTTP 200，線上 index.html 同本地 byte-identical（4,687,484 bytes；sha256 `963205fe21c431a0b16b09107a55f70c02f8c7f7711e99b1d73ffa715bd70222`）；線上檔含 `gig_1992_film_114`（2 處）＋`enc79CafeHelpHeld284`（5 處）。
+- 工作副本 `linji-work284` 已刪。
 
 ## 留畀下一版
 
