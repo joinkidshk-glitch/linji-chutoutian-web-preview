@@ -1,6 +1,6 @@
 // P7-board-r2 focused（B5）：輸咗第 1 輪 → 冷卻期滿，
 // rivalryTick 輪次次序修正——先閘通告存在，後先＋1 開局（B3 係先＋1 後閘住，冷卻期滿會燒輪次）；
-// GIGS 無新庫通告 gig_1991_film_109 嗰陣，冷卻期滿唔燒輪次（round 留 1、faceoffState 留 none、唔 toast）；
+// GIGS 無新庫通告 gig_1991_film_102 嗰陣，冷卻期滿唔燒輪次（round 留 1、faceoffState 留 none、唔 toast）；
 // GIGS 有呢張通告嗰陣開第 2 輪（round→2、state open、gigId 係新 id、toast 有出）。
 // 板面過濾（觸發前隱藏／觸發後上板）見 tests/test_gig229_trigger.js T4。
 // 用法：node tests/test_rival_board_r2.js [path-to-index.html]
@@ -117,11 +117,11 @@ S.dayIndex = 244;
 S.rivalry = {score:4, faceoffState:"none", openedDay:150, settledDay:154, stance:"hard",
   round:1, gigId:"gig_rival_stale_r1", nextOpenDay:244, lastResult:"lost", wins:0,
   newsIdx:1, workTitle:"霓虹夜影", settledDual:18};
-GIGS = [{ id:'gig_1991_film_109', loc:'film_cotton', season:'秋', tier:'高級', type:'電影', title:'《霓虹夜影》男主角', workTitle:'霓虹夜影' }];
+GIGS = [{ id:'gig_1991_film_102', loc:'film_cotton', season:'秋', tier:'高級', type:'電影', title:'《霓虹夜影》男主角', workTitle:'霓虹夜影' }];
 toasts.length = 0;
 rivalryTick(); // 期滿＋有通告 → 開第 2 輪
 ok('B5 供新庫通告 → 開第 2 輪（round→2、state open、gigId 係新 id、toast 有出）',
-  S.rivalry.round===2 && S.rivalry.faceoffState==='open' && S.rivalry.gigId==='gig_1991_film_109' &&
+  S.rivalry.round===2 && S.rivalry.faceoffState==='open' && S.rivalry.gigId==='gig_1991_film_102' &&
   S.rivalry.workTitle==='霓虹夜影' && toasts.length===1 && toasts[0].indexOf('霓虹夜影')>=0);
 ok('B6 開局唔改 nextOpenDay（冷卻只喺結算嗰陣先設：settledDay＋90）', S.rivalry.nextOpenDay===244);
 

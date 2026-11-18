@@ -24633,7 +24633,7 @@ function wf4PresentFenFarewell(afterCont){
    輸：人氣 −1（細懲罰，唔羞辱）＋高俊傑好感 −1＋報紙寫佢先拔頭籌但畀你留「輸得起」口碑。
    結算後第 1／2 輪冷卻 90 日再開下一輪，第 3 輪先落 won／lost 終態（見下面對手線強化票註解）；報紙剪報＋手帳傳聞各留一痕。
    v20a229 B3：決戰通告內容已刪（RIVAL_FACEOFF_GIGS 清空、gigId 轉 null）；rivalryTick 閘住冇通告唔開局，B5 觸發系統供新庫觸發通告嗰陣先恢復。 ===== */
-const RIVAL_CFG = { gigId:"gig_1991_film_109" /* v20a229 B5：決戰通告由新庫補返（《霓虹夜影》男主角，1991 秋；rival trigger）；第 2／3 輪重用同一張 id 嘅問題見 rivalryGigForRound——rematch 邏輯到時重寫覆蓋 */, rumorId:"gao_steal_spotlight", resultRumorId:"rival_faceoff_result", openScore:3, winDualBase:40, hardMod:6, endureMod:-6, winCredit:3, winPaperFame:2, losePop:1, rematchCooldownDays:90, maxRounds:3 };
+const RIVAL_CFG = { gigId:"gig_1991_film_102" /* v20a229 B5：決戰通告由新庫補返（《霓虹夜影》男主角，1991 秋；rival trigger）；v20a285 修正：舊 id film_109 係廖引薦《笑聲震天響》男配角（credit trigger），唔係決戰通告——改返 film_102；第 2／3 輪重用同一張 id 嘅問題見 rivalryGigForRound——rematch 邏輯到時重寫覆蓋 */, rumorId:"gao_steal_spotlight", resultRumorId:"rival_faceoff_result", openScore:3, winDualBase:40, hardMod:6, endureMod:-6, winCredit:3, winPaperFame:2, losePop:1, rematchCooldownDays:90, maxRounds:3 };
 /* 對手線強化票：決戰唔再一次過終態——第 1／2 輪結算後冷卻 90 日再開下一輪（第 3 輪先終態）。
    舊檔遷移：之前已 won／lost 嘅舊檔，ensureRivalry 將佢哋轉返 "none"＋nextOpenDay＝settledDay＋90，
    等下一輪自然開；門檻 40±6、贏輸效果每輪一樣，唔加難度。 */
@@ -24865,7 +24865,7 @@ function rivalryNewsTick(){
 }
 /* 跟 mergeTriggerGigs／mergeFavorGigs 同一注入模式：faceoffState==="open" 先將當輪爭位試演注入 GIGS，
    結算後（第 1／2 輪返 "none" 等冷卻、第 3 輪 won／lost 終態）移除，確保唔會重複觸發；試鏡落選唔會令通告消失（未殺青就唔算消費，可再報）。
-   v20a229 B5：決戰通告改由新庫供應（RIVAL_CFG.gigId＝gig_1991_film_109），經通用 trigger 系統
+   v20a229 B5：決戰通告改由新庫供應（RIVAL_CFG.gigId＝gig_1991_film_102，v20a285 由 film_109 修正；舊 film_109 係廖引薦《笑聲震天響》男配角），經通用 trigger 系統
    （trigger kind rival）上板；呢度只留返舊池 no-op，唔再注入。 */
 function mergeRivalGigs(){
   try{
