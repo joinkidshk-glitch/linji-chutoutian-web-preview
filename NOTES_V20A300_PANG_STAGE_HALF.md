@@ -48,4 +48,6 @@ Q13：用彭少祺人情渠道（慈善騷頂班）入場嗰陣，5 張司儀通
 364＝v299 基線 363＋新檔 `test_r300_pang_stage_half.js` 1 檔。9 項 FAIL 全部係已知 pre-existing，同 v299 基線一字不差：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38。零新增回歸。
 
 ## 落地
-（待填：main HEAD、Pages md5／bytes。）
+- main HEAD `e6e0638`（squash merge 自工作分支 `v20a300` 209526d；`git ls-remote origin main` 一致）。
+- GitHub Pages 核實 byte-identical：md5 `54f0c5c4eb7f462156d0fa9a49712be8`、4,680,520 bytes、HTTP 200（https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/）。
+- 工作副本 `~/workspace/linji-work300` 已刪。
