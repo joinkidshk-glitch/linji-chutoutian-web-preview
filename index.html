@@ -34335,6 +34335,19 @@ function buildNewspaperEdition(batch, day){
     const _out302 = !!(_f302 && _f302.flags && _f302.flags.chungFarewellPaper302);
     if(_done302 && !_out302) shorts.push({ eventKey:"", paperName:"花邊短訊", headline:"聽聞鍾楚凝赴加小住，權當一個長外景", dek:"有行內人表示，鍾楚凝近日將赴加拿大，小住一段日子，權當一個長一點的外景，歸期未定。", clipLabel:"", fameDelta:0, source:"side", sideId:"side_chung_farewell302" });
   }catch(_e302){}
+  /* v20a315 Q25：鍾楚凝 Beat 3「講出去」報紙花邊回音——揀「講出去」（授 chung_loose_talk）
+     之後，下一期晨報短訊列尾額外加一則（跟 v302 模式：唔取代當日輪替花邊，唔入 3 則
+     短訊上限，唔做頭條）。已出旗 S.flags.chungLooseTalkPaper315 唔喺呢度記——build 可以被
+     self-test／抽出測試叫多次，記早咗會漏出；commitMorningPaper 見到呢則先記。
+     sideId 用專屬值，enc79PaperWhisper 查表唔認得就 no-op（L41428–41431），唔開風聲窗，
+     呢則係泄漏回音唔係風聲。文案：書面語、含蓄口徑（聽聞）、無玩家名、唔點名鍾楚凝
+     （DLG L38708 明寫「沒有點名」，同 v302 點名寫法唔同）。 */
+  try{
+    const _f315 = (typeof S!=="undefined" && S) ? S : null;
+    const _done315 = !!(_f315 && _f315.flags && _f315.flags.chung_loose_talk);
+    const _out315 = !!(_f315 && _f315.flags && _f315.flags.chungLooseTalkPaper315);
+    if(_done315 && !_out315) shorts.push({ eventKey:"", paperName:"花邊短訊", headline:"聽聞有女星赴加手續辦緊", dek:"有行內人表示，有女星近日正辦赴加手續，詳情未明。", clipLabel:"", fameDelta:0, source:"side", sideId:"side_chung_loose315" });
+  }catch(_e315){}
   const fameDelta = ranked.reduce((n,it)=> n + (Number(it && it.fameDelta)||0), 0);
   const eventKeys = ranked.map(it=>it && it.eventKey).filter(Boolean);
   /* Weave Phase 3-1：連載口吻——今期主話題同上一份報紙同鍵，先喺主新聞 dek 加跟進句。 */
@@ -34618,6 +34631,8 @@ function commitMorningPaper(edition, opts){
      （whisper loop 上面會對呢則 call enc79PaperWhisper("side_chung_farewell302")，
      查表唔認得係 no-op，唔開風聲窗。） */
   try{ if(edition && Array.isArray(edition.shorts)) for(const sh of edition.shorts){ if(sh && sh.sideId==="side_chung_farewell302"){ S.flags = S.flags||{}; S.flags.chungFarewellPaper302 = 1; break; } } }catch(_e302){}
+  /* v20a315 Q25：泄漏花邊見報先記已出旗（跟 v302 模式；build 嗰陣唔記，免得建咗未出就當出咗）。 */
+  try{ if(edition && Array.isArray(edition.shorts)) for(const sh of edition.shorts){ if(sh && sh.sideId==="side_chung_loose315"){ S.flags = S.flags||{}; S.flags.chungLooseTalkPaper315 = 1; break; } } }catch(_e315){}
   S.pendingMorningPaper = null;
   S.newspaperLastPresentedDay = S.dayIndex|0;
   /* v20a27：鏈 G 第 2 拍——報紙點名跨級偵測（屋企回音），趕喺 saveQ 之前行，
