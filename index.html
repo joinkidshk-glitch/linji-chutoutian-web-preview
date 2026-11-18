@@ -40257,7 +40257,7 @@ function enc79BuildScript(starId, forceFirst, locId){
        唔叫 sideline280GrantCompletion（暖線獎勵）；無 choices，唔經 GRANT229（seg "heartCold:…" 無對應行）；
        提攜唔靠 heartDone，patron_cold 閘只睇 tier＋壞旗，播完冷版 heart 之後 T4 照去得到。 */
     pushSeg(D.heartCold, "heartCold:"+starId, ()=>{ const s2=enc79StarState(starId); s2.heartDone = true; enc79AddFav(starId, 1, "beat"); try{ S.flags = S.flags || {}; S.flags[starId==="lok_gasing" ? "lok_heart_cold" : starId==="ngai_wingnaam" ? "ngai_heart_cold" : "chai_heart_cold"] = 1; }catch(_e304){} });
-  } else if(tier>=3 && !st.heartDone && D.heart && !(starId==="chung_choning" && chungPre91) && !(starId==="luk_baakyin" && !(S.flags||{}).luk_kept_secret) && !(starId==="lok_gasing" && (S.flags||{}).lok_loose_row) && !(starId==="ngai_wingnaam" && (S.flags||{}).ngai_rain_hold_back) && !(starId==="chai_zanhoi" && (S.flags||{}).chai_loose_fear) && !(starId==="pang_siuki" && (S.flags||{}).pang_absent_night)){ /* v20a271：陸 heart 加閘 T3＋luk_kept_secret（守口先有交心）／v20a278：駱／魏／齊／彭壞旗唔播暖版 heart（行 pool；冷版 heart 見上 v20a304，提攜冷版照舊由 patron 冷版承接；鍾冷版見下） */
+  } else if(tier>=3 && !st.heartDone && D.heart && !(starId==="chung_choning" && chungPre91) && !(starId==="luk_baakyin" && !(S.flags||{}).luk_kept_secret) && !(starId==="lok_gasing" && (S.flags||{}).lok_loose_row) && !(starId==="ngai_wingnaam" && (S.flags||{}).ngai_rain_hold_back) && !(starId==="chai_zanhoi" && (S.flags||{}).chai_loose_fear) && !(starId==="pang_siuki" && (S.flags||{}).pang_absent_night) && !(starId==="pang_siuki" && (S.flags||{}).pang_late)){ /* v20a271：陸 heart 加閘 T3＋luk_kept_secret（守口先有交心）／v20a278：駱／魏／齊／彭壞旗唔播暖版 heart（行 pool；冷版 heart 見上 v20a304，提攜冷版照舊由 patron 冷版承接；鍾冷版見下）／v20a312 Q25：彭遲到唔播暖版交心（行 pool；冷收尾見 pang_finale_cold） */
     /* v20a273 1.14：顧 Beat 2 讀返——問返「咁你自己呢」，交心嗰陣認返 */
     let heartSeg273 = D.heart;
     if(starId==="gu_mingfai" && (S.flags||{}).gu_ask_back && Array.isArray(D.heart.lines) && D.heart.lines.length){
@@ -41870,9 +41870,9 @@ function enc87StoryFlag(k){
 }
 ENC79_BEATS.pang_siuki = [
   { id:"pang_intel", when(st){ return enc79TierOf(st.fav)>=2 && (!(S.flags||{}).pang_first_fake || (st.seen||0)>=2); }, }, /* v20a278：初遇話佢客套嗰陣延遲開（再撞多一次先開） */
-  { id:"pang_help", when(st){ return enc79TierOf(st.fav)>=1 && enc83NodeDone("N11"); } },
+  { id:"pang_help", when(st){ return enc79TierOf(st.fav)>=1 && enc83NodeDone("N11") && !(S.flags||{}).pang_late; } }, /* v20a312 Q25：遲到唔開頂一晚（PLAN「遲到→頂班唔開，行冷版」） */
   { id:"pang_n17", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=3 && ys.year===1992 && ys.season==="冬"; }, grants(){ try{ sideline280GrantCompletion("pang"); }catch(_e280){} } },
-  { id:"pang_finale_cold", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=3 && ys.year===1992 && ys.season==="冬" && (st.beatsDone||{}).pang_n17 && ((S.flags||{}).pang_absent_night || (S.flags||{}).pang_brushed_off || (S.flags||{}).pang_early_night); }, }, /* v20a278：冷收尾（n17 之後、patron 之前；獨立場面，唔係 pang_n17／pang_patron 內容，跟陸 luk_finale 前例） */
+  { id:"pang_finale_cold", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=3 && ys.year===1992 && ys.season==="冬" && (st.beatsDone||{}).pang_n17 && ((S.flags||{}).pang_absent_night || (S.flags||{}).pang_brushed_off || (S.flags||{}).pang_early_night || (S.flags||{}).pang_late); }, }, /* v20a278：冷收尾（n17 之後、patron 之前；獨立場面，唔係 pang_n17／pang_patron 內容，跟陸 luk_finale 前例）／v20a312 Q25：遲到加第四旗，等遲到玩家有冷收尾 */
   { id:"pang_finale", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=3 && ys.year===1992 && ys.season==="冬" && (st.beatsDone||{}).pang_n17 && (S.flags||{}).pang_cover_night && (S.flags||{}).pang_listened && (S.flags||{}).pang_noodle_night; }, }, /* v20a278：好收尾（n17 之後、patron 之前） */
   { id:"pang_patron", when(st){ return enc79TierOf(st.fav)>=4; }, grants(){ enc79GrantCredit({ id:"credit_enc84_pang_patron", debtor:"彭少祺", title:"司儀引薦", line:"彭少祺喺大騷監製面前提咗你個名：嗰個後生仔唔係齋企喺度嗰啲臨記，畀個機會佢企上台試下。", status:"未收" }); try{ sideline280GrantCompletion("pang"); }catch(_e280){} } },
 ];
