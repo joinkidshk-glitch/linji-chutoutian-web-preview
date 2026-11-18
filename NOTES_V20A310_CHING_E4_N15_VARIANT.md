@@ -1,7 +1,7 @@
 # NOTES_V20A310 — Q23 程天諾 ching_e4 N15 旗變體（抉擇後對白）
 
 - 基線：main `36b42a9`（v309 已落地，suite 372／9）
-- 落地：main HEAD（見回報）、suite 373／9、Pages byte-identical（見回報）
+- 落地：main `d1d3620`、suite 373／9、Pages byte-identical（index.html md5 `d5920a5abb5cb20badb2c82d8d6c92fa`／4,698,258 bytes）
 - 檔案：`index.html` ＋10 行（47275→47285）、新測試 `tests/test_r310_ching_e4_n15.js`（27 項）、
   resync `qa310/resync310.py`、5 檔靜態測試釘行 resync（見 §4）
 
