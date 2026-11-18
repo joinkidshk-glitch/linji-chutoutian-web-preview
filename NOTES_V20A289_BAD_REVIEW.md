@@ -55,3 +55,6 @@ bad  = pBad > 0 && R(1,100) <= round(pBad × 100)
 - 新測試逐個直接跑：`test_r289_wrap_perf_logic.js` 22 項 ALL PASS；`test_r289_wrap_perf_static.py` ALL PASS；`test_enc79_logic.js` 全過。
 - 全套 suite（工作副本，第二跑）：**TOTAL PASS 351 FAIL 9**——9 項全部係已知 pre-existing FAIL（flash51／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wf5_87／wrap38），零新 FAIL。基線 349／9，新加 2 個測試檔全過。
 - 釘行 resync：新函數令 index.html 淨 +36 行（46220→46256），5 檔釘行測試漂移（gift185／rom176／tang171／tang173／travel114），22 處錨點內容逐字核實純漂移後 resync（單次掃描 dict 查表，`/tmp/resync289.py`），逐個重跑 ALL PASS。
+
+## 落地記錄
+- main `758ca88`（squash merge 自工作副本 `8c31ff8`）；suite 351／9（零新 FAIL）；Pages byte-identical（4,685,344 bytes，md5 `9aa77ed75f2b5a8d739712ebfce65b98`）；工作副本已刪。
