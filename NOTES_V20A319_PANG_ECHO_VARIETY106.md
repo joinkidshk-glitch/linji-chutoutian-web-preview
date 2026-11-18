@@ -71,6 +71,6 @@
 - 陸柏言行（SPEC 表有佢、計數同生成映射冇佢）要先拍板先開票。
 
 ## §5 落地實數（待填）
-- Main HEAD：
-- Suite TOTAL：
-- Pages index.html md5／bytes：
+- Main HEAD：`8142f7e`（內容；NOTES §5 補填 commit 待 push 後為準）
+- Suite TOTAL：382 PASS／9 FAIL（基線 381／9，＋1 係新測試檔；9 項 FAIL 全部係已知 pre-existing）
+- Pages index.html md5／bytes：`6dbc343da7818d55ac66fa72ebd92440`／4,700,898 bytes（byte-identical，v319 標記在位）
