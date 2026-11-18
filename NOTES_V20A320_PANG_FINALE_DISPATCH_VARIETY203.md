@@ -56,7 +56,8 @@ seg hook 行唔到，grants() 直接記低係唯一出路（`luk_tease` v271 前
   n17 B 共存（tv_301＋冷版乜都唔派）、BR89 18 對。
 - 全套 suite：見 §5。
 
-## 5. 落地（待填）
-- Main HEAD：
-- Suite TOTAL：
-- Pages md5／bytes：
+## 5. 落地
+- Main HEAD：`3ed34e7`（內容 `e5f59df`＋本 NOTES §5 補填）
+- Suite：TOTAL PASS 383 FAIL 9（基線 382／9，＋1 係新測試檔；9 項 FAIL 全部係已知 pre-existing：flash51／slot50／soft_tip_111_restore／start53／weave43／44／49_static／wf5_87／wrap38）
+- Pages byte-identical：index.html md5 `61a46fc8b165a538527b74cda3c20f8e`／4,701,234 bytes，v20a320 標記在位
+- 工作副本 `linji-work320` 已刪；`qa296/derive296.json` 已還原，唔入版
