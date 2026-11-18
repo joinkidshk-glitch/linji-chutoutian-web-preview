@@ -88,8 +88,8 @@ ok('P6 每張 gig 嘅 loc 全部喺 11 個板面地點入面', badLoc.length ===
 const trig = gigs.filter(g=>g.trigger && g.trigger.kind);
 const trigKind = {};
 trig.forEach(g=>{ trigKind[g.trigger.kind] = (trigKind[g.trigger.kind] || 0) + 1; });
-ok('P7 觸發通告 35 張（credit 24／fame 5／rel 3／rival 1／story 1／wf3harvest 1；award 0）',
-   trig.length === 35 && trigKind.credit === 24 && (trigKind.award || 0) === 0 && trigKind.fame === 5 &&
+ok('P7 觸發通告 36 張（credit 25／fame 5／rel 3／rival 1／story 1／wf3harvest 1；award 0）',
+   trig.length === 36 && trigKind.credit === 25 && (trigKind.award || 0) === 0 && trigKind.fame === 5 &&
    trigKind.story === 1 && trigKind.rel === 3 && trigKind.rival === 1 && trigKind.wf3harvest === 1,
    'n=' + trig.length + ' ' + JSON.stringify(trigKind));
 const withStar = gigs.filter(g=>g.leadStarId);

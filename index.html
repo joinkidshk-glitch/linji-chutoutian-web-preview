@@ -26699,7 +26699,8 @@ function br89HasCredit(id){
    舊 6 張 trigger 已拆，變普通板通告；總數維持 13 對。
    v20a279 G-L2：加第 14 對 gig_1992_film_202《笑到最後》→喜劇組債權（兌現，唔係提攜；收割完成授債權，呢張殺青先標 redeemedBy）。
    v20a284 R5-F：加第 15 對 gig_1992_film_114《海角歸人》→陸柏言引薦債權（同 film_101 同一筆，1992 春接力；H 經反查自動出兩張名）。
-   v20a316：加第 16 對 gig_1992_rec_112《追風少年》→駱家聲引薦債權（同 rec_111《銅鑼灣》同一筆，支線回響通告；H 經反查自動出兩張名）。 */
+   v20a316：加第 16 對 gig_1992_rec_112《追風少年》→駱家聲引薦債權（同 rec_111《銅鑼灣》同一筆，支線回響通告；H 經反查自動出兩張名）。
+   v20a317：加第 17 對 gig_1991_tv_114《亂世將軍傳》→齊鎮海引薦債權（同 film_206《油麻地夜班》同一筆，支線回響通告；H 經反查自動出兩張名）。 */
 const BR89_PATRON_OF_GIG = {
   gig_1991_film_101:"credit_enc83_luk_patron", gig_1991_variety_203:"credit_enc84_pang_patron",
   gig_1992_rec_106:"credit_enc84_ching_patron", gig_1991_film_103:"credit_enc79_liu_priority",
@@ -26708,6 +26709,7 @@ const BR89_PATRON_OF_GIG = {
   gig_1991_ad_102:"credit_enc84_so_patron", gig_1991_film_213:"credit_enc84_chung_patron",
   gig_1992_rec_111:"credit_enc83_lok_patron", gig_1991_film_212:"credit_enc83_ngai_patron",
   gig_1992_film_206:"credit_enc83_chai_patron",
+  gig_1991_tv_114:"credit_enc83_chai_patron" /* v20a317：齊引薦第二張《亂世將軍傳》（1991 秋電視劇男主角）——同 film_206《油麻地夜班》同一筆債權，支線回響通告；殺青邊張都標 redeemedBy，另一張自動落板（br89GigOn 讀同一筆債權嘅 redeemedBy）。 */,
   gig_1992_film_202:"credit_wf3_comedy_crew" /* v20a279 G-L2：喜劇組債權兌現 gig《笑到最後》——殺青經 br89OnGigComplete 標 redeemedBy，兌現後落板（收割完成授債權嗰陣唔標，見 wf3SettleTick） */,
   gig_1992_film_114:"credit_enc83_luk_patron" /* v20a284 R5-F：陸引薦第二張《海角歸人》（1992 春）——film_101（1991 秋）窗口只到 1991-11-30，授出要好感 70，分散玩嘅玩家多數 1992 先上到；同一筆債權兩張兌現通告，殺青邊張都標 redeemedBy，另一張自動落板（br89GigOn 讀同一筆債權嘅 redeemedBy）。 */,
   gig_1992_rec_112:"credit_enc83_lok_patron" /* v20a316：駱引薦第二張《追風少年》（1992 春搖滾 MV）——同 rec_111《銅鑼灣》同一筆債權，支線回響通告；殺青邊張都標 redeemedBy，另一張自動落板（br89GigOn 讀同一筆債權嘅 redeemedBy）。 */

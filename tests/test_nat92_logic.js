@@ -8,7 +8,7 @@
 //  (E) 分布守衛：52 週普查（MAXED 組成）1990「恰好 2」占比 <40%；
 //      三年全板 0 嘅地點-週＝62（新庫地點-季節洞＋錯峰空窗，見 E2 註——舊版 0 係 351 張＋18 張
 //      注入先做到，新庫 287 張有季節性空洞，呢個數係分佈釘，唔係回歸目標）。
-//      v20a229 B5：MAXED 而家真係 maxed——35 張 trigger 條件齊開（E0 守衛，v232 補寫《星夜迷離》第 241 張；v252 新庫 award 0 張），
+//      v20a229 B5：MAXED 而家真係 maxed——36 張 trigger 條件齊開（E0 守衛，v232 補寫《星夜迷離》第 241 張；v252 新庫 award 0 張），
 //      E2 釘先至繼續量度庫分佈而唔係觸發狀態；沙盒抽埋 triggerGigOn＋依賴，
 //      唔係 board filter 嘅 typeof 守衛會將全部 trigger 通告當未觸發隱藏。
 //  (F) 注入池已刪：NAT92_GIGS 18 張拎走，mergeNat92Gigs 回 0；錯峰資格改由
@@ -113,7 +113,7 @@ const MAXED = { acting:999, stage:999, vocal:999, looks:999, charm:999, iq:999, 
   MAXED.story = { done: {}, flags: { rival_gao_hard: true } };
   for (let n = 1; n <= 19; n++) MAXED.story.done['N' + n] = true;
   MAXED.story.done.N6F = true;
-  MAXED.wf3 = { liaoHarvest: { gigDay: 0, window: 7 } }; /* v20a279：MAXED 開埋收割窗（dayIndex 0 ≤ 0+7），E0 35 張 trigger 先齊開 */
+  MAXED.wf3 = { liaoHarvest: { gigDay: 0, window: 7 } }; /* v20a279：MAXED 開埋收割窗（dayIndex 0 ≤ 0+7），E0 36 張 trigger 先齊開 */
   MAXED.npcs = {};
   [...new Set(_trig.filter(t => t.trigger.kind === 'rel').map(t => t.trigger.npcId))].forEach(id => { MAXED.npcs[id] = 100; });
   const _cats = ['cat_film_lead_m','cat_film_lead_f','cat_film_support_m','cat_tv_lead_m','cat_tv_lead_f','cat_tv_support_m','cat_music_newcomer','cat_ad_lead_m','cat_ad_lead_f','cat_ad_support_m'];
@@ -236,7 +236,7 @@ ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3
   /* E0 普查前提：MAXED 開齊 47 張 trigger（唔齊就 E2 釘量度緊觸發狀態，唔係庫分佈）。 */
   const _allTrig = (PACK_NEW.gigs || []).filter(g => g.trigger && g.trigger.kind);
   const _unopened = _allTrig.filter(g => { const st = deepClone(MAXED); W.setS(st); return !W.triggerGigOn(g); }).map(g => g.id);
-  ok('E0 MAXED 開齊 35 張 trigger（普查前提；B5）', _allTrig.length === 35 && _unopened.length === 0, '未開：' + _unopened.join(','));
+  ok('E0 MAXED 開齊 36 張 trigger（普查前提；B5）', _allTrig.length === 36 && _unopened.length === 0, '未開：' + _unopened.join(','));
   function censusYear(year){
     setupYearPool(year);
     let tot = 0, ex2 = 0, zero = 0;

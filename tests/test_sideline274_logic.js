@@ -106,11 +106,12 @@ const OLD6 = ['gig_1991_film_110', 'gig_1992_rec_102', 'gig_1991_film_111',
 /* ---------- A：庫對位 ---------- */
 ok('A1 庫 306 張', gigs.length===306, 'n='+gigs.length);
 const trig = gigs.filter(g=>g.trigger && g.trigger.kind);
-ok('A1 trigger 35 張（credit 24）', trig.length===35 && trig.filter(g=>g.trigger.kind==='credit').length===24,
+ok('A1 trigger 36 張（credit 25）', trig.length===36 && trig.filter(g=>g.trigger.kind==='credit').length===25,
   'trig='+trig.length+' credit='+trig.filter(g=>g.trigger.kind==='credit').length);
-ok('A2 每筆債權只兌現一張（新 6 對；駱 lok 例外 v316：rec_111＋rec_112 同一筆，陸 luk 前例）', NEW6.every(([c, id])=>{
+ok('A2 每筆債權只兌現一張（新 6 對；駱 lok 例外 v316：rec_111＋rec_112 同一筆，齊 chai 例外 v317：film_206＋tv_114 同一筆，陸 luk 前例）', NEW6.every(([c, id])=>{
   const hits = gigs.filter(g=>g.trigger && g.trigger.kind==='credit' && g.trigger.creditId===c);
   if(c === 'credit_enc83_lok_patron') return hits.length===2 && hits.some(g=>g.id==='gig_1992_rec_111') && hits.some(g=>g.id==='gig_1992_rec_112');
+  if(c === 'credit_enc83_chai_patron') return hits.length===2 && hits.some(g=>g.id==='gig_1992_film_206') && hits.some(g=>g.id==='gig_1991_tv_114');
   return hits.length===1 && hits[0].id===id;
 }), NEW6.map(([c, id])=>c+'→'+id).join(', '));
 ok('A3 新 5 張欄位齊（媒介／級／作品／年季／trigger／引薦字句／posterBrief／pay 帶）', (()=> {
@@ -183,12 +184,13 @@ const EXPECT13 = {
   gig_1992_rec_111:'credit_enc83_lok_patron', gig_1991_film_212:'credit_enc83_ngai_patron',
   gig_1992_film_206:'credit_enc83_chai_patron',
   gig_1992_film_202:'credit_wf3_comedy_crew',
-  gig_1992_film_114:'credit_enc83_luk_patron', gig_1992_rec_112:'credit_enc83_lok_patron'
+  gig_1992_film_114:'credit_enc83_luk_patron', gig_1992_rec_112:'credit_enc83_lok_patron',
+  gig_1991_tv_114:'credit_enc83_chai_patron'
 };
-ok('D1 BR89 映射 16 張逐對啱（v274 新對位＋v279 收割鏈＋v284 film_114＋v316 rec_112）',
-  Object.keys(BR89_PATRON_OF_GIG).length===16 &&
+ok('D1 BR89 映射 17 張逐對啱（v274 新對位＋v279 收割鏈＋v284 film_114＋v316 rec_112＋v317 tv_114）',
+  Object.keys(BR89_PATRON_OF_GIG).length===17 &&
   Object.keys(EXPECT13).every(k=>BR89_PATRON_OF_GIG[k]===EXPECT13[k]));
-ok('D2 BR89 16 張全部喺庫＋trigger.creditId 對位',
+ok('D2 BR89 17 張全部喺庫＋trigger.creditId 對位',
   Object.keys(BR89_PATRON_OF_GIG).every(id=>{ const g=gigById(id);
     return !!g && g.trigger && g.trigger.kind==='credit' && g.trigger.creditId===BR89_PATRON_OF_GIG[id]; }));
 ok('D3 舊 6 張 id 唔再喺 BR89 映射入面', OLD6.every(id=>!(id in BR89_PATRON_OF_GIG)));

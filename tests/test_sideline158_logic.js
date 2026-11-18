@@ -341,10 +341,11 @@ const BR89_EXPECTED = {
   gig_1992_film_206:"credit_enc83_chai_patron",
   gig_1992_film_202:"credit_wf3_comedy_crew",
   gig_1992_film_114:"credit_enc83_luk_patron",
-  gig_1992_rec_112:"credit_enc83_lok_patron"
+  gig_1992_rec_112:"credit_enc83_lok_patron",
+  gig_1991_tv_114:"credit_enc83_chai_patron"
 };
-ok('T8 BR89 16 對（v20a279 收割鏈＋v284 film_114＋v316 rec_112）',
-  Object.keys(BR89_PATRON_OF_GIG).length===16 &&
+ok('T8 BR89 17 對（v20a279 收割鏈＋v284 film_114＋v316 rec_112＋v317 tv_114）',
+  Object.keys(BR89_PATRON_OF_GIG).length===17 &&
   Object.keys(BR89_EXPECTED).every(k=>BR89_PATRON_OF_GIG[k]===BR89_EXPECTED[k]));
 
 /* ---------- T9：靜態＋舊路徑 ---------- */
