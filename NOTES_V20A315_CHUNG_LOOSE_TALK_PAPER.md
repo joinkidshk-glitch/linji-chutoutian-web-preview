@@ -23,10 +23,11 @@
 - 全套 suite：**PASS 378 FAIL 9**（基線 377／9；＋1 係新測試檔；9 項 FAIL 全部已知 pre-existing：flash51／slot50／soft_tip_111_restore／start53／weave43／44／49_static／wf5_87／wrap38）。
 - 首跑 373／14——多出嘅 5 項 FAIL 全部係靜態測試釘行漂移（本票 ＋15 行引起）：`qa315/resync315.py` 用 difflib 核實純漂移後，resync 咗 gift185／tang171／tang173／rom176／travel114 五檔（總行數 47266→47281、DEF 42475→42490、錨點按段 shift：＜34338 唔郁、34338–34620 ＋13、≥34621 ＋15）。
 
-## §5 落地核實（待填）
-- Main HEAD：
-- Pages md5／bytes：
-- 工作副本已刪；`qa296/derive296.json` 已還原，唔入版。
+## §5 落地核實
+- Main HEAD：`2a1f9f4`（內容 commit `2a1f9f4`；NOTES §5 填實數 commit 見下），GitHub `ls-remote` 已核實一致
+- Pages byte-identical：index.html md5 `a577b89328099e47c12b35c761a15169`／4,699,148 bytes，v315 標記 `side_chung_loose315` 在位（2 處）
+- Suite：378 PASS／9 FAIL（9 項全部已知 pre-existing）
+- 工作副本 `linji-work315` 已刪；`qa296/derive296.json` 已還原，唔入版。
 
 ## §6 殘留
 - 無。
