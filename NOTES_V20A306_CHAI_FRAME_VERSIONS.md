@@ -2,7 +2,7 @@
 
 - 版本：v20a306（Q19）
 - 基線：main `e385c82`（v305，suite 368／9）
-- 結果：suite 369／9（基線 368／9；+1 係新測試 test_r306_chai_frame.js；9 項 pre-existing FAIL 不變：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38）；Pages md5 ＿＿＿／＿＿＿ bytes（見 §7）
+- 結果：suite 369／9（基線 368／9；+1 係新測試 test_r306_chai_frame.js；9 項 pre-existing FAIL 不變：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38）；Pages md5 `ff8d425a1edb2e2f1ba2897d13b50eea`／4,693,683 bytes（見 §7）
 - 新測試：`tests/test_r306_chai_frame.js`（35 項，ALL PASS）
 - 行數：index.html 47229 → 47239（＋10 行：FRAME 新欄＋註解 4 行＋wrap 換句 3 行＋cap 換句 3 行）
 - 順手執：NOTES_V20A305 header「Pages md5 ＿＿＿／＿＿＿ bytes」填返實數 `b011862d8d3ec191983f3b214240fe4b`／4,692,106 bytes。
@@ -74,6 +74,6 @@ index.html ＋10 行令 5 檔靜態測試由 PASS 變 FAIL（全係行號釘，�
 
 ## §7 部署
 
-- main HEAD ＿＿＿（待填）
-- Pages md5 ＿＿＿／＿＿＿ bytes（待填）
+- main HEAD `7b6c6e0`（v306）
+- Pages md5 `ff8d425a1edb2e2f1ba2897d13b50eea`／4,693,683 bytes（byte-identical）
 - 工作副本 linji-work306 已刪。
