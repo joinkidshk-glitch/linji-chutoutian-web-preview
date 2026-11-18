@@ -18246,8 +18246,8 @@ function gigIssuerFigure30v2(g){
    新庫欄位（cast／product／singer／host／guests／segments）由呢度讀；舊庫 gig 無呢啲欄位
    嗰陣一律唔顯示、唔爆錯。玩家嗰格一律標「應徵中」；null 唔係玩家格嗰陣係「從缺」。
    星名對照自帶全表（唔依賴 POSTER59_STAR_IDS，A1 工人改名冊表嗰陣呢度唔使跟住改）。
-   唱片注意：新庫 singer 逢玩家做主唱都照填監製星（gig_1990_rec_107 等 9 張），
-   SPEC §6.2／§2.3 寫明唱片行出 singer 名，呢度跟 SPEC，唔擅自改做「應徵中」。 */
+   唱片注意：v20a307 B1 起，玩家做主唱嗰 10 張 singer／singerGender 改 null（監製星唔再冒充主唱）；
+   singer 係 null＋roleLabel 有「主唱」嗰陣，詳情頁行「應徵中」、作品牆行「阿偉」（下面兩個 fallback 分支）。 */
 const CAST252_STAR_NAMES = {
   luk_baakyin:"陸柏言", so_jiyan:"蘇芷茵", mak_zhendong:"麥震東", liu_bingxing:"廖炳星",
   chung_choning:"鍾楚凝", lok_gasing:"駱家聲", chai_zanhoi:"齊鎮海", ngai_wingnaam:"魏詠男",

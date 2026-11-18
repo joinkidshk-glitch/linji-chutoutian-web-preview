@@ -164,7 +164,7 @@ ok('S1 結局回望讀 beatsDone 唔郁', html.indexOf('bdC100.chung_farewell')>
 ok('S1 出沒盤停出讀 beatsDone 唔郁', html.indexOf('cs100.beatsDone.chung_farewell')>=0);
 ok('S1 grants() 授 advice 旗唔郁', html.indexOf('S.flags.chungAdviceHeld229 = 1')>=0);
 const gigsLib = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'gigs_new.json'), 'utf8')).gigs;
-ok('S1 gigs_new.json 仍係 302 張', gigsLib.length===302, 'count='+gigsLib.length);
+ok('S1 gigs_new.json 仍係 306 張', gigsLib.length===306, 'count='+gigsLib.length);
 
 if(fails.length){ console.log('FAILURES: '+fails.join(', ')); process.exit(1); }
 console.log('ALL PASS');

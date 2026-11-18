@@ -86,8 +86,8 @@ function buildWire(yearActive){
 const gigs1990 = gigList.filter(g => Number(g.year) === 1990);
 const gigs1991 = gigList.filter(g => Number(g.year) === 1991);
 const gigs1992 = gigList.filter(g => Number(g.year) === 1992);
-ok('B1 庫 counts：1990:124／1991:99／1992:79，共 302',
-  gigs1990.length === 124 && gigs1991.length === 99 && gigs1992.length === 79 && gigList.length === 302);
+ok('B1 庫 counts：1990:126／1991:100／1992:80，共 306',
+  gigs1990.length === 126 && gigs1991.length === 100 && gigs1992.length === 80 && gigList.length === 306);
 S = { dayIndex: 651 };
 ok('B2 dateObj：dayIndex 651 → 1991 年；1000 → 1992 年；100 → 1990 年',
   dateObj().getFullYear() === 1991 &&
@@ -102,8 +102,8 @@ mergeEntryCalls = 0; winterCalls = 0;
 syncGigsForCalendarYear(false);
 const has102 = GIGS.some(g => g && g.id === 'gig_1991_film_102');
 const f102 = GIGS.find(g => g && g.id === 'gig_1991_film_102');
-ok('B3 1991 load：sync 後 GIGS 99 張、yearActive 1991、含 film_102、冇 1990 年通告',
-  GIGS.length === 99 && STORY_WIRE.gigsYearActive === 1991 && has102 &&
+ok('B3 1991 load：sync 後 GIGS 100 張、yearActive 1991、含 film_102、冇 1990 年通告',
+  GIGS.length === 100 && STORY_WIRE.gigsYearActive === 1991 && has102 &&
   !GIGS.some(g => g && Number(g.year) === 1990));
 ok('B4 1991 load 後 film_102 內容啱：《霓虹夜影》男主角／秋／film_harbour／pay [4416,5184]／req 演技 130 體能 90',
   !!f102 && f102.title === '《霓虹夜影》男主角' && f102.season === '秋' &&
@@ -117,8 +117,8 @@ S = { dayIndex: 1000 };
 GIGS = gigs1990.map(g => Object.assign({}, g));
 STORY_WIRE = buildWire(1990);
 syncGigsForCalendarYear(false);
-ok('B6 1992 load：sync 後 GIGS 79 張、yearActive 1992、含 film_114《海角歸人》、全部 1992 年',
-  GIGS.length === 79 && STORY_WIRE.gigsYearActive === 1992 &&
+ok('B6 1992 load：sync 後 GIGS 80 張、yearActive 1992、含 film_114《海角歸人》、全部 1992 年',
+  GIGS.length === 80 && STORY_WIRE.gigsYearActive === 1992 &&
   GIGS.some(g => g && g.id === 'gig_1992_film_114') &&
   !GIGS.some(g => g && Number(g.year) !== 1992));
 
@@ -132,7 +132,7 @@ STORY_WIRE = buildWire(1990);
 mergeEntryCalls = 0;
 syncGigsForCalendarYear(false);
 ok('B7 1990 load：sync(false) 係 no-op——同一陣列、長度不變、入門 marker 仲喺度、唔 call mergeEntry',
-  GIGS === beforeRef && GIGS.length === 125 && GIGS.indexOf(marker) >= 0 && mergeEntryCalls === 0);
+  GIGS === beforeRef && GIGS.length === 127 && GIGS.indexOf(marker) >= 0 && mergeEntryCalls === 0);
 
 /* 已經同步嘅 1991：early return */
 S = { dayIndex: 651 };
@@ -141,7 +141,7 @@ const ref91 = GIGS;
 STORY_WIRE = buildWire(1991);
 syncGigsForCalendarYear(false);
 ok('B8 已同步 1991：sync(false) early return，同一陣列',
-  GIGS === ref91 && GIGS.length === 99 && STORY_WIRE.gigsYearActive === 1991);
+  GIGS === ref91 && GIGS.length === 100 && STORY_WIRE.gigsYearActive === 1991);
 
 console.log('\n' + (fails.length ? ('FAILED: ' + fails.length + ' — ' + fails.join('；')) : 'ALL PASS'));
 process.exit(fails.length ? 1 : 0);

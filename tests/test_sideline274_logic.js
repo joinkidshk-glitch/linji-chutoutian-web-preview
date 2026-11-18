@@ -104,7 +104,7 @@ const OLD6 = ['gig_1991_film_110', 'gig_1992_rec_102', 'gig_1991_film_111',
   'gig_1992_tv_104', 'gig_1991_tv_108', 'gig_1992_rec_105'];
 
 /* ---------- A：庫對位 ---------- */
-ok('A1 庫 302 張', gigs.length===302, 'n='+gigs.length);
+ok('A1 庫 306 張', gigs.length===306, 'n='+gigs.length);
 const trig = gigs.filter(g=>g.trigger && g.trigger.kind);
 ok('A1 trigger 34 張（credit 23）', trig.length===34 && trig.filter(g=>g.trigger.kind==='credit').length===23,
   'trig='+trig.length+' credit='+trig.filter(g=>g.trigger.kind==='credit').length);

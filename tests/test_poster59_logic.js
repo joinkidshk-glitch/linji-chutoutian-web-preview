@@ -165,7 +165,7 @@ const findGig = id=>PACK_NEW.gigs.find(g=>g.id===id);
      leadStar59Of 喺 v2 庫讀唔到 leadStarId（A1 未遷移），leadStar 欄係空，陣容行係唯一主演顯示。 */
   ok('wall: 陣容行（主演：陸柏言、鍾楚凝）＋海報回空', !!hb && hb.castLine==='主演：陸柏言、鍾楚凝' && hb.poster==='' && hb.leadStar==='');
   const ct = es.find(x=>x.gigId==='gig_1992_rec_102');
-  ok('wall: 唱片陣容行（主唱：駱家聲）', !!ct && ct.castLine==='主唱：駱家聲' && ct.year===1992);
+  ok('wall: 唱片陣容行（玩家主唱→主唱：阿偉）', !!ct && ct.castLine==='主唱：阿偉' && ct.year===1992);
   ok('wall: 臨記通告／補拍唔入牆', !es.some(x=>x.gigId==='gig_1990_film_201' || x.gigId==='gig_1990_film_301'));
   /* 無星作品：新庫 141 張作品全部有星，用 synthetic gig 測無星路 */
   GIGS = [{ id:'gig_1990_test_301', category:'作品', year:1990, type:'電影', title:'《無星小品》臨時演員', workTitle:'無星小品', roleLabel:'臨時演員', leadStarId:null }];

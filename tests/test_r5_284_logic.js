@@ -115,7 +115,7 @@ function resetS284(day){
 }
 
 // ---------- (0) 靜態結構 ----------
-ok('(0) gig_count_302', allGigs.length === 302 && new Set(allGigs.map(g=>g.id)).size === 302, 'n=' + allGigs.length);
+ok('(0) gig_count_306', allGigs.length === 306 && new Set(allGigs.map(g=>g.id)).size === 306, 'n=' + allGigs.length);
 ok('(0) kind_credit_still_23', allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 23, 'BR89 15＋通用 8');
 ok('(0) br89_map_15_pairs', Object.keys(BR89_PATRON_OF_GIG).length === 15, 'n=' + Object.keys(BR89_PATRON_OF_GIG).length);
 ok('(0) redeem_gig_map_8_entries', Object.keys(CREDIT_REDEEM_GIG283).length === 8, 'CREDIT_REDEEM_GIG283 8 個對照（lu_team 已清）');

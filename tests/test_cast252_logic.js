@@ -154,8 +154,8 @@ const findGig = id=>PACK_NEW.gigs.find(g=>g.id===id);
   ok('detail rec: 歌曲類型抒情＋形式大碟', r101.indexOf('歌曲類型</span><span class="v">抒情')>=0 && r101.indexOf('形式</span><span class="v">大碟')>=0);
   ok('detail rec: 唔出四角／代言／主持欄', r101.indexOf('男主角')<0 && r101.indexOf('代言人')<0 && r101.indexOf('主持')<0);
   const r107 = gigCastDetailRows252(findGig('gig_1990_rec_107'));
-  ok('detail rec: 玩家做大碟主唱嗰陣照出 singer 名（SPEC §6.2：駱家聲（男））',
-    r107.indexOf('主唱歌手</span><span class="v">駱家聲（男）')>=0 && r107.indexOf('搖滾')>=0);
+  ok('detail rec: 玩家做大碟主唱→主唱歌手應徵中（v307 B1：singer 改 null，監製星唔再冒充主唱）',
+    r107.indexOf('主唱歌手</span><span class="v">應徵中')>=0 && r107.indexOf('搖滾')>=0);
   ok('detail rec: 臨記唱片唔出任何欄', gigCastDetailRows252(findGig('gig_1990_rec_201'))==='');
 })();
 
@@ -218,11 +218,11 @@ const findGig = id=>PACK_NEW.gigs.find(g=>g.id===id);
   const hb = es.find(x=>x.gigId==='gig_1990_film_101');
   ok('wall: 電影陣容行', !!hb && hb.castLine==='主演：陸柏言、鍾楚凝');
   const ct = es.find(x=>x.gigId==='gig_1992_rec_102');
-  ok('wall: 唱片陣容行（主唱：駱家聲）', !!ct && ct.castLine==='主唱：駱家聲');
+  ok('wall: 唱片陣容行（玩家主唱→主唱：阿偉）', !!ct && ct.castLine==='主唱：阿偉');
   const vt = es.find(x=>x.gigId==='gig_1990_variety_101');
   ok('wall: 綜藝陣容行（主持：阿偉）', !!vt && vt.castLine==='主持：阿偉');
   const wallHtml = worksWallHtml59();
-  ok('wall html: 陣容行齊三種', wallHtml.indexOf('主演：陸柏言、鍾楚凝')>=0 && wallHtml.indexOf('主唱：駱家聲')>=0 && wallHtml.indexOf('主持：阿偉')>=0);
+  ok('wall html: 陣容行齊三種', wallHtml.indexOf('主演：陸柏言、鍾楚凝')>=0 && wallHtml.indexOf('主唱：阿偉')>=0 && wallHtml.indexOf('主持：阿偉')>=0);
   ok('wall html: 臨記通告／補拍唔入牆', wallHtml.indexOf('富貴茶餐廳')<0 && wallHtml.indexOf('西環月色')<0);
   /* 舊檔 fallback：舊庫 gig 有 leadStarId、無 cast——陣容行回空，卡片跌返舊制主演行 */
   GIGS = [{ id:'gig_1990_test_303', category:'作品', year:1990, type:'電影', title:'《舊庫戲》男配角', workTitle:'舊庫戲', roleLabel:'男配角', leadStarId:'luk_baakyin' }];
