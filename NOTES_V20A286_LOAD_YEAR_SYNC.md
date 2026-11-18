@@ -76,7 +76,20 @@
 
 ## 全套 suite
 - 第一跑（resync 前）：TOTAL PASS 341 FAIL 18——9 項基線 FAIL 照舊＋9 項釘行
-  FAIL（上節）。第二跑（resync 後，待填）。
+  FAIL（上節）。
+- 第二跑（resync 後）：**TOTAL PASS 350 FAIL 9**——FAIL 清單同基線完全一致
+  （flash51／slot50／soft_tip_111_restore／start53／weave43_static／
+  weave44_static／weave49_static／wf5_87／wrap38），零新 FAIL；PASS 350＝
+  基線 349＋新測試 test_r286_load_year_sync.js 1 項。
 
 ## 落地
-- （待填：main commit、Pages 核實）
+- 工作副本 linji-work286，分支 v286-load-year-sync，commit 45fc981。
+- 常駐 clone squash merge：main commit **bf849e3**（983f707→bf849e3），已 push，
+  ls-remote 核實一致。
+- Pages 核實：HTTP 200，**4,688,625 bytes，sha256
+  99aefc3f33379fa0495aa8b86d34a50902566fca26de4b6ab3ab770b16bd9a3e，同本地
+  byte-identical**，LOAD286 命中 2 處（新 code 已上線）。
+- 工作副本已刪。
+- 下一版號 v287（用前再核實）。
+- Live browser 實駕由 parent 做（統籌冇 live browser 權限）：讀入 1991 年存檔
+  後即刻開維港電影板，應該見到《霓虹夜影》喺未達標段，唔使再翻一日。
