@@ -36,6 +36,6 @@
 
 ## 5. 落地
 
-- main HEAD：`TBD`（合併後填）
-- Pages md5／bytes：`TBD`（curl 核實後填）
+- main HEAD：`fa2e9b4`（squash merge，ls-remote 已核實）
+- Pages md5／bytes：`8417613980fd5fb0377ae0b8ad1725dd`／4,698,723 bytes（curl 核實 byte-identical）
 - 工作副本 `linji-work312` 已刪。
