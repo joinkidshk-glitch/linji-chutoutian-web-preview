@@ -45,8 +45,8 @@ v20a317（Q17 後續／D-11 §3.6B 支線回響）：齊鎮海 `gig_1991_tv_114`
 
 - 全套：**TOTAL PASS 380 FAIL 9**（基線 379／9，＋1 係新測試檔；9 項 FAIL 全部已知 pre-existing：flash51／slot50／soft_tip_111_restore／start53／weave43／44／49_static／wf5_87／wrap38）。
 - `qa296/derive296.json` suite 再生嗰份已還原，唔入版。
-- Main HEAD：[待填]
-- Pages：index.html md5 [待填]／[待填] bytes，v317 標記在位
+- Main HEAD：`681b91d`（內容 commit 同上）
+- Pages：index.html md5 `2f49cfa2e3880e15fd9d007ec3c0d95f`／4,700,136 bytes，v317 標記在位（2 處）
 
 ## 6. 唔包（另票）
 
