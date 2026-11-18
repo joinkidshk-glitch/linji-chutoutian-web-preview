@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # v20a265 COSTUME265（服裝＋屋企系統 P1）靜態測試：
 # 一、服裝表 12 件：價錢／加成／解鎖同設計檔 §1.2 一致，全套 $6,270
-# 二、P1 店只賣 4 件（#1／#4／#10／#8），其餘 8 件入表唔賣（P2）
+# 二、v20a293 Q6：店賣 12 件（全數 shop:true；v265 P1 只賣 4 件 #1／#4／#10／#8 已成歷史）
 # 三、有效數值：加成函數在位、每圍上限 +4、永遠唔寫入 S.*（靜態掃描：成個 COSTUME265 塊
 #     入面唔准出現 S.<七圍／聲望> 賦值；錢只准喺 buyCostume265 入面扣）
 # 四、門檻檢查＋卡面顯示行有效數值（reqGap／gigMissingReqGaps／reqGridHtml 衫貢獻）
@@ -54,17 +54,17 @@ tab = m.group(1) if m else ""
 EXP = {
     # id: (name, cat, price, bonus dict, unlock dict-or-None, stem, shop)
     "c1":  ("乾淨白恤衫＋牛仔褲", "日常", 120,  {"looks": 1, "charm": 1}, None, "awi_c1", True),
-    "c2":  ("街坊波鞋套裝", "日常", 150,  {"stamina": 1, "looks": 1}, None, "awi_c2", False),
-    "c3":  ("黑皮褸", "日常", 300,  {"looks": 2, "charm": 1}, {"fame": 15}, "awi_c3", False),
+    "c2":  ("街坊波鞋套裝", "日常", 150,  {"stamina": 1, "looks": 1}, None, "awi_c2", True),
+    "c3":  ("黑皮褸", "日常", 300,  {"looks": 2, "charm": 1}, {"fame": 15}, "awi_c3", True),
     "c4":  ("合身深藍西裝", "正式", 600,  {"looks": 2, "charm": 2}, {"fame": 25}, "awi_c4", True),
-    "c5":  ("灰色三件頭", "正式", 900,  {"looks": 3, "charm": 2, "stage": 1}, {"tier": 1}, "awi_c5", False),
-    "c6":  ("晚宴禮服", "正式", 1500, {"looks": 3, "charm": 3, "stage": 1}, {"tier": 2, "fame": 40}, "awi_c6", False),
-    "c7":  ("牛仔舞台服", "舞台", 250,  {"stage": 2, "vocal": 2}, {"vocal": 20}, "awi_c7", False),
+    "c5":  ("灰色三件頭", "正式", 900,  {"looks": 3, "charm": 2, "stage": 1}, {"tier": 1}, "awi_c5", True),
+    "c6":  ("晚宴禮服", "正式", 1500, {"looks": 3, "charm": 3, "stage": 1}, {"tier": 2, "fame": 40}, "awi_c6", True),
+    "c7":  ("牛仔舞台服", "舞台", 250,  {"stage": 2, "vocal": 2}, {"vocal": 20}, "awi_c7", True),
     "c8":  ("亮片舞台裝", "舞台", 500,  {"stage": 3, "charm": 1}, {"vocal": 25}, "awi_c8", True),
-    "c9":  ("閃粉舞衣", "舞台", 800,  {"stage": 3, "charm": 2, "vocal": 1}, {"tier": 2}, "awi_c9", False),
+    "c9":  ("閃粉舞衣", "舞台", 800,  {"stage": 3, "charm": 2, "vocal": 1}, {"tier": 2}, "awi_c9", True),
     "c10": ("武師練功服", "戲行", 150,  {"stamina": 2, "acting": 1}, None, "awi_c10", True),
-    "c11": ("民初長衫", "戲行", 400,  {"acting": 3, "stage": 1}, {"acting": 35}, "awi_c11", False),
-    "c12": ("古裝戲服", "戲行", 600,  {"acting": 2, "looks": 2}, {"acting": 30}, "awi_c12", False),
+    "c11": ("民初長衫", "戲行", 400,  {"acting": 3, "stage": 1}, {"acting": 35}, "awi_c11", True),
+    "c12": ("古裝戲服", "戲行", 600,  {"acting": 2, "looks": 2}, {"acting": 30}, "awi_c12", True),
 }
 def parse_bonus(s):
     out = {}
@@ -94,13 +94,12 @@ ok("加成唔掂聲望／人氣／信用／智商（衫唔令人變聰明）",
    all(set(v[3]) <= {"acting", "stage", "vocal", "looks", "charm", "stamina"} for v in EXP.values()))
 ok("單件最高 +3", all(n <= 3 for v in EXP.values() for n in v[3].values()))
 
-# ---------- 2. P1 店只賣 4 件 ----------
+# ---------- 2. v293 店賣 12 件 ----------
 shop = sorted(k for k, v in rows.items() if v[6])
-ok("P1 店只賣 4 件：#1／#4／#10／#8", shop == ["c1", "c10", "c4", "c8"])
-ok("其餘 8 件入表唔賣（P2）", len(rows) - len(shop) == 8)
-ok("4 件衫 stem 約定：awi_c1／awi_c4／awi_c10／awi_c8",
-   rows.get("c1", (None,) * 7)[5] == "awi_c1" and rows.get("c4", (None,) * 7)[5] == "awi_c4"
-   and rows.get("c10", (None,) * 7)[5] == "awi_c10" and rows.get("c8", (None,) * 7)[5] == "awi_c8")
+ok("v293 店賣 12 件（全數 shop:true）", shop == ["c1", "c10", "c11", "c12", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"])
+ok("再無入表唔賣嘅衫（P2 清零）", len(rows) - len(shop) == 0)
+ok("12 件衫 stem 約定：awi_c1～awi_c12",
+   all(rows.get("c%d" % n, (None,) * 7)[5] == "awi_c%d" % n for n in range(1, 13)))
 ok("表情組 8 個（base／angry／sad／serious／shy／smile／surprise／think）",
    'const COSTUME265_EXPRS = ["base","angry","sad","serious","shy","smile","surprise","think"]' in src)
 

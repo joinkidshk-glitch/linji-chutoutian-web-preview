@@ -6333,24 +6333,24 @@ const NPCS = {
 };
 /* ===== v20a265 COSTUME265：服裝系統 P1（設計檔 ~/workspace/linji-costume-home/DESIGN.md §1）=====
    12 件全表（價錢係 v261 經濟重做逐項重錨值，全套 $6,270；唔好用舊價）。
-   P1 服裝店只賣 4 件（shop:true：#1／#4／#10／#8）；其餘 8 件數據入表但店唔賣（P2）。
+   v20a293 Q6：12 件全數入店（shop:true 全部）；解鎖照表，未達條件顯示鎖定、買唔到；64 張衫圖未生成，缺圖 fallback 見 NOTES_V20A293。
    unlock：{fame} 聲望／{tier} 級數（enc79PlayerTier 口徑，取 max(即時, 最高紀錄)）／
    {vocal} 歌藝／{acting} 演技；null＝無鎖。stem＝全身圖組字首（assets/story/fullbody/<stem>_<expr>.webp）。
    鐵律（§1.3／§0.2）：衫嘅加成係「有效數值」，只喺檢查嗰刻計，永遠唔寫入 S.*——唔經 applyCalib60、
    唔入訓練／拍攝日／殺青加成、唔計聲望／信用／結局判定、唔影響 enc79PlayerTier。 */
 const COSTUME265 = [
   { id:"c1",  name:"乾淨白恤衫＋牛仔褲", cat:"日常", price:120,  bonus:{ looks:1, charm:1 },                 unlock:null,               stem:"awi_c1",  shop:true },
-  { id:"c2",  name:"街坊波鞋套裝",       cat:"日常", price:150,  bonus:{ stamina:1, looks:1 },               unlock:null,               stem:"awi_c2",  shop:false },
-  { id:"c3",  name:"黑皮褸",             cat:"日常", price:300,  bonus:{ looks:2, charm:1 },                 unlock:{ fame:15 },        stem:"awi_c3",  shop:false },
+  { id:"c2",  name:"街坊波鞋套裝",       cat:"日常", price:150,  bonus:{ stamina:1, looks:1 },               unlock:null,               stem:"awi_c2",  shop:true },
+  { id:"c3",  name:"黑皮褸",             cat:"日常", price:300,  bonus:{ looks:2, charm:1 },                 unlock:{ fame:15 },        stem:"awi_c3",  shop:true },
   { id:"c4",  name:"合身深藍西裝",       cat:"正式", price:600,  bonus:{ looks:2, charm:2 },                 unlock:{ fame:25 },        stem:"awi_c4",  shop:true },
-  { id:"c5",  name:"灰色三件頭",         cat:"正式", price:900,  bonus:{ looks:3, charm:2, stage:1 },        unlock:{ tier:1 },         stem:"awi_c5",  shop:false },
-  { id:"c6",  name:"晚宴禮服",           cat:"正式", price:1500, bonus:{ looks:3, charm:3, stage:1 },        unlock:{ tier:2, fame:40 }, stem:"awi_c6",  shop:false },
-  { id:"c7",  name:"牛仔舞台服",         cat:"舞台", price:250,  bonus:{ stage:2, vocal:2 },                 unlock:{ vocal:20 },       stem:"awi_c7",  shop:false },
+  { id:"c5",  name:"灰色三件頭",         cat:"正式", price:900,  bonus:{ looks:3, charm:2, stage:1 },        unlock:{ tier:1 },         stem:"awi_c5",  shop:true },
+  { id:"c6",  name:"晚宴禮服",           cat:"正式", price:1500, bonus:{ looks:3, charm:3, stage:1 },        unlock:{ tier:2, fame:40 }, stem:"awi_c6",  shop:true },
+  { id:"c7",  name:"牛仔舞台服",         cat:"舞台", price:250,  bonus:{ stage:2, vocal:2 },                 unlock:{ vocal:20 },       stem:"awi_c7",  shop:true },
   { id:"c8",  name:"亮片舞台裝",         cat:"舞台", price:500,  bonus:{ stage:3, charm:1 },                 unlock:{ vocal:25 },       stem:"awi_c8",  shop:true },
-  { id:"c9",  name:"閃粉舞衣",           cat:"舞台", price:800,  bonus:{ stage:3, charm:2, vocal:1 },        unlock:{ tier:2 },         stem:"awi_c9",  shop:false },
+  { id:"c9",  name:"閃粉舞衣",           cat:"舞台", price:800,  bonus:{ stage:3, charm:2, vocal:1 },        unlock:{ tier:2 },         stem:"awi_c9",  shop:true },
   { id:"c10", name:"武師練功服",         cat:"戲行", price:150,  bonus:{ stamina:2, acting:1 },              unlock:null,               stem:"awi_c10", shop:true },
-  { id:"c11", name:"民初長衫",           cat:"戲行", price:400,  bonus:{ acting:3, stage:1 },                unlock:{ acting:35 },      stem:"awi_c11", shop:false },
-  { id:"c12", name:"古裝戲服",           cat:"戲行", price:600,  bonus:{ acting:2, looks:2 },                unlock:{ acting:30 },      stem:"awi_c12", shop:false },
+  { id:"c11", name:"民初長衫",           cat:"戲行", price:400,  bonus:{ acting:3, stage:1 },                unlock:{ acting:35 },      stem:"awi_c11", shop:true },
+  { id:"c12", name:"古裝戲服",           cat:"戲行", price:600,  bonus:{ acting:2, looks:2 },                unlock:{ acting:30 },      stem:"awi_c12", shop:true },
 ];
 const COSTUME265_MAX_PER_STAT = 4; /* R4：每圍有效加成上限 +4（單件最高 +3） */
 const COSTUME265_EXPRS = ["base","angry","sad","serious","shy","smile","surprise","think"];
@@ -6507,7 +6507,7 @@ function costume265Sleep(){
 }
 function openClothingShop265(L){
   /* 服裝店 sheet：抄 openGiftShop 買賣流程（查擁有→查錢→扣錢→入 S.wardrobe.owned→saveQ()，買嘢唔耗日）。
-     P1 只賣 4 件（shop:true）；其餘 8 件唔喺度出。鎖住嗰陣卡面寫明要求。 */
+     v20a293 Q6：12 件全數有售（shop:true 全部）；鎖住嗰陣卡面寫明要求。 */
   const rows = (COSTUME265||[]).filter(c=>c && c.shop);
   const w = costume265EnsureWardrobe();
   const owned = (w && w.owned) || [];
