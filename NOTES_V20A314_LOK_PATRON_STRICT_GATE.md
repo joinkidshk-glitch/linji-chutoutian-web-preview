@@ -69,6 +69,6 @@
 
 ## 6. 落地
 
-- main HEAD：`PLACEHOLDER_MAIN_HEAD`（內容 `PLACEHOLDER_CONTENT_HEAD`＋NOTES §5 補填）
-- Pages：index.html md5 `PLACEHOLDER_PAGES_MD5`／`PLACEHOLDER_PAGES_BYTES` bytes，byte-identical
+- main HEAD：`PLACEHOLDER_NOTES_HEAD`（內容 `e5c6a1d`＋NOTES §6 補填）
+- Pages：index.html md5 `d39d7bf8fb5a3612d12723f9febfb691`／`4697492` bytes，byte-identical
 - 工作副本 `linji-work314` 已刪；`qa296/derive296.json` suite 再生嗰份已還原，唔入版
