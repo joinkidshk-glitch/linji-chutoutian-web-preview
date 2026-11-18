@@ -34340,6 +34340,20 @@ function buildNewspaperEdition(batch, day){
     const side2 = (typeof paperSideItemForDay==="function") ? paperSideItemForDay(day+1) : null;
     if(side2 && side2.headline && side2.headline !== ((shorts[0]||{}).headline||"")) shorts.push(side2);
   }
+  /* v20a302 Q15：鍾楚凝告別花邊——告別 beat（chung_farewell）播完之後，下一期晨報
+     短訊列尾額外加一則（唔取代當日輪替花邊，唔入 3 則短訊上限，唔做頭條）。
+     完成判定：beatsDone.chung_farewell（播完最後一句嗰陣同 grants() 一齊落，見 L40120
+     pushSeg callback）為主，S.flags.chungAdviceHeld229（同一 callback 授出）做舊檔
+     後備，兩者等價。已出旗 S.flags.chungFarewellPaper302 唔喺呢度記——build 可以被
+     self-test／抽出測試叫多次，記早咗會漏出；commitMorningPaper 見到呢則先記。
+     sideId 用專屬值，enc79PaperWhisper 查表唔認得就 no-op（L41302），唔開風聲窗，
+     守住佢「唔想大鑼大鼓」。文案：書面語、寫全名，含蓄口徑（聽聞／小住／外景）。 */
+  try{
+    const _f302 = (typeof S!=="undefined" && S) ? S : null;
+    const _done302 = !!(_f302 && ((_f302.flags && _f302.flags.chungAdviceHeld229) || (_f302.stars && _f302.stars.chung_choning && _f302.stars.chung_choning.beatsDone && _f302.stars.chung_choning.beatsDone.chung_farewell)));
+    const _out302 = !!(_f302 && _f302.flags && _f302.flags.chungFarewellPaper302);
+    if(_done302 && !_out302) shorts.push({ eventKey:"", paperName:"花邊短訊", headline:"聽聞鍾楚凝赴加小住，權當一個長外景", dek:"有行內人表示，鍾楚凝近日將赴加拿大，小住一段日子，權當一個長一點的外景，歸期未定。", clipLabel:"", fameDelta:0, source:"side", sideId:"side_chung_farewell302" });
+  }catch(_e302){}
   const fameDelta = ranked.reduce((n,it)=> n + (Number(it && it.fameDelta)||0), 0);
   const eventKeys = ranked.map(it=>it && it.eventKey).filter(Boolean);
   /* Weave Phase 3-1：連載口吻——今期主話題同上一份報紙同鍵，先喺主新聞 dek 加跟進句。 */
@@ -34618,6 +34632,11 @@ function commitMorningPaper(edition, opts){
   }
   /* v20a267：傳聞池已刪；報紙花邊只開風聲（3 張具名碎片經 enc79PaperWhisper 直開風聲窗，其餘純顯示）。 */
   try{ if(edition && Array.isArray(edition.shorts)) for(const sh of edition.shorts){ if(sh && sh.source==="side" && sh.sideId) enc79PaperWhisper(sh.sideId); } }catch(_e){}
+  /* v20a302 Q15：告別花邊見報先記已出旗——commit 只行一次有效提交（重入嗰陣
+     fameApplied===true 早退，唔會重複記）；build 嗰陣唔記，免得建咗未出就當出咗。
+     （whisper loop 上面會對呢則 call enc79PaperWhisper("side_chung_farewell302")，
+     查表唔認得係 no-op，唔開風聲窗。） */
+  try{ if(edition && Array.isArray(edition.shorts)) for(const sh of edition.shorts){ if(sh && sh.sideId==="side_chung_farewell302"){ S.flags = S.flags||{}; S.flags.chungFarewellPaper302 = 1; break; } } }catch(_e302){}
   S.pendingMorningPaper = null;
   S.newspaperLastPresentedDay = S.dayIndex|0;
   /* v20a27：鏈 G 第 2 拍——報紙點名跨級偵測（屋企回音），趕喺 saveQ 之前行，
