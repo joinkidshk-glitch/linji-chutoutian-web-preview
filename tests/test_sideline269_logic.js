@@ -50,7 +50,7 @@ ok('靜態：flags 欄位消費點——pushSeg 傳遞＋揀嗰陣寫入', html.
 ok('靜態：冷版 beats 在位', html.includes('liu_patron_cold') && html.includes('gu_patron_cold') && html.includes('mak_patron_cold'));
 ok('靜態：廖 clash 新抉擇 2 選項', html.includes('企廖炳星嗰邊，話飛紙仔改得啱') && html.includes('企導演嗰邊，話照劇本拍先啱'));
 ok('靜態：registry 閘——廖 C8／C13、麥 C15', html.includes('enc83NodeDone("C8")') && html.includes('enc83NodeDone("C13")') && html.includes('enc83NodeDone("C15")'));
-ok('靜態：暖版只加排除式條件（無肯定式要求）', html.includes('!((S.flags||{}).enc79_liu_declined || (S.flags||{}).enc79_liu_clash_script)') && html.includes('!(S.flags||{}).enc83_gu_loan_refused && !(S.flags||{}).gu_n10_warned') && html.includes('!(S.flags||{}).enc79_mak_honest'));
+ok('靜態：暖版只加排除式條件（無肯定式要求）', html.includes('!((S.flags||{}).enc79_liu_declined || (S.flags||{}).enc79_liu_clash_script || (S.wf3 && S.wf3.liaoChoice)==="steal")') && html.includes('!(S.flags||{}).enc83_gu_loan_refused && !(S.flags||{}).gu_n10_warned') && html.includes('!(S.flags||{}).enc79_mak_honest')); /* v20a287：暖版排除表加 liaoChoice==="steal"，斷言字串同步更新，意圖不變（純排除式） */
 ok('靜態：傳聞引用零殘留（v267 已刪）', !html.includes('enc79GrantFrag') && !html.includes('enc79GrantRumorCard') && !html.includes('enc79HasMerged'));
 ok('靜態：B9 釘位——liu_repay／mak_respect beat 定義無 grants(', (()=>{ const a = html.indexOf('{ id:"liu_repay"'); const b = html.indexOf('{ id:"mak_respect"'); return a >= 0 && b >= 0 && !html.slice(a, a + 220).includes('grants(') && !html.slice(b, b + 220).includes('grants('); })());
 ok('靜態：BuildScript 變體在位——gu 認拒借／mak 認守秘密', html.includes('嗰陣你話幫唔到') && html.includes('嗰陣你應承幫我守秘密'));
