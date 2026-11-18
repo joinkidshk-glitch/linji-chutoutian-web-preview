@@ -2,7 +2,7 @@
 
 - 版本：v20a313（Q26）
 - 基線：main `bec7a84`（v312，suite 375／9）
-- 結果：suite 376／9（基線 375／9；+1 係新測試 test_r313_ko_rival_dead.js；9 項 pre-existing FAIL 不變：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38）；Pages md5 ＿＿＿／＿＿＿ bytes（見 §5）
+- 結果：suite 376／9（基線 375／9；+1 係新測試 test_r313_ko_rival_dead.js；9 項 pre-existing FAIL 不變：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38）；Pages md5 `a5dbc7c0e79b915d7b7682a77fd12730`／4,697,273 bytes（見 §5）
 - 新測試：`tests/test_r313_ko_rival_dead.js`（18 項，ALL PASS）
 
 ## 1. 刪咗乜（index.html 淨 −19 行，47285→47266）
@@ -38,6 +38,6 @@
 
 ## 5. 落地
 
-- main HEAD：＿＿＿（內容）＋＿＿＿（NOTES §5 補填）
-- Pages：index.html md5 ＿＿＿／＿＿＿ bytes（byte-identical）
+- main HEAD：`8f8a41f`（內容）＋＿＿＿（NOTES §5 補填）
+- Pages：index.html md5 `a5dbc7c0e79b915d7b7682a77fd12730`／4,697,273 bytes（byte-identical）
 - 工作副本 `linji-work313` 已刪；`qa296/derive296.json` suite 重跑再生，已還原，唔入版。
