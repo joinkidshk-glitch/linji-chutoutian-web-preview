@@ -62,6 +62,7 @@
 
 ## 5. 落地
 
-- main HEAD：（待填）
-- Pages：index.html md5（待填）／bytes（待填），byte-identical 核實。
+- main HEAD：`afa869e`（v20a311，squash merge 自工作副本分支 commit `ac74805`）
+- Pages：index.html md5 `3894f23ace4b22a9e6ee48f57018afc4`／4,698,367 bytes，curl 核實 byte-identical。
 - `qa296/derive296.json`：suite 重跑再生，commit 前已還原，唔入版。
+- 工作副本 `linji-work311` 已刪。
