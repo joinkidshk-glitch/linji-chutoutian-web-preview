@@ -298,6 +298,7 @@ for(const sid of ALL){
   const st = S.stars[sid];
   for(const b of (ENC79_BEATS[sid]||[])) if(!b.id.endsWith('_patron')) st.beatsDone[b.id] = 1;
   if(sid==='ching_tinlok'){ S.flags.flag_vocal_train=1; S.flags.ching_back_train=1; S.flags.ching_stand_slow=1; } /* v20a311：程提攜暖版嚴格閘——T4＋flag_vocal_train＋ching_back_train＋ching_stand_slow 三旗齊備 */
+  if(sid==='lok_gasing'){ S.flags.lok_calm_truth=1; } /* v20a314：駱提攜暖版嚴格閘——T4＋lok_calm_truth 正面旗 */
   const picked = enc79PickBeat(sid);
   ok('提攜 T4 開＋排鏈節拍之後：'+sid, !!picked && picked.id===PATRON_BEAT[sid]);
   if(picked && picked.grants) picked.grants();

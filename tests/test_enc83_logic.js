@@ -246,6 +246,7 @@ for(const sid of P1.concat(P2)){
   setFav(sid, 70);
   const st = S.stars[sid];
   for(const b of (ENC79_BEATS[sid]||[])) if(!b.id.endsWith('_patron')) st.beatsDone[b.id] = true;
+  if(sid==='lok_gasing'){ S.flags.lok_calm_truth=1; } /* v20a314：駱提攜暖版嚴格閘——T4＋lok_calm_truth 正面旗 */
   const picked = enc79PickBeat(sid);
   ok('提攜 T4 開＋排鏈節拍之後：'+sid, !!picked && picked.id===PATRON_BEAT[sid]);
   if(picked && picked.grants) picked.grants();

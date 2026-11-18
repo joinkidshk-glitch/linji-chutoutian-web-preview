@@ -170,6 +170,7 @@ CASES.forEach(c => {
     (() => { resetS(955); _ys = { year: 1992, season: '冬' }; setFav(c.sid, 45); doneExcept(c.sid, [c.line + '_finale']); return enc79BeatOpen(c.sid, beatOf(c.sid, c.line + '_finale')) === false; })());
   ok('B ' + c.sid + ' 提攜未播 → finale 唔開，先播提攜',
     (() => { resetS(956); _ys = { year: 1992, season: '冬' }; setFav(c.sid, 70); doneExcept(c.sid, [c.patron, c.line + '_finale']);
+      if(c.sid==='lok_gasing') S.flags.lok_calm_truth=1; /* v20a314：駱提攜暖版嚴格閘要 lok_calm_truth 正面旗 */
       return enc79BeatOpen(c.sid, beatOf(c.sid, c.line + '_finale')) === false && enc79PickBeat(c.sid).id === c.patron; })());
 });
 
