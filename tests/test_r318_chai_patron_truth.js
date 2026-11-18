@@ -249,8 +249,8 @@ ok('S heart 閘唔郁（T3＋loose_fear 排除，無年份窗、唔要 kept_fear
   html.indexOf('!(starId==="chai_zanhoi" && (S.flags||{}).chai_loose_fear)') >= 0);
 ok('S fear 閘唔郁（T1–T2＋1990–91 年窗＋N3）',
   html.indexOf('id:"chai_fear", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=1 && enc79TierOf(st.fav)<=2 && ys.year>=1990 && ys.year<=1991 && enc83NodeDone("N3")') >= 0);
-ok('S choice 閘唔郁（1992＋T2，草稿 1991 漂移另開票）',
-  html.indexOf('id:"chai_choice", when(st){ const ys=yearSeasonNow(); return ys.year===1992 && enc79TierOf(st.fav)>=2; }') >= 0);
+ok('S choice 閘已放寬（1991–1992＋T2，v321：草稿 L993「T2＋1991 年」、choice 在 N13 之前）',
+  html.indexOf('id:"chai_choice", when(st){ const ys=yearSeasonNow(); return ys.year>=1991 && ys.year<=1992 && enc79TierOf(st.fav)>=2; }') >= 0);
 ok('S repay 閘唔郁（T2＋＋!silent＋side 旗或 N13）',
   html.indexOf('id:"chai_repay", when(st){ return enc79TierOf(st.fav)>=2 && !(S.flags||{}).chai_silent') >= 0);
 ok('S finale 閘唔郁（T4＋1992 冬＋patron 已播＋同一組排除條件）',
