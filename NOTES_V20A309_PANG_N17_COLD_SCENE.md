@@ -27,5 +27,5 @@
 
 ## 落地
 
-- main HEAD：（待填）
-- Pages：（待填 md5／bytes）
+- main HEAD：`13333eb`（squash merge，工作副本分支 commit `5d0eb1c`）
+- Pages：byte-identical，index.html md5 `2c9bb88fcfffa0db6e17f2a2ca0e8fa5`／4,697,075 bytes
