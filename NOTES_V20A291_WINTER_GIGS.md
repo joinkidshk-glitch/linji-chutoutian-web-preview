@@ -134,4 +134,4 @@ film_cotton 0→2、film_harbour 1→3、tvb_harbour 1→2、tvb_kowloon 4→6�
 - 受影響測試逐個覆驗全過：pack／years／grant／press94／trigger／stagger／v251_c／awards63／nat92_logic／nat92_static／fix88／r286／r5_284／sideline274／sideline280。
 - 全套 suite（`bash qa131/run_suite.sh`，`~/workspace/suite291.txt`）：**TOTAL PASS 354 FAIL 9**。9 項 FAIL 全部係已知 pre-existing（flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38），同基線 353／9 一致；＋1 PASS 係新加嘅 test_gig291_winter.js。
 - 第一輪 suite 曾經 347／16：7 項新 FAIL 全部係計數斷言（見 §3 追加表），逐項核實係庫實數變動、唔係邏輯回歸，刻意更新後重跑回復 354／9。
-- Pages 核實：（收尾填）
+- Pages 核實：gigs_new.json 480,129 bytes md5 `1ec8015569f76ffd1961c9368dbaffbc`；index.html 4,711,711 bytes md5 `ab386a4bbc77edfb5914752c66ad9a21`；兩檔 curl 回來同本地 byte-identical。main HEAD `1ee6b2d`。
