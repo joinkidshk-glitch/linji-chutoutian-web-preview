@@ -40236,7 +40236,10 @@ function enc79BuildScript(starId, forceFirst, locId){
     } else if(starId==="lok_gasing" && Array.isArray(heartSeg278.lines) && heartSeg278.lines.length){
       let l278 = heartSeg278.lines.slice();
       if((S.flags||{}).lok_tried_harmony) l278 = l278.slice(0,5).concat([["S","呢段你聽唔聽得出我想講咩？"]], l278.slice(5));
-      if((S.flags||{}).lok_cover_first) l278 = l278.slice(0,4).concat([["S","呢首，我唔知仲唱唔唱得出。"]], l278.slice(4));
+      if((S.flags||{}).lok_cover_first){ /* v20a308 Q20：cover 版唔再插入懷疑句，改為將關鍵句換成懷疑版（同一主題反面講：歌係自己嘅，但係而家連自己仲唱唔唱得出都唔敢肯定）——舊插入句同肯定句隔籬打架，唔係真變體。按內容搵句，唔按 index（lok_tried_harmony 插入句會推後一行）。 */
+        const ki308 = l278.findIndex(function(r){ return r && r[1]==="不過呢，阿偉，歌係自己嘅，嗰種實淨，冇人攞得走。你明唔明？"; });
+        if(ki308>=0) l278[ki308] = ["S","不過呢，阿偉，歌係自己嘅——呢句我講咗咁多年，而家先發覺，我連自己仲唱唔唱得出，都唔敢肯定。你明唔明？"];
+      }
       if((S.flags||{}).lok_honest_not_ready) l278 = l278.concat([["S","有啲歌，我而家唱畀你聽，你都未必接得住。"]]);
       heartSeg278 = { lines: l278, choices: heartSeg278.choices || null };
     }
