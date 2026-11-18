@@ -18,8 +18,10 @@ chk('A1 相遇事態', TF.textfix55Str('相遇事態', 'category', null, TF.TEXT
 chk('A1 sentence', TF.textfix55Str('有新事態可以開', 'playerHint', null, TF.TEXTFIX55_OPTS_STORY) === '有新劇情可以開');
 // A2 聲量->聲望 (phrase)
 chk('A2 聲量', TF.textfix55Str('佢聲量好高，唔代表信用好', 'lines', null, TF.TEXTFIX55_OPTS_STORY) === '佢聲望好高，唔代表信用好');
-// A4 點擊->撳 (phrase)
-chk('A4 點擊', TF.textfix55Str('撳掣定點擊都得', 'body', null, TF.TEXTFIX55_OPTS_SIMPLE) === '撳掣定撳都得');
+// A4 點擊->撳 (phrase) — v20a295 Q8：呢對已拎走，全部用「點擊」
+chk('A4 點擊 kept', TF.textfix55Str('請點擊繼續', 'body', null, TF.TEXTFIX55_OPTS_SIMPLE) === '請點擊繼續');
+chk('A4 mixed input unchanged', TF.textfix55Str('撳掣定點擊都得', 'body', null, TF.TEXTFIX55_OPTS_SIMPLE) === '撳掣定點擊都得');
+chk('A4 pair removed from table', !TF.TEXTFIX57_PHRASES.some(function (p) { return p[0] === '點擊'; }));
 // B6 周刊->週刊 (phrase, incl. masthead + speaker)
 chk('B6 星訊周刊', TF.textfix55Str('《星訊周刊》今期出街', 'title', null, TF.TEXTFIX55_OPTS_STORY) === '《星訊週刊》今期出街');
 const wSpeaker = TF.textfix55Walk({ beats: [{ speaker: '周刊編輯', lines: ['周刊記者企喺門口。'] }] }, null, null, TF.TEXTFIX55_OPTS_STORY);

@@ -138,15 +138,15 @@ eval(extractFn('presentRestSleepDayEnd'));
   ok('b schedule next line names the plan + 自動行程',
     dayEndNextLine202(false) === '<p class="dayend-next202">聽日：街頭表演（自動行程）</p>');
   let n = dayEndDismissNote202(false);
-  ok('b schedule dismiss note says 繼續跑聽日行程', n.role === 'note' && n.label === '撳外面＝繼續跑明日行程');
+  ok('b schedule dismiss note says 繼續跑聽日行程', n.role === 'note' && n.label === '點擊外面＝繼續跑明日行程');
   S.weekPlan[1] = 'scout_all';
   ok('b map next line says 到處逛逛＋返地圖自由行',
     dayEndNextLine202(false) === '<p class="dayend-next202">聽日：到處逛逛（返地圖自由行）</p>');
   n = dayEndDismissNote202(false);
-  ok('b map dismiss note says 返地圖', n.role === 'note' && n.label === '撳外面＝返回地圖');
+  ok('b map dismiss note says 返地圖', n.role === 'note' && n.label === '點擊外面＝返回地圖');
   ok('b ended: no next line', dayEndNextLine202(true) === '');
   n = dayEndDismissNote202(true);
-  ok('b ended dismiss note says 回家結算', n.role === 'note' && n.label === '撳外面＝回家結算');
+  ok('b ended dismiss note says 回家結算', n.role === 'note' && n.label === '點擊外面＝回家結算');
 })();
 
 /* ---- (c) storyResultDestLine202：slot peek（唔消費）＋今日 framing ---- */
@@ -183,7 +183,7 @@ eval(extractFn('presentRestSleepDayEnd'));
     m.html.indexOf('聽日：街頭表演（自動行程）') >= 0);
   const note = m.btns[m.btns.length - 1];
   ok('d dismiss note is last in button row (板底)',
-    note && note.role === 'note' && note.label === '撳外面＝繼續跑明日行程');
+    note && note.role === 'note' && note.label === '點擊外面＝繼續跑明日行程');
   ok('d note has no on() (唔可撳)', typeof note.on !== 'function');
   ok('d scheduled day still has no 返回地圖 button',
     !labels(m.btns).some(l => l.indexOf('返回地圖') >= 0));
@@ -198,7 +198,7 @@ eval(extractFn('presentRestSleepDayEnd'));
   const m = lastModal();
   ok('d map day: next line says 到處逛逛', m.html.indexOf('聽日：到處逛逛（返地圖自由行）') >= 0);
   ok('d map day: dismiss note says 返地圖',
-    m.btns[m.btns.length - 1].label === '撳外面＝返回地圖');
+    m.btns[m.btns.length - 1].label === '點擊外面＝返回地圖');
   m.opts.onDismiss();
   ok('d map day: dismiss still goes to map', mapCalls === 1 && schedCalls === 0);
 })();
@@ -209,7 +209,7 @@ eval(extractFn('presentRestSleepDayEnd'));
   afterDayModal('<p>RESULT-BODY</p>', '訓練', null, true, null, {});
   const m = lastModal();
   ok('d ended: no next line, dismiss note is 回家結算',
-    m.html.indexOf('dayend-next202') < 0 && m.btns[m.btns.length - 1].label === '撳外面＝回家結算');
+    m.html.indexOf('dayend-next202') < 0 && m.btns[m.btns.length - 1].label === '點擊外面＝回家結算');
 })();
 
 /* ---- (e) 休息卡＋確認 modal：N1 取消返休息卡，dismiss 照跟 D1 ---- */
@@ -222,20 +222,20 @@ eval(extractFn('presentRestSleepDayEnd'));
   ok('e rest card has next line first (before body)',
     card.html.indexOf('dayend-next202') > 0 && card.html.indexOf('聽日：街頭表演（自動行程）') >= 0);
   ok('e rest card dismiss note is last',
-    card.btns[card.btns.length - 1].label === '撳外面＝繼續跑明日行程');
+    card.btns[card.btns.length - 1].label === '點擊外面＝繼續跑明日行程');
   press(card, '開始今日');
   ok('e start opens confirm (not schedule yet)', modalCalls.length === 2 && schedCalls === 0);
   const c = lastModal();
   ok('e confirm has 取消（返回休息卡） button',
     !!findBtn(c.btns, '取消（返回休息卡）'));
-  ok('e confirm dismiss note says 撳外面＝開始今日行程',
-    findBtn(c.btns, '撳外面＝開始今日行程') && findBtn(c.btns, '撳外面＝開始今日行程').role === 'note');
+  ok('e confirm dismiss note says 點擊外面＝開始今日行程',
+    findBtn(c.btns, '點擊外面＝開始今日行程') && findBtn(c.btns, '點擊外面＝開始今日行程').role === 'note');
   press(c, '取消（返回休息卡）');
   ok('e cancel re-presents the rest card (same title, no schedule run)',
     modalCalls.length === 3 && lastModal().html.indexOf('<h3>休息</h3>') === 0 && schedCalls === 0 && mapCalls === 0);
   ok('e re-presented rest card still has next line + dismiss note',
     lastModal().html.indexOf('聽日：街頭表演（自動行程）') >= 0
-    && lastModal().btns[lastModal().btns.length - 1].label === '撳外面＝繼續跑明日行程');
+    && lastModal().btns[lastModal().btns.length - 1].label === '點擊外面＝繼續跑明日行程');
   // 取消之後再入確認，dismiss 照跟 D1 繼續（唔係取消）
   press(lastModal(), '開始今日');
   lastModal().opts.onDismiss();
@@ -255,8 +255,8 @@ eval(extractFn('presentRestSleepDayEnd'));
   const c = lastModal();
   ok('e map day confirm has 返回地圖 + 取消',
     !!findBtn(c.btns, '返回地圖') && !!findBtn(c.btns, '取消（返回休息卡）'));
-  ok('e map day confirm dismiss note says 撳外面＝返回地圖',
-    findBtn(c.btns, '撳外面＝返回地圖') && findBtn(c.btns, '撳外面＝返回地圖').role === 'note');
+  ok('e map day confirm dismiss note says 點擊外面＝返回地圖',
+    findBtn(c.btns, '點擊外面＝返回地圖') && findBtn(c.btns, '點擊外面＝返回地圖').role === 'note');
   press(c, '取消（返回休息卡）');
   ok('e map day confirm cancel calls onCancel only',
     cancelled === 1 && started === 0 && mapped === 0);

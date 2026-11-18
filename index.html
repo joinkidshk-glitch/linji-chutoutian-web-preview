@@ -14267,11 +14267,11 @@ function loc96AddSheetActs(add, L){
     /* v20a105 UI105 S-25：健康嗰陣醫院板唔再近乎空板——補一張用途說明卡，
        講明三種服務各係咩條件先有（治療：病倒嗰朝先出；探病：你病嗰陣熟人嚟；
        體檢：隨時買、買之前有確認）。 */
-    add("醫院有咩用？", "治療／探病／體檢——邊樣幾時先有，撳入嚟睇", "免費", ()=>{
+    add("醫院有咩用？", "治療／探病／體檢——邊樣幾時先有，點擊入嚟睇", "免費", ()=>{
       modal(`<h3>仁康醫院</h3>
         <p><b>治療</b>：壓力谷爆病倒嗰朝，遊戲會問你去唔去醫院——付 $${LOC96_CFG.treatFee} 吊針食藥，聽日就好返，慳返成個病程嘅日子。冇病嗰陣冇得買，唔使專程嚟。</p>
         <p><b>探病</b>：你病倒嗰陣，同你最熟嗰位會嚟探你（冇人熟就珍姐送糖水）——唔使喺度等，病嗰陣自然會發生。</p>
-        <p><b>身體檢查</b>：$${LOC96_CFG.checkupFee} 一次，生效 ${LOC96_CFG.checkupDays} 日，期間高壓冇咁易谷病。撳「身體檢查」嗰陣會先確認，先至扣錢。</p>`,
+        <p><b>身體檢查</b>：$${LOC96_CFG.checkupFee} 一次，生效 ${LOC96_CFG.checkupDays} 日，期間高壓冇咁易谷病。點擊「身體檢查」嗰陣會先確認，先至扣錢。</p>`,
         [{ label:"明白", role:"p", on:()=>{ try{ openLoc("hospital", {travelFree:true}); }catch(_e){} } }],
         { onDismiss:()=>{ try{ openLoc("hospital", {travelFree:true}); }catch(_e){} } });
     }, "");
@@ -14418,7 +14418,7 @@ try{
    只改文案：唔掂邏輯／數值／SAVE key／softRev／?v=。 */
 const TEXTFIX55_EXACT = {"電視城臨記班底添新血": "入行消息：電視台臨記班底添新血", "鄧麗萍：「我收下。别以為送完表就可以談感情條款；我們先把場次談清楚。」": "鄧麗萍：「我收下。錶係錶，檔期係檔期——我哋先把場次談清楚。」",
 "秋日午後片場休息，周采兒攞住筆記本對阿偉做獨家小訪。采兒問起最近圈內傳聞同星河電視台高層變動，更提及駱家聲 Band 房後巷嘅古怪動靜，阿偉需要決定點樣回應呢條送命題。": "片場休息，周采兒攞住筆記本對阿偉做獨家小訪。采兒問起最近圈內傳聞同星河電視台高層變動，更提及駱家聲 Band 房後巷嘅古怪動靜，阿偉需要決定點樣回應呢條送命題。", "片場休息角小訪桌（摺椅、筆記本）；秋日午後；訪問向——周采兒小訪阿偉": "片場休息角小訪桌（摺椅、筆記本）；訪問向——周采兒小訪阿偉", "秋日午後，片場休息角。": "片場休息角，等埋位嗰陣空檔。", "窗外走廊間中有人行過，帶住幾分星河電視城特有嘅急促。": "窗外走廊間中有人行過，帶住幾分呢行特有嘅急促。", "時間？邊個畀時間我呀！呢單通宵浸水做屍體job，導演指明要識做嘅人，我特登留畀你。做埋呢單，啲數一筆勾銷。": "時間？邊個畀時間我呀！呢單通宵浸水做屍體job，導演指明要識做嘅人，我特登留畀你。做埋呢單，嗰筆數我遲啲先同你計——而家，開工先。", "你啱啱聽完關於星河電視台嘅傳聞 tvb_rules_gossip，心入面有好多問號。": "你啱啱聽完星河電視台嗰啲規矩傳聞，心入面有好多問號。",   /* v20a218 A1：主線 when 欄年份漏出——source 寫顯示曆，walk 會 +2，EXACT 預寫 1990 令顯示 1992（跟攻略章戳 N12 春／N13 夏／N14 秋／N15 秋末／N16 冬／N17 收束；synopsis 本身已顯示 1992，唔使加條目）；N12 synopsis「站哪邊」→「企邊」 */
-        "齊鎮海喺不遠處嘅監視器後邊，靜靜雞望住呢邊。": "齊鎮海喺不遠處嘅 mon 後面，靜靜雞望住呢邊。",   "打歌後台的抉擇": "錄影廠後台的抉擇", "打歌現場後台／電台": "電視台錄影廠後台", "阿偉在電台打歌，Vera 在後台等他。她問阿偉幾時得閒見面，阿偉要在陪伴她與趕下一個通告之間作出選擇。": "阿偉喺電視台錄完影，Vera 喺後台等他。她問阿偉幾時得閒見面，阿偉要在陪伴她與趕下一個通告之間作出選擇。", "你今晚打歌之後，還要趕下一個通告嗎？": "你今晚錄完影之後，還要趕下一個通告嗎？", "趕通告：先顧打歌與形象": "趕通告：先顧錄影與形象", "你就是新來的臨記？這件襯衫顏色太鮮，鏡頭前會搶戲，換一件素色的。": "你就係新嚟嗰個臨記？呢件恤衫太搶色，上鏡會搶戲，換件素啲嘅。", "規矩就是：你站在鏡頭前，觀眾第一眼看到的是整體感覺，不是你的演技。": "規矩就係：你企喺鏡頭前面，觀眾第一眼睇到嘅係成個感覺，唔係你嘅演技。", "待會兒開會前，有幾樣現場安排想先跟你對一對。": "陣間開會之前，有幾樣現場安排想同你對一對。", "這樣吧，開會前我們先交換電話，之後有改動可以直接聯絡。": "咁啦，開會前我哋交換個電話先，之後有改動可以直接聯絡。",                          "（教學備註）何生早前記低嘅人情債——唔係拼合生出嚟；稍後可去事務所還。": "何生早前記低嗰筆人情債，仲未還；得閒去事務所處理。", "教學開始：點兩張「剛聽聞」卡，再撳確認拼合。唔識拖都得，點擊都得。": "點兩張「剛聽聞」卡，再撳「確認拼合」。唔識拖都得，撳嚟揀都得。",        "鄧麗萍：「實用。我喜歡可以量化的誠意。」": "鄧麗萍：「實用。我鍾意睇得見、計得到嘅誠意。」",  "鄧麗萍：「玫瑰？你想綁架我的情緒，還是想拖延談判？」": "鄧麗萍：「玫瑰？呢度係排片部，唔係花店。想傾檔期，帶數據嚟。」",    "心領了。這份心意我記住，數字就先不動。": "心領了。這份心意我記住，唔使再破費。",              "正式版同熟人「傾談／送禮」耗一日；試玩閘（softBehaviorGate）下傾談／送禮不耗日（茶錢仍可能扣費；訓練／試鏡／休息／行程表演仍耗日）。": "現在和熟人傾談或者送禮都不會算一日（茶錢照扣）；只有訓練、試鏡、休息和跟行程開工才會算日。",                   };
+        "齊鎮海喺不遠處嘅監視器後邊，靜靜雞望住呢邊。": "齊鎮海喺不遠處嘅 mon 後面，靜靜雞望住呢邊。",   "打歌後台的抉擇": "錄影廠後台的抉擇", "打歌現場後台／電台": "電視台錄影廠後台", "阿偉在電台打歌，Vera 在後台等他。她問阿偉幾時得閒見面，阿偉要在陪伴她與趕下一個通告之間作出選擇。": "阿偉喺電視台錄完影，Vera 喺後台等他。她問阿偉幾時得閒見面，阿偉要在陪伴她與趕下一個通告之間作出選擇。", "你今晚打歌之後，還要趕下一個通告嗎？": "你今晚錄完影之後，還要趕下一個通告嗎？", "趕通告：先顧打歌與形象": "趕通告：先顧錄影與形象", "你就是新來的臨記？這件襯衫顏色太鮮，鏡頭前會搶戲，換一件素色的。": "你就係新嚟嗰個臨記？呢件恤衫太搶色，上鏡會搶戲，換件素啲嘅。", "規矩就是：你站在鏡頭前，觀眾第一眼看到的是整體感覺，不是你的演技。": "規矩就係：你企喺鏡頭前面，觀眾第一眼睇到嘅係成個感覺，唔係你嘅演技。", "待會兒開會前，有幾樣現場安排想先跟你對一對。": "陣間開會之前，有幾樣現場安排想同你對一對。", "這樣吧，開會前我們先交換電話，之後有改動可以直接聯絡。": "咁啦，開會前我哋交換個電話先，之後有改動可以直接聯絡。",                          "（教學備註）何生早前記低嘅人情債——唔係拼合生出嚟；稍後可去事務所還。": "何生早前記低嗰筆人情債，仲未還；得閒去事務所處理。", "教學開始：點兩張「剛聽聞」卡，再撳確認拼合。唔識拖都得，點擊都得。": "點兩張「剛聽聞」卡，再點擊「確認拼合」。唔識拖都得，點擊嚟揀都得。",        "鄧麗萍：「實用。我喜歡可以量化的誠意。」": "鄧麗萍：「實用。我鍾意睇得見、計得到嘅誠意。」",  "鄧麗萍：「玫瑰？你想綁架我的情緒，還是想拖延談判？」": "鄧麗萍：「玫瑰？呢度係排片部，唔係花店。想傾檔期，帶數據嚟。」",    "心領了。這份心意我記住，數字就先不動。": "心領了。這份心意我記住，唔使再破費。",              "正式版同熟人「傾談／送禮」耗一日；試玩閘（softBehaviorGate）下傾談／送禮不耗日（茶錢仍可能扣費；訓練／試鏡／休息／行程表演仍耗日）。": "現在和熟人傾談或者送禮都不會算一日（茶錢照扣）；只有訓練、試鏡、休息和跟行程開工才會算日。",                   };
 /* v20a108 TEXT108 S-42：系統 modal 潤飾覆寫（本批新鍵 34＋上面 3 個既有值更新）。
    live 教學行 content/tutorial_zh_HK.json（經 textfix55SimplePack 清洗）；inline fallback 已刪（v241b，JSON 做唯一來源）；
    pack 異文（製作日／選單「事態」／社交課／softBehaviorGate 長句）一併覆蓋，意思不變。
@@ -14429,7 +14429,7 @@ const TEXTFIX55_EXACT = {"電視城臨記班底添新血": "入行消息：電�
 const TEXTFIX55_NOTE_EXACT = {"T5 選陪伴；rel_vera／trust 升。": "你留低陪佢，Vera 記喺心入面。", "T5 選事業；music 升，rel_vera 跌。": "你趕去下一個通告，事業行先，Vera 嗰邊就冷咗落嚟。", "可與事業結局並存。": "呢段感情點收尾，事業嗰邊照常行落去。", "公開承認；fame 升，rel_choi／rel_mei 微升，公開戀愛壓力開始。": "你公開承認，名氣升咗；采兒同關海媚嗰邊都近咗啲，但公開戀愛嘅壓力亦開始嚟。", "對外否認；形象暫穩，但 rel_choi／rel_mei 下滑。": "你對外否認，形象暫時穩住；但采兒同關海媚嗰邊，都冷淡咗。", "張子駿／文藝線；craft 高。愛情結局另表並存。": "跟張子駿行文藝線，手藝夠硬。"};
 const TEXTFIX55_PHRASES = [["星河電視城", "星河電視台"], ["電視城廠景", "電視台廠景"], ["上座率", "入座率"], ["互懟", "駁火"], ["送命題", "辣手問題"], ["Hau Ching", "曉晴"]];
 /* ==== v20a57 TERMS：術語清理第二輪 ====
-   A 類：事態→劇情、聲量→聲望、周刊→週刊（PHRASES，喺 55 phrases 之後行）；點擊→撳。
+   A 類：事態→劇情、聲量→聲望、周刊→週刊（PHRASES，喺 55 phrases 之後行）。
    B 類有限度：解鎖成句走 EXACT；標籤值改名（動作演員→身手好、大牌→耍大牌）靠 EXACT 全字串
    ＋ walk object-key 改名（labelToId）；體力→體能要求表已刪（RW-7）。
    C 類詞彙一律唔郁。詳見 NOTES_V20A57_TERMS.md。 */
@@ -14442,7 +14442,7 @@ const TEXTFIX57_EXACT = {
   "動作演員": "身手好",
   "大牌": "耍大牌"
 };
-const TEXTFIX57_PHRASES = [["事態","劇情"],["聲量","聲望"],["周刊","週刊"],["點擊","撳"]];
+const TEXTFIX57_PHRASES = [["事態","劇情"],["聲量","聲望"],["周刊","週刊"]];
 const TEXTFIX57_KEY_RENAME = { "動作演員": "身手好", "大牌": "耍大牌" };
 
 const TEXTFIX55_STAR_LOOKS = {"mak_zhendong": "麥震東穿著戲服站在片場邊等候埋位，手臂包著紗布。", "lok_gasing": "駱家聲一身西裝站在廠景走廊與一班人談話，整班人圍著他。", "pang_siuki": "彭少祺站在廣告樓大堂與客戶握手，一身剪裁貼身的深色西裝。", "chung_choning": "鍾楚凝抱著一疊歌紙走過唱片公司梯間，還哼著歌。", "gu_mingfai": "顧明輝站在海港台門外向一班歌迷揮手，笑得十分溫文。", "so_jiyan": "蘇芷茵站在灣仔唱片樓門口等車，戴著頂帽子，側面也認得出來。", "luk_baakyin": "陸柏言站在片場燈光最亮的位置，整組人等他開口才敢動。", "liu_bingxing": "廖炳星坐在茶餐廳卡位與人談著大計，花恤衫老遠也認得出來。", "ngai_wingnaam": "魏詠男站在電視台門口食煙，一身舊西裝，還是當年那種派頭。", "yip_manji": "葉敏芝剛剛卸妝走出錄音室，還未開聲，已經引得整班人回頭望。"};
@@ -18796,7 +18796,7 @@ function openCastingNoticeDetail(g, L){
         ctaLabel = "去訓練／手帳 · 練"+plan.gap.label;
         if(plan.enrolled) ctaLabel = "去訓練／手帳 · 入手帳排課";
       }
-      body += `<div class="cn-train-jump" role="note"><p class="cn-train-jump-title">差幾多達標</p><p class="cn-train-jump-gaps">${gapLines}</p><p class="cn-train-jump-cta-hint">撳下面「去訓練／手帳」直達最佳訓練地或手帳。</p></div>`;
+      body += `<div class="cn-train-jump" role="note"><p class="cn-train-jump-title">差幾多達標</p><p class="cn-train-jump-gaps">${gapLines}</p><p class="cn-train-jump-cta-hint">點擊下面「去訓練／手帳」直達最佳訓練地或手帳。</p></div>`;
       /* v20a60 CALIB60-4：聲樂凍結明示（最大缺口係歌藝＋從未練過先出） */
       if(plan && plan.frozenVocal){
         body += `<p class="cn-train-jump-frozen60">阿偉從未練過歌藝——唱片／音樂通告會一直欠這一項。去唱片公司報「歌藝訓練」；手帳預設計劃現在會輪流排歌藝堂。</p>`;
@@ -20426,7 +20426,7 @@ function renderNotebook(){
       modeEl.hidden = false;
       if(editable){
         modeEl.className = "nb-plan-mode edit";
-        modeEl.textContent = "改完要撳確定才生效";
+        modeEl.textContent = "改完要點擊確定才生效";
       } else if(typeof nbShowingPrevWeek37==="function" && nbShowingPrevWeek37()){
         modeEl.className = "nb-plan-mode readonly";
         modeEl.textContent = "唯讀手帳 · 這版是上週已執行的行程；新一週行程在回家結算時編排";
@@ -20709,7 +20709,7 @@ function showStressPreviewModal(pv, go){
   const livingEst=livingCostEstimate();
   const livingRange=livingCostRangeLabel();
   const lowNote = (typeof isLowRiskWeek==="function" && isLowRiskWeek(planDraft))
-    ? `<p class="good" style="font-size:.78rem">這週屬低風險／全日休息也可以——撳「確定出發」就會落實行程。</p>` : "";
+    ? `<p class="good" style="font-size:.78rem">這週屬低風險／全日休息也可以——點擊「確定出發」就會落實行程。</p>` : "";
   modal(`<h3>本週壓力預覽</h3>
     <p>確定前估吓壓力：而家 <b>${pv.start}</b> → 週末累計約 <b>${pv.end}</b></p>
     ${risk}<p class="stress-impact">${stressImpactLine34(pv.peak, "高峰壓力")}</p>${lowNote}
@@ -20732,7 +20732,7 @@ function confirmPlan(){
   if(!S || !S.homeEditable){
     try{
       toast("行程已定 · 本週不可以再改", {
-        sub:"現在是唯讀手帳。下週一回家結算後才再排；可撳「壓力估」看已定行程。"
+        sub:"現在是唯讀手帳。下週一回家結算後才再排；可點擊「壓力估」看已定行程。"
       });
     }catch(_t){}
     try{
@@ -20924,7 +20924,7 @@ function goToMapForBrowse(){
   paintBar(); drawMap();
   const meta=planMeta(todayPlanId());
   if(typeof todayHasSoftSchedule==="function" && todayHasSoftSchedule()){
-    toast(`今日行程：${meta.name}`, { sub:"可先打聽／通告欄；要過日請撳「開始今日行程」", closeSheet:true });
+    toast(`今日行程：${meta.name}`, { sub:"可先打聽／通告欄；要過日請點擊「開始今日行程」", closeSheet:true });
   } else {
     toast(`今日：${meta.name}`, {closeSheet:true});
   }
@@ -21134,9 +21134,9 @@ function dayEndNextLine202(ended){
   return `<p class="dayend-next202">${esc202(txt)}</p>`;
 }
 function dayEndDismissNote202(ended){
-  if(ended) return { label:"撳外面＝回家結算", role:"note" };
+  if(ended) return { label:"點擊外面＝回家結算", role:"note" };
   const d = nextDayLabel202();
-  return { label: d.kind==="map" ? "撳外面＝返回地圖" : "撳外面＝繼續跑明日行程", role:"note" };
+  return { label: d.kind==="map" ? "點擊外面＝返回地圖" : "點擊外面＝繼續跑明日行程", role:"note" };
 }
 /* v20a202 B1（劇情結算）：showResult 嗰陣 dayIndex 已經係入緊嗰日（唔係聽日），
    所以用「關閉之後」＋今日 framing；slot 只 peek 唔消費（消費留返「關閉」／dismiss 本身）。
@@ -22201,7 +22201,7 @@ function paintBar(){
            endBrowseDayGoHome 完結日路徑），唔寫新結算；有安排活動嘅日子唔出呢個掣。 */
         if(!startToday && typeof todayPlanId==="function" && typeof isMapDay==="function"
           && isMapDay(todayPlanId()) && !(S && S.homeEditable)){
-          startToday = `<button type="button" class="map-start-today" id="map-end-day" title="今日是自由逛逛：周圍走走、打聽、看通告欄都不耗日；逛完撳這個掣返回屋企睡覺，過到下一日">過一日</button>`;
+          startToday = `<button type="button" class="map-start-today" id="map-end-day" title="今日是自由逛逛：周圍走走、打聽、看通告欄都不耗日；逛完點擊這個掣返回屋企睡覺，過到下一日">過一日</button>`;
         }
         /* v20a105 WEEK105 S-13 保底：任何日子都要有結束今日嘅入口。已完成標記日
            （wrap:／audition: 殘留）以前既唔係 map 日又冇 soft 行程，地圖冇掣過日；
@@ -22212,7 +22212,7 @@ function paintBar(){
             const pid105 = (typeof todayPlanId==="function") ? todayPlanId() : null;
             const forced105 = (typeof todayIsForcedDay==="function") ? todayIsForcedDay() : false;
             if(!forced105){
-              startToday = `<button type="button" class="map-start-today" id="map-end-day" title="逛完撳這個掣返回屋企睡覺，過到下一日">過一日</button>`;
+              startToday = `<button type="button" class="map-start-today" id="map-end-day" title="逛完點擊這個掣返回屋企睡覺，過到下一日">過一日</button>`;
             }
           }catch(_e){}
         }
@@ -30805,7 +30805,7 @@ function renderAwardInviteHtml(pack){
     <p class="psr-sub">${pack.displayName||""} · ${pack.season||""}${pack.year?(" "+pack.year):""}</p>
     ${pack.venue99 ? `<p class="psr-sub">場地：${pack.venue99}</p>` : ""}
     ${(pack && pack.ceremonyDay213!=null) ? `<p class="psr-sub">典禮夜：${awards213DateLabel(pack.ceremonyDay213)}</p>` : ""}
-    ${(()=>{ try{ const k213 = !!(pack && pack.ceremonyId && typeof awardsCeremonyById==="function" && awardsCeremonyById(pack.ceremonyId)); return k213 ? `<p class="psr-sub">出席即預約：典禮夜收工之後先播出。</p>` : ""; }catch(_e){ return ""; } })()} /* v20a218 C-B1：請柬要講明「預約」——撳出席唔係即刻播，係預約咗嗰晚收工之後播；合成 pack（自檢假請柬）唔出呢行 */
+    ${(()=>{ try{ const k213 = !!(pack && pack.ceremonyId && typeof awardsCeremonyById==="function" && awardsCeremonyById(pack.ceremonyId)); return k213 ? `<p class="psr-sub">出席即預約：典禮夜收工之後先播出。</p>` : ""; }catch(_e){ return ""; } })()} /* v20a218 C-B1：請柬要講明「預約」——點擊出席唔係即刻播，係預約咗嗰晚收工之後播；合成 pack（自檢假請柬）唔出呢行 */
     <p class="psr-body">${pack.inviteDek||""}</p>
     ${tierBit}
     ${catsBit182}
@@ -32036,7 +32036,7 @@ function awards62PlayCeremony(pack, doneFn){
       + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>' + awd181Html + '<button type="button" class="awd62-skip">跳過 ⏩</button>' + "</div>" + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服；v20a181：邏輯座標 480×432（10:9，v20a207 B2），backing 720×648；v20a197 B3：跳過掣搬入 canvaswrap（480×360 固定比例，唔跟 beat 高度走） */
       + cardsHtml
       + '<div class="awd62-caption"></div>'
-      + '<div class="awd62-tap">撳畫面可以快進</div>'
+      + '<div class="awd62-tap">點擊畫面可以快進</div>'
       + "</div>";
     document.body.appendChild(stage);
     const cv = stage.querySelector("canvas");
@@ -42167,7 +42167,7 @@ function openLoc(id, opts){
           if(soft){
             modal(`<h3>暫時未能點</h3>
               <p>${gate.reason||"介面暫未可互動。"}</p>
-              <p class="sub">對白未完，介面暫時鎖住——撳「完成對白」才可以繼續。</p>`,[
+              <p class="sub">對白未完，介面暫時鎖住——點擊「完成對白」才可以繼續。</p>`,[
               {label:"仍要繼續", role:"p", on:()=>{
                 try{ ensureLocSheetInteractive({force:true}); }catch(_e){}
                 try{ fn(ev); }catch(err){
@@ -43533,7 +43533,7 @@ function presentStartScheduleConfirm45(onStart, onMap, onCancel){
      取消返去休息卡本身（唔係返地圖），重開 presentRestSleepDayEnd（opts 原封不動）；
      dismiss 照跟 D1 繼續（map 日返地圖／排程日開始行程），同取消唔衝突，板底用 note 寫明。 */
   if(goCancel) btns45.push({ label:"取消（返回休息卡）", role:"g", on:()=>{ try{ goCancel(); }catch(_e){} } });
-  btns45.push({ label: mapNext45 ? "撳外面＝返回地圖" : "撳外面＝開始今日行程", role:"note" });
+  btns45.push({ label: mapNext45 ? "點擊外面＝返回地圖" : "點擊外面＝開始今日行程", role:"note" });
   modal(`<h3>開始今日行程？</h3><p>將會開始 ${dateTxt} 的行程。</p><p>${consequence}</p>`, btns45,
     { onDismiss: ()=>{ try{ if(mapNext45) goMap(); else goStart(); }catch(_e){} } });
 }
@@ -45197,7 +45197,7 @@ function inv72Html(){
   const list = (typeof GiftShop!=="undefined") ? GiftShop.inventoryList() : [];
   let body;
   if(!list.length){
-    body = `<p class="sub">庫存空空。去油麻地「廟街禮品」地點選單撳「買禮物」買入；送禮要喺已認識嘅熟人／可培養對象面前。</p>`
+    body = `<p class="sub">庫存空空。去油麻地「廟街禮品」地點選單點擊「買禮物」買入；送禮要喺已認識嘅熟人／可培養對象面前。</p>`
       + `<button type="button" class="pane-go72 inv72-goshop">去廟街禮品檔</button>`
       + `<div class="empty156-frames cols3" aria-hidden="true"><div class="empty156-frame">☆</div><div class="empty156-frame">☆</div><div class="empty156-frame">☆</div><div class="empty156-frame">☆</div><div class="empty156-frame">☆</div><div class="empty156-frame">☆</div></div>`
       + `<p class="empty156-cap">買咗禮物，就會擺入呢啲格。</p>`;
@@ -45584,7 +45584,7 @@ function jobs72GoBoard(){
       const L = LOCS.find(x=>x.id===target) || { id:target };
       openLoc(target);
       setTimeout(()=>{ try{ if(typeof doScout==="function") doScout(L); }catch(_e){} }, 100);
-    }catch(_e){ toast("去通告欄失敗——請在地圖撳有通告的地點。"); }
+    }catch(_e){ toast("去通告欄失敗——請在地圖點擊有通告的地點。"); }
   }, 60);
 }
 function jobs72GoLoc(){
@@ -45619,7 +45619,7 @@ function jobs72SectionHtml(){
   const pend91 = (typeof aud91Ensure==="function") ? (S.pendingAud||[]) : [];
   const log91 = (typeof aud91Ensure==="function") ? (S.aud91Log||[]) : [];
   if(!booked.length && !shoots.length && !hist.length && !pend91.length && !log91.length){
-    return `<h3 class="jobs72-h">拍攝簿</h3><p>現在未有拍攝中／待試鏡／殺青紀錄。<br>達標後去通告欄試鏡；試鏡後要等幾日才有回音，獲聘才會開拍。</p><p class="sub" style="font-size:.75rem;margin-top:8px">早期入場通告在中環廣告／星河等地——撳下面可直達。</p><button type="button" class="pane-go72 jobs72-goboard">去通告欄</button>`;
+    return `<h3 class="jobs72-h">拍攝簿</h3><p>現在未有拍攝中／待試鏡／殺青紀錄。<br>達標後去通告欄試鏡；試鏡後要等幾日才有回音，獲聘才會開拍。</p><p class="sub" style="font-size:.75rem;margin-top:8px">早期入場通告在中環廣告／星河等地——點擊下面可直達。</p><button type="button" class="pane-go72 jobs72-goboard">去通告欄</button>`;
   }
   let body=`<h3 class="jobs72-h">拍攝簿</h3>`;
   if(pend91.length){

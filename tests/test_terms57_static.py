@@ -147,7 +147,10 @@ chk('A1 zero 事態 in player strings',
 chk('A2 zero 聲量 in player strings',
     not bad('聲量', lambda s: s.strip() in ('聲量', '幕前聲量')))
 chk('A3 zero 刷新 in player strings', not bad('刷新', lambda s: False))
-chk('A4 zero 點擊 in player strings', not bad('點擊', lambda s: False))
+chk('A4 zero 撳 in player strings (dialogue 撳牌 only)',
+    not bad('撳', lambda s: '撳牌' in s or '撳通告牌' in s))
+chk('A4 UI strings use 點擊',
+    '點擊外面＝返回地圖' in src and '點擊外面＝回家結算' in src and '點擊畫面可以快進' in src)
 chk('B1 zero 解鎖 in player strings', not bad('解鎖', lambda s: False))
 chk('B6 zero 周刊 in player strings',
     not bad('周刊', lambda s: s == '周刊編輯'))
