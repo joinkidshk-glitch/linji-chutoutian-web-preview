@@ -49,7 +49,7 @@ cover 版唔再插入懷疑句，改為將 heart 關鍵句（index 10）**換成
 ## 5. Suite＋落地
 
 - 全套 suite（第二輪重跑）：**TOTAL PASS 371 FAIL 9**——9 項全部係已知 pre-existing FAIL（flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38）；新測試 test_r308 全 PASS。第一輪 365／15 係上述舊斷言＋行數釘未同步，逐個直接覆驗後全部修返，唔係回歸。
-- Pages 核實：見 §5（落地時填實數）。
+- Pages 核實（2026-11-18）：main HEAD `d36ef8f`，ls-remote 一致；Pages byte-identical——index.html md5 `26dcda314a2a7d29825699c706da1adc`／4,694,356 bytes，本地同 Pages 兩邊相同；live 頁面新懷疑句 2 命中（註解＋code 各一）、舊插入句 0 命中。
 
 ## 6. 殘留
 
