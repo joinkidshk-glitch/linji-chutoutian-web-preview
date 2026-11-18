@@ -64,5 +64,6 @@
 ## §5 Suite／落地
 
 - Suite：**370 PASS／9 FAIL**（`bash qa131/run_suite.sh`，outfile `~/workspace/suite_v307.log`；9 項 FAIL 全部係基線 pre-existing：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38；新測試 test_r307 22 項全 PASS）
-- main HEAD：待填
-- Pages：待填（index.html md5／bytes）
+- main HEAD `e71a231`（v307）
+- Pages md5 `1590b0bdaf5f1fc2f1c8355a22857065`／4,693,749 bytes（byte-identical）
+- 工作副本 linji-work307 已刪。
