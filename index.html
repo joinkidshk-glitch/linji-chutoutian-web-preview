@@ -40191,7 +40191,11 @@ function enc79BuildScript(starId, forceFirst, locId){
       let v278 = null;
       if((S.flags||{}).lok_heard_whole) v278 = ["S","呢個後生仔，肯由頭聽到尾。"];
       else if((S.flags||{}).lok_praised_song) v278 = ["S","呢個後生仔，識聽。"];
-      if(v278) beatSeg100 = { lines: beatSeg100.lines.slice(0,3).concat([v278], beatSeg100.lines.slice(3)), choices: beatSeg100.choices || null };
+      /* v20a322：lok_stand_original 軟條件讀者——回call Beat 3 勸企硬（草稿 L228–230「我想有人話我知，我企硬唔係傻」）；唔係閘，只係引薦句變體，行先 heard／praised。 */
+      const v322 = [];
+      if((S.flags||{}).lok_stand_original) v322.push(["S","你嗰陣勸我企硬，我記得。"]);
+      if(v278) v322.push(v278);
+      if(v322.length) beatSeg100 = { lines: beatSeg100.lines.slice(0,3).concat(v322, beatSeg100.lines.slice(3)), choices: beatSeg100.choices || null };
     }
     if(beat.id==="ngai_help" && (S.flags||{}).ngai_first_soda && Array.isArray(beatSeg100.lines) && beatSeg100.lines.length){
       beatSeg100 = { lines: [beatSeg100.lines[0], ["S","你嚟得啱。"]].concat(beatSeg100.lines.slice(1)), choices: beatSeg100.choices || null };

@@ -1,3 +1,4 @@
+# v20a322 resync：index.html 淨 +4 行（lok_patron 引薦句變體：舊 L40194 一行 → 新 5 行；總行數 47286→47290；其後錨點一律 +4，difflib 對位核實純漂移，見 qa322/resync322.py）。
 # v20a319 resync：index.html 淨 +1 行（BR89 加第 18 對：表頭註解 ＋1 @舊 L26703 後；總行數 47285→47286；錨點按段 shift（≤26702 唔郁、≥26704 ＋1），difflib 對位核實純漂移，見 qa319/resync319.py）。
 # v20a317 resync：index.html 淨 +2 行（BR89 加第 17 對：表頭註解 ＋1 @舊 L26702 後＋tv_114 映射行 ＋1 @舊 L26710 後；總行數 47283→47285；錨點按段 shift（＜26702 唔郁、26702 同行改內容、26703–26710 ＋1、≥26711 ＋2），difflib 對位核實純漂移，見 qa317/resync317.py）。
 # v20a316 resync：index.html 淨 +2 行（BR89 加第 16 對：表頭註解 ＋1 @舊 L26701 後＋rec_112 映射行 ＋1 @舊 L26711 後；總行數 47281→47283；錨點按段 shift（＜26702 唔郁、26702–26711 ＋1、≥26712 ＋2），difflib 對位核實純漂移，見 qa316/resync316.py）。
@@ -224,10 +225,10 @@ COUNT_LINES = {
     22528,  # 地圖釘 goPin（最近針／後備 L.id）
     22559,  # 地圖底欄地點掣
     28539,  # 人情債「去事務所」
-    45771,  # inv72GoShop 去禮品檔
-    45979,  # people72GoLoc
-    46137,  # jobs72GoBoard
-    46158,  # jobs72GoLoc
+    45775,  # inv72GoShop 去禮品檔
+    45983,  # people72GoLoc
+    46141,  # jobs72GoBoard
+    46162,  # jobs72GoLoc
 }
 # v20a158 resync：index.html 淨 +165 行（gigCardHtml 提示＋4／詳情頁渠道掣＋11／GRANT229_ENC79 8 行＋註解 7＝＋15／aud91CreatePending＋3／aud91PendingHint＋2／aud91PresentOne＋1／v20a158 渠道 block＋129；見 qa158/resync158.py difflib 對位核實內容逐字相同，純漂移；openLoc( 呼叫點總數不變）。
 # v20a243 resync：index.html 淨 −11 行（刪 TEXTFIX55 GIG 五組，刪除區間舊 L14413–14417／14576–14578／14588–14589／14593–14596）；其後錨點各 −11，之前唔郁；內容逐行核實純漂移。
@@ -250,33 +251,33 @@ FREE_LINES = {
     26142,  # v159 rom159DateScene go fallback（runScheduleFromToday 失敗）返去而家身處地點（travelFree）
     28347,  # 人情債流程尾，返去而家身處地點
     28380,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
-    40525,
-    40644,  # 巧遇播完（encDone，舊旗）
-    40719,  # v176 星巧遇送禮掣 fallback（encDone）
-    40919,  # v176 女角巧遇 def-missing（encDone）
-    40963,  # v176 女角巧遇「行開」（encDone）
-    40969,  # v176 女角巧遇 onDismiss（encDone）
-    41036,  # v176 星送禮 canGive-fail（encDone）
-    41038,  # v176 星送禮冇 item（encDone）
-    41041,  # v176 星送禮冇庫存（encDone）
-    41068,  # v176 星送禮結果 modal go（encDone）
-    42343,  # 劇情播完刷新（refreshLocAfterStory）
-    42390,  # v236 傾談確認「返去」重開地點（travelFree，唔計額度）
-    42760,
-    42782,  # 「劇情已完成」toast 後重開而家身處地點
-    42934,  # v236 打聽確認「返去」重開地點（travelFree，唔計額度）
-    42939,  # 聽完傳聞後 reopen 而家身處地點
-    43864,  # forceRestore（舊旗）
-    45341,  # promptAudition back（返去而家身處地點）
-    45648,
-    45649,
-    45693,
-    45694,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    45719,  # doGiveGift 失敗後重開而家身處地點
-    46608,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
+    40529,
+    40648,  # 巧遇播完（encDone，舊旗）
+    40723,  # v176 星巧遇送禮掣 fallback（encDone）
+    40923,  # v176 女角巧遇 def-missing（encDone）
+    40967,  # v176 女角巧遇「行開」（encDone）
+    40973,  # v176 女角巧遇 onDismiss（encDone）
+    41040,  # v176 星送禮 canGive-fail（encDone）
+    41042,  # v176 星送禮冇 item（encDone）
+    41045,  # v176 星送禮冇庫存（encDone）
+    41072,  # v176 星送禮結果 modal go（encDone）
+    42347,  # 劇情播完刷新（refreshLocAfterStory）
+    42394,  # v236 傾談確認「返去」重開地點（travelFree，唔計額度）
+    42764,
+    42786,  # 「劇情已完成」toast 後重開而家身處地點
+    42938,  # v236 打聽確認「返去」重開地點（travelFree，唔計額度）
+    42943,  # 聽完傳聞後 reopen 而家身處地點
+    43868,  # forceRestore（舊旗）
+    45345,  # promptAudition back（返去而家身處地點）
+    45652,
+    45653,
+    45697,
+    45698,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    45723,  # doGiveGift 失敗後重開而家身處地點
+    46612,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 42495      # function openLoc(id, opts){
+DEF_LINE = 42499      # function openLoc(id, opts){
 WRAPPER_LINE = 29108  # window.__phase2.openLoc：轉發 opts
 # v241b resync：index.html 淨 −6 行（刪四個內嵌 fallback 表：NPC_LINES_CORE／EVENTS_ZH_HK／STORY_BEATS_PHASE1／TUTORIAL_ZH_HK；UI 201 對逐句重寫行數不變）；COUNT／FREE／DEF／WRAPPER 按 difflib 對位映射重寫，47 處錨點內容逐行相同（3 處錨點行內 toast／reason 字串隨 RW-5 改寫：41148→41142、41170→41164「唔使再播」→「不必再播」，43932→43926「送唔成」→「送不成」）；openLoc( 呼叫點總數 53 不變；DEF 40874→40868、WRAPPER 28882→28878。
 # v20a241 resync：index.html 淨 −859 行（刪 WF4 覆寫表全數＋WF2 hiu/choi/xu 15 條；見 qa241/resync241.js）；COUNT／FREE／DEF／WRAPPER 按映射重寫（中段 −646、WF4 塊之後 −859；DEF 40868→40009、WRAPPER 28878→28019），47 處錨點內容逐行相同，純漂移；openLoc( 呼叫點總數 53 不變。
