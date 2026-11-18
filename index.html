@@ -18723,6 +18723,13 @@ function openCastingNoticeDetail(g, L){
       }});
     }
   } else {
+    /* v20a300 Q13：鎖定嗰陣彭渠道都用到（台風減半後過關）——金色提示＋「用人情免試鏡」掣，
+       唔使等練夠全數台風先嚟；正常試鏡掣照樣鎖住。下面「差幾多達標」係正常試鏡路線嘅數。 */
+    const ch158Locked = (typeof favor158ChannelForGig==="function") ? favor158ChannelForGig(g) : null;
+    if(ch158Locked){
+      body += `<p class="gold">${ch158Locked.hint}</p>`;
+      btns.push({label:"用人情免試鏡", role:"p", on:()=>{ if(typeof favor158UseChannel==="function") favor158UseChannel(g, L); }});
+    }
     const lockedBtn = {label:copy.lockedLabel, role:"g", cls:"cast-locked", stay:true, on:(btn)=>{
       if(copy.shake && btn){
         btn.classList.remove("is-shake");
@@ -45238,8 +45245,9 @@ function chungAdviceSpend229(){
      聽朝晨鏈 aud91PresentDue 呈現（沿用 GRANT229 即派模式），簽約金跟 v91 獲聘流程
      （片酬 30% 即付、餘額殺青入帳，見 aud91PresentOne）。
    - 唔耗日：用人情係打個電話，唔係去試鏡，唔行 confirmSpendDay／tickDay。
-   - 唔做嘅嘢：武師班本身已免費，「一堂免費」替代方案無意義，只做免試鏡；「台風放寬」未定，
-     彭渠道只做免試鏡。渠道唔繞過 canAudition 硬閘（聲望／能力未合照樣唔提供）。 */
+   - 唔做嘅嘢：武師班本身已免費，「一堂免費」替代方案無意義，只做免試鏡；「台風放寬」已定
+     （v20a300 Q13：彭渠道台風要求減半，ceil；渠道資格改用減半台風計 canAudition，其他硬閘
+     ——聲望 floor／charm／其餘能力／soft 閘——照舊唔繞過）。武指渠道唔郁。 */
 const FAVOR158_MAK_CREDIT_ID = "credit_enc79_mak_wuzhi";
 const FAVOR158_PANG_CREDIT_ID = "credit_enc84_pang_charity";
 function favor158CreditHeld(creditId){
@@ -45264,18 +45272,54 @@ function isPangCharityGig158(gig){
   if(!gig) return false;
   return gig.type==="綜藝" && String(gig.roleLabel||"").indexOf("主持")>=0;
 }
+/* v20a300 Q13：彭渠道台風要求減半（用戶拍板：放寬一半）。
+   計法：ceil(req.stage / 2)——15→8、25→13、30→15、45→23、80→40（ceil 保守啲，
+   開局台風 14 過 15→8 嗰張唔受 floor／ceil 影響，兩種計法都過到）。
+   開局台風 14：15→8 之後過到最低嗰張《今夜歡笑》（charm 12／聲望 floor 0 都過到），
+   其餘四張仍要練。只適用於經彭渠道入場嗰陣（持有彭債權＋行「慈善騷頂班」）；
+   庫 req 唔郁、charm 唔郁、聲望 floor 唔郁、其他硬閘唔郁；武指渠道唔郁。 */
+function pangHalvedStageReq158(gig){
+  try{
+    if(!gig || !gig.req) return 0;
+    const st = Number(gig.req.stage)||0;
+    return Math.ceil(st/2);
+  }catch(_e){ return 0; }
+}
+function pangEffectiveGig158(gig){
+  /* 渠道資格用嘅 effective gig：只改 stage 一項，其他原封不動（id／tier／其餘 req 照舊）。 */
+  try{
+    if(!gig) return gig;
+    const req = Object.assign({}, gig.req||{});
+    if(typeof req.stage==="number") req.stage = pangHalvedStageReq158(gig);
+    const c = Object.assign({}, gig); c.req = req; return c;
+  }catch(_e){ return gig; }
+}
+function pangChannelReady158(gig){
+  /* 彭渠道資格：啱類別＋持有債權＋用減半台風計嘅 canAudition 過關（其他硬閘照舊）。 */
+  try{
+    if(typeof isPangCharityGig158!=="function" || !isPangCharityGig158(gig)) return false;
+    if(typeof favor158CreditHeld!=="function" || !favor158CreditHeld(FAVOR158_PANG_CREDIT_ID)) return false;
+    if(typeof canAudition!=="function") return false;
+    return !!canAudition(pangEffectiveGig158(gig)).ok;
+  }catch(_e){ return false; }
+}
 function favor158ChannelForGig(gig){
   try{
     if(!gig) return null;
-    /* 渠道只喺 canAudition(gig).ok 嗰陣提供，唔繞過聲望／能力硬閘。 */
-    if(typeof canAudition==="function" && !canAudition(gig).ok) return null;
+    /* 武指渠道維持原狀：canAudition 全數過關先提供。 */
     if(isMakWuzhiGig158(gig) && favor158CreditHeld(FAVOR158_MAK_CREDIT_ID)){
+      if(typeof canAudition==="function" && !canAudition(gig).ok) return null;
       return { creditId:FAVOR158_MAK_CREDIT_ID, debtor:"紅棉武指", shortLabel:"武指照應",
         hint:"人情可用：武指照應——紅棉武指認住你，此武打通告無須試鏡，直接獲聘。" };
     }
+    /* v20a300 Q13：彭渠道用減半台風計資格（pangChannelReady158），唔再要求全數台風；
+       提示寫明減半前後數字，唔好靜靜放寬。 */
     if(isPangCharityGig158(gig) && favor158CreditHeld(FAVOR158_PANG_CREDIT_ID)){
+      if(typeof pangChannelReady158!=="function" || !pangChannelReady158(gig)) return null;
+      const orig = Number((gig.req||{}).stage)||0, half = pangHalvedStageReq158(gig);
+      const halfBit = (orig>0 && half<orig) ? ("台風要求 " + orig + "→" + half + "，") : "";
       return { creditId:FAVOR158_PANG_CREDIT_ID, debtor:"彭少祺", shortLabel:"慈善騷頂班",
-        hint:"人情可用：慈善騷頂班——彭少祺開聲引薦，此司儀通告無須試鏡，直接獲聘。" };
+        hint:"人情可用：慈善騷頂班——彭少祺開聲引薦，" + halfBit + "此司儀通告無須試鏡，直接獲聘。" };
     }
     return null;
   }catch(_e){ return null; }

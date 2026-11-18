@@ -1,7 +1,8 @@
 // v20a158 人情免試鏡渠道＋支線抉擇即派測試（G-M1 武指照應／G-PANG-1 彭慈善／GRANT229_ENC79 加 8 行）
 //   T1 兩條渠道 matcher：武打＝genre 動作／武俠＋category 作品（新庫 22 張；臨記散工唔入，
 //       例 gig_1990_film_206 碼頭搬運）；司儀＝type 綜藝＋roleLabel 含「主持」（新庫 5 張）
-//   T2 渠道供應條件：持有未兌現債權＋啱類別＋canAudition ok 先有；冇債權／已兌現／絕響／
+//   T2 渠道供應條件：持有未兌現債權＋啱類別＋canAudition ok 先有（彭渠道 v20a300 起用減半台風計
+//       canAudition，見 test_r300；呢度 stub canAudition，減半行為由新測試覆蓋）；冇債權／已兌現／絕響／
 //       閘未過／錯類別 → 冇；金色提示行只喺有渠道嗰陣出
 //   T3 兌現一次即清：用咗→ pending ok:true、revealDay 翌日（即日＋1）、via favor158；債權 redeemedBy＋
 //       「已兌現」字句＋syncNotebookMirror；第二次唔再提供；通告落板
@@ -136,6 +137,10 @@ eval(extractFn('isMakWuzhiGig158'));
 eval(extractFn('isPangCharityGig158'));
 eval(extractFn('favor158ChannelForGig'));
 eval(extractFn('favor158ChannelHintHtml'));
+/* v20a300 Q13：彭渠道台風減半——favor158ChannelForGig 依賴呢三個，唔抽會 ReferenceError。 */
+eval(extractFn('pangHalvedStageReq158'));
+eval(extractFn('pangEffectiveGig158'));
+eval(extractFn('pangChannelReady158'));
 eval(extractFn('favor158SpendCredit'));
 eval(extractFn('favor158UseChannel'));
 eval(extractFn('favor158RedeemChannel'));
