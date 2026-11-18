@@ -69,6 +69,6 @@
 
 ## 6. 落地
 
-- main HEAD：`PLACEHOLDER_NOTES_HEAD`（內容 `e5c6a1d`＋NOTES §6 補填）
+- main HEAD：`e5c6a1d`（v20a314，squash merge 自工作副本分支 commit `65b24cb`）
 - Pages：index.html md5 `d39d7bf8fb5a3612d12723f9febfb691`／`4697492` bytes，byte-identical
 - 工作副本 `linji-work314` 已刪；`qa296/derive296.json` suite 再生嗰份已還原，唔入版
