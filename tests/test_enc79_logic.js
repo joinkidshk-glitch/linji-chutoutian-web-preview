@@ -98,7 +98,8 @@ eval(consts + '\n' + fns.map(extractFn).join('\n'));
 resetS(0);
 ok('舊檔（冇 stars 欄）lazy-init 唔 crash', (()=>{ try{ const m = enc79EnsureStars(); return m && m.luk_baakyin && m.luk_baakyin.fav===0 && m.luk_baakyin.lastDay===-999; }catch(e){ return false; } })());
 ok('lazy-init 冪等（fav 唔會被重置）', (()=>{ S.stars.luk_baakyin.fav = 33; enc79EnsureStars(); return S.stars.luk_baakyin.fav===33; })());
-ok('名冊 12 星齊＋當紅花旦唔入名冊', ENC79_STARS.length===12 && !ENC79_STARS.some(s=>s.name.indexOf('海媚')>=0));
+// v20a290 Q2：名冊 12→17（五位新星入名冊；「當紅花旦唔入名冊」一半唔變——海媚仍然唔喺度）。
+ok('名冊 17 星齊＋當紅花旦唔入名冊', ENC79_STARS.length===17 && !ENC79_STARS.some(s=>s.name.indexOf('海媚')>=0));
 
 /* ---- (3) 好感 ---- */
 ok('五段邊界', enc79TierOf(0)===0 && enc79TierOf(9)===0 && enc79TierOf(10)===1 && enc79TierOf(24)===1 && enc79TierOf(25)===2 && enc79TierOf(44)===2 && enc79TierOf(45)===3 && enc79TierOf(69)===3 && enc79TierOf(70)===4 && enc79TierOf(100)===4);

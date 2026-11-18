@@ -1,4 +1,5 @@
 // v20a84 ENC84 邏輯測試：紅星巧遇 Phase 3（彭少祺／蘇芷茵／鍾楚凝／程天諾）＋全系統回收——
+// v20a290：名冊 12→17 星（§1／§9／§10 計數改認 17／16；其餘四星內容不變）。
 //   (1) 註冊：四星入 ENC79_PILOT（12 星齊）／ENC79_DIALOG／ENC79_BEATS／STAGEUP／CAP／WRAP；主副場照設計表；
 //   (2) 五層對白完整性＋句數（dlgCount 口徑同 enc79/83 測試）；
 //   (3) 初遇／心聲／節拍抉擇 fx 接線（label 關鍵字對位）＋實效（慈善債權／收斂凍結旗／緋聞卡）；
@@ -130,13 +131,13 @@ function beatOf(sid, bid){ return (ENC79_BEATS[sid]||[]).find(b=>b.id===bid); }
 function setFav(sid, fav){ enc79EnsureStars(); S.stars[sid].fav = fav; }
 
 /* ---- (1) 註冊 ---- */
-ok('名冊仍 12 星＋四星主副場照設計表', ENC79_STARS.length===12
+ok('名冊 17 星（v20a290 加五星）＋四星主副場照設計表', ENC79_STARS.length===17
   && enc79StarDef('pang_siuki').primary==='ad_central' && enc79StarDef('pang_siuki').secondary==='tvb_longmen'
   && enc79StarDef('so_jiyan').primary==='rec_wanchai' && enc79StarDef('so_jiyan').secondary==='ad_central'
   && enc79StarDef('chung_choning').primary==='rec_star' && enc79StarDef('chung_choning').secondary==='ad_adm'
   && enc79StarDef('ching_tinlok').primary==='rec_star' && enc79StarDef('ching_tinlok').secondary==='rec_hk'
   && enc79StarDef('ching_tinlok').unlockYear===1992);
-ok('試點盤 12 星齊（PILOT 全開）', ALL.every(sid=>ENC79_PILOT[sid]===1) && Object.keys(ENC79_PILOT).length===12);
+ok('試點盤 17 星齊（PILOT 全開，v20a290）', ALL.every(sid=>ENC79_PILOT[sid]===1) && Object.keys(ENC79_PILOT).length===17);
 ok('四星對白／節拍表／框架句註冊齊', P3.every(sid=> !!ENC79_DIALOG[sid] && Array.isArray(ENC79_BEATS[sid]) && Array.isArray(ENC79_STAGEUP[sid]) && ENC79_STAGEUP[sid].length===3));
 ok('CAP／WRAP 係扁平句對（唔嵌套）', P3.every(sid=> Array.isArray(ENC79_CAP_LINES[sid]) && typeof ENC79_CAP_LINES[sid][0]==='string' && typeof ENC79_CAP_LINES[sid][1]==='string' && Array.isArray(ENC79_WRAP_ECHO[sid]) && typeof ENC79_WRAP_ECHO[sid][0]==='string'));
 
@@ -311,10 +312,10 @@ resetS(900); _ys = { year:1991, season:'春' };
 {
   const h = enc79PeopleHtml();
   const silCount = (h.match(/？？？/g)||[]).length;
-  ok('人脈頁：未遇 12 星全出剪影＋範疇', silCount===12 && h.indexOf('唱片公司嗰邊')>=0 && h.indexOf('廣告界嗰邊')>=0);
+  ok('人脈頁：未遇 17 星全出剪影＋範疇（v20a290）', silCount===17 && h.indexOf('唱片公司嗰邊')>=0 && h.indexOf('廣告界嗰邊')>=0);
   enc79EnsureStars(); S.stars.pang_siuki.met = true; S.stars.pang_siuki.fav = 30;
   const h2 = enc79PeopleHtml();
-  ok('人脈頁：已遇彭少祺出行名／段名／主場', h2.indexOf('彭少祺')>=0 && h2.indexOf('傾得埋')>=0 && h2.indexOf('中環廣告')>=0 && (h2.match(/？？？/g)||[]).length===11);
+  ok('人脈頁：已遇彭少祺出行名／段名／主場', h2.indexOf('彭少祺')>=0 && h2.indexOf('傾得埋')>=0 && h2.indexOf('中環廣告')>=0 && (h2.match(/？？？/g)||[]).length===16); /* v20a290：17 星−已遇 1＝16 行剪影 */
 }
 
 /* ---- (11) 舊檔兼容 ---- */

@@ -1,3 +1,4 @@
+# v20a290 resync：index.html 淨 +461 行；釘行按 difflib 映射重寫（內容逐字核實純漂移；ok() 名入面嘅 Lxxxxx 歷史標籤唔郁）；總行數 46256→46717。
 # v20a289 resync：index.html 淨 +36 行（Q1 劣評判定 enc79WrapPerf＋註解，插入點舊 L40373 起）；釘行各 +36（41347→41383、41503→41539），之前唔郁；內容逐字核實純漂移。
 # v20a288 resync：index.html 淨 −90 行（A1 刪 DUR90 整組；釘行 39862→39772、40220→40130、41437→41347、41593→41503；L55647 等名唔郁）。
 # v20a286 resync：index.html 淨 +9 行（contFromSlot sync＋6＠舊 L45704 之後／softSeed sync＋3＠舊 L14392 之後；釘行按段重算：＜14392 唔郁、14392–45703 各 ＋3、≥45704 各 ＋9；內容逐字核實純漂移）。 14813→14816、39859→39862、40217→40220、41434→41437、41590→41593；L55647 等名唔郁。
@@ -117,10 +118,10 @@ for fn in ('rom176TryIntercept', 'rom176PlayEncounter', 'rom176DoGiveStarGift', 
 ok('釘：NPCS lan 條目 L6152', line(6325).startswith('  lan:{ id:"lan", name:"藍若曦"'))
 ok('釘：載入點 L31712（GIFT_REACT 賦值同行呼叫注入）',
    'GIFT_REACT = giftReact' in line(14816) and 'rom176ApplyGiftOverrides()' in line(14816))
-ok('釘：ROM176 block 起點 L55647', line(39772).startswith('/* ===== v20a176 ROM176'))
-ok('釘：rom176ApplyGiftOverrides 定義 L56015', line(40130).startswith('function rom176ApplyGiftOverrides()'))
-ok('釘：addLocTalkGiftActs L57154', line(41383).startswith('function addLocTalkGiftActs(add, L, npcId)'))
-ok('釘：openLoc rom176 攔截 L57248', 'rom176TryIntercept(id)' in line(41539))
+ok('釘：ROM176 block 起點 L55647', line(40173).startswith('/* ===== v20a176 ROM176'))
+ok('釘：rom176ApplyGiftOverrides 定義 L56015', line(40531).startswith('function rom176ApplyGiftOverrides()'))
+ok('釘：addLocTalkGiftActs L57154', line(41844).startswith('function addLocTalkGiftActs(add, L, npcId)'))
+ok('釘：openLoc rom176 攔截 L57248', 'rom176TryIntercept(id)' in line(42000))
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫（31903 唔郁、55254→55394、55622→55762、56761→56901、56855→56995），核實純漂移。# v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行，6 個釘行按段 +2／+9／+47 重算（6070→6072、31574→31583、53369→53416、53737→53784、54876→54923、54970→55017），difflib 對位核實純漂移。
 # v20a216 resync：釘行按 difflib 映射重寫（6322→6360、31903→31941、55394→55657、55762→56025、56901→57164、56995→57258；L6152／L31712 名唔郁），qa216/resync216.py 核實純漂移。
 # v20a217 resync：標籤遷移 ＋3 行（插入點舊 L45472 之後），釘行各 ＋3（55657→55660、56025→56028、57164→57167、57258→57261）。
@@ -153,16 +154,16 @@ for k, nm, face, homes in (('lan', '藍若曦', 'npc_lan', '"tvb_longmen","tvb_k
     ok('NPCS 有 %s（%s，homes 主＋副）' % (k, nm),
        ('  %s:{ id:"%s", name:"%s"' % (k, k, nm)) in html and ('face:"%s"' % face) in html and homes in html)
 
-# ---- 48 條星反應句（FAV176 24＋GEN176 24） ----
+# ---- 68 條星反應句（FAV176 34＋GEN176 34；v20a290：原 12 星 48 條＋新 5 星 20 條） ----
 fav = seg('const FAV176 = [', '];')
 gen = seg('const GEN176 = [', '];')
 stars = ['luk_baakyin', 'liu_bingxing', 'ngai_wingnaam', 'yip_manji', 'mak_zhendong', 'lok_gasing',
          'pang_siuki', 'chung_choning', 'gu_mingfai', 'so_jiyan', 'chai_zanhoi', 'ching_tinlok']
-ok('FAV176 24 條（每星 2 條最愛 item-specific）',
-   len(re.findall(r'\["[a-z_]+","gift_[a-z_]+",', fav)) == 24
+ok('FAV176 34 條（原 12 星每星 2 條最愛 item-specific＋v290 新 5 星 10 條）',
+   len(re.findall(r'\["[a-z_]+","gift_[a-z_]+",', fav)) == 34
    and all(fav.count('["' + s + '",') == 2 for s in stars))
-ok('GEN176 24 條（每星喜歡／唔鍾意各 1 條 tier-generic）',
-   len(re.findall(r'\["[a-z_]+","(liked|dislike)",', gen)) == 24
+ok('GEN176 34 條（原 12 星每星喜歡／唔鍾意各 1 條 tier-generic＋v290 新 5 星 10 條）',
+   len(re.findall(r'\["[a-z_]+","(liked|dislike)",', gen)) == 34
    and all(gen.count('["' + s + '","liked"') == 1 and gen.count('["' + s + '","dislike"') == 1 for s in stars))
 ok('海媚 prefs 注入（最愛保溫瓶＋拍紙簿）',
    'mei:{ fav:["gift_thermos","gift_memo_pad"]' in html)

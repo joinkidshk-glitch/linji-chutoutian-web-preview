@@ -163,12 +163,14 @@ function baseSave(over){
     favN += f.length; if (l) likedN++; if (d) disN++;
     if (f.length !== 2 || !l || !d) perStarOk = false;
   }
-  ok('A3 48 條星反應句（最愛 24＋喜歡 12＋唔鍾意 12，每星 2／1／1）',
-    favN === 24 && likedN === 12 && disN === 12 && perStarOk && GIFT_REACT.entries.length === 48,
+// v20a290 Q2：名冊 12→17（五位新星入名冊；逐星計數只行原 12 星硬編碼表，數字唔變；
+//   GIFT_REACT 總數 48→68＝原 12 星 48 條＋新 5 星 20 條；新 5 星逐項見 test_r290_five_stars.js）。
+  ok('A3 68 條星反應句（原 12 星最愛 24＋喜歡 12＋唔鍾意 12，每星 2／1／1；另加 v290 新 5 星 20 條）',
+    favN === 24 && likedN === 12 && disN === 12 && perStarOk && GIFT_REACT.entries.length === 68,
     'fav=' + favN + ' liked=' + likedN + ' dis=' + disN + ' entries=' + GIFT_REACT.entries.length);
   const before = GIFT_REACT.entries.length;
   rom176ApplyGiftOverrides();
-  ok('A4 注入冪等（再跑一次唔會重複）', GIFT_REACT.entries.length === before && Object.keys(GIFT_REACT.byKey).length === 48);
+  ok('A4 注入冪等（再跑一次唔會重複）', GIFT_REACT.entries.length === before && Object.keys(GIFT_REACT.byKey).length === 68);
   let nlOk = true;
   for (const k of ['lan','xu','mei']){
     const n = NPC_LINES[k];

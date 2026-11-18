@@ -131,8 +131,15 @@ rom159_gift_block = nocomment[_rg_i:_rg_j] if (_rg_i >= 0 and _rg_j > _rg_i) els
 _cmt_i = nocomment.find('COMMIT48_NODES.CMT_lan_commit = {')
 _cmt_j = nocomment.find('COMMIT48_NODES.CMT_xu_commit = {', _cmt_i) if _cmt_i >= 0 else -1
 cmt_lan_block = nocomment[_cmt_i:_cmt_j] if (_cmt_i >= 0 and _cmt_j > _cmt_i) else ''
+# v20a290 申報：Q2 五星入名冊，藍若曦正當地出現喺 ENC79 星系統入面——DLG 初遇劇本（通告牌
+# 派牌場面，PA 線內容）、FAV176／GEN176 送禮反應句（通宵跟組／拍紙簿，場記職責）、STAR_SIGHTINGS
+# 遠觀行（distanceLook／resultToast，片場派牌）。「零歌手向」嗰半保留不變（呢啲行唔含歌手／
+# 唱片／狗仔／宣傳場／玉女）；def／SP176／SIGHTINGS 首行本身帶 lan_ruoxi，已喺允許式入面。
+_sight_i = nocomment.find('const STAR_SIGHTINGS = [')
+_sight_j = nocomment.find('const PHASE3_STAR_ORDER', _sight_i) if _sight_i >= 0 else -1
+lan290_sight_block = nocomment[_sight_i:_sight_j] if (_sight_i >= 0 and _sight_j > _sight_i) else ''
 ok('藍若曦 remaining occurrences are engine infra or PA-line content (v20a31)',
-   all(('lan_ruoxi' in ln) or ('lan:"藍若曦' in ln) or ('name:"藍若曦"' in ln) or (ln in lan_block) or ('通告牌' in ln) or (ln in lan_block183) or (ln in tfix_block) or (ln in rom159_block) or (ln in rom159_gift_block) for ln in lan_lines))
+   all(('lan_ruoxi' in ln) or ('lan:"藍若曦' in ln) or ('name:"藍若曦"' in ln) or (ln in lan_block) or ('通告牌' in ln) or (ln in lan_block183) or (ln in tfix_block) or (ln in rom159_block) or (ln in rom159_gift_block) or (ln in lan290_sight_block) for ln in lan_lines))
 ok('藍若曦 occurrences carry no singer framing',
    all(not any(w in ln for w in ['歌手', '唱片', '狗仔', '宣傳場', '玉女']) for ln in lan_lines if ln not in tfix_block and ln not in cmt_lan_block))
 

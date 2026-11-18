@@ -173,8 +173,10 @@ for k, stem in (("npc_lan", "lan_ruoxi"), ("npc_xu", "tsui_poushan"), ("npc_mei"
        and os.path.exists(os.path.join(ROOT, "assets", "story", "fullbody", stem + "_base.webp")))
 m_stars = re.search(r"const ENC79_STARS = \[(.*?)\n\];", src, re.S)
 star_ids = re.findall(r'id:"([^"]+)"', m_stars.group(1)) if m_stars else []
-ck(f"紅星 12 個（{len(star_ids)}）全部有 BUST109_EXTRA 鍵",
-   len(star_ids) == 12 and set(star_ids) <= set(EXTRA))
+# v20a290 Q2：名冊 12→17——原 12 星全部有 BUST109_EXTRA 鍵；新 5 星冇全身裁圖，
+# 冇 BUST109_EXTRA 鍵（美術跟進票，見 NOTES_V20A290_FIVE_STARS §7），唔係缺漏。
+ck(f"紅星 17 個（{len(star_ids)}），原 12 星全部有 BUST109_EXTRA 鍵",
+   len(star_ids) == 17 and set(STARS) <= set(EXTRA))
 for k, stem in PORTRAITS_STEM.items():
     # v20a268：vera 例外——PORTRAITS.npc_vera bust（base64）留返，但全身 vera_base.webp 已刪
     # （Vera 感情線節點由 JSON 刪除；spBustCandidates 動態砌檔名，live 永遠唔會砌到 vera）。

@@ -38579,6 +38579,375 @@ function travel114TrySpend(opts, id){
   return true;
 }
 const ENC79_WEEK_SOFT_CAP = 10;/* 巧遇來源好感每週軟頂（殺青來源唔計） */
+/* ===== v20a290 Q2：五位新星初遇劇本（first＋openers T0–T4＋address；跟 ENC79_DLG_yip_manzi 格式）。
+   藍初遇場景寫主場 film_cotton（紅棉影業跟組），唔寫感情線場景（rec_hk／tvb_longmen／cafe_cha）；
+   升段以外嘅對白都唔寫拍拖／等收工呢類承諾句（HE 係正式拍拖，紅星線唔預支）。 ===== */
+const ENC79_DLG_lan_ruoxi = {
+  first: {
+    lines: [
+      ["N", "紅棉影業片場邊，通告牌前面企滿人。藍若曦抱住成疊牌，逐張逐張派，派到你面前嗰陣停咗停。"],
+      ["S", "喂，臨記仔，企埋一邊先啦，唔好阻住人行。"],
+      ["A", "哦，對唔住，我即刻行開。"],
+      ["S", "等陣——你係咪尋日嗰個幫手執牌嗰個？"],
+      ["A", "係我呀，尋日啲牌跌晒落地，我幫手執返啫。"],
+      ["S", "執牌唔係你份工，但你肯執，我記住。你叫咩名？"],
+      ["A", "阿偉，陳偉翔。大家都係咁叫我。"],
+      ["S", "阿偉……好，我記住喇。聽日開工早啲嚟，唔好遲到。"]
+    ],
+    choices: [
+      { label: "應承佢，話聽日一定早到", lines: [
+        ["A", "聽日我一定早到，唔會遲。"],
+        ["S", "講得出，做得到先算數。我睇你表現。"],
+        ["N", "佢將你個名寫喺通告牌角落——臨記咁多個，肯寫低名嘅唔多。"]
+      ] },
+      { label: "問佢場記係咪成日要派牌", lines: [
+        ["A", "場記係咪日日都要派牌㗎？"],
+        ["S", "派牌、對名、嗌埋位，邊樣唔係我做？做得耐，你就知邊個靠得住。"],
+        ["S", "你尋日肯幫手，已經好過一半人。"]
+      ] },
+      { label: "笑住話自己記性好", lines: [
+        ["A", "我記性好㗎，你派過咩牌我都記得。"],
+        ["S", "呵，咁你記唔記得自己聽日幾點開工？"],
+        ["A", "……你未話我知喎。"],
+        ["S", "咁你仲唔快啲問？"]
+      ] }
+    ]
+  },
+  openers: {
+    T0: [
+      ["S", "喂，臨記仔，企開少少，唔好阻住條路。"],
+      ["A", "哦，對唔住。"],
+      ["S", "呢度係片場，唔係街市，企位要識睇。"]
+    ],
+    T1: [
+      ["S", "咦，阿偉，今日又跟組？"],
+      ["A", "係呀，今日有我份。"],
+      ["S", "咁你記住，收工唔好自己一個走，執埋啲牌先。"]
+    ],
+    T2: [
+      ["S", "阿偉，問你句——你覺得場記呢份工，係咪一世都係咁？"],
+      ["A", "唔會啩，你做嘢咁認真，實有機會行前。"],
+      ["S", "借你吉言啦。呢句，我收低。"]
+    ],
+    T3: [
+      ["S", "坐低啦，唞陣先。通告牌我派完喇。"],
+      ["S", "你知唔知，我細個嗰陣，夢想唔係派牌，係企喺人哋派牌嗰個位對面——企出嚟嗰個。"],
+      ["A", "你會企到出去㗎，我信。"],
+      ["S", "……多謝你咁講。"]
+    ],
+    T4: [
+      ["S", "阿偉，過嚟，幫我睇住呢疊牌一陣。"],
+      ["A", "得，我睇住。"],
+      ["S", "呢行，肯幫手睇嘢嘅人唔多。你係其中一個，我記住。"]
+    ]
+  },
+  address: {
+    extra: [
+      ["S", "嗰個臨記，唔該借過少少。"]
+    ],
+    support: [
+      ["S", "後生仔，有戲做咪搏盡佢囉，唔好諗咁多。"]
+    ],
+    lead: [
+      ["S", "阿偉，今日呢場靠你帶一帶節奏喇。"]
+    ],
+    king: [
+      ["S", "偉翔，而家成行都望住你，講嘢做嘢都要企得穩。"]
+    ]
+  }
+};
+const ENC79_DLG_kong_siying = {
+  first: {
+    lines: [
+      ["N", "維港電影後巷，收工之後得返一盞後門燈。江詩盈企喺燈下面睇劇本，睇到連有人行近都唔覺。"],
+      ["S", "……你行過嗰陣，唔好踩到嗰疊紙。"],
+      ["A", "哦，對唔住，我冇留意。"],
+      ["S", "唔緊要。呢疊係下場嘅對白，我睇極都睇唔入腦。"],
+      ["A", "文藝片對白係難記啲，要逐句逐句嚼。"],
+      ["S", "你都識分文藝片同商業片？臨記入面，識分嘅唔多。"],
+      ["A", "我睇得多，咪識分囉。"],
+      ["S", "咁你話我知，呢場戲，個女主角嗰陣應該喊，定係忍住唔喊？"]
+    ],
+    choices: [
+      { label: "話忍住唔喊先有力", lines: [
+        ["A", "忍住唔喊。喊出嚟，觀眾喊埋一份就完；忍住，觀眾先會一路諗。"],
+        ["S", "……你講得啱。導演都係咁話。"],
+        ["S", "你唔係普通臨記，你識睇戲。"]
+      ] },
+      { label: "話喊出嚟先真", lines: [
+        ["A", "喊出嚟啦，真情流露，觀眾先信。"],
+        ["S", "真情……你講得都有道理。不過文藝片，喊得太多就變咗催淚片。"],
+        ["S", "下次你再嚟，我哋慢慢傾。"]
+      ] },
+      { label: "話自己唔敢亂講", lines: [
+        ["A", "呢啲我唔敢亂講，你係主角，你話事。"],
+        ["S", "主角唔代表啱晒。有時旁觀者先睇得清。"],
+        ["S", "你下次有意見，照講啦，我聽。"]
+      ] }
+    ]
+  },
+  openers: {
+    T0: [
+      ["S", "唔好意思，你擋住我睇劇本嘅光喇。"],
+      ["A", "哦，對唔住，我行開啲。"],
+      ["S", "睇劇本要靜，唔好意思。"]
+    ],
+    T1: [
+      ["S", "咦，又係你。上次嗰場戲，你講嗰句我返去諗咗成晚。"],
+      ["A", "係咩？我亂噏㗎咋。"],
+      ["S", "亂噏都噏得啱，算你有眼光。"]
+    ],
+    T2: [
+      ["S", "阿偉，問你樣嘢——文藝片票房差，係咪代表冇人識欣賞？"],
+      ["A", "唔係，係識欣賞嘅人唔出聲啫。"],
+      ["S", "呢句我鍾意聽。你留低，陪我對多一陣對白。"]
+    ],
+    T3: [
+      ["S", "坐低啦，唔好企喺度。呢場戲，我想聽下你點睇。"],
+      ["S", "人人都話我係文藝片女主角，講到我好似唔食人間煙火咁。"],
+      ["A", "你食唔食煙火我唔知，我淨係知你做戲嗰陣好認真。"],
+      ["S", "……多謝你咁講。"]
+    ],
+    T4: [
+      ["S", "阿偉，過嚟，幫我睇下呢場，個位企得啱唔啱。"],
+      ["A", "得，我睇住。"],
+      ["S", "你企位嘅眼光，我信得過。"]
+    ]
+  },
+  address: {
+    extra: [
+      ["S", "唔該借過少少，我要去對對白。"]
+    ],
+    support: [
+      ["S", "後生仔，做戲要慢，唔好趕。"]
+    ],
+    lead: [
+      ["S", "阿偉，今日呢場，你帶住成組人嘅節奏喇。"]
+    ],
+    king: [
+      ["S", "偉翔，你行到呢步，我替你高興。"]
+    ]
+  }
+};
+const ENC79_DLG_shum_yingsuet = {
+  first: {
+    lines: [
+      ["N", "灣仔唱片錄音室門口，沈映雪抱住一疊歌紙行出嚟，行到你面前嗰陣，忽然停低。"],
+      ["S", "……你係咪頭先喺入面和音嗰個？"],
+      ["A", "係我呀，和音嗰句係我唱。"],
+      ["S", "嗰句你唱得穩，音準唔差。我留意到你。"],
+      ["A", "多謝，我練咗好耐先敢開聲。"],
+      ["S", "唱歌呢樣嘢，練得多唔代表唱得好，係要識聽。識聽嘅人，唔多。"],
+      ["A", "咁你覺得我識唔識聽？"],
+      ["S", "你嗰句和音，唔搶主音，又唔會唔見咗——識聽，先至唱得出呢種和音。"]
+    ],
+    choices: [
+      { label: "話自己都係鍾意唱歌", lines: [
+        ["A", "其實我都鍾意唱歌，不過冇機會唱畀人聽。"],
+        ["S", "咁你下次練好一首，唱畀我聽。我聽得出真假。"],
+        ["S", "唔好怕醜，唱歌怕醜就唱唔好。"]
+      ] },
+      { label: "問佢點樣先唱得好抒情歌", lines: [
+        ["A", "抒情歌點樣先唱得好？我成日覺得自己唱得太平。"],
+        ["S", "抒情歌唔係靠技巧，係靠你有冇嘢想講。冇嘢想講，唱咩都係平。"],
+        ["S", "你慢慢諗，諗到先唱。"]
+      ] },
+      { label: "笑住話多謝提點", lines: [
+        ["A", "多謝提點，我會記住。"],
+        ["S", "記住就最好啦。呢行，肯提點人嘅唔多，我唔係見邊個都講。"],
+        ["S", "你今日嗰句和音，我記住你。"]
+      ] }
+    ]
+  },
+  openers: {
+    T0: [
+      ["S", "唔好意思，錄音室門口唔好企咁耐，阻住人出入。"],
+      ["A", "哦，對唔住，我即刻行開。"],
+      ["S", "唔緊要，下次記住就得。"]
+    ],
+    T1: [
+      ["S", "咦，和音嗰個，又見到你。"],
+      ["A", "係我呀，今日又有和音做。"],
+      ["S", "咁你嗌嗰陣記住，唔好搶，要托住主音。"]
+    ],
+    T2: [
+      ["S", "阿偉，問你句——你覺得一首抒情歌，邊句最難唱？"],
+      ["A", "副歌之前嗰句，情緒要收住，唔可以一次過爆晒。"],
+      ["S", "你識聽。下次錄音，你入嚟聽，我請你。"]
+    ],
+    T3: [
+      ["S", "坐低啦，唞陣先。今日嗰首歌，我錄咗成朝都唔收貨。"],
+      ["S", "人人都話我是抒情歌后，講到我好似一開聲就係天籟咁。"],
+      ["A", "你錄咗成朝都唔收貨，先至係天籟嘅原因啫。"],
+      ["S", "……呢句，我收低。"]
+    ],
+    T4: [
+      ["S", "阿偉，過嚟，幫我聽下呢句，個尾音收得啱唔啱。"],
+      ["A", "得，我聽住。"],
+      ["S", "你對耳，我信得過。"]
+    ]
+  },
+  address: {
+    extra: [
+      ["S", "唔該借過少少，我要入錄音室。"]
+    ],
+    support: [
+      ["S", "後生仔，唱歌要慢，唔好趕。"]
+    ],
+    lead: [
+      ["S", "阿偉，今日呢首，你幫我托住個和音喇。"]
+    ],
+    king: [
+      ["S", "偉翔，你把聲行到呢步，我替你高興。"]
+    ]
+  }
+};
+const ENC79_DLG_wu_meilam = {
+  first: {
+    lines: [
+      ["N", "獅子山製片廠走廊，胡美琳由助手陪住行過嚟，行到你面前嗰陣，忽然停低，望咗你一眼。"],
+      ["S", "咦，你係邊個？新嚟㗎？"],
+      ["A", "係呀，我叫阿偉，今日第一次跟呢組。"],
+      ["S", "阿偉……臨記仔，企位識唔識？唔識就企後面，唔好阻住鏡頭。"],
+      ["A", "我識㗎，企後面，唔阻鏡頭。"],
+      ["S", "識就好啦。呢行，最怕就係唔識扮識嗰啲。"],
+      ["A", "我唔會扮識，唔識我就問。"],
+      ["S", "問都好過扮識。行啦，跟住我，唔好行失。"]
+    ],
+    choices: [
+      { label: "乖乖跟住佢行", lines: [
+        ["A", "得，我跟住你。"],
+        ["S", "跟實啲，唔好行失。片場咁大，行失咗冇人搵你。"],
+        ["S", "你聽話，我記住你。"]
+      ] },
+      { label: "問佢今日拍邊場", lines: [
+        ["A", "今日拍邊場呀？我想早啲熟習個位。"],
+        ["S", "問得好。今日拍大場面，你企後排，唔好搶鏡。"],
+        ["S", "識問，算你醒目。"]
+      ] },
+      { label: "笑住話自己唔會阻住鏡頭", lines: [
+        ["A", "你放心，我企到實一實，鏡頭一定影唔到我。"],
+        ["S", "呵，咁你唔使做臨記啦，去做佈景啦。"],
+        ["S", "講笑咋。識笑，好過黑口黑面。"]
+      ] }
+    ]
+  },
+  openers: {
+    T0: [
+      ["S", "喂，臨記仔，企開少少，唔好阻住我條路。"],
+      ["A", "哦，對唔住。"],
+      ["S", "片場條路就係咁窄，企位要識睇。"]
+    ],
+    T1: [
+      ["S", "咦，阿偉，今日又跟組？"],
+      ["A", "係呀，今日有我份。"],
+      ["S", "咁你記住，埋位嗰陣唔好望鏡頭，望住我哋就得。"]
+    ],
+    T2: [
+      ["S", "阿偉，問你句——你覺得花旦呢個名，係讚定係貶？"],
+      ["A", "讚嚟㗎，有得做花旦，代表有人肯睇你。"],
+      ["S", "呢句我鍾意聽。好多人淨係識話我得個樣。"]
+    ],
+    T3: [
+      ["S", "坐低啦，唞陣先。今日拍咗成日，腳都企攰。"],
+      ["S", "人人都話我係九十年代嘅花旦，講到我好似一出世就紅咁。"],
+      ["A", "紅唔紅唔緊要，企得耐先緊要。你企得耐，我睇到。"],
+      ["S", "……多謝你咁講。"]
+    ],
+    T4: [
+      ["S", "阿偉，過嚟，幫我睇住呢件衫一陣，唔好俾人整污糟。"],
+      ["A", "得，我睇住。"],
+      ["S", "肯幫手睇嘢嘅人，我記住。"]
+    ]
+  },
+  address: {
+    extra: [
+      ["S", "嗰個臨記，唔該借過少少。"]
+    ],
+    support: [
+      ["S", "後生仔，有戲做咪搏盡佢囉。"]
+    ],
+    lead: [
+      ["S", "阿偉，今日呢場靠你帶一帶節奏喇。"]
+    ],
+    king: [
+      ["S", "偉翔，而家成行都望住你，企得穩啲。"]
+    ]
+  }
+};
+const ENC79_DLG_hon_sauting = {
+  first: {
+    lines: [
+      ["N", "天星音樂練舞室門口，音樂聲由門縫漏出嚟。韓秀婷推門行出嚟，成身汗，見到你嗰陣停低。"],
+      ["S", "喂，你企喺度做咩？偷聽呀？"],
+      ["A", "唔係偷聽，我係等埋位，順便聽下。"],
+      ["S", "聽下？咁你聽到啲咩？"],
+      ["A", "聽到你跳唱嗰陣，個節奏好準，拍子一啲都冇走。"],
+      ["S", "拍子準係基本，唔準點出嚟見人。你識聽拍子，算你唔係外行。"],
+      ["A", "我練舞嗰陣都係數拍子，數得多，咪識聽囉。"],
+      ["S", "你都練舞？咁你下次入嚟，唔好企門口，入嚟一齊練。"]
+    ],
+    choices: [
+      { label: "話下次一定入嚟練", lines: [
+        ["A", "得，下次我入嚟同你哋一齊練。"],
+        ["S", "講得出，做得到先算數。練舞唔係講，係跳。"],
+        ["S", "我等你。"]
+      ] },
+      { label: "問佢跳唱最難係咩", lines: [
+        ["A", "跳唱最難係咩？又要唱又要跳，氣點夠？"],
+        ["S", "氣唔夠就練氣，練到夠為止。冇捷徑㗎。"],
+        ["S", "你肯問，代表你想知多啲，好事嚟。"]
+      ] },
+      { label: "笑住話自己拍子都唔差", lines: [
+        ["A", "我拍子都唔差㗎，下次你數住，我跳畀你睇。"],
+        ["S", "呵，口氣唔細喎。好，下次我數住，你跳。"],
+        ["S", "跳得唔好，我唔會畀面㗎。"]
+      ] }
+    ]
+  },
+  openers: {
+    T0: [
+      ["S", "喂，企喺練舞室門口做咩？想偷師呀？"],
+      ["A", "哦，對唔住，我即刻行開。"],
+      ["S", "想學就入嚟，企門口學唔到嘢。"]
+    ],
+    T1: [
+      ["S", "咦，練舞嗰個，又見到你。"],
+      ["A", "係我呀，今日又嚟練舞。"],
+      ["S", "咁你數拍子嗰陣記住，唔好搶，要跟住音樂行。"]
+    ],
+    T2: [
+      ["S", "阿偉，問你句——你覺得跳唱天后呢個名，係咪淨係識跳唔識唱？"],
+      ["A", "唔係，識跳又識唱先難，淨係識一樣嗰啲多的是。"],
+      ["S", "呢句我鍾意聽。你留低，陪我練多一陣。"]
+    ],
+    T3: [
+      ["S", "坐低啦，唞陣先。今日練咗成朝，腳都跳攰。"],
+      ["S", "人人都話我係跳唱天后，講到我好似一出世就識跳咁。"],
+      ["A", "你練咗成朝都唔停，先至係天后嘅原因啫。"],
+      ["S", "……呢句，我收低。"]
+    ],
+    T4: [
+      ["S", "阿偉，過嚟，幫我數住拍子，我練多一次。"],
+      ["A", "得，我數住。"],
+      ["S", "你數拍子準，我信得過。"]
+    ]
+  },
+  address: {
+    extra: [
+      ["S", "唔該借過少少，我要入練舞室。"]
+    ],
+    support: [
+      ["S", "後生仔，練舞要勤力，唔好偷懶。"]
+    ],
+    lead: [
+      ["S", "阿偉，今日呢場騷，你幫我托住個節奏喇。"]
+    ],
+    king: [
+      ["S", "偉翔，你行到呢步，我替你高興。"]
+    ]
+  }
+};
 const ENC79_STARS = [
   { id:"luk_baakyin",  name:"陸柏言", primary:"film_lion",   secondary:"rec_star",    area:"片場嗰邊",     win:[[1992,"夏"],[1992,"秋"]] },
   { id:"liu_bingxing", name:"廖炳星", primary:"cafe_cha",    secondary:"film_cotton", area:"茶餐廳嗰邊",   win:[[1992,"秋"],[1992,"冬"]] },
@@ -38592,8 +38961,16 @@ const ENC79_STARS = [
   { id:"so_jiyan",     name:"蘇芷茵", primary:"rec_wanchai", secondary:"ad_central",  tertiary:"date_harbour", area:"唱片公司嗰邊", win:[[1991,"春"]] },
   { id:"chai_zanhoi",  name:"齊鎮海", primary:"tvb_longmen", secondary:"tvb_harbour", area:"電視台嗰邊",   win:[[1990,"春"],[1990,"夏"],[1992,"春"],[1992,"夏"]] },
   { id:"ching_tinlok", name:"程天諾", primary:"rec_star",    secondary:"rec_hk",      area:"唱片公司嗰邊", win:[[1992,"秋"],[1992,"冬"]], unlockYear:1992 },
+  /* v20a290 Q2：五位名冊外女星入名冊（12→17）。主場／副場全部係已在 13 個巧遇可達地點併集
+     入面嘅地點，reachLocs 維持 13 個；win 係加權窗口（窗內 P 0.5→0.75），唔係閘。
+     藍主場／副場避開感情線地點（見 NOTES_V20A290_FIVE_STARS §4）。 */
+  { id:"lan_ruoxi",   name:"藍若曦", primary:"film_cotton", secondary:"agency_ho",   area:"片場嗰邊",     win:[[1990,"秋"],[1991,"夏"]] },
+  { id:"kong_siying", name:"江詩盈", primary:"film_harbour",secondary:"tvb_kowloon", area:"片場嗰邊",     win:[[1991,"春"],[1991,"秋"]] },
+  { id:"shum_yingsuet",name:"沈映雪",primary:"rec_wanchai", secondary:"tvb_harbour", area:"唱片公司嗰邊", win:[[1990,"秋"],[1991,"秋"]] },
+  { id:"wu_meilam",   name:"胡美琳", primary:"film_lion",   secondary:"tvb_longmen", area:"片場嗰邊",     win:[[1990,"春"],[1990,"夏"],[1990,"秋"]] },
+  { id:"hon_sauting", name:"韓秀婷", primary:"rec_star",    secondary:"rec_hk",      area:"唱片公司嗰邊", win:[[1991,"夏"],[1991,"秋"]] },
 ];
-const ENC79_PILOT = { luk_baakyin:1, liu_bingxing:1, mak_zhendong:1, yip_manji:1 };
+const ENC79_PILOT = { luk_baakyin:1, liu_bingxing:1, mak_zhendong:1, yip_manji:1, lan_ruoxi:1, kong_siying:1, shum_yingsuet:1, wu_meilam:1, hon_sauting:1 };
 /* Phase 2/3 星嘅降格描寫（齊／程冇舊遠觀數據，新寫一句；其餘重用 STAR_SIGHTINGS distanceLook） */
 const ENC79_DISTANCE_EXTRA = {
   chai_zanhoi:"齊鎮海企喺監視器後面默劇本，成個廠景冇人敢行近。",
@@ -38605,24 +38982,48 @@ const ENC79_STAGEUP = {
   liu_bingxing:[["S","咦，隔籬枱嗰個變咗熟客仔喎。"],["S","過嚟坐啦，茶餐廳啲位，坐邊張都係咁話。"],["N","伙記冇問佢都先幫你落咗杯奶茶——熟客先有嘅待遇。"]],
   mak_zhendong:[["S","你嚟咗。"],["S","企埋嚟啦，唔使企到咁遠講嘢。"],["N","佢向你點一點頭。識佢嘅人都知，呢下點頭唔係人人有。"]],
   yip_manji:[["S","又係你。"],["S","今日唔同你鬥嘴，坐低，傾兩句正經嘅。"],["N","佢講嘢冇咗嗰陣刺——至少，對住你嗰陣冇咗。"]],
+  /* v20a290 Q2：五位新星升段戲（每星 3 句；只講行內交情，唔預支感情線承諾）。 */
+  lan_ruoxi:[["S","咦，你又嚟跟組呀。"],["S","通告牌我派完喇，坐低抖陣啦，唔好企喺度阻住人。"],["N","場記嗰邊冇再趕你走——肯留你喺度食埋個晏，已經係自己人先有嘅待遇。"]],
+  kong_siying:[["S","你又嚟探班？"],["S","文藝片唔係人人啱睇，你肯坐低睇晒成場，已經好難得。"],["N","佢冇再將你當普通臨記——肯同你講戲，已經係將你當行內人。"]],
+  shum_yingsuet:[["S","又係你。"],["S","錄音室門口唔係邊個都企得，你企咗咁耐，我留意到。"],["N","佢講嘢把聲放輕咗——錄音室入面，呢個就係熟人先有嘅待遇。"]],
+  wu_meilam:[["S","咦，臨記仔，又見到你。"],["S","我趕住埋位，長話短說啦——你肯企喺度等，我記住。"],["N","佢冇再由助手隔開你——花旦肯直接同你講嘢，成個廠景冇幾個人有。"]],
+  hon_sauting:[["S","喂，練舞室嗰個，又係你！"],["S","跳唱呢行，肯睇人練舞練到尾嘅人唔多，你係其中一個。"],["N","佢冇再將你當路人——肯叫你入練舞室坐，已經係自己人先有嘅待遇。"]],
 };
 const ENC79_CAP_LINES = {
   luk_baakyin:["S","等你擔正嗰日，我哋再慢慢傾。"],
   liu_bingxing:["S","你而家呢個位置，有啲嘢我講咗你都未必接得住。等你上多一級先。"],
   mak_zhendong:["S","有啲嘢，等你企到嗰個位，先講得。"],
   yip_manji:["S","唔係我唔肯講，係你而家呢個位置，聽咗都未必有用。等你行前一步先。"],
+  /* v20a290 Q2：五位新星級數上限句。 */
+  lan_ruoxi:["S","等你擔正嗰日，我哋先再傾呢啲。"],
+  kong_siying:["S","有啲戲，要你企到嗰個位，先講得明。"],
+  shum_yingsuet:["S","等你唱到主角嗰日，我哋先再慢慢傾。"],
+  wu_meilam:["S","等你紅到有人專登嚟等你嗰日，我哋先再傾。"],
+  hon_sauting:["S","等你企上台嗰日，我哋先再慢慢傾。"],
 };
 const ENC79_WRAP_ECHO = {
   luk_baakyin:["S","上次嗰套戲，你嗰場做得唔錯。導演有提起你。"],
   liu_bingxing:["S","上次同組，成班人笑到收唔到工——有你份㗎，記得你啦。"],
   mak_zhendong:["S","上次嗰場，你企得穩。武指嗰邊有講起你。"],
   yip_manji:["S","上次同場，算你冇失禮人。之後啲人問起，我有講你好話。"],
+  /* v20a290 Q2：五位新星合作回望句。 */
+  lan_ruoxi:["S","上次同組，你執通告牌嗰手快過我哋成班人，導演有讚你。"],
+  kong_siying:["S","上次嗰套文藝片，你嗰場企得穩，導演有提起你。"],
+  shum_yingsuet:["S","上次嗰首歌，你和音嗰句穩陣，監製有講起你。"],
+  wu_meilam:["S","上次嗰套戲，你嗰場做得唔錯，廠景啲人有提起你。"],
+  hon_sauting:["S","上次嗰場騷，你企得穩，班dancer有講起你。"],
 };
 const ENC79_DIALOG = {};
 try{ if(typeof ENC79_DLG_luk_baakyin!=="undefined") ENC79_DIALOG.luk_baakyin = ENC79_DLG_luk_baakyin; }catch(_e){}
 try{ if(typeof ENC79_DLG_liu_bingxing!=="undefined") ENC79_DIALOG.liu_bingxing = ENC79_DLG_liu_bingxing; }catch(_e){}
 try{ if(typeof ENC79_DLG_mak_zhendong!=="undefined") ENC79_DIALOG.mak_zhendong = ENC79_DLG_mak_zhendong; }catch(_e){}
 try{ if(typeof ENC79_DLG_yip_manzi!=="undefined") ENC79_DIALOG.yip_manji = ENC79_DLG_yip_manzi; }catch(_e){}
+/* v20a290 Q2：五位新星初遇劇本註冊（跟上面四行格式）。 */
+try{ if(typeof ENC79_DLG_lan_ruoxi!=="undefined") ENC79_DIALOG.lan_ruoxi = ENC79_DLG_lan_ruoxi; }catch(_e){}
+try{ if(typeof ENC79_DLG_kong_siying!=="undefined") ENC79_DIALOG.kong_siying = ENC79_DLG_kong_siying; }catch(_e){}
+try{ if(typeof ENC79_DLG_shum_yingsuet!=="undefined") ENC79_DIALOG.shum_yingsuet = ENC79_DLG_shum_yingsuet; }catch(_e){}
+try{ if(typeof ENC79_DLG_wu_meilam!=="undefined") ENC79_DIALOG.wu_meilam = ENC79_DLG_wu_meilam; }catch(_e){}
+try{ if(typeof ENC79_DLG_hon_sauting!=="undefined") ENC79_DIALOG.hon_sauting = ENC79_DLG_hon_sauting; }catch(_e){}
 function enc79StarDef(starId){ return ENC79_STARS.find(s=>s.id===starId) || null; }
 function enc79LocName(locId){ try{ const L=(typeof LOCS!=="undefined"?LOCS:[]).find(x=>x.id===locId); return L?L.name:locId; }catch(_e){ return locId; } }
 function enc79Hash(str){ let h=2166136261; const s=String(str||""); for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return (h>>>0); }
@@ -40130,7 +40531,7 @@ function rom176DoGiveStarGift(starId, itemId, L){
 function rom176ApplyGiftOverrides(){
   try{
     if(typeof GIFT_PREFS!=="undefined" && GIFT_PREFS && GIFT_PREFS.npcs){
-      const NAMES176 = { luk_baakyin:"陸柏言", liu_bingxing:"廖炳星", ngai_wingnaam:"魏詠男", yip_manji:"葉敏芝", mak_zhendong:"麥震東", lok_gasing:"駱家聲", pang_siuki:"彭少祺", chung_choning:"鍾楚凝", gu_mingfai:"顧明輝", so_jiyan:"蘇芷茵", chai_zanhoi:"齊鎮海", ching_tinlok:"程天諾", mei:"關海媚" };
+      const NAMES176 = { luk_baakyin:"陸柏言", liu_bingxing:"廖炳星", ngai_wingnaam:"魏詠男", yip_manji:"葉敏芝", mak_zhendong:"麥震東", lok_gasing:"駱家聲", pang_siuki:"彭少祺", chung_choning:"鍾楚凝", gu_mingfai:"顧明輝", so_jiyan:"蘇芷茵", chai_zanhoi:"齊鎮海", ching_tinlok:"程天諾", mei:"關海媚", lan_ruoxi:"藍若曦", kong_siying:"江詩盈", shum_yingsuet:"沈映雪", wu_meilam:"胡美琳", hon_sauting:"韓秀婷" };
       /* fav＝最愛 2／like＝喜歡 2／dis＝唔鍾意 1–2；likes 寫入 fav＋like（prefKind 嗰陣最愛都顯示「喜」，唔會誤標「普」） */
       const SP176 = {
         luk_baakyin:{ fav:["gift_coffee_beans","gift_memo_pad"], like:["gift_perfume_sample","gift_fashion_mag"], dis:["gift_pineapple_bun_set"] },
@@ -40146,6 +40547,13 @@ function rom176ApplyGiftOverrides(){
         chai_zanhoi:{ fav:["gift_coffee_beans","gift_memo_pad"], like:["gift_thermos","gift_cassette_indie"], dis:["gift_perfume_sample"] },
         ching_tinlok:{ fav:["gift_cassette_indie","gift_thermos"], like:["gift_coffee_beans","gift_egg_tart_box"], dis:["gift_fashion_mag","gift_perfume_sample"] },
         mei:{ fav:["gift_thermos","gift_memo_pad"], like:["gift_coffee_beans","gift_cassette_indie"], dis:["gift_perfume_sample","gift_fashion_mag"] },
+        /* v20a290 Q2：五位新星喜好（星層鍵＝全 id；感情層鍵係短鍵 lan／yip／so，唔會互相覆寫。
+           藍星層最愛（咖啡豆＋拍紙簿）同感情層最愛（手作甜品＋卡帶）零重疊，分流靠入口。 */
+        lan_ruoxi:{ fav:["gift_coffee_beans","gift_memo_pad"], like:["gift_thermos","gift_egg_tart_box"], dis:["gift_fashion_mag"] },
+        kong_siying:{ fav:["gift_memo_pad","gift_cassette_indie"], like:["gift_coffee_beans","gift_handmade_sweet"], dis:["gift_fashion_mag"] },
+        shum_yingsuet:{ fav:["gift_cassette_indie","gift_thermos"], like:["gift_coffee_beans","gift_handmade_sweet"], dis:["gift_pineapple_bun_set"] },
+        wu_meilam:{ fav:["gift_perfume_sample","gift_hair_clip_set"], like:["gift_fashion_mag","gift_handmade_sweet"], dis:["gift_thermos"] },
+        hon_sauting:{ fav:["gift_cassette_indie","gift_coffee_beans"], like:["gift_thermos","gift_memo_pad"], dis:["gift_perfume_sample","gift_fashion_mag"] },
       };
       for(const id in SP176){
         const sp = SP176[id];
@@ -40194,6 +40602,17 @@ function rom176ApplyGiftOverrides(){
         ["chai_zanhoi","gift_memo_pad","齊鎮海：「拍紙簿好。做戲唔可以靠個腦，要寫低。」","齊鎮海：「你做嘢穩陣，我記住你。」"],
         ["ching_tinlok","gift_cassette_indie","程天諾：「呢隻卡帶好正！練舞嗰陣聽呢啲先有火。你識聽嘢！」","程天諾：「多謝你！我即刻帶返練舞室聽。」"],
         ["ching_tinlok","gift_thermos","程天諾：「保溫瓶啱，練舞成身汗就要飲暖水。多謝你！」","程天諾：「你真係細心。我會記住㗎。」"],
+        /* v20a290 Q2：五位新星最愛反應句（每星 2 條 item-specific，共 10 條；GIFT_REACT 48→68）。 */
+        ["lan_ruoxi","gift_coffee_beans","藍若曦：「咖啡豆啱，通宵跟組就係靠呢啲頂住。你記得我捱開夜，算你有心。」","藍若曦：「呢包我收低，唔該你。」"],
+        ["lan_ruoxi","gift_memo_pad","藍若曦：「拍紙簿啱，通告牌派邊個、邊場幾點埋位，全部要寫低。」","藍若曦：「你做嘢咁細心，唔怪得之啲人話你醒目。」"],
+        ["kong_siying","gift_memo_pad","江詩盈：「拍紙簿啱，角色筆記唔寫低，轉頭就唔記得。」","江詩盈：「多謝你。你識得演員靠咩食飯。」"],
+        ["kong_siying","gift_cassette_indie","江詩盈：「呢隻卡帶……你邊度搵返嚟？入戲之前聽呢啲，個人先定得落嚟。」","江詩盈：「唔該你。呢隻我收低。」"],
+        ["shum_yingsuet","gift_cassette_indie","沈映雪：「呢隻卡帶好，練歌之前聽呢啲，先搵得返個感覺。」","沈映雪：「多謝你。你識聽嘢。」"],
+        ["shum_yingsuet","gift_thermos","沈映雪：「保溫瓶啱，唱歌嗰陣有啖暖水，條氣先順。」","沈映雪：「你細心。我收低啦。」"],
+        ["wu_meilam","gift_perfume_sample","胡美琳：「呢隻香水味啱，淡淡哋，唔會搶鏡。你識揀。」","胡美琳：「唔該你。呢份我收低。」"],
+        ["wu_meilam","gift_hair_clip_set","胡美琳：「髮夾幾襯，襯埋我今日件衫。多謝你。」","胡美琳：「我聽日開工就用佢。」"],
+        ["hon_sauting","gift_cassette_indie","韓秀婷：「呢隻卡帶啱，跳唱練舞就係要呢啲拍子。你識揀。」","韓秀婷：「多謝你！我帶返練舞室播。」"],
+        ["hon_sauting","gift_coffee_beans","韓秀婷：「咖啡豆啱，練舞練到半夜就係靠呢啲頂住。你明。」","韓秀婷：「有咗呢包，今晚練多兩個鐘都得。」"],
       ];
       FAV176.forEach(r=>put176(r[0], r[1], "favorite", [r[2], r[3]]));
       /* 喜歡／唔鍾意：每星各 1 條 tier-generic（24 條） */
@@ -40222,6 +40641,17 @@ function rom176ApplyGiftOverrides(){
         ["chai_zanhoi","dislike","齊鎮海：「呢啲嘢唔係我嗰套。心意收到。」"],
         ["ching_tinlok","liked","程天諾：「多謝！啱用，我會帶返去練舞室。」"],
         ["ching_tinlok","dislike","程天諾：「呢啲……我唔係好啱用。你留返自己啦，唔好意思。」"],
+        /* v20a290 Q2：五位新星喜歡／唔鍾意通用句（每星各 1 條，共 10 條）。 */
+        ["lan_ruoxi","liked","藍若曦：「啱用，唔該你。」"],
+        ["lan_ruoxi","dislike","藍若曦：「呢啲我唔啱用，留返自己啦。不過心意收到。」"],
+        ["kong_siying","liked","江詩盈：「多謝。你有心。」"],
+        ["kong_siying","dislike","江詩盈：「呢啲唔襯我。你留返。」"],
+        ["shum_yingsuet","liked","沈映雪：「多謝，啱用。」"],
+        ["shum_yingsuet","dislike","沈映雪：「呢啲我唔係好啱。你心意我收到啦。」"],
+        ["wu_meilam","liked","胡美琳：「好靚，我鍾意。多謝你。」"],
+        ["wu_meilam","dislike","胡美琳：「唔好意思，呢啲我唔係好啱。」"],
+        ["hon_sauting","liked","韓秀婷：「啱用，多謝！練舞嗰陣用得著。」"],
+        ["hon_sauting","dislike","韓秀婷：「呢啲……我唔係好啱用。你留返自己啦，唔好意思。」"],
       ];
       GEN176.forEach(r=>put176(r[0], "", r[1], [r[2]]));
     }
@@ -40374,8 +40804,9 @@ function rom183ApplyGiftReactFix(){ /* C3：55 條女角反應句過粵語 filte
    supportM／supportF＝配角格）：好評主角 +3／配角 +1，劣評主角 +1／配角 0。
    v20a289 Q1：好／劣判定改用表現判定 enc79WrapPerf（底圍欠數＋壓力加權 roll）——
    舊制 fame<=1 已退役：fame roll 全庫最低 5，舊判永不成立，劣評出唔到。
-   null 格＝玩家格或從缺，跳過；非 ENC79_STARS 名冊嘅星（藍若曦／江詩盈／
-   沈映雪／胡美琳／韓秀婷）冇 enc79 好感狀態位，跳過（舊制同樣唔加）。
+   null 格＝玩家格或從缺，跳過；非 ENC79_STARS 名冊嘅星跳過。
+   v20a290 Q2：藍若曦／江詩盈／沈映雪／胡美琳／韓秀婷已入名冊，有 enc79 好感狀態位，
+   grant() 讀 enc79StarDef 生效，唔使另開特例（code 唔郁）。
    舊庫 gig 無 cast 欄位嗰陣跌返舊制：leadStarId 單一主演，好評 +3／劣評 +1。 */
 function enc79OnWrap(sh){
   try{
@@ -40467,6 +40898,9 @@ function enc79PeopleHtml(){
          舊 era_stars 企立圖退做後備（cands[1]，onerror 嗰陣接住）；未見過嗰啲維持
          剪影（上面分支），唔揭面。 */
       try{ const b109=(typeof BUST109_EXTRA!=="undefined" && BUST109_EXTRA) ? BUST109_EXTRA[def.id] : ""; if(b109) cands.unshift(b109); }catch(_e){}
+      /* v20a290 Q2：冇 BUST109_EXTRA 鍵嘅星（五位新星冇全身裁圖）唔用企立／bust 候補做首圖
+         （兩檔都唔存在，兩級 404 會出破圖），縮圖直接用已入庫嘅中性剪影；12 星有 BUST109 鍵，唔變。 */
+      try{ const hasB109v290=(typeof BUST109_EXTRA!=="undefined" && BUST109_EXTRA) ? !!BUST109_EXTRA[def.id] : false; if(!hasB109v290 && typeof ENC105_STAND_SILHOUETTE!=="undefined" && ENC105_STAND_SILHOUETTE) cands.unshift(ENC105_STAND_SILHOUETTE); }catch(_e){}
       const img = cands.length ? '<img src="'+cands[0]+'" alt="" onerror="this.onerror=null;this.src=\''+(cands[1]||"")+'\';if(!\''+(cands[1]||"")+'\')this.style.display=\'none\';" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/>' : "";
       return '<div class="people-row" style="margin:8px 0;display:flex;gap:8px;align-items:flex-start">' + img
         + '<span style="flex:1"><b>'+def.name+'</b> · 紅星（'+ENC79_TIER_NAMES[tier]+'）<br><span class="gold">'+hearts+' '+st.fav+'／100</span>'
@@ -40982,6 +41416,33 @@ const STAR_SIGHTINGS = [
     distanceLine:"只能遠望，時機未到，不要走近。",
     locHint:"灣仔唱片", rumorTeaser:"",
     resultToast:"已遠觀蘇芷茵。" },
+  /* v20a290 Q2：五位新星遠觀行（locs＝主場；齊／程前例係 ENC79_DISTANCE_EXTRA 一句，
+     五位直接入 SIGHTINGS 全行，順便餵 phase3InlineMock）。 */
+  { starId:"lan_ruoxi", displayName:"藍若曦", locs:["film_cotton"],
+    distanceLook:"藍若曦抱著一疊通告牌站在紅棉影業片場邊，逐張逐張派，派到邊個都記得個名。",
+    distanceLine:"只能遠望，時機未到，不要走近。",
+    locHint:"紅棉片場", rumorTeaser:"",
+    resultToast:"已遠觀藍若曦。" },
+  { starId:"kong_siying", displayName:"江詩盈", locs:["film_harbour"],
+    distanceLook:"江詩盈站在維港電影後巷睇劇本，睇到入神，連收工嘅人都行光晒都唔覺。",
+    distanceLine:"只能遠望，時機未到，不要走近。",
+    locHint:"維港電影", rumorTeaser:"",
+    resultToast:"已遠觀江詩盈。" },
+  { starId:"shum_yingsuet", displayName:"沈映雪", locs:["rec_wanchai"],
+    distanceLook:"沈映雪抱著一疊歌紙走過灣仔唱片梯間，行到邊哼到邊，歌聲由梯間傳出嚟。",
+    distanceLine:"只能遠望，時機未到，不要走近。",
+    locHint:"灣仔唱片", rumorTeaser:"",
+    resultToast:"已遠觀沈映雪。" },
+  { starId:"wu_meilam", displayName:"胡美琳", locs:["film_lion"],
+    distanceLook:"胡美琳由助手陪住行過獅子山製片廠走廊，一身剪裁貼身嘅戲服，行到邊都有人望住。",
+    distanceLine:"只能遠望，時機未到，不要走近。",
+    locHint:"獅子山製片", rumorTeaser:"",
+    resultToast:"已遠觀胡美琳。" },
+  { starId:"hon_sauting", displayName:"韓秀婷", locs:["rec_star"],
+    distanceLook:"韓秀婷喺天星音樂練舞室門口拉筋，音樂聲由門縫漏出嚟，成班dancer跟住佢嘅拍子練。",
+    distanceLine:"只能遠望，時機未到，不要走近。",
+    locHint:"天星音樂", rumorTeaser:"",
+    resultToast:"已遠觀韓秀婷。" },
 ];
 const PHASE3_STAR_ORDER = ["luk_baakyin","liu_bingxing","ngai_wingnaam","yip_manji"];
 let PHASE3_MOCK = null;

@@ -1,4 +1,5 @@
 // v20a83 ENC83 邏輯測試：紅星巧遇 Phase 2（魏詠男／顧明輝／駱家聲／齊鎮海）＋ T4 提攜通用機制——
+// v20a290：名冊 12→17 星（§1 斷言改認 17；其餘四星內容不變）。
 //   (1) 註冊：四星入 ENC79_PILOT／ENC79_DIALOG／ENC79_BEATS／STAGEUP／CAP／WRAP；主副場照設計表；
 //   (2) 五層對白完整性＋句數（dlgCount 口徑同 enc79 測試）；
 //   (3) 初遇／心聲／節拍抉擇 fx 接線（label 關鍵字對位）；
@@ -120,7 +121,7 @@ function beatOf(sid, bid){ return (ENC79_BEATS[sid]||[]).find(b=>b.id===bid); }
 function setFav(sid, fav){ enc79EnsureStars(); S.stars[sid].fav = fav; }
 
 /* ---- (1) 註冊 ---- */
-ok('名冊仍 12 星＋四星主副場照設計表', ENC79_STARS.length===12
+ok('名冊 17 星（v20a290 加五星）＋四星主副場照設計表', ENC79_STARS.length===17
   && enc79StarDef('ngai_wingnaam').primary==='film_harbour' && enc79StarDef('ngai_wingnaam').secondary==='agency_ho'
   && enc79StarDef('gu_mingfai').primary==='tvb_harbour' && enc79StarDef('gu_mingfai').secondary==='cafe_cha'
   && enc79StarDef('lok_gasing').primary==='tvb_longmen' && enc79StarDef('lok_gasing').secondary==='rec_hk'

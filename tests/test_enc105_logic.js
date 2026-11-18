@@ -1,9 +1,10 @@
 // v20a159 resync：地點 15→21（MAP159 B2：LOC_SHEET_BG 加 6 行 bg_159_* 約會場景檔）；抽數 15→21。
 // v20a265 resync：地點 21→23（COSTUME265：加 clothing_shop bg_loc_＋home bg_wf4_home.jpg）；抽數 21→23。
 // v20a105 ENC105 邏輯測試：巧遇資產組 D-2／D-3——
-//   (1) 12 星逐個：enc79StandCandidates 第一候補＝企立檔（路徑逐字對版）＋實檔存在；
+//   (1) 17 星逐個：enc79StandCandidates 第一候補＝企立檔（路徑逐字對版）＋實檔存在
+//       （v20a290 新 5 星冇企立檔：只驗第一候補係企立路徑＋候補鏈行到剪影兜底）；
 //       bust 做後備；候補尾＝入庫剪影檔＋內嵌 SVG 兜底（全失敗都唔會冇人）。
-//   (2) enc79SceneSrc：每個巧遇可達地點（12 星 primary＋secondary 併集）回傳
+//   (2) enc79SceneSrc：每個巧遇可達地點（17 星 primary＋secondary 併集，維持 13 個）回傳
 //       LOC_SHEET_BG 逐地點新場景（逐字對版＋實檔存在），唔係 UI40 類別圖；
 //       未有逐地點檔嘅地點先退 UI40 兜底。
 // 反證：路徑逐字比對——改爛任何一個 stand／scene 路徑字串，呢度即 FAIL；
@@ -38,7 +39,11 @@ const STARS = [];
 for(const mm of starsBlock.matchAll(/\{ id:"([^"]+)",\s*name:"([^"]+)",\s*primary:"([^"]+)",\s*secondary:"([^"]+)"/g)){
   STARS.push({ id: mm[1], name: mm[2], primary: mm[3], secondary: mm[4] });
 }
-ok('名冊抽到 12 星', STARS.length === 12);
+ok('名冊抽到 17 星', STARS.length === 17);
+// v20a290 Q2：名冊 12→17；原 12 星企立實檔存在，新 5 星冇企立檔（美術跟進票，
+// 見 NOTES_V20A290_FIVE_STARS §7），實檔斷言只限原 12 星，新 5 星只驗候補鏈。
+const STARS12 = ['luk_baakyin','liu_bingxing','ngai_wingnaam','yip_manji','mak_zhendong','lok_gasing',
+  'pang_siuki','chung_choning','gu_mingfai','so_jiyan','chai_zanhoi','ching_tinlok'];
 const locBlock = html.slice(html.indexOf('const LOC_SHEET_BG = {'), html.indexOf('};', html.indexOf('const LOC_SHEET_BG = {')));
 const LOC_SHEET_BG = {};
 for(const mm of locBlock.matchAll(/(\w+):"([^"]+)"/g)) LOC_SHEET_BG[mm[1]] = mm[2];
@@ -56,12 +61,13 @@ const api = new Function('UI40_SCENE', 'UI40_BG_BY_KEY', 'UI40_STAND', 'LOC_SHEE
   '\nreturn { enc79SceneSrc, enc79StandCandidates, ENC105_STAND_FALLBACK, ENC105_STAND_SILHOUETTE };'
 )(UI40_SCENE, UI40_BG_BY_KEY, UI40_STAND, LOC_SHEET_BG, eraSilhouetteFarSrc);
 const fileOf = (url)=> path.join(root, String(url).split('?')[0]);
-/* ---- (1) D-2：12 星候補 ---- */
+/* ---- (1) D-2：17 星候補（原 12 星＋v290 新 5 星） ---- */
 for(const s of STARS){
   const cands = api.enc79StandCandidates(s.id);
   const expectStand = 'assets/story/era_stars/' + s.id + '_stand_default.png?v=20a105';
   ok(s.id + '（' + s.name + '）第一候補＝企立檔（逐字）', cands[0] === expectStand);
-  ok(s.id + ' 企立實檔存在', fs.existsSync(fileOf(cands[0])));
+  if(STARS12.indexOf(s.id) >= 0) ok(s.id + ' 企立實檔存在', fs.existsSync(fileOf(cands[0])));
+  else ok(s.id + '（v290 新星，無企立檔）第一候補係企立路徑，候補鏈照行到剪影兜底', cands[0] === expectStand && cands[cands.length - 2] === api.ENC105_STAND_SILHOUETTE);
   ok(s.id + ' bust 做後備（候補第 2 位起含 bust_default）', cands.slice(1).some(c => c.indexOf('_bust_default.png') >= 0));
   ok(s.id + ' 候補尾二＝入庫剪影檔＋實檔存在', cands[cands.length - 2] === api.ENC105_STAND_SILHOUETTE && fs.existsSync(fileOf(cands[cands.length - 2])));
   ok(s.id + ' 候補最尾＝內嵌 SVG 兜底（唔經網絡）', cands[cands.length - 1] === api.ENC105_STAND_FALLBACK && cands[cands.length - 1].indexOf('data:image/svg+xml') === 0);
