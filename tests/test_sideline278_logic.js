@@ -233,12 +233,12 @@ ok('(4) 暖版 patron 排除式閘：齊 silent／comfort／loose_fear 任一 �
 ok('(4) 暖版 patron 排除式閘：鍾 loose_talk／asked_return → 暖版唔開，冷版開', (()=> {
   return ['chung_loose_talk','chung_asked_return'].every(flag=>{ resetS(916); setFav('chung_choning',70); metStar('chung_choning'); S.flags[flag]=1; return enc79BeatOpen('chung_choning', beatOf('chung_choning','chung_patron'))===false && enc79BeatOpen('chung_choning', beatOf('chung_choning','chung_patron_cold'))===true; });
 })());
-ok('(4) 暖版 patron 排除式閘：程 polish／back_polish／stand_fast → 暖版唔開，冷版開', (()=> {
+ok('(4) 暖版 patron 嚴格閘：程 polish／back_polish／stand_fast → 暖版唔開（缺正面旗），冷版開', (()=> {
   const cases = [['flag_vocal_polish','story'],['ching_back_polish','flags'],['ching_stand_fast','flags']];
   return cases.every(([flag, store])=>{ resetS(917); setFav('ching_tinlok',70); metStar('ching_tinlok'); if(store==='story') S.story.flags[flag]=1; else S.flags[flag]=1; return enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_patron'))===false && enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_patron_cold'))===true; });
 })());
 ok('(4) 暖版 patron：程要 N15 苦練旗先開（無 train 旗 → 暖／冷都唔開）', (()=>{ resetS(918); setFav('ching_tinlok',70); metStar('ching_tinlok'); return enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_patron'))===false && enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_patron_cold'))===false; })());
-ok('(4) 暖版 patron：程有 train 旗＋無壞旗 → 暖版開', (()=>{ resetS(919); setFav('ching_tinlok',70); const st=metStar('ching_tinlok'); ['ching_e4','ching_rival','ching_after_train','ching_after_polish'].forEach(id=>st.beatsDone[id]=1); S.story.flags.flag_vocal_train=1; return enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_patron'))===true && enc79PickBeat('ching_tinlok').id==='ching_patron'; })());
+ok('(4) 暖版 patron：程三旗齊備（train＋back_train＋stand_slow）→ 暖版開', (()=>{ resetS(919); setFav('ching_tinlok',70); const st=metStar('ching_tinlok'); ['ching_e4','ching_rival','ching_after_train','ching_after_polish'].forEach(id=>st.beatsDone[id]=1); S.story.flags.flag_vocal_train=1; S.flags.ching_back_train=1; S.flags.ching_stand_slow=1; return enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok','ching_patron'))===true && enc79PickBeat('ching_tinlok').id==='ching_patron'; })());
 ok('(4) 暖版 patron：無壞旗 → 六線暖版照開', (()=> {
   return [['lok_gasing','lok_patron'],['ngai_wingnaam','ngai_patron'],['chai_zanhoi','chai_patron'],['chung_choning','chung_patron']].every(([sid, pid])=>{ resetS(920); setFav(sid,70); metStar(sid); return enc79BeatOpen(sid, beatOf(sid,pid))===true; });
 })());

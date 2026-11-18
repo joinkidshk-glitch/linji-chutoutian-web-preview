@@ -297,7 +297,7 @@ for(const sid of ALL){
   setFav(sid, 70);
   const st = S.stars[sid];
   for(const b of (ENC79_BEATS[sid]||[])) if(!b.id.endsWith('_patron')) st.beatsDone[b.id] = 1;
-  if(sid==='ching_tinlok') S.flags.flag_vocal_train=1; /* v20a278：程提攜暖版要 N15 苦練旗（enc87StoryFlag 同讀 S.flags） */
+  if(sid==='ching_tinlok'){ S.flags.flag_vocal_train=1; S.flags.ching_back_train=1; S.flags.ching_stand_slow=1; } /* v20a311：程提攜暖版嚴格閘——T4＋flag_vocal_train＋ching_back_train＋ching_stand_slow 三旗齊備 */
   const picked = enc79PickBeat(sid);
   ok('提攜 T4 開＋排鏈節拍之後：'+sid, !!picked && picked.id===PATRON_BEAT[sid]);
   if(picked && picked.grants) picked.grants();

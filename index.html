@@ -41896,7 +41896,7 @@ ENC79_BEATS.ching_tinlok = [
   { id:"ching_after_train", when(st){ return enc83NodeDone("N15") && enc87StoryFlag("flag_vocal_train"); } },
   { id:"ching_after_polish", when(st){ return enc83NodeDone("N15") && enc87StoryFlag("flag_vocal_polish"); } },
   { id:"ching_patron_cold", when(st){ return enc79TierOf(st.fav)>=4 && (enc87StoryFlag("flag_vocal_polish") || (S.flags||{}).ching_back_polish || (S.flags||{}).ching_stand_fast); }, }, /* v20a278：冷版提攜（排暖版前；無債權） */
-  { id:"ching_patron", when(st){ return enc79TierOf(st.fav)>=4 && enc87StoryFlag("flag_vocal_train") && !(S.flags||{}).ching_back_polish && !(S.flags||{}).ching_stand_fast; }, grants(){ enc79GrantCredit({ id:"credit_enc84_ching_patron", debtor:"程天諾", title:"同輩引薦", line:"程天諾喺佢嗰組監製面前幫你講咗句好話：嗰位前輩係真材實料，畀佢試下，你唔會後悔。", status:"未收" }); try{ sideline280GrantCompletion("ching"); }catch(_e280){} } }, /* v20a278：暖版加排除式閘（N15 苦練＋唔叫紅先算＋唔叫紅了再說） */
+  { id:"ching_patron", when(st){ return enc79TierOf(st.fav)>=4 && enc87StoryFlag("flag_vocal_train") && !!(S.flags||{}).ching_back_train && !!(S.flags||{}).ching_stand_slow; }, grants(){ enc79GrantCredit({ id:"credit_enc84_ching_patron", debtor:"程天諾", title:"同輩引薦", line:"程天諾喺佢嗰組監製面前幫你講咗句好話：嗰位前輩係真材實料，畀佢試下，你唔會後悔。", status:"未收" }); try{ sideline280GrantCompletion("ching"); }catch(_e280){} } }, /* v20a311：暖版嚴格閘（T4＋flag_vocal_train＋ching_back_train＋ching_stand_slow 三旗齊備，同 sideline280GrantCompletion 程線暖版讀法一致；漏做 Beat 3／4 唔播暖版） */
 ];
 /* ===== ENC84 模組完 ===== */
 

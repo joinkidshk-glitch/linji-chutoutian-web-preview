@@ -238,8 +238,8 @@ ok('F 程無 finale beat（registry 無 ching_finale，對白表 beats 無 ching
 ok('F 程暖版收科：after_train 閘（N15＋flag_vocal_train）照開',
   (() => { resetS(970); _ys = { year: 1992, season: '冬' }; setFav('ching_tinlok', 70); _doneNodes.add('N15'); S.flags.flag_vocal_train = 1; doneExcept('ching_tinlok', ['ching_after_train']);
     return enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok', 'ching_after_train')) === true; })());
-ok('F 程暖版收科：patron 閘（T4＋flag_vocal_train＋唔係 back_polish／stand_fast）照開',
-  (() => { resetS(971); _ys = { year: 1992, season: '冬' }; setFav('ching_tinlok', 70); S.flags.flag_vocal_train = 1; doneExcept('ching_tinlok', ['ching_patron']);
+ok('F 程暖版收科：patron 閘（T4＋flag_vocal_train＋ching_back_train＋ching_stand_slow 三旗齊備，v20a311）照開',
+  (() => { resetS(971); _ys = { year: 1992, season: '冬' }; setFav('ching_tinlok', 70); S.flags.flag_vocal_train = 1; S.flags.ching_back_train = 1; S.flags.ching_stand_slow = 1; doneExcept('ching_tinlok', ['ching_patron']);
     return enc79BeatOpen('ching_tinlok', beatOf('ching_tinlok', 'ching_patron')) === true; })());
 
 /* ---------- (G) 舊檔 ---------- */
@@ -274,8 +274,8 @@ ok('S 鍾送別閘唔郁（T2＋1992 秋／冬）＋授 chungAdviceHeld229 唔�
   html.indexOf('S.flags.chungAdviceHeld229 = 1') >= 0);
 ok('S 鍾提攜授 credit_enc84_chung_patron 唔郁',
   html.indexOf('id:"credit_enc84_chung_patron"') >= 0);
-ok('S 程提攜閘唔郁（T4＋flag_vocal_train＋唔係 back_polish／stand_fast）',
-  html.indexOf('enc87StoryFlag("flag_vocal_train") && !(S.flags||{}).ching_back_polish && !(S.flags||{}).ching_stand_fast') >= 0);
+ok('S 程提攜閘（v20a311 嚴格版：T4＋flag_vocal_train＋ching_back_train＋ching_stand_slow）',
+  html.indexOf('enc87StoryFlag("flag_vocal_train") && !!(S.flags||{}).ching_back_train && !!(S.flags||{}).ching_stand_slow') >= 0);
 ok('S 陸／彭 finale 唔郁（luk_finale 閘＋旗、pang_finale 閘在位）',
   html.indexOf('id:"luk_finale"') >= 0 && html.indexOf('S.flags.enc79_luk_finale=1') >= 0 &&
   html.indexOf('id:"pang_finale"') >= 0 && html.indexOf('(st.beatsDone||{}).pang_n17 && (S.flags||{}).pang_cover_night && (S.flags||{}).pang_listened && (S.flags||{}).pang_noodle_night') >= 0);
