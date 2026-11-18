@@ -31,12 +31,12 @@ ok('SAVE key 冇變', 'starVolunteer_map_v19w' in html)
 ok('softRev 冇變', '"s107"' in html or "'s107'" in html)
 ok('?v= 冇變', 'v=20a10' in html)
 prefs = json.loads(io.open(os.path.join(root, 'content/gift_prefs.json'), encoding='utf-8').read())
-ok('gift_prefs.json 唔郁（npcs 仍係原有 6 項）',
-   set(prefs.get('npcs', {}).keys()) == {'vera', 'hiu', 'choi', 'lan', 'xu', 'tang'})
+ok('gift_prefs.json（v297：npcs 剩 5 項，vera 已刪）',
+   set(prefs.get('npcs', {}).keys()) == {'hiu', 'choi', 'lan', 'xu', 'tang'})
 react = json.loads(io.open(os.path.join(root, 'content/gift_react_copy.json'), encoding='utf-8').read())
-ok('gift_react_copy.json 唔郁（55 條原封不動，仲有「是不是」——粵語化行 runtime）',
-   len(react.get('entries', [])) == 55
-   and sum(1 for e in react['entries'] for ln in e.get('lines', []) if '是不是' in ln or '什麼' in ln) == 10)
+ok('gift_react_copy.json（v297：44 條，vera 11 條已刪；「是不是」剩 7 句——粵語化行 runtime）',
+   len(react.get('entries', [])) == 44
+   and sum(1 for e in react['entries'] for ln in e.get('lines', []) if '是不是' in ln or '什麼' in ln) == 7)
 npc_lines = json.loads(io.open(os.path.join(root, 'content/npc_lines_core.json'), encoding='utf-8').read())
 ok('npc_lines_core.json 已粵語化（v217：colleague greet[0] 係廣東話原文）',
    npc_lines['colleague']['greet'][0] == '阿偉，今日喺星河電視台廠房撞到你，真係巧')
@@ -80,17 +80,16 @@ ok('B3 openLoc 在場行行 rom183WhoLine183', 'rom183WhoLine183(L, npcId)' in h
 ok('B3 在場行有「今日已經撞過佢，聽日再嚟」', '今日已經撞過佢，聽日再嚟' in html)
 ok('B3 撞過嗰位優先（doneToday 逐個對地點）', 'S.romDay.doneToday[k]!==L.id' in html)
 
-# ---- B4：海媚未解鎖掣唔生效 ----
-ok('B4 goBit 受 rom176MeiUnlocked 閘住', 'lockedMeiGo183' in ppl and 'rom176MeiUnlocked()' in ppl)
-ok('B4 未解鎖顯示「主線再行前啲先撞到佢」（冇掣）', '主線再行前啲先撞到佢' in ppl)
-go_seg = ppl[ppl.find('lockedMeiGo183'):]
-ok('B4 鎖定分支係純文字 div（唔係掣）',
-   '<div class="people-next">主線再行前啲先撞到佢</div>' in go_seg)
+# ---- B4：海媚未解鎖掣已刪（v297） ----
+ok('B4 lockedMeiGo183 已刪', 'lockedMeiGo183' not in ppl)
+ok('B4 rom176MeiUnlocked 讀取已刪', 'rom176MeiUnlocked()' not in ppl)
+ok('B4 「主線再行前啲先撞到佢」已刪', '主線再行前啲先撞到佢' not in ppl)
 
-# ---- C1：三人 greet 粵語版（runtime 覆寫表） ----
-ok('N1 ROM183_PACK_GREET 三句齊', all(x in html for x in
-   ['咦，阿偉？咁啱嘅，喺呢度撞到你。', '咁啱。你今日呢身……算啦，唔講住，行埋嚟傾兩句。',
+# ---- C1：兩人 greet 粵語版（runtime 覆寫表；v297 stylist 句已刪） ----
+ok('N1 ROM183_PACK_GREET 兩句齊', all(x in html for x in
+   ['咦，阿偉？咁啱嘅，喺呢度撞到你。',
     '阿偉！啱啱好，我有單嘢想問你——唔係訪問，純粹八卦。']))
+ok('N1 stylist greet 已刪', '咁啱。你今日呢身……算啦，唔講住，行埋嚟傾兩句。' not in html)
 ok('N1 覆寫表經 NPC_LINES greet[0] 注入', 'NL[id].greet[0] = ROM183_PACK_GREET[id]' in html)
 
 # ---- C2：徐寶珊分見過／未見過 ----
@@ -107,10 +106,8 @@ ok('N3 通用 fallback（是不是→係咪／什麼→咩）',
    'split("是不是").join("係咪")' in html and 'split("什麼").join("咩")' in html)
 ok('N3 覆寫 byKey＋entries 兩份', '(R.entries||[]).forEach(fixEnt);' in html and 'for(const k in R.byKey) fixEnt(R.byKey[k]);' in html)
 
-# ---- C4：海媚開場白冇舞台指示 ----
-greet_seg = seg('const ROM176_GREET = {', 'const ROM176_TEA_LINES')
-ok('N4 ROM176_GREET.mei 冇括號', '（佢望咗你一眼' not in greet_seg)
-ok('N4 NL176 mei greet[1] 淨留「有嘢搵我？」', '"有嘢搵我？"' in html and '（佢望咗你一眼，冇即刻行開。）有嘢搵我？' not in html)
+# ---- C4（v297）：海媚開場白已刪 ----
+ok('N4 NL176 mei greet 已刪', '"有嘢搵我？" not in html and "（佢望咗你一眼" not in html')
 
 # ---- C5：.people-go 對比度 ≥4.5:1（WCAG 計法；底＝rgba(201,162,39,.28) 混米紙 #F2EBD8） ----
 def lum(rgb):

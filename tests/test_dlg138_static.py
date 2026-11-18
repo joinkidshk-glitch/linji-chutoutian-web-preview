@@ -1,4 +1,5 @@
 # v20a296 resync：加 26 張新表情圖（Q9 表情死檔補齊）＋2 張孤兒復活，fullbody 總數 237→263。
+# v20a297：刪 kwan_hoimei 2 張 base／serious，總數 263→261。
 #   新圖 26 張（每張 ≥1 句 live 實線，句數來源：qa296/derive296.json，用 runtime
 #   真分類器 dlg106ResolveCategory 逐句分類；見 NOTES_V20A296_EXPRESSION_DEAD_FILES.md）：
 #   cheung_hakfan_think 1、cheung_tsijun_angry 1（新對白 A_tsijun_crisis）、
@@ -15,7 +16,7 @@
 #   wu_meilam，連 base 都冇，v290 已定剪影頂住，等新星美術票，唔入 v296）。
 #   孤兒剩返 8 組（cheung_tsijun:smile、chow_choiyi:sad／think／angry、gao_wenhan:angry、
 #   gu_mingfai:angry、lui_ging:serious、ngai_wingnaam:surprise），全部 0 live 句，留畀日後內容票。
-# 覆蓋：① 62 張新資產本地存在＋檔名一字唔差＋WebP 檔頭＋fullbody 總數 263
+# 覆蓋：① 62 張新資產本地存在＋檔名一字唔差＋WebP 檔頭＋fullbody 總數 261
 #       ② 每張新圖有對應可達（live）實線句數（句數來源：qa138/verdict138.json，
 #          reachable occurrence × runtime 分類；唔係 corpus 句數——v127 教訓）
 #       ③ 反證：檢查函數食缺檔／改錯名嘅檔案集必須報缺；另做真實
@@ -157,7 +158,7 @@ if os.path.isdir(FB):
     missing = check_new_assets(names)
     ck("62 張新資產全部喺 assets/story/fullbody/", not missing)
     if missing: info("缺新資產：" + ", ".join(missing))
-    ck("fullbody 總數 170→207→209→241→237→263（v127 後 170 張＋v138 37 張新表情＋v195 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；v268 刪 vera 4 張 base／smile／serious／angry；v296 加 26 張新表情）", len([f for f in names if f.endswith((".webp", ".png"))]) == 263)
+    ck("fullbody 總數 170→207→209→241→237→261（v127 後 170 張＋v138 37 張新表情＋v195 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；v268 刪 vera 4 張 base／smile／serious／angry；v296 加 26 張新表情；v297 刪 kwan_hoimei 2 張 base／serious）", len([f for f in names if f.endswith((".webp", ".png"))]) == 261)
     for fn, _sp, _cat, n in NEW:
         p = os.path.join(FB, fn)
         ok = os.path.isfile(p) and os.path.getsize(p) > 50000

@@ -3,7 +3,7 @@
 # 覆蓋：① 舊圖零殘留：7 個舊 key 嘅行 sha256／b64 前綴喺 index.html 內
 #       一律搵唔到（hash＋長度比對，唔係齋靠 key 名；舊 hash 寫死喺下面
 #       OLD 常數，來源 qa109b/old_portraits.json，main 546007d 實量）
-#       ② 新 PORTRAITS 7 鍵＋BUST109_EXTRA 14 鍵：全部 data:image/webp，
+#       ② 新 PORTRAITS 6 鍵（v297：npc_vera 已刪）＋BUST109_EXTRA 14 鍵：全部 data:image/webp，
 #       解碼係真 WebP、240×312、sha256 同 crop 記錄一致（v20a199 C1：hero_awi／awi_s3
 #       改用 qa199/crop199.json，其餘 19 鍵沿用 qa109b/crop109.json；見下面 crop199 一節）
 #       ③ 覆蓋齊：NPCS 6 個 face 值全部有 PORTRAITS 鍵；12 紅星全部有
@@ -11,7 +11,7 @@
 #       ④ 接線：bust109HeroSrc 定義＋enterHome 用佢；enc79PeopleHtml 紅星段
 #       有 BUST109_EXTRA[def.id]＋cands.unshift(b109)；4 個 PORTRAITS
 #       消費者（手帳頁頭／傾談 modal／人情頁／開局畫面）引用健在；
-#       UI40_STAND 10 鍵原封不動（今包唔掂企立圖）
+#       UI40_STAND 9 鍵（v297：vera 已刪；其餘原封不動）
 #       ⑤ 反證：checker 函數食舊值／缺鍵／缺圖嘅輸入必須報問題；抽走
 #       crop109.json 一項 → 交叉比對必須 FAIL
 #       ⑥ 基線不變：SAVE key／softRev／產品 ?v=
@@ -96,12 +96,11 @@ except ImportError:
 PORTRAITS, _pb = extract_map(src, "PORTRAITS")
 EXTRA, _eb = extract_map(src, "BUST109_EXTRA")
 PORTRAITS_STEM = {"hero_awi": "awi", "npc_cheung": "cheung_tsijun", "npc_chow": "chow_choiyi",
-                  "npc_ho": "ho_sang", "npc_ko": "ko_chunkit", "npc_lin": "lin_hiu",
-                  "npc_vera": "vera"}
+                  "npc_ho": "ho_sang", "npc_ko": "ko_chunkit", "npc_lin": "lin_hiu"}
 STARS = ["luk_baakyin", "liu_bingxing", "ngai_wingnaam", "yip_manji", "mak_zhendong",
          "lok_gasing", "pang_siuki", "chung_choning", "gu_mingfai", "so_jiyan",
          "chai_zanhoi", "ching_tinlok"]
-ck("PORTRAITS 7 鍵齊", set(PORTRAITS) == set(PORTRAITS_STEM))
+ck("PORTRAITS 6 鍵齊（v297：npc_vera 已刪）", set(PORTRAITS) == set(PORTRAITS_STEM))
 ck("BUST109_EXTRA 14 鍵齊", set(EXTRA) == set(["awi_s2", "awi_s3"] + STARS))
 
 crop_path = os.path.join(ROOT, "qa109b", "crop109.json")
@@ -162,12 +161,12 @@ for stem in ["awi_s2", "awi_s3"] + STARS:
 m_npcs = re.search(r"const NPCS\s*=\s*\{(.*?)\n\};", src, re.S)
 ck("搵到 NPCS", bool(m_npcs))
 faces = set(re.findall(r'face:"([^"]+)"', m_npcs.group(1))) if m_npcs else set()
-# v20a176：NPCS 加藍／徐／海媚 3 個 face，PORTRAITS 鍵行 runtime 注入（rom176ApplyGiftOverrides，
+# v20a176：NPCS 加藍／徐 2 個 face（v297：海媚已刪），PORTRAITS 鍵行 runtime 注入（rom176ApplyGiftOverrides，
 # GIFT 賦值之後呼叫）——覆蓋檢查要連注入鍵一齊計，唔係齋睇字面 PORTRAITS。
 injected = set(re.findall(r'PORTRAITS\.(npc_\w+)\s*=', src))
 ck(f"NPCS {len(faces)} 個 face（{sorted(faces)}）全部有 PORTRAITS 鍵（字面＋運行注入）",
    faces and faces <= (set(PORTRAITS) | injected))
-for k, stem in (("npc_lan", "lan_ruoxi"), ("npc_xu", "tsui_poushan"), ("npc_mei", "kwan_hoimei")):
+for k, stem in (("npc_lan", "lan_ruoxi"), ("npc_xu", "tsui_poushan")):
     ck(f"注入 PORTRAITS.{k} 指向存在嘅 fullbody 圖",
        ('PORTRAITS.%s = "assets/story/fullbody/%s_base.webp' % (k, stem)) in src
        and os.path.exists(os.path.join(ROOT, "assets", "story", "fullbody", stem + "_base.webp")))
@@ -178,12 +177,7 @@ star_ids = re.findall(r'id:"([^"]+)"', m_stars.group(1)) if m_stars else []
 ck(f"紅星 17 個（{len(star_ids)}），原 12 星全部有 BUST109_EXTRA 鍵",
    len(star_ids) == 17 and set(STARS) <= set(EXTRA))
 for k, stem in PORTRAITS_STEM.items():
-    # v20a268：vera 例外——PORTRAITS.npc_vera bust（base64）留返，但全身 vera_base.webp 已刪
-    # （Vera 感情線節點由 JSON 刪除；spBustCandidates 動態砌檔名，live 永遠唔會砌到 vera）。
-    if stem == "vera":
-        ck("全身基本款 vera_base.webp 已刪（v268：PORTRAITS bust 留返，全身檔唔留）",
-           not os.path.exists(os.path.join(ROOT, "assets", "story", "fullbody", stem + "_base.webp")))
-        continue
+    # v20a297：npc_vera 已刪（PORTRAITS bust＋全身檔一併拎走）；其餘鍵全身檔喺磁碟。
     ck(f"全身基本款 {stem}_base.webp 喺磁碟",
        os.path.exists(os.path.join(ROOT, "assets", "story", "fullbody", stem + "_base.webp")))
 for stem in ["awi_s2", "awi_s3"] + STARS:
@@ -205,7 +199,7 @@ ck("PORTRAITS 消費者健在：開局畫面 start-hero", "PORTRAITS.hero_awi" i
 ck("fallback 鏈健在：spBustCandidates 推 PORTRAITS[pk]",
    "PORTRAITS[pk]" in src)
 for k in ["awi", "ho_sang", "cheung_tsijun", "lin_hiu", "chow_choiyi",
-          "ko_chunkit", "vera", "lui_ging", "tang_laiping", "luk_baakyin"]:
+          "ko_chunkit", "lui_ging", "tang_laiping", "luk_baakyin"]:
     ck(f"UI40_STAND.{k} 原封不動（今包唔掂企立圖）",
        re.search(r"const UI40_STAND = \{[\s\S]*?%s:" % re.escape(k), src) is not None)
 
@@ -218,6 +212,7 @@ def check_portraits_block(block_text, extra_text):
     except ValueError:
         return ["搵唔到 PORTRAITS"]
     for k, v in OLD.items():
+        if k == "npc_vera": continue  # v297：Vera 已刪，PORTRAITS 唔再有佢
         if v["b64_prefix"] in block_text: problems.append(f"舊 {k} 殘留")
         if k not in pm: problems.append(f"缺 {k}")
     for k, val in pm.items():

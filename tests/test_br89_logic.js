@@ -144,16 +144,16 @@ try{
   S = baseS();
   ins = mk(S).endingInserts410({}, favor);
   ok('D4 冇旗 → 冇八線句（唔好亂出）', !ins.some(t=>t.indexOf('高俊傑與你鬥足')>=0 || t.indexOf('方小龍那次意外')>=0));
-  // 半線 he/be 分版
-  const rec = { career:'E0', romance:{ line:'vera', kind:'almost' } };
-  S = baseS(); S.story.flags['flag_vera_be'] = 1;
+  // 半線 he/be 分版（v297：vera 分支已刪，改用 lan）
+  const rec = { career:'E0', romance:{ line:'lan', kind:'almost' } };
+  S = baseS(); S.story.flags['flag_lan_be'] = 1;
   const beTxt = mk(S).endingRomanceScene410(rec);
   S = baseS();
   const deTxt = mk(S).endingRomanceScene410(rec);
-  S = baseS(); S.story.flags['flag_vera_he'] = 1;
+  S = baseS(); S.story.flags['flag_lan_he'] = 1;
   const heTxt = mk(S).endingRomanceScene410(rec);
-  ok('D5 Vera be 版 ≠ 預設版', beTxt !== deTxt && beTxt.indexOf('不再是你')>=0);
-  ok('D6 Vera he 版有留白句 ≠ 預設版', heTxt !== deTxt && heTxt.indexOf('留到不必再怕')>=0);
+  ok('D5 藍 be 版 ≠ 預設版', beTxt !== deTxt && beTxt.indexOf('調組了')>=0);
+  ok('D6 藍 he 版有留白句 ≠ 預設版', heTxt !== deTxt && heTxt.indexOf('未兌現的約定')>=0);
   S = baseS(); S.flags['flag_xu_be'] = 1;
   const xuBe = mk(S).endingRomanceScene410({ career:'E0', romance:{ line:'xu', kind:'almost' } });
   ok('D7 徐寶珊 be 版（退禮物）', xuBe.indexOf('原封退回')>=0);

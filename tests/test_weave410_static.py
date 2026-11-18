@@ -107,12 +107,12 @@ for w in ['張國榮', '陳百強', '梅艷芳', '周潤發', '劉德華']:
     ok('no real star name in file: '+w, w not in html)
 for w in ['關海媚', '陳淑芬', '施南生', 'Ho哥', 'Ho 哥']:
     ok('new player text free of QA-banned: '+w, w not in blk_nc)
-ok('關海媚只以稱號遠觀（當紅花旦）', '那位當紅花旦' in blk_nc)
-ok('Vera 差一步跟造型師版（領口／妝髮）', '整理領口和妝髮' in blk_nc)
+ok('關海媚「當紅花旦」稱號已刪（v297：index.html 零「當紅花旦」）', '當紅花旦' not in html)
+ok('Vera 差一步造型師版已刪（v297：領口／妝髮文案清零）', '整理領口和妝髮' not in blk_nc)
 ok('藍差一步跟 PA 版（通告牌／食飯約定）', '按住通告牌' in blk_nc and '請返我食飯' in blk_nc)
 ok('徐寶珊差一步（買唔起／買唔到）', '買不起' in blk_nc and '買不到' in blk_nc)
-ok('三段差一步唔共用範本（各有專屬場景函數分支）',
-   'almost" && r.line==="vera"' in blk and 'almost" && r.line==="lan"' in blk and 'almost" && r.line==="xu"' in blk)
+ok('差一步各有專屬場景函數分支（v297：vera 段已刪，剩低 lan／xu／hiu／choi 四段）',
+   'almost" && r.line==="vera"' not in blk and 'almost" && r.line==="lan"' in blk and 'almost" && r.line==="xu"' in blk and 'almost" && r.line==="hiu"' in blk and 'almost" && r.line==="choi"' in blk)
 
 # ---- 慣例不變 ----
 ok('SAVE key unchanged', 'starVolunteer_map_v19w' in html)

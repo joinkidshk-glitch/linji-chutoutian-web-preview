@@ -30,14 +30,14 @@ const GAZE = D.DLG106_GAZE, EMAP = D.DLG106_EMOTION_MAP;
 /* ---- (1) 視線表：同 handoff106/gaze_table.json 全表一致 ---- */
 let handoffGaze = null;
 try{ handoffGaze = JSON.parse(fs.readFileSync(path.join(root, 'handoff106', 'gaze_table.json'), 'utf8')); }catch(_e){}
-ok('視線表 39 條（31 角＋extra_ad_fen＋awi_s2/s3＋v20a119 DLG119 5 鍵）', Object.keys(GAZE).length === 39);
+ok('視線表 37 條（29 角＋extra_ad_fen＋awi_s2/s3＋v20a119 DLG119 5 鍵；v297 刪 vera／kwan_hoimei）', Object.keys(GAZE).length === 37);
 if(handoffGaze){
   ok('視線表同 handoff gaze_table.json 逐條一致', JSON.stringify(GAZE) === JSON.stringify(handoffGaze));
 } else info('handoff106/gaze_table.json 唔喺度（可能已清走）——跳過逐條對照，淨驗分佈');
 const dist = { front:0, left:0, right:0 };
 let flipTrue = 0;
 for(const k of Object.keys(GAZE)){ dist[GAZE[k].gaze]++; if(GAZE[k].flipSafe) flipTrue++; }
-ok('視線分佈 front29／left6／right4（v119 加 5 個 front）', dist.front === 29 && dist.left === 6 && dist.right === 4);
+ok('視線分佈 front27／left6／right4（v119 加 5 個 front；v297 刪 vera／kwan_hoimei，兩格皆 front）', dist.front === 27 && dist.left === 6 && dist.right === 4);
 ok('flipSafe=true 共 11 條', flipTrue === 11);
 ok('何生 left＋唔翻得', GAZE.ho_sang.gaze === 'left' && GAZE.ho_sang.flipSafe === false);
 ok('駱家聲 left＋唔翻得（C 實測，唔跟舊 bust 翻轉先例）', GAZE.lok_gasing.gaze === 'left' && GAZE.lok_gasing.flipSafe === false);
@@ -163,7 +163,7 @@ const noLines = Object.keys(GAZE).filter(k => k !== 'awi_s2' && k !== 'awi_s3' &
 info('逐角覆蓋：' + Object.keys(stats).sort().map(k => k + ' ' + stats[k].nn + '/' + stats[k].n).join('；'));
 info('零解析覆蓋（有對白但全 neutral）：' + (zeroCov.join(', ') || '（無）'));
 info('語料未抽到對白嘅角：' + (noLines.join(', ') || '（無）') + '（可能只喺 content pack／結果 beats 入面，抽取口徑所限）');
-info('C 對數參考：資產精確覆蓋 403/593=68.0%；零精確覆蓋 9 角＝cheung_tsijun, fong_siulung, gao_wenhan, tang_laiping, extra_ad_fen, uncle_kim, kwan_hoimei, cheng_william, mok_siufai（資產口徑，等 A 入庫後由 static 測試嘅資產掃描覆核）');
+info('C 對數參考：資產精確覆蓋 403/593=68.0%；零精確覆蓋 9 角＝cheung_tsijun, fong_siulung, gao_wenhan, tang_laiping, extra_ad_fen, uncle_kim, kwan_hoimei, cheng_william, mok_siufai（資產口徑，等 A 入庫後由 static 測試嘅資產掃描覆核；v297：kwan_hoimei 已由 GAZE 刪除，唔再入名冊）');
 ok('阿偉非 neutral 解析 >50 句（主角表情有得換）', (stats.awi || { nn:0 }).nn > 50);
 
 console.log(fails.length ? ('RESULT FAIL (' + fails.length + ')') : 'RESULT PASS');

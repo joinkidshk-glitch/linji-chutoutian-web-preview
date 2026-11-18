@@ -6,7 +6,7 @@
 //         （每類新表情各一句；括號舞台指示句——ching_tinlok think／lan_ruoxi think——
 //         係旁白動作句，唔入分類斷言，只驗首選）；(3) 反證：舊圖冇被搶（同角
 //         其他分類首選不變）；未知講者回 []；垃圾輸入唔 crash、回 neutral；分類
-//         真係影響揀圖；零覆蓋起家嘅四角（鄭威廉／關海媚／莫少輝／阿金叔）neutral 仍係 base。
+//         真係影響揀圖；零覆蓋起家嘅三角（鄭威廉／莫少輝／阿金叔）neutral 仍係 base（v297：關海媚已刪）。
 // 注意：dlg106Candidates 只係排 URL 次序，唔查檔案存在——檔案存在由
 // test_dlg127_static.py 守門；瀏覽器真載入由 qa127 實駕驗證。
 // 用法：node tests/test_dlg127_logic.js [path-to-index.html]
@@ -51,7 +51,6 @@ const NEW = [
   ['fong_siulung', 'angry', `assets/story/fullbody/fong_siulung_angry.webp${V}`],
   ['cheng_william', 'serious', `assets/story/fullbody/cheng_william_serious.webp${V}`],
   ['cheng_william', 'shy', `assets/story/fullbody/cheng_william_shy.webp${V}`],
-  ['kwan_hoimei', 'serious', `assets/story/fullbody/kwan_hoimei_serious.webp${V}`],
   ['mok_siufai', 'sad', `assets/story/fullbody/mok_siufai_sad.webp${V}`],
   ['uncle_kim', 'happy', `assets/story/fullbody/uncle_kim_smile.webp${V}`],
   ['uncle_kim', 'serious', `assets/story/fullbody/uncle_kim_serious.webp${V}`],
@@ -81,7 +80,6 @@ const LINES = [
   ['fong_siulung', '高師傅，你唔好嚇佢啦。我同佢自細打到大，佢食得苦㗎。', 'angry'],
   ['cheng_william', '唔好亂接平民貨，會拉低定位。', 'serious'],
   ['cheng_william', 'Darling！今日個 look 災難，但我鍾意你個眼神。', 'shy'],
-  ['kwan_hoimei', '你要記住，公關可以幫你包裝，但包不住你真正的心意。', 'serious'],
   ['mok_siufai', '公司畀十萬要我捧別人，我偏偏想播你——唔好令我失望。', 'sad'],
   ['uncle_kim', '紅唔紅係命，開心先係本事。', 'happy'],
   ['uncle_kim', '傳承這種事，不是等你發了達才做，是你肯不肯記住自己是從哪裡來的。', 'serious'],
@@ -118,8 +116,6 @@ ok('反證：chow_choiyi smile 首選仍係舊圖（新 sad/angry 圖冇搶走�
    first('chow_choiyi', 'smile') === `assets/story/fullbody/chow_choiyi_smile.webp${V}`);
 ok('反證：cheng_william neutral 首選係 base（零覆蓋起家，neutral 不變）',
    first('cheng_william', 'neutral') === `assets/story/fullbody/cheng_william_base.webp${V}`);
-ok('反證：kwan_hoimei neutral 首選係 base（零覆蓋起家，neutral 不變）',
-   first('kwan_hoimei', 'neutral') === `assets/story/fullbody/kwan_hoimei_base.webp${V}`);
 ok('反證：mok_siufai neutral 首選係 base（零覆蓋起家，neutral 不變）',
    first('mok_siufai', 'neutral') === `assets/story/fullbody/mok_siufai_base.webp${V}`);
 ok('反證：uncle_kim neutral 首選係 base（零覆蓋起家，neutral 不變）',

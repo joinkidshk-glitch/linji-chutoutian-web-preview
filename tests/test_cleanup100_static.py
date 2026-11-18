@@ -90,13 +90,13 @@ lan = find_cast(cj, 'lan_ruoxi') or {}
 kwan = find_cast(cj, 'kwan_hoimei') or {}
 gao = find_cast(cj, 'gao_wenhan') or {}
 ok('H 藍 role PA', 'PA' in lan.get('role', '') and '歌手' not in lan.get('role', ''))
-ok('H 關海媚 role 花旦', '花旦' in kwan.get('role', '') and '總編' not in kwan.get('role', ''))
+ok('H v297 關海媚已刪', find_cast(cj, 'kwan_hoimei') is None)
 ok('H 高文瀚 role 冇經理人', '經理人' not in gao.get('role', ''))
 gj = io.open(os.path.join(root, 'content', 'gift_react_copy.json'), encoding='utf-8').read()
 ok('H gift 藍冇錄音前/練歌', '今晚錄音前' not in gj and '練歌時' not in gj)
 ok('H gift 藍 PA 措辭到位', '今晚開工前先偷吃一粒' in gj and '跟場成晚' in gj)
 ok('H gift 冇聯姻壓力標籤', '聯姻壓力' not in gj)
-ok('H speaker 關海媚真名display (v151)', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"關海媚" }' in html)
+ok('H speaker 關海媚已刪 (v297)', 'kwan_hoimei: { artId:"char_kwan", portraitsKey:null, display:"關海媚" }' not in html)
 ok('H speaker 唔再用稱號display (v151)', 'display:"當紅花旦"' not in html)
 ok('H 海港廣播 desc 電台交代', '海港電台的錄音室' in html)
 

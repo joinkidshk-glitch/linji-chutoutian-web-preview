@@ -324,16 +324,20 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
   const mine = endingFavor410(S), prod = favorLedgerCounts();
   ok('favor 鏡像對照：settled/creditsHeld/exodus 一致', mine.settled === prod.settled && mine.creditsHeld === prod.creditsHeld && mine.exodusNames.join() === '副導演芬姐');
   const mr = endingRomance410(S), pr = endingRomanceState48();
-  ok('romance 鏡像對照：hiu commit／vera rel 一致', mr.hiu.committed === pr.hiu.committed && mr.vera.rel === pr.vera.rel && mr.hiu.crisisDone === pr.hiu.crisisDone);
+  ok('romance 鏡像對照：hiu commit／rel／crisisDone 一致（v297：vera 線已刪，唔再對照）', mr.hiu.committed === pr.hiu.committed && mr.hiu.rel === pr.hiu.rel && mr.hiu.crisisDone === pr.hiu.crisisDone);
   const rr = resolveEnding410(S);
   ok('感情軸：hiu commit → romance commit/hiu', rr.romance.kind === 'commit' && rr.romance.line === 'hiu');
 }
 {
-  /* 半線 pack commit 旗唔入 commit（專檔定性）：vera 有 flag_vera_commit＋rel 5 → 只做差一步 */
-  const r = R({ story: { flags: { flag_vera_commit: true }, rel: { rel_vera: 5 }, done: { R_vera_meet: true, R_vera_crisis: true }, choices: {} } });
-  ok('半線定性：flag_vera_commit 唔當 commit → almost/vera', r.romance.kind === 'almost' && r.romance.line === 'vera');
-  const r2 = R({ story: { flags: {}, rel: { rel_vera: 3 }, done: { R_vera_meet: true }, choices: {} } });
-  ok('差一步門檻：rel 3 <4 → solo', r2.romance.kind === 'solo');
+  /* v297：vera 半線已刪——舊存檔帶 flag_vera_commit／rel_vera 行 resolveEnding410
+     唔會返 line 'vera'、唔 crash（endingRomance410／resolveEnding410 揀序已無 vera，感情軸落 solo） */
+  let noCrash = true, r = null, r2 = null;
+  try{
+    r = R({ story: { flags: { flag_vera_commit: true }, rel: { rel_vera: 5 }, done: { R_vera_meet: true, R_vera_crisis: true }, choices: {} } });
+    r2 = R({ story: { flags: {}, rel: { rel_vera: 3 }, done: { R_vera_meet: true }, choices: {} } });
+  }catch(_e){ noCrash = false; }
+  ok('v297 舊檔 vera 半線已刪：flag_vera_commit＋rel 5 → 唔 crash、唔返 vera 線（solo）', noCrash && r && r.romance.kind === 'solo' && r.romance.line !== 'vera');
+  ok('v297 舊檔 vera 半線已刪：rel_vera 3 → solo、唔返 vera 線', noCrash && r2 && r2.romance.kind === 'solo' && r2.romance.line !== 'vera');
 }
 
 /* ================= (b) 觸發閘＋pack N17 ================= */

@@ -35,13 +35,14 @@ ok('搵到 dlg108FitPct／dlg108FitApply／window.DLG109',
 // ---- 身高比表 ----
 const GAZE_IDS = ["awi","awi_s2","awi_s3","chai_zanhoi","cheng_william","cheung_hakfan",
   "cheung_tsijun","ching_tinlok","chow_choiyi","chung_choning","crew_laolinji","extra_ad_fen",
-  "fong_siulung","gao_wenhan","generic_cinema_asst","gu_mingfai","ho_sang","ko_chunkit","kwan_hoimei",
+  "fong_siulung","gao_wenhan","generic_cinema_asst","gu_mingfai","ho_sang","ko_chunkit",
   "lan_ruoxi","lin_hiu","liu_bingxing","lok_gasing","lui_ging","luk_baakyin",
   "mak_zhendong","mok_siufai","ngai_wingnaam","pang_siuki","shadow_elder","shadow_female",
   "shadow_male","so_jiyan",
-  "tang_laiping","tong_souwan","tsui_poushan","uncle_kim","vera","yip_manji"];
-ok('身高比表有 39 個 key（DLG106_GAZE 全數，v119 加 5 鍵）', Object.keys(D109.SCALE).length === 39);
-ok('身高比表覆蓋全部 39 個 GAZE id', GAZE_IDS.every(id => typeof D109.SCALE[id] === 'number'));
+  "tang_laiping","tong_souwan","tsui_poushan","uncle_kim","yip_manji"];
+// v297：GAZE_IDS 由 39 減到 37——刪 vera／kwan_hoimei（Vera／關海媚 NPC 移除）。
+ok('身高比表有 37 個 key（DLG106_GAZE 全數，v119 加 5 鍵；v297 刪 vera／kwan_hoimei）', Object.keys(D109.SCALE).length === 37);
+ok('身高比表覆蓋全部 37 個 GAZE id', GAZE_IDS.every(id => typeof D109.SCALE[id] === 'number'));
 ok('全部身高比喺 0.80–1.10 之間',
    Object.values(D109.SCALE).every(v => v >= 0.80 && v <= 1.10));
 ok('阿偉基準 1.00（s1／s2／s3 同值）',
@@ -95,7 +96,8 @@ ok('反證：彭少祺比由 0.85 改 1.00，渲染高必須等於阿偉（51→
 ok('反證：舞台收窄到 300px（max-width 帽放寬到 1.0，等闊度綁死），pang 用 0.85 嘅 fitted 基礎高必須高過用 1.00',
    fit(AR.awi, AR.pang, 300, H, 12, 1.0, 1, 0.85) > fit(AR.awi, AR.pang, 300, H, 12, 1.0, 1, 1.00));
 ok('反證：表缺一個 GAZE id，覆蓋斷言必須 FAIL',
-   !GAZE_IDS.every(id => typeof Object.assign({}, D109.SCALE, { vera: undefined })[id] === 'number'));
+   !GAZE_IDS.every(id => typeof Object.assign({}, D109.SCALE, { ho_sang: undefined })[id] === 'number'));
+// （舊反證刪 vera；v297 後 vera 已唔喺 GAZE_IDS，刪佢唔再觸發覆蓋 FAIL，改刪 ho_sang。）
 
 // ---- fitApply：逐張 inline height（mock DOM）----
 function mockStage(isEnc, imgs){

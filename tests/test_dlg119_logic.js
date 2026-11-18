@@ -36,7 +36,7 @@ if(typeof dlg119ShadowAsset !== 'function' || typeof dlg119DedupePair !== 'funct
 // dlg119HaloUrl/dlg119DedupePair/dlg106StemFor/dlg106Candidates/dlg106ResolveSides/dlg106HasFullbody
 
 /* ---- (1) 影 asset 映射 ---- */
-ok('GAZE 39 鍵（34＋v119 5 鍵）', Object.keys(GAZE).length === 39);
+ok('GAZE 37 鍵（32＋v119 5 鍵；v297 刪 vera／kwan_hoimei）', Object.keys(GAZE).length === 37);
 ok('影鍵 front＋唔翻得',
   ['shadow_male','shadow_female','shadow_elder','generic_cinema_asst'].every(k =>
     GAZE[k] && GAZE[k].gaze === 'front' && GAZE[k].flipSafe === false));

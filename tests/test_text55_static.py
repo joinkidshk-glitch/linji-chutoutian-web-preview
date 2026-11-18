@@ -18,8 +18,7 @@ b = src.find('async function refreshCopyPacksFromDisk(){')
 chk('TEXTFIX55 block present', 0 <= a < b)
 block = src[a:b] if 0 <= a < b else ''
 outside = (src[:a] + src[b:]) if 0 <= a < b else src
-# v20a176：ROM176 block 入面有意寫關海媚（女角 prefs／出沒表／對白），同 TEXTFIX55 block 一樣道理——
-# KHM 掃描要剔走呢段（ROM176 內容由 test_rom176_static 覆），NPCS 註冊條目留喺 outside，用 npc_mei 認。
+# v20a297：ROM176 段再無關海媚；下面剔走段邏輯留返（無害，A5／A6／C10 掃描範圍不變）。
 _rs = outside.find('/* ===== v20a176 ROM176')
 _re = outside.find('/* ---------- 殺青回望', _rs) if _rs >= 0 else -1
 if _rs >= 0 and _re > _rs:
@@ -48,14 +47,8 @@ chk('C10 debt toast natural', '請截圖回報' not in src)
 chk('C10 press headline natural', '俾人截圖' not in outside)
 # favor-debt fallback placeholder
 chk('debt fallback natural', 'line || "（文案待補）"' not in src and 'line || "人情一筆"' in src)
-# KHM (v151)：名禁令退役——cleaner pattern 已拎走；名只留喺 QA ban-lists（其餘人名）／speaker registry／display
-import re
-ctx_ok = True
-for m in re.finditer('關海媚', outside):
-    ctx = outside[max(0, m.start()-60):m.start()+30]
-    if not any(k in ctx for k in ['陳淑芬', 'speaker', 'display', 'devAppendix', '禁令', 'Ho', 'guanHaimei', 'kwan_hoimei', 'indexOf', 'npc_mei', 'id:"mei"']):
-        ctx_ok = False
-chk('KHM outside tables only in QA/registry contexts', ctx_ok)
+# KHM (v297)：Vera／關海媚成個移除——全檔只剩 v151 歷史註解一句關海媚（見 test_kwan151_static A0）。
+chk('KHM v297：全檔只剩 v151 歷史註解一句', src.count('關海媚') == 1 and 'v151 退役：關海媚名禁令已撤' in src)
 chk('KHM cleaner pattern removed (v151)', '"關海媚", "當紅花旦"' not in block)
 # A8: undefined jargon in story hint overrides replaced
 chk('A8 hint overrides natural', outside.count('雙軌總和夠數') == 0 and '聲望和信用總和足夠' in src)

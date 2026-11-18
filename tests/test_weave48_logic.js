@@ -243,8 +243,8 @@ loadGame(baseSave());
      && end.choices[1].label === '收起那一步：笑著，當作一個約定');
   const xu = STORY_WIRE.romance.lanXu.nodes.find(n => n.id === 'R_xu_meet');
   ok('藍 PA：R_xu_* 無被覆寫（徐寶珊維持富豪千金原線）', !!xu && xu.title === '春茗初遇');
-  ok('半線狀態可讀：endingRomanceState48 五線齊（空存檔全 false/0）',
-     (() => { const st = endingRomanceState48(); return ['hiu','choi','vera','lan','xu'].every(k => st[k] && st[k].met === false && st[k].rel === 0 && st[k].committed === false); })());
+  ok('半線狀態可讀：endingRomanceState48 六線齊（v297 vera 已刪；空存檔全 false/0）',
+     (() => { const st = endingRomanceState48(); return ['hiu','choi','lan','xu','yip','so'].every(k => st[k] && st[k].met === false && st[k].rel === 0 && st[k].committed === false); })());
 }
 
 /* ---- N12（v20a113：補鏈，需 N11 done） ---- */

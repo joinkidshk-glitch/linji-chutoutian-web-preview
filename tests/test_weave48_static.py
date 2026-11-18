@@ -86,7 +86,7 @@ ok('commit48Play uses StoryPlay force', 'StoryPlay.start(node, { force:true })' 
 ok('openLoc hook for commit48ActionsAt after choice47 block',
    html.index('if(typeof choice47ActionsAt==="function")') < html.index('if(typeof commit48ActionsAt==="function")'))
 ok('endingRomanceState48 reader defined', 'function endingRomanceState48(' in html)
-for k in ['rel_hiu','rel_choi','rel_vera','rel_lan','rel_xu']:
+for k in ['rel_hiu','rel_choi','rel_lan','rel_xu','rel_yip','rel_so']:
     ok('romance state covers rel key: '+k, k in html[html.index('function endingRomanceState48('):html.index('function endingRomanceState48(')+1400])
 
 # ---- 債權 tick ----

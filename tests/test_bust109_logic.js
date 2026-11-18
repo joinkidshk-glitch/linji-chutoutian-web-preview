@@ -34,7 +34,7 @@ if (!global.PORTRAITS || !global.BUST109_EXTRA) {
   for (const f of fails) console.log(' - ' + f);
   process.exit(1);
 }
-ok('PORTRAITS 7 鍵', Object.keys(global.PORTRAITS).length === 7);
+ok('PORTRAITS 6 鍵（v297 刪 npc_vera）', Object.keys(global.PORTRAITS).length === 6);
 ok('BUST109_EXTRA 14 鍵', Object.keys(global.BUST109_EXTRA).length === 14);
 
 const a = html.indexOf('/* ===== v20a106 DLG106');

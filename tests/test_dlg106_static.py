@@ -68,7 +68,7 @@ def extract_json_after(marker):
 
 gaze = extract_json_after("const DLG106_GAZE =")
 emap = extract_json_after("const DLG106_EMOTION_MAP =")
-ck("視線表 39 條（34＋v20a119 DLG119 5 鍵：shadow_male／shadow_female／shadow_elder／crew_laolinji／generic_cinema_asst）", len(gaze) == 39)
+ck("視線表 37 條（32＋v20a119 DLG119 5 鍵：shadow_male／shadow_female／shadow_elder／crew_laolinji／generic_cinema_asst；v297 刪 vera／kwan_hoimei 兩鍵，兩格皆 front）", len(gaze) == 37)
 ck("emotion map 584 條", len(emap) == 584)
 
 HAND = os.path.join(ROOT, "handoff106")
@@ -81,7 +81,7 @@ else:
     info("handoff106/ 唔喺 work copy（可能已清理）——跳過逐條對照，淨驗內嵌表規模")
 
 ROSTER = [k for k in gaze if k not in ("awi_s2", "awi_s3")]
-ck("名冊 37 角（39 減 awi 兩階段）", len(ROSTER) == 37)
+ck("名冊 35 角（37 減 awi 兩階段；v297 刪 vera／kwan_hoimei）", len(ROSTER) == 35)
 ck("extra_ad_fen 喺名冊入面", "extra_ad_fen" in ROSTER)
 ck("DLG119 5 鍵喺名冊入面",
    all(k in ROSTER for k in ("shadow_male", "shadow_female", "shadow_elder", "crew_laolinji", "generic_cinema_asst")))
@@ -102,10 +102,10 @@ if not os.path.isdir(FB):
          "88 張焗邊圖未入庫；本節只申報唔 FAIL。入庫後重跑本測試，缺檔即 FAIL。")
 else:
     # v20a119 DLG119：generic_cinema_asst 係別名鍵，圖走 shadow_male（唔係自己 stem 嘅 base 檔）。
-    # v20a268：vera 係豁免鍵——DLG106_GAZE 登記留返（resolver 仲靠佢回 candidate 路徑，見 test_dlg138_logic.js），
-    #   但全身 vera_base.webp 已刪（Vera 感情線節點由 JSON 刪除），唔計入資產檢查。
+    # v20a297：vera／kwan_hoimei 已由 DLG106_GAZE 成個刪除（Vera／關海媚 NPC 移除），
+    #   唔再入名冊，唔使豁免——STEM_SKIP 已清零（v268 嗰陣 vera 仲喺表入面，先要 skip）。
     STEM_ALIAS = {"generic_cinema_asst": "shadow_male"}
-    STEM_SKIP = {"vera"}
+    STEM_SKIP = set()
     missing = []
     for stem in STEMS:
         if stem in STEM_SKIP:
@@ -113,7 +113,7 @@ else:
         disk = STEM_ALIAS.get(stem, stem)
         if not (os.path.isfile(os.path.join(FB, disk + "_base.webp")) or os.path.isfile(os.path.join(FB, disk + "_base.png"))):
             missing.append(stem + "_base")
-    ck("名冊 37 角（vera 除外）＋阿偉 s2/s3 全部有 fullbody base 資產（generic_cinema_asst 計 shadow_male 別名；vera：v268 刪檔，見上）", not missing)
+    ck("名冊 35 角＋阿偉 s2/s3 全部有 fullbody base 資產（generic_cinema_asst 計 shadow_male 別名；v297 刪 vera／kwan_hoimei 兩鍵，唔再入名冊）", not missing)
     if missing: info("缺 base 資產：" + ", ".join(missing))
     nfiles = len([f for f in os.listdir(FB) if f.endswith((".webp", ".png"))])
     info("fullbody 資產檔數：" + str(nfiles))

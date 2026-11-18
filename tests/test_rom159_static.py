@@ -1,3 +1,4 @@
+# v20a297 resync：index.html 淨 −64 行（Vera＋關海媚成個移除，刪除點散佈全檔）；6 個釘行＋全佳行按 difflib 映射重寫（25119→25081、8247→8241、25967→25929、10717→10699、14818→14782、25868→25830、全佳 25147→25109；內容逐字相同，純漂移）；pack sha 清單改精確替代斷言（見下面 v297 段）；ok() 名入面嘅 L 號係歷史標籤，唔郁。
 # v20a296 resync：rival_mentor pack 出 sha 清單（A_tsijun_crisis 加 1 句 angry 對白
 # 「收聲，聽我講埋先。」；見下面精確替代斷言）；lan_xu pack R_xu_crisis 同樣加 1 句
 # serious 對白（見下面針對性斷言）。
@@ -158,19 +159,19 @@ ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committ
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25499", line_has(25119, "v20a159 ROM159 Phase 1"))
-ok("行號釘 bumpRel 凍結鉤 8020", line_has(8247, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(25967, "COMMIT48_NODES.CMT_lan_commit"))
-ok("行號釘 StoryPlay 預備鉤 10553", line_has(10717, "rom159PrepareNode(node)"))
-ok("行號釘載入覆寫呼叫 14877", line_has(14818, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26248", line_has(25868, "function rom159SoMeetGate"))
+ok("行號釘 ROM159 block 頭 25499", line_has(25081, "v20a159 ROM159 Phase 1"))
+ok("行號釘 bumpRel 凍結鉤 8020", line_has(8241, "rom159GainAllowed(k)"))
+ok("行號釘 CMT_lan_commit 26333", line_has(25929, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 StoryPlay 預備鉤 10553", line_has(10699, "rom159PrepareNode(node)"))
+ok("行號釘載入覆寫呼叫 14877", line_has(14782, "rom159ApplyGiftOverrides()"))
+ok("行號釘 rom159SoMeetGate 26248", line_has(25830, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25147 - 1])  # v20a159 整合：B1＋B2 後行號 +86
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25109 - 1])  # v20a159 整合：B1＋B2 後行號 +86
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）
@@ -241,16 +242,54 @@ if _xu:
 # pack JSON 冇直改（同 pristine main 逐檔 sha 對照；lan_xu 已改唔入清單，見上面針對性斷言；
 # v20a296：rival_mentor.json 唔入清單——A_tsijun_crisis 加 1 句 angry 對白，見下面精確替代斷言；
 # v20a268：vera_hiu_choi.json＋romance_tang.json 唔入清單——vera 檔已減 5 個 R_vera_* 節點，tang 檔已刪；見下面精確替代斷言）
+# v20a297：gift_prefs.json／gift_react_copy.json／cast_main.json 唔入清單——Vera＋關海媚成個移除，見下面精確替代斷言）
 packs = [
     "content/story_detail_n1_to_n17.json",
-    "content/gift_prefs.json",
-    "content/gift_react_copy.json",
     "content/items_gifts.json",
     "content/shops.json",
-    "content/cast_main.json",
 ]
 for p in packs:
     ok("pack 冇直改: " + p, sha(os.path.join(ROOT, p)) == hashlib.sha256(_read_pristine_bytes(p)).hexdigest())
+
+# v20a297 精確替代斷言：Vera＋關海媚成個移除——gift_prefs 減 vera 一項、gift_react 減 vera 11 條 entries＋byKey 11 鍵＋crisis 2 條、cast_main 減 kwan_hoimei 一項；其餘同 pristine 逐字一致
+_gp_now = json.load(open(os.path.join(ROOT, "content", "gift_prefs.json"), encoding="utf8"))
+_gp_pris = json.loads(_read_pristine("content/gift_prefs.json"))
+ok("v297 gift_prefs：npcs 6→5（只減 vera）",
+   list(_gp_now.get("npcs", {}).keys()) == [k for k in _gp_pris.get("npcs", {}).keys() if k != "vera"])
+ok("v297 gift_prefs：npcs 除 vera 外逐字一致",
+   {k: v for k, v in _gp_now.get("npcs", {}).items()} == {k: v for k, v in _gp_pris.get("npcs", {}).items() if k != "vera"})
+ok("v297 gift_prefs：除 npcs 外全部頂層欄位同 pristine 一致",
+   {k: v for k, v in _gp_now.items() if k != "npcs"} == {k: v for k, v in _gp_pris.items() if k != "npcs"})
+ok("v297 gift_prefs：檔內 vera／mei 零殘留",
+   "vera" not in json.dumps(_gp_now, ensure_ascii=False).lower()
+   and "mei" not in json.dumps(_gp_now, ensure_ascii=False).lower())
+_gr_now = json.load(open(os.path.join(ROOT, "content", "gift_react_copy.json"), encoding="utf8"))
+_gr_pris = json.loads(_read_pristine("content/gift_react_copy.json"))
+ok("v297 gift_react：entries 55→44（減嘅 11 條全部係 vera）",
+   len(_gr_now.get("entries", [])) == 44 and len(_gr_pris.get("entries", [])) == 55
+   and _gr_now.get("entries", []) == [e for e in _gr_pris.get("entries", []) if e.get("npcKey") != "vera"])
+ok("v297 gift_react：byKey 減 11 個 vera 鍵，其餘逐字一致",
+   _gr_now.get("byKey", {}) == {k: v for k, v in _gr_pris.get("byKey", {}).items() if not k.startswith("vera:")})
+ok("v297 gift_react：crisis 9→7（減 2 條 vera），其餘逐字一致",
+   len(_gr_now.get("crisis", [])) == 7 and len(_gr_pris.get("crisis", [])) == 9
+   and _gr_now.get("crisis", []) == [c for c in _gr_pris.get("crisis", []) if c.get("npcKey") != "vera"])
+ok("v297 gift_react：除 entries／byKey／crisis 外全部頂層欄位同 pristine 一致",
+   {k: v for k, v in _gr_now.items() if k not in ("entries", "byKey", "crisis")}
+   == {k: v for k, v in _gr_pris.items() if k not in ("entries", "byKey", "crisis")})
+ok("v297 gift_react：檔內 vera 零殘留",
+   "vera" not in json.dumps(_gr_now, ensure_ascii=False).lower())
+_cm_now = json.load(open(os.path.join(ROOT, "content", "cast_main.json"), encoding="utf8"))
+_cm_pris = json.loads(_read_pristine("content/cast_main.json"))
+ok("v297 cast_main：npcs 12→11（只減 kwan_hoimei 關海媚）",
+   len(_cm_now.get("npcs", [])) == 11 and len(_cm_pris.get("npcs", [])) == 12
+   and [n.get("id") for n in _cm_now.get("npcs", [])] == [n.get("id") for n in _cm_pris.get("npcs", []) if n.get("id") != "kwan_hoimei"])
+ok("v297 cast_main：除 kwan_hoimei 外全部 npc 逐字一致",
+   _cm_now.get("npcs", []) == [n for n in _cm_pris.get("npcs", []) if n.get("id") != "kwan_hoimei"])
+ok("v297 cast_main：除 npcs 外全部頂層欄位同 pristine 一致",
+   {k: v for k, v in _cm_now.items() if k != "npcs"} == {k: v for k, v in _cm_pris.items() if k != "npcs"})
+ok("v297 cast_main：檔內 vera／hoimei 零殘留",
+   "vera" not in json.dumps(_cm_now, ensure_ascii=False).lower()
+   and "hoimei" not in json.dumps(_cm_now, ensure_ascii=False).lower())
 
 # v20a296 精確替代斷言：rival_mentor.json ＝ pristine 版＋A_tsijun_crisis 加 1 句 angry 對白
 _riv_now = json.load(open(os.path.join(ROOT, "content", "story_detail_rival_mentor.json"), encoding="utf8"))

@@ -1,6 +1,7 @@
 # v20a195 resync：加 2 張 angry 表情（awi_s2／s3_angry），fullbody 總數 207→209、真檔 182→184。
 # v20a127 DLG127 靜態守門：22 張新表情圖入庫＋檔名／映射／句數／焗邊。
-# 覆蓋：① 22 張新資產本地存在＋檔名一字唔差＋WebP 檔頭＋fullbody 總數 170
+# v20a297：其中 kwan_hoimei_serious.webp 已刪（關海媚 NPC 移除），NEW 表減到 21 張。
+# 覆蓋：① 21 張新資產本地存在＋檔名一字唔差＋WebP 檔頭＋fullbody 總數 170
 #       ② 每張新圖有對應分類句數（句數來源：
 #          linji-expression-inventory/work/lines_classified.json 2644 行，
 #          同 qa127/coverage127.py 計法一致；此檔將期望值寫死做常數，
@@ -58,7 +59,7 @@ NEW = [
     ("fong_siulung_angry.webp", "fong_siulung", "angry", 1),
     ("cheng_william_serious.webp", "cheng_william", "serious", 1),
     ("cheng_william_shy.webp", "cheng_william", "shy", 1),
-    ("kwan_hoimei_serious.webp", "kwan_hoimei", "serious", 1),
+    # v297：kwan_hoimei_serious.webp 已刪（關海媚 NPC 移除），唔再入 NEW 表（見下刪除斷言）。
     ("mok_siufai_sad.webp", "mok_siufai", "sad", 1),
     ("uncle_kim_smile.webp", "uncle_kim", "happy", 1),
     ("uncle_kim_serious.webp", "uncle_kim", "serious", 1),
@@ -93,9 +94,11 @@ def check_new_assets(names):
 if os.path.isdir(FB):
     names = set(os.listdir(FB))
     missing = check_new_assets(names)
-    ck("22 張新資產全部喺 assets/story/fullbody/", not missing)
+    ck("21 張新資產全部喺 assets/story/fullbody/（v297 刪 kwan_hoimei_serious.webp）", not missing)
     if missing: info("缺新資產：" + ", ".join(missing))
-    ck("fullbody 總數 148→170→207→209→237→263（v131 後 148 張＋v127 22 張新表情＋v138 37 張新表情＋v195 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；v268 刪 vera 4 張；v296 加 26 張新表情）", len([f for f in names if f.endswith((".webp", ".png"))]) == 263)
+    ck("kwan_hoimei_serious.webp 已刪（v297 關海媚 NPC 移除，檔唔存在）",
+       "kwan_hoimei_serious.webp" not in names)
+    ck("fullbody 總數 148→170→207→209→237→261（v131 後 148 張＋v127 22 張新表情＋v138 37 張新表情＋v195 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；v268 刪 vera 4 張；v296 加 26 張新表情；v297 刪 kwan_hoimei 2 張 base／serious）", len([f for f in names if f.endswith((".webp", ".png"))]) == 261)
     for fn, _sp, _cat, n in NEW:
         p = os.path.join(FB, fn)
         ok = os.path.isfile(p) and os.path.getsize(p) > 50000
@@ -105,8 +108,8 @@ if os.path.isdir(FB):
             ok = head[:4] == b"RIFF" and head[8:12] == b"WEBP"
         ck(f"{fn} 存在＋WebP 檔頭＋>50KB", ok)
         ck(f"{fn} 有對應分類句數 {n} 句（唔係死圖）", n > 0)
-    ck("新圖對應句數合計（全局升幅 32 句）",
-       sum(n for _f, _sp, _c, n in NEW) == 32)
+    ck("新圖對應句數合計（全局升幅 31 句；v297 刪 kwan_hoimei_serious 1 句）",
+       sum(n for _f, _sp, _c, n in NEW) == 31)
 else:
     ck("assets/story/fullbody/ 目錄存在", False)
 
@@ -115,9 +118,9 @@ ck("反證：檔案集抽走一張（in-memory）→ checker 必須報缺",
    check_new_assets(set(f for f, _, _, _ in NEW) - {"ching_tinlok_think.webp"}) == ["ching_tinlok_think.webp"])
 ck("反證：檔案集改錯名（lan_ruoxi_think→lan_ruoxi_think2）→ checker 必須報缺",
    check_new_assets(set(f for f, _, _, _ in NEW) - {"lan_ruoxi_think.webp"} | {"lan_ruoxi_think2.webp"}) == ["lan_ruoxi_think.webp"])
-ck("反證：空檔案集 → checker 報齊 22 張缺失",
-   len(check_new_assets(set())) == 22)
-# 真實臨時目錄負向測試：抄 21 張去 temp dir，checker 讀磁碟必須 FAIL 其中一張
+ck("反證：空檔案集 → checker 報齊 21 張缺失",
+   len(check_new_assets(set())) == 21)
+# 真實臨時目錄負向測試：抄 20 張去 temp dir，checker 讀磁碟必須 FAIL 其中一張
 # （對 pristine main 跑嗰陣新檔根本唔存在，跳過磁碟段——in-memory 反證已覆蓋，唔准 crash）
 tmp = tempfile.mkdtemp(prefix="dlg127neg_")
 try:
@@ -127,10 +130,10 @@ try:
                 continue
             shutil.copy(os.path.join(FB, fn), os.path.join(tmp, fn))
         disk_names = set(os.listdir(tmp))
-        ck("反證（真磁碟）：temp 目錄得 21 張 → checker 報缺 uncle_kim_serious.webp",
+        ck("反證（真磁碟）：temp 目錄得 20 張 → checker 報缺 uncle_kim_serious.webp",
            check_new_assets(disk_names) == ["uncle_kim_serious.webp"])
         shutil.copy(os.path.join(FB, "uncle_kim_serious.webp"), os.path.join(tmp, "uncle_kim_serious.webp"))
-        ck("反證對照：temp 目錄補返第 22 張 → checker 報零缺失",
+        ck("反證對照：temp 目錄補返第 21 張 → checker 報零缺失",
            check_new_assets(set(os.listdir(tmp))) == [])
     else:
         info("SKIP 磁碟反證：新資產唔齊（pristine 對照），in-memory 反證已覆蓋")

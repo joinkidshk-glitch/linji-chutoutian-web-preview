@@ -62,10 +62,8 @@ var PORTRAITS = {};
 var NPCS = {
   colleague:{ name:'林曉晴', role:'同期演員', face:'npc_cheung' },
   reporter:{ name:'周采兒', role:'娛樂記者', face:'npc_chow' },
-  stylist:{ name:'Vera', role:'造型師', face:'npc_vera' },
   lan:{ name:'藍若曦', role:'電視台場記', face:'npc_lan' },
   xu:{ name:'徐寶珊', role:'廣告客戶總監', face:'npc_xu' },
-  mei:{ name:'關海媚', role:'台柱', face:'npc_mei' },
 };
 var LOCS = [
   { id:'tvb_longmen', name:'星河電視台' }, { id:'tvb_kowloon', name:'九龍電視城' },
@@ -99,7 +97,7 @@ eval(extractConst('ROM176_P').replace('const ROM176_P =', 'var ROM176_P ='));
 eval(extractConst('TRAVEL114_DAILY_CAP').replace('const TRAVEL114_DAILY_CAP =', 'var TRAVEL114_DAILY_CAP ='));
 for (const f of ['enc79Hash','enc79Rand','enc79LocName','enc79StoryPendingAt','weekNumNow',
   'rom176SetEncounter','rom176BackOpts','rom176WomanDef','rom176WomanName','rom176IsWomanNpc',
-  'rom176WomanMet','rom176MeiUnlocked','rom176WhisperActive','rom176BeatOpen','rom176PresenceP',
+  'rom176WomanMet','rom176WhisperActive','rom176BeatOpen','rom176PresenceP',
   'rom176EnsureDay','rom176PresenceAt','rom176GrantWhisper','rom176TeaTargets','rom176TryIntercept',
   'rom176PlayEncounter',
   'rom183XuMetBefore183','rom183RelVal183','rom183RelText183','rom183RelLine183','rom183WhoLine183',
@@ -209,7 +207,6 @@ function baseSave(over){
 (function(){
   NPC_LINES = {
     colleague: { greet: ['阿偉，今天在星河電視台廠房碰到你，真巧', '第二句'] },
-    stylist: { greet: ['阿偉，今天的髮型總算聽話', '第二句'] },
     reporter: { greet: ['阿偉，又見面了，今天有甚麼可以寫進版面的？', '第二句'] },
   };
   TUTORIAL = { steps: [
@@ -218,9 +215,9 @@ function baseSave(over){
   ] };
   TUTORIAL_ZH_HK = null;
   rom183ApplyLineOverrides();
-  ok('N1 三人 greet[0] 變粵語（冇 今天／廠房／甚麼）',
+  ok('N1 兩人 greet[0] 變粵語（v297：stylist 已刪；冇 今天／廠房／甚麼）',
     NPC_LINES.colleague.greet[0].indexOf('今天') < 0 && NPC_LINES.colleague.greet[0].indexOf('廠房') < 0
-    && NPC_LINES.stylist.greet[0].indexOf('今天') < 0 && NPC_LINES.reporter.greet[0].indexOf('甚麼') < 0
+    && NPC_LINES.reporter.greet[0].indexOf('甚麼') < 0
     && NPC_LINES.colleague.greet[0].indexOf('咁啱') >= 0);
   ok('N1 greet[1] 之後唔郁', NPC_LINES.colleague.greet[1] === '第二句');
   ok('N6 教學 TUT_NPC body 加巧遇句',
@@ -257,7 +254,7 @@ function baseSave(over){
     && __modals[0].body.indexOf('通告牌嗰邊啱啱先改完') >= 0);
 })();
 
-/* ---------- C3：55 條女角反應句過粵語 filter ---------- */
+/* ---------- C3：44 條女角反應句過粵語 filter（v297：刪 Vera 11 條） ---------- */
 (function(){
   const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gift_react_copy.json'), 'utf8'));
   GIFT_REACT = JSON.parse(JSON.stringify(pack));
@@ -265,8 +262,8 @@ function baseSave(over){
   rom183ApplyGiftReactFix();
   let bad = [];
   GIFT_REACT.entries.forEach(e => (e.lines || []).forEach(ln => { if (ln.indexOf('是不是') >= 0 || ln.indexOf('什麼') >= 0) bad.push(ln); }));
-  ok('N3 55 條反應句再無「是不是」／「什麼」', bad.length === 0, 'bad=' + bad.length);
-  ok('N3 條數不變（55 條，唔加唔減）', GIFT_REACT.entries.length === 55 && before === 55);
+  ok('N3 44 條反應句再無「是不是」／「什麼」', bad.length === 0, 'bad=' + bad.length);
+  ok('N3 條數不變（44 條，唔加唔減）', GIFT_REACT.entries.length === 44 && before === 44);
   const hiuThermos = GIFT_REACT.byKey['hiu:gift_thermos:liked'];
   ok('N3 曉晴保溫瓶句變粵語（係咪見到／唔該你）',
     !!hiuThermos && hiuThermos.lines[0].indexOf('係咪見到') >= 0);

@@ -5,8 +5,9 @@
 #   (3) story_detail_romance_vera_hiu_choi.json 減 5 個 R_vera_* 節點（檔本身留返，hiu／choi 10 條在位）；
 #   (4) index.html：WF2 覆寫表 Vera 5 條、STORY_MEET_SOFT R_vera_meet、SCENE_OVERRIDE154 R_vera_meet、
 #       CONTRA98_WHEN_FIX R_vera_ending／R_vera_crisis 兩行＋R_tang_push2／R_tang_crisis 兩行（死項，見註）。
-# 刻意保留（見 NOTES_V20A268）：結局／舊檔讀取位兩行（L12652／L25189 附近）、WF2 表頭註解一句、
-#   NPCS stylist／mei、gift_prefs vera、SP176 mei、tang_laiping／kwan_hoimei 圖片、fixtures 凍結副本。
+# 刻意保留（見 NOTES_V20A268）：WF2 表頭註解一句、tang_laiping 圖片、fixtures 凍結副本。
+# v20a297 翻轉（見 NOTES_V20A297）：NPCS stylist／mei、gift_prefs vera、SP176 mei、kwan_hoimei 圖片、
+#   結局／舊檔讀取位兩行全部已刪。
 # 用法：python3 tests/test_delete268_static.py [path-to-index.html]
 import json, os, re, subprocess, sys, tempfile
 
@@ -85,21 +86,22 @@ ok('CONTRA98 no R_vera_', 'R_vera_' not in _c98)
 ok('CONTRA98 no R_tang_push2/crisis (dead rows)', 'R_tang_push2' not in _c98 and 'R_tang_crisis' not in _c98
    and 'R_tang_meet_stub' in _c98)
 
-# ---- (6) 刻意保留項在位 ----
+# ---- (6) v297 翻轉：v268 刻意保留項已刪（WF2 表頭註解一句繼續留返） ----
 ok('kept: WF2 header comment notes vera deletion', 'R_vera_* 5 條已刪' in html)
-ok('kept: endingDual410/commit48 vera old-save reads (2 lines)',
-   html.count('vera: line("R_vera_meet", "rel_vera", "R_vera_crisis", "flag_vera_commit")') == 2)
-ok('kept: NPCS stylist + mei', 'stylist:' in html and 'mei:' in html)
-ok('kept: NPCS mei is encounter character', 'rom176MeiUnlocked' in html)
+ok('gone: endingDual410/commit48 vera old-save reads (v297)',
+   html.count('vera: line("R_vera_meet", "rel_vera", "R_vera_crisis", "flag_vera_commit")') == 0)
+ok('gone: NPCS stylist + mei (v297)', '  stylist:{' not in html and '  mei:{' not in html)
+ok('gone: rom176MeiUnlocked (v297)', 'rom176MeiUnlocked' not in html)
 _gift = json.load(open(os.path.join(ROOT, 'content', 'gift_prefs.json'), encoding='utf-8'))
-ok('kept: gift_prefs vera entry (stylist gift path)', 'vera' in _gift.get('npcs', {}))
+ok('gone: gift_prefs vera entry (v297)', 'vera' not in _gift.get('npcs', {}))
 _sp176 = seg('const SP176 = {', '\n      };')
-ok('kept: SP176 mei entry', 'mei:{' in _sp176)
+ok('gone: SP176 mei entry (v297)', 'mei:{' not in _sp176)
 for rel in ['assets/story/core/tang_laiping_bust_default.png',
-            'assets/story/fullbody/tang_laiping_base.webp',
-            'assets/story/fullbody/kwan_hoimei_base.webp',
-            'assets/story/fullbody/kwan_hoimei_serious.webp']:
+            'assets/story/fullbody/tang_laiping_base.webp']:
     ok('kept file: ' + rel, os.path.exists(os.path.join(ROOT, rel)))
+for rel in ['assets/story/fullbody/kwan_hoimei_base.webp',
+            'assets/story/fullbody/kwan_hoimei_serious.webp']:
+    ok('gone file: ' + rel, not os.path.exists(os.path.join(ROOT, rel)))
 
 # ---- (7) tang 檔名喺已載入 JSON 只剩 metadata 字串（唔係載入路徑） ----
 # 容許嘅欄位：alignedWith／supersededByFile／notes_tang／oldRomanceRef／rule 敘述；其餘出現即 FAIL。

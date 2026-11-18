@@ -72,7 +72,7 @@ legacy = extract_json_after("const SP_SPEAKER_LEGACY =")
 scale = extract_json_after("const DLG109_HEIGHT_SCALE =")
 ck("搵到 DLG106_GAZE／SP_SPEAKER_LEGACY／DLG109_HEIGHT_SCALE",
    gaze is not None and legacy is not None and scale is not None)
-ck("GAZE 39 鍵", gaze is not None and len(gaze) == 39)
+ck("GAZE 37 鍵（v297 刪 vera／kwan_hoimei）", gaze is not None and len(gaze) == 37)
 
 # ---------- 38 名對照表（任務書逐名跟；昌叔預設影、場務預設男、約會對象預設女影） ----------
 EXPECTED = {}
@@ -226,8 +226,8 @@ ck("產品 ?v= 不變", "v20a10" in src)
 # ---------- ⑪ 資產總數 ----------
 if os.path.isdir(FB):
     names = set(os.listdir(FB))
-    ck("fullbody 總數 209→237→263（128＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情＋v138 37 張新表情＋v195 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；v268 刪 vera 4 張；v296 加 26 張新表情）",
-       len([f for f in names if f.endswith((".webp", ".png"))]) == 263)
+    ck("fullbody 總數 209→237→261（128＋v123 12 張新表情＋v126 6 張新表情＋v20a131 B1 2 張企立圖＋v127 22 張新表情＋v138 37 張新表情＋v195 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；v268 刪 vera 4 張；v296 加 26 張新表情；v297 刪 kwan_hoimei 2 張 base／serious）",
+       len([f for f in names if f.endswith((".webp", ".png"))]) == 261)
     ck("10 張新資產齊（6 張 base/dim＋3 張 halo＋老臨記 base）",
        all(fn in names for fn in (
            "shadow_male_base.webp", "shadow_male_dim_base.webp", "shadow_male_halo.png",

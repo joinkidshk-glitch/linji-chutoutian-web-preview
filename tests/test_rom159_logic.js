@@ -94,7 +94,7 @@ const StoryOC = {
 const GiftShop = {
   weekNow: () => 1,
   talkMetOk: () => talkMet,
-  romanceKeyFromMapNpc: (id) => ({ colleague: 'hiu', reporter: 'choi', stylist: 'vera' }[id] || null),
+  romanceKeyFromMapNpc: (id) => ({ colleague: 'hiu', reporter: 'choi' }[id] || null),
 };
 const toast = (m) => { toasts.push(String(m)); };
 const saveQ = () => {};

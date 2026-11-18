@@ -7,7 +7,7 @@
 //   (3) 守門：有 live 句但缺資產嘅組，只准剩返 4 位新星嗰 16 張
 //       （hon_sauting／kong_siying／shum_yingsuet／wu_meilam，連 base 都冇，
 //       v290 已定剪影頂住，等新星美術票）；其他角一張都唔准缺；
-//   (4) fullbody 總數 237→263。
+//   (4) fullbody 總數 237→261（v297 刪 kwan_hoimei 2 張）。
 // 推導本身由 qa296/derive296.js 做（單一來源）；呢個測試即場重跑推導再斷言，
 // 唔讀舊快照。
 // 用法：node tests/test_r296_expression_dead_files.js [path-to-index.html]
@@ -119,8 +119,8 @@ for (const b of [...BLOCKED].sort()) {
 }
 
 // ---------- (4) fullbody 總數 ----------
-ok("fullbody 總數 237→263", derived.totalFiles === 263);
-ok("fullbody 磁碟實數 263", fs.readdirSync(FB).filter(f => f.endsWith(".webp") || f.endsWith(".png")).length === 263);
+ok("fullbody 總數 237→261", derived.totalFiles === 261);
+ok("fullbody 磁碟實數 261", fs.readdirSync(FB).filter(f => f.endsWith(".webp") || f.endsWith(".png")).length === 261);
 
 console.log("RESULT " + (fails.length ? "FAIL (" + fails.length + ")" : "PASS"));
 process.exit(fails.length ? 1 : 0);

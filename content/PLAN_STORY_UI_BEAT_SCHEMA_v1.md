@@ -95,13 +95,12 @@
 
 ## B. speakerId registry（對表）
 
-### B.1 主角＋HTML 六人（G0 半身優先）
+### B.1 主角＋HTML 五人（G0 半身優先）
 
 | 顯示名 | speakerId | HTML `NPCS` key | face（現網） | 半身 artId（ART_BRIEF） | 備註 |
 |---|---|---|---|---|---|
 | 阿偉 | `awi` | —（主角） | — | `char_hero` | 陳偉翔；對白可出現 |
 | 何生 | `ho_sang` | `agent` | `npc_ho` | `char_ho` | |
-| Vera | `vera` | `stylist` | `npc_vera` | `char_vera` | 顯示名維持 Vera |
 | 林曉晴 | `lin_hiu` | `colleague` | `npc_lin` | `char_lin` | |
 | 張子駿 | `cheung_tsijun` | `director` | `npc_cheung` | `char_cheung` | |
 | 高俊傑 | `ko_chunkit` | `rival` | `npc_ko` | `char_ko` | |
@@ -115,7 +114,6 @@
 | 藍若曦 | `lan_ruoxi` | `char_lan` | 可攻略 |
 | 張克凡 | `cheung_hakfan` | `char_hakfan` | 阻力 |
 | 雷勁 | `lui_ging` | `char_lui`（ART 未列明細；佔位 id） | 阻力；出圖後期 |
-| 關海媚 | `kwan_hoimei` | `char_kwan`（佔位） | 可深交 |
 | 鄭威廉 | `cheng_william` | `char_cheng`（佔位） | 可深交；現 beats 未見 |
 | 唐素雲 | `tong_souwan` | `char_tong` | 可深交 |
 | 方小龍 | `fong_siulung` | `char_fong` | 可深交（友情） |

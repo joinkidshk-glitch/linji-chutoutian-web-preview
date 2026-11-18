@@ -1,4 +1,6 @@
 // v20a138 DLG138 邏輯測試：37 張新表情圖真係會被對話解析器揀中。
+// v20a297：其中 vera_serious 一張已刪（Vera NPC 移除），NEW 表減到 36 張 live；
+//   vera 嗰格改做刪除斷言（候補鏈空＋hasFullbody false，見 §3 尾）。
 // 資料一律由 index.html 抽 DLG106 模組真身 eval（同 test_dlg127_logic.js 手法），
 // tier 經 global.__tier106 stub（enc79PlayerTier 替身）控制。
 // 覆蓋：(1) 每張新圖係對應（講者，分類）嘅候補鏈首選——即 runtime
@@ -73,7 +75,7 @@ const NEW = [
   ['ngai_wingnaam', 'think', `assets/story/fullbody/ngai_wingnaam_think.webp${V}`],
   ['so_jiyan', 'surprise', `assets/story/fullbody/so_jiyan_surprise.webp${V}`],
   ['tsui_poushan', 'serious', `assets/story/fullbody/tsui_poushan_serious.webp${V}`],
-  ['vera', 'serious', `assets/story/fullbody/vera_serious.webp${V}`],
+  // v297：vera_serious 已刪（Vera NPC 移除），唔再入 NEW 表；刪除斷言見 §3 尾。
 ];
 for (const [sp, cat, exp] of NEW) {
   global.__tier106 = 0;
@@ -119,7 +121,8 @@ const LINES = [
   ['ngai_wingnaam', "而家人哋一聽我個名，就話諗下先，諗下先即係冇下文㗎喇。", 'think', null],
   ['so_jiyan', "咦，你咪嗰日喺大堂幫我擋鏡頭嗰個？", 'surprise', null],
   ['tsui_poushan', "挺機靈。做臨時演員也要有記性，記住誰是客人、誰是老闆，你才有機會站前一點。", 'serious', null],
-  ['vera', "規矩就是：你站在鏡頭前，觀眾第一眼看到的是整體感覺，不是你的演技。", 'serious', null],
+  // v297：vera 嗰句已刪（Vera NPC 移除）——分類本身唔靠 GAZE，但候補鏈已空，
+  //   唔再入 LINES（入咗會喺 [0].indexOf 嗰行 crash）；刪除斷言見 §3 尾。
 ];
 for (const [sp, text, cat, emo] of LINES) {
   const got = dlg106ResolveCategory({ speakerId: sp, emotion: emo, text });
@@ -168,8 +171,14 @@ ok('反證：so_jiyan smile 首選仍係舊圖（新 surprise 圖冇搶走）',
    first('so_jiyan', 'happy') === `assets/story/fullbody/so_jiyan_smile.webp${V}`);
 ok('反證：tsui_poushan shy 首選仍係舊圖（新 serious 圖冇搶走）',
    first('tsui_poushan', 'shy') === `assets/story/fullbody/tsui_poushan_shy.webp${V}`);
-ok('反證：vera smile 首選仍係舊圖（新 serious 圖冇搶走）',
-   first('vera', 'happy') === `assets/story/fullbody/vera_smile.webp${V}`);
+// v297：vera 已刪——唔再解到 serious 圖（候補鏈空，唔係跌返 base／neutral，
+//   dlg106Candidates 對表外 speaker 直接回 []，同 extra_unknown 一樣）。
+ok('v297：vera serious 候補鏈係空（唔再解到 vera_serious 圖）',
+   dlg106Candidates('vera', 'serious').length === 0);
+ok('v297：vera happy 候補鏈同樣係空（唔係淨係 serious 冇咗）',
+   dlg106Candidates('vera', 'happy').length === 0);
+ok('v297：vera 已刪 → dlg106HasFullbody 回 false',
+   dlg106HasFullbody('vera') === false);
 ok('反證：crew_laolinji neutral 首選係 base（得 base 起家，neutral 不變）',
    first('crew_laolinji', 'neutral') === `assets/story/fullbody/crew_laolinji_base.webp${V}`);
 ok('反證：extra_ad_fen neutral 首選係 base（得 base 起家，neutral 不變）',

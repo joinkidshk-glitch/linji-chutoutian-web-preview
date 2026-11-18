@@ -72,7 +72,7 @@ if os.path.isdir(FB):
     missing = check_new_assets(names)
     ck("8 張新資產全部喺 assets/story/fullbody/", not missing)
     if missing: info("缺新資產：" + ", ".join(missing))
-    ck("fullbody 總數 88→96→118→128→140→146→148→170→207→209→237→263（v119 DLG119 加 10 張：男／女／老年影 base＋dim 6 張＋3 張 halo png＋老臨記 base；v123 加 12 張新表情；v126 加 6 張新表情；v20a131 B1 加 2 張企立圖；v127 加 22 張新表情；v138 加 37 張新表情；v195 加 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；v268 刪 vera 4 張；v296 加 26 張新表情；v111 boss_* 11 張／v116 v2/v2b 11 張見舊註）", len([f for f in names if f.endswith((".webp", ".png"))]) == 263)
+    ck("fullbody 總數 88→96→118→128→140→146→148→170→207→209→237→261（v119 DLG119 加 10 張：男／女／老年影 base＋dim 6 張＋3 張 halo png＋老臨記 base；v123 加 12 張新表情；v126 加 6 張新表情；v20a131 B1 加 2 張企立圖；v127 加 22 張新表情；v138 加 37 張新表情；v195 加 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；v268 刪 vera 4 張；v296 加 26 張新表情；v297 刪 kwan_hoimei 2 張 base／serious；v111 boss_* 11 張／v116 v2/v2b 11 張見舊註）", len([f for f in names if f.endswith((".webp", ".png"))]) == 261)
     for fn, _sp, _cat, n in NEW:
         p = os.path.join(FB, fn)
         ok = os.path.isfile(p) and os.path.getsize(p) > 50000

@@ -68,8 +68,8 @@ var GIFT_REACT = { byKey:{}, entries:[] };
 var NPC_LINES = {};
 var PORTRAITS = {};
 var NPCS = {
-  colleague:{ face:'npc_cheung' }, reporter:{ face:'npc_chow' }, stylist:{ face:'npc_vera' },
-  lan:{ face:'npc_lan' }, xu:{ face:'npc_xu' }, mei:{ face:'npc_mei' },
+  colleague:{ face:'npc_cheung' }, reporter:{ face:'npc_chow' },
+  lan:{ face:'npc_lan' }, xu:{ face:'npc_xu' },
 };
 var LOCS = [
   { id:'tvb_longmen', name:'星河電視台' }, { id:'tvb_kowloon', name:'九龍電視城' },
@@ -105,7 +105,7 @@ eval(extractConst('ROM176_P').replace('const ROM176_P =', 'var ROM176_P ='));
 for (const f of ['enc79Hash','enc79Rand','enc79StarDef','enc79EnsureStars','enc79StarState',
   'enc79PlayerTier','enc79FavCap','enc79AddFav','enc79StoryPendingAt','weekNumNow',
   'rom176SetEncounter','rom176BackOpts','rom176WomanDef','rom176WomanName','rom176IsWomanNpc',
-  'rom176WomanMet','rom176MeiUnlocked','rom176WhisperActive','rom176BeatOpen','rom176PresenceP',
+  'rom176WomanMet','rom176WhisperActive','rom176BeatOpen','rom176PresenceP',
   'rom176EnsureDay','rom176PresenceAt','rom176GrantWhisper','rom176TeaTargets','rom176TryIntercept',
   'rom176StarPrefKind','rom176StarDelta','rom176CanGiveStarGift','rom176StarReactionLine',
   'rom176DoGiveStarGift','rom176ApplyGiftOverrides','rom183XuMetBefore183','rom183RelText183']) eval(extractFn(f));
@@ -153,9 +153,7 @@ function baseSave(over){
       || !Array.isArray(p.requireFlagsAny) || p.requireFlagsAny.length !== 0) prefsOk = false;
   }
   ok('A1 12 星 prefs 齊（最愛 2／喜歡 2／唔鍾意 1–2，relKey＋空閘）', prefsOk);
-  const mei = GIFT_PREFS.npcs.mei;
-  ok('A2 海媚 prefs（最愛保溫瓶＋拍紙簿）', !!mei && JSON.stringify(mei.favorites) === JSON.stringify(['gift_thermos','gift_memo_pad'])
-    && JSON.stringify(mei.dislikes) === JSON.stringify(['gift_perfume_sample','gift_fashion_mag']));
+  ok('A2 海媚 prefs 已刪（v297）', !('mei' in GIFT_PREFS.npcs));
   let favN = 0, likedN = 0, disN = 0, perStarOk = true;
   for (const id of stars){
     const f = Object.keys(GIFT_REACT.byKey).filter(k=>k.indexOf(id + ':') === 0 && k.endsWith(':favorite'));
@@ -172,14 +170,13 @@ function baseSave(over){
   rom176ApplyGiftOverrides();
   ok('A4 注入冪等（再跑一次唔會重複）', GIFT_REACT.entries.length === before && Object.keys(GIFT_REACT.byKey).length === 68);
   let nlOk = true;
-  for (const k of ['lan','xu','mei']){
+  for (const k of ['lan','xu']){
     const n = NPC_LINES[k];
     if (!n || !['greet','chat','advice','intel','pressure'].every(s=>Array.isArray(n[s]) && n[s].length === 2)) nlOk = false;
   }
-  ok('A5 NPC_LINES 藍／徐／海媚（5 類 × 2 句）', nlOk);
-  ok('A6 PORTRAITS 藍／徐／海媚 fullbody 圖', PORTRAITS.npc_lan === 'assets/story/fullbody/lan_ruoxi_base.webp?v=20a176'
-    && PORTRAITS.npc_xu === 'assets/story/fullbody/tsui_poushan_base.webp?v=20a176'
-    && PORTRAITS.npc_mei === 'assets/story/fullbody/kwan_hoimei_base.webp?v=20a176');
+  ok('A5 NPC_LINES 藍／徐（5 類 × 2 句；v297 海媚已刪）', nlOk);
+  ok('A6 PORTRAITS 藍／徐 fullbody 圖（v297 海媚圖已刪）', PORTRAITS.npc_lan === 'assets/story/fullbody/lan_ruoxi_base.webp?v=20a176'
+    && PORTRAITS.npc_xu === 'assets/story/fullbody/tsui_poushan_base.webp?v=20a176');
 })();
 
 /* ---------- B 女角出沒盤 ---------- */
@@ -220,21 +217,18 @@ function presenceOn(day, setup){
   for (let d = 0; d < 365; d++){ const p = presenceOn(d); if ([].concat(p.tvb_longmen || [], p.tvb_kowloon || []).indexOf('hiu') >= 0) beatDays++; }
   __storyNodes = {};
   ok('B7 未完成節點 offer → 出沒率上升（P+0.10）', beatDays > daysWithHiu, '節點 ' + beatDays + ' vs 平時 ' + daysWithHiu);
-  // 海媚閘
-  S = baseSave({ dayIndex: 100 });
-  ok('B8 海媚未解鎖（N10 未完成）P=0', rom176PresenceP('mei').p === 0);
+  // 海媚閘已刪（v297）：rom176MeiUnlocked 函數唔存在，mei 唔再出沒
+  ok('B8 海媚已刪：ROM176_WOMEN 冇 mei', !ROM176_WOMEN.some(w => w.key === 'mei'));
   __storyDone = { N10: true };
-  ok('B9 海媚解鎖（N10 完成）P=0.50', rom176PresenceP('mei').p === 0.50);
+  ok('B9 海媚已刪：N10 完成都唔出沒（連查 30 日）', (function(){
+    for (let d = 0; d < 30; d++){
+      const pres = presenceOn(d);
+      for (const loc in pres) if (pres[loc].indexOf('mei') >= 0) return false;
+    }
+    return true;
+  })());
   __storyDone = {};
-  const savedStoryOC = StoryOC;
-  StoryOC = null;
-  S = baseSave({ dayIndex: 100 }); delete S.story.done;
-  ok('B10 海媚退路：done-state 讀唔到＋day<699 → 鎖住', rom176MeiUnlocked() === false);
-  S = baseSave({ dayIndex: 699 }); delete S.story.done;
-  ok('B11 海媚退路：done-state 讀唔到＋day≥699 → 解鎖', rom176MeiUnlocked() === true);
-  S = baseSave({ dayIndex: 100, story: { done: { N10: true }, rel: {} } });
-  ok('B12 海媚退路：S.story.done 有 N10 → 解鎖', rom176MeiUnlocked() === true);
-  StoryOC = savedStoryOC;
+  ok('B10 rom176MeiUnlocked 已刪', typeof rom176MeiUnlocked === 'undefined');
   // 風聲 grant
   S = baseSave({ dayIndex: 10 });
   ok('B13 grantWhisper 寫入 3 日窗（v267：唔寫卡）', rom176GrantWhisper('hiu', 'tea') === true
