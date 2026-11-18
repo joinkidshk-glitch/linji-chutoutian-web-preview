@@ -7,7 +7,7 @@
 //   P4 年份唔 double-shift：normalize 前後＋兩次 normalize，年份全部唔郁（真 normalizeGigRecord）
 //   P5 開局 1990 板面有臨記／初級通告：entryGigPool229 返 12 張臨記、全部合開局數值、冬季有貨
 //   P6 每地點有通告：11 個板面地點全部有 gig；每張 gig 嘅 loc 全部喺呢 11 個入面
-//   P7 觸發通告 34 張（credit 23／fame 5／rel 3／rival 1／story 1／wf3harvest 1；award 0——新庫已無 award kind，見 trigger 測試 T1／T3 合成樣本）
+//   P7 觸發通告 35 張（credit 24／fame 5／rel 3／rival 1／story 1／wf3harvest 1；award 0——新庫已無 award kind，見 trigger 測試 T1／T3 合成樣本）
 //   P8 主演：leadStarId 已退役（新庫 0 張有 leadStarId），改 cast 四格——232 張有 cast（leadM／leadF／supportM／supportF），
 //       影視廣告作品 116 張全部有 cast，唱片／綜藝作品 49 張無 cast；165 張作品全部有 posterBrief（v284：＋film_114）
 //   P9 舊表已刪：LEADSTAR59／TIER110／REQ110／NAME93_FIX／CLEAN100_GIG_RELEASE／
@@ -88,8 +88,8 @@ ok('P6 每張 gig 嘅 loc 全部喺 11 個板面地點入面', badLoc.length ===
 const trig = gigs.filter(g=>g.trigger && g.trigger.kind);
 const trigKind = {};
 trig.forEach(g=>{ trigKind[g.trigger.kind] = (trigKind[g.trigger.kind] || 0) + 1; });
-ok('P7 觸發通告 34 張（credit 23／fame 5／rel 3／rival 1／story 1／wf3harvest 1；award 0）',
-   trig.length === 34 && trigKind.credit === 23 && (trigKind.award || 0) === 0 && trigKind.fame === 5 &&
+ok('P7 觸發通告 35 張（credit 24／fame 5／rel 3／rival 1／story 1／wf3harvest 1；award 0）',
+   trig.length === 35 && trigKind.credit === 24 && (trigKind.award || 0) === 0 && trigKind.fame === 5 &&
    trigKind.story === 1 && trigKind.rel === 3 && trigKind.rival === 1 && trigKind.wf3harvest === 1,
    'n=' + trig.length + ' ' + JSON.stringify(trigKind));
 const withStar = gigs.filter(g=>g.leadStarId);

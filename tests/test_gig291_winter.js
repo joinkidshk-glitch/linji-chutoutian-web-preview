@@ -174,7 +174,7 @@ ok('W3 新人獎 3 個、男女齊', newcomer.length === 3 &&
 const ngaiRec = gigs.filter(g=>g.type === '唱片通告' && g.singer === 'ngai_wingnaam');
 ok('W4 魏詠男唔入任何唱片格', ngaiRec.length === 0, ngaiRec.map(g=>g.id).join(','));
 const trigNew = NEW_IDS.filter(id=>byId[id].trigger);
-ok('W4 新通告無 trigger（P7 維持 34 張）', trigNew.length === 0, trigNew.join(','));
+ok('W4 新通告無 trigger（P7 維持 35 張）', trigNew.length === 0, trigNew.join(','));
 const yearInName = NEW_IDS.filter(id=>/\d/.test(byId[id].workTitle || '') || /\d/.test(byId[id].title || ''));
 ok('W4 新名唔含年份數字', yearInName.length === 0, yearInName.join(','));
 const dupTitle = NEW_IDS.filter(id=>{

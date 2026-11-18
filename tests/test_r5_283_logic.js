@@ -3,9 +3,9 @@
 // 用法：node tests/test_r5_283_logic.js [path-to-index.html]
 // 核心結論：
 //   A——殺青鉤加通用分支 genericCreditOnGigComplete283，讀 gig.trigger.creditId 標記，
-//     模式照抄 br89OnGigComplete；BR89 15 張留返 br89 標，唔補入 BR89 map（v284：film_114 第 15 對）；
+//     模式照抄 br89OnGigComplete；BR89 16 張留返 br89 標，唔補入 BR89 map（v284：film_114 第 15 對；v316：rec_112 第 16 對）；
 //     film_202 雖有 trigger.creditId 但喺 BR89 map 入面，通用分支跳過，唔重複標。
-//   H——creditRedeemLine283：BR89 15 張由 BR89_PATRON_OF_GIG 反查＋通用 8 張由
+//   H——creditRedeemLine283：BR89 16 張由 BR89_PATRON_OF_GIG 反查＋通用 8 張由
 //     CREDIT_REDEEM_GIG283 對照＋v158 兩條渠道寫類別名；只喺未兌現嗰陣出。
 const fs = require('fs');
 const path = require('path');
@@ -62,13 +62,13 @@ const br89CallIdx = html.indexOf('br89OnGigComplete(sh.gigId)');
 const genCallIdx = html.indexOf('genericCreditOnGigComplete283(sh.gigId)');
 ok('(0) hook_br89_call_in_place', br89CallIdx > 0, '殺青鉤仍有 br89 呼叫');
 ok('(0) hook_generic_call_after_br89', genCallIdx > br89CallIdx && (genCallIdx - br89CallIdx) < 500, '通用分支呼叫喺 br89 之後（相鄰兩行）');
-ok('(0) br89_map_15_pairs', Object.keys(BR89_PATRON_OF_GIG).length === 15, 'BR89 map 15 對（v284 加 film_114），通用 8 張無補入');
+ok('(0) br89_map_16_pairs', Object.keys(BR89_PATRON_OF_GIG).length === 16, 'BR89 map 16 對（v316 加 rec_112），通用 8 張無補入');
 const eightGigs = ['gig_1991_tv_204','gig_1991_film_108','gig_1992_film_203','gig_1992_tv_106','gig_1991_tv_106','gig_1992_tv_201','gig_1992_film_101','gig_1991_film_109'];
 ok('(0) eight_not_in_br89_map', eightGigs.every(g=>!(g in BR89_PATRON_OF_GIG)), '通用 8 張無一喺 BR89 map 入面（v284：film_112 已拆 trigger）');
 ok('(0) redeem_gig_map_8_entries', Object.keys(CREDIT_REDEEM_GIG283).length === 8, 'CREDIT_REDEEM_GIG283 8 個對照（v284：lu_team 已清）');
 ok('(0) redeem_text_map_2_entries', Object.keys(CREDIT_REDEEM_TEXT283).length === 2, 'CREDIT_REDEEM_TEXT283 2 條渠道');
 ok('(0) credit_card_calls_redeem_line', html.includes('creditRedeemLine283(c)'), 'creditCardHtml 呼叫 creditRedeemLine283(c)');
-ok('(0) credit_trigger_gigs_still_23', allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 23, '通告庫 kind:credit 仍係 23 張（15 BR89＋8 通用：film_112 拆走＋film_114 加入）');
+ok('(0) credit_trigger_gigs_still_24', allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 24, '通告庫 kind:credit 仍係 24 張（16 BR89＋8 通用：film_112 拆走＋film_114 加入＋rec_112 加入）');
 
 // ---------- (1) A：通用 8 張逐張殺青標記（v284：film_112 已拆 trigger，唔再經通用分支） ----------
 const eight = [

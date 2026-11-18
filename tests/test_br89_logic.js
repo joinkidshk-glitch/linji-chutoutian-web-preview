@@ -203,7 +203,7 @@ try{
   ok('E6 完成後情報通告落板', !env.GIGS.some(g=>/^gig_br89_/.test(g.id)));
 }catch(e){ ok('E/F BR89 模組抽取/執行 ('+e.message+')', false); }
 
-/* ================= (H) B5：BR89 映射 15 張＋R-4 雙觸發（v284：加 film_114） ================= */
+/* ================= (H) B5：BR89 映射 16 張＋R-4 雙觸發（v284：加 film_114；v316：加 rec_112） ================= */
 try{
   const modSrc = extractBetween('/* =====================================================================\n   v20a89 BR89：分支補完', '/* ---------- WF3-3 地點一次性對白');
   const env = {
@@ -224,10 +224,10 @@ try{
     gig_1991_ad_102:'credit_enc84_so_patron', gig_1991_film_213:'credit_enc84_chung_patron',
     gig_1992_rec_111:'credit_enc83_lok_patron', gig_1991_film_212:'credit_enc83_ngai_patron',
     gig_1992_film_206:'credit_enc83_chai_patron', gig_1992_film_202:'credit_wf3_comedy_crew',
-    gig_1992_film_114:'credit_enc83_luk_patron'
+    gig_1992_film_114:'credit_enc83_luk_patron', gig_1992_rec_112:'credit_enc83_lok_patron'
   };
-  ok('H1 BR89 映射 15 張逐對啱（SPEC §3.5A＋v284 R5-F）',
-    Object.keys(api.BR89_PATRON_OF_GIG).length===15 &&
+  ok('H1 BR89 映射 16 張逐對啱（SPEC §3.5A＋v284 R5-F＋v316 rec_112）',
+    Object.keys(api.BR89_PATRON_OF_GIG).length===16 &&
     Object.keys(EXPECT13).every(k=>api.BR89_PATRON_OF_GIG[k]===EXPECT13[k]));
   ok('H2 舊 gig_br89_* 已清', !Object.keys(api.BR89_PATRON_OF_GIG).some(k=>/^gig_br89_/.test(k)));
   // R-4 雙觸發 OR（兩條路獨立驗；v20a274：顧引薦 gig 由 gig_1992_rec_105《當年情懷》搬去新 gig_1992_rec_205《夜總會登台暖場》）
@@ -250,7 +250,7 @@ try{
   api.br89OnGigComplete(patId);
   const c = env.S.mockCredits.find(x=>x.id==='credit_enc83_luk_patron');
   ok('H7 兌現標記標題用新庫名（唔係「引薦通告」）', c.redeemedBy===patId && c.line.indexOf('《江河歲月》')>=0 && c.status==='未收');
-}catch(e){ ok('H BR89 15 張／R-4 抽取/執行 ('+e.message+')', false); }
+}catch(e){ ok('H BR89 16 張／R-4 抽取/執行 ('+e.message+')', false); }
 
 /* ================= (G) A_ho 寫返 npcs.agent（源碼級） ================= */
 try{
