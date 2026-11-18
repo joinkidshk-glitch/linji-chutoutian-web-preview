@@ -14389,6 +14389,9 @@ async function maybeApplySoftSeed(){
     const seed = pack && (pack.seeds||[]).find(s=>s && s.id===rec.id);
     if(!seed) return { ok:false, reason:"missing" };
     const res = applySoftSeedState(seed);
+    /* v20a286 LOAD286：種子改咗 S.dayIndex（applySoftSeedState 設 (week-1)*7），寫入後
+       即刻按新日曆年同步通告庫，否則 presentSoftSeed 直開地點／開板會攞住舊年庫。 */
+    try{ if(typeof syncGigsForCalendarYear==="function") syncGigsForCalendarYear(false); }catch(_e){}
     return presentSoftSeed(res);
   })().finally(()=>{ _softSeedJob = null; });
   return _softSeedJob;
@@ -45701,6 +45704,12 @@ function contFromSlot(slot){
   ensureMockJournal();
   syncDualTracks(S);
   atLoc=null;
+  /* v20a286 LOAD286：讀檔後即刻按存檔日曆年同步通告庫——pack loader init 嗰陣 S 未 load、
+     sync 去 1990，讀檔後唔補 sync 就會成個 session 攞住舊年庫開板（要翻一日先經
+     advanceDay 補返）。放喺 ensureEntryTierBoardFill 之前：sync 會成個 GIGS 重建，
+     1991／1992 唔再 merge 入門池，遲咗放會洗走啱啱注入嘅入門通告。force=false：
+     1990 年存檔早已同步，early return，零行為改變。 */
+  try{ if(typeof syncGigsForCalendarYear==="function") syncGigsForCalendarYear(false); }catch(_e){}
   try{ ensureEntryTierBoardFill(); }catch(_ef){}
   /* v20a78 LOCK78：已結局存檔（S.ending410 已有記錄）——載入即入已結局狀態：
      落手帳唯讀回顧＋出結局總結，唔行 runScheduleFromToday，日子唔會再行。

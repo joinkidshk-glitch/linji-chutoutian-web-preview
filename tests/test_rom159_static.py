@@ -1,3 +1,4 @@
+# v20a286 resync：index.html 淨 +9 行（contFromSlot sync＋6＠舊 L45704 之後／softSeed sync＋3＠舊 L14392 之後；釘行按段重算：＜14392 唔郁、14392–45703 各 ＋3、≥45704 各 ＋9；內容逐字核實純漂移）。 25204→25207、26038→26041、14815→14818、25953→25956、全佳 25232→25235；ok() 名入面嘅 L 號係歷史標籤，唔郁。
 # v20a276 resync：index.html 淨 +1 行（#loc-title 米紙圓底 chip 新規則，插入點舊 L4010）；本檔釘行／鏈尾一律 +1，內容逐字核實純漂移。
 # v20a272 resync：index.html 淨 +3 行（enterHome setHomeTab 加防禦，插入點新 L20675；其後錨點各 +3，之前唔郁；difflib 對位核實內容逐字相同，純漂移；rebase 上 v271 f25df08 後重做）。
 # v20a271 resync：index.html 淨 +91 行（支線第二批：交心旗＋陸頂一晚新機制＋初遇好感差異；插入點舊 L19690–39960；awei195 S4 wrap hook 改一行寫法保 3 行窗）；釘行按 difflib 映射重寫，內容逐字核實純漂移，見 qa271/resync271.py。
@@ -152,19 +153,19 @@ ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committ
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25499", line_has(25204, "v20a159 ROM159 Phase 1"))
+ok("行號釘 ROM159 block 頭 25499", line_has(25207, "v20a159 ROM159 Phase 1"))
 ok("行號釘 bumpRel 凍結鉤 8020", line_has(8247, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(26038, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 CMT_lan_commit 26333", line_has(26041, "COMMIT48_NODES.CMT_lan_commit"))
 ok("行號釘 StoryPlay 預備鉤 10553", line_has(10717, "rom159PrepareNode(node)"))
-ok("行號釘載入覆寫呼叫 14877", line_has(14815, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26248", line_has(25953, "function rom159SoMeetGate"))
+ok("行號釘載入覆寫呼叫 14877", line_has(14818, "rom159ApplyGiftOverrides()"))
+ok("行號釘 rom159SoMeetGate 26248", line_has(25956, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25232 - 1])  # v20a159 整合：B1＋B2 後行號 +86
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25235 - 1])  # v20a159 整合：B1＋B2 後行號 +86
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）
