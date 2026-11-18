@@ -29,7 +29,7 @@
 | 計數 | 庫 307 張／trigger 37（credit 26）／BR89 18 對——零改動 |
 
 ## §5 落地（待填）
-- Main HEAD：`b96a5b2`（內容 commit，同 NOTES §5 補填 commit）
+- Main HEAD：`dd8b5a3`（內容 `b96a5b2`＋NOTES §5 補填）
 - Suite TOTAL：384 PASS／9 FAIL（基線 383／9，＋1 係新測試檔；9 項 FAIL 全部係已知 pre-existing）
 - Pages index.html md5／bytes：`7ad4d3de98429f5b20a12f6ef929fc51`／4,701,407 bytes，byte-identical，v20a321 標記在位
 - 工作副本已刪：`linji-work321`
