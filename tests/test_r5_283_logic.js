@@ -137,7 +137,7 @@ const br89Expect = [
   ['credit_enc83_gu_patron', '夜總會登台暖場'],
   ['credit_enc84_so_patron', '秀髮如瀑'],
   ['credit_enc84_chung_patron', '秋日絮語'],
-  ['credit_enc83_lok_patron', '主打歌'],
+  ['credit_enc83_lok_patron', '銅鑼灣'],
   ['credit_enc83_ngai_patron', '鐵橋風雲'],
   ['credit_enc83_chai_patron', '油麻地夜班'],
   ['credit_wf3_comedy_crew', '笑到最後'],

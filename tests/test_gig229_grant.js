@@ -221,7 +221,7 @@ ok('T1 N12_a 跳→film_201', choiceMaps('N12','N12_a','gig_1992_film_201'));
 ok('T1 N12_b 拒接→tv_103', choiceMaps('N12','N12_b','gig_1992_tv_103'));
 ok('T1 N13_a 企邊電視台→tv_114', choiceMaps('N13','N13_a','gig_1992_tv_114'));
 ok('T1 N13_b 企邊電影公司→film_102', choiceMaps('N13','N13_b','gig_1992_film_102'));
-ok('T1 N14_a 主打歌MV→rec_111', choiceMaps('N14','N14_a','gig_1992_rec_111'));
+ok('T1 N14_a 銅鑼灣MV→rec_111', choiceMaps('N14','N14_a','gig_1992_rec_111'));
 ok('T1 N14_b 樂壇洗牌→rec_201', choiceMaps('N14','N14_b','gig_1992_rec_201'));
 ok('T1 N14_c 頒獎禮前哨→ad_109', choiceMaps('N14','N14_c','gig_1992_ad_109'));
 ok('T1 N15_a 櫥窗少年→ad_110', choiceMaps('N15','N15_a','gig_1992_ad_110'));
