@@ -10697,6 +10697,7 @@ const StoryPlay = (()=>{
     try{ if(typeof contra98PrepareNode==="function"){ const pn98 = contra98PrepareNode(node); if(pn98) node = pn98; } }catch(_c98p){} /* v20a98 CONTRA98 B-01 */
     try{ if(typeof enc158PrepareNode==="function"){ const pn158 = enc158PrepareNode(node); if(pn158) node = pn158; } }catch(_c158p){} /* v20a266：曉晴《留低》支線變體（contra98 之後，唔郁 choices；v158 層移植） */
     try{ if(typeof rom159PrepareNode==="function"){ const pn159 = rom159PrepareNode(node); if(pn159) node = pn159; } }catch(_r159p){} /* v20a159 ROM159：排他鎖＋采兒公開／低調 */
+    try{ if(typeof choi299PrepareNode==="function"){ const pn299 = choi299PrepareNode(node); if(pn299) node = pn299; } }catch(_c299p){} /* v20a299 Q12：R_choi_push1 spin／dodge 變體 */
     if(!opts.force){
       if(StoryOC.isStubNode && StoryOC.isStubNode(node)){ toast("此節不開放"); return false; }
       if(StoryOC.isDone(node.id)){ toast("這幕已完成"); return false; }
@@ -22977,6 +22978,241 @@ const RIPPLE_DUE_GIGS = [
     isKeyGig:false
   }
 ]; /* v20a298 Q11：RIPPLE_DUE_GIGS 獨立池（唔入 FAVOR_DUE_GIGS，免 test_br89_favor_due D1「得 1 張」斷言撞；mergeFavorGigs 逐張獨立開關）。 */
+/* ===== v20a299 Q12：N6／N6F 四旗跟進特別通告（班底記得你／出面搏到機會）。
+   背景：N6_a 落 flag_canteen_grind、N6_b 落 flag_canteen_quit、N6F_a 落 flag_studio_follow、
+   N6F_b 落 flag_studio_roam，四支旗之前只喺結局回望 ECHO89 被讀，遊戲中零跟進。
+   做法跟 v298 前例行 code-side 池（唔入 gigs_new.json，302 張計數唔郁）：旗在＋未完成就上板，
+   長期有效，唔設 dueDay／window／tick（同 FAVOR 最大分別：FAVOR 要限期逼還人情，Q12 係
+   「記得你」的機會，唔好逼）。四張同一 tier／pay／days／req／fame，只係 loc／戲名／角色／文案唔同，
+   揀接定唔接獎勵結構完全一樣。year 寫 1988（normalize 經 YEARS66＋2 變 1990，唔可以寫 1990）；
+   文案零四位年份數字。req acting:24 係刻意門檻（開局演技 18，一級演技課 1–2 堂就到；
+   stamina 開局 75 已達標，設 stamina 等於白送）。獎項計分：同 FAVOR 一樣，殺青後入
+   awards62YearWorks 作品桶（q 0.51，桶底，正常年份 base 約 ＋0.01–0.03），提名門檻計數零影響。 ===== */
+const Q12_FOLLOW_GIGS = [
+  {
+    id:"gig_q12_canteen_grind",
+    year:1988,
+    season:"不限",
+    type:"電視劇",
+    genreLabel:"電視劇",
+    category:"臨記通告",
+    loc:"tvb_longmen",
+    workTitle:"茶餐廳風雲",
+    title:"班底通告：《茶餐廳風雲》飯堂熟客",
+    roleLabel:"飯堂熟客（有對白）",
+    director:"處境劇副導",
+    roleHint:"唔使搶鏡，坐定、食飯，兩句對白講得自然就得；副導話你嗰張枱坐得穩，先至諗起你。",
+    blurb:"處境劇新一輯要個固定飯堂熟客：每集坐喺同一張枱，有兩句對白。副導話角落嗰張枱你坐過，坐得穩，呢個位留返畀你。",
+    synopsis:"星河電視台處境劇《茶餐廳風雲》新一輯開拍，飯堂場要個熟面孔坐定：每集同一張枱，兩句對白，唔搶鏡。副導第一個諗起你——嗰排角落枱你坐咗成季，班底認得你嗰張面，呢個位留返畀你。",
+    discoverNote:"處境劇班底記得你嗰張枱坐得穩。",
+    boardPriority:"high",
+    boardNote:"班底記得你",
+    seasonWeight:1,
+    req:{ acting:24 },
+    pay:[55, 65],
+    payExact:60,
+    breachFee:0,
+    fame:[5, 10],
+    popularity:[0, 1],
+    stressDeltaHint:"低",
+    hard:0.43,
+    tier:"臨記",
+    stars:1,
+    shootDaysHint:2,
+    shootHint:"準時到飯堂報到，坐定你嗰張枱，兩句對白講得自然就得。",
+    roleScale:"tv_cameo_short",
+    shootBand:[2, 2],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:14,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["班底記得你，兩日工"] },
+    storyKeys:["N6"],
+    tagOnComplete:[],
+    rumorKeys:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  },
+  {
+    id:"gig_q12_canteen_quit",
+    year:1988,
+    season:"不限",
+    type:"電視劇",
+    genreLabel:"電視劇",
+    category:"臨記通告",
+    loc:"tvb_kowloon",
+    workTitle:"夜市人生",
+    title:"街外通告：《夜市人生》大排檔熟客",
+    roleLabel:"大排檔熟客（有對白）",
+    director:"副導",
+    roleHint:"新組開劇要個識企位嘅熟手，大排檔場口兩句對白，講得自然就得；聽聞你肯捱唔詐型，先至叫你去試下。",
+    blurb:"九龍電視台新處境劇組開拍，大排檔取景，要個熟手做大排檔熟客。你喺出面跑咗成季，名聲傳到嗰邊，副導指明要你。",
+    synopsis:"九龍電視台處境劇《夜市人生》喺大排檔取景，要個大排檔熟客：兩日工，兩句對白，唔搶鏡。你喺出面跑咗成季，肯捱唔詐型嗰個名聲傳到嗰邊，副導指明要你去試。",
+    discoverNote:"出面有組記得你肯捱。",
+    boardPriority:"high",
+    boardNote:"搏到機會",
+    seasonWeight:1,
+    req:{ acting:24 },
+    pay:[55, 65],
+    payExact:60,
+    breachFee:0,
+    fame:[5, 10],
+    popularity:[0, 1],
+    stressDeltaHint:"低",
+    hard:0.43,
+    tier:"臨記",
+    stars:1,
+    shootDaysHint:2,
+    shootHint:"大排檔場口企定，兩句對白講得自然就得。",
+    roleScale:"tv_cameo_short",
+    shootBand:[2, 2],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:14,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["街外機會，兩日工"] },
+    storyKeys:["N6"],
+    tagOnComplete:[],
+    rumorKeys:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  },
+  {
+    id:"gig_q12_studio_follow",
+    year:1988,
+    season:"不限",
+    type:"電影",
+    genreLabel:"電影",
+    category:"臨記通告",
+    loc:"film_lion",
+    workTitle:"茶樓風雲",
+    title:"班底通告：《茶樓風雲》茶樓跑堂",
+    roleLabel:"茶樓跑堂（有對白）",
+    director:"電影組副導",
+    roleHint:"跟足成組人走位，端茶遞水唔好亂，兩句對白唔好搶；根叔話你跟得穩，先至寫你個名。",
+    blurb:"獅子山新開茶樓喜劇，副導要個跟得足全組嘅跑堂。你上一期由開鏡跟到殺青，成組人認得你嗰張面，呢個位第一個諗起你。",
+    synopsis:"獅子山製片廠茶樓喜劇《茶樓風雲》開拍，茶樓場要個跑堂跟足全組：兩日工，兩句對白，唔好亂。上一期你由開鏡跟到殺青，成組人認得你，副導第一個寫你個名。",
+    discoverNote:"大製作班底記得你跟足一期。",
+    boardPriority:"high",
+    boardNote:"片場記得你",
+    seasonWeight:1,
+    req:{ acting:24 },
+    pay:[55, 65],
+    payExact:60,
+    breachFee:0,
+    fame:[5, 10],
+    popularity:[0, 1],
+    stressDeltaHint:"低",
+    hard:0.43,
+    tier:"臨記",
+    stars:1,
+    shootDaysHint:2,
+    shootHint:"跟足成組人走位，茶樓場唔好亂，兩句對白唔好搶。",
+    roleScale:"film_support_small",
+    shootBand:[2, 2],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:14,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["班底記得你，兩日工"] },
+    storyKeys:["N6F"],
+    tagOnComplete:[],
+    rumorKeys:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  },
+  {
+    id:"gig_q12_studio_roam",
+    year:1988,
+    season:"不限",
+    type:"電影",
+    genreLabel:"電影",
+    category:"臨記通告",
+    loc:"film_harbour",
+    workTitle:"夜班貨倉",
+    title:"街外通告：《夜班貨倉》貨倉領頭",
+    roleLabel:"貨倉領頭（有對白）",
+    director:"副導",
+    roleHint:"動作組要個識執生嘅領頭，兩日夜班，唔使由頭教；聽聞你喺片場跟過大製作，叫你去頂兩日。",
+    blurb:"維港電影夜班動作戲要個貨倉領頭，兩日工。你喺出面跑咗成季，片場之間傳開你肯跟肯捱，動作組指明要你。",
+    synopsis:"維港電影《夜班貨倉》夜班動作戲要個貨倉領頭：兩日工，兩句對白，帶住成組臨記走位。你喺出面跑咗成季，肯跟肯捱嗰個名聲傳到動作組，佢哋指明要你。",
+    discoverNote:"出面有組記得你肯跟肯捱。",
+    boardPriority:"high",
+    boardNote:"搏到機會",
+    seasonWeight:1,
+    req:{ acting:24 },
+    pay:[55, 65],
+    payExact:60,
+    breachFee:0,
+    fame:[5, 10],
+    popularity:[0, 1],
+    stressDeltaHint:"低",
+    hard:0.43,
+    tier:"臨記",
+    stars:1,
+    shootDaysHint:2,
+    shootHint:"夜班帶住成組臨記走位，兩句對白唔好搶。",
+    roleScale:"film_support_small",
+    shootBand:[2, 2],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:14,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["街外機會，兩日工"] },
+    storyKeys:["N6F"],
+    tagOnComplete:[],
+    rumorKeys:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  }
+]; /* v20a299 Q12：四旗跟進池（唔入 gigs_new.json，302 張計數唔郁；mergeQ12Gigs 注入）。 */
+function q12FlagOn(key){
+  try{ if(typeof choice47StoryFlag==="function" && choice47StoryFlag(key)) return true; }catch(_e){}
+  try{ if(typeof enc87StoryFlag==="function" && enc87StoryFlag(key)) return true; }catch(_e){}
+  try{ return !!(typeof S!=="undefined" && S && S.flags && S.flags[key]); }catch(_e){ return false; }
+}
+function q12GigDone(id){
+  try{
+    if(typeof S!=="undefined" && S && S.flags && S.flags["done_"+id]) return true;
+    if(typeof S!=="undefined" && S && Array.isArray(S.wrapHistory) && S.wrapHistory.some(h=>h && h.gigId===id)) return true;
+  }catch(_e){}
+  return false;
+}
+function mergeQ12Gigs(){
+  try{
+    if(typeof GIGS==="undefined" || !Array.isArray(GIGS)) return 0;
+    if(typeof Q12_FOLLOW_GIGS==="undefined" || !Array.isArray(Q12_FOLLOW_GIGS)) return 0;
+    const map = { flag_canteen_grind:"gig_q12_canteen_grind", flag_canteen_quit:"gig_q12_canteen_quit", flag_studio_follow:"gig_q12_studio_follow", flag_studio_roam:"gig_q12_studio_roam" };
+    const ids = {};
+    Q12_FOLLOW_GIGS.forEach(g=>{ if(g && g.id) ids[g.id] = 1; });
+    const activeIds = {};
+    Object.keys(map).forEach(k=>{ try{ if(q12FlagOn(k) && !q12GigDone(map[k])) activeIds[map[k]] = 1; }catch(_e){} });
+    const before = GIGS.length;
+    GIGS = GIGS.filter(g=>!(g && ids[g.id] && !activeIds[g.id]));
+    if(GIGS.length!==before){ try{ window.GIGS = GIGS; }catch(_w){} }
+    let n = 0;
+    Q12_FOLLOW_GIGS.forEach(raw=>{
+      if(!raw || !raw.id || !activeIds[raw.id]) return;
+      const norm = normalizeGigRecord(Object.assign({}, raw, { q12FollowGig:true }));
+      const i = GIGS.findIndex(g=>g && g.id===raw.id);
+      if(i<0){ GIGS.push(norm); n++; }
+      else GIGS[i] = norm;
+      /* 一次通知：首次注入先出 toast（grind／follow 用何生轉告口徑，quit／roam 用情報站口徑），之後唔再出。 */
+      try{
+        if(typeof S!=="undefined" && S){
+          S.flags = S.flags || {};
+          const nk = "q12Notified_"+raw.id;
+          if(!S.flags[nk]){
+            S.flags[nk] = 1;
+            if(typeof toast==="function"){
+              const ho = (raw.id==="gig_q12_canteen_grind" || raw.id==="gig_q12_studio_follow");
+              toast(ho ? "何生轉告：班底記得你，有個位留返畀你。" : "情報站：出面有組記得你，有個位搵你去試。",
+                { sub: raw.workTitle + "——去通告板睇下。" });
+            }
+          }
+        }
+      }catch(_t){}
+    });
+    try{ window.GIGS = GIGS; }catch(_w){}
+    return n;
+  }catch(_e){ return 0; }
+}
 function rippleDueDebt(){
   try{
     if(typeof S==="undefined" || !S || !Array.isArray(S.mockDebts)) return null;
@@ -27488,6 +27724,49 @@ function enc158PrepareNode(node){
       changed158 = true;
     }
     return changed158 ? copy : null;
+  }catch(_e){ return null; }
+}
+/* v20a299 Q12：choi_spin／choi_dodge 跟進——R_choi_push1 變體。
+   N5_b 打圓場嗰次，采兒記得：push1 再問料嗰陣先提返休息角嗰次，情報互惠由即時變查證後先兌現；
+   選擇數值跟住郁（spin-a rel＋1／fame＋0、spin-b rel−1）。dodge 版對稱輕量：開場冷淡一句，
+   a 照舊，b 同 spin 一致 rel−1（連續兩次唔合作）。honest 版行原版，唔郁。
+   硬約束：spin 最佳路線 rel＝meet a(+1)＋push1 spin-a(+1)＋push2 a(+2)＋crisis a(+2)＝6，
+   剛好夠 COMMIT48_REL_MIN 6，所以 spin 版 a 必須至少 ＋1。
+   只處理 R_choi_push1，其餘節點回 null；淺拷貝（beats 逐 beat 拷 lines、choices 逐個拷 effects），原節點唔郁。 */
+function choi299PrepareNode(node){
+  try{
+    if(!node || node.id!=="R_choi_push1") return null;
+    if(typeof enc87StoryFlag!=="function") return null;
+    if(!Array.isArray(node.beats) || node.beats.length < 4) return null;
+    if(!Array.isArray(node.choices) || node.choices.length < 2) return null;
+    const has = (f)=> !!enc87StoryFlag(f);
+    const spin = has("choi_spin") || has("flag_choi_spin");
+    const dodge = !spin && (has("choi_dodge") || has("flag_choi_dodge"));
+    if(!spin && !dodge) return null;
+    const copy = Object.assign({}, node);
+    copy.beats = node.beats.map(b => ({ speaker: b.speaker, lines: (b.lines || []).slice() }));
+    copy.choices = node.choices.map(c => {
+      const cc = Object.assign({}, c);
+      cc.effects = Object.assign({}, c.effects || {});
+      cc.effects.stats = Object.assign({}, (c.effects || {}).stats || {});
+      cc.effects.flags = ((c.effects || {}).flags || []).slice();
+      return cc;
+    });
+    const ca = copy.choices.find(c=>c && c.id==="C_choi_push1_a");
+    const cb = copy.choices.find(c=>c && c.id==="C_choi_push1_b");
+    if(!ca || !cb) return null;
+    if(spin){
+      copy.beats[0] = { speaker:"周采兒", lines:[ "上次喺片場休息角，你話嗰晚只係見到人影晃過，可能係傾劇本——我返去諗過，你講嘢嗰陣，隻眼望咗去第二度。", "我唔係怪你，記者等得；不過今次，我唔想再聽包裝版。你肯講幾多，我寫幾多，唔會夾硬將你啲嘢寫大佢。" ] };
+      copy.beats[3] = { speaker:"旁白", lines:[ "阿偉明白她有壓力，這兩年追訪風氣興起，沒有人會只等通稿慢慢來。", "他答應今次講嘅，畀佢自己查證；查實咗，佢先至會話返畀阿偉知佢嗰邊收到咩——情報互惠，今次要等查證嗰步。" ] };
+      ca.effects.stats.rel_choi = 1;
+      ca.effects.stats.fame = 0;
+      ca.effects.flags.push("flag_choi_spin_repaid");
+      cb.effects.stats.rel_choi = -1;
+    } else if(dodge){
+      copy.beats[0] = { speaker:"周采兒", lines:[ "上次你話副導叫你，行得咁急——今次唔趕時間呀嘛？", "你唔使指名道姓，畀個方向我，我自己會落場查證。" ] };
+      cb.effects.stats.rel_choi = -1;
+    }
+    return copy;
   }catch(_e){ return null; }
 }
 function wf3PrepareNode82(node){
@@ -43291,6 +43570,7 @@ function mergeNat92Gigs(){
 function gigsForLocSeasonBoard(locId, curSeason){
   try{ if(typeof mergeSoftBridgeGigs==="function") mergeSoftBridgeGigs(); }catch(_br){}
   try{ if(typeof mergeFavorGigs==="function") mergeFavorGigs(); }catch(_fg){}
+  try{ if(typeof mergeQ12Gigs==="function") mergeQ12Gigs(); }catch(_q12){} /* v20a299 Q12：N6／N6F 四旗跟進通告 */
   try{ if(typeof mergeBr89Gigs==="function") mergeBr89Gigs(); }catch(_b89g){}
   try{ if(typeof mergeRivalGigs==="function") mergeRivalGigs(); }catch(_rg){}
   try{ if(typeof mergeExodusGigs==="function") mergeExodusGigs(); }catch(_xg){}
