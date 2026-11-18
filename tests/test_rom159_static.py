@@ -1,3 +1,5 @@
+# v20a298 resync：index.html 淨 +143 行；4 個釘行按段重算（25081→25223、25929→26071、25830→25972、全佳 25109→25251；8241／10699／14782 喺插入點之前唔郁），內容逐字核實純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁。
+
 # v20a297 resync：index.html 淨 −64 行（Vera＋關海媚成個移除，刪除點散佈全檔）；6 個釘行＋全佳行按 difflib 映射重寫（25119→25081、8247→8241、25967→25929、10717→10699、14818→14782、25868→25830、全佳 25147→25109；內容逐字相同，純漂移）；pack sha 清單改精確替代斷言（見下面 v297 段）；ok() 名入面嘅 L 號係歷史標籤，唔郁。
 # v20a296 resync：rival_mentor pack 出 sha 清單（A_tsijun_crisis 加 1 句 angry 對白
 # 「收聲，聽我講埋先。」；見下面精確替代斷言）；lan_xu pack R_xu_crisis 同樣加 1 句
@@ -159,19 +161,19 @@ ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committ
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25499", line_has(25081, "v20a159 ROM159 Phase 1"))
+ok("行號釘 ROM159 block 頭 25499", line_has(25223, "v20a159 ROM159 Phase 1"))
 ok("行號釘 bumpRel 凍結鉤 8020", line_has(8241, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(25929, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 CMT_lan_commit 26333", line_has(26071, "COMMIT48_NODES.CMT_lan_commit"))
 ok("行號釘 StoryPlay 預備鉤 10553", line_has(10699, "rom159PrepareNode(node)"))
 ok("行號釘載入覆寫呼叫 14877", line_has(14782, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26248", line_has(25830, "function rom159SoMeetGate"))
+ok("行號釘 rom159SoMeetGate 26248", line_has(25972, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25109 - 1])  # v20a159 整合：B1＋B2 後行號 +86
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25251 - 1])  # v20a159 整合：B1＋B2 後行號 +86
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）

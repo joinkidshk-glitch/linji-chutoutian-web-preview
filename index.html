@@ -19557,6 +19557,8 @@ function advanceDay(){
     S.flags.adBoardToast = true;
   }
   try{ if(typeof favorDueTick==="function") favorDueTick(); }catch(_fd){}
+  /* v20a298 Q11：拒單債到期 tick（同 favorDueTick 同位，advanceDay 內） */
+  try{ if(typeof rippleDueTick==="function") rippleDueTick(); }catch(_fd2){}
   /* v20a82 WF3：報紙事件刊出 tick＋鏈 A/B/D 結算 tick（同 favorDueTick 同位，advanceDay 內） */
   try{ if(typeof news82Tick==="function") news82Tick(); }catch(_n82){}
   /* v20a215 RELEASE215：推出日提及 tick（同 news82Tick 同位；dayIndex 啱啱變做推出日嗰陣入隊，enqueuedDay＝尋日） */
@@ -22881,25 +22883,33 @@ function favorDueTick(){
 function mergeFavorGigs(){
   try{
     if(typeof GIGS==="undefined" || !Array.isArray(GIGS)) return 0;
+    /* v20a298 Q11：兩個幫忙通告池（F1 教學債＋拒單債）逐張獨立開關——邊筆債叫數就只
+       上嗰筆嘅通告，唔好一張通告清兩筆債。typeof 守衛：舊測試 sandbox 只 eval F1
+       嗰套（無 RIPPLE_DUE_CFG／rippleDueDebt），嗰陣拒單分支靜靜跳過，F1 行為不變。 */
+    const all = [];
+    try{ if(typeof FAVOR_DUE_GIGS!=="undefined" && Array.isArray(FAVOR_DUE_GIGS)) all.push.apply(all, FAVOR_DUE_GIGS); }catch(_e){}
+    try{ if(typeof RIPPLE_DUE_GIGS!=="undefined" && Array.isArray(RIPPLE_DUE_GIGS)) all.push.apply(all, RIPPLE_DUE_GIGS); }catch(_e){}
     const ids = {};
-    (FAVOR_DUE_GIGS||[]).forEach(g=>{ if(g && g.id) ids[g.id] = 1; });
-    let active = false;
-    try{
-      const d = favorDueDebt();
-      if(d && d.kind==="help_gig" && d.favorState==="called"){
-        const today = (typeof S!=="undefined" && S && S.dayIndex) ? (S.dayIndex|0) : 0;
-        active = today <= (Number(d.favorGigDay)||today) + FAVOR_DUE_CFG.windowDays;
-      }
-    }catch(_e){}
-    if(!active){
-      const before = GIGS.length;
-      GIGS = GIGS.filter(g=>!(g && ids[g.id]));
-      if(GIGS.length!==before){ try{ window.GIGS = GIGS; }catch(_w){} }
-      return 0;
-    }
+    all.forEach(g=>{ if(g && g.id) ids[g.id] = 1; });
+    const activeIds = {};
+    const markActive298 = function(cfg, debtFn){
+      try{
+        if(!cfg || !cfg.gigId || typeof debtFn!=="function") return;
+        const d = debtFn();
+        if(d && d.kind==="help_gig" && d.favorState==="called"){
+          const today = (typeof S!=="undefined" && S && S.dayIndex) ? (S.dayIndex|0) : 0;
+          if(today <= (Number(d.favorGigDay)||today) + (Number(cfg.windowDays)||4)) activeIds[cfg.gigId] = 1;
+        }
+      }catch(_e){}
+    };
+    try{ if(typeof FAVOR_DUE_CFG!=="undefined") markActive298(FAVOR_DUE_CFG, (typeof favorDueDebt==="function") ? favorDueDebt : null); }catch(_e){}
+    try{ if(typeof RIPPLE_DUE_CFG!=="undefined") markActive298(RIPPLE_DUE_CFG, (typeof rippleDueDebt==="function") ? rippleDueDebt : null); }catch(_e){}
+    const before = GIGS.length;
+    GIGS = GIGS.filter(g=>!(g && ids[g.id] && !activeIds[g.id]));
+    if(GIGS.length!==before){ try{ window.GIGS = GIGS; }catch(_w){} }
     let n = 0;
-    (FAVOR_DUE_GIGS||[]).forEach(raw=>{
-      if(!raw || !raw.id) return;
+    all.forEach(raw=>{
+      if(!raw || !raw.id || !activeIds[raw.id]) return;
       const norm = normalizeGigRecord(Object.assign({}, raw, { favorDueGig:true }));
       const i = GIGS.findIndex(g=>g && g.id===raw.id);
       if(i<0){ GIGS.push(norm); n++; }
@@ -22908,6 +22918,138 @@ function mergeFavorGigs(){
     try{ window.GIGS = GIGS; }catch(_w){}
     return n;
   }catch(_e){ return 0; }
+}
+/* ===== v20a298 Q11：拒單債到期循環（跟 F1 同一套，獨立 cfg／獨立幫忙通告）。
+   背景：N4_a「果斷拒絕苛刻條件」嗰陣 ripple debtDelta 播種 debt_c4_ho_ripple（何生人情，
+   season 文案「嗰次你拒得乾脆，數就記喺度」），但一直無 dueDay、無 kind——玩家可以無限期拖，
+   唔似 F1 教學債咁到期叫數。做法跟 F1 一模一樣：dueDay（成立後 7 日）＋kind:"help_gig"；
+   到期嗰日何生 Call 機叫數（toast）；4 日內做幫忙通告《午間劇場》臨時人手＝清債（何生好感 +2）；
+   過期未做＝作廢（何生好感 −3，唔入帳本 settled）；到期前現金／禮物還照舊（applyMockAsk 原有路）。
+   獨立 cfg／獨立 gig：F1 教學債日 7–11 解決，拒單債 N4（約第 150 日）先播種，兩筆「叫數」
+   窗口實際唔重疊；分開 gig 免一張通告清兩筆債（mergeFavorGigs 逐張獨立開關）。
+   舊存檔兼容：dueDay 喺 rippleDueTick／手帳渲染首次見到嗰日回填（當日 +7），唔會一讀檔即到期；
+   結清／作廢／現金／禮物還都會記入 S.favorDueSettled（同 F1 共用 map，按債 id 分 key）。
+   永不設「已逾期」status（跟 F1），免 softOverdueFavorDebtLock 誤鎖幫忙通告本身。 ===== */
+const RIPPLE_DUE_CFG = { debtId:"debt_c4_ho_ripple", gigId:"gig_favor_ho_ripple_errand", dueDays:7, windowDays:4 };
+const RIPPLE_DUE_GIGS = [
+  {
+    id:"gig_favor_ho_ripple_errand",
+    year:1988,
+    season:"不限",
+    type:"電視劇",
+    genreLabel:"電視劇",
+    category:"臨記通告",
+    loc:"agency_ho",
+    workTitle:"午間劇場",
+    title:"幫忙通告：《午間劇場》臨時人手",
+    roleLabel:"幫忙頂位",
+    director:"何生",
+    roleHint:"何生個客嗰組臨時唔夠人，你去頂一更，聽場務安排做嘢就得。",
+    blurb:"何生留畀你嘅幫忙通告：唔係派工，係還人情。佢個客嗰組今晚唔夠人手，你去頂一更，做完嗰筆拒單人情就清咗。",
+    synopsis:"何生事務所轉介嘅電視台單元劇《午間劇場》今晚開廠，臨時唔夠臨記企位。何生第一時間諗起你——唔使試鏡，去到報何生個名，聽場務指示頂一更，收工即結。",
+    discoverNote:"何生留畀你還人情嘅幫忙通告，做完即清嗰筆拒單人情債。",
+    boardPriority:"high",
+    boardNote:"還人情",
+    seasonWeight:1,
+    req:{},
+    pay:[32, 40],
+    payExact:40,
+    breachFee:0,
+    fame:[0, 0],
+    popularity:[0, 1],
+    stressDeltaHint:"低",
+    hard:0.1,
+    tier:"臨記",
+    stars:1,
+    applyDeadlineDays:4,
+    shootDaysHint:1,
+    shootHint:"報何生個名入廠，聽場務安排頂位，做完一更就收工。",
+    roleScale:"tv_cameo_short",
+    shootBand:[1, 1],
+    shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    shootDeadlineDays:7,
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["還人情幫忙，即日開工"] },
+    storyKeys:["favor_ho_ripple_errand"],
+    tagOnComplete:[],
+    rumorKeys:[],
+    seasonHook:[],
+    boardHookMode:"normal",
+    isKeyGig:false
+  }
+]; /* v20a298 Q11：RIPPLE_DUE_GIGS 獨立池（唔入 FAVOR_DUE_GIGS，免 test_br89_favor_due D1「得 1 張」斷言撞；mergeFavorGigs 逐張獨立開關）。 */
+function rippleDueDebt(){
+  try{
+    if(typeof S==="undefined" || !S || !Array.isArray(S.mockDebts)) return null;
+    return S.mockDebts.find(d=>d && d.id===RIPPLE_DUE_CFG.debtId) || null;
+  }catch(_e){ return null; }
+}
+function ensureRippleDue(){
+  const d = rippleDueDebt();
+  if(!d) return null;
+  const settled = ensureFavorDueSettled();
+  if(settled[d.id]) return d; /* 已結清／作廢過：補種返嚟嗰筆當普通債，唔重行到期流程（跟 F1） */
+  if(d.kind==null) d.kind = "help_gig";
+  if(d.favorState==null) d.favorState = "pending";
+  if(d.dueDay==null){
+    const today = (typeof S.dayIndex==="number") ? S.dayIndex : 0;
+    d.dueDay = today + RIPPLE_DUE_CFG.dueDays;
+  }
+  return d;
+}
+function rippleDueTick(){
+  try{
+    if(typeof S==="undefined" || !S) return;
+    if(typeof ensureMockJournal==="function") ensureMockJournal();
+    const settled = ensureFavorDueSettled();
+    const d = ensureRippleDue();
+    if(!d){
+      /* 債唔見咗又未有結算紀錄（例如到期前用現金／禮物還咗）：靜靜記低，唔再觸發（跟 F1） */
+      if(S.rippleDueArmed && !settled[RIPPLE_DUE_CFG.debtId]){
+        settled[RIPPLE_DUE_CFG.debtId] = { result:"closed_other", day:(S.dayIndex|0) };
+        try{ favorLedgerNoteSettled(RIPPLE_DUE_CFG.debtId, "closed_other"); }catch(_fl){}
+      }
+      return;
+    }
+    if(d.kind!=="help_gig" || settled[d.id]) return;
+    S.rippleDueArmed = true;
+    const today = S.dayIndex|0;
+    if(d.favorState==="pending"){
+      if(today >= (Number(d.dueDay)||0)){
+        d.favorState = "called";
+        d.favorGigDay = today;
+        d.status = "就嚟到期";
+        try{ toast("何生 Call 機留言：阿偉，嗰次你拒單嗰筆數，到期喇。", { sub:"用現金或者禮物還返，"+RIPPLE_DUE_CFG.windowDays+" 日內還清，筆數就清咗。" }); }catch(_t){}
+        try{ saveQ(); }catch(_s){}
+      } else if((Number(d.dueDay)||0) - today <= 2){
+        if(d.status!=="就嚟到期") d.status = "就嚟到期";
+      }
+      return;
+    }
+    if(d.favorState==="called"){
+      let wrapped = false;
+      try{ wrapped = (S.wrapHistory||[]).some(w=>w && w.gigId===RIPPLE_DUE_CFG.gigId); }catch(_w){}
+      if(!wrapped && S.flags && S.flags["done_"+RIPPLE_DUE_CFG.gigId]) wrapped = true;
+      if(wrapped){
+        S.mockDebts = S.mockDebts.filter(x=>x!==d);
+        settled[d.id] = { result:"repaid_help", day:today };
+        try{ favorLedgerNoteSettled(d.id, "repaid_help"); }catch(_fl){}
+        try{ bumpNpc("agent", 2); }catch(_b){}
+        try{ toast("幫何生頂完嗰單，嗰筆拒單人情還清晒。何生拍拍你膊頭：「好，呢筆數清咗，嗰次拒單嘅事，一筆勾銷。」"); }catch(_t){}
+        try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
+        try{ saveQ(); }catch(_s){}
+        return;
+      }
+      if(today > (Number(d.favorGigDay)||today) + RIPPLE_DUE_CFG.windowDays){
+        S.mockDebts = S.mockDebts.filter(x=>x!==d);
+        settled[d.id] = { result:"void_expired", day:today };
+        /* 作廢唔計入帳本 settled——唔係「清」，係失約（跟 F1／v20a25） */
+        try{ bumpNpc("agent", -3); }catch(_b){}
+        try{ toast("到期未還，嗰筆拒單人情作廢。", { sub:"何生面色唔多好，同你嘅交情都淡咗啲。" }); }catch(_t){}
+        try{ if(typeof syncNotebookMirror==="function") syncNotebookMirror(); }catch(_m){}
+        try{ saveQ(); }catch(_s){}
+      }
+    }
+  }catch(_e){}
 }
 /* ===== Weave Phase 4-2（v20a25）：人情簿 S.favorLedger＋鏈 F 第 2 拍（副導演芬姐離港／人情絕響）。
    背景：mockDebts 係單向「玩家欠人」模型，債清咗就移除、無持久總帳；favorDueSettled 只記教學債、
@@ -27994,6 +28136,7 @@ function renderDebtPane(){
   const ORIGIN34 = (typeof DEBT_ORIGIN_LINES34!=="undefined") ? DEBT_ORIGIN_LINES34 : {};
   ensureMockJournal();
   try{ if(typeof ensureFavorDue==="function") ensureFavorDue(); }catch(_e){}
+  try{ if(typeof ensureRippleDue==="function") ensureRippleDue(); }catch(_e){} /* v20a298 Q11：拒單債 dueDay 首次見到嗰日回填（跟 F1） */
   ensureWeakSeals();
   /* v19z31：soft／早期若無人情債，種教學債，令「去還」唔係死 stub */
   try{
