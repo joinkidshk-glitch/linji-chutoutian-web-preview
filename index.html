@@ -38156,6 +38156,35 @@ const ENC84_DLG_pang_siuki = {
         }
       ]
     },
+    pang_n17_cold: { /* v20a309 Q22：彭 n17 冷版場面——pang_brushed_off 嗰陣播（heart 嗰晚笑住話佢諗多咗）。彭喺度，但唔會第一個行埋嚟；佢同每一個人打招呼，唯獨唔再望向阿偉。兩個選擇照留（雲吞麵／返屋企瞓），label 照含對位關鍵字，授旗同暖版一樣；暖版 n17 逐字唔郁。 */
+      lines: [
+        ["N", "一九九二年年底頒獎禮後台，人頭湧湧，彭少祺穿著司儀禮服，手持咪牌，站在人群中間，見人就叫得出名字，每個人都笑著回應他。"],
+        ["S", "阿偉，嚟咗呀。監製啱啱嗌我過去對流程，你自己周圍行下先啦，陣間台上見。"],
+        ["N", "他說完就轉身，繼續同身邊的監製講流程，連頭都沒有回。阿偉站在原地，看著他跟每一個人打招呼，唯獨沒有再望向自己。"],
+        ["A", "彭生，今晚辛苦晒喇，我……我企喺台邊睇你，成晚都冇停過口。"],
+        ["S", "辛苦咩啫，今晚成晚都係咁講，講到收工就得。做司儀嗰啲，邊度有窿就去補，補完就收工。"],
+        ["N", "阿偉望著他的背影，才想起那晚在錄影廠後台，他說到收工想有人陪他吃碗麵，自己笑著說他想多了，他臉色僵了一下——當時告訴自己是看錯，現在才知道沒有看錯。"],
+        ["S", "你食咗飯未呀？老地方嗰檔麵，今晚我唔得閒去，你自己去食啦，食完早啲返。"]
+      ],
+      choices: [
+        {
+          label: "自己去廟街食碗雲吞麵，坐低等佢",
+          lines: [
+            ["A", "好，彭生，你忙完先啦。我去老地方坐陣，碗麵凍咗我都等。"],
+            ["S", "……隨便你啦。呢行就係咁，邊個等邊個，冇人講得準。"]
+          ],
+          flags: ["pang_noodle_night"]
+        },
+        {
+          label: "趕住返屋企瞓，聽日仲有工開",
+          lines: [
+            ["A", "彭生，唔好意思呀，我聽日仲有工開，趕住返屋企瞓啦，你忙完都早啲返。"],
+            ["S", "哦，冇事，你返去瞓啦，聽日準時呀。"]
+          ],
+          flags: ["pang_early_night"]
+        }
+      ]
+    },
     pang_finale: {
       lines: [
         ["N", "頒獎禮之後那晚，廟街麵檔，彭少祺和阿偉一人一碗雲吞麵，坐下，不用講笑話。"],
@@ -40114,6 +40143,10 @@ function enc79BuildScript(starId, forceFirst, locId){
        按玩家實際行嗰路換開場第一句，其餘 beat 內容不變（「冇俾嗰張枱食埋」係
        顧明輝自己賭債線嘅自述，三路都成立）。 */
     let beatSeg100 = D.beats[beat.id];
+    /* v20a309 Q22：彭 n17 冷版場面——pang_brushed_off 嗰陣（heart 嗰晚笑住話佢諗多咗）播冷版，唔係暖版。beat.id 照係 pang_n17：segKey 照用 "beat:pang_n17"（GRANT229＋fav 對位唔郁）、beatsDone.pang_n17 照標、grants 照行，pang_finale_cold 閘（n17 做完＋brushed_off）照去得到。 */
+    if(beat.id==="pang_n17" && (S.flags||{}).pang_brushed_off && D.beats.pang_n17_cold){
+      beatSeg100 = D.beats.pang_n17_cold;
+    }
     if(beat.id==="gu_n10after" && typeof enc87StoryFlag==="function" && Array.isArray(beatSeg100.lines) && beatSeg100.lines.length){
       let first100 = null;
       if(enc87StoryFlag("flag_standup_crew")) first100 = ["N","自從嗰次你企出嚟幫成組人出聲之後，有段日子冇人見過顧明輝。直到嗰朝，報紙娛樂版登咗一小格，寫住佢喺夜總會駐唱，舊歌重唱，座無虛席。"];
