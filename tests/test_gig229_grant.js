@@ -9,7 +9,7 @@
 //       N10 film_105／film_202／tv_202、N11 film_106／film_107、N12 film_201／tv_103、N19 tv_104／tv_105；
 //       v253 C 組 10：N13 tv_114／film_102、N14 rec_111／rec_201／ad_109、N15 ad_110／rec_202、N16 film_113／film_104／ad_111；N13_c 不派）
 //   T2 支線：ENC79 廖／顧／麥初遇各 3（關鍵字命中＋兜底，映射表揀啱新 id，實機 record 派得出——v255 live）
-//       ＋廖 Beat2（W3_ho_liao_a／b → tv_209／tv_210，live）＋2 個 draft 目標 live（入口派得出，仍無呼叫點）
+//       ＋廖 Beat2（W3_ho_liao_a／b → tv_210／tv_209，live；v20a301 Q14-B 對調：A 表現好攞冬檔高薪，B 追問金主攞秋檔低薪）＋2 個 draft 目標 live（入口派得出，仍無呼叫點）
 //   T3 冪等：同一張記低兩次得一筆；派發一次後唔再派
 //   T4 翌日先到期：今日 dueList 空、聽日有
 //   T5 派發守衛：已殺青／拍攝中／等消息中／已預約 → 靜靜跳過（queue 清走、唔出電話）；gig 唔存在 → 跳過
@@ -269,9 +269,9 @@ ENC79_CASES.forEach(c=>{
   ok('T2 初遇實機派得出（記低＋聽日到期）' + c[2], enc79Live(c[0], c[1], c[2]));
 });
 freshS(10);
-ok('T2 廖 Beat2 a→tv_209', grant229RecordFromChoice({id:'W3_ho_liao'},{id:'W3_ho_liao_a'}) && S.grant229Queue[0].gigId==='gig_1990_tv_209');
+ok('T2 廖 Beat2 a→tv_210（v20a301 Q14-B 對調：表現好攞冬檔高薪）', grant229RecordFromChoice({id:'W3_ho_liao'},{id:'W3_ho_liao_a'}) && S.grant229Queue[0].gigId==='gig_1990_tv_210');
 freshS(10);
-ok('T2 廖 Beat2 b→tv_210', grant229RecordFromChoice({id:'W3_ho_liao'},{id:'W3_ho_liao_b'}) && S.grant229Queue[0].gigId==='gig_1990_tv_210');
+ok('T2 廖 Beat2 b→tv_209（v20a301 Q14-B 對調：追問金主攞秋檔低薪）', grant229RecordFromChoice({id:'W3_ho_liao'},{id:'W3_ho_liao_b'}) && S.grant229Queue[0].gigId==='gig_1990_tv_209');
 ok('T2 draft 兩張 1991 和音喺 GRANT229_DRAFT', GRANT229_DRAFT.gu_promise_clean.gigId==='gig_1991_rec_201' && GRANT229_DRAFT.gu_ask_back.gigId==='gig_1991_rec_207');
 freshS(10);
 grant229RecordFromEnc79('first:gu_mingfai','靜靜站在那裡，聽他哼完那段舊歌');
