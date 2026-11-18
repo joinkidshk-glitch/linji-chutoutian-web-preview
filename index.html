@@ -39815,7 +39815,7 @@ function sideline280GrantCompletion(lineKey){
     else if(lineKey==="mak") warm = !(F.enc79_mak_honest);
     else if(lineKey==="lok") warm = !!(F.lok_calm_truth) && !(F.lok_join_rant) && !(F.lok_loose_row) && !(F.lok_cover_first);
     else if(lineKey==="ngai") warm = !(F.ngai_rain_hold_back);
-    else if(lineKey==="chai") warm = !!(F.chai_truth_change) && !!(F.chai_try_new);
+    else if(lineKey==="chai") warm = !!(F.chai_truth_change); /* v20a318：獎勵讀法改 truth_change only（草稿 L1173；try_new／play_safe 係句變體，唔係暖／冷分界） */
     else if(lineKey==="pang") warm = !!(F.pang_cover_night) && !!(F.pang_listened) && !!(F.pang_noodle_night);
     else if(lineKey==="chung") warm = !!(F.chung_kept_quiet) && !!(F.chung_listened);
     else if(lineKey==="ching") warm = (typeof enc87StoryFlag==="function" ? enc87StoryFlag("flag_vocal_train") : !!(F.flag_vocal_train)) && !!(F.ching_back_train) && !!(F.ching_stand_slow);
@@ -41827,7 +41827,7 @@ ENC79_BEATS.chai_zanhoi = [
   { id:"chai_choice", when(st){ const ys=yearSeasonNow(); return ys.year===1992 && enc79TierOf(st.fav)>=2; } },
   { id:"chai_repay", when(st){ return enc79TierOf(st.fav)>=2 && !(S.flags||{}).chai_silent && (enc87StoryFlag("flag_side_film") || enc87StoryFlag("flag_side_tv") || enc87StoryFlag("flag_side_undecided") || enc83NodeDone("N13")); }, grants(){ try{ sideline280GrantCompletion("chai"); }catch(_e280){} } }, /* v20a278：repay 閘加 !chai_silent（唔出聲嗰陣無回報 beat，冷後果由 patron 冷版承接） */
   { id:"chai_patron_cold", when(st){ return enc79TierOf(st.fav)>=4 && ((S.flags||{}).chai_silent || (S.flags||{}).chai_comfort || (S.flags||{}).chai_loose_fear); }, }, /* v20a278：冷版提攜（排暖版前；無債權） */
-  { id:"chai_patron", when(st){ return enc79TierOf(st.fav)>=4 && !(S.flags||{}).chai_silent && !(S.flags||{}).chai_comfort && !(S.flags||{}).chai_loose_fear; }, grants(){ enc79GrantCredit({ id:"credit_enc83_chai_patron", debtor:"齊鎮海", title:"一哥引薦", line:"齊鎮海同監製打咗聲招呼：你去試鏡嗰日，提一哥個名，嗰道門會為你開。", status:"未收" }); try{ sideline280GrantCompletion("chai"); }catch(_e280){} } }, /* v20a278：暖版加排除式閘 */
+  { id:"chai_patron", when(st){ return enc79TierOf(st.fav)>=4 && !!(S.flags||{}).chai_truth_change && !(S.flags||{}).chai_silent && !(S.flags||{}).chai_comfort && !(S.flags||{}).chai_loose_fear; }, grants(){ enc79GrantCredit({ id:"credit_enc83_chai_patron", debtor:"齊鎮海", title:"一哥引薦", line:"齊鎮海同監製打咗聲招呼：你去試鏡嗰日，提一哥個名，嗰道門會為你開。", status:"未收" }); try{ sideline280GrantCompletion("chai"); }catch(_e280){} } }, /* v20a278：暖版加排除式閘／v20a318：加 truth_change 要求（草稿 L1110 引薦閘；silent＋truth_change 仍係冷，見 L1182） */
   { id:"chai_finale", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=4 && ys.year===1992 && ys.season==="冬" && (st.beatsDone||{}).chai_patron && !(S.flags||{}).chai_silent && !(S.flags||{}).chai_comfort && !(S.flags||{}).chai_loose_fear; }, grants(){ try{ S.flags=S.flags||{}; S.flags.enc79_chai_finale=1; }catch(_e){} } }, /* v20a305 Q18：暖版收科（草稿好收尾入稿；排提攜之後；冷版照行 patron_cold） */
 ];
 /* ===== ENC83 模組完 ===== */

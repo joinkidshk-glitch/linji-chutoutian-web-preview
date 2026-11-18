@@ -2,7 +2,7 @@
 //   (A) 數據：FRAME 有 cap_try／wrap_safe（S 句、唔同舊句）；stageup 唔郁；註冊後 CAP／WRAP 預設仍係舊句
 //   (B) cap 分流：try_new → cap_try；play_safe／未揀／舊檔 → 舊 cap；播完清 capHit
 //   (C) wrap 分流：play_safe → wrap_safe；try_new／未揀／舊檔 → 舊 wrap；播完清 wrapEcho
-//   (D) 暖／冷／finale 唔受影響：暖版閘照舊（truth_change＋try_new）；冷版 heartCold 照播；finale 尾句分流照舊（try_new 用 wrap 句、play_safe 用 cap 句）
+//   (D) 暖／冷／finale 唔受影響：暖版 heart 照播（v20a318 之後獎勵／提攜讀法改 truth_change only，try_new 唔再係必要條件）；冷版 heartCold 照播；finale 尾句分流照舊（try_new 用 wrap 句、play_safe 用 cap 句）
 //   (E) 舊檔：無 Beat 5 旗 → cap／wrap 都係舊句，唔 crash
 //   (F) 靜態：其他星 cap／wrap 唔郁；chai_try_new／chai_play_safe 授出點唯一（Beat 5 抉擇）；gigs_new.json 仍係 306 張
 // 用法：node tests/test_r306_chai_frame.js [path-to-index.html]
@@ -181,13 +181,13 @@ function buildFrame(flags, mark){
 
 /* ---------- (D) 暖／冷／finale 唔受影響 ---------- */
 (function(){
-  // 暖版 heart：truth_change＋try_new 齊 → 播暖版 heart
+  // 暖版 heart：truth_change → 播暖版 heart（v20a318：try_new 唔再係必要條件）
   resetS(200); _ys = { year: 1990, season: '春' };
   setFav('chai_zanhoi', 45);
   doneAllBeats('chai_zanhoi');
-  S.flags.chai_truth_change = 1; S.flags.chai_try_new = 1;
+  S.flags.chai_truth_change = 1;
   const bWarm = enc79BuildScript('chai_zanhoi', false);
-  ok('D 暖版齊晒（truth_change＋try_new）→ 播暖版 heart', segSteps(bWarm, 'heart:chai_zanhoi').length > 0);
+  ok('D 暖版齊晒（truth_change）→ 播暖版 heart', segSteps(bWarm, 'heart:chai_zanhoi').length > 0);
   // 冷版 heart：chai_loose_fear → 播 heartCold，唔播暖版 heart
   resetS(201); _ys = { year: 1990, season: '春' };
   setFav('chai_zanhoi', 45);
@@ -232,8 +232,8 @@ function buildFrame(flags, mark){
 ok('F 其他星 cap／wrap 唔郁（陸 cap 句在位）',
   ENC79_CAP_LINES.luk_baakyin && ENC79_CAP_LINES.luk_baakyin[1] === '等你擔正嗰日，我哋再慢慢傾。' &&
   ENC79_WRAP_ECHO.luk_baakyin && ENC79_WRAP_ECHO.luk_baakyin[1] === '上次嗰套戲，你嗰場做得唔錯。導演有提起你。');
-ok('F chai_try_new 授出點唯一（Beat 5 抉擇 flags 1 處＋讀取 2 處：暖閘、cap 分流）',
-  (html.match(/chai_try_new/g) || []).length === 3, 'count=' + (html.match(/chai_try_new/g) || []).length);
+ok('F chai_try_new 授出點唯一（Beat 5 抉擇 flags 1 處＋讀取 1 處：cap 分流；v20a318 之後 280 獎勵讀法唔再讀 try_new）',
+  (html.match(/chai_try_new/g) || []).length === 2, 'count=' + (html.match(/chai_try_new/g) || []).length);
 ok('F chai_play_safe 授出點唯一（Beat 5 抉擇 flags 1 處＋讀取 2 處：finale、wrap 分流）',
   (html.match(/chai_play_safe/g) || []).length === 3, 'count=' + (html.match(/chai_play_safe/g) || []).length);
 ok('F v305 finale 機制唔郁（chai_finale 6 句＋play_safe 換尾句在位）',

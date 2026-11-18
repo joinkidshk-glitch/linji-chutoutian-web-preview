@@ -164,10 +164,9 @@ ok('(1) 冷版唔派：駱陪鬧／講出去／翻唱、魏企埋一邊／唔講
   resetS(1010); S.flags.ngai_rain_hold_back = 1; if(sideline280GrantCompletion('ngai')!==false || S.fame!==0) good = false;
   return good;
 })());
-ok('(1) 缺一唔派：齊缺 Beat 5／缺 Beat 4、彭缺麵／缺聽／缺頂、鍾缺守口／缺靜聽、程缺 N15／缺撐練／缺慢路', (()=> {
+ok('(1) 缺一唔派：齊缺 Beat 4（無 truth_change）／彭缺麵／缺聽／缺頂、鍾缺守口／缺靜聽、程缺 N15／缺撐練／缺慢路（v20a318：齊獎勵讀法改 truth_change only，Beat 5 唔再係必要條件）', (()=> {
   let good = true;
   const cases = [
-    ['chai', ()=>{ S.flags.chai_truth_change = 1; }],
     ['chai', ()=>{ S.flags.chai_try_new = 1; }],
     ['pang', ()=>{ S.flags.pang_cover_night = 1; S.flags.pang_listened = 1; }],
     ['pang', ()=>{ S.flags.pang_cover_night = 1; S.flags.pang_noodle_night = 1; }],
@@ -237,11 +236,11 @@ ok('(2) 彭 patron 閘本身只睇 tier（舊制）：冷版 grants() 照授債�
   beatOf('pang_siuki','pang_patron').grants();
   return enc83HasCredit('credit_enc84_pang_patron')===true && S.fame===0 && S.industryCreditDelta===0 && !S.flags.sideline280_pang;
 })());
-ok('(2) 齊 patron 閘唔讀 try_new（舊制）：穩陣版 grants() 照授債權，但獎勵唔派', (()=> {
+ok('(2) 齊 patron 閘唔讀 try_new（v20a318）：穩陣版 grants() 照授債權，獎勵照派（truth_change only）', (()=> {
   resetS(1024); setFav('chai_zanhoi',70); metStar('chai_zanhoi');
   S.flags.chai_truth_change = 1; S.flags.chai_play_safe = 1; /* Beat 4 講真話、Beat 5 要穩陣 */
   beatOf('chai_zanhoi','chai_patron').grants();
-  return enc83HasCredit('credit_enc83_chai_patron')===true && S.fame===0 && S.industryCreditDelta===0 && !S.flags.sideline280_chai;
+  return enc83HasCredit('credit_enc83_chai_patron')===true && S.fame===2 && S.industryCreditDelta===1 && S.flags.sideline280_chai===1;
 })());
 
 /* ---- (3) 補派點：patron 早開 → 收尾 beat／heart 後補派；收尾先啱 → patron 唔重複 ---- */
@@ -271,14 +270,22 @@ ok('(3) 駱：patron 早開（E4 未出）唔派；e4grudge 勸佢後補派；�
   beatOf('lok_gasing','lok_e4grudge').grants();
   return early && paid && S.fame===0 && !S.flags.sideline280_lok;
 })());
-ok('(3) 齊：patron 早開（未試新角）唔派；repay 試新角後補派', (()=> {
+ok('(3) 齊：patron 有真話即派（v20a318，唔使等 Beat 5）；repay 唔重派', (()=> {
   resetS(1034); setFav('chai_zanhoi',70); metStar('chai_zanhoi');
   S.flags.chai_truth_change = 1;
   beatOf('chai_zanhoi','chai_patron').grants();
-  const early = S.fame===0 && !S.flags.sideline280_chai;
+  const paid = S.fame===2 && S.industryCreditDelta===1 && S.flags.sideline280_chai===1;
   S.flags.chai_try_new = 1;
   beatOf('chai_zanhoi','chai_repay').grants();
-  return early && S.fame===2 && S.industryCreditDelta===1;
+  return paid && S.fame===2 && S.industryCreditDelta===1;
+})());
+ok('(3) 齊：patron 早開（未講真話）唔派；講真話後 repay 補派', (()=> {
+  resetS(1034); setFav('chai_zanhoi',70); metStar('chai_zanhoi');
+  beatOf('chai_zanhoi','chai_patron').grants();
+  const early = S.fame===0 && !S.flags.sideline280_chai;
+  S.flags.chai_truth_change = 1;
+  beatOf('chai_zanhoi','chai_repay').grants();
+  return early && S.fame===2 && S.industryCreditDelta===1 && S.flags.sideline280_chai===1;
 })());
 ok('(3) 彭：patron 早開（未食麵）唔派；n17 食麵後補派', (()=> {
   resetS(1035); setFav('pang_siuki',70); metStar('pang_siuki');

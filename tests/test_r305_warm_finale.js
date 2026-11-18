@@ -171,6 +171,7 @@ CASES.forEach(c => {
   ok('B ' + c.sid + ' 提攜未播 → finale 唔開，先播提攜',
     (() => { resetS(956); _ys = { year: 1992, season: '冬' }; setFav(c.sid, 70); doneExcept(c.sid, [c.patron, c.line + '_finale']);
       if(c.sid==='lok_gasing') S.flags.lok_calm_truth=1; /* v20a314：駱提攜暖版嚴格閘要 lok_calm_truth 正面旗 */
+      if(c.sid==='chai_zanhoi') S.flags.chai_truth_change=1; /* v20a318：齊提攜暖版閘要 chai_truth_change 正面旗 */
       return enc79BeatOpen(c.sid, beatOf(c.sid, c.line + '_finale')) === false && enc79PickBeat(c.sid).id === c.patron; })());
 });
 
@@ -258,7 +259,7 @@ CASES.forEach(c => {
 });
 
 /* ---------- (S) 靜態 guard ---------- */
-ok('S 三線提攜閘唔郁（駱三旗／魏兩旗／齊三旗排除式）',
+ok('S 三線提攜閘唔郁（駱三旗／魏兩旗／齊 truth_change＋三旗排除式，v20a318）',
   html.indexOf('!(S.flags||{}).lok_join_rant && !(S.flags||{}).lok_loose_row && !(S.flags||{}).lok_cover_first') >= 0 &&
   html.indexOf('!(S.flags||{}).ngai_rain_hold_back && !(S.flags||{}).ngai_patron_honest') >= 0 &&
   html.indexOf('!(S.flags||{}).chai_silent && !(S.flags||{}).chai_comfort && !(S.flags||{}).chai_loose_fear') >= 0);
