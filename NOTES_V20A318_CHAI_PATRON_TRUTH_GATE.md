@@ -83,7 +83,7 @@ weave43_static／weave44_static／weave49_static／wf5_87／wrap38）。
 首跑 378／12——多出嘅 3 項 FAIL 係上面 enc83／enc84／r317 三檔寫死舊提攜閘，
 已同步更新（唔係回歸）。`qa296/derive296.json` suite 重跑再生，已還原，唔入版。
 
-## §5 落地實數（填）
+## §5 落地實數
 
-- main HEAD：待填
-- Pages：待填（index.html md5／bytes）
+- main HEAD：`122e27e`（內容 commit `6a1bb5d` squash 合併；本 commit `122e27e` 為 §5 填實數）
+- Pages：index.html md5 `2f2dc271c9e6dee7dcc77547490752a5`／4,700,388 bytes，byte-identical，v20a318 標記在位
