@@ -25058,6 +25058,8 @@ function commit48Available(id){
   if(!def || !COMMIT48_NODES[id]) return false;
   if(choice47StoryFlag(def.flag)) return false;          /* 已 commit 本線 */
   if(choice47StoryFlag(def.otherFlag)) return false;     /* 互斥：已 commit 另一線 */
+  /* v20a294 Q7：曉晴 HE 鎖死——揀咗「勸佢跟屋企走」（hiu_family_go），佢走咗冇得追，唔出 commit offer。 */
+  if(id==="CMT_hiu_commit" && choice47StoryFlag("hiu_family_go")) return false;
   if(!choice47StoryDone(def.crisis)) return false;       /* 未行到該線 crisis，唔好提早收束 */
   if(commit48Rel(def.relKey) < COMMIT48_REL_MIN) return false;
   /* v20a159 ROM159：排他鎖——只可以 commit 鎖定嗰位。未鎖（舊檔／未行過 bumpRel）嗰陣
@@ -25904,6 +25906,20 @@ function rom159PrepareNode(node){
     if(committed) return null;
     const heId = { hiu:"C_hiu_ending_he", choi:"C_choi_ending_he", lan:"C_lan_ending_he", xu:"C_xu_ending_he", yip:"C_yip_ending_he", so:"C_so_ending_he" }[who];
     if(!Array.isArray(node.choices) || !node.choices.some(c=>c && c.id===heId)) return null;
+    /* v20a294 Q7：曉晴 HE 鎖死——揀咗「勸佢跟屋企走」（hiu_family_go），佢走咗冇得追：
+       ending 嗰幕 HE 選擇換成「差一步」變體（只寫自己線 BE 旗，唔寫 commit／唔寫 HE）。
+       跟 locked／contra98 先例（HE 換成 BE 變體，唔係刪選擇）；family_go 比鎖另一位更貼呢條線，行先。 */
+    if(who==="hiu" && typeof enc87StoryFlag==="function" && enc87StoryFlag("hiu_family_go")){
+      const copy = Object.assign({}, node);
+      copy.choices = node.choices.map(c=>{
+        if(!c || c.id!==heId) return c;
+        return Object.assign({}, c, {
+          label:"坦白心意：佢已經跟屋企走咗",
+          effects:Object.assign({}, c.effects||{}, { flags:[myBe], stats:{}, notes:"差一步：佢已經拖住行李行入閘口。嗰句說話，阿偉到最後都冇講出口——唔係唔想講，係講咗，佢都唔會留低。嗰晚阿偉勸佢跟屋企走，呢一步就係嗰句話嘅代價。" })
+        });
+      });
+      return copy;
+    }
     /* 鎖咗第二個 → HE 換成「坦白」差一步變體（只寫自己線 BE 旗，唔寫 commit）。
        跟 v20a98 CONTRA98 先例（commit 旗已立嗰陣佢會先換，呢度守嘅係「鎖咗未 commit」嗰段）。 */
     if(locked && locked!==who){
@@ -27339,7 +27355,8 @@ function enc158PrepareNode(node){
       let open158 = null;
       if(has("hiu_deal_refused")) open158 = { speaker:"林曉晴", lines:[ "嗰陣你叫我留低，唔好簽，我聽你話。呢個角色，我捱咗咁耐先等到，你話，我爭唔爭？", "我知你都想要，不過今次，我真係唔想讓。" ] };
       else if(has("hiu_deal_signed")) open158 = { speaker:"林曉晴", lines:[ "嗰陣你叫我簽，我簽咗。公司話呢個角色啱我，叫我嚟試，不過我心入面，仲係掛住嗰陣你嗰句。", "你都嚟試呢個角色㗎？我哋……又撞埋一齊喇。" ] };
-      else if(has("hiu_family_go")) open158 = { speaker:"林曉晴", lines:[ "嗰陣你叫我跟屋企走，我差啲就買咗機票。不過臨上機嗰陣，我返轉頭喇。", "呢個角色，係我留低嘅理由。你話，我係咪傻？" ] };
+      /* v20a294 Q7：走咗版——機票買咗，走之前試埋呢個角色（喺呢行最後一個機會）；唔再講「返轉頭」，同結局啟德送機一致，之後試鏡競爭嗰幾段照接。 */
+      else if(has("hiu_family_go")) open158 = { speaker:"林曉晴", lines:[ "嗰陣你叫我跟屋企走，我聽你話，買咗機票喇。不過走之前，我想試埋呢個角色——呢個係我喺呢行最後一個機會。", "你話，我係咪傻？明知就嚟走，仲要嚟爭呢個角色。" ] };
       if(!open158) return null;
       copy.beats[0] = open158;
       return copy;
