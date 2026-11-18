@@ -37878,7 +37878,11 @@ const ENC83_FRAME_chai_zanhoi = {
     ["N", "齊鎮海說完，輕輕點了下頭，轉身回到監視器後面，背影和初見那天一樣挺直。"]
   ],
   cap: ["S", "阿偉，今日傾到呢度先啦，我仲有場戲要默。你有呢份心，我領咗，不過有啲路，仲要慢慢行，唔好急。"],
-  wrap: ["S", "殺青喇，阿偉。同你做呢套戲，我冇睇錯人。嚟緊嗰條路點行，你自己企穩，我會喺後面望住。"]
+  wrap: ["S", "殺青喇，阿偉。同你做呢套戲，我冇睇錯人。嚟緊嗰條路點行，你自己企穩，我會喺後面望住。"],
+  /* v20a306 Q19：FRAME cap／wrap 按 Beat 5 分流——cap 預設＝play_safe 版（舊 cap 句，慢慢行唔好急）；cap_try＝try_new 版（肯試新嘢，膽色認咗先，火候未夠）。
+     wrap 預設＝try_new 版（舊 wrap 句）；wrap_safe＝play_safe 版（企得穩、冇浮冇躁嗰邊）。預設即舊句，未揀／舊檔行為唔變；分流喺 enc79BuildScript 讀旗嗰陣換句。 */
+  cap_try: ["S", "阿偉，你肯試新嘢，呢份膽色我認。不過膽色唔係火候——等你試埋嗰個角色，企得穩先，我哋先再傾。"],
+  wrap_safe: ["S", "殺青喇，阿偉。呢套戲你企得穩，冇浮冇躁，已經好難得。慢慢嚟唔係慢，係行得穩，之後嗰條路，你照咁行，我放心。"]
 };
 /* ===== v20a84 ENC84 對話數據：紅星巧遇 Phase 3 四星（彭少祺／蘇芷茵／鍾楚凝／程天諾）五層對白＋框架句。
    註冊喺 ENC84 疊加模組（ENC79_DIALOG／ENC79_PILOT／ENC79_STAGEUP／CAP_LINES／WRAP_ECHO）。 ===== */
@@ -40071,7 +40075,10 @@ function enc79BuildScript(starId, forceFirst, locId){
   const addr = (D.address && D.address[ptier]) || [];
   pushLines(addr, "address:"+starId, null);
   if(st.wrapEcho && ENC79_WRAP_ECHO[starId]){
-    pushLines([ENC79_WRAP_ECHO[starId]], "wrapecho:"+starId, ()=>{ enc79StarState(starId).wrapEcho = false; });
+    /* v20a306 Q19：齊 FRAME wrap 按 Beat 5 分流——play_safe 用 wrap_safe（企得穩嗰邊）；預設（try_new／未揀／舊檔）用舊 wrap 句；v305 finale 尾句換句唔郁。 */
+    let wrapLine306 = ENC79_WRAP_ECHO[starId];
+    if(starId==="chai_zanhoi" && (S.flags||{}).chai_play_safe && typeof ENC83_FRAME_chai_zanhoi!=="undefined" && ENC83_FRAME_chai_zanhoi.wrap_safe) wrapLine306 = ENC83_FRAME_chai_zanhoi.wrap_safe;
+    pushLines([wrapLine306], "wrapecho:"+starId, ()=>{ enc79StarState(starId).wrapEcho = false; });
   }
   /* v20a89 BR89：主線抉擇記憶前置（審計 #7）——N7_c 嗌「分工救場」之後再遇魏詠男，
      佢會認返嗰次拍檔（一次性，唔再係揀完即忘）。 */
@@ -40245,7 +40252,10 @@ function enc79BuildScript(starId, forceFirst, locId){
   }
   /* 級數上限句：好感已到頂兼今次升唔到 */
   if(st.capHit && ENC79_CAP_LINES[starId]){
-    pushLines([ENC79_CAP_LINES[starId]], "cap:"+starId, ()=>{ enc79StarState(starId).capHit = false; });
+    /* v20a306 Q19：齊 FRAME cap 按 Beat 5 分流——try_new 用 cap_try（肯試新嘢嗰邊）；預設（play_safe／未揀／舊檔）用舊 cap 句。 */
+    let capLine306 = ENC79_CAP_LINES[starId];
+    if(starId==="chai_zanhoi" && (S.flags||{}).chai_try_new && typeof ENC83_FRAME_chai_zanhoi!=="undefined" && ENC83_FRAME_chai_zanhoi.cap_try) capLine306 = ENC83_FRAME_chai_zanhoi.cap_try;
+    pushLines([capLine306], "cap:"+starId, ()=>{ enc79StarState(starId).capHit = false; });
   }
   /* 收尾漏風聲（T2+，種子定 30%）
      v20a84 ENC84：彭少祺係風聲樞紐（設計 §3.4）——T1 起每次巧遇恆常漏一位，唔擲種子；

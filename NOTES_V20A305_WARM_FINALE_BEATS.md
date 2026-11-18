@@ -2,7 +2,7 @@
 
 - 版本：v20a305（Q18）
 - 基線：main `2890489`（v304，suite 367／9）
-- 結果：suite 368／9（基線 367／9；+1 係新測試 test_r305_warm_finale.js；9 項 pre-existing FAIL 不變：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38）；Pages md5 ＿＿＿／＿＿＿ bytes（見 §7）
+- 結果：suite 368／9（基線 367／9；+1 係新測試 test_r305_warm_finale.js；9 項 pre-existing FAIL 不變：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38）；Pages md5 `b011862d8d3ec191983f3b214240fe4b`／4,692,106 bytes（見 §7）
 - 新測試：`tests/test_r305_warm_finale.js`（78 項，ALL PASS）
 - 行數：index.html 47194 → 47229（＋35 行：3 段收科對白 28 行＋3 條 registry 閘 3 行＋齊尾句分流 4 行，鍾 registry 調序淨 0 行）
 
