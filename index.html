@@ -31292,20 +31292,6 @@ function renderAwardResultHtml(pack){
      喺卡列之後獨立一行；唔改數據／判定／得主標記。 */
   const felCat186 = cats.find(c=>c && Array.isArray(c.fellows63) && c.fellows63.length) || null;
   const felBit186 = felCat186 ? (()=>{ try{ return awards63FellowsHtml(felCat186); }catch(_e){ return ""; } })() : "";
-  /* 對手線強化票 R4：同屆提名有高俊傑嗰陣，結果卡加一句同場對照（只睇玩家有提名嘅類別；唔改數據／判定／得主標記）。 */
-  const rivalHeadBit = (()=>{
-    try{
-      const hc = (cats||[]).find(c=>c && (c.outcome==="won" || c.outcome==="nominated") && Array.isArray(c.fellows63) && c.fellows63.some(f=>f && f.star==="高俊傑"));
-      if(!hc) return "";
-      if(hc.outcome==="won") return '<p class="psr-fellows63">今屆同高俊傑同場提名，你贏咗呢一場。</p>';
-      let wStar = "";
-      try{
-        const w = hc.winner63;
-        wStar = (w && typeof w==="object" && w.star) ? w.star : ((typeof w==="string" && w) ? w : ((hc.fellows63[0] && hc.fellows63[0].star) || ""));
-      }catch(_w){}
-      return '<p class="psr-fellows63">今屆同高俊傑同場提名，獎落'+esc214(wStar||"對手")+'手，下年再鬥。</p>';
-    }catch(_e){ return ""; }
-  })();
   /* v20a214 NP214：結果卡改做一張報紙公佈（v11 樣本版式：報頭 A、兩欄、書面語、全名、
      遊戲日期、黑白半調相、★得主標記），唔再係票根式卡片。esc214 係本地轉義（渲染時先換
      全名：阿偉→陳偉翔；舊測試沙盒抽唔到 newspaperEsc／newspaperFullName214 嗰陣跌返
@@ -31386,7 +31372,7 @@ function renderAwardResultHtml(pack){
       ${photoFigure214(photo214)}
       ${factRows214 ? `<aside class="np214-factbox"><h4>${esc214((pack.displayName||"頒獎夜")+"小檔案")}</h4>${factRows214}</aside>` : ""}
       ${(photo214 || factRows214) ? `<p class="np214-filler np214-filler-left" aria-hidden="true">金碟夜 唱片銷量 樂壇頒獎 歌壇新人 專輯榜上 典禮掌聲 大禮堂 電台 唱片鋪 夏季 歌手 專輯 紅地毯 晚禮服 歌迷 歡呼 閃光燈</p>` : ""}
-      <div class="np214-body2">${catsHtml}${felBit186}${rivalHeadBit}</div>
+      <div class="np214-body2">${catsHtml}${felBit186}</div>
     </div>${sidebar214}</div>
     ${pagefoot214("第一版 · 頒獎結果")}
     ${hasMetric214 ? `<div class="np214-switchrow"><button type="button" class="np214-switch" onclick="np214ShowPage(this,2)">第二版 →</button></div>` : ""}
@@ -32165,11 +32151,6 @@ function awards62CeremonyBeats(pack){
             slotIdx: awards208NomineeSlotIdx(ni, nc.fellows.length, nc.isFocus, best),
             caption: nm.star + "：《" + (nm.title || "") + "》" });
         });
-      }
-      /* 對手線強化票 R4：玩家提名格又有高俊傑同場嗰陣，揭曉前加一格對決 beat（通用 caption 顯示，唔改卡片／時序）。 */
-      if(nc.isFocus && best !== "gallery"){
-        const koF208 = (nc.fellows||[]).find(f=>f && f.star==="高俊傑");
-        if(koF208) beats.push({ id:"rival", ms:2000, catIdx:ci, catId:nc.id, catLabel:nc.label, caption:"同場有高俊傑《"+(koF208.title||"")+"》——今晚呢個獎，係你哋兩個嘅對決。" });
       }
       beats.push({ id: "suspense", ms: 1400, catIdx: ci, catId: nc.id, catLabel: nc.label, caption: SUSPENSE212[ci % SUSPENSE212.length] });
       let revealCap;
