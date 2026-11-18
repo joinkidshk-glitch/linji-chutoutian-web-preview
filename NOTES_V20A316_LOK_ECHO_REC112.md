@@ -57,10 +57,10 @@
 
 ## §5 落地數字（填）
 
-- 內容 commit：
+- 內容 commit：`e2e4cdb`
 - NOTES commit：
-- main HEAD：
-- Suite TOTAL：
-- Pages：index.html md5 ／ bytes
+- main HEAD：`e2e4cdb`
+- Suite TOTAL：**379 PASS／9 FAIL**（基線 378／9；＋1 係新測試檔；9 項 FAIL 全部係已知 pre-existing：flash51／slot50／soft_tip_111_restore／start53／weave43／44／49_static／wf5_87／wrap38）
+- Pages：index.html md5 `8dba5e378b9a11787c4b56c1943ac0bb`／4,699,628 bytes，byte-identical，v316 標記在位
 - 工作副本 `linji-work316`：已刪
 - `qa296/derive296.json`：suite 再生嗰份已還原，唔入版
