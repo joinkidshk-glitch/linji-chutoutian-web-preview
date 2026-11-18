@@ -153,9 +153,9 @@ ok('T1 武打 matcher：臨記動作替身 film_211／213／214 唔入', ['gig_1
 ok('T1 武打 matcher：電視動作 tv_102 入', isMakWuzhiGig158(gigById('gig_1990_tv_102')));
 ok('T1 武打 matcher：喜劇／文藝唔入', !isMakWuzhiGig158(gigById('gig_1991_film_109')) && !isMakWuzhiGig158(gigById('gig_1991_film_103')));
 const pangMatches = gigs.filter(isPangCharityGig158);
-ok('T1 司儀 matcher：新庫 5 張', pangMatches.length===5, pangMatches.map(g=>g.id).join(','));
-ok('T1 司儀 matcher：5 張正係 task 列嗰 5 張',
-  ['gig_1990_variety_101','gig_1990_variety_105','gig_1991_variety_103','gig_1991_variety_104','gig_1992_variety_102']
+ok('T1 司儀 matcher：新庫 6 張', pangMatches.length===6, pangMatches.map(g=>g.id).join(','));
+ok('T1 司儀 matcher：6 張正係 task 列嗰 5 張＋v319 variety_106',
+  ['gig_1990_variety_101','gig_1990_variety_105','gig_1991_variety_103','gig_1991_variety_104','gig_1992_variety_102','gig_1992_variety_106']
     .every(id=>pangMatches.some(g=>g.id===id)));
 ok('T1 司儀 matcher：嘉賓／參賽者／伴舞唔入',
   !isPangCharityGig158(gigById('gig_1990_variety_102')) && !isPangCharityGig158(gigById('gig_1991_variety_109')) &&
@@ -342,10 +342,11 @@ const BR89_EXPECTED = {
   gig_1992_film_202:"credit_wf3_comedy_crew",
   gig_1992_film_114:"credit_enc83_luk_patron",
   gig_1992_rec_112:"credit_enc83_lok_patron",
-  gig_1991_tv_114:"credit_enc83_chai_patron"
+  gig_1991_tv_114:"credit_enc83_chai_patron",
+  gig_1992_variety_106:"credit_enc84_pang_patron"
 };
-ok('T8 BR89 17 對（v20a279 收割鏈＋v284 film_114＋v316 rec_112＋v317 tv_114）',
-  Object.keys(BR89_PATRON_OF_GIG).length===17 &&
+ok('T8 BR89 18 對（v20a279 收割鏈＋v284 film_114＋v316 rec_112＋v317 tv_114＋v319 variety_106）',
+  Object.keys(BR89_PATRON_OF_GIG).length===18 &&
   Object.keys(BR89_EXPECTED).every(k=>BR89_PATRON_OF_GIG[k]===BR89_EXPECTED[k]));
 
 /* ---------- T9：靜態＋舊路徑 ---------- */

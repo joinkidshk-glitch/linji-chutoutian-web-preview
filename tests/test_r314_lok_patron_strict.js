@@ -9,7 +9,7 @@
 //   (D) sideline280 一致：calm_truth 齊備→收尾獎勵派（fame＋2／delta＋1／doneKey）；無旗／有壞旗→唔派；
 //       閘開＝獎勵派、閘閂＝獎勵唔派（同一組旗對照）
 //   (E) 舊檔：無旗舊檔（舊排除式暖版玩家）唔 crash、唔播暖版；calm_truth 舊檔照播暖版
-//   (S) 靜態：lok_e4grudge 閘唔郁；gigs_new.json 仍係 306 張
+//   (S) 靜態：lok_e4grudge 閘唔郁；gigs_new.json 仍係 307 張
 // 用法：node tests/test_r314_lok_patron_strict.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -272,7 +272,7 @@ ok('S lok_e4grudge 註冊閘唔郁（tier≥1＋enc83NewsOut("E4")）',
   (() => { const w = beatOf('lok_gasing', 'lok_e4grudge').when.toString(); return w.indexOf('enc83NewsOut("E4")') >= 0 && w.indexOf('lok_calm_truth') < 0; })());
 ok('S lok_finale 閘唔郁（要 beatsDone.lok_patron）',
   (() => { const w = beatOf('lok_gasing', 'lok_finale').when.toString(); return w.indexOf('beatsDone') >= 0 && w.indexOf('lok_patron') >= 0; })());
-ok('S gigs_new.json 仍係 306 張', GIGS_ARR.length === 306, 'count=' + GIGS_ARR.length);
+ok('S gigs_new.json 仍係 307 張', GIGS_ARR.length === 307, 'count=' + GIGS_ARR.length);
 
 if(fails.length){ console.log('\nFAILURES: ' + fails.length); process.exit(1); }
 console.log('\nALL PASS');

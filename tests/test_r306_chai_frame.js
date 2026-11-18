@@ -4,7 +4,7 @@
 //   (C) wrap 分流：play_safe → wrap_safe；try_new／未揀／舊檔 → 舊 wrap；播完清 wrapEcho
 //   (D) 暖／冷／finale 唔受影響：暖版 heart 照播（v20a318 之後獎勵／提攜讀法改 truth_change only，try_new 唔再係必要條件）；冷版 heartCold 照播；finale 尾句分流照舊（try_new 用 wrap 句、play_safe 用 cap 句）
 //   (E) 舊檔：無 Beat 5 旗 → cap／wrap 都係舊句，唔 crash
-//   (F) 靜態：其他星 cap／wrap 唔郁；chai_try_new／chai_play_safe 授出點唯一（Beat 5 抉擇）；gigs_new.json 仍係 306 張
+//   (F) 靜態：其他星 cap／wrap 唔郁；chai_try_new／chai_play_safe 授出點唯一（Beat 5 抉擇）；gigs_new.json 仍係 307 張
 // 用法：node tests/test_r306_chai_frame.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -247,7 +247,7 @@ ok('F chai_finale 對白唔郁（6 句、尾句＝wrap 句）',
 ok('F 提攜冷版唔郁（chai_patron_cold 對白＋閘在位）',
   html.indexOf('id:"chai_patron_cold"') >= 0 && html.indexOf('chai_loose_fear') >= 0);
 const gigsLib = GIGS_ARR;
-ok('F gigs_new.json 仍係 306 張', gigsLib.length === 306, 'count=' + gigsLib.length);
+ok('F gigs_new.json 仍係 307 張', gigsLib.length === 307, 'count=' + gigsLib.length);
 
 if(fails.length){ console.log('FAILURES: ' + fails.join(', ')); process.exit(1); }
 console.log('ALL PASS');

@@ -1,7 +1,7 @@
 // v20a299 Q12 三旗遊戲中跟進測試：
 //   (C) choi_spin／choi_dodge → R_choi_push1 變體（choi299PrepareNode）
 //   (G) N6／N6F 四旗 → code-side 跟進通告（Q12_FOLLOW_GIGS＋mergeQ12Gigs）
-//   (S) 靜態：ECHO89 結局回望唔郁、N5／N6／N6F 抉擇唔郁、gigs_new.json 仍係 306 張
+//   (S) 靜態：ECHO89 結局回望唔郁、N5／N6／N6F 抉擇唔郁、gigs_new.json 仍係 307 張
 // 用法：node tests/test_r299_three_flags.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -189,7 +189,7 @@ const n6f = main.nodes.find(n=>n.id==='N6F');
 ok('S1 N5_b 仍落 choi_spin', JSON.stringify(n5.choices.find(c=>c.id==='N5_b').effects.flags)==='["choi_spin"]');
 ok('S1 N6_a 仍落 flag_canteen_grind', JSON.stringify(n6.choices.find(c=>c.id==='N6_a').effects.flags)==='["flag_canteen_grind"]');
 ok('S1 N6F_a 仍落 flag_studio_follow', JSON.stringify(n6f.choices.find(c=>c.id==='N6F_a').effects.flags)==='["flag_studio_follow"]');
-ok('S1 gigs_new.json 仍係 306 張', gigsLib.length===306, 'count='+gigsLib.length);
+ok('S1 gigs_new.json 仍係 307 張', gigsLib.length===307, 'count='+gigsLib.length);
 
 if(fails.length){ console.log('FAILURES: '+fails.join(', ')); process.exit(1); }
 console.log('ALL PASS');

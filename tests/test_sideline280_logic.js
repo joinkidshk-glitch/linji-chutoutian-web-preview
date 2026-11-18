@@ -341,7 +341,7 @@ ok('(4) 顧 G-G1 就係 v274 gig_1992_rec_205《夜總會登台暖場》，唔�
 ok('(4) 廖收割通告唔係外傳：gig_1991_film_214 係 wf3harvest 補拍，唔係優先試鏡', (()=>{ const g = gigById('gig_1991_film_214'); const p = gigById('gig_1991_film_103'); return !!g && g.trigger.kind==='wf3harvest' && String(g.title||'').indexOf('夜景補拍')>=0 && !!p && String(p.title||'').indexOf('外傳')>=0 && p.trigger.creditId==='credit_enc79_liu_priority'; })());
 ok('(4) 舊庫三 id 唔喺新庫＋唔喺 BR89 映射（gig_br89_liu_priority／gig_br89_patron_pang／gig_br89_patron_ching）', ['gig_br89_liu_priority','gig_br89_patron_pang','gig_br89_patron_ching'].every(id=> !gigById(id) && !(id in BR89_PATRON_OF_GIG)));
 ok('(4) 專屬通告標題唔含年份數字（新庫規格）', GIG280.every(([, gid])=>{ const t = String((gigById(gid)||{}).title||''); return !/19\d\d|20\d\d/.test(t); }));
-ok('(4) 通告庫總數 306 張（v280 0 張新開＋v284 1 張 film_114＋v291 13 張冬季 gig＋v307 4 張真唱片 gig）', GIGS_ARR.length===306);
+ok('(4) 通告庫總數 307 張（v280 0 張新開＋v284 1 張 film_114＋v291 13 張冬季 gig＋v307 4 張真唱片 gig＋v319 1 張彭引薦 gig variety_106）', GIGS_ARR.length===307);
 
 /* ---- (5) 3.10 結局門檻未郁 ---- */
 ok('(5) E1 數字：ENDING95_T 聲望 70／信用 65／雙軌 350／負標籤 ≤1', ENDING95_T.e1Fame===70 && ENDING95_T.e1Credit===65 && ENDING95_T.e1Dual===350 && ENDING95_T.e1NegMax===1);

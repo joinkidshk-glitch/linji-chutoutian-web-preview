@@ -94,15 +94,15 @@ const LOK_CREDIT = { id: 'credit_enc83_lok_patron', debtor: '駱家聲', title: 
 const rec112 = gigById['gig_1992_rec_112'];
 const rec111 = gigById['gig_1992_rec_111'];
 const rec102 = gigById['gig_1992_rec_102'];
-ok('(0) gig_count_306', allGigs.length === 306 && new Set(allGigs.map(g=>g.id)).size === 306, 'n=' + allGigs.length);
-ok('(0) trig_36_credit_25', allGigs.filter(g=>g.trigger && g.trigger.kind).length === 36 && allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 25, 'credit 25（BR89 17＋通用 8）');
+ok('(0) gig_count_307', allGigs.length === 307 && new Set(allGigs.map(g=>g.id)).size === 307, 'n=' + allGigs.length);
+ok('(0) trig_37_credit_26', allGigs.filter(g=>g.trigger && g.trigger.kind).length === 37 && allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 26, 'credit 26（BR89 18＋通用 8）');
 ok('(0) rec112_tag_trigger', !!rec112 && JSON.stringify(rec112.storyKeys) === '["lok_gasing"]' && rec112.trigger && rec112.trigger.kind === 'credit' && rec112.trigger.creditId === 'credit_enc83_lok_patron' && rec112.trigger.creditOwner === '駱家聲', 'storyKeys＋trigger 齊');
 ok('(0) rec112_other_fields_unchanged', !!rec112 && rec112.title === '《追風少年》MV 男主角' && rec112.tier === '中級' && rec112.type === '唱片通告' && rec112.year === 1992 && rec112.season === '春' && rec112.days === 3 && JSON.stringify(rec112.pay) === '[330,396]' && rec112.singer === 'lok_gasing' && rec112.genre === '搖滾' && rec112.roleLabel === 'MV 男主角', 'title／tier／year／season／days／pay／singer 唔郁');
 ok('(0) lok_patron_grants_match', html.indexOf('{ id:"credit_enc83_lok_patron", debtor:"駱家聲", title:"監製引薦"') >= 0, 'lok_patron 授出同一筆債權（id＋debtor＋title 一致）');
 ok('(0) lok_patron_gate_unchanged', html.indexOf('{ id:"lok_patron", when(st){ return enc79TierOf(st.fav)>=4 && !!(S.flags||{}).lok_calm_truth && !(S.flags||{}).lok_join_rant && !(S.flags||{}).lok_loose_row && !(S.flags||{}).lok_cover_first; }') >= 0, 'v314 嚴格閘一行都唔郁');
 ok('(0) rec111_unchanged', !!rec111 && JSON.stringify(rec111.storyKeys) === '["N14"]' && rec111.trigger && rec111.trigger.creditId === 'credit_enc83_lok_patron' && rec111.tier === '高級', 'rec_111 係 N14 tag＋lok trigger 共用，唔郁');
 ok('(0) rec102_unchanged', !!rec102 && JSON.stringify(rec102.storyKeys) === '["lok_gasing"]' && !rec102.trigger, '初級搖滾 rec_102 唔郁');
-const EXPECT17 = {
+const EXPECT18 = {
   gig_1991_film_101:'credit_enc83_luk_patron', gig_1991_variety_203:'credit_enc84_pang_patron',
   gig_1992_rec_106:'credit_enc84_ching_patron', gig_1991_film_103:'credit_enc79_liu_priority',
   gig_1992_film_103:'credit_enc83_liu_patron', gig_1991_film_211:'credit_enc83_mak_patron',
@@ -111,11 +111,11 @@ const EXPECT17 = {
   gig_1992_rec_111:'credit_enc83_lok_patron', gig_1991_film_212:'credit_enc83_ngai_patron',
   gig_1992_film_206:'credit_enc83_chai_patron', gig_1992_film_202:'credit_wf3_comedy_crew',
   gig_1992_film_114:'credit_enc83_luk_patron', gig_1992_rec_112:'credit_enc83_lok_patron',
-  gig_1991_tv_114:'credit_enc83_chai_patron'
+  gig_1991_tv_114:'credit_enc83_chai_patron', gig_1992_variety_106:'credit_enc84_pang_patron'
 };
-ok('(0) br89_map_17_pairs', Object.keys(BR89_PATRON_OF_GIG).length === 17 &&
-  Object.keys(EXPECT17).every(k=>BR89_PATRON_OF_GIG[k] === EXPECT17[k]) &&
-  Object.keys(BR89_PATRON_OF_GIG).every(k=>EXPECT17[k] === BR89_PATRON_OF_GIG[k]), 'n=' + Object.keys(BR89_PATRON_OF_GIG).length);
+ok('(0) br89_map_18_pairs', Object.keys(BR89_PATRON_OF_GIG).length === 18 &&
+  Object.keys(EXPECT18).every(k=>BR89_PATRON_OF_GIG[k] === EXPECT18[k]) &&
+  Object.keys(BR89_PATRON_OF_GIG).every(k=>EXPECT18[k] === BR89_PATRON_OF_GIG[k]), 'n=' + Object.keys(BR89_PATRON_OF_GIG).length);
 
 // ---------- (1) 未持有債權：唔上板 ----------
 resetS316();

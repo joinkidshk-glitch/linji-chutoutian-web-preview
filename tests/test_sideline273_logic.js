@@ -140,7 +140,7 @@ ok('(c) 即派範圍：GRANT229_ENC79 六線行 v278 已實裝 57 行（總 17�
 ok('(c) 1.18 勘誤 code 側無嘢：gig_rec_02／gig_wf3_liao_stage repo 0 命中', !html.includes('gig_rec_02') && !html.includes('gig_wf3_liao_stage') && !gigById('gig_wf3_liao_stage'));
 
 /* ---- (d) PLAN §10 第一批 25 項核實 ---- */
-ok('(d) BR89 映射 17 張：每張新庫存在＋trigger.creditId 同映射一致', (()=>{ const ids = Object.keys(BR89_PATRON_OF_GIG); if(ids.length!==17) return false; return ids.every(id=>{ const g=gigById(id); return g && g.trigger && g.trigger.kind==='credit' && g.trigger.creditId===BR89_PATRON_OF_GIG[id]; }); })());
+ok('(d) BR89 映射 18 張：每張新庫存在＋trigger.creditId 同映射一致', (()=>{ const ids = Object.keys(BR89_PATRON_OF_GIG); if(ids.length!==18) return false; return ids.every(id=>{ const g=gigById(id); return g && g.trigger && g.trigger.kind==='credit' && g.trigger.creditId===BR89_PATRON_OF_GIG[id]; }); })());
 ok('(d) BR89 映射包齊 §10.1 八筆債權（廖 patron／顧／麥／駱／魏／齊／鍾／廖優先）', ['credit_enc83_liu_patron','credit_enc83_gu_patron','credit_enc83_mak_patron','credit_enc83_lok_patron','credit_enc83_ngai_patron','credit_enc83_chai_patron','credit_enc84_chung_patron','credit_enc79_liu_priority'].every(c=> Object.values(BR89_PATRON_OF_GIG).includes(c)));
 ok('(d) G-G1：顧引薦＝gig_1992_rec_205《夜總會登台暖場》唱片中級 1992', (()=>{ const g=gigById('gig_1992_rec_205'); return !!g && g.title.indexOf('夜總會登台暖場')>=0 && g.type==='唱片通告' && g.tier==='中級' && g.year===1992 && g.trigger.creditId==='credit_enc83_gu_patron'; })());
 ok('(d) G-G2：還錢結算（result＝1）無債權都開 rec_105；未還／無結果唔開', (()=>{ resetS(700); const g=gigById('gig_1992_rec_205'); if(br89GigOn(g)!==false) return false; S.flags.enc83_gu_loan_result = 1; if(br89GigOn(g)!==true) return false; S.flags.enc83_gu_loan_result = 2; if(br89GigOn(g)!==false) return false; return true; })());
