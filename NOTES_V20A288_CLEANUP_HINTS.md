@@ -55,4 +55,5 @@
 - 全套 suite 第二跑：**TOTAL PASS 349 FAIL 9**（`~/workspace/suite288_run2.log`）。9 項 FAIL 全部係基線 pre-existing（flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38），零新 FAIL。總檔數 360−2 刪檔＝358，349＋9＝358，對數。
 
 ## 出貨
-- 待填：merge commit、Pages 核實。
+- main commit `d68551d`（squash merge，branch `v20a288` 兩 commits `d47d1c1`＋`2cbd2e8`）；suite 第二跑 TOTAL PASS 349 FAIL 9（基線 FAIL 而已）；Pages 核實 byte-identical（md5 `b8a9361996048a03438ed7cef172f4de`，4,683,219 bytes）。
+- 工作副本 `~/workspace/linji-work288` 已刪。
