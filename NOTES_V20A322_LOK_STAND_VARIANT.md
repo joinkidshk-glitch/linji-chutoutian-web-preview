@@ -34,6 +34,6 @@
 
 ## 5. 落地
 - Suite：**385 PASS／9 FAIL**（基線 384／9，＋1 係新測試檔；9 項 FAIL 全部係已知 pre-existing：flash51／slot50／soft_tip_111_restore／start53／weave43／44／49_static／wf5_87／wrap38）
-- Main HEAD：[待填]
-- Pages：index.html md5 [待填]／[待填] bytes，v20a322 標記在位
+- Main HEAD：`ad5a760`（內容 `7df6ecc`＋NOTES §5 補填）
+- Pages：index.html md5 `4f9885b076162bed26e34768c394c391`／4,701,789 bytes，v20a322 標記在位
 - `qa296/derive296.json` 已還原，唔入版。
