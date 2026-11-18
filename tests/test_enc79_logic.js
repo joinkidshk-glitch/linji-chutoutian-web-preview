@@ -91,7 +91,7 @@ const consts = names.map(n=> asVar(extractConst(n), n)).join('\n')
       try{ return asVar(extractDlg('ENC79_DLG_' + sid), 'ENC79_DLG_' + sid) + '\nENC79_DIALOG["' + (sid==='yip_manzi' ? 'yip_manji' : sid) + '"] = ENC79_DLG_' + sid + ';'; }
       catch(e){ return ''; }
     }).join('\n');
-const fns = ['enc79StarDef','enc79LocName','enc79Hash','enc79Rand','enc79EnsureStars','enc79StarState','enc79TierOf','enc79PlayerTier','enc79FavCap','enc79AddFav','enc79InWindow','enc79WhisperActive','enc79PresenceP','enc79EnsureDay','enc79PresenceAt','enc79GrantWhisper','enc79GrantCredit','enc79BoardHasStar','enc79BoardHasActionGig','enc79BeatOpen','enc79AnyBeatOpen','enc79PickBeat','enc79ChoiceFx','enc79RunChoiceFx','enc79NormSeg','enc79StoryPendingAt','enc79TryIntercept','enc79DistanceLook','enc79OnWrap','enc79PaperWhisper','enc79HoTrustLine','enc79HelpAvailable','enc79MockAskBranch','enc79PayTea','enc79TeaListen','enc79HelpClear','enc79AgencyWind','enc79BuildScript'];
+const fns = ['enc79StarDef','enc79LocName','enc79Hash','enc79Rand','enc79EnsureStars','enc79StarState','enc79TierOf','enc79PlayerTier','enc79FavCap','enc79AddFav','enc79InWindow','enc79WhisperActive','enc79PresenceP','enc79EnsureDay','enc79PresenceAt','enc79GrantWhisper','enc79GrantCredit','enc79BoardHasStar','enc79BoardHasActionGig','enc79BeatOpen','enc79AnyBeatOpen','enc79PickBeat','enc79ChoiceFx','enc79RunChoiceFx','enc79NormSeg','enc79StoryPendingAt','enc79TryIntercept','enc79DistanceLook','enc79OnWrap','enc79WrapPerf','enc79PaperWhisper','enc79HoTrustLine','enc79HelpAvailable','enc79MockAskBranch','enc79PayTea','enc79TeaListen','enc79HelpClear','enc79AgencyWind','enc79BuildScript'];
 eval(consts + '\n' + fns.map(extractFn).join('\n'));
 
 /* ---- (4) 舊檔兼容 lazy-init ---- */
@@ -160,7 +160,11 @@ enc79OnWrap({ gigId:'g_test_lead', fame: 5 });
 ok('殺青：同星主演 +3＋workedWith＋回望標記', S.stars.luk_baakyin.fav===3 && S.stars.luk_baakyin.workedWith===true && S.stars.luk_baakyin.wrapEcho===true);
 resetS(41);
 enc79OnWrap({ gigId:'g_test_lead', fame: 0 });
-ok('殺青劣評減半 +1', S.stars.luk_baakyin.fav===1);
+ok('舊制退役：fame 0 但表現合格 → 照樣好評 +3', S.stars.luk_baakyin.fav===3 && S.stars.luk_baakyin.workedWith===true);
+resetS(42);
+S.stress = 90; /* v20a289：壓力 ≥85 → pBad 20%，測試 R 返最小值 1 → 劣評 */
+enc79OnWrap({ gigId:'g_test_lead', fame: 5 });
+ok('殺青劣評減半 +1（壓力爆煲演得差）', S.stars.luk_baakyin.fav===1);
 
 /* ---- (6) 處置表分支 ---- */
 resetS(60); _ledger = null;

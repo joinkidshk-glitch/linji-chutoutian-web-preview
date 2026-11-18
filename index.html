@@ -40372,8 +40372,8 @@ function rom183ApplyGiftReactFix(){ /* C3：55 條女角反應句過粵語 filte
 /* ---------- 殺青回望（resolvePlannedDay 掛點） ---------- */
 /* v20a252 D-v2-4：殺青好感四角分格——讀 gig.cast 四角（leadM／leadF＝主角格，
    supportM／supportF＝配角格）：好評主角 +3／配角 +1，劣評主角 +1／配角 0。
-   好／劣判定沿用舊制：sh.fame（殺青聲望，scheduleShoot 存入 shoot record）
-   <= 1 視為劣評，其餘為好評——sh 並無評價／劣評專屬欄位。
+   v20a289 Q1：好／劣判定改用表現判定 enc79WrapPerf（底圍欠數＋壓力加權 roll）——
+   舊制 fame<=1 已退役：fame roll 全庫最低 5，舊判永不成立，劣評出唔到。
    null 格＝玩家格或從缺，跳過；非 ENC79_STARS 名冊嘅星（藍若曦／江詩盈／
    沈映雪／胡美琳／韓秀婷）冇 enc79 好感狀態位，跳過（舊制同樣唔加）。
    舊庫 gig 無 cast 欄位嗰陣跌返舊制：leadStarId 單一主演，好評 +3／劣評 +1。 */
@@ -40382,7 +40382,8 @@ function enc79OnWrap(sh){
     if(!sh || !sh.gigId) return;
     const g = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
     if(!g) return;
-    const bad = ((Number(sh.fame)||0) <= 1); /* 劣評（舊制沿用：fame<=1） */
+    const perf = (typeof enc79WrapPerf==="function") ? enc79WrapPerf(sh, g) : {bad:false};
+    const bad = !!perf.bad; /* v20a289：劣評＝表現判定（欠數＋壓力加權 roll）；舊制 fame<=1 已退役 */
     const seen = {};
     const grant = (sid, delta)=>{
       if(!sid || seen[sid] || !enc79StarDef(sid)) return; /* null 格／重複格／名冊外跳過 */
@@ -40402,6 +40403,41 @@ function enc79OnWrap(sh){
     /* 舊庫 fallback：無 cast 欄位，沿用舊制單一主演 leadStarId */
     grant(g.leadStarId, bad ? 1 : 3);
   }catch(_e){}
+}
+/* v20a289 Q1 劣評分支：殺青表現判定（取代舊制 fame<=1）。
+   舊制死咗：fame roll 全庫最低 5，fame<=1 永不成立，劣評出唔到。
+   新制用殺青嗰陣可用訊號——底圍 vs 通告 req 嘅總欠數（short）＋壓力（S.stress）：
+   - 底圍：衫加成唔計（v20a265：加成唔入殺青判定），只讀 S.* 底數。試鏡靠衫頂住入門檻，
+     殺青嗰陣底圍唔夠就會見到欠數；非試鏡途徑獲聘（即派／引薦）同樣會計。
+   - 欠數每點 +3% 劣評機率，上限 30%；壓力 60–84 加 8%，≥85 加 20%（85 係遊戲本身
+     危險線：≥85 唔畀做非休息非拍攝活動）；合計上限 50%。
+   - 欠數 0＋壓力 <60 → 機率 0：演得唔差，絕唔出劣評。無 req 嘅臨記通告同理，只睇壓力。
+   - 擲骰 R(1,100) <= pBad*100 先算劣評；好評仍係常態。
+   回傳 {bad, pBad, short, stress}；sh/g 缺值時當表現合格（bad=false）。 */
+function enc79WrapPerf(sh, g){
+  try{
+    const RK = (typeof GIG_REQ_KEYS88!=="undefined") ? GIG_REQ_KEYS88 : {acting:1,stage:1,vocal:1,looks:1,charm:1,iq:1,stamina:1};
+    let short = 0;
+    const req = (g && g.req && typeof g.req==="object") ? g.req : {};
+    for(const k in req){
+      if(!RK[k]) continue;
+      const need = Number(req[k])||0;
+      const have = (typeof S!=="undefined" && S) ? (Number(S[k])||0) : 0;
+      if(have < need) short += (need - have);
+    }
+    const stress = (typeof S!=="undefined" && S) ? (Number(S.stress)||0) : 0;
+    let p = 0;
+    if(short > 0) p += Math.min(0.30, short * 0.03);
+    if(stress >= 85) p += 0.20;
+    else if(stress >= 60) p += 0.08;
+    if(p > 0.50) p = 0.50;
+    let bad = false;
+    if(p > 0){
+      const roll = (typeof R==="function") ? R(1,100) : 100;
+      bad = roll <= Math.round(p * 100);
+    }
+    return {bad: bad, pBad: p, short: short, stress: stress};
+  }catch(_e){ return {bad:false, pBad:0, short:0, stress:0}; }
 }
 /* ---------- 人脈頁紅星段 ---------- */
 function enc79PeopleHtml(){

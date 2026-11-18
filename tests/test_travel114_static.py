@@ -1,3 +1,4 @@
+# v20a289 resync：index.html 淨 +36 行（Q1 劣評判定 enc79WrapPerf＋註解，插入點舊 L40373 起）；COUNT／FREE／DEF 其後錨點各 +36（FREE 14 處、COUNT 4 處、DEF 41462→41498；WRAPPER 28695 喺插入點之前唔郁），內容逐行核實純漂移。
 # v20a288 resync：index.html 淨 −90 行（A1 刪 DUR90 整組，刪除點舊 L15773–15928；COUNT／FREE／DEF／WRAPPER 其後錨點各 −90（COUNT 15398 喺刪除點之前唔郁、FREE ≤14376 10 處唔郁），內容逐行核實純漂移；DEF 41552→41462、WRAPPER 28785→28695）。
 # v20a286 resync：index.html 淨 +9 行（contFromSlot sync＋6＠舊 L45704 之後／softSeed sync＋3＠舊 L14392 之後；釘行按段重算：＜14392 唔郁、14392–45703 各 ＋3、≥45704 各 ＋9；內容逐字核實純漂移）。 COUNT／FREE／DEF／WRAPPER 按段重算；DEF 41549→41552、WRAPPER 28782→28785。
 # v20a284 resync：index.html 淨 +58 行（F 註解＋1／BR89 film_114＋1／C2 註解＋1／mockAskDefs hint＋10／E helpers＋20／TeaListen cap＋6／強制風聲＋11／消耗＋5／G tick＋3；COUNT／FREE／DEF／WRAPPER 按段重算：＜26425 唔郁、26425–26433 ＋1、26434–26534 ＋2、26535–27679 ＋3、27680–40570 ＋13、40571–40573 ＋33、40574–40577 ＋39、40578–40613 ＋50、40614–40745 ＋55、≥40746 ＋58；DEF 41491→41549、WRAPPER 28769→28782），內容逐行核實純漂移。
@@ -203,10 +204,10 @@ COUNT_LINES = {
     22555,  # 地圖釘 goPin（最近針／後備 L.id）
     22586,  # 地圖底欄地點掣
     28126,  # 人情債「去事務所」
-    44701,  # inv72GoShop 去禮品檔
-    44913,  # people72GoLoc
-    45071,  # jobs72GoBoard
-    45092,  # jobs72GoLoc
+    44737,  # inv72GoShop 去禮品檔
+    44949,  # people72GoLoc
+    45107,  # jobs72GoBoard
+    45128,  # jobs72GoLoc
 }
 # v20a158 resync：index.html 淨 +165 行（gigCardHtml 提示＋4／詳情頁渠道掣＋11／GRANT229_ENC79 8 行＋註解 7＝＋15／aud91CreatePending＋3／aud91PendingHint＋2／aud91PresentOne＋1／v20a158 渠道 block＋129；見 qa158/resync158.py difflib 對位核實內容逐字相同，純漂移；openLoc( 呼叫點總數不變）。
 # v20a243 resync：index.html 淨 −11 行（刪 TEXTFIX55 GIG 五組，刪除區間舊 L14413–14417／14576–14578／14588–14589／14593–14596）；其後錨點各 −11，之前唔郁；內容逐行核實純漂移。
@@ -239,23 +240,23 @@ FREE_LINES = {
     40091,  # v176 星送禮冇 item（encDone）
     40094,  # v176 星送禮冇庫存（encDone）
     40121,  # v176 星送禮結果 modal go（encDone）
-    41310,  # 劇情播完刷新（refreshLocAfterStory）
-    41357,  # v236 傾談確認「返去」重開地點（travelFree，唔計額度）
-    41727,
-    41749,  # 「劇情已完成」toast 後重開而家身處地點
-    41901,  # v236 打聽確認「返去」重開地點（travelFree，唔計額度）
-    41906,  # 聽完傳聞後 reopen 而家身處地點
-    42830,  # forceRestore（舊旗）
-    44308,  # promptAudition back（返去而家身處地點）
-    44578,
-    44579,
-    44623,
-    44624,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    44649,  # doGiveGift 失敗後重開而家身處地點
-    45542,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
+    41346,  # 劇情播完刷新（refreshLocAfterStory）
+    41393,  # v236 傾談確認「返去」重開地點（travelFree，唔計額度）
+    41763,
+    41785,  # 「劇情已完成」toast 後重開而家身處地點
+    41937,  # v236 打聽確認「返去」重開地點（travelFree，唔計額度）
+    41942,  # 聽完傳聞後 reopen 而家身處地點
+    42866,  # forceRestore（舊旗）
+    44344,  # promptAudition back（返去而家身處地點）
+    44614,
+    44615,
+    44659,
+    44660,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    44685,  # doGiveGift 失敗後重開而家身處地點
+    45578,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 41462      # function openLoc(id, opts){
+DEF_LINE = 41498      # function openLoc(id, opts){
 WRAPPER_LINE = 28695  # window.__phase2.openLoc：轉發 opts
 # v241b resync：index.html 淨 −6 行（刪四個內嵌 fallback 表：NPC_LINES_CORE／EVENTS_ZH_HK／STORY_BEATS_PHASE1／TUTORIAL_ZH_HK；UI 201 對逐句重寫行數不變）；COUNT／FREE／DEF／WRAPPER 按 difflib 對位映射重寫，47 處錨點內容逐行相同（3 處錨點行內 toast／reason 字串隨 RW-5 改寫：41148→41142、41170→41164「唔使再播」→「不必再播」，43932→43926「送唔成」→「送不成」）；openLoc( 呼叫點總數 53 不變；DEF 40874→40868、WRAPPER 28882→28878。
 # v20a241 resync：index.html 淨 −859 行（刪 WF4 覆寫表全數＋WF2 hiu/choi/xu 15 條；見 qa241/resync241.js）；COUNT／FREE／DEF／WRAPPER 按映射重寫（中段 −646、WF4 塊之後 −859；DEF 40868→40009、WRAPPER 28878→28019），47 處錨點內容逐行相同，純漂移；openLoc( 呼叫點總數 53 不變。
