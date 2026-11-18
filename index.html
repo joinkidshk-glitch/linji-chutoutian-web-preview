@@ -40241,6 +40241,16 @@ function enc79BuildScript(starId, forceFirst, locId){
     if(beat.id==="chai_finale" && (S.flags||{}).chai_play_safe && Array.isArray(beatSeg100.lines) && beatSeg100.lines.length){
       beatSeg100 = { lines: beatSeg100.lines.slice(0, -1).concat([["S","阿偉，今日傾到呢度先啦，我仲有場戲要默。你有呢份心，我領咗，不過有啲路，仲要慢慢行，唔好急。"]]), choices: beatSeg100.choices || null };
     }
+    /* v20a310 Q23：程 e4 N15 旗變體（PLAN §9 Beat 3 逐字稿）——撐練抉擇後回應按 N15 分流：苦練旗→信任句行先再接原本「今晚唔停」；修音旗→頂返句取代原本應承。只係撐練嗰邊（choices[0]），紅咗先算嗰邊唔加；label／授旗／即派／fav 唔郁；開場 8 句唔郁。兩旗同在（正常玩法唔會）以苦練為先。 */
+    if(beat.id==="ching_e4" && typeof enc87StoryFlag==="function" && Array.isArray(beatSeg100.choices) && beatSeg100.choices.length){
+      const ch310a = beatSeg100.choices[0];
+      if(ch310a && Array.isArray(ch310a.lines) && ch310a.lines.length>=2){
+        let varLines310 = null;
+        if(enc87StoryFlag("flag_vocal_train")) varLines310 = [ch310a.lines[0], ["S","你嗰晚都係咁揀，我信你。"], ch310a.lines[1]];
+        else if(enc87StoryFlag("flag_vocal_polish")) varLines310 = [ch310a.lines[0], ["S","你嗰晚都係靠部機交帶㗎，咁你而家係教我練，定教我執呀？"]];
+        if(varLines310) beatSeg100 = { lines: beatSeg100.lines, choices: [Object.assign({}, ch310a, { lines: varLines310 })].concat(beatSeg100.choices.slice(1)) };
+      }
+    }
     pushSeg(beatSeg100, "beat:"+beat.id, ()=>{ const s2=enc79StarState(starId); s2.beatsDone[beat.id]=((S&&S.dayIndex)|0); try{ beat.grants && beat.grants(); }catch(_g){} });
   } else if(tier>=3 && !st.heartDone && D.heartCold && ((starId==="lok_gasing" && (S.flags||{}).lok_loose_row) || (starId==="ngai_wingnaam" && (S.flags||{}).ngai_rain_hold_back) || (starId==="chai_zanhoi" && (S.flags||{}).chai_loose_fear))){ /* v20a304 Q17：駱／魏／齊冷版交心（PLAN §4–§6 草稿「行冷版交心」）——壞旗玩家去到交心嗰刻播冷版，唔係淨係跳過暖版。排暖版之前；暖版閘唔郁。 */
     /* 冷版 heart：heartDone 照標（呢個就係嗰次交心，唔重播）；好感＋1（唔係暖版＋2——有裂痕，值同一次普通 pool 傾偈一樣）；
