@@ -28,9 +28,9 @@
   - 端到端：`enc79RunChoiceFx("liu_steal")` 落旗 → 冷版開、暖版唔開。
 - 反證：新測試喺 pristine main（e4b2e08）跑，7 項乾淨 FAIL（A1／A2／A3／A4／B1／B2／B7），其餘 6 項行為保留斷言照過——證明測試真係驗到今版改動。
 - v269 相關舊測試逐個直接跑：`test_sideline269_logic.js` ALL PASS、`test_wf3_279_logic.js` ALL PASS。
-- 全套 suite：見落地記錄（TOTAL PASS ___ FAIL ___）。
+- 全套 suite：TOTAL PASS 351 FAIL 9——FAIL 清單同基線完全一致（flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38），零新 FAIL；PASS 351＝基線 350＋新測試檔 1 項。
 
 ## 落地
-- main commit：___
-- Pages 核實：___
-- 下一版號：v288（用前再核實）。
+- main commit：7d900ac（e4b2e08 → 7d900ac，已 push，ls-remote 核實一致）；NOTES landing record 補 commit（見下）。
+- Pages 核實：HTTP 200，4,688,798 bytes，sha256 `edf7263e18d2cdbf0da71ec13d12d069783baa31e451de70c65a6f5f5942c4f1`，同本地 byte-identical；`liaoChoice)==="steal"` 線上命中 2 處（兩閘）。
+- 工作副本 linji-work287 已刪；下一版號：v288（用前再核實）。
