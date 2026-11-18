@@ -48,5 +48,9 @@ weave44_static／weave49_static／wf5_87／wrap38。
 
 ## 落地
 
-- 分支 v285-rival-cfg → main squash merge，commit（見 git log）。
-- Pages 核實：（見下方）
+- 分支 v285-rival-cfg（work commit 7a8a10d）→ main squash merge，main commit
+  `3e65487`（2026-11-18）；`git ls-remote origin HEAD` 核實一致。
+- Pages 核實：curl 200，4,687,712 bytes，sha256
+  `abd05009fda949d6eb1dfa3316ea9172ea572e399a34dbad371b57e8b56c00b9`，
+  同 main index.html byte-identical。
+- 工作副本 linji-work285 已刪。
