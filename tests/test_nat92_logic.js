@@ -6,7 +6,7 @@
 //      v250 起九龍電視台第一週有可接（即派新通告填咗缺口，見 D2 註）；
 //      紅棉影業／灣仔唱片 day-0 有可接（新庫供應，唔再靠 NAT92 入門補位）。
 //  (E) 分布守衛：52 週普查（MAXED 組成）1990「恰好 2」占比 <40%；
-//      三年全板 0 嘅地點-週＝70（新庫地點-季節洞＋錯峰空窗，見 E2 註——舊版 0 係 351 張＋18 張
+//      三年全板 0 嘅地點-週＝62（新庫地點-季節洞＋錯峰空窗，見 E2 註——舊版 0 係 351 張＋18 張
 //      注入先做到，新庫 287 張有季節性空洞，呢個數係分佈釘，唔係回歸目標）。
 //      v20a229 B5：MAXED 而家真係 maxed——34 張 trigger 條件齊開（E0 守衛，v232 補寫《星夜迷離》第 241 張；v252 新庫 award 0 張），
 //      E2 釘先至繼續量度庫分佈而唔係觸發狀態；沙盒抽埋 triggerGigOn＋依賴，
@@ -148,7 +148,7 @@ for(const y of [1990, 1991, 1992]) for(const g of poolByYear[y]){
   if(W.nat92StaggerEligible(g)) stagN++;
   if(Object.keys(g.req||{}).some(k=>!CANON[k])) reqBad.push(g.id);
 }
-ok('F2 錯峰合資格 277 張（289－12 入門）', stagN === 277, 'stagN=' + stagN);
+ok('F2 錯峰合資格 290 張（302－12 入門）', stagN === 290, 'stagN=' + stagN);
 ok('F2b 入門 12 張唔錯峰', entryN === 12);
 ok('F3 舊 nat92 旗全庫 0 命中', nat92FlagN === 0);
 ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3).join(','));
@@ -255,13 +255,13 @@ ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3
   const c90 = censusYear(1990);
   ok('E1 1990「恰好 2」占比 <40%（實數 '+c90.pct.toFixed(1)+'%）', c90.pct < 40);
   const c91 = censusYear(1991), c92 = censusYear(1992);
-  // E2 註（v252 實數）：靜態地點-季節洞——1990（6）：film_cotton 冬、film_harbour 春、tvb_harbour 春／夏、
-  // rec_wanchai 春、rec_star 冬；1991（6）：tvb_harbour 冬、ad_central 冬、ad_adm 春／秋、rec_wanchai 冬、
-  // rec_star 夏；1992（8）：film_cotton 夏、film_harbour 冬、tvb_harbour 秋、tvb_kowloon 冬、ad_central 冬、
-  // rec_wanchai 夏、rec_star 春／夏。普查 0 數大過靜態洞數，因為錯峰 interval 空窗都會令成塊板真空；
-  // 1990 冬季入門工短缺（見 D2 註）亦推高 1990 嘅 0 數。呢個數係分佈釘，唔係回歸目標。
-  ok('E2 三年全板 0 地點-週＝70（1990:21／1991:21／1992:28，新庫分佈釘）',
-    c90.zero === 21 && c91.zero === 21 && c92.zero === 28, '實數 ' + c90.zero + '/' + c91.zero + '/' + c92.zero);
+  // E2 註（v291 實數）：靜態地點-季節洞——1990（3）：film_harbour 春、rec_wanchai 春、tvb_harbour 夏
+  // （v291 填咗 film_cotton 冬、rec_star 冬兩個洞，1990 嘅 0 數由 21 跌到 13）；1991（5）：ad_adm 春／秋、
+  // ad_central 冬、rec_wanchai 冬、tvb_harbour 冬；1992（6）：film_cotton 夏、film_harbour 冬、
+  // tvb_harbour 秋、tvb_kowloon 冬、rec_star 夏、rec_wanchai 夏。普查 0 數大過靜態洞數，因為錯峰
+  // interval 空窗都會令成塊板真空；1990 冬季入門工短缺（見 D2 註）亦推高 1990 嘅 0 數。呢個數係分佈釘，唔係回歸目標。
+  ok('E2 三年全板 0 地點-週＝62（1990:13／1991:21／1992:28，新庫分佈釘）',
+    c90.zero === 13 && c91.zero === 21 && c92.zero === 28, '實數 ' + c90.zero + '/' + c91.zero + '/' + c92.zero);
   ok('E3 1991/1992「恰好 2」占比 <40%（實數 '+c91.pct.toFixed(1)+'%／'+c92.pct.toFixed(1)+'%）', c91.pct < 40 && c92.pct < 40);
 }
 

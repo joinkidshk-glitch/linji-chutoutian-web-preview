@@ -84,17 +84,19 @@ for banned in ["成龍", "周潤發", "劉德華", "張國榮", "梅艷芳", "�
 
 ok("E0 B3 NAT92_GIGS 已清空", "const NAT92_GIGS = [];" in src)
 # B3 v252：1990 冬季臨記工得 4 張，全部喺獅子山／星河；紅棉／灣仔 0 張（見檔頭註）。
+# v291：冬季臨記工 4→5（＋film_305 紅棉）；紅棉冬洞已填（film_302 初級＋film_305 臨記）；灣仔冬仍 0 張臨記工，嗰季 3→4 張（＋rec_302 初級）。
 _new = __import__("json").load(open(base / "content" / "gigs_new.json", encoding="utf-8"))
 _winter = [g for g in _new["gigs"] if g["year"] == 1990 and g["season"] == "冬" and g["tier"] == "臨記"]
-ok("E1 B3 1990 冬季臨記工共 4 張（film_207／tv_208／tv_210／tv_214）",
-   sorted(g["id"] for g in _winter) == ["gig_1990_film_207", "gig_1990_tv_208", "gig_1990_tv_210", "gig_1990_tv_214"])
-ok("E1b B3 紅棉 1990 冬季 0 張臨記工（film_cotton 嗰季本身 0 張通告，靜態洞）",
-   not any(g["loc"] == "film_cotton" for g in _winter) and
-   not any(g["year"] == 1990 and g["season"] == "冬" and g["loc"] == "film_cotton" for g in _new["gigs"]))
-ok("E2 B3 灣仔 1990 冬季 0 張臨記工（rec_wanchai 嗰季 3 張全部初級）",
+ok("E1 B3 1990 冬季臨記工共 5 張（film_207／film_305／tv_208／tv_210／tv_214）",
+   sorted(g["id"] for g in _winter) == ["gig_1990_film_207", "gig_1990_film_305", "gig_1990_tv_208", "gig_1990_tv_210", "gig_1990_tv_214"])
+ok("E1b B3 紅棉 1990 冬季 1 張臨記工（v291 填洞：film_302 初級＋film_305 臨記）",
+   sorted(g["id"] for g in _winter if g["loc"] == "film_cotton") == ["gig_1990_film_305"] and
+   sorted(g["id"] for g in _new["gigs"] if g["year"] == 1990 and g["season"] == "冬" and g["loc"] == "film_cotton") ==
+   ["gig_1990_film_302", "gig_1990_film_305"])
+ok("E2 B3 灣仔 1990 冬季 0 張臨記工（rec_wanchai 嗰季 4 張全部初級）",
    not any(g["loc"] == "rec_wanchai" for g in _winter) and
    sorted(g["id"] for g in _new["gigs"] if g["year"] == 1990 and g["season"] == "冬" and g["loc"] == "rec_wanchai") ==
-   ["gig_1990_rec_104", "gig_1990_rec_108", "gig_1990_rec_204"])
+   ["gig_1990_rec_104", "gig_1990_rec_108", "gig_1990_rec_204", "gig_1990_rec_302"])
 ok("E3 B3 入門標記由 mergeEntryGigsIntoPool 派發（entryTier + boardPriority high）",
    "entryTier: true" in extract_fn("mergeEntryGigsIntoPool") and 'boardPriority: "high"' in extract_fn("mergeEntryGigsIntoPool"))
 

@@ -1,5 +1,5 @@
 // v20a286 LOAD286：讀檔後通告庫年份唔同步——讀入 1991／1992 年存檔後，GIGS 仍然係
-// 1990 年庫（111 張），要翻一日先經 advanceDay 補返；期間開板見到舊年通告，當年
+// 1990 年庫（124 張，v291：111＋13），要翻一日先經 advanceDay 補返；期間開板見到舊年通告，當年
 // 通告（包括決戰通告《霓虹夜影》）唔上板。
 // 修法：contFromSlot 喺 syncDualTracks 之後、ensureEntryTierBoardFill 之前補
 // syncGigsForCalendarYear(false)；maybeApplySoftSeed 喺 applySoftSeedState 之後補一次
@@ -86,8 +86,8 @@ function buildWire(yearActive){
 const gigs1990 = gigList.filter(g => Number(g.year) === 1990);
 const gigs1991 = gigList.filter(g => Number(g.year) === 1991);
 const gigs1992 = gigList.filter(g => Number(g.year) === 1992);
-ok('B1 庫 counts：1990:111／1991:99／1992:79，共 289',
-  gigs1990.length === 111 && gigs1991.length === 99 && gigs1992.length === 79 && gigList.length === 289);
+ok('B1 庫 counts：1990:124／1991:99／1992:79，共 302',
+  gigs1990.length === 124 && gigs1991.length === 99 && gigs1992.length === 79 && gigList.length === 302);
 S = { dayIndex: 651 };
 ok('B2 dateObj：dayIndex 651 → 1991 年；1000 → 1992 年；100 → 1990 年',
   dateObj().getFullYear() === 1991 &&
@@ -132,7 +132,7 @@ STORY_WIRE = buildWire(1990);
 mergeEntryCalls = 0;
 syncGigsForCalendarYear(false);
 ok('B7 1990 load：sync(false) 係 no-op——同一陣列、長度不變、入門 marker 仲喺度、唔 call mergeEntry',
-  GIGS === beforeRef && GIGS.length === 112 && GIGS.indexOf(marker) >= 0 && mergeEntryCalls === 0);
+  GIGS === beforeRef && GIGS.length === 125 && GIGS.indexOf(marker) >= 0 && mergeEntryCalls === 0);
 
 /* 已經同步嘅 1991：early return */
 S = { dayIndex: 651 };

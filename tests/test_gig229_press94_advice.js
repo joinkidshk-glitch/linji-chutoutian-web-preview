@@ -56,25 +56,25 @@ ok('A10_extract', parts.every(Boolean));
 if(parts.every(Boolean)){
   eval(parts.join('\n'));
   const gigs = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/gigs_new.json'), 'utf8')).gigs;
-  ok('A10_newlib_289', gigs.length===289, 'n='+gigs.length);
+  ok('A10_newlib_302', gigs.length===302, 'n='+gigs.length);
   // 逐張驗：category 作品→named（替身守門 9 張例外→base），其餘→base
   const isStunt = g=>((g.roleLabel||'').indexOf('替身')>=0 || (g.title||'').replace(/^《[^》]*》/, '').indexOf('替身')>=0);
   const expectClass = g=>((g.category==='作品' && !isStunt(g)) ? 'named' : 'base');
   const bad = gigs.filter(g=>press94RoleClass(g)!==expectClass(g));
-  ok('A10_all289_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
-  ok('A10_named_156_base_133',
-    gigs.filter(g=>press94RoleClass(g)==='named').length===156 &&
-    gigs.filter(g=>press94RoleClass(g)==='base').length===133);
+  ok('A10_all302_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
+  ok('A10_named_166_base_136',
+    gigs.filter(g=>press94RoleClass(g)==='named').length===166 &&
+    gigs.filter(g=>press94RoleClass(g)==='base').length===136);
   const stuntWorks = gigs.filter(g=>g.category==='作品' && isStunt(g));
   ok('A10_stunt_gate_9', stuntWorks.length===9 && stuntWorks.every(g=>press94RoleClass(g)==='base'),
     stuntWorks.map(g=>g.id).join(','));
   // mtv 38 張逐張定分類：20 named（作品）／18 base（臨記通告），逐張對 category
   const mtv = gigs.filter(g=>g.roleScale==='mtv');
-  ok('A10_mtv_38', mtv.length===38, 'n='+mtv.length);
+  ok('A10_mtv_39', mtv.length===39, 'n='+mtv.length);
   const mtvBad = mtv.filter(g=>press94RoleClass(g)!==expectClass(g));
   ok('A10_mtv_each', mtvBad.length===0, mtvBad.map(g=>g.id).join(','));
-  ok('A10_mtv_20named_18base',
-    mtv.filter(g=>press94RoleClass(g)==='named').length===20 &&
+  ok('A10_mtv_21named_18base',
+    mtv.filter(g=>press94RoleClass(g)==='named').length===21 &&
     mtv.filter(g=>press94RoleClass(g)==='base').length===18);
   // 抽 20 張驗分類（含文字層會誤判嗰啲）
   const sample = [
