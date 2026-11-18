@@ -1,3 +1,4 @@
+// v20a305 resync：EXPECT_BEATS 鍾提攜排送別之前（送別後出沒 P=0，遲到 T4 會永失提攜）。
 // v20a84 ENC84 邏輯測試：紅星巧遇 Phase 3（彭少祺／蘇芷茵／鍾楚凝／程天諾）＋全系統回收——
 // v20a290：名冊 12→17 星（§1／§9／§10 計數改認 17／16；其餘四星內容不變）。
 //   (1) 註冊：四星入 ENC79_PILOT（12 星齊）／ENC79_DIALOG／ENC79_BEATS／STAGEUP／CAP／WRAP；主副場照設計表；
@@ -145,7 +146,7 @@ ok('CAP／WRAP 係扁平句對（唔嵌套）', P3.every(sid=> Array.isArray(ENC
 const EXPECT_BEATS = {
   pang_siuki: ['pang_intel','pang_help','pang_n17','pang_finale_cold','pang_finale','pang_patron'], /* v20a278：收尾 beats（n17 之後、patron 之前） */
   so_jiyan: ['so_intel','so_risk','so_wrap','so_patron'],
-  chung_choning: ['chung_review','chung_intel','chung_f_clue','chung_farewell','chung_patron_cold','chung_patron'], /* v20a278：冷版 patron（暖版前） */
+  chung_choning: ['chung_review','chung_intel','chung_f_clue','chung_patron_cold','chung_patron','chung_farewell'], /* v20a278：冷版 patron（暖版前）；v20a305：提攜排送別之前（送別後出沒 P=0，遲到 T4 會永失提攜） */
   ching_tinlok: ['ching_e4','ching_rival','ching_after_train','ching_after_polish','ching_patron_cold','ching_patron'], /* v20a278：冷版 patron（暖版前） */
 };
 let total84 = 0;

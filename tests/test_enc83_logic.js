@@ -1,3 +1,4 @@
+// v20a305 resync：EXPECT_BEATS 三線加暖版收科 beat（ngai_finale／lok_finale／chai_finale，排提攜之後）。
 // v20a83 ENC83 邏輯測試：紅星巧遇 Phase 2（魏詠男／顧明輝／駱家聲／齊鎮海）＋ T4 提攜通用機制——
 // v20a290：名冊 12→17 星（§1 斷言改認 17；其餘四星內容不變）。
 //   (1) 註冊：四星入 ENC79_PILOT／ENC79_DIALOG／ENC79_BEATS／STAGEUP／CAP／WRAP；主副場照設計表；
@@ -134,10 +135,10 @@ ok('出沒窗外：齊 1991 春得基礎 50%', (()=>{ _ys={year:1991,season:'春
 
 /* ---- (2) 五層完整性＋句數 ---- */
 const EXPECT_BEATS = {
-  ngai_wingnaam: ['ngai_intel','ngai_help','ngai_repay','ngai_rain','ngai_patron_cold','ngai_patron'], /* v20a278：新 beat ngai_rain（repay 之後）＋冷版 patron（暖版前） */
+  ngai_wingnaam: ['ngai_intel','ngai_help','ngai_repay','ngai_rain','ngai_patron_cold','ngai_patron','ngai_finale'], /* v20a278：新 beat ngai_rain（repay 之後）＋冷版 patron（暖版前）；v20a305：暖版收科 ngai_finale（提攜之後） */
   gu_mingfai: ['gu_foreshadow','gu_tease','gu_loan','gu_after_repay','gu_after_default','gu_n10after','gu_patron_cold','gu_patron'], /* v20a269：冷版提攜排暖版之前 */
-  lok_gasing: ['lok_foreshadow','lok_intel','lok_help','lok_cover','lok_recover','lok_e4grudge','lok_patron_cold','lok_patron_cover','lok_patron'], /* v20a278：新 beat lok_cover（help 之後）＋冷版／翻唱收尾（暖版前） */
-  chai_zanhoi: ['chai_intel','chai_fear','chai_choice','chai_repay','chai_patron_cold','chai_patron'], /* v20a278：新 beat chai_fear（intel 之後）＋冷版 patron（暖版前） */
+  lok_gasing: ['lok_foreshadow','lok_intel','lok_help','lok_cover','lok_recover','lok_e4grudge','lok_patron_cold','lok_patron_cover','lok_patron','lok_finale'], /* v20a278：新 beat lok_cover（help 之後）＋冷版／翻唱收尾（暖版前）；v20a305：暖版收科 lok_finale（提攜之後） */
+  chai_zanhoi: ['chai_intel','chai_fear','chai_choice','chai_repay','chai_patron_cold','chai_patron','chai_finale'], /* v20a278：新 beat chai_fear（intel 之後）＋冷版 patron（暖版前）；v20a305：暖版收科 chai_finale（提攜之後） */
 };
 let total83 = 0;
 for(const sid of P2){

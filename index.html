@@ -36870,7 +36870,16 @@ const ENC83_DLG_ngai_wingnaam = {
           flags: ["ngai_patron_honest"]
         }
       ]
-    }
+    },
+    ngai_finale: {
+      lines: [
+        ["N", "頒獎禮之後那晚，維港電影後巷，魏詠男坐在木箱上面，今晚不是一個人，阿偉坐在旁邊，兩個人一人一支汽水。"],
+        ["S", "阿偉，你記唔記得，我話過，呢行唔記得邊個紅過，只記得邊個仲企得穩？"],
+        ["A", "記得呀詠男姐，你教我嗰兩招，我日日練，練到企穩為止。"],
+        ["S", "你而家企到呢個位，記得扶返啲肯捱嘅後生，呢行先唔會斷。我當年由天台跳落貨車頂，一鏡過，全場拍晒手；你尋晚嗰下暴雨頂燈架，我睇在眼內，唔輸蝕。"],
+        ["S", "我個電話仲打得通，你呢個後生仔，我介紹得出，唔會丟我架。"]
+      ]
+    }, /* v20a305 Q18：暖版收科（草稿好收尾入稿；旁白轉書面語，對白照原文） */
   }
 };
 const ENC83_FRAME_ngai_wingnaam = {
@@ -37534,7 +37543,16 @@ const ENC83_DLG_lok_gasing = {
         ["S", "我啲歌佢哋唔收，你個人，佢哋會收。你有嗰陣火，又肯捱，唔好浪費咗。"],
         ["A", "家聲哥，我唔知講咩好……多謝你。"]
       ]
-    }
+    },
+    lok_finale: {
+      lines: [
+        ["N", "頒獎禮之後那晚，香江唱片後巷，駱家聲抱著結他，今晚不是一個人，阿偉坐在樓梯級旁邊。"],
+        ["S", "阿偉，你記唔記得，我話過，歌係自己嘅，嗰種實淨，冇人攞得走？"],
+        ["A", "記得呀家聲哥，你喺錄音室講嗰陣，我就記住喇。"],
+        ["S", "我唱咗十幾年，輸俾排榜遊戲，輸俾識做宣傳嘅人，但我冇輸俾自己。今晚你企到嚟呢度，係嘉賓席嗰邊入場，我喺台下望住你，覺得自己冇白寫咁多年。"],
+        ["S", "監製嗰邊，我提過你個名，之後點行，睇你自己。記住，歌仲喺度，人就唔好俾人收埋。"]
+      ]
+    }, /* v20a305 Q18：暖版收科（草稿好收尾入稿；旁白轉書面語，對白照原文） */
   }
 };
 const ENC83_FRAME_lok_gasing = {
@@ -37840,7 +37858,17 @@ const ENC83_DLG_chai_zanhoi = {
         ["S", "搏盡之餘，記得默熟劇本先好入去。人哋畀面我，你唔好丟我架。"],
         ["A", "唔會，我邊敢丟你架呀，我會做足功課先去。"]
       ]
-    }
+    },
+    chai_finale: {
+      lines: [
+        ["N", "頒獎禮之後那晚，星河電視台古裝街，齊鎮海站在那道城門前面，望著阿偉，今晚不是考他，是同他說話。"],
+        ["S", "阿偉，唔知由幾時開始，我同你講嘢，唔再當你係企後面嗰個臨時演員喇。"],
+        ["A", "齊生，你咁講，我受唔起呀。"],
+        ["S", "人同人之間，過咗嗰條線，就唔同晒。你自己應該都覺得到。嗰陣我喺古裝街考你企位，我冇睇錯你，你係企得正嗰種人。"],
+        ["S", "轉型嗰套新戲，我會同監製講，造型點都要改少少。你嗰邊，試成點，睇你自己本事，我唔會再幫你講落去。"],
+        ["S", "殺青喇，阿偉。同你做呢套戲，我冇睇錯人。嚟緊嗰條路點行，你自己企穩，我會喺後面望住。"]
+      ]
+    }, /* v20a305 Q18：暖版收科（草稿好收尾入稿；旁白轉書面語，對白照原文） */
   }
 };
 const ENC83_FRAME_chai_zanhoi = {
@@ -40169,6 +40197,10 @@ function enc79BuildScript(starId, forceFirst, locId){
     if(beat.id==="ngai_repay" && (S.flags||{}).ngai_tea && !enc83HasCredit("credit_enc83_ngai_meal") && Array.isArray(beatSeg100.lines) && beatSeg100.lines.length>1){
       beatSeg100 = { lines: [beatSeg100.lines[0], ["S","今日得閒，順手教你兵器套路，學咗一世受用。"]].concat(beatSeg100.lines.slice(2)), choices: beatSeg100.choices || null };
     }
+    /* v20a305 Q18：齊暖版收科尾句按 Beat 5 分流——try_new 用 wrap 句（預設），play_safe 用 cap 句（草稿好收尾變體二）；冷版 patron_cold 唔郁。 */
+    if(beat.id==="chai_finale" && (S.flags||{}).chai_play_safe && Array.isArray(beatSeg100.lines) && beatSeg100.lines.length){
+      beatSeg100 = { lines: beatSeg100.lines.slice(0, -1).concat([["S","阿偉，今日傾到呢度先啦，我仲有場戲要默。你有呢份心，我領咗，不過有啲路，仲要慢慢行，唔好急。"]]), choices: beatSeg100.choices || null };
+    }
     pushSeg(beatSeg100, "beat:"+beat.id, ()=>{ const s2=enc79StarState(starId); s2.beatsDone[beat.id]=((S&&S.dayIndex)|0); try{ beat.grants && beat.grants(); }catch(_g){} });
   } else if(tier>=3 && !st.heartDone && D.heartCold && ((starId==="lok_gasing" && (S.flags||{}).lok_loose_row) || (starId==="ngai_wingnaam" && (S.flags||{}).ngai_rain_hold_back) || (starId==="chai_zanhoi" && (S.flags||{}).chai_loose_fear))){ /* v20a304 Q17：駱／魏／齊冷版交心（PLAN §4–§6 草稿「行冷版交心」）——壞旗玩家去到交心嗰刻播冷版，唔係淨係跳過暖版。排暖版之前；暖版閘唔郁。 */
     /* 冷版 heart：heartDone 照標（呢個就係嗰次交心，唔重播）；好感＋1（唔係暖版＋2——有裂痕，值同一次普通 pool 傾偈一樣）；
@@ -41709,6 +41741,7 @@ ENC79_BEATS.ngai_wingnaam = [
   { id:"ngai_rain", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=2 && enc83NodeDone("N7") && ys.year===1991 && (ys.season==="夏" || ys.season==="秋"); }, }, /* v20a278：新 beat 暴雨救場（repay 之後） */
   { id:"ngai_patron_cold", when(st){ return enc79TierOf(st.fav)>=4 && ((S.flags||{}).ngai_rain_hold_back || (S.flags||{}).ngai_patron_honest); }, }, /* v20a278：冷版提攜（排暖版前；無債權） */
   { id:"ngai_patron", when(st){ return enc79TierOf(st.fav)>=4 && !(S.flags||{}).ngai_rain_hold_back && !(S.flags||{}).ngai_patron_honest; }, }, /* v20a278：暖版加排除式閘；grants() 已拆——債權改由抉擇 fx ngai_vouch 授（照實講先授） */
+  { id:"ngai_finale", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=4 && ys.year===1992 && ys.season==="冬" && (st.beatsDone||{}).ngai_patron && !(S.flags||{}).ngai_rain_hold_back && !(S.flags||{}).ngai_patron_honest; }, grants(){ try{ S.flags=S.flags||{}; S.flags.enc79_ngai_finale=1; }catch(_e){} } }, /* v20a305 Q18：暖版收科（草稿好收尾入稿；排提攜之後；冷版照行 patron_cold） */
 ];
 ENC79_BEATS.gu_mingfai = [
   { id:"gu_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year===1991 && enc79TierOf(st.fav)>=1; }, grants(){ toast("後台有人講：顧明輝最近四圍撲水。歌迷見到嗰個笑容，同佢收工之後嗰個樣，完全係兩回事。"); } },
@@ -41730,6 +41763,7 @@ ENC79_BEATS.lok_gasing = [
   { id:"lok_patron_cold", when(st){ return enc79TierOf(st.fav)>=4 && ((S.flags||{}).lok_loose_row || (S.flags||{}).lok_join_rant); }, }, /* v20a278：冷版提攜（排暖版前；無債權） */
   { id:"lok_patron_cover", when(st){ return enc79TierOf(st.fav)>=4 && (S.flags||{}).lok_cover_first && !(S.flags||{}).lok_loose_row && !(S.flags||{}).lok_join_rant; }, }, /* v20a278：翻唱收尾（排暖版前；無債權） */
   { id:"lok_patron", when(st){ return enc79TierOf(st.fav)>=4 && !(S.flags||{}).lok_join_rant && !(S.flags||{}).lok_loose_row && !(S.flags||{}).lok_cover_first; }, grants(){ enc79GrantCredit({ id:"credit_enc83_lok_patron", debtor:"駱家聲", title:"監製引薦", line:"駱家聲塞咗張唱片監製嘅卡片畀你：佢哋唔收我啲歌，但你個人，佢哋會收。去敲門啦。", status:"未收" }); try{ sideline280GrantCompletion("lok"); }catch(_e280){} } }, /* v20a278：暖版加排除式閘 */
+  { id:"lok_finale", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=4 && ys.year===1992 && ys.season==="冬" && (st.beatsDone||{}).lok_patron && !(S.flags||{}).lok_join_rant && !(S.flags||{}).lok_loose_row && !(S.flags||{}).lok_cover_first; }, grants(){ try{ S.flags=S.flags||{}; S.flags.enc79_lok_finale=1; }catch(_e){} } }, /* v20a305 Q18：暖版收科（草稿好收尾入稿；排提攜之後；冷版照行 patron_cold／翻唱行 patron_cover） */
 ];
 ENC79_BEATS.chai_zanhoi = [
   { id:"chai_intel", when(st){ return enc79TierOf(st.fav)>=2; }, },
@@ -41738,6 +41772,7 @@ ENC79_BEATS.chai_zanhoi = [
   { id:"chai_repay", when(st){ return enc79TierOf(st.fav)>=2 && !(S.flags||{}).chai_silent && (enc87StoryFlag("flag_side_film") || enc87StoryFlag("flag_side_tv") || enc87StoryFlag("flag_side_undecided") || enc83NodeDone("N13")); }, grants(){ try{ sideline280GrantCompletion("chai"); }catch(_e280){} } }, /* v20a278：repay 閘加 !chai_silent（唔出聲嗰陣無回報 beat，冷後果由 patron 冷版承接） */
   { id:"chai_patron_cold", when(st){ return enc79TierOf(st.fav)>=4 && ((S.flags||{}).chai_silent || (S.flags||{}).chai_comfort || (S.flags||{}).chai_loose_fear); }, }, /* v20a278：冷版提攜（排暖版前；無債權） */
   { id:"chai_patron", when(st){ return enc79TierOf(st.fav)>=4 && !(S.flags||{}).chai_silent && !(S.flags||{}).chai_comfort && !(S.flags||{}).chai_loose_fear; }, grants(){ enc79GrantCredit({ id:"credit_enc83_chai_patron", debtor:"齊鎮海", title:"一哥引薦", line:"齊鎮海同監製打咗聲招呼：你去試鏡嗰日，提一哥個名，嗰道門會為你開。", status:"未收" }); try{ sideline280GrantCompletion("chai"); }catch(_e280){} } }, /* v20a278：暖版加排除式閘 */
+  { id:"chai_finale", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=4 && ys.year===1992 && ys.season==="冬" && (st.beatsDone||{}).chai_patron && !(S.flags||{}).chai_silent && !(S.flags||{}).chai_comfort && !(S.flags||{}).chai_loose_fear; }, grants(){ try{ S.flags=S.flags||{}; S.flags.enc79_chai_finale=1; }catch(_e){} } }, /* v20a305 Q18：暖版收科（草稿好收尾入稿；排提攜之後；冷版照行 patron_cold） */
 ];
 /* ===== ENC83 模組完 ===== */
 
@@ -41795,9 +41830,9 @@ ENC79_BEATS.chung_choning = [
   { id:"chung_review", when(st){ return enc79TierOf(st.fav)>=1; } },
   { id:"chung_intel", when(st){ return enc79TierOf(st.fav)>=2; }, },
   { id:"chung_f_clue", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=3 && ys.year>=1991; }, },
-  { id:"chung_farewell", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=2 && ys.year===1992 && (ys.season==="秋" || ys.season==="冬"); }, grants(){ (function(){ try{ S.flags = S.flags || {}; S.flags.chungAdviceHeld229 = 1; }catch(_e){} })(); } },
   { id:"chung_patron_cold", when(st){ return enc79TierOf(st.fav)>=4 && ((S.flags||{}).chung_loose_talk || (S.flags||{}).chung_asked_return); }, }, /* v20a278：冷版提攜（排暖版前；無債權） */
   { id:"chung_patron", when(st){ return enc79TierOf(st.fav)>=4 && !(S.flags||{}).chung_loose_talk && !(S.flags||{}).chung_asked_return; }, grants(){ enc79GrantCredit({ id:"credit_enc84_chung_patron", debtor:"鍾楚凝", title:"影后引薦", line:"鍾楚凝臨行前向嗰位導演提過你個名，留低一句：嗰個後生仔，有戲。佢嗰種人，一句好話，重過成版廣告。", status:"未收" }); try{ sideline280GrantCompletion("chung"); }catch(_e280){} } }, /* v20a278：暖版加排除式閘 */
+  { id:"chung_farewell", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=2 && ys.year===1992 && (ys.season==="秋" || ys.season==="冬"); }, grants(){ (function(){ try{ S.flags = S.flags || {}; S.flags.chungAdviceHeld229 = 1; }catch(_e){} })(); } }, /* v20a305 Q18：提攜排送別之前——送別之後出沒 P=0，遲到 T4 玩家會永失提攜；暖版收科＝送別＋引薦齊播（草稿 Beat 5），唔另開 finale beat */
 ];
 ENC79_BEATS.ching_tinlok = [
   { id:"ching_e4", when(st){ return enc79TierOf(st.fav)>=1 && enc83NewsOut("E4"); }, grants(){ try{ sideline280GrantCompletion("ching"); }catch(_e280){} } },
