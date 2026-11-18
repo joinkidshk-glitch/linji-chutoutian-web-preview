@@ -158,3 +158,10 @@ liked／dislike 通用句（共 +10 條）。`GIFT_REACT` 條目總數 48 → 68
 - gig 庫 cast 命中（parent 核實＋工人覆核 `content/gigs_new.json`）：wu leadF 51／supportF 34、
   kong leadF 28／supportF 25、hon leadF 10／supportF 19、shum leadF 11／supportF 12、
   lan leadF 4／supportF 18（另 singer 7）。五位全部有主角格＋配角格實例，殺青分格有嘢加。
+
+## §8 落地記錄（統籌 2026-11-18）
+- 內容 commit `ebcbcf3`（squash merge 自工作副本分支 `v290-five-stars` commit `f497813`，19 檔 +1188/−67；index.html 46256→46717 行）。
+- Suite：`~/workspace/suite290.txt`，**TOTAL PASS 353 FAIL 9**；9 個 FAIL 全部係已知 pre-existing（flash51／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wf5_87／wrap38），PASS 351→353（+2 新測試檔），零回歸。統籌獨立核實：ENC79_STARS 17 def、五位送禮喜好、兩新測試喺 suite 輸出入面 PASS。
+- Push：main `ebcbcf3`，`git ls-remote` 已確認。
+- Pages：curl 核實 byte-identical，md5 `ab386a4bbc77edfb5914752c66ad9a21`，4,711,711 bytes。
+- 工作副本 `linji-work290` 已刪。
