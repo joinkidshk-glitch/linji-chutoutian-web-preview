@@ -406,11 +406,11 @@ try{
   const tfB = html.indexOf('async function refreshCopyPacksFromDisk(){');
   const TF_SRC = html.slice(tfA, tfB);
   const CONSTS = ['STAT_LABEL', 'POSTER59_STAR_IDS', 'GIG_REQ_KEYS88', 'SHOOT_DAYS',
-    'ROLE_SCALE_BAND', 'DUR90_OLD_BAND', 'DUR90_DAILY'];
+    'ROLE_SCALE_BAND'];
   const FNS = ['years66ShiftYear', 'years66ShiftText', 'years66Walk', 'years66GigRemap', 'normalizeGigRecord',
     'bridge56NormalizeGig', 'boardNotePlayerOk', 'looksLikeEraId', 'humanizeEraId',
     'clamp', 'resolveRoleScale', 'shootBandFor', 'effectiveShootDays', 'effectiveShootWeekdays',
-    'effectiveShootDeadlineDays', 'gigPayExact', 'dur90RoundPay', 'dur90CalibrateGig',
+    'effectiveShootDeadlineDays', 'gigPayExact',
     'clampEntryReqToTemplate', 'entryGigPool229', 'mergeEntryGigsIntoPool', 'mergeSoftBridgeGigs'];
   const WORLD_SRC = TF_SRC + '\n' + CONSTS.map(c=>{
     const s = extractConstVar(c); return s ? s : 'var '+c+' = undefined;';

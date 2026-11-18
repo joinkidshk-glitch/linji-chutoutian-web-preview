@@ -48,13 +48,12 @@ const TF_SRC = html.slice(tfA, tfB);
 const CONSTS = ['STAT_LABEL','POSTER59_STAR_IDS',
   'GIG_REQ_KEYS88','GIG_SEASON_SPAN88','GIG_SEASON_LEAD88',
   'SHOOT_DAYS','ROLE_SCALE_BAND',
-  'DUR90_OLD_BAND','DUR90_DAILY','NAT92_SPREAD','NAT92_PULL_MAX','NAT92_PULL_OPEN_MAX',
+  'NAT92_SPREAD','NAT92_PULL_MAX','NAT92_PULL_OPEN_MAX',
   'BR89_PATRON_OF_GIG','GIG_TRIGGER_AWARD_MAP229','RIVAL_CFG'];
 const FNS = ['normalizeGigRecord',
   'bridge56NormalizeGig','leadStar59Of','boardNotePlayerOk','looksLikeEraId','humanizeEraId',
   'clamp','resolveRoleScale','shootBandFor','effectiveShootDays','effectiveShootWeekdays',
   'effectiveShootDeadlineDays','gigPayExact','gigTierCanon229',
-  'dur90RoundPay','dur90CalibrateGig',
   'reqGap','canAudition','fameFloor','gateTrainHint','isGigWrapped','gigActiveShoot','isGigInProduction',
   'isGigConsumed','seasonRank','calendarSeason','dateObj','boardPriorityRank','boardSortCompare',
   'gigsForLocSeasonBoard','clampEntryReqToTemplate','mergeEntryGigsIntoPool','entryGigPool229','entryGigPoolLive',
@@ -92,7 +91,7 @@ function buildWorld(){
     nat92StaggerEligible, nat92PostIntervals, nat92BoardOffsetDays, nat92CalNeedDays,
     effectiveShootDays, gigPayExact, resolveRoleScale,
     setS:(s)=>{S=s;}, setGIGS:(g)=>{GIGS=g;}, getGIGS:()=>GIGS,
-    DUR90_DAILY, ROLE_SCALE_BAND };`)();
+    ROLE_SCALE_BAND };`)();
 }
 const W = buildWorld();
 function deepClone(o){ return JSON.parse(JSON.stringify(o)); }

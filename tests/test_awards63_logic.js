@@ -54,7 +54,7 @@ const TF_SRC = html.slice(tfA, tfB);
 for(const c of ['POSTER59_STAR_IDS','AWARDS188_CATEGORIES','AWARDS204_FEMALE_STARS','EMOJI_ICON112'])
   eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
 eval(extractConst('GIG_REQ_KEYS88').replace('const GIG_REQ_KEYS88 =', 'var GIG_REQ_KEYS88 ='));
-for(const f of ['normalizeGigRecord','bridge56NormalizeGig','boardNotePlayerOk','looksLikeEraId','humanizeEraId','dur90CalibrateGig',
+for(const f of ['normalizeGigRecord','bridge56NormalizeGig','boardNotePlayerOk','looksLikeEraId','humanizeEraId',
   'leadStar59Of','poster59Path','work59WorkOf','awards63StarName','awards63AllGigs','awards63GigYear','awards63GigPay',
   'awards63CatSlot','awards63HasSprite','awards63Fellows','awards63FocusCat','awards62CeremonyBeats',
   'awards204StarGender','iconHtml112'])

@@ -51,7 +51,7 @@ collectFlagArrays(html, writes);
 const reads = new Set();
 // (a) 讀旗函數呼叫參數
 {
-  const re = /(?:getFlag|hasFlag|endingFlag410|enc87StoryFlag|storyFlag|getStoryFlag|hasStoryFlag|flagOn|hasIntelFlag)\s*\([^)]*?["'](flag_[a-z0-9_]+)["']/g;
+  const re = /(?:getFlag|hasFlag|endingFlag410|enc87StoryFlag|storyFlag|getStoryFlag|hasStoryFlag|flagOn)\s*\([^)]*?["'](flag_[a-z0-9_]+)["']/g;
   let m; while ((m = re.exec(html))) reads.add(m[1]);
 }
 // (b) index 入面：將所有「寫入陣列」同「flags_written 元數據」遮起嚟之後，剩低嘅出現當讀取

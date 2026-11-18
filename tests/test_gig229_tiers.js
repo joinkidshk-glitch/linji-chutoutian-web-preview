@@ -9,9 +9,9 @@
 //   E gigBreachFee：高級／稀有行高分支（60%／下限 $100）；臨記／初級／中級行一般分支（50%／下限 $50）（v261 ÷10）
 //   F gigDifficultyStars：高級／稀有 5 星、中級 4 星、臨記／初級按 hard 2／3 星
 //   G aud91WaitDays：臨記／初級短工 1–2 日、高級／稀有 3–4 日、中級 2–3 日
-//   H DUR90_DAILY 五級各一鍵（值按機械級對位），舊三級鍵留返
+//   H（已刪 v288：日薪帶隨工期／片酬校準整組刪除——庫入面 0 張帶 shootBand，校準係 no-op）
 //   I 板面 tierOrder 五級：gigsForLocSeasonBoard 每級留一張＋按五級排序；舊三級按機械級對位照排
-// 反證：v229 B1（舊三級）→ B1–B3／C1–C2／D／E／F／G／H／I 全部 FAIL（舊 code 唔識「中級」等新值，
+// 反證：v229 B1（舊三級）→ B1–B3／C1–C2／D／E／F／G／I 全部 FAIL（舊 code 唔識「中級」等新值，
 //   臨記／初級撈埋 junior、板面 tierOrder 得三格）。
 const fs = require('fs');
 const path = require('path');
@@ -51,20 +51,13 @@ ok('S0 GIG_TIER_ORDER229 五級次序 臨記／初級／中級／高級／稀有
 ok('S1 板面 tierOrder 讀 GIG_TIER_ORDER229（唔係寫死三級）',
    (()=>{ const s = extractFn('gigsForLocSeasonBoard') || '';
      return s.includes('GIG_TIER_ORDER229') && s.includes('gigTierCanon229'); })());
-ok('S2 DUR90_DAILY 五級鍵齊（臨記／初級／中級／高級／稀有）',
-   ['"臨記"', '"初級"', '"中級"', '"高級"', '"稀有"'].every(k=>{
-     const s = extractConst('DUR90_DAILY') || ''; return s.includes(k); }));
-ok('S3 DUR90_DAILY 舊三級鍵留返（初／中／高）',
-   (()=>{ const s = extractConst('DUR90_DAILY') || '';
-     return s.includes('"初"') && s.includes('"中"') && s.includes('"高"'); })());
-
 /* ---------- sandbox：核心五級函數 ---------- */
 const STUBS_SRC = `
   var START = { y:1990, m:1, d:1 };
   var S = null;
   var GIGS = [];
 `;
-const CONSTS = ['ROLE_SCALE_BAND', 'DUR90_DAILY', 'GIG_TIER_ORDER229'];
+const CONSTS = ['ROLE_SCALE_BAND', 'GIG_TIER_ORDER229'];
 const FNS = ['clamp', 'R', 'fameFloor', 'chance', 'gigTierCanon229', 'gigTierKey',
   'resolveRoleScale', 'shootBandFor', 'gigPayExact', 'gigBreachFee', 'gigDifficultyStars',
   'aud91WaitDays'];
@@ -73,7 +66,7 @@ const WORLD_SRC = CONSTS.map(c=>{
 }).join('\n') + '\n' + FNS.map(f=>extractFn(f) || '').join('\n');
 const W = new Function(STUBS_SRC + WORLD_SRC + `
 ; return { fameFloor, chance, gigTierCanon229, gigTierKey, resolveRoleScale, gigPayExact,
-  gigBreachFee, gigDifficultyStars, aud91WaitDays, DUR90_DAILY,
+  gigBreachFee, gigDifficultyStars, aud91WaitDays,
   setS:(s)=>{S=s;}, getS:()=>S };`)();
 
 /* ---------- A fameFloor ---------- */
@@ -207,19 +200,13 @@ ok('G5 aud91WaitDays 稀有 3–4 日', rangeOk(waitRange('稀有', 5), 3, 4));
 ok('G6 aud91WaitDays 舊 高 3–4 日', rangeOk(waitRange('高', 5), 3, 4));
 ok('G7 aud91WaitDays 舊 初短工 1–2 日', rangeOk(waitRange('初', 2), 1, 2));
 
-/* ---------- H DUR90_DAILY 值 ---------- */
-const D = W.DUR90_DAILY;
-ok('H DUR90_DAILY 臨記／初級＝舊 初帶', JSON.stringify(D['臨記']) === JSON.stringify(D['初']) &&
-   JSON.stringify(D['初級']) === JSON.stringify(D['初']));
-ok('H2 DUR90_DAILY 中級＝舊 中帶', JSON.stringify(D['中級']) === JSON.stringify(D['中']));
-ok('H3 DUR90_DAILY 高級／稀有＝舊 高帶', JSON.stringify(D['高級']) === JSON.stringify(D['高']) &&
-   JSON.stringify(D['稀有']) === JSON.stringify(D['高']));
+/* H 已刪 v288：日薪帶隨工期／片酬校準整組刪除（見檔頭 H 註）。 */
 
 /* ---------- I 板面 tierOrder（live） ---------- */
 const BOARD_FNS = ['clamp', 'seasonRank', 'calendarSeason', 'boardPriorityRank', 'boardSortCompare',
   'isGigWrapped', 'gigActiveShoot', 'isGigInProduction', 'isGigConsumed',
   'gigTierCanon229', 'gigsForLocSeasonBoard'];
-const BOARD_SRC = CONSTS.filter(c=>c !== 'DUR90_DAILY').map(c=>{
+const BOARD_SRC = CONSTS.map(c=>{
   const s = extractConst(c); return s ? s.replace('const '+c, 'var '+c) : 'var '+c+' = undefined;';
 }).join('\n') + '\n' + BOARD_FNS.map(f=>extractFn(f) || '').join('\n');
 const WB = new Function(`

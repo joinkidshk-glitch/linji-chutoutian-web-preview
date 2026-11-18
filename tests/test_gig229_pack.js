@@ -119,11 +119,11 @@ const tfB = html.indexOf('async function refreshCopyPacksFromDisk(){');
 if(tfA<0 || tfB<=tfA){ console.log('FAIL TEXTFIX55 block not found'); process.exit(1); }
 const TF_SRC = html.slice(tfA, tfB);
 const CONSTS = ['STAT_LABEL', 'POSTER59_STAR_IDS', 'GIG_REQ_KEYS88', 'SHOOT_DAYS',
-  'ROLE_SCALE_BAND', 'DUR90_OLD_BAND', 'DUR90_DAILY'];
+  'ROLE_SCALE_BAND'];
 const FNS = ['years66ShiftYear', 'years66ShiftText', 'years66Walk', 'years66GigRemap', 'normalizeGigRecord',
   'bridge56NormalizeGig', 'boardNotePlayerOk', 'looksLikeEraId', 'humanizeEraId',
   'clamp', 'resolveRoleScale', 'shootBandFor', 'effectiveShootDays', 'effectiveShootWeekdays',
-  'effectiveShootDeadlineDays', 'gigPayExact', 'dur90RoundPay', 'dur90CalibrateGig',
+  'effectiveShootDeadlineDays', 'gigPayExact',
   'clampEntryReqToTemplate', 'entryGigPool229', 'mergeEntryGigsIntoPool', 'mergeSoftBridgeGigs'];
 const STUBS_SRC = `
   var START = { y:1990, m:1, d:1 };

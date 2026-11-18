@@ -59,7 +59,7 @@ var S = { dayIndex: 0 };
 var dateObj = function(){ return new Date(1990, 0, 1); };
 try{
   for(const c of ['START','GIG_SEASON_SPAN88','GIG_SEASON_LEAD88','NAT92_SPREAD','NAT92_PULL_MAX',
-    'NAT92_PULL_OPEN_MAX','ROLE_SCALE_BAND','SHOOT_DAYS','DUR90_DAILY','DUR90_OLD_BAND']){
+    'NAT92_PULL_OPEN_MAX','ROLE_SCALE_BAND','SHOOT_DAYS']){
     const src = extractConstVar(c);
     if(!src) ok('抽取 const '+c, false); else eval(src);
   }

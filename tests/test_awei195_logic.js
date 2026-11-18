@@ -61,7 +61,7 @@ if(tfA < 0 || tfB <= tfA){ console.log('FAIL TEXTFIX55 block not found'); proces
 const TF_SRC = html.slice(tfA, tfB);
 const CONSTS = ['GIG_REQ_KEYS88'];
 const FNS = ['normalizeGigRecord', 'boardNotePlayerOk',
-  'looksLikeEraId', 'humanizeEraId', 'dur90CalibrateGig', 'leadStar59Of',
+  'looksLikeEraId', 'humanizeEraId', 'leadStar59Of',
   'enc79PlayerTier', 'dlg106AweiStem',
   'enc195TierFromAllYears', 'enc195BackfillTierMax', 'enc195EnsureTierMax', 'enc195RecordTierMax',
   'normalizeSaveObj'];
