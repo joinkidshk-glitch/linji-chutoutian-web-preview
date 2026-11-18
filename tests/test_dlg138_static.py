@@ -1,7 +1,21 @@
-# v20a195 resync：加 2 張 angry 表情（awi_s2／s3_angry），fullbody 總數 207→209、真檔 182→184。
-# v20a138 DLG138 靜態守門：36 張新表情圖入庫＋檔名／映射／實線句數／焗邊。
-# （v20a268：37→36，vera_serious.webp 已刪——Vera 感情線節點由 JSON 刪除，佢嘅實線句數隨之歸零；fullbody 目錄總數 241→237，v268 刪咗 4 張 vera 全身圖；焗邊報告 qa138/bake_results138.json 保持 37 張，因為 bake 檔本身無改。）
-# 覆蓋：① 36 張新資產本地存在＋檔名一字唔差＋WebP 檔頭＋fullbody 總數 237（v195：207＋2 張 angry 表情；v265 加 32 張衫圖；v268 刪 vera 4 張）
+# v20a296 resync：加 26 張新表情圖（Q9 表情死檔補齊）＋2 張孤兒復活，fullbody 總數 237→263。
+#   新圖 26 張（每張 ≥1 句 live 實線，句數來源：qa296/derive296.json，用 runtime
+#   真分類器 dlg106ResolveCategory 逐句分類；見 NOTES_V20A296_EXPRESSION_DEAD_FILES.md）：
+#   cheung_hakfan_think 1、cheung_tsijun_angry 1（新對白 A_tsijun_crisis）、
+#   chow_choiyi_shy 2、crew_laolinji_smile 1、gao_wenhan_think 1、ho_sang_shy 3、
+#   ko_chunkit_sad 1、ko_chunkit_surprise 1、lan_ruoxi_surprise 1、lan_ruoxi_angry 3、
+#   lin_hiu_surprise 2、lin_hiu_think 1、lin_hiu_angry 1、lui_ging_sad 1、lui_ging_shy 1、
+#   lui_ging_think 3、so_jiyan_think 2、so_jiyan_angry 2、tong_souwan_sad 2、
+#   tong_souwan_think 1、tsui_poushan_smile 1、tsui_poushan_sad 1、tsui_poushan_surprise 1、
+#   tsui_poushan_think 2、tsui_poushan_angry 2、yip_manji_think 3（合計 41 句）。
+#   孤兒復活 2 張：lin_hiu_serious 0→1（npc_lines_core 已有 1 句 live，檔案一直存在）、
+#   tsui_poushan_serious 0→1（新對白 R_xu_crisis 加 1 句 serious）。DEAD_SHIPPED 清零。
+#   死檔剩返 vera_shy.webp（Vera 已刪，檔案從未生成）。
+#   仲缺嘅 live 句：16 句，全部係 4 位新星（hon_sauting／kong_siying／shum_yingsuet／
+#   wu_meilam，連 base 都冇，v290 已定剪影頂住，等新星美術票，唔入 v296）。
+#   孤兒剩返 8 組（cheung_tsijun:smile、chow_choiyi:sad／think／angry、gao_wenhan:angry、
+#   gu_mingfai:angry、lui_ging:serious、ngai_wingnaam:surprise），全部 0 live 句，留畀日後內容票。
+# 覆蓋：① 62 張新資產本地存在＋檔名一字唔差＋WebP 檔頭＋fullbody 總數 263
 #       ② 每張新圖有對應可達（live）實線句數（句數來源：qa138/verdict138.json，
 #          reachable occurrence × runtime 分類；唔係 corpus 句數——v127 教訓）
 #       ③ 反證：檢查函數食缺檔／改錯名嘅檔案集必須報缺；另做真實
@@ -10,9 +24,8 @@
 #          DLG106 接線原封不動；新檔名本身就係新 URL，用既有 ?v=20a106）。
 #       ⑤ 焗邊驗證（qa138/bake_results138.json）：37 張全 PASS、
 #          邊帶米白命中 ≥95%、內部大差異 <1%、單一邊帶。
-#       ⑥ 死檔守門：7 個 inventory-missing 死資產唔入批，檔案必須唔存在
-#          （cheung_tsijun_angry／ko_chunkit_sad／lin_hiu_angry／lin_hiu_think／
-#           lui_ging_sad／tong_souwan_sad／vera_shy）。
+#       ⑥ 死檔守門：vera_shy.webp 唔入批，檔案必須唔存在
+#          （v296 前嘅 7 個死資產之中 6 個已經復活出圖入庫，只剩 vera_shy）。
 #       ⑦ 生死分類依據：qa138/verdict138.json＋verdict138_addendum.md
 #          （live-needed 110 組，已有 73，批單 37；inventory 口徑 +66 句入面
 #          9 句係 extra_ad_fen 旁白重複誤歸（盤點 bug），另 lin_hiu_serious 1 句＋
@@ -62,7 +75,7 @@ NEW = [
     ("ho_sang_surprise.webp", "ho_sang", "surprise", 1),
     ("ko_chunkit_shy.webp", "ko_chunkit", "shy", 1),
     ("ko_chunkit_think.webp", "ko_chunkit", "think", 1),
-    ("lin_hiu_serious.webp", "lin_hiu", "serious", 0),  # 死圖：pack 句播唔到，mock 版零 serious
+    ("lin_hiu_serious.webp", "lin_hiu", "serious", 1),  # v296 復活：npc_lines_core 已有 1 句 live
     ("lin_hiu_smile.webp", "lin_hiu", "happy", 1),
     ("liu_bingxing_sad.webp", "liu_bingxing", "sad", 2),
     ("liu_bingxing_surprise.webp", "liu_bingxing", "surprise", 2),
@@ -83,8 +96,35 @@ NEW = [
     ("ngai_wingnaam_surprise.webp", "ngai_wingnaam", "surprise", 1),
     ("ngai_wingnaam_think.webp", "ngai_wingnaam", "think", 1),
     ("so_jiyan_surprise.webp", "so_jiyan", "surprise", 1),
-    ("tsui_poushan_serious.webp", "tsui_poushan", "serious", 0),  # 死圖：運行版 17 句 live 徐寶珊句 serious 0
+    ("tsui_poushan_serious.webp", "tsui_poushan", "serious", 1),  # v296 復活：R_xu_crisis 新加 1 句 serious
     # v20a268：("vera_serious.webp", "vera", "serious", 1) 已刪——Vera 感情線節點由 JSON 刪除
+    # ---- v20a296 新增 26 張（句數＝qa296/derive296.json live 實線） ----
+    ("cheung_hakfan_think.webp", "cheung_hakfan", "think", 1),
+    ("cheung_tsijun_angry.webp", "cheung_tsijun", "angry", 1),
+    ("chow_choiyi_shy.webp", "chow_choiyi", "shy", 2),
+    ("crew_laolinji_smile.webp", "crew_laolinji", "happy", 1),
+    ("gao_wenhan_think.webp", "gao_wenhan", "think", 1),
+    ("ho_sang_shy.webp", "ho_sang", "shy", 3),
+    ("ko_chunkit_sad.webp", "ko_chunkit", "sad", 1),
+    ("ko_chunkit_surprise.webp", "ko_chunkit", "surprise", 1),
+    ("lan_ruoxi_surprise.webp", "lan_ruoxi", "surprise", 1),
+    ("lan_ruoxi_angry.webp", "lan_ruoxi", "angry", 3),
+    ("lin_hiu_surprise.webp", "lin_hiu", "surprise", 2),
+    ("lin_hiu_think.webp", "lin_hiu", "think", 1),
+    ("lin_hiu_angry.webp", "lin_hiu", "angry", 1),
+    ("lui_ging_sad.webp", "lui_ging", "sad", 1),
+    ("lui_ging_shy.webp", "lui_ging", "shy", 1),
+    ("lui_ging_think.webp", "lui_ging", "think", 3),
+    ("so_jiyan_think.webp", "so_jiyan", "think", 2),
+    ("so_jiyan_angry.webp", "so_jiyan", "angry", 2),
+    ("tong_souwan_sad.webp", "tong_souwan", "sad", 2),
+    ("tong_souwan_think.webp", "tong_souwan", "think", 1),
+    ("tsui_poushan_smile.webp", "tsui_poushan", "happy", 1),
+    ("tsui_poushan_sad.webp", "tsui_poushan", "sad", 1),
+    ("tsui_poushan_surprise.webp", "tsui_poushan", "surprise", 1),
+    ("tsui_poushan_think.webp", "tsui_poushan", "think", 2),
+    ("tsui_poushan_angry.webp", "tsui_poushan", "angry", 2),
+    ("yip_manji_think.webp", "yip_manji", "think", 3),
 ]
 CAT2EXPR = {"happy": "smile", "neutral": "base", "serious": "serious",
             "sad": "sad", "surprise": "surprise", "shy": "shy",
@@ -101,13 +141,11 @@ if m:
         ck(f"檔名 {fn}＝講者_{CAT2EXPR[cat]}",
            fn == f"{sp}_{CAT2EXPR[cat]}.webp")
 
-# ---------- 死檔守門：7 個死資產唔入批 ----------
-DEAD = ["cheung_tsijun_angry.webp", "ko_chunkit_sad.webp", "lin_hiu_angry.webp",
-        "lin_hiu_think.webp", "lui_ging_sad.webp", "tong_souwan_sad.webp",
-        "vera_shy.webp"]
-# 已入庫但判死嘅 2 張（見 addendum）：檔案存在，但可達實線句數＝0。
-# 唔刪檔——留低等另一票（mock R_hiu_meet 加 serious 台詞／live R_xu_* 加 serious 台詞）加返線即用得。
-DEAD_SHIPPED = ["lin_hiu_serious.webp", "tsui_poushan_serious.webp"]
+# ---------- 死檔守門：vera_shy 唔入批 ----------
+# v296 前嘅 7 個死資產之中 6 個已經復活出圖入庫（見 NEW 表），只剩 vera_shy
+# （Vera 已刪，檔案從未生成）。DEAD_SHIPPED 清零：lin_hiu_serious／
+# tsui_poushan_serious 兩張孤兒已經復活（見 NEW 表句數 1／1）。
+DEAD = ["vera_shy.webp"]
 
 FB = os.path.join(ROOT, "assets", "story", "fullbody")
 def check_new_assets(names):
@@ -117,9 +155,9 @@ def check_new_assets(names):
 if os.path.isdir(FB):
     names = set(os.listdir(FB))
     missing = check_new_assets(names)
-    ck("36 張新資產全部喺 assets/story/fullbody/", not missing)
+    ck("62 張新資產全部喺 assets/story/fullbody/", not missing)
     if missing: info("缺新資產：" + ", ".join(missing))
-    ck("fullbody 總數 170→207→209→241→237（v127 後 170 張＋v138 37 張新表情＋v195 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；v268 刪 vera 4 張 base／smile／serious／angry）", len([f for f in names if f.endswith((".webp", ".png"))]) == 237)
+    ck("fullbody 總數 170→207→209→241→237→263（v127 後 170 張＋v138 37 張新表情＋v195 2 張 angry 表情；v265 加 32 張衫圖（awi_c1／c4／c8／c10 各 8 表情）；v268 刪 vera 4 張 base／smile／serious／angry；v296 加 26 張新表情）", len([f for f in names if f.endswith((".webp", ".png"))]) == 263)
     for fn, _sp, _cat, n in NEW:
         p = os.path.join(FB, fn)
         ok = os.path.isfile(p) and os.path.getsize(p) > 50000
@@ -128,14 +166,10 @@ if os.path.isdir(FB):
                 head = fh.read(12)
             ok = head[:4] == b"RIFF" and head[8:12] == b"WEBP"
         ck(f"{fn} 存在＋WebP 檔頭＋>50KB", ok)
-        if fn in DEAD_SHIPPED:
-            ck(f"{fn} 判死：實線句數 0（檔案留低等修復票，見 addendum）", n == 0)
-        else:
-            ck(f"{fn} 有對應可達實線句數 {n} 句（唔係死圖）", n > 0)
-    ck("新圖對應可達實線句數合計（真 live 53 句）",
-       sum(n for _f, _sp, _c, n in NEW) == 53)
-    ck("死檔 7 張全部唔存在（唔生成死圖）", all(d not in names for d in DEAD))
-    ck("判死已入庫 2 張檔案存在（留低等修復票）", all(d in names for d in DEAD_SHIPPED))
+        ck(f"{fn} 有對應可達實線句數 {n} 句（唔係死圖）", n > 0)
+    ck("新圖對應可達實線句數合計（真 live 96 句＝v138 53＋v296 新圖 41＋孤兒復活 2）",
+       sum(n for _f, _sp, _c, n in NEW) == 96)
+    ck("死檔 vera_shy.webp 唔存在（唔生成死圖）", all(d not in names for d in DEAD))
 else:
     ck("assets/story/fullbody/ 目錄存在", False)
 
@@ -144,9 +178,9 @@ ck("反證：檔案集抽走一張（in-memory）→ checker 必須報缺",
    check_new_assets(set(f for f, _, _, _ in NEW) - {"ngai_wingnaam_think.webp"}) == ["ngai_wingnaam_think.webp"])
 ck("反證：檔案集改錯名（lok_gasing_shy→lok_gasing_shy2）→ checker 必須報缺",
    check_new_assets(set(f for f, _, _, _ in NEW) - {"lok_gasing_shy.webp"} | {"lok_gasing_shy2.webp"}) == ["lok_gasing_shy.webp"])
-ck("反證：空檔案集 → checker 報齊 36 張缺失",
-   len(check_new_assets(set())) == 36)
-# 真實臨時目錄負向測試：抄 35 張去 temp dir，checker 讀磁碟必須 FAIL 其中一張
+ck("反證：空檔案集 → checker 報齊 62 張缺失",
+   len(check_new_assets(set())) == 62)
+# 真實臨時目錄負向測試：抄 61 張去 temp dir，checker 讀磁碟必須 FAIL 其中一張
 # （對 pristine main 跑嗰陣新檔根本唔存在，跳過磁碟段——in-memory 反證已覆蓋，唔准 crash）
 tmp = tempfile.mkdtemp(prefix="dlg138neg_")
 try:
@@ -156,10 +190,10 @@ try:
                 continue
             shutil.copy(os.path.join(FB, fn), os.path.join(tmp, fn))
         disk_names = set(os.listdir(tmp))
-        ck("反證（真磁碟）：temp 目錄得 35 張 → checker 報缺 ho_sang_surprise.webp",
+        ck("反證（真磁碟）：temp 目錄得 61 張 → checker 報缺 ho_sang_surprise.webp",
            check_new_assets(disk_names) == ["ho_sang_surprise.webp"])
         shutil.copy(os.path.join(FB, "ho_sang_surprise.webp"), os.path.join(tmp, "ho_sang_surprise.webp"))
-        ck("反證對照：temp 目錄補返第 36 張 → checker 報零缺失",
+        ck("反證對照：temp 目錄補返第 62 張 → checker 報零缺失",
            check_new_assets(set(os.listdir(tmp))) == [])
     else:
         info("SKIP 磁碟反證：新資產唔齊（pristine 對照），in-memory 反證已覆蓋")
@@ -184,6 +218,27 @@ if os.path.isfile(BAKE):
 else:
     warns.append("BAKE_REPORT_MISSING")
     info("PENDING-BAKE-REPORT：qa138/bake_results138.json 唔喺度——跳過焗邊數值對照")
+
+# ---------- 焗邊驗證（v296：qa296 如在場） ----------
+BAKE296 = os.path.join(ROOT, "qa296", "bake_results296.json")
+if os.path.isfile(BAKE296):
+    with open(BAKE296, encoding="utf-8") as f:
+        bake296 = json.load(f)
+    ck("v296 焗邊報告 26 張", len(bake296) == 26)
+    ck("v296 焗邊 26 張全 PASS", all(b.get("pass") for b in bake296))
+    ck("v296 焗邊：邊帶米白命中全部 ≥95%",
+       all(b.get("edge_color_frac", 0) >= 0.95 for b in bake296))
+    ck("v296 焗邊：內部大差異全部 <1%",
+       all(b.get("interior_bigdiff_frac", 1) < 0.01 for b in bake296))
+    ck("v296 焗邊：單一邊帶（far_cream_px 全部 0，唔准兩重邊）",
+       all(b.get("far_cream_px", -1) == 0 for b in bake296))
+    ck("v296 焗邊：尺寸全部＝原圖+2r",
+       all(b.get("size_ok") for b in bake296))
+    ck("v296 焗邊檔名同 NEW 表 26 張新圖一致",
+       sorted(b.get("file") for b in bake296) == sorted(fn for fn, _sp, _c, _n in NEW[36:]))
+else:
+    warns.append("BAKE296_REPORT_MISSING")
+    info("PENDING-BAKE-REPORT：qa296/bake_results296.json 唔喺度——跳過 v296 焗邊數值對照")
 
 print("WARNINGS " + (", ".join(warns) if warns else "none"))
 print("RESULT " + ("FAIL (" + str(len(fails)) + ")" if fails else "PASS"))

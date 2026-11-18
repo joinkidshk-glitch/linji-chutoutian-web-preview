@@ -1,3 +1,6 @@
+# v20a296 resync：rival_mentor pack 出 sha 清單（A_tsijun_crisis 加 1 句 angry 對白
+# 「收聲，聽我講埋先。」；見下面精確替代斷言）；lan_xu pack R_xu_crisis 同樣加 1 句
+# serious 對白（見下面針對性斷言）。
 # v20a294 resync：index.html 淨 +17 行（Q7：CMT 閘 ＋2 @舊 L25060 後／HE 換選擇 ＋14 @舊 L25906 後／危機改寫 ＋1 @舊 L27342）；釘行按段重算（25117→25119、25951→25967、25866→25868、全佳 25145→25147；內容逐字相同，純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁）。
 # v20a288 resync：index.html 淨 −90 行（A1 刪 DUR90 整組；釘行 25207→25117、26041→25951、25956→25866、全佳 25235→25145；ok() 名入面嘅 L 號係歷史標籤，唔郁）。
 # v20a286 resync：index.html 淨 +9 行（contFromSlot sync＋6＠舊 L45704 之後／softSeed sync＋3＠舊 L14392 之後；釘行按段重算：＜14392 唔郁、14392–45703 各 ＋3、≥45704 各 ＋9；內容逐字核實純漂移）。 25204→25207、26038→26041、14815→14818、25953→25956、全佳 25232→25235；ok() 名入面嘅 L 號係歷史標籤，唔郁。
@@ -222,11 +225,24 @@ if _crisis:
     ok("藍 crisis help rel+2／fame-1 不變",
        _c["choices"][0]["effects"]["stats"] == {"rel_lan": 2, "fame": -1})
 
+# 徐寶珊 crisis 加 serious 台詞（v296 針對性斷言；lan_xu pack 已改，唔再入下面 sha 清單）
+_xu = [n for n in _lanxu["nodes"] if n["id"] == "R_xu_crisis"]
+ok("徐 crisis 搵到唯一節點", len(_xu) == 1)
+if _xu:
+    _xb = [b for b in _xu[0]["beats"] if b.get("speaker") == "徐寶珊"]
+    ok("徐 crisis 有徐寶珊 beats", len(_xb) >= 2)
+    ok("徐 crisis 有新加 serious 句「呢單生意，我唔係講笑。你跟我做嘢，就要認真。」",
+       any("呢單生意，我唔係講笑。你跟我做嘢，就要認真。" in l
+           for b in _xb for l in b.get("lines", [])))
+    ok("徐 crisis beats 數 5 不變", len(_xu[0]["beats"]) == 5)
+    ok("徐 crisis 抉擇 id 不變",
+       [ch["id"] for ch in _xu[0]["choices"]] == ["C_xu_crisis_respect", "C_xu_crisis_depend", "C_xu_crisis_refuse"])
+
 # pack JSON 冇直改（同 pristine main 逐檔 sha 對照；lan_xu 已改唔入清單，見上面針對性斷言；
+# v20a296：rival_mentor.json 唔入清單——A_tsijun_crisis 加 1 句 angry 對白，見下面精確替代斷言；
 # v20a268：vera_hiu_choi.json＋romance_tang.json 唔入清單——vera 檔已減 5 個 R_vera_* 節點，tang 檔已刪；見下面精確替代斷言）
 packs = [
     "content/story_detail_n1_to_n17.json",
-    "content/story_detail_rival_mentor.json",
     "content/gift_prefs.json",
     "content/gift_react_copy.json",
     "content/items_gifts.json",
@@ -235,6 +251,34 @@ packs = [
 ]
 for p in packs:
     ok("pack 冇直改: " + p, sha(os.path.join(ROOT, p)) == hashlib.sha256(_read_pristine_bytes(p)).hexdigest())
+
+# v20a296 精確替代斷言：rival_mentor.json ＝ pristine 版＋A_tsijun_crisis 加 1 句 angry 對白
+_riv_now = json.load(open(os.path.join(ROOT, "content", "story_detail_rival_mentor.json"), encoding="utf8"))
+_riv_pris = json.loads(_read_pristine("content/story_detail_rival_mentor.json"))
+_riv_now_ids = [n["id"] for n in _riv_now.get("nodes", [])]
+_riv_pris_ids = [n["id"] for n in _riv_pris.get("nodes", [])]
+ok("v296 rival_mentor：nodes 數目／次序同 pristine 一致",
+   _riv_now_ids == _riv_pris_ids)
+ok("v296 rival_mentor：除 A_tsijun_crisis 外全部節點同 pristine 逐字一致",
+   all(json.dumps(a, ensure_ascii=False, sort_keys=True) == json.dumps(b, ensure_ascii=False, sort_keys=True)
+       for a, b in zip(_riv_now.get("nodes", []), _riv_pris.get("nodes", []))
+       if a["id"] != "A_tsijun_crisis"))
+_crisis_now = [n for n in _riv_now["nodes"] if n["id"] == "A_tsijun_crisis"]
+_crisis_pris = [n for n in _riv_pris["nodes"] if n["id"] == "A_tsijun_crisis"]
+ok("v296 rival_mentor：A_tsijun_crisis 搵到唯一節點（今昔各一）",
+   len(_crisis_now) == 1 and len(_crisis_pris) == 1)
+if _crisis_now and _crisis_pris:
+    _cn, _cp = _crisis_now[0], _crisis_pris[0]
+    ok("v296 rival_mentor：A_tsijun_crisis 除 beats 外全部欄位不變",
+       {k: v for k, v in _cn.items() if k != "beats"} == {k: v for k, v in _cp.items() if k != "beats"})
+    ok("v296 rival_mentor：A_tsijun_crisis beats 數 5 不變",
+       len(_cn["beats"]) == 5 and len(_cp["beats"]) == 5)
+    ok("v296 rival_mentor：A_tsijun_crisis 其餘 4 個 beats 逐字不變",
+       all(json.dumps(a, ensure_ascii=False, sort_keys=True) == json.dumps(b, ensure_ascii=False, sort_keys=True)
+           for i, (a, b) in enumerate(zip(_cn["beats"], _cp["beats"])) if i != 3))
+    ok("v296 rival_mentor：A_tsijun_crisis 第 4 個 beat 只係前面加 1 句「收聲，聽我講埋先。」",
+       _cn["beats"][3].get("speaker") == "張子駿"
+       and _cn["beats"][3].get("lines") == ["收聲，聽我講埋先。"] + _cp["beats"][3].get("lines", []))
 
 # v20a268 精確替代斷言：vera_hiu_choi.json ＝ pristine 版減 5 個 R_vera_* 節點（metadata 清零另行講明）；tang 檔唔存在
 _vhc_now = json.load(open(os.path.join(ROOT, "content", "story_detail_romance_vera_hiu_choi.json"), encoding="utf8"))
