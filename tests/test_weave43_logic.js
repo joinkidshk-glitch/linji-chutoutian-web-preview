@@ -171,7 +171,6 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   var PAPER_NAME_TIER_TITLED = globalThis.__PTT3;
   eval(extractFn('debtStatusLabel'));
   eval(extractFn('favorPressure'));
-  eval(extractFn('softOverdueFavorDebtLock'));
   eval(LEDGER_SRC);
 
   const famOverdue = { id:'debt_family_home', creditor:'屋企／阿媽', title:'今個月家用', amount:600, weight:'屋企嗰份', season:'', status:'已逾期', familyHome:true };
@@ -185,11 +184,6 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   ok('pressure: normal overdue debt still counts (control)', favorPressure().n===base+1);
   S = { dayIndex:5, mockDebts:[famOverdue, liveOverdue] };
   ok('pressure: mixed = only live counts', favorPressure().n===base+1);
-
-  S = { dayIndex:5, mockDebts:[famOverdue] };
-  ok('lock: family debt never locks gigs', softOverdueFavorDebtLock({ id:'gig_x' }).ok===true);
-  S = { dayIndex:5, mockDebts:[liveOverdue] };
-  ok('lock: normal overdue debt still locks (control)', softOverdueFavorDebtLock({ id:'gig_x' }).ok===false);
 
   S = { dayIndex:5, favorLedger:{ settled:3, credits:1, exodus:[], counted:{}, __bf:1 },
         mockCredits:[], mockDebts:[ { id:'debt_family_home', status:'未到期' }, { id:'debt_live', status:'未到期' } ] };

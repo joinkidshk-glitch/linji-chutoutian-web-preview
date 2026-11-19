@@ -149,7 +149,6 @@ __awards.check();            // ok:true；四軌 id 齊
 __awards.preview({ ceremonyId:"award_harbour_ad", year:1988, forceTier:"gallery" });
 __freeplay.slots().nodes.length; // 17
 __freeplay.softIndustryCreditGate({ industryCreditMin: 1 });
-__freeplay.softOverdueFavorDebtLock({});
 ```
 
 預覽：`https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/?v=20a9&softBehaviorGate=1`

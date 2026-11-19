@@ -41,7 +41,6 @@ var COURSE_DEFS = {};
 var isGigInProduction = function(){ return false; };
 var softCastingTagGate = function(){ return null; };
 var softIndustryCreditGate = function(){ return null; };
-var softOverdueFavorDebtLock = function(){ return null; };
 var costume265EffStat = function(k){ return (S && S[k]) || 0; };
 
 /* ---------- 抽真函數 ---------- */

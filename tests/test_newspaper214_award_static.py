@@ -223,13 +223,16 @@ try:
     _rw8_allowed = {'content/MOCK_UI_PHASE3_STAR_CASTING_v1.json'}
     # v268 豁免（角色刪除，已拍板）：content/story_detail_romance_tang.json 成檔刪除；vera_hiu_choi.json 已改（v217／v210 豁免集已有佢）。
     _v268_allowed = {'content/story_detail_romance_tang.json'}
+    # v327 豁免（死鎖刪除，已拍板）：content/SCHEMA_FREEPLAY_FRAMEWORK_v1.json 刪 overdueSoftLock 一行
+    # （死鎖成把刪走，schema 唔留死引用）。
+    _v327_allowed = {'content/SCHEMA_FREEPLAY_FRAMEWORK_v1.json'}
     # v297 豁免（Vera＋關海媚成個移除，已拍板）：以下 6 個 content 檔係 v297 有意改動——
     # gift_prefs／gift_react_copy／cast_main／npc_lines_core 刪 vera／mei 相關行；lan_xu 刪 vera 參照；
     # PLAN_STORY_UI_BEAT_SCHEMA_v1.md 同步更新（其餘 5 檔已有舊豁免集覆蓋，呢度一併列明 v297 批次）。
     _v297_allowed = {'content/gift_prefs.json', 'content/gift_react_copy.json',
         'content/cast_main.json', 'content/npc_lines_core.json',
         'content/story_detail_romance_lan_xu.json', 'content/PLAN_STORY_UI_BEAT_SCHEMA_v1.md'}
-    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v243_allowed | _v244_allowed | _rw8_allowed | _v268_allowed | _v297_allowed for l in touched))
+    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v243_allowed | _v244_allowed | _rw8_allowed | _v268_allowed | _v327_allowed | _v297_allowed for l in touched))
 except Exception as e:
     ok('X05_content_json_untouched (git unavailable: %s)' % e, False)
 

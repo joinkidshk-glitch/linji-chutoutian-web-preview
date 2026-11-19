@@ -473,7 +473,6 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   eval(extractFn('softCastingTagGate'));
   eval(extractFn('softIndustryCreditGate'));
   eval(extractFn('debtStatusLabel'));
-  eval(extractFn('softOverdueFavorDebtLock'));
   eval(extractFn('canAudition'));
   eval(extractFn('gigPayExact'));
   eval(extractConst('EXODUS_GIGS').replace('const EXODUS_GIGS', 'var EXODUS_GIGS'));

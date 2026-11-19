@@ -17423,31 +17423,6 @@ function softIndustryCreditGate(gig){
   }
   return {ok:true, industryCredit:have, industryCreditMin:need};
 }
-function softOverdueFavorDebtLock(gig){
-  /* Soft-only. 已逾期人情債鎖「接通告」；清數／非逾期（含教學未到期）唔鎖。Soft≠PASS. */
-  try{
-    if(typeof BehaviorGate==="undefined" || !BehaviorGate.featureFlag_softBehaviorGatePreview || !BehaviorGate.featureFlag_softBehaviorGatePreview()){
-      return {ok:true};
-    }
-  }catch(_e){ return {ok:true}; }
-  let overdue = [];
-  try{
-    const list = (typeof S!=="undefined" && S && Array.isArray(S.mockDebts)) ? S.mockDebts : [];
-    overdue = list.filter(d=>{
-      if(!d) return false;
-      if(d.id==="debt_family_home") return false; /* v20a26：屋企債永不入逾期鎖（屋企唔會鎖你接通告） */
-      const st = (typeof debtStatusLabel==="function") ? debtStatusLabel(d.status) : String(d.status||"");
-      return st==="已逾期";
-    });
-  }catch(_e){ overdue = []; }
-  if(!overdue.length) return {ok:true};
-  const who = overdue.slice(0,2).map(d=>d.creditor||d.title||"債主").join("、");
-  return {
-    ok:false,
-    reason:"有人情債已逾期（"+who+"）——先去事務所／手帳清數，再接通告。",
-    overdueIds: overdue.map(d=>d.id).filter(Boolean),
-  };
-}
 function softCastingTagGate(gig){
   /* Soft-only. Reads requiresCastingTagAny / blocksCastingTagAny on the gig. LIVE unchanged. */
   try{
@@ -17507,10 +17482,6 @@ function canAudition(gig){
     const creditGate = softIndustryCreditGate(gig);
     if(creditGate && creditGate.ok===false) return creditGate;
   }catch(_e){}
-  try{
-    const debtGate = softOverdueFavorDebtLock(gig);
-    if(debtGate && debtGate.ok===false) return debtGate;
-  }catch(_e){}
   return {ok:true, softTry:false};
 }
 /** v18a／v18t：門檻未齊但 canAudition 仍放行＝可搏一搏 */
@@ -17556,10 +17527,6 @@ function chance(gig){
 function gateShortReason(gig){
   /* PLAN_GIG_CARD_PLAYER_COPY_v1 §2.1 — 能力名列表，唔帶數字 */
   if(!gig) return "這張通告暫時未能報名。";
-  try{
-    const debtGate = softOverdueFavorDebtLock(gig);
-    if(debtGate && debtGate.ok===false) return debtGate.reason;
-  }catch(_e){}
   try{
     const creditGate = softIndustryCreditGate(gig);
     if(creditGate && creditGate.ok===false) return creditGate.reason;
@@ -22734,7 +22701,7 @@ const MOCK_EMPTY = {
    做法：畀呢筆債加 dueDay（成立後 7 日）＋kind:"help_gig"；到期嗰日何生開一張「幫忙通告」
    （mergeFavorGigs 條件注入，行現有通告管線）；4 日內殺青＝人情結清（何生好感 +2）；
    過期未做＝人情作廢（何生好感 -3，toast 文案講明）。呢筆債永不設「已逾期」狀態，
-   避免 soft 逾期鎖（softOverdueFavorDebtLock）誤鎖幫忙通告本身。
+   到期＝作廢（唔設逾期狀態）。
    舊存檔兼容：dueDay 喺 favorDueTick／手帳渲染首次見到嗰日回填（當日 +7），唔會一讀檔即到期；
    結清／作廢／用其他方法清走（例如現金還）都會記入 S.favorDueSettled，教學債日後被補種都唔會重行到期流程。
    v20a254 D3：幫忙通告已恢復（FAVOR_DUE_GIGS 恢復 v20a17 原裝 special gig、gigId 填返 gig_favor_ho_errand）；到期前現金／禮物還款路照舊，幫忙通告係第三條路。 ===== */
@@ -22928,7 +22895,7 @@ function mergeFavorGigs(){
    窗口實際唔重疊；分開 gig 免一張通告清兩筆債（mergeFavorGigs 逐張獨立開關）。
    舊存檔兼容：dueDay 喺 rippleDueTick／手帳渲染首次見到嗰日回填（當日 +7），唔會一讀檔即到期；
    結清／作廢／現金／禮物還都會記入 S.favorDueSettled（同 F1 共用 map，按債 id 分 key）。
-   永不設「已逾期」status（跟 F1），免 softOverdueFavorDebtLock 誤鎖幫忙通告本身。 ===== */
+   永不設「已逾期」status（跟 F1，到期＝作廢）。 ===== */
 const RIPPLE_DUE_CFG = { debtId:"debt_c4_ho_ripple", gigId:"gig_favor_ho_ripple_errand", dueDays:7, windowDays:4 };
 const RIPPLE_DUE_GIGS = [
   {
@@ -23377,8 +23344,8 @@ function favorLedgerCounts(){
    定位：屋企唔係圈內人情。屋企債 debt_family_home 借 mockDebts 渲染／還款入口，但：
    - 永不入 S.favorLedger（結局判定唔計屋企數）：applyMockAsk 結清嗰陣改行 noteFamilyHomePaid 記月份，唔 note settled；
      favorLedgerCounts 嘅 openDebts 亦排除佢。
-   - 永不逾期：status 恆「未到期」、無 dueDay（唔入 favorDue 流程）；favorPressure 同 softOverdueFavorDebtLock
-     兩處計算都明確排除（跟 4-2 絕響排除 pattern，唔靠 status 巧合）。
+   - 永不逾期：status 恆「未到期」、無 dueDay（唔入 favorDue 流程）；favorPressure 計算明確排除
+     （跟 4-2 絕響排除 pattern，唔靠 status 巧合）。
    - 恆常補種：還清唔會消失——跨月（dateObj 月份變化）自動補下一期；未還唔補、還清當月唔補。
      狀態存 S.familyHome = { cycle, monthKey, seedDay, paidDay, seedFlavorDay, paidFlavorDay }，冪等＋舊檔安全。
      （v20a27 Phase 4-4 追加 paperTier／echoNote／echoDay 三欄，同一個 state 物件，見 familyPaperEchoTick。）
@@ -35367,7 +35334,6 @@ try{
     applyTags: applyCastingTags,
     softCastingTagGate: softCastingTagGate,
     softIndustryCreditGate: softIndustryCreditGate,
-    softOverdueFavorDebtLock: softOverdueFavorDebtLock,
     seedFavorDebt: seedFreeplayFavorDebt,
     wireSlots: applyFreeplaySlotsToSoftGate,
     stars: function(){ return ((FREEPLAY_FW.eraStars&&FREEPLAY_FW.eraStars.stars)||[]).map(s=>freeplayNormalizeStarId(s.starId)); },
@@ -35447,7 +35413,6 @@ try{
       try{
         if(typeof softCastingTagGate!=="function") fails.push("soft_tag_gate");
         if(typeof softIndustryCreditGate!=="function") fails.push("credit_gate");
-        if(typeof softOverdueFavorDebtLock!=="function") fails.push("debt_lock");
       }catch(_e){ fails.push("soft_gates"); }
       try{
         const sil = (typeof eraSilhouetteFarSrc==="function") ? eraSilhouetteFarSrc("so_jiyan") : "";
@@ -35481,7 +35446,6 @@ try{
         slotsCount: ((FREEPLAY_FW.storySlots&&FREEPLAY_FW.storySlots.nodes)||[]).length,
         soJiyan: typeof STAR_SIGHTINGS!=="undefined" && STAR_SIGHTINGS.some(s=>s.starId==="so_jiyan"),
         creditGate: typeof softIndustryCreditGate==="function",
-        debtLock: typeof softOverdueFavorDebtLock==="function",
         postShootReward: typeof queuePostShootRewardOnWrap==="function",
         awardsCeremony: typeof queueAwardsOnSeasonWindow==="function",
         newspaper: typeof presentDueMorningPaper==="function",
