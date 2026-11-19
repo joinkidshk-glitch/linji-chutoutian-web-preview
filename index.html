@@ -27146,9 +27146,26 @@ function grant229Ensure(){
   }catch(_e){ return false; }
 }
 function grant229GigById(gigId){
+  /* v20a336：先查當年 runtime GIGS，搵唔到再查 STORY_WIRE.gigsByYear 三年全庫
+     （同 gigRecordById283 同一查法）——runtime GIGS 按日曆年載入（syncGigsForCalendarYear），
+     即派表多處跨年配對（1990 gig 喺 1991 播、1992 gig 喺 1991 播、1991 gig 喺 1992 播），
+     淨查當年會靜默派唔出（G-NGAI-3 實駕 BUG-1）。全庫命中係 raw 記錄，要經
+     normalizeGigRecord 先同入池版一致（shootDaysHint 等引擎欄位）。 */
   try{
     const list = (typeof GIGS!=="undefined" && Array.isArray(GIGS)) ? GIGS : [];
-    return list.find(g=>g && g.id===gigId) || null;
+    const hit = list.find(g=>g && g.id===gigId) || null;
+    if(hit) return hit;
+    if(typeof STORY_WIRE!=="undefined" && STORY_WIRE && STORY_WIRE.gigsByYear){
+      const by = STORY_WIRE.gigsByYear;
+      for(const yy of [1990,1991,1992]){
+        const pack = by[yy];
+        if(pack && Array.isArray(pack.gigs)){
+          const f = pack.gigs.find(x=>x && x.id===gigId);
+          if(f) return (typeof normalizeGigRecord==="function") ? normalizeGigRecord(f) : f;
+        }
+      }
+    }
+    return null;
   }catch(_e){ return null; }
 }
 function grant229Mid(range, fallback){
@@ -27168,7 +27185,7 @@ function grant229Record(gigId, source, reason){
     if(!gigId || !grant229Ensure()) return false;
     if(S.flags["grant229_recorded_"+gigId]) return false; /* 一生一次 */
     const gig = grant229GigById(gigId);
-    if(!gig) return false; /* 新庫無呢張（唔應發生）：唔記低，唔好派空頭支票 */
+    if(!gig) return false; /* 全庫都無呢張（唔應發生）：唔記低，唔好派空頭支票（v20a336：grant229GigById 已查三年全庫） */
     S.flags["grant229_recorded_"+gigId] = 1;
     S.grant229Queue.push({ gigId:String(gigId), source:String(source||""), reason:String(reason||""), dueDay:(S.dayIndex|0)+1, recordedDay:(S.dayIndex|0) });
     try{ if(typeof saveQ==="function") saveQ(); }catch(_s){}
@@ -27280,6 +27297,13 @@ function grant229DeliverOne(rec, step){
       try{ apply({money: terms.signPay}); }catch(_a){}
     }
     const shoot = scheduleShoot(gig, terms.pay, terms.fame, terms.pop, {basePay:terms.pay, bonusPay:0, bonusLabel:""});
+    /* v20a336：跨年即派 gig 唔喺當年 runtime GIGS——派發成功後補入 GIGS，令拍攝／殺青路徑
+       嘅 GIGS 反查（end95／end229 計數、wrapHistory 欄位、shootDeadlineHud）照常 resolve。
+       補入嗰刻 shoot 已建立，isGigConsumed＝true，板面 pool 唔會貼返出嚟；下次
+       syncGigsForCalendarYear 換年庫自然清走（同普通通告跨年一樣，殺青路徑容忍缺失）。 */
+    try{
+      if(typeof GIGS!=="undefined" && Array.isArray(GIGS) && !GIGS.some(x=>x && x.id===gig.id)) GIGS.push(gig);
+    }catch(_inj){}
     shoot.signedPaid = terms.signPay; /* 合約制＝0（無簽約金）；其餘＝三成，同 v91 獲聘一致 */
     if(terms.contract){
       shoot.contract229 = { gigId:gig.id, weeks:terms.weeks, weeklyPay:terms.weeklyPay, totalPay:terms.totalPay, paidTotal:0, paidWeeks:0, tailPaid:0 };
