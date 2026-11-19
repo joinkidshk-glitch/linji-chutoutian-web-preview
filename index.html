@@ -2087,6 +2087,8 @@ button.g, .start button.g{
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
 }
+/* v20a335：接通告掣人情提示行——同詳情頁同一句金色字，掣內描述尺寸（.66rem），深金免同米白掣底撞色。 */
+#loc-sheet.sheet .act .gold{ color:#8a5a00; font-weight:700; font-size:.66rem; line-height:1.4; margin-top:2px; }
 #loc-sheet.sheet .act .cost,
 #app #loc-sheet.sheet .act .cost{
   flex: 0 0 auto !important;
@@ -2935,6 +2937,8 @@ body.day-res-open #mask.day-res{
 .gig-teaser .gt-meta{ font-size:.72rem; color:#6b5a48; line-height:1.4; }
 .gig-teaser .gt-meta-line{ display:block; }
 .gig-teaser .gt-hint{ font-size:.7rem; color:#a33; font-weight:700; margin-top:6px; }
+/* v20a335：板短卡人情提示行——同詳情頁同一句金色字，短卡版式收細（跟 .gt-meta 同級 .72rem）。 */
+.gig-teaser .gold{ font-size:.72rem; line-height:1.45; margin:6px 0 0; }
 .gig-teaser .g-seal{ position:absolute; top:8px; right:8px; height:28px; width:auto; }
 
 /* sheet-first stacked casting notice — v18w polish */
@@ -18029,6 +18033,10 @@ function gigBoardTeaserHtml(g, opts){
   const badgeCls = (st.alt || boardState==="locked") ? "gt-badge done" : "gt-badge";
   /* v20a267：傳聞拼合已刪，短卡唔出情報標記。 */
   let intelMark = "";
+  /* v20a335：板短卡補返人情免試鏡金色提示——同 gigCardHtml／詳情頁同一行（favor158ChannelHintHtml），
+     只喺渠道適用嗰陣出（canAudition 過關＋持有對應債權＋啱類別；彭渠道用減半台風計，鎖定卡都可能出）。 */
+  let favor158Html = "";
+  try{ const fh = (typeof favor158ChannelHintHtml==="function") ? favor158ChannelHintHtml(g) : ""; if(fh) favor158Html = fh; }catch(_e){}
   /* v20a34 引導包 P0-1：鎖定短卡直接列差額，唔使逐張點入詳情先知欠幾多；
      齊條件（ready）卡唔加字。opts.closest 由 doScout 計（全板差額最少嗰張）先傳入。 */
   let gapHtml = "";
@@ -18048,6 +18056,7 @@ function gigBoardTeaserHtml(g, opts){
     <div class="gt-row"><span class="gt-pill">${genre}</span>${trigPill}<span class="${badgeCls}">${badgeText}</span></div>
     ${metaParts.length?`<div class="gt-meta">${metaParts.map(m=>`<div class="gt-meta-line">${m}</div>`).join("")}</div>`:""}
     ${intelMark}
+    ${favor158Html}
     ${gapHtml}
   </div>`;
 }
@@ -42406,9 +42415,14 @@ function addLocGigActs(add, L, gigs, bridgeShown){
       return;
     }
     const gate=canAudition(gig);
+    /* v20a335：接通告掣補返人情免試鏡金色提示——同板短卡／詳情頁同一句文字（favor158ChannelForGig
+       已經包晒兩渠道閘：武指要全數過關，彭用減半台風；唔啱就返 null，唔使另加閘）。放掣內獨立
+       金行（經 add() extraHtml），唔放 .h——.h 單行截短，放咗都睇唔到。 */
+    let favor158Gold = "";
+    try{ const ch158a = (typeof favor158ChannelForGig==="function") ? favor158ChannelForGig(gig) : null; if(ch158a && ch158a.hint) favor158Gold = `<div class="gold">${ch158a.hint}</div>`; }catch(_e){}
     const castCopy = phase3CastCopy();
     if(!gate.ok){
-      add(`${castCopy.lockedLabel}：${gig.title}`, "條件未合","未開放", ()=>openCastingNoticeDetail(gig, L));
+      add(`${castCopy.lockedLabel}：${gig.title}`, "條件未合","未開放", ()=>openCastingNoticeDetail(gig, L), undefined, favor158Gold);
       return;
     }
     const p=Math.round(chance(gig)*100);
@@ -42416,9 +42430,9 @@ function addLocGigActs(add, L, gigs, bridgeShown){
     const coarse = (typeof gigTypeCoarse==="function") ? gigTypeCoarse(gig) : "";
     const sub = (coarse && coarse!==genre) ? `${genre}／${coarse}` : genre;
     if(typeof softPreviewOn==="function" && softPreviewOn()){
-      add(`試鏡入口：${gig.title}`, `${sub} · 成功率 ${p}% · 查看不耗日。試鏡後等通知；獲聘才收簽約金，餘額於殺青時支付。`, "不耗日", ()=>openCastingNoticeDetail(gig, L));
+      add(`試鏡入口：${gig.title}`, `${sub} · 成功率 ${p}% · 查看不耗日。試鏡後等通知；獲聘才收簽約金，餘額於殺青時支付。`, "不耗日", ()=>openCastingNoticeDetail(gig, L), undefined, favor158Gold);
     } else {
-      add(`${castCopy.readyLabel}：${gig.title}`, `${sub} · 成功率 ${p}%`,"+1日", ()=>openCastingNoticeDetail(gig, L));
+      add(`${castCopy.readyLabel}：${gig.title}`, `${sub} · 成功率 ${p}%`,"+1日", ()=>openCastingNoticeDetail(gig, L), undefined, favor158Gold);
     }
   });
   /* 亦列出此地進行中拍攝（即使已踢出 board） */
@@ -42633,7 +42647,9 @@ function openLoc(id, opts){
   acts.innerHTML="";
   /* v19z20：開 sheet 先清殘鎖，避免傾談／報名可睇但撳唔入 */
   try{ ensureLocSheetInteractive(); }catch(_ei){}
-  const add=(title,hint,cost,fn,cls)=>{
+  const add=(title,hint,cost,fn,cls,extraHtml)=>{
+    /* v20a335：extraHtml（第 6 參數，選填）——掣內描述行之後嘅附加 HTML（例如人情金提示行；
+       .h 單行截短，放唔入去，先獨立放一行）。冇傳就空字串，舊 call 位全部唔郁。 */
     /* v20a105 UI105 S-23：費用欄統一格式——$X／免費／+1日 三種行先；其餘狀態字
        （已聽過／今日已滿／未開放／— 等）原樣保留；實物名（凍檸茶／萬寶路嗰啲 flavor）
        唔再冒充費用，移入卡身描述行尾。金額＋日數複合（例如「$500 · 不耗日」）拆返：
@@ -42659,7 +42675,7 @@ function openLoc(id, opts){
       }
     }catch(_e105){}
     const b=document.createElement("button"); b.type="button"; b.className="act"+(cls?" "+cls:""); /* v20a171 C2：鎖住態（費用欄「庫存空」／「今日已送」，只由 giftGateBadge 出）加 act-locked171——掣身變灰一眼分到；只做視覺區分，disabled／點擊／toast 唔郁 */ if(cost105==="庫存空"||cost105==="今日已送") b.className+=" act-locked171";
-    b.innerHTML=`${locpanel118ActIcon(title, cls)}<div class="act-txt118"><div class="n">${title}</div>${hint105?`<div class="h">${hint105}</div>`:""}</div><div class="cost">${cost105}</div>`;
+    b.innerHTML=`${locpanel118ActIcon(title, cls)}<div class="act-txt118"><div class="n">${title}</div>${hint105?`<div class="h">${hint105}</div>`:""}${extraHtml||""}</div><div class="cost">${cost105}</div>`;
     b.onclick=(ev)=>{
       try{
         const gate = ensureLocSheetInteractive();
