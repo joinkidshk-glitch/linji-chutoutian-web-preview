@@ -1,3 +1,4 @@
+# v20a329 resync：index.html 淨 −13 行（刪死函數 19 行＠舊 L45312–45330＋doAudition 搬入教學 toast 6 行；FREE 刪舊 45317、加新 45514（搬入嘅 back 行）、其後 6 處 −13，COUNT 4 處 −13；DEF 42471／WRAPPER 29083 唔郁，內容逐行核實純漂移，見 qa329/resync329.py）。
 # v20a328 resync：index.html 淨 ＋18 行（A1＋18＠舊 L27705 之後；COUNT 5 處＋FREE 26 處＋DEF 42453→42471＋WRAPPER 29065→29083，＜27705 者唔郁，內容逐行核實純漂移，見 qa328/resync328.py）。
 # v20a327 resync：index.html 淨 −36 行（刪死鎖；FREE／COUNT 錨點按分區 shift（＜17426 唔郁、17563–35369 −33、≥35485 −36；28337 等舊釘行已重算，內容逐行核實純漂移）＋DEF 42489→42453＋WRAPPER 29098→29065，見 qa327/resync327.py）。
 # v20a326 resync：index.html 淨 −1 行（刪死常數舊 L27959；COUNT 5 處＋FREE 26 處＋DEF 42490→42489＋WRAPPER 29099→29098 各 −1，之前唔郁；difflib 對位核實純漂移，見 qa326/resync326b.py）。
@@ -229,10 +230,10 @@ COUNT_LINES = {
     22486,  # 地圖釘 goPin（最近針／後備 L.id）
     22517,  # 地圖底欄地點掣
     28514,  # 人情債「去事務所」
-    45747,  # inv72GoShop 去禮品檔
-    45955,  # people72GoLoc
-    46113,  # jobs72GoBoard
-    46134,  # jobs72GoLoc
+    45734,  # inv72GoShop 去禮品檔
+    45942,  # people72GoLoc
+    46100,  # jobs72GoBoard
+    46121,  # jobs72GoLoc
 }
 # v20a158 resync：index.html 淨 +165 行（gigCardHtml 提示＋4／詳情頁渠道掣＋11／GRANT229_ENC79 8 行＋註解 7＝＋15／aud91CreatePending＋3／aud91PendingHint＋2／aud91PresentOne＋1／v20a158 渠道 block＋129；見 qa158/resync158.py difflib 對位核實內容逐字相同，純漂移；openLoc( 呼叫點總數不變）。
 # v20a243 resync：index.html 淨 −11 行（刪 TEXTFIX55 GIG 五組，刪除區間舊 L14413–14417／14576–14578／14588–14589／14593–14596）；其後錨點各 −11，之前唔郁；內容逐行核實純漂移。
@@ -272,13 +273,13 @@ FREE_LINES = {
     42910,  # v236 打聽確認「返去」重開地點（travelFree，唔計額度）
     42915,  # 聽完傳聞後 reopen 而家身處地點
     43840,  # forceRestore（舊旗）
-    45317,  # promptAudition back（返去而家身處地點）
-    45624,
-    45625,
-    45669,
-    45670,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    45695,  # doGiveGift 失敗後重開而家身處地點
-    46584,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
+    45514,  # doAudition fail branch：首次教學 toast back（v329 由死函數搬入，travelFree）
+    45611,
+    45612,
+    45656,
+    45657,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    45682,  # doGiveGift 失敗後重開而家身處地點
+    46571,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
 DEF_LINE = 42471      # function openLoc(id, opts){

@@ -17679,7 +17679,7 @@ function gigCardHtml(g, opts){
   /* v20a267：傳聞拼合已刪，通告卡唔出情報行。 */
   let intelHtml = "";
   /* v20a158：人情免試鏡渠道適用嗰陣，卡面多一行金色提示（只喺 canAudition 過關嗰陣出；
-     渠道本身見 favor158ChannelForGig，掛喺 promptAudition 附近）。 */
+     渠道本身見 favor158ChannelForGig，掛喺 doAudition 附近）。 */
   let favor158Html = "";
   try{ const fh = (typeof favor158ChannelHintHtml==="function") ? favor158ChannelHintHtml(g) : ""; if(fh) favor158Html = fh; }catch(_e){}
   /* PLAN §3 meta：酬勞 · 拍攝／錄音約 N 日 · 逢週… · 獲聘後 N 日內完成 */
@@ -45309,25 +45309,6 @@ function aud91PresentOne(rec, next){
   saveQ();
 }
 
-function promptAudition(gig, L){
-  /* v19i：試鏡預約紙本卡已廢；入口一律直走即場 doAudition（唔再 push pendingAudition） */
-  const gate=canAudition(gig);
-  if(!gate.ok){
-    S.flags=S.flags||{};
-    const back=()=> L ? openLoc(L.id, {travelFree:true}) : null;
-    if(!S.flags.sawTutAudLock){
-      maybeShowTutToast("sawTutAudLock","TUT_AUD_LOCK", back);
-      return;
-    }
-    modal(`<h3>未能試鏡</h3>${gigCardHtml(gig)}<p>可以免費繼續查看通告；達標後再來。</p>`,[
-      {label:"返回地圖",role:"g",on:back}
-    ]);
-    return;
-  }
-  confirmSpendDay((typeof softPreviewOn==="function" && softPreviewOn())
-    ? `去試鏡：${gig.title||"通告"}`
-    : `接通告：${gig.title||"通告"}`, ()=>doAudition(gig, L));
-}
 
 /* ===== v20a229 B7 Q6 忠告卡（支線補完 Q6，用戶 2026-11-15 21:43 拍板）=====
    憑 S.flags.chungAdviceHeld229（v20a267：傳聞系統刪除，chung_farewell 嗰句忠告改記旗，
@@ -45529,6 +45510,12 @@ function favor158RedeemChannel(gig, L){
 function doAudition(gig, L){
   const gate=canAudition(gig);
   if(!gate.ok){
+    S.flags=S.flags||{};
+    const back=()=> L ? openLoc(L.id, {travelFree:true}) : null;
+    if(!S.flags.sawTutAudLock){
+      maybeShowTutToast("sawTutAudLock","TUT_AUD_LOCK", back);
+      return;
+    }
     toast(gate.reason||"未能試鏡");
     if(L) openCastingNoticeDetail(gig, L);
     return;

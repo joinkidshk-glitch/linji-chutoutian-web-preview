@@ -70,7 +70,8 @@ ok('詳情頁有簽約金行', '簽約金' in html and '合約額三成' in html
 ok('詳情頁講等回音（唯一版本：底部 note；v20a115：摘要 var-note 嗰句「試鏡後要等劇組回音」已刪，唔好兩處重複）', '去試鏡要用一日，結果等何生通知。' in html and '試鏡後要等劇組回音' not in html)
 
 # ---- 玩家面唔准系統味詞（AUD91 玩家文案段落） ----
-mod = seg('/* ===== v20a91 AUD91', 'function promptAudition')
+# v20a329：死函數已刪，seg 終點改做其後第一個函數 chungAdviceCardHeld229（chunk 只多 B7 註解＋CHUNG_ADVICE_TEXT229 常數行，文案檢查不變）。
+mod = seg('/* ===== v20a91 AUD91', 'function chungAdviceCardHeld229')
 import re
 def literal_texts(chunk):
     # 模板字串剝走 ${...} 程式插值後，剩低嘅先係玩家真係會見到嘅文字
