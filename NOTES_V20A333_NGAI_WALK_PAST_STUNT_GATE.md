@@ -98,5 +98,9 @@ helper 插入令其後錨點一律 +7（舊 L39872 之後）。difflib 對位核
 
 ## 八、落地
 
-- 內容 commit：（見 §九）
-- Pages 核實：（見 §九）
+- 內容 commit `0ec35f0` → 常駐 clone squash merge → **main `2a258d3`**，已 push；
+  `git ls-remote` 核實一致。
+- Pages 核實：curl 比對 byte-identical，index.html md5
+  `93256439bf124ca7bf7912589f05b6dd`／4,700,994 bytes；
+  `tests/test_r333_ngai_stunt_gate.js` HTTP 200。
+- 工作副本已刪；常駐 clone tracked 乾淨，`qa296/derive296.json` 已還原（衍生檔唔入版）。
