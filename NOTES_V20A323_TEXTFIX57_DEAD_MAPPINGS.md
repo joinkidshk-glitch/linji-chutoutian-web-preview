@@ -43,9 +43,9 @@
 - 工作副本：linji-work323（clone 式），分支 v323。
 - 合併：常駐 clone `git fetch`＋`git merge --squash FETCH_HEAD`，見 §5。
 
-## §5 落地實際數（待填）
-- 內容 commit：
-- main HEAD：
-- suite：
-- Pages md5／bytes：
-- 工作副本已刪：
+## §5 落地實際數
+- 內容 commit：909af05（分支 v323）
+- main HEAD：be466b9
+- suite：385／9（第二輪，~/workspace/suite_v323b.txt；第一輪 377／17——8 檔釘行測試因 −9 漂移 FAIL，resync 後逐個直接 PASS，再跑全套返基線；9 項 FAIL 係已知 pre-existing：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38）
+- Pages md5／bytes：3032f87432fcd6142ebd2a36172b9c3f／4,701,180（curl 核實 byte-identical）
+- 工作副本已刪：係
