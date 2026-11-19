@@ -40,6 +40,6 @@
 ## 出貨
 
 - 工作副本 `linji-work341`（clone 式），分支 `v20a341`。
-- main HEAD：見落地紀錄（內容 commit＋NOTES 落地紀錄）；Pages 核實 byte-identical。
+- main HEAD `01bd941`（內容 commit，suite 394／9）；Pages 核實 byte-identical：index.html md5 `b93a58e1811bf3915977f24be277f8b9`／4,704,982 bytes。
 - 通告庫 323 張不變；index.html 47,296 行不變。
 - 證據：`~/workspace/suite341.txt`。
