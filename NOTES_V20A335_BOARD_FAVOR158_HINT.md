@@ -78,6 +78,6 @@
 
 ## 四、落地
 
-- 內容 commit（TODO）→ main（TODO），已 push；Pages index.html md5（TODO）／（TODO）bytes，
-  byte-identical。
+- 內容 commit `644bce1`（工作副本分支 `v335`）→ main `e123d17`，已 push；Pages index.html
+  md5 `fb55e2ed96eb5c0831115c06f30cba9c`／4,702,814 bytes，byte-identical。
 - 工作副本已刪；常駐 clone tracked 乾淨，`qa296/derive296.json` 已還原。
