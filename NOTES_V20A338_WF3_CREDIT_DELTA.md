@@ -49,4 +49,6 @@
 - 證據：`~/workspace/linji-drive338/`（harness＋截圖＋run_steady_v338.log／run_probe_v338.log）。
 
 ## 落地
-- （落地時補：main commit、Pages md5、suite 總數。）
+- main commit：dcc6ef7（04556b9 → dcc6ef7，已 push）；Pages 核實 byte-identical：index.html md5 `9dc6e675d8935d11feb5a677431fb590`／4,705,045 bytes，同本地一致；index.html 行數不變 47,296（同行改動，零釘行漂移，qa338/resync 無需）。
+- 全套 suite：391／9（v337 基線 390／9＋新測試檔 1 項；9 FAIL 同基線逐項一致：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38，零回歸）。
+- 工作副本 linji-work338 已刪。
