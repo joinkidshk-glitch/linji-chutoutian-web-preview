@@ -26,6 +26,7 @@ ok('S05_milestone', 'press94ClaimFirstNamed' in html and 'press94FirstNamedDay' 
    and '第一次出現在本報的殺青消息' in html)
 ok('S06_card_badge', html.count('press94TierBadge(g)') >= 2)
 ok('S07_seal_asset', os.path.exists(os.path.join(ROOT, 'assets/ui-physical/notice/seal_extra.png')))
+ok('S07b_seal_rare_asset', os.path.exists(os.path.join(ROOT, 'assets/ui-physical/notice/seal_rare.png')))
 ok('S08_save_key', 'starVolunteer_map_v19w' in html)
 ok('S09_softrev', '"s107"' in html or "'s107'" in html or 's107' in html)
 ok('S10_version', 'v20a10' in html)

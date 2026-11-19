@@ -12,7 +12,7 @@ v1 備份：`_v1_bak/`
 | brand/start_title_card.jpg\|png | 9:16 開始卡 |
 | moodboard/ui_moodboard.jpg\|png | 總覽 moodboard v2／v4 |
 | notice/notice_paper.jpg\|png | 通告紙底（撕邊／釘孔） |
-| notice/seal_junior\|mid\|senior\|urgent.png | 單層印章（Noto 初／中／高／急） |
+| notice/seal_junior\|mid\|senior\|urgent\|rare.png | 單層印章（Noto 初／中／高／急／稀） |
 | notebook/notebook_spread.jpg\|png | **空白 list-lined 手帳**（螺旋／紙紋／橫線；無七欄直格；無 baked 字） |
 | notebook/notebook_spread_list.jpg\|png | 同上別名（明確 list 版） |
 | notebook/_7col_bak/ | 舊七欄格備份 |
