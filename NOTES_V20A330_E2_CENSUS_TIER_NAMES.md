@@ -27,4 +27,9 @@
 - 本票只係修復普查函數嘅量度，唔係改分布——E1／E3 守衛而家先至量度到真實分布，之前 0.0% 係假數。
 - B4（E2 守衛門檻 vs 分布）唔使開：三個 pct 全部遠低於 40%，守衛有足夠 headroom。
 
-## 五、合併＋部署（待填）
+## 五、合併＋部署
+
+- 內容 commit `7bd1ef6` → 常駐 clone squash merge → main `53e19c7`，已 push；`git ls-remote` 核實一致。
+- Pages 核實（傳播約 4 分鐘後 curl）：index.html HTTP 200、4,700,360 bytes、md5 `d57d99192b940ad2f57a23fa68241ade`，同 main 本地逐 byte 一致（index.html 本票零改動，md5 同 v329）；`tests/test_nat92_logic.js` HTTP 200。
+- 全套 suite（工作副本，已 commit 樹）：TOTAL PASS 386 FAIL 9＝v328 基線，9 項 FAIL（flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38）同基線逐項一致，零回歸。
+- 工作副本已刪；常駐 clone `qa296/derive296.json` 已還原（衍生檔唔入版）。
