@@ -28,6 +28,7 @@
 - B1 裁決關鍵：草稿閘門行寫明 live 係「原閘」，草稿數係事後提案，唔係 live 偏離原設計；v278 NOTES L59 已裁決「其餘閘跟 live」，今次逐處重新論證過先跟。
 - 下一票按 triage 建議：v332 攻略 A6（須 parent 授權後行 repair 流程）、v333 B2（魏腿替身缺位修正版選項 i）。
 
-## §四 合併＋部署（待填）
-- NOTES-only commit → push main → `git ls-remote` 核實。
-- 唔使 Pages 核實（index.html 零改動）。
+## §四 合併＋部署
+- NOTES-only commit `8cadae8` → push main → `git ls-remote` 核實一致（`8cadae812cb7cc166c1e447484dadfd4ad81e6f6`）。
+- 唔使 Pages 核實（index.html 零改動，main index.html 仍係 v329／v330 嗰個 md5 `d57d99192b940ad2f57a23fa68241ade`）。
+- 常駐 clone tracked 乾淨（`qa296/derive296.json` 已還原，唔入版）。
