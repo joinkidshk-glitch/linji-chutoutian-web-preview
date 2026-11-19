@@ -53,7 +53,7 @@ ok('(2) Q11_no_hit_in_stub_json', !stubDebts.some(d => d && d.id === 'debt_slot_
 // ---------- (3) Q13：廖面子債過期未做當壞帳，唔計 settled，信用 −2 ----------
 const tick = extractFn('wf3SettleTick');
 ok('(3) Q13_overdue_not_settled_note', tick.includes('唔入帳本 settled'), '過期分支註明唔入帳本 settled');
-ok('(3) Q13_overdue_credit_minus2', tick.includes('S.industryCredit = Math.max(0, (Number(S.industryCredit)||0) - 2);'), '過期分支信用 −2 在位');
+ok('(3) Q13_overdue_credit_minus2', tick.includes('S.industryCreditDelta = (Number(S.industryCreditDelta)||0) - 2;'), '過期分支信用 −2 在位（v20a338 改寫 delta，唔再直寫鏡像）');
 const settledCalls = (tick.match(/favorLedgerNoteSettled\(/g) || []).length;
 ok('(3) Q13_settled_called_once_completion_only', settledCalls === 1, 'favorLedgerNoteSettled 呼叫全函數只出現 1 次（收割完成分支；typeof 守衛唔計）');
 const tail = tick.slice(tick.indexOf('liaoHarvestExpired'));

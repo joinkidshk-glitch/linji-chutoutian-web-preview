@@ -168,9 +168,9 @@ _enqueued = [];
 S = freshS(300);
 S.wf3 = { liaoChoice:'steady' };
 S.wrapHistory = [{ gigId:'gig_1990_film_101', wrappedDay:299 }];
-const credBefore = S.industryCredit;
+const deltaBefore = Number(S.industryCreditDelta)||0;
 wf3SettleTick();
-ok('B3 鏈 B 穩陣：信用 +2', S.industryCredit===credBefore+2);
+ok('B3 鏈 B 穩陣：信用 +2（delta，v20a338）', Number(S.industryCreditDelta)===deltaBefore+2);
 ok('B3 鏈 B 穩陣：報紙好評角度入隊', _enqueued.some(e=>e.eventKey==='wf3:liao_steady'));
 // 鏈 B 搶鏡＋記仇＋收割（v20a279 還原）
 _enqueued = [];
@@ -200,10 +200,10 @@ ok('B3 收割完成：傳聞系統已刪，完成唔寫傳聞', !S.mockRumors.so
 S = freshS(300);
 S.wf3 = { liaoChoice:'steal', liaoSettled:1, grudgeDue:290, liaoHarvest:{ gigDay:290, window:7 } };
 S.mockDebts = [{ id:'debt_wf3_liao_grudge' }];
-const cred2 = S.industryCredit;
+const delta2 = Number(S.industryCreditDelta)||0;
 S.dayIndex = 298;
 wf3SettleTick();
-ok('收割過期：債銷＋信用 −2', !S.mockDebts.some(d=>d.id==='debt_wf3_liao_grudge') && S.industryCredit===cred2-2 && S.wf3.liaoHarvestExpired===1);
+ok('收割過期：債銷＋信用 −2（delta，v20a338）', !S.mockDebts.some(d=>d.id==='debt_wf3_liao_grudge') && Number(S.industryCreditDelta)===delta2-2 && S.wf3.liaoHarvestExpired===1);
 // 鏈 D：提點債權＋爆料回音
 _enqueued = [];
 S = freshS(400);

@@ -27848,7 +27848,7 @@ function wf3SettleTick(){
     if(st.liaoChoice && !st.liaoSettled){
       st.liaoSettled = 1;
       if(st.liaoChoice==="steady"){
-        S.industryCredit = Math.max(0, (Number(S.industryCredit)||0) + 2);
+        S.industryCreditDelta = (Number(S.industryCreditDelta)||0) + 2; /* v20a338：industryCredit 係派生鏡像，直接寫俾 syncDualTracks 冚走，要寫 delta */
         try{ if(typeof syncDualTracks==="function") syncDualTracks(S); }catch(_e){}
         try{
           enqueueNewspaperItem({ eventKey:"wf3:liao_steady", source:"story", enqueuedDay: day, publishDay: day+1,
@@ -27908,7 +27908,7 @@ function wf3SettleTick(){
         st.liaoHarvestExpired = 1;
         S.mockDebts = (S.mockDebts||[]).filter(d=>!(d && d.id==="debt_wf3_liao_grudge"));
         /* v20a259 R3：收割過期唔做，唔係「還清」，唔入帳本 settled（債銷咗，數唔計；信用照扣 −2）。 */
-        S.industryCredit = Math.max(0, (Number(S.industryCredit)||0) - 2);
+        S.industryCreditDelta = (Number(S.industryCreditDelta)||0) - 2; /* v20a338：同上，寫 delta 唔寫鏡像 */
         try{ if(typeof syncDualTracks==="function") syncDualTracks(S); }catch(_e){}
         try{ toast("還人情嗰份工，你冇去。", { sub:"廖炳星嗰邊冇再開聲——呢啲機會，過咗就冇。行內信用 −2。" }); }catch(_t){}
         try{ saveQ(); }catch(_s){}
