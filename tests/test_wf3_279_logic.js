@@ -124,12 +124,12 @@ ok('fx 落旗：liu_steady → liaoChoice=steady', (()=>{ resetS(600); enc79RunC
 
 /* ---------- 4. Beat 閘門 ---------- */
 function liuSetup(year, season, fav, doneBeats){
-  resetS(600); _ys = { year, season }; _doneNodes = new Set(['C8']);
+  resetS(600); _ys = { year, season }; _doneNodes = new Set(['N9']);
   const st = setFav('liu_bingxing', fav);
   (doneBeats || []).forEach(id => { st.beatsDone[id] = 1; });
   return st;
 }
-ok('閘：1991 秋 T2＋C8＋前三 beat 已播 → PickBeat 係 liu_steal', (()=>{ liuSetup(1991, '秋', 30, ['liu_foreshadow', 'liu_intel', 'liu_tease']); return enc79PickBeat('liu_bingxing') && enc79PickBeat('liu_bingxing').id === 'liu_steal'; })());
+ok('閘：1991 秋 T2＋N9＋前三 beat 已播 → PickBeat 係 liu_steal', (()=>{ liuSetup(1991, '秋', 30, ['liu_foreshadow', 'liu_intel', 'liu_tease']); return enc79PickBeat('liu_bingxing') && enc79PickBeat('liu_bingxing').id === 'liu_steal'; })());
 ok('閘：問過一次（liaoChoice）→ 唔再開，行 liu_repay', (()=>{ liuSetup(1991, '秋', 30, ['liu_foreshadow', 'liu_intel', 'liu_tease']); enc79RunChoiceFx('liu_steal'); return enc79PickBeat('liu_bingxing') && enc79PickBeat('liu_bingxing').id === 'liu_repay'; })());
 ok('閘：1991 冬（未問過）→ 搶鏡閘口已關，行 liu_repay', (()=>{ liuSetup(1991, '冬', 30, ['liu_foreshadow', 'liu_intel', 'liu_tease']); return enc79PickBeat('liu_bingxing') && enc79PickBeat('liu_bingxing').id === 'liu_repay'; })());
 ok('閘：1990 → 唔開搶鏡', (()=>{ liuSetup(1990, '秋', 30, ['liu_foreshadow', 'liu_intel', 'liu_tease']); return enc79BeatOpen('liu_bingxing', beatOf('liu_bingxing', 'liu_steal')) === false; })());

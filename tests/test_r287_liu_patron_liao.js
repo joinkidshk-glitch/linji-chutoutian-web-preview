@@ -54,7 +54,7 @@ ok('A3 冷版閘仲讀 v269 兩支舊旗（declined／clash_script）',
 ok('A4 暖版閘仲讀 v269 兩支舊旗',
   html.includes('!((S.flags||{}).enc79_liu_declined || (S.flags||{}).enc79_liu_clash_script || (S.wf3 && S.wf3.liaoChoice)==="steal")'));
 ok('A5 讀旗路徑跟 liu_steal 閘一致（S.wf3.liaoChoice，唔係 ensureWf3 另起寫法）',
-  html.includes('!(S.wf3 && S.wf3.liaoChoice) && enc83NodeDone("C8")'));
+  html.includes('!(S.wf3 && S.wf3.liaoChoice) && enc83NodeDone("N9")'));
 ok('A6 結算唔郁：wf3SettleTick 仲喺度，搶鏡結算照舊（+$800＋面子債 dueDay+14）',
   html.indexOf('function wf3SettleTick(') >= 0 &&
   html.includes('S.money = (Number(S.money)||0) + 800;') &&

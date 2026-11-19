@@ -39869,17 +39869,17 @@ const ENC79_BEATS = {
     { id:"luk_finale", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=4 && ys.year===1992 && ys.season==="冬" && !((S.flags||{}).luk_absent_night || (S.flags||{}).luk_loose_talk); }, grants(){ try{ S.flags=S.flags||{}; S.flags.enc79_luk_finale=1; }catch(_e){} } },
   ],
   liu_bingxing:[
-    { id:"liu_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year<=1991 && enc79TierOf(st.fav)<=1 && enc83NodeDone("C8"); }, }, /* v20a269：N9 開口（C8＝N9） */
+    { id:"liu_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year<=1991 && enc79TierOf(st.fav)<=1 && enc83NodeDone("N9"); }, }, /* v20a269：N9 開口（v20a341：閘改讀 N id） */
     { id:"liu_intel", when(st){ return enc79TierOf(st.fav)>=2; } },
     { id:"liu_tease", when(st){ return enc79BoardHasStar("liu_bingxing"); } },
-    { id:"liu_steal", when(st){ const ys=yearSeasonNow(); return ys.year===1991 && ys.season==="秋" && enc79TierOf(st.fav)>=2 && !(S.wf3 && S.wf3.liaoChoice) && enc83NodeDone("C8"); } }, /* v20a279 G-L2：Beat 3 搶鏡抉擇——1991 秋＋N9 已完成（C8）先開，排喺 liu_repay 之前保 PLAN 次序；問過一次（liaoChoice）就唔再開，1991 冬之後閘口關閉，liu_repay 照開 */
+    { id:"liu_steal", when(st){ const ys=yearSeasonNow(); return ys.year===1991 && ys.season==="秋" && enc79TierOf(st.fav)>=2 && !(S.wf3 && S.wf3.liaoChoice) && enc83NodeDone("N9"); } }, /* v20a279 G-L2：Beat 3 搶鏡抉擇——1991 秋＋N9 已完成先開，排喺 liu_repay 之前保 PLAN 次序；問過一次（liaoChoice）就唔再開，1991 冬之後閘口關閉，liu_repay 照開 */
     { id:"liu_repay", when(st){ return enc79TierOf(st.fav)>=2; } /* v20a89：債權改由 enc79ChoiceFx／RunChoiceFx 按抉擇派（liu_accept 先派），唔再無條件 grants */ },
-    { id:"liu_clash", when(st){ const ys=yearSeasonNow(); return ys.year===1992 && ys.season==="冬" && enc83NodeDone("C13"); }, grants(){ try{ sideline280GrantCompletion("liu"); }catch(_e280){} } }, /* v20a269：N16 再開口（C13＝N16） */
+    { id:"liu_clash", when(st){ const ys=yearSeasonNow(); return ys.year===1992 && ys.season==="冬" && enc83NodeDone("N16"); }, grants(){ try{ sideline280GrantCompletion("liu"); }catch(_e280){} } }, /* v20a269：N16 再開口（v20a341：閘改讀 N id） */
     { id:"liu_patron_cold", when(st){ return enc79TierOf(st.fav)>=4 && ((S.flags||{}).enc79_liu_declined || (S.flags||{}).enc79_liu_clash_script || (S.wf3 && S.wf3.liaoChoice)==="steal"); } }, /* v20a269：冷版提攜（排喺暖版之前 shadow；無 credit）——v20a287：搶鏡（liaoChoice==="steal"）都行冷版 */
   ],
   mak_zhendong:[
     { id:"mak_foreshadow", when(st){ const ys=yearSeasonNow(); return ys.year<=1991 && enc79TierOf(st.fav)<=1; }, },
-    { id:"mak_intel", when(st){ return enc79TierOf(st.fav)>=2 && enc83NodeDone("C15"); } }, /* v20a269：N12 開口（C15＝N12） */
+    { id:"mak_intel", when(st){ return enc79TierOf(st.fav)>=2 && enc83NodeDone("N12"); } }, /* v20a269：N12 開口（v20a341：閘改讀 N id） */
     { id:"mak_tease", when(st){ const ys=yearSeasonNow(); return enc79TierOf(st.fav)>=1 && ((ys.year===1992 && ys.season==="春") || enc79BoardHasActionGig()); } },
     { id:"mak_respect", when(st){ return enc79TierOf(st.fav)>=2 && !!st.workedWith; } /* v20a89：債權改按抉擇派（mak_accept 先派），唔再無條件 grants */ },
     { id:"mak_visit", when(st){ try{ const c=(S&&S.conseq61)||{}; const cu=Number(c.cooldownUntil)||0; const day=(S&&S.dayIndex)|0; return !!c.sick || (cu>0 && day-cu<=45 && day-cu>=-14); }catch(_e){ return false; } } },

@@ -1,5 +1,5 @@
 // v20a269 支線實裝第一批邏輯測試：廖炳星／顧明輝／麥震東——
-//   (1) 靜態：flags 欄位、冷版 beats、registry 閘（C8／C13／C15）、暖版排除式條件、
+//   (1) 靜態：flags 欄位、冷版 beats、registry 閘（N9／N16／N12；v20a341 改讀 N id）、暖版排除式條件、
 //       傳聞引用零殘留、liu_repay／mak_respect beat 定義無 grants（test_br89 B9 釘位）；
 //   (2) 抉擇 fx：clash 企邊邊；舊 fx 釘位（liu_repay／mak_respect／gu_loan 唔借無 fx）保持；
 //   (3) 節拍閘：patron 冷暖 shadow＋PickBeat 排序、暖版無旗照開（提攜測試態）、
@@ -49,7 +49,7 @@ ok('靜態：flags 欄位——麥 respect／heart', html.includes('flags: ["enc
 ok('靜態：flags 欄位消費點——pushSeg 傳遞＋揀嗰陣寫入', html.includes('flags:c.flags||null') && html.includes('if(opt.flags) (opt.flags||[]).forEach'));
 ok('靜態：冷版 beats 在位', html.includes('liu_patron_cold') && html.includes('gu_patron_cold') && html.includes('mak_patron_cold'));
 ok('靜態：廖 clash 新抉擇 2 選項', html.includes('企廖炳星嗰邊，話飛紙仔改得啱') && html.includes('企導演嗰邊，話照劇本拍先啱'));
-ok('靜態：registry 閘——廖 C8／C13、麥 C15', html.includes('enc83NodeDone("C8")') && html.includes('enc83NodeDone("C13")') && html.includes('enc83NodeDone("C15")'));
+ok('靜態：registry 閘——廖 N9／N16、麥 N12', html.includes('enc83NodeDone("N9")') && html.includes('enc83NodeDone("N16")') && html.includes('enc83NodeDone("N12")'));
 ok('靜態：暖版只加排除式條件（無肯定式要求）', html.includes('!((S.flags||{}).enc79_liu_declined || (S.flags||{}).enc79_liu_clash_script || (S.wf3 && S.wf3.liaoChoice)==="steal")') && html.includes('!(S.flags||{}).enc83_gu_loan_refused && !(S.flags||{}).gu_n10_warned') && html.includes('!(S.flags||{}).enc79_mak_honest')); /* v20a287：暖版排除表加 liaoChoice==="steal"，斷言字串同步更新，意圖不變（純排除式） */
 ok('靜態：傳聞引用零殘留（v267 已刪）', !html.includes('enc79GrantFrag') && !html.includes('enc79GrantRumorCard') && !html.includes('enc79HasMerged'));
 ok('靜態：B9 釘位——liu_repay／mak_respect beat 定義無 grants(', (()=>{ const a = html.indexOf('{ id:"liu_repay"'); const b = html.indexOf('{ id:"mak_respect"'); return a >= 0 && b >= 0 && !html.slice(a, a + 220).includes('grants(') && !html.slice(b, b + 220).includes('grants('); })());
@@ -124,22 +124,22 @@ ok('註冊順序：冷版排暖版之前（三線）', beatIds('liu_bingxing').i
 ok('冷版 DLG 句數 ≥3（三線）', ENC79_DIALOG.liu_bingxing.beats.liu_patron_cold.lines.length>=3 && ENC79_DIALOG.mak_zhendong.beats.mak_patron_cold.lines.length>=3 && ENC79_DIALOG.gu_mingfai.beats.gu_patron_cold.lines.length>=3);
 ok('冷版 DLG 句數：廖 6／麥 6／顧 7', ENC79_DIALOG.liu_bingxing.beats.liu_patron_cold.lines.length===6 && ENC79_DIALOG.mak_zhendong.beats.mak_patron_cold.lines.length===6 && ENC79_DIALOG.gu_mingfai.beats.gu_patron_cold.lines.length===7);
 resetS(210); _ys = { year:1990, season:'夏' }; setFav('liu_bingxing', 10);
-ok('閘：liu_foreshadow C8 未完唔開（N9 開口）', openBeat('liu_bingxing','liu_foreshadow')===false);
-_doneNodes.add('C8');
-ok('閘：liu_foreshadow C8 完開', openBeat('liu_bingxing','liu_foreshadow')===true);
+ok('閘：liu_foreshadow N9 未完唔開', openBeat('liu_bingxing','liu_foreshadow')===false);
+_doneNodes.add('N9');
+ok('閘：liu_foreshadow N9 完開', openBeat('liu_bingxing','liu_foreshadow')===true);
 resetS(211); _ys = { year:1992, season:'冬' }; setFav('liu_bingxing', 30);
-ok('閘：liu_clash C13 未完唔開（N16 再開口）', openBeat('liu_bingxing','liu_clash')===false);
-_doneNodes.add('C13');
-ok('閘：liu_clash C13 完開', openBeat('liu_bingxing','liu_clash')===true);
+ok('閘：liu_clash N16 未完唔開', openBeat('liu_bingxing','liu_clash')===false);
+_doneNodes.add('N16');
+ok('閘：liu_clash N16 完開', openBeat('liu_bingxing','liu_clash')===true);
 resetS(212); _ys = { year:1992, season:'秋' }; setFav('liu_bingxing', 70);
 ok('閘：liu_patron 暖／冷分流（declined 行冷）', openBeat('liu_bingxing','liu_patron')===true && openBeat('liu_bingxing','liu_patron_cold')===false && (S.flags.enc79_liu_declined=1, openBeat('liu_bingxing','liu_patron')===false && openBeat('liu_bingxing','liu_patron_cold')===true));
 ok('閘：liu_patron 壞旗（clash_script）行冷', (()=>{ resetS(2121); _ys = { year:1992, season:'秋' }; setFav('liu_bingxing', 70); S.flags.enc79_liu_clash_script = 1; return openBeat('liu_bingxing','liu_patron')===false && openBeat('liu_bingxing','liu_patron_cold')===true; })());
 ok('閘：liu_patron 冷版排暖版之前（PickBeat 揀冷）', (()=>{ resetS(213); _ys = { year:1992, season:'秋' }; setFav('liu_bingxing', 70); S.flags.enc79_liu_declined = 1; const st = S.stars.liu_bingxing; for(const b of (ENC79_BEATS.liu_bingxing||[])) if(!b.id.endsWith('_patron') && b.id!=='liu_patron_cold') st.beatsDone[b.id] = 1; const p = enc79PickBeat('liu_bingxing'); return !!p && p.id==='liu_patron_cold'; })());
 ok('閘：liu_patron 暖版 T4＋無旗 → PickBeat 揀暖（提攜測試態）', (()=>{ resetS(214); _ys = { year:1992, season:'秋' }; setFav('liu_bingxing', 70); const st = S.stars.liu_bingxing; for(const b of (ENC79_BEATS.liu_bingxing||[])) if(!b.id.endsWith('_patron')) st.beatsDone[b.id] = 1; const p = enc79PickBeat('liu_bingxing'); return !!p && p.id==='liu_patron'; })());
 resetS(215); _ys = { year:1991, season:'夏' }; setFav('mak_zhendong', 30);
-ok('閘：mak_intel C15 未完唔開（N12 開口）', openBeat('mak_zhendong','mak_intel')===false);
-_doneNodes.add('C15');
-ok('閘：mak_intel C15 完開', openBeat('mak_zhendong','mak_intel')===true);
+ok('閘：mak_intel N12 未完唔開', openBeat('mak_zhendong','mak_intel')===false);
+_doneNodes.add('N12');
+ok('閘：mak_intel N12 完開', openBeat('mak_zhendong','mak_intel')===true);
 resetS(216); _ys = { year:1992, season:'秋' }; setFav('mak_zhendong', 70);
 ok('閘：mak_patron 暖／冷分流（honest 行冷）', openBeat('mak_zhendong','mak_patron')===true && openBeat('mak_zhendong','mak_patron_cold')===false && (S.flags.enc79_mak_honest=1, openBeat('mak_zhendong','mak_patron')===false && openBeat('mak_zhendong','mak_patron_cold')===true));
 ok('閘：mak_patron 冷版排暖版之前（PickBeat 揀冷）', (()=>{ const st = S.stars.mak_zhendong; for(const b of (ENC79_BEATS.mak_zhendong||[])) if(!b.id.endsWith('_patron') && b.id!=='mak_patron_cold') st.beatsDone[b.id] = 1; const p = enc79PickBeat('mak_zhendong'); return !!p && p.id==='mak_patron_cold'; })());
@@ -160,7 +160,7 @@ ok('變體：gu_n10after 無拒借旗唔插句', (()=>{ resetS(231); _ys = { yea
 ok('變體：mak_patron 認守秘密（插句）', (()=>{ resetS(232); _ys = { year:1992, season:'秋' }; setFav('mak_zhendong', 70); metStar('mak_zhendong'); S.flags.mak_kept_secret = 1; const st = S.stars.mak_zhendong; for(const b of (ENC79_BEATS.mak_zhendong||[])) if(b.id!=='mak_patron' && !b.id.endsWith('_patron')) st.beatsDone[b.id] = 1; st.beatsDone.mak_patron_cold = 1; const built = enc79BuildScript('mak_zhendong', false); return !!built && built.steps.some(s=>String(s.text||'').indexOf('應承幫我守秘密')>=0); })());
 ok('變體：mak_patron 無守秘密旗唔插句', (()=>{ resetS(233); _ys = { year:1992, season:'秋' }; setFav('mak_zhendong', 70); metStar('mak_zhendong'); const st = S.stars.mak_zhendong; for(const b of (ENC79_BEATS.mak_zhendong||[])) if(b.id!=='mak_patron' && !b.id.endsWith('_patron')) st.beatsDone[b.id] = 1; st.beatsDone.mak_patron_cold = 1; const built = enc79BuildScript('mak_zhendong', false); return !!built && !built.steps.some(s=>String(s.text||'').indexOf('應承幫我守秘密')>=0); })());
 ok('pushSeg：liu_repay 抉擇 options 帶 flags', (()=>{ resetS(234); _ys = { year:1991, season:'夏' }; setFav('liu_bingxing', 30); metStar('liu_bingxing'); const st = S.stars.liu_bingxing; for(const b of (ENC79_BEATS.liu_bingxing||[])) if(b.id!=='liu_repay' && !b.id.endsWith('_patron')) st.beatsDone[b.id] = 1; const built = enc79BuildScript('liu_bingxing', false); const ch = (built.steps||[]).find(s=>s.choice && s.seg==='beat:liu_repay'); return !!ch && JSON.stringify(ch.options[0].flags)==='["enc79_liu_accepted"]' && JSON.stringify(ch.options[1].flags)==='["enc79_liu_declined"]'; })());
-ok('pushSeg：liu_clash 抉擇 options 帶 flags', (()=>{ resetS(235); _ys = { year:1992, season:'冬' }; setFav('liu_bingxing', 30); metStar('liu_bingxing'); _doneNodes.add('C13'); const st = S.stars.liu_bingxing; for(const b of (ENC79_BEATS.liu_bingxing||[])) if(b.id!=='liu_clash' && !b.id.endsWith('_patron')) st.beatsDone[b.id] = 1; const built = enc79BuildScript('liu_bingxing', false); const ch = (built.steps||[]).find(s=>s.choice && s.seg==='beat:liu_clash'); return !!ch && JSON.stringify(ch.options[0].flags)==='["enc79_liu_clash_stand"]' && JSON.stringify(ch.options[1].flags)==='["enc79_liu_clash_script"]'; })());
+ok('pushSeg：liu_clash 抉擇 options 帶 flags', (()=>{ resetS(235); _ys = { year:1992, season:'冬' }; setFav('liu_bingxing', 30); metStar('liu_bingxing'); _doneNodes.add('N16'); const st = S.stars.liu_bingxing; for(const b of (ENC79_BEATS.liu_bingxing||[])) if(b.id!=='liu_clash' && !b.id.endsWith('_patron')) st.beatsDone[b.id] = 1; const built = enc79BuildScript('liu_bingxing', false); const ch = (built.steps||[]).find(s=>s.choice && s.seg==='beat:liu_clash'); return !!ch && JSON.stringify(ch.options[0].flags)==='["enc79_liu_clash_stand"]' && JSON.stringify(ch.options[1].flags)==='["enc79_liu_clash_script"]'; })());
 ok('pushSeg：gu_loan 抉擇 options 帶 flags（唔借）', (()=>{ resetS(236); _ys = { year:1991, season:'夏' }; setFav('gu_mingfai', 30); metStar('gu_mingfai'); const st = S.stars.gu_mingfai; for(const b of (ENC79_BEATS.gu_mingfai||[])) if(b.id!=='gu_loan' && !b.id.endsWith('_patron')) st.beatsDone[b.id] = 1; const built = enc79BuildScript('gu_mingfai', false); const ch = (built.steps||[]).find(s=>s.choice && s.seg==='beat:gu_loan'); return !!ch && JSON.stringify(ch.options[2].flags)==='["enc83_gu_loan_refused"]'; })());
 ok('pushSeg：mak_respect 抉擇 options 帶 flags', (()=>{ resetS(237); _ys = { year:1992, season:'春' }; setFav('mak_zhendong', 30); metStar('mak_zhendong'); S.stars.mak_zhendong.workedWith = true; const st = S.stars.mak_zhendong; for(const b of (ENC79_BEATS.mak_zhendong||[])) if(b.id!=='mak_respect' && !b.id.endsWith('_patron')) st.beatsDone[b.id] = 1; const built = enc79BuildScript('mak_zhendong', false); const ch = (built.steps||[]).find(s=>s.choice && s.seg==='beat:mak_respect'); return !!ch && JSON.stringify(ch.options[0].flags)==='["enc79_mak_accepted"]' && JSON.stringify(ch.options[1].flags)==='["enc79_mak_honest"]'; })());
 
