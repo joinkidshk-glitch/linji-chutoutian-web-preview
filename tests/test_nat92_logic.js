@@ -247,9 +247,9 @@ ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3
       for(const loc of GIG_LOCS){
         const shown = W.gigsForLocSeasonBoard(loc, W.calendarSeason());
         if(!shown.length){ zero++; continue; }
-        const tiers = { '中':0, '高':0 };
+        const tiers = { '中級':0, '高級':0 };
         shown.forEach(g=>{ if(tiers[g.tier] != null) tiers[g.tier]++; });
-        for(const t of ['中','高']){ tot++; if(tiers[t] === 2) ex2++; }
+        for(const t of ['中級','高級']){ tot++; if(tiers[t] === 2) ex2++; }
       }
     }
     return { tot, ex2, pct: 100 * ex2 / tot, zero };
