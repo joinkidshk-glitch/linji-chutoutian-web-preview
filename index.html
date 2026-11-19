@@ -14395,20 +14395,13 @@ const TEXTFIX55_NOTE_EXACT = {"可與事業結局並存。": "呢段感情點收
 const TEXTFIX55_PHRASES = [["星河電視城", "星河電視台"], ["電視城廠景", "電視台廠景"], ["上座率", "入座率"], ["互懟", "駁火"], ["送命題", "辣手問題"], ["Hau Ching", "曉晴"]];
 /* ==== v20a57 TERMS：術語清理第二輪 ====
    A 類：事態→劇情、聲量→聲望、周刊→週刊（PHRASES，喺 55 phrases 之後行）。
-   B 類有限度：解鎖成句走 EXACT；標籤值改名（動作演員→身手好、大牌→耍大牌）靠 EXACT 全字串
-   ＋ walk object-key 改名（labelToId）；體力→體能要求表已刪（RW-7）。
+   B 類有限度：只留「未解鎖」→「未開放」一條 EXACT（v323：其餘死映射＋標籤改名
+   ＋ walk object-key 改名已刪）；體力→體能要求表已刪（RW-7）。
    C 類詞彙一律唔郁。詳見 NOTES_V20A57_TERMS.md。 */
 const TEXTFIX57_EXACT = {
-  "新課程解鎖：魅力課可以報名。": "新課程開咗：魅力課可以報名。",
-  "訓練解鎖試鏡": "訓練夠了才報得試鏡",
-  /* v241：死映射已刪（教學 JSON 已直寫 v108 新句）。 */
-  "情報刷新，去金龍茶餐廳聽下新風聲。": "有新情報，去金龍茶餐廳聽下新風聲。",
-  "未解鎖": "未開放",
-  "動作演員": "身手好",
-  "大牌": "耍大牌"
+  "未解鎖": "未開放"
 };
 const TEXTFIX57_PHRASES = [["事態","劇情"],["聲量","聲望"],["周刊","週刊"]];
-const TEXTFIX57_KEY_RENAME = { "動作演員": "身手好", "大牌": "耍大牌" };
 
 const TEXTFIX55_STAR_LOOKS = {"mak_zhendong": "麥震東穿著戲服站在片場邊等候埋位，手臂包著紗布。", "lok_gasing": "駱家聲一身西裝站在廠景走廊與一班人談話，整班人圍著他。", "pang_siuki": "彭少祺站在廣告樓大堂與客戶握手，一身剪裁貼身的深色西裝。", "chung_choning": "鍾楚凝抱著一疊歌紙走過唱片公司梯間，還哼著歌。", "gu_mingfai": "顧明輝站在海港台門外向一班歌迷揮手，笑得十分溫文。", "so_jiyan": "蘇芷茵站在灣仔唱片樓門口等車，戴著頂帽子，側面也認得出來。", "luk_baakyin": "陸柏言站在片場燈光最亮的位置，整組人等他開口才敢動。", "liu_bingxing": "廖炳星坐在茶餐廳卡位與人談著大計，花恤衫老遠也認得出來。", "ngai_wingnaam": "魏詠男站在電視台門口食煙，一身舊西裝，還是當年那種派頭。", "yip_manji": "葉敏芝剛剛卸妝走出錄音室，還未開聲，已經引得整班人回頭望。"};
 /* v20a243 RW-6：TEXTFIX55_GIG_EXACT／GIG_SUB／GIG_PHRASES／POLICY_KW／ERA_KW 已刪（舊通告庫專用；新庫 241 張 0 命中，見 RW6_CHECKLIST.md）。體力→體能要求表已刪（RW-7：無呼叫者）。 */
@@ -14482,9 +14475,7 @@ function textfix55Walk(o, key, parentKey, opts){
     for(const k of Object.keys(o)){
       if(TEXTFIX55_SKIP_KEYS[k]) continue;
       const nv57 = textfix55Walk(o[k], k, key, opts);
-      const nk57 = TEXTFIX57_KEY_RENAME[k];
-      if(nk57 && nk57 !== k){ o[nk57] = nv57; delete o[k]; }
-      else o[k] = nv57;
+      o[k] = nv57;
     }
     if(o.speaker === "旁白" && Array.isArray(o.lines) && o.lines.indexOf("咁我咪要覺得好榮幸？講真，我好少同記者私下食飯。") >= 0){
       o.speaker = "阿偉";

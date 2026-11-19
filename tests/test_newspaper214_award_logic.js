@@ -51,7 +51,7 @@ const FN_NAMES = ["fmtNewspaperDate", "newspaperEsc", "newspaperFullName214",
   "textfix55Walk", "textfix55Str", "textfix55Note", "textfix55Label"];
 const CONST_NAMES = ["START", "NP214_AWARD_PHOTOS_214",
   "TEXTFIX55_EXACT", "TEXTFIX55_PHRASES", "TEXTFIX57_EXACT", "TEXTFIX57_PHRASES",
-  "TEXTFIX55_SKIP_KEYS", "TEXTFIX57_KEY_RENAME", "TEXTFIX55_NOTE_EXACT", "TEXTFIX55_OPTS_SIMPLE"];
+  "TEXTFIX55_SKIP_KEYS", "TEXTFIX55_NOTE_EXACT", "TEXTFIX55_OPTS_SIMPLE"];
 const missing = [];
 for (const n of FN_NAMES) if (!extractFn(n)) missing.push(n);
 for (const n of CONST_NAMES) if (!extractConst(n)) missing.push(n);

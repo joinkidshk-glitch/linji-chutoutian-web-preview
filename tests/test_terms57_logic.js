@@ -26,26 +26,18 @@ chk('A4 pair removed from table', !TF.TEXTFIX57_PHRASES.some(function (p) { retu
 chk('B6 星訊周刊', TF.textfix55Str('《星訊周刊》今期出街', 'title', null, TF.TEXTFIX55_OPTS_STORY) === '《星訊週刊》今期出街');
 const wSpeaker = TF.textfix55Walk({ beats: [{ speaker: '周刊編輯', lines: ['周刊記者企喺門口。'] }] }, null, null, TF.TEXTFIX55_OPTS_STORY);
 chk('B6 speaker walked', wSpeaker.beats[0].speaker === '週刊編輯' && wSpeaker.beats[0].lines[0] === '週刊記者企喺門口。');
-// B1 解鎖: EXACT sentences + lockedHint bare value
-chk('B1 unlock event', TF.textfix55Str('新課程解鎖：魅力課可以報名。', 'lines', null, TF.TEXTFIX55_OPTS_SIMPLE) === '新課程開咗：魅力課可以報名。');
-chk('B1 tutorial title', TF.textfix55Str('訓練解鎖試鏡', 'title', null, TF.TEXTFIX55_OPTS_SIMPLE) === '訓練夠了才報得試鏡');
+// B1 解鎖: lockedHint bare value only（EXACT 成句已刪）
 const wLock = TF.textfix55Walk({ nodes: [{ lockedHint: '未解鎖' }] }, null, null, TF.TEXTFIX55_OPTS_STORY);
 chk('B1 lockedHint', wLock.nodes[0].lockedHint === '未開放');
-// A3 刷新: refresh hint sentence via EXACT
-chk('A3 情報刷新', TF.textfix55Str('情報刷新，去金龍茶餐廳聽下新風聲。', 'randomRefreshHint', null, TF.TEXTFIX55_OPTS_SIMPLE) === '有新情報，去金龍茶餐廳聽下新風聲。');
-// B2 tag values via EXACT (whole-string only)
-chk('B2 動作演員 tag', TF.textfix55Str('動作演員', 'tags', null, TF.TEXTFIX55_OPTS_SIMPLE) === '身手好');
-chk('B2 大牌 tag', TF.textfix55Str('大牌', 'tags', null, TF.TEXTFIX55_OPTS_SIMPLE) === '耍大牌');
+// B2 prose untouched (no whole-string EXACT hit)
 chk('B2 prose untouched', TF.textfix55Str('大牌藝人先有呢種待遇', 'lines', null, TF.TEXTFIX55_OPTS_STORY) === '大牌藝人先有呢種待遇');
-// B2 registry: labels renamed + labelToId KEYS renamed, ids intact (via walk)
+// B2 registry: walk leaves labels + labelToId keys untouched (no rename)
 const reg = { tags: [{ id: 'tag_action', label: '動作演員' }, { id: 'tag_diva', label: '大牌' }], labelToId: { '動作演員': 'tag_action', '大牌': 'tag_diva' } };
 TF.textfix55Walk(reg, null, null, TF.TEXTFIX55_OPTS_SIMPLE);
-chk('B2 registry labels', reg.tags[0].label === '身手好' && reg.tags[1].label === '耍大牌');
-chk('B2 registry labelToId keys', reg.labelToId['身手好'] === 'tag_action' && reg.labelToId['耍大牌'] === 'tag_diva' && !('動作演員' in reg.labelToId) && !('大牌' in reg.labelToId));
-// B2 wiring: textfix55Freeplay cleans the loaded registry
+// B2 wiring: textfix55Freeplay leaves the loaded registry untouched (no rename)
 const FW = { castingTagsReg: { tags: [{ id: 'tag_action', label: '動作演員' }], labelToId: { '動作演員': 'tag_action' } } };
 TF.textfix55Freeplay(FW);
-chk('B2 freeplay wiring', FW.castingTagsReg.tags[0].label === '身手好' && FW.castingTagsReg.labelToId['身手好'] === 'tag_action');
+chk('B2 freeplay wiring', FW.castingTagsReg.tags[0].label === '動作演員' && FW.castingTagsReg.labelToId['動作演員'] === 'tag_action');
 // RW-7：體力→體能要求表＋通告清洗層已刪（無呼叫者；新庫 0 命中）。B4 檢查一併刪走。
 
 console.log(fails.length ? ('FAILURES: ' + fails.join(', ')) : 'ALL PASS');
