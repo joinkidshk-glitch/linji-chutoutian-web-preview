@@ -51,4 +51,7 @@
 - Triage B1–B4 留待設計拍板（§10 項 10 閘門出入、魏腿 `gig_br89_stunt_ngai` 已消失、D-13 修訂、E2 守衛門檻）。
 - 下一票按 triage 建議：v329 A2（`promptAudition` 死函數刪除）、v330 A3（E2 普查 tier 名修正，measure-first）、v331 A5（SPEC docs 清理）、v332 攻略 A6（a)–(f)，須 parent 授權後行 repair 流程。
 
-## 五、合併＋部署（待填）
+## 五、合併＋部署
+- 內容 commit `bc42abc`（工作副本 `linji-work328` 分支 `v328`）→ 常駐 clone squash merge → main `df790f4`，已 push；`git ls-remote` 核實一致。
+- Pages 核實：curl 比對 byte-identical，index.html md5 `0def277dda7ccc0b3d1c55682379de27`／4,700,928 bytes。
+- 工作副本已刪；常駐 clone tracked 乾淨，`qa296/derive296.json` 無入版。
