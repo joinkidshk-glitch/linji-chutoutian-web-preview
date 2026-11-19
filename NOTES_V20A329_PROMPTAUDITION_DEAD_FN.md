@@ -31,8 +31,8 @@
 2. **死函數刪除要查埋測試嘅 seg／抽取錨點**：triage 只列咗 travel114 錨點，漏咗 aud91 嘅 seg 終點——`seg()` 搵唔到 end marker 會 fallback 抽 30000 字元，靜默擴大 chunk，文案檢查會誤 FAIL。刪函數嗰陣要 grep 埋函數名喺 tests/ 全部出現處（今次 4 處：index.html 定義＋註解、aud91 seg、travel114 錨點）。
 3. **搬入嘅行可能要入返測試清單**：搬入 doAudition 嘅 back 行帶 `travelFree:true`，travel114 掃描會要求佢喺 FREE_LINES 入面——唔係淨刪舊錨，要加新錨，否則「帶免費旗但唔喺 FREE_LINES」FAIL。
 
-## §五 合併＋部署（待填）
+## §五 合併＋部署
 
-- 內容 commit：（待填）
-- main HEAD：（待填）
-- Pages index.html md5／bytes：（待填）
+- 內容 commit：`40308d6`（工作副本分支 v329-promptaudition-dead-fn）→ 常駐 clone squash merge → **main `c644a18`**，已 push；`git ls-remote` 核實一致。
+- Pages index.html md5 `d57d99192b940ad2f57a23fa68241ade`／4,700,360 bytes，同 main 本地一致（curl 比對 byte-identical，傳播約 4 分鐘）。
+- 工作副本已刪；常駐 clone tracked 乾淨，`qa296/derive296.json` 無入版（suite 喺工作副本跑，衍生檔已還原）。
