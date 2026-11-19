@@ -31,7 +31,9 @@ gigId `gig_1991_tv_205`）。
 
 ## 五、落地
 
-- （填：內容 commit、main HEAD、Pages md5／bytes）
+- 內容 commit `62d3663` → 常駐 clone squash merge → main `3fbf41e`，已 push；`git ls-remote` 核實一致。
+- Pages 核實：curl 比對 byte-identical，index.html md5 `6e1138db85e6939a38da1d671bb1ce87`／4,700,943 bytes；「碼頭故事」線上 0 命中。
+- 工作副本已刪；常駐 clone tracked 乾淨，`qa296/derive296.json` 無入版。
 
 ## 六、跟進（唔係本票）
 
