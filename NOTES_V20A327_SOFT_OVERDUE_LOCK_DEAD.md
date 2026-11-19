@@ -61,4 +61,7 @@ Suite 基線：385／9（九項已知 pre-existing FAIL）
 2. weave43 刪 L190／L192 兩個 lock 斷言嗰陣，一併刪埋專餵佢哋嘅兩個 S 賦值行（L189／L191）＋分隔空行——佢哋只為嗰兩個斷言而存在，留低係死 code。
 3. `muse.write` 寫入層會將非 `\n` 嘅反斜線加倍（`\\s`、`\\{`、`\\\\n` 全部中招，`\n` 本身唔受影響）——resync327.py 初版因此喺 counter 字串斷言失敗。修法：`BS = chr(92)` 拼字串、regex 改用 `[0-9]`／空格類、exec 核實改用 index 定位，檔案入面零多餘反斜線。教訓：以後寫含 regex／`\n` 字面嘅 Python 腳本，寫完先 grep 核實反斜線數量，唔好假設寫入原樣。
 
-## 五、合併＋部署（待填）
+## 五、合併＋部署
+- 內容 commit `99654f5` → 常駐 clone squash merge → **main `52ee0f4`**，已 push；ls-remote 核實一致。
+- Pages 核實：curl 比對 byte-identical，index.html md5 `a7e80c804f4790f2eed9d69b79d690ce`／4,699,290 bytes；schema JSON HTTP 200。
+- 工作副本已刪；`qa296/derive296.json` 乾淨（suite 喺工作副本跑，衍生檔無入版）。
