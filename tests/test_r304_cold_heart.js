@@ -5,7 +5,7 @@
 //   (D) 播完：heartDone 照標（唔重播）；好感＋1（唔係暖版＋2）；唔派暖版收尾獎勵（sideline280／聲望唔郁）
 //   (E) GRANT229：冷版無 choices、seg "heartCold:…" 無對應行，唔派即派通告
 //   (F) 舊檔：已有壞旗、未播 heart、star state 只有 fav／met，唔 crash，照播冷版
-//   (S) 靜態：暖版 heart 閘／暖版對白／patron_cold 對白／鍾冷版唔郁；gigs_new.json 仍係 322 張
+//   (S) 靜態：暖版 heart 閘／暖版對白／patron_cold 對白／鍾冷版唔郁；gigs_new.json 仍係 323 張
 // 用法：node tests/test_r304_cold_heart.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -253,7 +253,7 @@ ok('S 鍾 cold 靜態在位（金鐘細房 4 句）',
   html.indexOf('金鐘創意一間細房，活動完了，人散得七七八八。鍾楚凝坐在窗邊，見到阿偉進來，沒有叫他坐下。') >= 0 &&
   html.indexOf('阿偉，今日唔傾喇。我啲安排搞到七七八八，講多一句，都係多餘。') >= 0);
 const gigsLib = GIGS_ARR;
-ok('S gigs_new.json 仍係 322 張', gigsLib.length === 322, 'count=' + gigsLib.length);
+ok('S gigs_new.json 仍係 323 張', gigsLib.length === 323, 'count=' + gigsLib.length);
 ok('S 冷版 heart 唔叫 sideline280GrantCompletion（冷版回調無呢個 call）',
   (() => {
     const i = html.indexOf('pushSeg(D.heartCold, "heartCold:"+starId');

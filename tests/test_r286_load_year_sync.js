@@ -86,8 +86,8 @@ function buildWire(yearActive){
 const gigs1990 = gigList.filter(g => Number(g.year) === 1990);
 const gigs1991 = gigList.filter(g => Number(g.year) === 1991);
 const gigs1992 = gigList.filter(g => Number(g.year) === 1992);
-ok('B1 庫 counts：1990:130／1991:105／1992:87，共 322',
-  gigs1990.length === 130 && gigs1991.length === 105 && gigs1992.length === 87 && gigList.length === 322);
+ok('B1 庫 counts：1990:130／1991:105／1992:88，共 323',
+  gigs1990.length === 130 && gigs1991.length === 105 && gigs1992.length === 88 && gigList.length === 323);
 S = { dayIndex: 651 };
 ok('B2 dateObj：dayIndex 651 → 1991 年；1000 → 1992 年；100 → 1990 年',
   dateObj().getFullYear() === 1991 &&
@@ -117,8 +117,8 @@ S = { dayIndex: 1000 };
 GIGS = gigs1990.map(g => Object.assign({}, g));
 STORY_WIRE = buildWire(1990);
 syncGigsForCalendarYear(false);
-ok('B6 1992 load：sync 後 GIGS 87 張、yearActive 1992、含 film_114《海角歸人》、全部 1992 年',
-  GIGS.length === 87 && STORY_WIRE.gigsYearActive === 1992 &&
+ok('B6 1992 load：sync 後 GIGS 88 張、yearActive 1992、含 film_114《海角歸人》、全部 1992 年',
+  GIGS.length === 88 && STORY_WIRE.gigsYearActive === 1992 &&
   GIGS.some(g => g && g.id === 'gig_1992_film_114') &&
   !GIGS.some(g => g && Number(g.year) !== 1992));
 

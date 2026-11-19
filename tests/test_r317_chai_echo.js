@@ -99,14 +99,14 @@ const CHAI_CREDIT = { id: 'credit_enc83_chai_patron', debtor: '齊鎮海', title
 const tv114 = gigById['gig_1991_tv_114'];
 const film206 = gigById['gig_1992_film_206'];
 const tv210 = gigById['gig_1991_tv_210'];
-ok('(0) gig_count_322', allGigs.length === 322 && new Set(allGigs.map(g=>g.id)).size === 322, 'n=' + allGigs.length);
-ok('(0) trig_37_credit_26', allGigs.filter(g=>g.trigger && g.trigger.kind).length === 37 && allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 26, 'credit 26（BR89 18＋通用 8）');
+ok('(0) gig_count_323', allGigs.length === 323 && new Set(allGigs.map(g=>g.id)).size === 323, 'n=' + allGigs.length);
+ok('(0) trig_38_credit_27', allGigs.filter(g=>g.trigger && g.trigger.kind).length === 38 && allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 27, 'credit 27（BR89 19＋通用 8）');
 ok('(0) tv114_tag_trigger', !!tv114 && JSON.stringify(tv114.storyKeys) === '["chai_zanhoi"]' && tv114.trigger && tv114.trigger.kind === 'credit' && tv114.trigger.creditId === 'credit_enc83_chai_patron' && tv114.trigger.creditOwner === '齊鎮海', 'storyKeys＋trigger 齊');
 ok('(0) tv114_other_fields_unchanged', !!tv114 && tv114.title === '《亂世將軍傳》男主角' && tv114.tier === '高級' && tv114.type === '電視劇' && tv114.year === 1991 && tv114.season === '秋' && tv114.days === 30 && JSON.stringify(tv114.pay) === '[6000,7200]' && tv114.genre === '歷史傳記' && tv114.roleLabel === '男主角' && tv114.cast && tv114.cast.leadM === null && tv114.cast.leadF === 'chung_choning' && tv114.cast.supportM === 'chai_zanhoi' && tv114.cast.supportF === 'kong_siying', 'title／tier／year／season／days／pay／genre／cast 唔郁');
 ok('(0) chai_patron_grants_match', html.indexOf('{ id:"credit_enc83_chai_patron", debtor:"齊鎮海", title:"一哥引薦"') >= 0, 'chai_patron 授出同一筆債權（id＋debtor＋title 一致）');
 ok('(0) chai_patron_gates_v318', html.indexOf('{ id:"chai_patron", when(st){ return enc79TierOf(st.fav)>=4 && !!(S.flags||{}).chai_truth_change && !(S.flags||{}).chai_silent && !(S.flags||{}).chai_comfort && !(S.flags||{}).chai_loose_fear; }') >= 0 && html.indexOf('{ id:"chai_patron_cold", when(st){ return enc79TierOf(st.fav)>=4 && ((S.flags||{}).chai_silent || (S.flags||{}).chai_comfort || (S.flags||{}).chai_loose_fear); }') >= 0, '暖版閘 v20a318：T4＋truth_change＋三排除；冷版閘一行都唔郁');
 ok('(0) film206_unchanged', !!film206 && JSON.stringify(film206.storyKeys) === '["chai_zanhoi"]' && film206.trigger && film206.trigger.creditId === 'credit_enc83_chai_patron' && film206.tier === '中級', 'film_206 係 chai tag＋trigger，唔郁');
-const EXPECT18 = {
+const EXPECT19 = {
   gig_1991_film_101:'credit_enc83_luk_patron', gig_1991_variety_203:'credit_enc84_pang_patron',
   gig_1992_rec_106:'credit_enc84_ching_patron', gig_1991_film_103:'credit_enc79_liu_priority',
   gig_1992_film_103:'credit_enc83_liu_patron', gig_1991_film_211:'credit_enc83_mak_patron',
@@ -115,11 +115,12 @@ const EXPECT18 = {
   gig_1992_rec_111:'credit_enc83_lok_patron', gig_1991_film_212:'credit_enc83_ngai_patron',
   gig_1992_film_206:'credit_enc83_chai_patron', gig_1992_film_202:'credit_wf3_comedy_crew',
   gig_1992_film_114:'credit_enc83_luk_patron', gig_1992_rec_112:'credit_enc83_lok_patron',
-  gig_1991_tv_114:'credit_enc83_chai_patron', gig_1992_variety_106:'credit_enc84_pang_patron'
+  gig_1991_tv_114:'credit_enc83_chai_patron', gig_1992_variety_106:'credit_enc84_pang_patron',
+  gig_1992_film_207:'credit_enc83_ngai_patron'
 };
-ok('(0) br89_map_18_pairs', Object.keys(BR89_PATRON_OF_GIG).length === 18 &&
-  Object.keys(EXPECT18).every(k=>BR89_PATRON_OF_GIG[k] === EXPECT18[k]) &&
-  Object.keys(BR89_PATRON_OF_GIG).every(k=>EXPECT18[k] === BR89_PATRON_OF_GIG[k]), 'n=' + Object.keys(BR89_PATRON_OF_GIG).length);
+ok('(0) br89_map_19_pairs', Object.keys(BR89_PATRON_OF_GIG).length === 19 &&
+  Object.keys(EXPECT19).every(k=>BR89_PATRON_OF_GIG[k] === EXPECT19[k]) &&
+  Object.keys(BR89_PATRON_OF_GIG).every(k=>EXPECT19[k] === BR89_PATRON_OF_GIG[k]), 'n=' + Object.keys(BR89_PATRON_OF_GIG).length);
 ok('(0) board_1991_autumn_tv_senior_0_open', allGigs.filter(g=>g.type === '電視劇' && g.tier === '高級' && g.year === 1991 && g.season === '秋' && !g.trigger).length === 0 && !!tv210 && tv210.trigger && tv210.trigger.kind === 'fame' && tv210.trigger.fameMin === 40, 'tv_114 轉 trigger 閘，tv_210 本來已經 fame 閘（D-4／D-11 既定機制）');
 
 // ---------- (1) 未持有債權：唔上板 ----------

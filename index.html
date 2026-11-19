@@ -26668,14 +26668,14 @@ function br89HasCredit(id){
    v20a284 R5-F：加第 15 對 gig_1992_film_114《海角歸人》→陸柏言引薦債權（同 film_101 同一筆，1992 春接力；H 經反查自動出兩張名）。
    v20a316：加第 16 對 gig_1992_rec_112《追風少年》→駱家聲引薦債權（同 rec_111《銅鑼灣》同一筆，支線回響通告；H 經反查自動出兩張名）。
    v20a317：加第 17 對 gig_1991_tv_114《亂世將軍傳》→齊鎮海引薦債權（同 film_206《油麻地夜班》同一筆，支線回響通告；H 經反查自動出兩張名）。
-   v20a319：加第 18 對 gig_1992_variety_106《星光慈善夜》→彭少祺引薦債權（同 variety_203《台慶大騷》同一筆，支線回響通告；H 經反查自動出兩張名）。 */
+   v20a319：加第 18 對 gig_1992_variety_106《星光慈善夜》→彭少祺引薦債權（同 variety_203《台慶大騷》同一筆，支線回響通告；H 經反查自動出兩張名）。v20a337：加第 19 對 gig_1992_film_207《虎嘯龍吟》→魏詠男引薦債權（同 film_212《鐵橋風雲》同一筆，1992 春接力；H 經反查自動出兩張名）。 */
 const BR89_PATRON_OF_GIG = {
   gig_1991_film_101:"credit_enc83_luk_patron", gig_1991_variety_203:"credit_enc84_pang_patron", gig_1992_variety_106:"credit_enc84_pang_patron" /* v20a319：彭引薦第二張《星光慈善夜》（1992 秋綜藝主持）——同 variety_203《台慶大騷》同一筆債權，支線回響通告；殺青邊張都標 redeemedBy，另一張自動落板（br89GigOn 讀同一筆債權嘅 redeemedBy）。 */,
   gig_1992_rec_106:"credit_enc84_ching_patron", gig_1991_film_103:"credit_enc79_liu_priority",
   gig_1992_film_103:"credit_enc83_liu_patron", gig_1991_film_211:"credit_enc83_mak_patron",
   gig_1992_tv_105:"credit_enc83_yip_patron", gig_1992_rec_205:"credit_enc83_gu_patron",
   gig_1991_ad_102:"credit_enc84_so_patron", gig_1991_film_213:"credit_enc84_chung_patron",
-  gig_1992_rec_111:"credit_enc83_lok_patron", gig_1991_film_212:"credit_enc83_ngai_patron",
+  gig_1992_rec_111:"credit_enc83_lok_patron", gig_1991_film_212:"credit_enc83_ngai_patron", gig_1992_film_207:"credit_enc83_ngai_patron" /* v20a337：魏引薦第二張《虎嘯龍吟》（1992 春電影男主角）——同 film_212《鐵橋風雲》同一筆債權，支線回響通告；殺青邊張都標 redeemedBy，另一張自動落板（br89GigOn 讀同一筆債權嘅 redeemedBy）。 */,
   gig_1992_film_206:"credit_enc83_chai_patron",
   gig_1991_tv_114:"credit_enc83_chai_patron" /* v20a317：齊引薦第二張《亂世將軍傳》（1991 秋電視劇男主角）——同 film_206《油麻地夜班》同一筆債權，支線回響通告；殺青邊張都標 redeemedBy，另一張自動落板（br89GigOn 讀同一筆債權嘅 redeemedBy）。 */,
   gig_1992_film_202:"credit_wf3_comedy_crew" /* v20a279 G-L2：喜劇組債權兌現 gig《笑到最後》——殺青經 br89OnGigComplete 標 redeemedBy，兌現後落板（收割完成授債權嗰陣唔標，見 wf3SettleTick） */,

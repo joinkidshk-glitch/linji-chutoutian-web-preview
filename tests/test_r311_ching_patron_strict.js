@@ -8,7 +8,7 @@
 //   (C) 端到端 buildScript：三旗齊備→播 beat:ching_patron；缺 stand_slow→唔播；遲補 stand_slow→即播（漏做趕得切，唔死局）
 //   (D) sideline280 一致：三旗齊備→收尾獎勵派（fame＋2／delta＋1／doneKey）；缺一旗→唔派
 //   (E) 舊檔：舊排除式暖版玩家（得 flag_vocal_train）唔 crash、唔播暖版；三旗齊備舊檔照播暖版；S.story.flags 讀法照行
-//   (S) 靜態：ching_e4 閘唔郁；gigs_new.json 仍係 322 張
+//   (S) 靜態：ching_e4 閘唔郁；gigs_new.json 仍係 323 張
 // 用法：node tests/test_r311_ching_patron_strict.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -253,7 +253,7 @@ ok('E 舊檔 S.story.flags 讀法（flag_vocal_train 喺 story.flags）照播暖
 /* ---------- (S) 靜態其餘 ---------- */
 ok('S ching_e4 註冊閘唔郁（tier≥1＋enc83NewsOut("E4")）',
   (() => { const w = beatOf('ching_tinlok', 'ching_e4').when.toString(); return w.indexOf('enc83NewsOut("E4")') >= 0 && w.indexOf('flag_vocal') < 0; })());
-ok('S gigs_new.json 仍係 322 張', GIGS_ARR.length === 322, 'count=' + GIGS_ARR.length);
+ok('S gigs_new.json 仍係 323 張', GIGS_ARR.length === 323, 'count=' + GIGS_ARR.length);
 
 if(fails.length){ console.log('\nFAILURES: ' + fails.length); process.exit(1); }
 console.log('\nALL PASS');

@@ -2,7 +2,7 @@
 //   草稿 Beat 3 閘（L993）：「T2＋1991 年」，掛鈎「N13〈站隊〉之前，1991 年」；
 //   N13〈高爾夫球〉顯示 1992夏（source when "1990夏"，YEARS66＋2），live 1992 閘令次序倒轉；
 //   1991 年上到 T3 嘅玩家 choice 閘死 → heart 照播，advise_stop／silent 兩個 heart 變體永久流失。
-//   (S) 靜態：新閘字串逐字＋舊 1992-only 字串消失＋其餘齊線閘唔郁＋庫 322／trigger 37／BR89 18
+//   (S) 靜態：新閘字串逐字＋舊 1992-only 字串消失＋其餘齊線閘唔郁＋庫 323／trigger 38／BR89 19
 //   (B) when() 直接判定：1991／1992 T2 開；1990 T2／1991 T1／1993 唔開
 //   (C) 次序：1991 年 T3 玩家（fear 已做、choice 未做）→ picker 回 choice 唔係 heart；
 //       choice 做完之後先輪到 heart（advise_stop 變體「你講中晒。」在位）；舊檔 1992 年未做 choice 照做到
@@ -149,11 +149,11 @@ ok('S finale 閘唔郁（T4＋1992 冬＋patron 已播）',
   FINALE.when.toString().indexOf('chai_patron') >= 0);
 ok('S registry 次序唔郁（intel＜fear＜choice＜repay＜patron_cold＜patron＜finale）',
   JSON.stringify((ENC79_BEATS.chai_zanhoi || []).map(b => b.id)) === JSON.stringify(['chai_intel','chai_fear','chai_choice','chai_repay','chai_patron_cold','chai_patron','chai_finale']));
-ok('S gigs 322 張／trigger 37（credit 26）／BR89 18 對',
-  GIGS_ARR.length === 322 &&
-  GIGS_ARR.filter(g => g.trigger && g.trigger.kind).length === 37 &&
-  GIGS_ARR.filter(g => g.trigger && g.trigger.kind === 'credit').length === 26 &&
-  Object.keys(BR89_PATRON_OF_GIG).length === 18,
+ok('S gigs 323 張／trigger 38（credit 27）／BR89 19 對',
+  GIGS_ARR.length === 323 &&
+  GIGS_ARR.filter(g => g.trigger && g.trigger.kind).length === 38 &&
+  GIGS_ARR.filter(g => g.trigger && g.trigger.kind === 'credit').length === 27 &&
+  Object.keys(BR89_PATRON_OF_GIG).length === 19,
   'gigs=' + GIGS_ARR.length + ' trig=' + GIGS_ARR.filter(g => g.trigger && g.trigger.kind).length + ' br89=' + Object.keys(BR89_PATRON_OF_GIG).length);
 
 /* ---------- (B) when() 直接判定 ---------- */

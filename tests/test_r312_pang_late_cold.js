@@ -7,7 +7,7 @@
 //       準時→三閘行為唔變；遲到＋暖收尾三旗齊→冷收尾贏（註冊次序冷行先）
 //   (D) 對位：pang_intel 兩選擇 GRANT229 照派（準時→variety_201／遲到→variety_104）、fav 照計
 //   (E) 舊檔：已有 pang_late 嘅舊 save 唔 crash，閘行為同新檔一致
-//   (S) 靜態：pang_patron 閘唔郁；gigs_new.json 仍係 322 張
+//   (S) 靜態：pang_patron 閘唔郁；gigs_new.json 仍係 323 張
 // 用法：node tests/test_r312_pang_late_cold.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -242,7 +242,7 @@ ok('S pang_finale 暖收尾閘唔郁（cover＋listened＋noodle 三旗）',
   !!FWARM && FWARM.when.toString().indexOf('pang_cover_night') >= 0 && FWARM.when.toString().indexOf('pang_listened') >= 0 && FWARM.when.toString().indexOf('pang_noodle_night') >= 0);
 ok('S 註冊次序唔郁（finale_cold 排 finale 之前，冷贏暖）',
   (() => { const ids = (ENC79_BEATS.pang_siuki || []).map(b => b.id); return ids.indexOf('pang_finale_cold') >= 0 && ids.indexOf('pang_finale_cold') < ids.indexOf('pang_finale'); })());
-ok('S gigs_new.json 仍係 322 張', GIGS_ARR.length === 322, 'count=' + GIGS_ARR.length);
+ok('S gigs_new.json 仍係 323 張', GIGS_ARR.length === 323, 'count=' + GIGS_ARR.length);
 
 if(fails.length){ console.log('\nFAILURES: ' + fails.length); process.exit(1); }
 console.log('\nALL PASS');

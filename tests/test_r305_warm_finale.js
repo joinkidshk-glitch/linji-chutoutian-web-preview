@@ -6,7 +6,7 @@
 //   (E) 鍾：唔另開 finale beat；提攜排送別之前（遲到 T4 玩家先攞引薦、後送別；T2 玩家送別照播；冷版提攜冷版先播）
 //   (F) 程：唔另開 finale beat；暖版收科＝after_train＋patron＋stageup 齊播，閘唔郁
 //   (G) 舊檔：得 fav／met、提攜已播、1992 冬 → 唔 crash、照播 finale
-//   (S) 靜態：patron／patron_cold 閘＋對白唔郁；陸／彭 finale 唔郁；gigs_new.json 仍係 322 張
+//   (S) 靜態：patron／patron_cold 閘＋對白唔郁；陸／彭 finale 唔郁；gigs_new.json 仍係 323 張
 // 用法：node tests/test_r305_warm_finale.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -285,7 +285,7 @@ ok('S 齊 FRAME cap／wrap 唔郁（Q19 範圍，今版唔掂）',
   html.indexOf('cap: ["S", "阿偉，今日傾到呢度先啦，我仲有場戲要默。你有呢份心，我領咗，不過有啲路，仲要慢慢行，唔好急。"]') >= 0 &&
   html.indexOf('wrap: ["S", "殺青喇，阿偉。同你做呢套戲，我冇睇錯人。嚟緊嗰條路點行，你自己企穩，我會喺後面望住。"]') >= 0);
 const gigsLib = GIGS_ARR;
-ok('S gigs_new.json 仍係 322 張', gigsLib.length === 322, 'count=' + gigsLib.length);
+ok('S gigs_new.json 仍係 323 張', gigsLib.length === 323, 'count=' + gigsLib.length);
 ok('S finale 唔叫 sideline280GrantCompletion（收尾獎勵提攜嗰陣已派，唔重派）',
   (() => {
     let good = true;

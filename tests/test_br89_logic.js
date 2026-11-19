@@ -225,10 +225,11 @@ try{
     gig_1992_rec_111:'credit_enc83_lok_patron', gig_1991_film_212:'credit_enc83_ngai_patron',
     gig_1992_film_206:'credit_enc83_chai_patron', gig_1992_film_202:'credit_wf3_comedy_crew',
     gig_1992_film_114:'credit_enc83_luk_patron', gig_1992_rec_112:'credit_enc83_lok_patron',
-    gig_1991_tv_114:'credit_enc83_chai_patron', gig_1992_variety_106:'credit_enc84_pang_patron'
+    gig_1991_tv_114:'credit_enc83_chai_patron', gig_1992_variety_106:'credit_enc84_pang_patron',
+    gig_1992_film_207:'credit_enc83_ngai_patron'
   };
-  ok('H1 BR89 映射 18 張逐對啱（SPEC §3.5A＋v284 R5-F＋v316 rec_112＋v317 tv_114＋v319 variety_106）',
-    Object.keys(api.BR89_PATRON_OF_GIG).length===18 &&
+  ok('H1 BR89 映射 19 張逐對啱（SPEC §3.5A＋v284 R5-F＋v316 rec_112＋v317 tv_114＋v319 variety_106＋v337 film_207）',
+    Object.keys(api.BR89_PATRON_OF_GIG).length===19 &&
     Object.keys(EXPECT13).every(k=>api.BR89_PATRON_OF_GIG[k]===EXPECT13[k]));
   ok('H2 舊 gig_br89_* 已清', !Object.keys(api.BR89_PATRON_OF_GIG).some(k=>/^gig_br89_/.test(k)));
   // R-4 雙觸發 OR（兩條路獨立驗；v20a274：顧引薦 gig 由 gig_1992_rec_105《當年情懷》搬去新 gig_1992_rec_205《夜總會登台暖場》）

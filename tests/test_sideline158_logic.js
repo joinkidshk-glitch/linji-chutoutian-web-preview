@@ -147,7 +147,7 @@ eval(extractFn('favor158RedeemChannel'));
 
 /* ---------- T1：matcher ---------- */
 const makMatches = gigs.filter(isMakWuzhiGig158);
-ok('T1 武打 matcher：新庫 22 張（動作／武俠＋作品）', makMatches.length===22, makMatches.map(g=>g.id).join(','));
+ok('T1 武打 matcher：新庫 23 張（動作／武俠＋作品）', makMatches.length===23, makMatches.map(g=>g.id).join(','));
 ok('T1 武打 matcher：gig_1990_film_206 碼頭搬運（臨記通告）唔入', !isMakWuzhiGig158(gigById('gig_1990_film_206')));
 ok('T1 武打 matcher：臨記動作替身 film_211／213／214 唔入', ['gig_1990_film_211','gig_1990_film_213','gig_1990_film_214'].every(id=>!isMakWuzhiGig158(gigById(id))));
 ok('T1 武打 matcher：電視動作 tv_102 入', isMakWuzhiGig158(gigById('gig_1990_tv_102')));
@@ -345,8 +345,8 @@ const BR89_EXPECTED = {
   gig_1991_tv_114:"credit_enc83_chai_patron",
   gig_1992_variety_106:"credit_enc84_pang_patron"
 };
-ok('T8 BR89 18 對（v20a279 收割鏈＋v284 film_114＋v316 rec_112＋v317 tv_114＋v319 variety_106）',
-  Object.keys(BR89_PATRON_OF_GIG).length===18 &&
+ok('T8 BR89 19 對（v20a279 收割鏈＋v284 film_114＋v316 rec_112＋v317 tv_114＋v319 variety_106＋v337 film_207）',
+  Object.keys(BR89_PATRON_OF_GIG).length===19 &&
   Object.keys(BR89_EXPECTED).every(k=>BR89_PATRON_OF_GIG[k]===BR89_EXPECTED[k]));
 
 /* ---------- T9：靜態＋舊路徑 ---------- */

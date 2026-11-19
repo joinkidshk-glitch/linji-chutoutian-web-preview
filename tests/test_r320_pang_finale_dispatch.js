@@ -1,7 +1,7 @@
 // v20a320：彭少祺好收尾 finale 派 gig_1991_variety_203《台慶大騷》台上助理
 //   pang_finale grants() 加 grant229Record（草稿 L1545；跟 luk_tease v271 前例）。
 //   (1) 靜態：finale grants 派 variety_203、閘＋對白逐字唔郁、冷版唔派、n17 兩行唔郁、
-//       variety_203 trigger／BR89 唔郁、計數 322／37／26／BR89 18、無 GRANT229 死 code 行；
+//       variety_203 trigger／BR89 唔郁、計數 323／38／27／BR89 19、無 GRANT229 死 code 行；
 //   (2) 行為：grants() 一次記低（聽日到期）、第二次唔重複、簽約金三成、
 //       殺青標 redeemedBy＋variety_106 落板、已兌現唔重標、grant229IsConsumed 跳過、
 //       n17 雲吞麵照派 ad_107 共存。
@@ -62,9 +62,9 @@ ok('靜態：variety_203 trigger／storyKeys 唔郁', !!v203 && v203.trigger && 
 ok('靜態：BR89 第 18 對在位（variety_203＋variety_106 同一筆債權）',
   html.includes('gig_1991_variety_203:"credit_enc84_pang_patron"') &&
   html.includes('gig_1992_variety_106:"credit_enc84_pang_patron"'));
-ok('靜態：庫 322 張／trigger 37／credit 26', GIGS.length === 322 &&
-  GIGS.filter(g => g && g.trigger).length === 37 &&
-  GIGS.filter(g => g && g.trigger && g.trigger.kind === 'credit').length === 26);
+ok('靜態：庫 323 張／trigger 38／credit 27', GIGS.length === 323 &&
+  GIGS.filter(g => g && g.trigger).length === 38 &&
+  GIGS.filter(g => g && g.trigger && g.trigger.kind === 'credit').length === 27);
 
 /* ---- (2) 行為：抽 live code＋stub ---- */
 let S;
@@ -187,7 +187,7 @@ ok('行為：共存——n17 揀 B 派 tv_301，冷版 finale 乜都唔派', (()
   return !!r1 && S.grant229Queue.length === 1 && S.grant229Queue[0].gigId === 'gig_1992_tv_301' &&
     typeof finCold.grants !== 'function';
 })());
-ok('行為：BR89 映射 18 對', Object.keys(BR89_PATRON_OF_GIG).length === 18);
+ok('行為：BR89 映射 19 對', Object.keys(BR89_PATRON_OF_GIG).length === 19);
 
 console.log('\n' + (fails.length ? 'FAIL: ' + fails.join(' | ') : 'R320 PANG FINALE DISPATCH: ALL PASS'));
 if(fails.length) process.exit(1);

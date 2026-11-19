@@ -4,7 +4,7 @@
 //   (C) 接駁：播完冷版 → beatsDone.pang_n17 照標；再遇 → pang_finale_cold 照開、暖版 finale 唔開、sideline280 唔派（缺 pang_listened）
 //   (D) 對位：冷版選擇 label 照含「雲吞麵」／「返屋企瞓」→ GRANT229 照派同一張通告、fav 照計（3／1）
 //   (E) 舊檔：已有 brushed_off、beat 做晒頭兩幕嘅舊 save，唔 crash，照播冷版
-//   (S) 靜態：暖版 n17 逐字唔郁；pang_finale_cold 閘／對白唔郁；gigs_new.json 仍係 322 張
+//   (S) 靜態：暖版 n17 逐字唔郁；pang_finale_cold 閘／對白唔郁；gigs_new.json 仍係 323 張
 // 用法：node tests/test_r309_pang_n17_cold.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -214,7 +214,7 @@ ok('S pang_finale_cold 閘唔郁（n17 做完＋absent／brushed_off／early_nig
   (() => { const w = beatOf('pang_siuki', 'pang_finale_cold').when.toString(); return w.indexOf('pang_n17') >= 0 && w.indexOf('pang_absent_night') >= 0 && w.indexOf('pang_brushed_off') >= 0 && w.indexOf('pang_early_night') >= 0; })());
 ok('S pang_finale_cold 對白唔郁（凍咗嗰碗麵開場在位）',
   hasText({ steps: D.beats.pang_finale_cold.lines.map(l => ({ text: l[1] })) }, '面前一碗雲吞麵，已經凍了'));
-ok('S gigs_new.json 仍係 322 張', GIGS_ARR.length === 322, 'count=' + GIGS_ARR.length);
+ok('S gigs_new.json 仍係 323 張', GIGS_ARR.length === 323, 'count=' + GIGS_ARR.length);
 
 if(fails.length){ console.log('\nFAILURES: ' + fails.length); process.exit(1); }
 console.log('\nALL PASS');

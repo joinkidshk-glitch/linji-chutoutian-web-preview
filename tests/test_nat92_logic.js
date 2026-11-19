@@ -148,7 +148,7 @@ for(const y of [1990, 1991, 1992]) for(const g of poolByYear[y]){
   if(W.nat92StaggerEligible(g)) stagN++;
   if(Object.keys(g.req||{}).some(k=>!CANON[k])) reqBad.push(g.id);
 }
-ok('F2 錯峰合資格 310 張（322－12 入門）', stagN === 310, 'stagN=' + stagN);
+ok('F2 錯峰合資格 311 張（323－12 入門）', stagN === 311, 'stagN=' + stagN);
 ok('F2b 入門 12 張唔錯峰', entryN === 12);
 ok('F3 舊 nat92 旗全庫 0 命中', nat92FlagN === 0);
 ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3).join(','));
@@ -238,7 +238,7 @@ ok('F3b 新庫 req 只含七真屬性鍵', reqBad.length === 0, reqBad.slice(0,3
   /* E0 普查前提：MAXED 開齊 47 張 trigger（唔齊就 E2 釘量度緊觸發狀態，唔係庫分佈）。 */
   const _allTrig = (PACK_NEW.gigs || []).filter(g => g.trigger && g.trigger.kind);
   const _unopened = _allTrig.filter(g => { const st = deepClone(MAXED); W.setS(st); return !W.triggerGigOn(g); }).map(g => g.id);
-  ok('E0 MAXED 開齊 37 張 trigger（普查前提；B5）', _allTrig.length === 37 && _unopened.length === 0, '未開：' + _unopened.join(','));
+  ok('E0 MAXED 開齊 38 張 trigger（普查前提；B5）', _allTrig.length === 38 && _unopened.length === 0, '未開：' + _unopened.join(','));
   function censusYear(year){
     setupYearPool(year);
     let tot = 0, ex2 = 0, zero = 0;
