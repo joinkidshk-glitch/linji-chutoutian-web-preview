@@ -267,7 +267,7 @@ ok('S wrap_safe／cap_try／finale 尾句變體唔郁',
   html.indexOf('cap_try: ["S", "阿偉，你肯試新嘢，呢份膽色我認。') >= 0 &&
   html.indexOf('wrap_safe: ["S", "殺青喇，阿偉。呢套戲你企得穩，冇浮冇躁，已經好難得。') >= 0 &&
   html.indexOf('if(beat.id==="chai_finale" && (S.flags||{}).chai_play_safe') >= 0);
-ok('S gigs_new.json 仍係 307 張', GIGS_ARR.length === 307, 'count=' + GIGS_ARR.length);
+ok('S gigs_new.json 仍係 322 張', GIGS_ARR.length === 322, 'count=' + GIGS_ARR.length);
 ok('S 回響通告 trigger 唔郁（tv_114＋film_206 全部係 credit_enc83_chai_patron）',
   (() => {
     const byId = id => GIGS_ARR.find(g => g.id === id || g.gigId === id);

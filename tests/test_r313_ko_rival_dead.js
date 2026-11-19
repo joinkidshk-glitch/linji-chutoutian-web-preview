@@ -5,7 +5,7 @@
 //       結局旗（rival_gao_hard／rival_gao_endure）、師父旗
 //       （flag_ko_mentor_complete／flag_ko_rival_respect／flag_ko_cold_war）、
 //       film_102 文字提及、rivalry trigger（film_102 rivalScoreMin 3）
-//   (C) 靜態：gigs_new.json 仍係 307 張
+//   (C) 靜態：gigs_new.json 仍係 322 張
 // 用法：node tests/test_r313_ko_rival_dead.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -46,7 +46,7 @@ ok('B film_102 rival trigger（rivalScoreMin 3）仲喺度',
 ok('B 高俊傑全檔仲有提及（live 用法未清零）', count(html, '高俊傑') > 0, 'count=' + count(html, '高俊傑'));
 
 /* ---- (C) 庫數唔郁 ---- */
-ok('C gigs_new.json 仍係 307 張', GIGS_ARR.length === 307, 'count=' + GIGS_ARR.length);
+ok('C gigs_new.json 仍係 322 張', GIGS_ARR.length === 322, 'count=' + GIGS_ARR.length);
 
 if(fails.length){ console.log('\nFAILURES: ' + fails.length); process.exit(1); }
 console.log('\nALL PASS');

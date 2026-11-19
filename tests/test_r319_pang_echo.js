@@ -104,7 +104,7 @@ const v106 = gigById['gig_1992_variety_106'];
 const v103 = gigById['gig_1991_variety_103'];
 const v203 = gigById['gig_1991_variety_203'];
 const v104 = gigById['gig_1991_variety_104'];
-ok('(0) gig_count_307', allGigs.length === 307 && new Set(allGigs.map(g=>g.id)).size === 307, 'n=' + allGigs.length);
+ok('(0) gig_count_322', allGigs.length === 322 && new Set(allGigs.map(g=>g.id)).size === 322, 'n=' + allGigs.length);
 ok('(0) trig_37_credit_26', allGigs.filter(g=>g.trigger && g.trigger.kind).length === 37 && allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 26, 'credit 26（BR89 18＋通用 8）');
 ok('(0) v106_fields_match_template', !!v106 && v106.title === '《星光慈善夜》慈善晚會主持' && v106.type === '綜藝' && v106.tier === '中級' && v106.category === '作品' && v106.genre === '晚會' && v106.workTitle === '星光慈善夜' && v106.roleLabel === '慈善晚會主持' && v106.loc === 'tvb_kowloon' && v106.director === '晚會監製' && v106.year === 1992 && v106.season === '秋' && v106.days === 2 && v106.roleScale === 'variety_special' && JSON.stringify(v106.req) === '{"stage":45,"charm":30}' && v106.hard === 0.5 && JSON.stringify(v106.pay) === '[200,240]' && JSON.stringify(v106.fame) === '[28,45]' && v106.host === null && JSON.stringify(v106.guests) === '["pang_siuki","so_jiyan","gu_mingfai"]' && JSON.stringify(v106.segments) === '["慈善拍賣","歌舞表演","捐款公佈"]', '數字照抄標板 variety_103');
 ok('(0) v106_tag_trigger', !!v106 && JSON.stringify(v106.storyKeys) === '["pang_siuki"]' && v106.trigger && v106.trigger.kind === 'credit' && v106.trigger.creditId === 'credit_enc84_pang_patron' && v106.trigger.creditOwner === '彭少祺', 'storyKeys＋trigger 齊');

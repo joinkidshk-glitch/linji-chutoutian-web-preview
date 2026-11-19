@@ -144,8 +144,8 @@ ok('S 收尾獎勵判定唔郁（sideline280：calm_truth＋三排除）',
 ok('S heard／praised 變體句唔郁（v278）',
   html.indexOf('["S","呢個後生仔，肯由頭聽到尾。"]') >= 0 &&
   html.indexOf('["S","呢個後生仔，識聽。"]') >= 0);
-ok('S 計數零改動：庫 307／trigger 37（credit 26）／BR89 18',
-  GIGS_ARR.length === 307 &&
+ok('S 計數零改動：庫 322／trigger 37（credit 26）／BR89 18',
+  GIGS_ARR.length === 322 &&
   GIGS_ARR.filter(g=>g && g.trigger).length === 37 &&
   GIGS_ARR.filter(g=>g && g.trigger && g.trigger.kind === 'credit').length === 26 &&
   Object.keys(BR89_PATRON_OF_GIG).length === 18);

@@ -108,7 +108,7 @@ for(const y of [1990, 1991, 1992]){
   W2.setBy(by);
   W2.sync(true);
   const gigs = W2.getGIGS();
-  const want = { 1990: 126, 1991: 100, 1992: 81 }[y];
+  const want = { 1990: 130, 1991: 105, 1992: 87 }[y];
   ok('A6 sync ' + y + ' 年揀新庫（' + want + ' 張、年份全部 ' + y + '、版本 gigs_new v2）',
      gigs.length === want && gigs.every(g=>g.year === y) && W2.getVer() === 'gigs_new v2',
      'n=' + gigs.length + ' ver=' + W2.getVer());
@@ -122,14 +122,14 @@ for(const y of [1990, 1991, 1992]){
   ok('A6 新庫缺席（by 空）→ GIGS 留空，唔跌返舊庫', gigs.length === 0, 'n=' + gigs.length);
 }
 {
-  /* 缺年跌返較早一年：1991 缺庫 → 用 1990（126 張、年份 1990） */
+  /* 缺年跌返較早一年：1991 缺庫 → 用 1990（130 張、年份 1990） */
   const W2 = makeSyncSandbox(1991);
   const by = { 1990: { version: 'gigs_new v2', year: 1990, gigs: _newPackA6.gigs.filter(g=>g.year === 1990).map(g=>{ const c = deepClone(g); c.__y66w = 1; return c; }) } };
   W2.setBy(by);
   W2.sync(true);
   const gigs = W2.getGIGS();
-  ok('A6 1991 缺庫跌返 1990（126 張、年份 1990）',
-     gigs.length === 126 && gigs.every(g=>g.year === 1990), 'n=' + gigs.length);
+  ok('A6 1991 缺庫跌返 1990（130 張、年份 1990）',
+     gigs.length === 130 && gigs.every(g=>g.year === 1990), 'n=' + gigs.length);
 }
 
 /* ---------- B 舊 pack 已刪 ---------- */
@@ -142,29 +142,29 @@ for(const f of ['gigs_1988.json', 'gigs_1989.json', 'gigs_1990.json', 'gigs_1991
 /* ---------- C 新 pack 年份唔郁 ---------- */
 const newPack = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gigs_new.json'), 'utf8'));
 const newGigs = newPack.gigs || [];
-ok('C0 gigs_new.json 307 張、版本 gigs_new v2、id 唯一', newGigs.length === 307 &&
+ok('C0 gigs_new.json 322 張、版本 gigs_new v2、id 唯一', newGigs.length === 322 &&
    newPack.version === 'gigs_new v2' &&
-   new Set(newGigs.map(g=>g.id)).size === 307, 'n=' + newGigs.length + ' ver=' + newPack.version);
+   new Set(newGigs.map(g=>g.id)).size === 322, 'n=' + newGigs.length + ' ver=' + newPack.version);
 /* C1：模擬 loader——打旗＋按年分組，再 normalize */
 const stamped = deepClone(newGigs);
 const byYear = { 1990: [], 1991: [], 1992: [] };
 stamped.forEach(g=>{ g.__y66w = 1; if(byYear[g.year]) byYear[g.year].push(g); });
-ok('C1 loader 分組 1990／1991／1992 = 126／100／81',
-   byYear[1990].length === 126 && byYear[1991].length === 100 && byYear[1992].length === 81,
+ok('C1 loader 分組 1990／1991／1992 = 130／105／87',
+   byYear[1990].length === 130 && byYear[1991].length === 105 && byYear[1992].length === 87,
    [1990, 1991, 1992].map(y=>y + ':' + byYear[y].length).join(' '));
 const normedStamped = stamped.map(g=>W.normalizeGigRecord(g));
 const yearBad = normedStamped.filter((g, i)=>g.year !== newGigs[i].year);
-ok('C2 打旗後 normalize：307 張年份全部唔郁', yearBad.length === 0,
+ok('C2 打旗後 normalize：322 張年份全部唔郁', yearBad.length === 0,
    yearBad.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 /* C3：唔打旗、直接 normalize——normalize 層守衛都要擋住 */
 const normedRaw = deepClone(newGigs).map(g=>W.normalizeGigRecord(g));
 const rawBad = normedRaw.filter((g, i)=>g.year !== newGigs[i].year);
-ok('C3 無旗直接 normalize：307 張年份全部唔郁（守衛）', rawBad.length === 0,
+ok('C3 無旗直接 normalize：322 張年份全部唔郁（守衛）', rawBad.length === 0,
    rawBad.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 /* C4：冪等——兩次 normalize 年份唔變 */
 const normedTwice = normedStamped.map(g=>W.normalizeGigRecord(deepClone(g)));
 const twiceBad = normedTwice.filter((g, i)=>g.year !== newGigs[i].year);
-ok('C4 兩次 normalize：307 張年份全部唔郁', twiceBad.length === 0,
+ok('C4 兩次 normalize：322 張年份全部唔郁', twiceBad.length === 0,
    twiceBad.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 /* C5：玩家面文字欄年份 token 唔變（唔可以由 walker／remap 偷偷 +2） */
 const TEXT_FIELDS = ['title','workTitle','roleLabel','roleHint','blurb','synopsis','boardNote','shootHint','discoverNote'];
@@ -207,10 +207,10 @@ ok('D1 抽 20 張跨 roleScale：shootDaysHint＝days＝effectiveShootDays',
    'n=' + sample20.length + ' scales=' + new Set(sample20.map(g=>g.roleScale)).size +
    ' bad=' + sampleBad.slice(0, 3).map(g=>g.id + ':' + g.days + '/' + g.shootDaysHint + '/' + W.effectiveShootDays(g)).join(','));
 const allHintBad = normedStamped.filter(g=>g.shootDaysHint !== g.days);
-ok('D2 全數 307 張 shootDaysHint＝days', allHintBad.length === 0,
+ok('D2 全數 322 張 shootDaysHint＝days', allHintBad.length === 0,
    allHintBad.slice(0, 3).map(g=>g.id + ':' + g.days + '/' + g.shootDaysHint).join(','));
 const allEffBad = normedStamped.filter(g=>W.effectiveShootDays(g) !== g.days);
-ok('D3 全數 307 張 effectiveShootDays＝days', allEffBad.length === 0,
+ok('D3 全數 322 張 effectiveShootDays＝days', allEffBad.length === 0,
    allEffBad.slice(0, 3).map(g=>g.id + ':' + g.days + '/' + W.effectiveShootDays(g)).join(','));
 const twiceHintBad = normedTwice.filter(g=>g.shootDaysHint !== g.days);
 ok('D4 兩次 normalize：hint 仍然＝days', twiceHintBad.length === 0,

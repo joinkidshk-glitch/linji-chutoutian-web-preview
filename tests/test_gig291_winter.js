@@ -1,7 +1,7 @@
 // v20a291 Q3：補 1990 冬開局通告・新通告測試
 //   W0 13 張新通告在位、id 唯一、新格式、年份／季節／tier 正確
 //   W1 必填欄齊（按類型：作品有 posterBrief；影視廣告有 cast 四格；唱片有 singer；綜藝有 host）
-//   W2 1990 冬 40 張、開局可接 18 張（req ≤ 開局數值）
+//   W2 1990 冬 41 張、開局可接 19 張（req ≤ 開局數值）
 //   W3 獎項提名人收集零變動：1990 年各格頭三名同舊庫一致（按 awards63Fellows 口徑重計）
 //   W4 魏詠男唔入任何唱片格；新通告無 trigger；新名唔含年份數字
 const fs = require('fs');
@@ -38,7 +38,7 @@ const WANT = {
 /* ---------- W0：在位＋唯一＋格式＋年份／季節／tier ---------- */
 ok('W0 13 張新通告全部在位', NEW_IDS.every(id=>!!byId[id]),
    NEW_IDS.filter(id=>!byId[id]).join(','));
-ok('W0 全庫 id 唯一（307 張）', gigs.length === 307 && new Set(gigs.map(g=>g.id)).size === 307,
+ok('W0 全庫 id 唯一（322 張）', gigs.length === 322 && new Set(gigs.map(g=>g.id)).size === 322,
    'n=' + gigs.length);
 const badId = NEW_IDS.filter(id=>!/^gig_(1990|1991|1992)_[a-z]+_\d{3}$/.test(id));
 ok('W0 新 id 全部新格式', badId.length === 0, badId.join(','));
@@ -71,14 +71,14 @@ ok('W1 新通告 loc 全部喺 11 個板面地點入面', badLoc.length === 0, b
 
 /* ---------- W2：冬季總數＋開局可接 ---------- */
 const w90 = gigs.filter(g=>g.year === 1990 && g.season === '冬');
-ok('W2 1990 冬 40 張', w90.length === 40, 'n=' + w90.length);
+ok('W2 1990 冬 41 張', w90.length === 41, 'n=' + w90.length);
 const openStats = { acting: 18, stage: 14, vocal: 14, looks: 22, charm: 16, iq: 20, stamina: 75 };
 const reqMet = g=>{
   const req = g.req || {};
   return Object.keys(req).every(k=>(Number(req[k]) || 0) <= (openStats[k] != null ? openStats[k] : 0));
 };
 const openWinter = w90.filter(reqMet);
-ok('W2 冬季開局可接 18 張', openWinter.length === 18, 'n=' + openWinter.length + ' ' + openWinter.map(g=>g.id).join(','));
+ok('W2 冬季開局可接 19 張', openWinter.length === 19, 'n=' + openWinter.length + ' ' + openWinter.map(g=>g.id).join(','));
 const newOpen = NEW_IDS.filter(id=>reqMet(byId[id]));
 ok('W2 新通告 9 張開局可接', newOpen.length === 9, 'n=' + newOpen.length + ' ' + newOpen.join(','));
 const high1990 = gigs.filter(g=>g.year === 1990 && (g.tier === '高級' || g.tier === '稀有'));

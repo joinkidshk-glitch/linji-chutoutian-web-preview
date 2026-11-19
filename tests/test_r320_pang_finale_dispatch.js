@@ -1,7 +1,7 @@
 // v20a320：彭少祺好收尾 finale 派 gig_1991_variety_203《台慶大騷》台上助理
 //   pang_finale grants() 加 grant229Record（草稿 L1545；跟 luk_tease v271 前例）。
 //   (1) 靜態：finale grants 派 variety_203、閘＋對白逐字唔郁、冷版唔派、n17 兩行唔郁、
-//       variety_203 trigger／BR89 唔郁、計數 307／37／26／BR89 18、無 GRANT229 死 code 行；
+//       variety_203 trigger／BR89 唔郁、計數 322／37／26／BR89 18、無 GRANT229 死 code 行；
 //   (2) 行為：grants() 一次記低（聽日到期）、第二次唔重複、簽約金三成、
 //       殺青標 redeemedBy＋variety_106 落板、已兌現唔重標、grant229IsConsumed 跳過、
 //       n17 雲吞麵照派 ad_107 共存。
@@ -62,7 +62,7 @@ ok('靜態：variety_203 trigger／storyKeys 唔郁', !!v203 && v203.trigger && 
 ok('靜態：BR89 第 18 對在位（variety_203＋variety_106 同一筆債權）',
   html.includes('gig_1991_variety_203:"credit_enc84_pang_patron"') &&
   html.includes('gig_1992_variety_106:"credit_enc84_pang_patron"'));
-ok('靜態：庫 307 張／trigger 37／credit 26', GIGS.length === 307 &&
+ok('靜態：庫 322 張／trigger 37／credit 26', GIGS.length === 322 &&
   GIGS.filter(g => g && g.trigger).length === 37 &&
   GIGS.filter(g => g && g.trigger && g.trigger.kind === 'credit').length === 26);
 
