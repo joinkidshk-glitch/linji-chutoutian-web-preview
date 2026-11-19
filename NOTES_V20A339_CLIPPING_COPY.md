@@ -39,4 +39,6 @@ NPC_TIER_LINES 內幕層仲有幾句指去已刪嘅拼合／情報行機制：�
 - 全套 suite：TOTAL PASS 392 FAIL 9（v338 基線 391／9＋新測試檔 1 項；9 FAIL 同基線逐項一致：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38，零回歸）。suite 後已還原 `qa296/derive296.json`。
 
 ## 落地
-（合併後填：main commit、suite 總數、Pages md5／bytes）
+- main commit：8b68903（squash，工作副本 commit 3baa635），已推 GitHub。
+- Pages 核實：index.html md5 `70a0deb068d8e5551f514515c9287fba`／4,704,955 bytes，同本地 byte-identical。
+- index.html 行數不變（47,296，同行改動）；通告庫 323 張不變；工作副本已刪，常駐 clone tracked 乾淨。
