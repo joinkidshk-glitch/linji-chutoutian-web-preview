@@ -31,5 +31,5 @@
 
 ## 五、合併＋部署（待填）
 
-- 工作副本：`linji-work326`，分支 `v326-weak-marks`；內容 commit：（待填）。
-- main HEAD：（待填）；Pages md5／bytes：（待填）。
+- 工作副本：`linji-work326`，分支 `v326-weak-marks`；內容 commit `82aace7`。
+- main HEAD `7a8493a`；Pages md5 `fe48880b5ae8db427e0e514901586844`／4,701,053 bytes，curl 核實 byte-identical；工作副本已刪。
