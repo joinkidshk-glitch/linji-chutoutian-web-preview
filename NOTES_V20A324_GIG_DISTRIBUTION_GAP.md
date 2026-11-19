@@ -69,8 +69,8 @@
 - 合併：常駐 clone `git fetch`＋`git merge --squash FETCH_HEAD`，見 §5。
 
 ## §5 落地實際數
-- 內容 commit：（待填）
-- main HEAD：（待填）
-- suite：（待填，~/workspace/suite324.txt；9 項 FAIL 係已知 pre-existing：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38）
-- Pages md5／bytes：（待填，curl 核實 byte-identical）
-- 工作副本已刪：（待填）
+- 內容 commit：9019f8a（分支 v20a324）
+- main HEAD：0f17d58
+- suite：385／9（~/workspace/suite324.txt；9 項 FAIL 係已知 pre-existing：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38）
+- Pages md5／bytes：index.html 3032f87432fcd6142ebd2a36172b9c3f／4,701,180（同 v323 一致，呢票 index.html 零改動）；content/gigs_new.json 5583f3884d21980df96dccb324c01e81／512,851（322 張，新 gig 在位，curl 核實 byte-identical）
+- 工作副本已刪：係
