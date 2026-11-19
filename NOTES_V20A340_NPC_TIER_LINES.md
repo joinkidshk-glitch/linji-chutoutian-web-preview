@@ -29,7 +29,9 @@ L12303、L12304、L12317、L12318（見上）。
 - 新 `tests/test_r340_npc_tier_lines.js`，16 項全過：A 組靜態 9 項（四句舊文案已清、四句新文案在位、全池死引用字眼零命中）＋B 組池結構（5 NPC、每 NPC daily 4＋insider 4、總數 40、每句非空）＋C 組真跑 `npcTierPool`（好感 0 兩層唔出、中好感只出 daily、高好感兩層齊出、新文案經池出到）。
 - 反證：喺 v339 index 上行 → A1–A9＋C4 共 10 項乾淨 FAIL，B1–B3＋C1–C3 照過（結構同分層行為保留）——證明測試真係驗到今版改動。
 - 無舊測試釘住四句舊文案（tests/ 內 grep 零命中）。
-- 全套 suite：見「落地」節。
+- 全套 suite：TOTAL PASS 393 FAIL 9（v339 基線 392／9＋新測試檔 1 項；9 FAIL 同基線逐項一致：flash51／slot50／soft_tip_111_restore／start53／weave43_static／weave44_static／weave49_static／wf5_87／wrap38，零回歸）。suite 後已還原 `qa296/derive296.json`。
 
 ## 落地
-（合併後補）
+- main commit：a6d7021（squash，工作副本 commit 8ad2841），已推 GitHub。
+- Pages 核實：index.html md5 `3eb236f8684f661866793f41470abd01`／4,704,943 bytes，同本地 byte-identical。
+- index.html 行數不變（47,296，同行改動）；通告庫 323 張不變；工作副本已刪，常駐 clone tracked 乾淨。
