@@ -42,6 +42,6 @@
 
 ## 七、落地
 
-- 內容 commit：（待填）
-- main HEAD：（待填）
-- Pages 核實：（待填：`seal_rare.png` 線上在位＋index.html byte-identical）
+- 內容 commit：`92d0be7`（squash merge 自工作副本分支 `v20a325-seal-rare` commit `7c804c7`）
+- main HEAD：`92d0be7`
+- Pages 核實（2026-11-19）：`seal_rare.png` 線上 HTTP 200，md5 `23935d7cecc6842e4c193fb131cb5dd0`＝本地一致（57,155 B）；`index.html` md5 `3032f87432fcd6142ebd2a36172b9c3f` 線上＝本地 byte-identical（`index.html` 本身零改動，md5 同 v323 一致屬預期）。
