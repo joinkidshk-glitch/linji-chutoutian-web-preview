@@ -27702,11 +27702,29 @@ function enc158PrepareNode(node){
    a 照舊，b 同 spin 一致 rel−1（連續兩次唔合作）。honest 版行原版，唔郁。
    硬約束：spin 最佳路線 rel＝meet a(+1)＋push1 spin-a(+1)＋push2 a(+2)＋crisis a(+2)＝6，
    剛好夠 COMMIT48_REL_MIN 6，所以 spin 版 a 必須至少 ＋1。
-   只處理 R_choi_push1，其餘節點回 null；淺拷貝（beats 逐 beat 拷 lines、choices 逐個拷 effects），原節點唔郁。 */
+   v20a328 A1：加埋 R_choi_push2 軟條件讀者——flag_choi_spin_repaid 在位嗰陣，push2 開場插一句回call查證嗰次（只加一句，唔郁閘／數值）。
+   只處理 R_choi_push1／R_choi_push2，其餘節點回 null；淺拷貝（beats 逐 beat 拷 lines、choices 逐個拷 effects），原節點唔郁。 */
 function choi299PrepareNode(node){
   try{
-    if(!node || node.id!=="R_choi_push1") return null;
+    if(!node) return null;
     if(typeof enc87StoryFlag!=="function") return null;
+    /* v20a328 A1：flag_choi_spin_repaid 軟條件讀者——push2 開場回call查證嗰次（v322 模式：唔係閘，只係一句變體）；無旗回 null。 */
+    if(node.id==="R_choi_push2"){
+      if(!enc87StoryFlag("flag_choi_spin_repaid")) return null;
+      if(!Array.isArray(node.beats) || !node.beats.length || !Array.isArray(node.beats[0].lines)) return null;
+      const copy = Object.assign({}, node);
+      copy.beats = node.beats.map(b => ({ speaker: b.speaker, lines: (b.lines || []).slice() }));
+      copy.choices = (node.choices || []).map(c => {
+        const cc = Object.assign({}, c);
+        cc.effects = Object.assign({}, c.effects || {});
+        cc.effects.stats = Object.assign({}, (c.effects || {}).stats || {});
+        cc.effects.flags = ((c.effects || {}).flags || []).slice();
+        return cc;
+      });
+      copy.beats[0] = { speaker: copy.beats[0].speaker || "周采兒", lines: ["你上次肯等我查證，今次我唔會再問包裝版。"].concat(copy.beats[0].lines) };
+      return copy;
+    }
+    if(node.id!=="R_choi_push1") return null;
     if(!Array.isArray(node.beats) || node.beats.length < 4) return null;
     if(!Array.isArray(node.choices) || node.choices.length < 2) return null;
     const has = (f)=> !!enc87StoryFlag(f);
@@ -40216,7 +40234,7 @@ function enc79BuildScript(starId, forceFirst, locId){
        唔叫 sideline280GrantCompletion（暖線獎勵）；無 choices，唔經 GRANT229（seg "heartCold:…" 無對應行）；
        提攜唔靠 heartDone，patron_cold 閘只睇 tier＋壞旗，播完冷版 heart 之後 T4 照去得到。 */
     pushSeg(D.heartCold, "heartCold:"+starId, ()=>{ const s2=enc79StarState(starId); s2.heartDone = true; enc79AddFav(starId, 1, "beat"); try{ S.flags = S.flags || {}; S.flags[starId==="lok_gasing" ? "lok_heart_cold" : starId==="ngai_wingnaam" ? "ngai_heart_cold" : "chai_heart_cold"] = 1; }catch(_e304){} });
-  } else if(tier>=3 && !st.heartDone && D.heart && !(starId==="chung_choning" && chungPre91) && !(starId==="luk_baakyin" && !(S.flags||{}).luk_kept_secret) && !(starId==="lok_gasing" && (S.flags||{}).lok_loose_row) && !(starId==="ngai_wingnaam" && (S.flags||{}).ngai_rain_hold_back) && !(starId==="chai_zanhoi" && (S.flags||{}).chai_loose_fear) && !(starId==="pang_siuki" && (S.flags||{}).pang_absent_night) && !(starId==="pang_siuki" && (S.flags||{}).pang_late)){ /* v20a271：陸 heart 加閘 T3＋luk_kept_secret（守口先有交心）／v20a278：駱／魏／齊／彭壞旗唔播暖版 heart（行 pool；冷版 heart 見上 v20a304，提攜冷版照舊由 patron 冷版承接；鍾冷版見下）／v20a312 Q25：彭遲到唔播暖版交心（行 pool；冷收尾見 pang_finale_cold） */
+  } else if(tier>=3 && !st.heartDone && D.heart && !(starId==="chung_choning" && chungPre91) && !(starId==="luk_baakyin" && !(S.flags||{}).luk_kept_secret) && !(starId==="lok_gasing" && (S.flags||{}).lok_loose_row) && !(starId==="ngai_wingnaam" && (S.flags||{}).ngai_rain_hold_back) && !(starId==="chai_zanhoi" && (S.flags||{}).chai_loose_fear) && !(starId==="pang_siuki" && (S.flags||{}).pang_absent_night) && !(starId==="pang_siuki" && (S.flags||{}).pang_late) && !(starId==="lok_gasing" && (S.flags||{}).lok_first_mock && !(st.beatsDone||{}).lok_help) && !(starId==="chai_zanhoi" && (S.flags||{}).chai_first_bluff && !(st.beatsDone||{}).chai_choice)){ /* v20a271：陸 heart 加閘 T3＋luk_kept_secret（守口先有交心）／v20a278：駱／魏／齊／彭壞旗唔播暖版 heart（行 pool；冷版 heart 見上 v20a304，提攜冷版照舊由 patron 冷版承接；鍾冷版見下）／v20a312 Q25：彭遲到唔播暖版交心（行 pool；冷收尾見 pang_finale_cold）／v20a328 A4：lok_first_mock／chai_first_bluff 玩家要先做埋 Beat 2（lok_help 試和音／chai_choice 勸停）先播暖版交心（遲啲開，唔係永久鎖死；無旗唔受影響） */
     /* v20a273 1.14：顧 Beat 2 讀返——問返「咁你自己呢」，交心嗰陣認返 */
     let heartSeg273 = D.heart;
     if(starId==="gu_mingfai" && (S.flags||{}).gu_ask_back && Array.isArray(D.heart.lines) && D.heart.lines.length){

@@ -108,6 +108,28 @@ const spinTotal = meetA + spinA.effects.stats.rel_choi + push2A + crisisA;
 ok('C6 COMMIT48_REL_MIN 係 6', relMin===6, 'relMin='+relMin);
 ok('C6 spin 全佳 rel＝1＋1＋2＋2＝6，剛好夠門檻', spinTotal===6 && spinTotal>=relMin, 'total='+spinTotal);
 
+/* ---------- C7：v20a328 A1 — flag_choi_spin_repaid 軟條件讀者（push2） ---------- */
+S = freshS();
+ok('C7 無旗 → push2 回 null', choi299PrepareNode(push2)===null);
+S.flags.flag_choi_spin_repaid = 1;
+const beforeP2 = JSON.stringify(push2.beats[0]);
+const beforeP2C = JSON.stringify(push2.choices[0].effects);
+const vP2 = choi299PrepareNode(push2);
+ok('C7 有旗 → push2 回 copy', !!vP2 && vP2!==push2);
+ok('C7 有旗 → beats 仍係 6 段', vP2 && vP2.beats.length===6, 'beats='+(vP2 && vP2.beats.length));
+ok('C7 有旗 → beats[0] 首句回call查證嗰次（肯等我查證／唔會再問包裝版）',
+  vP2 && vP2.beats[0].lines[0].indexOf('肯等我查證')>=0 && vP2.beats[0].lines[0].indexOf('唔會再問包裝版')>=0);
+ok('C7 有旗 → beats[0] 原 3 句照在位（加句唔係換句）',
+  vP2 && vP2.beats[0].lines.length===4 && vP2.beats[0].lines.slice(1).join('').indexOf('今晚唔談工作')>=0);
+ok('C7 有旗 → choices 數值唔郁（push2-a rel＋2）',
+  vP2 && vP2.choices.find(c=>c.id==='C_choi_push2_a').effects.stats.rel_choi===2);
+ok('C7 原節點唔郁', JSON.stringify(push2.beats[0])===beforeP2 && JSON.stringify(push2.choices[0].effects)===beforeP2C);
+S = freshS(); S.story.flags.flag_choi_spin_repaid = 1;
+const vP2b = choi299PrepareNode(push2);
+ok('C7 S.story.flags 有旗 → 同 push2 版', !!vP2b && vP2b.beats[0].lines[0].indexOf('肯等我查證')>=0);
+S = freshS(); S.flags.choi_spin = 1;
+ok('C7 只有 choi_spin（無 repaid 旗）→ push2 回 null', choi299PrepareNode(push2)===null);
+
 /* ---------- G1：池形狀 ---------- */
 ok('G1 池得 4 張', Array.isArray(Q12_FOLLOW_GIGS) && Q12_FOLLOW_GIGS.length===4);
 const qids = Q12_FOLLOW_GIGS.map(g=>g.id);
