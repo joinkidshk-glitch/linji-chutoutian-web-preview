@@ -61,3 +61,9 @@ Base：v344（main `738a834`，index.html 47,316 行，suite 397／9）。
 
 - 1990／1991 評核、破產寬限、病倒機制；N17 閘；結局梯判定表；
   `resolveEnding410` 純函數本體；weekBoundary105 補呈現路徑；F3 三行 1993 字句。
+
+## 落地紀錄
+
+- main `8347b45`（squash merge 自分支 `v345-fullarc-fix` `d6cae74`，base 738a834）。
+- index.html md5 `39b4bc461957273630790197434451cf`；Pages 傳播後 curl 核實 byte-identical。
+- 全套 suite 398／9（v344 基線 397／9＋新測試 r345 一項；九項 FAIL 同既有 pre-existing 清單逐項相同）。
