@@ -6756,6 +6756,26 @@ const STORY_LOC_SOFT = {
   N15: "rec_star",
   /* v20a33 WEAVE_PHASE4_10：N17 結局前夕喺星河電視台頒獎禮後台（覆寫節點本身有 locId，呢張表只係後備，兩邊一致） */
   N17: "tvb_longmen",
+  /* v20a342 R_LOC：31 個 R_ 感情節點派 locId（之前 JSON 無 locId＋呢張表無 entry，
+     storyNodeLocId 回 null → enterLoc／doTalk 永遠唔寫 offer → 成條感情線 pack 節點播唔到）。
+     地點跟各節點 setting＋女角主場：藍／曉晴全線星河廠景（曉晴 push1 茶餐廳）；
+     寶珊 meet 星河春茗、其餘中環廣告商界場；采兒 meet 星河走廊、push 茶記、
+     crisis／ending 週刊辦公室（金鐘創意）；葉全線跟 N8 選美後台（星河綜藝廠，
+     setting 寫九龍電視台係舊稿地名，同 N8 實際場地唔同，見 NOTES_V20A342）；
+     蘇灣仔唱片為主、push2 中環廣告樓下。 */
+  R_lan_meet: "tvb_longmen", R_lan_push1: "tvb_longmen", R_lan_push2: "tvb_longmen",
+  R_lan_crisis: "tvb_longmen", R_lan_ending: "tvb_longmen",
+  R_xu_meet: "tvb_longmen", R_xu_push1: "ad_central", R_xu_push2: "ad_central",
+  R_xu_crisis: "ad_central", R_xu_ending: "ad_central",
+  R_tang_meet_stub: "ad_central",
+  R_hiu_meet: "tvb_longmen", R_hiu_push1: "cafe_cha", R_hiu_push2: "tvb_longmen",
+  R_hiu_crisis: "tvb_longmen", R_hiu_ending: "tvb_longmen",
+  R_choi_meet: "tvb_longmen", R_choi_push1: "cafe_cha", R_choi_push2: "cafe_cha",
+  R_choi_crisis: "ad_adm", R_choi_ending: "ad_adm",
+  R_yip_meet: "tvb_longmen", R_yip_push1: "tvb_longmen", R_yip_push2: "tvb_longmen",
+  R_yip_crisis: "tvb_longmen", R_yip_ending: "tvb_longmen",
+  R_so_meet: "rec_wanchai", R_so_push1: "rec_wanchai", R_so_push2: "ad_central",
+  R_so_crisis: "rec_wanchai", R_so_ending: "rec_wanchai",
 };
 const STORY_HINT_SOFT = {
   /* fallback only — JSON 1.2.8 / N1 UI-test beat annotate + HINT_C6C10 優先 */

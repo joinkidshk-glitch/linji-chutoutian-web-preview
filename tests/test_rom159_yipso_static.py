@@ -34,7 +34,7 @@ for nid, n in nodes.items():
     arc = n.get("arcBeat")
     ok(nid + " 有 beats", isinstance(n.get("beats"), list) and len(n["beats"]) >= 2)
     ok(nid + " 有 2 個抉擇", isinstance(n.get("choices"), list) and len(n["choices"]) == 2)
-    ok(nid + " playerOffer false", n.get("playerOffer") is False)
+    ok(nid + " playerOffer 非 false（v342：行 offer 機制）", n.get("playerOffer") is not False)
     ok(nid + " romanceLine 啱", n.get("romanceLine") in ("yip", "so"))
     written = set(n.get("flags_written") or [])
     got = set()

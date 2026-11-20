@@ -66,7 +66,7 @@ for stale in ['唱片店','錄音室','合唱','狗仔','緋聞','聯姻','豪�
 for pa in ['場記', '通告牌']:
     ok('lan JSON carries PA framing: '+pa, pa in lan_txt)
 ok('lan JSON beats 6/5/5/6/9', [len(lan_nodes[n].get('beats', [])) for n in ['R_lan_meet','R_lan_push1','R_lan_push2','R_lan_crisis','R_lan_ending']] == [6,5,5,6,9])  # v20a159 ROM159：crisis 重寫加一拍（阿爸親自到電視台），5→6
-ok('lan JSON playerOffer 全部 false', all(lan_nodes[n].get('playerOffer') is False for n in lan_nodes))
+ok('lan JSON playerOffer 全部非 false（v342：行 offer 機制）', all(lan_nodes[n].get('playerOffer') is not False for n in lan_nodes))
 ok('lan JSON push1 stage（唔係 music）', all('music' not in json.dumps(c.get('effects', {}).get('stats', {}), ensure_ascii=False) for n in lan_nodes.values() for c in n.get('choices', [])))
 ok('no main-line override remains', 'STORY_SPINE_NODES_1990' not in html and 'STORY_SPINE_NODES_N6' not in html and 'applyStorySpineOverrides' not in html)
 

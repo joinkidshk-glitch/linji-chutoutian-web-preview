@@ -232,7 +232,11 @@ try:
     _v297_allowed = {'content/gift_prefs.json', 'content/gift_react_copy.json',
         'content/cast_main.json', 'content/npc_lines_core.json',
         'content/story_detail_romance_lan_xu.json', 'content/PLAN_STORY_UI_BEAT_SCHEMA_v1.md'}
-    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v243_allowed | _v244_allowed | _rw8_allowed | _v268_allowed | _v327_allowed | _v297_allowed for l in touched))
+    # v342 豁免（R_ 節點 locId 修復，已拍板）：三個 romance pack 刪 playerOffer:false＋crisis when 1991→1990。
+    _v342_allowed = {'content/story_detail_romance_lan_xu.json',
+        'content/story_detail_romance_vera_hiu_choi.json',
+        'content/story_detail_romance_yip_so.json'}
+    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v243_allowed | _v244_allowed | _rw8_allowed | _v268_allowed | _v327_allowed | _v297_allowed | _v342_allowed for l in touched))
 except Exception as e:
     ok('X05_content_json_untouched (git unavailable: %s)' % e, False)
 

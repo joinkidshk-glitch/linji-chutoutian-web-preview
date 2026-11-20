@@ -218,7 +218,7 @@ loadGame(baseSave());
     const n = lanNodes[id];
     if(!n){ structOk = false; return; }
     if((n.beats || []).length !== wantBeats[id]) structOk = false;
-    if(n.playerOffer !== false) structOk = false;
+    if(n.playerOffer === false) structOk = false;
     if(n.phase !== wantPhase[id]) structOk = false;
     if(!n.artId || n.romanceLine !== 'lan' || !n.arcBeat) structOk = false;
     if((n.choices || []).length !== 2) structOk = false;
@@ -231,7 +231,7 @@ loadGame(baseSave());
     if(singerWords.some(w => prose.includes(w))) proseOk = false;
     if(!prose.includes('藍若曦') || (!prose.includes('場記') && !prose.includes('通告牌'))) proseOk = false;
   });
-  ok('藍 PA：五節點 JSON 直出（beats 6/5/5/6/9、playerOffer false、結構層齊）', structOk);
+  ok('藍 PA：五節點 JSON 直出（beats 6/5/5/6/9、playerOffer 非 false（v342）、結構層齊）', structOk);
   ok('藍 PA：文字層零歌手向字眼（唱片店/錄音室/合唱/狗仔/緋聞/聯姻/豪門…）＋PA 框架在位', proseOk);
   const p1 = lanNodes.R_lan_push1;
   const sang = (p1.choices || []).find(c => (c.effects && c.effects.flags || []).indexOf('flag_lan_sang_together') >= 0);
