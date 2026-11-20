@@ -92,5 +92,11 @@ STORY_MEET_SOFT（死數據，唔掂）。
 
 ## 出貨
 
-- 工作副本 `linji-work342` 分支 `v342` commit → 常駐 clone fetch＋squash merge→
-  push main → Pages 核實 byte-identical → 刪工作副本。（落地紀錄見下方補記。）
+- 工作副本 `linji-work342`（clone 式），分支 `v342`（commit `85f4c39`）。
+- main HEAD `977bfe9`（squash 內容 commit，suite 395／9）；Pages 核實 byte-identical：
+  index.html md5 `e72e24c27234c85d92d6d69a95fd12f7`／4,706,558 bytes／47,316 行；
+  三個 romance pack md5 亦逐一對版（lan_xu `5748debc…`／vera_hiu_choi `e223e395…`／
+  yip_so `93f37dea…`）。
+- 通告庫 323 張不變；index.html 47,296→47,316 行（+20，STORY_LOC_SOFT R_ 條目）。
+- 證據：`~/workspace/suite342_base.txt`（基線 394／9）、`~/workspace/suite342_r2.txt`
+  （落地前 395／9）。
