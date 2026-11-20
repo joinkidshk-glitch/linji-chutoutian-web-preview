@@ -1,3 +1,4 @@
+// v20a356 resync：支線複檢 (a) 類修復改咗 ENC 釘句（齊 wrap／駱 patron_cold／彭 finale_cold＋n17／程 e4／魏 heartCold／駱 heart label／彭 intel label／齊 choice GRANT key），釘句同步更新，邏輯斷言唔郁。
 // v20a304 Q17 駱／魏／齊冷版 heart 交心測試：
 //   (A) 數據：三線各有 heartCold（7 句、無 choices），對白承接各自裂痕、唔抄暖版句；旁白書面語
 //   (B) 分流：有壞旗 → 播 heartCold、唔播暖版 heart／pool；無壞旗 → 播暖版 heart、唔播 heartCold
@@ -119,9 +120,9 @@ CASES.forEach(({ sid, coldFlag }) => {
 ok('A 駱 cold 講裂痕：彈畀自己聽、唔彈埋落去',
   hasText({ steps: ENC79_DIALOG.lok_gasing.heartCold.lines.map(l => ({ text: l[1] })) }, '彈畀自己聽') &&
   hasText({ steps: ENC79_DIALOG.lok_gasing.heartCold.lines.map(l => ({ text: l[1] })) }, '唔彈畀人聽'));
-ok('A 魏 cold 講裂痕：企喺應該企嘅位、嗰晚冇做到',
+ok('A 魏 cold 講裂痕：企喺應該企嘅位、嗰晚未做到',
   hasText({ steps: ENC79_DIALOG.ngai_wingnaam.heartCold.lines.map(l => ({ text: l[1] })) }, '企喺應該企嘅位') &&
-  hasText({ steps: ENC79_DIALOG.ngai_wingnaam.heartCold.lines.map(l => ({ text: l[1] })) }, '你嗰晚冇做到'));
+  hasText({ steps: ENC79_DIALOG.ngai_wingnaam.heartCold.lines.map(l => ({ text: l[1] })) }, '你嗰晚未做到'));
 ok('A 齊 cold 講裂痕：驚嗰啲唔會同人講、唔講「冇同第二個人講過」',
   hasText({ steps: ENC79_DIALOG.chai_zanhoi.heartCold.lines.map(l => ({ text: l[1] })) }, '驚嗰啲，我唔會同人講') &&
   !hasText({ steps: ENC79_DIALOG.chai_zanhoi.heartCold.lines.map(l => ({ text: l[1] })) }, '冇同第二個人講過'));
@@ -245,8 +246,8 @@ ok('S 暖版 heart 對白唔郁（駱新歌／魏留三分力／齊冇同第二�
   html.indexOf('我有首新歌，寫咗一半，想彈畀你聽下。') >= 0 &&
   html.indexOf('留三分力喺手，收得返，先唔會傷到自己人。') >= 0 &&
   html.indexOf('今日呢啲說話，我冇同第二個人講過。') >= 0);
-ok('S 提攜冷版對白唔郁（駱後巷／魏木箱／齊監視器）',
-  html.indexOf('呢度冇人會趕我哋走。') >= 0 &&
+ok('S 提攜冷版對白唔郁（駱錄音室／魏木箱／齊監視器）',
+  html.indexOf('錄音室收咗工，冇人會趕我哋走。') >= 0 &&
   html.indexOf('木箱硬啲，唔好嫌。') >= 0 &&
   html.indexOf('我仲有場戲要默。') >= 0);
 ok('S 鍾 cold 靜態在位（金鐘細房 4 句）',

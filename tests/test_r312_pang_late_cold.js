@@ -1,3 +1,4 @@
+// v20a356 resync：支線複檢 (a) 類修復改咗 ENC 釘句（齊 wrap／駱 patron_cold／彭 finale_cold＋n17／程 e4／魏 heartCold／駱 heart label／彭 intel label／齊 choice GRANT key），釘句同步更新，邏輯斷言唔郁。
 // v20a312 Q25 彭少祺 pang_help 遲到行冷版，全套三閘測試：
 //   (A) 靜態：三閘齊加 pang_late；pang_n17 閘唔郁（遲到玩家去得到 n17）；
 //       pang_intel 選擇／授旗／即派唔郁；對白唔郁
@@ -141,7 +142,7 @@ ok('A pang_intel 兩選擇唔郁（準時授 pang_showed_up／遲到授 pang_lat
   !!D && !!D.beats && !!D.beats.pang_intel &&
   D.beats.pang_intel.choices[0].label === '一早去後台留名，準時到' &&
   JSON.stringify(D.beats.pang_intel.choices[0].flags) === JSON.stringify(['pang_showed_up']) &&
-  D.beats.pang_intel.choices[1].label === '遲咗去／唔去，覺得唔差在' &&
+  D.beats.pang_intel.choices[1].label === '遲咗去，覺得唔差在' &&
   JSON.stringify(D.beats.pang_intel.choices[1].flags) === JSON.stringify(['pang_late']));
 ok('A pang_help 對白唔郁（首句逐字）',
   !!D && !!D.beats && !!D.beats.pang_help &&
@@ -150,7 +151,7 @@ ok('A pang heart 對白唔郁（D.heart 在位）',
   !!D && !!D.heart && Array.isArray(D.heart.lines) && D.heart.lines.length > 0);
 ok('A pang_finale_cold 對白唔郁（凍咗嗰碗麵開場在位）',
   !!D && !!D.beats && !!D.beats.pang_finale_cold &&
-  D.beats.pang_finale_cold.lines.some(l => String(l[1]).indexOf('面前一碗雲吞麵，已經凍了') >= 0));
+  D.beats.pang_finale_cold.lines.some(l => String(l[1]).indexOf('阿偉一早到了，叫了一碗雲吞麵，坐著等') >= 0));
 
 /* ---------- (B) when() 直接判定 ---------- */
 ok('B pang_help：N11 做咗＋T1（fav 10）＋準時 → 開',
@@ -207,12 +208,12 @@ ok('D pang_intel 準時 label → GRANT229 照派 gig_1991_variety_201',
   'queue=' + JSON.stringify(S.grant229Queue.map(q => q.gigId)));
 resetS(950);
 ok('D pang_intel 遲到 label → GRANT229 照派 gig_1991_variety_104',
-  grant229RecordFromEnc79('beat:pang_intel', '遲咗去／唔去，覺得唔差在') === true && S.grant229Queue.some(q => q.gigId === 'gig_1991_variety_104'),
+  grant229RecordFromEnc79('beat:pang_intel', '遲咗去，覺得唔差在') === true && S.grant229Queue.some(q => q.gigId === 'gig_1991_variety_104'),
   'queue=' + JSON.stringify(S.grant229Queue.map(q => q.gigId)));
 ok('D pang_intel 準時選擇 fav＋3（enc79ChoiceFx 同舊一樣）',
   enc79ChoiceFx('beat:pang_intel', '一早去後台留名，準時到').fav === 3);
 ok('D pang_intel 遲到選擇 fav＋0（enc79ChoiceFx 同舊一樣：遲到無好感）',
-  enc79ChoiceFx('beat:pang_intel', '遲咗去／唔去，覺得唔差在').fav === 0);
+  enc79ChoiceFx('beat:pang_intel', '遲咗去，覺得唔差在').fav === 0);
 
 /* ---------- (E) 舊檔 ---------- */
 ok('E 舊檔（fav／met＋頭兩幕已做＋pang_late）唔 crash：頂一晚唔開、暖版交心唔播',

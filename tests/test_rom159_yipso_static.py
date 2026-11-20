@@ -1,3 +1,4 @@
+# v20a356 resync：index.html 淨 +20 行（支線複檢 (a) 類修復：WF2 B0＋1／rom159 葉 crisis 分流＋12／enc158 synopsis＋1／lost_role＋4／顧哼歌＋1／鍾追問者＋1）；釘行按段 shift，內容逐字核實純漂移。
 # v159 感情線重排：葉敏芝／蘇芷茵 static 測試（新 pack 節點齊全、tier 閘、commit offer、
 # WOMEN 六行、送禮分層、星層／感情層分流）。
 # 用法：python3 tests/test_rom159_yipso_static.py
@@ -83,7 +84,7 @@ ok("yip push1 守口 notes 係玩家面文字（v20a355 清走製作備忘：冇
 ok("yip meet 1989夏（顯示 1991夏）", nodes["R_yip_meet"].get("when") == "1989夏" and nodes["R_yip_meet"].get("phase") == "P2")
 ok("so meet 1989春（顯示 1991春）", nodes["R_so_meet"].get("when") == "1989春" and nodes["R_so_meet"].get("phase") == "P3")
 ok("yip ending 1990秋（顯示 1992秋）", nodes["R_yip_ending"].get("when") == "1990秋" and nodes["R_yip_ending"].get("phase") == "P5")
-ok("so ending 1990秋（顯示 1992秋）", nodes["R_so_ending"].get("when") == "1990秋" and nodes["R_so_ending"].get("phase") == "P5")
+ok("so ending 1990冬（顯示 1992冬）", nodes["R_so_ending"].get("when") == "1990冬" and nodes["R_so_ending"].get("phase") == "P5")
 ok("yip meet 掛 N8", nodes["R_yip_meet"].get("linksMain") == ["N8"])
 ok("旁白唔寫阿偉「我」", all("我" not in ln for n in nodes.values() for b in n["beats"]
                              if b.get("speaker") == "旁白" for ln in b.get("lines", [])))

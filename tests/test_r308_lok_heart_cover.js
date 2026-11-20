@@ -1,3 +1,4 @@
+// v20a356 resync：支線複檢 (a) 類修復改咗 ENC 釘句（齊 wrap／駱 patron_cold／彭 finale_cold＋n17／程 e4／魏 heartCold／駱 heart label／彭 intel label／齊 choice GRANT key），釘句同步更新，邏輯斷言唔郁。
 // v20a308 Q20 駱家聲 heart cover 版變體測試：
 //   (A) cover 版：關鍵句（index 10）換成懷疑版——同一主題反面講；唔再插入舊懷疑句；行數唔變（換句唔係加句）
 //   (B) 非 cover 版：heart 12 句逐字唔變；同 harmony／honest 變體疊加嗰陣，關鍵句照換（按內容搵句，唔按 index）
@@ -111,7 +112,7 @@ ok('A cover 版：懷疑版只出現一次', cl.filter(t => t === NEW_KEY).lengt
 ok('A cover 版：其餘 11 句逐字唔變',
   cl.filter((t, i) => i !== 10).every((t, j) => t === ENC79_DIALOG.lok_gasing.heart.lines[j < 10 ? j : j + 1][1]));
 ok('A cover 版：抉擇照在位（靜靜聽／讚好聽）',
-  (() => { const o = heartChoices(cover); return o && o.length === 2 && o[0].label === '靜靜聽他彈完整首' && o[1].label === '讚他那首歌好聽'; })());
+  (() => { const o = heartChoices(cover); return o && o.length === 2 && o[0].label === '靜靜聽他彈完寫好嗰半首' && o[1].label === '讚他那首歌好聽'; })());
 ok('A cover 版：玩家回應句（我明……唔肯改嗰幾粒音）照在位', cl[11] === '我明。唔怪得你嗌交嗌到咁大聲，都唔肯改嗰幾粒音。');
 
 /* ---------- (B) 非 cover 版＋疊加 ---------- */

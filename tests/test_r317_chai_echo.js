@@ -1,3 +1,4 @@
+// v20a356 resync：GRANT229 beat:chai_choice key 由「不出聲」改「婉拒畀意見」（齊 choice label 同步改），釘句同步更新。
 // v20a317 齊鎮海支線回響通告：gig_1991_tv_114《亂世將軍傳》升格
 //   tv_114 加 storyKeys ["chai_zanhoi"]＋credit trigger credit_enc83_chai_patron（齊鎮海），
 //   BR89 加第 17 對（同 film_206《油麻地夜班》同一筆債權，陸 film_101＋film_114／駱 rec_111＋rec_112 雙 gig 前例）。
@@ -157,7 +158,7 @@ ok('(3) H_shows_both_titles', chaiLine.indexOf('可以換：') >= 0 && chaiLine.
 resetS317();
 ok('(4) grant229_stop_no_credit', grant229RecordFromEnc79('beat:chai_choice', '停一停') === true && S.grant229Queue.length === 1 && S.grant229Queue[0].gigId === 'gig_1991_tv_114', 'GRANT229 唔讀 trigger，唔持債照派 tv_114');
 resetS317();
-ok('(4) grant229_silent_other_gig', grant229RecordFromEnc79('beat:chai_choice', '不出聲') === true && S.grant229Queue.length === 1 && S.grant229Queue[0].gigId === 'gig_1991_tv_207', '「唔出聲」嗰邊照派 tv_207');
+ok('(4) grant229_silent_other_gig', grant229RecordFromEnc79('beat:chai_choice', '婉拒畀意見') === true && S.grant229Queue.length === 1 && S.grant229Queue[0].gigId === 'gig_1991_tv_207', '「婉拒畀意見」嗰邊照派 tv_207');
 
 // ---------- (5) 舊檔唔 crash ----------
 resetS317();

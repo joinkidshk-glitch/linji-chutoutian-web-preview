@@ -1,3 +1,4 @@
+// v20a356 resync：支線複檢 (a) 類修復改咗 ENC 釘句（齊 wrap／駱 patron_cold／彭 finale_cold＋n17／程 e4／魏 heartCold／駱 heart label／彭 intel label／齊 choice GRANT key），釘句同步更新，邏輯斷言唔郁。
 // v20a306 Q19 齊鎮海 FRAME cap／wrap 各寫兩個版本測試：
 //   (A) 數據：FRAME 有 cap_try／wrap_safe（S 句、唔同舊句）；stageup 唔郁；註冊後 CAP／WRAP 預設仍係舊句
 //   (B) cap 分流：try_new → cap_try；play_safe／未揀／舊檔 → 舊 cap；播完清 capHit
@@ -108,9 +109,9 @@ function segSteps(b, seg){ return (b && b.steps || []).filter(s => s.seg === seg
 function playSeg(b, seg){ segSteps(b, seg).forEach(s => { try{ if(typeof s.segFx === 'function') s.segFx(); }catch(_e){} }); }
 
 const CAP_OLD = '阿偉，今日傾到呢度先啦，我仲有場戲要默。你有呢份心，我領咗，不過有啲路，仲要慢慢行，唔好急。';
-const WRAP_OLD = '殺青喇，阿偉。同你做呢套戲，我冇睇錯人。嚟緊嗰條路點行，你自己企穩，我會喺後面望住。';
+const WRAP_OLD = '行到今日，你企嘅位，已經唔係企後面嗰個位。嚟緊嗰條路點行，你自己企穩，我會喺後面望住。';
 const CAP_TRY = '阿偉，你肯試新嘢，呢份膽色我認。不過膽色唔係火候——等你試埋嗰個角色，企得穩先，我哋先再傾。';
-const WRAP_SAFE = '殺青喇，阿偉。呢套戲你企得穩，冇浮冇躁，已經好難得。慢慢嚟唔係慢，係行得穩，之後嗰條路，你照咁行，我放心。';
+const WRAP_SAFE = '行到今日，你企嘅位唔同晒喇。呢套戲你企得穩，冇浮冇躁，已經好難得。慢慢嚟唔係慢，係行得穩，之後嗰條路，你照咁行，我放心。';
 
 /* 封住 beat／heart，只留 cap／wrap 兩句 */
 function buildFrame(flags, mark){
@@ -167,7 +168,7 @@ function buildFrame(flags, mark){
   ok('C play_safe → wrap 句係 wrap_safe（企得穩嗰邊）', sSafe.length === 1 && sSafe[0].text === WRAP_SAFE, 'got=' + (sSafe[0] && sSafe[0].text));
   const bTry = buildFrame({ chai_try_new: 1 }, 'wrap');
   const sTry = segSteps(bTry, 'wrapecho:chai_zanhoi');
-  ok('C try_new → wrap 句係舊 wrap 句（殺青喇…）', sTry.length === 1 && sTry[0].text === WRAP_OLD, 'got=' + (sTry[0] && sTry[0].text));
+  ok('C try_new → wrap 句係舊 wrap 句（行到今日…）', sTry.length === 1 && sTry[0].text === WRAP_OLD, 'got=' + (sTry[0] && sTry[0].text));
   const bNone = buildFrame({}, 'wrap');
   const sNone = segSteps(bNone, 'wrapecho:chai_zanhoi');
   ok('C 未揀 Beat 5 → wrap 句係舊 wrap 句（預設）', sNone.length === 1 && sNone[0].text === WRAP_OLD, 'got=' + (sNone[0] && sNone[0].text));

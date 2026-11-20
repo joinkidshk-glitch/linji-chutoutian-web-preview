@@ -1,3 +1,4 @@
+// v20a356 resync：GRANT229 beat:chai_choice key 由「不出聲」改「婉拒畀意見」（齊 choice label 同步改），釘句同步更新。
 // v20a321 齊鎮海 chai_choice（Beat 3 勸停）閘由 1992-only 放寬做 1991–1992：
 //   草稿 Beat 3 閘（L993）：「T2＋1991 年」，掛鈎「N13〈站隊〉之前，1991 年」；
 //   N13〈高爾夫球〉顯示 1992夏（source when "1990夏"，YEARS66＋2），live 1992 閘令次序倒轉；
@@ -6,7 +7,7 @@
 //   (B) when() 直接判定：1991／1992 T2 開；1990 T2／1991 T1／1993 唔開
 //   (C) 次序：1991 年 T3 玩家（fear 已做、choice 未做）→ picker 回 choice 唔係 heart；
 //       choice 做完之後先輪到 heart（advise_stop 變體「你講中晒。」在位）；舊檔 1992 年未做 choice 照做到
-//   (D) 共存：GRANT229 choice 兩行唔郁（停一停→tv_114、唔出聲→tv_207）
+//   (D) 共存：GRANT229 choice 兩行唔郁（停一停→tv_114、婉拒畀意見→tv_207）
 // 用法：node tests/test_r321_chai_choice_window.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -202,9 +203,9 @@ ok('C 舊檔：1991 年已做 choice 嘅玩家唔重播（beatsDone 擋住）', 
 })());
 
 /* ---------- (D) 共存：GRANT229 choice 兩行唔郁 ---------- */
-ok('D GRANT229 停一停→tv_114、唔出聲→tv_207 唔郁',
+ok('D GRANT229 停一停→tv_114、婉拒畀意見→tv_207 唔郁',
   html.indexOf('seg:"beat:chai_choice", key:"停一停", gigId:"gig_1991_tv_114"') >= 0 &&
-  html.indexOf('seg:"beat:chai_choice", key:"不出聲", gigId:"gig_1991_tv_207"') >= 0);
+  html.indexOf('seg:"beat:chai_choice", key:"婉拒畀意見", gigId:"gig_1991_tv_207"') >= 0);
 
 console.log(fails.length === 0 ? '\nALL PASS' : '\nFAILURES: ' + fails.join(' | '));
 process.exit(fails.length === 0 ? 0 : 1);

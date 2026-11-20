@@ -1,3 +1,4 @@
+// v20a356 resync：支線複檢 (a) 類修復改咗 ENC 釘句（齊 wrap／駱 patron_cold／彭 finale_cold＋n17／程 e4／魏 heartCold／駱 heart label／彭 intel label／齊 choice GRANT key），釘句同步更新，邏輯斷言唔郁。
 // v20a305 Q18 五線 warm finale beats 測試：
 //   (A) 數據：駱／魏／齊各有 *_finale（5／5／6 句、無 choices），對白＝草稿暖版收科逐字；旁白書面語
 //   (B) 分流：暖版＋T4＋1992 冬＋提攜已播 → 播 finale；有壞旗／未到 1992 冬／tier 未夠／提攜未播 → 唔播
@@ -116,7 +117,7 @@ const CASES = [
   { sid: 'ngai_wingnaam', line: 'ngai', bad: 'ngai_rain_hold_back', patron: 'ngai_patron', cold: 'ngai_patron_cold', n: 5,
     keys: ['呢行唔記得邊個紅過，只記得邊個仲企得穩', '你而家企到呢個位，記得扶返啲肯捱嘅後生', '我個電話仲打得通'] },
   { sid: 'chai_zanhoi', line: 'chai', bad: 'chai_loose_fear', patron: 'chai_patron', cold: 'chai_patron_cold', n: 6,
-    keys: ['唔再當你係企後面嗰個臨時演員喇', '人同人之間，過咗嗰條線，就唔同晒', '殺青喇，阿偉。同你做呢套戲，我冇睇錯人。嚟緊嗰條路點行，你自己企穩，我會喺後面望住。'] },
+    keys: ['唔再當你係企後面嗰個臨時演員喇', '人同人之間，過咗嗰條線，就唔同晒', '行到今日，你企嘅位，已經唔係企後面嗰個位。嚟緊嗰條路點行，你自己企穩，我會喺後面望住。'] },
 ];
 /* 暖版齊晒：T4＋1992 冬＋提攜已播＋無壞旗；前面 beats 全部做晒，淨低 finale */
 function buildWarmFinale(c, ys, flags){
@@ -188,11 +189,11 @@ CASES.forEach(c => {
 /* ---------- (D) 齊尾句分流 ---------- */
 (function(){
   const c = CASES[2];
-  const wrapLine = '殺青喇，阿偉。同你做呢套戲，我冇睇錯人。嚟緊嗰條路點行，你自己企穩，我會喺後面望住。';
+  const wrapLine = '行到今日，你企嘅位，已經唔係企後面嗰個位。嚟緊嗰條路點行，你自己企穩，我會喺後面望住。';
   const capLine = '阿偉，今日傾到呢度先啦，我仲有場戲要默。你有呢份心，我領咗，不過有啲路，仲要慢慢行，唔好急。';
   const bTry = buildWarmFinale(c, { year: 1992, season: '冬' }, { chai_try_new: 1 });
   const lastTry = segSteps(bTry, 'beat:chai_finale');
-  ok('D 齊 try_new → finale 尾句係 wrap 句（殺青喇…）',
+  ok('D 齊 try_new → finale 尾句係 wrap 句（行到今日…）',
     lastTry.length === 6 && lastTry[5].text === wrapLine, 'last=' + (lastTry[5] && lastTry[5].text));
   const bSafe = buildWarmFinale(c, { year: 1992, season: '冬' }, { chai_play_safe: 1 });
   const lastSafe = segSteps(bSafe, 'beat:chai_finale');
@@ -267,8 +268,8 @@ ok('S 三線提攜對白唔郁（駱監製老友／魏電話打得通／齊試�
   html.indexOf('我約咗一位唱片監製老友食飯，我同佢提起你') >= 0 &&
   html.indexOf('我魏詠男個名而家唔值錢，但呢個電話仲打得通。') >= 0 &&
   html.indexOf('我齊鎮海開口，佢會畀個試鏡你。') >= 0);
-ok('S 三線提攜冷版對白唔郁（駱後巷／魏木箱／齊監視器）',
-  html.indexOf('呢度冇人會趕我哋走。') >= 0 &&
+ok('S 三線提攜冷版對白唔郁（駱錄音室／魏木箱／齊監視器）',
+  html.indexOf('錄音室收咗工，冇人會趕我哋走。') >= 0 &&
   html.indexOf('木箱硬啲，唔好嫌。') >= 0 &&
   html.indexOf('我仲有場戲要默。') >= 0);
 ok('S 鍾送別閘唔郁（T2＋1992 秋／冬）＋授 chungAdviceHeld229 唔郁',
@@ -283,7 +284,7 @@ ok('S 陸／彭 finale 唔郁（luk_finale 閘＋旗、pang_finale 閘在位）'
   html.indexOf('id:"pang_finale"') >= 0 && html.indexOf('(st.beatsDone||{}).pang_n17 && (S.flags||{}).pang_cover_night && (S.flags||{}).pang_listened && (S.flags||{}).pang_noodle_night') >= 0);
 ok('S 齊 FRAME cap／wrap 唔郁（Q19 範圍，今版唔掂）',
   html.indexOf('cap: ["S", "阿偉，今日傾到呢度先啦，我仲有場戲要默。你有呢份心，我領咗，不過有啲路，仲要慢慢行，唔好急。"]') >= 0 &&
-  html.indexOf('wrap: ["S", "殺青喇，阿偉。同你做呢套戲，我冇睇錯人。嚟緊嗰條路點行，你自己企穩，我會喺後面望住。"]') >= 0);
+  html.indexOf('wrap: ["S", "行到今日，你企嘅位，已經唔係企後面嗰個位。嚟緊嗰條路點行，你自己企穩，我會喺後面望住。"]') >= 0);
 const gigsLib = GIGS_ARR;
 ok('S gigs_new.json 仍係 323 張', gigsLib.length === 323, 'count=' + gigsLib.length);
 ok('S finale 唔叫 sideline280GrantCompletion（收尾獎勵提攜嗰陣已派，唔重派）',

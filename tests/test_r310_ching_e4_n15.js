@@ -1,3 +1,4 @@
+// v20a356 resync：支線複檢 (a) 類修復改咗 ENC 釘句（齊 wrap／駱 patron_cold／彭 finale_cold＋n17／程 e4／魏 heartCold／駱 heart label／彭 intel label／齊 choice GRANT key），釘句同步更新，邏輯斷言唔郁。
 // v20a310 Q23 程天諾 ching_e4 N15 旗變體測試（PLAN §9 Beat 3 逐字稿）：
 //   (A) 數據：ching_e4 開場 8 句逐字、2 choices（label＋授旗唔郁）
 //   (B) 苦練旗＋揀撐練 → 信任句「你嗰晚都係咁揀，我信你。」行先，再接原本「今晚唔停」
@@ -126,8 +127,8 @@ const TRAIN_TRUST = '你嗰晚都係咁揀，我信你。';
 const POLISH_RETORT = '你嗰晚都係靠部機交帶㗎，咁你而家係教我練，定教我執呀？';
 const ORIG_ACCEPT = '好！咁我今晚唔停，唱嗰課練多一個鐘，你唔准走！';
 const ORIG_PLAYER = '天諾，個名上咗報紙，功夫就要追得上個名。你今晚加操嗰一個鐘，我陪你。你唱，我聽住。';
-const ORIG_POLISH_PLAYER = '天諾，唔好諗咁多喇，呢行機會唔等人㗎，紅咗先算啦。紅咗，你想點練都仲有機會㗎。';
-const ORIG_POLISH_REPLY = '……係嘅，紅咗先算。你講得啱，係我諗多咗。今晚唔講喇，我去沖個涼先。';
+const ORIG_POLISH_PLAYER = '天諾，報紙都出咗，你就唔好再自己嚇自己喇。執聲就執聲，紅咗先算，練嘅事，紅咗之後慢慢補都未遲。';
+const ORIG_POLISH_REPLY = '……報紙都出咗，我仲諗咁多做咩。你講得啱，今晚唔練喇，我返去瞓先。';
 
 /* ---------- (A) 數據形狀＋開場 ---------- */
 const D = ENC79_DIALOG.ching_tinlok;

@@ -1,3 +1,4 @@
+// v20a356 resync：支線複檢 (a) 類修復改咗 ENC 釘句（齊 wrap／駱 patron_cold／彭 finale_cold＋n17／程 e4／魏 heartCold／駱 heart label／彭 intel label／齊 choice GRANT key），釘句同步更新，邏輯斷言唔郁。
 // v20a318 齊鎮海 patron 閘同收尾獎勵按草稿對齊測試：
 //   (A) 靜態：暖版閘要 T4＋truth_change＋三排除（silent／comfort／loose_fear）；冷版閘一行唔郁；
 //       grants（credit_enc83_chai_patron＋sideline280GrantCompletion("chai")）唔郁；280 齊線讀法 truth_change only；
@@ -257,15 +258,15 @@ ok('S finale 閘唔郁（T4＋1992 冬＋patron 已播＋同一組排除條件�
   !!FINALE && FINALE.when.toString().indexOf('1992') >= 0 &&
   FINALE.when.toString().indexOf('chai_patron') >= 0 &&
   FINALE.when.toString().indexOf('chai_silent') >= 0);
-ok('S GRANT229 即派唔郁（fear 守口→tv_111、choice 勸停→tv_114、choice 唔出聲→tv_207、repay 唔同→tv_111、repay 穩陣→tv_112）',
+ok('S GRANT229 即派唔郁（fear 守口→tv_111、choice 勸停→tv_114、choice 婉拒畀意見→tv_207、repay 唔同→tv_111、repay 穩陣→tv_112）',
   html.indexOf('seg:"beat:chai_fear", key:"守口", gigId:"gig_1991_tv_111"') >= 0 &&
   html.indexOf('seg:"beat:chai_choice", key:"停一停", gigId:"gig_1991_tv_114"') >= 0 &&
-  html.indexOf('seg:"beat:chai_choice", key:"不出聲", gigId:"gig_1991_tv_207"') >= 0 &&
+  html.indexOf('seg:"beat:chai_choice", key:"婉拒畀意見", gigId:"gig_1991_tv_207"') >= 0 &&
   html.indexOf('seg:"beat:chai_repay", key:"唔同", gigId:"gig_1992_tv_111"') >= 0 &&
   html.indexOf('seg:"beat:chai_repay", key:"穩陣", gigId:"gig_1992_tv_112"') >= 0);
 ok('S wrap_safe／cap_try／finale 尾句變體唔郁',
   html.indexOf('cap_try: ["S", "阿偉，你肯試新嘢，呢份膽色我認。') >= 0 &&
-  html.indexOf('wrap_safe: ["S", "殺青喇，阿偉。呢套戲你企得穩，冇浮冇躁，已經好難得。') >= 0 &&
+  html.indexOf('wrap_safe: ["S", "行到今日，你企嘅位唔同晒喇。呢套戲你企得穩，冇浮冇躁，已經好難得。') >= 0 &&
   html.indexOf('if(beat.id==="chai_finale" && (S.flags||{}).chai_play_safe') >= 0);
 ok('S gigs_new.json 仍係 323 張', GIGS_ARR.length === 323, 'count=' + GIGS_ARR.length);
 ok('S 回響通告 trigger 唔郁（tv_114＋film_206 全部係 credit_enc83_chai_patron）',

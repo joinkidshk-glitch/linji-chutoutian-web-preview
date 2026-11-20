@@ -1,3 +1,4 @@
+// v20a356 resync：支線複檢 (a) 類修復改咗 ENC 釘句（齊 wrap／駱 patron_cold／彭 finale_cold＋n17／程 e4／魏 heartCold／駱 heart label／彭 intel label／齊 choice GRANT key），釘句同步更新，邏輯斷言唔郁。
 // v20a273 支線實裝第三批邏輯測試：(a) 顧 heart fx 關鍵字修復、(b) 顧 Beat 2 天台抉擇實裝、
 //   (c) 其餘六線 code 側核實（fx 關鍵字再發現 3 處同類 bug＋草稿旗 0 命中盤點）、
 //   (d) PLAN §10 即派第一批 25 項核實（BR89 13 對／G-G2／免試鏡渠道／忠告卡／已刪／已核實項）、
@@ -126,7 +127,7 @@ ok('(b) pushSeg：gu_tease 抉擇 options 帶旗（行 v269 機制 B+）', (()=>
 ok('(c) fx 駱 first：講好話 +3／點頭 +1／笑佢 -2（live label）', enc79ChoiceFx('first:lok_gasing','出聲為他說句好話：這些歌是好聽的').fav===3 && enc79ChoiceFx('first:lok_gasing','點頭不出聲，等他走過').fav===1 && enc79ChoiceFx('first:lok_gasing','笑他脾氣這麼大，活該他倒霉').fav===-2);
 ok('(c) fx 程 first：練到天亮 +3／遞一瓶水 +1／笑佢 -2（live label）', enc79ChoiceFx('first:ching_tinlok','說自己當年怎樣熬：被人笑的時候，我也是練到天亮').fav===3 && enc79ChoiceFx('first:ching_tinlok','靜靜遞一瓶水給他，不出聲').fav===1 && enc79ChoiceFx('first:ching_tinlok','笑他的唱功：你唱那兩句真的不行').fav===-2);
 ok('(c) fx 蘇 first：護著 +3／讓開 +1／介紹 -2（live label）', enc79ChoiceFx('first:so_jiyan','護著她進升降機，一句也不多說').fav===3 && enc79ChoiceFx('first:so_jiyan','讓開站到一邊，不阻礙別人工作').fav===1 && enc79ChoiceFx('first:so_jiyan','趁機介紹自己，想攞個機會').fav===-2);
-ok('(c) fx 六線 heart 全部對得上 live label（駱聽／魏認真／齊真話／彭聽／鍾出聲／程慢）', enc79ChoiceFx('heart:lok_gasing','靜靜聽他彈完整首').fav===3 && enc79ChoiceFx('heart:lok_gasing','讚他那首歌好聽').fav===1
+ok('(c) fx 六線 heart 全部對得上 live label（駱聽／魏認真／齊真話／彭聽／鍾出聲／程慢）', enc79ChoiceFx('heart:lok_gasing','靜靜聽他彈完寫好嗰半首').fav===3 && enc79ChoiceFx('heart:lok_gasing','讚他那首歌好聽').fav===1
   && enc79ChoiceFx('heart:ngai_wingnaam','認真記低，返去練').fav===3 && enc79ChoiceFx('heart:ngai_wingnaam','笑著說怕自己學不來').fav===1
   && enc79ChoiceFx('heart:chai_zanhoi','說真話：戲路要變，不變才危險').fav===3 && enc79ChoiceFx('heart:chai_zanhoi','安慰他：一哥地位哪有這麼容易動搖').fav===1
   && enc79ChoiceFx('heart:pang_siuki','靜靜聽他說完').fav===3 && enc79ChoiceFx('heart:pang_siuki','笑著說他想多了').fav===1

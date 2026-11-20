@@ -1,3 +1,4 @@
+// v20a356 resync：支線複檢 (a) 類修復改咗 ENC 釘句（齊 wrap／駱 patron_cold／彭 finale_cold＋n17／程 e4／魏 heartCold／駱 heart label／彭 intel label／齊 choice GRANT key），釘句同步更新，邏輯斷言唔郁。
 // v20a309 Q22 彭少祺 n17 brushed_off 冷版場面測試：
 //   (A) 數據：pang_n17_cold 存在（7 句＋2 choices），對白講距離、認返 heart 嗰晚裂痕、唔抄暖版句；旁白書面語
 //   (B) 分流：有 pang_brushed_off → 播冷版、唔播暖版；無旗 → 播暖版、唔播冷版；兩個選擇照出、授旗照落
@@ -117,7 +118,7 @@ function build(flags, fav){
 const WARM_LINES = [
   '阿偉！你嚟到啦，我喺後台咁多人入面，第一眼就見到你。',
   '一九九二年年底頒獎禮後台，人頭湧湧，彭少祺穿著司儀禮服，手持咪牌，第一個走過來跟阿偉打招呼。',
-  '記唔記得嗰陣喺中環廣告公司大堂？你企喺臨記堆入面，我叫你個名，你嚇到彈起。',
+  '記唔記得嗰陣喺大騷後台？你企喺後台門口嗰堆臨記入面，我叫你個名，你嚇到彈起。',
   '點會唔記得呀彭生，嗰日我返到屋企仲諗，點解你會記得我呢啲細角色。',
   '而家唔同晒啦，今晚你企到嚟呢度，係嘉賓席嗰邊入場㗎啦，我喺台上讀到你個名嗰陣，都替你驕傲。',
   '冇你嗰陣時時提點，我都唔知自己行唔行到嚟呢一步。',
@@ -171,7 +172,7 @@ ok('B 暖版兩個選擇照舊（label＋授旗唔郁）',
 ok('C 播完冷版 segFx → beatsDone.pang_n17 照標（收尾閘讀呢個）',
   (() => { const b = build({ pang_brushed_off: 1 }); playSeg(b, 'beat:pang_n17'); return !!(S.stars.pang_siuki.beatsDone || {}).pang_n17; })());
 ok('C 冷版 n17 之後再遇 → pang_finale_cold 照開（pickBeat）',
-  (() => { const b = build({ pang_brushed_off: 1 }); playSeg(b, 'beat:pang_n17'); const b2 = enc79BuildScript('pang_siuki', false); return !!b2 && hasText(b2, '面前一碗雲吞麵，已經凍了') && b2.steps.some(s => s.seg === 'beat:pang_finale_cold'); })());
+  (() => { const b = build({ pang_brushed_off: 1 }); playSeg(b, 'beat:pang_n17'); const b2 = enc79BuildScript('pang_siuki', false); return !!b2 && hasText(b2, '阿偉一早到了，叫了一碗雲吞麵，坐著等') && b2.steps.some(s => s.seg === 'beat:pang_finale_cold'); })());
 ok('C 冷版玩家唔會誤入暖版收尾（缺 pang_listened，pang_finale 閘唔開）',
   (() => { const b = build({ pang_brushed_off: 1 }); playSeg(b, 'beat:pang_n17'); S.flags.pang_noodle_night = 1; return enc79BeatOpen('pang_siuki', beatOf('pang_siuki', 'pang_finale')) === false; })());
 ok('C 冷版 n17 唔派暖線收尾獎勵（sideline280：缺 pang_listened，聲望唔郁）',
@@ -212,8 +213,8 @@ ok('S pang_n17 註冊閘唔郁（tier≥3＋1992 冬，無旗條件）',
   (() => { const w = beatOf('pang_siuki', 'pang_n17').when.toString(); return w.indexOf('1992') >= 0 && w.indexOf('冬') >= 0 && w.indexOf('brushed_off') < 0; })());
 ok('S pang_finale_cold 閘唔郁（n17 做完＋absent／brushed_off／early_night 三旗）',
   (() => { const w = beatOf('pang_siuki', 'pang_finale_cold').when.toString(); return w.indexOf('pang_n17') >= 0 && w.indexOf('pang_absent_night') >= 0 && w.indexOf('pang_brushed_off') >= 0 && w.indexOf('pang_early_night') >= 0; })());
-ok('S pang_finale_cold 對白唔郁（凍咗嗰碗麵開場在位）',
-  hasText({ steps: D.beats.pang_finale_cold.lines.map(l => ({ text: l[1] })) }, '面前一碗雲吞麵，已經凍了'));
+ok('S pang_finale_cold 對白唔郁（阿偉先到開場在位）',
+  hasText({ steps: D.beats.pang_finale_cold.lines.map(l => ({ text: l[1] })) }, '阿偉一早到了，叫了一碗雲吞麵，坐著等'));
 ok('S gigs_new.json 仍係 323 張', GIGS_ARR.length === 323, 'count=' + GIGS_ARR.length);
 
 if(fails.length){ console.log('\nFAILURES: ' + fails.length); process.exit(1); }
