@@ -37,3 +37,10 @@ eraTag 係節點 metadata（pack JSON 載入時由 `contra98FixNodeWhen` 覆寫�
 - 新 `tests/test_r343_crisis_year_fix.js`：**27 項 ALL PASS**（靜態表值＋完整載入路徑 contra98FixNodeWhen→years66Walk→spPlayerMeta 五節點頁首全 1992＋反證：表值還原 1989 即重現 1991 頁首＋JSON when 未郁）。
 - 同步兩檔舊測試：`test_contra98_logic.js`（WANT_YEAR98 剔走 choi／hiu，只剩 stub 1991；註解同步）、`test_hiu266_logic.js`（靜態斷言 1989秋→1990秋＋載入鏈 crisis 頁首 1991秋→1992秋）。
 - 全套 suite：見落地紀錄（基線 395／9＋新測試檔 1 項）。
+
+## 落地紀錄
+
+- main 內容 commit `02f62f6`（squash merge 工作分支 `7ef4eb1`），已推 GitHub。
+- Suite：396 PASS／9 FAIL（v342 基線 395／9＋新測試檔 1 項；九項 FAIL 同基線逐項一致：flash51／slot50／soft_tip_111_restore／start53／weave43／weave44／weave49／wf5_87／wrap38）。證據：`~/workspace/suite343.txt`。
+- Pages byte-identical 已核實：index.html md5 `b67d4f04f54e0872377dceae5f03d114`／4,706,725 bytes／47,316 行（+167 bytes 係兩行行內註解，行數不變）。
+- `qa296/derive296.json` 已還原；工作副本已刪。
