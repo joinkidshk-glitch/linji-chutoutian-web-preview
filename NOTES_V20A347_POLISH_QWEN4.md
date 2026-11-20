@@ -99,4 +99,7 @@ qwen4 將 A_ko_ending 對白「我唔會話你贏咗。不過，你係一個值�
 
 ## 落地紀錄
 
-- （待合併後補）
+- main `4806c72`（squash merge 自分支 v347-polish-qwen4 `cf72bd3`），已推 GitHub。
+- Pages 核實 byte-identical：`content/story_detail_rival_mentor.json` md5 `7b99d84248c994cd2526d6cd89853554`（本地同 Pages curl 兩邊相同）。
+- 全套 suite 398／9（工作副本實測，九項已知 pre-existing FAIL 逐項相同）。
+- 工作副本 linji-work347 已刪；suite 後 `qa296/derive296.json` 已還原唔入版。
