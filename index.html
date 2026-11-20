@@ -12548,7 +12548,7 @@ const ENDING410_CAREER_NAMES = {
   SS: "一線巨星", FK: "影壇天王", TK: "電視天王", SK: "歌王", GH: "金牌司儀",
   CK: "喜劇泰斗", AK: "動作巨星", ID: "人氣偶像", CR: "實力派演員",
   E5: "江湖撈家", E6: "退圈", E0: "浮沉未定",
-  E7: "未紅先收" /* v20a61 CONSEQ61-1：強制收場（年終評核唔過／破產寬限期滿）；唔經 resolveEnding410 判定表，由 conseq61PresentForcedEnding 寫入 */
+  E7: "未紅先收" /* v20a61 CONSEQ61-1：強制收場（年終評核唔過／破產寬限期滿）；唔經 resolveEnding410 判定表，由 conseq61PresentForcedEnding 寫入。v20a345 F2：結局判定嗰刻 dual 低過 1992 floor 亦改判此格（ending410ResolvePresent410 覆寫，variant review1992） */
 };
 const ENDING410_T = {
   e1Fame: 60, e1Credit: 55, e1Dual: 125, e1NegMax: 1,       /* E1 天王接班（專檔 §2） */
@@ -13227,6 +13227,9 @@ function endingCareerScene410(rec){
       if(v==="review1991") return "<p>第二年年尾，事務所會議室。何生拿著你兩年的記數簿，翻了很久，才開口：「阿偉，唔係一年，係兩年喇。」</p>"
         + "<p>聲望與信用合計，離公司肯留人的那條線，還差一截。這行不是沒有等過你——兩年，多少張通告、多少場戲，機會來過，你沒有抓緊。何生沒有罵你，只是嘆氣：「有啲人，係要遲啲先開竅——但公司，唔可以陪你等到嗰陣。」</p>"
         + "<p>你收拾位置時，牆上還貼著今年賀歲片那張海報。你的名字，沒有在上面。未紅先收，不是誰判你死刑，是時間與數字，一起說了句：到此為止。</p>";
+      if(v==="review1992") return "<p>第三年年尾，事務所會議室。何生拿著你三年的記數簿，翻到最後一頁，才開口：「阿偉，三年喇。」</p>"
+        + "<p>聲望與信用合計，離公司肯留人的那條線，還差一截。這行不是沒有等過你——三年，多少張通告、多少場戲，機會來過，你沒有抓緊。何生沒有罵你，只是嘆氣：「有啲人，係要遲啲先開竅——但公司，唔可以陪你等到嗰陣。」</p>"
+        + "<p>你收拾位置時，牆上還貼著今年賀歲片那張海報。你的名字，沒有在上面。未紅先收，不是誰判你死刑，是時間與數字，一起說了句：到此為止。</p>";
       return "<p>第一年年尾，事務所做評核。何生叫你進房，攤開那本記數簿：聲望與信用合計，離公司肯留人的那條線，還差一截。</p>"
         + "<p>「你唔係冇嚟開工，」何生說，「係開嚟開去，都未開出一條路。呢行好現實：畀咗成年你，冇起色，就要換第二個嚟試。」他語氣不差，甚至有點可惜——但合約就是合約，年尾不續，就是不續。</p>"
         + "<p>你走回出去時，走廊有個新臨記在那裡等面試，緊張到手心出汗——好像年初那個你。未紅先收。你那盞燈，未亮過，就要熄滅。</p>";
@@ -13623,6 +13626,20 @@ function ending410ResolvePresent410(node, choice, result, key, opts){
     if(typeof S==="undefined" || !S || !key) return false;
     if(S.ending410){ showEndingSummary410(); return true; }
     const res = resolveEnding410(S, opts || {});
+    /* v20a345 F2：1992 年尾評核 floor 補檢查——N17 閘（weekMin 153）喺 12 月初觸發，
+       搶先 week156 評核，1992 E7 正常玩法不可達。結局判定嗰刻補返：dual 低過
+       1992 floor（155）改判 E7 未紅先收（review1992），唔落正常格；E6 主動退圈唔覆蓋，
+       保留玩家選擇。1990／1991 評核路徑（conseq61SettleEval）唔郁。 */
+    let e7Floor345 = 0;
+    try{
+      const R92_345 = (typeof CONSEQ61_REVIEWS!=="undefined" && CONSEQ61_REVIEWS[1992]) ? CONSEQ61_REVIEWS[1992] : null;
+      if(R92_345 && res.career!=="E6" && (Number(res.snapshot.dual)||0) < R92_345.floor){
+        e7Floor345 = R92_345.floor;
+        res.career = "E7"; res.careerVariant = "review1992";
+        res.title = "未紅先收・" + (res.exodus==="leave" ? "遠走的人" : (res.exodus==="stay" ? "留下來的人" : "未說出口的人"));
+        res.gaps95 = [];
+      }
+    }catch(_e345){}
     const favor = endingFavor410(S);
     S.ending410 = {
       career: res.career, careerVariant: res.careerVariant || "",
@@ -13634,6 +13651,8 @@ function ending410ResolvePresent410(node, choice, result, key, opts){
       settled: res.snapshot.settled, creditsHeld: res.snapshot.creditsHeld,
       exodusNames: res.snapshot.exodusNames.slice()
     };
+    /* v20a345 F2：E7 改判要帶 earlyEnd（同強制收場路徑一致），手帳總結頁先出「1992 年尾評核」標題 */
+    if(e7Floor345) S.ending410.earlyEnd = { kind: "review", year: 1992, dual: res.snapshot.dual, floor: e7Floor345, week: (typeof weekNumNow==="function" ? weekNumNow() : 0) };
     try{ saveQ(); }catch(_s){}
     const inserts = endingInserts410(res, favor);
     const page1 = "<h3>三年埋單</h3>" + endingCareerScene410(res);
@@ -19825,9 +19844,10 @@ function settleWeek(){
     }
   }catch(_bw61){}
   /* v20a61 CONSEQ61-1：年終評核警告／評核／破產寬限（登記趕喺 saveQ 前；收場呈現交 enterHome 後嘅 hook） */
+  const cq61Clean345 = []; /* v20a345 F1：cq61 行另存一份（cleaned 後），畀 warnHtml 篩選用 */
   try{
     const cq61 = (typeof conseq61SettleEval==="function") ? conseq61SettleEval(S, w, earned) : []; /* v20a65 FIX65-2：傳本週入帳畀寬限入帳解除 */
-    (cq61||[]).forEach(line=>pushFlavor(line));
+    (cq61||[]).forEach(line=>{ pushFlavor(line); try{ const c345 = stripSettleMoneyNoise(line); if(c345) cq61Clean345.push(c345); }catch(_e345){} });
   }catch(_cq61){}
   /* v20a62 AWARDS62-6：頒獎季前目標提示——接既有週結 pushFlavor 渠道，差少少先出聲，每週最多一行 */
   try{
@@ -19846,7 +19866,14 @@ function settleWeek(){
     S.weekBoundary105 = { week: w, day: S.dayIndex|0, html: settleBlock + flavorHtml };
     saveQ();
   }catch(_wb105){}
-  return { weekNum:w, html: settleBlock + flavorHtml, stressEvent:(S.stress||0)>=75 };
+  /* v20a345 F1：警告類行（cq61 評核／寬限行＋class="bad" 行）另存 warnHtml，
+     畀 enterHome 喺連續遊玩下呈現——v20a71 移除 home 結算卡之後，flavor 只剩
+     重開遊戲嘅補呈現 modal，玩家連續遊玩從來睇唔到警告，同「警告先行」拍板不符。 */
+  const warnLines345 = flavor.filter(x=> cq61Clean345.indexOf(x)>=0 || String(x).indexOf('class="bad"')>=0);
+  const warnHtml345 = warnLines345.length
+    ? `<div class="settle-flavor">${warnLines345.map(x=>`<div class="settle-flavor-line">${x}</div>`).join("")}</div>`
+    : "";
+  return { weekNum:w, html: settleBlock + flavorHtml, warnHtml: warnHtml345, stressEvent:(S.stress||0)>=75 };
 }
 
 /* v19z7: single source — header date / weekday highlight / 今日計劃 */
@@ -20444,6 +20471,29 @@ function renderNotebook(){
   try{ renderWardrobe265(); }catch(_w265r){}
 }
 
+/* v20a345 F1：週結警告行連續遊玩呈現。入編排步（enterHome editable）嗰刻，
+   若 summary 帶警告行（settleWeek 嘅 warnHtml），排隊彈一個提醒 modal——
+   等其他 modal／試鏡公佈完先出（retry 上限約 7.5 秒）；已判強制收場就唔出，
+   結局呈現本身會交代。重開補呈現路徑（contFromSlot）傳入嘅 summary 冇 warnHtml，
+   唔會重複彈。 */
+function presentSettleWarn345(summary){
+  try{
+    if(!summary || !summary.warnHtml) return;
+    if(typeof ending78Locked==="function" && ending78Locked()) return;
+    const warnHtml345 = summary.warnHtml, warnWeek345 = summary.weekNum||"";
+    let tries345 = 0;
+    const present345 = ()=>{
+      try{
+        if(typeof _aud91Presenting!=="undefined" && _aud91Presenting){ if(++tries345<25) setTimeout(present345, 300); return; }
+        const mk345 = document.getElementById("mask");
+        if(mk345 && mk345.classList.contains("on")){ if(++tries345<25) setTimeout(present345, 300); return; }
+        if(typeof S!=="undefined" && S && S.conseq61 && S.conseq61.pendingEnding) return; /* 強制收場呈現會交代，唔重複 */
+        modal(`<h3>週結算提醒 · 第 ${warnWeek345} 週</h3>${warnHtml345}`,[{label:"我知道了",role:"p"}]);
+      }catch(_e345){}
+    };
+    setTimeout(present345, 120);
+  }catch(_w345){}
+}
 function enterHome(summary, editable, initialTab){
   /* v20a78 LOCK78：已結局嘅手帳只准唯讀回顧（作品牆／回憶／剪報），唔准再編排行程 */
   if(typeof ending78Locked==="function" && ending78Locked()) editable = false;
@@ -20470,6 +20520,8 @@ function enterHome(summary, editable, initialTab){
   /* v20a105 WEEK105 S-12：入到編排步（editable）＝週界流程已完成，清走週界旗，
      之後重開唔好再誤觸發補呈現。唯讀入屋唔清——玩家未編排就重開，旗要留返。 */
   try{ if(editable && typeof S!=="undefined" && S) S.weekBoundary105 = null; }catch(_e){}
+  /* v20a345 F1：連續遊玩下呈現週結警告行（評核／寬限／身體／現金警告） */
+  try{ if(editable && typeof presentSettleWarn345==="function") presentSettleWarn345(summary); }catch(_e345){}
   planSelDay = weekdayIdx(S.dayIndex);
   planCat = "browse";
   try{
