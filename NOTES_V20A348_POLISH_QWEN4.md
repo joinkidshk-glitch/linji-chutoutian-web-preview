@@ -67,3 +67,10 @@
 ## 工作檔
 
 `~/workspace/linji-polish-pilot/batch3/`（extract／build_prompts／run／verify／apply 腳本、逐批 prompt＋raw 輸出、verify_results3.json、diffs3.txt、applied3.json、reverted_shadowed.json、guide_candidates.txt）
+
+## 落地紀錄
+
+- main 內容 commit：`594a4d3`（squash merge 自 v348-polish-qwen4 分支 `bdced2f`）
+- Suite（工作副本全跑）：398 PASS／9 FAIL，FAIL 名單同基線九項逐項相同，零回歸
+- Pages 核實：三檔 byte-identical（lan_xu md5 `b349cc906878198d48ebcb3f14c53718`、vera_hiu_choi `d83ed5aababfec1f19c0f1d325bd2f7a`、tutorial `983243ba5c87873599b903c693306b30`）
+- 工作副本 linji-work348 已刪
