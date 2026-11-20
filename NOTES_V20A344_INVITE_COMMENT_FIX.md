@@ -65,7 +65,15 @@ Base：main `2c30c80`（v343，通告庫 323 張，index.html 47,316 行，suite
 - 相關舊測試覆驗全 PASS：dayflow196（logic＋static）、dayend189、
   guidance34、flow45、story165、awards182／184／186／192／194／200／211／
   213／62／63、gate136。
-- 全套 suite：見落地紀錄（預期 397／9，九項 FAIL 同 v343 基線逐項一致）。
+- 全套 suite：397 PASS／9 FAIL（v343 基線 396／9＋新測試 1 項；九項 FAIL
+  同基線逐項一致：flash51／slot50／soft_tip_111_restore／start53／weave43／
+  weave44／weave49／wf5_87／wrap38）。證據：`~/workspace/suite344.txt`。
+
+## 落地紀錄
+
+- main 內容 commit：`b94c62e`（分支 `4961c64` squash merge），已推 GitHub。
+- Pages byte-identical 已核實：index.html md5
+  `1f547a8561ae215f4945638edd44d7c0`／4,707,378 bytes／47,316 行（行數不變）。
 
 ## 跟進提示
 
