@@ -180,8 +180,10 @@ ok("N6F 標題同 N6 一致、synopsis 各走自己路線（v352：共用簡介�
    and "大製作想留他做固定跟班" in TBR89["N6F"]["synopsis"]
    and "處境劇班底" not in TBR89["N6F"]["synopsis"]
    and "大製作想留他" not in TC6["N6"]["synopsis"])
-ok("N6 Beat5 Q1 已潤飾（無 route 旗術語）",
-   "第一天那個選擇" in blob(TC6["N6"]) and "route 旗" not in blob(TC6["N6"]))
+ok("N6 Beat5 Q1 已潤飾（無 route 旗術語；v353：旁白改場景內敘述，刪分支機制解說）",
+   "這一句，是阿偉給自己的交代" in blob(TC6["N6"]) and "route 旗" not in blob(TC6["N6"])
+   and "不假裝有分叉" not in blob(TC6["N6"]) and "開哪一幕" not in blob(TC6["N6"])
+   and "開哪一幕" not in blob(TBR89["N6F"]))
 ok("N7 穿幫修正：暴雨唔係黑雨", "天文台說有暴雨" in blob(T1989["N7"]) and "黑雨" not in blob(T1989["N7"]))
 ok("N8 synopsis＋Beat2 信任代價", "帶眼帶耳" in T1989["N8"]["synopsis"]
    and "後台的人看他的眼神" in blob(T1989["N8"]))  # v233 RW-2：第二人稱→第三人稱

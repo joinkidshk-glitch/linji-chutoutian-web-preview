@@ -265,9 +265,10 @@ for p in packs:
     ok("pack 冇直改: " + p, sha(os.path.join(ROOT, p)) == hashlib.sha256(_read_pristine_bytes(p)).hexdigest())
 
 # v352 精確替代斷言：主線 pack 只改 26 項證實矛盾涉及嘅文字，其餘節點同 pristine 逐字一致
+# v353：再改 8 項文風取捨（用戶拍板全部改）——觸及節點加 N3；其餘未觸及節點仍同 pristine 逐字一致
 _ml_now = {n["id"]: n for n in json.load(open(os.path.join(ROOT, "content", "story_detail_n1_to_n17.json"), encoding="utf8"))["nodes"]}
 _ml_pris = {n["id"]: n for n in json.loads(_read_pristine("content/story_detail_n1_to_n17.json"))["nodes"]}
-_ml_touched = {"N1", "N2", "N4", "N5", "N6", "N6F", "closeup39", "N9", "N11", "N12", "N14", "N16", "N17", "N17_epi", "N18", "N19"}
+_ml_touched = {"N1", "N2", "N3", "N4", "N5", "N6", "N6F", "closeup39", "N9", "N11", "N12", "N14", "N16", "N17", "N17_epi", "N18", "N19"}
 ok("v352 主線 pack：未觸及節點同 pristine 逐字一致",
    all(_ml_now[i] == _ml_pris[i] for i in _ml_pris if i not in _ml_touched))
 _ml_blob = json.dumps(_ml_now, ensure_ascii=False)
@@ -284,6 +285,17 @@ ok("v352 N17：攤開嚟講只剩一次＋未答走還是留",
    _ml_blob.count("攤開嚟講") == 1 and "還未答那句「走，還是留」" in _ml_blob)
 ok("v352 N17_epi：阿媽兩句之間加阿偉回應（5 拍）",
    len(_ml_now["N17_epi"]["beats"]) == 5)
+ok("v353 文風 8 項：新句在場、舊句清零（N1／N3／N5／N6＋N6F／closeup39／N11／N12_a／N17）",
+   "他要等的，是一個讓人把他的名字寫上去的機會" in _ml_blob and "第一幕要解決的問題" not in _ml_blob
+   and "鏡頭一掃過來，第一個照到的就是那裡" in _ml_blob and "鏡頭第一個認到" not in _ml_blob
+   and "她要的是真料" in _ml_blob and "她要料，她要真" not in _ml_blob
+   and "這一句，是阿偉給自己的交代" in _ml_blob and "不假裝有分叉" not in _ml_blob
+   and "跟班那個位置就在佈景板後面" in _ml_blob and "開哪一幕" not in _ml_blob
+   and _ml_blob.count("正是阿偉接到第一張配角通告的那陣子") == 2 and "第一張配角同期" not in _ml_blob
+   and "你試鏡時演的那一段，會跟著你很久" in _ml_blob and "落力試的" not in _ml_blob
+   and "阿偉跳下那一跳，一次通過" in _ml_blob and "那一跳收工之後" in _ml_blob
+   and "跳了那一躍" not in _ml_blob and "那一躍收工" not in _ml_blob
+   and "他往上走，市道往下走，兩條線就在這裡交叉" in _ml_blob and "戲味自然出來" not in _ml_blob)
 
 # v20a297 精確替代斷言：Vera＋關海媚成個移除——gift_prefs 減 vera 一項、gift_react 減 vera 11 條 entries＋byKey 11 鍵＋crisis 2 條、cast_main 減 kwan_hoimei 一項；其餘同 pristine 逐字一致
 _gp_now = json.load(open(os.path.join(ROOT, "content", "gift_prefs.json"), encoding="utf8"))

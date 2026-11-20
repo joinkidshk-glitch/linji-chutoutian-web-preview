@@ -39,10 +39,11 @@ ok('nodes[0-4] 係 N1-N5', [n.get('id') for n in nodes[:5]] == ['N1', 'N2', 'N3'
 #      v20a254 統籌收尾（N6F lockedHint 標題引用「采兒小訪題」→「筆記本」，跟新短詞標題；其餘一字未郁），sha 再重算） ---
 #      v20a258 N4 改夏（when／openConditions／pacing 8→22，N4 係 nodes[3]，nodes[5:] sha 唔受影響；其餘一字未郁） ---
 #      v20a352 主線複檢 26 項玩家面矛盾修復（N6–N19 多節點文字＋N4／N5 各刪 1 重複拍＋N17_epi 加 1 回應拍；beats 數 N1-N5 改 [16,9,10,10,8]、行數改 [19,12,12,11,10]），sha 再重算） ---
+#      v20a353 主線複檢 8 項文風取捨修復（N6／N6F 旁白改場景內敘述＋closeup39／N11／N12_a／N17 措辭，僅文字），sha 再重算） ---
 tail = json.dumps(nodes[5:], sort_keys=True, ensure_ascii=False)
 ok('nodes[5:] 同 v254 一致（N6F lockedHint 標題引用跟新標題；其餘同 v256）',
    hashlib.sha256(tail.encode('utf-8')).hexdigest()
-   == 'f8a62582ef4df521a2b0da8e988e92026c812218440a11df664709e73748899b')
+   == '0004d0cfcf428a9641c9e9df5a0e2dabe56a4ffad2c15a2ee3f040416954bff1')
 
 # --- 標題／setting／synopsis 按設計 ---
 ok('標題 N1-N5 按設計（v250 新短詞標題：通告板／後巷／正中央／記數簿／筆記本）',
