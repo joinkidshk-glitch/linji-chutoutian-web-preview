@@ -74,3 +74,10 @@
 ## 檔案
 
 - 試點工作檔：`~/workspace/linji-polish-pilot/batch1/`（extract／run／retry 腳本、逐批 prompt＋raw 輸出、results.json、applied.json）
+
+## 落地紀錄
+
+- main `b9a2f72`（squash merge 自分支 v346-polish-ko `a260135`），已推 GitHub。
+- Pages 核實 byte-identical：`content/story_detail_rival_mentor.json` md5 `234305c7949348fc10211cee5374e4bb`（本地同 Pages curl 兩邊相同）。
+- 全套 suite 398／9（工作副本實測，九項已知 pre-existing FAIL 逐項相同）。
+- 工作副本 linji-work346 已刪；suite 後 `qa296/derive296.json` 已還原唔入版。
