@@ -239,8 +239,8 @@ loadGame(baseSave());
      !!(sang && sang.effects.stats.stage === 1 && sang.effects.stats.rel_lan === 2));
   const end = lanNodes.R_lan_ending;
   ok('藍 PA：ending 抉擇 label／notes 係 JSON（RW-3）版',
-     end.choices[0].label === '接住那個約定：那頓飯，我記住，不會失約'
-     && end.choices[1].label === '收起那一步：笑著，當作一個約定');
+     end.choices[0].label === '接住約定：那頓飯，我記住，不會失約'
+     && end.choices[1].label === '收起那一步：笑著當作約定');
   const xu = STORY_WIRE.romance.lanXu.nodes.find(n => n.id === 'R_xu_meet');
   ok('藍 PA：R_xu_* 無被覆寫（徐寶珊維持富豪千金原線）', !!xu && xu.title === '春茗初遇');
   ok('半線狀態可讀：endingRomanceState48 六線齊（v297 vera 已刪；空存檔全 false/0）',
