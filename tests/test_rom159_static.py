@@ -266,9 +266,10 @@ for p in packs:
 
 # v352 精確替代斷言：主線 pack 只改 26 項證實矛盾涉及嘅文字，其餘節點同 pristine 逐字一致
 # v353：再改 8 項文風取捨（用戶拍板全部改）——觸及節點加 N3；其餘未觸及節點仍同 pristine 逐字一致
+# v354：再改待潤飾 34 項＋resultBeats 13 項＋漏報 N6_b——觸及節點加 N7／N10／N13／N15；其餘未觸及節點仍同 pristine 逐字一致
 _ml_now = {n["id"]: n for n in json.load(open(os.path.join(ROOT, "content", "story_detail_n1_to_n17.json"), encoding="utf8"))["nodes"]}
 _ml_pris = {n["id"]: n for n in json.loads(_read_pristine("content/story_detail_n1_to_n17.json"))["nodes"]}
-_ml_touched = {"N1", "N2", "N3", "N4", "N5", "N6", "N6F", "closeup39", "N9", "N11", "N12", "N14", "N16", "N17", "N17_epi", "N18", "N19"}
+_ml_touched = {"N1", "N2", "N3", "N4", "N5", "N6", "N6F", "closeup39", "N7", "N9", "N10", "N11", "N12", "N13", "N14", "N15", "N16", "N17", "N17_epi", "N18", "N19"}
 ok("v352 主線 pack：未觸及節點同 pristine 逐字一致",
    all(_ml_now[i] == _ml_pris[i] for i in _ml_pris if i not in _ml_touched))
 _ml_blob = json.dumps(_ml_now, ensure_ascii=False)
@@ -296,6 +297,63 @@ ok("v353 文風 8 項：新句在場、舊句清零（N1／N3／N5／N6＋N6F／
    and "阿偉跳下那一跳，一次通過" in _ml_blob and "那一跳收工之後" in _ml_blob
    and "跳了那一躍" not in _ml_blob and "那一躍收工" not in _ml_blob
    and "他往上走，市道往下走，兩條線就在這裡交叉" in _ml_blob and "戲味自然出來" not in _ml_blob)
+ok("v354 待潤飾 34 項：新句在場、舊句清零",
+   "張子駿肯教他，已屬難得" in _ml_blob and "是他好彩" not in _ml_blob
+   and "哪個組的工作是真的有戲份" in _ml_blob and "是真的有得做" not in _ml_blob
+   and "留下多聽幾句" in _ml_blob and "留下，聽多兩句" not in _ml_blob
+   and "老臨記說日後有好通告，會第一個想起他" in _ml_blob and "會提他一把" not in _ml_blob
+   and "高俊傑成日搶鏡，今天終於輪到自己" in _ml_blob and "阿偉心想：之前聽人說他成日搶鏡" not in _ml_blob
+   and "熬到天亮，明天試鏡連站都站不穩" in _ml_blob and "捱到天光" not in _ml_blob
+   and "別怪他想不起阿偉" in _ml_blob and "別怪他想不起你" not in _ml_blob
+   and "換來何生一句「捱得」的評價" in _ml_blob
+   and "周采兒覺得他夠坦誠" in _ml_blob and "夠真誠" not in _ml_blob
+   and "像他當時一樣" in _ml_blob and "學他那時一樣" not in _ml_blob
+   and "由開鏡跟到殺青，還是繼續跑通告？" in _ml_blob and "定繼續跑" not in _ml_blob
+   and "何生問你來年怎樣走" in _ml_blob and "來年點行" not in _ml_blob
+   and "埋頭做好本分，還是跟老臨記偷師？" in _ml_blob and "本份" not in _ml_blob
+   and "全行都趕拍賭片" in _ml_blob and "撲去拍賭片" not in _ml_blob
+   and "站在賭桌邊充當賭客" in _ml_blob and "做賭客幫忙" not in _ml_blob
+   and "根叔收工時遞了一支煙給他" in _ml_blob and "撥了一支煙" not in _ml_blob
+   and "只是說：「來年何生會安排多一點東西給我學。」" in _ml_blob
+   and "而是他懂不懂做人" in _ml_blob and "識不識做人" not in _ml_blob
+   and "他站在哪邊，哪邊就記住他。" in _ml_blob and "他企邊，哪邊記住" not in _ml_blob
+   and "誰就有工作" in _ml_blob and "誰就有工開" not in _ml_blob
+   and "選擇跳，方小龍會跟他談下去" in _ml_blob and "專屬傾談接下去" not in _ml_blob
+   and "阿偉想起何生在事務所提過的一句話" in _ml_blob and "何生喺事務所提過你一句" not in _ml_blob
+   and _ml_now["N13"]["beats"][10]["speaker"] == "系統"
+   and "站在哪邊不再是「有工作就接」這麼簡單" in _ml_blob and "企邊哪邊" not in _ml_blob
+   and "阿偉去唱片公司交一疊通告帶" in _ml_blob and "去唱片公司交代" not in _ml_blob
+   and _ml_now["N14"]["playerOffer"].endswith("你站在哪邊？") and "你企邊邊" not in _ml_blob
+   and "後門那邊又混進了兩個扮送花的記者" in _ml_blob and "剛剛又塞" not in _ml_blob
+   and "靠修音，還是練真功夫？" in _ml_blob and "定練真功夫" not in _ml_blob
+   and "賀歲片趕在年初一上映" in _ml_blob and "趕住年初一上畫" not in _ml_blob
+   and "這幕問的不是演技夠不夠，而是手藝的極限在哪裡" in _ml_blob and "你識唔識演" not in _ml_blob
+   and "爆肚那個take試一試" in _ml_blob and "搏一搏" not in _ml_blob
+   and "先說清楚：選這個" in _ml_blob and "講明先" not in _ml_blob
+   and "今晚不用談工作，先喝湯。" in _ml_blob and "食咗碗湯先" not in _ml_now["N17_epi"]["synopsis"]
+   and "阿偉走出會議室" in _ml_blob and "阿偉行出會議室" not in _ml_blob)
+ok("v354 resultBeats 13 項＋漏報 N6_b：新收尾在場、舊收尾清零",
+   "阿偉在電視城的走廊裡，傳呼機響了一聲" in _ml_blob
+   and "他想起高俊傑那句「唔好阻住我」" in _ml_blob
+   and "今晚準時到片場" in _ml_blob and "聽晚準時到片場" not in _ml_blob
+   and "他走回家，換下濕透的衣服" in _ml_blob
+   and "周采兒笑了笑。她知道阿偉沒有說完" in _ml_blob
+   and "還會再問——只是問法會不同" in _ml_blob
+   and "他見到的事，今天一句都沒有說" in _ml_blob
+   and "它不會走，只是站的人換了" in _ml_blob and "它在等下一個肯跟的人" not in _ml_blob
+   and "它不會走，只是坐的人換了" in _ml_blob and "它在等下一個肯坐下的人" not in _ml_blob
+   and "替東哥跳了那一格" in _ml_blob
+   and "電影公司那邊，從此沒有再打過電話來" in _ml_blob
+   and "招呼照打，只是再沒有人叫他「自己人」" in _ml_blob
+   and "電影公司那邊也沒有再追問" in _ml_blob
+   and "記者會忘記，歌迷不會" in _ml_blob and "歌迷記得比記者還要牢" not in _ml_now["N14"]["choices"][0]["resultBeats"][3]["lines"][0]
+   and "一句話，有時比一張相走得更遠" in _ml_blob
+   and "只寫了三個字：「識做人。」" in _ml_blob
+   and "人人心裡都給他貼上了一個標籤" in _ml_blob and "放下了一個標籤" not in _ml_blob
+   and "答案，要等到埋單那晚" in _ml_blob and "結果留到埋單那晚" not in _ml_now["N16"]["choices"][0]["resultBeats"][2]["lines"][0]
+   and "點名說全廠只有他那組沒有超時" in _ml_blob
+   and "拍了拍他的肩膀，什麼話都沒有說" in _ml_blob)
+
 
 # v20a297 精確替代斷言：Vera＋關海媚成個移除——gift_prefs 減 vera 一項、gift_react 減 vera 11 條 entries＋byKey 11 鍵＋crisis 2 條、cast_main 減 kwan_hoimei 一項；其餘同 pristine 逐字一致
 _gp_now = json.load(open(os.path.join(ROOT, "content", "gift_prefs.json"), encoding="utf8"))

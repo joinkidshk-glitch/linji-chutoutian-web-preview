@@ -10,6 +10,7 @@
 //       舊設計「冇 needDone 唔卡主線」已廢——用戶 2026-11-12 實玩捉到跳步）；
 //   (5) v20a234：注入已刪——N18/N19 由 JSON pack 直出，pack 自帶且 id 唯一；
 //   (6) 紅線：14 節點全文冇真人名、冇關海媚名、冇直寫 1991–1994 年份。
+//   (v20a354：N17_410_b notes「講明先」→「先說清楚」意圖改動（主線複檢 s6B7），fixture 同步更新一處；其餘不變）
 // 反證：喺 v20a79 pack 上行會 FAIL（冇 N18/N19／beats 唔夠數）。
 // 用法：node tests/test_wf1_80_logic.js [path-to-index.html]
 const fs = require('fs');

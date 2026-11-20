@@ -13093,12 +13093,12 @@ function endingEveOptions410(st, baseRes){
   const out = [];
   out.push({ key: "natural", label: "順其自然：照這三年的路，走到哪裡就是哪裡", note: "不強求，不回頭——頒獎禮散場，他站回他站慣的那個位置。"  /* v20a136：N17 成幕改做頒獎禮之後（動態重建選項，靜態節點 notes 嗰句同步改咗） */ });
   if(endingFlag410(s, "flag_family_job_accept")){
-    out.push({ key: "quit_job", label: "收山：家裡那份穩妥工作還等著你——接了它，不再做這一行", note: "講明先：選這個，今晚之後他就不再是這一行的人。（退圈・安穩）" });
+    out.push({ key: "quit_job", label: "收山：家裡那份穩妥工作還等著你——接了它，不再做這一行", note: "先說清楚：選這個，今晚之後他就不再是這一行的人。（退圈・安穩）" });
   } else {
-    out.push({ key: "quit_job", label: "收山想想：接家裡那份穩妥工作，不再做這一行", note: "講明先：選這個，今晚之後他就不再是這一行的人。（退圈・安穩）" });
+    out.push({ key: "quit_job", label: "收山想想：接家裡那份穩妥工作，不再做這一行", note: "先說清楚：選這個，今晚之後他就不再是這一行的人。（退圈・安穩）" });
   }
   if(endingFlag410(s, "flag_leave_mind")){
-    out.push({ key: "quit_leave", label: "走：移民離場——放棄今晚，不再回這一行", note: "講明先：選這個，他會在啟德上機，這一行的事，留在香港。（退圈・遠走）" });
+    out.push({ key: "quit_leave", label: "走：移民離場——放棄今晚，不再回這一行", note: "先說清楚：選這個，他會在啟德上機，這一行的事，留在香港。（退圈・遠走）" });
   }
   return out;
 }
