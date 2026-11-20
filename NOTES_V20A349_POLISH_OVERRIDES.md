@@ -66,4 +66,7 @@
 
 ## 落地紀錄
 
-（落地後補）
+- main 內容 commit：`8bb9043`（squash merge 自 v349-polish-overrides 分支 `51391f4`）
+- Suite（工作副本全跑）：398 PASS／9 FAIL，FAIL 名單同基線九項逐項相同，零回歸
+- Pages 核實：index.html md5 `182867f0fc22bd67985c4ca0295d2b12`、lan_xu md5 `393093ee469a92b65e73de4fd7eaac9f`，同本地 byte-identical
+- 工作副本 linji-work349 已刪
