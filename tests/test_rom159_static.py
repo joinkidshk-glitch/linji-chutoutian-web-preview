@@ -1,3 +1,4 @@
+# v20a346 resync：rival_mentor ko 弧文字潤飾第一批（22 行文字改動，結構/旗標/id 不變）；「同 pristine 逐字一致」斷言剔除 A_ko_*，改用下面 v346 精確替代斷言（22 處原文對位＋套用後逐字一致）。
 # v20a345 resync：index.html 淨 +52 行（F1 警告呈現＋F2 floor 檢查；插入點舊 L13229 +3／L13625 +14／L13636 +2／L19827 +1／L19849 +7／L20446 +23／L20472 +2；總行數 47316→47368；釘行按段 shift，內容逐行核實純漂移，見 qa345/resync345.py）。
 # v20a342 resync：index.html 淨 +20 行（STORY_LOC_SOFT 派 R_ 節點 locId ＋20＠舊 L6758 後；總行數 47296→47316；其後錨點一律 +20，內容逐行核實純漂移，見 qa342/resync342.py）。
 # v20a335 resync335b：第二層 drift（地點掣金提示：CSS ＋2＠舊 L2089 後＋favor158Gold 計算 ＋5＠舊 L42408 後＋add() 簽名註解 ＋2＠舊 L42636；總計淨 +16，47256→47272；錨點按段 shift，內容逐行核實純漂移，見 qa335/resync335b.py）。
@@ -308,10 +309,10 @@ _riv_now_ids = [n["id"] for n in _riv_now.get("nodes", [])]
 _riv_pris_ids = [n["id"] for n in _riv_pris.get("nodes", [])]
 ok("v296 rival_mentor：nodes 數目／次序同 pristine 一致",
    _riv_now_ids == _riv_pris_ids)
-ok("v296 rival_mentor：除 A_tsijun_crisis 外全部節點同 pristine 逐字一致",
+ok("v296 rival_mentor：除 A_tsijun_crisis 同 A_ko_*（v346 潤飾，見下面精確替代斷言）外全部節點同 pristine 逐字一致",
    all(json.dumps(a, ensure_ascii=False, sort_keys=True) == json.dumps(b, ensure_ascii=False, sort_keys=True)
        for a, b in zip(_riv_now.get("nodes", []), _riv_pris.get("nodes", []))
-       if a["id"] != "A_tsijun_crisis"))
+       if a["id"] != "A_tsijun_crisis" and not a["id"].startswith("A_ko_")))
 _crisis_now = [n for n in _riv_now["nodes"] if n["id"] == "A_tsijun_crisis"]
 _crisis_pris = [n for n in _riv_pris["nodes"] if n["id"] == "A_tsijun_crisis"]
 ok("v296 rival_mentor：A_tsijun_crisis 搵到唯一節點（今昔各一）",
@@ -328,6 +329,60 @@ if _crisis_now and _crisis_pris:
     ok("v296 rival_mentor：A_tsijun_crisis 第 4 個 beat 只係前面加 1 句「收聲，聽我講埋先。」",
        _cn["beats"][3].get("speaker") == "張子駿"
        and _cn["beats"][3].get("lines") == ["收聲，聽我講埋先。"] + _cp["beats"][3].get("lines", []))
+
+# v20a346 精確替代斷言：rival_mentor ko 弧文字潤飾第一批（中轉 Claude，22 行；其餘同 pristine 逐字一致）
+_KO346 = {
+    'A_ko_meet.setting': ('星河電視台二號錄影廠外走廊，臨時演員排隊等派通告', '星河電視台二號錄影廠外走廊，臨記排隊等派通告'),
+    'A_ko_meet.beats[0].lines[0]': ('星河電視台二號錄影廠外走廊，臨記排成長龍。阿偉拿著一張紙本通告站在隊伍中間，忽然一隻手伸過來，把通告搶走了。', '星河電視台二號錄影廠外走廊，臨記排成長龍。阿偉拿著一張紙本通告站在隊中，忽然一隻手伸過來，把通告搶走了。'),
+    'A_ko_meet.beats[1].lines[0]': ('呢個位，我一早排好，你唔明咩？', '呢個位，我一早排好㗎，你唔明咩？'),
+    'A_ko_meet.beats[1].lines[1]': ('陳、偉、翔——你個名都幾難讀，怪唔得副導演成日記唔住你。', '陳、偉、翔——你個名都幾難讀，怪唔之得副導演成日記唔住你。'),
+    'A_ko_meet.beats[2].lines[0]': ('喂，你排隊呀，大佬？我企咗成粒鐘。', '喂，你排隊呀，大佬？我企咗成個鐘。'),
+    'A_ko_meet.beats[3].lines[0]': ('排隊？我高俊傑唔係咩星二代，我係自己一場一場捱上嚟嘅。你呢？企喺度等運到呀？', '排隊？我高俊傑唔係咩星二代，我係自己一場一場捱上嚟㗎。你呢？企喺度等運到呀？'),
+    'A_ko_meet.beats[4].lines[0]': ('他說到「捱」字的時候，旁邊幾個臨記都望過來。阿偉望著他——這個人不是靠家裏，是真正在這裏捱出來的，譏諷裏帶著底氣。', '他說到「捱」字時，旁邊幾個臨記都望過來。阿偉望著他——這人不是靠家裏，是真正在這裏捱出來的，譏諷裏帶著底氣。'),
+    'A_ko_meet.choices[0].label': ('搶回通告機會，堅決不讓', '搶回通告，堅決不讓'),
+    'A_ko_meet.choices[0].effects.notes': ('高俊傑記住，阿偉不是一個軟弱可欺的人。', '高俊傑記住，阿偉不好欺。'),
+    'A_ko_meet.choices[1].label': ('讓他一次，看清楚他的底細', '讓他一次，摸清底細'),
+    'A_ko_meet.choices[1].effects.notes': ('高俊傑覺得阿偉懂分寸，但心底看不起他。', '高俊傑覺得阿偉懂分寸，卻看不起他。'),
+    'A_ko_push1.setting': ('星河電視台一號錄影廠，處境劇圍讀同走位排練', '星河電視台一號錄影廠，處境劇圍讀兼走位排練'),
+    'A_ko_push1.synopsis': ('圍讀的時候，高俊傑刻意打亂阿偉唸對白的節奏，走位又霸佔他的位置，副導演在一旁看誰反應快些。', '圍讀時，高俊傑刻意打亂阿偉唸對白的節奏，走位又霸佔他的位置，副導演在旁看誰反應快。'),
+    'A_ko_push1.beats[0].lines[0]': ('圍讀房裏，稿紙沙沙作響。高俊傑坐在阿偉對面，唸自己那段時忽然加快，整段節奏被他扯亂了。', '圍讀房裏，稿紙沙沙作響。高俊傑坐在阿偉對面，唸自己那段時忽然加快，整段節奏被他扯亂。'),
+    'A_ko_push1.beats[4].lines[0]': ('副導演在門口沒有出聲，手上的筆沒有停過。阿偉知道，這場不是唸稿，是鬥反應。', '副導演在門口沒出聲，手上的筆沒停過。阿偉知道，這場不是唸稿，是鬥反應。'),
+    'A_ko_push1.choices[0].label': ('即場改變節奏反壓他，讓副導看到你的應變', '即場改變節奏反壓，讓副導看到應變'),
+    'A_ko_push1.choices[1].label': ('先記住他的走位習慣，不急於反擊', '先記住他的走位習慣，不急反擊'),
+    'A_ko_push2.choices[0].label': ('拉攏排舞師和助導，用實力爭回位置', '拉攏排舞師與助導，用實力爭回位置'),
+    'A_ko_push2.choices[0].effects.notes': ('高俊傑發現，阿偉有人脈。', '高俊傑發現阿偉有人脈。'),
+    'A_ko_push2.choices[1].label': ('當面跟他說清楚，不要再放風', '當面說清楚，不要再放話'),
+    'A_ko_push2.choices[2].label': ('不理他的說話，專心練自己的環節', '不理他，專心練自己的環節'),
+    'A_ko_crisis.beats[0].lines[0]': ('台慶前兩天，監製房傳出一句話：節目太長，要刪去一個環節。整個後台靜了下來，被點到名的那兩個，是高俊傑和阿偉。', '台慶前兩天，監製房傳出一句話：節目太長，要刪去一個環節。整個後台靜了下來，被點到名的兩個，是高俊傑和阿偉。'),
+}
+def _ko346_get(node, path):
+    parts = path.split(".")[1:]
+    obj = node
+    for part in parts:
+        m = re.match(r"(\w+)\[(\d+)\]", part)
+        if m: obj = obj[m.group(1)][int(m.group(2))]
+        else: obj = obj[part]
+    return obj
+def _ko346_set(node, path, val):
+    parts = path.split(".")[1:]
+    obj = node
+    for part in parts[:-1]:
+        m = re.match(r"(\w+)\[(\d+)\]", part)
+        if m: obj = obj[m.group(1)][int(m.group(2))]
+        else: obj = obj[part]
+    m = re.match(r"(\w+)\[(\d+)\]", parts[-1])
+    if m: obj[m.group(1)][int(m.group(2))] = val
+    else: obj[parts[-1]] = val
+_ko_now = {n["id"]: n for n in _riv_now["nodes"] if n["id"].startswith("A_ko_")}
+_ko_pris = {n["id"]: n for n in _riv_pris["nodes"] if n["id"].startswith("A_ko_")}
+ok("v346 rival_mentor ko：5 節點齊全（今昔各一）",
+   len(_ko_now) == 5 and len(_ko_pris) == 5)
+ok("v346 rival_mentor ko：22 處潤飾原文同 pristine 逐字對位",
+   all(_ko346_get(_ko_pris[p.split(".")[0]], p) == o for p, (o, t) in _KO346.items()))
+for _p, (_o, _t) in _KO346.items():
+    _ko346_set(_ko_pris[_p.split(".")[0]], _p, _t)
+ok("v346 rival_mentor ko：套用 22 處潤飾後同 pristine 逐字一致（結構/旗標/id 冇郁）",
+   all(json.dumps(_ko_now[i], ensure_ascii=False, sort_keys=True) == json.dumps(_ko_pris[i], ensure_ascii=False, sort_keys=True) for i in _ko_now))
 
 # v20a268 精確替代斷言：vera_hiu_choi.json ＝ pristine 版減 5 個 R_vera_* 節點（metadata 清零另行講明）；tang 檔唔存在
 _vhc_now = json.load(open(os.path.join(ROOT, "content", "story_detail_romance_vera_hiu_choi.json"), encoding="utf8"))
