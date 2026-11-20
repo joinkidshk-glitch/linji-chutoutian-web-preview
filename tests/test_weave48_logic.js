@@ -238,8 +238,8 @@ loadGame(baseSave());
   ok('藍 PA：push1「一齊捱過」抉擇 stage:1（v20a100 修正已入 JSON，唔再靠覆寫表）',
      !!(sang && sang.effects.stats.stage === 1 && sang.effects.stats.rel_lan === 2));
   const end = lanNodes.R_lan_ending;
-  ok('藍 PA：ending 抉擇 label／notes 係 JSON（RW-3）版',
-     end.choices[0].label === '接住約定：那頓飯，我記住，不會失約'
+  ok('藍 PA：ending 抉擇 label／notes 係 JSON（RW-3）版（v20a355 HE 改正式拍拖表態）',
+     end.choices[0].label === '講明心意：唔使等第日——我想同你拍拖，唔係淨係一餐飯'
      && end.choices[1].label === '收起那一步：笑著當作約定');
   const xu = STORY_WIRE.romance.lanXu.nodes.find(n => n.id === 'R_xu_meet');
   ok('藍 PA：R_xu_* 無被覆寫（徐寶珊維持富豪千金原線）', !!xu && xu.title === '春茗初遇');

@@ -174,7 +174,7 @@ def line_has(n, frag):
 
 ok("行號釘 ROM159 block 頭 25499", line_has(25523, "v20a159 ROM159 Phase 1"))
 ok("行號釘 bumpRel 凍結鉤 8020", line_has(8265, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(26371, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 CMT_lan_commit 26333", line_has(26405, "COMMIT48_NODES.CMT_lan_commit"))
 ok("行號釘 StoryPlay 預備鉤 10553", line_has(10723, "rom159PrepareNode(node)"))
 ok("行號釘載入覆寫呼叫 14877", line_has(14835, "rom159ApplyGiftOverrides()"))
 ok("行號釘 rom159SoMeetGate 26248", line_has(26272, "function rom159SoMeetGate"))
@@ -738,9 +738,26 @@ ok("v347 rival_mentor 7 弧：34 節點齊全（今昔各一，crisis 另段）"
    len(_p347_now) == 34 and len(_p347_pris) == 34)
 ok("v347 rival_mentor 7 弧：207 處潤飾原文同 pristine 逐字對位",
    all(_ko346_get(_p347_pris[p.split(".")[0]], p) == o for p, (o, t) in _POLISH347.items()))
+# v20a355 雷勁弧說話人錯位修復（支線複檢 s4 A1）：meet/push2/ending 對話改返阿偉在場（cast＋speaker），
+# crisis 高俊傑嗰句改阿偉講（「我哋」→「我」）；push1 高俊傑介入屬有意安排，唔郁。旗標/數值/id 冇郁。
+_FIX355 = {
+    'A_lei_meet.cast': (['雷勁', '張克凡'], ['雷勁', '阿偉']),
+    'A_lei_meet.beats[1].speaker': ('張克凡', '阿偉'),
+    'A_lei_push2.cast': (['雷勁', '張克凡'], ['雷勁', '阿偉']),
+    'A_lei_push2.beats[1].speaker': ('張克凡', '阿偉'),
+    'A_lei_ending.cast': (['雷勁', '張克凡'], ['雷勁', '阿偉']),
+    'A_lei_ending.beats[1].speaker': ('張克凡', '阿偉'),
+    'A_lei_crisis.cast': (['雷勁', '高俊傑'], ['雷勁', '阿偉']),
+    'A_lei_crisis.beats[1].speaker': ('高俊傑', '阿偉'),
+    'A_lei_crisis.beats[1].lines[1]': ('我哋唔會簽呢啲嘢。', '我唔會簽呢啲嘢。'),
+}
+ok("v355 雷勁弧：9 處修復原文同 pristine 逐字對位",
+   all(_ko346_get(_p347_pris[p.split(".")[0]], p) == o for p, (o, t) in _FIX355.items()))
 for _p, (_o, _t) in _POLISH347.items():
     _ko346_set(_p347_pris[_p.split(".")[0]], _p, _t)
-ok("v347 rival_mentor 7 弧：套用 207 處潤飾後同 pristine 逐字一致（結構/旗標/id 冇郁）",
+for _p, (_o, _t) in _FIX355.items():
+    _ko346_set(_p347_pris[_p.split(".")[0]], _p, _t)
+ok("v347＋v355 rival_mentor 7 弧：套用 207 處潤飾＋9 處雷勁修復後同 pristine 逐字一致（旗標/id 冇郁）",
    all(json.dumps(_p347_now[i], ensure_ascii=False, sort_keys=True) == json.dumps(_p347_pris[i], ensure_ascii=False, sort_keys=True) for i in _p347_now))
 
 # v20a268 精確替代斷言：vera_hiu_choi.json ＝ pristine 版減 5 個 R_vera_* 節點（metadata 清零另行講明）；tang 檔唔存在

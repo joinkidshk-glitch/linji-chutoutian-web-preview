@@ -74,7 +74,10 @@ _leak = [c for c in _push1["choices"] if "flag_yip_leaked" in str(c.get("effects
 ok("yip push1 守口 rel＋2", len(_keep) == 1 and _keep[0]["effects"]["stats"].get("rel_yip") == 2)
 ok("yip push1 放料 rel−1＋「把口唔穩」標籤", len(_leak) == 1 and _leak[0]["effects"]["stats"].get("rel_yip") == -1
    and (_leak[0]["effects"].get("ripple") or {}).get("tag") == "把口唔穩")
-ok("yip push1 守口 notes 講明債權由 ENC79 兌現", "ENC79" in str(_keep[0]["effects"].get("notes", "")))
+ok("yip push1 守口 notes 係玩家面文字（v20a355 清走製作備忘：冇 ENC79／fx 術語）",
+   "ENC79" not in str(_keep[0]["effects"].get("notes", ""))
+   and "fx" not in str(_keep[0]["effects"].get("notes", ""))
+   and "以後會還" in str(_keep[0]["effects"].get("notes", "")))
 
 # ---- 5. 年份／phase（source 年，YEARS66＋2 之後＝顯示年） ----
 ok("yip meet 1989夏（顯示 1991夏）", nodes["R_yip_meet"].get("when") == "1989夏" and nodes["R_yip_meet"].get("phase") == "P2")
