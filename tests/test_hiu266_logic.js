@@ -41,7 +41,7 @@ function extractConst(name){
 ok('靜態：V158 表 5 節點＋apply＋載入鏈呼叫', html.includes('const ROMANCE_V158_OVERRIDES') && html.includes('function applyRomanceV158Overrides158') && html.includes('applyRomanceV158Overrides158();'));
 ok('靜態：V158 表有兩封信三揀一＋新旗', html.includes('hiu_deal_refused') && html.includes('hiu_deal_signed') && html.includes('hiu_family_go') && html.includes('C_hiu_push1_c'));
 ok('靜態：C→N——舊 C 閘全無，新 N 閘在位', !html.includes('"openConditions": ["C4"]') && !html.includes('"openConditions": ["C8"]') && !html.includes('"openConditions": ["C9"]') && !html.includes('"phase_P4", "C12"') && html.includes('"openConditions": ["N4"]') && html.includes('"openConditions": ["N9"]') && html.includes('"openConditions": ["N10"]') && html.includes('"phase_P4", "N14"'));
-ok('靜態：CONTRA98 時期已在位（crisis 1989秋／ending 1990秋，v223）', html.includes('R_hiu_crisis:["1989秋"') && html.includes('R_hiu_ending:["1990秋"'));
+ok('靜態：CONTRA98 時期已在位（crisis 1990秋／ending 1990秋，v223＋v343）', html.includes('R_hiu_crisis:["1990秋"') && html.includes('R_hiu_ending:["1990秋"'));
 ok('靜態：apply fn packs 無 rom.tang（v152 已刪）', (()=>{ const fn = extractFn('applyRomanceV158Overrides158'); return fn.includes('rom.veraHiuChoi') && fn.includes('rom.lanXu') && !fn.includes('rom.tang'); })());
 ok('靜態：prepare-hook 在位＋StoryPlay 掛鈎', html.includes('function enc158PrepareNode') && html.includes('enc158PrepareNode(node)'));
 
@@ -124,7 +124,7 @@ eval(extractFn('enc158PrepareNode'));
   globalThis.__CH158.years66Walk(wireChain.romance.veraHiuChoi, null);
   const chainById = {};
   wireChain.romance.veraHiuChoi.nodes.forEach(n => { chainById[n.id] = n; });
-  ok('載入鏈：crisis 頁首 1991秋', chainById.R_hiu_crisis.when === '1991秋');
+  ok('載入鏈：crisis 頁首 1992秋（v343 表值 1990）', chainById.R_hiu_crisis.when === '1992秋');
   ok('載入鏈：push2 頁首 1991冬', chainById.R_hiu_push2.when === '1991冬');
   ok('載入鏈：ending 頁首 1992秋', chainById.R_hiu_ending.when === '1992秋');
   ok('載入鏈：meet 頁首 1990春不變', chainById.R_hiu_meet.when === '1990春');

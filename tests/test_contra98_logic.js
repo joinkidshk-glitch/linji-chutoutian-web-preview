@@ -77,11 +77,12 @@ fixWhen98(packs);
 packs.forEach(p => walk98(p, null));
 packs.forEach(p => (p.nodes || []).forEach(n => { __nodeMap[n.id] = n; }));
 /* v20a219 顯示值（walk +2 後；見 DECISIONS-2026-11-15「when 欄年份核查結果」）：
-   年份：危機三節點 1991（R_choi_crisis／R_hiu_crisis／R_tang_meet_stub，表值 1989），其餘 18 節點 1992；
+   年份：危機節點 1992（v20a343：R_choi_crisis／R_hiu_crisis 表值 1989→1990，頁首由 1991 改 1992；
+   R_tang_meet_stub 表值 1989 唔郁，顯示 1991，stub 永不入玩家列表），其餘 18 節點 1992；
    季節：冬＝7 個 A_ending＋A_ko_ending＋A_ho_crisis＋R_choi_crisis（10），
-   秋＝其餘 11 節點（hiu／choi／xu 三個結局由冬改秋；R_hiu_crisis／R_tang_meet_stub 1991秋；
+   秋＝其餘 11 節點（hiu／choi／xu 三個結局由冬改秋；R_hiu_crisis 1992秋／R_tang_meet_stub 1991秋；
    v20a242：R_lan_crisis／R_lan_ending 1992秋；v20a268：R_vera_ending／R_vera_crisis／R_tang_push2／R_tang_crisis 四行已刪）。 */
-const WANT_YEAR98 = { R_choi_crisis: 1991, R_hiu_crisis: 1991, R_tang_meet_stub: 1991 };
+const WANT_YEAR98 = { R_tang_meet_stub: 1991 };
 const WANT_SEASON98 = { A_hakfan_ending: '冬', A_tsijun_ending: '冬', A_fong_ending: '冬', A_tong_ending: '冬',
   A_ho_ending: '冬', A_gao_ending: '冬', A_lei_ending: '冬',
   A_ko_ending: '冬', A_ho_crisis: '冬', R_choi_crisis: '冬' };
@@ -94,7 +95,7 @@ for(const id of fixIds){
   if(meta.indexOf(String(wy)) < 0 || /199[3-9]|20\d\d/.test(meta)) badYear.push(id + ':' + meta);
   if(meta.indexOf(wy + ws) < 0) badSeason.push(id + ':' + meta + ' want ' + wy + ws);
 }
-ok('A-01/A-02: 21 節點頁首年份正確（危機 1991、其餘 1992；冇 1993/1994）', badYear.length === 0);
+ok('A-01/A-02: 21 節點頁首年份正確（crisis 1992、stub 1991、其餘 1992；冇 1993/1994）', badYear.length === 0);
 if(badYear.length) console.log('   badYear:', badYear.join(' | '));
 ok('A-01/A-02: 21 節點季節正確（冬 10／秋 11，按表）', badSeason.length === 0);
 if(badSeason.length) console.log('   badSeason:', badSeason.join(' | '));
