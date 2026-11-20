@@ -38,3 +38,10 @@
 （旁白行改咗 6 句：611／612／617／618／619／624，見 batch5/diffs5.txt。）
 
 至此 DeepSeek 初稿＋變體 beats 潤飾清單全數清零。
+
+## 落地紀錄
+
+- main 內容 commit：`fca6d7e`（squash merge 自工作分支 v350-polish-enc158 `e26c9d5`），已推 GitHub。
+- Suite：工作副本同常駐 clone 各跑一次，均 398 PASS／9 FAIL，FAIL 名單同基線九項逐項相同，零回歸；`qa296/derive296.json` 已還原。
+- Pages 核實：index.html md5 `9906be89801f5746d694c17897f4ce9e`，同本地 byte-identical（舊版 `182867f0fc22bd67985c4ca0295d2b12`）。
+- 工作副本 linji-work350 已刪；常駐 clone 乾淨。
