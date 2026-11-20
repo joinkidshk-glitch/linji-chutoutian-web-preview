@@ -260,9 +260,9 @@ const ENC79_CASES = [
   ['first:gu_mingfai','靜靜站在那裡，聽他哼完那段舊歌','gig_1990_rec_209'],
   ['first:gu_mingfai','點頭打個招呼，不打擾','gig_1990_rec_201'],
   ['first:gu_mingfai','先走，不要讓人見到我和他站在一起','gig_1990_rec_210'],
-  ['first:mak_zhendong','放低支水喺佢身邊就走','gig_1990_film_211'],
-  ['first:mak_zhendong','堅持遞到佢手','gig_1990_film_213'],
-  ['first:mak_zhendong','開口問佢傷勢','gig_1990_film_214']
+  ['first:mak_zhendong','把水放在他身邊便離開','gig_1990_film_211'],
+  ['first:mak_zhendong','堅持把水遞到他手上','gig_1990_film_213'],
+  ['first:mak_zhendong','開口詢問他的傷勢','gig_1990_film_214']
 ];
 ENC79_CASES.forEach(c=>{
   ok('T2 初遇映射揀啱 ' + c[2] + '（' + c[0] + '）', enc79Pick(c[0], c[1])===c[2]);

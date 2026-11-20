@@ -136,7 +136,7 @@ ok('A cold 旁白（N 句）係書面語，無廣東話口語字（㗎／咗／�
   !!D && D.beats.pang_n17_cold.lines.filter(ln => ln[0] === 'N').every(ln => !/[㗎咗唔嘅喇啲嗰]/.test(ln[1])));
 const coldSteps = { steps: D.beats.pang_n17_cold.lines.map(l => ({ text: l[1] })) };
 ok('A cold 講距離：佢同每個人打招呼、唯獨唔再望向阿偉、連頭都冇回',
-  hasText(coldSteps, '跟每一個人打招呼') && hasText(coldSteps, '唯獨沒有再望向自己') && hasText(coldSteps, '連頭都沒有回'));
+  hasText(coldSteps, '跟每一個人打招呼') && hasText(coldSteps, '唯獨沒有再望向自己') && hasText(coldSteps, '連頭也沒有回'));
 ok('A cold 認返 heart 嗰晚裂痕：笑住話佢諗多咗、臉色僵了一下',
   hasText(coldSteps, '笑著說他想多了') && hasText(coldSteps, '臉色僵了一下'));
 ok('A cold 唔用暖版關鍵句（第一眼就見到你／第一個走過來／嘉賓席／老地方食雲吞麵，慶祝下）',
@@ -165,7 +165,7 @@ ok('B 無旗 → 播暖版（beat:pang_n17 7 句對白＋1 抉擇步，含第一
   'lineSegs=' + segSteps(warm, 'beat:pang_n17').filter(s => !s.choice).length);
 const warmChoice = choiceStep(warm, 'beat:pang_n17');
 ok('B 暖版兩個選擇照舊（label＋授旗唔郁）',
-  !!warmChoice && warmChoice.options[0].label === '去廟街食碗雲吞麵，陪佢坐低' && JSON.stringify(warmChoice.options[0].flags) === JSON.stringify(['pang_noodle_night']) &&
+  !!warmChoice && warmChoice.options[0].label === '去廟街吃一碗雲吞麵，陪他坐下' && JSON.stringify(warmChoice.options[0].flags) === JSON.stringify(['pang_noodle_night']) &&
   warmChoice.options[1].label === '趕住返屋企瞓，聽日仲有工開' && JSON.stringify(warmChoice.options[1].flags) === JSON.stringify(['pang_early_night']));
 
 /* ---------- (C) 播完接駁 ---------- */
@@ -207,7 +207,7 @@ ok('E 舊檔（fav／met＋頭兩幕已做＋brushed_off）唔 crash，照播冷
 ok('S 暖版 pang_n17 7 句逐字唔郁',
   JSON.stringify(D.beats.pang_n17.lines.map(l => l[1])) === JSON.stringify(WARM_LINES));
 ok('S 暖版 pang_n17 兩個選擇逐字唔郁',
-  D.beats.pang_n17.choices[0].label === '去廟街食碗雲吞麵，陪佢坐低' && D.beats.pang_n17.choices[1].label === '趕住返屋企瞓，聽日仲有工開' &&
+  D.beats.pang_n17.choices[0].label === '去廟街吃一碗雲吞麵，陪他坐下' && D.beats.pang_n17.choices[1].label === '趕住返屋企瞓，聽日仲有工開' &&
   D.beats.pang_n17.choices[0].lines[1][1] === '辛苦咩啫，今晚食碗麵，唔使講笑話，坐低慢慢講。');
 ok('S pang_n17 註冊閘唔郁（tier≥3＋1992 冬，無旗條件）',
   (() => { const w = beatOf('pang_siuki', 'pang_n17').when.toString(); return w.indexOf('1992') >= 0 && w.indexOf('冬') >= 0 && w.indexOf('brushed_off') < 0; })());

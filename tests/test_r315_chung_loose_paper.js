@@ -150,7 +150,7 @@ ok('E 含兩則嗰期 commit 只開 lu 風聲（side_lu_concert 係當日輪替�
 /* ---------- S：靜態——唔郁清單 ---------- */
 ok('S1 PAPER_SIDE_ITEMS 仍係 39 則', Array.isArray(PAPER_SIDE_ITEMS) && PAPER_SIDE_ITEMS.length===39, 'count='+(PAPER_SIDE_ITEMS && PAPER_SIDE_ITEMS.length));
 ok('S1 chung_f_clue 對白唔郁（門半掩／加拿大手續／第二天整層樓）',
-  html.indexOf('金鐘創意後台走廊，門半掩住')>=0 &&
+  html.indexOf('金鐘創意後台走廊，房門半掩')>=0 &&
   html.indexOf('第二天，整層樓都知道。《維港日報》花邊多了一句碎片，沒有點名')>=0);
 ok('S1 授旗唔郁（chung_loose_talk／chung_kept_quiet）',
   html.indexOf('flags: ["chung_loose_talk"]')>=0 && html.indexOf('flags: ["chung_kept_quiet"]')>=0);

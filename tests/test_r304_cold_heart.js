@@ -251,7 +251,7 @@ ok('S 提攜冷版對白唔郁（駱錄音室／魏木箱／齊監視器）',
   html.indexOf('木箱硬啲，唔好嫌。') >= 0 &&
   html.indexOf('我仲有場戲要默。') >= 0);
 ok('S 鍾 cold 靜態在位（金鐘細房 4 句）',
-  html.indexOf('金鐘創意一間細房，活動完了，人散得七七八八。鍾楚凝坐在窗邊，見到阿偉進來，沒有叫他坐下。') >= 0 &&
+  html.indexOf('金鐘創意的一間小房間，活動結束，人已散得七七八八。鍾楚凝坐在窗邊，看見阿偉進來，沒有叫他坐下。') >= 0 &&
   html.indexOf('阿偉，今日唔傾喇。我啲安排搞到七七八八，講多一句，都係多餘。') >= 0);
 const gigsLib = GIGS_ARR;
 ok('S gigs_new.json 仍係 323 張', gigsLib.length === 323, 'count=' + gigsLib.length);

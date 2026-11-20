@@ -129,19 +129,19 @@ function stepsText(built){ return (built && built.steps || []).map(s=>String(s.t
 function hasText(built, sub){ return stepsText(built).some(t=>t.indexOf(sub)>=0); }
 
 /* ---- (1) ChoiceFx 12 新分支（用 live label 逐個對） ---- */
-ok('(1) lok_foreshadow：守口 +3／講兩句 -2', enc79ChoiceFx('beat:lok_foreshadow','守口，話冇咩事').fav===3 && enc79ChoiceFx('beat:lok_foreshadow','同人講兩句，話佢為原創歌同高層嗌交').fav===-2);
-ok('(1) lok_cover：企硬 +5／唱住先 +3', enc79ChoiceFx('beat:lok_cover','勸佢企硬，唔好唱翻唱').fav===5 && enc79ChoiceFx('beat:lok_cover','勸佢唱住先，上咗台先再慢慢推原創').fav===3);
-ok('(1) ngai_rain：衝入雨幕 +5／企埋一邊 0', enc79ChoiceFx('beat:ngai_rain','衝入雨幕，用佢教嘅企位頂住燈架').fav===5 && enc79ChoiceFx('beat:ngai_rain','企埋一邊，等武指嚟').fav===0);
+ok('(1) lok_foreshadow：守口 +3／講兩句 -2', enc79ChoiceFx('beat:lok_foreshadow','守口如瓶，只說沒事').fav===3 && enc79ChoiceFx('beat:lok_foreshadow','與人聊上兩句，說他為了原創歌曲與高層爭吵').fav===-2);
+ok('(1) lok_cover：企硬 +5／唱住先 +3', enc79ChoiceFx('beat:lok_cover','勸他堅持立場，不要唱翻唱歌曲').fav===5 && enc79ChoiceFx('beat:lok_cover','勸他先唱再說，登台之後再慢慢推動原創').fav===3);
+ok('(1) ngai_rain：衝入雨幕 +5／企埋一邊 0', enc79ChoiceFx('beat:ngai_rain','衝入雨幕，用她教的站位頂住燈架').fav===5 && enc79ChoiceFx('beat:ngai_rain','站到一旁，等候武指到來').fav===0);
 ok('(1) chai_fear：守口 +3／講兩句 -2', enc79ChoiceFx('beat:chai_fear','守口，話佢好穩陣，唔好亂講').fav===3 && enc79ChoiceFx('beat:chai_fear','講兩句，話一哥都驚後生追上嚟').fav===-2);
 ok('(1) pang_intel：一早去 +3／遲咗 0', enc79ChoiceFx('beat:pang_intel','一早去後台留名，準時到').fav===3 && enc79ChoiceFx('beat:pang_intel','遲咗去／唔去，覺得唔差在').fav===0);
 ok('(1) chung_intel：跟指點 +3／跑熟路 +1', enc79ChoiceFx('beat:chung_intel','跟佢指點去試：帶住個腦去，唔背定一套演法').fav===3 && enc79ChoiceFx('beat:chung_intel','繼續跑熟路通告：邊度有工就去邊度').fav===1);
-ok('(1) chung_f_clue：守口 +3／講兩句 -2', enc79ChoiceFx('beat:chung_f_clue','守口，話冇咩事').fav===3 && enc79ChoiceFx('beat:chung_f_clue','同人講兩句：佢加拿大手續辦緊').fav===-2);
-ok('(1) ching_rival：留低 +3／走先 +1', enc79ChoiceFx('beat:ching_rival','留低陪佢練：幫佢聽住，走音即刻嗌停').fav===3 && enc79ChoiceFx('beat:ching_rival','走先返去瞓：聽朝仲有通告要開工').fav===1);
+ok('(1) chung_f_clue：守口 +3／講兩句 -2', enc79ChoiceFx('beat:chung_f_clue','守口如瓶，只說沒事').fav===3 && enc79ChoiceFx('beat:chung_f_clue','同人講兩句：佢加拿大手續辦緊').fav===-2);
+ok('(1) ching_rival：留低 +3／走先 +1', enc79ChoiceFx('beat:ching_rival','留下陪他練習：替他聽着，一走音便立即叫停').fav===3 && enc79ChoiceFx('beat:ching_rival','走先返去瞓：聽朝仲有通告要開工').fav===1);
 ok('(1) ching_e4：撐練 +5／紅先算 +1', enc79ChoiceFx('beat:ching_e4','撐佢練真功夫：個名上咗報紙，功夫就要追得上個名').fav===5 && enc79ChoiceFx('beat:ching_e4','叫佢紅咗先算：執聲有咩所謂，紅咗先算').fav===1);
 ok('(1) ngai_patron：照實講 +3＋fx ngai_vouch／唔講大話 +1 無 fx', (()=>{ const a=enc79ChoiceFx('beat:ngai_patron','照實講：佢得，佢企得穩'); const b=enc79ChoiceFx('beat:ngai_patron','唔好為我講大話，照實講就得，唔得我自己再練'); return a.fav===3 && a.fx==='ngai_vouch' && b.fav===1 && !b.fx; })());
 ok('(1) ngai_patron key 互斥：兩選項都含「照實講」，A 靠「企得穩」分流', enc79ChoiceFx('beat:ngai_patron','照實講：佢得，佢企得穩').fx==='ngai_vouch' && !enc79ChoiceFx('beat:ngai_patron','唔好為我講大話，照實講就得，唔得我自己再練').fx);
 ok('(1) chai_repay：唔同 +3／穩陣 +1', enc79ChoiceFx('beat:chai_repay','試個同以前唔同嘅角色').fav===3 && enc79ChoiceFx('beat:chai_repay','要個穩陣嘅，慢慢嚟').fav===1);
-ok('(1) pang_n17：雲吞麵 +3／返屋企瞓 +1', enc79ChoiceFx('beat:pang_n17','去廟街食碗雲吞麵，陪佢坐低').fav===3 && enc79ChoiceFx('beat:pang_n17','趕住返屋企瞓，聽日仲有工開').fav===1);
+ok('(1) pang_n17：雲吞麵 +3／返屋企瞓 +1', enc79ChoiceFx('beat:pang_n17','去廟街吃一碗雲吞麵，陪他坐下').fav===3 && enc79ChoiceFx('beat:pang_n17','趕住返屋企瞓，聽日仲有工開').fav===1);
 ok('(1) 舊分支唔郁：lok_help 試 +5／ngai_help 大排檔 +5 fx ngai_meal／pang_help 頂一晚 +5 fx pang_helped', enc79ChoiceFx('beat:lok_help','試試，一Take過給你看').fav===5 && enc79ChoiceFx('beat:ngai_help','請他去大排檔，吃頓好的').fav===5 && enc79ChoiceFx('beat:ngai_help','請他去大排檔，吃頓好的').fx==='ngai_meal' && enc79ChoiceFx('beat:pang_help','頂一晚：整晚跟足全程，幫他看流程').fav===5 && enc79ChoiceFx('beat:pang_help','頂一晚：整晚跟足全程，幫他看流程').fx==='pang_helped');
 
 /* ---- (2) RunChoiceFx ngai_vouch＋ngai_patron grants() 已拆 ---- */
@@ -180,7 +180,7 @@ ok('(3) 即派逐行：揀中嗰個選項 → 派對應 gig（第二朝到期，
 ok('(3) 無即派選項唔派：lok_foreshadow B／chai_fear B／ngai_patron A／lok_e4grudge A 全部無行', (()=> {
   resetS(810);
   const noRows = [
-    ['beat:lok_foreshadow','同人講兩句，話佢為原創歌同高層嗌交'],
+    ['beat:lok_foreshadow','與人聊上兩句，說他為了原創歌曲與高層爭吵'],
     ['beat:chai_fear','講兩句，話一哥都驚後生追上嚟'],
     ['beat:ngai_patron','照實講：佢得，佢企得穩'],
     ['beat:lok_e4grudge','勸他：榜是人排的，歌是自己的'],
@@ -262,7 +262,7 @@ ok('(5) heart 排除：魏 hold_back → 暖版 heart 唔播', (()=>{ const b = 
 ok('(5) heart 排除：齊 loose_fear → 暖版 heart 唔播', (()=>{ const b = heartBuild('chai_zanhoi',45,{year:1992,season:'冬'},{chai_loose_fear:1}); return b && !b.steps.some(s=>s.seg==='heart:chai_zanhoi'); })());
 ok('(5) heart 排除：彭 absent_night → 暖版 heart 唔播', (()=>{ const b = heartBuild('pang_siuki',45,{year:1992,season:'冬'},{pang_absent_night:1}); return b && !b.steps.some(s=>s.seg==='heart:pang_siuki'); })());
 ok('(5) heart 排除：無壞旗 → 暖版 heart 照播', (()=>{ const b = heartBuild('lok_gasing',45,{year:1992,season:'冬'},{}); return b && b.steps.some(s=>s.seg==='heart:lok_gasing'); })());
-ok('(5) 鍾冷版 heart：loose_talk → 播 heartCold（金鐘細房 4 句），唔播暖版 heart', (()=>{ const b = heartBuild('chung_choning',45,{year:1992,season:'冬'},{chung_loose_talk:1}); return b && hasText(b,'金鐘創意一間細房') && hasText(b,'阿偉，今日唔傾喇') && !hasText(b,'阿偉，坐啦，唔使成日企'); })());
+ok('(5) 鍾冷版 heart：loose_talk → 播 heartCold（金鐘細房 4 句），唔播暖版 heart', (()=>{ const b = heartBuild('chung_choning',45,{year:1992,season:'冬'},{chung_loose_talk:1}); return b && hasText(b,'金鐘創意的一間小房間') && hasText(b,'阿偉，今日唔傾喇') && !hasText(b,'阿偉，坐啦，唔使成日企'); })());
 ok('(5) 鍾暖版 heart：無 loose_talk → 播暖版 heart（金鐘小房間）', (()=>{ const b = heartBuild('chung_choning',45,{year:1992,season:'冬'},{}); return b && hasText(b,'金鐘創意一間小房間') && !hasText(b,'阿偉，今日唔傾喇'); })());
 ok('(5) 齊 silent heart：尾句問句換走＋choices 剝走（Beat 4 抉擇唔開）', (()=>{ const b = heartBuild('chai_zanhoi',45,{year:1992,season:'冬'},{chai_silent:1}); const heartSteps = (b&&b.steps||[]).filter(s=>s.seg==='heart:chai_zanhoi'); return b && heartSteps.length>0 && !heartSteps.some(s=>String(s.text||'').indexOf('你覺得我應該點行')>=0) && hasText(b,'你唔使答我，我自己諗') && !b.steps.some(s=>s.choice && s.seg==='heart:chai_zanhoi'); })());
 ok('(5) 齊 advise_stop heart：首句前插「你講中晒。」', (()=>{ const b = heartBuild('chai_zanhoi',45,{year:1992,season:'冬'},{chai_advise_stop:1}); const hs = (b&&b.steps||[]).filter(s=>s.seg==='heart:chai_zanhoi'); return b && hs.length>0 && hs[0].text==='你講中晒。'; })());
@@ -323,7 +323,7 @@ const FLAGS278 = ['lok_first_stand','lok_first_quiet','lok_first_mock','lok_kept
 /* v20a309 Q22：pang_noodle_night／pang_early_night 各 2 次——暖版 pang_n17＋冷版 pang_n17_cold 各授一次（同一個 beat、同一對旗，冷版照留兩個選擇）；其餘 65 旗各 1 次。 */
 ok('(6) 67 支草稿旗全部落 DLG flags 欄位（65 旗各 1 次；彭 n17 兩旗各 2 次：暖版＋冷版）', FLAGS278.length===67 && FLAGS278.every(f=>{ const n = (html.match(new RegExp('flags: \\["'+f.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'"\]', 'g'))||[]).length; return (f==='pang_noodle_night' || f==='pang_early_night') ? n===2 : n===1; }));
 ok('(6) 新 beats DLG 在位：lok_cover／ngai_rain／chai_fear／6 冷版 patron／2 彭收尾／heartCold', ['lok_cover','ngai_rain','chai_fear','lok_patron_cold','lok_patron_cover','ngai_patron_cold','chai_patron_cold','chung_patron_cold','ching_patron_cold','pang_finale','pang_finale_cold'].every(bid=>{ const D = ENC79_DIALOG[bid.indexOf('lok_')===0?'lok_gasing':bid.indexOf('ngai_')===0?'ngai_wingnaam':bid.indexOf('chai_')===0?'chai_zanhoi':bid.indexOf('pang_')===0?'pang_siuki':bid.indexOf('chung_')===0?'chung_choning':'ching_tinlok']; return D && D.beats && D.beats[bid] && (D.beats[bid].lines||[]).length>=1; }) && !!ENC79_DIALOG.chung_choning.heartCold && ENC79_DIALOG.chung_choning.heartCold.lines.length===4);
-ok('(6) 新 labels 一律廣東話（新抉擇 label 無書面語「說／這些／那個」字眼）', (()=>{ const newLabels = [...beatLabels('lok_gasing','lok_foreshadow'),...beatLabels('lok_gasing','lok_cover'),...beatLabels('ngai_wingnaam','ngai_rain'),...beatLabels('chai_zanhoi','chai_fear'),...beatLabels('pang_siuki','pang_intel'),...beatLabels('chung_choning','chung_intel'),...beatLabels('chung_choning','chung_f_clue'),...beatLabels('ching_tinlok','ching_rival'),...beatLabels('ching_tinlok','ching_e4'),...beatLabels('ngai_wingnaam','ngai_patron'),...beatLabels('chai_zanhoi','chai_repay'),...beatLabels('pang_siuki','pang_n17')]; return newLabels.length===24 && newLabels.every(l=>l.indexOf('說')<0 && l.indexOf('這些')<0 && l.indexOf('那個')<0); })());
+ok('(6) 新 labels 24 個在位；v357 書面語化嘅 8 個 label 無廣東話口語字（佢／唔／咗／嗰／喺／啲／咁／冇／嘅）', (()=>{ const newLabels = [...beatLabels('lok_gasing','lok_foreshadow'),...beatLabels('lok_gasing','lok_cover'),...beatLabels('ngai_wingnaam','ngai_rain'),...beatLabels('chai_zanhoi','chai_fear'),...beatLabels('pang_siuki','pang_intel'),...beatLabels('chung_choning','chung_intel'),...beatLabels('chung_choning','chung_f_clue'),...beatLabels('ching_tinlok','ching_rival'),...beatLabels('ching_tinlok','ching_e4'),...beatLabels('ngai_wingnaam','ngai_patron'),...beatLabels('chai_zanhoi','chai_repay'),...beatLabels('pang_siuki','pang_n17')]; const v357 = ['守口如瓶，只說沒事','與人聊上兩句，說他為了原創歌曲與高層爭吵','勸他堅持立場，不要唱翻唱歌曲','勸他先唱再說，登台之後再慢慢推動原創','衝入雨幕，用她教的站位頂住燈架','站到一旁，等候武指到來','留下陪他練習：替他聽着，一走音便立即叫停','去廟街吃一碗雲吞麵，陪他坐下']; return newLabels.length===24 && v357.every(l=>newLabels.includes(l) && !/[佢唔咗嗰喺啲咁冇嘅]/.test(l)); })());
 ok('(6) 唔改 SAVE key／softRev／?v=（v278 只改內容）', html.indexOf('starVolunteer_map_v19w')>=0 && html.indexOf('"s107"')>=0 && html.indexOf('v20a10')>=0);
 
 console.log(fails.length ? ('FAILURES: ' + fails.length + '\n' + fails.join('\n')) : 'ALL PASS');

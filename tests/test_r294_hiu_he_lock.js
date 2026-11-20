@@ -90,7 +90,7 @@ function beatsText(node) { return (node.beats || []).map(b => (b.lines || []).jo
   const endingOut = enc158PrepareNode(clone(byId158.R_hiu_ending));
   const crisisTxt = beatsText(crisisOut), endingTxt = beatsText(endingOut);
   ok('一致：危機唔話留低（無「返轉頭」／「留低」）', !/返轉頭|留低/.test(crisisTxt));
-  ok('一致：結局話走咗（啟德機場＋行入閘口＋冇再回頭）', endingTxt.indexOf('啟德機場') >= 0 && endingTxt.indexOf('行入閘口') >= 0 && endingTxt.indexOf('冇再回頭') >= 0);
+  ok('一致：結局話走咗（啟德機場＋行入閘口＋冇再回頭）', endingTxt.indexOf('啟德機場') >= 0 && endingTxt.indexOf('走進閘口') >= 0 && endingTxt.indexOf('沒有再回頭') >= 0);
   ok('一致：危機話買咗機票要走，結局話上機前返嚟見一面先走（同一條路）', crisisTxt.indexOf('買咗機票') >= 0 && endingTxt.indexOf('上機之前') >= 0);
   S.story.flags = {};
 }

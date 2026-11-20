@@ -164,7 +164,7 @@ for(const sid of ALT_STARS){
 }
 ok('C-02: 12 星喺 at 地點全部換到（旁白＋choice 內文案）、其他地點零改動', swapBad.length === 0);
 if(swapBad.length) console.log('   swapBad:', swapBad.join(' | '));
-ok('C-03: 麥震東底稿唔再寫清水灣', html.indexOf('清水灣片場邊') < 0 && html.indexOf('紅棉影業片場邊，竹棚底下熱到出煙') >= 0);
+ok('C-03: 麥震東底稿唔再寫清水灣', html.indexOf('清水灣片場邊') < 0 && html.indexOf('紅棉影業片場一角，竹棚底下熱得冒煙') >= 0);
 
 console.log(fails.length ? ('CONTRA98 LOGIC: ' + fails.length + ' FAIL') : 'CONTRA98 LOGIC: ALL PASS');
 process.exit(fails.length ? 1 : 0);

@@ -77,7 +77,9 @@ ok('V158：ending P4＋N14 閘＋promise 旗＋commit 層唔郁', ending.phase =
 ok('V158：冪等（第二次 applied = 0）', run158(T158, wire158, appliedSet) === 0);
 for(const id of ['R_hiu_meet','R_hiu_push1','R_hiu_push2','R_hiu_crisis','R_hiu_ending']){
   const node = byId158[id], bt = beatsText(node);
-  ok('V158 語體 beats：' + id + ' 廣東話 ≥25／書面語 0／冇年份／冇真人名／beats ≥300 字', countMarkers(bt, CANT) >= 25 && countMarkers(bt, WRITTEN) === 0 && !/199\d|198\d/.test(bt) && REAL_NAMES.every(x=>!bt.includes(x)) && bt.length >= 300);
+  const dlgText = (node.beats||[]).filter(b=>b.speaker!=='旁白').map(b=>(b.lines||[]).join('')).join('');
+  const narText = (node.beats||[]).filter(b=>b.speaker==='旁白').map(b=>(b.lines||[]).join('')).join('');
+  ok('V158 語體 beats：' + id + ' 對白拍廣東話 ≥25／書面語 0、旁白拍有書面語標記、冇年份／冇真人名／beats ≥300 字', countMarkers(dlgText, CANT) >= 25 && countMarkers(dlgText, WRITTEN) === 0 && countMarkers(narText, WRITTEN) >= 1 && !/199\d|198\d/.test(bt) && REAL_NAMES.every(x=>!bt.includes(x)) && bt.length >= 300);
   ok('V158 語體 synopsis：' + id + ' 書面語（廣東話標記 0／冇年份）', countMarkers(node.synopsis || '', SYN_CANT) === 0 && !/199\d|198\d/.test(node.synopsis || ''));
 }
 globalThis.__byId158 = byId158;

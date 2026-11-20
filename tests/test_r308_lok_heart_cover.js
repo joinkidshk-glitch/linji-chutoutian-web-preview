@@ -139,7 +139,7 @@ ok('C 提攜應用句唔郁（企到台中間嗰陣……企自己嘅歌上去�
 ok('C 舊插入句全檔消失', html.indexOf(OLD_INSERT) < 0);
 
 /* ---------- (D) 守住：beat／旗／閘／播完效果／舊檔 ---------- */
-ok('D lok_cover beat 唔郁（勸佢唱住先上台先）', html.indexOf('勸佢唱住先，上咗台先再慢慢推原創') >= 0);
+ok('D lok_cover beat 唔郁（勸佢唱住先上台先）', html.indexOf('勸他先唱再說，登台之後再慢慢推動原創') >= 0);
 ok('D lok_cover_first 旗唔郁', html.indexOf('flags: ["lok_cover_first"]') >= 0);
 ok('D 暖版閘唔郁（cover_first 排除暖版）', html.indexOf('warm = !!(F.lok_calm_truth) && !(F.lok_join_rant) && !(F.lok_loose_row) && !(F.lok_cover_first);') >= 0);
 ok('D lok_patron_cover 閘唔郁（T4＋cover_first）', html.indexOf('id:"lok_patron_cover", when(st){ return enc79TierOf(st.fav)>=4 && (S.flags||{}).lok_cover_first') >= 0);

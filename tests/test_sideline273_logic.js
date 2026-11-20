@@ -128,7 +128,7 @@ ok('(c) fx 駱 first：講好話 +3／點頭 +1／笑佢 -2（live label）', en
 ok('(c) fx 程 first：練到天亮 +3／遞一瓶水 +1／笑佢 -2（live label）', enc79ChoiceFx('first:ching_tinlok','說自己當年怎樣熬：被人笑的時候，我也是練到天亮').fav===3 && enc79ChoiceFx('first:ching_tinlok','靜靜遞一瓶水給他，不出聲').fav===1 && enc79ChoiceFx('first:ching_tinlok','笑他的唱功：你唱那兩句真的不行').fav===-2);
 ok('(c) fx 蘇 first：護著 +3／讓開 +1／介紹 -2（live label）', enc79ChoiceFx('first:so_jiyan','護著她進升降機，一句也不多說').fav===3 && enc79ChoiceFx('first:so_jiyan','讓開站到一邊，不阻礙別人工作').fav===1 && enc79ChoiceFx('first:so_jiyan','趁機介紹自己，想攞個機會').fav===-2);
 ok('(c) fx 六線 heart 全部對得上 live label（駱聽／魏認真／齊真話／彭聽／鍾出聲／程慢）', enc79ChoiceFx('heart:lok_gasing','靜靜聽他彈完寫好嗰半首').fav===3 && enc79ChoiceFx('heart:lok_gasing','讚他那首歌好聽').fav===1
-  && enc79ChoiceFx('heart:ngai_wingnaam','認真記低，返去練').fav===3 && enc79ChoiceFx('heart:ngai_wingnaam','笑著說怕自己學不來').fav===1
+  && enc79ChoiceFx('heart:ngai_wingnaam','認真記下，回去練習').fav===3 && enc79ChoiceFx('heart:ngai_wingnaam','笑著說怕自己學不來').fav===1
   && enc79ChoiceFx('heart:chai_zanhoi','說真話：戲路要變，不變才危險').fav===3 && enc79ChoiceFx('heart:chai_zanhoi','安慰他：一哥地位哪有這麼容易動搖').fav===1
   && enc79ChoiceFx('heart:pang_siuki','靜靜聽他說完').fav===3 && enc79ChoiceFx('heart:pang_siuki','笑著說他想多了').fav===1
   && enc79ChoiceFx('heart:chung_choning','靜靜聽，不出聲').fav===3 && enc79ChoiceFx('heart:chung_choning','問她會不會回來').fav===1
@@ -156,7 +156,7 @@ ok('(d) G-NGAI-3：餐飯人情第二重兌現＝gig_1992_film_101《武館風�
 ok('(d) G-L2：trigger 通告 gig_1992_film_202《笑到最後》在位，債權 code 側已授出（v20a279 收割完成授債權＋BR89 map 第 14 對＋結局讀位，共 3 處）', (()=>{ const g=gigById('gig_1992_film_202'); return !!g && g.trigger && g.trigger.creditId==='credit_wf3_comedy_crew' && html.split('credit_wf3_comedy_crew').length-1===3; })());
 ok('(d) G-NGAI-2：stub 債 debt_slot_ngai_01 code 側 0 命中（已刪）', !html.includes('debt_slot_ngai_01') && !gigById('debt_slot_ngai_01'));
 ok('(d) G-CHAI-3：code 早已係「企邊嗰場風波」，舊詞 0 命中', html.includes('企邊嗰場風波') && !html.includes('站隊嗰場風波'));
-ok('(d) G-LOK-2／G-NGAI-4／G-CHAI-2／G-PANG-2：草稿新寫抉擇唔在 live code（無「唱住先」抉擇 label）', !html.includes('label: "勸他唱住先') && !html.includes('label: "勸他堅持'));
+ok('(d) G-LOK-2／G-NGAI-4／G-CHAI-2／G-PANG-2：草稿新寫抉擇唔在 live code（無「唱住先」抉擇 label）', !html.includes('label: "勸他唱住先，上咗台') && !html.includes('label: "勸他堅持企硬'));
 ok('(d) M-1：GRANT229 晨鏈在位（PresentDue→DueList→DeliverOne）', html.includes('function grant229PresentDue') && html.includes('grant229DueList()') && html.includes('function grant229DeliverOne'));
 
 /* ---- (e) 陸 foreshadow 放寬：遲遇都開，唔再鎖死 luk_kept_secret／heart ---- */
