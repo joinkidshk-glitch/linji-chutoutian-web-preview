@@ -20769,7 +20769,7 @@ function startTodayScheduleFromMap(){
   const id=todayPlanId();
   if(!id || isMapDay(id)){ goToMapForBrowse(); return; }
   if(String(id).startsWith("wrap:") || String(id).startsWith("audition:")){ goToMapForBrowse(); return; }
-  resolvePlannedDay(id);
+  morningChain196(()=>{ resolvePlannedDay(id); }, { mapMode:false }); /* v20a344 硬化：唔好直接 resolvePlannedDay 繞過晨鏈（昨晚典禮／晨報會靜默遲一日，drive-192 實測）——跟 runScheduleFromToday 同一寫法，先行全晨鏈再跑當日行程 */
 }
 /** If today still has auto schedule (拍攝／訓練等), run it instead of idling on map. */
 /** v19z11：過一日（舊名提早休息，+1日）——選單獨立掣＋二次確認 */
@@ -20845,7 +20845,7 @@ function kickScheduleIfNeeded(){
   if(!todayIsForcedDay()) return false;
   const id=todayPlanId();
   toast("今日已排定行程，繼續進行…");
-  resolvePlannedDay(id);
+  morningChain196(()=>{ resolvePlannedDay(id); }, { mapMode:false }); /* v20a344 硬化：同 startTodayScheduleFromMap——先行全晨鏈再跑當日行程，唔好繞鏈令典禮／晨報遲一日；mapMode:false 令鏈尾唔再 kick 自己（無遞迴），各 presenter 冇 pending 就回 false，重入無害 */
   return true;
 }
 function goEnrollableCompany(){
@@ -31223,13 +31223,13 @@ function renderAwardInviteHtml(pack){
   if(!catsBit182){
     catsBit182 = (Array.isArray(pack.categories) && pack.categories.length) ? `<p class="psr-sub">你爭嘅獎項：${awardsCatsSorted184(pack).map(c=> (c && c.label) || "").filter(Boolean).join("、")}</p>` : "";
   }
-  return `<div class="psr-sheet awd-sheet">
+  return /* v20a218 C-B1：請柬要講明「預約」——點擊出席唔係即刻播，係預約咗嗰晚收工之後播；合成 pack（自檢假請柬）唔出呢行（v20a344：原註解寫喺 template literal 入面會照字面渲染出請柬，移出做 JS 註解） */ `<div class="psr-sheet awd-sheet">
     <p class="psr-eyebrow">定期頒獎</p>
     <h3 class="psr-h">${pack.inviteTitle||"頒獎夜請柬"}</h3>
     <p class="psr-sub">${pack.displayName||""} · ${pack.season||""}${pack.year?(" "+pack.year):""}</p>
     ${pack.venue99 ? `<p class="psr-sub">場地：${pack.venue99}</p>` : ""}
     ${(pack && pack.ceremonyDay213!=null) ? `<p class="psr-sub">典禮夜：${awards213DateLabel(pack.ceremonyDay213)}</p>` : ""}
-    ${(()=>{ try{ const k213 = !!(pack && pack.ceremonyId && typeof awardsCeremonyById==="function" && awardsCeremonyById(pack.ceremonyId)); return k213 ? `<p class="psr-sub">出席即預約：典禮夜收工之後先播出。</p>` : ""; }catch(_e){ return ""; } })()} /* v20a218 C-B1：請柬要講明「預約」——點擊出席唔係即刻播，係預約咗嗰晚收工之後播；合成 pack（自檢假請柬）唔出呢行 */
+    ${(()=>{ try{ const k213 = !!(pack && pack.ceremonyId && typeof awardsCeremonyById==="function" && awardsCeremonyById(pack.ceremonyId)); return k213 ? `<p class="psr-sub">出席即預約：典禮夜收工之後先播出。</p>` : ""; }catch(_e){ return ""; } })()}
     <p class="psr-body">${pack.inviteDek||""}</p>
     ${tierBit}
     ${catsBit182}
