@@ -106,8 +106,8 @@ for rel in ['assets/story/fullbody/kwan_hoimei_base.webp',
 # ---- (7) tang 檔名喺已載入 JSON 只剩 metadata 字串（唔係載入路徑） ----
 # 容許嘅欄位：alignedWith／supersededByFile／notes_tang／oldRomanceRef／rule 敘述；其餘出現即 FAIL。
 _tang_hits = []
-for rel in _loaded + ['content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json',
-                      'content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.json']:
+# v20a358：兩個 MEET mock 已成檔刪除，唔再列入檢查清單（檔已刪，冇嘢好查）。
+for rel in _loaded:
     txt = open(os.path.join(ROOT, rel), encoding='utf-8').read()
     for m in re.finditer(r'story_detail_romance_tang\.json', txt):
         ctx = txt[max(0, m.start() - 200):m.start()]

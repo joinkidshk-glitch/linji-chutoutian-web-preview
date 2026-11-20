@@ -63,7 +63,7 @@ ok("N17 節點係 1990 冬（源頭）＋台慶之後＋散場（v157：場景�
    and "台慶之後，何生在星河電視台會議室等你" in c17 and "頒獎禮散場" in c17)
 ok("N17 節點無「試咪／開場之前」", "試咪" not in c17 and "開場之前" not in c17)
 ok("N17 節點經 years66Walk（1990 源頭先會顯示 1992）：pack main 喺載入 walk 清單",
-   "[main, rom1, rom2, rom3, rival, gateStub, dengMock, dengPushMock, dualMock].forEach" in src  # v20a159 ROM159：加 rom3
+   "[main, rom1, rom2, rom3, rival, gateStub, dualMock].forEach" in src  # v20a159 ROM159：加 rom3；v20a358：DengLine mock 已刪
    and "years66Walk(p, null)" in src)
 ok("N17 pacing.weekMin＝153（章戳約第153週）", (pack_nodes.get("N17", {}).get("pacing") or {}).get("weekMin") == 153)
 ok("結局總結 fallback 改做台慶之後那一晚（唔經 walk，源頭寫 1992）",

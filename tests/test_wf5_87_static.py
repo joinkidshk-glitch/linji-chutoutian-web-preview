@@ -42,7 +42,7 @@ ok("p3when 期望已更新", '"主線 · 1988秋"' in idx)
 # 變體覆寫標記＋call site
 ok("WF5 覆寫表", "const WF5_VARIANT_OVERRIDES87" in idx)
 ok("WF5 apply", "function applyVariantWf5Overrides87" in idx)
-ok("WF5 call site", "applyVariantWf5Overrides87(dengMock, dengPushMock, dualMock)" in idx)
+ok("WF5 call site", "applyVariantWf5Overrides87(dualMock)" in idx)  # v20a358：DengLine mock 已刪，呼叫只剩 dualMock
 
 # pack JSON 冇直改（同 v86 出貨副本逐檔 sha 對照）
 # v157 豁免（已拍板，窄化）：story_detail_c1_to_c17.json 只准 nodes[0-4] 改動

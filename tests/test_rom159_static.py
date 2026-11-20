@@ -1,3 +1,4 @@
+# v20a358 resync＋手術：支線複檢 (b) 類潤飾 27 處（_FIX358_KO 3＋_FIX358 24）＋soft 層鄧麗萍清理令 index.html 淨 −441 行，6 個行號釘＋全佳行按內容重對（25100／8173／25994／10316／14421／25849／25128），內容逐字核實純漂移。
 # v20a356 resync：rival_mentor 支線複檢 (a) 類矛盾修復——已有 dict 條目 live 值更新＋_FIX356 新增條目＋crisis B0 中立交代句（見各段）；釘行按段 shift（index.html 淨 +20）。
 # v20a352 resync：index.html 淨 +18 行（ending410EveNode 回憶過濾＠舊 L13117 後）；4 個行號釘＋全佳行各 +18，內容逐字核實純漂移；story_detail_n1_to_n17.json 因主線複檢 26 項修復唔入「pack 冇直改」清單，改精確替代斷言（見下）。
 # v20a347 resync：rival_mentor 文字潤飾第二批（ko 餘 3 批 13 行＋7 弧 213 行，官方 qwen4-max；結構/旗標/id 不變）；精確替代斷言：ko 段擴至 35 處、A_tsijun_crisis 段改精確替代（加句＋6 處）、7 弧新增 207 處（見下面 v347 段）。
@@ -173,19 +174,19 @@ ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committ
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25499", line_has(25524, "v20a159 ROM159 Phase 1"))
-ok("行號釘 bumpRel 凍結鉤 8020", line_has(8266, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(26418, "COMMIT48_NODES.CMT_lan_commit"))
-ok("行號釘 StoryPlay 預備鉤 10553", line_has(10724, "rom159PrepareNode(node)"))
-ok("行號釘載入覆寫呼叫 14877", line_has(14836, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26248", line_has(26273, "function rom159SoMeetGate"))
+ok("行號釘 ROM159 block 頭 25499", line_has(25100, "v20a159 ROM159 Phase 1"))
+ok("行號釘 bumpRel 凍結鉤 8020", line_has(8173, "rom159GainAllowed(k)"))
+ok("行號釘 CMT_lan_commit 26333", line_has(25994, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 StoryPlay 預備鉤 10553", line_has(10316, "rom159PrepareNode(node)"))
+ok("行號釘載入覆寫呼叫 14877", line_has(14421, "rom159ApplyGiftOverrides()"))
+ok("行號釘 rom159SoMeetGate 26248", line_has(25849, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25552 - 1])  # v20a159 整合：B1＋B2 後行號 +86
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25128 - 1])  # v20a159 整合：B1＋B2 後行號 +86；v20a358 resync −424
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）
@@ -522,7 +523,17 @@ ok("v346+v347 rival_mentor ko：35 處潤飾原文同 pristine 逐字對位",
    all(_ko346_get(_ko_pris[p.split(".")[0]], p) == o for p, (o, t) in list(_KO346.items()) + list(_KO347.items())))
 for _p, (_o, _t) in list(_KO346.items()) + list(_KO347.items()):
     _ko346_set(_ko_pris[_p.split(".")[0]], _p, _t)
-ok("v346+v347 rival_mentor ko：套用 35 處潤飾後同 pristine 逐字一致（結構/旗標/id 冇郁）",
+# v20a358 支線複檢 (b) 類潤飾（qwen4-max；notes 措辭，旗標/數值/id 冇郁）
+_FIX358_KO = {
+    'A_ko_meet.choices[0].effects.notes': ('高俊傑記住，阿偉不好欺。', '高俊傑牢牢記住，阿偉並不是好欺負的人。'),
+    'A_ko_crisis.choices[1].effects.notes': ('兩人關係出現微妙變化。', '兩人關係微妙轉變，由對手變成肯坐下商量。'),
+    'A_ko_ending.choices[1].effects.notes': ('兩人表面客氣，心底仍有刺。', '兩人表面客氣，暗裏仍存芥蒂。'),
+}
+ok("v358 ko：3 處潤飾原文同套用 346/347 後 pristine 逐字對位",
+   all(_ko346_get(_ko_pris[p.split(".")[0]], p) == o for p, (o, t) in _FIX358_KO.items()))
+for _p, (_o, _t) in _FIX358_KO.items():
+    _ko346_set(_ko_pris[_p.split(".")[0]], _p, _t)
+ok("v346+v347+v358 rival_mentor ko：套用 35 處潤飾＋3 處 v358 潤飾後同 pristine 逐字一致（結構/旗標/id 冇郁）",
    all(json.dumps(_ko_now[i], ensure_ascii=False, sort_keys=True) == json.dumps(_ko_pris[i], ensure_ascii=False, sort_keys=True) for i in _ko_now))
 
 # v20a347 精確替代斷言：rival_mentor 7 弧（hakfan／tsijun／fong／tong／ho／gao／lei）文字潤飾（官方 qwen4-max，207 行；A_tsijun_crisis 6 行見上面 crisis 段；結構/旗標/id 不變）
@@ -781,7 +792,38 @@ ok("v356 rival_mentor 7 弧：14 處修復原文同 pristine 逐字對位",
    all(_ko346_get(_p347_pris[p.split(".")[0]], p) == o for p, (o, t) in _FIX356.items()))
 for _p, (_o, _t) in _FIX356.items():
     _ko346_set(_p347_pris[_p.split(".")[0]], _p, _t)
-ok("v347＋v355＋v356 rival_mentor 7 弧：套用 207 處潤飾＋9 處雷勁修復＋14 處 v356 修復後同 pristine 逐字一致（旗標/id 冇郁）",
+# v20a358 支線複檢 (b) 類潤飾（qwen4-max 細批次＋成批制；synopsis/label/notes/beats 措辭，旗標/數值/id 冇郁）
+_FIX358 = {
+    'A_hakfan_meet.choices[1].effects.notes': ('張克凡談演技即認真，開始視阿偉為對手。', '張克凡一談到演技便立刻認真起來，開始視阿偉為對手。'),
+    'A_hakfan_crisis.choices[0].label': ('跟張克凡聯手，一起洽談外間公司', '與張克凡聯手，一同跟外間公司洽談'),
+    'A_hakfan_crisis.choices[2].effects.notes': ('張克凡知道後關係轉冷，兩人心底留下一根刺。', '張克凡知道後關係轉冷，兩人之間自此有了隔閡。'),
+    'A_hakfan_ending.choices[2].effects.notes': ('阿偉把較量化為傳承，對手線昇華。', '阿偉邀請張克凡一同帶領新人，雙方的較量至此告一段落。'),
+    'A_tsijun_meet.synopsis': ('阿偉被派去單元劇練功房試鏡，遇到文藝導演張子駿。他不急看阿偉演戲，只叫他在鏡前站定，想清楚自己為何想演戲。高俊傑在門口探頭催人。', '阿偉被派去單元劇練功房試鏡，遇到文藝導演張子駿。張子駿不急於看阿偉表演，只叫他在鏡前站定，想清楚自己為何想演戲。高俊傑在門口探頭催人。'),
+    'A_tsijun_push1.beats[0].lines[0]': ('單元劇班底名單貼出來，阿偉的名字在最後一行，只有三場戲。但張子駿親手圈住第三場。', '單元劇班底名單貼出來，阿偉的名字在最後一行，他飾演的角色只有三場戲。但張子駿親手圈住第三場。'),
+    'A_fong_crisis.beats[0].lines[0]': ('那一下很快，小龍落地時腳一滑，滑出台邊，半邊身吊在半空，只剩一隻手抓著邊緣。全場聲音一下子全沒了。', '事發極快，小龍落地時腳下打滑，整個人溜出台邊，半邊身懸在半空，只剩一隻手抓著邊緣。全場頓時鴉雀無聲。'),
+    'A_fong_crisis.choices[0].effects.notes': ('阿偉衝上去抓緊小龍。小龍這件事還沒完，日後可能有回報。', '小龍在半空被穩穩拉住，驚魂未定；這場風波顯然還未平息。'),
+    'A_fong_ending.choices[0].effects.notes': ('阿偉與小龍一同加入新班底，互相照應。', '新班底名單上多了兩個名字，往後開工互有照應，不再單打獨鬥。'),
+    'A_fong_ending.choices[1].effects.notes': ('兩人各自跟不同班底，但言明有事一定幫忙。', '路分兩條，通告各接各的，但那句承諾依然作準：有事必定出手。'),
+    'A_fong_ending.choices[2].effects.notes': ('阿偉不再跟班底，與小龍各行各路。', '班底名單上再沒有阿偉的名字，兩人的路自此愈走愈遠。'),
+    'A_tong_push2.synopsis': ('唐素雲一句話鉤住阿偉，要他想清楚是否真的想留在這行。', '唐素雲一句話就說到阿偉心裏，要他想清楚是否真的想留在這行。'),
+    'A_tong_push2.choices[1].effects.notes': ('阿偉坦白說尚未想清楚，唐素雲覺得他還要再想。', '阿偉坦白說尚未想通，唐素雲認為他仍需好好考慮。'),
+    'A_ho_push2.synopsis': ('阿偉通告漸多，何生逐張跟他核對，指出哪張消耗他、哪張替他打底，還推了兩張，留精神拍下個星期那組。', '阿偉通告漸多，何生逐張跟他核對，指出哪張消耗他、哪張替他打底，還推了兩張，留精神拍下個星期開拍的那組戲。'),
+    'A_ho_crisis.choices[2].effects.notes': ('何生照說，但指阿偉還未夠膽。', '何生照說，但指出阿偉仍未有足夠膽量。'),
+    'A_ho_ending.choices[0].effects.notes': ('師徒線收成，何生認可阿偉。', '何生認可阿偉，正式收他為徒。'),
+    'A_gao_push2.choices[1].label': ('收着演，寧願穩妥不博', '演得收斂，寧願穩妥，不願冒險'),
+    'A_gao_crisis.synopsis': ('高文瀚把公司的賀歲檔押在阿偉身上，但上面有人質疑，說阿偉未夠班擔正。他叫阿偉進房，沒有安慰，只將預算表推到他面前，問一句：你覺得我應不應該繼續賭下去。', '高文瀚把公司的賀歲檔押在阿偉身上，但上面有人質疑，說阿偉資歷未夠，未能擔正。他叫阿偉進房，沒有安慰，只將預算表推到他面前，問一句：你覺得我應不應該繼續賭下去。'),
+    'A_gao_ending.choices[1].effects.notes': ('高文瀚沒有拒絕，但開始收資源，兩人心底有刺。', '高文瀚沒有拒絕，但開始收緊資金與人脈上的支援，兩人漸生嫌隙。'),
+    'A_lei_push1.synopsis': ('雷勁開始出手，先把阿偉的通告「技術性」調走，再在停車場截住他，半笑半嚇，說這行現實，不埋堆就被邊緣化。', '雷勁開始出手，先把阿偉的通告「技術性」調走，再在停車場截住他，半笑半嚇地警告他，這行現實，不埋堆就會被邊緣化。'),
+    'A_lei_push1.choices[2].effects.notes': ('高俊傑答應，但欠下一個人情。', '高俊傑答應，但阿偉從此欠他一個人情。'),
+    'A_lei_crisis.synopsis': ('雷勁要阿偉即刻簽長約，年期長、抽佣高、違約罰得重，還說不簽就是不給面子。阿偉怎樣表態，雷勁都沒有即刻發惡，只慢慢合上記數簿，說了一句令阿偉心寒的話。', '雷勁要阿偉立即簽長約，年期長、抽佣高、違約罰得重，還說不簽就是不給面子。無論阿偉怎樣表態，雷勁都沒有即時動怒，只慢慢合上記數簿，說了一句令阿偉心寒的話。'),
+    'A_lei_crisis.choices[1].label': ('提出反建議，提高自己籌碼', '提出反建議，為自己爭取更好條件'),
+    'A_lei_ending.choices[1].effects.notes': ('雷勁不服，但認阿偉有種。', '雷勁不服，但佩服阿偉的膽色。'),
+}
+ok("v358 rival_mentor 7 弧：24 處潤飾原文同套用 347/355/356 後 pristine 逐字對位",
+   all(_ko346_get(_p347_pris[p.split(".")[0]], p) == o for p, (o, t) in _FIX358.items()))
+for _p, (_o, _t) in _FIX358.items():
+    _ko346_set(_p347_pris[_p.split(".")[0]], _p, _t)
+ok("v347＋v355＋v356＋v358 rival_mentor 7 弧：套用 207 處潤飾＋9 處雷勁修復＋14 處 v356 修復＋24 處 v358 潤飾後同 pristine 逐字一致（旗標/id 冇郁）",
    all(json.dumps(_p347_now[i], ensure_ascii=False, sort_keys=True) == json.dumps(_p347_pris[i], ensure_ascii=False, sort_keys=True) for i in _p347_now))
 
 # v20a268 精確替代斷言：vera_hiu_choi.json ＝ pristine 版減 5 個 R_vera_* 節點（metadata 清零另行講明）；tang 檔唔存在

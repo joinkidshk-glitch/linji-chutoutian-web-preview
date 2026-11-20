@@ -155,11 +155,11 @@ function loadPack(f) { return JSON.parse(fs.readFileSync(path.join(ROOT, 'conten
   if (!ovSrc || !fnSrc) return;
   const applyVariantWf5Overrides87 = new Function('var WF5_VARIANT_OVERRIDES87 = ' + ovSrc + ';\n' + fnSrc + '\nreturn applyVariantWf5Overrides87;')();
   const OV_KEYS = Object.keys(eval('(' + ovSrc + ')'));
-  const files = ['MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json', 'MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json', 'MOCK_STORY_DUAL_MEET_THICKEN_SOFT_v1.json'];
+  const files = ['MOCK_STORY_DUAL_MEET_THICKEN_SOFT_v1.json']; /* v20a358：兩個 DengLine mock 已刪，WF5 只剩 DualMeet 兩節 */
   const orig = files.map(loadPack);
   const work = JSON.parse(JSON.stringify(orig));
-  const applied = applyVariantWf5Overrides87(work[0], work[1], work[2]);
-  ok('變體 套用節點數 = 6（v20a152：R_tang_ending 已刪）', applied === 6);
+  const applied = applyVariantWf5Overrides87(work[0]);
+  ok('變體 套用節點數 = 2（v20a358：R_tang_* 四節已刪，只剩 hiu／choi）', applied === 2);
   const nodesOf = (packs) => packs.flatMap(p => [].concat(p.beats || [], p.nodes || [])).filter(n => n && n.id && Array.isArray(n.beats));
   const before = nodesOf(orig), after = nodesOf(work);
   const CANTO = ['嘅', '喺', '唔', '佢', '哋', '咗', '冇', '畀', '嚟', '㗎', '嗰', '呢', '先', '返', '埋', '攞', '睇', '講'];
@@ -180,14 +180,13 @@ function loadPack(f) { return JSON.parse(fs.readFileSync(path.join(ROOT, 'conten
     if (JSON.stringify(a.openConditions || null) !== JSON.stringify(b.openConditions || null)) structOk = false;
   }
   ok('變體 結構不變量全保', structOk);
-  /* v20a152：鄧麗萍收尾已刪——WF5 表冇 R_tang_ending，push mock 載入嗰陣過濾咗；
-     以下斷言 WF5 覆寫層本身唔再有 ending 條目（業務節點 meet／push1／push2／crisis 照覆寫） */
+  /* v20a358：鄧麗萍 soft 層全刪——WF5 表冇任何 R_tang_* 條目，只留 hiu／choi */
   ok('變體 WF5 表冇 R_tang_ending（v20a152）', !('R_tang_ending' in eval('(' + ovSrc + ')')));
-  ok('變體 WF5 表留返鄧麗萍業務節點', ['R_tang_meet', 'R_tang_push1', 'R_tang_push2', 'R_tang_crisis'].every(k => k in eval('(' + ovSrc + ')')));
-  /* 禁詞＋年份數字（DengLine selfCheck 口徑） */
-  const dengAll = JSON.stringify([byId.R_tang_meet, byId.R_tang_push1, byId.R_tang_push2, byId.R_tang_crisis]);
-  for (const b of ['關海媚', '陳淑芬', '施南生', 'Ho哥', 'nextHint']) ok('變體 鄧線冇禁詞「' + b + '」', dengAll.indexOf(b) < 0);
-  ok('變體 鄧線 beats 冇 1989–1992 數字', !/19(89|90|91|92)/.test(JSON.stringify([byId.R_tang_push1.beats, byId.R_tang_push2.beats, byId.R_tang_crisis.beats])));
+  ok('變體 WF5 表冇鄧麗萍業務節點（v20a358 全刪）', ['R_tang_meet', 'R_tang_push1', 'R_tang_push2', 'R_tang_crisis'].every(k => !(k in eval('(' + ovSrc + ')'))));
+  ok('變體 WF5 表留返 hiu／choi', ['R_hiu_meet', 'R_choi_meet'].every(k => k in eval('(' + ovSrc + ')')));
+  /* 禁詞（DualMeet 覆寫後口徑） */
+  const dualAll = JSON.stringify([byId.R_hiu_meet, byId.R_choi_meet]);
+  for (const b of ['關海媚', '陳淑芬', '施南生', 'Ho哥', 'nextHint']) ok('變體 雙線冇禁詞「' + b + '」', dualAll.indexOf(b) < 0);
   /* 采兒 meet：週刊正字＋M33 口徑 */
   const choi = byId.R_choi_meet, choiVis = JSON.stringify({ t: choi.title, s: choi.setting, y: choi.synopsis, b: choi.beats });
   ok('變體 采兒 meet 用《星訊週刊》', choiVis.indexOf('《星訊週刊》') >= 0);

@@ -236,7 +236,18 @@ try:
     _v342_allowed = {'content/story_detail_romance_lan_xu.json',
         'content/story_detail_romance_vera_hiu_choi.json',
         'content/story_detail_romance_yip_so.json'}
-    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v243_allowed | _v244_allowed | _rw8_allowed | _v268_allowed | _v327_allowed | _v297_allowed | _v342_allowed for l in touched))
+    # v358 豁免（支線複檢 (b) 潤飾＋soft 層鄧麗萍清理，已拍板）：三個 story pack 逐句潤飾
+    # （rival_mentor／lan_xu／vera_hiu_choi）；三個 DengLine mock JSON 連同名 .md 成檔刪除
+    # （soft 層底稿，live 路徑零讀者，詳見 NOTES_V20A358）。
+    _v358_allowed = {'content/story_detail_rival_mentor.json',
+        'content/story_detail_romance_lan_xu.json',
+        'content/story_detail_romance_vera_hiu_choi.json',
+        'content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.json',
+        'content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json',
+        'content/MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json',
+        'content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.md',
+        'content/MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.md'}
+    ok('X05_content_json_untouched', all(l[3:] in _v217_allowed | _v210_allowed | _v229_allowed | _v229_b3_allowed | _v229_b7_allowed | _v239_allowed | _v241_allowed | _v243_allowed | _v244_allowed | _rw8_allowed | _v268_allowed | _v327_allowed | _v297_allowed | _v342_allowed | _v358_allowed for l in touched))
 except Exception as e:
     ok('X05_content_json_untouched (git unavailable: %s)' % e, False)
 

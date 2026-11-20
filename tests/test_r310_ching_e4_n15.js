@@ -126,7 +126,7 @@ const OPENING_LINES = [
 const TRAIN_TRUST = '你嗰晚都係咁揀，我信你。';
 const POLISH_RETORT = '你嗰晚都係靠部機交帶㗎，咁你而家係教我練，定教我執呀？';
 const ORIG_ACCEPT = '好！咁我今晚唔停，唱嗰課練多一個鐘，你唔准走！';
-const ORIG_PLAYER = '天諾，個名上咗報紙，功夫就要追得上個名。你今晚加操嗰一個鐘，我陪你。你唱，我聽住。';
+const ORIG_PLAYER = '天諾，你今晚加操嗰一個鐘，我全程陪你練。你唱，我聽住。'; /* v20a358 (b) 潤飾：刪走「個名上咗報紙」 setup 句（s12 B6） */
 const ORIG_POLISH_PLAYER = '天諾，報紙都出咗，你就唔好再自己嚇自己喇。執聲就執聲，紅咗先算，練嘅事，紅咗之後慢慢補都未遲。';
 const ORIG_POLISH_REPLY = '……報紙都出咗，我仲諗咁多做咩。你講得啱，今晚唔練喇，我返去瞓先。';
 

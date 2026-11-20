@@ -1,3 +1,4 @@
+# v20a358：三個 DengLine mock 已成檔刪除，§6 由「JSON 有效＋flag 已清」改做「檔已刪」斷言。
 # v20a297：Vera／關海媚成個移除——(5)(7) 翻轉：speaker registry／散文稱號句／名冊規則句全部已刪；
 #   本檔由釘行檢查改做內容檢查（見下面 v297 註）。
 # v20a286 resync：index.html 淨 +9 行（contFromSlot sync＋6＠舊 L45704 之後／softSeed sync＋3＠舊 L14392 之後；釘行按段重算：＜14392 唔郁、14392–45703 各 ＋3、≥45704 各 ＋9；內容逐字核實純漂移）。 B2 14427→14430、N3 14461→14464、N4 14426→14429、B3／B4／B5 14545→14548、N5 14554→14557。
@@ -79,20 +80,20 @@ def ok(name, cond):
     if not cond: fails.append(name)
     print(('PASS ' if cond else 'FAIL ') + name)
 
-# (0) 全檔殘留
-ok('A0 全檔只剩 v151 歷史註解一句關海媚', html.count('關海媚') == 1 and 'v151 退役：關海媚名禁令已撤' in html)
+# (0) 全檔殘留（v20a358：DengLine IIFE 全刪，入面嗰句 v151 歷史註解一齊刪走，關海媚全檔清零）
+ok('A0 全檔關海媚清零（v358 連 IIFE 內 v151 註解一齊刪）', html.count('關海媚') == 0)
 
-# (1) banned-list 檢查：關海媚已清，其餘禁令留返
+# (1) banned-list 檢查：關海媚已清，其餘禁令留返（A2／A3 兩張 list 喺 DengLine selfCheck 入面，v358 隨層刪走）
 ok('A1 regex 其餘禁令留返', '/Ho\\s*哥|陳淑芬|施南生/' in html)
-ok('A2 list 其餘禁令留返', '["陳淑芬","施南生","Ho哥"]' in html)
-ok('A3 list 其餘禁令留返', '["陳淑芬","施南生","Ho哥","Ho 哥","nextHint"]' in html)
+ok('A2 DengLine selfCheck list 已隨層刪（v358）', '["陳淑芬","施南生","Ho哥"]' not in html)
+ok('A3 DengLine selfCheck list 已隨層刪（v358）', '["陳淑芬","施南生","Ho哥","Ho 哥","nextHint"]' not in html)
 ok('A4 list 其餘禁令留返', '["陳淑芬","施南生","Ho哥","Ho 哥"]' in html)
 ok('A5 其餘禁令仲喺度', all(w in html for w in ['陳淑芬', '施南生', 'Ho哥']))
 
-# (2) kwan_note check 退役
-ok('A6 kwan_note check 已註解', 'bad("kwan_note")' not in html and 'v151 退役' in html)
-ok('A7 註解唔留「關海媚禁令」字眼', '關海媚禁令' not in html and '雙女主改讀 devAppendix' in html)
-ok('A8 dual_note 唔郁', 'bad("dual_note")' in html)
+# (2) kwan_note check 退役（v20a358：DengLine selfCheck 連同 v151 註解／dual_note 一齊刪）
+ok('A6 kwan_note check 已刪（v358 隨層）', 'bad("kwan_note")' not in html and 'v151 退役' not in html)
+ok('A7 註解唔留「關海媚禁令」字眼', '關海媚禁令' not in html and '雙女主改讀 devAppendix' not in html)
+ok('A8 dual_note 已隨層刪（v358）', 'bad("dual_note")' not in html)
 ok('A9 guanHaimeiUpgradeForbidden 全檔清零', 'guanHaimeiUpgradeForbidden' not in html)
 
 # (3) TEXTFIX55_PHRASES
@@ -111,20 +112,12 @@ ok('N3 relMap rel_mei 已刪', '["rel_mei","關海媚"]' not in html)
 ok('N4 NOTE_EXACT 兩句已刪', '采兒同關海媚嗰邊都近咗啲' not in html and '但采兒同關海媚嗰邊，都冷淡咗' not in html)
 ok('N5 NOTE_EXACT 冇殘留稱號', '嗰位當紅花旦' not in html)
 
-# (6) content JSON flag
+# (6) content JSON flag（v20a358：三個 DengLine mock 已成檔刪除，改做「檔已刪」斷言）
 for rel in ['content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json',
             'content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.json',
             'content/MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json']:
     p = os.path.join(root, rel)
-    txt = io.open(p, encoding='utf-8').read()
-    try:
-        json.loads(txt); valid = True
-    except Exception:
-        valid = False
-    ok('D1 %s JSON 有效＋flag 已清' % os.path.basename(rel),
-       valid and 'guanHaimeiUpgradeForbidden' not in txt)
-    ok('D2 %s mvpDualHeroineProtected 留返' % os.path.basename(rel),
-       'mvpDualHeroineProtected' in txt)
+    ok('D1 %s 已刪（v20a358 soft 層清理）' % os.path.basename(rel), not os.path.exists(p))
 
 # (7) v297：舊「唔郁嘅嘢」全部已刪
 ok('E1 speaker registry 關海媚已刪', '"關海媚":"kwan_hoimei"' not in html)

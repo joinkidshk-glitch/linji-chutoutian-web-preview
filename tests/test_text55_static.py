@@ -48,7 +48,8 @@ chk('C10 press headline natural', '俾人截圖' not in outside)
 # favor-debt fallback placeholder
 chk('debt fallback natural', 'line || "（文案待補）"' not in src and 'line || "人情一筆"' in src)
 # KHM (v297)：Vera／關海媚成個移除——全檔只剩 v151 歷史註解一句關海媚（見 test_kwan151_static A0）。
-chk('KHM v297：全檔只剩 v151 歷史註解一句', src.count('關海媚') == 1 and 'v151 退役：關海媚名禁令已撤' in src)
+# v20a358：DengLine IIFE 全刪，入面嗰句 v151 註解一齊刪走，關海媚全檔清零。
+chk('KHM v358：全檔關海媚清零', src.count('關海媚') == 0)
 chk('KHM cleaner pattern removed (v151)', '"關海媚", "當紅花旦"' not in block)
 # A8: undefined jargon in story hint overrides replaced
 chk('A8 hint overrides natural', outside.count('雙軌總和夠數') == 0 and '聲望和信用總和足夠' in src)

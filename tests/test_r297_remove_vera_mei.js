@@ -29,7 +29,7 @@ ok('NPCS 其餘 7 人在位', ['colleague', 'director', 'rival', 'reporter', 'la
 ok('MAP_NPC_TO_KEY 冇 stylist', html.indexOf('stylist:"vera"') < 0);
 ok('MAP_NPC_TO_KEY 新值在位', html.indexOf('const MAP_NPC_TO_KEY = { colleague:"hiu", reporter:"choi" };') >= 0);
 ok('rom176MeiUnlocked 已刪', html.indexOf('rom176MeiUnlocked') < 0);
-ok('全檔零關海媚（v151 歷史註解除外）', html.split('關海媚').length - 1 === 1 && html.indexOf('v151 退役：關海媚名禁令已撤') >= 0);
+ok('全檔零關海媚（v20a358：DengLine IIFE 全刪，入面 v151 註解一齊刪走）', html.split('關海媚').length - 1 === 0);
 ok('全檔零 npc_vera', html.indexOf('npc_vera') < 0);
 ok('全檔零 rel_vera／flag_vera／kwan_hoimei', html.indexOf('rel_vera') < 0 && html.indexOf('flag_vera') < 0 && html.indexOf('kwan_hoimei') < 0);
 ok('全檔零 R_vera_（WF2 表頭註解除外）', (html.match(/R_vera_/g) || []).length === 1 && html.indexOf('R_vera_* 5 條已刪') >= 0);

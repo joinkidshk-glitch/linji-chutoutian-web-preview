@@ -6990,7 +6990,7 @@ const ROMANCE_WF2_OVERRIDES = {
   ]
  },
  "R_lan_push2": {
-  "synopsis": "台慶之後，有人在茶水間說藍若曦排位「偏幫」阿偉，他才常有好位置。閒話傳到她耳中，她沒有出聲，照舊按牌。阿偉知道後，要選擇怎樣站：站出來澄清，還是劃清界線避嫌。",
+  "synopsis": "台慶之後，有人在茶水間說藍若曦排位「偏幫」阿偉，他才常有好位置。閒話傳到她耳中，她沒有出聲，照舊按牌。阿偉知道後，要決定怎樣回應：站出來澄清，還是劃清界線避嫌。",
   "beats": [
    {
     "speaker": "旁白",
@@ -7096,7 +7096,7 @@ const ROMANCE_WF2_OVERRIDES = {
    {
     "speaker": "旁白",
     "lines": [
-     "那句話一出，阿偉心裏那句「唔使等第日」已經到了嘴邊。他望著她，她也回望他，笑容裏有些東西，兩個人都明白。正因為太明白，兩個人都沒有再說下去。她把最真那句包成一個約定，遞到他面前——接還是不接，就看他這一句。"
+     "那句話一出，阿偉心裏那句「唔使等第日」已經到了嘴邊。他望著她，她也回望他，笑容裏藏著的話，兩個人心裏都清楚。正因為太清楚，兩個人都沒有再說下去。她把最真那句包成一個約定，遞到他面前——接還是不接，就看他這一句。"
     ]
    },
    {
@@ -7118,9 +7118,9 @@ const ROMANCE_WF2_OVERRIDES = {
     ]
    },
    {
-    "speaker": "藍若曦",
+    "speaker": "旁白",
     "lines": [
-     "（佢笑住轉身收拾通告牌，嗰句說話留咗喺走廊，等佢接。）"
+     "她笑著轉身收拾通告牌。那句話留在走廊，等他接下去。"
     ]
    }
   ],
@@ -7453,75 +7453,15 @@ function applyRomanceV158Overrides158(){
 
 
 /* ===== v20a87 WF5：soft 變體層文本對齊（WF2 遺留）。
-   soft 行為閘模式下，曉晴／采兒 meet 走 DualMeet 層、成條鄧麗萍線走 DengLine 層——兩層自帶
-   beats 唔經 pack 節點，WF2 廣東話化嗰陣冇掂到，文本停留喺書面語，鄧麗萍收尾仲寫到似可以
-   commit（「跨越商業界線，承諾共同面對未來」），同 WF2 定版嘅半線差一步口徑（紅筆圈格＋
-   改口公事句＋「改咗把尺，佢就唔再係鄧麗萍」）打架。今包喺載入點（loadMock 之前）以覆寫表
-   對齊兩層玩家可見文本：synopsis／beats lines／choice label／notes。
-   硬約束（兩層 selfCheck 釘死，唔准掂）：beat 數同每 beat 行數、speaker 次序、choice id／
+   soft 行為閘模式下，曉晴／采兒 meet 走 DualMeet 層——自帶 beats 唔經 pack 節點，
+   WF2 廣東話化嗰陣冇掂到。今包喺載入點（loadMock 之前）以覆寫表對齊玩家可見文本：
+   synopsis／beats lines／choice label／notes。
+   硬約束（selfCheck 釘死，唔准掂）：beat 數同每 beat 行數、speaker 次序、choice id／
    flags／stats、chromeSeason／playerMeta、openConditions。覆寫只換字，逐 beat 核對 speaker
    先套用，對唔上就成節點跳過（寧可唔改，唔好改爛結構）。
-   v20a152：R_tang_ending 條目已刪（鄧麗萍感情線收尾取消）；本表只留 meet／push1／push2／crisis 四節。 ===== */
+   v20a358：鄧麗萍 soft 層（DengLine＋R_tang_* 條目＋mock 底稿）已刪；本表只留
+   R_hiu_meet／R_choi_meet 兩節（DualMeet）。 ===== */
 const WF5_VARIANT_OVERRIDES87 = {
-  R_tang_meet: {
-    synopsis: "阿偉帶著新片計劃走進排片部，鄧麗萍開口閉口都是數字——要拿黃金檔，先要過她那條入座率紅線。",
-    beats: [
-      ["鄧麗萍", ["何生推介嗰份計劃，我睇過。劇本係紮實，但院線唔係善堂，我要睇嘅係數字——套戲賣唔賣得，先講得落去。"]],
-      ["院線助理", ["鄧小姐，上季同類型片嘅午夜場入座率表喺呢度，條基準線我標咗出嚟。"]],
-      ["鄧麗萍", ["阿偉，你呢套陣容唔算頂尖，想攞黃金檔，午夜場預估入座率要過到呢條紅線，冇得傾。"]],
-      ["鄧麗萍", ["你今日係帶齊數據嚟，定係想問清楚我哋排片嗰套準則，返去再補？"]]
-    ],
-    choiceText: {
-      C_tang_meet_data: { label: "立刻遞上做足功課的市場數據和票房預測", note: "用足數據，爭取她當場放行。" },
-      C_tang_meet_wait: { label: "先問清楚排片準則，回去補對數據再來", note: "摸清那條紅線在哪裏，補的數據才對得上。" }
-    }
-  },
-  R_tang_push1: {
-    synopsis: "阿偉和鄧麗萍開始有來往，她依然句句不離百分比。兩個人交換試映情報和冷門檔期的資料，她第一次主動問阿偉：其他區嘅口碑，走成點。",
-    beats: [
-      ["系統", ["排片部夜班房，深夜十一點半，枱面一疊未拆的午夜場票房表原封不動。"]],
-      ["院線助理", ["鄧小姐，冷門檔嗰邊入座偏軟，午夜場仲有半個鐘開場——縮唔縮場？"]],
-      ["鄧麗萍", ["唔好縮住。我要睇埋試映反應同跨區口碑條線點走，未跌穿警戒線之前，唔好自己亂咗陣腳。"]],
-      ["系統", ["鄧麗萍的眼睛離開螢幕，望向阿偉——第一次，是她主動開口問另一區的口碑。"]],
-      ["鄧麗萍", ["你嗰邊收到嘅試映情報，同我手上嘅冷門檔資料，可以交換。或者，你用數字話我知，呢套戲值得賭。"]],
-      ["系統", ["夜班房靜下來，枱頭那疊票房表等阿偉決定：交換情報，抑或以數據證明。"]]
-    ],
-    choiceText: {
-      C_tang_push1_exchange: { label: "拿試映情報，換她手上的冷門檔期資料" },
-      C_tang_push1_prove: { label: "用跨區入座走勢，證明冷門檔亦有回報" }
-    }
-  },
-  R_tang_push2: {
-    synopsis: "黃金檔試水成績出了，鄧麗萍約阿偉在午夜場散場之後對數。她那晚放鬆了一點，說起當年排過一部文藝片，賠得要寫報告。今晚，阿偉可以繼續只談商業，或者問她那句私事。",
-    beats: [
-      ["系統", ["午夜場散場，戲院後巷那間茶餐廳還亮著白光燈。桌上攤著即日票房紙，數字一行行壓在膠桌布上面。", "隔壁桌有人正在吃宵夜，碗筷聲夾著收音機聲，熱鬧得好像不關這桌的事。"]],
-      ["鄧麗萍", ["黃金檔試水嘅成績，喺呢度。數字唔差，但未算穩。", "午夜場啲觀眾肯坐到最尾，起碼證明呢條線，有人睇。"]],
-      ["鄧麗萍", ["我以前排過一套文藝片，蝕到要寫報告交代。嗰陣，我仲以為自己好懂觀眾。", "到今日我先知，報告寫得幾靚，都唔及一張票房紙咁誠實。"]],
-      ["系統", ["阿偉可以順著那張票房紙，繼續談檔期怎樣排；也可以問她那一句，與數字無關的話。", "茶餐廳吊扇慢慢轉，桌上那張紙被風掀起一角，又落了下來。"]],
-      ["鄧麗萍", ["你唔出聲，我大概估到你諗緊咩。", "不過今晚，我想聽你講。"]],
-      ["系統", ["隔壁桌的宵夜聲照舊，夥計照舊喊單。", "只剩這一桌，忽然安靜下來。"]]
-    ],
-    choiceText: {
-      C_tang_push2_business: { label: "把票房紙推回她面前，只談檔期和排片" },
-      C_tang_push2_private: { label: "問她：當年寫那份報告的時候，最難過的是哪一點" }
-    }
-  },
-  R_tang_crisis: {
-    synopsis: "對手片出高價搶黃金檔，阿偉手上偏偏有部講人情、講手藝的片想排同一個位置。鄧麗萍要他在數據和人情之間選擇——她自己，同樣被上頭壓著要交出成績。",
-    beats: [
-      ["系統", ["會議室剛剛散會，對手片發行商留下的那兩份建議書，還攤在桌上。牆上那張排片表，紅筆畫得密密麻麻，刺眼得不用看第二次。"]],
-      ["鄧麗萍", ["對手片出高價搶黃金檔，上頭要我今個禮拜交數。", "兩份建議書擺晒喺度，數字點寫，你自己睇到。"]],
-      ["系統", ["阿偉手上那部片，講人情，講手藝，想排的，偏偏是同一個黃金檔。"]],
-      ["鄧麗萍", ["計數據，對手片穩陣，回本機會高，呢個我唔會呃你。", "但你嗰套，贏在口碑長尾，唔係一時三刻計得晒。"]],
-      ["鄧麗萍", ["數據、人情，定係折衷——你自己揀一條路。", "我唔會幫你揀，但揀完之後嗰啲後果，你要自己孭。"]],
-      ["系統", ["整間房安靜下來。鄧麗萍的眼睛回到排片表上面，等阿偉出聲。"]]
-    ],
-    choiceText: {
-      C_tang_crisis_data: { label: "按數據決定，以票房為先" },
-      C_tang_crisis_favor: { label: "力保人情：這部片我撐到底，風險我來承擔" },
-      C_tang_crisis_middle: { label: "尋求折衷：兩邊各讓一步" }
-    }
-  },
   R_hiu_meet: {
     synopsis: "阿偉在休息角遇上林曉晴，她主動提起何生安排的通告，言談之間，像是想交換情報。",
     beats: [
@@ -7634,18 +7574,6 @@ function storyHintPack(node){
         const face = BehaviorGate.playerFace(node);
         if(face) pack.playerHint = face;
         pack.lockedHint = BehaviorGate.lockedCopy_noEngineeringTerms(node);
-      }
-      if(typeof DengLine!=="undefined" && (DengLine.isMeet(node) || DengLine.isHeld(node) || (DengLine.isPush && DengLine.isPush(node)))){
-        pack.lockedHint = BehaviorGate.lockedCopy_noEngineeringTerms(node);
-        if(DengLine.isMeet(node)){
-          const face = DengLine.playerFace();
-          if(face) pack.playerHint = face;
-        }
-        if(DengLine.isPush && DengLine.isPush(node) && !DengLine.isHeld(node)){
-          const swapped = DengLine.pushNode(node);
-          if(swapped && swapped.synopsis) pack.playerHint = swapped.synopsis;
-          if(DengLine.pushGate(node).ok) pack.lockedHint = "";
-        }
       }
     }
   }catch(_e){}
@@ -7782,14 +7710,7 @@ const StoryOC = (()=>{
   }
 
   function tangFileThreshold(){
-    /* v20a152：舊 romance_tang pack 讀數分支已刪——pack 唔再載入，永遠讀唔到；
-       閘門值只剩 DengLine soft A 鎖定值（2），否則預設 2。 */
-    try{
-      if(typeof DengLine!=="undefined" && DengLine.featureFlagOn && DengLine.featureFlagOn()){
-        const locked = DengLine.lockedThreshold();
-        if(typeof locked==="number") return locked;
-      }
-    }catch(_e){}
+    /* v20a152：舊 romance_tang pack 讀數分支已刪；v20a358：DengLine soft 層已刪，閘門值預設 2。 */
     return 2;
   }
 
@@ -7801,12 +7722,6 @@ const StoryOC = (()=>{
       return { value:Number(v), source:"node.thresholds", skipped:false };
     }
     if(token==="rel_tang_threshold"){
-      try{
-        if(typeof DengLine!=="undefined" && DengLine.featureFlagOn && DengLine.featureFlagOn()){
-          const locked = DengLine.lockedThreshold();
-          if(typeof locked==="number") return { value:locked, source:"soft_a_lock", skipped:false };
-        }
-      }catch(_e){}
       if(typeof th.rel_tang_threshold==="number"){
         return { value:th.rel_tang_threshold, source:"node.thresholds", skipped:false };
       }
@@ -7942,17 +7857,9 @@ const StoryOC = (()=>{
        liveWeekGateStillActive() 自 v249 起回 false。Soft off does not inject softSeed. */
     try{
       if(typeof BehaviorGate!=="undefined" && BehaviorGate.gatePath()==="soft"){
-        if(typeof DengLine!=="undefined" && DengLine.isPush && DengLine.isPush(node)){
-          if(DengLine.isHeld(node) || !DengLine.pushGate(node).ok) return BehaviorGate.heldEval(node);
-          return { ok:true, openable:true, and:[], any:null, phaseSoft:null, reasons:[], skippedThresholds:[], softBehavior:true, dengPush:true };
-        }
-        if(typeof DengLine!=="undefined" && DengLine.isHeld(node)) return BehaviorGate.heldEval(node);
-        if(typeof DengLine!=="undefined" && DengLine.isMeet(node) && !DengLine.openGate().ok){
-          return BehaviorGate.heldEval(node);
-        }
         if(BehaviorGate.coversNode(node)) return BehaviorGate.evalTrigger_AND(node, opts);
       } else if(typeof BehaviorGate!=="undefined" && BehaviorGate.coversNode(node)){
-        /* v20a249：live 路徑——N1–N5 行 stub trigger。DengLine 守衛維持喺 soft 分支唔郁，
+        /* v20a249：live 路徑——N1–N5 行 stub trigger。v20a358：DengLine soft 層已刪，
            live 升格前亦唔行佢哋。stub 未載入嗰陣 coversNode 回 false，自動跌返 live week-gate。 */
         return BehaviorGate.evalTrigger_AND(node, opts);
       }
@@ -8034,7 +7941,7 @@ const StoryOC = (()=>{
     push("romance_vera_hiu_choi", "R感情1", w.romance && w.romance.veraHiuChoi && w.romance.veraHiuChoi.nodes);
     push("romance_lan_xu", "R感情2", w.romance && w.romance.lanXu && w.romance.lanXu.nodes);
     push("romance_yip_so", "R感情3", w.romance && w.romance.yipSo && w.romance.yipSo.nodes); /* v20a159 ROM159：葉／蘇新線 */
-    /* v20a152：romance_tang 已刪——鄧麗萍線只行 DengLine 排片層（v268：pack 檔已刪） */
+    /* v20a152：romance_tang 已刪（v268：pack 檔已刪）；v20a358：DengLine 排片 soft 層亦已刪 */
     push("rival", "A對手導師", w.rival && w.rival.nodes);
     return out;
   }
@@ -9302,306 +9209,10 @@ const BehaviorGate = (function(){
   return api;
 })();
 
-const DengLine = (function(){
-  let mock = null;
-  let pushMock = null;
-  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"]; /* v20a152：R_tang_ending 已刪（感情線收尾取消）；排片線只留 meet＋push1／push2／crisis 三節 */
-  const PUSH_CHROME = {
-    R_tang_push1: { chromeSeason:"winter", playerMeta:"主線 · 1990冬" },
-    R_tang_push2: { chromeSeason:"spring", playerMeta:"主線 · 1990春" },
-    R_tang_crisis: { chromeSeason:"autumn", playerMeta:"主線 · 1990秋" }
-    /* v20a152：R_tang_ending 條目已刪（同 HELD） */
-  };
-  function featureFlagOn(){
-    return typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview();
-  }
-  function loadMock(data){
-    if(!data || !data.meta || data.meta.scope!=="meet_only") return { ok:false, reason:"scope" };
-    if(data.meta.playerFacingName!=="鄧麗萍" || data.meta.characterId!=="tang_laiping") return { ok:false, reason:"name" };
-    if(data.meta.rel_tang_threshold!==2) return { ok:false, reason:"threshold" };
-    const lock = data.meta.softALocked || {};
-    if(lock.meetOnly!==true || lock.pushPlusHold!==true || lock.rel_tang_threshold!==2) return { ok:false, reason:"softA" };
-    if(data.meta.tipForbidden!==true || data.meta.artHold!==true || data.meta.eraDeep8992Hold!==true) return { ok:false, reason:"hold" };
-    if(!Array.isArray(data.beats) || data.beats.length!==1 || !data.beats[0] || data.beats[0].id!=="R_tang_meet") return { ok:false, reason:"meet_only" };
-    const holds = (data.holdBeats||[]).map(b=>b && b.id);
-    for(let i=0;i<HELD.length;i++){ if(holds.indexOf(HELD[i])<0) return { ok:false, reason:"holdBeats" }; }
-    mock = data;
-    return { ok:true, scope:data.meta.scope };
-  }
-  /* Soft flag only. LIVE romance JSON stays; this mock is swapped in at play time. */
-  function loadPushMock(data){
-    if(!data || !data.meta || data.meta.scope!=="push1_plus") return { ok:false, reason:"scope" };
-    if(data.meta.playerFacingName!=="鄧麗萍" || data.meta.characterId!=="tang_laiping") return { ok:false, reason:"name" };
-    if(data.meta.rel_tang_threshold!==2 || data.meta.parentSha8!=="8a80d7b9") return { ok:false, reason:"threshold" };
-    if(data.meta.tipForbidden!==true || data.meta.artHold!==true || data.meta.eraDeep8992Hold!==true) return { ok:false, reason:"hold" };
-    const lock = data.meta.softALocked || {};
-    if(lock.rel_tang_threshold!==2 || lock.needSoftAB!==false) return { ok:false, reason:"softA" };
-    if(!data.meetRef || data.meetRef.status!=="REFERENCE_ONLY" || data.meetRef.parentSha8!=="8a80d7b9") return { ok:false, reason:"meetRef" };
-    if(!Array.isArray(data.beats) || data.beats.length!==HELD.length) return { ok:false, reason:"beats" };
-    for(let i=0;i<HELD.length;i++){
-      const b = data.beats[i];
-      const want = PUSH_CHROME[HELD[i]];
-      if(!b || b.id!==HELD[i] || b.chromeSeason!==want.chromeSeason || b.playerMeta!==want.playerMeta) return { ok:false, reason:"chrome" };
-      if(b.artHold!==true || b.playerOffer!==false || b.pcSilent!==true) return { ok:false, reason:"offer" };
-      if((b.openConditions||[]).join(",")!=="flag_tang_open,rel_tang_threshold") return { ok:false, reason:"oc" };
-    }
-    pushMock = data;
-    return { ok:true, scope:data.meta.scope };
-  }
-  function idOf(node){
-    if(!node) return "";
-    if(typeof node==="string") return node;
-    return String(node.id || node.beatId || "");
-  }
-  function isMeet(node){ return idOf(node)==="R_tang_meet"; }
-  function isPush(node){ return HELD.indexOf(idOf(node))>=0; }
-  function isHeld(node){
-    /* Flag off, or push mock not accepted: push+ stays HELD. Meet is never held. */
-    if(!isPush(node)) return false;
-    if(!featureFlagOn() || !pushMock) return true;
-    return false;
-  }
-  function lockedThreshold(){ return mock ? 2 : null; }
-  function meetNode(){
-    if(!mock || !mock.beats || !mock.beats[0]) return null;
-    const node = JSON.parse(JSON.stringify(mock.beats[0]));
-    node.dev_only = true;
-    node.deng_line_soft_meet = true;
-    node.playerOffer = false;
-    node.artHold = true;
-    return node;
-  }
-  function openGate(opts){
-    const meta = (mock && mock.meta && mock.meta.openGate) || { needDone:["N5"], favorMin:1, favorTarget:"agency_ho" };
-    const ctx = BehaviorGate.readCtx(opts||{});
-    const needDone = meta.needDone || ["N5"];
-    const doneOk = needDone.every(id=>BehaviorGate.done(id, ctx));
-    const favor = BehaviorGate.favorValue(meta.favorTarget||"agency_ho", ctx);
-    const favorOk = favor >= (Number(meta.favorMin)||1);
-    const locOk = ctx.atLoc===(meta.favorTarget||"agency_ho");
-    return { ok: !!(doneOk && favorOk && locOk), doneOk:doneOk, favorOk:favorOk, locOk:locOk, favor:favor, threshold:2 };
-  }
-  function meetAvailable(){
-    if(!featureFlagOn() || !mock) return false;
-    try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone("R_tang_meet")) return false; }catch(_e){}
-    return !!openGate().ok;
-  }
-  function playerFace(){
-    const syn = mock && mock.beats && mock.beats[0] && mock.beats[0].synopsis;
-    return syn || "鄧麗萍在院線排片部等阿偉對數。";
-  }
-  function playMeet(){
-    if(!featureFlagOn()) return { ok:false, reason:"preview_off" };
-    const gate = openGate();
-    if(!gate.ok){
-      BehaviorGate["leaveWhenLocked_暫未能報_離開"]();
-      return { ok:false, gate:gate };
-    }
-    try{
-      if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone("R_tang_meet")){
-        if(typeof toast==="function") toast("這幕已完成");
-        return { ok:false, done:true };
-      }
-    }catch(_e){}
-    const node = meetNode();
-    if(!node || typeof StoryPlay==="undefined" || !StoryPlay.start) return { ok:false, reason:"no_play" };
-    return { ok: !!StoryPlay.start(node, { force:true }), gate:gate };
-  }
-  function pushSrc(id){
-    if(!pushMock) return null;
-    const want = idOf(id);
-    for(let i=0;i<pushMock.beats.length;i++){
-      if(pushMock.beats[i] && pushMock.beats[i].id===want) return pushMock.beats[i];
-    }
-    return null;
-  }
-  function pushNode(id){
-    const src = pushSrc(id);
-    if(!src) return null;
-    const node = JSON.parse(JSON.stringify(src));
-    node.dev_only = true;
-    node.deng_line_soft_push = true;
-    node.playerOffer = false;
-    node.artHold = true;
-    return node;
-  }
-  function pushRel(explicit){
-    if(explicit){
-      if(typeof explicit.rel_tang==="number") return explicit.rel_tang;
-      if(explicit.rel && typeof explicit.rel.rel_tang==="number") return explicit.rel.rel_tang;
-      return 0;
-    }
-    try{ if(typeof StoryOC!=="undefined" && StoryOC.getRel) return StoryOC.getRel("rel_tang"); }catch(_e){}
-    return 0;
-  }
-  function pushFlag(explicit){
-    if(explicit) return !!(explicit.flags && explicit.flags.flag_tang_open);
-    try{ if(typeof StoryOC!=="undefined" && StoryOC.getFlag) return !!StoryOC.getFlag("flag_tang_open"); }catch(_e){}
-    return false;
-  }
-  function pushGate(node, opts){
-    const explicit = (opts && opts.ctx) ? opts.ctx : null;
-    const flagOk = pushFlag(explicit);
-    const rel = pushRel(explicit);
-    const relOk = rel >= 2;
-    return { ok: !!(flagOk && relOk), flagOk:flagOk, relOk:relOk, rel:rel, threshold:2, id:idOf(node) };
-  }
-  function nextPushId(){
-    for(let i=0;i<HELD.length;i++){
-      const id = HELD[i];
-      try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(id)) continue; }catch(_e){}
-      return id;
-    }
-    return "";
-  }
-  function pushAvailable(id){
-    if(!featureFlagOn() || !pushMock) return false;
-    const beatId = id ? idOf(id) : nextPushId();
-    if(!isPush(beatId)) return false;
-    try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(beatId)) return false; }catch(_e){}
-    return !!pushGate(beatId).ok;
-  }
-  function playPush(id){
-    if(!featureFlagOn()) return { ok:false, reason:"preview_off" };
-    if(!pushMock) return { ok:false, reason:"held" };
-    const beatId = id ? idOf(id) : nextPushId();
-    if(!isPush(beatId)) return { ok:false, reason:"id" };
-    const gate = pushGate(beatId);
-    if(!gate.ok){
-      BehaviorGate["leaveWhenLocked_暫未能報_離開"]();
-      return { ok:false, gate:gate };
-    }
-    try{
-      if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(beatId)){
-        if(typeof toast==="function") toast("這幕已完成");
-        return { ok:false, done:true };
-      }
-    }catch(_e){}
-    const node = pushNode(beatId);
-    if(!node || typeof StoryPlay==="undefined" || !StoryPlay.start) return { ok:false, reason:"no_play" };
-    return { ok: !!StoryPlay.start(node, { force:true }), gate:gate, id:beatId };
-  }
-  function selfCheck(){
-    const fails = [];
-    const bad = (m)=>{ fails.push(m); };
-    if(!mock) bad("mock_missing");
-    const face = JSON.stringify({ beats: mock && mock.beats, holdBeats: mock && mock.holdBeats });
-    ["陳淑芬","施南生","Ho哥"].forEach(w=>{ if(face.indexOf(w)>=0) bad("banned:"+w); });
-    const dev = (mock && mock.devAppendix) || {};
-    const note = String((mock && mock.meta && mock.meta.note) || "");
-    /* v1.1 note 不再寫角色名；雙女主改讀 devAppendix（v1 正文 note 仍算過） */
-    if(note.indexOf("曉晴")<0 && dev.mvpDualHeroineProtected!==true) bad("dual_note");
-    /* v151 退役：關海媚名禁令已撤，kwan_note check 不再執行。 */
-    if(!mock || mock.meta.version!=="v1.1") bad("mock_version");
-    const beat = mock && mock.beats[0];
-    if(!beat || beat.playerMeta!=="主線 · 1988秋" || beat.chromeSeason!=="autumn") bad("chrome_fields");
-    if(!beat || beat.playerOffer!==false) bad("playerOffer");
-    if(!beat || beat.artHold!==true) bad("artHold");
-    const cast = (beat && beat.cast || []).join("|");
-    if(cast!=="鄧麗萍|院線助理") bad("cast");
-    const ids = (beat && beat.choices || []).map(c=>c.id);
-    if(ids.join()!=="C_tang_meet_data,C_tang_meet_wait") bad("choice_ids");
-    const data = (beat.choices||[]).filter(c=>c.id==="C_tang_meet_data")[0];
-    const wait = (beat.choices||[]).filter(c=>c.id==="C_tang_meet_wait")[0];
-    if(!data || (data.effects.flags||[]).indexOf("flag_tang_open")<0) bad("flag_open");
-    if(!wait || (wait.effects.flags||[]).indexOf("flag_tang_met_wait")<0) bad("flag_wait");
-    if(wait && (wait.effects.flags||[]).indexOf("flag_tang_open")>=0) bad("wait_opens");
-    if(isHeld("R_tang_meet")!==false) bad("hold");
-    if(!pushMock || !featureFlagOn()){
-      if(isHeld("R_tang_push1")!==true) bad("hold");
-    } else if(isHeld("R_tang_push1")!==false) bad("push_still_held");
-    if(featureFlagOn() && !pushMock) bad("push_mock_missing");
-    if(lockedThreshold()!==2) bad("threshold");
-    const gateBase = { atLoc:"agency_ho", favor:1, done:{ N5:true } };
-    if(openGate({ ctx: gateBase }).ok!==true) bad("gate_pass");
-    if(openGate({ ctx: Object.assign({}, gateBase, { done:{ N5:false } }) }).ok!==false) bad("gate_need_c5");
-    if(openGate({ ctx: Object.assign({}, gateBase, { favor:0 }) }).ok!==false) bad("gate_favor");
-    if(openGate({ ctx: Object.assign({}, gateBase, { atLoc:"cafe_cha" }) }).ok!==false) bad("gate_loc");
-    if(beat && (beat.choices||[]).some(c=>JSON.stringify(c).indexOf("rival_gao")>=0)) bad("rival_in_meet");
-    try{
-      if(typeof StoryPlay!=="undefined" && StoryPlay.spPlayerMeta_softSeasonSelfCheck){
-        const chk = StoryPlay.spPlayerMeta_softSeasonSelfCheck();
-        if(!chk.ok) (chk.fails||[]).forEach(f=>bad("season:"+f));
-      }
-      if(typeof StoryPlay!=="undefined" && StoryPlay.spPlayerMeta && beat){
-        const shown = StoryPlay.spPlayerMeta(beat);
-        if(featureFlagOn()){
-          if(shown!=="主線 · 1988秋") bad("soft_chrome");
-        } else if(shown==="主線 · 1988秋"){
-          bad("live_chrome");
-        }
-      }
-    }catch(_chrome){ bad("chrome_throw"); }
-    if(pushMock){
-      const facePush = JSON.stringify(pushMock.beats);
-      ["陳淑芬","施南生","Ho哥","Ho 哥","nextHint"].forEach(w=>{ if(facePush.indexOf(w)>=0) bad("push_banned:"+w); });
-      if(/1989|1990|1991|1992/.test(facePush)) bad("push_era");
-      if(pushMock.meta.parentSha8!=="8a80d7b9" || pushMock.meetRef.id!=="R_tang_meet") bad("push_parent");
-      const sig = {
-        R_tang_push1: "C_tang_push1_exchange|flag_tang_push1_exchange|1;C_tang_push1_prove|flag_tang_push1_prove|1",
-        R_tang_push2: "C_tang_push2_business|flag_tang_push2_business|1;C_tang_push2_private|flag_tang_push2_private|1",
-        R_tang_crisis: "C_tang_crisis_data|flag_tang_crisis_data|1;C_tang_crisis_favor|flag_tang_crisis_favor|1;C_tang_crisis_middle|flag_tang_crisis_middle|1"
-        /* v20a152：R_tang_ending 行已刪（ending beat 載入時已濾走，見 refreshCopyPacksFromDisk） */
-      };
-      HELD.forEach(id=>{
-        const b = pushSrc(id);
-        const want = PUSH_CHROME[id];
-        if(!b || b.playerMeta!==want.playerMeta || b.chromeSeason!==want.chromeSeason) bad("push_chrome:"+id);
-        const got = (b && b.choices || []).map(c=>{
-          const flags = ((c.effects && c.effects.flags) || []).join(",");
-          const rel = c.effects && c.effects.stats ? c.effects.stats.rel_tang : "";
-          return c.id+"|"+flags+"|"+rel;
-        }).join(";");
-        if(got!==sig[id]) bad("push_choice:"+id);
-        if(b && JSON.stringify(b).indexOf("rival_gao")>=0) bad("push_rival:"+id);
-      });
-      /* v20a152：push_standing 檢查已刪（R_tang_ending HE 抉擇取消，standing＋1 來源已無） */
-      if(pushGate("R_tang_push1", { ctx:{ flags:{ flag_tang_open:true }, rel_tang:2 } }).ok!==true) bad("push_gate_pass");
-      if(pushGate("R_tang_push1", { ctx:{ flags:{ flag_tang_open:true }, rel_tang:1 } }).ok!==false) bad("push_gate_rel");
-      if(pushGate("R_tang_push1", { ctx:{ flags:{}, rel_tang:3 } }).ok!==false) bad("push_gate_flag");
-      try{
-        if(typeof StoryPlay!=="undefined" && StoryPlay.spPlayerMeta){
-          HELD.forEach(id=>{
-            const node = pushNode(id);
-            const shown = StoryPlay.spPlayerMeta(node);
-            if(featureFlagOn()){
-              if(!node || shown!==node.playerMeta) bad("push_soft_chrome:"+id+"="+shown);
-            } else if(node && shown===node.playerMeta){
-              bad("push_live_chrome:"+id);
-            }
-          });
-        }
-      }catch(_pushChrome){ bad("push_chrome_throw"); }
-    }
-    return { ok: fails.length===0, fails: fails };
-  }
-  return {
-    loadMock: loadMock,
-    loadPushMock: loadPushMock,
-    featureFlagOn: featureFlagOn,
-    isMeet: isMeet,
-    isPush: isPush,
-    isHeld: isHeld,
-    lockedThreshold: lockedThreshold,
-    meetNode: meetNode,
-    pushNode: pushNode,
-    openGate: openGate,
-    pushGate: pushGate,
-    meetAvailable: meetAvailable,
-    pushAvailable: pushAvailable,
-    nextPushId: nextPushId,
-    playerFace: playerFace,
-    playMeet: playMeet,
-    playPush: playPush,
-    selfCheck: selfCheck,
-  };
-})();
 try{
   if(typeof window!=="undefined"){
     window.BehaviorGate = BehaviorGate;
-    window.DengLine = DengLine;
     window.__behaviorGate = BehaviorGate;
-    window.__dengLine = DengLine;
   }
 }catch(_w){}
 
@@ -10687,26 +10298,7 @@ const StoryPlay = (()=>{
       node = hit.node; pack=hit.pack; label=hit.label;
     }
     try{
-      if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview() && typeof DengLine!=="undefined"){
-        if(DengLine.isPush && DengLine.isPush(node)){
-          if(DengLine.isHeld(node) || !DengLine.pushGate(node).ok){
-            BehaviorGate["leaveWhenLocked_暫未能報_離開"](node);
-            return false;
-          }
-          const swappedPush = DengLine.pushNode(node);
-          if(swappedPush) node = swappedPush;
-        } else if(DengLine.isHeld(node)){
-          BehaviorGate["leaveWhenLocked_暫未能報_離開"](node);
-          return false;
-        }
-        if(DengLine.isMeet(node)){
-          if(!DengLine.openGate().ok){
-            BehaviorGate["leaveWhenLocked_暫未能報_離開"](node);
-            return false;
-          }
-          const swapped = DengLine.meetNode();
-          if(swapped) node = swapped;
-        }
+      if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview()){
         if(typeof DualMeet!=="undefined" && DualMeet.isMeet(node)){
           if(!DualMeet.openGate(node).ok){
             BehaviorGate["leaveWhenLocked_暫未能報_離開"](node);
@@ -12070,7 +11662,7 @@ const StoryPlay = (()=>{
         else if(meta && (r.reasons||[]).some(x=>/days_after_prev:|same_day/.test(String(x)))) meta = meta+" · 隔日";
       }catch(_e){}
       try{
-        if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview() && (BehaviorGate.coversNode(node||r) || (typeof DengLine!=="undefined" && (DengLine.isMeet(node||r) || DengLine.isHeld(node||r) || (DengLine.isPush && DengLine.isPush(node||r) && !DengLine.pushGate(node||r).ok))))){
+        if(typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview() && BehaviorGate.coversNode(node||r)){
           why = BehaviorGate.lockedCopy_noEngineeringTerms(node||r);
           meta = "";
         }
@@ -14390,13 +13982,8 @@ function presentSoftSeed(res){
   try{ show("v-map"); }catch(_e){}
   try{ paintBar(); drawMap(); }catch(_e){}
   announceSoftSeed(res);
-  if(res.id==="seed_deng_meet_ready" || res.id==="seed_chain_shortest"){
+  if(res.id==="seed_chain_shortest"){
     atLoc = res.locId || "agency_ho";
-    try{ if(typeof DengLine!=="undefined" && DengLine.playMeet) DengLine.playMeet(); }catch(_e){}
-  }
-  if(res.id==="seed_deng_push_ready"){
-    atLoc = res.locId || "agency_ho";
-    try{ if(typeof DengLine!=="undefined" && DengLine.playPush) DengLine.playPush("R_tang_push1"); }catch(_e){}
   }
   if(res.id==="seed_hiu_meet_ready" || res.id==="seed_choi_meet_ready" || res.id==="seed_dual_chain_shortest"){
     atLoc = res.locId || (res.id==="seed_choi_meet_ready" ? "cafe_cha" : "tvb_longmen");
@@ -14797,7 +14384,7 @@ async function refreshCopyPacksFromDisk(){
   const bust = encodeURIComponent(typeof SAVE!=="undefined"?SAVE:Date.now());
   const get = (name)=> fetch(contentFetchUrl(base+name+"?v="+bust)).then(r=>r.ok?r.json():null).catch(()=>null);
   try{
-    const [a,b,c,d, gigsNew, main, rom1, rom2, rom3, rival, giftItems, giftShops, giftPrefs, giftReact, gateStub, dengMock, dengPushMock, dualMock, newsImgs] = await Promise.all([
+    const [a,b,c,d, gigsNew, main, rom1, rom2, rom3, rival, giftItems, giftShops, giftPrefs, giftReact, gateStub, dualMock, newsImgs] = await Promise.all([
       get("npc_lines_core.json"),
       get("events_zh_HK.json"),
       get("story_beats_phase1.json"),
@@ -14807,15 +14394,13 @@ async function refreshCopyPacksFromDisk(){
       get("story_detail_romance_vera_hiu_choi.json"),
       get("story_detail_romance_lan_xu.json"),
       get("story_detail_romance_yip_so.json"), /* v20a159 ROM159：葉敏芝／蘇芷茵新線（Vera／海媚出局後入局） */
-      /* v20a152：romance_tang 已停載（鄧麗萍感情線取消；排片線行 DengLine mock；v268：pack 檔已刪） */
+      /* v20a152：romance_tang 已停載（鄧麗萍感情線取消；v268：pack 檔已刪；v20a358：DengLine mock 亦已刪） */
       get("story_detail_rival_mentor.json"),
       get("items_gifts.json"),
       get("shops.json"),
       get("gift_prefs.json"),
       get("gift_react_copy.json"),
       get("SANDBOX_BEHAVIOR_GATE_N1_N5_SOFT_STUB_v1.json"),
-      get("MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json"),
-      get("MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json"),
       get("MOCK_STORY_DUAL_MEET_THICKEN_SOFT_v1.json"),
       get("news_images_v82.json"),
     ]);
@@ -14888,14 +14473,14 @@ async function refreshCopyPacksFromDisk(){
        舊開閘字串已改寫，TEXTFIX55 嘅舊開閘條目對唔上源字串，已刪。 */
     try{ normaliseTangStub152(rom2); }catch(_t152){}
     try{ textfix55StoryPack(main); textfix55StoryPack(rom1); textfix55StoryPack(rom2); textfix55StoryPack(rom3); textfix55StoryPack(rival); textfix55RivalSpeakers(rival); }catch(_t55){}
-    try{ textfix55StoryPack(gateStub); textfix55StoryPack(dengMock); textfix55StoryPack(dengPushMock); textfix55StoryPack(dualMock); }catch(_t55){}
+    try{ textfix55StoryPack(gateStub); textfix55StoryPack(dualMock); }catch(_t55){}
     /* v20a66 YEARS66：劇情包年份 remap（TEXTFIX 之後行，pack 年份字眼一併 +2） */
     try{ if(typeof contra98FixNodeWhen==="function") contra98FixNodeWhen([main, rom1, rom2, rom3, rival]); }catch(_c98w){} /* v20a98 CONTRA98：支線節點時期標籤正規化，須喺 years66Walk 之前 */
-    try{ if(typeof years66Walk==="function"){ [main, rom1, rom2, rom3, rival, gateStub, dengMock, dengPushMock, dualMock].forEach(p=>{ try{ years66Walk(p, null); }catch(_y66){} }); } }catch(_y66){}
+    try{ if(typeof years66Walk==="function"){ [main, rom1, rom2, rom3, rival, gateStub, dualMock].forEach(p=>{ try{ years66Walk(p, null); }catch(_y66){} }); } }catch(_y66){}
     /* v20a67 JAN67：N1 時期標籤季節對位（when「1990春」→「1990冬」，只限 N1） */
     try{ if(typeof jan67OpeningTextFix==="function") jan67OpeningTextFix(main, 0); }catch(_j67){}
-    /* v20a87 WF5：soft 變體層（DengLine／DualMeet）文本對齊——loadMock 之前套用（同 textfix55／years66 先例） */
-    try{ if(typeof applyVariantWf5Overrides87==="function") applyVariantWf5Overrides87(dengMock, dengPushMock, dualMock); }catch(_wf5v){}
+    /* v20a87 WF5：soft 變體層（DualMeet）文本對齊——loadMock 之前套用（同 textfix55／years66 先例；v20a358 起只剩 DualMeet 兩節） */
+    try{ if(typeof applyVariantWf5Overrides87==="function") applyVariantWf5Overrides87(dualMock); }catch(_wf5v){}
     let _softStubRes = null;
     try{
       if(gateStub && typeof BehaviorGate!=="undefined") _softStubRes = BehaviorGate.loadStub_nodes_trigger(gateStub);
@@ -14909,15 +14494,6 @@ async function refreshCopyPacksFromDisk(){
           applyFreeplaySlotsToSoftGate();
         }
       }catch(_e){}
-      if(dengMock && typeof DengLine!=="undefined") DengLine.loadMock(dengMock);
-      /* v20a152：載入正規化——push mock 拎走 R_tang_ending 先至入 DengLine.loadPushMock。
-         唔直改 content pack JSON：原檔照有 ending beat（連 flag_tang_commit／he／be），但載入嗰陣濾走，
-         HELD 已同步縮到 3 節，loadPushMock 嘅 beats.length／chrome／choice 簽名檢查照過。 */
-      try{ if(dengPushMock && Array.isArray(dengPushMock.beats)) dengPushMock.beats = dengPushMock.beats.filter(function(b){ return b && b.id!=="R_tang_ending"; }); }catch(_f152){}
-      if(dengPushMock && typeof DengLine!=="undefined" && DengLine.loadPushMock){
-        const pushLoaded = DengLine.loadPushMock(dengPushMock);
-        if(pushLoaded && !pushLoaded.ok && typeof console!=="undefined" && console.info) console.info("[DENG] push mock", pushLoaded.reason);
-      }
       if(dualMock && typeof DualMeet!=="undefined") DualMeet.loadMock(dualMock);
     }catch(_sg){}
     if(!main) STORY_WIRE.errors.push("story_detail_n1_to_n17.json 未載入");
@@ -35932,7 +35508,7 @@ const ENC79_DLG_liu_bingxing = {
       ["S", "唔得唔得，呢句一出，觀眾未笑，我自己先尷尬……"],
       ["S", "如果轉一轉，先抑後揚，包袱抖喺最後兩個字度呢？"],
       ["A", "（心諗）嘩，呢段爆肚橋勁到……原來喜劇係咁度出嚟㗎。"],
-      ["N", "副導：喂，後生仔，企喺度做乜？唔好阻住大佬度橋啦。"],
+      ["N", "副導在旁邊開口：「喂，後生仔，企喺度做乜？唔好阻住大佬度橋啦。」"],
       ["A", "唔好意思，我……我坐隔籬枱啫，聽到入晒迷。"],
       ["S", "（抬頭，笑住）由佢啦，年輕人肯停低聽人講嘢，已經好過好多人。"],
       ["S", "你頭先聽到邊句？講嚟聽吓，唔使怕醜。"],
@@ -36422,7 +35998,7 @@ const ENC79_DLG_mak_zhendong = {
         ["N", "武指：佢嗰句冇事，我聽咗十年。邊次係真㗎？"],
         ["A", "咁你點解唔嗌停？"],
         ["N", "武指：嗌停，佢會嬲到拆廠。到時成班人冇工開。"],
-        ["N", "阿偉望回去——他連站著，都在死頂，肩膀那邊微微震著，自己也不覺得。"],
+        ["N", "阿偉望回去——麥震東連站著都在硬撐，肩膀微微發抖，麥震東自己卻渾然不覺。"],
         ["S", "望咩？埋位啦。"]
       ]
     },
@@ -36482,7 +36058,7 @@ const ENC79_DLG_mak_zhendong = {
         ["A", "麥哥……"],
         ["S", "不過，嗰啲位，係要企得穩先有得企。你嗰日話你會驚，我記住咗。唔係話你唔好，係呢啲位，等唔到一個驚字。"],
         ["A", "得，我明喇。"],
-        ["N", "他拍一拍你的肩膀。那隻手滿是舊患，卻站得比任何人都穩。"]
+        ["N", "麥震東拍一拍阿偉的肩膀；那隻手滿是舊患，步伐卻穩得沒有一絲顫抖。"]
       ]
     }
   }
@@ -36669,7 +36245,7 @@ const ENC79_DLG_yip_manzi = {
         { label: "轉頭同場務講兩句", lines: [
           ["A", "喂，你知唔知呀，敏芝嗰輯寫真原來仲未簽㗎，公司放風逼佢就範咋。"],
           ["N", "場務轉頭就跟燈光師說，燈光師又跟化妝姐姐說，不夠兩天，整個廠都知道了。"],
-          ["N", "雜誌記者還打去公司求證，公司立刻發聲明，葉敏芝那邊立刻變得很被動。"],
+          ["N", "雜誌記者還致電公司求證，公司隨即發聲明，葉敏芝那邊立刻變得很被動。"],
           ["S", "……原來你把口，同出面啲人冇分別。以後我啲嘢，你唔使知喇。"]
         ] }
       ]
@@ -36760,7 +36336,7 @@ const ENC83_DLG_ngai_wingnaam = {
       ["S", "阿偉，你嚟得正好，幫我攞住支棍，我示範嗰下轉身俾你睇。"],
       ["A", "好呀，我攞實喇，你慢慢嚟。"],
       ["S", "睇實喇，呢啲基本功，而家冇幾多個後生肯練喇。"],
-      ["A", "我睇實喇，一步都冇眨眼。"]
+      ["A", "我睇實喇，一眼都冇眨過。"]
     ],
     T4: [
       ["S", "阿偉，你坐低先，唔使趕住走。"],
@@ -37004,7 +36580,7 @@ const ENC83_DLG_ngai_wingnaam = {
         {
           label: "照實講：佢得，佢企得穩",
           lines: [
-            ["A", "詠男姐，你照實講就得：我企得穩，我肯跌，肯練。你話我得，我就得。"],
+            ["A", "詠男姐，你唔使幫我講大話，我自己企出嚟俾人睇：我企得穩，我肯跌，肯練。我話我得，我就得。"],
             ["S", "……好，我就係等你呢句。你嗰下暴雨頂燈架，我睇在眼內，唔係我幫你講大話，係你自己企出嚟㗎。"]
           ],
           flags: ["ngai_patron_vouch"]
@@ -37207,9 +36783,9 @@ const ENC83_DLG_gu_mingfai = {
     gu_foreshadow: {
       lines: [
         ["N", "1991年，海港廣播電台後門。阿偉拿著東西經過，見到顧明輝和一個西裝男人站在樓梯口，說話輕聲得幾乎聽不到。"],
-        ["N", "西裝男人：明輝哥，嗰邊已經催咗幾次喇，你俾個日子我交代啦。"],
+        ["N", "西裝男人壓低聲音說：「明輝哥，嗰邊已經催咗幾次喇，你俾個日子我交代啦。」"],
         ["S", "我知，我冇走數，你俾多幾日我，我一有就即刻找俾你。"],
-        ["N", "西裝男人：你次次都係咁講……唉，我都係打份工，你唔好令我難做。"],
+        ["N", "西裝男人嘆了口氣：「你次次都係咁講……唉，我都係打份工，你唔好令我難做。」"],
         ["S", "我顧明輝幾時有賴過人帳？你放心，我笑得出嚟嗰日，就係我仲企得住嗰日。"],
         ["N", "他說到這句，那個笑容忽然收了，壓低聲音，之後那個男人走了，他一個人站了很久，才慢慢拿紙巾出來抹汗。"],
         ["A", "（佢嗰個笑容，原來一轉背，就會跌落嚟……）"]
@@ -37249,7 +36825,7 @@ const ENC83_DLG_gu_mingfai = {
         ["N", "夜晚，金龍茶餐廳收了大半，顧明輝約阿偉坐在最裡面那張桌子，西裝筆挺，但手指一直在桌底搓來搓去。"],
         ["S", "阿偉，我今日約你，唔係飲茶咁簡單。有件事，我開口之前，諗咗成個禮拜。"],
         ["A", "明輝哥，你講啦，咩事咁嚴重？"],
-        ["S", "我想同你借一筆錢周轉。唔係食飯錢咁簡單，係……有啲數，要即刻找咗佢。"],
+        ["S", "我想同你借一筆錢周轉。唔係小數目，係……有啲數，要即刻找咗佢。"],
         ["A", "點會搞到咁急呀？"],
         ["S", "你唔好問咁多，問咗，我都唔知點答你先唔失禮。我口頭應承你，一有，我就還返俾你。"],
         ["S", "我呢世人冇求過幾多個人。你肯唔肯，都唔好勉強，我唔會怪你。"]
@@ -37326,7 +36902,7 @@ const ENC83_DLG_gu_mingfai = {
       lines: [
         ["N", "夜總會後台，顧明輝換好衣服，拉著阿偉去到走廊盡頭，那裡站著一位登台班主。"],
         ["S", "阿偉，我介紹你識——呢位係昌哥，呢頭幾間夜總會嘅登台都係佢安排嘅，人好爽直。"],
-        ["N", "昌哥：明輝開到口，我點都要俾面。後生仔，你嗰啲戲我睇過，有潛質。"],
+        ["N", "昌哥笑著說：「明輝開到口，我點都要俾面。後生仔，你嗰啲戲我睇過，有潛質。」"],
         ["A", "昌哥你好，多謝你肯見我。"],
         ["S", "我紅嗰陣識落嘅人，而家肯聽我講一句嘅，就剩返呢個。你要好好珍惜呢個機會。"],
         ["S", "我冇咩俾到你，剩返呢啲舊人情，今日交俾你喇。"]
@@ -37359,7 +36935,7 @@ const ENC83_DLG_lok_gasing = {
   first: {
     lines: [
       ["N", "星河電視台錄影廠走廊，駱家聲剛剛在高層房裡拍桌吵完架，推門出來，臉黑得發焦。"],
-      ["N", "高層：家聲，你嗰啲歌，台度播唔播，我哋自有分數，你唔好咁大聲。"],
+      ["N", "高層房裏傳出一把聲音：「家聲，你嗰啲歌，台度播唔播，我哋自有分數，你唔好咁大聲。」"],
       ["S", "分數？我寫歌唔係求你哋派分數㗎！"],
       ["A", "（哇，撞正火頭……我貼住牆邊企算啦。）"],
       ["S", "喂，後生仔，你企喺度做咩？冇見過人嗌交呀？"],
@@ -37716,7 +37292,7 @@ const ENC83_FRAME_lok_gasing = {
 const ENC83_DLG_chai_zanhoi = {
   first: {
     lines: [
-      ["N", "星河電視台古裝街，剛才那場剛剛拍完，工作人員正在收燈，阿偉站在監視器後面看熱鬧。"],
+      ["N", "星河電視台古裝街，上一場戲剛拍完，工作人員正在收燈，阿偉站在監視器後面看熱鬧。"],
       ["S", "企咗好耐喇噃。"],
       ["A", "齊生？我……我冇阻住你呀，我企邊邊咋。"],
       ["S", "冇阻。係想問你一句啫。"],
@@ -37806,12 +37382,12 @@ const ENC83_DLG_chai_zanhoi = {
       ["A", "齊生，你嘅戲，唔係後生仔學幾下就學得嚟㗎。"],
       ["S", "我知。但台入面開會，已經有人問，古裝戲仲係唔係台柱嗰味嘢。"],
       ["S", "以前一講古裝，監製第一個就諗起我。而家佢哋諗嘅，係點樣慳皮、點樣捧新人。"],
-      ["N", "齊鎮海望著古裝街那道城門，那裡他站過無數次，今天望過去，眼神有些不同。"],
+      ["N", "齊鎮海望著古裝街那道城門，那裡他站過無數次，今天再看，眼神比平日沉靜，銳氣收斂了幾分。"],
       ["S", "我唔怕辛苦，我怕嘅係，有一日我企返去嗰個位，已經冇人覺得嗰個位係我嘅。"],
       ["S", "轉型？我呢個年紀，嗰身打法、嗰種聲線，觀眾認咗咁多年，話變就變，變到似咩？"],
       ["A", "你係驚變咗，舊觀眾唔認你；唔變，新觀眾又唔埋嚟？"],
       ["S", "你講中晒。我夜晚返到屋企，Call機靜晒，一個人對住劇本，就會諗呢樣嘢。"],
-      ["S", "一哥呢兩個字，聽落好威，實際上係企喺懸崖邊，後面仲要保持笑容。"],
+      ["S", "一哥呢兩個字，聽落好威，實際上係企喺懸崖邊，仲要笑住俾人睇。"],
       ["A", "齊生，你肯同我講呢啲，我唔會當係八卦聽。"],
       ["S", "我知你唔會。所以我先想聽你一句真話，你覺得我應該點行？"]
     ],
@@ -38039,7 +37615,7 @@ const ENC84_DLG_pang_siuki = {
   first: {
     lines: [
       ["S", "哎，收工啦收工啦，各位辛苦晒，聽日準時呀！"],
-      ["N", "中環廣告公司大堂，彭少祺剛剛錄完東西出來，一路走一路跟人打招呼，誰出入他都叫得出名字。"],
+      ["N", "中環廣告公司大堂，彭少祺剛剛錄完節目出來，一路走一路跟人打招呼，進出的人他都叫得出名字。"],
       ["S", "阿玲，琴日你個仔冇事嘛？老陳，你副新眼鏡幾襯你喎。"],
       ["N", "他轉過頭，忽然望著阿偉，笑得眼睛都瞇了起來。"],
       ["S", "咦，阿偉！係咪先？我冇記錯人呀？"],
@@ -38312,7 +37888,7 @@ const ENC84_DLG_pang_siuki = {
         ["N", "他說完便轉身，繼續與身邊的監製談流程，連頭也沒有回。阿偉站在原地，看着他跟每一個人打招呼，唯獨沒有再望向自己。"],
         ["A", "彭生，今晚辛苦晒喇，我……我企喺台邊睇你，成晚都冇停過口。"],
         ["S", "辛苦咩啫，今晚成晚都係咁講，講到收工就得。做司儀嗰啲，邊度有窿就去補，補完就收工。"],
-        ["N", "阿偉望著他的背影，才想起那晚在錄影廠後台，他說到收工想有人陪他吃碗麵，自己笑著說他想多了，他臉色僵了一下——當時告訴自己是看錯，現在才知道沒有看錯。"],
+        ["N", "阿偉望著他的背影，才想起那晚在錄影廠後台的事。對方說收工後想有人陪他吃一碗麵，阿偉笑著說對方想多了，對方的臉色僵了一下——當時阿偉告訴自己是看錯，現在才知道沒有看錯。"],
         ["S", "你食咗飯未呀？老地方嗰檔麵，今晚我唔得閒去，你自己去食啦，食完早啲返。"]
       ],
       choices: [
@@ -38386,7 +37962,7 @@ const ENC84_DLG_so_jiyan = {
       ["N", "阿偉剛在大堂等人，順手擋開那支鏡頭，站到了她身旁。"],
       ["S", "唔……唔好意思，唔該你。"],
       ["A", "冇事，你入先啦，呢度交畀我擋一擋。"],
-      ["N", "經理人立刻打圓場，半推半送把她送進升降機。"],
+      ["N", "經理人立刻打圓場，半推半扶把她送進升降機。"],
       ["S", "頭先……真係唔該晒。"],
       ["A", "舉手之勞啫，你冇整親就好。"],
       ["N", "升降機門關上之前，她仍然掛著那個完美的笑容，只是眼神在阿偉身上多停了一秒。"]
@@ -38407,7 +37983,7 @@ const ENC84_DLG_so_jiyan = {
         ]
       },
       {
-        label: "趁機介紹自己，想攞個機會",
+        label: "趁機介紹自己，想爭取一個機會",
         lines: [
           ["A", "（門關上之前，阿偉開口）蘇小姐，我叫阿偉，做開拍戲嗰邊，有機會……"],
           ["S", "嗯，我記住喇。有機會公司會聯絡你嗰邊。"]
@@ -38486,7 +38062,7 @@ const ENC84_DLG_so_jiyan = {
       {
         label: "認真跟她說：你做得到",
         lines: [
-          ["A", "芷茵，你做得到。你缺嘅唔係能力，係一個肯信你嘅機會。"],
+          ["A", "芷茵，你唔係冇能力，只係未有人肯畀你試一次。"],
           ["S", "……好耐冇人咁肯定咁同我講。多謝你，我會記住呢句。"]
         ]
       },
@@ -38592,7 +38168,7 @@ const ENC84_DLG_so_jiyan = {
     },
     so_wrap: {
       lines: [
-        ["N", "那套廣告拍到最後一天，中環那間廠房裡熱得出汗，終於喊出殺青。"],
+        ["N", "那套廣告拍到最後一天，中環那間廠房裡人人熱得出汗，導演終於喊出殺青。"],
         ["S", "今日……係我第一次喺現場，有人問我你覺得點演好。"],
         ["A", "導演嗰句呀？我都有聽到，佢好認真問你意見。"],
         ["S", "以前啲人淨係嗌我笑多啲、企過啲，冇人當我有諗法。"],
@@ -38651,7 +38227,7 @@ const ENC84_DLG_chung_choning = {
       {
         label: "點頭道謝，不出聲",
         lines: [
-          ["A", "（阿偉點一點頭，企返直啲，一句聲都冇出，驚講多錯多。）"],
+          ["A", "（我點一點頭，企返直啲，一句聲都冇出，驚講多錯多。）"],
           ["S", "唔出聲好過亂講。你對眼而家定咗少少喇。"]
         ],
         flags: ["chung_first_silent"]
@@ -38730,13 +38306,13 @@ const ENC84_DLG_chung_choning = {
       ["A", "你講得好平靜，好似講緊聽日去邊度食飯咁。"],
       ["S", "平靜先安排得好嘢㗎。喊苦喊忽，解決唔到手續，仲會俾人寫到亂晒。"],
       ["S", "我想靜靜地嚟，靜靜地走。嚟嗰陣冇人識我，走嗰陣，都唔使驚動咁多人。"],
-      ["A", "（阿偉望住佢，忽然覺得佢唔係高冷，係將好多嘢都收得好埋。）"]
+      ["A", "（我望住佢，忽然覺得佢唔係高冷，係將好多嘢都收得好埋。）"]
     ],
     choices: [
       {
         label: "靜靜聽，不出聲",
         lines: [
-          ["A", "（阿偉冇出聲，只係將杯水推過去俾佢，陪佢望住窗外。）"],
+          ["A", "（我冇出聲，只係將杯水推過去俾佢，陪佢望住窗外。）"],
           ["S", "你咁樣就啱喇。有啲嘢，聽嘅人唔出聲，先係最大嘅尊重。"]
         ],
         flags: ["chung_listened"]
@@ -38832,7 +38408,7 @@ const ENC84_DLG_chung_choning = {
       ],
       choices: [
         {
-          label: "跟佢指點去試：帶住個腦去，唔背定一套演法",
+          label: "按照她的指點去試：帶著腦袋去，不預先背定一套演法",
           lines: [
             ["A", "鍾小姐，我聽你話，唔背定一套演法去，帶住問題去試。"],
             ["S", "咁先啱。記住，佢問你嗰個人點解咁做，你唔好急住答，諗清楚先講。"]
@@ -38889,14 +38465,14 @@ const ENC84_DLG_chung_choning = {
         ["S", "我走，唔想大鑼大鼓。你都唔好同人講，當我去咗一個長啲嘅外景就得喇。"],
         ["A", "我唔會講。你……保重呀。"],
         ["S", "你都係。臨走我留一句俾你，唔好學人哋點演，你要諗下嗰個人點解咁做，諗通咗，你點企、點望、點停，都自然係佢，唔係你扮佢。"],
-        ["N", "她說完上車，車開了很遠，阿偉還站在那裡，那句話在心裡，一句一句地翻來覆去。"]
+        ["N", "她說完便上車，車子開得很遠，阿偉仍站在那裡，一直看著車尾燈消失，才緩緩轉身。"]
       ]
     },
     chung_patron_cold: {
       lines: [
         ["N", "車門關上之前，鍾楚凝望了阿偉一眼，點一點頭。"],
         ["S", "你都捱到今日，都算唔錯。保重。"],
-        ["N", "阿偉站在原地，明白她記得你，但不是那種會提你名字的記得。"],
+        ["N", "阿偉站在原地，明白她記得自己，只是不會向任何人提起他的名字。"],
         ["N", "那句忠告，她今次沒有說。你要自己想回，那個人為甚麼這樣做。"]
       ]
     },
@@ -38984,7 +38560,7 @@ const ENC84_DLG_ching_tinlok = {
       ["A", "唱到沙都仲唱？你真係同自己過唔去。"]
     ],
     T3: [
-      ["S", "阿偉，你嚟得啱，我有樣嘢，憋咗好耐，冇人敢同人講。"],
+      ["S", "阿偉，你嚟得啱，我有樣嘢，憋咗好耐，一直唔敢同人講。"],
       ["A", "咩事呀？你講啦，我聽住。"],
       ["S", "人哋成日話我靠修音……最屈辱嗰下，係連我自己都知，佢哋講嘅，有一半係真㗎。"],
       ["A", "認咗嗰一半，先有機會練返另外嗰一半返嚟呀。"]
@@ -39115,7 +38691,7 @@ const ENC84_DLG_ching_tinlok = {
         {
           label: "撐佢練真功夫：個名上咗報紙，功夫就要追得上個名",
           lines: [
-            ["A", "天諾，個名上咗報紙，功夫就要追得上個名。你今晚加操嗰一個鐘，我陪你。你唱，我聽住。"],
+            ["A", "天諾，你今晚加操嗰一個鐘，我全程陪你練。你唱，我聽住。"],
             ["S", "好！咁我今晚唔停，唱嗰課練多一個鐘，你唔准走！"]
           ],
           flags: ["ching_back_train"]
@@ -39185,7 +38761,7 @@ const ENC84_DLG_ching_tinlok = {
       lines: [
         ["N", "他說完，轉身對著鏡子，又由第一拍跳起，沒有再叫你留下。"],
         ["S", "偉哥，你嗰晚企到最後，呢樣我認。不過下次，你想我點睇你，你自己揀。"],
-        ["A", "（阿偉望住佢個背影，明白佢唔係嬲，係等緊——等你下次用把真聲，唔係用部機，同佢講嘢。）"],
+        ["A", "（佢唔係嬲，係等緊——等我下次用把真聲，唔係用部機，同佢講嘢。）"],
         ["N", "整間舞蹈室，只剩他一個人的腳步聲。你走出去的時候，聽到他由頭唱過，走音，都不停。"]
       ]
     },
@@ -39302,7 +38878,7 @@ const ENC79_DLG_lan_ruoxi = {
     ],
     T3: [
       ["S", "坐低啦，唞陣先。通告牌我派完喇。"],
-      ["S", "你知唔知，我細個嗰陣，夢想唔係派牌，係企喺人哋派牌嗰個位對面——企出嚟嗰個。"],
+      ["S", "你知唔知，我細個嗰陣，夢想唔係喺後台派牌，係企喺台上面做畀人睇嗰個——企出嚟嗰個。"],
       ["A", "你會企到出去㗎，我信。"],
       ["S", "……多謝你咁講。"]
     ],
@@ -39588,13 +39164,13 @@ const ENC79_DLG_hon_sauting = {
       ["S", "咁你數拍子嗰陣記住，唔好搶，要跟住音樂行。"]
     ],
     T2: [
-      ["S", "阿偉，問你句——你覺得跳唱天后呢個名，係咪淨係識跳唔識唱？"],
-      ["A", "唔係，識跳又識唱先難，淨係識一樣嗰啲多的是。"],
+      ["S", "阿偉，問你句——你覺得跳唱天后呢個名，係咪淨係靠天份就得？"],
+      ["A", "唔係，天份邊有咁勤力？識跳又識唱先難，淨係識一樣嗰啲多的是。"],
       ["S", "呢句我鍾意聽。你留低，陪我練多一陣。"]
     ],
     T3: [
       ["S", "坐低啦，唞陣先。今日練咗成朝，腳都跳攰。"],
-      ["S", "人人都話我係跳唱天后，講到我好似一出世就識跳咁。"],
+      ["S", "人人都話我係跳唱天后，冇人知我一隻舞要練幾百次。"],
       ["A", "你練咗成朝都唔停，先至係天后嘅原因啫。"],
       ["S", "……呢句，我收低。"]
     ],
@@ -40203,12 +39779,12 @@ const ENC79_FIRST_ALT98 = {
   "ngai_wingnaam": { at: "agency_ho", swaps: [["維港電影後巷，天黑下來，收工的人都走光了，只剩一盞後門燈。", "事務所後面那條巷子，天黑下來，收工的人都走了，只剩一盞後門燈。"]] },
   "yip_manji": { at: "rec_hk", swaps: [["九龍電視台訓練班，第一堂。阿偉剛剛坐下，隔壁那位已經化好妝、坐得筆直。", "香江唱片試音等候區，阿偉剛剛坐下，隔壁那位已經化好妝、坐得筆直。"], ["阿偉……嗯。臨記做到嚟訓練班，算你有啲本事，不過呢度唔同片場，唔係企得埋就得㗎。", "阿偉……嗯。臨記出身，嚟到唱片公司試音，算你有啲本事，不過呢度唔同片場，唔係企得埋就得㗎。"]] },
   "mak_zhendong": { at: "film_lion", swaps: [["紅棉影業片場一角，竹棚底下熱得冒煙，下一場便輪到麥震東埋位。", "獅子山製片廠片場一角，竹棚底下熱得冒煙，下一場便輪到麥震東埋位。"]] },
-  "lok_gasing": { at: "rec_hk", swaps: [["星河電視台錄影廠走廊，駱家聲剛剛在高層房裡拍桌吵完架，推門出來，臉黑得發焦。", "香江唱片走廊，駱家聲剛剛在高層房裏拍桌吵完架，推門出來，臉色黑得像燒焦了一樣。"], ["高層：家聲，你嗰啲歌，台度播唔播，我哋自有分數，你唔好咁大聲。", "高層：家聲，你嗰啲歌，出唔出得街，我哋自有分數，你唔好咁大聲。"]] },
-  "pang_siuki": { at: "tvb_longmen", swaps: [["中環廣告公司大堂，彭少祺剛剛錄完東西出來，一路走一路和人打招呼，誰進出他都叫得出名字。", "星河電視台大堂，彭少祺剛剛錄完節目出來，一路走一路和人打招呼，誰進出他都叫得出名字。"]] },
+  "lok_gasing": { at: "rec_hk", swaps: [["星河電視台錄影廠走廊，駱家聲剛剛在高層房裡拍桌吵完架，推門出來，臉黑得發焦。", "香江唱片走廊，駱家聲剛剛在高層房裏拍桌吵完架，推門出來，臉色黑得像燒焦了一樣。"], ["高層房裏傳出一把聲音：「家聲，你嗰啲歌，台度播唔播，我哋自有分數，你唔好咁大聲。」", "高層房裏傳出一把聲音：「家聲，你嗰啲歌，出唔出得街，我哋自有分數，你唔好咁大聲。」"]] },
+  "pang_siuki": { at: "tvb_longmen", swaps: [["中環廣告公司大堂，彭少祺剛剛錄完節目出來，一路走一路跟人打招呼，進出的人他都叫得出名字。", "星河電視台大堂，彭少祺剛剛錄完節目出來，一路走一路跟人打招呼，進出的人他都叫得出名字。"]] },
   "chung_choning": { at: "ad_adm", swaps: [["天星音樂那邊辦影展酒會，門口紅地毯鋪到街上，水晶燈照得人眼花，阿偉站在外圍幫忙看場，衣服都還沒熨直。", "金鐘一間廣告公司辦發佈酒會，門口紅地毯鋪到街上，水晶燈照得人眼花，阿偉站在外圍幫忙看場，衣服都還沒熨直。"]] },
   "gu_mingfai": { at: "cafe_cha", swaps: [["海港廣播電台門外，節目剛剛做完，歌迷拍完照、拿完簽名，散得七七八八。", "金龍茶餐廳門口，顧明輝剛剛和老闆敘完舊出來，幾個歌迷拍完照、拿完簽名，散得七七八八。"], ["係你呀？後生仔，嚟電台做嘢呀？", "係你呀？後生仔，嚟食嘢呀？"]] },
   "so_jiyan": { at: "ad_central", swaps: [["灣仔唱片公司大堂，閃光燈閃得人眼花，記者圍住門口不肯走。", "中環廣告公司大堂，閃光燈閃得人眼花，記者圍住門口不肯走。"], ["阿偉退開兩步，站到一邊，沒有擋住唱片公司的人做事。", "阿偉退開兩步，站到一邊，沒有擋住那些人做事。"]] },
-  "chai_zanhoi": { at: "tvb_harbour", swaps: [["星河電視台古裝街，剛才那場剛剛拍完，工作人員正在收燈，阿偉站在監視器後面看熱鬧。", "海港廣播廠景那邊，剛才那場古裝戲剛剛拍完，工作人員正在收燈，阿偉站在監視器後面看熱鬧。"]] },
+  "chai_zanhoi": { at: "tvb_harbour", swaps: [["星河電視台古裝街，上一場戲剛拍完，工作人員正在收燈，阿偉站在監視器後面看熱鬧。", "海港廣播廠景那邊，上一場古裝戲剛拍完，工作人員正在收燈，阿偉站在監視器後面看熱鬧。"]] },
   "ching_tinlok": { at: "rec_hk", swaps: [["1992年，天星音樂舞蹈室，晚上十一點多，整層樓只剩這間房還亮著燈。", "1992年，香江唱片舞蹈室，晚上十一點多，整層樓只剩這間房還亮著燈。"]] }
 };
 function contra98EncFirstLocSwap(steps, starId, locId){
@@ -41935,7 +41511,7 @@ try{ const D=ENC79_DIALOG.mak_zhendong; if(D && D.beats) D.beats.mak_patron = { 
   ["A","麥哥，我怕我未夠班……"],
   ["S","夠唔夠班，唔係你講，係跌出嚟嘅。你肯跌，我就肯推。"],
   ["A","得，我跟你學，跌幾多次都唔走。"],
-  ["N","他拍一拍你的肩膀。那隻手滿是舊患，卻站得比任何人都穩。"]
+  ["N","麥震東拍一拍阿偉的肩膀；那隻手滿是舊患，步伐卻穩得沒有一絲顫抖。"]
 ] }; }catch(_e){}
 try{ const D=ENC79_DIALOG.yip_manji; if(D && D.beats) D.beats.yip_patron = { lines:[
   ["S","阿偉，今日我唔同你鬥嘴，我有單嘢益你。"],
@@ -42976,23 +42552,6 @@ function openLoc(id, opts){
     document.getElementById("loc-who").textContent = "何生提醒：練好基本功，條件未合就暫未能報，不要硬闖。" + ((typeof enc79HoTrustLine==="function" && enc79HoTrustLine()) ? " " + enc79HoTrustLine() : "");
   }
   try{
-    if(L.id==="agency_ho" && typeof DengLine!=="undefined" && DengLine.meetAvailable && DengLine.meetAvailable()){
-      add("鄧麗萍約談排片", "龍頭院線排片部有人等阿偉對數。", "免費", ()=>{
-        closeSheet();
-        try{ DengLine.playMeet(); }catch(_e){ toast("暫時未能前往"); }
-      }, "act-priority act-story");
-    }
-    if(L.id==="agency_ho" && typeof DengLine!=="undefined" && DengLine.pushAvailable){
-      ["R_tang_push1","R_tang_push2","R_tang_crisis"].forEach(beatId=>{ /* v20a152：R_tang_ending 已刪 */
-        if(!DengLine.pushAvailable(beatId)) return;
-        const node = DengLine.pushNode(beatId);
-        if(!node) return;
-        add(node.title || "鄧麗萍", node.synopsis || "", "免費", ()=>{
-          closeSheet();
-          try{ DengLine.playPush(beatId); }catch(_e){ toast("暫時未能前往"); }
-        }, "act-priority act-story");
-      });
-    }
     /* v20a164：鄧麗萍送禮入口——見面後（flag_tang_open）先出，行現成 openGiftPick；
        佢唔係地圖駐場 NPC（MAP_NPC_TO_KEY 冇 tang、NPCS 亦冇佢），唔行 addLocTalkGiftActs；
        事務所係佢唯一出現場合（meet／push 掣都喺呢度），送禮掣跟埋同一版面。 */

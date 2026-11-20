@@ -30,7 +30,7 @@ ok('A-01/02: CONTRA98_WHEN_FIX 表在位（21 節點；v20a268 刪 Vera 2 行＋
    and src.count('"1990冬","era_1990_winter_finale"') == 7)
 ok('A-01/02: contra98FixNodeWhen 函數在位', 'function contra98FixNodeWhen(packs)' in src)
 i_fix = src.find('contra98FixNodeWhen([main, rom1, rom2, rom3, rival])')  # v20a152：romTang 已停載，唔再入表；v20a159 ROM159：加 rom3
-i_walk = src.find('rival, gateStub, dengMock')  # story pack 嗰次 walk（檔入面另有 gift pack walk，唔好混淆）
+i_walk = src.find('rival, gateStub, dualMock')  # story pack 嗰次 walk（檔入面另有 gift pack walk，唔好混淆；v20a358：dengMock 已刪）
 ok('A-01/02: 載入次序——正規化喺 story years66Walk 之前', 0 <= i_fix < i_walk)
 
 # 二、B-01/B-02

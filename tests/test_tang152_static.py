@@ -1,3 +1,4 @@
+# v20a358 resync＋手術：soft 層鄧麗萍清理（DengLine IIFE＋WF5 R_tang_* 條目＋mock 底稿全刪，live 路徑零讀者核實見 NOTES_V20A358）。§3 由「留線」改寫做「刪線」斷言；§2 R_tang_ending 計數 1→0（載入過濾連同 mock 一齊刪）；§4 刪 push mock 過濾斷言；§6 push mock 改做「檔已刪」斷言；normaliseTangStub152 釘 lines()[14761]→[14348]、stub 呼叫行 lines()[14888]→[14473]（index.html 淨 −441 行：WF5 −59＠舊 L7466／DengLine IIFE −294＠舊 L9305／呼叫點散刪 −88；內容逐字核實純漂移）。
 # v20a356 resync：index.html 淨 +20 行（支線複檢 (a) 類修復：WF2 B0＋1／rom159 葉 crisis 分流＋12／enc158 synopsis＋1／lost_role＋4／顧哼歌＋1／鍾追問者＋1）；釘行按段 shift，內容逐字核實純漂移。
 # v20a352 resync：index.html 淨 +18 行（ending410EveNode 回憶過濾＠舊 L13117 後）；normaliseTangStub152／stub 呼叫兩釘各 +18，內容逐字核實純漂移。
 # v20a345 resync：index.html 淨 +52 行（F1 警告呈現＋F2 floor 檢查；插入點舊 L13229 +3／L13625 +14／L13636 +2／L19827 +1／L19849 +7／L20446 +23／L20472 +2；總行數 47316→47368；釘行按段 shift，內容逐行核實純漂移，見 qa345/resync345.py）。
@@ -89,7 +90,7 @@ ok('刪旗：程式碼再無 flag_tang_commit／he／be 引用',
    '"flag_tang_commit"' not in src and '"flag_tang_he"' not in src and '"flag_tang_be"' not in src
    and "'flag_tang_commit'" not in src and "'flag_tang_he'" not in src and "'flag_tang_be'" not in src
    and 'C_tang_ending_he' not in src and 'C_tang_ending_be' not in src)
-ok('刪節點：R_tang_ending 只剩載入過濾嗰一次（filter 謂詞）', src.count('"R_tang_ending"') == 1)
+ok('刪節點：R_tang_ending 引號引用已清零（v20a358：載入過濾連 mock 一齊刪）', src.count('"R_tang_ending"') == 0)
 ok('刪節點：R_tang_ending: 冒號式引用已清', 'R_tang_ending:' not in src)
 ok('刪節點：pushSrc("R_tang_ending") 已清', 'pushSrc("R_tang_ending")' not in src)
 ok('刪節點：WF2 覆寫表冇 tang 條目', '"R_tang_meet": {' not in src and '"R_tang_ending": {' not in src)
@@ -98,25 +99,28 @@ ok('刪節點：收科回望「盟友以上／嗰個紅圈」已清', '盟友以
 ok('刪節點：CONTRA98_WHEN_FIX 冇 R_tang_ending', 'R_tang_ending:["1990' not in src)
 ok('刪節點：CONTRA98 winter_finale 由 8 減到 7（v20a268：R_vera_ending 段刪）', src.count('"1990冬","era_1990_winter_finale"') == 7)
 
-# --- 3. DengLine 排片線留返（meet＋push1／push2／crisis，閘門唔郁） ---
-ok('留線：HELD 縮到 3 節（L25817）', lines()[9307].startswith('  const HELD = ["R_tang_push1","R_tang_push2","R_tang_crisis"];'))
-ok('留線：PUSH_CHROME 有 push1／push2／crisis，冇 ending',
-   'R_tang_push1: { chromeSeason:"winter"' in src and 'R_tang_push2: { chromeSeason:"spring"' in src
-   and 'R_tang_crisis: { chromeSeason:"autumn"' in src)
-ok('留線：selfCheck 簽名表留返 push1／push2／crisis 三行，冇 ending 行',
-   'R_tang_push1: "C_tang_push1_exchange|flag_tang_push1_exchange|1' in src
-   and 'R_tang_crisis: "C_tang_crisis_data|flag_tang_crisis_data|1' in src
-   and 'R_tang_ending: "C_tang_ending_he' not in src)
-ok('留線：push 閘門 flag_tang_open ∧ rel_tang≥2 唔郁',
-   'pushGate("R_tang_push1", { ctx:{ flags:{ flag_tang_open:true }, rel_tang:2 } }).ok!==true' in src
-   and 'if((b.openConditions||[]).join(",")!=="flag_tang_open,rel_tang_threshold")' in src)
-ok('留線：debugUnlockTangPush（排片閘 debug）仲喺度', 'function debugUnlockTangPush()' in src)
-ok('留線：事務所排片掣只列 push1／push2／crisis',
-   '["R_tang_push1","R_tang_push2","R_tang_crisis"].forEach(beatId=>' in src)
-ok('留線：WF5 業務覆寫 meet／push1／push2／crisis 仲喺度',
-   '  R_tang_meet: {' in src and '  R_tang_push1: {' in src and '  R_tang_crisis: {' in src)
-ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
-   'DengLine.loadMock(dengMock)' in src and 'DengLine.loadPushMock(dengPushMock)' in src)
+# --- 3. v20a358：DengLine soft 層全刪（IIFE＋WF5 R_tang_*＋mock 底稿＋呼叫點；live 路徑零讀者） ---
+ok('刪線：DengLine IIFE 已刪', 'const DengLine = (function(){' not in src)
+ok('刪線：window.DengLine／__dengLine 匯出已刪', 'window.DengLine' not in src and 'window.__dengLine' not in src)
+ok('刪線：HELD／PUSH_CHROME 已刪', 'const HELD = ["R_tang_push1"' not in src and 'PUSH_CHROME' not in src)
+ok('刪線：selfCheck 簽名表已刪', 'R_tang_push1: "C_tang_push1_exchange|flag_tang_push1_exchange|1' not in src)
+ok('留返：debugUnlockTangPush（live 旗 debug 幫手，唔屬 soft 層，保留）', 'function debugUnlockTangPush()' in src)
+ok('刪線：事務所排片掣已刪', '["R_tang_push1","R_tang_push2","R_tang_crisis"].forEach(beatId=>' not in src)
+ok('刪線：WF5 R_tang_* 條目已刪，只留 hiu／choi',
+   '  R_tang_meet: {' not in src and '  R_tang_push1: {' not in src and '  R_tang_crisis: {' not in src
+   and '  R_hiu_meet: {' in src and '  R_choi_meet: {' in src)
+ok('刪線：DengLine.loadMock／loadPushMock 呼叫已刪',
+   'DengLine.loadMock' not in src and 'DengLine.loadPushMock' not in src)
+ok('刪線：mock 底稿已刪（三個 JSON＋同名 .md）',
+   not (ROOT / 'content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.json').exists()
+   and not (ROOT / 'content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.json').exists()
+   and not (ROOT / 'content/MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json').exists()
+   and not (ROOT / 'content/MOCK_STORY_DENG_LINE_MEET_SOFT_v1.1.md').exists()
+   and not (ROOT / 'content/MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.md').exists())
+ok('刪線：fetch 唔再載 deng mock', 'get("MOCK_STORY_DENG_LINE_' not in src and 'dengMock' not in src and 'dengPushMock' not in src)
+ok('刪線：WF5 套用呼叫只剩 dualMock', 'applyVariantWf5Overrides87(dualMock)' in src)
+ok('刪線：DengLine 程式碼引用清零（只剩註解提及，註解入面冇 DengLine. 呼叫式）',
+   src.count('typeof DengLine') == 0 and 'DengLine.' not in src)
 
 # v20a196 resync：showResult 淨 −1 行，兩錨點各 −1（31510→31509、31654→31653），difflib 對位核實內容逐字相同，純漂移。
 # v20a219 resync：index.html 淨 +3 行（CONTRA98 stub，插入點舊 L31845 之後）；winter_finale 11→8（hiu／choi／xu 結局改秋）；normaliseTangStub152 31899→31902、stub 呼叫行 32045→32048（difflib 對位核實純漂移，見 qa219/resync219.py）。
@@ -132,9 +136,9 @@ ok('留線：DengLine.loadMock／loadPushMock 呼叫仲喺度',
 # v20a234 resync：index.html 淨 −2869 行（刪五個內嵌主線表＋覆寫函數／載入呼叫）；3 個釘行按 difflib 映射重寫（HELD 12669→10006、normaliseTangStub152 18430→15563、stub 呼叫行 18557→15686；stub 呼叫行另 −2 因 46 呼叫＋註解拎走），內容逐字核實純漂移。
 # v20a235 resync：index.html 淨 −24 行（N17 前夕刪三選項）；3 個釘行按 difflib 映射重寫（normaliseTangStub152 15563→15539、stub 呼叫行 15686→15662；HELD 10006 唔郁），內容逐字核實純漂移。
 # v20a242 resync：index.html 淨 −144 行（刪 LAN 覆寫表；刪除區間舊 L6597–6735／7559–7579／15038–15045）；3 個釘行按段重算（HELD 9358→9212，−146；normaliseTangStub152 14926→14783，−143；stub 呼叫行 15049→14905，−144），內容逐字核實純漂移。
-# --- 4. 載入機制：stub 正規化＋push mock 過濾 ---
-ok('機制：normaliseTangStub152 函數在位（L31610）', lines()[14761].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行（L31754）', lines()[14888].strip().startswith('try{ normaliseTangStub152(rom2);'))
+# --- 4. 載入機制：stub 正規化（v20a358：push mock 過濾連 mock 一齊刪，見 §3） ---
+ok('機制：normaliseTangStub152 函數在位', lines()[14348].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行', lines()[14473].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)
@@ -142,8 +146,6 @@ ok('機制：stub 新抉擇 label／notes（唔留「深交／開閘」）',
    'keep.label = "留下聯絡：交換電話號碼"' in src
    and 'hold.label = "暫時唔留電話"' in src
    and '日後排片可以直接聯絡。' in src)
-ok('機制：push mock 載入過濾 R_tang_ending 在位',
-   'dengPushMock.beats = dengPushMock.beats.filter(function(b){ return b && b.id!=="R_tang_ending"; });' in src)
 
 # --- 5. TEXTFIX55：開閘＋收尾條目已清，玫瑰改純公事，錶句改純公事 ---
 ok('TEXTFIX：stub 開閘 synopsis／label 條目已清（舊句只剩 normaliser 註解引文各 1 次）',
@@ -172,9 +174,7 @@ def load_json(rel):
 ok('pack 已刪：romance_tang.json 唔再存在', not (ROOT / 'content/story_detail_romance_tang.json').exists())
 ok('pack 已刪：index 零提及檔名', 'story_detail_romance_tang.json' not in src)
 ok('pack 已刪：loader 零提及檔名', 'get("story_detail_romance_tang.json")' not in src)
-push_mock = load_json('content/MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json')
-ok('pack 唔郁：push mock 照有 4 節連 R_tang_ending（載入過濾，唔係改檔）',
-   len(push_mock.get('beats', [])) == 4 and any(b.get('id') == 'R_tang_ending' for b in push_mock.get('beats', [])))
+ok('pack 已刪：push mock 成檔刪除（v20a358）', not (ROOT / 'content/MOCK_STORY_DENG_LINE_PUSH_SOFT_v1.json').exists())
 lan_xu = load_json('content/story_detail_romance_lan_xu.json')
 stub = [n for n in lan_xu.get('nodes', []) if n.get('id') == 'R_tang_meet_stub'][0]
 ok('pack 唔郁：lan_xu stub 原稿照有開閘字（正規化喺載入嗰陣做，唔係改檔）',

@@ -138,7 +138,7 @@ const coldSteps = { steps: D.beats.pang_n17_cold.lines.map(l => ({ text: l[1] })
 ok('A cold 講距離：佢同每個人打招呼、唯獨唔再望向阿偉、連頭都冇回',
   hasText(coldSteps, '跟每一個人打招呼') && hasText(coldSteps, '唯獨沒有再望向自己') && hasText(coldSteps, '連頭也沒有回'));
 ok('A cold 認返 heart 嗰晚裂痕：笑住話佢諗多咗、臉色僵了一下',
-  hasText(coldSteps, '笑著說他想多了') && hasText(coldSteps, '臉色僵了一下'));
+  hasText(coldSteps, '笑著說對方想多了') && hasText(coldSteps, '臉色僵了一下')); /* v20a358 (b) 潤飾：人稱講明 */
 ok('A cold 唔用暖版關鍵句（第一眼就見到你／第一個走過來／嘉賓席／老地方食雲吞麵，慶祝下）',
   !hasText(coldSteps, '第一眼就見到你') && !hasText(coldSteps, '第一個走過來') && !hasText(coldSteps, '嘉賓席') && !hasText(coldSteps, '慶祝下'));
 const coldTexts = new Set(D.beats.pang_n17_cold.lines.map(l => l[1]));

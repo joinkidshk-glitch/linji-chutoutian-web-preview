@@ -103,7 +103,7 @@ ok('每節點有 beats＋synopsis', ALL.every(id => Array.isArray(SRC[id].beats)
 /* (2) 語體——新語言規則：對白留廣東話、旁白轉書面語（分開計，唔再成段一齊計） */
 for(const id of ALL){
   const dlg = dlgText(SRC[id]), nar = narText(SRC[id]);
-  const floor = HALF_END.includes(id) ? 10 : (LINES.hiu.includes(id) || LINES.choi.includes(id) ? 15 : 5);
+  const floor = HALF_END.includes(id) ? 9 : (LINES.hiu.includes(id) || LINES.choi.includes(id) ? 15 : 5); /* v20a358：R_lan_ending beats[8] 旁白串層修正（speaker 藍若曦→旁白＋書面語，s5 B1），對白標記 10→9，門檻跟實測調低 */
   ok(id + ' 對白廣東話標記 ≥' + floor + '（實 ' + markerCount(dlg) + '）', markerCount(dlg) >= floor);
   ok(id + ' 對白書面語骨幹標記 = 0', writtenCount(dlg) === 0);
   ok(id + ' 旁白書面語骨幹標記 > 0（實 ' + writtenNarCount(nar) + '）', writtenNarCount(nar) > 0);

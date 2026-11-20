@@ -114,7 +114,7 @@ ok('守線：tang_commit／R_tang_ending／HE／BE 繼續零引用（引號版�
    '"flag_tang_commit"' not in src and "'flag_tang_commit'" not in src
    and '"flag_tang_he"' not in src and '"flag_tang_be"' not in src
    and 'C_tang_ending_he' not in src and 'C_tang_ending_be' not in src)
-ok('守線：R_tang_ending 只剩載入過濾嗰一次', src.count('"R_tang_ending"') == 1)
+ok('守線：R_tang_ending 引號引用已清零（v20a358：載入過濾連 mock 一齊刪）', src.count('"R_tang_ending"') == 0)
 ok('守線：MAP_NPC_TO_KEY 已刪 stylist（v297）',
    'const MAP_NPC_TO_KEY = { colleague:"hiu", reporter:"choi" };' in src)
 
