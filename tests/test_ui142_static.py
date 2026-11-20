@@ -51,29 +51,30 @@ ok('A2b 空畫框只喺空狀態出現（有作品嗰陣唔出）', 'worksWallHt
 def mn(name):
     mm = re.search(r'<div class="mn68" style="([^"]*)">' + re.escape(name) + r'</div>', html)
     return mm.group(1) if mm else None
-ok('B1 香江唱片錨＝29.2%／24% +31px', mn('香江唱片') == 'left:29.2%;top:calc(24% + 31px)')
-ok('B1 廟街禮品錨＝28.4%／35% -104px', mn('廟街禮品') == 'left:28.4%;top:calc(35% - 104px)')
-ok('B1 海港廣播錨＝88%／15% -44px', mn('海港廣播') == 'left:88%;top:calc(15% - 44px)')
-ok('B1 金龍茶餐廳錨＝16%／16% -56px', mn('金龍茶餐廳') == 'left:16%;top:calc(16% - 56px)')
-ok('B1 中環廣告錨＝51%／57% +30px（v20a207 C5：60%→51%，避開藍塔，「廣」字唔再俾遮）', mn('中環廣告') == 'left:51%;top:calc(57% + 30px)')
+ok('B1 香江唱片錨＝34%／21% -44px（v351）', mn('香江唱片') == 'left:34%;top:calc(21% - 44px)')
+ok('B1 廟街禮品錨＝16%／40% +34px（v351）', mn('廟街禮品') == 'left:16%;top:calc(40% + 34px)')
+ok('B1 海港廣播錨＝88%／27% -44px（v351）', mn('海港廣播') == 'left:88%;top:calc(27% - 44px)')
+ok('B1 金龍茶餐廳錨＝22%／34% -52px（v351）', mn('金龍茶餐廳') == 'left:22%;top:calc(34% - 52px)')
+ok('B1 中環廣告錨＝44%／63% +30px（v351 新圖對位）', mn('中環廣告') == 'left:44%;top:calc(63% + 30px)')
 UNCHANGED = {
-    '獅子山製片': 'left:54%;top:calc(12% - 52px)',
-    '星河電視台': 'left:26%;top:2%',
-    '九龍電視台': 'left:36%;top:calc(45% - 52px)',
-    '紅棉影業': 'left:74%;top:calc(11% - 44px)',
-    '維港電影': 'left:80%;top:calc(18% + 38px)',
-    '金鐘創意': 'left:85%;top:calc(60% + 28px)',
-    '灣仔唱片': 'left:68%;top:calc(77% + 34px)',
-    '天星音樂': 'left:86%;top:calc(82% + 30px)',
-    '何生事務所': 'left:15%;top:calc(86% - 20px)',
-    '仁康醫院': 'left:43%;top:calc(73% + 52px)',
+    # v351：換 v7 新圖後全部標籤按新圖地標重對（見 NOTES_V20A351）
+    '獅子山製片': 'left:86%;top:calc(20% - 52px)',
+    '星河電視台': 'left:48%;top:calc(21% - 44px)',
+    '九龍電視台': 'left:55%;top:calc(38% - 52px)',
+    '紅棉影業': 'left:43%;top:calc(40% + 34px)',
+    '維港電影': 'left:13%;top:calc(67% + 34px)',
+    '金鐘創意': 'left:52%;top:calc(61% + 28px)',
+    '灣仔唱片': 'left:60%;top:calc(61% + 34px)',
+    '天星音樂': 'left:86%;top:calc(59% + 30px)',
+    '何生事務所': 'left:36%;top:calc(63% - 52px)',
+    '仁康醫院': 'left:76%;top:calc(61% + 34px)',
 }
 for name, want in UNCHANGED.items():
-    ok('B1 其餘標籤唔郁：' + name, mn(name) == want)
-ok('B1 LOCS rec_hk 熱區座標唔郁', 'id:"rec_hk"' in html and 'x:30, y:24' in html)
-ok('B1 LOCS tvb_harbour 熱區座標唔郁', 'x:90, y:15' in html)
-ok('B1 LOCS cafe_cha 熱區座標唔郁', 'x:15, y:16' in html)
-ok('B1 LOCS gift_shop 熱區座標唔郁', 'x:43, y:35' in html)
+    ok('B1 其餘標籤（v351 對位）：' + name, mn(name) == want)
+ok('B1 LOCS rec_hk 熱區座標（v351）', 'id:"rec_hk"' in html and 'x:34, y:21' in html)
+ok('B1 LOCS tvb_harbour 熱區座標（v351）', 'x:93, y:27' in html)
+ok('B1 LOCS cafe_cha 熱區座標（v351）', 'x:22, y:34' in html)
+ok('B1 LOCS gift_shop 熱區座標（v351）', 'x:16, y:40' in html)
 
 print('TOTAL ' + ('PASS' if not fails else 'FAIL %d' % len(fails)))
 sys.exit(1 if fails else 0)

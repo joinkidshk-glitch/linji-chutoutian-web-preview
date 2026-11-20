@@ -66,8 +66,8 @@ ok('B3：.md97 底色 rule 唔郁（淡金 #7a5c33／.88 仲喺 base 度，其�
 ok('B3：.mn68 15 張標籤樣式唔郁',
    '.mn68{ position:absolute; transform:translate(-50%,0); white-space:nowrap; pointer-events:none;' in src
    and 'font-size:12.5px; font-weight:800; letter-spacing:.08em; color:#43301c; line-height:1.2;' in src)
-ok('B3：會場標籤 HTML／位置唔郁（left:11%;top:32%）',
-   '<div class="md97 md97-venue99" style="left:11%;top:32%">金禧大酒店</div>' in src)
+ok('B3：會場標籤 HTML／位置（v351：left:33%;top:37%）',
+   '<div class="md97 md97-venue99" style="left:33%;top:37%">金禧大酒店</div>' in src)
 ok('B3：positionMapLabels137 位置邏輯唔郁',
    'document.querySelectorAll(".map-names68 .mn68, #map-districts97 .md97-venue99")' in src)
 
