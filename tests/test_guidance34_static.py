@@ -1,3 +1,4 @@
+# v20a348 resync：tutorial TUT_MAP 句經官方 qwen4-max 潤飾收緊（意思不變），釘句改查新句。
 # 引導包（v20a34）靜態測試：接線斷言＋P0-3 指引文案核對＋壓力真碼分支釘住。
 import re, sys, json, os
 html = open(sys.argv[1] if len(sys.argv)>1 else 'index.html', encoding='utf-8').read()
@@ -45,10 +46,10 @@ tut_map = next(s for s in tut_json['steps'] if s['id'] == 'TUT_MAP')
 tut_map_body = ' '.join(tut_map.get('body', []))
 # v20a108 TEXT108 S-42：TUT_MAP 舊句「茶餐廳／事務所「打聽」不耗日」改寫做完整句，意思不變（打聽唔耗日＋傳聞入手帳）
 # v241：v108 新句已直接寫入 JSON（舊 EXACT 覆寫隨死映射刪除）；查 JSON 新句，唔再查舊句。
-ok('tutorial ask guidance names only cafe/agency (both have ask)', '在茶餐廳或者事務所「打聽」不耗日' in tut_map_body)
+ok('tutorial ask guidance names only cafe/agency (both have ask)', '在茶餐廳或事務所「打聽」不耗日' in tut_map_body)
 ok('tutorial ask guidance EXACT override removed (dead map deleted, JSON carries written form)',
    '"能力不夠就去報名訓練；茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。":' not in html
-   and '能力未夠，就去報名訓練；在茶餐廳或者事務所「打聽」不耗日，打聽得來的情報會直接告訴你。' in tut_map_body)
+   and '能力不足，就去報名訓練；在茶餐廳或事務所「打聽」不耗日，情報會直接告訴你。' in tut_map_body)
 ok('v267 tutorial 唔再話傳聞記入手帳（情報站：直接講）',
    '打聽回來的傳聞會記入手帳' not in tut_map_body and '傳聞會記入手帳' not in html)
 
