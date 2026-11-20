@@ -13113,7 +13113,25 @@ function ending410EveNode(baseNode){
   try{
     const node = Object.assign({}, baseNode || {});
     const base = resolveEnding410(S);
-    const beats = (node.beats || []).slice();
+    let beats = (node.beats || []).slice();
+    /* v352：回憶拍按 done 狀態過濾——N12（高危替身）／N13（企邊球局）可跳過，未玩過就唔好寫死做既定回憶；
+       「走定留」微節點以 flag_stay_mind／flag_leave_mind／flag_undecided_mind 判斷。 */
+    const _done352 = (S && S.story && S.story.done) || {};
+    const _stay352 = endingFlag410(S, "flag_stay_mind") || endingFlag410(S, "flag_leave_mind") || endingFlag410(S, "flag_undecided_mind");
+    beats = beats.map(b=>{
+      if(!b || !b.lines) return b;
+      const lines = b.lines.map(t=>{
+        let s = String(t);
+        if(!_done352.N12) s = s.replace("高危替身那一躍、", "");
+        if(!_done352.N13) s = s.replace("企邊那場球、", "");
+        if(!_stay352) s = s.replace("何生問他走還是留那晚、", "");
+        if(!_done352.N13) s = s.replace("第一件，企邊那場球——齊鎮海把球桿遞給他，等他開球，也等他那句。他那天站了哪一邊，兩邊都會很快知道；之後來的資源，會開始向那邊傾斜。", "第一件，是那些要他表態的日子——站哪一邊、答哪一句，每一次都要他自己拿主意，答了，就要認。");
+        if(!_stay352) s = s.replace("第二件，走還是留那個黃昏——他那句怎麼回答，今晚埋單時就會看到。", "第二件，是他自己那句未答完的話——今晚埋單時，就會看到他怎樣答。");
+        if(!_stay352) s = s.replace("這兩句，他已經答了。今晚，他只是埋單。", "今晚，他只是埋單。");
+        return s;
+      });
+      return Object.assign({}, b, { lines });
+    });
     if(base.career==="E4"){
       const crisis = { speaker: "系統", kind: "system", lines: ["（化妝間門口，何生剛剛接完一個電話，面色不太好：有本週刊明天出頭版，寫的，是他這陣子的風風雨雨。", "站得有多高，跌下來那一下就有多痛——這一晚，整行都看著他怎樣埋單。）"] };
       beats.splice(Math.max(0, beats.length-1), 0, crisis);

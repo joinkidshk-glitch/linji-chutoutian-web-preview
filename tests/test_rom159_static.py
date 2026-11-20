@@ -1,3 +1,4 @@
+# v20a352 resync：index.html 淨 +18 行（ending410EveNode 回憶過濾＠舊 L13117 後）；4 個行號釘＋全佳行各 +18，內容逐字核實純漂移；story_detail_n1_to_n17.json 因主線複檢 26 項修復唔入「pack 冇直改」清單，改精確替代斷言（見下）。
 # v20a347 resync：rival_mentor 文字潤飾第二批（ko 餘 3 批 13 行＋7 弧 213 行，官方 qwen4-max；結構/旗標/id 不變）；精確替代斷言：ko 段擴至 35 處、A_tsijun_crisis 段改精確替代（加句＋6 處）、7 弧新增 207 處（見下面 v347 段）。
 # v20a346 resync：rival_mentor ko 弧文字潤飾第一批（22 行文字改動，結構/旗標/id 不變）；「同 pristine 逐字一致」斷言剔除 A_ko_*，改用下面 v346 精確替代斷言（22 處原文對位＋套用後逐字一致）。
 # v20a345 resync：index.html 淨 +52 行（F1 警告呈現＋F2 floor 檢查；插入點舊 L13229 +3／L13625 +14／L13636 +2／L19827 +1／L19849 +7／L20446 +23／L20472 +2；總行數 47316→47368；釘行按段 shift，內容逐行核實純漂移，見 qa345/resync345.py）。
@@ -171,19 +172,19 @@ ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committ
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25499", line_has(25505, "v20a159 ROM159 Phase 1"))
+ok("行號釘 ROM159 block 頭 25499", line_has(25523, "v20a159 ROM159 Phase 1"))
 ok("行號釘 bumpRel 凍結鉤 8020", line_has(8265, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(26353, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 CMT_lan_commit 26333", line_has(26371, "COMMIT48_NODES.CMT_lan_commit"))
 ok("行號釘 StoryPlay 預備鉤 10553", line_has(10723, "rom159PrepareNode(node)"))
-ok("行號釘載入覆寫呼叫 14877", line_has(14817, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26248", line_has(26254, "function rom159SoMeetGate"))
+ok("行號釘載入覆寫呼叫 14877", line_has(14835, "rom159ApplyGiftOverrides()"))
+ok("行號釘 rom159SoMeetGate 26248", line_has(26272, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25533 - 1])  # v20a159 整合：B1＋B2 後行號 +86
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[25551 - 1])  # v20a159 整合：B1＋B2 後行號 +86
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）
@@ -255,13 +256,34 @@ if _xu:
 # v20a296：rival_mentor.json 唔入清單——A_tsijun_crisis 加 1 句 angry 對白，見下面精確替代斷言；
 # v20a268：vera_hiu_choi.json＋romance_tang.json 唔入清單——vera 檔已減 5 個 R_vera_* 節點，tang 檔已刪；見下面精確替代斷言）
 # v20a297：gift_prefs.json／gift_react_copy.json／cast_main.json 唔入清單——Vera＋關海媚成個移除，見下面精確替代斷言）
+# v20a352：story_detail_n1_to_n17.json 唔入清單——主線複檢 26 項玩家面矛盾修復（GPT-6.2 全量掃＋Kimi 試點證實），見下面精確替代斷言）
 packs = [
-    "content/story_detail_n1_to_n17.json",
     "content/items_gifts.json",
     "content/shops.json",
 ]
 for p in packs:
     ok("pack 冇直改: " + p, sha(os.path.join(ROOT, p)) == hashlib.sha256(_read_pristine_bytes(p)).hexdigest())
+
+# v352 精確替代斷言：主線 pack 只改 26 項證實矛盾涉及嘅文字，其餘節點同 pristine 逐字一致
+_ml_now = {n["id"]: n for n in json.load(open(os.path.join(ROOT, "content", "story_detail_n1_to_n17.json"), encoding="utf8"))["nodes"]}
+_ml_pris = {n["id"]: n for n in json.loads(_read_pristine("content/story_detail_n1_to_n17.json"))["nodes"]}
+_ml_touched = {"N1", "N2", "N4", "N5", "N6", "N6F", "closeup39", "N9", "N11", "N12", "N14", "N16", "N17", "N17_epi", "N18", "N19"}
+ok("v352 主線 pack：未觸及節點同 pristine 逐字一致",
+   all(_ml_now[i] == _ml_pris[i] for i in _ml_pris if i not in _ml_touched))
+_ml_blob = json.dumps(_ml_now, ensure_ascii=False)
+ok("v352 N1：電話改聽日報到＋引述改返「嗰邊無人湊你」＋N1_b 片場版收尾",
+   "聽日嗰場戲就快開鏡" in _ml_blob and "無人當你係自己友" not in _ml_blob
+   and "片場外，收工的人潮往外湧" in _ml_blob)
+ok("v352 N6F：刪第 15 週標籤、簡介拆開唔混電視線",
+   "第 15 週起。阿偉入行幾個月" not in _ml_blob
+   and "處境劇班底" not in _ml_now["N6F"]["synopsis"]
+   and "大製作想留他" not in _ml_now["N6"]["synopsis"])
+ok("v352 N14：季節標籤改夏末",
+   _ml_now["N14"]["when"] == "1990夏末" and "1990 年夏末，天星音樂大堂" in _ml_blob)
+ok("v352 N17：攤開嚟講只剩一次＋未答走還是留",
+   _ml_blob.count("攤開嚟講") == 1 and "還未答那句「走，還是留」" in _ml_blob)
+ok("v352 N17_epi：阿媽兩句之間加阿偉回應（5 拍）",
+   len(_ml_now["N17_epi"]["beats"]) == 5)
 
 # v20a297 精確替代斷言：Vera＋關海媚成個移除——gift_prefs 減 vera 一項、gift_react 減 vera 11 條 entries＋byKey 11 鍵＋crisis 2 條、cast_main 減 kwan_hoimei 一項；其餘同 pristine 逐字一致
 _gp_now = json.load(open(os.path.join(ROOT, "content", "gift_prefs.json"), encoding="utf8"))

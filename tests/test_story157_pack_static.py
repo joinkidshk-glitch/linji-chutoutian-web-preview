@@ -38,10 +38,11 @@ ok('nodes[0-4] 係 N1-N5', [n.get('id') for n in nodes[:5]] == ['N1', 'N2', 'N3'
 #      v20a256 N6F 第二人稱轉第三人稱（10 句系統旁白／notes，照 V250_DIALOGUE_DELTA §3.4；其餘一字未郁），sha 再重算） ---
 #      v20a254 統籌收尾（N6F lockedHint 標題引用「采兒小訪題」→「筆記本」，跟新短詞標題；其餘一字未郁），sha 再重算） ---
 #      v20a258 N4 改夏（when／openConditions／pacing 8→22，N4 係 nodes[3]，nodes[5:] sha 唔受影響；其餘一字未郁） ---
+#      v20a352 主線複檢 26 項玩家面矛盾修復（N6–N19 多節點文字＋N4／N5 各刪 1 重複拍＋N17_epi 加 1 回應拍；beats 數 N1-N5 改 [16,9,10,10,8]、行數改 [19,12,12,11,10]），sha 再重算） ---
 tail = json.dumps(nodes[5:], sort_keys=True, ensure_ascii=False)
 ok('nodes[5:] 同 v254 一致（N6F lockedHint 標題引用跟新標題；其餘同 v256）',
    hashlib.sha256(tail.encode('utf-8')).hexdigest()
-   == '6e2f307b9e3023281e87012ca4ae89f59e7184f3169577a85dda267ca9f8a63c')
+   == 'f8a62582ef4df521a2b0da8e988e92026c812218440a11df664709e73748899b')
 
 # --- 標題／setting／synopsis 按設計 ---
 ok('標題 N1-N5 按設計（v250 新短詞標題：通告板／後巷／正中央／記數簿／筆記本）',
@@ -57,9 +58,9 @@ ok('synopsis 係設計首段（唔含「現行…」DEV 段落／N-code）',
    and '第一天出現過的記數簿' in nodes[3].get('synopsis', ''))
 
 # --- beats：設計 Beat 1-5 按講者分拆（設計 script beat 8/8/8/8/9；引擎 beat 數見 manifest） ---
-ok('beats 數 N1-N5', [len(n['beats']) for n in nodes[:5]] == [16, 9, 10, 11, 9])
+ok('beats 數 N1-N5', [len(n['beats']) for n in nodes[:5]] == [16, 9, 10, 10, 8])
 ok('beat 行數 N1-N5', [sum(len(b['lines']) for b in n['beats']) for n in nodes[:5]]
-   == [19, 12, 12, 12, 11])
+   == [19, 12, 12, 11, 10])
 ALLOWED_SPEAKERS = {'系統', '何生', '阿偉', '張子駿', '老臨記', '副導', '高俊傑', '周采兒'}
 ALLOWED_EMOTIONS = {'neutral', 'calm', 'tense', 'angry', 'warm', 'tired',
                     'smirk', 'worried', 'soft', 'firm'}

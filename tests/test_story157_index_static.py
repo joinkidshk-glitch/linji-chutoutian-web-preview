@@ -176,8 +176,10 @@ def blob(node):
 
 ok("N6 標題＋synopsis 新寫", TC6["N6"]["title"] == "角落那張枱"
    and "每集都找他" in TC6["N6"]["synopsis"] and "一簽一季" not in blob(TC6["N6"]))
-ok("N6F 標題＋synopsis 同 N6 一致", TBR89["N6F"]["title"] == "角落那張枱"
-   and TBR89["N6F"]["synopsis"] == TC6["N6"]["synopsis"])
+ok("N6F 標題同 N6 一致、synopsis 各走自己路線（v352：共用簡介拆開，電視線唔混電影邀約、電影線唔混電視邀約）", TBR89["N6F"]["title"] == "角落那張枱"
+   and "大製作想留他做固定跟班" in TBR89["N6F"]["synopsis"]
+   and "處境劇班底" not in TBR89["N6F"]["synopsis"]
+   and "大製作想留他" not in TC6["N6"]["synopsis"])
 ok("N6 Beat5 Q1 已潤飾（無 route 旗術語）",
    "第一天那個選擇" in blob(TC6["N6"]) and "route 旗" not in blob(TC6["N6"]))
 ok("N7 穿幫修正：暴雨唔係黑雨", "天文台說有暴雨" in blob(T1989["N7"]) and "黑雨" not in blob(T1989["N7"]))
@@ -199,13 +201,13 @@ ok("N17 synopsis：頒獎禮之後嗰晚", "頒獎禮之後那晚" in N17["synop
 ok("N17 synopsis 無 DEV 註解（舊版文案／重寫）", "舊版文案" not in N17["synopsis"] and "重寫" not in N17["synopsis"])
 ok("N17 會議室收尾過場句仍在第 15 拍（v253 工人 C：湯場搬去 N17_epi，會議室收尾係 N17 最後一則）",
    "寫滿他三年行過的路" in json.dumps(N17["beats"][14], ensure_ascii=False))
-ok("N17 尾聲湯場搬去獨立節點 N17_epi（v253 工人 C：阿媽＋返屋企食湯，4 拍；playerOffer:false，唔入玩家列表）",
+ok("N17 尾聲湯場搬去獨立節點 N17_epi（v253 工人 C：阿媽＋返屋企食湯；v352 阿媽兩句之間加阿偉回應，共 5 拍；playerOffer:false，唔入玩家列表）",
    EPI["title"] == "返屋企食湯" and EPI.get("playerOffer") is False
-   and len(EPI["beats"]) == 4 and len(EPI["choices"]) == 0
+   and len(EPI["beats"]) == 5 and len(EPI["choices"]) == 0
    and "阿媽煲了湯" in json.dumps(EPI["beats"][0], ensure_ascii=False)
    and "返嚟食飯就得" in json.dumps(EPI["beats"], ensure_ascii=False)
    and "唔好餓親自己" in json.dumps(EPI["beats"], ensure_ascii=False)
-   and "寫滿我三年行過嘅路" in json.dumps(EPI["beats"][3], ensure_ascii=False)
+   and "寫滿我三年行過嘅路" in json.dumps(EPI["beats"][4], ensure_ascii=False)
    and "圈格" not in json.dumps(EPI["beats"], ensure_ascii=False))
 ok("F4 太空人＋回流零星口吻", "太空人" in blob(F4) and "間中都會聽到" in blob(F4)
    and "呢年開始" not in blob(F4))
