@@ -5962,6 +5962,338 @@ body.day-res-open .day-row{
   #app button:active{ transform:none; }
 }
 /* ===== v362 UI362 完 ===== */
+/* ===== v363 UI363：GPT 加強方案實裝——方向二「紙本手帳 · 實物劇組」全面整合 =====
+   依據：~/workspace/linji-drive363/gpt_ui_strengthen.md（GPT-6.2-sol 五屏方案）。
+   原則：v362 可用性成果（字體下限、觸控區 ≥44px、故事快進）唔退步；
+   動畫只落「落實決定」同「睇結果」兩刻；真資產（ui363 紙紋／票根／像素貼紙、
+   ui-physical 印章／票根／通告紙）；釘維持隱形熱區（v20a43 用戶決定）。 */
+
+/* --- (0) 動畫語言 tokens（GPT 方案 5） --- */
+:root{
+  --m-paper363:cubic-bezier(.22,.75,.25,1);
+  --m-settle363:cubic-bezier(.2,.75,.3,1);
+  --m-hit363:cubic-bezier(.55,0,.9,.45);
+  --m-tear363:cubic-bezier(.65,0,.85,.35);
+  --ink363:#342d24; --inkblue363:#314d65; --inkred363:#a02e28;
+  --hand363:"LXGW WenKai","Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif;
+  --print363:"Noto Serif CJK TC","Noto Serif TC",serif;
+}
+@keyframes stampHit363{0%{opacity:0;transform:scale(1.16) rotate(-9deg)}55%{opacity:1;transform:scale(.97) rotate(-9deg)}100%{opacity:1;transform:scale(1) rotate(-9deg)}}
+@keyframes settle363{0%{transform:scale(1.14) rotate(-8deg) translateY(-6px)}60%{transform:scale(.98) rotate(0)}100%{transform:scale(1) rotate(0)}}
+@keyframes floatUp363{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
+@keyframes pageIn363{0%{transform:translateX(14px) rotate(.4deg);opacity:.4}100%{transform:translateX(0) rotate(0);opacity:1}}
+@keyframes pressFace363{0%{transform:translateY(0)}100%{transform:translateY(2px)}}
+.view.on{ animation:pageIn363 .22s var(--m-paper363); }
+#app button{ transition:transform .07s ease, filter .09s ease; }
+#app button:active{ transform:translateY(1px) scale(.985); }
+
+/* --- (1) 主畫面：手帳紙面＋頁眉帳本＋撕頁日曆 --- */
+#v-map{ position:relative; background:#533832 !important; }
+#v-map::before{ /* 裝訂孔列 */
+  content:""; position:absolute; z-index:8; top:14px; bottom:14px; left:4px; width:9px;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 48% 8px, rgba(54,43,34,.75) 0 1.5px, transparent 2.25px) 0 0 / 9px 66px repeat-y,
+    radial-gradient(ellipse at 36% 9px, rgba(255,233,189,.6) 0 2px, transparent 3px) 0 0 / 9px 66px repeat-y;
+}
+#v-map .bar{
+  background:#f0e3c8 url("assets/ui363/paper_gen.jpg") repeat !important;
+  border-bottom:1px solid #a16649 !important;
+  box-shadow:0 2px 0 #bca582, 0 4px 0 #cfb991, 0 6px 8px rgba(60,40,20,.25) !important;
+  color:var(--ink363) !important;
+  padding-left:16px !important;
+}
+#v-map .bar .who{
+  font-family:var(--hand363) !important; font-size:1.28rem !important; font-weight:400 !important;
+  color:var(--ink363) !important; transform:rotate(-1.5deg); letter-spacing:.06em;
+}
+#v-map .bar .bar-primary .dual-money b{ color:var(--ink363) !important; }
+#v-map .bar .bar-primary .dual-money-sym{ color:#8a6a3a !important; }
+#v-map .bar .bar-secondary.dual-hud{ border-top:1px solid rgba(145,113,72,.45) !important; }
+#v-map .bar .bar-secondary .dual-compact,
+#v-map .bar .bar-secondary .dual-compact .dual-lab,
+#v-map .bar .bar-secondary .dual-compact .dual-mid,
+#v-map .bar .bar-secondary .dual-compact .dual-sep{
+  color:#5a4632 !important;
+}
+#v-map .bar .bar-secondary .dual-compact b{ color:var(--ink363) !important; }
+#v-map .hud-stress-lab{ color:#5a4632 !important; }
+#v-map .hud-stress-val{ color:var(--inkred363) !important; }
+#v-map .hud-stress-max{ color:#68513b !important; }
+#v-map .hud-stress-track{ background:rgba(183,139,101,.35) !important; }
+#v-map .hud-stress-fill{ background:#a44737 !important; }
+#v-map .bar .chip, #v-map .bar .chip-story, #v-map .bar .iconbtn{
+  background:#fbf3df !important; border:1px solid #b99b62 !important; color:var(--ink363) !important;
+  min-height:44px !important; min-width:44px !important; border-radius:3px !important;
+  box-shadow:0 1px 0 rgba(107,78,46,.35) !important;
+}
+#v-map .bar .chip-story.on{ background:#f3e2b7 !important; border-color:#a02e28 !important; }
+/* 撕頁日曆（JS 注入 .cal363，讀遊戲日期） */
+.cal363{
+  flex:0 0 auto; width:52px; margin-left:2px; text-align:center; transform:rotate(3deg);
+  background:#fff3db; box-shadow:1px 2px 0 #d8c8a7, 2px 3px 5px rgba(77,49,35,.25);
+  border-radius:2px; overflow:hidden; pointer-events:none;
+}
+.cal363 .cal363-m{ display:block; color:#fff3da; background:#9a3830; font:700 9px/15px var(--print363); letter-spacing:.04em; }
+.cal363 .cal363-d{ display:block; font:20px/24px var(--hand363); color:var(--ink363); }
+.cal363 .cal363-d small{ font-size:10px; margin-left:1px; }
+/* 級數斜印（JS 注入 .tier363，文字跟 enc79PlayerTier） */
+.tier363{
+  flex:0 0 auto; padding:2px 7px 1px; transform:rotate(5deg);
+  color:var(--inkred363); border:1px solid rgba(160,46,40,.6);
+  box-shadow:inset 0 0 0 1px rgba(160,46,40,.15);
+  font:700 11px/1.3 var(--print363); letter-spacing:.15em; white-space:nowrap; pointer-events:none;
+}
+/* HUD 浮字改手寫批註感 */
+#v-map .hud-float362{ font-family:var(--hand363); font-size:.8rem; animation:floatUp363 .9s var(--m-settle363) forwards; }
+#v-map .hud-float362.up{ color:#1f7a5c !important; }
+#v-map .hud-float362.down{ color:var(--inkred363) !important; }
+
+/* --- (2) 地圖紙＋和紙膠紙＋紙標籤＋像素人 --- */
+#v-map .map-wrap{ background:#e9d9b8 url("assets/ui363/paper_gen.jpg") repeat !important; }
+#v-map .map-polaroid{ position:relative; }
+#v-map .map-polaroid::before{ /* 紙墊底邊 */
+  content:""; position:absolute; inset:-3px -4px -5px; z-index:0;
+  background:url("assets/ui363/paper.png") center / 100% 100% no-repeat;
+  filter:drop-shadow(1px 4px 4px rgba(76,53,40,.3)); pointer-events:none;
+}
+#v-map .map-polaroid::after{ /* 和紙膠紙（頂） */
+  content:""; position:absolute; z-index:7; left:50%; top:-6px; margin-left:-42px;
+  width:84px; height:18px; transform:rotate(3deg); pointer-events:none;
+  background-color:rgba(189,165,103,.6);
+  background-image:repeating-linear-gradient(105deg, rgba(255,249,223,.17) 0 1px, transparent 1px 4px);
+  clip-path:polygon(0 0,100% 0,97% 14%,100% 27%,97% 42%,100% 55%,97% 72%,100% 86%,98% 100%,0 100%,3% 85%,0 70%,3% 55%,0 41%,3% 27%,0 13%);
+}
+#v-map .map-well{ position:relative; z-index:1; }
+#v-map .map-legend{
+  background:rgba(251,243,223,.95) !important; border:1px solid #b99b62 !important;
+  border-radius:3px !important; transform:rotate(-.4deg);
+}
+/* 地點名紙標籤：近不透明米紙＋撕邊（字保持水平，釘位唔郁） */
+#v-map .map-names68 .mn68{
+  font-family:var(--hand363) !important; font-size:12.5px !important; font-weight:400 !important;
+  color:#392d20 !important; letter-spacing:.04em !important;
+  padding:1px 6px 2px !important;
+  background:linear-gradient(100deg,#f9edca,#fff6dc 75%,#ead8ad) !important;
+  clip-path:polygon(1% 0,99% 3%,97% 24%,100% 42%,98% 60%,100% 84%,98% 100%,0 97%,2% 76%,0 57%,2% 37%,0 16%);
+  text-shadow:none !important;
+  filter:drop-shadow(1px 2px 1px rgba(70,50,30,.35));
+}
+#v-map .map-districts97 .md97{
+  font-family:var(--hand363) !important; color:#64553e !important;
+  background:rgba(249,237,202,.85); padding:0 4px; border-radius:2px; text-shadow:none !important;
+}
+/* 像素人位置指示（JS 注入 .map-me363，腳底對準錨點） */
+.map-me363{
+  position:absolute; z-index:6; width:30px; height:30px; pointer-events:none;
+  transform:translate(-50%,-88%); image-rendering:pixelated;
+  border:2px solid #fff9e4; border-radius:4px; overflow:visible; background:#1c130c;
+  box-shadow:0 2px 3px rgba(60,40,10,.35);
+  animation:settle363 .18s var(--m-settle363);
+}
+.map-me363 img{ width:100%; height:100%; object-fit:cover; display:block; border-radius:2px; }
+.map-me363 .me363-tag{
+  position:absolute; left:50%; top:-16px; transform:translateX(-50%) rotate(-3deg);
+  font:11px/14px var(--hand363); color:#392d20; white-space:nowrap;
+  background:#f4dfad; padding:0 5px; border-radius:2px;
+  box-shadow:0 1px 2px rgba(70,50,30,.3);
+}
+
+/* --- (3) 底部行動列：通告便條＋票根掣＋層切換 --- */
+#v-map .map-hint{
+  background:#f5e7c6 url("assets/ui363/paper_gen.jpg") repeat !important;
+  border:1px solid #c9ab6a !important; border-radius:3px !important;
+  color:var(--ink363) !important; transform:rotate(.3deg);
+  box-shadow:0 4px 10px rgba(60,40,20,.3) !important;
+  padding:8px 12px 10px !important;
+}
+#v-map .map-hint b{ color:var(--ink363) !important; }
+#v-map .map-hint-date{ font-family:var(--print363); font-size:.85rem; border-bottom:1px solid rgba(112,87,68,.4); padding-bottom:4px; margin-bottom:5px; }
+#v-map .map-hint-plan{ font-family:var(--hand363); font-size:1rem; }
+#v-map .map-hint-travel{ color:#8a6a1a !important; }
+#v-map .map-hint-travel.travel-done{ color:var(--inkred363) !important; }
+#v-map .map-hint-aud108{ color:var(--inkblue363) !important; }
+#v-map .map-hint .bad{ color:var(--inkred363) !important; }
+#v-map #map-end-day, #v-map #map-start-today{
+  min-height:48px !important; width:100%; margin-top:7px;
+  font-family:var(--hand363) !important; font-size:1.25rem !important; letter-spacing:.12em;
+  color:#79291f !important;
+  background:#ebca89 url("assets/ui363/ticket.png") center / 100% 100% no-repeat !important;
+  border:0 !important; border-radius:0 !important;
+  clip-path:polygon(0 0,100% 0,100% 36%,97% 42%,96% 50%,97% 58%,100% 64%,100% 100%,0 100%,0 64%,3% 58%,4% 50%,3% 42%,0 36%);
+  filter:drop-shadow(1px 2px 1px rgba(83,55,39,.35));
+}
+#v-map #map-end-day:active, #v-map #map-start-today:active{ transform:translateY(2px); }
+#v-map #map-layer159{
+  min-height:44px !important; margin-top:7px; padding:4px 14px !important;
+  font-family:var(--hand363) !important; font-size:.95rem !important; color:#28495a !important;
+  background:#dce4cf !important; border:1px solid #a9b89a !important; border-radius:2px !important;
+  transform:rotate(1deg); box-shadow:0 1px 2px rgba(66,55,38,.3) !important;
+  display:inline-flex; flex-direction:column; align-items:center; line-height:1.15;
+}
+#v-map #map-layer159 .lay363-b{ font-size:.72rem; opacity:.85; }
+#v-map #map-layer159[aria-pressed="true"]{ background:#f3e2b7 !important; border-color:#c9a86a !important; }
+/* 今日活動像素貼紙（JS 注入 .today-stk363） */
+.today-stk363{
+  float:right; width:44px; height:44px; margin:-2px 0 2px 8px; image-rendering:pixelated;
+  transform:rotate(6deg); pointer-events:none;
+  border:2px solid #fff9e4; border-radius:4px; overflow:hidden; background:#1c130c;
+  box-shadow:0 2px 3px rgba(60,40,10,.3);
+}
+.today-stk363 img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* --- (4) 行程手帳：索引紙舌＋日列貼紙＋壓力刻度 --- */
+#v-home .home-tabs .home-tab{
+  background:#e7d7ae !important; border:1px solid #b99b62 !important; border-bottom:0 !important;
+  border-radius:4px 4px 0 0 !important; color:#5a4632 !important;
+  min-height:44px !important; box-shadow:inset 0 -6px 6px rgba(120,90,40,.12) !important;
+}
+#v-home .home-tabs .home-tab.on{
+  background:#fbf3df !important; color:var(--ink363) !important;
+  box-shadow:inset 0 -3px 0 var(--inkblue363) !important; transform:translateY(2px);
+}
+#v-home .home-subtabs .home-tab{
+  background:transparent !important; border:0 !important; border-radius:0 !important;
+  color:#7a6248 !important; min-height:44px !important; box-shadow:none !important;
+}
+#v-home .home-subtabs .home-tab.on{ color:var(--inkred363) !important; box-shadow:inset 0 -2px 0 var(--inkred363) !important; }
+#nb-days .day-row{
+  display:grid !important; grid-template-columns:42px minmax(0,1fr) 52px; align-items:center;
+  min-height:48px !important; padding:4px 8px !important;
+}
+#nb-days .day-row .wd{ width:auto !important; font-family:var(--hand363); font-size:.95rem !important; grid-column:1; grid-row:1; }
+#nb-days .day-row .nm{ font-size:.88rem !important; grid-column:2; grid-row:1; min-width:0; }
+#nb-days .day-row .nb-stk362, #nb-days .day-row .ic{ grid-column:3; grid-row:1; }
+#nb-days .day-row .nm .plan-main{ font-family:var(--print363) !important; font-weight:700; font-size:.92rem !important; }
+#nb-days .day-row .plan-hint{ font-family:var(--hand363); color:#314d65; }
+#nb-days .nb-stk362{
+  width:44px !important; height:44px !important; border-radius:3px !important;
+  border:2px solid #fff9e4 !important; background:transparent !important;
+  box-shadow:0 2px 3px rgba(60,40,10,.3) !important; animation:none !important;
+  justify-self:end;
+}
+#nb-days .nb-stk362 video{ object-fit:contain !important; }
+#nb-days .day-row .ic{ justify-self:end; }
+/* 教學行改邊註（保留文字，唔再係大盒） */
+#v-home #plan-teach105{
+  font-family:var(--hand363) !important; font-size:.82rem !important; line-height:1.45 !important;
+  color:#5a4632 !important; background:transparent !important; border:0 !important;
+  padding:2px 4px !important; margin:6px 0 0 !important;
+}
+/* 壓力刻度（JS 注入 .stress-scale363 落 #nb-live-stress 之後） */
+.stress-scale363{ position:relative; height:22px; margin:2px 14px 6px; pointer-events:none; }
+.stress-scale363 .ss363-track{ position:absolute; left:0; right:0; top:10px; height:2px; background:rgba(183,139,101,.45); }
+.stress-scale363 .ss363-dot{ position:absolute; top:6px; width:10px; height:10px; margin-left:-5px; border-radius:50%; border:2px solid #8a6a3a; background:#fbf3df; }
+.stress-scale363 .ss363-dot.end{ background:#a44737; border-color:#8e3027; }
+.stress-scale363 .ss363-peak{ position:absolute; top:3px; width:2px; height:16px; margin-left:-1px; background:var(--inkred363); }
+.stress-scale363 .ss363-lab{ position:absolute; top:-2px; transform:translateX(-50%); font:10px/12px var(--hand363); color:#5a4632; white-space:nowrap; }
+/* 確定蓋章（JS 注入 .stamp363 落 .nb-actions） */
+.nb-actions{ position:relative; }
+.stamp363{
+  position:absolute; right:12px; top:-34px; width:74px; pointer-events:none; z-index:5;
+  transform:rotate(-9deg); mix-blend-mode:multiply;
+}
+.stamp363.play{ animation:stampHit363 .16s var(--m-hit363) both; }
+
+/* --- (5) 故事播放：撕邊便條＋旁白條＋場記籤 --- */
+#mask.story-play-on:has(.sp-mode-dialogue) .story-play .dlg106-plate{
+  background:#f5e7c6 url("assets/ui-physical/notice/notice_paper.png") center / 100% 100% no-repeat !important;
+  border:0 !important; border-radius:0 !important;
+  clip-path:polygon(0 0,100% 0,100% 94%,96% 97%,92% 95%,88% 98%,83% 96%,78% 99%,72% 97%,66% 98%,60% 96%,54% 99%,48% 97%,42% 98%,36% 96%,30% 99%,24% 97%,18% 98%,12% 96%,7% 99%,2% 97%,0 95%);
+  box-shadow:none !important; filter:drop-shadow(0 6px 10px rgba(30,20,8,.35));
+  transform:rotate(-.6deg);
+}
+#mask.story-play-on:has(.sp-mode-narration) .story-play .dlg106-plate{
+  background:#fdfdf8 !important; border:1px solid #d8d2c0 !important; border-radius:2px !important;
+  box-shadow:0 4px 10px rgba(30,20,8,.25) !important; transform:rotate(.4deg);
+}
+#mask.story-play-on:has(.sp-mode-narration) .story-play .dlg106-plate::before{ display:none !important; }
+.story-play .sp-speaker{
+  font-family:var(--print363) !important; font-size:.82rem !important; font-weight:800 !important;
+  color:var(--inkblue363) !important; letter-spacing:.08em;
+}
+.story-play .sp-mode-dialogue .sp-line{
+  font-family:var(--hand363) !important; font-size:1.12rem !important; line-height:1.5 !important; color:#252c32 !important;
+}
+.story-play .sp-mode-narration .sp-line{
+  font-family:var(--print363) !important; font-size:.95rem !important; line-height:1.6 !important; color:#484640 !important;
+}
+.story-play .sp-head{
+  background:#f5e7c6 url("assets/ui363/ticket.png") center / 100% 100% no-repeat;
+  padding:6px 14px 8px 22px; transform:rotate(-1deg);
+  box-shadow:0 3px 6px rgba(30,20,8,.3);
+}
+.story-play .sp-head .sp-act191{ color:var(--ink363) !important; text-shadow:none !important; }
+.story-play .sp-head h3, .story-play .sp-head p{ color:var(--ink363) !important; text-shadow:none !important; }
+.sp-prog362{
+  background:#fbf3df !important; color:var(--ink363) !important; border-radius:2px !important;
+  border:1px solid #c9ab6a; transform:rotate(2deg); font-family:var(--print363);
+}
+.story-play .dlg106-char{
+  filter:drop-shadow(0 10px 6px rgba(20,14,6,.35));
+}
+.story-play .dlg106-char.char-in362{ animation:charFade362 .2s ease-out; }
+/* 抉擇紙（選項掣做通告紙） */
+#mask.story-play-on .sp-choices-layout #modal-btns button,
+#mask.story-play-on:has(.sp-mode-choices) #modal-btns button{
+  background:#f5e7c6 url("assets/ui-physical/notice/notice_paper.png") center / 100% 100% no-repeat !important;
+  border:0 !important; border-radius:0 !important; color:var(--ink363) !important;
+  font-family:var(--hand363) !important; min-height:56px !important;
+  clip-path:polygon(0 0,100% 0,100% 92%,95% 97%,90% 94%,84% 98%,78% 95%,71% 99%,64% 96%,57% 98%,50% 95%,43% 99%,36% 96%,29% 98%,22% 95%,15% 99%,8% 96%,3% 98%,0 94%);
+  filter:drop-shadow(0 3px 5px rgba(30,20,8,.3));
+}
+
+/* --- (6) 結算：票根憑據＋雙軌兩欄＋落印 --- */
+#mask:has(.sp-result) .modal{
+  background:#f5e7c6 url("assets/ui-physical/toast/ticket_stub.png") right center / 150% 100% no-repeat !important;
+  border:0 !important; border-left:2px dashed rgba(150,110,60,.5) !important; border-radius:0 !important;
+  clip-path:polygon(0 0,100% 0,100% 36%,97.5% 42%,96.5% 50%,97.5% 58%,100% 64%,100% 100%,0 100%,0 64%,2.5% 58%,3.5% 50%,2.5% 42%,0 36%);
+  filter:drop-shadow(0 8px 16px rgba(30,20,8,.4));
+  padding-top:16px !important;
+}
+#mask:has(.sp-result) .modal h3{ font-family:var(--print363); letter-spacing:.14em; color:var(--ink363) !important; margin-top:8px !important; }
+.story-play.sp-result{ position:relative; }
+.story-play.sp-result::after{ /* 完成印：數字落定後落印 */
+  content:""; position:absolute; right:2px; top:-6px; width:64px; height:64px;
+  background:url("assets/ui-physical/toast/stamp_complete.png") center / contain no-repeat;
+  transform:rotate(-9deg); mix-blend-mode:multiply; pointer-events:none;
+  animation:stampHit363 .16s var(--m-hit363) .42s both;
+}
+.story-play.sp-result .sp-dual{
+  display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0;
+  background:transparent !important; border:0 !important; border-top:1px solid rgba(145,113,72,.5) !important;
+  border-bottom:1px solid rgba(145,113,72,.5) !important; border-radius:0 !important; padding:10px 0 !important;
+}
+.story-play.sp-result .sp-dual-track{
+  display:flex !important; flex-direction:column; align-items:center; gap:2px;
+  font-size:.8rem !important; color:#5a4632 !important;
+}
+.story-play.sp-result .sp-dual-track + .sp-dual-track{ border-left:1px solid rgba(145,113,72,.45); }
+.story-play.sp-result .sp-dual b{ font-size:1.9rem !important; line-height:1.1; color:var(--ink363) !important; }
+.story-play.sp-result .sp-dual .good, .story-play.sp-result .sp-dual .bad{
+  font-size:.85rem; font-family:var(--hand363); animation:dualFloat362 .8s ease-out;
+}
+#mask:has(.sp-result) #modal-btns button.p{ min-height:52px !important; font-size:1.05rem !important; width:100%; }
+/* 日結／地圖細目標補 44px */
+#v-map #btn-menu{ min-width:44px !important; min-height:44px !important; }
+#v-map #chip-story{ min-height:44px !important; }
+#v-map #map-start-today{ min-height:48px !important; }
+
+/* 故事 modal 註腳加深，紙面上讀得到 */
+#mask .modal-note202{ color:#7a6547 !important; }
+
+/* 地圖 toast 跟紙頁眉高度（bar 90px）落位，唔遮帳本第二行 */
+#app.toast-up.keep-sheet:has(#v-map.view.on) .toast,
+#app.toast-up:not(.keep-sheet):has(#v-map.view.on) .toast{ top:98px !important; }
+
+/* --- (7) 減少動態：新動畫一律停 --- */
+@media (prefers-reduced-motion: reduce){
+  .view.on, .map-me363, .stamp363.play, .story-play.sp-result::after{
+    animation:none !important;
+  }
+  .story-play.sp-result::after{ opacity:1; }
+}
+/* ===== v363 UI363 完 ===== */
 </style>
 </head>
 <body>
@@ -6830,7 +7162,7 @@ function map159LocVisible(L){
 }
 function map159LayerBtnHtml(){
   const isDate = (typeof map159Layer!=="undefined" && map159Layer==="date");
-  return `<button type="button" class="map-layer159" id="map-layer159" aria-pressed="${isDate?"true":"false"}" title="切換地圖層次，不耗出行額度">${isDate?"約會層 · 切返片場":"片場層 · 切去約會"}</button>`;
+  return `<button type="button" class="map-layer159" id="map-layer159" aria-pressed="${isDate?"true":"false"}" title="切換地圖層次，不耗出行額度"><span class="lay363-a">${isDate?"約會層":"片場層"}</span><span class="lay363-b">${isDate?"切返片場":"切去約會"}</span></button>`;
 }
 /* 第三出沒點（tertiary）——6 個新點嘅日常用途（草稿 §3.2：每個新地點除咗約會要有日常用途）。
    出沒率 p／主場 share／上限／冷卻數字一律唔郁：tertiary 唔食主場／副場嘅份——只喺
@@ -20060,7 +20392,7 @@ function updateLiveStressStrip(){
   if(!el) return;
   const editable=!!S.homeEditable;
   el.classList.toggle("show", editable);
-  if(!editable){ el.innerHTML="壓力估 —"; return; }
+  if(!editable){ el.innerHTML="壓力估 —"; try{ stressScaleHide363(); }catch(_e){} return; }
   if(!planDraft || planDraft.length!==7) return;
   const pv=previewWeekStress(planDraft);
   const endCls = pv.end < pv.start ? "good" : (pv.end > pv.start ? "bad" : "");
@@ -20068,6 +20400,7 @@ function updateLiveStressStrip(){
   const low = isLowRiskWeek(planDraft);
   el.innerHTML = `壓力估 <b>${pv.start}</b>→<b class="${endCls}">${pv.end}</b> · 高峰 <b class="${peakCls}">${pv.peak}</b>`
     + (low ? ` <span class="muted">· 低風險可直出</span>` : ` <span class="muted">· 點開明細</span>`);
+  try{ stressScale363(pv); }catch(_e){}
   /* v20a105 UI105 S-19：明細展開中嗰陣改行程要跟住更新，唔好顯示舊數 */
   try{
     const d105=document.getElementById("nb-stress-detail105");
@@ -22102,6 +22435,105 @@ function hudFloat362(id, val){
     setTimeout(()=>{ try{ s.remove(); }catch(_e){} }, 1100);
   }catch(_e){}
 }
+/* ===== v363 UI363：GPT 加強方案 JS（撕頁日曆／級數印／今日貼紙／像素人／標籤避撞／壓力刻度） ===== */
+function paintPageHead363(){
+  try{
+    const prim = document.querySelector("#map-bar .bar-primary");
+    if(!prim) return;
+    let cal = prim.querySelector(".cal363");
+    if(!cal){
+      cal = document.createElement("span");
+      cal.className = "cal363"; cal.setAttribute("aria-hidden","true");
+      const tools = prim.querySelector(".bar-tools");
+      if(tools) prim.insertBefore(cal, tools); else prim.appendChild(cal);
+    }
+    const dt = (typeof dateObj==="function") ? dateObj() : null;
+    if(dt){
+      const season = (typeof calendarSeason==="function") ? calendarSeason() : "";
+      cal.innerHTML = `<span class="cal363-m">${dt.getMonth()+1}月 · ${season}季</span><span class="cal363-d">${dt.getDate()}<small>日</small></span>`;
+    }
+    let tier = prim.querySelector(".tier363");
+    if(!tier){
+      tier = document.createElement("span");
+      tier.className = "tier363"; tier.setAttribute("aria-hidden","true");
+      const who = prim.querySelector(".who");
+      if(who && who.nextSibling) prim.insertBefore(tier, who.nextSibling); else prim.appendChild(tier);
+    }
+    const ti = (typeof enc79PlayerTier==="function") ? (enc79PlayerTier()|0) : 0;
+    tier.textContent = ["臨記","配角","主角","天王"][Math.max(0,Math.min(3,ti))] || "臨記";
+  }catch(_e){}
+}
+function todaySticker363(planId){
+  try{
+    const kind = (typeof nbStickerKind362==="function") ? nbStickerKind362(planId) : null;
+    const map = { shoot:"shoot.png", audition:"audition.png", trainA:"train_a.png", trainB:"train_b.png", trainC:"train_c.png", rest:"rest.png", record:"record.png" };
+    const f = kind && map[kind];
+    if(!f) return "";
+    return `<span class="today-stk363" aria-hidden="true"><img src="assets/ui363/${f}" alt=""/></span>`;
+  }catch(_e){ return ""; }
+}
+function mapMe363(box, pinPos){
+  try{
+    if(!box || !pinPos) return;
+    const id = (typeof atLoc!=="undefined" && atLoc && pinPos[atLoc]) ? atLoc : "home";
+    const p = pinPos[id]; if(!p) return;
+    const me = document.createElement("div");
+    me.className = "map-me363"; me.setAttribute("aria-hidden","true");
+    me.style.left = p.x + "%"; me.style.top = p.y + "%";
+    me.innerHTML = `<span class="me363-tag">我喺呢度</span><img src="assets/ui363/shoot.png" alt=""/>`;
+    box.appendChild(me);
+  }catch(_e){}
+}
+function deCollideLabels363(){
+  try{
+    const els = Array.from(document.querySelectorAll(".map-names68 .mn68"))
+      .filter(el=>el.style.display!=="none" && el.offsetParent!==null);
+    if(els.length<2) return;
+    const items = els.map(el=>({el, r:el.getBoundingClientRect()}));
+    for(let pass=0; pass<3; pass++){
+      let moved = false;
+      for(let i=0;i<items.length;i++){
+        for(let j=i+1;j<items.length;j++){
+          const a=items[i].r, b=items[j].r;
+          const ox = Math.min(a.right,b.right)-Math.max(a.left,b.left);
+          const oy = Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);
+          if(ox>2 && oy>2){
+            const el = items[j].el;
+            const cur = parseFloat(el.style.top)||0;
+            el.style.top = (cur + oy + 2) + "px";
+            items[j].r = el.getBoundingClientRect();
+            moved = true;
+          }
+        }
+      }
+      if(!moved) break;
+    }
+  }catch(_e){}
+}
+function stressScale363(pv){
+  try{
+    const host = document.getElementById("nb-live-stress");
+    if(!host || !pv) return;
+    let sc = document.getElementById("stress-scale363");
+    if(!sc){
+      sc = document.createElement("div");
+      sc.id = "stress-scale363"; sc.className = "stress-scale363"; sc.setAttribute("aria-hidden","true");
+      host.parentNode.insertBefore(sc, host.nextSibling);
+    }
+    sc.style.display = "";
+    const clamp = v=>Math.max(0,Math.min(100,Number(v)||0));
+    sc.innerHTML = `<span class="ss363-track"></span>`
+      + `<span class="ss363-dot" style="left:${clamp(pv.start)}%"></span>`
+      + `<span class="ss363-dot end" style="left:${clamp(pv.end)}%"></span>`
+      + `<span class="ss363-peak" style="left:${clamp(pv.peak)}%"></span>`
+      + `<span class="ss363-lab" style="left:${clamp(pv.peak)}%">高峰 ${pv.peak}</span>`;
+  }catch(_e){}
+}
+function stressScaleHide363(){
+  try{ const sc = document.getElementById("stress-scale363"); if(sc) sc.style.display = "none"; }catch(_e){}
+}
+/* ===== v363 UI363 JS 完 ===== */
+
 function paintBar(){
   const dual = (S && typeof syncDualTracks==="function") ? syncDualTracks(S) : { stageVolume:0, industryCredit:0 };
   const sv=document.getElementById("c-stage-volume"); if(sv) sv.textContent = String(dual.stageVolume);
@@ -22189,7 +22621,8 @@ function paintBar(){
          委派掛喺 #map-hint 上，見 wireMapLayer159；切換唔耗出行額度）。 */
       let layerBtn159 = "";
       try{ if(typeof map159LayerBtnHtml==="function") layerBtn159 = map159LayerBtnHtml(); }catch(_e159){}
-      return `<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${audLine108}${awardLine218}${startToday}${layerBtn159}`;
+      let stk363 = ""; try{ stk363 = todaySticker363(pid); }catch(_e){}
+      return `${stk363}<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${audLine108}${awardLine218}${startToday}${layerBtn159}`;
     })();
   try{
     const stBtn=document.getElementById("map-start-today");
@@ -22217,6 +22650,7 @@ function paintBar(){
     /* v20a108 UI108 S-11：bar 過 70 轉紅色脈動（跟已有 ≥70 警號機制齊）。 */
     if(hsBox){ hsBox.classList.toggle("warn", hsVal>=52 && hsVal<70); hsBox.classList.toggle("danger", hsVal>=70); }
   }catch(_e){}
+  try{ paintPageHead363(); }catch(_e){}
 }
 
 let __storyMapRedrawT = null;
@@ -22563,6 +22997,9 @@ function drawMap(){
       el.style.display = visNames[t] ? "" : "none";
     });
   }catch(_e){}
+  /* v363 UI363：像素人位置指示＋紙標籤避撞（只郁視覺，唔郁熱區座標） */
+  try{ mapMe363(box, pinPos); }catch(_e){}
+  try{ deCollideLabels363(); }catch(_e){}
 }
 
 let _modalDismiss=null;
