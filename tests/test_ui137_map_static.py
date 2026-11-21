@@ -51,11 +51,11 @@ ok('冇裁圖資產（唔裁源圖；v6 已刪）', not (root / 'assets' / 'hk_m
 v137css = seg('/* === v20a137 MAP137', '/* === v20a137 MAP137 完 === */')
 ok('v137 CSS 段存在', bool(v137css))
 ok('地圖改 cover', 'object-fit:cover !important' in v137css)
-ok('object-position 60% 50%（窗 [~62,~1334] 包晒建築）', 'object-position:60% 50% !important' in v137css)
-ok('舞台 aspect-ratio 1270/1824（窗闊 1270px）', 'aspect-ratio:1270/1824 !important' in v137css)
+ok('object-position 50% 50%（v367：比例啱 cover 變 identity）', 'object-position:50% 50% !important' in v137css)
+ok('舞台 aspect-ratio 1024/1536（v367：跟 v10 圖本身比例填滿）', 'aspect-ratio:1024/1536 !important' in v137css)
 ok('舞台 height:auto（等 ratio 計高，唔俾舊 height:100% 搶）', 'height:auto !important' in v137css)
 ok('舞台 max-height:100%（700 短屏唔爆版）', 'max-height:100% !important' in v137css)
-ok('polaroid 改 flex:1（食返 wrap 剩位）', '#app .map-polaroid{ flex:1 1 auto !important; }' in v137css)
+ok('polaroid 改 flex:0（v367：收返去舞台高，唔留空白帶）', '#app .map-polaroid{ flex:0 0 auto !important; }' in v137css)
 ok('well 變 flex column 置中（舞台喺框內垂直置中）',
    'display:flex !important' in v137css and 'justify-content:center !important' in v137css)
 # v43 舊層原封（唔准偷改舊定案，只准後面蓋過）

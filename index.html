@@ -5651,10 +5651,10 @@ body.day-res-open .day-row{
    同 700（width-bound，近乎 identity）各自啱位。LOCS x/y 唔郁（圖 % 係 source
    of truth）。地區名：12 個 .md97 地區 div 已刪（HTML 段），金禧大酒店會場
    標籤保留（JS 即場定位）。 */
-#app .map-polaroid{ flex:1 1 auto !important; }
-#app .map-well{ flex:1 1 auto !important; height:100% !important; display:flex !important; flex-direction:column !important; justify-content:center !important; }
-#app .map-stage{ flex:0 0 auto !important; width:100% !important; height:auto !important; aspect-ratio:1270/1824 !important; max-height:100% !important; }
-#app .map-img{ width:100% !important; height:100% !important; object-fit:cover !important; object-position:60% 50% !important; }
+#app .map-polaroid{ flex:0 0 auto !important; } /* v367：收返去舞台高，唔留空白帶（原 flex:1） */
+#app .map-well{ flex:0 0 auto !important; height:auto !important; display:flex !important; flex-direction:column !important; justify-content:center !important; } /* v367：同上（原 flex:1／height:100%） */
+#app .map-stage{ flex:0 0 auto !important; width:100% !important; height:auto !important; aspect-ratio:1024/1536 !important; max-height:100% !important; background:#f6ead2 !important; box-shadow:0 0 0 6px #f6ead2, 0 0 0 7px rgba(122,96,54,.45), 0 6px 14px rgba(76,53,40,.25) !important; } #app .map-stage::after{ content:""; position:absolute; inset:0; z-index:1; pointer-events:none; box-shadow:inset 0 0 22px rgba(246,234,210,.5), inset 0 0 3px rgba(122,96,54,.35); } /* v367：舞台跟 v10 圖 1024/1536 比例填滿（原 1270/1824 窗）＋紙邊框／內緣柔光同紙底融合 */
+#app .map-img{ width:100% !important; height:100% !important; object-fit:cover !important; object-position:50% 50% !important; background:#f6ead2; } /* v367：比例啱 cover 變 identity（原 60% 50%） */
 /* === v20a137 MAP137 完 === */
 /* === v20a141 BOOK141：手帳去網頁感（樣本 v2b：B 式文件夾 tab＋備忘紙＋吊牌＋印章） ===
    用戶 2026-11-12 22:10 拍板揀 B。只換手帳外殼呈現：五 tab／stats／返回掣／plan 組
