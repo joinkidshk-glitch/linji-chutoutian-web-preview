@@ -17,13 +17,13 @@ ok("const LOC96_CFG = { treatFee:60, checkupFee:50, checkupDays:28, checkupShiel
    "LOC96 數字定案（治療 60／體檢 50・28 日・寬容 10；v261 ÷10）")
 
 # --- 新地點登記 ---
-ok('id:"gift_shop", name:"廟街禮品", area:"油麻地", type:"shop"' in src and "x:16, y:40" in src,
-   "gift_shop 登記（廟街夜市排檔位 16,40）")
-ok('id:"hospital", name:"仁康醫院", area:"薄扶林", type:"med"' in src and "x:76, y:61" in src,
-   "hospital 登記（白十字大樓位 76,61）")
-ok('<div class="mn68" style="left:16%;top:calc(40% + 34px)">廟街禮品</div>' in src, "廟街禮品墨字標籤在位（v351：16%／calc(40% + 34px)，貼新圖排檔）")
+ok('id:"gift_shop", name:"廟街禮品", area:"油麻地", type:"shop"' in src and "x:44, y:26" in src,
+   "gift_shop 登記（廟街夜市排檔位 44,26）")
+ok('id:"hospital", name:"仁康醫院", area:"薄扶林", type:"med"' in src and "x:73, y:80" in src,
+   "hospital 登記（白十字大樓位 73,80）")
+ok('<div class="mn68" style="left:44%;top:calc(26% + 34px)">廟街禮品</div>' in src, "廟街禮品墨字標籤在位（v364：44%／calc(26% + 34px)，貼新圖排檔）")
 ok("海傍禮品" not in src, "舊稱「海傍禮品」已清零（落位跟地圖審計 A11/B5 對位廟街夜市）")
-ok('<div class="mn68" style="left:76%;top:calc(61% + 34px)">仁康醫院</div>' in src, "仁康醫院墨字標籤在位")
+ok('<div class="mn68" style="left:73%;top:calc(80% + 34px)">仁康醫院</div>' in src, "仁康醫院墨字標籤在位")
 
 # --- 禮物店正規化（行覆寫／正規化，唔直改 pack）---
 ok('sh.shopId==="shop_street_mk"' in src and 'sh.locId = "gift_shop"' in src and 'sh.name = "廟街禮品檔"' in src,
