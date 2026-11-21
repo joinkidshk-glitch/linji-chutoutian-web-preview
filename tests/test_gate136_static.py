@@ -41,8 +41,8 @@ ok("進度頁 awardResolved 有玩家文案（唔漏工程術語）",
    "等冬台慶有結果" in src and "awardResolved" in block("function prog71GateItems", "function prog71StubItems"))
 
 # ---- B. 評核 ----
-ok("CONSEQ61_REVIEWS 有 1992 條目（155／195／156）",
-   "1992: { floor: 155, warnLine: 195, boundaryWeek: 156 }" in src)
+ok("CONSEQ61_REVIEWS 有 1992 條目（140／180／156）",
+   "1992: { floor: 140, warnLine: 180, boundaryWeek: 156 }" in src) # v361 P1-B：floor 155→140、warnLine 195→180
 
 # ---- C. 文案 ----
 # 語義關鍵（v20a136 實駕捉到）：JSON pack 主線節點／STORY_HINT_SOFT／CHOICE47_NODES

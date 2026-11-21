@@ -166,7 +166,7 @@ ok('S1 enc79PaperWhisper 查表唔郁（只得三項）',
   html.indexOf('side_lu_concert:"luk_baakyin"')>=0 && html.indexOf('side_chung_loose315')>=0 &&
   extractFn('enc79PaperWhisper').indexOf('side_chung_loose315')<0);
 const gigsLib = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'gigs_new.json'), 'utf8')).gigs;
-ok('S1 gigs_new.json 仍係 323 張', gigsLib.length===323, 'count='+gigsLib.length);
+ok('S1 gigs_new.json 仍係 326 張', gigsLib.length===326, 'count='+gigsLib.length);
 
 if(fails.length){ console.log('FAILURES: '+fails.join(', ')); process.exit(1); }
 console.log('ALL PASS');

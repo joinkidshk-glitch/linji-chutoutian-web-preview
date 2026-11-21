@@ -57,8 +57,8 @@ function mkState(dual, dayIndex){
 /* (1) 條目數字＋曆法對位 */
 {
   const r = run(sb, "CONSEQ61_REVIEWS[1992]");
-  ok("1992 條目：floor 155／warnLine 195／boundaryWeek 156",
-    r && r.floor === 155 && r.warnLine === 195 && r.boundaryWeek === 156);
+  ok("1992 條目：floor 140／warnLine 180／boundaryWeek 156",
+    r && r.floor === 140 && r.warnLine === 180 && r.boundaryWeek === 156); // v361 P1-B：floor 155→140、warnLine 195→180
   ok("calib60YearOfWeek(156)＝1992", run(sb, "calib60YearOfWeek(156)") === 1992);
   ok("calib60YearOfWeek(152)＝1992（警告週同屬 1992）", run(sb, "calib60YearOfWeek(152)") === 1992);
   const r90 = run(sb, "CONSEQ61_REVIEWS[1990]");
@@ -76,11 +76,11 @@ function mkState(dual, dayIndex){
   ok("week 152 警告唔判收場", !lines.reviews[1992]);
   const st2 = mkState(200, 1050);
   const lines2 = run(sb, "(function(){ const st = " + JSON.stringify(st2) + "; return conseq61SettleEval(st, 152); })()");
-  ok("week 152＋dual 200（≥warnLine 195）：唔出聲", !lines2.some(l=>String(l).indexOf("1992") >= 0));
-  const st3 = mkState(140, 1080);
+  ok("week 152＋dual 200（≥warnLine 180）：唔出聲", !lines2.some(l=>String(l).indexOf("1992") >= 0));
+  const st3 = mkState(130, 1080);
   const lines3 = run(sb, "(function(){ const st = " + JSON.stringify(st3) + "; return conseq61SettleEval(st, 155); })()");
-  ok("week 155（邊界前 1 週）＋dual 140：強警告提到 1992 年尾評核", lines3.some(l=>String(l).indexOf("1992 年尾評核") >= 0));
-  ok("week 155 強警告原文：下週就係 1992 年尾評核＋dual＋floor 155", lines3.some(l=>{ const s = String(l); return s.indexOf("下週就係 1992 年尾評核") >= 0 && s.indexOf("140") >= 0 && s.indexOf("155") >= 0; }));
+  ok("week 155（邊界前 1 週）＋dual 130：強警告提到 1992 年尾評核", lines3.some(l=>String(l).indexOf("1992 年尾評核") >= 0));
+  ok("week 155 強警告原文：下週就係 1992 年尾評核＋dual＋floor 140", lines3.some(l=>{ const s = String(l); return s.indexOf("下週就係 1992 年尾評核") >= 0 && s.indexOf("130") >= 0 && s.indexOf("140") >= 0; }));
   const st4 = mkState(150, 900);
   const lines4 = run(sb, "(function(){ const st = " + JSON.stringify(st4) + "; return conseq61SettleEval(st, 150); })()");
   ok("week 150（邊界前 6 週）：唔出 1992 警告", !lines4.some(l=>String(l).indexOf("1992") >= 0));
@@ -88,14 +88,14 @@ function mkState(dual, dayIndex){
 
 /* (3) 邊界週 156 即判 */
 {
-  const low = run(sb, "(function(){ const st = " + JSON.stringify(mkState(154, 1091)) + "; const L = conseq61SettleEval(st, 156); return { lines: L, rev: st.conseq61.reviews[1992], pend: st.conseq61.pendingEnding }; })()");
-  ok("week 156＋dual 154（<floor 155）：判收場", low.rev && low.rev.passed === false);
-  ok("week 156＋dual 154：pendingEnding kind review／year 1992",
-    low.pend && low.pend.kind === "review" && low.pend.year === 1992 && low.pend.floor === 155);
-  ok("week 156＋dual 154：結算行文有「1992 年尾評核結果出咗」",
+  const low = run(sb, "(function(){ const st = " + JSON.stringify(mkState(139, 1091)) + "; const L = conseq61SettleEval(st, 156); return { lines: L, rev: st.conseq61.reviews[1992], pend: st.conseq61.pendingEnding }; })()");
+  ok("week 156＋dual 139（<floor 140）：判收場", low.rev && low.rev.passed === false);
+  ok("week 156＋dual 139：pendingEnding kind review／year 1992",
+    low.pend && low.pend.kind === "review" && low.pend.year === 1992 && low.pend.floor === 140);
+  ok("week 156＋dual 139：結算行文有「1992 年尾評核結果出咗」",
     low.lines.some(l=>String(l).indexOf("1992 年尾評核結果出咗") >= 0));
-  const edge = run(sb, "(function(){ const st = " + JSON.stringify(mkState(155, 1091)) + "; const L = conseq61SettleEval(st, 156); return { rev: st.conseq61.reviews[1992], pend: st.conseq61.pendingEnding }; })()");
-  ok("week 156＋dual 155（＝floor）：過關，唔收場", edge.rev && edge.rev.passed === true && !edge.pend);
+  const edge = run(sb, "(function(){ const st = " + JSON.stringify(mkState(140, 1091)) + "; const L = conseq61SettleEval(st, 156); return { rev: st.conseq61.reviews[1992], pend: st.conseq61.pendingEnding }; })()");
+  ok("week 156＋dual 140（＝floor）：過關，唔收場", edge.rev && edge.rev.passed === true && !edge.pend);
   const hi = run(sb, "(function(){ const st = " + JSON.stringify(mkState(210, 1091)) + "; conseq61SettleEval(st, 156); return st.conseq61.reviews[1992]; })()");
   ok("week 156＋dual 210：過關紀錄 dual 210", hi && hi.passed === true && hi.dual === 210);
 }

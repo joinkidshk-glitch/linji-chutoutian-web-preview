@@ -12290,7 +12290,7 @@ const ENDING95_T = {
   e3BossFavor: 5                                               /* E3 製片老闆變體：人情總量（已清＋持有）門檻 */
 };
 const END95_TYPE_MEDIUM = { "電影": "film", "電視劇": "tv", "唱片通告": "music", "唱片": "music", "綜藝": "variety", "廣告": "ad" };
-const END95_LEAD_SCALES = { film_lead_big: 1, film_second_lead: 1, tv_lead_long: 1, tv_lead: 1, tv_second_lead: 1, music_lead: 1, ad_lead: 1 };
+const END95_LEAD_SCALES = { film_lead_big: 1, film_second_lead: 1, tv_lead_long: 1, tv_lead: 1, tv_second_lead: 1, music_lead: 1, ad_lead: 1, variety_host_lead: 1 };
 const END95_STRONG_LEAD = /主角|男主|女主|主演|主唱|擔正/;
 const END95_GENRE_TYPE_NAMES = { "電影": 1, "電視劇": 1, "唱片通告": 1, "唱片": 1, "綜藝": 1, "廣告": 1 };
 const END95_COMEDY_G = /喜劇|諧|搞笑|笑片|笑匠/;
@@ -12418,9 +12418,9 @@ function end229IsLead(gig){
   if(rl.indexOf("替身") >= 0 || ti.indexOf("替身") >= 0) return false;
   const sc = String(gig.roleScale || gig.resolvedScale || "");
   if(sc === "film_lead_big" || sc === "tv_lead_long") return /男主角|女主角|主角/.test(rl);
-  if(sc === "rec_album") return rl.indexOf("主唱") >= 0;
-  if(sc === "ad_av") return /代言|主角/.test(rl);
-  if(sc === "variety_special") return rl.indexOf("主持") >= 0;
+  if(sc === "rec_album" || sc === "music_lead") return rl.indexOf("主唱") >= 0;
+  if(sc === "ad_av" || sc === "ad_lead") return /代言|主角/.test(rl);
+  if(sc === "variety_special" || sc === "variety_host_lead") return rl.indexOf("主持") >= 0;
   return false;
 }
 function end229ClassifyLead(gig){
@@ -12466,6 +12466,53 @@ function end229AddWrap(Sref, gig){
     }
     const m = end229ClassifyLead(gig);
     if(m) Sref.leadStats229.byMedium[m] = (Sref.leadStats229.byMedium[m] | 0) + 1;
+  }catch(_e){}
+}
+/* ===== v20a361 P1-B：獨立信用來源（合約信用）——信用係派生值（fame×0.5＋台風×0.3＋演技×0.2＋delta），
+   舊制 delta 只有敘事／獎項小額來源，低曝光高信用（E3/E5）同高曝光低信用（E4）都養唔成（W4 證實）。
+   GPT 方案：完成合約（殺青）+1、高難度（高級／稀有）額外 +1，正增長每季上限 +4、工作來源生涯上限 +36，
+   一律寫入 industryCreditDelta（唔直接改派生值）。季＝13 週（weekNumNow 口徑）。 */
+const CONTRACT_CREDIT361_CFG = { perWrap: 1, highTierBonus: 1, quarterCap: 4, lifetimeCap: 36 };
+function contractCredit361QuarterOf(dayIndex){
+  return Math.floor(Math.floor((Number(dayIndex) || 0) / 7) / 13);
+}
+function contractCredit361OnWrap(Sref, gig, dayIndex){
+  try{
+    if(!Sref || !gig) return 0;
+    let st = Sref.contractCredit361;
+    if(!st || typeof st !== "object" || Array.isArray(st)){ st = { total: 0, qKey: -1, qCount: 0 }; Sref.contractCredit361 = st; }
+    const q = contractCredit361QuarterOf(dayIndex);
+    if(st.qKey !== q){ st.qKey = q; st.qCount = 0; }
+    let gain = CONTRACT_CREDIT361_CFG.perWrap;
+    if(gig.tier === "高級" || gig.tier === "稀有") gain += CONTRACT_CREDIT361_CFG.highTierBonus;
+    gain = Math.min(gain,
+      CONTRACT_CREDIT361_CFG.quarterCap - (st.qCount | 0),
+      CONTRACT_CREDIT361_CFG.lifetimeCap - (st.total | 0));
+    if(gain <= 0) return 0;
+    st.qCount = (st.qCount | 0) + gain;
+    st.total = (st.total | 0) + gain;
+    Sref.industryCreditDelta = (Number(Sref.industryCreditDelta) || 0) + gain;
+    return gain;
+  }catch(_e){ return 0; }
+}
+/* v20a361 P1-B：舊檔回填合約信用——由 wrapHistory（wrappedDay＋gig tier）按時序重播同一套上限，
+   一次性寫入 delta（state.backfilled 旗防重複；wrapHistory 上限 90 條，係下限唔係全史，同其他回填同口徑）。
+   年庫未載入嗰陣 tier lookup 會 miss（當普通 +1 計，唔高估）；enterHome 唔再懶掃（一次性回填，唔追溯改數值第二次）。 */
+function contractCredit361Backfill(o){
+  try{
+    if(!o || typeof o !== "object") return;
+    if(o.contractCredit361 && typeof o.contractCredit361 === "object" && !Array.isArray(o.contractCredit361)) return;
+    const st = { total: 0, qKey: -1, qCount: 0, backfilled: true };
+    o.contractCredit361 = st;
+    const hist = (Array.isArray(o.wrapHistory) ? o.wrapHistory.slice() : [])
+      .filter(h => h && h.wrappedDay != null)
+      .sort((a, b) => (a.wrappedDay | 0) - (b.wrappedDay | 0));
+    let gainTotal = 0;
+    hist.forEach(h => {
+      const g = (h.gigId && typeof work59GigLookup === "function") ? work59GigLookup(h.gigId) : null;
+      gainTotal += contractCredit361OnWrap(o, g || { tier: "" }, h.wrappedDay | 0);
+    });
+    void gainTotal;
   }catch(_e){}
 }
 function end95Awards(st){
@@ -12549,6 +12596,9 @@ function end95BuildGaps(ctx){
   if(!ctx || ctx.career === "E6") return [];
   if(ctx.career === "E1") return ["那一格，你不差——獎、擔正、主線，樣樣齊全，數字也站得穩。"];
   const lines = [];
+  /* v20a361 P1-B：負標籤交代（W4 B1：neg≥2 跌格但 gaps95 空白，玩家唔知點解）。
+     E1/SS 上限係 1 個；有 2 個或以上要講明係邊瓣擋住。 */
+  if((ctx.negTags | 0) >= 2) lines.push("負面印記，你身上有 " + (ctx.negTags | 0) + " 個——天王與巨星那兩格，最多容許一個。");
   if(!ctx.hasWin) lines.push("獎，你未曾拿過——頒獎禮那幾晚，你依然坐在台下。");
   if((ctx.leadMediaCount | 0) <= 0) lines.push("擔正，你未曾站上那個位置——哪種媒介都沒有。");
   else if(ctx.leadMediaCount < 2) lines.push("擔正，你只在一邊擔正過——還欠另一種媒介。");
@@ -12561,6 +12611,8 @@ function end95BuildGaps(ctx){
 
 /* 結局判定（純函數、唯讀、無副作用）：v20a95 新梯上而下
    E1→E4→SS→FK→TK→SK→GH→CK→AK→ID→CR→E2→E3→E5→E0；
+   v20a361 P1-B：E3/E5 提前到 CR/E2 之前（加 credit>fame 守門），次序變
+   E1→E4→SS→FK→TK→SK→GH→CK→AK→ID→E3→E5→CR→E2→E0；
    E6 只認 opts.quit（"job"｜"leave"）主動入口，旗本身唔會令純函數自己入 E6。
    opts.exodus 可由前夕抉擇覆寫去留軸（"leave"）。回傳 {career, careerVariant, romance, exodus, title, reasons, snapshot}。 */
 function resolveEnding410(st, opts){
@@ -12613,15 +12665,19 @@ function resolveEnding410(st, opts){
     career = "AK"; reasons.push("AK 動作巨星：雙軌 "+sum+"≥"+T95.akDual+"、動作佔比（可辨識 "+stats95.genreIdentified+" 部）"+Math.round(genreShare95(stats95.genreAction)*100)+"%≥50%、武師班 "+((s.trainCount && Number(s.trainCount.train_stamina))||0)+" 堂≥"+T95.akStaminaLessons);
   } else if(fame>=T95.idFame && credit>=T95.idCreditLo && credit<=T95.idCreditHi && neg<=T95.idNegMax){
     career = "ID"; reasons.push("ID 人氣偶像：聲望 "+fame+"≥"+T95.idFame+"、信用 "+credit+" 喺 "+T95.idCreditLo+"–"+T95.idCreditHi+"、負標籤 "+neg+"≤"+T95.idNegMax);
+  /* v20a361 P1-B：明確路線（E3 幕後／E5 人情）提前到 CR／E2 之前判——舊次序 E2（credit≥42＋fame≥35）
+     幾乎吞晒所有正常 profile，E3/E5 只剩 fame<35＋credit≥121 嘅數學死位（W4 36 案例證實）。
+     加 credit>fame（信用主導）做路線身份守門：幕後／人情路線要真係信用行先過聲望，
+     唔會搶走一般演員格（CR/E2）嘅人。E3/E5 另獲 ending361FloorExempt 豁免 1992 兜底改判。 */
+  } else if(credit>fame && endingE3Eligible410(s)){
+    career = "E3"; variant = end95E3Variant(s, stats95, favor);
+    reasons.push("E3：信用 "+credit+">聲望 "+fame+"（信用主導）＋信用≥"+T.e3Credit+"、幕後標籤 "+endingBackstageTagCount410(s)+"／導演 rel "+directorRel+"；變體＝"+variant+"（人情總量 "+((favor.settled|0)+(favor.creditsHeld|0))+"、電影 "+(stats95.byMedium.film|0)+"／電視 "+(stats95.byMedium.tv|0)+"）");
+  } else if(credit>fame && (favor.settled + favor.creditsHeld)>=T.e5FavorTotal && agentRel>=T.e5AgentRel){
+    career = "E5"; reasons.push("E5：信用 "+credit+">聲望 "+fame+"（信用主導）＋已清債 "+favor.settled+"＋持有債權 "+favor.creditsHeld+"≥"+T.e5FavorTotal+"、何生 rel "+agentRel+"≥"+T.e5AgentRel);
   } else if(credit>=T95.crCredit && fame>=T95.crFameLo && fame<=T95.crFameHi){
     career = "CR"; reasons.push("CR 實力派演員：信用 "+credit+"≥"+T95.crCredit+"、聲望 "+fame+" 喺 "+T95.crFameLo+"–"+T95.crFameHi);
   } else if(credit>=T.e2Credit && fame>=T.e2Fame){
     career = "E2"; reasons.push("E2：信用 "+credit+"≥"+T.e2Credit+"、聲望 "+fame+"≥"+T.e2Fame);
-  } else if(endingE3Eligible410(s)){
-    career = "E3"; variant = end95E3Variant(s, stats95, favor);
-    reasons.push("E3：信用 "+credit+"≥"+T.e3Credit+"、幕後標籤 "+endingBackstageTagCount410(s)+"／導演 rel "+directorRel+"；變體＝"+variant+"（人情總量 "+((favor.settled|0)+(favor.creditsHeld|0))+"、電影 "+(stats95.byMedium.film|0)+"／電視 "+(stats95.byMedium.tv|0)+"）");
-  } else if((favor.settled + favor.creditsHeld)>=T.e5FavorTotal && agentRel>=T.e5AgentRel){
-    career = "E5"; reasons.push("E5：已清債 "+favor.settled+"＋持有債權 "+favor.creditsHeld+"≥"+T.e5FavorTotal+"、何生 rel "+agentRel+"≥"+T.e5AgentRel);
   } else {
     reasons.push("E0：以上皆不合，浮沉未定（預設）");
   }
@@ -12657,7 +12713,7 @@ function resolveEnding410(st, opts){
   /* v20a95：E3 稱號用變體名（大導演／金牌監製／製片老闆），其餘用格名。 */
   const titleName95 = (career==="E3" && variant) ? variant : (ENDING410_CAREER_NAMES[career] || career);
   const title = titleName95 + "・" + exodusWord;
-  const gaps95 = end95BuildGaps({ career: career, fame: fame, credit: credit, dual: sum,
+  const gaps95 = end95BuildGaps({ career: career, fame: fame, credit: credit, dual: sum, negTags: neg,
     hasWin: awards95.hasWin, leadMediaCount: leadMedia95.length, chains: chains95, spine: spine95 });
   return {
     career: career, careerVariant: variant, baseCareer: baseCareer, baseVariant: baseVariant,
@@ -13232,6 +13288,13 @@ function ending410AfterEpi410(node){
 /* v20a253：前夕抉擇落定之後嘅結局判定＋呈現本體（由 ending410AfterEveChoice／
    ending410AfterEpi410 共用；湯場路同即時路行同一段 code）。按玩家揀嘅去留計最終結局
    （事業格照三年數值計，唔郁；quit 入口覆寫 E6）→ 寫 S.ending410 → 逐頁呈現。 */
+/* v20a361 P1-B：1992 兜底 floor 豁免——明確路線格（E4 泡沫偶像／E3 幕後／E5 江湖撈家）
+   同主動退圈（E6）唔畀 generic floor 改判 E7（GPT 方案「先判明確路線，再判 E7 兜底」）。
+   E4 嘅 dual 天生低（fame≥50＋credit<30 → dual 唔過 ~90），唔豁免就永遠被 E7 蓋過；
+   E3/E5 係刻意養成嘅路線身份（信用主導＋幕後／人情證據），唔應該因為 dual 貼線而消失。 */
+function ending361FloorExempt(career){
+  return career==="E6" || career==="E4" || career==="E3" || career==="E5";
+}
 function ending410ResolvePresent410(node, choice, result, key, opts){
   try{
     if(typeof S==="undefined" || !S || !key) return false;
@@ -13240,11 +13303,13 @@ function ending410ResolvePresent410(node, choice, result, key, opts){
     /* v20a345 F2：1992 年尾評核 floor 補檢查——N17 閘（weekMin 153）喺 12 月初觸發，
        搶先 week156 評核，1992 E7 正常玩法不可達。結局判定嗰刻補返：dual 低過
        1992 floor（155）改判 E7 未紅先收（review1992），唔落正常格；E6 主動退圈唔覆蓋，
-       保留玩家選擇。1990／1991 評核路徑（conseq61SettleEval）唔郁。 */
+       保留玩家選擇。1990／1991 評核路徑（conseq61SettleEval）唔郁。
+       v20a361 P1-B：floor 155→140（CONSEQ61_REVIEWS），豁免改行 ending361FloorExempt
+       （E6＋明確路線 E3/E4/E5）。 */
     let e7Floor345 = 0;
     try{
       const R92_345 = (typeof CONSEQ61_REVIEWS!=="undefined" && CONSEQ61_REVIEWS[1992]) ? CONSEQ61_REVIEWS[1992] : null;
-      if(R92_345 && res.career!=="E6" && (Number(res.snapshot.dual)||0) < R92_345.floor){
+      if(R92_345 && !ending361FloorExempt(res.career) && (Number(res.snapshot.dual)||0) < R92_345.floor){
         e7Floor345 = R92_345.floor;
         res.career = "E7"; res.careerVariant = "review1992";
         res.title = "未紅先收・" + (res.exodus==="leave" ? "遠走的人" : (res.exodus==="stay" ? "留下來的人" : "未說出口的人"));
@@ -15803,6 +15868,8 @@ function normalizeSaveObj(o){
   if(!Array.isArray(o.castingTags)) o.castingTags=[];
   /* v20a360 P0-2：舊檔回填 genre 標籤（做過喜劇／動作作品但冇標籤嘅舊檔補返，N9/N12 閘先開到）。 */
   try{ if(typeof castingTagGenreBackfill360==="function") castingTagGenreBackfill360(o); }catch(_e360){}
+  /* v20a361 P1-B：舊檔回填合約信用（由 wrapHistory 重播季／生涯上限，一次性；已有計數器唔郁）。 */
+  try{ if(typeof contractCredit361Backfill==="function") contractCredit361Backfill(o); }catch(_e361){}
   if(!Array.isArray(o.postShootRewards)) o.postShootRewards=[];
   if(!Array.isArray(o.awardsLog)) o.awardsLog=[];
   if(!o.awardsFlags || typeof o.awardsFlags!=="object") o.awardsFlags={};
@@ -16649,8 +16716,11 @@ const CONSEQ61_REVIEWS = {
   /* v20a136：1992 年條目（結局閘搬去 12 月後，遊戲行到年尾先有第三年評核）。數字暫定，
      照 1990→1991 升幅推（floor ＋55、warnLine ＋65）：floor 155／warnLine 195；boundaryWeek 156
      （第 156 週週結 ≈ 1992-12-27，calib60YearOfWeek(156)＝1992 已驗）。警告週（152–155 週）同
-     conseq61LegacyMark 舊檔行為自動跟到，唔使另改。評核數字之後按實玩再調整。 */
-  1992: { floor: 155, warnLine: 195, boundaryWeek: 156 }
+     conseq61LegacyMark 舊檔行為自動跟到，唔使另改。評核數字之後按實玩再調整。
+     v20a361 P1-B：實玩評估（W2/W4）證 155 對主角期 dual 159 太貼（僅過 4 點），普通浮動即翻格；
+     floor 155→140、warnLine 195→180（保留 40 點警告帶，同 1990→1991 帶寬升幅一致）。
+     明確路線格（E3/E4/E5）另有 ending361FloorExempt 豁免，唔受呢條兜底線改判。 */
+  1992: { floor: 140, warnLine: 180, boundaryWeek: 156 }
 };
 const CONSEQ61_CFG = {
   graceWeeks: 4,        /* 破產寬限：4 個週結；期間有戲拍緊暫停倒數；存款返到夠冚下週生活費、或本週入帳夠冚＋存款返正數（v20a65 FIX65-2）即解除 */
@@ -18515,6 +18585,10 @@ const ROLE_SCALE_BAND = {
   photobook:[1,2],
   variety_ep:[1,2],
   variety_special:[1,3],
+  /* v20a361 P1-A：新擔正級 scale 工期帶（跟各自媒介既有帶同寬） */
+  ad_lead:[1,2],
+  music_lead:[6,14],
+  variety_host_lead:[1,3],
 };
 function resolveRoleScale(gig){
   if(!gig || typeof gig!=="object") return null;
@@ -21038,6 +21112,8 @@ function resolvePlannedDay(id){
           const _g95 = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
           if(_g95 && typeof end95AddWrap==="function") end95AddWrap(S, _g95, sh);
           if(_g95 && typeof end229AddWrap==="function") end229AddWrap(S, _g95);
+          /* v20a361 P1-B：合約信用——殺青即寫 delta（季上限 +4／生涯 +36，見 contractCredit361OnWrap） */
+          if(_g95 && typeof contractCredit361OnWrap==="function") contractCredit361OnWrap(S, _g95, S.dayIndex|0);
         }catch(_e95w){}
         try{
           S.wrapHistory = S.wrapHistory || [];
@@ -28899,6 +28975,18 @@ function castingTagMeta(idOrLabel){
   const id = castingTagLabelToId(idOrLabel);
   return castingTagRegistry().find(t=>t && (t.id===id || t.label===idOrLabel)) || { id:id, label:String(idOrLabel||id), hidden:false };
 }
+/* v20a361 P1-B：負標籤即時預警——拎到負面印記嗰刻提示會影響結局（GPT：有第 2 個即時預警 E1/SS 受阻；
+   第 1 個都提示，畀玩家知有上限）。只喺真授予（applyCastingTags 新增）嗰陣出，舊檔回填唔經呢度、唔會誤報。 */
+function negTagWarn361(addedRows){
+  try{
+    const rows = Array.isArray(addedRows) ? addedRows : [];
+    const isNeg = (t)=> t && (ENDING_NEG_TAGS410.indexOf(String(t.label || "")) >= 0 || ENDING_NEG_TAGS410.indexOf(String(t.id || "")) >= 0);
+    if(!rows.some(isNeg)) return;
+    const n = (typeof endingNegTagCount410 === "function") ? endingNegTagCount410(S) : rows.filter(isNeg).length;
+    if(n >= 2) toast("負面印記已有兩個——天王與巨星那兩格，最多容許一個，這兩格已經關閉。");
+    else toast("這是負面印記，會影響結局——天王與巨星那兩格，最多容許一個。");
+  }catch(_e){}
+}
 /** Sink：殺青／事態可寫入選角標籤；雙軌 delta 可選套用一次。 */
 function applyCastingTags(tags, opts){
   opts = opts || {};
@@ -28925,6 +29013,7 @@ function applyCastingTags(tags, opts){
   });
   if(added.length){
     try{ ensureWeakSeals(); }catch(_e){}
+    try{ if(typeof negTagWarn361 === "function") negTagWarn361(added); }catch(_e361){}
   }
   return added;
 }
@@ -31422,6 +31511,10 @@ const AWARDS62_TASTE = 0.05;
 const AWARDS62_ROLE_Q = {
   film_lead_big: 1.00, tv_lead_long: 1.00,
   film_support_main: 0.78, tv_support_main: 0.78,
+  /* v20a361 P1-A：廣告／唱片／綜藝補擔正級 q（同 film_support_main 同級 0.78）——
+     舊制三媒介封頂 0.48／0.66，廣告同司儀格天花板 0.795／0.784 數學上贏唔到（W2 真引擎覆核）；
+     補 ad_lead／music_lead／variety_host_lead 後，滿配天花板同影視睇齊（qa361 harness 逐格驗證）。 */
+  ad_lead: 0.78, music_lead: 0.78, variety_host_lead: 0.78,
   rec_album: 0.66,
   film_support_small: 0.55, tv_cameo_short: 0.55,
   mtv: 0.48, ad_av: 0.48, variety_special: 0.48,
@@ -31541,7 +31634,7 @@ function awards62ScoreParts(cat, ceremony, year){
 /* v20a65 FIX65-4：擔正判準——roleScale 一番／二番級，或 roleLabel／作品名明寫主角級。
    唔可以齋睇 roleScale：pack 入面有幕後助手都掛 "mtv"，而真・MTV 男主角嗰部
    roleScale 一樣係 "mtv"、roleLabel 係空——要靠作品名「男主角」先認得返（全弧二輪 BUG-4 實例）。 */
-const AWARDS65_LEAD_SCALES = { film_lead_big:1, tv_lead_long:1, tv_lead:1, film_second_lead:1, tv_second_lead:1, music_lead:1, ad_lead:1, rec_album:1 };
+const AWARDS65_LEAD_SCALES = { film_lead_big:1, tv_lead_long:1, tv_lead:1, film_second_lead:1, tv_second_lead:1, music_lead:1, ad_lead:1, rec_album:1, variety_host_lead:1 };
 function awards65IsLeadWork(w){
   try{
     if(!w) return false;
@@ -33249,7 +33342,7 @@ const PRESS94_STRONG_NAMED = /主角|男主|女主|主演|主唱/;
 const PRESS94_BASE_LABEL = /臨記|臨時演員|臨時群演|群演|路人|途人|幫工|和音|和唱|伴舞|舞者|班底|散工|舉牌|充場|群戲|過場|閒角|客串|特約|熟手|頂位|助手|場務|武行|手模|試音|遞水/;
 const PRESS94_NAMED_LABEL = /配角|男配|女配|男二|女二|隊長|模特|嘉賓|領唱|領舞/;
 const PRESS94_BASE_SCALES = { ad_extra_day:1, tv_extra_day:1, tv_regular_extra:1, film_action_extra:1, film_extra_short:1, film_stunt:1, tv_cameo_short:1 };
-const PRESS94_NAMED_SCALES = { film_lead_big:1, film_support_main:1, tv_lead_long:1, tv_support_main:1, film_second_lead:1, tv_second_lead:1, tv_lead:1, film_support:1, tv_support:1, ad_lead:1, ad_print:1, photobook:1, music_lead:1, music_guest:1, ad_support:1, film_support_short:1 };
+const PRESS94_NAMED_SCALES = { film_lead_big:1, film_support_main:1, tv_lead_long:1, tv_support_main:1, film_second_lead:1, tv_second_lead:1, tv_lead:1, film_support:1, tv_support:1, ad_lead:1, ad_print:1, photobook:1, music_lead:1, music_guest:1, ad_support:1, film_support_short:1, variety_host_lead:1 };
 function press94ScaleOf(gig){
   if(!gig) return "";
   if(gig.resolvedScale) return String(gig.resolvedScale);

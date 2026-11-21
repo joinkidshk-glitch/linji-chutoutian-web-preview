@@ -168,7 +168,7 @@ const SIDE_DEAD11 = ['gig_1990_tv_114','gig_1990_tv_115','gig_1990_tv_116',
   'gig_1990_film_116','gig_1990_film_117','gig_1990_film_115',
   'gig_1991_rec_111','gig_1991_rec_112'];
 const SIDE_W3_2 = ['gig_1990_tv_209','gig_1990_tv_210'];
-ok('T0 新庫 323 張', gigs.length===323, 'n='+gigs.length);
+ok('T0 新庫 326 張', gigs.length===326, 'n='+gigs.length); // v361：＋3 張擔正級通告（ad_lead×2／variety_host_lead×1），323→326
 ok('T0 主線 31 張 id 齊', MAIN31.every(id=>!!gigById(id)));
 ok('T0 支線 W3 2 張 id 齊', SIDE_W3_2.every(id=>!!gigById(id)));
 ok('T0 ENC79／DRAFT 11 張舊 id 已唔喺新庫（v255：已刪，映射改指新 id）', SIDE_DEAD11.every(id=>!gigById(id)),

@@ -70,7 +70,7 @@ eval([
 
 ok('harness: conseq61SettleEval 載入', typeof conseq61SettleEval === 'function');
 ok('harness: presentSettleWarn345 載入', typeof presentSettleWarn345 === 'function');
-ok('harness: CONSEQ61_REVIEWS 1992 floor 155', CONSEQ61_REVIEWS[1992].floor === 155);
+ok('harness: CONSEQ61_REVIEWS 1992 floor 140', CONSEQ61_REVIEWS[1992].floor === 140); // v361 P1-B：floor 155→140
 
 /* ---- F1a：conseq61SettleEval 警告行生成（1991 評核前 2 週） ---- */
 function mkState(fame, credit, dayIndex){
@@ -157,6 +157,7 @@ var endingExodusScene410 = function(){ return ''; };
 var endingEsc410 = function(x){ return String(x==null?'':x); };
 var showEndingSummary410 = function(){};
 
+eval(safeExtractFn('function ending361FloorExempt(career)', 'function ending361FloorExempt(career){ return career==="E6"; }')); // v361 P1-B：F2 豁免 helper（舊 code 無此函數時退回 E6-only 語義）
 eval(extractFn('function ending410ResolvePresent410(node, choice, result, key, opts)'));
 ok('harness: ending410ResolvePresent410 載入', typeof ending410ResolvePresent410 === 'function');
 
@@ -172,34 +173,47 @@ S = mkState(50, 50, 1070); S.ending410 = null;
 _stubRes = mkRes('E2', 100);
 _modalCalls = [];
 ending410ResolvePresent410(null, null, null, 'natural', { exodus: 'stay' });
-ok('F2: dual 100 <155 改判 E7', S.ending410.career === 'E7');
+ok('F2: dual 100 <140 改判 E7', S.ending410.career === 'E7');
 ok('F2: variant review1992', S.ending410.careerVariant === 'review1992');
 ok('F2: title 未紅先收', String(S.ending410.title).startsWith('未紅先收'));
-ok('F2: earlyEnd review 1992 floor 155', !!(S.ending410.earlyEnd && S.ending410.earlyEnd.kind==='review' && S.ending410.earlyEnd.year===1992 && S.ending410.earlyEnd.floor===155));
+ok('F2: earlyEnd review 1992 floor 140', !!(S.ending410.earlyEnd && S.ending410.earlyEnd.kind==='review' && S.ending410.earlyEnd.year===1992 && S.ending410.earlyEnd.floor===140));
 ok('F2: gaps95 清走（同強制 E7 一致）', Array.isArray(S.ending410.gaps95) && S.ending410.gaps95.length === 0);
 ok('F2: 場景行 E7/review1992', _modalCalls.some(h=>h.includes('SCENE:E7/review1992')));
 
 S = mkState(100, 100, 1070); S.ending410 = null;
 _stubRes = mkRes('E2', 200);
 ending410ResolvePresent410(null, null, null, 'natural', { exodus: 'stay' });
-ok('F2: dual 200 ≥155 照舊 E2', S.ending410.career === 'E2');
+ok('F2: dual 200 ≥140 照舊 E2', S.ending410.career === 'E2');
 ok('F2: dual 200 唔寫 earlyEnd', !S.ending410.earlyEnd);
 
 S = mkState(50, 50, 1070); S.ending410 = null;
-_stubRes = mkRes('E0', 154);
+_stubRes = mkRes('E0', 139);
 ending410ResolvePresent410(null, null, null, 'natural', { exodus: 'stay' });
-ok('F2: dual 154（差 1）改判 E7', S.ending410.career === 'E7');
+ok('F2: dual 139（差 1）改判 E7', S.ending410.career === 'E7');
 
 S = mkState(80, 75, 1070); S.ending410 = null;
-_stubRes = mkRes('E0', 155);
+_stubRes = mkRes('E0', 140);
 ending410ResolvePresent410(null, null, null, 'natural', { exodus: 'stay' });
-ok('F2: dual 155（啱啱到線）唔改判', S.ending410.career === 'E0');
+ok('F2: dual 140（啱啱到線）唔改判', S.ending410.career === 'E0');
 
 S = mkState(50, 50, 1070); S.ending410 = null;
 _stubRes = mkRes('E6', 100);
 _stubRes.careerVariant = '安穩';
 ending410ResolvePresent410(null, null, null, 'quit_job', { quit: 'job' });
 ok('F2: E6 主動退圈唔覆蓋', S.ending410.career === 'E6');
+
+/* v361 P1-B：明確路線格（E4/E3/E5）豁免 floor 改判（ending361FloorExempt） */
+S = mkState(27, 56, 1070); S.ending410 = null;
+_stubRes = mkRes('E4', 83);
+_stubRes.careerVariant = 'sunk';
+ending410ResolvePresent410(null, null, null, 'natural', { exodus: 'stay' });
+ok('F2-v361: E4 dual 83 豁免，唔改判 E7', S.ending410.career === 'E4');
+
+S = mkState(25, 75, 1070); S.ending410 = null;
+_stubRes = mkRes('E3', 100);
+_stubRes.careerVariant = '大導演';
+ending410ResolvePresent410(null, null, null, 'natural', { exodus: 'stay' });
+ok('F2-v361: E3 dual 100 豁免，唔改判 E7', S.ending410.career === 'E3');
 
 /* ---- F2：E7 review1992 場景文字 ---- */
 var endingFlag410 = function(){ return false; };

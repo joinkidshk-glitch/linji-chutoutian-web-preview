@@ -62,7 +62,7 @@ ok('靜態：variety_203 trigger／storyKeys 唔郁', !!v203 && v203.trigger && 
 ok('靜態：BR89 第 18 對在位（variety_203＋variety_106 同一筆債權）',
   html.includes('gig_1991_variety_203:"credit_enc84_pang_patron"') &&
   html.includes('gig_1992_variety_106:"credit_enc84_pang_patron"'));
-ok('靜態：庫 323 張／trigger 38／credit 27', GIGS.length === 323 &&
+ok('靜態：庫 326 張／trigger 38／credit 27', GIGS.length === 326 &&
   GIGS.filter(g => g && g.trigger).length === 38 &&
   GIGS.filter(g => g && g.trigger && g.trigger.kind === 'credit').length === 27);
 

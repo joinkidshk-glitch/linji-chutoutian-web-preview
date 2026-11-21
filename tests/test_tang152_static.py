@@ -1,3 +1,4 @@
+# v20a361 resync：index.html 淨 +93 行（P1 平衡修復）；2 個釘索引按 difflib 映射重寫，內容逐字核實純漂移。
 # v20a358 resync＋手術：soft 層鄧麗萍清理（DengLine IIFE＋WF5 R_tang_* 條目＋mock 底稿全刪，live 路徑零讀者核實見 NOTES_V20A358）。§3 由「留線」改寫做「刪線」斷言；§2 R_tang_ending 計數 1→0（載入過濾連同 mock 一齊刪）；§4 刪 push mock 過濾斷言；§6 push mock 改做「檔已刪」斷言；normaliseTangStub152 釘 lines()[14761]→[14348]、stub 呼叫行 lines()[14888]→[14473]（index.html 淨 −441 行：WF5 −59＠舊 L7466／DengLine IIFE −294＠舊 L9305／呼叫點散刪 −88；內容逐字核實純漂移）。
 # v20a356 resync：index.html 淨 +20 行（支線複檢 (a) 類修復：WF2 B0＋1／rom159 葉 crisis 分流＋12／enc158 synopsis＋1／lost_role＋4／顧哼歌＋1／鍾追問者＋1）；釘行按段 shift，內容逐字核實純漂移。
 # v20a352 resync：index.html 淨 +18 行（ending410EveNode 回憶過濾＠舊 L13117 後）；normaliseTangStub152／stub 呼叫兩釘各 +18，內容逐字核實純漂移。
@@ -137,8 +138,8 @@ ok('刪線：DengLine 程式碼引用清零（只剩註解提及，註解入面�
 # v20a235 resync：index.html 淨 −24 行（N17 前夕刪三選項）；3 個釘行按 difflib 映射重寫（normaliseTangStub152 15563→15539、stub 呼叫行 15686→15662；HELD 10006 唔郁），內容逐字核實純漂移。
 # v20a242 resync：index.html 淨 −144 行（刪 LAN 覆寫表；刪除區間舊 L6597–6735／7559–7579／15038–15045）；3 個釘行按段重算（HELD 9358→9212，−146；normaliseTangStub152 14926→14783，−143；stub 呼叫行 15049→14905，−144），內容逐字核實純漂移。
 # --- 4. 載入機制：stub 正規化（v20a358：push mock 過濾連 mock 一齊刪，見 §3） ---
-ok('機制：normaliseTangStub152 函數在位', lines()[14348].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行', lines()[14473].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位', lines()[14413].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行', lines()[14538].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)

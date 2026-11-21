@@ -115,9 +115,9 @@ if(DEBUG) console.log('lead91:', LEAD91.length, LEAD91.join(','));
 if(DEBUG) console.log('lead92:', LEAD92.length, LEAD92.join(','));
 
 /* ---- (g) 全池口徑：新庫按年真男主角數 ---- */
-ok('(g) 1990 年庫 normalize 後真男主角得 0 部（臨記／初級年，第一部男主角要到 1991）', LEAD90.length === 0, 'n=' + LEAD90.length);
-ok('(g) 1991 年庫得 8 部真男主角', LEAD91.length === 8, 'n=' + LEAD91.length + ' ' + LEAD91.join(','));
-ok('(g) 1992 年庫得 8 部真男主角', LEAD92.length === 8, 'n=' + LEAD92.length + ' ' + LEAD92.join(','));
+ok('(g) 1990 年庫 normalize 後真男主角得 2 部（v361：rec_110／rec_303 大碟主唱升 music_lead；影視男主角仍要到 1991）', LEAD90.length === 2, 'n=' + LEAD90.length);
+ok('(g) 1991 年庫得 14 部真男主角', LEAD91.length === 14, 'n=' + LEAD91.length + ' ' + LEAD91.join(',')); // v361：＋music_lead×2／variety_host_lead×2／ad_lead×2，8→14
+ok('(g) 1992 年庫得 14 部真男主角', LEAD92.length === 14, 'n=' + LEAD92.length + ' ' + LEAD92.join(',')); // v361：＋ad_lead×2／music_lead×2／variety_host_lead×2，8→14
 ok('(g) gig_1990_rec_108 係假男主角（label 男主角、roleScale mtv）',
   (() => { const g = gigsOfYear(1990).find(x => x.id === 'gig_1990_rec_108');
     return g && /男主角/.test(String(g.roleLabel || '')) && !/lead/.test(String(g.roleScale || '')); })());
