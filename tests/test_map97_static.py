@@ -17,10 +17,10 @@ def ok(name, cond):
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
 
 # --- (1) 換圖：MAP_IMG 改指 v6 資產檔 ---
-ok('MAP_IMG 指向 assets/hk_map_v9.jpg', 'const MAP_IMG = "assets/hk_map_v9.jpg";' in src)
+ok('MAP_IMG 指向 assets/hk_map_v10.jpg', 'const MAP_IMG = "assets/hk_map_v10.jpg";' in src)
 ok('MAP_IMG 唔再係內嵌 data URI', 'const MAP_IMG = "data:image' not in src)
-asset = root / 'assets' / 'hk_map_v9.jpg'
-ok('assets/hk_map_v9.jpg 存在', asset.exists())
+asset = root / 'assets' / 'hk_map_v10.jpg'
+ok('assets/hk_map_v10.jpg 存在', asset.exists())
 data = asset.read_bytes() if asset.exists() else b''
 ok('資產係 JPEG（FFD8 開頭）', data[:2] == b'\xff\xd8')
 ok('資產唔硬減（>500,000 bytes；實檔 q88＝579,000 級）', len(data) > 500000)
@@ -38,9 +38,9 @@ def jpeg_size(b):
         ln = struct.unpack('>H', b[i + 2:i + 4])[0]
         i += 2 + ln
     return None
-ok('資產尺寸＝1024×1536（v365 v9 生成圖）', jpeg_size(data) == (1024, 1536))
-ok('舊圖資產保留唔刪（hk_map.jpg／hk_map_full.jpg 仍在；hk_map_v6／v7／v8 已刪）',
-   not (root / 'assets' / 'hk_map_v6.jpg').exists() and not (root / 'assets' / 'hk_map_v7.jpg').exists() and not (root / 'assets' / 'hk_map_v8.jpg').exists() and
+ok('資產尺寸＝1024×1536（v366 v10 生成圖）', jpeg_size(data) == (1024, 1536))
+ok('舊圖資產保留唔刪（hk_map.jpg／hk_map_full.jpg 仍在；hk_map_v6／v7／v8／v9 已刪）',
+   not (root / 'assets' / 'hk_map_v6.jpg').exists() and not (root / 'assets' / 'hk_map_v7.jpg').exists() and not (root / 'assets' / 'hk_map_v8.jpg').exists() and not (root / 'assets' / 'hk_map_v9.jpg').exists() and
    (root / 'assets' / 'hk_map.jpg').exists() and (root / 'assets' / 'hk_map_full.jpg').exists())
 ok('fallback 仍指現存舊圖（MAP_IMG 未定義時唔會 404）', '"assets/hk_map.jpg"' in src)
 
@@ -53,18 +53,18 @@ ok('23 個地點名齊（舊 15 同 v96 一致＋v159 加 6 個約會新點＋v2
     '尖沙咀海傍', '山頂', '酒廊唱歌', '旺角戲院', '淺水灣', '啟德機場',
     '花園街成衣店', '阿偉屋企'})
 
-# --- (3) LOCS 座標（v365 按 v9 新圖地標重對） ---
+# --- (3) LOCS 座標（v366 按 v10 新圖金邊建築重對） ---
 EXP_LOCS = {
-    'film_lion': (49, 33), 'rec_hk': (45, 16), 'tvb_longmen': (77, 21), 'tvb_kowloon': (87, 32),
-    'tvb_harbour': (88, 11), 'film_cotton': (63, 28), 'film_harbour': (61, 63), 'ad_central': (25, 74),
-    'ad_adm': (68, 73), 'rec_wanchai': (77, 81), 'rec_star': (87, 74), 'cafe_cha': (60, 11),
-    'agency_ho': (48, 74), 'gift_shop': (22, 29), 'hospital': (88, 86)}
+    'film_lion': (56, 19), 'rec_hk': (40, 40), 'tvb_longmen': (23, 34), 'tvb_kowloon': (42, 30),
+    'tvb_harbour': (51, 37), 'film_cotton': (70, 17), 'film_harbour': (10, 81), 'ad_central': (40, 63),
+    'ad_adm': (17, 89), 'rec_wanchai': (56, 83), 'rec_star': (70, 81), 'cafe_cha': (29, 27),
+    'agency_ho': (29, 84), 'gift_shop': (24, 16), 'hospital': (86, 78)}
 locs_ok = True
 for lid, (ex, ey) in EXP_LOCS.items():
     line = next((ln for ln in src.split('\n') if f'id:"{lid}"' in ln), '')
     m = re.search(r'x:(\d+), y:(\d+)', line)
     if not m or (int(m.group(1)), int(m.group(2))) != (ex, ey): locs_ok = False
-ok('LOCS 舊 15 地點座標同 v365 新圖對位逐一一致（v159 總數 15→21；v265 總數 21→23）', locs_ok and len(re.findall(r'\{ id:"', src.split('const NPCS')[0].split('const LOCS')[1])) == 23)
+ok('LOCS 舊 15 地點座標同 v366 新圖對位逐一一致（v159 總數 15→21；v265 總數 21→23）', locs_ok and len(re.findall(r'\{ id:"', src.split('const NPCS')[0].split('const LOCS')[1])) == 23)
 
 # --- (4) 地區名細字層（v20a137：用戶拍板大地圖唔要地區名，12 個已刪；淨低會場標籤） ---
 ok('地區層容器存在（map-districts97，淨低會場標籤）', 'id="map-districts97"' in src)

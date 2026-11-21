@@ -26,9 +26,9 @@ def seg(start, end=None):
 
 # --- 基線不變 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('MAP_IMG 指 assets/hk_map_v9.jpg（v365 換圖，唔裁源圖）', 'const MAP_IMG = "assets/hk_map_v9.jpg";' in src)
-asset = root / 'assets' / 'hk_map_v9.jpg'
-ok('assets/hk_map_v9.jpg 存在', asset.exists())
+ok('MAP_IMG 指 assets/hk_map_v10.jpg（v366 換圖，唔裁源圖）', 'const MAP_IMG = "assets/hk_map_v10.jpg";' in src)
+asset = root / 'assets' / 'hk_map_v10.jpg'
+ok('assets/hk_map_v10.jpg 存在', asset.exists())
 data = asset.read_bytes() if asset.exists() else b''
 def jpeg_size(b):
     i = 2
@@ -43,7 +43,7 @@ def jpeg_size(b):
         ln = struct.unpack('>H', b[i + 2:i + 4])[0]
         i += 2 + ln
     return None
-ok('資產尺寸＝1024×1536（v364 v8 原圖，冇裁過）', jpeg_size(data) == (1024, 1536))
+ok('資產尺寸＝1024×1536（v366 v10 生成圖，冇裁過）', jpeg_size(data) == (1024, 1536))
 ok('冇裁圖資產（唔裁源圖；v6 已刪）', not (root / 'assets' / 'hk_map_v6_crop137.jpg').exists()
    and not (root / 'assets' / 'hk_map_v6.jpg').exists())
 
@@ -93,16 +93,16 @@ ok('23 個地點名齊（舊 15＋v159 加 6 個約會新點＋v265 加 2 新點
     '尖沙咀海傍', '山頂', '酒廊唱歌', '旺角戲院', '淺水灣', '啟德機場',
     '花園街成衣店', '阿偉屋企'})
 EXP_LOCS = {
-    'film_lion': (49, 33), 'rec_hk': (45, 16), 'tvb_longmen': (77, 21), 'tvb_kowloon': (87, 32),
-    'tvb_harbour': (88, 11), 'film_cotton': (63, 28), 'film_harbour': (61, 63), 'ad_central': (25, 74),
-    'ad_adm': (68, 73), 'rec_wanchai': (77, 81), 'rec_star': (87, 74), 'cafe_cha': (60, 11),
-    'agency_ho': (48, 74), 'gift_shop': (22, 29), 'hospital': (88, 86)}
+    'film_lion': (56, 19), 'rec_hk': (40, 40), 'tvb_longmen': (23, 34), 'tvb_kowloon': (42, 30),
+    'tvb_harbour': (51, 37), 'film_cotton': (70, 17), 'film_harbour': (10, 81), 'ad_central': (40, 63),
+    'ad_adm': (17, 89), 'rec_wanchai': (56, 83), 'rec_star': (70, 81), 'cafe_cha': (29, 27),
+    'agency_ho': (29, 84), 'gift_shop': (24, 16), 'hospital': (86, 78)}
 locs_ok = True
 for lid, (ex, ey) in EXP_LOCS.items():
     line = next((ln for ln in src.split('\n') if f'id:"{lid}"' in ln), '')
     m = re.search(r'x:(\d+), y:(\d+)', line)
     if not m or (int(m.group(1)), int(m.group(2))) != (ex, ey): locs_ok = False
-ok('LOCS 舊 15 地點座標同 v365 新圖對位一致（圖 % 係 source of truth）', locs_ok)
+ok('LOCS 舊 15 地點座標同 v366 新圖對位一致（圖 % 係 source of truth）', locs_ok)
 ok('熱區仍 52px（v43 定案唔郁）', 'width:52px !important' in v43 and 'height:52px !important' in v43)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')

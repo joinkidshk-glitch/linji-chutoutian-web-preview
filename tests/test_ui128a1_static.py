@@ -16,8 +16,8 @@ def ok(name, cond):
 # 標籤座標微調（§7 建議稿；金禧 3% 會因 translate(-50%,-50%) 出界，實測改 11%）
 # v20a137 MAP137：用戶拍板大地圖唔要地區名，12 個地區 div 已刪——薄扶林／灣仔／銅鑼灣
 # 三個斷言由「標籤在」反轉做「地區 div 已刪」；星河地點名＋金禧會場標籤保留。
-ok('標籤 星河電視台', 'left:77%;top:calc(21% - 44px)">星河電視台' in html)
-ok('標籤 金禧大酒店', 'left:33%;top:37%">金禧大酒店' in html)
+ok('標籤 星河電視台', 'left:23%;top:calc(34% - 44px)">星河電視台' in html)
+ok('標籤 金禧大酒店', 'left:86%;top:24%">金禧大酒店' in html)
 ok('標籤 薄扶林地區名已刪（v137）', 'left:34%;top:50%">薄扶林' not in html)
 ok('標籤 灣仔地區名已刪（v137）', 'left:56%;top:68%">灣仔' not in html)
 ok('標籤 銅鑼灣地區名已刪（v137）', 'right:6%;top:66%">銅鑼灣' not in html)

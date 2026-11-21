@@ -31,10 +31,10 @@ entries = re.findall(r'\{ id:"(\w+)",(.*?)\},', locs_seg, re.S)
 ids = [e[0] for e in entries]
 ok('LOCS 23 個（15＋6＋2）', len(ids) == 23)
 EXP15 = {
-    'film_lion': (49, 33), 'rec_hk': (45, 16), 'tvb_longmen': (77, 21), 'tvb_kowloon': (87, 32),
-    'tvb_harbour': (88, 11), 'film_cotton': (63, 28), 'film_harbour': (61, 63), 'ad_central': (25, 74),
-    'ad_adm': (68, 73), 'rec_wanchai': (77, 81), 'rec_star': (87, 74), 'cafe_cha': (60, 11),
-    'agency_ho': (48, 74), 'gift_shop': (22, 29), 'hospital': (88, 86)}
+    'film_lion': (56, 19), 'rec_hk': (40, 40), 'tvb_longmen': (23, 34), 'tvb_kowloon': (42, 30),
+    'tvb_harbour': (51, 37), 'film_cotton': (70, 17), 'film_harbour': (10, 81), 'ad_central': (40, 63),
+    'ad_adm': (17, 89), 'rec_wanchai': (56, 83), 'rec_star': (70, 81), 'cafe_cha': (29, 27),
+    'agency_ho': (29, 84), 'gift_shop': (24, 16), 'hospital': (86, 78)}
 def fields(block):
     out = {}
     for k in ('name', 'area', 'type', 'region', 'desc', 'layer'):
@@ -48,16 +48,16 @@ by_id = {e[0]: fields(e[1]) for e in entries}
 ok('15 個原有地點 id 齊', all(k in by_id for k in EXP15))
 locs15_ok = all(by_id.get(k, {}).get('x') == v[0] and by_id.get(k, {}).get('y') == v[1]
                 for k, v in EXP15.items())
-ok('15 個原有地點座標同 v365 新圖對位一致', locs15_ok)
+ok('15 個原有地點座標同 v366 新圖對位一致', locs15_ok)
 ok('15 個原有地點唔加 layer 欄（預設片場層）',
    all('layer' not in by_id.get(k, {}) for k in EXP15))
 EXP6 = {
-    'date_harbour': ('尖沙咀海傍', '尖沙咀', 'kln', 16, 43),
-    'date_peak': ('山頂', '山頂', 'island', 42, 54),
-    'date_lounge': ('酒廊唱歌', '中環', 'island', 58, 79),
-    'date_cinema': ('旺角戲院', '旺角', 'kln', 40, 10),
-    'date_beach': ('淺水灣', '淺水灣', 'island', 50, 89),
-    'date_airport': ('啟德機場', '九龍城', 'kln', 78, 48)}
+    'date_harbour': ('尖沙咀海傍', '尖沙咀', 'kln', 31, 42),
+    'date_peak': ('山頂', '山頂', 'island', 90, 63),
+    'date_lounge': ('酒廊唱歌', '中環', 'island', 43, 84),
+    'date_cinema': ('旺角戲院', '旺角', 'kln', 40, 8),
+    'date_beach': ('淺水灣', '淺水灣', 'island', 85, 96),
+    'date_airport': ('啟德機場', '九龍城', 'kln', 82, 35)}
 ok('6 個新點齊', all(k in by_id for k in EXP6))
 new_ok = True
 for k, (nm, area, region, x, y) in EXP6.items():
