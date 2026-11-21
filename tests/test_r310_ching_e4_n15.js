@@ -6,7 +6,7 @@
 //   (D) 無旗＋揀撐練 → 原回應；紅咗先算嗰邊任何旗都唔變
 //   (E) 接駁：label／授旗／GRANT229／fav 唔郁；變體唔寫入 DLG 定義（重播無旗回復原樣）
 //   (F) 舊檔：已有 N15 旗嘅舊 save 唔 crash，照播變體
-//   (S) 靜態：開場 8 句、兩選擇 label、e4 註冊閘、after_train／after_polish 閘唔郁；gigs_new.json 仍係 326 張
+//   (S) 靜態：開場 8 句、兩選擇 label、e4 註冊閘、after_train／after_polish 閘唔郁；gigs_new.json 仍係 330 張
 // 用法：node tests/test_r310_ching_e4_n15.js [path-to-index.html]
 const fs = require('fs');
 const path = require('path');
@@ -250,7 +250,7 @@ ok('S ching_after_train／after_polish 閘唔郁（N15 做完＋對應旗）',
   })());
 ok('S ching_e4 抉擇後對白只喺 buildScript 分流，唔係開場插入（開場無信任句／頂返句）',
   !OPENING_LINES.some(t => t === TRAIN_TRUST || t === POLISH_RETORT));
-ok('S gigs_new.json 仍係 326 張', GIGS_ARR.length === 326, 'count=' + GIGS_ARR.length);
+ok('S gigs_new.json 仍係 330 張', GIGS_ARR.length === 330, 'count=' + GIGS_ARR.length);
 
 if(fails.length){ console.log('\nFAILURES: ' + fails.length); process.exit(1); }
 console.log('\nALL PASS');

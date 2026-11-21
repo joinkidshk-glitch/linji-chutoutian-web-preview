@@ -2,7 +2,7 @@
 //   (A) 10 張 singer／singerGender 係 null，其他欄（title／pay／tier／season／year／category）唔郁
 //   (B) 4 張新 gig 在位、必填欄齊、category 作品、歌手正確、玩家唔係主唱（配唱／MV 男主角）
 //   (C) awards63Fellows 口徑：1990／1991／1992 男歌手格各返 3 個；女歌手格唔郁；新人獎各 3 個男女齊
-//   (D) 庫總數 326 張、id 唯一、按年 130／105／87；1990 冬 41 張（v324＋A）；1990 高級仍 1 張 film_304
+//   (D) 庫總數 330 張、id 唯一、按年 130／105／87；1990 冬 41 張（v324＋A）；1990 高級仍 1 張 film_304
 //   (E) 魏詠男唔入任何唱片格；新名唔含年份數字；新作品名唔撞現庫
 //   註：brief 原擬補 3 張（1990×2＋1991×1），live 覆核發現 1992 男歌手格實際係 3→2——
 //   程天諾（ching_tinlok）唔入 POSTER59_STAR_IDS，awards63HasSprite 濾走佢，唔計數；
@@ -146,12 +146,12 @@ ok('C 1992 女歌手格唔郁（藍若曦＋蘇芷茵＋韓秀婷）',
 });
 
 /* ---------- D：總數／按年／冬季／高級 ---------- */
-ok('D 庫總數 326 張、id 唯一', gigs.length === 326 && new Set(gigs.map(g=>g.id)).size === 326,
+ok('D 庫總數 330 張、id 唯一', gigs.length === 330 && new Set(gigs.map(g=>g.id)).size === 330,
    'n=' + gigs.length);
-ok('D 按年 1990:130／1991:108／1992:88',
+ok('D 按年 1990:130／1991:110／1992:90',
    gigs.filter(g=>g.year === 1990).length === 130 &&
-   gigs.filter(g=>g.year === 1991).length === 108 &&
-   gigs.filter(g=>g.year === 1992).length === 88,
+   gigs.filter(g=>g.year === 1991).length === 110 &&
+   gigs.filter(g=>g.year === 1992).length === 90,
    [1990, 1991, 1992].map(y=>gigs.filter(g=>g.year === y).length).join('/'));
 const w90 = gigs.filter(g=>g.year === 1990 && g.season === '冬');
 ok('D 1990 冬 41 張', w90.length === 41, 'n=' + w90.length);

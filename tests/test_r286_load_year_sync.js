@@ -86,8 +86,8 @@ function buildWire(yearActive){
 const gigs1990 = gigList.filter(g => Number(g.year) === 1990);
 const gigs1991 = gigList.filter(g => Number(g.year) === 1991);
 const gigs1992 = gigList.filter(g => Number(g.year) === 1992);
-ok('B1 庫 counts：1990:130／1991:108／1992:88，共 326',
-  gigs1990.length === 130 && gigs1991.length === 108 && gigs1992.length === 88 && gigList.length === 326);
+ok('B1 庫 counts：1990:130／1991:110／1992:90，共 330',
+  gigs1990.length === 130 && gigs1991.length === 110 && gigs1992.length === 90 && gigList.length === 330);
 S = { dayIndex: 651 };
 ok('B2 dateObj：dayIndex 651 → 1991 年；1000 → 1992 年；100 → 1990 年',
   dateObj().getFullYear() === 1991 &&
@@ -102,8 +102,8 @@ mergeEntryCalls = 0; winterCalls = 0;
 syncGigsForCalendarYear(false);
 const has102 = GIGS.some(g => g && g.id === 'gig_1991_film_102');
 const f102 = GIGS.find(g => g && g.id === 'gig_1991_film_102');
-ok('B3 1991 load：sync 後 GIGS 108 張、yearActive 1991、含 film_102、冇 1990 年通告',
-  GIGS.length === 108 && STORY_WIRE.gigsYearActive === 1991 && has102 &&
+ok('B3 1991 load：sync 後 GIGS 110 張、yearActive 1991、含 film_102、冇 1990 年通告',
+  GIGS.length === 110 && STORY_WIRE.gigsYearActive === 1991 && has102 &&
   !GIGS.some(g => g && Number(g.year) === 1990));
 ok('B4 1991 load 後 film_102 內容啱：《霓虹夜影》男主角／秋／film_harbour／pay [4416,5184]／req 演技 130 體能 90',
   !!f102 && f102.title === '《霓虹夜影》男主角' && f102.season === '秋' &&
@@ -117,8 +117,8 @@ S = { dayIndex: 1000 };
 GIGS = gigs1990.map(g => Object.assign({}, g));
 STORY_WIRE = buildWire(1990);
 syncGigsForCalendarYear(false);
-ok('B6 1992 load：sync 後 GIGS 88 張、yearActive 1992、含 film_114《海角歸人》、全部 1992 年',
-  GIGS.length === 88 && STORY_WIRE.gigsYearActive === 1992 &&
+ok('B6 1992 load：sync 後 GIGS 90 張、yearActive 1992、含 film_114《海角歸人》、全部 1992 年',
+  GIGS.length === 90 && STORY_WIRE.gigsYearActive === 1992 &&
   GIGS.some(g => g && g.id === 'gig_1992_film_114') &&
   !GIGS.some(g => g && Number(g.year) !== 1992));
 
@@ -141,7 +141,7 @@ const ref91 = GIGS;
 STORY_WIRE = buildWire(1991);
 syncGigsForCalendarYear(false);
 ok('B8 已同步 1991：sync(false) early return，同一陣列',
-  GIGS === ref91 && GIGS.length === 108 && STORY_WIRE.gigsYearActive === 1991);
+  GIGS === ref91 && GIGS.length === 110 && STORY_WIRE.gigsYearActive === 1991);
 
 console.log('\n' + (fails.length ? ('FAILED: ' + fails.length + ' — ' + fails.join('；')) : 'ALL PASS'));
 process.exit(fails.length ? 1 : 0);

@@ -103,7 +103,7 @@ const NGAI_CREDIT = { id: 'credit_enc83_ngai_patron', debtor: '魏詠男', title
 // ---------- (0) 靜態結構 ----------
 const f207 = gigById['gig_1992_film_207'];
 const f212 = gigById['gig_1991_film_212'];
-ok('(0) gig_count_326', allGigs.length === 326 && new Set(allGigs.map(g=>g.id)).size === 326, 'n=' + allGigs.length);
+ok('(0) gig_count_330', allGigs.length === 330 && new Set(allGigs.map(g=>g.id)).size === 330, 'n=' + allGigs.length);
 ok('(0) trig_38_credit_27', allGigs.filter(g=>g.trigger && g.trigger.kind).length === 38 && allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 27, 'credit 27（BR89 19＋通用 8）');
 ok('(0) f207_fields_match_template', !!f207 && f207.title === '《虎嘯龍吟》江湖拳手阿虎' && f207.type === '電影' && f207.tier === '高級' && f207.category === '作品' && f207.genre === '動作' && f207.workTitle === '虎嘯龍吟' && f207.roleLabel === '男主角' && f207.loc === 'film_harbour' && f207.director === '導演' && f207.year === 1992 && f207.season === '春' && f207.days === 24 && f207.roleScale === 'film_lead_big' && JSON.stringify(f207.req) === '{"acting":130,"stamina":90}' && f207.hard === 0.58 && JSON.stringify(f207.pay) === '[4416,5184]' && JSON.stringify(f207.fame) === '[35,55]' && JSON.stringify(f207.cast) === '{"leadM":null,"leadF":"ngai_wingnaam","supportM":"mak_zhendong","supportF":"wu_meilam"}' && (f207.discoverNote || '').indexOf('魏詠男引薦') >= 0 && !!f207.posterBrief, '數字照抄標板 film_212');
 ok('(0) f207_tag_trigger', !!f207 && JSON.stringify(f207.storyKeys) === '["ngai_wingnaam"]' && f207.trigger && f207.trigger.kind === 'credit' && f207.trigger.creditId === 'credit_enc83_ngai_patron' && f207.trigger.creditOwner === '魏詠男', 'storyKeys＋trigger 齊');

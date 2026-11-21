@@ -170,8 +170,8 @@ function baseSave(over){
   ok('B2 prefKind 最愛回 favorite（唔再併入 liked）', GS.prefKind('mei','gift_thermos') === 'favorite');
   ok('B2 prefKind 喜歡照回 liked', GS.prefKind('mei','gift_coffee_beans') === 'liked' && GS.prefKind('hiu','gift_thermos') === 'liked');
   ok('B2 prefKind 唔鍾意／普通不變', GS.prefKind('mei','gift_perfume_sample') === 'dislike' && GS.prefKind('hiu','gift_coffee_beans') === 'neutral');
-  ok('B2 calcDelta 最愛同喜歡同數 +2（唔跌返 +1）',
-    GS.giveGift && (function(){ const r = GS.giveGift('mei','gift_thermos'); return r.ok && r.delta === 2; })());
+  ok('B2 calcDelta 最愛 +3（v372 拉開，唔再同喜歡同數）',
+    GS.giveGift && (function(){ const r = GS.giveGift('mei','gift_thermos'); return r.ok && r.delta === 3; })());
   S = baseSave({ inventory: { gift_thermos: 2 }, giftMeta: { lastGiveDay: {}, weekGiftGain: {}, givenCount: {} }, story: { done: {}, rel: {} } });
   ok('B2 reactionEntry 最愛查到 :liked 句（唔係 neutral fallback）',
     (function(){ const e = GS.reactionEntry('mei','gift_thermos','favorite'); return !!e && e.lines[0].indexOf('保溫瓶啱用') >= 0; })());

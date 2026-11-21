@@ -360,7 +360,7 @@ ok('N15：N14 未做唔出現', !openIds().includes('N15'));
 }
 
 /* ---- N16 ---- */
-loadGame(baseSave({ dayIndex: dayIndexOf(1992, 12, 15) }));
+loadGame(baseSave({ dayIndex: dayIndexOf(1993, 2, 20) /* v372：harness epoch 1990-03-07，weekMin 153 要 dayIndex>=1064，1992-12-15 得 1000 */ }));
 ok('N16：1992 冬 → offer 喺 film_cotton', !!openRow('N16') && openRow('N16').locId === 'film_cotton');
 loadGame(baseSave({ dayIndex: dayIndexOf(1992, 10, 15) }));
 ok('N16：1992 秋唔出現', !openIds().includes('N16'));

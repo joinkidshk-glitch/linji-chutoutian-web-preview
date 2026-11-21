@@ -1,8 +1,8 @@
 // v20a229 B3 換庫：新庫做唯一來源・pack 測試
 // 合約（AUDIT229 §1／§2／§8；SPEC §2／§3；DECISIONS D-1～D-15）：
-//   P0 新庫 326 張、id 唯一、全部新格式 gig_1990|1991|1992_<媒介>_<三位數字>、年份只係 1990–1992（v284：＋film_114；v291：＋13 張冬季 gig；v307：＋4 張真唱片 gig；v319：＋1 張彭引薦 gig variety_106；v324：＋15 張分布缺口 gig；v337：＋1 張魏引薦 gig film_207；v361：＋3 張擔正級 gig ad_109／ad_110／variety_110）
-//   P1 五級分布 臨記 28／初級 177／中級 76／高級 23／稀有 22（v284：tv_201 高級→中級＋film_114 中級；v291：＋臨記 1／初級 8／中級 3／高級 1；v307：＋初級 2／中級 2；v319：＋中級 1；v324：＋初級 15；v337：＋高級 1；v361：＋高級 2／稀有 1）
-//   P2 category 作品 199／臨記通告 120／補拍通告 7（v284：＋film_114 作品；v291：＋作品 10／臨記通告 3；v307：＋作品 4；v319：＋作品 1；v324：＋作品 15；v337：＋作品 1；v361：＋作品 3）
+//   P0 新庫 330 張、id 唯一、全部新格式 gig_1990|1991|1992_<媒介>_<三位數字>、年份只係 1990–1992（v284：＋film_114；v291：＋13 張冬季 gig；v307：＋4 張真唱片 gig；v319：＋1 張彭引薦 gig variety_106；v324：＋15 張分布缺口 gig；v337：＋1 張魏引薦 gig film_207；v361：＋3 張擔正級 gig ad_109／ad_110／variety_110）
+//   P1 五級分布 臨記 28／初級 177／中級 76／高級 26／稀有 23（v284：tv_201 高級→中級＋film_114 中級；v291：＋臨記 1／初級 8／中級 3／高級 1；v307：＋初級 2／中級 2；v319：＋中級 1；v324：＋初級 15；v337：＋高級 1；v361：＋高級 2／稀有 1）
+//   P2 category 作品 203／臨記通告 120／補拍通告 7（v284：＋film_114 作品；v291：＋作品 10／臨記通告 3；v307：＋作品 4；v319：＋作品 1；v324：＋作品 15；v337：＋作品 1；v361：＋作品 3）
 //   P3 1990 年高級（高級／稀有）1 張（v291：＋film_304 高級，Q3 填補缺口）
 //   P4 年份唔 double-shift：normalize 前後＋兩次 normalize，年份全部唔郁（真 normalizeGigRecord）
 //   P5 開局 1990 板面有臨記／初級通告：entryGigPool229 返 12 張臨記、全部合開局數值、冬季有貨
@@ -52,7 +52,7 @@ function extractConst(name){
 /* ---------- P0–P3／P6–P8：pack 靜態 ---------- */
 const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gigs_new.json'), 'utf8'));
 const gigs = pack.gigs || [];
-ok('P0 326 張、id 唯一', gigs.length === 326 && new Set(gigs.map(g=>g.id)).size === 326, 'n=' + gigs.length); // v361：＋3 張擔正級通告，323→326
+ok('P0 330 張、id 唯一', gigs.length === 330 && new Set(gigs.map(g=>g.id)).size === 330, 'n=' + gigs.length); // v361：＋3 張擔正級通告，323→326；v372：＋4 張 ad/host 擔正（ad_111／ad_112／variety_107×2），326→330
 const ID_RE = /^gig_(1990|1991|1992)_[a-z]+_\d{3}$/;
 const badId = gigs.filter(g=>!ID_RE.test(g.id || ''));
 ok('P0 全部 id 係新格式', badId.length === 0, badId.slice(0, 3).map(g=>g.id).join(','));
@@ -60,21 +60,21 @@ const badYear = gigs.filter(g=>[1990, 1991, 1992].indexOf(g.year) < 0);
 ok('P0 年份只係 1990–1992', badYear.length === 0, badYear.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 const tierCount = {};
 gigs.forEach(g=>{ tierCount[g.tier] = (tierCount[g.tier] || 0) + 1; });
-ok('P1 五級分布 28／177／76／23／22',
+ok('P1 五級分布 28／177／76／26／23',
    tierCount['臨記'] === 28 && tierCount['初級'] === 177 && tierCount['中級'] === 76 &&
-   tierCount['高級'] === 23 && tierCount['稀有'] === 22,
+   tierCount['高級'] === 26 && tierCount['稀有'] === 23,
    JSON.stringify(tierCount)); // v361：＋高級 2／稀有 1
 const catCount = {};
 gigs.forEach(g=>{ catCount[g.category] = (catCount[g.category] || 0) + 1; });
-ok('P2 category 作品 199／臨記通告 120／補拍通告 7',
-   catCount['作品'] === 199 && catCount['臨記通告'] === 120 && catCount['補拍通告'] === 7,
+ok('P2 category 作品 203／臨記通告 120／補拍通告 7',
+   catCount['作品'] === 203 && catCount['臨記通告'] === 120 && catCount['補拍通告'] === 7,
    JSON.stringify(catCount)); // v361：＋3 張作品
 const high1990 = gigs.filter(g=>g.year === 1990 && (g.tier === '高級' || g.tier === '稀有'));
 ok('P3 1990 年高級 1 張', high1990.length === 1, high1990.slice(0, 3).map(g=>g.id).join(','));
 const yearCount = {};
 gigs.forEach(g=>{ yearCount[g.year] = (yearCount[g.year] || 0) + 1; });
-ok('P0 每年張數 1990／1991／1992 = 130／108／88',
-   yearCount[1990] === 130 && yearCount[1991] === 108 && yearCount[1992] === 88,
+ok('P0 每年張數 1990／1991／1992 = 130／110／90',
+   yearCount[1990] === 130 && yearCount[1991] === 110 && yearCount[1992] === 90,
    JSON.stringify(yearCount)); // v361：1991 ＋3 張
 const LOCS_11 = ['ad_adm', 'ad_central', 'film_cotton', 'film_harbour', 'film_lion',
   'rec_hk', 'rec_star', 'rec_wanchai', 'tvb_harbour', 'tvb_kowloon', 'tvb_longmen'];
@@ -97,20 +97,20 @@ ok('P8 leadStarId 已退役（新庫 0 張有）', withStar.length === 0, 'n=' +
 const POSTER59_STAR_IDS = (()=>{ const s = extractConst('POSTER59_STAR_IDS') || ''; const o = {}; const m = s.match(/"([^"]+)":\s*"([^"]+)"/g) || []; m.forEach(kv=>{ const mm = kv.match(/"([^"]+)":\s*"([^"]+)"/); if(mm) o[mm[1]] = mm[2]; }); return o; })();
 const knownStars = new Set(Object.values(POSTER59_STAR_IDS).filter(Boolean).concat(['ching_tinlok', 'pang_siuki']));
 const withCast = gigs.filter(g=>g.cast && ['leadM', 'leadF', 'supportM', 'supportF'].every(k=>k in g.cast));
-ok('P8 256 張有 cast 四格', withCast.length === 256, 'n=' + withCast.length); // v361：＋2 張廣告 cast
+ok('P8 258 張有 cast 四格', withCast.length === 258, 'n=' + withCast.length); // v361：＋2 張廣告 cast
 const badCastStar = [];
 withCast.forEach(g=>{ ['leadM', 'leadF', 'supportM', 'supportF'].forEach(k=>{ const v = g.cast[k]; if(v && !knownStars.has(v)) badCastStar.push(g.id + ':' + k + '=' + v); }); });
 ok('P8 全部 cast 星 id 係已知星 id', badCastStar.length === 0, badCastStar.slice(0, 3).join(','));
 const avWorks = gigs.filter(g=>g.category === '作品' && ['電影', '電視劇', '廣告'].indexOf(g.type) >= 0);
 const avNoCast = avWorks.filter(g=>!g.cast);
-ok('P8 影視廣告作品 136 張全部有 cast', avWorks.length === 136 && avNoCast.length === 0,
+ok('P8 影視廣告作品 138 張全部有 cast', avWorks.length === 138 && avNoCast.length === 0,
    'n=' + avWorks.length + ' noCast=' + avNoCast.slice(0, 3).map(g=>g.id).join(','));
 const rvWorks = gigs.filter(g=>g.category === '作品' && ['唱片通告', '綜藝'].indexOf(g.type) >= 0);
-ok('P8 唱片／綜藝作品 63 張無 cast（cast 只覆蓋影視廣告）',
-   rvWorks.length === 63 && rvWorks.every(g=>!g.cast), 'n=' + rvWorks.length); // v361：＋1 張綜藝
+ok('P8 唱片／綜藝作品 65 張無 cast（cast 只覆蓋影視廣告）',
+   rvWorks.length === 65 && rvWorks.every(g=>!g.cast), 'n=' + rvWorks.length); // v361：＋1 張綜藝
 const works = gigs.filter(g=>g.category === '作品');
 const noBrief = works.filter(g=>!g.posterBrief);
-ok('P8 199 張作品全部有 posterBrief', noBrief.length === 0,
+ok('P8 203 張作品全部有 posterBrief', noBrief.length === 0,
    noBrief.slice(0, 3).map(g=>g.id).join(','));
 
 /* ---------- sandbox：真 normalizeGigRecord＋entryGigPool229 ---------- */

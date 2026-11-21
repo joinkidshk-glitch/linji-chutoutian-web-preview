@@ -64,8 +64,8 @@ const shapeBad = trig.filter(g=>{
 });
 ok('T0 七種 kind 形狀齊（必填欄全部有）', shapeBad.length===0, shapeBad.slice(0,3).map(g=>g.id).join(','));
 const rareGigs = gigs.filter(g=>g.tier==='稀有');
-ok('T0 稀有級 22 張、其中 6 張有 trigger（稀有≠觸發閘，新庫真相）',
-  rareGigs.length===22 && rareGigs.filter(g=>g.trigger && g.trigger.kind).length===6, // v361：＋稀有 ad_110，21→22
+ok('T0 稀有級 23 張、其中 6 張有 trigger（稀有≠觸發閘，新庫真相）',
+  rareGigs.length===23 && rareGigs.filter(g=>g.trigger && g.trigger.kind).length===6, // v361：＋稀有 ad_110，21→22；v372：＋稀有 ad_112，22→23
   'rare=' + rareGigs.length + ' withTrig=' + rareGigs.filter(g=>g.trigger && g.trigger.kind).length);
 
 /* ---------- eval 沙盒：trigger 模組 ---------- */

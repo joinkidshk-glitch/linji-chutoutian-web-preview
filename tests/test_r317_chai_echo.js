@@ -100,7 +100,7 @@ const CHAI_CREDIT = { id: 'credit_enc83_chai_patron', debtor: '齊鎮海', title
 const tv114 = gigById['gig_1991_tv_114'];
 const film206 = gigById['gig_1992_film_206'];
 const tv210 = gigById['gig_1991_tv_210'];
-ok('(0) gig_count_326', allGigs.length === 326 && new Set(allGigs.map(g=>g.id)).size === 326, 'n=' + allGigs.length);
+ok('(0) gig_count_330', allGigs.length === 330 && new Set(allGigs.map(g=>g.id)).size === 330, 'n=' + allGigs.length);
 ok('(0) trig_38_credit_27', allGigs.filter(g=>g.trigger && g.trigger.kind).length === 38 && allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 27, 'credit 27（BR89 19＋通用 8）');
 ok('(0) tv114_tag_trigger', !!tv114 && JSON.stringify(tv114.storyKeys) === '["chai_zanhoi"]' && tv114.trigger && tv114.trigger.kind === 'credit' && tv114.trigger.creditId === 'credit_enc83_chai_patron' && tv114.trigger.creditOwner === '齊鎮海', 'storyKeys＋trigger 齊');
 ok('(0) tv114_other_fields_unchanged', !!tv114 && tv114.title === '《亂世將軍傳》男主角' && tv114.tier === '高級' && tv114.type === '電視劇' && tv114.year === 1991 && tv114.season === '秋' && tv114.days === 30 && JSON.stringify(tv114.pay) === '[6000,7200]' && tv114.genre === '歷史傳記' && tv114.roleLabel === '男主角' && tv114.cast && tv114.cast.leadM === null && tv114.cast.leadF === 'chung_choning' && tv114.cast.supportM === 'chai_zanhoi' && tv114.cast.supportF === 'kong_siying', 'title／tier／year／season／days／pay／genre／cast 唔郁');

@@ -56,15 +56,15 @@ ok('A10_extract', parts.every(Boolean));
 if(parts.every(Boolean)){
   eval(parts.join('\n'));
   const gigs = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/gigs_new.json'), 'utf8')).gigs;
-  ok('A10_newlib_326', gigs.length===326, 'n='+gigs.length); // v361：＋3 張擔正級通告，323→326
+  ok('A10_newlib_330', gigs.length===330, 'n='+gigs.length); // v361：＋3 張擔正級通告，323→326；v372：＋4 張 ad/host 擔正（ad_111／ad_112／variety_107×2），326→330
   // 逐張驗：category 作品→named（替身守門 9 張例外→base），其餘→base
   const isStunt = g=>((g.roleLabel||'').indexOf('替身')>=0 || (g.title||'').replace(/^《[^》]*》/, '').indexOf('替身')>=0);
   const expectClass = g=>((g.category==='作品' && !isStunt(g)) ? 'named' : 'base');
   const bad = gigs.filter(g=>press94RoleClass(g)!==expectClass(g));
-  ok('A10_all326_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
-  ok('A10_named_190_base_136',
-    gigs.filter(g=>press94RoleClass(g)==='named').length===190 &&
-    gigs.filter(g=>press94RoleClass(g)==='base').length===136); // v361：＋3 張作品→named，187→190
+  ok('A10_all330_category', bad.length===0, bad.slice(0,5).map(g=>g.id+':'+g.category+'->'+press94RoleClass(g)).join(','));
+  ok('A10_named_194_base_136',
+    gigs.filter(g=>press94RoleClass(g)==='named').length===194 &&
+    gigs.filter(g=>press94RoleClass(g)==='base').length===136); // v361：＋3 張作品→named，187→190；v372：＋4 張作品→named，190→194
   const stuntWorks = gigs.filter(g=>g.category==='作品' && isStunt(g));
   ok('A10_stunt_gate_9', stuntWorks.length===9 && stuntWorks.every(g=>press94RoleClass(g)==='base'),
     stuntWorks.map(g=>g.id).join(','));

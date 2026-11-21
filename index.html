@@ -127,6 +127,8 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
 }
 /* v20a34 引導包：通告卡差額／頁面白話說明／債來歷／雙軌解釋／壓力後果 */
 .gt-gap{margin-top:4px;font-size:.74rem;font-weight:700;color:#8a5a12}
+.gt-chance{margin-top:4px;font-size:.74rem;font-weight:700;color:#6b5a48}
+.gt-chance b{color:#8a5a20}
 .gt-closest{display:inline-block;margin-left:6px;padding:0 6px;border-radius:999px;background:#C9A227;color:#1A1410;font-size:.68rem;font-weight:800}
 .req-gap{font-weight:700;color:#8a5a12}
 .pane-intro{margin:0 0 8px;font-size:.78rem;line-height:1.5;color:#5a4328;background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.35);border-radius:8px;padding:6px 8px}
@@ -739,6 +741,11 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .work-name59{font-weight:800;color:var(--navy);font-size:.92rem;line-height:1.35}
 .work-meta59{font-size:.76rem;color:#6b4e2e;font-weight:700;margin-top:2px;line-height:1.4}
 .work-meta59.dim{color:var(--muted-ink);font-weight:600}
+/* v372：作品卡改 <button>（撳卡開詳情）——重置按鈕預設，保留紙卡外觀；span 行改 block。 */
+button.work-card59{display:block;width:100%;font:inherit;text-align:left;cursor:pointer;color:inherit}
+button.work-card59:focus-visible{outline:2px solid #84402e;outline-offset:2px}
+button.work-card59 .work-name59,button.work-card59 .work-meta59{display:block}
+.work-open59{display:block;text-align:right;font-size:.72rem;font-weight:700;color:#8a5a20;margin-top:4px}
 .works-note59{font-size:.78rem;color:var(--muted-ink);line-height:1.5;margin:12px 2px 2px}
 .works-empty59{padding:10px 4px;line-height:1.6}
 .works-empty59 h3{margin:0 0 6px;color:var(--navy)}
@@ -7432,10 +7439,13 @@ const STORY_GATE_3Y = {
   /* N10（1991 冬）：「人情債觸發」屬內容層，4-6 處理，唔入閘
      v20a113：刻意唔補 needDone N9——N9 係 1991 秋限定；若果 N10 要 N9，錯過 N9 秋天窗口嘅玩家會連
      N10→N11→N13→N14→N15→N16→N17 成條關鍵路徑一齊死（災難性軟鎖）。N10 係恢復節點，關鍵路徑經
-     N11 要 N10 間接卡住，唔可以直接跳去結局。 */
-  N10:  { yearMin: 1991, seasonIn: ["冬"] },
-  /* N11（1991 冬末）：前置 N10；雙軌總和 > 70 */
-  N11: { needDone: ["N10"], dualGt: 70, yearMin: 1991, seasonIn: ["冬"] },
+     N11 要 N10 間接卡住，唔可以直接跳去結局。
+     v372：加 weekMin 100——「冬」含 1–2 月，yearMin 1991＋冬令 1991 年 1 月（1990 冬尾）
+     就開得，搶先過 N7（1991 夏）／N9（1991 秋），脊骨次序倒轉（第二輪評估 W5）。
+     weekMin 100 實數：1991-12-01＝dayIndex 699＝第 100 週（同 N18 weekMin 48／N17 153 先列）。 */
+  N10:  { weekMin: 100, yearMin: 1991, seasonIn: ["冬"] },
+  /* N11（1991 冬末）：前置 N10；雙軌總和 > 70；v372 同加 weekMin 100（同上，防年頭冬尾搶閘） */
+  N11: { needDone: ["N10"], dualGt: 70, weekMin: 100, yearMin: 1991, seasonIn: ["冬"] },
   /* N12（1992 春）：持有動作標籤（v20a29 同 N9 一併補 registry id／label 候選）
      v20a113：補 needDone N11——N12 係 N 次序入面 N11 嘅下一幕，唔鏈會令 1992 春未做 N11 都直入；
      安全：N12 唔喺關鍵路徑，N13 已經要 N11，唔增加新嘅軟鎖風險。 */
@@ -7451,8 +7461,12 @@ const STORY_GATE_3Y = {
   N15: { needDone: ["N14"], dualGt: 125, yearMin: 1992, seasonIn: ["秋"] },
   /* N16（1992 冬・賀歲片）
      v20a113：刻意唔補 needDone N15——N15 係 1992 秋末＋dual>125；若果 N16 要 N15，錯過 N15 嘅玩家會連
-     N16＋N17（結局）一齊死（災難性軟鎖）。N16 係恢復節點，關鍵路徑經 N17 要 N16 間接卡住。 */
-  N16: { yearMin: 1992, seasonIn: ["冬"] },
+     N16＋N17（結局）一齊死（災難性軟鎖）。N16 係恢復節點，關鍵路徑經 N17 要 N16 間接卡住。
+     v372：加 weekMin 153——「冬」含 1–2 月，yearMin 1992＋冬令 1992 年 1 月就開得，
+     搶先過 N13（1992 夏）／N14／N15，脊骨次序倒轉（第二輪評估 W5；gate136 舊斷言
+     「1992-01 照開」同步改）。weekMin 153＝1992-12-01（同 N17 閘同一週次；N17 另要
+     needDone N16＋台慶已解決，兩幕同月先後播，唔撞）。 */
+  N16: { weekMin: 153, yearMin: 1992, seasonIn: ["冬"] },
   /* N17（1992 冬・事件閘）：前置 N16。結局判定／呈現係 4-10，呢度只守入場閘
      v20a136：搬閘去 1992 年 12 月——舊閘得 yearEq＋seasonIn（冬＝12／1／2 月），1992 年 1 月 1 日
      已經成立，結局 day ~746（調查報告 ~/workspace/linji-endgate-inv/ENDGATE_INVESTIGATION.md）。
@@ -14374,7 +14388,8 @@ const GiftShop = (function(){
     const it = itemById(itemId) || {};
     const dr = it.deltaRel || { default:1, liked:2, disliked:-1 };
     const kind = prefKind(npcKey, itemId);
-    let delta = (kind==="liked" || kind==="favorite") ? (Number(dr.liked)||2) /* v20a183 B2：最愛同喜歡同數（女角 +2；星數值行 rom176StarDelta，唔經呢度） */
+    let delta = kind==="favorite" ? 3 /* v372：最愛拉開做 +3（第二輪評估 W6：最愛=喜歡 +2 冇分別；星層最愛 +4／喜歡 +2 先例） */
+              : kind==="liked" ? (Number(dr.liked)||2)
               : kind==="dislike" ? (Number(dr.disliked)!=null?Number(dr.disliked):-1)
               : (Number(dr.default)||1);
     /* 同 item 重複：第 2 次起正數減半（向下取整），負數維持 −1 */
@@ -14385,7 +14400,7 @@ const GiftShop = (function(){
     if(prev>=1 && delta>0){
       delta = Math.floor(delta/2);
     }
-    if(delta>2) delta = 2;
+    if(delta>3) delta = 3; /* v372：上限跟最愛 +3（舊上限 2 會食咗最愛拉開） */
     if(delta<-1) delta = -1;
     return { delta, kind, relKey };
   }
@@ -14423,7 +14438,7 @@ const GiftShop = (function(){
     let softcap = false;
     const weekGain = Number((S.giftMeta.weekGiftGain||{})[relKey])||0;
     if(applied>0){
-      const room = Math.max(0, 2 - weekGain); /* 週淨好感軟 +2 */
+      const room = Math.max(0, 3 - weekGain); /* 週淨好感軟頂（v372：2→3，令最愛 +3 真正落到；軟頂結構不變） */
       if(room<=0){ applied = 0; softcap = true; }
       else if(applied>room){ applied = room; }
     }
@@ -15996,8 +16011,11 @@ function work59IsNamed(h){
   if(!h || !h.gigId) return false;
   const g = work59GigLookup(h.gigId);
   /* v20a229 B3：舊 LEADSTAR59 名冊已刪——「有名製作」改由新庫 category 判：只收 作品；
-     臨記通告／補拍唔入作品牆（entryTier／softBridge 旗照舊排除）。 */
-  return !!(g && g.category === "作品" && !g.entryTier && !g.softBridge);
+     臨記通告／補拍唔入作品牆（entryTier／softBridge 旗照舊排除）。
+     v372：gig 回查唔到嗰陣（例如跨年庫未同步／舊檔）退回殺青紀錄自帶 category
+     （wrapHistory 寫入點有存 category），唔好成部作品喺牆上消失（第二輪評估 W3）。 */
+  if(g) return !!(g.category === "作品" && !g.entryTier && !g.softBridge);
+  return h.category === "作品" && !h.entryTier && !h.softBridge;
 }
 function work59WorkOf(h, g){
   if(h && h.workTitle) return String(h.workTitle);
@@ -16037,7 +16055,14 @@ function worksWallEntries59(){
       type: (g && g.type) || h.type || "",
       leadStar: leadStar59Of(g || { id: h.gigId, leadStar: h.leadStar }),
       castLine: (typeof work59CastLineOf === "function") ? work59CastLineOf(g, h) : "",
-      poster: poster59Path(h.gigId)
+      poster: poster59Path(h.gigId),
+      /* v372：詳情剪報用欄（殺青紀錄＋通告原稿；缺項留空，詳情頁唔出空欄） */
+      pay: (typeof h.pay === "number") ? h.pay : 0,
+      days: (typeof h.totalDays === "number") ? h.totalDays : 0,
+      rating: h.rating || "",
+      fame: (typeof h.fame === "number") ? h.fame : 0,
+      synopsis: (g && g.synopsis) || "",
+      blurb: (g && g.blurb) || ""
     });
   });
   return out;
@@ -16049,12 +16074,16 @@ function workCard59Html(e){
     : ('<div class="work-media59">' + cssCard + '</div>');
   /* v20a252 CAST252：作品牆「主演」行改陣容行（SPEC §2.3）：有 castLine（新庫 cast／singer／host）
      出陣容行；無新欄位（舊庫／舊檔）跌返舊制 leadStar59Of 行，唔壞舊檔。 */
-  const star = e.castLine ? ('<div class="work-meta59">' + esc59(e.castLine) + '</div>')
-    : (e.leadStar ? ('<div class="work-meta59">主演：' + esc59(e.leadStar) + '</div>') : "");
+  const star = e.castLine ? ('<span class="work-meta59">' + esc59(e.castLine) + '</span>')
+    : (e.leadStar ? ('<span class="work-meta59">主演：' + esc59(e.leadStar) + '</span>') : "");
   const yr = e.year ? (e.year + " 年") : "";
   const meta2 = [yr, e.role ? ("阿偉：" + e.role) : ""].filter(Boolean).join(" · ");
-  return '<div class="work-card59">' + media + '<div class="work-name59">《' + esc59(e.work) + '》</div>' + star
-    + (meta2 ? ('<div class="work-meta59 dim">' + esc59(meta2) + '</div>') : "") + '</div>';
+  /* v372：成張卡改做 <button>（撳卡開作品詳情剪報；GPT 諮詢方案）——
+     海報區照用 v370 紙底模板（work-csscard59 四款分流），卡底加「詳情 ›」明示可撳。
+     完成後場合先出卡（worksWallEntries59 只收殺青紀錄），唔違反完成前唔出海報規則。 */
+  return '<button type="button" class="work-card59" data-work-gig="' + esc59(e.gigId) + '" aria-label="《' + esc59(e.work) + '》詳情">' + media + '<span class="work-name59">《' + esc59(e.work) + '》</span>' + star
+    + (meta2 ? ('<span class="work-meta59 dim">' + esc59(meta2) + '</span>') : "")
+    + '<span class="work-open59">詳情 ›</span></button>';
 }
 function worksWallHtml59(){
   const es = worksWallEntries59();
@@ -16063,8 +16092,8 @@ function worksWallHtml59(){
        機制說明文字一字唔郁，淨係加畫框＋一句。 */
     return '<div class="works-empty59"><h3>作品牆</h3><p>還未有作品入牆。有作品圖的製作，殺青之後，它的作品圖就會黐在這面牆上；沒有海報的製作（例如電視特輯），完成了只會記入拍攝簿，不會上牆。由臨記做到主角，整幅牆就是阿偉的履歷。</p><div class="works-frames142" aria-hidden="true"><div class="works-frame142">☆</div><div class="works-frame142">☆</div><div class="works-frame142">☆</div></div><p class="works-frames142-cap">完成作品後，它的作品圖會黐在這裡。</p></div>';
   }
-  return '<div class="works-wall59">' + es.map(workCard59Html).join("") + '</div>'
-    + '<p class="works-note59">有作品圖的殺青製作會收錄在這裡。早期做臨記，海報只有明星的樣子；做到主角那日，圖中就會有阿偉一份。</p>';
+  return '<h3 class="jobs72-h" style="margin-top:14px">作品牆 · ' + es.length + ' 部</h3><div class="works-wall59">' + es.map(workCard59Html).join("") + '</div>'
+    + '<p class="works-note59">有作品圖的殺青製作會收錄在這裡。早期做臨記，海報只有明星的樣子；做到主角那日，圖中就會有阿偉一份。點擊海報卡可查看作品詳情。</p>';
 }
 function renderWorksPane(){
   /* v20a72 MENU72：作品頁＝拍攝簿（頂）＋作品牆（底）。拍攝簿段由
@@ -16078,6 +16107,40 @@ function renderWorksPane(){
   if(gb) gb.onclick = ()=>{ try{ jobs72GoBoard(); }catch(_e){} };
   const gl = el.querySelector(".jobs72-goloc");
   if(gl) gl.onclick = ()=>{ try{ jobs72GoLoc(); }catch(_e){} };
+  /* v372：作品牆卡點擊委派（撳卡開詳情剪報）——用 el.onclick 指派避免重複綁定。 */
+  el.onclick = (ev)=>{
+    try{
+      const card = ev.target && ev.target.closest ? ev.target.closest(".work-card59[data-work-gig]") : null;
+      if(!card) return;
+      openWorkDetail372(card.getAttribute("data-work-gig"));
+    }catch(_e){}
+  };
+}
+/* v372：作品詳情剪報（撳作品牆卡開）——只讀已殺青紀錄（worksWallEntries59），
+   未完成通告唔經呢度，唔會出成品海報／主演名。版式跟手帳紙面：片名→媒介·年份→
+   阿偉角色→陣容→劇情簡介→拍攝日數／片酬／評價（GPT 諮詢方案）。 */
+function openWorkDetail372(gigId){
+  try{
+    const es = worksWallEntries59();
+    const e = es.find(x=>x.gigId===gigId);
+    if(!e) return;
+    const rows = [];
+    const head372 = [e.type, e.year ? (e.year + " 年") : ""].filter(Boolean).join(" · ");
+    if(head372) rows.push('<p class="sub">' + esc59(head372) + '</p>');
+    if(e.role) rows.push('<p>阿偉：' + esc59(e.role) + '</p>');
+    if(e.castLine) rows.push('<p>' + esc59(e.castLine) + '</p>');
+    else if(e.leadStar) rows.push('<p>主演：' + esc59(e.leadStar) + '</p>');
+    if(e.synopsis) rows.push('<p>' + esc59(e.synopsis) + '</p>');
+    else if(e.blurb) rows.push('<p>' + esc59(e.blurb) + '</p>');
+    const nums = [];
+    if(e.days) nums.push("拍攝 " + e.days + " 日");
+    if(e.pay) nums.push("片酬 $" + Number(e.pay).toLocaleString());
+    if(e.fame) nums.push("聲望 +" + e.fame);
+    if(e.rating) nums.push("評價：" + e.rating);
+    if(nums.length) rows.push('<p class="sub">' + esc59(nums.join(" · ")) + '</p>');
+    const body = '<h3>《' + esc59(e.work) + '》</h3>' + rows.join("");
+    modal(body, [{ label:"關閉", role:"p", on:()=>{ try{ closeModal(); }catch(_e){} } }]);
+  }catch(_e){}
 }
 function wrapPoster59Html(gigId){
   const src = poster59Path(gigId);
@@ -18506,6 +18569,18 @@ function gigBoardTeaserHtml(g, opts){
       if(gl) gapHtml = `<div class="gt-gap">${gl}${opts.closest?`<span class="gt-closest">最接近</span>`:""}</div>`;
     }catch(_e){}
   }
+  /* v372：短卡補返試鏡成功率（第二輪評估 W1/W3：短卡冇成功率，要逐張點入詳情先知）。
+     計法同 gigCardHtml／詳情頁同一支 chance()（v368 新曲線，唔改曲線本身）；
+     只喺 ready（可接）出，鎖定卡照出差額行，唔出假成功率。 */
+  let chanceHtml = "";
+  if(boardState==="ready"){
+    try{
+      if(typeof chance==="function"){
+        const p372 = Math.round(chance(g)*100);
+        chanceHtml = `<div class="gt-chance">試鏡成功率約 <b>${p372}%</b></div>`;
+      }
+    }catch(_e){}
+  }
   /* v20a229 B5 觸發標籤：已觸發上板嘅通告標「引薦」（credit）／「邀約」（其餘五種）；
      未觸發嘅根本唔會入板，呢度唔使再驗。 */
   let trigPill = "";
@@ -18515,6 +18590,7 @@ function gigBoardTeaserHtml(g, opts){
     <div class="gt-title">${work}</div>
     <div class="gt-row"><span class="gt-pill">${genre}</span>${trigPill}<span class="${badgeCls}">${badgeText}</span></div>
     ${metaParts.length?`<div class="gt-meta">${metaParts.map(m=>`<div class="gt-meta-line">${m}</div>`).join("")}</div>`:""}
+    ${chanceHtml}
     ${intelMark}
     ${favor158Html}
     ${gapHtml}
@@ -26251,7 +26327,7 @@ const ROM159_WOMEN = {
           spots:["xu_central","xu_adm","xu_premiere","xu_star","xu_peak","xu_cinema","xu_cafe"] },
   yip:  { key:"yip",  relKey:"rel_yip",  name:"葉敏芝", npcId:null, phase:2, meet:"R_yip_meet",
           spots:["yip_rec","yip_ktv","yip_peak","yip_cinema","yip_lounge","yip_cafe"] },
-  so:   { key:"so",   relKey:"rel_so",   name:"蘇芷茵", npcId:null, phase:3, meet:"R_so_meet",
+  so:   { key:"so",   relKey:"rel_so",   name:"蘇芷茵", npcId:null, phase:2, meet:"R_so_meet",
           spots:["so_rec","so_central","so_harbour","so_airport","so_beach","so_cafe"] }
 }; /* v20a159 ROM159：Vera／海媚出局，葉敏芝／蘇芷茵入局；最終六人，37 場。DATES 條目見 ROM159_DATES（B1）。 */
 const ROM159_DATES = {
@@ -26965,7 +27041,7 @@ function rom159PrepareNode(node){
        將來補 meet offer 接線嗰陣，offer 之前要先查 rom159SoMeetGate()，唔好齋靠呢度。 */
     if(node.id==="R_so_meet" && typeof rom159SoMeetGate==="function" && !rom159SoMeetGate()){
       return {
-        id:"R_so_meet_gate", title:"大堂嗰支咪", when:node.when||"", phase:node.phase||"P3",
+        id:"R_so_meet_gate", title:"大堂嗰支咪", when:node.when||"", phase:node.phase||"P2",
         setting:"灣仔唱片大堂；蘇芷茵錄完音出嚟，記者喺大堂等",
         synopsis:"蘇芷茵錄完音出嚟，記者喺大堂等住。阿偉企喺嗰頭，佢望咗佢一眼，笑得好專業——嗰下笑，唔係邀請，係距離。",
         beats:[
@@ -26977,7 +27053,7 @@ function rom159PrepareNode(node){
             effects:{ flags:["flag_so_gate_seen"], stats:{ rel_so:0 }, notes:"層級閘未開：阿偉仲係臨記，蘇芷茵唔會同佢交心。只記低見過呢一面，唔開感情線；真 meet 留返 tier 夠咗再播。" } }
         ],
         flags_written:["flag_so_gate_seen"],
-        openConditions:["phase_P3"], openConditionsAny:null,
+        openConditions:["phase_P2"], openConditionsAny:null,
         romanceLine:"so", arcBeat:"meet", parallelOk:true, pcSilent:true, playerOffer:true
       };
     }

@@ -45,7 +45,7 @@ chk('A2 end229IsLead 認三新 scale',
     'music_lead' in islead and 'ad_lead' in islead and 'variety_host_lead' in islead)
 
 # A3：通告庫轉換＋新增（326 張）
-chk('A3 通告庫 326 張', len(pack['gigs']) == 326)
+chk('A3 通告庫 330 張', len(pack['gigs']) == 330)  # v372 +4（ad/host 供應 2→3）
 for gid, sc in [('gig_1992_ad_107', 'ad_lead'), ('gig_1992_ad_203', 'ad_lead'),
                 ('gig_1991_ad_109', 'ad_lead'), ('gig_1991_ad_110', 'ad_lead'),
                 ('gig_1991_variety_103', 'variety_host_lead'), ('gig_1991_variety_110', 'variety_host_lead'),

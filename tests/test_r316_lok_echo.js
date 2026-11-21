@@ -94,7 +94,7 @@ const LOK_CREDIT = { id: 'credit_enc83_lok_patron', debtor: '駱家聲', title: 
 const rec112 = gigById['gig_1992_rec_112'];
 const rec111 = gigById['gig_1992_rec_111'];
 const rec102 = gigById['gig_1992_rec_102'];
-ok('(0) gig_count_326', allGigs.length === 326 && new Set(allGigs.map(g=>g.id)).size === 326, 'n=' + allGigs.length);
+ok('(0) gig_count_330', allGigs.length === 330 && new Set(allGigs.map(g=>g.id)).size === 330, 'n=' + allGigs.length);
 ok('(0) trig_38_credit_27', allGigs.filter(g=>g.trigger && g.trigger.kind).length === 38 && allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 27, 'credit 27（BR89 19＋通用 8）');
 ok('(0) rec112_tag_trigger', !!rec112 && JSON.stringify(rec112.storyKeys) === '["lok_gasing"]' && rec112.trigger && rec112.trigger.kind === 'credit' && rec112.trigger.creditId === 'credit_enc83_lok_patron' && rec112.trigger.creditOwner === '駱家聲', 'storyKeys＋trigger 齊');
 ok('(0) rec112_other_fields_unchanged', !!rec112 && rec112.title === '《追風少年》MV 男主角' && rec112.tier === '中級' && rec112.type === '唱片通告' && rec112.year === 1992 && rec112.season === '春' && rec112.days === 3 && JSON.stringify(rec112.pay) === '[330,396]' && rec112.singer === 'lok_gasing' && rec112.genre === '搖滾' && rec112.roleLabel === 'MV 男主角', 'title／tier／year／season／days／pay／singer 唔郁');

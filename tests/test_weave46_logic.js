@@ -244,7 +244,7 @@ ok('N9：夏天唔出現', !openIds().includes('N9'));
 }
 
 /* ---- N10 ---- */
-loadGame(baseSave({ dayIndex: dayIndexOf(1991, 12, 15) }));
+loadGame(baseSave({ dayIndex: dayIndexOf(1992, 2, 10) /* v372：harness epoch 1990-03-07，weekMin 100 要 dayIndex>=693，1991-12-15 得 648 */ }));
 ok('N10：1991 冬開，場地 tvb_harbour', !!openRow('N10') && openRow('N10').locId === 'tvb_harbour');
 loadGame(baseSave({ dayIndex: dayIndexOf(1991, 10, 15) }));
 ok('N10：秋唔出現', !openIds().includes('N10'));
@@ -268,7 +268,7 @@ ok('N10：秋唔出現', !openIds().includes('N10'));
 /* ---- N11 ---- */
 function c10Save(over){
   return baseSave(Object.assign({
-    dayIndex: dayIndexOf(1991, 12, 20), fame: 40, industryCreditDelta: 35,
+    dayIndex: dayIndexOf(1992, 2, 15) /* v372：同上，N11 weekMin 100 */, fame: 40, industryCreditDelta: 35,
     story: { flags: {}, rel: {}, done: { N5: true, N7: true, N10: true }, choices: {} },
   }, over || {}));
 }

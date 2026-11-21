@@ -108,7 +108,7 @@ for(const y of [1990, 1991, 1992]){
   W2.setBy(by);
   W2.sync(true);
   const gigs = W2.getGIGS();
-  const want = { 1990: 130, 1991: 108, 1992: 88 }[y]; // v361：1991 ＋3 張擔正級通告，105→108
+  const want = { 1990: 130, 1991: 110, 1992: 90 }[y]; // v361：1991 ＋3 張擔正級通告，105→108
   ok('A6 sync ' + y + ' 年揀新庫（' + want + ' 張、年份全部 ' + y + '、版本 gigs_new v2）',
      gigs.length === want && gigs.every(g=>g.year === y) && W2.getVer() === 'gigs_new v2',
      'n=' + gigs.length + ' ver=' + W2.getVer());
@@ -142,29 +142,29 @@ for(const f of ['gigs_1988.json', 'gigs_1989.json', 'gigs_1990.json', 'gigs_1991
 /* ---------- C 新 pack 年份唔郁 ---------- */
 const newPack = JSON.parse(fs.readFileSync(path.join(ROOT, 'content', 'gigs_new.json'), 'utf8'));
 const newGigs = newPack.gigs || [];
-ok('C0 gigs_new.json 326 張、版本 gigs_new v2、id 唯一', newGigs.length === 326 &&
+ok('C0 gigs_new.json 330 張、版本 gigs_new v2、id 唯一', newGigs.length === 330 &&
    newPack.version === 'gigs_new v2' &&
-   new Set(newGigs.map(g=>g.id)).size === 326, 'n=' + newGigs.length + ' ver=' + newPack.version); // v361：＋3 張，323→326
+   new Set(newGigs.map(g=>g.id)).size === 330, 'n=' + newGigs.length + ' ver=' + newPack.version); // v361：＋3 張，323→326；v372：＋4 張 ad/host 擔正（ad_111／ad_112／variety_107×2），326→330
 /* C1：模擬 loader——打旗＋按年分組，再 normalize */
 const stamped = deepClone(newGigs);
 const byYear = { 1990: [], 1991: [], 1992: [] };
 stamped.forEach(g=>{ g.__y66w = 1; if(byYear[g.year]) byYear[g.year].push(g); });
-ok('C1 loader 分組 1990／1991／1992 = 130／108／88',
-   byYear[1990].length === 130 && byYear[1991].length === 108 && byYear[1992].length === 88,
+ok('C1 loader 分組 1990／1991／1992 = 130／110／90',
+   byYear[1990].length === 130 && byYear[1991].length === 110 && byYear[1992].length === 90,
    [1990, 1991, 1992].map(y=>y + ':' + byYear[y].length).join(' '));
 const normedStamped = stamped.map(g=>W.normalizeGigRecord(g));
 const yearBad = normedStamped.filter((g, i)=>g.year !== newGigs[i].year);
-ok('C2 打旗後 normalize：326 張年份全部唔郁', yearBad.length === 0,
+ok('C2 打旗後 normalize：330 張年份全部唔郁', yearBad.length === 0,
    yearBad.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 /* C3：唔打旗、直接 normalize——normalize 層守衛都要擋住 */
 const normedRaw = deepClone(newGigs).map(g=>W.normalizeGigRecord(g));
 const rawBad = normedRaw.filter((g, i)=>g.year !== newGigs[i].year);
-ok('C3 無旗直接 normalize：326 張年份全部唔郁（守衛）', rawBad.length === 0,
+ok('C3 無旗直接 normalize：330 張年份全部唔郁（守衛）', rawBad.length === 0,
    rawBad.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 /* C4：冪等——兩次 normalize 年份唔變 */
 const normedTwice = normedStamped.map(g=>W.normalizeGigRecord(deepClone(g)));
 const twiceBad = normedTwice.filter((g, i)=>g.year !== newGigs[i].year);
-ok('C4 兩次 normalize：326 張年份全部唔郁', twiceBad.length === 0,
+ok('C4 兩次 normalize：330 張年份全部唔郁', twiceBad.length === 0,
    twiceBad.slice(0, 3).map(g=>g.id + ':' + g.year).join(','));
 /* C5：玩家面文字欄年份 token 唔變（唔可以由 walker／remap 偷偷 +2） */
 const TEXT_FIELDS = ['title','workTitle','roleLabel','roleHint','blurb','synopsis','boardNote','shootHint','discoverNote'];

@@ -38,7 +38,7 @@ const WANT = {
 /* ---------- W0：在位＋唯一＋格式＋年份／季節／tier ---------- */
 ok('W0 13 張新通告全部在位', NEW_IDS.every(id=>!!byId[id]),
    NEW_IDS.filter(id=>!byId[id]).join(','));
-ok('W0 全庫 id 唯一（326 張）', gigs.length === 326 && new Set(gigs.map(g=>g.id)).size === 326,
+ok('W0 全庫 id 唯一（330 張）', gigs.length === 330 && new Set(gigs.map(g=>g.id)).size === 330,
    'n=' + gigs.length);
 const badId = NEW_IDS.filter(id=>!/^gig_(1990|1991|1992)_[a-z]+_\d{3}$/.test(id));
 ok('W0 新 id 全部新格式', badId.length === 0, badId.join(','));

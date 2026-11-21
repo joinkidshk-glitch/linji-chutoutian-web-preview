@@ -104,7 +104,7 @@ const v106 = gigById['gig_1992_variety_106'];
 const v103 = gigById['gig_1991_variety_103'];
 const v203 = gigById['gig_1991_variety_203'];
 const v104 = gigById['gig_1991_variety_104'];
-ok('(0) gig_count_326', allGigs.length === 326 && new Set(allGigs.map(g=>g.id)).size === 326, 'n=' + allGigs.length);
+ok('(0) gig_count_330', allGigs.length === 330 && new Set(allGigs.map(g=>g.id)).size === 330, 'n=' + allGigs.length);
 ok('(0) trig_38_credit_27', allGigs.filter(g=>g.trigger && g.trigger.kind).length === 38 && allGigs.filter(g=>g.trigger && g.trigger.kind === 'credit').length === 27, 'credit 27（BR89 19＋通用 8）');
 ok('(0) v106_fields_match_template', !!v106 && v106.title === '《星光慈善夜》慈善晚會主持' && v106.type === '綜藝' && v106.tier === '中級' && v106.category === '作品' && v106.genre === '晚會' && v106.workTitle === '星光慈善夜' && v106.roleLabel === '慈善晚會主持' && v106.loc === 'tvb_kowloon' && v106.director === '晚會監製' && v106.year === 1992 && v106.season === '秋' && v106.days === 2 && v106.roleScale === 'variety_host_lead' && JSON.stringify(v106.req) === '{"stage":45,"charm":30}' && v106.hard === 0.5 && JSON.stringify(v106.pay) === '[350,420]' && JSON.stringify(v106.fame) === '[28,45]' && v106.host === null && JSON.stringify(v106.guests) === '["pang_siuki","so_jiyan","gu_mingfai"]' && JSON.stringify(v106.segments) === '["慈善拍賣","歌舞表演","捐款公佈"]', '數字照抄標板 variety_103');
 ok('(0) v106_tag_trigger', !!v106 && JSON.stringify(v106.storyKeys) === '["pang_siuki"]' && v106.trigger && v106.trigger.kind === 'credit' && v106.trigger.creditId === 'credit_enc84_pang_patron' && v106.trigger.creditOwner === '彭少祺', 'storyKeys＋trigger 齊');
@@ -113,7 +113,7 @@ ok('(0) pang_patron_grants_match', html.indexOf('{ id:"credit_enc84_pang_patron"
 ok('(0) pang_patron_gate_t4_only', html.indexOf('{ id:"pang_patron", when(st){ return enc79TierOf(st.fav)>=4; }') >= 0, 'pang_patron 閘淨 T4，無年份窗、無冷版對照，唔郁');
 ok('(0) v203_unchanged', !!v203 && v203.tier === '中級' && v203.roleLabel === '台上助理' && v203.category === '臨記通告' && JSON.stringify(v203.storyKeys) === '["pang_siuki"]' && v203.trigger && v203.trigger.creditId === 'credit_enc84_pang_patron', 'variety_203 係中級助理＋tag＋trigger，唔郁');
 ok('(0) v104_unchanged', !!v104 && v104.tier === '初級' && v104.roleLabel === '綜合節目遊戲環節主持' && !v104.storyKeys && !v104.trigger, 'variety_104 係初級主持、無 tag 無 trigger，唔郁');
-ok('(0) mc_gigs_7', allGigs.filter(g=>g.type === '綜藝' && (g.roleLabel || '').indexOf('主持') >= 0).length === 7, '司儀類 6→7（v361 variety_110 入列）');
+ok('(0) mc_gigs_7', allGigs.filter(g=>g.type === '綜藝' && (g.roleLabel || '').indexOf('主持') >= 0).length === 9, '司儀類 7→9（v372 +2 主持通告）');
 const EXPECT19 = {
   gig_1991_film_101:'credit_enc83_luk_patron', gig_1991_variety_203:'credit_enc84_pang_patron',
   gig_1992_rec_106:'credit_enc84_ching_patron', gig_1991_film_103:'credit_enc79_liu_priority',

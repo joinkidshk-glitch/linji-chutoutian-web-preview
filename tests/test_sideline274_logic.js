@@ -1,5 +1,5 @@
 // v20a274 取代票測試：6 張支線人情引薦通告取代（開 5 張新＋駱接駁 rec_111＋拆 6 張舊 trigger）
-//   A 庫對位：326 張／trigger 38／credit 27；每筆債權只兌現一張（駱 lok 例外 v316：rec_111＋rec_112 同一筆；齊 chai 例外 v317：film_206＋tv_114 同一筆；彭 pang 例外 v319：variety_203＋variety_106 同一筆；魏 ngai 例外 v337：film_212＋film_207 同一筆；陸 luk 前例）；新 gig 欄位齊；rec_111 接駁；舊 6 張無 trigger＋無引薦字句
+//   A 庫對位：330 張／trigger 38／credit 27；每筆債權只兌現一張（駱 lok 例外 v316：rec_111＋rec_112 同一筆；齊 chai 例外 v317：film_206＋tv_114 同一筆；彭 pang 例外 v319：variety_203＋variety_106 同一筆；魏 ngai 例外 v337：film_212＋film_207 同一筆；陸 luk 前例）；新 gig 欄位齊；rec_111 接駁；舊 6 張無 trigger＋無引薦字句
 //   B 開閘：新 gig 無債權唔開／持債權開＋標「引薦」；舊 gig 持債權都唔經 BR89 開
 //   C R-4：還錢路開新顧 gig（rec_205）唔開舊 rec_105
 //   D BR89 映射 18 張逐對啱（新對位）
@@ -104,7 +104,7 @@ const OLD6 = ['gig_1991_film_110', 'gig_1992_rec_102', 'gig_1991_film_111',
   'gig_1992_tv_104', 'gig_1991_tv_108', 'gig_1992_rec_105'];
 
 /* ---------- A：庫對位 ---------- */
-ok('A1 庫 326 張', gigs.length===326, 'n='+gigs.length);
+ok('A1 庫 330 張', gigs.length===330, 'n='+gigs.length);
 const trig = gigs.filter(g=>g.trigger && g.trigger.kind);
 ok('A1 trigger 38 張（credit 27）', trig.length===38 && trig.filter(g=>g.trigger.kind==='credit').length===27,
   'trig='+trig.length+' credit='+trig.filter(g=>g.trigger.kind==='credit').length);

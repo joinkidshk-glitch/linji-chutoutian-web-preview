@@ -5,7 +5,7 @@
 //   (4) 1992-12-01（week 153）＋台慶未解決唔開（invited／pending／空字串）；
 //   (5) week 153＋台慶已解決（done／skipped）開；(6) dayIndex 1096 之後無條件開（連 N16 未做都開，
 //       季節唔啱都開）；(7) defensive：awardsGetFlag 唔存在／throw 嗰陣唔 crash、當未解決；
-//   (8) N16 閘不變（1992 冬 1–2 月照開）；(9) scrub：已收科舊檔唔清 N17，未收科＋week<153 先清。
+//   (8) N16 閘（v372 加 weekMin 153：1992-01 冬尾唔開、1992-12 先開）；(9) scrub：已收科舊檔唔清 N17，未收科＋week<153 先清。
 // 反證：閘表 copy 拎走 weekMin／awardResolved／backstopDay 嗰陣，對應斷言必須反轉
 //       （證明斷言對新欄位敏感，唔係永遠 PASS）；舊閘（得 yearEq＋seasonIn）喺 1992-01 會開。
 // 用法：node tests/test_story_gate136_logic.js [path-to-index.html]
@@ -138,10 +138,12 @@ ok("N17 保留 needDone N16＋yearEq 1992＋seasonIn 冬", GATE.N17 && JSON.stri
   const r2 = vm.runInContext("evalGate3Y(\"N17\", { ctx: " + JSON.stringify(baseCtx()) + " })", sb3);
   ok("awardsGetFlag throw：唔 crash、當未解決（唔開）", r2 && r2.ok === false);
 }
-/* (8) N16 閘不變 */
+/* (8) N16 閘（v372：加 weekMin 153，1992-01 冬尾唔再搶閘；1992-12 先開） */
 {
-  const r = vm.runInContext("evalGate3Y(\"N16\", { ctx: " + JSON.stringify({ week: 105, dayIndex: 730, year: 1992, season: "冬", done: {}, lastMainDoneDay: null }) + " })", sb);
-  ok("N16 喺 1992-01（冬）照開（閘不變）", r && r.ok === true);
+  const rJan = vm.runInContext("evalGate3Y(\"N16\", { ctx: " + JSON.stringify({ week: 105, dayIndex: 730, year: 1992, season: "冬", done: {}, lastMainDoneDay: null }) + " })", sb);
+  ok("N16 喺 1992-01（冬）唔開（v372 weekMin 153 守衛）", rJan && rJan.ok === false);
+  const rDec = vm.runInContext("evalGate3Y(\"N16\", { ctx: " + JSON.stringify({ week: 153, dayIndex: 1065, year: 1992, season: "冬", done: {}, lastMainDoneDay: null }) + " })", sb);
+  ok("N16 喺 1992-12（冬，week 153）照開", rDec && rDec.ok === true);
 }
 /* (9) scrub：已收科舊檔唔清 N17 */
 {

@@ -82,7 +82,7 @@ ok("yip push1 守口 notes 係玩家面文字（v20a355 清走製作備忘：冇
 
 # ---- 5. 年份／phase（source 年，YEARS66＋2 之後＝顯示年） ----
 ok("yip meet 1989夏（顯示 1991夏）", nodes["R_yip_meet"].get("when") == "1989夏" and nodes["R_yip_meet"].get("phase") == "P2")
-ok("so meet 1989春（顯示 1991春）", nodes["R_so_meet"].get("when") == "1989春" and nodes["R_so_meet"].get("phase") == "P3")
+ok("so meet 1989春（顯示 1991春）", nodes["R_so_meet"].get("when") == "1989春" and nodes["R_so_meet"].get("phase") == "P2")  # v372：P3→P2（休閒打法 550 日只到 P2，P3 開唔到）
 ok("yip ending 1990秋（顯示 1992秋）", nodes["R_yip_ending"].get("when") == "1990秋" and nodes["R_yip_ending"].get("phase") == "P5")
 ok("so ending 1990冬（顯示 1992冬）", nodes["R_so_ending"].get("when") == "1990冬" and nodes["R_so_ending"].get("phase") == "P5")
 ok("yip meet 掛 N8", nodes["R_yip_meet"].get("linksMain") == ["N8"])
