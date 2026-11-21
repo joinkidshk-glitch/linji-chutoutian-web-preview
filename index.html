@@ -3304,7 +3304,7 @@ body.day-res-open .day-row{
    即係舊版 :not(.tut-on) 規則喺 tut-on 態下完全冇生效。所以 day-res 一律行
    flex-end 底錨（同 v18a／base bottom-sheet 一致），高度規則亦唔再排除 tut-on；
    過一日確認等非 day-res modal 唔受影響（繼續 tut-on 置中）。 */
-#mask.day-res .modal{ height: min(78dvh,78svh,720px) !important; }
+#mask.day-res .modal{ height:auto !important; max-height:min(92dvh,92svh,720px) !important; }
 #mask.day-res{ align-items: flex-end !important; }
 /* v20a189（v218 移位）：日結板矮屏放寬——88dvh（modal 616px／inner 457px）實測最長內容嗰版
    仲差 3px 先過到綠色結算行，所以放寬到 92dvh（modal 644px／inner ~485px）；只放寬掛咗
@@ -3314,8 +3314,98 @@ body.day-res-open .day-row{
 @media (max-height: 820px){
   #mask.day-res .modal{
     max-height: min(92dvh,92svh,720px) !important;
-    height: min(92dvh,92svh,720px) !important;
+    height: auto !important; /* v374：矮屏一樣跟內容高，唔再固定 92dvh（短卡唔好空肚） */
   }
+}
+/* ===== v374 DAYRES374：日結卡改版（劇組日簿；GPT-6.2-sol 方案，方向二紙本手帳）=====
+   只改呈現：卡高跟內容（短卡唔空肚、長卡 #modal-inner 內捲、掣列照 sticky）；
+   今日畫面做橫幅主體；數值做簿頁短列（兩格並排）；敘述／警示／事件分層。
+   結算邏輯／數值／流程一律唔郁。 */
+#mask.day-res .modal{
+  border-radius:16px 16px 12px 12px !important;
+  padding:14px 14px 10px !important;
+  animation:dayresIn374 .24s ease-out;
+}
+@keyframes dayresIn374{ from{ transform:translateY(20px); opacity:.55; } to{ transform:translateY(0); opacity:1; } }
+#mask.day-res .modal h3{
+  font-size:1.22rem !important; line-height:1.3 !important; font-weight:800;
+  margin:0 0 2px !important; color:#1A1410;
+}
+#mask.day-res .dayend-next202{
+  display:inline-block; margin:4px 0 2px; padding:2px 8px;
+  background:rgba(201,162,39,.16); border:1px solid rgba(201,162,39,.45); border-radius:4px;
+  font-size:.78rem; font-weight:700; color:#6b4e2e;
+}
+#mask.day-res .dayres-date374{
+  margin:2px 0 0 !important; font-size:.75rem !important; color:#7a6248 !important;
+}
+/* 今日畫面：fx 片／定格圖統一橫幅（GPT 334×154，細屏收 128） */
+#mask.day-res .act-fx102{ margin:8px 0 10px; }
+#mask.day-res .act-fx102 video{
+  width:100% !important; max-width:none !important; height:154px !important; max-height:none !important;
+  object-fit:cover; border-radius:4px !important;
+  box-shadow:0 2px 6px rgba(26,20,16,.14);
+}
+#mask.day-res .rest-sleep-inline{ margin:8px 0 10px; }
+#mask.day-res .rest-sleep-inline video{
+  width:100% !important; max-width:none !important; height:154px !important; max-height:none !important;
+  object-fit:cover; border-radius:4px !important;
+  box-shadow:0 2px 6px rgba(26,20,16,.14);
+}
+.dayres-still374{ position:relative; margin:8px 0 10px; }
+.dayres-still374 img{
+  width:100%; height:154px; object-fit:cover; object-position:center 30%;
+  display:block; border:1px solid rgba(60,40,20,.22); border-radius:4px;
+  image-rendering:pixelated; image-rendering:crisp-edges; background:#14100e;
+  box-shadow:0 2px 6px rgba(26,20,16,.14);
+}
+.dayres-still374.bust374 img{ object-position:center 12%; image-rendering:auto; }
+.dayres-tag374{
+  position:absolute; left:8px; bottom:8px; padding:2px 8px;
+  background:#F2EBD8; border:1px solid rgba(107,83,64,.5); border-radius:3px;
+  font-size:.72rem; font-weight:800; color:#6b4e2e; transform:rotate(-1.2deg);
+}
+@media (max-height: 700px){
+  #mask.day-res .act-fx102 video, #mask.day-res .rest-sleep-inline video, .dayres-still374 img{ height:128px !important; }
+}
+/* 結算簿：數值兩格並排、敘述全寬、區段標籤 */
+#mask.day-res .result-notes{
+  display:flex !important; flex-direction:row !important; flex-wrap:wrap; gap:6px !important;
+  margin:8px 0 0 !important;
+}
+#mask.day-res .result-notes .result-line{ font-size:.9rem; }
+#mask.day-res .result-notes .res-stat374{
+  flex:1 1 calc(50% - 6px); max-width:calc(50% - 3px); min-width:130px;
+  display:flex; align-items:baseline; justify-content:space-between; gap:8px;
+  background:rgba(255,252,244,.65); border:1px solid rgba(107,83,64,.28); border-radius:4px;
+  padding:6px 10px; box-sizing:border-box;
+}
+#mask.day-res .result-notes .res-stat374.wide374{ flex:1 1 100%; max-width:none; }
+#mask.day-res .res-stat-n374{ font-size:.82rem; font-weight:700; color:#5a4328; }
+#mask.day-res .res-stat-v374{ font-size:1.05rem; font-weight:800; font-variant-numeric:tabular-nums; }
+#mask.day-res .result-notes .res-note374{ flex:1 1 100%; line-height:1.5; }
+#mask.day-res .result-notes .res-sec374{
+  flex:1 1 100%; margin-top:4px; padding-top:6px;
+  border-top:1px solid rgba(107,83,64,.3);
+  font-size:.8rem; font-weight:800; color:#8a5a20; letter-spacing:.04em;
+}
+.res-prog374{ height:6px; margin-top:5px; background:rgba(107,83,64,.22); border-radius:3px; overflow:hidden; }
+.res-prog374 i{ display:block; height:100%; background:#C9A227; border-radius:3px; }
+/* 事件紙條（片場小事）：牛皮紙底＋選項等闊 ≥44px */
+#mask.day-res #setchoice35box{
+  background:#E9DEC5; border:1px solid rgba(107,83,64,.35); border-radius:4px;
+  padding:10px 12px; margin-top:4px;
+}
+#mask.day-res #setchoice35box .set-choice35-btn{
+  display:block; width:100%; min-height:44px; margin-top:8px;
+  background:#F2EBD8; border:1.5px solid #C9A227; border-radius:6px;
+  color:#1A1410; font-weight:700; font-size:.9rem; padding:10px 12px; box-sizing:border-box;
+}
+/* 底部操作：收近主掣、提示放大 */
+#mask.day-res #modal-btns{ margin-top:10px !important; padding-top:10px; }
+#mask.day-res .modal-note202{ font-size:.84rem; color:#6b4e2e; padding:4px 4px 0; }
+@media (prefers-reduced-motion: reduce){
+  #mask.day-res .modal{ animation:none !important; }
 }
 #mask:not(.tut-on):not(.casting-sheet-on) #modal-inner{
   flex: 1 1 0% !important;
@@ -17202,10 +17292,31 @@ try{
     },
   };
 }catch(_e){}
+/* v374 DAYRES374：日結數值分組（純呈現）——單一 good/bad 增量行做簿頁短列
+   （名稱左、數字右，兩格並排由 CSS 處理）；gold 標題行做區段標籤；其餘
+   （敘述／警示／支票／事件盒等）原 HTML 不動、全寬。唔改任何結算數值。
+   分類器嵌喺 formatResultNotes 入面（logic 測試逐函數抽取，唔好拆做外置函數）。 */
 function formatResultNotes(notes){
+  function resLine374(x){
+    const s = String(x);
+    const t = s.replace(/<[^>]+>/g,"").trim();
+    const nSpan = (s.match(/class="(good|bad)"/g)||[]).length;
+    const m = t.match(/^(.*?)\s*([+\-−]\$?\s*[\d,]+)$/);
+    if(m && nSpan===1 && s.indexOf("<button")<0 && s.indexOf("<div")<0){
+      const cls = s.indexOf('class="bad"')>=0 ? "bad" : "good";
+      const nm = (m[1]||"").trim();
+      const wide = nm ? "" : " wide374";
+      return `<div class="result-line res-stat374${wide}"><span class="res-stat-n374">${nm||"現金"}</span><span class="res-stat-v374 ${cls}">${m[2]}</span></div>`;
+    }
+    if(s.indexOf('class="gold"')>=0 && !m) return `<div class="result-line res-sec374">${s}</div>`;
+    let bar = "";
+    const pm = t.match(/進度\s*(\d+)\s*\/\s*(\d+)/);
+    if(pm){ const pct = Math.max(0, Math.min(100, Math.round((Number(pm[1])/Math.max(1,Number(pm[2])))*100))); bar = `<div class="res-prog374" aria-hidden="true"><i style="width:${pct}%"></i></div>`; }
+    return `<div class="result-line res-note374">${s}${bar}</div>`;
+  }
   const arr = (notes||[]).filter(x=>x!=null && String(x).trim()!=="");
   if(!arr.length) return `<div class="result-notes"><span class="result-line">—</span></div>`;
-  return `<div class="result-notes">${arr.map(x=>`<div class="result-line">${x}</div>`).join("")}</div>`;
+  return `<div class="result-notes">${arr.map(resLine374).join("")}</div>`;
 }
 /** v19z11：統一存款顯示——地圖頂／手帳頂／所有 .home-money／#c-money */
 function refreshMoneyHud(){
@@ -17824,7 +17935,7 @@ function conseq61ResolveSickDay(id){
       if(isShoot || ended){
         const cont = ()=>{ if(ended){ try{ enterHome(summary, true); }catch(_e){} } else { try{ runScheduleFromToday(); }catch(_e){} } };
         try{ flushWeekAccelSummary(title, formatResultNotes(notes) + (ended ? `<p class="gold">一週完結 → 回家結算</p>` : ""), ended, summary, cont); }
-        catch(_e){ afterDayModal(formatResultNotes(notes), title, null, ended, summary, { dayDone: dayDone }); }
+        catch(_e){ afterDayModal(formatResultNotes(notes), title, null, ended, summary, { dayDone: dayDone, still374: "sick" }); }
       } else {
         try{ syncDateChrome(); }catch(_e){}
         try{ saveQ(); }catch(_e){}
@@ -17832,7 +17943,7 @@ function conseq61ResolveSickDay(id){
       }
       return true;
     }
-    afterDayModal(formatResultNotes(notes), title, null, ended, summary, { dayDone: dayDone });
+    afterDayModal(formatResultNotes(notes), title, null, ended, summary, { dayDone: dayDone, still374: "sick" });
     return true;
   }catch(_e){ return false; }
 }
@@ -20592,8 +20703,8 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
     }
   }catch(_e){}
   const dayLine = opts.dayDone
-    ? `<p style="font-size:.75rem;color:var(--muted)">完成日：${opts.dayDone} → 而家 ${fmtDate()}</p>`
-    : `<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`;
+    ? `<p class="dayres-date374">完成日：${opts.dayDone} → 而家 ${fmtDate()}</p>`
+    : `<p class="dayres-date374">${fmtDate()}</p>`;
   try{ document.body.classList.add("day-res-open"); }catch(_e){}
   const dropBits = takeShootDropNotes();
   const dropHtml = dropBits.length ? `<div style="margin:6px 0">${dropBits.join("<br>")}</div>` : "";
@@ -20610,13 +20721,13 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
     btns.push({label: ended?"回家結算":(mapNext196?"返回地圖":"開始今日行程"), role:"p", on: ended?go:(mapNext196?()=>goToMapForBrowse():go)});
   }
   const liveHint = livingCostDayEndHint();
-  const fx102Html = (typeof actFx102Html==="function") ? actFx102Html(opts.fx102Kind) : ""; /* v20a102 FX102 */
+  const fx102Html = ((typeof actFx102Html==="function") ? actFx102Html(opts.fx102Kind) : "") || (typeof dayResStill374==="function" ? dayResStill374(opts.still374) : ""); /* v20a102 FX102＋v374 冇片活動定格圖 */
   /* v20a196 D1／D7：dismiss 跟下一日行程——排程日＝繼續跑下一日（go），逛逛日＝返地圖。 */
   const dismissFn = ended ? go : ()=>{ try{ if(nextDayIsMap()) goToMapForBrowse(); else go(); }catch(_e){ try{ goToMapForBrowse(); }catch(_e2){} } };
   /* v20a202 B1/B2：去向行放 <h3> 之後（第一屏見，唔使碌）；dismiss 提示行 role:"note"
      放掣列尾（sticky 掣欄底，長期可見）。流程／dismissFn 本身唔郁。 */
   try{ btns.push(dayEndDismissNote202(ended)); }catch(_e){}
-  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}${dayLine}`, btns, {onDismiss: dismissFn});
+  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dayLine}${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}`, btns, {onDismiss: dismissFn});
   try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   saveQ();
@@ -21899,6 +22010,7 @@ function resolvePlannedDay(id){
   let notes=[];
   let title=meta.name;
   let fx102Kind=null; /* v20a102 FX102：今個行程日要播邊條片（shoot/job/train 分支內 set；其餘日子 null＝唔播） */
+  let still374=null; /* v374 DAYRES374：冇 fx 片嘅活動用既有資產定格圖做今日畫面（cafe/street/chore/sick 分支內 set） */
 
   let shootFinished=false;
   if(id.startsWith("shoot:")){
@@ -22043,8 +22155,9 @@ function resolvePlannedDay(id){
 else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75ApplyLesson(id); S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; if(typeof actFx102KindForTrain==="function") fx102Kind=actFx102KindForTrain(id); /* v20a102 FX102 */ }
   
   else if(id==="rest"){ notes=apply({stress:-S.stress}); S.weekRestDone370 = (Number(S.weekRestDone370)||0) + 1; /* v20a370 P3-11 */ /* v20a65 FIX65-1（用戶 2026-11-10 拍板）：全日休息＝壓力清零（舊 −(18+R(0,8)) 平均 −22） */ title = `休息（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
-  else if(id==="home_chore"){ notes=apply({money:R(0,200), stress:-(6+R(0,4))}); title = `收拾房間（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
+  else if(id==="home_chore"){ notes=apply({money:R(0,200), stress:-(6+R(0,4))}); title = `收拾房間（週${weekdayName(weekdayIdx(S.dayIndex))}）`; still374="chore"; }
   else if(id==="street"){
+    still374="street";
     /* v20a368 P2 ⑧經濟（評估報告 §六 B7，GPT 方向）：街演日收 $100–160
        （舊 R(300,1200) 均值 $750，單日碾壓多數通告片酬）；同一活動一週第 3 日起收 60%
        （S.ptWeek368 週次計數，舊檔 undefined 即初始化；週次同 weekNumNow 同式）。
@@ -22068,6 +22181,7 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
     title = `街頭表演（週${weekdayName(weekdayIdx(S.dayIndex))}）`;
   }
   else if(id==="cafe_gig"){
+    still374="cafe";
     /* v20a368 P2 ⑧經濟：咖啡店日收 $160–230（舊 R(500,1500) 均值 $1,000）；
        同一活動一週第 3 日起收 60%（計數同 street 共用 S.ptWeek368）。
        v20a371 FIX371-2（第二輪評估 P1-2）：再壓到 $85–115（均值 $100，GPT 錨點），
@@ -22178,7 +22292,8 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   }catch(_e){}
   /* v20a218 C-B2：典禮日日結板加提示——收工之後播典禮，板上先講聲。 */
   const awardCue218 = (()=>{ try{ const c = (typeof awards213MapCue213==="function") ? awards213MapCue213() : ""; return (c && c.indexOf("今晚：")===0) ? `<p class="gold">${c}——收工之後播出。</p>` : ""; }catch(_e){ return ""; } })();
-  const body=`<p>${iconHtml112(meta.icon||"")} ${meta.hint||""}</p>${formatResultNotes(notes)}${awardCue218}`;
+  const progBar374 = (()=>{ const pm = String(meta.hint||"").match(/進度\s*(\d+)\s*\/\s*(\d+)/); if(!pm) return ""; const pct = Math.max(0, Math.min(100, Math.round((Number(pm[1])/Math.max(1,Number(pm[2])))*100))); return `<div class="res-prog374" aria-hidden="true"><i style="width:${pct}%"></i></div>`; })(); /* v374：拍攝進度條（純呈現，讀 meta.hint 既有數字） */
+  const body=`<p>${iconHtml112(meta.icon||"")} ${meta.hint||""}</p>${progBar374}${formatResultNotes(notes)}${awardCue218}`;
   const clearDayRes = ()=>{ try{ document.body.classList.remove("day-res-open"); const m=document.getElementById("mask"); if(m) m.classList.remove("day-res"); }catch(_e){} };
   let advancedNb = false;
   const nextNbRaw=()=>{
@@ -22202,8 +22317,8 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   }
   const isRestCard = (id==="rest" || id==="home_chore");
   const dayLine = isRestCard
-    ? `<p style="font-size:.75rem;color:var(--muted)">完成日：${dayDone} → 現在 ${fmtDate()}</p>`
-    : `<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`;
+    ? `<p class="dayres-date374">完成日：${dayDone} → 現在 ${fmtDate()}</p>`
+    : `<p class="dayres-date374">${fmtDate()}</p>`;
   const critical = !!isCriticalPlanDay(id, shootFinished);
   const blurb = String((notes||[]).map(x=>String(x).replace(/<[^>]+>/g,"")).join(" · ")).slice(0,56);
   /* 加速中：非關鍵日靜默合併，殺青／試鏡／週結停下 */
@@ -22255,7 +22370,7 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   /* v20a202 B2：dismiss 提示行放掣列尾（下面兩個 modal 分支共用呢個 btns）。 */
   try{ btns.push(dayEndDismissNote202(ended)); }catch(_e){}
   const liveHint2 = livingCostDayEndHint();
-  const fx102Html = (typeof actFx102Html==="function") ? actFx102Html(fx102Kind) : ""; /* v20a102 FX102 */
+  const fx102Html = ((typeof actFx102Html==="function") ? actFx102Html(fx102Kind) : "") || (typeof dayResStill374==="function" ? dayResStill374(still374) : ""); /* v20a102 FX102＋v374 冇片活動定格圖 */
   /* v20a196 D1／D7：dismiss 跟下一日行程——排程日＝繼續跑下一日（nextNb，獎勵 sheet 行先），逛逛日＝返地圖。 */
   const dismissNb = ended ? nextNbReward : ()=> afterDayRes(()=>{ try{ if(nextDayIsMap()) goToMapForBrowse(); else nextNb(); }catch(_e){ try{ goToMapForBrowse(); }catch(_e2){} } });
   /* v20a10：休息瞓覺 — 片嵌日結板；文案只留數值；週加速靜默合併唔播 */
@@ -22276,7 +22391,7 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
       saveQ();
     }
   } else {
-    modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${fx102Html}${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}${dayLine}`, btns, {onDismiss: dismissNb});
+    modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dayLine}${fx102Html}${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}`, btns, {onDismiss: dismissNb});
     /* v369 UI369：殺青嗰日喺標題旁蓋「已殺青」紅印（shootFinished 先出，天然去重；DOM 注入唔改模板字串；唔鎖操作）。 */
     try{ if(shootFinished){ const h3w369 = document.querySelector("#mask .modal h3"); if(h3w369){ const spw369 = document.createElement("span"); spw369.className = "wrap-stamp369"; spw369.setAttribute("aria-hidden","true"); spw369.textContent = "已殺青"; h3w369.appendChild(spw369); } } }catch(_w369){}
     try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
@@ -45053,7 +45168,8 @@ function restSleepFxHtml(){
 function formatRestSleepDeltas(notes){
   const arr = (notes||[]).filter(x=>x!=null && String(x).trim()!=="");
   if(!arr.length) return `<div class="result-notes rest-sleep-deltas"><span class="result-line">—</span></div>`;
-  return `<div class="result-notes rest-sleep-deltas">${arr.map(x=>`<div class="result-line">${x}</div>`).join("")}</div>`;
+  /* v374：跟 formatResultNotes 同一分類（分類器嵌喺佢入面），只換容器 class */
+  return formatResultNotes(arr).replace('class="result-notes"', 'class="result-notes rest-sleep-deltas"');
 }
 function stopRestSleepFxInModal(){
   _restSleepFxArmed = false;
@@ -45208,7 +45324,7 @@ function presentRestSleepDayEnd(opts){
   const dismissFn = ended ? goSchedule : ()=>{ try{ if(nextDayIsMap()) goMap(); else goSchedule(); }catch(_e){ goMap(); } };
   /* v20a202 B1/B2：去向行放 <h3> 之後（第一屏見）；dismiss 提示行放掣列尾。流程／dismissFn 唔郁。 */
   try{ btns.push(dayEndDismissNote202(ended)); }catch(_e){}
-  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${body}${gold}`, btns, {onDismiss: dismissFn});
+  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}<p class="dayres-date374">${fmtDate()}</p>${body}${gold}`, btns, {onDismiss: dismissFn});
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   armRestSleepFxInModal();
   saveQ();
@@ -45282,6 +45398,20 @@ function actFx102KindForTrain(cid){
   if(cid==="train_stamina") return "trainC";
   if(cid==="train_acting" || cid==="train_stage" || cid==="train_charm" || cid==="train_iq") return "trainA";
   return null;
+}
+/* v374 DAYRES374：冇 fx 片嘅日結活動——用既有資產定格圖做「今日畫面」橫幅
+   （cafe＝fx_train_b 室內演出定格；street＝fx_shoot_ext 街景定格裁走攝製器材；
+   chore/sick＝主角立繪）。定格圖由既有 fx 片抽幀，唔係佔位圖形；純呈現。 */
+const DAYRES_STILL374 = {
+  cafe:  { src:"assets/fx/still_cafe374.jpg", tag:"咖啡店駐場", bust:false },
+  street:{ src:"assets/fx/still_street374.jpg", tag:"街頭表演", bust:false },
+  chore: { src:"assets/dialog/char_hero_bust_default.png", tag:"收拾房間", bust:true },
+  sick:  { src:"assets/dialog/char_hero_bust_eyes_down.png", tag:"病假", bust:true }
+};
+function dayResStill374(kind){
+  const d = kind ? DAYRES_STILL374[kind] : null;
+  if(!d) return "";
+  return `<div class="dayres-still374${d.bust?" bust374":""}"><img src="${d.src}" alt=""/><span class="dayres-tag374">${d.tag}</span></div>`;
 }
 function actFx102Html(kind){
   const src0 = kind ? ACT_FX102[kind] : null;

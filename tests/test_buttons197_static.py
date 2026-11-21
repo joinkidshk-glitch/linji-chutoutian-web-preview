@@ -54,10 +54,10 @@ ok('B3：跳過掣 CSS 搬去底邊（v20a207 B3：absolute bottom:8 right:8，�
 # 實駕揭露舊版 :not(.tut-on) 喺 tut-on 態下完全冇生效（兩板都係 tut-on，掣 y 差 70px
 # 同 review 數字逐 px 相同），且兩板 anchor 唔同（拍攝板 tut-on 置中／休息板 v18a 貼底）。
 # 所以高度規則唔再排除 tut-on，另加 anchor 統一做 flex-end 底錨。
-ok('B4：日結板 modal 固定高度（78dvh，矮屏 92dvh；唔再排除 tut-on）',
-   '#mask.day-res .modal{ height: min(78dvh,78svh,720px) !important; }' in src
+ok('B4：日結板 modal 內容高度（v374 改：height:auto＋max-height 92dvh 上限，短卡唔空肚；唔再排除 tut-on）',
+   '#mask.day-res .modal{ height:auto !important; max-height:min(92dvh,92svh,720px) !important; }' in src
    and '#mask.day-res:not(.tut-on) .modal{ height:' not in src
-   and 'height: min(92dvh,92svh,720px) !important;' in src)
+   and 'max-height: min(92dvh,92svh,720px) !important;' in src)
 ok('B4：日結板 mask anchor 統一底錨（拍攝板置中 vs 休息板貼底係根因）',
    '#mask.day-res{ align-items: flex-end !important; }' in src)
 ok('B4：日結板三條路徑一律掛 day-res（流程邏輯唔郁，只郁幾何）',
