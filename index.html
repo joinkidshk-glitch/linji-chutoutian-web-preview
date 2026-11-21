@@ -5808,7 +5808,161 @@ body.day-res-open .day-row{
   #home-pane-plan:has(#btn-confirm-plan.is-locked) .nb-range{ margin-bottom:2px !important; }
   #nb-actions:has(#btn-confirm-plan.is-locked){ padding:6px 10px calc(6px + env(safe-area-inset-bottom)); } /* v20a197 B2：鎖定態 bar padding 同未確認態一致（舊 5px 會令印章 y 差 1px） */
 }
-/* === v20a145 BOOK145 完 === */</style>
+/* === v20a145 BOOK145 完 === */
+/* ===== v362 UI362：四屏改善（HUD／手帳／故事／結算）＋共通動畫 =====
+   方向二「紙本手帳 · 實物劇組」：先減撳、再加動畫。動畫只用喺「落實決定」
+   同「睇結果」兩刻，唔鎖下一步。字體：印刷體 Noto Serif CJK TC 棧、
+   手寫體 LXGW WenKai 棧（系統字 fallback，唔載 webfont）。 */
+
+/* --- (0) 共通：按壓反饋＋modal 滑入＋tab 淡入 --- */
+#app button{ transition:transform .09s ease, filter .09s ease; }
+#app button:active{ transform:translateY(1px) scale(.985); filter:brightness(.94); }
+#app button:disabled:active{ transform:none; filter:none; }
+#mask.on .modal{ animation:modalIn362 .22s ease-out; }
+@keyframes modalIn362{ from{ opacity:0; transform:translateY(16px); } to{ opacity:1; transform:translateY(0); } }
+#v-home .home-pane.on{ animation:paneIn362 .16s ease-out; }
+@keyframes paneIn362{ from{ opacity:0; transform:translateY(4px); } to{ opacity:1; transform:translateY(0); } }
+
+/* --- (1) HUD：關鍵數字放大到可讀（標籤 ≥12px、數值 ≥15px） --- */
+.bar .bar-secondary.dual-hud{ min-height:28px !important; padding:5px 0 3px !important; }
+.bar .bar-secondary .dual-compact{
+  font-size:.78rem !important; height:24px !important; line-height:24px !important;
+  color:rgba(245,230,192,.82) !important;
+}
+.bar .bar-secondary .dual-compact .dual-lab,
+.bar .bar-secondary .dual-compact .dual-mid,
+.bar .bar-secondary .dual-compact .dual-sep{
+  font-size:.78rem !important; line-height:24px !important;
+  color:rgba(245,230,192,.82) !important;
+}
+.bar .bar-secondary .dual-compact b{
+  font-size:.98rem !important; line-height:24px !important;
+  color:#F2EBD8 !important; margin-left:2px !important;
+}
+.bar .bar-secondary .dual-compact .dual-sep{ margin:0 5px !important; }
+#app .hud-stress-lab{ font-size:.78rem !important; }
+#app .hud-stress-val{ font-size:.95rem !important; }
+#app .hud-stress-max{ font-size:.68rem; font-weight:700; opacity:.65; margin-left:1px; }
+.bar .bar-primary .dual-money b{ font-size:.98rem !important; }
+.bar .bar-primary .dual-money-sym{ font-size:.85rem !important; }
+/* HUD 數值變化浮字 */
+.hud-float362{
+  position:absolute; right:0; top:-14px; z-index:5; pointer-events:none;
+  font-size:.72rem; font-weight:900; font-variant-numeric:tabular-nums;
+  animation:floatNum362 1.05s ease-out forwards;
+}
+.hud-float362.up{ color:#7fd6a8; }
+.hud-float362.down{ color:#ff9a8a; }
+@keyframes floatNum362{
+  0%{ opacity:0; transform:translateY(4px); }
+  18%{ opacity:1; }
+  100%{ opacity:0; transform:translateY(-12px); }
+}
+
+/* --- (2) 行程手帳：觸控區 ≥44px＋像素貼紙＋主掣突出 --- */
+#nb-days .day-row{ min-height:48px !important; padding:6px 10px !important; }
+#nb-days .day-row .nm{ font-size:.85rem !important; }
+#nb-days .day-row .nm .plan-main{
+  font-family:"LXGW WenKai","Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif;
+  font-size:.95rem;
+}
+#home-tabs .home-tab{ min-height:44px !important; }
+#home-subtabs .home-tab{ min-height:44px !important; font-size:.8rem !important; }
+#nb-live-stress{ min-height:44px !important; }
+.nb-stk362{
+  flex:0 0 auto; width:38px; height:38px; border-radius:8px; overflow:hidden;
+  border:1px solid rgba(160,124,32,.5); background:#1c130c;
+  box-shadow:0 1px 3px rgba(60,40,10,.35);
+  animation:stkBob362 2.6s ease-in-out infinite;
+}
+.nb-stk362 video{ width:100%; height:100%; object-fit:cover; display:block; }
+@keyframes stkBob362{ 0%,100%{ transform:translateY(0) rotate(-1deg); } 50%{ transform:translateY(-2px) rotate(1deg); } }
+#btn-confirm-plan{
+  min-height:54px !important; font-size:1.05rem !important; font-weight:900 !important;
+  padding:12px 22px !important;
+}
+#btn-confirm-plan.is-locked{ animation:stampIn362 .3s ease-out; }
+@keyframes stampIn362{
+  0%{ opacity:0; transform:scale(1.7) rotate(-8deg); }
+  60%{ opacity:1; transform:scale(.94) rotate(-3deg); }
+  100%{ opacity:1; transform:scale(1) rotate(-4.5deg); }
+}
+/* 衣櫃／瞓覺掣換紙標籤（唔再係灰色網頁掣） */
+#home265-row button.paper{
+  background:#fbf3df !important; border:1px solid #b99b62 !important; border-radius:3px !important;
+  color:#3a2e22 !important; min-height:44px !important;
+  font-family:"LXGW WenKai","Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif !important;
+  font-weight:800 !important; box-shadow:0 1px 0 rgba(107,78,46,.35) !important;
+}
+
+/* --- (3) 故事播放：撕邊便條紙對話框＋進度＋人物入場＋逐句淡入 --- */
+#mask.story-play-on:has(.sp-mode-dialogue) .story-play .dlg106-plate,
+#mask.story-play-on:has(.sp-mode-narration) .story-play .dlg106-plate{
+  background:linear-gradient(174deg,#fdf6e0,#f6ead0 70%,#f1e2ba) !important;
+  border:1px solid #c9ab6a !important; border-radius:3px !important;
+  box-shadow:0 6px 16px rgba(30,20,8,.35) !important;
+  transform:rotate(-.5deg);
+}
+#mask.story-play-on:has(.sp-mode-dialogue) .story-play .dlg106-plate::before,
+#mask.story-play-on:has(.sp-mode-narration) .story-play .dlg106-plate::before{
+  content:""; position:absolute; top:-9px; left:50%; margin-left:-34px;
+  width:68px; height:16px; background:rgba(232,214,150,.75);
+  border-left:1px dashed rgba(160,124,32,.4); border-right:1px dashed rgba(160,124,32,.4);
+  transform:rotate(1.5deg); pointer-events:none;
+}
+.story-play .dlg106-plate{ position:relative; }
+.story-play .sp-speaker{
+  font-family:"LXGW WenKai","Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif;
+  font-size:1rem !important;
+}
+.story-play .sp-line{ animation:lineIn362 .18s ease-out; }
+@keyframes lineIn362{ from{ opacity:0; } to{ opacity:1; } }
+.story-play .dlg106-char.char-in362{ animation:charFade362 .32s ease-out; }
+@keyframes charFade362{ from{ opacity:0; } to{ opacity:1; } }
+.sp-prog362{
+  position:absolute; top:8px; right:10px; z-index:6; pointer-events:none;
+  background:rgba(28,19,12,.55); color:#f2ebd8; border-radius:99px;
+  padding:2px 10px; font-size:.72rem; font-weight:800; font-variant-numeric:tabular-nums;
+}
+#mask.story-play-on #modal-btns button.sp-auto362.on{
+  background:#C9A227 !important; color:#1A1410 !important; border-color:#C9A227 !important;
+}
+
+/* --- (4) 結算：主掣突出＋結果逐行入場＋雙軌浮字 --- */
+#mask:not(.tut-on) #modal-btns button.p{ min-height:52px; font-size:1.02rem; }
+#mask.story-play-on:has(.sp-mode-dialogue) #modal-btns button.p,
+#mask.story-play-on:has(.sp-mode-narration) #modal-btns button.p{ min-height:44px; font-size:.95rem; }
+.result-notes .result-line{ animation:resultIn362 .25s ease-out both; }
+.result-notes .result-line:nth-child(2){ animation-delay:.05s; }
+.result-notes .result-line:nth-child(3){ animation-delay:.1s; }
+.result-notes .result-line:nth-child(4){ animation-delay:.15s; }
+.result-notes .result-line:nth-child(5){ animation-delay:.2s; }
+.result-notes .result-line:nth-child(6){ animation-delay:.25s; }
+.result-notes .result-line:nth-child(n+7){ animation-delay:.3s; }
+@keyframes resultIn362{ from{ opacity:0; transform:translateY(5px); } to{ opacity:1; transform:translateY(0); } }
+.story-play .sp-dual .good, .story-play .sp-dual .bad{
+  display:inline-block; animation:dualFloat362 .8s ease-out;
+}
+@keyframes dualFloat362{
+  0%{ opacity:0; transform:translateY(6px) scale(1.25); }
+  30%{ opacity:1; }
+  100%{ opacity:1; transform:translateY(0) scale(1); }
+}
+.story-play .sp-dual b{ font-size:1.05rem; font-variant-numeric:tabular-nums; }
+
+/* --- 減少動態偏好：停 v362 動畫 --- */
+@media (prefers-reduced-motion: reduce){
+  #mask.on .modal, #v-home .home-pane.on, .story-play .sp-line,
+  .story-play .dlg106-char.char-in362, .result-notes .result-line,
+  .story-play .sp-dual .good, .story-play .sp-dual .bad,
+  .nb-stk362, #btn-confirm-plan.is-locked, .hud-float362{
+    animation:none !important;
+  }
+  #app button{ transition:none !important; }
+  #app button:active{ transform:none; }
+}
+/* ===== v362 UI362 完 ===== */
+</style>
 </head>
 <body>
 <!-- v20a141 BOOK141：手墨抖動 filter defs（ink141／inkSoft141；檔內本無 feTurbulence，無撞名） -->
@@ -5886,7 +6040,7 @@ body.day-res-open .day-row{
         <div class="hud-stress" id="hud-stress" title="壓力：偏高會扣打工收入同試鏡表現">
           <span class="hud-stress-lab">壓力</span>
           <span class="hud-stress-track"><i class="hud-stress-fill" id="hud-stress-fill"></i></span>
-          <b class="hud-stress-val" id="hud-stress-val">0</b>
+          <b class="hud-stress-val" id="hud-stress-val">0</b><span class="hud-stress-max" aria-hidden="true">/100</span>
         </div>
       </div>
     </div>
@@ -10256,6 +10410,23 @@ try{ window.DLG109 = { SCALE:DLG109_HEIGHT_SCALE, scale:dlg109HeightScale, scale
  */
 const StoryPlay = (()=>{
   let _sess = null; /* { node, pack, label, beatIdx, lineIdx, mode } */
+  /* v362 UI362：自動播放狀態＋上一個講者（人物入場動畫用）。 */
+  let _spAuto362 = false, _spAutoTimer362 = null, _spPrevSpeaker362 = null;
+  function spAutoStop362(){
+    _spAuto362 = false;
+    if(_spAutoTimer362){ try{ clearTimeout(_spAutoTimer362); }catch(_e){} _spAutoTimer362 = null; }
+  }
+  function spAutoArm362(){
+    if(!_spAuto362) return;
+    if(_spAutoTimer362) clearTimeout(_spAutoTimer362);
+    _spAutoTimer362 = setTimeout(()=>{
+      _spAutoTimer362 = null;
+      if(!_spAuto362 || !_sess || _sess.mode!=="beats") return;
+      /* 打字未完就等多陣再試；打完先推進（advance 會 render，render 尾再 arm）。 */
+      try{ if(typeof _spReveal!=="undefined" && !_spReveal.done){ spAutoArm362(); return; } }catch(_e){}
+      advance();
+    }, 1200);
+  }
 
   function esc(s){
     return String(s==null?"":s)
@@ -11176,6 +11347,7 @@ const StoryPlay = (()=>{
   }
 
   function showResult(node, choice, result){
+    try{ spAutoStop362(); }catch(_e){}
     const notes = playerNotes(result);
     const lis = notes.map(x=>`<li>${esc(x)}</li>`).join("") || "<li>選擇已記下。</li>";
     const unlocked = newlyOpenAfter(node && node.id);
@@ -11254,7 +11426,8 @@ const StoryPlay = (()=>{
       /* 無下一可播：v20a77 HUB77 改去進度頁睇未開放條件（舊版開劇情列表） */
       btns.push({ label:"進度", role:"g", on:()=>{ clearPendingB01Flag(); try{ if(typeof story165AfterContClear==="function") story165AfterContClear(); }catch(_e){} /* v20a196 D3：主動入去手帳，續鏈放棄 */ try{ enterHome(null, false, "progress"); }catch(_e){} } });
     }
-    btns.push({ label:"關閉", role:"g", on:()=>{
+    /* v362 UI362：冇「下一節」嗰陣「關閉」係主出口，升做主掣（唔再同「進度」同權重）。 */
+    btns.push({ label:"關閉", role: unlocked.length ? "g" : "p", on:()=>{
       try{ if(typeof paintStoryEntryHints==="function") paintStoryEntryHints(); }catch(_e){}
       try{ if(typeof paintBar==="function") paintBar(); }catch(_e){}
       try{ if(typeof scheduleStoryMapRedraw==="function") scheduleStoryMapRedraw("backMap"); else if(typeof drawMap==="function") drawMap(); }catch(_e){}
@@ -11296,6 +11469,20 @@ const StoryPlay = (()=>{
         try{ if(typeof refreshLocAfterStory==="function") refreshLocAfterStory(); }catch(_e){}
       }
     });
+    /* v362 UI362：雙軌數字滾動——由「現值−增量」滾到現值，增量標籤浮字（CSS dualFloat362）。 */
+    try{
+      const d362 = result && result.dual;
+      if(d362){
+        const countUp362 = (el, from, to)=>{
+          if(!el || from===to || from==null || to==null) return;
+          const t0 = performance.now(), dur = 550;
+          const step362 = (t)=>{ const p = Math.min(1,(t-t0)/dur); el.textContent = String(Math.round(from + (to-from)*p)); if(p<1) requestAnimationFrame(step362); };
+          requestAnimationFrame(step362);
+        };
+        if(d362.stageVolume!=null) countUp362(document.querySelector(".sp-stage-volume"), d362.stageVolume-(d362.dStage||0), d362.stageVolume);
+        if(d362.industryCredit!=null) countUp362(document.querySelector(".sp-industry-credit"), d362.industryCredit-(d362.dCredit||0), d362.industryCredit);
+      }
+    }catch(_e){}
     try{ if(typeof paintStoryEntryHints==="function") paintStoryEntryHints(); }catch(_e){}
     try{ if(typeof scheduleStoryMapRedraw==="function") scheduleStoryMapRedraw("storyResult"); else if(typeof drawMap==="function") drawMap(); }catch(_e){} /* v17u debounce pin */
     try{ if(typeof pruneMapTips==="function") pruneMapTips(); }catch(_e){}
@@ -11388,12 +11575,24 @@ const StoryPlay = (()=>{
           </div>
         </div>`;
       }
+      /* v362 UI362：段落進度（第 X／Y 句）——跟 advance 同一 lines 計法。 */
+      const progHtml362 = (()=>{
+        try{
+          const countLines362 = (b)=>{ b=b||{}; return (Array.isArray(b.lines)?b.lines:(b.line?[b.line]:(typeof b.text==="string"&&b.text?[b.text]:[]))).length; };
+          const bs362 = n.beats||[];
+          let tot362 = 0, cur362 = 0;
+          bs362.forEach((b,i)=>{ const c = countLines362(b); tot362 += c; if(i < cur.beatIdx) cur362 += c; });
+          cur362 += (cur.lineIdx|0) + 1;
+          return tot362>1 ? `<div class="sp-prog362" aria-label="對白進度">${cur362}／${tot362}</div>` : "";
+        }catch(_e){ return ""; }
+      })();
       inner = `<div class="story-play sp-cinematic" id="story-play-root">
         ${head}
         ${stageBody}
+        ${progHtml362}
         <div class="sp-actions">
           <button type="button" class="sp-next" data-sp="next">下一句</button>
-          ${spIsForcedStory(n, _sess.pack, _sess.label)?"":`<button type="button" class="sp-skip" data-sp="skip">跳至選項</button>`}
+          <button type="button" class="sp-skip" data-sp="skip">跳至選項</button>
         </div>
       </div>`;
     } else {
@@ -11454,9 +11653,16 @@ const StoryPlay = (()=>{
         try{ if(typeof spRevealSkipOrDone==="function" && !spRevealSkipOrDone()) return; }catch(_e){}
         advance();
       }});
-      if(!spIsForcedStory(n, _sess.pack, _sess.label)){
-        modalBtns.push({ label:"跳至選項", role:"g", stay:true, on:()=>{ try{ if(typeof spRevealCancel==="function") spRevealCancel(); }catch(_e){} skipToChoices(); } });
-      }
+      /* v362 UI362：「跳至選項」開放畀所有故事（連強制主線）——快進只跳對白，
+         抉擇同 reconfirm 照舊，玩家唔會錯過決定位。 */
+      modalBtns.push({ label:"跳至選項", role:"g", stay:true, on:()=>{ try{ if(typeof spRevealCancel==="function") spRevealCancel(); }catch(_e){} skipToChoices(); } });
+      /* v362 UI362：自動播放開關——開咗之後每句打字完停 1.2 秒自動下一句，
+         到抉擇自動停（render 入 choices 模式會清旗）。 */
+      modalBtns.push({ label: _spAuto362 ? "自動：開" : "自動播放", role:"g", cls:"sp-auto362"+(_spAuto362?" on":""), stay:true, on:(btn)=>{
+        _spAuto362 = !_spAuto362;
+        try{ if(btn){ btn.textContent = _spAuto362 ? "自動：開" : "自動播放"; btn.classList.toggle("on", _spAuto362); } }catch(_e){}
+        if(_spAuto362) spAutoArm362(); else spAutoStop362();
+      }});
     } else {
       /* v20a128 A3 N4：抉擇屏留紙卡，刪重複嘅金色大掣——紙卡（.sp-choice）本身就係
          可撳選項（root click handler 行 data-sp-choice → pickChoice），唔再喺
@@ -11500,7 +11706,17 @@ const StoryPlay = (()=>{
       }catch(_hide){}
       root.addEventListener("click", (e)=>{
         const t = e.target.closest("[data-sp],[data-sp-choice]");
-        if(!t) return;
+        if(!t){
+          /* v362 UI362：對白模式撳舞台任何位置＝下一句（唔使追細字連結掣）。
+             掣／連結本身唔行呢條路；stopPropagation 防 mask dismiss 重開畫面。 */
+          if(_sess && _sess.mode==="beats" && !e.target.closest("button, a, input, select, textarea, [role='button']")){
+            e.preventDefault();
+            e.stopPropagation();
+            try{ if(typeof spRevealSkipOrDone==="function" && !spRevealSkipOrDone()) return; }catch(_e){}
+            advance();
+          }
+          return;
+        }
         e.preventDefault();
         e.stopPropagation();
         if(t.hasAttribute("data-sp-choice")){
@@ -11524,6 +11740,21 @@ const StoryPlay = (()=>{
           _sess = null;
         }
       });
+      /* v362 UI362：人物入場——講者換人嗰陣，新講者全身圖淡入（唔郁 flip transform）。 */
+      try{
+        const stage362 = root.querySelector(".sp-stage[data-speaker-id]");
+        const spk362 = stage362 ? stage362.getAttribute("data-speaker-id") : null;
+        if(spk362 && spk362 !== _spPrevSpeaker362){
+          const img362 = root.querySelector(`img.dlg106-char[data-dlg-id="${spk362}"]`);
+          if(img362) img362.classList.add("char-in362");
+        }
+        _spPrevSpeaker362 = spk362;
+      }catch(_e){}
+      /* v362 UI362：自動播放——對白模式 arm 下一句；入抉擇模式停。 */
+      try{
+        if(_sess && _sess.mode==="beats") spAutoArm362();
+        else spAutoStop362();
+      }catch(_e){}
     }catch(_e){}
   }
 
@@ -16459,6 +16690,7 @@ function refreshMoneyHud(){
     const amt = raw.toLocaleString();
     const moneyEl=document.getElementById("c-money");
     if(moneyEl) moneyEl.textContent = amt;
+    try{ hudFloat362("c-money", raw); }catch(_hf){}
     const wrap=document.getElementById("c-money-wrap");
     const lv = (typeof moneyThreatLevel==="function") ? moneyThreatLevel() : "ok";
     const tip = (typeof moneyThreatPlayerLine==="function") ? (moneyThreatPlayerLine()||"") : "";
@@ -19981,6 +20213,22 @@ function syncConfirmPlanStamp197(locked){
   el.style.display = "inline-block";
   return el;
 }
+/* v362 UI362：手帳像素貼紙——plan id → fx 片 kind（跟 actFx102 同一套資產同版本參數）。 */
+function nbStickerKind362(planId){
+  const s = String(planId||"");
+  if(s.startsWith("shoot:")) return "shoot";
+  if(s.startsWith("job:") || s.startsWith("audition:")) return "audition";
+  if(s.startsWith("train_")) return (typeof actFx102KindForTrain==="function") ? actFx102KindForTrain(s) : null;
+  if(s==="rest" || s==="home_chore") return "rest";
+  return null;
+}
+function nbStickerHtml362(kind){
+  try{
+    if(!kind || typeof ACT_FX102==="undefined" || !ACT_FX102[kind]) return "";
+    const v = kind==="shoot" ? "20a130" : kind==="trainC" ? "20a264" : kind==="rest" ? "20a10" : "20a139";
+    return `<span class="nb-stk362" aria-hidden="true"><video muted loop autoplay playsinline preload="metadata" src="${ACT_FX102[kind]}?v=${v}"></video></span>`;
+  }catch(_e){ return ""; }
+}
 function renderNotebook(){
   if(!planDraft || planDraft.length!==7) planDraft = (S.weekPlan && S.weekPlan.length===7) ? S.weekPlan.slice() : defaultWeekPlan();
   document.getElementById("nb-range").textContent = (typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel();
@@ -20011,18 +20259,12 @@ function renderNotebook(){
     btn.className="day-row"+(planSelDay===i?" on":"")+(locked?" locked":"")+(editable && !locked?" hint-edit":"");
     const hint = locked ? "拍攝檔期已定 · 不可改" : (editable ? "" : (meta.hint||""));
     const hintHtml = hint ? `<span class="plan-hint">${hint}</span>` : "";
-    btn.innerHTML=`<span class="wd">週${weekdayName(i)}</span><span class="ic">${iconHtml112(meta.icon)}</span><span class="nm"><span class="plan-main">${meta.name}</span>${hintHtml}</span>`;
-    if(editable && !locked){
-      const cp=document.createElement("span");
-      cp.className="cp";
-      cp.setAttribute("role","button");
-      cp.tabIndex=0;
-      cp.title="複製到其他日";
-      cp.textContent="⧉ 複製";
-      cp.onclick=(e)=>{ e.stopPropagation(); openCopyFromDay(i); };
-      cp.onkeydown=(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); e.stopPropagation(); openCopyFromDay(i); } };
-      btn.appendChild(cp);
-    }
+    /* v362 UI362：像素貼紙——有對應 fx 片嘅活動用細片做貼紙（真資產 assets/fx/），
+       取代靜態 icon；冇片嘅活動（逛逛／街頭／咖啡店）照舊 icon。 */
+    const stk362 = nbStickerHtml362(nbStickerKind362(planDraft[i]));
+    btn.innerHTML=`<span class="wd">週${weekdayName(i)}</span>${stk362||`<span class="ic">${iconHtml112(meta.icon)}</span>`}<span class="nm"><span class="plan-main">${meta.name}</span>${hintHtml}</span>`;
+    /* v362 UI362：逐行「⧉ 複製」刪走（7 粒 45×21 細目標，同「複製到…」批次功能重疊）；
+       複製改行頂部「複製到…」一個入口。openCopyFromDay 函數保留（批次面板仍用）。 */
     btn.onclick=()=>{
       planSelDay=i;
       try{ if(typeof planCatForId==="function") planCat = planCatForId(planDraft[i]); }catch(_e){}
@@ -20874,7 +21116,8 @@ function dayEndContinueButtons(ended, goRunSchedule, opts){
        「開始今日行程」；下一日係逛逛日會行上面 nextIsMap 分支（照出「返回地圖」）。
        v20a189 嗰粒 soft「返回地圖」真返地圖嘅修法保留喺 map 分支（行 goRunSchedule 經獎勵流程），
        呢度唔再出。 */
-    btns.push({label:"開始今日行程", role:"g", on:goRunSchedule});
+    /* v362 UI362：soft 排程日嘅「開始今日行程」係唯一主行動，升做主掣色（唔再係次要灰掣）。 */
+    btns.push({label:"開始今日行程", role:"p", on:goRunSchedule});
   }
   /* v20a189：加速降級——唔再係同行大掣，改做掣列下方細連結（role "link"，modal() 另行渲染）；
      點落去照行 confirmWeekAccel 確認 modal，流程唔郁。放最後，等主掣先渲染。 */
@@ -21837,10 +22080,33 @@ function maybeNudgeStoryEntry(reason){
   return true;
 }
 
+/* v362 UI362：HUD 數值變化浮字——paintBar/refreshMoneyHud 寫入新值嗰陣，
+   同上次值比較，有變就喺數字旁浮 +N/−N（1 秒淡出，唔阻操作）。 */
+const _hudPrev362 = {};
+function hudFloat362(id, val){
+  try{
+    const v = Number(val)||0;
+    const prev = _hudPrev362[id];
+    _hudPrev362[id] = v;
+    if(prev==null || prev===v) return;
+    const el = document.getElementById(id);
+    if(!el || !el.parentElement) return;
+    const host = el.parentElement;
+    if(getComputedStyle(host).position==="static") host.style.position = "relative";
+    const d = v - prev;
+    const s = document.createElement("span");
+    s.className = "hud-float362 " + (d>0 ? "up" : "down");
+    s.textContent = (d>0 ? "+" : "") + d.toLocaleString();
+    s.setAttribute("aria-hidden","true");
+    host.appendChild(s);
+    setTimeout(()=>{ try{ s.remove(); }catch(_e){} }, 1100);
+  }catch(_e){}
+}
 function paintBar(){
   const dual = (S && typeof syncDualTracks==="function") ? syncDualTracks(S) : { stageVolume:0, industryCredit:0 };
   const sv=document.getElementById("c-stage-volume"); if(sv) sv.textContent = String(dual.stageVolume);
   const ic=document.getElementById("c-industry-credit"); if(ic) ic.textContent = String(dual.industryCredit);
+  try{ hudFloat362("c-stage-volume", dual.stageVolume); hudFloat362("c-industry-credit", dual.industryCredit); }catch(_hf){}
   const era=document.getElementById("c-era");
   if(era){
     const dt=dateObj();
@@ -21946,6 +22212,7 @@ function paintBar(){
     if(hsFill) hsFill.style.width=Math.max(0,Math.min(100,hsVal))+"%";
     const hsNum=document.getElementById("hud-stress-val");
     if(hsNum) hsNum.textContent=String(hsVal);
+    try{ hudFloat362("hud-stress-val", hsVal); }catch(_hf){}
     const hsBox=document.getElementById("hud-stress");
     /* v20a108 UI108 S-11：bar 過 70 轉紅色脈動（跟已有 ≥70 警號機制齊）。 */
     if(hsBox){ hsBox.classList.toggle("warn", hsVal>=52 && hsVal<70); hsBox.classList.toggle("danger", hsVal>=70); }

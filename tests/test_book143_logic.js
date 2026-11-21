@@ -23,10 +23,10 @@ ok('快捷四掣 onclick 綁定齊（rest／train／clear／copy）',
 ok('套用複製＋預設三掣綁定齊',
   html.includes('apply.onclick=()=>applyCopyToTargets()')
   && html.includes('selectCopyPreset(b.getAttribute("data-copy"))'));
-ok('每行「複製」生成邏輯仲喺度（cp.onclick → openCopyFromDay，鍵盤 Enter／Space 一樣）',
-  html.includes('cp.textContent="⧉ 複製"')
-  && html.includes('cp.onclick=(e)=>{ e.stopPropagation(); openCopyFromDay(i); }')
-  && html.includes('if(e.key==="Enter"||e.key===" "){ e.preventDefault(); e.stopPropagation(); openCopyFromDay(i); }'));
+ok('逐行「複製」已刪（v362 UI362：7 粒 45×21 細目標拎走；複製改行頂部「複製到…」批次入口，openCopyFromDay 函數保留）',
+  !html.includes('cp.textContent="⧉ 複製"')
+  && html.includes('function openCopyFromDay(')
+  && html.includes('copy.onclick=()=>toggleCopyPanel()'));
 ok('還原＋確定綁定齊（resetPlanDraft／confirmPlan）',
   html.includes('document.getElementById("btn-reset-plan").onclick=resetPlanDraft')
   && html.includes('document.getElementById("btn-confirm-plan").onclick=confirmPlan'));

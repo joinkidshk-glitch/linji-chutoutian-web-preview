@@ -1,4 +1,5 @@
 # v20a108 UI108 視覺統一包（B 級）・靜態守門測試（工人 C 範圍：D-5＋S-1/2/4/5/7/8/9/11/18/20/27/29/33/34/36）。
+# v20a362：逐行「⧉ 複製」掣已刪（UI362），S-18 改做缺席斷言。
 # 用法：python3 tests/test_ui108_static.py [path-to-index.html]
 # 反證意識：每項同時驗「新寫法在」＋「舊寫法不在」（舊寫法出現即 FAIL）。
 # 注意 S-9 舊直角框規則保留喺檔（被 v108 規則後發覆蓋），故用「位置先後」驗覆蓋而非「舊字串消失」。
@@ -86,7 +87,7 @@ ok('S-11 danger 脈動 keyframes', '@keyframes hudStressPulse108' in html)
 ok('S-11 爆表文案門檻 90 保留（只改 HUD 顏色門檻）', 'if(stVal>=90) stMsg.textContent="爆表"' in html)
 
 # S-18 複製掣加可見標籤
-ok('S-18 ⧉ 加「複製」可見字', 'cp.textContent="⧉ 複製"' in html)
+ok('S-18 逐行「複製」掣已刪（v362 UI362；複製改行頂部批次入口）', 'cp.textContent="⧉ 複製"' not in html)
 
 # S-20 編輯頁「返回地圖」改細掣
 ok('S-20 返回地圖細掣規則', '#home-tab-exit #home-back-map-tabs{ flex:0 0 auto !important; width:auto !important;' in html)

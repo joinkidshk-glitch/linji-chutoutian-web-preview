@@ -596,7 +596,7 @@ function makeEl(){
   eval(extractFn('function iconHtml112'));
   eval(extractFn('function favDots112'));
   const FNS = ['weekdayIdx','weekdayName','weekNumNow','weekRangeLabelFor','weekRangeLabel','stampWeekPlan37','nbShowingPrevWeek37','nbRangeLabel37',
-    'planCatForId','planMeta','isGigWrapped','isGigInProduction','gigActiveShoot','shootDeadlineHud','shootRemain','reqGap','dayPlanLocked','defaultWeekPlan','renderNotebook'];
+    'planCatForId','planMeta','isGigWrapped','isGigInProduction','gigActiveShoot','shootDeadlineHud','shootRemain','reqGap','dayPlanLocked','defaultWeekPlan','nbStickerKind362','nbStickerHtml362','renderNotebook'];
   for(const f of FNS) eval(extractFn('function ' + f + '('));
 
   function nbSave(stamp){

@@ -1,4 +1,5 @@
 # v20a196 日流程自動連跑＋故事播放鎖死返地圖・靜態測試
+# v20a362：soft 分支「開始今日行程」role g→p（UI362 主掣色），斷言同步。
 # 逐字照 NOTES_V20A196 §0（D1–D7）＋§6 實作清單核對。
 # 用法：python3 tests/test_dayflow196_static.py [path-to-index.html]
 # 反證：對 pristine（v191）index 行 → 新函數／新寫法全部唔存在，乾淨 FAIL（唔 crash）。
@@ -88,7 +89,7 @@ ok('dayEndContinueButtons uses shared helper for nextIsMap',
    'const nextIsMap = nextDayIsMap();' in fn_dayend)
 ok('soft branch no longer emits 返回地圖 (only one such label left: the map branch)',
    fn_dayend.count('label:"返回地圖"') == 1
-   and 'label:"開始今日行程", role:"g", on:goRunSchedule' in fn_dayend)
+   and 'label:"開始今日行程", role:"p", on:goRunSchedule' in fn_dayend)
 ok('forced/map/ended branches unchanged',
    'btns.push({label:"開始今日行程", role:"p", on:goRunSchedule});' in fn_dayend
    and 'btns.push({label:"回家結算", role:"p", on:goRunSchedule});' in fn_dayend

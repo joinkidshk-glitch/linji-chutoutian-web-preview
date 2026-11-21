@@ -33,7 +33,7 @@ ok('v196 soft branch has NO 返回地圖 (only the map-branch one left)',
    and 'label:"返回地圖", role:"p", on: (typeof goRunSchedule' in fn  # 只剩 nextIsMap 嗰粒
    and 'label:"返回地圖", role:"p", on:(()=>{ try{ goToMapForBrowse(); }catch(_e){} })}' not in fn)
 ok('soft schedule button still runs goRunSchedule',
-   'label:"開始今日行程", role:"g", on:goRunSchedule' in fn)
+   'label:"開始今日行程", role:"p", on:goRunSchedule' in fn)
 
 # ---- 2：forced／map 分支唔郁 ----
 ok('forced branch unchanged (only 開始今日行程 on goRunSchedule)',
