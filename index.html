@@ -15801,6 +15801,8 @@ function normalizeSaveObj(o){
   /* Soft: 壓力硬上限 100。舊檔高過 100 要夾落。體能係能力，跟 STAT_MAX，唔夾 100。 */
   if(Number(o.stress)>STRESS_MAX) o.stress=STRESS_MAX;
   if(!Array.isArray(o.castingTags)) o.castingTags=[];
+  /* v20a360 P0-2：舊檔回填 genre 標籤（做過喜劇／動作作品但冇標籤嘅舊檔補返，N9/N12 閘先開到）。 */
+  try{ if(typeof castingTagGenreBackfill360==="function") castingTagGenreBackfill360(o); }catch(_e360){}
   if(!Array.isArray(o.postShootRewards)) o.postShootRewards=[];
   if(!Array.isArray(o.awardsLog)) o.awardsLog=[];
   if(!o.awardsFlags || typeof o.awardsFlags!=="object") o.awardsFlags={};
@@ -18847,20 +18849,27 @@ function defaultWeekPlan(){
     const debts = ((S && S.mockDebts) || []).length;
     const plan = base.slice();
     const actingN = Number(tc.train_acting)||0;
-    if(!en.train_acting || actingN<2){
+    if(actingN<2){
       plan[1] = "train_acting";
       plan[3] = "scout_all";
-    } else if(en.train_vocal && (Number(tc.train_vocal)||0)<2){
-      /* v20a60 CALIB60-4：歌藝輪替——全弧報告 §6.2.3：舊預設計劃成世唔排歌藝堂，
-         跟預設行嘅玩家聲樂凍結、唱片／音樂線靜靜鎖死而唔知點解。
-         演技夠 2 堂之後，星期二訓練位先輪畀歌藝（夠 2 堂為止），次序同其他主屬性睇齊；
-         未報名歌藝嗰陣唔排（排咗都上唔到堂），保持舊行為。 */
-      plan[1] = "train_vocal";
-    } else if((Number(tc.train_looks)||0)<1 && en.train_looks){
-      plan[1] = "train_looks";
     } else {
-      plan[1] = "scout_all";
-      plan[2] = "street";
+      /* v20a360 P0-3：訓練位輪替保底——舊制演技≥2＋歌藝≥2＋外貌≥1 後訓練位變 scout_all，
+         跟預設計劃嘅玩家全部屬性凍結（W1/W6 實測歌藝凍結 370 日、演技以外零成長）。
+         改為：候選＝已報名課程＋演技＋歌藝（排程上堂唔經報名閘，同演技 bootstrap 同一口徑；
+         歌藝未報名都排，唔好再凍結），揀主屬性最低嗰課（同分揀堂數少、再按固定次序），
+         保證每科都有可見成長。 */
+      const order360 = ["train_acting","train_vocal","train_stage","train_looks","train_charm","train_iq","train_stamina"];
+      const cand360 = order360.filter(cid=> en[cid] || cid==="train_acting" || cid==="train_vocal");
+      let pick360 = "train_vocal";
+      let best360 = null;
+      cand360.forEach(cid=>{
+        const sp = (typeof TRAIN75_SPEC!=="undefined" && TRAIN75_SPEC[cid]) || null;
+        const stat = sp ? (Number(S[sp.main])||0) : 0;
+        const cnt = Number(tc[cid])||0;
+        const key = stat*1000 + cnt;
+        if(best360===null || key<best360){ best360 = key; pick360 = cid; }
+      });
+      plan[1] = pick360;
     }
     if(debts>0){
       plan[4] = "scout_all"; /* 留空位去事務所還人情 */
@@ -20104,6 +20113,9 @@ function enterHome(summary, editable, initialTab){
       }, 40);
     }
   }catch(_e){}
+  /* v20a360 P0-2：genre 標籤回填懶掃——normalize 嗰陣年庫未載入 lookup miss 咗嘅舊檔，
+     入屋嗰刻再掃一次（冪等，已有標籤唔重複）。 */
+  try{ if(typeof castingTagGenreBackfill360==="function") castingTagGenreBackfill360(S); }catch(_e360){}
   /* v20a91 AUD91：入屋嗰刻有到期試鏡消息未公佈 → 補呈現（同 drops 嘅 setTimeout 模式；
      結局鎖定時唔呈現，唔畀 pending 卡住結局流程） */
   try{
@@ -28916,10 +28928,51 @@ function applyCastingTags(tags, opts){
   }
   return added;
 }
+/* v20a360 P0-2：通告 genre → 選角標籤授予表。N9/N12 閘要 tag_comedy/tag_action，
+   舊制只有 gig.tagOnComplete 一條授予路，而全庫 323 張冇一張有 tagOnComplete，
+   標籤結構上攞唔到、E1 不可達（W5 真玩證實：602 日 59 部作品零授予）。
+   改按完成作品 genre 授予：喜劇→tag_comedy「喜劇細胞」；動作／武俠→tag_action「動作好手」；
+   roleLabel「動作替身」同樣授予 tag_action（身手好，含 2 張靈異驚慄替身工）。
+   任何級別完成即授予（標籤係業內印象，唔係成就；臨記做過喜劇組都留低印象）。 */
+const GIG_GENRE_TAG360 = { "喜劇":"tag_comedy", "動作":"tag_action", "武俠":"tag_action" };
+const GENRE_TAG_LABEL360 = { tag_comedy:"喜劇細胞", tag_action:"動作好手" };
+function gigGenreTag360(g){
+  try{
+    if(!g) return null;
+    if(g.roleLabel==="動作替身") return "tag_action";
+    return GIG_GENRE_TAG360[g.genre] || null;
+  }catch(_e){ return null; }
+}
+/* v20a360 P0-2：舊檔回填 genre 標籤——由 wrapHistory＋done_* 旗反推已完成作品，
+   按 genre 補授予。冪等（已有 id／label 唔重複）；唔套雙軌 delta（唔追溯改數值）。
+   年庫未載入嗰陣 lookup 會 miss，enterHome 會再懶掃一次。 */
+function castingTagGenreBackfill360(o){
+  try{
+    if(!o || typeof o!=="object") return;
+    if(!Array.isArray(o.castingTags)) o.castingTags = [];
+    const have = new Set(o.castingTags.map(t=> t && (typeof t==="string" ? t : (t.id||t.label))).filter(Boolean));
+    const want = new Set();
+    const scan = (gid)=>{
+      if(!gid) return;
+      const g = (typeof work59GigLookup==="function") ? work59GigLookup(gid) : null;
+      const gt = gigGenreTag360(g);
+      if(gt) want.add(gt);
+    };
+    (Array.isArray(o.wrapHistory) ? o.wrapHistory : []).forEach(h=> scan(h && h.gigId));
+    Object.keys(o.flags||{}).forEach(k=>{ if(k.indexOf("done_")===0 && o.flags[k]) scan(k.slice(5)); });
+    want.forEach(id=>{
+      if(have.has(id) || have.has(GENRE_TAG_LABEL360[id])) return;
+      o.castingTags.push({ id:id, label:GENRE_TAG_LABEL360[id], at:Date.now(), from:"backfill360" });
+    });
+  }catch(_e){}
+}
 function applyGigTagOnComplete(gigId){
   try{
-    const g = (typeof GIGS!=="undefined" && GIGS) ? GIGS.find(x=>x && x.id===gigId) : null;
-    const tags = g && Array.isArray(g.tagOnComplete) ? g.tagOnComplete : [];
+    const g = (typeof work59GigLookup==="function") ? work59GigLookup(gigId)
+      : ((typeof GIGS!=="undefined" && GIGS) ? GIGS.find(x=>x && x.id===gigId) : null);
+    const tags = g && Array.isArray(g.tagOnComplete) ? g.tagOnComplete.slice() : [];
+    const gt = gigGenreTag360(g);
+    if(gt && tags.indexOf(gt)<0) tags.push(gt);
     if(!tags.length) return [];
     return applyCastingTags(tags, { from: "gig:"+String(gigId||""), applyDual:true });
   }catch(_e){ return []; }
@@ -44867,15 +44920,31 @@ var _week105SettleDone124 = false;
 /* 朝早公佈呈現：到期 pending 逐單揭曉（免費互動，唔耗玩家嗰日行動）；
    全部出完先行 continueFn。冇到期／呈現中 → 回 false，呼叫方照常行。 */
 function aud91PresentDue(continueFn){
-  if(_aud91Presenting) return false;
+  /* v20a360 P0-1：_aud91Presenting 自癒——呈現鏈任何一環拋錯／reveal modal 被其他 modal
+     取代，continuation 永遠唔行，旗 strand，之後所有 reveal 唔呈現（W1/W5 兩 driver 同證：
+     revealDay 過咗 15–23 日仍未呈現、pending 滿 3 張連新試鏡都 block）。
+     旗真但冇 modal 開緊＝上次呈現已死，清旗照呈現；旗真且有 modal 開緊＝真呈現中，照舊回 false。
+     呈現鏈全程同步（掣 on→cont→step→PresentOne→modal），冇合法嘅「旗真＋mask 關」空窗。 */
+  if(_aud91Presenting){
+    let _maskOn360 = false;
+    try{ const _mk360 = document.getElementById("mask"); _maskOn360 = !!(_mk360 && _mk360.classList.contains("on")); }catch(_e360){}
+    if(_maskOn360) return false;
+    _aud91Presenting = false;
+  }
   if(typeof ending78Locked==="function" && ending78Locked()) return false;
   if(!aud91DueList().length) return false;
   _aud91Presenting = true;
-  const done = ()=>{ _aud91Presenting = false; if(typeof continueFn==="function") continueFn(); };
+  let _done360 = false;
+  const done = ()=>{ if(_done360) return; _done360 = true; _aud91Presenting = false; if(typeof continueFn==="function") continueFn(); };
   const step = ()=>{
     const list = aud91DueList();
     if(!list.length){ done(); return; }
-    aud91PresentOne(list[0], step);
+    /* v20a360 P0-1：PresentOne 拋錯唔好 strand 旗——剔走壞單，續呈現其餘到期單。 */
+    try{ aud91PresentOne(list[0], step); }
+    catch(_e360b){
+      try{ S.pendingAud = aud91Ensure().filter(p=>p!==list[0]); }catch(_e360c){}
+      step();
+    }
   };
   try{ toast("何生打嚟——有通告消息。"); }catch(_e){}
   step();

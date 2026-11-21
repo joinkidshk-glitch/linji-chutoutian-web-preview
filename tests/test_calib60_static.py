@@ -72,7 +72,7 @@ chk('漏失窗表齊 12 節點', all(re.search(r'\b%s:\s*\{' % n, _nw) for n in 
 
 # --- (4) 聲樂 ---
 dwp = slice_fn('defaultWeekPlan')
-chk('defaultWeekPlan 輪入 train_vocal', 'plan[1] = "train_vocal"' in dwp)
+chk('defaultWeekPlan 輪入 train_vocal', '"train_vocal"' in dwp and 'plan[1] = pick360' in dwp)  # v360 P0-3：訓練位輪替保底（最低屬性／最少堂數）取代固定輪入，未報歌藝都排
 bj = slice_fn('bestTrainJumpForGig')
 chk('bestTrainJumpForGig frozenVocal', 'frozenVocal' in bj and 'train_vocal' in bj)
 ocd = slice_fn('openCastingNoticeDetail')

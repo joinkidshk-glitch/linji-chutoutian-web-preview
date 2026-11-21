@@ -226,7 +226,7 @@ ok('預設計劃：演技夠 2＋已報歌藝 0 堂 → 星期二排 train_vocal
 S = planState(14, { train_acting: true, train_vocal: true }, { train_acting: 1, train_vocal: 0 });
 ok('預設計劃：演技未夠 2 → 照舊 train_acting 優先', defaultWeekPlan()[1] === 'train_acting');
 S = planState(14, { train_acting: true }, { train_acting: 3, train_vocal: 0 });
-ok('預設計劃：未報歌藝 → 唔排 train_vocal', defaultWeekPlan()[1] !== 'train_vocal');
+ok('預設計劃：未報歌藝 → 照排 train_vocal（v360 P0-3 歌藝保底：排程上堂唔經報名閘，跟預設計劃歌藝唔再凍結）', defaultWeekPlan()[1] === 'train_vocal');
 S = planState(14, { train_acting: true, train_vocal: true, train_looks: true }, { train_acting: 3, train_vocal: 2, train_looks: 0 });
 ok('預設計劃：歌藝夠 2 → 輪返 train_looks（舊次序）', defaultWeekPlan()[1] === 'train_looks');
 S = planState(0, { train_acting: true, train_vocal: true }, { train_acting: 0, train_vocal: 0 });
