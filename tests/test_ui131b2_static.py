@@ -44,8 +44,8 @@ ok('mem-empty60／mem-head60 h3 還原 --navy',
 # 唔郁範圍
 ok('base .req 規則保留深藍盒（其他場合唔郁）',
    '.req{font-size:.78rem;background:#0d1828;' in html)
-ok('.work-csscard59 海報代用卡深藍漸變不變（海報畫面本身，唔係頁底色）',
-   '.work-csscard59{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:12px;background:linear-gradient(160deg,#33355e,#1c1e38 70%)}' in html)
+ok('.work-csscard59 海報代用卡紙底模板（v370 P3-14 GPT 方案，唔係頁底色）',
+   '.work-csscard59{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:14px 12px;background:#F2DFBD}' in html)
 ok('副 tab 結構不變（作品／獎項／回憶）',
    'id="htab-works"' in html and 'id="htab-awards"' in html and 'id="htab-memory"' in html)
 ok('拍攝簿渲染函數 jobs72SectionHtml 不變', 'function jobs72SectionHtml(){' in html)

@@ -128,7 +128,7 @@ ok("錢只喺 buyCostume265 入面扣（其餘 helpers／UI 唔掂錢）",
    len(money_writes) == 1 and "S.money = (S.money||0) - price;" in buy_src)
 ok("wardrobe 寫入只限 owned／equipped（唔寫其他 S 欄）",
    "w.owned.push(id)" in buy_src and "w.equipped = id" in extract_fn("costume265Equip")
-   and not re.search(r"S\.(?!wardrobe\b|money\b)\w+\s*=(?!=)", blk.replace(buy_src, "")) )
+   and not re.search(r"S\.(?!wardrobe\b|money\b|weekRestDone370\b)\w+\s*=(?!=)", blk.replace(buy_src, "")) )  # v20a370 P3-11：weekRestDone370 係休息計數，唔係數值寫入
 ok("解鎖級數用 max(即時, 最高紀錄)，唔用即時 tier（跨年唔會鎖返）",
    "Math.max(live, mx)" in extract_fn("costume265Tier"))
 

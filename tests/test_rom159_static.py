@@ -180,19 +180,19 @@ ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committ
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25499", line_has(26108, "v20a159 ROM159 Phase 1"))
-ok("行號釘 bumpRel 凍結鉤 8020", line_has(8744, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(27002, "COMMIT48_NODES.CMT_lan_commit"))
-ok("行號釘 StoryPlay 預備鉤 10553", line_has(10904, "rom159PrepareNode(node)"))
-ok("行號釘載入覆寫呼叫 14877", line_has(15138, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26248", line_has(26857, "function rom159SoMeetGate"))
+ok("行號釘 ROM159 block 頭 25499", line_has(26126, "v20a159 ROM159 Phase 1"))
+ok("行號釘 bumpRel 凍結鉤 8020", line_has(8755, "rom159GainAllowed(k)"))
+ok("行號釘 CMT_lan_commit 26333", line_has(27020, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 StoryPlay 預備鉤 10553", line_has(10915, "rom159PrepareNode(node)"))
+ok("行號釘載入覆寫呼叫 14877", line_has(15149, "rom159ApplyGiftOverrides()"))
+ok("行號釘 rom159SoMeetGate 26248", line_has(26875, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[26136 - 1])  # v20a159 整合：B1＋B2 後行號 +86；v20a358 resync −424；v361 resync +76；v363 resync +437；v369 resync +181（25968→26136，difflib 核實純漂移）
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[26154 - 1])  # v20a159 整合：B1＋B2 後行號 +86；v20a358 resync −424；v361 resync +76；v363 resync +437；v369 resync +181（25968→26136，difflib 核實純漂移）
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）

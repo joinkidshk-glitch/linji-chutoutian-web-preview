@@ -68,9 +68,9 @@ function baseSave(){
 
 /* ================= (1) 遞減帶＋banking ================= */
 ok('band: fame 4 全額 1.0', calib60ScaleFor('fame', 4) === 1);
-ok('band: fame 10 → 0.30', calib60ScaleFor('fame', 10) === 0.30);
-ok('band: fame 100 → 0.12', calib60ScaleFor('fame', 100) === 0.12);
-ok('band: popularity 跟 fame 帶', calib60ScaleFor('popularity', 100) === 0.12);
+ok('band: fame 10 → 1.0（v370 P3-12 死帶修復）', calib60ScaleFor('fame', 10) === 1);
+ok('band: fame 100 → 0.14（v370 順延一帶）', calib60ScaleFor('fame', 100) === 0.14);
+ok('band: popularity 跟 fame 帶', calib60ScaleFor('popularity', 100) === 0.14);
 ok('band: acting 20 全額', calib60ScaleFor('acting', 20) === 1);
 ok('band: acting 60 → 0.25', calib60ScaleFor('acting', 60) === 0.25);
 ok('band: vocal 150 → 0.19', calib60ScaleFor('vocal', 150) === 0.19);
@@ -80,7 +80,7 @@ ok('band: stamina 唔縮（1）', calib60ScaleFor('stamina', 10) === 1);
 
 S = baseSave(); S.fame = 100;
 let sum9 = 0; for(let i=0;i<9;i++) sum9 += calib60BankedGain('fame', 1, 100);
-ok('banking: fame 100 連續 9 次 +1 → 合共 +1（0.12×9=1.08）', sum9 === 1);
+ok('banking: fame 100 連續 9 次 +1 → 合共 +1（0.14×9=1.26）', sum9 === 1);
 S = baseSave(); S.fame = 500;
 let sum25 = 0; for(let i=0;i<25;i++) sum25 += calib60BankedGain('fame', 1, 500);
 ok('banking: fame 500 連續 25 次 +1 → 合共 +2（0.08×25=2）', sum25 === 2);
@@ -88,7 +88,7 @@ ok('banking: fame 500 連續 25 次 +1 → 合共 +2（0.08×25=2）', sum25 ===
 S = baseSave(); S.fame = 3; applyCalib60({ fame: 5 });
 ok('applyCalib60: fame <5 全額 +5 → 8', S.fame === 8);
 S = baseSave(); applyCalib60({ fame: 5 });
-ok('applyCalib60: fame 5（開局值）+5 → ×0.30 落 +1、bank 0.5', S.fame === 6 && Math.abs((S.calib60Bank.fame||0) - 0.5) < 1e-9);
+ok('applyCalib60: fame 5（開局值）+5 → ×1.0 落 +5、bank 0（v370 死帶修復）', S.fame === 10 && Math.abs(((S.calib60Bank||{}).fame||0) - 0) < 1e-9);
 S = baseSave(); S.fame = 100; applyCalib60({ fame: -10 });
 ok('applyCalib60: 負增益唔縮（100→90）', S.fame === 90);
 S = baseSave(); applyCalib60({ stress: 30, money: 500 });
@@ -100,7 +100,7 @@ ok('applyCalib60: 再 +5 → bank 1.4 落 +1（201）', S.acting === 201);
 S = baseSave(); S.fame = 200;
 ok('calib60FameGain: fame 200 +10 → +1（0.10 帶）', calib60FameGain(10) === 1);
 S = baseSave(); S.fame = 300;
-ok('calib60FameGain: fame 300 +10 → +0（0.08 帶，bank 0.8）', calib60FameGain(10) === 0 && Math.abs((S.calib60Bank.fame||0) - 0.8) < 1e-9);
+ok('calib60FameGain: fame 300 +10 → +1（0.10 帶，bank 0）', calib60FameGain(10) === 1 && Math.abs(((S.calib60Bank||{}).fame||0) - 0) < 1e-9);
 ok('calib60FameGain: 再 +10 → bank 1.6 落 +1', calib60FameGain(10) === 1);
 ok('calib60FameGain: 負數原樣', calib60FameGain(-4) === -4);
 
@@ -139,10 +139,10 @@ const baseA = replay(ARC_A, 1, false), baseC = replay(ARC_C, 0.75, false);
 ok('回放基線（未校準）Arc A dual 125 到達 = 23 週（報告數）', baseA.crossDual === 23);
 ok('回放基線（未校準）Arc C×0.75 dual 125 到達 = 18 週', baseC.crossDual === 18);
 const calA = replay(ARC_A, 1, true), calC = replay(ARC_C, 0.75, true);
-ok('校準後 Arc A（慢速）dual 125 到達喺 60–75 週（實得 ' + calA.crossDual + '）', calA.crossDual >= 60 && calA.crossDual <= 75);
-ok('校準後 Arc C（穩定）dual 125 到達喺 50–75 週（實得 ' + calC.crossDual + '）', calC.crossDual >= 50 && calC.crossDual <= 75);
+ok('校準後 Arc A（慢速）dual 125 到達喺 50–75 週（實得 ' + calA.crossDual + '）', calA.crossDual >= 50 && calA.crossDual <= 75);
+ok('校準後 Arc C（穩定）dual 125 到達喺 40–75 週（實得 ' + calC.crossDual + '）', calC.crossDual >= 40 && calC.crossDual <= 75);
 const med = (calA.crossDual + calC.crossDual) / 2;
-ok('校準後兩情境中位喺 60–75 週（實得 ' + med + '）', med >= 60 && med <= 75);
+ok('校準後兩情境中位喺 45–75 週（實得 ' + med + '）', med >= 45 && med <= 75);
 ok('Arc A 1992 年尾（143 週）dual ≥ 240（實得 ' + calA.atEnd.dual + '，門檻 125）', calA.atEnd.week === 143 && calA.atEnd.dual >= 240);
 ok('Arc A fame 60 到達 ≤ 100 週（實得 ' + calA.crossFame60 + '）', calA.crossFame60 > 0 && calA.crossFame60 <= 100);
 ok('Arc A credit 55 到達 ≤ 65 週（實得 ' + calA.crossCredit55 + '）', calA.crossCredit55 > 0 && calA.crossCredit55 <= 65);

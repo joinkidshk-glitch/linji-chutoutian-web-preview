@@ -27,7 +27,7 @@ def slice_fn(name):
 # --- 區塊本體 ---
 chk('CALIB60 block present', '/* ===== v20a60 CALIB60' in src)
 chk('CALIB60-3 block present', 'CALIB60-3' in src)
-chk('FAME bands const', 'const CALIB60_FAME_BANDS' in src and '[230,0.10]' in src)
+chk('FAME bands const', 'const CALIB60_FAME_BANDS' in src and '[15,1]' in src and '[230,0.12]' in src)  # v20a370 P3-12：×1.0 帶 <15，縮放順延一帶
 chk('ATTR bands const', 'const CALIB60_ATTR_BANDS' in src and '[190,0.19]' in src)
 chk('applyCalib60 defined', 'function applyCalib60(delta)' in src)
 chk('calib60BankedGain defined', 'function calib60BankedGain(key, v, cur)' in src)

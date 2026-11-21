@@ -722,14 +722,20 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .work-card59:nth-child(even){transform:rotate(.6deg)}
 .work-media59{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:2px;background:#2b2118;margin-bottom:7px}
 .work-poster59{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.work-csscard59{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:12px;background:linear-gradient(160deg,#33355e,#1c1e38 70%)}
-.work-csscard59[data-type="電影"]{background:linear-gradient(160deg,#5e2f26,#331a14 70%)}
-.work-csscard59[data-type="電視劇"]{background:linear-gradient(160deg,#274b5c,#152a35 70%)}
-.work-csscard59[data-type="唱片通告"]{background:linear-gradient(160deg,#4d2c50,#281331 70%)}
-.work-csscard59[data-type="廣告"]{background:linear-gradient(160deg,#6b5322,#3a2d12 70%)}
-.work-csscard59[data-type="綜藝"]{background:linear-gradient(160deg,#6e2f43,#3a1624 70%)}
-.work-csscard59::after{content:"";position:absolute;inset:6px;border:1px solid rgba(232,201,125,.55);pointer-events:none}
-.work-csscard59-t{color:#f0d9a0;font-weight:800;font-size:1.02rem;line-height:1.5;text-align:center;letter-spacing:.06em;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+/* v20a370 P3-14：作品牆海報模板（GPT 方案）——紙底墨字、四款按媒介分流，唔加新圖 */
+.work-csscard59{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:14px 12px;background:#F2DFBD}
+.work-csscard59::before{content:attr(data-type);position:absolute;top:8px;left:8px;font-size:11px;font-weight:800;letter-spacing:.08em;color:#8A3028;border:1px solid #8A3028;border-radius:2px;padding:1px 5px;background:rgba(255,248,232,.7)}
+.work-csscard59[data-type="電視劇"]{background:#EFE7D4}
+.work-csscard59[data-type="電視劇"]::before{color:#FFF4DF;background:#365344;border-color:#365344}
+.work-csscard59[data-type="綜藝"]{background:#EFE7D4}
+.work-csscard59[data-type="綜藝"]::before{color:#FFF4DF;background:#7C3346;border-color:#7C3346}
+.work-csscard59[data-type="唱片通告"]{background:radial-gradient(circle at 88% 12%,transparent 0 9px,#6C4F70 9px 10px,transparent 10px 16px,#6C4F70 16px 17px,transparent 17px 24px,#6C4F70 24px 25px,transparent 25px),#E9DECA}
+.work-csscard59[data-type="唱片通告"]::before{color:#2E2934;border-color:#6C4F70}
+.work-csscard59[data-type="廣告"]{background:#F5E8C9}
+.work-csscard59[data-type="廣告"]::before{color:#FFF4DF;background:#765017;border-color:#765017}
+.work-csscard59::after{content:"";position:absolute;inset:6px;border:1px solid rgba(138,48,40,.35);pointer-events:none}
+.work-csscard59[data-type="廣告"]::after{border-style:dashed;border-color:rgba(118,80,23,.5)}
+.work-csscard59-t{color:#38251D;font-weight:800;font-size:1.05rem;line-height:1.5;text-align:center;letter-spacing:.06em}
 .work-name59{font-weight:800;color:var(--navy);font-size:.92rem;line-height:1.35}
 .work-meta59{font-size:.76rem;color:#6b4e2e;font-weight:700;margin-top:2px;line-height:1.4}
 .work-meta59.dim{color:var(--muted-ink);font-weight:600}
@@ -3993,6 +3999,10 @@ body.day-res-open .day-row{
 #home-pane-ledger .ledger-enroll{ font-size:.78rem; color:var(--muted); margin:0; }
 .ending410-title-card{ background:#fff8e8; border:1px solid #c4a574; border-radius:10px; padding:10px 12px; margin:8px 0; }
 .ending410-title{ font-size:1.25rem; font-weight:900; margin:2px 0 6px; }
+/* v20a370 P3-15 C2：結局總結頁對比度（GPT 方案）——淺紙深墨，正文 ≥4.5:1 */
+.modal .ending410-title-card p{ color:#33241C; }
+.modal .ending410-title-card .sub{ color:#5C4738; }
+.modal .ending410-title-card ~ p{ color:#33241C; font-size:.95rem; line-height:1.6; }
 .psr-sheet{ text-align:left; }
 .psr-eyebrow{ font-size:.7rem; letter-spacing:.12em; color:var(--muted); margin:0 0 4px; text-transform:uppercase; }
 .psr-h{ margin:0 0 4px; font-size:1.05rem; }
@@ -7052,6 +7062,7 @@ function costume265Sleep(){
       try{ closeModal(); }catch(_e4){}
       try{ writeTodayPlan("rest"); }catch(_e5){}
       const wd = weekdayName(weekdayIdx(S.dayIndex));
+      S.weekRestDone370 = (Number(S.weekRestDone370)||0) + 1; /* v20a370 P3-11：本週完整休息日計數 */
       const notes = apply({stress:-S.stress}); /* 全日休息同一條數：壓力清零（v65 拍板） */
       try{ if(typeof recordExec105Day==="function") recordExec105Day("rest"); }catch(_e6){}
       const {ended, summary} = tickDay();
@@ -13850,7 +13861,7 @@ function endingSummaryHtml410(){
   return "<h3>" + head410 + "</h3>"
     + "<div class=\"ending410-title-card\"><p class=\"sub\">你的稱號</p><p class=\"ending410-title\">" + endingEsc410(rec.title || "") + "</p>"
     + "<p>事業結局：<b>" + endingEsc410(ENDING410_CAREER_NAMES[rec.career] || rec.career) + "</b>"
-    + (rec.careerVariant ? "（" + endingEsc410(rec.careerVariant) + "版）" : "") + "</p></div>"
+    + ((()=>{ const v370 = rec.careerVariant || ""; const m370 = v370==="rescued" ? "沉唔死" : (v370==="sunk" ? "真沉" : (/^(review\d+|bankrupt)$/.test(v370) ? "" : v370)); return m370 ? "（" + endingEsc410(m370) + "版）" : ""; })()) + "</p></div>"
     + "<p>幕前聲望 <b>" + (rec.fame|0) + "</b> · 業內信用 <b>" + (rec.credit|0) + "</b> · 雙軌總和 <b>" + (rec.dual|0) + "</b></p>"
     + "<p><b>人情總帳：</b>" + endingEsc410(favorLine) + "</p>"
     + favorBreak
@@ -17200,7 +17211,7 @@ function apply(delta){
    參數校準：test_calib60_logic 以 Arc A（慢速）＋Arc C×0.75（穩定）逐週真數據回放驗證——
    dual 125 到達週由 23／18 推遲到 66／57（中位 ~61.5，連同未建模嘅通告入場回饋只會更遲），
    1990 年尾 dual 仍有 260／204（門檻 2.1／1.6 倍），E1 三門檻全部有餘裕。詳見 NOTES_V20A60_CALIB.md。 */
-const CALIB60_FAME_BANDS = [[5,1],[14,0.30],[28,0.22],[50,0.17],[85,0.14],[140,0.12],[230,0.10],[Infinity,0.08]];
+const CALIB60_FAME_BANDS = [[15,1],[28,0.30],[50,0.22],[85,0.17],[140,0.14],[230,0.12],[Infinity,0.10]]; /* v20a370 P3-12：×1.0 帶由 <5 改 <15（開局 fame=5 原本一出世已入 ×0.30 死帶）；其餘縮放順延一帶 */
 const CALIB60_ATTR_BANDS = [[28,1],[55,0.36],[110,0.25],[190,0.19],[Infinity,0.14]];
 const CALIB60_SCALED_KEYS = { fame:1, popularity:1, acting:1, stage:1, vocal:1, looks:1, charm:1, iq:1 };
 function calib60BandScale(bands, x){
@@ -20158,12 +20169,19 @@ function settleWeek(){
     pushFlavor(apply({fame:-2, stress:5}));
     pushFlavor(`<span class="bad">${eventLine("WEEK_LOW_STA")||"體能見底，宜減輕通告。"}</span>`);
   } else if(stressAtEnd<75){
-    // Weekend soft recovery (壓力−6) — must land in S before Monday paintBar
-    pushFlavor(apply({stress:-6}));
-    pushFlavor(`<span class="good">${eventLine("WEEKEND_SOFT")||"週末休息，壓力稍降。"}</span>`);
+    /* v20a370 P3-11：零完整休息日嘅週唔再有週末回復（舊檔未有計數當有休息，唔誤罰） */
+    const rest370 = (S.weekRestDone370==null) ? 1 : (Number(S.weekRestDone370)||0);
+    if(rest370<=0){
+      pushFlavor(`<span class="bad">本週沒有完整休息日，週末也回復不了——壓力留到下週，宜安排休息。</span>`);
+    } else {
+      // Weekend soft recovery (壓力−6) — must land in S before Monday paintBar
+      pushFlavor(apply({stress:-6}));
+      pushFlavor(`<span class="good">${eventLine("WEEKEND_SOFT")||"週末休息，壓力稍降。"}</span>`);
+    }
   } else {
     pushFlavor(`週末稍歇，壓力後遺仍在。`);
   }
+  S.weekRestDone370 = 0; /* v20a370 P3-11：週結後休息計數歸零 */
   if(S.fame>=50 && !S.flags.mid){
     S.flags.mid=true;
     /* 里程碑獎金要入帳；金額大字由 stripSettleMoneyNoise 清走 */
@@ -21856,7 +21874,7 @@ function resolvePlannedDay(id){
   }
 else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75ApplyLesson(id); S.weekTrainDone=(Number(S.weekTrainDone)||0)+1; if(typeof actFx102KindForTrain==="function") fx102Kind=actFx102KindForTrain(id); /* v20a102 FX102 */ }
   
-  else if(id==="rest"){ notes=apply({stress:-S.stress}); /* v20a65 FIX65-1（用戶 2026-11-10 拍板）：全日休息＝壓力清零（舊 −(18+R(0,8)) 平均 −22） */ title = `休息（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
+  else if(id==="rest"){ notes=apply({stress:-S.stress}); S.weekRestDone370 = (Number(S.weekRestDone370)||0) + 1; /* v20a370 P3-11 */ /* v20a65 FIX65-1（用戶 2026-11-10 拍板）：全日休息＝壓力清零（舊 −(18+R(0,8)) 平均 −22） */ title = `休息（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
   else if(id==="home_chore"){ notes=apply({money:R(0,200), stress:-(6+R(0,4))}); title = `收拾房間（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
   else if(id==="street"){
     /* v20a368 P2 ⑧經濟（評估報告 §六 B7，GPT 方向）：街演日收 $100–160
@@ -45078,6 +45096,7 @@ try{
 function doRest(L){
   confirmSpendDay("休息室歇陣", ()=>{
     const wd = weekdayName(weekdayIdx(S.dayIndex));
+    S.weekRestDone370 = (Number(S.weekRestDone370)||0) + 1; /* v20a370 P3-11 */
     const notes=apply({stress:-S.stress}); /* v20a65 FIX65-1（用戶 2026-11-10 拍板）：全日休息（doRest）＝壓力清零（舊 −(14+R(0,8)) 平均 −18） */
     writeTodayPlan("rest");
     closeSheet();
