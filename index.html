@@ -17770,13 +17770,41 @@ function chance(gig){
     keys++; need+=v; score+=Number(S[k])||0;
     if((Number(S[k])||0)>=v) matched++;
   }
-  const ratio = need? score/need : 1;
-  let p = 0.05 + ratio*0.48 - (gig.hard||0.4)*0.28;
-  if(keys && matched===keys) p += 0.10;
-  else if(keys){
-    p *= 0.42;
-    p -= (keys-matched)*0.07;
+  /* v20a368 P2 ⑦試鏡曲線（評估報告 §六 B5，GPT 分段線性方向）：
+     有 req：ratio 1.0→55%、1.25→66%、1.5→75%、2.0→85%（總上限 88%）；
+     無 req（臨記等）：相關能力對基準 30 計比率，0.5→42%、1.0→55%、1.5→68%（封頂 75%）；
+     hard 改做以 0.45 為中心嘅小幅修正（±5% 內），唔再壓低達標底分。
+     舊式 0.05+ratio×0.48−hard×0.28＋全達標 0.10 令 ratio 1.0 得約 44%，同卡面「需要 X」承諾唔一致。 */
+  let p;
+  if(keys){
+    const ratio = need? score/need : 1;
+    const pts=[[0.5,0.33],[1.0,0.55],[1.25,0.66],[1.5,0.75],[2.0,0.85]];
+    if(ratio<=pts[0][0]) p=pts[0][1];
+    else if(ratio>=pts[pts.length-1][0]) p=pts[pts.length-1][1];
+    else{
+      p=pts[pts.length-1][1];
+      for(let i=1;i<pts.length;i++){
+        if(ratio<=pts[i][0]){ const a=pts[i-1],b=pts[i]; p=a[1]+(b[1]-a[1])*(ratio-a[0])/(b[0]-a[0]); break; }
+      }
+    }
+    if(matched!==keys){
+      p *= 0.42;
+      p -= (keys-matched)*0.07;
+    }
+  } else {
+    const statKey = gig.type==="唱片通告" ? "vocal" : gig.type==="綜藝" ? "stage" : gig.type==="廣告" ? "looks" : "acting";
+    const r = (Number(S[statKey])||0)/30;
+    const pts=[[0,0.29],[0.5,0.42],[1.0,0.55],[1.5,0.68]];
+    if(r<=pts[0][0]) p=pts[0][1];
+    else if(r>=pts[pts.length-1][0]) p=pts[pts.length-1][1];
+    else{
+      p=pts[pts.length-1][1];
+      for(let i=1;i<pts.length;i++){
+        if(r<=pts[i][0]){ const a=pts[i-1],b=pts[i]; p=a[1]+(b[1]-a[1])*(r-a[0])/(b[0]-a[0]); break; }
+      }
+    }
   }
+  p -= ((gig.hard||0.4) - 0.45) * 0.25;
   p += (S.npcs.director||0)*0.0005 + (S.npcs.agent||0)*0.0005 + (S.npcs.colleague||0)*0.0003;
   if(S.stamina<25) p *= 0.7;
   if((S.stress||0)>=70) p *= 0.78;
@@ -17784,9 +17812,11 @@ function chance(gig){
   if(S.flags && S.flags.missGigChance){ p *= 0.55; }
   const tier=gig.tier||"初";
   /* v20a229 B2 真五級（SPEC §2.6 數值）：中級 ×0.9、高級／稀有 ×0.82、臨記／初級 ×1.0；
-     舊三級按機械級對位（中→×0.9、高→×0.82）。 */
-  if(tier==="中級" || tier==="中") p *= 0.9;
-  if(tier==="高級" || tier==="稀有" || tier==="高") p *= 0.82;
+     舊三級按機械級對位（中→×0.9、高→×0.82）。
+     v20a368：乘數放寬為中級 ×0.95、高級／稀有 ×0.9——新曲線已用 hard 分難度，
+     舊乘數會令高級達標（ratio 1.0）跌返去四成中，抵銷曲線修正。 */
+  if(tier==="中級" || tier==="中") p *= 0.95;
+  if(tier==="高級" || tier==="稀有" || tier==="高") p *= 0.9;
   const floor = (keys && matched===keys) ? 0.06 : 0.02;
   /* v19z31 soft：入場通告試鏡保底，確保頭幾週可湊齊通告 3／3 → N2 */
   try{
@@ -17795,7 +17825,8 @@ function chance(gig){
       return clamp(p, 0.72, 0.92);
     }
   }catch(_e){}
-  return clamp(p, floor, 0.88);
+  /* v20a368：無 req 通告封頂 75%（GPT 方向），有 req 總上限維持 88%。 */
+  return clamp(p, floor, keys?0.88:0.75);
 }
 /** Concise lock reason for card / toast (no long train essay). */
 function gateShortReason(gig){
@@ -21739,23 +21770,40 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   else if(id==="rest"){ notes=apply({stress:-S.stress}); /* v20a65 FIX65-1（用戶 2026-11-10 拍板）：全日休息＝壓力清零（舊 −(18+R(0,8)) 平均 −22） */ title = `休息（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
   else if(id==="home_chore"){ notes=apply({money:R(0,200), stress:-(6+R(0,4))}); title = `收拾房間（週${weekdayName(weekdayIdx(S.dayIndex))}）`; }
   else if(id==="street"){
-    let pay=R(300,1200);
+    /* v20a368 P2 ⑧經濟（評估報告 §六 B7，GPT 方向）：街演日收 $100–160
+       （舊 R(300,1200) 均值 $750，單日碾壓多數通告片酬）；同一活動一週第 3 日起收 60%
+       （S.ptWeek368 週次計數，舊檔 undefined 即初始化；週次同 weekNumNow 同式）。 */
+    let pay=R(100,160);
+    const wk368=Math.floor(((S&&S.dayIndex)||0)/7)+1;
+    if(!S.ptWeek368 || S.ptWeek368.wk!==wk368) S.ptWeek368={wk:wk368, street:0, cafe_gig:0};
+    S.ptWeek368.street++;
+    const taper368 = S.ptWeek368.street>=3;
+    if(taper368) pay=Math.round(pay*0.6);
     const st=Number(S.stress)||0;
     if(st>=90){ pay=Math.max(50, Math.round(pay*0.2)); }
     else if(st>=70){ pay=Math.max(80, Math.round(pay*0.5)); }
     notes=applyGain60({stage:2, charm:1, fame:R(0,1), popularity:1+R(0,2), money:pay, stress:6+R(0,4)});
     notes.unshift(`<span class="gold">街頭表演日結 · 週${weekdayName(weekdayIdx(S.dayIndex))}</span>`);
+    if(taper368) notes.push(`<span class="var-note">本週多次街頭表演，酬勞按六成計算。</span>`);
     if(st>=90) notes.push(`<span class="bad">壓力爆表：街頭失常，酬勞大幅縮水。</span>`);
     else if(st>=70) notes.push(`<span class="bad">壓力偏高：表現一般，收入打折。</span>`);
     title = `街頭表演（週${weekdayName(weekdayIdx(S.dayIndex))}）`;
   }
   else if(id==="cafe_gig"){
-    let pay=R(500,1500);
+    /* v20a368 P2 ⑧經濟：咖啡店日收 $160–230（舊 R(500,1500) 均值 $1,000）；
+       同一活動一週第 3 日起收 60%（計數同 street 共用 S.ptWeek368）。 */
+    let pay=R(160,230);
+    const wk368=Math.floor(((S&&S.dayIndex)||0)/7)+1;
+    if(!S.ptWeek368 || S.ptWeek368.wk!==wk368) S.ptWeek368={wk:wk368, street:0, cafe_gig:0};
+    S.ptWeek368.cafe_gig++;
+    const taper368 = S.ptWeek368.cafe_gig>=3;
+    if(taper368) pay=Math.round(pay*0.6);
     const st=Number(S.stress)||0;
     if(st>=90){ pay=Math.max(50, Math.round(pay*0.2)); }
     else if(st>=70){ pay=Math.max(80, Math.round(pay*0.5)); }
     notes=applyGain60({charm:2, stage:1, money:pay, fame:R(0,1), popularity:R(0,2), stress:5+R(0,3)});
     notes.unshift(`<span class="gold">咖啡店駐場日結 · 週${weekdayName(weekdayIdx(S.dayIndex))}</span>`);
+    if(taper368) notes.push(`<span class="var-note">本週多次咖啡店駐場，酬勞按六成計算。</span>`);
     if(st>=90) notes.push(`<span class="bad">壓力爆表：Cafe 演出失手，小費大減。</span>`);
     else if(st>=70) notes.push(`<span class="bad">壓力偏高：觀眾反應淡，收入打折。</span>`);
     title = `咖啡店駐場（週${weekdayName(weekdayIdx(S.dayIndex))}）`;

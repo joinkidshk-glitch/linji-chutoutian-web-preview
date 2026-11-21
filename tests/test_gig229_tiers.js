@@ -1,8 +1,8 @@
 // v20a229 B2 真五級引擎・邏輯測試
 // 合約（AUDIT229 §3；SPEC §2.6 數值；DECISIONS.md D-1 引擎升級做真五級，唔用對應表）：
 //   A fameFloor：臨記 0／初級 0／中級 16／高級 32／稀有 32；舊 初／中／高 照舊（0／16／32）
-//   B chance 試鏡乘數：臨記 ×1.0／初級 ×1.0／中級 ×0.9／高級 ×0.82／稀有 ×0.82；
-//     舊 初 ×1.0／中 ×0.9／高 ×0.82 照舊
+//   B chance 試鏡乘數：臨記 ×1.0／初級 ×1.0／中級 ×0.95／高級 ×0.9／稀有 ×0.9（v368 放寬，舊 ×0.9／×0.82）；
+//     舊 初 ×1.0／中 ×0.95／高 ×0.9 照舊
 //   C gigTierKey 五級各自一格（臨記 extra／初級 junior／中級 mid／高級 senior／稀有 rare），
 //     臨記 ≠ 初級；舊 初→junior／中→mid／高→senior 照舊；gigTierCanon229 舊三級對位
 //   D resolveRoleScale fallback 認齊五級；未認得嘅 tier 安全 fallback（唔 throw、唔靜默升格，跌返最低帶）
@@ -87,16 +87,16 @@ function chanceOf(tier, req, sOverride){
   W.setS(s);
   return W.chance({ tier, req: req || {}, hard: 0.4 });
 }
-// req {}：p = 0.05 + 1×0.48 − 0.4×0.28 = 0.418（滿 ratio、無 keys、無 npc／體能／壓力加成）
-const BASE_P = 0.418;
-for(const [tier, mult] of [['臨記',1.0],['初級',1.0],['中級',0.9],['高級',0.82],['稀有',0.82],['初',1.0],['中',0.9],['高',0.82]]){
+// req {}（v368 無 req 曲線）：相關能力 999/30 → 封頂段 0.68，hard 0.4 修正 +(0.45−0.4)×0.25 = +0.0125 → 0.6925
+const BASE_P = 0.6925;
+for(const [tier, mult] of [['臨記',1.0],['初級',1.0],['中級',0.95],['高級',0.9],['稀有',0.9],['初',1.0],['中',0.95],['高',0.9]]){
   ok('B chance ' + tier + ' ×' + mult, approx(chanceOf(tier), BASE_P * mult),
      'got=' + chanceOf(tier) + ' want=' + (BASE_P * mult));
 }
-// 有 req 嗰陣乘數一樣生效：req 全達標（演技 18＝要求 18，ratio 1）→ p = 0.418 + 0.10 = 0.518
-ok('B9 chance 中級（有 req 全達標）= 0.518×0.9', approx(chanceOf('中級', { acting:18 }, { acting:18 }), 0.518 * 0.9),
+// 有 req 嗰陣乘數一樣生效：req 全達標（演技 18＝要求 18，ratio 1）→ v368 曲線 0.55 + hard 修正 0.0125 = 0.5625
+ok('B9 chance 中級（有 req 全達標）= 0.5625×0.95', approx(chanceOf('中級', { acting:18 }, { acting:18 }), 0.5625 * 0.95),
    'got=' + chanceOf('中級', { acting:18 }, { acting:18 }));
-ok('B10 chance 臨記（有 req 全達標）= 0.518×1.0', approx(chanceOf('臨記', { acting:18 }, { acting:18 }), 0.518),
+ok('B10 chance 臨記（有 req 全達標）= 0.5625×1.0', approx(chanceOf('臨記', { acting:18 }, { acting:18 }), 0.5625),
    'got=' + chanceOf('臨記', { acting:18 }, { acting:18 }));
 
 /* ---------- C gigTierKey／gigTierCanon229 ---------- */
