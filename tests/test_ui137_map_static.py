@@ -85,7 +85,7 @@ ok('地區層入面淨低金禧大酒店', '金禧大酒店' in _dist_seg and '�
    and '灣仔' not in _dist_seg and '銅鑼灣' not in _dist_seg)
 
 # --- (4) 地點名 23 個（v159 加 6 個約會新點；v265 加花園街成衣店／阿偉屋企）、舊 15 個 LOCS 座標零改動 ---
-mn = re.findall(r'<div class="mn68"[^>]*>([^<]+)</div>', src)
+mn = re.findall(r'<div class="mn68[^"]*"[^>]*>([^<]+)</div>', src)  # v20a373：容許額外 class（mn68-ask373）
 ok('方案 B 地點標籤恰好 23 個', len(mn) == 23)
 ok('23 個地點名齊（舊 15＋v159 加 6 個約會新點＋v265 加 2 新點）', set(mn) == {
     '獅子山製片', '香江唱片', '星河電視台', '九龍電視台', '海港廣播', '紅棉影業', '維港電影',

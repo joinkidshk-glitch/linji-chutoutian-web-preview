@@ -27,7 +27,7 @@ ok('判定唔依賴軌跡分類（resolve 函數體內冇 trajectoryOf49）',
    'trajectoryOf49' not in block('function resolveEnding410(st, opts)', '/* 前夕抉擇選項生成'))
 ok('E6 只認 opts.quit 主動入口', 'opts.quit' in block('function resolveEnding410(st, opts)', '/* 前夕抉擇選項生成'))
 for frag in ['e1Fame: 60', 'e1Credit: 55', 'e1Dual: 125', 'e4Fame: 50', 'e4CreditBelow: 30',
-             'e4RescueCredits: 2', 'e2Credit: 42', 'e2Fame: 35', 'e3Credit: 42',
+             'e4RescueCredits: 5', 'e2Credit: 42', 'e2Fame: 35', 'e3Credit: 42',
              'e5FavorTotal: 6', 'e5AgentRel: 60', 'almostRelMin: 4']:
     ok('threshold per design: '+frag, frag in blk)
 ok('負標籤清單（專檔：耍大牌／八卦／爛片類＋實際高冷；v20a57 標籤改名）', 'const ENDING_NEG_TAGS410 = ["八卦", "耍大牌", "高冷", "爛片"]' in blk)

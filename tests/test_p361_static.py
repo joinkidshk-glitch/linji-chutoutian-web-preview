@@ -68,7 +68,7 @@ chk('B1 殺青 hook 在位（end95AddWrap 旁）',
 chk('B1 舊檔回填 contractCredit361Backfill＋normalize 呼叫',
     'function contractCredit361Backfill(' in src and 'contractCredit361Backfill(o)' in src)
 
-# B2：E3/E5 提前＋credit>fame 守門（次序：ID→E3→E5→CR→E2）
+# B2：E3/E5 提前＋信用主導守門（次序：ID→E3→E5→CR→E2；v20a373 守門 credit>fame → credit>=fame-10）
 res = slice_fn('resolveEnding410')
 i_id = res.index('career = "ID"')
 i_e3 = res.index('career = "E3"')
@@ -76,8 +76,8 @@ i_e5 = res.index('career = "E5"')
 i_cr = res.index('career = "CR"')
 i_e2 = res.index('career = "E2"')
 chk('B2 判定次序 ID→E3→E5→CR→E2', i_id < i_e3 < i_e5 < i_cr < i_e2)
-chk('B2 E3/E5 有 credit>fame 守門',
-    'credit>fame && endingE3Eligible410(s)' in res and 'credit>fame && (favor.settled + favor.creditsHeld)>=T.e5FavorTotal' in res)
+chk('B2 E3/E5 有信用主導守門（credit>=fame-10，v373）',
+    'credit>=fame-10 && endingE3Eligible410(s)' in res and 'credit>=fame-10 && (favor.settled + favor.creditsHeld)>=T.e5FavorTotal' in res)
 
 # B3：floor 140／warnLine 180＋F2 豁免 helper
 chk('B3 CONSEQ61_REVIEWS 1992 floor 140／warnLine 180',

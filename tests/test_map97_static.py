@@ -45,7 +45,7 @@ ok('舊圖資產保留唔刪（hk_map.jpg／hk_map_full.jpg 仍在；hk_map_v6�
 ok('fallback 仍指現存舊圖（MAP_IMG 未定義時唔會 404）', '"assets/hk_map.jpg"' in src)
 
 # --- (2) 地點標籤沿用：23 個 .mn68（v159 加 6 個約會新點；v265 加花園街成衣店／阿偉屋企） ---
-mn = re.findall(r'<div class="mn68"[^>]*>([^<]+)</div>', src)
+mn = re.findall(r'<div class="mn68[^"]*"[^>]*>([^<]+)</div>', src)  # v20a373：容許額外 class（mn68-ask373）
 ok('方案 B 地點標籤恰好 23 個', len(mn) == 23)
 ok('23 個地點名齊（舊 15 同 v96 一致＋v159 加 6 個約會新點＋v265 加 2 新點）', set(mn) == {
     '獅子山製片', '香江唱片', '星河電視台', '九龍電視台', '海港廣播', '紅棉影業', '維港電影',

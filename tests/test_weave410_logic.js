@@ -259,11 +259,11 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
   ok('負標籤兜底：只有 flag_miss_leak（無標籤）都計 1', r.snapshot.negTags === 1);
 }
 {
-  const held2 = [{ id: 'c1', debtor: '甲', title: '人情一', status: '未收' }, { id: 'c2', debtor: '乙', title: '人情二', status: '未收' }];
-  const r = R({ fame: 55, stage: 0, acting: 0, mockCredits: held2 });
-  ok('E4 沉唔死版：聲量55/信用28＋債權持有 2 → E4 rescued', r.career === 'E4' && r.careerVariant === 'rescued' && r.snapshot.credit === 28);
-  const r2 = R({ fame: 55, stage: 0, acting: 0, mockCredits: held2.slice(0, 1) });
-  ok('E4 真沉版：債權持有 1（<2，門檻唔放寬）→ E4 sunk', r2.career === 'E4' && r2.careerVariant === 'sunk');
+  const held5 = [1,2,3,4,5].map(i=>({ id: 'c'+i, debtor: '甲', title: '人情'+i, status: '未收' }));
+  const r = R({ fame: 55, stage: 0, acting: 0, mockCredits: held5 });
+  ok('E4 沉唔死版：聲量55/信用28＋債權持有 5 → E4 rescued（v20a373 門檻 2→5）', r.career === 'E4' && r.careerVariant === 'rescued' && r.snapshot.credit === 28);
+  const r2 = R({ fame: 55, stage: 0, acting: 0, mockCredits: held5.slice(0, 4) });
+  ok('E4 真沉版：債權持有 4（<5，全脊骨被動債權量）→ E4 sunk（v20a373）', r2.career === 'E4' && r2.careerVariant === 'sunk');
 }
 {
   const r = R({ fame: 40, stage: 50, acting: 35 });

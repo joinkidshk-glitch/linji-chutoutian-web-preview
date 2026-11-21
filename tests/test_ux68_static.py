@@ -74,7 +74,7 @@ ok('sheet 標題加地區、desc 唔重複', 'document.getElementById("loc-title
 # --- (3) 地圖墨字地名（方案 B 定版：index-alt-b.html） ---
 # v128 A1：星河電視台改 plain top（left:26%;top:2%，唔再用 calc 扣 50px）——regex 要識
 # plain top（記做 sign "+"、px "0"），其餘 22 個繼續 calc 格式。
-labels = re.findall(r'<div class="mn68" style="left:([0-9.]+)%;top:(?:calc\((\d+)% ([+-]) (\d+)px\)|([0-9.]+)%)">([^<]+)</div>', src)
+labels = re.findall(r'<div class="mn68[^"]*" style="left:([0-9.]+)%;top:(?:calc\((\d+)% ([+-]) (\d+)px\)|([0-9.]+)%)">([^<]+)</div>', src)  # v20a373：容許額外 class（mn68-ask373）
 labels = [(t[0], t[1] or t[4], t[2] or '+', t[3] or '0', t[5]) for t in labels]
 ok('地圖有 23 個墨字標籤（v20a96 LOC96 加海傍禮品＋仁康醫院；v159 加 6 個約會新點；v265 加花園街成衣店／阿偉屋企）', len(labels) == 23)
 lm = re.search(r'const LOCS = \[(.*?)\n\];', src, re.S)

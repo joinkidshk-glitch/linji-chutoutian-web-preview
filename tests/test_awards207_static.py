@@ -143,7 +143,7 @@ chk('C4 音樂場寫法（v20a218 C-C1：金碟夜 6 月 1 日，「年終」打
 # --- C5：地圖「中環廣告」標籤移離藍塔 ---
 chk('N5 中環廣告 left:40%（v366 新圖對位）', 'left:40%;top:calc(63% + 30px)">中環廣告' in src)
 chk('N5 中環廣告舊 left:60% 唔再出現', 'left:60%;top:calc(57% + 30px)">中環廣告' not in src)
-chk('N5 地圖標籤 15→21→23 個（v159 加 6 個約會新點；v265 加花園街成衣店／阿偉屋企）', src.count('class="mn68"') == 23)
+chk('N5 地圖標籤 15→21→23 個（v159 加 6 個約會新點；v265 加花園街成衣店／阿偉屋企）', src.count('class="mn68') == 23)  # v20a373：count 改前綴（兩標籤帶 mn68-ask373 額外 class）
 chk('N5 其餘標籤唔郁（金鐘創意／灣仔唱片）',
     'left:17%;top:calc(89% + 34px)">金鐘創意' in src and 'left:56%;top:calc(83% + 34px)">灣仔唱片' in src)
 

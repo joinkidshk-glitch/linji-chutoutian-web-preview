@@ -356,7 +356,7 @@ ok('(5) E2 邊界 live 行為：信用 42／聲望 35 入閘，差 1 唔入', ((
   const c = endingE2Eligible410(S)===false;
   return a && b && c;
 })());
-ok('(5) E4 救回門檻 ≥2 筆未用債權，唔放寬', ENDING410_T.e4RescueCredits===2 && html.indexOf('favor.creditsHeld>=T.e4RescueCredits')>=0);
+ok('(5) E4 救回門檻 ≥5 筆未用債權（v20a373：2→5，全脊骨被動故事債權恒 4，舊門檻令真沉版不可達）', ENDING410_T.e4RescueCredits===5 && html.indexOf('favor.creditsHeld>=T.e4RescueCredits')>=0);
 ok('(5) E5：已清債＋持有 ≥6＋何生 rel ≥60', ENDING410_T.e5FavorTotal===6 && ENDING410_T.e5AgentRel===60 && html.indexOf('(favor.settled + favor.creditsHeld)>=T.e5FavorTotal && agentRel>=T.e5AgentRel')>=0);
 
 /* ---- (6) 九線全暖合計 ---- */

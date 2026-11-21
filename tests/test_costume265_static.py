@@ -210,7 +210,7 @@ ok("LOCS 有 home（阿偉屋企／深水埗／home／13,8）",
 ok("新點唔加 layer 欄（預設片場層）",
    'layer' not in locs_seg.split('id:"clothing_shop"')[1].split('id:"home"')[0]
    and 'layer' not in locs_seg.split('id:"home"')[1].split('},')[0])
-mn = re.findall(r'<div class="mn68"[^>]*>([^<]+)</div>', src)
+mn = re.findall(r'<div class="mn68[^"]*"[^>]*>([^<]+)</div>', src)  # v20a373：容許額外 class（mn68-ask373）
 ok("墨字地名 23 個，包花園街成衣店／阿偉屋企", len(mn) == 23
    and "花園街成衣店" in mn and "阿偉屋企" in mn)
 ok("LOC_SHEET_BG：服裝店＋屋企（屋企用現成 bg_wf4_home.jpg）",

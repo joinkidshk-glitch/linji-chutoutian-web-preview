@@ -49,7 +49,7 @@ ok('A2b 空畫框只喺空狀態出現（有作品嗰陣唔出）', 'worksWallHt
 
 # --- B1：5 張錨新值；其餘 10 張唔郁；LOCS 熱區座標唔郁（v20a207 C5：中環廣告 60%→51%，避開藍塔） ---
 def mn(name):
-    mm = re.search(r'<div class="mn68" style="([^"]*)">' + re.escape(name) + r'</div>', html)
+    mm = re.search(r'<div class="mn68[^"]*" style="([^"]*)">' + re.escape(name) + r'</div>', html)  # v20a373：容許額外 class（mn68-ask373 副註）
     return mm.group(1) if mm else None
 ok('B1 香江唱片錨＝40%／40% +34px（v366）', mn('香江唱片') == 'left:40%;top:calc(40% + 34px)')
 ok('B1 廟街禮品錨＝24%／16% -52px（v366）', mn('廟街禮品') == 'left:24%;top:calc(16% - 52px)')
