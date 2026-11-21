@@ -453,7 +453,15 @@ if _crisis_now and _crisis_pris:
         _c347_set(_cp, _p, _t)
     # v20a356：crisis B0 前加一句路線中立交代（支線複檢 s2 A1：兩張通告點揀都留低個位）
     _cp["beats"][0]["lines"] = ['短片放映那天，阿偉那個長鏡頭還在片中。無論那天選了哪張通告，張子駿最後都把這個位置留給了他。'] + _cp["beats"][0].get("lines", [])
-    ok("v347＋v356 rival_mentor A_tsijun_crisis：套用加句＋6 處潤飾＋v356 中立交代句後同 pristine 逐字一致（結構/旗標/id 冇郁）",
+    # v20a359：支線複檢文風取捨 s2 B3——B4 抒情收尾「鏡頭裏站著的，始終是他自己」改懸置收尾，保留張力
+    _CRISIS359 = {
+        'A_tsijun_crisis.beats[4].lines[0]': ('兩人都沒有再出聲，一起望著阿偉。鏡頭裏站著的，始終是他自己。', '兩人都沒有再出聲，一起望著阿偉，等他自己開口。'),
+    }
+    ok("v359 rival_mentor A_tsijun_crisis：1 處文風修復原文同套用 347/356 後 pristine 逐字對位",
+       all(_c347_get(_cp, p) == o for p, (o, t) in _CRISIS359.items()))
+    for _p, (_o, _t) in _CRISIS359.items():
+        _c347_set(_cp, _p, _t)
+    ok("v347＋v356＋v359 rival_mentor A_tsijun_crisis：套用加句＋6 處潤飾＋v356 中立交代句＋v359 文風修復後同 pristine 逐字一致（結構/旗標/id 冇郁）",
        json.dumps(_cn, ensure_ascii=False, sort_keys=True) == json.dumps(_cp, ensure_ascii=False, sort_keys=True))
 
 # v20a346 精確替代斷言：rival_mentor ko 弧文字潤飾第一批（中轉 Claude，22 行；其餘同 pristine 逐字一致）
@@ -823,7 +831,16 @@ ok("v358 rival_mentor 7 弧：24 處潤飾原文同套用 347/355/356 後 pristi
    all(_ko346_get(_p347_pris[p.split(".")[0]], p) == o for p, (o, t) in _FIX358.items()))
 for _p, (_o, _t) in _FIX358.items():
     _ko346_set(_p347_pris[_p.split(".")[0]], _p, _t)
-ok("v347＋v355＋v356＋v358 rival_mentor 7 弧：套用 207 處潤飾＋9 處雷勁修復＋14 處 v356 修復＋24 處 v358 潤飾後同 pristine 逐字一致（旗標/id 冇郁）",
+# v20a359 支線複檢文風取捨 s3 B3：唐素雲「有人走，有人留」起手式三節點同用——push1 保留作錨，push2／ending 換起手式
+_FIX359 = {
+    'A_tong_push2.beats[0].lines[1]': ('有人走，有人留。你諗清楚，你係邊種人。', '企得穩嘅人，先留得低。你諗清楚，你係邊種人。'),
+    'A_tong_ending.beats[1].lines[0]': ('有人走，有人留。你今日企喺呢度，就要幫手睇住呢個地方。', '我走之後，呢度就交畀你哋。你今日企喺呢度，就要幫手睇住呢個地方。'),
+}
+ok("v359 rival_mentor 7 弧：2 處文風修復原文同套用 347/355/356/358 後 pristine 逐字對位",
+   all(_ko346_get(_p347_pris[p.split(".")[0]], p) == o for p, (o, t) in _FIX359.items()))
+for _p, (_o, _t) in _FIX359.items():
+    _ko346_set(_p347_pris[_p.split(".")[0]], _p, _t)
+ok("v347＋v355＋v356＋v358＋v359 rival_mentor 7 弧：套用 207 處潤飾＋9 處雷勁修復＋14 處 v356 修復＋24 處 v358 潤飾＋2 處 v359 文風修復後同 pristine 逐字一致（旗標/id 冇郁）",
    all(json.dumps(_p347_now[i], ensure_ascii=False, sort_keys=True) == json.dumps(_p347_pris[i], ensure_ascii=False, sort_keys=True) for i in _p347_now))
 
 # v20a268 精確替代斷言：vera_hiu_choi.json ＝ pristine 版減 5 個 R_vera_* 節點（metadata 清零另行講明）；tang 檔唔存在

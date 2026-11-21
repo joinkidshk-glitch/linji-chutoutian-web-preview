@@ -14350,7 +14350,7 @@ function normaliseTangStub152(pack){
   if(!pack || !Array.isArray(pack.nodes)) return 0;
   const stub = pack.nodes.filter(n=>n && n.id==="R_tang_meet_stub")[0];
   if(!stub) return 0;
-  stub.synopsis = "阿偉到公關公司洽談臨記工作，在會議室遇見鄧麗萍。二人短暫交談，交換電話方便日後排片聯絡。";
+  stub.synopsis = "阿偉到公關公司洽談臨記工作，在會議室遇見排片部負責人。二人短暫交談，交換電話方便日後排片聯絡。";
   const chs = stub.choices || [];
   const keep = chs.filter(c=>c && c.id==="C_tang_meet_keep_contact")[0];
   if(keep){
@@ -36056,7 +36056,7 @@ const ENC79_DLG_mak_zhendong = {
         ["S", "阿偉，過嚟，我有句說話擱咗好耐。"],
         ["S", "武指嗰行，我仲講得上兩句話。第日有大組開武打戲，我本來諗住推你入去——唔係做替身嗰啲散位，係跟組學嘢嗰種。"],
         ["A", "麥哥……"],
-        ["S", "不過，嗰啲位，係要企得穩先有得企。你嗰日話你會驚，我記住咗。唔係話你唔好，係呢啲位，等唔到一個驚字。"],
+        ["S", "不過，嗰啲位，係要企得穩先有得企。你嗰日話你會驚，我記住咗。唔係話你唔好——我尊重你夠坦白，但引薦要我擔保，你嗰句驚，我擔唔起。呢啲位，等唔到一個驚字。"],
         ["A", "得，我明喇。"],
         ["N", "麥震東拍一拍阿偉的肩膀；那隻手滿是舊患，步伐卻穩得沒有一絲顫抖。"]
       ]
