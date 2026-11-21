@@ -203,10 +203,10 @@ ids = re.findall(r'\{ id:"(\w+)",', locs_seg)
 ok("LOCS 總數 23 個（15＋6＋2）", len(ids) == 23)
 set_layer = [i for i in ids if not i.startswith("date_")]
 ok("片場層 17 個（15 舊＋服裝店／屋企）", len(set_layer) == 17)
-ok("LOCS 有 clothing_shop（花園街成衣店／旺角／shop／28,24）",
-   '{ id:"clothing_shop", name:"花園街成衣店", area:"旺角", type:"shop", region:"kln", x:28, y:24' in locs_seg)
-ok("LOCS 有 home（阿偉屋企／深水埗／home／23,10）",
-   '{ id:"home", name:"阿偉屋企", area:"深水埗", type:"home", region:"kln", x:23, y:10' in locs_seg)
+ok("LOCS 有 clothing_shop（花園街成衣店／旺角／shop／28,22）",
+   '{ id:"clothing_shop", name:"花園街成衣店", area:"旺角", type:"shop", region:"kln", x:28, y:22' in locs_seg)
+ok("LOCS 有 home（阿偉屋企／深水埗／home／18,12）",
+   '{ id:"home", name:"阿偉屋企", area:"深水埗", type:"home", region:"kln", x:18, y:12' in locs_seg)
 ok("新點唔加 layer 欄（預設片場層）",
    'layer' not in locs_seg.split('id:"clothing_shop"')[1].split('id:"home"')[0]
    and 'layer' not in locs_seg.split('id:"home"')[1].split('},')[0])

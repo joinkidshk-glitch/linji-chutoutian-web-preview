@@ -26,9 +26,9 @@ def seg(start, end=None):
 
 # --- 基線不變 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
-ok('MAP_IMG 指 assets/hk_map_v8.jpg（v364 換圖，唔裁源圖）', 'const MAP_IMG = "assets/hk_map_v8.jpg";' in src)
-asset = root / 'assets' / 'hk_map_v8.jpg'
-ok('assets/hk_map_v8.jpg 存在', asset.exists())
+ok('MAP_IMG 指 assets/hk_map_v9.jpg（v365 換圖，唔裁源圖）', 'const MAP_IMG = "assets/hk_map_v9.jpg";' in src)
+asset = root / 'assets' / 'hk_map_v9.jpg'
+ok('assets/hk_map_v9.jpg 存在', asset.exists())
 data = asset.read_bytes() if asset.exists() else b''
 def jpeg_size(b):
     i = 2
@@ -93,16 +93,16 @@ ok('23 個地點名齊（舊 15＋v159 加 6 個約會新點＋v265 加 2 新點
     '尖沙咀海傍', '山頂', '酒廊唱歌', '旺角戲院', '淺水灣', '啟德機場',
     '花園街成衣店', '阿偉屋企'})
 EXP_LOCS = {
-    'film_lion': (65, 19), 'rec_hk': (36, 22), 'tvb_longmen': (42, 10), 'tvb_kowloon': (80, 14),
-    'tvb_harbour': (58, 8), 'film_cotton': (76, 24), 'film_harbour': (27, 73), 'ad_central': (47, 58),
-    'ad_adm': (56, 62), 'rec_wanchai': (79, 71), 'rec_star': (79, 63), 'cafe_cha': (60, 25),
-    'agency_ho': (38, 60), 'gift_shop': (44, 26), 'hospital': (73, 80)}
+    'film_lion': (49, 33), 'rec_hk': (45, 16), 'tvb_longmen': (77, 21), 'tvb_kowloon': (87, 32),
+    'tvb_harbour': (88, 11), 'film_cotton': (63, 28), 'film_harbour': (61, 63), 'ad_central': (25, 74),
+    'ad_adm': (68, 73), 'rec_wanchai': (77, 81), 'rec_star': (87, 74), 'cafe_cha': (60, 11),
+    'agency_ho': (48, 74), 'gift_shop': (22, 29), 'hospital': (88, 86)}
 locs_ok = True
 for lid, (ex, ey) in EXP_LOCS.items():
     line = next((ln for ln in src.split('\n') if f'id:"{lid}"' in ln), '')
     m = re.search(r'x:(\d+), y:(\d+)', line)
     if not m or (int(m.group(1)), int(m.group(2))) != (ex, ey): locs_ok = False
-ok('LOCS 舊 15 地點座標同 v364 新圖對位一致（圖 % 係 source of truth）', locs_ok)
+ok('LOCS 舊 15 地點座標同 v365 新圖對位一致（圖 % 係 source of truth）', locs_ok)
 ok('熱區仍 52px（v43 定案唔郁）', 'width:52px !important' in v43 and 'height:52px !important' in v43)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')
