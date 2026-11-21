@@ -6294,6 +6294,90 @@ body.day-res-open .day-row{
   .story-play.sp-result::after{ opacity:1; }
 }
 /* ===== v363 UI363 完 ===== */
+/* ===== v369 UI369：動畫 P1 補完＋系統回饋（GPT-6.2-sol 方案，見 linji-drive369/gpt_consult_v369.md） =====
+   原則：先更新結果再播動畫；裝飾層 pointer-events:none；唔等 animationend 先畀操作；
+   減少動態模式停位移／縮放，保留即時高亮同數值差。 */
+
+/* --- (1) 卡按壓反饋：通告卡撳實紙面（外框唔郁，內層壓低） --- */
+.gig-teaser{ transition:transform .12s ease-out, box-shadow .12s ease-out; }
+.gig-teaser:active{ transform:translateY(2px) scale(.99); box-shadow:0 1px 0 rgba(60,40,10,.25); opacity:1; }
+.gig-teaser:focus-visible{ outline:2px solid var(--gold-seal,#C9A227); outline-offset:1px; }
+
+/* --- (2) 訓練／結算數值浮字：增量 span 原位彈起（唔複製文字，唔改行高） --- */
+.result-notes .result-line .good, .result-notes .result-line .bad{
+  display:inline-block; animation:statPop369 .5s ease-out;
+}
+@keyframes statPop369{
+  0%{ opacity:0; transform:translateY(4px) scale(1.18); }
+  35%{ opacity:1; }
+  100%{ opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* --- (3) 殺青蓋章：日結算標題旁紅印「已殺青」（只喺殺青嗰日出） --- */
+.wrap-stamp369{
+  display:inline-block; margin-left:8px; vertical-align:middle;
+  border:2px solid #9E2F2F; color:#9E2F2F; border-radius:4px;
+  padding:1px 7px; font-size:.82rem; font-weight:900; letter-spacing:.14em;
+  transform:rotate(-5deg); pointer-events:none;
+  animation:wrapStamp369 .24s ease-out;
+}
+@keyframes wrapStamp369{
+  0%{ opacity:0; transform:scale(1.18) rotate(-10deg); }
+  60%{ opacity:1; transform:scale(.97) rotate(-5deg); }
+  100%{ opacity:1; transform:scale(1) rotate(-5deg); }
+}
+
+/* --- (4) 地圖 pin 輕跳（首次見到提示先跳一次，JS 去重）＋「可打聽」細字 --- */
+.pin.pin-bounce369 .pin-head{ animation:pinBounce369 .36s ease-in-out; }
+@keyframes pinBounce369{ 0%,100%{ transform:translateY(0); } 45%{ transform:translateY(-5px); } }
+.pin .plab-ask369{
+  display:block; margin-top:1px; font-size:9px; font-weight:800; line-height:1.1;
+  color:#7a5f1e; background:rgba(242,235,216,.92); border:1px solid rgba(160,124,32,.55);
+  border-radius:6px; padding:1px 4px; white-space:nowrap; pointer-events:none;
+}
+
+/* --- (5) 劇情結果：關係變化行手寫旁註式強調（唔改文字，淨係視覺分層） --- */
+.story-play.sp-result li.sp-rel369{
+  font-family:var(--hand363,"LXGW WenKai","Kaiti TC",serif);
+  font-weight:800; color:#7a3b12;
+  border-left:3px solid var(--gold-seal,#C9A227); padding-left:7px; margin-left:-10px;
+  animation:relNote369 .18s ease-out;
+}
+@keyframes relNote369{ from{ background:rgba(201,162,39,.28); } to{ background:transparent; } }
+
+/* --- (6) 送禮反應分級行 --- */
+.gift-kind369{ font-size:.8rem; color:#7a6547; margin-top:2px; animation:giftKind369 .14s ease-out; }
+@keyframes giftKind369{ from{ opacity:.65; } to{ opacity:1; } }
+
+/* --- (7) 人情兌現：tab「可兌現」票角＋可兌現卡高亮 --- */
+#hgroup-favor{ position:relative; }
+.favor-badge369{
+  position:absolute; top:-7px; right:-6px; z-index:2;
+  background:#9E2F2F; color:#fdf6e0; border-radius:99px;
+  font-size:10px; font-weight:900; line-height:1; padding:3px 6px;
+  box-shadow:0 1px 3px rgba(60,20,10,.4); pointer-events:none;
+  animation:favorBadge369 .16s ease-out;
+}
+@keyframes favorBadge369{ from{ opacity:0; } to{ opacity:1; } }
+.debt-row.credit-redeemable369{ border-color:#9E2F2F !important; box-shadow:0 0 0 1px rgba(158,47,47,.35), 0 2px 6px rgba(60,40,10,.18); }
+.debt-row.credit-redeemable369 .debt-redeem{ color:#9E2F2F; font-weight:800; }
+
+/* --- (8) 情報入口：地圖「打聽」掣＋面板打聽行動高亮 --- */
+#v-map #btn-ask369{ min-height:44px !important; }
+#loc-acts .act-ask{ border-left:4px solid var(--gold-seal,#C9A227) !important; }
+
+/* --- 減少動態：停 v369 位移／縮放，保留高亮同文字 --- */
+@media (prefers-reduced-motion: reduce){
+  .gig-teaser{ transition:none !important; }
+  .gig-teaser:active{ transform:none; border-color:var(--gold-seal,#C9A227); }
+  .result-notes .result-line .good, .result-notes .result-line .bad,
+  .wrap-stamp369, .pin.pin-bounce369 .pin-head,
+  .story-play.sp-result li.sp-rel369, .gift-kind369, .favor-badge369{
+    animation:none !important;
+  }
+  .wrap-stamp369{ opacity:1; }
+}
+/* ===== v369 UI369 完 ===== */
 </style>
 </head>
 <body>
@@ -6357,6 +6441,7 @@ body.day-res-open .day-row{
           <span class="dual-money-sym" aria-hidden="true">$</span><b id="c-money">0</b>
         </span>
         <div class="bar-tools">
+          <button type="button" class="chip chip-ask369" id="btn-ask369" title="打聽：茶餐廳／事務所">打聽</button>
           <button type="button" class="chip chip-story" id="chip-story" title="主線進度">進度<span class="chip-story-n" id="chip-story-n"></span></button>
           <button class="iconbtn" id="btn-menu" type="button" aria-label="選單">☰</button>
         </div>
@@ -6494,7 +6579,7 @@ body.day-res-open .day-row{
         <button type="button" class="home-tab" id="hgroup-career" role="tab" aria-selected="false" data-hgroup="career" data-htab="works">事業</button>
         <button type="button" class="home-tab" id="hgroup-status" role="tab" aria-selected="false" data-hgroup="status" data-htab="ledger">近況</button>
         <button type="button" class="home-tab" id="hgroup-news" role="tab" aria-selected="false" data-hgroup="news" data-htab="clippings">消息</button>
-        <button type="button" class="home-tab" id="hgroup-favor" role="tab" aria-selected="false" data-hgroup="favor" data-htab="debt">人情</button>
+        <button type="button" class="home-tab" id="hgroup-favor" role="tab" aria-selected="false" data-hgroup="favor" data-htab="debt">人情<span class="favor-badge369" id="favor-badge369" hidden>可兌現</span></button>
       </div>
       <div class="home-subtabs" id="home-subtabs" aria-label="手帳分類">
         <div class="hsub-group" data-hsubgroup="plan">
@@ -11681,7 +11766,11 @@ const StoryPlay = (()=>{
   function showResult(node, choice, result){
     try{ spAutoStop362(); }catch(_e){}
     const notes = playerNotes(result);
-    const lis = notes.map(x=>`<li>${esc(x)}</li>`).join("") || "<li>選擇已記下。</li>";
+    /* v369 UI369：關係變化行視覺強調（手寫旁註式），令玩家一眼知推進咗；文字不變。 */
+    const lis = notes.map(x=>{
+      const isRel369 = /^同.+的人情\s*[+\-−－]?\d+$/.test(x) || x==="人情有變";
+      return `<li${isRel369 ? ' class="sp-rel369"' : ""}>${esc(x)}</li>`;
+    }).join("") || "<li>選擇已記下。</li>";
     const unlocked = newlyOpenAfter(node && node.id);
     let nextHtml = "";
     /* v19z12 M4：live／soft 都唔喺結算洩漏 pacing nextHint */
@@ -21940,6 +22029,8 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
       } else nextNb();
     };
     flushWeekAccelSummary(title, body+(ended?`<p class="gold">一週完結 → 回家結算</p>`:""), ended, summary, cont);
+    /* v369 UI369：週加速摘要同樣蓋「已殺青」印（關鍵日係殺青先出）。 */
+    try{ if(shootFinished){ const h3a369 = document.querySelector("#mask .modal h3"); if(h3a369){ const spa369 = document.createElement("span"); spa369.className = "wrap-stamp369"; spa369.setAttribute("aria-hidden","true"); spa369.textContent = "已殺青"; h3a369.appendChild(spa369); } } }catch(_wa369){}
     if(isRestCard){ try{ document.body.classList.add("day-res-open"); const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){} }
     saveQ();
     return;
@@ -21993,6 +22084,8 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
     }
   } else {
     modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${fx102Html}${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}${dayLine}`, btns, {onDismiss: dismissNb});
+    /* v369 UI369：殺青嗰日喺標題旁蓋「已殺青」紅印（shootFinished 先出，天然去重；DOM 注入唔改模板字串；唔鎖操作）。 */
+    try{ if(shootFinished){ const h3w369 = document.querySelector("#mask .modal h3"); if(h3w369){ const spw369 = document.createElement("span"); spw369.className = "wrap-stamp369"; spw369.setAttribute("aria-hidden","true"); spw369.textContent = "已殺青"; h3w369.appendChild(spw369); } } }catch(_w369){}
     try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
     /* v20a35 節奏包 P1-6：日結算板入面嘅片場抉擇掣接線（冇抉擇嗰日 no-op） */
     try{ if(typeof wireSetChoice35==="function") wireSetChoice35(); }catch(_wc35){}
@@ -22581,8 +22674,70 @@ function stressScaleHide363(){
   try{ const sc = document.getElementById("stress-scale363"); if(sc) sc.style.display = "none"; }catch(_e){}
 }
 /* ===== v363 UI363 JS 完 ===== */
+/* ===== v369 UI369 JS：送禮分級標籤／人情兌現票角／打聽入口（GPT 方案） ===== */
+/* 送禮反應分級：只顯示今次一級（最愛／喜歡／普通／唔鍾意），唔預告全表。 */
+function giftKindLabel369(kind){
+  if(kind==="favorite") return "最愛";
+  if(kind==="liked") return "喜歡";
+  if(kind==="dislike") return "唔鍾意";
+  return "普通";
+}
+/* 債權可兌現判定：持有未兌現債權，對應引薦通告而家真係上到板（triggerGigOn）。
+   對照表同 creditRedeemLine283 同源（BR89 反查＋CREDIT_REDEEM_GIG283＋類別免試鏡）。 */
+function creditRedeemable369(c){
+  try{
+    if(!c || c.redeemedBy || c.status==="絕響") return false;
+    if(typeof CREDIT_REDEEM_TEXT283!=="undefined" && CREDIT_REDEEM_TEXT283 && CREDIT_REDEEM_TEXT283[c.id]) return true;
+    const ids = [];
+    if(typeof BR89_PATRON_OF_GIG!=="undefined" && BR89_PATRON_OF_GIG){
+      Object.keys(BR89_PATRON_OF_GIG).forEach(gid=>{ if(BR89_PATRON_OF_GIG[gid]===c.id) ids.push(gid); });
+    }
+    const gg = (typeof CREDIT_REDEEM_GIG283!=="undefined" && CREDIT_REDEEM_GIG283) ? CREDIT_REDEEM_GIG283[c.id] : null;
+    if(gg && ids.indexOf(gg)<0) ids.push(gg);
+    if(!ids.length) return false;
+    const list = (typeof GIGS!=="undefined" && Array.isArray(GIGS)) ? GIGS : [];
+    return ids.some(gid=>{
+      const g = list.find(x=>x && x.id===gid);
+      return !!g && (typeof triggerGigOn!=="function" || triggerGigOn(g));
+    });
+  }catch(_e){ return false; }
+}
+function anyRedeemableCredit369(){
+  try{
+    if(typeof S==="undefined" || !S || !Array.isArray(S.mockCredits)) return false;
+    return S.mockCredits.some(c=>creditRedeemable369(c));
+  }catch(_e){ return false; }
+}
+/* 人情 tab「可兌現」票角：有可兌現債權先出，冇就收起（唔重發 toast）。 */
+function paintFavorBadge369(){
+  try{
+    const b = document.getElementById("favor-badge369");
+    if(!b) return;
+    const on = anyRedeemableCredit369();
+    if(on && b.hidden){ b.hidden = false; }
+    else if(!on && !b.hidden){ b.hidden = true; }
+  }catch(_e){}
+}
+/* 地圖「打聽」掣：展開合資格地點（有 MOCK_ASK 嘅茶餐廳／事務所）；多個就畀玩家揀。
+   入口只做導覽，唔自動執行行動，原有條件同成本不變。 */
+function openAskPicker369(){
+  try{
+    const locs = (typeof LOCS!=="undefined" && Array.isArray(LOCS)) ? LOCS.filter(L=>L && typeof mockAskDefs==="function" && mockAskDefs(L.id)) : [];
+    if(!locs.length){ toast("暫時冇地方可以打聽。"); return; }
+    if(locs.length===1){ openLoc(locs[0].id); return; }
+    const btns = locs.map(L=>({ label: L.name, role:"p", on:()=>{ try{ openLoc(L.id); }catch(_e){} } }));
+    btns.push({ label:"取消", role:"g", on:()=>{} });
+    modal(`<h3>打聽</h3><p>去邊度打聽？茶餐廳同事務所都有人講行內消息。</p>`, btns, {onDismiss:()=>{}});
+  }catch(_e){ toast("暫時未能前往——遲些再回來看。"); }
+}
+try{
+  const askBtn369 = document.getElementById("btn-ask369");
+  if(askBtn369) askBtn369.addEventListener("click", ()=>{ try{ openAskPicker369(); }catch(_e){} });
+}catch(_e369){}
+/* ===== v369 UI369 JS 完 ===== */
 
 function paintBar(){
+  try{ if(typeof paintFavorBadge369==="function") paintFavorBadge369(); }catch(_fb369){}
   const dual = (S && typeof syncDualTracks==="function") ? syncDualTracks(S) : { stageVolume:0, industryCredit:0 };
   const sv=document.getElementById("c-stage-volume"); if(sv) sv.textContent = String(dual.stageVolume);
   const ic=document.getElementById("c-industry-credit"); if(ic) ic.textContent = String(dual.industryCredit);
@@ -22850,6 +23005,7 @@ function positionMapLabels137(){
   }catch(_e){}
 }
 function drawMap(){
+  drawMap._bounced369 = false; /* v369：每版地圖最多一個 pin 輕跳（session 去重喺 _bounceSeen369） */
   const img=document.getElementById("map-img");
   if(img && !img.src) img.src = (typeof MAP_IMG!=="undefined" && MAP_IMG) ? MAP_IMG : "assets/hk_map.jpg";
   const box=document.getElementById("map-pins");
@@ -22975,7 +23131,19 @@ function drawMap(){
     const starAria = hasStar ? (` · 遠觀`+(starName?(" "+starName):"")) : "";
     btn.setAttribute("aria-label", `${L.name}（${L.area}）${boardAria}${isStoryTip?" · 劇情":(hasTip?" · 情報":"")}${hasNpc?" · 熟人":""}${starAria}${hasAction?"":" · 閒置"}`);
     btn.style.pointerEvents="auto";
-    btn.innerHTML=`<span class="pin-head"><span class="marks">${marks}</span><img class="pin-img" src="assets/ui-physical/map-frame/map_pin.png?v=16" alt="" draggable="false"/></span><span class="plab">${L.name}</span>`;
+    /* v369 UI369：有打聽嘅地點（茶餐廳／事務所）pin 旁加「可打聽」細字；有提示嘅 pin 首次見到輕跳一次（session 去重，成版只跳一個）。 */
+    const askTag369 = (typeof mockAskDefs==="function" && mockAskDefs(L.id)) ? `<span class="plab-ask369">可打聽</span>` : "";
+    btn.innerHTML=`<span class="pin-head"><span class="marks">${marks}</span><img class="pin-img" src="assets/ui-physical/map-frame/map_pin.png?v=16" alt="" draggable="false"/></span><span class="plab">${L.name}</span>${askTag369}`;
+    try{
+      if(!drawMap._bounced369 && (isStoryTip || hasTip || hasBoard)){
+        if(!drawMap._bounceSeen369) drawMap._bounceSeen369 = new Set();
+        if(!drawMap._bounceSeen369.has(L.id)){
+          drawMap._bounceSeen369.add(L.id);
+          drawMap._bounced369 = true;
+          btn.classList.add("pin-bounce369");
+        }
+      }
+    }catch(_pb369){}
     const goPin=(ev)=>{
       if(ev){ try{ ev.preventDefault(); ev.stopPropagation(); }catch(_e){} }
       /* nearest-pin among visible if click near several — prefer 有事做 */
@@ -29043,12 +29211,20 @@ function renderDebtPane(){
     const ex = c.status==="絕響";
     const redeemed = !!c.redeemedBy;
     const status = ex ? "絕響" : (redeemed ? "已兌現" : "未收");
-    return `<article class="debt-row credit-row${ex?" debt-exodus":""}" data-credit-id="${journalText(c.id)}"><p class="debt-who">欠你人情：${journalText(c.debtor||"")}</p><p class="debt-title">${journalText(c.title||"")}</p><p class="collect-line">${journalText(c.line||"")}</p>${(typeof creditRedeemLine283==="function")?creditRedeemLine283(c):""}<span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span>${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:""}</article>`;
+    /* v369 UI369：而家真係換到嘅債權卡加高亮 class（判定同 tab 票角同源）。 */
+    const redeemable369 = (typeof creditRedeemable369==="function") && creditRedeemable369(c);
+    return `<article class="debt-row credit-row${ex?" debt-exodus":""}${redeemable369?" credit-redeemable369":""}" data-credit-id="${journalText(c.id)}"><p class="debt-who">欠你人情：${journalText(c.debtor||"")}</p><p class="debt-title">${journalText(c.title||"")}</p><p class="collect-line">${journalText(c.line||"")}</p>${(typeof creditRedeemLine283==="function")?creditRedeemLine283(c):""}<span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span>${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:""}</article>`;
   };
   const creditGroup=(list, head)=> list.length ? `<p class="pane-intro">${journalText(head)}</p>` + list.map(creditCardHtml).join("") : "";
   const allCredits=(S.mockCredits||[]).filter(c=>!!c);
   const isCafeCredit=(c)=> typeof c.id==="string" && c.id.indexOf("credit_enc79_cafe_help_")===0;
-  const creditHtml=creditGroup(allCredits.filter(c=>!c.redeemedBy && !isCafeCredit(c)), "故事債權")
+  /* v369 UI369：可兌現嘅故事債權排前（stable sort，其餘次序不變）。 */
+  const storyCredits369 = allCredits.filter(c=>!c.redeemedBy && !isCafeCredit(c)).slice().sort((a,b)=>{
+    const ra = (typeof creditRedeemable369==="function" && creditRedeemable369(a)) ? 1 : 0;
+    const rb = (typeof creditRedeemable369==="function" && creditRedeemable369(b)) ? 1 : 0;
+    return rb - ra;
+  });
+  const creditHtml=creditGroup(storyCredits369, "故事債權")
     + creditGroup(allCredits.filter(c=>!c.redeemedBy && isCafeCredit(c)), "茶餐廳幫手")
     + creditGroup(allCredits.filter(c=>!!c.redeemedBy), "已兌現");
   const rows=S.mockDebts||[];
@@ -41700,7 +41876,9 @@ function rom176DoGiveStarGift(starId, itemId, L){
     try{ paintBar(); }catch(_e){} try{ drawMap(); }catch(_e){}
     const lineHtml = /<p[\s>]/.test(String(line||"")) ? String(line) : "<p>"+(line||"")+"</p>";
     const go = ()=>{ if(L) openLoc(L.id, { encDone:true }); };
-    modal("<h3>送禮結果</h3>\n    "+lineHtml+"\n    <p class=\"gold\">"+deltaTxt+"</p>\n    <p class=\"sub\">"+fmtDate()+" · 送禮不計日子</p>",[
+    /* v369 UI369：反應分級講明（只顯示今次一級）。 */
+    const kindLine369 = "<p class=\"gift-kind369\">收禮反應："+((typeof giftKindLabel369==="function") ? giftKindLabel369(kind) : "")+"</p>";
+    modal("<h3>送禮結果</h3>\n    "+lineHtml+"\n    "+kindLine369+"\n    <p class=\"gold\">"+deltaTxt+"</p>\n    <p class=\"sub\">"+fmtDate()+" · 送禮不計日子</p>",[
       {label:"關閉", role:"g", on:go}
     ], {onDismiss: go});
     try{ saveQ(); }catch(_e){}
@@ -46363,8 +46541,11 @@ function doGiveGift(npcKey, itemId, L){
   };
   const lineHtml = /<p[\s>]/.test(String(res.line||"")) ? String(res.line) : `<p>${res.line||""}</p>`;
   const dayNote = spendDay ? `${fmtDate()} · 送禮耗一日` : `${fmtDate()} · 送禮不計日子`;
+  /* v369 UI369：反應分級講明（只顯示今次一級；鄧麗萍公事心意唔出，免誤會關係有變）。 */
+  const kindLine369 = npcKey==="tang" ? "" : `<p class="gift-kind369">收禮反應：${(typeof giftKindLabel369==="function") ? giftKindLabel369(res.kind) : ""}</p>`;
   modal(`<h3>送禮結果</h3>
     ${lineHtml}
+    ${kindLine369}
     <p class="gold">${deltaTxt}</p>
     <p class="sub">${dayNote}</p>
     ${ended?`<p class="gold">一週完結 → 回家結算，計劃下週</p>`:""}`,[

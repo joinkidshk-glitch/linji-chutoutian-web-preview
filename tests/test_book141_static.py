@@ -24,7 +24,7 @@ ok('手寫字體棧有 Kaiti TC', '"Kaiti TC"' in src)
 # --- (1) B 式文件夾 tab ---
 ok('五個大類 tab 仲齊（data-hgroup ×5＋行程／事業／近況／消息／人情）',
    src.count('data-hgroup="') == 5
-   and all(s in src for s in ['>行程</button>', '>事業</button>', '>近況</button>', '>消息</button>', '>人情</button>']))
+   and all(s in src for s in ['>行程</button>', '>事業</button>', '>近況</button>', '>消息</button>', '>人情<span class="favor-badge369"']))
 ok('B 式尺寸：tab 58px 闊、未選 32px、高 manila #e9dcbc',
    '#home-tabs .home-tab{' in src and 'flex:0 0 58px' in src and 'height:32px' in src and '#e9dcbc' in src)
 ok('B 式選中態：32px 高、同紙面色 #f5eddc、底部伸出 1.5px（v20a197 C1：使用中狀態用色／底線區分，唔改大細）',

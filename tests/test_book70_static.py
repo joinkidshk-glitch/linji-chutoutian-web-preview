@@ -18,7 +18,7 @@ ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107'
 ok('一級只剩 5 個大類掣（行程／事業／近況／消息／人情）',
    src.count('data-hgroup="') == 5
    and all(s in src for s in ['data-hgroup="plan"', 'data-hgroup="career"', 'data-hgroup="status"', 'data-hgroup="news"', 'data-hgroup="favor"'])
-   and all(s in src for s in ['>行程</button>', '>事業</button>', '>近況</button>', '>消息</button>', '>人情</button>']))
+   and all(s in src for s in ['>行程</button>', '>事業</button>', '>近況</button>', '>消息</button>', '>人情<span class="favor-badge369"']))
 # v20a71 PROGRESS71 改版：htab-plan 喺 v71 以「行程組分段掣」身份返嚟（行程／進度
 # 兩掣之一，唔係舊 10-tab），故呢度唔再驗佢唔存在；guide 相關舊結構仍然唔准返嚟。
 ok('冇返舊 10-tab 結構（htab-guide／guide pane 唔再存在）',
