@@ -13850,7 +13850,10 @@ function endingSummaryHtml410(){
   const goneLine = (rec.exodusNames && rec.exodusNames.length)
     ? ("<p><b>哪些人離開了：</b>" + rec.exodusNames.map(endingEsc410).join("、") + "——人已不在香港，人情成絕響。</p>")
     : "<p><b>哪些人離開了：</b>你那班人，暫時還齊齊整整留在香港。</p>";
-  const romLine = rec.romanceKind==="commit" ? ("同" + (rec.romanceLine==="hiu" ? "林曉晴" : "周采兒") + "行到埋一齊")
+  /* v20a371 FIX371-4：總結感情行要跟判定欄位 romanceLine 對人——舊寫法只分 hiu／其他，
+     lan／xu／yip／so 四條線全部誤寫周采兒（第二輪評估 W5 兩輪重現）。六條線全映射。 */
+  const romName371 = { hiu:"林曉晴", choi:"周采兒", lan:"藍若曦", xu:"徐寶珊", yip:"葉敏芝", so:"蘇芷茵" }[rec.romanceLine] || "";
+  const romLine = rec.romanceKind==="commit" ? ("同" + romName371 + "行到埋一齊")
     : (rec.romanceKind==="almost" ? "有一段，差一步" : "一個人埋單，不代表一個人收尾");
   const exoLine = rec.exodus==="leave" ? "走——啟德上機，遠走" : (rec.exodus==="stay" ? "留——扎根香港，1993 繼續開工" : "未表態——留白");
   const rumor = ENDING410_ADJ_RUMOR[rec.career] || "";
@@ -17341,6 +17344,62 @@ function calib60MissedScan(st){
   }catch(_e){}
   return newly;
 }
+/* ===== v20a371 FIX371-3：主線季節窗口事前警告（第二輪評估 P1-3，GPT 方案） =====
+   舊制只有過窗後登記「回憶」，玩家事前唔知窗口幾時開／幾時關／剩幾多日，錯過即永久
+   失最佳結局資格。而家：地圖提示行顯示最近一個限期、手帳「進度」頁加「主線期限」欄、
+   週結算喺窗口將開／將關（7 日內）時出一行。只顯示時間＋前置＋失窗後果，唔劇透內容；
+   唔改 STORY_GATE_3Y／任何觸發條件。預告期＝開放前 7 日起；過窗後移出（回憶頁交代）。 */
+function season371WindowDays(id){
+  try{
+    const win = (typeof CALIB60_NODE_WINDOWS!=="undefined") ? CALIB60_NODE_WINDOWS[id] : null;
+    if(!win || !win.seasons || !win.seasons.length) return null;
+    const span = { "春":[3,5], "夏":[6,8], "秋":[9,11], "冬":[12,2] };
+    const first = span[win.seasons[0]], last = span[win.seasons[win.seasons.length-1]];
+    if(!first || !last) return null;
+    const toIdx = (y,m,d)=> Math.round((Date.UTC(y, m-1, d) - Date.UTC(START.y, START.m-1, START.d)) / 86400000);
+    const startDay = toIdx(win.year, first[0], 1);
+    const endY = (win.seasons[win.seasons.length-1]==="冬") ? win.year+1 : win.year;
+    const endDay = toIdx(endY, last[1]+1, 1) - 1;
+    return { startDay, endDay, whenLabel: win.whenLabel || "" };
+  }catch(_e){ return null; }
+}
+function season371List(){
+  const out = [];
+  try{
+    if(typeof S==="undefined" || !S || typeof CALIB60_NODE_WINDOWS==="undefined") return out;
+    const done = (S.story && S.story.done) || {};
+    const today = Number(S.dayIndex)||0;
+    Object.keys(CALIB60_NODE_WINDOWS).forEach(id=>{
+      if(done[id]) return;
+      if(S.calib60Missed && S.calib60Missed[id]) return;
+      const w = season371WindowDays(id);
+      if(!w) return;
+      if(today > w.endDay) return;
+      if(today < w.startDay - 7) return;
+      let need = "";
+      try{
+        const g = (typeof STORY_GATE_3Y!=="undefined" && STORY_GATE_3Y) ? STORY_GATE_3Y[id] : null;
+        const nd = (g && Array.isArray(g.needDone)) ? g.needDone.filter(x=>!done[x]) : [];
+        if(nd.length) need = nd.map(x=> (typeof calib60NodeTitle==="function" ? calib60NodeTitle(x) : x)).join("、");
+      }catch(_n){}
+      out.push({ id, title: (typeof calib60NodeTitle==="function" ? calib60NodeTitle(id) : id),
+        whenLabel: w.whenLabel, startDay: w.startDay, endDay: w.endDay,
+        open: today >= w.startDay, remain: w.endDay - today, toOpen: w.startDay - today, need });
+    });
+    out.sort((a,b)=> a.endDay - b.endDay);
+  }catch(_e){}
+  return out;
+}
+function season371LineText(it){
+  const head = `《${it.title}》（${it.whenLabel}）`;
+  let s;
+  if(!it.open) s = `${head} ${it.toOpen} 日後開放`;
+  else if(it.remain <= 0) s = `${head} 今日截止`;
+  else s = `${head} 尚餘 ${it.remain} 日`;
+  if(it.open && it.remain <= 3 && it.remain > 0) s += "（即將截止）";
+  if(it.need) s += ` · 須先完成《${it.need}》`;
+  return s;
+}
 function renderMemoryPane60(){
   const el = document.getElementById("memory-list");
   if(!el) return;
@@ -20217,6 +20276,12 @@ function settleWeek(){
       pushFlavor(`<span class="var-note">錯過了：《${m.title}》（${m.whenLabel}）的時窗過了——手帳「回憶」頁記下了。</span>`);
     });
   }catch(_m60){}
+  /* v20a371 FIX371-3：窗口將開／將關（7 日內）→ 週結算出一行（最多一行，截止優先由排序決定） */
+  try{
+    const _lst371 = (typeof season371List==="function") ? season371List() : [];
+    const _soon371 = _lst371.filter(it=> (!it.open && it.toOpen<=7) || (it.open && it.remain<=7));
+    if(_soon371.length) pushFlavor(`<span class="var-note">主線限期：${season371LineText(_soon371[0])}——手帳「進度」頁有全部期限。</span>`);
+  }catch(_s371){}
   /* v20a61 CONSEQ61-2 警告層：週結收市壓力 ≥80（未病）→ 身體警號旁白 */
   try{
     if(stressAtEnd>=80 && !(S.conseq61 && S.conseq61.sick)){
@@ -21879,16 +21944,19 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   else if(id==="street"){
     /* v20a368 P2 ⑧經濟（評估報告 §六 B7，GPT 方向）：街演日收 $100–160
        （舊 R(300,1200) 均值 $750，單日碾壓多數通告片酬）；同一活動一週第 3 日起收 60%
-       （S.ptWeek368 週次計數，舊檔 undefined 即初始化；週次同 weekNumNow 同式）。 */
-    let pay=R(100,160);
+       （S.ptWeek368 週次計數，舊檔 undefined 即初始化；週次同 weekNumNow 同式）。
+       v20a371 FIX371-2（第二輪評估 P1-2）：再壓到 $70–100（均值 $85），低過高級通告
+       期望日均 $104.9，兼職回復「穩定但低效」嘅救急定位；壓力折扣下限同步調低。 */
+    let pay=R(70,100);
     const wk368=Math.floor(((S&&S.dayIndex)||0)/7)+1;
     if(!S.ptWeek368 || S.ptWeek368.wk!==wk368) S.ptWeek368={wk:wk368, street:0, cafe_gig:0};
     S.ptWeek368.street++;
     const taper368 = S.ptWeek368.street>=3;
     if(taper368) pay=Math.round(pay*0.6);
     const st=Number(S.stress)||0;
-    if(st>=90){ pay=Math.max(50, Math.round(pay*0.2)); }
-    else if(st>=70){ pay=Math.max(80, Math.round(pay*0.5)); }
+    /* v20a371：下限跟新日薪比例調低，唔好俾下限食晒壓力折扣（stressImpact34 ×0.5／×0.2 口徑不變） */
+    if(st>=90){ pay=Math.max(20, Math.round(pay*0.2)); }
+    else if(st>=70){ pay=Math.max(40, Math.round(pay*0.5)); }
     notes=applyGain60({stage:2, charm:1, fame:R(0,1), popularity:1+R(0,2), money:pay, stress:6+R(0,4)});
     notes.unshift(`<span class="gold">街頭表演日結 · 週${weekdayName(weekdayIdx(S.dayIndex))}</span>`);
     if(taper368) notes.push(`<span class="var-note">本週多次街頭表演，酬勞按六成計算。</span>`);
@@ -21898,16 +21966,20 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   }
   else if(id==="cafe_gig"){
     /* v20a368 P2 ⑧經濟：咖啡店日收 $160–230（舊 R(500,1500) 均值 $1,000）；
-       同一活動一週第 3 日起收 60%（計數同 street 共用 S.ptWeek368）。 */
-    let pay=R(160,230);
+       同一活動一週第 3 日起收 60%（計數同 street 共用 S.ptWeek368）。
+       v20a371 FIX371-2（第二輪評估 P1-2）：再壓到 $85–115（均值 $100，GPT 錨點），
+       低過全庫最佳通告期望日均 ~$145 同高級中位 $104.9，純現金最優解回復通告；
+       壓力折扣下限同步調低（見下）。 */
+    let pay=R(85,115);
     const wk368=Math.floor(((S&&S.dayIndex)||0)/7)+1;
     if(!S.ptWeek368 || S.ptWeek368.wk!==wk368) S.ptWeek368={wk:wk368, street:0, cafe_gig:0};
     S.ptWeek368.cafe_gig++;
     const taper368 = S.ptWeek368.cafe_gig>=3;
     if(taper368) pay=Math.round(pay*0.6);
     const st=Number(S.stress)||0;
-    if(st>=90){ pay=Math.max(50, Math.round(pay*0.2)); }
-    else if(st>=70){ pay=Math.max(80, Math.round(pay*0.5)); }
+    /* v20a371：下限跟新日薪比例調低，唔好俾下限食晒壓力折扣（stressImpact34 ×0.5／×0.2 口徑不變） */
+    if(st>=90){ pay=Math.max(20, Math.round(pay*0.2)); }
+    else if(st>=70){ pay=Math.max(40, Math.round(pay*0.5)); }
     notes=applyGain60({charm:2, stage:1, money:pay, fame:R(0,1), popularity:R(0,2), stress:5+R(0,3)});
     notes.unshift(`<span class="gold">咖啡店駐場日結 · 週${weekdayName(weekdayIdx(S.dayIndex))}</span>`);
     if(taper368) notes.push(`<span class="var-note">本週多次咖啡店駐場，酬勞按六成計算。</span>`);
@@ -22837,13 +22909,19 @@ function paintBar(){
       /* v20a218 C-B1/B2：已預約／典禮日提示——跟 audLine108 同一寫法（有先顯示，冇就唔出）。 */
       let awardLine218 = "";
       try{ const _cue218 = (typeof awards213MapCue213==="function") ? awards213MapCue213() : ""; if(_cue218) awardLine218 = `<span class="map-hint-aud108">${_cue218}</span>`; }catch(_e){}
+      /* v20a371 FIX371-3：主線限期行——只顯示最近截止嗰章（預告期／窗口內先出） */
+      let seasonLine371 = "";
+      try{
+        const _lst371 = (typeof season371List==="function") ? season371List() : [];
+        if(_lst371.length) seasonLine371 = `<span class="map-hint-aud108">主線限期：${season371LineText(_lst371[0])}（手帳「進度」頁看全部）</span>`;
+      }catch(_e371){}
       /* v20a135 MAP135：灰色規則行、劇情卡、地點篩選掣已拎走；出行已併入 planLine（上）。 */
       /* v20a159 MAP159：層切換掣生喺 #map-hint 行尾（paintBar 每次重寫 innerHTML，掣面文字跟層走；
          委派掛喺 #map-hint 上，見 wireMapLayer159；切換唔耗出行額度）。 */
       let layerBtn159 = "";
       try{ if(typeof map159LayerBtnHtml==="function") layerBtn159 = map159LayerBtnHtml(); }catch(_e159){}
       let stk363 = ""; try{ stk363 = todaySticker363(pid); }catch(_e){}
-      return `${stk363}<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${audLine108}${awardLine218}${startToday}${layerBtn159}`;
+      return `${stk363}<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${audLine108}${awardLine218}${seasonLine371}${startToday}${layerBtn159}`;
     })();
   try{
     const stBtn=document.getElementById("map-start-today");
@@ -29759,6 +29837,15 @@ function renderProgressPane71(){
   let progTitleLine162 = "";
   try{ progTitleLine162 = '<p class="prog71-note" style="margin-top:2px">'+prog71Esc(titles162ProgressLine162())+'</p>'; }catch(_e){}
   const html = ['<div class="prog71-wrap"><h3 class="prog71-h">主線進度</h3><p class="prog71-intro">逐幕列出開放條件與阿偉目前的進度：✓ 是已達標，○ 是未達。完成一幕，之後的幕會逐漸揭曉。</p>' + progTitleLine162];
+  /* v20a371 FIX371-3：主線期限欄——預告期／窗口內嘅未完成章節按截止日列出 */
+  try{
+    const _lst371 = (typeof season371List==="function") ? season371List() : [];
+    if(_lst371.length){
+      html.push('<div class="prog71-row open"><div class="prog71-top"><b>主線期限</b></div>'
+        + '<p class="prog71-note">錯過任何主線限期，該章將永久無法開啟，本周目亦無法達成最佳結局。</p>'
+        + _lst371.map(it=>'<p class="prog71-note">'+prog71Esc(season371LineText(it))+'</p>').join("") + '</div>');
+    }
+  }catch(_e371){}
   let farMerged105 = false; /* v20a105 UI105 S-45 */
   /* v20a198 C2：遠幕合併按「段」計——鎖住插入行（而家常駐可見，見下面 detail 分支）
      截斷遠幕連續段，每段各自合併（新局：「第 4–6 幕」＋「第 7–17 幕」），唔再全頁
@@ -32561,7 +32648,19 @@ function awards62ScoreParts(cat, ceremony, year){
     const want = cat.tagBonusAny || [];
     if(want.length && (tags || []).some(t=> want.indexOf(t) >= 0 || want.indexOf((t && t.id) || t) >= 0)) tagBonus = 0.10;
   }catch(_e){}
-  const repPower65 = (crossN65 >= 2 && crossQ65 >= 0.5) ? 0.08 * crossQ65 : 0; /* v20a65 FIX65-3(2) */
+  /* v20a371 FIX371-1（第二輪評估 P1-1）：專攻死路＋crossQ 懸崖修復，贏線 0.875 不變。
+     舊制 repPower 全有全無（crossN≥2 且 crossQ≥0.5 先有分，0.48→0 懸崖），pure 專攻
+     天花板全媒介 0.78–0.82 必輸。改為兩路取較高（唔疊加）：
+     (1) 跨界路：0.08×crossQ×min(crossN/2,1)×clamp((crossQ−0.30)/0.20,0,1)——線性爬升，
+         crossQ≥0.5＋crossN≥2 時同舊制相同（跨界滿配維持 0.90）。
+     (2) 專攻路：本桶 wsum 接近飽和（≥1.47）時俾星勢 0.08（sat² 漸入），另補
+         0.25×(1−worksScore) 抵銷廣告／綜藝桶 q 結構較低（0.78,0.78,0.48,0.48）嘅先天差，
+         令專攻滿配校到 0.885–0.90（電影／電視 0.90、唱片 0.897、廣告／綜藝 0.887）。 */
+  const sat371 = Math.min(1, wsum / 1.45);
+  const repPowerSpec371 = 0.08 * sat371 * sat371 + (sat371 >= 1 ? 0.28 * (1 - worksScore) : 0);
+  const crossRamp371 = Math.min(crossN65 / 2, 1) * Math.min(1, Math.max(0, (crossQ65 - 0.30) / 0.20));
+  const repPowerCross371 = 0.08 * crossQ65 * crossRamp371;
+  const repPower65 = Math.max(repPowerCross371, repPowerSpec371); /* v20a65 FIX65-3(2) → v20a371 兩路取高 */
   const base = 0.40 * normPrimary + 0.42 * worksScore + tagBonus + repPower65;
   return {
     primary: primary,

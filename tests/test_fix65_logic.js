@@ -6,7 +6,7 @@
    (3) FIX65-2 寬限入帳解除：grace 中、本週入帳 ≥ 下週費、結算後存款 >0 → 解除（舊版 2 參數呼叫唔解除）；
        入帳唔夠 → 照倒數；存款夠全費 → 舊路徑解除（兩版都得）。
    (4) FIX65-3 跨媒介補分：多元 fixture（唱片桶＋電影擔正＋電視作品）→ borrow65 = 0.55×0.35×crossQ、
-       repPower65 = 0.08×crossQ、base 高過冇補分；專攻 fixture（得電影）→ borrow/repPower 皆 0（曲線唔變）。
+       repPower65 = 0.08×crossQ、base 高過冇補分；專攻 fixture（得電影）→ borrow 0、repPower = v371 專攻路 sat² 項。
    (5) FIX65-4 提示認級數：代表作 = MTV 男主角（舊庫 MTV 真身形狀）→ 唔出「缺擔正」句、出深度句；
        代表作係臨記 → 照出「缺擔正」；主軌最弱 → 指主軌（舊 parts 形狀 topQ 兜底唔崩）。
    反證：對 v20a64 index 行——壓力舊值／舊生活費帶／冇 weekEarnIn 解除／冇 borrow65 欄位／冇 awards65IsLeadWork → FAIL。
@@ -179,7 +179,7 @@ ok(pMu.base > pMuNoCross.base + 0.05, "多元 base（" + pMu.base.toFixed(3) + "
 /* 專攻：得電影作品 → 電影桶 crossQ = 0、借分/星勢皆 0 */
 S = { fame: 60, industryCredit: 60, wrapHistory: [wrap("g_film_lead", 1989), wrap("g_extra", 1989)] };
 const pFilm = awards62ScoreParts(CAT_MU, FILM_CER, 1989);
-ok(pFilm.borrow65 === 0 && pFilm.repPower65 === 0, "專攻 fixture：borrow/repPower = 0（專攻曲線唔變）");
+ok(pFilm.borrow65 === 0 && approx(pFilm.repPower65, 0.0460, 0.0005), "專攻 fixture：borrow = 0、repPower = 專攻路 sat² 項 ≈ 0.046（v371：專攻唔再係 0）");
 /* 本桶空 → 唔借（唔憑空造分） */
 S = { fame: 60, industryCredit: 60, wrapHistory: [wrap("g_film_lead", 1989), wrap("g_tv_sup", 1989)] };
 const pEmpty = awards62ScoreParts(CAT_MU, MUSIC_CER, 1989);

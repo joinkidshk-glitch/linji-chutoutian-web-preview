@@ -163,13 +163,15 @@ S = baseSave(); S.fame = 40; S._tags = ['動作演員'];
 S.wrapHistory = [ wrap('gig_lead', 1989), wrap('gig_lead2', 1989) ];
 const catTag = { id:'film_actor', primaryTrack:'stageVolume', tagBonusAny:['動作演員'] };
 const pMid = awards62ScoreParts(catTag, FILM_CER, 1989);
-ok('中間帶 base ≈ 0.8306', approx(pMid.base, 0.8306, 0.002));
+ok('中間帶 base ≈ 0.9084（v371 專攻路）', approx(pMid.base, 0.9084, 0.002)); /* v371：專攻路 sat²＋飽和補分，中間帶 0.8306→0.9084，過贏線 */
 /* v20a147 D4 重做校準：贏線 0.82→0.90→0.875——0.8306 檔喺新線下三種口味都係 nominated，唔再係邊界；
-   邊界檔案改做 base 0.92（fame 45＋lead＋lead2×2＋tag），taste −0.05 先跌返 nominated（0.87＜0.875）。 */
-S = baseSave(); S.fame = 45; S._tags = ['動作演員'];
-S.wrapHistory = [ wrap('gig_lead', 1989), wrap('gig_lead2', 1989), wrap('gig_lead2', 1989) ];
+   邊界檔案改做 base 0.92（fame 45＋lead＋lead2×2＋tag），taste −0.05 先跌返 nominated（0.87＜0.875）。
+   v371 專攻路：舊邊界檔升至 1.0（封頂），邊界改用中間帶參數（fame 40＋lead＋lead2＋tag，base 0.9084），
+   taste −0.05 → 0.8584＜0.875 跌返 nominated，邊界性質不變。 */
+S = baseSave(); S.fame = 40; S._tags = ['動作演員'];
+S.wrapHistory = [ wrap('gig_lead', 1989), wrap('gig_lead2', 1989) ];
 const pEdge = awards62ScoreParts(catTag, FILM_CER, 1989);
-ok('邊界檔 base ≈ 0.92', approx(pEdge.base, 0.92, 0.002));
+ok('邊界檔 base ≈ 0.9084（v371）', approx(pEdge.base, 0.9084, 0.002));
 Math.random = function(){ return 0.5; }; /* taste = 0 */
 let r = awardsScoreCategory(catTag, FILM_CER, 1989, 'nominee');
 ok('taste 0 → won（過贏線 0.875）', r.outcome === 'won');
@@ -180,7 +182,7 @@ Math.random = function(){ return 1; }; /* taste = +0.05：最勁口味都翻唔�
 S = baseSave(); S.fame = 45;
 S.wrapHistory = [ wrap('gig_lead', 1989) ];
 r = awardsScoreCategory(CAT_SV, FILM_CER, 1989, 'nominee');
-ok('base 0.6625 + 口味盡 0.05 都未到贏線 0.875 → nominated（冇 18% 骰翻盤）', r.outcome === 'nominated');
+ok('base 0.7005 + 口味盡 0.05 都未到贏線 0.875 → nominated（冇 18% 骰翻盤）', r.outcome === 'nominated'); /* v371：單部擔正專攻路 +0.038，0.6625→0.7005 */
 r = awardsScoreCategory(CAT_SV, FILM_CER, 1989, 'gallery');
 ok('gallery tier 恆 gallery', r.outcome === 'gallery');
 
@@ -299,18 +301,18 @@ for(let i = 0; i < 30; i++) hist90.push(wrap('gig_extra', 1991));
 for(let i = 0; i < 3; i++) hist90.push(wrap('gig_lead', 1991));
 S.wrapHistory = hist90;
 const pFull = awards62ScoreParts(CAT_SV, FILM_CER, 1991);
-ok('窗口 90：殿後 3 部擔正計入，base ≈ 0.82', approx(pFull.base, 0.82, 0.002));
+ok('窗口 90：殿後 3 部擔正計入，base ≈ 0.90（v371 專攻滿配）', approx(pFull.base, 0.90, 0.002));
 ok('窗口 90：代表作係擔正舊作', awards62RepWork(FILM_CER, 1991) === '大製作');
 S.wrapHistory = hist90.slice(0, 30); /* 模擬舊 30 窗口：只剩新臨記工 */
 const pOld = awards62ScoreParts(CAT_SV, FILM_CER, 1991);
-ok('舊 30 窗口反證：同一批只計頭 30 部，base ≈ 0.499', approx(pOld.base, 0.499, 0.002));
+ok('舊 30 窗口反證：同一批只計頭 30 部，base ≈ 0.5047（v371 sat² 微升）', approx(pOld.base, 0.5047, 0.002));
 ok('舊 30 窗口反證：代表作跌返臨記工', awards62RepWork(FILM_CER, 1991) === '臨記工');
 /* (9b) 年份口徑：pack 年 1990、1991 年殺青嘅橋接工，計分要入 1991 桶，唔係 1990 桶。 */
 const hBridge = wrap('gig_lead', 1990);
 hBridge.wrappedDay = (1991 - 1988) * 365 + 120; /* 1991 年中 */
 ok('年份口徑：pack 1990＋1991 殺青 → YearOf 1991', awards62YearOf(hBridge) === 1991);
 S = baseSave(); S.fame = 45; S.wrapHistory = [hBridge];
-ok('年份口徑：橋接工入 1991 桶（base 0.6625）', approx(awards62ScoreParts(CAT_SV, FILM_CER, 1991).base, 0.6625, 0.002));
+ok('年份口徑：橋接工入 1991 桶（base 0.7005，v371）', approx(awards62ScoreParts(CAT_SV, FILM_CER, 1991).base, 0.7005, 0.002));
 ok('年份口徑：橋接工唔入 1990 桶（得主軌 0.40）', approx(awards62ScoreParts(CAT_SV, FILM_CER, 1990).base, 0.40, 0.002));
 const hRev = wrap('gig_lead', 1991);
 hRev.wrappedDay = (1990 - 1988) * 365 + 120; /* 反向：pack 1991、1990 殺青 */
