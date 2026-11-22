@@ -41,7 +41,7 @@ ok('A helper onDismiss 等同返去（行 onCancel）', 'onDismiss' in helper an
 ok('A helper 選項原文有 esc', 'esc236' in helper and '&lt;' in helper)
 
 # 12 個呼叫點＋1 個定義＝13 次 'confirmChoice236('（pickChoice／WF4／還債×2／請柬×2／傾談×2／打聽／買禮物／治療／v265 買衫）
-ok('A 呼叫點齊 12 處（＋定義＝13）', html.count('confirmChoice236(') == 13)
+ok('A 呼叫點齊 13 處（＋定義＝14）', html.count('confirmChoice236(') == 14)
 
 # ---- B. 故事側 ----
 pick = fn_block('function pickChoice(choiceId){')

@@ -4218,6 +4218,12 @@ body.day-res-open .day-row{
 .intel381-stamp{ position:absolute; top:8px; right:10px; padding:2px 8px; border:2px solid rgba(90,80,70,.65); border-radius:4px; color:rgba(90,80,70,.8); font-weight:800; transform:rotate(-8deg); }
 .gig-card .bp-tag.intel381{ background:#e8d5b5; color:#4a3421; }
 .gt-pill.gt-intel381{ background:#e8d5b5; color:#4a3421; }
+/* v20a383 TAPE383：自費試鏡標籤（GPT 規格：灰藍紙底 #dce6ea、深藍墨字 #243e4a，同「補位」淡赭區分） */
+.gig-card .bp-tag.tape383{ background:#dce6ea; color:#243e4a; }
+.gt-pill.gt-tape383{ background:#dce6ea; color:#243e4a; }
+.tape383-note{ margin-top:4px; font-size:.82rem; color:#243e4a; font-weight:700; }
+.tape383-cat{ display:flex; align-items:center; justify-content:space-between; width:100%; min-height:44px; margin:0 0 8px; padding:10px 12px; background:#fbf7ea; border:1px solid rgba(36,62,74,.45); border-radius:4px; color:#243e4a; font-weight:800; text-align:left; cursor:pointer; }
+.tape383-cat .tape383-fee{ font-weight:700; color:#5a4328; }
 .gt-pill.gt-costume382{ background:#f3e2c7; color:#5a3d1e; border:1px dashed rgba(120,90,40,.55); }
 .wardrobe265{ margin:10px 0 0; padding:10px 12px; background:#f8f1de; border:1px solid rgba(120,95,60,.45); border-radius:10px; }
 .wardrobe265-h{ margin:0 0 6px; font-size:1rem; }
@@ -16897,6 +16903,7 @@ function normalizeSaveObj(o){
   if(!Array.isArray(o.grant229Queue)) o.grant229Queue=[];
   /* v20a381 INTEL381：舊檔補補位名額槽預設（null＝未買；已有就唔郁，冪等）。 */
   if(!o.intel381||typeof o.intel381!=="object") o.intel381=null;
+  if(!o.tape383||typeof o.tape383!=="object") o.tape383=null; /* v20a383 TAPE383：自費試鏡帶單槽，舊存檔兼容 */
   if(!Array.isArray(o.contracts229)) o.contracts229=[];
   if(typeof o.vocal!=="number"||!isFinite(o.vocal))o.vocal=14;
   /* Soft: 壓力硬上限 100。舊檔高過 100 要夾落。體能係能力，跟 STAT_MAX，唔夾 100。 */
@@ -18304,6 +18311,7 @@ function costume382GigReq(g){
     if(typeof isPangCharityGig158==="function" && isPangCharityGig158(g)) return null;
     if(typeof triggerGigLabel229==="function" && triggerGigLabel229(g)) return null;
     if(typeof intel381Label==="function" && intel381Label(g)) return null;
+    if(typeof tape383Label==="function" && tape383Label(g)) return null; /* v20a383：付費買資格嘅通告唔再疊自備戲服閘 */
     if(costume382Hash(g.id)%10!==3) return null;
     const genre=String(g.genre||"");
     const type=String(g.type||"");
@@ -18671,8 +18679,11 @@ function gigCardHtml(g, opts){
   try{ const tl = (typeof triggerGigLabel229==="function") ? triggerGigLabel229(g) : ""; if(tl) trigBit = ` <span class="bp-tag trig">${tl}</span>`; }catch(_e){}
   /* v20a381 INTEL381：補位通告卡標籤（沿用觸發標籤位） */
   try{ const il = (typeof intel381Label==="function") ? intel381Label(g) : ""; if(il) trigBit += ` <span class="bp-tag intel381">${il}</span>`; }catch(_e){}
+  /* v20a383 TAPE383：自費試鏡標籤＋試鏡截止日行（GPT 規格：卡上顯示同一截止日期） */
+  let tape383Note = "";
+  try{ const tl383 = (typeof tape383Label==="function") ? tape383Label(g) : ""; if(tl383){ trigBit += ` <span class="bp-tag tape383">${tl383}</span>`; const dd383 = (typeof tape383DeadlineText==="function") ? tape383DeadlineText(g) : ""; if(dd383) tape383Note = `<div class="tape383-note">自費試鏡 · 請於 ${dd383} 前到場試鏡</div>`; } }catch(_e){}
   try{ const cr382 = (typeof costume382GigReq==="function") ? costume382GigReq(g) : null; if(cr382) trigBit += ` <span class="bp-tag costume382">自備戲服 · ${cr382}${costume382OwnedCat(cr382)?"":"（未持有）"}</span>`; }catch(_e){}
-  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+badge94.label):""}${seasonBit}${bpBit}${bridgeBit}${trigBit}</div><b class="g-title">${g.title}</b>${bridgeNote}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}${favor158Html}</div>`;
+  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+badge94.label):""}${seasonBit}${bpBit}${bridgeBit}${trigBit}</div><b class="g-title">${g.title}</b>${bridgeNote}${tape383Note}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}${favor158Html}</div>`;
 }
 
 /* ===== v19c PLAN_GIG_PAY_EXACT_v1 + PLAN_GIG_BREACH_FEE_v1（顯示派生；引擎逾期可掛） ===== */
@@ -18991,6 +19002,8 @@ function gigBoardTeaserHtml(g, opts){
   try{ const tl = (typeof triggerGigLabel229==="function") ? triggerGigLabel229(g) : ""; if(tl) trigPill = `<span class="gt-pill gt-trigger">${tl}</span>`; }catch(_e){}
   /* v20a381 INTEL381：補位通告卡標籤（沿用觸發標籤位） */
   try{ const il = (typeof intel381Label==="function") ? intel381Label(g) : ""; if(il) trigPill += `<span class="gt-pill gt-intel381">${il}</span>`; }catch(_e){}
+  /* v20a383 TAPE383：自費試鏡標籤（沿用觸發標籤位） */
+  try{ const tl383 = (typeof tape383Label==="function") ? tape383Label(g) : ""; if(tl383) trigPill += `<span class="gt-pill gt-tape383">${tl383}</span>`; }catch(_e){}
   /* v20a382 COSTUME382：自備戲服標籤（GPT 方案：細紙標籤跟觸發標籤同排，欠衫標「未持有」） */
   try{ const cp = (typeof costume382PillHtml==="function") ? costume382PillHtml(g) : ""; if(cp) trigPill += cp; }catch(_e){}
   return `<div class="gig-teaser" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
@@ -19419,6 +19432,13 @@ function castingNoticeDetailHtml(g){
       return `<div class="cn-chance378"><span class="cn-chance378-lab">試鏡成功率</span><strong class="cn-chance378-val">約 ${p378}%</strong></div>`;
     }catch(_e){ return ""; }
   })();
+  /* v20a383 TAPE383：詳情頁自費試鏡截止日行（GPT 規格：通告卡顯示同一截止日期） */
+  const tape383DetailRow383 = (()=>{
+    try{
+      const dd383 = (typeof tape383DeadlineText==="function") ? tape383DeadlineText(g) : "";
+      return dd383 ? `<div class="cn-sum-row"><span class="k">自費試鏡</span><span class="v">請於 ${dd383} 前到場試鏡</span></div>` : "";
+    }catch(_e){ return ""; }
+  })();
   const weeklyRow117 = (total > 1) ? weeklyBlock : "";
   const synopsisFrame117 = `<div class="notice_synopsis_frame">
       <div class="cn-lab">劇情簡介</div>
@@ -19460,6 +19480,7 @@ function castingNoticeDetailHtml(g){
       <div class="cn-sum-row"><span class="k">簽約金</span><span class="v">${signFee108}</span></div>
       ${breachRow108}
       ${chanceRow378}
+      ${tape383DetailRow383}
       ${costume382DetailRowHtml(g)}
       <div class="cn-sum-row"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
       <div class="cn-sum-row"><span class="k">通告期間</span><span class="v">${period}</span></div>
@@ -20551,6 +20572,7 @@ function advanceDay(){
   try{ if(typeof enc271LukAbsentTick==="function") enc271LukAbsentTick(); }catch(_lk271){}
   /* v20a381 INTEL381：補位留言／資格到期 tick（同 enc271 並列） */
   try{ if(typeof intel381Tick==="function") intel381Tick(); }catch(_i381){}
+  try{ if(typeof tape383Tick==="function") tape383Tick(); }catch(_t383){}
   try{ if(typeof rivalryTick==="function") rivalryTick(); }catch(_rv){}
   try{ if(typeof rivalryNewsTick==="function") rivalryNewsTick(); }catch(_rn){}
   try{ if(typeof exodusFenTick==="function") exodusFenTick(); }catch(_ex){}
@@ -29441,6 +29463,8 @@ const MOCK_ASK = {
     { id:"act_ho_choi_news", title:"詢問采兒近況", hint:"向何生打聽采兒最新動向", cost:"免費", toast:"何生透露采兒正籌備新戲。", source:"何生事務所", intelText:"采兒最近頻密接拍賀歲片，更想物色新臨記做替身。" },
     { id:"act_ho_repay", title:"還人情 / 送禮", hint:"揀一筆何生人情債，用現金或庫存禮物還。", choiceHint:"揀一筆何生人情債，用現金或庫存禮物還。", cost:"禮物／現金", toast:"何生收低，話「大家自己人」。", resultHint:"何生心情好咗，提咗句年尾有筍盤。", source:"何生事務所", repay:true },
     { id:"act_ho_rumor", title:"聽風聲", hint:"何生每日有一單真風聲：邊位紅星呢幾日會出沒、邊套戲就嚟開鏡。", cost:"無", toast:"何生壓低聲講咗一單真風聲。", source:"何生事務所" },
+    /* v20a383 TAPE383：自費試鏡帶（1991 年起每季一次；moneyCost 由 mockAskDefs 按季定價 $1,200–1,800，專屬流程 tape383OpenPicker） */
+    { id:"act_ho_tape383", title:"自費拍攝試鏡帶", hint:"1991 年起，每季可使用一次。自費拍攝並寄出試鏡帶，可取得所選類別一項通告的試鏡資格。試鏡按一般規則判定，不保證入選。", choiceHint:"1991 年起，每季可使用一次。自費拍攝並寄出試鏡帶，可取得所選類別一項通告的試鏡資格。試鏡按一般規則判定，不保證入選。", cost:"試鏡帶費", toast:"", source:"何生事務所" },
   ],
 };
 function mockAskDefs(locId){
@@ -29468,6 +29492,19 @@ function mockAskDefs(locId){
           ? Object.assign({}, d, { moneyCost:p381, cost:"$"+p381+" 情報費" })
           : d);
       }
+    }
+    if(locId==="agency_ho" && typeof tape383State==="function"){
+      /* v20a383 TAPE383：試鏡帶掣原位常駐——可用時寫入實價；停用時（1990 年／本季已用）寫明狀態（GPT 規格，唔隱藏）。 */
+      const st383 = tape383State();
+      out = out.map(d=>{
+        if(d.id!=="act_ho_tape383") return d;
+        if(st383==="ok"){
+          const p383 = tape383Price();
+          return Object.assign({}, d, { moneyCost:p383, cost:"$"+p383.toLocaleString()+" 試鏡帶費", tape383Off:false });
+        }
+        const offTxt = (st383==="early") ? "此行動將於 1991 年開放。" : "本季已使用。下季可再次使用。";
+        return Object.assign({}, d, { moneyCost:0, cost:(st383==="early" ? "1991 年開放" : "本季已用"), hint:String(d.hint||"")+" "+offTxt, choiceHint:String(d.choiceHint||d.hint||"")+" "+offTxt, tape383Off:true });
+      });
     }
     if(locId==="cafe_cha" && typeof enc79CafeHelpHeld284==="function"){
       /* v20a284 R5-E：持霞姐人情嗰陣，飲茶掣講明可多打聽幾多次（每次消耗一筆）。 */
@@ -29652,6 +29689,8 @@ function applyMockAsk(locId, actionId, repayOpt){
   }
   /* v20a381 INTEL381：補位消息專屬分支（自理扣費／名額，唔經通用 intelText 登記） */
   if(def.id==="act_cha_intel381" && typeof intel381Buy==="function") return intel381Buy(def);
+  /* v20a383 TAPE383：試鏡帶要先揀類別，唔經通用打聽流程（避免誤扣茶錢／登記 intelAsked）。 */
+  if(def.id==="act_ho_tape383") return { ok:false, toast:"請在事務所選擇試鏡類別。" };
   let added=false, updated=false, cleared=false;
   let payNote="";
   /* v19z6：已聽過傳聞唔再扣茶／重複登記 */
@@ -43434,6 +43473,123 @@ function intel381OpenBook(){
   }catch(_e){}
 }
 
+/* ===== v20a383 TAPE383：後期金錢自費試鏡帶 =====
+   規格（用戶 2026-11-22 拍板「按建議次序開票」第三票，方案來源 linji-systems-balance-2026-11-22/REPORT.md，
+   GPT-6.2-sol 首選「自費試鏡帶」）：第二、三年（1991–1992）何生事務所新增行動「自費拍攝試鏡帶」，
+   每季一次付費 $1,200–1,800（按季種子定價，flat scale 唔跟通脹），玩家自選一類媒介
+   （電影／電視劇／唱片通告／廣告／綜藝），由嗰類揀一張未消費真通告（tier 窗貼近玩家級數，
+   跟 v381 補位同口徑）以「自費試鏡」標籤上板，換試鏡入場資格——買入場資格唔買分：
+   試鏡照常 aud91 判定，唔改成功率、唔可付費重試、唔設主線／E1 必經。7 日內去試鏡，過期失效。
+   唔加新通告（庫總數 330 不變）、唔耗日（同打聽行動一致，試鏡本身耗一日）、唔計茶座上限。
+   狀態存 S.tape383（單槽）。UI 規格 GPT-6.2-sol（原稿 linji-drive383/gpt_ui383.txt，brief 寫明終極目標原生 iOS app）。 */
+function tape383QuarterKey(){ try{ const d=dateObj(); return d.getFullYear()*4+Math.floor(d.getMonth()/3); }catch(_e){ return 0; } }
+function tape383Price(){ return 1200 + ((tape383QuarterKey()*37)%7)*100; }
+function tape383Slot(){ try{ return (typeof S!=="undefined" && S && S.tape383 && typeof S.tape383==="object") ? S.tape383 : null; }catch(_e){ return null; } }
+function tape383State(){
+  try{
+    if(typeof S==="undefined"||!S) return "used";
+    const y = dateObj().getFullYear();
+    if(y<1991) return "early";
+    const s=tape383Slot();
+    if(s && s.qk===tape383QuarterKey()) return "used";
+    return "ok";
+  }catch(_e){ return "used"; }
+}
+function tape383PickGig(type){
+  try{
+    const order=(typeof GIG_TIER_ORDER229!=="undefined"&&Array.isArray(GIG_TIER_ORDER229))?GIG_TIER_ORDER229:["臨記","初級","中級","高級","稀有"];
+    const canon=(typeof gigTierCanon229==="function")?gigTierCanon229:(t=>t||"初級");
+    const pt=(typeof enc79PlayerTier==="function")?enc79PlayerTier():0;
+    const lo=Math.max(0,Math.min(order.length-1,pt));
+    const hi=Math.max(lo,Math.min(order.length-1,pt+1));
+    const pool=(typeof GIGS!=="undefined"&&Array.isArray(GIGS)?GIGS:[]).filter(g=>{
+      if(!g||!g.id||g.trigger) return false;
+      if(String(g.type||"")!==String(type||"")) return false;
+      const ti=order.indexOf(canon(g.tier)); if(ti<lo||ti>hi) return false;
+      if(typeof isGigConsumed==="function" && isGigConsumed(g)) return false;
+      if(S.flags && S.flags["done_"+g.id]) return false;
+      if(Array.isArray(S.booked)&&S.booked.some(b=>b&&b.gigId===g.id)) return false;
+      return true;
+    });
+    if(!pool.length) return null;
+    pool.sort((a,b)=>String(a.id).localeCompare(String(b.id)));
+    let th=0; const ts=String(type||""); for(let i=0;i<ts.length;i++) th+=ts.charCodeAt(i);
+    const qk=tape383QuarterKey();
+    return pool[(((qk*31+th)%pool.length)+pool.length)%pool.length];
+  }catch(_e){ return null; }
+}
+function tape383FmtDay(dayIdx){
+  try{
+    const d=new Date(START.y, START.m-1, START.d+(Number(dayIdx)||0));
+    return d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日";
+  }catch(_e){ return ""; }
+}
+function tape383LocName(locId){
+  try{ if(typeof triggerGigLocName229==="function") return triggerGigLocName229(locId); }catch(_e){}
+  return String(locId||"通告欄");
+}
+function tape383OpenPicker(L){
+  try{
+    const reopen=()=>{ try{ if(L) openLoc(L.id, {travelFree:true}); }catch(_e){} };
+    const st=tape383State();
+    if(st==="early"){ toast("此行動將於 1991 年開放。"); return; }
+    if(st==="used"){ toast("本季已使用。下季可再次使用。"); return; }
+    const price=tape383Price();
+    const cats=["電影","電視劇","唱片通告","廣告","綜藝"];
+    const rows=cats.map(c=>`<button type="button" class="tape383-cat" data-tape383-cat="${c}"><span>${c}</span><span class="tape383-fee">$${price.toLocaleString()}</span></button>`).join("");
+    modal(`<h3>選擇試鏡類別</h3><p class="sub">自費拍攝並寄出試鏡帶，可取得所選類別一項通告的試鏡資格。試鏡按一般規則判定，不保證入選。</p><div id="tape383-cats">${rows}</div>`,[
+      {label:"取消", role:"g", on:reopen}
+    ], {onDismiss:reopen});
+    const box=document.getElementById("tape383-cats");
+    if(box){
+      box.querySelectorAll("[data-tape383-cat]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{ tape383Confirm(btn.getAttribute("data-tape383-cat"), L); });
+      });
+    }
+  }catch(_e){}
+}
+function tape383Confirm(type, L){
+  try{
+    const reopen=()=>{ try{ if(L) openLoc(L.id, {travelFree:true}); }catch(_e){} };
+    if(tape383State()!=="ok"){ toast("本季已使用。下季可再次使用。"); reopen(); return; }
+    const gig=tape383PickGig(type);
+    if(!gig){ toast("暫時沒有合適的"+String(type||"")+"通告，試鏡帶費不收。"); reopen(); return; }
+    const price=tape383Price();
+    confirmChoice236({
+      choiceLabel:"自費拍攝試鏡帶（"+String(type||"")+"）",
+      consequence:"確認後將即時支付 $"+price.toLocaleString()+"，拍攝並寄出試鏡帶，取得一項"+String(type||"")+"通告的試鏡資格。本次付款將使用本季一次機會。試鏡按一般規則判定，不保證入選。",
+      onConfirm:()=>{
+        if((Number(S.money)||0)<price){ toast("試鏡帶費不足 $"+price.toLocaleString()+"，先去接單賺回一些。"); reopen(); return; }
+        S.money=(Number(S.money)||0)-price;
+        try{ refreshMoneyHud(); }catch(_e){}
+        S.tape383={ qk:tape383QuarterKey(), gigId:String(gig.id), locId:String(gig.loc||""), title:String(gig.title||""), type:String(type||""), state:"kept", keptDay:(S.dayIndex|0), price:price };
+        try{ saveQ(); }catch(_s){}
+        const locName=tape383LocName(gig.loc);
+        modal(`<h3>已取得試鏡資格</h3><p>請前往${locName}的通告欄，查看標有「自費試鏡」的《${journalText(gig.title||"通告")}》。</p><p class="gold">請於 7 日內到場試鏡。截止日期為 ${tape383FmtDay((S.dayIndex|0)+7)}。</p>`,[
+          {label:"我知道了", role:"g", on:reopen}
+        ], {onDismiss:reopen});
+      },
+      onCancel:reopen
+    });
+  }catch(_e){}
+}
+function tape383Tick(){
+  try{
+    const s=tape383Slot(); if(!s||typeof S==="undefined"||!S) return;
+    if(s.state!=="kept") return;
+    const today=(S.dayIndex|0);
+    if(today > (s.keptDay|0)+7){
+      const used=(Array.isArray(S.pendingAud)&&S.pendingAud.some(p=>p&&p.gigId===s.gigId))||(Array.isArray(S.shoots)&&S.shoots.some(sh=>sh&&sh.gigId===s.gigId))||(S.flags&&S.flags["done_"+s.gigId]);
+      if(used){ s.state="used"; }
+      else{ s.state="expired"; try{ toast("自費試鏡資格已過期，試鏡帶已由製作單位收回。"); }catch(_t){} }
+      try{ saveQ(); }catch(_s){}
+    }
+  }catch(_e){}
+}
+function tape383KeptGig(g){ const s=tape383Slot(); return !!(s&&s.state==="kept"&&g&&g.id===s.gigId); }
+function tape383Label(g){ return tape383KeptGig(g) ? "自費試鏡" : ""; }
+function tape383DeadlineText(g){ const s=tape383Slot(); if(!s||s.state!=="kept"||!g||g.id!==s.gigId) return ""; return tape383FmtDay((s.keptDay|0)+7); }
+
 /* ===== v20a83 ENC83：紅星巧遇 Phase 2（魏詠男／顧明輝／駱家聲／齊鎮海）＋ T4 提攜通用機制（D2 已批）。
    核查結論：Phase 1 未實作 T4 提攜（ENC79 全模組冇提攜／引薦機制）——本包補通用機制：
    每位星好感到 T4（自己人）後，下次巧遇播一段專屬提攜戲（lines only），完成即經 enc79GrantCredit
@@ -44674,7 +44830,7 @@ function openLoc(id, opts){
     mockAskDefs(L.id).forEach(def=>{
       const face = def.choiceHint || def.hint || "";
       const heard = !def.repay && typeof mockAskAlreadyHeard==="function" && mockAskAlreadyHeard(def);
-      const isTeaAct = !def.repay && ((Number(def.moneyCost)||0)>0 || def.id==="act_cha_hall_tea");
+      const isTeaAct = !def.repay && def.id!=="act_ho_tape383" && ((Number(def.moneyCost)||0)>0 || def.id==="act_cha_hall_tea"); /* v20a383：試鏡帶費唔計茶座上限 */
       let askCost = (def.moneyCost || def.repay) ? def.cost : (softPreviewOn() ? ((def.cost && def.cost!=="無" && def.cost!=="免費") ? def.cost+" · 不耗日" : "不耗日") : (def.cost||"免費"));
       let hintFace = face + (softPreviewOn() && !def.repay && !heard ? " · 不耗日" : "");
       if(heard){
@@ -44694,6 +44850,11 @@ function openLoc(id, opts){
         }
         if(def.repay){
           openHoRepaySheet(L);
+          return;
+        }
+        /* v20a383 TAPE383：試鏡帶行專屬流程（揀類別→確認付款→上板），唔經通用打聽確認頁。 */
+        if(def.id==="act_ho_tape383"){
+          if(typeof tape383OpenPicker==="function") tape383OpenPicker(L);
           return;
         }
         if(heard){ toast("呢單情報已經聽過。"); return; }
@@ -44722,7 +44883,7 @@ function openLoc(id, opts){
         }
           },
           onCancel: reopen236 });
-      }, heard ? "act-ask act-ask-heard" : "act-priority act-ask");
+      }, (heard || def.tape383Off) ? "act-ask act-ask-heard" : "act-priority act-ask"); /* v20a383：試鏡帶停用態同已聽過同款半透明 */
     });
     /* v20a22：hub 地點補返傾談／送禮（同非 hub 共用 helper）＋通告入口。
        MOCK_ASK 係「打聽」，傾談掣係「同X傾談」，文案本身分得清，兩者並存。
@@ -45513,13 +45674,15 @@ function gigsForLocSeasonBoard(locId, curSeason){
     if(g.trigger && (typeof triggerGigOn==="function" ? !triggerGigOn(g) : true)) return false;
     /* v20a381 INTEL381：已覆電保留嘅補位通告豁免季節／NAT92 錯峰（同 wf3harvest 收割窗同理——資格窗就係檔期本身）。 */
     const isIntel381 = (typeof intel381KeptGig==="function" && intel381KeptGig(g));
+    /* v20a383 TAPE383：自費試鏡帶保留嘅通告同理豁免（7 日試鏡窗就係檔期本身）。 */
+    const isTape383 = (typeof tape383KeptGig==="function" && tape383KeptGig(g));
     /* v20a88：錯季硬藏改提早窗判準（typeof 防禦：抽函數測試沙盒冇 88 函數時回退 v18k 語義）
        v20a279 G-L2：收割窗通告（wf3harvest）豁免季節閘——佢嘅檔期就係 7 日收割窗本身（由 S.wf3.liaoHarvest 計），唔係上映季；
        遲秋先搶鏡嘅玩家，窗開喺冬都照上板。其他 trigger 通告照舊跟季節窗。 */
-    if(!isIntel381 && !(g.trigger && g.trigger.kind==="wf3harvest" && typeof triggerGigOn==="function" && triggerGigOn(g)) && (typeof gigSeasonHidden88==="function" ? gigSeasonHidden88(g, curSeason) : seasonRank(g, curSeason)>0)) return false;
+    if(!isIntel381 && !isTape383 && !(g.trigger && g.trigger.kind==="wf3harvest" && typeof triggerGigOn==="function" && triggerGigOn(g)) && (typeof gigSeasonHidden88==="function" ? gigSeasonHidden88(g, curSeason) : seasonRank(g, curSeason)>0)) return false;
     /* v20a92 NAT92：未到上板日／已落板嘅庫存通告唔上板（typeof 防禦：冇 92 函數時唔生效）；
        已觸發通告豁免——觸發嗰刻就係上板嗰刻，唔好再俾 0–39 日開窗偏移／落板拉前擋死。 */
-    if(!isIntel381 && !(g.trigger && typeof triggerGigOn==="function" && triggerGigOn(g)) && typeof gigBoardPosted92==="function" && !gigBoardPosted92(g)) return false;
+    if(!isIntel381 && !isTape383 && !(g.trigger && typeof triggerGigOn==="function" && triggerGigOn(g)) && typeof gigBoardPosted92==="function" && !gigBoardPosted92(g)) return false;
     if(isGigConsumed(g)) return false;
     return true;
   });
