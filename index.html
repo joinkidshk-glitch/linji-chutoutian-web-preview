@@ -4222,6 +4222,8 @@ body.day-res-open .day-row{
 .gig-card .bp-tag.tape383{ background:#dce6ea; color:#243e4a; }
 .gt-pill.gt-tape383{ background:#dce6ea; color:#243e4a; }
 .tape383-note{ margin-top:4px; font-size:.82rem; color:#243e4a; font-weight:700; }
+/* v20a384（第六輪評估 P2-1）：待播劇情擋巧遇提示便箋（GPT 規格：淺琥珀底 #FFF1D6、深褐字 #654617、左 3px 色條 #B47A28） */
+.story-pending384{ margin:0 0 8px; padding:8px 12px; background:#FFF1D6; color:#654617; border-left:3px solid #B47A28; border-radius:2px; font-size:.88rem; line-height:1.45; }
 .tape383-cat{ display:flex; align-items:center; justify-content:space-between; width:100%; min-height:44px; margin:0 0 8px; padding:10px 12px; background:#fbf7ea; border:1px solid rgba(36,62,74,.45); border-radius:4px; color:#243e4a; font-weight:800; text-align:left; cursor:pointer; }
 .tape383-cat .tape383-fee{ font-weight:700; color:#5a4328; }
 .gt-pill.gt-costume382{ background:#f3e2c7; color:#5a3d1e; border:1px dashed rgba(120,90,40,.55); }
@@ -7992,7 +7994,7 @@ const ROMANCE_WF2_OVERRIDES = {
   "choiceText": {
    "C_lan_ending_he": {
     "label": "講明心意：唔使等第日——我想同你拍拖，唔係淨係一餐飯",
-    "notes": "HE：正式成為情侶、拍拖。她把那句包成約定，他接住了——不是一頓飯，是以後每一餐。"
+    "notes": "他們正式拍拖了。她把那句話包成約定，他接住了——不只這一頓飯，還有往後的每一餐。"
    },
    "C_lan_ending_be": {
     "label": "收起那一步：笑著當作約定",
@@ -19003,7 +19005,7 @@ function gigBoardTeaserHtml(g, opts){
   /* v20a381 INTEL381：補位通告卡標籤（沿用觸發標籤位） */
   try{ const il = (typeof intel381Label==="function") ? intel381Label(g) : ""; if(il) trigPill += `<span class="gt-pill gt-intel381">${il}</span>`; }catch(_e){}
   /* v20a383 TAPE383：自費試鏡標籤（沿用觸發標籤位） */
-  try{ const tl383 = (typeof tape383Label==="function") ? tape383Label(g) : ""; if(tl383) trigPill += `<span class="gt-pill gt-tape383">${tl383}</span>`; }catch(_e){}
+  try{ const tl383 = (typeof tape383Label==="function") ? tape383Label(g) : ""; if(tl383){ trigPill += `<span class="gt-pill gt-tape383">${tl383}</span>`; const ds384 = (typeof tape383DeadlineShortText==="function") ? tape383DeadlineShortText(g) : ""; if(ds384) trigPill += `<span class="gt-pill gt-tape383">${ds384}</span>`; } }catch(_e){}
   /* v20a382 COSTUME382：自備戲服標籤（GPT 方案：細紙標籤跟觸發標籤同排，欠衫標「未持有」） */
   try{ const cp = (typeof costume382PillHtml==="function") ? costume382PillHtml(g) : ""; if(cp) trigPill += cp; }catch(_e){}
   return `<div class="gig-teaser" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
@@ -19439,6 +19441,13 @@ function castingNoticeDetailHtml(g){
       return dd383 ? `<div class="cn-sum-row"><span class="k">自費試鏡</span><span class="v">請於 ${dd383} 前到場試鏡</span></div>` : "";
     }catch(_e){ return ""; }
   })();
+  /* v20a384（第六輪評估 P2-2）：補位試鏡詳情頁截止日行（GPT 規格：沿用自費試鏡期限行同一位置同元件） */
+  const intel381DetailRow384 = (()=>{
+    try{
+      const dd384 = (typeof intel381DeadlineText==="function") ? intel381DeadlineText(g) : "";
+      return dd384 ? `<div class="cn-sum-row"><span class="k">補位試鏡</span><span class="v">請於 ${dd384} 前到場試鏡</span></div>` : "";
+    }catch(_e){ return ""; }
+  })();
   const weeklyRow117 = (total > 1) ? weeklyBlock : "";
   const synopsisFrame117 = `<div class="notice_synopsis_frame">
       <div class="cn-lab">劇情簡介</div>
@@ -19481,6 +19490,7 @@ function castingNoticeDetailHtml(g){
       ${breachRow108}
       ${chanceRow378}
       ${tape383DetailRow383}
+      ${intel381DetailRow384}
       ${costume382DetailRowHtml(g)}
       <div class="cn-sum-row"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
       <div class="cn-sum-row"><span class="k">通告期間</span><span class="v">${period}</span></div>
@@ -20189,7 +20199,10 @@ function lockShootsIntoDraft(draft){
   d=scrubStaleJobs(d);
   // clear prior shoot marks but keep wrap:/audition: history
   d=d.map(x=> String(x||"").startsWith("shoot:") ? null : x);
-  for(const sh of (S.shoots||[])){
+  /* v20a384（第六輪評估 P2-5）：雙拍攝爭位餓死尾日——近限期嘅拍攝先填位，
+     唔好畀後入嘅長拍攝搶晒星期位，令剩 1 日嘅近限期通告排唔到而逾期取消。 */
+  const shoots384 = (S.shoots||[]).slice().sort((a,b)=> ((a&&a.deadlineDay!=null?a.deadlineDay:1e9) - (b&&b.deadlineDay!=null?b.deadlineDay:1e9)));
+  for(const sh of shoots384){
     let need = (typeof shootRemain==="function") ? shootRemain(sh) : Math.max(0,(sh.totalDays||0)-(sh.doneDays||0));
     if(need<=0) continue;
     for(let i=0;i<7 && need>0;i++){
@@ -20253,8 +20266,13 @@ function defaultWeekPlan(){
        唔好再零感知咁連谷到病倒。壓力 ≥60：訓練位改返休息（兩日休息）；
        ≥80：再多一日休息（三日）。壓力唔高嗰陣行為不變。 */
     const stress379 = Number(S && S.stress) || 0;
-    if(stress379 >= 60) plan[1] = "rest";
-    if(stress379 >= 80) plan[3] = "rest";
+    /* v20a384（第六輪評估 P2-4）：draft 生成時點邊界——生成嗰刻未跨 80，但成週預覽
+       峰值會跨（wk17 實測：生成時 79、翌日 97，只得兩日休息）。改用「現壓力同
+       預覽峰值取高」判休息日數，令高壓週真加休息。 */
+    let stress384 = stress379;
+    try{ if(typeof previewWeekStress==="function"){ const pv384 = previewWeekStress(plan); if(pv384 && Number(pv384.peak)>stress384) stress384 = Number(pv384.peak); } }catch(_e384){}
+    if(stress384 >= 60) plan[1] = "rest";
+    if(stress384 >= 80) plan[3] = "rest";
     plan[6] = "rest";
     return plan;
   }catch(_e){ return base; }
@@ -43431,6 +43449,7 @@ function intel381Tick(){
 }
 function intel381KeptGig(g){ const s=intel381Slot(); return !!(s&&s.state==="kept"&&g&&g.id===s.gigId); }
 function intel381Label(g){ return intel381KeptGig(g) ? "補位" : ""; }
+function intel381DeadlineText(g){ const s=intel381Slot(); if(!s||s.state!=="kept"||!g||g.id!==s.gigId) return ""; return intel381FmtDay((s.keptDay|0)+7); } /* v20a384：補位試鏡截止日（同 tape383DeadlineText 同口徑，覆電後 7 日窗） */
 function intel381FmtDay(dayIdx){
   try{
     const d=new Date(START.y, START.m-1, START.d+(Number(dayIdx)||0));
@@ -43589,6 +43608,10 @@ function tape383Tick(){
 function tape383KeptGig(g){ const s=tape383Slot(); return !!(s&&s.state==="kept"&&g&&g.id===s.gigId); }
 function tape383Label(g){ return tape383KeptGig(g) ? "自費試鏡" : ""; }
 function tape383DeadlineText(g){ const s=tape383Slot(); if(!s||s.state!=="kept"||!g||g.id!==s.gigId) return ""; return tape383FmtDay((s.keptDay|0)+7); }
+function tape383DeadlineShortText(g){ /* v20a384（第六輪評估 P2-3）：teaser 短卡截止提示（GPT 規格：「{月}月{日}日截止」同標籤同列） */
+  const s=tape383Slot(); if(!s||s.state!=="kept"||!g||g.id!==s.gigId) return "";
+  try{ const d=new Date(START.y, START.m-1, START.d+((s.keptDay|0)+7)); return (d.getMonth()+1)+"月"+d.getDate()+"日截止"; }catch(_e){ return ""; }
+}
 
 /* ===== v20a83 ENC83：紅星巧遇 Phase 2（魏詠男／顧明輝／駱家聲／齊鎮海）＋ T4 提攜通用機制（D2 已批）。
    核查結論：Phase 1 未實作 T4 提攜（ENC79 全模組冇提攜／引薦機制）——本包補通用機制：
@@ -44742,6 +44765,23 @@ function openLoc(id, opts){
       }
     }
   }catch(_e){}
+
+  /* v20a384（第六輪評估 P2-1）：待播劇情擋巧遇提示——此地有待播劇情、而又有女角今日
+     在場（巧遇原本合資格）嗰陣，喺「播劇情」掣上方出便箋交代巧遇點解未觸發（GPT 規格）。
+     唔改劇情優先機制；播完劇情返面板重新判斷，冇待播即唔出。 */
+  try{
+    if(typeof enc79StoryPendingAt==="function" && enc79StoryPendingAt(L.id) && typeof ROM176_WOMEN!=="undefined"){
+      const isRomLoc384 = ROM176_WOMEN.some(w=> w && (w.primary===L.id || w.secondary===L.id || w.tertiary===L.id));
+      let present384 = false;
+      try{ const sd384 = (typeof rom176EnsureDay==="function") ? rom176EnsureDay() : null; present384 = !!(sd384 && sd384.presence && (sd384.presence[L.id]||[]).length); }catch(_p384){}
+      if(isRomLoc384 && present384){
+        const note384 = document.createElement("div");
+        note384.className = "story-pending384";
+        note384.textContent = `${L.name||"此地"}有一段待播劇情。請先播放劇情；巧遇暫時不會觸發。`;
+        if(acts.firstChild) acts.insertBefore(note384, acts.firstChild); else acts.appendChild(note384);
+      }
+    }
+  }catch(_n384){}
 
   // v19u：茶餐廳／事務所只出打聽 Mock，唔走上板、訓練、休息（唔過日）
   /* v20a79 ENC79：遠觀掣退場——星在場但冇觸發巧遇（冷卻／上限／主線壓制）嗰陣，
