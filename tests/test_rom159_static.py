@@ -182,19 +182,19 @@ ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committ
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25499", line_has(26576, "v20a159 ROM159 Phase 1"))
+ok("行號釘 ROM159 block 頭 25499", line_has(26581, "v20a159 ROM159 Phase 1"))
 ok("行號釘 bumpRel 凍結鉤 8020", line_has(8990, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(27470, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 CMT_lan_commit 26333", line_has(27475, "COMMIT48_NODES.CMT_lan_commit"))
 ok("行號釘 StoryPlay 預備鉤 10553", line_has(11158, "rom159PrepareNode(node)"))
 ok("行號釘載入覆寫呼叫 14877", line_has(15421, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26248", line_has(27325, "function rom159SoMeetGate"))
+ok("行號釘 rom159SoMeetGate 26248", line_has(27330, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[26604 - 1])  # v376 resync（26580→26604，difflib 核實）  # v375 resync（26464→26580，grep 核實）  # v374 resync（26349→26464，grep 核實）  # v373 resync +41（26308→26349，grep 核實）  # v372 resync +76  # v20a159 整合：B1＋B2 後行號 +86；v20a358 resync −424；v361 resync +76；v363 resync +437；v369 resync +181（25968→26136，difflib 核實純漂移）
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[26609 - 1])  # v377 resync（26604→26609，difflib 核實）  # v376 resync（26580→26604，difflib 核實）  # v375 resync（26464→26580，grep 核實）  # v374 resync（26349→26464，grep 核實）  # v373 resync +41（26308→26349，grep 核實）  # v372 resync +76  # v20a159 整合：B1＋B2 後行號 +86；v20a358 resync −424；v361 resync +76；v363 resync +437；v369 resync +181（25968→26136，difflib 核實純漂移）
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）
@@ -216,14 +216,14 @@ _flat_spots = [s for grp in _spot_lists for s in grp]
 ok("WOMEN spots 無重複", len(_flat_spots) == len(set(_flat_spots)))
 
 # 約會價錢定值表（B1 工人同一張）：散步類 $4、海傍／山頂／淺水灣／啟德 $6、廟街 $20、
-# 茶記 $45、戲院／首映 $58、酒廊唱歌 $50（酒廊係推算，NOTES 標明待確認）。
+# 茶記 $20、戲院／首映 $30、酒廊唱歌 $25（v377 第三輪 B7 減價；酒廊原 $50 係推算）。
 # DATES 係 B1 範圍——呢個分支未齊 37 場嗰陣成段 skip，唔紅；齊晒先驗終態。
 _dates_m = re.search(r"const ROM159_DATES = \{(.*?)\n\};", idx, re.S)
 _dates_body = _dates_m.group(1) if _dates_m else ""
 _costs = {k: int(v) for k, v in re.findall(r"^\s*(\w+):\s*\{[^}]*?cost:(\d+)", _dates_body, re.M)}  # v20a159 整合：findall 回字串，轉 int 先同定值表比
 _SUFFIX_PRICE = {"harbour": 6, "beach": 6, "airport": 6, "peak": 6,
-                 "market": 20, "cafe": 45, "cinema": 58, "premiere": 58, "lounge": 50}
-_ALLOWED = {4, 6, 20, 45, 58, 50}
+                 "market": 20, "cafe": 20, "cinema": 30, "premiere": 30, "lounge": 25}
+_ALLOWED = {4, 6, 20, 25, 30}
 _missing = [s for s in _flat_spots if s not in _costs]
 if not _flat_spots or _missing:
     skip("約會價錢表：DATES 未齊 37 場（欠 %d 場），合併 B1 之後先驗" % len(_missing))
@@ -267,12 +267,27 @@ if _xu:
 # v20a268：vera_hiu_choi.json＋romance_tang.json 唔入清單——vera 檔已減 5 個 R_vera_* 節點，tang 檔已刪；見下面精確替代斷言）
 # v20a297：gift_prefs.json／gift_react_copy.json／cast_main.json 唔入清單——Vera＋關海媚成個移除，見下面精確替代斷言）
 # v20a352：story_detail_n1_to_n17.json 唔入清單——主線複檢 26 項玩家面矛盾修復（GPT-6.2 全量掃＋Kimi 試點證實），見下面精確替代斷言）
+# v20a377：items_gifts.json 唔入清單——第三輪 B7 休閒經濟，五件中高價禮物減價（見下面精確替代斷言）
 packs = [
-    "content/items_gifts.json",
     "content/shops.json",
 ]
 for p in packs:
     ok("pack 冇直改: " + p, sha(os.path.join(ROOT, p)) == hashlib.sha256(_read_pristine_bytes(p)).hexdigest())
+
+# v377 精確替代斷言：items_gifts 只改五件禮物價格（咖啡豆 45→28、卡帶 50→32、甜品盒 48→30、
+# 時裝雜誌 55→35、淡香水 65→40），其餘欄位同 pristine 逐字一致
+_gifts_now = json.load(open(os.path.join(ROOT, "content", "items_gifts.json"), encoding="utf8"))
+_gifts_pris = json.loads(_read_pristine("content/items_gifts.json"))
+_V377_GIFT_PRICE = {"gift_coffee_beans": 28, "gift_cassette_indie": 32, "gift_handmade_sweet": 30, "gift_fashion_mag": 35, "gift_perfume_sample": 40}
+def _gift_items(doc):
+    items = doc["items"] if isinstance(doc, dict) and "items" in doc else doc
+    return {it["itemId"]: it for it in items}
+_gn, _gp = _gift_items(_gifts_now), _gift_items(_gifts_pris)
+ok("v377 禮物 pack：五件減價定值",
+   all(_gn[i]["price"] == p for i, p in _V377_GIFT_PRICE.items()))
+ok("v377 禮物 pack：除五件價格外同 pristine 逐字一致",
+   all({k: v for k, v in _gn[i].items() if k != "price"} == {k: v for k, v in _gp[i].items() if k != "price"}
+       and (_gn[i]["price"] == _gp[i]["price"] or i in _V377_GIFT_PRICE) for i in _gp))
 
 # v352 精確替代斷言：主線 pack 只改 26 項證實矛盾涉及嘅文字，其餘節點同 pristine 逐字一致
 # v353：再改 8 項文風取捨（用戶拍板全部改）——觸及節點加 N3；其餘未觸及節點仍同 pristine 逐字一致

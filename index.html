@@ -15559,8 +15559,8 @@ async function refreshCopyPacksFromDisk(){
    span+1（七課一致 +4~6→+6~8→+8~11）；sub 附帶（有先算，值＝級數 +1/+2/+3；
    附帶邊個數值跟各課現有數據——演技→台風、台風→魅力、外貌→魅力、智商→演技；
    歌藝／魅力／武師班現行冇附帶，唔發明）；stress 壓力一級 [sLo, sLo+sSpan]，
-   每級 lo+2（七課一致 +8~12→+10~14→+12~16）；fee800＝外貌課學費 $80（各級
-   不變，跟現行，唔加價）。耗時維持 1 日。
+   每級 lo+2（七課一致 +8~12→+10~14→+12~16）；fee800＝外貌課學費 $40（v20a377 由 $80 下調，各級
+   不變，唔加價）。耗時維持 1 日。
    v20a76 UNIFY76（用戶 2026-11-10 17:28 拍板統一）：v75 曾保留外貌／魅力／智商
    三課一級 +3~5、壓力跟各課自己帶（偏差已交代）；用戶揀返統一全表——三課主增益
    同壓力改到同其餘四課一致（mLo 3→4；壓力 looks 6/3→8/4、charm 5/3→8/4、
@@ -15599,7 +15599,7 @@ function levels75GainRange(cid, lv){
   const mLo = sp.mLo + (lv - 1) * 2, mSpan = sp.mSpan + (lv === 3 ? 1 : 0);
   out[sp.main] = [mLo, mLo + mSpan];
   if(sp.sub) out[sp.sub] = [lv, lv];
-  if(sp.fee800) out.money = [-80, -80];
+  if(sp.fee800) out.money = [-40, -40]; /* v20a377：外貌課學費 $80→$40（休閒經濟可持續，見 NOTES_V20A377） */
   const sLo = sp.sLo + (lv - 1) * 2;
   out.stress = [sLo, sLo + sp.sSpan];
   return out;
@@ -15613,7 +15613,7 @@ function levels75GainRoll(cid, lv){
   const mLo = sp.mLo + (lv - 1) * 2, mSpan = sp.mSpan + (lv === 3 ? 1 : 0);
   g[sp.main] = mLo + R(0, mSpan);
   if(sp.sub) g[sp.sub] = lv;
-  if(sp.fee800) g.money = -Math.min(80, (typeof S !== "undefined" && S) ? (Number(S.money) || 0) : 0);
+  if(sp.fee800) g.money = -Math.min(40, (typeof S !== "undefined" && S) ? (Number(S.money) || 0) : 0); /* v20a377：學費 $80→$40 */
   const sLo = sp.sLo + (lv - 1) * 2;
   g.stress = sLo + R(0, sp.sSpan);
   return g;
@@ -17553,8 +17553,8 @@ function apply(delta){
    參數校準：test_calib60_logic 以 Arc A（慢速）＋Arc C×0.75（穩定）逐週真數據回放驗證——
    dual 125 到達週由 23／18 推遲到 66／57（中位 ~61.5，連同未建模嘅通告入場回饋只會更遲），
    1990 年尾 dual 仍有 260／204（門檻 2.1／1.6 倍），E1 三門檻全部有餘裕。詳見 NOTES_V20A60_CALIB.md。 */
-const CALIB60_FAME_BANDS = [[15,1],[28,0.30],[50,0.22],[85,0.15],[140,0.11],[230,0.09],[Infinity,0.07]]; /* v20a370 P3-12：×1.0 帶由 <5 改 <15（開局 fame=5 原本一出世已入 ×0.30 死帶）；其餘縮放順延一帶。v20a373：上段再收緊（85+ 帶 0.17→0.15、140+ 0.14→0.11、230+ 0.12→0.09、頂帶 0.10→0.07）——第二輪評估 W5 真玩 E1 門檻 day 238 已過、最終 dual 977（門檻 2.8 倍），GPT 方向技能衰減壓後段溢出，門檻不變 */
-const CALIB60_ATTR_BANDS = [[28,1],[55,0.36],[110,0.20],[190,0.13],[Infinity,0.08]]; /* v20a373：上段收緊（110+ 帶 0.25→0.20、190+ 0.19→0.13、頂帶 0.14→0.08）——W5 演技 891 vs 最高 req 150，後段溢出壓縮；開局帶（<55）不變 */
+const CALIB60_FAME_BANDS = [[15,1],[28,0.30],[50,0.22],[85,0.24],[140,0.20],[200,0.12],[Infinity,0.04]]; /* v20a370 P3-12：×1.0 帶由 <5 改 <15（開局 fame=5 原本一出世已入 ×0.30 死帶）；其餘縮放順延一帶。v20a373：上段再收緊（85+ 帶 0.17→0.15、140+ 0.14→0.11、230+ 0.12→0.09、頂帶 0.10→0.07）——第二輪評估 W5 真玩 E1 門檻 day 238 已過、最終 dual 977（門檻 2.8 倍），GPT 方向技能衰減壓後段溢出，門檻不變。v20a377（第三輪評估 B1 劫貧濟富修復）：v373 均勻收緊令慢速打法（raw 6/4/4）最終 dual 326 永遠唔過 E1 門檻 350，優化打法仍 2.24 倍溢出——改為只壓門檻以上溢出段：開局低段（fame<85）維持舊值保前期節奏，門檻以下中高段（85–200）放寬（0.24/0.20/0.12），門檻以上（≥200）硬壓 0.04。真引擎前向模擬（156 週）：慢速最終 359（第 149 週過 350）、正常 412（第 98 週）、優化 470（1.34×）、W5 校準 621（1.77×，v373 為 2.13×）。E1 門檻 350 不變 */
+const CALIB60_ATTR_BANDS = [[28,1],[55,0.36],[110,0.34],[160,0.18],[Infinity,0.05]]; /* v20a373：上段收緊（110+ 帶 0.25→0.20、190+ 0.19→0.13、頂帶 0.14→0.08）——W5 演技 891 vs 最高 req 150，後段溢出壓縮；開局帶（<55）不變。v20a377：同 FAME 帶同理——低段（<110）維持 0.36，門檻以下中高段（110–160）放寬 0.34/0.18，≥160 硬壓 0.05；演技 18→150 訓練堂數 134→94（舊帶 103） */
 const CALIB60_SCALED_KEYS = { fame:1, popularity:1, acting:1, stage:1, vocal:1, looks:1, charm:1, iq:1 };
 function calib60BandScale(bands, x){
   const v = Number(x)||0;
@@ -20332,6 +20332,11 @@ function advanceDay(){
   if(typeof ending78Locked==="function" && ending78Locked()) return false;
   S.dayIndex += 1;
   try{ if(typeof syncGigsForCalendarYear==="function") syncGigsForCalendarYear(false); }catch(_y){}
+  /* v20a377（第三輪評估 U9 Phase 同步遲滯）：phase 同步原本只喺 markDone（節點完成）時行——
+     1991 年 1 月到咗 phase 仍係 P1.5，要等下一個節點完成（W6 實測 Day ~448）先升 P2，
+     連帶蘇／徐／葉 meet 集中 Day 539–588、前 450 日只有兩線劇情。改為翻日時同步：
+     日曆一過年 phase 即升（syncPhaseFromProgress 只向上 bump，冪等安全），六線劇情分佈回復平均。 */
+  try{ if(typeof StoryOC!=="undefined" && StoryOC.syncPhaseFromProgress) StoryOC.syncPhaseFromProgress(); }catch(_ph377){}
   refreshNpc();
   if(S.dayIndex % 3 === 0){
     Object.keys(S.board).forEach(loc=>{
@@ -26639,7 +26644,7 @@ const ROM159_DATES = {
     intro:"廟街夜市，人聲同鑊氣夾埋一齊。曉晴話，行夜市先係放工。",
     good:{ label:"買串魚蛋，兩個人分住食", line:"佢咬住魚蛋笑：「臨記約會就係咁，唔使扮嘢。」" },
     bad:{ label:"嫌夜市污糟，叫佢去第二度", line:"佢望住你：「呢度就係我放工嘅地方喎。」" } },
-  hiu_cafe:     { who:"hiu", locId:"cafe_cha", label:"金龍茶餐廳", cost:45,
+  hiu_cafe:     { who:"hiu", locId:"cafe_cha", label:"金龍茶餐廳", cost:20,
     intro:"金龍茶餐廳老位，兩杯奶茶，一碟菠蘿油。收工食飯，就係咁簡單。",
     good:{ label:"記得佢飲奶茶唔加糖", line:"佢有啲意外：「你記得我飲奶茶唔加糖？」" },
     bad:{ label:"淨係講通告，唔問佢近況", line:"佢攪住杯奶茶，冇再出聲。" } },
@@ -26655,7 +26660,7 @@ const ROM159_DATES = {
     intro:"啟德機場，兩個人企喺觀景台睇飛機升降。曉晴話，佢細個嗰陣成日諗，飛機上面嗰啲人去邊。",
     good:{ label:"話俾佢聽，留低都係一種揀", line:"佢望住架飛機升上天：「有啲人走，有啲人留低。留低嗰啲，唔係冇得揀，係揀咗呢度。」你點頭：「我都係咁揀。」" },
     bad:{ label:"話走先係出路，留低係蝕底", line:"佢望住跑道，冇出聲。過咗好耐，佢先話：「或者你啱。但係我唔想聽呢句。」" } },
-  choi_premiere:{ who:"choi", locId:"film_cotton", label:"紅棉首映", cost:58,
+  choi_premiere:{ who:"choi", locId:"film_cotton", label:"紅棉首映", cost:30,
     intro:"首映散場，人群慢慢散。采兒冇即刻走，話想聽你點睇呢套戲。",
     good:{ label:"講真話，唔係講好聽", line:"佢點頭：「你講嘢唔兜圈，我先至鍾意同你講戲。」" },
     bad:{ label:"淨係讚，句句都係場面話", line:"佢笑咗笑：「你呢啲說話，我訪問嗰陣聽過一百次。」" } },
@@ -26663,15 +26668,15 @@ const ROM159_DATES = {
     intro:"電台訪問做完，咪熄咗，兩個人喺走廊慢慢行。",
     good:{ label:"問佢寫稿嗰陣最難係咩", line:"佢話好少有人問佢寫嘢嗰陣諗咩——「個個都係問我有咩料。」" },
     bad:{ label:"問佢有冇獨家料", line:"佢望住你：「你約我出嚟，都係為咗料？」" } },
-  choi_cafe:    { who:"choi", locId:"cafe_cha", label:"金龍茶餐廳", cost:45,
+  choi_cafe:    { who:"choi", locId:"cafe_cha", label:"金龍茶餐廳", cost:20,
     intro:"茶餐廳，采兒叫咗兩杯奶茶，記者簿收埋咗——今晚唔係訪問。",
     good:{ label:"講返自己嘅嘢，唔係講人哋嘅嘢", line:"佢話：「你肯講自己嘅嘢，我先信你唔係嚟攞料。」" },
     bad:{ label:"成晚都係打聽邊個邊個", line:"佢收埋笑容：「今晚我唔係記者，你唔使當我係。」" } },
-  choi_lounge:  { who:"choi", locId:"date_lounge", label:"酒廊唱歌", cost:50,
+  choi_lounge:  { who:"choi", locId:"date_lounge", label:"酒廊唱歌", cost:25,
     intro:"酒廊，燈光暗暗哋，台上有人唱緊歌。采兒話，收工之後嚟呢度，唔使講嘢，聽歌就得。",
     good:{ label:"點首佢鍾意嘅歌，認真唱", line:"你唱完，佢拍手：「你唱歌唔算好聽，但係你肯唱真嘅，唔係扮嘢。」佢話，記者最識分真假。" },
     bad:{ label:"成晚都係問佢邊單新聞有料", line:"佢放低杯嘢：「嚟酒廊你都問料？今晚我唔係記者。」" } },
-  choi_cinema:  { who:"choi", locId:"date_cinema", label:"旺角戲院", cost:58,
+  choi_cinema:  { who:"choi", locId:"date_cinema", label:"旺角戲院", cost:30,
     intro:"旺角戲院，散場嗰陣人潮湧出嚟。采兒話，佢睇戲唔係為咗消閒，係為咗學人哋點講故事。",
     good:{ label:"散場認真同佢講呢套戲好定唔好", line:"佢點頭：「你講嘢唔兜圈，好就話好，唔好就話唔好——我做記者，最憎聽場面話。」" },
     bad:{ label:"睇戲途中不停問佢邊個明星有緋聞", line:"佢望住銀幕，冇理你。散場嗰陣，佢話：「你約我睇戲，定係約我返工？」" } },
@@ -26687,7 +26692,7 @@ const ROM159_DATES = {
     intro:"香江唱片錄音室，門外嗰盞紅燈熄咗。若曦話，佢有次喺呢度唱咗半首歌，唱到一半就俾人叫咗出去遞嘢。",
     good:{ label:"叫佢唱埋嗰半首，話你信佢識唱", line:"佢望住支咪，細聲話：「嗰半首，我成日都想唱埋佢。」你話：「咁唱啦，呢度冇人會叫你去遞嘢。」" },
     bad:{ label:"話佢唱歌唔啱，叫佢專心做返 PA", line:"佢點頭，冇出聲。行出錄音室嗰陣，佢話：「係呀，我都知。」嗰句嘢，輕到差啲聽唔到。" } },
-  lan_lounge:   { who:"lan", locId:"date_lounge", label:"酒廊唱歌", cost:50,
+  lan_lounge:   { who:"lan", locId:"date_lounge", label:"酒廊唱歌", cost:25,
     intro:"酒廊，台上有人唱緊舊歌。若曦話，佢收工之後成日想嚟呢度——唔係為咗飲嘢，係為咗唱歌。",
     good:{ label:"叫佢唱首自己鍾意嘅歌，唔係應酬歌", line:"佢唱完，成個酒廊靜咗一靜，之後有人拍手。佢返埋嚟，細聲話：「我第一次唔係為咗人哋唱歌。」" },
     bad:{ label:"叫佢唱啲應酬歌，氹下啲客", line:"佢望住你：「你都覺得我唱歌，係為咗氹人？」佢冇唱，成晚都冇再開聲。" } },
@@ -26695,7 +26700,7 @@ const ROM159_DATES = {
     intro:"淺水灣沙灘，佢收工之後搭車過嚟，坐喺沙上面，鞋都唔著。若曦話，呢度係佢唞氣嘅地方，冇人會叫佢遞嘢。",
     good:{ label:"陪佢靜靜坐，唔催佢講嘢", line:"佢話：「呢度好靜，靜到我聽到自己諗乜。」你冇催佢，等佢慢慢講，講佢想唱歌嗰件事。" },
     bad:{ label:"催佢快啲返去，話聽日仲要開工", line:"佢拍走啲沙，企起身：「係呀，聽日仲要開工。」佢行返去巴士站嗰陣，背脊挺得好直。" } },
-  lan_cafe:     { who:"lan", locId:"cafe_cha", label:"金龍茶餐廳", cost:45,
+  lan_cafe:     { who:"lan", locId:"cafe_cha", label:"金龍茶餐廳", cost:20,
     intro:"金龍茶餐廳，收工之後，兩杯奶茶，一碟菠蘿油。若曦話，佢最鍾意呢度——唔使扮，唔使趕。",
     good:{ label:"記得佢收工鍾意食菠蘿油加奶茶", line:"佢有啲意外：「你記得我收工鍾意食乜？」你話：「你每次收工都係咁叫，我記得。」" },
     bad:{ label:"淨係講自己今日幾辛苦", line:"佢攪住杯奶茶，冇出聲。過咗一陣，佢話：「你辛苦，我都辛苦——咁邊個聽邊個講？」" } },
@@ -26707,7 +26712,7 @@ const ROM159_DATES = {
     intro:"金鐘創意公司門口，寶珊同個客講完電話行出嚟，仲拎住疊文件。佢話，佢每日就係咁，喺呢啲地方行嚟行去。",
     good:{ label:"欣賞佢諗嘢快，唔係欣賞佢有錢", line:"佢望住你：「你唔係第一個讚我嘅人，但係你係第一個讚我諗嘢快、唔係讚我識搵錢嘅人。」" },
     bad:{ label:"叫佢幫你諗掂份合約，免費", line:"佢笑住搖頭：「我諗嘢係要收錢㗎。」佢講笑咁講，但係你聽得出，佢唔鍾意俾人當免費。" } },
-  xu_premiere:  { who:"xu", locId:"film_cotton", label:"紅棉首映", cost:58,
+  xu_premiere:  { who:"xu", locId:"film_cotton", label:"紅棉首映", cost:30,
     intro:"紅棉影業首映，紅地氈兩邊都係人。寶珊著住套晚裝行入場，佢話，首映呢啲場合，佢每年都要去幾次。",
     good:{ label:"陪佢睇戲，成晚唔講生意", line:"散場嗰陣，佢話：「今晚你一句生意都冇講過。你知唔知，成晚都冇人咁對我？」" },
     bad:{ label:"成晚都係講廣告，問佢邊個客啱", line:"佢望住銀幕，冇理你。散場嗰陣，佢話：「你約我睇首映，定係約我開會？」" } },
@@ -26719,11 +26724,11 @@ const ROM159_DATES = {
     intro:"山頂，夜晚成個維港喺腳下。寶珊話，佢好少上嚟——上嚟呢度，乜嘢生意都唔使諗。",
     good:{ label:"陪佢睇夜景，唔講工作", line:"佢望住對岸啲燈：「喺呢度睇落去，成個香港都好細，細到我啲煩惱都變得好細。」你話：「咁咪幾好。」" },
     bad:{ label:"上到山頂都係講生意經", line:"佢望住夜景，冇出聲。過咗好耐，佢話：「上到嚟呢度，你都係講生意——咁你同我啲客有咩分別？」" } },
-  xu_cinema:    { who:"xu", locId:"date_cinema", label:"旺角戲院", cost:58,
+  xu_cinema:    { who:"xu", locId:"date_cinema", label:"旺角戲院", cost:30,
     intro:"旺角戲院，寶珊話，佢好耐冇試過咁——買張飛，排隊入場，乜都唔使諗，淨係睇戲。",
     good:{ label:"睇戲嗰陣唔講錢，淨係講套戲", line:"散場嗰陣，佢話：「今晚我唔係徐寶珊，唔係廣告界嗰個徐寶珊，我淨係一個睇戲嘅人。」" },
     bad:{ label:"計較戲飛貴，話唔值", line:"佢望住你：「你計較嗰幾十蚊？」佢冇嬲，但係嗰晚剩低嘅時間，佢冇再講過嘢。" } },
-  xu_cafe:      { who:"xu", locId:"cafe_cha", label:"金龍茶餐廳", cost:45,
+  xu_cafe:      { who:"xu", locId:"cafe_cha", label:"金龍茶餐廳", cost:20,
     intro:"金龍茶餐廳，寶珊坐低嗰陣，成間舖頭啲人都望住佢。佢話，佢好少嚟呢啲地方——唔係睇唔起，係冇人陪佢嚟。",
     good:{ label:"同佢食茶記，唔扮嘢，唔當佢係貴客", line:"佢咬住菠蘿油，笑咗：「你冇因為我係邊個，就叫多幾碟貴嘢。你當我係普通人——呢樣嘢，冇人做過。」" },
     bad:{ label:"嫌茶記唔襯佢，話下次去高級餐廳", line:"佢放低筷子：「你覺得呢度唔襯我？」佢冇嬲，但係你聽得出，佢唔鍾意俾人話佢唔襯呢度。" } },
@@ -26739,15 +26744,15 @@ const ROM159_DATES = {
     intro:"山頂，夜晚成個香港喺腳下。敏芝話，佢想企高啲睇返自己——喺下面，個個都淨係睇到佢個樣。",
     good:{ label:"陪佢企高啲，話佢唔止塊面", line:"佢望住對岸：「喺呢度睇落去，我先至覺得自己大個咗——唔係個樣大個咗，係個人大個咗。」你話：「你本來就唔止塊面。」" },
     bad:{ label:"叫佢認命做花瓶，話咁先搵到食", line:"佢望住夜景，冇出聲。過咗好耐，佢先話：「或者你啱。但係我唔想認命。」" } },
-  yip_cinema:   { who:"yip", locId:"date_cinema", label:"旺角戲院", cost:58,
+  yip_cinema:   { who:"yip", locId:"date_cinema", label:"旺角戲院", cost:30,
     intro:"旺角戲院，敏芝話，佢睇戲唔係為咗拍拖，係為咗學戲——睇人哋點樣用一個眼神，講成句對白。",
     good:{ label:"睇完認真同佢講邊場戲做得好", line:"佢點頭：「你識睇戲，唔係淨係睇明星。你講嗰場，我都覺得係成套戲最好嘅一場。」" },
     bad:{ label:"睇戲淨係睇明星，話邊個邊個靚", line:"佢望住銀幕，冇理你。散場嗰陣，佢話：「你睇戲，淨係睇塊面？」" } },
-  yip_lounge:   { who:"yip", locId:"date_lounge", label:"酒廊唱歌", cost:50,
+  yip_lounge:   { who:"yip", locId:"date_lounge", label:"酒廊唱歌", cost:25,
     intro:"酒廊，台上有人唱緊歌。敏芝話，佢收工之後成日想嚟呢度練歌——喺呢度唱，冇人會話佢係選美出身，唔識唱歌。",
     good:{ label:"叫佢唱首自己鍾意嘅歌，唔使理人點睇", line:"佢唱完，返埋嚟，細聲話：「我第一次唔係為咗比賽唱歌，係為咗自己唱。」" },
     bad:{ label:"叫佢唱啲應酬歌，氹下啲客", line:"佢望住你：「你都覺得我唱歌，係為咗氹人？」佢冇唱，成晚都冇再開聲。" } },
-  yip_cafe:     { who:"yip", locId:"cafe_cha", label:"金龍茶餐廳", cost:45,
+  yip_cafe:     { who:"yip", locId:"cafe_cha", label:"金龍茶餐廳", cost:20,
     intro:"金龍茶餐廳，練歌練到半夜，兩個人過嚟食個宵夜。敏芝話，練完歌食碗雲吞麵，係佢最鍾意嘅收尾。",
     good:{ label:"記得佢練歌練到半夜，問佢攰唔攰", line:"佢話：「你記得我練歌練到半夜？個個都淨係記得我幾時上台，冇人記得我練到幾夜。」" },
     bad:{ label:"問佢選美嗰啲八卦，唔問佢練歌", line:"佢攪住碗麵，冇出聲。過咗一陣，佢話：「你對我啲八卦，仲有興趣過對我練歌？」" } },
@@ -26771,7 +26776,7 @@ const ROM159_DATES = {
     intro:"淺水灣沙灘，佢著住件普通恤衫，冇化妝，冇助手跟住。芷茵話，呢度係佢少數可以唔做樣嘅地方——沙灘上面，冇記者會跟到嚟。",
     good:{ label:"陪佢靜靜坐，唔叫佢扮嘢", line:"佢話：「喺呢度，我唔使諗住自己係邊個，唔使諗住笑得啱唔啱。」你話：「咁咪幾好，今日你淨係蘇芷茵。」" },
     bad:{ label:"叫佢著靚啲，話萬一俾人影到都好睇", line:"佢拍走啲沙，企起身：「你都係咁諗——我去邊度，都要預咗俾人影。」" } },
-  so_cafe:      { who:"so", locId:"cafe_cha", label:"金龍茶餐廳", cost:45,
+  so_cafe:      { who:"so", locId:"cafe_cha", label:"金龍茶餐廳", cost:20,
     intro:"金龍茶餐廳，芷茵坐低嗰陣，仲望咗望門口——冇記者跟到嚟，佢先至鬆一口氣。佢話，呢度係佢少數唔使扮嘅地方。",
     good:{ label:"同佢食茶記，佢唔使扮玉女", line:"佢咬住菠蘿油，笑得好放鬆：「喺呢度，我唔使諗住自己係玉女，我淨係一個食緊嘢嘅人。」" },
     bad:{ label:"問佢玉女殼入面係點，係咪好辛苦做戲", line:"佢放低筷子：「你都係想聽我講殼入面啲嘢？」佢冇嬲，但係嗰晚剩低嘅時間，佢冇再講過真話。" } }
@@ -31517,7 +31522,8 @@ function countYearMediumWraps(matchTypes, year){
     (S.wrapHistory||[]).forEach(h=>{
       if(!h) return;
       const y = awardsYearFromDay(h.wrappedDay!=null ? h.wrappedDay : h.dayIndex);
-      if(year!=null && y!==year) return;
+      /* v20a377 累計制：提名計數同計分桶同口徑——典禮年＋前一年兩年窗（見 awards62YearWorks） */
+      if(year!=null && y!==year && y!==year-1) return;
       /* v20a229 B4：提名池只計 category＝作品（臨記通告／補拍通告唔計）。
          無 category 嘅舊檔／fixture 當作品計（舊口徑），唔跌舊數。 */
       let cat229 = "";
@@ -31532,7 +31538,7 @@ function countYearMediumWraps(matchTypes, year){
     (log||[]).forEach(r=>{
       if(!r) return;
       const y = awardsYearFromDay(r.dayIndex);
-      if(year!=null && y!==year) return;
+      if(year!=null && y!==year && y!==year-1) return;
       let cat229 = "";
       try{ cat229 = (typeof gig229CategoryOf === "function") ? gig229CategoryOf(r) : ""; }catch(_e229c2){}
       if(!cat229) cat229 = "作品";
@@ -32970,7 +32976,10 @@ function awards62YearWorks(ceremony, year){
   try{
     ((typeof S !== "undefined" && S && S.wrapHistory) || []).forEach(h=>{
       if(!h) return;
-      if(year != null && awards62YearOf(h) !== year) return;
+      /* v20a377（第三輪評估 B2/B3 累計制）：作品桶改兩年累計窗（典禮年＋前一年）——
+         廣告／唱片供應緊（3／2 張/年），同年湊滿配近乎不可能（W5 真玩 11 部廣告擔正三屆零勝）；
+         累計窗令跨年 body of work 入桶，專攻路另有「≥3 部＋至少 1 部本年作品」閘防舊作躺贏（見 scoreParts）。 */
+      if(year != null){ const _y377 = awards62YearOf(h); if(_y377 !== year && _y377 !== year - 1) return; }
       if(!types[String(h.type || "")]) return;
       let g = null;
       try{ g = (h.gigId && typeof work59GigLookup === "function") ? work59GigLookup(h.gigId) : null; }catch(_e){}
@@ -33029,7 +33038,13 @@ function awards62ScoreParts(cat, ceremony, year){
          0.25×(1−worksScore) 抵銷廣告／綜藝桶 q 結構較低（0.78,0.78,0.48,0.48）嘅先天差，
          令專攻滿配校到 0.885–0.90（電影／電視 0.90、唱片 0.897、廣告／綜藝 0.887）。 */
   const sat371 = Math.min(1, wsum / 1.45);
-  const repPowerSpec371 = 0.08 * sat371 * sat371 + (sat371 >= 1 ? 0.28 * (1 - worksScore) : 0);
+  /* v20a377（第三輪評估 B2 電影獎過易）：專攻路加作品數閘——桶內 ≥3 部且至少 1 部係典禮年作品先計。
+     舊制電影／電視 2 部擔正（q 1.00×2）wsum 1.55 即飽和贏獎（base 0.8956，71%），同廣告／唱片
+     要成桶滿配嘅難度唔對稱；加閘後電影 2 部跌返 0.8069（唔過贏線），滿配 4 部不受影響。
+     「至少 1 部本年作品」防累計窗下舊作躺贏（上年 3 部擔正、今年零作品唔再自動贏）。贏線 0.875 不變。 */
+  const thisYearN377 = (year != null) ? works.filter(w=> awards62YearOf(w.h) === year).length : works.length;
+  const specOk377 = works.length >= 3 && thisYearN377 >= 1;
+  const repPowerSpec371 = specOk377 ? (0.08 * sat371 * sat371 + (sat371 >= 1 ? 0.28 * (1 - worksScore) : 0)) : 0;
   const crossRamp371 = Math.min(crossN65 / 2, 1) * Math.min(1, Math.max(0, (crossQ65 - 0.30) / 0.20));
   const repPowerCross371 = 0.08 * crossQ65 * crossRamp371;
   const repPower65 = Math.max(repPowerCross371, repPowerSpec371); /* v20a65 FIX65-3(2) → v20a371 兩路取高 */

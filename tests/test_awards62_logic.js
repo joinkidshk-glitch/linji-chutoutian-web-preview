@@ -163,26 +163,28 @@ S = baseSave(); S.fame = 40; S._tags = ['動作演員'];
 S.wrapHistory = [ wrap('gig_lead', 1989), wrap('gig_lead2', 1989) ];
 const catTag = { id:'film_actor', primaryTrack:'stageVolume', tagBonusAny:['動作演員'] };
 const pMid = awards62ScoreParts(catTag, FILM_CER, 1989);
-ok('中間帶 base ≈ 0.9084（v371 專攻路）', approx(pMid.base, 0.9084, 0.002)); /* v371：專攻路 sat²＋飽和補分，中間帶 0.8306→0.9084，過贏線 */
+ok('中間帶 base ≈ 0.8306（v377：2 部作品未夠 ≥3 閘，專攻路唔計）', approx(pMid.base, 0.8306, 0.002)); /* v371 專攻路令中間帶 0.8306→0.9084 過贏線；v377（第三輪 B2 電影過易）專攻路加 ≥3 部閘，2 部作品跌返 0.8306，唔再即贏 */
 /* v20a147 D4 重做校準：贏線 0.82→0.90→0.875——0.8306 檔喺新線下三種口味都係 nominated，唔再係邊界；
    邊界檔案改做 base 0.92（fame 45＋lead＋lead2×2＋tag），taste −0.05 先跌返 nominated（0.87＜0.875）。
    v371 專攻路：舊邊界檔升至 1.0（封頂），邊界改用中間帶參數（fame 40＋lead＋lead2＋tag，base 0.9084），
-   taste −0.05 → 0.8584＜0.875 跌返 nominated，邊界性質不變。 */
-S = baseSave(); S.fame = 40; S._tags = ['動作演員'];
-S.wrapHistory = [ wrap('gig_lead', 1989), wrap('gig_lead2', 1989) ];
-const pEdge = awards62ScoreParts(catTag, FILM_CER, 1989);
-ok('邊界檔 base ≈ 0.9084（v371）', approx(pEdge.base, 0.9084, 0.002));
+   taste −0.05 → 0.8584＜0.875 跌返 nominated，邊界性質不變。
+   v377：專攻路加 ≥3 部閘後，邊界檔改用 3 部作品（fame 45＋lead＋lead2×2，base 0.90），
+   taste −0.05 → 0.85＜0.875 跌返 nominated，邊界性質不變。 */
+S = baseSave(); S.fame = 45;
+S.wrapHistory = [ wrap('gig_lead', 1989), wrap('gig_lead2', 1989), wrap('gig_lead2', 1989) ];
+const pEdge = awards62ScoreParts(CAT_SV, FILM_CER, 1989);
+ok('邊界檔 base ≈ 0.90（v377 三部作品專攻路）', approx(pEdge.base, 0.90, 0.002));
 Math.random = function(){ return 0.5; }; /* taste = 0 */
-let r = awardsScoreCategory(catTag, FILM_CER, 1989, 'nominee');
+let r = awardsScoreCategory(CAT_SV, FILM_CER, 1989, 'nominee');
 ok('taste 0 → won（過贏線 0.875）', r.outcome === 'won');
 Math.random = function(){ return 0; }; /* taste = -0.05 */
-r = awardsScoreCategory(catTag, FILM_CER, 1989, 'nominee');
+r = awardsScoreCategory(CAT_SV, FILM_CER, 1989, 'nominee');
 ok('taste -0.05 → 擦邊跌返 nominated', r.outcome === 'nominated');
 Math.random = function(){ return 1; }; /* taste = +0.05：最勁口味都翻唔到遠離贏線嘅盤 */
 S = baseSave(); S.fame = 45;
 S.wrapHistory = [ wrap('gig_lead', 1989) ];
 r = awardsScoreCategory(CAT_SV, FILM_CER, 1989, 'nominee');
-ok('base 0.7005 + 口味盡 0.05 都未到贏線 0.875 → nominated（冇 18% 骰翻盤）', r.outcome === 'nominated'); /* v371：單部擔正專攻路 +0.038，0.6625→0.7005 */
+ok('base 0.6625 + 口味盡 0.05 都未到贏線 0.875 → nominated（冇 18% 骰翻盤）', r.outcome === 'nominated'); /* v377：單部擔正未夠 ≥3 閘，專攻路唔計，0.7005→0.6625 */
 r = awardsScoreCategory(CAT_SV, FILM_CER, 1989, 'gallery');
 ok('gallery tier 恆 gallery', r.outcome === 'gallery');
 
@@ -312,7 +314,7 @@ const hBridge = wrap('gig_lead', 1990);
 hBridge.wrappedDay = (1991 - 1988) * 365 + 120; /* 1991 年中 */
 ok('年份口徑：pack 1990＋1991 殺青 → YearOf 1991', awards62YearOf(hBridge) === 1991);
 S = baseSave(); S.fame = 45; S.wrapHistory = [hBridge];
-ok('年份口徑：橋接工入 1991 桶（base 0.7005，v371）', approx(awards62ScoreParts(CAT_SV, FILM_CER, 1991).base, 0.7005, 0.002));
+ok('年份口徑：橋接工入 1991 桶（base 0.6625，v377）', approx(awards62ScoreParts(CAT_SV, FILM_CER, 1991).base, 0.6625, 0.002));
 ok('年份口徑：橋接工唔入 1990 桶（得主軌 0.40）', approx(awards62ScoreParts(CAT_SV, FILM_CER, 1990).base, 0.40, 0.002));
 const hRev = wrap('gig_lead', 1991);
 hRev.wrappedDay = (1990 - 1988) * 365 + 120; /* 反向：pack 1991、1990 殺青 */

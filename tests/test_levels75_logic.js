@@ -138,7 +138,7 @@ const EXPECT = {
   train_acting:  { stat:'acting',  sub:'stage', base:[4,6], sBase:[8,12] },
   train_stage:   { stat:'stage',   sub:'charm', base:[4,6], sBase:[8,12] },
   train_vocal:   { stat:'vocal',   sub:null,    base:[4,6], sBase:[8,12] },
-  train_looks:   { stat:'looks',   sub:'charm', base:[4,6], sBase:[8,12], fee:80 },
+  train_looks:   { stat:'looks',   sub:'charm', base:[4,6], sBase:[8,12], fee:40 }, /* v377：學費 $80→$40 */
   train_charm:   { stat:'charm',   sub:null,    base:[4,6], sBase:[8,12] },
   train_iq:      { stat:'iq',      sub:'acting', base:[4,6], sBase:[8,12] },
   train_stamina: { stat:'stamina', sub:null,    base:[4,6], sBase:[8,12] },

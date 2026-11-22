@@ -27,55 +27,55 @@ EXPECTED = {
     "hiu_roof":     ("hiu", "tvb_longmen", "廠景天台", 4),
     "hiu_location": ("hiu", "film_lion", "獅子山外景", 4),
     "hiu_market":   ("hiu", "gift_shop", "廟街夜市", 20),
-    "hiu_cafe":     ("hiu", "cafe_cha", "金龍茶餐廳", 45),
+    "hiu_cafe":     ("hiu", "cafe_cha", "金龍茶餐廳", 20),
     "hiu_harbour":  ("hiu", "date_harbour", "尖沙咀海傍", 6),
     "hiu_beach":    ("hiu", "date_beach", "淺水灣沙灘", 6),
     "hiu_airport":  ("hiu", "date_airport", "啟德機場", 6),
-    "choi_premiere": ("choi", "film_cotton", "紅棉首映", 58),
+    "choi_premiere": ("choi", "film_cotton", "紅棉首映", 30),
     "choi_radio":   ("choi", "tvb_harbour", "海港廣播", 4),
-    "choi_cafe":    ("choi", "cafe_cha", "金龍茶餐廳", 45),
-    "choi_lounge":  ("choi", "date_lounge", "酒廊唱歌", 50),
-    "choi_cinema":  ("choi", "date_cinema", "旺角戲院", 58),
+    "choi_cafe":    ("choi", "cafe_cha", "金龍茶餐廳", 20),
+    "choi_lounge":  ("choi", "date_lounge", "酒廊唱歌", 25),
+    "choi_cinema":  ("choi", "date_cinema", "旺角戲院", 30),
     "lan_studio":   ("lan", "tvb_longmen", "星河廠景", 4),
     "lan_ktv":      ("lan", "tvb_kowloon", "九龍電視台", 4),
     "lan_rec":      ("lan", "rec_hk", "香江唱片錄音室", 4),
-    "lan_lounge":   ("lan", "date_lounge", "酒廊唱歌", 50),
+    "lan_lounge":   ("lan", "date_lounge", "酒廊唱歌", 25),
     "lan_beach":    ("lan", "date_beach", "淺水灣沙灘", 6),
-    "lan_cafe":     ("lan", "cafe_cha", "金龍茶餐廳", 45),
+    "lan_cafe":     ("lan", "cafe_cha", "金龍茶餐廳", 20),
     "xu_central":   ("xu", "ad_central", "中環廣告", 4),
     "xu_adm":       ("xu", "ad_adm", "金鐘創意", 4),
-    "xu_premiere":  ("xu", "film_cotton", "紅棉首映", 58),
+    "xu_premiere":  ("xu", "film_cotton", "紅棉首映", 30),
     "xu_star":      ("xu", "rec_star", "天星商場活動", 6),
     "xu_peak":      ("xu", "date_peak", "山頂", 6),
-    "xu_cinema":    ("xu", "date_cinema", "旺角戲院", 58),
-    "xu_cafe":      ("xu", "cafe_cha", "金龍茶餐廳", 45),
+    "xu_cinema":    ("xu", "date_cinema", "旺角戲院", 30),
+    "xu_cafe":      ("xu", "cafe_cha", "金龍茶餐廳", 20),
     "yip_rec":      ("yip", "rec_hk", "香江唱片", 4),
     "yip_ktv":      ("yip", "tvb_kowloon", "九龍電視台", 4),
     "yip_peak":     ("yip", "date_peak", "山頂", 6),
-    "yip_cinema":   ("yip", "date_cinema", "旺角戲院", 58),
-    "yip_lounge":   ("yip", "date_lounge", "酒廊唱歌", 50),
-    "yip_cafe":     ("yip", "cafe_cha", "金龍茶餐廳", 45),
+    "yip_cinema":   ("yip", "date_cinema", "旺角戲院", 30),
+    "yip_lounge":   ("yip", "date_lounge", "酒廊唱歌", 25),
+    "yip_cafe":     ("yip", "cafe_cha", "金龍茶餐廳", 20),
     "so_rec":       ("so", "rec_wanchai", "灣仔唱片", 4),
     "so_central":   ("so", "ad_central", "中環廣告", 4),
     "so_harbour":   ("so", "date_harbour", "尖沙咀海傍", 6),
     "so_airport":   ("so", "date_airport", "啟德機場", 6),
     "so_beach":     ("so", "date_beach", "淺水灣沙灘", 6),
-    "so_cafe":      ("so", "cafe_cha", "金龍茶餐廳", 45),
+    "so_cafe":      ("so", "cafe_cha", "金龍茶餐廳", 20),
 }
 PER_PERSON = {"hiu": 7, "choi": 5, "lan": 6, "xu": 7, "yip": 6, "so": 6}
 
-# --- Q7 價錢帶（經濟重做 DESIGN.md §4.8；酒廊 $50 係推算，待確認） ---
-# 散步類＋海傍／山頂／淺水灣／啟德 $0–6；廟街 $10–30；茶記 $40–50；
-# 戲院／首映 $40–76；酒廊 $40–60。
+# --- Q7 價錢帶（經濟重做 DESIGN.md §4.8；v377 第三輪 B7 減價後帶） ---
+# 散步類＋海傍／山頂／淺水灣／啟德 $0–6；廟街 $10–30；茶記 $15–25；
+# 戲院／首映 $25–35；酒廊 $20–30。
 def q7_band(loc):
     if loc == "gift_shop":
         return (10, 30)
     if loc == "cafe_cha":
-        return (40, 50)
+        return (15, 25)  # v377 B7 減價
     if loc in ("film_cotton", "date_cinema"):
-        return (40, 76)
+        return (25, 35)  # v377 B7 減價
     if loc == "date_lounge":
-        return (40, 60)
+        return (20, 30)  # v377 B7 減價
     return (0, 6)  # 散步類（廠景／外景／電台／錄音室／廣告場合／商場活動）
                    # ＋海傍／山頂／淺水灣／啟德
 

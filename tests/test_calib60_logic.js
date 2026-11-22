@@ -69,21 +69,21 @@ function baseSave(){
 /* ================= (1) 遞減帶＋banking ================= */
 ok('band: fame 4 全額 1.0', calib60ScaleFor('fame', 4) === 1);
 ok('band: fame 10 → 1.0（v370 P3-12 死帶修復）', calib60ScaleFor('fame', 10) === 1);
-ok('band: fame 100 → 0.11（v373 上段收緊）', calib60ScaleFor('fame', 100) === 0.11);
-ok('band: popularity 跟 fame 帶', calib60ScaleFor('popularity', 100) === 0.11);
+ok('band: fame 100 → 0.20（v377 門檻以下放寬）', calib60ScaleFor('fame', 100) === 0.20);
+ok('band: popularity 跟 fame 帶', calib60ScaleFor('popularity', 100) === 0.20);
 ok('band: acting 20 全額', calib60ScaleFor('acting', 20) === 1);
-ok('band: acting 60 → 0.20（v373）', calib60ScaleFor('acting', 60) === 0.20);
-ok('band: vocal 150 → 0.13（v373）', calib60ScaleFor('vocal', 150) === 0.13);
-ok('band: vocal 200 → 0.08（頂帶，v373）', calib60ScaleFor('vocal', 200) === 0.08);
+ok('band: acting 60 → 0.34（v377）', calib60ScaleFor('acting', 60) === 0.34);
+ok('band: vocal 150 → 0.18（v377）', calib60ScaleFor('vocal', 150) === 0.18);
+ok('band: vocal 200 → 0.05（頂帶，v377 門檻以上硬壓）', calib60ScaleFor('vocal', 200) === 0.05);
 ok('band: stress 唔縮（1）', calib60ScaleFor('stress', 10) === 1);
 ok('band: stamina 唔縮（1）', calib60ScaleFor('stamina', 10) === 1);
 
 S = baseSave(); S.fame = 100;
 let sum9 = 0; for(let i=0;i<9;i++) sum9 += calib60BankedGain('fame', 1, 100);
-ok('banking: fame 100 連續 9 次 +1 → 合共 +0（0.11×9=0.99，v373）', sum9 === 0);
+ok('banking: fame 100 連續 9 次 +1 → 合共 +1（0.20×9=1.8，v377）', sum9 === 1);
 S = baseSave(); S.fame = 500;
 let sum25 = 0; for(let i=0;i<25;i++) sum25 += calib60BankedGain('fame', 1, 500);
-ok('banking: fame 500 連續 25 次 +1 → 合共 +1（0.07×25=1.75，v373）', sum25 === 1);
+ok('banking: fame 500 連續 25 次 +1 → 合共 +1（0.04×25=1.0，v377 頂帶硬壓）', sum25 === 1);
 
 S = baseSave(); S.fame = 3; applyCalib60({ fame: 5 });
 ok('applyCalib60: fame <5 全額 +5 → 8', S.fame === 8);
@@ -94,16 +94,18 @@ ok('applyCalib60: 負增益唔縮（100→90）', S.fame === 90);
 S = baseSave(); applyCalib60({ stress: 30, money: 500 });
 ok('applyCalib60: 壓力/錢唔縮', S.stress === 42 && S.money === 12500);
 S = baseSave(); S.acting = 200; applyCalib60({ acting: 5 });
-ok('applyCalib60: acting 200 +5 縮到 +0（×0.08，bank 0.4，v373）', S.acting === 200 && Math.abs((S.calib60Bank.acting||0) - 0.4) < 1e-9);
+ok('applyCalib60: acting 200 +5 縮到 +0（×0.05，bank 0.25，v377）', S.acting === 200 && Math.abs((S.calib60Bank.acting||0) - 0.25) < 1e-9);
 applyCalib60({ acting: 5 });
-ok('applyCalib60: 再 +5 → bank 0.8 未落（200，v373）', S.acting === 200 && Math.abs((S.calib60Bank.acting||0) - 0.8) < 1e-9);
+ok('applyCalib60: 再 +5 → bank 0.5 未落（200，v377）', S.acting === 200 && Math.abs((S.calib60Bank.acting||0) - 0.5) < 1e-9);
 applyCalib60({ acting: 5 });
-ok('applyCalib60: 第三次 +5 → bank 1.2 落 +1（201，v373）', S.acting === 201);
+ok('applyCalib60: 第三次 +5 → bank 0.75 未落（200，v377）', S.acting === 200 && Math.abs((S.calib60Bank.acting||0) - 0.75) < 1e-9);
+applyCalib60({ acting: 5 });
+ok('applyCalib60: 第四次 +5 → bank 1.0 落 +1（201，v377）', S.acting === 201);
 S = baseSave(); S.fame = 200;
-ok('calib60FameGain: fame 200 +10 → +0（0.09 帶，bank 0.9，v373）', calib60FameGain(10) === 0 && Math.abs(((S.calib60Bank||{}).fame||0) - 0.9) < 1e-9);
+ok('calib60FameGain: fame 200 +10 → +0（0.04 帶，bank 0.4，v377）', calib60FameGain(10) === 0 && Math.abs(((S.calib60Bank||{}).fame||0) - 0.4) < 1e-9);
 S = baseSave(); S.fame = 300;
-ok('calib60FameGain: fame 300 +10 → +0（0.07 帶，bank 0.7，v373）', calib60FameGain(10) === 0 && Math.abs(((S.calib60Bank||{}).fame||0) - 0.7) < 1e-9);
-ok('calib60FameGain: 再 +10 → bank 1.4 落 +1（v373）', calib60FameGain(10) === 1);
+ok('calib60FameGain: fame 300 +10 → +0（0.04 帶，bank 0.4，v377）', calib60FameGain(10) === 0 && Math.abs(((S.calib60Bank||{}).fame||0) - 0.4) < 1e-9);
+ok('calib60FameGain: 再 +10 → bank 0.8 未落（v377）', calib60FameGain(10) === 0 && Math.abs(((S.calib60Bank||{}).fame||0) - 0.8) < 1e-9);
 ok('calib60FameGain: 負數原樣', calib60FameGain(-4) === -4);
 
 /* ================= (2) 雙軌回放模擬 ================= */

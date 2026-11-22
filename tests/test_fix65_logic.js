@@ -179,7 +179,7 @@ ok(pMu.base > pMuNoCross.base + 0.05, "多元 base（" + pMu.base.toFixed(3) + "
 /* 專攻：得電影作品 → 電影桶 crossQ = 0、借分/星勢皆 0 */
 S = { fame: 60, industryCredit: 60, wrapHistory: [wrap("g_film_lead", 1989), wrap("g_extra", 1989)] };
 const pFilm = awards62ScoreParts(CAT_MU, FILM_CER, 1989);
-ok(pFilm.borrow65 === 0 && approx(pFilm.repPower65, 0.0460, 0.0005), "專攻 fixture：borrow = 0、repPower = 專攻路 sat² 項 ≈ 0.046（v371：專攻唔再係 0）");
+ok(pFilm.borrow65 === 0 && approx(pFilm.repPower65, 0, 0.0005), "專攻 fixture：borrow = 0、repPower = 0（v377：專攻路加 ≥3 部作品閘，2 部作品唔計 repPower）");
 /* 本桶空 → 唔借（唔憑空造分） */
 S = { fame: 60, industryCredit: 60, wrapHistory: [wrap("g_film_lead", 1989), wrap("g_tv_sup", 1989)] };
 const pEmpty = awards62ScoreParts(CAT_MU, MUSIC_CER, 1989);
