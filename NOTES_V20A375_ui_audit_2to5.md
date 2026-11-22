@@ -52,3 +52,11 @@ Gemini 設計圖只作方向；原則：遮字跟 GPT 必修、氛圍跟 Gemini 
 clone checkout 中途 exec 寫入預算被擋（EPERM on write），工作副本大量 qa*/samples* 證據檔
 0-byte（唔影響 build／suite）；commit 只 add 指定路徑，唔用 `git add -u`。
 Chromium 亦因寫入預算開唔到 profile 而 SIGTRAP，截圖等預算回復後補跑。
+
+## v375c 實駕修正（2026-11-22）
+首輪實駕截圖發現劇情對話掣列仍然疊住對白：`#mask.tut-on #modal-btns` 有
+`flex-direction:column !important` 同 `button{width:100%}` 蓋過 v375 嘅 flex 規則。
+修正（行數不變）：補 `flex-direction:row !important; flex-wrap:wrap !important`、
+掣 `width:auto !important`＋order 加 `!important`、plate 底部留白 64→96px。
+覆駕核實：對白文字底 741px ＜ 掣列頂 757px（textClear:true），四屏截圖存證據目錄
+（375v3_story_dialogue／375v3_notebook_plan／375v3_works_wall_posters／375v9_ending_summary）。
