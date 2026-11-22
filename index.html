@@ -801,7 +801,7 @@ button.work-card59 .work-name59,button.work-card59 .work-meta59{display:block}
 .psr-weak62{margin:6px 0 0;font-size:.82rem;color:#6b4e2e;background:#fdf3d8;border:1px dashed #b98c4a;border-radius:4px;padding:6px 8px;line-height:1.5}
 .psr-gate62{margin:6px 0 0;font-size:.84rem;line-height:1.55;color:#4a3a22}
 .psr-gate62.ok{color:#3d6038;font-weight:700}
-.awd62-stage{position:fixed;inset:0;z-index:9990;background:#14101f;display:flex;align-items:flex-start;justify-content:center;padding:12px;overflow-y:auto} /* v20a207 B2：overflow-y:auto——提名 700 幀高貼近 viewport，內容萬一超高都唔會頂裁，改捲唔改佈局；v20a218 C-C2／v197 B3：safe center 改 flex-start——frame 頂釘死，唔再垂直置中：之前字幕／卡列一收一放，frame 高一變，成個 frame 連跳過掣喺 viewport 上下跳（glamour 段＋空字幕 beat）；而家 frame 頂固定喺 12px，canvas＋跳過掣 viewport 位置全程唔郁，超高嗰陣照舊捲落去（flex-start 本身唔會頂裁）。 */
+.awd62-stage{position:fixed;inset:0;z-index:9990;background:radial-gradient(120% 55% at 50% 0%,#2c2148 0%,#14101f 55%,#0c0913 100%);display:flex;align-items:flex-start;justify-content:center;padding:12px;overflow-y:auto} /* v20a379（第四輪評估 P2-3）：舞台底由平黑改聚光燈漸層——frame 頂釘死唔郁（v218），下半唔再係一片死黑，讀得出係劇院暗場；佈局一字唔郁。 */ /* v20a207 B2：overflow-y:auto——提名 700 幀高貼近 viewport，內容萬一超高都唔會頂裁，改捲唔改佈局；v20a218 C-C2／v197 B3：safe center 改 flex-start——frame 頂釘死，唔再垂直置中：之前字幕／卡列一收一放，frame 高一變，成個 frame 連跳過掣喺 viewport 上下跳（glamour 段＋空字幕 beat）；而家 frame 頂固定喺 12px，canvas＋跳過掣 viewport 位置全程唔郁，超高嗰陣照舊捲落去（flex-start 本身唔會頂裁）。 */
 .awd62-frame{position:relative;width:min(96vw,760px);container-type:inline-size}
 .awd62-canvaswrap{position:relative}
 .awd62-m5fx149{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none;display:none;z-index:2}
@@ -816,7 +816,7 @@ canvas.awd62-canvas{display:block;width:100%;height:auto;image-rendering:pixelat
 .awd62-skip.glamour-hide{display:none} /* v20a212 A1：glamour 期間收起跳過掣（見 syncGlamour） */
 .awd62-tap{margin-top:6px; /* v20a207 B2：8→6，提名 700 留 2px */text-align:center;color:#8d7db5;font-size:12px}
 .awd63-cards{display:flex;gap:24px;justify-content:center;margin-top:8px;visibility:hidden} /* v20a207 B2：margin-top 10→8，提名 700 留 2px */ /* v20a174 B2：卡列預留高度——由 display:none 改常駐 flex＋visibility 隱藏，names beat 開場 frame 高唔跳（開場全空 0.2s 消除）；.on 先可見；v20a187 C2：gap 8→24——「你」徽（右出 7px）同隔籬卡 🏆 徽（左出 7px）中間留 10px，唔再喺 8px 卡罅撞埋；4 卡總闊 376→424px，760 框仲放到 */
-.awd63-cards.on{visibility:visible}.awd63-cards.preview212{visibility:visible}.awd63-cards.preview212 .awd63-card{opacity:.22;transform:none} /* v20a212 C1：格標題剪影——卡列預先淡入（dimmed，等宣佈先上色上名） */.awd63-cards.glamour-hide{display:none} /* v20a174 C2：glamour 期間卡列改 display:none 收短 frame（v168 visibility 留位嗰 174px 死位取消；下一 beat 除返即恢復） */
+.awd63-cards.on{visibility:visible}.awd63-cards.preview212{visibility:visible}.awd63-cards.preview212 .awd63-card{opacity:.38;transform:none} /* v20a212 C1：格標題剪影——卡列預先淡入（dimmed，等宣佈先上色上名）；v20a379（第四輪評估 P2-3）：預覽不透明度 .22→.38，宣佈前都讀到名，唔再似空卡 */.awd63-cards.glamour-hide{display:none} /* v20a174 C2：glamour 期間卡列改 display:none 收短 frame（v168 visibility 留位嗰 174px 死位取消；下一 beat 除返即恢復） */
 .awd63-card{width:88px;background:linear-gradient(180deg,#fbf2da,#f3e5c3);border:2px solid #d9c491;border-radius:4px;padding:5px;box-shadow:0 3px 8px rgba(0,0,0,.45);opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease;position:relative}
 .awd63-card.show{opacity:1;transform:none}
 .awd63-card img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;background:#2b2118}
@@ -6680,7 +6680,7 @@ body.day-res-open .day-row{
             <button class="g" id="btn-load-mini" style="display:none" title="讀檔">讀檔</button>
           </div>
         </div>
-        <p class="sub" id="start-soft-tip" style="font-size:.78rem;margin-top:6px">通告欄／打聽／傾談／送禮<strong>不耗日</strong>（茶錢另計）；訓練／試鏡／休息／表演 <strong>+1 日</strong>。</p>
+        <p class="sub" id="start-soft-tip" style="font-size:.78rem;margin-top:6px;display:none">通告欄／打聽／傾談／送禮<strong>不耗日</strong>（茶錢另計）；訓練／試鏡／休息／表演 <strong>+1 日</strong>。</p>
       </div>
     </div>
   </section>
@@ -13669,12 +13669,12 @@ function endingEveOptions410(st, baseRes){
   const out = [];
   out.push({ key: "natural", label: "順其自然：照這三年的路，走到哪裡就是哪裡", note: "不強求，不回頭——頒獎禮散場，他站回他站慣的那個位置。"  /* v20a136：N17 成幕改做頒獎禮之後（動態重建選項，靜態節點 notes 嗰句同步改咗） */ });
   if(endingFlag410(s, "flag_family_job_accept")){
-    out.push({ key: "quit_job", label: "收山：家裡那份穩妥工作還等著你——接了它，不再做這一行", note: "先說清楚：選這個，今晚之後他就不再是這一行的人。（退圈・安穩）" });
+    out.push({ key: "quit_job", label: "收山：家裡那份穩妥工作還等著你——接了它，不再做這一行", note: "先說清楚：選這個，今晚之後他就不再是這一行的人。此選擇不可逆轉，結局會按退圈計算。（退圈・安穩）" });
   } else {
-    out.push({ key: "quit_job", label: "收山想想：接家裡那份穩妥工作，不再做這一行", note: "先說清楚：選這個，今晚之後他就不再是這一行的人。（退圈・安穩）" });
+    out.push({ key: "quit_job", label: "收山想想：接家裡那份穩妥工作，不再做這一行", note: "先說清楚：選這個，今晚之後他就不再是這一行的人。此選擇不可逆轉，結局會按退圈計算。（退圈・安穩）" });
   }
   if(endingFlag410(s, "flag_leave_mind")){
-    out.push({ key: "quit_leave", label: "走：移民離場——放棄今晚，不再回這一行", note: "先說清楚：選這個，他會在啟德上機，這一行的事，留在香港。（退圈・遠走）" });
+    out.push({ key: "quit_leave", label: "走：移民離場——放棄今晚，不再回這一行", note: "先說清楚：選這個，他會在啟德上機，這一行的事，留在香港。此選擇不可逆轉，結局會按退圈計算。（退圈・遠走）" });
   }
   return out;
 }
@@ -13843,11 +13843,11 @@ function endingRomanceScene410(rec){
     let won100 = false;
     try{ won100 = end95Awards((typeof S!=="undefined") ? S : {}).hasWin; }catch(_e){}
     if(won100)
-      return "<p>後台走廊，你捧著那晚贏到的那個獎座，林曉晴站在側邊望著你笑：「由片場嗰杯涼茶開始，我就知你唔同。」記者把咪遞過來那陣，你第一時間望回她那邊。三年了，那一步，你們終於走到了。</p>";
-    return "<p>後台走廊，林曉晴剛剛下台，妝都未卸，望著你笑：「由片場嗰杯涼茶開始，我就知你唔同。」你整晚在側邊幫忙看位、遞水——不出聲的那種站法，她全部記得。三年了，那一步，你們終於走到了。</p>";
+      return "<p>後台走廊，你捧著那晚贏到的那個獎座，林曉晴站在側邊望著你笑：「由片場嗰杯涼茶開始，我就知你唔同。」記者把咪遞過來那陣，你第一時間望回她那邊。三年了，那一步，你們終於走到了。那晚之後，你們正式成為情侶。</p>";
+    return "<p>後台走廊，林曉晴剛剛下台，妝都未卸，望著你笑：「由片場嗰杯涼茶開始，我就知你唔同。」你整晚在側邊幫忙看位、遞水——不出聲的那種站法，她全部記得。三年了，那一步，你們終於走到了。那晚之後，你們正式成為情侶。</p>";
   }
   if(r.kind==="commit" && r.line==="choi")
-    return "<p>埋單那晚，你們沒有去什麼大地方——金龍茶餐廳，你們坐慣的那張枱。周采兒收起記者證，那晚她不是來訪問你，是來陪你吃頓飯。</p><p>「我寫過咁多人沉浮，」她說，「寫到你嗰陣，我先知咩叫唔捨得落筆。」整個故事由茶餐廳開始，在茶餐廳收尾——恰好圓滿。</p>";
+    return "<p>埋單那晚，你們沒有去什麼大地方——金龍茶餐廳，你們坐慣的那張枱。周采兒收起記者證，那晚她不是來訪問你，是來陪你吃頓飯。</p><p>「我寫過咁多人沉浮，」她說，「寫到你嗰陣，我先知咩叫唔捨得落筆。」整個故事由茶餐廳開始，在茶餐廳收尾——恰好圓滿。那晚之後，你們正式成為情侶。</p>";
   /* v20a376 FIX376-5：補齊藍／徐／葉／蘇 commit 場景（舊版只有曉晴／采兒，四線 HE 跌返單身文案，同總結行自相矛盾——第三輪評估 U1）。HE＝正式成為情侶。 */
   if(r.kind==="commit" && r.line==="lan")
     return "<p>埋單那晚，錄音室熄了大半燈，藍若曦站在咪前，把那半首歌唱完——三年來，她由按通告牌的人，站成了台上的人。你在玻璃那邊聽著，沒有出聲。</p><p>她推門出來，望著你笑：「以後我企出嚟嗰陣，你要喺台下。」那晚之後，你們正式成為情侶——她站出去，你站在她看得見的位置。</p>";
@@ -15054,7 +15054,7 @@ try{
    只改文案：唔掂邏輯／數值／SAVE key／softRev／?v=。 */
 const TEXTFIX55_EXACT = {"電視城臨記班底添新血": "入行消息：電視台臨記班底添新血", "鄧麗萍：「我收下。别以為送完表就可以談感情條款；我們先把場次談清楚。」": "鄧麗萍：「我收下。錶係錶，檔期係檔期——我哋先把場次談清楚。」",
 "秋日午後片場休息，周采兒攞住筆記本對阿偉做獨家小訪。采兒問起最近圈內傳聞同星河電視台高層變動，更提及駱家聲 Band 房後巷嘅古怪動靜，阿偉需要決定點樣回應呢條送命題。": "片場休息，周采兒攞住筆記本對阿偉做獨家小訪。采兒問起最近圈內傳聞同星河電視台高層變動，更提及駱家聲 Band 房後巷嘅古怪動靜，阿偉需要決定點樣回應呢條送命題。", "片場休息角小訪桌（摺椅、筆記本）；秋日午後；訪問向——周采兒小訪阿偉": "片場休息角小訪桌（摺椅、筆記本）；訪問向——周采兒小訪阿偉", "秋日午後，片場休息角。": "片場休息角，等埋位嗰陣空檔。", "窗外走廊間中有人行過，帶住幾分星河電視城特有嘅急促。": "窗外走廊間中有人行過，帶住幾分呢行特有嘅急促。", "時間？邊個畀時間我呀！呢單通宵浸水做屍體job，導演指明要識做嘅人，我特登留畀你。做埋呢單，啲數一筆勾銷。": "時間？邊個畀時間我呀！呢單通宵浸水做屍體job，導演指明要識做嘅人，我特登留畀你。做埋呢單，嗰筆數我遲啲先同你計——而家，開工先。", "你啱啱聽完關於星河電視台嘅傳聞 tvb_rules_gossip，心入面有好多問號。": "你啱啱聽完星河電視台嗰啲規矩傳聞，心入面有好多問號。",   /* v20a218 A1：主線 when 欄年份漏出——source 寫顯示曆，walk 會 +2，EXACT 預寫 1990 令顯示 1992（跟攻略章戳 N12 春／N13 夏／N14 秋／N15 秋末／N16 冬／N17 收束；synopsis 本身已顯示 1992，唔使加條目）；N12 synopsis「站哪邊」→「企邊」 */
-        "齊鎮海喺不遠處嘅監視器後邊，靜靜雞望住呢邊。": "齊鎮海喺不遠處嘅 mon 後面，靜靜雞望住呢邊。",   "打歌後台的抉擇": "錄影廠後台的抉擇", "打歌現場後台／電台": "電視台錄影廠後台", "阿偉在電台打歌，Vera 在後台等他。她問阿偉幾時得閒見面，阿偉要在陪伴她與趕下一個通告之間作出選擇。": "阿偉喺電視台錄完影，Vera 喺後台等他。她問阿偉幾時得閒見面，阿偉要在陪伴她與趕下一個通告之間作出選擇。", "你今晚打歌之後，還要趕下一個通告嗎？": "你今晚錄完影之後，還要趕下一個通告嗎？", "趕通告：先顧打歌與形象": "趕通告：先顧錄影與形象", "你就是新來的臨記？這件襯衫顏色太鮮，鏡頭前會搶戲，換一件素色的。": "你就係新嚟嗰個臨記？呢件恤衫太搶色，上鏡會搶戲，換件素啲嘅。", "規矩就是：你站在鏡頭前，觀眾第一眼看到的是整體感覺，不是你的演技。": "規矩就係：你企喺鏡頭前面，觀眾第一眼睇到嘅係成個感覺，唔係你嘅演技。", "待會兒開會前，有幾樣現場安排想先跟你對一對。": "陣間開會之前，有幾樣現場安排想同你對一對。", "這樣吧，開會前我們先交換電話，之後有改動可以直接聯絡。": "咁啦，開會前我哋交換個電話先，之後有改動可以直接聯絡。",                          "（教學備註）何生早前記低嘅人情債——唔係拼合生出嚟；稍後可去事務所還。": "何生早前記低嗰筆人情債，仲未還；得閒去事務所處理。", "教學開始：點兩張「剛聽聞」卡，再撳確認拼合。唔識拖都得，點擊都得。": "點兩張「剛聽聞」卡，再點擊「確認拼合」。唔識拖都得，點擊嚟揀都得。",        "鄧麗萍：「實用。我喜歡可以量化的誠意。」": "鄧麗萍：「實用。我鍾意睇得見、計得到嘅誠意。」",  "鄧麗萍：「玫瑰？你想綁架我的情緒，還是想拖延談判？」": "鄧麗萍：「玫瑰？呢度係排片部，唔係花店。想傾檔期，帶數據嚟。」",    "心領了。這份心意我記住，數字就先不動。": "心領了。這份心意我記住，唔使再破費。",              "正式版同熟人「傾談／送禮」耗一日；試玩閘（softBehaviorGate）下傾談／送禮不耗日（茶錢仍可能扣費；訓練／試鏡／休息／行程表演仍耗日）。": "現在和熟人傾談或者送禮都不會算一日（茶錢照扣）；只有訓練、試鏡、休息和跟行程開工才會算日。",                   };
+        "齊鎮海喺不遠處嘅監視器後邊，靜靜雞望住呢邊。": "齊鎮海喺不遠處嘅 mon 後面，靜靜雞望住呢邊。",   "打歌後台的抉擇": "錄影廠後台的抉擇", "打歌現場後台／電台": "電視台錄影廠後台", "阿偉在電台打歌，Vera 在後台等他。她問阿偉幾時得閒見面，阿偉要在陪伴她與趕下一個通告之間作出選擇。": "阿偉喺電視台錄完影，Vera 喺後台等他。她問阿偉幾時得閒見面，阿偉要在陪伴她與趕下一個通告之間作出選擇。", "你今晚打歌之後，還要趕下一個通告嗎？": "你今晚錄完影之後，還要趕下一個通告嗎？", "趕通告：先顧打歌與形象": "趕通告：先顧錄影與形象", "你就是新來的臨記？這件襯衫顏色太鮮，鏡頭前會搶戲，換一件素色的。": "你就係新嚟嗰個臨記？呢件恤衫太搶色，上鏡會搶戲，換件素啲嘅。", "規矩就是：你站在鏡頭前，觀眾第一眼看到的是整體感覺，不是你的演技。": "規矩就係：你企喺鏡頭前面，觀眾第一眼睇到嘅係成個感覺，唔係你嘅演技。", "待會兒開會前，有幾樣現場安排想先跟你對一對。": "陣間開會之前，有幾樣現場安排想同你對一對。", "這樣吧，開會前我們先交換電話，之後有改動可以直接聯絡。": "咁啦，開會前我哋交換個電話先，之後有改動可以直接聯絡。",                          "（教學備註）何生早前記低嘅人情債——唔係拼合生出嚟；稍後可去事務所還。": "何生早前記低嗰筆人情債，仲未還；得閒去事務所處理。", "教學開始：點兩張「剛聽聞」卡，再撳確認拼合。唔識拖都得，點擊都得。": "點兩張「剛聽聞」卡，再點擊「確認拼合」。唔識拖都得，點擊嚟揀都得。",        "鄧麗萍：「實用。我喜歡可以量化的誠意。」": "鄧麗萍：「實用。我鍾意睇得見、計得到嘅誠意。」",  "鄧麗萍：「玫瑰？你想綁架我的情緒，還是想拖延談判？」": "鄧麗萍：「玫瑰？呢度係排片部，唔係花店。想傾檔期，帶數據嚟。」",    "心領了。這份心意我記住，數字就先不動。": "心領了。這份心意我記住，唔使再破費。",              "正式版同熟人「傾談／送禮」耗一日；試玩閘（softBehaviorGate）下傾談／送禮不耗日（茶錢仍可能扣費；訓練／試鏡／休息／行程表演仍耗日）。": "和熟人傾談或者送禮，會用去一日（茶錢照扣）；訓練、試鏡、休息和跟行程開工，同樣會算日。",                   };
 /* v20a108 TEXT108 S-42：系統 modal 潤飾覆寫（本批新鍵 34＋上面 3 個既有值更新）。
    live 教學行 content/tutorial_zh_HK.json（經 textfix55SimplePack 清洗）；inline fallback 已刪（v241b，JSON 做唯一來源）；
    pack 異文（製作日／選單「事態」／社交課／softBehaviorGate 長句）一併覆蓋，意思不變。
@@ -20095,6 +20095,12 @@ function defaultWeekPlan(){
       plan[4] = "cafe_gig";
       plan[5] = "street";
     }
+    /* v20a379（第四輪評估 P2-1）：預設計劃壓力感知——壓力偏高嗰陣自動加休息日，
+       唔好再零感知咁連谷到病倒。壓力 ≥60：訓練位改返休息（兩日休息）；
+       ≥80：再多一日休息（三日）。壓力唔高嗰陣行為不變。 */
+    const stress379 = Number(S && S.stress) || 0;
+    if(stress379 >= 60) plan[1] = "rest";
+    if(stress379 >= 80) plan[3] = "rest";
     plan[6] = "rest";
     return plan;
   }catch(_e){ return base; }
@@ -20639,7 +20645,7 @@ function settleWeek(){
   }
   if(S.stamina<12){
     pushFlavor(apply({fame:-2, stress:5}));
-    pushFlavor(`<span class="bad">${eventLine("WEEK_LOW_STA")||"體能見底，宜減輕通告。"}</span>`);
+    pushFlavor(`<span class="bad">${eventLine("WEEK_LOW_STA")||"體能見底，聲望下跌，宜減輕通告。"}</span>`);
   } else if(stressAtEnd<75){
     /* v20a370 P3-11：零完整休息日嘅週唔再有週末回復（舊檔未有計數當有休息，唔誤罰） */
     const rest370 = (S.weekRestDone370==null) ? 1 : (Number(S.weekRestDone370)||0);
@@ -23149,8 +23155,27 @@ function deCollideLabels363(){
   try{
     const els = Array.from(document.querySelectorAll(".map-names68 .mn68"))
       .filter(el=>el.style.display!=="none" && el.offsetParent!==null);
-    if(els.length<2) return;
+    if(els.length<1) return;
     const items = els.map(el=>({el, r:el.getBoundingClientRect()}));
+    /* v20a379（第四輪評估 P2-5）：「我喺呢度」標籤都係障礙物——同佢重疊嘅地點名
+       推落去，唔好同玩家標籤疊字（之前只處理地點名互撞，冇理玩家標籤）。 */
+    try{
+      const tag379 = document.querySelector(".map-me363 .me363-tag");
+      if(tag379 && tag379.offsetParent!==null){
+        const tr379 = tag379.getBoundingClientRect();
+        items.forEach(it=>{
+          const a = it.r;
+          const ox = Math.min(a.right,tr379.right)-Math.max(a.left,tr379.left);
+          const oy = Math.min(a.bottom,tr379.bottom)-Math.max(a.top,tr379.top);
+          if(ox>2 && oy>2){
+            const cur = parseFloat(it.el.style.top)||0;
+            it.el.style.top = (cur + oy + 2) + "px";
+            it.r = it.el.getBoundingClientRect();
+          }
+        });
+      }
+    }catch(_e379){}
+    if(items.length<2) return;
     for(let pass=0; pass<3; pass++){
       let moved = false;
       for(let i=0;i<items.length;i++){
@@ -27307,6 +27332,18 @@ function rom159RunDate(who, spot, L){
 function rom159DateScene(who, spot, L, ended, summary){
   try{
     const w = ROM159_WOMEN[who]; if(!w || !spot) return false;
+    /* v20a379（第四輪評估 P2-9）：約會改用劇情對話同款呈現（立繪＋名＋對話框），
+       唔再齋文字卡；立繪來源同巧遇 modal 一致（NPCS face → PORTRAITS），
+       冇立繪嘅線（葉／蘇未有 NPC 立繪）跌返純文字，唔出爛圖。 */
+    let portrait379 = "";
+    try{
+      const npc379 = (typeof NPCS!=="undefined" && w.npcId) ? NPCS[w.npcId] : null;
+      const face379 = npc379 && npc379.face;
+      portrait379 = (face379 && typeof PORTRAITS!=="undefined") ? (PORTRAITS[face379] || "") : "";
+    }catch(_p379){}
+    const dlg379 = (txt)=> portrait379
+      ? `<div class="dlg"><div class="dlg-stage"><img class="dlg-portrait" src="${portrait379}" alt="${w.name}"/><div class="dlg-side"><div class="dlg-name">${w.name}</div><div class="dlg-bubble">${txt}</div></div></div></div>`
+      : `<p>${txt}</p>`;
     const go = ()=>{
       if(ended){ try{ enterHome(summary, true); }catch(_e){} }
       else { try{ runScheduleFromToday(); }catch(_e){ if(L){ try{ openLoc(L.id, {travelFree:true}); }catch(_e2){} } } }
@@ -27315,10 +27352,10 @@ function rom159DateScene(who, spot, L, ended, summary){
       let nv = 0;
       try{ if(typeof StoryOC!=="undefined" && StoryOC.getRel) nv = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
       const deltaTxt = delta>0 ? "好感 +1（而家 " + nv + "）" : (delta<0 ? "好感 -1（而家 " + nv + "）" : "好感 ±0");
-      modal(`<h3>約會 · ${w.name}</h3><p>${line}</p><p class="gold">${deltaTxt}</p>${ended?`<p class="gold">一週完結 → 回家結算，計劃下週</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()} · 約會用咗一日</p>`,
+      modal(`<h3>約會 · ${w.name}</h3>${dlg379(line)}<p class="gold">${deltaTxt}</p>${ended?`<p class="gold">一週完結 → 回家結算，計劃下週</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()} · 約會用咗一日</p>`,
         [{label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}], {onDismiss: go});
     };
-    modal(`<h3>約會 · ${w.name}（${spot.label}）</h3><p>${spot.intro}</p><p class="sub">揀一句回應——講啱咗，兩個人近啲；講錯咗，佢會冷淡啲。</p>`,[
+    modal(`<h3>約會 · ${w.name}（${spot.label}）</h3>${dlg379(spot.intro)}<p class="sub">揀一句回應——講啱咗，兩個人近啲；講錯咗，佢會冷淡啲。</p>`,[
       {label: spot.good.label, role:"p", on:()=>{
         /* v20a378（B12）：rel 上限 7——顯示實際落數，撞頂唔再假報 +1。 */
         let b378 = 0; try{ b378 = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
@@ -32115,7 +32152,7 @@ function buildAwardResultPack(opts){
       outcome: scored.outcome,
       score: scored.score,
       repWorkTitle: repWork62,
-      weakHint62: (scored.outcome==="nominated" && scored.parts) ? awards62WeakHint(scored.parts, cat) : "",
+      weakHint62: (scored.outcome==="nominated" && scored.parts) ? (awards62WeakHint(scored.parts, cat) + awards379GapBand(scored.score)) : "",
       line: line,
       primaryTrack: cat.primaryTrack||"",
       gender: cat.gender||"", /* v20a204：逐類別計 fellows 要用，舊路冇 gender 嗰陣係 "" */
@@ -33159,6 +33196,15 @@ function awards65IsLeadWork(w){
     if(/男主角|女主角/.test(t)) return true;
     return false;
   }catch(_e){ return false; }
+}
+/* v20a379（第四輪評估 P1-3）：落敗差額提示——按同贏線嘅距離分三段講，唔出原始分數，唔改贏線。 */
+function awards379GapBand(score){
+  try{
+    const gap = AWARDS62_WIN_LINE - (Number(score)||0);
+    if(gap <= 0.05) return "今次只差一線。";
+    if(gap <= 0.15) return "今次差一截。";
+    return "今次距離得獎還有一段路。";
+  }catch(_e){ return ""; }
 }
 function awards62WeakHint(parts, cat){
   if(!parts) return "";
@@ -42402,7 +42448,7 @@ function rom176PlayEncounter(key, locId, metBefore183){
     + (portrait ? "<img class=\"dlg-portrait\" src=\""+portrait+"\" alt=\""+def.name+"\"/>" : "")
     + "<div class=\"dlg-side\"><div class=\"dlg-name\">"+def.name+"</div><div class=\"dlg-bubble\">"+greet+"</div></div></div></div>\n    "
     + leakLine
-    + "<p class=\"sub\">喺"+(L.name||locId)+"撞到佢。傾談／送禮唔耗日；今日唔會再撞到佢。"+rom183RelText183(key)+"</p>",
+    + "<p class=\"sub\">喺"+(L.name||locId)+"撞到佢。"+((typeof softSocialCostsDay==="function" && softSocialCostsDay()) ? "傾談／送禮會用去 1 日" : "傾談／送禮唔耗日")+"；今日唔會再撞到佢。"+rom183RelText183(key)+"</p>",
     btns, { onDismiss:()=>{ rom176SetEncounter(null); try{ openLoc(locId, { encDone:true }); }catch(_e){} } });
 }
 
@@ -42697,10 +42743,10 @@ function rom183RelVal183(key){
   return 0;
 }
 function rom183RelText183(key){ /* B1：巧遇 modal 細字（rel 0 嗰陣都出，等玩家知有呢條數） */
-  try{ if(!key) return ""; return "而家好感 "+rom183RelVal183(key)+"／5。"; }catch(_e){ return ""; }
+  try{ if(!key) return ""; return "而家好感 "+rom183RelVal183(key)+"／7。"; }catch(_e){ return ""; }
 }
 function rom183RelLine183(rk){ /* B1：人脈頁女角行感情進度（淨顯示，讀 S.story.rel） */
-  try{ if(!rk) return ""; return '<div class="people-next">感情：好感 '+rom183RelVal183(rk)+'／5</div>'; }catch(_e){ return ""; }
+  try{ if(!rk) return ""; return '<div class="people-next">感情：好感 '+rom183RelVal183(rk)+'／7</div>'; }catch(_e){ return ""; }
 }
 function rom183WhoLine183(L, npcId){ /* B3：地點板在場行——今日喺呢度撞過嘅女角優先 */
   try{
@@ -47175,9 +47221,13 @@ function openGiftPick(npcKey, L){
         const it = GiftShop.itemById(id);
         const kind183 = GiftShop.prefKind(npcKey, id);
         const kindLine183 = kind183==="favorite" ? `<p class="sub">★ 最愛：他最喜歡這份禮物。</p>` : kind183==="liked" ? `<p class="sub">他頗喜歡這樣。</p>` : kind183==="dislike" ? `<p class="sub">他未必喜歡這樣，要想清楚。</p>` : "";
+        /* v20a379（第四輪評估 P2-4）：好感已滿 7 嗰陣，確認前講明再送都唔會再升，唔好照食禮物＋一日先知。 */
+        const relNow379 = (typeof rom183RelVal183==="function") ? rom183RelVal183(npcKey) : 0;
+        const capLine379 = relNow379 >= 7 ? `<p class="sub">好感已達上限（7／7）——再送都不會再升，禮物和日子照樣會用去。</p>` : "";
         modal(`<h3>確認送禮</h3>
           <p>把「<b>${(it&&it.name)||id}</b>」送給 <b>${name}</b>？</p>
           ${kindLine183}
+          ${capLine379}
           <p class="sub">${giftConfirmCostLine()}</p>`,[
           {label:"取消", role:"g", on:()=>openGiftPick(npcKey, L)},
           {label:"送出", role:"p", on:()=>doGiveGift(npcKey, id, L)}

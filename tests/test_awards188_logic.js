@@ -143,7 +143,7 @@ var document = { _els: {}, getElementById: function(id){ if(!this._els[id]) this
 const FNS = ['awardsCopyLine','awardsSchemaTiers','awardsGigCount','countYearMediumWraps','awardsEvalTier','awardsMetricEchoLabel',
   'awardsMvpCategories','awardsStubCategory','awardsPickPressNews','awardsDualRewardForOutcome',
   'awards62WorkQuality','awards62YearOf','awards62YearWorks','awards62RepWork','awards62ScoreParts',
-  'awards62WeakHint','awards62WrapMin','awards62Standing','awards62GateLineHtml',
+  'awards62WeakHint','awards379GapBand','awards62WrapMin','awards62Standing','awards62GateLineHtml',
   'awards62ScoreParts','awardsScoreCategory','buildAwardResultPack',
   'press94ScaleOf','end95IsLead','awards65IsLeadWork',
   'awards188IsLead','awards188IsSupport','awards188PlayerCastSlot','awards188WorkRole','awards188HadEarlierWork',

@@ -38,7 +38,7 @@ chk('WEEKEND_SOFT 舊句已清（體能慢慢回來）', '體能慢慢回來' no
 chk('WEEKEND_SOFT 新句（養體能，live JSON 寫法）', '先把體能養回來' in ' '.join(_ev.get('WEEKEND_SOFT', [])))
 chk('WEEKEND_SOFT fallback 已改（壓力稍降）', '週末休息，壓力稍降。' in src and '週末休息，體能回升。' not in src)
 chk('WEEK_LOW_STA 已刪「瞓夠回體能」暗示', '開工前先睡夠' not in src)
-chk('低體能警告句保留（提示性質唔係回復承諾）', '體能見底，宜減輕通告。' in src)
+chk('低體能警告句保留（提示性質唔係回復承諾）', '體能見底，聲望下跌，宜減輕通告。' in src)
 
 # --- 硬規則 ---
 chk('SAVE key unchanged', 'starVolunteer_map_v19w' in src)

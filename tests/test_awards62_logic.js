@@ -124,7 +124,7 @@ var document = { _els: {}, getElementById: function(id){ if(!this._els[id]) this
 const FNS = ['awardsCopyLine','awardsSchemaTiers','awardsGigCount','countYearMediumWraps','awardsEvalTier','awardsMetricEchoLabel',
   'awardsMvpCategories','awardsStubCategory','awardsPickPressNews','awardsDualRewardForOutcome',
   'awards62WorkQuality','awards62YearOf','awards62YearWorks','awards62RepWork','awards62ScoreParts',
-  'awards62WeakHint','awards62WrapMin','awards62Standing','awards62GateLineHtml','renderAwardsPane62',
+  'awards62WeakHint','awards379GapBand','awards62WrapMin','awards62Standing','awards62GateLineHtml','renderAwardsPane62',
   'awards62SeasonHints','awards62CeremonyBeats','awardsScoreCategory','buildAwardResultPack'];
 /* v128 A5：獎項渲染經 iconHtml112（🏆→trophy 圖）——抽真身入 stub，唔係 mock。 */
 eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));

@@ -61,7 +61,7 @@ ok('giveGift 回傳冇 costsDay:true 殘留', 'costsDay:true' not in nocomment) 
 
 # ---- B1：感情進度顯示（讀 S.story.rel，淨顯示） ----
 ppl = seg('function people72Html(){', 'function br89ArcStatusHtml')
-ok('B1 人脈頁女角行有感情進度行', 'rom183RelLine183(rk176)' in ppl and '感情：好感 ' in html and '／5</div>' in seg('function rom183RelLine183', 'function rom183WhoLine183'))
+ok('B1 人脈頁女角行有感情進度行', 'rom183RelLine183(rk176)' in ppl and '感情：好感 ' in html and '／7</div>' in seg('function rom183RelLine183', 'function rom183WhoLine183'))
 ok('B1 rel 讀 S.story.rel（唔讀 S.npcs）',
    'S.story.rel["rel_"+key]' in html or "S.story.rel['rel_'+key]" in html or 'S.story.rel' in seg('function rom183RelVal183', 'function rom183RelText183'))
 ok('B1 巧遇 modal 有好感細字', 'rom183RelText183(key)' in html and '而家好感 ' in html)

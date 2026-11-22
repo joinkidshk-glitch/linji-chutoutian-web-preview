@@ -182,19 +182,19 @@ ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committ
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25499", line_has(26639, "v20a159 ROM159 Phase 1"))
+ok("行號釘 ROM159 block 頭 25499", line_has(26664, "v20a159 ROM159 Phase 1"))
 ok("行號釘 bumpRel 凍結鉤 8020", line_has(9004, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(27535, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 CMT_lan_commit 26333", line_has(27572, "COMMIT48_NODES.CMT_lan_commit"))
 ok("行號釘 StoryPlay 預備鉤 10553", line_has(11174, "rom159PrepareNode(node)"))
 ok("行號釘載入覆寫呼叫 14877", line_has(15443, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26248", line_has(27390, "function rom159SoMeetGate"))
+ok("行號釘 rom159SoMeetGate 26248", line_has(27427, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[26667 - 1])  # v377 resync（26604→26609，difflib 核實）  # v376 resync（26580→26604，difflib 核實）  # v375 resync（26464→26580，grep 核實）  # v374 resync（26349→26464，grep 核實）  # v373 resync +41（26308→26349，grep 核實）  # v372 resync +76  # v20a159 整合：B1＋B2 後行號 +86；v20a358 resync −424；v361 resync +76；v363 resync +437；v369 resync +181（25968→26136，difflib 核實純漂移）
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[26692 - 1])  # v377 resync（26604→26609，difflib 核實）  # v376 resync（26580→26604，difflib 核實）  # v375 resync（26464→26580，grep 核實）  # v374 resync（26349→26464，grep 核實）  # v373 resync +41（26308→26349，grep 核實）  # v372 resync +76  # v20a159 整合：B1＋B2 後行號 +86；v20a358 resync −424；v361 resync +76；v363 resync +437；v369 resync +181（25968→26136，difflib 核實純漂移）
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）
@@ -385,8 +385,14 @@ _gp_now = json.load(open(os.path.join(ROOT, "content", "gift_prefs.json"), encod
 _gp_pris = json.loads(_read_pristine("content/gift_prefs.json"))
 ok("v297 gift_prefs：npcs 6→5（只減 vera）",
    list(_gp_now.get("npcs", {}).keys()) == [k for k in _gp_pris.get("npcs", {}).keys() if k != "vera"])
-ok("v297 gift_prefs：npcs 除 vera 外逐字一致",
-   {k: v for k, v in _gp_now.get("npcs", {}).items()} == {k: v for k, v in _gp_pris.get("npcs", {}).items() if k != "vera"})
+# v379 精確替代：xu requireFlagsAny 由 warm/cold/cool 改做 polite/distance——R_xu_meet 實際寫後者，
+# 舊旗永遠唔會寫，靠劇情 meet 嘅玩家開唔到送禮閘（第四輪評估 P2-5）。其餘欄位照舊逐字對 pristine。
+_gp_now_npcs = json.loads(json.dumps(_gp_now.get("npcs", {})))
+_gp_now_npcs["xu"]["requireFlagsAny"] = _gp_pris["npcs"]["xu"]["requireFlagsAny"]
+ok("v297 gift_prefs：npcs 除 vera 外逐字一致（v379 xu 旗精確替代）",
+   _gp_now_npcs == {k: v for k, v in _gp_pris.get("npcs", {}).items() if k != "vera"})
+ok("v379 gift_prefs：xu requireFlagsAny＝meet 實際旗標 polite/distance",
+   _gp_now["npcs"]["xu"]["requireFlagsAny"] == ["flag_xu_met_polite", "flag_xu_met_distance"])
 ok("v297 gift_prefs：除 npcs 外全部頂層欄位同 pristine 一致",
    {k: v for k, v in _gp_now.items() if k != "npcs"} == {k: v for k, v in _gp_pris.items() if k != "npcs"})
 ok("v297 gift_prefs：檔內 vera／mei 零殘留",

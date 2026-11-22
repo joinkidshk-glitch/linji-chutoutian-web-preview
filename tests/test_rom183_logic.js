@@ -125,10 +125,10 @@ function baseSave(over){
   S = baseSave({ story: { done: {}, rel: { rel_hiu: 2, rel_choi: 0, rel_mei: 5 } } });
   ok('B1 rel 值讀 S.story.rel（hiu 2／choi 0／mei 5）',
     rom183RelVal183('hiu') === 2 && rom183RelVal183('choi') === 0 && rom183RelVal183('mei') === 5);
-  ok('B1 人脈行文案「感情：好感 2／5」',
-    rom183RelLine183('hiu') === '<div class="people-next">感情：好感 2／5</div>');
+  ok('B1 人脈行文案「感情：好感 2／7」',
+    rom183RelLine183('hiu') === '<div class="people-next">感情：好感 2／7</div>');
   ok('B1 非女角／空 key 唔出感情行', rom183RelLine183('') === '' && rom183RelLine183(null) === '');
-  ok('B1 modal 細字「而家好感 2／5。」', rom183RelText183('hiu') === '而家好感 2／5。');
+  ok('B1 modal 細字「而家好感 2／7。」', rom183RelText183('hiu') === '而家好感 2／7。');
 })();
 
 /* ---------- B2：GiftShop IIFE 最愛獨立（抽真 IIFE，唔係 stub） ---------- */

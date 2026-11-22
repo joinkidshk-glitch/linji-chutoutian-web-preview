@@ -66,8 +66,8 @@ chk('B1：懸念句四句輪換（SUSPENSE212，第一格沿用舊句；v20a218 
 chk('B1：懸念時長唔郁（1400ms）', 'id: "suspense", ms: 1400' in beats_fn)
 
 # --- (C1) 格標題卡列剪影 ---
-chk('N1：preview212 剪影 CSS 在位（dimmed 0.22）',
-    '.awd63-cards.preview212' in src and 'opacity:.22' in src)
+chk('N1：preview212 剪影 CSS 在位（dimmed 0.38）',
+    '.awd63-cards.preview212' in src and 'opacity:.38' in src)
 chk('N1：syncCards 格標題分支加 on＋preview212',
     'b.id === "catTitle"' in play_fn and 'classList.add("preview212")' in play_fn)
 chk('N1：提名 beat 嗰陣除返 preview212（上色上名）',
