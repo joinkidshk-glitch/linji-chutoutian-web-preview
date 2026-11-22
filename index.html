@@ -4210,6 +4210,14 @@ body.day-res-open .day-row{
 /* v20a265 COSTUME265：手帳行程頁底——瞓覺／衣櫃掣列＋衣櫃區 */
 .home265-row{ display:flex; gap:8px; margin:10px 0 0; }
 .home265-row button{ flex:1; min-height:44px; }
+/* v20a381 INTEL381：留話簿未讀紙角＋留言簿版式＋補位標籤（GPT 規格：淡赭紙底深墨字） */
+#btn-intel381{ position:relative; }
+.intel381-corner{ position:absolute; top:-7px; right:-4px; padding:1px 6px; background:#f3e3bd; color:#5a3d1e; border:1px solid rgba(120,95,60,.55); border-radius:2px 8px 2px 8px; font-size:.68rem; font-weight:800; transform:rotate(4deg); box-shadow:0 1px 3px rgba(60,40,20,.25); }
+.intel381-book{ position:relative; margin-top:8px; padding:10px 12px 6px; background:repeating-linear-gradient(180deg,#fbf4df 0 26px,#f3e8c8 26px 27px); border:1px solid rgba(120,95,60,.45); border-radius:4px; text-align:left; }
+.intel381-book p{ margin:0 0 8px; }
+.intel381-stamp{ position:absolute; top:8px; right:10px; padding:2px 8px; border:2px solid rgba(90,80,70,.65); border-radius:4px; color:rgba(90,80,70,.8); font-weight:800; transform:rotate(-8deg); }
+.gig-card .bp-tag.intel381{ background:#e8d5b5; color:#4a3421; }
+.gt-pill.gt-intel381{ background:#e8d5b5; color:#4a3421; }
 .wardrobe265{ margin:10px 0 0; padding:10px 12px; background:#f8f1de; border:1px solid rgba(120,95,60,.45); border-radius:10px; }
 .wardrobe265-h{ margin:0 0 6px; font-size:1rem; }
 .wardrobe265-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; border-top:1px dashed rgba(120,95,60,.35); }
@@ -6906,6 +6914,7 @@ body.day-res-open .day-row{
       <div class="home265-row" id="home265-row">
         <button type="button" class="paper" id="btn-sleep265">瞓覺</button>
         <button type="button" class="paper" id="btn-wardrobe265">衣櫃</button>
+        <button type="button" class="paper" id="btn-intel381">留話簿<span class="intel381-corner" id="intel381-corner" hidden>新留言</span></button>
       </div>
       <div class="wardrobe265" id="wardrobe265" hidden></div>
       <!-- v20a71 PART3B：「訓練一覽」摺疊段成段移除（用戶 13:30）——訓練資訊改入
@@ -7442,6 +7451,14 @@ function wireHome265(){
         box.hidden = !box.hidden;
         if(!box.hidden){ try{ renderWardrobe265(); }catch(_e){} }
       };
+    }
+    /* v20a381 INTEL381：留話簿掣（未讀留言露出紙角「新留言」；撳開留話簿 modal） */
+    const iBtn = document.getElementById("btn-intel381");
+    if(iBtn){
+      const corner = document.getElementById("intel381-corner");
+      const s381 = (typeof intel381Slot==="function") ? intel381Slot() : null;
+      if(corner) corner.hidden = !(s381 && s381.state==="msg");
+      iBtn.onclick = ()=>{ try{ if(typeof intel381OpenBook==="function") intel381OpenBook(); }catch(_e){} };
     }
   }catch(_e){}
 }
@@ -16877,6 +16894,8 @@ function normalizeSaveObj(o){
   }
   /* v20a229 B6 A8／A12：舊檔回填即派待派清單＋合約紀錄（空陣列；已有就唔郁，冪等）。 */
   if(!Array.isArray(o.grant229Queue)) o.grant229Queue=[];
+  /* v20a381 INTEL381：舊檔補補位名額槽預設（null＝未買；已有就唔郁，冪等）。 */
+  if(!o.intel381||typeof o.intel381!=="object") o.intel381=null;
   if(!Array.isArray(o.contracts229)) o.contracts229=[];
   if(typeof o.vocal!=="number"||!isFinite(o.vocal))o.vocal=14;
   /* Soft: 壓力硬上限 100。舊檔高過 100 要夾落。體能係能力，跟 STAT_MAX，唔夾 100。 */
@@ -18576,6 +18595,8 @@ function gigCardHtml(g, opts){
   /* v20a229 B5 觸發標籤：已觸發上板嘅通告標「引薦」（credit）／「邀約」（其餘五種）。 */
   let trigBit = "";
   try{ const tl = (typeof triggerGigLabel229==="function") ? triggerGigLabel229(g) : ""; if(tl) trigBit = ` <span class="bp-tag trig">${tl}</span>`; }catch(_e){}
+  /* v20a381 INTEL381：補位通告卡標籤（沿用觸發標籤位） */
+  try{ const il = (typeof intel381Label==="function") ? intel381Label(g) : ""; if(il) trigBit += ` <span class="bp-tag intel381">${il}</span>`; }catch(_e){}
   return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+badge94.label):""}${seasonBit}${bpBit}${bridgeBit}${trigBit}</div><b class="g-title">${g.title}</b>${bridgeNote}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}${favor158Html}</div>`;
 }
 
@@ -18893,6 +18914,8 @@ function gigBoardTeaserHtml(g, opts){
      未觸發嘅根本唔會入板，呢度唔使再驗。 */
   let trigPill = "";
   try{ const tl = (typeof triggerGigLabel229==="function") ? triggerGigLabel229(g) : ""; if(tl) trigPill = `<span class="gt-pill gt-trigger">${tl}</span>`; }catch(_e){}
+  /* v20a381 INTEL381：補位通告卡標籤（沿用觸發標籤位） */
+  try{ const il = (typeof intel381Label==="function") ? intel381Label(g) : ""; if(il) trigPill += `<span class="gt-pill gt-intel381">${il}</span>`; }catch(_e){}
   return `<div class="gig-teaser" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
     <img class="g-seal" src="${sealSrc}" alt="${badge94.label||sealKey}" onerror="this.style.display='none'"/>
     <div class="gt-title">${work}</div>
@@ -20427,6 +20450,8 @@ function advanceDay(){
   try{ if(typeof enc83GuLoanTick==="function") enc83GuLoanTick(); }catch(_gl){}
   /* v20a271：陸柏言唔接替工偵測 tick（同 enc83GuLoanTick 並列） */
   try{ if(typeof enc271LukAbsentTick==="function") enc271LukAbsentTick(); }catch(_lk271){}
+  /* v20a381 INTEL381：補位留言／資格到期 tick（同 enc271 並列） */
+  try{ if(typeof intel381Tick==="function") intel381Tick(); }catch(_i381){}
   try{ if(typeof rivalryTick==="function") rivalryTick(); }catch(_rv){}
   try{ if(typeof rivalryNewsTick==="function") rivalryNewsTick(); }catch(_rn){}
   try{ if(typeof exodusFenTick==="function") exodusFenTick(); }catch(_ex){}
@@ -29309,6 +29334,8 @@ const MOCK_ASK = {
     { id:"act_cha_tvb_rules", title:"打聽電視城規矩", hint:"向茶餐廳伙記打聽入廠禁忌", cost:"請伙記飲凍檸茶", toast:"伙記低聲透露廠景潛規則。", source:"金龍茶餐廳", intelText:"入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。" },
     { id:"act_cha_gao_spotlight", title:"打聽高俊傑搶鏡事", hint:"向茶客打聽高俊傑片場八卦", cost:"請茶客食西多士", toast:"鄰桌燈光師爆料高俊傑所為。", source:"金龍茶餐廳", intelText:"高俊傑昨日拍戲時擅自加戲搶鏡，遭導演當場斥責。" },
     { id:"act_cha_hiu_news", title:"打聽曉晴近況", hint:"向化妝師打聽曉晴動向", cost:"請化妝師飲咖啡", toast:"化妝師指曉晴轉拍時裝喜劇。", source:"金龍茶餐廳", intelText:"曉晴剛拍畢古裝劇，近期轉接時裝喜劇，急需反應敏捷的臨記。" },
+    /* v20a381 INTEL381：情報站補位試鏡（陸柏言好感≥25 開閘、每月一個名額；moneyCost 由 mockAskDefs 按月定價 $60–75） */
+    { id:"act_cha_intel381", title:"打聽補位消息", hint:"向陸柏言購買傳聞，取得獨家補位試鏡的消息。每月只可購買一次。", choiceHint:"向陸柏言購買傳聞，取得獨家補位試鏡的消息。每月只可購買一次。", cost:"情報費", toast:"", source:"金龍茶餐廳" },
   ],
   agency_ho:[
     { id:"act_ho_tvb_rules", title:"請教何生入廠守則", hint:"向經理人請教電視台規矩", cost:"遞包萬寶路畀何生", toast:"何生提點數招廠景生存之道。", source:"何生事務所", intelText:"入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。" },
@@ -29329,6 +29356,17 @@ function mockAskDefs(locId){
       if(canHelp){
         out = out.map(d=> d.id==="act_cha_help_clear"
           ? Object.assign({}, d, { hint:"老闆娘今日唔夠人手，幫佢執枱沖茶頂一陣，佢會記你一份人情。", choiceHint:"老闆娘今日唔夠人手，幫佢執枱沖茶頂一陣，佢會記你一份人情。" })
+          : d);
+      }
+    }
+    if(locId==="cafe_cha"){
+      /* v20a381 INTEL381：補位消息——未開閘（陸好感<25）／本月名額已用就唔出掣；出掣嗰陣按月定價寫入 moneyCost＋cost 面。 */
+      const can381 = (typeof intel381Available==="function") ? intel381Available() : false;
+      out = out.filter(d=> d.id!=="act_cha_intel381" || can381);
+      if(can381 && typeof intel381Price==="function"){
+        const p381 = intel381Price();
+        out = out.map(d=> d.id==="act_cha_intel381"
+          ? Object.assign({}, d, { moneyCost:p381, cost:"$"+p381+" 情報費" })
           : d);
       }
     }
@@ -29513,6 +29551,8 @@ function applyMockAsk(locId, actionId, repayOpt){
     const r79 = enc79MockAskBranch(locId, def);
     if(r79) return r79;
   }
+  /* v20a381 INTEL381：補位消息專屬分支（自理扣費／名額，唔經通用 intelText 登記） */
+  if(def.id==="act_cha_intel381" && typeof intel381Buy==="function") return intel381Buy(def);
   let added=false, updated=false, cleared=false;
   let payNote="";
   /* v19z6：已聽過傳聞唔再扣茶／重複登記 */
@@ -43173,6 +43213,128 @@ function enc79AgencyWind(def){
 
 /* ===== ENC79 模組完 ===== */
 
+/* ===== v20a381 INTEL381：情報站補位試鏡＋屋企留話簿 =====
+   規格（用戶 2026-11-22 拍板，GPT-6.2-sol＋Claude 綜合首選）：
+   ・金龍茶餐廳「打聽補位消息」：陸柏言好感≥25 開閘，花 $60–75（按月定價）買一條傳聞，
+     每月換一個獨家補位試鏡名額（演員移民留低嘅空缺）。買情報唔買分——試鏡照常判定。
+   ・買後留言留喺屋企電話：返深水埗唐樓（手帳「留話簿」掣）睇留言，5 日內覆電保留試鏡資格；
+     覆電後該通告喺指定地點通告欄以「補位」標籤上板（豁免季節／NAT92 錯峰），7 日內去試鏡。
+   ・名額池：由當年 GIGS 揀一張未消費、無 trigger、級別貼近玩家級數嘅真通告（唔加新通告、
+     唔改通告庫總數）；每月以月份種子定死一張，讀檔唔重擲。狀態存 S.intel381（單槽）。 */
+function intel381MonthKey(){ try{ const d=dateObj(); return d.getFullYear()*12+d.getMonth(); }catch(_e){ return 0; } }
+function intel381Price(){ return 60 + ((intel381MonthKey()*7)%16); }
+function intel381Slot(){ try{ return (typeof S!=="undefined" && S && S.intel381 && typeof S.intel381==="object") ? S.intel381 : null; }catch(_e){ return null; } }
+function intel381LukFav(){ try{ const st=(typeof enc79StarState==="function")?enc79StarState("luk_baakyin"):null; return st?(Number(st.fav)||0):0; }catch(_e){ return 0; } }
+function intel381Available(){
+  try{
+    if(typeof S==="undefined"||!S) return false;
+    if(intel381LukFav()<25) return false;
+    const s=intel381Slot();
+    if(s && s.mk===intel381MonthKey()) return false;
+    return true;
+  }catch(_e){ return false; }
+}
+function intel381PickGig(){
+  try{
+    const order=(typeof GIG_TIER_ORDER229!=="undefined"&&Array.isArray(GIG_TIER_ORDER229))?GIG_TIER_ORDER229:["臨記","初級","中級","高級","稀有"];
+    const canon=(typeof gigTierCanon229==="function")?gigTierCanon229:(t=>t||"初級");
+    const pt=(typeof enc79PlayerTier==="function")?enc79PlayerTier():0;
+    const lo=Math.max(0,Math.min(order.length-1,pt));
+    const hi=Math.max(lo,Math.min(order.length-1,pt+1));
+    const pool=(typeof GIGS!=="undefined"&&Array.isArray(GIGS)?GIGS:[]).filter(g=>{
+      if(!g||!g.id||g.trigger) return false;
+      const ti=order.indexOf(canon(g.tier)); if(ti<lo||ti>hi) return false;
+      if(typeof isGigConsumed==="function" && isGigConsumed(g)) return false;
+      if(S.flags && S.flags["done_"+g.id]) return false;
+      if(Array.isArray(S.booked)&&S.booked.some(b=>b&&b.gigId===g.id)) return false;
+      return true;
+    });
+    if(!pool.length) return null;
+    pool.sort((a,b)=>String(a.id).localeCompare(String(b.id)));
+    const mk=intel381MonthKey();
+    return pool[(((mk*31+7)%pool.length)+pool.length)%pool.length];
+  }catch(_e){ return null; }
+}
+function intel381Buy(def){
+  try{
+    if(typeof S==="undefined"||!S) return {ok:false,toast:"暫時未能購買。"};
+    if(intel381LukFav()<25) return {ok:false,toast:"陸柏言未當你是自己人，這條線未開。"};
+    const mk=intel381MonthKey(); const s0=intel381Slot();
+    if(s0 && s0.mk===mk) return {ok:false,toast:"本月補位名額已用，下月再來。"};
+    if(typeof softSocialDailyCap==="function"){ const cap=softSocialDailyCap("tea"); if(!cap.ok) return {ok:false,toast:cap.reason}; }
+    const gig=intel381PickGig();
+    if(!gig) return {ok:false,toast:"暫時沒有合適的補位空缺，情報費不收。"};
+    const price=intel381Price();
+    if((Number(S.money)||0)<price) return {ok:false,toast:"情報費不足 $"+price+"，先去接單賺回一些。"};
+    S.money=(Number(S.money)||0)-price;
+    try{ refreshMoneyHud(); }catch(_e){}
+    S.intel381={ mk:mk, gigId:String(gig.id), locId:String(gig.loc||""), title:String(gig.title||""), state:"msg", msgDay:(S.dayIndex|0), keptDay:0, price:price };
+    try{ softSocialDailyUse("tea"); }catch(_c){}
+    try{ saveQ(); }catch(_s){}
+    const text="有演員移民，劇組正安排補位試鏡。傳呼留言已留在家中電話。請返回深水埗住所，查看留話簿，並於留言後 5 日內覆電保留試鏡資格。";
+    return { ok:true, added:true, updated:false, cleared:false, toast:"已付情報費 $"+price+"。"+text, rumorId:null, intelTitle:"收到補位消息", intelText:text };
+  }catch(_e){ return {ok:false,toast:"暫時未能購買。"}; }
+}
+function intel381Tick(){
+  try{
+    const s=intel381Slot(); if(!s||typeof S==="undefined"||!S) return;
+    const today=(S.dayIndex|0);
+    if(s.state==="msg" && today > (s.msgDay|0)+5){
+      s.state="expired";
+      try{ toast("留話簿：覆電限期已過，未能保留這次補位試鏡資格。"); }catch(_t){}
+      try{ saveQ(); }catch(_s){}
+    } else if(s.state==="kept" && today > (s.keptDay|0)+7){
+      const used=(Array.isArray(S.pendingAud)&&S.pendingAud.some(p=>p&&p.gigId===s.gigId))||(Array.isArray(S.shoots)&&S.shoots.some(sh=>sh&&sh.gigId===s.gigId))||(S.flags&&S.flags["done_"+s.gigId]);
+      if(used){ s.state="used"; }
+      else{ s.state="expired"; try{ toast("補位試鏡資格已過期，名額已由他人頂上。"); }catch(_t){} }
+      try{ saveQ(); }catch(_s){}
+    }
+  }catch(_e){}
+}
+function intel381KeptGig(g){ const s=intel381Slot(); return !!(s&&s.state==="kept"&&g&&g.id===s.gigId); }
+function intel381Label(g){ return intel381KeptGig(g) ? "補位" : ""; }
+function intel381FmtDay(dayIdx){
+  try{
+    const d=new Date(START.y, START.m-1, START.d+(Number(dayIdx)||0));
+    return d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日";
+  }catch(_e){ return ""; }
+}
+function intel381LocName(locId){
+  try{ if(typeof triggerGigLocName229==="function") return triggerGigLocName229(locId); }catch(_e){}
+  return String(locId||"通告欄");
+}
+function intel381Reply(){
+  try{
+    const s=intel381Slot(); if(!s||s.state!=="msg") return;
+    s.state="kept"; s.keptDay=(S.dayIndex|0);
+    try{ saveQ(); }catch(_s){}
+    try{ toast("已保留試鏡資格。請到"+intel381LocName(s.locId)+"的通告欄查看標有「補位」的通告。"); }catch(_t){}
+    try{ if(typeof renderNotebook==="function") renderNotebook(); }catch(_r){}
+  }catch(_e){}
+}
+function intel381OpenBook(){
+  try{
+    const s=intel381Slot();
+    const closeBtn={label:"關閉", role:"g", on:()=>{ try{ if(typeof renderNotebook==="function") renderNotebook(); }catch(_r){} }};
+    if(!s || s.state==="used"){
+      modal(`<h3>留話簿</h3><p>留話簿暫無新留言。</p>`,[closeBtn],{onDismiss:closeBtn.on});
+      return;
+    }
+    const locName=intel381LocName(s.locId);
+    const stamp = s.state==="expired" ? `<span class="intel381-stamp">已失效</span>` : "";
+    let stateLine="";
+    if(s.state==="msg") stateLine=`<p>覆電限期：${intel381FmtDay((s.msgDay|0)+5)}（請於留言後 5 日內覆電。）</p>`;
+    else if(s.state==="kept") stateLine=`<p class="gold">已保留試鏡資格。請到${locName}的通告欄查看標有「補位」的通告，並於 ${intel381FmtDay((s.keptDay|0)+7)} 前前往試鏡。</p>`;
+    else if(s.state==="expired") stateLine=`<p>覆電限期已過，未能保留這次補位試鏡資格。</p>`;
+    const body=`<h3>留話簿</h3><div class="intel381-book">${stamp}<p>留言日期：${intel381FmtDay(s.msgDay|0)}</p><p>留言人：場務（經陸柏言介紹）</p><p>留言內容：《${journalText(s.title||"通告")}》有演員移民，劇組正安排補位試鏡。</p><p>試鏡地點：${locName}</p>${stateLine}</div>`;
+    const btns=[];
+    if(s.state==="msg") btns.push({label:"覆電保留資格", role:"p", on:()=>{ intel381Reply(); }});
+    if(s.state==="msg") btns.push({label:"稍後覆電", role:"g", on:closeBtn.on});
+    else btns.push(closeBtn);
+    modal(body, btns, {onDismiss:closeBtn.on});
+  }catch(_e){}
+}
+
 /* ===== v20a83 ENC83：紅星巧遇 Phase 2（魏詠男／顧明輝／駱家聲／齊鎮海）＋ T4 提攜通用機制（D2 已批）。
    核查結論：Phase 1 未實作 T4 提攜（ENC79 全模組冇提攜／引薦機制）——本包補通用機制：
    每位星好感到 T4（自己人）後，下次巧遇播一段專屬提攜戲（lines only），完成即經 enc79GrantCredit
@@ -44437,7 +44599,7 @@ function openLoc(id, opts){
         }
         if(heard){ toast("呢單情報已經聽過。"); return; }
         /* v20a236 RECONFIRM236：打聽先確認後扣茶錢／寫卡（applyMockAsk 本體唔郁；事務所打聽即加何生人情照舊）。 */
-        const cost236 = (Number(def.moneyCost)||0)>0 ? ("即時支付茶錢 $"+(Number(def.moneyCost)||0)+"。") : "";
+        const cost236 = (Number(def.moneyCost)||0)>0 ? (def.id==="act_cha_intel381" ? ("即時支付情報費 $"+(Number(def.moneyCost)||0)+"。") : ("即時支付茶錢 $"+(Number(def.moneyCost)||0)+"。")) : "";
         const cons236 = cost236 + (L.id==="agency_ho" ? "何生人情將會增加。" : "行動一旦確認便會即時生效。");
         const reopen236 = ()=>{ try{ if(L) openLoc(L.id, {travelFree:true}); }catch(_e2){} };
         confirmChoice236({ choiceLabel: def.title, consequence: cons236,
@@ -45250,13 +45412,15 @@ function gigsForLocSeasonBoard(locId, curSeason){
     /* v20a229 B5 觸發系統（D-4）：有 trigger 嘅通告，未觸發唔上板；已觸發嘅跳過 NAT92 錯峰
        再擋（照季節上板），季節窗（gigSeasonHidden88 嗰關）照舊。 */
     if(g.trigger && (typeof triggerGigOn==="function" ? !triggerGigOn(g) : true)) return false;
+    /* v20a381 INTEL381：已覆電保留嘅補位通告豁免季節／NAT92 錯峰（同 wf3harvest 收割窗同理——資格窗就係檔期本身）。 */
+    const isIntel381 = (typeof intel381KeptGig==="function" && intel381KeptGig(g));
     /* v20a88：錯季硬藏改提早窗判準（typeof 防禦：抽函數測試沙盒冇 88 函數時回退 v18k 語義）
        v20a279 G-L2：收割窗通告（wf3harvest）豁免季節閘——佢嘅檔期就係 7 日收割窗本身（由 S.wf3.liaoHarvest 計），唔係上映季；
        遲秋先搶鏡嘅玩家，窗開喺冬都照上板。其他 trigger 通告照舊跟季節窗。 */
-    if(!(g.trigger && g.trigger.kind==="wf3harvest" && typeof triggerGigOn==="function" && triggerGigOn(g)) && (typeof gigSeasonHidden88==="function" ? gigSeasonHidden88(g, curSeason) : seasonRank(g, curSeason)>0)) return false;
+    if(!isIntel381 && !(g.trigger && g.trigger.kind==="wf3harvest" && typeof triggerGigOn==="function" && triggerGigOn(g)) && (typeof gigSeasonHidden88==="function" ? gigSeasonHidden88(g, curSeason) : seasonRank(g, curSeason)>0)) return false;
     /* v20a92 NAT92：未到上板日／已落板嘅庫存通告唔上板（typeof 防禦：冇 92 函數時唔生效）；
        已觸發通告豁免——觸發嗰刻就係上板嗰刻，唔好再俾 0–39 日開窗偏移／落板拉前擋死。 */
-    if(!(g.trigger && typeof triggerGigOn==="function" && triggerGigOn(g)) && typeof gigBoardPosted92==="function" && !gigBoardPosted92(g)) return false;
+    if(!isIntel381 && !(g.trigger && typeof triggerGigOn==="function" && triggerGigOn(g)) && typeof gigBoardPosted92==="function" && !gigBoardPosted92(g)) return false;
     if(isGigConsumed(g)) return false;
     return true;
   });
