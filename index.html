@@ -6652,6 +6652,26 @@ body.day-res-open .day-row{
   .story-play .sp-line, .ending375-sheet, .ending375-stamp, .work-card59{ animation:none !important; }
 }
 /* ===== v375 UI375 完 ===== */
+/* ===== v385 SCHED385：行程頁手機版面修正（用戶 2026-11-22 iPhone 截圖）=====
+   GPT-6.2-sol 方案（原稿 linji-drive385/gpt_plan.txt）：斷點 767px；
+   手機兩欄 minmax(0,1fr)＋第七格獨佔末行；文字 overflow-wrap:anywhere。
+   根因：repeat(3,1fr) 嘅 1fr 下限係 auto（min-content），長片名撐到每格
+   220px，390px 下 scrollWidth 686＞clientWidth 304，右欄斬尾。
+   桌面亦改 minmax(0,1fr) 防長名撐爆，欄數不變。 */
+#nb-days{ grid-template-columns:repeat(3,minmax(0,1fr)) !important; }
+#nb-days .day-row{ min-width:0 !important; box-sizing:border-box !important; }
+#nb-days .day-row .nm, #nb-days .day-row .wd{ min-width:0 !important; max-width:100% !important; }
+#nb-days .day-row .nm .plan-main, #nb-days .day-row .plan-hint{
+  white-space:normal !important; overflow-wrap:anywhere !important; word-break:normal !important;
+}
+@media (max-width:767px){
+  #nb-days{ grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:8px !important; width:100% !important; min-width:0 !important; box-sizing:border-box !important; }
+  #nb-days .day-row{ min-height:118px !important; height:auto !important; padding:10px 8px !important; min-width:44px !important; }
+  #nb-days .day-row .wd{ font-size:15px !important; line-height:1.35 !important; }
+  #nb-days .day-row .nm .plan-main{ font-size:14px !important; line-height:1.45 !important; }
+  .nb-left, .nb-right{ min-width:0 !important; max-width:100% !important; }
+}
+/* ===== v385 SCHED385 完 ===== */
 </style>
 </head>
 <body>
