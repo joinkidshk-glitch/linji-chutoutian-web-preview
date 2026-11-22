@@ -248,11 +248,11 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
   const r = R({ fame: 70, stage: 45, acting: 40, industryCreditDelta: 4 });
   /* v20a95 LADDER95 改版：E1 收緊（雙軌 ≥350＋質性閘）——舊 E1 命中狀態（雙軌 131、
      冇獎／冇擔正／冇鏈）按新梯落 E2（信用 61／聲望 70 過 ID 上限同 CR 聲望帶，落返 E2）。 */
-  ok('v95：舊 E1 狀態（聲量70/台風45/演技40/delta4 → 信用61、雙軌131）→ 新梯 E2', r.career === 'E2' && r.snapshot.credit === 61 && r.snapshot.dual === 131);
+  ok('v95：舊 E1 狀態（聲量70/台風45/演技40/delta4 → 信用61、雙軌131）→ 新梯 ID（v378 B6：61 ≤ 70×0.9=63，聲望主導帶）', r.career === 'ID' && r.snapshot.credit === 61 && r.snapshot.dual === 131);
 }
 {
   const r = R({ fame: 70, stage: 45, acting: 40, industryCreditDelta: 4, castingTags: [{ id: '八卦', label: '八卦' }, { id: '高冷', label: '高冷' }] });
-  ok('E1 被負標籤 2 擋下（八卦＋高冷）→ 落 E2', r.career === 'E2' && r.snapshot.negTags === 2);
+  ok('E1 被負標籤 2 擋下（八卦＋高冷）→ 落 ID（v378 B6：同上聲望主導帶；ID negMax 2 容得下）', r.career === 'ID' && r.snapshot.negTags === 2);
 }
 {
   const r = R({ fame: 60, stage: 0, acting: 0, story: { flags: { flag_miss_leak: true }, rel: {}, done: {}, choices: {} } });
@@ -296,7 +296,7 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
   const st = { fame: 70, stage: 45, acting: 40, industryCreditDelta: 4,
     story: { flags: { flag_family_job_accept: true }, rel: {}, done: {}, choices: {} } };
   const rNo = R(st);
-  ok('E6 唔會自己觸發：有 flag_family_job_accept 都照計事業軸（v95 新梯下呢個狀態＝E2）', rNo.career === 'E2');
+  ok('E6 唔會自己觸發：有 flag_family_job_accept 都照計事業軸（v378 新梯下呢個狀態＝ID）', rNo.career === 'ID');
   S = baseSave(st);
   ok('E6 安穩版：opts.quit=job → E6／安穩', resolveEnding410(S, { quit: 'job' }).career === 'E6' && resolveEnding410(S, { quit: 'job' }).careerVariant === '安穩');
   ok('E6 遠走版：opts.quit=leave → E6／遠走／exodus=leave', (()=>{ const q = resolveEnding410(S, { quit: 'leave' }); return q.career === 'E6' && q.careerVariant === '遠走' && q.exodus === 'leave'; })());

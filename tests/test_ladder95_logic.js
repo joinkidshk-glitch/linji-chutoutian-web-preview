@@ -268,7 +268,7 @@ const SPINE95_DONE = { N1:true, N2:true, N3:true, N4:true, N5:true, N6:true, N7:
       byMedium: { film: 15, tv: 12, music: 10, variety: 8, ad: 5 },
       leadByMedium: { film: 1 }, genreIdentified: 3, genreComedy: 3, genreAction: 0 }),
   }));
-  ok('片種樣本守門：可辨識得 3（喜劇 3/3）唔入 CK → 落 E2', r.career === 'E2');
+  ok('片種樣本守門：可辨識得 3（喜劇 3/3）唔入 CK → 落 E2（v378 B6：fame 105／credit 95，95 > 105×0.9=94.5，唔入 ID，照落 E2）', r.career === 'E2');
 }
 
 /* ============ ID／CR 帶位弧 ============ */

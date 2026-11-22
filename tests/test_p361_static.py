@@ -75,7 +75,7 @@ i_e3 = res.index('career = "E3"')
 i_e5 = res.index('career = "E5"')
 i_cr = res.index('career = "CR"')
 i_e2 = res.index('career = "E2"')
-chk('B2 判定次序 ID→E3→E5→CR→E2', i_id < i_e3 < i_e5 < i_cr < i_e2)
+chk('B2 判定次序 E3→E5→ID→CR→E2（v378 B6：ID 移後，明確路線證據優先）', i_e3 < i_e5 < i_id < i_cr < i_e2)
 chk('B2 E3/E5 有信用主導守門（credit>=fame-10，v373）',
     'credit>=fame-10 && endingE3Eligible410(s)' in res and 'credit>=fame-10 && (favor.settled + favor.creditsHeld)>=T.e5FavorTotal' in res)
 

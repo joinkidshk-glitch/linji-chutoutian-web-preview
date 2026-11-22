@@ -110,6 +110,10 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
 }
 /* v20a117 S-30 DEDUP117：.cn-detail-toggle／.cn-detail 已隨詳細區刪除，CSS 一併清。 */
 .cn-summary .cn-sum-row{display:flex;justify-content:space-between;gap:8px;margin:4px 0;font-size:.82rem}
+/* v20a378（U6）：詳情頁成功率行（GPT 規格：紙底金邊、標籤 13px、數值 14px 粗體） */
+.cn-chance378{display:flex;align-items:baseline;justify-content:space-between;gap:12px;min-height:40px;margin:8px 0 10px;padding:8px 10px;color:#1A1410;background:#F8F1DE;border:1px solid rgba(201,162,39,.72);border-radius:3px;box-sizing:border-box}
+.cn-chance378-lab{font-size:13px;line-height:20px;font-weight:600}
+.cn-chance378-val{font-size:14px;line-height:20px;font-weight:700;white-space:nowrap}
 .cn-summary .cn-sum-row .k{color:#6B5340;font-weight:700}
 .cn-summary .cn-sum-row .v{font-weight:800;color:#1A1410;text-align:right}
 .cn-sum-gaps{margin:6px 0 0;font-size:.78rem;line-height:1.4}
@@ -1526,6 +1530,11 @@ button.g, .start button.g{
   overflow: hidden !important;
   max-height: min(88dvh, 760px) !important;
 }
+/* v20a378（第三輪評估 U6）：教學態開非教學 modal（通告欄等）唔好用 88dvh 置中——
+   modal 頂會升到 HUD 第二行同標題疊字（W3 實拍）。非教學 modal 行返正常 modal
+   規格：底部對齊＋78dvh 上限；教學卡（.tut-card）版面不變。 */
+#mask.tut-on:not(:has(.tut-card)){ align-items:flex-end; }
+#mask.tut-on .modal:not(:has(.tut-card)){ max-height:min(78dvh,78svh,720px) !important; }
 #mask.tut-on .tut-card{
   max-height: min(58dvh, 480px);
   overflow: auto;
@@ -4202,7 +4211,7 @@ body.day-res-open .day-row{
 .wardrobe265-row.is-eq{ background:rgba(201,168,118,.18); border-radius:6px; padding:8px 6px; }
 .wardrobe265-row .n{ font-weight:700; }
 .wardrobe265-row .h{ font-size:.82rem; color:#6b4f2a; }
-.wardrobe265-row button{ flex-shrink:0; min-height:36px; padding:4px 14px; }
+.wardrobe265-row button{ flex-shrink:0; min-height:44px; padding:4px 14px; } /* v20a378（U7）：36→44px 觸控下限 */
 /* v20a102 FX102：行程像素動畫嵌日結板（拍攝/錄音/試鏡/訓練；造法同 rest-sleep-inline） */
 .act-fx102{
   margin:0 0 8px; display:flex; justify-content:center;
@@ -6436,6 +6445,11 @@ body.day-res-open .day-row{
 
 /* --- (4) 地圖 pin 輕跳（首次見到提示先跳一次，JS 去重）＋「可打聽」細字 --- */
 .pin.pin-bounce369 .pin-head{ animation:pinBounce369 .36s ease-in-out; }
+/* v20a378（第三輪評估 U6）：一般 pin 點擊回饋（GPT 方案「紙張按壓」：120ms 下沉 1px＋縮 0.95＋內陰影，
+   唔用光暈，唔同主線 pin 光暈／提示 pin 輕跳混淆；定位 transform 喺 .pin 本體，回饋落 .pin-head 唔覆蓋定位）。 */
+.pin .pin-head{ transition:transform 120ms ease, box-shadow 120ms ease; }
+.pin:active .pin-head{ transform:translateY(1px) scale(.95); box-shadow:inset 0 2px 2px rgba(26,20,16,.16), 0 1px 0 rgba(201,162,39,.32); }
+@media (prefers-reduced-motion: reduce){ .pin .pin-head{ transition:none; } }
 @keyframes pinBounce369{ 0%,100%{ transform:translateY(0); } 45%{ transform:translateY(-5px); } }
 .pin .plab-ask369{
   display:block; margin-top:1px; font-size:9px; font-weight:800; line-height:1.1;
@@ -8990,11 +9004,13 @@ const StoryOC = (()=>{
       if(typeof rom159GainAllowed==="function" && !rom159GainAllowed(k)){ return (typeof st.rel[k]==="number" ? st.rel[k] : 0); }
     }catch(_e){}
     const next = (typeof st.rel[k]==="number" ? st.rel[k] : 0) + (Number(delta)||0);
-    st.rel[k] = next;
+    /* v20a378（第三輪評估 B12）：rel 上限 7（設計尺度：rel 5 排他鎖、rel 6 commit、滿 7）——
+       舊制無上限，純約會每週 +1 刷到 32，同劇情量級脫節。負值照舊唔 clamp。 */
+    st.rel[k] = Math.min(7, next);
     /* v20a159 ROM159：首次衝上 rel 5 即鎖定；rel 4 首次軟提示（見 rom159CheckLock）。 */
-    try{ if(typeof rom159CheckLock==="function") rom159CheckLock(k, next); }catch(_e){}
+    try{ if(typeof rom159CheckLock==="function") rom159CheckLock(k, st.rel[k]); }catch(_e){}
     try{ saveQ(); }catch(_e){}
-    return next;
+    return st.rel[k];
   }
 
   function setPhase(p){
@@ -13050,7 +13066,8 @@ const ENDING410_CAREER_NAMES = {
   E7: "未紅先收" /* v20a61 CONSEQ61-1：強制收場（年終評核唔過／破產寬限期滿）；唔經 resolveEnding410 判定表，由 conseq61PresentForcedEnding 寫入。v20a345 F2：結局判定嗰刻 dual 低過 1992 floor 亦改判此格（ending410ResolvePresent410 覆寫，variant review1992） */
 };
 const ENDING410_T = {
-  e1Fame: 60, e1Credit: 55, e1Dual: 125, e1NegMax: 1,       /* E1 天王接班（專檔 §2） */
+  /* v20a378（第三輪評估 B10）：e1Fame／e1Credit／e1Dual／e1NegMax 死欄已刪——結局判定只讀 ENDING95_T，
+     呢四欄從無引用（weave410 靜態測試釘字串同步改）。 */
   e4Fame: 50, e4CreditBelow: 30, e4RescueCredits: 5,        /* E4 泡沫偶像＋沉唔死版債權門檻（v20a373：2→5——全脊骨被動故事債權恒 4，舊門檻令真沉版全脊骨不可達；5＝要真經營人情網先有人撈） */
   e2Credit: 42, e2Fame: 35,                                 /* E2 甘草王 */
   e3Credit: 42, e3BackstageTags: 2, e3DirectorRel: 60,      /* E3 幕後之路（導演 rel 或幕後標籤，鏡像 4-9 定義） */
@@ -13191,7 +13208,7 @@ const ENDING95_T = {
   ckDual: 180, ckComedyShare: 0.5, ckCredit: 50,               /* CK 喜劇泰斗（片種佔比＋信用） */
   akDual: 180, akActionShare: 0.5, akStaminaLessons: 5,        /* AK 動作巨星（片種佔比＋武師班底子） */
   genreMinSample: 6,                                           /* 片種佔比最低可辨識樣本，防 1/1 刷格 */
-  idFame: 60, idCreditLo: 30, idCreditHi: 60, idNegMax: 2,     /* ID 人氣偶像：紅而未沉（同 E4 信用 <30 分家；v20a373 上限 54→60——信用隨殺青自然上漂，舊窗實玩落點易穿上限落 E2；唔去到 65，免搶 E2 平衡 profile） */
+  idFame: 60, idCreditLo: 30, idCreditHi: 60, idNegMax: 2,     /* ID 人氣偶像：紅而未沉（同 E4 信用 <30 分家；v20a373 上限 54→60；v20a378 上限改跟聲望掛鈎 max(60, fame×0.9)——自然信用 fame 80–110 時 70–95，固定窗要刻意壓信用先入到） */
   crCredit: 55, crFameLo: 35, crFameHi: 59,                    /* CR 實力派演員 */
   e3BossFavor: 5                                               /* E3 製片老闆變體：人情總量（已清＋持有）門檻 */
 };
@@ -13519,6 +13536,8 @@ function end95BuildGaps(ctx){
    E1→E4→SS→FK→TK→SK→GH→CK→AK→ID→CR→E2→E3→E5→E0；
    v20a361 P1-B：E3/E5 提前到 CR/E2 之前（加 credit>fame 守門），次序變
    E1→E4→SS→FK→TK→SK→GH→CK→AK→ID→E3→E5→CR→E2→E0；
+   v20a378：ID 移後到 E3/E5 之後（明確路線證據優先過 ID 預設格），ID 信用窗改 max(60, fame×0.9)，次序變
+   E1→E4→SS→FK→TK→SK→GH→CK→AK→E3→E5→ID→CR→E2→E0；
    E6 只認 opts.quit（"job"｜"leave"）主動入口，旗本身唔會令純函數自己入 E6。
    opts.exodus 可由前夕抉擇覆寫去留軸（"leave"）。回傳 {career, careerVariant, romance, exodus, title, reasons, snapshot}。 */
 function resolveEnding410(st, opts){
@@ -13569,20 +13588,19 @@ function resolveEnding410(st, opts){
     career = "CK"; reasons.push("CK 喜劇泰斗：雙軌 "+sum+"≥"+T95.ckDual+"、喜劇佔比（可辨識 "+stats95.genreIdentified+" 部）"+Math.round(genreShare95(stats95.genreComedy)*100)+"%≥50%、信用 "+credit+"≥"+T95.ckCredit);
   } else if(sum>=T95.akDual && stats95.genreIdentified>=T95.genreMinSample && genreShare95(stats95.genreAction)>=T95.akActionShare && ((s.trainCount && Number(s.trainCount.train_stamina))||0)>=T95.akStaminaLessons){
     career = "AK"; reasons.push("AK 動作巨星：雙軌 "+sum+"≥"+T95.akDual+"、動作佔比（可辨識 "+stats95.genreIdentified+" 部）"+Math.round(genreShare95(stats95.genreAction)*100)+"%≥50%、武師班 "+((s.trainCount && Number(s.trainCount.train_stamina))||0)+" 堂≥"+T95.akStaminaLessons);
-  } else if(fame>=T95.idFame && credit>=T95.idCreditLo && credit<=T95.idCreditHi && neg<=T95.idNegMax){
-    career = "ID"; reasons.push("ID 人氣偶像：聲望 "+fame+"≥"+T95.idFame+"、信用 "+credit+" 喺 "+T95.idCreditLo+"–"+T95.idCreditHi+"、負標籤 "+neg+"≤"+T95.idNegMax);
-  /* v20a361 P1-B：明確路線（E3 幕後／E5 人情）提前到 CR／E2 之前判——舊次序 E2（credit≥42＋fame≥35）
-     幾乎吞晒所有正常 profile，E3/E5 只剩 fame<35＋credit≥121 嘅數學死位（W4 36 案例證實）。
-     加 credit>fame（信用主導）做路線身份守門：幕後／人情路線要真係信用行先過聲望，
-     唔會搶走一般演員格（CR/E2）嘅人。E3/E5 另獲 ending361FloorExempt 豁免 1992 兜底改判。
-     v20a373：守門放寬 credit>fame → credit>=fame-10（GPT 方向）——E3 另有 credit≥42＋幕後標籤／
-     導演 rel 閘、E5 另有人情總量≥6＋何生 rel≥60 閘，身份已夠明確；舊守門令信用同聲望
-     接近嘅幕後／人情路線玩家被迫刻意壓聲望先入到，屬刻意 build 死位。 */
+  /* v20a378（第三輪評估 B6）：ID 判定移後到 E3／E5 之後——舊次序 ID 排先，fame 60–70／credit 50–60
+     段有幕後／人情證據都俾 ID 截走，E3／E5 實際守門變成 credit>=fame-9（W2 實證）。明確路線證據齊全
+     應優先過 ID 呢格「紅而未沉」嘅預設格。
+     ID 信用窗改跟聲望掛鈎：上限 = max(60, fame×0.9)（聲望主導帶）——自然信用 fame 80–110 時 70–95，舊固定窗
+     30–60 要刻意壓信用先入到；新窗令聲望行先過信用嘅人氣型 profile（信用 ≈ 聲望×0.82–0.86）自然入格，
+     平衡 profile（信用 ≈ 聲望×0.99–1.03）照落 E2。E4 信用 <30 分家不變，贏線／floor／warnLine 不變。 */
   } else if(credit>=fame-10 && endingE3Eligible410(s)){
     career = "E3"; variant = end95E3Variant(s, stats95, favor);
     reasons.push("E3：信用 "+credit+"≥聲望 "+fame+"−10（信用主導帶）＋信用≥"+T.e3Credit+"、幕後標籤 "+endingBackstageTagCount410(s)+"／導演 rel "+directorRel+"；變體＝"+variant+"（人情總量 "+((favor.settled|0)+(favor.creditsHeld|0))+"、電影 "+(stats95.byMedium.film|0)+"／電視 "+(stats95.byMedium.tv|0)+"）");
   } else if(credit>=fame-10 && (favor.settled + favor.creditsHeld)>=T.e5FavorTotal && agentRel>=T.e5AgentRel){
     career = "E5"; reasons.push("E5：信用 "+credit+"≥聲望 "+fame+"−10（信用主導帶）＋已清債 "+favor.settled+"＋持有債權 "+favor.creditsHeld+"≥"+T.e5FavorTotal+"、何生 rel "+agentRel+"≥"+T.e5AgentRel);
+  } else if(fame>=T95.idFame && credit>=T95.idCreditLo && credit<=Math.max(T95.idCreditHi, fame*0.9) && neg<=T95.idNegMax){
+    career = "ID"; reasons.push("ID 人氣偶像：聲望 "+fame+"≥"+T95.idFame+"、信用 "+credit+" 喺 "+T95.idCreditLo+"–"+Math.round(Math.max(T95.idCreditHi, fame*0.9))+"（聲望主導帶）、負標籤 "+neg+"≤"+T95.idNegMax);
   } else if(credit>=T95.crCredit && fame>=T95.crFameLo && fame<=T95.crFameHi){
     career = "CR"; reasons.push("CR 實力派演員：信用 "+credit+"≥"+T95.crCredit+"、聲望 "+fame+" 喺 "+T95.crFameLo+"–"+T95.crFameHi);
   } else if(credit>=T.e2Credit && fame>=T.e2Fame){
@@ -14701,19 +14719,23 @@ const GiftShop = (function(){
     S.giftMeta.lastGiveDay[relKey] = S.dayIndex|0;
     const gk = relKey+":"+itemId;
     S.giftMeta.givenCount[gk] = (Number(S.giftMeta.givenCount[gk])||0) + 1;
+    const before378 = (typeof StoryOC!=="undefined") ? StoryOC.getRel(relKey) : 0;
     if(applied!==0){
       try{ if(typeof StoryOC!=="undefined") StoryOC.bumpRel(relKey, applied); }catch(_e){}
-      if(applied>0) S.giftMeta.weekGiftGain[relKey] = weekGain + applied;
     }
     const line = reactionLine(npcKey, itemId, kind==="dislike"?"dislike":kind, softcap);
-    const before = (typeof StoryOC!=="undefined") ? StoryOC.getRel(relKey) - applied : 0;
+    const before = before378;
     const after = (typeof StoryOC!=="undefined") ? StoryOC.getRel(relKey) : before+applied;
+    /* v20a378（B12）：rel 上限 7 後，實際落數以 after−before 為準（撞頂嗰陣 applied 會大過真增量）；
+       週軟頂計數都跟實際落數，唔好俾撞頂嘅禮物食咗成週額度。 */
+    const applied378 = after - before;
+    if(applied378>0) S.giftMeta.weekGiftGain[relKey] = weekGain + applied378;
     try{ saveQ(); }catch(_e){}
     /* v20a159 ROM159：送禮唔耗日（現行唔耗日規則）——拎走 costsDay:true 殘留值，
        回傳唔再帶呢個欄，唔好兩邊唔同。呼叫方（doGiveGift）一向睇 softSocialCostsDay，唔睇呢欄。 */
     return {
       ok:true, reason:"", itemId, name:(itemById(itemId)||{}).name||itemId,
-      kind, delta:applied, softcap, line, relKey, before, after
+      kind, delta:applied378, softcap, line, relKey, before, after
     };
   }
   function inventoryList(){
@@ -19278,6 +19300,15 @@ function castingNoticeDetailHtml(g){
   const directorRow117 = (directorReal117 && g.category === "作品" && (directorType252 === "電影" || directorType252 === "電視劇")) ? `<div class="cn-sum-row"><span class="k">導演</span><span class="v">${directorReal117}</span></div>` : "";
   /* v20a252 CAST252：詳情頁按類型分流欄位（SPEC §6.2，見 gigCastDetailRows252）。 */
   const castRows252 = (typeof gigCastDetailRows252 === "function") ? gigCastDetailRows252(g) : "";
+  /* v20a378（第三輪評估 U6）：詳情頁補返試鏡成功率（GPT 方案：摘要錢行之後、簡介之前；
+     同短卡同一支 chance()、同一句「試鏡成功率約 X%」，只喺 ready 出）。 */
+  const chanceRow378 = (()=>{
+    try{
+      if(boardState!=="ready" || typeof chance!=="function") return "";
+      const p378 = Math.round(chance(g)*100);
+      return `<div class="cn-chance378"><span class="cn-chance378-lab">試鏡成功率</span><strong class="cn-chance378-val">約 ${p378}%</strong></div>`;
+    }catch(_e){ return ""; }
+  })();
   const weeklyRow117 = (total > 1) ? weeklyBlock : "";
   const synopsisFrame117 = `<div class="notice_synopsis_frame">
       <div class="cn-lab">劇情簡介</div>
@@ -19318,6 +19349,7 @@ function castingNoticeDetailHtml(g){
       <div class="cn-sum-row"><span class="k">片酬</span><span class="v">${payStr}</span></div>
       <div class="cn-sum-row"><span class="k">簽約金</span><span class="v">${signFee108}</span></div>
       ${breachRow108}
+      ${chanceRow378}
       <div class="cn-sum-row"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
       <div class="cn-sum-row"><span class="k">通告期間</span><span class="v">${period}</span></div>
       ${deadlineRow30v2}
@@ -19457,7 +19489,7 @@ function openCastingNoticeDetail(g, L){
   try{
     const life = gigLifecycleStatus(g);
     if(life && life.key==="pending"){
-      const body = `<h3>${g.title||"通告"}</h3><p class="gold">等消息</p><p>你已經試咗鏡，劇組未有回音。何生一收到風就會打嚟通知你；等消息嗰幾日照常生活就得，唔使日日嚟望。</p>`;
+      const body = `<h3>${g.title||"通告"}</h3><p class="gold">等消息</p><p>你已經試咗鏡，劇組未有回音。何生一收到風就會打嚟通知你；等消息嗰幾日照常生活就得，唔使日日嚟望——可以照常試其他通告（最多同時等 ${AUD91_CAP} 張）或者做兼職，唔使空等。</p>`;
       modal(body, [
         {label:"查看手帳", role:"p", on:()=>{ try{ showJobs(); }catch(_e){} }},
         {label:"離開", role:"g", on:()=>{ if(L) doScout(L); }}
@@ -19484,6 +19516,11 @@ function openCastingNoticeDetail(g, L){
     const softEntry = (typeof softPreviewOn==="function" && softPreviewOn());
     if(softEntry){
       body += `<p class="var-note">去試鏡要用一日，結果等何生通知。</p>`;
+    }
+    /* v20a378（第三輪評估 B11）：接通告前檔期撞期警告（唔阻止，只交代） */
+    const risk378 = (typeof aud378ScheduleRisk==="function") ? aud378ScheduleRisk(g) : "";
+    if(risk378){
+      body += `<p class="bad">${risk378}</p>`;
     }
     /* v20a158：人情免試鏡渠道——金色提示行＋用人情掣（只喺 canAudition 過關嗰陣出；
        用咗就保證獲聘、唔使試鏡，聽朝何生打嚟通知；人情用一次即清）。 */
@@ -20547,6 +20584,25 @@ function settleWeek(){
       pushFlavor(`<span class="bad">本週入不敷支。存款 $${cashNow.toLocaleString()}，宜下週多接通告。</span>`);
     }
   }catch(_cash){}
+  /* v20a378（第三輪評估 B8／B11）：拍攝限期交代——尚欠日數多過限期前可拍日子（或限期 ≤3 日仍未拍完）
+     就喺週結算講明，唔好等逾期取消先知扣聲望（W1 將逾期罰則誤讀做聲望自然衰減）。 */
+  try{
+    const today378 = S.dayIndex|0;
+    (S.shoots||[]).forEach(sh=>{
+      if(!sh || typeof sh.deadlineDay!=="number") return;
+      const remain378 = shootRemain(sh);
+      if(remain378<=0) return;
+      const left378 = sh.deadlineDay - today378;
+      const wd378 = {}; (sh.shootWeekdays||[]).forEach(w=>wd378[w]=1);
+      let avail378 = 0;
+      for(let d=today378+1; d<=sh.deadlineDay; d++){ if(wd378[weekdayIdx(d)]) avail378++; }
+      if(remain378 > avail378){
+        pushFlavor(`<span class="bad">《${sh.title||"拍攝"}》限期告急：尚欠 ${remain378} 日，限期前可拍日子得 ${avail378} 日——再唔排拍攝日，逾期會取消檔期、扣違約金同聲望。</span>`);
+      } else if(left378<=3){
+        pushFlavor(`<span class="bad">《${sh.title||"拍攝"}》拍攝限期仲有 ${Math.max(0,left378)} 日，尚欠 ${remain378} 日未拍——記得排拍攝日，逾期會扣違約金同聲望。</span>`);
+      }
+    });
+  }catch(_dl378){}
   // High stress week-end event (based on week-end stress before soft recovery)
   if(stressAtEnd>=75){
     const sick = stressAtEnd>=90;
@@ -23934,13 +23990,15 @@ function ensureFavorDue(){
 function favorDueHintText(d){
   if(!d || d.dueDay==null) return "";
   const today = (typeof S!=="undefined" && S && typeof S.dayIndex==="number") ? S.dayIndex : 0;
+  /* v20a378（第三輪評估 U11）：何生嗰筆講明去邊還——舊文案只講限期唔講地點。 */
+  const where378 = (typeof FAVOR_DUE_CFG!=="undefined" && d.id===FAVOR_DUE_CFG.debtId) ? "去何生事務所" : "";
   if(d.favorState==="called"){
     const left = Math.max(0, (Number(d.favorGigDay)||today) + FAVOR_DUE_CFG.windowDays - today);
-    return "到期喇：呢筆人情到期未還，仲有 "+left+" 日——到期前用現金或者禮物還返，唔係就會作廢。";
+    return "到期喇：呢筆人情到期未還，仲有 "+left+" 日——到期前"+where378+"用現金或者禮物還返，唔係就會作廢。";
   }
   const left = Math.max(0, (Number(d.dueDay)||0) - today);
-  if(left<=0) return "到期喇：呢筆人情今日到期，盡快還返。";
-  return "約 "+left+" 日後到期：到期前用現金或者禮物還返就得。";
+  if(left<=0) return "到期喇：呢筆人情今日到期，盡快"+where378+"還返。";
+  return "約 "+left+" 日後到期：到期前"+where378+"用現金或者禮物還返就得。";
 }
 function favorDueTick(){
   try{
@@ -27122,14 +27180,11 @@ function rom159DateGate(who, spot){
     const w = ROM159_WOMEN[who];
     if(!w) return { ok:false, reason:"呢條線呢期未開。" };
     if(!w.spots || !w.spots.length) return { ok:false, reason:"呢條線呢期未開約會（Phase 2／3 先開）。" };
+    /* v20a378（第三輪評估 U10）：約會要先行完故事初遇節點——舊制傾過偈（NPC 層）就約得，
+       徐寶珊 Day 94 已約到、Day 543 先睇「初遇」劇情，次序倒轉。六線一律以 meet 節點為準。 */
     let met = false;
-    try{
-      if(typeof GiftShop!=="undefined" && GiftShop.talkMetOk && GiftShop.talkMetOk(who)) met = true;
-    }catch(_e){}
-    if(!met){
-      try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(w.meet)) met = true; }catch(_e){}
-    }
-    if(!met) return { ok:false, reason:"要先見過面／傾過偈，先約得出街。" };
+    try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(w.meet)) met = true; }catch(_e){}
+    if(!met) return { ok:false, reason:"要先喺劇情入面正式見過面，先約得出街。" };
     const locked = rom159LockedWho();
     if(locked && locked!==who) return { ok:false, reason:"你心入面已經有人喇（" + ROM159_WOMEN[locked].name + "），約唔到第二個。" };
     const st = rom159State();
@@ -27265,12 +27320,17 @@ function rom159DateScene(who, spot, L, ended, summary){
     };
     modal(`<h3>約會 · ${w.name}（${spot.label}）</h3><p>${spot.intro}</p><p class="sub">揀一句回應——講啱咗，兩個人近啲；講錯咗，佢會冷淡啲。</p>`,[
       {label: spot.good.label, role:"p", on:()=>{
+        /* v20a378（B12）：rel 上限 7——顯示實際落數，撞頂唔再假報 +1。 */
+        let b378 = 0; try{ b378 = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
         try{ if(typeof StoryOC!=="undefined" && StoryOC.bumpRel) StoryOC.bumpRel(w.relKey, 1); }catch(_e){}
-        showResult(1, spot.good.line);
+        let a378 = b378; try{ a378 = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
+        showResult(a378-b378, spot.good.line);
       }},
       {label: spot.bad.label, role:"g", on:()=>{
+        let b378 = 0; try{ b378 = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
         try{ if(typeof StoryOC!=="undefined" && StoryOC.bumpRel) StoryOC.bumpRel(w.relKey, -1); }catch(_e){}
-        showResult(-1, spot.bad.line);
+        let a378 = b378; try{ a378 = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
+        showResult(a378-b378, spot.bad.line);
       }}
     ], {onDismiss: go});
     return true;
@@ -27998,6 +28058,18 @@ function creditRedeemLine283(c){
     }
     const gg = (typeof CREDIT_REDEEM_GIG283!=="undefined" && CREDIT_REDEEM_GIG283) ? CREDIT_REDEEM_GIG283[c.id] : null;
     if(gg && ids.indexOf(gg)<0) ids.push(gg);
+    /* v20a378（第三輪評估 U11）：兌現通告試鏡／拍攝進行中，卡面講明已用於邊張——
+       舊制殺青先標 redeemedBy，期間卡面一直「未收」，玩家唔知筆人情已經用緊。 */
+    try{
+      const pend378 = (typeof S!=="undefined" && S && Array.isArray(S.pendingAud)) ? S.pendingAud : [];
+      const shoots378 = (typeof S!=="undefined" && S && Array.isArray(S.shoots)) ? S.shoots : [];
+      for(const gid of ids){
+        const sh378 = shoots378.find(x=>x && x.gigId===gid);
+        if(sh378) return '<p class="debt-redeem">已用於《' + journalText(sh378.title||gigTitleById283(gid)) + '》拍攝中</p>';
+        const pa378 = pend378.find(x=>x && x.gigId===gid);
+        if(pa378) return '<p class="debt-redeem">已用於《' + journalText(pa378.title||gigTitleById283(gid)) + '》試鏡，等消息中</p>';
+      }
+    }catch(_e378){}
     const titles = ids.map(gid=>gigTitleById283(gid)).filter(Boolean);
     if(titles.length) return '<p class="debt-redeem">可以換：' + titles.map(t=>journalText(t)).join("／") + '</p>';
     const tx = (typeof CREDIT_REDEEM_TEXT283!=="undefined" && CREDIT_REDEEM_TEXT283) ? CREDIT_REDEEM_TEXT283[c.id] : null;
@@ -29683,7 +29755,9 @@ function renderDebtPane(){
     if(!c) return "";
     const ex = c.status==="絕響";
     const redeemed = !!c.redeemedBy;
-    const status = ex ? "絕響" : (redeemed ? "已兌現" : "未收");
+    /* v20a378（第三輪評估 U11）：已兌現優先過絕響——芬姐債權兌現後 status 仍係「絕響」（WF4 farewell），
+       舊顯示俾絕響 badge 蓋過「已兌現」，卡面自相矛盾。而家兌現咗就寫已兌現，「人已不在香港」照出。 */
+    const status = redeemed ? "已兌現" : (ex ? "絕響" : "未收");
     /* v369 UI369：而家真係換到嘅債權卡加高亮 class（判定同 tab 票角同源）。 */
     const redeemable369 = (typeof creditRedeemable369==="function") && creditRedeemable369(c);
     return `<article class="debt-row credit-row${ex?" debt-exodus":""}${redeemable369?" credit-redeemable369":""}" data-credit-id="${journalText(c.id)}"><p class="debt-who">欠你人情：${journalText(c.debtor||"")}</p><p class="debt-title">${journalText(c.title||"")}</p><p class="collect-line">${journalText(c.line||"")}</p>${(typeof creditRedeemLine283==="function")?creditRedeemLine283(c):""}<span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span>${ex?`<p class="debt-fuzzy">${journalText("人已不在香港")}</p>`:""}</article>`;
@@ -32009,6 +32083,13 @@ function buildAwardResultPack(opts){
   try{
     const el188 = (typeof awards188EligibleCats === "function") ? awards188EligibleCats(ceremonyId, ceremony, year) : null;
     if(Array.isArray(el188) && el188.length) pool188 = el188;
+    else if(Array.isArray(el188)){
+      /* v20a378（第三輪評估 U12）：gallery 兜底唔好成表亂抽——舊制 eligible 空就用全表，
+         會抽中女歌手格做「你嗰格」（W5 存檔 1992 music_singer_f: gallery）。觀禮列全 slate
+         喺請柬另有處理（catsBit182）；pack 主打格只抽性別啱／中性格。 */
+      const gm378 = cats.filter(c=> !c.gender || c.gender === AWARDS188_PLAYER_GENDER);
+      if(gm378.length) pool188 = gm378;
+    }
   }catch(_e){}
   const pickN = Math.min(pool188.length, 1 + (Math.random()<0.45 && pool188.length>1 ? 1 : 0));
   const shuffled = pool188.slice();
@@ -42047,6 +42128,23 @@ function enc79PlayEncounter(starId, locId, wasMet){
       idx++;
       render();
     };
+    /* v20a378（第三輪評估 U8）：巧遇對白加「跳至選項」——同劇情跳轉同一口徑，只跳對白唔跳後果：
+       沿途每步 segFx 照行，跳到下一個抉擇步停低（冇抉擇步就唔出掣，唔同 .e79-skip 成段跳過混淆）。 */
+    if(built.steps.slice(idx+1).some(s=>s && s.choice)){
+      const jb = document.createElement("button");
+      jb.type = "button"; jb.className = "e79-btn"; jb.textContent = "跳至選項";
+      jb.onclick = ()=>{
+        /* 當前步 segFx 喺 render() 開頭已行過，由下一步開始補行，唔好重複落數。 */
+        while(idx+1 < built.steps.length && !built.steps[idx+1].choice){
+          idx++;
+          const stp378 = built.steps[idx];
+          if(stp378 && stp378.segFx){ try{ stp378.segFx(); }catch(_g){} }
+        }
+        idx++;
+        render();
+      };
+      rowEl.appendChild(jb);
+    }
     /* v20a176 ROM176：收尾嗰句加「送禮」——撞到先送得（星送禮入口）；撳咗就收起巧遇 overlay 去揀禮物。 */
     if(idx >= built.steps.length-1 && typeof rom176CanGiveStarGift==="function" && rom176CanGiveStarGift(starId)){
       const gb = document.createElement("button");
@@ -46894,6 +46992,33 @@ function favor158RedeemChannel(gig, L){
   }catch(_e){ return false; }
 }
 
+/* v20a378（第三輪評估 B11）：試鏡前檔期可行性檢查——按限期由近至遠累計尚欠拍攝日，
+   同限期前可拍日子（各拍攝可拍星期聯集）比較；唔夠就出警告（唔阻止，玩家照試）。
+   舊制接通告零警告，逾期先知取消兼扣違約金＋聲望（W1 全年 2 次）。 */
+function aud378ScheduleRisk(gig){
+  try{
+    if(!gig || typeof S==="undefined" || !S) return "";
+    const today = S.dayIndex|0;
+    const days = shootSpanFor(gig);
+    const dl = effectiveShootDeadlineDays(gig, days);
+    const items = (S.shoots||[]).filter(sh=>sh && shootRemain(sh)>0 && typeof sh.deadlineDay==="number")
+      .map(sh=>({ remain: shootRemain(sh), deadline: sh.deadlineDay, wds: sh.shootWeekdays||[] }));
+    if(!items.length) return "";
+    items.push({ remain: days, deadline: today+dl, wds: effectiveShootWeekdays(gig) });
+    items.sort((a,b)=>a.deadline-b.deadline);
+    const wdSet = {}; items.forEach(it=> (it.wds||[]).forEach(w=>wdSet[w]=1));
+    let demand = 0;
+    for(const it of items){
+      demand += it.remain;
+      let supply = 0;
+      for(let d=today+1; d<=it.deadline; d++){ if(wdSet[weekdayIdx(d)]) supply++; }
+      if(demand > supply){
+        return "檔期可能撞期：計埋手頭拍攝，限期前要拍 " + demand + " 日，可拍日子得 " + supply + " 日——逾期會取消檔期、扣違約金同聲望。";
+      }
+    }
+    return "";
+  }catch(_e){ return ""; }
+}
 function doAudition(gig, L){
   const gate=canAudition(gig);
   if(!gate.ok){
@@ -46958,7 +47083,7 @@ function doAudition(gig, L){
     <p>你照住要求演咗一輪，評判點頭抄低你個名，最後講咗句「返去等消息啦」——呢行唔興即場拍板，劇組要開完會先定到人。</p>
     ${advice229?`<p class="gold">鍾楚凝的忠告：臨試鏡前，阿偉想起她臨走時留下的那句話——「${advice229}」</p>`:""}
     <p class="gold">何生話：${aud91WaitPhrase(rec.wait)}，佢一收到風就會打嚟通知你；真係獲聘嗰陣，先簽約收簽約金，之後先排拍攝日開工。</p>
-    <p class="var-note">成功率約 ${Math.round(p*100)}%（成數受表現／壓力／信用影響）。等消息期間照常生活；手帳「事業」頁睇得到而家等緊邊幾張。</p>
+    <p class="var-note">成功率約 ${Math.round(p*100)}%（成數受表現／壓力／信用影響）。等消息期間照常生活；手帳「事業」頁睇得到而家等緊邊幾張。等消息嘅日子可以照常試其他通告（最多同時等 ${AUD91_CAP} 張）或者做兼職，唔使空等。</p>
     ${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}
     <p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
     {label: ended?"回家結算":"繼續", role:"p", on:cont}
@@ -47400,6 +47525,15 @@ function failShootOverdue(sh){
     stress: high ? 16 : 12,
     popularity: high ? -8 : -5,
   }));
+  /* v20a378（第三輪評估 B6）：逾期掉單加業內信用扣減（經 industryCreditDelta，唔經 CALIB60 縮放）——
+     舊制只有聲望／壓力／人氣罰，信用靠派生公式自然上漂，E4（聲望≥50＋信用<30）入口要刻意壓信用先入到，
+     屬反向養成。失約扣信用令「玩壞」有路可循：紅咗但成日甩通告，信用會真係沉落去。 */
+  try{
+    const pen378 = high ? 5 : 3;
+    S.industryCreditDelta = (Number(S.industryCreditDelta)||0) - pen378;
+    if(typeof syncDualTracks==="function") syncDualTracks(S);
+    notes.push(`<span class="bad">業內信用 −${pen378}</span>`);
+  }catch(_pen378){}
   try{ bumpNpc("agent", -1); }catch(_e){}
   notes.push(`<span class="bad">臨時缺席的消息傳開，圈子裡對你的評價滑了一截。</span>`);
   notes.push(`<span class="bad">俾人放飛機嗰種羞恥感壓喺心口，夜晚點都瞓唔穩。</span>`);

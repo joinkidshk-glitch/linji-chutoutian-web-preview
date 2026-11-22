@@ -249,25 +249,34 @@ ok('E 未鎖：送禮唔擋', env.rom159GiftBlocked('choi') === null);
 
 /* ---- F. 約會閘 ---- */
 resetS();
-ok('F 未見面約唔到', (() => { talkMet = false; const g = env.rom159DateGate('hiu', null); return !g.ok && g.reason.indexOf('見過面') >= 0; })());
+/* v20a378（U10）：約會要先行完故事初遇節點——測試預設六線 meet 已做，「未見面」個案清走曉晴 meet。 */
+S.story.done = { R_hiu_meet:true, R_choi_meet:true, R_lan_meet:true, R_xu_meet:true, R_yip_meet:true, R_so_meet:true };
+ok('F 未見面約唔到', (() => { delete S.story.done.R_hiu_meet; const g = env.rom159DateGate('hiu', null); return !g.ok && g.reason.indexOf('見過面') >= 0; })());
 resetS();
+S.story.done = { R_hiu_meet:true, R_choi_meet:true, R_lan_meet:true, R_xu_meet:true, R_yip_meet:true, R_so_meet:true };
 ok('F 見過面＋有錢：開', env.rom159DateGate('hiu', null).ok === true);
 ok('F 銀包唔夠：擋', env.rom159DateGate('hiu', { cost: 60 }).ok === false || (() => { S.money = 10; return env.rom159DateGate('hiu', { cost: 60 }).ok === false; })());
 resetS();
+S.story.done = { R_hiu_meet:true, R_choi_meet:true, R_lan_meet:true, R_xu_meet:true, R_yip_meet:true, R_so_meet:true };
 S.romance159.dates = { hiu: 1 };
 ok('F 今週已約過佢：擋', env.rom159DateGate('hiu', null).ok === false);
 resetS();
+S.story.done = { R_hiu_meet:true, R_choi_meet:true, R_lan_meet:true, R_xu_meet:true, R_yip_meet:true, R_so_meet:true };
 S.romance159.dateWeekWho = 'choi';
 ok('F 今週已約第二個人：擋', env.rom159DateGate('hiu', null).ok === false);
 resetS();
+S.story.done = { R_hiu_meet:true, R_choi_meet:true, R_lan_meet:true, R_xu_meet:true, R_yip_meet:true, R_so_meet:true };
 S.flags = { flag_romance_locked: true, romance_locked_who: 'choi' };
 ok('F 鎖咗采兒：約曉晴擋', env.rom159DateGate('hiu', null).ok === false);
 ok('F 鎖咗采兒：約采兒開', env.rom159DateGate('choi', null).ok === true);
 resetS();
+S.story.done = { R_hiu_meet:true, R_choi_meet:true, R_lan_meet:true, R_xu_meet:true, R_yip_meet:true, R_so_meet:true };
 ok('F 藍有 spots：見過面就約到', env.rom159DateGate('lan', null).ok === true);
 resetS();
+S.story.done = { R_hiu_meet:true, R_choi_meet:true, R_lan_meet:true, R_xu_meet:true, R_yip_meet:true, R_so_meet:true };
 ok('F 葉有 spots：見過面就約到', env.rom159DateGate('yip', null).ok === true);
 resetS();
+S.story.done = { R_hiu_meet:true, R_choi_meet:true, R_lan_meet:true, R_xu_meet:true, R_yip_meet:true, R_so_meet:true };
 ok('F 蘇有 spots：見過面就約到', env.rom159DateGate('so', null).ok === true);
 
 /* ---- G. 撞期偵測 ---- */
