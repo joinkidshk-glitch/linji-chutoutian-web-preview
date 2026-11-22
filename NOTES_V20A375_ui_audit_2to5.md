@@ -34,13 +34,16 @@ Gemini 設計圖只作方向；原則：遮字跟 GPT 必修、氛圍跟 Gemini 
 ## 測試
 - JS 語法：node parse 2 個 script block，0 bad。
 - Suite 首跑 380 PASS／29 FAIL，逐項分類：
-  - 12 項逐個跑 PASS（suite 波動）：awei199、awei201、bust109、delete268、dlg107、dlg119、
-    dlg123、dlg126、dlg127、dlg138、home272、travel114。
-  - 7 項行號釘漂移已 resync 並逐個覆驗 PASS：gift185、tang171、tang173、rom159、rom176、
-    text125、tang152（新總行數 48601；CSS 插入舊 L6501 淨 +115，作品卡 +1 行，規則：舊行
+  - 11 項逐個跑 PASS（suite 波動）：awei199、awei201、bust109、delete268、dlg107、dlg119、
+    dlg123、dlg126、dlg127、dlg138、home272。
+  - 8 項行號釘漂移已 resync 並逐個覆驗 PASS：gift185、tang171、tang173、rom159、rom176、
+    text125、tang152、travel114（travel114 喺合併後全套 suite 先浮面，54 個釘按段移位補 resync；
+    新總行數 48601；CSS 插入舊 L6501 淨 +115，作品卡 +1 行，規則：舊行
     >6501 且 <16186 → +115，>16186 → +116；錨點內容逐字核實純漂移）。
   - r296_expression_dead_files.js：工作副本環境損壞（qa296 檔 0-byte，clone checkout 中途
-    寫入預算被擋，derive296.json 寫唔入），合併後喺常駐 clone 單跑覆驗。
+    寫入預算被擋，derive296.json 寫唔入），合併後喺常駐 clone 單跑覆驗 PASS。
+  - 合併後常駐 clone 全套 suite：399 PASS／10 FAIL（9 項 pre-existing＋travel114 未 resync）；
+    travel114 補 resync 後逐個 PASS，返 400／9 基線。
 - 相關邏輯測試逐個 PASS：weave410、conseq61、cast252、poster59、menu72、ladder95、
   favor259、gig229、qa101。
 - Playwright 實駕截圖四屏：見證據目錄（劇情對話、結局總結、作品牆、手帳週行程）。
