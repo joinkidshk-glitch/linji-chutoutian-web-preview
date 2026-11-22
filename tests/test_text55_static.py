@@ -39,7 +39,7 @@ chk('A1 journal empty-state natural', '暫時未有選角印象' in src and '[DE
 chk('A1 dev label gone everywhere', src.count('[DEV]') == 0)
 # A6: trial-gate wording out of display source (patterns may remain in tables)
 chk('A6 no trial-gate outside tables', '試玩閘' not in outside)
-chk('A6 start-screen li natural', '試玩閘：' not in src and '不計日子（茶錢另計）' in src)
+chk('A6 start-screen li natural', '試玩閘：' not in src and '耗用一日（茶錢另計）' in src)
 # A5: gift placeholder fallback
 chk('A5 gift fallback de-placeholdered', '（佔位）' not in outside)
 # A9/C10: screenshot strings out of display source

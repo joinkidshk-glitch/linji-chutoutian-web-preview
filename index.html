@@ -4104,6 +4104,11 @@ body.day-res-open .day-row{
 #home-pane-ledger .ledger-money{ margin:10px 0 6px; font-weight:800; }
 #home-pane-ledger .ledger-enroll{ font-size:.78rem; color:var(--muted); margin:0; }
 .ending410-title-card{ background:#fff8e8; border:1px solid #c4a574; border-radius:10px; padding:10px 12px; margin:8px 0; }
+/* v20a380（第五輪評估 P2-6，GPT 方案）：結局頭兩頁場景框實色米紙底——觸發時 mask 帶 story-play-on，紙底規則被排除，啡字壓近黑遮罩對比極低；內容框自己帶紙底，唔改轉頁流程（原生版對應 Color Assets EndingPaper/EndingInk/EndingGold） */
+.ending410-scene{ background:#f2ebd8; color:#33241C; border:1px solid #a88443; border-radius:10px; padding:12px 14px; }
+.ending410-scene h3{ color:#33241C; margin-top:0; }
+.ending410-scene p{ color:#33241C; font-size:.95rem; line-height:1.6; }
+.ending410-scene .sub{ color:#5C4738; }
 .ending410-title{ font-size:1.25rem; font-weight:900; margin:2px 0 6px; }
 /* v20a370 P3-15 C2：結局總結頁對比度（GPT 方案）——淺紙深墨，正文 ≥4.5:1 */
 .modal .ending410-title-card p{ color:#33241C; }
@@ -6651,7 +6656,7 @@ body.day-res-open .day-row{
   <ul>
     <li>地圖：通告欄／打聽／訓練</li>
     <li>手帳：安排拍攝與加練</li>
-    <li>傾談／送禮不計日子（茶錢另計）</li>
+    <li>傾談／送禮耗用一日（茶錢另計）</li>
     <li>日結預設返回地圖；加速需確認</li>
   </ul>
 </aside>
@@ -6680,7 +6685,7 @@ body.day-res-open .day-row{
             <button class="g" id="btn-load-mini" style="display:none" title="讀檔">讀檔</button>
           </div>
         </div>
-        <p class="sub" id="start-soft-tip" style="font-size:.78rem;margin-top:6px;display:none">通告欄／打聽／傾談／送禮<strong>不耗日</strong>（茶錢另計）；訓練／試鏡／休息／表演 <strong>+1 日</strong>。</p>
+        <p class="sub" id="start-soft-tip" style="font-size:.78rem;margin-top:6px;display:none">通告欄／打聽<strong>不耗日</strong>；傾談／送禮／訓練／試鏡／休息／表演 <strong>+1 日</strong>（茶錢另計）。</p>
       </div>
     </div>
   </section>
@@ -7149,6 +7154,11 @@ const NPCS = {
     homes:["tvb_longmen","tvb_kowloon"] },
   xu:{ id:"xu", name:"徐寶珊", role:"廣告界女強人", face:"npc_xu",
     homes:["ad_central","ad_adm"] },
+  /* v20a380：補葉／蘇 NPCS 條目（第五輪評估 P1-2：感情層送禮＋傾談冇 UI 入口；跟 v176 藍／徐同一套 plumbing，傾談對白行＋頭像 rom176ApplyGiftOverrides 注入） */
+  yip:{ id:"yip", name:"葉敏芝", role:"電視台藝員", face:"npc_yip",
+    homes:["tvb_longmen","tvb_kowloon"] },
+  so:{ id:"so", name:"蘇芷茵", role:"唱片公司歌手", face:"npc_so",
+    homes:["rec_wanchai","ad_central"] },
   agent:{ id:"agent", name:"何生", role:"經理人", face:"npc_ho",
     homes:["ad_central","tvb_kowloon","film_cotton","rec_wanchai"] },
 };
@@ -14283,9 +14293,9 @@ function ending410ResolvePresent410(node, choice, result, key, opts){
     if(e7Floor345) S.ending410.earlyEnd = { kind: "review", year: 1992, dual: res.snapshot.dual, floor: e7Floor345, week: (typeof weekNumNow==="function" ? weekNumNow() : 0) };
     try{ saveQ(); }catch(_s){}
     const inserts = endingInserts410(res, favor);
-    const page1 = "<h3>三年埋單</h3>" + endingCareerScene410(res);
-    const page2 = "<h3>埋單之後</h3>" + endingRomanceScene410(res) + endingExodusScene410(res, favor)
-      + (inserts.length ? ("<p class=\"sub\">——呢三年——</p>" + inserts.map(t=>"<p>"+endingEsc410(t)+"</p>").join("")) : "");
+    const page1 = "<div class=\"ending410-scene\"><h3>三年埋單</h3>" + endingCareerScene410(res) + "</div>";
+    const page2 = "<div class=\"ending410-scene\"><h3>埋單之後</h3>" + endingRomanceScene410(res) + endingExodusScene410(res, favor)
+      + (inserts.length ? ("<p class=\"sub\">——呢三年——</p>" + inserts.map(t=>"<p>"+endingEsc410(t)+"</p>").join("")) : "") + "</div>";
     modal(page1, [{ label: "下一頁", role: "p", on: ()=>{
       modal(page2, [{ label: "睇手帳總結", role: "p", on: ()=>{ showEndingSummary410(); } }]);
     } }]);
@@ -17962,9 +17972,9 @@ function conseq61PresentForcedEnding(){
     try{ saveQ(); }catch(_s){}
     const rec = { career: "E7", careerVariant: variant, romance: res.romance, exodus: res.exodus, earlyEnd: earlyEnd };
     const inserts = endingInserts410(rec, favor);
-    const page1 = "<h3>" + (pend.kind==="review" ? (pend.year + " 年尾 · 事務所評核") : "寬限期滿 · 荷包見底") + "</h3>" + endingCareerScene410(rec);
-    const page2 = "<h3>收場之後</h3>" + endingRomanceScene410(rec) + endingExodusScene410(rec, favor)
-      + (inserts.length ? ("<p class=\"sub\">——呢段日子——</p>" + inserts.map(t=>"<p>"+endingEsc410(t)+"</p>").join("")) : "");
+    const page1 = "<div class=\"ending410-scene\"><h3>" + (pend.kind==="review" ? (pend.year + " 年尾 · 事務所評核") : "寬限期滿 · 荷包見底") + "</h3>" + endingCareerScene410(rec) + "</div>";
+    const page2 = "<div class=\"ending410-scene\"><h3>收場之後</h3>" + endingRomanceScene410(rec) + endingExodusScene410(rec, favor)
+      + (inserts.length ? ("<p class=\"sub\">——呢段日子——</p>" + inserts.map(t=>"<p>"+endingEsc410(t)+"</p>").join("")) : "") + "</div>";
     modal(page1, [{ label: "下一頁", role: "p", on: ()=>{
       modal(page2, [{ label: "睇手帳總結", role: "p", on: ()=>{ showEndingSummary410(); } }]);
     } }]);
@@ -20042,6 +20052,7 @@ function lockShootsIntoDraft(draft){
     for(let i=0;i<7 && need>0;i++){
       if(!shootWeekdayOk(sh, i)) continue;
       if(d[i] && String(d[i]).startsWith("shoot:")) continue;
+      if(d[i]==="rest") continue; /* v20a380：預設計劃休息位唔好被拍攝填走（第五輪評估 P2-5：壓力休息常被填位蓋過，病倒連鎖） */
       d[i]="shoot:"+sh.id;
       need--;
     }
@@ -26605,8 +26616,8 @@ function commit48Available(id){
   /* v20a294 Q7：曉晴 HE 鎖死——揀咗「勸佢跟屋企走」（hiu_family_go），佢走咗冇得追，唔出 commit offer。 */
   if(id==="CMT_hiu_commit" && choice47StoryFlag("hiu_family_go")) return false;
   if(!choice47StoryDone(def.crisis)) return false;       /* 未行到該線 crisis，唔好提早收束 */
-  /* v20a376 FIX376-4：BE 後唔再出 commit offer（拍板：BE 唔解鎖）——flag_<line>_be（BR89 口徑，六線全覆蓋）＋葉敏芝 crisis BE 路線旗 flag_yip_be_route；舊版只查 commit 旗，BE 後約會刷 rel 可繞道 HE（第三輪評估 U2） */
-  try{ const _be376 = String(def.relKey||"").replace(/^rel_/,""); if(_be376 && choice47StoryFlag("flag_"+_be376+"_be")) return false; if(_be376==="yip" && choice47StoryFlag("flag_yip_be_route")) return false; }catch(_e376){}
+  /* v20a376 FIX376-4：BE 後唔再出 commit offer（拍板：BE 唔解鎖）——flag_<line>_be（BR89 口徑，六線全覆蓋）＋葉敏芝 crisis BE 路線旗 flag_yip_be_route；舊版只查 commit 旗，BE 後約會刷 rel 可繞道 HE（第三輪評估 U2）。v20a380：補蘇芷茵 crisis BE 路線旗 flag_so_played_safe（第五輪評估 P1-1，真玩證實可繞道 commit） */
+  try{ const _be376 = String(def.relKey||"").replace(/^rel_/,""); if(_be376 && choice47StoryFlag("flag_"+_be376+"_be")) return false; if(_be376==="yip" && choice47StoryFlag("flag_yip_be_route")) return false; if(_be376==="so" && choice47StoryFlag("flag_so_played_safe")) return false; }catch(_e376){}
   if(commit48Rel(def.relKey) < COMMIT48_REL_MIN) return false;
   /* v20a159 ROM159：排他鎖——只可以 commit 鎖定嗰位。未鎖（舊檔／未行過 bumpRel）嗰陣
      rom159LockedWho 內含遷移：有人已 ≥5 即鎖佢；六人都未到 5 就唔開 offer。 */
@@ -26709,9 +26720,9 @@ const ROM159_WOMEN = {
           spots:["lan_studio","lan_ktv","lan_rec","lan_lounge","lan_beach","lan_cafe"] },
   xu:   { key:"xu",   relKey:"rel_xu",   name:"徐寶珊", npcId:"xu", phase:1, meet:"R_xu_meet",
           spots:["xu_central","xu_adm","xu_premiere","xu_star","xu_peak","xu_cinema","xu_cafe"] },
-  yip:  { key:"yip",  relKey:"rel_yip",  name:"葉敏芝", npcId:null, phase:2, meet:"R_yip_meet",
+  yip:  { key:"yip",  relKey:"rel_yip",  name:"葉敏芝", npcId:"yip", phase:2, meet:"R_yip_meet",
           spots:["yip_rec","yip_ktv","yip_peak","yip_cinema","yip_lounge","yip_cafe"] },
-  so:   { key:"so",   relKey:"rel_so",   name:"蘇芷茵", npcId:null, phase:2, meet:"R_so_meet",
+  so:   { key:"so",   relKey:"rel_so",   name:"蘇芷茵", npcId:"so", phase:2, meet:"R_so_meet",
           spots:["so_rec","so_central","so_harbour","so_airport","so_beach","so_cafe"] }
 }; /* v20a159 ROM159：Vera／海媚出局，葉敏芝／蘇芷茵入局；最終六人，37 場。DATES 條目見 ROM159_DATES（B1）。 */
 const ROM159_DATES = {
@@ -27448,7 +27459,7 @@ function rom159PrepareNode(node){
         ],
         choices:[
           { id:"C_so_gate_ok", label:"明白，遲啲再講",
-            effects:{ flags:["flag_so_gate_seen"], stats:{ rel_so:0 }, notes:"層級閘未開：阿偉仲係臨記，蘇芷茵唔會同佢交心。只記低見過呢一面，唔開感情線；真 meet 留返 tier 夠咗再播。" } }
+            effects:{ flags:["flag_so_gate_seen"], stats:{ rel_so:0 }, notes:"她還沒有把你放在眼內：你仍是臨記，她不會跟你交心。這一面先記下，等你站穩了，再正式認識。" } }
         ],
         flags_written:["flag_so_gate_seen"],
         openConditions:["phase_P2"], openConditionsAny:null,
@@ -42221,6 +42232,9 @@ const ROM176_WOMEN = [
   { key:"choi", npcId:"reporter",  name:"周采兒", primary:"rec_star",    secondary:"film_cotton", tertiary:"date_cinema" },
   { key:"lan",  npcId:"lan",       name:"藍若曦", primary:"tvb_longmen", secondary:"tvb_kowloon", tertiary:"date_beach" },
   { key:"xu",   npcId:"xu",        name:"徐寶珊", primary:"ad_central",  secondary:"ad_adm",      tertiary:"date_peak" },
+  /* v20a380：補葉／蘇巧遇（第五輪評估 P1-2：感情層送禮＋傾談冇入口；主場跟 meet 地點：葉選美後台電視台、蘇灣仔唱片大堂） */
+  { key:"yip",  npcId:"yip",       name:"葉敏芝", primary:"tvb_longmen", secondary:"tvb_kowloon", tertiary:"date_peak" },
+  { key:"so",   npcId:"so",        name:"蘇芷茵", primary:"rec_wanchai", secondary:"ad_central",  tertiary:"date_harbour" },
 ]; /* v20a159 ROM159：Vera／海媚出局（四位女角）。v20a297：NPCS mei／vera 條目已刪。 */
 const ROM176_P = 0.50, ROM176_SHARE = 0.65, ROM176_DAILY_CAP = 1, ROM176_WEEKLY_CAP = 3, ROM176_COOLDOWN = 2, ROM176_PITY_DAYS = 5;
 const ROM176_MEET_NODES = { hiu:["R_hiu_meet"], choi:["R_choi_meet"], lan:["R_lan_meet"], xu:["R_xu_meet"], yip:["R_yip_meet"], so:["R_so_meet"] }; /* v20a159 ROM159：刪 vera，加 yip／so（葉／蘇初遇節點） */
@@ -42229,12 +42243,16 @@ const ROM176_GREET = {
   choi:"采兒：「阿偉！啱啱好，我有單嘢想問你——唔係訪問，純粹八卦。」",
   lan:"藍若曦：「阿偉？通告牌嗰邊啱啱先改完，你咁啱行過嚟……係咪有嘢想問？」",
   xu:"徐寶珊：「後生仔，行路望路呀。咦，係你——啱啱先撞到，唔好意思。」", /* v20a183 C2：初遇版，唔預設春茗；見過版喺 ROM183_GREET_MET */
+  yip:"葉敏芝：「咦，阿偉？咁啱嘅，後台呢頭都撞到你。」",
+  so:"蘇芷茵：「阿偉？錄音室嗰邊啱啱收工，你喺度等邊個？」",
 }; /* v20a159 ROM159：Vera／海媚出局，刪 vera／mei 問候句（讀者由 ROM176_WOMEN 派生，刪後無讀取位） */
 const ROM176_TEA_LINES = {
   hiu:"化妝師話，林曉晴呢排多數喺星河電視台廠景出沒，收工會喺附近行下。",
   choi:"有個娛樂版同事漏口風：周采兒呢幾日成日喺天星音樂嗰頭蒲，話跟緊一單料。",
   lan:"場務話，藍若曦呢排成日喺星河電視台通告牌前面企，話幫手執位。",
   xu:"廣告公司樓下個看更話，徐寶珊呢幾日多數喺中環廣告嗰邊出入，行得好急。",
+  yip:"化妝師話，葉敏芝呢排多數喺星河電視台後台出沒，收工會喺附近行下。",
+  so:"唱片公司樓下個看更話，蘇芷茵呢幾日多數喺灣仔唱片大堂出入，行得好急。",
 }; /* v20a159 ROM159：Vera／海媚出局，刪 vera／mei 風聲句（讀者由 ROM176_WOMEN 派生，刪後無讀取位） */
 /* 巧遇返程守衛：由女角／紅星巧遇入面行出嚟嘅傾談／送禮，返地點嗰陣唔可以再擲一次巧遇
    （同一入場只觸發一個）。rom176BackOpts() 喺 doTalk／doGiveGift／openGiftPick 嘅返程共用：
@@ -42442,7 +42460,7 @@ function rom176PlayEncounter(key, locId, metBefore183){
   ];
   if(canGift) btns.push({ label:"送禮", role:"p", on:()=>{ rom176SetEncounter({ kind:"woman", key:key, locId:locId }); openGiftPick(key, L); } });
   /* 約會入口只喺 v159 已落地嗰陣先出（defensive check；v176 唔自己寫約會系統）。落地嗰陣駁返 rom159DateGate 實簽名。 */
-  if(hasDate) btns.push({ label:"約佢出街", role:"p", on:()=>{ rom176SetEncounter({ kind:"woman", key:key, locId:locId }); try{ rom159DateGate(key, L); }catch(_e2){ toast("約會未開放"); } } });
+  if(hasDate) btns.push({ label:"約佢出街", role:"p", on:()=>{ rom176SetEncounter({ kind:"woman", key:key, locId:locId }); try{ rom159OpenDatePicker(key, L); }catch(_e2){ toast("約會未開放"); } } }); /* v20a380：舊版只 call rom159DateGate 丟棄結果，掣冇反應（第五輪評估 P2-3）；改開日期選擇器（內含閘檢查＋原因 toast） */
   btns.push({ label:"行開", role:"g", on:()=>{ rom176SetEncounter(null); try{ openLoc(locId, { encDone:true }); }catch(_e){} } });
   modal("<h3>巧遇 · "+def.name+"</h3>\n    <div class=\"dlg\"><div class=\"dlg-stage\">"
     + (portrait ? "<img class=\"dlg-portrait\" src=\""+portrait+"\" alt=\""+def.name+"\"/>" : "")
@@ -42551,7 +42569,7 @@ function rom176DoGiveStarGift(starId, itemId, L){
     const go = ()=>{ if(L) openLoc(L.id, { encDone:true }); };
     /* v369 UI369：反應分級講明（只顯示今次一級）。 */
     const kindLine369 = "<p class=\"gift-kind369\">收禮反應："+((typeof giftKindLabel369==="function") ? giftKindLabel369(kind) : "")+"</p>";
-    modal("<h3>送禮結果</h3>\n    "+lineHtml+"\n    "+kindLine369+"\n    <p class=\"gold\">"+deltaTxt+"</p>\n    <p class=\"sub\">"+fmtDate()+" · 送禮不計日子</p>",[
+    modal("<h3>送禮結果</h3>\n    "+lineHtml+"\n    "+kindLine369+"\n    <p class=\"gold\">"+deltaTxt+"</p>\n    <p class=\"sub\">"+fmtDate()+((typeof softSocialCostsDay==="function" && softSocialCostsDay()) ? " · 送禮耗一日" : " · 送禮不計日子")+"</p>",[ /* v20a380：跟 live 實收（耗一日），唔再硬寫不計日子 */
       {label:"關閉", role:"g", on:go}
     ], {onDismiss: go});
     try{ saveQ(); }catch(_e){}
@@ -42702,6 +42720,19 @@ function rom176ApplyGiftOverrides(){
           advice:["想人記得你？第一印象好重要，企出嚟嗰下唔可以縮。","呢行最緊要準時同醒目，遲到一次，人哋就唔再搵你。"],
           intel:["有個客戶想搵個生面孔拍廣告，條件唔高，你可以試下。","聽聞有間大公司想搞個新系列，要好多臨記，你留意通告欄。"],
           pressure:["我而家趕住見客，你有嘢快啲講，唔好阻住我。","唔好喺度阻住晒，我仲有三個會要開。"] },
+        /* v20a380：葉／蘇傾談對白（第五輪評估 P1-2 補入口） */
+        yip:{ name:"葉敏芝",
+          greet:["咦，阿偉？咁啱嘅，後台呢頭都撞到你。","你嚟搵人定係路過？後台呢度唔好亂行，小心撞到人。"],
+          chat:["做藝員最驚俾人話唔識做人。把口穩，先有人肯同你講真話。","你話做臨記辛苦？我哋企喺台前，邊個唔係由朝企到晚。"],
+          advice:["想上位？唔好淨係等機會，要令人記得你企喺邊邊。","後台唔會等人。你肯企出嚟，自然有人見到。"],
+          intel:["聽聞下個月有個選美節目開籌，後台仲未定人，你留意下。","有個監製話想搵生面孔試吓企台，你得閒去片場行下。"],
+          pressure:["唔好喺呢個時候煩我，後台亂到我頭都大埋。","你唔見我忙到連水都冇時間飲咩？"] },
+        so:{ name:"蘇芷茵",
+          greet:["阿偉？錄音室嗰邊啱啱收工，你喺度等邊個？","唔好意思，我啱啱錄完音，你等我一陣。"],
+          chat:["做歌手最驚俾人話唔識唱歌。把聲穩，先有人肯聽你唱落去。","你話做臨記辛苦？我哋企喺台前，邊個唔係由朝企到晚。"],
+          advice:["想上位？唔好淨係等機會，要令人記得你把聲。","錄音室唔會等人。你肯唱，自然有人聽到。"],
+          intel:["聽聞下個月有首新歌開錄，錄音室仲未定人，你留意下。","有個監製話想搵生面孔試吓唱，你得閒去錄音室行下。"],
+          pressure:["唔好喺呢個時候煩我，錄音室亂到我頭都大埋。","你唔見我忙到連水都冇時間飲咩？"] },
       };
       for(const k in NL176){ if(!NPC_LINES[k]) NPC_LINES[k] = NL176[k]; }
     }
@@ -42711,6 +42742,8 @@ function rom176ApplyGiftOverrides(){
     if(typeof PORTRAITS!=="undefined" && PORTRAITS){
       if(!PORTRAITS.npc_lan) PORTRAITS.npc_lan = "assets/story/fullbody/lan_ruoxi_base.webp?v=20a176";
       if(!PORTRAITS.npc_xu) PORTRAITS.npc_xu = "assets/story/fullbody/tsui_poushan_base.webp?v=20a176";
+      if(!PORTRAITS.npc_yip) PORTRAITS.npc_yip = "assets/story/fullbody/yip_manji_base.webp?v=20a380";
+      if(!PORTRAITS.npc_so) PORTRAITS.npc_so = "assets/story/fullbody/so_jiyan_base.webp?v=20a380";
     }
   }catch(_e){}
   return 1;

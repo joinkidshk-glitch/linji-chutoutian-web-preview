@@ -44,7 +44,7 @@ ok('nodes[0-4] 係 N1-N5', [n.get('id') for n in nodes[:5]] == ['N1', 'N2', 'N3'
 tail = json.dumps(nodes[5:], sort_keys=True, ensure_ascii=False)
 ok('nodes[5:] 同 v254 一致（N6F lockedHint 標題引用跟新標題；其餘同 v256）',
    hashlib.sha256(tail.encode('utf-8')).hexdigest()
-   == 'd3c47bb9481d76a5369ad51b61ffd8f34716e7499889af27c77336215696327b')
+   == '6eed7239a0d14063faf08e638759fdac1fb0bb0804a7083a10aff3722c433a31')
 
 # --- 標題／setting／synopsis 按設計 ---
 ok('標題 N1-N5 按設計（v250 新短詞標題：通告板／後巷／正中央／記數簿／筆記本）',

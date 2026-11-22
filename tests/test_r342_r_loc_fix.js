@@ -198,6 +198,7 @@ const LINES = [
 ];
 LINES.forEach(({key, meet})=>{
   loadGame();
+  if(key === "yip") S.story.done.N8 = true; /* v380：R_yip_meet 補 N8 閘（設計掛 N8 選美後台），種子補 N8 done，意圖不變 */
   const node = StoryOC.findNodeRaw(meet);
   const loc = storyNodeLocId(node);
   ok(key + ' meet 有 locId（' + loc + '）', !!loc);
