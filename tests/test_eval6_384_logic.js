@@ -79,6 +79,7 @@ S.stress = 79; S.dayIndex = 112; /* week 17 */
 const planD = defaultWeekPlan();
 ok('D1 峰值跨 80 三日休息', planD.filter(x=>x==="rest").length === 3, planD.join(","));
 S.stress = 30;
+S.shoots = []; /* v20a386：峰值預覽已計入已 lock 拍攝，C 段留低嘅 shoots 會推峰值——D2 驗嘅係低壓無拍攝負荷，清走先測 */
 const planD2 = defaultWeekPlan();
 ok('D2 低壓維持一至兩日休息', planD2.filter(x=>x==="rest").length <= 2, planD2.join(","));
 

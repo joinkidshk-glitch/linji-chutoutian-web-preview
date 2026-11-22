@@ -39,8 +39,10 @@ function ok(name, cond, extra){
 
 /* ---------- 沙盒 ---------- */
 var S = { wardrobe: { owned: [], equipped: null }, flags: {} };
-var isMakWuzhiGig158 = function(){ return false; };
-var isPangCharityGig158 = function(){ return false; };
+/* v20a386：stub 改真邏輯（同 index.html isMakWuzhiGig158／isPangCharityGig158 一致），
+   令 tagged 計數同 runtime 生效數對齊（舊 stub 永遠 false，計多咗武指／彭渠道張）。 */
+var isMakWuzhiGig158 = function(g){ return !!g && (g.genre === '動作' || g.genre === '武俠') && g.category === '作品'; };
+var isPangCharityGig158 = function(g){ return !!g && g.type === '綜藝' && String(g.roleLabel || '').indexOf('主持') >= 0; };
 var triggerGigLabel229 = function(){ return ""; };
 var intel381Label = function(){ return ""; };
 eval([
@@ -65,10 +67,14 @@ ok('no entry/bridge tagged', tagged.every(g => !g.entryTier && !g.softBridge));
 const cats = {};
 for (const g of tagged) cats[costume382GigReq(g)] = (cats[costume382GigReq(g)] || 0) + 1;
 ok('all cats valid', Object.keys(cats).every(c => ['日常','正式','舞台','戲行'].includes(c)), JSON.stringify(cats));
+/* v20a386（第七輪評估 P1）：四類每類至少 1 張生效、trigger 通告一律唔標、1990 零標（開局板面零影響） */
+ok('v386 每類至少一張', ['日常','正式','舞台','戲行'].every(c => (cats[c] || 0) >= 1), JSON.stringify(cats));
+ok('v386 trigger 通告唔標', tagged.every(g => !g.trigger));
+ok('v386 1990 零標', tagged.every(g => !String(g.id).startsWith('gig_1990_')), tagged.map(g => g.id).join(','));
 
-/* 類別映射抽樣：用合成 gig 逐 genre 驗（雜湊要命中 %10==3，先搵 id） */
+/* 類別映射抽樣：用合成 gig 逐 genre 驗（雜湊要命中 %10==8，先搵 id；v20a386 改餘數） */
 function findId(){
-  for (let i = 0; i < 10000; i++){ const id = 'test382_' + i; if (costume382Hash(id) % 10 === 3) return id; }
+  for (let i = 0; i < 10000; i++){ const id = 'test382_' + i; if (costume382Hash(id) % 10 === 8) return id; }
   return null;
 }
 const tid = findId();

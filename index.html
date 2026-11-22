@@ -13217,11 +13217,14 @@ function endingRomance410(st){
   const s = st || {};
   const done = (s.story && s.story.done) || {};
   const rel = (s.story && s.story.rel) || {};
+  /* v20a386（第七輪評估 P2-5）：BE 抉擇覆蓋 commit——CMT 已 commit 後 ending 仍可揀 BE，
+     舊版判定只讀 commit 旗，BE 抉擇冇效（揀咗都出情侶場景）。改為該線 BE 旗已立就唔當
+     committed（最後抉擇生效，反悔路）；差一步變體寫 BE 旗嗰陣 commit 本來就未立，唔受影響。 */
   const line = (meetId, relKey, crisisId, commitFlag)=>({
     met: !!done[meetId],
     rel: (typeof rel[relKey]==="number") ? rel[relKey] : 0,
     crisisDone: !!done[crisisId],
-    committed: endingFlag410(s, commitFlag)
+    committed: endingFlag410(s, commitFlag) && !endingFlag410(s, String(commitFlag||"").replace(/_commit$/, "_be"))
   });
   return {
     hiu:  line("R_hiu_meet",  "rel_hiu",  "R_hiu_crisis",  "flag_hiu_commit"),
@@ -16239,6 +16242,11 @@ function ux68OrganizeLocSheet(L){
     wrap.appendChild(tog); wrap.appendChild(body);
     frag.appendChild(wrap);
   }
+  /* v20a386（第七輪評估 P2-1）：重建前保留非 .act 嘅便箋元素——v384 待播劇情便箋
+     （.story-pending384）插入 #loc-acts 後被呢度 innerHTML="" 抹走，有待播劇情時
+     organizer 必行（urgent），便箋喺設計場景永不顯示。改為重建時將便箋搬去 frag 最前。 */
+  const keepNotes386 = Array.from(box.querySelectorAll(".story-pending384"));
+  keepNotes386.slice().reverse().forEach(n=>{ frag.insertBefore(n, frag.firstChild); });
   box.innerHTML = "";
   box.appendChild(frag);
   box.classList.add("ux68-organized");
@@ -18331,10 +18339,15 @@ function costume382GigReq(g){
     if(g.entryTier || g.softBridge) return null;
     if(typeof isMakWuzhiGig158==="function" && isMakWuzhiGig158(g)) return null;
     if(typeof isPangCharityGig158==="function" && isPangCharityGig158(g)) return null;
-    if(typeof triggerGigLabel229==="function" && triggerGigLabel229(g)) return null;
+    /* v20a386（第七輪評估 P1）：trigger 排除改靜態——舊版經 triggerGigLabel229（state-dependent，
+       fame≥40 等觸發成立先排除），hash 命中 11 張喺正常進度下 runtime 生效得 4–5 張、戲行 0 張，
+       c10–c12 戲行衫獨佔入口從未存在。改為有 trigger 欄一律排除（邀約／引薦通告唔疊戲服閘，
+       同武指／彭渠道同口徑），再改 hash 餘數令四類都有生效張：%10==8（靜態池 84 張抽 11 張，
+       戲行 4／日常 1／舞台 3／正式 3，全部 1991／1992，開局 1990 板面零影響；逐張複算見 NOTES）。 */
+    if(g.trigger) return null;
     if(typeof intel381Label==="function" && intel381Label(g)) return null;
     if(typeof tape383Label==="function" && tape383Label(g)) return null; /* v20a383：付費買資格嘅通告唔再疊自備戲服閘 */
-    if(costume382Hash(g.id)%10!==3) return null;
+    if(costume382Hash(g.id)%10!==8) return null;
     const genre=String(g.genre||"");
     const type=String(g.type||"");
     if(["武俠","動作","警匪","江湖黑幫","歷史傳記","賭片"].indexOf(genre)>=0) return "戲行";
@@ -20102,6 +20115,8 @@ function previewShootPlacement(shoot, fromWeekday){
   let placed=0;
   const take=Math.min(need, free.length);
   placed+=take; need-=take;
+  /* v20a386：同 placeShootOnPlan pass2 同次序——非休息格先覆寫，休息格最後（modal 列名跟實際覆寫一致）。 */
+  busy.sort((a,b)=> ((a.id==="rest"?1:0) - (b.id==="rest"?1:0)) || (a.wd - b.wd));
   if(need>0){
     for(const b of busy){
       if(need<=0) break;
@@ -20129,14 +20144,20 @@ function placeShootOnPlan(shoot, fromWeekday, overwriteBusy){
     need--;
   }
   // pass 2: overwrite rest/plans if allowed (still weekday-gated)
+  /* v20a386（第七輪評估 P2-6）：覆寫次序改休息位最後——舊版按星期序覆寫，週二休息位
+     會先過週三／週四嘅非休息安排被拍攝佔走（wk6 實測預設三日休息仍病倒）。改為先覆寫
+     非休息格，唔夠先覆寫休息格；confirmPlaceShoot modal 警告照舊（玩家確認先覆寫）。 */
   if(overwriteBusy){
-    for(let i=start; i<7 && need>0; i++){
-      if(!shootWeekdayOk(shoot, i)) continue;
-      const cur=plan[i];
-      if(cur && String(cur).startsWith("shoot:") && cur!==mark) continue;
-      if(plan[i]===mark) continue;
-      plan[i] = mark;
-      need--;
+    for(let pass386=0; pass386<2 && need>0; pass386++){
+      for(let i=start; i<7 && need>0; i++){
+        if(!shootWeekdayOk(shoot, i)) continue;
+        const cur=plan[i];
+        if(cur && String(cur).startsWith("shoot:") && cur!==mark) continue;
+        if(plan[i]===mark) continue;
+        if(pass386===0 && cur==="rest") continue; /* 第一輪跳過休息位 */
+        plan[i] = mark;
+        need--;
+      }
     }
   }
   shoot.daysLeft = need;
@@ -20290,7 +20311,21 @@ function defaultWeekPlan(){
        峰值會跨（wk17 實測：生成時 79、翌日 97，只得兩日休息）。改用「現壓力同
        預覽峰值取高」判休息日數，令高壓週真加休息。 */
     let stress384 = stress379;
-    try{ if(typeof previewWeekStress==="function"){ const pv384 = previewWeekStress(plan); if(pv384 && Number(pv384.peak)>stress384) stress384 = Number(pv384.peak); } }catch(_e384){}
+    /* v20a386（第七輪評估 P2-7）：峰值預覽計入已 lock 拍攝——舊版喺未 lock 拍攝嘅計劃上計，
+       拍攝日 +10／日唔入預覽（wk48 入口 10、5 日拍攝尖峰 84）。改為先 lockShootsIntoDraft
+       一份副本再預覽；lock 會寫 sh.daysLeft，預覽前後 snapshot／restore，唔留副作用。 */
+    try{
+      if(typeof previewWeekStress==="function"){
+        let pvPlan386 = plan;
+        if(typeof lockShootsIntoDraft==="function" && S && Array.isArray(S.shoots) && S.shoots.length){
+          const snap386 = S.shoots.map(sh=> sh ? sh.daysLeft : undefined);
+          pvPlan386 = lockShootsIntoDraft(plan.slice());
+          S.shoots.forEach((sh,i)=>{ if(sh) sh.daysLeft = snap386[i]; });
+        }
+        const pv384 = previewWeekStress(pvPlan386);
+        if(pv384 && Number(pv384.peak)>stress384) stress384 = Number(pv384.peak);
+      }
+    }catch(_e384){}
     if(stress384 >= 60) plan[1] = "rest";
     if(stress384 >= 80) plan[3] = "rest";
     plan[6] = "rest";
@@ -26841,7 +26876,8 @@ function endingRomanceState48(){
     let met = false, crisisDone = false;
     try{ met = choice47StoryDone(meetId); }catch(_e){}
     try{ crisisDone = choice47StoryDone(crisisId); }catch(_e){}
-    const out = { met:met, rel:commit48Rel(relKey), crisisDone:crisisDone, committed:choice47StoryFlag(commitFlag) };
+    /* v20a386：同 endingRomance410 鏡像同口徑——BE 旗已立就唔當 committed（最後抉擇生效）。 */
+    const out = { met:met, rel:commit48Rel(relKey), crisisDone:crisisDone, committed:choice47StoryFlag(commitFlag) && !choice47StoryFlag(String(commitFlag||"").replace(/_commit$/, "_be")) };
     /* v20a159 ROM159：采兒 HE 公開／低調二揀一——公開嗰邊寫 flag_choi_public，結局讀取口如實回報，
        等 4-10 判定／結局呈現嗰陣分辨（公開＝上咗頭條，低調＝忍住唔講）。 */
     if(publicFlag) out.public = choice47StoryFlag(publicFlag);
@@ -43456,13 +43492,13 @@ function intel381Tick(){
     const s=intel381Slot(); if(!s||typeof S==="undefined"||!S) return;
     const today=(S.dayIndex|0);
     if(s.state==="msg" && today > (s.msgDay|0)+5){
-      s.state="expired";
+      s.state="expired"; s.expiredFrom="msg"; /* v20a386：記失效來源，留話簿文案分開寫 */
       try{ toast("留話簿：覆電限期已過，未能保留這次補位試鏡資格。"); }catch(_t){}
       try{ saveQ(); }catch(_s){}
     } else if(s.state==="kept" && today > (s.keptDay|0)+7){
       const used=(Array.isArray(S.pendingAud)&&S.pendingAud.some(p=>p&&p.gigId===s.gigId))||(Array.isArray(S.shoots)&&S.shoots.some(sh=>sh&&sh.gigId===s.gigId))||(S.flags&&S.flags["done_"+s.gigId]);
       if(used){ s.state="used"; }
-      else{ s.state="expired"; try{ toast("補位試鏡資格已過期，名額已由他人頂上。"); }catch(_t){} }
+      else{ s.state="expired"; s.expiredFrom="kept"; try{ toast("補位試鏡資格已過期，名額已由他人頂上。"); }catch(_t){} }
       try{ saveQ(); }catch(_s){}
     }
   }catch(_e){}
@@ -43502,7 +43538,11 @@ function intel381OpenBook(){
     let stateLine="";
     if(s.state==="msg") stateLine=`<p>覆電限期：${intel381FmtDay((s.msgDay|0)+5)}（請於留言後 5 日內覆電。）</p>`;
     else if(s.state==="kept") stateLine=`<p class="gold">已保留試鏡資格。請到${locName}的通告欄查看標有「補位」的通告，並於 ${intel381FmtDay((s.keptDay|0)+7)} 前前往試鏡。</p>`;
-    else if(s.state==="expired") stateLine=`<p>覆電限期已過，未能保留這次補位試鏡資格。</p>`;
+    /* v20a386（第七輪評估 P2-3）：失效文案按來源分開——覆電後失效係試鏡窗過期，唔係覆電限期
+       （GPT-6.2-sol 文案，原稿 linji-drive386/gpt_text386.txt）。舊檔冇 expiredFrom 時以 keptDay 推斷。 */
+    else if(s.state==="expired") stateLine = (s.expiredFrom==="kept" || (s.expiredFrom!=="msg" && (s.keptDay|0)>0))
+      ? `<p>試鏡限期已過，這次補位試鏡資格已告失效。</p>`
+      : `<p>覆電限期已過，未能保留這次補位試鏡資格。</p>`;
     const body=`<h3>留話簿</h3><div class="intel381-book">${stamp}<p>留言日期：${intel381FmtDay(s.msgDay|0)}</p><p>留言人：場務（經陸柏言介紹）</p><p>留言內容：《${journalText(s.title||"通告")}》有演員移民，劇組正安排補位試鏡。</p><p>試鏡地點：${locName}</p>${stateLine}</div>`;
     const btns=[];
     if(s.state==="msg") btns.push({label:"覆電保留資格", role:"p", on:()=>{ intel381Reply(); }});
