@@ -6501,6 +6501,121 @@ body.day-res-open .day-row{
   .wrap-stamp369{ opacity:1; }
 }
 /* ===== v369 UI369 完 ===== */
+
+/* ===== v375 UI375：全畫面檢視優先序②–⑤（GPT-6.2-sol 規格＋Gemini 方向；只改呈現）=====
+   ①劇情對話：牌隨內容長高（唔再固定 170px 溢出切字）＋掣列分區（吊牌左、翻頁角右），
+     對白永遠唔入掣列區；②結局總結：暖白紙底深墨字＋稱號吊牌＋朱印＋段落分組；
+   ③作品牆：膠紙貼頂＋殺青印＋已殺青履歷剪報條（媒介色邊）；④手帳週行程：
+     七格格仔紙表＋今日紅圈＋壓力溫度計管。邏輯／數值／流程一律唔郁。 */
+/* --- ① 劇情對話 --- */
+#mask.story-play-on:has(.sp-mode-dialogue) .story-play .dlg106-plate,
+#mask.story-play-on:has(.sp-mode-narration) .story-play .dlg106-plate{
+  height:auto !important; min-height:170px; max-height:60dvh;
+  padding-bottom:calc(64px + env(safe-area-inset-bottom,0px)) !important;
+}
+#mask.story-play-on:has(.sp-mode-dialogue) #modal-btns,
+#mask.story-play-on:has(.sp-mode-narration) #modal-btns{
+  display:flex !important; align-items:flex-end; gap:8px;
+  padding:6px 12px calc(8px + env(safe-area-inset-bottom,0px)) !important;
+}
+#mask.story-play-on:has(.sp-mode-dialogue) #modal-btns button.g,
+#mask.story-play-on:has(.sp-mode-narration) #modal-btns button.g{
+  order:1; flex:0 0 auto;
+  background:#EEE6D6 !important; color:#62584B !important;
+  border:1px solid #C9BDAB !important; border-radius:4px !important;
+  box-shadow:0 1px 3px rgba(30,20,8,.25) !important;
+  font-size:.82rem !important; min-height:44px; padding:6px 12px !important;
+}
+#mask.story-play-on:has(.sp-mode-dialogue) #modal-btns button.p,
+#mask.story-play-on:has(.sp-mode-narration) #modal-btns button.p{
+  order:2; margin-left:auto;
+  background:linear-gradient(to top left, transparent 0 12px, #FBF7EE 12px) !important;
+  color:#9C302D !important; text-decoration:none !important;
+  border:0 !important; border-radius:4px 4px 4px 0 !important;
+  box-shadow:0 1px 4px rgba(30,20,8,.3) !important;
+  min-width:76px; min-height:44px; padding:8px 14px 8px 10px !important;
+  font-size:.88rem !important; font-weight:800;
+}
+#mask.story-play-on .story-play .sp-speaker{
+  display:inline-block; background:#E6D9BD; padding:1px 8px; border-radius:2px;
+}
+.story-play .sp-line{ animation:lineIn375 .14s ease-out; }
+@keyframes lineIn375{ from{ opacity:.35; } to{ opacity:1; } }
+/* --- ② 結局總結 --- */
+.ending375-sheet{
+  background:#FBF7EE; color:#292621; border:1px solid #C9BDAB; border-radius:4px;
+  padding:14px 16px; margin:0 0 6px; animation:endingIn375 .18s ease-out;
+}
+@keyframes endingIn375{ from{ opacity:.4; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
+.ending375-sheet h3{ color:#292621 !important; }
+.modal .ending375-sheet p{ color:#292621 !important; }
+.ending375-tag{ background:#EAE0CA !important; border:1px solid #BCAF98 !important; border-radius:4px !important; }
+.ending375-stamp{
+  display:inline-block; color:#9C302D !important; border:2px solid #9C302D; border-radius:3px;
+  padding:0 6px; transform:rotate(-2deg); font-weight:900;
+  animation:stampIn375 .16s ease-out;
+}
+@keyframes stampIn375{ from{ transform:rotate(-2deg) scale(1.04); } to{ transform:rotate(-2deg) scale(1); } }
+.e375-grp{ border-top:1px solid #C9BDAB; margin-top:14px !important; padding-top:12px; }
+#mask:has(.ending375-sheet) #modal-btns button.p{ background:#9C302D !important; color:#FFF9EE !important; }
+#mask:has(.ending375-sheet) #modal-btns button.g{ background:#FBF7EE !important; color:#9C302D !important; border:1px solid #9C302D !important; }
+/* --- ③ 作品牆 --- */
+.work-card59{ position:relative; animation:workIn375 .16s ease-out both; }
+.work-card59:nth-child(2){ animation-delay:.03s; }
+.work-card59:nth-child(3){ animation-delay:.06s; }
+.work-card59:nth-child(n+4){ animation-delay:.09s; }
+@keyframes workIn375{ from{ opacity:0; } to{ opacity:1; } }
+.work-card59::before{
+  content:""; position:absolute; top:-7px; left:50%; transform:translateX(-50%) rotate(-2deg);
+  width:44px; height:14px; background:rgba(217,198,143,.75);
+  border-left:1px dashed rgba(120,90,40,.35); border-right:1px dashed rgba(120,90,40,.35);
+  z-index:3; pointer-events:none;
+}
+.work-stamp375{
+  position:absolute; right:8px; bottom:8px; z-index:2; color:#9C302D;
+  border:2px solid #9C302D; border-radius:3px; padding:1px 6px;
+  font-size:.78rem; font-weight:900; letter-spacing:.14em; transform:rotate(-8deg);
+  background:rgba(251,247,238,.82); mix-blend-mode:multiply; pointer-events:none;
+}
+.wrap-clip375{ position:relative; border-left:5px solid #8A3028 !important; }
+.wrap-clip375[data-type="電視劇"]{ border-left-color:#365344 !important; }
+.wrap-clip375[data-type="綜藝"]{ border-left-color:#7C3346 !important; }
+.wrap-clip375[data-type="唱片通告"]{ border-left-color:#6C4F70 !important; }
+.wrap-clip375[data-type="廣告"]{ border-left-color:#765017 !important; }
+.clip-stamp375{
+  position:absolute; right:8px; top:8px; color:#9C302D; border:1.5px solid #9C302D;
+  border-radius:3px; padding:0 5px; font-size:.7rem; font-weight:900; letter-spacing:.12em;
+  transform:rotate(-6deg); background:rgba(251,247,238,.8); pointer-events:none;
+}
+/* --- ④ 手帳週行程 --- */
+#nb-days{ display:grid !important; grid-template-columns:repeat(3,1fr); gap:10px 12px; }
+#nb-days .day-row{
+  display:flex !important; flex-direction:column; align-items:center; justify-content:flex-start;
+  gap:5px; text-align:center; min-height:118px !important; padding:10px 8px !important;
+  background-color:#FBF7EE !important;
+  background-image:linear-gradient(#E9E1D2 1px,transparent 1px),linear-gradient(90deg,#E9E1D2 1px,transparent 1px) !important;
+  background-size:16px 16px !important;
+  border:1px solid #C9BDAB !important; border-radius:4px !important;
+}
+#nb-days .day-row:nth-child(7){ grid-column:1 / -1; flex-direction:row; min-height:64px !important; justify-content:center; gap:12px; }
+#nb-days .day-row .wd{ grid-column:auto !important; grid-row:auto !important; }
+#nb-days .day-row .nm{ grid-column:auto !important; grid-row:auto !important; text-align:center; }
+#nb-days .day-row .nb-stk362, #nb-days .day-row .ic{ grid-column:auto !important; grid-row:auto !important; justify-self:center !important; }
+#nb-days .day-row.on{ box-shadow:inset 0 0 0 2px #C9A227 !important; }
+#nb-days .day-row.is-today{ outline:none !important; }
+#nb-days .day-row.is-today .wd{ border:2px solid #9C302D; border-radius:50%; padding:1px 7px; color:#9C302D !important; }
+#nb-days .day-row.locked{ background-color:#E9E4DA !important; }
+.stress-scale363{ height:30px !important; }
+.stress-scale363 .ss363-track{ top:12px !important; height:12px !important; border-radius:6px; background:#E7DDCC !important; border:1px solid rgba(183,139,101,.5); }
+.stress-scale363 .ss363-dot{ top:12px !important; width:12px !important; height:12px !important; margin-left:-6px !important; }
+.stress-scale363 .ss363-dot.end{ background:#2C6260 !important; border-color:#2C6260 !important; }
+.stress-scale363 .ss363-peak{ top:6px !important; height:24px !important; }
+.stress-scale363 .ss363-lab{ top:0 !important; }
+/* --- 減少動態 --- */
+@media (prefers-reduced-motion: reduce){
+  .story-play .sp-line, .ending375-sheet, .ending375-stamp, .work-card59{ animation:none !important; }
+}
+/* ===== v375 UI375 完 ===== */
 </style>
 </head>
 <body>
@@ -13992,22 +14107,22 @@ function endingSummaryHtml410(){
   const head410 = (rec.career==="E7")
     ? (((rec.earlyEnd && rec.earlyEnd.kind==="review") ? ((rec.earlyEnd.year||"") + " 年尾評核") : "寬限期滿") + "・提早埋單・手帳總結")
     : "三年埋單・手帳總結";
-  return "<h3>" + head410 + "</h3>"
-    + "<div class=\"ending410-title-card\"><p class=\"sub\">你的稱號</p><p class=\"ending410-title\">" + endingEsc410(rec.title || "") + "</p>"
-    + "<p>事業結局：<b>" + endingEsc410(ENDING410_CAREER_NAMES[rec.career] || rec.career) + "</b>"
+  return "<div class=\"ending375-sheet\"><h3>" + head410 + "</h3>"
+    + "<div class=\"ending410-title-card ending375-tag\"><p class=\"sub\">你的稱號</p><p class=\"ending410-title\">" + endingEsc410(rec.title || "") + "</p>"
+    + "<p>事業結局：<b class=\"ending375-stamp\">" + endingEsc410(ENDING410_CAREER_NAMES[rec.career] || rec.career) + "</b>"
     + ((()=>{ const v370 = rec.careerVariant || ""; const m370 = v370==="rescued" ? "沉唔死" : (v370==="sunk" ? "真沉" : (/^(review\d+|bankrupt)$/.test(v370) ? "" : v370)); return m370 ? "（" + endingEsc410(m370) + "版）" : ""; })()) + "</p></div>"
     + "<p>幕前聲望 <b>" + (rec.fame|0) + "</b> · 業內信用 <b>" + (rec.credit|0) + "</b> · 雙軌總和 <b>" + (rec.dual|0) + "</b></p>"
-    + "<p><b>人情總帳：</b>" + endingEsc410(favorLine) + "</p>"
+    + "<p class=\"e375-grp\"><b>人情總帳：</b>" + endingEsc410(favorLine) + "</p>"
     + favorBreak
     + goneLine
-    + "<p><b>感情：</b>" + endingEsc410(romLine) + "</p>"
+    + "<p class=\"e375-grp\"><b>感情：</b>" + endingEsc410(romLine) + "</p>"
     + "<p><b>去留：</b>" + endingEsc410(exoLine) + "</p>"
     /* v20a95 LADDER95 差邊瓣：去天王嗰格差邊啲（回望口吻，唔係攻略）；舊檔／E7 冇 gaps95 就唔出。 */
-    + ((rec.gaps95 && rec.gaps95.length) ? "<p><b>回望那一格：</b></p>" + rec.gaps95.map(g => "<p>" + endingEsc410(g) + "</p>").join("") : "")
+    + ((rec.gaps95 && rec.gaps95.length) ? "<p class=\"e375-grp\"><b>回望那一格：</b></p>" + rec.gaps95.map(g => "<p>" + endingEsc410(g) + "</p>").join("") : "")
     + (rumor ? "<p class=\"sub\">茶餐廳那邊有人說：「" + endingEsc410(rumor) + "」——聽聽就算，不必當真。</p>" : "")
     + (rec.career==="E7"
       ? "<p class=\"sub\">結局已記入手帳。這次收場，不是你選的，是數字和荷包選的。這一局到這裡埋單——日子不會再走下去；你可以在手帳回顧這段日子，或者開新一局再來過：下次，不要等何生出聲才著急。</p>"
-      : "<p class=\"sub\">結局已記入手帳。這一局已經埋單——日子不會再走下去。這頁和手帳隨時可以回來看；想再玩，就開新一局。</p>");
+      : "<p class=\"sub\">結局已記入手帳。這一局已經埋單——日子不會再走下去。這頁和手帳隨時可以回來看；想再玩，就開新一局。</p>") + "</div>";
 }
 function showEndingSummary410(){
   /* v20a78 LOCK78：已結局之後，總結頁出口只准回顧類（手帳唯讀）／開新一局／讀檔，
@@ -16186,9 +16301,10 @@ function worksWallEntries59(){
 }
 function workCard59Html(e){
   const cssCard = '<div class="work-csscard59" data-type="' + esc59(e.type) + '"><span class="work-csscard59-t">《' + esc59(e.work) + '》</span></div>';
+  const stamp375 = '<span class="work-stamp375">殺青</span>'; /* v375：海報區右下殺青印（app 排字，唔入片名區） */
   const media = e.poster
-    ? ('<div class="work-media59">' + cssCard + '<img class="work-poster59" src="' + e.poster + '" alt="《' + esc59(e.work) + '》作品圖" loading="lazy" onerror="this.remove()"/></div>')
-    : ('<div class="work-media59">' + cssCard + '</div>');
+    ? ('<div class="work-media59">' + cssCard + '<img class="work-poster59" src="' + e.poster + '" alt="《' + esc59(e.work) + '》作品圖" loading="lazy" onerror="this.remove()"/>' + stamp375 + '</div>')
+    : ('<div class="work-media59">' + cssCard + stamp375 + '</div>');
   /* v20a252 CAST252：作品牆「主演」行改陣容行（SPEC §2.3）：有 castLine（新庫 cast／singer／host）
      出陣容行；無新欄位（舊庫／舊檔）跌返舊制 leadStar59Of 行，唔壞舊檔。 */
   const star = e.castLine ? ('<span class="work-meta59">' + esc59(e.castLine) + '</span>')
@@ -47422,10 +47538,10 @@ function jobs72SectionHtml(){
   if(hist.length){
     body += `<p class="gold" style="margin:10px 0 6px">已殺青履歷</p>`;
     hist.forEach(h=>{
-      body += `<div class="req" style="margin-bottom:8px">
+      body += `<div class="req wrap-clip375" data-type="${h.type||""}" style="margin-bottom:8px">
         <b>${iconHtml112("✅")} ${h.title||"通告"}</b> · ${h.type||""}
         <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${h.totalDays||0} 日 · 片酬 $ ${(h.pay||0).toLocaleString()} · 聲望 +${h.fame||0}</div>
-        <div style="font-size:.72rem;color:#b3a284">評價：${h.rating||"已殺青"}</div>
+        <div style="font-size:.72rem;color:#b3a284">評價：${h.rating||"已殺青"}</div><span class="clip-stamp375">殺青</span>
       </div>`;
     });
   }
