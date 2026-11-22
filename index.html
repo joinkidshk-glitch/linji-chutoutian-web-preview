@@ -4218,6 +4218,7 @@ body.day-res-open .day-row{
 .intel381-stamp{ position:absolute; top:8px; right:10px; padding:2px 8px; border:2px solid rgba(90,80,70,.65); border-radius:4px; color:rgba(90,80,70,.8); font-weight:800; transform:rotate(-8deg); }
 .gig-card .bp-tag.intel381{ background:#e8d5b5; color:#4a3421; }
 .gt-pill.gt-intel381{ background:#e8d5b5; color:#4a3421; }
+.gt-pill.gt-costume382{ background:#f3e2c7; color:#5a3d1e; border:1px dashed rgba(120,90,40,.55); }
 .wardrobe265{ margin:10px 0 0; padding:10px 12px; background:#f8f1de; border:1px solid rgba(120,95,60,.45); border-radius:10px; }
 .wardrobe265-h{ margin:0 0 6px; font-size:1rem; }
 .wardrobe265-row{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; border-top:1px dashed rgba(120,95,60,.35); }
@@ -18282,6 +18283,71 @@ function softCastingTagGate(gig){
   }
   return {ok:true};
 }
+/* ===== v20a382 COSTUME382：自備戲服通告（用戶 2026-11-22 拍板次序②；方案 GPT-6.2-sol）=====
+   少量中／高／稀有通告列明「自備戲服」：持有對應類別服裝先可報名。
+   選取規則：tier 中級／高級／稀有（舊三級 中／高）＋ id 雜湊 %10==3（約一成）；
+   排除入場／橋接（entryTier／softBridge）、引薦觸發、人情渠道（武指／彭）、補位通告，
+   保開局可接數同人情兌現路徑不變。類別按 genre／type 對應 12 件衫四類（日常／正式／舞台／戲行）。
+   只加報名門檻，唔改試鏡成功率公式、唔改換衫加成規則。 */
+function costume382Hash(id){
+  let h=0; const s=String(id||"");
+  for(let i=0;i<s.length;i++) h=(h*31 + s.charCodeAt(i))>>>0;
+  return h;
+}
+function costume382GigReq(g){
+  try{
+    if(!g || !g.id) return null;
+    const tier=g.tier||"";
+    if(tier!=="中級" && tier!=="高級" && tier!=="稀有" && tier!=="中" && tier!=="高") return null;
+    if(g.entryTier || g.softBridge) return null;
+    if(typeof isMakWuzhiGig158==="function" && isMakWuzhiGig158(g)) return null;
+    if(typeof isPangCharityGig158==="function" && isPangCharityGig158(g)) return null;
+    if(typeof triggerGigLabel229==="function" && triggerGigLabel229(g)) return null;
+    if(typeof intel381Label==="function" && intel381Label(g)) return null;
+    if(costume382Hash(g.id)%10!==3) return null;
+    const genre=String(g.genre||"");
+    const type=String(g.type||"");
+    if(["武俠","動作","警匪","江湖黑幫","歷史傳記","賭片"].indexOf(genre)>=0) return "戲行";
+    if(type==="唱片通告" || ["情歌","快歌","搖滾","民謠","合唱","主題曲","晚會","台慶","選拔節目"].indexOf(genre)>=0) return "舞台";
+    if(type==="廣告" || ["平面廣告","電視廣告","形象廣告","產品廣告","慈善廣告"].indexOf(genre)>=0) return "正式";
+    return "日常";
+  }catch(_e){ return null; }
+}
+function costume382OwnedCat(cat){
+  try{
+    const w=(typeof costume265EnsureWardrobe==="function") ? costume265EnsureWardrobe() : null;
+    if(!w || !Array.isArray(w.owned)) return false;
+    return w.owned.some(id=>{ const c=(typeof costume265ById==="function") ? costume265ById(id) : null; return c && c.cat===cat; });
+  }catch(_e){ return false; }
+}
+function costume382Gate(g){
+  const cat=costume382GigReq(g);
+  if(!cat) return null;
+  if(costume382OwnedCat(cat)) return null;
+  return { ok:false, reason:"此通告需要自備戲服，須持有「"+cat+"」類服裝方可報名。可前往旺角花園街成衣店選購。" };
+}
+function costume382PillHtml(g){
+  const cat=costume382GigReq(g);
+  if(!cat) return "";
+  const miss=costume382OwnedCat(cat) ? "" : "（未持有）";
+  return `<span class="gt-pill gt-costume382">自備戲服 · ${cat}${miss}</span>`;
+}
+function costume382DetailRowHtml(g){
+  const cat=costume382GigReq(g);
+  if(!cat) return "";
+  if(costume382OwnedCat(cat)){
+    return `<div class="cn-sum-row"><span class="k">自備戲服</span><span class="v">${cat}類服裝（已持有）</span></div>`;
+  }
+  let first="";
+  try{
+    if(typeof S!=="undefined" && S && S.flags && !S.flags.costume382Seen){
+      S.flags.costume382Seen=true;
+      first=`<div class="cn-wd-sub">部分通告需要自備戲服。持有對應類別服裝即可報名，其他合資格通告照常可報。</div>`;
+    }
+  }catch(_e){}
+  return `<div class="cn-sum-row"><span class="k">自備戲服</span><span class="v">${cat}類服裝（未持有）</span></div>`
+    + `<div class="cn-wd-sub">可前往旺角花園街成衣店選購「${cat}」類服裝，買入後即可報名。</div>` + first;
+}
 function canAudition(gig){
   if(!gig) return {ok:false, reason:"通告已下架。"};
   if(isGigWrapped(gig)){
@@ -18304,6 +18370,10 @@ function canAudition(gig){
   try{
     const creditGate = softIndustryCreditGate(gig);
     if(creditGate && creditGate.ok===false) return creditGate;
+  }catch(_e){}
+  try{
+    const costumeGate = costume382Gate(gig);
+    if(costumeGate && costumeGate.ok===false) return costumeGate;
   }catch(_e){}
   return {ok:true, softTry:false};
 }
@@ -18388,6 +18458,10 @@ function gateShortReason(gig){
   try{
     const tagGate = softCastingTagGate(gig);
     if(tagGate && tagGate.ok===false) return tagGate.reason;
+  }catch(_e){}
+  try{
+    const costumeGate = costume382Gate(gig);
+    if(costumeGate && costumeGate.ok===false) return costumeGate.reason;
   }catch(_e){}
   const floor=fameFloor(gig);
   const fameShort=(Number(S.fame)||0)<floor;
@@ -18597,6 +18671,7 @@ function gigCardHtml(g, opts){
   try{ const tl = (typeof triggerGigLabel229==="function") ? triggerGigLabel229(g) : ""; if(tl) trigBit = ` <span class="bp-tag trig">${tl}</span>`; }catch(_e){}
   /* v20a381 INTEL381：補位通告卡標籤（沿用觸發標籤位） */
   try{ const il = (typeof intel381Label==="function") ? intel381Label(g) : ""; if(il) trigBit += ` <span class="bp-tag intel381">${il}</span>`; }catch(_e){}
+  try{ const cr382 = (typeof costume382GigReq==="function") ? costume382GigReq(g) : null; if(cr382) trigBit += ` <span class="bp-tag costume382">自備戲服 · ${cr382}${costume382OwnedCat(cr382)?"":"（未持有）"}</span>`; }catch(_e){}
   return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+badge94.label):""}${seasonBit}${bpBit}${bridgeBit}${trigBit}</div><b class="g-title">${g.title}</b>${bridgeNote}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}${favor158Html}</div>`;
 }
 
@@ -18916,6 +18991,8 @@ function gigBoardTeaserHtml(g, opts){
   try{ const tl = (typeof triggerGigLabel229==="function") ? triggerGigLabel229(g) : ""; if(tl) trigPill = `<span class="gt-pill gt-trigger">${tl}</span>`; }catch(_e){}
   /* v20a381 INTEL381：補位通告卡標籤（沿用觸發標籤位） */
   try{ const il = (typeof intel381Label==="function") ? intel381Label(g) : ""; if(il) trigPill += `<span class="gt-pill gt-intel381">${il}</span>`; }catch(_e){}
+  /* v20a382 COSTUME382：自備戲服標籤（GPT 方案：細紙標籤跟觸發標籤同排，欠衫標「未持有」） */
+  try{ const cp = (typeof costume382PillHtml==="function") ? costume382PillHtml(g) : ""; if(cp) trigPill += cp; }catch(_e){}
   return `<div class="gig-teaser" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
     <img class="g-seal" src="${sealSrc}" alt="${badge94.label||sealKey}" onerror="this.style.display='none'"/>
     <div class="gt-title">${work}</div>
@@ -19383,6 +19460,7 @@ function castingNoticeDetailHtml(g){
       <div class="cn-sum-row"><span class="k">簽約金</span><span class="v">${signFee108}</span></div>
       ${breachRow108}
       ${chanceRow378}
+      ${costume382DetailRowHtml(g)}
       <div class="cn-sum-row"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
       <div class="cn-sum-row"><span class="k">通告期間</span><span class="v">${period}</span></div>
       ${deadlineRow30v2}
@@ -19611,19 +19689,40 @@ function openCastingNoticeDetail(g, L){
           if(cur>=need) bits.push(`<span class="gap-ok">✓ ${lab} ${cur}／${need}</span>`);
           else bits.push(`<span class="gap-no">✗ ${lab} 差 ${need-cur}（現 ${cur}／要 ${need}）</span>`);
         });
+        /* v20a382 COSTUME382：自備戲服都列入差額行，唔好全綠但鎖住令人誤會係 bug */
+        try{
+          const cr382 = (typeof costume382GigReq==="function") ? costume382GigReq(g) : null;
+          if(cr382){
+            if(costume382OwnedCat(cr382)) bits.push(`<span class="gap-ok">✓ 自備戲服 ${cr382}類服裝</span>`);
+            else bits.push(`<span class="gap-no">✗ 自備戲服 未持有「${cr382}」類服裝</span>`);
+          }
+        }catch(_e382){}
         gapLines = bits.join("") || "條件未合，先去訓練或入手帳安排。";
       }catch(_e2){ gapLines = "條件未合，先去訓練或入手帳安排。"; }
       if(plan && plan.gap && plan.gap.label){
         ctaLabel = "去訓練／手帳 · 練"+plan.gap.label;
         if(plan.enrolled) ctaLabel = "去訓練／手帳 · 入手帳排課";
       }
-      body += `<div class="cn-train-jump" role="note"><p class="cn-train-jump-title">差幾多達標</p><p class="cn-train-jump-gaps">${gapLines}</p><p class="cn-train-jump-cta-hint">點擊下面「去訓練／手帳」直達最佳訓練地或手帳。</p></div>`;
+      /* v20a382：只欠戲服（冇數值缺口）→ CTA 改去成衣店，唔好叫人去訓練 */
+      let costumeOnly382 = false;
+      try{
+        const cr382b = (typeof costume382GigReq==="function") ? costume382GigReq(g) : null;
+        costumeOnly382 = !!(cr382b && !costume382OwnedCat(cr382b) && !(plan && plan.gap));
+        if(costumeOnly382) ctaLabel = "去花園街成衣店";
+      }catch(_e382b){}
+      body += `<div class="cn-train-jump" role="note"><p class="cn-train-jump-title">差幾多達標</p><p class="cn-train-jump-gaps">${gapLines}</p><p class="cn-train-jump-cta-hint">${costumeOnly382 ? "點擊下面「去花園街成衣店」選購對應類別服裝。" : "點擊下面「去訓練／手帳」直達最佳訓練地或手帳。"}</p></div>`;
       /* v20a60 CALIB60-4：聲樂凍結明示（最大缺口係歌藝＋從未練過先出） */
       if(plan && plan.frozenVocal){
         body += `<p class="cn-train-jump-frozen60">阿偉從未練過歌藝——唱片／音樂通告會一直欠這一項。去唱片公司報「歌藝訓練」；手帳預設計劃現在會輪流排歌藝堂。</p>`;
       }
       btns.push({label:ctaLabel, role:"p", cls:"btn_train_jump", on:()=>{
-        if(plan) jumpToTrainForGig(g);
+        if(costumeOnly382){
+          try{ closeModal(); }catch(_e){}
+          try{ closeSheet(); }catch(_e){}
+          try{ openLoc("clothing_shop"); }catch(_e){}
+          toast("到花園街成衣店選購對應類別服裝，買入後即可報名。");
+        }
+        else if(plan) jumpToTrainForGig(g);
         else {
           try{ closeModal(); }catch(_e){}
           try{ closeSheet(); }catch(_e){}
