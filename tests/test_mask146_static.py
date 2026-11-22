@@ -51,7 +51,7 @@ ok('A1：矮屏（max-height:820px）高帽加 88svh',
    '@media (max-height: 820px){' in src
    and 'max-height: min(88dvh,88svh,720px) !important;' in src)
 ok('A1：教學 modal 高帽加 88svh',
-   '#mask.tut-on .modal{background:transparent;border:0;padding:0;max-height:min(88dvh,88svh,760px);' in src)
+   '#mask.tut-on .modal:has(.tut-card){background:transparent;border:0;padding:0;max-height:min(88dvh,88svh,760px);' in src)  # v376：透明只限教學卡 modal
 ok('A1：StoryPlay modal 78dvh 規則原封不動（ui133 釘死；呢句冇 !important，實際由上面 !important 高帽管，唔使加 svh）',
    '#mask.story-play-on .modal{max-height:min(78dvh,720px);overflow:hidden}' in src)
 ok('A1：基底 .modal 嘅 78dvh 規則原封不動（svh 唔支援嗰陣嘅 fallback）',

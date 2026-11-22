@@ -454,7 +454,7 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .tut-card .tut-line{margin:0 0 8px;color:#3a2e22;font-size:.9rem;line-height:1.45}
 .tut-card .tut-line:last-child{margin-bottom:0}
 #mask.tut-on{align-items:center;padding:16px}
-#mask.tut-on .modal{background:transparent;border:0;padding:0;max-height:min(88dvh,88svh,760px);overflow:hidden;box-shadow:none}
+#mask.tut-on .modal:has(.tut-card){background:transparent;border:0;padding:0;max-height:min(88dvh,88svh,760px);overflow:hidden;box-shadow:none} /* v20a376 FIX376-2：透明只限教學卡 modal（.tut-card 自帶紙底）；非教學 modal 喺 tut-on 態行返下面紙底規則，唔再浮喺地圖上 */
 /* v19r: one column, same order every step — 下一步／我知道了 then 跳過教學 */
 #mask.tut-on #modal-btns{justify-content:stretch;gap:8px;flex-wrap:nowrap;flex-direction:column;align-items:stretch;margin-top:10px}
 #mask.tut-on #modal-btns button{flex:0 0 auto;width:100%;min-height:44px;font-size:.92rem;font-weight:700}
@@ -1790,7 +1790,7 @@ button.g, .start button.g{
 
 
 /* v17h EXTRA: stress-preview + week-settle contrast — paper plate, ink text (street-result clarity) */
-#mask:not(.tut-on) .modal{
+#mask:not(.tut-on) .modal, #mask.tut-on:not(.story-play-on):not(.paper-on) .modal:not(:has(.tut-card)):not(:has(.sp-result)){ /* v20a376 FIX376-2：tut-on 態非教學 modal（日結／請柬／作品詳情）同補紙底；story-play／paper／sp-result 各有專屬底，唔搶 */
   background: #F2EBD8 !important; /* solid cream */
   border: 2px solid #C9A227 !important;
   color: #1A1410 !important;
@@ -13830,6 +13830,15 @@ function endingRomanceScene410(rec){
   }
   if(r.kind==="commit" && r.line==="choi")
     return "<p>埋單那晚，你們沒有去什麼大地方——金龍茶餐廳，你們坐慣的那張枱。周采兒收起記者證，那晚她不是來訪問你，是來陪你吃頓飯。</p><p>「我寫過咁多人沉浮，」她說，「寫到你嗰陣，我先知咩叫唔捨得落筆。」整個故事由茶餐廳開始，在茶餐廳收尾——恰好圓滿。</p>";
+  /* v20a376 FIX376-5：補齊藍／徐／葉／蘇 commit 場景（舊版只有曉晴／采兒，四線 HE 跌返單身文案，同總結行自相矛盾——第三輪評估 U1）。HE＝正式成為情侶。 */
+  if(r.kind==="commit" && r.line==="lan")
+    return "<p>埋單那晚，錄音室熄了大半燈，藍若曦站在咪前，把那半首歌唱完——三年來，她由按通告牌的人，站成了台上的人。你在玻璃那邊聽著，沒有出聲。</p><p>她推門出來，望著你笑：「以後我企出嚟嗰陣，你要喺台下。」那晚之後，你們正式成為情侶——她站出去，你站在她看得見的位置。</p>";
+  if(r.kind==="commit" && r.line==="xu")
+    return "<p>埋單那晚，中環廣告大堂只剩你們兩個人。徐寶珊把那份禮物推回你面前，說這次不算還禮，算開始。</p><p>「我唔要你還，」她說，「我要你企喺我呢邊。」門那邊和門這邊，站的位置不同——那晚之後，你們正式成為情侶，站到了同一邊。</p>";
+  if(r.kind==="commit" && r.line==="yip")
+    return "<p>埋單那晚，選美後台的燈還未熄，葉敏芝卸了妝，站在走廊等你。她說這三年，她學懂的第一件事，是站邊要站得明。</p><p>「我企你嗰邊，」她說，「以後都係。」那晚之後，你們正式成為情侶——她站你那邊，你沒有再讓她一個人站。</p>";
+  if(r.kind==="commit" && r.line==="so")
+    return "<p>埋單那晚，灣仔唱片大堂，蘇芷茵抱著那盒錄好的帶，站在你慣常等她的那個位置。她說這三年，她最怕的不是沒人找她，是沒人當她是演員。</p><p>「你當我係演員，」她說，「咁我都當你係自己人。」那晚之後，你們正式成為情侶——她轉型那首歌，第一個聽的人是你。</p>";
   /* v20a89 BR89：半線結局呈現按玩家喺差一步嗰幕嘅 he/be 抉擇分版（審計 #5）——
      以前無論嗰幕點揀，結局頁都係同一段；而家 be＝親手放下版、he＝留有餘地版、
      冇去到嗰幕＝原版。判定（邊條線做 almost）完全唔郁，只分呈現文字。 */
@@ -13858,6 +13867,19 @@ function endingRomanceScene410(rec){
     if(v==="be") return "<p>金龍茶餐廳，周采兒沒有再坐隔壁枱——她升職了，不再跑這條線。你們那天說清楚：她的筆不可以偏，你的路不可以停。現在偶然在報紙見到她的名字，你會停一停，才翻過去。那句話沒有說出口，就留在那張枱。</p>";
     return "<p>金龍茶餐廳，周采兒坐在隔壁枱趕稿，你坐在這邊等通告電話。她寫完那版，抬頭跟你點了一下頭，才走。訪問就做得多了——有一句話，你們兩個人都沒有說出口。不是不想，是一說出口，就不再是現在這樣舒服。</p>"
       + (v==="he" ? "<p>不過那句話，你沒有打算吞回去——留下，留到不必再怕說出口的那一天。</p>" : "");
+  }
+  /* v20a376 FIX376-5：補葉／蘇 almost 場景（舊版跌返單身文案；he/be 分版跟 BR89 口徑）。 */
+  if(r.kind==="almost" && r.line==="yip"){
+    const v = heBe89("yip");
+    if(v==="be") return "<p>選美後台，葉敏芝趕著去綵排，你趕著去開工。那次之後，她沒有再在走廊等你——不是誰變了，是那天你們說清楚：企邊，企得太明，就沒有回頭路。現在偶然在電視台撞到，她照舊同你點頭，你照舊讓路。那一步沒有走出，但那段日子，沒有白過。</p>";
+    return "<p>選美後台，葉敏芝卸了妝站在走廊，望著你笑：「企邊呢家嘢，企得太明，成行都知。」她沒有再說下去，你沒有追問。太明了，明到那一步，誰都不敢先走。</p>"
+      + (v==="he" ? "<p>那句「成行都知」，你一直記住——未說出口的站邊，都是一種牽掛。</p>" : "");
+  }
+  if(r.kind==="almost" && r.line==="so"){
+    const v = heBe89("so");
+    if(v==="be") return "<p>灣仔唱片大堂，蘇芷茵那盒帶最後交了給監製，沒有經你的手。你們那天說清楚：當你是演員，和當你是自己人，是兩回事。現在偶然在錄音室撞到，她照舊同你打招呼，你照舊站在門外等。這一頁，是你親手翻過去的。</p>";
+    return "<p>灣仔唱片大堂，蘇芷茵抱著那盒錄好的帶，站在你慣常等她的那個位置。她說：「當我係演員，唔好當我係花瓶。」你點頭。她走之前回頭一笑——那句話，你們兩個人都沒有再說下去。</p>"
+      + (v==="he" ? "<p>那句「唔好當我係花瓶」，你沒有打算吞回去——留下，留到不必再怕說出口的那一天。</p>" : "");
   }
   return "<p>那晚收工，你一個人走去搭車。沒有誰在那裡等你——但你望著手上那張通告紙，覺得這樣也不算差。這三年你對自己，總算有個交代。感情那格空著，不代表那裡沒有東西，只是還未到時候寫下去。</p>";
 }
@@ -26495,6 +26517,8 @@ function commit48Available(id){
   /* v20a294 Q7：曉晴 HE 鎖死——揀咗「勸佢跟屋企走」（hiu_family_go），佢走咗冇得追，唔出 commit offer。 */
   if(id==="CMT_hiu_commit" && choice47StoryFlag("hiu_family_go")) return false;
   if(!choice47StoryDone(def.crisis)) return false;       /* 未行到該線 crisis，唔好提早收束 */
+  /* v20a376 FIX376-4：BE 後唔再出 commit offer（拍板：BE 唔解鎖）——flag_<line>_be（BR89 口徑，六線全覆蓋）＋葉敏芝 crisis BE 路線旗 flag_yip_be_route；舊版只查 commit 旗，BE 後約會刷 rel 可繞道 HE（第三輪評估 U2） */
+  try{ const _be376 = String(def.relKey||"").replace(/^rel_/,""); if(_be376 && choice47StoryFlag("flag_"+_be376+"_be")) return false; if(_be376==="yip" && choice47StoryFlag("flag_yip_be_route")) return false; }catch(_e376){}
   if(commit48Rel(def.relKey) < COMMIT48_REL_MIN) return false;
   /* v20a159 ROM159：排他鎖——只可以 commit 鎖定嗰位。未鎖（舊檔／未行過 bumpRel）嗰陣
      rom159LockedWho 內含遷移：有人已 ≥5 即鎖佢；六人都未到 5 就唔開 offer。 */
@@ -41792,10 +41816,9 @@ function enc79StandCandidates(starId){
   out.push("assets/story/era_stars/"+starId+"_bust_default.png?v=20a8");
   try{ if(typeof UI40_STAND!=="undefined" && UI40_STAND[starId]) out.push(UI40_STAND[starId]); }catch(_e){}
   try{ if(typeof eraSilhouetteFarSrc==="function"){ const sil = eraSilhouetteFarSrc(starId); if(sil) out.push(sil); } }catch(_e){}
-  try{ out.push(ENC105_STAND_SILHOUETTE); }catch(_e){ out.push("assets/story/era_stars/enc105_stand_silhouette.png?v=20a105"); }
-  /* v20a373 ENC373：無圖紅星行藝員資料卡（排喺黑剪影兜底之前；卡係 data URI 必載入，
-     黑剪影保留做最終兜底，候補最尾不變） */
+  /* v20a376 FIX376-3：藝員資料卡排黑剪影檔之前——剪影檔真係存在會載入成功，卡排後面永遠輪唔到（第三輪評估 U5 雙證）；卡係 data URI 必載入，黑剪影保留做卡之後嘅兜底 */
   try{ const card373 = (typeof enc373CardSrc==="function") ? enc373CardSrc(starId) : ""; if(card373) out.push(card373); }catch(_e){}
+  try{ out.push(ENC105_STAND_SILHOUETTE); }catch(_e){ out.push("assets/story/era_stars/enc105_stand_silhouette.png?v=20a105"); }
   try{ out.push(ENC105_STAND_FALLBACK); }catch(_e){}
   return out.filter((v,i)=> v && out.indexOf(v)===i);
 }
