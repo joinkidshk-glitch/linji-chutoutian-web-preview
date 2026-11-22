@@ -79,8 +79,8 @@ sp = fn_body("awards62ScoreParts")
 ok("borrowW65" in sp and "0.55 * 0.35 * crossQ65" in sp, "借分 0.55×0.35×crossQ 在位")
 ok("repPower65" in sp and "0.08 * crossQ65" in sp, "跨桶星勢 0.08×crossQ 在位")
 ok("AWARDS62_WIN_LINE = 0.875" in src, "贏線 0.875（v20a147 D4 重做校準：0.90→0.875，見 qa147/CALIBRATION_D4.md §5；唔係放水——同期修咗計分樽頸，觀測最佳 base 0.694→0.879；新線下觀測期望贏場 0.54／9 場，頂級檔 57%，Y1 強 0%）")
-ok("S.wrapHistory.length>90" in src.replace(" ", "") or "wrapHistory.length>90" in src,
-   "wrapHistory 上限 90（舊 30；全弧單年最多 79 部，30 條冚唔晒一年）")
+ok("S.wrapHistory.length>240" in src.replace(" ", "") or "wrapHistory.length>240" in src,
+   "wrapHistory 上限 240（v387：同 careerStats95 全史口徑對齊，冚得晒三年全弧；舊 90 只冚一年）")
 
 # --- FIX65-4 提示認級數 ---
 ok("FIX65-4" in src, "FIX65-4 標記在位")

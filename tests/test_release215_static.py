@@ -99,8 +99,8 @@ chk('唔郁：SAVE key 照舊 starVolunteer_map_v19w',
     'const SAVE = "starVolunteer_map_v19w"' in src)
 chk('唔郁：剪報上限 40 照舊',
     'if(clips.length>40) clips.length = 40;' in src)
-chk('唔郁：wrapHistory 上限 90 照舊',
-    'if(S.wrapHistory.length>90) S.wrapHistory.length=90;' in src)
+chk('wrapHistory 上限 240（v387 改：同 careerStats95 全史口徑對齊）',
+    'if(S.wrapHistory.length>240) S.wrapHistory.length=240;' in src)
 chk('唔郁：殺青報入隊（enqueueNewspaperFromWrap）原封不動',
     'function enqueueNewspaperFromWrap' in src and 'eventKey: "wrap:"+subject.gigId+":"+shootDay' in src)
 chk('唔郁：頒獎報入隊（enqueueNewspaperFromAward）原封不動',

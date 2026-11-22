@@ -91,7 +91,7 @@ eval(extractFn("shootDailyDelta"));
   ok(mn >= 10 && mx <= 14, "拍攝日入水維持原值 10..14（實測 " + mn + ".." + mx + "）");
 }
 ok(stressDeltaForAct("rest") === -100, "預覽：rest = −100（清零標示）");
-ok(stressDeltaForAct("train_acting") === 10 && stressDeltaForAct("shoot:gig_x") === 10, "預覽入水維持原值（train/shoot = 10）");
+ok(stressDeltaForAct("train_acting") === 10 && stressDeltaForAct("shoot:gig_x") === 12, "預覽入水：train = 10、shoot = 12（v387 校準到實際 8+R(2,6) 平均）");
 ok(src.includes("stress:-(4+R(0,4))"), "部分休息（提早返屋企）−(4+R(0,4)) 保留");
 ok(src.includes("stress:-(6+R(0,4))"), "部分休息（家務）−(6+R(0,4)) 保留");
 

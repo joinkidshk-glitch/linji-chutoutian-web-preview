@@ -143,7 +143,7 @@ ok('N5：choices-layout 嗰條 rule 都係 64px（唔係 44px）',
 # --- C6：通告板 54px 罅＝分組頭 ---
 ok('C6：未達標分組頭做返明顯標題（唔再係無解釋嘅空位）',
    '.gig-locked108{ margin-top:12px; border-top:2px solid #cbb98d; padding-top:0; }' in src
-   and '.gig-locked108 summary{ display:block;' in src
+   and '.gig-locked108 summary{ display:flex; align-items:center; min-height:44px;' in src
    and 'background:#efe6cf; border-bottom:1px solid #cbb98d;' in src)
 ok('N6：開合提示由 CSS ::after 出（▸ 點開睇／▾ 點開收起），唔寫死喺字串',
    '.gig-locked108 summary::after{ content:"  ▸ 點開睇";' in src

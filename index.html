@@ -803,6 +803,9 @@ button.work-card59 .work-name59,button.work-card59 .work-meta59{display:block}
 .psr-gate62.ok{color:#3d6038;font-weight:700}
 .awd62-stage{position:fixed;inset:0;z-index:9990;background:radial-gradient(120% 55% at 50% 0%,#2c2148 0%,#14101f 55%,#0c0913 100%);display:flex;align-items:flex-start;justify-content:center;padding:12px;overflow-y:auto} /* v20a379（第四輪評估 P2-3）：舞台底由平黑改聚光燈漸層——frame 頂釘死唔郁（v218），下半唔再係一片死黑，讀得出係劇院暗場；佈局一字唔郁。 */ /* v20a207 B2：overflow-y:auto——提名 700 幀高貼近 viewport，內容萬一超高都唔會頂裁，改捲唔改佈局；v20a218 C-C2／v197 B3：safe center 改 flex-start——frame 頂釘死，唔再垂直置中：之前字幕／卡列一收一放，frame 高一變，成個 frame 連跳過掣喺 viewport 上下跳（glamour 段＋空字幕 beat）；而家 frame 頂固定喺 12px，canvas＋跳過掣 viewport 位置全程唔郁，超高嗰陣照舊捲落去（flex-start 本身唔會頂裁）。 */
 .awd62-frame{position:relative;width:min(96vw,760px);container-type:inline-size}
+/* v20a387（第八輪評估 W2 P2-6）：直向手機舞台只佔上半屏、顯細——GPT 方案 C：frame 排版闊不變（96vw，頂釘死防跳位照舊），窄屏視覺放大 6%（transform-origin 頂置中，beat 變高唔跳位）；舞台加 overflow-x:hidden 防放大出界橫捲。下半暗場加腳燈暖光漸層，唔再死黑。 */
+.awd62-stage{overflow-x:hidden;background:radial-gradient(120% 55% at 50% 0%,#2c2148 0%,#14101f 55%,#0c0913 100%),radial-gradient(90% 30% at 50% 100%,rgba(180,150,82,.16) 0%,rgba(12,9,19,0) 70%)}
+@media (max-width:480px){ .awd62-frame{transform:scale(1.06);transform-origin:top center} }
 .awd62-canvaswrap{position:relative}
 .awd62-m5fx149{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none;display:none;z-index:2}
 .awd62-m5fx149.on{display:block}
@@ -811,7 +814,7 @@ canvas.awd62-canvas{display:block;width:100%;height:auto;image-rendering:pixelat
 .awd62-caption{margin-top:10px;background:#1d1430;border:3px solid #8a6d2f;box-shadow:4px 4px 0 #0d0918;color:#ffe9b0;padding:8px 12px;height:93px; /* v20a211 C2：字幕框高度釘死 93px（全域 border-box，93 即總高）——基線實測 names 69px／suspense 54px／reveal 54–93px 來回跳，frame 跟住跳 7–12px（music 提名 700 係 24px）；93＝實測最長揭曉字幕 3 行高，1–2 行留空唔縮，frame 全程唔郁。空字幕 beat（walkup／glamour）display:none 維持不變——嗰兩段跳位係 v174 已接受 trade-off（glamour 同時收起卡列）。 */font-size:15px;line-height:1.55;text-align:center;white-space:pre-line}
 .awd62-caption .gold{color:#f2c14e;font-weight:900}
 .awd62-caption .dim{color:#b9a8d9;font-size:13px}
-.awd62-skip{position:absolute;bottom:8px;right:8px; /* v20a207 B3：由右上角搬去右下角——舊位壓住「角逐」pill 右端數字；右下係地板前緣＋觀眾席暗帶，唔遮人物（腳底 FLOOR 之上）／唔遮數字條 */background:#3a2a12;color:#ffd968;border:3px solid #8a6d2f;box-shadow:3px 3px 0 #0d0918;padding:6px 14px;font-weight:900;font-size:14px;cursor:pointer;z-index:3;border-radius:0}
+.awd62-skip{position:absolute;bottom:8px;right:8px; /* v20a207 B3：由右上角搬去右下角——舊位壓住「角逐」pill 右端數字；右下係地板前緣＋觀眾席暗帶，唔遮人物（腳底 FLOOR 之上）／唔遮數字條 */background:#3a2a12;color:#ffd968;border:3px solid #8a6d2f;box-shadow:3px 3px 0 #0d0918;padding:6px 14px;font-weight:900;font-size:14px;cursor:pointer;z-index:3;border-radius:0;min-height:44px;display:inline-flex;align-items:center;justify-content:center} /* v20a387（第八輪評估 W2 P2-7）：觸控高 38→44px（GPT 規格） */
 .awd62-skip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #0d0918}
 .awd62-skip.glamour-hide{display:none} /* v20a212 A1：glamour 期間收起跳過掣（見 syncGlamour） */
 .awd62-tap{margin-top:6px; /* v20a207 B2：8→6，提名 700 留 2px */text-align:center;color:#8d7db5;font-size:12px}
@@ -3941,7 +3944,7 @@ body.day-res-open .day-row{
 
 /* ===== v19z31: playtest closeout — people/jobs/debt CTAs ===== */
 .people-go, .debt-empty .debt-repay-btn{
-  margin-top:6px; min-height:36px; padding:6px 12px; border-radius:10px;
+  margin-top:6px; min-height:44px; padding:6px 12px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; /* v20a387（第八輪評估 W2 P2-3）：觸控高 36→44px（GPT 規格：外層補高、字體邊框不變） */
   border:1px solid rgba(90,67,40,.65); background:rgba(201,162,39,.28);
   color:#5a4328; font-weight:700; font-size:.78rem; cursor:pointer;
 }
@@ -5008,6 +5011,7 @@ body.day-res-open .day-row{
   color:#1a1a1a; background:transparent;
   border:1.5px solid #1a1a1a; border-radius:6px;
   padding:7px 16px; cursor:pointer;
+  min-height:44px; display:inline-flex; align-items:center; justify-content:center; /* v20a387（第八輪評估 W2 P2-7）：觸控高 39→44px（GPT 規格：留白補高、黑邊不變） */
 }
 .paper-sheet .np214-switch:active{ background:rgba(26,26,26,.08); }
 /* paper-on 舊規則將 .paper-kicker 置中（帶 id 選擇器，權重高過上面）——
@@ -5597,7 +5601,7 @@ body.day-res-open .day-row{
 /* ===== v20a108 UI108 視覺統一包（B 級）===== */
 #app #v-start .start52 #start-soft-tip{ background:rgba(243,231,200,.93); color:#3a2e22 !important; text-shadow:none; padding:6px 10px; border-radius:8px; box-shadow:0 1px 6px rgba(0,0,0,.28); }
 #app #v-start .start52 #start-soft-tip strong{ color:#8a5a00; }
-#app #v-start .start52 #btn-load-mini{ font-size:.75rem; padding:5px 14px; min-height:30px; background:rgba(20,18,14,.5); color:#f5e6c0; border:1px solid rgba(201,162,39,.5); }
+#app #v-start .start52 #btn-load-mini{ font-size:.75rem; padding:5px 14px; min-height:44px; display:inline-flex; align-items:center; justify-content:center; background:rgba(20,18,14,.5); color:#f5e6c0; border:1px solid rgba(201,162,39,.5); } /* v20a387（第八輪評估 W2 P2-7）：觸控高 30→44px（GPT 規格） */
 /* S-4：dim 只落內容／地圖區——殼底（--tut-shell-bottom，setTutMask 量度）以上透明 */
 #mask.tut-on{ background:linear-gradient(180deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) var(--tut-shell-bottom,110px), rgba(0,0,0,.78) var(--tut-shell-bottom,110px), rgba(0,0,0,.78) 100%) !important; }
 /* S-5：B01 新場景＋全身企立 */
@@ -5631,7 +5635,7 @@ body.day-res-open .day-row{
    無解釋嘅空位。將 summary 做返明顯嘅分組標題，等個罅變成一眼認到嘅分組頭；
    開合狀態用 ::after 提示（▸ 點開睇／▾ 點開收起）。 */
 .gig-locked108{ margin-top:12px; border-top:2px solid #cbb98d; padding-top:0; }
-.gig-locked108 summary{ display:block; cursor:pointer; font-size:.85rem; font-weight:800; color:#3a2e22; background:#efe6cf; border-bottom:1px solid #cbb98d; padding:10px; margin:0 0 8px; list-style:none; }
+.gig-locked108 summary{ display:flex; align-items:center; min-height:44px; cursor:pointer; font-size:.85rem; font-weight:800; color:#3a2e22; background:#efe6cf; border-bottom:1px solid #cbb98d; padding:10px; margin:0 0 8px; list-style:none; } /* v20a387（第八輪評估 W2 P2-7）：觸控高 39→44px（GPT 規格：垂直置中補高） */
 .gig-locked108 summary::-webkit-details-marker{ display:none; }
 .gig-locked108 summary::after{ content:"  ▸ 點開睇"; font-weight:700; color:#7a6248; }
 .gig-locked108[open] summary::after{ content:"  ▾ 點開收起"; }
@@ -6005,7 +6009,7 @@ body.day-res-open .day-row{
   font-size:.95rem;
 }
 #home-tabs .home-tab{ min-height:44px !important; }
-#home-subtabs .home-tab{ min-height:44px !important; font-size:.8rem !important; }
+#home-subtabs .home-tab{ min-height:44px !important; min-width:44px !important; font-size:.8rem !important; } /* v20a387（第八輪評估 W2 P2-2）：子 tab 闊 30→44px——非 plan 組 5851 行 min-width:0 蓋走 v373 嘅 44，呢度補返闊（GPT 規格：觸控區 44、紅圈視覺不變） */
 #nb-live-stress{ min-height:44px !important; }
 .nb-stk362{
   flex:0 0 auto; width:38px; height:38px; border-radius:8px; overflow:hidden;
@@ -6292,7 +6296,7 @@ body.day-res-open .day-row{
 }
 #v-home .home-subtabs .home-tab{
   background:transparent !important; border:0 !important; border-radius:0 !important;
-  color:#7a6248 !important; min-height:44px !important; box-shadow:none !important;
+  color:#7a6248 !important; min-height:44px !important; min-width:44px !important; box-shadow:none !important; /* v20a387：同上，補闊 44px */
 }
 #v-home .home-subtabs .home-tab.on{ color:var(--inkred363) !important; box-shadow:inset 0 -2px 0 var(--inkred363) !important; }
 #nb-days .day-row{
@@ -21729,7 +21733,7 @@ function resetPlanDraft(){
 
 function stressDeltaForAct(id){
   if(!id) return 0;
-  if(String(id).startsWith("shoot:")) return 10; /* v20a65 FIX65-1：拍攝日平均（含殺青攤分） */
+  if(String(id).startsWith("shoot:")) return 12; /* v20a387（第八輪評估 W3 P2-1）：拍攝日預覽 10→12——實際 shootDailyDelta 係 8+R(2,6)＝10–14、平均 12，舊預覽低估令低入口重拍攝週尖峰 80–84（v20a65 FIX65-1 原註「拍攝日平均」口徑不變，只校準到真平均） */
   if(String(id).startsWith("job:")) return 9; /* v20a65 FIX65-1 */
   /* v20a75 LEVELS75：訓練壓力預覽按現級平均入水（級別越高推得越多）；
      抽函數沙盒冇 LEVELS75 嗰陣退回下面靜態表（一級平均，同舊值）。 */
@@ -22555,7 +22559,7 @@ function resolvePlannedDay(id){
             popularity: sh.popularity!=null?sh.popularity:0,
             wrappedDay: S.dayIndex|0, rating: (sh.pay||0)>=2000?"表現穩妥":"順利殺青"
           });
-          if(S.wrapHistory.length>90) S.wrapHistory.length=90; /* v20a147 D4 重做校準：上限 30→90——全弧 arcN 單年最多 79 部（1991 年）、任何 365 日窗口最多 79 部，30 條連一年都冚唔晒，day 609 三部 0.74 代表作俾擠出窗口（base 0.694，見 qa147/CALIBRATION_D4.md §5）；90 條冚得晒一年份量兼有裕。作品牆／ladder95／人情／對手等讀取逐個核過：只會更準，詳見 CALIBRATION_D4.md §5 讀取審計。舊檔已截斷嘅歷史救唔返，新殺青先累積到 90。 */
+          if(S.wrapHistory.length>240) S.wrapHistory.length=240; /* v20a387（第八輪評估 W4 P2-11）：上限 90→240，同 careerStats95.total 全史計數器口徑對齊——90 條只冚一年（v20a147 D4 校準），三年全弧實測 110 部，作品牆／履歷數字同結局計數器唔一致。240 冚得晒三年上限（單年最多 79×3≈237）；讀取逐個核過（v147 審計：窗口大咗只會更準，日期過濾嘅讀取不受影響）。舊檔已截斷嘅歷史救唔返，新殺青先累積到 240。 */
         }catch(_wh){}
         try{
           const psr = (typeof queuePostShootRewardOnWrap==="function") ? queuePostShootRewardOnWrap(sh) : null;
