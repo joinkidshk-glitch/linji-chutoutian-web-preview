@@ -804,7 +804,7 @@ button.work-card59 .work-name59,button.work-card59 .work-meta59{display:block}
 .awd62-stage{position:fixed;inset:0;z-index:9990;background:radial-gradient(120% 55% at 50% 0%,#2c2148 0%,#14101f 55%,#0c0913 100%);display:flex;align-items:flex-start;justify-content:center;padding:12px;overflow-y:auto} /* v20a379（第四輪評估 P2-3）：舞台底由平黑改聚光燈漸層——frame 頂釘死唔郁（v218），下半唔再係一片死黑，讀得出係劇院暗場；佈局一字唔郁。 */ /* v20a207 B2：overflow-y:auto——提名 700 幀高貼近 viewport，內容萬一超高都唔會頂裁，改捲唔改佈局；v20a218 C-C2／v197 B3：safe center 改 flex-start——frame 頂釘死，唔再垂直置中：之前字幕／卡列一收一放，frame 高一變，成個 frame 連跳過掣喺 viewport 上下跳（glamour 段＋空字幕 beat）；而家 frame 頂固定喺 12px，canvas＋跳過掣 viewport 位置全程唔郁，超高嗰陣照舊捲落去（flex-start 本身唔會頂裁）。 */
 .awd62-frame{position:relative;width:min(96vw,760px);container-type:inline-size}
 /* v20a387（第八輪評估 W2 P2-6）：直向手機舞台只佔上半屏、顯細——GPT 方案 C：frame 排版闊不變（96vw，頂釘死防跳位照舊），窄屏視覺放大 6%（transform-origin 頂置中，beat 變高唔跳位）；舞台加 overflow-x:hidden 防放大出界橫捲。下半暗場加腳燈暖光漸層，唔再死黑。 */
-.awd62-stage{overflow-x:hidden;background:radial-gradient(120% 55% at 50% 0%,#2c2148 0%,#14101f 55%,#0c0913 100%),radial-gradient(90% 30% at 50% 100%,rgba(180,150,82,.16) 0%,rgba(12,9,19,0) 70%)}
+.awd62-stage{overflow-x:hidden;background:radial-gradient(90% 30% at 50% 100%,rgba(180,150,82,.16) 0%,rgba(12,9,19,0) 70%),radial-gradient(120% 55% at 50% 0%,#2c2148 0%,#14101f 55%,#0c0913 100%)} /* v20a388（第九輪補跑 W1 P2）：腳燈／聚光燈圖層對調——CSS 先列層畫上面，舊版不透明聚光燈喺上遮蔽腳燈暖光（像素實測下半全 #0c0913）；GPT 方案腳燈放第一、聚光燈做底，.16 透明度不變 */
 @media (max-width:480px){ .awd62-frame{transform:scale(1.06);transform-origin:top center} }
 .awd62-canvaswrap{position:relative}
 .awd62-m5fx149{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none;display:none;z-index:2}
@@ -5232,7 +5232,7 @@ body.day-res-open .day-row{
 .ux68-ghead-urgent{ color:#9c3d1e; border-bottom-color:rgba(180,80,40,.55); }
 .ux68-note{ font-size:.8rem; font-weight:700; color:#9c3d1e; padding:1px 2px 5px; line-height:1.45; }
 .ux68-why{ display:block; font-size:.74rem; font-weight:700; color:#9c3d1e; margin-top:3px; line-height:1.4; } /* v20a169 B2：#loc-acts 由 grid 轉 flex 直欄＋掣 flex-shrink:0——grid auto 行高跟 max-content（唔換行）計，長簡介卡被夾喺 50px 行高溢出框外（實測文字欄 91px、掣 50px）；flex 直欄＋唔縮先係卡高隨內容增長（實測 push 卡 115px、零重疊；機制見 NOTES_V20A169 §2）——flex 規則唔可以寫入 #loc-acts 原規則行：locfull120 測試用 9000 字元窗切 LOCFULL120 段，長註解會推走窗尾 nobg 規則，呢行喺窗外 */ #loc-sheet.sheet.locpanel118 #loc-acts{ display:flex !important; flex-direction:column !important; } #loc-sheet.sheet.locpanel118 #loc-acts .act{ flex-shrink:0; } /* v20a171 C1：#loc-acts 捲動提示——內容超出可視高而且未捲到底嗰陣（JS syncLocActsFade171 掛 loc-acts-more171 class），底緣 30px 淡出漸變提示下面仲有嘢；sticky ::after 唔佔位（margin-top:-30px 抵消 30px 高＋margin-bottom:-7px 抵消 #loc-acts flex row-gap 7px，scrollHeight 唔郁，否則多 7px）。v20a173：實色 stop 78%→60%——932 淡出更早變實，「還人情」底邊溶得更明顯；高仲係 30px、margin 抵消唔郁，唔郁掣高／卡片（B2） */ #loc-sheet.sheet.locpanel118 #loc-acts.loc-acts-more171::after{ content:""; position:sticky; bottom:0; flex:0 0 auto; align-self:stretch; height:30px; margin-top:-30px; margin-bottom:-7px; pointer-events:none; z-index:5; background:linear-gradient(to bottom, rgba(248,241,222,0), #f8f1de 60%); } /* v20a171 C2：鎖住態（庫存空／今日已送）掣身變灰——底轉灰米 #e6dfcc＋邊框轉灰 #a89a7c，標題／hint 微淡（opacity .72）；費用欄轉深啡灰 #6b5636（同鎖住底對比度 5.25:1，高過 B1 實測 4.21:1，唔會灰到讀唔到）；只做視覺區分——disabled／aria／點擊／toast 全部唔郁，撳落去照有 toast 講原因。v20a173：.h 加 !important——舊 rule L2016 opacity 1 !important 贏咗 v171 條無 !important 嘅，hint 實測 opacity 1；加返先同標題一齊淡 */ #app #loc-sheet.sheet .act.act-locked171{ background:#e6dfcc !important; border-color:#a89a7c !important; } #app #loc-sheet.sheet .act.act-locked171 .n{ opacity:.72; } #app #loc-sheet.sheet .act.act-locked171 .h{ opacity:.72 !important; color:#3a2e22 !important; } /* v20a218 D-v173C1：鎖住態 hint 色改深到 #3a2e22 睇齊 priority——舊版沿用 base #5a4328，0.72 混合後只得 3.64:1，未達 4.5；#3a2e22 混合後 4.63:1（同 priority 嗰粒一樣，review 已 live 量度）。只改鎖住態，未鎖住嘅 hint 唔郁 */ #app #loc-sheet.sheet .act.act-locked171 .cost{ color:#6b5636 !important; }
-.ux68-locked-toggle{ width:100%; margin-top:12px; padding:9px 10px; text-align:left; cursor:pointer;
+.ux68-locked-toggle{ width:100%; margin-top:12px; padding:9px 10px; min-height:44px; text-align:left; cursor:pointer; /* v20a388（第九輪補跑 W2 P2）：觸控高 39→44px（同 v387 口徑） */
   background:transparent; border:1px dashed rgba(120,95,60,.55); border-radius:10px;
   color:#7a6248; font:inherit; font-size:.8rem; font-weight:700; }
 .ux68-locked-body{ opacity:.78; }
@@ -20247,15 +20247,33 @@ function lockShootsIntoDraft(draft){
   /* v20a384（第六輪評估 P2-5）：雙拍攝爭位餓死尾日——近限期嘅拍攝先填位，
      唔好畀後入嘅長拍攝搶晒星期位，令剩 1 日嘅近限期通告排唔到而逾期取消。 */
   const shoots384 = (S.shoots||[]).slice().sort((a,b)=> ((a&&a.deadlineDay!=null?a.deadlineDay:1e9) - (b&&b.deadlineDay!=null?b.deadlineDay:1e9)));
+  /* v20a388（第九輪補跑 W3 P2）：填位唔好跨限期——格仔曆日過咗 deadlineDay 嘅拍攝日永遠執行唔到，
+     信任預設計劃嘅玩家照樣違約（6 次違約有 3 次屬此型）。先計本週週一曆日（weekdayIdx 同式，
+     唔經函數呼叫，測試沙盒冇 stub 都行到）；填位只用限期內嘅格；限期喺本週內而限期前非休息格
+     唔夠，先至覆寫限期前休息格（休息最後，同 v20a386 次序）——唔覆寫就必違約。 */
+  const di388 = (S && (S.dayIndex|0)) || 0;
+  const mon388 = di388 - (((di388%7)+7)%7);
   for(const sh of shoots384){
     let need = (typeof shootRemain==="function") ? shootRemain(sh) : Math.max(0,(sh.totalDays||0)-(sh.doneDays||0));
     if(need<=0) continue;
+    const dl388 = (typeof sh.deadlineDay==="number") ? sh.deadlineDay : null;
     for(let i=0;i<7 && need>0;i++){
       if(!shootWeekdayOk(sh, i)) continue;
+      if(dl388!=null && mon388+i > dl388) continue; /* v20a388：限期後嘅格唔填 */
       if(d[i] && String(d[i]).startsWith("shoot:")) continue;
       if(d[i]==="rest") continue; /* v20a380：預設計劃休息位唔好被拍攝填走（第五輪評估 P2-5：壓力休息常被填位蓋過，病倒連鎖） */
       d[i]="shoot:"+sh.id;
       need--;
+    }
+    if(need>0 && dl388!=null && dl388>=di388 && dl388<=mon388+6){
+      /* v20a388 救援：限期喺本週內、下週救唔返——覆寫限期前休息格保拍攝 */
+      for(let i=0;i<7 && need>0;i++){
+        if(!shootWeekdayOk(sh, i)) continue;
+        if(mon388+i > dl388) continue;
+        if(d[i]!=="rest") continue;
+        d[i]="shoot:"+sh.id;
+        need--;
+      }
     }
     sh.daysLeft = need; // still beyond this week after filling allowed slots
   }
@@ -22500,7 +22518,7 @@ function resolvePlannedDay(id){
            改插喺殺青行之後、對帳行之前，開板第一屏就成張見晒。 */
         try{ if(wrapPay91>0 && typeof chk101Html==="function") notes.splice(wrapNoteIdx105, 0, chk101Html({ amount: wrapPay91, memo: sh.contract229 ? "合約尾糧" : (signedPaid91>0 ? "片酬餘額" : "片酬") })); }catch(_chk101){}
         try{
-          const _bg56 = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
+          const _bg56 = (typeof grant229GigById==="function") ? grant229GigById(sh.gigId) : ((typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId)); /* v20a388（第九輪補跑 W4 P2）：跨年殺青查全庫——GIGS 只得當年，跨年殺青會靜默搵唔到（計數器跳過／履歷欄空白）；grant229GigById 先查當年再查三年全庫＋normalize，同入池版一致 */
           if(_bg56 && _bg56.softBridge){
             notes.push(`<span class="var-note">常駐散工收工：這單糧已入帳，不當一部作品殺青。這個崗位隔一陣會再開工，到時可能換個組名貼出來。</span>`);
           }
@@ -22542,7 +22560,7 @@ function resolvePlannedDay(id){
            unshift 之前行：end95AddWrap 首次會以當刻 wrapHistory 衍生種子，遲咗會雙計本單。
            v20a229 B4 LEAD229：擔正計數器同一呼叫點、同一時機。 */
         try{
-          const _g95 = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
+          const _g95 = (typeof grant229GigById==="function") ? grant229GigById(sh.gigId) : ((typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId)); /* v20a388：同上，跨年殺青計數器（end95／end229／合約信用）唔可以再跳過 */
           if(_g95 && typeof end95AddWrap==="function") end95AddWrap(S, _g95, sh);
           if(_g95 && typeof end229AddWrap==="function") end229AddWrap(S, _g95);
           /* v20a361 P1-B：合約信用——殺青即寫 delta（季上限 +4／生涯 +36，見 contractCredit361OnWrap） */
@@ -22550,7 +22568,7 @@ function resolvePlannedDay(id){
         }catch(_e95w){}
         try{
           S.wrapHistory = S.wrapHistory || [];
-          const _wg59w = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
+          const _wg59w = (typeof grant229GigById==="function") ? grant229GigById(sh.gigId) : ((typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId)); /* v20a388：同上，wrapHistory 角色欄跨年唔再空白 */
           S.wrapHistory.unshift({
             gigId: sh.gigId, title: sh.title, type: sh.type||"",
             workTitle: _wg59w ? (_wg59w.workTitle||"") : "", roleLabel: _wg59w ? (_wg59w.roleLabel||"") : "", year: _wg59w ? (_wg59w.year||0) : 0,
@@ -22579,7 +22597,7 @@ function resolvePlannedDay(id){
           if(x===("job:"+sh.gigId)) return "scout_all";
           return x;
         });
-        const _brg56 = (typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId);
+        const _brg56 = (typeof grant229GigById==="function") ? grant229GigById(sh.gigId) : ((typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId)); /* v20a388：同上，softBridge 標籤跨年唔再誤判 */
         title = (_brg56 && _brg56.softBridge) ? `散工收工：${sh.title}` : ((tot<=1) ? `拍攝日→殺青：${sh.title}` : `殺青：${sh.title}`);
         meta={icon:"✅", name:title, hint:(_brg56 && _brg56.softBridge) ? `常駐散工 · 一單收工，片酬入帳` : `進度 ${tot}/${tot} · 拍攝完成並殺青`};
       } else {
