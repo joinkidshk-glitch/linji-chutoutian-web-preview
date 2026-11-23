@@ -75,8 +75,8 @@ eval(extractBlock('/* ===== v20a68 UX68', 'function looksLikeEraId(s){'));
 const gains = ux68ParseGainTable();
 /* v20a75 改版：增益改由 TRAIN75_SPEC 按現級衍生；演技一級附帶台風 +1 由一級起
    （跟用戶三級表「附帶跟級 +1/+2/+3」），期望值加 stage:[1,1]。 */
-ok('增益解析：train_acting = 演技+4~6／附帶台風+1／壓力+8~12（v75 一級）',
-  JSON.stringify(gains.train_acting) === JSON.stringify({ acting:[4,6], stage:[1,1], stress:[8,12] }));
+ok('增益解析：train_acting = 演技+4~6／附帶台風+1／學費 $20／壓力+8~12（v75 一級；v390 七課統一學費）',
+  JSON.stringify(gains.train_acting) === JSON.stringify({ acting:[4,6], stage:[1,1], money:[-20,-20], stress:[8,12] }));
 /* v20a76 改版：智商課主增益／壓力統一返全表（用戶 17:28 拍板）——智商+4~6／壓力+8~12；
    附帶演技+1 唔郁。 */
 ok('增益解析：train_iq 附帶演技+1', gains.train_iq && gains.train_iq.iq[0] === 4 && gains.train_iq.iq[1] === 6
@@ -92,9 +92,9 @@ ok('v75：演技 5 堂後增益轉二級 = 演技+6~8／台風+2／壓力+10~14'
 ok('增益解析：train_stage 有台風增益（解析層面）', gains.train_stage && gains.train_stage.stage[0] === 4);
 /* v20a76 改版：外貌課主增益／壓力統一返全表（用戶 17:28 拍板）——外貌+4~6／壓力+8~12；
    附帶魅力+1 同學費 $80 唔郁（v261 ÷10）。 */
-ok('增益解析：train_looks = 外貌+4~6／魅力+1／學費 $40／壓力+8~12（同行串連分支）',
+ok('增益解析：train_looks = 外貌+4~6／魅力+1／學費 $20／壓力+8~12（同行串連分支；v390 七課統一學費 $20）',
   !!gains.train_looks && gains.train_looks.looks[0] === 4 && gains.train_looks.looks[1] === 6
-  && gains.train_looks.charm[0] === 1 && gains.train_looks.money[0] === -40
+  && gains.train_looks.charm[0] === 1 && gains.train_looks.money[0] === -20
   && gains.train_looks.stress[0] === 8 && gains.train_looks.stress[1] === 12);
 
 /* ---------- (2) 課程地點衍生 ---------- */

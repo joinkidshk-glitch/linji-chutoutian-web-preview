@@ -99,15 +99,15 @@ ok(src.includes("stress:-(6+R(0,4))"), "部分休息（家務）−(6+R(0,4)) �
 eval(extractFn("livingCostWeekNum"));
 eval(extractFn("livingCostBand"));
 S = { fame: 0 };
-ok(livingCostBand(2).mid === 110, "wk2 生活費 mid 110（舊 160）");
-ok(livingCostBand(8).mid === 130, "wk8 生活費 mid 130（舊 soft 190／LIVE 240）");
-ok(livingCostBand(20).mid === 150, "wk20 生活費 mid 150（舊 240）");
-ok(livingCostBand(35).mid === 170, "wk35 生活費 mid 170（舊 240）");
-ok(livingCostBand(44).mid === 270, "wk44 已入 1991：full 帶 240＋年份加幅 30 = 270（後期規則冇郁）");
-ok(livingCostBand(50).mid === 270, "1991 wk50 = 240+30（CALIB60 加幅保留）");
-ok(livingCostBand(100).mid === 300, "1992 wk100 = 240+60（CALIB60 加幅保留）");
+ok(livingCostBand(2).mid === 120, "wk2 生活費 mid 120（v390 ×1.1；舊 160）");
+ok(livingCostBand(8).mid === 145, "wk8 生活費 mid 145（v390 ×1.1；舊 soft 190／LIVE 240）");
+ok(livingCostBand(20).mid === 165, "wk20 生活費 mid 165（v390 ×1.1；舊 240）");
+ok(livingCostBand(35).mid === 185, "wk35 生活費 mid 185（v390 ×1.1；舊 240）");
+ok(livingCostBand(44).mid === 295, "wk44 已入 1991：full 帶 265＋年份加幅 30 = 295（v390；後期規則冇郁）");
+ok(livingCostBand(50).mid === 295, "1991 wk50 = 265+30（v390；CALIB60 加幅保留）");
+ok(livingCostBand(100).mid === 325, "1992 wk100 = 265+60（v390；CALIB60 加幅保留）");
 SOFT = true;
-ok(livingCostBand(8).mid === 130 && livingCostBand(35).mid === 170, "soft 預覽同 LIVE 同一緩坡");
+ok(livingCostBand(8).mid === 145 && livingCostBand(35).mid === 185, "soft 預覽同 LIVE 同一緩坡（v390）");
 SOFT = false;
 
 /* ---------- (3) FIX65-2 寬限入帳解除 ---------- */

@@ -155,11 +155,11 @@ ok('Arc C fame/credit 終點過 E1 單項門檻（60/55）', calC.atEnd.fame >= 
 
 /* ================= (3) 經濟 ================= */
 function livingCostBandV59(w, soft){ /* v20a65 FIX65-2：預期值改首年緩坡（soft 與否一致）；函數名保留歷史 */
-  if(w>=1 && w<=4) return 110;
-  if(w>=5 && w<=12) return 130;
-  if(w>=13 && w<=26) return 150;
-  if(w>=27 && w<=43) return 170;
-  return 240;
+  if(w>=1 && w<=4) return 120;
+  if(w>=5 && w<=12) return 145;
+  if(w>=13 && w<=26) return 165;
+  if(w>=27 && w<=43) return 185;
+  return 265;
 }
 let econOk = true;
 for(let wk = 1; wk <= 43; wk++){
@@ -171,13 +171,13 @@ for(let wk = 1; wk <= 43; wk++){
   }
 }
 softPreviewOn = function(){ return false; };
-ok('紅線（v20a65 更新；v20a66 年份 +2）：1990（wk1–43）×soft×fame 生活費＝首年緩坡 110/130/150/170', econOk);
+ok('紅線（v20a65 更新；v20a66 年份 +2）：1990（wk1–43）×soft×fame 生活費＝首年緩坡 120/145/165/185（v390 ×1.1）', econOk);
 S = baseSave(); S.fame = 0;
-ok('1991 wk50 生活費 240+30 = 270', livingCostBand(50).mid === 270);
-S.fame = 130; ok('1991 wk50 fame 130 → 290（+成名 20）', livingCostBand(50).mid === 290);
-S.fame = 300; ok('1991 wk50 fame 300 → 310（+成名 40）', livingCostBand(50).mid === 310);
-S.fame = 0;   ok('1992 wk100 生活費 240+60 = 300', livingCostBand(100).mid === 300);
-S.fame = 260; ok('1992 wk100 fame 260 → 340', livingCostBand(100).mid === 340);
+ok('1991 wk50 生活費 265+30 = 295（v390）', livingCostBand(50).mid === 295);
+S.fame = 130; ok('1991 wk50 fame 130 → 315（+成名 20；v390）', livingCostBand(50).mid === 315);
+S.fame = 300; ok('1991 wk50 fame 300 → 335（+成名 40；v390）', livingCostBand(50).mid === 335);
+S.fame = 0;   ok('1992 wk100 生活費 265+60 = 325（v390）', livingCostBand(100).mid === 325);
+S.fame = 260; ok('1992 wk100 fame 260 → 365（v390：265+60+40）', livingCostBand(100).mid === 365);
 S.fame = 0;   ok('1989 標籤講明物價', livingCostBand(50).label.indexOf('1991 年物價') >= 0);
 ok('livingCostEstimate = band mid（預覽/扣款一致）', livingCostEstimate(50) === livingCostBand(50).mid);
 

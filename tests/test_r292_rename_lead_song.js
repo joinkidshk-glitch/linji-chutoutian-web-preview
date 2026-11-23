@@ -37,7 +37,7 @@ ok('兩張 title 唔再含《主打歌》', g108 && g111 && g108.title.indexOf('
 /* ---- (3) 其餘欄位不變 ---- */
 function sameFields(g, season){
   return g && g.singer === 'luk_baakyin' && g.singerGender === 'M'
-    && JSON.stringify(g.pay) === '[600,720]' && g.tier === '高級'
+    && JSON.stringify(g.pay) === '[840,1008]' && g.tier === '高級'  // v390：片酬 ×1.4（600,720 → 840,1008）
     && g.year === 1992 && g.season === season
     && g.req && g.req.acting === 85 && g.req.stage === 65 && g.req.vocal === 55
     && g.genre === '情歌' && g.format === 'MTV' && g.days === 3

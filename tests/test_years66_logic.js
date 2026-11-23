@@ -71,9 +71,9 @@ ok('CONSEQ61_REVIEWS 鍵 = 1990/1991、地板 45/100 不變',
   CONSEQ61_REVIEWS[1991] && CONSEQ61_REVIEWS[1991].floor === 100 && CONSEQ61_REVIEWS[1991].boundaryWeek === 104 &&
   !CONSEQ61_REVIEWS[1988] && !CONSEQ61_REVIEWS[1989]);
 S = { fame: 0, popularity: 0, industryCreditDelta: 0 };
-ok('生活費：wk50 仍係曆法 1990 → 未加級 240（v20a67：加級跟真日曆年）', livingCostBand(50).mid === 240);
-ok('生活費：1991 年 wk56 = 240+30（年份加幅跟移）', livingCostBand(56).mid === 270);
-ok('生活費：1992 年 wk110 = 240+60', livingCostBand(110).mid === 300);
+ok('生活費：wk50 仍係曆法 1990 → 未加級 265（v20a67：加級跟真日曆年；v390 ×1.1）', livingCostBand(50).mid === 265);
+ok('生活費：1991 年 wk56 = 265+30（年份加幅跟移；v390）', livingCostBand(56).mid === 295);
+ok('生活費：1992 年 wk110 = 265+60（v390）', livingCostBand(110).mid === 325);
 S = null;
 
 /* ================= (3) gig 正規化 remap ================= */

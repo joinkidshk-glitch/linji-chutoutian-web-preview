@@ -127,9 +127,9 @@ ok('行為：finale grants() 行第二次 → 唔重複記低（一生一次）'
   fin.grants(); fin.grants();
   return S.grant229Queue.length === 1 && S.grant229Queue[0].gigId === 'gig_1991_variety_203';
 })());
-ok('行為：派發條款——簽約金＝pay 中位數三成（220→66）', (() => {
+ok('行為：派發條款——簽約金＝pay 中位數三成（308→92；v390 片酬 ×1.4）', (() => {
   const t = grant229HireTerms(gigById('gig_1991_variety_203'));
-  return !!t && t.pay === 220 && t.signPay === 66 && !t.contract;
+  return !!t && t.pay === 308 && t.signPay === 92 && !t.contract;
 })());
 ok('行為：殺青 variety_203 → 債權標 redeemedBy、variety_106 落板', (() => {
   resetS(100);

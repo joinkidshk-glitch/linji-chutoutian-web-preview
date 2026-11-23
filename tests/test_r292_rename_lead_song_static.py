@@ -30,7 +30,7 @@ ok('銅鑼灣喺全庫只出現一次', sum(1 for g in gigs if g.get('workTitle'
 
 def same_fields(g, season):
     return (bool(g) and g.get('singer') == 'luk_baakyin' and g.get('singerGender') == 'M'
-            and g.get('pay') == [600, 720] and g.get('tier') == '高級'
+            and g.get('pay') == [840, 1008] and g.get('tier') == '高級'  # v390：片酬 ×1.4（600,720 → 840,1008）
             and g.get('year') == 1992 and g.get('season') == season
             and g.get('req') == {'acting': 85, 'stage': 65, 'vocal': 55}
             and g.get('genre') == '情歌' and g.get('format') == 'MTV' and g.get('days') == 3

@@ -89,8 +89,8 @@ S = {
   giftMeta: { lastGiveDay:{}, weekGiftGain:{}, givenCount:{}, shopStock:{}, shopWeek: 0 },
 };
 const sum = settleWeek();
-ok(S.money === 13788, "settleWeek 生活費 $110 只扣一次：13898 → 13788（實得 " + S.money + "）");
-ok(sum && sum.weekNum === 1 && /生活費 \$110/.test(sum.html), "結算 summary 含生活費 $110");
+ok(S.money === 13778, "settleWeek 生活費 $120 只扣一次：13898 → 13778（v390 ×1.1；實得 " + S.money + "）");
+ok(sum && sum.weekNum === 1 && /生活費 \$120/.test(sum.html), "結算 summary 含生活費 $120（v390）");
 ok(S.weekBoundary105 && S.weekBoundary105.week === 1, "WEEK105 旗已寫入 S（week=1）");
 ok(S.weekBoundary105 && S.weekBoundary105.html === sum.html, "旗存低嘅 html 同結算 summary 一致");
 ok(STORE && JSON.parse(STORE).weekBoundary105, "旗已隨 saveQ 落存檔快照");

@@ -28,10 +28,12 @@ def slice_fn(name):
         j += 1
     return src[m.start():j + 1]
 
-# A1：ROLE_Q 新擔正級 q=0.78；贏線冇郁
+# A1：ROLE_Q 新擔正級 q=0.78；贏線冇郁（v390：music_lead 0.78→0.85、rec_album 0.66→0.74、mtv 0.48→0.52，音樂獎天花板拉齊電影）
 rq = src[src.index('const AWARDS62_ROLE_Q'):src.index('const AWARDS62_ROLE_Q') + 1200]
-chk('A1 ROLE_Q ad_lead/music_lead/variety_host_lead 0.78 在位',
-    'ad_lead: 0.78' in rq and 'music_lead: 0.78' in rq and 'variety_host_lead: 0.78' in rq)
+chk('A1 ROLE_Q ad_lead/variety_host_lead 0.78＋music_lead 0.85 在位',
+    'ad_lead: 0.78' in rq and 'music_lead: 0.85' in rq and 'variety_host_lead: 0.78' in rq)
+chk('A1 ROLE_Q rec_album 0.74＋mtv 0.52 在位（v390）',
+    'rec_album: 0.74' in rq and 'mtv: 0.52' in rq)
 chk('A1 贏線 AWARDS62_WIN_LINE=0.875 冇郁', 'const AWARDS62_WIN_LINE = 0.875;' in src)
 
 # A2：ROLE_SCALE_BAND＋擔正表＋end229IsLead 同步

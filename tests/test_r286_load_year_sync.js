@@ -105,9 +105,9 @@ const f102 = GIGS.find(g => g && g.id === 'gig_1991_film_102');
 ok('B3 1991 load：sync 後 GIGS 110 張、yearActive 1991、含 film_102、冇 1990 年通告',
   GIGS.length === 110 && STORY_WIRE.gigsYearActive === 1991 && has102 &&
   !GIGS.some(g => g && Number(g.year) === 1990));
-ok('B4 1991 load 後 film_102 內容啱：《霓虹夜影》男主角／秋／film_harbour／pay [4416,5184]／req 演技 130 體能 90',
+ok('B4 1991 load 後 film_102 內容啱：《霓虹夜影》男主角／秋／film_harbour／pay [6182,7258]（v390 ×1.4）／req 演技 130 體能 90',
   !!f102 && f102.title === '《霓虹夜影》男主角' && f102.season === '秋' &&
-  f102.loc === 'film_harbour' && Array.isArray(f102.pay) && f102.pay[0] === 4416 && f102.pay[1] === 5184 &&
+  f102.loc === 'film_harbour' && Array.isArray(f102.pay) && f102.pay[0] === 6182 && f102.pay[1] === 7258 &&
   f102.req && f102.req.acting === 130 && f102.req.stamina === 90);
 ok('B5 1991 load：sync 唔 call mergeEntryGigsIntoPool（只限 1990 年）',
   mergeEntryCalls === 0 && winterCalls === 0);

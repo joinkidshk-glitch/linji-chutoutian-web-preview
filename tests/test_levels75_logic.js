@@ -134,14 +134,14 @@ ok('升級進度：10 堂 → 已到三級（top）',
    保留一級 +3~5＋各課自己壓力帶，用戶 17:28 拍板統一返全表——七課主增益同
    壓力一致，附帶同外貌學費 $80 唔郁）：
    [mainLo, mainHi, subStat, subVal, stressLo, stressHi, fee] × 三級 */
-const EXPECT = {
-  train_acting:  { stat:'acting',  sub:'stage', base:[4,6], sBase:[8,12] },
-  train_stage:   { stat:'stage',   sub:'charm', base:[4,6], sBase:[8,12] },
-  train_vocal:   { stat:'vocal',   sub:null,    base:[4,6], sBase:[8,12] },
-  train_looks:   { stat:'looks',   sub:'charm', base:[4,6], sBase:[8,12], fee:40 }, /* v377：學費 $80→$40 */
-  train_charm:   { stat:'charm',   sub:null,    base:[4,6], sBase:[8,12] },
-  train_iq:      { stat:'iq',      sub:'acting', base:[4,6], sBase:[8,12] },
-  train_stamina: { stat:'stamina', sub:null,    base:[4,6], sBase:[8,12] },
+const EXPECT = { /* v390：七課統一學費 $20（舊制只有外貌課 $40） */
+  train_acting:  { stat:'acting',  sub:'stage', base:[4,6], sBase:[8,12], fee:20 },
+  train_stage:   { stat:'stage',   sub:'charm', base:[4,6], sBase:[8,12], fee:20 },
+  train_vocal:   { stat:'vocal',   sub:null,    base:[4,6], sBase:[8,12], fee:20 },
+  train_looks:   { stat:'looks',   sub:'charm', base:[4,6], sBase:[8,12], fee:20 },
+  train_charm:   { stat:'charm',   sub:null,    base:[4,6], sBase:[8,12], fee:20 },
+  train_iq:      { stat:'iq',      sub:'acting', base:[4,6], sBase:[8,12], fee:20 },
+  train_stamina: { stat:'stamina', sub:null,    base:[4,6], sBase:[8,12], fee:20 },
 };
 function expAt(e, lv){ /* lv: 1..3 → 主 [lo,hi]、附帶值、壓力 [lo,hi] */
   const lo = e.base[0] + (lv - 1) * 2, hi = e.base[1] + (lv - 1) * 2 + (lv === 3 ? 1 : 0);

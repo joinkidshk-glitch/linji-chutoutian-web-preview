@@ -13647,6 +13647,8 @@ function end95BuildGaps(ctx){
   if(!ctx.hasWin) lines.push("獎，你未曾拿過——頒獎禮那幾晚，你依然坐在台下。");
   if((ctx.leadMediaCount | 0) <= 0) lines.push("擔正，你未曾站上那個位置——哪種媒介都沒有。");
   else if(ctx.leadMediaCount < 2) lines.push("擔正，你只在一邊擔正過——還欠另一種媒介。");
+  /* v20a390：電影擔正缺口（E1 新閘）——已有 ≥2 媒介擔正但冇電影擔正嗰陣先講，唔同上面兩句疊。 */
+  else if((ctx.filmLead | 0) < 1) lines.push("電影擔正，你未曾站上那個位置——天王那一格，要有一部電影由你擔正。");
   if(ctx.spine && !ctx.spine.done) lines.push("主線尚欠 " + ctx.spine.missing.join("、") + " 未完成——天王那一格，要走完整條主線，單靠接工作是堆不出來的。");
   if((ctx.dual | 0) < T.e1Dual) lines.push("聲望與信用合計，你還差 " + (T.e1Dual - (ctx.dual | 0)) + " 才到天王那條線。");
   if((ctx.fame | 0) < T.e1Fame) lines.push("聲望還差 " + (T.e1Fame - (ctx.fame | 0)) + "。");
@@ -13688,16 +13690,22 @@ function resolveEnding410(st, opts){
   const total95 = Math.max(0, stats95.total | 0);
   const share95 = n => total95 > 0 ? ((Number(n) || 0) / total95) : 0;
   const genreShare95 = n => stats95.genreIdentified > 0 ? ((Number(n) || 0) / stats95.genreIdentified) : 0;
-  const e1Qual95 = awards95.hasWin && leadMedia95.length >= 2 && spine95.done;
+  /* v20a390 E1 難易度（用戶 2026-11-23 拍板「E1 要用心玩先可達」）：質性閘加電影擔正 ≥1。
+     第十輪深度審計實測：正常政策（預設計劃＋最高片酬）雙軌 829、獎 9 格、擔正 4 媒介 15 部、
+     脊骨行完，唯獨電影擔正 0 部（全庫 film_lead_big 只有 10 張，1991/92 各 5，演技 85–150，
+     唔刻意追唔會自然攞到）；衝刺政策電影擔正 2 部。雙軌門檻唔郁（正常 829 vs 衝刺 911，
+     三局衝刺範圍 669–1010，方差太大，加門檻冇區分作用）。 */
+  const filmLead390 = (lead229.byMedium.film || 0);
+  const e1Qual95 = awards95.hasWin && leadMedia95.length >= 2 && spine95.done && filmLead390 >= 1;
   let career = "E0", variant = "";
   if(fame>=T95.e1Fame && credit>=T95.e1Credit && sum>=T95.e1Dual && neg<=T95.e1NegMax && e1Qual95){
-    career = "E1"; reasons.push("E1：聲望 "+fame+"≥"+T95.e1Fame+"、信用 "+credit+"≥"+T95.e1Credit+"、雙軌 "+sum+"≥"+T95.e1Dual+"、負標籤 "+neg+"≤"+T95.e1NegMax+"＋質性閘全齊（獎 "+awards95.wins+"／擔正媒介 "+leadMedia95.length+"／主線脊骨已走完）");
+    career = "E1"; reasons.push("E1：聲望 "+fame+"≥"+T95.e1Fame+"、信用 "+credit+"≥"+T95.e1Credit+"、雙軌 "+sum+"≥"+T95.e1Dual+"、負標籤 "+neg+"≤"+T95.e1NegMax+"＋質性閘全齊（獎 "+awards95.wins+"／擔正媒介 "+leadMedia95.length+"／電影擔正 "+filmLead390+"／主線脊骨已走完）");
   } else if(fame>=T.e4Fame && credit<T.e4CreditBelow){
     career = "E4";
     variant = (favor.creditsHeld>=T.e4RescueCredits) ? "rescued" : "sunk";
     reasons.push("E4：聲望 "+fame+"≥"+T.e4Fame+"、信用 "+credit+"<"+T.e4CreditBelow+"；債權持有 "+favor.creditsHeld+" → "+(variant==="rescued"?"沉唔死版":"真沉版"));
   } else if(sum>=T95.ssDual && fame>=T95.ssFame && credit>=T95.ssCredit && neg<=T95.ssNegMax){
-    career = "SS"; reasons.push("SS 一線巨星：雙軌 "+sum+"≥"+T95.ssDual+"、聲望 "+fame+"≥"+T95.ssFame+"、信用 "+credit+"≥"+T95.ssCredit+"、負標籤 "+neg+"≤"+T95.ssNegMax+"（未齊 E1 質性閘：獎 "+(awards95.hasWin?"有":"冇")+"／擔正媒介 "+leadMedia95.length+"／主線脊骨 "+(spine95.done?"已走完":"尚欠 "+spine95.missing.join("、"))+"）");
+    career = "SS"; reasons.push("SS 一線巨星：雙軌 "+sum+"≥"+T95.ssDual+"、聲望 "+fame+"≥"+T95.ssFame+"、信用 "+credit+"≥"+T95.ssCredit+"、負標籤 "+neg+"≤"+T95.ssNegMax+"（未齊 E1 質性閘：獎 "+(awards95.hasWin?"有":"冇")+"／擔正媒介 "+leadMedia95.length+"／電影擔正 "+filmLead390+"／主線脊骨 "+(spine95.done?"已走完":"尚欠 "+spine95.missing.join("、"))+"）");
   } else if(sum>=T95.fkDual && share95(stats95.byMedium.film)>=T95.fkFilmShare && (lead229.byMedium.film||0)>=T95.fkFilmLeads){
     career = "FK"; reasons.push("FK 影壇天王：雙軌 "+sum+"≥"+T95.fkDual+"、電影佔比 "+Math.round(share95(stats95.byMedium.film)*100)+"%≥50%、電影擔正 "+(lead229.byMedium.film||0)+"≥"+T95.fkFilmLeads);
   } else if(sum>=T95.tkDual && share95(stats95.byMedium.tv)>=T95.tkTvShare && (lead229.byMedium.tv||0)>=T95.tkTvLongLeads){
@@ -13763,14 +13771,14 @@ function resolveEnding410(st, opts){
   const titleName95 = (career==="E3" && variant) ? variant : (ENDING410_CAREER_NAMES[career] || career);
   const title = titleName95 + "・" + exodusWord;
   const gaps95 = end95BuildGaps({ career: career, fame: fame, credit: credit, dual: sum, negTags: neg,
-    hasWin: awards95.hasWin, leadMediaCount: leadMedia95.length, chains: chains95, spine: spine95 });
+    hasWin: awards95.hasWin, leadMediaCount: leadMedia95.length, filmLead: filmLead390, chains: chains95, spine: spine95 });
   return {
     career: career, careerVariant: variant, baseCareer: baseCareer, baseVariant: baseVariant,
     romance: romance, exodus: exodus, title: title, reasons: reasons,
     gaps95: gaps95,
     ladder95: { total: total95, byMedium: Object.assign({}, stats95.byMedium), leadByMedium: Object.assign({}, lead229.byMedium),
       tvLongLeads: (lead229.byMedium.tv || 0), genreIdentified: stats95.genreIdentified, genreComedy: stats95.genreComedy, genreAction: stats95.genreAction,
-      leadMedia: leadMedia95.slice(), chains: chains95.slice(), spine95: { done: spine95.done, missing: spine95.missing.slice() }, hasWin: awards95.hasWin, musicHonor: awards95.musicHonor },
+      leadMedia: leadMedia95.slice(), filmLead: filmLead390, chains: chains95.slice(), spine95: { done: spine95.done, missing: spine95.missing.slice() }, hasWin: awards95.hasWin, musicHonor: awards95.musicHonor },
     snapshot: {
       fame: fame, credit: credit, dual: sum, negTags: neg,
       settled: favor.settled, creditsTotal: favor.creditsTotal, creditsHeld: favor.creditsHeld,
@@ -15712,14 +15720,18 @@ async function refreshCopyPacksFromDisk(){
 const LEVELS75_STEP = 5;
 const LEVELS75_MAX = 3;
 const LEVELS75_NAMES = ["", "一級", "二級", "三級"];
+/* v20a390 錢約束：七課統一學費 $20/堂（舊制只有外貌課 fee800 $40，其餘免費——訓練冇成本
+   令錢唔構成決策）。fee 欄取代 fee800；實際扣費仍以現有現金為上限（min(fee, money)），
+   預設計劃自動排課唔會扣到負數。Monte Carlo：$35 令訓練型打法破產率 36%，$20 降至 2.5%
+   （唔識變通嘅固定政策；真人會跟警告調整），休閒打法 0%。 */
 const TRAIN75_SPEC = {
-  train_acting:  { main:"acting",  mLo:4, mSpan:2, sub:"stage",  sLo:8, sSpan:4 },
-  train_stage:   { main:"stage",   mLo:4, mSpan:2, sub:"charm",  sLo:8, sSpan:4 },
-  train_vocal:   { main:"vocal",   mLo:4, mSpan:2, sub:null,     sLo:8, sSpan:4 },
-  train_looks:   { main:"looks",   mLo:4, mSpan:2, sub:"charm",  sLo:8, sSpan:4, fee800:true },
-  train_charm:   { main:"charm",   mLo:4, mSpan:2, sub:null,     sLo:8, sSpan:4 },
-  train_iq:      { main:"iq",      mLo:4, mSpan:2, sub:"acting", sLo:8, sSpan:4 },
-  train_stamina: { main:"stamina", mLo:4, mSpan:2, sub:null,     sLo:8, sSpan:4 },
+  train_acting:  { main:"acting",  mLo:4, mSpan:2, sub:"stage",  sLo:8, sSpan:4, fee:20 },
+  train_stage:   { main:"stage",   mLo:4, mSpan:2, sub:"charm",  sLo:8, sSpan:4, fee:20 },
+  train_vocal:   { main:"vocal",   mLo:4, mSpan:2, sub:null,     sLo:8, sSpan:4, fee:20 },
+  train_looks:   { main:"looks",   mLo:4, mSpan:2, sub:"charm",  sLo:8, sSpan:4, fee:20 },
+  train_charm:   { main:"charm",   mLo:4, mSpan:2, sub:null,     sLo:8, sSpan:4, fee:20 },
+  train_iq:      { main:"iq",      mLo:4, mSpan:2, sub:"acting", sLo:8, sSpan:4, fee:20 },
+  train_stamina: { main:"stamina", mLo:4, mSpan:2, sub:null,     sLo:8, sSpan:4, fee:20 },
 };
 function levels75Count(o, cid){ return (o && o.trainCount && Number(o.trainCount[cid])) || 0; }
 function levels75Level(o, cid){
@@ -15743,7 +15755,7 @@ function levels75GainRange(cid, lv){
   const mLo = sp.mLo + (lv - 1) * 2, mSpan = sp.mSpan + (lv === 3 ? 1 : 0);
   out[sp.main] = [mLo, mLo + mSpan];
   if(sp.sub) out[sp.sub] = [lv, lv];
-  if(sp.fee800) out.money = [-40, -40]; /* v20a377：外貌課學費 $80→$40（休閒經濟可持續，見 NOTES_V20A377） */
+  if(sp.fee) out.money = [-sp.fee, -sp.fee]; /* v20a390：七課統一學費 $20（舊 fee800 外貌課 $40 已併入） */
   const sLo = sp.sLo + (lv - 1) * 2;
   out.stress = [sLo, sLo + sp.sSpan];
   return out;
@@ -15757,7 +15769,7 @@ function levels75GainRoll(cid, lv){
   const mLo = sp.mLo + (lv - 1) * 2, mSpan = sp.mSpan + (lv === 3 ? 1 : 0);
   g[sp.main] = mLo + R(0, mSpan);
   if(sp.sub) g[sp.sub] = lv;
-  if(sp.fee800) g.money = -Math.min(40, (typeof S !== "undefined" && S) ? (Number(S.money) || 0) : 0); /* v20a377：學費 $80→$40 */
+  if(sp.fee) g.money = -Math.min(sp.fee, (typeof S !== "undefined" && S) ? (Number(S.money) || 0) : 0); /* v20a390：學費 $20，以現有現金為上限 */
   const sLo = sp.sLo + (lv - 1) * 2;
   g.stress = sLo + R(0, sp.sSpan);
   return g;
@@ -20748,11 +20760,13 @@ function livingCostBand(w){
      唔係同評核週對位；wk43→44 銜接（$170→$240）同 v66 時代嘅跳幅一致（v66 嗰陣
      wk44 仲要疊 CALIB60 1991 加級、跳幅更大），1 月 epoch 下 CALIB60 年加級改由真
      日曆年觸發（wk54 起 +$30），全年總生活費比 v66 微降，唔構成罅，金額一律唔郁。 */
-  if(week>=1 && week<=4) band = { lo:95, hi:125, mid:110, label:"$95–125（開局優惠）", tier:"early" };
-  else if(week>=5 && week<=12) band = { lo:115, hi:145, mid:130, label:"$115–145（首年緩坡）", tier:"y1_a" };
-  else if(week>=13 && week<=26) band = { lo:135, hi:165, mid:150, label:"$135–165（首年緩坡）", tier:"y1_b" };
-  else if(week>=27 && week<=43) band = { lo:155, hi:185, mid:170, label:"$155–185（首年緩坡）", tier:"y1_c" };
-  else band = { lo:200, hi:280, mid:240, label:"$200–280", tier:"full" };
+  /* v20a390 錢約束：生活費全帶 ×1.1（取整到 $5）——錢要變真約束，唔再全程唔使理。
+     Monte Carlo 驗證休閒打法破產率維持 0%（見 NOTES_V20A390）。CALIB60 年份／聲望加級不變。 */
+  if(week>=1 && week<=4) band = { lo:105, hi:140, mid:120, label:"$105–140（開局優惠）", tier:"early" };
+  else if(week>=5 && week<=12) band = { lo:125, hi:160, mid:145, label:"$125–160（首年緩坡）", tier:"y1_a" };
+  else if(week>=13 && week<=26) band = { lo:150, hi:180, mid:165, label:"$150–180（首年緩坡）", tier:"y1_b" };
+  else if(week>=27 && week<=43) band = { lo:170, hi:205, mid:185, label:"$170–205（首年緩坡）", tier:"y1_c" };
+  else band = { lo:220, hi:310, mid:265, label:"$220–310", tier:"full" };
   /* v20a60 CALIB60-2：生活費隨年份＋名氣遞增（全弧報告 §6.2.5——gate-on 錢全程唔構成決策）。
      只限 1991 年起：1991 +$30／1992 +$60；同年 fame≥120 再 +$20、fame≥250 再 +$40（取高嗰級，唔疊加）。
      1990 年（新人期）完全唔經呢段——同 v20a59 逐蚊一致，守住「唔好餓死新人」紅線（gate-off 弧試過 $0 死局）。
@@ -22653,7 +22667,11 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
        （S.ptWeek368 週次計數，舊檔 undefined 即初始化；週次同 weekNumNow 同式）。
        v20a371 FIX371-2（第二輪評估 P1-2）：再壓到 $70–100（均值 $85），低過高級通告
        期望日均 $104.9，兼職回復「穩定但低效」嘅救急定位；壓力折扣下限同步調低。 */
-    let pay=R(70,100);
+    /* v20a390 錢約束（第十輪審計 P1-1）：街演 $70–100→$35–60（均值 $47.5）、咖啡 $85–115→$45–75
+       （均值 $60），連同通告片酬 ×1.4（gigs_new.json）令通告收入壓過兼職（次序反轉）；
+       壓力折扣下限按比例調低（$20→$12、$40→$25），唔俾下限食晒折扣。Monte Carlo 驗證見
+       NOTES_V20A390（兼職打法年尾現金低過通告打法、休閒破產率 0%）。 */
+    let pay=R(35,60);
     const wk368=Math.floor(((S&&S.dayIndex)||0)/7)+1;
     if(!S.ptWeek368 || S.ptWeek368.wk!==wk368) S.ptWeek368={wk:wk368, street:0, cafe_gig:0};
     S.ptWeek368.street++;
@@ -22661,8 +22679,8 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
     if(taper368) pay=Math.round(pay*0.6);
     const st=Number(S.stress)||0;
     /* v20a371：下限跟新日薪比例調低，唔好俾下限食晒壓力折扣（stressImpact34 ×0.5／×0.2 口徑不變） */
-    if(st>=90){ pay=Math.max(20, Math.round(pay*0.2)); }
-    else if(st>=70){ pay=Math.max(40, Math.round(pay*0.5)); }
+    if(st>=90){ pay=Math.max(12, Math.round(pay*0.2)); }
+    else if(st>=70){ pay=Math.max(25, Math.round(pay*0.5)); }
     notes=applyGain60({stage:2, charm:1, fame:R(0,1), popularity:1+R(0,2), money:pay, stress:6+R(0,4)});
     notes.unshift(`<span class="gold">街頭表演日結 · 週${weekdayName(weekdayIdx(S.dayIndex))}</span>`);
     if(taper368) notes.push(`<span class="var-note">本週多次街頭表演，酬勞按六成計算。</span>`);
@@ -22677,7 +22695,7 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
        v20a371 FIX371-2（第二輪評估 P1-2）：再壓到 $85–115（均值 $100，GPT 錨點），
        低過全庫最佳通告期望日均 ~$145 同高級中位 $104.9，純現金最優解回復通告；
        壓力折扣下限同步調低（見下）。 */
-    let pay=R(85,115);
+    let pay=R(45,75); /* v20a390：$85–115→$45–75（均值 $60），見街演段註解 */
     const wk368=Math.floor(((S&&S.dayIndex)||0)/7)+1;
     if(!S.ptWeek368 || S.ptWeek368.wk!==wk368) S.ptWeek368={wk:wk368, street:0, cafe_gig:0};
     S.ptWeek368.cafe_gig++;
@@ -22685,8 +22703,8 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
     if(taper368) pay=Math.round(pay*0.6);
     const st=Number(S.stress)||0;
     /* v20a371：下限跟新日薪比例調低，唔好俾下限食晒壓力折扣（stressImpact34 ×0.5／×0.2 口徑不變） */
-    if(st>=90){ pay=Math.max(20, Math.round(pay*0.2)); }
-    else if(st>=70){ pay=Math.max(40, Math.round(pay*0.5)); }
+    if(st>=90){ pay=Math.max(12, Math.round(pay*0.2)); }
+    else if(st>=70){ pay=Math.max(25, Math.round(pay*0.5)); }
     notes=applyGain60({charm:2, stage:1, money:pay, fame:R(0,1), popularity:R(0,2), stress:5+R(0,3)});
     notes.unshift(`<span class="gold">咖啡店駐場日結 · 週${weekdayName(weekdayIdx(S.dayIndex))}</span>`);
     if(taper368) notes.push(`<span class="var-note">本週多次咖啡店駐場，酬勞按六成計算。</span>`);
@@ -31026,10 +31044,12 @@ function titles162Ladder162(){
     const lad = res.ladder95 || {};
     const hasWin = !!lad.hasWin;
     const leadN = Array.isArray(lad.leadMedia) ? lad.leadMedia.length : 0;
+    const filmLeadN = Number(lad.filmLead) || 0; /* v20a390：E1 電影擔正閘嘅第四項事實 */
     const chains = Array.isArray(lad.chains) ? lad.chains.length : 0;
     const rows = [];
     rows.push(hasWin ? "獎：攞過獎。" : "獎：仲未攞過獎。");
     rows.push(leadN<=0 ? "擔正：未試過企正嗰個位。" : (leadN<2 ? "擔正：只係喺一種媒介企過正。" : "擔正：已經喺唔止一種媒介企過正。"));
+    rows.push(filmLeadN>=1 ? "電影擔正：企過電影正位。" : "電影擔正：未試過企正電影嗰個位。");
     rows.push(chains<=0 ? "主線：未行完一條行內主線。" : "主線：有主線行到尾。");
     return { career: res.career, name: name, rows: rows };
   }catch(_e){ return null; }
@@ -33406,10 +33426,16 @@ const AWARDS62_ROLE_Q = {
   /* v20a361 P1-A：廣告／唱片／綜藝補擔正級 q（同 film_support_main 同級 0.78）——
      舊制三媒介封頂 0.48／0.66，廣告同司儀格天花板 0.795／0.784 數學上贏唔到（W2 真引擎覆核）；
      補 ad_lead／music_lead／variety_host_lead 後，滿配天花板同影視睇齊（qa361 harness 逐格驗證）。 */
-  ad_lead: 0.78, music_lead: 0.78, variety_host_lead: 0.78,
-  rec_album: 0.66,
+  /* v20a390 音樂獎天花板（第十輪審計 P1-2）：music_lead 0.78→0.85、rec_album 0.66→0.74、
+     mtv 0.48→0.52。舊值下音樂現實滿配桶 [0.78,0.66,0.48,0.48] wsum 1.407 < 飽和線 1.45，
+     攞唔到專攻星勢，base ~0.844 勝率約 20%（電影滿配 base 0.90 勝率約 75%）。
+     新值滿配桶 [0.85,0.74,0.74,0.52] wsum 1.620 → base 0.90，同電影睇齊；
+     [0.74,0.74,0.74,0.52]（冇 music_lead）wsum 1.510 → base ~0.892。贏線 0.875 不變。
+     rec_album／music_lead 同屬主唱擔正，層級維持 music_lead > rec_album > mtv。 */
+  ad_lead: 0.78, music_lead: 0.85, variety_host_lead: 0.78,
+  rec_album: 0.74,
   film_support_small: 0.55, tv_cameo_short: 0.55,
-  mtv: 0.48, ad_av: 0.48, variety_special: 0.48,
+  mtv: 0.52, ad_av: 0.48, variety_special: 0.48,
   ad_print: 0.40, variety_ep: 0.40, photobook: 0.40,
   film_extra_day: 0.22, tv_extra_day: 0.22, ad_extra_day: 0.22,
   rec_extra_day: 0.22, variety_extra_day: 0.22

@@ -40,8 +40,8 @@ ok('1.11 source 唔郁', A && B && A.source === '廖炳星支線' && B.source ==
 
 const g210 = gigById('gig_1990_tv_210');
 const g209 = gigById('gig_1990_tv_209');
-ok('tv_210 係冬／臨記／pay [80,100]／3 日', g210 && g210.season === '冬' && g210.tier === '臨記' && JSON.stringify(g210.pay) === '[80,100]' && g210.days === 3);
-ok('tv_209 係秋／臨記／pay [55,65]／2 日', g209 && g209.season === '秋' && g209.tier === '臨記' && JSON.stringify(g209.pay) === '[55,65]' && g209.days === 2);
+ok('tv_210 係冬／臨記／pay [112,140]／3 日（v390 ×1.4）', g210 && g210.season === '冬' && g210.tier === '臨記' && JSON.stringify(g210.pay) === '[112,140]' && g210.days === 3);
+ok('tv_209 係秋／臨記／pay [77,91]／2 日（v390 ×1.4）', g209 && g209.season === '秋' && g209.tier === '臨記' && JSON.stringify(g209.pay) === '[77,91]' && g209.days === 2);
 ok('獎懲啱返：A 嗰張 pay／days 高過 B 嗰張', g210 && g209 && g210.pay[0] > g209.pay[0] && g210.days > g209.days);
 ok('兩張皆電視劇喜劇替身雜務 1990（廖炳星有份）', [g210, g209].every(g=> g && g.type === '電視劇' && g.genre === '喜劇' && g.roleLabel === '喜劇替身雜務' && g.year === 1990 && JSON.stringify(g.cast || {}).indexOf('liu_bingxing') >= 0));
 
