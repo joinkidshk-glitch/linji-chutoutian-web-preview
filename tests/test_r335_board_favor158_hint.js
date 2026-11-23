@@ -100,7 +100,7 @@ eval(extractFn('pangChannelReady158'));
 eval(extractFn('favor158ChannelForGig'));
 eval(extractFn('favor158ChannelHintHtml'));
 eval(extractFn('gigBoardTeaserHtml'));
-eval(extractFn('addLocGigActs'));
+/* v389：addLocGigActs 已刪（逐張通告掣收埋入通告欄），金提示只剩通告欄短卡一層。 */
 
 const MAK_GIG = gigById('gig_1991_film_108');      /* 《月夜酒廊》男配角，動作＋作品，演技 78／體能 70 */
 const MAK_WRONG = gigById('gig_1990_film_206');    /* 碼頭搬運，臨記通告，唔入武指渠道 */
@@ -180,64 +180,10 @@ ok('C1 gigBoardTeaserHtml 內有 favor158ChannelHintHtml 呼叫', html.indexOf('
 ok('C2 CSS 有 .gig-teaser .gold 短卡尺寸規則', html.indexOf('.gig-teaser .gold')>=0);
 ok('C3 gigCardHtml 提示寫法原封不動', html.indexOf('let favor158Html = "";')>=0);
 ok('C4 add() 有 extraHtml 第 6 參數（地點掣金提示行）', html.indexOf('const add=(title,hint,cost,fn,cls,extraHtml)=>{')>=0);
-ok('C5 addLocGigActs 傳 favor158Gold 入 add()', html.indexOf('favor158Gold')>=0 && html.indexOf('undefined, favor158Gold')>=0);
+ok('C5 addLocGigActs 已刪（v389 逐張掣收埋入通告欄）', html.indexOf('function addLocGigActs')<0);
 ok('C6 CSS 有 #loc-sheet.sheet .act .gold 掣內金行規則', html.indexOf('#loc-sheet.sheet .act .gold')>=0);
 
-/* ---------- D. 地點面板接通告掣（addLocGigActs，實駕 A1 檢查嗰層） ---------- */
-function runActs(gigList){
-  const calls = [];
-  const addStub = function(title, hint, cost, fn, cls, extraHtml){ calls.push({ title:title, hint:hint, cost:cost, cls:cls||'', extra:extraHtml||'' }); };
-  addLocGigActs(addStub, { id:'tvb_kowloon' }, gigList, {});
-  return calls;
-}
-function findCall(calls, frag){ return calls.find(c=>c.title.indexOf(frag)>=0); }
-
-freshS({ stage:50, acting:80, stamina:80, charm:30 });
-giveCredit('credit_enc79_mak_wuzhi', '紅棉武指');
-lifecycleOverride = null;
-let calls = runActs([MAK_GIG]);
-let call = findCall(calls, '月夜酒廊');
-ok('D1 武指 ready 掣：有金提示行', call && call.extra.indexOf('class="gold"')>=0 && call.extra.indexOf('武指照應')>=0, call && call.extra);
-ok('D2 武指 ready 掣：金行文字同 favor158ChannelForGig 逐字相同', call && call.extra === '<div class="gold">'+favor158ChannelForGig(MAK_GIG).hint+'</div>', call && call.extra);
-ok('D3 武指 ready 掣：標題＋成功率 hint 照常', call && call.title.indexOf('接通告：')===0 && call.hint.indexOf('成功率 64%')>=0, call && (call.title+' / '+call.hint));
-
-freshS({ stage:50, acting:80, stamina:80, charm:30 });
-calls = runActs([MAK_GIG]);
-call = findCall(calls, '月夜酒廊');
-ok('D4 無債權 → 接通告掣無金提示行', call && call.extra === '', call && JSON.stringify(call.extra));
-
-freshS({ stage:50, acting:10, stamina:80, charm:30 });
-giveCredit('credit_enc79_mak_wuzhi', '紅棉武指');
-calls = runActs([MAK_GIG]);
-call = findCall(calls, '月夜酒廊');
-ok('D5 武指閘未過（演技唔夠）→ 鎖定掣無金提示行', call && call.title.indexOf('暫未能報：')===0 && call.extra === '', call && (call.title+' / '+JSON.stringify(call.extra)));
-
-freshS({ stage:25, acting:80, stamina:80, charm:30 });
-giveCredit('credit_enc84_pang_charity', '彭少祺');
-calls = runActs([PANG_GIG]);
-call = findCall(calls, '樂善之夜');
-ok('D6 彭鎖定掣（全數台風 45 唔夠、減半 23 過到）：有金提示行', call && call.title.indexOf('暫未能報：')===0 && call.extra.indexOf('慈善騷頂班')>=0, call && (call.title+' / '+call.extra));
-ok('D7 彭鎖定掣：提示寫明台風減半數字', call && call.extra.indexOf('台風要求 45→23')>=0, call && call.extra);
-
-freshS({ stage:50, acting:80, stamina:80, charm:30 });
-giveCredit('credit_enc84_pang_charity', '彭少祺');
-calls = runActs([PANG_GIG]);
-call = findCall(calls, '樂善之夜');
-ok('D8 彭 ready 掣：有金提示行', call && call.extra.indexOf('class="gold"')>=0 && call.extra.indexOf('慈善騷頂班')>=0, call && call.extra);
-
-freshS({ stage:10, acting:80, stamina:80, charm:30 });
-giveCredit('credit_enc84_pang_charity', '彭少祺');
-calls = runActs([PANG_GIG]);
-call = findCall(calls, '樂善之夜');
-ok('D9 彭減半都唔夠（台風 10＜23）→ 掣無金提示行', call && call.extra === '', call && JSON.stringify(call.extra));
-
-freshS({ stage:50, acting:80, stamina:80, charm:30 });
-giveCredit('credit_enc79_mak_wuzhi', '紅棉武指');
-lifecycleOverride = { key:'hired', label:'已獲聘' };
-calls = runActs([MAK_GIG]);
-call = findCall(calls, '月夜酒廊');
-ok('D10 已獲聘通告 → 查看檔期掣，無金提示行', call && call.title.indexOf('查看檔期：')===0 && call.extra === '', call && (call.title+' / '+JSON.stringify(call.extra)));
-lifecycleOverride = null;
+/* ---------- D. （v389 已刪：地點面板逐張接通告掣收埋入通告欄，金提示由 A／B 段短卡覆蓋） ---------- */
 
 console.log(fails.length ? ('FAILURES: '+fails.length+' :: '+fails.join(' | ')) : 'ALL PASS');
 process.exit(fails.length ? 1 : 0);

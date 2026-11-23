@@ -41,15 +41,17 @@ ok('劇情列表兄弟句改完整子句（開了之後…就會觸發）', '開
 # --- 一（續）、v20a198 C1：地圖 hint renderer 已拎走（死 code），進度入口改行地圖「進度」掣＋手帳進度子頁 ---
 ok('v198 C1：地圖 hint renderer 已拎走', 'function storyMapHintHtml(){' not in src and 'function refreshMapHintStory(){' not in src)
 ok('v198 C1：地圖卡模板唔再有 hint 掣（data-prog71="1" 零出現）', src.count('data-prog71="1"') == 0)
-ok('v198 C1：進度入口仲喺度（頂欄 chip＋手帳進度子頁；v128 起地圖浮掣已取消）',
-   'id="chip-story"' in src and 'id="home-pane-progress"' in src and 'enterHome(null, false, "progress")' in src)
+ok('v198 C1：進度入口仲喺度（頂欄 chip＋手帳進度 badge；v389 進度子頁改 badge＋抽屜）',
+   'id="chip-story"' in src and 'id="prog389-badge"' in src and 'enterHome(null, false, "progress")' in src)
 ok('v198 C1：storyMainProgressLine 保留（「下一幕」句式規格）', 'function storyMainProgressLine(){' in src)
 
-# --- 二、進度子頁 ---
-ok('行程組分段掣＝行程＋進度（冇訓練掣——3B 後訓練入選擇器）',
-   'id="htab-plan"' in src and 'id="htab-progress"' in src and 'id="htab-train"' not in src)
-ok('進度 pane 存在', 'id="home-pane-progress"' in src and 'id="progress-list"' in src)
-ok('分組映射加 progress（BOOK70_TAB_GROUP）', 'progress:"plan"' in src and 'plan:"plan"' in seg('const book70GroupSub', 'function book70SyncTabGroups'))
+# --- 二、進度抽屜（v389：子頁取消，改 badge＋modal 抽屜） ---
+ok('行程組分段掣＝本週安排＋衣櫃（冇進度掣／訓練掣）',
+   'id="htab-plan"' in src and 'id="htab-wardrobe"' in src and 'id="htab-progress"' not in src and 'id="htab-train"' not in src)
+ok('進度抽屜存在（progress-list＋openProgressDrawer389，冇 home-pane-progress）',
+   'id="progress-list"' in src and 'function openProgressDrawer389' in src and 'id="home-pane-progress"' not in src)
+ok('progress 入口重定向（setHomeTab：progress→plan＋開抽屜）',
+   'if(tab === "progress"){ tab = "plan"; openProg389 = true; }' in src and 'plan:"plan"' in seg('const book70GroupSub', 'function book70SyncTabGroups'))
 ok('渲染函數齊（renderProgressPane71／prog71Rows／prog71GateItems／prog71StubItems）',
    all(s in src for s in ['function renderProgressPane71', 'function prog71Rows', 'function prog71GateItems', 'function prog71StubItems']))
 ok('條件衍生用結構化數據（evalGate3Y／progressToward／CALIB60_NODE_WINDOWS）',

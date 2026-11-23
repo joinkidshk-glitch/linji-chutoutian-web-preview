@@ -1,3 +1,4 @@
+# v389 resync：index.html 淨 +80 行（UI389 手帳 4 組 7 子＋拉柄＋傾談貼紙＋鎖定標籤；刪 openAskPicker369／addLocGigActs／addLocBridgeActs／act_ho_tvb_rules）；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫，內容逐行核實純漂移，見 qa389/resync389.py；openAskPicker369 兩處 COUNT 呼叫點隨函數刪除，呼叫點總數 −2。
 # v379 resync：index.html 淨 +50 行（defaultWeekPlan 壓力感知 +7／deCollideLabels363 標籤障礙 +19／rom159DateScene 立繪 +13／awards379GapBand +10／送禮撞頂提示 +4，餘為同行改寫）；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫，內容逐行核實純漂移，見 qa379/resync379.py；openLoc( 呼叫點總數不變。
 # v371 resync：index.html 淨 +99 行（頒獎專攻公式＋季節限期提示＋結局總結修正＋兼職數值）；COUNT／FREE／DEF／WRAPPER 按 git hunk 段 shift，逐行核實 openLoc( 內容純漂移（qa371 見 linji-drive371/resync371_travel.py）；openLoc( 呼叫點總數不變。
 # v20a369 resync：index.html 淨 +181 行（UI369 CSS＋JS＋HTML 掣／票角＋殺青印（日結＋週加速摘要）＋送禮分級行＋StoryPlay rel 強調＋pin 可打聽／輕跳＋人情頁高亮排序）；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫，內容逐行核實純漂移，見 qa369/resync369.py＋resync369c_travel.py（369b 食數 bug 修復重做）。
@@ -240,21 +241,19 @@ ck("drawMap 計 travelLocked114（travel114Remain() <= 0）",
 # v20a355 resync：index.html 淨 +34 行（rom159PrepareNode 葉／蘇 BE 路線閘，插入點舊 L26327 之後）；其後錨點各 +34，之前唔郁；逐行核實 openLoc( 內容相同，純漂移。
 # v375 resync：index.html 淨 +116 行（UI375 CSS 層＠舊 L6501 +115＋作品卡殺青印行 +1）；COUNT／FREE／DEF／WRAPPER 按 git hunk 段移位（＜16186 者 +115、＞16186 者 +116），54 處錨點逐行核實含 openLoc(，純漂移；openLoc( 呼叫點總數不變。
 COUNT_LINES = {
-    19790,  # v382 自備戲服鎖定 CTA「去花園街成衣店」（計出行）
-    23525,  # v369 openAskPicker369 多地點揀場入場（計出行）
-    23524,  # v369 openAskPicker369 單一打聽地點直入（計出行）
-    16077,  # ux68GoLoc 手帳「前往」
-    19662,  # 訓練建議「去報名」
-    22051,  # 訓練報名導航
-    23289,  # 進度頁「去現場播劇情」
-    23968,
-    23971,  # 地圖釘 goPin（最近針／後備 L.id）
-    24002,  # 地圖底欄地點掣
-    30150,  # 人情債「去事務所」
-    47880,  # inv72GoShop 去禮品檔
-    48088,  # people72GoLoc
-    48255,  # jobs72GoBoard
-    48276,  # jobs72GoLoc
+    19823,  # v382 自備戲服鎖定 CTA「去花園街成衣店」（計出行）
+    16136,  # ux68GoLoc 手帳「前往」
+    19724,  # 訓練建議「去報名」
+    22084,  # 訓練報名導航
+    23322,  # 進度頁「去現場播劇情」
+    23987,
+    23990,  # 地圖釘 goPin（最近針／後備 L.id）
+    24021,  # 地圖底欄地點掣
+    30170,  # 人情債「去事務所」
+    47929,  # inv72GoShop 去禮品檔
+    48137,  # people72GoLoc
+    48304,  # jobs72GoBoard
+    48325,  # jobs72GoLoc
 }
 # v20a361 resync：index.html 淨 +93 行（P1 平衡修復：合約信用／結局次序／負標籤預警／頒獎 q 表）；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫，內容逐行核實純漂移；openLoc( 呼叫點總數不變。
 # v20a358 resync：index.html 淨 −441 行（soft 層鄧麗萍清理：WF5 −59＠舊 L7466／DengLine IIFE −296＠舊 L9305／呼叫點散刪）；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重寫，內容逐行核實純漂移；openLoc( 呼叫點總數不變。
@@ -263,52 +262,52 @@ COUNT_LINES = {
 # 免費清單（帶旗，唔計）：40 處（舊 38 加 v265 買衫 modal 關閉／dismiss 新 2 處）（舊 35 加 v159 約會返程新 3 處；舊 34 減 v196 D4 刪走 leaveStory 嗰行 28228；舊 27 減 2 條改行 back176 守衛，加 ROM176 新 8 處＋v183 C9 intro 1 處）
 # v20a154 resync：index.html 淨 +64 行（B1 CSS ＋38／DLG154_CACHE ＋9／B2 覆寫表 ＋12／B3 ＋5）；COUNT／FREE／DEF／WRAPPER 按 difflib 映射重算，內容逐字核實純漂移；呼叫點總數不變。
 FREE_LINES = {
-    43634,  # v383 tape383OpenPicker 取消／完成返去而家身處地點（travelFree，唔計額度）
-    43654,  # v383 tape383Confirm 完成返去而家身處地點（travelFree，唔計額度）
-    7405,  # v265 買衫 modal「關閉」返去而家身處地點（travelFree，唔計額度；跟禮品店同例；v372 +7 CSS 漂移）
-    7406,  # v265 買衫 modal onDismiss 返去而家身處地點（travelFree，唔計額度；v372 +7）
-    9040,  # 劇情播完刷新（markDone fallback）
-    14954,
-    14955,
-    14967,
-    14968,
-    14979,
-    14980,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
-    15075,  # 故事 seed 就緒，系統傳送去劇情地點
-    26169,  # wf4Fire 完（wf4Done，舊旗）
-    27513,  # v159 rom159OpenDatePicker「取消」返去而家身處地點（travelFree）
-    27514,  # v159 rom159OpenDatePicker onDismiss 返去而家身處地點（travelFree）
-    27602,  # v159 rom159DateScene go fallback（runScheduleFromToday 失敗）返去而家身處地點（travelFree）
-    29948,  # 人情債流程尾，返去而家身處地點
-    29981,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
-    42276,
-    42395,  # 巧遇播完（encDone，舊旗）
-    42487,  # v176 星巧遇送禮掣 fallback（encDone）
-    42694,  # v176 女角巧遇 def-missing（encDone）
-    42738,  # v176 女角巧遇「行開」（encDone）
-    42744,  # v176 女角巧遇 onDismiss（encDone）
-    42811,  # v176 星送禮 canGive-fail（encDone）
-    42813,  # v176 星送禮冇 item（encDone）
-    42816,  # v176 星送禮冇庫存（encDone）
-    42843,  # v176 星送禮結果 modal go（encDone）
-    44383,  # 劇情播完刷新（refreshLocAfterStory）
-    44430,  # v236 傾談確認「返去」重開地點（travelFree，唔計額度）
-    44807,
-    44829,  # 「劇情已完成」toast 後重開而家身處地點
-    44986,  # v236 打聽確認「返去」重開地點（travelFree，唔計額度）
-    44991,  # 聽完傳聞後 reopen 而家身處地點
-    45920,  # forceRestore（舊旗）
-    47653,  # doAudition fail branch：首次教學 toast back（v329 由死函數搬入，travelFree）
-    47750,
-    47751,
-    47795,
-    47796,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
-    47825,  # doGiveGift 失敗後重開而家身處地點
-    48726,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
+    43712,  # v383 tape383OpenPicker 取消／完成返去而家身處地點（travelFree，唔計額度）
+    43732,  # v383 tape383Confirm 完成返去而家身處地點（travelFree，唔計額度）
+    7472,  # v265 買衫 modal「關閉」返去而家身處地點（travelFree，唔計額度；跟禮品店同例；v372 +7 CSS 漂移）
+    7473,  # v265 買衫 modal onDismiss 返去而家身處地點（travelFree，唔計額度；v372 +7）
+    9099,  # 劇情播完刷新（markDone fallback）
+    15013,
+    15014,
+    15026,
+    15027,
+    15038,
+    15039,  # 病倒流程送去 hospital（體檢／買體檢／醫院說明 modal）
+    15134,  # 故事 seed 就緒，系統傳送去劇情地點
+    26188,  # wf4Fire 完（wf4Done，舊旗）
+    27532,  # v159 rom159OpenDatePicker「取消」返去而家身處地點（travelFree）
+    27533,  # v159 rom159OpenDatePicker onDismiss 返去而家身處地點（travelFree）
+    27621,  # v159 rom159DateScene go fallback（runScheduleFromToday 失敗）返去而家身處地點（travelFree）
+    29968,  # 人情債流程尾，返去而家身處地點
+    30001,  # 人情債「取消」，返去而家身處地點（brief 未列，同一理據）
+    42354,
+    42473,  # 巧遇播完（encDone，舊旗）
+    42565,  # v176 星巧遇送禮掣 fallback（encDone）
+    42772,  # v176 女角巧遇 def-missing（encDone）
+    42816,  # v176 女角巧遇「行開」（encDone）
+    42822,  # v176 女角巧遇 onDismiss（encDone）
+    42889,  # v176 星送禮 canGive-fail（encDone）
+    42891,  # v176 星送禮冇 item（encDone）
+    42894,  # v176 星送禮冇庫存（encDone）
+    42921,  # v176 星送禮結果 modal go（encDone）
+    44461,  # 劇情播完刷新（refreshLocAfterStory）
+    44513,  # v236 傾談確認「返去」重開地點（travelFree，唔計額度）
+    44846,
+    44868,  # 「劇情已完成」toast 後重開而家身處地點
+    45025,  # v236 打聽確認「返去」重開地點（travelFree，唔計額度）
+    45030,  # 聽完傳聞後 reopen 而家身處地點
+    45969,  # forceRestore（舊旗）
+    47702,  # doAudition fail branch：首次教學 toast back（v329 由死函數搬入，travelFree）
+    47799,
+    47800,
+    47844,
+    47845,  # 禮物店／送禮 modal 關閉／dismiss 後重開而家身處地點
+    47874,  # doGiveGift 失敗後重開而家身處地點
+    48775,  # v183 C9 開局 intro「去睇劇情」掣（travelFree，唔計額度）
 }
 FREE_FLAGS = ("travelFree:true", "encDone:true", "forceRestore:true", "wf4Done:true")
-DEF_LINE = 44540      # function openLoc(id, opts){
-WRAPPER_LINE = 30728  # window.__phase2.openLoc：轉發 opts
+DEF_LINE = 44578      # function openLoc(id, opts){
+WRAPPER_LINE = 30806  # window.__phase2.openLoc：轉發 opts
 # v241b resync：index.html 淨 −6 行（刪四個內嵌 fallback 表：NPC_LINES_CORE／EVENTS_ZH_HK／STORY_BEATS_PHASE1／TUTORIAL_ZH_HK；UI 201 對逐句重寫行數不變）；COUNT／FREE／DEF／WRAPPER 按 difflib 對位映射重寫，47 處錨點內容逐行相同（3 處錨點行內 toast／reason 字串隨 RW-5 改寫：41148→41142、41170→41164「唔使再播」→「不必再播」，43932→43926「送唔成」→「送不成」）；openLoc( 呼叫點總數 53 不變；DEF 40874→40868、WRAPPER 28882→28878。
 # v20a241 resync：index.html 淨 −859 行（刪 WF4 覆寫表全數＋WF2 hiu/choi/xu 15 條；見 qa241/resync241.js）；COUNT／FREE／DEF／WRAPPER 按映射重寫（中段 −646、WF4 塊之後 −859；DEF 40868→40009、WRAPPER 28878→28019），47 處錨點內容逐行相同，純漂移；openLoc( 呼叫點總數 53 不變。
 # v20a242 resync：index.html 淨 −144 行（刪 LAN 覆寫表：表 139→8 行、函數 21→6 行、CONTRA98 ＋3 行、載入呼叫 8→7 行；刪除區間舊 L6597–6735／7559–7579／15038–15045）；COUNT／FREE／DEF／WRAPPER 按段 shift 重算（＜6597 唔郁、6736–7558 −131、7580–14865 −146、14872–15037 −143、≥15046 −144），47 處錨點內容逐行相同，純漂移；openLoc( 呼叫點總數 53 不變；DEF 40009→39865、WRAPPER 28019→27875。

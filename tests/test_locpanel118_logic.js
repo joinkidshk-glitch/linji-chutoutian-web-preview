@@ -106,7 +106,7 @@ const ICON_CASES = [
   ['打聽電視城規矩', 'act-priority act-ask', 'icon_tv.png'],
   ['同何生傾談', 'act-priority', 'icon_people.png'],
   ['送禮：林曉晴', 'act-priority', 'icon_gift.png'],
-  ['只查看通告欄', 'act-priority', 'icon_briefcase.png'],
+  ['通告欄（3）', 'act-priority', 'icon_briefcase.png'],
   ['查看檔期：《夜班廠景》', '', 'icon_briefcase.png'],
   ['試鏡入口：《夜班廠景》', '', 'icon_clapper.png'],
   ['報名：旁聽對戲／綵排', 'act-priority', 'icon_fitness.png'],

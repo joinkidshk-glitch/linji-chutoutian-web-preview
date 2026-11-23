@@ -89,7 +89,7 @@ if eh is not None:
 
 # ---- (5) 瞓覺／衣櫃接線路徑完整在位 ----
 ok('sleep button id present', 'id="btn-sleep265"' in html)
-ok('wardrobe button id present', 'id="btn-wardrobe265"' in html)
+ok('wardrobe subtab id present (v389)', 'id="htab-wardrobe"' in html and 'id="btn-wardrobe265"' not in html)
 ok('wireHome265 defined', func_body('wireHome265') is not None)
 ok('renderNotebook calls wireHome265', 'wireHome265();' in html)
 ok('costume265Sleep defined', func_body('costume265Sleep') is not None)

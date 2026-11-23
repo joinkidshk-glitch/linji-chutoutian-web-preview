@@ -132,7 +132,7 @@ ok('覆核 S-10 劇情卡「›」釘右中線', '.map-hint-story-btn::after' in
 ok('v198 C1：副行截第一句隨地圖提示 renderer 一併拎走', 'progShort105' not in html and 'function storyMainProgressLine(){' in html)
 ok('覆核 S-19 確定行程唔再彈壓力 modal', 'commitPlanAndGo();' in body_of('function confirmPlan', 1500))
 ok('覆核 S-19 壓力影響句係完整句子', '已經爆煲邊緣' in body_of('function stressImpactLine34', 1500))
-ok('覆核 S-23 費用欄正規化在位', 'cost105 = "免費"' in html)
+ok('覆核 S-23 費用欄正規化在位（v389 輸出改「不耗日」）', 'cost105 = "不耗日";' in html)
 ok('覆核 S-24 事務所信任行冇結局配方', '江湖撈家' not in body_of('function enc79HoTrustLine', 1200))
 ok('覆核 S-24 人情頁有江湖路指向（統籌裁決分工）', '日後自有一條江湖路給阿偉走' in html)
 ok('覆核 S-28 未達標格式「現值／需 X（差 N）」', '／需 ${b.need}（差 ${b.gap}）' in html)

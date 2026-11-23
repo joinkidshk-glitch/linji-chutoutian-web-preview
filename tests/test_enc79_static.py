@@ -56,7 +56,7 @@ ok('護欄：事務所 loc-who 有何生信任進度（數字＋下一階提示�
 ok('S-24 護欄：事務所信任行唔再攤結局配方（冇「江湖撈家」字樣）', '江湖撈家' not in seg('function enc79HoTrustLine(', '/* ---------- 處置表', 3000))
 ok('護欄（105 裁決）：E5 指向喺人情頁定性承載（江湖路＋信任/清債/債權方向）', '江湖路' in seg('function renderDebtPane(', '', 6000) and '信任儲得夠深' in seg('function renderDebtPane(', '', 6000))
 ok('護欄：聽風聲保留何生人情增益（bumpNpc agent）', 'bumpNpc("agent", 3+R(0,2))' in seg('function enc79AgencyWind(', '/* ----------', 4000))
-ok('閘匙保留：茶餐廳三粒＋事務所采兒／守則（v267：grantsRumorId 改 intelText，行動 id 唔郁）', ask.count('intelText:') >= 5 and 'act_ho_choi_news' in ask and 'act_cha_hiu_news' in ask and 'act_cha_gao_spotlight' in ask)
+ok('閘匙保留：茶餐廳三粒＋事務所采兒（v389：事務所守則隨情報去重刪除，行動 id 其餘唔郁）', ask.count('intelText:') >= 4 and 'act_ho_choi_news' in ask and 'act_cha_hiu_news' in ask and 'act_cha_gao_spotlight' in ask and 'id:"act_ho_tvb_rules"' not in ask)
 
 # --- 三、遠觀退場 ---
 ok('openLoc 唔再出遠觀掣', 'addStarSighting(L.id, add);' not in src)

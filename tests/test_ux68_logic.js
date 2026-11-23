@@ -153,7 +153,7 @@ ok('分類：播劇情 → 社交・劇情', ux68ClassifyAct(fakeBtn('act act-pr
 ok('分類：打聽（act-ask） → 社交・劇情', ux68ClassifyAct(fakeBtn('act act-ask', '去茶水間打聽', '免費')).group === 'story');
 ok('分類：傾談 → 社交・劇情', ux68ClassifyAct(fakeBtn('act act-priority', '同何生傾談', '免費')).group === 'story');
 ok('分類：送禮未開放 → 社交・劇情＋locked', (()=>{ const r = ux68ClassifyAct(fakeBtn('act', '送禮：何生', '未開放')); return r.group === 'story' && r.locked; })());
-ok('分類：只查看通告欄 → 接工', ux68ClassifyAct(fakeBtn('act act-priority', '只查看通告欄', '免費')).group === 'work');
+ok('分類：通告欄（N） → 接工', ux68ClassifyAct(fakeBtn('act act-priority', '通告欄（3）', '不耗日')).group === 'work');
 ok('分類：試鏡入口 → 接工', ux68ClassifyAct(fakeBtn('act act-priority act-bridge', '試鏡入口：某片', '不耗日')).group === 'work');
 ok('分類：接通告 → 接工', ux68ClassifyAct(fakeBtn('act', '接通告：某片', '+1日')).group === 'work');
 ok('分類：查看檔期 → 接工', ux68ClassifyAct(fakeBtn('act', '查看檔期：某片', '—')).group === 'work');

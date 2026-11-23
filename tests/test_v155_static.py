@@ -53,7 +53,7 @@ ok('B2：播掣 min-height 40→36、margin-top 8→6', '.prog71-play{ margin-to
 ok('B2：標題 margin 4→2、wrap 頂 padding 2→0、捲動器頂 padding 4→2',
    '.prog71-h{ margin:0 0 2px;' in src
    and '.prog71-wrap{ padding:0 0 8px; }' in src
-   and '#home-pane-progress .journal-scroll{ flex:1 1 auto; min-height:0; overflow:auto; padding:2px 2px 16px;' in src)
+   and '#modal-inner #progress-list{ max-height:62vh; overflow:auto; padding:2px 2px 16px;' in src)
 ok('B2：v20a155 B2 註解在場（列明慳位預算）', 'v20a155 B2' in src and '要慳 108／54px' in src)
 
 # --- B3：會場標籤「金禧大酒店」對比弱（跟返 15 張標籤：深啡墨字＋米紙光暈） ---

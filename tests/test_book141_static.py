@@ -22,9 +22,9 @@ ok('唔同檔內已有 id 撞名（冇裸 id="ink"）', 'id="ink"' not in src)
 ok('手寫字體棧有 Kaiti TC', '"Kaiti TC"' in src)
 
 # --- (1) B 式文件夾 tab ---
-ok('五個大類 tab 仲齊（data-hgroup ×5＋行程／事業／近況／消息／人情）',
-   src.count('data-hgroup="') == 5
-   and all(s in src for s in ['>行程</button>', '>事業</button>', '>近況</button>', '>消息</button>', '>人情<span class="favor-badge369"']))
+ok('四個大類 tab 仲齊（data-hgroup ×4＋行程／事業／帳本／人情；v389）',
+   src.count('data-hgroup="') == 4
+   and all(s in src for s in ['>行程</button>', '>事業</button>', '>帳本</button>', '>人情<span class="favor-badge369"']))
 ok('B 式尺寸：tab 58px 闊、未選 32px、高 manila #e9dcbc',
    '#home-tabs .home-tab{' in src and 'flex:0 0 58px' in src and 'height:32px' in src and '#e9dcbc' in src)
 ok('B 式選中態：32px 高、同紙面色 #f5eddc、底部伸出 1.5px（v20a197 C1：使用中狀態用色／底線區分，唔改大細）',
@@ -79,9 +79,10 @@ ok('「還原」掣鎖定態改 disabled 灰態留喺原位（v20a197 B2：唔�
    'resetBtn.style.display = "inline-block"' in src and '#btn-reset-plan:disabled' in src)
 
 # --- 內容面板唔郁 ---
-ok('內容面板 id 全保留（plan／ledger／clippings／debt／people／tags／inv／works／awards／memory／progress；v267 刪傳聞頁）',
+ok('內容面板 id 齊（plan／wardrobe／works／awards／memory／ledger／inv／stats389／favor389；v389 重組）',
    all(('id="home-pane-%s"' % s) in src for s in
-   ['plan', 'ledger', 'clippings', 'debt', 'people', 'tags', 'inv', 'works', 'awards', 'memory', 'progress']))
+   ['plan', 'wardrobe', 'works', 'awards', 'memory', 'ledger', 'inv', 'stats389', 'favor389'])
+   and 'id="home-pane-progress"' not in src and 'id="home-pane-clippings"' not in src)
 ok('行程 pane 內 notebook＋nb-actions 仲喺度', 'id="notebook"' in src and 'id="nb-actions"' in src)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')

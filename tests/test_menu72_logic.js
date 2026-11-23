@@ -62,9 +62,10 @@ eval(extractFn('inv72Html'));
 
 /* ---------- (1) 分組映射 ---------- */
 ok('映射：people→人情組、inv→近況組', BOOK70_TAB_GROUP.people === 'favor' && BOOK70_TAB_GROUP.inv === 'status');
-ok('映射：舊子頁冇走樣（debt→favor、ledger→status、works→career、progress→plan）',
+ok('映射：舊子頁冇走樣（debt→favor、ledger→status、works→career；progress 改 setHomeTab 重定向去 plan＋抽屜，v389）',
   BOOK70_TAB_GROUP.debt === 'favor' && BOOK70_TAB_GROUP.ledger === 'status'
-  && BOOK70_TAB_GROUP.works === 'career' && BOOK70_TAB_GROUP.progress === 'plan');
+  && BOOK70_TAB_GROUP.works === 'career' && !('progress' in BOOK70_TAB_GROUP)
+  && html.includes('if(tab === "progress"){ tab = "plan"; openProg389 = true; }'));
 ok('人情組預設子頁＝人情債（GROUP_FIRST＋groupSub）',
   BOOK70_GROUP_FIRST.favor === 'debt' && book70GroupSub.favor === 'debt');
 ok('映射：全部子頁都落入五大類之一',

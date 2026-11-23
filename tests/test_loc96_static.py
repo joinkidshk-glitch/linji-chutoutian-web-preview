@@ -42,9 +42,9 @@ ok("廟街禮品檔換了一批貨" in src, "週結補貨旁白改指廟街禮�
 ok("油麻地廟街夜市" in src, "禮物店副題用廟街夜市定性（對位地圖審計）")
 
 # --- 通告欄掣收返工作地點 ---
-ok("LOC96：通告欄只出喺有通告板嘅工作地點" in src, "通告欄掣 gating 註記在位")
-seg = src[src.find("LOC96：通告欄只出喺有通告板嘅工作地點"):][:300]
-ok('add("只查看通告欄"' in seg and "L.type" in seg, "通告欄掣跟 type gating（shop/med 唔出空板掣）")
+ok("v20a389 UI389（用戶 2026-11-23 拍板）：逐張通告掣收埋入通告欄" in src, "通告欄掣 gating 註記在位（v389）")
+seg = src[src.rfind("v20a389 UI389（用戶 2026-11-23 拍板）：逐張通告掣收埋入通告欄"):][:600]
+ok('add(`通告欄（${n389}）`' in seg and "L.type" in seg, "通告欄掣跟 type gating（shop/med 唔出空板掣）")
 
 # --- 醫院三功能接線 ---
 ok(src.count("hosp96TreatGate(") >= 4, "治療 gate：定義＋三個病日守衛接線齊")

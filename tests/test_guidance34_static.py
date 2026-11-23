@@ -34,9 +34,9 @@ lock_seg = seg('function softLockPlayerLine(node){', 'function lockedCopy_noEngi
 ok('softLockPlayerLine 冇傳聞位', 'rumorAny' not in lock_seg and 'rumorHearHint' not in lock_seg)
 # 核對清單（靜態層面）：MOCK_ASK 只有茶餐廳／事務所派 tvb_rules 情報；電視台冇打聽行動
 ask_seg = seg('const MOCK_ASK = {', 'function applyMockAsk(')
-ok('MOCK_ASK 五個行動直接帶情報文字', ask_seg.count('intelText:') >= 5)
+ok('MOCK_ASK 四個行動直接帶情報文字（v389 去重後）', ask_seg.count('intelText:') >= 4)
 intel_locs = re.findall(r'(\w+):\s*\[\s*\{[^]]*?intelText:"入廠拍劇最忌遲到', ask_seg)
-ok('tvb_rules 情報只喺 cafe_cha + agency_ho', sorted(set(intel_locs)) == ['agency_ho', 'cafe_cha'])
+ok('tvb_rules 情報只喺 cafe_cha（v389 去重，事務所嗰份已刪）', sorted(set(intel_locs)) == ['cafe_cha'])
 ok('no guidance text sends player to TV station to hear rules',
    '星河電視台聽' not in html and '去星河電視台打聽' not in html and '電視台打聽電視城規矩' not in html)
 # v241b: inline TUTORIAL_ZH_HK deleted (JSON sole source); check live JSON + EXACT override instead

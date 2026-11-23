@@ -677,14 +677,16 @@ function makeEl(){
     };
   }
   /* v267：打聽變情報站——結果直接出情報文字，唔寫卡；已問過鎖住 */
+  /* v389：事務所守則（act_ho_tvb_rules）隨情報去重刪除——事務所問唔到、唔寫記錄 */
   S = askSave();
   const rAgency = applyMockAsk('agency_ho', 'act_ho_tvb_rules');
-  ok('seg9 事務所打聽直接出情報文字（唔寫卡）', !!rAgency && rAgency.ok && rAgency.intelText === '入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。' && rAgency.rumorId === null);
-  ok('seg9 打聽已問記錄寫入 S.intelAsked', S.intelAsked && S.intelAsked['act_ho_tvb_rules'] === 2);
+  ok('seg9 事務所守則已刪（問唔到，v389 去重）', !rAgency || rAgency.ok === false);
+  ok('seg9 打聽已問記錄唔寫入已刪行動', !(S.intelAsked && S.intelAsked['act_ho_tvb_rules']));
   /* 喺金龍茶餐廳打聽 → 同一情報文字 */
   S = askSave();
   const rCafe = applyMockAsk('cafe_cha', 'act_cha_tvb_rules');
-  ok('seg9 茶餐廳打聽同一情報文字', !!rCafe && rCafe.ok && rCafe.intelText === '入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。');
+  ok('seg9 茶餐廳打聽直接出情報文字（唔寫卡）', !!rCafe && rCafe.ok && rCafe.intelText === '入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。' && rCafe.rumorId === null);
+  ok('seg9 打聽已問記錄寫入 S.intelAsked', S.intelAsked && S.intelAsked['act_cha_tvb_rules'] === 2);
   ok('seg9 打聽第二次鎖住（已經聽過）', (()=>{ const r2 = applyMockAsk('cafe_cha', 'act_cha_tvb_rules'); return r2 && r2.ok === false && r2.alreadyHeard === true; })());
 })();
 

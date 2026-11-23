@@ -145,8 +145,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   eval(extractFn('locResidentNpcId'));
   eval(extractFn('locPanelNpcId'));
   eval(extractFn('addLocTalkGiftActs'));
-  eval(extractFn('addLocBridgeActs'));
-  eval(extractFn('addLocGigActs'));
+  /* v389：addLocBridgeActs／addLocGigActs 已刪（逐張通告掣收埋入通告欄），openLoc 唔再引用。 */
   /* v20a112 ICONS112：openLoc 經 openLocSheet 調用 iconHtml112＋esc59，沙盒要一併載入對照＋helper。 */
   eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112', 'var EMOJI_ICON112'));
   eval(extractFn('iconHtml112'));

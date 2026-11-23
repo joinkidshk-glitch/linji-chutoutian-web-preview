@@ -30,7 +30,7 @@ ok('N3 28 字截斷已刪', 'descShort' not in html)
 ok('S-23 凍檸茶動作短語', 'cost:"請伙記飲凍檸茶"' in html)
 ok('S-23 西多士動作短語', 'cost:"請茶客食西多士"' in html)
 ok('S-23 咖啡動作短語', 'cost:"請化妝師飲咖啡"' in html)
-ok('S-23 萬寶路動作短語', 'cost:"遞包萬寶路畀何生"' in html)
+ok('S-23 萬寶路動作短語（v389：act_ho_tvb_rules 隨情報去重刪除，短語一併冇）', 'cost:"遞包萬寶路畀何生"' not in html and 'id:"act_ho_tvb_rules"' not in html)
 ok('S-23 舊裸實物名 cost 唔見', 'cost:"一杯凍檸茶"' not in html and 'cost:"一碟西多士"' not in html and 'cost:"一杯咖啡"' not in html and 'cost:"一包萬寶路"' not in html)
 
 # 打聽卡圖標：按 title 分圖，唔再全部用報紙圖

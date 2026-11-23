@@ -94,8 +94,8 @@ rp_body = func_body(src, 'renderProgressPane71')
 ok('N2：renderProgressPane71 尾段有呼 prog175AdoptToast',
    'prog175AdoptToast()' in rp_body)
 toast_body = func_body(src, 'toast')
-ok('N2：toast() 喺進度頁開住嗰陣行 banner（唔行 overlay）',
-   'prog175ShowBanner' in toast_body and 'home-pane-progress' in toast_body)
+ok('N2：toast() 喺進度抽屜開住嗰陣行 banner（唔行 overlay；v389 判斷改查 modal 內 #progress-list）',
+   'prog175ShowBanner' in toast_body and '#modal-inner #progress-list' in toast_body)
 ok('N2：toast() 分流要手帳真係顯示緊（#v-home.on＋pane.on，唔係淨睇 pane）',
    'getElementById("v-home")' in toast_body
    and 'classList.contains("on")' in toast_body)

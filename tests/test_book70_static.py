@@ -14,11 +14,12 @@ def ok(name, cond):
 # --- 基線不變 ---
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
 
-# --- (1) 一級五大類 ---
-ok('一級只剩 5 個大類掣（行程／事業／近況／消息／人情）',
-   src.count('data-hgroup="') == 5
-   and all(s in src for s in ['data-hgroup="plan"', 'data-hgroup="career"', 'data-hgroup="status"', 'data-hgroup="news"', 'data-hgroup="favor"'])
-   and all(s in src for s in ['>行程</button>', '>事業</button>', '>近況</button>', '>消息</button>', '>人情<span class="favor-badge369"']))
+# --- (1) 一級四大類（v389：用戶 2026-11-23 拍板 4 組 7 子，消息組取消、近況改帳本） ---
+ok('一級只剩 4 個大類掣（行程／事業／帳本／人情）',
+   src.count('data-hgroup="') == 4
+   and all(s in src for s in ['data-hgroup="plan"', 'data-hgroup="career"', 'data-hgroup="status"', 'data-hgroup="favor"'])
+   and 'data-hgroup="news"' not in src
+   and all(s in src for s in ['>行程</button>', '>事業</button>', '>帳本</button>', '>人情<span class="favor-badge369"']))
 # v20a71 PROGRESS71 改版：htab-plan 喺 v71 以「行程組分段掣」身份返嚟（行程／進度
 # 兩掣之一，唔係舊 10-tab），故呢度唔再驗佢唔存在；guide 相關舊結構仍然唔准返嚟。
 ok('冇返舊 10-tab 結構（htab-guide／guide pane 唔再存在）',
@@ -29,22 +30,22 @@ def between(a, b):
     i, j = src.find(a), src.find(b)
     return src[i:j] if 0 <= i < j else ''
 career = between('data-hsubgroup="career"', 'data-hsubgroup="status"')
-status = between('data-hsubgroup="status"', 'data-hsubgroup="news"')
-news = between('data-hsubgroup="news"', 'data-hsubgroup="favor"')
+status = between('data-hsubgroup="status"', 'id="home-pane-plan"')
 favor = between('data-hsubgroup="favor"', '</div>\n      </div>\n      <div class="home-pane on"')
 ok('事業組分段＝作品＋獎項＋回憶', all(s in career for s in ['id="htab-works"', 'id="htab-awards"', 'id="htab-memory"']))
-# v20a72 MENU72 改版：選單「庫存」歸入近況組做子頁（用戶一門原則），故近況組
-# 分段由「記數＋標籤」變「記數＋標籤＋庫存」；人情組新增分段列「人情債＋人脈」。
-ok('近況組分段＝記數＋標籤＋庫存（v72 改版）', all(s in status for s in ['id="htab-ledger"', 'id="htab-tags"', 'id="htab-inv"']))
-ok('消息組分段＝剪報（v267：傳聞子頁已刪）', all(s in news for s in ['id="htab-clippings"']) and 'id="htab-rumor"' not in news)
-ok('人情組分段＝人情債＋人脈（v72 新增）', all(s in favor for s in ['id="htab-debt"', 'id="htab-people"']))
-ok('子頁 pane 全部保留（10 個，v267 刪傳聞頁）', all(('id="home-pane-%s"' % s) in src for s in
-   ['plan','ledger','clippings','debt','people','tags','inv','works','awards','memory']))
-ok('分組映射 BOOK70_TAB_GROUP 齊 10 子頁（v267 刪 rumor）',
+# v389 改版：帳本組＝帳目＋庫存＋資料卡（稱號摺疊入作品、剪報併入回憶，唔再獨立子頁）；
+# 人情組無子頁掣，改單頁分段掣（人情債｜人脈）。
+ok('帳本組分段＝帳目＋庫存＋資料卡（v389）', all(s in status for s in ['id="htab-ledger"', 'id="htab-inv"', 'id="htab-stats389"'])
+   and 'id="htab-tags"' not in status and 'id="htab-clippings"' not in src)
+ok('人情組無子頁掣、單頁分段（v389）', 'id="htab-debt"' not in src and 'id="htab-people"' not in src
+   and 'id="favor389-seg-debt"' in src and 'id="favor389-seg-people"' in src)
+ok('子頁 pane 齊（9 個：plan／wardrobe／works／awards／memory／ledger／inv／stats389／favor389）', all(('id="home-pane-%s"' % s) in src for s in
+   ['plan','wardrobe','works','awards','memory','ledger','inv','stats389','favor389']))
+ok('分組映射 BOOK70_TAB_GROUP 齊（v389）',
    'const BOOK70_TAB_GROUP' in src and all(s in src for s in
-   ['plan:"plan"', 'works:"career"', 'awards:"career"', 'memory:"career"', 'ledger:"status"',
-    'tags:"status"', 'inv:"status"', 'clippings:"news"', 'debt:"favor"', 'people:"favor"'])
-   and 'rumor:"news"' not in src)
+   ['plan:"plan"', 'wardrobe:"plan"', 'works:"career"', 'awards:"career"', 'memory:"career"', 'ledger:"status"',
+    'inv:"status"', 'stats389:"status"', 'debt:"favor"', 'people:"favor"'])
+   and 'clippings:"news"' not in src and 'rumor:"news"' not in src)
 ok('分組同步＋子頁點擊接線（book70SyncTabGroups／home-subtabs onclick）',
    'function book70SyncTabGroups' in src and '_homeSubtabsEl' in src and 'book70SyncTabGroups(tab)' in src)
 ok('大類掣 data-htab 跟組內記憶子頁（舊呼叫／自檢兼容）', 'book70GroupSub[g] || BOOK70_GROUP_FIRST[g]' in src)

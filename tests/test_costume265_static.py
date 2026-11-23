@@ -161,7 +161,7 @@ ok("openLoc 服裝店出「買衫」掣",
 
 # ---------- 6. 瞓覺掣／衣櫃入口 ----------
 ok("HTML 有 #btn-sleep265（瞓覺掣）", 'id="btn-sleep265"' in src)
-ok("HTML 有 #btn-wardrobe265（衣櫃入口）", 'id="btn-wardrobe265"' in src)
+ok("衣櫃子頁入口在位（v389：#htab-wardrobe＋#home-pane-wardrobe，舊 #btn-wardrobe265 已刪）", 'id="htab-wardrobe"' in src and 'id="home-pane-wardrobe"' in src and 'id="btn-wardrobe265"' not in src)
 ok("HTML 有 #wardrobe265（衣櫃區容器）", 'id="wardrobe265"' in src)
 ok("renderNotebook 尾段接線瞓覺／衣櫃＋渲染衣櫃區",
    "wireHome265();" in extract_fn("renderNotebook")

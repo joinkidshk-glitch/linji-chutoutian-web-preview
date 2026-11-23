@@ -36,10 +36,10 @@ m = re.search(r'function setHomeTab\(tab\)\{(.*?)\n\}', src, re.S)
 body = m.group(1) if m else ''
 # v20a71 PART3B 改版：guide／train 舊入口只去 plan（唔再展開已刪嘅訓練段）、
 # allow 冇 guide、唔再呼叫 renderGuidePane68；progress 分支渲染進度頁。
-ok('setHomeTab v71 接線（guide／train 改落 plan／冇已刪段呼叫／progress 渲染／分組同步）',
+ok('setHomeTab v71 接線（guide／train 改落 plan／冇已刪段呼叫／progress 改開抽屜渲染／分組同步；v389）',
    'if(tab === "guide" || tab === "train")' in body and 'guide:1' not in body
    and 'renderGuidePane68' not in body and 'book70OpenTrainSection' not in body
-   and 'renderProgressPane71()' in body and 'book70SyncTabGroups(tab)' in body)
+   and 'openProgressDrawer389()' in body and 'book70SyncTabGroups(tab)' in body)
 # v20a70 BOOK70 改版：恆常出口——syncHomeTabExit 唔再計 journalTab、唔再睇 #home-back-map
 # 可見與否，永遠顯示＋標籤恆定。喺 v69 index 上行會 FAIL（反證）。
 ok('syncHomeTabExit v70 恆常出口（永遠顯示＋標籤恆定「返回地圖」）',

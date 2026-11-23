@@ -28,12 +28,12 @@ menu = src[i_menu:i_after] if 0 <= i_menu < i_after else ''
 ok('選單容器搵到', bool(menu))
 ms = re.findall(r'data-m="([^"]+)"', menu)
 # v20a108 TEXT108 S-49：選單項舊名「提早休息」改「過一日」；data-m 值 rest-early 不變，只係測試名跟改
-ok('選單 data-m 恰好＝新清單（手帳／過一日＋系統五項＋wire；劇情掣已於 v20a77 移除）',
-   ms == ['journal', 'rest-early', 'replay-tut', 'settings', 'wire', 'save', 'load', 'new'])
+ok('選單 data-m 恰好＝新清單（過一日＋系統五項＋wire；手帳掣 v389 已刪改拉柄）',
+   ms == ['rest-early', 'replay-tut', 'settings', 'wire', 'save', 'load', 'new'])
 ok('選單已冇六個資訊頁入口', all(('data-m="%s"' % m) not in menu for m in
    ['stats', 'people', 'inv', 'jobs', 'rumors', 'debts']))
 ok('劇情掣＋徽章已移除（v20a77 HUB77）', 'id="menu-story-badge"' not in menu and 'menu-story' not in menu)
-ok('手帳掣文案＝手帳（唔再叫返手帳）', 'data-m="journal">手帳</button>' in menu and '返手帳' not in menu)
+ok('手帳掣已刪、拉柄在位（v389）', 'data-m="journal"' not in menu and 'id="book389-handle"' in src)
 i_rest = menu.find('data-m="rest-early"')
 i_sep = menu.find('class="menu-sep"')
 i_sys = menu.find('data-m="replay-tut"')
@@ -51,9 +51,9 @@ ok('handler 保留全部新清單分支（story-play 已於 v20a77 隨掣移除�
    and 'm==="story-play"' not in handler)
 
 # --- (3) 手帳新子頁結構 ---
-ok('人脈 pane＋清單容器', 'id="home-pane-people"' in src and 'id="people-list"' in src)
+ok('人脈清單容器喺人情合併頁（v389）', 'id="home-pane-favor389"' in src and 'id="people-list"' in src)
 ok('庫存 pane＋清單容器', 'id="home-pane-inv"' in src and 'id="inv-list"' in src)
-ok('人情組分段列（人情債＋人脈）', 'data-hsubgroup="favor"' in src and 'id="htab-debt"' in src and 'id="htab-people"' in src)
+ok('人情組單頁分段掣（人情債｜人脈；v389）', 'id="favor389-seg-debt"' in src and 'id="favor389-seg-people"' in src)
 ok('庫存子掣喺近況組', 'id="htab-inv"' in src and 'data-htab="inv">庫存</button>' in src)
 ok('分組映射：people→favor、inv→status、人情組預設 debt',
    'people:"favor"' in src and 'inv:"status"' in src and 'favor:"debt"' in src)

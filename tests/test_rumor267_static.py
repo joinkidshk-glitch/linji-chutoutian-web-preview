@@ -42,7 +42,7 @@ ok('no rumor tab group entry', 'rumor:"news"' not in html and 'news:"rumor"' not
 
 # ---- 情報站就位 ----
 ok('intelAsked record exists', 'intelAsked' in html)
-ok('MOCK_ASK carries intelText', html.count('intelText:"') >= 5)
+ok('MOCK_ASK carries intelText (v389 dedupe: 4)', html.count('intelText:"') >= 4)
 ok('ask-result modal title', '打聽到情報' in html)
 ok('whisper state kept', 'S.starWhispers' in html and 'enc79GrantWhisper' in html)
 ok('paper whisper wiring', 'enc79PaperWhisper' in html and 'side_lu_concert' in html)

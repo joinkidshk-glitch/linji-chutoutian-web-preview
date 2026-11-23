@@ -41,7 +41,7 @@ chk('no 撳外面 left', s.indexOf('撳外面') < 0);
 // 3b. source: 6 more UI strings that hid in template literals (found via the
 // static test's tokenizer, not a plain quote scan)
 chk('hospital checkup hint', s.indexOf('點擊「身體檢查」嗰陣會先確認') >= 0);
-chk('train jump hint', s.indexOf('點擊下面「去訓練／手帳」') >= 0);
+chk('train jump hint', s.indexOf('點擊下面「去訓練／手帳」') < 0 && s.indexOf('去訓練／手帳 · 入手帳排課') >= 0); // v389：差幾多達標版已刪，CTA 保留
 chk('planner confirm hint', s.indexOf('點擊「確定出發」就會落實行程') >= 0);
 chk('dialogue lock hint', s.indexOf('點擊「完成對白」才可以繼續') >= 0);
 chk('gift shop hint', s.indexOf('地點選單點擊「買禮物」買入') >= 0);

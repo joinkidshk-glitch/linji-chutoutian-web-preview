@@ -3596,7 +3596,7 @@ body.day-res-open .day-row{
   display:flex; align-items:center; justify-content:center;
   font-weight:900; letter-spacing:.12em; transform:rotate(-8deg);
 }
-#home-pane-debt.on .journal-scroll{ animation:mockFadeIn .8s ease }
+#home-pane-favor389.on .journal-scroll{ animation:mockFadeIn .8s ease }
 @keyframes mockFadeIn{ from{ opacity:0 } to{ opacity:1 } }
 .push-door{
   position:absolute; left:10%; right:10%; top:16%; height:30%;
@@ -5324,7 +5324,7 @@ body.day-res-open .day-row{
    條件 ul margin 8→6（4）、li 行高 1.55→1.4（約 21）、note 行高 1.55→1.45＋margin 6→5（約 4.5）、
    播掣 min-height 40→36＋margin 8→6（6，在場態先有）、標題 margin 4→2（2）、
    捲動器頂 padding 4→2（2）、wrap 頂 padding 2→0（2）、幕頂行高 1.3（約 14）。 */
-#home-pane-progress .journal-scroll{ flex:1 1 auto; min-height:0; overflow:auto; padding:2px 2px 16px; -webkit-overflow-scrolling:touch; }
+#modal-inner #progress-list{ max-height:62vh; overflow:auto; padding:2px 2px 16px; -webkit-overflow-scrolling:touch; }
 .prog71-wrap{ padding:0 0 8px; }
 .prog71-h{ margin:0 0 2px; font-size:.95rem; color:#43301c; }
 .prog71-intro{ font-size:.78rem; color:#8a755a; line-height:1.5; margin:0 0 6px; }
@@ -5458,8 +5458,8 @@ body.day-res-open .day-row{
 .works-empty59 h3, .mem-empty60 h3, .mem-head60 h3{ color:#ecdfc2; }
 #home-pane-works .req{ color:#d9c9a3; }
 #home-pane-ledger .ledger-enroll{ color:#c3b096; }
-#home-pane-people .people-next{ color:#c3b096; }
-#home-pane-debt .pane-intro{ color:#e6d7ae; }
+#home-pane-favor389 .people-next{ color:#c3b096; }
+#home-pane-favor389 .pane-intro{ color:#e6d7ae; }
 #v-home .home-top .txt .home-money:not(.money-warn):not(.money-critical):not(.money-broke),
 #v-home .home-top .txt .home-stats-line .hs-i.home-money:not(.money-warn):not(.money-critical):not(.money-broke){ color:#e3c565 !important; }
 .day-row .nm .plan-hint{ color:#59452a; }
@@ -5900,11 +5900,9 @@ body.day-res-open .day-row{
    （v142 範圍）唔郁——呢度淨係補返八組 journal-scroll。 */
 #home-pane-ledger .journal-scroll,
 #home-pane-inv .journal-scroll,
-#home-pane-clippings .journal-scroll,
-#home-pane-debt .journal-scroll,
-#home-pane-people .journal-scroll,
-#home-pane-tags .journal-scroll,
-#home-pane-progress .journal-scroll{
+#home-pane-favor389 .journal-scroll,
+#home-pane-wardrobe .journal-scroll,
+#home-pane-stats389 .journal-scroll{
   background:#f3e6c8; color:#2a2118;
   border-radius:14px 14px 0 0; border:2px solid #c4a574; border-bottom:0;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);
@@ -5914,14 +5912,14 @@ body.day-res-open .day-row{
    ledger-enroll #c3b096／people-next #c3b096／debt pane-intro #e6d7ae；
    傳聞頁已刪（v20a267），相關覆寫一併移除。 */
 #home-pane-ledger .ledger-enroll{ color:#6b4e2e; }
-#home-pane-people .people-next{ color:#6b4e2e; }
-#home-pane-debt .pane-intro{ color:#5a4328; }
+#home-pane-favor389 .people-next{ color:#6b4e2e; }
+#home-pane-favor389 .pane-intro{ color:#5a4328; }
 /* B2 附帶（續）：v76 為深底加嘅淺字覆寫仲有三處喺新紙面頁——.jobs72-h（庫存／人脈標題，
    #ecdfc2 喺紙面淡到睇唔到，實駕 crop 核實）同進度頁 .prog71-h／.prog71-intro；
    跟 v131 做法，喺紙面頁範圍內還原返墨色。記數簿 h3 繼承 pane 墨色、debt 無 h3，唔使郁。 */
-#home-pane-inv .jobs72-h, #home-pane-people .jobs72-h{ color:#43301c; }
-#home-pane-progress .prog71-h{ color:#43301c; }
-#home-pane-progress .prog71-intro{ color:#8a755a; }
+#home-pane-inv .jobs72-h, #home-pane-favor389 .jobs72-h{ color:#43301c; }
+#progress-list .prog71-h{ color:#43301c; }
+#progress-list .prog71-intro{ color:#8a755a; }
 /* --- B3：訓練選擇器換紙面語言（跟 v143 B1 紙標籤同一套） ---
    屬性 chips 其實係 .guide68-chip（train71PickerHtml 出，兩個 host 共用：全日填滿＋逐日排入；
    唔係 .train71-pick——嗰個係課程卡上面「全日排呢堂／排入呢一日」金掣，兩個一齊換紙面）。
@@ -6526,7 +6524,7 @@ body.day-res-open .day-row{
 .debt-row.credit-redeemable369 .debt-redeem{ color:#9E2F2F; font-weight:800; }
 
 /* --- (8) 情報入口：地圖「打聽」掣＋面板打聽行動高亮 --- */
-#v-map #btn-ask369{ min-height:44px !important; }
+/* v20a389 UI389：地圖「打聽」掣已刪（CSS 隨掣移除） */
 #loc-acts .act-ask{ border-left:4px solid var(--gold-seal,#C9A227) !important; }
 
 /* --- 減少動態：停 v369 位移／縮放，保留高亮同文字 --- */
@@ -6541,6 +6539,63 @@ body.day-res-open .day-row{
   .wrap-stamp369{ opacity:1; }
 }
 /* ===== v369 UI369 完 ===== */
+
+/* ===== v20a389 UI389：手帳拉柄／進度 badge／人情分段／傾談貼紙／鎖定標籤 ===== */
+/* 手帳拉柄：地圖底部固定，向上掃或撳一下入手帳（GPT 方案）。 */
+#v-map .book389-handle{
+  position:absolute; left:50%; transform:translateX(-50%);
+  bottom:calc(64px + env(safe-area-inset-bottom, 0px)); z-index:6;
+  min-height:44px; padding:10px 22px; border-radius:99px 99px 12px 12px;
+  background:#c9a876; color:#3a2e22; border:1px solid #a8895f;
+  font-family:inherit; font-size:14px; font-weight:700; letter-spacing:.06em;
+  box-shadow:0 3px 8px rgba(0,0,0,.4); cursor:pointer;
+}
+#v-map .book389-handle:active{ transform:translateX(-50%) translateY(2px); }
+/* 進度 badge：本週安排頁頂，撳開進度抽屜。 */
+.prog389-badge{
+  display:inline-flex; align-items:center; min-height:44px; margin:0 0 8px;
+  padding:6px 14px; border-radius:99px; background:#e9dcbc; color:#3a2e22;
+  border:1px solid #cbb98d; font-family:inherit; font-size:13px; font-weight:700;
+  letter-spacing:.04em; cursor:pointer;
+}
+/* 人情分段掣 */
+.favor389-seg{ display:flex; gap:0; margin:0 0 10px; border:1px solid #cbb98d; border-radius:10px; overflow:hidden; }
+.favor389-segbtn{
+  flex:1 1 0; min-height:44px; padding:8px 0; background:#e9dcbc; color:#6d5a3e;
+  border:0; font-family:inherit; font-size:15px; font-weight:700; letter-spacing:.06em; cursor:pointer;
+}
+.favor389-segbtn.on{ background:#6b4e2e; color:#fff8e8; }
+/* 工作地點傾談貼紙（在場角色列） */
+.loc-talk389{ margin:6px 0 2px; }
+.loc-talk389-btn{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  width:100%; min-height:44px; padding:8px 12px; border-radius:10px;
+  background:#f5eddc; color:#3a2e22; border:1.5px solid #a8895f;
+  font-family:inherit; font-size:14px; font-weight:700; cursor:pointer;
+  box-shadow:0 2px 5px rgba(0,0,0,.25);
+}
+.loc-talk389-cta{ color:#8a5a1e; font-size:13px; white-space:nowrap; }
+/* 通告詳情鎖定狀態標籤＋差額＋戲服提示 */
+.cn-locked389{
+  margin:0 0 8px; padding:4px 2px; color:#5a4a33; font-weight:700; font-size:14px;
+  border-bottom:1.5px solid rgba(138,90,30,.45); text-align:left;
+}
+.cn-req-gap389{ color:#9E2F2F; }
+.cn-costume389{ color:#8a5a1e; font-weight:700; }
+/* 稱號摺疊段＋剪報段＋資料卡 */
+.tags389-fold{ margin-top:10px; }
+.tags389-fold summary{
+  min-height:44px; display:flex; align-items:center; cursor:pointer;
+  font-weight:700; color:#3a2e22; letter-spacing:.04em;
+}
+.tags389-fold #tags-list{ max-height:38vh; overflow:auto; -webkit-overflow-scrolling:touch; }
+.clippings389-wrap{ margin-top:12px; }
+.clippings389-h{ margin:0 0 6px; color:#3a2e22; }
+.clippings389-wrap #clippings-list{ max-height:38vh; overflow:auto; -webkit-overflow-scrolling:touch; }
+.stats389-card{
+  background:#f5eddc; border:1px solid #cbb98d; border-radius:10px; padding:12px;
+}
+/* ===== v20a389 UI389 CSS 完 ===== */
 
 /* ===== v375 UI375：全畫面檢視優先序②–⑤（GPT-6.2-sol 規格＋Gemini 方向；只改呈現）=====
    ①劇情對話：牌隨內容長高（唔再固定 170px 溢出切字）＋掣列分區（吊牌左、翻頁角右），
@@ -6739,7 +6794,6 @@ body.day-res-open .day-row{
           <span class="dual-money-sym" aria-hidden="true">$</span><b id="c-money">0</b>
         </span>
         <div class="bar-tools">
-          <button type="button" class="chip chip-ask369" id="btn-ask369" title="打聽：茶餐廳／事務所">打聽</button>
           <button type="button" class="chip chip-story" id="chip-story" title="主線進度">進度<span class="chip-story-n" id="chip-story-n"></span></button>
           <button class="iconbtn" id="btn-menu" type="button" aria-label="選單">☰</button>
         </div>
@@ -6764,8 +6818,9 @@ body.day-res-open .day-row{
            （劇情／手帳／過一日）＋分隔以下系統組；資訊頁（狀態／人脈／庫存／
            拍攝簿／傳聞／人情債）全部歸入手帳五大類，唔再喺選單開第二度門。
            v20a77 HUB77（用戶 2026-11-10 17:51 拍板）：「劇情」掣成粒移除——
-           劇情／進度統一由進度頁做門口（頂欄 chip＋地圖「進度」掣直達）。 -->
-      <button type="button" data-m="journal">手帳</button>
+           劇情／進度統一由進度頁做門口（頂欄 chip＋地圖「進度」掣直達）。
+           v20a389 UI389（用戶 2026-11-23 拍板）：「手帳」掣成粒移除——改地圖
+           底部拉柄（向上掃／撳）直達手帳，選單只留動作＋系統組。 -->
       <button type="button" data-m="rest-early">過一日</button>
       <div class="menu-sep" aria-hidden="true"></div>
       <button type="button" data-m="replay-tut">重看教學</button>
@@ -6833,6 +6888,9 @@ body.day-res-open .day-row{
       </div>
       <div class="map-hint" id="map-hint"><b>載入中…</b></div>
       <div id="map-money-tip" class="map-money-tip" role="status" aria-live="polite" hidden></div>
+      <!-- v20a389 UI389（用戶 2026-11-23 拍板）：手帳拉柄——☰「手帳」掣已刪，
+           改底部拉柄：向上掃或撳一下直達手帳（GPT 方案，保留可達性）。 -->
+      <button type="button" class="book389-handle" id="book389-handle" aria-label="手帳">手帳 ↑</button>
     </div>
     <!-- v17y: sheet is sibling of map-wrap so absolute bottom pins to #v-map, not mid flex/scroll -->
     <div class="sheet" id="loc-sheet">
@@ -6844,6 +6902,8 @@ body.day-res-open .day-row{
       <h2 id="loc-title">地點</h2>
       <p class="sub" id="loc-desc"></p>
       <p class="sub" id="loc-who"></p>
+      <!-- v20a389 UI389：工作地點傾談入口（在場角色列；有 NPC 先顯示，openLoc 填） -->
+      <div class="loc-talk389" id="loc-talk389" hidden></div>
       <div class="locpanel118-tagrow" id="loc-tagrow118" hidden><span class="locpanel118-tag" id="loc-tagrow-tag118"></span></div>
       <div class="acts" id="loc-acts"></div>
       <div class="btnrow"><button class="g" type="button" id="loc-close">返回地圖</button></div>
@@ -6872,17 +6932,20 @@ body.day-res-open .day-row{
           <button type="button" class="tag141" id="home-back-map-tabs">返回地圖</button>
         </div>
       </div>
+      <!-- v20a389 UI389（用戶 2026-11-23 拍板）：手帳 5 組 11 子頁 → 4 組 7 子頁。
+           行程（本週安排＋衣櫃；進度改內聯 badge 抽屜）／事業（作品＋獎項＋回憶；
+           稱號摺疊入作品、剪報併入回憶）／帳本（帳目＋庫存＋資料卡）／
+           人情（人情債／人脈單頁分段切換）。消息組取消。 -->
       <div class="home-tabs" id="home-tabs" role="tablist" aria-label="手帳大類">
         <button type="button" class="home-tab on" id="hgroup-plan" role="tab" aria-selected="true" data-hgroup="plan" data-htab="plan">行程</button>
         <button type="button" class="home-tab" id="hgroup-career" role="tab" aria-selected="false" data-hgroup="career" data-htab="works">事業</button>
-        <button type="button" class="home-tab" id="hgroup-status" role="tab" aria-selected="false" data-hgroup="status" data-htab="ledger">近況</button>
-        <button type="button" class="home-tab" id="hgroup-news" role="tab" aria-selected="false" data-hgroup="news" data-htab="clippings">消息</button>
+        <button type="button" class="home-tab" id="hgroup-status" role="tab" aria-selected="false" data-hgroup="status" data-htab="ledger">帳本</button>
         <button type="button" class="home-tab" id="hgroup-favor" role="tab" aria-selected="false" data-hgroup="favor" data-htab="debt">人情<span class="favor-badge369" id="favor-badge369" hidden>可兌現</span></button>
       </div>
       <div class="home-subtabs" id="home-subtabs" aria-label="手帳分類">
         <div class="hsub-group" data-hsubgroup="plan">
           <button type="button" class="home-tab hsub" id="htab-plan" role="tab" aria-selected="false" data-htab="plan">本週安排</button> <!-- v20a197 C7：主分頁「行程」同 sub-tab 撞名，sub-tab 改名「本週安排」 -->
-          <button type="button" class="home-tab hsub" id="htab-progress" role="tab" aria-selected="false" data-htab="progress">進度</button>
+          <button type="button" class="home-tab hsub" id="htab-wardrobe" role="tab" aria-selected="false" data-htab="wardrobe">衣櫃</button>
         </div>
         <div class="hsub-group" data-hsubgroup="career">
           <button type="button" class="home-tab hsub" id="htab-works" role="tab" aria-selected="false" data-htab="works">作品</button>
@@ -6890,21 +6953,16 @@ body.day-res-open .day-row{
           <button type="button" class="home-tab hsub" id="htab-memory" role="tab" aria-selected="false" data-htab="memory">回憶</button>
         </div>
         <div class="hsub-group" data-hsubgroup="status">
-          <button type="button" class="home-tab hsub" id="htab-ledger" role="tab" aria-selected="false" data-htab="ledger">記數</button>
-          <button type="button" class="home-tab hsub" id="htab-tags" role="tab" aria-selected="false" data-htab="tags">稱號</button>
+          <button type="button" class="home-tab hsub" id="htab-ledger" role="tab" aria-selected="false" data-htab="ledger">帳目</button>
           <button type="button" class="home-tab hsub" id="htab-inv" role="tab" aria-selected="false" data-htab="inv">庫存</button>
-        </div>
-        <div class="hsub-group" data-hsubgroup="news">
-          <button type="button" class="home-tab hsub" id="htab-clippings" role="tab" aria-selected="false" data-htab="clippings">剪報</button>
-        </div>
-        <div class="hsub-group" data-hsubgroup="favor">
-          <button type="button" class="home-tab hsub" id="htab-debt" role="tab" aria-selected="false" data-htab="debt">人情債</button>
-          <button type="button" class="home-tab hsub" id="htab-people" role="tab" aria-selected="false" data-htab="people">人脈</button>
+          <button type="button" class="home-tab hsub" id="htab-stats389" role="tab" aria-selected="false" data-htab="stats389">資料卡</button>
         </div>
       </div>
       <div class="home-pane on" id="home-pane-plan">
       <!-- v20a71 PART3C：「本週結算」摺疊卡成段移除（用戶 13:33：資訊太多）。
            寄居內容（結算重溫／本週章節／劇情提示）去向見 NOTES_V20A71＋報告 3C 節。 -->
+      <!-- v20a389 UI389：進度內聯 badge（撳開主線進度抽屜；進度子頁已取消） -->
+      <button type="button" class="prog389-badge" id="prog389-badge">進度</button>
       <div class="notebook" id="notebook">
         <div class="nb-left">
           <p class="nb-title" id="nb-plan-title">本週行程</p>
@@ -6941,15 +6999,12 @@ body.day-res-open .day-row{
           <div class="act-list" id="act-list"></div>
         </div>
       </div>
-      <!-- v20a265 COSTUME265：屋企新增——① 瞓覺掣（只限今日未耗嗰陣出，見 wireHome265）
-           ② 衣櫃入口（撳開下面 #wardrobe265 區，著緊／擁有／換衫；換衫免費即時唔耗日）。
-           其餘手帳內容一字唔郁；呢度只係入口，唔係第二套手帳。 -->
+      <!-- v20a265 COSTUME265：屋企新增——瞓覺掣（只限今日未耗嗰陣出，見 wireHome265）。
+           v20a389 UI389：衣櫃升做行程組子頁（home-pane-wardrobe），呢度只留瞓覺＋留話簿。 -->
       <div class="home265-row" id="home265-row">
         <button type="button" class="paper" id="btn-sleep265">瞓覺</button>
-        <button type="button" class="paper" id="btn-wardrobe265">衣櫃</button>
         <button type="button" class="paper" id="btn-intel381">留話簿<span class="intel381-corner" id="intel381-corner" hidden>新留言</span></button>
       </div>
-      <div class="wardrobe265" id="wardrobe265" hidden></div>
       <!-- v20a71 PART3B：「訓練一覽」摺疊段成段移除（用戶 13:30）——訓練資訊改入
            排程選擇流程（全日訓練選擇器 #nb-train71-wrap＋逐日活動欄訓練分類）。 -->
       <div class="nb-actions" id="nb-actions">
@@ -6958,35 +7013,47 @@ body.day-res-open .day-row{
         <button class="ink" type="button" id="btn-confirm-plan">確定本週行程</button>
       </div>
       </div>
+      <!-- v20a389 UI389：衣櫃子頁（原行程頁底展開區升格；容器 id 不變，renderWardrobe265 照用） -->
+      <div class="home-pane" id="home-pane-wardrobe">
+        <div class="wardrobe265 journal-scroll" id="wardrobe265"></div>
+      </div>
       <div class="home-pane" id="home-pane-ledger">
-        <div class="ledger-wrap journal-scroll" id="ledger-list" aria-label="記數簿"></div>
+        <div class="ledger-wrap journal-scroll" id="ledger-list" aria-label="帳目"></div>
       </div>
-      <div class="home-pane" id="home-pane-clippings">
-        <div class="journal-scroll" id="clippings-list" aria-label="剪報"></div>
-      </div>
-      <div class="home-pane" id="home-pane-debt">
+      <!-- v20a389 UI389：人情單頁（人情債／人脈分段切換；兩容器 id 不變） -->
+      <div class="home-pane" id="home-pane-favor389">
+        <div class="favor389-seg" role="tablist" aria-label="人情">
+          <button type="button" class="favor389-segbtn on" id="favor389-seg-debt" data-favor389="debt">人情債</button>
+          <button type="button" class="favor389-segbtn" id="favor389-seg-people" data-favor389="people">人脈</button>
+        </div>
         <div class="journal-scroll" id="debt-list" aria-label="人情債"></div>
-      </div>
-      <div class="home-pane" id="home-pane-people">
-        <div class="journal-scroll" id="people-list" aria-label="人脈"></div>
-      </div>
-      <div class="home-pane" id="home-pane-tags">
-        <div class="journal-scroll" id="tags-list" aria-label="選角標籤"></div>
+        <div class="journal-scroll" id="people-list" aria-label="人脈" hidden></div>
       </div>
       <div class="home-pane" id="home-pane-inv">
         <div class="journal-scroll" id="inv-list" aria-label="庫存"></div>
       </div>
+      <!-- v20a389 UI389：資料卡子頁（七圍＋聲望＋信用＋存款，讀 ledgerStatsParts） -->
+      <div class="home-pane" id="home-pane-stats389">
+        <div class="journal-scroll" id="stats389-list" aria-label="資料卡"></div>
+      </div>
       <div class="home-pane" id="home-pane-works">
         <div class="journal-scroll" id="works-list" aria-label="作品牆"></div>
+        <!-- v20a389 UI389：稱號（選角標籤）摺疊入作品頁（容器 id 不變） -->
+        <details class="tags389-fold">
+          <summary>稱號</summary>
+          <div id="tags-list" aria-label="選角標籤"></div>
+        </details>
       </div>
       <div class="home-pane" id="home-pane-awards">
         <div class="journal-scroll" id="awards-list" aria-label="獎項"></div>
       </div>
       <div class="home-pane" id="home-pane-memory">
         <div class="journal-scroll" id="memory-list" aria-label="回憶"></div>
-      </div>
-      <div class="home-pane" id="home-pane-progress">
-        <div class="journal-scroll" id="progress-list" aria-label="主線進度"></div>
+        <!-- v20a389 UI389：剪報併入回憶頁（消息組取消；容器 id 不變） -->
+        <div class="clippings389-wrap">
+          <h3 class="clippings389-h">剪報</h3>
+          <div id="clippings-list" aria-label="剪報"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -7476,15 +7543,7 @@ function wireHome265(){
       sleepBtn.style.display = costume265SleepAvailable() ? "" : "none";
       sleepBtn.onclick = ()=>{ try{ costume265Sleep(); }catch(_e){} };
     }
-    const wBtn = document.getElementById("btn-wardrobe265");
-    if(wBtn){
-      wBtn.onclick = ()=>{
-        const box = document.getElementById("wardrobe265");
-        if(!box) return;
-        box.hidden = !box.hidden;
-        if(!box.hidden){ try{ renderWardrobe265(); }catch(_e){} }
-      };
-    }
+    /* v20a389 UI389：衣櫃升做子頁，btn-wardrobe265 入口已刪（renderWardrobe265 由 setHomeTab 呼叫）。 */
     /* v20a381 INTEL381：留話簿掣（未讀留言露出紙角「新留言」；撳開留話簿 modal） */
     const iBtn = document.getElementById("btn-intel381");
     if(iBtn){
@@ -16089,7 +16148,7 @@ function ux68ClassifyAct(btn){
   if(/act-ask/.test(cls)) return { group:"story", locked, title };
   if(title.indexOf("傾談") >= 0 && title.indexOf("同") === 0) return { group:"story", locked, title };
   if(title.indexOf("送禮") === 0) return { group:"story", locked, title };
-  if(title === "只查看通告欄") return { group:"work", locked, title };
+  if(/^通告欄/.test(title)) return { group:"work", locked, title };
   if(/act-bridge/.test(cls)) return { group:"work", locked, title };
   if(title.indexOf("試鏡入口") === 0 || title.indexOf("接通告") === 0 || title.indexOf("查看檔期") === 0)
     return { group:"work", locked, title };
@@ -17341,8 +17400,9 @@ function toast(m, opts){
      將地圖提示吞咗入隱藏咗嘅手帳。banner 唔到就跌返 overlay（唔吞提示）。 */
   {
     const _vh = document.getElementById("v-home");
-    const _pp = document.getElementById("home-pane-progress");
-    if(_vh && _vh.classList.contains("on") && _pp && _pp.classList.contains("on")){
+    /* v20a389 UI389：進度改抽屜（modal 內 #progress-list），判斷跟住改。 */
+    const _pp = document.querySelector("#modal-inner #progress-list");
+    if(_vh && _vh.classList.contains("on") && _pp){
       const _bm = msg + (opts.sub ? " — " + String(opts.sub) : "");
       if(prog175ShowBanner(_bm)){
         toast._msg = msg; toast._subKey = opts.sub ? String(opts.sub) : ""; toast._until = Date.now() + 1800;
@@ -19403,7 +19463,9 @@ function castingNoticeDetailHtml(g){
       const cur=(typeof costume265EffStat==="function") ? costume265EffStat(key) : (Number(S&&S[key])||0);
       const bonus265=(typeof costume265BonusMap==="function") ? ((costume265BonusMap()[key])||0) : 0;
       const ok=cur>=need;
-      cells.push(`<div class="cn-req-cell ${ok?"ok":"no"}"><div class="cn-req-top"><span class="cn-req-lab">${lab}</span><span class="cn-req-mark">${ok?"✓":"✕"}</span></div><div class="cn-req-val">現 ${cur} ／ 要 ${need}${bonus265?` · 衫 +${bonus265}`:""}</div></div>`);
+      /* v20a389 UI389（共識項＋GPT 方案）：未達標格直接標差額（「差 N」），
+         取代詳情下方成版「差幾多達標」重複數字。 */
+      cells.push(`<div class="cn-req-cell ${ok?"ok":"no"}"><div class="cn-req-top"><span class="cn-req-lab">${lab}</span><span class="cn-req-mark">${ok?"✓":"✕"}</span></div><div class="cn-req-val">現 ${cur} ／ 要 ${need}${bonus265?` · 衫 +${bonus265}`:""}${ok?"":` · <b class="cn-req-gap389">差 ${need-cur}</b>`}</div></div>`);
     };
     if(floor30v2>0) push30v2("fame",(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲望",floor30v2);
     const ORDER30v2=["acting","vocal","stage","charm","looks","stamina","iq"];
@@ -19670,7 +19732,7 @@ function openCastingNoticeDetail(g, L){
     if(life && life.key==="pending"){
       const body = `<h3>${g.title||"通告"}</h3><p class="gold">等消息</p><p>你已經試咗鏡，劇組未有回音。何生一收到風就會打嚟通知你；等消息嗰幾日照常生活就得，唔使日日嚟望——可以照常試其他通告（最多同時等 ${AUD91_CAP} 張）或者做兼職，唔使空等。</p>`;
       modal(body, [
-        {label:"查看手帳", role:"p", on:()=>{ try{ showJobs(); }catch(_e){} }},
+        {label:"查看拍攝簿", role:"p", on:()=>{ try{ showJobs(); }catch(_e){} }},
         {label:"離開", role:"g", on:()=>{ if(L) doScout(L); }}
       ]);
       return;
@@ -19678,7 +19740,7 @@ function openCastingNoticeDetail(g, L){
     if(life && (life.key==="hired" || life.key==="shooting" || life.key==="wrapped")){
       const body = `<h3>${g.title||"通告"}</h3><p class="gold">${life.label}</p><p>${life.key==="wrapped"?"本單已殺青，可在拍攝簿看履歷。":"已排檔期，請入手帳看拍攝日。"}</p>`;
       modal(body, [
-        {label:"查看檔期／拍攝簿", role:"p", on:()=>{ try{ showJobs(); }catch(_e){} }},
+        {label:"查看拍攝簿", role:"p", on:()=>{ try{ showJobs(); }catch(_e){} }},
         {label:"離開", role:"g", on:()=>{ if(L) doScout(L); }}
       ]);
       return;
@@ -19725,48 +19787,17 @@ function openCastingNoticeDetail(g, L){
       body += `<p class="gold">${ch158Locked.hint}</p>`;
       btns.push({label:"用人情免試鏡", role:"p", on:()=>{ if(typeof favor158UseChannel==="function") favor158UseChannel(g, L); }});
     }
-    const lockedBtn = {label:copy.lockedLabel, role:"g", cls:"cast-locked", stay:true, on:(btn)=>{
-      if(copy.shake && btn){
-        btn.classList.remove("is-shake");
-        void btn.offsetWidth;
-        btn.classList.add("is-shake");
-      }
-      toast(copy.lockedToast, { sub: copy.subLine });
-    }};
-    if(phase3SoftOn()) lockedBtn.ariaDisabled = true;
-    btns.push(lockedBtn);
+    /* v20a389 UI389（共識項＋GPT 方案）：鎖定掣改狀態標籤——純文字註記，
+       唔再係掣（唔震、唔彈提示）；差額已併入要求格。 */
+    body = `<p class="cn-locked389"><span class="sp-lock-ico" aria-hidden="true"></span>暫未能報名</p>` + body;
     /* v19z1：鎖定 Detail 一定有可見「去訓練／手帳」CTA（mobile sheet 全寬） */
     let plan = null;
     try{ plan = bestTrainJumpForGig(g); }catch(_e){ plan = null; }
     const consumed = (typeof isGigConsumed==="function") ? !!isGigConsumed(g) : false;
     if(!consumed){
-      let gapLines = "";
+      /* v20a389 UI389（共識項）：「差幾多達標」成版刪除——差額已併入要求格，
+         呢度只留去向 CTA（去訓練／手帳／成衣店）。 */
       let ctaLabel = "去訓練／手帳";
-      try{
-        const bits=[];
-        const floor = (typeof fameFloor==="function") ? fameFloor(g) : 0;
-        const curF = Number(S && S.fame)||0;
-        if(floor>0){
-          const fameLab=(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲望";
-          if(curF>=floor) bits.push(`<span class="gap-ok">✓ ${fameLab} ${curF}／${floor}</span>`);
-          else bits.push(`<span class="gap-no">✗ ${fameLab} 差 ${floor-curF}（現 ${curF}／要 ${floor}）</span>`);
-        }
-        Object.entries((g && g.req)||{}).forEach(([k,v])=>{
-          const need=Number(v)||0, cur=Number(S && S[k])||0;
-          const lab=(STAT_LABEL&&STAT_LABEL[k])||k;
-          if(cur>=need) bits.push(`<span class="gap-ok">✓ ${lab} ${cur}／${need}</span>`);
-          else bits.push(`<span class="gap-no">✗ ${lab} 差 ${need-cur}（現 ${cur}／要 ${need}）</span>`);
-        });
-        /* v20a382 COSTUME382：自備戲服都列入差額行，唔好全綠但鎖住令人誤會係 bug */
-        try{
-          const cr382 = (typeof costume382GigReq==="function") ? costume382GigReq(g) : null;
-          if(cr382){
-            if(costume382OwnedCat(cr382)) bits.push(`<span class="gap-ok">✓ 自備戲服 ${cr382}類服裝</span>`);
-            else bits.push(`<span class="gap-no">✗ 自備戲服 未持有「${cr382}」類服裝</span>`);
-          }
-        }catch(_e382){}
-        gapLines = bits.join("") || "條件未合，先去訓練或入手帳安排。";
-      }catch(_e2){ gapLines = "條件未合，先去訓練或入手帳安排。"; }
       if(plan && plan.gap && plan.gap.label){
         ctaLabel = "去訓練／手帳 · 練"+plan.gap.label;
         if(plan.enrolled) ctaLabel = "去訓練／手帳 · 入手帳排課";
@@ -19778,7 +19809,9 @@ function openCastingNoticeDetail(g, L){
         costumeOnly382 = !!(cr382b && !costume382OwnedCat(cr382b) && !(plan && plan.gap));
         if(costumeOnly382) ctaLabel = "去花園街成衣店";
       }catch(_e382b){}
-      body += `<div class="cn-train-jump" role="note"><p class="cn-train-jump-title">差幾多達標</p><p class="cn-train-jump-gaps">${gapLines}</p><p class="cn-train-jump-cta-hint">${costumeOnly382 ? "點擊下面「去花園街成衣店」選購對應類別服裝。" : "點擊下面「去訓練／手帳」直達最佳訓練地或手帳。"}</p></div>`;
+      if(costumeOnly382){
+        body += `<p class="cn-costume389">尚欠自備戲服——點擊下面「去花園街成衣店」選購對應類別服裝。</p>`;
+      }
       /* v20a60 CALIB60-4：聲樂凍結明示（最大缺口係歌藝＋從未練過先出） */
       if(plan && plan.frozenVocal){
         body += `<p class="cn-train-jump-frozen60">阿偉從未練過歌藝——唱片／音樂通告會一直欠這一項。去唱片公司報「歌藝訓練」；手帳預設計劃現在會輪流排歌藝堂。</p>`;
@@ -23515,22 +23548,8 @@ function paintFavorBadge369(){
     else if(!on && !b.hidden){ b.hidden = true; }
   }catch(_e){}
 }
-/* 地圖「打聽」掣：展開合資格地點（有 MOCK_ASK 嘅茶餐廳／事務所）；多個就畀玩家揀。
-   入口只做導覽，唔自動執行行動，原有條件同成本不變。 */
-function openAskPicker369(){
-  try{
-    const locs = (typeof LOCS!=="undefined" && Array.isArray(LOCS)) ? LOCS.filter(L=>L && typeof mockAskDefs==="function" && mockAskDefs(L.id)) : [];
-    if(!locs.length){ toast("暫時冇地方可以打聽。"); return; }
-    if(locs.length===1){ openLoc(locs[0].id); return; }
-    const btns = locs.map(L=>({ label: L.name, role:"p", on:()=>{ try{ openLoc(L.id); }catch(_e){} } }));
-    btns.push({ label:"取消", role:"g", on:()=>{} });
-    modal(`<h3>打聽</h3><p>去邊度打聽？茶餐廳同事務所都有人講行內消息。</p>`, btns, {onDismiss:()=>{}});
-  }catch(_e){ toast("暫時未能前往——遲些再回來看。"); }
-}
-try{
-  const askBtn369 = document.getElementById("btn-ask369");
-  if(askBtn369) askBtn369.addEventListener("click", ()=>{ try{ openAskPicker369(); }catch(_e){} });
-}catch(_e369){}
+/* v20a389 UI389（用戶 2026-11-23 拍板）：地圖「打聽」快捷掣已刪——打聽只留地點面板
+   （茶餐廳／事務所入面嘅打聽行動照舊）。openAskPicker369 隨掣一併移除。 */
 /* ===== v369 UI369 JS 完 ===== */
 
 function paintBar(){
@@ -29555,7 +29574,8 @@ const MOCK_ASK = {
     { id:"act_cha_intel381", title:"打聽補位消息", hint:"向陸柏言購買傳聞，取得獨家補位試鏡的消息。每月只可購買一次。", choiceHint:"向陸柏言購買傳聞，取得獨家補位試鏡的消息。每月只可購買一次。", cost:"情報費", toast:"", source:"金龍茶餐廳" },
   ],
   agency_ho:[
-    { id:"act_ho_tvb_rules", title:"請教何生入廠守則", hint:"向經理人請教電視台規矩", cost:"遞包萬寶路畀何生", toast:"何生提點數招廠景生存之道。", source:"何生事務所", intelText:"入廠拍劇最忌遲到及亂闖直播區，務必跟隨場記用餐。" },
+    /* v20a389 UI389（共識項）：act_ho_tvb_rules（請教何生入廠守則）與茶餐廳
+       act_cha_tvb_rules 同一段 intelText，兩地重複——刪事務所一份，情報只留茶餐廳。 */
     { id:"act_ho_choi_news", title:"詢問采兒近況", hint:"向何生打聽采兒最新動向", cost:"免費", toast:"何生透露采兒正籌備新戲。", source:"何生事務所", intelText:"采兒最近頻密接拍賀歲片，更想物色新臨記做替身。" },
     { id:"act_ho_repay", title:"還人情 / 送禮", hint:"揀一筆何生人情債，用現金或庫存禮物還。", choiceHint:"揀一筆何生人情債，用現金或庫存禮物還。", cost:"禮物／現金", toast:"何生收低，話「大家自己人」。", resultHint:"何生心情好咗，提咗句年尾有筍盤。", source:"何生事務所", repay:true },
     { id:"act_ho_rumor", title:"聽風聲", hint:"何生每日有一單真風聲：邊位紅星呢幾日會出沒、邊套戲就嚟開鏡。", cost:"無", toast:"何生壓低聲講咗一單真風聲。", source:"何生事務所" },
@@ -30203,9 +30223,12 @@ function playPushDoor(){
    一級只顯示五大類（行程／事業／近況／消息／人情）；子頁 id 同 pane 全部不變，
    分組只係導航層；組內記住上次開嗰個子頁（session 內）。恆常出口：唔再跟行程掣
    嘅顯示／標籤走（舊制根因見 syncHomeTabExit 註解）。 */
-const BOOK70_TAB_GROUP = { plan:"plan", train:"plan", progress:"plan", works:"career", awards:"career", memory:"career", ledger:"status", tags:"status", inv:"status", clippings:"news", debt:"favor", people:"favor" };
-const BOOK70_GROUP_FIRST = { plan:"plan", career:"works", status:"ledger", news:"clippings", favor:"debt" };
-const book70GroupSub = { plan:"plan", career:"works", status:"ledger", news:"clippings", favor:"debt" };
+/* v20a389 UI389：4 組 7 子頁映射。progress／tags／clippings 舊 tab id 由
+   setHomeTab 入口重定向（進度→行程＋抽屜、稱號→作品、剪報→回憶），
+   呢度只列現行子頁。debt／people 同屬 favor 單頁（分段切換）。 */
+const BOOK70_TAB_GROUP = { plan:"plan", train:"plan", wardrobe:"plan", works:"career", awards:"career", memory:"career", ledger:"status", inv:"status", stats389:"status", debt:"favor", people:"favor" };
+const BOOK70_GROUP_FIRST = { plan:"plan", career:"works", status:"ledger", favor:"debt" };
+const book70GroupSub = { plan:"plan", career:"works", status:"ledger", favor:"debt" };
 function book70SyncTabGroups(tab){
   const grp = BOOK70_TAB_GROUP[tab] || "plan";
   if(book70GroupSub[grp]) book70GroupSub[grp] = tab;
@@ -30273,23 +30296,41 @@ function setHomeTab(tab){
      原選單 modal 頁歸入手帳（選單一門原則）；拍攝簿併入 works 頁、狀態早於
      v20a6 已同記數同頁，唔使加子頁。 */
   if(tab === "guide" || tab === "train"){ tab = "plan"; }
-  const allow={ plan:1, ledger:1, clippings:1, debt:1, tags:1, works:1, awards:1, memory:1, progress:1, people:1, inv:1 }; /* v20a60 CALIB60-3：加「回憶」頁；v20a62 AWARDS62-7：加「獎項」頁；v20a71 PROGRESS71：加「進度」頁；v20a72 MENU72：加「人脈」「庫存」頁 */
+  /* v20a389 UI389：舊子頁 id 重定向——進度→行程（＋開進度抽屜）、稱號→作品、
+     剪報→回憶。所有既有呼叫（enterHome "progress" 等）唔使逐個改。 */
+  let openProg389 = false;
+  if(tab === "progress"){ tab = "plan"; openProg389 = true; }
+  if(tab === "tags"){ tab = "works"; }
+  if(tab === "clippings"){ tab = "memory"; }
+  const allow={ plan:1, wardrobe:1, ledger:1, debt:1, people:1, works:1, awards:1, memory:1, inv:1, stats389:1 }; /* v20a389 UI389：4 組 7 子頁 */
   if(!allow[tab]) tab="plan";
   /* v20a272：傳聞教學函數 applyPhase2Steps56TabLabel 已隨 v267 刪走，呢度殘留嘅裸呼叫會掟 ReferenceError，令成個 setHomeTab 死晒（tab 撳落去毫無反應）——刪走。 */
   try{ book70SyncTabGroups(tab); }catch(_grp){}
-  ["plan","ledger","clippings","debt","people","tags","inv","works","awards","memory","progress"].forEach(id=>{
+  /* v20a389 UI389：debt／people 共用 favor389 單頁（分段切換），其餘 tab 同 pane id 一一對應。 */
+  const pane389 = (tab==="debt" || tab==="people") ? "favor389" : tab;
+  ["plan","wardrobe","ledger","favor389","inv","stats389","works","awards","memory"].forEach(id=>{
     const pane=document.getElementById("home-pane-"+id);
-    if(pane) pane.classList.toggle("on", id===tab);
+    if(pane) pane.classList.toggle("on", id===pane389);
   });
+  if(pane389==="favor389"){
+    try{
+      const dl=document.getElementById("debt-list"), pl=document.getElementById("people-list");
+      if(dl) dl.hidden = tab!=="debt";
+      if(pl) pl.hidden = tab!=="people";
+      document.querySelectorAll(".favor389-segbtn").forEach(b=>{
+        b.classList.toggle("on", b.getAttribute("data-favor389")===tab);
+      });
+    }catch(_fv389){}
+  }
   ensureWeakSeals();
-  if(tab==="progress"){
-    try{ renderProgressPane71(); }catch(_e){}
+  if(tab==="plan"){
+    try{ syncProg389Badge(); }catch(_e){}
+  }
+  if(tab==="wardrobe"){
+    try{ renderWardrobe265(); }catch(_e){}
   }
   if(tab==="ledger"){
     try{ renderLedgerPane(); }catch(_e){}
-  }
-  if(tab==="clippings"){
-    try{ renderClippingsPane(); }catch(_e){}
   }
   if(tab==="debt"){
     renderDebtPane();
@@ -30301,20 +30342,57 @@ function setHomeTab(tab){
   if(tab==="inv"){
     try{ renderInvPane(); }catch(_e){}
   }
-  if(tab==="tags"){
-    try{ renderCastingTagsPane(); }catch(_e){}
+  if(tab==="stats389"){
+    try{ renderStats389Pane(); }catch(_e){}
   }
   if(tab==="works"){
     try{ renderWorksPane(); }catch(_e){}
+    try{ renderCastingTagsPane(); }catch(_e){} /* v20a389 UI389：稱號摺疊段跟作品頁一齊 render */
   }
   if(tab==="awards"){
     try{ renderAwardsPane62(); }catch(_e){}
   }
   if(tab==="memory"){
     try{ renderMemoryPane60(); }catch(_e){}
+    try{ renderClippingsPane(); }catch(_e){} /* v20a389 UI389：剪報段跟回憶頁一齊 render */
   }
   try{ syncHomeTabExit(tab); }catch(_exit){}
   if(tab==="plan"){ try{ revealCatTabs197(); }catch(_r197){} } /* v20a197 B7：切返行程頁嗰陣，初 paint 分類掣俾 bar 冚住就捲返出嚟 */
+  if(openProg389){ try{ openProgressDrawer389(); }catch(_op389){} }
+}
+
+/* v20a389 UI389：進度內聯——本週安排頁 badge＋抽屜（原進度子頁內容原封搬入抽屜，
+   renderProgressPane71 寫入抽屜內 #progress-list，逐幕條件全保留）。 */
+function syncProg389Badge(){
+  const b = document.getElementById("prog389-badge");
+  if(!b) return;
+  let txt = "進度";
+  try{
+    const rows = (typeof prog71Rows==="function") ? prog71Rows() : [];
+    const open = rows.find(r=>r.state==="open");
+    const next = open || rows.find(r=>r.state==="locked");
+    if(next && next.label) txt = "進度 · " + next.label + (open ? "可播" : "");
+    else if(rows.length) txt = "進度 · 全幕完成";
+  }catch(_e){}
+  b.textContent = txt;
+}
+function openProgressDrawer389(){
+  modal(`<h3>主線進度</h3><div class="journal-scroll" id="progress-list" aria-label="主線進度"></div>`, [
+    {label:"關閉", role:"g"}
+  ]);
+  try{ renderProgressPane71(); }catch(_e){}
+}
+/* v20a389 UI389：資料卡子頁（七圍＋雙軌＋存款，讀 ledgerStatsParts 同源數字）。 */
+function renderStats389Pane(){
+  const box = document.getElementById("stats389-list");
+  if(!box) return;
+  try{
+    const p = ledgerStatsParts();
+    box.innerHTML = `<div class="stats389-card"><h3>阿偉資料卡</h3><p class="sub">${p.dateLine}</p><div class="stats-grid">${p.grid}</div>`
+      + `<p class="sub">幕前聲望 <b>${p.stageVolume}</b> · 業內信用 <b>${p.industryCredit}</b></p>`
+      + `<p>存款 <b class="gold">$ ${p.money.toLocaleString()}</b></p>`
+      + `<p style="font-size:.78rem;color:var(--muted)">已報名訓練：${p.enrollLine}</p></div>`;
+  }catch(_e){ box.innerHTML = `<p class="sub">資料暫時讀唔到。</p>`; }
 }
 
 function syncHomeTabExit(tab){
@@ -36361,7 +36439,7 @@ function commitMorningPaper(edition, opts){
   try{ if(typeof familyPaperEchoTick==="function") familyPaperEchoTick(); }catch(_e){}
   if(opts.persist!==false){ try{ saveQ(); }catch(_e){} }
   try{
-    const pane = document.getElementById("home-pane-clippings");
+    const pane = document.getElementById("home-pane-memory"); /* v20a389 UI389：剪報併入回憶頁 */
     if(pane && pane.classList.contains("on")) renderClippingsPane();
   }catch(_e){}
 }
@@ -37128,7 +37206,7 @@ try{
         if(!LOCS.some(l=>l.id==="agency_ho")) fails.push("loc:agency_ho");
         if(!LOCS.some(l=>l.id==="rec_wanchai")) fails.push("loc:rec_wanchai");
       }
-      if(!document.getElementById("home-pane-tags")) fails.push("ui:tags");
+      if(!document.getElementById("tags-list")) fails.push("ui:tags"); /* v20a389 UI389：稱號摺疊入作品頁 */
       if(!document.getElementById("home-pane-ledger")) fails.push("ui:ledger");
       if(!document.getElementById("htab-ledger")) fails.push("ui:htab_ledger");
       try{
@@ -37138,9 +37216,9 @@ try{
         if(/<h3>狀態<\/h3>/.test(src) || /modal\(`<h3>狀態/.test(src)) fails.push("ui:stats_modal_status");
         if(!/enterHome\([^)]*"ledger"/.test(src) && src.indexOf('"ledger"')<0) fails.push("ui:stats_not_ledger");
       }catch(_e){ fails.push("ui:stats_probe"); }
-      if(!document.getElementById("home-pane-clippings")) fails.push("ui:clippings");
-      if(!document.getElementById("htab-clippings")) fails.push("ui:htab_clippings");
-      if(!document.getElementById("home-pane-debt")) fails.push("ui:debt");
+      if(!document.getElementById("clippings-list")) fails.push("ui:clippings"); /* v20a389 UI389：剪報併入回憶頁 */
+      if(!document.getElementById("htab-memory")) fails.push("ui:htab_memory");
+      if(!document.getElementById("home-pane-favor389") || !document.getElementById("debt-list")) fails.push("ui:debt"); /* v20a389 UI389：人情單頁 */
       try{
         if(typeof phase3Stars==="function" && !phase3Stars().some(s=>s&&s.starId==="so_jiyan")) fails.push("so_jiyan_phase3");
         if(typeof starAtLoc==="function" && !(starAtLoc("rec_wanchai")&&starAtLoc("rec_wanchai").starId==="so_jiyan")) fails.push("so_jiyan_loc");
@@ -44421,76 +44499,32 @@ function addLocTalkGiftActs(add, L, npcId){
   // 人物／情報置頂，減少要滾先撳
   /* v20a176 ROM176：四位女角唔再喺地點板傾談／送禮——要撞到先傾得／送得（明星志願嗰套）。
      非女角（導演／對手／何生）傾談掣不變；鄧麗萍送禮掣唔喺呢度（agency_ho 專屬段）。 */
-  if(npcId && !(typeof rom176IsWomanNpc==="function" && rom176IsWomanNpc(npcId)))
-    add(`同${NPCS[npcId].name}傾談`, talkHintLabel(), talkCostLabel(), ()=>{
+  /* v20a389 UI389（用戶 2026-11-23 拍板＋GPT 方案）：工作地點（film／tv／music／ad）
+     傾談收埋去在場角色列——名牌式貼紙掣（人名＋「💬 傾談 · 耗日」），有 NPC 先顯示；
+     非工作地點（茶餐廳／事務所／約會層）維持行動列表掣。確認流程不變。 */
+  const host389 = document.getElementById("loc-talk389");
+  if(host389){ host389.hidden = true; host389.innerHTML = ""; }
+  if(npcId && !(typeof rom176IsWomanNpc==="function" && rom176IsWomanNpc(npcId))){
+    const talk389 = ()=>{
       /* v20a236 RECONFIRM236：傾談先確認（doTalk 本體唔郁；LIVE 耗一日／壓力上升照舊）。 */
       confirmChoice236({ choiceLabel: "與"+NPCS[npcId].name+"傾談",
         consequence: (typeof softTalkCostsDay==="function" && softTalkCostsDay()) ? "傾談將會耗用一日，壓力亦會上升。" : "傾談不耗用日子，壓力將會上升。",
         onConfirm: ()=>doTalk(npcId, L),
         onCancel: ()=>{ try{ openLoc(L.id, {travelFree:true}); }catch(_e){} } });
-    }, "act-priority");
-}
-function addLocBridgeActs(add, L){
-  const bridgeShown = {};
-  try{
-    if(typeof softPreviewOn==="function" && softPreviewOn() && typeof pinSoftBridgeOnBoard==="function"){
-      pinSoftBridgeOnBoard(L.id);
-      const curS = (typeof calendarSeason==="function") ? calendarSeason() : "";
-      (GIGS||[]).forEach(g=>{
-        if(!g || !g.softBridge || g.loc!==L.id) return;
-        if(typeof seasonRank==="function" && seasonRank(g, curS)>0) return;
-        if(typeof isGigConsumed==="function" && isGigConsumed(g)) return;
-        if(typeof canAudition==="function" && !canAudition(g).ok) return;
-        bridgeShown[g.id] = 1;
-        const face = g.workTitle || g.title || "初階臨記";
-        add(`試鏡入口：${face}`, "初階臨記 · 一日殺青 · 正薪夠生活費 · 打開不耗日。試鏡後等通知；獲聘先收簽約金，餘額殺青先有片酬。", "不耗日", ()=>openCastingNoticeDetail(g, L), "act-priority act-bridge");
-      });
-    }
-  }catch(_br){}
-  return bridgeShown;
-}
-function addLocGigActs(add, L, gigs, bridgeShown){
-  bridgeShown = bridgeShown || {};
-  (gigs||[]).forEach(gig=>{
-    if(!gig) return;
-    if(bridgeShown[gig.id]) return;
-    const life = (typeof gigLifecycleStatus==="function") ? gigLifecycleStatus(gig) : null;
-    if(life && (life.key==="hired" || life.key==="shooting" || life.key==="wrapped")){
-      /* v19z3：已接／拍攝／殺青 → 查看檔期，唔再接通告 */
-      add(`查看檔期：${gig.title}`, life.label, "—", ()=>{
-        try{ showJobs(); }catch(_e){ openCastingNoticeDetail(gig, L); }
-      });
+    };
+    const isWork389 = L && (L.type==="film" || L.type==="tv" || L.type==="music" || L.type==="ad");
+    if(isWork389 && host389){
+      host389.hidden = false;
+      host389.innerHTML = `<button type="button" class="loc-talk389-btn"><span class="loc-talk389-name">${NPCS[npcId].name}</span><span class="loc-talk389-cta">💬 傾談 · ${talkCostLabel()}</span></button>`;
+      const b389 = host389.querySelector("button");
+      if(b389) b389.addEventListener("click", talk389);
       return;
     }
-    const gate=canAudition(gig);
-    /* v20a335：接通告掣補返人情免試鏡金色提示——同板短卡／詳情頁同一句文字（favor158ChannelForGig
-       已經包晒兩渠道閘：武指要全數過關，彭用減半台風；唔啱就返 null，唔使另加閘）。放掣內獨立
-       金行（經 add() extraHtml），唔放 .h——.h 單行截短，放咗都睇唔到。 */
-    let favor158Gold = "";
-    try{ const ch158a = (typeof favor158ChannelForGig==="function") ? favor158ChannelForGig(gig) : null; if(ch158a && ch158a.hint) favor158Gold = `<div class="gold">${ch158a.hint}</div>`; }catch(_e){}
-    const castCopy = phase3CastCopy();
-    if(!gate.ok){
-      add(`${castCopy.lockedLabel}：${gig.title}`, "條件未合","未開放", ()=>openCastingNoticeDetail(gig, L), undefined, favor158Gold);
-      return;
-    }
-    const p=Math.round(chance(gig)*100);
-    const genre = (typeof gigGenreLabel==="function") ? gigGenreLabel(gig) : (gig.type||"通告");
-    const coarse = (typeof gigTypeCoarse==="function") ? gigTypeCoarse(gig) : "";
-    const sub = (coarse && coarse!==genre) ? `${genre}／${coarse}` : genre;
-    if(typeof softPreviewOn==="function" && softPreviewOn()){
-      add(`試鏡入口：${gig.title}`, `${sub} · 成功率 ${p}% · 查看不耗日。試鏡後等通知；獲聘才收簽約金，餘額於殺青時支付。`, "不耗日", ()=>openCastingNoticeDetail(gig, L), undefined, favor158Gold);
-    } else {
-      add(`${castCopy.readyLabel}：${gig.title}`, `${sub} · 成功率 ${p}%`,"+1日", ()=>openCastingNoticeDetail(gig, L), undefined, favor158Gold);
-    }
-  });
-  /* 亦列出此地進行中拍攝（即使已踢出 board） */
-  try{
-    (S.shoots||[]).filter(sh=>sh && sh.locId===L.id).forEach(sh=>{
-      const rem = (typeof shootRemain==="function") ? shootRemain(sh) : Math.max(0,(sh.totalDays||0)-(sh.doneDays||0));
-      add(`查看檔期：${sh.title}`, (sh.doneDays>0?"拍攝中":"已獲聘")+` · 剩 ${rem} 日`, "—", ()=>{ try{ showJobs(); }catch(_e){} });
-    });
-  }catch(_e){}
+    add(`同${NPCS[npcId].name}傾談`, talkHintLabel(), talkCostLabel(), talk389, "act-priority");
+  }
 }
+/* v20a389 UI389：addLocBridgeActs／addLocGigActs 已移除——逐張通告掣收埋入通告欄
+   （用戶 2026-11-23 拍板）；soft bridge 釘板改由 openLoc 直接呼叫 pinSoftBridgeOnBoard。 */
 /* ===== v20a159 MAP159：地點 sheet 約會對象列 =====
    邊個女角喺呢度約得，讀 ROM159_WOMEN 各人 spots（A／B1 工人擁有，呢度只讀唔改）：
    spots 入面可以直接係 locId（新寫法），或者係 ROM159_DATES 嘅 key（Phase 1 寫法，
@@ -44522,6 +44556,10 @@ function addRom159DateActs(add, L){
     keys.forEach(rk=>{
       const w = ROM159_WOMEN[rk];
       if(!w) return;
+      /* v20a389 UI389（共識項）：未喺劇情正式見過面唔出約會掣（見面後自然解鎖）。 */
+      let met389 = false;
+      try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(w.meet)) met389 = true; }catch(_e){}
+      if(!met389) return;
       let gate = { ok:false, reason:"" };
       try{ if(typeof rom159DateGate==="function") gate = rom159DateGate(rk, null) || gate; }catch(_e){}
       let hint = gate.ok ? "約會耗一日" : (gate.reason || "暫時約唔到");
@@ -44701,7 +44739,8 @@ function openLoc(id, opts){
     /* v20a105 UI105 S-23：費用欄統一格式——$X／免費／+1日 三種行先；其餘狀態字
        （已聽過／今日已滿／未開放／— 等）原樣保留；實物名（凍檸茶／萬寶路嗰啲 flavor）
        唔再冒充費用，移入卡身描述行尾。金額＋日數複合（例如「$500 · 不耗日」）拆返：
-       費用欄只留 $X，日數語意併入描述。 */
+       費用欄只留 $X，日數語意併入描述。
+       v20a389 UI389（共識項）：「免費」顯示改「不耗日」（不耗日≠冇成本，唔好誤導）。 */
     let cost105 = String(cost==null?"":cost);
     let hint105 = String(hint||"");
     try{
@@ -44713,13 +44752,13 @@ function openLoc(id, opts){
         if(dayM && hint105.indexOf("+1日")<0) hint105 = (hint105?hint105+" · ":"") + "要用一日";
       } else if(dayM){
         cost105 = "+1日";
-      } else if(cost105==="無" || cost105==="不耗日"){
-        cost105 = "免費";
+      } else if(cost105==="無" || cost105==="不耗日" || cost105==="免費"){
+        cost105 = "不耗日";
       } else if(cost105 && known105.indexOf(cost105)<0 && !/^\$/.test(cost105)){
-        /* flavor／未識別字串 → 移入描述行，費用欄歸「免費」（先剝走「· 不耗日」尾巴免同 hint 重複） */
+        /* flavor／未識別字串 → 移入描述行，費用欄歸「不耗日」（先剝走「· 不耗日」尾巴免同 hint 重複） */
         const flav105 = cost105.replace(/\s*·\s*不耗日\s*$/,"");
         if(flav105 && hint105.indexOf(flav105)<0) hint105 = (hint105?hint105+" · ":"") + flav105;
-        cost105 = "免費";
+        cost105 = "不耗日";
       }
     }catch(_e105){}
     const b=document.createElement("button"); b.type="button"; b.className="act"+(cls?" "+cls:""); /* v20a171 C2：鎖住態（費用欄「庫存空」／「今日已送」，只由 giftGateBadge 出）加 act-locked171——掣身變灰一眼分到；只做視覺區分，disabled／點擊／toast 唔郁 */ if(cost105==="庫存空"||cost105==="今日已送") b.className+=" act-locked171";
@@ -45016,11 +45055,14 @@ function openLoc(id, opts){
        事務所冇人約得，helper 會回空，唔出掣）。 */
     try{ addRom159DateActs(add, L); }catch(_e159){}
     try{
+      /* v20a389：板數要同 advanceDay 一樣先 sync 通告庫，讀檔後未翻日都唔會顯示（0）。 */
+      try{ if(typeof syncGigsForCalendarYear==="function") syncGigsForCalendarYear(false); }catch(_sg389){}
       const hubGigs = (typeof gigsForLocSeasonBoard==="function") ? gigsForLocSeasonBoard(L.id, calendarSeason()) : [];
       if(hubGigs && hubGigs.length){
-        add("只查看通告欄","","免費", ()=>doScout(L), "act-priority");
-        const hubBridgeShown = addLocBridgeActs(add, L);
-        addLocGigActs(add, L, hubGigs, hubBridgeShown);
+        /* v20a389 UI389（用戶 2026-11-23 拍板）：逐張通告掣收埋入通告欄，
+           面板只留「通告欄（N）」一粒入口（GPT 方案）。 */
+        add(`通告欄（${hubGigs.length}）`,"","不耗日", ()=>doScout(L), "act-priority");
+        try{ if(typeof softPreviewOn==="function" && softPreviewOn() && typeof pinSoftBridgeOnBoard==="function") pinSoftBridgeOnBoard(L.id); }catch(_br389){}
       }
     }catch(_hb){}
   } else {
@@ -45045,10 +45087,15 @@ function openLoc(id, opts){
   }catch(_cs265){}
   /* v20a96 LOC96：醫院專屬服務（身體檢查）；禮品店除買禮物外冇其他服務掣 */
   try{ if(typeof loc96AddSheetActs==="function") loc96AddSheetActs(add, L); }catch(_l96s){}
-  /* v20a96 LOC96：通告欄只出喺有通告板嘅工作地點（新地點 shop／med 冇板，唔出空板掣） */
-  if(L.type==="film" || L.type==="tv" || L.type==="music" || L.type==="ad")
-    add("只查看通告欄","","免費", ()=>doScout(L), "act-priority");
-  const bridgeShown = addLocBridgeActs(add, L);
+  /* v20a389 UI389（用戶 2026-11-23 拍板）：逐張通告掣收埋入通告欄，
+     面板只留「通告欄（N）」一粒入口（GPT 方案）。 */
+  if(L.type==="film" || L.type==="tv" || L.type==="music" || L.type==="ad"){
+    /* v20a389：板數要同 advanceDay 一樣先 sync 通告庫，讀檔後未翻日都唔會顯示（0）。 */
+    try{ if(typeof syncGigsForCalendarYear==="function") syncGigsForCalendarYear(false); }catch(_sg389){}
+    let n389=0; try{ n389=(gigsForLocSeasonBoard(L.id, calendarSeason())||[]).length; }catch(_n389){}
+    add(`通告欄（${n389}）`,"","不耗日", ()=>doScout(L), "act-priority");
+  }
+  try{ if(typeof softPreviewOn==="function" && softPreviewOn() && typeof pinSoftBridgeOnBoard==="function") pinSoftBridgeOnBoard(L.id); }catch(_br389){}
   /* v19z20：報名／休息室釘喺通告列表前（首屏可點），避免被多張通告壓到 fold 下 */
   const tr=TRAIN_BY_TYPE[L.type];
   if(tr){
@@ -45071,7 +45118,7 @@ function openLoc(id, opts){
       if(shown101.length){ S.board[L.id]=shown101.map(g=>g.id); shown101.forEach(g=>{ S.known[g.id]=true; }); }
     }
   }catch(_qa101b){}
-  addLocGigActs(add, L, (S.board[L.id]||[]).map(gid=>GIGS.find(g=>g.id===gid)).filter(Boolean), bridgeShown);
+  /* v20a389 UI389：逐張通告掣已收埋入通告欄（addLocGigActs 隨之移除）。 */
   }
 
   document.getElementById("loc-sheet").classList.add("on");
@@ -45241,7 +45288,7 @@ function locpanel118ActIcon(title, cls){
     else if(/電視城規矩/.test(t) || /入廠守則/.test(t)) em="📺";
     else if(/act-ask/.test(c)) em="📰";
     else if(/^同.+傾談/.test(t)) em="👥";
-    else if(t==="只查看通告欄" || /^查看檔期/.test(t)) em="💼";
+    else if(/^通告欄/.test(t) || /^查看檔期/.test(t)) em="💼";
     else if(/試鏡入口/.test(t) || /^接通告/.test(t)) em="🎬";
     else if(/報名/.test(t) || /訓練/.test(t)) em="💪";
     else if(t==="休息室歇陣") em="😴";
@@ -45319,6 +45366,8 @@ function locpanel118Hide(){
     ["loc-quota118","loc-owner118","loc-tagrow118"].forEach(function(id){
       const el=document.getElementById(id); if(el) el.hidden=true;
     });
+    /* v20a389 UI389：傾談貼紙跟 sheet 一齊收起 */
+    const tk389=document.getElementById("loc-talk389"); if(tk389){ tk389.hidden=true; tk389.innerHTML=""; }
     /* v20a118：收起嗰陣一併清走殘留內容，唔好留上一地點嘅名牌／圖喺 DOM 入面 */
     const oi=document.getElementById("loc-owner-img118"); if(oi){ oi.removeAttribute("src"); oi.alt=""; }
     const ot=document.getElementById("loc-owner-tag118"); if(ot) ot.innerHTML="";
@@ -45870,8 +45919,8 @@ function doScout(L){
     const anyOk = shown.some(g=>canAudition(g).ok);
     const anyHard = shown.some(g=>!canAudition(g).ok);
     let lead;
-    if(anyOk) lead = `免費查看通告 · 達標可接通告（耗一日）。`;
-    else lead = `免費查看通告 · 有通告暫未能報（條件未合）。`;
+    if(anyOk) lead = `不耗日查看通告 · 達標可接通告（耗一日）。`;
+    else lead = `不耗日查看通告 · 有通告暫未能報（條件未合）。`;
     if(anyOk && anyHard) lead += `<br><span class="board-lead-mix">有些通告條件未合；可點開查看詳情。</span>`;
     body=`<p class="board-lead">${lead}</p>`;
     /* v18v: 通告欄短卡 → 點開招募單 Detail（PLAN §4） */
@@ -46909,7 +46958,7 @@ function softPreviewOn(){
   try{ return typeof BehaviorGate!=="undefined" && BehaviorGate.featureFlag_softBehaviorGatePreview && BehaviorGate.featureFlag_softBehaviorGatePreview(); }catch(_e){ return false; }
 }
 function dayCostLabel(costsDay){
-  if(!costsDay) return "免費";
+  if(!costsDay) return "不耗日"; /* v20a389 UI389（共識項）：「免費」誤導（不耗日≠冇成本），改實標 */
   /* 訓練／休息／試鏡／行程表演：soft／live 都耗日 */
   return "+1日";
 }
@@ -48457,7 +48506,7 @@ function showTutBoardStage(){
   const cards = shown.map(g=>{
     try{ return gigBoardTeaserHtml(g); }catch(_e){ return ""; }
   }).join("");
-  el.innerHTML=`<h3 class="tut-board-h">只查看通告欄 · ${where}</h3><p class="board-lead">${lead}</p><div class="gig-board-list">${cards||"<p>今日通告欄沒有張貼。</p>"}</div>`;
+  el.innerHTML=`<h3 class="tut-board-h">通告欄 · ${where}</h3><p class="board-lead">${lead}</p><div class="gig-board-list">${cards||"<p>今日通告欄沒有張貼。</p>"}</div>`;
   el.classList.add("on");
   el.setAttribute("aria-hidden","true");
 }
@@ -48901,6 +48950,14 @@ document.getElementById("home-tabs").onclick=e=>{
   const btn=e.target.closest("button[data-htab]"); if(!btn) return;
   setHomeTab(btn.getAttribute("data-htab"));
 };
+/* v20a389 UI389：進度 badge＋人情分段接線 */
+try{
+  const _pb389=document.getElementById("prog389-badge");
+  if(_pb389) _pb389.addEventListener("click", ()=>{ try{ openProgressDrawer389(); }catch(_e){} });
+  document.querySelectorAll(".favor389-segbtn").forEach(b=>{
+    b.addEventListener("click", ()=>{ try{ setHomeTab(b.getAttribute("data-favor389")); }catch(_e){} });
+  });
+}catch(_w389){}
 /* v20a71 PROGRESS71：地圖劇情提示行撳得——開手帳行程組「進度」子頁。
    委派掛喺 #map-hint 本身（paintBar 只換 innerHTML，委派唔受影響）；
    錯誤／載入中態出嘅係普通 span（冇 data-prog71），撳落去冇反應，唔亂跳。
@@ -49040,10 +49097,33 @@ document.body.addEventListener("click",()=>document.getElementById("menu").class
     try{
       /* v20a77 HUB77：chip 改指手帳「進度」頁（唔再開 playOpenPicker 劇情列表）；
          入手帳跟地圖 hint 掣同一路徑（enterHome progress），唔使先提交行程——
-         進度頁係手帳子頁，行程狀態由手帳自己嘅流程處理。 */
+         進度頁係手帳子頁，行程狀態由手帳自己嘅流程處理。
+         v20a389 UI389：進度子頁取消，enterHome "progress" 由 setHomeTab 重定向
+         去行程頁＋開進度抽屜，呢度呼叫不變。 */
       enterHome(null, false, "progress");
     }catch(_e){}
   });
+})();
+/* v20a389 UI389（用戶 2026-11-23 拍板＋GPT 方案）：手帳拉柄——向上掃或撳一下
+   直達手帳（跟舊 ☰「手帳」掣同一路徑：kickScheduleIfNeeded→goJournalFromMenu）。 */
+(function(){
+  const h=document.getElementById("book389-handle");
+  if(!h) return;
+  const openBook389=()=>{
+    try{ if(typeof kickScheduleIfNeeded==="function" && kickScheduleIfNeeded()) return; }catch(_e){}
+    try{ goJournalFromMenu(); }catch(_e){}
+  };
+  h.addEventListener("click", e=>{ e.stopPropagation(); openBook389(); });
+  let y0=null;
+  h.addEventListener("touchstart", e=>{ try{ y0=e.touches[0].clientY; }catch(_e){} }, {passive:true});
+  h.addEventListener("touchend", e=>{
+    try{
+      if(y0==null) return;
+      const y1=e.changedTouches[0].clientY;
+      if(y0-y1>24) openBook389();
+      y0=null;
+    }catch(_e){}
+  }, {passive:true});
 })();
 document.getElementById("menu").onclick=e=>{
   e.stopPropagation(); const m=e.target.dataset.m; if(!m)return;

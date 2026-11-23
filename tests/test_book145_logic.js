@@ -27,15 +27,15 @@ ok('B3：未報名提示邏輯仲喺度（train73-note／train73-zero 純文字�
   html.includes('train73-note train73-zero') && html.includes('你仲未報名任何課程'));
 
 // --- B2：pane 切換 handler 共用 setHomeTab（八組同事業組同一條路） ---
-ok('B2：七組 pane 嘅 HTML id 全部仲喺度（ledger／inv／clippings／debt／people／tags／progress；v267：rumor 已刪）',
-  ['home-pane-ledger', 'home-pane-inv', 'home-pane-clippings',
-   'home-pane-debt', 'home-pane-people', 'home-pane-tags', 'home-pane-progress']
+ok('B2：五組 pane 嘅 HTML id 全部仲喺度（ledger／inv／favor389／wardrobe／stats389；v389）',
+  ['home-pane-ledger', 'home-pane-inv', 'home-pane-favor389',
+   'home-pane-wardrobe', 'home-pane-stats389']
     .every(id => html.includes('id="' + id + '"'))
-  && !html.includes('id="home-pane-rumor"'));
-ok('B2：subtab 切換 handler 仲喺度（setHomeTab／htab id 齊）',
+  && !html.includes('id="home-pane-rumor"') && !html.includes('id="home-pane-progress"'));
+ok('B2：subtab 切換 handler 仲喺度（setHomeTab／htab id 齊；v389）',
   html.includes('setHomeTab') && html.includes('id="htab-ledger"')
-  && html.includes('id="htab-clippings"') && html.includes('id="htab-people"')
-  && html.includes('id="htab-progress"'));
+  && html.includes('id="htab-inv"') && html.includes('id="htab-stats389"')
+  && html.includes('id="htab-wardrobe"'));
 ok('B2：各 pane 渲染函數仲喺度（renderClippingsPane／renderInvPane 唔郁；renderRumorPane 已刪）',
   html.includes('function renderClippingsPane()') && html.includes('function renderInvPane()')
   && !html.includes('function renderRumorPane'));

@@ -56,13 +56,13 @@ ok('G1 setHomeTab 唔再彈 tags 返 plan', 'tab==="tags" && typeof freeplayDevT
 ok('G1 render 入面冇 dev 閘分支', 'Player default: no engineering tag spreadsheet' not in src)
 ok('G1 tab 唔再 hidden（冇 tab.hidden／display none 閘）',
    'tab.hidden = !show' not in src and 'htab-tags' in src)
-ok('G1 setHomeTab("tags") 照常 render', 'if(tab==="tags"){' in src and 'renderCastingTagsPane();' in src)
+ok('G1 setHomeTab("tags") 重定向去作品頁＋照常 render（v389）', 'if(tab === "tags"){ tab = "works"; }' in src and 'renderCastingTagsPane();' in src)
 
-# --- tab 改名：玩家面「稱號」，系統內部名唔郁 ---
-ok('TAB 玩家面改名「稱號」', 'data-htab="tags">稱號</button>' in src)
+# --- 稱號摺疊入作品頁（v389）：玩家面「稱號」，容器 id 不變 ---
+ok('TAB 玩家面改名「稱號」（摺疊 summary）', '<summary>稱號</summary>' in src)
 ok('TAB 舊字「標籤」唔再係掣名', 'data-htab="tags">標籤</button>' not in src)
-ok('TAB 內部 id 唔郁（htab-tags／home-pane-tags／tags-list）',
-   'id="htab-tags"' in src and 'id="home-pane-tags"' in src and 'id="tags-list"' in src)
+ok('TAB 容器 id 不變、舊 tab/pane 已刪（tags-list 喺 tags389-fold 入面）',
+   'id="tags-list"' in src and 'class="tags389-fold"' in src and 'id="htab-tags"' not in src and 'id="home-pane-tags"' not in src)
 ok('TAB S.castingTags key 唔郁', 'S.castingTags' in src)
 
 # --- (2) Tag 卡正經化 ---

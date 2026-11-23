@@ -25,8 +25,8 @@ chk('作品牆／回憶（空＋錯過態）標題提亮',
     '.works-empty59 h3, .mem-empty60 h3, .mem-head60 h3{ color:#ecdfc2; }' in src)
 chk('拍攝簿條目 .req 提亮（限作品頁）', '#home-pane-works .req{ color:#d9c9a3; }' in src)
 chk('記數簿報名行提亮', '#home-pane-ledger .ledger-enroll{ color:#c3b096; }' in src)
-chk('人脈提示提亮', '#home-pane-people .people-next{ color:#c3b096; }' in src)
-chk('人情債引言提亮（v48 留低嗰頁）', '#home-pane-debt .pane-intro{ color:#e6d7ae; }' in src)
+chk('人脈提示提亮（v389 人情合併頁）', '#home-pane-favor389 .people-next{ color:#c3b096; }' in src)
+chk('人情債引言提亮（v48 留低嗰頁；v389 人情合併頁）', '#home-pane-favor389 .pane-intro{ color:#e6d7ae; }' in src)
 chk('v267 傳聞鬼影字已刪（.weak-whisper 隨傳聞頁刪除）', '.weak-whisper' not in src)
 chk('jobs72 副行 inline 色改淺（4 處）', src.count('color:#b3a284') >= 4)
 
