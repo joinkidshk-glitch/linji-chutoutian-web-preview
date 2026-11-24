@@ -6731,6 +6731,134 @@ body.day-res-open .day-row{
   .nb-left, .nb-right{ min-width:0 !important; max-width:100% !important; }
 }
 /* ===== v385 SCHED385 完 ===== */
+
+/* ===== v391 UI391：11-24 UI 檢視五項修正（只改呈現層；邏輯／數值／文案唔郁）=====
+   (1) 確認 modal 紙卡＋深色 modal token；(2) 地圖標籤層＋手帳拉柄 in-flow；
+   (3) 稱號段包入紙面；(4) 劇情層疊漏＋「下一句」防呆；(5) 地點面板＋頒獎請柬去網頁化。
+   規則：深底容器一律用紙卡承載文字，禁透明底黑字；「確定」掣（金漸變＋深棕字）唔郁。 */
+
+/* --- (1) reconfirm236：story-play 全屏深底 modal 入面收做置中紙卡 --- */
+#app #mask.story-play-on:has(.reconfirm236){ align-items:center !important; justify-content:center !important; background:rgba(10,7,5,.86) !important; }
+#app #mask.story-play-on:has(.reconfirm236) .modal{
+  height:auto !important; width:min(360px,calc(100% - 32px)) !important; max-height:min(78dvh,720px) !important;
+  background:#F2EBD8 !important; border:1px solid #c9a86a !important; border-radius:16px !important;
+  box-shadow:0 16px 40px rgba(0,0,0,.55) !important; padding:0 !important; overflow:hidden !important;
+}
+#app #mask.story-play-on:has(.reconfirm236) #modal-inner{ flex:0 0 auto !important; padding:16px 16px 4px !important; overflow:visible !important; }
+#app #mask.story-play-on:has(.reconfirm236) .reconfirm236 h3{ color:#1A1410 !important; }
+#app #mask.story-play-on:has(.reconfirm236) .reconfirm236 p,
+#app #mask.story-play-on:has(.reconfirm236) .reconfirm236 .sub{ color:#3a2e22 !important; }
+#app #mask.story-play-on:has(.reconfirm236) .reconfirm236 p b{ color:#8a2f2f !important; }
+#app #mask.story-play-on:has(.reconfirm236) #modal-btns{
+  position:static !important; background:#F2EBD8 !important; border-top:1px solid rgba(107,83,64,.28) !important;
+  margin:8px 0 0 !important; padding:8px 16px calc(10px + env(safe-area-inset-bottom,0px)) !important;
+}
+
+/* --- (4a) 劇情＋教學同場：tut-on 規則唔好壓贏 story-play-on（頂部手帳頁眉漏入） --- */
+#app #mask.story-play-on.tut-on{ background:#0a0705 !important; }
+#app #mask.story-play-on.tut-on .modal:not(:has(.tut-card)){ max-height:none !important; height:100% !important; }
+/* --- (4b) 對白／旁白模式：#modal-btns 由絕對定位 overlay 改流程底欄，三粒掣統一 44px 置中 --- */
+#app #mask.story-play-on:has(.sp-mode-dialogue) #modal-btns,
+#app #mask.story-play-on:has(.sp-mode-narration) #modal-btns{
+  position:static !important; background:#17100a !important; border-top:1px solid rgba(201,162,39,.35) !important;
+  padding:6px 16px calc(8px + env(safe-area-inset-bottom,0px)) !important;
+}
+#app #mask.story-play-on:has(.sp-mode-dialogue) #modal-btns button,
+#app #mask.story-play-on:has(.sp-mode-narration) #modal-btns button{
+  height:44px !important; min-height:44px !important; display:inline-flex !important; align-items:center !important; justify-content:center !important;
+}
+#app #mask.story-play-on:has(.sp-mode-dialogue) .story-play .dlg106-plate,
+#app #mask.story-play-on:has(.sp-mode-narration) .story-play .dlg106-plate{
+  padding-bottom:calc(14px + env(safe-area-inset-bottom,0px)) !important;
+}
+
+/* --- (3) 稱號段：成段包入米紙卡，唔再跌出紙面 --- */
+#app #home-pane-works .tags389-fold{
+  background:linear-gradient(180deg,#f6efdc,#efe2bd);
+  border:1px solid #c9a86a; border-radius:12px; padding:8px 12px 12px; margin-top:10px;
+}
+#app #home-pane-works .tags389-fold summary{ min-height:36px; color:#1A1410; }
+#app #home-pane-works .tags389-fold #tags-list{ max-height:none; overflow:visible; }
+#app #home-pane-works .tags389-fold #tags-list .jobs72-h{ display:none !important; }
+#app #home-pane-works .tags389-fold #tags-list p,
+#app #home-pane-works .tags389-fold #tags-list .sub{ color:#3a2e22 !important; }
+#app #home-pane-works .tags389-fold #tags-list p.gold{
+  color:#6b3f0e !important; font-weight:800; letter-spacing:.06em;
+  border-bottom:1px solid rgba(107,63,14,.35); padding-bottom:2px;
+}
+#app #home-pane-works .tags389-fold #tags-list > p:first-of-type b{
+  display:inline-block; color:#9E2F2F !important; border:2px solid #9E2F2F; border-radius:3px;
+  padding:1px 8px; transform:rotate(-1.5deg); background:rgba(158,47,47,.06);
+}
+
+/* --- (2a) 手帳拉柄＋地圖提示卡：由絕對覆蓋改 in-flow 靜態列，地圖區縮細，標籤永不被遮 --- */
+#app #v-map .book389-handle{
+  position:static !important; left:auto !important; transform:none !important; bottom:auto !important;
+  flex:0 0 auto !important; margin:auto auto calc(8px + env(safe-area-inset-bottom,0px)) !important;
+}
+#app #v-map .book389-handle:active{ transform:translateY(2px) !important; }
+#app #v-map .map-hint{
+  position:static !important; left:auto !important; right:auto !important; bottom:auto !important;
+  flex:0 0 auto !important; margin:6px 8px 0 !important;
+}
+/* --- (2a 續) 地圖捲動邊界：polaroid 由 v367 嘅 flex:0 0 auto（內容高頂死 wrap，
+   hint＋拉柄被推出畫面）改 flex:0 1 auto——有位嗰陣唔生 blank band（grow 0），
+   唔夠位嗰陣縮細＋內捲（唔再推走下面兩件）；well 唔准縮，等舞台成個入捲動區，
+   唔好俾 well 嘅 overflow:hidden 切走地圖底。開 sheet 嗰陣一併鎖 polaroid 捲動。 --- */
+#app #v-map .map-polaroid{
+  flex:0 1 auto !important; min-height:0 !important;
+  overflow-y:auto !important; overflow-x:hidden !important; scrollbar-width:thin;
+}
+#app #v-map .map-well{ flex:0 0 auto !important; }
+#app #v-map .map-wrap.sheet-open .map-polaroid{ overflow:hidden !important; }
+/* --- (2b) 玩家標記金框＋緩衝；標籤主次分級（跟 pin 狀態同步，見 deCollideLabels363） --- */
+#app #v-map .map-me363{ border-color:#c9a227 !important; box-shadow:0 0 0 2px rgba(201,162,39,.4), 0 2px 3px rgba(60,40,10,.35) !important; }
+#app #v-map .map-names68 .mn68-here{
+  background:linear-gradient(100deg,#e8c96a,#ffe9ad 75%,#e0bd63) !important; color:#1A1410 !important; font-weight:800 !important;
+}
+#app #v-map .map-names68 .mn68-tip{
+  background:linear-gradient(100deg,#f3d98b,#ffe9ad 75%,#f0d48a) !important;
+}
+#app #v-map .map-names68 .mn68-dim{ opacity:.72 !important; }
+
+/* --- (5a) 08b 地點面板：「返回地圖」改頁角吊牌；分組標頭壓薄，令尾列唔使捲都見晒 --- */
+#app #loc-sheet.sheet .btnrow{
+  display:flex !important; justify-content:flex-end !important;
+  background:transparent !important; border-top:0 !important; margin-top:6px !important; padding-top:0 !important;
+}
+#app #loc-sheet.sheet .btnrow #loc-close{
+  flex:0 0 auto !important; width:auto !important; min-width:120px; min-height:44px !important;
+  padding:10px 18px !important; border-radius:12px !important;
+}
+#app #loc-sheet.sheet.locpanel118 .ux68-ghead:not(:first-child){ margin-top:2px !important; }
+/* v391 item 5 追加（verify12 實測）：播完兩個劇情＋約會列出現，面板變 5 列，
+   休息列底超出容器底 14.7px，要捲先見晒。group header margin-top 6→2px
+   （4 個組頭共慳 16px）＋待播卡 padding 6→4px、margin-bottom 6→4px（慳 6px）
+   ＋額度 pill margin-top 4→2px（容器高多 2px），合共約 24px，5 列唔使捲都見晒。 */
+#app #loc-sheet.sheet.locpanel118 .story-pending384{ padding:4px 12px !important; margin-bottom:4px !important; }
+#app #loc-sheet.sheet.locpanel118 .locpanel118-quota{ margin-top:2px !important; }
+/* --- (5b) 標題有負責人嗰陣縮字＋禁斷詞，唔好再將「塘」字孤行 --- */
+#app #loc-sheet.sheet.locpanel118.locpanel118-has-owner #loc-title{ font-size:1rem !important; word-break:keep-all !important; }
+#app #loc-sheet.sheet.locpanel118 #loc-title{ word-break:keep-all; }
+
+/* --- (5c) 35 頒獎請柬＋結果卡：實物請柬票根；金框大掣改啞面紙籤（同一套用喺兩處） --- */
+#app .awd-sheet{
+  border:1px solid #c9a86a; border-radius:6px; padding:14px 14px 12px;
+  background:linear-gradient(180deg,#fbf6e6,#f3e8c8);
+  box-shadow:inset 0 0 0 3px #fbf6e6, inset 0 0 0 4px rgba(201,168,106,.55);
+}
+#app .awd-sheet::after{ content:""; display:block; border-top:2px dashed rgba(138,90,32,.45); margin:10px -4px 0; }
+#app .awd-sheet .psr-eyebrow{ color:#8a5a20 !important; font-weight:800; letter-spacing:.18em; font-size:.72rem; }
+#app .awd-sheet .psr-h{ color:#1A1410 !important; }
+#app #mask:has(.awd-sheet) #modal-btns button.p,
+#app #mask.awd-sheet-on #modal-btns button.p{
+  background:#efe3c2 !important; color:#1A1410 !important; border:2px solid #C9A227 !important; box-shadow:none !important;
+}
+#app #mask:has(.awd-sheet) #modal-btns button.g,
+#app #mask.awd-sheet-on #modal-btns button.g{
+  background:#f7f1e2 !important; color:#3a2e22 !important; border:1px solid rgba(107,83,64,.4) !important;
+}
+/* ===== v391 UI391 完 ===== */
 </style>
 </head>
 <body>
@@ -23450,34 +23578,90 @@ function mapMe363(box, pinPos){
     const me = document.createElement("div");
     me.className = "map-me363"; me.setAttribute("aria-hidden","true");
     me.style.left = p.x + "%"; me.style.top = p.y + "%";
-    me.innerHTML = `<span class="me363-tag">我喺呢度</span><img src="assets/ui363/shoot.png" alt=""/>`;
+    /* v391 item 2：喺屋企嗰陣唔出「我喺呢度」tag——「阿偉屋企」標籤本身已經講明，
+       兩個標示並存易混淆；其他地點保留 tag。 */
+    me.innerHTML = (id==="home" ? "" : `<span class="me363-tag">我喺呢度</span>`) + `<img src="assets/ui363/shoot.png" alt=""/>`;
     box.appendChild(me);
   }catch(_e){}
 }
 function deCollideLabels363(){
+  /* v391 settle 鏈：由延遲覆核觸發嘅重跑唔應該重置預算／再排鏈——入面食咗個 flag。 */
+  const _isSettle391 = !!deCollideLabels363._inSettle391;
+  deCollideLabels363._inSettle391 = false;
   try{
     const els = Array.from(document.querySelectorAll(".map-names68 .mn68"))
       .filter(el=>el.style.display!=="none" && el.offsetParent!==null);
     if(els.length<1) return;
     const items = els.map(el=>({el, r:el.getBoundingClientRect()}));
-    /* v20a379（第四輪評估 P2-5）：「我喺呢度」標籤都係障礙物——同佢重疊嘅地點名
-       推落去，唔好同玩家標籤疊字（之前只處理地點名互撞，冇理玩家標籤）。 */
+    /* v391 item 2：玩家標記障礙區——marker（30×30 像素人）＋「我喺呢度」tag 嘅聯集，
+       外加 4px 緩衝。tag 伸出 marker 框上面，淨用 marker 會計漏（verify2only 實測：
+       喺電視台嗰陣 tag 撞「星河電視台」標籤 584.2px²）。 */
+    let zone391 = null;
     try{
-      const tag379 = document.querySelector(".map-me363 .me363-tag");
-      if(tag379 && tag379.offsetParent!==null){
-        const tr379 = tag379.getBoundingClientRect();
+      const me363z = document.querySelector(".map-me363");
+      if(me363z && me363z.offsetParent!==null){
+        const rz = me363z.getBoundingClientRect();
+        zone391 = { left:rz.left-4, right:rz.right+4, top:rz.top-4, bottom:rz.bottom+4 };
+        const tz = me363z.querySelector(".me363-tag");
+        if(tz && tz.offsetParent!==null){
+          const rt = tz.getBoundingClientRect();
+          zone391 = { left:Math.min(zone391.left, rt.left-4), right:Math.max(zone391.right, rt.right+4),
+                      top:Math.min(zone391.top, rt.top-4), bottom:Math.max(zone391.bottom, rt.bottom+4) };
+        }
+      }
+    }catch(_e391z){}
+    const stage391 = document.getElementById("map-stage");
+    const stageH391 = (stage391 && stage391.clientHeight) || 576;
+    /* v20a379：玩家標記係障礙物——同佢重疊／近距（8px 內）嘅地點名要推開。
+       v391 修正（verify3 實測）：舊式 oy+8 只啱向上推——向下推要標籤頂過埋
+       marker 底先清，oy+8 計少咗標籤本身高度，推完照撞。所以改方向精確推距：
+       向上 D=(標籤底-障礙頂)+8，向下 D=(障礙底-標籤頂)+8；揀細嗰邊，
+       但唔可以推出舞台（新 top<0 或底過舞台高就揀另一邊）。 */
+    const pushOffMarker391 = ()=>{
+      let moved391 = false;
+      if(!zone391) return false;
+      try{
         items.forEach(it=>{
           const a = it.r;
-          const ox = Math.min(a.right,tr379.right)-Math.max(a.left,tr379.left);
-          const oy = Math.min(a.bottom,tr379.bottom)-Math.max(a.top,tr379.top);
-          if(ox>2 && oy>2){
+          const ox = Math.min(a.right,zone391.right)-Math.max(a.left,zone391.left);
+          const oy = Math.min(a.bottom,zone391.bottom)-Math.max(a.top,zone391.top);
+          if(ox>-8 && oy>-8){
             const cur = parseFloat(it.el.style.top)||0;
-            it.el.style.top = (cur + oy + 2) + "px";
-            it.r = it.el.getBoundingClientRect();
+            const h391 = it.el.offsetHeight || 18;
+            const dUp391 = (a.bottom - zone391.top) + 8;
+            const dDn391 = (zone391.bottom - a.top) + 8;
+            let dir391 = (dUp391 <= dDn391) ? -1 : 1;
+            let d391 = (dir391===-1) ? dUp391 : dDn391;
+            if(dir391===-1 && (cur - d391) < 0) { dir391 = 1; d391 = dDn391; }
+            else if(dir391===1 && (cur + d391 + h391) > stageH391) { dir391 = -1; d391 = dUp391; }
+            if(d391 > 0){
+              it.el.style.top = (cur + dir391 * d391) + "px";
+              it.r = it.el.getBoundingClientRect();
+              moved391 = true;
+            }
           }
         });
-      }
-    }catch(_e379){}
+      }catch(_e379){}
+      return moved391;
+    };
+    try{ pushOffMarker391(); }catch(_e){}
+    /* v391 item 2：標籤主次分級——跟 pin 狀態同步（只郁視覺，唔郁熱區／邏輯）：
+       當前所在地標籤加 mn68-here（金底突出）；有提示（has-tip）嘅加 mn68-tip；
+       閒置（idle dim）嘅加 mn68-dim。對照用 LOCS 名（同 drawMap visNames 一樣按文字對）。 */
+    try{
+      const nameToId391 = {};
+      if(typeof LOCS!=="undefined" && Array.isArray(LOCS)) LOCS.forEach(L=>{ if(L && L.name) nameToId391[L.name]=L.id; });
+      const hereId391 = (typeof atLoc!=="undefined" && atLoc) ? atLoc : "home";
+      const here391 = (typeof LOCS!=="undefined" && Array.isArray(LOCS)) ? (LOCS.find(L=>L && L.id===hereId391)||{}).name : null;
+      items.forEach(it=>{
+        const t391 = (it.el.textContent||"").trim();
+        it.el.classList.toggle("mn68-here", !!here391 && t391===here391);
+        const pid391 = nameToId391[t391];
+        const pin391 = pid391 ? document.querySelector('.pin[data-loc="'+pid391+'"]') : null;
+        it.el.classList.toggle("mn68-tip", !!(pin391 && pin391.classList.contains("has-tip")));
+        it.el.classList.toggle("mn68-dim", !!(t391!==here391 && pin391 && pin391.classList.contains("idle") && !pin391.classList.contains("has-action")));
+      });
+    }catch(_e391){}
     if(items.length<2) return;
     for(let pass=0; pass<3; pass++){
       let moved = false;
@@ -23486,17 +23670,76 @@ function deCollideLabels363(){
           const a=items[i].r, b=items[j].r;
           const ox = Math.min(a.right,b.right)-Math.max(a.left,b.left);
           const oy = Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);
-          if(ox>2 && oy>2){
-            const el = items[j].el;
-            const cur = parseFloat(el.style.top)||0;
-            el.style.top = (cur + oy + 2) + "px";
-            items[j].r = el.getBoundingClientRect();
-            moved = true;
+          if(ox>-8 && oy>-8){ /* v391 item 2：近距（8px 內）都推，唔只重疊先推；推下面嗰個 */
+            const aC391 = (a.top + a.bottom) / 2, bC391 = (b.top + b.bottom) / 2;
+            const lo391 = (bC391 >= aC391) ? items[j] : items[i];
+            const hi391 = (lo391===items[j]) ? items[i] : items[j];
+            /* v391 修正：精確推距——下面標籤頂要過上面標籤底 +8px 先清；
+               舊式 oy+8 喺標籤頂本身高過上面標籤頂嗰陣計少咗。 */
+            const d391 = (hi391.r.bottom + 8) - lo391.r.top;
+            if(d391 <= 0) continue;
+            /* v391 修正（verify2only 實測）：推下面嗰個落去會撞入玩家標記區嗰陣，
+               改推上面嗰個上去（要唔出舞台頂、唔撞入標記區先得）；否則照推下面嗰個。 */
+            let pushed391 = false;
+            if(zone391){
+              const loNewTop391 = lo391.r.top + d391;
+              const loNewBot391 = loNewTop391 + (lo391.r.height || 18);
+              const oxz391 = Math.min(lo391.r.right, zone391.right) - Math.max(lo391.r.left, zone391.left);
+              if(oxz391 > -8 && loNewTop391 < zone391.bottom + 8 && loNewBot391 > zone391.top - 8){
+                const hiCur391 = parseFloat(hi391.el.style.top)||0;
+                const hiNewTop391 = hiCur391 - d391;
+                const hiNewBot391 = hiNewTop391 + (hi391.r.height || 18);
+                const oxh391 = Math.min(hi391.r.right, zone391.right) - Math.max(hi391.r.left, zone391.left);
+                const hiHitsZone391 = (oxh391 > -8 && hiNewTop391 < zone391.bottom + 8 && hiNewBot391 > zone391.top - 8);
+                if(hiNewTop391 >= 0 && !hiHitsZone391){
+                  hi391.el.style.top = hiNewTop391 + "px";
+                  hi391.r = hi391.el.getBoundingClientRect();
+                  moved = true; pushed391 = true;
+                }
+              }
+            }
+            if(!pushed391){
+              const cur = parseFloat(lo391.el.style.top)||0;
+              lo391.el.style.top = (cur + d391) + "px";
+              lo391.r = lo391.el.getBoundingClientRect();
+              moved = true;
+            }
           }
         }
       }
       if(!moved) break;
     }
+    /* 安全網：pair pass 有機會將標籤推返入標記區，完咗再跑一次障礙推撞兜底。 */
+    try{ pushOffMarker391(); }catch(_e){}
+    /* v391 item 2 修正（verify3／verify4 實測）：drawMap 嗰陣版面可能未定型（字體／
+       地圖圖／手帳提示行先後載入，舞台頂同標籤摺行會郁），推撞計出嚟嘅位可能係
+       過渡值——verify4 證實一輪覆核唔夠（殘留 15.8px²），版面喺 400ms 後仲郁。
+       改三輪覆核（400／800／1200ms）：每輪無條件重跑一次 deCollide——佢係
+       idempotent（已經清咗就唔郁），定型後嘅幾何先計得啱；地圖閂咗就停鏈，
+       三輪跑完停，唔會無限循環。 */
+    try{
+      if(!_isSettle391){
+        deCollideLabels363._settleLeft391 = 3;
+        if(!deCollideLabels363._settleT391){
+          const arm391 = ()=>{
+            deCollideLabels363._settleT391 = setTimeout(()=>{
+              deCollideLabels363._settleT391 = null;
+              try{
+                const vm = document.getElementById("v-map");
+                if(!vm || !vm.classList.contains("on")){ deCollideLabels363._settleLeft391 = 0; return; }
+                deCollideLabels363._inSettle391 = true;
+                deCollideLabels363();
+                if(deCollideLabels363._settleLeft391 > 0){
+                  deCollideLabels363._settleLeft391--;
+                  if(deCollideLabels363._settleLeft391 > 0) arm391();
+                }
+              }catch(_e391){}
+            }, 400);
+          };
+          arm391();
+        }
+      }
+    }catch(_e391){}
   }catch(_e){}
 }
 function stressScale363(pv){
