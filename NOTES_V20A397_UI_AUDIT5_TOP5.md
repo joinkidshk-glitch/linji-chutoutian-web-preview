@@ -107,3 +107,10 @@
 - 工作副本 `~/workspace/linji-work397`（clone 式，分支 `v397-ui-audit5-top5`），commit：`b866e27`（五項實裝＋新測試）、`095bcdb`（resync）、`4b61e80`（NOTES）。
 - 合併：常駐 clone `git fetch <副本路徑> v397-ui-audit5-top5` → `git merge --squash FETCH_HEAD` → commit → push main → curl Pages 核實 byte-identical（https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/）→ 刪工作副本。
 - main HEAD（落地後填）：`4f2a13e`；Pages 核實（落地後填）：byte-identical（curl 4,974,044 bytes，50979 行，`cmp` 零差異；第一次 curl 嗰陣 Pages 仲係 v396，隔 2 分鐘再 curl 先係新版）。
+
+## 補記：實駕證據重生（2026-11-25，落地後補入）
+
+- 落地嗰陣工作副本刪得太早，`qa397/shots/`＋`qa397/verify/`（untracked）未入版就跟埋副本一齊刪咗；main 當時只有 `qa397/drive397.py`＋`qa397/resync397.py`，同 qa395／qa396「driver＋verify＋shots 留喺 repo」慣例唔符。
+- 補救：由 main 另開工作副本 `linji-work397b`（分支 `v397-qa-evidence`），9 個 probe 逐個獨立重跑（每 probe 一個 process，v396 教訓），0 PROBE_FAIL，全部數字同上面 NOTES 一致（venue 四種情況 overlaps 全部 []；02b／03＝14、11d＝25、24_menu＝27、33b＝15；board 3 粒可見掣、LOCKED-DETAILS 最尾；P1 mastH 78.8、caption fullyVisible、miScrollH 1032；P2 dek／lead／cap 逐字同上；dayres scene397＋地圖可見＋40 掣順序；D1 印章「一週完結」；D2 ledger 一行；約會 who-picker 6 位、spot-picker 7 個地點）。唯一隨機差異：D2 ledger 數值今次係「演技 +5 ／ 台風 +1 ／ 現金 −$20 ／ 壓力 +8」（上次「演技 +4 ／ 壓力 +12」），訓練隨機 roll，結構相同。
+- 重生嗰陣捉到 driver 寫死路徑：`ROOT`／`OUT`／`SHOTS` 全部寫死 `/home/hatch/workspace/linji-work397`。第一次重生跑咗去已刪目錄（`makedirs` 重建空殼，server serve 404，每個 probe 喺 `#btn-new` timeout，只得 counts33b 出咗空殼 JSON——已棄置）。已修：三個路徑改由 `__file__` 推 repo root，跨工作副本通用；教訓：**driver 絕對唔可以寫死工作副本路徑**。
+- 本補記＋重生證據經 squash merge 入 main，index.html 唔郁。

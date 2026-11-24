@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """v397 UI fixes (audit round 5, top 5): real-drive verification.
-Serves ~/workspace/linji-work397 locally, Playwright headless shell via
+Serves the repo this script lives in locally, Playwright headless shell via
 local CONNECT relay. Usage:
   /home/hatch/pwenv49/bin/python qa397/drive397.py venue|counts|counts33b|board|awards|dayres|dayres2 [all]
 Results JSON + screenshots -> qa397/verify/ and qa397/shots/.
@@ -13,9 +13,12 @@ from playwright.sync_api import sync_playwright
 import driver as drv
 
 ITEMS = sys.argv[1:] or ['board']
-ROOT = "/home/hatch/workspace/linji-work397"
-OUT = "/home/hatch/workspace/linji-work397/qa397/verify"
-SHOTS = "/home/hatch/workspace/linji-work397/qa397/shots"
+# Repo root = parent of this script's qa397/ dir (portable across work copies;
+# never hardcode a work-copy path — v397 regen lesson: a hardcoded ROOT served
+# a deleted directory and every probe measured a 404 page).
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT = os.path.join(ROOT, "qa397", "verify")
+SHOTS = os.path.join(ROOT, "qa397", "shots")
 os.makedirs(OUT, exist_ok=True)
 os.makedirs(SHOTS, exist_ok=True)
 EXE = "/home/hatch/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell"
