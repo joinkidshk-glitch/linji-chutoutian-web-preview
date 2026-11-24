@@ -106,4 +106,4 @@
 - 常駐 clone 合併前核實 HEAD `e92a457`（v396），v397 空閒。
 - 工作副本 `~/workspace/linji-work397`（clone 式，分支 `v397-ui-audit5-top5`），commit：`b866e27`（五項實裝＋新測試）、`095bcdb`（resync）、`4b61e80`（NOTES）。
 - 合併：常駐 clone `git fetch <副本路徑> v397-ui-audit5-top5` → `git merge --squash FETCH_HEAD` → commit → push main → curl Pages 核實 byte-identical（https://joinkidshk-glitch.github.io/linji-chutoutian-web-preview/）→ 刪工作副本。
-- main HEAD（落地後填）：____；Pages 核實（落地後填）：____。
+- main HEAD（落地後填）：`4f2a13e`；Pages 核實（落地後填）：byte-identical（curl 4,974,044 bytes，50979 行，`cmp` 零差異；第一次 curl 嗰陣 Pages 仲係 v396，隔 2 分鐘再 curl 先係新版）。
