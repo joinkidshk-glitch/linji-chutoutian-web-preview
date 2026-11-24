@@ -98,17 +98,17 @@ ok("v398 整理選單保留全部排序／篩選選項",
    'data-sort392="${k}"' in src and 'data-filter392="${m}"' in src
    and 'data-filter392="all"' in src
    and "board-sort392" in src and "board-filter392" in src)
-ok("v398 總數行縮成紅印紙章（同一句，唔改數）",
+ok("v398 總數行縮成紅印紙章（同一句，唔改數）",  # v399：改剪報標籤——虛線裁邊＋米紙底
    ".board-sum392{ display:inline-block;" in src
-   and "border:1.5px solid #9E2F2F;" in src)
+   and "border:1.5px dashed #9E2F2F;" in src)
 ok("v398 板頭去報表工具列（透明貼紙底、冇框冇漸變，sticky 保留）",
    ".board-head392{ position:sticky; top:0;" in src
    and "background:var(--paper); border:0;" in src)  # --panel 係深啡 #3A3530，用佢會留返條深色報表帶；紙底先啱
 ok("v398 列表成功率加「約」（詳情計法行註明用精確值）",
    "約 ${Math.round(chance(g)*100)}%" in src
    and "成功率用精確值" in src)
-ok("v398 高版 modal 捲動區底 26px 淡出＋列表底墊",
-   "#mask.board-tall392 #modal-inner{" in src
+ok("v398 高版 modal 捲動區底 26px 淡出＋列表底墊",  # v399：底漸隱已刪（第 6 張 chips 行橫跨摺位，漸隱洗字）；底墊保留
+   "#mask.board-tall392 #modal-inner{" not in src
    and ".gig-board-list{ padding-bottom:26px; }" in src)
 ok("v398 計法本身唔郁（$378×86.3%÷4→$82）",
    "function boardExpCalc397(g){" in src and "四捨五入" in src)
@@ -120,8 +120,8 @@ ok("v398 modal() 掛 scene398（keepScene397 → 共享漸變 dim）",
 ok("v398 scene398 用 v396 日結漸變（頂 .10／底 .42）",
    "#mask.scene398{" in src
    and "rgba(0,0,0,.10) 0, rgba(0,0,0,.10) 48px, rgba(0,0,0,.42) 48px" in src)
-ok("v398 日結家族 7 處 modal 用 scene 模式（27c×2／43／44×2／41／35_invite）",
-   src.count("keepScene397:true") == 10)  # 7 新＋afterDayModal／presentStartScheduleConfirm45／presentRestSleepDayEnd 3 舊
+ok("v398 日結家族 7 處 modal 用 scene 模式（27c×2／43／44×2／41／35_invite）",  # v399：試鏡等消息卡加入 scene 家族，10→11
+   src.count("keepScene397:true") == 11)  # 7 新＋afterDayModal／presentStartScheduleConfirm45／presentRestSleepDayEnd 3 舊＋doAudition 1（v399）
 for _sig, _n, _label in [
         ("function confirmSpendDay(", 1, "43 確認卡"),
         ("function resolvePlannedDay(", 2, "27c 日結卡×2"),

@@ -1,3 +1,4 @@
+# v399 resync：已選速度 pill「快」由金底 #c97f1f 改深啡底 #5c4a1f 配 #fff8e8 白字（UI399-1：cream on gold 3.03 低過 4.5:1，改後實量 8.09；見 qa399/resync399.py）。
 # v397 resync：「還原」搬入行程工具選單（v397 UI397-5），S-20 規則跟新位置；見 qa397/resync397.py。
 # v20a128 A6 設定／選單收尾包・靜態守門測試（對白速度紙掣／S-20）。
 # 用法：python3 tests/test_ui128a6_static.py [path-to-index.html]
@@ -19,7 +20,7 @@ ok('速度 紙掣容器在', 'class="set-speed128"' in html)
 ok('速度 四格掣在（慢／中／快／即出）', 'data-v="slow"' in html and 'data-v="normal"' in html and 'data-v="fast"' in html and 'data-v="instant"' in html)
 ok('速度 隱藏欄位 #set-speed 在（關閉 handler 照讀 .value）', 'type="hidden" id="set-speed"' in html)
 ok('速度 舊 <select id="set-speed"> 已刪', '<select id="set-speed">' not in html)
-ok('速度 紙掣 CSS 在（米紙底＋金邊＋選中金底）', '.set-speed128 .set-speed-btn.on{ background:#c97f1f' in html)
+ok('速度 紙掣 CSS 在（米紙底＋金邊＋選中深啡底）', '.set-speed128 .set-speed-btn.on{ background:#5c4a1f' in html)
 ok('速度 撳掣同步隱藏欄位＋on 態', 'hid.value = b.getAttribute("data-v")' in html)
 
 # S-20：返回地圖搬去手帳頂部，底部只留主 CTA＋細還原

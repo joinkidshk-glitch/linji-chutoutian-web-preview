@@ -419,9 +419,12 @@ button.g{
 .slot-row .slot-meta{font-size:.72rem;color:var(--muted)}
 .slot-row .slot-tag{font-size:.66rem;color:var(--gold-seal,#e8b86d)}
 .settings-list{display:grid;gap:10px;margin:8px 0}
-.settings-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;background:var(--panel2);border:1px solid var(--line);border-radius:10px}
+/* v20a399 UI399-1：設定深啡條對比度——深啡底（#4a433c）配近黑字 9 項低過 4.5:1
+   （音效／音樂 1.88、未推出行 1.35、對白速度 1.88、副文 1.36、減少動態／家庭友善內容 1.88）；
+   改淺紙底 #fbf4dd 配深墨字，逐項 ≥4.5:1（lab #1a1410≈15.9、hint #5c4a1f≈7.8，實駕驗）。 */
+.settings-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;background:#fbf4dd;border:1px solid #a98d4f;border-radius:10px;color:#1a1410}
 .settings-row .lab{font-size:.84rem;font-weight:600}
-.settings-row .hint{font-size:.68rem;color:var(--muted);margin-top:2px}
+.settings-row .hint{font-size:.68rem;color:#5c4a1f;margin-top:2px}
 .settings-row select,.settings-row input[type="range"]{font:inherit;max-width:140px}
 .var-note{font-size:.72rem;color:var(--muted);line-height:1.4;margin:4px 0 0}
 .sp-line.sp-revealing{min-height:1.2em}
@@ -1630,6 +1633,21 @@ button.g, .start button.g{
   position:absolute; z-index:520; pointer-events:none; box-sizing:border-box;
   border:3px solid #C9A227; border-radius:12px;
   box-shadow:0 0 0 4px rgba(201,162,39,.35), 0 8px 24px rgba(0,0,0,.35);
+}
+/* v20a399 UI399-3：TUT_MAP 金圈圈埋鄰居——step 1 期間撞圈嘅非目標地名標籤暫隱
+   （.tut-label-hide399，離開 step 1 即還原）；目標「星河電視台」標籤用浮貼
+   #tut-target-label399 提到遮罩上層（z 521，.map-well z 1 困住原標籤，升層要浮貼），
+   原標籤同時隱藏，唔重疊；浮貼比原位上移 12px，同圈頂留空。 */
+.tut-label-hide399{ visibility:hidden; }
+#tut-target-label399{
+  position:absolute; z-index:521; pointer-events:none; box-sizing:border-box;
+  transform:translate(-50%,0); white-space:nowrap;
+  font-family:var(--hand363) !important; font-size:12.5px !important; font-weight:400 !important;
+  line-height:1.2 !important; color:#392d20 !important; letter-spacing:.04em !important;
+  padding:1px 6px 2px !important;
+  background:linear-gradient(100deg,#f9edca,#fff6dc 75%,#ead8ad) !important;
+  clip-path:polygon(1% 0,99% 3%,97% 24%,100% 42%,98% 60%,100% 84%,98% 100%,0 97%,2% 76%,0 57%,2% 37%,0 16%);
+  filter:drop-shadow(1px 2px 1px rgba(70,50,30,.35));
 }
 .stress-preview .sp-lab{
   display: inline-block; min-width: 4.5em; color: #8a7355; font-size: .72rem; font-weight: 700;
@@ -4435,8 +4453,11 @@ body.day-res-open .day-row{
   box-shadow:0 3px 9px rgba(26,20,16,.3), inset 0 0 26px rgba(160,124,32,.12);
   padding:14px 15px 13px 17px;
 }
+/* v20a399 UI399-5：卡頂圖釘護欄——圖釘上移做半出卡頂（top -4px，釘住紙邊），
+   釘底（卡頂＋5px）同標題字頂留 ≥6px 空隙（量度：最差卡「冬日鄰里情推介」−3px，即圖釘掂字頂 3px）；
+   唔郁標題（標題下移會逐張墊高卡身，第 6 張跌出摺位）。 */
 #app .gig-teaser::before{
-  content:""; position:absolute; top:5px; left:50%;
+  content:""; position:absolute; top:-4px; left:50%;
   width:9px; height:9px; margin-left:-5px; border-radius:50%;
   background:radial-gradient(circle at 35% 35%,#ecd27c,#8a6d1f);
   box-shadow:0 1px 2px rgba(26,20,16,.55);
@@ -5855,7 +5876,8 @@ body.day-res-open .day-row{
 .set-speed128{ display:flex; gap:6px; }
 .set-speed128 .set-speed-btn{ flex:1; min-height:36px; padding:6px 4px; border-radius:8px;
   border:1px solid #a98d4f; background:#fbf4dd; color:#5c4a1f; font-weight:800; font-size:.82rem; cursor:pointer; }
-.set-speed128 .set-speed-btn.on{ background:#c97f1f; border-color:#8a5a12; color:#fff8e8; }
+/* v20a399 UI399-1：已選速度 pill「快」cream on gold 3.03 → 深底白字（#fff8e8 on #5c4a1f ≈ 7.9，≥4.5:1）。 */
+.set-speed128 .set-speed-btn.on{ background:#5c4a1f; border-color:#3a2f14; color:#fff8e8; }
 /* S-20：返回地圖搬去手帳頂部（.home-top 之下、分類掣之上），底部唔再疊三層；
    還原收細做次要掣，底部主 CTA 只留確定本週行程。 */
 #home-tab-exit{ position:static; padding:6px 10px 0; background:transparent; border-top:0; justify-content:flex-start; }
@@ -6993,27 +7015,29 @@ body.day-res-open .day-row{
 /* --- (3) 通告欄峰值分層：板頂總數行＋排序／媒介掣釘住（sticky）、短卡壓矮、推介大卡、未達標預覽行。
    v20a398 UI398-4：頭板唔再做報表工具列——透明貼紙底、冇框冇漸變；總數行縮成一枚紅印紙章。 --- */
 .board-head392{ position:sticky; top:0; z-index:5; background:var(--paper); border:0; border-radius:0; box-shadow:none; padding:4px 2px 6px; margin:0 0 6px; }
-.board-sum392{ display:inline-block; font-weight:800; color:#9E2F2F; font-size:.8rem; border:1.5px solid #9E2F2F; border-radius:4px; padding:2px 8px; background:rgba(255,255,255,.4); transform:rotate(-.5deg); }
+/* v20a399 UI399-5：統計列改剪報標籤——虛線裁邊＋米紙底＋微斜＋紙影，唔再係紅框統計框；同一句，唔改數。 */
+.board-sum392{ display:inline-block; font-weight:800; color:#9E2F2F; font-size:.8rem; border:1.5px dashed #9E2F2F; border-radius:2px; padding:3px 10px; background:linear-gradient(100deg,#fff6dc,#f9edca 75%,#ead8ad); transform:rotate(-1deg); box-shadow:1px 2px 3px rgba(70,50,30,.25); }
 .board-sort392, .board-filter392{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:5px; }
 /* v20a397 UI397-3：頂欄縮薄＋排序／篩選各收納成一粒下拉掣（顯示已套用條件）。
    兩粒掣並排一行；選單平時收起（hidden），撳開先展開選項（in-flow，唔疊內容）。
    wrapper 保留 board-sort392／board-filter392 class（test_v396 釘死）。 */
-.board-ctl397{ display:flex; gap:6px; margin-top:4px; }
-.board-ctl397 .board-sort392, .board-ctl397 .board-filter392{ flex:1 1 0; min-width:0; margin-top:0; flex-direction:column; align-items:stretch; }
-.board-ctl397-btn{ width:100%; text-align:left; }
-.board-menu397{ display:flex; flex-direction:column; gap:4px; margin-top:4px; }
+/* v20a399 UI399-5：「整理」縮成側邊紙籤——靠右、自動闊、微斜紙籤，唔再全寬報表列；
+   選單展開嗰陣 200px 靠右掛喺籤下，唔跟籤收窄。 */
+.board-ctl397{ display:flex; justify-content:flex-end; margin-top:4px; }
+.board-ctl397 .board-sort392, .board-ctl397 .board-filter392{ flex:0 0 auto; min-width:0; margin-top:0; flex-direction:column; align-items:stretch; }
+.board-ctl397-btn{ width:auto; text-align:left; }
+.board-ctl397 .board-ctl397-btn{ transform:rotate(-1deg); box-shadow:1px 2px 3px rgba(70,50,30,.25); }
+.board-menu397{ display:flex; flex-direction:column; gap:4px; margin-top:4px; width:200px; align-self:flex-end; }
 .board-menu397[hidden]{ display:none; }
 .board-menu397 .board-chip392{ width:100%; text-align:left; }
 /* v20a398 UI398-4：整理選單分「排序／媒介」兩組（組名小字），媒介選項沿用 board-filter392 包裝。 */
 .board-menu-group397{ font-size:.72rem; font-weight:800; color:#8a6a3a; margin-top:6px; }
 .board-menu-group397:first-child{ margin-top:0; }
 .board-menu397 .board-filter392{ display:flex; flex-direction:column; gap:4px; margin-top:0; flex:0 0 auto; }
-/* v20a398 UI398-4：長列表底加 26px 墊＋高版 modal 捲動區底 26px 淡出——摺位唔再半隻字切走第 6 張卡嘅「可接通告」印。 */
+/* v20a399 UI399-5：刪通告欄底漸隱——量度：第 6 張 chips 行 733–758 橫跨摺位 745，
+   26px 漸隱（719 起）將成行洗到 46%→0% 不透明，縮到 8px 仍洗走字下半；
+   摺位乾切係正常捲動行為，底墊 26px 已保捲到底最後一張完整。 */
 .gig-board-list{ padding-bottom:26px; }
-#mask.board-tall392 #modal-inner{
-  -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 26px),transparent 100%);
-  mask-image:linear-gradient(180deg,#000 calc(100% - 26px),transparent 100%);
-}
 /* v20a397 UI397-3：詳情預期日薪計法行。 */
 .board-calc397{ font-size:12px; color:#6b5a44; margin:6px 0 0; }
 /* v20a392：通告欄長列表高版 modal（92dvh）——峰值 16 張第一眼完整見到 5 張卡；
@@ -34410,7 +34434,11 @@ function renderAwardResultHtml(pack){
     : null;
   /* v20a397 UI397-2 35c：右欄模糊尾字（.np214-filler-v）換成非文字印記 ❦——淡出前
      最後一行係正文，唔再有半行模糊字。晨報渲染器唔郁。 */
-  const sidebar214 = `<aside class="np214-sidebar"><h3>影視娛樂</h3>${news.line ? `<p><span class="np214-sb-tag">${esc214(news.outlet||"娛樂快訊")}：</span>${esc214(news.line)}</p>` : ""}<span class="np214-sb-mark397" aria-hidden="true">❦</span></aside>`;
+  /* v20a399 UI399-4：右欄直排喺 fade 區前收尾——只留 outlet＋行首 6 字（共 13 字＋❦），
+     量度：P1 欄首 487.6／fade 起點 727，13 字底 ≈644、❦ 底 ≈668，留 ≥50px 裕度，
+     唔再有半截字（「大禮堂」）喺淡出區；全文仍喺第二版主欄，唔失內容。晨報渲染器唔郁。 */
+  const sbLine399 = String(news.line || "").slice(0, 6);
+  const sidebar214 = `<aside class="np214-sidebar"><h3>影視娛樂</h3>${news.line ? `<p><span class="np214-sb-tag">${esc214(news.outlet||"娛樂快訊")}：</span>${esc214(sbLine399)}</p>` : ""}<span class="np214-sb-mark397" aria-hidden="true">❦</span></aside>`;
   const masthead214 = pageNo => `<header class="np214-masthead">
       <div class="np214-name">維港日報</div>
       <div class="np214-rule-thick"></div>
@@ -49270,7 +49298,9 @@ function doAudition(gig, L){
   const {ended, summary}=tickDay();
   paintBar(); drawMap();
   const cont=()=>{ if(ended) enterHome(summary, true); else runScheduleFromToday(); };
-  modal(`<h3>試鏡完畢 ${gig.title}</h3>
+  /* v20a399 UI399-2：試鏡等消息卡用 scene 模式（同休息／訓練／病倒卡同一套 scene398
+     場景／地圖背底，唔再黑背底 bottom-sheet）；標題加「・等消息」，唔再令人誤解為已出結果。 */
+  modal(`<h3>試鏡完畢・等消息 ${gig.title}</h3>
     <p>你照住要求演咗一輪，評判點頭抄低你個名，最後講咗句「返去等消息啦」——呢行唔興即場拍板，劇組要開完會先定到人。</p>
     ${advice229?`<p class="gold">鍾楚凝的忠告：臨試鏡前，阿偉想起她臨走時留下的那句話——「${advice229}」</p>`:""}
     <p class="gold">何生話：${aud91WaitPhrase(rec.wait)}，佢一收到風就會打嚟通知你；真係獲聘嗰陣，先簽約收簽約金，之後先排拍攝日開工。</p>
@@ -49278,7 +49308,7 @@ function doAudition(gig, L){
     ${ended?`<p class="dayres-stamp397">一週完結</p>`:""}
     <p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
     {label: ended?"回家結算":"繼續", role:"p", on:cont}
-  ], {onDismiss: cont});
+  ], {onDismiss: cont, keepScene397:true}); /* v20a399 UI399-2：試鏡卡 scene 模式 */
   saveQ();
 }
 function rarityDot(r){
@@ -49968,6 +49998,7 @@ function tutBodyHtml(entry){
 }
 function clearTutSpotlight(){
   document.querySelectorAll(".tut-spotlight-target").forEach(el=>el.classList.remove("tut-spotlight-target"));
+  try{ if(typeof restoreTutLabels399==="function") restoreTutLabels399(); }catch(_e){} /* v20a399 UI399-3：教學完／轉步即還原地名標籤 */
 }
 function applyTutSpotlight(stepId){
   clearTutSpotlight();
@@ -50013,6 +50044,45 @@ function ensureTutSpotlightRing398(){
   }
   return ring;
 }
+/* v20a399 UI399-3：TUT_MAP 標籤避圈——撞金圈嘅非目標 .mn68 暫隱（visibility，
+   離開 step 1 即還原）；目標「星河電視台」原標籤隱藏，改由 #app 直屬浮貼
+   #tut-target-label399 喺遮罩上層顯示（上移 8px，同圈頂留空）。金圈繼續跟 pin 中心，唔靠移偏避字。 */
+function ensureTutTargetLabel399(){
+  let el = document.getElementById("tut-target-label399");
+  if(!el){
+    el = document.createElement("div");
+    el.id = "tut-target-label399";
+    el.setAttribute("aria-hidden","true");
+    el.style.display = "none";
+    const app = document.getElementById("app");
+    if(app) app.appendChild(el);
+  }
+  return el;
+}
+function restoreTutLabels399(){
+  document.querySelectorAll(".tut-label-hide399").forEach(el=>el.classList.remove("tut-label-hide399"));
+  const el = document.getElementById("tut-target-label399");
+  if(el) el.style.display = "none";
+}
+function updateTutLabels399(ringRect, appRect){
+  const labels = [...document.querySelectorAll("#map-names68 .mn68")].filter(e=>e.offsetParent!==null);
+  const target = labels.find(e=>(e.textContent||"").trim()==="星河電視台") || null;
+  const pad = 2;
+  labels.forEach(e=>{
+    const r = e.getBoundingClientRect();
+    const hit = r.right > ringRect.left - pad && r.left < ringRect.right + pad
+      && r.bottom > ringRect.top - pad && r.top < ringRect.bottom + pad;
+    e.classList.toggle("tut-label-hide399", hit);
+  });
+  const clone = ensureTutTargetLabel399();
+  if(!clone) return;
+  if(!target){ clone.style.display = "none"; return; }
+  const tr = target.getBoundingClientRect();
+  clone.textContent = "星河電視台";
+  clone.style.display = "block";
+  clone.style.left = (tr.left + tr.width/2 - appRect.left) + "px";
+  clone.style.top = (tr.top - appRect.top - 12) + "px"; /* v20a399：上移 12px（浮貼本身高 18px，同圈頂留 ~6px 空隙；8px 嗰版只得 −1.4px，仍掂圈頂） */
+}
 function refreshTutSpotlight398(){
   try{
     const ring = ensureTutSpotlightRing398();
@@ -50020,9 +50090,9 @@ function refreshTutSpotlight398(){
     const mask = document.getElementById("mask");
     const stepId = (mask && mask.dataset.tutStep) || null;
     const on = !!(_tut && _tut.active && stepId==="TUT_MAP" && mask && mask.classList.contains("tut-on"));
-    if(!on){ ring.style.display = "none"; return; }
+    if(!on){ ring.style.display = "none"; try{ restoreTutLabels399(); }catch(_e){} return; }
     const pin = document.querySelector('.pin[data-loc="tvb_longmen"]') || document.querySelector(".pin:not(.dim)");
-    if(!pin || pin.offsetParent===null){ ring.style.display = "none"; return; }
+    if(!pin || pin.offsetParent===null){ ring.style.display = "none"; try{ restoreTutLabels399(); }catch(_e){} return; }
     /* drawMap 重建 pin 會洗走 class——每次補返（唔係 TUT_MAP 嗰陣唔郁其他步嘅光）。 */
     try{
       document.querySelectorAll(".tut-spotlight-target").forEach(el=>{ if(el!==pin) el.classList.remove("tut-spotlight-target"); });
@@ -50037,6 +50107,8 @@ function refreshTutSpotlight398(){
     ring.style.top = (pr.top - ar.top - pad) + "px";
     ring.style.width = (pr.width + pad*2) + "px";
     ring.style.height = (pr.height + pad*2) + "px";
+    /* v20a399 UI399-3：金圈定位後，暫隱撞圈嘅非目標標籤＋浮貼目標標籤（跟 pin 中心，唔移偏）。 */
+    try{ updateTutLabels399({left: pr.left - pad, top: pr.top - pad, right: pr.right + pad, bottom: pr.bottom + pad}, ar); }catch(_e){}
   }catch(_e){}
 }
 /** Which phone surface the player should be looking at for this tutorial step. */
