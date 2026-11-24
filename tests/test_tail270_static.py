@@ -1,3 +1,4 @@
+# v395 resync：index.html 淨 +1 行（檔尾 minigame395.js script 標籤）；script 3 個、檔尾加 src 行；其餘唔郁。
 # v20a270 檔尾碎片靜態測試：index.html 檔尾結構——單一 </html> 結尾、script 平衡、零 stray code。
 # 背景：live index.html 檔尾有重複內容，第一個 </html> 之後仲有一段 stray 碎片
 #   `1; } refreshCopyPacksFromDisk(); })(); </script> </body> </html>`，
@@ -25,8 +26,8 @@ ok('stray code string absent', '})();\n\n</script>\n</body>\n</html>\n1;' not in
 
 # ---- (2) script 平衡 ----
 ok('<script count == </script> count', html.count('<script') == html.count('</script>'))
-ok('two script blocks', html.count('<script') == 2)
-ok('two </script>', html.count('</script>') == 2)
+ok('three script blocks (v395: +minigame395.js src)', html.count('<script') == 3)
+ok('three </script> (v395: +minigame395.js src)', html.count('</script>') == 3)
 scripts = re.findall(r'<script>(.*?)</script>', html, re.S)
 ok('two script blocks extractable', len(scripts) == 2)
 
@@ -34,8 +35,8 @@ ok('two script blocks extractable', len(scripts) == 2)
 tail = html[-400:]
 ok('tail has return 1', 'return 1;' in tail)
 ok('tail has refreshCopyPacksFromDisk();', 'refreshCopyPacksFromDisk();' in tail)
-ok('tail ends refresh -> })(); -> </script> -> </body> -> </html>',
-   re.search(r'refreshCopyPacksFromDisk\(\);\n\}\)\(\);\n\n</script>\n</body>\n</html>\n$', html) is not None)
+ok('tail ends refresh -> })(); -> </script> -> minigame395.js -> </body> -> </html> (v395)',
+   re.search(r'refreshCopyPacksFromDisk\(\);\n\}\)\(\);\n\n</script>\n<script src=\"minigame395.js\"></script>\n</body>\n</html>\n$', html) is not None)
 ok('refreshCopyPacksFromDisk called exactly once', html.count('refreshCopyPacksFromDisk();') == 1)
 
 # ---- (4) node --check 主 script（第二個 script block） ----

@@ -23080,7 +23080,7 @@ function resolvePlannedDay(id){
   let fx102Kind=null; /* v20a102 FX102：今個行程日要播邊條片（shoot/job/train 分支內 set；其餘日子 null＝唔播） */
   let still374=null; /* v374 DAYRES374：冇 fx 片嘅活動用既有資產定格圖做今日畫面（cafe/street/chore/sick 分支內 set） */
 
-  let shootFinished=false;
+  let shootFinished=false; let wrapGigId395=null, wrapTitle395=""; /* v395：殺青小遊戲用（allowlist 通告先彈，見 minigame395.js） */
   if(id.startsWith("shoot:")){
     const sid=id.slice(6);
     const sh=(S.shoots||[]).find(x=>x.id===sid);
@@ -23093,7 +23093,7 @@ function resolvePlannedDay(id){
       sh.doneDays=(sh.doneDays||0)+1;
       sh.daysLeft = Math.max(0, (sh.totalDays||0) - (sh.doneDays||0));
       const finished = sh.doneDays >= sh.totalDays;
-      shootFinished=finished;
+      shootFinished=finished; if(finished){ wrapGigId395=sh.gigId; wrapTitle395=sh.title||""; } /* v395 */
       const daily=shootDailyDelta(sh);
       if(finished){
         const pop = sh.popularity!=null ? sh.popularity : Math.max(1, Math.round((sh.fame||1)*0.7));
@@ -23466,9 +23466,9 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   if(isRestCard){ try{ document.body.classList.add("day-res-open"); }catch(_e){} }
   const afterDayRes = (fn)=>{
     const cont = (typeof fn==="function") ? fn : function(){};
-    if(shootFinished && typeof presentPendingPostShootReward==="function" && FREEPLAY_FW._pendingPostShootReward){
-      presentPendingPostShootReward(cont);
-    } else cont();
+    const afterGame395 = ()=>{ if(shootFinished && typeof presentPendingPostShootReward==="function" && FREEPLAY_FW._pendingPostShootReward){ presentPendingPostShootReward(cont); } else cont(); }; /* v395：allowlist 殺青先彈 game，玩完／跳過先行原獎勵鏈；週加速唔經呢度；同一單一日一次 */
+    if(shootFinished && wrapGigId395 && typeof minigame395Eligible==="function" && minigame395Eligible(wrapGigId395) && typeof openMinigame395==="function" && window.mg395DoneKey395!==String(wrapGigId395)+"|"+(S.dayIndex|0)){ window.mg395DoneKey395=String(wrapGigId395)+"|"+(S.dayIndex|0); openMinigame395(minigame395PickKind(wrapGigId395), {gigTitle: wrapTitle395, onDone: afterGame395}); return; }
+    afterGame395();
   };
   const nextNbReward = ()=> afterDayRes(nextNb);
   let btns = [];
@@ -50507,5 +50507,6 @@ refreshCopyPacksFromDisk();
 })();
 
 </script>
+<script src="minigame395.js"></script>
 </body>
 </html>
