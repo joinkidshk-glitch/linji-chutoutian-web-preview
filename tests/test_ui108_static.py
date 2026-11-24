@@ -1,3 +1,4 @@
+# v397 resync：金禧錨點 top:24%→calc(24% + 30px)（venue99 相疊修正）；見 qa397/resync397.py。
 # v20a108 UI108 視覺統一包（B 級）・靜態守門測試（工人 C 範圍：D-5＋S-1/2/4/5/7/8/9/11/18/20/27/29/33/34/36）。
 # v20a362：逐行「⧉ 複製」掣已刪（UI362），S-18 改做缺席斷言。
 # 用法：python3 tests/test_ui108_static.py [path-to-index.html]
@@ -52,7 +53,7 @@ ok('S-5 B01 呼叫新場景（舊圖只做退路）', 'b01GuideHtml108()' in bod
 ok('S-7 鑽石山地區名已刪（v137）', 'left:38%;top:6.5%">鑽石山' not in html)
 ok('S-7 九龍城地區名已刪（v137）', 'left:58%;top:31.5%">九龍城' not in html)
 ok('S-7 紅磡地區名已刪（v137）', 'left:52%;top:38%">紅磡' not in html)
-ok('S-7 金禧新位 86%/24%（v366）', 'left:86%;top:24%">金禧大酒店' in html)
+ok('S-7 金禧新位 86%/calc(24%+30px)（v397）', 'left:86%;top:calc(24% + 30px)">金禧大酒店' in html)
 ok('S-7 薄扶林地區名已刪（v137）', 'left:34%;top:50%">薄扶林' not in html)
 ok('S-7 星河新位 23%/34%（v366）', 'left:23%;top:calc(34% - 44px)">星河電視台' in html)
 ok('S-7 灣仔地區名已刪（v137）', 'left:56%;top:68%">灣仔' not in html)

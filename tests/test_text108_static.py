@@ -89,7 +89,7 @@ for _k, _v in (('獲聘後，製作日已排進行程。', '獲聘之後，拍�
 
 # ---- S-49：完結一日統一叫「過一日」 ----
 ok('S-49 地圖金掣＝過一日', '>過一日</button>' in html)
-ok('S-49 選單項＝過一日', 'data-m="rest-early">過一日</button>' in html)
+ok('S-49 選單項「過一日」已刪（v397：地圖入口保留）', 'data-m="rest-early"' not in html)
 ok('S-49 舊名「逛完・過一日」已清', '逛完・過一日' not in html)
 ok('S-49 舊名「提早休息（過一日）」已清', '提早休息（過一日）' not in html)
 ok('S-49 確認框標題＝確認過一日', '確認過一日？' in html)

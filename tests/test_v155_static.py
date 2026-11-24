@@ -1,3 +1,4 @@
+# v397 resync：金禧錨點 top:24%→calc(24% + 30px)（venue99 相疊修正）；見 qa397/resync397.py。
 # -*- coding: utf-8 -*-
 # v20a191：order71 顯示次序跟播次序（N6、N6F、N18、N19、N7–N17），唔再排尾扮第 18／19／20 幕；內部 n 保留。
 # v20a155 靜態測試：v142 review B1＋B2＋B3。
@@ -66,8 +67,8 @@ ok('B3：.md97 底色 rule 唔郁（淡金 #7a5c33／.88 仲喺 base 度，其�
 ok('B3：.mn68 15 張標籤樣式唔郁',
    '.mn68{ position:absolute; transform:translate(-50%,0); white-space:nowrap; pointer-events:none;' in src
    and 'font-size:12.5px; font-weight:800; letter-spacing:.08em; color:#43301c; line-height:1.2;' in src)
-ok('B3：會場標籤 HTML／位置（v366：left:86%;top:24%）',
-   '<div class="md97 md97-venue99" style="left:86%;top:24%">金禧大酒店</div>' in src)
+ok('B3：會場標籤 HTML／位置（v397：left:86%;top:calc(24% + 30px)）',
+   '<div class="md97 md97-venue99" style="left:86%;top:calc(24% + 30px)">金禧大酒店</div>' in src)
 ok('B3：positionMapLabels137 位置邏輯唔郁',
    'document.querySelectorAll(".map-names68 .mn68, #map-districts97 .md97-venue99")' in src)
 

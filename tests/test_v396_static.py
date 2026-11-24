@@ -36,7 +36,7 @@ ok("v396 35c 結果卡有 awd-result396 專屬 class",
 ok("v396 35c 專屬 CSS：body2 單欄",
    ".paper-sheet.awd-result396 .np214-body2{ column-count:1; column-rule:none; }" in src)
 ok("v396 35c 專屬 CSS：相片＋圖說成組、取消繞排",
-   ".paper-sheet.awd-result396 .np214-photowrap{ float:none; width:min(240px,100%); margin:8px auto; }" in src)
+   ".paper-sheet.awd-result396 .np214-photowrap{ float:none; width:min(240px,100%); margin:4px auto; }" in src)
 ok("v396 35c 專屬 CSS：第二版掣改 static（隨正文捲動，唔再遮正文）",
    ".paper-sheet.awd-result396 .np214-switchrow{ position:static; background:transparent; }" in src)
 ok("v396 35c 小檔案抽成共用 factboxHtml214",
@@ -79,7 +79,7 @@ ok("v396 日結日期標示：完成日標籤",
 ok("v396 40 號確認卡用 day-res 底部＋淺遮罩",
    "day-res-open" in src and "day-res" in src)
 ok("v396 日結漸變補返 !important（#mask.on 嘅 .72 !important 一直蓋住佢）",
-   "linear-gradient(180deg, rgba(0,0,0,.18) 0, rgba(0,0,0,.18) 48px, rgba(0,0,0,.58) 48px) !important" in src)
+   "linear-gradient(180deg, rgba(0,0,0,.10) 0, rgba(0,0,0,.10) 48px, rgba(0,0,0,.42) 48px) !important" in src)
 ok("v396 40 號卡日期用 dayResDateLine396（結算）",
    'dayResDateLine396("結算")' in src)
 ok("v396 afterDayModal／afterDayRes 日期用 dayResDateLine396（完成日）",
@@ -95,7 +95,7 @@ ok("v396 背景卸載覆蓋 v-map／v-home／v-start／loc-sheet／menubar／.me
    and "#app.ui-hide-under396 #loc-sheet," in src
    and "#app.ui-hide-under396 #btn-confirm-plan{" in src)
 ok("v396 setUnderlyingInert 同步開關 ui-hide-under396",
-   'app.classList.toggle("ui-hide-under396", !!(on && !tut))' in src)
+   'app.classList.toggle("ui-hide-under396", !!(on && !scene && !tut))' in src)
 ok("v396 教學聚光燈（mask.tut-on）豁免卸載",
    'mask.classList.contains("tut-on")' in src)
 ok("v396 禮品／買衫行改做 div（唔係掣，唔計入掣數）",
@@ -119,9 +119,11 @@ ok("v396 禮品店唔用 gift-pick-name（gift185 禁區）",
    and src.count('gift-pick-name') == 2)  # 只剩 CSS＋openGiftPick 各一處
 
 # ---- 靜態 <button 總數：v392 係 112，v396 係 110（兩間商店嘅行模板由 button 轉 div；
-# 每間得一個模板字串，所以靜態只減 2；實駕掣數禮品 37→2、買衫 33→2） ----
-ok("v396 靜態 <button 總數 110（v392：112）",
-   src.count("<button") == 110)
+# 每間得一個模板字串，所以靜態只減 2；實駕掣數禮品 37→2、買衫 33→2）。
+# v397 係 112（＋2 板下拉掣＋1 工具掣＋1 約人 picker 模板－1 選單過一日－1 未開放掣；
+# 可見掣數每屏都跌，見實駕 counts397.json） ----
+ok("v397 靜態 <button 總數 112（v396：110）",
+   src.count("<button") == 112)
 
 # ---- 唔郁嘅嘢：SAVE／softRev／?v= ----
 ok("v396 SAVE key 不變 starVolunteer_map_v19w", "starVolunteer_map_v19w" in src)

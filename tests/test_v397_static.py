@@ -1,0 +1,140 @@
+# v397：第五輪 UI 檢視頭五項必修 — 靜態測試（釘字串／接線／禁區守門）。
+# 用法：python3 tests/test_v397_static.py [repo-root]
+import os
+import sys
+
+root = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), "..")
+src = open(os.path.join(root, "index.html"), encoding="utf-8").read()
+fails = []
+total = [0]
+
+
+def ok(msg, cond):
+    total[0] += 1
+    if cond:
+        print("PASS " + msg)
+    else:
+        fails.append(msg)
+        print("FAIL " + msg)
+
+
+def seg(start, end):
+    b = src.index(start)
+    e = src.index(end, b)
+    return src[b:e]
+
+
+def fn_seg(sig):
+    b = src.index(sig)
+    e = src.index("\nfunction ", b + 1)
+    return src[b:e]
+
+
+# ---- (1) venue99 相疊＋地圖底邊截籤 ----
+ok("v397 venue99 金禧錨點下移 30px（上下錯行）",
+   "top:calc(24% + 30px)" in src)
+ok("v397 碰撞夾實 helper 在位（8px 淨距）",
+   "function clampMapLabels397(){" in src and "const GAP = 8" in src
+   and ".md97-venue99" in src)
+ok("v397 clamp 由 positionMapLabels137＋paintBar＋ResizeObserver 觸發",
+   "clampMapLabels397()" in src and "__mapRO397" in src
+   and src.count("clampMapLabels397()") >= 3)
+
+# ---- (2) 35c 殘留 ----
+ok("v397 35c 結果卡報頭收緊（只限結果卡，晨報唔郁）",
+   ".paper-sheet.awd-result396 .np214-masthead .np214-name{ font-size:36px; }" in src
+   and ".paper-sheet.awd-result396 .np214-photowrap{ float:none; width:min(240px,100%); margin:4px auto; }" in src)
+ok("v397 35c 右欄模糊尾字換成非文字印記",
+   ".np214-sb-mark397" in src and "np214-sb-mark397" in src)
+render_award = fn_seg("function renderAwardResultHtml(")
+render_morning = fn_seg("function renderMorningPaperHtml(")
+ok("v397 35c 結果卡 sidebar 唔再有 filler-v（晨報保留）",
+   '<p class="np214-filler-v"' not in render_award and '<p class="np214-filler-v"' in render_morning)
+ok("v397 35c 第二版導語改散場鏡頭（唔再重複第一版入圍段）",
+   "metricDek397" in src and "散場時分，掌聲未散" in src)
+ok("v397 35c 第二版 lead 改散場報道（點明陳偉翔係觀察對象）",
+   "metricLead397" in src and "散場報道的觀察對象" in src)
+ok("v397 35c 第二版圖說用散場版（唔提典禮名，避橫額 mismatch）",
+   "aftermath:true" in src and "散場時離開會場" in src)
+
+# ---- (3) 通告欄峰值 ----
+ok("v397 通告欄頂欄縮薄（sticky 保留）",
+   ".board-head392{ position:sticky; top:0;" in src
+   and "padding:4px 10px; margin:0 0 6px;" in src)
+ok("v397 排序／篩選各收納成一粒下拉掣（顯示已套用條件）",
+   'data-board-menu397="sort"' in src and 'data-board-menu397="filter"' in src
+   and "排序：${sortLabel392} ▾" in src and "board-ctl397" in src)
+ok("v397 排序／篩選選項保留（功能唔減）",
+   "board-sort392" in src and "board-filter392" in src
+   and 'data-sort392' in src and 'data-filter392' in src)
+ok("v397 詳情預期日薪計法 helper 在位",
+   "function boardExpCalc397(g){" in src and "board-calc397" in src
+   and "四捨五入" in src)
+do_scout = seg("function doScout(L){", "function applyTrainLesson(")
+ok("v397 鎖定摘要移去可接清單最尾（唔再插斷）",
+   do_scout.index("readyList392.forEach") < do_scout.index("if(lockedF392.length) body+=lockedDetails392(lockedF392);"))
+
+# ---- (4) 40／27／86 家族 ----
+ok("v397 日結卡 scene 模式（場景留低、掣收起）",
+   "keepScene397" in src and "dayres-scene397" in src
+   and "setUnderlyingInert(true, !!opts.keepScene397)" in src
+   and "#app.dayres-scene397 #map-pins," in src)
+ok("v397 日結漸變放淺（.10／.42）",
+   "linear-gradient(180deg, rgba(0,0,0,.10) 0, rgba(0,0,0,.10) 48px, rgba(0,0,0,.42) 48px) !important" in src)
+ok("v397 40 號掣層級：返回休息卡第一位＋主掣色",
+   'label:"返回休息卡", role:"p"' in src
+   and 'label:"開始並結算當日", role:"g"' in src
+   and "btns45.unshift(b45)" in src
+   and "if(goCancel) btns45.push" in src)
+ok("v397 86c 週結提示改紅印章（正文唔再重複回家結算）",
+   "dayres-stamp397" in src and "一週完結 → 回家結算" not in src
+   and "一週完結" in src)
+ok("v397 27c ledger helper 在位＋兩邊日結路徑都用",
+   "function dayResLedger397(html){" in src
+   and "dayResLedger397(resultHtml)" in src
+   and "dayResLedger397(body)" in src)
+
+# ---- (5) 掣量 ----
+ok("v397 開局分步：教學期間收起手帳次要控制",
+   'app.classList.toggle("tut-stage397", !!on)' in src
+   and "#app.tut-stage397 #hgroup-career," in src
+   and "#app.tut-stage397 #cat-tabs," in src
+   and "#app.tut-stage397 #btn-intel381{" in src)
+ok("v397 行程工具收成一粒下拉掣（id＋handler 保留）",
+   'id="nb-q-tools397"' in src and 'id="nb-tools397-menu"' in src
+   and 'id="nb-q-rest"' in src and 'id="nb-q-train"' in src
+   and 'id="nb-q-clear"' in src and 'id="nb-q-copy"' in src
+   and 'id="btn-reset-plan"' in src
+   and 'document.getElementById("btn-reset-plan").onclick=resetPlanDraft' in src)
+ok("v397 約會入口合併（一粒入內揀人）",
+   "function rom159OpenDateWhoPicker(keys, L){" in src
+   and 'add("約人出街"' in src
+   and src.count("addRom159DateActs(add, L);") == 2
+   and "約人出街" in src)
+ok("v397 選單「過一日」已刪（地圖入口保留）",
+   'data-m="rest-early"' not in src
+   and 'm==="rest-early"' not in src
+   and "confirmEarlyRestFromMenu" in src
+   and ">過一日</button>" in src)
+ok("v397 「未開放」改不可撳紙標",
+   "sp-lock-tag" in src
+   and '<button type="button" class="sp-play" disabled' not in src
+   and "劇情未開放" in src)
+ok("v397 33b 回顧唯讀收起編輯工具",
+   'ct397.style.display = editable ? "" : "none"' in src
+   and 'ib397.style.display = editable ? "" : "none"' in src
+   and "ending78Locked" in src)
+
+# ---- 靜態 <button 總數：v396 係 110；v397 係 112（＋2 板下拉掣＋1 工具掣＋1 約人 picker 模板
+# －1 選單過一日－1 未開放掣；可見掣數每屏都跌，見實駕 counts397.json） ----
+ok("v397 靜態 <button 總數 112（v396：110）",
+   src.count("<button") == 112)
+
+# ---- 唔郁嘅嘢：SAVE／softRev／?v= ----
+ok("v397 SAVE key 不變 starVolunteer_map_v19w", "starVolunteer_map_v19w" in src)
+ok("v397 softRev 不變 s107", 'SOFT_REV = "s107"' in src)
+ok("v397 ?v= 不變 v20a10", "?v=20a10" in src)
+
+print()
+print("v397 static: %d passed, %d failed" % (total[0] - len(fails), len(fails)))
+sys.exit(1 if fails else 0)

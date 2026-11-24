@@ -1,3 +1,4 @@
+# v397 resync：「還原」搬入行程工具選單（v397 UI397-5），:disabled 選擇器跟新位置；見 qa397/resync397.py。
 # v20a207 resync：index.html 淨 +34 行（見 qa207/resync207.py，73 錨點對位零 mismatch，純漂移）。
 # -*- coding: utf-8 -*-
 # v20a197 BUTTONS197 靜態測試：全站掣位 review B1–B7＋N1–N7＋刪 D1 印章掣
@@ -35,7 +36,7 @@ ok('B2：印章視覺唔郁（24px、3px double 紅框、斜 -4.5°、.32em）',
    and 'rotate(-4.5deg)' in src and 'letter-spacing:.32em' in src)
 ok('B2：「還原」鎖定態唔消失（永遠 inline-block＋disabled 灰態）',
    'resetBtn.style.display = "inline-block"' in src
-   and '#nb-actions #btn-reset-plan:disabled{ opacity:.35; cursor:not-allowed; }' in src
+   and '#nb-tools397-menu #btn-reset-plan:disabled{ opacity:.35; cursor:not-allowed; }' in src
    and 'resetBtn.style.display = editable ? "inline-block" : "none"' not in src)
 ok('D1：鎖定態經 helper 換做 <span>（唔係掣），換返 button 嗰陣重綁 onclick=confirmPlan',
    'function syncConfirmPlanStamp197(locked){' in src

@@ -2232,7 +2232,7 @@ body.day-res-open #mask.day-res{
   /* v20a396 UI396 ③：漸變本身一直被 #mask.on 嘅 background !important 蓋住（實駕量度：
      日結卡背景一直係 rgba(0,0,0,.72)，所謂「淺遮罩」從未生效）；呢度補返 !important，
      等日結卡／40 號確認卡真係用到淺漸變（頂 .18／底 .58），唔係得個名。 */
-  background:linear-gradient(180deg, rgba(0,0,0,.18) 0, rgba(0,0,0,.18) 48px, rgba(0,0,0,.58) 48px) !important;
+  background:linear-gradient(180deg, rgba(0,0,0,.10) 0, rgba(0,0,0,.10) 48px, rgba(0,0,0,.42) 48px) !important;
 }
 /* v20a197 B6：sheet 開嗰陣唔再將 .map-hint 改做 compact HUD——舊 v18a 規則
    （top:42px＋max-width:280px＋細字＋收起 help／story 行）係「過一日」掣走位
@@ -2684,6 +2684,12 @@ body.day-res-open #mask.day-res{
   flex:0 0 auto;min-height:44px;min-width:72px;padding:8px 12px;border-radius:10px;
   border:1px solid rgba(120,80,20,.35);background:#e8d4a8;color:#2a2118;
   font-weight:800;font-size:.82rem;cursor:pointer;
+}
+/* v20a397 UI397-5：「未開放」改不可撳紙標——唔再係 disabled 掣（掣數 −1），鎖 icon＋文字保留。 */
+.story-picker .sp-lock-tag{
+  flex:0 0 auto;display:inline-flex;align-items:center;min-height:44px;padding:8px 12px;
+  border-radius:10px;border:1px solid #c4b090;background:#d8cbb0;color:#5a4a32;
+  font-weight:800;font-size:.82rem;opacity:.85;
 }
 .story-picker .sp-empty{margin:8px 0;color:#6b5a48;font-size:.8rem}
 .story-picker .sp-empty.sp-load-err,
@@ -3251,6 +3257,53 @@ body.day-res-open #mask.day-res{
 #app.ui-hide-under396 #btn-confirm-plan{
   display: none !important;
 }
+/* v20a397 UI397-4：日結卡 scene 模式——地圖／屋企場景影像留低做承托（唔再成幅卸載），
+   但全部掣收起（display:none，掣數唔回升、唔可撳）。只限日結家族（keepScene397），
+   其他 modal 沿用 ui-hide-under396 全卸載。籤（.mn68）同地圖唔喺收起清單入面。 */
+#app.dayres-scene397 #map-pins,
+#app.dayres-scene397 #v-map button,
+#app.dayres-scene397 #v-home button,
+#app.dayres-scene397 #menubar,
+#app.dayres-scene397 .menu,
+#app.dayres-scene397 #btn-confirm-plan,
+#app.dayres-scene397 #loc-sheet{
+  display: none !important;
+}
+/* v20a397 UI397-4 86c：週結提示改紅印章「一週完結」（跟 wrap-stamp369 屋企印章樣），
+   「回家結算」只留喺掣上面，唔再喺正文重複。 */
+.dayres-stamp397{
+  display:inline-block; margin:6px 0 0; vertical-align:middle;
+  border:2px solid #9E2F2F; color:#9E2F2F; border-radius:4px;
+  padding:1px 7px; font-size:.82rem; font-weight:900; letter-spacing:.14em;
+  transform:rotate(-2deg); pointer-events:none;
+}
+/* v20a397 UI397-4 27c：數值改一行手帳記錄（手寫體），取代逐格 stat 框。 */
+.dayres-ledger397{
+  font-family:"LXGW WenKai", "Kaiti TC", "STKaiti", serif;
+  font-size:.95rem; color:#3a2e22; margin:6px 0 0; line-height:1.6;
+}
+/* v20a397 UI397-5：開局分步——教學期間手帳只留行程主線（返回地圖＋行程組＋本週安排＋
+   日格＋行程工具＋確定＋教學掣），次要控制收起（display:none，掣數即跌）。
+   教學卡本身只係「讀＋下一步」，唔使喺卡度揀活動；教學完 setTutMask(false) 即還原。 */
+#app.tut-stage397 #hgroup-career,
+#app.tut-stage397 #hgroup-status,
+#app.tut-stage397 #hgroup-favor,
+#app.tut-stage397 #htab-wardrobe,
+#app.tut-stage397 #prog389-badge,
+#app.tut-stage397 #nb-live-stress,
+#app.tut-stage397 #cat-tabs,
+#app.tut-stage397 #act-list,
+#app.tut-stage397 #btn-intel381{
+  display:none !important;
+}
+/* v20a397 UI397-5：行程工具下拉選單——直排紙標籤，同 .nb-quick > button 同一套手寫樣。 */
+#nb-tools397-menu{ flex:1 1 100%; display:flex; flex-direction:column; gap:4px; margin-top:4px; }
+#nb-tools397-menu[hidden]{ display:none; }
+#nb-tools397-menu button{ font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:15px; font-weight:700; color:#3a2e22; background:#fbf3df; border:1px solid #b99b62; border-radius:3px; box-shadow:0 1px 0 rgba(107,78,46,.35); text-align:left; min-height:44px; padding:6px 10px; }
+#nb-tools397-menu button:active{ background:#f3e6c8; transform:scale(.98); }
+/* 還原入選單之後沿用選單紙標籤樣，唔再係 #nb-actions 嘅虛線底線樣。 */
+#nb-tools397-menu #btn-reset-plan{ background:#fbf3df; border:1px solid #b99b62; border-radius:3px; box-shadow:0 1px 0 rgba(107,78,46,.35); color:#3a2e22; font-size:15px; font-weight:700; min-height:44px; padding:6px 10px; }
+#nb-tools397-menu #btn-reset-plan:disabled{ opacity:.35; cursor:not-allowed; }
 /* v19z12 M5：未選地點／未 .on 時完全收合 */
 #loc-sheet.sheet:not(.on){
   visibility: hidden !important;
@@ -5047,9 +5100,20 @@ body.day-res-open .day-row{
    691–741px 蓋住 32.5px）。修法：正文單欄用足內闊；相片取消繞排、成組放導語後；
    小檔案搬去第二版（全闊格）；切換列改靜態、隨正文捲動；紙底加 24px 令尾行完整露出。 */
 .paper-sheet.awd-result396 .np214-body2{ column-count:1; column-rule:none; }
-.paper-sheet.awd-result396 .np214-photowrap{ float:none; width:min(240px,100%); margin:8px auto; }
+.paper-sheet.awd-result396 .np214-photowrap{ float:none; width:min(240px,100%); margin:4px auto; }
 .paper-sheet.awd-result396 .np214-switchrow{ position:static; background:transparent; }
 .paper-sheet.awd-result396{ padding-bottom:24px; }
+/* v20a397 UI397-2 35c：底欄切字——結果卡報頭留白收緊約 36px，令相＋圖說首屏完整露出
+   （量度：圖說底 782.1px vs 視口底 753px，切半行；只限結果卡，晨報唔郁）。 */
+.paper-sheet.awd-result396 .np214-masthead .np214-name{ font-size:36px; }
+.paper-sheet.awd-result396 .np214-rule-thin{ margin-top:3px; }
+.paper-sheet.awd-result396 .np214-masthead .np214-eng{ margin-top:2px; }
+.paper-sheet.awd-result396 .np214-dateline{ margin-top:2px; }
+.paper-sheet.awd-result396 .np214-kicker{ margin-top:4px; }
+.paper-sheet.awd-result396 .np214-headline, .paper-sheet.awd-result396 .np214-headline2{ margin-bottom:3px; }
+.paper-sheet.awd-result396 .np214-dek{ padding:3px 0; margin-bottom:6px; }
+/* v20a397 UI397-2 35c：右欄模糊尾字換成非文字印記（❦），右欄正文喺淡出前收尾。 */
+.paper-sheet.awd-result396 .np214-sb-mark397{ display:block; text-align:center; font-size:14px; line-height:1; color:#b32020; margin:6px 0 0; }
 /* paper-on 舊規則將 .paper-kicker 置中（帶 id 選擇器，權重高過上面）——
    NP214 眉題跟樣本行左對齊，喺呢度蓋返。聲望行／附註沿用舊置中規則，唔郁。 */
 #mask.paper-on .paper-sheet .np214-kicker{ text-align:left; }
@@ -5411,8 +5475,8 @@ body.day-res-open .day-row{
 .train71-pick:active{ transform:translateY(1px); }
 .t70-card.picked{ outline:2px solid #3e6b34; outline-offset:1px; }
 .train71-acts{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
-/* === v20a72 MENU72：主選單一門原則——分隔線＋歸位子頁通用導航掣 === */
-.menu-sep{ height:1px; background:var(--line); margin:5px 6px; flex:0 0 auto; }
+/* === v20a72 MENU72：主選單一門原則——分隔線＋歸位子頁通用導航掣 ===
+   v20a397 UI397-5：分隔線隨「過一日」一併移除（選單得返系統組，唔再分組）。 */
 /* v20a72 外觀修正一（用戶 2026-11-10 14:46）：手帳子頁掣 active 文字隱形——
    #home-subtabs .home-tab（ID 特異性）蓋走 .home-tab.on 嘅啡底，但文字色冇
    規則跟，.on 嘅 #fff8e8 白字落喺 #fbf3df 淺底等於唔見咗（五組共用同一
@@ -5663,7 +5727,6 @@ body.day-res-open .day-row{
 /* S-20：編輯頁「返回地圖」改細掣置中，主 CTA 只留確定 */
 #home-tab-exit{ padding-top:6px; }
 #home-tab-exit #home-back-map-tabs{ flex:0 0 auto !important; width:auto !important; min-height:36px; padding:6px 18px; font-size:.82rem; margin:0 auto; background:transparent; color:#cbb894; border-color:rgba(120,95,60,.45); }
-#nb-actions #btn-reset-plan{ flex:0 0 auto; }
 #nb-actions #btn-confirm-plan{ flex:1 1 auto; }
 /* S-29：未達標通告預設摺疊 */
 /* v20a197 C6：54px 罅成因已核實——入面係 <details class="gig-locked108"> 嘅
@@ -5769,7 +5832,6 @@ body.day-res-open .day-row{
    還原收細做次要掣，底部主 CTA 只留確定本週行程。 */
 #home-tab-exit{ position:static; padding:6px 10px 0; background:transparent; border-top:0; justify-content:flex-start; }
 #home-tab-exit #home-back-map-tabs{ margin:0; }
-#nb-actions #btn-reset-plan{ min-height:34px; padding:6px 12px; font-size:.8rem; align-self:center; }
 /* === v20a131 UI131 B批：B2 事業 tab 統一做筆記紙＋B4 對話框短句置中 ===
    B2：事業 tab（作品／獎項／回憶三頁）之前直接坐喺 #v-home 深色漸變（#2a1f1a→#0a1424）
    上面，成頁深藍底＋淺字，同行程 tab 嘅筆記紙係兩種視覺語言。純油漆層，唔郁內容／
@@ -5875,7 +5937,6 @@ body.day-res-open .day-row{
    未定嗰陣 .is-locked 唔喺度，維持原有 .ink 確定掣；「還原」掣鎖定態本身 display:none，不變。 --- */
 #nb-actions:has(#btn-confirm-plan.is-locked){ background:#f5eddc; border-top:1px solid #cbb98d; } /* v20a197 B2：印章改 flex:1 佔滿 bar，唔再置中收窄 */
 #nb-actions #btn-confirm-plan.is-locked{ flex:1 1 auto; width:auto; height:52px; min-height:0; margin:0; padding:6px 20px 6px 22px; display:flex; align-items:center; justify-content:center; box-sizing:border-box; cursor:default; font-family:"Songti TC","STSong","Noto Serif CJK TC",serif; font-size:24px; font-weight:700; letter-spacing:.32em; text-indent:.32em; color:#c0452c !important; background:rgba(192,69,44,.045) !important; border:3px double #c0452c !important; border-radius:8px !important; transform:rotate(-4.5deg); filter:url(#ink141); opacity:.93; box-shadow:inset 0 0 0 1px rgba(192,69,44,.3) !important; } /* v20a197 B2＋D1：鎖定態幾何同未確認掣一致（flex:1 佔滿 bar，52px 高）；24px 字唔郁（靜態測試硬計）；D1 嗰陣呢粒會由 <button> 換做 <span>，呢條規則照行 */
-#nb-actions #btn-reset-plan:disabled{ opacity:.35; cursor:not-allowed; } /* v20a197 B2：「還原」鎖定態唔消失，改 disabled 灰態留喺原位 */
 /* === v20a141 BOOK141 完 === */
 /* === v20a143 BOOK143：手帳內臟紙面化（v141 review B1＋B2＋B3；用戶 2026-11-12 拍板修頭三項） ===
    只換呈現：掣嘅 id／class／onclick 綁定、subtab 切換 handler、鎖定態印章邏輯一律不變。
@@ -5907,9 +5968,8 @@ body.day-res-open .day-row{
 .day-row .cp{ background:transparent; border:0; border-bottom:1px dashed #b99b62; border-radius:0; box-shadow:none; color:#7a4d12; font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:13px; font-weight:700; padding:2px 2px; min-width:0; }
 /* 底部 bar：深色底改紙面色（鎖定態 :has(.is-locked) 本身已經係紙面，兩態一致）。 */
 .nb-actions{ background:#f5eddc; border-top:1px solid #cbb98d; }
-/* 「還原」：改手寫墨字＋虛線底線（次要掣）。要 !important 先搶得贏 904 行 grouped
-   .nb-actions button.paper !important（金邊＋米底＋radius 10px＋shadow）。 */
-#nb-actions #btn-reset-plan{ background:transparent !important; border:0 !important; border-bottom:1px dashed #b99b62 !important; border-radius:0 !important; box-shadow:none !important; color:#7a6248 !important; font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:15px !important; font-weight:700; min-height:44px; padding:6px 8px; }
+/* v20a397 UI397-5：「還原」搬入行程工具下拉選單（#nb-tools397-menu），呢度舊 #nb-actions
+   虛線底線樣已刪；選單樣見 UI397-5 CSS（紙標籤＋disabled 灰態保留）。 */
 /* 可編輯態「確定本週行程」：改紅墨字掣（2px 實線紅框＋淡紅底＋手寫字，仍然係一個
    撳得嘅掣）。:not(.is-locked) 令鎖定態印章（3px double、24px、斜 -4.5°）完全唔受
    影響；同樣要 !important 先搶得贏 904 行 grouped .nb-actions button.ink !important。 */
@@ -6903,9 +6963,20 @@ body.day-res-open .day-row{
 #mask:not(.tut-on) .modal p.shoot-warn392{ color:#9c2418 !important; }
 .shoot-warn392 b{ font-weight:900; }
 /* --- (3) 通告欄峰值分層：板頂總數行＋排序／媒介掣釘住（sticky）、短卡壓矮、推介大卡、未達標預覽行。 --- */
-.board-head392{ position:sticky; top:0; z-index:5; background:linear-gradient(180deg,#f6efdc,#efe2bd); border:1px solid #c9a86a; border-radius:8px; padding:6px 10px; margin:0 0 8px; }
+.board-head392{ position:sticky; top:0; z-index:5; background:linear-gradient(180deg,#f6efdc,#efe2bd); border:1px solid #c9a86a; border-radius:8px; padding:4px 10px; margin:0 0 6px; }
 .board-sum392{ font-weight:800; color:#3a2e22; font-size:.85rem; }
 .board-sort392, .board-filter392{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:5px; }
+/* v20a397 UI397-3：頂欄縮薄＋排序／篩選各收納成一粒下拉掣（顯示已套用條件）。
+   兩粒掣並排一行；選單平時收起（hidden），撳開先展開選項（in-flow，唔疊內容）。
+   wrapper 保留 board-sort392／board-filter392 class（test_v396 釘死）。 */
+.board-ctl397{ display:flex; gap:6px; margin-top:4px; }
+.board-ctl397 .board-sort392, .board-ctl397 .board-filter392{ flex:1 1 0; min-width:0; margin-top:0; flex-direction:column; align-items:stretch; }
+.board-ctl397-btn{ width:100%; text-align:left; }
+.board-menu397{ display:flex; flex-direction:column; gap:4px; margin-top:4px; }
+.board-menu397[hidden]{ display:none; }
+.board-menu397 .board-chip392{ width:100%; text-align:left; }
+/* v20a397 UI397-3：詳情預期日薪計法行。 */
+.board-calc397{ font-size:12px; color:#6b5a44; margin:6px 0 0; }
 /* v20a392：通告欄長列表高版 modal（92dvh）——峰值 16 張第一眼完整見到 5 張卡；
    細板內容短，modal 本身跟內容縮，唔受影響。!important 必需：#mask:not(.tut-on) .modal
    嗰條 78dvh 係 !important，同權重下冇 !important 贏唔到（day-res 前例同理）。 */
@@ -7022,9 +7093,9 @@ body.day-res-open .day-row{
            v20a77 HUB77（用戶 2026-11-10 17:51 拍板）：「劇情」掣成粒移除——
            劇情／進度統一由進度頁做門口（頂欄 chip＋地圖「進度」掣直達）。
            v20a389 UI389（用戶 2026-11-23 拍板）：「手帳」掣成粒移除——改地圖
-           底部拉柄（向上掃／撳）直達手帳，選單只留動作＋系統組。 -->
-      <button type="button" data-m="rest-early">過一日</button>
-      <div class="menu-sep" aria-hidden="true"></div>
+           底部拉柄（向上掃／撳）直達手帳，選單只留動作＋系統組。
+           v20a397 UI397-5：「過一日」由選單移除（地圖入口保留；地圖「過一日」掣
+           照行 confirmEarlyRestFromMenu）。 -->
       <button type="button" data-m="replay-tut">重看教學</button>
       <button type="button" data-m="settings">設定</button>
       <button type="button" data-m="wire" id="menu-wire" hidden>接線／年份</button>
@@ -7083,7 +7154,7 @@ body.day-res-open .day-row{
                  v20a137 MAP137：用戶 2026-11-12 21:04 拍板大地圖唔要地區名，12 個地區 div 已刪；
                  淨低金禧大酒店會場標籤（venue99），位置由 positionMapLabels137 即場換算。 -->
             <div class="map-districts97" id="map-districts97" aria-hidden="true">
-              <div class="md97 md97-venue99" style="left:86%;top:24%">金禧大酒店</div>
+              <div class="md97 md97-venue99" style="left:86%;top:calc(24% + 30px)">金禧大酒店</div>
             </div>
           </div>
         </div>
@@ -7171,10 +7242,15 @@ body.day-res-open .day-row{
           <p class="nb-plan-mode" id="nb-plan-mode" hidden></p>
           <p class="nb-range" id="nb-range">—</p>
           <div class="nb-quick" id="nb-quick" aria-label="快捷安排">
-            <button type="button" id="nb-q-rest">全日休息</button>
-            <button type="button" id="nb-q-train">全日訓練</button>
-            <button type="button" id="nb-q-clear">清空本週</button>
-            <button type="button" id="nb-q-copy">複製到…</button>
+            <!-- v20a397 UI397-5：行程工具收成一粒下拉掣——4 工具＋還原入選單，預設收起；id＋handler 全部保留。 -->
+            <button type="button" id="nb-q-tools397" aria-expanded="false" aria-controls="nb-tools397-menu">行程工具 ▾</button>
+            <div class="nb-tools397-menu" id="nb-tools397-menu" hidden>
+              <button type="button" id="nb-q-rest">全日休息</button>
+              <button type="button" id="nb-q-train">全日訓練</button>
+              <button type="button" id="nb-q-clear">清空本週</button>
+              <button type="button" id="nb-q-copy">複製到…</button>
+              <button class="paper" type="button" id="btn-reset-plan">還原</button>
+            </div>
             <div class="nb-copy-wrap" id="nb-copy-wrap">
               <div class="nb-copy-chips" id="nb-copy-chips"></div>
               <div class="nb-copy-actions">
@@ -7211,7 +7287,6 @@ body.day-res-open .day-row{
            排程選擇流程（全日訓練選擇器 #nb-train71-wrap＋逐日活動欄訓練分類）。 -->
       <div class="nb-actions" id="nb-actions">
         <button class="g" type="button" id="home-back-map" style="display:none">返回地圖</button>
-        <button class="paper" type="button" id="btn-reset-plan">還原</button>
         <button class="ink" type="button" id="btn-confirm-plan">確定本週行程</button>
       </div>
       </div>
@@ -12874,7 +12949,7 @@ const StoryPlay = (()=>{
       if(hereBlock){
         return `<div class="sp-row locked-play" data-locked="${esc(r.id)}">
       <div class="sp-row-txt"><b>${esc(r.title||r.id)}</b><span>${bits.join(" · ")}</span></div>
-      <button type="button" class="sp-play" disabled aria-disabled="true"><span class="sp-lock-ico" aria-hidden="true"></span>劇情未開放</button>
+      <span class="sp-lock-tag"><span class="sp-lock-ico" aria-hidden="true"></span>劇情未開放</span>
     </div>`;
       }
       return `<div class="sp-row" data-play="${esc(r.id)}">
@@ -17240,6 +17315,18 @@ function board392ExpDaily(g){
     return (Number(p)||0) * pay / Math.max(1, Number(d)||1);
   }catch(_e){ return 0; }
 }
+/* v20a397 UI397-3：詳情預期日薪計法——回傳實際計算值＋取整規則（378×86.5%÷4＝81.7→$82），
+   顯示層用。全部 typeof 守門，抽唔到就回 null。 */
+function boardExpCalc397(g){
+  try{
+    const pay = (typeof gigPayExact==="function") ? gigPayExact(g) : null;
+    const p = (typeof chance==="function") ? chance(g) : null;
+    const d = (typeof effectiveShootDays==="function") ? effectiveShootDays(g) : null;
+    if(pay==null || !(pay>0) || p==null || !(p>0) || !(d>0)) return null;
+    const raw = (Number(p)||0) * pay / Math.max(1, Number(d)||1);
+    return { pay: pay, chance: (Number(p)||0), days: Number(d)||1, raw: raw, rounded: Math.round(raw) };
+  }catch(_e){ return null; }
+}
 function board392Compare(a, b, key){
   let r = 0;
   try{
@@ -18266,6 +18353,52 @@ function formatResultNotes(notes){
   if(!arr.length) return `<div class="result-notes"><span class="result-line">—</span></div>`;
   return `<div class="result-notes">${arr.map(resLine374).join("")}</div>`;
 }
+/* v20a397 UI397-4 27c：日結數值改一行手帳記錄——將 .res-stat374 逐格抽出、同名合併
+   （演技 +6＋+1 → 演技 +7；壓力 +8／−2 → 壓力 +6），砌成一行手寫體 ledger，
+   刪走個別 stat 框；敘事行（.res-note374）唔郁。無 stat 行嗰陣原樣返；唔識 parse
+   嘅行原樣留返，唔會靜默刪走。 */
+function dayResLedger397(html){
+  try{
+    const s = String(html||"");
+    if(s.indexOf("res-stat374")<0) return s;
+    const statRe = /<div class="result-line res-stat374[^"]*"><span class="res-stat-n374">([\s\S]*?)<\/span><span class="res-stat-v374[^"]*">([\s\S]*?)<\/span><\/div>/g;
+    const parseRow = (nmRaw, valRaw)=>{
+      const nm = String(nmRaw||"").replace(/<[^>]+>/g,"").trim();
+      const val = String(valRaw||"").replace(/<[^>]+>/g,"").trim();
+      if(!nm || !val) return null;
+      const vm = val.match(/^([+−-])\s*(\$?)\s*([\d,]+(?:\.\d+)?)$/);
+      if(!vm) return null;
+      const sign = (vm[1]==="−" || vm[1]==="-") ? -1 : 1;
+      return { nm: nm, dollar: vm[2]==="$", v: sign * (parseFloat(String(vm[3]).replace(/,/g,"")) || 0) };
+    };
+    const rows = [];
+    let m;
+    while((m = statRe.exec(s))!==null){
+      const r = parseRow(m[1], m[2]);
+      if(r) rows.push(r);
+    }
+    if(!rows.length) return s;
+    const merged = [];
+    rows.forEach(r=>{
+      const ex = merged.find(x=>x.nm===r.nm && x.dollar===r.dollar);
+      if(ex) ex.v += r.v;
+      else merged.push({ nm: r.nm, dollar: r.dollar, v: r.v });
+    });
+    const fmt = (r)=>{
+      const sign = r.v<0 ? "−" : "+";
+      const n = Math.abs(r.v);
+      return r.nm + " " + sign + (r.dollar?"$":"") + (Number.isInteger(n) ? String(n) : String(n));
+    };
+    const ledger = `<p class="dayres-ledger397">${merged.map(fmt).join(" ／ ")}</p>`;
+    let first = true;
+    const out = s.replace(/<div class="result-line res-stat374[^"]*"><span class="res-stat-n374">([\s\S]*?)<\/span><span class="res-stat-v374[^"]*">([\s\S]*?)<\/span><\/div>/g, (whole, nmRaw, valRaw)=>{
+      if(!parseRow(nmRaw, valRaw)) return whole;
+      if(first){ first = false; return ledger; }
+      return "";
+    });
+    return out;
+  }catch(_e){ return String(html||""); }
+}
 /** v19z11：統一存款顯示——地圖頂／手帳頂／所有 .home-money／#c-money */
 function refreshMoneyHud(){
   try{
@@ -18859,7 +18992,8 @@ function conseq61ResolveSickDay(id){
       _weekAccelBuf.push({ title: title, blurb: blurb });
       if(isShoot || ended){
         const cont = ()=>{ if(ended){ try{ enterHome(summary, true); }catch(_e){} } else { try{ runScheduleFromToday(); }catch(_e){} } };
-        try{ flushWeekAccelSummary(title, formatResultNotes(notes) + (ended ? `<p class="gold">一週完結 → 回家結算</p>` : ""), ended, summary, cont); }
+        /* v20a397 UI397-4 86c：call-site 唔再加金句（flushWeekAccelSummary 自己加印章），免重複兩行。 */
+        try{ flushWeekAccelSummary(title, formatResultNotes(notes), ended, summary, cont); }
         catch(_e){ afterDayModal(formatResultNotes(notes), title, null, ended, summary, { dayDone: dayDone, still374: "sick" }); }
       } else {
         try{ syncDateChrome(); }catch(_e){}
@@ -20401,6 +20535,12 @@ function openCastingNoticeDetail(g, L){
   const copy = phase3CastCopy();
   /* Soft／LIVE Detail：只 ready｜locked。唔讀 isSoftTryGig，禁 soft-try／搏一搏／第三態試投。 */
   if(gate.ok){
+    /* v20a397 UI397-3：詳情列預期日薪實際計法＋取整規則——$82 唔係 378×86%÷4，
+       係用未取整成功率計（86.5% → 81.7 → 四捨五入 $82）。 */
+    try{
+      const calc397 = (typeof boardExpCalc397==="function") ? boardExpCalc397(g) : null;
+      if(calc397) body += `<p class="board-calc397">預期日薪 $${calc397.rounded}／日＝片酬 $${calc397.pay} × 成功率 ${(calc397.chance*100).toFixed(1)}% ÷ ${calc397.days} 日（未取整 $${calc397.raw.toFixed(1)}，四捨五入）</p>`;
+    }catch(_c397){}
     const softEntry = (typeof softPreviewOn==="function" && softPreviewOn());
     if(softEntry){
       body += `<p class="var-note">去試鏡要用一日，結果等何生通知。</p>`;
@@ -21713,7 +21853,7 @@ function syncDateChrome(){
     if(range) range.textContent = (typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel();
   }catch(_e){}
 }
-function setUnderlyingInert(on){
+function setUnderlyingInert(on, scene){
   try{
     ["v-map","v-home","v-start","menubar","menu"].forEach(id=>{
       const el=document.getElementById(id);
@@ -21745,12 +21885,15 @@ function setUnderlyingInert(on){
   }catch(_e){}
   /* v20a396 UI396 ⑤：同步開關 ui-hide-under396（見上面 CSS）——modal 開住時背後地圖層
      連視覺一併卸載，關窗即復原。教學聚光燈（mask.tut-on）嗰陣一定要除返——display:none
-     唔可以由子孫 override，聚光目標會成個唔見；所以用 toggle：tut-on 嗰陣無論如何都除。 */
+     唔可以由子孫 override，聚光目標會成個唔見；所以用 toggle：tut-on 嗰陣無論如何都除。
+     v20a397 UI397-4：日結家族 scene 模式——scene 嗰陣唔加 ui-hide-under396，改加
+     dayres-scene397（場景影像留低，掣收起）。關窗／非 scene 一律清走兩個 class。 */
   try{
     const app=document.getElementById("app");
     const mask=document.getElementById("mask");
     const tut = !!(mask && mask.classList.contains("tut-on"));
-    if(app) app.classList.toggle("ui-hide-under396", !!(on && !tut));
+    if(app) app.classList.toggle("ui-hide-under396", !!(on && !scene && !tut));
+    if(app) app.classList.toggle("dayres-scene397", !!(on && scene && !tut));
   }catch(_e){}
 }
 /** Preview the plan that will run AFTER spending today (+1 day). */
@@ -21848,6 +21991,8 @@ function tickDay(){
 
 function afterDayModal(resultHtml, title, L, ended, summary, opts){
   opts = opts || {};
+  /* v20a397 UI397-4 27c：數值改一行手帳記錄（同 resolvePlannedDay 一致）。 */
+  try{ if(typeof dayResLedger397==="function") resultHtml = dayResLedger397(resultHtml); }catch(_l397){}
   try{ syncDateChrome(); }catch(_e){ try{ paintBar(); }catch(_e2){} }
   try{ drawMap(); }catch(_e){}
   let advanced = false;
@@ -21858,7 +22003,8 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
     if(ended) enterHome(summary, true);
     else runScheduleFromToday(); // next planned auto-day or map browse day — only after 繼續
   };
-  let extra = ended ? `<p class="gold" style="margin-top:8px">一週完結 → 回家結算，計劃下週行程</p>` : "";
+  /* v20a397 UI397-4 86c：週結提示改紅印章「一週完結」，「回家結算」只留喺掣上面。 */
+  let extra = ended ? `<p class="dayres-stamp397">一週完結</p>` : "";
   try{
     const snap = storyOpenSnapshot();
     let rows = (snap.open||[]).slice();
@@ -21893,7 +22039,7 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
      玩家由地圖「開始今日行程」掣明確開始新一日。週結（ended）例外：dismiss 照去屋企結算
      （嗰步唔推進日期，係下週編排嘅入口）。底部「點擊外面＝⋯」細字一併刪走。 */
   const dismissFn = ended ? go : null;
-  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dayLine}${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}`, btns, {onDismiss: dismissFn});
+  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dayLine}${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}`, btns, {onDismiss: dismissFn, keepScene397:true});
   try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   saveQ();
@@ -22302,6 +22448,18 @@ function renderNotebook(){
       }
     }catch(_e){ hbm.style.display = "none"; hbm.textContent = "返回地圖"; hbm.setAttribute("data-mode", "map"); }
   }
+  /* v20a397 UI397-5 33b：回顧預設唯讀，收起編輯工具——分類篩選（編輯用）＋留話簿；
+     結局鎖定嗰陣連「開始今日行程」都收起（已結局唔准離開手帳）。 */
+  try{
+    const ct397 = document.getElementById("cat-tabs");
+    if(ct397) ct397.style.display = editable ? "" : "none";
+    const ib397 = document.getElementById("btn-intel381");
+    if(ib397) ib397.style.display = editable ? "" : "none";
+    if(!editable && typeof ending78Locked==="function" && ending78Locked()){
+      const hbm397 = document.getElementById("home-back-map");
+      if(hbm397) hbm397.style.display = "none";
+    }
+  }catch(_e397){}
   try{ syncHomeTabExit(); }catch(_exit){}
   updateLiveStressStrip();
   if(editable){
@@ -23060,7 +23218,8 @@ function flushWeekAccelSummary(finalTitle, finalBody, ended, summary, contFn){
   const head = buf.length>1
     ? `<h3>本週加速摘要</h3><p class="sub">已合併 ${buf.length} 個非關鍵日。</p>${list}`
     : `<h3>${finalTitle||"日程"}</h3>`;
-  const extra = ended ? `<p class="gold">一週完結 → 回家結算</p>` : "";
+  /* v20a397 UI397-4 86c：週結提示改紅印章「一週完結」，「回家結算」只留喺掣上面。 */
+  const extra = ended ? `<p class="dayres-stamp397">一週完結</p>` : "";
   let replay = "";
   try{ replay = `<p class="gold" style="margin-top:8px">${weekBestReplayLine()}</p>`; }catch(_e){}
   modal(`${head}${finalBody||""}${extra}${replay}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
@@ -23514,7 +23673,9 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   /* v20a218 C-B2：典禮日日結板加提示——收工之後播典禮，板上先講聲。 */
   const awardCue218 = (()=>{ try{ const c = (typeof awards213MapCue213==="function") ? awards213MapCue213() : ""; return (c && c.indexOf("今晚：")===0) ? `<p class="gold">${c}——收工之後播出。</p>` : ""; }catch(_e){ return ""; } })();
   const progBar374 = (()=>{ const pm = String(meta.hint||"").match(/進度\s*(\d+)\s*\/\s*(\d+)/); if(!pm) return ""; const pct = Math.max(0, Math.min(100, Math.round((Number(pm[1])/Math.max(1,Number(pm[2])))*100))); return `<div class="res-prog374" aria-hidden="true"><i style="width:${pct}%"></i></div>`; })(); /* v374：拍攝進度條（純呈現，讀 meta.hint 既有數字） */
-  const body=`<p>${iconHtml112(meta.icon||"")} ${meta.hint||""}</p>${progBar374}${formatResultNotes(notes)}${awardCue218}`;
+  let body=`<p>${iconHtml112(meta.icon||"")} ${meta.hint||""}</p>${progBar374}${formatResultNotes(notes)}${awardCue218}`;
+  /* v20a397 UI397-4 27c：數值改一行手帳記錄（同 afterDayModal 一致）。 */
+  try{ if(typeof dayResLedger397==="function") body = dayResLedger397(body); }catch(_l397){}
   const clearDayRes = ()=>{ try{ document.body.classList.remove("day-res-open"); const m=document.getElementById("mask"); if(m) m.classList.remove("day-res"); }catch(_e){} };
   let advancedNb = false;
   const nextNbRaw=()=>{
@@ -23530,7 +23691,7 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
   const isAudFail = /^落選：/.test(String(title||"")) || title==="試鏡資格不符" || title==="未獲錄用";
   if(isAudFail && presentAudFailSettlement({
     gigTitle: String(title||"").replace(/^落選：/,""),
-    notesHtml: ended?`<p class="gold">一週完結 → 回家結算</p>`:"",
+    notesHtml: ended?`<p class="dayres-stamp397">一週完結</p>`:"",
     thenFn: nextNb
   })){
     saveQ();
@@ -23557,7 +23718,8 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
         presentPendingPostShootReward(nextNb);
       } else nextNb();
     };
-    flushWeekAccelSummary(title, body+(ended?`<p class="gold">一週完結 → 回家結算</p>`:""), ended, summary, cont);
+    /* v20a397 UI397-4 86c：call-site 唔再加金句（flushWeekAccelSummary 自己加印章），免重複兩行。 */
+    flushWeekAccelSummary(title, body, ended, summary, cont);
     /* v369 UI369：週加速摘要同樣蓋「已殺青」印（關鍵日係殺青先出）。 */
     try{ if(shootFinished){ const h3a369 = document.querySelector("#mask .modal h3"); if(h3a369){ const spa369 = document.createElement("span"); spa369.className = "wrap-stamp369"; spa369.setAttribute("aria-hidden","true"); spa369.textContent = "已殺青"; h3a369.appendChild(spa369); } } }catch(_wa369){}
     if(isRestCard){ try{ document.body.classList.add("day-res-open"); const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){} }
@@ -23605,12 +23767,12 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
         onSchedule: nextNbReward
       });
     }catch(_e){
-      modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${formatRestSleepDeltas(notes)}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}`, btns, {onDismiss: dismissNb});
+      modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${formatRestSleepDeltas(notes)}${ended?`<p class="dayres-stamp397">一週完結</p>`:""}`, btns, {onDismiss: dismissNb});
       if(isRestCard){ try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e2){} }
       saveQ();
     }
   } else {
-    modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dayLine}${fx102Html}${body}${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}${liveHint2}`, btns, {onDismiss: dismissNb});
+    modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dayLine}${fx102Html}${body}${ended?`<p class="dayres-stamp397">一週完結</p>`:""}${liveHint2}`, btns, {onDismiss: dismissNb});
     /* v369 UI369：殺青嗰日喺標題旁蓋「已殺青」紅印（shootFinished 先出，天然去重；DOM 注入唔改模板字串；唔鎖操作）。 */
     try{ if(shootFinished){ const h3w369 = document.querySelector("#mask .modal h3"); if(h3w369){ const spw369 = document.createElement("span"); spw369.className = "wrap-stamp369"; spw369.setAttribute("aria-hidden","true"); spw369.textContent = "已殺青"; h3w369.appendChild(spw369); } } }catch(_w369){}
     try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
@@ -24547,6 +24709,9 @@ function paintBar(){
     if(hsBox){ hsBox.classList.toggle("warn", hsVal>=52 && hsVal<70); hsBox.classList.toggle("danger", hsVal>=70); }
   }catch(_e){}
   try{ paintPageHead363(); }catch(_e){}
+  /* v20a397 UI397-1：日卡（map-hint）變高會縮短舞台，但 labels 未必即時重定位
+     （paintBar 唔帶 drawMap 嘅路徑）——呢度即刻夾實一次，唔使等下次重畫。 */
+  try{ if(typeof clampMapLabels397==="function") clampMapLabels397(); }catch(_e){}
 }
 
 let __storyMapRedrawT = null;
@@ -24695,7 +24860,67 @@ function positionMapLabels137(){
       el.style.left = lx + "px";
       el.style.top = ((p.y / 100 * tr.H) + aoff) + "px";
     });
+    /* v20a397 UI397-1：定位完即夾實（見 clampMapLabels397）。 */
+    try{ if(typeof clampMapLabels397==="function") clampMapLabels397(); }catch(_e){}
   }catch(_e){}
+}
+/* v20a397 UI397-1：地圖紙籤碰撞＋底邊夾實（venue99 相疊＋底邊截籤）。
+   positionMapLabels137 由 % 錨點換算 px（cover 換算）之後，量度全部紙籤
+   （.mn68＋.md97-venue99）：任何兩籤水平重疊且垂直淨距 < 8px，就將下面嗰張
+   移夠 8px（貼底嗰陣改向上移，唔好推出舞台）；任何籤底邊出舞台就向上夾返
+   入舞台留 4px。最多三輪；唔改 dataset 錨點原值（下次重定位由錨點重新計，
+   唔會漂移）。地圖隱藏／舞台冇尺寸嗰陣即刻返（量度唔到）。 */
+function clampMapLabels397(){
+  try{
+    const stage = document.querySelector('.map-well') || document.getElementById('v-map');
+    if(!stage) return 0;
+    const sr = stage.getBoundingClientRect();
+    if(!sr || sr.height <= 0 || sr.width <= 0) return 0;
+    const els = [...document.querySelectorAll('.map-names68 .mn68, #map-districts97 .md97-venue99')]
+      .filter(e=>e.offsetParent!==null);
+    if(els.length < 2) return 0;
+    const GAP = 8, BOTTOM_PAD = 4, MAX_PASS = 3;
+    const stageBottom = sr.bottom - BOTTOM_PAD, stageTop = sr.top + 2;
+    let moved = 0;
+    for(let pass=0; pass<MAX_PASS; pass++){
+      let any = false;
+      let rects = els.map(e=>e.getBoundingClientRect());
+      /* 底邊夾實先：底邊出舞台嘅籤向上移返入嚟。 */
+      for(let i=0;i<els.length;i++){
+        const over = rects[i].bottom - stageBottom;
+        if(over > 0.5){
+          const cur = parseFloat(els[i].style.top) || 0;
+          els[i].style.top = (cur - over) + 'px';
+          any = true; moved++;
+        }
+      }
+      rects = els.map(e=>e.getBoundingClientRect());
+      /* 碰撞：水平重疊＋垂直淨距 < 8px → 下面嗰張移夠 8px（貼底改向上移）。 */
+      for(let i=0;i<els.length;i++) for(let j=i+1;j<els.length;j++){
+        const a=rects[i], b=rects[j];
+        const ox = Math.min(a.right,b.right)-Math.max(a.left,b.left);
+        if(ox <= 0) continue;
+        const gap = (a.bottom<=b.top) ? (b.top-a.bottom) : (a.top-b.bottom);
+        if(gap >= GAP) continue;
+        const lower = (a.top<=b.top) ? j : i;
+        const upper = (lower===j) ? i : j;
+        const lr = rects[lower], ur = rects[upper];
+        const need = GAP - gap;
+        const cur = parseFloat(els[lower].style.top) || 0;
+        if(lr.bottom + need <= stageBottom){
+          els[lower].style.top = (cur + need) + 'px';
+        }else{
+          /* 向下會出舞台：改向上移，放喺上面嗰張頂邊之上 8px（唔出舞台頂）。 */
+          const upTop = Math.max(stageTop, ur.top - GAP - lr.height);
+          els[lower].style.top = (cur + (upTop - lr.top)) + 'px';
+        }
+        any = true; moved++;
+        rects = els.map(e=>e.getBoundingClientRect());
+      }
+      if(!any) break;
+    }
+    return moved;
+  }catch(_e){ return 0; }
 }
 function drawMap(){
   drawMap._bounced369 = false; /* v369：每版地圖最多一個 pin 輕跳（session 去重喺 _bounceSeen369） */
@@ -25006,7 +25231,7 @@ function modal(html, buttons, opts){
   maskEl.classList.add("on");
   document.getElementById("app").classList.add("mask-up");
   try{ const sh=document.getElementById("loc-sheet"); if(sh) sh.classList.remove("sheet-live"); }catch(_e){}
-  try{ setUnderlyingInert(true); }catch(_e){}
+  try{ setUnderlyingInert(true, !!opts.keepScene397); }catch(_e){} /* v20a397 UI397-4：日結家族 keepScene397 → 場景留低做承托 */
   try{
     const firstBtn = row.querySelector("button");
     if(firstBtn && typeof firstBtn.focus==="function") setTimeout(()=>{ try{ firstBtn.focus({preventScroll:true}); }catch(_f){ try{ firstBtn.focus(); }catch(_g){} }
@@ -28596,7 +28821,7 @@ function rom159DateScene(who, spot, L, ended, summary){
       let nv = 0;
       try{ if(typeof StoryOC!=="undefined" && StoryOC.getRel) nv = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
       const deltaTxt = delta>0 ? "好感 +1（而家 " + nv + "）" : (delta<0 ? "好感 -1（而家 " + nv + "）" : "好感 ±0");
-      modal(`<h3>約會 · ${w.name}</h3>${dlg379(line)}<p class="gold">${deltaTxt}</p>${ended?`<p class="gold">一週完結 → 回家結算，計劃下週</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()} · 約會用咗一日</p>`,
+      modal(`<h3>約會 · ${w.name}</h3>${dlg379(line)}<p class="gold">${deltaTxt}</p>${ended?`<p class="dayres-stamp397">一週完結</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()} · 約會用咗一日</p>`,
         [{label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}], {onDismiss: go});
     };
     modal(`<h3>約會 · ${w.name}（${spot.label}）</h3>${dlg379(spot.intro)}<p class="sub">揀一句回應——講啱咗，兩個人近啲；講錯咗，佢會冷淡啲。</p>`,[
@@ -33969,7 +34194,11 @@ function np214AwardPhoto214(pack, opts){
     const rep = String((pack && pack.repWork62) || (focus && focus.repWorkTitle) || "");
     const name = String((pack && pack.displayName) || "頒獎夜");
     let caption = "";
-    if(who === "awi"){
+    if(opts && opts.aftermath && who === "awi" && pack.bestOutcome === "nominated"){
+      /* v20a397 UI397-2 35c：第二版用散場圖說——唔提典禮名，避開相內橫額（星河金碟夜）
+         同圖說典禮名對唔上。 */
+      caption = rep ? ("陳偉翔憑《" + rep + "》入圍，散場時離開會場。") : "陳偉翔散場時離開會場。";
+    }else if(who === "awi"){
       if(pack.bestOutcome === "won") caption = rep ? ("陳偉翔在台上接過獎座，憑《" + rep + "》奪獎。") : "陳偉翔在台上接過獎座。";
       else caption = rep ? ("陳偉翔身穿燕尾服出席" + name + "，憑《" + rep + "》入圍。") : ("陳偉翔身穿燕尾服出席" + name + "。");
     }else{
@@ -34076,6 +34305,17 @@ function renderAwardResultHtml(pack){
   const hasMetric214 = !!(pack.metricEcho || pack.metricEchoLabel);
   const metricHead214 = winLine214 || playerWinLine214 || ((pack.displayName ? pack.displayName + "散場" : "頒獎夜散場"));
   const metricDek214 = (focusCat214 && focusCat214.line) ? String(focusCat214.line) : "";
+  /* v20a397 UI397-2 35c：第二版雙焦——有得主嗰陣（入圍＋他人奪獎），導語唔再逐字重複
+     第一版入圍段，改以散場鏡頭開場（得主行由主標講，呢度只講散場畫面＋入圍作品，
+     用 rep214 真數據）；lead 唔再重複主標（metricLabel——metricHead），改寫做散場報道——
+     提得主奪獎（winLine214 真數據），點明陳偉翔係散場報道嘅觀察對象。冇得主嗰陣
+     沿用舊寫法。 */
+  const metricDek397 = (win149 && rep214)
+    ? ("散場時分，掌聲未散；憑《" + rep214 + "》入圍的陳偉翔在人群中離開會場。")
+    : metricDek214;
+  const metricLead397 = (win149 && winLine214 && rep214)
+    ? (winLine214 + "。散場報道的觀察對象，是憑《" + rep214 + "》入圍的陳偉翔")
+    : (metricLabel214 + "——" + metricHead214);
   /* 典禮小檔案：只用遊戲已有真實資料（典禮／地點／得主／入圍），唔作新事實。行頭用「得獎／入圍」
      唔用獎項 label——舊測試計 label 只可以出一次（test_awards186／192），label 只喺內文行出。 */
   let factRows214 = "";
@@ -34093,8 +34333,12 @@ function renderAwardResultHtml(pack){
      第二版＝玩家相（只限入圍落選嗰陣——玩家贏嗰陣第一版已經係陳偉翔相，唔重複；旁聽冇玩家相）。 */
   const photo214 = (typeof np214AwardPhoto214 === "function") ? np214AwardPhoto214(pack) : null;
   const photoFigure214 = p => (p ? `<figure class="np214-photowrap"><div class="np214-photo"><img src="${p.src}" alt=""></div><figcaption class="np214-caption"><b>${esc214(p.caption)}</b></figcaption></figure>` : "");
-  const photo2_214 = (pack.bestOutcome === "nominated") ? photo214 : null;
-  const sidebar214 = `<aside class="np214-sidebar"><h3>影視娛樂</h3>${news.line ? `<p><span class="np214-sb-tag">${esc214(news.outlet||"娛樂快訊")}：</span>${esc214(news.line)}</p>` : ""}<p class="np214-filler-v" aria-hidden="true">金碟夜唱片銷量</p></aside>`;
+  const photo2_214 = (pack.bestOutcome === "nominated")
+    ? ((typeof np214AwardPhoto214 === "function") ? (np214AwardPhoto214(pack, {aftermath:true}) || photo214) : photo214)
+    : null;
+  /* v20a397 UI397-2 35c：右欄模糊尾字（.np214-filler-v）換成非文字印記 ❦——淡出前
+     最後一行係正文，唔再有半行模糊字。晨報渲染器唔郁。 */
+  const sidebar214 = `<aside class="np214-sidebar"><h3>影視娛樂</h3>${news.line ? `<p><span class="np214-sb-tag">${esc214(news.outlet||"娛樂快訊")}：</span>${esc214(news.line)}</p>` : ""}<span class="np214-sb-mark397" aria-hidden="true">❦</span></aside>`;
   const masthead214 = pageNo => `<header class="np214-masthead">
       <div class="np214-name">維港日報</div>
       <div class="np214-rule-thick"></div>
@@ -34123,11 +34367,11 @@ function renderAwardResultHtml(pack){
     ${masthead214("2")}
     <p class="np214-kicker">${esc214(metricLabel214 || "餘韻")}</p>
     <h3 class="np214-headline2">${esc214(metricHead214)}</h3>
-    ${metricDek214 ? `<p class="np214-dek">${esc214(metricDek214)}</p>` : ""}
+    ${metricDek397 ? `<p class="np214-dek">${esc214(metricDek397)}</p>` : ""}
     <div class="np214-layout"><div class="np214-maincol np214-clearfix">
       ${photoFigure214(photo2_214)}
       <div class="np214-body2">
-        <p class="np214-lead">${esc214(metricLabel214)}——${esc214(metricHead214)}。</p>
+        <p class="np214-lead">${esc214(metricLead397)}。</p>
         ${news.line ? `<p>${esc214(news.line)}</p>` : ""}
         <p>${esc214(pack.displayName||"頒獎夜")}散場。頒獎夜結束，明年再見。</p>
       </div>
@@ -45562,18 +45806,14 @@ function rom159WomenAtLoc(locId){
   }catch(_e){}
   return out;
 }
-function addRom159DateActs(add, L){
+/* v20a397 UI397-5：約會揀人 modal——列出已見面女角（閘口原因做 hint），揀人後開
+   現成 rom159OpenDatePicker(rk, L)；返回掣經 openLoc 返地點面板（forceRestore，唔再扣額度）。 */
+function rom159OpenDateWhoPicker(keys, L){
   try{
-    if(!L || typeof ROM159_WOMEN==="undefined" || !ROM159_WOMEN) return;
-    const keys = rom159WomenAtLoc(L.id);
-    if(!keys.length) return;
-    keys.forEach(rk=>{
+    if(!Array.isArray(keys) || !keys.length) return false;
+    const rows = keys.map(rk=>{
       const w = ROM159_WOMEN[rk];
-      if(!w) return;
-      /* v20a389 UI389（共識項）：未喺劇情正式見過面唔出約會掣（見面後自然解鎖）。 */
-      let met389 = false;
-      try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(w.meet)) met389 = true; }catch(_e){}
-      if(!met389) return;
+      if(!w) return "";
       let gate = { ok:false, reason:"" };
       try{ if(typeof rom159DateGate==="function") gate = rom159DateGate(rk, null) || gate; }catch(_e){}
       let hint = gate.ok ? "約會耗一日" : (gate.reason || "暫時約唔到");
@@ -45583,10 +45823,51 @@ function addRom159DateActs(add, L){
           if(info && info.show && info.hint && info.hint.indexOf("$0")<0) hint = info.hint;
         }
       }catch(_e){}
-      add("約" + w.name + "出街", hint, "+1日", ()=>{
-        try{ if(typeof rom159OpenDatePicker==="function") rom159OpenDatePicker(rk, L); }catch(_e){ toast("暫時約唔到"); }
-      }, gate.ok ? "act-priority" : "");
+      return `<button type="button" class="act${gate.ok ? " act-priority" : ""}" data-date-who="${rk}" style="width:100%;margin:0 0 8px;text-align:left">
+        <div><div class="n">約${w.name}出街</div>
+        <div class="h">${hint}</div></div>
+        <div class="cost">+1日</div>
+      </button>`;
+    }).join("");
+    modal(`<h3>約人出街</h3>
+      <p class="sub">約會用一日，嗰日唔可以接通告、唔可以訓練。每人每週最多約一次；一星期只可以約一個人。</p>
+      <div id="rom159-date-who-list">${rows}</div>`,[
+      {label:"返回", role:"g", on:()=>{ if(L) openLoc(L.id, {forceRestore:true}); }}
+    ], {onDismiss:()=>{ if(L) openLoc(L.id, {forceRestore:true}); }});
+    const box = document.getElementById("rom159-date-who-list");
+    if(box){
+      box.querySelectorAll("[data-date-who]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const rk = btn.getAttribute("data-date-who");
+          try{ if(typeof rom159OpenDatePicker==="function") rom159OpenDatePicker(rk, L); }catch(_e){ toast("暫時約唔到"); }
+        });
+      });
+    }
+    return true;
+  }catch(_e){ return false; }
+}
+function addRom159DateActs(add, L){
+  try{
+    if(!L || typeof ROM159_WOMEN==="undefined" || !ROM159_WOMEN) return;
+    const keys = rom159WomenAtLoc(L.id);
+    if(!keys.length) return;
+    /* v20a397 UI397-5：6 粒約會掣合成一粒入口——入內揀人（閘口原因做 hint），
+       唔再逐個女角出掣。未喺劇情正式見過面嘅唔計入可約數（v20a389 規則保留）。 */
+    const met = [];
+    let anyOk = false;
+    keys.forEach(rk=>{
+      const w = ROM159_WOMEN[rk];
+      if(!w) return;
+      let met389 = false;
+      try{ if(typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(w.meet)) met389 = true; }catch(_e){}
+      if(!met389) return;
+      met.push(rk);
+      try{ if(typeof rom159DateGate==="function"){ const g = rom159DateGate(rk, null); if(g && g.ok) anyOk = true; } }catch(_e){}
     });
+    if(!met.length) return;
+    add("約人出街", "可約 " + met.length + " 位", "+1日", ()=>{
+      try{ if(typeof rom159OpenDateWhoPicker==="function") rom159OpenDateWhoPicker(met, L); }catch(_e){ toast("暫時約唔到"); }
+    }, anyOk ? "act-priority" : "");
   }catch(_e){}
 }
 function openLoc(id, opts){
@@ -47062,16 +47343,19 @@ function doScout(L){
         : `顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張（可接 ${readyF392.length} · 未達標 ${lockedF392.length}）`;
       body+=`<div class="board-head392">`
         + `<div class="board-sum392">${sum392}</div>`
-        + `<div class="board-sort392"><span class="board-cap392">排序：按${sortLabel392}</span>`
+        + `<div class="board-ctl397"><div class="board-sort392"><button type="button" class="board-chip392 board-ctl397-btn" data-board-menu397="sort" aria-expanded="false">排序：${sortLabel392} ▾</button>`
+        + `<div class="board-menu397" data-board-menu-list397="sort" hidden>`
         + ["exp","pay","chance"].map(k=>`<button type="button" class="board-chip392${_boardSort392===k?" on":""}" data-sort392="${k}">${k==="exp"?"預期日薪":(k==="pay"?"總片酬":"成功率")}</button>`).join("")
-        + `</div>`
-        + `<div class="board-filter392"><span class="board-cap392">媒介</span><button type="button" class="board-chip392${filter392==="all"?" on":""}" data-filter392="all">全部</button>`
+        + `</div></div>`
+        + `<div class="board-filter392"><button type="button" class="board-chip392 board-ctl397-btn" data-board-menu397="filter" aria-expanded="false">媒介：${filter392==="all"?"全部":filter392} ▾</button>`
+        + `<div class="board-menu397" data-board-menu-list397="filter" hidden><button type="button" class="board-chip392${filter392==="all"?" on":""}" data-filter392="all">全部</button>`
         + media392.map(m=>`<button type="button" class="board-chip392${filter392===m?" on":""}" data-filter392="${m}">${m}</button>`).join("")
-        + `</div></div>`;
+        + `</div></div></div></div>`;
       body+=`<div class="gig-board-list" id="gig-board-list">`;
       if(featured392) body+=gigBoardTeaserHtml(featured392, { closest:false, featured:true });
-      if(lockedF392.length) body+=lockedDetails392(lockedF392);
       readyList392.forEach((g)=>{ body+=gigBoardTeaserHtml(g, { closest: closestMark392(g) }); });
+      /* v20a397 UI397-3：鎖定摘要由推介卡之後、移去可接清單最尾，唔再插斷清單。 */
+      if(lockedF392.length) body+=lockedDetails392(lockedF392);
       body+=`</div>`;
     } else {
       body+=`<div class="gig-board-list" id="gig-board-list">`;
@@ -47120,6 +47404,19 @@ function doScout(L){
     });
     document.getElementById("modal-inner").querySelectorAll("[data-filter392]").forEach(btn=>{
       btn.addEventListener("click", ev=>{ ev.preventDefault(); _boardFilter392 = btn.getAttribute("data-filter392") || "all"; try{ doScout(L); }catch(_e){} });
+    });
+    /* v20a397 UI397-3：下拉掣開合——撳開先展開選項，撳第二次收起；一次只開一粒。 */
+    document.getElementById("modal-inner").querySelectorAll("[data-board-menu397]").forEach(btn=>{
+      btn.addEventListener("click", ev=>{
+        ev.preventDefault(); ev.stopPropagation();
+        const key = btn.getAttribute("data-board-menu397");
+        const list = document.querySelector(`[data-board-menu-list397="${key}"]`);
+        if(!list) return;
+        const opening = list.hasAttribute("hidden");
+        document.querySelectorAll("[data-board-menu-list397]").forEach(m=>m.setAttribute("hidden",""));
+        document.querySelectorAll("[data-board-menu397]").forEach(b=>b.setAttribute("aria-expanded","false"));
+        if(opening){ list.removeAttribute("hidden"); btn.setAttribute("aria-expanded","true"); }
+      });
     });
   }catch(_e){}
   /* 只查看通告欄係免費瀏覽。能力不夠的教學唔好搶在板面之前彈出。 */
@@ -47291,14 +47588,18 @@ function presentStartScheduleConfirm45(onStart, onMap, onCancel){
   /* v20a196 D1／D7：排程日唔出「返回地圖」；逛逛日照舊（兩粒掣）。 */
   let mapNext45 = true;
   try{ mapNext45 = nextDayIsMap(); }catch(_e){}
-  const btns45 = [{ label:"開始並結算當日", role:"p", on:()=>{ try{ goStart(); }catch(_e){} } }];
+  const btns45 = [{ label:"開始並結算當日", role:"g", on:()=>{ try{ goStart(); }catch(_e){} } }];
   if(mapNext45) btns45.push({ label:"返回地圖", role:"g", on:()=>{ try{ goMap(); }catch(_e){} } });
   /* v20a202 C1：取消返去休息卡本身（唔係返地圖），重開 presentRestSleepDayEnd（opts 原封不動）。
      v20a392 UI392 ①：點擊外面＝取消（同取消掣同一去向），唔再開始行程／返地圖；冇取消掣嗰陣
      點擊外面只收起卡。底部「點擊外面＝⋯」細字刪走。 */
-  if(goCancel) btns45.push({ label:"返回休息卡", role:"g", on:()=>{ try{ goCancel(); }catch(_e){} } });
+  if(goCancel) btns45.push({ label:"返回休息卡", role:"p", on:()=>{ try{ goCancel(); }catch(_e){} } });
+  /* v20a397 UI397-4 40 號掣層級：以「返回休息卡」做主視覺（第一位＋主掣色），
+     「開始並結算當日」降做次掣。push 行保留（test_dayend202_static 釘死），
+     用 reorder 移位，唔改 push 本身。 */
+  if(goCancel){ const i45 = btns45.findIndex(b=>b && b.label==="返回休息卡"); if(i45>0){ const b45 = btns45.splice(i45,1)[0]; btns45.unshift(b45); } }
   modal(`<h3>開始今日行程？</h3><p>${consequence}</p>`, btns45,
-    { onDismiss: goCancel ? ()=>{ try{ goCancel(); }catch(_e){} } : null });
+    { onDismiss: goCancel ? ()=>{ try{ goCancel(); }catch(_e){} } : null, keepScene397:true });
   /* v20a396 UI396 ③：40 號確認卡改用日結卡同一套底部＋淺遮罩（day-res：貼底、頂部 .18／
      底部 .58 漸變），唔再係中央白卡＋.72 黑罩。closeModal 已經清 day-res／day-res-open；
      取消返休息卡嗰陣，presentRestSleepDayEnd 會重新加上。 */
@@ -47388,11 +47689,12 @@ function presentRestSleepDayEnd(opts){
     });
   }catch(_e){}
   const body = (opts.sleep265 ? sleep265ZzzHtml() : restSleepFxHtml()) + formatRestSleepDeltas(notes);
-  const gold = ended ? `<p class="gold">一週完結 → 回家結算</p>` : "";
+  /* v20a397 UI397-4 86c：週結提示改紅印章「一週完結」，「回家結算」只留喺掣上面。 */
+  const gold = ended ? `<p class="dayres-stamp397">一週完結</p>` : "";
   /* v20a392 UI392 ①：同 afterDayModal——點擊外面只收起休息卡，唔推進日期；週結照去結算。底部細字刪走。 */
   const dismissFn = ended ? goSchedule : null;
   const dateLine396 = dayResDateLine396("結算") || fmtDate();
-  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}<p class="dayres-date374">${dateLine396}</p>${body}${gold}`, btns, {onDismiss: dismissFn});
+  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}<p class="dayres-date374">${dateLine396}</p>${body}${gold}`, btns, {onDismiss: dismissFn, keepScene397:true});
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   armRestSleepFxInModal();
   saveQ();
@@ -48243,7 +48545,7 @@ function doTalk(npcId, L){
         </div>
       </div>
       ${extraHtml||""}
-      ${ended?`<p class="gold">一週完結 → 回家結算，計劃下週</p>`:""}
+      ${ended?`<p class="dayres-stamp397">一週完結</p>`:""}
       <p style="margin-top:8px;font-size:.75rem;color:var(--muted)">${dayNote}</p>
     </div>`,(()=>{
       /* v20a159 ROM159：傾談結果加「約佢出街」＋「交換電話號碼」（只限感情線女角）。 */
@@ -48902,7 +49204,7 @@ function doAudition(gig, L){
     ${advice229?`<p class="gold">鍾楚凝的忠告：臨試鏡前，阿偉想起她臨走時留下的那句話——「${advice229}」</p>`:""}
     <p class="gold">何生話：${aud91WaitPhrase(rec.wait)}，佢一收到風就會打嚟通知你；真係獲聘嗰陣，先簽約收簽約金，之後先排拍攝日開工。</p>
     <p class="var-note">成功率約 ${Math.round(p*100)}%（成數受表現／壓力／信用影響）。等消息期間照常生活；手帳「事業」頁睇得到而家等緊邊幾張。等消息嘅日子可以照常試其他通告（最多同時等 ${AUD91_CAP} 張）或者做兼職，唔使空等。</p>
-    ${ended?`<p class="gold">一週完結 → 回家結算</p>`:""}
+    ${ended?`<p class="dayres-stamp397">一週完結</p>`:""}
     <p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
     {label: ended?"回家結算":"繼續", role:"p", on:cont}
   ], {onDismiss: cont});
@@ -49054,7 +49356,7 @@ function doGiveGift(npcKey, itemId, L){
     ${kindLine369}
     <p class="gold">${deltaTxt}</p>
     <p class="sub">${dayNote}</p>
-    ${ended?`<p class="gold">一週完結 → 回家結算，計劃下週</p>`:""}`,[
+    ${ended?`<p class="dayres-stamp397">一週完結</p>`:""}`,[
     {label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}
   ], {onDismiss: go});
   saveQ();
@@ -49727,6 +50029,8 @@ function setTutMask(on){
   _tut.blocking=!!on;
   const app=document.getElementById("app");
   if(app) app.classList.toggle("mask-up", !!on || m.classList.contains("on"));
+  /* v20a397 UI397-5：開局分步——教學期間加 tut-stage397，收起手帳次要控制。 */
+  if(app) app.classList.toggle("tut-stage397", !!on);
   try{ setUnderlyingInert(!!on || m.classList.contains("on")); }catch(_e){}
   if(!on) clearTutSpotlight();
 }
@@ -50158,6 +50462,25 @@ document.getElementById("btn-reset-plan").onclick=resetPlanDraft;
   if(train) train.onclick=()=>quickFillTrain();
   if(clear) clear.onclick=()=>quickClearWeek();
   if(copy) copy.onclick=()=>toggleCopyPanel();
+  /* v20a397 UI397-5：行程工具下拉掣——撳開先見 4 工具＋還原；選單內掣撳完自動收埋
+     （複製／訓練面板喺選單外面，唔受影響）。 */
+  const toolsBtn=document.getElementById("nb-q-tools397");
+  const toolsMenu=document.getElementById("nb-tools397-menu");
+  if(toolsBtn && toolsMenu){
+    toolsBtn.onclick=()=>{
+      const opening = toolsMenu.hidden;
+      toolsMenu.hidden = !opening;
+      toolsBtn.setAttribute("aria-expanded", opening ? "true" : "false");
+      toolsBtn.textContent = opening ? "行程工具 ▴" : "行程工具 ▾";
+    };
+    toolsMenu.addEventListener("click", (ev)=>{
+      const b = ev.target.closest("button");
+      if(!b) return;
+      toolsMenu.hidden = true;
+      toolsBtn.setAttribute("aria-expanded", "false");
+      toolsBtn.textContent = "行程工具 ▾";
+    });
+  }
   if(apply) apply.onclick=()=>applyCopyToTargets();
   document.querySelectorAll("#nb-copy-wrap .nb-copy-actions [data-copy]").forEach(b=>{
     b.onclick=()=>selectCopyPreset(b.getAttribute("data-copy"));
@@ -50292,9 +50615,7 @@ document.getElementById("menu").onclick=e=>{
     if(kickScheduleIfNeeded()) return;
     goJournalFromMenu();
   }
-  if(m==="rest-early"){
-    confirmEarlyRestFromMenu();
-  }
+  /* v20a397 UI397-5：「過一日」由選單移除（地圖入口保留），分支一併刪走。 */
   if(m==="replay-tut")replayTutorial();
   if(m==="settings")openSettingsModal();
   if(m==="wire")showWireDebug();
@@ -50470,6 +50791,23 @@ try{
     if(__map137ResizeT) clearTimeout(__map137ResizeT);
     __map137ResizeT = setTimeout(()=>{ try{ if(typeof scheduleStoryMapRedraw==="function") scheduleStoryMapRedraw("resize137"); }catch(_e){} }, 160);
   });
+  /* v20a397 UI397-1：舞台尺寸變（日卡變高／modal 開合／dvh 變）嗰陣，% 錨點
+     換算出嚟嘅 px 位置會過時，底籤有機會俾舞台底邊裁切（audit 06／05b_h682）——
+     監察 .map-well 尺寸，一變即重定位（連夾實），唔使等 drawMap。 */
+  try{
+    if(typeof ResizeObserver!=="undefined" && !window.__mapRO397){
+      const __well397 = document.querySelector(".map-well");
+      if(__well397){
+        window.__mapRO397 = new ResizeObserver(()=>{
+          try{
+            if(!__well397.clientWidth || !__well397.clientHeight) return;
+            if(typeof positionMapLabels137==="function") positionMapLabels137();
+          }catch(_e){}
+        });
+        window.__mapRO397.observe(__well397);
+      }
+    }
+  }catch(_e){}
 }catch(_e){}
 try{ applyPrefsChrome(); }catch(_e){}
 (function paintTitleSaveBtns(){

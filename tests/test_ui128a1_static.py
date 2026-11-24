@@ -1,3 +1,4 @@
+# v397 resync：金禧錨點 top:24%→calc(24% + 30px)（venue99 相疊修正）；見 qa397/resync397.py。
 # v20a128 A1 地圖一屏包・靜態守門測試。
 # 用法：python3 tests/test_ui128a1_static.py [path-to-index.html]
 # 反證意識：每項同時驗「新寫法在」＋「舊寫法不在」。
@@ -17,7 +18,7 @@ def ok(name, cond):
 # v20a137 MAP137：用戶拍板大地圖唔要地區名，12 個地區 div 已刪——薄扶林／灣仔／銅鑼灣
 # 三個斷言由「標籤在」反轉做「地區 div 已刪」；星河地點名＋金禧會場標籤保留。
 ok('標籤 星河電視台', 'left:23%;top:calc(34% - 44px)">星河電視台' in html)
-ok('標籤 金禧大酒店', 'left:86%;top:24%">金禧大酒店' in html)
+ok('標籤 金禧大酒店', 'left:86%;top:calc(24% + 30px)">金禧大酒店' in html)
 ok('標籤 薄扶林地區名已刪（v137）', 'left:34%;top:50%">薄扶林' not in html)
 ok('標籤 灣仔地區名已刪（v137）', 'left:56%;top:68%">灣仔' not in html)
 ok('標籤 銅鑼灣地區名已刪（v137）', 'right:6%;top:66%">銅鑼灣' not in html)

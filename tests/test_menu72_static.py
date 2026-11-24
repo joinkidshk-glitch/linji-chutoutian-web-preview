@@ -28,16 +28,16 @@ menu = src[i_menu:i_after] if 0 <= i_menu < i_after else ''
 ok('選單容器搵到', bool(menu))
 ms = re.findall(r'data-m="([^"]+)"', menu)
 # v20a108 TEXT108 S-49：選單項舊名「提早休息」改「過一日」；data-m 值 rest-early 不變，只係測試名跟改
-ok('選單 data-m 恰好＝新清單（過一日＋系統五項＋wire；手帳掣 v389 已刪改拉柄）',
-   ms == ['rest-early', 'replay-tut', 'settings', 'wire', 'save', 'load', 'new'])
+# v20a397 UI397-5：「過一日」由選單移除（地圖入口保留），選單得返系統五項＋wire
+ok('選單 data-m 恰好＝新清單（系統五項＋wire；手帳掣 v389 已刪改拉柄；過一日 v397 已刪）',
+   ms == ['replay-tut', 'settings', 'wire', 'save', 'load', 'new'])
 ok('選單已冇六個資訊頁入口', all(('data-m="%s"' % m) not in menu for m in
    ['stats', 'people', 'inv', 'jobs', 'rumors', 'debts']))
 ok('劇情掣＋徽章已移除（v20a77 HUB77）', 'id="menu-story-badge"' not in menu and 'menu-story' not in menu)
 ok('手帳掣已刪、拉柄在位（v389）', 'data-m="journal"' not in menu and 'id="book389-handle"' in src)
-i_rest = menu.find('data-m="rest-early"')
-i_sep = menu.find('class="menu-sep"')
 i_sys = menu.find('data-m="replay-tut"')
-ok('分隔線喺動作組同系統組之間', 0 <= i_rest < i_sep < i_sys and '.menu-sep{' in src)
+ok('選單得返系統組，唔再分組（過一日＋分隔線 v397 一併移除）',
+   'data-m="rest-early"' not in menu and 'menu-sep' not in menu and i_sys >= 0)
 ok('wire 隱藏項保留（接線功能冇誤刪）', 'id="menu-wire" hidden' in menu)
 
 # --- (2) 選單 handler 冇 orphan 分支 ---
@@ -46,9 +46,9 @@ handler = src[i_h:i_h + 2200] if i_h >= 0 else ''
 ok('handler 在位', bool(handler))
 ok('handler 已刪六個資訊頁分支', all(('m==="%s"' % m) not in handler for m in
    ['stats', 'people', 'inv', 'jobs', 'rumors', 'debts']))
-ok('handler 保留全部新清單分支（story-play 已於 v20a77 隨掣移除）', all(('m==="%s"' % m) in handler for m in
-   ['journal', 'rest-early', 'replay-tut', 'settings', 'wire', 'save', 'load', 'new'])
-   and 'm==="story-play"' not in handler)
+ok('handler 保留全部新清單分支（story-play 已於 v20a77 隨掣移除；rest-early 已於 v397 隨掣移除）', all(('m==="%s"' % m) in handler for m in
+   ['journal', 'replay-tut', 'settings', 'wire', 'save', 'load', 'new'])
+   and 'm==="story-play"' not in handler and 'm==="rest-early"' not in handler)
 
 # --- (3) 手帳新子頁結構 ---
 ok('人脈清單容器喺人情合併頁（v389）', 'id="home-pane-favor389"' in src and 'id="people-list"' in src)

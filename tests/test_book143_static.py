@@ -58,10 +58,10 @@ ok('B1：每行「複製」改手寫墨字＋虛線底線（唔再係米色 pill
    and 'font-size:13px; font-weight:700; padding:2px 2px; min-width:0; }' in src)
 ok('B1：底部 bar 由深色底改紙面色 #f5eddc',
    '.nb-actions{ background:#f5eddc; border-top:1px solid #cbb98d; }' in src)
-ok('B1：「還原」改手寫墨字＋虛線底線（2×id＋!important 先搶得贏 904 行 grouped !important）',
-   '#nb-actions #btn-reset-plan{ background:transparent !important; border:0 !important' in src
-   and 'border-bottom:1px dashed #b99b62 !important' in src
-   and 'font-size:15px !important' in src)
+ok('B1：「還原」搬入行程工具選單（v397：紙標籤樣；虛線底線樣已刪）',
+   '#nb-tools397-menu #btn-reset-plan{ background:#fbf3df; border:1px solid #b99b62;' in src
+   and '#nb-tools397-menu #btn-reset-plan:disabled' in src
+   and '#nb-actions #btn-reset-plan' not in src)
 ok('B1：可編輯態「確定」改紅墨字掣（2px 實線紅框、18px 手寫字；:not(.is-locked) 保鎖定態印章唔受影響）',
    '#nb-actions #btn-confirm-plan:not(.is-locked){ background:rgba(192,69,44,.07) !important; border:2px solid #c0452c !important' in src
    and 'font-size:18px !important' in src and 'letter-spacing:.14em' in src)

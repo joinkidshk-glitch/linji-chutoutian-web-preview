@@ -1,3 +1,4 @@
+# v397 resync：「還原」搬入行程工具選單（v397 UI397-5），S-20 規則跟新位置；見 qa397/resync397.py。
 # v20a128 A6 設定／選單收尾包・靜態守門測試（對白速度紙掣／S-20）。
 # 用法：python3 tests/test_ui128a6_static.py [path-to-index.html]
 # 反證意識：每項同時驗「新寫法在」＋「舊寫法不在」。
@@ -25,7 +26,7 @@ ok('速度 撳掣同步隱藏欄位＋on 態', 'hid.value = b.getAttribute("data
 ok('S-20 返回地圖容器搬去頂部（喺 home-tabs 之前）',
    'id="home-tab-exit"' in html and html.find('id="home-tab-exit"') < html.find('id="home-tabs"'))
 ok('S-20 返回地圖頂部行唔再係 sticky 底部 bar', '#home-tab-exit{ position:static;' in html)
-ok('S-20 還原收細做次要掣', '#nb-actions #btn-reset-plan{ min-height:34px;' in html)
+ok('S-20 還原收埋入行程工具選單做次要掣（v397）', '#nb-tools397-menu #btn-reset-plan{ background:#fbf3df; border:1px solid #b99b62;' in html and '#nb-actions #btn-reset-plan' not in html)
 ok('S-20 返回掣本身仍係細掣（舊規則保留）', '#home-tab-exit #home-back-map-tabs{ flex:0 0 auto !important; width:auto !important;' in html)
 ok('S-20 返回掣文字不變', 'id="home-back-map-tabs">返回地圖</button>' in html)
 
