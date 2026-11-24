@@ -6859,6 +6859,44 @@ body.day-res-open .day-row{
   background:#f7f1e2 !important; color:#3a2e22 !important; border:1px solid rgba(107,83,64,.4) !important;
 }
 /* ===== v391 UI391 完 ===== */
+
+/* ===== v392 UI392：11-24 第三輪 UI 檢視頭五項修正（GPT 頭五項；只改呈現＋dismiss 安全語義，數值／門檻唔郁）===== */
+/* --- (2) 39 拍攝排程警告：深紅 #9c2418（紙底 #fbf2da 對比 7.02:1）＋字重 800，「會取消」加粗；唔再只靠紅色。
+   v20a392 實駕修正：#mask:not(.tut-on) .modal p{color:#3a2e22 !important}（v391）會壓住普通 class——要同級 !important＋更高權重先贏到。 --- */
+.shoot-warn392{ color:#9c2418; font-weight:800; line-height:1.55; }
+#mask:not(.tut-on) .modal p.shoot-warn392{ color:#9c2418 !important; }
+.shoot-warn392 b{ font-weight:900; }
+/* --- (3) 通告欄峰值分層：板頂總數行＋排序／媒介掣釘住（sticky）、短卡壓矮、推介大卡、未達標預覽行。 --- */
+.board-head392{ position:sticky; top:0; z-index:5; background:linear-gradient(180deg,#f6efdc,#efe2bd); border:1px solid #c9a86a; border-radius:8px; padding:6px 10px; margin:0 0 8px; }
+.board-sum392{ font-weight:800; color:#3a2e22; font-size:.85rem; }
+.board-sort392, .board-filter392{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:5px; }
+/* v20a392：通告欄長列表高版 modal（92dvh）——峰值 16 張第一眼完整見到 5 張卡；
+   細板內容短，modal 本身跟內容縮，唔受影響。!important 必需：#mask:not(.tut-on) .modal
+   嗰條 78dvh 係 !important，同權重下冇 !important 贏唔到（day-res 前例同理）。 */
+#mask.board-tall392 .modal{ max-height:min(92dvh,92svh,780px) !important; }
+.board-cap392{ font-size:.75rem; font-weight:800; color:#6b4e2e; margin-right:2px; }
+.board-chip392{ min-height:26px; padding:1px 9px; border-radius:20px; border:1px solid #a98d4f; background:#fbf4dd; color:#4a3a20; font-size:.75rem; font-weight:700; cursor:pointer; }
+.board-chip392.on{ background:#8a6d1f; color:#fff8e1; border-color:#8a6d1f; }
+.board-closest392{ flex-basis:100%; font-size:.72rem; font-weight:700; color:#6b4e2e; margin-top:2px; }
+.gig-locked108 summary{ flex-wrap:wrap; }
+#app .gig-teaser{ padding:10px 14px 10px 16px; }
+#app .gig-teaser .gt-title{ margin:0 0 4px; }
+#app .gig-teaser .gt-row{ margin:0 0 4px; }
+.gig-teaser.gt-featured{ border:2px solid #c9a227; box-shadow:0 3px 12px rgba(26,20,16,.35), inset 0 0 26px rgba(160,124,32,.15); }
+.gt-featured-tag{ display:inline-block; padding:1px 8px; border-radius:3px; font-size:.68rem; font-weight:900; background:#b3261e; color:#fff8e1; letter-spacing:.14em; transform:rotate(-3deg); margin-left:6px; vertical-align:2px; }
+/* --- (4) 18 拍攝簿截字：作品頁改整頁捲動——#works-list 唔再係被 flex 夾扁嘅內捲容器，
+     拍攝簿標題完整入流；頁底改紙色，等稱號段接返上頁，唔再露深色斷層。稱號段本身唔郁。 --- */
+#app #home-pane-works{ overflow-y:auto; background:#f3e6c8; }
+#app #home-pane-works #works-list{ flex:0 0 auto; overflow:visible; }
+/* --- (5) 35 頒獎系列：快進提示加深＋搬近「跳過」（同列左下）；未揭曉卡用實色卡背。 --- */
+/* 快進提示 #d6cdf0（舞台暗底 #14101f 對比 12.33:1、#2c2148 對比 9.77:1，≥4.5:1）＋粗體＋暗影，搬入 canvaswrap 左下角，同跳過掣同一列。 */
+.awd62-tap{ position:absolute; bottom:8px; left:8px; z-index:3; margin-top:0; text-align:left; color:#d6cdf0; font-size:12px; font-weight:700; text-shadow:0 1px 2px rgba(0,0,0,.65); }
+/* 未揭曉卡：卡面（海報／名／作品）隱藏，只見實色卡背＋「？」；得主 🏆 角標等揭開先出（唔預先洩露），「你」角標保留。 */
+.awd63-card:not(.show) img, .awd63-card:not(.show) .awd63-csscard, .awd63-card:not(.show) .t, .awd63-card:not(.show) .s{ visibility:hidden; }
+.awd63-card:not(.show)::before{ content:"？"; position:absolute; inset:5px; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#3a2a4a,#241736); color:#f2c14e; font-size:28px; font-weight:900; border:2px solid #d9c491; border-radius:4px; z-index:1; }
+.awd63-card:not(.show).win::after{ display:none; }
+.awd63-cards.on .awd63-card:not(.show){ opacity:.38; transform:none; }
+/* ===== v392 UI392 完 ===== */
 </style>
 </head>
 <body>
@@ -16780,6 +16818,27 @@ function boardPriorityRank(g){
 }
 
 /** 通告欄排序：當季優先 → boardPriority → seasonWeight（高者先） */
+/* ===== v20a392 UI392 ③：通告欄預期日薪排序（成功率 × 片酬 ÷ 拍攝日數）＋總片酬／成功率切換。
+   只係顯示層排序，門檻／庫／gigsForLocSeasonBoard 原次序唔郁。 */
+function board392ExpDaily(g){
+  try{
+    const pay = (typeof gigPayExact==="function") ? gigPayExact(g) : null;
+    const p = (typeof chance==="function") ? chance(g) : 0;
+    const d = (typeof effectiveShootDays==="function") ? effectiveShootDays(g) : 1;
+    if(pay==null || !(pay>0)) return 0;
+    return (Number(p)||0) * pay / Math.max(1, Number(d)||1);
+  }catch(_e){ return 0; }
+}
+function board392Compare(a, b, key){
+  let r = 0;
+  try{
+    if(key==="pay") r = (gigPayExact(b)||0) - (gigPayExact(a)||0);
+    else if(key==="chance") r = (chance(b)||0) - (chance(a)||0);
+    else r = board392ExpDaily(b) - board392ExpDaily(a);
+  }catch(_e){ r = 0; }
+  if(r) return r;
+  try{ return boardSortCompare(a, b); }catch(_e){ return String(a&&a.id||"").localeCompare(String(b&&b.id||"")); }
+}
 function boardSortCompare(a, b, cur){
   cur = cur || calendarSeason();
   const sr = seasonRank(a, cur) - seasonRank(b, cur);
@@ -19190,21 +19249,28 @@ function gigBoardTeaserHtml(g, opts){
   const badge94 = (typeof press94TierBadge==="function") ? press94TierBadge(g) : { key: rk, label: (g && g.tier) || "初" };
   const sealKey = (g && (g.urgent || g.tier==="急")) ? "urgent" : badge94.key;
   const sealSrc = `assets/ui-physical/notice/seal_${sealKey}.png?v=20a8`;
-  let pay="";
-  {
-    const payTxt=gigPayExactText(g, {card:true});
-    if(payTxt) pay=`片酬 ${payTxt}`;
-  }
-  const verb=gigScheduleVerb(g);
-  let days="";
-  try{ days=`${verb}約 ${effectiveShootDays(g)} 日`; }catch(_e){}
-  /* v20a117 S-30 DEDUP117：欄卡 meta 拆行（跟 v111 期間拆行同一做法：一段一行）。
-     實駕核實實際渲染只得兩段——「片酬 $N」「拍攝約 N 日」；任務書話嘅第三段
-     「獲聘後 N 日內完成」並唔喺 teaser meta 出現（嗰句係詳情頁「完成期限」行嘅值），
-     故按實際兩段拆，唔憑空加第三段。數字／文字一字唔郁，只係由「 · 」串連改逐行。 */
-  const metaParts=[pay, days].filter(Boolean);
+  /* v20a392 修正：lifeKey／boardState 要先聲明——下面 meta-line 區塊讀 boardState
+     決定出唔出成功率；const 喺 TDZ，後聲明會令成個 gigBoardTeaserHtml 一叫即 throw，
+     板面撳極都唔開（實駕捉到）。 */
   const lifeKey = st.key || ((st.label==="已殺青"||st.label==="已取消")?"wrapped":(st.label==="拍攝中"?"shooting":(st.label==="已獲聘"?"hired":"")));
   const boardState = (lifeKey==="wrapped" || lifeKey==="shooting" || lifeKey==="hired" || st.label==="已殺青" || st.label==="製作中" || st.label==="已獲聘" || st.label==="拍攝中") ? "" : gigBoardCardState(g);
+  /* v20a392 UI392 ③：短卡改可掃讀紙條——片酬／日數／成功率併做一行（「$378｜3 日｜86%」）；
+     鎖定卡唔出假成功率，只出片酬＋日數，差額行照舊喺下面。容器／行 class 唔變（S-30 測試釘）。
+     v20a117 拆行做法由呢行取代（兩段 meta＋成功率行三行變一行）。 */
+  let metaLine392 = "";
+  {
+    const payTxt=gigPayExactText(g, {card:true});
+    let daysN=null;
+    try{ daysN=effectiveShootDays(g); }catch(_e){}
+    const bits392=[];
+    if(payTxt) bits392.push(`片酬 ${payTxt}`);
+    if(daysN!=null) bits392.push(`${daysN} 日`);
+    if(boardState==="ready"){
+      try{ if(typeof chance==="function") bits392.push(`${Math.round(chance(g)*100)}%`); }catch(_e){}
+    }
+    if(bits392.length) metaLine392 = bits392.join("｜");
+  }
+  /* v20a392：lifeKey／boardState 已搬上 meta-line 區塊之前（見上），呢度唔再重複聲明。 */
   const castCopy = phase3CastCopy();
   const badgeText = boardState==="locked" ? castCopy.lockedTag : (boardState==="ready" ? castCopy.readyTag : st.label);
   const badgeCls = (st.alt || boardState==="locked") ? "gt-badge done" : "gt-badge";
@@ -19223,18 +19289,7 @@ function gigBoardTeaserHtml(g, opts){
       if(gl) gapHtml = `<div class="gt-gap">${gl}${opts.closest?`<span class="gt-closest">最接近</span>`:""}</div>`;
     }catch(_e){}
   }
-  /* v372：短卡補返試鏡成功率（第二輪評估 W1/W3：短卡冇成功率，要逐張點入詳情先知）。
-     計法同 gigCardHtml／詳情頁同一支 chance()（v368 新曲線，唔改曲線本身）；
-     只喺 ready（可接）出，鎖定卡照出差額行，唔出假成功率。 */
-  let chanceHtml = "";
-  if(boardState==="ready"){
-    try{
-      if(typeof chance==="function"){
-        const p372 = Math.round(chance(g)*100);
-        chanceHtml = `<div class="gt-chance">試鏡成功率約 <b>${p372}%</b></div>`;
-      }
-    }catch(_e){}
-  }
+  /* v20a372 成功率已經併入上面一行 meta（v392），呢度唔再另出成功率行。 */
   /* v20a229 B5 觸發標籤：已觸發上板嘅通告標「引薦」（credit）／「邀約」（其餘五種）；
      未觸發嘅根本唔會入板，呢度唔使再驗。 */
   let trigPill = "";
@@ -19245,12 +19300,13 @@ function gigBoardTeaserHtml(g, opts){
   try{ const tl383 = (typeof tape383Label==="function") ? tape383Label(g) : ""; if(tl383){ trigPill += `<span class="gt-pill gt-tape383">${tl383}</span>`; const ds384 = (typeof tape383DeadlineShortText==="function") ? tape383DeadlineShortText(g) : ""; if(ds384) trigPill += `<span class="gt-pill gt-tape383">${ds384}</span>`; } }catch(_e){}
   /* v20a382 COSTUME382：自備戲服標籤（GPT 方案：細紙標籤跟觸發標籤同排，欠衫標「未持有」） */
   try{ const cp = (typeof costume382PillHtml==="function") ? costume382PillHtml(g) : ""; if(cp) trigPill += cp; }catch(_e){}
-  return `<div class="gig-teaser" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
+  /* v20a392 UI392 ③：推介大卡（opts.featured）——可接之中片酬最高者置頂，唔重複計數。 */
+  const featured392 = !!(opts && opts.featured);
+  return `<div class="gig-teaser${featured392 ? " gt-featured" : ""}" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
     <img class="g-seal" src="${sealSrc}" alt="${badge94.label||sealKey}" onerror="this.style.display='none'"/>
-    <div class="gt-title">${work}</div>
+    <div class="gt-title">${work}${featured392 ? `<span class="gt-featured-tag">推介</span>` : ""}</div>
     <div class="gt-row"><span class="gt-pill">${genre}</span>${trigPill}<span class="${badgeCls}">${badgeText}</span></div>
-    ${metaParts.length?`<div class="gt-meta">${metaParts.map(m=>`<div class="gt-meta-line">${m}</div>`).join("")}</div>`:""}
-    ${chanceHtml}
+    ${metaLine392?`<div class="gt-meta"><div class="gt-meta-line">${metaLine392}</div></div>`:""}
     ${intelMark}
     ${favor158Html}
     ${gapHtml}
@@ -20344,21 +20400,30 @@ function placeShootOnPlan(shoot, fromWeekday, overwriteBusy){
 }
 function confirmPlaceShoot(shoot, fromWeekday, thenFn){
   const prev=previewShootPlacement(shoot, fromWeekday);
-  const go=(overwrite)=>{
-    placeShootOnPlan(shoot, fromWeekday, !!overwrite);
+  /* v20a392 UI392 ②：go(overwrite, defer)——defer＝留待下週：乜都唔排（唔郁 weekPlan／
+     daysLeft），只記旗等 reveal 文案講真話；shoot 下週編排嗰陣由 lockShootsIntoDraft 兜底排入。 */
+  const go=(overwrite, defer)=>{
+    if(defer){ try{ shoot._v392defer=true; }catch(_e){} }
+    else placeShootOnPlan(shoot, fromWeekday, !!overwrite);
     if(typeof thenFn==="function") thenFn();
   };
   if(!prev.displaced.length){ go(false); return; }
   const names=prev.displaced.map(d=>`週${weekdayName(d.wd)}（${d.name}）`).join("、");
+  const n392 = prev.displaced.length;
+  const free392 = prev.freeCount|0;
+  /* v20a392 UI392 ②：三掣得兩個功能，刪「取消」掣——撳遮罩／關閉只收起 modal，唔排位、
+     唔行 thenFn（_aud91Presenting 由 v360 自癒清旗；record 呈現前已經剔走，唔會重播）。
+     金色畀安全選項：有空日用「只排空日」做主掣；冇空日就寫「留待下週」。覆寫用次級掣
+     「取消原安排並拍攝」，唔用金色、唔做預設。警告直接講損失，唔再靠紅色＋細字。 */
+  const safeBtn392 = free392>0
+    ? {label:"只排空日", role:"p", on:()=>go(false)}
+    : {label:"留待下週", role:"p", on:()=>go(false, true)};
   modal(`<h3>拍攝排程</h3>
-    <p>空日唔夠，要佔用：<b>${names}</b>。</p>
-    <p class="bad">原本休息／安排會取消，改為拍攝檔期已定。</p>
-    <p style="font-size:.75rem;color:var(--muted)">取消＝只排入空日，其餘留待下週。</p>`,[
-    {label:"確定佔用", role:"p", on:()=>go(true)},
-    {label:"只排空日", role:"g", on:()=>go(false)},
-    {label:"取消", role:"g", on:()=>{ /* abort overwrite — still place free only */ go(false); }}
-    /* v20a122 AUD91FIX H2：遮罩點走等同撳「取消」（只排空日），等 finishReveal 照行、_aud91Presenting 清旗。 */
-  ], { onDismiss: ()=>go(false) });
+    <p>${free392>0 ? `空日唔夠（得 ${free392} 日空閒），要佔用原有安排先排得晒。` : `本週已經冇空日，要佔用原有安排先排得晒。`}</p>
+    <p class="shoot-warn392"><b>會取消</b>${names}，${n392===2 ? "兩" : n392}日改為拍攝。</p>`,[
+    safeBtn392,
+    {label:"取消原安排並拍攝", role:"g", on:()=>go(true)}
+  ]);
 }
 
 function scheduleShoot(gig, pay, fame, popularity, payBreak){
@@ -21354,11 +21419,10 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
   }
   const liveHint = livingCostDayEndHint();
   const fx102Html = ((typeof actFx102Html==="function") ? actFx102Html(opts.fx102Kind) : "") || (typeof dayResStill374==="function" ? dayResStill374(opts.still374) : ""); /* v20a102 FX102＋v374 冇片活動定格圖 */
-  /* v20a196 D1／D7：dismiss 跟下一日行程——排程日＝繼續跑下一日（go），逛逛日＝返地圖。 */
-  const dismissFn = ended ? go : ()=>{ try{ if(nextDayIsMap()) goToMapForBrowse(); else go(); }catch(_e){ try{ goToMapForBrowse(); }catch(_e2){} } };
-  /* v20a202 B1/B2：去向行放 <h3> 之後（第一屏見，唔使碌）；dismiss 提示行 role:"note"
-     放掣列尾（sticky 掣欄底，長期可見）。流程／dismissFn 本身唔郁。 */
-  try{ btns.push(dayEndDismissNote202(ended)); }catch(_e){}
+  /* v20a392 UI392 ①：dismiss 唔再推進——點擊外面只收起日結卡，唔跑下一日行程、唔返地圖；
+     玩家由地圖「開始今日行程」掣明確開始新一日。週結（ended）例外：dismiss 照去屋企結算
+     （嗰步唔推進日期，係下週編排嘅入口）。底部「點擊外面＝⋯」細字一併刪走。 */
+  const dismissFn = ended ? go : null;
   modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dayLine}${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}`, btns, {onDismiss: dismissFn});
   try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
@@ -22451,11 +22515,6 @@ function dayEndNextLine202(ended){
   const txt = d.kind==="map" ? ("聽日：" + d.label + "（返地圖自由行）") : ("聽日：" + d.label + "（自動行程）");
   return `<p class="dayend-next202">${esc202(txt)}</p>`;
 }
-function dayEndDismissNote202(ended){
-  if(ended) return { label:"點擊外面＝回家結算", role:"note" };
-  const d = nextDayLabel202();
-  return { label: d.kind==="map" ? "點擊外面＝返回地圖" : "點擊外面＝繼續跑明日行程", role:"note" };
-}
 /* v20a202 B1（劇情結算）：showResult 嗰陣 dayIndex 已經係入緊嗰日（唔係聽日），
    所以用「關閉之後」＋今日 framing；slot 只 peek 唔消費（消費留返「關閉」／dismiss 本身）。
    slot=schedule → 今日行程實名；slot=map → 返地圖；冇 slot（玩家自己開播）→ 返地圖。 */
@@ -23003,12 +23062,10 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
       return Object.assign({}, b, { on: ()=> afterDayRes(typeof orig==="function" ? orig : nextNb) });
     });
   }catch(_e){}
-  /* v20a202 B2：dismiss 提示行放掣列尾（下面兩個 modal 分支共用呢個 btns）。 */
-  try{ btns.push(dayEndDismissNote202(ended)); }catch(_e){}
+  /* v20a392 UI392 ①：同 afterDayModal——點擊外面只收起卡，唔推進；週結照去結算。底部細字刪走。 */
+  const dismissNb = ended ? nextNbReward : null;
   const liveHint2 = livingCostDayEndHint();
   const fx102Html = ((typeof actFx102Html==="function") ? actFx102Html(fx102Kind) : "") || (typeof dayResStill374==="function" ? dayResStill374(still374) : ""); /* v20a102 FX102＋v374 冇片活動定格圖 */
-  /* v20a196 D1／D7：dismiss 跟下一日行程——排程日＝繼續跑下一日（nextNb，獎勵 sheet 行先），逛逛日＝返地圖。 */
-  const dismissNb = ended ? nextNbReward : ()=> afterDayRes(()=>{ try{ if(nextDayIsMap()) goToMapForBrowse(); else nextNb(); }catch(_e){ try{ goToMapForBrowse(); }catch(_e2){} } });
   /* v20a10：休息瞓覺 — 片嵌日結板；文案只留數值；週加速靜默合併唔播 */
   if(id==="rest" && !_weekAccel){
     try{
@@ -24390,6 +24447,7 @@ function modal(html, buttons, opts){
   const maskEl=document.getElementById("mask");
   maskEl.classList.toggle("casting-sheet-on", !!opts.castingSheet);
   maskEl.classList.toggle("awd-sheet-on", !!opts.awardSheet); /* v20a207 C3：結果卡先掛（presentAwardResult 傳 awardSheet:true） */
+  maskEl.classList.toggle("board-tall392", !!opts.boardTall); /* v20a392 UI392 ③：通告欄長列表用高版 modal（92dvh），第一眼見到 5 張卡；closeModal 清除 */
   /* v20a47：opts.paperSheet → #mask.paper-on（報紙實物化情境 class，純呈現；closeModal 清除） */
   maskEl.classList.toggle("paper-on", !!opts.paperSheet);
   maskEl.classList.add("on");
@@ -24411,6 +24469,7 @@ function closeModal(){
   try{ document.getElementById("mask").classList.remove("casting-sheet-on"); }catch(_e){}
   try{ document.getElementById("mask").classList.remove("paper-on"); }catch(_e){}
   try{ document.getElementById("mask").classList.remove("awd-sheet-on"); }catch(_e){} /* v20a207 C3 */
+  try{ document.getElementById("mask").classList.remove("board-tall392"); }catch(_e){} /* v20a392 UI392 ③ */
   /* v19z3：清 story-play-on + 清空 #modal-inner，避免劇情結算 HTML／mask 殘留 */
   try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
   try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
@@ -29156,11 +29215,13 @@ function grant229DeliverOne(rec, step){
       const moneyLine = terms.contract
         ? `<span class="good">長期合約：每週 $${terms.weeklyPay.toLocaleString()} 出糧，共 ${terms.weeks} 週，總額 $${terms.totalPay.toLocaleString()}；唔使再試鏡，殺青計作品。</span>`
         : `<span class="good">簽約金 $${terms.signPay.toLocaleString()} 已入帳（合約 $${terms.pay.toLocaleString()} 嘅三成）；餘額 $${(terms.pay-terms.signPay).toLocaleString()} 殺青嗰日先入帳。</span>`;
+      /* v20a392 UI392 ②：揀咗「留待下週」就唔好話拍攝日已排——shoot._v392defer 由 confirmPlaceShoot 記。 */
+      const defer392 = !!(shoot && shoot._v392defer);
       try{
-        if(typeof toast==="function") toast("何生來電：即派通告"+(gig.title||"")+"，拍攝日已排進行程。");
+        if(typeof toast==="function") toast("何生來電：即派通告"+(gig.title||"")+ (defer392 ? "，拍攝日留待下週再排。" : "，拍攝日已排進行程。"));
       }catch(_t){}
       if(typeof modal==="function"){
-        modal(`<h3>何生來電</h3><p>何生打嚟：「${String(rec.reason||"有張通告派畀你。")}」</p><p><b>${gig.title||""}</b> · ${gig.type||""} · ${gig.roleLabel||""}</p>${moneyLine}<p class="gold">已獲聘——拍攝日已排進行程，返手帳睇行程，再開工。</p>${chkHtml}<p style="font-size:.75rem;color:var(--muted)">${(typeof fmtDate==="function")?fmtDate():""}</p>`,[
+        modal(`<h3>何生來電</h3><p>何生打嚟：「${String(rec.reason||"有張通告派畀你。")}」</p><p><b>${gig.title||""}</b> · ${gig.type||""} · ${gig.roleLabel||""}</p>${moneyLine}<p class="gold">${defer392 ? "已獲聘——拍攝日留待下週再排，返手帳睇行程。" : "已獲聘——拍攝日已排進行程，返手帳睇行程，再開工。"}</p>${chkHtml}<p style="font-size:.75rem;color:var(--muted)">${(typeof fmtDate==="function")?fmtDate():""}</p>`,[
           {label:"好", role:"p", on:cont}
         ], {onDismiss: cont});
       } else { cont(); }
@@ -34421,6 +34482,10 @@ function awards62PlayCeremony(pack, doneFn){
     const awd181Board = (night208 ? night208[0].label : (focus && focus.label)) || (pack && pack.displayName) || "頒獎夜";
     const awd181Line1 = repTitle ? "《" + repTitle + "》" : "入圍名單逐一揭曉";
     const awd181Line2 = (pack && pack.venue99) || (pack && pack.displayName) || "";
+    /* v20a392 UI392 ⑤：吊牌預設副行（代表作＋場地）——逐位宣佈嗰陣先收起，追光落定（500ms）先揭
+       當位提名人，完咗還原返呢行；.long 條件同下面建牌嗰句一致。 */
+    let boardSubDefault392 = esc(awd181Line1) + (awd181Line2 ? "<br/>" + esc(awd181Line2) : "");
+    let boardSubLong392 = (String(awd181Board).length > 8 || String(awd181Line1).length > 10 || String(awd181Line2).length > 10);
     const awd181Html = '<div class="awd181-banner">' + esc((pack && pack.displayName) ? pack.displayName : "頒獎夜") + "</div>"
       + '<div class="awd181-strip l"><span class="lab"><i class="awd181-ic spk"></i>聲望</span><span class="num">' + awd181Fame + "</span></div>"
       + '<div class="awd181-strip r"><span class="lab"><i class="awd181-ic star"></i>角逐</span><span class="num">' + awd181Noms + "</span></div>"
@@ -34473,10 +34538,9 @@ function awards62PlayCeremony(pack, doneFn){
     stage.innerHTML = '<div class="awd62-frame">'
       + '<div class="awd62-canvaswrap"><canvas class="awd62-canvas" width="720" height="' + Math.round(HS211 * 1.5) + '"></canvas>' /* v20a211 B1：backing 高跟 HS211（432→648／540→810，×1.5 transform 不變） */
       + '<img class="awd62-m5fx149" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>'
-      + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>' + awd181Html + '<button type="button" class="awd62-skip">跳過 ⏩</button>' + "</div>" + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服；v20a181：邏輯座標 480×432（10:9，v20a207 B2），backing 720×648；v20a197 B3：跳過掣搬入 canvaswrap（480×360 固定比例，唔跟 beat 高度走） */
+      + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>' + awd181Html + '<div class="awd62-tap">點擊畫面可以快進</div><button type="button" class="awd62-skip">跳過 ⏩</button>' + "</div>" + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服；v20a181：邏輯座標 480×432（10:9，v20a207 B2），backing 720×648；v20a197 B3：跳過掣搬入 canvaswrap（480×360 固定比例，唔跟 beat 高度走）；v20a392 UI392 ⑤：快進提示一併搬入 canvaswrap 左下角，同跳過掣同一列 */
       + cardsHtml
       + '<div class="awd62-caption"></div>'
-      + '<div class="awd62-tap">點擊畫面可以快進</div>'
       + "</div>";
     document.body.appendChild(stage);
     const cv = stage.querySelector("canvas");
@@ -34569,6 +34633,9 @@ function awards62PlayCeremony(pack, doneFn){
           const l1 = repTitle ? "《" + repTitle + "》" : "入圍名單逐一揭曉";
           const l2 = (pack && pack.venue99) || (pack && pack.displayName) || "";
           bs.innerHTML = esc(l1) + (l2 ? "<br/>" + esc(l2) : "");
+          /* v20a392 UI392 ⑤：格轉換同步更新吊牌預設副行（syncBoardSub392 還原嗰陣用）。 */
+          boardSubDefault392 = bs.innerHTML;
+          boardSubLong392 = (String(cs.label).length > 8 || String(l1).length > 10 || String(l2).length > 10);
         }
       }catch(_e){}
       fellows.forEach(f=>{ if(f && f.starId) ["south", "east", "west"].forEach(d=> loadPx(f.starId, d)); });
@@ -34667,15 +34734,36 @@ function awards62PlayCeremony(pack, doneFn){
     let lastTick = -1;
     let capLineIdx = -1;
     const setCaption = (html)=>{ if(!capEl) return; capEl.innerHTML = html; capEl.style.display = (capEl.textContent || "").trim() ? "" : "none"; }; /* v20a166 C1：caption 為空嗰陣隱藏字幕框（walkup／glamour／won-out 係 ""），有字嗰陣照顯示 */
+    /* v20a392 UI392 ⑤：追光先落角色，再揭吊牌——逐位宣佈 beat 頭 500ms 只見追光＋行前（吊牌副行收起），
+       500ms 後先揭當位提名人「星：《作品》」；其他 beat 還原獎項預設副行。 */
+    const syncBoardSub392 = (b, elapsed)=>{
+      const bs = stage.querySelector(".awd181-sub");
+      const bd = stage.querySelector(".awd181-board");
+      if(!bs || !bd) return;
+      if(b && b.id === "nominee" && b.nomineeIdx >= 0){
+        if((elapsed||0) > 500){
+          bs.innerHTML = esc(String(b.caption || ""));
+          bs.style.visibility = "visible";
+          bd.classList.toggle("long", String(b.caption||"").length > 10);
+        } else {
+          bs.style.visibility = "hidden";
+        }
+      } else {
+        bs.innerHTML = boardSubDefault392;
+        bs.style.visibility = "visible";
+        bd.classList.toggle("long", boardSubLong392);
+      }
+    };
     const applyBeatCaption = (b, beatTick)=>{
       if(!b) return;
       if(b.id === "names" && Array.isArray(b.lines) && b.lines.length){
         const li = Math.min(b.lines.length - 1, Math.floor((beatTick || 0) / 6));
         if(li !== capLineIdx){ capLineIdx = li; setCaption('<span class="dim">入圍名單</span>\n' + b.lines[li]); }
       } else if(b.id === "nominee"){
-        /* v20a208：逐位宣佈——字幕讀出嗰位「星：《作品》」，加埋進度（第 n／共 N 位）＋獎項名，唔一次過列晒。 */
+        /* v20a208：逐位宣佈——進度（第 n／共 N 位）＋獎項名。
+           v20a392 UI392 ⑤：姓名＋作品唔再喺下方字幕重複——集中喺舞台吊牌（syncBoardSub392 500ms 後先揭），字幕只留進度，消雙焦。 */
         const prog208 = (b.nomineeTotal > 0 && b.nomineeIdx >= 0) ? (" " + (b.nomineeIdx + 1) + "/" + b.nomineeTotal) : "";
-        setCaption('<span class="dim">入圍名單' + prog208 + (b.catLabel ? " · " + b.catLabel : "") + '</span>\n' + (b.caption || ""));
+        setCaption('<span class="dim">入圍名單' + prog208 + (b.catLabel ? " · " + b.catLabel : "") + '</span>');
       } else if(b.id === "reveal"){
         const htmlTxt = String(b.caption || "").replace(/\n/g, "<br/>");
         setCaption(curOutcome208 === "won" ? ('<span class="gold">' + htmlTxt + "</span>") : htmlTxt);
@@ -34878,6 +34966,7 @@ function awards62PlayCeremony(pack, doneFn){
       syncGlamour(beats[beatIdx]);
       applyBeatCaption(beats[beatIdx], 0);
       syncCards(beats[beatIdx], 0); /* v20a212 C2：卡片同字幕同步出——advance() 嗰刻即刻加 show，唔等下一個 rAF tick（舊路要等 tick 先出，個別格慢到 ~0.5 秒） */
+      syncBoardSub392(beats[beatIdx], 0); /* v20a392 UI392 ⑤：格／beat 轉換嗰刻同步吊牌副行 */
     };
     stage.addEventListener("click", ()=>{ advance(); });
     const loop = ()=>{
@@ -34895,6 +34984,7 @@ function awards62PlayCeremony(pack, doneFn){
         draw(b, tick, elapsed);
         if(b.id === "names") applyBeatCaption(b, Math.floor(elapsed / 125));
         syncCards(b, elapsed);
+        syncBoardSub392(b, elapsed); /* v20a392 UI392 ⑤：逐 tick 跟吊牌副行（逐位宣佈 500ms 後先揭名） */
       }
       if(elapsed >= (b.ms || 1000)) advance();
       if(!finished) raf = requestAnimationFrame(loop);
@@ -34902,6 +34992,7 @@ function awards62PlayCeremony(pack, doneFn){
     syncGlamour(beats[0]);
     syncConfetti149(beats[0]);
     applyBeatCaption(beats[0], 0);
+    syncBoardSub392(beats[0], 0); /* v20a392 UI392 ⑤：開場同步吊牌副行 */
     raf = requestAnimationFrame(loop);
     return true;
   }catch(_e){
@@ -46172,6 +46263,9 @@ function gigsForLocSeasonBoard(locId, curSeason){
   });
   return shown;
 }
+/* v20a392 UI392 ③：通告欄排序／篩選狀態（本 session 內記住，唔入存檔）。 */
+let _boardSort392 = "exp";
+let _boardFilter392 = "all";
 function doScout(L){
   try{ mergeSoftBridgeGigs(); }catch(_br){}
   // FREE — browse board; locked gigs stay on the board (條件未齊 → Detail「暫未能報」)
@@ -46187,39 +46281,82 @@ function doScout(L){
   } else {
     const anyOk = shown.some(g=>canAudition(g).ok);
     const anyHard = shown.some(g=>!canAudition(g).ok);
-    let lead;
-    if(anyOk) lead = `不耗日查看通告 · 達標可接通告（耗一日）。`;
-    else lead = `不耗日查看通告 · 有通告暫未能報（條件未合）。`;
-    if(anyOk && anyHard) lead += `<br><span class="board-lead-mix">有些通告條件未合；可點開查看詳情。</span>`;
-    body=`<p class="board-lead">${lead}</p>`;
-    /* v18v: 通告欄短卡 → 點開招募單 Detail（PLAN §4） */
-    body+=`<div class="gig-board-list" id="gig-board-list">`;
-    /* v20a34 引導包 P0-1：全板鎖定卡入面差額總和最少嗰張標「最接近」（只標記，唔改排序）
-       v20a37：過界（長遠目標）卡唔入候選——全板得遠卡嗰陣唔好亂標「最接近」誤導。 */
-    let closest34 = null, closestGap34 = Infinity;
-    try{
-      shown.forEach((g)=>{
-        if(g && !canAudition(g).ok){
-          const t = gigGapTotal34(g);
-          if(t>0 && t<closestGap34 && !(typeof gigGapFar37==="function" && gigGapFar37(g))){ closestGap34 = t; closest34 = g.id; }
-        }
-      });
-    }catch(_e){ closest34 = null; }
     /* v20a108 UI108 S-29：可接置頂＋未達標預設摺疊——第一眼見到玩得嘅卡，長遠目標收埋唔佔版。
-       只改呈現次序／摺疊，門檻／排序／「最接近」標記邏輯唔郁。 */
+       只改呈現次序／摺疊，門檻／「最接近」標記邏輯唔郁；排序由下面 v392 接手。 */
     const ready108 = shown.filter(g=>{ try{ return canAudition(g).ok; }catch(_e){ return false; } });
     const locked108 = shown.filter(g=>ready108.indexOf(g)<0);
-    ready108.forEach((g)=>{
-      body+=gigBoardTeaserHtml(g, { closest: !!(closest34 && g && g.id===closest34) });
+    /* v20a392 UI392 ③：峰值分層——數量唔減，呈現分層。
+       (a) 可接按預期日薪預設排序（可切總片酬／成功率）；未達標按差額由細到大（最接近先）。
+       (b) 媒介吊牌篩選（全部／電視劇／綜藝…按板面實際媒介出），唔做預設分組（會拆散跨媒介好選擇）。
+       (c) 推介大卡＝篩選後可接之中片酬最高者（鎖定卡唔入），置頂展示，唔重複計數。
+       (d) 細板（≤3 張）直出，唔加分層；0 張可接直寫「今日冇可接通告」。 */
+    const ready392 = ready108.slice().sort((a,b)=>board392Compare(a,b,_boardSort392));
+    const locked392 = locked108.slice().sort((a,b)=>{
+      let r = 0;
+      try{ r = gigGapTotal34(a) - gigGapTotal34(b); }catch(_e){}
+      return r || board392Compare(a,b,"exp");
     });
-    if(locked108.length){
-      body+=`<details class="gig-locked108"><summary>未達標／長遠目標（${locked108.length} 張）</summary>`; /* v20a197 C6：開合提示改由 CSS ::after 出（▸／▾），唔寫死喺字串入面 */
-      locked108.forEach((g)=>{
-        body+=gigBoardTeaserHtml(g, { closest: !!(closest34 && g && g.id===closest34) });
+    const mediaOrder392 = ["電視劇","綜藝","電影","廣告","唱片通告"];
+    const media392 = mediaOrder392.filter(m=> shown.some(g=>gigTypeCoarse(g)===m));
+    shown.forEach(g=>{ const m=gigTypeCoarse(g); if(media392.indexOf(m)<0) media392.push(m); });
+    let filter392 = _boardFilter392;
+    if(filter392!=="all" && media392.indexOf(filter392)<0) filter392="all";
+    const inFilter392 = g=> filter392==="all" || gigTypeCoarse(g)===filter392;
+    const readyF392 = ready392.filter(inFilter392);
+    const lockedF392 = locked392.filter(inFilter392);
+    const layered392 = shown.length > 3;
+    const lockedShown392 = layered392 ? lockedF392 : locked392;
+    /* v20a34／v20a37「最接近」：只計今次渲染嘅未達標列，過界卡唔入候選。 */
+    let closest34 = null, closestGap34 = Infinity;
+    try{
+      lockedShown392.forEach((g)=>{
+        if(!g) return;
+        const t = gigGapTotal34(g);
+        if(t>0 && t<closestGap34 && !(typeof gigGapFar37==="function" && gigGapFar37(g))){ closestGap34 = t; closest34 = g.id; }
       });
-      body+=`</details>`;
+    }catch(_e){ closest34 = null; }
+    let featured392 = null;
+    readyF392.forEach(g=>{ try{ if(!featured392 || (gigPayExact(g)||0) > (gigPayExact(featured392)||0)) featured392 = g; }catch(_e){} });
+    const readyList392 = featured392 ? readyF392.filter(g=>g!==featured392) : readyF392;
+    let lead;
+    if(!anyOk) lead = `今日冇可接通告。不耗日查看通告。`;
+    else if(anyOk && anyHard) lead = `不耗日查看通告 · 達標可接通告（耗一日）。<br><span class="board-lead-mix">有些通告條件未合；可點開查看詳情。</span>`;
+    else lead = `不耗日查看通告 · 達標可接通告（耗一日）。`;
+    body=`<p class="board-lead">${lead}</p>`;
+    const closestMark392 = g=> !!(closest34 && g && g.id===closest34);
+    const lockedDetails392 = (list)=>{
+      let s = `<details class="gig-locked108"><summary>未達標／長遠目標（${list.length} 張）`;
+      if(closest34){
+        const cg = GIGS.find(x=>x&&x.id===closest34);
+        if(cg) s += `<span class="board-closest392">最接近：${gigWorkTitle(cg)}（差 ${closestGap34}）</span>`;
+      }
+      s += `</summary>`; /* v20a197 C6：開合提示改由 CSS ::after 出（▸／▾），唔寫死喺字串入面 */
+      list.forEach((g)=>{ s += gigBoardTeaserHtml(g, { closest: closestMark392(g) }); });
+      s += `</details>`;
+      return s;
+    };
+    /* v18v: 通告欄短卡 → 點開招募單 Detail（PLAN §4） */
+    if(layered392){
+      const sortLabel392 = _boardSort392==="pay" ? "總片酬" : (_boardSort392==="chance" ? "成功率" : "預期日薪");
+      body+=`<div class="board-head392">`
+        + `<div class="board-sum392">共 ${shown.length} 張 · 可接 ${ready108.length} 張 · 未達標 ${locked108.length} 張</div>`
+        + `<div class="board-sort392"><span class="board-cap392">排序：按${sortLabel392}</span>`
+        + ["exp","pay","chance"].map(k=>`<button type="button" class="board-chip392${_boardSort392===k?" on":""}" data-sort392="${k}">${k==="exp"?"預期日薪":(k==="pay"?"總片酬":"成功率")}</button>`).join("")
+        + `</div>`
+        + `<div class="board-filter392"><span class="board-cap392">媒介</span><button type="button" class="board-chip392${filter392==="all"?" on":""}" data-filter392="all">全部</button>`
+        + media392.map(m=>`<button type="button" class="board-chip392${filter392===m?" on":""}" data-filter392="${m}">${m}</button>`).join("")
+        + `</div></div>`;
+      body+=`<div class="gig-board-list" id="gig-board-list">`;
+      if(featured392) body+=gigBoardTeaserHtml(featured392, { closest:false, featured:true });
+      if(lockedF392.length) body+=lockedDetails392(lockedF392);
+      readyList392.forEach((g)=>{ body+=gigBoardTeaserHtml(g, { closest: closestMark392(g) }); });
+      body+=`</div>`;
+    } else {
+      body+=`<div class="gig-board-list" id="gig-board-list">`;
+      ready392.forEach((g)=>{ body+=gigBoardTeaserHtml(g, { closest: closestMark392(g) }); });
+      if(locked392.length) body+=lockedDetails392(locked392);
+      body+=`</div>`;
     }
-    body+=`</div>`;
   }
   if((S.stress||0)>=70) body+=`<p class="bad">壓力偏高時，試鏡把握會較低。</p>`;
   paintBar(); drawMap();
@@ -46239,7 +46376,7 @@ function doScout(L){
   };
   modal(`<h3>通告欄 · ${L.name}</h3>${body}`,[
     {label:"返去地點",role:"g",on:reopenLoc}
-  ], { onDismiss: reopenLoc, keepSheetContent: true });
+  ], { onDismiss: reopenLoc, keepSheetContent: true, boardTall: true });
   document.getElementById("modal-inner").querySelectorAll(".gig-teaser").forEach(card=>{
     const open=()=>{
       const gid=card.dataset.gid;
@@ -46254,6 +46391,15 @@ function doScout(L){
       if(ev.key==="Enter" || ev.key===" "){ ev.preventDefault(); open(); }
     });
   });
+  /* v20a392 UI392 ③：排序／媒介掣——撳即重開板面（捲回頂部）；狀態記喺 _boardSort392／_boardFilter392。 */
+  try{
+    document.getElementById("modal-inner").querySelectorAll("[data-sort392]").forEach(btn=>{
+      btn.addEventListener("click", ev=>{ ev.preventDefault(); _boardSort392 = btn.getAttribute("data-sort392") || "exp"; try{ doScout(L); }catch(_e){} });
+    });
+    document.getElementById("modal-inner").querySelectorAll("[data-filter392]").forEach(btn=>{
+      btn.addEventListener("click", ev=>{ ev.preventDefault(); _boardFilter392 = btn.getAttribute("data-filter392") || "all"; try{ doScout(L); }catch(_e){} });
+    });
+  }catch(_e){}
   /* 只查看通告欄係免費瀏覽。能力不夠的教學唔好搶在板面之前彈出。 */
   saveQ();
 }
@@ -46406,31 +46552,31 @@ function presentStartScheduleConfirm45(onStart, onMap, onCancel){
   let id = null;
   try{ id = todayPlanId(); }catch(_e){}
   const s = String(id||"");
+  /* v20a392 UI392 ①：後果寫入正文（唔再靠底部細字）——講明邊日、排咗咩、確認後會點，
+     強調「確認後無法再安排當日行程」。 */
   let consequence;
   if(s==="rest"){
-    consequence = "今日排了「休息」，一開始就會即時結算埋今日（即是連續過日）。";
+    consequence = `${dateTxt}已安排「休息」。確認後會即時結算埋今日（即是連續過日），你將無法再安排當日行程。`;
   } else if(s.indexOf("shoot:")===0 || s.indexOf("job:")===0){
-    consequence = "今日有已排定的行程，開始後會直接進行。";
+    consequence = `${dateTxt}有已排定的行程，開始後會直接進行。`;
   } else if(s && !(typeof isMapDay==="function" && isMapDay(s))){
     let nm = s;
     try{ nm = planLabel(s) || s; }catch(_e){}
-    consequence = `今日排了「${nm}」（自動行程），會即時結算埋今日（即是連續過日）。`;
+    consequence = `${dateTxt}已安排「${nm}」（自動行程）。確認後會即時結算埋今日（即是連續過日），你將無法再安排當日行程。`;
   } else {
-    consequence = "如果今日排了休息／自動行程，會即時結算埋今日（即是連續過日）。";
+    consequence = `如果今日排了休息／自動行程，確認後會即時結算埋今日（即是連續過日），你將無法再安排當日行程。`;
   }
-  /* v20a196 D1／D7：排程日唔出「返回地圖」，dismiss＝開始行程（玩家已經撳咗「開始」，dismiss
-     唔可以走佬返地圖）；逛逛日照舊（兩粒掣＋dismiss 返地圖）。 */
+  /* v20a196 D1／D7：排程日唔出「返回地圖」；逛逛日照舊（兩粒掣）。 */
   let mapNext45 = true;
   try{ mapNext45 = nextDayIsMap(); }catch(_e){}
-  const btns45 = [{ label:"開始今日行程", role:"p", on:()=>{ try{ goStart(); }catch(_e){} } }];
+  const btns45 = [{ label:"開始並結算當日", role:"p", on:()=>{ try{ goStart(); }catch(_e){} } }];
   if(mapNext45) btns45.push({ label:"返回地圖", role:"g", on:()=>{ try{ goMap(); }catch(_e){} } });
-  /* v20a202 C1：揀咗加「取消」掣（唔係改直述句）——標題問句本身冇錯，錯在得一個答案；
-     取消返去休息卡本身（唔係返地圖），重開 presentRestSleepDayEnd（opts 原封不動）；
-     dismiss 照跟 D1 繼續（map 日返地圖／排程日開始行程），同取消唔衝突，板底用 note 寫明。 */
-  if(goCancel) btns45.push({ label:"取消（返回休息卡）", role:"g", on:()=>{ try{ goCancel(); }catch(_e){} } });
-  btns45.push({ label: mapNext45 ? "點擊外面＝返回地圖" : "點擊外面＝開始今日行程", role:"note" });
-  modal(`<h3>開始今日行程？</h3><p>將會開始 ${dateTxt} 的行程。</p><p>${consequence}</p>`, btns45,
-    { onDismiss: ()=>{ try{ if(mapNext45) goMap(); else goStart(); }catch(_e){} } });
+  /* v20a202 C1：取消返去休息卡本身（唔係返地圖），重開 presentRestSleepDayEnd（opts 原封不動）。
+     v20a392 UI392 ①：點擊外面＝取消（同取消掣同一去向），唔再開始行程／返地圖；冇取消掣嗰陣
+     點擊外面只收起卡。底部「點擊外面＝⋯」細字刪走。 */
+  if(goCancel) btns45.push({ label:"返回休息卡", role:"g", on:()=>{ try{ goCancel(); }catch(_e){} } });
+  modal(`<h3>開始今日行程？</h3><p>${consequence}</p>`, btns45,
+    { onDismiss: goCancel ? ()=>{ try{ goCancel(); }catch(_e){} } : null });
 }
 /* v20a265 COSTUME265：瞓覺日結卡呈現——行入屋企＋「zzz」浮字（用戶 2026-11-12 定落），
    唔畫瞓低身體，唔用 fx_rest.mp4（嗰個係「休息」嘅呈現，兩者唔好撈埋）。 */
@@ -46517,10 +46663,8 @@ function presentRestSleepDayEnd(opts){
   }catch(_e){}
   const body = (opts.sleep265 ? sleep265ZzzHtml() : restSleepFxHtml()) + formatRestSleepDeltas(notes);
   const gold = ended ? `<p class="gold">一週完結 → 回家結算</p>` : "";
-  /* v20a196 D1／D7：dismiss 跟下一日行程——排程日＝繼續跑下一日，逛逛日＝返地圖。 */
-  const dismissFn = ended ? goSchedule : ()=>{ try{ if(nextDayIsMap()) goMap(); else goSchedule(); }catch(_e){ goMap(); } };
-  /* v20a202 B1/B2：去向行放 <h3> 之後（第一屏見）；dismiss 提示行放掣列尾。流程／dismissFn 唔郁。 */
-  try{ btns.push(dayEndDismissNote202(ended)); }catch(_e){}
+  /* v20a392 UI392 ①：同 afterDayModal——點擊外面只收起休息卡，唔推進日期；週結照去結算。底部細字刪走。 */
+  const dismissFn = ended ? goSchedule : null;
   modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}<p class="dayres-date374">${fmtDate()}</p>${body}${gold}`, btns, {onDismiss: dismissFn});
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   armRestSleepFxInModal();
@@ -47698,14 +47842,16 @@ function aud91PresentOne(rec, next){
     const finishReveal = ()=>{
       paintBar(); drawMap();
       const go = ()=>{ maybeShowTutToast("sawTutShoot","TUT_SHOOT", cont); };
+      /* v20a392 UI392 ②：揀咗「留待下週」就唔好話拍攝日而家排——shoot._v392defer 由 confirmPlaceShoot 記。 */
+      const defer392 = !!(shoot && shoot._v392defer);
       toast((typeof softPreviewOn==="function" && softPreviewOn())
         ? "劇組通知：獲聘，簽約金已入帳。入手帳看行程開工，餘額殺青入帳。"
         : phase3CastCopy().successToast);
       modal(`<h3>獲聘！ ${rec.title}</h3>
-        <p>${(rec.via==="favor158" && rec.favorLabel) ? ("何生打嚟：「"+rec.favorLabel+"嗰邊應承咗，直接用你，唔使試鏡。簽約金已經過數，拍攝日而家排。」") : "何生打嚟：「嗰邊開完會——用你。簽約金已經過數，拍攝日而家排。」"}</p>
+        <p>${(rec.via==="favor158" && rec.favorLabel) ? ("何生打嚟：「"+rec.favorLabel+"嗰邊應承咗，直接用你，唔使試鏡。簽約金已經過數，" + (defer392 ? "拍攝日留待下週再排。" : "拍攝日而家排。") + "」") : "何生打嚟：「嗰邊開完會——用你。簽約金已經過數，" + (defer392 ? "拍攝日留待下週再排。" : "拍攝日而家排。") + "」"}</p>
         ${formatResultNotes(notes)}
         ${chk101SignHtml}
-        <p class="gold">已簽約——返回手帳查看行程，再開工。</p>
+        <p class="gold">${defer392 ? "已簽約——拍攝日留待下週再排，返回手帳查看行程。" : "已簽約——返回手帳查看行程，再開工。"}</p>
         <p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
         {label:"好", role:"p", on:go}
       ], {onDismiss: go});

@@ -1,3 +1,4 @@
+// v392：dayEndDismissNote202 已刪（v392 ① 廢止 dismiss 提示機制）；本檔只刪載入，斷言唔郁。
 // v20a91 AUD91 試鏡流程改版・邏輯測試
 // 合約（用戶 2026-11-11 拍板，照明星志願嗰套）：
 //   A 等待帶：入門/臨記 1–2 日、一般 2–3 日、高級/大製作 3–4 日（試鏡刻定死）
@@ -90,7 +91,7 @@ const FNS = ['R','clamp','statHardMax','apply','bumpNpc','planMeta','isGigWrappe
   'shootBandFor','resolveRoleScale','shootWeekdayOk','shootWeekdaySet0','isFreePlanSlot','isMapDay','isRecordGig','shootWeekdayLabel','gigScheduleVerb','displayDateObj','isCriticalPlanDay','planDayWouldWrap','enrollCourse','fameFloor','canAudition','chance','rollAuditionPay','chanceVarianceNote','payContractNote','doAudition',
   'aud91Ensure','aud91PendingOf','aud91WaitDays','aud91WaitPhrase','aud91CreatePending','aud91LogPush','aud91DueList','aud91PendingHint','aud91PresentDue','aud91PresentOne','payWrapNote','shootPendingLine38',
   /* v20a202：resolvePlannedDay 而家靠呢啲 helper 出去向行＋dismiss 提示 */
-  'esc202','nextDayLabel202','dayEndNextLine202','dayEndDismissNote202','storyResultDestLine202'];
+  'esc202','nextDayLabel202','dayEndNextLine202','storyResultDestLine202']; /* v392：dayEndDismissNote202 已刪（dismiss 提示機制隨 v392 ① 廢止） */
 /* v20a112 ICONS112：被抽函數調用 iconHtml112，沙盒要一併載入對照＋helper。 */
 eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
 eval(extractFn('iconHtml112'));

@@ -102,7 +102,7 @@ ok('S-27 詳情仍經 gigPayExactHtml（保留區間）', 'function gigPayExactH
 b = body_of('function doScout', 6000)
 ok('S-29 板面分 ready/locked', 'ready108' in b and 'locked108' in b)
 ok('S-29 未達標 details 預設摺疊', '<details class="gig-locked108">' in b)
-ok('S-29 摺疊標題有張數', '未達標／長遠目標（${locked108.length} 張）' in b)
+ok('S-29 摺疊標題有張數（v392：lockedDetails392 helper，張數＝傳入列長度）', '未達標／長遠目標（${list.length} 張）' in b)
 
 # S-33 簽約金行升摘要＋違約金有數先出
 # 視窗 7000→11000：S-30v2 令 castingNoticeDetailHtml 由 ~6.9k 漲到 9750 字元

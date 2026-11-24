@@ -150,7 +150,8 @@ chk('A3 zero 刷新 in player strings', not bad('刷新', lambda s: False))
 chk('A4 zero 撳 in player strings (dialogue 撳牌 only)',
     not bad('撳', lambda s: '撳牌' in s or '撳通告牌' in s))
 chk('A4 UI strings use 點擊',
-    '點擊外面＝返回地圖' in src and '點擊外面＝回家結算' in src and '點擊畫面可以快進' in src)
+    '點擊畫面可以快進' in src and '點擊海報卡可查看作品詳情' in src and '點擊確定才生效' in src)
+# v20a392 UI392 ①：「點擊外面＝⋯」細字已刪（撳外面唔再推進，唔使再定義後果），上面 A4 唔再釘嗰兩句。
 chk('B1 zero 解鎖 in player strings', not bad('解鎖', lambda s: False))
 chk('B6 zero 周刊 in player strings',
     not bad('周刊', lambda s: s == '周刊編輯'))

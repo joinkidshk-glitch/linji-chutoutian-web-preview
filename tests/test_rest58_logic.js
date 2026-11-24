@@ -1,3 +1,4 @@
+// v392：dayEndDismissNote202 已刪（v392 ① 廢止 dismiss 提示機制）；本檔只刪載入，斷言唔郁。
 // v20a58 休息加體能 bug 修復・邏輯測試
 // 鎖住：四條休息系路徑（週計劃 rest 日／home_chore／地點 doRest／提早休息 endBrowseDayGoHome）
 // 結算後 stamina 必須原封不動、stress 必須有減；目標建議 stamina 唔再指去 rest（stress 保留）。
@@ -80,7 +81,7 @@ const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName'
   'allPlanDefs','planMeta','formatResultNotes','isCriticalPlanDay','planDayWouldWrap','displayDateObj',
   'courseForStatKey','preferredLocForTrainTarget','resolvePlannedDay','endBrowseDayGoHome','doRest',
   /* v20a202：resolvePlannedDay 而家靠呢啲 helper 出去向行＋dismiss 提示 */
-  'esc202','nextDayLabel202','dayEndNextLine202','dayEndDismissNote202','storyResultDestLine202'];
+  'esc202','nextDayLabel202','dayEndNextLine202','storyResultDestLine202']; /* v392：dayEndDismissNote202 已刪（dismiss 提示機制隨 v392 ① 廢止） */
 for(const f of FNS) eval(extractFn(f));
 
 ok('harness: 四路徑函數載入', typeof resolvePlannedDay==='function' && typeof doRest==='function'

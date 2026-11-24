@@ -42,10 +42,10 @@ fn_rest = seg('function presentRestSleepDayEnd(', 'function playRestSleepFx(')
 fn_enc79 = seg('function enc79PlayEncounter(', '/* ===== v20a176 ROM176')
 
 # ---- B1：下一日去向 helper ----
-ok('B1 helpers exist (nextDayLabel202/dayEndNextLine202/dayEndDismissNote202/storyResultDestLine202)',
+ok('B1 helpers exist (nextDayLabel202/dayEndNextLine202/storyResultDestLine202；dayEndDismissNote202 已刪 v392)',
    'function nextDayLabel202(){' in html
    and 'function dayEndNextLine202(ended){' in html
-   and 'function dayEndDismissNote202(ended){' in html
+   and 'function dayEndDismissNote202(ended){' not in html
    and 'function storyResultDestLine202(){' in html)
 ok('B1 label follows nextDayIsMap logic (mapish incl wrap:/audition:)',
    'isMapDay(id)' in fn_helpers and 'String(id).startsWith("wrap:")' in fn_helpers
@@ -67,21 +67,21 @@ ok('B1 result dest line uses 今日 framing for schedule slot',
 # ---- B1/B2：三塊日結板都掛咗去向行＋dismiss note ----
 ok('B1 afterDayModal: next line right after <h3>',
    '`<h3>${title}</h3>${dayEndNextLine202(ended)}' in fn_after)
-ok('B2 afterDayModal: dismiss note pushed to btns before modal()',
-   'btns.push(dayEndDismissNote202(ended))' in fn_after)
+ok('B2 afterDayModal: dismiss note 已刪（v392：撳外面唔再推進日期，唔再推 note）',
+   'dayEndDismissNote202' not in fn_after)
 ok('B1 resolvePlannedDay: both modal branches have next line after <h3>',
    fn_resolve.count('`<h3>${title}</h3>${dayEndNextLine202(ended)}') == 2)
-ok('B2 resolvePlannedDay: dismiss note pushed once (兩分支共用 btns)',
-   fn_resolve.count('btns.push(dayEndDismissNote202(ended))') == 1)
+ok('B2 resolvePlannedDay: dismiss note 已刪（v392，兩分支共用 btns 亦唔再推）',
+   fn_resolve.count('dayEndDismissNote202') == 0)
 ok('B1 rest card: next line right after <h3>',
    '`<h3>${title}</h3>${dayEndNextLine202(ended)}' in fn_rest)
-ok('B2 rest card: dismiss note pushed to btns before modal()',
-   'btns.push(dayEndDismissNote202(ended))' in fn_rest)
+ok('B2 rest card: dismiss note 已刪（v392）',
+   'dayEndDismissNote202' not in fn_rest)
 ok('B1 showResult: dest line right after <h3>劇情結算</h3>',
    '`<h3>劇情結算</h3>${storyResultDestLine202()}' in fn_result)
-ok('B2 dismiss note wording covers all three destinations',
-   '點擊外面＝繼續跑明日行程' in fn_helpers and '點擊外面＝返回地圖' in fn_helpers
-   and '點擊外面＝回家結算' in fn_helpers)
+ok('B2 dismiss note wording 已刪（v392：「點擊外面＝⋯」細字唔再出現喺玩家面）',
+   '點擊外面＝繼續跑明日行程' not in fn_helpers and '點擊外面＝返回地圖' not in fn_helpers
+   and '點擊外面＝回家結算' not in fn_helpers)
 
 # ---- B2：modal() role:"note" 支援 ----
 ok('B2 modal() renders role:"note" as a plain div (唔係掣)',
@@ -93,12 +93,12 @@ ok('B2 note has no onclick attached (唔可撳)',
 # ---- C1：確認 modal 取消掣 ----
 ok('N1 confirm takes onCancel (third arg)',
    'function presentStartScheduleConfirm45(onStart, onMap, onCancel){' in html)
-ok('N1 cancel button labelled 取消（返回休息卡）',
-   '取消（返回休息卡）' in fn_confirm)
+ok('N1 cancel button labelled 返回休息卡（v392：刪「取消」前綴）',
+   '返回休息卡' in fn_confirm and '取消（返回休息卡）' not in fn_confirm)
 ok('N1 cancel only rendered when onCancel given (defensive)',
    'if(goCancel) btns45.push' in fn_confirm)
-ok('N1 confirm dismiss note states the D1 rule',
-   '點擊外面＝開始今日行程' in fn_confirm and '點擊外面＝返回地圖' in fn_confirm)
+ok('N1 confirm consequence 寫入正文（v392：取代 dismiss note，講明確認後無法再安排當日行程）',
+   '確認後會即時結算埋今日' in fn_confirm and '無法再安排當日行程' in fn_confirm)
 ok('N1 rest card passes onCancel that re-presents the same rest card',
    'presentStartScheduleConfirm45(proceedSchedule, proceedMap, ()=>{' in fn_rest
    and 'presentRestSleepDayEnd(opts);' in fn_rest)
@@ -127,8 +127,8 @@ ok('CSS has .dayend-next202 + .modal-note202 + dark story override',
 ok('v196 dismiss rules untouched (afterDayModal dismissFn / resolve dismissNb)',
    'const dismissFn = ended ? go :' in fn_after
    and 'const dismissNb = ended ? nextNbReward :' in fn_resolve)
-ok('v196 confirm dismiss untouched (map→goMap / schedule→goStart)',
-   'onDismiss: ()=>{ try{ if(mapNext45) goMap(); else goStart(); }catch(_e){} }' in fn_confirm)
+ok('v196 confirm dismiss 已改（v392：onDismiss＝onCancel 返休息卡，冇就 null 只收起卡，唔再開始／返地圖）',
+   'onDismiss: goCancel ? ()=>{ try{ goCancel(); }catch(_e){} } : null' in fn_confirm)
 
 print('')
 if fails:

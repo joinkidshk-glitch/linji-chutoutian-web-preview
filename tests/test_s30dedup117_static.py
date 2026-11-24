@@ -61,11 +61,10 @@ ok('D2 劇情簡介：搬入摘要（原樣 markup，唔係刪除）',
 ok('D2 POSTER90 標記註保留（詳情頁仍唔出成品海報／主演行）', 'POSTER90' in b)
 
 # --- 3. 通告欄卡片 meta 拆行（實駕：實際只得兩段） ---
-ok('D3 meta 用 metaParts 逐行渲染', 'const metaParts=[pay, days].filter(Boolean);' in t)
-ok('D3 每段一行（gt-meta-line）', 'gt-meta-line' in t and '.gt-meta-line{' in html)
+ok('D3 meta 一行渲染（v392：片酬｜日數｜成功率併做一行，gt-meta-line）', 'metaLine392' in t and 'gt-meta-line' in t and '.gt-meta-line{' in html)
 ok('D3 舊寫法「 · 」串連已刪', 'join(" · ")' not in t)
-ok('D3 兩段內容不變（片酬＋日數，渲染只讀 metaParts，冇憑空加第三段）',
-   'const metaParts=[pay, days].filter(Boolean);' in t and 'metaParts.map(m=>' in t)
+ok('D3 meta 內容：片酬＋日數＋成功率（可接先出成功率，鎖定卡唔出假成功率）',
+   'bits392.join("｜")' in t and 'if(boardState==="ready")' in t and '片酬 ${payTxt}' in t)
 ok('D3 gt-meta 容器保留', '<div class="gt-meta">' in t)
 
 # --- 4. 紀律：v115 文字＋紅線不變 ---

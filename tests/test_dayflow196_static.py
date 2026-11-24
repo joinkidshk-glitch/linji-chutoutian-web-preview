@@ -95,10 +95,12 @@ ok('forced/map/ended branches unchanged',
    and 'btns.push({label:"回家結算", role:"p", on:goRunSchedule});' in fn_dayend
    and 'label:"返回地圖", role:"p", on: (typeof goRunSchedule==="function") ? goRunSchedule' in fn_dayend)
 ok('accel link unchanged', 'role:"link"' in fn_dayend and '想跳過本週剩餘日子？加速' in fn_dayend)
-ok('afterDayModal dismiss follows D7 (schedule=go, map=goToMapForBrowse)',
-   'if(nextDayIsMap()) goToMapForBrowse(); else go();' in fn_after)
-ok('resolvePlannedDay dismissNb follows D7 (reward first, then schedule/map)',
-   'if(nextDayIsMap()) goToMapForBrowse(); else nextNb();' in fn_resolve)
+ok('afterDayModal dismiss follows v392 (撳外面唔推進日期：週結去結算，非週結只收起卡）',
+   'const dismissFn = ended ? go : null;' in fn_after
+   and 'if(nextDayIsMap()) goToMapForBrowse(); else go();' not in fn_after)
+ok('resolvePlannedDay dismissNb follows v392 (撳外面唔推進日期：週結先獎勵，非週結只收起卡）',
+   'const dismissNb = ended ? nextNbReward : null;' in fn_resolve
+   and 'if(nextDayIsMap()) goToMapForBrowse(); else nextNb();' not in fn_resolve)
 ok('degraded fallbacks follow D7 (no unconditional 返回地圖)',
    fn_after.count('label: ended?"回家結算":"返回地圖"') == 0
    and fn_resolve.count('label: ended?"回家結算":"返回地圖"') == 0)
@@ -148,12 +150,14 @@ ok('spSoftSeedCanDismiss function kept (offer logic may use it); render only men
 ok('跳至選項 untouched in render', '跳至選項' in fn_render)
 
 # ---- 7：休息卡＋確認 modal ----
-ok('confirm45: scheduled day has no 返回地圖, dismiss starts schedule',
-   'const btns45 = [{ label:"開始今日行程"' in fn_confirm
-   and 'if(mapNext45) btns45.push({ label:"返回地圖"' in fn_confirm
-   and 'if(mapNext45) goMap(); else goStart();' in fn_confirm)
-ok('rest card dismiss follows D7',
-   'if(nextDayIsMap()) goMap(); else goSchedule();' in fn_rest)
+ok('confirm45 v392: 金掣「開始並結算當日」＋取消「返回休息卡」，dismiss＝onCancel／null（唔再開始／返地圖）',
+   'label:"開始並結算當日"' in fn_confirm
+   and 'label:"返回休息卡"' in fn_confirm
+   and 'onDismiss: goCancel ? ()=>{ try{ goCancel(); }catch(_e){} } : null' in fn_confirm
+   and 'if(mapNext45) goMap(); else goStart();' not in fn_confirm)
+ok('rest card dismiss follows v392 (撳外面唔推進日期：週結去排程，非週結只收起卡）',
+   'const dismissFn = ended ? goSchedule : null;' in fn_rest
+   and 'if(nextDayIsMap()) goMap(); else goSchedule();' not in fn_rest)
 ok('rest card fallback never defaults to goMap any more',
    'finish(orig || goMap)' not in html and 'orig : goMap' not in fn_rest)
 ok('rest card confirm-failure path follows D7',

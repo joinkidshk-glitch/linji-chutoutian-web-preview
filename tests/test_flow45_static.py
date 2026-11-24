@@ -22,9 +22,9 @@ def seg(start, end=None):
 ok('confirm fn defined', 'function presentStartScheduleConfirm45(' in html)
 cf = seg('function presentStartScheduleConfirm45(', 'function presentRestSleepDayEnd(')
 ok('confirm copy: title asks', '開始今日行程？' in cf)
-ok('confirm copy: starts date line', '將會開始' in cf and 'fmtDate()' in cf)
+ok('confirm copy: starts date line (v392: 日期＋後果開頭，取代「將會開始」)', 'dateTxt' in cf and '已安排' in cf and '將會開始' not in cf)
 ok('confirm copy: instant-settle warning', '即時結算埋今日' in cf)
-ok('confirm buttons: start + back to map', '"開始今日行程"' in cf.replace('label:"', '"') or 'label:"開始今日行程"' in cf)
+ok('confirm buttons: start + back to rest card (v392: 金掣「開始並結算當日」＋「返回休息卡」)', 'label:"開始並結算當日"' in cf and 'label:"返回休息卡"' in cf)
 ok('confirm dismiss goes to map', 'onDismiss' in cf)
 ok('confirm fn never touches dayIndex', 'dayIndex' not in cf)
 

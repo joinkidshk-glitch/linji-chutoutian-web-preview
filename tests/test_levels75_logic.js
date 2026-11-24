@@ -1,3 +1,4 @@
+// v392：dayEndDismissNote202 已刪（v392 ① 廢止 dismiss 提示機制）；本檔只刪載入，斷言唔郁。
 // v20a75 LEVELS75 邏輯測試：訓練課程三級制——
 //   (1) 級別衍生（累計堂數 → 一/二/三級、升下一級進度）；
 //   (2) 逐課逐級增益表：地點即時堂（applyTrainLesson）實擲下限/上限 == 用戶拍板表；
@@ -94,7 +95,7 @@ const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName'
   'defaultPrefs','loadPrefs','savePrefs','setPref','progressToward',
   'levels75Count','levels75Level','levels75Next','levels75GainRange','levels75GainRoll','train75ApplyLesson',
   /* v20a202：resolvePlannedDay 而家靠呢啲 helper 出去向行＋dismiss 提示 */
-  'esc202','nextDayLabel202','dayEndNextLine202','dayEndDismissNote202','storyResultDestLine202'];
+  'esc202','nextDayLabel202','dayEndNextLine202','storyResultDestLine202']; /* v392：dayEndDismissNote202 已刪（dismiss 提示機制隨 v392 ① 廢止） */
 /* v20a112 ICONS112：被抽函數調用 iconHtml112，沙盒要一併載入對照＋helper。 */
 eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
 eval(extractFn('iconHtml112'));

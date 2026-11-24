@@ -4,8 +4,10 @@
 //   H1 (b) 旗卡死＋有報紙到期 → 照常出晨報 modal（return true），dismiss 後清旗＋cont 照行。
 //   H1 (c) 正常路徑不變：旗 false＋有報紙 → 出 modal；旗 false＋冇報紙 → return false。
 //   H1 (d) closeModal() 保底清旗：任何關 modal 嘅路都清 _paperShowing。
-//   H2 (a) confirmPlaceShoot 要佔用日子嗰陣，modal 呼叫帶 onDismiss。
-//   H2 (b) 遮罩點走（行 onDismiss）等同撳「取消」：只排空日 go(false)＋thenFn 照行。
+//   H2 (a) confirmPlaceShoot 要佔用日子嗰陣，modal 呼叫唔帶 onDismiss（v392：
+//         撳遮罩只收起 modal，唔排位、唔行 thenFn）。
+//   H2 (b) 安全掣分流：有空日「只排空日」go(false)；冇空日「留待下週」defer
+//         （唔排位、記 _v392defer 旗、thenFn 照行）；覆寫掣「取消原安排並拍攝」go(true)。
 //   H2 (c) 唔使佔用日子嗰陣照舊即刻 go(false)，唔彈 modal。
 // 反證：pristine main（v121）跑呢檔要 FAIL——舊 early-return 會 return true、
 //   confirmPlaceShoot 冇 onDismiss（modal stub 收到 opts.onDismiss === undefined）。
@@ -68,7 +70,8 @@ function weekdayName(wd){ return ['日','一','二','三','四','五','六'][wd]
 /* confirmPlaceShoot 嘅兩個下游用 stub（行為本身已有 test_aud91 覆蓋，呢度只驗 onDismiss 接線） */
 var __placed = [];
 var __previewDisplaced = [];
-function previewShootPlacement(){ return { displaced: __previewDisplaced }; }
+var __previewFreeCount = 0;
+function previewShootPlacement(){ return { displaced: __previewDisplaced, freeCount: __previewFreeCount }; }
 function placeShootOnPlan(shoot, wd, overwrite){ __placed.push({ shoot: shoot, wd: wd, overwrite: !!overwrite }); }
 
 eval(extractFn('presentDueMorningPaper'));
@@ -133,37 +136,48 @@ ok('harness: 函數全載入', typeof presentDueMorningPaper === 'function' && t
   ok('H1d closeModal() 清 _paperShowing', !threw && FREEPLAY_FW._paperShowing === false);
 })();
 
-/* ---------- H2 ---------- */
+/* ---------- H2 (v392) ---------- */
 (function(){
   const shoot = { id: 'sh_test' };
-  /* (a)+(b) 要佔用日子 → modal 帶 onDismiss；遮罩點走等同取消 */
+  /* (a) 有空日＋要佔用日子 → 彈 modal、唔帶 onDismiss；安全掣係「只排空日」 */
   __previewDisplaced = [{ wd: 1, name: '街頭表演' }];
+  __previewFreeCount = 2;
   __placed = []; __modals = [];
   let thenCalled = false;
   confirmPlaceShoot(shoot, 1, ()=>{ thenCalled = true; });
   ok('H2a 要佔用日子：彈拍攝排程 modal', __modals.length === 1 && __modals[0].body.indexOf('拍攝排程') >= 0);
-  ok('H2a 排程 modal 帶 onDismiss', __modals[0] && typeof __modals[0].opts.onDismiss === 'function');
-  if(__modals[0] && typeof __modals[0].opts.onDismiss === 'function') __modals[0].opts.onDismiss(); /* 模擬遮罩點走 */
-  else ok('H2b 遮罩點走：只排空日 go(false)', false, '冇 onDismiss 可行');
-  if(__modals[0] && typeof __modals[0].opts.onDismiss === 'function'){
-    ok('H2b 遮罩點走：只排空日 go(false)', __placed.length === 1 && __placed[0].overwrite === false);
-    ok('H2b 遮罩點走：thenFn（finishReveal）照行', thenCalled === true);
-  }
-  /* 取消掣語義對照：onDismiss 嘅效果要同「取消」掣完全一致 */
-  const cancelBtn = __modals[0].btns.find(b => b.label === '取消');
+  ok('H2a 排程 modal 唔帶 onDismiss（v392：遮罩只收起 modal）', __modals[0] && typeof __modals[0].opts.onDismiss === 'undefined');
+  ok('H2a 有空日：安全掣係「只排空日」（金色主掣）', __modals[0] && __modals[0].btns.some(b => b.label === '只排空日' && b.role === 'p'));
+  ok('H2a 「取消」掣已刪、「確定佔用」已改名「取消原安排並拍攝」',
+    __modals[0] && !__modals[0].btns.some(b => b.label === '取消' || b.label === '確定佔用')
+    && __modals[0].btns.some(b => b.label === '取消原安排並拍攝'));
+  /* (b) 遮罩點走＝乜都唔做：冇 onDismiss 可行，唔排位、thenFn 唔行 */
+  ok('H2b 遮罩點走：唔排位、thenFn 唔行（冇 onDismiss）', __placed.length === 0 && thenCalled === false);
+  /* 「只排空日」掣：go(false)＋thenFn */
+  const freeBtn = __modals[0].btns.find(b => b.label === '只排空日');
   __placed = []; thenCalled = false;
-  cancelBtn.on();
-  ok('H2b 對照：「取消」掣同樣 go(false)＋thenFn', __placed.length === 1 && __placed[0].overwrite === false && thenCalled === true);
-  /* 確定佔用掣對照：go(true) 唔受影響 */
-  const okBtn = __modals[0].btns.find(b => b.label === '確定佔用');
+  freeBtn.on();
+  ok('H2b 對照：「只排空日」掣 go(false)＋thenFn', __placed.length === 1 && __placed[0].overwrite === false && thenCalled === true);
+  /* (c) 冇空日 → 安全掣變「留待下週」：defer，唔排位、記旗、thenFn 照行 */
+  __previewDisplaced = [{ wd: 1, name: '街頭表演' }];
+  __previewFreeCount = 0;
+  __placed = []; __modals = []; thenCalled = false;
+  const shoot2 = { id: 'sh_test2' };
+  confirmPlaceShoot(shoot2, 1, ()=>{ thenCalled = true; });
+  ok('H2c 冇空日：安全掣係「留待下週」', __modals[0] && __modals[0].btns.some(b => b.label === '留待下週' && b.role === 'p'));
+  const deferBtn = __modals[0].btns.find(b => b.label === '留待下週');
+  deferBtn.on();
+  ok('H2c 「留待下週」：唔排位、記 _v392defer 旗、thenFn 照行', __placed.length === 0 && shoot2._v392defer === true && thenCalled === true);
+  /* 覆寫掣對照：go(true)＋thenFn */
+  const owBtn = __modals[0].btns.find(b => b.label === '取消原安排並拍攝');
   __placed = []; thenCalled = false;
-  okBtn.on();
-  ok('H2b 對照：「確定佔用」掣照舊 go(true)', __placed.length === 1 && __placed[0].overwrite === true && thenCalled === true);
-  /* (c) 唔使佔用日子 → 即刻 go(false)，唔彈 modal */
+  owBtn.on();
+  ok('H2c 對照：「取消原安排並拍攝」掣 go(true)＋thenFn', __placed.length === 1 && __placed[0].overwrite === true && thenCalled === true);
+  /* (d) 唔使佔用日子 → 即刻 go(false)，唔彈 modal */
   __previewDisplaced = [];
   __placed = []; __modals = []; thenCalled = false;
   confirmPlaceShoot(shoot, 1, ()=>{ thenCalled = true; });
-  ok('H2c 唔使佔用：唔彈 modal、即刻 go(false)＋thenFn', __modals.length === 0 && __placed.length === 1 && __placed[0].overwrite === false && thenCalled === true);
+  ok('H2d 唔使佔用：唔彈 modal、即刻 go(false)＋thenFn', __modals.length === 0 && __placed.length === 1 && __placed[0].overwrite === false && thenCalled === true);
 })();
 
 console.log('\nAUD91FIX122 LOGIC: ' + (fails ? fails + ' FAIL' : 'ALL PASS'));

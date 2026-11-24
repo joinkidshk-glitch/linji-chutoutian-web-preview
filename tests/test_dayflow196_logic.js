@@ -1,3 +1,4 @@
+// v392：dayEndDismissNote202 已刪＋(f)(g) dismiss 斷言改做 v392 契約（非週結 null／確認返休息卡／確認金掣「開始並結算當日」）。
 // v20a196 日流程自動連跑＋故事播放鎖死返地圖・邏輯／真路徑測試
 //   行真碼：nextDayIsMap／dayEndContinueButtons／morningChain196／runScheduleFromToday／
 //   afterDayModal／presentRestSleepDayEnd／presentStartScheduleConfirm45／
@@ -127,7 +128,7 @@ eval(extractFn('countRemainingAutoDays'));
 eval(extractFn('esc202')); /* v20a202：afterDayModal／休息卡／確認 modal 而家靠呢啲 helper 出去向行＋dismiss 提示 */
 eval(extractFn('nextDayLabel202'));
 eval(extractFn('dayEndNextLine202'));
-eval(extractFn('dayEndDismissNote202'));
+/* v392：dayEndDismissNote202 已刪（v392 ① 廢止 dismiss 提示機制），唔再載入。 */
 eval(extractFn('storyResultDestLine202'));
 eval(extractFn('dayEndContinueButtons'));
 eval(extractFn('morningChain196'));
@@ -285,7 +286,7 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
   ok('e clear drops slot', story165AfterContTake() === null);
 })();
 
-/* ---- (f) afterDayModal dismiss：排程日＝繼續（真鏈→行程），逛逛日＝返地圖 ---- */
+/* ---- (f) afterDayModal dismiss（v392 改）：非週結＝null，撳外面只收起卡，唔行程／唔返地圖 ---- */
 (function(){
   reset();
   S.dayIndex = 1;
@@ -293,9 +294,8 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
   afterDayModal('<p>ok</p>', '訓練', null, false, null, {});
   const m = lastModal();
   ok('f scheduled next day: no 返回地圖 button', !labels(m.btns).some(l => l.indexOf('返回地圖') >= 0));
-  m.opts.onDismiss();
-  driveChain();
-  ok('f scheduled next day: dismiss runs schedule via real chain', JSON.stringify(resolveCalls) === JSON.stringify(['street']) && mapCalls === 0);
+  ok('f scheduled next day: dismiss is null (v392)', m.opts.onDismiss == null);
+  ok('f scheduled next day: dismiss does nothing', resolveCalls.length === 0 && mapCalls === 0 && S.dayIndex === 1);
 })();
 (function(){
   reset();
@@ -304,11 +304,11 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
   afterDayModal('<p>ok</p>', '訓練', null, false, null, {});
   const m = lastModal();
   ok('f map next day: 返回地圖 button present', labels(m.btns).some(l => l.indexOf('返回地圖') >= 0));
-  m.opts.onDismiss();
-  ok('f map next day: dismiss goes to map', mapCalls === 1 && resolveCalls.length === 0);
+  ok('f map next day: dismiss is null (v392)', m.opts.onDismiss == null);
+  ok('f map next day: dismiss does nothing', resolveCalls.length === 0 && mapCalls === 0 && S.dayIndex === 1);
 })();
 
-/* ---- (g) 休息卡＋確認 modal：排程日冇返地圖路，逛逛日照舊 ---- */
+/* ---- (g) 休息卡＋確認 modal（v392 改）：非週結 dismiss＝null；確認金掣改名「開始並結算當日」 ---- */
 (function(){
   reset();
   S.dayIndex = 1;
@@ -316,9 +316,8 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
   presentRestSleepDayEnd({ title: '休息', notes: [], ended: false, summary: null, confirmStartSchedule: true });
   const card = lastModal();
   ok('g scheduled next day: rest card has no 返回地圖', !labels(card.btns).some(l => l.indexOf('返回地圖') >= 0));
-  card.opts.onDismiss();
-  driveChain();
-  ok('g scheduled next day: rest card dismiss runs schedule', JSON.stringify(resolveCalls) === JSON.stringify(['street']) && mapCalls === 0);
+  ok('g scheduled next day: rest card dismiss is null (v392)', card.opts.onDismiss == null);
+  ok('g scheduled next day: rest card dismiss does nothing', resolveCalls.length === 0 && mapCalls === 0 && S.dayIndex === 1);
   reset();
   S.dayIndex = 1;
   S.weekPlan = ['rest', 'street', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all'];
@@ -327,7 +326,7 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
   ok('g scheduled next day: start opens confirm (not schedule yet)', modalCalls.length === 2 && resolveCalls.length === 0);
   const c = lastModal();
   ok('g scheduled next day: confirm has no 返回地圖', !labels(c.btns).some(l => l.indexOf('返回地圖') >= 0));
-  press(c, '開始今日');
+  press(c, '開始並結算當日');
   driveChain();
   ok('g scheduled next day: confirm-start runs schedule', JSON.stringify(resolveCalls) === JSON.stringify(['street']) && mapCalls === 0);
 })();
@@ -338,8 +337,8 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
   presentRestSleepDayEnd({ title: '休息', notes: [], ended: false, summary: null, confirmStartSchedule: true });
   const card = lastModal();
   ok('g map next day: rest card has 返回地圖', labels(card.btns).some(l => l.indexOf('返回地圖') >= 0));
-  card.opts.onDismiss();
-  ok('g map next day: rest card dismiss goes to map', mapCalls === 1 && resolveCalls.length === 0);
+  ok('g map next day: rest card dismiss is null (v392)', card.opts.onDismiss == null);
+  ok('g map next day: rest card dismiss does nothing', resolveCalls.length === 0 && mapCalls === 0 && S.dayIndex === 1);
 })();
 (function(){
   reset();
@@ -349,8 +348,8 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
   presentStartScheduleConfirm45(()=>{ started++; }, ()=>{ mapped++; });
   const c = lastModal();
   ok('g scheduled next day: confirm has no 返回地圖', !labels(c.btns).some(l => l.indexOf('返回地圖') >= 0));
-  c.opts.onDismiss();
-  ok('g scheduled next day: confirm dismiss starts schedule', started === 1 && mapped === 0);
+  ok('g scheduled next day: confirm dismiss is null without onCancel (v392)', c.opts.onDismiss == null);
+  ok('g scheduled next day: confirm dismiss does nothing', started === 0 && mapped === 0);
 })();
 (function(){
   reset();
@@ -367,8 +366,8 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
   S.dayIndex = 1;
   S.weekPlan = ['rest', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all'];
   presentStartScheduleConfirm45(()=>{ started++; }, ()=>{ mapped++; });
-  lastModal().opts.onDismiss();
-  ok('g map next day: confirm dismiss maps', mapped === 1 && started === 0);
+  ok('g map next day: confirm dismiss is null without onCancel (v392)', lastModal().opts.onDismiss == null);
+  ok('g map next day: confirm dismiss does nothing', mapped === 0 && started === 0);
 })();
 
 /* ---- (h) wf4PresentPending（真）：forced 閘＋allowForced＋預設 cont＋Fen afterCont ---- */

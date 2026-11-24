@@ -140,13 +140,15 @@ cm = seg('function closeModal(){', '/* v19u Phase 2')
 ok('H1 保底：closeModal 清 _paperShowing', 'FREEPLAY_FW._paperShowing = false' in cm)
 ok('H1 保底標記在位', 'v20a122 AUD91FIX H1' in cm)
 
-# ---- H2：confirmPlaceShoot 排程 modal 加 onDismiss ----
+# ---- H2：confirmPlaceShoot 排程 modal（v392 重寫：無 onDismiss、兩掣）----
 cps = seg('function confirmPlaceShoot(shoot, fromWeekday, thenFn){', 'function scheduleShoot(')
-ok('H2 排程 modal 帶 onDismiss', 'onDismiss' in cps)
-ok('H2 onDismiss 等同取消（go(false)）', 'onDismiss: ()=>go(false)' in cps)
-ok('H2 標記在位', 'v20a122 AUD91FIX H2' in cps)
-ok('H2 三個掣不變（確定佔用／只排空日／取消）',
-   '確定佔用' in cps and '只排空日' in cps and '取消' in cps)
+ok('H2 排程 modal 無 onDismiss（v392：撳遮罩只收起 modal，唔改 weekPlan／daysLeft）', 'onDismiss:' not in cps)
+ok('H2 安全掣分流：有空日「只排空日」／冇空日「留待下週」（defer 記旗唔排位）',
+   'label:"只排空日"' in cps and 'label:"留待下週"' in cps and 'shoot._v392defer=true' in cps)
+ok('H2 標記在位（v392 取代舊 AUD91FIX H2 註解）', 'v20a392 UI392' in cps)
+ok('H2 兩掣（安全主掣＋覆寫次級掣；「取消」掣已刪、「確定佔用」已改名）',
+   '只排空日' in cps and '留待下週' in cps and '取消原安排並拍攝' in cps
+   and '{label:"取消"' not in cps and '確定佔用' not in cps)
 ok('H2 go() 定義不變（overwrite → placeShootOnPlan＋thenFn）',
    'placeShootOnPlan(shoot, fromWeekday, !!overwrite)' in cps)
 

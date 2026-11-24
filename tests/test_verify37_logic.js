@@ -1,3 +1,4 @@
+// v392：dayEndDismissNote202 已刪（v392 ① 廢止 dismiss 提示機制）；本檔只刪載入，斷言唔郁。
 // v20a37 驗證修復包・邏輯／真路徑測試
 // 宗旨（吸取 v20a34/35 教訓）：唔齋 call 被修函數餵假數據——每段都行玩家真路徑：
 //   段一：真 StoryOC.listOpen offer → 真 StoryPlay.start/skipToChoices/pickChoice（v236 兩步：確認框＋確定）→ 真 showResult 畫面（捕捉 modal body）
@@ -32,7 +33,7 @@ function extractFn(decl){
 eval(extractFn('function esc202'));
 eval(extractFn('function nextDayLabel202'));
 eval(extractFn('function dayEndNextLine202'));
-eval(extractFn('function dayEndDismissNote202'));
+/* v392：dayEndDismissNote202 已刪（v392 ① 廢止 dismiss 提示機制），唔再載入。 */
 eval(extractFn('function storyResultDestLine202'));
 function extractConst(name){
   const i = html.indexOf('const ' + name + ' =');

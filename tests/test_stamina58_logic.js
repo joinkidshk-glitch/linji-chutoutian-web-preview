@@ -1,3 +1,4 @@
+// v392：dayEndDismissNote202 已刪（v392 ① 廢止 dismiss 提示機制）；本檔只刪載入，斷言唔郁。
 // v20a58 擴展・邏輯測試：新增體能訓練課程「武師班」(train_stamina)＋收埋週結暗加。
 // 鎖住：(1) 目標建議 stamina → train_stamina、指去電影地點、mode=train；
 //       (2) 手帳排程堂（resolvePlannedDay）同即場堂（applyTrainLesson）結算真加 stamina；
@@ -103,7 +104,7 @@ const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName'
   /* v20a75：兩條上堂路徑共用核心＋級別衍生，harness 要一併抽取先行得返 */
   'levels75Count','levels75Level','levels75Next','levels75GainRange','levels75GainRoll','train75ApplyLesson',
   /* v20a202：resolvePlannedDay 而家靠呢啲 helper 出去向行＋dismiss 提示 */
-  'esc202','nextDayLabel202','dayEndNextLine202','dayEndDismissNote202','storyResultDestLine202'];
+  'esc202','nextDayLabel202','dayEndNextLine202','storyResultDestLine202']; /* v392：dayEndDismissNote202 已刪（dismiss 提示機制隨 v392 ① 廢止） */
 for(const f of FNS) eval(extractFn(f));
 const weekFlavorBlock = extractWeekFlavorBlock();
 

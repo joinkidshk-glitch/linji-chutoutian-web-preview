@@ -32,7 +32,7 @@ chk('hospital FAQ', s.indexOf('撳入嚟睇') < 0 && s.indexOf('治療／探病�
 chk('planner confirm', s.indexOf('改完要點擊確定才生效') >= 0);
 chk('planner readonly', s.indexOf('可點擊「壓力估」看已定行程') >= 0);
 chk('day toast', s.indexOf('要過日請點擊「開始今日行程」') >= 0);
-chk('dismiss notes x4', s.indexOf('點擊外面＝回家結算') >= 0 && s.indexOf('點擊外面＝返回地圖') >= 0 && s.indexOf('點擊外面＝繼續跑明日行程') >= 0 && s.indexOf('點擊外面＝開始今日行程') >= 0);
+chk('dismiss notes x4 gone (v392: 撳外面唔再推進日期，「點擊外面＝⋯」細字已刪）', s.indexOf('點擊外面＝回家結算') < 0 && s.indexOf('點擊外面＝返回地圖') < 0 && s.indexOf('點擊外面＝繼續跑明日行程') < 0 && s.indexOf('點擊外面＝開始今日行程') < 0);
 chk('free-day titles', (s.match(/逛完點擊這個掣返回屋企睡覺，過到下一日/g) || []).length === 2);
 chk('awards tap hint', s.indexOf('點擊畫面可以快進') >= 0);
 chk('gig board toast', s.indexOf('請在地圖點擊有通告的地點') >= 0);

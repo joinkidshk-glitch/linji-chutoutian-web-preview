@@ -1,3 +1,4 @@
+// v392：dayEndDismissNote202 已刪＋(f)(g) dismiss 斷言改做 v392 契約（非週結 null／確認返休息卡／確認金掣「開始並結算當日」）。
 // v20a45 流程確認（A 方案）邏輯／路徑測試：日結休息卡「開始今日行程」確認閘。
 // 行真路徑：抽真 presentRestSleepDayEnd＋真 dayEndContinueButtons＋真 presentStartScheduleConfirm45，
 // 以 stub modal／排程入口驗證——確認只出喺休息卡延續入口、開始先至行程、
@@ -56,7 +57,7 @@ eval(extractFn('nextDayIsMap')); /* v20a196 D7：dayEndContinueButtons／休息�
 eval(extractFn('esc202')); /* v20a202：presentStartScheduleConfirm45／presentRestSleepDayEnd 而家靠呢啲 helper 出去向行＋dismiss 提示 */
 eval(extractFn('nextDayLabel202'));
 eval(extractFn('dayEndNextLine202'));
-eval(extractFn('dayEndDismissNote202'));
+/* v392：dayEndDismissNote202 已刪（v392 ① 廢止 dismiss 提示機制），唔再載入。 */
 eval(extractFn('storyResultDestLine202'));
 eval(extractFn('dayEndContinueButtons'));
 eval(extractFn('presentStartScheduleConfirm45'));
@@ -82,11 +83,11 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
   const c = lastModal();
   ok('A confirm copy has date', c.html.indexOf('1988年3月8日（二）') >= 0);
   ok('A confirm copy warns instant settle for rest', c.html.indexOf('即時結算埋今日') >= 0 && c.html.indexOf('休息') >= 0);
-  press(c, '開始今日');
+  press(c, '開始並結算當日');
   ok('A confirm-start runs schedule exactly once', schedCalls === 1 && mapCalls === 0);
 })();
 
-/* ---- B（v196 改）：旗標開＋排程下一日（rest）—— 確認冇「返回地圖」，dismiss＝開始行程，唔推日 ---- */
+/* ---- B（v392 改）：旗標開＋排程下一日（rest）—— 確認冇「返回地圖」，dismiss＝返休息卡，唔行程／唔推日 ---- */
 (function(){
   reset(); PLAN_NOW = 'rest';
   presentRestSleepDayEnd({ title:'休息（週一）', notes:[], ended:false, summary:null, confirmStartSchedule:true });
@@ -94,7 +95,7 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
   const c = lastModal();
   ok('B v196 scheduled next day: confirm has no 返回地圖', !c.btns.some(x => String(x.label || '').indexOf('返回地圖') >= 0));
   if(typeof c.opts.onDismiss === 'function') c.opts.onDismiss();
-  ok('B2 v196 dismiss starts schedule, never maps', schedCalls === 1 && mapCalls === 0 && S.dayIndex === 1);
+  ok('B2 v392 dismiss returns to rest card, never starts schedule/maps', schedCalls === 0 && mapCalls === 0 && S.dayIndex === 1 && modalCalls.length === 3);
 })();
 
 /* ---- C：冇旗標（legacy playRestSleepFx 路徑）—— 開始即行程，冇確認 ---- */
@@ -114,7 +115,7 @@ function lastModal(){ return modalCalls[modalCalls.length - 1]; }
     onMap: ()=>{ mapCalls++; } });
   press(lastModal(), '開始今日');
   ok('D confirm appears for planned-rest card too', modalCalls.length === 2 && onSchedCalls === 0 && schedCalls === 0);
-  press(lastModal(), '開始今日');
+  press(lastModal(), '開始並結算當日');
   ok('D confirm-start runs onSchedule continuation', onSchedCalls === 1 && schedCalls === 0);
 })();
 
