@@ -458,6 +458,8 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .tut-card .tut-line{margin:0 0 8px;color:#3a2e22;font-size:.9rem;line-height:1.45}
 .tut-card .tut-line:last-child{margin-bottom:0}
 #mask.tut-on{align-items:center;padding:16px}
+/* v20a398 UI398-1：TUT_MAP 嗰步教學卡貼地圖底邊——唔再置中蓋住聚光 pin（星河電視台）。 */
+#mask.tut-on.tut-step-map{align-items:flex-end}
 #mask.tut-on .modal:has(.tut-card){background:transparent;border:0;padding:0;max-height:min(88dvh,88svh,760px);overflow:hidden;box-shadow:none} /* v20a376 FIX376-2：透明只限教學卡 modal（.tut-card 自帶紙底）；非教學 modal 喺 tut-on 態行返下面紙底規則，唔再浮喺地圖上 */
 /* v19r: one column, same order every step — 下一步／我知道了 then 跳過教學 */
 #mask.tut-on #modal-btns{justify-content:stretch;gap:8px;flex-wrap:nowrap;flex-direction:column;align-items:stretch;margin-top:10px}
@@ -1411,6 +1413,11 @@ button.g, .start button.g{
 #mask.tut-on{
   background: rgba(0,0,0,.78) !important;
 }
+/* v20a398 UI398-5：日結家族 scene 模式共用 dim——同 v396 日結漸變（頂 .10／底 .42）；
+   規則放喺 #mask.on 之後（同權重，後勝），唔靠 body.day-res-open（通用路徑加佢會漏清）。 */
+#mask.scene398{
+  background: linear-gradient(180deg, rgba(0,0,0,.10) 0, rgba(0,0,0,.10) 48px, rgba(0,0,0,.42) 48px) !important;
+}
 .toast{
   z-index: 520 !important;
   aspect-ratio: auto !important;
@@ -1616,6 +1623,13 @@ button.g, .start button.g{
   box-shadow: 0 0 0 3px #E6D2A8, 0 0 0 6px rgba(201,162,39,.85), 0 8px 24px rgba(0,0,0,.35) !important;
   border-radius: 12px !important;
   pointer-events: auto !important;
+}
+/* v20a398 UI398-1：教學聚光獨立金圈——唔靠 pin 身上嘅 class（drawMap 重建 pin 會洗走），
+   由教學層持有，直接跟 pin 最新 rect 定位，z 520 蓋過遮罩（500），唔撳得。 */
+.tut-spotlight-ring398{
+  position:absolute; z-index:520; pointer-events:none; box-sizing:border-box;
+  border:3px solid #C9A227; border-radius:12px;
+  box-shadow:0 0 0 4px rgba(201,162,39,.35), 0 8px 24px rgba(0,0,0,.35);
 }
 .stress-preview .sp-lab{
   display: inline-block; min-width: 4.5em; color: #8a7355; font-size: .72rem; font-weight: 700;
@@ -4991,6 +5005,20 @@ body.day-res-open .day-row{
   width:100%; height:auto; display:block;
   filter:grayscale(1) contrast(1.28) brightness(1.06);
 }
+/* v20a398 UI398-3：非金碟夜典禮裁走相頂橫額——容器鎖 520/550（裁頂 ~16%），相片
+   object-fit:cover＋貼底；awi 相橫額文字底 ~150px，inline 520/500 深裁（裁 158px）先清得晒，lok 牌淺留 520/550。 */
+.paper-sheet .np214-photo.np214-photo-cropbanner{
+  aspect-ratio:520/550;
+}
+.paper-sheet .np214-photo.np214-photo-cropbanner img{
+  height:100%; object-fit:cover; object-position:center bottom;
+}
+/* v20a398 UI398-3：頒獎結果卡捲動區底 26px 淡出——摺位切字行讀做「未完待續」，
+   唔係半隻字俾切走。只限結果卡（.awd-result396），晨報唔郁。 */
+#modal-inner:has(.awd-result396){
+  -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 26px),transparent 100%);
+  mask-image:linear-gradient(180deg,#000 calc(100% - 26px),transparent 100%);
+}
 .paper-sheet .np214-photo::after{
   content:""; position:absolute; inset:0; pointer-events:none;
   background-image:radial-gradient(rgba(0,0,0,0.20) 0.8px, transparent 1.1px);
@@ -6962,9 +6990,10 @@ body.day-res-open .day-row{
 .shoot-warn392{ color:#9c2418; font-weight:800; line-height:1.55; }
 #mask:not(.tut-on) .modal p.shoot-warn392{ color:#9c2418 !important; }
 .shoot-warn392 b{ font-weight:900; }
-/* --- (3) 通告欄峰值分層：板頂總數行＋排序／媒介掣釘住（sticky）、短卡壓矮、推介大卡、未達標預覽行。 --- */
-.board-head392{ position:sticky; top:0; z-index:5; background:linear-gradient(180deg,#f6efdc,#efe2bd); border:1px solid #c9a86a; border-radius:8px; padding:4px 10px; margin:0 0 6px; }
-.board-sum392{ font-weight:800; color:#3a2e22; font-size:.85rem; }
+/* --- (3) 通告欄峰值分層：板頂總數行＋排序／媒介掣釘住（sticky）、短卡壓矮、推介大卡、未達標預覽行。
+   v20a398 UI398-4：頭板唔再做報表工具列——透明貼紙底、冇框冇漸變；總數行縮成一枚紅印紙章。 --- */
+.board-head392{ position:sticky; top:0; z-index:5; background:var(--paper); border:0; border-radius:0; box-shadow:none; padding:4px 2px 6px; margin:0 0 6px; }
+.board-sum392{ display:inline-block; font-weight:800; color:#9E2F2F; font-size:.8rem; border:1.5px solid #9E2F2F; border-radius:4px; padding:2px 8px; background:rgba(255,255,255,.4); transform:rotate(-.5deg); }
 .board-sort392, .board-filter392{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:5px; }
 /* v20a397 UI397-3：頂欄縮薄＋排序／篩選各收納成一粒下拉掣（顯示已套用條件）。
    兩粒掣並排一行；選單平時收起（hidden），撳開先展開選項（in-flow，唔疊內容）。
@@ -6975,6 +7004,16 @@ body.day-res-open .day-row{
 .board-menu397{ display:flex; flex-direction:column; gap:4px; margin-top:4px; }
 .board-menu397[hidden]{ display:none; }
 .board-menu397 .board-chip392{ width:100%; text-align:left; }
+/* v20a398 UI398-4：整理選單分「排序／媒介」兩組（組名小字），媒介選項沿用 board-filter392 包裝。 */
+.board-menu-group397{ font-size:.72rem; font-weight:800; color:#8a6a3a; margin-top:6px; }
+.board-menu-group397:first-child{ margin-top:0; }
+.board-menu397 .board-filter392{ display:flex; flex-direction:column; gap:4px; margin-top:0; flex:0 0 auto; }
+/* v20a398 UI398-4：長列表底加 26px 墊＋高版 modal 捲動區底 26px 淡出——摺位唔再半隻字切走第 6 張卡嘅「可接通告」印。 */
+.gig-board-list{ padding-bottom:26px; }
+#mask.board-tall392 #modal-inner{
+  -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 26px),transparent 100%);
+  mask-image:linear-gradient(180deg,#000 calc(100% - 26px),transparent 100%);
+}
 /* v20a397 UI397-3：詳情預期日薪計法行。 */
 .board-calc397{ font-size:12px; color:#6b5a44; margin:6px 0 0; }
 /* v20a392：通告欄長列表高版 modal（92dvh）——峰值 16 張第一眼完整見到 5 張卡；
@@ -18011,7 +18050,7 @@ function openSettingsModal(){
       savePrefs(next);
       toast("設定已儲存");
     }}
-  ]);
+  ], {keepScene397:true}); /* v20a398 UI398-5：41 號設定卡用 scene 模式 */
   /* v20a128 A6：對白速度紙掣——撳邊格，隱藏欄位 #set-speed 就跟邊個值，on 態跟手轉。 */
   try{
     document.querySelectorAll(".set-speed128 .set-speed-btn").forEach(b=>{
@@ -19851,7 +19890,7 @@ function gigBoardTeaserHtml(g, opts){
     else if(payTxt) bits392.push(`片酬 ${payTxt}`);
     if(daysN!=null) bits392.push(`${daysN} 日`);
     if(boardState==="ready"){
-      try{ if(typeof chance==="function") bits392.push(`${Math.round(chance(g)*100)}%`); }catch(_e){}
+      try{ if(typeof chance==="function") bits392.push(`約 ${Math.round(chance(g)*100)}%`); }catch(_e){} /* v20a398 UI398-4：列表成功率加「約」（計法行註明用精確值，見 openCastingNoticeDetail） */
     }
     if(bits392.length) metaLine392 = bits392.join("｜");
   }
@@ -20539,7 +20578,7 @@ function openCastingNoticeDetail(g, L){
        係用未取整成功率計（86.5% → 81.7 → 四捨五入 $82）。 */
     try{
       const calc397 = (typeof boardExpCalc397==="function") ? boardExpCalc397(g) : null;
-      if(calc397) body += `<p class="board-calc397">預期日薪 $${calc397.rounded}／日＝片酬 $${calc397.pay} × 成功率 ${(calc397.chance*100).toFixed(1)}% ÷ ${calc397.days} 日（未取整 $${calc397.raw.toFixed(1)}，四捨五入）</p>`;
+      if(calc397) body += `<p class="board-calc397">預期日薪 $${calc397.rounded}／日＝片酬 $${calc397.pay} × 成功率 ${(calc397.chance*100).toFixed(1)}% ÷ ${calc397.days} 日（成功率用精確值，未取整 $${calc397.raw.toFixed(1)}，四捨五入）</p>`;
     }catch(_c397){}
     const softEntry = (typeof softPreviewOn==="function" && softPreviewOn());
     if(softEntry){
@@ -21932,7 +21971,7 @@ function confirmSpendDay(actionLabel, onYes, opts){
     <p class="sub">${nextLine}</p>`,[
     {label:"取消", role:"g", on: opts.onCancel||null},
     {label:"確定進行", role:"p", on: onYes}
-  ]);
+  ], {keepScene397:true}); /* v20a398 UI398-5：43 號確認卡用 scene 模式（場景＋淺 dim） */
 }
 
 /* ===== v20a236 RECONFIRM236：共用抉擇再確認 =====
@@ -22940,12 +22979,9 @@ function goToMapForBrowse(){
   atLoc=null;
   show("v-map");
   paintBar(); drawMap();
-  const meta=planMeta(todayPlanId());
-  if(typeof todayHasSoftSchedule==="function" && todayHasSoftSchedule()){
-    toast(`今日行程：${meta.name}`, { sub:"可先打聽／通告欄；要過日請點擊「開始今日行程」", closeSheet:true });
-  } else {
-    toast(`今日：${meta.name}`, {closeSheet:true});
-  }
+  /* v20a398 UI398-2：入地圖唔再彈「今日：…」大卡——日卡（#map-hint）本身已經寫住
+     同一句（計劃＋剩餘出行次數），overlay 卡喺矮屏會蓋住地圖頂部地點牌 1.8 秒；
+     其餘 toast（存檔／到埗等）唔郁。 */
   }, { mapMode:true });
 }
 
@@ -23767,12 +23803,12 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
         onSchedule: nextNbReward
       });
     }catch(_e){
-      modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${formatRestSleepDeltas(notes)}${ended?`<p class="dayres-stamp397">一週完結</p>`:""}`, btns, {onDismiss: dismissNb});
+      modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${formatRestSleepDeltas(notes)}${ended?`<p class="dayres-stamp397">一週完結</p>`:""}`, btns, {onDismiss: dismissNb, keepScene397:true}); /* v20a398 UI398-5：休息 fallback 日結卡用 scene 模式 */
       if(isRestCard){ try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e2){} }
       saveQ();
     }
   } else {
-    modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dayLine}${fx102Html}${body}${ended?`<p class="dayres-stamp397">一週完結</p>`:""}${liveHint2}`, btns, {onDismiss: dismissNb});
+    modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dayLine}${fx102Html}${body}${ended?`<p class="dayres-stamp397">一週完結</p>`:""}${liveHint2}`, btns, {onDismiss: dismissNb, keepScene397:true}); /* v20a398 UI398-5：27c 通用日結卡用 scene 模式 */
     /* v369 UI369：殺青嗰日喺標題旁蓋「已殺青」紅印（shootFinished 先出，天然去重；DOM 注入唔改模板字串；唔鎖操作）。 */
     try{ if(shootFinished){ const h3w369 = document.querySelector("#mask .modal h3"); if(h3w369){ const spw369 = document.createElement("span"); spw369.className = "wrap-stamp369"; spw369.setAttribute("aria-hidden","true"); spw369.textContent = "已殺青"; h3w369.appendChild(spw369); } } }catch(_w369){}
     try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
@@ -24512,6 +24548,9 @@ function deCollideLabels363(){
         }
       }
     }catch(_e391){}
+    /* v20a398 UI398-2：de-collide 之後再夾返可見帶——pair pass 會將籤推出帶外，
+       settle 鏈（400／800／1200ms）重跑 de-collide 嗰陣呢度一併再夾，唔會漂移。 */
+    try{ if(typeof clampMapLabels397==="function") clampMapLabels397(); }catch(_e398){}
   }catch(_e){}
 }
 function stressScale363(pv){
@@ -24880,18 +24919,43 @@ function clampMapLabels397(){
       .filter(e=>e.offsetParent!==null);
     if(els.length < 2) return 0;
     const GAP = 8, BOTTOM_PAD = 4, MAX_PASS = 3;
-    const stageBottom = sr.bottom - BOTTOM_PAD, stageTop = sr.top + 2;
+    /* v20a398 UI398-2：夾實改用可見帶——舞台本身 576px 高，矮屏嗰陣上下伸出 polaroid
+       之外（頂俾頂欄蓋、底俾日卡蓋），夾舞台底唔等於見到。visTop＝polaroid 頂，
+       visBottom＝polaroid 底／日卡頂／視口底三者最細。冇 polaroid／日卡（fake doc
+       測試）就跌返舞台界。 */
+    let stageBottom = sr.bottom - BOTTOM_PAD, stageTop = sr.top + 2;
+    try{
+      const polar = (typeof document.getElementById==="function") ? document.getElementById("map-polaroid") : null;
+      if(polar && polar.offsetParent!==null){
+        const pr = polar.getBoundingClientRect();
+        if(pr && pr.height > 0){ stageTop = pr.top + 2; stageBottom = Math.min(stageBottom, pr.bottom - BOTTOM_PAD); }
+      }
+      const hint = (typeof document.getElementById==="function") ? document.getElementById("map-hint") : null;
+      if(hint && hint.offsetParent!==null){
+        const hr = hint.getBoundingClientRect();
+        if(hr && hr.height > 0) stageBottom = Math.min(stageBottom, hr.top - 2);
+      }
+      if(typeof window!=="undefined" && window && window.innerHeight) stageBottom = Math.min(stageBottom, window.innerHeight - 2);
+    }catch(_e398){}
     let moved = 0;
     for(let pass=0; pass<MAX_PASS; pass++){
       let any = false;
       let rects = els.map(e=>e.getBoundingClientRect());
-      /* 底邊夾實先：底邊出舞台嘅籤向上移返入嚟。 */
+      /* 底邊夾實先：底邊出可見帶嘅籤向上移返入嚟；頂邊出可見帶嘅向下夾返入嚟。 */
       for(let i=0;i<els.length;i++){
         const over = rects[i].bottom - stageBottom;
         if(over > 0.5){
           const cur = parseFloat(els[i].style.top) || 0;
           els[i].style.top = (cur - over) + 'px';
           any = true; moved++;
+        } else {
+          /* v20a398：頂邊出可見帶（矮屏舞台頂伸出 polaroid 之外）向下夾返入嚟。 */
+          const under = stageTop - rects[i].top;
+          if(under > 0.5){
+            const cur = parseFloat(els[i].style.top) || 0;
+            els[i].style.top = (cur + under) + 'px';
+            any = true; moved++;
+          }
         }
       }
       rects = els.map(e=>e.getBoundingClientRect());
@@ -25135,6 +25199,8 @@ function drawMap(){
   /* v363 UI363：像素人位置指示＋紙標籤避撞（只郁視覺，唔郁熱區座標） */
   try{ mapMe363(box, pinPos); }catch(_e){}
   try{ deCollideLabels363(); }catch(_e){}
+  /* v20a398 UI398-1：drawMap 重建 pin 會洗走聚光 class——尾段即刻搵返 pin 補金圈。 */
+  try{ if(typeof refreshTutSpotlight398==="function") refreshTutSpotlight398(); }catch(_e){}
 }
 
 let _modalDismiss=null;
@@ -25226,6 +25292,8 @@ function modal(html, buttons, opts){
   maskEl.classList.toggle("casting-sheet-on", !!opts.castingSheet);
   maskEl.classList.toggle("awd-sheet-on", !!opts.awardSheet); /* v20a207 C3：結果卡先掛（presentAwardResult 傳 awardSheet:true） */
   maskEl.classList.toggle("board-tall392", !!opts.boardTall); /* v20a392 UI392 ③：通告欄長列表用高版 modal（92dvh），第一眼見到 5 張卡；closeModal 清除 */
+  /* v20a398 UI398-5：日結家族 scene 模式——mask 掛 scene398，共享 v396 日結漸變 dim（頂 .10／底 .42），唔再一張有景一張全黑；closeModal 清除。 */
+  maskEl.classList.toggle("scene398", !!opts.keepScene397);
   /* v20a47：opts.paperSheet → #mask.paper-on（報紙實物化情境 class，純呈現；closeModal 清除） */
   maskEl.classList.toggle("paper-on", !!opts.paperSheet);
   maskEl.classList.add("on");
@@ -25248,6 +25316,7 @@ function closeModal(){
   try{ document.getElementById("mask").classList.remove("paper-on"); }catch(_e){}
   try{ document.getElementById("mask").classList.remove("awd-sheet-on"); }catch(_e){} /* v20a207 C3 */
   try{ document.getElementById("mask").classList.remove("board-tall392"); }catch(_e){} /* v20a392 UI392 ③ */
+  try{ document.getElementById("mask").classList.remove("scene398"); }catch(_e){} /* v20a398 UI398-5 */
   /* v19z3：清 story-play-on + 清空 #modal-inner，避免劇情結算 HTML／mask 殘留 */
   try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
   try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
@@ -28822,7 +28891,7 @@ function rom159DateScene(who, spot, L, ended, summary){
       try{ if(typeof StoryOC!=="undefined" && StoryOC.getRel) nv = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
       const deltaTxt = delta>0 ? "好感 +1（而家 " + nv + "）" : (delta<0 ? "好感 -1（而家 " + nv + "）" : "好感 ±0");
       modal(`<h3>約會 · ${w.name}</h3>${dlg379(line)}<p class="gold">${deltaTxt}</p>${ended?`<p class="dayres-stamp397">一週完結</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()} · 約會用咗一日</p>`,
-        [{label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}], {onDismiss: go});
+        [{label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}], {onDismiss: go, keepScene397:true}); /* v20a398 UI398-5：44 號約會結果卡用 scene 模式 */
     };
     modal(`<h3>約會 · ${w.name}（${spot.label}）</h3>${dlg379(spot.intro)}<p class="sub">揀一句回應——講啱咗，兩個人近啲；講錯咗，佢會冷淡啲。</p>`,[
       {label: spot.good.label, role:"p", on:()=>{
@@ -28838,7 +28907,7 @@ function rom159DateScene(who, spot, L, ended, summary){
         let a378 = b378; try{ a378 = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
         showResult(a378-b378, spot.bad.line);
       }}
-    ], {onDismiss: go});
+    ], {onDismiss: go, keepScene397:true}); /* v20a398 UI398-5：44 號約會卡用 scene 模式 */
     return true;
   }catch(_e){ return false; }
 }
@@ -34193,6 +34262,9 @@ function np214AwardPhoto214(pack, opts){
     if(!src) return null;
     const rep = String((pack && pack.repWork62) || (focus && focus.repWorkTitle) || "");
     const name = String((pack && pack.displayName) || "頒獎夜");
+    /* v20a398 UI398-3：兩張典禮現場相頂部焗咗「星河金碟夜」橫額——非金碟夜典禮
+       （如維港街招・年度廣告賞）用佢哋會對唔上口；cropBanner 叫渲染器裁走頂部（awi 深裁 520/500，lok 淺裁 520/550）。 */
+    const cropBanner398 = name.indexOf("金碟夜") < 0;
     let caption = "";
     if(opts && opts.aftermath && who === "awi" && pack.bestOutcome === "nominated"){
       /* v20a397 UI397-2 35c：第二版用散場圖說——唔提典禮名，避開相內橫額（星河金碟夜）
@@ -34204,7 +34276,7 @@ function np214AwardPhoto214(pack, opts){
     }else{
       caption = (win && win.title) ? ("駱家聲在台上接過獎座，憑《" + win.title + "》奪獎。") : "駱家聲在台上接過獎座。";
     }
-    return { key: key, src: src, caption: caption };
+    return { key: key, src: src, caption: caption, cropBanner: cropBanner398 };
   }catch(_e){ return null; }
 }
 /* v20a214 NP214：殺青報紙相片——通告作品海報（工人 3）。
@@ -34332,7 +34404,7 @@ function renderAwardResultHtml(pack){
   /* 相片：第一版＝得主相（玩家贏就陳偉翔、得主係駱家聲就駱家聲、其他得主冇相）；
      第二版＝玩家相（只限入圍落選嗰陣——玩家贏嗰陣第一版已經係陳偉翔相，唔重複；旁聽冇玩家相）。 */
   const photo214 = (typeof np214AwardPhoto214 === "function") ? np214AwardPhoto214(pack) : null;
-  const photoFigure214 = p => (p ? `<figure class="np214-photowrap"><div class="np214-photo"><img src="${p.src}" alt=""></div><figcaption class="np214-caption"><b>${esc214(p.caption)}</b></figcaption></figure>` : "");
+  const photoFigure214 = p => (p ? `<figure class="np214-photowrap"><div class="np214-photo${p.cropBanner ? " np214-photo-cropbanner" : ""}"${(p.cropBanner && p.key === 'np214_award_awi') ? ' style="aspect-ratio:520/500"' : ''}"><img src="${p.src}" alt=""></div><figcaption class="np214-caption"><b>${esc214(p.caption)}</b></figcaption></figure>` : "");
   const photo2_214 = (pack.bestOutcome === "nominated")
     ? ((typeof np214AwardPhoto214 === "function") ? (np214AwardPhoto214(pack, {aftermath:true}) || photo214) : photo214)
     : null;
@@ -34471,7 +34543,7 @@ function presentAwardInvite(pack, thenFn){
         confirmChoice236({ choiceLabel: "推辭「"+(pack.displayName||"頒獎典禮")+"」", consequence: "將推辭席位，典禮當晚不會親身出席。",
           onConfirm: skip, onCancel: ()=>{ presentAwardInvite(pack, thenFn); } });
       } }
-    ], { onDismiss: skip, keepSheetContent:true });
+    ], { onDismiss: skip, keepSheetContent:true, keepScene397:true }); /* v20a398 UI398-5：35_invite 請柬用 scene 模式 */
     return true;
   }catch(_e){ cont(); return false; }
 }
@@ -44421,7 +44493,7 @@ function rom183ApplyLineOverrides(){ /* C1：pack greet[0] 改粵語（runtime �
     TUTS.forEach(t=>{
       const steps = (t && Array.isArray(t.steps)) ? t.steps : [];
       steps.forEach(st=>{
-        if(!st) return; if(st.id==="TUT_MAP"){ if(Array.isArray(st.body) && st.body.join("").indexOf("撞到")<0) st.body.push(LINE183); } else if(st.id!=="TUT_NPC") return; /* v20a183 C6 修正：live 教學只行 TUT_MAIN_IDS 四步，TUT_NPC 唔顯示，巧遇句要落喺 TUT_MAP 先見到 */
+        if(!st) return; if(st.id==="TUT_MAP"){ if(Array.isArray(st.body) && st.body.join("").indexOf("撞到")<0) st.body.push(LINE183); return; } /* v20a398 UI398-1：TUT_MAP 只加一次——下面 body／bodyAlt loop 會再將同一句黐上 body[1]，變重複兩次 */ else if(st.id!=="TUT_NPC") return; /* v20a183 C6 修正：live 教學只行 TUT_MAIN_IDS 四步，TUT_NPC 唔顯示，巧遇句要落喺 TUT_MAP 先見到 */
         ["body","bodyAlt"].forEach(k=>{
           const arr = st[k];
           if(Array.isArray(arr) && arr.length>1 && typeof arr[1]==="string" && arr[1].indexOf("撞到")<0) arr[1] = arr[1] + LINE183;
@@ -47336,21 +47408,20 @@ function doScout(L){
     };
     /* v18v: 通告欄短卡 → 點開招募單 Detail（PLAN §4） */
     if(layered392){
-      const sortLabel392 = _boardSort392==="pay" ? "總片酬" : (_boardSort392==="chance" ? "成功率" : "預期日薪");
       /* v20a396 UI396 ②：篩選生效嗰陣，總數行出篩選後數目（顯示 X／總數），唔係成板總數。 */
       const sum392 = filter392==="all"
         ? `共 ${shown.length} 張 · 可接 ${ready108.length} 張 · 未達標 ${locked108.length} 張`
         : `顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張（可接 ${readyF392.length} · 未達標 ${lockedF392.length}）`;
       body+=`<div class="board-head392">`
         + `<div class="board-sum392">${sum392}</div>`
-        + `<div class="board-ctl397"><div class="board-sort392"><button type="button" class="board-chip392 board-ctl397-btn" data-board-menu397="sort" aria-expanded="false">排序：${sortLabel392} ▾</button>`
-        + `<div class="board-menu397" data-board-menu-list397="sort" hidden>`
+        + `<div class="board-ctl397"><div class="board-sort392"><button type="button" class="board-chip392 board-ctl397-btn" data-board-menu397="organize" aria-expanded="false">整理 ▾</button>`
+        + `<div class="board-menu397" data-board-menu-list397="organize" hidden>`
+        + `<div class="board-menu-group397">排序</div>`
         + ["exp","pay","chance"].map(k=>`<button type="button" class="board-chip392${_boardSort392===k?" on":""}" data-sort392="${k}">${k==="exp"?"預期日薪":(k==="pay"?"總片酬":"成功率")}</button>`).join("")
-        + `</div></div>`
-        + `<div class="board-filter392"><button type="button" class="board-chip392 board-ctl397-btn" data-board-menu397="filter" aria-expanded="false">媒介：${filter392==="all"?"全部":filter392} ▾</button>`
-        + `<div class="board-menu397" data-board-menu-list397="filter" hidden><button type="button" class="board-chip392${filter392==="all"?" on":""}" data-filter392="all">全部</button>`
+        + `<div class="board-menu-group397">媒介</div>`
+        + `<div class="board-filter392"><button type="button" class="board-chip392${filter392==="all"?" on":""}" data-filter392="all">全部</button>`
         + media392.map(m=>`<button type="button" class="board-chip392${filter392===m?" on":""}" data-filter392="${m}">${m}</button>`).join("")
-        + `</div></div></div></div>`;
+        + `</div></div></div></div></div>`;
       body+=`<div class="gig-board-list" id="gig-board-list">`;
       if(featured392) body+=gigBoardTeaserHtml(featured392, { closest:false, featured:true });
       readyList392.forEach((g)=>{ body+=gigBoardTeaserHtml(g, { closest: closestMark392(g) }); });
@@ -49916,6 +49987,58 @@ function applyTutSpotlight(stepId){
     else document.querySelectorAll("#map-show-all-locs, #map-legend, #map-polaroid").forEach(el=>el.classList.add("tut-spotlight-target"));
   }catch(e){}
 }
+/* v20a398 UI398-1：教學聚光獨立金圈（#tut-spotlight-ring）——applyTutSpotlight
+   只係喺 pin 身上加 class，drawMap 重建 pin（＋settle 鏈）會洗走佢，量度長期係 0。
+   呢個 refresh 由教學層持有金圈：每次 drawMap 完成後用 data-loc 搵返當前 pin、重新量
+   rect 定位金圈，順手將 class 補返上 pin；唔係 TUT_MAP／教學完咗就收起金圈。
+   resize／.map-wrap 捲動嗰陣亦重定位（監聽只掛一次）。 */
+function ensureTutSpotlightRing398(){
+  let ring = document.getElementById("tut-spotlight-ring");
+  if(!ring){
+    ring = document.createElement("div");
+    ring.id = "tut-spotlight-ring";
+    ring.className = "tut-spotlight-ring398";
+    ring.setAttribute("aria-hidden","true");
+    ring.style.display = "none";
+    const app = document.getElementById("app");
+    if(app) app.appendChild(ring);
+    try{
+      if(!ensureTutSpotlightRing398._wired){
+        ensureTutSpotlightRing398._wired = true;
+        window.addEventListener("resize", ()=>{ try{ refreshTutSpotlight398(); }catch(_e){} });
+        const wrap = document.querySelector(".map-wrap");
+        if(wrap) wrap.addEventListener("scroll", ()=>{ try{ refreshTutSpotlight398(); }catch(_e){} }, {passive:true});
+      }
+    }catch(_e){}
+  }
+  return ring;
+}
+function refreshTutSpotlight398(){
+  try{
+    const ring = ensureTutSpotlightRing398();
+    if(!ring) return;
+    const mask = document.getElementById("mask");
+    const stepId = (mask && mask.dataset.tutStep) || null;
+    const on = !!(_tut && _tut.active && stepId==="TUT_MAP" && mask && mask.classList.contains("tut-on"));
+    if(!on){ ring.style.display = "none"; return; }
+    const pin = document.querySelector('.pin[data-loc="tvb_longmen"]') || document.querySelector(".pin:not(.dim)");
+    if(!pin || pin.offsetParent===null){ ring.style.display = "none"; return; }
+    /* drawMap 重建 pin 會洗走 class——每次補返（唔係 TUT_MAP 嗰陣唔郁其他步嘅光）。 */
+    try{
+      document.querySelectorAll(".tut-spotlight-target").forEach(el=>{ if(el!==pin) el.classList.remove("tut-spotlight-target"); });
+      pin.classList.add("tut-spotlight-target");
+    }catch(_e){}
+    const app = document.getElementById("app");
+    const pr = pin.getBoundingClientRect();
+    const ar = app ? app.getBoundingClientRect() : {left:0, top:0};
+    const pad = 6;
+    ring.style.display = "block";
+    ring.style.left = (pr.left - ar.left - pad) + "px";
+    ring.style.top = (pr.top - ar.top - pad) + "px";
+    ring.style.width = (pr.width + pad*2) + "px";
+    ring.style.height = (pr.height + pad*2) + "px";
+  }catch(_e){}
+}
 /** Which phone surface the player should be looking at for this tutorial step. */
 function tutSurfaceFor(stepId){
   if(stepId==="TUT_MAP" || stepId==="TUT_DONE") return "map";
@@ -50000,6 +50123,7 @@ function alignTutSurface(stepId){
       if(token!==_tutSurfaceToken || !_tut || !_tut.active) return;
       try{ drawMap(); }catch(_e){}
       try{ applyTutSpotlight(stepId); }catch(_e){}
+      try{ if(typeof refreshTutSpotlight398==="function") refreshTutSpotlight398(); }catch(_e){}
     });
   }
 }
@@ -50064,6 +50188,7 @@ function showTutMainStep(i){
   alignTutSurface(step.id);
   const mask=document.getElementById("mask");
   if(mask) mask.dataset.tutStep=step.id;
+  if(mask) mask.classList.toggle("tut-step-map", step.id==="TUT_MAP"); /* v20a398 UI398-1：TUT_MAP 嗰步卡片貼底，唔蓋聚光 pin；其他步清走 */
   const btns=[];
   // Primary always first in DOM and in CSS order. Skip always directly under it, every step.
   btns.push({
@@ -50082,6 +50207,11 @@ function showTutMainStep(i){
   }
   showTutCard(step, btns);
   applyTutSpotlight(step.id);
+  try{ if(typeof refreshTutSpotlight398==="function") refreshTutSpotlight398(); }catch(_e){}
+  /* v20a398 UI398-1 補：入場嗰陣地圖仲喺度 settle（實駕量度：pin x 80.1→65.3 約 200ms），即刻嗰次
+     refresh 攞到舊 rect，金圈偏右 ~15px；400ms 後再 refresh 一次（refresh 內部會檢查仲係唔係
+     TUT_MAP——離開咗／完咗會收起金圈，遲到都唔會留低）。 */
+  setTimeout(()=>{ try{ if(typeof refreshTutSpotlight398==="function") refreshTutSpotlight398(); }catch(_e){} }, 400);
 }
 function finishTutorial(skipped){
   const after=_tut.afterDone;
@@ -50095,6 +50225,8 @@ function finishTutorial(skipped){
   try{ closeSheet(); }catch(_e){}
   const mask=document.getElementById("mask");
   if(mask) delete mask.dataset.tutStep;
+  if(mask) mask.classList.remove("tut-step-map");
+  try{ if(typeof refreshTutSpotlight398==="function") refreshTutSpotlight398(); }catch(_e){} /* _tut.active 已關，收起金圈 */
   if(back==="v-map"){
     show("v-map");
     try{ paintBar(); drawMap(); }catch(_e){}

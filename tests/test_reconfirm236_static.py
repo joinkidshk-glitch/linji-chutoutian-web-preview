@@ -1,3 +1,4 @@
+# v398 resync：35_invite 請柬加 keepScene397:true（日結卡家族統一場景背圖），onDismiss=skip 唔郁；見 qa398/resync398.py。
 # v20a236 reconfirm 靜態測試：共用確認 helper＋全部 10 個面接線＋唔准郁嘅嘢。
 # 用法：python3 tests/test_reconfirm236_static.py [path-to-index.html]
 import sys, pathlib
@@ -82,7 +83,7 @@ ok('C3 傾談入口×2 先確認', html.count('confirmChoice236({ choiceLabel: "
 ok('C3 doTalk 本體仲在', 'function doTalk(npcId, L){' in html)
 ok('C4 還債禮物／現金兩掣都先確認', html.count('confirmChoice236({ choiceLabel: "以禮物還') == 1 and html.count('confirmChoice236({ choiceLabel: "以現金 $200 還') == 1)
 ok('C5 請柬出席／推辭都先確認', 'confirmChoice236({ choiceLabel: "出席「' in html and 'confirmChoice236({ choiceLabel: "推辭「' in html)
-ok('C5 請柬遮罩行為唔郁（onDismiss 照＝推辭）', '{ onDismiss: skip, keepSheetContent:true }' in html)
+ok('C5 請柬遮罩行為唔郁（onDismiss 照＝推辭）', '{ onDismiss: skip, keepSheetContent:true, keepScene397:true }' in html)
 ok('C6 醫院治療先確認後扣 $600', 'confirmChoice236({ choiceLabel: "去醫院治療"' in html)
 cshop = block_between('function openClothingShop265(L){', 'function renderWardrobe265(')
 ok('C7 買衫先確認後扣錢（v265）', 'confirmChoice236({' in cshop and 'buyCostume265(id)' in cshop)

@@ -58,12 +58,13 @@ ok("v397 35c 第二版圖說用散場版（唔提典禮名，避橫額 mismatch�
    "aftermath:true" in src and "散場時離開會場" in src)
 
 # ---- (3) 通告欄峰值 ----
+# v398：通告欄頭板改透明貼紙底（去報表工具列），sticky 保留；見 test_v398_static.py。
 ok("v397 通告欄頂欄縮薄（sticky 保留）",
    ".board-head392{ position:sticky; top:0;" in src
-   and "padding:4px 10px; margin:0 0 6px;" in src)
-ok("v397 排序／篩選各收納成一粒下拉掣（顯示已套用條件）",
-   'data-board-menu397="sort"' in src and 'data-board-menu397="filter"' in src
-   and "排序：${sortLabel392} ▾" in src and "board-ctl397" in src)
+   and "background:var(--paper); border:0;" in src  # v398 補：--panel 係深啡 #3A3530，用佢會留返條深色報表帶；紙底先啱
+   and "padding:4px 2px 6px; margin:0 0 6px;" in src)
+ok("v397 排序／篩選各收納成一粒下拉掣（顯示已套用條件）",  # v398：兩掣合併做一粒「整理」掣，選項分排序／媒介兩組
+   'data-board-menu397="organize"' in src and "整理 ▾" in src and "board-ctl397" in src)
 ok("v397 排序／篩選選項保留（功能唔減）",
    "board-sort392" in src and "board-filter392" in src
    and 'data-sort392' in src and 'data-filter392' in src)
@@ -126,9 +127,9 @@ ok("v397 33b 回顧唯讀收起編輯工具",
    and "ending78Locked" in src)
 
 # ---- 靜態 <button 總數：v396 係 110；v397 係 112（＋2 板下拉掣＋1 工具掣＋1 約人 picker 模板
-# －1 選單過一日－1 未開放掣；可見掣數每屏都跌，見實駕 counts397.json） ----
-ok("v397 靜態 <button 總數 112（v396：110）",
-   src.count("<button") == 112)
+# －1 選單過一日－1 未開放掣；可見掣數每屏都跌，見實駕 counts397.json）；v398 係 111（兩粒板下拉掣合併做一粒「整理」） ----
+ok("v397 靜態 <button 總數 112（v396：110）",  # v398：111
+   src.count("<button") == 111)
 
 # ---- 唔郁嘅嘢：SAVE／softRev／?v= ----
 ok("v397 SAVE key 不變 starVolunteer_map_v19w", "starVolunteer_map_v19w" in src)
