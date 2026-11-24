@@ -130,6 +130,15 @@ eval(["end95GenreOf","end95IsLead","end95ClassifyWrap","end95EmptyStats","end95S
  "end229IsLead","end229ClassifyLead","end229EmptyLeadStats",
  "end229DeriveLeadStats","leadStats229Of","end229AddWrap"]
  .map(n => extractFn(n)).join("\n"));
+/* v20a393：resolveEnding410 新依賴（自選履歷／曝光／活動量／幕後職務／對照信用／獎項句憑據） */
+const DUTY392_KIND_BY_ID = bindConst("DUTY392_KIND_BY_ID");
+const DUTY392_GIGS = bindConst("DUTY392_GIGS");
+eval(["isForcedGig392","day392YearMonth","end392SelDeriveStats","careerStats392SelOf",
+ "exposure392Of","activity392Of","isLowActivity392",
+ "duty392GigById","backstageDuties392Of",
+ "forcedCredit392ReplayWraps","forcedCredit392Of","forcedCredit392CounterCredit",
+ "endingAward392TvSupport","endingAward392WonLabel"]
+ .map(n => extractFn(n)).join("\n"));
 eval(extractFn("resolveEnding410"));
 eval(extractFn("endingEsc410"));
 eval(extractFn("endingCareerScene410"));
@@ -226,46 +235,47 @@ console.log("[2] 評核：警告先行＋邊界判場");
   ok(!S.conseq61.pendingEnding && !S.conseq61.reviews[1990], "已埋單存檔：評核全跳過");
 }
 
-/* ---------- (3) 破產寬限 ---------- */
-console.log("[3] 破產寬限：起／倒數／暫停／解除／用盡");
+/* ---------- (3) 破產寬限已刪（v20a393）——欠費改記欠，唔再提前完局 ---------- */
+console.log("[3] 破產寬限已刪：見底唔起寬限、唔寫收場、舊殘留清走");
 {
   S = baseSave(); S.money = 0;
   const l1 = conseq61SettleEval(S, 20);
-  ok(S.conseq61.grace && S.conseq61.grace.weeksLeft === 4 && !S.conseq61.pendingEnding, "money≤0 起寬限 4 週，唔即收");
-  ok(l1.some(t => t.includes("寬限") && t.includes("4 週")), "起寬限有明示行");
-  conseq61SettleEval(S, 21); ok(S.conseq61.grace.weeksLeft === 3, "倒數 3");
-  conseq61SettleEval(S, 22); ok(S.conseq61.grace.weeksLeft === 2, "倒數 2");
-  const l4 = conseq61SettleEval(S, 23);
-  ok(S.conseq61.grace.weeksLeft === 1 && l4.some(t => t.includes("寬限期仲有 1 週")), "倒數 1＋最後通牒行");
-  conseq61SettleEval(S, 24);
-  ok(S.conseq61.pendingEnding && S.conseq61.pendingEnding.kind === "bankrupt" && !S.conseq61.grace, "寬限用盡 → 收場 bankrupt");
+  ok(!("grace" in S.conseq61) && !S.conseq61.pendingEnding, "money≤0：唔起寬限、唔寫 pendingEnding");
+  ok(!l1.some(t => t.includes("寬限")), "見底嗰週唔出寬限行");
+  for(let w = 21; w <= 24; w++) conseq61SettleEval(S, w);
+  ok(!S.conseq61.pendingEnding, "連續 5 週見底都唔收場（主線照常推進）");
 }
 {
   S = baseSave(); S.money = 0;
   conseq61SettleEval(S, 20);
-  S.money = 5000; /* ≥ 下週生活費估算（1990 帶 $240；v261 ÷10） */
+  S.money = 5000;
   const l = conseq61SettleEval(S, 21);
-  ok(!S.conseq61.grace && !S.conseq61.pendingEnding && l.some(t => t.includes("解除")), "寬限內翻上水 → 解除警報，唔收場");
-  S = baseSave(); S.money = 0;
+  ok(!S.conseq61.pendingEnding, "翻上水之後照常，唔收場");
+  S = baseSave(); S.money = 100;
   conseq61SettleEval(S, 20);
-  S.money = 100; /* 返少少唔夠生活費：未解除，照倒數 */
-  conseq61SettleEval(S, 21);
-  ok(S.conseq61.grace && S.conseq61.grace.weeksLeft === 3, "有錢返但未過生活費線 → 未解除，倒數照行");
+  ok(!S.conseq61.pendingEnding, "有少少錢都唔收場");
 }
 {
   S = baseSave(); S.money = 0;
   conseq61SettleEval(S, 20);
   S.shoots = [{ id: "s1", gigId: "g", totalDays: 5, doneDays: 1 }];
   const l = conseq61SettleEval(S, 21);
-  ok(S.conseq61.grace.weeksLeft === 4 && l.some(t => t.includes("暫停倒數")), "有未完拍攝 → 倒數暫停（唔好拍緊戲收人場）");
+  ok(!S.conseq61.pendingEnding, "有未完拍攝都唔收場（寬限暫停機制已刪，唔使再分）");
   S.shoots = [];
   conseq61SettleEval(S, 22);
-  ok(S.conseq61.grace.weeksLeft === 3, "拍完之後倒數恢復");
+  ok(!S.conseq61.pendingEnding, "拍完之後都唔收場");
 }
 {
   S = baseSave(); S.money = 1;
   conseq61SettleEval(S, 20);
-  ok(!S.conseq61.grace, "money>0 唔起寬限（觸發線係真・水底 ≤0）");
+  ok(!S.conseq61.pendingEnding, "money>0 唔收場");
+}
+{
+  /* 舊檔殘留 grace：normalizeSaveObj 靜靜清走（已錄得嘅 bankrupt pendingEnding 唔郁） */
+  const old = baseSave(); old.dayIndex = 100;
+  const cOld = conseq61State(old); cOld.grace = { weeksLeft: 2, startedWeek: 9 };
+  const nOld = normalizeSaveObj(old);
+  ok(!("grace" in nOld.conseq61), "舊檔殘留 grace 經 normalize 清走");
 }
 
 /* ---------- (4) 舊檔安全 ---------- */
@@ -301,9 +311,14 @@ console.log("[5] 呈現：E7 寫入＋總結頁＋判定表紀律");
   ok(!sum.includes(">三年埋單・手帳總結<") && sum.includes("不是你選的"), "唔扮三年埋單＋講明唔係自願");
 }
 {
+  /* v20a393：破產唔再由週結產生——呢度覆核「已錄得破產 E7 嘅舊檔」顯示兼容：
+     舊檔 pendingEnding {kind:"bankrupt"} 照呈現（variant／eveKey／寬限期滿文案不變）。 */
   S = baseSave(); S.money = 0; modalCalls = [];
   for(let w = 20; w <= 24; w++) conseq61SettleEval(S, w);
-  ok(conseq61PresentForcedEnding() === true, "破產 present 成功");
+  ok(!S.conseq61.pendingEnding, "v393 之後見底 5 週都唔再產生 bankrupt pending");
+  ok(conseq61PresentForcedEnding() === false, "冇 pending 就唔呈現");
+  conseq61State(S).pendingEnding = { kind: "bankrupt", dual: 15 };
+  ok(conseq61PresentForcedEnding() === true, "舊檔已錄得 bankrupt pending → 照呈現（顯示兼容）");
   ok(S.ending410.careerVariant === "bankrupt" && S.ending410.eveKey === "forced_bankrupt", "bankrupt variant／eveKey");
   ok(modalCalls[0].html.includes("寬限期") && modalCalls[0].html.includes("荷包"), "破產事業場景文案");
   ok(endingCareerScene410({ career: "E7", careerVariant: "review1991" }).includes("兩年"), "1991 評核場景分開寫");

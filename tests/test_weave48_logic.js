@@ -247,7 +247,7 @@ loadGame(baseSave());
      (() => { const st = endingRomanceState48(); return ['hiu','choi','lan','xu','yip','so'].every(k => st[k] && st[k].met === false && st[k].rel === 0 && st[k].committed === false); })());
 }
 
-/* ---- N12（v20a113：補鏈，需 N11 done） ---- */
+/* ---- N12（v20a113：補鏈，需 N11 done；v20a392：標籤前置已刪、窗口擴至春／夏） ---- */
 function c15Save(over){
   return baseSave(Object.assign({
     dayIndex: dayIndexOf(1992, 4, 15), fame: 20,
@@ -260,11 +260,11 @@ ok('N12：1992 春＋動作標籤 → offer 喺 film_harbour', !!openRow('N12') 
 loadGame(c15Save({ story: { flags: {}, rel: {}, done: {}, choices: {} } }));
 ok('N12：N11 未做唔出現', !openIds().includes('N12'));
 loadGame(c15Save({ castingTags: [] }));
-ok('N12：冇動作標籤唔出現', !openIds().includes('N12'));
+ok('N12：冇動作標籤都出現（v20a392：標籤前置已刪）', openIds().includes('N12'));
 loadGame(c15Save({ dayIndex: dayIndexOf(1991, 4, 15) }));
 ok('N12：1991 唔出現', !openIds().includes('N12'));
 loadGame(c15Save({ dayIndex: dayIndexOf(1992, 7, 15) }));
-ok('N12：1992 夏（非春）唔出現', !openIds().includes('N12'));
+ok('N12：1992 夏都出現（v20a392：窗口擴至春／夏）', openIds().includes('N12'));
 {
   const s = loadGame(c15Save());
   StoryOC.applyChoice(node('N12'), choice('N12', 'N12_a'));

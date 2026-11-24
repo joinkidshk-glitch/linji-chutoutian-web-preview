@@ -7904,7 +7904,7 @@ const STORY_HINT_SOFT = {
   N11: { playerHint: "慈善秀後台，彭少祺剛剛多說了一句；隔壁房梟雄片選角等著你試兩段。", lockedHint: "1989 年冬末才開啟，還要完成年尾追數、聲望和信用總和足夠。未到之前照常跑通告；開啟後去星河電視台慈善秀後台。", nextHint: "主線去到下一階段——1990 年先有新劇情，繼續跑通告、見人。" },
   N8: { playerHint: "選美後台人多眼雜——帶一份見面禮（例如淡香水試用裝）到佳麗身邊，整件事會順利得多。", lockedHint: "1989 年夏末到秋才開啟（選美綵排季）。未到之前照常跑通告；開啟後去星河電視台綜藝廠後台。", nextHint: "下一幕——1989 年冬年尾清貨期，留意何生那邊的消息。" },
   /* v20a31 WEAVE_PHASE4_8：N14–N15 提示跟三年版主幹 §2（pack 自創線提示隨覆寫取代） */
-  N12: { playerHint: "動作片片場有人受傷，武指叫人頂一個高危鏡頭。", lockedHint: "1990 年春才開啟，還要有動作標籤傍身才有人想起你。未到之前照常跑通告；開啟後去維港電影動作片片場。", nextHint: "下一幕「高爾夫球」——1990 年夏，完成戲路定型、業內信用夠高，才有人出來挖你角。" },
+  N12: { playerHint: "動作片片場有人受傷，武指叫人頂一個高危鏡頭。", lockedHint: "1990 年春才開啟，完成上一幕先有人想起你。未到之前照常跑通告；開啟後去維港電影動作片片場。", nextHint: "下一幕「高爾夫球」——1990 年夏，完成戲路定型、業內信用夠高，才有人出來挖你角。" },
   N13: { playerHint: "齊鎮海約你打球——打球是其次，他有話想跟你說。", lockedHint: "1990 年夏才開啟，還要完成戲路定型、業內信用足夠。未到之前照常跑通告；開啟後去星河電視台那邊等齊鎮海約你。", nextHint: "下一幕「樂壇前哨」——1990 年夏／秋，完成企邊、聲望夠高，才會在唱片公司大堂撞上那場風波。" },
   N14: { playerHint: "唱片公司大堂有一班歌迷聚集，陸柏言就快到了——你企哪邊？", lockedHint: "1990 年夏起開啟，還要完成企邊、聲望夠高。未到之前照常跑通告；開啟後去天星音樂大堂。", nextHint: "下一幕「錄音室」——1990 年秋末，完成樂壇前哨、聲望和信用總和足夠才開啟；開啟後去天星音樂舞蹈室。" },
   N15: { playerHint: "舞蹈室那邊試音試到深夜，程天諾就在隔壁練舞。", lockedHint: "1990 年秋末才開啟，還要完成樂壇前哨、聲望和信用總和足夠。未到之前照常跑通告；開啟後去天星音樂舞蹈室。", nextHint: "下一幕「飛紙仔」——1990 年冬，廖炳星那組賀歲片飛紙仔滿天飛；開啟後去紅棉影業片場。" },
@@ -7969,7 +7969,7 @@ const STORY_GATE_3Y = {
   /* N12（1992 春）：持有動作標籤（v20a29 同 N9 一併補 registry id／label 候選）
      v20a113：補 needDone N11——N12 係 N 次序入面 N11 嘅下一幕，唔鏈會令 1992 春未做 N11 都直入；
      安全：N12 唔喺關鍵路徑，N13 已經要 N11，唔增加新嘅軟鎖風險。 */
-  N12: { needDone: ["N11"], tagAny: ["動作", "action", "tag_action", "身手好"], yearMin: 1992, seasonIn: ["春"] },
+  N12: { needDone: ["N11"], yearMin: 1992, seasonIn: ["春", "夏"] }, /* v20a393：刪動作標籤前置（tagAny）——N12 唔再受通告板刷新／導演 rel／E5 條件控制，N11 完成＋到 1992 春窗口即解鎖；seasonIn 擴至夏（春錯過唔致死；N13 亦係夏，ORDER165 將 N12 移到 N13 之前）；秋未玩就預設 tick 行 N12_b（見 story392N12DefaultTick）。 */
   /* N13（1992 夏）：前置 N11；信用 > 42 */
   N13: { needDone: ["N11"], creditGt: 42, yearMin: 1992, seasonIn: ["夏"] },
   /* N14（1992 夏／秋）：前置 N13；聲望 > 50
@@ -9471,6 +9471,16 @@ const StoryOC = (()=>{
     }
     if(statsApplied.industryCredit && typeof S!=="undefined" && S){
       S.industryCreditDelta = (Number(S.industryCreditDelta)||0) + Number(statsApplied.industryCredit);
+      /* v20a393：主線抉擇直接寫入的信用增量，記入對照信用帳（forcedCredit392）——
+         只計 N1–N17／N6F／N18／N19 主線節點（story nodes 以 N 開頭）；支線／巧遇抉擇唔計。 */
+      try{
+        const _nid392 = String((node && node.id) || "");
+        if(/^N\d/.test(_nid392) && Number(statsApplied.industryCredit) > 0){
+          if(!S.forcedCredit392 || typeof S.forcedCredit392!=="object" || Array.isArray(S.forcedCredit392)) S.forcedCredit392 = { direct: 0, fame: 0, wraps: 0, choices: 0, backfilled: false };
+          S.forcedCredit392.direct = (Number(S.forcedCredit392.direct)||0) + Number(statsApplied.industryCredit);
+          S.forcedCredit392.choices = (Number(S.forcedCredit392.choices)||0) + 1;
+        }
+      }catch(_fc392c){}
     }
     let dual = null;
     if(dualBefore && typeof syncDualTracks==="function" && typeof S!=="undefined" && S){
@@ -13353,9 +13363,13 @@ const ENDING410_CAREER_NAMES = {
 const ENDING410_T = {
   /* v20a378（第三輪評估 B10）：e1Fame／e1Credit／e1Dual／e1NegMax 死欄已刪——結局判定只讀 ENDING95_T，
      呢四欄從無引用（weave410 靜態測試釘字串同步改）。 */
-  e4Fame: 50, e4CreditBelow: 30, e4RescueCredits: 5,        /* E4 泡沫偶像＋沉唔死版債權門檻（v20a373：2→5——全脊骨被動故事債權恒 4，舊門檻令真沉版全脊骨不可達；5＝要真經營人情網先有人撈） */
+  e4Fame: 50, e4NetCreditBelow: 45, e4RescueCredits: 5,         /* E4 泡沫偶像（v20a393：舊窗 credit<30 數學不可達——fame 95 單 fame 項已貢獻 47.5，
+     改只在 E4 判定扣除 fame 帶來的信用：credit − 0.5×fame < 45，另要 ≥6 宗自選曝光（見 ENDING95_T
+     e4ExposureMin／e4ExposureMonths）；全局 credit 繼供 dual 及其他結局用。45 係統籌定數——
+     GPT 原稿 (b) 寫 <45、(d) 驗收寫 ≤40，內部不一致，統籌定 45。沉唔死版債權門檻不變
+     （v20a373：2→5——全脊骨被動故事債權恒 4，舊門檻令真沉版全脊骨不可達；5＝要真經營人情網先有人撈） */
   e2Credit: 42, e2Fame: 35,                                 /* E2 甘草王 */
-  e3Credit: 42, e3BackstageTags: 2, e3DirectorRel: 60,      /* E3 幕後之路（導演 rel 或幕後標籤，鏡像 4-9 定義） */
+  e3Credit: 42, e3DirectorRel: 60,      /* E3 幕後之路（v20a393：e3BackstageTags 死欄已刪——舊「幕後標籤≥2」入口讀 castingTags 關鍵字，無授予來源係死路；入口改讀明確職務類別，見 endingE3Eligible410／backstageDuties392Of） */
   e5FavorTotal: 6, e5AgentRel: 60,                          /* E5 江湖撈家：已清債＋持有債權 ≥6＋何生 rel 高 */
   backstageCloseTags: 1, backstageCloseDirectorRel: 40,     /* E4→E3 前夕「差少少」：幕後標籤 ≥1 或導演 rel ≥40 */
   almostRelMin: 4                                           /* 半線／未 commit 線「差一步」素材門檻（rel 滿 7） */
@@ -13472,7 +13486,12 @@ function endingE3Eligible410(st){
   const d = endingDual410(st);
   if((Number(d.industryCredit)||0) < ENDING410_T.e3Credit) return false;
   const dirRel = (st && st.npcs) ? (Number(st.npcs.director)||0) : 0;
-  return endingBackstageTagCount410(st) >= ENDING410_T.e3BackstageTags || dirRel >= ENDING410_T.e3DirectorRel;
+  /* v20a393：幕後入口改讀明確職務類別（backstageDuties392Of）——2 種職務＋≥2 製作；
+     導演關係入口加職務門檻（rel≥60 且 ≥3 宗職務＋≥2 製作）——純靠電影殺青堆 rel
+     唔再直入 E3（L22701 任何電影殺青都＋4–7 rel 機制不變）。舊 keyword 計數已死路
+     （castingTags 無幕後來源），唔再開入口。 */
+  const duties = (typeof backstageDuties392Of === "function") ? backstageDuties392Of(st) : { tagEntrance: false, relEntrance: false };
+  return !!duties.tagEntrance || (dirRel >= ENDING410_T.e3DirectorRel && !!duties.relEntrance);
 }
 function endingBackstageClose410(st){
   const dirRel = (st && st.npcs) ? (Number(st.npcs.director)||0) : 0;
@@ -13492,12 +13511,14 @@ const ENDING95_T = {
   fkDual: 200, fkFilmShare: 0.5, fkFilmLeads: 2,               /* FK 影壇天王 */
   tkDual: 200, tkTvShare: 0.5, tkTvLongLeads: 1,               /* TK 電視天王 */
   skDual: 200, skMusicShare: 0.5,                              /* SK 歌王（另要音樂獎提名／得獎） */
-  ghDual: 180, ghHostShare: 0.5,                               /* GH 金牌司儀（綜藝佔比＋彭少祺線進展） */
+  ghDual: 180, ghHostShare: 0.5, ghVarietyMin: 8,              /* GH 金牌司儀（綜藝佔比＋彭少祺線進展；v20a393：佔比改讀自選綜藝殺青／全部自選
+     演藝通告殺青，門檻維持 ≥50%，另要自選綜藝殺青 ≥8 宗；N1–N17 強制通告剔出分子分母） */
   ckDual: 180, ckComedyShare: 0.5, ckCredit: 50,               /* CK 喜劇泰斗（片種佔比＋信用） */
   akDual: 180, akActionShare: 0.5, akStaminaLessons: 5,        /* AK 動作巨星（片種佔比＋武師班底子） */
   genreMinSample: 6,                                           /* 片種佔比最低可辨識樣本，防 1/1 刷格 */
+  e4ExposureMin: 6, e4ExposureMonths: 3,                       /* E4 自選宣傳／偶像曝光下限（v20a393）：≥6 宗＋橫跨 ≥3 個月 */
   idFame: 60, idCreditLo: 30, idCreditHi: 60, idNegMax: 2,     /* ID 人氣偶像：紅而未沉（同 E4 信用 <30 分家；v20a373 上限 54→60；v20a378 上限改跟聲望掛鈎 max(60, fame×0.9)——自然信用 fame 80–110 時 70–95，固定窗要刻意壓信用先入到） */
-  crCredit: 55, crFameLo: 35, crFameHi: 59,                    /* CR 實力派演員 */
+  crCredit: 55, crFameLo: 35, crFameHi: 110,                   /* CR 實力派演員（v20a393：fame 窗 35–59→35–110——主線約 95 fame 已出舊窗，唔減主線 fame、唔畀拒拍） */
   e3BossFavor: 5                                               /* E3 製片老闆變體：人情總量（已清＋持有）門檻 */
 };
 const END95_TYPE_MEDIUM = { "電影": "film", "電視劇": "tv", "唱片通告": "music", "唱片": "music", "綜藝": "variety", "廣告": "ad" };
@@ -13609,7 +13630,20 @@ function end95AddWrap(Sref, gig, sh){
     if(!Sref.careerStats95 || typeof Sref.careerStats95 !== "object" || Array.isArray(Sref.careerStats95)){
       Sref.careerStats95 = end95DeriveStats(Sref);
     }
-    end95StatsAddOne(Sref.careerStats95, end95ClassifyWrap(gig, sh ? sh.totalDays : 0));
+    const cls95 = end95ClassifyWrap(gig, sh ? sh.totalDays : 0);
+    end95StatsAddOne(Sref.careerStats95, cls95);
+    /* v20a393：自選履歷同步累加——強制即派（grant229）唔入自選計數；種子同總數一樣，
+       以當刻 wrapHistory（未含本單）衍生，唔雙計。 */
+    try{
+      if(typeof isForcedGig392 === "function" && !isForcedGig392(Sref, gig.id)){
+        if(!gig.duty392 && String(gig.id || "").indexOf("duty392_") !== 0){ /* 幕後職務唔係演藝通告，唔入自選履歷 */
+          if(!Sref.careerStats392Sel || typeof Sref.careerStats392Sel !== "object" || Array.isArray(Sref.careerStats392Sel)){
+            Sref.careerStats392Sel = end392SelDeriveStats(Sref);
+          }
+          end95StatsAddOne(Sref.careerStats392Sel, cls95);
+        }
+      }
+    }catch(_e392){}
   }catch(_e){}
 }
 /* ===== v20a229 B4 LEAD229：擔正累計式計數器 S.leadStats229（SPEC §2.9／D-9）。
@@ -13726,6 +13760,68 @@ function contractCredit361Backfill(o){
     void gainTotal;
   }catch(_e){}
 }
+/* v20a393：強制殺青合約信用重播（純函數）——同 contractCredit361OnWrap 口徑（季上限 +4／
+   生涯 +36），只計 grant229 即派 gig。forcedCredit392Of 衍生路徑＋forcedCredit392Backfill
+   共用，唔好兩邊各寫一套上限。 */
+function forcedCredit392ReplayWraps(st){
+  let direct = 0, fame = 0, wraps = 0;
+  try{
+    const s = st || {};
+    const hist = (Array.isArray(s.wrapHistory) ? s.wrapHistory.slice() : [])
+      .filter(h => h && h.wrappedDay != null)
+      .sort((a, b) => (a.wrappedDay | 0) - (b.wrappedDay | 0));
+    let qKey = -1, qCount = 0, total = 0;
+    hist.forEach(h => {
+      let gain = 0;
+      try{
+        let tier = "";
+        if(typeof work59GigLookup === "function"){ const g = work59GigLookup(h.gigId); if(g) tier = String(g.tier || ""); }
+        if(!tier && typeof GIGS !== "undefined" && Array.isArray(GIGS)){
+          const g = GIGS.find(x => x && x.id === h.gigId); if(g) tier = String(g.tier || "");
+        }
+        const q = Math.floor(Math.floor((Number(h.wrappedDay) || 0) / 7) / 13);
+        if(q !== qKey){ qKey = q; qCount = 0; }
+        gain = 1 + ((tier === "高級" || tier === "稀有") ? 1 : 0);
+        gain = Math.min(gain, 4 - qCount, 36 - total);
+        if(gain < 0) gain = 0;
+        qCount += gain; total += gain;
+      }catch(_e){ gain = 0; }
+      if(isForcedGig392(s, h.gigId)){ direct += gain; fame += Math.max(0, Number(h.fame) || 0); wraps++; }
+    });
+  }catch(_e){}
+  return { direct: direct, fame: fame, wraps: wraps };
+}
+/* v20a393：舊檔回填對照信用帳（S.forcedCredit392）——一次性，冪等（已有帳唔郁）。
+   (a) 強制即派殺青合約信用：forcedCredit392ReplayWraps 重播季／生涯上限；
+   (b) 主線抉擇 stats.industryCredit：StoryOC.findNode＋S.story.choices 匹配（只計
+   無歧義匹配：choices 記咗 nodeId→choiceId，搵返該抉擇嘅 stats.industryCredit>0 先計；
+   搵唔返／歧義就唔計，保守——唔高估）。 */
+function forcedCredit392Backfill(o){
+  try{
+    if(!o || typeof o !== "object") return;
+    if(o.forcedCredit392 && typeof o.forcedCredit392 === "object" && !Array.isArray(o.forcedCredit392)) return;
+    const rep = (typeof forcedCredit392ReplayWraps === "function") ? forcedCredit392ReplayWraps(o) : { direct: 0, fame: 0, wraps: 0 };
+    let direct = rep.direct | 0, fame = rep.fame | 0, wraps = rep.wraps | 0, choices = 0;
+    try{
+      const ch = (o.story && o.story.choices && typeof o.story.choices === "object") ? o.story.choices : {};
+      Object.keys(ch).forEach(nid => {
+        if(!/^N\d/.test(String(nid))) return;
+        const cid = ch[nid];
+        if(!cid) return;
+        try{
+          if(typeof StoryOC === "undefined" || typeof StoryOC.findNodeRaw !== "function") return;
+          const node = StoryOC.findNodeRaw(nid);
+          if(!node || !Array.isArray(node.choices)) return;
+          const c = node.choices.find(x => x && x.id === cid);
+          if(!c) return;
+          const v = Number(((c.effects || {}).stats || {}).industryCredit) || 0;
+          if(v > 0){ direct += v; choices++; }
+        }catch(_e){}
+      });
+    }catch(_e){}
+    o.forcedCredit392 = { direct: direct, fame: fame, wraps: wraps, choices: choices, backfilled: true };
+  }catch(_e){}
+}
 function end95Awards(st){
   const s = st || {};
   const log = Array.isArray(s.awardsLog) ? s.awardsLog : [];
@@ -13800,6 +13896,227 @@ function end95E3Variant(st, stats, favor){
   const tv = (stats && stats.byMedium) ? (stats.byMedium.tv | 0) : 0;
   return film >= tv ? "大導演" : "金牌監製";
 }
+/* ===== v20a393：自選／強制分流＋幕後職務＋對照信用（十項修復票）。
+   核心區分：「強制」＝ N1–N17 抉擇即派（grant229）通告——玩家冇得揀、冇得拒絕；
+   「自選」＝其餘一切（板上通告、試鏡、訓練、幕後職務）。強制通告識別＝
+   grant229 派發旗（delivered 優先，recorded 兜底；派發翌日即自動排拍攝，板上
+   副本喺派發前完成屬極罕邊界，見 NOTES）。以下函數全部純函數、唯讀。 ===== */
+function isForcedGig392(st, gigId){
+  try{
+    if(!st || !gigId) return false;
+    const fl = st.flags || {};
+    return !!(fl["grant229_delivered_" + gigId] || fl["grant229_recorded_" + gigId]);
+  }catch(_e){ return false; }
+}
+function day392YearMonth(day){
+  try{
+    const st0 = (typeof START !== "undefined" && START) ? START : { y: 1990, m: 1, d: 1 };
+    const dt = new Date(st0.y, st0.m - 1, st0.d + (Number(day) || 0));
+    return dt.getFullYear() * 12 + (dt.getMonth() + 1);
+  }catch(_e){ return 0; }
+}
+/* 自選履歷計數（GH 分子分母／E0 投入用）：同 careerStats95 同形，只計非強制殺青。
+   優先讀存檔計數器 S.careerStats392Sel；冇就由 wrapHistory 衍生（剔走強制）；
+   wrapHistory 為空嗰陣跌返 careerStats95Of 副本（舊檔／合成檔無履歷可分流嗰陣，
+   當全部自選——只影響測試 fixture 同零殺青存檔，兩者分流結果一致）。 */
+function end392SelDeriveStats(st){
+  const out = end95EmptyStats();
+  const s = st || {};
+  const hist = Array.isArray(s.wrapHistory) ? s.wrapHistory : [];
+  const gigs = (typeof GIGS !== "undefined" && Array.isArray(GIGS)) ? GIGS : [];
+  hist.forEach(h => {
+    if(!h || isForcedGig392(s, h.gigId)) return;
+    if(String(h.gigId || "").indexOf("duty392_") === 0) return; /* 幕後職務唔係演藝通告，唔入 GH 分母／E0 活動量 */
+    const gig = h.gigId ? (gigs.find(x => x && x.id === h.gigId) || null) : null;
+    if(gig && gig.duty392) return;
+    let cls;
+    if(gig) cls = end95ClassifyWrap(gig, h.totalDays);
+    else cls = { medium: END95_TYPE_MEDIUM[String(h.type || "")] || "", lead: false, tvLong: false, genre: "", backstage: false };
+    if(!cls.medium) cls.medium = END95_TYPE_MEDIUM[String(h.type || "")] || "";
+    end95StatsAddOne(out, cls);
+  });
+  return out;
+}
+function careerStats392SelOf(st){
+  const s = st || {};
+  const cs = s.careerStats392Sel;
+  if(cs && typeof cs === "object" && !Array.isArray(cs) && typeof cs.total === "number"){
+    const out = end95EmptyStats();
+    out.total = cs.total | 0;
+    ["byMedium", "leadByMedium"].forEach(k => {
+      if(cs[k] && typeof cs[k] === "object") Object.keys(out[k]).forEach(m => { out[k][m] = Number(cs[k][m]) || 0; });
+    });
+    ["tvLongLeads", "genreIdentified", "genreComedy", "genreAction", "backstageWorks"].forEach(k => { out[k] = Number(cs[k]) || 0; });
+    return out;
+  }
+  if(!Array.isArray(s.wrapHistory) || !s.wrapHistory.length){
+    const all = (typeof careerStats95Of === "function") ? careerStats95Of(s) : end95EmptyStats();
+    return all;
+  }
+  return end392SelDeriveStats(s);
+}
+/* E4 自選曝光：自選廣告／綜藝殺青宗數＋橫跨曆月數（由 wrapHistory 數，唔靠新計數器——
+   舊檔履歷齊全，零回填；wrapHistory 上限 240，三年全弧約 110 部，冚得晒）。 */
+function exposure392Of(st){
+  const s = st || {};
+  const hist = Array.isArray(s.wrapHistory) ? s.wrapHistory : [];
+  const months = {};
+  let n = 0;
+  hist.forEach(h => {
+    if(!h || (h.type !== "廣告" && h.type !== "綜藝")) return;
+    if(isForcedGig392(s, h.gigId)) return;
+    n++;
+    if(h.wrappedDay != null) months[day392YearMonth(h.wrappedDay)] = 1;
+  });
+  return { count: n, months: Object.keys(months).length };
+}
+/* E0／E2／CR 低投入分流：三年自選演藝通告（殺青）＋正式試鏡＋正式訓練合計。
+   試鏡數由可衍生痕跡併集計（aud91Log／pendingAud／booked／shoots／done_* 旗，剔走
+   強制即派；失敗試鏡只留 aud91Log 最近 12 條——失敗 3 次以上者痕跡必 ≥3，邊界安全）。
+   訓練數＝Σ trainCount（正式課程堂數）。主線同糊口兼職一律唔計。 */
+function activity392Of(st){
+  const s = st || {};
+  const sel = careerStats392SelOf(s);
+  const wraps = Math.max(0, sel.total | 0);
+  const audIds = {};
+  const addId = (id)=>{ if(id) audIds[String(id)] = 1; };
+  (Array.isArray(s.aud91Log) ? s.aud91Log : []).forEach(e => { if(e && e.gigId) addId(e.gigId); });
+  (Array.isArray(s.pendingAud) ? s.pendingAud : []).forEach(e => { if(e && e.gigId) addId(e.gigId); });
+  (Array.isArray(s.booked) ? s.booked : []).forEach(e => { if(e && e.gigId) addId(e.gigId); });
+  (Array.isArray(s.shoots) ? s.shoots : []).forEach(e => { if(e && e.gigId) addId(e.gigId); });
+  Object.keys(s.flags || {}).forEach(k => {
+    if(k.indexOf("done_") === 0 && s.flags[k]){
+      const gid = k.slice(5);
+      if(!isForcedGig392(s, gid)) addId(gid);
+    }
+  });
+  const auditions = Object.keys(audIds).length;
+  let training = 0;
+  const tc = (s.trainCount && typeof s.trainCount === "object") ? s.trainCount : {};
+  Object.keys(tc).forEach(k => { training += Math.max(0, Number(tc[k]) || 0); });
+  return { wraps: wraps, auditions: auditions, training: training, total: wraps + auditions + training };
+}
+function isLowActivity392(st){
+  const d = (typeof endingDual410 === "function") ? endingDual410(st || {}) : { stageVolume: 0 };
+  const fame = Number(d.stageVolume) || 0;
+  return fame <= 40 && activity392Of(st).total <= 2;
+}
+/* ===== v20a393 幕後職務（DUTY392）：三類明確職務，經通告板自選、完成交付先計。
+   職務表見 DUTY392_GIGS（runtime 注入，唔入 gigs_new.json，330 張庫數不變）；
+   每個製作（workTitle）最多計 1 宗；重複同類只保留同一標籤。
+   判定改讀明確職務類別，唔再搜尋「幕後」字眼——舊 keyword 計數
+   endingBackstageTagCount410 只留作「差少少」診斷／快照，唔再開 E3 入口。 ===== */
+const DUTY392_KIND_BY_ID = { tag_duty_clapper: "場記", tag_duty_ad: "副導演助理", tag_duty_editor: "剪接助理" };
+function duty392GigById(gigId){
+  try{
+    if(!gigId || typeof DUTY392_GIGS === "undefined" || !Array.isArray(DUTY392_GIGS)) return null;
+    return DUTY392_GIGS.find(g => g && g.id === gigId) || null;
+  }catch(_e){ return null; }
+}
+function backstageDuties392Of(st){
+  const s = st || {};
+  const pairs = {}; /* production -> {kind:1}（每製作最多計 1 宗） */
+  const add = (kind, production)=>{
+    if(!kind || !production) return;
+    const p = String(production);
+    if(!pairs[p]) pairs[p] = {};
+    pairs[p][String(kind)] = 1;
+  };
+  if(Array.isArray(s.backstageDuties392)){
+    s.backstageDuties392.forEach(d => { if(d) add(d.kind, d.production); });
+  } else {
+    (Array.isArray(s.wrapHistory) ? s.wrapHistory : []).forEach(h => {
+      if(!h || !h.gigId) return;
+      const g = duty392GigById(h.gigId);
+      if(g) add(g.dutyKind, g.workTitle || g.id);
+    });
+  }
+  const kinds = {}, productions = Object.keys(pairs);
+  let total = 0;
+  productions.forEach(p => {
+    Object.keys(pairs[p]).forEach(k => { kinds[k] = 1; total++; });
+  });
+  const kindList = Object.keys(kinds);
+  return { total: total, kinds: kindList, productions: productions,
+    tagEntrance: kindList.length >= 2 && productions.length >= 2,
+    relEntrance: total >= 3 && productions.length >= 2 };
+}
+/* ===== v20a393 ID 對照信用：強制拍攝直接寫入的信用增量流水（S.forcedCredit392）。
+   來源有二，全部逐節可對帳：
+   (a) 強制即派殺青合約信用（contractCredit361OnWrap 寫入 delta 嗰份，季／生涯上限後實數）；
+   (b) N1–N17 主線抉擇 stats.industryCredit（applyChoice 寫入 delta 嗰份）。
+   另計強制殺青帶來的 fame（wrapHistory.fame 實數），供對照重算 fame 項間接貢獻。
+   舊檔由 normalizeSaveObj 一次性回填（forcedCredit392Backfill）；未回填嗰陣
+   forcedCredit392Of 由 wrapHistory 即場重播 (a) 流水（(b) 嗰份要 StoryOC 先計到，
+   無就當 0，保守——唔高估）。封頂口徑：先減增量、再 max(0, …)（先加分再封頂）。 */
+function forcedCredit392Of(st){
+  const s = st || {};
+  const led = s.forcedCredit392;
+  if(led && typeof led === "object" && !Array.isArray(led)){
+    return { direct: Math.max(0, Number(led.direct) || 0), fame: Math.max(0, Number(led.fame) || 0) };
+  }
+  /* 無帳嗰陣即場重播 (a) 流水（forcedCredit392ReplayWraps，同回填同一套上限）；
+     (b) 抉擇嗰份要 StoryOC 先計到，無就當 0，保守——唔高估。 */
+  try{
+    if(typeof forcedCredit392ReplayWraps === "function"){
+      const rep = forcedCredit392ReplayWraps(s);
+      return { direct: rep.direct | 0, fame: rep.fame | 0 };
+    }
+  }catch(_e){}
+  return { direct: 0, fame: 0 };
+}
+function forcedCredit392CounterCredit(st){
+  const s = st || {};
+  const fc = forcedCredit392Of(s);
+  if(!fc || ((fc.direct | 0) <= 0 && (fc.fame | 0) <= 0)) return null;
+  const d = (typeof endingDual410 === "function") ? endingDual410(s) : { stageVolume: 0, industryCredit: 0 };
+  const fame = Number(d.stageVolume) || 0, credit = Number(d.industryCredit) || 0;
+  const stage = Math.max(0, Number(s.stage) || 0), acting = Math.max(0, Number(s.acting) || 0);
+  const stress = Math.max(0, Number(s.stress) || 0);
+  const delta = Math.round(Number(s.industryCreditDelta) || 0);
+  const fameC = Math.max(0, fame - (fc.fame | 0));
+  const baseC = Math.round(fameC * 0.5 + stage * 0.3 + acting * 0.2 - Math.max(0, stress - 40) * 0.1);
+  void credit;
+  return Math.max(0, baseC + (delta - (fc.direct | 0)));
+}
+/* E2／E1 獎項句憑據（v20a393）：只讀 awardsLog（舊檔欠紀錄＝無憑據，只出主文）。
+   電視台最佳男配角＝類別 cat_tv_support_m。 */
+function endingAward392TvSupport(st){
+  try{
+    const s = st || {};
+    const log = Array.isArray(s.awardsLog) ? s.awardsLog : [];
+    let nom = false;
+    for(let i = 0; i < log.length; i++){
+      const cats = (log[i] && Array.isArray(log[i].categories)) ? log[i].categories : [];
+      for(let j = 0; j < cats.length; j++){
+        if(!cats[j] || cats[j].id !== "cat_tv_support_m") continue;
+        if(cats[j].outcome === "won") return "won";
+        if(cats[j].outcome === "nominated") nom = true;
+      }
+    }
+    return nom ? "nominated" : "";
+  }catch(_e){ return ""; }
+}
+function endingAward392WonLabel(st){
+  try{
+    const s = st || {};
+    const log = Array.isArray(s.awardsLog) ? s.awardsLog : [];
+    const table = (typeof AWARDS188_CATEGORIES !== "undefined" && AWARDS188_CATEGORIES) ? AWARDS188_CATEGORIES : {};
+    for(let i = 0; i < log.length; i++){
+      const cats = (log[i] && Array.isArray(log[i].categories)) ? log[i].categories : [];
+      for(let j = 0; j < cats.length; j++){
+        if(cats[j] && cats[j].outcome === "won" && cats[j].id){
+          let label = "";
+          Object.keys(table).forEach(cer => {
+            (table[cer] || []).forEach(c => { if(c && c.id === cats[j].id) label = String(c.label || ""); });
+          });
+          if(label) return label;
+        }
+      }
+    }
+    return "";
+  }catch(_e){ return ""; }
+}
 /* 差邊瓣（用戶定調：結算要睇得出差喺邊，唔畀食譜）：回望口吻，只講去 E1 嗰格差邊啲
    質性件／雙軌差幾多，最多三句；已入 E1 就講「冇差」；E6 主動離場唔出。 */
 function end95BuildGaps(ctx){
@@ -13828,6 +14145,11 @@ function end95BuildGaps(ctx){
    E1→E4→SS→FK→TK→SK→GH→CK→AK→ID→E3→E5→CR→E2→E0；
    v20a378：ID 移後到 E3/E5 之後（明確路線證據優先過 ID 預設格），ID 信用窗改 max(60, fame×0.9)，次序變
    E1→E4→SS→FK→TK→SK→GH→CK→AK→E3→E5→ID→CR→E2→E0；
+   v20a393（十項修復票）：六格專長全部排喺 SS 之前（SS 截格：FK／CK／GH 原被 SS 截走，
+   雙專長由 FK→TK→SK→GH→CK→AK 次序決勝），新梯
+   E1→E4→FK→TK→SK→GH→CK→AK→SS→E3→E5→ID→CR→E2→E0；
+   GH 讀自選綜藝佔比＋≥8 宗；E4 讀扣除 fame 後信用＋≥6 宗自選曝光；ID 讀對照信用；
+   CR fame 窗 35–110；E2／CR 加低投入豁免（fame≤40 且活動 ≤2 者跌返 E0）。
    E6 只認 opts.quit（"job"｜"leave"）主動入口，旗本身唔會令純函數自己入 E6。
    opts.exodus 可由前夕抉擇覆寫去留軸（"leave"）。回傳 {career, careerVariant, romance, exodus, title, reasons, snapshot}。 */
 function resolveEnding410(st, opts){
@@ -13863,46 +14185,58 @@ function resolveEnding410(st, opts){
      三局衝刺範圍 669–1010，方差太大，加門檻冇區分作用）。 */
   const filmLead390 = (lead229.byMedium.film || 0);
   const e1Qual95 = awards95.hasWin && leadMedia95.length >= 2 && spine95.done && filmLead390 >= 1;
+  /* v20a393 分流數值（純函數讀數）：自選履歷／曝光／活動量／對照信用／幕後職務 */
+  const sel95 = careerStats392SelOf(s);
+  const selTotal95 = Math.max(0, sel95.total | 0);
+  const selShare95 = n => selTotal95 > 0 ? ((Number(n) || 0) / selTotal95) : 0;
+  const expo392 = exposure392Of(s);
+  const act392 = activity392Of(s);
+  const lowAct392 = fame <= 40 && act392.total <= 2;
+  const creditCounter392 = forcedCredit392CounterCredit(s);
+  const idCredit392 = (creditCounter392 == null) ? credit : creditCounter392;
+  const duties392 = backstageDuties392Of(s);
+  const forced392 = forcedCredit392Of(s);
   let career = "E0", variant = "";
   if(fame>=T95.e1Fame && credit>=T95.e1Credit && sum>=T95.e1Dual && neg<=T95.e1NegMax && e1Qual95){
     career = "E1"; reasons.push("E1：聲望 "+fame+"≥"+T95.e1Fame+"、信用 "+credit+"≥"+T95.e1Credit+"、雙軌 "+sum+"≥"+T95.e1Dual+"、負標籤 "+neg+"≤"+T95.e1NegMax+"＋質性閘全齊（獎 "+awards95.wins+"／擔正媒介 "+leadMedia95.length+"／電影擔正 "+filmLead390+"／主線脊骨已走完）");
-  } else if(fame>=T.e4Fame && credit<T.e4CreditBelow){
+  } else if(fame>=T.e4Fame && (credit - 0.5*fame) < T.e4NetCreditBelow && expo392.count>=T95.e4ExposureMin && expo392.months>=T95.e4ExposureMonths){
     career = "E4";
     variant = (favor.creditsHeld>=T.e4RescueCredits) ? "rescued" : "sunk";
-    reasons.push("E4：聲望 "+fame+"≥"+T.e4Fame+"、信用 "+credit+"<"+T.e4CreditBelow+"；債權持有 "+favor.creditsHeld+" → "+(variant==="rescued"?"沉唔死版":"真沉版"));
-  } else if(sum>=T95.ssDual && fame>=T95.ssFame && credit>=T95.ssCredit && neg<=T95.ssNegMax){
-    career = "SS"; reasons.push("SS 一線巨星：雙軌 "+sum+"≥"+T95.ssDual+"、聲望 "+fame+"≥"+T95.ssFame+"、信用 "+credit+"≥"+T95.ssCredit+"、負標籤 "+neg+"≤"+T95.ssNegMax+"（未齊 E1 質性閘：獎 "+(awards95.hasWin?"有":"冇")+"／擔正媒介 "+leadMedia95.length+"／電影擔正 "+filmLead390+"／主線脊骨 "+(spine95.done?"已走完":"尚欠 "+spine95.missing.join("、"))+"）");
+    reasons.push("E4：聲望 "+fame+"≥"+T.e4Fame+"、扣除聲望後信用 "+(credit - 0.5*fame).toFixed(1)+"<"+T.e4NetCreditBelow+"（信用 "+credit+"−0.5×聲望 "+fame+"）、自選曝光 "+expo392.count+" 宗橫跨 "+expo392.months+" 個月；債權持有 "+favor.creditsHeld+" → "+(variant==="rescued"?"沉唔死版":"真沉版"));
   } else if(sum>=T95.fkDual && share95(stats95.byMedium.film)>=T95.fkFilmShare && (lead229.byMedium.film||0)>=T95.fkFilmLeads){
     career = "FK"; reasons.push("FK 影壇天王：雙軌 "+sum+"≥"+T95.fkDual+"、電影佔比 "+Math.round(share95(stats95.byMedium.film)*100)+"%≥50%、電影擔正 "+(lead229.byMedium.film||0)+"≥"+T95.fkFilmLeads);
   } else if(sum>=T95.tkDual && share95(stats95.byMedium.tv)>=T95.tkTvShare && (lead229.byMedium.tv||0)>=T95.tkTvLongLeads){
     career = "TK"; reasons.push("TK 電視天王：雙軌 "+sum+"≥"+T95.tkDual+"、電視佔比 "+Math.round(share95(stats95.byMedium.tv)*100)+"%≥50%、電視長劇擔正 "+(lead229.byMedium.tv||0)+"≥"+T95.tkTvLongLeads);
   } else if(sum>=T95.skDual && share95(stats95.byMedium.music)>=T95.skMusicShare && awards95.musicHonor){
     career = "SK"; reasons.push("SK 歌王：雙軌 "+sum+"≥"+T95.skDual+"、唱片佔比 "+Math.round(share95(stats95.byMedium.music)*100)+"%≥50%、音樂獎提名／得獎有紀錄");
-  } else if(sum>=T95.ghDual && share95(stats95.byMedium.variety)>=T95.ghHostShare && end95PangProgress(s)){
-    career = "GH"; reasons.push("GH 金牌司儀：雙軌 "+sum+"≥"+T95.ghDual+"、綜藝佔比 "+Math.round(share95(stats95.byMedium.variety)*100)+"%≥50%、彭少祺線有進展");
+  } else if(sum>=T95.ghDual && selShare95(sel95.byMedium.variety)>=T95.ghHostShare && (sel95.byMedium.variety|0)>=T95.ghVarietyMin && end95PangProgress(s)){
+    career = "GH"; reasons.push("GH 金牌司儀：雙軌 "+sum+"≥"+T95.ghDual+"、自選綜藝佔比 "+Math.round(selShare95(sel95.byMedium.variety)*100)+"%≥50%（自選綜藝 "+(sel95.byMedium.variety|0)+" 宗／自選共 "+selTotal95+" 宗）、彭少祺線有進展");
   } else if(sum>=T95.ckDual && stats95.genreIdentified>=T95.genreMinSample && genreShare95(stats95.genreComedy)>=T95.ckComedyShare && credit>=T95.ckCredit){
     career = "CK"; reasons.push("CK 喜劇泰斗：雙軌 "+sum+"≥"+T95.ckDual+"、喜劇佔比（可辨識 "+stats95.genreIdentified+" 部）"+Math.round(genreShare95(stats95.genreComedy)*100)+"%≥50%、信用 "+credit+"≥"+T95.ckCredit);
   } else if(sum>=T95.akDual && stats95.genreIdentified>=T95.genreMinSample && genreShare95(stats95.genreAction)>=T95.akActionShare && ((s.trainCount && Number(s.trainCount.train_stamina))||0)>=T95.akStaminaLessons){
     career = "AK"; reasons.push("AK 動作巨星：雙軌 "+sum+"≥"+T95.akDual+"、動作佔比（可辨識 "+stats95.genreIdentified+" 部）"+Math.round(genreShare95(stats95.genreAction)*100)+"%≥50%、武師班 "+((s.trainCount && Number(s.trainCount.train_stamina))||0)+" 堂≥"+T95.akStaminaLessons);
+  } else if(sum>=T95.ssDual && fame>=T95.ssFame && credit>=T95.ssCredit && neg<=T95.ssNegMax){
+    career = "SS"; reasons.push("SS 一線巨星：雙軌 "+sum+"≥"+T95.ssDual+"、聲望 "+fame+"≥"+T95.ssFame+"、信用 "+credit+"≥"+T95.ssCredit+"、負標籤 "+neg+"≤"+T95.ssNegMax+"（未齊 E1 質性閘：獎 "+(awards95.hasWin?"有":"冇")+"／擔正媒介 "+leadMedia95.length+"／電影擔正 "+filmLead390+"／主線脊骨 "+(spine95.done?"已走完":"尚欠 "+spine95.missing.join("、"))+"）");
   /* v20a378（第三輪評估 B6）：ID 判定移後到 E3／E5 之後——舊次序 ID 排先，fame 60–70／credit 50–60
      段有幕後／人情證據都俾 ID 截走，E3／E5 實際守門變成 credit>=fame-9（W2 實證）。明確路線證據齊全
      應優先過 ID 呢格「紅而未沉」嘅預設格。
      ID 信用窗改跟聲望掛鈎：上限 = max(60, fame×0.9)（聲望主導帶）——自然信用 fame 80–110 時 70–95，舊固定窗
      30–60 要刻意壓信用先入到；新窗令聲望行先過信用嘅人氣型 profile（信用 ≈ 聲望×0.82–0.86）自然入格，
-     平衡 profile（信用 ≈ 聲望×0.99–1.03）照落 E2。E4 信用 <30 分家不變，贏線／floor／warnLine 不變。 */
+     平衡 profile（信用 ≈ 聲望×0.99–1.03）照落 E2。E4 信用 <30 分家不變，贏線／floor／warnLine 不變。
+     v20a393：ID 窗讀對照信用（略去強制拍攝直接寫入的信用增量＋強制殺青 fame 間接貢獻）；下限仍讀實信用。 */
   } else if(credit>=fame-10 && endingE3Eligible410(s)){
     career = "E3"; variant = end95E3Variant(s, stats95, favor);
-    reasons.push("E3：信用 "+credit+"≥聲望 "+fame+"−10（信用主導帶）＋信用≥"+T.e3Credit+"、幕後標籤 "+endingBackstageTagCount410(s)+"／導演 rel "+directorRel+"；變體＝"+variant+"（人情總量 "+((favor.settled|0)+(favor.creditsHeld|0))+"、電影 "+(stats95.byMedium.film|0)+"／電視 "+(stats95.byMedium.tv|0)+"）");
+    reasons.push("E3：信用 "+credit+"≥聲望 "+fame+"−10（信用主導帶）＋信用≥"+T.e3Credit+"、幕後職務 "+duties392.total+" 宗（"+duties392.kinds.join("、")+"／"+duties392.productions.length+" 個製作）／導演 rel "+directorRel+"；變體＝"+variant+"（人情總量 "+((favor.settled|0)+(favor.creditsHeld|0))+"、電影 "+(stats95.byMedium.film|0)+"／電視 "+(stats95.byMedium.tv|0)+"）");
   } else if(credit>=fame-10 && (favor.settled + favor.creditsHeld)>=T.e5FavorTotal && agentRel>=T.e5AgentRel){
     career = "E5"; reasons.push("E5：信用 "+credit+"≥聲望 "+fame+"−10（信用主導帶）＋已清債 "+favor.settled+"＋持有債權 "+favor.creditsHeld+"≥"+T.e5FavorTotal+"、何生 rel "+agentRel+"≥"+T.e5AgentRel);
-  } else if(fame>=T95.idFame && credit>=T95.idCreditLo && credit<=Math.max(T95.idCreditHi, fame*0.9) && neg<=T95.idNegMax){
-    career = "ID"; reasons.push("ID 人氣偶像：聲望 "+fame+"≥"+T95.idFame+"、信用 "+credit+" 喺 "+T95.idCreditLo+"–"+Math.round(Math.max(T95.idCreditHi, fame*0.9))+"（聲望主導帶）、負標籤 "+neg+"≤"+T95.idNegMax);
-  } else if(credit>=T95.crCredit && fame>=T95.crFameLo && fame<=T95.crFameHi){
+  } else if(fame>=T95.idFame && credit>=T95.idCreditLo && idCredit392<=Math.max(T95.idCreditHi, fame*0.9) && neg<=T95.idNegMax){
+    career = "ID"; reasons.push("ID 人氣偶像：聲望 "+fame+"≥"+T95.idFame+"、對照信用 "+idCredit392+" 喺 "+T95.idCreditLo+"–"+Math.round(Math.max(T95.idCreditHi, fame*0.9))+"（聲望主導帶；實信用 "+credit+"、強制增量直寫 "+(forced392.direct|0)+"＋強制 fame "+(forced392.fame|0)+"）、負標籤 "+neg+"≤"+T95.idNegMax);
+  } else if(credit>=T95.crCredit && fame>=T95.crFameLo && fame<=T95.crFameHi && !lowAct392){
     career = "CR"; reasons.push("CR 實力派演員：信用 "+credit+"≥"+T95.crCredit+"、聲望 "+fame+" 喺 "+T95.crFameLo+"–"+T95.crFameHi);
-  } else if(credit>=T.e2Credit && fame>=T.e2Fame){
+  } else if(credit>=T.e2Credit && fame>=T.e2Fame && !lowAct392){
     career = "E2"; reasons.push("E2：信用 "+credit+"≥"+T.e2Credit+"、聲望 "+fame+"≥"+T.e2Fame);
   } else {
-    reasons.push("E0：以上皆不合，浮沉未定（預設）");
+    reasons.push("E0：以上皆不合，浮沉未定（預設；聲望 "+fame+"、三年投入 "+act392.total+" 宗＝自選通告 "+act392.wraps+"＋試鏡 "+act392.auditions+"＋訓練 "+act392.training+")");
   }
   const baseCareer = career, baseVariant = variant;
   if(opts.quit){
@@ -13950,7 +14284,12 @@ function resolveEnding410(st, opts){
       settled: favor.settled, creditsTotal: favor.creditsTotal, creditsHeld: favor.creditsHeld,
       exodusNames: favor.exodusNames.slice(), agentRel: agentRel, directorRel: directorRel,
       backstageTags: endingBackstageTagCount410(s),
-      spine95: { done: spine95.done, missing: spine95.missing.slice() }
+      spine95: { done: spine95.done, missing: spine95.missing.slice() },
+      selTotal95: selTotal95, selVariety95: (sel95.byMedium.variety | 0),
+      exposure392: { count: expo392.count, months: expo392.months },
+      activity392: { wraps: act392.wraps, auditions: act392.auditions, training: act392.training, total: act392.total },
+      duties392: { total: duties392.total, kinds: duties392.kinds.slice(), productions: duties392.productions.slice() },
+      forcedCredit392: { direct: (forced392.direct | 0), fame: (forced392.fame | 0), counterCredit: idCredit392 }
     }
   };
 }
@@ -14034,12 +14373,31 @@ function endingCareerScene410(rec){
     else if(endingFlag410(S, "rival_gao_endure")) rival = "<p>高俊傑走過來與你握手。當年你忍下他的那些，今晚他逐樣還給你——不是錢，而是一句「嗰陣，我唔啱」。</p>";
   }
   switch(c){
-    case "E1": return "<p>司儀叫到你名字的那一刻，整個"+hall+"靜了一靜，然後爆出掌聲。最佳男配角——三年前那個在茶餐廳聽人說誰紅誰沉的臨記，捧著獎站在台中央。</p>"
+    case "E1": {
+      /* v20a393：舊版寫死「最佳男配角」——E1 只要求「贏過獎」，獎可以係任何一格
+         （最佳男主角／最佳司儀…）。有憑據就寫實獎名，舊檔欠紀錄就只講捧獎，唔虛構。 */
+      let wonLabel392 = "";
+      try{ wonLabel392 = endingAward392WonLabel((typeof S !== "undefined") ? S : null); }catch(_e){}
+      return "<p>司儀叫到你名字的那一刻，整個"+hall+"靜了一靜，然後爆出掌聲。" + (wonLabel392 ? "「"+wonLabel392+"」——" : "") + "三年前那個在茶餐廳聽人說誰紅誰沉的臨記，捧著獎站在台中央。</p>"
       + "<p>何生在台下第一行，眼眶有點紅。他當年說過「呢個後生仔，第時唔得了」——今晚，全行都知道他沒有看錯人。聲望與信用，你兩樣都站得穩，負面那些印記，你甚少沾上。</p>"
       + "<p>獎座不重。重的，是你走過來的那三年。</p>";
-    case "E2": return "<p>"+hall+"，「最佳男配角」——不是最搶眼的那個位置，但評審致辭時說了一句：「冇佢，成套戲企唔穩。」全場的人會心一笑，那些笑容，就是認同。</p>"
+    }
+    case "E2": {
+      /* v20a393：主文改做通用甘草敘事，唔再預設攞過電視台最佳男配角；獎項句只按
+         awardsLog 憑據插入——贏咗先講得獎，只得提名講提名，零勝零提名／舊檔欠紀錄只出主文。
+         同一獎既有提名又有勝出，只顯示勝出句（endingAward392TvSupport 贏優先）。 */
+      let tvSup392 = "";
+      try{ tvSup392 = endingAward392TvSupport((typeof S !== "undefined") ? S : null); }catch(_e){}
+      const awardLine392 = (tvSup392 === "won")
+        ? "<p>那一年，你拿下了電視台最佳男配角。獎座不重，重的，是評審那句「冇佢，成套戲企唔穩」——全場的人都認同。</p>"
+        : (tvSup392 === "nominated")
+          ? "<p>那一年，你入圍了電視台最佳男配角。獎座沒有到手，但入圍那一刻，全行都知道你的名字。</p>"
+          : "";
+      return "<p>"+hall+"，那晚你沒有站在最搶眼的那個位置，但評審致辭時說了一句：「冇佢，成套戲企唔穩。」全場的人會心一笑，那些笑容，就是認同。</p>"
+      + awardLine392
       + "<p>你不是站在最前的那一個，但哪一組開戲都想先問你有沒有檔期。由臨記做到金牌甘草，你靠的不是哪一場爆發，而是哪一場都不出亂子的那種穩。</p>" + rival
       + "<p>何生拍了拍你的肩膀：「甘草先係長做長有。呢行，紅嘅人換得快，企得穩嘅，走唔甩。」</p>";
+    }
     case "E3": {
       /* v20a95：變體段（大導演／金牌監製／製片老闆）只分呈現，判定格不變。 */
       const vp = (v==="大導演") ? "<p>行內人現在怎樣叫你？他們不叫你阿偉，叫你「偉導」。由站在鏡頭前面讓人喊埋位，到坐在導演椅上喊人埋位——那張椅，你用三年換回來。</p>"
@@ -17036,6 +17394,10 @@ function fresh(){
     wrapHistory: [],
     careerStats95: null, /* v20a95 LADDER95：履歷累計計數（殺青嗰刻先生種子再累加；null＝未起計） */
     leadStats229: null, /* v20a229 B4 LEAD229：擔正累計計數（SPEC §2.9；殺青嗰刻先生種子再累加；null＝未起計） */
+    careerStats392Sel: null, /* v20a393：自選履歷計數（GH 分母／E0 投入用；殺青嗰刻先生種子再累加；null＝未起計） */
+    backstageDuties392: [], /* v20a393：幕後職務交付 log（E3 職務入口＋E5(a) 關係入口共用） */
+    forcedCredit392: null, /* v20a393：強制拍攝直接寫入信用帳（ID 對照重算用；null＝未起計） */
+    moneyArrears: 0, /* v20a393：累欠生活費（欠費改記欠，唔再提前完局） */
     weekGigsDone: 0,
     weekTrainDone: 0,
     booked:[], // accepted gigs waiting to schedule {gigId,title,type}
@@ -17205,6 +17567,23 @@ function normalizeSaveObj(o){
   try{ if(typeof castingTagGenreBackfill360==="function") castingTagGenreBackfill360(o); }catch(_e360){}
   /* v20a361 P1-B：舊檔回填合約信用（由 wrapHistory 重播季／生涯上限，一次性；已有計數器唔郁）。 */
   try{ if(typeof contractCredit361Backfill==="function") contractCredit361Backfill(o); }catch(_e361){}
+  /* v20a393：舊檔回填自選履歷計數器（以 wrapHistory 衍生，剔走強制＋幕後職務；已有計數器唔郁，冪等）；
+     幕後職務 log 補空陣列（職務 gig v393 先有，舊檔履歷唔會有）；累欠補 0；對照信用帳回填；
+     N12 補掛（已有 N11、欠 N12、日 ≥1992-03-01＝dayIndex 790 → 掛待處理旗，閘本身已開，
+     旗只係診斷／測試識別；秋未玩就預設 tick 行 N12_b）。 */
+  if(!o.careerStats392Sel || typeof o.careerStats392Sel!=="object" || Array.isArray(o.careerStats392Sel)){
+    try{ if(typeof end392SelDeriveStats==="function") o.careerStats392Sel = end392SelDeriveStats(o); }catch(_e392){}
+  }
+  if(!Array.isArray(o.backstageDuties392)) o.backstageDuties392 = [];
+  if(typeof o.moneyArrears!=="number" || !isFinite(o.moneyArrears)) o.moneyArrears = 0;
+  try{ if(typeof forcedCredit392Backfill==="function") forcedCredit392Backfill(o); }catch(_e392){}
+  try{
+    const done392 = (o.story && o.story.done && typeof o.story.done==="object") ? o.story.done : {};
+    if(done392["N11"] && !done392["N12"] && (Number(o.dayIndex)||0) >= 790){
+      o.flags = o.flags || {};
+      o.flags.n12_pending392 = true;
+    }
+  }catch(_e392){}
   if(!Array.isArray(o.postShootRewards)) o.postShootRewards=[];
   if(!Array.isArray(o.awardsLog)) o.awardsLog=[];
   if(!o.awardsFlags || typeof o.awardsFlags!=="object") o.awardsFlags={};
@@ -17976,7 +18355,7 @@ const CALIB60_NODE_WINDOWS = {
   N9:  { year:1991, seasons:["秋"], whenLabel:"1991 年秋" },
   N10:  { year:1991, seasons:["冬"], whenLabel:"1991 年冬" },
   N11: { year:1991, seasons:["冬"], whenLabel:"1991 年冬" },
-  N12: { year:1992, seasons:["春"], whenLabel:"1992 年春" },
+  N12: { year:1992, seasons:["春", "夏"], whenLabel:"1992 年春／夏" }, /* v20a393：閘擴至夏，「回憶」過窗提醒同步延後一季 */
   N13: { year:1992, seasons:["夏"], whenLabel:"1992 年夏" },
   N14: { year:1992, seasons:["夏","秋"], whenLabel:"1992 年夏／秋" },
   N15: { year:1992, seasons:["秋"], whenLabel:"1992 年秋" },
@@ -18137,7 +18516,9 @@ const CONSEQ61_REVIEWS = {
   1992: { floor: 140, warnLine: 180, boundaryWeek: 156 }
 };
 const CONSEQ61_CFG = {
-  graceWeeks: 4,        /* 破產寬限：4 個週結；期間有戲拍緊暫停倒數；存款返到夠冚下週生活費、或本週入帳夠冚＋存款返正數（v20a65 FIX65-2）即解除 */
+  /* v20a393：破產寬限已刪（寬限週數欄刪除）——欠費改記欠（S.moneyArrears，見 settleWeek），
+     唔再提前完局；舊檔殘留 grace 由 conseq61LegacyMark 清走；E7 破產呈現分支保留，
+     只供已錄得破產 E7 嘅舊檔顯示兼容。 */
   sickStreak: 2,        /* 連續 2 日「收市」壓力 ≥90 先病倒（觸發喺 advanceDay、用翻日前壓力） */
   sickWarnStreak: 2,    /* 連續 2 日 ≥80：地圖壓力提示升級做身體警號 */
   sickRelief: 35,       /* 病癒嗰日壓力 −35 */
@@ -18155,7 +18536,6 @@ function conseq61State(st){
   if(typeof c.streak80!=="number") c.streak80 = 0;
   if(typeof c.peak90!=="number") c.peak90 = 0;
   if(typeof c.cooldownUntil!=="number") c.cooldownUntil = 0;
-  if(!("grace" in c)) c.grace = null;
   if(!("sick" in c)) c.sick = null;
   if(!("pendingEnding" in c)) c.pendingEnding = null;
   return c;
@@ -18172,6 +18552,9 @@ function conseq61LegacyMark(st){
     if(!st || typeof st!=="object") return;
     const c = conseq61State(st);
     if(!c) return;
+    /* v20a393：舊檔殘留 grace 靜靜清走（寬限已刪，唔再產生；已錄得嘅 bankrupt pendingEnding
+       唔郁，留返 conseq61PresentForcedEnding 呈現兼容）。 */
+    if("grace" in c) delete c.grace;
     const dt = new Date(START.y, START.m-1, START.d + (Number(st.dayIndex)||0));
     const curYear = dt.getFullYear();
     Object.keys(CONSEQ61_REVIEWS).forEach(yKey=>{
@@ -18182,10 +18565,11 @@ function conseq61LegacyMark(st){
     });
   }catch(_e){}
 }
-/* 週結評估（settleWeek 喺 saveQ 前呼叫）：評核警告（前 4 個週結、貼線先出聲）→ 年終評核 → 破產寬限。
+/* 週結評估（settleWeek 喺 saveQ 前呼叫）：評核警告（前 4 個週結、貼線先出聲）→ 年終評核。
+   v20a393：破產寬限已刪（欠費改記欠，見 settleWeek），唔再寫 bankrupt pendingEnding。
    只登記狀態＋回傳結算旁白行；真收場寫 pendingEnding，交 enterHome 之後嘅 conseq61PresentForcedEnding 呈現。
    已埋單（S.ending410）就全數跳過。 */
-function conseq61SettleEval(st, weekJustEnded, weekEarnIn){ /* v20a65 FIX65-2：第三參數＝本週入帳（settleWeek 傳入），畀寬限「入帳解除」用；舊呼叫唔傳就只行存款線 */
+function conseq61SettleEval(st, weekJustEnded, weekEarnIn){ /* v20a393：第三參數保留供呼叫兼容（寬限已刪；舊 FIX65-2 入帳解除已隨之刪除） */
   const lines = [];
   try{
     const s = st;
@@ -18226,39 +18610,10 @@ function conseq61SettleEval(st, weekJustEnded, weekEarnIn){ /* v20a65 FIX65-2：
       }
     });
     if(endedNow) return lines; /* 已判收場，唔再評寬限 */
-    /* --- 破產寬限：存款 ≤0 起計 4 個週結；有戲拍緊暫停；返到夠冚下週生活費即解除 --- */
-    const money = Number(s.money)||0;
-    const clearLine = (typeof livingCostEstimate==="function") ? livingCostEstimate(w+1) : 2400;
-    if(c.grace){
-      if(money >= clearLine){
-        c.grace = null;
-        lines.push(`<span class="good">存款返到 $${money.toLocaleString()}，夠冚下週生活費——寬限警報解除。呢鑊，捱過咗。</span>`);
-      } else if(typeof weekEarnIn === "number" && weekEarnIn >= clearLine && money > 0){
-        /* v20a65 FIX65-2（入帳解除）：舊制只認「結算後存款 ≥ 下週全費」，但生活費喺同一個週結
-           先扣，初級玩家入帳永遠追唔上嗰條線（全弧二輪實測：解除 0 次；day 90 持有 $2,053、
-           day 91 扣費至 $0 同時到期）。改為雙軌：本週入帳夠冚下週生活費、且結算後存款返正數，
-           即證明收入已回復，同樣解除——唔會即入即出，因為再入寬限要存款重新跌到 ≤0。 */
-        c.grace = null;
-        lines.push(`<span class="good">呢週入帳 $${weekEarnIn.toLocaleString()}，夠冚下週生活費，存款又返到正數——寬限警報解除。何生：「有工開、有糧出，就唔使驚。」</span>`);
-      } else {
-        const hasShoot = Array.isArray(s.shoots) && s.shoots.some(sh=>sh && (typeof shootRemain==="function" ? shootRemain(sh)>0 : true));
-        if(hasShoot){
-          lines.push(`<span class="var-note">寬限期暫停倒數：你仲有戲拍緊，殺青有糧出，何生知你有工開，唔催你住。（存款 $${money.toLocaleString()}）</span>`);
-        } else {
-          c.grace.weeksLeft = (Number(c.grace.weeksLeft)||0) - 1;
-          if(c.grace.weeksLeft <= 0){
-            c.pendingEnding = { kind: "bankrupt", dual: conseq61DualOf(s).dual };
-            c.grace = null;
-            lines.push(`<span class="bad">寬限期到咗，存款仍然見底。何生今次幫你唔到——聽朝，返事務所收拾你個位。</span>`);
-          } else {
-            lines.push(`<span class="bad">寬限期仲有 ${c.grace.weeksLeft} 週：存款 $${money.toLocaleString()}。儲夠下週生活費（$${clearLine.toLocaleString()}），或者一週入帳夠冚、存款返正數，都解除到。有散工就接，唔好等運到。</span>`); /* v20a65 FIX65-2 */
-          }
-        }
-      }
-    } else if(money <= 0){
-      c.grace = { weeksLeft: CONSEQ61_CFG.graceWeeks, startedWeek: w };
-      lines.push(`<span class="bad">存款見底。何生打嚟：「我同事務所講，畀你 ${CONSEQ61_CFG.graceWeeks} 週寬限——接散工、翻上水，就當冇事發生；寬限一到仲係咁，我保你唔住。」（期間有戲拍緊，倒數會暫停）</span>`);
-    }
+    /* --- v20a393：破產寬限已刪——欠費改記欠（settleWeek 累入 S.moneyArrears），唔再提前完局；
+       存款見底嗰陣唔起寬限、唔寫 pendingEnding，主線照常推進，零兼職路線行到三年結算。
+       第三參數 weekEarnIn 保留供呼叫兼容（void 標記）。 --- */
+    void weekEarnIn;
   }catch(_e){}
   return lines;
 }
@@ -20052,6 +20407,9 @@ const PLAN_ITEMS = {
   perform: [
     { id:"street", icon:"🎤", name:"街頭表演", hint:"碼頭／行人專用區賣藝" },
     { id:"cafe_gig", icon:"☕", name:"咖啡店駐場小表演", hint:"小費＋曝光" },
+    /* v20a393：補班夜班——糊口工保底（$185／班，每週上限 2 班；滿額嗰陣 render loop 即場鎖掣，
+       resolvePlannedDay 再硬截一次）。唔畀 fame／credit／導演 rel／演藝通告計數。 */
+    { id:"pt_topup", icon:"🌙", name:"補班夜班", hint:"$185／班 · 每週上限 2 班" },
   ],
   train: [], // filled from S.enrolled via enrolledTrainItems()
   rest: [
@@ -20820,7 +21178,7 @@ function exec105KindForSlot(id){
   if(s === "sick61") return "sick";
   if(s === "rest") return "rest";
   if(s === "home_chore") return "chore";
-  if(s === "street" || s === "cafe_gig") return "perform";
+  if(s === "street" || s === "cafe_gig" || s === "pt_topup") return "perform"; /* v20a393：補班夜班歸 perform（手帳回顧） */
   if(s.indexOf("train_")===0) return "train";
   if(s === "scout_all" || s === "scout_nt" || s === "scout_kln" || s === "scout_island") return "browse";
   return null;
@@ -21039,6 +21397,11 @@ function settleWeek(){
   const living=livingCostRoll();
   const earned=Math.max(0, Number(S.weekEarn)||0);
   const paid=Math.min(living, S.money);
+  /* v20a393：欠費改記欠——生活費扣唔足嗰陣，短缺累入 S.moneyArrears（新檔預設 0，normalize 補 0），
+     唔再提前完局（破產寬限已刪，見 conseq61SettleEval）；主線照常推進，令零兼職 E0 路線
+     行到三年結算。欠費唔生息、唔自動追扣。 */
+  const short392 = Math.max(0, living - paid);
+  if(short392 > 0){ S.moneyArrears = (Number(S.moneyArrears)||0) + short392; }
   /* v19z4／v19z6：扣生活費但永唔把 apply() 的 −$ 大字塞入結算 HTML */
   apply({money:-paid});
   const bal=earned - living;
@@ -21046,10 +21409,11 @@ function settleWeek(){
   const balCls = bal>0 ? "pos" : (bal<0 ? "neg" : "zero");
   const equation = `收入 $${earned.toLocaleString()} − 生活費 $${living.toLocaleString()} ＝ 結餘 ${balTxt}`;
   /* P0-5（v20a11）：存款唔夠畀足生活費嗰陣，要喺卡面講明只扣到幾多、餘額唔追，
-     唔好等玩家自己發現存款同等式對唔返。 */
-  const shortNote = paid<living ? `<div class="settle-sub">存款不足：生活費只扣到 $${paid.toLocaleString()}，餘下 $${(living-paid).toLocaleString()} 未扣（不會扣到負數）</div>` : "";
+     唔好等玩家自己發現存款同等式對唔返。v20a393：餘額改記欠，卡面寫明累欠總數。 */
+  const shortNote = paid<living ? `<div class="settle-sub">存款不足：生活費只扣到 $${paid.toLocaleString()}，餘下 $${(living-paid).toLocaleString()} 記欠（累欠 $${(Number(S.moneyArrears)||0).toLocaleString()}），主線照常推進</div>` : "";
   /* 主數字＝本週淨結餘；收入／生活費只做 settle-block 次行；旁白另欄 */
-  const settleBlock=`<div class="settle-block"><div class="settle-net ${balCls}"><span class="settle-net-label">本週淨結餘</span>${balTxt}</div><div class="settle-sub">${equation}</div><div class="settle-sub">通告收入 $${earned.toLocaleString()}</div><div class="settle-sub">生活費 −$${living.toLocaleString()}（實扣 $${paid.toLocaleString()}）</div><div class="settle-sub">結算後現款 $${(S.money||0).toLocaleString()}</div>${shortNote}</div>`;
+  const arrearsNote392 = (Number(S.moneyArrears)||0) > 0 ? `<div class="settle-sub">累欠生活費 $${(Number(S.moneyArrears)||0).toLocaleString()}</div>` : "";
+  const settleBlock=`<div class="settle-block"><div class="settle-net ${balCls}"><span class="settle-net-label">本週淨結餘</span>${balTxt}</div><div class="settle-sub">${equation}</div><div class="settle-sub">通告收入 $${earned.toLocaleString()}</div><div class="settle-sub">生活費 −$${living.toLocaleString()}（實扣 $${paid.toLocaleString()}）</div><div class="settle-sub">結算後現款 $${(S.money||0).toLocaleString()}</div>${arrearsNote392}${shortNote}</div>`;
   S.weekEarn=0;
   const w = Math.floor((S.dayIndex-1)/7)+1;
   const pushFlavor = (bits)=>{
@@ -21199,10 +21563,10 @@ function settleWeek(){
       pushFlavor(`<span class="bad">身體警號：近來睡得差、胃口又沒有，整個人燶透——壓力到了這個地步，再谷下去真的會病倒。病倒時，排了的行程會全部作廢，撞正拍攝還要告假扣信用。</span>`);
     }
   }catch(_bw61){}
-  /* v20a61 CONSEQ61-1：年終評核警告／評核／破產寬限（登記趕喺 saveQ 前；收場呈現交 enterHome 後嘅 hook） */
+  /* v20a61 CONSEQ61-1：年終評核警告／評核（登記趕喺 saveQ 前；收場呈現交 enterHome 後嘅 hook；v20a393 寬限已刪） */
   const cq61Clean345 = []; /* v20a345 F1：cq61 行另存一份（cleaned 後），畀 warnHtml 篩選用 */
   try{
-    const cq61 = (typeof conseq61SettleEval==="function") ? conseq61SettleEval(S, w, earned) : []; /* v20a65 FIX65-2：傳本週入帳畀寬限入帳解除 */
+    const cq61 = (typeof conseq61SettleEval==="function") ? conseq61SettleEval(S, w, earned) : []; /* v20a393：第三參數保留供呼叫兼容（寬限已刪） */
     (cq61||[]).forEach(line=>{ pushFlavor(line); try{ const c345 = stripSettleMoneyNoise(line); if(c345) cq61Clean345.push(c345); }catch(_e345){} });
   }catch(_cq61){}
   /* v20a62 AWARDS62-6：頒獎季前目標提示——接既有週結 pushFlavor 渠道，差少少先出聲，每週最多一行 */
@@ -21755,6 +22119,14 @@ function renderNotebook(){
   } else if(planCat==="work" && !items.length){
     list.innerHTML=`<div class="act-empty">未有待試鏡通告。<br>去地圖通告欄看通告，合適的就去試鏡。</div>`;
   } else {
+    /* v20a393：補班夜班每週上限 2 班——render 嗰刻即場鎖掣（唔寫死入 PLAN_ITEMS，
+       週次會變；resolvePlannedDay 再硬截一次，防舊存檔／直接排程繞過）。map 出新
+       物件，唔改 PLAN_ITEMS 原表。 */
+    if(planCat==="perform"){
+      const wk392 = Math.floor(((typeof S!=="undefined" && S && S.dayIndex)||0)/7)+1;
+      const used392 = (S && S.ptTopup392 && S.ptTopup392.wk===wk392) ? (Number(S.ptTopup392.count)||0) : 0;
+      items = items.map(it=> it.id==="pt_topup" ? Object.assign({}, it, { locked: used392>=2, hint: used392>=2 ? "本週已滿 2 班 · 下週再嚟" : it.hint }) : it);
+    }
     items.forEach(it=>{
       const b=document.createElement("button");
       b.type="button";
@@ -22003,7 +22375,7 @@ function stressDeltaForAct(id){
     rest:-100, /* v20a65 FIX65-1：全日休息＝清零，預覽以 -100 代表歸零 */ home_chore:-8,
     train_acting:10, train_stage:10, train_vocal:10, train_looks:7, train_charm:6, train_iq:5,
     train_stamina:10,
-    street:7, cafe_gig:6,
+    street:7, cafe_gig:6, pt_topup:8, /* v20a393：補班夜班壓力預覽 8——實際 6+R(0,4)，均值 8 */
     scout_all:0, scout_nt:0, scout_kln:0, scout_island:0,
   };
   return table[id] != null ? table[id] : 2;
@@ -22774,6 +23146,22 @@ function resolvePlannedDay(id){
             notes.push('<span class="var-note">選角標籤：'+tagged.map(t=>journalText(t.label||t.id)).join("、")+'</span>');
           }
         }catch(_tg2){}
+        /* v20a393：幕後職務交付——殺青嗰刻授 castingTag＋記職務 log（每 gigId 一次；
+           標籤零雙軌 delta，E3 入口讀職務 log，唔係讀標籤數）。 */
+        try{
+          const _dg392 = (typeof duty392GigById==="function") ? duty392GigById(sh.gigId) : null;
+          if(_dg392 && _dg392.dutyKind){
+            if(!Array.isArray(S.backstageDuties392)) S.backstageDuties392 = [];
+            if(!S.backstageDuties392.some(d=>d && d.gigId===sh.gigId)){
+              S.backstageDuties392.push({ kind: _dg392.dutyKind, production: _dg392.workTitle || sh.gigId, gigId: sh.gigId, day: S.dayIndex|0 });
+              const _tagId392 = _dg392.dutyTagId || "";
+              if(_tagId392 && typeof applyCastingTags==="function"){
+                const _got392 = applyCastingTags([_tagId392]);
+                if(_got392 && _got392.length) notes.push('<span class="var-note">幕後職務：'+_got392.map(t=>journalText(t.label||t.id)).join("、")+'</span>');
+              }
+            }
+          }
+        }catch(_dg392e){}
         /* v20a79 ENC79：同紅星主演通告殺青 → 嗰位星好感 +3（劣評 +1）＋合作回望標記 */
         try{ if(typeof enc79OnWrap==="function") enc79OnWrap(sh); }catch(_e79w){}
         /* v20a89 BR89：引薦通告殺青 → 提攜債權標記兌現 */
@@ -22797,8 +23185,19 @@ function resolvePlannedDay(id){
           const _g95 = (typeof grant229GigById==="function") ? grant229GigById(sh.gigId) : ((typeof GIGS!=="undefined" ? GIGS : []).find(x=>x && x.id===sh.gigId)); /* v20a388：同上，跨年殺青計數器（end95／end229／合約信用）唔可以再跳過 */
           if(_g95 && typeof end95AddWrap==="function") end95AddWrap(S, _g95, sh);
           if(_g95 && typeof end229AddWrap==="function") end229AddWrap(S, _g95);
-          /* v20a361 P1-B：合約信用——殺青即寫 delta（季上限 +4／生涯 +36，見 contractCredit361OnWrap） */
-          if(_g95 && typeof contractCredit361OnWrap==="function") contractCredit361OnWrap(S, _g95, S.dayIndex|0);
+          /* v20a361 P1-B：合約信用——殺青即寫 delta（季上限 +4／生涯 +36，見 contractCredit361OnWrap）
+             v20a393：強制即派殺青嗰份，記入對照信用帳（forcedCredit392），供 ID 對照重算；自選殺青唔記。 */
+          if(_g95 && typeof contractCredit361OnWrap==="function"){
+            const _gain392 = contractCredit361OnWrap(S, _g95, S.dayIndex|0);
+            try{
+              if(_gain392 > 0 && typeof isForcedGig392==="function" && isForcedGig392(S, sh.gigId)){
+                if(!S.forcedCredit392 || typeof S.forcedCredit392!=="object" || Array.isArray(S.forcedCredit392)) S.forcedCredit392 = { direct: 0, fame: 0, wraps: 0, choices: 0, backfilled: false };
+                S.forcedCredit392.direct = (Number(S.forcedCredit392.direct)||0) + _gain392;
+                S.forcedCredit392.fame = (Number(S.forcedCredit392.fame)||0) + Math.max(0, Number(sh.fame)||0);
+                S.forcedCredit392.wraps = (Number(S.forcedCredit392.wraps)||0) + 1;
+              }
+            }catch(_fc392e){}
+          }
         }catch(_e95w){}
         try{
           S.wrapHistory = S.wrapHistory || [];
@@ -22899,6 +23298,27 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
     else if(st>=70) notes.push(`<span class="bad">壓力偏高：觀眾反應淡，收入打折。</span>`);
     title = `咖啡店駐場（週${weekdayName(weekdayIdx(S.dayIndex))}）`;
   }
+  else if(id==="pt_topup"){
+    /* v20a393：補班夜班——糊口工保底（第 10 項）。$185／班，每週上限 2 班（S.ptTopup392
+       計數，週 key 同 ptWeek368 式 floor(dayIndex/7)+1）；第 3 班起 $0＋提示（硬截，唔靠掣鎖）。
+       按實際工時計薪：固定 $185 夜班費，唔疊 taper／唔疊壓力折扣（夜班本身就係頂硬上）；
+       壓力小加（6+R(0,4)，均值 8，預覽 stressDeltaForAct pt_topup: 8 對齊）。
+       唔畀 fame／credit／導演 rel／演藝通告計數；唔入 weekGigsDone；薪金即日入帳，
+       喺當週生活費扣賬前入賬（settleWeek 喺週末先扣）。保底算式見 NOTES：最高生活費
+       $365＋$5 緩衝＝$370／週，兩班各 $185；零工週做足兩班淨 ＋$5／週。 */
+    const wk392=Math.floor(((S&&S.dayIndex)||0)/7)+1;
+    if(!S.ptTopup392 || S.ptTopup392.wk!==wk392) S.ptTopup392={wk:wk392, count:0};
+    if(S.ptTopup392.count>=2){
+      notes.push(`<span class="var-note">本週補班已滿 2 班——下週再嚟。</span>`);
+      title = `補班夜班（已滿額）`;
+    } else {
+      S.ptTopup392.count++;
+      const pay392=185;
+      notes=applyGain60({money:pay392, stress:6+R(0,4)});
+      notes.unshift(`<span class="gold">補班夜班日結 · 週${weekdayName(weekdayIdx(S.dayIndex))}（本週第 ${S.ptTopup392.count} 班／2 班）</span>`);
+      title = `補班夜班（週${weekdayName(weekdayIdx(S.dayIndex))}）`;
+    }
+  }
   else if(id.startsWith("job:")){
     // 手帳「約試鏡日」——當日先過門檻＋擲成功率
     // v20a91 AUD91：同 doAudition 睇齊——試鏡嗰刻擲定成單入 S.pendingAud 等公佈，
@@ -22973,7 +23393,7 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
     else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ k105 = "train"; det105 = ((typeof COURSE_DEFS!=="undefined" && COURSE_DEFS[id])||{}).name || ""; }
     else if(id==="rest") k105 = "rest";
     else if(id==="home_chore") k105 = "chore";
-    else if(id==="street" || id==="cafe_gig") k105 = "perform";
+    else if(id==="street" || id==="cafe_gig" || id==="pt_topup") k105 = "perform"; /* v20a393：補班夜班歸 perform（手帳回顧） */
     else if(id==="sick61") k105 = "sick";
     if(k105 && typeof recordExec105Day==="function") recordExec105Day(k105, det105);
   }catch(_e){}
@@ -23134,14 +23554,41 @@ function autoPushC1IfNeeded(opts){
    觸發點係 goToMapForBrowse 尾段（晨鏈＋行程 kick 行完之後、地圖顯示之前）；
    一日最多一幕（evalNode 同日禁）；唔經 openLoc，唔食出行額度；
    手帳未確定嗰陣唔靜默提交，順延到下次返地圖；結局鎖／劇情進行中嗰陣唔播。 */
+/* v20a393：N12 預設 tick——N11 完成、N12 未玩、日期已到 1992 秋首日（dayIndex 974）
+   仍未處理，就經真 StoryOC.applyChoice 行預設拒接（N12_b：flag_stunt_refuse、
+   industryCredit +1、「惜身」標籤；GRANT229_CHOICE 同時記低跟進通告 gig_1992_tv_103，
+   翌晨照派）。每節只結算一次（markDone 後即唔再觸發）；旗 flag_n12_auto_default
+   供診斷／測試識別。N12 本身持續顯示至處理：閘一開（1992 春／夏）story165NextOpen
+   每日返地圖都會揀佢播；忙拍攝嗰陣強制播順延至下一可操作時段（story165 機制本身）。 */
+function story392N12DefaultTick(){
+  try{
+    if(typeof StoryOC==="undefined" || !S) return false;
+    if(!S.flags) return false;
+    const st = StoryOC.ensure ? StoryOC.ensure() : null;
+    const done = (st && st.done) ? st.done : {};
+    if(!done["N11"] || done["N12"]) return false;
+    if((Number(S.dayIndex)||0) < 974) return false;
+    if(typeof StoryOC.findNodeRaw!=="function" || typeof StoryOC.applyChoice!=="function") return false;
+    const node = StoryOC.findNodeRaw("N12");
+    if(!node || !Array.isArray(node.choices)) return false;
+    const choice = node.choices.find(c=>c && c.id==="N12_b");
+    if(!choice) return false;
+    StoryOC.applyChoice(node, choice);
+    try{ S.flags.flag_n12_auto_default = true; }catch(_e){}
+    try{ delete S.flags.n12_pending392; }catch(_e){}
+    try{ if(typeof toast==="function") toast("「高危替身」一幕你一直未處理，已按劇情預設（拒接）記低。"); }catch(_e){}
+    return true;
+  }catch(_e){ return false; }
+}
 function story165NextOpen(){
   try{
     if(typeof StoryOC==="undefined" || !S) return null;
     StoryOC.ensure();
+    try{ if(typeof story392N12DefaultTick==="function") story392N12DefaultTick(); }catch(_e){}
     const oc = StoryOC.listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true }) || {};
     const open = oc.open || [];
-    /* 播次序跟 prog71 order71：N1–N5、N6、N6F、N18、N19、N7–N17 */
-    const ORDER165 = ["N1","N2","N3","N4","N5","N6","N6F","N18","N19","N7","N9","N10","N11","N8","N14","N16","N13","N12","N15","N17"];
+    /* 播次序跟 prog71 order71：N1–N5、N6、N6F、N18、N19、N7–N17；v20a393：N12 移到 N13 之前（N12 閘 1992 春／夏，N13 亦係夏——N12 要先播先至唔會俾 N13 搶閘） */
+    const ORDER165 = ["N1","N2","N3","N4","N5","N6","N6F","N18","N19","N7","N9","N10","N11","N8","N14","N16","N12","N13","N15","N17"];
     const rank165 = (id)=>{ const i = ORDER165.indexOf(id); return i < 0 ? 99 : i; };
     const cands = open.filter(r=>r && r.id && (r.id==="N6F" || /^N\d+$/.test(r.id)));
     if(!cands.length) return null;
@@ -24675,6 +25122,105 @@ function favorDueTick(){
 }
 /* 跟 mergeTriggerGigs 同一注入模式：favorState==="called" 且喺窗口內先將幫忙通告注入 GIGS，
    其餘時間移除，確保平時完全唔顯示；殺青後 isGigConsumed 亦會自然落板。 */
+/* ===== v20a393：幕後職務通告（DUTY392）——三類明確職務，每種兩張、製作各異，
+   經通告板自選、完成交付先計（E3 職務入口＋E5(a) 導演關係入口共用）。
+   唔入 content/gigs_new.json（330 張庫數不變），runtime 注入 GIGS，仿 mergeFavorGigs 模式。
+   欄位要點：id 用 duty392_ 前綴（避開 NAT92 錯峰——nat92StaggerEligible 只認
+   ^gig_\d{4}_／^g36_）；season「全年」（seasonRank 回 0，永遠唔藏）；year 用舊曆源頭值
+   1988／1989／1990，經 years66GigRemap＋2 變顯示年（仿 gig_favor_ho_errand year:1988
+   precedent）；文案避開四位年份數字；roleScale "crew"（唔入任何擔正尺度，end229IsLead
+   回 false）；tier「臨記」、hard 0.2、req {}——人人都接得；pay [120,180]、fame [0,1]、
+   拍攝 2 日；duty392＋dutyKind＋dutyTagId 係判定／授標籤用欄。 ===== */
+const DUTY392_GIGS = [
+  { id:"duty392_clapper_a", year:1988, season:"全年", type:"電影", genreLabel:"劇情", category:"幕後職務", loc:"film_harbour",
+    workTitle:"廟街夜話", title:"幕後職務：場記——《廟街夜話》", roleLabel:"場記", director:"方子健",
+    roleHint:"跟組兩日，負責打板、記場次，準時到場、聽副導指示做嘢就得。",
+    blurb:"《廟街夜話》劇組要一個場記跟兩日：打板、記場次、幫手對通告。唔使露面，但成組人都靠你嗰塊板認場次。",
+    synopsis:"夜戲為主嘅街坊劇組《廟街夜話》開廠兩日，要場記一名：每場開拍前打板，收工前核對場次表，錯一格都可能令成晚白拍。",
+    discoverNote:"劇組請場記：跟組兩日，打板記場次。",
+    boardPriority:"normal", boardNote:"幕後職務", seasonWeight:1, req:{}, pay:[120, 180], breachFee:0, fame:[0, 1], popularity:[0, 1],
+    stressDeltaHint:"低", hard:0.2, tier:"臨記", stars:1, applyDeadlineDays:30, shootDaysHint:2, shootHint:"跟組兩日，準時到場、聽指示做嘢。",
+    roleScale:"crew", shootBand:[2, 2], shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["幕後職務：完成交付先計"] },
+    storyKeys:[], tagOnComplete:[], rumorKeys:[], seasonHook:[], boardHookMode:"normal", isKeyGig:false,
+    duty392:true, dutyKind:"場記", dutyTagId:"tag_duty_clapper" },
+  { id:"duty392_ad_a", year:1988, season:"全年", type:"電影", genreLabel:"劇情", category:"幕後職務", loc:"film_lion",
+    workTitle:"碼頭風雲", title:"幕後職務：副導演助理——《碼頭風雲》", roleLabel:"副導演助理", director:"梁志強",
+    roleHint:"跟組兩日，幫副導排通告、現場協調，企得穩、記得清就得。",
+    blurb:"《碼頭風雲》劇組要一個副導演助理跟兩日：幫手排通告、現場協調人手，副導話你係佢第二對眼。",
+    synopsis:"碼頭實景拍攝嘅《碼頭風雲》開廠兩日，要副導演助理一名：跟副導排定每日通告，現場協調臨記企位同道具交收，唔可以甩轆。",
+    discoverNote:"劇組請副導演助理：排通告、現場協調。",
+    boardPriority:"normal", boardNote:"幕後職務", seasonWeight:1, req:{}, pay:[120, 180], breachFee:0, fame:[0, 1], popularity:[0, 1],
+    stressDeltaHint:"低", hard:0.2, tier:"臨記", stars:1, applyDeadlineDays:30, shootDaysHint:2, shootHint:"跟組兩日，準時到場、聽指示做嘢。",
+    roleScale:"crew", shootBand:[2, 2], shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["幕後職務：完成交付先計"] },
+    storyKeys:[], tagOnComplete:[], rumorKeys:[], seasonHook:[], boardHookMode:"normal", isKeyGig:false,
+    duty392:true, dutyKind:"副導演助理", dutyTagId:"tag_duty_ad" },
+  { id:"duty392_editor_a", year:1989, season:"全年", type:"電視劇", genreLabel:"劇情", category:"幕後職務", loc:"tvb_longmen",
+    workTitle:"電視城長劇", title:"幕後職務：剪接助理——《電視城長劇》", roleLabel:"剪接助理", director:"吳國榮",
+    roleHint:"跟組兩日，幫剪接師整理素材、對片，坐得定、手腳快就得。",
+    blurb:"《電視城長劇》剪接房要一個助理跟兩日：整理素材、對片、幫剪接師執好每一格，成套劇嘅節奏由你手上開始。",
+    synopsis:"電視城長劇組開廠兩日，要剪接助理一名：將每日拍返嚟嘅素材分類整理、對齊場次表交畀剪接師，錯一格都可能剪錯段。",
+    discoverNote:"剪接房請助理：整理素材、對片交付。",
+    boardPriority:"normal", boardNote:"幕後職務", seasonWeight:1, req:{}, pay:[120, 180], breachFee:0, fame:[0, 1], popularity:[0, 1],
+    stressDeltaHint:"低", hard:0.2, tier:"臨記", stars:1, applyDeadlineDays:30, shootDaysHint:2, shootHint:"跟組兩日，準時到場、聽指示做嘢。",
+    roleScale:"crew", shootBand:[2, 2], shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["幕後職務：完成交付先計"] },
+    storyKeys:[], tagOnComplete:[], rumorKeys:[], seasonHook:[], boardHookMode:"normal", isKeyGig:false,
+    duty392:true, dutyKind:"剪接助理", dutyTagId:"tag_duty_editor" },
+  { id:"duty392_clapper_b", year:1989, season:"全年", type:"電影", genreLabel:"劇情", category:"幕後職務", loc:"film_cotton",
+    workTitle:"獅子山下情", title:"幕後職務：場記——《獅子山下情》", roleLabel:"場記", director:"何偉棠",
+    roleHint:"跟組兩日，負責打板、記場次，準時到場、聽副導指示做嘢就得。",
+    blurb:"《獅子山下情》劇組要一個場記跟兩日：打板、記場次、幫手對通告。唔使露面，但成組人都靠你嗰塊板認場次。",
+    synopsis:"山邊實景拍攝嘅《獅子山下情》開廠兩日，要場記一名：每場開拍前打板，收工前核對場次表，錯一格都可能令成晚白拍。",
+    discoverNote:"劇組請場記：跟組兩日，打板記場次。",
+    boardPriority:"normal", boardNote:"幕後職務", seasonWeight:1, req:{}, pay:[120, 180], breachFee:0, fame:[0, 1], popularity:[0, 1],
+    stressDeltaHint:"低", hard:0.2, tier:"臨記", stars:1, applyDeadlineDays:30, shootDaysHint:2, shootHint:"跟組兩日，準時到場、聽指示做嘢。",
+    roleScale:"crew", shootBand:[2, 2], shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["幕後職務：完成交付先計"] },
+    storyKeys:[], tagOnComplete:[], rumorKeys:[], seasonHook:[], boardHookMode:"normal", isKeyGig:false,
+    duty392:true, dutyKind:"場記", dutyTagId:"tag_duty_clapper" },
+  { id:"duty392_ad_b", year:1990, season:"全年", type:"電視劇", genreLabel:"劇情", category:"幕後職務", loc:"tvb_kowloon",
+    workTitle:"香江歲月", title:"幕後職務：副導演助理——《香江歲月》", roleLabel:"副導演助理", director:"沈家豪",
+    roleHint:"跟組兩日，幫副導排通告、現場協調，企得穩、記得清就得。",
+    blurb:"《香江歲月》劇組要一個副導演助理跟兩日：幫手排通告、現場協調人手，副導話你係佢第二對眼。",
+    synopsis:"電視城開廠嘅《香江歲月》要副導演助理一名，跟組兩日：跟副導排定每日通告，現場協調臨記企位同道具交收，唔可以甩轆。",
+    discoverNote:"劇組請副導演助理：排通告、現場協調。",
+    boardPriority:"normal", boardNote:"幕後職務", seasonWeight:1, req:{}, pay:[120, 180], breachFee:0, fame:[0, 1], popularity:[0, 1],
+    stressDeltaHint:"低", hard:0.2, tier:"臨記", stars:1, applyDeadlineDays:30, shootDaysHint:2, shootHint:"跟組兩日，準時到場、聽指示做嘢。",
+    roleScale:"crew", shootBand:[2, 2], shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["幕後職務：完成交付先計"] },
+    storyKeys:[], tagOnComplete:[], rumorKeys:[], seasonHook:[], boardHookMode:"normal", isKeyGig:false,
+    duty392:true, dutyKind:"副導演助理", dutyTagId:"tag_duty_ad" },
+  { id:"duty392_editor_b", year:1990, season:"全年", type:"電影", genreLabel:"劇情", category:"幕後職務", loc:"film_harbour",
+    workTitle:"海港之夜", title:"幕後職務：剪接助理——《海港之夜》", roleLabel:"剪接助理", director:"劉天成",
+    roleHint:"跟組兩日，幫剪接師整理素材、對片，坐得定、手腳快就得。",
+    blurb:"《海港之夜》剪接房要一個助理跟兩日：整理素材、對片、幫剪接師執好每一格，成套戲嘅節奏由你手上開始。",
+    synopsis:"海港夜景拍攝嘅《海港之夜》開廠兩日，要剪接助理一名：將每日拍返嚟嘅素材分類整理、對齊場次表交畀剪接師，錯一格都可能剪錯段。",
+    discoverNote:"剪接房請助理：整理素材、對片交付。",
+    boardPriority:"normal", boardNote:"幕後職務", seasonWeight:1, req:{}, pay:[120, 180], breachFee:0, fame:[0, 1], popularity:[0, 1],
+    stressDeltaHint:"低", hard:0.2, tier:"臨記", stars:1, applyDeadlineDays:30, shootDaysHint:2, shootHint:"跟組兩日，準時到場、聽指示做嘢。",
+    roleScale:"crew", shootBand:[2, 2], shootWeekdays:[1, 2, 3, 4, 5, 6, 7],
+    limits:{ gender:"any", licenses:[], groupOnly:false, notes:["幕後職務：完成交付先計"] },
+    storyKeys:[], tagOnComplete:[], rumorKeys:[], seasonHook:[], boardHookMode:"normal", isKeyGig:false,
+    duty392:true, dutyKind:"剪接助理", dutyTagId:"tag_duty_editor" }
+];
+function mergeDuty392Gigs(){
+  try{
+    if(typeof GIGS==="undefined" || !Array.isArray(GIGS)) return 0;
+    let n = 0;
+    DUTY392_GIGS.forEach(raw=>{
+      if(!raw || !raw.id) return;
+      if(GIGS.some(g=>g && g.id===raw.id)) return;
+      const g = Object.assign({}, raw);
+      if(typeof years66GigRemap==="function") years66GigRemap(g);
+      GIGS.push(g);
+      try{ window.GIGS = GIGS; }catch(_w){}
+      n++;
+    });
+    return n;
+  }catch(_e){ return 0; }
+}
 function mergeFavorGigs(){
   try{
     if(typeof GIGS==="undefined" || !Array.isArray(GIGS)) return 0;
@@ -46179,6 +46725,64 @@ function mergeNat92Gigs(){
      nat92Hash 等）留返，新庫 gig 照行錯峰上板。 */
   return 0;
 }
+/* v20a393：GH 板面保證——只針對三個電視台板（星河／九龍／海港）。狀態
+   S.variety392ByLoc[locId] = {gigId, sinceDay}。
+   板上已有綜藝 → 唔注入；板上無綜藝 → 注入一張未完成綜藝（首選合季節，其次
+   跨季——檔期本身就係通告嘅可用期，注入只係繞過 NAT92 錯峰，唔改季節邏輯以外
+   任何嘢）；同一張留板 ≥7 日（7 日內重開板照貼同一張），14 日內唔重複注入同一張。
+   注入嗰張經玩家自選試鏡日報名，構造上唔會撞強制拍攝（強制拍攝係翌晨即派，
+   唔經板面；玩家報名嗰陣拍攝日未鎖死）。 */
+function variety392EnsureBoard(locId, shown, curSeason){
+  try{
+    if(!locId || (locId!=="tvb_longmen" && locId!=="tvb_kowloon" && locId!=="tvb_harbour")) return;
+    if(!Array.isArray(shown)) return;
+    if(shown.some(g=>g && g.type==="綜藝")) return;
+    if(typeof S==="undefined" || !S) return;
+    if(!S.variety392ByLoc || typeof S.variety392ByLoc!=="object") S.variety392ByLoc = {};
+    const today = Number(S.dayIndex)||0;
+    const st = S.variety392ByLoc[locId] || null;
+    const consumed392 = (g)=>{
+      try{ if(g && g.trigger && (typeof triggerGigOn==="function" ? !triggerGigOn(g) : true)) return true; }catch(_e){}
+      try{ if(typeof isGigConsumed==="function" && isGigConsumed(g)) return true; }catch(_e){}
+      return false;
+    };
+    if(st && st.gigId){
+      const held = (typeof GIGS!=="undefined" && Array.isArray(GIGS)) ? GIGS.find(g=>g && g.id===st.gigId) : null;
+      if(today - (Number(st.sinceDay)||0) < 7){
+        /* 留板期內：同一張未完成就照貼；已接／已殺青就等留板期過先換張 */
+        if(held && !consumed392(held) && !shown.some(g=>g && g.id===held.id)) shown.push(held);
+        return;
+      }
+    }
+    const pool = (typeof GIGS!=="undefined" && Array.isArray(GIGS)) ? GIGS : [];
+    const inSeason392 = (g)=>{
+      try{ if(typeof gigSeasonHidden88==="function") return !gigSeasonHidden88(g, curSeason); }catch(_e){}
+      try{ if(typeof seasonRank==="function") return seasonRank(g, curSeason)<=0; }catch(_e){}
+      return true;
+    };
+    let cands = pool.filter(g=>{
+      if(!g || g.loc!==locId || g.type!=="綜藝") return false;
+      if(consumed392(g)) return false;
+      if(shown.some(x=>x && x.id===g.id)) return false;
+      if(st && st.gigId===g.id && today - (Number(st.sinceDay)||0) < 14) return false;
+      return inSeason392(g);
+    });
+    if(!cands.length){
+      cands = pool.filter(g=>{
+        if(!g || g.loc!==locId || g.type!=="綜藝") return false;
+        if(consumed392(g)) return false;
+        if(shown.some(x=>x && x.id===g.id)) return false;
+        if(st && st.gigId===g.id && today - (Number(st.sinceDay)||0) < 14) return false;
+        return true;
+      });
+    }
+    if(!cands.length) return;
+    try{ if(typeof boardSortCompare==="function") cands.sort((a,b)=>boardSortCompare(a,b,curSeason)); }catch(_e){}
+    const pick = cands[0];
+    shown.push(pick);
+    S.variety392ByLoc[locId] = { gigId: pick.id, sinceDay: today };
+  }catch(_e){}
+}
 /** v19l：某一地點、某一季嘅通告欄名單。
  *  錯季（seasonRank>0）同已殺青／拍攝中仍然硬藏。
  *  唔再以聲望、req.fame、fameFloor 硬藏「高」或任何級——條件未齊仍上板，Detail 硬鎖「暫未能報」。
@@ -46187,6 +46791,7 @@ function mergeNat92Gigs(){
 function gigsForLocSeasonBoard(locId, curSeason){
   try{ if(typeof mergeSoftBridgeGigs==="function") mergeSoftBridgeGigs(); }catch(_br){}
   try{ if(typeof mergeFavorGigs==="function") mergeFavorGigs(); }catch(_fg){}
+  try{ if(typeof mergeDuty392Gigs==="function") mergeDuty392Gigs(); }catch(_d392){} /* v20a393：幕後職務通告注入（DUTY392） */
   try{ if(typeof mergeQ12Gigs==="function") mergeQ12Gigs(); }catch(_q12){} /* v20a299 Q12：N6／N6F 四旗跟進通告 */
   try{ if(typeof mergeBr89Gigs==="function") mergeBr89Gigs(); }catch(_b89g){}
   try{ if(typeof mergeRivalGigs==="function") mergeRivalGigs(); }catch(_rg){}
@@ -46261,6 +46866,8 @@ function gigsForLocSeasonBoard(locId, curSeason){
     if(tr) return tr;
     return byBoard(a,b);
   });
+  /* v20a393：GH 板面保證——電視台板無綜藝嗰陣注入一張（見 variety392EnsureBoard）。 */
+  try{ if(typeof variety392EnsureBoard==="function") variety392EnsureBoard(locId, shown, curSeason); }catch(_v393){}
   return shown;
 }
 /* v20a392 UI392 ③：通告欄排序／篩選狀態（本 session 內記住，唔入存檔）。 */

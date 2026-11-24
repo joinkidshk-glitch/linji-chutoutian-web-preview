@@ -138,7 +138,7 @@ const GATE_WANT = {
   N9: { needDone: ['N7'], fameGt: 28, tagAny: ['喜劇', 'comedy', '動作', 'action', 'tag_comedy', '喜劇細胞', 'tag_action', '身手好'], yearMin: 1991, seasonIn: ['秋'] },
   N10: { weekMin: 100, yearMin: 1991, seasonIn: ['冬'] }, // v372：加 weekMin 100 防年頭冬尾搶閘
   N11: { needDone: ['N10'], dualGt: 70, weekMin: 100, yearMin: 1991, seasonIn: ['冬'] }, // v372：同上
-  N12: { needDone: ['N11'], tagAny: ['動作', 'action', 'tag_action', '身手好'], yearMin: 1992, seasonIn: ['春'] },
+  N12: { needDone: ['N11'], yearMin: 1992, seasonIn: ['春', '夏'] }, // v20a393：刪動作標籤前置、窗口擴至春／夏
   N19: { needDone: ['N18'], weekMin: 61, yearMin: 1991, seasonIn: ['春'] },
 };
 for (const [id, want] of Object.entries(GATE_WANT)) {

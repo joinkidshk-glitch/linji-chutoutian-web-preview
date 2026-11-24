@@ -58,10 +58,16 @@ const FN_LIST = ['function dateObj','function calendarSeason','function dualTrac
   'function end95StoryDone','function end95ChainsDone','function end95SpineDone','function end95PangProgress','function end95E3Variant','function end95BuildGaps',
   'function end229IsLead','function end229ClassifyLead','function end229EmptyLeadStats',
   'function end229DeriveLeadStats','function leadStats229Of','function end229AddWrap',
+  'function isForcedGig392','function day392YearMonth','function end392SelDeriveStats','function careerStats392SelOf',
+  'function exposure392Of','function activity392Of','function isLowActivity392',
+  'function duty392GigById','function backstageDuties392Of',
+  'function forcedCredit392ReplayWraps','function forcedCredit392Of','function forcedCredit392CounterCredit',
+  'function endingAward392TvSupport','function endingAward392WonLabel', // v20a392：resolveEnding410 新依賴
   'function resolveEnding410','function endingEveOptions410','function endingEsc410','function endingCareerScene410','function endingSummaryHtml410'];
 const CONST_LIST = ['ENDING410_CAREER_NAMES','ENDING410_T','ENDING_NEG_TAGS410','ENDING410_BACKSTAGE_KEYS','ENDING410_EXODUS_NAME_FALLBACK',
   'ENDING410_NPC_NAMES','ENDING95_T','END95_TYPE_MEDIUM','END95_LEAD_SCALES','END95_STRONG_LEAD','END95_GENRE_TYPE_NAMES',
-  'END95_COMEDY_G','END95_ACTION_G','END95_COMEDY_KW','END95_ACTION_KW','ENDING410_ADJ_RUMOR','END229_LEAD_MEDIUM','SPINE95_REQUIRED'];
+  'END95_COMEDY_G','END95_ACTION_G','END95_COMEDY_KW','END95_ACTION_KW','ENDING410_ADJ_RUMOR','END229_LEAD_MEDIUM','SPINE95_REQUIRED',
+  'DUTY392_KIND_BY_ID','DUTY392_GIGS']; // v20a392：backstageDuties392Of 衍生路徑讀 DUTY392_GIGS
 let SRC = "var START = { y:1990, m:1, d:1 };\n" + FN_LIST.map(extractFn).join('\n') + '\n' + CONST_LIST.map(extractConst).join('\n');
 CONST_LIST.forEach(n => { SRC = SRC.split('const '+n+' =').join('var '+n+' ='); });
 eval(SRC);

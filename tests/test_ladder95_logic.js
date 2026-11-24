@@ -66,10 +66,16 @@ const FN_LIST = ['function dateObj','function calendarSeason','function dualTrac
   'function end95StoryDone','function end95ChainsDone','function end95SpineDone','function end95PangProgress','function end95E3Variant','function end95BuildGaps',
   'function end229IsLead','function end229ClassifyLead','function end229EmptyLeadStats',
   'function end229DeriveLeadStats','function leadStats229Of','function end229AddWrap',
+  'function isForcedGig392','function day392YearMonth','function end392SelDeriveStats','function careerStats392SelOf', // v20a393 自選履歷
+  'function exposure392Of','function activity392Of','function isLowActivity392', // v20a393 曝光／活動量
+  'function duty392GigById','function backstageDuties392Of', // v20a393 幕後職務
+  'function forcedCredit392ReplayWraps','function forcedCredit392Of','function forcedCredit392CounterCredit', // v20a393 對照信用
+  'function endingAward392TvSupport','function endingAward392WonLabel', // v20a393 獎項句憑據
   'function resolveEnding410','function endingEveOptions410','function endingEsc410','function endingCareerScene410','function endingSummaryHtml410'];
 const CONST_LIST = ['ENDING410_CAREER_NAMES','ENDING410_T','ENDING_NEG_TAGS410','ENDING410_BACKSTAGE_KEYS','ENDING410_EXODUS_NAME_FALLBACK',
   'ENDING410_NPC_NAMES','ENDING95_T','END95_TYPE_MEDIUM','END95_LEAD_SCALES','END95_STRONG_LEAD','END95_GENRE_TYPE_NAMES',
-  'END95_COMEDY_G','END95_ACTION_G','END95_COMEDY_KW','END95_ACTION_KW','ENDING410_ADJ_RUMOR','END229_LEAD_MEDIUM','SPINE95_REQUIRED'];
+  'END95_COMEDY_G','END95_ACTION_G','END95_COMEDY_KW','END95_ACTION_KW','ENDING410_ADJ_RUMOR','END229_LEAD_MEDIUM','SPINE95_REQUIRED',
+  'DUTY392_KIND_BY_ID','DUTY392_GIGS']; // v20a393 職務表
 let SRC = "var START = { y:1990, m:1, d:1 };\n" + FN_LIST.map(extractFn).join('\n') + '\n' + CONST_LIST.map(extractConst).join('\n');
 CONST_LIST.forEach(n => { SRC = SRC.split('const '+n+' =').join('var '+n+' ='); });
 eval(SRC);
@@ -189,9 +195,9 @@ const SPINE95_DONE = { N1:true, N2:true, N3:true, N4:true, N5:true, N6:true, N7:
     awardsLog: [{ medium: 'film', categories: [{ id: 'w', outcome: 'won', repTitle: '丙片' }] }],
     wf3: { liaoHarvestDone: 1 },
   }));
-  /* 雙軌 405 本身已過 SS 線（SS 排喺專長格之前，係「未齊 E1 質性閘」嘅頂格）→ 落 SS 而唔係 FK；
-     差邊瓣要講明差擔正媒介嗰瓣。 */
-  ok('E1 閘拆解：只得一種媒介擔正 → 唔上 E1（落 SS），差邊瓣講擔正', rOneLead.career === 'SS' && rOneLead.gaps95.some(g => /擔正/.test(g)));
+  /* v20a393：六格專長全部排喺 SS 之前——雙軌 405、電影佔比 60%、電影擔正 4，
+     齊 FK 條件，落 FK 而唔係 SS；差邊瓣要講明差擔正媒介嗰瓣（E1 質性閘未齊）。 */
+  ok('E1 閘拆解：只得一種媒介擔正 → 唔上 E1（落 FK：專長格排喺 SS 之前），差邊瓣講擔正', rOneLead.career === 'FK' && rOneLead.gaps95.some(g => /擔正/.test(g)));
 }
 
 /* ============ v20a249：end95SpineDone 單元（讀法甲：17 位置＋N6/N6F 二揀一；N18/N19 唔計） ============ */
@@ -268,7 +274,7 @@ const SPINE95_DONE = { N1:true, N2:true, N3:true, N4:true, N5:true, N6:true, N7:
       byMedium: { film: 15, tv: 12, music: 10, variety: 8, ad: 5 },
       leadByMedium: { film: 1 }, genreIdentified: 3, genreComedy: 3, genreAction: 0 }),
   }));
-  ok('片種樣本守門：可辨識得 3（喜劇 3/3）唔入 CK → 落 E2（v378 B6：fame 105／credit 95，95 > 105×0.9=94.5，唔入 ID，照落 E2）', r.career === 'E2');
+  ok('片種樣本守門：可辨識得 3（喜劇 3/3）唔入 CK → 落 CR（v393：fame 105／credit 95，CR 窗擴至 110；95 ≤ 105×0.9=94.5 唔入 ID，照落 CR）', r.career === 'CR');
 }
 
 /* ============ ID／CR 帶位弧 ============ */
@@ -289,22 +295,38 @@ const SPINE95_DONE = { N1:true, N2:true, N3:true, N4:true, N5:true, N6:true, N7:
   ok('帶位：信用 70／聲望 45（35–59 帶）→ CR 實力派演員', r.career === 'CR');
 }
 
-/* ============ E3 三變體（只分呈現） ============ */
+/* ============ E3 三變體（只分呈現）——v20a393：導演關係入口加職務門檻，fixture 補職務 log ============ */
 {
   const base = { npcs: { agent: 0, director: 65, colleague: 0, reporter: 0, stylist: 0, rival: 0 } };
+  /* 兩種職務、兩個製作 → 標籤入口開；rel≥60＋3 宗職務／2 製作 → 關係入口亦開 */
+  const duties2 = [{ kind: '場記', production: '甲組', gigId: 'duty392_clapper_a', day: 100 }, { kind: '剪接助理', production: '乙組', gigId: 'duty392_editor_a', day: 200 }];
+  const duties3 = duties2.concat([{ kind: '副導演助理', production: '丙組', gigId: 'duty392_ad_a', day: 300 }]);
   const rDir = R(arc(30, 50, Object.assign({}, base, {
+    backstageDuties392: duties2,
     careerStats95: stats95({ total: 30, byMedium: { film: 20, tv: 5, music: 2, variety: 2, ad: 1 }, backstageWorks: 4 }) })));
   ok('E3 變體：電影幕後多 → 大導演', rDir.career === 'E3' && rDir.careerVariant === '大導演' && rDir.title.indexOf('大導演') === 0);
   const rProd = R(arc(30, 50, Object.assign({}, base, {
+    backstageDuties392: duties2,
     careerStats95: stats95({ total: 30, byMedium: { film: 3, tv: 20, music: 2, variety: 3, ad: 2 }, backstageWorks: 4 }) })));
   ok('E3 變體：電視幕後多 → 金牌監製', rProd.career === 'E3' && rProd.careerVariant === '金牌監製');
   const rBoss = R(arc(30, 50, Object.assign({}, base, {
+    backstageDuties392: duties3,
     careerStats95: stats95({ total: 30, byMedium: { film: 20, tv: 5, music: 2, variety: 2, ad: 1 }, backstageWorks: 4 }),
     /* 人情總量口徑＝endingFavor410 total：settled 4＋未用 favor/debt 債權 2（mockCredits）＝6 */
     favorLedger: { settled: 4, credits: 0, exodus: [], counted: {} },
     mockCredits: [{ id: 'favor_x1', amount: 1 }, { id: 'debt_y1', amount: 1 }] })));
   ok('E3 變體：人情總量 6（≥5）→ 製片老闆（壓過媒介構成）', rBoss.career === 'E3' && rBoss.careerVariant === '製片老闆');
+  /* v20a393：導演 rel≥60 但 0 職務 → 唔入 E3（fame 30／credit 50：E2 要 fame≥35，跌返 E0） */
+  const rNoDuty = R(arc(30, 50, Object.assign({}, base, {
+    careerStats95: stats95({ total: 30, byMedium: { film: 20, tv: 5, music: 2, variety: 2, ad: 1 }, backstageWorks: 4 }) })));
+  ok('E3 守門：導演 rel 65 但 0 職務 → 唔入 E3（落 E0，唔係靠殺青堆 rel 就入到）', rNoDuty.career === 'E0');
+  /* 同製作兩個職務 → 製作得 1 個，標籤入口唔開；3 宗都唔夠 → 關係入口亦唔開 */
+  const rSameProd = R(arc(30, 50, Object.assign({}, base, {
+    backstageDuties392: [{ kind: '場記', production: '甲組', gigId: 'duty392_clapper_a', day: 100 }, { kind: '剪接助理', production: '甲組', gigId: 'duty392_editor_a', day: 200 }],
+    careerStats95: stats95({ total: 30, byMedium: { film: 20, tv: 5, music: 2, variety: 2, ad: 1 }, backstageWorks: 4 }) })));
+  ok('E3 守門：兩種職務但同一製作 → 唔入 E3', rSameProd.career === 'E0');
   S = arc(30, 50, Object.assign({}, base, {
+    backstageDuties392: duties2,
     careerStats95: stats95({ total: 30, byMedium: { film: 20, tv: 5, music: 2, variety: 2, ad: 1 }, backstageWorks: 4 }) }));
   const scene = endingCareerScene410({ career: 'E3', careerVariant: '大導演', adjPicked: {} });
   ok('E3 變體呈現：大導演場景有「偉導」字眼', scene.includes('偉導'));

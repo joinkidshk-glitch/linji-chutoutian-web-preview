@@ -168,7 +168,7 @@ chk('A3 board toast', '廣告通告欄更新了：有新通告' in src and '通�
 chk('B5 deposit wording', '"存款不足 $"+fee+"——債項未清。"' in src and '存款亦不足 $200' in src)
 chk('B7 成數 note x2（v128 A4 N9 刪咗落選 modal 嗰份，原 x3）', src.count('成數受表現／壓力／信用影響') == 2)
 chk('B7 success-rate labels kept', '成功率約' in src)
-chk('B2 gate/tag values renamed (castmig: migration assignments gone, 4→2)', src.count('"身手好"') == 2)
+chk('B2 gate/tag values renamed (castmig: migration assignments gone, 4→2; v20a392: N12 閘刪 tagAny, 2→1)', src.count('"身手好"') == 1)
 chk('B2 ending neg tags', '["八卦", "耍大牌", "高冷", "爛片"]' in src)
 chk('B2 legacy save migration removed (castmig)', '舊存檔標籤改名遷移' not in src)
 chk('B2 castingTags accessor kept (castmig)', 'function ensureCastingTagsState(){' in src)

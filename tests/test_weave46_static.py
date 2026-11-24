@@ -56,8 +56,9 @@ c8line = next((ln for ln in gate.splitlines() if ln.strip().startswith('N9:')), 
 c15line = next((ln for ln in gate.splitlines() if ln.strip().startswith('N12:')), '')
 for cand in ['"tag_comedy"', '"喜劇細胞"', '"tag_action"', '"身手好"']:
     ok('N9 tagAny candidate: '+cand, cand in c8line)
-for cand in ['"tag_action"', '"身手好"']:
-    ok('N12 tagAny candidate: '+cand, cand in c15line)
+# v20a392：N12 動作標籤前置已刪，閘唔再帶 tagAny（見 STORY_GATE_3Y）；N9 候選不變。
+# （行尾註解提到 tagAny 係解釋刪咗咩，只驗 code 部分。）
+ok('N12 無 tagAny（v20a392 標籤前置已刪）', 'tagAny' not in c15line.split('/*')[0])
 ok('gate thresholds unchanged (N7 creditGt 20 / N9 fameGt 28 / N11 dualGt 70)',
    'creditGt: 20' in gate and 'fameGt: 28' in gate and 'dualGt: 70' in gate)
 

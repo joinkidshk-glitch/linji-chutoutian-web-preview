@@ -45,17 +45,19 @@ m = re.search(r"1990:\s*\{\s*floor:\s*45,\s*warnLine:\s*65,\s*boundaryWeek:\s*52
 ok(m is not None, "1990 評核參數 floor 45／warnLine 65／邊界週 52")
 m = re.search(r"1991:\s*\{\s*floor:\s*100,\s*warnLine:\s*130,\s*boundaryWeek:\s*104\s*\}", src)
 ok(m is not None, "1991 評核參數 floor 100／warnLine 130／邊界週 104")
-for key, val in (("graceWeeks", 4), ("sickStreak", 2), ("sickWarnStreak", 2),
+for key, val in (("sickStreak", 2), ("sickWarnStreak", 2),
                  ("sickRelief", 35), ("sickCooldownDays", 14),
                  ("sickCreditPerDay", 2), ("sickCreditCap", 6)):
     ok(re.search(key + r":\s*" + str(val) + r"\b", src) is not None,
        "CFG 參數 " + key + "=" + str(val))
+ok("graceWeeks" not in (re.search(r"CONSEQ61_CFG = \{[^}]*\}", src).group(0) if re.search(r"CONSEQ61_CFG = \{[^}]*\}", src) else ""), "寬限已刪（v20a393）：CFG 無 graceWeeks")
+ok("moneyArrears" in src, "記欠欄 moneyArrears 在位（v20a393）")
 
 # --- 接線點 ---
 adv = fn_body("advanceDay", src)
 ok("conseq61DailyTick" in adv, "advanceDay 接 conseq61DailyTick（翻日計收市壓力 streak）")
 stw = fn_body("settleWeek", src)
-ok("conseq61SettleEval" in stw, "settleWeek 接 conseq61SettleEval（評核／寬限）")
+ok("conseq61SettleEval" in stw, "settleWeek 接 conseq61SettleEval（評核；v20a393 寬限已刪）")
 ok("身體警號" in stw, "settleWeek 有 ≥80 身體警號旁白（警告層）")
 eh = fn_body("enterHome", src)
 ok("conseq61PresentForcedEnding" in eh, "enterHome 接強制收場呈現 hook")

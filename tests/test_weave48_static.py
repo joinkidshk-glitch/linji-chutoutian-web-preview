@@ -125,7 +125,8 @@ ok('N5 nextHint 兩線並陳（v89 BR89 有意改版：N1 film 支補返 N6F 片
 # ---- 閘不變（4-5 門檻；v20a113 例外：N12 補 needDone N11，見下） ----
 gm = re.search(r'const STORY_GATE_3Y = \{(.*?)\n\};', html, re.S)
 gate = gm.group(1) if gm else ''
-for frag in ['N12: { needDone: ["N11"], tagAny:', 'creditGt: 42', 'fameGt: 50', 'dualGt: 125', 'N6:  { needDone: ["N5"], route: "route_tv", weekMin: 15 }']:
+# v20a392：N12 閘刪 tagAny、季節擴至春／夏（其餘門檻不變）。
+for frag in ['N12: { needDone: ["N11"], yearMin: 1992, seasonIn: ["春", "夏"] }', 'creditGt: 42', 'fameGt: 50', 'dualGt: 125', 'N6:  { needDone: ["N5"], route: "route_tv", weekMin: 15 }']:
     ok('gate unchanged fragment: '+frag, frag in gate)
 
 # ---- 玩家面真名掃描（現有 QA 禁用表）＋新 block 禁字 ----

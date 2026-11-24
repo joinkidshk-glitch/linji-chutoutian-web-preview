@@ -132,6 +132,21 @@ const SRC = [
   extractFn('function end229DeriveLeadStats'),
   extractFn('function leadStats229Of'),
   extractFn('function end229AddWrap'),
+  /* v20a392：自選履歷／曝光／活動量／幕後職務／對照信用／獎項句憑據 */
+  extractFn('function isForcedGig392'),
+  extractFn('function day392YearMonth'),
+  extractFn('function end392SelDeriveStats'),
+  extractFn('function careerStats392SelOf'),
+  extractFn('function exposure392Of'),
+  extractFn('function activity392Of'),
+  extractFn('function isLowActivity392'),
+  extractFn('function duty392GigById'),
+  extractFn('function backstageDuties392Of'),
+  extractFn('function forcedCredit392ReplayWraps'),
+  extractFn('function forcedCredit392Of'),
+  extractFn('function forcedCredit392CounterCredit'),
+  extractFn('function endingAward392TvSupport'),
+  extractFn('function endingAward392WonLabel'),
   extractFn('function resolveEnding410'),
   extractFn('function endingEveOptions410'),
   extractFn('function ending410EveNode'),
@@ -175,6 +190,8 @@ const SRC = [
   extractConst('ENDING410_NPC_NAMES'),
   extractConst('ENDING410_CHOICE_IDS'),
   extractConst('ENDING410_ADJ_RUMOR'),
+  extractConst('DUTY392_KIND_BY_ID'), // v20a392 職務表
+  extractConst('DUTY392_GIGS'), // v20a392 職務通告表
   /* v20a136：awardResolved 檢查行真 awardsGetFlag（＋ensureAwardsFlags／awardsFlagKey），唔 stub */
   extractFn('function ensureAwardsFlags'),
   extractFn('function awardsFlagKey'),
@@ -207,6 +224,8 @@ const SRC = [
  .replace('const ENDING410_NPC_NAMES =', 'var ENDING410_NPC_NAMES =')
  .replace('const ENDING410_CHOICE_IDS =', 'var ENDING410_CHOICE_IDS =')
  .replace('const ENDING410_ADJ_RUMOR =', 'var ENDING410_ADJ_RUMOR =')
+ .replace('const DUTY392_KIND_BY_ID =', 'var DUTY392_KIND_BY_ID =')
+ .replace('const DUTY392_GIGS =', 'var DUTY392_GIGS =')
  .replace('const START =', 'var START =')
  .replace('const BehaviorGate =', 'var BehaviorGate =')
  .replace('const StoryOC =', 'var StoryOC =');
@@ -242,6 +261,13 @@ function canon(o){
   return JSON.stringify(o);
 }
 function R(over){ S = baseSave(over); return resolveEnding410(S); }
+/* v20a392：E4 曝光履歷——6 宗自選廣告／綜藝殺青，橫跨 3 個月（wrappedDay 10／15＝1 月、
+   40／45＝2 月、70／75＝3 月；START＝1990-01-01）。 */
+const EXPO392 = [
+  { gigId: 'e_ad1', type: '廣告', wrappedDay: 10 }, { gigId: 'e_ad2', type: '廣告', wrappedDay: 15 },
+  { gigId: 'e_var1', type: '綜藝', wrappedDay: 40 }, { gigId: 'e_var2', type: '綜藝', wrappedDay: 45 },
+  { gigId: 'e_ad3', type: '廣告', wrappedDay: 70 }, { gigId: 'e_ad4', type: '廣告', wrappedDay: 75 },
+];
 
 /* ================= (a) 判定矩陣 ================= */
 {
@@ -260,20 +286,33 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
 }
 {
   const held5 = [1,2,3,4,5].map(i=>({ id: 'c'+i, debtor: '甲', title: '人情'+i, status: '未收' }));
-  const r = R({ fame: 55, stage: 0, acting: 0, mockCredits: held5 });
-  ok('E4 沉唔死版：聲量55/信用28＋債權持有 5 → E4 rescued（v20a373 門檻 2→5）', r.career === 'E4' && r.careerVariant === 'rescued' && r.snapshot.credit === 28);
-  const r2 = R({ fame: 55, stage: 0, acting: 0, mockCredits: held5.slice(0, 4) });
+  /* v20a392：E4 新判定——fame≥50、credit−0.5×fame<45（55／28 → 28−27.5＝0.5）＋6 宗自選曝光橫跨 3 個月 */
+  const r = R({ fame: 55, stage: 0, acting: 0, mockCredits: held5, wrapHistory: EXPO392.slice() });
+  ok('E4 沉唔死版：聲量55/信用28＋債權持有 5＋曝光 6 宗／3 個月 → E4 rescued（v20a373 門檻 2→5）', r.career === 'E4' && r.careerVariant === 'rescued' && r.snapshot.credit === 28);
+  const r2 = R({ fame: 55, stage: 0, acting: 0, mockCredits: held5.slice(0, 4), wrapHistory: EXPO392.slice() });
   ok('E4 真沉版：債權持有 4（<5，全脊骨被動債權量）→ E4 sunk（v20a373）', r2.career === 'E4' && r2.careerVariant === 'sunk');
+  const rNoExpo = R({ fame: 55, stage: 0, acting: 0, mockCredits: held5 });
+  ok('E4 守門：零曝光 → 唔入 E4（落 E0：信用 28 唔夠 E2／CR 線）', rNoExpo.career === 'E0');
+  const rExpo5 = R({ fame: 55, stage: 0, acting: 0, mockCredits: held5, wrapHistory: EXPO392.slice(0, 5) });
+  ok('E4 守門：曝光得 5 宗 → 唔入 E4', rExpo5.career === 'E0');
 }
 {
-  const r = R({ fame: 40, stage: 50, acting: 35 });
-  ok('E2：信用42＋聲量40 → E2', r.career === 'E2' && r.snapshot.credit === 42);
+  /* v20a392：呢個係「持續工作嘅正常 E2」——補訓練紀錄（trainCount 5 堂），唔係低投入閒置者 */
+  const r = R({ fame: 40, stage: 50, acting: 35, trainCount: { train_acting: 3, train_stage: 2 } });
+  ok('E2：信用42＋聲量40＋訓練 5 堂 → E2', r.career === 'E2' && r.snapshot.credit === 42);
 }
 {
-  const r = R({ fame: 30, stage: 60, acting: 50, npcs: { agent: 0, director: 65, colleague: 0, reporter: 0, stylist: 0, rival: 0 } });
-  ok('E3（導演線）：信用43＋聲量30（唔夠 E2）＋導演 rel 65 → E3', r.career === 'E3');
-  const r2 = R({ fame: 30, stage: 60, acting: 50, castingTags: [{ id: '編劇', label: '編劇' }, { id: '剪接', label: '剪接' }] });
-  ok('E3（標籤線）：幕後標籤 2 → E3', r2.career === 'E3' && r2.snapshot.backstageTags === 2);
+  /* v20a392：E3 導演關係入口加職務門檻——rel 65＋3 宗職務／2 個製作先入 E3 */
+  const duties3 = [{ kind: '場記', production: '甲組', gigId: 'duty392_clapper_a', day: 100 }, { kind: '剪接助理', production: '乙組', gigId: 'duty392_editor_a', day: 200 }, { kind: '副導演助理', production: '丙組', gigId: 'duty392_ad_a', day: 300 }];
+  const r = R({ fame: 30, stage: 60, acting: 50, backstageDuties392: duties3, npcs: { agent: 0, director: 65, colleague: 0, reporter: 0, stylist: 0, rival: 0 } });
+  ok('E3（導演線）：信用43＋聲量30（唔夠 E2）＋導演 rel 65＋3 宗職務 → E3', r.career === 'E3');
+  const rRelOnly = R({ fame: 30, stage: 60, acting: 50, npcs: { agent: 0, director: 65, colleague: 0, reporter: 0, stylist: 0, rival: 0 } });
+  ok('E3 守門：導演 rel 65 但 0 職務 → 唔入 E3（落 E0）', rRelOnly.career === 'E0');
+  /* v20a392：E3 標籤入口改讀明確職務類別——2 種職務／2 個製作先開；舊 keyword 標籤唔再開入口 */
+  const r2 = R({ fame: 30, stage: 60, acting: 50, backstageDuties392: duties3.slice(0, 2) });
+  ok('E3（職務線）：2 種職務／2 個製作 → E3', r2.career === 'E3');
+  const rKwOnly = R({ fame: 30, stage: 60, acting: 50, castingTags: [{ id: '編劇', label: '編劇' }, { id: '剪接', label: '剪接' }] });
+  ok('E3 守門：2 個幕後關鍵字標籤而無職務 → 唔入 E3（落 E0）；診斷計數照計 2', rKwOnly.career === 'E0' && rKwOnly.snapshot.backstageTags === 2);
 }
 {
   const r = R({ fame: 20, stage: 30, acting: 30,
@@ -300,8 +339,8 @@ function R(over){ S = baseSave(over); return resolveEnding410(S); }
   S = baseSave(st);
   ok('E6 安穩版：opts.quit=job → E6／安穩', resolveEnding410(S, { quit: 'job' }).career === 'E6' && resolveEnding410(S, { quit: 'job' }).careerVariant === '安穩');
   ok('E6 遠走版：opts.quit=leave → E6／遠走／exodus=leave', (()=>{ const q = resolveEnding410(S, { quit: 'leave' }); return q.career === 'E6' && q.careerVariant === '遠走' && q.exodus === 'leave'; })());
-  const rE4 = R({ fame: 55, stage: 0, acting: 0 });
-  S = baseSave({ fame: 55, stage: 0, acting: 0 });
+  const rE4 = R({ fame: 55, stage: 0, acting: 0, wrapHistory: EXPO392.slice() });
+  S = baseSave({ fame: 55, stage: 0, acting: 0, wrapHistory: EXPO392.slice() });
   ok('E6 心灰版：原判定 E4＋quit=job → 心灰', resolveEnding410(S, { quit: 'job' }).careerVariant === '心灰' && rE4.career === 'E4');
 }
 {
@@ -405,6 +444,7 @@ function eveKeys(over){
   modalPages410 = [];
   loadGame(baseSave({
     fame: 40, stage: 50, acting: 35,
+    trainCount: { train_acting: 3, train_stage: 2 }, /* v20a392：持續工作嘅正常 E2（唔係低投入） */
     npcs: { agent: 30, director: 10, colleague: 0, reporter: 0, stylist: 0, rival: 0 },
     mockCredits: [{ id: 'credit_fen_rescue', debtor: '副導演芬姐', title: '芬姐人情', status: '絕響' }, { id: 'credit_c9_crew', debtor: '劇組場務', title: '年尾出頭人情', status: '未收' }],
     favorLedger: { settled: 3, credits: 4, exodus: ['credit_fen_rescue'], counted: {} },
@@ -449,6 +489,7 @@ function eveKeys(over){
   modalPages410 = [];
   loadGame(baseSave({
     fame: 40, stage: 50, acting: 35,
+    trainCount: { train_acting: 3, train_stage: 2 }, /* v20a392：持續工作嘅正常 E2（唔係低投入） */
     npcs: { agent: 30, director: 10, colleague: 0, reporter: 0, stylist: 0, rival: 0 },
     mockCredits: [{ id: 'credit_c13_newyear', debtor: '賀歲片場務組', title: '賀歲片頂場人情', status: '未收' }],
     story: { flags: { flag_newyear_improv: true }, rel: {}, done: { N16: true }, choices: {} }
@@ -472,6 +513,7 @@ function eveKeys(over){
   modalPages410 = [];
   loadGame(baseSave({
     fame: 55, stage: 0, acting: 0,
+    wrapHistory: EXPO392.slice(), /* v20a392：E4 要 6 宗曝光先入格 */
     npcs: { agent: 0, director: 45, colleague: 0, reporter: 0, stylist: 0, rival: 0 },
     story: { flags: {}, rel: {}, done: { N16: true }, choices: {} }
   }));
@@ -493,6 +535,7 @@ function eveKeys(over){
   modalPages410 = [];
   loadGame(baseSave({
     fame: 40, stage: 50, acting: 35,
+    trainCount: { train_acting: 3, train_stage: 2 }, /* v20a392：持續工作嘅正常 E2（唔係低投入） */
     npcs: { agent: 30, director: 10, colleague: 0, reporter: 0, stylist: 0, rival: 0 },
     story: { flags: { flag_leave_mind: true }, rel: {}, done: { N16: true }, choices: {} }
   }));

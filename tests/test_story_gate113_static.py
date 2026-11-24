@@ -23,7 +23,7 @@ def gate_ok(s):
     return ('N18: { needDone: ["N5"], weekMin: 48, yearMin: 1990, seasonIn: ["冬"] }' in s
             and 'N19: { needDone: ["N18"], weekMin: 61, yearMin: 1991, seasonIn: ["春"] }' in s
             and 'N8: { needDone: ["N7"], yearMin: 1991, seasonIn: ["夏", "秋"] }' in s
-            and 'N12: { needDone: ["N11"], tagAny: ["動作", "action", "tag_action", "身手好"], yearMin: 1992, seasonIn: ["春"] }' in s)
+            and 'N12: { needDone: ["N11"], yearMin: 1992, seasonIn: ["春", "夏"] }' in s)
 ok('閘表補鏈：N18 需 N5＋48 週／N19 需 N18＋61 週／N8 需 N7／N12 需 N11', gate_ok(src))
 ok('N10／N16 刻意無 needDone（閘行唔含 needDone）',
    'N10:  { weekMin: 100, yearMin: 1991, seasonIn: ["冬"] },' in src and 'N16: { weekMin: 153, yearMin: 1992, seasonIn: ["冬"] },' in src)  # v372：加 weekMin 防年頭冬尾搶閘，仍無 needDone

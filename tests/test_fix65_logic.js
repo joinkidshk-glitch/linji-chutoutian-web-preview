@@ -3,8 +3,9 @@
        （抽真表達式行）；入水維持原值（拍攝日 10–14）；部分休息保留。
    (2) FIX65-2 生活費首年緩坡：wk2/8/20/35 mid = 110/130/150/170；wk44+ full 240（v261 ÷10）；
        CALIB60 加幅保留（1989 wk50 = 270、1990 wk100 = 300）。
-   (3) FIX65-2 寬限入帳解除：grace 中、本週入帳 ≥ 下週費、結算後存款 >0 → 解除（舊版 2 參數呼叫唔解除）；
-       入帳唔夠 → 照倒數；存款夠全費 → 舊路徑解除（兩版都得）。
+   (3) FIX65-2 寬限入帳解除已刪（v20a393）：破產寬限成個刪除，欠費改記欠（S.moneyArrears）；
+       conseq61SettleEval 見底唔起寬限、唔寫 pendingEnding；舊檔殘留 grace 由 conseq61LegacyMark 清走；
+       第三參數 weekEarnIn 保留供呼叫兼容，唔再有解除路徑。
    (4) FIX65-3 跨媒介補分：多元 fixture（唱片桶＋電影擔正＋電視作品）→ borrow65 = 0.55×0.35×crossQ、
        repPower65 = 0.08×crossQ、base 高過冇補分；專攻 fixture（得電影）→ borrow 0、repPower = v371 專攻路 sat² 項。
    (5) FIX65-4 提示認級數：代表作 = MTV 男主角（舊庫 MTV 真身形狀）→ 唔出「缺擔正」句、出深度句；
@@ -110,7 +111,7 @@ SOFT = true;
 ok(livingCostBand(8).mid === 145 && livingCostBand(35).mid === 185, "soft 預覽同 LIVE 同一緩坡（v390）");
 SOFT = false;
 
-/* ---------- (3) FIX65-2 寬限入帳解除 ---------- */
+/* ---------- (3) FIX65-2 寬限入帳解除已刪（v20a393） ---------- */
 eval(extractConst("CONSEQ61_REVIEWS").replace("const CONSEQ61_REVIEWS =", "var CONSEQ61_REVIEWS ="));
 eval(extractConst("CONSEQ61_CFG").replace("const CONSEQ61_CFG =", "var CONSEQ61_CFG ="));
 eval(extractFn("conseq61State"));
@@ -121,27 +122,25 @@ function graceSave(money, weeksLeft){
            conseq61: { reviews: {}, streak80: 0, streak90: 0, peak90: 0, cooldownUntil: 0,
                        grace: { weeksLeft: weeksLeft, startedWeek: 9 }, sick: null, pendingEnding: null } };
 }
-/* 入帳解除：存款 $30（< 全費 $130；w=10 → 下週 w11，wk5–12 帶中位數 130）、本週入帳 $200 ≥ $130、存款 >0 → 解除 */
+/* 見底唔起寬限：第三參數傳唔傳都一樣，唔寫 pendingEnding，唔出寬限行 */
 let g = graceSave(30, 3);
 let lines = conseq61SettleEval(g, 10, 200);
-ok(g.conseq61.grace === null && lines.join("").indexOf("寬限警報解除") >= 0,
-   "寬限入帳解除：入帳 $200 ≥ 下週費 $130 ＋ 存款 $30 >0 → 解除（舊版冇呢條路）");
-/* 反例：入帳唔夠 → 照倒數 */
-g = graceSave(30, 3);
+ok(!g.conseq61.pendingEnding && !lines.join("").includes("寬限"),
+   "見底＋入帳 $200：唔起寬限、唔收場（舊入帳解除路徑已刪）");
+/* 舊檔殘留 grace 欄位：settleEval 唔再讀佢，唔會誤觸收場（清走由 conseq61LegacyMark 負責） */
+g = graceSave(0, 3);
 lines = conseq61SettleEval(g, 10, 100);
-ok(g.conseq61.grace && g.conseq61.grace.weeksLeft === 2, "入帳 $100 < $130 → 唔解除、倒數 3→2");
-/* 反例：入帳夠但存款 = 0（冇返正數）→ 唔解除 */
+ok(!g.conseq61.pendingEnding && g.conseq61.grace.weeksLeft === 3,
+   "殘留 grace 欄位唔再被倒數／唔觸發收場");
 g = graceSave(0, 3);
 lines = conseq61SettleEval(g, 10, 200);
-ok(g.conseq61.grace && g.conseq61.grace.weeksLeft === 2, "入帳夠但結算後存款 $0 → 唔解除（防即入即出）");
-/* 舊路徑：存款夠全費 → 解除 */
+ok(!g.conseq61.pendingEnding, "入帳夠都唔收場（冇寬限可解除）");
 g = graceSave(200, 3);
 lines = conseq61SettleEval(g, 10, 0);
-ok(g.conseq61.grace === null, "存款 $200 ≥ 全費 → 舊路徑照解除");
-/* 冇傳第三參數（舊呼叫形狀）→ 唔好崩、唔好誤解除 */
+ok(!g.conseq61.pendingEnding, "存款夠都唔收場");
 g = graceSave(30, 3);
 lines = conseq61SettleEval(g, 10);
-ok(g.conseq61.grace && g.conseq61.grace.weeksLeft === 2, "冇 weekEarnIn → 行舊邏輯倒數（唔崩）");
+ok(!g.conseq61.pendingEnding, "冇 weekEarnIn → 唔崩、唔收場");
 
 /* ---------- (4) FIX65-3 跨媒介補分 ---------- */
 for(const c of ["AWARDS62_WIN_LINE", "AWARDS62_TASTE", "AWARDS62_ROLE_Q"])

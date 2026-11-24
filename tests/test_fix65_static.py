@@ -59,7 +59,7 @@ ok("sickStreak: 2" in cfg, "病倒觸發連續 2 日（冇郁）")
 ok("sickRelief: 35" in cfg, "病癒 −35（冇郁）")
 ok("sickCooldownDays: 14" in cfg, "病癒冷卻 14 日（冇郁）")
 ok("sickCreditPerDay: 2" in cfg and "sickCreditCap: 6" in cfg, "告假扣信用 −2/日封頂 6（冇郁）")
-ok("graceWeeks: 4" in cfg, "寬限 4 週（冇郁）")
+ok("graceWeeks" not in cfg, "寬限已刪（v20a393）：CFG 無 graceWeeks")
 
 # --- FIX65-2 生活費緩坡＋寬限解除 ---
 ok("FIX65-2" in src, "FIX65-2 標記在位")
@@ -68,7 +68,7 @@ for m in ("mid:120", "mid:145", "mid:165", "mid:185", "mid:265"):  # v390：生�
     ok(m in lcb, "生活費帶含 " + m)
 ok("yr>=1992" in lcb and "f>=250" in lcb, "CALIB60 年份/聲望加級保留")
 se = fn_body("conseq61SettleEval")
-ok("weekEarnIn" in se, "conseq61SettleEval 收 weekEarnIn（入帳解除）")
+ok("weekEarnIn" in se, "conseq61SettleEval 收 weekEarnIn（第三參數保留供呼叫兼容；寬限已刪 v20a393）")
 ok("conseq61SettleEval(S, w, earned)" in src, "settleWeek 傳 earned 入評核")
 ok("floor: 45" in src and "warnLine: 65" in src and "floor: 100" in src and "warnLine: 130" in src,
    "評核地板/警告線 45/65、100/130 冇郁")
