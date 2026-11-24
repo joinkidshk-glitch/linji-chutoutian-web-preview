@@ -1474,6 +1474,14 @@ button.g, .start button.g{
 .act.act-priority .n{ color: var(--ink,#2a2118) !important; font-weight: 800; }
 .act.act-priority .h{ color: #3a2e22 !important; }
 .act.act-priority .cost{ color: var(--stamp-red,#C43C2A) !important; }
+/* v20a396 UI396 ⑤：商店單一購買——揀中行金框（同 act-priority 同一款式），「已揀」寫喺 cost 格。 */
+.act.act-sel396{
+  background: #f5e6c0 !important;
+  border: 2px solid var(--gold-seal,#C9A227) !important;
+  color: var(--ink,#2a2118) !important;
+  box-shadow: 0 2px 0 rgba(107,83,64,.35);
+}
+.act.act-sel396 .cost{ color: var(--stamp-red,#C43C2A) !important; font-weight:800; }
 /* map hint: split lines; region never splits */
 .map-hint{
   line-height: 1.4 !important;
@@ -2221,7 +2229,10 @@ body.day-res-open #v-map .bar{ position:relative; z-index:60; }
 body.day-res-open #mask.day-res{
   z-index:50; align-items:flex-end;
   padding-top:52px;
-  background:linear-gradient(180deg, rgba(0,0,0,.18) 0, rgba(0,0,0,.18) 48px, rgba(0,0,0,.58) 48px);
+  /* v20a396 UI396 ③：漸變本身一直被 #mask.on 嘅 background !important 蓋住（實駕量度：
+     日結卡背景一直係 rgba(0,0,0,.72)，所謂「淺遮罩」從未生效）；呢度補返 !important，
+     等日結卡／40 號確認卡真係用到淺漸變（頂 .18／底 .58），唔係得個名。 */
+  background:linear-gradient(180deg, rgba(0,0,0,.18) 0, rgba(0,0,0,.18) 48px, rgba(0,0,0,.58) 48px) !important;
 }
 /* v20a197 B6：sheet 開嗰陣唔再將 .map-hint 改做 compact HUD——舊 v18a 規則
    （top:42px＋max-width:280px＋細字＋收起 help／story 行）係「過一日」掣走位
@@ -3223,6 +3234,22 @@ body.day-res-open #mask.day-res{
 #app.ui-inert #mask button,
 #app.ui-inert #toast{
   pointer-events: auto !important;
+}
+/* v20a396 UI396 ⑤：modal 開住時將背後地圖層連視覺一併卸載（display:none——關窗即復原）。
+   點解唔用 visibility:hidden：COUNT_JS 用 offsetParent＋rect 計「可見可撳」，visibility
+   隱藏嘅元素照舊有 offsetParent 同 rect，計數唔會跌；display:none 先令 offsetParent
+   變 null、rect 歸零。地圖捲動位置由現有 preserveMapScroll／restoreMapScroll 保存／
+   還原，DOM 本身唔會拆，關窗即刻返嚟。教學聚光燈（mask.tut-on）嗰陣唔收起——聚光目
+   標要見到；display:none 唔可以由子孫 override，所以豁免全靠 setUnderlyingInert 入面
+   嘅 tut-on 判斷（見下），唔好只靠 CSS。 */
+#app.ui-hide-under396 #v-map,
+#app.ui-hide-under396 #v-home,
+#app.ui-hide-under396 #v-start,
+#app.ui-hide-under396 #loc-sheet,
+#app.ui-hide-under396 #menubar,
+#app.ui-hide-under396 .menu,
+#app.ui-hide-under396 #btn-confirm-plan{
+  display: none !important;
 }
 /* v19z12 M5：未選地點／未 .on 時完全收合 */
 #loc-sheet.sheet:not(.on){
@@ -5014,6 +5041,15 @@ body.day-res-open .day-row{
   min-height:44px; display:inline-flex; align-items:center; justify-content:center; /* v20a387（第八輪評估 W2 P2-7）：觸控高 39→44px（GPT 規格：留白補高、黑邊不變） */
 }
 .paper-sheet .np214-switch:active{ background:rgba(26,26,26,.08); }
+/* v20a396 UI396 ① 35c：頒獎結果卡 390px 下正文改單欄（只限結果卡，晨報唔郁）。
+   成因：相（138px 浮左）＋小檔案（138px 浮左）＋填充字夾埋將兩欄正文壓到每行 ~57px
+   （2–3 字一行），sticky 切換列再遮住何生引文下半截（量度：引文底 723.5px 被切換列
+   691–741px 蓋住 32.5px）。修法：正文單欄用足內闊；相片取消繞排、成組放導語後；
+   小檔案搬去第二版（全闊格）；切換列改靜態、隨正文捲動；紙底加 24px 令尾行完整露出。 */
+.paper-sheet.awd-result396 .np214-body2{ column-count:1; column-rule:none; }
+.paper-sheet.awd-result396 .np214-photowrap{ float:none; width:min(240px,100%); margin:8px auto; }
+.paper-sheet.awd-result396 .np214-switchrow{ position:static; background:transparent; }
+.paper-sheet.awd-result396{ padding-bottom:24px; }
 /* paper-on 舊規則將 .paper-kicker 置中（帶 id 選擇器，權重高過上面）——
    NP214 眉題跟樣本行左對齊，喺呢度蓋返。聲望行／附註沿用舊置中規則，唔郁。 */
 #mask.paper-on .paper-sheet .np214-kicker{ text-align:left; }
@@ -7618,30 +7654,30 @@ function openClothingShop265(L){
   const rows = (COSTUME265||[]).filter(c=>c && c.shop);
   const w = costume265EnsureWardrobe();
   const owned = (w && w.owned) || [];
+  /* v20a396 UI396 ⑤：單一購買——行改做 div（唔係掣，唔計入掣數），撳行＝揀中（金框＋
+     「已揀」），底欄一粒「購買」掣（stay）先真係買，掣面寫埋揀中嗰件名。買賣流程
+     （confirmChoice236 → buyCostume265 → 重開店）一字唔郁。 */
   const body = rows.map(c=>{
     const has = owned.indexOf(c.id)>=0;
     const lock = costume265UnlockReason(c);
     const afford = (S.money||0) >= (Number(c.price)||0);
     const disabled = has || !!lock || !afford;
     const why = has ? "已擁有" : (lock ? ("未合要求："+lock) : (!afford ? "不夠錢" : "有售"));
-    return `<button type="button" class="act ${disabled?"dim":""}" data-buy265="${c.id}" ${disabled?"disabled":""} style="width:100%;margin:0 0 8px;text-align:left">
+    return `<div class="act ${disabled?"dim":""}" data-buy265="${c.id}" ${disabled?"data-disabled396=\"1\"":""} style="width:100%;margin:0 0 8px;text-align:left">
       <div><div class="n">${c.name}</div>
       <div class="h">${costume265BonusText(c)} · $${(Number(c.price)||0).toLocaleString()} · ${why}</div></div>
-      <div class="cost">${disabled?(has?"已擁有":(lock?"鎖住":"——")):"買下"}</div>
-    </button>`;
+      <div class="cost">${disabled?(has?"已擁有":(lock?"鎖住":"——")):"揀"}</div>
+    </div>`;
   }).join("") || `<p class="sub">本週暫無貨。</p>`;
   try{ closeSheet(); }catch(_e){}
   modal(`<h3>花園街成衣店</h3>
     <p class="sub">旺角花園街 · 買入不耗日 · 著衫加成只喺接通告／試鏡嗰陣計</p>
     <p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>
     <div id="clothing-shop265-list">${body}</div>`,[
-      {label:"關閉", role:"g", on:()=>{ if(L) openLoc(L.id, {travelFree:true}); }}
-    ], {onDismiss:()=>{ if(L) openLoc(L.id, {travelFree:true}); }});
-  const box = document.getElementById("clothing-shop265-list");
-  if(box){
-    box.querySelectorAll("[data-buy265]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const id = btn.getAttribute("data-buy265");
+      {label:"購買", role:"p", cls:"shop-buy396", stay:true, on:(btn)=>{
+        const sel = document.querySelector("#clothing-shop265-list .act-sel396");
+        if(!sel){ toast("請先揀一件衫"); return; }
+        const id = sel.getAttribute("data-buy265");
         const c = costume265ById(id);
         confirmChoice236({
           choiceLabel: "購買「" + ((c&&c.name)||id) + "」",
@@ -7655,6 +7691,19 @@ function openClothingShop265(L){
           },
           onCancel: ()=>{ openClothingShop265(L); }
         });
+      }},
+      {label:"關閉", role:"g", on:()=>{ if(L) openLoc(L.id, {travelFree:true}); }}
+    ], {onDismiss:()=>{ if(L) openLoc(L.id, {travelFree:true}); }});
+  const box = document.getElementById("clothing-shop265-list");
+  if(box){
+    box.querySelectorAll("[data-buy265]").forEach(row=>{
+      row.addEventListener("click", ()=>{
+        if(row.getAttribute("data-disabled396")) return;
+        box.querySelectorAll(".act-sel396").forEach(r=>{ r.classList.remove("act-sel396"); const c=r.querySelector(".cost"); if(c) c.textContent="揀"; });
+        row.classList.add("act-sel396");
+        const c=row.querySelector(".cost"); if(c) c.textContent="已揀";
+        const buyBtn=document.querySelector("#modal-btns .shop-buy396");
+        if(buyBtn){ const cc=costume265ById(row.getAttribute("data-buy265")); buyBtn.textContent="購買「"+((cc&&cc.name)||"")+"」"; }
       });
     });
   }
@@ -17375,6 +17424,32 @@ function fmtDateShort(){
   const dt=displayDateObj();
   return `${dt.getFullYear()}/${dt.getMonth()+1}/${dt.getDate()}`;
 }
+/* v20a396 UI396 ③：日結卡日期標示——卡出嗰陣 dayIndex 已經係下一日，fmtDate() 係下一日
+   嘅日期，唔係結算嗰日（之前淨出 fmtDate()，易誤會係卡本身嘅日期；「完成日 X → 而家 Y」
+   亦易誤會）。結算日＝displayDateObj() 減一日（Date 減一日，跨月／跨年都啱；
+   displayDateObj 嘅季節 remap 兩邊共用同一基準）。有傳入嘅 dayDone（tickDay 之前捉嘅
+   結算日全字串）就優先用佢，唔再重計。 */
+function settledDateObj396(){
+  try{
+    const dt = displayDateObj();
+    return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()-1);
+  }catch(_e){ return null; }
+}
+function fmtShortDate396(d){
+  if(!d) return "";
+  const w=["日","一","二","三","四","五","六"][d.getDay()];
+  return `${d.getMonth()+1}月${d.getDate()}日（${w}）`;
+}
+function dayResDateLine396(firstLabel, doneFull){
+  let s = "";
+  const m = String(doneFull||"").match(/\d+月\d+日（[日一二三四五六]）/);
+  if(m) s = m[0];
+  else s = fmtShortDate396(settledDateObj396());
+  let n = "";
+  try{ n = fmtShortDate396(displayDateObj()); }catch(_e){}
+  if(!s || !n) return "";
+  return `${firstLabel}：${s} · 下一日：${n}行程`;
+}
 
 function fresh(){
   return {
@@ -19602,7 +19677,14 @@ function gigBoardTeaserHtml(g, opts){
   opts=opts||{};
   /* 通告欄短卡；點開先出招募單 Detail */
   const work=gigWorkTitle(g);
-  const genre=(g && g.genreLabel) ? String(g.genreLabel) : gigTypeCoarse(g);
+  /* v20a396 UI396 ②：卡上類別同媒介篩選統一——先出媒介（gigTypeCoarse，同篩選同一口徑），
+     再出劇種（genreLabel）當兩者唔同（例：電視劇 · 劇情）。之前齋出 genreLabel，電視劇
+     嘅「劇情」卡喺電視劇篩選入面會令人以為歸類唔同。 */
+  const coarse396 = gigTypeCoarse(g);
+  const genre396 = (g && g.genreLabel) ? String(g.genreLabel) : "";
+  const genrePills396 = (genre396 && genre396!==coarse396)
+    ? `<span class="gt-pill">${coarse396}</span><span class="gt-pill">${genre396}</span>`
+    : `<span class="gt-pill">${coarse396}</span>`;
   const st=gigRecruitStatus(g);
   const rk=gigTierKey(g);
   /* v20a94 PRESS94「臨」徽章（短卡）：同 gigCardHtml 共用 press94TierBadge，急件優先；typeof 守衛同上。 */
@@ -19622,8 +19704,17 @@ function gigBoardTeaserHtml(g, opts){
     const payTxt=gigPayExactText(g, {card:true});
     let daysN=null;
     try{ daysN=effectiveShootDays(g); }catch(_e){}
+    let exp396 = null;
+    try{ if(typeof board392ExpDaily==="function") exp396 = board392ExpDaily(g); }catch(_e){}
+    let sortIsExp396 = false;
+    try{ sortIsExp396 = (typeof _boardSort392!=="undefined") && _boardSort392==="exp"; }catch(_e){}
     const bits392=[];
-    if(payTxt) bits392.push(`片酬 ${payTxt}`);
+    /* v20a396 UI396 ②：預設排序係預期日薪嗰陣，可接卡嘅片酬段改出「預期 $X／日」
+       （board392ExpDaily＝片酬×成功率÷日數，計法見板頭 lead 行）；鎖定卡／其他排序
+       照出片酬總額。typeof 守衛：測試沙盒抽呢個函數嗰陣未定義 board392ExpDaily／
+       _boardSort392，唔可以直引。 */
+    if(boardState==="ready" && sortIsExp396 && exp396!=null && exp396>0) bits392.push(`預期 $${Math.round(exp396)}／日`);
+    else if(payTxt) bits392.push(`片酬 ${payTxt}`);
     if(daysN!=null) bits392.push(`${daysN} 日`);
     if(boardState==="ready"){
       try{ if(typeof chance==="function") bits392.push(`${Math.round(chance(g)*100)}%`); }catch(_e){}
@@ -19665,7 +19756,7 @@ function gigBoardTeaserHtml(g, opts){
   return `<div class="gig-teaser${featured392 ? " gt-featured" : ""}" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
     <img class="g-seal" src="${sealSrc}" alt="${badge94.label||sealKey}" onerror="this.style.display='none'"/>
     <div class="gt-title">${work}${featured392 ? `<span class="gt-featured-tag">推介</span>` : ""}</div>
-    <div class="gt-row"><span class="gt-pill">${genre}</span>${trigPill}<span class="${badgeCls}">${badgeText}</span></div>
+    <div class="gt-row">${genrePills396}${trigPill}<span class="${badgeCls}">${badgeText}</span></div>
     ${metaLine392?`<div class="gt-meta"><div class="gt-meta-line">${metaLine392}</div></div>`:""}
     ${intelMark}
     ${favor158Html}
@@ -21652,6 +21743,15 @@ function setUnderlyingInert(on){
     const app=document.getElementById("app");
     if(app) app.classList.toggle("ui-inert", !!on);
   }catch(_e){}
+  /* v20a396 UI396 ⑤：同步開關 ui-hide-under396（見上面 CSS）——modal 開住時背後地圖層
+     連視覺一併卸載，關窗即復原。教學聚光燈（mask.tut-on）嗰陣一定要除返——display:none
+     唔可以由子孫 override，聚光目標會成個唔見；所以用 toggle：tut-on 嗰陣無論如何都除。 */
+  try{
+    const app=document.getElementById("app");
+    const mask=document.getElementById("mask");
+    const tut = !!(mask && mask.classList.contains("tut-on"));
+    if(app) app.classList.toggle("ui-hide-under396", !!(on && !tut));
+  }catch(_e){}
 }
 /** Preview the plan that will run AFTER spending today (+1 day). */
 function nextPlanPreviewAfterSpend(){
@@ -21768,9 +21868,10 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
       extra += `<p class="gold" style="margin-top:6px">有劇情：「${t}」· 頂欄或地圖「進度」掣可入</p>`;
     }
   }catch(_e){}
-  const dayLine = opts.dayDone
-    ? `<p class="dayres-date374">完成日：${opts.dayDone} → 而家 ${fmtDate()}</p>`
-    : `<p class="dayres-date374">${fmtDate()}</p>`;
+  /* v20a396 UI396 ③：日期標示——結算日同下一日分開標（之前「完成日 X → 而家 Y」易誤會，
+     冇 dayDone 嗰陣淨出下一日日期，更加似係卡本身嘅日期）。 */
+  const dayLine396 = dayResDateLine396("完成日", opts.dayDone) || fmtDate();
+  const dayLine = `<p class="dayres-date374">${dayLine396}</p>`;
   try{ document.body.classList.add("day-res-open"); }catch(_e){}
   const dropBits = takeShootDropNotes();
   const dropHtml = dropBits.length ? `<div style="margin:6px 0">${dropBits.join("<br>")}</div>` : "";
@@ -23436,9 +23537,9 @@ else if(typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]){ notes=train75A
     return;
   }
   const isRestCard = (id==="rest" || id==="home_chore");
-  const dayLine = isRestCard
-    ? `<p class="dayres-date374">完成日：${dayDone} → 現在 ${fmtDate()}</p>`
-    : `<p class="dayres-date374">${fmtDate()}</p>`;
+  /* v20a396 UI396 ③：同 afterDayModal——結算日同下一日分開標；非休息卡之前淨出下一日
+     日期（易誤會係活動當日）。dayDone 係 tickDay 之前捉嘅結算日全字串，優先用佢。 */
+  const dayLine = `<p class="dayres-date374">${dayResDateLine396("完成日", dayDone) || fmtDate()}</p>`;
   const critical = !!isCriticalPlanDay(id, shootFinished);
   const blurb = String((notes||[]).map(x=>String(x).replace(/<[^>]+>/g,"")).join(" · ")).slice(0,56);
   /* 加速中：非關鍵日靜默合併，殺青／試鏡／週結停下 */
@@ -34003,6 +34104,8 @@ function renderAwardResultHtml(pack){
     </header>`;
   const pagefoot214 = label => `<div class="np214-pagefoot"><span>維港日報</span><span>${label}</span></div>`;
   const filler214 = `<p class="np214-filler" aria-hidden="true">金碟夜 唱片銷量 樂壇頒獎 歌壇新人 專輯榜上 典禮掌聲 大禮堂 電台 唱片鋪 夏季 歌手 專輯 紅地毯 晚禮服 歌迷 歡呼 閃光燈</p>`;
+  /* v20a396 UI396 ①：小檔案搬去第二版（全闊格，放主文之後）；冇第二版嗰陣先留喺第一版主文之後。 */
+  const factboxHtml214 = factRows214 ? `<aside class="np214-factbox np214-factbox-wide"><h4>${esc214((pack.displayName||"頒獎夜")+"小檔案")}</h4>${factRows214}</aside>` : "";
   const page1 = `<section class="np214-page on" data-np214-page="1">
     ${masthead214("1")}
     ${kicker214 ? `<p class="np214-kicker">${esc214(kicker214)}</p>` : ""}
@@ -34010,9 +34113,8 @@ function renderAwardResultHtml(pack){
     ${dek214 ? `<p class="np214-dek">${esc214(dek214)}</p>` : ""}
     <div class="np214-layout"><div class="np214-maincol np214-clearfix">
       ${photoFigure214(photo214)}
-      ${factRows214 ? `<aside class="np214-factbox"><h4>${esc214((pack.displayName||"頒獎夜")+"小檔案")}</h4>${factRows214}</aside>` : ""}
-      ${(photo214 || factRows214) ? `<p class="np214-filler np214-filler-left" aria-hidden="true">金碟夜 唱片銷量 樂壇頒獎 歌壇新人 專輯榜上 典禮掌聲 大禮堂 電台 唱片鋪 夏季 歌手 專輯 紅地毯 晚禮服 歌迷 歡呼 閃光燈</p>` : ""}
       <div class="np214-body2">${catsHtml}${felBit186}</div>
+      ${hasMetric214 ? "" : factboxHtml214}
     </div>${sidebar214}</div>
     ${pagefoot214("第一版 · 頒獎結果")}
     ${hasMetric214 ? `<div class="np214-switchrow"><button type="button" class="np214-switch" onclick="np214ShowPage(this,2)">第二版 →</button></div>` : ""}
@@ -34029,6 +34131,7 @@ function renderAwardResultHtml(pack){
         ${news.line ? `<p>${esc214(news.line)}</p>` : ""}
         <p>${esc214(pack.displayName||"頒獎夜")}散場。頒獎夜結束，明年再見。</p>
       </div>
+      ${factboxHtml214}
       ${photo2_214 ? "" : filler214}
     </div>${sidebar214}</div>
     ${pagefoot214("第二版 · " + (metricLabel214 || "餘韻"))}
@@ -34038,7 +34141,7 @@ function renderAwardResultHtml(pack){
   const dualLine = (dual.stageVolume || dual.industryCredit)
     ? `<p class="psr-dual var-note">幕前聲望 ${dual.stageVolume?("+"+dual.stageVolume):""}${(dual.stageVolume&&dual.industryCredit)?" · ":""}${dual.industryCredit?("業內信用 +"+dual.industryCredit):""}</p>`
     : "";
-  return `<div class="paper-sheet" role="document" aria-label="頒獎結果">
+  return `<div class="paper-sheet awd-result396" role="document" aria-label="頒獎結果">
   ${page1}
   ${page2}
   </div>${dualLine}`;
@@ -46934,6 +47037,9 @@ function doScout(L){
     if(!anyOk) lead = `今日冇可接通告。不耗日查看通告。`;
     else if(anyOk && anyHard) lead = `不耗日查看通告 · 達標可接通告（耗一日）。<br><span class="board-lead-mix">有些通告條件未合；可點開查看詳情。</span>`;
     else lead = `不耗日查看通告 · 達標可接通告（耗一日）。`;
+    /* v20a396 UI396 ②：預設排序係預期日薪嗰陣，lead 行改做一行計法＋置頂說明
+       （唔加行，保住第一眼 5 張卡）；其他排序沿用原 lead。 */
+    if(_boardSort392==="exp") lead = `不耗日 · 預期日薪＝片酬×成功率÷日數 · 推介置頂。`;
     body=`<p class="board-lead">${lead}</p>`;
     const closestMark392 = g=> !!(closest34 && g && g.id===closest34);
     const lockedDetails392 = (list)=>{
@@ -46950,8 +47056,12 @@ function doScout(L){
     /* v18v: 通告欄短卡 → 點開招募單 Detail（PLAN §4） */
     if(layered392){
       const sortLabel392 = _boardSort392==="pay" ? "總片酬" : (_boardSort392==="chance" ? "成功率" : "預期日薪");
+      /* v20a396 UI396 ②：篩選生效嗰陣，總數行出篩選後數目（顯示 X／總數），唔係成板總數。 */
+      const sum392 = filter392==="all"
+        ? `共 ${shown.length} 張 · 可接 ${ready108.length} 張 · 未達標 ${locked108.length} 張`
+        : `顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張（可接 ${readyF392.length} · 未達標 ${lockedF392.length}）`;
       body+=`<div class="board-head392">`
-        + `<div class="board-sum392">共 ${shown.length} 張 · 可接 ${ready108.length} 張 · 未達標 ${locked108.length} 張</div>`
+        + `<div class="board-sum392">${sum392}</div>`
         + `<div class="board-sort392"><span class="board-cap392">排序：按${sortLabel392}</span>`
         + ["exp","pay","chance"].map(k=>`<button type="button" class="board-chip392${_boardSort392===k?" on":""}" data-sort392="${k}">${k==="exp"?"預期日薪":(k==="pay"?"總片酬":"成功率")}</button>`).join("")
         + `</div>`
@@ -47189,6 +47299,10 @@ function presentStartScheduleConfirm45(onStart, onMap, onCancel){
   if(goCancel) btns45.push({ label:"返回休息卡", role:"g", on:()=>{ try{ goCancel(); }catch(_e){} } });
   modal(`<h3>開始今日行程？</h3><p>${consequence}</p>`, btns45,
     { onDismiss: goCancel ? ()=>{ try{ goCancel(); }catch(_e){} } : null });
+  /* v20a396 UI396 ③：40 號確認卡改用日結卡同一套底部＋淺遮罩（day-res：貼底、頂部 .18／
+     底部 .58 漸變），唔再係中央白卡＋.72 黑罩。closeModal 已經清 day-res／day-res-open；
+     取消返休息卡嗰陣，presentRestSleepDayEnd 會重新加上。 */
+  try{ document.body.classList.add("day-res-open"); const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
 }
 /* v20a265 COSTUME265：瞓覺日結卡呈現——行入屋企＋「zzz」浮字（用戶 2026-11-12 定落），
    唔畫瞓低身體，唔用 fx_rest.mp4（嗰個係「休息」嘅呈現，兩者唔好撈埋）。 */
@@ -47277,7 +47391,8 @@ function presentRestSleepDayEnd(opts){
   const gold = ended ? `<p class="gold">一週完結 → 回家結算</p>` : "";
   /* v20a392 UI392 ①：同 afterDayModal——點擊外面只收起休息卡，唔推進日期；週結照去結算。底部細字刪走。 */
   const dismissFn = ended ? goSchedule : null;
-  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}<p class="dayres-date374">${fmtDate()}</p>${body}${gold}`, btns, {onDismiss: dismissFn});
+  const dateLine396 = dayResDateLine396("結算") || fmtDate();
+  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}<p class="dayres-date374">${dateLine396}</p>${body}${gold}`, btns, {onDismiss: dismissFn});
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   armRestSleepFxInModal();
   saveQ();
@@ -48806,30 +48921,31 @@ function openGiftShop(shopId, L){
   const shop = GiftShop.shopById(shopId);
   if(!shop){ toast("禮品店未開檔"); return; }
   const rows = GiftShop.shopList(shopId);
+  /* v20a396 UI396 ⑤：單一購買——行改做 div（唔係掣，唔計入掣數），撳行＝揀中（金框＋
+     「已揀」），底欄一粒「購買」掣（stay）先真係買，掣面寫埋揀中嗰件名。買賣流程
+     （confirmChoice236 → buyItem → 重開店）一字唔郁。無障礙取捨：行本身滑鼠／觸控
+     先撳到，購買／關閉維持鍵盤可達。 */
   let body = rows.map(row=>{
     const it = row.item;
     const left = row.left;
     const afford = (S.money||0) >= (it.price||0);
     const disabled = left<=0 || !afford;
     const why = left<=0 ? "沽清" : (!afford ? "不夠錢" : `餘 ${left}`);
-    return `<button type="button" class="act ${disabled?"dim":""}" data-buy="${it.itemId}" ${disabled?"disabled":""} style="width:100%;margin:0 0 8px;text-align:left">
+    return `<div class="act ${disabled?"dim":""}" data-buy="${it.itemId}" ${disabled?"data-disabled396=\"1\"":""} style="width:100%;margin:0 0 8px;text-align:left">
       <div><div class="n">${iconHtml112(it.emoji||"🎁")} ${rarityDot(it.rarity)}${it.name}</div>
       <div class="h">$${(it.price||0).toLocaleString()} · ${rarityLabelZh(it.rarity)} · ${why}</div></div>
-      <div class="cost">${disabled?(left<=0?"沽清":"——"):"買下"}</div>
-    </button>`;
+      <div class="cost">${disabled?(left<=0?"沽清":"——"):"揀"}</div>
+    </div>`;
   }).join("") || `<p class="sub">本週暫無貨。</p>`;
   closeSheet();
   modal(`<h3>${shop.name||"廟街禮品檔"}</h3>
     <p class="sub">油麻地廟街夜市 · 買入不耗日 · 每週補貨</p>
     <p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>
     <div id="gift-shop-list">${body}</div>`,[
-      {label:"關閉", role:"g", on:()=>{ if(L) openLoc(L.id, {travelFree:true}); }}
-    ], {onDismiss:()=>{ if(L) openLoc(L.id, {travelFree:true}); }});
-  const box = document.getElementById("gift-shop-list");
-  if(box){
-    box.querySelectorAll("[data-buy]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const id = btn.getAttribute("data-buy");
+      {label:"購買", role:"p", cls:"shop-buy396", stay:true, on:(btn)=>{
+        const sel = document.querySelector("#gift-shop-list .act-sel396");
+        if(!sel){ toast("請先揀一件禮物"); return; }
+        const id = sel.getAttribute("data-buy");
         const it = GiftShop.itemById(id);
         /* v20a236 RECONFIRM236：買禮物先確認後扣錢（buyItem 本體唔郁，確認嗰陣再驗貨存／銀包）。 */
         confirmChoice236({
@@ -48844,6 +48960,19 @@ function openGiftShop(shopId, L){
           },
           onCancel: ()=>{ openGiftShop(shopId, L); }
         });
+      }},
+      {label:"關閉", role:"g", on:()=>{ if(L) openLoc(L.id, {travelFree:true}); }}
+    ], {onDismiss:()=>{ if(L) openLoc(L.id, {travelFree:true}); }});
+  const box = document.getElementById("gift-shop-list");
+  if(box){
+    box.querySelectorAll("[data-buy]").forEach(row=>{
+      row.addEventListener("click", ()=>{
+        if(row.getAttribute("data-disabled396")) return;
+        box.querySelectorAll(".act-sel396").forEach(r=>{ r.classList.remove("act-sel396"); const c=r.querySelector(".cost"); if(c) c.textContent="揀"; });
+        row.classList.add("act-sel396");
+        const c=row.querySelector(".cost"); if(c) c.textContent="已揀";
+        const buyBtn=document.querySelector("#modal-btns .shop-buy396");
+        if(buyBtn){ const it=GiftShop.itemById(row.getAttribute("data-buy")); buyBtn.textContent="購買「"+((it&&it.name)||"")+"」"; }
       });
     });
   }

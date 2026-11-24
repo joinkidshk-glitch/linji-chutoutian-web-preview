@@ -1,3 +1,4 @@
+// v396 resync：afterDayRes／afterDayModal／休息卡靠 dayResDateLine396 等三 helper 出日結日期行，沙盒一併抽入；見 qa396/resync396.py。
 // v392：dayEndDismissNote202 已刪（v392 ① 廢止 dismiss 提示機制）；本檔只刪載入，斷言唔郁。
 // v20a75 LEVELS75 邏輯測試：訓練課程三級制——
 //   (1) 級別衍生（累計堂數 → 一/二/三級、升下一級進度）；
@@ -95,7 +96,7 @@ const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName'
   'defaultPrefs','loadPrefs','savePrefs','setPref','progressToward',
   'levels75Count','levels75Level','levels75Next','levels75GainRange','levels75GainRoll','train75ApplyLesson',
   /* v20a202：resolvePlannedDay 而家靠呢啲 helper 出去向行＋dismiss 提示 */
-  'esc202','nextDayLabel202','dayEndNextLine202','storyResultDestLine202']; /* v392：dayEndDismissNote202 已刪（dismiss 提示機制隨 v392 ① 廢止） */
+  'esc202','nextDayLabel202','dayEndNextLine202','storyResultDestLine202','settledDateObj396','fmtShortDate396','dayResDateLine396']; /* v396：afterDayRes／afterDayModal／休息卡靠呢三個 helper 出日結日期行 */ /* v392：dayEndDismissNote202 已刪（dismiss 提示機制隨 v392 ① 廢止） */
 /* v20a112 ICONS112：被抽函數調用 iconHtml112，沙盒要一併載入對照＋helper。 */
 eval(extractConst('EMOJI_ICON112').replace('const EMOJI_ICON112 =', 'var EMOJI_ICON112 ='));
 eval(extractFn('iconHtml112'));

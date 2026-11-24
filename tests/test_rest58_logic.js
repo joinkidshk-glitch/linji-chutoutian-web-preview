@@ -1,3 +1,4 @@
+// v396 resync：afterDayRes／afterDayModal／休息卡靠 dayResDateLine396 等三 helper 出日結日期行，沙盒一併抽入；見 qa396/resync396.py。
 // v392：dayEndDismissNote202 已刪（v392 ① 廢止 dismiss 提示機制）；本檔只刪載入，斷言唔郁。
 // v20a58 休息加體能 bug 修復・邏輯測試
 // 鎖住：四條休息系路徑（週計劃 rest 日／home_chore／地點 doRest／提早休息 endBrowseDayGoHome）
@@ -81,7 +82,7 @@ const FNS = ['R','clamp','pick','statHardMax','apply','weekdayIdx','weekdayName'
   'allPlanDefs','planMeta','formatResultNotes','isCriticalPlanDay','planDayWouldWrap','displayDateObj',
   'courseForStatKey','preferredLocForTrainTarget','resolvePlannedDay','endBrowseDayGoHome','doRest',
   /* v20a202：resolvePlannedDay 而家靠呢啲 helper 出去向行＋dismiss 提示 */
-  'esc202','nextDayLabel202','dayEndNextLine202','storyResultDestLine202']; /* v392：dayEndDismissNote202 已刪（dismiss 提示機制隨 v392 ① 廢止） */
+  'esc202','nextDayLabel202','dayEndNextLine202','storyResultDestLine202','settledDateObj396','fmtShortDate396','dayResDateLine396']; /* v396：afterDayRes／afterDayModal／休息卡靠呢三個 helper 出日結日期行 */ /* v392：dayEndDismissNote202 已刪（dismiss 提示機制隨 v392 ① 廢止） */
 for(const f of FNS) eval(extractFn(f));
 
 ok('harness: 四路徑函數載入', typeof resolvePlannedDay==='function' && typeof doRest==='function'

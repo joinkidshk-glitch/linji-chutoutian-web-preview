@@ -1,3 +1,4 @@
+// v396 resync：afterDayRes／afterDayModal／休息卡靠 dayResDateLine396 等三 helper 出日結日期行，沙盒一併抽入；見 qa396/resync396.py。
 // v20a202 B1/B2/C1/C2・邏輯／真路徑測試
 //   行真碼：nextDayLabel202／dayEndNextLine202／
 //   storyResultDestLine202／dayEndContinueButtons／afterDayModal／
@@ -93,6 +94,10 @@ eval(extractFn('dayEndContinueButtons'));
 eval(extractFn('afterDayModal'));
 eval(extractFn('presentStartScheduleConfirm45'));
 eval(extractFn('presentRestSleepDayEnd'));
+/* v396：afterDayModal／afterDayRes／休息卡靠呢三個 helper 出日結日期行 */
+eval(extractFn('settledDateObj396'));
+eval(extractFn('fmtShortDate396'));
+eval(extractFn('dayResDateLine396'));
 
 /* ---- (a) nextDayLabel202：種類＋實名 ---- */
 (function(){

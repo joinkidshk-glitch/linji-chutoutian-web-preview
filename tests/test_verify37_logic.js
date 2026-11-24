@@ -1,3 +1,4 @@
+// v396 resync：afterDayRes／afterDayModal／休息卡靠 dayResDateLine396 等三 helper 出日結日期行，沙盒一併抽入；見 qa396/resync396.py。
 // v392：dayEndDismissNote202 已刪（v392 ① 廢止 dismiss 提示機制）；本檔只刪載入，斷言唔郁。
 // v20a37 驗證修復包・邏輯／真路徑測試
 // 宗旨（吸取 v20a34/35 教訓）：唔齋 call 被修函數餵假數據——每段都行玩家真路徑：
@@ -434,7 +435,7 @@ function makeEl(){
     'defaultWeekPlan','lockShootsIntoDraft','placeShootOnPlan','previewShootPlacement','confirmPlaceShoot',
     'weekNumNow','stampWeekPlan37','writeTodayPlan','clearJobFromPlans',
     'shootBandFor','resolveRoleScale','shootWeekdayOk','shootWeekdaySet0','isFreePlanSlot','isMapDay','isRecordGig','shootWeekdayLabel','gigScheduleVerb','displayDateObj','isCriticalPlanDay','planDayWouldWrap','enrollCourse','fameFloor','canAudition','chance','rollAuditionPay','chanceVarianceNote','payContractNote','doAudition',
-    'aud91Ensure','aud91PendingOf','aud91WaitDays','aud91WaitPhrase','aud91CreatePending','aud91LogPush','aud91DueList','aud91PendingHint','aud91PresentDue','aud91PresentOne'];
+    'aud91Ensure','aud91PendingOf','aud91WaitDays','aud91WaitPhrase','aud91CreatePending','aud91LogPush','aud91DueList','aud91PendingHint','aud91PresentDue','aud91PresentOne','settledDateObj396','fmtShortDate396','dayResDateLine396']; /* v396：resolvePlannedDay→afterDayRes 靠呢三個 helper 出日結日期行 */
   eval(extractConst('AUD91_CAP').replace('const AUD91_CAP =', 'var AUD91_CAP ='));
   eval("var _aud91Presenting = false;");
   /* v20a112 ICONS112：被抽函數調用 iconHtml112，沙盒要一併載入對照＋helper。 */

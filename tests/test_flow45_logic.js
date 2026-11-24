@@ -1,3 +1,4 @@
+// v396 resync：afterDayRes／afterDayModal／休息卡靠 dayResDateLine396 等三 helper 出日結日期行，沙盒一併抽入；見 qa396/resync396.py。
 // v392：dayEndDismissNote202 已刪＋(f)(g) dismiss 斷言改做 v392 契約（非週結 null／確認返休息卡／確認金掣「開始並結算當日」）。
 // v20a45 流程確認（A 方案）邏輯／路徑測試：日結休息卡「開始今日行程」確認閘。
 // 行真路徑：抽真 presentRestSleepDayEnd＋真 dayEndContinueButtons＋真 presentStartScheduleConfirm45，
@@ -62,6 +63,10 @@ eval(extractFn('storyResultDestLine202'));
 eval(extractFn('dayEndContinueButtons'));
 eval(extractFn('presentStartScheduleConfirm45'));
 eval(extractFn('presentRestSleepDayEnd'));
+/* v396：afterDayModal／afterDayRes／休息卡靠呢三個 helper 出日結日期行 */
+eval(extractFn('settledDateObj396'));
+eval(extractFn('fmtShortDate396'));
+eval(extractFn('dayResDateLine396'));
 
 function press(call, substr){
   const b = (call.btns || []).find(x => String(x.label || '').indexOf(substr) >= 0);

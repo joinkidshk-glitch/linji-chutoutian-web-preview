@@ -1,3 +1,4 @@
+// v396 resync：afterDayRes／afterDayModal／休息卡靠 dayResDateLine396 等三 helper 出日結日期行，沙盒一併抽入；見 qa396/resync396.py。
 // v392：dayEndDismissNote202 已刪＋(f)(g) dismiss 斷言改做 v392 契約（非週結 null／確認返休息卡／確認金掣「開始並結算當日」）。
 // v20a196 日流程自動連跑＋故事播放鎖死返地圖・邏輯／真路徑測試
 //   行真碼：nextDayIsMap／dayEndContinueButtons／morningChain196／runScheduleFromToday／
@@ -136,6 +137,10 @@ eval(extractFn('runScheduleFromToday'));
 eval(extractFn('afterDayModal'));
 eval(extractFn('presentStartScheduleConfirm45'));
 eval(extractFn('presentRestSleepDayEnd'));
+/* v396：afterDayModal／afterDayRes／休息卡靠呢三個 helper 出日結日期行 */
+eval(extractFn('settledDateObj396'));
+eval(extractFn('fmtShortDate396'));
+eval(extractFn('dayResDateLine396'));
 var wf4PresentPendingReal = extractFnExpr('wf4PresentPending');
 var wf4PresentFenFarewellReal = extractFnExpr('wf4PresentFenFarewell');
 
