@@ -189,7 +189,8 @@ ok('F2: dual 200 唔寫 earlyEnd', !S.ending410.earlyEnd);
 S = mkState(50, 50, 1070); S.ending410 = null;
 _stubRes = mkRes('E0', 139);
 ending410ResolvePresent410(null, null, null, 'natural', { exodus: 'stay' });
-ok('F2: dual 139（差 1）改判 E7', S.ending410.career === 'E7');
+ok('F2-v394: E0 dual 139 豁免，唔改判 E7（v394 加入豁免；舊行為改判 E7 已廢）', S.ending410.career === 'E0');
+ok('F2-v394: E0 dual 139 唔寫 earlyEnd', !S.ending410.earlyEnd);
 
 S = mkState(80, 75, 1070); S.ending410 = null;
 _stubRes = mkRes('E0', 140);

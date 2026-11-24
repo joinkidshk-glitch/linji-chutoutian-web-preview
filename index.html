@@ -14897,9 +14897,13 @@ function ending410AfterEpi410(node){
 /* v20a361 P1-B：1992 兜底 floor 豁免——明確路線格（E4 泡沫偶像／E3 幕後／E5 江湖撈家）
    同主動退圈（E6）唔畀 generic floor 改判 E7（GPT 方案「先判明確路線，再判 E7 兜底」）。
    E4 嘅 dual 天生低（fame≥50＋credit<30 → dual 唔過 ~90），唔豁免就永遠被 E7 蓋過；
-   E3/E5 係刻意養成嘅路線身份（信用主導＋幕後／人情證據），唔應該因為 dual 貼線而消失。 */
+   E3/E5 係刻意養成嘅路線身份（信用主導＋幕後／人情證據），唔應該因為 dual 貼線而消失。
+   v20a394：E0 浮沉未定加入豁免——E0 本身就係「以上皆不合」嘅預設格，低名望＋低投入
+   （fame≤40 且活動 ≤2 宗）嘅 dual 上限約 124，結構上到唔到 1992 floor 140；唔豁免就
+   永遠被 E7 蓋過，19 格得 18 格可達。豁免只影響最後嗰個計算，唔影響中途破產／年尾
+   評核唔合格嘅提早收場。 */
 function ending361FloorExempt(career){
-  return career==="E6" || career==="E4" || career==="E3" || career==="E5";
+  return career==="E6" || career==="E4" || career==="E3" || career==="E5" || career==="E0";
 }
 function ending410ResolvePresent410(node, choice, result, key, opts){
   try{
@@ -14911,7 +14915,7 @@ function ending410ResolvePresent410(node, choice, result, key, opts){
        1992 floor（155）改判 E7 未紅先收（review1992），唔落正常格；E6 主動退圈唔覆蓋，
        保留玩家選擇。1990／1991 評核路徑（conseq61SettleEval）唔郁。
        v20a361 P1-B：floor 155→140（CONSEQ61_REVIEWS），豁免改行 ending361FloorExempt
-       （E6＋明確路線 E3/E4/E5）。 */
+       （E6＋明確路線 E3/E4/E5；v20a394 加 E0 浮沉未定）。 */
     let e7Floor345 = 0;
     try{
       const R92_345 = (typeof CONSEQ61_REVIEWS!=="undefined" && CONSEQ61_REVIEWS[1992]) ? CONSEQ61_REVIEWS[1992] : null;
@@ -18512,7 +18516,8 @@ const CONSEQ61_REVIEWS = {
      conseq61LegacyMark 舊檔行為自動跟到，唔使另改。評核數字之後按實玩再調整。
      v20a361 P1-B：實玩評估（W2/W4）證 155 對主角期 dual 159 太貼（僅過 4 點），普通浮動即翻格；
      floor 155→140、warnLine 195→180（保留 40 點警告帶，同 1990→1991 帶寬升幅一致）。
-     明確路線格（E3/E4/E5）另有 ending361FloorExempt 豁免，唔受呢條兜底線改判。 */
+     明確路線格（E3/E4/E5）另有 ending361FloorExempt 豁免，唔受呢條兜底線改判。
+     v20a394：E0 浮沉未定同樣豁免（預設格，低投入 dual 上限約 124，到唔到 floor 140）。 */
   1992: { floor: 140, warnLine: 180, boundaryWeek: 156 }
 };
 const CONSEQ61_CFG = {
