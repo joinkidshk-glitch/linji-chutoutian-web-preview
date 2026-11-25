@@ -3299,14 +3299,18 @@ body.day-res-open #mask.day-res{
    還原，DOM 本身唔會拆，關窗即刻返嚟。教學聚光燈（mask.tut-on）嗰陣唔收起——聚光目
    標要見到；display:none 唔可以由子孫 override，所以豁免全靠 setUnderlyingInert 入面
    嘅 tut-on 判斷（見下），唔好只靠 CSS。 */
+/* v20a406 UI406-7：前景層背後保留內容（變暗＋inert），唔再 display:none 成幅背景
+   變純色空洞；觸控／焦點／VoiceOver 由 setUnderlyingInert 嘅 inert 處理。 */
 #app.ui-hide-under396 #v-map,
 #app.ui-hide-under396 #v-home,
-#app.ui-hide-under396 #v-start,
+#app.ui-hide-under396 #v-start{
+  pointer-events: none !important; opacity:.5 !important; filter:saturate(.7) brightness(.9) !important;
+}
 #app.ui-hide-under396 #loc-sheet,
 #app.ui-hide-under396 #menubar,
 #app.ui-hide-under396 .menu,
 #app.ui-hide-under396 #btn-confirm-plan{
-  display: none !important;
+  pointer-events: none !important;
 }
 /* v20a397 UI397-4：日結卡 scene 模式——地圖／屋企場景影像留低做承托（唔再成幅卸載），
    但全部掣收起（display:none，掣數唔回升、唔可撳）。只限日結家族（keepScene397），
@@ -7316,19 +7320,22 @@ body.day-res-open .day-row{
 #app.awd-stage-on402 .menu,
 #app.awd-stage-on402 #loc-sheet,
 #app.awd-stage-on402 #btn-confirm-plan{
-  display:none !important;
+  pointer-events:none !important; opacity:.5 !important; filter:saturate(.7) brightness(.9) !important;
 }
 /* (6⑥) 選單開住嗰陣卸載地圖內容——只留 ☰（關單）＋選單本身。#menu 喺 #v-map 入面，
    唔可以直接 hide #v-map；改收 .map-wrap（pin／標籤／過一日／層切／手帳拉柄）＋
    進度 chip＋loc-sheet＋其他 view。 */
-#app.menu-open402 #v-map .map-wrap,
-#app.menu-open402 #chip-story,
+/* v20a406 UI406-7（用戶實機回報）：選單開住唔再卸載地圖——地圖保留可見（變暗），
+   背景退出觸控／焦點／VoiceOver 靠 inert（JS 同步）＋ pointer-events:none，
+   唔用空白畫面換掣數。 */
+#app.menu-open402 #v-map .map-wrap{
+  pointer-events:none !important; opacity:.55 !important; filter:saturate(.7) brightness(.92) !important;
+}
+#app.menu-open402 #chip-story{ pointer-events:none !important; opacity:.55 !important; }
 #app.menu-open402 #loc-sheet,
-#app.menu-open402 #v-home,
-#app.menu-open402 #v-start,
 #app.menu-open402 #menubar,
 #app.menu-open402 #btn-confirm-plan{
-  display:none !important;
+  pointer-events:none !important;
 }
 /* (6⑦) 地點面板開住嗰陣收起底圖 pin（−17）：面板係接管層，背景 pin 退出觸控／焦點／
    VoiceOver；關 sheet（返回地圖）即還原。只收 .pin 掣——玩家標記（.map-me363）同
@@ -7414,6 +7421,92 @@ body.day-res-open .day-row{
 #app.mask-up .toast, #app.ui-inert #toast, .toast{ pointer-events:none !important; }
 /* ===== v20a403 UI403 完 ===== */
 
+
+/* ===== v20a406 UI406：第十二輪頭五項修復 ===== */
+/* (2) 全域對比：細字加深＋不透明底（像素實量 ≥4.5:1，大字 ≥3:1） */
+.bar .bar-primary .chip-story{ opacity:1 !important; color:#f7ead0 !important; background:rgba(26,20,16,.55) !important; border-color:rgba(247,234,208,.65) !important; filter:none !important; }
+#btn-menu{ color:#f7ead0 !important; background:#241a0e !important; border:1px solid rgba(247,234,208,.5) !important; border-radius:6px !important; }
+#app #v-start .start52 .start-sub{ color:#f7ead0 !important; font-weight:900 !important; background:rgba(26,20,16,.62) !important; border-radius:4px !important; padding:2px 10px !important; text-shadow:0 1px 2px rgba(0,0,0,.6) !important; }
+#app #v-start .start52 .start-subrow button{ color:#f7ead0 !important; background:#241a0e !important; border:1px solid #c9a227 !important; font-weight:900 !important; }
+#app .gig-teaser .gt-meta, .gig-teaser .gt-meta{ color:#3d2c1a !important; }
+.gig-teaser .gt-meta-line{ color:#3d2c1a !important; }
+.modal .ending410-title-card .sub, .ending410-scene .sub{ color:#43301c !important; font-weight:700 !important; }
+.season-banner{ color:#43301c !important; }
+.season-banner .season-mark{ opacity:1 !important; color:#5c3a14 !important; }
+.favor-pressure[data-level="輕"]{ color:#0a4a32 !important; font-weight:900 !important; }
+.hud-stress-max, .dual-sep, .dual-lab{ color:#f0e2c4 !important; opacity:1 !important; }
+#book389-handle{ color:#241a0e !important; background:#f7ecc8 !important; font-weight:900 !important; border:1px solid #a98d4f !important; }
+.dual-money-sym, .dual-money b{ color:#f7ead0 !important; }
+.gt-badge{ color:#241a0e !important; font-weight:900 !important; background:#e8d9ae !important; }
+.sn-stamp{ color:#7c1d12 !important; border-color:#7c1d12 !important; font-weight:900 !important; }
+/* v406 對比收尾：金字加深、頂欄淺字、推介標籤加深 */
+.home-money{ color:#7c4a08 !important; font-weight:900 !important; }
+.dual-mid, #c-era{ color:#f7ead0 !important; font-weight:800 !important; }
+.gt-featured-tag{ background:#8f1d16 !important; color:#fff8e1 !important; }
+.dual-sep{ color:#f7ead0 !important; }
+/* (6) 劇情旁白版面（用戶實機回報）：舞台填滿按鈕列以上高度、旁白紙跟內容收緊貼底。
+   根因：#modal-inner 冇 height:100%，.story-play height:100% 對住 auto 高度失效，
+   舞台縮到內容高，高屏露出黑底空洞；旁白 plate 定高 170px（連 61px 底 pad）
+   ＋文字垂直置中，短句俾大片空白包住。 */
+#mask.story-play-on:not(.tut-on) .modal{ max-height:none !important; height:100% !important; }
+#mask.story-play-on #modal-inner{ height:100% !important; flex:1 1 auto !important; min-height:0 !important; }
+#mask.story-play-on #modal-inner{ position:relative !important; }
+#mask.story-play-on .story-play{ position:absolute !important; inset:0 !important; height:auto !important; max-height:none !important; }
+#mask.story-play-on .story-play .sp-stage-inner{ padding-bottom:calc(80px + env(safe-area-inset-bottom,0px)) !important; }
+#mask.story-play-on:has(.sp-mode-narration) .story-play .dlg106-plate{ height:auto !important; min-height:0 !important; max-height:46% !important; padding:12px 14px !important; }
+#mask.story-play-on:has(.sp-mode-narration) .story-play .dlg106-plate .sp-line{ margin:0 !important; }
+#mask.story-play-on:has(.sp-mode-dialogue) .story-play .dlg106-plate{ height:118px !important; min-height:118px !important; max-height:118px !important; padding-bottom:12px !important; }
+/* (8) 通告詳情高度鏈（用戶實機回報）：flex 子項 min-height:0 防 Safari 塌陷；
+   短屏收英雄區，首屏折位落行與行之間，標題／類型／難易度／職位／要求／片酬完整。 */
+#mask.casting-sheet-on #modal-inner{ display:flex !important; flex-direction:column !important; height:100% !important; min-height:0 !important; }
+#mask.casting-sheet-on .notice_sheet_frame.cn-paper30v2{ flex:1 1 auto !important; min-height:0 !important; display:flex !important; flex-direction:column !important; }
+#mask.casting-sheet-on .notice_sheet_frame.cn-paper30v2 .notice_sheet_body{ flex:1 1 auto !important; min-height:0 !important; overflow-y:auto !important; }
+/* (9) 手帳入口併入底欄（用戶實機提問）：唔再 in-flow 獨佔一行食地圖高度；
+   改貼底欄右緣小書籤（absolute，44px 熱區，撳＋上拉照舊），一眼見到。 */
+#v-map{ position:relative !important; }
+#app #v-map .book389-handle{
+  position:absolute !important; right:8px !important; left:auto !important;
+  bottom:calc(6px + env(safe-area-inset-bottom,0px)) !important; z-index:8 !important;
+  margin:0 !important; min-height:44px !important; min-width:64px !important;
+  padding:8px 10px !important; border-radius:8px 8px 2px 2px !important;
+  box-shadow:0 2px 6px rgba(70,50,30,.35) !important;
+}
+/* (10) 地圖和紙膠紙刪走（用戶實機提問）：裝飾唔可以遮建築／道路／標籤。 */
+#v-map .map-polaroid::after{ display:none !important; }
+@media (max-height:760px){
+  #mask.casting-sheet-on #modal-inner .cn-issuer30v2{ height:168px !important; margin-bottom:-72px !important; }
+  #mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2{ bottom:80px !important; }
+}
+.story-play .sp-meta{ color:#3d2c1a !important; }
+.debt-row .debt-meta, .debt-row .debt-note, .debt-row .debt-origin, .debt-fuzzy{ color:#43301c !important; }
+.debt-amt{ color:#241a0e !important; font-weight:900 !important; }
+#v-map .map-names68 .mn68{ color:#2a1e10 !important; background:#f7ecc8 !important; }
+.cn-summary .cn-sum-row .k{ color:#43301c !important; }
+.awd-next403{ color:#43301c !important; }
+/* (3) 里程碑首屏密度：結局長內容尾段首屏完整（唔縮字，收段距＋行距） */
+.ending375-sheet{ padding:6px 14px 10px !important; }
+.ending375-sheet .e375-grp{ margin-top:2px !important; padding-top:2px !important; }
+.ending375-sheet p{ margin-top:2px !important; margin-bottom:2px !important; line-height:1.5 !important; }
+.ending410-scene p{ line-height:1.5 !important; }
+.ending375-sheet .ending410-title-card{ padding:4px 10px !important; margin:4px 0 !important; }
+.ending375-sheet h3{ margin-top:2px !important; margin-bottom:2px !important; }
+/* (3) 人情債首屏：說明收成一行便條＋債卡收緊，第一粒「去還」首屏完整 */
+.season-banner{ padding:4px 8px !important; margin:0 0 4px !important; font-size:.74rem !important; }
+.season-banner .season-mark{ font-size:1rem !important; }
+.favor-pressure{ padding:4px 8px !important; margin:0 0 4px !important; font-size:.8rem !important; }
+.debt-overdue404{ padding:5px 8px !important; margin:4px 0 6px !important; font-size:.78rem !important; line-height:1.35 !important; }
+.debt-row{ padding:8px 10px !important; margin-bottom:6px !important; }
+.debt-row .debt-who{ margin:0 0 2px !important; }
+.debt-row .debt-meta, .debt-row .debt-note{ margin-top:3px !important; }
+.debt-cta-wrap{ margin-top:5px !important; }
+/* (4) 通告欄質感：推介劇照同一鏡頭調色＋暗角；紅印字芯加深；整理改索引紙籤 */
+.gt-still404 .gt-still403-img{ filter:sepia(.22) contrast(1.06) brightness(.98) !important; }
+.gt-still404-fig{ filter:sepia(.18) contrast(1.05) drop-shadow(0 2px 3px rgba(26,20,16,.5)) !important; }
+.gt-still404::after{ content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse at 50% 42%, rgba(0,0,0,0) 55%, rgba(26,20,16,.28) 100%), linear-gradient(180deg, rgba(26,20,16,.14), rgba(0,0,0,0) 22%, rgba(0,0,0,0) 80%, rgba(26,20,16,.18)); }
+#app .gig-teaser .g-seal, .gig-card .g-seal{ filter:contrast(1.9) saturate(1.45) brightness(.6) drop-shadow(0 1px 2px rgba(26,20,16,.35)) !important; }
+.board-ctl397-btn{ background:#f7ecc8 !important; color:#43301c !important; border:1px solid #a98d4f !important; border-bottom:3px solid #9c302d !important; border-radius:2px 8px 2px 2px !important; transform:rotate(-1.2deg); box-shadow:1px 2px 4px rgba(70,50,30,.25) !important; font-weight:900 !important; letter-spacing:.08em !important; padding:6px 12px !important; min-height:44px !important; }
+.board-ctl397-btn:active{ transform:rotate(-1.2deg) translateY(1px); }
+/* ===== v20a406 UI406 完 ===== */
 </style>
 </head>
 <body>
@@ -7508,7 +7601,6 @@ body.day-res-open .day-row{
            照行 confirmEarlyRestFromMenu）。 -->
       <!-- v20a404 UI404-6（掣量裁決）：選單只留 返回／設定／存檔管理。
            存／讀共用槽位清單（存檔管理），重看教學入設定，新遊戲入存檔管理。 -->
-      <button type="button" data-m="back">返回</button>
       <button type="button" data-m="settings">設定</button>
       <button type="button" data-m="wire" id="menu-wire" hidden>接線／年份</button>
       <button type="button" data-m="slots">存檔管理</button>
@@ -22635,6 +22727,8 @@ function setUnderlyingInert(on, scene){
        舊版一律豁免，令 43e 落選卡背後地圖成層留低（基線 23 粒）。 */
     const tutMap = tut && (mask.dataset.tutStep === "TUT_MAP");
     if(app) app.classList.toggle("ui-hide-under396", !!(on && !scene && !tutMap));
+    /* v20a406 UI406-7：背景保留可見（CSS 變暗），以 inert 退出觸控／焦點／VoiceOver。 */
+    try{ ["v-map","v-home","v-start"].forEach(id406=>{ const v406=document.getElementById(id406); if(!v406) return; if(on && !tutMap){ v406.setAttribute("inert",""); } else { v406.removeAttribute("inert"); } }); }catch(_e406){}
     if(app) app.classList.toggle("dayres-scene397", !!(on && scene && !tutMap));
   }catch(_e){}
 }
@@ -25270,6 +25364,7 @@ function deCollideLabels363(){
     try{
       if(!_isSettle391){
         deCollideLabels363._settleLeft391 = 3;
+        deCollideLabels363._settleRounds406 = 0;
         if(!deCollideLabels363._settleT391){
           const arm391 = ()=>{
             deCollideLabels363._settleT391 = setTimeout(()=>{
@@ -25279,6 +25374,12 @@ function deCollideLabels363(){
                 if(!vm || !vm.classList.contains("on")){ deCollideLabels363._settleLeft391 = 0; return; }
                 deCollideLabels363._inSettle391 = true;
                 deCollideLabels363();
+                /* v20a406 UI406-1：仲有互撞就唔好停鏈——版面定型時序唔同，固定三輪
+                   會喺未清嗰陣停低（間歇殘留成因）。上限 8 輪防無限循環。 */
+                if((deCollideLabels363._overlap406|0) > 0 && (deCollideLabels363._settleRounds406|0) < 8){
+                  deCollideLabels363._settleRounds406 = (deCollideLabels363._settleRounds406|0) + 1;
+                  deCollideLabels363._settleLeft391 = Math.max(deCollideLabels363._settleLeft391|0, 1);
+                }
                 if(deCollideLabels363._settleLeft391 > 0){
                   deCollideLabels363._settleLeft391--;
                   if(deCollideLabels363._settleLeft391 > 0) arm391();
@@ -25362,20 +25463,61 @@ function deCollideLabels363(){
         }
         return any404;
       };
-      for(let round404=0; round404<4; round404++){
-        const moved404 = pairPass404();
+      /* v20a406 UI406-1：求解迭代至驗證零互撞先停（上限 10 輪）——舊版 pair→clamp→push
+         最多 4 輪、收尾橫移只跑一次，push 後新撞位冇人再驗，430×707 回圖間歇殘留
+         1 對（970.8px²）。而家每輪尾段實量全對重疊，>0 就再跑 pair＋橫移，結果確定。 */
+      const countOverlap406 = ()=>{
+        let n406 = 0;
+        items.forEach(it=>{ try{ it.r = it.el.getBoundingClientRect(); }catch(_e){} });
+        for(let i406=0;i406<items.length;i406++) for(let j406=i406+1;j406<items.length;j406++){
+          const a406=items[i406].r, b406=items[j406].r;
+          const ox406 = Math.min(a406.right,b406.right)-Math.max(a406.left,b406.left);
+          const oy406 = Math.min(a406.bottom,b406.bottom)-Math.max(a406.top,b406.top);
+          if(ox406>0 && oy406>0) n406++;
+        }
+        return n406;
+      };
+      const hSep406 = ()=>{
+        const stageW406 = (stage391 && stage391.clientWidth) || 390;
+        items.forEach(it=>{ try{ it.r = it.el.getBoundingClientRect(); }catch(_e){} });
+        for(let i406=0;i406<items.length;i406++){
+          for(let j406=i406+1;j406<items.length;j406++){
+            const a406=items[i406].r, b406=items[j406].r;
+            const ox406 = Math.min(a406.right,b406.right)-Math.max(a406.left,b406.left);
+            const oy406 = Math.min(a406.bottom,b406.bottom)-Math.max(a406.top,b406.top);
+            if(ox406>0 && oy406>0){
+              const aC406=(a406.top+a406.bottom)/2, bC406=(b406.top+b406.bottom)/2;
+              const lo406=(bC406>=aC406)?items[j406]:items[i406];
+              const hi406=(lo406===items[j406])?items[i406]:items[j406];
+              const hiCx406=(hi406.r.left+hi406.r.right)/2, loCx406=(lo406.r.left+lo406.r.right)/2;
+              let dir406=(loCx406>=hiCx406)?1:-1;
+              const curL406=(typeof lo406.el.offsetLeft==="number")?lo406.el.offsetLeft:(parseFloat(lo406.el.style.left)||0);
+              const w406=lo406.r.width||60;
+              let newL406=curL406 + dir406*(ox406+8);
+              if(newL406 < w406/2+2 || newL406 > stageW406-w406/2-2){ dir406=-dir406; newL406=curL406 + dir406*(ox406+8); }
+              newL406=Math.max(w406/2+2, Math.min(newL406, stageW406-w406/2-2));
+              lo406.el.style.left=newL406+"px";
+              lo406.r=lo406.el.getBoundingClientRect();
+            }
+          }
+        }
+      };
+      for(let round404=0; round404<10; round404++){
+        pairPass404();
         if(typeof clampMapLabels397==="function") clampMapLabels397();
         items.forEach(it=>{ try{ it.r = it.el.getBoundingClientRect(); }catch(_e){} });
         pushOffMarker391();
-        if(!moved404) break;
+        if(countOverlap406()===0) break;
+        hSep406();
+        pushOffMarker391();
+        if(countOverlap406()===0) break;
       }
-      /* v20a404 UI404-1：障礙推撞係最後權威，佢推完可能再撞鄰籤（垂直震盪）。
-         收尾橫向分離：仲重疊嘅對，將下面嗰張橫移 ox+8（clamp／障礙推撞都只管
-         垂直為主，橫移唔會俾夾返）；移完再推一次障礙，確保最終 0 互撞。 */
+      deCollideLabels363._overlap406 = countOverlap406();
+      /* v20a406 UI406-1：收尾橫向分離已併入上面迭代（每輪驗證），呢度只保留
+         障礙推撞做最後權威；推完若再撞，settle 鏈會按 _overlap406 繼續重跑。 */
       try{
-        const stageW404 = (stage391 && stage391.clientWidth) || 390;
         items.forEach(it=>{ try{ it.r = it.el.getBoundingClientRect(); }catch(_e){} });
-        for(let i404=0;i404<items.length;i404++){
+        for(let i404=0;i404<0;i404++){ /* v406：舊單次橫移停用，改由迭代 hSep406 處理 */
           for(let j404=i404+1;j404<items.length;j404++){
             const a404=items[i404].r, b404=items[j404].r;
             const ox404 = Math.min(a404.right,b404.right)-Math.max(a404.left,b404.left);
@@ -51822,10 +51964,14 @@ document.getElementById("btn-menu").onclick=e=>{
   const opening = menu && !menu.classList.contains("on");
   if(opening){ try{ closeSheet(); }catch(_e){} }
   if(menu) menu.classList.toggle("on");
+  /* v20a406 UI406-5：選單刪「返回」列，開合掣本身 ☰↔✕（連開合掣共 3 個可撳）。 */
+  try{ e.currentTarget.textContent = (menu && menu.classList.contains("on")) ? "✕" : "☰"; }catch(_e406){}
   /* v20a402 UI402-6⑥：選單開住嗰陣卸載地圖內容（CSS #app.menu-open402），只留 ☰＋選單；關單即還原。 */
   try{ document.getElementById("app").classList.toggle("menu-open402", !!(menu && menu.classList.contains("on"))); }catch(_e402){}
+  /* v20a406 UI406-7：地圖保留可見，背景以 inert 退出觸控／焦點／VoiceOver。 */
+  try{ const mw406=document.querySelector("#v-map .map-wrap"); const on406=!!(menu && menu.classList.contains("on")); if(mw406){ if(on406){ mw406.setAttribute("inert",""); mw406.setAttribute("aria-hidden","true"); } else { mw406.removeAttribute("inert"); mw406.removeAttribute("aria-hidden"); } } }catch(_e406){}
 };
-document.body.addEventListener("click",()=>{ document.getElementById("menu").classList.remove("on"); try{ document.getElementById("app").classList.remove("menu-open402"); }catch(_e402){} });
+document.body.addEventListener("click",()=>{ document.getElementById("menu").classList.remove("on"); try{ document.getElementById("btn-menu").textContent="☰"; }catch(_e406){} try{ document.getElementById("app").classList.remove("menu-open402"); }catch(_e402){} try{ const mw406=document.querySelector("#v-map .map-wrap"); if(mw406){ mw406.removeAttribute("inert"); mw406.removeAttribute("aria-hidden"); } }catch(_e406){} });
 /* v20a404 UI404-6（掣量裁決）：地圖刪「進度」掣——頂欄改靜態進度徽章，
    進度喺手帳行程頁頂部直接顯示（見 #nb-progress404），唔再多一粒掣。 */
 /* v20a389 UI389（用戶 2026-11-23 拍板＋GPT 方案）：手帳拉柄——向上掃或撳一下

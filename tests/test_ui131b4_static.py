@@ -1,3 +1,4 @@
+# v406：旁白牌 height:auto（narration scope）有意圖改動，對白定高不變。
 # v20a131 B4 對話框維持固定高，短句留空用文字垂直置中去減・靜態守門測試。
 # 用法：python3 tests/test_ui131b4_static.py [path-to-index.html]
 # 對 pristine main 行 → 置中規則缺席 → 乾淨 FAIL（唔 crash）。
@@ -25,8 +26,12 @@ ok('巧遇對白行定 3 行 4.65em 不變',
    '#enc79-overlay .e79-line{margin:0 0 10px;line-height:1.55;font-size:1rem;height:4.65em;min-height:4.65em;overflow-y:auto;white-space:pre-wrap;}' in html)
 ok('巧遇名牌行定高 1.5em 不變',
    '#enc79-overlay .e79-name{font-weight:800;color:#8a5a00;margin:0 0 4px;font-size:.95rem;line-height:1.5;min-height:1.5em;}' in html)
-ok('主線牌無 height:auto（唔准跟字數伸縮）',
-   'dlg106-plate{height:auto' not in html and 'dlg106-plate{ height:auto' not in html)
+# v406：旁白牌改跟內容收緊（height:auto 只限 narration scope，用戶實機回報短句大片空白）；
+# 對白牌維持定高 118px，唔跟字數伸縮。
+ok('對白牌定高 118px（唔跟字數伸縮）',
+   'sp-mode-dialogue) .story-play .dlg106-plate{ height:118px' in html)
+ok('旁白牌 height:auto 只限 narration scope',
+   'sp-mode-narration) .story-play .dlg106-plate{ height:auto' in html)
 
 # ---------- 主線：plate flex 縱向＋.sp-line margin auto 置中 ----------
 ok('主線 plate 改 flex 縱向',

@@ -1,3 +1,5 @@
+# v406 resync D：手帳/膠紙 CSS +12 行（L7464），6 釘行各 +12，內容逐行核實。
+# v406 resync：釘行按內容重對（qa406/resync406b.py），純漂移。
 # v405 resync：index.html 淨 +129 行；6 個 line() 釘行按 difflib 映射重寫，內容逐字核實純漂移；見 qa405/resync405.py。
 # v404 resync：index.html 淨 +189 行；6 個 line() 釘行按 difflib 映射重寫，內容逐字核實純漂移；見 qa404/resync404.py。
 # v403 resync：index.html 淨 +125 行；6 個 line() 釘行按 difflib 映射重寫，內容逐字核實純漂移；見 qa403/resync403.py。
@@ -174,13 +176,13 @@ for fn in ('rom176TryIntercept', 'rom176PlayEncounter', 'rom176DoGiveStarGift', 
 # v20a206 C2 resync：index.html 淨 +3 行（WF4 覆寫表頭註解＋3，插入點舊 L41271 之後）；其後釘行各 +3（54324→54327、54692→54695、55831→55834、55925→55928）；qa206/resync206c2.py difflib 對位核實純漂移。
 # v20a154 resync：index.html 淨 +64 行（B1 CSS ＋38／DLG154_CACHE ＋9／B2 覆寫表 ＋12／B3 ＋5）；6 個釘行按 difflib 映射重寫，內容逐字核實純漂移；L6152／L31712 等名唔郁。
 # v20a207 rebase 上 main 8cecf7f（v206）resync：v206 +25（N1 +22／N2 +3，插入點 ~41129／41271 之後）＋v207 +34；/tmp/verify207.py 73 錨點對位零 mismatch，純漂移。
-ok('釘：NPCS lan 條目 L6152', line(7953).startswith('  lan:{ id:"lan", name:"藍若曦"'))
+ok('釘：NPCS lan 條目 L6152', line(8045).startswith('  lan:{ id:"lan", name:"藍若曦"'))
 ok('釘：載入點 L31712（GIFT_REACT 賦值同行呼叫注入）',
-   'GIFT_REACT = giftReact' in line(16668) and 'rom176ApplyGiftOverrides()' in line(16668))
-ok('釘：ROM176 block 起點 L55647', line(44928).startswith('/* ===== v20a176 ROM176'))
-ok('釘：rom176ApplyGiftOverrides 定義 L56015', line(45287).startswith('function rom176ApplyGiftOverrides()'))
-ok('釘：addLocTalkGiftActs L57154', line(46853).startswith('function addLocTalkGiftActs(add, L, npcId)'))
-ok('釘：openLoc rom176 攔截 L57248', 'rom176TryIntercept(id)' in line(47041))
+   'GIFT_REACT = giftReact' in line(16760) and 'rom176ApplyGiftOverrides()' in line(16760))
+ok('釘：ROM176 block 起點 L55647', line(45070).startswith('/* ===== v20a176 ROM176'))
+ok('釘：rom176ApplyGiftOverrides 定義 L56015', line(45429).startswith('function rom176ApplyGiftOverrides()'))
+ok('釘：addLocTalkGiftActs L57154', line(46995).startswith('function addLocTalkGiftActs(add, L, npcId)'))
+ok('釘：openLoc rom176 攔截 L57248', 'rom176TryIntercept(id)' in line(47183))
 # v20a215 rebase 上 main 7e27e1a resync：v215 淨 +140 行，釘行按 difflib 映射重寫（31903 唔郁、55254→55394、55622→55762、56761→56901、56855→56995），核實純漂移。# v20a191 rebase 上 main b3db32f resync：v189 淨 +34 行＋v191 淨 +47 行，6 個釘行按段 +2／+9／+47 重算（6070→6072、31574→31583、53369→53416、53737→53784、54876→54923、54970→55017），difflib 對位核實純漂移。
 # v20a216 resync：釘行按 difflib 映射重寫（6322→6360、31903→31941、55394→55657、55762→56025、56901→57164、56995→57258；L6152／L31712 名唔郁），qa216/resync216.py 核實純漂移。
 # v20a217 resync：標籤遷移 ＋3 行（插入點舊 L45472 之後），釘行各 ＋3（55657→55660、56025→56028、57164→57167、57258→57261）。

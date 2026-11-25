@@ -1,3 +1,4 @@
+# v406：選單刪「返回」列，靜態 <button 111→110（有意圖改動）。
 # v404 意圖更新：確認閘刪除後 40 號掣層級斷言改做新掣名。
 # v397：第五輪 UI 檢視頭五項必修 — 靜態測試（釘字串／接線／禁區守門）。
 # 用法：python3 tests/test_v397_static.py [repo-root]
@@ -129,8 +130,8 @@ ok("v397 33b 回顧唯讀收起編輯工具",
 
 # ---- 靜態 <button 總數：v396 係 110；v397 係 112（＋2 板下拉掣＋1 工具掣＋1 約人 picker 模板
 # －1 選單過一日－1 未開放掣；可見掣數每屏都跌，見實駕 counts397.json）；v398 係 111（兩粒板下拉掣合併做一粒「整理」） ----
-ok("v397 靜態 <button 總數 112（v396：110）",  # v398：111
-   src.count("<button") == 111)
+ok("v397 靜態 <button 總數 110（v406：選單刪「返回」列 −1）（v396：110）",  # v398：111
+   src.count("<button") == 110)
 
 # ---- 唔郁嘅嘢：SAVE／softRev／?v= ----
 ok("v397 SAVE key 不變 starVolunteer_map_v19w", "starVolunteer_map_v19w" in src)

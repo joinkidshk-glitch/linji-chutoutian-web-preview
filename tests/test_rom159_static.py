@@ -1,3 +1,5 @@
+# v406 resync D：6 釘行＋全佳行各 +12。
+# v406 resync：釘行按內容重對（qa406/resync406.py），純漂移。
 # v405 resync：index.html 淨 +129 行；6 個 line_has 釘行＋全佳行按 difflib 映射重寫，內容逐字核實純漂移；見 qa405/resync405.py。
 # v404 resync：index.html 淨 +189 行；6 個 line_has 釘行按 difflib 映射重寫，內容逐字核實純漂移；見 qa404/resync404.py。
 # v403 resync：index.html 淨 +125 行；6 個 line_has 釘行＋全佳行按 difflib 映射重寫，內容逐字核實純漂移；見 qa403/resync403.py。
@@ -52,7 +54,7 @@
 # 內容逐字相同，純漂移，見 qa268/resync268.py；ok() 名內歷史行號標籤不變）。
 # v20a267 resync：傳聞系統刪除，淨 −1399 行；7 個釘行按內容重對（26135→25431、8623→8480、26969→26265、11171→10950、15495→15050、26884→26180、全佳註解 26163→25459；內容逐字相同，ok() 名內歷史行號標籤不變）。
 # v20a266 resync：index.html 淨 +328 行（V158 block ＋284／StoryPlay hook ＋1／載入呼叫 ＋1／enc158 hook ＋42）；釘行按 difflib 映射重寫，內容逐字相同，純漂移。
-# v20a265 resync：index.html 淨 +378 行；6 個釘行＋全佳行按 difflib 映射重寫（25499→25849、8020→8339、26333→26683、10553→10886、14877→15210、26248→26598、全佳 25527→25877），內容逐字相同，純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁。
+# v20a265 resync：index.html 淨 +378 行；6 個釘行＋全佳行按 difflib 映射重寫（25511→25849、8032→8339、26345→26683、10565→10886、14889→15210、26260→26598、全佳 25527→25877），內容逐字相同，純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁。
 # v20a283 resync：index.html 淨 +76 行（殺青鉤通用分支 ＋2＠舊 L21490 之後／R5-A＋H 新函數＋對照表 ＋74＠舊 L26493 之後；3 個釘行＋全佳行各 ＋2，全部喺第二插入點之前），內容逐字核實純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁。
 # v20a139 resync：pristine 改由 git show 846e952（v154 main HEAD，v159 落地前最後一個 main）讀，唔再用 ~/workspace/linji-repo（佢個 main 而家已經係 v159，唔再係 pristine）；反證＋pack 對照不變。
 # v20a159 ROM159 Phase 1＋v159 感情線重排 static 測試：紀律釘（SAVE/softRev/?v=、pack JSON 冇直改）
@@ -198,19 +200,19 @@ ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committ
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25499", line_has(29185, "v20a159 ROM159 Phase 1"))
-ok("行號釘 bumpRel 凍結鉤 8020", line_has(9826, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(30093, "COMMIT48_NODES.CMT_lan_commit"))
-ok("行號釘 StoryPlay 預備鉤 10553", line_has(12034, "rom159PrepareNode(node)"))
-ok("行號釘載入覆寫呼叫 14877", line_has(16670, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26248", line_has(29948, "function rom159SoMeetGate"))
+ok("行號釘 ROM159 block 頭 25511", line_has(29327, "v20a159 ROM159 Phase 1"))
+ok("行號釘 bumpRel 凍結鉤 8032", line_has(9918, "rom159GainAllowed(k)"))
+ok("行號釘 CMT_lan_commit 26345", line_has(30235, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 StoryPlay 預備鉤 10565", line_has(12126, "rom159PrepareNode(node)"))
+ok("行號釘載入覆寫呼叫 14889", line_has(16762, "rom159ApplyGiftOverrides()"))
+ok("行號釘 rom159SoMeetGate 26260", line_has(30090, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[29212])  # v392 resync（27225→27284，difflib 核實）  # v393-endings resync（27284→27830，difflib 核實）  # v391 resync（26982→27225，difflib 核實）  # v390 resync（26964→26982，difflib 核實）  # v389 resync（26945→26964，difflib 核實）  # v377 resync（26604→26609，difflib 核實）  # v376 resync（26580→26604，difflib 核實）  # v375 resync（26464→26580，grep 核實）  # v374 resync（26349→26464，grep 核實）  # v373 resync +41（26308→26349，grep 核實）  # v372 resync +76  # v20a159 整合：B1＋B2 後行號 +86；v20a358 resync −424；v361 resync +76；v363 resync +437；v369 resync +181（25968→26136，difflib 核實純漂移）
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[29354])  # v392 resync（27225→27284，difflib 核實）  # v393-endings resync（27284→27830，difflib 核實）  # v391 resync（26982→27225，difflib 核實）  # v390 resync（26964→26982，difflib 核實）  # v389 resync（26945→26964，difflib 核實）  # v377 resync（26604→26609，difflib 核實）  # v376 resync（26580→26604，difflib 核實）  # v375 resync（26464→26580，grep 核實）  # v374 resync（26349→26464，grep 核實）  # v373 resync +41（26308→26349，grep 核實）  # v372 resync +76  # v20a159 整合：B1＋B2 後行號 +86；v20a358 resync −424；v361 resync +76；v363 resync +437；v369 resync +181（25968→26136，difflib 核實純漂移）
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）

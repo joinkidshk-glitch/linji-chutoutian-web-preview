@@ -1,3 +1,4 @@
+# v406：選單刪「返回」列，靜態 <button 111→110（有意圖改動）。
 # v402 resync：setUnderlyingInert 教學豁免收窄到只限 TUT_MAP（!tut→!tutMap，有意圖改動，任務 6③⑤；聚光目標 pin 只喺 TUT_MAP 步先要留低，TUT_BOARD／結算卡要 scene 卸載；見 qa402/resync402.py。
 # v398 resync：排序＋媒介合成一個「整理」掣，靜態 <button −1（112→111）；見 qa398/resync398.py。
 # v396：第四輪 UI 檢視頭五項必修 — 靜態測試（釘字串／接線／禁區守門）。
@@ -124,8 +125,8 @@ ok("v396 禮品店唔用 gift-pick-name（gift185 禁區）",
 # 每間得一個模板字串，所以靜態只減 2；實駕掣數禮品 37→2、買衫 33→2）。
 # v397 係 112（＋2 板下拉掣＋1 工具掣＋1 約人 picker 模板－1 選單過一日－1 未開放掣；
 # 可見掣數每屏都跌，見實駕 counts397.json） ----
-ok("v398 靜態 <button 總數 111（v397：112）",
-   src.count("<button") == 111)
+ok("v398 靜態 <button 總數 110（v406：選單刪「返回」列 −1）（v397：112）",
+   src.count("<button") == 110)
 
 # ---- 唔郁嘅嘢：SAVE／softRev／?v= ----
 ok("v396 SAVE key 不變 starVolunteer_map_v19w", "starVolunteer_map_v19w" in src)

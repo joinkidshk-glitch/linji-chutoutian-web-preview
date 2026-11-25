@@ -1,3 +1,4 @@
+# v406：選單刪「返回」列（有意圖改動），data-m 清單去 back。
 # v404 意圖更新：選單 6→3（返回／設定／存檔管理＋隱藏 wire）——重看教學入設定頁、存檔／讀檔／新遊戲入存檔管理共用槽位清單；斷言同步。
 # -*- coding: utf-8 -*-
 # v20a72 MENU72 靜態測試：主選單一門原則（選單只留動作＋系統組；資訊頁歸入
@@ -31,7 +32,7 @@ ms = re.findall(r'data-m="([^"]+)"', menu)
 # v20a108 TEXT108 S-49：選單項舊名「提早休息」改「過一日」；data-m 值 rest-early 不變，只係測試名跟改
 # v20a397 UI397-5：「過一日」由選單移除（地圖入口保留），選單得返系統五項＋wire
 ok('選單 data-m 恰好＝新清單（系統五項＋wire；手帳掣 v389 已刪改拉柄；過一日 v397 已刪）',
-   ms == ['back', 'settings', 'wire', 'slots'])
+   ms == ['settings', 'wire', 'slots'])
 ok('選單已冇六個資訊頁入口', all(('data-m="%s"' % m) not in menu for m in
    ['stats', 'people', 'inv', 'jobs', 'rumors', 'debts']))
 ok('劇情掣＋徽章已移除（v20a77 HUB77）', 'id="menu-story-badge"' not in menu and 'menu-story' not in menu)
