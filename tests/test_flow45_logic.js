@@ -1,3 +1,4 @@
+// v404 意圖更新：確認閘刪除（用戶拍板）——改驗「撳掣即執行＋掣名講明後果」，presentStartScheduleConfirm45 已刪唔再載入。
 // v396 resync：afterDayRes／afterDayModal／休息卡靠 dayResDateLine396 等三 helper 出日結日期行，沙盒一併抽入；見 qa396/resync396.py。
 // v392：dayEndDismissNote202 已刪＋(f)(g) dismiss 斷言改做 v392 契約（非週結 null／確認返休息卡／確認金掣「開始並結算當日」）。
 // v20a45 流程確認（A 方案）邏輯／路徑測試：日結休息卡「開始今日行程」確認閘。
@@ -61,7 +62,6 @@ eval(extractFn('dayEndNextLine202'));
 /* v392：dayEndDismissNote202 已刪（v392 ① 廢止 dismiss 提示機制），唔再載入。 */
 eval(extractFn('storyResultDestLine202'));
 eval(extractFn('dayEndContinueButtons'));
-eval(extractFn('presentStartScheduleConfirm45'));
 eval(extractFn('presentRestSleepDayEnd'));
 /* v396：afterDayModal／afterDayRes／休息卡靠呢三個 helper 出日結日期行 */
 eval(extractFn('settledDateObj396'));
@@ -76,82 +76,50 @@ function press(call, substr){
 }
 function lastModal(){ return modalCalls[modalCalls.length - 1]; }
 
-/* ---- A：旗標開＋預設路徑＋今日休息 —— 卡撳開始 → 先確認，唔即刻行程 ---- */
+/* ---- A（v404）：休息日 —— 撳「休息並過日」即執行，冇確認 modal ---- */
 (function(){
   reset(); PLAN_NOW = 'rest';
-  presentRestSleepDayEnd({ title:'休息（週一）', notes:[], ended:false, summary:null, confirmStartSchedule:true });
+  presentRestSleepDayEnd({ title:'休息（週一）', notes:[], ended:false, summary:null });
   ok('A card shown once', modalCalls.length === 1);
-  press(lastModal(), '開始今日');
-  ok('A confirm modal appears before schedule', modalCalls.length === 2);
-  ok('A schedule NOT started yet', schedCalls === 0 && mapCalls === 0);
-  ok('A dayIndex untouched by confirm', S.dayIndex === 1);
-  const c = lastModal();
-  ok('A confirm copy has date', c.html.indexOf('1988年3月8日（二）') >= 0);
-  ok('A confirm copy warns instant settle for rest', c.html.indexOf('即時結算埋今日') >= 0 && c.html.indexOf('休息') >= 0);
-  press(c, '開始並結算當日');
-  ok('A confirm-start runs schedule exactly once', schedCalls === 1 && mapCalls === 0);
+  ok('A rest-day button names consequence', lastModal().btns.some(x => String(x.label || '') === '休息並過日'));
+  press(lastModal(), '休息並過日');
+  ok('A press runs schedule immediately, no confirm modal', schedCalls === 1 && modalCalls.length === 1 && mapCalls === 0);
 })();
 
-/* ---- B（v392 改）：旗標開＋排程下一日（rest）—— 確認冇「返回地圖」，dismiss＝返休息卡，唔行程／唔推日 ---- */
-(function(){
-  reset(); PLAN_NOW = 'rest';
-  presentRestSleepDayEnd({ title:'休息（週一）', notes:[], ended:false, summary:null, confirmStartSchedule:true });
-  press(lastModal(), '開始今日');
-  const c = lastModal();
-  ok('B v196 scheduled next day: confirm has no 返回地圖', !c.btns.some(x => String(x.label || '').indexOf('返回地圖') >= 0));
-  if(typeof c.opts.onDismiss === 'function') c.opts.onDismiss();
-  ok('B2 v392 dismiss returns to rest card, never starts schedule/maps', schedCalls === 0 && mapCalls === 0 && S.dayIndex === 1 && modalCalls.length === 3);
-})();
-
-/* ---- C：冇旗標（legacy playRestSleepFx 路徑）—— 開始即行程，冇確認 ---- */
-(function(){
-  reset(); PLAN_NOW = 'rest';
-  presentRestSleepDayEnd({ title:'休息', notes:[], ended:false, summary:null });
-  press(lastModal(), '開始今日');
-  ok('C no-flag starts schedule immediately, no confirm modal', schedCalls === 1 && modalCalls.length === 1);
-})();
-
-/* ---- D：旗標開＋計劃休息卡（onSchedule 延續）—— 確認後行 onSchedule ---- */
+/* ---- B（v404）：自動行程 —— 撳「執行今日行程」即執行 ---- */
 (function(){
   reset(); PLAN_NOW = 'street';
   presentRestSleepDayEnd({ title:'休息', notes:[], ended:false, summary:null,
-    confirmStartSchedule:true,
     onSchedule: ()=>{ onSchedCalls++; },
     onMap: ()=>{ mapCalls++; } });
-  press(lastModal(), '開始今日');
-  ok('D confirm appears for planned-rest card too', modalCalls.length === 2 && onSchedCalls === 0 && schedCalls === 0);
-  press(lastModal(), '開始並結算當日');
-  ok('D confirm-start runs onSchedule continuation', onSchedCalls === 1 && schedCalls === 0);
+  ok('B auto-plan button names consequence', lastModal().btns.some(x => String(x.label || '') === '執行今日行程'));
+  press(lastModal(), '執行今日行程');
+  ok('B press runs onSchedule continuation directly', onSchedCalls === 1 && schedCalls === 0 && modalCalls.length === 1);
 })();
 
-/* ---- E：ended（週結）＋旗標 —— 「回家結算」唔經確認 ---- */
+/* ---- C（v404）：拍攝日 —— 掣名「開始拍攝」，撳即執行 ---- */
+(function(){
+  reset(); PLAN_NOW = 'shoot:demo1';
+  presentRestSleepDayEnd({ title:'休息', notes:[], ended:false, summary:null });
+  ok('C shoot-day button names consequence', lastModal().btns.some(x => String(x.label || '') === '開始拍攝'));
+  press(lastModal(), '開始拍攝');
+  ok('C press runs schedule immediately', schedCalls === 1 && modalCalls.length === 1);
+})();
+
+/* ---- D（v404）：逛逛日 —— 「返回地圖」照舊，唔行程 ---- */
+(function(){
+  reset(); PLAN_NOW = 'scout_all';
+  presentRestSleepDayEnd({ title:'休息', notes:[], ended:false, summary:null });
+  press(lastModal(), '返回地圖');
+  ok('D map day returns to map only', mapCalls === 1 && schedCalls === 0 && modalCalls.length === 1);
+})();
+
+/* ---- E：ended（週結）—— 「回家結算」直行 ---- */
 (function(){
   reset(); PLAN_NOW = 'rest';
-  presentRestSleepDayEnd({ title:'休息', notes:[], ended:true, summary:{}, confirmStartSchedule:true });
+  presentRestSleepDayEnd({ title:'休息', notes:[], ended:true, summary:{} });
   press(lastModal(), '回家結算');
-  ok('E ended goes home directly, no confirm modal', homeCalls === 1 && modalCalls.length === 1 && schedCalls === 0);
-})();
-
-/* ---- F／G：確認文案按計劃類型（直接行真 confirm 函數） ---- */
-(function(){
-  reset(); PLAN_NOW = 'street';
-  let started = 0, mapped = 0;
-  presentStartScheduleConfirm45(()=>{ started++; }, ()=>{ mapped++; });
-  const c = lastModal();
-  ok('F auto-plan copy names plan + instant settle', c.html.indexOf('街頭表演') >= 0 && c.html.indexOf('自動行程') >= 0 && c.html.indexOf('即時結算埋今日') >= 0);
-  ok('F v196 scheduled next day: confirm has no 返回地圖', !c.btns.some(x => String(x.label || '').indexOf('返回地圖') >= 0));
-  // 返地圖路徑改行逛逛日（scout_all）驗：確認照出兩粒掣，取消只返地圖
-  reset(); PLAN_NOW = 'scout_all';
-  presentStartScheduleConfirm45(()=>{ started++; }, ()=>{ mapped++; });
-  const cm = lastModal();
-  ok('F map next day: confirm still has 返回地圖', cm.btns.some(x => String(x.label || '').indexOf('返回地圖') >= 0));
-  press(cm, '返回地圖');
-  ok('F cancel callback only maps', mapped === 1 && started === 0 && S.dayIndex === 1);
-
-  reset(); PLAN_NOW = 'shoot:demo1';
-  presentStartScheduleConfirm45(()=>{ started++; }, ()=>{ mapped++; });
-  const c2 = lastModal();
-  ok('G forced-plan copy says proceeds directly, no instant-settle warning', c2.html.indexOf('直接進行') >= 0 && c2.html.indexOf('即時結算埋今日') < 0);
+  ok('E ended goes home directly', homeCalls === 1 && modalCalls.length === 1 && schedCalls === 0);
 })();
 
 console.log(fails.length ? ('\nFAILURES: '+fails.length+' -> '+fails.join(' | ')) : '\nALL PASS');

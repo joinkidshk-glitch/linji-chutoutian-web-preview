@@ -1,3 +1,4 @@
+# v404 意圖更新：人情債頁頂提示改佔位便條（overdueNote404 插喺 banner 同債卡之間），組成斷言同步。
 # Weave Phase 4-7（v20a30）靜態測試：1990 抉擇三連——模組／掛點／時間閘／旗名與 NOTES 清單對照／慣例不變
 # 用法：python3 tests/test_weave47_static.py [path-to-index.html]
 import sys, pathlib, re
@@ -61,7 +62,7 @@ ok('openLoc hook AFTER DualMeet block',
    html.index('DualMeet.actionsAt(L.id).forEach') < html.index('choice47ActionsAt(L.id).forEach'))
 ok('openLoc hook plays via choice47Play', 'choice47Play(act.id)' in html)
 ok('debt pane: choice47Html composed after family cards',
-   'banner+famCardsHtml+choice47Html+cardHtml' in html)
+   'banner+overdueNote404+famCardsHtml+choice47Html+cardHtml' in html)
 seg_start = html.index('function renderDebtPane(')
 seg = html[seg_start:html.index('\nfunction ', seg_start + 10)]
 onclick_seg = seg[seg.index('box.onclick=(ev)=>{'):] if 'box.onclick=(ev)=>{' in seg else ''

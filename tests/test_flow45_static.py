@@ -1,3 +1,4 @@
+# v404 意圖更新：用戶 2026-11-25 拍板刪「開始今日行程？」確認閘——presentStartScheduleConfirm45＋goScheduleAsk＋confirmStartSchedule 旗標全刪，掣名改講明後果（休息並過日／執行今日行程／開始拍攝／開始工作）；斷言同步改做「已刪＋新掣名在位」。
 # v20a45 流程確認（A 方案）靜態測試：接線標記／入口區分／紅線／結算公式冇郁。
 # 用法：python3 tests/test_flow45_static.py [path-to-index.html]
 import os, re, sys
@@ -18,34 +19,20 @@ def seg(start, end=None):
         j = min(len(html), i + 30000)
     return html[i:j]
 
-# ---- 確認函數本體 ----
-ok('confirm fn defined', 'function presentStartScheduleConfirm45(' in html)
-cf = seg('function presentStartScheduleConfirm45(', 'function presentRestSleepDayEnd(')
-ok('confirm copy: title asks', '開始今日行程？' in cf)
-ok('confirm copy: starts date line (v392: 日期＋後果開頭，取代「將會開始」)', 'dateTxt' in cf and '已安排' in cf and '將會開始' not in cf)
-ok('confirm copy: instant-settle warning', '即時結算埋今日' in cf)
-ok('confirm buttons: start + back to rest card (v392: 金掣「開始並結算當日」＋「返回休息卡」)', 'label:"開始並結算當日"' in cf and 'label:"返回休息卡"' in cf)
-ok('confirm dismiss goes to map', 'onDismiss' in cf)
-ok('confirm fn never touches dayIndex', 'dayIndex' not in cf)
+# ---- 確認閘已刪（v404 用戶拍板：已安排行程撳掣即執行，掣名講明後果） ----
+ok('confirm fn deleted (v404)', 'function presentStartScheduleConfirm45(' not in html)
+ok('confirm copy gone (v404)', 'label:"開始並結算當日"' not in html and 'label:"返回休息卡"' not in html and '<h3>開始今日行程？</h3>' not in html)
+ok('consequence labels present (v404)', '休息並過日' in html and '執行今日行程' in html and '開始拍攝' in html and '開始工作' in html)
 
-# ---- 閘門接線（presentRestSleepDayEnd 內） ----
+# ---- 閘門接線已拆（v404）：執行掣直行 goSchedule ----
 ps = seg('function presentRestSleepDayEnd(', 'function playRestSleepFx(')
-ok('gate fn goScheduleAsk defined in card', 'goScheduleAsk' in ps)
-ok('gate wired to start button only', 'indexOf("開始今日")>=0) return Object.assign({}, b, { on: goScheduleAsk })' in ps)
-ok('home-settle button stays ungated', 'indexOf("回家結算")>=0) return Object.assign({}, b, { on: goSchedule })' in ps)
-ok('gate checks flag', 'opts.confirmStartSchedule' in ps)
+ok('gate fn goScheduleAsk deleted (v404)', 'goScheduleAsk' not in ps)
+ok('execute buttons wired straight to goSchedule (v404)', 'on: goSchedule' in ps)
+ok('gate flag check deleted (v404)', 'opts.confirmStartSchedule' not in ps)
 
-# ---- 旗標呼叫點：四處日結卡，冇多冇少（v265 瞓覺加第四處） ----
+# ---- 旗標呼叫點已全刪（v404） ----
 n_flag = len(re.findall(r'confirmStartSchedule:\s*true', html))
-ok('flag passed at exactly 4 day-end call sites', n_flag == 4)
-eb = seg('function endBrowseDayGoHome(', 'function confirmEarlyRestFromMenu(')
-ok('flag at early-rest card (endBrowseDayGoHome)', 'confirmStartSchedule: true' in eb)
-rp = seg('function resolvePlannedDay(', 'function autoPushC1IfNeeded(')
-ok('flag at planned-rest card (resolvePlannedDay)', 'confirmStartSchedule: true' in rp)
-dr = seg('function doRest(', 'function tipGig(')
-ok('flag at location-rest card (doRest)', 'confirmStartSchedule: true' in dr)
-sl = seg('function costume265Sleep(', 'function openClothingShop265(')
-ok('flag at sleep card (costume265Sleep)', 'confirmStartSchedule: true' in sl)
+ok('flag passed nowhere (v404)', n_flag == 0)
 
 # ---- 唔加確認嘅路徑保持原狀 ----
 pl = seg('function playRestSleepFx(', 'function restSleepFxCheck(')

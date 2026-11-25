@@ -40,7 +40,6 @@ fn_wf4 = seg('function wf4PresentPending(', '/* ---------- WF4 碎片庫')
 fn_fen = seg('function wf4PresentFenFarewell(', '/* ---------- WF4 對手')
 fn_result = seg('  function showResult(', '  function render(){')
 fn_render = seg('  function render(){', '  function playOpenPicker(){')
-fn_confirm = seg('function presentStartScheduleConfirm45(', '/** Compact rest day-end')
 fn_rest = seg('function presentRestSleepDayEnd(', 'function playRestSleepFx(')
 
 # ---- 1：D7 helper＋D3 slot helpers 在位 ----
@@ -89,9 +88,9 @@ ok('dayEndContinueButtons uses shared helper for nextIsMap',
    'const nextIsMap = nextDayIsMap();' in fn_dayend)
 ok('soft branch no longer emits 返回地圖 (only one such label left: the map branch)',
    fn_dayend.count('label:"返回地圖"') == 1
-   and 'label:"開始今日行程", role:"p", on:goRunSchedule' in fn_dayend)
+   and '執行今日行程' in fn_dayend and '休息並過日' in fn_dayend)
 ok('forced/map/ended branches unchanged',
-   'btns.push({label:"開始今日行程", role:"p", on:goRunSchedule});' in fn_dayend
+   '開始拍攝' in fn_dayend and '開始工作' in fn_dayend
    and 'btns.push({label:"回家結算", role:"p", on:goRunSchedule});' in fn_dayend
    and 'label:"返回地圖", role:"p", on: (typeof goRunSchedule==="function") ? goRunSchedule' in fn_dayend)
 ok('accel link unchanged', 'role:"link"' in fn_dayend and '想跳過本週剩餘日子？加速' in fn_dayend)
@@ -150,18 +149,15 @@ ok('spSoftSeedCanDismiss function kept (offer logic may use it); render only men
 ok('跳至選項 untouched in render', '跳至選項' in fn_render)
 
 # ---- 7：休息卡＋確認 modal ----
-ok('confirm45 v392: 金掣「開始並結算當日」＋取消「返回休息卡」，dismiss＝onCancel／null（唔再開始／返地圖）',
-   'label:"開始並結算當日"' in fn_confirm
-   and 'label:"返回休息卡"' in fn_confirm
-   and 'onDismiss: goCancel ? ()=>{ try{ goCancel(); }catch(_e){} } : null' in fn_confirm
-   and 'if(mapNext45) goMap(); else goStart();' not in fn_confirm)
+ok('v404 confirm gate removed (presentStartScheduleConfirm45／confirmStartSchedule 全刪）',
+   'function presentStartScheduleConfirm45(' not in html and 'confirmStartSchedule' not in html)
 ok('rest card dismiss follows v392 (撳外面唔推進日期：週結去排程，非週結只收起卡）',
    'const dismissFn = ended ? goSchedule : null;' in fn_rest
    and 'if(nextDayIsMap()) goMap(); else goSchedule();' not in fn_rest)
 ok('rest card fallback never defaults to goMap any more',
    'finish(orig || goMap)' not in html and 'orig : goMap' not in fn_rest)
-ok('rest card confirm-failure path follows D7',
-   'if(nextDayIsMap()) proceedMap(); else proceedSchedule();' in fn_rest)
+ok('rest card execute path direct (v404: 執行掣行 goSchedule，冇確認失敗路）',
+   'lab.indexOf("執行今日行程")>=0' in fn_rest and 'goScheduleAsk' not in fn_rest)
 
 # ---- 8：唔郁清單（紅線）----
 ok('redline SAVE key untouched', 'starVolunteer_map_v19w' in html)

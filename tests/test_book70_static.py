@@ -89,7 +89,7 @@ ok('出口掣 onclick 行 book70ExitHome', '_homeTabExitBtn.onclick' in src and 
 ok('syncHomeTabExit 唔再睇 srcShown／journalTab（舊共用掣邏輯已拆）',
    'const srcShown' not in src and 'const journalTab' not in src)
 ok('行程頁日子狀態掣保留（繼續行程／開始今日行程／返回地圖三態仲喺 #home-back-map 度）',
-   all(s in src for s in ['"繼續行程"', '"開始今日行程"', 'hbm.textContent = forced']))
+   all(s in src for s in ['"繼續行程"', '"執行今日行程"', 'hbm.textContent = forced']))
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')
 sys.exit(1 if fails else 0)

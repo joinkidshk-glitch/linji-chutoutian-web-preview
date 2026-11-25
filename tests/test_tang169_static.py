@@ -1,3 +1,4 @@
+# v404 意圖更新：茶餐廳打聽掣合一點菜紙，organizer 早退條件加 cafe404 觸發。
 # -*- coding: utf-8 -*-
 # v20a169 靜態測試：v164 review B1＋B2＋C1＋C2。
 # 修法選擇（見 NOTES_V20A169.md，唔好假設）：
@@ -75,8 +76,8 @@ ok('B2：#loc-acts 掣 flex-shrink:0（容器唔夠高嗰陣唔壓縮卡高，�
    '#loc-sheet.sheet.locpanel118 #loc-acts .act{ flex-shrink:0; }' in src)
 ok('B2：flex 直欄下掣闊度唔郁（.act width:100%＋預設 stretch）',
    '.act{display:flex;justify-content:space-between;gap:8px;align-items:center;width:100%;' in src)
-ok('B2：organizer 仍然只喺有要事／鎖定／多組嗰陣先重組（早退條件唔郁）',
-   'if(!hasUrgent && !hasLocked && groupSet.size <= 1) return;' in src)
+ok('B2：organizer 早退條件（v404 加茶餐廳點菜紙觸發）',
+   'if(!hasUrgent && !hasLocked && groupSet.size <= 1 && !cafeSlip404) return;' in src)
 
 # --- §3. N1：名筆句改字（覆寫，唔直改 pack） ---
 fn = fn_body('applyTangGift169')

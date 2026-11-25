@@ -92,7 +92,6 @@ eval(extractFn('dayEndNextLine202'));
 eval(extractFn('storyResultDestLine202'));
 eval(extractFn('dayEndContinueButtons'));
 eval(extractFn('afterDayModal'));
-eval(extractFn('presentStartScheduleConfirm45'));
 eval(extractFn('presentRestSleepDayEnd'));
 /* v396：afterDayModal／afterDayRes／休息卡靠呢三個 helper 出日結日期行 */
 eval(extractFn('settledDateObj396'));
@@ -211,78 +210,38 @@ eval(extractFn('dayResDateLine396'));
   ok('d ended: dismiss still goes home (週結唔推進日期）', homeCalls === 1 && schedCalls === 0 && mapCalls === 0);
 })();
 
-/* ---- (e) 休息卡＋確認 modal：v392 取消返休息卡，dismiss＝取消（唔再開始行程） ---- */
+/* ---- (e) 休息卡直接執行（v404：確認閘已刪，撳掣即結算一日） ---- */
 (function(){
   reset();
   S.dayIndex = 1;
   S.weekPlan = ['rest', 'street', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all'];
-  presentRestSleepDayEnd({ title: '休息', notes: [], ended: false, summary: null, confirmStartSchedule: true });
+  presentRestSleepDayEnd({ title: '休息', notes: [], ended: false, summary: null });
   const card = lastModal();
   ok('e rest card has next line first (before body)',
     card.html.indexOf('dayend-next202') > 0 && card.html.indexOf('聽日：街頭表演（自動行程）') >= 0);
-  ok('e rest card has no dismiss note (v392)',
-    !card.btns.some(b => b && b.role === 'note'));
-  ok('e rest card dismiss is null (v392: 撳外面唔推進日期）', card.opts.onDismiss == null);
-  press(card, '開始今日');
-  ok('e start opens confirm (not schedule yet)', modalCalls.length === 2 && schedCalls === 0);
-  const c = lastModal();
-  ok('e confirm gold renamed 開始並結算當日', !!findBtn(c.btns, '開始並結算當日'));
-  ok('e confirm has 返回休息卡 button (v392: 唔再叫「取消」）',
-    !!findBtn(c.btns, '返回休息卡'));
-  ok('e confirm consequence names the cost (無法再安排當日行程）',
-    c.html.indexOf('無法再安排當日行程') >= 0);
-  ok('e confirm has no dismiss note (v392)', !c.btns.some(b => b && b.role === 'note'));
-  press(c, '返回休息卡');
-  ok('e cancel re-presents the rest card (same title, no schedule run)',
-    modalCalls.length === 3 && lastModal().html.indexOf('<h3>休息</h3>') === 0 && schedCalls === 0 && mapCalls === 0);
-  ok('e re-presented rest card still has next line, no dismiss note',
-    lastModal().html.indexOf('聽日：街頭表演（自動行程）') >= 0
-    && !lastModal().btns.some(b => b && b.role === 'note'));
-  // 取消之後再入確認，dismiss＝取消（唔係開始行程）
-  press(lastModal(), '開始今日');
-  lastModal().opts.onDismiss();
-  ok('e confirm dismiss cancels back to rest card (v392)', modalCalls.length === 5 && lastModal().html.indexOf('<h3>休息</h3>') === 0 && schedCalls === 0 && mapCalls === 0);
+  ok('e rest card dismiss is null (撳外面唔推進日期)', card.opts.onDismiss == null);
+  ok('e execute button names consequence （執行今日行程）', !!findBtn(card.btns, '執行今日行程'));
+  press(card, '執行今日行程');
+  ok('e press executes schedule directly (no confirm modal)', modalCalls.length === 1 && schedCalls === 1 && mapCalls === 0);
+})();
+(function(){
+  reset();
+  S.dayIndex = 1;
+  S.weekPlan = ['rest', 'rest', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all'];
+  presentRestSleepDayEnd({ title: '休息', notes: [], ended: false, summary: null });
+  const card = lastModal();
+  ok('e rest-next-day button says 休息並過日', !!findBtn(card.btns, '休息並過日'));
+  press(card, '休息並過日');
+  ok('e rest press executes directly, one day only', modalCalls.length === 1 && schedCalls === 1);
 })();
 (function(){
   reset();
   S.dayIndex = 1;
   S.weekPlan = ['rest', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all'];
-  presentRestSleepDayEnd({ title: '休息', notes: [], ended: false, summary: null, confirmStartSchedule: true });
+  presentRestSleepDayEnd({ title: '休息', notes: [], ended: false, summary: null });
   const card = lastModal();
-  ok('e map day rest card has 返回地圖 and no 開始今日 (v196: 逛逛日唔經確認 modal)',
-    !!findBtn(card.btns, '返回地圖') && !findBtn(card.btns, '開始今日'));
-  // 逛逛日確認 modal 本身（直接呼叫）：照有返回休息卡，dismiss＝取消
-  let started = 0, mapped = 0, cancelled = 0;
-  presentStartScheduleConfirm45(()=>{ started++; }, ()=>{ mapped++; }, ()=>{ cancelled++; });
-  const c = lastModal();
-  ok('e map day confirm has 返回地圖 + 返回休息卡',
-    !!findBtn(c.btns, '返回地圖') && !!findBtn(c.btns, '返回休息卡'));
-  ok('e map day confirm has no dismiss note (v392)', !c.btns.some(b => b && b.role === 'note'));
-  c.opts.onDismiss();
-  ok('e map day confirm dismiss calls onCancel only (v392)',
-    cancelled === 1 && started === 0 && mapped === 0);
-  press(lastModal(), '返回休息卡');
-  ok('e map day confirm cancel calls onCancel only',
-    cancelled === 2 && started === 0 && mapped === 0);
-})();
-
-/* ---- (f) presentStartScheduleConfirm45 直接呼叫：冇 onCancel 就唔出取消掣 ---- */
-(function(){
-  reset();
-  S.dayIndex = 1;
-  S.weekPlan = ['rest', 'street', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all'];
-  let started = 0, cancelled = 0;
-  presentStartScheduleConfirm45(()=>{ started++; }, ()=>{}, ()=>{ cancelled++; });
-  const c = lastModal();
-  ok('f confirm with onCancel has 返回休息卡 button (v392)', !!findBtn(c.btns, '返回休息卡'));
-  press(c, '返回休息卡');
-  ok('f cancel calls onCancel and nothing else', cancelled === 1 && started === 0);
-  reset();
-  S.dayIndex = 1;
-  S.weekPlan = ['rest', 'street', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all'];
-  presentStartScheduleConfirm45(()=>{ started++; }, ()=>{});
-  ok('f confirm without onCancel has no 返回休息卡 button',
-    !findBtn(lastModal().btns, '返回休息卡'));
+  ok('e map day rest card has 返回地圖 and no execute button',
+    !!findBtn(card.btns, '返回地圖') && !findBtn(card.btns, '執行今日行程'));
 })();
 
 console.log(fails.length ? ('\nFAILURES: ' + fails.length + ' -> ' + fails.join(' | ')) : '\nALL PASS');

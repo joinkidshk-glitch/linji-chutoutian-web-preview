@@ -1,3 +1,4 @@
+# v404 意圖更新：選單 6→3（返回／設定／存檔管理＋隱藏 wire）——重看教學入設定頁、存檔／讀檔／新遊戲入存檔管理共用槽位清單；斷言同步。
 # -*- coding: utf-8 -*-
 # v20a72 MENU72 靜態測試：主選單一門原則（選單只留動作＋系統組；資訊頁歸入
 # 手帳五大類——狀態併記數／拍攝簿併作品／人脈入人情組／庫存入近況組；
@@ -30,12 +31,12 @@ ms = re.findall(r'data-m="([^"]+)"', menu)
 # v20a108 TEXT108 S-49：選單項舊名「提早休息」改「過一日」；data-m 值 rest-early 不變，只係測試名跟改
 # v20a397 UI397-5：「過一日」由選單移除（地圖入口保留），選單得返系統五項＋wire
 ok('選單 data-m 恰好＝新清單（系統五項＋wire；手帳掣 v389 已刪改拉柄；過一日 v397 已刪）',
-   ms == ['replay-tut', 'settings', 'wire', 'save', 'load', 'new'])
+   ms == ['back', 'settings', 'wire', 'slots'])
 ok('選單已冇六個資訊頁入口', all(('data-m="%s"' % m) not in menu for m in
    ['stats', 'people', 'inv', 'jobs', 'rumors', 'debts']))
 ok('劇情掣＋徽章已移除（v20a77 HUB77）', 'id="menu-story-badge"' not in menu and 'menu-story' not in menu)
 ok('手帳掣已刪、拉柄在位（v389）', 'data-m="journal"' not in menu and 'id="book389-handle"' in src)
-i_sys = menu.find('data-m="replay-tut"')
+i_sys = menu.find('data-m="settings"')
 ok('選單得返系統組，唔再分組（過一日＋分隔線 v397 一併移除）',
    'data-m="rest-early"' not in menu and 'menu-sep' not in menu and i_sys >= 0)
 ok('wire 隱藏項保留（接線功能冇誤刪）', 'id="menu-wire" hidden' in menu)
@@ -46,9 +47,12 @@ handler = src[i_h:i_h + 2200] if i_h >= 0 else ''
 ok('handler 在位', bool(handler))
 ok('handler 已刪六個資訊頁分支', all(('m==="%s"' % m) not in handler for m in
    ['stats', 'people', 'inv', 'jobs', 'rumors', 'debts']))
-ok('handler 保留全部新清單分支（story-play 已於 v20a77 隨掣移除；rest-early 已於 v397 隨掣移除）', all(('m==="%s"' % m) in handler for m in
-   ['journal', 'replay-tut', 'settings', 'wire', 'save', 'load', 'new'])
+ok('handler 保留新清單分支（v404 選單 6→3：返回／設定／存檔管理＋wire；replay-tut 入設定頁、save／load／new 入存檔管理）', all(('m==="%s"' % m) in handler for m in
+   ['settings', 'wire', 'slots'])
+   and 'm==="replay-tut"' not in handler and 'm==="save"' not in handler and 'm==="load"' not in handler and 'm==="new"' not in handler
    and 'm==="story-play"' not in handler and 'm==="rest-early"' not in handler)
+ok('重看教學入設定頁（v404）', 'id="set-replay-tut"' in src)
+ok('存檔管理共用槽位清單＋新遊戲（v404）', 'openSaveSlotsModal("manage")' in src and 'data-slot-save404' in src and 'data-slot-load404' in src and 'label:"新遊戲", role:"g", on:()=>openSaveSlotsModal("new")' in src)
 
 # --- (3) 手帳新子頁結構 ---
 ok('人脈清單容器喺人情合併頁（v389）', 'id="home-pane-favor389"' in src and 'id="people-list"' in src)

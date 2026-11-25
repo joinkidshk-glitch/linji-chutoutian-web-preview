@@ -1,3 +1,4 @@
+# v404 意圖更新：確認閘刪除後 40 號掣層級斷言改做新掣名。
 # v397：第五輪 UI 檢視頭五項必修 — 靜態測試（釘字串／接線／禁區守門）。
 # 用法：python3 tests/test_v397_static.py [repo-root]
 import os
@@ -82,11 +83,11 @@ ok("v397 日結卡 scene 模式（場景留低、掣收起）",
    and "#app.dayres-scene397 #map-pins," in src)
 ok("v397 日結漸變放淺（.10／.42）",
    "linear-gradient(180deg, rgba(0,0,0,.10) 0, rgba(0,0,0,.10) 48px, rgba(0,0,0,.42) 48px) !important" in src)
-ok("v397 40 號掣層級：返回休息卡第一位＋主掣色",
-   'label:"返回休息卡", role:"p"' in src
-   and 'label:"開始並結算當日", role:"g"' in src
-   and "btns45.unshift(b45)" in src
-   and "if(goCancel) btns45.push" in src)
+ok("v397 40 號掣層級：確認閘已刪，執行掣名講明後果（v404）",
+   'label:"返回休息卡"' not in src
+   and 'label:"開始並結算當日"' not in src
+   and '"休息並過日"' in src and '"執行今日行程"' in src
+   and "dayEndContinueButtons(ended, go).forEach(b=>btns.push(b))" in src)
 ok("v397 86c 週結提示改紅印章（正文唔再重複回家結算）",
    "dayres-stamp397" in src and "一週完結 → 回家結算" not in src
    and "一週完結" in src)

@@ -1,3 +1,4 @@
+# v404 意圖更新：地圖頂欄「進度」掣按第十一輪裁決刪走——chip 改靜態徽章（span、無 click），進度數字改顯示喺手帳行程頁（#nb-progress404）；斷言同步。
 # v397 resync：金禧錨點 top:24%→calc(24% + 30px)（venue99 相疊修正）；見 qa397/resync397.py。
 # v20a108 UI108 視覺統一包（B 級）・靜態守門測試（工人 C 範圍：D-5＋S-1/2/4/5/7/8/9/11/18/20/27/29/33/34/36）。
 # v20a362：逐行「⧉ 複製」掣已刪（UI362），S-18 改做缺席斷言。
@@ -66,11 +67,11 @@ ok('S-7 地區名光暈加厚', '0 0 4px #f3e7c8, 0 0 4px #f3e7c8, 0 0 4px #f3e7
 # S-8 頂欄進度 chip 只係徽章
 # v128 A1（計劃 §5／§7 mockup）：反轉——進度只留一個入口（頂欄 chip），地圖浮 pill 取消；
 # chip 恢復做 button＋click 接線，唔再係徽章。
-ok('S-8 chip 恢復做 button（唯一進度入口）', '<button type="button" class="chip chip-story" id="chip-story"' in html)
-ok('S-8 chip 唔再係 span 徽章', '<span class="chip chip-story" id="chip-story"' not in html)
-ok('S-8 chip click 接線恢復', 'cs.addEventListener("click"' in html)
+ok('S-8 chip 改靜態徽章（v404）', '<span class="chip chip-story" id="chip-story"' in html)
+ok('S-8 chip 唔再係 button（v404）', '<button type="button" class="chip chip-story" id="chip-story"' not in html)
+ok('S-8 chip click 接線已刪（v404）', 'cs.addEventListener("click"' not in html)
 ok('S-8 地圖浮 pill 已取消', 'id="map-progress-btn"' not in html)
-ok('S-8 chip 游標係 pointer', '#app #chip-story{ cursor:pointer; }' in html)
+ok('S-8 chip 唔再有 pointer 游標（v404）', '#app #chip-story{ cursor:pointer; }' not in html)
 
 # S-9 劇情高亮改柔光呼吸光暈（v108 規則喺舊規則之後，先覆蓋）
 _i_old = html.find('.pin.has-story-tip{box-shadow:0 0 0 2px rgba(196,138,42,.85)')

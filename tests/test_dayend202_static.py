@@ -37,7 +37,6 @@ fn_after = seg('function afterDayModal(', '/* v20a38')
 fn_resolve = seg('function resolvePlannedDay(', 'function autoPushC1IfNeeded(')
 fn_result = seg('  function showResult(', '  function render(){')
 fn_render = seg('  function render(){', '  function playOpenPicker(){')
-fn_confirm = seg('function presentStartScheduleConfirm45(', '/** Compact rest day-end')
 fn_rest = seg('function presentRestSleepDayEnd(', 'function playRestSleepFx(')
 fn_enc79 = seg('function enc79PlayEncounter(', '/* ===== v20a176 ROM176')
 
@@ -90,20 +89,17 @@ ok('B2 modal() renders role:"note" as a plain div (唔係掣)',
 ok('B2 note has no onclick attached (唔可撳)',
    idx(fn_modal, 'role==="note"') < idx(fn_modal, 'btn.onclick'))
 
-# ---- C1：確認 modal 取消掣 ----
-ok('N1 confirm takes onCancel (third arg)',
-   'function presentStartScheduleConfirm45(onStart, onMap, onCancel){' in html)
-ok('N1 cancel button labelled 返回休息卡（v392：刪「取消」前綴）',
-   '返回休息卡' in fn_confirm and '取消（返回休息卡）' not in fn_confirm)
-ok('N1 cancel only rendered when onCancel given (defensive)',
-   'if(goCancel) btns45.push' in fn_confirm)
-ok('N1 confirm consequence 寫入正文（v392：取代 dismiss note，講明確認後無法再安排當日行程）',
-   '確認後會即時結算埋今日' in fn_confirm and '無法再安排當日行程' in fn_confirm)
-ok('N1 rest card passes onCancel that re-presents the same rest card',
-   'presentStartScheduleConfirm45(proceedSchedule, proceedMap, ()=>{' in fn_rest
-   and 'presentRestSleepDayEnd(opts);' in fn_rest)
-ok('N1 confirm title stays a question (家下有真選擇，問句合理)',
-   '<h3>開始今日行程？</h3>' in fn_confirm)
+# ---- C1：確認閘已刪（v404 用戶 2026-11-25 拍板）----
+ok('N1 confirm gate function removed (presentStartScheduleConfirm45 唔再存在)',
+   'function presentStartScheduleConfirm45(' not in html)
+ok('N1 no confirmStartSchedule flag anywhere (閘旗標隨閘刪走)',
+   'confirmStartSchedule' not in html)
+ok('N1 rest card executes directly (執行掣行 goSchedule，冇中間 modal)',
+   'lab.indexOf("執行今日行程")>=0' in fn_rest and 'goScheduleAsk' not in fn_rest)
+ok('N1 consequence wording on buttons (休息並過日／執行今日行程／開始拍攝／開始工作)',
+   all(s in html for s in ['"休息並過日"', '"執行今日行程"', '"開始拍攝"', '"開始工作"']))
+ok('N1 old confirm title gone (開始今日行程？唔再出現喺玩家面)',
+   '<h3>開始今日行程？</h3>' not in html)
 
 # ---- C2：故事鎖死提示 ----
 ok('N2 StoryPlay render pushes lock hint note into modalBtns',
@@ -127,8 +123,8 @@ ok('CSS has .dayend-next202 + .modal-note202 + dark story override',
 ok('v196 dismiss rules untouched (afterDayModal dismissFn / resolve dismissNb)',
    'const dismissFn = ended ? go :' in fn_after
    and 'const dismissNb = ended ? nextNbReward :' in fn_resolve)
-ok('v196 confirm dismiss 已改（v392：onDismiss＝onCancel 返休息卡，冇就 null 只收起卡，唔再開始／返地圖）',
-   'onDismiss: goCancel ? ()=>{ try{ goCancel(); }catch(_e){} } : null' in fn_confirm)
+ok('v404 confirm dismiss 隨閘刪走（冇確認 modal 就冇 confirm dismiss）',
+   'goCancel' not in html)
 
 print('')
 if fails:

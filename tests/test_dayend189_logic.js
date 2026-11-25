@@ -79,9 +79,9 @@ function findBtn(btns, sub){ return (btns || []).find(b => String(b.label || '')
   S.weekPlan = ['rest', 'street', 'rest', 'rest', 'rest', 'rest', 'scout_all'];
   const btns = dayEndContinueButtons(false, goRunSchedule);
   ok('a v196 soft has only schedule + accel-link (no 返回地圖)',
-    JSON.stringify(labels(btns)) === JSON.stringify(['開始今日行程', '想跳過本週剩餘日子？加速 →']));
+    JSON.stringify(labels(btns)) === JSON.stringify(['執行今日行程', '想跳過本週剩餘日子？加速 →']));
   ok('a soft has no 返回地圖 button', !findBtn(btns, '返回地圖'));
-  const schedBtn = findBtn(btns, '開始今日行程');
+  const schedBtn = findBtn(btns, '執行今日行程');
   ok('a soft schedule button IS goRunSchedule', schedBtn && schedBtn.on === goRunSchedule);
   const link = findBtn(btns, '加速');
   ok('a accel is a link (role link, not a big button)', link && link.role === 'link');
@@ -98,7 +98,7 @@ function findBtn(btns, sub){ return (btns || []).find(b => String(b.label || '')
   S.shoots = [{ id: 'live1', doneDays: 0, totalDays: 3 }];
   S.weekPlan = ['rest', 'shoot:live1', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all'];
   const btns = dayEndContinueButtons(false, goRunSchedule);
-  ok('b forced has only 開始今日行程', JSON.stringify(labels(btns)) === JSON.stringify(['開始今日行程']));
+  ok('b forced shoot has only 開始拍攝 (v404 掣名講明後果)', JSON.stringify(labels(btns)) === JSON.stringify(['開始拍攝']));
   ok('b forced schedule runs goRunSchedule', btns[0].on === goRunSchedule);
 })();
 (function(){
@@ -123,7 +123,7 @@ function findBtn(btns, sub){ return (btns || []).find(b => String(b.label || '')
   S.weekPlan = ['rest', 'street', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all'];
   const btns = dayEndContinueButtons(false, goRunSchedule);
   ok('e no remaining auto days -> no accel link, v196 soft only 開始今日行程',
-    JSON.stringify(labels(btns)) === JSON.stringify(['開始今日行程']));
+    JSON.stringify(labels(btns)) === JSON.stringify(['執行今日行程']));
 })();
 
 /* ---- (d) runScheduleFromToday 分流核實 ---- */

@@ -1,3 +1,4 @@
+# v404 意圖更新：presentStartScheduleConfirm45 刪除，scene 家族計數 11→10。
 # v398：第六輪 UI 檢視頭五項必修 — 靜態測試（釘字串／接線／禁區守門）。
 # 用法：python3 tests/test_v398_static.py [repo-root]
 import os
@@ -128,7 +129,7 @@ ok("v398 scene398 用 v396 日結漸變（頂 .10／底 .42）",
    "#mask.scene398{" in src
    and "rgba(0,0,0,.10) 0, rgba(0,0,0,.10) 48px, rgba(0,0,0,.42) 48px" in src)
 ok("v398 日結家族 7 處 modal 用 scene 模式（27c×2／43／44×2／41／35_invite）",  # v399：試鏡等消息卡加入 scene 家族，10→11
-   src.count("keepScene397:true") == 11)  # 7 新＋afterDayModal／presentStartScheduleConfirm45／presentRestSleepDayEnd 3 舊＋doAudition 1（v399）
+   src.count("keepScene397:true") == 10)  # 7 新＋afterDayModal／presentRestSleepDayEnd 2 舊＋doAudition 1（v399）；presentStartScheduleConfirm45 已於 v404 隨確認閘刪除（11→10）
 for _sig, _n, _label in [
         ("function confirmSpendDay(", 1, "43 確認卡"),
         ("function resolvePlannedDay(", 2, "27c 日結卡×2"),

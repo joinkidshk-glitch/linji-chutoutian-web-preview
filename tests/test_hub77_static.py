@@ -1,3 +1,4 @@
+# v404 意圖更新：地圖頂欄「進度」掣按第十一輪裁決刪走——chip 改靜態徽章（span、無 click），進度數字改顯示喺手帳行程頁（#nb-progress404）；斷言同步。
 # -*- coding: utf-8 -*-
 # v20a77 HUB77 靜態測試：劇情／進度全套整合（用戶 2026-11-10 17:51 拍板）——
 # 一、大地圖常駐「進度」掣（任何 hint 狀態都撳得）直達手帳進度頁
@@ -60,13 +61,13 @@ ok('paintStoryEntryHints：badge 更新保留 if 守衛（元素缺席安全降�
 # --- 三、chip 改指進度頁 ---
 # v20a128 A1（計劃 §5／§7 mockup）：進度只留一個入口——頂欄 chip。chip 恢復做掣
 # （反轉 v108 S-8「chip 只係數字徽章、入口係 pill」；浮 pill 已取消，chip 唔做掣就冇入口）。
-ok('chip：標籤改「進度」＋title 改「主線進度」',
-   'id="chip-story" title="主線進度">進度<span class="chip-story-n"' in src)
-ok('chip：恢復做 button（唯一進度入口）',
-   '<button type="button" class="chip chip-story" id="chip-story"' in src
-   and '<span class="chip chip-story" id="chip-story"' not in src)
-ok('chip：有 click 接線入進度頁（enterHome progress）', 'cs.addEventListener("click"' in src and 'enterHome(null, false, "progress")' in src)
-ok('chip：cursor pointer（係掣，唔係徽章）', '#app #chip-story{ cursor:pointer; }' in src)
+ok('chip：標籤「進度」＋title 指去手帳（v404 靜態徽章）',
+   'id="chip-story" title="主線進度（手帳行程頁查看）">進度<span class="chip-story-n"' in src)
+ok('chip：靜態 span 徽章，唔再係掣（v404）',
+   '<span class="chip chip-story" id="chip-story"' in src
+   and '<button type="button" class="chip chip-story" id="chip-story"' not in src)
+ok('chip：click 接線已刪，進度改手帳行程頁顯示（v404）', 'cs.addEventListener("click"' not in src and 'id="nb-progress404"' in src)
+ok('chip：唔再有 pointer 游標規則（v404 徽章）', '#app #chip-story{ cursor:pointer; }' not in src)
 ok('chip title 四態改主線進度語系',
    '主線進度 · 有 ' in ps and '主線內容載入中' in ps and '主線進度（暫無可播）' in ps and '主線內容載入唔到' in ps)
 ok('chip 舊 title 文案清零', '有可播劇情 · ' not in src and '"劇情（暫無可播）"' not in src and '"劇情內容載入中"' not in src)

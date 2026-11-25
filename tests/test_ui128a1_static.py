@@ -1,3 +1,4 @@
+# v404 意圖更新：地圖頂欄「進度」掣按第十一輪裁決刪走——chip 改靜態徽章（span、無 click），進度數字改顯示喺手帳行程頁（#nb-progress404）；斷言同步。
 # v397 resync：金禧錨點 top:24%→calc(24% + 30px)（venue99 相疊修正）；見 qa397/resync397.py。
 # v20a128 A1 地圖一屏包・靜態守門測試。
 # 用法：python3 tests/test_ui128a1_static.py [path-to-index.html]
@@ -26,8 +27,8 @@ ok('標籤 舊座標唔見（星河 14%／金禧 44.5%）', 'top:calc(14% - 50%)
 
 # 浮「進度」掣取消，進度入口只留頂欄 chip（計劃 §5／§7 mockup；反轉 v108 S-8）
 ok('浮進度掣 HTML 已刪', 'id="map-progress-btn"' not in html)
-ok('進度入口：頂欄 chip 恢復做 button', '<button type="button" class="chip chip-story" id="chip-story"' in html)
-ok('進度入口：chip 有 click 接線入進度頁', 'cs.addEventListener("click"' in html)
+ok('進度入口：頂欄 chip 改靜態徽章（v404）', '<span class="chip chip-story" id="chip-story"' in html and '<button type="button" class="chip chip-story" id="chip-story"' not in html)
+ok('進度入口：chip click 已刪，改手帳行程頁顯示（v404）', 'cs.addEventListener("click"' not in html and 'id="nb-progress404"' in html)
 # v20a135 MAP135：全部地點掣已由底部卡拎走（地圖熱區篤建築就入到，掣係多餘嘅）——
 # 模板（paintBar #map-hint innerHTML 段）入面唔可以再有呢個掣；舊 v128 斷言反轉。
 _i = html.find('document.getElementById("map-hint").innerHTML')

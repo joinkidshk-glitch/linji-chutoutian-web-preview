@@ -1,3 +1,4 @@
+# v404 意圖更新：確認閘成個刪走（用戶拍板），v392 掣名斷言改做「已刪」。
 #!/usr/bin/env python3
 # v392 UI 檢視修正（第三輪頭五項）靜態守門：五項呈現層修法嘅關鍵標記在位＋對比度守門。
 # 只驗靜態標記（實駕量度見 ~/workspace/linji-drive392/verify/measurements.json）；
@@ -47,8 +48,8 @@ ok("1 dayEndDismissNote202 已刪", "function dayEndDismissNote202(" not in src)
 ok("1 「點擊外面＝」細字已清（玩家面）",
     "點擊外面＝繼續跑明日行程" not in src and "點擊外面＝返回地圖" not in src
     and "點擊外面＝回家結算" not in src and "點擊外面＝開始今日行程" not in src)
-ok("1 確認金掣改名「開始並結算當日」", "開始並結算當日" in src)
-ok("1 取消掣改名「返回休息卡」", "返回休息卡" in src)
+ok("1 確認金掣已隨確認閘刪除（v404）", "開始並結算當日" not in src)
+ok("1 取消掣已隨確認閘刪除（v404）", "返回休息卡" not in src)
 
 # --- (2) 39 拍攝排程：刪「取消」、金色畀安全選項 ---
 ok("2 confirmPlaceShoot 無獨立「取消」掣（去重後兩個出口＋安全主掣）",

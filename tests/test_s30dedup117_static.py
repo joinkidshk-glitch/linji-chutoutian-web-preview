@@ -1,3 +1,4 @@
+# v404 意圖更新：推介卡片酬改獨立大字行（gt-pay404「總片酬」），D3 斷言同步。
 # v20a117 S-30 DEDUP117・靜態守門測試：詳情區刪除＋唯一資料搬摘要＋欄卡 meta 拆行。
 # 用法：python3 tests/test_s30dedup117_static.py [path-to-index.html]
 # 反證意識：每項同時驗「新寫法在」＋「舊寫法不在」（舊寫法出現即 FAIL）——
@@ -19,7 +20,7 @@ def body_of(fname, span=12000):
     return html[i:i + span] if i >= 0 else ''
 
 b = body_of('function castingNoticeDetailHtml', 14000)
-t = body_of('function gigBoardTeaserHtml', 6000)
+t = body_of('function gigBoardTeaserHtml', 9000)  # v404：推介卡複合劇照令函數變長，擷取窗 6000→9000
 
 # --- 1. 詳細區成段刪除：掣＋.cn-detail＋死接線＋死 CSS ---
 ok('D1 「顯示詳細 ▾」掣已刪', '顯示詳細 ▾' not in html)
@@ -61,11 +62,11 @@ ok('D2 劇情簡介：搬入摘要（原樣 markup，唔係刪除）',
 ok('D2 POSTER90 標記註保留（詳情頁仍唔出成品海報／主演行）', 'POSTER90' in b)
 
 # --- 3. 通告欄卡片 meta 拆行（實駕：實際只得兩段） ---
-ok('D3 meta 一行渲染（v392：片酬｜日數｜成功率併做一行，gt-meta-line）', 'metaLine392' in t and 'gt-meta-line' in t and '.gt-meta-line{' in html)
+ok('D3 meta 渲染（v404：推介卡片酬獨立大字行 gt-pay404＋其餘併一行 gt-meta-line）', 'metaLine392' in t and 'gt-meta-line' in t and '.gt-meta-line{' in html and 'gt-pay404' in t)
 ok('D3 舊寫法「 · 」串連已刪', 'join(" · ")' not in t)
-ok('D3 meta 內容：片酬＋日數＋成功率（可接先出成功率，鎖定卡唔出假成功率）',
-   'bits392.join("｜")' in t and 'if(boardState==="ready")' in t and '片酬 ${payTxt}' in t)
-ok('D3 gt-meta 容器保留', '<div class="gt-meta">' in t)
+ok('D3 meta 內容：總片酬＋日數＋成功率（可接先出成功率，鎖定卡唔出假成功率）',
+   'bits392.join("｜")' in t and 'if(boardState==="ready")' in t and '總片酬 ${payTxt}' in t)
+ok('D3 gt-meta 容器保留（v404 模板改條件渲染）', '<div class="gt-meta">' in t)
 
 # --- 4. 紀律：v115 文字＋紅線不變 ---
 ok('D4 v115 簽約金行「獲聘後即收」仍在', '（獲聘後即收）' in b)

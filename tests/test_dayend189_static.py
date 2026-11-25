@@ -32,12 +32,12 @@ ok('v196 soft branch has NO 返回地圖 (only the map-branch one left)',
    fn.count('label:"返回地圖"') == 1
    and 'label:"返回地圖", role:"p", on: (typeof goRunSchedule' in fn  # 只剩 nextIsMap 嗰粒
    and 'label:"返回地圖", role:"p", on:(()=>{ try{ goToMapForBrowse(); }catch(_e){} })}' not in fn)
-ok('soft schedule button still runs goRunSchedule',
-   'label:"開始今日行程", role:"p", on:goRunSchedule' in fn)
+ok('soft schedule button still runs goRunSchedule (v404 掣名：休息並過日／執行今日行程）',
+   'label:(String(nextId||"")==="rest" ? "休息並過日" : "執行今日行程"), role:"p", on:goRunSchedule' in fn)
 
 # ---- 2：forced／map 分支唔郁 ----
-ok('forced branch unchanged (only 開始今日行程 on goRunSchedule)',
-   'btns.push({label:"開始今日行程", role:"p", on:goRunSchedule});' in fn)
+ok('forced branch names the work (v404：開始拍攝／開始工作 on goRunSchedule)',
+   'label:(String(nextId||"").indexOf("shoot:")===0 ? "開始拍攝" : "開始工作"), role:"p", on:goRunSchedule' in fn)
 ok('map branch unchanged (v20a4 comment + 返回地圖 on goRunSchedule)',
    'v20a4' in fn and 'label:"返回地圖", role:"p", on: (typeof goRunSchedule==="function") ? goRunSchedule' in fn)
 ok('ended branch unchanged (回家結算 on goRunSchedule)',
@@ -51,7 +51,7 @@ ok('accel link still wires confirmWeekAccel + goRunSchedule',
    'confirmWeekAccel(()=>{ if(typeof goRunSchedule==="function") goRunSchedule(); })' in fn)
 ok('accel link pushed after main buttons (renders below the row)',
    idx(fn, '想跳過本週剩餘日子？加速') > 0
-   and idx(fn, '想跳過本週剩餘日子？加速') > idx(fn, 'label:"開始今日行程", role:"g", on:goRunSchedule'))
+   and idx(fn, '想跳過本週剩餘日子？加速') > idx(fn, '休息並過日'))
 
 # ---- 4：modal() 識得 render link ----
 modal_seg = seg('function modal(', 'function closeModal()')
