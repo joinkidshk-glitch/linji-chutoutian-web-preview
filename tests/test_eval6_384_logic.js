@@ -3,8 +3,8 @@
 //   A 補位截止日：intel381DeadlineText 只喺 kept＋同 gigId 出「覆電後 7 日」日期，否則空。
 //   B 自費短截止：tape383DeadlineShortText 出「M月D日截止」，同 A 同閘。
 //   C 雙拍攝爭位：lockShootsIntoDraft 按 deadlineDay 升序填位，近限期先得位。
-//   D 壓力 draft：defaultWeekPlan 用「現壓力／預覽峰值取高」判休息日數（生成時未跨 80、
-//     預覽峰值跨 80 → 三日休息）。
+//   D 壓力 draft：v20a400 預設唔再因壓力靜靜換休息——「現壓力／預覽峰值取高」計法
+//     保留喺 weekStressPeak400，改由手帳建議列出掣；高壓週預設照舊得一日休息。
 // 反證：v383 index 冇 intel381DeadlineText／tape383DeadlineShortText → 抽取即 throw → FAIL。
 const fs = require('fs');
 const path = require('path');
@@ -74,10 +74,12 @@ const draftC = lockShootsIntoDraft(["scout_all","scout_all","scout_all","scout_a
 ok('C1 尾日拍攝有位', draftC.includes("shoot:tail"), draftC.join(","));
 ok('C2 長拍攝填其餘', draftC.filter(x=>x==="shoot:long").length === 6, draftC.join(","));
 
-/* D：壓力 draft——現壓力 79（未跨 80），成週活動推峰值跨 80 → 三日休息 */
+/* D：壓力 draft——v20a400：預設唔再因壓力靜靜換休息。現壓力 79（未跨 80），成週活動推峰值
+   跨 80 → 舊制三日休息；v400 預設照舊得一日休息（plan[6]），壓力建議改由手帳建議列出
+   （峰值計法保留喺 weekStressPeak400，見 test_v400_logic.js）。 */
 S.stress = 79; S.dayIndex = 112; /* week 17 */
 const planD = defaultWeekPlan();
-ok('D1 峰值跨 80 三日休息', planD.filter(x=>x==="rest").length === 3, planD.join(","));
+ok('D1 v400 高壓預設唔靜靜加休息（得 plan[6] 一日）', planD.filter(x=>x==="rest").length === 1 && planD[1]==="scout_all", planD.join(","));
 S.stress = 30;
 S.shoots = []; /* v20a386：峰值預覽已計入已 lock 拍攝，C 段留低嘅 shoots 會推峰值——D2 驗嘅係低壓無拍攝負荷，清走先測 */
 const planD2 = defaultWeekPlan();

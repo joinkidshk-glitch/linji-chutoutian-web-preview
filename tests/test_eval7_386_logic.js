@@ -1,8 +1,8 @@
 // v20a386 第七輪評估修正・邏輯測試
 // 合約：
 //   A 執行層休息覆寫（P2-6）：placeShootOnPlan pass2＋previewShootPlacement 先覆寫非休息格，休息格最後。
-//   B 峰值預覽計入已 lock 拍攝（P2-7）：defaultWeekPlan 預覽用 lock 後計劃，拍攝 +10/日入峰值；
-//     預覽唔留 daysLeft 副作用。
+//   B 峰值預覽計入已 lock 拍攝（P2-7）：v20a400 預設唔再因峰值靜靜加休息——峰值計法
+//     保留喺 weekStressPeak400，改由手帳建議列出掣；預覽唔留 daysLeft 副作用。
 //   C BE 抉擇覆蓋 commit（P2-5）：endingRomance410 committed 喺 BE 旗已立時為 false。
 //   D 補位失效來源（P2-3）：intel381Tick 失效時寫 expiredFrom（msg／kept）。
 // 反證：v385 index 冇上述改動 → 相關斷言 FAIL。
@@ -68,14 +68,15 @@ ok('A 唔夠位先覆寫休息', planA2[1] === 'shoot:shA2' && planA2[4] === 're
 
 /* ---------- B 峰值預覽計入已 lock 拍攝 ---------- */
 // 入口 stress 35、一個 5 日拍攝：未 lock 預覽峰值約 58（得一日休息）；lock 後 5 日拍攝 +10/日，
-// 峰值 85 衝上 80 → 預設應畀三日休息（plan[1]、plan[3]、plan[6] 皆 rest）。
+// 峰值 85 衝上 80 → 舊制預設畀三日休息。v20a400：預設唔再因峰值靜靜加休息，照舊得一日休息
+// （plan[6]）；峰值計法保留喺 weekStressPeak400，壓力建議改由手帳建議列出。
 S.stress = 35;
 S.enrolled = {}; S.trainCount = { train_acting: 5 }; S.mockDebts = [];
 const shB = { id: 'shB', totalDays: 5, doneDays: 0, daysLeft: 99, deadlineDay: 999 };
 S.shoots = [shB];
 const planB = defaultWeekPlan();
 const restsB = planB.filter(x => x === 'rest').length;
-ok('B 重拍攝週預設三日休息', restsB >= 3, JSON.stringify(planB));
+ok('B v400 重拍攝週預設唔靜靜加休息（一日）', restsB === 1, JSON.stringify(planB));
 ok('B 預覽唔留 daysLeft 副作用', shB.daysLeft === 99, 'daysLeft=' + shB.daysLeft);
 // 對照：冇拍攝時同 stress 只得一日休息
 S.shoots = [];

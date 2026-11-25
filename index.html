@@ -2078,6 +2078,13 @@ button.g, .start button.g{
 .nb-live-stress .good{ color:#1f7a5c !important; font-weight:800; }
 .nb-live-stress .bad{ color:#c62828 !important; font-weight:800; }
 .nb-live-stress .muted{ color:#5a4328; font-weight:700; font-size:.68rem; }
+/* v20a400：手帳建議列＋改格機會成本行（米紙卡，同 .nb-live-stress 一套）。 */
+.nb-suggest400{ display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 2px; }
+.nb-suggest400[hidden]{ display:none; }
+.nb-suggest400-btn{ appearance:none; -webkit-appearance:none; background:#fbf3df; border:1px solid #b99b62; border-radius:3px; box-shadow:0 1px 0 rgba(107,78,46,.35); color:#3a2e22; font-size:13px; font-weight:700; min-height:36px; padding:6px 10px; cursor:pointer; text-align:left; font-family:inherit; }
+.nb-suggest400-btn:active{ transform:scale(.98); background:#e8dfc8; }
+.nb-cost400{ margin:6px 0 2px; padding:7px 10px; border-radius:10px; background:#f2ebd8; border:1px solid rgba(196,165,116,.55); color:#1A1410; font-size:.74rem; font-weight:700; line-height:1.35; }
+.nb-cost400[hidden]{ display:none; }
 .day-row .cp{
   flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center;
   border:1px solid rgba(107,78,46,.35);
@@ -5442,6 +5449,7 @@ body.day-res-open .day-row{
   border:1px solid rgba(196,165,116,.7); border-radius:10px; padding:6px 9px; margin:0 0 6px; font-size:.78rem; }
 .t70-mname{ font-weight:800; color:#43301c; }
 .t70-mgain{ color:#7a4d12; font-weight:800; white-space:nowrap; }
+.t70-mprog{ color:#5a4328; font-weight:700; white-space:nowrap; }
 .t70-mgo{ margin-left:auto; border:1px solid #6b4e2e; background:#fff8e8; color:#6b4e2e;
   border-radius:8px; padding:4px 9px; font:inherit; font-size:.72rem; font-weight:800; cursor:pointer; white-space:nowrap; }
 /* === v20a70 BOOK70 皮膚完 === */
@@ -7330,6 +7338,9 @@ body.day-res-open .day-row{
           <div id="nb-days"></div>
           <button type="button" class="nb-live-stress" id="nb-live-stress" aria-live="polite">壓力估 —</button>
           <div id="nb-stress-detail105" class="nb-stress-detail105" hidden></div>
+          <!-- v20a400：手帳建議列（訓練／壓力建議掣，renderSuggest400 填）＋改格機會成本行（showCost400 寫，留到下一次改格）。 -->
+          <div class="nb-suggest400" id="nb-suggest400" hidden></div>
+          <div class="nb-cost400" id="nb-cost400" hidden></div>
           <!-- v20a105 UI105 S-3：行程規則由開局導入卡搬嚟呢度（contextual）——
                玩家第一次編行程先至需要知，唔再塞喺入門卡度截斷。 -->
           <p class="pane-intro" id="plan-teach105">點排：一週行程確定之後，訓練／表演當日會自動過；「到處逛逛」當日才入大地圖四處走走。訓練要先去公司報名，再排入手帳；只看通告欄不耗日。</p>
@@ -16691,9 +16702,13 @@ function train71CourseMini(cid, stat, ctx){
   } else if(st.open){
     act = '<span class="t70-mgain">已開放</span>';
   }
+  /* v20a400 細改 3：細行加升下一級進度（同大卡 prog75 同一口徑）。 */
+  const nx75m = levels75Next((typeof S !== "undefined" ? S : null), cid);
+  const prog75m = nx75m.top ? "已到三級" : ("再 " + nx75m.left + " 堂升" + (LEVELS75_NAMES[nx75m.lv + 1] || ""));
   return '<div class="t70-mini' + (picked ? " picked" : "") + '">'
     + '<span class="t70-mname">' + (def.icon ? iconHtml112(def.icon) + " " : "") + ux68Esc((def.name || cid) + "・" + (LEVELS75_NAMES[levels75Level((typeof S !== "undefined" ? S : null), cid)] || "一級")) + '</span>'
     + '<span class="t70-mgain">' + ux68Esc((SL[stat] || stat) + " " + ux68GainText(g[stat])) + '</span>'
+    + '<span class="t70-mprog">' + ux68Esc(prog75m) + '</span>'
     + '<span class="t70-badge sm ' + (st.open ? "ok" : (st.badge === "未報名" ? "mid" : "lock")) + '">' + ux68Esc(st.badge) + '</span>'
     + act
     + '</div>';
@@ -16801,13 +16816,19 @@ function train71HandleClick(ev, ctx){
     if(!cid) return true;
     if(ctx === "fill"){
       const def = ((typeof COURSE_DEFS !== "undefined" && COURSE_DEFS) || {})[cid] || {};
+      /* v20a400：全日填訓練都係手動揀課 → 記低做「沿用上次」候選（多日填寫唔出單日成本行）。 */
+      if(typeof S !== "undefined" && S) S.lastTrain400 = cid;
       applyActToUnlocked(cid, "已填全日訓練（" + (def.name || cid) + "），可還原");
       train71TogglePanel(false);
     } else {
       if(typeof planDraft === "undefined" || !planDraft || typeof planSelDay === "undefined") return true;
       if(!(typeof S !== "undefined" && S && S.homeEditable)) return true;
       if(typeof dayPlanLocked === "function" && dayPlanLocked(planDraft[planSelDay])){ toast("拍攝日檔期已定"); return true; }
+      /* v20a400：手動揀訓練課 → 記低做「沿用上次」候選（S.lastTrain400，跟 save 走）；改格出機會成本行。 */
+      const from400 = planDraft[planSelDay];
       planDraft[planSelDay] = cid;
+      if(typeof S !== "undefined" && S) S.lastTrain400 = cid;
+      if(typeof showCost400 === "function") showCost400(from400, cid, planSelDay);
       renderNotebook();
     }
     return true;
@@ -21180,39 +21201,220 @@ function planLabel(id){ return planMeta(id).name; }
 function isMapDay(id){
   return !!id && (id==="scout_all" || id==="scout_nt" || id==="scout_kln" || id==="scout_island");
 }
+function lowestStatTrain400(){
+  /* v20a400：建議掣專用——舊 v360 最低屬性輪替邏輯抽出，只畀「補最低屬性」建議掣用，
+     唔再自動填訓練位。候選只限已報名課程（同 v73 揀課器口徑一致：未報名排唔入，
+     唔好再建議未報名課）；揀主屬性最低嗰課，同分揀堂數少、再按固定次序。
+     未報任何課 → null（建議掣隱藏）。 */
+  try{
+    const en = (S && S.enrolled) || {};
+    const tc = (S && S.trainCount) || {};
+    const order400 = ["train_acting","train_vocal","train_stage","train_looks","train_charm","train_iq","train_stamina"];
+    const cand400 = order400.filter(cid=> en[cid]);
+    if(!cand400.length) return null;
+    let pick400 = null, best400 = null;
+    cand400.forEach(cid=>{
+      const sp = (typeof TRAIN75_SPEC!=="undefined" && TRAIN75_SPEC[cid]) || null;
+      const stat = sp ? (Number(S[sp.main])||0) : 0;
+      const cnt = Number(tc[cid])||0;
+      const key = stat*1000 + cnt;
+      if(best400===null || key<best400){ best400 = key; pick400 = cid; }
+    });
+    return pick400;
+  }catch(_e){ return null; }
+}
+function weekStressPeak400(plan){
+  /* v20a400：壓力建議用峰值——舊 v379／v384／v386「現壓力 vs 預覽峰值取高，計埋已 lock 拍攝」
+     計法原封不動抽出，只係唔再用嚟靜靜換休息，改為出建議掣（見 renderSuggest400）。 */
+  try{
+    let peak400 = Number(S && S.stress) || 0;
+    if(typeof previewWeekStress==="function"){
+      let pvPlan400 = (plan||[]).slice();
+      if(typeof lockShootsIntoDraft==="function" && S && Array.isArray(S.shoots) && S.shoots.length){
+        const snap400 = S.shoots.map(sh=> sh ? sh.daysLeft : undefined);
+        pvPlan400 = lockShootsIntoDraft(pvPlan400);
+        S.shoots.forEach((sh,i)=>{ if(sh) sh.daysLeft = snap400[i]; });
+      }
+      const pv400 = previewWeekStress(pvPlan400);
+      if(pv400 && Number(pv400.peak)>peak400) peak400 = Number(pv400.peak);
+    }
+    return peak400;
+  }catch(_e){ return Number(S && S.stress) || 0; }
+}
+function freeDays400(){
+  /* v20a400：未鎖定嘅自由日（scout_*）index 陣列——壓力建議掣目標日用。 */
+  const out=[];
+  try{
+    for(let i=0;i<7;i++){
+      const id = (typeof planDraft!=="undefined" && planDraft) ? planDraft[i] : "";
+      if(!dayPlanLocked(id) && isMapDay(id)) out.push(i);
+    }
+  }catch(_e){}
+  return out;
+}
+function nbDayHint400(i, meta, editable, locked){
+  /* v20a400 細改 3：日格 hint 寫明機會成本——訓練格「再 N 堂升 X 級」／到頂「已到三級」；
+     外出日「本週外出機會剩 X 日」（X＝planDraft 入面 scout_* 格數）。可編輯態只寫成本行；
+     唯讀態保留原有 hint 再加成本行；鎖定格維持「拍攝檔期已定」。 */
+  try{
+    if(locked) return "拍攝檔期已定 · 不可改";
+    const id = (typeof planDraft!=="undefined" && planDraft) ? planDraft[i] : "";
+    if(typeof COURSE_DEFS!=="undefined" && COURSE_DEFS[id] && typeof levels75Next==="function"){
+      const nx400 = levels75Next((typeof S!=="undefined" ? S : null), id);
+      const prog400 = nx400.top ? "已到三級" : ("再 " + nx400.left + " 堂升" + (LEVELS75_NAMES[nx400.lv+1] || ""));
+      return editable ? prog400 : ((meta.hint||"") ? (meta.hint + " · " + prog400) : prog400);
+    }
+    if(typeof isMapDay==="function" && isMapDay(id)){
+      const n400 = (planDraft||[]).filter(x=> isMapDay(x)).length;
+      const txt400 = "本週外出機會剩 " + n400 + " 日";
+      return editable ? txt400 : ((meta.hint||"") ? (meta.hint + " · " + txt400) : txt400);
+    }
+  }catch(_e){}
+  return editable ? "" : (meta.hint||"");
+}
+function costLose400(id){
+  /* v20a400 細改 3：改走舊格失去嘅嘢——收入實數跟 resolvePlannedDay（街演 R(35,60)／
+     咖啡 R(45,75)／補班 $185，v390／v393）；訓練進度用 levels75Next 現況。 */
+  if(id==="street") return "失去約 $35–60 收入";
+  if(id==="cafe_gig") return "失去約 $45–75 收入";
+  if(id==="pt_topup") return "失去 $185 收入";
+  if(id==="rest") return "失去一日休息";
+  if(id==="home_chore") return "失去一日執屋減壓";
+  if(typeof COURSE_DEFS!=="undefined" && COURSE_DEFS[id] && typeof levels75Next==="function"){
+    const nx400 = levels75Next((typeof S!=="undefined" ? S : null), id);
+    const prog400 = nx400.top ? "已到三級" : ("再 " + nx400.left + " 堂升" + (LEVELS75_NAMES[nx400.lv+1] || ""));
+    return "失去一堂" + COURSE_DEFS[id].name + "（" + prog400 + "）";
+  }
+  if(typeof isMapDay==="function" && isMapDay(id)) return "失去一日外出機會";
+  return "失去原有安排";
+}
+function costGain400(id){
+  /* v20a400 細改 3：改入新格得到嘅嘢——休息「壓力清零」（v20a65 規則）；訓練寫明
+     堂數進度＋學費 $20（v390 統一）＋壓力（stressDeltaForAct 現級平均）。 */
+  if(id==="rest") return "得到壓力清零";
+  if(id==="home_chore") return "得到壓力 −8";
+  if(id==="street") return "得到約 $35–60 收入 · 壓力 +7";
+  if(id==="cafe_gig") return "得到約 $45–75 收入 · 壓力 +6";
+  if(id==="pt_topup") return "得到 $185 收入 · 壓力 +8";
+  if(typeof COURSE_DEFS!=="undefined" && COURSE_DEFS[id] && typeof levels75Next==="function"
+    && typeof TRAIN75_SPEC!=="undefined" && TRAIN75_SPEC[id]){
+    const sp400 = TRAIN75_SPEC[id];
+    const nx400 = levels75Next((typeof S!=="undefined" ? S : null), id);
+    const prog400 = nx400.top ? "已到三級" : ("再 " + nx400.left + " 堂升" + (LEVELS75_NAMES[nx400.lv+1] || ""));
+    const d400 = (typeof stressDeltaForAct==="function") ? stressDeltaForAct(id) : 10;
+    const stat400 = (typeof STAT_LABEL!=="undefined" && STAT_LABEL[sp400.main]) || sp400.main;
+    return "得到" + stat400 + " +1 堂（" + prog400 + "）· 學費 $20 · 壓力 +" + d400;
+  }
+  if(typeof isMapDay==="function" && isMapDay(id)) return "得到一日外出機會";
+  return "得到新安排";
+}
+function costLine400(fromId, toId, dayIdx){
+  /* v20a400 細改 3：改格機會成本行文案（香港式書面語）。同一格唔變 → 空字串（唔出無謂行）。 */
+  try{
+    if(!fromId || !toId || fromId===toId) return "";
+    const wd400 = "週" + weekdayName(dayIdx);
+    const fromName400 = planMeta(fromId).name, toName400 = planMeta(toId).name;
+    return wd400 + "：" + fromName400 + " → " + toName400 + "：" + costLose400(fromId) + "；" + costGain400(toId);
+  }catch(_e){ return ""; }
+}
+function showCost400(fromId, toId, dayIdx){
+  /* v20a400：成本行寫入 #nb-cost400 後一直留喺度，直到下一次改格；renderNotebook 唔清佢。 */
+  try{
+    const el = document.getElementById("nb-cost400");
+    if(!el) return;
+    const txt400 = costLine400(fromId, toId, dayIdx);
+    if(!txt400) return;
+    el.textContent = txt400;
+    el.hidden = false;
+  }catch(_e){}
+}
+function renderSuggest400(editable){
+  /* v20a400 細改 1＋2：手帳建議列（可編輯態先顯示，喺 #nb-days／#nb-live-stress 附近）。
+     訓練建議：第 2 週起、訓練位（index 1）係自由日嗰陣先出——「沿用上次手動排嘅課」
+     （S.lastTrain400，舊檔 undefined 嗰陣隱藏）＋「補最低屬性」（lowestStatTrain400，只限已報名課）。
+     壓力建議：預覽峰值 ≥60 出「用週X自由日換休息」，≥80 再多一粒「再加一日休息」；
+     目標日＝第一個未鎖定嘅自由日（scout_*），標明實際星期幾。玩家撳先換，唔撳唔換；
+     拍攝鎖位唔郁。掣換完／峰值跌返 <60 嗰陣建議列自然消失，render 唔會重複自動換。 */
+  try{
+    const box = document.getElementById("nb-suggest400");
+    if(!box) return;
+    box.innerHTML = "";
+    if(!editable || !planDraft || planDraft.length!==7){ box.hidden = true; return; }
+    const w400 = (typeof weekNumNow==="function") ? weekNumNow() : 1;
+    const mk400 = (label, on)=>{
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "nb-suggest400-btn";
+      b.textContent = label;
+      b.onclick = on;
+      box.appendChild(b);
+    };
+    if(w400>=2 && !dayPlanLocked(planDraft[1]) && isMapDay(planDraft[1])){
+      const last400 = (typeof S!=="undefined" && S) ? S.lastTrain400 : null;
+      if(last400 && typeof COURSE_DEFS!=="undefined" && COURSE_DEFS[last400]
+        && S && S.enrolled && S.enrolled[last400]){
+        mk400("沿用上次：" + COURSE_DEFS[last400].name, ()=>{
+          if(dayPlanLocked(planDraft[1])){ toast("拍攝日檔期已定"); return; }
+          const from400 = planDraft[1];
+          planDraft[1] = last400;
+          if(S) S.lastTrain400 = last400;
+          showCost400(from400, last400, 1);
+          renderNotebook();
+        });
+      }
+      const low400 = (typeof lowestStatTrain400==="function") ? lowestStatTrain400() : null;
+      if(low400 && typeof COURSE_DEFS!=="undefined" && COURSE_DEFS[low400]){
+        mk400("補最低屬性：" + COURSE_DEFS[low400].name, ()=>{
+          if(dayPlanLocked(planDraft[1])){ toast("拍攝日檔期已定"); return; }
+          const from400 = planDraft[1];
+          planDraft[1] = low400;
+          if(S) S.lastTrain400 = low400;
+          showCost400(from400, low400, 1);
+          renderNotebook();
+        });
+      }
+    }
+    const peak400 = weekStressPeak400(planDraft);
+    if(peak400>=60){
+      const free400 = freeDays400();
+      if(free400.length){
+        const t400 = free400[0];
+        mk400("建議：壓力偏高，用週" + weekdayName(t400) + "自由日換休息", ()=>{
+          if(dayPlanLocked(planDraft[t400])){ toast("拍攝日檔期已定"); return; }
+          const from400 = planDraft[t400];
+          planDraft[t400] = "rest";
+          showCost400(from400, "rest", t400);
+          renderNotebook();
+        });
+        if(peak400>=80 && free400.length>1){
+          const t2400 = free400[1];
+          mk400("再加一日休息：週" + weekdayName(t2400), ()=>{
+            if(dayPlanLocked(planDraft[t2400])){ toast("拍攝日檔期已定"); return; }
+            const from400 = planDraft[t2400];
+            planDraft[t2400] = "rest";
+            showCost400(from400, "rest", t2400);
+            renderNotebook();
+          });
+        }
+      }
+    }
+    box.hidden = !box.children.length;
+  }catch(_e){}
+}
 function defaultWeekPlan(){
-  /* v19z3：第2週起按欠債／訓練缺口／上週行為輕微差異化 */
+  /* v20a400：預設唔再自動揀課、唔再因壓力靜靜換休息——第 2 週起訓練位（index 1）預填自由日，
+     訓練建議＋壓力建議改由手帳建議列畀玩家撳（見 renderSuggest400）。第 1 週引導照舊（返 base）。
+     人情債留位（plan[4]=scout_all）維持不變，嗰個本身已經係自由日。
+     呢個改動同時解決 v360 遺留問題（舊預設將未報名歌藝排入訓練位）：新做法根本唔再自動揀課，
+     嗰個取捨唔使再等表態。非編輯呼叫方（fresh／writeTodayPlan／previewShootPlacement／
+     lockShootsIntoDraft fallback／resetPlanDraft 等）只攞到底稿，唔依賴舊自動揀課／自動休息行為。 */
   const base = ["scout_all","rest","scout_all","scout_all","street","cafe_gig","rest"];
   try{
     const w = (typeof weekNumNow==="function") ? weekNumNow() : (Math.floor(((S&&S.dayIndex)||0)/7)+1);
     if(w<=1) return base;
-    const en = (S && S.enrolled) || {};
-    const tc = (S && S.trainCount) || {};
     const debts = ((S && S.mockDebts) || []).length;
     const plan = base.slice();
-    const actingN = Number(tc.train_acting)||0;
-    if(actingN<2){
-      plan[1] = "train_acting";
-      plan[3] = "scout_all";
-    } else {
-      /* v20a360 P0-3：訓練位輪替保底——舊制演技≥2＋歌藝≥2＋外貌≥1 後訓練位變 scout_all，
-         跟預設計劃嘅玩家全部屬性凍結（W1/W6 實測歌藝凍結 370 日、演技以外零成長）。
-         改為：候選＝已報名課程＋演技＋歌藝（排程上堂唔經報名閘，同演技 bootstrap 同一口徑；
-         歌藝未報名都排，唔好再凍結），揀主屬性最低嗰課（同分揀堂數少、再按固定次序），
-         保證每科都有可見成長。 */
-      const order360 = ["train_acting","train_vocal","train_stage","train_looks","train_charm","train_iq","train_stamina"];
-      const cand360 = order360.filter(cid=> en[cid] || cid==="train_acting" || cid==="train_vocal");
-      let pick360 = "train_vocal";
-      let best360 = null;
-      cand360.forEach(cid=>{
-        const sp = (typeof TRAIN75_SPEC!=="undefined" && TRAIN75_SPEC[cid]) || null;
-        const stat = sp ? (Number(S[sp.main])||0) : 0;
-        const cnt = Number(tc[cid])||0;
-        const key = stat*1000 + cnt;
-        if(best360===null || key<best360){ best360 = key; pick360 = cid; }
-      });
-      plan[1] = pick360;
-    }
+    plan[1] = "scout_all"; /* v20a400：訓練位預填自由日 */
     if(debts>0){
       plan[4] = "scout_all"; /* 留空位去事務所還人情 */
       plan[5] = "cafe_gig";
@@ -21220,31 +21422,6 @@ function defaultWeekPlan(){
       plan[4] = "cafe_gig";
       plan[5] = "street";
     }
-    /* v20a379（第四輪評估 P2-1）：預設計劃壓力感知——壓力偏高嗰陣自動加休息日，
-       唔好再零感知咁連谷到病倒。壓力 ≥60：訓練位改返休息（兩日休息）；
-       ≥80：再多一日休息（三日）。壓力唔高嗰陣行為不變。 */
-    const stress379 = Number(S && S.stress) || 0;
-    /* v20a384（第六輪評估 P2-4）：draft 生成時點邊界——生成嗰刻未跨 80，但成週預覽
-       峰值會跨（wk17 實測：生成時 79、翌日 97，只得兩日休息）。改用「現壓力同
-       預覽峰值取高」判休息日數，令高壓週真加休息。 */
-    let stress384 = stress379;
-    /* v20a386（第七輪評估 P2-7）：峰值預覽計入已 lock 拍攝——舊版喺未 lock 拍攝嘅計劃上計，
-       拍攝日 +10／日唔入預覽（wk48 入口 10、5 日拍攝尖峰 84）。改為先 lockShootsIntoDraft
-       一份副本再預覽；lock 會寫 sh.daysLeft，預覽前後 snapshot／restore，唔留副作用。 */
-    try{
-      if(typeof previewWeekStress==="function"){
-        let pvPlan386 = plan;
-        if(typeof lockShootsIntoDraft==="function" && S && Array.isArray(S.shoots) && S.shoots.length){
-          const snap386 = S.shoots.map(sh=> sh ? sh.daysLeft : undefined);
-          pvPlan386 = lockShootsIntoDraft(plan.slice());
-          S.shoots.forEach((sh,i)=>{ if(sh) sh.daysLeft = snap386[i]; });
-        }
-        const pv384 = previewWeekStress(pvPlan386);
-        if(pv384 && Number(pv384.peak)>stress384) stress384 = Number(pv384.peak);
-      }
-    }catch(_e384){}
-    if(stress384 >= 60) plan[1] = "rest";
-    if(stress384 >= 80) plan[3] = "rest";
     plan[6] = "rest";
     return plan;
   }catch(_e){ return base; }
@@ -22382,7 +22559,8 @@ function renderNotebook(){
     const btn=document.createElement("button");
     btn.type="button";
     btn.className="day-row"+(planSelDay===i?" on":"")+(locked?" locked":"")+(editable && !locked?" hint-edit":"");
-    const hint = locked ? "拍攝檔期已定 · 不可改" : (editable ? "" : (meta.hint||""));
+    /* v20a400 細改 3：日格 hint 寫機會成本（訓練進度／外出剩餘），見 nbDayHint400。 */
+    const hint = (typeof nbDayHint400==="function") ? nbDayHint400(i, meta, editable, locked) : (locked ? "拍攝檔期已定 · 不可改" : (editable ? "" : (meta.hint||"")));
     const hintHtml = hint ? `<span class="plan-hint">${hint}</span>` : "";
     /* v362 UI362：像素貼紙——有對應 fx 片嘅活動用細片做貼紙（真資產 assets/fx/），
        取代靜態 icon；冇片嘅活動（逛逛／街頭／咖啡店）照舊 icon。 */
@@ -22452,7 +22630,11 @@ function renderNotebook(){
       b.onclick=()=>{
         if(!editable || selLocked) return;
         if(dayPlanLocked(planDraft[planSelDay])){ toast("拍攝日檔期已定"); return; }
+        /* v20a400：手動改格 → 訓練課記低做「沿用上次」候選（S.lastTrain400，跟 save 走）；出機會成本行。 */
+        const from400 = planDraft[planSelDay];
         planDraft[planSelDay]=it.id;
+        if(typeof COURSE_DEFS!=="undefined" && COURSE_DEFS[it.id] && typeof S!=="undefined" && S) S.lastTrain400 = it.id;
+        if(typeof showCost400==="function") showCost400(from400, it.id, planSelDay);
         renderNotebook();
       };
       list.appendChild(b);
@@ -22525,6 +22707,8 @@ function renderNotebook(){
   }catch(_e397){}
   try{ syncHomeTabExit(); }catch(_exit){}
   updateLiveStressStrip();
+  /* v20a400：建議列（訓練／壓力建議掣）——render 唔會自動換格，只出掣等人撳。成本行 #nb-cost400 唔喺呢度清，留到下一次改格。 */
+  try{ if(typeof renderSuggest400==="function") renderSuggest400(editable); }catch(_s400){}
   if(editable){
     const wrap=document.getElementById("nb-copy-wrap");
     if(wrap && wrap.classList.contains("open")) renderCopyChips();
@@ -22600,6 +22784,8 @@ function enterHome(summary, editable, initialTab){
   if(editable){
     // v19z3：過週清空 audition:/wrap: 殘留，只讀新手帳格
     planDraft = lockShootsIntoDraft(defaultWeekPlan());
+    /* v20a400：新一週新底稿 → 上週成本行清走（唔留跨週舊數）。 */
+    try{ const c400=document.getElementById("nb-cost400"); if(c400){ c400.textContent=""; c400.hidden=true; } }catch(_c400){}
     planDraft = planDraft.map(x=>{
       const s=String(x||"");
       if(s.startsWith("audition:") || s.startsWith("wrap:")) return "scout_all";

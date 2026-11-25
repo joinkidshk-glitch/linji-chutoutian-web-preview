@@ -43,11 +43,14 @@ chk('② 回填唔套雙軌（無 applyCastingTags／industryCreditDelta 寫入�
 chk('② normalizeSaveObj 掛回填', src.count('castingTagGenreBackfill360(o)') >= 1)
 chk('② enterHome 懶掃掛回填', src.count('castingTagGenreBackfill360(S)') >= 1)
 
-# ③ 輪替保底
+# ③ v20a400：輪替保底退役——defaultWeekPlan 唔再自動揀課，建議邏輯抽去 lowestStatTrain400（只限已報名課）。
 dwp = slice_fn('defaultWeekPlan')
-chk('③ 訓練位輪替（pick360）', 'plan[1] = pick360;' in dwp)
-chk('③ 歌藝常駐候選', 'cid==="train_vocal"' in dwp)
-chk('③ 最低屬性＋最少堂數鍵', 'stat*1000 + cnt' in dwp)
+chk('③ v400 訓練位預填自由日', 'plan[1] = "scout_all"' in dwp)
+chk('③ v400 自動揀課已刪（pick360）', 'pick360' not in dwp)
+chk('③ v400 壓力靜靜換休息已刪', 'stress384' not in dwp and '>= 60' not in dwp)
+low400 = slice_fn('lowestStatTrain400')
+chk('③ v400 建議 helper 在位（只限已報名課）', 'en[cid]' in low400 and 'cid==="train_vocal"' not in low400)
+chk('③ v400 最低屬性＋最少堂數鍵', 'stat*1000 + cnt' in low400)
 
 print('FAILURES:', len(fails))
 sys.exit(1 if fails else 0)

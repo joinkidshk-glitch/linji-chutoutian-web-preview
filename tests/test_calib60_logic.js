@@ -8,7 +8,8 @@
 //     令「有工就做」型玩家 wk14 結構性破產、E7 評核支永遠到達唔到；新紅線＝首年緩坡 110/130/150/170（v261 ÷10）。
 //     1989/1990 加幅正確；散工正薪 fame≥200 ×0.75、補場 $800 不變；
 // (4) 節點漏失：過窗登記／完成除名／N17 收科豁免／normalizeSaveObj 舊檔靜靜補登；
-// (5) 聲樂：預設計劃輪入 train_vocal（演技優先次序保留）、bestTrainJumpForGig frozenVocal 偵測；
+// (5) 聲樂：v20a400 預設計劃唔再自動揀課——第 2 週起訓練位預填自由日；建議邏輯抽咗去
+//     lowestStatTrain400（只限已報名課，未報歌藝唔再建議）、bestTrainJumpForGig frozenVocal 偵測；
 // (6) v20a267：tutorialFxFingerErr 已刪（傳聞教學 fx 一併刪除），本節退役。
 // 反證：對 v20a59 index 行 → CALIB60 函數唔存在 → FAIL。
 // 用法：node tests/test_calib60_logic.js [path-to-index.html]
@@ -49,13 +50,13 @@ var S = null;
 var refreshMoneyHud = function(){};
 var softPreviewOn = function(){ return false; };
 eval("var START = { y:1990, m:3, d:7 };");
-for(const c of ['STAT_LABEL','STAT_MAX','STRESS_MAX','LOCS','COURSE_DEFS']) eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
+for(const c of ['STAT_LABEL','STAT_MAX','STRESS_MAX','LOCS','COURSE_DEFS','TRAIN75_SPEC']) eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
 for(const c of ['CALIB60_FAME_BANDS','CALIB60_ATTR_BANDS','CALIB60_SCALED_KEYS','CALIB60_NODE_WINDOWS','CALIB60_NODE_TITLES']) eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
 const FNS = ['R','clamp','statHardMax','dualTrackNumbers','syncDualTracks','apply',
   'calib60BandScale','calib60ScaleFor','calib60BankedGain','calib60FameGain','calib60ScaleDelta','applyCalib60',
   'calib60YearOfWeek','weekNumNow','livingCostWeekNum','livingCostBand','livingCostRoll','livingCostEstimate','takeSoftBridgePay',
   'calib60SeasonIdx','calib60NowSeasonIdx','calib60NodeTitle','calib60MissedScan','normalizeSaveObj',
-  'defaultWeekPlan','fameFloor','gigMissingReqGaps','courseForStatKey','preferredLocForTrainTarget','bestTrainJumpForGig'];
+  'defaultWeekPlan','lowestStatTrain400','fameFloor','gigMissingReqGaps','courseForStatKey','preferredLocForTrainTarget','bestTrainJumpForGig'];
 for(const f of FNS) eval(extractFn(f));
 Math.random = function(){ return 0; };
 
@@ -225,14 +226,20 @@ function planState(dayIndex, enrolled, trainCount){
     stress: 10, money: 5000, stamina: 60, industryCreditDelta: 0, flags: {}, npcs: {}, board: {}, booked: [], shoots: [],
     trainCount: trainCount || {}, enrolled: enrolled || {}, mockDebts: [], story: { gigCount: 0, flags: {}, done: {} } };
 }
+/* v20a400：預設計劃唔再自動揀課——第 2 週起訓練位預填自由日；建議邏輯抽咗去
+   lowestStatTrain400（只限已報名課）。舊斷言（plan[1] 輪入 train_vocal／train_acting／
+   train_looks）隨舊行為退役，見 test_v400_logic.js 詳細覆蓋。 */
 S = planState(14, { train_acting: true, train_vocal: true }, { train_acting: 3, train_vocal: 0 });
-ok('預設計劃：演技夠 2＋已報歌藝 0 堂 → 星期二排 train_vocal', defaultWeekPlan()[1] === 'train_vocal');
-S = planState(14, { train_acting: true, train_vocal: true }, { train_acting: 1, train_vocal: 0 });
-ok('預設計劃：演技未夠 2 → 照舊 train_acting 優先', defaultWeekPlan()[1] === 'train_acting');
-S = planState(14, { train_acting: true }, { train_acting: 3, train_vocal: 0 });
-ok('預設計劃：未報歌藝 → 照排 train_vocal（v360 P0-3 歌藝保底：排程上堂唔經報名閘，跟預設計劃歌藝唔再凍結）', defaultWeekPlan()[1] === 'train_vocal');
+ok('v400 預設計劃：第 2 週起訓練位係自由日', defaultWeekPlan()[1] === 'scout_all');
+ok('v400 建議：演技夠 2＋已報歌藝 0 堂 → 補歌藝（屬性最低）', lowestStatTrain400() === 'train_vocal');
+S = planState(14, { train_acting: true }, { train_acting: 1, train_vocal: 0 });
+ok('v400 預設計劃：只報演技 → 訓練位照舊自由日', defaultWeekPlan()[1] === 'scout_all');
+ok('v400 建議：未報歌藝 → 唔建議歌藝，只建議已報名演技', lowestStatTrain400() === 'train_acting');
 S = planState(14, { train_acting: true, train_vocal: true, train_looks: true }, { train_acting: 3, train_vocal: 2, train_looks: 0 });
-ok('預設計劃：歌藝夠 2 → 輪返 train_looks（舊次序）', defaultWeekPlan()[1] === 'train_looks');
+S.acting = 30; S.vocal = 30;
+ok('v400 建議：三科已報、演技歌藝拉高 → 補外貌', lowestStatTrain400() === 'train_looks');
+S = planState(14, {}, {});
+ok('v400 建議：未報任何課 → null（建議掣隱藏）', lowestStatTrain400() === null);
 S = planState(0, { train_acting: true, train_vocal: true }, { train_acting: 0, train_vocal: 0 });
 ok('預設計劃：第 1 週 base 不變（星期二 rest）', defaultWeekPlan()[1] === 'rest');
 

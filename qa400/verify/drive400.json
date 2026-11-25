@@ -1,0 +1,438 @@
+{
+  "w1": {
+    "pass": true,
+    "weekPlan": [
+      "scout_all",
+      "rest",
+      "scout_all",
+      "scout_all",
+      "street",
+      "cafe_gig",
+      "rest"
+    ],
+    "dayIndex": 0
+  },
+  "w2": {
+    "arrive": {
+      "ok": true,
+      "note": "week done day 0->7 conf=clicked"
+    },
+    "dayIndex": 7,
+    "planDom": [
+      "到處逛逛",
+      "到處逛逛",
+      "到處逛逛",
+      "到處逛逛",
+      "到處逛逛",
+      "咖啡店駐場小表演",
+      "休息瞓覺"
+    ],
+    "suggest": {
+      "hidden": false,
+      "btns": [
+        "沿用上次：歌藝訓練",
+        "補最低屬性：歌藝訓練"
+      ]
+    },
+    "dayHints": [
+      "本週外出機會剩 5 日",
+      "本週外出機會剩 5 日",
+      "本週外出機會剩 5 日",
+      "本週外出機會剩 5 日",
+      "本週外出機會剩 5 日",
+      "",
+      ""
+    ],
+    "plan_ids": [
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "cafe_gig",
+      "rest"
+    ],
+    "train_slot_free": true,
+    "both_suggest": true,
+    "click_lowest": "補最低屬性：歌藝訓練",
+    "after_lowest_ids": [
+      "scout_all",
+      "train_vocal",
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "cafe_gig",
+      "rest"
+    ],
+    "after_lowest_cost": {
+      "hidden": false,
+      "text": "週二：到處逛逛 → 歌藝訓練：失去一日外出機會；得到歌藝 +1 堂（再 5 堂升二級）· 學費 $20 · 壓力 +10"
+    },
+    "after_lowest_lastTrain": "train_vocal",
+    "after_reset_ids": [
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "cafe_gig",
+      "rest"
+    ],
+    "click_last": "沿用上次：歌藝訓練",
+    "after_last_ids": [
+      "scout_all",
+      "train_vocal",
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "cafe_gig",
+      "rest"
+    ],
+    "after_last_cost": {
+      "hidden": false,
+      "text": "週二：到處逛逛 → 歌藝訓練：失去一日外出機會；得到歌藝 +1 堂（再 5 堂升二級）· 學費 $20 · 壓力 +10"
+    },
+    "old_save_suggest": {
+      "hidden": true,
+      "btns": []
+    },
+    "old_save_no_train_btns": true,
+    "pass": true
+  },
+  "stress": {
+    "arrive": {
+      "ok": true,
+      "note": "week done day 0->7 conf=clicked"
+    },
+    "dayIndex": 7,
+    "plan_before": [
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "cafe_gig",
+      "rest"
+    ],
+    "suggest": {
+      "hidden": false,
+      "btns": [
+        "建議：壓力偏高，用週一自由日換休息",
+        "再加一日休息：週二"
+      ]
+    },
+    "stress": 85,
+    "suggest_shown": true,
+    "unchanged_before_click": true,
+    "click_rest": "建議：壓力偏高，用週一自由日換休息",
+    "plan_after": [
+      "rest",
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "scout_all",
+      "cafe_gig",
+      "rest"
+    ],
+    "after_cost": {
+      "hidden": false,
+      "text": "週一：到處逛逛 → 休息瞓覺：失去一日外出機會；得到壓力清零"
+    },
+    "suggest_after": {
+      "hidden": false,
+      "btns": [
+        "建議：壓力偏高，用週二自由日換休息",
+        "再加一日休息：週三"
+      ]
+    },
+    "pass": true
+  },
+  "cost": {
+    "arrive": {
+      "ok": true,
+      "note": "week done day 0->7 conf=clicked"
+    },
+    "dayHints": [
+      "本週外出機會剩 5 日",
+      "本週外出機會剩 5 日",
+      "本週外出機會剩 5 日",
+      "本週外出機會剩 5 日",
+      "本週外出機會剩 5 日",
+      "",
+      ""
+    ],
+    "scout_hint": true,
+    "click_street": "街頭表演碼頭／行人專用區賣藝",
+    "plan_after": [
+      "scout_all",
+      "scout_all",
+      "street",
+      "scout_all",
+      "scout_all",
+      "cafe_gig",
+      "rest"
+    ],
+    "cost_after": {
+      "hidden": false,
+      "text": "週三：到處逛逛 → 街頭表演：失去一日外出機會；得到約 $35–60 收入 · 壓力 +7"
+    },
+    "hints_after_street": [
+      "本週外出機會剩 4 日",
+      "本週外出機會剩 4 日",
+      "",
+      "本週外出機會剩 4 日",
+      "本週外出機會剩 4 日",
+      "",
+      ""
+    ],
+    "train_hint": true,
+    "card_meta": [
+      "已練 3 次 · 再 2 堂升二級"
+    ],
+    "card_prog": true,
+    "click_train_pick": true,
+    "plan_after_train": [
+      "scout_all",
+      "train_vocal",
+      "street",
+      "scout_all",
+      "scout_all",
+      "cafe_gig",
+      "rest"
+    ],
+    "hints_after_train": [
+      "本週外出機會剩 3 日",
+      "再 2 堂升二級",
+      "",
+      "本週外出機會剩 3 日",
+      "本週外出機會剩 3 日",
+      "",
+      ""
+    ],
+    "cost_after_train": {
+      "hidden": false,
+      "text": "週二：到處逛逛 → 歌藝訓練：失去一日外出機會；得到歌藝 +1 堂（再 2 堂升二級）· 學費 $20 · 壓力 +10"
+    },
+    "pass": true
+  },
+  "novice": {
+    "runs": [
+      {
+        "run": 1,
+        "ok": true,
+        "weeks": [
+          {
+            "week": 1,
+            "ok": true,
+            "note": "week done day 0->7 conf=clicked",
+            "start": {
+              "day": 0,
+              "money": 1200,
+              "stress": 12
+            },
+            "end": {
+              "day": 7,
+              "money": 1435,
+              "stress": 0,
+              "sick": 0
+            }
+          },
+          {
+            "week": 2,
+            "ok": true,
+            "note": "week done day 7->14 conf=clicked",
+            "start": {
+              "day": 7,
+              "money": 1435,
+              "stress": 0
+            },
+            "end": {
+              "day": 14,
+              "money": 1387,
+              "stress": 0,
+              "sick": 0
+            }
+          },
+          {
+            "week": 3,
+            "ok": true,
+            "note": "week done day 14->21 conf=clicked",
+            "start": {
+              "day": 14,
+              "money": 1387,
+              "stress": 0
+            },
+            "end": {
+              "day": 21,
+              "money": 1312,
+              "stress": 0,
+              "sick": 0
+            }
+          },
+          {
+            "week": 4,
+            "ok": true,
+            "note": "week done day 21->28 conf=clicked",
+            "start": {
+              "day": 21,
+              "money": 1312,
+              "stress": 0
+            },
+            "end": {
+              "day": 28,
+              "money": 1212,
+              "stress": 0,
+              "sick": 0
+            }
+          },
+          {
+            "week": 5,
+            "ok": true,
+            "note": "week done day 28->35 conf=clicked",
+            "start": {
+              "day": 28,
+              "money": 1212,
+              "stress": 0
+            },
+            "end": {
+              "day": 35,
+              "money": 1136,
+              "stress": 0,
+              "sick": 0
+            }
+          },
+          {
+            "week": 6,
+            "ok": true,
+            "note": "week done day 35->42 conf=clicked",
+            "start": {
+              "day": 35,
+              "money": 1136,
+              "stress": 0
+            },
+            "end": {
+              "day": 42,
+              "money": 1038,
+              "stress": 0,
+              "sick": 0
+            }
+          }
+        ],
+        "final": {
+          "day": 42,
+          "money": 1038,
+          "stress": 0,
+          "sick": 0
+        }
+      },
+      {
+        "run": 2,
+        "ok": true,
+        "weeks": [
+          {
+            "week": 1,
+            "ok": true,
+            "note": "week done day 0->7 conf=clicked",
+            "start": {
+              "day": 0,
+              "money": 1200,
+              "stress": 12
+            },
+            "end": {
+              "day": 7,
+              "money": 1409,
+              "stress": 0,
+              "sick": 0
+            }
+          },
+          {
+            "week": 2,
+            "ok": true,
+            "note": "week done day 7->14 conf=clicked",
+            "start": {
+              "day": 7,
+              "money": 1409,
+              "stress": 0
+            },
+            "end": {
+              "day": 14,
+              "money": 1334,
+              "stress": 0,
+              "sick": 0
+            }
+          },
+          {
+            "week": 3,
+            "ok": true,
+            "note": "week done day 14->21 conf=clicked",
+            "start": {
+              "day": 14,
+              "money": 1334,
+              "stress": 0
+            },
+            "end": {
+              "day": 21,
+              "money": 1278,
+              "stress": 0,
+              "sick": 0
+            }
+          },
+          {
+            "week": 4,
+            "ok": true,
+            "note": "week done day 21->28 conf=clicked",
+            "start": {
+              "day": 21,
+              "money": 1278,
+              "stress": 0
+            },
+            "end": {
+              "day": 28,
+              "money": 1193,
+              "stress": 0,
+              "sick": 0
+            }
+          },
+          {
+            "week": 5,
+            "ok": true,
+            "note": "week done day 28->35 conf=clicked",
+            "start": {
+              "day": 28,
+              "money": 1193,
+              "stress": 0
+            },
+            "end": {
+              "day": 35,
+              "money": 1123,
+              "stress": 0,
+              "sick": 0
+            }
+          },
+          {
+            "week": 6,
+            "ok": true,
+            "note": "week done day 35->42 conf=clicked",
+            "start": {
+              "day": 35,
+              "money": 1123,
+              "stress": 0
+            },
+            "end": {
+              "day": 42,
+              "money": 1031,
+              "stress": 0,
+              "sick": 0
+            }
+          }
+        ],
+        "final": {
+          "day": 42,
+          "money": 1031,
+          "stress": 0,
+          "sick": 0
+        }
+      }
+    ]
+  }
+}
