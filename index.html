@@ -5059,10 +5059,8 @@ body.day-res-open .day-row{
    rule（「未完待續」係設計意圖，唔係 bug），拆走會令 suite fail——還原。
    洗字疑慮靠下面 .paper-sheet.awd-result396 padding-bottom 32px 緩解：捲到底
    嗰陣淡出只落空白紙邊；摺位嗰 26px 柔化係「未完待續」提示本身。 */
-#modal-inner:has(.awd-result396){
-  -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 26px),transparent 100%);
-  mask-image:linear-gradient(180deg,#000 calc(100% - 26px),transparent 100%);
-}
+/* v20a403 UI403-3：26px mask 已拆（第十輪裁決改 fade）——「未完待續」改由紙邊
+   .awd-next403「下接」提示交代，唔再洗摺位正文；紙底 32px 留白保留。 */
 .paper-sheet .np214-photo::after{
   content:""; position:absolute; inset:0; pointer-events:none;
   background-image:radial-gradient(rgba(0,0,0,0.20) 0.8px, transparent 1.1px);
@@ -7338,6 +7336,54 @@ body.day-res-open .day-row{
    日卡橫條（.map-here373）唔係掣，留低做位置提示，唔好一併收起。 */
 .map-wrap.sheet-open #map-pins .pin{ display:none !important; }
 /* ===== v20a402 UI402 完 ===== */
+/* ===== v20a403 UI403（第十輪頭五項＋暗角 dismiss）===== */
+/* (2) 捲動邊界：modal 抬頭固定＋捲動安全區；JS align403 將捲底頂沿對齊段落邊界。 */
+#modal-inner{ scroll-padding-top:12px; scroll-padding-bottom:calc(20px + env(safe-area-inset-bottom, 0px)); }
+#mask:not(.tut-on):not(.paper-on):not(.casting-sheet-on) #modal-inner > h3:first-child{
+  position:sticky; top:-1px; z-index:5; background:#F2EBD8;
+  margin:-4px -4px 8px; padding:8px 4px 6px; border-bottom:1px solid rgba(107,83,64,.25);
+}
+#mask.casting-sheet-on .notice_header_orange{ padding:6px 12px 5px !important; }
+#mask.casting-sheet-on .notice_sheet_body{ scroll-padding-top:10px; scroll-padding-bottom:calc(28px + env(safe-area-inset-bottom, 0px)); }
+.journal-scroll{ scroll-padding-bottom:calc(96px + env(safe-area-inset-bottom, 0px)); }
+#debt-list{ padding-bottom:calc(96px + env(safe-area-inset-bottom, 0px)) !important; }
+.debt-repay-btn{ min-height:44px !important; }
+/* (2) 教學 step2：舞台卡收窄置中，卡邊唔再露相鄰卡殘字／半枚印。 */
+.tut-board-stage .gig-board-list{ max-width:300px; margin:0 auto; }
+.tut-board-stage .tut-board-h, .tut-board-stage .board-lead{ max-width:300px; margin-left:auto; margin-right:auto; }
+/* (3) 頒獎結果紙邊「下接」提示（捲到底由 JS 收起）。 */
+.awd-next403{ margin-right:auto; align-self:center;
+  background:#f5eedb; color:#6b4e2e; border:1px solid rgba(107,83,64,.45); border-radius:3px;
+  font-size:.72rem; font-weight:800; letter-spacing:.14em; padding:2px 8px; pointer-events:none; }
+.awd-next403[hidden]{ display:none !important; }
+/* (4) 推介真劇照：場景圖做主體，右上預留印章位，單一媒介角標。 */
+.gig-teaser.gt-featured .gt-still403{ margin-right:42px; padding:0; align-items:flex-end; }
+.gt-still403-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+.gig-teaser.gt-featured .gt-still403 .gt-still402-sub{ position:relative; z-index:1; background:rgba(245,238,219,.88); padding:1px 6px; border-radius:2px; margin:0 0 5px 6px; }
+.gig-teaser.gt-featured .g-seal{ z-index:2; }
+/* (4) 整理索引紙籤：窄籤拉出、選項做紙籤行（去方框）、選中紅剔。 */
+.board-menu397{ width:152px !important; border-radius:2px 8px 8px 2px !important; transform:rotate(-.6deg); animation:boardTab403 .16s ease-out; }
+@keyframes boardTab403{ from{ transform:translateX(10px) rotate(-.6deg); opacity:.4; } to{ transform:translateX(0) rotate(-.6deg); opacity:1; } }
+.board-menu397 .board-chip392{ background:transparent !important; padding:4px 2px 4px 18px !important; border-bottom:1px dashed rgba(107,83,64,.25) !important; }
+.board-menu397 .board-chip392::before{ display:none !important; }
+.board-menu397 .board-chip392.on::after{ left:0 !important; }
+/* (4) 詳情合約紙：要求格去框改紙上分節、簡介去框。 */
+.notice_sheet_frame.cn-paper30v2 .cn-req-cell{ border:0 !important; border-bottom:1px dashed rgba(107,83,64,.35) !important; background:transparent !important; border-radius:0 !important; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-cell.no{ background:rgba(192,57,43,.06) !important; }
+.notice_sheet_frame.cn-paper30v2 .notice_synopsis_frame{ border:0 !important; background:transparent !important; box-shadow:none !important; }
+.notice_sheet_frame.cn-paper30v2 .cn-chance378{ border:0 !important; background:transparent !important; }
+/* (5) 里程碑：結局紙加高＋尾段留白；人情頁弱印唔疊字；資料卡改手寫卡。 */
+#mask:has(.ending375-sheet) .modal{ max-height:min(94dvh,94svh,760px) !important; }
+.ending375-sheet{ padding-bottom:28px !important; }
+.ending375-sheet .e375-grp{ margin-top:8px !important; padding-top:8px !important; }
+#v-home:has(#home-pane-favor389.on) .weak-seals{ display:none !important; }
+#home-pane-stats389 .stats389-card{ background:repeating-linear-gradient(180deg,#fbf4dd 0 27px,#e7d9b8 27px 28px) !important; border:1px solid #a98d4f !important; border-radius:4px !important; box-shadow:1px 2px 6px rgba(70,50,30,.25); transform:rotate(-.4deg); }
+#home-pane-stats389 .stats-grid{ grid-template-columns:1fr !important; gap:0 !important; }
+#home-pane-stats389 .stats-grid .stat{ background:transparent !important; border:0 !important; border-bottom:1px dashed rgba(107,83,64,.35) !important; border-radius:0 !important; display:flex; justify-content:space-between; padding:4px 2px !important; font-family:var(--hand363,"LXGW WenKai","Kaiti TC",serif); }
+/* (6) toast 唔擋暗角撳（純顯示層，撳穿去 mask dismiss）。 */
+#app.mask-up .toast, #app.ui-inert #toast, .toast{ pointer-events:none !important; }
+/* ===== v20a403 UI403 完 ===== */
+
 </style>
 </head>
 <body>
@@ -7470,7 +7516,7 @@ body.day-res-open .day-row{
               <div class="mn68" style="left:56%;top:calc(83% + 34px)">灣仔唱片</div>
               <div class="mn68" style="left:70%;top:calc(81% - 52px)">天星音樂</div>
               <div class="mn68 mn68-ask373" style="left:29%;top:calc(27% + 34px)">金龍茶餐廳</div>
-              <div class="mn68 mn68-ask373" style="left:29%;top:calc(84% - 52px)">何生事務所</div>
+              <div class="mn68 mn68-ask373" style="left:29%;top:calc(84% - 42px)">何生事務所</div>
               <div class="mn68" style="left:24%;top:calc(16% - 52px)">廟街禮品</div>
               <div class="mn68" style="left:86%;top:calc(78% + 34px)">仁康醫院</div>
               <!-- v20a265 COSTUME265：片場層 17 個墨字地名（15 舊＋花園街成衣店／阿偉屋企 2 新；label 位置跟 LOCS 座標） -->
@@ -20177,9 +20223,9 @@ function gigBoardTeaserHtml(g, opts){
      板面撳極都唔開（實駕捉到）。 */
   const lifeKey = st.key || ((st.label==="已殺青"||st.label==="已取消")?"wrapped":(st.label==="拍攝中"?"shooting":(st.label==="已獲聘"?"hired":"")));
   const boardState = (lifeKey==="wrapped" || lifeKey==="shooting" || lifeKey==="hired" || st.label==="已殺青" || st.label==="製作中" || st.label==="已獲聘" || st.label==="拍攝中") ? "" : gigBoardCardState(g);
-  /* v20a392 UI392 ③：短卡改可掃讀紙條——片酬／日數／成功率併做一行（「$378｜3 日｜86%」）；
-     鎖定卡唔出假成功率，只出片酬＋日數，差額行照舊喺下面。容器／行 class 唔變（S-30 測試釘）。
-     v20a117 拆行做法由呢行取代（兩段 meta＋成功率行三行變一行）。 */
+  /* v20a392：片酬／日數／成功率併做一行；鎖定卡唔出假成功率。
+     容器／行 class 唔變（S-30 測試釘）。
+     v20a403：推介卡 meta 首項出總片酬。 */
   let metaLine392 = "";
   {
     const payTxt=gigPayExactText(g, {card:true});
@@ -20190,12 +20236,13 @@ function gigBoardTeaserHtml(g, opts){
     let sortIsExp396 = false;
     try{ sortIsExp396 = (typeof _boardSort392!=="undefined") && _boardSort392==="exp"; }catch(_e){}
     const bits392=[];
-    /* v20a396 UI396 ②：預設排序係預期日薪嗰陣，可接卡嘅片酬段改出「預期 $X／日」
-       （board392ExpDaily＝片酬×成功率÷日數，計法見板頭 lead 行）；鎖定卡／其他排序
-       照出片酬總額。typeof 守衛：測試沙盒抽呢個函數嗰陣未定義 board392ExpDaily／
-       _boardSort392，唔可以直引。 */
+    /* v20a396：預期日薪排序嗰陣可接卡出「預期 $X／日」，
+       鎖定卡／其他排序出片酬總額。typeof 守衛防沙盒未定義。
+       （計法見板頭 lead 行。）
+       */
+    if(opts.featured && payTxt) bits392.push(`總片酬 ${payTxt}`);
     if(boardState==="ready" && sortIsExp396 && exp396!=null && exp396>0) bits392.push(`預期 $${Math.round(exp396)}／日`);
-    else if(payTxt) bits392.push(`片酬 ${payTxt}`);
+    else if(payTxt && !opts.featured) bits392.push(`片酬 ${payTxt}`);
     if(daysN!=null) bits392.push(`${daysN} 日`);
     if(boardState==="ready"){
       try{ if(typeof chance==="function") bits392.push(`約 ${Math.round(chance(g)*100)}%`); }catch(_e){} /* v20a398 UI398-4：列表成功率加「約」（計法行註明用精確值，見 openCastingNoticeDetail） */
@@ -20234,10 +20281,10 @@ function gigBoardTeaserHtml(g, opts){
   try{ const cp = (typeof costume382PillHtml==="function") ? costume382PillHtml(g) : ""; if(cp) trigPill += cp; }catch(_e){}
   /* v20a392 UI392 ③：推介大卡（opts.featured）——可接之中片酬最高者置頂，唔重複計數。 */
   const featured392 = !!(opts && opts.featured);
-  /* v20a402 UI402-5c：推介卡加劇照式插畫（作品牆 CSS 卡語言：大字首字＋媒介／劇種）。
-     海報已刪（v229），有真圖嗰日先換。 */
+  /* v20a403 UI403-4：推介卡用通告地點場景圖，唔用大字字首，
+     亦唔出成品海報（未完成唔應有成品圖）。 */
   const still402 = featured392
-    ? `<div class="gt-still402" data-type="${coarse396}"><span class="gt-still402-mono">${String(work||"").replace(/[《》]/g,"").charAt(0)||"?"}</span><span class="gt-still402-sub">${coarse396}${(genre396 && genre396!==coarse396)?(" · "+genre396):""}</span></div>`
+    ? `<div class="gt-still402 gt-still403" data-type="${coarse396}"><img class="gt-still403-img" src="assets/story/locs/bg_loc_${(g && g.loc) || "tvb_harbour"}.jpg" alt="" onerror="this.style.display='none'"><span class="gt-still402-sub">${coarse396}${(genre396 && genre396!==coarse396) ? " · " + genre396 : ""}</span></div>`
     : "";
   return `<div class="gig-teaser${featured392 ? " gt-featured" : ""}" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
     <img class="g-seal" src="${sealSrc}" alt="${badge94.label||sealKey}" onerror="this.style.display='none'"/>
@@ -24882,7 +24929,7 @@ function deCollideLabels363(){
   const _isSettle391 = !!deCollideLabels363._inSettle391;
   deCollideLabels363._inSettle391 = false;
   try{
-    const els = Array.from(document.querySelectorAll(".map-names68 .mn68"))
+    const els = Array.from(document.querySelectorAll(".map-names68 .mn68, #map-districts97 .md97-venue99"))
       .filter(el=>el.style.display!=="none" && el.offsetParent!==null);
     if(els.length<1) return;
     const items = els.map(el=>({el, r:el.getBoundingClientRect()}));
@@ -24997,7 +25044,7 @@ function deCollideLabels363(){
               const loNewBot391 = loNewTop391 + (lo391.r.height || 18);
               const oxz391 = Math.min(lo391.r.right, zone391.right) - Math.max(lo391.r.left, zone391.left);
               if(oxz391 > -8 && loNewTop391 < zone391.bottom + 8 && loNewBot391 > zone391.top - 8){
-                const hiCur391 = parseFloat(hi391.el.style.top)||0;
+                const hiCur391 = (typeof map403CurTop==="function") ? map403CurTop(hi391.el) : (parseFloat(hi391.el.style.top)||0);
                 const hiNewTop391 = hiCur391 - d391;
                 const hiNewBot391 = hiNewTop391 + (hi391.r.height || 18);
                 const oxh391 = Math.min(hi391.r.right, zone391.right) - Math.max(hi391.r.left, zone391.left);
@@ -25010,7 +25057,7 @@ function deCollideLabels363(){
               }
             }
             if(!pushed391){
-              const cur = parseFloat(lo391.el.style.top)||0;
+              const cur = (typeof map403CurTop==="function") ? map403CurTop(lo391.el) : (parseFloat(lo391.el.style.top)||0);
               lo391.el.style.top = (cur + d391) + "px";
               lo391.r = lo391.el.getBoundingClientRect();
               moved = true;
@@ -25261,12 +25308,12 @@ function paintBar(){
   try{ paintPageHead363(); }catch(_e){}
   /* v20a397 UI397-1：日卡（map-hint）變高會縮短舞台，但 labels 未必即時重定位
      （paintBar 唔帶 drawMap 嘅路徑）——呢度即刻夾實一次，唔使等下次重畫。 */
-  try{ if(typeof clampMapLabels397==="function") clampMapLabels397(); }catch(_e){}
+  try{ if(typeof map403LabelsReady==="function" && map403LabelsReady() && typeof clampMapLabels397==="function") clampMapLabels397(); }catch(_e){}
   /* v20a402 UI402-4：夾實之後要再推一次障礙——clamp 唔識 zone，佢為咗籤同籤之間
      嘅 8px 間距會將標籤推返落 tag 區（禮品店 844：drawMap 收尾 20.2px 清晒，
      paintBar 呢個 clamp 一夾即變 34.884px，tag 仲疊 2.5px）。deCollide 係
      idempotent，收尾一定係 zone 推撞，唔會漂移。 */
-  try{ if(typeof deCollideLabels363==="function") deCollideLabels363(); }catch(_e402z3){}
+  try{ if(typeof map403LabelsReady==="function" && map403LabelsReady() && typeof deCollideLabels363==="function") deCollideLabels363(); }catch(_e402z3){}
 }
 
 let __storyMapRedrawT = null;
@@ -25391,29 +25438,55 @@ function map137ImgPctToStagePct(xPct, yPct, tr){
    窗向右移，左緣錨 11% 會跌出舞台）嗰陣夾返入舞台，唔好畀 label 俾 polaroid
    框邊切走（金龍茶餐廳／金禧大酒店 932 實測切字，見 NOTES）。縱向唔使夾
    （頂錨 ≥2%＋負 offset 落點 ≥9px，底錨＋offset 唔過 500px）。 */
+/* v20a403 UI403-1：靜態錨點常數（調查報告附錄 A；何生事務所 aoff -52→-42 解近距對）。
+   錨點永遠唔由 live style 擷取——推撞寫入嘅 px top 唔可以再變成「原始錨點」。 */
+const MAP403_ANCHORS = {
+  "獅子山製片":[56,19,-52], "香江唱片":[40,40,34], "星河電視台":[23,34,-44],
+  "九龍電視台":[42,30,-52], "海港廣播":[51,37,-52], "紅棉影業":[70,17,34],
+  "維港電影":[10,81,-52], "中環廣告":[40,63,30], "金鐘創意":[17,89,34],
+  "灣仔唱片":[56,83,34], "天星音樂":[70,81,-52], "金龍茶餐廳":[29,27,34],
+  "何生事務所":[29,84,-42], "廟街禮品":[24,16,-52], "仁康醫院":[86,78,34],
+  "花園街成衣店":[78,7,44], "阿偉屋企":[13,8,34], "尖沙咀海傍":[31,42,34],
+  "山頂":[90,63,34], "酒廊唱歌":[43,84,-52], "旺角戲院":[40,8,31],
+  "淺水灣":[85,96,-52], "啟德機場":[82,35,-52], "金禧大酒店":[86,24,30]
+};
+function map403AnchorFor(el){
+  try{
+    const t = (el && el.textContent || "").trim();
+    const a = MAP403_ANCHORS[t];
+    if(!a) return null;
+    const ax = Number(a[0]), ay = Number(a[1]), aoff = Number(a[2]) || 0;
+    if(!(ax>=0 && ax<=100 && ay>=0 && ay<=100 && aoff>=-80 && aoff<=80)) return null;
+    return { ax, ay, aoff };
+  }catch(_e){ return null; }
+}
+function map403LabelsReady(){
+  try{
+    const vm = document.getElementById("v-map");
+    if(!vm || !vm.classList.contains("on")) return false;
+    return !!document.querySelector(".map-names68 .mn68[data-map403positioned='1']");
+  }catch(_e){ return false; }
+}
+function map403CurTop(el){
+  try{ if(el && typeof el.offsetTop==="number") return el.offsetTop; }catch(_e){}
+  return parseFloat(el && el.style && el.style.top) || 0;
+}
 function positionMapLabels137(){
   try{
     const tr = map137CoverTransform();
     document.querySelectorAll(".map-names68 .mn68, #map-districts97 .md97-venue99").forEach(el=>{
-      if(el.dataset.map137orig === undefined){
-        el.dataset.map137orig = el.getAttribute("style") || "";
-        const st = el.style;
-        const ax = parseFloat(st.left) || 0;
-        let ay = 0, aoff = 0;
-        const top = (st.top || "").trim();
-        const m = top.match(/([\d.]+)%\s*([+-]\s*[\d.]+)px/);
-        if(m){ ay = parseFloat(m[1]); aoff = parseFloat(m[2].replace(/\s/g, "")) || 0; }
-        else { ay = parseFloat(top) || 0; }
-        el.dataset.map137ax = String(ax); el.dataset.map137ay = String(ay); el.dataset.map137aoff = String(aoff);
-      }
-      if(!tr){ el.setAttribute("style", el.dataset.map137orig); return; }
-      const ax = parseFloat(el.dataset.map137ax), ay = parseFloat(el.dataset.map137ay), aoff = parseFloat(el.dataset.map137aoff) || 0;
-      const p = map137ImgPctToStagePct(ax, ay, tr);
+      const a403 = map403AnchorFor(el);
+      if(!a403) return; /* 冇靜態錨點：唔用 live style 猜，跳過 */
+      el.dataset.map137orig = "left:" + a403.ax + "%;top:calc(" + a403.ay + "% " + (a403.aoff<0?"-":"+ ") + Math.abs(a403.aoff) + "px)";
+      el.dataset.map137ax = String(a403.ax); el.dataset.map137ay = String(a403.ay); el.dataset.map137aoff = String(a403.aoff);
+      if(!tr){ el.style.left = a403.ax + "%"; el.style.top = "calc(" + a403.ay + "% " + (a403.aoff<0?"-":"+ ") + Math.abs(a403.aoff) + "px)"; el.dataset.map403positioned = "1"; return; }
+      const p = map137ImgPctToStagePct(a403.ax, a403.ay, tr);
       let lx = p.x / 100 * tr.W;
       const w137 = el.offsetWidth || 0;
       if(w137 > 0){ lx = Math.max(w137 / 2 + 2, Math.min(lx, tr.W - w137 / 2 - 2)); }
       el.style.left = lx + "px";
-      el.style.top = ((p.y / 100 * tr.H) + aoff) + "px";
+      el.style.top = ((p.y / 100 * tr.H) + a403.aoff) + "px";
+      el.dataset.map403positioned = "1";
     });
     /* v20a397 UI397-1：定位完即夾實（見 clampMapLabels397）。 */
     try{ if(typeof clampMapLabels397==="function") clampMapLabels397(); }catch(_e){}
@@ -25461,14 +25534,14 @@ function clampMapLabels397(){
       for(let i=0;i<els.length;i++){
         const over = rects[i].bottom - stageBottom;
         if(over > 0.5){
-          const cur = parseFloat(els[i].style.top) || 0;
+          const cur = (typeof map403CurTop==="function") ? map403CurTop(els[i]) : (parseFloat(els[i].style.top) || 0);
           els[i].style.top = (cur - over) + 'px';
           any = true; moved++;
         } else {
           /* v20a398：頂邊出可見帶（矮屏舞台頂伸出 polaroid 之外）向下夾返入嚟。 */
           const under = stageTop - rects[i].top;
           if(under > 0.5){
-            const cur = parseFloat(els[i].style.top) || 0;
+            const cur = (typeof map403CurTop==="function") ? map403CurTop(els[i]) : (parseFloat(els[i].style.top) || 0);
             els[i].style.top = (cur + under) + 'px';
             any = true; moved++;
           }
@@ -25486,7 +25559,7 @@ function clampMapLabels397(){
         const upper = (lower===j) ? i : j;
         const lr = rects[lower], ur = rects[upper];
         const need = GAP - gap;
-        const cur = parseFloat(els[lower].style.top) || 0;
+        const cur = (typeof map403CurTop==="function") ? map403CurTop(els[lower]) : (parseFloat(els[lower].style.top) || 0);
         if(lr.bottom + need <= stageBottom){
           els[lower].style.top = (cur + need) + 'px';
         }else{
@@ -25781,6 +25854,56 @@ function hideMapLabelsUnderModal402(){
 function restoreMapLabels402(){
   try{ document.querySelectorAll(".mn-hidden402").forEach(el=>el.classList.remove("mn-hidden402")); }catch(_e402){}
 }
+
+/* v20a403 UI403-2/3：捲動邊界對齊——捲到底嗰陣頂沿對齊段落邊界（唔切半行）；
+   頒獎結果卡首屏摺位放行與行之間＋紙邊「下接」提示（捲到底收起）。 */
+function align403ScrollEdges(root){
+  try{
+    if(!root || root.scrollHeight <= root.clientHeight + 2) return;
+    const blocks = Array.from(root.querySelectorAll("p,h3,h4,li,.cn-sum-row,.gig-teaser,.debt-row,.result-line,.np214-short,.cn-req-cell,.cn-kv,.cn-kv-top,.cn-wd-sub,.cn-chance378,.notice_synopsis_frame,.cn-lab,.cn-pills,.cn-stars-role30v2")).filter(el=>el.offsetParent!==null || el===root.firstElementChild);
+    if(!blocks.length) return;
+    const rr = root.getBoundingClientRect();
+    const tops = blocks.flatMap(el=>{ const r = el.getBoundingClientRect(); return [(r.top - rr.top) + root.scrollTop, (r.bottom - rr.top) + root.scrollTop]; }).filter(v=>v>4).sort((a,b)=>a-b);
+    if(!tops.length) return;
+    const maxScroll = root.scrollHeight - root.clientHeight;
+    let next = tops.find(v=>v > maxScroll + 1);
+    if(next == null) return;
+    const add = Math.min(120, next - maxScroll);
+    if(add > 1){
+      const cur = parseFloat(getComputedStyle(root).paddingBottom) || 0;
+      root.style.setProperty("padding-bottom", (cur + add) + "px", "important");
+    }
+  }catch(_e403){}
+}
+function awd403FoldAndHint(){
+  try{
+    const mi = document.getElementById("modal-inner");
+    if(!mi) return;
+    const sheet = mi.querySelector(".awd-result396");
+    if(!sheet) return;
+    if(!document.querySelector("#modal-btns .awd-next403")){
+      const hint = document.createElement("span");
+      hint.className = "awd-next403"; hint.setAttribute("aria-hidden","true"); hint.textContent = "下接 ↓";
+      const row403 = document.getElementById("modal-btns");
+      if(row403) row403.insertBefore(hint, row403.firstChild);
+      const upd = ()=>{ try{ hint.hidden = !(mi.scrollHeight > mi.clientHeight + 4) || (mi.scrollTop + mi.clientHeight >= mi.scrollHeight - 4); }catch(_e){} };
+      mi.addEventListener("scroll", upd, { passive:true });
+      upd();
+    }
+    /* 首屏摺位：底邊切中邊個 block，就將紙下移至摺位落喺 block 頂（行與行之間）。 */
+    const rr = mi.getBoundingClientRect();
+    const fold = rr.bottom;
+    const blocks = Array.from(sheet.querySelectorAll("p,h4,.np214-short,.np214-caption,.np214-factbox")).filter(el=>el.offsetParent!==null);
+    for(const el of blocks){
+      const r = el.getBoundingClientRect();
+      if(r.top < fold - 1 && r.bottom > fold + 1){
+        const shift = Math.min(32, fold - r.top);
+        if(shift > 1) sheet.style.marginTop = shift + "px";
+        break;
+      }
+    }
+  }catch(_e403){}
+}
 function modal(html, buttons, opts){
   opts=opts||{};
   _modalGen++;
@@ -25856,6 +25979,7 @@ function modal(html, buttons, opts){
   }catch(_e){}
   // Prevent focus/layout from scrolling map-wrap under the phone frame
   restoreMapScroll();
+  try{ const _al403=()=>{ try{ awd403FoldAndHint(); }catch(_e){} try{ align403ScrollEdges(document.getElementById("modal-inner")); }catch(_e){} try{ const nb=document.querySelector("#modal-inner .notice_sheet_body"); if(nb) align403ScrollEdges(nb); }catch(_e){} }; requestAnimationFrame(_al403); setTimeout(_al403, 700); }catch(_e403){}
 }
 function closeModal(){
   /* v20a122 AUD91FIX H1 保底：任何關 modal 嘅路都清晨報旗，免卡死吞鏈。 */
@@ -32215,6 +32339,7 @@ function renderStats389Pane(){
 }
 
 function syncHomeTabExit(tab){
+  try{ requestAnimationFrame(()=>{ try{ document.querySelectorAll("#v-home .journal-scroll, #v-home .notebook").forEach(el=>{ if(el.offsetParent!==null && typeof align403ScrollEdges==="function") align403ScrollEdges(el); }); }catch(_e403){} }); }catch(_e403){}
 /* v20a70 BOOK70：手帳恆常出口——任何大類／子頁／日子狀態都顯示，標籤恆定「返回地圖」。
      舊制（v19z 共用掣）根因：journal 頁出口要 #home-back-map 可見（srcShown）先出；
      排程可編輯嗰陣 #home-back-map 隱藏 → 成個手帳冇任何出口；強制／soft 日出口仲會
@@ -49435,7 +49560,7 @@ function chk101EnsureCss(){
 .chk101 .ck-payee{left:7%;top:32.5%;font-size:1.08rem;font-weight:700;letter-spacing:.35em}
 .chk101 .ck-words{left:7%;top:53.5%;font-size:.92rem;letter-spacing:.06em}
 .chk101 .ck-amt{left:70%;top:50%;width:24.5%;height:11%;display:flex;align-items:center;justify-content:center;font-size:1.12rem;font-weight:700}
-.chk101 .ck-memo{left:6%;top:84%;width:25%;text-align:center;font-size:.62rem;color:#5a5340;letter-spacing:.2em}
+.chk101 .ck-memo{left:6%;top:80.5%;line-height:1;width:25%;text-align:center;font-size:.62rem;color:#5a5340;letter-spacing:.2em}
 /* v20a402 UI402-2：memo 細字由 86.3% 上移至 84%——實測字底 698 掂 memo 格底線（約 91% 圖高），
    上移後字底約 89.5%，收喺格內；.chk101 加左右 6px 紙邊，支票唔再貼卡邊。 */
 /* v20a218 D-v189B1：日結板支票改細——舊版全闊 231px 高，932 見 42–52%、700 見 16–17%，第一屏淨係見到頂條。
@@ -51411,9 +51536,9 @@ document.getElementById("menu").onclick=e=>{
   if(m==="new")startNew();
 };
 document.getElementById("mask").addEventListener("click",e=>{
-  if(e.target.id!=="mask") return;
-  // Tutorial / tut toast: outside tap does not close (防誤觸)
-  if(_tut && _tut.blocking) return;
+  if(e.target.id!=="mask" && e.target.id!=="modal") return;
+  // Tutorial / tut toast: outside tap does not close (防誤觸)；通告欄除外（v403：暗角要閂到）
+  if(_tut && _tut.blocking && !(e.currentTarget && e.currentTarget.classList && e.currentTarget.classList.contains("board-tall392"))) return;
   const fn=_modalDismiss;
   _modalDismiss=null;
   closeModal();

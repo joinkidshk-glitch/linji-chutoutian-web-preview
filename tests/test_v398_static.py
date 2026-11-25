@@ -82,9 +82,16 @@ ok("v398 裁橫額 CSS（鎖 520/550、貼底，燕尾服／獎座留低）",
 ok("v398 awi 相深裁（橫額文字底 ~150px，520/550 裁唔清，inline 520/500）",
    "p.key === 'np214_award_awi'" in src
    and 'style="aspect-ratio:520/500"' in src)
-ok("v398 結果卡捲動區底 26px 淡出（摺位切字變未完待續）",
-   "#modal-inner:has(.awd-result396){" in src
-   and "calc(100% - 26px),transparent 100%)" in src)
+# v403 UI403-3（第十輪裁決改 fade）：26px mask 拆走，改紙邊「下接」提示；
+# 驗證改為「唔洗字、唔露半截字」嘅結構條件（mask 不存在＋下接提示＋紙底留白保留）。
+ok("v403 結果卡拆 26px mask（首屏唔洗字）",
+   "calc(100% - 26px),transparent 100%)" not in src
+   and "mask-image:linear-gradient(180deg,#000 calc(100% - 26px)" not in src)
+ok("v403 結果卡紙邊下接提示＋紙底留白保留（捲到底完整）",
+   "awd-next403" in src and "下接" in src
+   and ".paper-sheet.awd-result396{ padding-bottom:32px; }" in src)
+ok("v403 晨報不變（下接提示只限結果卡）",
+   "awd403FoldAndHint" in src and '.awd-result396' in src)
 ok("v398 金碟夜相本身唔郁（音樂典禮照用原相）",
    'np214_award_awi: "assets/story/newspaper/photo_awi_ceremony.webp"' in src)
 

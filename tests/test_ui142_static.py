@@ -66,7 +66,7 @@ UNCHANGED = {
     '金鐘創意': 'left:17%;top:calc(89% + 34px)',
     '灣仔唱片': 'left:56%;top:calc(83% + 34px)',
     '天星音樂': 'left:70%;top:calc(81% - 52px)',
-    '何生事務所': 'left:29%;top:calc(84% - 52px)',
+    '何生事務所': 'left:29%;top:calc(84% - 42px)',  # v403：同維港電影近距對解開（調查報告 §6⑥，offset -52→-42）
     '仁康醫院': 'left:86%;top:calc(78% + 34px)',
 }
 for name, want in UNCHANGED.items():
