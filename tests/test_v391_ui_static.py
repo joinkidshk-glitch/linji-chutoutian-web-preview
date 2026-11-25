@@ -48,7 +48,8 @@ ok("reconfirm 內文色 #3a2e22", ".reconfirm236 p," in blk and "#3a2e22" in blk
 ok("reconfirm 內文對比 ≥7:1", contrast("#3a2e22", "#F2EBD8") >= 7)
 ok("reconfirm 掣欄用紙底＋安全區", "calc(10px + env(safe-area-inset-bottom,0px))" in blk)
 # 「確定」金掣唔郁：原金漸變規則仲喺度，v391 區塊冇改佢背景
-ok("確定金掣原規則仲喺度", src.count("linear-gradient(180deg,#E6D2A8,#C9A227)") >= 1)
+# v401 UI401-3：共用金掣漸變改實色金（殺「繼續」疊影浮雕；底色 #C9A227／墨邊／深色字唔變，掣字對比 7.54:1）——漸變字串已刪，改釘實色金在位
+ok("確定金掣原規則仲喺度", "background:#C9A227 !important" in src and src.count("linear-gradient(180deg,#E6D2A8,#C9A227)") == 0)
 ok("v391 區塊冇改確定掣背景", "reconfirm236" not in blk.split("#modal-btns{")[1].split("}")[0]
    if "#modal-btns{" in blk else True)
 

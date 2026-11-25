@@ -115,7 +115,7 @@ ok("v398 計法本身唔郁（$378×86.3%÷4→$82）",
 
 # ---- (5) 日結卡場景唔一致＋黑 backdrop 家族 ----
 ok("v398 modal() 掛 scene398（keepScene397 → 共享漸變 dim）",
-   'maskEl.classList.toggle("scene398", !!opts.keepScene397);' in src
+   'maskEl.classList.toggle("scene398", !!(opts.keepScene397 || scene401));' in src  # v401 UI401-1：scenePaper401 同樣掛 scene398，keepScene397 觸發不變
    and 'classList.remove("scene398")' in src)
 ok("v398 scene398 用 v396 日結漸變（頂 .10／底 .42）",
    "#mask.scene398{" in src

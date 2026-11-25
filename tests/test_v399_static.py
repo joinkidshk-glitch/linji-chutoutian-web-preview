@@ -66,7 +66,7 @@ ok("v399 試鏡卡標題加「・等消息」，唔再令人誤解為已出結�
    and "<h3>試鏡完畢 ${gig.title}</h3>" not in src)
 ok("v399 試鏡卡仍係同一隻掣＋同一條 cont 路（唔改流程）",
    '{label: ended?"回家結算":"繼續", role:"p", on:cont}' in _aud
-   and "{onDismiss: cont, keepScene397:true}" in _aud)
+   and "{onDismiss: cont, keepScene397:true, scenePaper401:true}" in _aud)  # v401 UI401-1：只加紙卡 opt，掣＋cont 路唔郁
 
 # ---- (3) 教學聚光燈圈埋鄰居 ----
 ok("v399 撞圈標籤暫隱＋目標標籤浮貼 helper 在位",
@@ -77,7 +77,8 @@ ok("v399 撞圈標籤暫隱＋目標標籤浮貼 helper 在位",
    and ".tut-label-hide399{ visibility:hidden; }" in src)
 ok("v399 金圈定位後即避圈（refresh 內調 update，離開 step 1 即還原）",
    "updateTutLabels399({left: pr.left - pad" in src
-   and 'if(!on){ ring.style.display = "none"; try{ restoreTutLabels399(); }catch(_e){} return; }' in src
+   and 'if(!on){ ring.style.display = "none"; try{ restoreTutLabels399(); }catch(_e){}' in src  # v401 UI401-2：同一分支加清遮罩挖空，收圈＋還原標籤不變
+   and 'mask.classList.remove("tut-hole401")' in src
    and "restoreTutLabels399();" in seg("function clearTutSpotlight(){", "function applyTutSpotlight("))
 ok("v399 浮貼目標標籤上移 12px＋z 521 蓋過遮罩（原標籤同時隱藏）",
    'clone.style.top = (tr.top - appRect.top - 12) + "px";' in src

@@ -78,7 +78,7 @@ ok("v397 鎖定摘要移去可接清單最尾（唔再插斷）",
 # ---- (4) 40／27／86 家族 ----
 ok("v397 日結卡 scene 模式（場景留低、掣收起）",
    "keepScene397" in src and "dayres-scene397" in src
-   and "setUnderlyingInert(true, !!opts.keepScene397)" in src
+   and "setUnderlyingInert(true, !!(opts.keepScene397 || scene401))" in src  # v401 UI401-1：scenePaper401 同樣留場景，keepScene397 觸發不變
    and "#app.dayres-scene397 #map-pins," in src)
 ok("v397 日結漸變放淺（.10／.42）",
    "linear-gradient(180deg, rgba(0,0,0,.10) 0, rgba(0,0,0,.10) 48px, rgba(0,0,0,.42) 48px) !important" in src)

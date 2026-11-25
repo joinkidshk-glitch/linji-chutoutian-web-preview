@@ -989,12 +989,16 @@ canvas.awd62-canvas{display:block;width:100%;height:auto;image-rendering:pixelat
 }
 
 /* Physical primary buttons — deeper ink border + gold, less CSS-pill */
+/* v20a401 UI401-3：「繼續」掣字疊影——金漸變＋inset 高光造成浮雕重影感；改實色金、
+   清走 inset 高光＋掣字陰影，改深色實字（#1A1410 實色金 #C9A227 對比度約 7:1，≥4.5:1）。
+   共用樣式：全站 .p 金掣一併清走（43b／43c 等消息卡同其他卡同一支樣式）。 */
 button.p, .start button.p, .gig-actions button.p, .nb-actions button.ink{
-  background:linear-gradient(180deg,#E6D2A8,#C9A227) !important;
+  background:#C9A227 !important;
   color:var(--ink) !important;
   border:2px solid var(--ink) !important;
   border-radius:10px !important;
-  box-shadow:0 3px 0 #6B5340, inset 0 1px 0 rgba(242,235,216,.55) !important;
+  box-shadow:0 2px 0 #6B5340 !important;
+  text-shadow:none !important;
 }
 button.g, .start button.g{
   border-radius:10px !important;
@@ -7075,6 +7079,154 @@ body.day-res-open .day-row{
 .awd63-card:not(.show).win::after{ display:none; }
 .awd63-cards.on .awd63-card:not(.show){ opacity:.38; transform:none; }
 /* ===== v392 UI392 完 ===== */
+
+/* ===== v20a401 UI401（第八輪 GPT 頭五項）=====
+   (1) scene-paper401：電話／醫院／教學完結／等消息卡共用實物卡語言——mask 用
+       scene398 漸變 dim（經 modal opts.scenePaper401 掛 scene398，唔再純黑），卡改
+       細圓角紙品＋膠紙貼＋啞面票籤掣，唔再係純黑＋大圓角 bottom-sheet。其他 modal
+       （通告詳情、確認 modal 等）唔掛呢個 class，一律唔郁。
+   (2) 教學：遮罩挖空金圈＋頂欄同步降亮；教學期間隱去地圖提示列／圖例（卡邊半截字）；
+       教學卡改窄紙條，「下一步」做右下頁籤（降飽和），「跳過教學」降為卡內次要文字掣。
+   (3) 金掣「繼續」疊影：見 L993 共用 button.p 規則（改實色金＋清陰影／浮雕）。
+   (4) 35c：小檔案改剪報旁註（只限 .awd-result396，晨報渲染器唔郁）。
+   (5) 通告欄：整理選單改側邊紙籤拉出嘅小型索引紙（紅筆剔號）；詳情合約紙＋手寫
+       計算備註＋陣容捲底留白。 */
+/* (1) 場景實物卡 */
+#mask.tut-on.scene-paper401{ background:linear-gradient(180deg, rgba(0,0,0,.10) 0, rgba(0,0,0,.10) 48px, rgba(0,0,0,.42) 48px) !important; }
+#mask.scene-paper401 .modal{
+  border-radius:8px !important; border:1px solid #a98d4f !important;
+  background:linear-gradient(180deg,#fbf4dd,#f3e6c8) !important;
+  box-shadow:0 10px 28px rgba(0,0,0,.45) !important;
+}
+#mask.scene-paper401 .modal::before{
+  content:""; display:block; width:72px; height:12px; margin:2px auto 8px; flex:0 0 auto;
+  background:rgba(232,214,170,.9); border:1px solid rgba(107,83,64,.25);
+  transform:rotate(-1deg);
+}
+#mask.scene-paper401 #modal-btns{ background:transparent !important; border-top:0 !important; box-shadow:none !important; padding:8px 0 2px !important; }
+#mask.scene-paper401 #modal-btns button.p{
+  background:#d8c49a !important; color:#1A1410 !important; border:1px solid rgba(60,40,20,.4) !important;
+  box-shadow:0 2px 0 rgba(107,83,64,.4) !important; text-shadow:none !important; border-radius:8px !important;
+}
+#mask.scene-paper401 #modal-btns button.g{
+  background:#fbf4dd !important; color:#1A1410 !important; border:1px solid rgba(60,40,20,.4) !important;
+  box-shadow:0 2px 0 rgba(107,83,64,.25) !important; text-shadow:none !important; border-radius:8px !important;
+}
+/* (2) 教學遮罩：全幅均勻 dim（頂欄同步降亮，唔再留頂欄光）；有金圈嗰陣挖空圈內 */
+#mask.tut-on{ background:rgba(0,0,0,.78) !important; }
+#mask.tut-on.tut-hole401{
+  background:radial-gradient(circle var(--tut-hole-r,46px) at var(--tut-hole-x,50%) var(--tut-hole-y,50%), rgba(0,0,0,0) 0, rgba(0,0,0,0) calc(var(--tut-hole-r,46px) - 6px), rgba(0,0,0,.78) var(--tut-hole-r,46px)) !important;
+}
+/* 教學期間隱去卡邊背景字：地圖提示列＋圖例（離開教學即還原，class 由 setTutMask 加／除） */
+#app.tut-stage397 .map-hint, #app.tut-stage397 .map-legend{ display:none !important; }
+/* 教學卡改窄紙條：modal 本身收窄，卡＋掣同一紙面 */
+#mask.tut-on .modal:has(.tut-card){
+  width:min(330px,calc(100% - 32px)) !important;
+  background:var(--cream,#f3ead7) !important;
+  border:1px solid rgba(60,40,20,.18) !important;
+  border-radius:14px !important;
+  box-shadow:0 8px 24px rgba(0,0,0,.25) !important;
+  padding:12px 12px 10px !important;
+}
+#mask.tut-on .modal:has(.tut-card) .tut-card{
+  background:transparent !important; border:0 !important; box-shadow:none !important; padding:0 !important;
+}
+#mask.tut-on #modal-btns{
+  background:transparent !important; border-top:0 !important; box-shadow:none !important;
+  padding:8px 0 0 !important; margin-top:0 !important;
+  flex-direction:row !important; flex-wrap:wrap !important;
+  justify-content:flex-end !important; align-items:center !important; gap:4px 12px !important;
+}
+/* 「下一步」做右下頁籤：降飽和啞金，唔再同金圈爭焦 */
+#mask.tut-on #modal-btns button.p{
+  order:2 !important; flex:0 0 auto !important; width:auto !important; min-width:0 !important;
+  min-height:40px !important; padding:8px 18px !important; font-size:.9rem !important;
+  background:#d8c49a !important; color:#1A1410 !important; border:1px solid rgba(60,40,20,.35) !important;
+  box-shadow:none !important; text-shadow:none !important; border-radius:8px !important;
+}
+/* 「跳過教學」降為卡內次要文字掣（左置，同列） */
+#mask.tut-on #modal-btns button.tut-skip,
+#mask.tut-on #modal-btns button.tut-skip-mini,
+#mask.tut-on #modal-btns button.tut-replay-step{
+  order:1 !important; flex:0 0 auto !important; width:auto !important; min-width:0 !important;
+  min-height:40px !important; padding:8px 6px !important; font-size:.8rem !important; font-weight:700 !important;
+  background:transparent !important; border:0 !important; box-shadow:none !important;
+  color:#6b4e2e !important; text-decoration:underline !important; text-underline-offset:3px !important;
+  border-radius:0 !important; white-space:nowrap !important;
+}
+#mask.tut-on #modal-btns button.tut-replay-step{ order:3 !important; }
+/* (4) 35c 小檔案改剪報旁註：去框、虛線頂欄、細字，只限頒獎結果紙（.awd-result396） */
+.awd-result396 .np214-factbox{
+  border:0 !important; border-bottom:0 !important; background:transparent !important;
+  box-shadow:none !important; float:none !important; width:auto !important;
+  margin:10px 0 4px !important; padding:6px 0 0 !important;
+  border-top:1px dashed rgba(107,83,64,.55) !important; border-radius:0 !important;
+  font-size:.8rem !important;
+}
+.awd-result396 .np214-factbox h4{
+  font-size:.78rem !important; letter-spacing:.08em !important; color:#6b4e2e !important;
+  border-bottom:0 !important; margin:0 0 4px !important; padding:0 !important;
+}
+.awd-result396 .np214-factbox .np214-row{ margin-bottom:2px !important; }
+.awd-result396 .np214-factbox .np214-row b{ color:#6b4e2e !important; font-weight:700 !important; }
+/* (4) 35c 第二版小標：奪獎行降做主標下面嘅小標（次級大細、深棕粗體） */
+.np214-subhead401{ font-size:.95rem !important; font-weight:700 !important; color:#6b4e2e !important; margin:2px 0 6px !important; line-height:1.35 !important; }
+/* (5) 通告欄整理選單：側邊紙籤拉出嘅小型索引紙——紙底＋微斜＋紙影，唔再係大片空白底板；
+   選項改文字行（唔再係等寬膠囊掣），選中用紅筆剔號。原 .board-menu397 規則（200px 闊）保留，
+   呢度只係後加覆寫；DOM／class／data 屬性一字唔郁。 */
+.board-menu397{
+  background:linear-gradient(100deg,#fff6dc,#f9edca 75%,#ead8ad) !important;
+  border:1px solid #a98d4f !important; border-radius:4px !important;
+  box-shadow:1px 3px 8px rgba(70,50,30,.3) !important;
+  padding:6px 10px 8px !important; transform:rotate(-.6deg) !important;
+  margin-top:2px !important;
+}
+.board-menu397 .board-chip392{
+  width:100% !important; text-align:left !important;
+  background:transparent !important; border:0 !important; border-radius:0 !important;
+  box-shadow:none !important; padding:3px 2px 3px 20px !important;
+  min-height:30px !important; font-size:.82rem !important; font-weight:700 !important;
+  color:#3a2e22 !important; position:relative !important;
+}
+.board-menu397 .board-chip392::before{
+  content:""; position:absolute; left:2px; top:50%; transform:translateY(-50%);
+  width:14px; height:14px; border:1.5px solid rgba(107,83,64,.4); border-radius:2px;
+  box-sizing:border-box;
+}
+.board-menu397 .board-chip392.on{ background:transparent !important; color:#1A1410 !important; font-weight:800 !important; }
+.board-menu397 .board-chip392.on::before{ border-color:#B3261E !important; }
+.board-menu397 .board-chip392.on::after{
+  content:"✓"; position:absolute; left:2px; top:50%; transform:translateY(-50%);
+  width:14px; height:14px; line-height:14px; text-align:center;
+  color:#B3261E !important; font-size:13px !important; font-weight:900 !important;
+}
+.board-menu397 .board-menu-group397{ margin-top:6px !important; padding-left:2px !important; }
+/* (5) 詳情合約紙：片酬／簽約金／違約金三行併做一張實物合約紙 */
+.cn-contract401{
+  background:linear-gradient(100deg,#fff6dc,#f9edca 75%,#ead8ad);
+  border:1px solid #a98d4f; border-radius:4px;
+  box-shadow:1px 2px 6px rgba(70,50,30,.25);
+  padding:8px 12px 10px; margin:8px 0 4px; position:relative;
+}
+.cn-contract401::before{
+  content:"合約"; position:absolute; top:-9px; right:10px;
+  background:#B3261E; color:#fff8e1; font-size:.66rem; font-weight:900; letter-spacing:.14em;
+  padding:1px 8px; border-radius:2px; transform:rotate(-2deg);
+}
+.cn-contract401 .cn-sum-row{ border-bottom:1px dashed rgba(107,83,64,.3) !important; padding:3px 0 !important; }
+.cn-contract401 .cn-sum-row:last-child{ border-bottom:0 !important; }
+/* (5) 預期日薪算式降為手寫式計算備註 */
+.board-calc397{
+  font-family:var(--hand363,"LXGW WenKai","Kaiti TC",serif) !important;
+  font-size:.82rem !important; color:#6b4e2e !important; line-height:1.5 !important;
+  background:transparent !important; border:0 !important;
+  border-left:2px solid rgba(107,83,64,.35) !important;
+  padding:2px 0 2px 8px !important; margin:8px 0 0 !important;
+}
+/* (5) 詳情頁捲底留白：確保已公布陣容最後一行可完整捲出（唔再貼住掣欄半截）。
+   舊規則（L5716，12px）係 #mask.casting-sheet-on … specificity (1,3,0)，呢條同級後出先贏。 */
+#mask.casting-sheet-on .notice_sheet_frame.cn-paper30v2 .notice_sheet_body{ padding-bottom:28px !important; }
+/* ===== v20a401 UI401 完 ===== */
 </style>
 </head>
 <body>
@@ -15677,7 +15829,7 @@ function hosp96TreatGate(id){
       modal(`<h3>病到燶</h3>
         <p>你燒到成身滾，醫生紙寫明仲要唞 ${saved} 日先好返——嗰幾日嘅行程，全部要作廢。</p>
         <p class="sub">仁康醫院急症室有吊針同特效藥，$${fee} 可以聽日就好返；不過你而家得 $${(Number(S.money)||0).toLocaleString()}，唔夠畀。唯有留喺屋企，慢慢唞。</p>`,
-        [{ label:"留喺屋企休養", role:"p", on:doResolve }], { onDismiss:doResolve });
+        [{ label:"留喺屋企休養", role:"p", on:doResolve }], { onDismiss:doResolve, scenePaper401:true }); /* v20a401 UI401-1：醫院唔夠錢版診症紙＋場景 dim */
       return true;
     }
     modal(`<h3>病到燶——去唔去醫院？</h3>
@@ -15686,7 +15838,7 @@ function hosp96TreatGate(id){
       [
         { label:`去醫院治療（−$${fee}）`, role:"p", on:()=>{
           /* v20a236 RECONFIRM236：治療先確認後扣 $600＋改寫病程（首個選擇 modal 本身係抉擇屏，呢度係確認一步）。 */
-          confirmChoice236({ choiceLabel: "去醫院治療", consequence: `即時扣款 $${fee}，病程將於今日完結，慳返 ${saved} 日病假。`,
+          confirmChoice236({ choiceLabel: "去醫院治療", consequence: `即時扣款 $${fee}，病程將於今日完結，慳返 ${saved} 日病假。`, scenePaper401:true, /* v20a401 UI401-1：醫院確認卡（46b）同樣收據紙＋場景 dim；confirmChoice236 只喺傳入嗰陣先掛，唔郁其他確認 modal */
             onConfirm: ()=>{
               S.money = (Number(S.money)||0) - fee;
               c.sick.hosp96Treated = true;
@@ -15699,7 +15851,7 @@ function hosp96TreatGate(id){
             onCancel: ()=>{ hosp96TreatGate(id); } });
         } },
         { label:"留喺屋企休養", role:"g", on:doResolve }
-      ], { onDismiss:doResolve });
+      ], { onDismiss:doResolve, scenePaper401:true }); /* v20a401 UI401-1：醫院 offer 診症紙＋場景 dim */
     return true;
   }catch(_e){ return false; }
 }
@@ -19078,7 +19230,7 @@ function conseq61ResolveSickDay(id){
         const cont = ()=>{ if(ended){ try{ enterHome(summary, true); }catch(_e){} } else { try{ runScheduleFromToday(); }catch(_e){} } };
         /* v20a397 UI397-4 86c：call-site 唔再加金句（flushWeekAccelSummary 自己加印章），免重複兩行。 */
         try{ flushWeekAccelSummary(title, formatResultNotes(notes), ended, summary, cont); }
-        catch(_e){ afterDayModal(formatResultNotes(notes), title, null, ended, summary, { dayDone: dayDone, still374: "sick" }); }
+        catch(_e){ afterDayModal(formatResultNotes(notes), title, null, ended, summary, { dayDone: dayDone, still374: "sick", scenePaper401:true }); } /* v20a401 UI401-1：46d 病假日結卡實物紙卡（同 resolver 另一 afterDayModal 呼叫；45／45c 同路徑，一併受惠，內容數字唔郁） */
       } else {
         try{ syncDateChrome(); }catch(_e){}
         try{ saveQ(); }catch(_e){}
@@ -19086,7 +19238,7 @@ function conseq61ResolveSickDay(id){
       }
       return true;
     }
-    afterDayModal(formatResultNotes(notes), title, null, ended, summary, { dayDone: dayDone, still374: "sick" });
+    afterDayModal(formatResultNotes(notes), title, null, ended, summary, { dayDone: dayDone, still374: "sick", scenePaper401:true }); /* v20a401 UI401-1：46d 病假日結卡實物紙卡 */
     return true;
   }catch(_e){ return false; }
 }
@@ -20449,9 +20601,11 @@ function castingNoticeDetailHtml(g){
       ${stateSub?`<p class="cn-board-sub">${stateSub}</p>`:""}
       ${starsRoleRow30v2}
       ${reqGridHtml}
+      <div class="cn-contract401">
       <div class="cn-sum-row"><span class="k">片酬</span><span class="v">${payStr}</span></div>
       <div class="cn-sum-row"><span class="k">簽約金</span><span class="v">${signFee108}</span></div>
       ${breachRow108}
+      </div>
       ${chanceRow378}
       ${tape383DetailRow383}
       ${intel381DetailRow384}
@@ -22196,7 +22350,7 @@ function confirmChoice236(opts){
     <p class="sub">確定後便會即時生效；如想更改，請返回重新選擇。</p></div>`,[
     {label:"返去揀過", role:"g", on:()=>{ if(typeof onCancel==="function") onCancel(); }},
     {label:"確定", role:"p", on:()=>{ if(typeof onConfirm==="function") onConfirm(); }}
-  ], { onDismiss:()=>{ if(typeof onCancel==="function") onCancel(); } });
+  ], { onDismiss:()=>{ if(typeof onCancel==="function") onCancel(); }, scenePaper401: !!opts.scenePaper401 }); /* v20a401 UI401-1：scenePaper401 只由呼叫方傳入（醫院 46b），預設唔掛 */
 }
 
 function tickDay(){
@@ -22279,7 +22433,7 @@ function afterDayModal(resultHtml, title, L, ended, summary, opts){
      玩家由地圖「開始今日行程」掣明確開始新一日。週結（ended）例外：dismiss 照去屋企結算
      （嗰步唔推進日期，係下週編排嘅入口）。底部「點擊外面＝⋯」細字一併刪走。 */
   const dismissFn = ended ? go : null;
-  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dayLine}${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}`, btns, {onDismiss: dismissFn, keepScene397:true});
+  modal(`<h3>${title}</h3>${dayEndNextLine202(ended)}${dayLine}${dropHtml}${fx102Html}${resultHtml}${extra}${liveHint}`, btns, {onDismiss: dismissFn, keepScene397:true, scenePaper401: !!opts.scenePaper401}); /* v20a401 UI401-1：病假日結（46d）經 opts 傳入先掛實物紙卡；其他日結卡唔傳，唔郁 */
   try{ armActFx102(); }catch(_fx102e){} /* v20a102 FX102 */
   try{ const m=document.getElementById("mask"); if(m) m.classList.add("day-res"); }catch(_e){}
   saveQ();
@@ -25503,13 +25657,17 @@ function modal(html, buttons, opts){
   maskEl.classList.toggle("awd-sheet-on", !!opts.awardSheet); /* v20a207 C3：結果卡先掛（presentAwardResult 傳 awardSheet:true） */
   maskEl.classList.toggle("board-tall392", !!opts.boardTall); /* v20a392 UI392 ③：通告欄長列表用高版 modal（92dvh），第一眼見到 5 張卡；closeModal 清除 */
   /* v20a398 UI398-5：日結家族 scene 模式——mask 掛 scene398，共享 v396 日結漸變 dim（頂 .10／底 .42），唔再一張有景一張全黑；closeModal 清除。 */
-  maskEl.classList.toggle("scene398", !!opts.keepScene397);
+  /* v20a401 UI401-1：opts.scenePaper401（電話／醫院／教學完結／等消息卡）同樣掛 scene398
+     漸變 dim＋mask 掛 scene-paper401（實物紙卡語言，見 v401 CSS）；closeModal 清除。 */
+  const scene401 = !!opts.scenePaper401;
+  maskEl.classList.toggle("scene398", !!(opts.keepScene397 || scene401));
+  maskEl.classList.toggle("scene-paper401", scene401);
   /* v20a47：opts.paperSheet → #mask.paper-on（報紙實物化情境 class，純呈現；closeModal 清除） */
   maskEl.classList.toggle("paper-on", !!opts.paperSheet);
   maskEl.classList.add("on");
   document.getElementById("app").classList.add("mask-up");
   try{ const sh=document.getElementById("loc-sheet"); if(sh) sh.classList.remove("sheet-live"); }catch(_e){}
-  try{ setUnderlyingInert(true, !!opts.keepScene397); }catch(_e){} /* v20a397 UI397-4：日結家族 keepScene397 → 場景留低做承托 */
+  try{ setUnderlyingInert(true, !!(opts.keepScene397 || scene401)); }catch(_e){} /* v20a397 UI397-4：日結家族 keepScene397 → 場景留低做承托；v20a401：scenePaper401 同樣留場景 */
   try{
     const firstBtn = row.querySelector("button");
     if(firstBtn && typeof firstBtn.focus==="function") setTimeout(()=>{ try{ firstBtn.focus({preventScroll:true}); }catch(_f){ try{ firstBtn.focus(); }catch(_g){} }
@@ -25527,6 +25685,7 @@ function closeModal(){
   try{ document.getElementById("mask").classList.remove("awd-sheet-on"); }catch(_e){} /* v20a207 C3 */
   try{ document.getElementById("mask").classList.remove("board-tall392"); }catch(_e){} /* v20a392 UI392 ③ */
   try{ document.getElementById("mask").classList.remove("scene398"); }catch(_e){} /* v20a398 UI398-5 */
+  try{ document.getElementById("mask").classList.remove("scene-paper401"); }catch(_e){} /* v20a401 UI401-1 */
   /* v19z3：清 story-play-on + 清空 #modal-inner，避免劇情結算 HTML／mask 殘留 */
   try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
   try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
@@ -30379,7 +30538,7 @@ function grant229DeliverOne(rec, step){
       if(typeof modal==="function"){
         modal(`<h3>何生來電</h3><p>何生打嚟：「${String(rec.reason||"有張通告派畀你。")}」</p><p><b>${gig.title||""}</b> · ${gig.type||""} · ${gig.roleLabel||""}</p>${moneyLine}<p class="gold">${defer392 ? "已獲聘——拍攝日留待下週再排，返手帳睇行程。" : "已獲聘——拍攝日已排進行程，返手帳睇行程，再開工。"}</p>${chkHtml}<p style="font-size:.75rem;color:var(--muted)">${(typeof fmtDate==="function")?fmtDate():""}</p>`,[
           {label:"好", role:"p", on:cont}
-        ], {onDismiss: cont});
+        ], {onDismiss: cont, scenePaper401:true}); /* v20a401 UI401-1：電話獲聘卡實物紙卡＋場景 dim */
       } else { cont(); }
       try{ if(typeof saveQ==="function") saveQ(); }catch(_s){}
     };
@@ -33201,8 +33360,13 @@ function renderPostShootRewardHtml(pack){
   pack = pack || {};
   const cards = Array.isArray(pack.cards) ? pack.cards : [];
   const dual = pack.dualDelta || {};
-  const dualLine = (dual.stageVolume || dual.industryCredit)
-    ? `<p class="psr-dual var-note">幕前聲望 ${dual.stageVolume?("+"+dual.stageVolume):""}${(dual.stageVolume&&dual.industryCredit)?" · ":""}${dual.industryCredit?("業內信用 +"+dual.industryCredit):""}</p>`
+  /* v20a401 UI401-4：加分歸屬——每項數值貼住對應屬性，冇加分嗰項唔列（舊寫法缺值嗰項
+     淨低個名冇數字，「幕前聲望 業內信用 +2」睇唔出 +2 屬邊項）；兩項齊嗰陣輸出同舊版逐字相同。 */
+  const dualParts401 = [];
+  if(dual.stageVolume) dualParts401.push("幕前聲望 +" + dual.stageVolume);
+  if(dual.industryCredit) dualParts401.push("業內信用 +" + dual.industryCredit);
+  const dualLine = dualParts401.length
+    ? `<p class="psr-dual var-note">${dualParts401.join(" · ")}</p>`
     : "";
   const cardsHtml = cards.map(c=>{
     const body = c.body ? `<p class="psr-body">${String(c.body)}</p>` : "";
@@ -34586,6 +34750,11 @@ function renderAwardResultHtml(pack){
   const metricLabel214 = String(pack.metricEchoLabel || pack.metricEcho || "");
   const hasMetric214 = !!(pack.metricEcho || pack.metricEchoLabel);
   const metricHead214 = winLine214 || playerWinLine214 || ((pack.displayName ? pack.displayName + "散場" : "頒獎夜散場"));
+  /* v20a401 UI401-4：圖文錯配——第二版主標由得主奪獎行改做「陳偉翔散場」（相係陳偉翔，
+     報道觀察對象係陳偉翔）；得主奪獎行降做小標（metricSub401）。玩家奪獎／冇得主嗰陣
+     沿用舊主標（metricHead214），唔郁。 */
+  const metricHead401 = (win149 && winLine214 && rep214) ? "陳偉翔散場" : metricHead214;
+  const metricSub401 = (win149 && winLine214 && rep214) ? winLine214 : "";
   const metricDek214 = (focusCat214 && focusCat214.line) ? String(focusCat214.line) : "";
   /* v20a397 UI397-2 35c：第二版雙焦——有得主嗰陣（入圍＋他人奪獎），導語唔再逐字重複
      第一版入圍段，改以散場鏡頭開場（得主行由主標講，呢度只講散場畫面＋入圍作品，
@@ -34596,7 +34765,7 @@ function renderAwardResultHtml(pack){
     ? ("散場時分，掌聲未散；憑《" + rep214 + "》入圍的陳偉翔在人群中離開會場。")
     : metricDek214;
   const metricLead397 = (win149 && winLine214 && rep214)
-    ? (winLine214 + "。散場報道的觀察對象，是憑《" + rep214 + "》入圍的陳偉翔")
+    ? ("散場報道的觀察對象，是憑《" + rep214 + "》入圍的陳偉翔") /* v20a401 UI401-4：奪獎行已升做小標（metricSub401），lead 唔再重複，淨低觀察對象句 */
     : (metricLabel214 + "——" + metricHead214);
   /* 典禮小檔案：只用遊戲已有真實資料（典禮／地點／得主／入圍），唔作新事實。行頭用「得獎／入圍」
      唔用獎項 label——舊測試計 label 只可以出一次（test_awards186／192），label 只喺內文行出。 */
@@ -34652,7 +34821,8 @@ function renderAwardResultHtml(pack){
   const page2 = hasMetric214 ? `<section class="np214-page" data-np214-page="2">
     ${masthead214("2")}
     <p class="np214-kicker">${esc214(metricLabel214 || "餘韻")}</p>
-    <h3 class="np214-headline2">${esc214(metricHead214)}</h3>
+    <h3 class="np214-headline2">${esc214(metricHead401)}</h3>
+    ${metricSub401 ? `<p class="np214-subhead401">${esc214(metricSub401)}</p>` : ""}
     ${metricDek397 ? `<p class="np214-dek">${esc214(metricDek397)}</p>` : ""}
     <div class="np214-layout"><div class="np214-maincol np214-clearfix">
       ${photoFigure214(photo2_214)}
@@ -34668,8 +34838,13 @@ function renderAwardResultHtml(pack){
     <div class="np214-switchrow"><button type="button" class="np214-switch" onclick="np214ShowPage(this,1)">← 第一版</button></div>
   </section>` : "";
   const dual = pack.rewardsApplied || {};
-  const dualLine = (dual.stageVolume || dual.industryCredit)
-    ? `<p class="psr-dual var-note">幕前聲望 ${dual.stageVolume?("+"+dual.stageVolume):""}${(dual.stageVolume&&dual.industryCredit)?" · ":""}${dual.industryCredit?("業內信用 +"+dual.industryCredit):""}</p>`
+  /* v20a401 UI401-4：加分歸屬——每項數值貼住對應屬性，冇加分嗰項唔列（舊寫法缺值嗰項
+     淨低個名冇數字，「幕前聲望 業內信用 +2」睇唔出 +2 屬邊項）；兩項齊嗰陣輸出同舊版逐字相同。 */
+  const dualParts401 = [];
+  if(dual.stageVolume) dualParts401.push("幕前聲望 +" + dual.stageVolume);
+  if(dual.industryCredit) dualParts401.push("業內信用 +" + dual.industryCredit);
+  const dualLine = dualParts401.length
+    ? `<p class="psr-dual var-note">${dualParts401.join(" · ")}</p>`
     : "";
   return `<div class="paper-sheet awd-result396" role="document" aria-label="頒獎結果">
   ${page1}
@@ -49146,7 +49321,7 @@ function aud91PresentOne(rec, next){
       /* 通告資料對唔返（理論上唔會發生）：簽約金已入帳，唔好卡住玩家 */
       modal(`<h3>何生來電</h3>${formatResultNotes(notes)}${chk101SignHtml}<p class="var-note">那張通告的資料對不上，拍攝安排要再與何生確認；簽約金照數入帳。</p>`,[
         {label:"好", role:"p", on:cont}
-      ], {onDismiss: cont});
+      ], {onDismiss: cont, scenePaper401:true}); /* v20a401 UI401-1：電話獲聘卡實物紙卡＋場景 dim */
       try{ saveQ(); }catch(_e){}
       return;
     }
@@ -49168,7 +49343,7 @@ function aud91PresentOne(rec, next){
         <p class="gold">${defer392 ? "已簽約——拍攝日留待下週再排，返回手帳查看行程。" : "已簽約——返回手帳查看行程，再開工。"}</p>
         <p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
         {label:"好", role:"p", on:go}
-      ], {onDismiss: go});
+      ], {onDismiss: go, scenePaper401:true}); /* v20a401 UI401-1：電話獲聘卡實物紙卡＋場景 dim */
       saveQ();
     };
     /* 拍攝日由公佈嗰刻起排，唔會早過公佈日（scheduleShoot 嘅 hiredAtDay＝今日） */
@@ -49195,7 +49370,7 @@ function aud91PresentOne(rec, next){
   }
   modal(`<h3>何生來電</h3><p><b>${rec.title}</b></p><p>何生打嚟：「嗰邊有回音喇——今次冇你份，唔使等喇。」</p>${formatResultNotes(notes)}${rivalTookHtml}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
     {label:"繼續", role:"p", on:cont}
-  ], {onDismiss: cont});
+  ], {onDismiss: cont, scenePaper401:true}); /* v20a401 UI401-1：電話落選卡實物紙卡＋場景 dim */
   saveQ();
 }
 
@@ -49494,7 +49669,7 @@ function doAudition(gig, L){
     ${ended?`<p class="dayres-stamp397">一週完結</p>`:""}
     <p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
     {label: ended?"回家結算":"繼續", role:"p", on:cont}
-  ], {onDismiss: cont, keepScene397:true}); /* v20a399 UI399-2：試鏡卡 scene 模式 */
+  ], {onDismiss: cont, keepScene397:true, scenePaper401:true}); /* v20a399 UI399-2：試鏡卡 scene 模式；v20a401 UI401-1：實物紙卡 */
   saveQ();
 }
 function rarityDot(r){
@@ -50276,7 +50451,7 @@ function refreshTutSpotlight398(){
     const mask = document.getElementById("mask");
     const stepId = (mask && mask.dataset.tutStep) || null;
     const on = !!(_tut && _tut.active && stepId==="TUT_MAP" && mask && mask.classList.contains("tut-on"));
-    if(!on){ ring.style.display = "none"; try{ restoreTutLabels399(); }catch(_e){} return; }
+    if(!on){ ring.style.display = "none"; try{ restoreTutLabels399(); }catch(_e){} try{ if(mask){ mask.classList.remove("tut-hole401"); mask.style.removeProperty("--tut-hole-x"); mask.style.removeProperty("--tut-hole-y"); mask.style.removeProperty("--tut-hole-r"); } }catch(_e2){} /* v20a401 UI401-2：唔係 TUT_MAP／教學完咗就清走遮罩挖空 */ return; }
     const pin = document.querySelector('.pin[data-loc="tvb_longmen"]') || document.querySelector(".pin:not(.dim)");
     if(!pin || pin.offsetParent===null){ ring.style.display = "none"; try{ restoreTutLabels399(); }catch(_e){} return; }
     /* drawMap 重建 pin 會洗走 class——每次補返（唔係 TUT_MAP 嗰陣唔郁其他步嘅光）。 */
@@ -50295,6 +50470,23 @@ function refreshTutSpotlight398(){
     ring.style.height = (pr.height + pad*2) + "px";
     /* v20a399 UI399-3：金圈定位後，暫隱撞圈嘅非目標標籤＋浮貼目標標籤（跟 pin 中心，唔移偏）。 */
     try{ updateTutLabels399({left: pr.left - pad, top: pr.top - pad, right: pr.right + pad, bottom: pr.bottom + pad}, ar); }catch(_e){}
+    /* v20a401 UI401-2：遮罩挖空圈內——金圈中心／半徑寫入 #mask CSS 變數（mask 坐標＝
+       ring rect 減 mask rect，唔靠 #app 偏移假設），mask 掛 tut-hole401 用
+       radial-gradient 挖空；圈內大樓唔再被壓暗。頂欄同步降亮由 v401 CSS（#mask.tut-on
+       全幅均勻 dim）負責，唔再留頂欄光。 */
+    try{
+      if(mask){
+        const mr = mask.getBoundingClientRect();
+        const rr = ring.getBoundingClientRect();
+        const cx = rr.left + rr.width / 2 - mr.left;
+        const cy = rr.top + rr.height / 2 - mr.top;
+        const rad = Math.max(rr.width, rr.height) / 2 + 10;
+        mask.style.setProperty("--tut-hole-x", cx.toFixed(1) + "px");
+        mask.style.setProperty("--tut-hole-y", cy.toFixed(1) + "px");
+        mask.style.setProperty("--tut-hole-r", rad.toFixed(1) + "px");
+        mask.classList.add("tut-hole401");
+      }
+    }catch(_e){}
   }catch(_e){}
 }
 /** Which phone surface the player should be looking at for this tutorial step. */
@@ -50414,7 +50606,7 @@ function setTutMask(on){
   /* v20a397 UI397-5：開局分步——教學期間加 tut-stage397，收起手帳次要控制。 */
   if(app) app.classList.toggle("tut-stage397", !!on);
   try{ setUnderlyingInert(!!on || m.classList.contains("on")); }catch(_e){}
-  if(!on) clearTutSpotlight();
+  if(!on){ clearTutSpotlight(); try{ m.classList.remove("tut-hole401"); m.style.removeProperty("--tut-hole-x"); m.style.removeProperty("--tut-hole-y"); m.style.removeProperty("--tut-hole-r"); }catch(_e){} } /* v20a401 UI401-2：教學完咗清走遮罩挖空 */
 }
 function showTutCard(entry, buttons){
   if(!entry){ return; }
@@ -50535,7 +50727,7 @@ function presentAudFailSettlement(opts){
     setTutMask(true);
     const speaker=entry.speaker?`<div class="tut-speaker">${entry.speaker}</div>`:"";
     const card=`<div class="tut-card">${speaker}<h3 class="tut-title">${entry.title||""}</h3><div class="tut-body">${tutBodyHtml(entry)}${ctx.join("")}</div></div>`;
-    modal(card, [{label:tutUi("gotIt"), role:"p", on:()=>{ setTutMask(false); cont(); }}], {onDismiss:null});
+    modal(card, [{label:tutUi("gotIt"), role:"p", on:()=>{ setTutMask(false); cont(); }}], {onDismiss:null, scenePaper401:true}); /* v20a401 UI401-1：首次落選教學卡同樣場景 dim（tut-on 漸變由 scene-paper401 覆寫，見 v401 CSS） */
     setTutMask(true);
     return true;
   }
@@ -50629,7 +50821,7 @@ function showB01HomeModal(){
         }}];
       })()),
       {label:"開始寫手帳", role:"p", on:goPlan}
-    ], {onDismiss: goPlan});
+    ], {onDismiss: goPlan, scenePaper401:true}); /* v20a401 UI401-1：教學完結（B01 入門卡）手帳頁＋場景 dim */
   saveQ();
 }
 
