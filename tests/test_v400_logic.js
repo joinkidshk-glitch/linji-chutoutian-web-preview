@@ -122,7 +122,7 @@ ok('3C 低壓週峰值 23（咖啡＋6／街演＋7）', weekStressPeak400(planD
 /* ================= (4) 自由日 ================= */
 S = mkS(14, {});
 planDraft = ["scout_all","train_acting","scout_all","rest","street","cafe_gig","rest"];
-ok('4A 自由日只計未鎖定 scout_*（[0,2]）', freeDays400().join(',')==='0,2', freeDays400().join(','));
+ok('4A 可換日：自由日優先、其次訓練／兼職（v405 P1-2，[0,2,1,4,5]）', freeDays400().join(',')==='0,2,1,4,5', freeDays400().join(','));
 
 /* ================= (5) 日格 hint 機會成本 ================= */
 S = mkS(14, { trainCount:{ train_vocal:3 } });

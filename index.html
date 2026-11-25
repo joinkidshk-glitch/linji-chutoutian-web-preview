@@ -9815,7 +9815,7 @@ const StoryOC = (()=>{
     return true;
   }
 
-  function bumpRel(key, delta){
+  function bumpRel(key, delta, opts){
     const st = ensure();
     if(!st || !key) return 0;
     let k = String(key);
@@ -9825,7 +9825,25 @@ const StoryOC = (()=>{
     try{
       if(typeof rom159GainAllowed==="function" && !rom159GainAllowed(k)){ return (typeof st.rel[k]==="number" ? st.rel[k] : 0); }
     }catch(_e){}
-    const next = (typeof st.rel[k]==="number" ? st.rel[k] : 0) + (Number(delta)||0);
+    const cur405 = (typeof st.rel[k]==="number" ? st.rel[k] : 0);
+    let next = cur405 + (Number(delta)||0);
+    /* v405 P1-6：感情 rel 按劇情進度分段封頂——push1 未完成封頂 3、push1 後 5、
+       push2 後 6、crisis 後 7。舊制送禮／約會／傾談可以喺 day 85 前刷滿 7，
+       之後近兩年等劇情閘，抉擇冇失敗空間。分段後 commit 門檻（rel 6）要 push2
+       之後先到，節奏貼返劇情閘。劇情抉擇經 applyChoice 傳 paceCap（本節點完成後嘅段），
+       令 push 節點本身嘅 +2 落到新段；負值照舊唔 clamp，舊檔已超段嘅正增量只係唔再升。 */
+    try{
+      const pace405 = { rel_hiu:"hiu", rel_choi:"choi", rel_lan:"lan", rel_xu:"xu", rel_yip:"yip", rel_so:"so" }[k];
+      if(pace405 && (Number(delta)||0) > 0){
+        let cap405 = 3;
+        if(st.done && st.done["R_"+pace405+"_crisis"]) cap405 = 7;
+        else if(st.done && st.done["R_"+pace405+"_push2"]) cap405 = 6;
+        else if(st.done && st.done["R_"+pace405+"_push1"]) cap405 = 5;
+        if(opts && typeof opts.paceCap==="number") cap405 = Math.max(cap405, opts.paceCap);
+        if(cur405 < cap405) next = Math.min(cap405, next);
+        else next = cur405;
+      }
+    }catch(_e){}
     /* v20a378（第三輪評估 B12）：rel 上限 7（設計尺度：rel 5 排他鎖、rel 6 commit、滿 7）——
        舊制無上限，純約會每週 +1 刷到 32，同劇情量級脫節。負值照舊唔 clamp。 */
     st.rel[k] = Math.min(7, next);
@@ -9913,7 +9931,17 @@ const StoryOC = (()=>{
       const v = Number(stats[k]);
       if(!v && v!==0) return;
       if(k.startsWith("rel_") || /^rel[A-Z]/.test(k)){
-        const next = bumpRel(k, v);
+        /* v405 P1-6：劇情節點本身嘅 rel 增量用「本節點完成後」嘅段封頂——
+           push1→5、push2→6、crisis／ending→7、meet→3，令節點 +2 落到新段。 */
+        let paceCap405;
+        try{
+          const nid405 = String((node && node.id) || "");
+          if(/_push1$/.test(nid405)) paceCap405 = 5;
+          else if(/_push2$/.test(nid405)) paceCap405 = 6;
+          else if(/_crisis$/.test(nid405) || /_ending$/.test(nid405)) paceCap405 = 7;
+          else if(/_meet$/.test(nid405)) paceCap405 = 3;
+        }catch(_e){}
+        const next = bumpRel(k, v, paceCap405!=null ? { paceCap: paceCap405 } : undefined);
         relApplied[k.startsWith("rel_")?k:"rel_"+k] = next;
         notes.push((k.startsWith("rel_")?k:"rel_"+k)+" "+(v>0?"+":"")+v+" → "+next);
         return;
@@ -14733,10 +14761,14 @@ function resolveEnding410(st, opts){
   const idCredit392 = (creditCounter392 == null) ? credit : creditCounter392;
   const duties392 = backstageDuties392Of(s);
   const forced392 = forcedCredit392Of(s);
+  /* v405 P1-3：GH 資格先計——自選綜藝同時係 E4 曝光來源，E4 排 GH 之前會截走
+     已達 GH 資格嘅低 net 態。GH 資格成立嗰陣 E4 唔截（綜藝專攻歸 GH，E4 留畀
+     非綜藝專攻嘅高曝光低信用態）。 */
+  const ghQualified405 = sum>=T95.ghDual && selShare95(sel95.byMedium.variety)>=T95.ghHostShare && (sel95.byMedium.variety|0)>=T95.ghVarietyMin && end95PangProgress(s);
   let career = "E0", variant = "";
   if(fame>=T95.e1Fame && credit>=T95.e1Credit && sum>=T95.e1Dual && neg<=T95.e1NegMax && e1Qual95){
     career = "E1"; reasons.push("E1：聲望 "+fame+"≥"+T95.e1Fame+"、信用 "+credit+"≥"+T95.e1Credit+"、雙軌 "+sum+"≥"+T95.e1Dual+"、負標籤 "+neg+"≤"+T95.e1NegMax+"＋質性閘全齊（獎 "+awards95.wins+"／擔正媒介 "+leadMedia95.length+"／電影擔正 "+filmLead390+"／主線脊骨已走完）");
-  } else if(fame>=T.e4Fame && (credit - 0.5*fame) < T.e4NetCreditBelow && expo392.count>=T95.e4ExposureMin && expo392.months>=T95.e4ExposureMonths){
+  } else if(!ghQualified405 && fame>=T.e4Fame && (credit - 0.5*fame) < T.e4NetCreditBelow && expo392.count>=T95.e4ExposureMin && expo392.months>=T95.e4ExposureMonths){
     career = "E4";
     variant = (favor.creditsHeld>=T.e4RescueCredits) ? "rescued" : "sunk";
     reasons.push("E4：聲望 "+fame+"≥"+T.e4Fame+"、扣除聲望後信用 "+(credit - 0.5*fame).toFixed(1)+"<"+T.e4NetCreditBelow+"（信用 "+credit+"−0.5×聲望 "+fame+"）、自選曝光 "+expo392.count+" 宗橫跨 "+expo392.months+" 個月；債權持有 "+favor.creditsHeld+" → "+(variant==="rescued"?"沉唔死版":"真沉版"));
@@ -19683,6 +19715,9 @@ function costume382Hash(id){
 function costume382GigReq(g){
   try{
     if(!g || !g.id) return null;
+    /* v405 P1-1：電影擔正唔疊自備戲服閘——全庫得 10 張，戲服係門檻加成唔係入場券，
+       唔可以硬擋唯一擔正機會（試玩實證：正常路線唯一遇到的 film_lead_big 俾戲服閘擋走）。 */
+    if(g.roleScale==="film_lead_big") return null;
     const tier=g.tier||"";
     if(tier!=="中級" && tier!=="高級" && tier!=="稀有" && tier!=="中" && tier!=="高") return null;
     if(g.entryTier || g.softBridge) return null;
@@ -19696,13 +19731,17 @@ function costume382GigReq(g){
     if(g.trigger) return null;
     if(typeof intel381Label==="function" && intel381Label(g)) return null;
     if(typeof tape383Label==="function" && tape383Label(g)) return null; /* v20a383：付費買資格嘅通告唔再疊自備戲服閘 */
-    if(costume382Hash(g.id)%10!==8) return null;
     const genre=String(g.genre||"");
     const type=String(g.type||"");
-    if(["武俠","動作","警匪","江湖黑幫","歷史傳記","賭片"].indexOf(genre)>=0) return "戲行";
-    if(type==="唱片通告" || ["情歌","快歌","搖滾","民謠","合唱","主題曲","晚會","台慶","選拔節目"].indexOf(genre)>=0) return "舞台";
-    if(type==="廣告" || ["平面廣告","電視廣告","形象廣告","產品廣告","慈善廣告"].indexOf(genre)>=0) return "正式";
-    return "日常";
+    let cat382 = "日常";
+    if(["武俠","動作","警匪","江湖黑幫","歷史傳記","賭片"].indexOf(genre)>=0) cat382 = "戲行";
+    else if(type==="唱片通告" || ["情歌","快歌","搖滾","民謠","合唱","主題曲","晚會","台慶","選拔節目"].indexOf(genre)>=0) cat382 = "舞台";
+    else if(type==="廣告" || ["平面廣告","電視廣告","形象廣告","產品廣告","慈善廣告"].indexOf(genre)>=0) cat382 = "正式";
+    /* v405 P1-1：排除電影擔正後 %10==8 池冇日常類（唯一日常張係 film_lead_big），
+       日常類補選 %10==3，保四類每類至少一張生效（v386 標準不變）。 */
+    const hash382 = costume382Hash(g.id)%10;
+    if(hash382!==8 && !(hash382===3 && cat382==="日常")) return null;
+    return cat382;
   }catch(_e){ return null; }
 }
 function costume382OwnedCat(cat){
@@ -19777,9 +19816,14 @@ function isSoftTryGig(){
 /** Success probability in [0,1]; UI % = Math.round(chance(g)*100). Roll: Math.random() < chance(g). */
 function chance(gig){
   let score=0, need=0, matched=0, keys=0;
+  /* v405 P1-4：成功率同門檻用同一口徑——有效數值（底數＋戲服加成，同 reqGap 一致）。
+     舊制 chance 用原始數值：靠衫先過閘嘅通告食「未達標」懲罰跌到約 15–17%，
+     卡面卻顯示達標。改用有效數值後，過閘即係達標，成功率跟返曲線。 */
+  const eff405 = (k)=> (typeof costume265EffStat==="function") ? costume265EffStat(k) : (Number(S[k])||0);
   for(const [k,v] of Object.entries(gig.req||{})){
-    keys++; need+=v; score+=Number(S[k])||0;
-    if((Number(S[k])||0)>=v) matched++;
+    if(typeof GIG_REQ_KEYS88!=="undefined" && !GIG_REQ_KEYS88[k]) continue;
+    keys++; need+=v; score+=eff405(k);
+    if(eff405(k)>=v) matched++;
   }
   /* v20a368 P2 ⑦試鏡曲線（評估報告 §六 B5，GPT 分段線性方向）：
      有 req：ratio 1.0→55%、1.25→66%、1.5→75%、2.0→85%（總上限 88%）；
@@ -19804,7 +19848,7 @@ function chance(gig){
     }
   } else {
     const statKey = gig.type==="唱片通告" ? "vocal" : gig.type==="綜藝" ? "stage" : gig.type==="廣告" ? "looks" : "acting";
-    const r = (Number(S[statKey])||0)/30;
+    const r = eff405(statKey)/30; /* v405 P1-4：無 req 通告同樣用有效數值，口徑一致 */
     const pts=[[0,0.29],[0.5,0.42],[1.0,0.55],[1.5,0.68]];
     if(r<=pts[0][0]) p=pts[0][1];
     else if(r>=pts[pts.length-1][0]) p=pts[pts.length-1][1];
@@ -21687,15 +21731,21 @@ function weekStressPeak400(plan){
   }catch(_e){ return Number(S && S.stress) || 0; }
 }
 function freeDays400(){
-  /* v20a400：未鎖定嘅自由日（scout_*）index 陣列——壓力建議掣目標日用。 */
-  const out=[];
+  /* v20a400：未鎖定嘅自由日（scout_*）index 陣列——壓力建議掣目標日用。
+     v405 P1-2：可換日擴至訓練日／兼職日（自由日優先）——舊制只認自由日，
+     高峰週全部係拍攝鎖定＋訓練／兼職，冇自由日可換，建議掣結構性永不出現
+     （140 週 0 次）。拍攝鎖位照舊唔郁（dayPlanLocked 擋）。 */
+  const free = [], train = [], part = [];
   try{
     for(let i=0;i<7;i++){
       const id = (typeof planDraft!=="undefined" && planDraft) ? planDraft[i] : "";
-      if(!dayPlanLocked(id) && isMapDay(id)) out.push(i);
+      if(!id || dayPlanLocked(id) || id==="rest") continue;
+      if(isMapDay(id)) free.push(i);
+      else if(String(id).indexOf("train_")===0) train.push(i);
+      else if(id==="street" || id==="cafe_gig") part.push(i);
     }
   }catch(_e){}
-  return out;
+  return free.concat(train, part);
 }
 function nbDayHint400(i, meta, editable, locked){
   /* v20a400 細改 3：日格 hint 寫明機會成本——訓練格「再 N 堂升 X 級」／到頂「已到三級」；
@@ -21821,10 +21871,13 @@ function renderSuggest400(editable){
     }
     const peak400 = weekStressPeak400(planDraft);
     if(peak400>=60){
+      /* v405 P1-2：目標日用 freeDays400（自由日→訓練日→兼職日），
+         高壓週冇自由日時訓練日都換得，建議掣先至出得到。 */
       const free400 = freeDays400();
       if(free400.length){
         const t400 = free400[0];
-        mk400("建議：壓力偏高，用週" + weekdayName(t400) + "自由日換休息", ()=>{
+        const tKind405 = isMapDay(planDraft[t400]) ? "自由日" : (String(planDraft[t400]).indexOf("train_")===0 ? "訓練日" : "兼職日");
+        mk400("建議：壓力偏高，用週" + weekdayName(t400) + tKind405 + "換休息", ()=>{
           if(dayPlanLocked(planDraft[t400])){ toast("拍攝日檔期已定"); return; }
           const from400 = planDraft[t400];
           planDraft[t400] = "rest";
@@ -35766,7 +35819,12 @@ function awards62ScoreParts(cat, ceremony, year){
   }catch(_cx65){}
   const borrowW65 = works.length ? 0.55 * 0.35 * crossQ65 : 0;
   const wsum = (qs[0] || 0) + 0.55 * (qs[1] || 0) + 0.35 * (qs[2] || 0) + 0.20 * (qs[3] || 0) + borrowW65;
-  const worksScore = Math.min(1, wsum / 1.6);
+  /* v405 P1-5：廣告／綜藝桶 q 結構先天較低（擔正 0.78、其餘 0.48），單擔正桶
+     wsum 封頂約 1.29，舊分母 1.6 令 base 封頂 0.803，數學上贏唔到贏線 0.875。
+     廣告／綜藝類別分母改 1.32：單一強擔正桶 base 約 0.875（有機會贏），
+     弱桶照輸；雙擔正保留優勢。贏線 0.875 不變，電影／音樂／電視分母不變。 */
+  const isAdVariety405 = ((ceremony && ceremony.matchTypes) || []).some(t=> t==="廣告" || t==="綜藝");
+  const worksScore = Math.min(1, wsum / (isAdVariety405 ? 1.32 : 1.6));
   let tagBonus = 0;
   try{
     const tags = (typeof ensureCastingTagsState === "function") ? ensureCastingTagsState() : [];
@@ -46795,7 +46853,37 @@ function locPanelNpcId(L){
 function addLocTalkGiftActs(add, L, npcId){
   // 人物／情報置頂，減少要滾先撳
   /* v20a176 ROM176：四位女角唔再喺地點板傾談／送禮——要撞到先傾得／送得（明星志願嗰套）。
-     非女角（導演／對手／何生）傾談掣不變；鄧麗萍送禮掣唔喺呢度（agency_ho 專屬段）。 */
+     非女角（導演／對手／何生）傾談掣不變；鄧麗萍送禮掣唔喺呢度（agency_ho 專屬段）。
+     v405 P1-7：送禮入口可發現性——試玩 434 次地點面板零送禮入口，玩家買咗禮都唔知去邊送。
+     女角喺地點在場（地點 NPC 係佢）且已正式見過面嗰陣，地點面板出明確送禮入口；
+     傾談照舊經巧遇，送禮唔再要等巧遇彈窗先搵到。 */
+  try{
+    if(typeof ROM159_WOMEN!=="undefined" && ROM159_WOMEN){
+      /* 在場候選：面板 NPC 係女角，或巧遇在場盤（rom176PresenceAt）有佢——兩者都算在場。 */
+      const cand405 = [];
+      if(npcId && typeof rom176IsWomanNpc==="function" && rom176IsWomanNpc(npcId)){
+        const rk0 = Object.keys(ROM159_WOMEN).find(k=> ROM159_WOMEN[k] && ROM159_WOMEN[k].npcId===npcId);
+        if(rk0) cand405.push(rk0);
+      }
+      try{
+        if(L && typeof rom176PresenceAt==="function"){
+          for(const key405 of (rom176PresenceAt(L.id) || [])){
+            if(ROM159_WOMEN[key405] && cand405.indexOf(key405)<0) cand405.push(key405);
+          }
+        }
+      }catch(_e2){}
+      for(const rk405 of cand405){
+        const w405 = ROM159_WOMEN[rk405];
+        let met405 = false;
+        try{ if(w405 && typeof StoryOC!=="undefined" && StoryOC.isDone && StoryOC.isDone(w405.meet)) met405 = true; }catch(_e){}
+        if(w405 && met405){
+          add("送禮畀" + w405.name, "揀庫存禮物送出", (typeof giftConfirmCostLine==="function") ? giftConfirmCostLine() : "", ()=>{
+            try{ if(typeof openGiftPick==="function") openGiftPick(rk405, L); }catch(_e){ toast("暫時送唔到"); }
+          }, "act-priority");
+        }
+      }
+    }
+  }catch(_e){}
   /* v20a389 UI389（用戶 2026-11-23 拍板＋GPT 方案）：工作地點（film／tv／music／ad）
      傾談收埋去在場角色列——名牌式貼紙掣（人名＋「💬 傾談 · 耗日」），有 NPC 先顯示；
      非工作地點（茶餐廳／事務所／約會層）維持行動列表掣。確認流程不變。 */
@@ -48296,7 +48384,61 @@ function gigsForLocSeasonBoard(locId, curSeason){
   });
   /* v20a393：GH 板面保證——電視台板無綜藝嗰陣注入一張（見 variety392EnsureBoard）。 */
   try{ if(typeof variety392EnsureBoard==="function") variety392EnsureBoard(locId, shown, curSeason); }catch(_v393){}
+  /* v405 P1-1：電影擔正板面保證——已達資格玩家喺電影地點板見到一張 film_lead_big。 */
+  try{ if(typeof filmLead405EnsureBoard==="function") filmLead405EnsureBoard(locId, shown, curSeason); }catch(_v405){}
   return shown;
+}
+function filmLead405EnsureBoard(locId, shown, curSeason){
+  /* v405 P1-1：電影擔正供應保證（跟 variety392EnsureBoard 同一套留板／唔重複規則）。
+     film_lead_big 全庫 10 張（1991:5／1992:5），季節窗＋錯峰令已達資格玩家都好難遇見
+     （試玩：正常路線 92 次詳情只遇 1 張；衝 E1 路線第一部擔正 day 824 先殺青）。
+     保證條件：電影地點（film_lion／film_harbour／film_cotton）、板上無 film_lead_big、
+     玩家聲望 ≥32（高級地板）且演技有效數值 ≥85（全庫最低擔正要求）——只幫已達資格者
+     搵到機會，唔降低門檻，E1 仍然要用心玩先可達。留板 7 日、14 日唔重複注入同一張。 */
+  try{
+    if(!locId || (locId!=="film_lion" && locId!=="film_harbour" && locId!=="film_cotton")) return;
+    if(!Array.isArray(shown)) return;
+    if(shown.some(g=>g && g.roleScale==="film_lead_big")) return;
+    if(typeof S==="undefined" || !S) return;
+    if((Number(S.fame)||0) < 32) return;
+    const acting405 = (typeof costume265EffStat==="function") ? costume265EffStat("acting") : (Number(S.acting)||0);
+    if(acting405 < 85) return;
+    if(!S.filmLead405ByLoc || typeof S.filmLead405ByLoc!=="object") S.filmLead405ByLoc = {};
+    const today = Number(S.dayIndex)||0;
+    const st = S.filmLead405ByLoc[locId] || null;
+    const consumed405 = (g)=>{
+      try{ if(g && g.trigger && (typeof triggerGigOn==="function" ? !triggerGigOn(g) : true)) return true; }catch(_e){}
+      try{ if(typeof isGigConsumed==="function" && isGigConsumed(g)) return true; }catch(_e){}
+      return false;
+    };
+    if(st && st.gigId){
+      const held = (typeof GIGS!=="undefined" && Array.isArray(GIGS)) ? GIGS.find(g=>g && g.id===st.gigId) : null;
+      if(today - (Number(st.sinceDay)||0) < 7){
+        if(held && !consumed405(held) && !shown.some(g=>g && g.id===held.id)) shown.push(held);
+        return;
+      }
+    }
+    const pool = (typeof GIGS!=="undefined" && Array.isArray(GIGS)) ? GIGS : [];
+    const inSeason405 = (g)=>{
+      try{ if(typeof gigSeasonHidden88==="function") return !gigSeasonHidden88(g, curSeason); }catch(_e){}
+      try{ if(typeof seasonRank==="function") return seasonRank(g, curSeason)<=0; }catch(_e){}
+      return true;
+    };
+    const base405 = (g)=>{
+      if(!g || g.loc!==locId || g.roleScale!=="film_lead_big") return false;
+      if(consumed405(g)) return false;
+      if(shown.some(x=>x && x.id===g.id)) return false;
+      if(st && st.gigId===g.id && today - (Number(st.sinceDay)||0) < 14) return false;
+      return true;
+    };
+    let cands = pool.filter(g=> base405(g) && inSeason405(g));
+    if(!cands.length) cands = pool.filter(base405);
+    if(!cands.length) return;
+    try{ if(typeof boardSortCompare==="function") cands.sort((a,b)=>boardSortCompare(a,b,curSeason)); }catch(_e){}
+    const pick = cands[0];
+    shown.push(pick);
+    S.filmLead405ByLoc[locId] = { gigId: pick.id, sinceDay: today };
+  }catch(_e){}
 }
 /* v20a392 UI392 ③：通告欄排序／篩選狀態（本 session 內記住，唔入存檔）。 */
 let _boardSort392 = "exp";
