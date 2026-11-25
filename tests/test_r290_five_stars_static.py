@@ -25,7 +25,7 @@ ok('產品 ?v= 不變', 'v20a10' in src)
 # ---- LOCS id 集（主副場驗證用） ----
 m_locs = re.search(r'const LOCS = \[(.*?)\n\];', src, re.S)
 loc_ids = set(re.findall(r'id:"([^"]+)"', m_locs.group(1))) if m_locs else set()
-ok('搵到 LOCS（17 個片場層地點）', len(loc_ids) == 23)  # 17 片場層＋6 約會層
+ok('搵到 LOCS（17 個地圖地點）', len(loc_ids) == 17)  # v20a407：約會層收起，LOCS 23→17
 
 # ---- (1) 名冊 ----
 m_stars = re.search(r'const ENC79_STARS = \[(.*?)\n\];', src, re.S)

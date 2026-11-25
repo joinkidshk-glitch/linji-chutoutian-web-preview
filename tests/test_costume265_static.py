@@ -200,7 +200,7 @@ ok("換衫免費即時（costume265Equip：寫 equipped＋saveQ，冇 tickDay／
 lm = re.search(r"const LOCS = \[(.*?)\n\];", src, re.S)
 locs_seg = lm.group(1) if lm else ""
 ids = re.findall(r'\{ id:"(\w+)",', locs_seg)
-ok("LOCS 總數 23 個（15＋6＋2）", len(ids) == 23)
+ok("LOCS 總數 17 個（v407 約會場景收起，23→17）", len(ids) == 17)
 set_layer = [i for i in ids if not i.startswith("date_")]
 ok("片場層 17 個（15 舊＋服裝店／屋企）", len(set_layer) == 17)
 ok("LOCS 有 clothing_shop（花園街成衣店／旺角／shop／78,7）",
@@ -211,7 +211,7 @@ ok("新點唔加 layer 欄（預設片場層）",
    'layer' not in locs_seg.split('id:"clothing_shop"')[1].split('id:"home"')[0]
    and 'layer' not in locs_seg.split('id:"home"')[1].split('},')[0])
 mn = re.findall(r'<div class="mn68[^"]*"[^>]*>([^<]+)</div>', src)  # v20a373：容許額外 class（mn68-ask373）
-ok("墨字地名 23 個，包花園街成衣店／阿偉屋企", len(mn) == 23
+ok("墨字地名 17 個，包花園街成衣店／阿偉屋企", len(mn) == 17
    and "花園街成衣店" in mn and "阿偉屋企" in mn)
 ok("LOC_SHEET_BG：服裝店＋屋企（屋企用現成 bg_wf4_home.jpg）",
    'clothing_shop:"assets/story/locs/bg_loc_clothing_shop.jpg"' in src

@@ -513,6 +513,7 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 /* Dialogue */
 .dlg{display:flex;flex-direction:column;gap:0}
 .dlg-stage{display:flex;gap:10px;align-items:flex-end;background:linear-gradient(180deg,#1a2a44,#0d1828);border-radius:12px;padding:10px;min-height:210px}
+.date-scene-bg407{height:150px;border-radius:12px;margin:0 0 10px;background-color:#d8cbb8;background-size:cover;background-position:center;border:2px solid var(--gold)}
 .dlg-portrait{width:42%;max-width:180px;aspect-ratio:3/4;object-fit:cover;object-position:top center;border-radius:10px;border:2px solid var(--gold);background:#0a1424;flex-shrink:0}
 .dlg-side{flex:1;min-width:0;padding-bottom:4px}
 .dlg-name{font-weight:800;color:var(--gold);font-size:.95rem;margin-bottom:4px}
@@ -4421,18 +4422,7 @@ body.day-res-open .day-row{
   box-shadow:0 1px 3px rgba(26,20,16,.2);
   padding:2px 9px; font-weight:700;
 }
-/* v20a159 MAP159：地圖層切換掣（#map-hint 行尾，米紙 pill，跟 #map-show-all-locs 同一語言；
-   約會層態加深色，等玩家一眼分到而家邊層） */
-#app #map-layer159{
-  background:#fdf8ea; color:#5c4a1f;
-  border:1px solid var(--gold); border-radius:999px;
-  box-shadow:0 1px 3px rgba(26,20,16,.2);
-  padding:2px 9px; font-weight:700; cursor:pointer; margin-left:6px;
-  font-size:.68rem; white-space:nowrap;
-}
-#app #map-layer159[aria-pressed="true"]{
-  background:#2e3448; color:#FFE7A0; border-color:var(--gold);
-}
+/* v20a407：地圖切層掣已刪（約會層收起，地圖只有一層）。 */
 
 /* --- .chip：米紙牌＋金邊＋柔和陰影（全域） --- */
 #app .chip{
@@ -6442,15 +6432,6 @@ body.day-res-open .day-row{
   filter:drop-shadow(1px 2px 1px rgba(83,55,39,.35));
 }
 #v-map #map-end-day:active, #v-map #map-start-today:active{ transform:translateY(2px); }
-#v-map #map-layer159{
-  min-height:44px !important; margin-top:7px; padding:4px 14px !important;
-  font-family:var(--hand363) !important; font-size:.95rem !important; color:#28495a !important;
-  background:#dce4cf !important; border:1px solid #a9b89a !important; border-radius:2px !important;
-  transform:rotate(1deg); box-shadow:0 1px 2px rgba(66,55,38,.3) !important;
-  display:inline-flex; flex-direction:column; align-items:center; line-height:1.15;
-}
-#v-map #map-layer159 .lay363-b{ font-size:.72rem; opacity:.85; }
-#v-map #map-layer159[aria-pressed="true"]{ background:#f3e2b7 !important; border-color:#c9a86a !important; }
 /* 今日活動像素貼紙（JS 注入 .today-stk363） */
 .today-stk363{
   float:right; width:44px; height:44px; margin:-2px 0 2px 8px; image-rendering:pixelated;
@@ -6658,22 +6639,11 @@ body.day-res-open .day-row{
   color:#7a5f1e; background:rgba(242,235,216,.92); border:1px solid rgba(160,124,32,.55);
   border-radius:6px; padding:1px 4px; white-space:nowrap; pointer-events:none;
 }
-/* v20a373：紙標籤第二行副註（「可打聽」併入標籤，GPT 方案；::after 出字，標籤文字保持純地名）＋約會層所在頁眉 */
+/* v20a373：紙標籤第二行副註（「可打聽」併入標籤，GPT 方案；::after 出字，標籤文字保持純地名） */
 .mn68.mn68-ask373::after{
   content:"可打聽"; display:block; text-align:center; font-size:10.5px; line-height:1.25;
   color:#36564B; letter-spacing:.12em; margin-top:1px;
 }
-.map-here373{
-  position:absolute; top:6px; left:50%; transform:translateX(-50%); z-index:6;
-  display:flex; align-items:center; gap:8px; pointer-events:none;
-  min-height:44px; padding:6px 12px; box-sizing:border-box;
-  background:linear-gradient(100deg,#f9edca,#fff6dc 75%,#ead8ad);
-  border:1px solid #b99b62; border-radius:3px;
-  filter:drop-shadow(1px 2px 1px rgba(70,50,30,.35));
-  font-family:var(--hand363,"LXGW WenKai","Kaiti TC",serif);
-  font-size:14px; line-height:20px; color:#392d20; white-space:nowrap;
-}
-.map-here373 img{ width:24px; height:24px; object-fit:cover; border-radius:2px; image-rendering:pixelated; }
 
 /* --- (5) 劇情結果：關係變化行手寫旁註式強調（唔改文字，淨係視覺分層） --- */
 .story-play.sp-result li.sp-rel369{
@@ -7339,7 +7309,7 @@ body.day-res-open .day-row{
 }
 /* (6⑦) 地點面板開住嗰陣收起底圖 pin（−17）：面板係接管層，背景 pin 退出觸控／焦點／
    VoiceOver；關 sheet（返回地圖）即還原。只收 .pin 掣——玩家標記（.map-me363）同
-   日卡橫條（.map-here373）唔係掣，留低做位置提示，唔好一併收起。 */
+   玩家標記唔係掣，留低做位置提示，唔好一併收起。 */
 .map-wrap.sheet-open #map-pins .pin{ display:none !important; }
 /* ===== v20a402 UI402 完 ===== */
 /* ===== v20a403 UI403（第十輪頭五項＋暗角 dismiss）===== */
@@ -7641,16 +7611,9 @@ body.day-res-open .day-row{
               <div class="mn68 mn68-ask373" style="left:29%;top:calc(84% - 42px)">何生事務所</div>
               <div class="mn68" style="left:24%;top:calc(16% - 52px)">廟街禮品</div>
               <div class="mn68" style="left:86%;top:calc(78% + 34px)">仁康醫院</div>
-              <!-- v20a265 COSTUME265：片場層 17 個墨字地名（15 舊＋花園街成衣店／阿偉屋企 2 新；label 位置跟 LOCS 座標） -->
+              <!-- v20a265 COSTUME265：地圖 17 個墨字地名（15 舊＋花園街成衣店／阿偉屋企 2 新；label 位置跟 LOCS 座標） -->
               <div class="mn68" style="left:78%;top:calc(7% + 44px)">花園街成衣店</div>
               <div class="mn68" style="left:13%;top:calc(8% + 34px)">阿偉屋企</div>
-              <!-- v20a159 MAP159：約會層 6 個墨字地名（格式跟足上面 17 個；label 位置跟 LOCS 座標，避開附近標籤） -->
-              <div class="mn68" style="left:31%;top:calc(42% + 34px)">尖沙咀海傍</div>
-              <div class="mn68" style="left:90%;top:calc(63% + 34px)">山頂</div>
-              <div class="mn68" style="left:43%;top:calc(84% - 52px)">酒廊唱歌</div>
-              <div class="mn68" style="left:40%;top:calc(8% + 31px)">旺角戲院</div>
-              <div class="mn68" style="left:85%;top:calc(96% - 52px)">淺水灣</div>
-              <div class="mn68" style="left:82%;top:calc(35% - 52px)">啟德機場</div>
             </div>
             <!-- v20a97 MAP97 地區名細字層（落位表見 NOTES_V20A97_MAP97.md）——
                  v20a137 MAP137：用戶 2026-11-12 21:04 拍板大地圖唔要地區名，12 個地區 div 已刪；
@@ -8000,37 +7963,27 @@ const LOCS = [
   { id:"hospital", name:"仁康醫院", area:"薄扶林", type:"med", region:"island", x:86, y:78, emoji:"🏥",
     desc:"白十字大樓，門口長泊著一部救護車。平時無人想來，病到燶透時，才知這裡有多重要。" },
   /* v20a265 COSTUME265：服裝店＋屋企上地圖（設計檔 ~/workspace/linji-costume-home/DESIGN.md §2／§3）。
-     片場層 15→17。落位：成衣店 (24,30) 旺角花園街一帶，離 rec_hk (30,24) 8.5%、cafe_cha (15,16)
+     地圖 15→17。落位：成衣店 (24,30) 旺角花園街一帶，離 rec_hk (30,24) 8.5%、cafe_cha (15,16)
      16.7%，唔入 CLUSTER 7.5% fan-out 圈；屋企 (20,44) 深水埗一帶，離 tvb_kowloon (37,45) 17.0%。
-     兩個新點都唔設 layer（預設片場層），唔入約會層。 */
+     兩個新點同其餘 15 個一樣，係地圖可入地點。 */
   { id:"clothing_shop", name:"花園街成衣店", area:"旺角", type:"shop", region:"kln", x:78, y:7, emoji:"✨",
     desc:"花園街成衣檔：掛滿衫嘅鐵架、帆布頂，價錢貼地，新人由平衫買起、慢慢買貴衫。" },
   { id:"home", name:"阿偉屋企", area:"深水埗", type:"home", region:"kln", x:13, y:8, emoji:"🏠",
     desc:"深水埗唐樓，阿偉屋企。返嚟唔計出行額度；入面就係行程手帳，可以瞓覺、換衫。" },
-  /* v20a159 MAP159：約會層 6 個新地點（草稿 §3.2；Q8 修訂：酒廊唱歌唔係卡拉OK）。
-     layer:"date"；片場層 17 個唔設 layer（預設片場層，現有欄位零改動）。
-     落位理據（對住 hk_map_v6.jpg 實圖＋現有 15 點座標，全部新點同最近舊點距離 ≥10%、
-     唔撞 label、唔入 CLUSTER 7.5% fan-out 圈）：
-     · 海傍 (58,40)：南九龍海邊，夜市檔／紅樓旁邊水邊位，離 gift_shop 15.8%、tvb_kowloon 21.6%。
-     · 山頂 (52,63)：港島西高位，中環藍塔以西綠坡，離 ad_central 13.4%、hospital 13.5%。
-     · 酒廊 (74,60)：中環／金鐘之間山坡，離 ad_central 10.4%、ad_adm 11%。
-     · 戲院 (22,32)：旺角西面空地，近 rec_hk（旺角）11.3%，離 cafe_cha 17.5%。
-     · 淺水灣 (55,92)：港島南岸底邊，離 agency_ho 31.7%、rec_star 27.8%。
-     · 啟德 (78,38)：東九龍跑道尖端，離 film_harbour 20.1%、date_harbour 20.1%。
-     type:"date"——唔行通告板／訓練／休息室嗰啲工作地點掣（openLoc 只認 film/tv/music/ad）。 */
-  { id:"date_harbour", name:"尖沙咀海傍", area:"尖沙咀", type:"date", region:"kln", x:31, y:42, emoji:"🌊", layer:"date",
-    desc:"尖沙咀海傍，維港海風迎面，對岸燈火映照水面，適合慢慢散步。" },
-  { id:"date_peak", name:"山頂", area:"山頂", type:"date", region:"island", x:90, y:63, emoji:"🌃", layer:"date",
-    desc:"山頂可俯瞰全城夜景，纜車站旁燈火如星，整個香港盡在腳下。" },
-  { id:"date_lounge", name:"酒廊唱歌", area:"中環", type:"date", region:"island", x:43, y:84, emoji:"🎤", layer:"date",
-    desc:"中環酒廊燈光昏黃，駐場歌手彈着結他唱慢歌，適合坐下來慢慢談心。" },
-  { id:"date_cinema", name:"旺角戲院", area:"旺角", type:"date", region:"kln", x:40, y:8, emoji:"🎬", layer:"date",
-    desc:"旺角戲院門口貼滿手繪海報，散場時人潮湧出，門前永遠熱鬧。" },
-  { id:"date_beach", name:"淺水灣", area:"淺水灣", type:"date", region:"island", x:85, y:96, emoji:"🏖️", layer:"date",
-    desc:"淺水灣沙灘水清沙幼，泳棚與更衣室維持舊貌，假日遊人較多。" },
-  { id:"date_airport", name:"啟德機場", area:"九龍城", type:"date", region:"kln", x:82, y:35, emoji:"✈️", layer:"date",
-    desc:"啟德機場跑道伸入維港，飛機低飛越過九龍城上空，轟鳴聲不絕於耳。" },
 ];
+/* v20a407：六個約會場景（用戶 2026-11-26 拍板收起約會層）——唔再係地圖地點，
+   冇 pin／標籤／自由到達入口；只做約會選擇同場景背景（背景檔見 LOC_SHEET_BG
+   bg_159_*，約會場景經 rom159DateScene 顯示）。約會由約會流程帶玩家去：
+   傾談後約／地點面板約人／手帳 Call 機約，揀場嗰陣先去到場景。 */
+const DATE_SCENES407 = [
+  { id:"date_harbour", name:"尖沙咀海傍", emoji:"🌊" },
+  { id:"date_peak", name:"山頂", emoji:"🌃" },
+  { id:"date_lounge", name:"酒廊唱歌", emoji:"🎤" },
+  { id:"date_cinema", name:"旺角戲院", emoji:"🎬" },
+  { id:"date_beach", name:"淺水灣", emoji:"🏖️" },
+  { id:"date_airport", name:"啟德機場", emoji:"✈️" },
+];
+function dateScene407ById(id){ try{ return (DATE_SCENES407||[]).find(x=>x && x.id===id) || null; }catch(_e){ return null; } }
 
 const NPCS = {
   colleague:{ id:"colleague", name:"林曉晴", role:"同期演員", face:"npc_lin",
@@ -8398,32 +8351,13 @@ function enrolledCourseCta(courseId){
 
 let S=null, atLoc=null, mapRegion="all"; /* v19z20: region filter retired; always all */
 let mapShowAllLocs=false; /* v19z20: idle pins dimmed unless true */
-/* ===== v20a159 MAP159：地圖分兩層（草稿 §3.2）=====
-   片場層（"set"，預設）：17 個原有地點。約會層（"date"）：6 個新點＋金龍茶餐廳
-   ＋廟街禮品。何生事務所／仁康醫院唔入約會層。
-   層狀態只係 transient（唔入 save）；切換唔耗出行額度、唔刷新成個地圖狀態，
-   只係 drawMap 重繪一次＋paintBar 更新掣面文字。 */
-let map159Layer="set";
-const MAP159_DATE_LAYER_SHARED=["cafe_cha","gift_shop"]; /* 約會層共享點：茶餐廳（通用約會）＋廟街（夜市） */
-function map159LocLayer(L){ try{ return (L && L.layer) ? L.layer : "set"; }catch(_e){ return "set"; } }
-function map159LocVisible(L){
-  if(!L) return false;
-  const layer = (typeof map159Layer!=="undefined" && map159Layer) ? map159Layer : "set";
-  if(layer==="date") return map159LocLayer(L)==="date" || MAP159_DATE_LAYER_SHARED.indexOf(L.id)>=0;
-  return map159LocLayer(L)!=="date";
-}
-function map159LayerBtnHtml(){
-  const isDate = (typeof map159Layer!=="undefined" && map159Layer==="date");
-  return `<button type="button" class="map-layer159" id="map-layer159" aria-pressed="${isDate?"true":"false"}" title="切換地圖層次，不耗出行額度"><span class="lay363-a">${isDate?"約會層":"片場層"}</span><span class="lay363-b">${isDate?"切返片場":"切去約會"}</span></button>`;
-}
-/* 第三出沒點（tertiary）——6 個新點嘅日常用途（草稿 §3.2：每個新地點除咗約會要有日常用途）。
-   出沒率 p／主場 share／上限／冷卻數字一律唔郁：tertiary 唔食主場／副場嘅份——只喺
-   本來唔出沒嘅日子（out roll 唔中），以 20% 機率去第三點；主場／副場出現率同以前一字不差，
-   同一日只可以喺一個地方。roll 寫死喺 enc79EnsureDay／rom176EnsureDay 入面，唔可以抽做
-   共用 helper——enc79／rom176 嘅 logic test 係逐個函數抽取 eval，共用 helper 會令佢哋 ReferenceError。
-   分配（每人一個第三點，六個新點各有一人；跟草稿 §3.2 分配表）：
-   ENC79：葉敏芝→酒廊、蘇芷茵→海傍；
-   ROM176：林曉晴→啟德、周采兒→戲院、藍若曦→淺水灣、徐寶珊→山頂。 */
+/* v20a407：地圖只有一層（17 個地點全畫，冇切層掣）；約會場景見 DATE_SCENES407。
+   第三出沒點（tertiary）改返地圖日常地點，出沒率 p／主場 share／上限／冷卻一律唔郁：
+   只喺本來唔出沒嘅日子（out roll 唔中）以 20% 機率去第三點，同一日只喺一個地方；
+   roll 寫死喺 enc79EnsureDay／rom176EnsureDay（logic test 逐函數抽取 eval，唔抽 helper）。
+   分配（跟角色日常活動）：ENC79 葉敏芝→天星音樂、蘇芷茵→海港廣播；
+   ROM176 林曉晴→金龍茶餐廳、周采兒→海港廣播、藍若曦→香江唱片、徐寶珊→紅棉影業、
+   葉敏芝→香江唱片、蘇芷茵→天星音樂。 */
 
 function R(a,b){return a+Math.floor(Math.random()*(b-a+1))}
 function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v))}
@@ -25183,19 +25117,7 @@ function mapMe363(box, pinPos){
     if(!box || !pinPos) return;
     const id = (typeof atLoc!=="undefined" && atLoc && pinPos[atLoc]) ? atLoc : "home";
     const p = pinPos[id];
-    if(!p){
-      /* v20a373：約會層冇玩家標記（W3 實測）——玩家實際喺片場地點，約會圖上冇對應 pin，
-         唔好亂落 pin；改出頂部紙頁眉「目前所在：X」（GPT 方案，像素人做行首插圖）。 */
-      try{
-        const locId = (typeof atLoc!=="undefined" && atLoc) ? atLoc : "home";
-        const loc = (typeof LOCS!=="undefined" && Array.isArray(LOCS)) ? LOCS.find(x=>x && x.id===locId) : null;
-        const strip = document.createElement("div");
-        strip.className = "map-here373"; strip.setAttribute("aria-hidden","true");
-        strip.innerHTML = `<img src="assets/ui363/shoot.png" alt=""/><span>目前所在：${loc ? loc.name : "阿偉屋企"}</span>`;
-        box.appendChild(strip);
-      }catch(_e373){}
-      return;
-    }
+    if(!p) return; /* v20a407：地圖得一層，pinPos 必有 atLoc／home；冇就唔落標記。 */
     const me = document.createElement("div");
     me.className = "map-me363"; me.setAttribute("aria-hidden","true");
     me.style.left = p.x + "%"; me.style.top = p.y + "%";
@@ -25251,20 +25173,6 @@ function deCollideLabels363(){
         }
       }
     }catch(_e391z){}
-    /* v20a402 UI402-4：07c——.map-here373 日卡橫條（「目前所在：…」）都係障礙物，
-       併入同一 zone391（＋4px 緩衝），等現成 pushOffMarker391() 將撞區標籤推落橫條之下。
-       橫條喺頂，撞區標籤只可以向下推，現成方向邏輯（唔出舞台）會自動揀啱。 */
-    try{
-      const here402 = document.querySelector(".map-here373");
-      if(here402 && here402.offsetParent!==null){
-        const rh = here402.getBoundingClientRect();
-        const zh = { left:rh.left-4, right:rh.right+4, top:rh.top-4, bottom:rh.bottom+4 };
-        zone391 = zone391
-          ? { left:Math.min(zone391.left, zh.left), right:Math.max(zone391.right, zh.right),
-              top:Math.min(zone391.top, zh.top), bottom:Math.max(zone391.bottom, zh.bottom) }
-          : zh;
-      }
-    }catch(_e402z){}
     const stage391 = document.getElementById("map-stage");
     const stageH391 = (stage391 && stage391.clientHeight) || 576;
     /* v20a379：玩家標記係障礙物——同佢重疊／近距（8px 內）嘅地點名要推開。
@@ -25704,12 +25612,8 @@ function paintBar(){
         if(_lst371.length) seasonLine371 = `<span class="map-hint-aud108">主線限期：${season371LineText(_lst371[0])}（手帳「進度」頁看全部）</span>`;
       }catch(_e371){}
       /* v20a135 MAP135：灰色規則行、劇情卡、地點篩選掣已拎走；出行已併入 planLine（上）。 */
-      /* v20a159 MAP159：層切換掣生喺 #map-hint 行尾（paintBar 每次重寫 innerHTML，掣面文字跟層走；
-         委派掛喺 #map-hint 上，見 wireMapLayer159；切換唔耗出行額度）。 */
-      let layerBtn159 = "";
-      try{ if(typeof map159LayerBtnHtml==="function") layerBtn159 = map159LayerBtnHtml(); }catch(_e159){}
       let stk363 = ""; try{ stk363 = todaySticker363(pid); }catch(_e){}
-      return `${stk363}<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${audLine108}${awardLine218}${seasonLine371}${startToday}${layerBtn159}`;
+      return `${stk363}<span class="map-hint-date"><b>${fmtDate()}</b></span><span class="map-hint-plan">${planLine}${stressHint}</span>${audLine108}${awardLine218}${seasonLine371}${startToday}`;
     })();
   try{
     const stBtn=document.getElementById("map-start-today");
@@ -26059,9 +25963,8 @@ function drawMap(){
     return { hasNpc, boardList, boardN, canBoardN, tip, hasTip, isStoryTip, hasBoard, hasStar, starName, hasAction };
   }
   /* v19z3／v19z20：近針扇形錯開（略加大半徑減重疊） */
-  /* v20a159 MAP159：只顯示當前層嘅地點（片場層 17 個／約會層 6 新＋茶記＋廟街）；
-     底欄 #map-area-list 同最近針解析都食同一個 visible，唔使逐處改。 */
-  const visible = LOCS.filter(map159LocVisible);
+  /* v20a407：地圖 17 個地點全畫；底欄 #map-area-list 同最近針解析食同一個 visible。 */
+  const visible = LOCS.slice();
   const placed = visible.map(L=>({ L, x:Number(L.x)||0, y:Number(L.y)||0 }));
   const CLUSTER = 7.5; /* % distance */
   const claimed = new Set();
@@ -26205,18 +26108,6 @@ function drawMap(){
   }catch(_e){}
   /* v20a137 MAP137：地點名＋會場標籤即場定位（cover 換算；見 positionMapLabels137）。 */
   try{ if(typeof positionMapLabels137==="function") positionMapLabels137(); }catch(_e){}
-  /* v20a159 MAP159：墨字地名（.mn68）跟層走——另一層嘅名唔可以留喺地圖上面。
-     mn68 冇 data-loc 欄（唔郁上面 17 個舊 div），按文字對 LOCS 名；
-     唔係地點名嘅 div（例如會場標籤）唔郁。 */
-  try{
-    const visNames = {};
-    visible.forEach(L=>{ visNames[L.name]=1; });
-    document.querySelectorAll(".map-names68 .mn68").forEach(el=>{
-      const t = (el.textContent||"").trim();
-      if(!t) return;
-      el.style.display = visNames[t] ? "" : "none";
-    });
-  }catch(_e){}
   /* v363 UI363：像素人位置指示＋紙標籤避撞（只郁視覺，唔郁熱區座標） */
   try{ mapMe363(box, pinPos); }catch(_e){}
   try{ deCollideLabels363(); }catch(_e){}
@@ -29333,7 +29224,7 @@ function endingRomanceState48(){
        （toast＋手帳／地點 modal）＋手帳人脈頁鎖定狀態＋鎖定後其他女角行為表；
        鎖定唔影響事業線（通告／訓練／頒獎禮／結局事業軸照行）。
    (2) 約會系統——三入口（地點面板約／傾談後即場約／手帳人脈頁 Call 機約）；
-       每人 3 專屬地點＋金龍茶餐廳通用（現有片場層地點，唔發明新地點；事務所／醫院唔做約會地點）；
+       每人 3 專屬地點＋金龍茶餐廳通用（現有地圖地點，唔發明新地點；事務所／醫院唔做約會地點）；
        約會耗一日、使茶錢級數（約之前見到價錢）；每人每週 1 次、一星期只約一個人；
        約會本身唔加分，場內抉擇先加減（好 +1／差 -1）；撞期（拍攝日／試鏡日）用簡化版 C10 模式。
        簡化說明（寫死喺度，唔好日後當 bug）：草稿話「約定聽日」，實裝做即日赴約——
@@ -29909,9 +29800,11 @@ function rom159OpenDatePicker(who, L){
     const rows = w.spots.map(id=>{
       const sp = ROM159_DATES[id];
       if(!sp) return "";
-      const locName = (typeof LOCS!=="undefined" && LOCS) ? ((LOCS.find(l=>l.id===sp.locId)||{}).name || sp.label) : sp.label;
+      const _sc407 = (typeof dateScene407ById==="function") ? dateScene407ById(sp.locId) : null;
+      const locName = _sc407 ? _sc407.name : ((typeof LOCS!=="undefined" && LOCS) ? ((LOCS.find(l=>l.id===sp.locId)||{}).name || sp.label) : sp.label);
+      const locIcon407 = (_sc407 && typeof iconHtml112==="function") ? (iconHtml112(_sc407.emoji||"") + " ") : "";
       return `<button type="button" class="act act-priority" data-date-spot="${id}" style="width:100%;margin:0 0 8px;text-align:left">
-        <div><div class="n">${locName} · $${sp.cost}</div>
+        <div><div class="n">${locIcon407}${locName} · $${sp.cost}</div>
         <div class="h">${sp.label}：${sp.intro}</div></div>
         <div class="cost">約</div>
       </button>`;
@@ -30004,6 +29897,8 @@ function rom159DateScene(who, spot, L, ended, summary){
       const face379 = npc379 && npc379.face;
       portrait379 = (face379 && typeof PORTRAITS!=="undefined") ? (PORTRAITS[face379] || "") : "";
     }catch(_p379){}
+    let bg407 = "";
+    try{ const _b407 = (typeof LOC_SHEET_BG!=="undefined" && LOC_SHEET_BG) ? LOC_SHEET_BG[spot.locId] : ""; if(_b407) bg407 = `<div class="date-scene-bg407" style="background-image:url('${_b407}')"></div>`; }catch(_e407){}
     const dlg379 = (txt)=> portrait379
       ? `<div class="dlg"><div class="dlg-stage"><img class="dlg-portrait" src="${portrait379}" alt="${w.name}"/><div class="dlg-side"><div class="dlg-name">${w.name}</div><div class="dlg-bubble">${txt}</div></div></div></div>`
       : `<p>${txt}</p>`;
@@ -30018,7 +29913,7 @@ function rom159DateScene(who, spot, L, ended, summary){
       modal(`<h3>約會 · ${w.name}</h3>${dlg379(line)}<p class="gold">${deltaTxt}</p>${ended?`<p class="dayres-stamp397">一週完結</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()} · 約會用咗一日</p>`,
         [{label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}], {onDismiss: go, keepScene397:true}); /* v20a398 UI398-5：44 號約會結果卡用 scene 模式 */
     };
-    modal(`<h3>約會 · ${w.name}（${spot.label}）</h3>${dlg379(spot.intro)}<p class="sub">揀一句回應——講啱咗，兩個人近啲；講錯咗，佢會冷淡啲。</p>`,[
+    modal(`<h3>約會 · ${w.name}（${spot.label}）</h3>${bg407}${dlg379(spot.intro)}<p class="sub">揀一句回應——講啱咗，兩個人近啲；講錯咗，佢會冷淡啲。</p>`,[
       {label: spot.good.label, role:"p", on:()=>{
         /* v20a378（B12）：rel 上限 7——顯示實際落數，撞頂唔再假報 +1。 */
         let b378 = 0; try{ b378 = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
@@ -43764,13 +43659,13 @@ const ENC79_STARS = [
   { id:"luk_baakyin",  name:"陸柏言", primary:"film_lion",   secondary:"rec_star",    area:"片場嗰邊",     win:[[1992,"夏"],[1992,"秋"]] },
   { id:"liu_bingxing", name:"廖炳星", primary:"cafe_cha",    secondary:"film_cotton", area:"茶餐廳嗰邊",   win:[[1992,"秋"],[1992,"冬"]] },
   { id:"ngai_wingnaam",name:"魏詠男", primary:"film_harbour",secondary:"agency_ho",   area:"片場嗰邊",     win:[[1991,"春"],[1991,"夏"]] },
-  { id:"yip_manji",    name:"葉敏芝", primary:"rec_hk",      secondary:"tvb_kowloon", tertiary:"date_lounge", area:"唱片公司嗰邊", win:[[1991,"夏"],[1991,"秋"]] },
+  { id:"yip_manji",    name:"葉敏芝", primary:"rec_hk",      secondary:"tvb_kowloon", tertiary:"rec_star", area:"唱片公司嗰邊", win:[[1991,"夏"],[1991,"秋"]] },
   { id:"mak_zhendong", name:"麥震東", primary:"film_cotton", secondary:"film_lion",   area:"片場嗰邊",     win:[[1991,"冬"],[1992,"春"]] },
   { id:"lok_gasing",   name:"駱家聲", primary:"tvb_longmen", secondary:"rec_hk",      area:"電視台嗰邊",   win:[[1992,"春"],[1992,"夏"]] },
   { id:"pang_siuki",   name:"彭少祺", primary:"ad_central",  secondary:"tvb_longmen", area:"廣告界嗰邊",   win:[] },
   { id:"chung_choning",name:"鍾楚凝",primary:"rec_star",    secondary:"ad_adm",      area:"唱片公司嗰邊", win:[[1991,"秋"]] },
   { id:"gu_mingfai",   name:"顧明輝", primary:"tvb_harbour", secondary:"cafe_cha",    area:"電台嗰邊",     win:[[1991,"秋"],[1991,"冬"]] },
-  { id:"so_jiyan",     name:"蘇芷茵", primary:"rec_wanchai", secondary:"ad_central",  tertiary:"date_harbour", area:"唱片公司嗰邊", win:[[1991,"春"]] },
+  { id:"so_jiyan",     name:"蘇芷茵", primary:"rec_wanchai", secondary:"ad_central",  tertiary:"tvb_harbour", area:"唱片公司嗰邊", win:[[1991,"春"]] },
   { id:"chai_zanhoi",  name:"齊鎮海", primary:"tvb_longmen", secondary:"tvb_harbour", area:"電視台嗰邊",   win:[[1990,"春"],[1990,"夏"],[1992,"春"],[1992,"夏"]] },
   { id:"ching_tinlok", name:"程天諾", primary:"rec_star",    secondary:"rec_hk",      area:"唱片公司嗰邊", win:[[1992,"秋"],[1992,"冬"]], unlockYear:1992 },
   /* v20a290 Q2：五位名冊外女星入名冊（12→17）。主場／副場全部係已在 13 個巧遇可達地點併集
@@ -44030,8 +43925,8 @@ function enc79EnsureDay(){
   for(const def of ENC79_STARS){
     const { p, share } = enc79PresenceP(def, day);
     if(!(p>0)) continue;
-    /* v20a159 MAP159：第三出沒點——本來唔出沒嘅日子（out roll 唔中），以 20% 機率去第三點
-       （收工後先去嘅消閒地方）。主場／副場出現率同以前一字不差（p／share 數字零改動，
+    /* v20a407：第三出沒點（地圖日常地點）——本來唔出沒嘅日子（out roll 唔中），以 20% 機率去第三點。
+       主場／副場出現率同以前一字不差（p／share 數字零改動，
        rom176 B2／B3／B5／B6 嗰啲率測試唔受影響）；同一日只可以喺一個地方（partition 唔變）。 */
     if(enc79Rand("enc79:"+day+":"+def.id+":out") >= p){
       if(def.tertiary && enc79Rand("enc79:"+day+":"+def.id+":tert") < 0.20)
@@ -45077,13 +44972,13 @@ function enc79PlayEncounter(starId, locId, wasMet){
    dayIndex≥335 只係 done-state 讀唔到嗰陣嘅退路（code 閘話 N10 開 1991 冬，同設計 fallback 假設嘅 1990-12-01 差一年，見 NOTES）。
    傾談經現行 doTalk——注意：main 入面 doTalk 加嘅係 S.npcs 人情，唔係 S.story.rel；rel 只靠送禮＋劇情節點升（見 NOTES／模擬）。 ===== */
 const ROM176_WOMEN = [
-  { key:"hiu",  npcId:"colleague", name:"林曉晴", primary:"tvb_longmen", secondary:"tvb_kowloon", tertiary:"date_airport" },
-  { key:"choi", npcId:"reporter",  name:"周采兒", primary:"rec_star",    secondary:"film_cotton", tertiary:"date_cinema" },
-  { key:"lan",  npcId:"lan",       name:"藍若曦", primary:"tvb_longmen", secondary:"tvb_kowloon", tertiary:"date_beach" },
-  { key:"xu",   npcId:"xu",        name:"徐寶珊", primary:"ad_central",  secondary:"ad_adm",      tertiary:"date_peak" },
+  { key:"hiu",  npcId:"colleague", name:"林曉晴", primary:"tvb_longmen", secondary:"tvb_kowloon", tertiary:"cafe_cha" },
+  { key:"choi", npcId:"reporter",  name:"周采兒", primary:"rec_star",    secondary:"film_cotton", tertiary:"tvb_harbour" },
+  { key:"lan",  npcId:"lan",       name:"藍若曦", primary:"tvb_longmen", secondary:"tvb_kowloon", tertiary:"rec_hk" },
+  { key:"xu",   npcId:"xu",        name:"徐寶珊", primary:"ad_central",  secondary:"ad_adm",      tertiary:"film_cotton" },
   /* v20a380：補葉／蘇巧遇（第五輪評估 P1-2：感情層送禮＋傾談冇入口；主場跟 meet 地點：葉選美後台電視台、蘇灣仔唱片大堂） */
-  { key:"yip",  npcId:"yip",       name:"葉敏芝", primary:"tvb_longmen", secondary:"tvb_kowloon", tertiary:"date_peak" },
-  { key:"so",   npcId:"so",        name:"蘇芷茵", primary:"rec_wanchai", secondary:"ad_central",  tertiary:"date_harbour" },
+  { key:"yip",  npcId:"yip",       name:"葉敏芝", primary:"tvb_longmen", secondary:"tvb_kowloon", tertiary:"rec_hk" },
+  { key:"so",   npcId:"so",        name:"蘇芷茵", primary:"rec_wanchai", secondary:"ad_central",  tertiary:"rec_star" },
 ]; /* v20a159 ROM159：Vera／海媚出局（四位女角）。v20a297：NPCS mei／vera 條目已刪。 */
 const ROM176_P = 0.50, ROM176_SHARE = 0.65, ROM176_DAILY_CAP = 1, ROM176_WEEKLY_CAP = 3, ROM176_COOLDOWN = 2, ROM176_PITY_DAYS = 5;
 const ROM176_MEET_NODES = { hiu:["R_hiu_meet"], choi:["R_choi_meet"], lan:["R_lan_meet"], xu:["R_xu_meet"], yip:["R_yip_meet"], so:["R_so_meet"] }; /* v20a159 ROM159：刪 vera，加 yip／so（葉／蘇初遇節點） */
@@ -45166,8 +45061,8 @@ function rom176EnsureDay(){
   for(const w of ROM176_WOMEN){
     const ps = rom176PresenceP(w.key, day);
     if(!(ps.p>0)) continue;
-    /* v20a159 MAP159：第三出沒點——本來唔出沒嘅日子（out roll 唔中），以 20% 機率去第三點
-       （收工後先去嘅消閒地方）。主場／副場出現率同以前一字不差（p／share 數字零改動，
+    /* v20a407：第三出沒點（地圖日常地點）——本來唔出沒嘅日子（out roll 唔中），以 20% 機率去第三點。
+       主場／副場出現率同以前一字不差（p／share 數字零改動，
        rom176 B2／B3／B5／B6 嗰啲率測試唔受影響）；同一日只可以喺一個地方（partition 唔變）。 */
     if(enc79Rand("rom176:"+day+":"+w.key+":out") >= ps.p){
       if(w.tertiary && enc79Rand("rom176:"+day+":"+w.key+":tert") < 0.20)
@@ -47028,7 +46923,7 @@ function addLocTalkGiftActs(add, L, npcId){
   }catch(_e){}
   /* v20a389 UI389（用戶 2026-11-23 拍板＋GPT 方案）：工作地點（film／tv／music／ad）
      傾談收埋去在場角色列——名牌式貼紙掣（人名＋「💬 傾談 · 耗日」），有 NPC 先顯示；
-     非工作地點（茶餐廳／事務所／約會層）維持行動列表掣。確認流程不變。 */
+     非工作地點（茶餐廳／事務所等）維持行動列表掣。確認流程不變。 */
   const host389 = document.getElementById("loc-talk389");
   if(host389){ host389.hidden = true; host389.innerHTML = ""; }
   if(npcId && !(typeof rom176IsWomanNpc==="function" && rom176IsWomanNpc(npcId))){
@@ -47052,7 +46947,7 @@ function addLocTalkGiftActs(add, L, npcId){
 }
 /* v20a389 UI389：addLocBridgeActs／addLocGigActs 已移除——逐張通告掣收埋入通告欄
    （用戶 2026-11-23 拍板）；soft bridge 釘板改由 openLoc 直接呼叫 pinSoftBridgeOnBoard。 */
-/* ===== v20a159 MAP159：地點 sheet 約會對象列 =====
+/* ===== v20a407：地點 sheet 約人入口（揀場嗰陣先去到約會場景） =====
    邊個女角喺呢度約得，讀 ROM159_WOMEN 各人 spots（A／B1 工人擁有，呢度只讀唔改）：
    spots 入面可以直接係 locId（新寫法），或者係 ROM159_DATES 嘅 key（Phase 1 寫法，
    經 ROM159_DATES 轉 locId）——兩種寫法都認，A／B1 換寫法嗰陣 sheet 自動跟。
@@ -47147,6 +47042,8 @@ function openLoc(id, opts){
   if(isStoryPlayActive() && !opts.forceRestore){ toast("劇情進行中，完成對白才可以繼續。"); return; }
   /* v20a159 ROM159：排他鎖／軟提示待發通知（rel 5 即場提示 modal；劇情進行中嗰陣唔彈）。 */
   try{ if(typeof rom159FlushNotices==="function") rom159FlushNotices(); }catch(_e){}
+  /* v20a407：約會場景唔係地圖地點——非 LOCS id 一律唔開 sheet（唔扣額度、唔擲巧遇）。 */
+  if(!LOCS.some(x=>x && x.id===id)) return;
   if(!opts.forceRestore && todayIsForcedDay()){
     closeSheet();
     kickScheduleIfNeeded();
@@ -47615,8 +47512,8 @@ function openLoc(id, opts){
        通告入口唔 hardcode 地點：用 gigsForLocSeasonBoard 判斷，有 gig 先出——
        cafe_cha 平時無 gig 就自動唔顯示；事務所一有幫忙通告（人情到期注入）即刻有板開。 */
     addLocTalkGiftActs(add, L, npcId);
-    /* v20a159 MAP159：hub 地點約會對象列（金龍茶餐廳：曉晴／采兒經 ROM159_DATES；
-       事務所冇人約得，helper 會回空，唔出掣）。 */
+    /* v20a407：hub 地點約人入口（金龍茶餐廳：六人經 ROM159_DATES；事務所冇人約得，
+       helper 回空唔出掣）。揀場嗰陣先去到約會場景，唔使先去場景地點。 */
     try{ addRom159DateActs(add, L); }catch(_e159){}
     try{
       /* v20a389：板數要同 advanceDay 一樣先 sync 通告庫，讀檔後未翻日都唔會顯示（0）。 */
@@ -47632,8 +47529,8 @@ function openLoc(id, opts){
   } else {
   /* v20a22：傾談／送禮抽咗做共用 helper（hub 分支共用同一套） */
   addLocTalkGiftActs(add, L, npcId);
-  /* v20a159 MAP159：非 hub 地點約會對象列（6 個新點＋廟街禮品：讀 ROM159_WOMEN spots；
-     新點而家未有 ROM159_DATES 條目，A／B1 落地嗰陣自動出掣）。 */
+  /* v20a407：非 hub 地點約人入口（讀 ROM159_WOMEN spots 經 ROM159_DATES；
+     揀場嗰陣先去到約會場景）。 */
   try{ addRom159DateActs(add, L); }catch(_e159){}
   /* v18d 原為 rec_hk 附設小賣；v20a96 LOC96：禮物店獨立做 gift_shop 地點，
      shopAtLoc 跟正規化後嘅 locId 行——唱片公司唔再出呢個掣，新店先出。 */
@@ -47742,9 +47639,8 @@ const LOC_SHEET_BG = {
      applyLocSheetBg 探測到 404 會行中性漸變底，唔爆 error）；屋企用現成 bg_wf4_home.jpg，唔使新圖。 */
   clothing_shop:"assets/story/locs/bg_loc_clothing_shop.jpg",
   home:"assets/story/locs/bg_wf4_home.jpg",
-  /* v20a159 MAP159：約會層 6 張新場景圖（圖檔由 C 工人出緊，呢個 clone 未有——
-     對照表照寫呢啲檔名；圖 404 嗰陣 applyLocSheetBg 會用中性漸變底頂住，
-     唔用第二個地點嘅圖、唔爆 error。檔名唔加 ?v= 參數，C 工人出圖嗰陣原名入庫即啱。 */
+  /* v20a407：六個約會場景背景（唔係地圖地點；約會場景經 rom159DateScene 顯示，
+     揀場嗰陣先去到）。檔名唔加 ?v= 參數。 */
   date_harbour:"assets/story/locs/bg_159_harbour.jpg",
   date_peak:"assets/story/locs/bg_159_peak.jpg",
   date_lounge:"assets/story/locs/bg_159_lounge.jpg",
@@ -47762,11 +47658,9 @@ function applyLocSheetBg(locId){
     bg.hidden=false;
     sheet.classList.add("has-loc-bg");
     sheet.classList.remove("loc-bg-missing159");
-    /* v20a159 MAP159：新地點圖檔由 C 工人出緊，呢個 clone 未有——圖 404 嗰陣
-       用中性漸變底頂住（同 bg_generic_interior 同一套米紙漸變，唔用第二個地點
-       嘅圖頂住，唔爆 error）。只對 bg_159_ 待出圖＋v265 服裝店待出圖做 preload 檢查；現有
-       15 張實檔唔行呢條路，免多一次請求。 */
-    if(url.indexOf("bg_159_")>=0 || url.indexOf("bg_loc_clothing_shop.jpg")>=0){
+    /* v265 服裝店圖 404 嗰陣用中性漸變底頂住（唔用第二個地點嘅圖、唔爆 error）；
+       只對服裝店待出圖做 preload 檢查，實檔唔行呢條路，免多一次請求。 */
+    if(url.indexOf("bg_loc_clothing_shop.jpg")>=0){
       try{
         const probe=new Image();
         probe.onerror=()=>{ try{ bg.style.backgroundImage="linear-gradient(160deg,#ebe2d4 0%,#d8cbb8 55%,#c9b8a0 100%)"; sheet.classList.add("loc-bg-missing159"); }catch(_e){} };
@@ -51789,20 +51683,6 @@ function cont(){
     mapShowAllLocs = !mapShowAllLocs;
     drawMap();
     try{ toast(mapShowAllLocs ? "已顯示全部地點" : "只顯示有事做嘅地點", {closeSheet:false}); }catch(_e){}
-  });
-})();
-/* v20a159 MAP159：層切換掣委派（跟 wireMapShowAllLocs 同一寫法，掛喺 #map-hint 上；
-   paintBar 重寫 innerHTML 都唔會甩；切換唔耗出行額度、唔刷新成個地圖狀態，
-   只係 drawMap 重繪一次＋paintBar 更新掣面文字）。 */
-(function wireMapLayer159(){
-  const host=document.getElementById("map-hint");
-  if(!host) return;
-  host.addEventListener("click", (e)=>{
-    const btn=(e.target && e.target.closest) ? e.target.closest("#map-layer159") : null;
-    if(!btn) return;
-    map159Layer = (map159Layer==="date") ? "set" : "date";
-    try{ drawMap(); }catch(_e){}
-    try{ paintBar(); }catch(_e){}
   });
 })();
 

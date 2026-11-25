@@ -147,8 +147,8 @@ ok("v398 休息卡 scene 模式唔郁（已有 keepScene397）",
 ok("v398 SAVE key 不變 starVolunteer_map_v19w", "starVolunteer_map_v19w" in src)
 ok("v398 softRev 不變 s107", 'SOFT_REV = "s107"' in src)
 ok("v398 ?v= 不變 v=20a10", "v=20a10" in src)
-ok("v398 靜態 <button 總數 110（v406：選單刪「返回」列 −1）（v397：112，兩粒板掣合併做一粒）",
-   src.count("<button") == 110)
+ok("v398 靜態 <button 總數 109（v407 刪切層掣 −1）（v406：選單刪「返回」列 −1）（v397：112，兩粒板掣合併做一粒）",
+   src.count("<button") == 109)
 
 print(f"\n{total[0] - len(fails)}/{total[0]} passed")
 sys.exit(1 if fails else 0)

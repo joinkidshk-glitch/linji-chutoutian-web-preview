@@ -46,11 +46,10 @@ ok('fallback 仍指現存舊圖（MAP_IMG 未定義時唔會 404）', '"assets/h
 
 # --- (2) 地點標籤沿用：23 個 .mn68（v159 加 6 個約會新點；v265 加花園街成衣店／阿偉屋企） ---
 mn = re.findall(r'<div class="mn68[^"]*"[^>]*>([^<]+)</div>', src)  # v20a373：容許額外 class（mn68-ask373）
-ok('方案 B 地點標籤恰好 23 個', len(mn) == 23)
-ok('23 個地點名齊（舊 15 同 v96 一致＋v159 加 6 個約會新點＋v265 加 2 新點）', set(mn) == {
+ok('方案 B 地點標籤恰好 17 個（v407 約會層收起）', len(mn) == 17)
+ok('17 個地點名齊（舊 15＋v265 加 2 新點；v407 約會場景唔再係地圖標籤）', set(mn) == {
     '獅子山製片', '香江唱片', '星河電視台', '九龍電視台', '海港廣播', '紅棉影業', '維港電影',
     '中環廣告', '金鐘創意', '灣仔唱片', '天星音樂', '金龍茶餐廳', '何生事務所', '廟街禮品', '仁康醫院',
-    '尖沙咀海傍', '山頂', '酒廊唱歌', '旺角戲院', '淺水灣', '啟德機場',
     '花園街成衣店', '阿偉屋企'})
 
 # --- (3) LOCS 座標（v366 按 v10 新圖金邊建築重對） ---
@@ -64,7 +63,7 @@ for lid, (ex, ey) in EXP_LOCS.items():
     line = next((ln for ln in src.split('\n') if f'id:"{lid}"' in ln), '')
     m = re.search(r'x:(\d+), y:(\d+)', line)
     if not m or (int(m.group(1)), int(m.group(2))) != (ex, ey): locs_ok = False
-ok('LOCS 舊 15 地點座標同 v366 新圖對位逐一一致（v159 總數 15→21；v265 總數 21→23）', locs_ok and len(re.findall(r'\{ id:"', src.split('const NPCS')[0].split('const LOCS')[1])) == 23)
+ok('LOCS 舊 15 地點座標同 v366 新圖對位逐一一致（v407 總數 17）', locs_ok and len(re.findall(r'\{ id:"', src.split('const NPCS')[0].split('const LOCS')[1].split('\n];')[0])) == 17)
 
 # --- (4) 地區名細字層（v20a137：用戶拍板大地圖唔要地區名，12 個已刪；淨低會場標籤） ---
 ok('地區層容器存在（map-districts97，淨低會場標籤）', 'id="map-districts97"' in src)

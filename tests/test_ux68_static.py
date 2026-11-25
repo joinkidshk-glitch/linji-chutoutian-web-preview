@@ -76,11 +76,11 @@ ok('sheet 標題加地區、desc 唔重複', 'document.getElementById("loc-title
 # plain top（記做 sign "+"、px "0"），其餘 22 個繼續 calc 格式。
 labels = re.findall(r'<div class="mn68[^"]*" style="left:([0-9.]+)%;top:(?:calc\((\d+)% ([+-]) (\d+)px\)|([0-9.]+)%)">([^<]+)</div>', src)  # v20a373：容許額外 class（mn68-ask373）
 labels = [(t[0], t[1] or t[4], t[2] or '+', t[3] or '0', t[5]) for t in labels]
-ok('地圖有 23 個墨字標籤（v20a96 LOC96 加海傍禮品＋仁康醫院；v159 加 6 個約會新點；v265 加花園街成衣店／阿偉屋企）', len(labels) == 23)
+ok('地圖有 17 個墨字標籤（v407 約會層收起，23→17）', len(labels) == 17)
 lm = re.search(r'const LOCS = \[(.*?)\n\];', src, re.S)
 locs = re.findall(r'\{ id:"(\w+)", name:"([^"]+)"', lm.group(1) if lm else '')
 loc_names = [n for _, n in locs]
-ok('標籤文字同 LOCS 地點名逐個對得上', sorted(t[4] for t in labels) == sorted(loc_names) and len(loc_names) == 23)
+ok('標籤文字同 LOCS 地點名逐個對得上', sorted(t[4] for t in labels) == sorted(loc_names) and len(loc_names) == 17)
 spec = {
     # v366：換 v10 生成圖後按新圖金邊建築重對（LOCS 熱區＋標籤一齊移，見 NOTES_V20A366）
     '獅子山製片': ('56', '19', '-', '52'), '香江唱片': ('40', '40', '+', '34'),
@@ -94,10 +94,6 @@ spec = {
     # v20a108 UI108 S-7：維港電影 76%/+44 → 80%/+38（避開九龍城）、廟街禮品 46% → 44%
     # v20a142 B1：4 張標籤由花紋底微調去附近乾淨底（PIL 計分：香江 sd 49.8→27.1、廟街 47.6→25.6、海港 67.0→2.7、金龍 3.0→2.9；LOCS 熱區座標唔郁）
     '廟街禮品': ('24', '16', '-', '52'), '仁康醫院': ('86', '78', '+', '34'),
-    # v20a159 MAP159 B2：6 個約會新點標籤位置（對 index.html .mn68 div 實量）
-    '尖沙咀海傍': ('31', '42', '+', '34'), '山頂': ('90', '63', '+', '34'),
-    '酒廊唱歌': ('43', '84', '-', '52'), '旺角戲院': ('40', '8', '+', '31'),
-    '淺水灣': ('85', '96', '-', '52'), '啟德機場': ('82', '35', '-', '52'),
     # v20a265 COSTUME265：2 新點標籤位置（對 index.html .mn68 div 實量；成衣店貼舖頂、屋企貼樓底）
     '花園街成衣店': ('78', '7', '+', '44'), '阿偉屋企': ('13', '8', '+', '34'),
 }
