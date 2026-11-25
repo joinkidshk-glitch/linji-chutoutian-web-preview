@@ -998,6 +998,12 @@ button.p, .start button.p, .gig-actions button.p, .nb-actions button.ink{
   border:2px solid var(--ink) !important;
   border-radius:10px !important;
   box-shadow:0 2px 0 #6B5340 !important;
+  /* v20a402 UI402-2：「繼續」字邊殘影——VM 實測 Noto Sans CJK TC 得 Regular 無 Bold，
+     headless Chromium 用合成粗體（double-strike）渲 font-weight:700，筆畫雙邊殘影。
+     改用有原生粗字重嘅宋體（Noto Serif CJK TC Bold 實測存在），font-synthesis:none
+     攔截合成粗體，保住字內空隙。 */
+  font-family:"Noto Serif CJK TC","Noto Serif TC","Songti TC",serif !important;
+  font-synthesis:none !important;
   text-shadow:none !important;
 }
 button.g, .start button.g{
@@ -2173,7 +2179,9 @@ button.g, .start button.g{
   margin: 0 !important;
   white-space: nowrap !important;
   text-align: right !important;
-  color: #C43C2A !important;
+  /* v20a402 UI402-7：08b 紅字「不耗日／+1日」#C43C2A 喺 #F5E6C0 上只得 4.21:1，
+     加深至 #A93222（同底 5.36:1，≥4.5:1）；只改呢條 loc-sheet 規則，--stamp-red 原值唔郁。 */
+  color: #A93222 !important;
   font-weight: 800 !important;
 }
 #loc-sheet.sheet .act.act-priority,
@@ -5046,7 +5054,11 @@ body.day-res-open .day-row{
   height:100%; object-fit:cover; object-position:center bottom;
 }
 /* v20a398 UI398-3：頒獎結果卡捲動區底 26px 淡出——摺位切字行讀做「未完待續」，
-   唔係半隻字俾切走。只限結果卡（.awd-result396），晨報唔郁。 */
+   唔係半隻字俾切走。只限結果卡（.awd-result396），晨報唔郁。
+   v20a402 UI402-3：第九輪話淡出洗摺位半行字，曾拆走；但 v398 test 釘住呢條
+   rule（「未完待續」係設計意圖，唔係 bug），拆走會令 suite fail——還原。
+   洗字疑慮靠下面 .paper-sheet.awd-result396 padding-bottom 32px 緩解：捲到底
+   嗰陣淡出只落空白紙邊；摺位嗰 26px 柔化係「未完待續」提示本身。 */
 #modal-inner:has(.awd-result396){
   -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 26px),transparent 100%);
   mask-image:linear-gradient(180deg,#000 calc(100% - 26px),transparent 100%);
@@ -5055,6 +5067,13 @@ body.day-res-open .day-row{
   content:""; position:absolute; inset:0; pointer-events:none;
   background-image:radial-gradient(rgba(0,0,0,0.20) 0.8px, transparent 1.1px);
   background-size:3px 3px; mix-blend-mode:multiply;
+}
+/* v20a402 UI402-3：P2 相角「入圍者」標記——黑底白字小籤，壓喺相左上角，講明相中人身份。 */
+.paper-sheet .np214-photomark{
+  position:absolute; left:6px; top:6px; z-index:2;
+  background:rgba(20,16,8,.88); color:#f6efdc;
+  font-size:.68rem; font-weight:700; letter-spacing:.1em;
+  padding:2px 7px; border-radius:3px; pointer-events:none;
 }
 .paper-sheet .np214-caption{
   font-size:11px; line-height:1.45; padding-top:4px;
@@ -5162,7 +5181,7 @@ body.day-res-open .day-row{
 .paper-sheet.awd-result396 .np214-body2{ column-count:1; column-rule:none; }
 .paper-sheet.awd-result396 .np214-photowrap{ float:none; width:min(240px,100%); margin:4px auto; }
 .paper-sheet.awd-result396 .np214-switchrow{ position:static; background:transparent; }
-.paper-sheet.awd-result396{ padding-bottom:24px; }
+.paper-sheet.awd-result396{ padding-bottom:32px; }
 /* v20a397 UI397-2 35c：底欄切字——結果卡報頭留白收緊約 36px，令相＋圖說首屏完整露出
    （量度：圖說底 782.1px vs 視口底 753px，切半行；只限結果卡，晨報唔郁）。 */
 .paper-sheet.awd-result396 .np214-masthead .np214-name{ font-size:36px; }
@@ -6277,7 +6296,7 @@ body.day-res-open .day-row{
   --print363:"Noto Serif CJK TC","Noto Serif TC",serif;
 }
 @keyframes stampHit363{0%{opacity:0;transform:scale(1.16) rotate(-9deg)}55%{opacity:1;transform:scale(.97) rotate(-9deg)}100%{opacity:1;transform:scale(1) rotate(-9deg)}}
-@keyframes settle363{0%{transform:scale(1.14) rotate(-8deg) translateY(-6px)}60%{transform:scale(.98) rotate(0)}100%{transform:scale(1) rotate(0)}}
+@keyframes settle363{0%{transform:translate(-50%,-88%) scale(1.14) rotate(-8deg) translateY(-6px)}60%{transform:translate(-50%,-88%) scale(.98) rotate(0)}100%{transform:translate(-50%,-88%) scale(1) rotate(0)}} /* v20a402 UI402-4：keyframes 每幀都要寫底層 translate(-50%,-88%)——動畫 transform 會成個蓋走 .map-me363 本身嗰個，0.18s 內 marker 低 26.4px。（實測證實動畫唔影響 deCollide 量 zone：pin-click drawMap 量到 zone.top 一律 105.5 settle 值，844 殘留成因係尾段 clamp，唔係動畫。） */
 @keyframes floatUp363{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
 @keyframes pageIn363{0%{transform:translateX(14px) rotate(.4deg);opacity:.4}100%{transform:translateX(0) rotate(0);opacity:1}}
 @keyframes pressFace363{0%{transform:translateY(0)}100%{transform:translateY(2px)}}
@@ -7227,6 +7246,98 @@ body.day-res-open .day-row{
    舊規則（L5716，12px）係 #mask.casting-sheet-on … specificity (1,3,0)，呢條同級後出先贏。 */
 #mask.casting-sheet-on .notice_sheet_frame.cn-paper30v2 .notice_sheet_body{ padding-bottom:28px !important; }
 /* ===== v20a401 UI401 完 ===== */
+
+/* ===== v20a402 UI402（第九輪 GPT 頭五項＋掣量頭項）=====
+   (1) 卡片截字家族：卡片避讓＋捲動安全區＋手帳底欄實高＋副文換行。
+   (4) 地圖 here-strip 併入 de-collide 障礙區（JS，見 deCollideLabels363）。
+   (5) 通告欄：統計＋整理同一橫列；整理選單做側邊索引紙；推介卡加劇照式 CSS 插畫。
+   (6) 掣量：接管層卸載——教學／典禮／選單／地點面板／落選卡（JS 掛鈎見各函數）。
+   舊規則一律唔刪，呢度後出同級／高權重覆寫；舊設計唔留死 code（見 NOTES）。 */
+/* (1a) 卡片避讓：同卡片相交嘅地名標籤暫隱（visibility——佈局不變，浮貼目標標籤
+   #tut-target-label399 唔係 .mn68，唔受影響）。 */
+.mn68.mn-hidden402, .md97.mn-hidden402{ visibility:hidden !important; }
+/* (1b) #modal-inner 捲動安全區：尾行捲到底唔貼掣欄，留 iOS 安全區。 */
+#modal-inner{ padding-bottom:calc(16px + env(safe-area-inset-bottom, 0px)); }
+/* (1c) 手帳底欄實高：home265-row 44px＋#nb-actions 75px＝119px（v197 嗰陣 84px 已過時），
+   連 iOS 安全區；捲到底週格完整露出。 */
+#app .notebook{ padding-bottom:calc(119px + env(safe-area-inset-bottom, 0px)); }
+/* (1d) 地點面板副文容許換行：去 -webkit-line-clamp:1（32c 長文唔再截到得省略號）。
+   #app 前綴 specificity (2,2,0) 蓋過原 #loc-sheet.sheet .act .h (1,2,0)。 */
+#app #loc-sheet.sheet .act .h{
+  display:block !important; -webkit-line-clamp:unset !important;
+  -webkit-box-orient:horizontal !important; overflow:visible !important;
+}
+/* (5a) 板頭同一橫列：統計剪報標籤靠左、整理紙籤靠右，唔再上下兩行。 */
+.board-head392{ display:flex !important; align-items:flex-start !important; justify-content:space-between !important; gap:8px !important; }
+.board-head392 .board-sum392{ flex:0 1 auto !important; min-width:0 !important; }
+.board-head392 .board-ctl397{ flex:0 0 auto !important; margin-top:0 !important; }
+/* (5b) 整理選單做側邊索引紙：由紙籤拉出、貼右緣、窄身、米紙底＋紅筆剔號（剔號本身
+   已喺 v401 .board-chip392.on::after；呢度補紙身，唔再係一列裸掣似表單面板）。 */
+.board-menu397{
+  width:180px !important; background:linear-gradient(100deg,#fff6dc,#f9edca 75%,#ead8ad) !important;
+  border:1px solid #a98d4f !important; border-radius:4px !important;
+  box-shadow:1px 2px 6px rgba(70,50,30,.3) !important; padding:6px 8px 8px !important;
+  transform:rotate(-.6deg) !important; margin-right:-2px !important;
+}
+/* (5c) 推介卡劇照式插畫：海報已刪（v229 D-12 待出圖），用作品牆同一套 CSS 卡語言
+   （.work-csscard59 媒介底色＋角標）做細幅橫式劇照——大字首字＋媒介／劇種，打破等高卡列。
+   有海報嗰日 poster59Path 回值再換真圖，呢個 class 到時退場。 */
+.gig-teaser.gt-featured .gt-still402{
+  position:relative; height:62px; border-radius:6px; margin:2px 0 8px; overflow:hidden;
+  display:flex; align-items:center; gap:10px; padding:8px 10px 8px 12px;
+  background:#F2DFBD; border:1px solid rgba(138,48,40,.35);
+  box-shadow:inset 0 0 0 3px rgba(255,248,232,.35);
+}
+.gig-teaser.gt-featured .gt-still402::before{
+  content:attr(data-type); position:absolute; top:6px; right:6px;
+  font-size:10px; font-weight:800; letter-spacing:.08em; color:#8A3028;
+  border:1px solid #8A3028; border-radius:2px; padding:1px 5px; background:rgba(255,248,232,.7);
+}
+.gig-teaser.gt-featured .gt-still402[data-type="電視劇"]{ background:#EFE7D4; }
+.gig-teaser.gt-featured .gt-still402[data-type="電視劇"]::before{ color:#FFF4DF; background:#365344; border-color:#365344; }
+.gig-teaser.gt-featured .gt-still402[data-type="綜藝"]{ background:#EFE7D4; }
+.gig-teaser.gt-featured .gt-still402[data-type="綜藝"]::before{ color:#FFF4DF; background:#7C3346; border-color:#7C3346; }
+.gig-teaser.gt-featured .gt-still402[data-type="唱片通告"]{ background:#E9DECA; }
+.gig-teaser.gt-featured .gt-still402[data-type="唱片通告"]::before{ color:#2E2934; border-color:#6C4F70; }
+.gig-teaser.gt-featured .gt-still402[data-type="廣告"]{ background:#F5E8C9; }
+.gig-teaser.gt-featured .gt-still402[data-type="廣告"]::before{ color:#FFF4DF; background:#765017; border-color:#765017; }
+.gt-still402-mono{ font-size:30px; line-height:1; font-weight:900; color:#38251D; flex:0 0 auto; }
+.gt-still402-sub{ font-size:.72rem; font-weight:700; color:#6b4e2e; line-height:1.4; }
+/* (6①) 教學板舞台預覽卡本身唔可撳（stage 已有 pointer-events:none＋aria-hidden，
+   呢條兜底，防將來 .gig-teaser 重設 pointer-events；掣數靠 JS 去 role／tabindex）。 */
+#tut-board-stage .gig-teaser{ pointer-events:none !important; }
+/* (6②) 教學地圖步只留 1 粒目標 pin：其他 pin 收起（display:none——唔入掣數／觸控／
+   VoiceOver）；目標 pin（.tut-spotlight-target）留低做聚光點。 */
+#app.tut-stage397 #map-pins .pin:not(.tut-spotlight-target){ display:none !important; }
+/* (6④) 典禮舞台接管嗰陣卸載地圖＋頂欄＋其他 view（display:none——掣數唔回升、唔可撳、
+   唔入 VoiceOver）；只留舞台本身嘅跳過掣（舞台掛喺 body，唔受呢條影響）。 */
+#app.awd-stage-on402 #v-map,
+#app.awd-stage-on402 #v-home,
+#app.awd-stage-on402 #v-start,
+#app.awd-stage-on402 .bar,
+#app.awd-stage-on402 #menubar,
+#app.awd-stage-on402 .menu,
+#app.awd-stage-on402 #loc-sheet,
+#app.awd-stage-on402 #btn-confirm-plan{
+  display:none !important;
+}
+/* (6⑥) 選單開住嗰陣卸載地圖內容——只留 ☰（關單）＋選單本身。#menu 喺 #v-map 入面，
+   唔可以直接 hide #v-map；改收 .map-wrap（pin／標籤／過一日／層切／手帳拉柄）＋
+   進度 chip＋loc-sheet＋其他 view。 */
+#app.menu-open402 #v-map .map-wrap,
+#app.menu-open402 #chip-story,
+#app.menu-open402 #loc-sheet,
+#app.menu-open402 #v-home,
+#app.menu-open402 #v-start,
+#app.menu-open402 #menubar,
+#app.menu-open402 #btn-confirm-plan{
+  display:none !important;
+}
+/* (6⑦) 地點面板開住嗰陣收起底圖 pin（−17）：面板係接管層，背景 pin 退出觸控／焦點／
+   VoiceOver；關 sheet（返回地圖）即還原。只收 .pin 掣——玩家標記（.map-me363）同
+   日卡橫條（.map-here373）唔係掣，留低做位置提示，唔好一併收起。 */
+.map-wrap.sheet-open #map-pins .pin{ display:none !important; }
+/* ===== v20a402 UI402 完 ===== */
 </style>
 </head>
 <body>
@@ -20123,8 +20234,14 @@ function gigBoardTeaserHtml(g, opts){
   try{ const cp = (typeof costume382PillHtml==="function") ? costume382PillHtml(g) : ""; if(cp) trigPill += cp; }catch(_e){}
   /* v20a392 UI392 ③：推介大卡（opts.featured）——可接之中片酬最高者置頂，唔重複計數。 */
   const featured392 = !!(opts && opts.featured);
+  /* v20a402 UI402-5c：推介卡加劇照式插畫（作品牆 CSS 卡語言：大字首字＋媒介／劇種）。
+     海報已刪（v229），有真圖嗰日先換。 */
+  const still402 = featured392
+    ? `<div class="gt-still402" data-type="${coarse396}"><span class="gt-still402-mono">${String(work||"").replace(/[《》]/g,"").charAt(0)||"?"}</span><span class="gt-still402-sub">${coarse396}${(genre396 && genre396!==coarse396)?(" · "+genre396):""}</span></div>`
+    : "";
   return `<div class="gig-teaser${featured392 ? " gt-featured" : ""}" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
     <img class="g-seal" src="${sealSrc}" alt="${badge94.label||sealKey}" onerror="this.style.display='none'"/>
+    ${still402}
     <div class="gt-title">${work}${featured392 ? `<span class="gt-featured-tag">推介</span>` : ""}</div>
     <div class="gt-row">${genrePills396}${trigPill}<span class="${badgeCls}">${badgeText}</span></div>
     ${metaLine392?`<div class="gt-meta"><div class="gt-meta-line">${metaLine392}</div></div>`:""}
@@ -22286,8 +22403,12 @@ function setUnderlyingInert(on, scene){
     const app=document.getElementById("app");
     const mask=document.getElementById("mask");
     const tut = !!(mask && mask.classList.contains("tut-on"));
-    if(app) app.classList.toggle("ui-hide-under396", !!(on && !scene && !tut));
-    if(app) app.classList.toggle("dayres-scene397", !!(on && scene && !tut));
+    /* v20a402 UI402-6③⑤：教學豁免只限 TUT_MAP（聚光目標 pin 要見到；display:none
+       唔可以由子孫 override）。其他教學步（TUT_BOARD／TUT_DONE／落選卡）照常卸載——
+       舊版一律豁免，令 43e 落選卡背後地圖成層留低（基線 23 粒）。 */
+    const tutMap = tut && (mask.dataset.tutStep === "TUT_MAP");
+    if(app) app.classList.toggle("ui-hide-under396", !!(on && !scene && !tutMap));
+    if(app) app.classList.toggle("dayres-scene397", !!(on && scene && !tutMap));
   }catch(_e){}
 }
 /** Preview the plan that will run AFTER spending today (+1 day). */
@@ -24782,6 +24903,20 @@ function deCollideLabels363(){
         }
       }
     }catch(_e391z){}
+    /* v20a402 UI402-4：07c——.map-here373 日卡橫條（「目前所在：…」）都係障礙物，
+       併入同一 zone391（＋4px 緩衝），等現成 pushOffMarker391() 將撞區標籤推落橫條之下。
+       橫條喺頂，撞區標籤只可以向下推，現成方向邏輯（唔出舞台）會自動揀啱。 */
+    try{
+      const here402 = document.querySelector(".map-here373");
+      if(here402 && here402.offsetParent!==null){
+        const rh = here402.getBoundingClientRect();
+        const zh = { left:rh.left-4, right:rh.right+4, top:rh.top-4, bottom:rh.bottom+4 };
+        zone391 = zone391
+          ? { left:Math.min(zone391.left, zh.left), right:Math.max(zone391.right, zh.right),
+              top:Math.min(zone391.top, zh.top), bottom:Math.max(zone391.bottom, zh.bottom) }
+          : zh;
+      }
+    }catch(_e402z){}
     const stage391 = document.getElementById("map-stage");
     const stageH391 = (stage391 && stage391.clientHeight) || 576;
     /* v20a379：玩家標記係障礙物——同佢重疊／近距（8px 內）嘅地點名要推開。
@@ -24798,7 +24933,11 @@ function deCollideLabels363(){
           const ox = Math.min(a.right,zone391.right)-Math.max(a.left,zone391.left);
           const oy = Math.min(a.bottom,zone391.bottom)-Math.max(a.top,zone391.top);
           if(ox>-8 && oy>-8){
-            const cur = parseFloat(it.el.style.top)||0;
+            /* v20a402 UI402-4：cur 要用 offsetTop（佈局實測 px）——標籤 inline top
+               係 calc()（例：calc(16% - 52px)），parseFloat 得 NaN→0，令邊界檢查誤判：
+               應向上推嗰陣以為會出頂、反轉向下推，落點錯、tag 照撞標籤（844 禮品店實測
+               仲疊 2.5px）。offsetTop 同 style.top 都係相對 offsetParent，px 運算一致。 */
+            const cur = (typeof it.el.offsetTop==="number" ? it.el.offsetTop : 0) || 0;
             const h391 = it.el.offsetHeight || 18;
             const dUp391 = (a.bottom - zone391.top) + 8;
             const dDn391 = (zone391.bottom - a.top) + 8;
@@ -24915,6 +25054,14 @@ function deCollideLabels363(){
     /* v20a398 UI398-2：de-collide 之後再夾返可見帶——pair pass 會將籤推出帶外，
        settle 鏈（400／800／1200ms）重跑 de-collide 嗰陣呢度一併再夾，唔會漂移。 */
     try{ if(typeof clampMapLabels397==="function") clampMapLabels397(); }catch(_e398){}
+    /* v20a402 UI402-4：夾實之後要再推一次障礙——clamp 唔識 zone，佢為咗籤同籤之間
+       嘅 8px 間距會將標籤推返落 tag 區（禮品店 844 實測：deCollide 收尾 20.2px 清
+       晒，clamp 一夾即變 34.884px，tag 仲疊 2.5px；settle 鏈每輪都係咁收尾）。
+       障礙推撞放最尾，zone 永遠係最後權威。注意：clamp 只改 style.top，唔會更新
+       items 嘅快取 rect（it.r）——唔先刷新，push 會用舊 rect（79.3，oy −8.2）
+       以為已經清咗，唔郁。 */
+    try{ items.forEach(it=>{ try{ it.r = it.el.getBoundingClientRect(); }catch(_e){} }); }catch(_e402r){}
+    try{ pushOffMarker391(); }catch(_e402z2){}
   }catch(_e){}
 }
 function stressScale363(pv){
@@ -25115,6 +25262,11 @@ function paintBar(){
   /* v20a397 UI397-1：日卡（map-hint）變高會縮短舞台，但 labels 未必即時重定位
      （paintBar 唔帶 drawMap 嘅路徑）——呢度即刻夾實一次，唔使等下次重畫。 */
   try{ if(typeof clampMapLabels397==="function") clampMapLabels397(); }catch(_e){}
+  /* v20a402 UI402-4：夾實之後要再推一次障礙——clamp 唔識 zone，佢為咗籤同籤之間
+     嘅 8px 間距會將標籤推返落 tag 區（禮品店 844：drawMap 收尾 20.2px 清晒，
+     paintBar 呢個 clamp 一夾即變 34.884px，tag 仲疊 2.5px）。deCollide 係
+     idempotent，收尾一定係 zone 推撞，唔會漂移。 */
+  try{ if(typeof deCollideLabels363==="function") deCollideLabels363(); }catch(_e402z3){}
 }
 
 let __storyMapRedrawT = null;
@@ -25563,6 +25715,12 @@ function drawMap(){
   /* v363 UI363：像素人位置指示＋紙標籤避撞（只郁視覺，唔郁熱區座標） */
   try{ mapMe363(box, pinPos); }catch(_e){}
   try{ deCollideLabels363(); }catch(_e){}
+  /* v20a402 UI402-1a：卡片避讓要喺每次重畫尾段再評估一次——modal() 入面嗰次 hide
+     有機會跑喺標籤定位之前（教學 TUT_MAP 實測：modal() 嗰陣標籤仲係 0,0 未定位，
+     hide 跳過晒；跟住 drawMap 先將「何生事務所」擺去 536.8，撞住卡頂 543.8，冇人
+     再遮佢）。呢度標籤已經係最終位，hide 會遮返撞卡嗰啲；冇卡開嗰陣 #modal rect
+     係 0，hit 全部 false，等於還原，唔會誤遮。 */
+  try{ if(typeof hideMapLabelsUnderModal402==="function") hideMapLabelsUnderModal402(); }catch(_e402h){}
   /* v20a398 UI398-1：drawMap 重建 pin 會洗走聚光 class——尾段即刻搵返 pin 補金圈。 */
   try{ if(typeof refreshTutSpotlight398==="function") refreshTutSpotlight398(); }catch(_e){}
 }
@@ -25602,6 +25760,27 @@ function softLeaveOnlyButtons(buttons){
   }catch(_e){ return false; }
 }
 let _modalGen=0;
+/* v20a402 UI402-1a：卡片避讓——modal 開嗰陣，將同卡片（.modal，唔係成個 #mask）
+   矩形相交嘅地圖地名標籤（#map-names68 .mn68／#map-districts97 .md97）暫隱
+   （visibility:hidden——佈局不變，量度 rect 照攞到）。卡頂／卡邊唔再出現半截字；
+   目標浮貼標籤 #tut-target-label399 唔係 .mn68，唔受影響（佢跟原標籤 rect 定位，
+   原標籤 visibility 隱藏照量到）。closeModal() 還原。 */
+function hideMapLabelsUnderModal402(){
+  try{
+    const card=document.getElementById("modal");
+    if(!card) return;
+    const mr=card.getBoundingClientRect();
+    document.querySelectorAll("#map-names68 .mn68, #map-districts97 .md97").forEach(el=>{
+      if(el.offsetParent===null) return;
+      const r=el.getBoundingClientRect();
+      const hit = r.right>mr.left && r.left<mr.right && r.bottom>mr.top && r.top<mr.bottom;
+      el.classList.toggle("mn-hidden402", hit);
+    });
+  }catch(_e402){}
+}
+function restoreMapLabels402(){
+  try{ document.querySelectorAll(".mn-hidden402").forEach(el=>el.classList.remove("mn-hidden402")); }catch(_e402){}
+}
 function modal(html, buttons, opts){
   opts=opts||{};
   _modalGen++;
@@ -25666,8 +25845,10 @@ function modal(html, buttons, opts){
   maskEl.classList.toggle("paper-on", !!opts.paperSheet);
   maskEl.classList.add("on");
   document.getElementById("app").classList.add("mask-up");
+  try{ hideMapLabelsUnderModal402(); }catch(_e402){} /* v20a402 UI402-1a：卡片避讓地名標籤 */
   try{ const sh=document.getElementById("loc-sheet"); if(sh) sh.classList.remove("sheet-live"); }catch(_e){}
   try{ setUnderlyingInert(true, !!(opts.keepScene397 || scene401)); }catch(_e){} /* v20a397 UI397-4：日結家族 keepScene397 → 場景留低做承托；v20a401：scenePaper401 同樣留場景 */
+  try{ document.getElementById("app").classList.remove("menu-open402"); }catch(_e402){} /* v20a402 UI402-6⑥：開 modal 嗰陣選單唔再係前景，清走選單卸載（選單本身由 ui-hide-under396 收起）。 */
   try{
     const firstBtn = row.querySelector("button");
     if(firstBtn && typeof firstBtn.focus==="function") setTimeout(()=>{ try{ firstBtn.focus({preventScroll:true}); }catch(_f){ try{ firstBtn.focus(); }catch(_g){} }
@@ -25686,6 +25867,7 @@ function closeModal(){
   try{ document.getElementById("mask").classList.remove("board-tall392"); }catch(_e){} /* v20a392 UI392 ③ */
   try{ document.getElementById("mask").classList.remove("scene398"); }catch(_e){} /* v20a398 UI398-5 */
   try{ document.getElementById("mask").classList.remove("scene-paper401"); }catch(_e){} /* v20a401 UI401-1 */
+  try{ restoreMapLabels402(); }catch(_e402){} /* v20a402 UI402-1a：還原卡片避讓標籤 */
   /* v19z3：清 story-play-on + 清空 #modal-inner，避免劇情結算 HTML／mask 殘留 */
   try{ document.getElementById("mask").classList.remove("story-play-on"); }catch(_e){}
   try{ if(typeof setStoryPlayLock==="function") setStoryPlayLock(false); }catch(_e){}
@@ -34072,8 +34254,8 @@ function awardsPickPressNews(medium){
   return {
     press: {
       paperName: awardsCopyLine(press.paperName, "娛樂快報"),
-      headline: awardsCopyLine(press.headline, "頒獎夜，版面多一行"),
-      dek: awardsCopyLine(press.dek, "典禮散場，側記多一個名。")
+      headline: awardsCopyLine(press.headline, "頒獎夜落幕"),
+      dek: awardsCopyLine(press.dek, "典禮散場，名單見報。")
     },
     news: {
       outlet: awardsCopyLine(news.outlet, "晚間娛樂快訊"),
@@ -34783,7 +34965,11 @@ function renderAwardResultHtml(pack){
   /* 相片：第一版＝得主相（玩家贏就陳偉翔、得主係駱家聲就駱家聲、其他得主冇相）；
      第二版＝玩家相（只限入圍落選嗰陣——玩家贏嗰陣第一版已經係陳偉翔相，唔重複；旁聽冇玩家相）。 */
   const photo214 = (typeof np214AwardPhoto214 === "function") ? np214AwardPhoto214(pack) : null;
-  const photoFigure214 = p => (p ? `<figure class="np214-photowrap"><div class="np214-photo${p.cropBanner ? " np214-photo-cropbanner" : ""}"${(p.cropBanner && p.key === 'np214_award_awi') ? ' style="aspect-ratio:520/500"' : ''}"><img src="${p.src}" alt=""></div><figcaption class="np214-caption"><b>${esc214(p.caption)}</b></figcaption></figure>` : "");
+  /* v20a402 UI402-3：P2 相圖文錯配——入圍落選嗰陣 P2 相係玩家（入圍者）陳偉翔，
+     但版面主標講得主彭少祺奪獎，大頭相讀做得主相。P2 相角加「入圍者」標記，
+     講明相中人係入圍者唔係得主；玩家贏／旁聽嗰陣冇 P2 相，唔出標記。 */
+  const mark214 = (pack.bestOutcome === "nominated" && win149) ? "入圍者" : "";
+  const photoFigure214 = (p, mark) => (p ? `<figure class="np214-photowrap"><div class="np214-photo${p.cropBanner ? " np214-photo-cropbanner" : ""}"${(p.cropBanner && p.key === 'np214_award_awi') ? ' style="aspect-ratio:520/500"' : ''}">${mark ? `<span class="np214-photomark">${esc214(mark)}</span>` : ""}<img src="${p.src}" alt=""></div><figcaption class="np214-caption"><b>${esc214(p.caption)}</b></figcaption></figure>` : "");
   const photo2_214 = (pack.bestOutcome === "nominated")
     ? ((typeof np214AwardPhoto214 === "function") ? (np214AwardPhoto214(pack, {aftermath:true}) || photo214) : photo214)
     : null;
@@ -34825,7 +35011,7 @@ function renderAwardResultHtml(pack){
     ${metricSub401 ? `<p class="np214-subhead401">${esc214(metricSub401)}</p>` : ""}
     ${metricDek397 ? `<p class="np214-dek">${esc214(metricDek397)}</p>` : ""}
     <div class="np214-layout"><div class="np214-maincol np214-clearfix">
-      ${photoFigure214(photo2_214)}
+      ${photoFigure214(photo2_214, mark214)}
       <div class="np214-body2">
         <p class="np214-lead">${esc214(metricLead397)}。</p>
         ${news.line ? `<p>${esc214(news.line)}</p>` : ""}
@@ -35776,6 +35962,7 @@ function awards62PlayCeremony(pack, doneFn){
   const cleanup = ()=>{
     if(raf) cancelAnimationFrame(raf);
     if(stage && stage.parentNode) stage.parentNode.removeChild(stage);
+    try{ document.getElementById("app").classList.remove("awd-stage-on402"); }catch(_e402){} /* v20a402 UI402-6④：舞台拆走即還原地圖＋頂欄。 */
   };
   const finish = ()=>{
     if(finished) return;
@@ -35902,6 +36089,7 @@ function awards62PlayCeremony(pack, doneFn){
       + '<div class="awd62-caption"></div>'
       + "</div>";
     document.body.appendChild(stage);
+    try{ document.getElementById("app").classList.add("awd-stage-on402"); }catch(_e402){} /* v20a402 UI402-6④：典禮接管嗰陣卸載地圖＋頂欄（CSS），只留跳過掣。 */
     const cv = stage.querySelector("canvas");
     const ctx = cv.getContext("2d");
     ctx.imageSmoothingEnabled = false;
@@ -38331,7 +38519,7 @@ function newspaperCheck(){
       if(!gal || gal.fameDelta!==1 || gal.templateEventKey!=="award_gallery.film") fails.push("gallery_paper");
       if(gal && /入圍|提名|得獎|奪獎/.test(gal.headline+gal.dek)) fails.push("gallery_copy");
       /* v20a136 D1：推辭一樣有報紙——declined 文案行典禮級 press，唔派聲望，唔寫阿偉贏獎／出席。 */
-      const dec = enqueueNewspaperFromAward({ skipped:false, bestOutcome:"won", year:1988, ceremonyId:"award_harbour_ad", medium:"ad", displayName:"維港街招", press:{ paperName:"娛樂快報", headline:"街招年賞，版面多一行", dek:"廣告年賞散場。" } }, { persist:false, declined:true });
+      const dec = enqueueNewspaperFromAward({ skipped:false, bestOutcome:"won", year:1988, ceremonyId:"award_harbour_ad", medium:"ad", displayName:"維港街招", press:{ paperName:"娛樂快報", headline:"廣告年賞揭盅，新人榜上有名", dek:"廣告年賞散場。" } }, { persist:false, declined:true });
       if(!dec || dec.fameDelta!==0 || dec.templateEventKey!=="award_declined.ad") fails.push("declined_paper");
       if(dec && /阿偉/.test(dec.headline+dec.dek)) fails.push("declined_copy");
       const win = enqueueNewspaperFromAward({ skipped:false, bestOutcome:"won", year:1988, ceremonyId:"award_harbour_ad", medium:"ad", displayName:"維港街招", press:{} }, { persist:false });
@@ -49239,7 +49427,7 @@ function chk101EnsureCss(){
   if(document.getElementById("chk101-css")) return;
   const st = document.createElement("style"); st.id = "chk101-css";
   st.textContent = `
-.chk101{position:relative;margin:10px 0 4px;border-radius:6px;overflow:hidden;box-shadow:0 4px 14px rgba(20,16,8,.35);transform:rotate(-.5deg)}
+.chk101{position:relative;margin:14px 6px 8px;border-radius:6px;overflow:hidden;box-shadow:0 4px 14px rgba(20,16,8,.35);transform:rotate(-.5deg)}
 .chk101 img{display:block;width:100%;height:auto}
 .chk101 span{position:absolute;color:#22304f;font-family:"Kaiti TC","STKaiti","DFKai-SB","KaiTi",serif;white-space:nowrap}
 .chk101 .ck-bank{left:5.5%;top:10.5%;width:24%;text-align:center;font-family:"Songti TC","STSong",serif;font-weight:700;font-size:.78rem;letter-spacing:.14em;color:#2e4a38}
@@ -49247,7 +49435,9 @@ function chk101EnsureCss(){
 .chk101 .ck-payee{left:7%;top:32.5%;font-size:1.08rem;font-weight:700;letter-spacing:.35em}
 .chk101 .ck-words{left:7%;top:53.5%;font-size:.92rem;letter-spacing:.06em}
 .chk101 .ck-amt{left:70%;top:50%;width:24.5%;height:11%;display:flex;align-items:center;justify-content:center;font-size:1.12rem;font-weight:700}
-.chk101 .ck-memo{left:6%;top:86.3%;width:25%;text-align:center;font-size:.62rem;color:#5a5340;letter-spacing:.2em}
+.chk101 .ck-memo{left:6%;top:84%;width:25%;text-align:center;font-size:.62rem;color:#5a5340;letter-spacing:.2em}
+/* v20a402 UI402-2：memo 細字由 86.3% 上移至 84%——實測字底 698 掂 memo 格底線（約 91% 圖高），
+   上移後字底約 89.5%，收喺格內；.chk101 加左右 6px 紙邊，支票唔再貼卡邊。 */
 /* v20a218 D-v189B1：日結板支票改細——舊版全闊 231px 高，932 見 42–52%、700 見 16–17%，第一屏淨係見到頂條。
    日結板限 70% 置中（慳 ~70px 高），字號按比例縮 0.7 倍（span 用固定 rem，唔縮字會夾日期／金額）；
    只限 #mask.day-res（殺青板），簽約嗰張支票（何生來電 modal，唔掛 day-res）維持全闊。 */
@@ -50540,6 +50730,10 @@ function showTutBoardStage(){
   el.innerHTML=`<h3 class="tut-board-h">通告欄 · ${where}</h3><p class="board-lead">${lead}</p><div class="gig-board-list">${cards||"<p>今日通告欄沒有張貼。</p>"}</div>`;
   el.classList.add("on");
   el.setAttribute("aria-hidden","true");
+  /* v20a402 UI402-6①：預覽卡只係教學示範，唔係操作——去 role=button＋tabindex
+     （唔入掣數／Tab 序／VoiceOver；stage 本身 pointer-events:none＋aria-hidden，
+     視覺不變。hideTutBoardStage 清 innerHTML，唔使還原。） */
+  try{ el.querySelectorAll(".gig-teaser[role='button']").forEach(n=>{ n.removeAttribute("role"); n.removeAttribute("tabindex"); }); }catch(_e402){}
 }
 function showTutLocStage(kind){
   const el=document.getElementById("tut-board-stage");
@@ -50605,7 +50799,15 @@ function setTutMask(on){
   if(app) app.classList.toggle("mask-up", !!on || m.classList.contains("on"));
   /* v20a397 UI397-5：開局分步——教學期間加 tut-stage397，收起手帳次要控制。 */
   if(app) app.classList.toggle("tut-stage397", !!on);
-  try{ setUnderlyingInert(!!on || m.classList.contains("on")); }catch(_e){}
+  /* v20a402 UI402-6⑤：唔好喺 tut-on 嗰陣清走 scene 卸載——43e 落選卡（scenePaper401）
+     先由 modal() 掛 dayres-scene397，再 setTutMask(true) 會用 scene=undefined 叫
+     setUnderlyingInert，舊版將 scene 卸載清走、背景成層返晒嚟。scene 由 mask class
+     推導（scene-paper401／day-res）＋ TUT_BOARD 步本身都係 scene 卸載（板舞台留低、
+     pin＋掣收起）；TUT_MAP 靠 setUnderlyingInert 入面嘅 tutMap 豁免。 */
+  try{
+    const scene402 = m.classList.contains("scene-paper401") || m.classList.contains("day-res") || (m.dataset.tutStep === "TUT_BOARD");
+    setUnderlyingInert(!!on || m.classList.contains("on"), scene402);
+  }catch(_e){}
   if(!on){ clearTutSpotlight(); try{ m.classList.remove("tut-hole401"); m.style.removeProperty("--tut-hole-x"); m.style.removeProperty("--tut-hole-y"); m.style.removeProperty("--tut-hole-r"); }catch(_e){} } /* v20a401 UI401-2：教學完咗清走遮罩挖空 */
 }
 function showTutCard(entry, buttons){
@@ -51146,8 +51348,10 @@ document.getElementById("btn-menu").onclick=e=>{
   const opening = menu && !menu.classList.contains("on");
   if(opening){ try{ closeSheet(); }catch(_e){} }
   if(menu) menu.classList.toggle("on");
+  /* v20a402 UI402-6⑥：選單開住嗰陣卸載地圖內容（CSS #app.menu-open402），只留 ☰＋選單；關單即還原。 */
+  try{ document.getElementById("app").classList.toggle("menu-open402", !!(menu && menu.classList.contains("on"))); }catch(_e402){}
 };
-document.body.addEventListener("click",()=>document.getElementById("menu").classList.remove("on"));
+document.body.addEventListener("click",()=>{ document.getElementById("menu").classList.remove("on"); try{ document.getElementById("app").classList.remove("menu-open402"); }catch(_e402){} });
 /* v20a128 A1：進度只留一個入口（頂欄 chip）——地圖浮 pill 已取消，chip 恢復做掣
    （反轉 v108 S-8「chip 只係徽章、入口係 pill」嗰個決定；計劃 §5 A1／§7 mockup 明確
    寫頂欄 chip 係唯一入口）。接線跟返 v77 原路徑（enterHome progress）。 */
@@ -51189,6 +51393,7 @@ document.body.addEventListener("click",()=>document.getElementById("menu").class
 document.getElementById("menu").onclick=e=>{
   e.stopPropagation(); const m=e.target.dataset.m; if(!m)return;
   document.getElementById("menu").classList.remove("on");
+  try{ document.getElementById("app").classList.remove("menu-open402"); }catch(_e402){} /* v20a402 UI402-6⑥：撳選單項目即關單，還原地圖。 */
   /* v20a72 MENU72：stats／people／inv／jobs／rumors／debts 六個選單分支隨掣
      一併移除（資訊頁歸入手帳）；showStats／showPeople／showInventory／
      showJobs 函數保留做舊呼叫重定向，唔再由選單觸發。
@@ -51384,6 +51589,11 @@ try{
           try{
             if(!__well397.clientWidth || !__well397.clientHeight) return;
             if(typeof positionMapLabels137==="function") positionMapLabels137();
+            /* v20a402 UI402-4：RO 淨係重定位唔推開——positionMapLabels137 會由錨點重計
+               style.top（連 clampMapLabels397 夾實），之後冇 deCollide，標籤就停喺夾實位
+               （禮品店 844 實測 34.884px，tag 仲疊 2.5px）；RO 係 layout  settle 之後最尾
+               跑嗰個，收尾就係佢留低嘅位。補返 deCollide，同 drawMap 嗰個次序一致。 */
+            if(typeof deCollideLabels363==="function") deCollideLabels363();
           }catch(_e){}
         });
         window.__mapRO397.observe(__well397);

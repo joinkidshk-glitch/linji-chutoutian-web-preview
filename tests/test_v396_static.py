@@ -1,3 +1,4 @@
+# v402 resync：setUnderlyingInert 教學豁免收窄到只限 TUT_MAP（!tut→!tutMap，有意圖改動，任務 6③⑤；聚光目標 pin 只喺 TUT_MAP 步先要留低，TUT_BOARD／結算卡要 scene 卸載；見 qa402/resync402.py。
 # v398 resync：排序＋媒介合成一個「整理」掣，靜態 <button −1（112→111）；見 qa398/resync398.py。
 # v396：第四輪 UI 檢視頭五項必修 — 靜態測試（釘字串／接線／禁區守門）。
 # 用法：python3 tests/test_v396_static.py [repo-root]
@@ -96,7 +97,7 @@ ok("v396 背景卸載覆蓋 v-map／v-home／v-start／loc-sheet／menubar／.me
    and "#app.ui-hide-under396 #loc-sheet," in src
    and "#app.ui-hide-under396 #btn-confirm-plan{" in src)
 ok("v396 setUnderlyingInert 同步開關 ui-hide-under396",
-   'app.classList.toggle("ui-hide-under396", !!(on && !scene && !tut))' in src)
+   'app.classList.toggle("ui-hide-under396", !!(on && !scene && !tutMap))' in src)
 ok("v396 教學聚光燈（mask.tut-on）豁免卸載",
    'mask.classList.contains("tut-on")' in src)
 ok("v396 禮品／買衫行改做 div（唔係掣，唔計入掣數）",

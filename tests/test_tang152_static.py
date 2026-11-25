@@ -1,3 +1,4 @@
+# v402 resync：index.html 淨 +210 行；normaliseTangStub152 兩釘按 difflib 映射重寫，內容逐字核實純漂移；見 qa402/resync402.py。
 # v401 resync：index.html 淨 +192 行；normaliseTangStub152 兩釘按 difflib 映射重寫，內容逐字核實純漂移；見 qa401/resync401.py。
 # v400 resync：index.html 淨 +186 行；normaliseTangStub152 兩釘按 difflib 映射重寫（lines()[16215]→[16226]、[16340]→[16351]），內容逐字核實純漂移；見 qa400/resync400.py。
 # v399 resync：index.html 淨 +72 行；normaliseTangStub152 兩釘按 difflib 映射重寫（lines()[16191]→[16215]、[16316]→[16340]），內容逐字核實純漂移；見 qa399/resync399.py。
@@ -154,8 +155,8 @@ ok('刪線：DengLine 程式碼引用清零（只剩註解提及，註解入面�
 # v20a235 resync：index.html 淨 −24 行（N17 前夕刪三選項）；3 個釘行按 difflib 映射重寫（normaliseTangStub152 15563→15539、stub 呼叫行 15686→15662；HELD 10006 唔郁），內容逐字核實純漂移。
 # v20a242 resync：index.html 淨 −144 行（刪 LAN 覆寫表；刪除區間舊 L6597–6735／7559–7579／15038–15045）；3 個釘行按段重算（HELD 9358→9212，−146；normaliseTangStub152 14926→14783，−143；stub 呼叫行 15049→14905，−144），內容逐字核實純漂移。
 # --- 4. 載入機制：stub 正規化（v20a358：push mock 過濾連 mock 一齊刪，見 §3） ---
-ok('機制：normaliseTangStub152 函數在位', lines()[16378].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行', lines()[16503].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位', lines()[16489].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行', lines()[16614].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)

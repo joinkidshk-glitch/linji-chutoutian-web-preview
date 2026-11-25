@@ -1,3 +1,4 @@
+# v402 resync：index.html 淨 +210 行；6 個 line_has 釘行＋全佳行按 difflib 映射重寫，內容逐字核實純漂移；見 qa402/resync402.py。
 # v401 resync：index.html 淨 +192 行；6 個 line_has 釘行＋全佳行按 difflib 映射重寫，內容逐字核實純漂移；見 qa401/resync401.py。
 # v400 resync：index.html 淨 +186 行；6 個 line_has 釘行＋全佳行按 difflib 映射重寫（28226→28412、9476→9487、29134→29320、11656→11667、16288→16299、28989→29175、全佳 28254→28440），內容逐字核實純漂移；見 qa400/resync400.py。
 # v399 resync：index.html 淨 +72 行；6 個 line_has 釘行＋全佳行按 difflib 映射重寫（28202→28226、9452→9476、29110→29134、11632→11656、16264→16288、28965→28989、全佳 28230→28254），內容逐字核實純漂移；見 qa399/resync399.py。
@@ -194,19 +195,19 @@ ok("ending commit 分支六人", 'rom.lan.committed' in idx and 'rom.yip.committ
 def line_has(n, frag):
     return 1 <= n <= len(idx_lines) and frag in idx_lines[n - 1]
 
-ok("行號釘 ROM159 block 頭 25499", line_has(28571, "v20a159 ROM159 Phase 1"))
-ok("行號釘 bumpRel 凍結鉤 8020", line_has(9639, "rom159GainAllowed(k)"))
-ok("行號釘 CMT_lan_commit 26333", line_has(29479, "COMMIT48_NODES.CMT_lan_commit"))
-ok("行號釘 StoryPlay 預備鉤 10553", line_has(11819, "rom159PrepareNode(node)"))
-ok("行號釘載入覆寫呼叫 14877", line_has(16451, "rom159ApplyGiftOverrides()"))
-ok("行號釘 rom159SoMeetGate 26248", line_has(29334, "function rom159SoMeetGate"))
+ok("行號釘 ROM159 block 頭 25499", line_has(28753, "v20a159 ROM159 Phase 1"))
+ok("行號釘 bumpRel 凍結鉤 8020", line_has(9750, "rom159GainAllowed(k)"))
+ok("行號釘 CMT_lan_commit 26333", line_has(29661, "COMMIT48_NODES.CMT_lan_commit"))
+ok("行號釘 StoryPlay 預備鉤 10553", line_has(11930, "rom159PrepareNode(node)"))
+ok("行號釘載入覆寫呼叫 14877", line_has(16562, "rom159ApplyGiftOverrides()"))
+ok("行號釘 rom159SoMeetGate 26248", line_has(29516, "function rom159SoMeetGate"))
 
 # costsDay:true 殘留已拎走（code 值；註解提到舊值唔計）
 ok("giveGift 回傳冇 costsDay:true", "before, after, costsDay:true" not in idx)
 ok("全檔冇 after, costsDay:true", "after, costsDay:true" not in idx)
 
 # 「全佳 7 分」查實：code 入面從來冇「全佳」閘門——唯一一次出現係 ROM159 註解嘅查實說明
-ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[28598])  # v392 resync（27225→27284，difflib 核實）  # v393-endings resync（27284→27830，difflib 核實）  # v391 resync（26982→27225，difflib 核實）  # v390 resync（26964→26982，difflib 核實）  # v389 resync（26945→26964，difflib 核實）  # v377 resync（26604→26609，difflib 核實）  # v376 resync（26580→26604，difflib 核實）  # v375 resync（26464→26580，grep 核實）  # v374 resync（26349→26464，grep 核實）  # v373 resync +41（26308→26349，grep 核實）  # v372 resync +76  # v20a159 整合：B1＋B2 後行號 +86；v20a358 resync −424；v361 resync +76；v363 resync +437；v369 resync +181（25968→26136，difflib 核實純漂移）
+ok("全佳只出現喺 ROM159 查實註解", idx.count("全佳") == 1 and "查實" in idx_lines[28780])  # v392 resync（27225→27284，difflib 核實）  # v393-endings resync（27284→27830，difflib 核實）  # v391 resync（26982→27225，difflib 核實）  # v390 resync（26964→26982，difflib 核實）  # v389 resync（26945→26964，difflib 核實）  # v377 resync（26604→26609，difflib 核實）  # v376 resync（26580→26604，difflib 核實）  # v375 resync（26464→26580，grep 核實）  # v374 resync（26349→26464，grep 核實）  # v373 resync +41（26308→26349，grep 核實）  # v372 resync +76  # v20a159 整合：B1＋B2 後行號 +86；v20a358 resync −424；v361 resync +76；v363 resync +437；v369 resync +181（25968→26136，difflib 核實純漂移）
 ok("rel 上限 7 校準說明在場", "理論最高 7" in idx)
 
 # ROM159_WOMEN：最終六人，37 場（spots 順序照任務表）
