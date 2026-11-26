@@ -1,3 +1,4 @@
+# v416：頒獎快進提示改揭曉下一張，斷言跟新文案。
 # v404 意圖更新：確認閘成個刪走（用戶拍板），v392 掣名斷言改做「已刪」。
 #!/usr/bin/env python3
 # v392 UI 檢視修正（第三輪頭五項）靜態守門：五項呈現層修法嘅關鍵標記在位＋對比度守門。
@@ -94,7 +95,7 @@ ok("4 稱號段本身無郁（tags389-fold 規則原位）", ".tags389-fold{ mar
 # 'skip</button>' + '</div>' + glamHtml 相鄰，tap 插喺中間會斷咗條釘；tap 係
 # absolute 左下角，DOM 前後唔影響視覺位置，依然同跳過掣同一列。
 ok("5 快進提示搬入 canvaswrap（同跳過掣同一列，喺跳過掣之前）",
-    '<div class="awd62-tap">點擊畫面可以快進</div><button type="button" class="awd62-skip">' in src)
+    '<div class="awd62-tap">點擊畫面揭曉下一張</div><button type="button" class="awd62-skip">' in src)
 c3 = contrast("#d6cdf0", "#14101f")
 ok("5 快進提示 #d6cdf0 對舞台暗底 ≥4.5:1（實算 %.2f:1）" % c3, c3 >= 4.5)
 c4 = contrast("#d6cdf0", "#2c2148")

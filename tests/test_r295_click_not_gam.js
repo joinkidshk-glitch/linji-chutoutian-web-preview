@@ -1,3 +1,4 @@
+// v416：提示文案清晰化（對應掣名／揭曉下一張），斷言跟新文案。
 // v414 resync：編輯提示改「點選日子格，在下方選擇活動；改完點擊確定才生效」（Q6 呈現修復）；見 qa414/resync414.py。
 // v398 resync：入地圖「今日」toast 已刪（蓋住地圖頂部地點牌，審計 UI398-2；.js 檔用 // 註解）；今日資訊改由日卡常駐顯示（planLine），過日指引留喺「過一日」掣 title；見 qa398/resync398.py。
 // v20a295 Q8: ["點擊","撳"] pair removed from TEXTFIX57_PHRASES — all player
@@ -31,12 +32,12 @@ chk('周刊 still -> 週刊', TF.textfix55Str('《星訊周刊》今期出街', 
 
 // 3. source: the 13 hardcoded UI strings now say 點擊
 chk('hospital FAQ', s.indexOf('撳入嚟睇') < 0 && s.indexOf('治療／探病／體檢——邊樣幾時先有，點擊入嚟睇') >= 0);
-chk('planner confirm', s.indexOf('改完點擊確定才生效') >= 0);
+chk('planner confirm', s.indexOf('改完按「確定本週行程」生效') >= 0);
 chk('planner readonly', s.indexOf('可點擊「壓力估」看已定行程') >= 0);
 chk('day toast gone (v398: 今日資訊改由日卡常駐顯示)', s.indexOf('toast(`今日：${meta.name}`') < 0 && s.indexOf('今日：<b>${planName135}</b>') >= 0);
 chk('dismiss notes x4 gone (v392: 撳外面唔再推進日期，「點擊外面＝⋯」細字已刪）', s.indexOf('點擊外面＝回家結算') < 0 && s.indexOf('點擊外面＝返回地圖') < 0 && s.indexOf('點擊外面＝繼續跑明日行程') < 0 && s.indexOf('點擊外面＝開始今日行程') < 0);
 chk('free-day titles', (s.match(/逛完點擊這個掣返回屋企睡覺，過到下一日/g) || []).length === 2);
-chk('awards tap hint', s.indexOf('點擊畫面可以快進') >= 0);
+chk('awards tap hint', s.indexOf('點擊畫面揭曉下一張') >= 0);
 chk('gig board toast', s.indexOf('請在地圖點擊有通告的地點') >= 0);
 chk('no 撳外面 left', s.indexOf('撳外面') < 0);
 

@@ -561,7 +561,7 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .nb-left{flex:0 0 auto;max-height:none;overflow:visible;border-bottom:2px dashed rgba(196,165,116,.55);background:transparent}
 .nb-right{flex:0 0 auto;min-height:0;display:flex;flex-direction:column;overflow:visible;background:transparent} /* grows with content; parent .notebook scrolls */
 .nb-title{font-size:.85rem;font-weight:800;color:#6b4e2e;margin:0 0 4px}
-.nb-range{font-size:.72rem;color:#8a7355;margin:0 0 8px}
+.nb-range{font-size:.72rem;color:#6b543a;margin:0 0 8px}
 .day-row{
   display:flex;align-items:center;gap:10px;width:100%;text-align:left;
   border:1px solid transparent;background:transparent;border-radius:12px;
@@ -3443,7 +3443,7 @@ body.day-res-open .day-row{
   image-rendering:pixelated; image-rendering:crisp-edges; background:#14100e;
   box-shadow:0 2px 6px rgba(26,20,16,.14);
 }
-.dayres-still374.bust374 img{ object-position:center 12%; image-rendering:auto; }
+.dayres-still374.bust374 img{ object-fit:contain !important; object-position:center bottom; background:#f3ead2; image-rendering:auto; } /* v416：病假半身圖完整入框，唔切頭唔切下巴 */
 .dayres-tag374{
   position:absolute; left:8px; bottom:8px; padding:2px 8px;
   background:#F2EBD8; border:1px solid rgba(107,83,64,.5); border-radius:3px;
@@ -5952,7 +5952,7 @@ body.day-res-open .day-row{
    !important；其餘舊規則無 !important，後出＋同級／高級選擇器即贏。 */
 /* --- B2：其餘四組 subtab 照 plan 組做法——紙面頂行手寫字，未選褪色，選中紅墨手畫圈 --- */
 #home-subtabs .hsub-group:not([data-hsubgroup="plan"]){ justify-content:flex-start; gap:22px; padding:4px 12px 4px 46px; align-items:center; }
-#home-subtabs .hsub-group:not([data-hsubgroup="plan"]) .home-tab{ flex:0 0 auto; min-width:0; min-height:0; height:auto; background:transparent; border:0; border-radius:0; padding:2px; box-shadow:none; font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:17px; font-weight:400; color:#3a2e22; }
+#home-subtabs .hsub-group:not([data-hsubgroup="plan"]) .home-tab{ flex:0 0 auto; min-width:44px; min-height:44px; height:auto; background:transparent; border:0; border-radius:0; padding:2px; box-shadow:none; font-family:"Kaiti TC","STKaiti","KaiTi","Noto Serif CJK TC",serif; font-size:17px; font-weight:400; color:#3a2e22; }
 #home-subtabs .hsub-group:not([data-hsubgroup="plan"]) .home-tab:not(.on){ color:#a08a68; }
 #home-subtabs .hsub-group:not([data-hsubgroup="plan"]) .home-tab.on{ background:transparent; color:#3a2e22; font-weight:700; position:relative; }
 #home-subtabs .hsub-group:not([data-hsubgroup="plan"]) .home-tab.on::after{ content:""; position:absolute; left:-11px; top:-9px; width:calc(100% + 22px); height:calc(100% + 18px); background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 44' preserveAspectRatio='none'%3E%3Cpath d='M7 22 C 15 5, 85 4, 94 19 C 96 33, 78 42, 48 41 C 20 40, 4 35, 7 22' fill='none' stroke='%23c0452c' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat; filter:url(#inkSoft141); pointer-events:none; }
@@ -6667,7 +6667,7 @@ body.day-res-open .day-row{
 }
 .tags389-fold #tags-list{ max-height:38vh; overflow:auto; -webkit-overflow-scrolling:touch; }
 .clippings389-wrap{ margin-top:12px; }
-.clippings389-h{ margin:0 0 6px; color:#3a2e22; }
+.clippings389-h{ margin:0 0 6px; color:#e8dcc0; } /* v416：剪報標題喺深底上面改淺色，唔再同底色撞 */
 .clippings389-wrap #clippings-list{ max-height:38vh; overflow:auto; -webkit-overflow-scrolling:touch; }
 .stats389-card{
   background:#f5eddc; border:1px solid #cbb98d; border-radius:10px; padding:12px;
@@ -7169,7 +7169,7 @@ body.day-res-open .day-row{
 }
 /* (5a) 板頭同一橫列：統計剪報標籤靠左、整理紙籤靠右，唔再上下兩行。 */
 .board-head392{ display:flex !important; align-items:flex-start !important; justify-content:space-between !important; gap:8px !important; }
-.board-head392 .board-sum392{ flex:0 1 auto !important; min-width:0 !important; }
+.board-head392 .board-sum392{ flex:1 1 auto !important; min-width:0 !important; }
 .board-head392 .board-ctl397{ flex:0 0 auto !important; margin-top:0 !important; }
 /* (5b) 整理選單做側邊索引紙：由紙籤拉出、貼右緣、窄身、米紙底＋紅筆剔號（剔號本身
    已喺 v401 .board-chip392.on::after；呢度補紙身，唔再係一列裸掣似表單面板）。 */
@@ -7283,7 +7283,7 @@ body.day-res-open .day-row{
 .gig-teaser.gt-featured .g-seal{ z-index:2; }
 /* v20a404 UI404-5：劇照人物合成（右下人物、場景做底）＋片酬大字行＋紅印加深。 */
 .gt-still404{ position:relative; overflow:hidden; }
-.gt-pay404{ display:block; font-size:1.02rem; font-weight:900; color:#7c1d12; letter-spacing:.02em; margin-bottom:2px; }
+.gt-pay404{ display:inline; font-size:1.02rem; font-weight:900; color:#7c1d12; letter-spacing:.02em; } /* v416：推介卡片酬同預期同一行，掃讀位置同普通卡一致 */
 /* 紅印加深：中位紙色亦 ≥4.5:1（第十一輪中位 2.90:1）——加深墨色，維持印章質感。 */
 #app .gig-teaser .g-seal, .gig-card .g-seal{ filter:contrast(1.25) saturate(1.2) brightness(.9) drop-shadow(0 1px 2px rgba(26,20,16,.35)) !important; }
 /* 整理索引紙籤：側邊紙籤＋選中紅筆剔號（唔似表單）。 */
@@ -7788,6 +7788,35 @@ body.day-res-open .day-row{
 /* R13 推介卡劇照角標同卡下類型籤重複，收起角標（類型籤保留） */
 .gig-teaser.gt-featured .gt-still402::before{ content:none !important; }
 .gig-teaser.gt-featured .gt-still402-sub{ display:none !important; }
+/* ===== v416 UI416：第二十輪 self-review 修復（只改呈現） ===== */
+/* S1 編輯區說明＋壓力刻度避開裝訂陰影（原 46px 邊距下首字／刻度左點仍被影遮） */
+#home-pane-plan #plan-teach105{ margin-left:58px !important; }
+#home-pane-plan #stress-scale363{ margin-left:58px !important; margin-right:18px !important; }
+/* S2 通告欄預期日薪加粗（排序鍵一眼可比） */
+.gig-teaser .gt-exp416{ font-weight:800; color:#7a3b12; }
+/* S3 衣櫃狀態 chip＋未合要求唔拆行 */
+.ward-chip416{ display:inline-block; padding:1px 7px; border-radius:999px; font-size:.68rem; font-weight:800; border:1px solid #a98d4f; background:#fbf4dd; color:#5a4328; }
+.ward-chip416.on{ background:#2e5d3a; border-color:#2e5d3a; color:#f5efdd; }
+.ward-chip416.own{ background:#e7ddc4; }
+.ward-lock415{ white-space:nowrap; }
+/* v416 batch2：second opinion 覆核修復 */
+.gig-teaser .gt-badge, .gig-teaser .notice_tag_recruiting{ outline:none !important; background:rgba(179,38,30,.08) !important; border-width:1.5px !important; }
+.gig-teaser .gt-more416{ float:right; font-weight:800; color:#7a3b12; }
+.gig-board-list{ -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 24px),rgba(0,0,0,.35)) !important; mask-image:linear-gradient(180deg,#000 calc(100% - 24px),rgba(0,0,0,.35)) !important; }
+#nb-days .day-row:nth-child(7){ align-items:flex-start !important; }
+#home-pane-plan #nb-quick{ max-width:230px !important; }
+.stress-scale363 .ss363-lab{ font-size:11px !important; font-weight:800 !important; color:#7a2a1e !important; }
+#home-subtabs .prog389-badge{ border-width:1px !important; box-shadow:none !important; font-weight:700 !important; }
+.cost-pick416{ color:#7a4d12 !important; }
+.cost-lock416{ color:#8a7a5f !important; }
+#clothing-shop265-list{ -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 22px),rgba(0,0,0,.4)) !important; mask-image:linear-gradient(180deg,#000 calc(100% - 22px),rgba(0,0,0,.4)) !important; }
+.story-play .sp-text{ padding-right:14px !important; }
+/* v416 batch3：編輯入場週格微收，分類掣離開紙面底漸隱 */
+.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days{ gap:2px !important; }
+.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row{ min-height:73px !important; }
+.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row:nth-child(7){ min-height:44px !important; }
+/* S4 週日寬格圖示同其他格一致（右上角） */
+#nb-days .day-row .ic, #nb-days .day-row .nb-stk362{ order:3 !important; } /* v416：週日寬格（flex 列）圖示排最右，同其他格右上一致；grid 格用 grid-column 定位，order 無副作用 */
 /* R14 通告欄 lead 計法行：獨立一行，字級略細同主行分層 */
 .board-lead-formula415{ font-size:.86em !important; opacity:.85 !important; }
 /* R15 衣櫃項目資料行均衡斷行，避免單字孤行 */
@@ -7807,7 +7836,7 @@ body.day-res-open .day-row{
   .home:has(#btn-confirm-plan:not(.is-locked)) #home265-row button{ min-height:36px !important; padding-top:4px !important; padding-bottom:4px !important; }
 }
 /* R19 batch3：通告欄總數行保單行（整理掣加排序名後唔折「張」孤字） */
-.board-sum392{ font-size:.72rem !important; white-space:nowrap !important; }
+.board-sum392{ font-size:.72rem !important; white-space:normal !important; line-height:1.35 !important; text-wrap:balance !important; word-break:keep-all !important; } /* v416：篩選後總數行唔再俾整理掣截字，折行均衡唔留孤字 */
 /* R18 batch3：地圖選單紙本化，同手帳／紙籤同一世界 */
 #v-map .menu{ background:#f7efdb !important; border:1px solid #c9b183 !important; box-shadow:0 6px 18px rgba(40,28,16,.35) !important; }
 #v-map .menu button{ color:#2e2118 !important; }
@@ -8532,17 +8561,18 @@ function openClothingShop265(L){
     const lock = costume265UnlockReason(c);
     const afford = (S.money||0) >= (Number(c.price)||0);
     const disabled = has || !!lock || !afford;
-    const why = has ? "已擁有" : (lock ? ("未合要求："+lock) : (!afford ? "不夠錢" : "有售"));
+    const why = has ? "已擁有" : (lock ? (`<span class="ward-lock415">未合要求：${lock}</span>`) : (!afford ? "不夠錢" : "有售")); /* v416：未合要求整句唔拆行 */
     return `<div class="act ${disabled?"dim":""}" data-buy265="${c.id}" ${disabled?"data-disabled396=\"1\"":""} style="width:100%;margin:0 0 8px;text-align:left">
       <div><div class="n">${c.name}</div>
       <div class="h">${costume265BonusText(c)} · $${(Number(c.price)||0).toLocaleString()} · ${why}</div></div>
-      <div class="cost">${disabled?(has?"已擁有":(lock?"鎖住":"——")):"揀"}</div>
+      <div class="cost ${disabled?"cost-lock416":"cost-pick416"}">${disabled?(has?"已擁有":(lock?"鎖住":"——")):"揀"}</div>
     </div>`;
   }).join("") || `<p class="sub">本週暫無貨。</p>`;
   try{ closeSheet(); }catch(_e){}
   modal(`<h3>花園街成衣店</h3>
     <p class="sub">旺角花園街 · 買入不耗日 · 著衫加成只喺接通告／試鏡嗰陣計</p>
     <p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>
+    <p class="sub">揀中一件衫之後，按「購買」確認。</p>
     <div id="clothing-shop265-list">${body}</div>`,[
       {label:"購買", role:"p", cls:"shop-buy396", stay:true, on:(btn)=>{
         const sel = document.querySelector("#clothing-shop265-list .act-sel396");
@@ -8592,7 +8622,7 @@ function renderWardrobe265(){
     const has = owned.indexOf(c.id)>=0;
     const isEq = eq && eq.id===c.id;
     const lock = has ? "" : costume265UnlockReason(c);
-    const tag = isEq ? "著緊" : (has ? "擁有" : (c.shop ? "花園街成衣店有售" : "稍後推出"));
+    const tag = isEq ? `<span class="ward-chip416 on">著緊</span>` : (has ? `<span class="ward-chip416 own">已擁有</span>` : `<span class="ward-chip416 shop">未購入</span>`); /* v416：狀態 chip 分清著緊／已擁有／未購入；店舖提示收去頁首講一次 */
     const btn = isEq
       ? `<button type="button" class="paper" data-unequip265="1">除低</button>`
       : (has ? `<button type="button" class="paper" data-equip265="${c.id}">著上</button>` : "");
@@ -8600,7 +8630,7 @@ function renderWardrobe265(){
   }).join("");
   box.innerHTML = `<h3 class="wardrobe265-h">衣櫃</h3>`
     + `<p class="sub">而家著緊：<b>${eqName}</b>${eqBonus?("（"+eqBonus+"）"):""}</p>`
-    + `<p class="sub">換衫免費、即時，唔耗日；加成只喺接通告／試鏡嗰陣計，唔會寫入能力值。</p>`
+    + `<p class="sub">換衫免費、即時，唔耗日；加成只喺接通告／試鏡嗰陣計，唔會寫入能力值。未購入嘅衫可以去花園街成衣店買。</p>`
     + rows;
   box.querySelectorAll("[data-equip265]").forEach(b=>{
     b.addEventListener("click", ()=>{
@@ -13598,7 +13628,7 @@ const StoryPlay = (()=>{
     /* v20a202 C2：鎖死提示——所有故事一律唔出「先返回」（v196 D4），但要講出口：
        掣欄底加一行細字，播緊對白／抉擇兩種 mode 都有；純文字，唔改鎖死流程。
        （enc79 巧遇 overlay 唔加——佢本身有「點頭離開」出口，唔係鎖死，寫呢句會係錯話。） */
-    modalBtns.push({ label:"劇情進行中：可以選擇，播完才可以離開", role:"note" }); /* v415 batch3：講明選項而家撳得，只係未離開得 */
+    modalBtns.push({ label:"劇情進行中：可以選擇，播完這一段才可以離開", role:"note" }); /* v416：講明係播完呢段，唔係呢句 */
     /* v20a196 D4：所有故事一律唔出「先返回」（舊寫法只係 lockedForced 先唔出）。 */
     /* v20a196 D4：所有故事 onDismiss 一律重開畫面（舊 lockedForced 嗰條路）；mask click 唔會返地圖。
        注意次序：closeModal() 會先清 story-play-on＋解鎖，render() 再加返——N1 舊路同一寫法。 */
@@ -20809,8 +20839,8 @@ function gigBoardTeaserHtml(g, opts){
        */
     /* v20a404 UI404-5：推介卡片酬獨立一行大字（第一眼可見），唔同日數／成功率擠同一行。 */
     if(opts.featured && payTxt) bits392.push(`<span class="gt-pay404">總片酬 ${payTxt}</span>`);
-    if(boardState==="ready" && sortIsExp396 && exp396!=null && exp396>0) bits392.push(`預期 $${Math.round(exp396)}／日`);
-    else if(payTxt && !opts.featured) bits392.push(`片酬 ${payTxt}`);
+    if(payTxt && !opts.featured) bits392.push(`片酬 ${payTxt}`); /* v416：所有卡都出總片酬，同推介卡一眼可比 */
+    if(boardState==="ready" && sortIsExp396 && exp396!=null && exp396>0) bits392.push(`<span class="gt-exp416">預期 $${Math.round(exp396)}／日</span>`);
     if(daysN!=null) bits392.push(`${daysN} 日`);
     if(boardState==="ready"){
       try{ if(typeof chance==="function") bits392.push(`成功率約 ${Math.round(chance(g)*100)}%`); }catch(_e){} /* v20a398 UI398-4：列表成功率加「約」（計法行註明用精確值，見 openCastingNoticeDetail）；v415 batch3：就地標明係成功率 */
@@ -20861,7 +20891,7 @@ function gigBoardTeaserHtml(g, opts){
     ${still402}
     <div class="gt-title">${work}${featured392 ? `<span class="gt-featured-tag">推介</span>` : ""}</div>
     <div class="gt-row">${genrePills396}${trigPill}<span class="${badgeCls}">${badgeText}</span></div>
-    ${metaLine392?`<div class="gt-meta"><div class="gt-meta-line">${metaLine392}</div></div>`:""}
+    ${metaLine392?`<div class="gt-meta"><div class="gt-meta-line">${metaLine392}<span class="gt-more416">查看詳情 ›</span></div></div>`:""}
     ${intelMark}
     ${favor158Html}
     ${gapHtml}
@@ -21193,7 +21223,7 @@ function castingNoticeDetailHtml(g){
   const payStr=gigPayExactHtml(g);
   const breachStr=gigBreachFeeHtml(g);
   /* v20a108 UI108 S-33：簽約金數字行升上摘要區（獲聘後即收；v20a115 更正：簽約金只喺公佈獲聘嗰刻入帳，見 aud91PresentOne「公佈嗰刻即付」，接通告嗰刻唔入帳）；違約金只喺有數嗰陣先出。 */
-  const signFee108=(()=>{ try{ const ex=gigPayExact(g); return (ex!=null && ex>0) ? ("約 $"+Math.round(ex*0.3).toLocaleString()+"（獲聘後即收）") : "合約額三成（獲聘後即收）"; }catch(_e){ return "合約額三成（獲聘後即收）"; } })();
+  const signFee108=(()=>{ try{ const ex=gigPayExact(g); return (ex!=null && ex>0) ? ("約 $"+Math.round(ex*0.3).toLocaleString()+"（片酬三成，獲聘後即收）") : "合約額三成（獲聘後即收）"; }catch(_e){ return "合約額三成（獲聘後即收）"; } })();
   const breachRow108=(()=>{ try{ return (typeof gigBreachFee==="function" && gigBreachFee(g)!=null) ? `<div class="cn-sum-row"><span class="k">違約金</span><span class="v">${breachStr}</span></div>` : ""; }catch(_e){ return ""; } })();
   /* v20a117 S-30 DEDUP117：condParts（詳細區「條件」表）隨詳細區刪除——同摘要區
      要求格（reqGridHtml，現／要對照）同一組數，只係冇現值，純重複。 */
@@ -23273,7 +23303,7 @@ function updateLiveStressStrip(){
   const endCls = pv.end < pv.start ? "good" : (pv.end > pv.start ? "bad" : "");
   const peakCls = pv.peak>=52 ? "bad" : "good";
   const low = isLowRiskWeek(planDraft);
-  el.innerHTML = `壓力估 <b>${pv.start}</b>→<b class="${endCls}">${pv.end}</b> · 高峰 <b class="${peakCls}">${pv.peak}</b>`
+  el.innerHTML = `壓力估：現時 <b>${pv.start}</b> → 週末 <b class="${endCls}">${pv.end}</b> · 高峰 <b class="${peakCls}">${pv.peak}</b>` /* v416：箭嘴兩端標明現時／週末 */
     + (low ? ` <span class="muted">· 低風險可直出</span>` : ` <span class="muted">· 點開明細</span>`);
   try{ stressScale363(pv); }catch(_e){}
   /* v20a105 UI105 S-19：明細展開中嗰陣改行程要跟住更新，唔好顯示舊數 */
@@ -23570,7 +23600,7 @@ function renderNotebook(){
       modeEl.hidden = false;
       if(editable){
         modeEl.className = "nb-plan-mode edit";
-        modeEl.textContent = "點擊日子格會捲到編輯區；改完點擊確定才生效"; /* v415 batch3：講明點擊日格會捲去編輯區（短句保 390 單行） */
+        modeEl.textContent = "點日格去編輯區；改完按「確定本週行程」生效"; /* v415 batch3：講明點擊日格會捲去編輯區（短句保 390 單行） */
       } else if(typeof nbShowingPrevWeek37==="function" && nbShowingPrevWeek37()){
         modeEl.className = "nb-plan-mode readonly";
         modeEl.textContent = "唯讀手帳 · 這版是上週已執行的行程；新一週行程在回家結算時編排";
@@ -37118,7 +37148,7 @@ function awards62PlayCeremony(pack, doneFn){
     stage.innerHTML = '<div class="awd62-frame">'
       + '<div class="awd62-canvaswrap"><canvas class="awd62-canvas" width="720" height="' + Math.round(HS211 * 1.5) + '"></canvas>' /* v20a211 B1：backing 高跟 HS211（432→648／540→810，×1.5 transform 不變） */
       + '<img class="awd62-m5fx149" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>'
-      + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>' + awd181Html + '<div class="awd62-tap">點擊畫面可以快進</div><button type="button" class="awd62-skip">跳過 ⏩</button>' + "</div>" + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服；v20a181：邏輯座標 480×432（10:9，v20a207 B2），backing 720×648；v20a197 B3：跳過掣搬入 canvaswrap（480×360 固定比例，唔跟 beat 高度走）；v20a392 UI392 ⑤：快進提示一併搬入 canvaswrap 左下角，同跳過掣同一列 */
+      + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>' + awd181Html + '<div class="awd62-tap">點擊畫面揭曉下一張</div><button type="button" class="awd62-skip">跳過 ⏩</button>' + "</div>" + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服；v20a181：邏輯座標 480×432（10:9，v20a207 B2），backing 720×648；v20a197 B3：跳過掣搬入 canvaswrap（480×360 固定比例，唔跟 beat 高度走）；v20a392 UI392 ⑤：快進提示一併搬入 canvaswrap 左下角，同跳過掣同一列 */
       + cardsHtml
       + '<div class="awd62-caption"></div>'
       + "</div>";
@@ -48035,7 +48065,7 @@ function openLoc(id, opts){
         if(heard){ toast("呢單情報已經聽過。"); return; }
         /* v20a236 RECONFIRM236：打聽先確認後扣茶錢／寫卡（applyMockAsk 本體唔郁；事務所打聽即加何生人情照舊）。 */
         const cost236 = (Number(def.moneyCost)||0)>0 ? (def.id==="act_cha_intel381" ? ("即時支付情報費 $"+(Number(def.moneyCost)||0)+"。") : ("即時支付茶錢 $"+(Number(def.moneyCost)||0)+"。")) : "";
-        const cons236 = cost236 + (L.id==="agency_ho" ? "何生人情將會增加。" : ""); /* v415：生效提示只留確認框通用句，唔重複 */
+        const cons236 = (cost236 || "不耗日。") + (L.id==="agency_ho" ? "何生人情將會增加。" : "情報會即時寫入留話簿。"); /* v416：免費打聽都講明後果，唔剩通用句 */
         const reopen236 = ()=>{ try{ if(L) openLoc(L.id, {travelFree:true}); }catch(_e2){} };
         confirmChoice236({ choiceLabel: def.title, consequence: cons236,
           onConfirm: ()=>{
@@ -49109,7 +49139,7 @@ function doScout(L){
       /* v20a396 UI396 ②：篩選生效嗰陣，總數行出篩選後數目（顯示 X／總數），唔係成板總數。 */
       const sum392 = filter392==="all"
         ? `共 ${shown.length} 張 · 可接 ${ready108.length} 張 · 未達標 ${locked108.length} 張`
-        : `顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張（可接 ${readyF392.length} · 未達標 ${lockedF392.length}）`;
+        : `顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張 · 可接 ${readyF392.length} · 未達標 ${lockedF392.length}`; /* v416：縮短總數行，唔再俾整理掣截字 */
       body+=`<div class="board-head392">`
         + `<div class="board-sum392">${sum392}</div>`
         + `<div class="board-ctl397"><div class="board-sort392"><button type="button" class="board-chip392 board-ctl397-btn" data-board-menu397="organize" aria-expanded="false">整理 · ${_boardSort392==="exp"?"預期日薪":(_boardSort392==="pay"?"總片酬":"成功率")} ▾</button>` /* v415 batch3：整理掣顯示目前排序 */

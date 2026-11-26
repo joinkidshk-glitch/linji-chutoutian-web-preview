@@ -1,3 +1,4 @@
+# v416：店舖提示收去衣櫃頁首、未合要求改 span，斷言跟新寫法。
 # -*- coding: utf-8 -*-
 # v20a265 COSTUME265（服裝＋屋企系統 P1）靜態測試：
 # 一、服裝表 12 件：價錢／加成／解鎖同設計檔 §1.2 一致，全套 $6,270
@@ -154,7 +155,7 @@ ok("buyCostume265：未有售嘅衫買唔到（P2 衫守門）", '"這件衫暫�
 shop_src = extract_fn("openClothingShop265")
 ok("openClothingShop265：在位＋先確認後扣錢（confirmChoice236＋buyCostume265）",
    "confirmChoice236({" in shop_src and "buyCostume265(id)" in shop_src)
-ok("openClothingShop265：鎖住寫明要求", '"未合要求："' in shop_src)
+ok("openClothingShop265：鎖住寫明要求", '未合要求：' in shop_src)
 ok("openClothingShop265：已擁有顯示，唔可以重複買", '"已擁有"' in shop_src)
 ok("openLoc 服裝店出「買衫」掣",
    'if(L.id==="clothing_shop") add("買衫", "花園街成衣店","免費", ()=>openClothingShop265(L), "act-priority");' in src)
@@ -190,7 +191,7 @@ ward_src = extract_fn("renderWardrobe265")
 ok("衣櫃區：著緊邊套／擁有／換衫（著上／除低）",
    "而家著緊" in ward_src and 'data-equip265' in ward_src and 'data-unequip265' in ward_src)
 ok("衣櫃區：未擁有寫明去向（店有售／稍後推出）",
-   "花園街成衣店有售" in ward_src and "稍後推出" in ward_src)
+   "未購入嘅衫可以去花園街成衣店買" in ward_src)
 ok("換衫免費即時（costume265Equip：寫 equipped＋saveQ，冇 tickDay／冇扣錢）",
    "w.equipped = id" in extract_fn("costume265Equip")
    and "tickDay" not in extract_fn("costume265Equip")

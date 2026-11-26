@@ -1,3 +1,5 @@
+// v416：未合要求改 span 整句不拆行，斷言跟新寫法。
+// v416：店舖提示收去衣櫃頁首講一次，斷言跟新文案。
 // v20a293 Q6：其餘 8 件衫入舖頭賣，達條件先買得——邏輯測試。
 //   (1) 店列出 12 件（全數 shop:true；價錢總和 $6,270 不變，解鎖條件照表）；
 //   (2) 鎖定條件逐個驗：開局（聲望 5／級數 0／歌藝 14／演技 18）c2 唔鎖，其餘 7 件各鎖
@@ -152,10 +154,10 @@ const shopSrc = (()=>{
   return html.slice(i, j + 1);
 })();
 ok('店面：只列 shop:true（filter c.shop），12 件全出', shopSrc.indexOf('filter(c=>c && c.shop)') >= 0);
-ok('店面：鎖住寫明要求＋顯示「鎖住」', shopSrc.indexOf('"未合要求："') >= 0 && shopSrc.indexOf('"鎖住"') >= 0);
+ok('店面：鎖住寫明要求＋顯示「鎖住」', shopSrc.indexOf('未合要求：') >= 0 && shopSrc.indexOf('"鎖住"') >= 0);
 ok('店面：買前確認（confirmChoice236）＋行 buyCostume265', shopSrc.indexOf('confirmChoice236({') >= 0 && shopSrc.indexOf('buyCostume265(id)') >= 0);
 ok('店面：已擁有顯示，唔可以重複買', shopSrc.indexOf('"已擁有"') >= 0);
-ok('衣櫃：未擁有寫明去向（花園街成衣店有售）', html.indexOf('"花園街成衣店有售"') >= 0);
+ok('衣櫃：未擁有寫明去向（花園街成衣店有售）', html.indexOf('未購入嘅衫可以去花園街成衣店買') >= 0);
 
 if(fails.length){ console.log('FAILURES: ' + fails.join(' | ')); process.exit(1); }
 console.log('ALL PASS');

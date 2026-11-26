@@ -1,3 +1,4 @@
+# v416：提示文案清晰化，A4 斷言跟新文案。
 # v404 意圖更新：地圖頂欄「進度」掣按第十一輪裁決刪走——chip 改靜態徽章（span、無 click），進度數字改顯示喺手帳行程頁（#nb-progress404）；斷言同步。
 # v20a57 TERMS static tests: player-facing source strings in index.html must be
 # free of the audited A-class terms after the v57 pass. Block-aware:
@@ -151,7 +152,7 @@ chk('A3 zero 刷新 in player strings', not bad('刷新', lambda s: False))
 chk('A4 zero 撳 in player strings (dialogue 撳牌 only)',
     not bad('撳', lambda s: '撳牌' in s or '撳通告牌' in s))
 chk('A4 UI strings use 點擊',
-    '點擊畫面可以快進' in src and '點擊海報卡可查看作品詳情' in src and '點擊確定才生效' in src)
+    '點擊畫面揭曉下一張' in src and '點擊海報卡可查看作品詳情' in src and '按「確定本週行程」生效' in src)
 # v20a392 UI392 ①：「點擊外面＝⋯」細字已刪（撳外面唔再推進，唔使再定義後果），上面 A4 唔再釘嗰兩句。
 chk('B1 zero 解鎖 in player strings', not bad('解鎖', lambda s: False))
 chk('B6 zero 周刊 in player strings',

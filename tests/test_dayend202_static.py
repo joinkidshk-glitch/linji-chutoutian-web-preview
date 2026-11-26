@@ -1,3 +1,4 @@
+# v416：劇情底欄提示講明播完這一段，斷言跟新文案。
 # v20a202 B1/B2/C1/C2・靜態測試
 # 逐字核對四項修法嘅落點（文案層，唔郁 v196 承諾制流程）。
 # 用法：python3 tests/test_dayend202_static.py [path-to-index.html]
@@ -103,15 +104,15 @@ ok('N1 old confirm title gone (開始今日行程？唔再出現喺玩家面)',
 
 # ---- C2：故事鎖死提示 ----
 ok('N2 StoryPlay render pushes lock hint note into modalBtns',
-   '劇情進行中：可以選擇，播完才可以離開' in fn_render
-   and 'modalBtns.push({ label:"劇情進行中：可以選擇，播完才可以離開", role:"note" });' in fn_render)
+   '劇情進行中：可以選擇，播完這一段才可以離開' in fn_render
+   and 'modalBtns.push({ label:"劇情進行中：可以選擇，播完這一段才可以離開", role:"note" });' in fn_render)
 ok('N2 hint is pushed after the beats/choices branch (兩種 mode 都有)',
-   idx(fn_render, 'modalBtns.push({ label:"劇情進行中：可以選擇，播完才可以離開", role:"note" });')
+   idx(fn_render, 'modalBtns.push({ label:"劇情進行中：可以選擇，播完這一段才可以離開", role:"note" });')
    > idx(fn_render, 'modalBtns.push({ label:"下一句"')
-   and idx(fn_render, 'modalBtns.push({ label:"劇情進行中：可以選擇，播完才可以離開", role:"note" });')
+   and idx(fn_render, 'modalBtns.push({ label:"劇情進行中：可以選擇，播完這一段才可以離開", role:"note" });')
    > idx(fn_render, 'modalBtns.push({ label:"完成這一節"'))
 ok('N2 enc79 overlay NOT given the lock hint (佢有「點頭離開」出口，唔係鎖死)',
-   '劇情進行中：可以選擇，播完才可以離開' not in fn_enc79
+   '劇情進行中：可以選擇，播完這一段才可以離開' not in fn_enc79
    and '點頭離開' in fn_enc79)
 
 # ---- CSS ----
