@@ -7493,6 +7493,52 @@ body.day-res-open .day-row{
   min-height:44px !important; font-weight:700 !important;
 }
 /* ===== v20a409 UI409 完 ===== */
+/* ===== v20a411 UI411：第十五輪頭五項修復（GPT-6.2-sol 加強方案，只改視覺層） ===== */
+/* (1) 彈窗／資料卡去報表：拆逐行分隔、狀態改細字印章、合約算式退註腳 */
+#modal-inner .cn-contract401 .cn-sum-row{ border-bottom:0 !important; padding:2px 0 !important; }
+#modal-inner .cn-contract401 .cn-sum-row:last-child{ border-top:1px solid #CDBFA9 !important; padding-top:5px !important; margin-top:3px !important; }
+#modal-inner .cn-contract401 .cn-sum-row:last-child .v{ font-size:1rem !important; }
+#modal-inner .board-calc397{ font-family:var(--hand363,"LXGW WenKai","Kaiti TC",serif) !important; font-size:.75rem !important; color:#5C4D3D !important; margin-top:5px !important; }
+#modal-inner .cn-kv{ line-height:1.45 !important; margin-bottom:3px !important; }
+#modal-inner .cn-kv .v{ font-weight:700 !important; }
+#home-pane-stats389 .stats-grid .stat, #home-pane-ledger .stats-grid .stat{ border-bottom:0 !important; padding:5px 2px !important; }
+#home-pane-stats389 .stats-grid, #home-pane-ledger .stats-grid{ gap:2px 10px !important; }
+#mask.casting-sheet-on #modal-btns button.p{ flex:1.4 1 0 !important; }
+#mask.casting-sheet-on #modal-btns button.g{ flex:1 1 0 !important; }
+/* (3) 進度抽屜層級：一張通告紙幼線分幕、下一幕突出、完成紙條收薄、狀態印章化 */
+#progress-list .prog71-row{ border:0 !important; border-top:1px solid #CDBFA9 !important; border-radius:0 !important; background:transparent !important; margin:0 !important; padding:6px 2px !important; }
+#progress-list .prog71-row:first-of-type{ border-top:0 !important; }
+#progress-list .prog71-row.open{ background:#EDDFC2 !important; border-left:2px solid #823F35 !important; box-shadow:none !important; padding:8px 8px !important; }
+#progress-list .prog71-row.open .prog71-top b{ font-size:1rem !important; }
+#progress-list .prog71-tag{ border-radius:2px !important; padding:0 4px !important; font-size:.75rem !important; line-height:16px !important; }
+#progress-list .prog71-intro{ font-size:.75rem !important; line-height:16px !important; margin-bottom:4px !important; }
+#progress-list .prog409-done{ padding:0 10px !important; margin-bottom:6px !important; }
+#progress-list .prog409-done summary{ font-size:.85rem !important; }
+/* (2) 行程頁首屏密度：壓頁首留白、日格收高、建議／成本入鏡、徽章書籤角 */
+#home-pane-plan .nb-left{ padding-top:2px !important; }
+#home-pane-plan .nb-range{ margin-bottom:2px !important; }
+#home-pane-plan .nb-title{ margin-bottom:2px !important; }
+#home-pane-plan .prog389-badge{ border-left:2px solid #823F35 !important; background:#EDDFC2 !important; }
+#home-pane-plan .nb-suggest400, #home-pane-plan .nb-cost400{ margin:3px 0 !important; }
+@media (max-height:900px){
+  #nb-days{ gap:4px !important; }
+  #nb-days .day-row{ min-height:88px !important; padding:5px 8px !important; }
+}
+@media (max-width:440px) and (max-height:740px){
+  #nb-days .day-row{ min-height:80px !important; }
+  #home-pane-plan .nb-range{ line-height:22px !important; }
+}
+/* (4) 約會場景：拆對白內框改紙上正文、相片貼角、隱背景標籤、收提示留白 */
+#app #mask:not(.tut-on) .modal .date409 .dlg-bubble{ background:transparent !important; border:0 !important; border-radius:0 !important; padding:2px 0 0 !important; }
+#app #mask:not(.tut-on) .modal .date409 .dlg-portrait{ border:3px solid #F5EBD8 !important; outline:1px solid #CDBFA9 !important; }
+#app:has(.date409) .mn68, #app:has(.date409) .md97{ visibility:hidden !important; }
+.date409 .sub{ margin:0 0 8px !important; }
+#modal-btns button.date409-choice{ min-height:48px !important; align-items:flex-start !important; }
+/* (5) 旁白完成卡收細避印、旁白貼近操作欄（正文對比覆量定斷見 NOTES） */
+#app.toast-up:has(#mask.story-play-on) .toast{ max-width:38% !important; padding:5px 10px !important; font-size:.75rem !important; }
+#mask.story-play-on:has(.sp-mode-narration) .sp-stage-inner{ padding-bottom:4px !important; }
+#mask.story-play-on:has(.sp-mode-narration) #modal-btns{ padding-top:4px !important; }
+/* ===== v20a411 UI411 完 ===== */
 
 </style>
 </head>
@@ -26318,7 +26364,14 @@ function fold408Align(scroller){
       if(hit) break;
     }
     if(!hit || !hitEl) return;
-    const block = hitEl.closest(".gig-teaser,.cn-lab,.cn-sum-row,.cn-kv,.cn-kv-top,.cn-req-cell,.debt-row,.result-line,.np214-short,.notice_synopsis_frame,p,h3,h4,li") || hitEl;
+    /* v20a411 UI15-S1：進度抽屜卡頂行（.prog71-top 內）被切嗰陣推成張卡，
+       折位落卡與卡之間；完成紙條 summary 被切推成條紙條；其餘維持行級推（li／p），
+       折位落行與行之間——推成張卡會連上一行一齊推落去再切上一行，唔可以。 */
+    const row411 = hitEl.closest(".prog71-row");
+    const done411 = hitEl.closest(".prog409-done");
+    const block = (row411 && hitEl.closest(".prog71-top")) ? row411
+      : ((done411 && hitEl.closest("summary")) ? done411
+      : (hitEl.closest(".gig-teaser,.cn-lab,.cn-sum-row,.cn-kv,.cn-kv-top,.cn-req-cell,.debt-row,.result-line,.np214-short,.notice_synopsis_frame,p,h3,h4,li") || hitEl));
     /* +3 緩衝：字體載入後行高可漂移 1–2px，唔加緩衝折位會再切返字形（實駕 run2 差 1.3px）。
        套用後覆量同一行：margin 摺疊會食咗部分 shift（詳情 cn-sum-row 實駕差 8px），
        殘差補足至行頂真係落到折位之下。 */
@@ -26445,7 +26498,7 @@ function modal(html, buttons, opts){
   }catch(_e){}
   // Prevent focus/layout from scrolling map-wrap under the phone frame
   restoreMapScroll();
-  try{ const _al403=()=>{ try{ awd403FoldAndHint(); }catch(_e){} try{ fold408Align(document.getElementById("modal-inner")); }catch(_e){} try{ const nb408=document.querySelector("#modal-inner .notice_sheet_body"); if(nb408) fold408Align(nb408); }catch(_e){} try{ align403ScrollEdges(document.getElementById("modal-inner")); }catch(_e){} try{ const nb=document.querySelector("#modal-inner .notice_sheet_body"); if(nb) align403ScrollEdges(nb); }catch(_e){} }; requestAnimationFrame(_al403); setTimeout(_al403, 250); setTimeout(_al403, 700); setTimeout(_al403, 1200); setTimeout(_al403, 2000); try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(_al403); }catch(_ef){} }catch(_e403){}
+  try{ const _al403=()=>{ try{ awd403FoldAndHint(); }catch(_e){} try{ fold408Align(document.getElementById("modal-inner")); }catch(_e){} try{ const nb408=document.querySelector("#modal-inner .notice_sheet_body"); if(nb408) fold408Align(nb408); }catch(_e){} try{ align403ScrollEdges(document.getElementById("modal-inner")); }catch(_e){} try{ const nb=document.querySelector("#modal-inner .notice_sheet_body"); if(nb) align403ScrollEdges(nb); }catch(_e){} try{ const pl411=document.getElementById("progress-list"); if(pl411){ fold408Align(pl411); align403ScrollEdges(pl411); } }catch(_e411){} }; requestAnimationFrame(_al403); setTimeout(_al403, 250); setTimeout(_al403, 700); setTimeout(_al403, 1200); setTimeout(_al403, 2000); try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(_al403); }catch(_ef){} }catch(_e403){}
 }
 function closeModal(){
   /* v20a122 AUD91FIX H1 保底：任何關 modal 嘅路都清晨報旗，免卡死吞鏈。 */
@@ -32802,6 +32855,17 @@ function openProgressDrawer389(){
     {label:"關閉", role:"g"}
   ]);
   try{ renderProgressPane71(); }catch(_e){}
+  /* v20a411 UI15-S1：抽屜係內層捲動器（#progress-list max-height 62vh），
+     modal 嘅 _al403 已納入佢做折位對齊；完成紙條展開／收起會改變內容高度，
+     喺頂部嗰陣重跑對齊，免展開後折位再切字（捲走咗唔郁玩家位置）。 */
+  try{
+    const pl411 = document.getElementById("progress-list");
+    const done411 = pl411 ? pl411.querySelector(".prog409-done") : null;
+    if(pl411 && done411) done411.addEventListener("toggle", ()=>{
+      try{ if(pl411.scrollTop <= 2 && typeof fold408Align === "function") fold408Align(pl411); }catch(_t411){}
+      try{ if(typeof align403ScrollEdges === "function") align403ScrollEdges(pl411); }catch(_t411b){}
+    });
+  }catch(_e411){}
 }
 /* v20a389 UI389：資料卡子頁（七圍＋雙軌＋存款，讀 ledgerStatsParts 同源數字）。 */
 function renderStats389Pane(){
