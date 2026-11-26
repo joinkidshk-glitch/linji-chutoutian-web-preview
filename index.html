@@ -7539,6 +7539,63 @@ body.day-res-open .day-row{
 #mask.story-play-on:has(.sp-mode-narration) .sp-stage-inner{ padding-bottom:4px !important; }
 #mask.story-play-on:has(.sp-mode-narration) #modal-btns{ padding-top:4px !important; }
 /* ===== v20a411 UI411 完 ===== */
+/* ===== v20a412 UI412：第十六輪 self-review N1–N11 修復（只改呈現層） ===== */
+/* N1 地點面板尾列：淡出收輕（18px／最高 .82）＋行動列收 1px 內距，尾列標題／費用唔再似停用 */
+#loc-sheet.sheet.locpanel118 #loc-acts{ padding-bottom:22px !important; scroll-padding-bottom:24px; }
+#loc-sheet.sheet.locpanel118 #loc-acts.loc-acts-more171::after{ height:10px !important; margin-top:-10px !important; background:linear-gradient(to bottom, rgba(248,241,222,0), rgba(248,241,222,.82)) !important; }
+#loc-sheet.sheet.locpanel118 #loc-acts .act{ padding:9px 14px !important; }
+#loc-sheet.sheet.locpanel118 .ux68-ghead{ margin-bottom:4px !important; }
+/* N2 資料卡去橫線：平紙底＋標籤／數值兩欄，數值右齊（條形欄喺資料卡唔出，唔再擠數值去中間） */
+#home-pane-stats389 .stats389-card{ background:#fbf4dd !important; }
+#home-pane-stats389 .stats-grid .stat{ display:grid !important; grid-template-columns:1fr auto !important; align-items:baseline !important; padding:7px 2px !important; }
+#home-pane-stats389 .stats-grid .stat .barline{ display:none !important; }
+#home-pane-stats389 .stats-grid .stat .l{ font-size:.88rem !important; }
+#home-pane-stats389 .stats-grid .stat .v{ font-size:1.05rem !important; text-align:right !important; font-variant-numeric:tabular-nums; }
+/* N3 707 行程首屏：短屏收貼紙／格距（唔縮字），第三排完整入鏡或落折位之下 */
+@media (max-width:440px) and (max-height:740px){
+  #nb-days .day-row{ gap:1px !important; padding:2px 6px !important; }
+  #nb-days .day-row .wd{ line-height:1.15 !important; }
+  #nb-days .day-row .nm .plan-main{ line-height:1.2 !important; }
+  #nb-days .day-row .plan-hint{ line-height:1.2 !important; }
+  #nb-days .nb-stk362{ width:16px !important; height:16px !important; }
+  #nb-days{ gap:4px !important; }
+  #home-pane-plan .nb-left{ padding-top:0 !important; }
+  #home-pane-plan .nb-range{ margin-bottom:0 !important; padding-top:0 !important; padding-bottom:0 !important; }
+}
+/* N5 進度抽屜：下一幕（第一個未開放逐項行）同已開放行同一層級突出；行距略放，折位空白收窄 */
+#progress-list .prog71-row{ padding:7px 4px !important; }
+#progress-list .prog71-items li{ line-height:1.45 !important; }
+#progress-list .prog71-row.prog71-next412{ background:#EDDFC2 !important; border-left:2px solid #823F35 !important; padding:8px 8px !important; }
+#progress-list .prog71-row.prog71-next412 .prog71-top b{ font-size:1rem !important; }
+#progress-list .prog71-row.prog71-next412 .prog71-tag.lock{ border-color:#823F35 !important; color:#823F35 !important; font-weight:800 !important; }
+#progress-list .prog71-next142{ margin-top:8px !important; }
+/* N6 詳情算式：主數一行、公式一行（JS 分段），字級略放大、行距放鬆 */
+#modal-inner .board-calc397{ font-family:var(--hand363,"LXGW WenKai","Kaiti TC",serif) !important; font-size:.8rem !important; line-height:1.55 !important; color:#4a3a28 !important; }
+#modal-inner .board-calc397 .calc412-main{ display:block; font-size:.86rem; font-weight:800; color:#33241C; }
+#modal-inner .board-calc397 .calc412-formula{ display:block; margin-top:1px; }
+/* N8 旁白完成卡：還原印章右邊留白，紅印唔再壓住尾字 */
+#app.toast-up:has(#mask.story-play-on) .toast{ max-width:42% !important; font-size:.78rem !important; }
+#app.toast-up:has(#mask.story-play-on) .toast.has-stamp{ padding-right:44px !important; }
+#app.toast-up:has(#mask.story-play-on) .toast .toast-stamp{ width:28px !important; right:4px !important; }
+/* N9 次要文字 targeted 放大／加深：槽位、通告卡 meta、報紙小字、頒獎字幕次行 */
+.slot-row .slot-meta{ font-size:.8rem !important; line-height:1.45 !important; }
+.slot-row .slot-tag{ font-size:.74rem !important; }
+.gig-teaser .gt-meta{ font-size:.78rem !important; line-height:1.45 !important; }
+.paper-sheet .np214-dateline{ font-size:12px !important; }
+.paper-sheet .np214-kicker{ font-size:12px !important; }
+.paper-sheet .np214-caption{ font-size:12px !important; }
+.paper-sheet .np214-sidebar p{ font-size:12px !important; }
+.awd62-caption .dim{ font-size:13.5px !important; color:#cdbfe9 !important; }
+.awd63-card .s{ font-size:10.5px !important; }
+.awd63-card .t{ color:#3a2c14 !important; }
+/* N10 地圖標籤：字略放大、閒置籤唔再壓到 .72，地區名略放大 */
+#v-map .map-names68 .mn68{ font-size:13px !important; padding:2px 7px 3px !important; letter-spacing:.03em !important; }
+#app #v-map .map-names68 .mn68-dim{ opacity:.86 !important; }
+#v-map .map-districts97 .md97{ font-size:11px !important; opacity:.92 !important; }
+/* N11 進度徽章：同手帳紙之間留 2px 分隔＋底影，捲動嗰陣層次分明 */
+#home-pane-plan .prog389-badge{ margin-bottom:2px !important; box-shadow:0 2px 0 rgba(70,50,30,.18) !important; }
+#home-pane-plan .notebook{ scroll-padding-top:8px; }
+/* ===== v20a412 UI412 完 ===== */
 
 </style>
 </head>
@@ -18765,6 +18822,34 @@ function payWrapNote(sh){
 }
 
 
+/* v20a412 N7：約會場景期間延後非約會 toast——資訊唔丟失，約會完結先再出，唔打斷氣氛 */
+function queueToastAfterDate412(m, opts){
+  try{
+    clearTimeout(toast._dateT412);
+    let tries412 = 0;
+    const tick412 = ()=>{
+      try{
+        if(!document.querySelector(".date409")){ toast(m, Object.assign({}, opts||{}, { _dateDefer412:true })); return; }
+        if(++tries412 < 80) toast._dateT412 = setTimeout(tick412, 250);
+      }catch(_e412){}
+    };
+    toast._dateT412 = setTimeout(tick412, 250);
+  }catch(_e412){}
+}
+function stashToastForDate412(){
+  try{
+    const t412 = document.getElementById("toast");
+    if(!t412 || !t412.classList.contains("on")) return;
+    const msgEl412 = t412.querySelector(".toast-msg");
+    const subEl412 = t412.querySelector(".toast-sub");
+    const msg412 = msgEl412 ? msgEl412.textContent : "";
+    if(!msg412) return;
+    const sub412 = subEl412 ? subEl412.textContent : "";
+    const stamp412 = t412.classList.contains("has-stamp");
+    hideToast211();
+    queueToastAfterDate412(msg412, { sub: sub412 || undefined, stamp: stamp412 });
+  }catch(_e412){}
+}
 function toast(m, opts){
   opts=opts||{};
   const sheet=document.getElementById("loc-sheet");
@@ -18794,6 +18879,11 @@ function toast(m, opts){
         return;
       }
     }
+  }
+  /* v20a412 N7：約會場景開住嗰陣，toast 延後到約會完結先出（資訊保留） */
+  if(!opts._dateDefer412 && document.querySelector(".date409")){
+    queueToastAfterDate412(msg, opts);
+    return;
   }
   const stampWanted = !!opts.stamp || /完成|已存檔|已約|行程已定|已還原|通告欄更新咗/.test(String(m||""));
   /* P0-4（v20a11）：同一句提示喺顯示期間（1.8 秒）重複觸發唔好重置計時器。
@@ -21204,7 +21294,7 @@ function openCastingNoticeDetail(g, L){
        係用未取整成功率計（86.5% → 81.7 → 四捨五入 $82）。 */
     try{
       const calc397 = (typeof boardExpCalc397==="function") ? boardExpCalc397(g) : null;
-      if(calc397) body += `<p class="board-calc397">預期日薪 $${calc397.rounded}／日＝片酬 $${calc397.pay} × 成功率 ${(calc397.chance*100).toFixed(1)}% ÷ ${calc397.days} 日（成功率用精確值，未取整 $${calc397.raw.toFixed(1)}，四捨五入）</p>`;
+      if(calc397) body += `<p class="board-calc397"><span class="calc412-main">預期日薪 $${calc397.rounded}／日</span><span class="calc412-formula">片酬 $${calc397.pay} × 成功率 ${(calc397.chance*100).toFixed(1)}% ÷ ${calc397.days} 日＝$${calc397.raw.toFixed(1)}，四捨五入（成功率用精確值）</span></p>`; /* v20a412 N6：主數／公式分行，數字不變 */
     }catch(_c397){}
     const softEntry = (typeof softPreviewOn==="function" && softPreviewOn());
     if(softEntry){
@@ -23305,6 +23395,8 @@ function renderNotebook(){
   updateLiveStressStrip();
   /* v20a400：建議列（訓練／壓力建議掣）——render 唔會自動換格，只出掣等人撳。成本行 #nb-cost400 唔喺呢度清，留到下一次改格。 */
   try{ if(typeof renderSuggest400==="function") renderSuggest400(editable); }catch(_s400){}
+  /* v20a412 N3/N4：建議／成本列入鏡後重跑折位對齊，短屏折位落排與排之間 */
+  try{ requestAnimationFrame(()=>{ try{ if(typeof fold408Schedule==="function") fold408Schedule(); }catch(_e412){} }); }catch(_e412b){}
   if(editable){
     const wrap=document.getElementById("nb-copy-wrap");
     if(wrap && wrap.classList.contains("open")) renderCopyChips();
@@ -26403,7 +26495,11 @@ function fold408Schedule(){
     days.style.removeProperty("margin-top");
     days.querySelectorAll(".day-row").forEach(r=>{ try{ r.style.removeProperty("min-height"); }catch(_e){} }); /* v20a409：重跑先還原格高再量 */
     void days.offsetHeight;
-    const pr = pane.getBoundingClientRect();
+    /* v20a412 N3：折位以手帳紙底（#notebook）為準，唔再用成個 pane 底——707 短屏第三排只露標題嘅根源；
+       玩家捲走咗手帳（scrollTop>2）就唔郁佢位置。 */
+    const nb412 = document.getElementById("notebook");
+    if(nb412 && nb412.scrollTop > 2) return;
+    const pr = nb412 ? nb412.getBoundingClientRect() : pane.getBoundingClientRect();
     const rows = Array.from(days.querySelectorAll(".day-row"));
     const hit = rows.find(r=>{ const b = r.getBoundingClientRect(); return b.top < pr.bottom - 1 && b.bottom > pr.bottom + 1; });
     if(!hit) return;
@@ -26416,7 +26512,7 @@ function fold408Schedule(){
     void days.offsetHeight;
     const hit2 = rows.find(r=>{ const b = r.getBoundingClientRect(); return b.top < pr.bottom - 1 && b.bottom > pr.bottom + 1; });
     if(!hit2) return;
-    const shift = Math.min(40, pr.bottom - hit2.getBoundingClientRect().top);
+    const shift = Math.min(140, pr.bottom - hit2.getBoundingClientRect().top); /* v20a412 N3：兜底推至折位落排頂——寧可留白唔切字（CSS 收格為主，呢度只係字體遲載兜底） */
     if(shift > 1){
       const cur = parseFloat(getComputedStyle(days).marginTop) || 0;
       days.style.setProperty("margin-top", (cur + shift) + "px", "important");
@@ -30106,6 +30202,7 @@ function rom159DateScene(who, spot, L, ended, summary){
         showResult(a378-b378, spot.bad.line);
       }}
     ], {onDismiss: go, keepScene397:true}); /* v20a398 UI398-5：44 號約會卡用 scene 模式 */
+    try{ if(typeof stashToastForDate412==="function") stashToastForDate412(); }catch(_e412){} /* v20a412 N7：入約會嗰刻收起未散嘅 toast，完結先再出 */
     return true;
   }catch(_e){ return false; }
 }
@@ -33197,6 +33294,7 @@ function renderProgressPane71(){
       + done409.map(r=>'<div class="prog71-row done"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag ok">✓ 已完成</span></div></div>').join("")
       + '</details>');
   }
+  let next412Marked = false; /* v20a412 N5：第一個未開放逐項行標記做「下一幕」層級 */
   rows.forEach((r, i)=>{
     if(r.state==="done" && done409.indexOf(r) >= 0){ return; }
     if(r.state==="open"){
@@ -33232,7 +33330,8 @@ function renderProgressPane71(){
       } else {
         body = '<p class="prog71-note">時機未到——先照常跑通告、見人，條件夠就會開。</p>';
       }
-      html.push('<div class="prog71-row locked'+(storyActIsInsert(r.id) ? ' prog71-insert' : '')+'"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag lock">未開放</span></div>'+body+'</div>');
+      const next412Cls = (!next412Marked && !rows.some(x=>x && x.state==="open")) ? ' prog71-next412' : ''; if(next412Cls) next412Marked = true; /* v20a412 N5：冇已開放行嗰陣，第一個未開放逐項行做下一幕焦點 */
+      html.push('<div class="prog71-row locked'+(storyActIsInsert(r.id) ? ' prog71-insert' : '')+next412Cls+'"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag lock">未開放</span></div>'+body+'</div>');
       if(storyActIsInsert(r.id)) farMerged105 = false;
       return;
     }
