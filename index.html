@@ -7840,6 +7840,43 @@ body.day-res-open .day-row{
 /* R18 batch3：地圖選單紙本化，同手帳／紙籤同一世界 */
 #v-map .menu{ background:#f7efdb !important; border:1px solid #c9b183 !important; box-shadow:0 6px 18px rgba(40,28,16,.35) !important; }
 #v-map .menu button{ color:#2e2118 !important; }
+/* ===== v417 UI417：第二十一輪 self-review 修復（只改呈現） ===== */
+/* T1 推介卡片酬唔再大紅搶過排序鍵預期日薪；總數行分段唔拆 */
+.gt-pay404{ font-size:.95rem !important; font-weight:700 !important; color:#8a4a20 !important; }
+.bc-seg417{ white-space:nowrap !important; }
+/* T3 壓力刻度：現時標籤＋高峰低壓時綠色，同摘要行顏色一致 */
+.stress-scale363 .ss363-lab.start{ color:#5a4632 !important; }
+.stress-scale363 .ss363-peak.low{ background:#2e5d3a !important; }
+.stress-scale363 .ss363-lab.low{ color:#2e5d3a !important; }
+/* T4 確認彈窗：返去揀過做次要掣，唔同確定搶焦點 */
+#modal-btns button.confirm-back417{ font-weight:600 !important; }
+/* T5 商店購買掣未揀衫前降飽和，揀中先回復主掣狀態 */
+#modal-btns button.shop-buy396:not(.ready){ filter:saturate(.4) !important; opacity:.72 !important; }
+.shop-sub417{ text-wrap:balance !important; }
+/* T6 衣櫃說明均衡斷行 */
+.ward-intro417{ text-wrap:balance !important; }
+/* T7 回憶空狀態收緊，唔再大片留白 */
+#home-pane-memory .mem-empty60{ padding:2px 4px 6px !important; }
+/* T8 病假壓力 relief 重點行 */
+.sick-relief417, .sick-relief417 *{ font-weight:800 !important; color:#1e6b3a !important; font-size:1.05em !important; }
+#modal-inner #clothing-shop265-list .cost-pick416{ color:#2e5d3a !important; font-weight:800 !important; }
+#modal-inner #clothing-shop265-list .cost-lock416{ color:#8a7a5f !important; font-weight:700 !important; }
+/* T9 頒獎舞台下段加腳燈暖光，唔再一片死黑 */
+.awd62-stage{ background:radial-gradient(120% 55% at 50% 0%,#2c2148 0%,#14101f 55%,#0c0913 100%),radial-gradient(90% 30% at 50% 108%,rgba(216,164,65,.16) 0%,rgba(216,164,65,0) 70%) !important; }
+/* T10 GPT 覆核修復：頒獎主提示做膠囊、推介片酬再降、總數行去警示色、購買掣未揀更似停用、選單分隔、速度掣唔拆字、kicker 唔拆詞、標題導語均衡 */
+.awd62-tap{ background:rgba(20,14,8,.72) !important; padding:5px 10px !important; border-radius:999px !important; font-size:13px !important; color:#ffe9b0 !important; }
+.gt-pay404{ font-size:.88rem !important; font-weight:600 !important; color:#6b4a2f !important; }
+.board-sum392{ color:#5a4632 !important; border-color:#b39b6d !important; font-weight:700 !important; display:flex !important; flex-wrap:wrap !important; gap:0 10px !important; }
+#modal-btns button.shop-buy396:not(.ready){ filter:grayscale(.7) saturate(.3) !important; opacity:.55 !important; box-shadow:none !important; }
+#v-map .menu button{ border-bottom:1px dashed #c9b183 !important; }
+#v-map .menu button:last-child{ border-bottom:none !important; }
+.set-speed128 .set-speed-btn{ white-space:nowrap !important; }
+.paper-sheet .np214-kicker{ display:flex !important; flex-wrap:wrap !important; gap:0 10px !important; }
+.start-intro{ text-wrap:balance !important; }
+.nowrap417{ white-space:nowrap !important; }
+.sick-nowrap417{ white-space:nowrap !important; }
+/* T2 詳情流程小字 */
+.cn-flow417{ margin:2px 0 0 !important; font-size:.78rem !important; color:#5a4632 !important; line-height:1.5 !important; }
 /* ===== v20a415 UI415 完 ===== */
 
 </style>
@@ -8570,7 +8607,7 @@ function openClothingShop265(L){
   }).join("") || `<p class="sub">本週暫無貨。</p>`;
   try{ closeSheet(); }catch(_e){}
   modal(`<h3>花園街成衣店</h3>
-    <p class="sub">旺角花園街 · 買入不耗日 · 著衫加成只喺接通告／試鏡嗰陣計</p>
+    <p class="sub shop-sub417">旺角花園街 · 買入不耗日 · 著衫加成只喺接通告／試鏡嗰陣計</p>
     <p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>
     <p class="sub">揀中一件衫之後，按「購買」確認。</p>
     <div id="clothing-shop265-list">${body}</div>`,[
@@ -8603,7 +8640,7 @@ function openClothingShop265(L){
         row.classList.add("act-sel396");
         const c=row.querySelector(".cost"); if(c) c.textContent="已揀";
         const buyBtn=document.querySelector("#modal-btns .shop-buy396");
-        if(buyBtn){ const cc=costume265ById(row.getAttribute("data-buy265")); buyBtn.textContent="購買「"+((cc&&cc.name)||"")+"」"; }
+        if(buyBtn){ const cc=costume265ById(row.getAttribute("data-buy265")); buyBtn.textContent="購買「"+((cc&&cc.name)||"")+"」"; buyBtn.classList.add("ready"); } /* v417：揀中先回復主掣狀態 */
       });
     });
   }
@@ -8626,11 +8663,11 @@ function renderWardrobe265(){
     const btn = isEq
       ? `<button type="button" class="paper" data-unequip265="1">除低</button>`
       : (has ? `<button type="button" class="paper" data-equip265="${c.id}">著上</button>` : "");
-    return `<div class="wardrobe265-row${isEq?" is-eq":""}"><div><div class="n">${c.name}</div><div class="h">${c.cat} · ${costume265BonusText(c)} · $${(Number(c.price)||0).toLocaleString()} · ${tag}${lock?(" · <span class=\"ward-lock415\">未合要求："+lock+"</span>"):""}</div></div>${btn}</div>`; /* v415 batch3：未合要求獨立標示易掃讀 */
+    return `<div class="wardrobe265-row${isEq?" is-eq":""}"><div><div class="n">${c.name}</div><div class="h">${c.cat} · ${costume265BonusText(c)} · $${(Number(c.price)||0).toLocaleString()} · ${tag}${lock?(" <span class=\"ward-lock415\">・未合要求："+lock+"</span>"):""}</div></div>${btn}</div>`; /* v415 batch3：未合要求獨立標示易掃讀 */
   }).join("");
   box.innerHTML = `<h3 class="wardrobe265-h">衣櫃</h3>`
     + `<p class="sub">而家著緊：<b>${eqName}</b>${eqBonus?("（"+eqBonus+"）"):""}</p>`
-    + `<p class="sub">換衫免費、即時，唔耗日；加成只喺接通告／試鏡嗰陣計，唔會寫入能力值。未購入嘅衫可以去花園街成衣店買。</p>`
+    + `<p class="sub ward-intro417">換衫免費、即時，唔耗日；加成只喺接通告／試鏡嗰陣計，唔會寫入能力值。未購入嘅衫可以去花園街成衣店買。</p>`
     + rows;
   box.querySelectorAll("[data-equip265]").forEach(b=>{
     b.addEventListener("click", ()=>{
@@ -13603,9 +13640,9 @@ const StoryPlay = (()=>{
       modalBtns.push({ label:"跳至選項", role:"g", stay:true, on:()=>{ try{ if(typeof spRevealCancel==="function") spRevealCancel(); }catch(_e){} skipToChoices(); } });
       /* v362 UI362：自動播放開關——開咗之後每句打字完停 1.2 秒自動下一句，
          到抉擇自動停（render 入 choices 模式會清旗）。 */
-      modalBtns.push({ label: _spAuto362 ? "自動：開" : "自動播放", role:"g", cls:"sp-auto362"+(_spAuto362?" on":""), stay:true, on:(btn)=>{
+      modalBtns.push({ label: _spAuto362 ? "自動：開" : "自動：關" /* v417：開關狀態對稱顯示 */, role:"g", cls:"sp-auto362"+(_spAuto362?" on":""), stay:true, on:(btn)=>{
         _spAuto362 = !_spAuto362;
-        try{ if(btn){ btn.textContent = _spAuto362 ? "自動：開" : "自動播放"; btn.classList.toggle("on", _spAuto362); } }catch(_e){}
+        try{ if(btn){ btn.textContent = _spAuto362 ? "自動：開" : "自動：關"; btn.classList.toggle("on", _spAuto362); } }catch(_e){}
         if(_spAuto362) spAutoArm362(); else spAutoStop362();
       }});
     } else {
@@ -18778,8 +18815,8 @@ function openSaveSlotsModal(mode){
   const titles={ save:"存檔槽", load:"讀檔", new:"開新遊戲 · 選槽" };
   const rows=slots.map(s=>{
     const active = (prefs.activeSlot|0)===(s.slot|0);
-    const meta = s.empty ? "空白槽" : `第 ${s.summary.week} 週 · 存款 $${Number(s.summary.money).toLocaleString()} · 幕前聲望 ${s.summary.stage}`;
-    const tag = active ? `<span class="slot-tag">使用中</span>` : (s.empty?`<span class="slot-tag">可寫入</span>`:`<span class="slot-tag">有進度</span>`);
+    const meta = s.empty ? (mode==="load"?"沒有可讀取的存檔":"空白槽") : `第 ${s.summary.week} 週 · 存款 $${Number(s.summary.money).toLocaleString()} · 幕前聲望 ${s.summary.stage}`;
+    const tag = s.empty ? `<span class="slot-tag">${mode==="load"?(active?"目前槽位":"沒有存檔"):"可寫入"}</span>` : (active?`<span class="slot-tag">使用中</span>`:`<span class="slot-tag">有進度</span>`); /* v417：讀檔模式空槽唔再寫可寫入／使用中，免誤讀 */
     return `<button type="button" class="slot-row ${s.empty?"is-empty":""} ${active?"is-active":""}" data-slot="${s.slot}">
       <span class="slot-title">槽 ${s.slot}</span>
       <span class="slot-meta">${meta}</span>
@@ -19672,7 +19709,7 @@ function renderMemoryPane60(){
   const missed = (typeof S!=="undefined" && S && S.calib60Missed) || {};
   const ids = Object.keys(missed);
   if(!ids.length){
-    el.innerHTML = '<div class="mem-empty60"><h3>回憶</h3><p>暫時冇錯過嘅主線。啲重要嘅相遇都有時窗——過咗嗰陣仲未遇到嘅，會記低喺呢頁，提你嗰段日子過咗啲咩。</p></div>';
+    el.innerHTML = '<div class="mem-empty60"><h3>錯過的主線</h3><p>暫時冇錯過嘅主線。啲重要嘅相遇都有時窗——過咗嗰陣仲未遇到嘅，會記低喺呢頁，提你嗰段日子過咗啲咩。</p></div>';
     return;
   }
   const rows = ids.map(id=>{
@@ -19950,8 +19987,8 @@ function conseq61ResolveSickDay(id){
     try{ if(typeof hosp96VisitNote==="function"){ const vn96 = hosp96VisitNote(dayNo); if(vn96) notes.push(vn96); } }catch(_h96v){}
     const title = `病倒休養（第 ${dayNo} 日）`;
     if(lastDay){
-      notes.push(...apply({ stress: -CONSEQ61_CFG.sickRelief }));
-      notes.push(`<span class="good">病咗 ${c.sick.days} 日，總算退燒企得返起身——個人清晒，壓力大減。記住今次：壓力爆到盡，身體真係會冧，冧嗰陣，排咩都冇用。</span>`);
+      apply({ stress: -CONSEQ61_CFG.sickRelief }); /* v417：relief 數值併入病癒句做重點，唔再出獨立灰字行 */
+      notes.push(`<span class="good">病咗 ${c.sick.days} 日，總算退燒企得返起身——個人清晒，<b class="sick-nowrap417">壓力 −${CONSEQ61_CFG.sickRelief}</b>。記住今次：壓力爆到盡，身體真係會冧，冧嗰陣，排咩都冇用。</span>`);
       c.cooldownUntil = today + CONSEQ61_CFG.sickCooldownDays;
       c.sick = null;
       c.streak80 = 0;
@@ -20838,7 +20875,7 @@ function gigBoardTeaserHtml(g, opts){
        （計法見板頭 lead 行。）
        */
     /* v20a404 UI404-5：推介卡片酬獨立一行大字（第一眼可見），唔同日數／成功率擠同一行。 */
-    if(opts.featured && payTxt) bits392.push(`<span class="gt-pay404">總片酬 ${payTxt}</span>`);
+    if(opts.featured && payTxt) bits392.push(`<span class="gt-pay404">片酬 ${payTxt}</span>`) /* v417：推介卡同普通卡同一欄名，唔再似兩種數字 */;
     if(payTxt && !opts.featured) bits392.push(`片酬 ${payTxt}`); /* v416：所有卡都出總片酬，同推介卡一眼可比 */
     if(boardState==="ready" && sortIsExp396 && exp396!=null && exp396>0) bits392.push(`<span class="gt-exp416">預期 $${Math.round(exp396)}／日</span>`);
     if(daysN!=null) bits392.push(`${daysN} 日`);
@@ -21311,7 +21348,7 @@ function castingNoticeDetailHtml(g){
     try{
       if(boardState!=="ready" || typeof chance!=="function") return "";
       const p378 = Math.round(chance(g)*100);
-      return `<div class="cn-chance378"><span class="cn-chance378-lab">試鏡成功率</span><strong class="cn-chance378-val">約 ${p378}%</strong></div>`;
+      return `<div class="cn-chance378"><span class="cn-chance378-lab">試鏡成功率</span><strong class="cn-chance378-val">約 ${p378}%</strong></div><p class="cn-flow417">按「接通告」即報名試鏡，唔係即刻開工；獲聘後先收簽約金（片酬三成，計入片酬總額）。</p>`; /* v417：講明接通告＝報名試鏡＋簽約金口徑 */
     }catch(_e){ return ""; }
   })();
   /* v20a383 TAPE383：詳情頁自費試鏡截止日行（GPT 規格：通告卡顯示同一截止日期） */
@@ -21541,7 +21578,7 @@ function openCastingNoticeDetail(g, L){
        係用未取整成功率計（86.5% → 81.7 → 四捨五入 $82）。 */
     try{
       const calc397 = (typeof boardExpCalc397==="function") ? boardExpCalc397(g) : null;
-      if(calc397) body += `<p class="board-calc397"><span class="calc412-main">預期日薪 $${calc397.rounded}／日</span><span class="calc412-formula">片酬 $${calc397.pay} × 成功率 ${(calc397.chance*100).toFixed(1)}% ÷ ${calc397.days} 日＝$${calc397.raw.toFixed(1)}，四捨五入（成功率用精確值）</span></p>`; /* v20a412 N6：主數／公式分行，數字不變 */
+      if(calc397) body += `<p class="board-calc397"><span class="calc412-main">預期日薪 $${calc397.rounded}／日</span><span class="calc412-formula">片酬 $${calc397.pay} × 成功率 ${parseFloat((calc397.chance*100).toFixed(2))}% ÷ ${calc397.days} 日＝$${calc397.raw.toFixed(1)}，四捨五入（成功率用精確值）</span></p>`; /* v20a412 N6：主數／公式分行，數字不變 */
     }catch(_c397){}
     const softEntry = (typeof softPreviewOn==="function" && softPreviewOn());
     if(softEntry){
@@ -23129,8 +23166,8 @@ function confirmChoice236(opts){
   modal(`<div class="reconfirm236"><h3>確認選擇</h3>
     <p>你選擇了「<b>${esc236(label)}</b>」。</p>
     ${consequence?`<p class="sub">${consequence}</p>`:""}
-    <p class="sub">確定後便會即時生效。</p></div>`,[
-    {label:"返去揀過", role:"g", on:()=>{ if(typeof onCancel==="function") onCancel(); }},
+    ${consequence?"":`<p class="sub">確定後便會即時生效。</p>`}</div>`,[ /* v417：有後果說明就唔再疊通用句 */
+    {label:"返去揀過", role:"g", cls:"confirm-back417", on:()=>{ if(typeof onCancel==="function") onCancel(); }},
     {label:"確定", role:"p", on:()=>{ if(typeof onConfirm==="function") onConfirm(); }}
   ], { onDismiss:()=>{ if(typeof onCancel==="function") onCancel(); }, scenePaper401: !!opts.scenePaper401 }); /* v20a401 UI401-1：scenePaper401 只由呼叫方傳入（醫院 46b），預設唔掛 */
 }
@@ -25875,11 +25912,17 @@ function stressScale363(pv){
     }
     sc.style.display = "";
     const clamp = v=>Math.max(0,Math.min(100,Number(v)||0));
+    const low417 = (Number(pv.peak)||0) < 52; /* v417：高峰低壓時綠色，同摘要行一致 */
+    const close417 = Math.abs((Number(pv.peak)||0) - (Number(pv.start)||0)) <= 14;
+    const lab417 = close417
+      ? `<span class="ss363-lab${low417?" low":""}" style="left:${clamp(pv.peak)}%">現時 ${pv.start}・高峰 ${pv.peak}</span>`
+      : `<span class="ss363-lab start" style="left:${clamp(pv.start)}%">現時 ${pv.start}</span>`
+        + `<span class="ss363-lab${low417?" low":""}" style="left:${clamp(pv.peak)}%">高峰 ${pv.peak}</span>`;
     sc.innerHTML = `<span class="ss363-track"></span>`
       + `<span class="ss363-dot" style="left:${clamp(pv.start)}%"></span>`
       + `<span class="ss363-dot end" style="left:${clamp(pv.end)}%"></span>`
-      + `<span class="ss363-peak" style="left:${clamp(pv.peak)}%"></span>`
-      + `<span class="ss363-lab" style="left:${clamp(pv.peak)}%">高峰 ${pv.peak}</span>`;
+      + `<span class="ss363-peak${low417?" low":""}" style="left:${clamp(pv.peak)}%"></span>`
+      + lab417; /* v417：現時／高峰接近時合併標籤，唔再疊埋 */
   }catch(_e){}
 }
 function stressScaleHide363(){
@@ -26678,25 +26721,31 @@ function awd403FoldAndHint(){
     const fold = rr.bottom;
     const scope404 = sheet.querySelector(".np214-page.on") || sheet;
     const walker404 = document.createTreeWalker(scope404, NodeFilter.SHOW_TEXT);
-    let line404 = null;
+    const lines404 = [];
     let node404;
     while((node404 = walker404.nextNode())){
       if(!node404.nodeValue || !node404.nodeValue.trim()) continue;
       const pe404 = node404.parentElement;
       if(!pe404 || pe404.offsetParent === null) continue;
+      try{ const wm404 = getComputedStyle(pe404).writingMode || ""; if(wm404.indexOf("vertical") === 0) continue; }catch(_wm404){} /* v417：直書欄逐字 rect 唔係橫行，唔參與折位對齊 */
+      if((pe404.className || "").toString().indexOf("np214-sb-mark397") >= 0) continue; /* v417：裝飾 ❦ 唔參與折位對齊 */
       const range404 = document.createRange();
       range404.selectNodeContents(node404);
       const rects404 = range404.getClientRects();
       for(let k404=0;k404<rects404.length;k404++){
         const r404 = rects404[k404];
-        if(r404.height > 0 && r404.top < fold - 1 && r404.bottom > fold + 1){ line404 = r404; break; }
+        if(r404.height > 0 && !(r404.height > 40 && r404.width < 24)) lines404.push(r404);
       }
-      if(line404) break;
     }
-    if(line404){
-      const shift404 = Math.min(64, fold - line404.top);
-      if(shift404 > 1) sheet.style.marginTop = shift404 + "px";
+    /* v417：迭代推至冇任何一行跨折位（推過一行唔好令下一行跨折位） */
+    let shift404 = 0;
+    for(let guard404 = 0; guard404 < 8; guard404++){
+      const hit404 = lines404.find(r404 => (r404.top + shift404) < fold - 1 && (r404.bottom + shift404) > fold + 1);
+      if(!hit404) break;
+      shift404 = Math.min(64, fold - hit404.top + 1);
     }
+    if(shift404 > 1) sheet.style.marginTop = shift404 + "px";
+    if(!sheet._fold417){ sheet._fold417 = 1; const again417=()=>{ try{ awd403FoldAndHint(); }catch(_e417){} }; setTimeout(again417, 380); setTimeout(again417, 1200); sheet.querySelectorAll("img").forEach(im417=>{ if(!im417.complete) im417.addEventListener("load", again417, {once:true}); }); } /* v417：字型／圖片定版後再對齊折位 */
   }catch(_e403){}
 }
 /* v20a408 UI408-2：首屏折位對齊——搵俾折位切中嘅文字行，將其 block 下移至折位落行頂
@@ -35964,7 +36013,7 @@ function renderAwardResultHtml(pack){
   const paperDay214 = ((pack.dayIndex!=null ? pack.dayIndex : ((typeof S!=="undefined" && S && (S.dayIndex|0)) || 0))|0) + 1;
   const date214 = (typeof fmtNewspaperDate === "function") ? fmtNewspaperDate(paperDay214) : "";
   const section214 = String(press.paperName || "娛樂快報");
-  const kicker214 = [pack.displayName||"", pack.year||"", pack.venue99||""].filter(Boolean).join(" · ");
+  const kicker214 = [pack.displayName||"", pack.year||"", pack.venue99||""].filter(Boolean).map(x214=>`<span class="nowrap417">${esc214(x214)}</span>`).join(""); /* v417：kicker 分段 flex 排版，分隔點唔再吊行尾 */
   const headline214 = String(press.headline || pack.displayName || "頒獎夜");
   const dek214 = String(press.dek || "");
   /* v20a218 C-C4：安慰行只喺最後一個入圍格出一次——之前每格 nominated 都出，成晚重複。 */
@@ -36052,7 +36101,7 @@ function renderAwardResultHtml(pack){
   const factboxHtml214 = factRows214 ? `<aside class="np214-factbox np214-factbox-wide"><h4>${esc214((pack.displayName||"頒獎夜")+"小檔案")}</h4>${factRows214}</aside>` : "";
   const page1 = `<section class="np214-page on" data-np214-page="1">
     ${masthead214("1")}
-    ${kicker214 ? `<p class="np214-kicker">${esc214(kicker214)}</p>` : ""}
+    ${kicker214 ? `<p class="np214-kicker">${kicker214}</p>` : ""}
     <h3 class="np214-headline">${esc214(headline214)}</h3>
     ${dek214 ? `<p class="np214-dek">${esc214(dek214)}</p>` : ""}
     <div class="np214-layout"><div class="np214-maincol np214-clearfix">
@@ -49138,8 +49187,8 @@ function doScout(L){
     if(layered392){
       /* v20a396 UI396 ②：篩選生效嗰陣，總數行出篩選後數目（顯示 X／總數），唔係成板總數。 */
       const sum392 = filter392==="all"
-        ? `共 ${shown.length} 張 · 可接 ${ready108.length} 張 · 未達標 ${locked108.length} 張`
-        : `顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張 · 可接 ${readyF392.length} · 未達標 ${lockedF392.length}`; /* v416：縮短總數行，唔再俾整理掣截字 */
+        ? `<span class="bc-seg417">共 ${shown.length} 張</span><span class="bc-seg417">可接 ${ready108.length} 張</span><span class="bc-seg417">未達標 ${locked108.length} 張</span>`
+        : `<span class="bc-seg417">顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張</span><span class="bc-seg417">可接 ${readyF392.length}</span><span class="bc-seg417">未達標 ${lockedF392.length}</span>`; /* v417：分段 nowrap，折行唔留分隔點喺行尾／行首 */ /* v416：縮短總數行，唔再俾整理掣截字 */
       body+=`<div class="board-head392">`
         + `<div class="board-sum392">${sum392}</div>`
         + `<div class="board-ctl397"><div class="board-sort392"><button type="button" class="board-chip392 board-ctl397-btn" data-board-menu397="organize" aria-expanded="false">整理 · ${_boardSort392==="exp"?"預期日薪":(_boardSort392==="pay"?"總片酬":"成功率")} ▾</button>` /* v415 batch3：整理掣顯示目前排序 */
@@ -50623,9 +50672,9 @@ function aud91PresentOne(rec, next){
         <p>${(rec.via==="favor158" && rec.favorLabel) ? ("何生打嚟：「"+rec.favorLabel+"嗰邊應承咗，直接用你，唔使試鏡。簽約金已經過數，" + (defer392 ? "拍攝日留待下週再排。" : "拍攝日而家排。") + "」") : "何生打嚟：「嗰邊開完會——用你。簽約金已經過數，" + (defer392 ? "拍攝日留待下週再排。" : "拍攝日而家排。") + "」"}</p>
         ${formatResultNotes(notes)}
         ${chk101SignHtml}
-        <p class="gold">${defer392 ? "已簽約——拍攝日留待下週再排，返回手帳查看行程。" : "已簽約——返回手帳查看行程，再開工。"}</p>
+        <p class="gold">${defer392 ? "已簽約——拍攝日留待下週再排，可在手帳查看行程。" : "已簽約——拍攝日已排入行程，可在手帳查看。"}</p>
         <p style="font-size:.75rem;color:var(--muted)">${fmtDate()}</p>`,[
-        {label:"好", role:"p", on:go}
+        {label:"知道了", role:"p", on:go}
       ], {onDismiss: go, scenePaper401:true}); /* v20a401 UI401-1：電話獲聘卡實物紙卡＋場景 dim */
       saveQ();
     };
@@ -51019,7 +51068,7 @@ function openGiftShop(shopId, L){
         row.classList.add("act-sel396");
         const c=row.querySelector(".cost"); if(c) c.textContent="已揀";
         const buyBtn=document.querySelector("#modal-btns .shop-buy396");
-        if(buyBtn){ const it=GiftShop.itemById(row.getAttribute("data-buy")); buyBtn.textContent="購買「"+((it&&it.name)||"")+"」"; }
+        if(buyBtn){ const it=GiftShop.itemById(row.getAttribute("data-buy")); buyBtn.textContent="購買「"+((it&&it.name)||"")+"」"; buyBtn.classList.add("ready"); } /* v417 */
       });
     });
   }

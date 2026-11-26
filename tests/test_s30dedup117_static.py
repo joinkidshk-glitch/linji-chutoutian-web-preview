@@ -1,3 +1,4 @@
+# v417 意圖更新：推介卡欄名統一「片酬」（同普通卡同一欄），斷言同步。
 # v404 意圖更新：推介卡片酬改獨立大字行（gt-pay404「總片酬」），D3 斷言同步。
 # v20a117 S-30 DEDUP117・靜態守門測試：詳情區刪除＋唯一資料搬摘要＋欄卡 meta 拆行。
 # 用法：python3 tests/test_s30dedup117_static.py [path-to-index.html]
@@ -64,8 +65,8 @@ ok('D2 POSTER90 標記註保留（詳情頁仍唔出成品海報／主演行）'
 # --- 3. 通告欄卡片 meta 拆行（實駕：實際只得兩段） ---
 ok('D3 meta 渲染（v404：推介卡片酬獨立大字行 gt-pay404＋其餘併一行 gt-meta-line）', 'metaLine392' in t and 'gt-meta-line' in t and '.gt-meta-line{' in html and 'gt-pay404' in t)
 ok('D3 舊寫法「 · 」串連已刪', 'join(" · ")' not in t)
-ok('D3 meta 內容：總片酬＋日數＋成功率（可接先出成功率，鎖定卡唔出假成功率）',
-   'bits392.join("｜")' in t and 'if(boardState==="ready")' in t and '總片酬 ${payTxt}' in t)
+ok('D3 meta 內容：片酬＋日數＋成功率（可接先出成功率，鎖定卡唔出假成功率）',
+   'bits392.join("｜")' in t and 'if(boardState==="ready")' in t and '片酬 ${payTxt}' in t)
 ok('D3 gt-meta 容器保留（v404 模板改條件渲染）', '<div class="gt-meta">' in t)
 
 # --- 4. 紀律：v115 文字＋紅線不變 ---
