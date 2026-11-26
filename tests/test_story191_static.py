@@ -85,8 +85,8 @@ ok('A：order71 內部 n 保留 1–20（供 far-merge／逐項邏輯用，唔�
    sorted(int(n) for _, n in pairs) == list(range(1, 21)))
 ok('A：prog71Rows 行帶 label（storyActLabel 來源）', 'label:storyActLabel(id)' in src)
 rp = func_body(src, 'renderProgressPane71')
-ok('A：進度頁四行模板用 r.label（唔再寫死「第 "+r.n+" 幕」）',
-   rp.count('r.label || ("第 "+r.n+" 幕")') == 4 and "'第 '+r.n+' 幕'" not in rp)
+ok('A：進度頁五行模板用 r.label（唔再寫死「第 "+r.n+" 幕」）',
+   rp.count('r.label || ("第 "+r.n+" 幕")') == 5 and "'第 '+r.n+' 幕'" not in rp)
 ok('A：v20a198 C2——鎖住插入幕出獨立行（舊 skip guard 已拎走，遠幕按段合併）',
    'if(storyActIsInsert(r.id)) return;' not in rp and 'prog71-insert' in rp and 'segOf198' in rp)
 ok('A：遠幕合併 fallback 保留（farNs 空嗰陣跳過）', 'if(!farNs.length) return;' in rp)

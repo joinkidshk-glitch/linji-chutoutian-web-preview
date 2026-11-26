@@ -48,7 +48,7 @@ ok('B1 獎項：四格典禮框（廣告賞春／金碟夜夏／影藝獎秋／�
    and '影藝獎' in awd_empty and '秋季' in awd_empty
    and '台慶' in awd_empty and '冬季' in awd_empty
    and awd_empty.count('<div class="empty156-frame">') == 4)
-ok('B1 獎項：引導句「第一個獎入嚟，就會擺入上面嗰格。」', '第一個獎入嚟，就會擺入上面嗰格。' in awd_empty)
+ok('B1 獎項：引導句「第一個獎項到手後，會顯示在上面的格子。」', '第一個獎項到手後，會顯示在上面的格子。' in awd_empty)
 awd_full = seg_between('el.innerHTML = log.map', 'function awards62SeasonHints', src)
 ok('B1 獎項：有內容嗰陣唔出佔位框（log.map 段冇 empty156）', 'empty156' not in awd_full)
 

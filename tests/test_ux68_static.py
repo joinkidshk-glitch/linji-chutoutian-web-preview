@@ -60,7 +60,7 @@ ok('openLoc 尾有 organizer 呼叫', 'ux68OrganizeLocSheet(L)' in src)
 ok('分組標籤齊（要事／接工／訓練／社交・劇情／休息・雜項／未開放）',
    all(t in src for t in ['"要事"', '"接工"', '"訓練"', '"社交・劇情"', '"休息・雜項"', '未開放（']))
 ok('分類覆蓋主要掣型（通告欄／試鏡／報名／傾談／打聽／休息）',
-   all(t in src for t in ['只查看通告欄', '試鏡入口', '報名：', '傾談', 'act-ask', '休息室歇陣']))
+   all(t in src for t in ['只查看通告欄', '試鏡入口', '報名：', '傾談', 'act-ask', '休息室休息']))
 ok('要事訊號用既有數據（favorDue／deadlineDay／CALIB60_NODE_WINDOWS／季尾）',
    all(t in src for t in ['favorDueDebt', 'deadlineDay', 'CALIB60_NODE_WINDOWS', 'ux68SeasonEndLeft']))
 # v20a74 改版：目標標示隨主攻目標功能移除——舊斷言「▲ 用 STAT_LABEL」改為驗全清。

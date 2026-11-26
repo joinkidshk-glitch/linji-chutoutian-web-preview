@@ -77,7 +77,7 @@ chk('N1 根因：格轉換只換內層卡片（唔巢狀容器）',
 chk('N1 根因：內層 builder 唔包容器（回傳淨係卡片）',
     'const cardsInnerHtmlFor208 = (cd)=>{' in play_fn and 'return cd.map((c, ci)=>{' in play_fn)
 chk('N1 根因：建台嗰陣先包容器外殼（唔係格轉換嗰陣）',
-    '\'<div class="awd63-cards">\' + cardsInnerHtmlFor208(cardsData) + "</div>"' in play_fn)
+    '\'<div class="awd63-cards awd63-cards418">\' + cardsInnerHtmlFor208(cardsData) + "</div>"' in play_fn)
 chk('N1 根因：冇殘留成個容器塞入 innerHTML',
     'cardsEl.innerHTML = cardsData.length ? cardsHtmlFor208(cardsData)' not in play_fn)
 

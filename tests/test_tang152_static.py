@@ -1,3 +1,4 @@
+# v418 resync：index.html 淨 +110 行；釘行按 difflib 映射重寫，內容逐字核實純漂移；見 qa418/resync418.py。
 # v417 resync：index.html 淨 +30 行；釘行按 difflib 映射重寫，內容逐字核實純漂移；見 qa417/resync417.py。
 # v416 resync：index.html 淨 +30 行；釘行按 difflib 映射重寫，內容逐字核實純漂移；見 qa416/resync416.py。
 # v415 resync：index.html 淨 +113 行；釘行按 difflib 映射重寫，內容逐字核實純漂移；見 qa415/resync415.py。
@@ -14,11 +15,11 @@
 # v403 resync：index.html 淨 +125 行；normaliseTangStub152 兩釘按 difflib 映射重寫，內容逐字核實純漂移；見 qa403/resync403.py。
 # v402 resync：index.html 淨 +210 行；normaliseTangStub152 兩釘按 difflib 映射重寫，內容逐字核實純漂移；見 qa402/resync402.py。
 # v401 resync：index.html 淨 +192 行；normaliseTangStub152 兩釘按 difflib 映射重寫，內容逐字核實純漂移；見 qa401/resync401.py。
-# v400 resync：index.html 淨 +186 行；normaliseTangStub152 兩釘按 difflib 映射重寫（lines()[16500]→[16226]、[16340]→[16351]），內容逐字核實純漂移；見 qa400/resync400.py。
-# v399 resync：index.html 淨 +72 行；normaliseTangStub152 兩釘按 difflib 映射重寫（lines()[16476]→[16215]、[16316]→[16340]），內容逐字核實純漂移；見 qa399/resync399.py。
-# v398 resync：index.html 淨 +128 行；normaliseTangStub152 兩釘按 difflib 映射重寫（lines()[16437]→[16191]、[16277]→[16316]），內容逐字核實純漂移；見 qa398/resync398.py。
-# v397 resync：index.html 淨 +338 行；normaliseTangStub152 兩釘按 difflib 映射重寫（lines()[16362]→[16152]、[16202]→[16277]），內容逐字核實純漂移；見 qa397/resync397.py。
-# v396 resync：index.html 淨 +129 行；normaliseTangStub152 兩釘按 difflib 映射重寫（lines()[16313]→[16077]、[16153]→[16202]），內容逐字核實純漂移；見 qa396/resync396.py。
+# v400 resync：index.html 淨 +186 行；normaliseTangStub152 兩釘按 difflib 映射重寫（lines()[16536]→[16226]、[16340]→[16351]），內容逐字核實純漂移；見 qa400/resync400.py。
+# v399 resync：index.html 淨 +72 行；normaliseTangStub152 兩釘按 difflib 映射重寫（lines()[16512]→[16215]、[16316]→[16340]），內容逐字核實純漂移；見 qa399/resync399.py。
+# v398 resync：index.html 淨 +128 行；normaliseTangStub152 兩釘按 difflib 映射重寫（lines()[16473]→[16191]、[16277]→[16316]），內容逐字核實純漂移；見 qa398/resync398.py。
+# v397 resync：index.html 淨 +338 行；normaliseTangStub152 兩釘按 difflib 映射重寫（lines()[16398]→[16152]、[16202]→[16277]），內容逐字核實純漂移；見 qa397/resync397.py。
+# v396 resync：index.html 淨 +129 行；normaliseTangStub152 兩釘按 difflib 映射重寫（lines()[16349]→[16077]、[16153]→[16202]），內容逐字核實純漂移；見 qa396/resync396.py。
 # v394 resync：index.html 淨 +5 行（E0 豁免註解）；normaliseTangStub152 兩釘按 difflib 映射重寫，內容逐字核實純漂移，見 qa394/resync394.py。
 # v393-endings resync：index.html 淨 +607 行（結局梯十項修復，底係 cfd8b2b）；normaliseTangStub152 兩釘按 difflib 映射重寫，內容逐字核實純漂移，見 qa392/resync393_endings.py。
 # v392 resync：index.html 淨 +146 行（UI392 頭五項＋TDZ 修正）；normaliseTangStub152 兩釘按 difflib 映射重寫，內容逐字核實純漂移，見 qa392/resync392.py。
@@ -27,10 +28,10 @@
 # v375 resync：index.html 淨 +116 行（UI375 CSS 層＠L6501 +115＋作品卡殺青印行 +1）；釘行按 git hunk 段移位，錨點內容逐字核實純漂移。
 # v371 resync：index.html 淨 +99 行（頒獎專攻公式＋季節限期提示＋結局總結修正＋兼職數值）；釘行按 git hunk 段移位，錨點內容逐字核實純漂移。
 # v20a369 resync：index.html 淨 +179 行（UI369 CSS＋JS＋HTML 掣／票角＋殺青印＋送禮分級行＋StoryPlay rel 強調＋pin 可打聽／輕跳＋人情頁高亮排序）；釘行按 difflib 映射重寫，內容逐字核實純漂移，見 qa369/resync369.py。
-# v20a363 resync：index.html 淨 +437 行（UI363 CSS＋JS）；normaliseTangStub152 釘 lines()[14929]→[14976]、stub 呼叫行 lines()[15054]→[15101]，內容逐字核實純漂移。
+# v20a363 resync：index.html 淨 +437 行（UI363 CSS＋JS）；normaliseTangStub152 釘 lines()[14965]→[14976]、stub 呼叫行 lines()[15090]→[15101]，內容逐字核實純漂移。
 # v20a361 resync：index.html 淨 +93 行（P1 平衡修復）；2 個釘索引按 difflib 映射重寫，內容逐字核實純漂移。
-# v20a362 resync：index.html 淨 +267 行（UI362 CSS＋JS）；normaliseTangStub152 釘 lines()[14698]→[14644]、stub 呼叫行 lines()[14823]→[14769]，內容逐字核實純漂移。
-# v20a358 resync＋手術：soft 層鄧麗萍清理（DengLine IIFE＋WF5 R_tang_* 條目＋mock 底稿全刪，live 路徑零讀者核實見 NOTES_V20A358）。§3 由「留線」改寫做「刪線」斷言；§2 R_tang_ending 計數 1→0（載入過濾連同 mock 一齊刪）；§4 刪 push mock 過濾斷言；§6 push mock 改做「檔已刪」斷言；normaliseTangStub152 釘 lines()[15046]→[14348]、stub 呼叫行 lines()[15173]→[14473]（index.html 淨 −441 行：WF5 −59＠舊 L7466／DengLine IIFE −294＠舊 L9305／呼叫點散刪 −88；內容逐字核實純漂移）。
+# v20a362 resync：index.html 淨 +267 行（UI362 CSS＋JS）；normaliseTangStub152 釘 lines()[14734]→[14644]、stub 呼叫行 lines()[14859]→[14769]，內容逐字核實純漂移。
+# v20a358 resync＋手術：soft 層鄧麗萍清理（DengLine IIFE＋WF5 R_tang_* 條目＋mock 底稿全刪，live 路徑零讀者核實見 NOTES_V20A358）。§3 由「留線」改寫做「刪線」斷言；§2 R_tang_ending 計數 1→0（載入過濾連同 mock 一齊刪）；§4 刪 push mock 過濾斷言；§6 push mock 改做「檔已刪」斷言；normaliseTangStub152 釘 lines()[15082]→[14348]、stub 呼叫行 lines()[15209]→[14473]（index.html 淨 −441 行：WF5 −59＠舊 L7466／DengLine IIFE −294＠舊 L9305／呼叫點散刪 −88；內容逐字核實純漂移）。
 # v20a356 resync：index.html 淨 +20 行（支線複檢 (a) 類修復：WF2 B0＋1／rom159 葉 crisis 分流＋12／enc158 synopsis＋1／lost_role＋4／顧哼歌＋1／鍾追問者＋1）；釘行按段 shift，內容逐字核實純漂移。
 # v20a352 resync：index.html 淨 +18 行（ending410EveNode 回憶過濾＠舊 L13117 後）；normaliseTangStub152／stub 呼叫兩釘各 +18，內容逐字核實純漂移。
 # v20a345 resync：index.html 淨 +52 行（F1 警告呈現＋F2 floor 檢查；插入點舊 L13229 +3／L13625 +14／L13636 +2／L19827 +1／L19849 +7／L20446 +23／L20472 +2；總行數 47316→47368；釘行按段 shift，內容逐行核實純漂移，見 qa345/resync345.py）。
@@ -39,8 +40,8 @@
 # v20a323 resync：index.html 淨 −9 行（刪 TEXTFIX57 死映射，刪除區間舊 L14401–14487）；2 個釘索引各 −9（14708→14699、14835→14826），內容逐字核實純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁。
 # v20a299 resync：index.html 淨 +280 行；2 個釘索引各 ＋1（14707→14708、14834→14835；插入點舊 L10699 之後），內容逐字核實純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁。
 
-# v20a297 resync：index.html 淨 −64 行（Vera＋關海媚成個移除，刪除點散佈全檔）；3 個釘行按 difflib 映射重寫（HELD lines()[9573]→[9282]、normaliseTangStub152 lines()[15028]→[14707]、stub 呼叫行 lines()[15155]→[14834]；內容逐字相同，純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁）。
-# v20a286 resync：index.html 淨 +9 行（contFromSlot sync＋6＠舊 L45704 之後／softSeed sync＋3＠舊 L14392 之後；釘行按段重算：＜14392 唔郁、14392–45703 各 ＋3、≥45704 各 ＋9；內容逐字核實純漂移）。 lines()[15025]→[14743]、lines()[15152]→[14870]；ok() 名入面嘅 Lxxxxx 歷史標籤唔郁。
+# v20a297 resync：index.html 淨 −64 行（Vera＋關海媚成個移除，刪除點散佈全檔）；3 個釘行按 difflib 映射重寫（HELD lines()[9609]→[9282]、normaliseTangStub152 lines()[15064]→[14707]、stub 呼叫行 lines()[15191]→[14834]；內容逐字相同，純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁）。
+# v20a286 resync：index.html 淨 +9 行（contFromSlot sync＋6＠舊 L45704 之後／softSeed sync＋3＠舊 L14392 之後；釘行按段重算：＜14392 唔郁、14392–45703 各 ＋3、≥45704 各 ＋9；內容逐字核實純漂移）。 lines()[15061]→[14743]、lines()[15188]→[14870]；ok() 名入面嘅 Lxxxxx 歷史標籤唔郁。
 # v20a276 resync：index.html 淨 +1 行（#loc-title 米紙圓底 chip 新規則，插入點舊 L4010）；本檔釘行／鏈尾一律 +1，內容逐字核實純漂移。
 # v20a268 resync：index.html 淨 −236 行（WF2 Vera 覆寫 −233／MEET_SOFT −1／SCENE_OVERRIDE154 −1／CONTRA98 R_tang_push2／crisis 行 −1）；
 # 3 個釘行按 difflib 映射重寫（HELD 9521→9287、normaliseTangStub152 14975→14739、stub 呼叫行 15102→14866；
@@ -49,10 +50,10 @@
 # v20a267 resync：傳聞系統刪除，淨 −1399 行；3 個釘行按內容重對（HELD [9742]→[9521]、normaliseTangStub152 [15420]→[14975]、stub 呼叫行 [15547]→[15102]；內容逐字相同，ok() 名內歷史行號標籤不變）。
 # v20a266 resync：index.html 淨 +328 行（V158 block ＋284／StoryPlay hook ＋1／載入呼叫 ＋1／enc158 hook ＋42）；釘行按 difflib 映射重寫，內容逐字相同，純漂移。
 # v20a265 resync：index.html 淨 +378 行；3 個釘行按 difflib 映射重寫（9140→9459、14803→15136、14929→15262），內容逐字相同，純漂移；ok() 名入面嘅 L 號係歷史標籤，唔郁。
-# v20a159 resync：index.html 淨 +1235 行（Phase 1＋A＋B1＋B2）；3 個釘行按內容實量重寫（HELD lines()[9342]→[9139]、normaliseTangStub152 lines()[14980]→[14802]、stub 呼叫行 lines()[15102]→[14928]），內容逐字核實純漂移；R 節點計數改認 [rom1,rom2,rom3]（A 加 rom3 載入，romTang 依然唔含）；ok() 名入面嘅 Lxxxxx 歷史標籤唔郁。
+# v20a159 resync：index.html 淨 +1235 行（Phase 1＋A＋B1＋B2）；3 個釘行按內容實量重寫（HELD lines()[9378]→[9139]、normaliseTangStub152 lines()[15016]→[14802]、stub 呼叫行 lines()[15138]→[14928]），內容逐字核實純漂移；R 節點計數改認 [rom1,rom2,rom3]（A 加 rom3 載入，romTang 依然唔含）；ok() 名入面嘅 Lxxxxx 歷史標籤唔郁。
 # v20a154 resync：index.html 淨 +64 行（B1 CSS ＋38／DLG154_CACHE ＋9／B2 覆寫表 ＋12／B3 ＋5）；3 個釘行按 difflib 映射重寫，內容逐字核實純漂移；名入面嘅 Lxxxxx 歷史標籤唔郁。
 # v20a163 resync：index.html 淨 −33 行（刪 #map-stress-tip：CSS −7＠舊 L3494–3500／story-play-lock 死規則行合併 −1＠舊 L4055–4056／HTML 元素 −1＠舊 L6031／drawMap() 呼叫 −1＠舊 L22365／updateMapStressTip() 函數 −23＠舊 L41473–41495）；釘行按 difflib 映射重寫，內容逐字核實純漂移；ok() 名入面嘅 Lxxxxx 歷史標籤唔郁。
-# 3 個釘行按 difflib 映射重寫（lines()[9313]→9019、14640→14631、14762→14753）。
+# 3 個釘行按 difflib 映射重寫（lines()[9349]→9019、14640→14631、14762→14753）。
 # v20a259 resync：index.html 淨 +41 行（R1＋R2 helper＋註解、c13 註解、R4 結局頁分佈＋人情頁分組、R3 守衛＋定義註解；插入點舊 L12516＋9／L13288＋1／L13401＋15／L13418＋1／L23033＋1／L23073＋4／L23101＋1／L27364＋9；兩處呼叫改註解行數不變）；釘行按 difflib 映射重寫（/tmp/v259_resync.py，67 錨點零 mismatch，內容逐字相同，純漂移；標籤 Lxxxxx 歷史名唔郁）。
 # v20a254 工人 C resync：index.html 淨 +2 行（STORY_TITLE_SOFT 對齊註解，插入點舊 L6519）；3 個釘行全部喺插入點之後，一律 +2，內容逐字核實純漂移；名入面嘅 Lxxxxx 歷史標籤唔郁。
 # v20a253 resync：index.html 淨 +115 行；3 個釘行按 difflib 映射重寫（HELD 9021→9027、normaliseTangStub152 14527→14613、stub 呼叫行 14649→14735），內容逐字核實純漂移。
@@ -169,8 +170,8 @@ ok('刪線：DengLine 程式碼引用清零（只剩註解提及，註解入面�
 # v20a235 resync：index.html 淨 −24 行（N17 前夕刪三選項）；3 個釘行按 difflib 映射重寫（normaliseTangStub152 15563→15539、stub 呼叫行 15686→15662；HELD 10006 唔郁），內容逐字核實純漂移。
 # v20a242 resync：index.html 淨 −144 行（刪 LAN 覆寫表；刪除區間舊 L6597–6735／7559–7579／15038–15045）；3 個釘行按段重算（HELD 9358→9212，−146；normaliseTangStub152 14926→14783，−143；stub 呼叫行 15049→14905，−144），內容逐字核實純漂移。
 # --- 4. 載入機制：stub 正規化（v20a358：push mock 過濾連 mock 一齊刪，見 §3） ---
-ok('機制：normaliseTangStub152 函數在位', lines()[17028].startswith('function normaliseTangStub152(pack){'))
-ok('機制：stub 正規化喺 TEXTFIX 之前行', lines()[17153].strip().startswith('try{ normaliseTangStub152(rom2);'))
+ok('機制：normaliseTangStub152 函數在位', lines()[17064].startswith('function normaliseTangStub152(pack){'))
+ok('機制：stub 正規化喺 TEXTFIX 之前行', lines()[17189].strip().startswith('try{ normaliseTangStub152(rom2);'))
 ok('機制：stub 新 synopsis＝純公事（排片聯絡）；舊開閘句只剩 v152 註解引文 1 次',
    '交換電話方便日後排片聯絡。' in src and src.count('正式開線需同時滿足') == 1
    and '交換聯絡與否' not in src)

@@ -158,9 +158,9 @@ ok('分類：試鏡入口 → 接工', ux68ClassifyAct(fakeBtn('act act-priority
 ok('分類：接通告 → 接工', ux68ClassifyAct(fakeBtn('act', '接通告：某片', '+1日')).group === 'work');
 ok('分類：查看檔期 → 接工', ux68ClassifyAct(fakeBtn('act', '查看檔期：某片', '—')).group === 'work');
 ok('分類：暫未能報＋未開放 → 接工＋locked', (()=>{ const r = ux68ClassifyAct(fakeBtn('act', '暫未能報：某片', '未開放')); return r.group === 'work' && r.locked; })());
-ok('分類：休息室 → 休息・雜項', ux68ClassifyAct(fakeBtn('act act-priority', '休息室歇陣', '+1日')).group === 'rest');
+ok('分類：休息室 → 休息・雜項', ux68ClassifyAct(fakeBtn('act act-priority', '休息室休息', '+1日')).group === 'rest');
 ok('分類：小賣 → 休息・雜項', ux68ClassifyAct(fakeBtn('act act-priority', '小賣／禮品', '免費')).group === 'rest');
-ok('分類：已完成劇情（disabled） → locked', ux68ClassifyAct(fakeBtn('act act-story act-story-done', '劇情已完成', '', true)).locked === true);
+ok('分類：已完成劇情 → done（唔當未開放）', ux68ClassifyAct(fakeBtn('act act-story act-story-done', '劇情已完成', '', true)).done === true && ux68ClassifyAct(fakeBtn('act act-story act-story-done', '劇情已完成', '', true)).locked === false);
 ok('分類：未知掣 → 兜底休息・雜項（唔漏項）', ux68ClassifyAct(fakeBtn('act', '神秘選項', '免費')).group === 'rest');
 
 /* ---------- (6) 季尾日數 ---------- */

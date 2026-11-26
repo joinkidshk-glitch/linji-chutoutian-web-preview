@@ -50,7 +50,7 @@ ok('N10 新句在', '阿媽冇提過半句' in html)
 ok('N10 舊矛盾句唔見', '冇打電話嚟催' not in html)
 
 # S-44：人情卡狀態講一次（DEBT_FUZZY 頭三句改純指引）
-ok('S-44 未到期純指引', '"未到期":"唔使太急，慢慢還得。"' in html)
+ok('S-44 未到期純指引', '"未到期":"不必太急，慢慢償還即可。"' in html)
 ok('S-44 絕響句不變（測試釘死前綴）', '"絕響":"人已不在香港' in html)
 
 print('TOTAL %s' % ('PASS' if not fails else 'FAIL: ' + ', '.join(fails)))

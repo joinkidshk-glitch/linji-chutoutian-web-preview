@@ -352,10 +352,10 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   ok('d1 debt pane intro line present', h.indexOf('這頁記住誰欠阿偉、阿偉欠誰') >= 0);
   ok('d2 family debt card present', h.indexOf('data-debt-id="debt_family_home"') >= 0);
   ok('d3 tutorial debt seeded by real tutorial-done path', h.indexOf('data-debt-id="debt_ho_tutorial"') >= 0);
-  ok('d4 origin: family home', h.indexOf('來歷：你出嚟做臨記嗰陣應承屋企嘅') >= 0);
-  ok('d5 origin: Biao winter season card', h.indexOf('來歷：早前趕戲嗰陣副導阿標幫你頂過一更') >= 0);
-  ok('d6 origin: May winter season card', h.indexOf('來歷：你應承過幫化妝姐美兒買嗰支精華液') >= 0);
-  ok('d7 origin: tutorial debt', h.indexOf('來歷：何生手把手教你入行規矩嗰份人情') >= 0);
+  ok('d4 origin: family home', h.indexOf('來歷：你入行做臨時演員時答應家中的') >= 0);
+  ok('d5 origin: Biao winter season card', h.indexOf('來歷：早前趕戲時副導阿標替你頂過一更') >= 0);
+  ok('d6 origin: May winter season card', h.indexOf('來歷：你答應替化妝姐美兒買的那支精華液') >= 0);
+  ok('d7 origin: tutorial debt', h.indexOf('來歷：何生手把手教你入行規矩的那份人情') >= 0);
   ok('d8 exactly four origin lines on opening pane', (h.split('來歷：').length - 1) === 4);
 
   /* ---- 傳聞頁已刪（v267） ---- */

@@ -32,7 +32,7 @@ chk('周刊 still -> 週刊', TF.textfix55Str('《星訊周刊》今期出街', 
 
 // 3. source: the 13 hardcoded UI strings now say 點擊
 chk('hospital FAQ', s.indexOf('撳入嚟睇') < 0 && s.indexOf('治療／探病／體檢——邊樣幾時先有，點擊入嚟睇') >= 0);
-chk('planner confirm', s.indexOf('改完按「確定本週行程」生效') >= 0);
+chk('planner confirm', s.indexOf('完成後按「確定本週行程」生效') >= 0);
 chk('planner readonly', s.indexOf('可點擊「壓力估」看已定行程') >= 0);
 chk('day toast gone (v398: 今日資訊改由日卡常駐顯示)', s.indexOf('toast(`今日：${meta.name}`') < 0 && s.indexOf('今日：<b>${planName135}</b>') >= 0);
 chk('dismiss notes x4 gone (v392: 撳外面唔再推進日期，「點擊外面＝⋯」細字已刪）', s.indexOf('點擊外面＝回家結算') < 0 && s.indexOf('點擊外面＝返回地圖') < 0 && s.indexOf('點擊外面＝繼續跑明日行程') < 0 && s.indexOf('點擊外面＝開始今日行程') < 0);

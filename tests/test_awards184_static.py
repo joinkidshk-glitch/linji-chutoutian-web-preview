@@ -64,7 +64,7 @@ if _tints and _deeps:
     chk('N1 每隻 deep 都比對位 tint 深（同色系暗版，唔係另一隻淺色）', all(lum(d) < lum(t) for d, t in zip(deeps, tints)))
 chk('N1 漸變用 deep 變量（唔再寫死 #241736）', "linear-gradient(160deg,' + tint182 + ',' + deep184" in play_fn)
 chk('N1 deep 按卡位 index 揀（同 tint 對位）', 'AWDS63_DEEPS184[ci % AWDS63_DEEPS184.length]' in play_fn)
-chk('N1 卡面文字唔郁（首字＋全名＋媒介細行）', 'awd63-cssmono' in play_fn and 'awd63-cssstar' in play_fn and 'awd63-cssmed' in play_fn)
+chk('N1 卡面文字（首字＋媒介細行；全名只留卡底）', 'awd63-cssmono' in play_fn and 'awd63-cssstar' not in play_fn and 'awd63-cssmed' in play_fn)
 chk('N1 得主標記 CSS 唔郁（win 金框＋me）', '.awd63-card.me' in src and '.awd63-card.win' in src)
 
 # --- C2：呈現層固定排序 ---

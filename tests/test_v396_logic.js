@@ -66,15 +66,15 @@ ok('settledDateObj 跨年：display 1991-01-01 → 結算 1990-12-31', (() => {
   return s && s.getFullYear() === 1990 && s.getMonth() === 11 && s.getDate() === 31;
 })());
 ok('dayResDateLine 結算（有傳入 dayDone）',
-   dayResDateLine396('結算', '1990年1月18日（四）· 第3週') === '結算：1月18日（四） · 下一日：1月19日（五）行程');
+   dayResDateLine396('結算', '1990年1月18日（四）· 第3週') === '結算：1月18日（四） · 今日：1月19日（五）');
 ok('dayResDateLine 完成日（有傳入 dayDone）',
-   dayResDateLine396('完成日', '1990年1月18日（四）· 第3週') === '完成日：1月18日（四） · 下一日：1月19日（五）行程');
+   dayResDateLine396('完成日', '1990年1月18日（四）· 第3週') === '完成日：1月18日（四） · 今日：1月19日（五）');
 ok('dayResDateLine 無傳入 dayDone → 重計結算日',
-   dayResDateLine396('結算', null) === '結算：1月18日（四） · 下一日：1月19日（五）行程');
+   dayResDateLine396('結算', null) === '結算：1月18日（四） · 今日：1月19日（五）');
 ok('dayResDateLine 週結 D1：結算日抽到 1月21日（日）（下一日由 displayDateObj stub 定）',
    dayResDateLine396('結算', '1990年1月21日（日）· 第4週').indexOf('結算：1月21日（日）') === 0);
 ok('dayResDateLine 結算日一定係「M月D日（週X）」格式',
-   /^結算：\d+月\d+日（[日一二三四五六]） · 下一日：\d+月\d+日（[日一二三四五六]）行程$/.test(dayResDateLine396('結算', '1990年1月18日（四）· 第3週')));
+   /^結算：\d+月\d+日（[日一二三四五六]） · 今日：\d+月\d+日（[日一二三四五六]）$/.test(dayResDateLine396('結算', '1990年1月18日（四）· 第3週')));
 
 console.log(pass + ' passed, ' + fail + ' failed');
 process.exit(fail ? 1 : 0);

@@ -183,9 +183,9 @@ function baseSave(over){
 (function(){
   S = baseSave({ dayIndex: 0 });
   S.romDay = { day: 0, presence: { tvb_longmen: ['hiu'] }, triggered: 0, doneToday: { hiu: 'tvb_longmen' } };
-  ok('B3 今日喺呢度撞過曉晴 → 在場行寫曉晴＋「今日已經撞過佢，聽日再嚟」',
+  ok('B3 今日喺呢度撞過曉晴 → 在場行寫曉晴＋「今日已經遇見，明日再來」',
     rom183WhoLine183(LOCS[0], 'lan').indexOf('林曉晴') >= 0
-    && rom183WhoLine183(LOCS[0], 'lan').indexOf('今日已經撞過佢，聽日再嚟') >= 0);
+    && rom183WhoLine183(LOCS[0], 'lan').indexOf('今日已經遇見，明日再來') >= 0);
   S.romDay.doneToday = {};
   ok('B3 未撞過 → 跌返 locNpc 行（藍若曦）',
     rom183WhoLine183(LOCS[0], 'lan').indexOf('藍若曦') >= 0);

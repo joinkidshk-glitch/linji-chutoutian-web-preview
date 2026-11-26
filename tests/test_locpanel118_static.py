@@ -119,8 +119,8 @@ ck("全庫 residentNpc 只得 agency_ho 一處（LOCS 定義）",
 # ---------- 3. 額度 pill ----------
 quota_src = extract_fn("locpanel118QuotaHtml")
 ck("pill 有「今日出行：已用 N / 2」", "今日出行：" in quota_src and "已用 " in quota_src)
-ck("pill 有「仲可以去 N 個地方」", "仲可以去 " in quota_src and "個地方" in quota_src)
-ck("pill 有「✓ 已到埗，扣咗 1 次出行額度」", "✓ 已到埗，扣咗 1 次出行額度" in quota_src)
+ck("pill 有「還可前往 N 個地方」", "還可前往 " in quota_src and "個地方" in quota_src)
+ck("pill 有「✓ 已抵達，已扣除 1 次出行額度」", "✓ 已抵達，已扣除 1 次出行額度" in quota_src)
 ck("pill 已到埗行只喺 spent 先出（if(spent)）", "if(spent)" in quota_src)
 ck("pill 讀 TRAVEL114_DAILY_CAP（唔 hardcode 2）", "TRAVEL114_DAILY_CAP" in quota_src)
 ck("pill 有兩粒點（dots loop＋used 填金）",

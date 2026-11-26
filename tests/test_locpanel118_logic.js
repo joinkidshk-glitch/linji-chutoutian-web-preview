@@ -55,17 +55,17 @@ const MAP = api.GIG_ISSUER_FIGURE_MAP30V2;
 /* ---- (1) 額度 pill ---- */
 let h = api.locpanel118QuotaHtml(1, 1, true);
 ok('pill 入場後：已用 1 / 2', h.indexOf('已用 1 / 2') >= 0);
-ok('pill 入場後：仲可以去 1 個地方', h.indexOf('仲可以去 1 個地方') >= 0);
-ok('pill 入場後：有「✓ 已到埗，扣咗 1 次出行額度」', h.indexOf('✓ 已到埗，扣咗 1 次出行額度') >= 0);
+ok('pill 入場後：還可前往 1 個地方', h.indexOf('還可前往 1 個地方') >= 0);
+ok('pill 入場後：有「✓ 已抵達，已扣除 1 次出行額度」', h.indexOf('✓ 已抵達，已扣除 1 次出行額度') >= 0);
 ok('pill 點數：2 粒點、1 粒已用', (h.match(/lp118-dot[ "]/g) || []).length === 2 && (h.match(/lp118-dot used/g) || []).length === 1);
 h = api.locpanel118QuotaHtml(1, 1, false);
 ok('pill 免費返嚟：數字照舊（已用 1 / 2），冇「已到埗」行', h.indexOf('已用 1 / 2') >= 0 && h.indexOf('已到埗') < 0);
 h = api.locpanel118QuotaHtml(0, 2, true);
-ok('pill 未入場：已用 0 / 2、仲可以去 2 個地方、0 粒已用',
-   h.indexOf('已用 0 / 2') >= 0 && h.indexOf('仲可以去 2 個地方') >= 0 && (h.match(/lp118-dot used/g) || []).length === 0);
+ok('pill 未入場：已用 0 / 2、還可前往 2 個地方、0 粒已用',
+   h.indexOf('已用 0 / 2') >= 0 && h.indexOf('還可前往 2 個地方') >= 0 && (h.match(/lp118-dot used/g) || []).length === 0);
 h = api.locpanel118QuotaHtml(2, 0, true);
-ok('pill 用盡：已用 2 / 2、仲可以去 0 個地方、2 粒已用',
-   h.indexOf('已用 2 / 2') >= 0 && h.indexOf('仲可以去 0 個地方') >= 0 && (h.match(/lp118-dot used/g) || []).length === 2);
+ok('pill 用盡：已用 2 / 2、還可前往 0 個地方、2 粒已用',
+   h.indexOf('已用 2 / 2') >= 0 && h.indexOf('還可前往 0 個地方') >= 0 && (h.match(/lp118-dot used/g) || []).length === 2);
 
 /* ---- (1b) 已到埗行：探訪記憶（巧遇／WF4 攔截後免費返嚟、modal 免費重開都出） ---- */
 const L_AG = { id: 'agency_ho' };
@@ -111,7 +111,7 @@ const ICON_CASES = [
   ['試鏡入口：《夜班廠景》', '', 'icon_clapper.png'],
   ['報名：旁聽對戲／綵排', 'act-priority', 'icon_fitness.png'],
   ['進行演技訓練', 'act-priority', 'icon_fitness.png'],
-  ['休息室歇陣', 'act-priority', 'icon_sleep.png'],
+  ['休息室休息', 'act-priority', 'icon_sleep.png'],
   ['買禮物', 'act-priority', 'icon_gift.png'],
   ['身體檢查', '', 'icon_hospital.png'],
   ['醫院有咩用？', '', 'icon_book.png'],

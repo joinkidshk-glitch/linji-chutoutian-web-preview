@@ -54,8 +54,8 @@ ok('B1 map day hardcodes 到處逛逛 (唔用 scout_nt raw id)',
    'label:"到處逛逛"' in fn_helpers)
 ok('B1 rest special-cased to 休息 (唔係 PLAN_ITEMS 嘅「休息睡覺」)',
    'if(String(id)==="rest") return { kind:"schedule", label:"休息" };' in fn_helpers)
-ok('B1 schedule line says （自動行程）, map line says （返地圖自由行）',
-   '（自動行程）' in fn_helpers and '（返地圖自由行）' in fn_helpers)
+ok('B1 schedule line says （自動行程）, map line says （返回地圖自由行動）',
+   '（自動行程）' in fn_helpers and '（返回地圖自由行動）' in fn_helpers)
 ok('B1 ended returns no next line',
    'if(ended) return "";' in fn_helpers)
 ok('B1 result dest line only peeks slot (唔消費 _story165AfterCont)',
@@ -104,15 +104,15 @@ ok('N1 old confirm title gone (開始今日行程？唔再出現喺玩家面)',
 
 # ---- C2：故事鎖死提示 ----
 ok('N2 StoryPlay render pushes lock hint note into modalBtns',
-   '劇情進行中：可以選擇，播完這一段才可以離開' in fn_render
-   and 'modalBtns.push({ label:"劇情進行中：可以選擇，播完這一段才可以離開", role:"note" });' in fn_render)
+   '劇情進行中：完成本段後才可離開' in fn_render
+   and 'modalBtns.push({ label:"劇情進行中：完成本段後才可離開", role:"note" });' in fn_render)
 ok('N2 hint is pushed after the beats/choices branch (兩種 mode 都有)',
-   idx(fn_render, 'modalBtns.push({ label:"劇情進行中：可以選擇，播完這一段才可以離開", role:"note" });')
+   idx(fn_render, 'modalBtns.push({ label:"劇情進行中：完成本段後才可離開", role:"note" });')
    > idx(fn_render, 'modalBtns.push({ label:"下一句"')
-   and idx(fn_render, 'modalBtns.push({ label:"劇情進行中：可以選擇，播完這一段才可以離開", role:"note" });')
+   and idx(fn_render, 'modalBtns.push({ label:"劇情進行中：完成本段後才可離開", role:"note" });')
    > idx(fn_render, 'modalBtns.push({ label:"完成這一節"'))
 ok('N2 enc79 overlay NOT given the lock hint (佢有「點頭離開」出口，唔係鎖死)',
-   '劇情進行中：可以選擇，播完這一段才可以離開' not in fn_enc79
+   '劇情進行中：完成本段後才可離開' not in fn_enc79
    and '點頭離開' in fn_enc79)
 
 # ---- CSS ----

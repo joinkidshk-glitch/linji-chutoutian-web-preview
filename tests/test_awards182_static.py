@@ -54,7 +54,7 @@ chk('B1 日期行繼續 nowrap（唔郁）', 'white-space:nowrap' in rule('.awd6
 # --- C1：CSS 卡面 fellow 專屬 ---
 chk('N1 CSS 卡仍在 play 內（通用跌返規則唔郁）', 'awd63-csscard' in play_fn)
 chk('N1 卡面有大字首字 span', 'awd63-cssmono' in play_fn and '.awd63-cssmono' in src)
-chk('N1 卡面有全名 span', 'awd63-cssstar' in play_fn and '.awd63-cssstar' in src)
+chk('N1 卡面唔重複全名（v418：全名只留卡底）', 'awd63-cssstar' not in play_fn)
 chk('N1 卡面有媒介細行 span', 'awd63-cssmed' in play_fn and '.awd63-cssmed' in src)
 chk('N1 首字取自星名（charAt(0)）', "charAt(0)" in play_fn)
 _pal = re.search(r'AWDS63_TINTS182 = \[[^\]]*\]', play_fn)

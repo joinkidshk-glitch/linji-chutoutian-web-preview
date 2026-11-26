@@ -140,7 +140,7 @@ ok('5E 鎖定格維持拍攝檔期已定', nbDayHint400(1, planMeta("train_vocal
 /* ================= (6) 改格成本行文案 ================= */
 S = mkS(14, { trainCount:{ train_vocal:3 } });
 ok('6A 街演 → 休息：失去收入；得到壓力清零',
-  costLine400("street","rest",1)==='週二：街頭表演 → 休息瞓覺：失去約 $35–60 收入；得到壓力清零', costLine400("street","rest",1));
+  costLine400("street","rest",1)==='週二：街頭表演 → 休息：失去約 $35–60 收入；得到壓力清零', costLine400("street","rest",1));
 ok('6B 咖啡 → 歌藝：失去收入；得到堂數＋學費＋壓力',
   costLine400("cafe_gig","train_vocal",1).indexOf('失去約 $45–75 收入')>=0
   && costLine400("cafe_gig","train_vocal",1).indexOf('得到歌藝 +1 堂（再 2 堂升二級）· 學費 $20 · 壓力 +10')>=0,

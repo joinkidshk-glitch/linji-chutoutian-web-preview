@@ -141,14 +141,14 @@ eval(extractFn('dayResDateLine396'));
   S.dayIndex = 1;
   S.weekPlan = ['rest', 'street', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all'];
   ok('b schedule next line names the plan + 自動行程',
-    dayEndNextLine202(false) === '<p class="dayend-next202">聽日：街頭表演（自動行程）</p>');
+    dayEndNextLine202(false) === '<p class="dayend-next202">今日行程：街頭表演（自動行程）</p>');
   ok('b dayEndDismissNote202 deleted (v392: 撳外面唔再推進，細字刪走）',
     html.indexOf('function dayEndDismissNote202(') < 0
     && html.indexOf('點擊外面＝繼續跑明日行程') < 0 && html.indexOf('點擊外面＝返回地圖') < 0
     && html.indexOf('點擊外面＝回家結算') < 0 && html.indexOf('點擊外面＝開始今日行程') < 0);
   S.weekPlan[1] = 'scout_all';
   ok('b map next line says 到處逛逛＋返地圖自由行',
-    dayEndNextLine202(false) === '<p class="dayend-next202">聽日：到處逛逛（返地圖自由行）</p>');
+    dayEndNextLine202(false) === '<p class="dayend-next202">今日：到處逛逛（返回地圖自由行動）</p>');
   ok('b ended: no next line', dayEndNextLine202(true) === '');
 })();
 
@@ -183,7 +183,7 @@ eval(extractFn('dayResDateLine396'));
   ok('d next line sits right after <h3> (before result body)',
     m.html.indexOf('dayend-next202') > 0 && m.html.indexOf('dayend-next202') < m.html.indexOf('RESULT-BODY'));
   ok('d next line text is the scheduled plan',
-    m.html.indexOf('聽日：街頭表演（自動行程）') >= 0);
+    m.html.indexOf('今日行程：街頭表演（自動行程）') >= 0);
   ok('d no dismiss note button (v392)', !m.btns.some(b => b && b.role === 'note'));
   ok('d scheduled day still has no 返回地圖 button',
     !labels(m.btns).some(l => l.indexOf('返回地圖') >= 0));
@@ -196,7 +196,7 @@ eval(extractFn('dayResDateLine396'));
   S.weekPlan = ['rest', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all', 'scout_all'];
   afterDayModal('<p>RESULT-BODY</p>', '訓練', null, false, null, {});
   const m = lastModal();
-  ok('d map day: next line says 到處逛逛', m.html.indexOf('聽日：到處逛逛（返地圖自由行）') >= 0);
+  ok('d map day: next line says 到處逛逛', m.html.indexOf('今日：到處逛逛（返回地圖自由行動）') >= 0);
   ok('d map day: dismiss is null (v392: 撳外面唔返地圖）', m.opts.onDismiss == null);
 })();
 (function(){
@@ -218,7 +218,7 @@ eval(extractFn('dayResDateLine396'));
   presentRestSleepDayEnd({ title: '休息', notes: [], ended: false, summary: null });
   const card = lastModal();
   ok('e rest card has next line first (before body)',
-    card.html.indexOf('dayend-next202') > 0 && card.html.indexOf('聽日：街頭表演（自動行程）') >= 0);
+    card.html.indexOf('dayend-next202') > 0 && card.html.indexOf('今日行程：街頭表演（自動行程）') >= 0);
   ok('e rest card dismiss is null (撳外面唔推進日期)', card.opts.onDismiss == null);
   ok('e execute button names consequence （執行今日行程）', !!findBtn(card.btns, '執行今日行程'));
   press(card, '執行今日行程');

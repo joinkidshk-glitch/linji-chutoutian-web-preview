@@ -11,7 +11,7 @@ def ok(name, cond):
 
 # 屋企債本體
 ok('family debt id const', 'const FAMILY_HOME_DEBT_ID = "debt_family_home"' in html)
-ok('family cycles defined (4 rotating bills)', html.count('title:"今個月家用"') == 1 and 'title:"今期幫補交租"' in html and 'title:"阿媽覆診藥費"' in html and 'title:"屋企換雪櫃嗰份"' in html)
+ok('family cycles defined (4 rotating bills)', html.count('title:"本月家用"') == 1 and 'title:"今期幫補交租"' in html and 'title:"阿媽覆診藥費"' in html and 'title:"屋企換雪櫃嗰份"' in html)
 ok('family creditor is 屋企／阿媽', 'creditor:"屋企／阿媽"' in html)
 ok('family state helper defined', 'function ensureFamilyHomeState(' in html)
 ok('family seed fn defined', 'function ensureFamilyHomeDebt(' in html)

@@ -129,7 +129,7 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
 
   S = { dayIndex:0, money:5000, inventory:{}, npcs:{ agent:50 }, board:{}, flags:{}, mockDebts:[], mockRumors:[], mockCredits:[], favorDueSettled:{}, mockSeasonCleared:{} };
   ok('seed returns true first time', ensureFamilyHomeDebt()===true && famCount()===1);
-  ok('seed: cycle0 = 今個月家用 $60', S.mockDebts[0].title==='今個月家用' && S.mockDebts[0].amount===60);
+  ok('seed: cycle0 = 本月家用 $60', S.mockDebts[0].title==='本月家用' && S.mockDebts[0].amount===60);
 
   adv(10); // dayIndex 10，仍係 1990 年 1 月；advanceDay 每日行 ensureFamilyHomeDebt
   ok('same month, debt present: no reseed', famCount()===1 && S.dayIndex===10);
@@ -173,7 +173,7 @@ const LEDGER_SRC = ['ensureFavorLedger','favorLedgerNoteSettled','favorLedgerNot
   eval(extractFn('favorPressure'));
   eval(LEDGER_SRC);
 
-  const famOverdue = { id:'debt_family_home', creditor:'屋企／阿媽', title:'今個月家用', amount:600, weight:'屋企嗰份', season:'', status:'已逾期', familyHome:true };
+  const famOverdue = { id:'debt_family_home', creditor:'屋企／阿媽', title:'本月家用', amount:600, weight:'屋企嗰份', season:'', status:'已逾期', familyHome:true };
   const liveOverdue = { id:'debt_live', creditor:'阿標', title:'現行人情', weight:'細', season:'', status:'已逾期' };
 
   S = { dayIndex:5, mockDebts:[] };

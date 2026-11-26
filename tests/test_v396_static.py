@@ -77,7 +77,7 @@ ok("v396 日結日期 helper 存在：settledDateObj396／fmtShortDate396／dayR
    and "function fmtShortDate396(d){" in src
    and "function dayResDateLine396(firstLabel, doneFull){" in src)
 ok("v396 日結日期標示：結算日同下一日分開標",
-   "結算：" in src and "下一日：" in src and "行程" in src)
+   "結算：" in src and "今日：" in src)
 ok("v396 日結日期標示：完成日標籤",
    "完成日" in src)
 ok("v396 40 號確認卡用 day-res 底部＋淺遮罩",

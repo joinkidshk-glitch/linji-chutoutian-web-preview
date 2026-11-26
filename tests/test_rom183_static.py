@@ -77,7 +77,7 @@ ok('B2 確認 modal 有最愛句', '★ 最愛：他最喜歡這份禮物。' in
 # ---- B3：行開後在場行跟返巧遇盤 ----
 ok('B3 doneToday 記地點（唔係 1）', 'sd.doneToday[pick.key] = locId;' in html)
 ok('B3 openLoc 在場行行 rom183WhoLine183', 'rom183WhoLine183(L, npcId)' in html)
-ok('B3 在場行有「今日已經撞過佢，聽日再嚟」', '今日已經撞過佢，聽日再嚟' in html)
+ok('B3 在場行有「今日已經遇見，明日再來」', '今日已經遇見，明日再來' in html)
 ok('B3 撞過嗰位優先（doneToday 逐個對地點）', 'S.romDay.doneToday[k]!==L.id' in html)
 
 # ---- B4：海媚未解鎖掣已刪（v297） ----
