@@ -48,8 +48,8 @@ ok('R2 film_102 係《霓虹夜影》男主角／高級／rival trigger rivalSco
   !!f102 && f102.title === '《霓虹夜影》男主角' && f102.tier === '高級' &&
   f102.trigger && f102.trigger.kind === 'rival' && f102.trigger.rivalScoreMin === 3);
 const f109 = gigById('gig_1991_film_109');
-ok('R3 film_109 唔郁：仍係《笑聲震天響》男配角／初級／廖引薦 credit_enc83_liu_patron',
-  !!f109 && f109.title === '《笑聲震天響》男配角' && f109.tier === '初級' &&
+ok('R3 film_109 唔郁：仍係《笑聲震天響》小配角・喜劇學徒／初級／廖引薦 credit_enc83_liu_patron',
+  !!f109 && f109.title === '《笑聲震天響》小配角・喜劇學徒' && f109.tier === '初級' &&
   f109.trigger && f109.trigger.kind === 'credit' && f109.trigger.creditId === 'credit_enc83_liu_patron');
 ok('R4 index.html 入面 RIVAL_CFG 嗰行唔再提 film_109',
   (function(){

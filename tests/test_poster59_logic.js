@@ -159,7 +159,7 @@ const findGig = id=>PACK_NEW.gigs.find(g=>g.id===id);
   ok('wall: 只入作品（5 條歷史 → 3 部：兩部臨記通告／補拍唔入）', es.length===3);
   const hb = es.find(x=>x.gigId==='gig_1990_film_101');
   ok('wall: 回查 workTitle', !!hb && hb.work==='梭哈');
-  ok('wall: 回查 roleLabel', !!hb && hb.role==='男配角');
+  ok('wall: 回查 roleLabel', !!hb && hb.role==='小配角・賭場夥計');
   ok('wall: 年份係顯示年 1990（唔再 +2）', !!hb && hb.year===1990);
   /* v20a252 CAST252：主演行改陣容行（SPEC §2.3）——film_101 玩家做男配角，主演行只出兩位主角；
      leadStar59Of 喺 v2 庫讀唔到 leadStarId（A1 未遷移），leadStar 欄係空，陣容行係唯一主演顯示。 */
@@ -175,7 +175,7 @@ const findGig = id=>PACK_NEW.gigs.find(g=>g.id===id);
   ok('wall: 無星作品照入牆（冇主演冇海報）', !!ns && ns.leadStar==='' && ns.castLine==='' && ns.poster==='' && ns.work==='無星小品');
   const wallHtml = worksWallHtml59();
   ok('wall html: 全部 CSS 片名卡（冇 data URI 海報）', wallHtml.indexOf('work-csscard59')>=0 && wallHtml.indexOf('data:image')<0);
-  ok('wall html: 顯示陣容行＋崗位', wallHtml.indexOf('主演：陸柏言、鍾楚凝')>=0 && wallHtml.indexOf('阿偉：男配角')>=0);
+  ok('wall html: 顯示陣容行＋崗位', wallHtml.indexOf('主演：陸柏言、鍾楚凝')>=0 && wallHtml.indexOf('阿偉：小配角・賭場夥計')>=0);
   ok('wall html: 臨記通告／補拍唔入牆', wallHtml.indexOf('富貴茶餐廳')<0 && wallHtml.indexOf('西環月色')<0);
   S.wrapHistory = [];
   ok('wall html: 空牆有提示', worksWallHtml59().indexOf('還未有作品入牆')>=0);
