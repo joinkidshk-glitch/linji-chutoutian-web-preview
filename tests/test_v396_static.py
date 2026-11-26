@@ -1,3 +1,4 @@
+# v415 resync：通告欄 lead 算式運算符加空格（呈現修復）；見 qa415/resync415.py。
 # v406：選單刪「返回」列，靜態 <button 111→110（有意圖改動）。
 # v402 resync：setUnderlyingInert 教學豁免收窄到只限 TUT_MAP（!tut→!tutMap，有意圖改動，任務 6③⑤；聚光目標 pin 只喺 TUT_MAP 步先要留低，TUT_BOARD／結算卡要 scene 卸載；見 qa402/resync402.py。
 # v398 resync：排序＋媒介合成一個「整理」掣，靜態 <button −1（112→111）；見 qa398/resync398.py。
@@ -56,7 +57,7 @@ ok("v396 board392ExpDaily 存在：預期日薪＝片酬×成功率÷日數",
    "function board392ExpDaily(g){" in src
    and "(Number(p)||0) * pay / Math.max(1, Number(d)||1)" in src)
 ok("v396 通告欄 lead 出計法（一行）",
-   "預期日薪＝片酬×成功率÷日數" in src)
+   "預期日薪 ＝ 片酬 × 成功率 ÷ 日數" in src)
 ok("v396 通告欄篩選總數行出「顯示 X／總數」",
    "顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張" in src)
 ok("v396 通告欄類別 pill 先出媒介（coarse396）再出 genre",

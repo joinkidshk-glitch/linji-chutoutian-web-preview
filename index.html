@@ -7701,6 +7701,118 @@ body.day-res-open .day-row{
 }
 /* ===== v20a414 UI414 完 ===== */
 
+/* ===== v20a415 UI415：第十九輪 self-review 修復（只改呈現） ===== */
+/* R1 編輯區搬去週格之下：原來週格同編輯區之間隔住工具／壓力／banner／說明共 264px，
+   編輯入場完全見唔到編輯掣（量度證據見第十九輪 SELF_REVIEW）。nb-left 改 display:contents，
+   子項用 order 排：標題→模式→範圍→建議／成本→週格→編輯區→工具→壓力→banner→說明。
+   左右邊距補返原 nb-left 嘅 46px（裝訂邊）／12px；虛線分隔改掛編輯區頂。 */
+#home-pane-plan .nb-left{ display:contents !important; }
+#home-pane-plan .nb-left > *{ margin-left:46px !important; margin-right:12px !important; box-sizing:border-box !important; order:20 !important; min-width:0 !important; }
+#home-pane-plan #nb-plan-title{ order:1 !important; }
+#home-pane-plan #nb-plan-mode{ order:2 !important; }
+#home-pane-plan #nb-range{ order:3 !important; }
+#home-pane-plan #nb-suggest400{ order:4 !important; }
+#home-pane-plan #nb-cost400{ order:5 !important; }
+#home-pane-plan #nb-days{ order:6 !important; width:auto !important; }
+#home-pane-plan .nb-right{ order:7 !important; border-top:2px dashed rgba(196,165,116,.55) !important; padding-top:6px !important; }
+#home-pane-plan #nb-quick{ order:8 !important; }
+#home-pane-plan #nb-live-stress{ order:9 !important; }
+#home-pane-plan #stress-scale363{ order:10 !important; }
+#home-pane-plan #nb-stress-detail105{ order:11 !important; }
+#home-pane-plan #nb-progress404{ order:12 !important; }
+#home-pane-plan #plan-teach105{ order:13 !important; }
+/* R2 頁首收緊（唔縮字）：標題／模式／範圍邊距收細，週格下限跟內容（84→78，星期日 56→50），
+   格距 8→6——編輯入場喺 390／932 見到分類掣，唔使犧牲全週概覽 */
+#home-pane-plan .nb-left .nb-title{ margin-top:2px !important; margin-bottom:2px !important; }
+#home-pane-plan .nb-plan-mode{ padding:1px 8px !important; margin-bottom:2px !important; }
+#home-pane-plan .nb-left .nb-range{ margin-bottom:2px !important; line-height:1.15 !important; }
+#home-pane-plan #nb-days{ gap:3px !important; }
+#home-pane-plan #nb-days .day-row{ min-height:76px !important; }
+#home-pane-plan #nb-days .day-row:nth-child(7){ min-height:46px !important; padding:4px 8px !important; }
+#home-pane-plan #nb-right-title{ margin-bottom:2px !important; line-height:1.2 !important; }
+#home-pane-plan .nb-right{ padding-top:4px !important; }
+#home-pane-plan .cat-tab{ padding:4px 2px !important; }
+#home-pane-plan .cat-tab .ci{ font-size:.95rem !important; }
+#home-pane-plan #stress-scale363{ margin-top:12px !important; }
+/* R4 子頁籤可撳感一致：未選子頁（衣櫃等）原來褪色 #a08a68（對紙底約 2.9:1）似普通文字；
+   加深至 #77603f（約 5.2:1）＋紙籤底線，選中紅圈不變，一眼分到入口同狀態 */
+#home-subtabs .hsub-group .home-tab:not(.on){ color:#77603f !important;
+  background-image:linear-gradient(rgba(122,101,71,.45),rgba(122,101,71,.45)) !important;
+  background-size:calc(100% - 10px) 2px !important; background-position:center calc(100% - 5px) !important; background-repeat:no-repeat !important; }
+/* R5 約會回應掣斷行均衡：兩掣同尺寸但長句拆行唔齊，balance 令兩行長度接近；提示句同理 */
+#modal-btns button.date409-choice{ text-wrap:balance !important; line-break:strict !important; }
+.date409 .sub{ text-wrap:balance !important; }
+/* R6 地圖地名標籤：字重加返 700＋影加深，米黃樓邊都一眼認到紙籤（位置不變，互撞由 deCollide 處理） */
+#v-map .map-names68 .mn68{ font-weight:700 !important; filter:drop-shadow(0 1px 1px rgba(70,50,30,.55)) !important; }
+.board-lead{ text-wrap:balance !important; }
+/* R3 短屏（≤740px）：手帳頭收緊令紙面高返少少，編輯標題露出折位做續頁提示；
+   707 量度證明全週＋編輯掣幾何上唔可能同屏（週格本身高過紙面），保留兩段式 */
+@media (max-height:740px){
+  #v-home .home-top img{ width:44px !important; height:56px !important; }
+  #v-home .memo141{ padding:7px 12px 5px !important; }
+  #v-home .memo141-line{ line-height:1.42 !important; }
+  #home-pane-plan #nb-days .day-row{ min-height:72px !important; }
+  #home-pane-plan #nb-days .day-row:nth-child(7){ min-height:42px !important; }
+}
+/* R7 second opinion 覆核修復：編輯態留話簿移去確認掣之下，編輯→確定路徑唔再俾全寬條打斷 */
+.home:has(#btn-confirm-plan:not(.is-locked)) #nb-actions{ order:8 !important; }
+.home:has(#btn-confirm-plan:not(.is-locked)) #home265-row{ order:9 !important; margin-top:6px !important; }
+/* R8 鎖定態週格收緊：唯讀格唔使編輯觸控高度，慳返空間令詳情卡完整入鏡 */
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row{ padding:4px 6px !important; min-height:58px !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row:nth-child(7){ min-height:38px !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row .nm{ line-height:1.15 !important; font-size:.84rem !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row .wd{ font-size:.8rem !important; line-height:1.1 !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days{ gap:3px !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row .nm small{ font-size:.64rem !important; line-height:1.05 !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row .plan-hint{ font-size:.64rem !important; line-height:1.05 !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan .nb-title{ margin-bottom:0 !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-mode{ margin-top:1px !important; margin-bottom:1px !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-range{ margin-top:0 !important; margin-bottom:2px !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-right .act-item{ padding:4px 9px !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-right-title{ margin-bottom:1px !important; }
+/* R9 撳格後短屏：壓力刻度預留高度＋編輯區間距收緊，刻度標籤唔切折位 */
+.stress-scale363{ height:30px !important; min-height:30px !important; flex:none !important; margin-top:6px !important; margin-bottom:2px !important; }
+#home-pane-plan #nb-progress404{ margin-top:24px !important; } /* v415 batch3：banner 推落折位之下，撳格後折位落刻度與 banner 之間，唔露半截字 */
+#home-pane-plan .cat-tabs{ margin-bottom:3px !important; }
+#home-pane-plan .act-item{ padding:5px 9px !important; }
+#home-pane-plan #nb-quick{ margin-top:2px !important; }
+#home-pane-plan #nb-live-stress{ margin-top:2px !important; }
+#home-pane-plan .act-list{ padding-bottom:2px !important; }
+#home-pane-plan .nb-quick{ padding:4px 8px !important; }
+/* R10 分類掣選中態圖示反白：深啡底上深色線圖示提亮無效，改反白令圖示同白字同層 */
+.cat-tab.on .ci img.ic112{ filter:invert(.92) sepia(.25) saturate(.6) brightness(1.05) !important; }
+/* R11 紙面底漸隱（全高度）：折位露邊嘅下一張卡淡出做續頁提示，唔似被截斷 */
+#notebook{ -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 10px),rgba(0,0,0,.45)) !important; mask-image:linear-gradient(180deg,#000 calc(100% - 10px),rgba(0,0,0,.45)) !important; }
+/* R12 劇情選項副文加深：灰啡字掃讀唔夠快 */
+.story-play .sp-choice .sp-notes{ color:#4a3826 !important; font-size:.74rem !important; }
+/* R13 推介卡劇照角標同卡下類型籤重複，收起角標（類型籤保留） */
+.gig-teaser.gt-featured .gt-still402::before{ content:none !important; }
+.gig-teaser.gt-featured .gt-still402-sub{ display:none !important; }
+/* R14 通告欄 lead 計法行：獨立一行，字級略細同主行分層 */
+.board-lead-formula415{ font-size:.86em !important; opacity:.85 !important; }
+/* R15 衣櫃項目資料行均衡斷行，避免單字孤行 */
+#home-pane-wardrobe .wardrobe265-row .h{ text-wrap:pretty !important; line-break:strict !important; }
+/* R16 batch3：鎖定態明細文字加深（灰字疊淺金底難讀）；短屏明細標題做續頁提示、卡身唔露半截 */
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-right .act-item{ color:#3a2c1c !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-right .act-item .sub{ color:#5a4632 !important; }
+@media (max-height:740px){
+  .home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-right-title{ margin-bottom:9px !important; }
+}
+/* R17 batch3：衣櫃未合要求標示加強掃讀 */
+#home-pane-wardrobe .ward-lock415{ color:#a33b2a !important; font-weight:700 !important; }
+/* R20 batch4：活動列表推落少少，折位唔露下一張卡頂邊；短屏留話簿收細畀紙面高返；未選子頁再加深 */
+#home-pane-plan .act-list{ margin-top:6px !important; }
+#home-subtabs .hsub-group .home-tab:not(.on){ color:#5f4a2e !important; }
+@media (max-height:740px){
+  .home:has(#btn-confirm-plan:not(.is-locked)) #home265-row button{ min-height:36px !important; padding-top:4px !important; padding-bottom:4px !important; }
+}
+/* R19 batch3：通告欄總數行保單行（整理掣加排序名後唔折「張」孤字） */
+.board-sum392{ font-size:.72rem !important; white-space:nowrap !important; }
+/* R18 batch3：地圖選單紙本化，同手帳／紙籤同一世界 */
+#v-map .menu{ background:#f7efdb !important; border:1px solid #c9b183 !important; box-shadow:0 6px 18px rgba(40,28,16,.35) !important; }
+#v-map .menu button{ color:#2e2118 !important; }
+/* ===== v20a415 UI415 完 ===== */
+
 </style>
 </head>
 <body>
@@ -8484,7 +8596,7 @@ function renderWardrobe265(){
     const btn = isEq
       ? `<button type="button" class="paper" data-unequip265="1">除低</button>`
       : (has ? `<button type="button" class="paper" data-equip265="${c.id}">著上</button>` : "");
-    return `<div class="wardrobe265-row${isEq?" is-eq":""}"><div><div class="n">${c.name}</div><div class="h">${c.cat} · ${costume265BonusText(c)} · $${(Number(c.price)||0).toLocaleString()} · ${tag}${lock?(" · 未合要求："+lock):""}</div></div>${btn}</div>`;
+    return `<div class="wardrobe265-row${isEq?" is-eq":""}"><div><div class="n">${c.name}</div><div class="h">${c.cat} · ${costume265BonusText(c)} · $${(Number(c.price)||0).toLocaleString()} · ${tag}${lock?(" · <span class=\"ward-lock415\">未合要求："+lock+"</span>"):""}</div></div>${btn}</div>`; /* v415 batch3：未合要求獨立標示易掃讀 */
   }).join("");
   box.innerHTML = `<h3 class="wardrobe265-h">衣櫃</h3>`
     + `<p class="sub">而家著緊：<b>${eqName}</b>${eqBonus?("（"+eqBonus+"）"):""}</p>`
@@ -13486,7 +13598,7 @@ const StoryPlay = (()=>{
     /* v20a202 C2：鎖死提示——所有故事一律唔出「先返回」（v196 D4），但要講出口：
        掣欄底加一行細字，播緊對白／抉擇兩種 mode 都有；純文字，唔改鎖死流程。
        （enc79 巧遇 overlay 唔加——佢本身有「點頭離開」出口，唔係鎖死，寫呢句會係錯話。） */
-    modalBtns.push({ label:"劇情進行中，播完才可以離開", role:"note" });
+    modalBtns.push({ label:"劇情進行中：可以選擇，播完才可以離開", role:"note" }); /* v415 batch3：講明選項而家撳得，只係未離開得 */
     /* v20a196 D4：所有故事一律唔出「先返回」（舊寫法只係 lockedForced 先唔出）。 */
     /* v20a196 D4：所有故事 onDismiss 一律重開畫面（舊 lockedForced 嗰條路）；mask click 唔會返地圖。
        注意次序：closeModal() 會先清 story-play-on＋解鎖，render() 再加返——N1 舊路同一寫法。 */
@@ -20701,7 +20813,7 @@ function gigBoardTeaserHtml(g, opts){
     else if(payTxt && !opts.featured) bits392.push(`片酬 ${payTxt}`);
     if(daysN!=null) bits392.push(`${daysN} 日`);
     if(boardState==="ready"){
-      try{ if(typeof chance==="function") bits392.push(`約 ${Math.round(chance(g)*100)}%`); }catch(_e){} /* v20a398 UI398-4：列表成功率加「約」（計法行註明用精確值，見 openCastingNoticeDetail） */
+      try{ if(typeof chance==="function") bits392.push(`成功率約 ${Math.round(chance(g)*100)}%`); }catch(_e){} /* v20a398 UI398-4：列表成功率加「約」（計法行註明用精確值，見 openCastingNoticeDetail）；v415 batch3：就地標明係成功率 */
     }
     if(bits392.length) metaLine392 = bits392.join("｜");
   }
@@ -22987,7 +23099,7 @@ function confirmChoice236(opts){
   modal(`<div class="reconfirm236"><h3>確認選擇</h3>
     <p>你選擇了「<b>${esc236(label)}</b>」。</p>
     ${consequence?`<p class="sub">${consequence}</p>`:""}
-    <p class="sub">確定後便會即時生效；如想更改，請返回重新選擇。</p></div>`,[
+    <p class="sub">確定後便會即時生效。</p></div>`,[
     {label:"返去揀過", role:"g", on:()=>{ if(typeof onCancel==="function") onCancel(); }},
     {label:"確定", role:"p", on:()=>{ if(typeof onConfirm==="function") onConfirm(); }}
   ], { onDismiss:()=>{ if(typeof onCancel==="function") onCancel(); }, scenePaper401: !!opts.scenePaper401 }); /* v20a401 UI401-1：scenePaper401 只由呼叫方傳入（醫院 46b），預設唔掛 */
@@ -23375,7 +23487,7 @@ function renderNotebook(){
         if(right) setTimeout(()=>{
           try{
             const nb414=document.getElementById("notebook");
-            const rt414=document.getElementById("nb-progress404")||document.getElementById("nb-right-title")||right;
+            const rt414=document.getElementById("nb-right-title")||document.getElementById("nb-progress404")||right; /* v20a415 UI19：編輯區搬去週格之下，撳格捲去編輯標題（唔再捲去 banner） */
             if(nb414 && rt414){
               const top414 = rt414.getBoundingClientRect().top - nb414.getBoundingClientRect().top + nb414.scrollTop - 8;
               nb414.scrollTo({top: Math.max(0, top414), behavior:"auto"});
@@ -23458,7 +23570,7 @@ function renderNotebook(){
       modeEl.hidden = false;
       if(editable){
         modeEl.className = "nb-plan-mode edit";
-        modeEl.textContent = "點選日子格，在下方選擇活動；改完點擊確定才生效";
+        modeEl.textContent = "點擊日子格會捲到編輯區；改完點擊確定才生效"; /* v415 batch3：講明點擊日格會捲去編輯區（短句保 390 單行） */
       } else if(typeof nbShowingPrevWeek37==="function" && nbShowingPrevWeek37()){
         modeEl.className = "nb-plan-mode readonly";
         modeEl.textContent = "唯讀手帳 · 這版是上週已執行的行程；新一週行程在回家結算時編排";
@@ -26657,7 +26769,8 @@ function fold408Schedule(){
     const overflow409 = hb.bottom - pr.bottom;
     const per409 = Math.ceil(overflow409 / 2) + 2;
     /* v20a414 UI18：短屏格高下限 72（同 CSS media 一致），令星期日頂露出折位做續頁提示 */
-    const floor414 = (window.innerHeight <= 740) ? 72 : 84;
+    const locked415 = !!(document.getElementById("btn-confirm-plan")||{}).classList && document.getElementById("btn-confirm-plan").classList.contains("is-locked");
+    const floor414 = locked415 ? 58 : ((window.innerHeight <= 740) ? 72 : 76); /* v20a415 UI19：跟 CSS 格高下限一致；鎖定態唯讀格下限 58 令詳情卡入鏡 */
     rows.forEach((r, ri414)=>{ if(ri414 === rows.length - 1) return; /* v20a414：星期日格高跟 CSS，唔跟收格下限 */ try{ const curH = r.getBoundingClientRect().height; r.style.setProperty("min-height", Math.max(floor414, curH - per409) + "px", "important"); }catch(_e){} });
     void days.offsetHeight;
     const hit2 = rows.find(r=>{ const b = r.getBoundingClientRect(); return b.top < pr.bottom - 1 && b.bottom > pr.bottom + 1; });
@@ -47922,7 +48035,7 @@ function openLoc(id, opts){
         if(heard){ toast("呢單情報已經聽過。"); return; }
         /* v20a236 RECONFIRM236：打聽先確認後扣茶錢／寫卡（applyMockAsk 本體唔郁；事務所打聽即加何生人情照舊）。 */
         const cost236 = (Number(def.moneyCost)||0)>0 ? (def.id==="act_cha_intel381" ? ("即時支付情報費 $"+(Number(def.moneyCost)||0)+"。") : ("即時支付茶錢 $"+(Number(def.moneyCost)||0)+"。")) : "";
-        const cons236 = cost236 + (L.id==="agency_ho" ? "何生人情將會增加。" : "行動一旦確認便會即時生效。");
+        const cons236 = cost236 + (L.id==="agency_ho" ? "何生人情將會增加。" : ""); /* v415：生效提示只留確認框通用句，唔重複 */
         const reopen236 = ()=>{ try{ if(L) openLoc(L.id, {travelFree:true}); }catch(_e2){} };
         confirmChoice236({ choiceLabel: def.title, consequence: cons236,
           onConfirm: ()=>{
@@ -48977,14 +49090,14 @@ function doScout(L){
     else lead = `不耗日查看通告 · 達標可接通告（耗一日）。`;
     /* v20a396 UI396 ②：預設排序係預期日薪嗰陣，lead 行改做一行計法＋置頂說明
        （唔加行，保住第一眼 5 張卡）；其他排序沿用原 lead。 */
-    if(_boardSort392==="exp") lead = `不耗日 · 預期日薪＝片酬×成功率÷日數 · 推介置頂。`;
+    if(_boardSort392==="exp") lead = `不耗日查看 · 推介置頂<br><span class="board-lead-formula415">預期日薪 ＝ 片酬 × 成功率 ÷ 日數</span>`; /* v415：lead 兩行，計法獨立一行易掃讀 */
     body=`<p class="board-lead">${lead}</p>`;
     const closestMark392 = g=> !!(closest34 && g && g.id===closest34);
     const lockedDetails392 = (list)=>{
       let s = `<details class="gig-locked108"><summary>未達標／長遠目標（${list.length} 張）`;
       if(closest34){
         const cg = GIGS.find(x=>x&&x.id===closest34);
-        if(cg) s += `<span class="board-closest392">最接近：${gigWorkTitle(cg)}（差 ${closestGap34}）</span>`;
+        if(cg) s += `<span class="board-closest392">最接近：${gigWorkTitle(cg)}（條件總差 ${closestGap34} 點）</span>`;
       }
       s += `</summary>`; /* v20a197 C6：開合提示改由 CSS ::after 出（▸／▾），唔寫死喺字串入面 */
       list.forEach((g)=>{ s += gigBoardTeaserHtml(g, { closest: closestMark392(g) }); });
@@ -48999,7 +49112,7 @@ function doScout(L){
         : `顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張（可接 ${readyF392.length} · 未達標 ${lockedF392.length}）`;
       body+=`<div class="board-head392">`
         + `<div class="board-sum392">${sum392}</div>`
-        + `<div class="board-ctl397"><div class="board-sort392"><button type="button" class="board-chip392 board-ctl397-btn" data-board-menu397="organize" aria-expanded="false">整理 ▾</button>`
+        + `<div class="board-ctl397"><div class="board-sort392"><button type="button" class="board-chip392 board-ctl397-btn" data-board-menu397="organize" aria-expanded="false">整理 · ${_boardSort392==="exp"?"預期日薪":(_boardSort392==="pay"?"總片酬":"成功率")} ▾</button>` /* v415 batch3：整理掣顯示目前排序 */
         + `<div class="board-menu397" data-board-menu-list397="organize" hidden>`
         + `<div class="board-menu-group397">排序</div>`
         + ["exp","pay","chance"].map(k=>`<button type="button" class="board-chip392${_boardSort392===k?" on":""}" data-sort392="${k}">${k==="exp"?"預期日薪":(k==="pay"?"總片酬":"成功率")}</button>`).join("")

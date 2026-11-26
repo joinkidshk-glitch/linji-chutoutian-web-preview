@@ -99,7 +99,7 @@ ok("v398 金碟夜相本身唔郁（音樂典禮照用原相）",
 
 # ---- (4) 通告欄頂部報表感＋底欄截印章＋86% 規則 ----
 ok("v398 排序＋媒介合併做一粒「整理」掣（選項分兩組，功能唔減）",
-   'data-board-menu397="organize"' in src and "整理 ▾" in src
+   'data-board-menu397="organize"' in src and "整理 · " in src and "預期日薪" in src
    and "board-menu-group397" in src
    and 'data-board-menu397="sort"' not in src
    and 'data-board-menu397="filter"' not in src)

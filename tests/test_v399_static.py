@@ -112,7 +112,7 @@ ok("v399 「整理」縮成側邊紙籤（靠右自動闊，選單 200px 靠右�
    and ".board-ctl397-btn{ width:auto; text-align:left; }" in src
    and ".board-menu397{ display:flex; flex-direction:column; gap:4px; margin-top:4px; width:200px; align-self:flex-end; }" in src)
 ok("v399 整理選單選項唔減（排序 3＋媒介全部）",
-   'data-board-menu397="organize"' in src and "整理 ▾" in src
+   'data-board-menu397="organize"' in src and "整理 · " in src and "預期日薪" in src
    and 'data-sort392="${k}"' in src and 'data-filter392="${m}"' in src)
 ok("v399 卡頂圖釘護欄（圖釘上移半出卡頂，標題唔郁）",
    '#app .gig-teaser::before{\n  content:""; position:absolute; top:-4px; left:50%;' in src

@@ -66,7 +66,7 @@ ok("v397 通告欄頂欄縮薄（sticky 保留）",
    and "background:var(--paper); border:0;" in src  # v398 補：--panel 係深啡 #3A3530，用佢會留返條深色報表帶；紙底先啱
    and "padding:4px 2px 6px; margin:0 0 6px;" in src)
 ok("v397 排序／篩選各收納成一粒下拉掣（顯示已套用條件）",  # v398：兩掣合併做一粒「整理」掣，選項分排序／媒介兩組
-   'data-board-menu397="organize"' in src and "整理 ▾" in src and "board-ctl397" in src)
+   'data-board-menu397="organize"' in src and "整理 · " in src and "預期日薪" in src and "board-ctl397" in src)
 ok("v397 排序／篩選選項保留（功能唔減）",
    "board-sort392" in src and "board-filter392" in src
    and 'data-sort392' in src and 'data-filter392' in src)
