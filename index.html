@@ -6901,7 +6901,7 @@ body.day-res-open .day-row{
 /* --- (5a) 08b 地點面板：「返回地圖」改頁角吊牌；分組標頭壓薄，令尾列唔使捲都見晒 --- */
 #app #loc-sheet.sheet .btnrow{
   display:flex !important; justify-content:flex-end !important;
-  background:transparent !important; border-top:0 !important; margin-top:6px !important; padding-top:0 !important;
+  background:#F2EBD8 !important; border-top:1px dashed rgba(107,83,64,.35) !important; margin-top:0 !important; padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px)) !important;
 }
 #app #loc-sheet.sheet .btnrow #loc-close{
   flex:0 0 auto !important; width:auto !important; min-width:120px; min-height:44px !important;
@@ -7314,6 +7314,8 @@ body.day-res-open .day-row{
 #home-pane-stats389 .stats389-card{ background:repeating-linear-gradient(180deg,#fbf4dd 0 27px,#e7d9b8 27px 28px) !important; border:1px solid #a98d4f !important; border-radius:4px !important; box-shadow:1px 2px 6px rgba(70,50,30,.25); transform:rotate(-.4deg); }
 #home-pane-stats389 .stats-grid{ grid-template-columns:1fr !important; gap:0 !important; }
 #home-pane-stats389 .stats-grid .stat{ background:transparent !important; border:0 !important; border-bottom:1px dashed rgba(107,83,64,.35) !important; border-radius:0 !important; display:flex; justify-content:space-between; padding:4px 2px !important; font-family:var(--hand363,"LXGW WenKai","Kaiti TC",serif); }
+#home-pane-stats389 .stats-grid .stat .l{ color:#6b4e2e !important; }
+#home-pane-stats389 .stats-grid .stat .v{ color:#1A1410 !important; }
 /* (6) toast 唔擋暗角撳（純顯示層，撳穿去 mask dismiss）。 */
 #app.mask-up .toast, #app.ui-inert #toast, .toast{ pointer-events:none !important; }
 /* ===== v20a403 UI403 完 ===== */
@@ -7440,6 +7442,58 @@ body.day-res-open .day-row{
 /* (8) 詳情合約卡收緊留白，首屏折位更易落行間 */
 #mask.casting-sheet-on .cn-contract401{ padding-top:6px !important; padding-bottom:6px !important; }
 /* ===== v20a408 UI408 完 ===== */
+/* ===== v20a409 UI409：第十四輪頭五項修復（只改呈現層） ===== */
+/* (1) 旁白底欄對比：g 掣深墨紙籤＋note 暖白實色；詳情 ✓ 加深 */
+#app #mask.story-play-on:has(.sp-mode-dialogue) #modal-btns button.g,
+#app #mask.story-play-on:has(.sp-mode-narration) #modal-btns button.g{
+  background:#F7EEDF !important; color:#33241C !important; border:1px solid #8A6D3B !important;
+}
+#mask.story-play-on .modal-note202{ color:#F3E8D5 !important; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-cell.ok .cn-req-mark{ color:#14532D !important; }
+.gap-ok{ color:#14532D !important; }
+/* (2) 彈窗去報表感：拆內框浮影，紙邊細線分組；資料卡短欄 */
+#modal-inner .gig-card, #modal-inner .cn-contract401, #modal-inner .cn-req-cell{
+  box-shadow:none !important; border:1px solid #CDBFA9 !important; border-radius:4px !important;
+}
+#modal-inner .cn-board-sub{ font-size:.72rem !important; }
+#home-pane-stats389 .stats-grid .stat, #home-pane-ledger .stats-grid .stat{
+  background:transparent !important; border:0 !important; border-bottom:1px solid #CDBFA9 !important;
+  border-radius:0 !important; box-shadow:none !important; padding:6px 2px !important;
+}
+#home-pane-stats389 .stats389-card{ box-shadow:none !important; border:1px solid #CDBFA9 !important; border-radius:4px !important; }
+/* (3) 進度抽屜：完成幕摺疊紙條＋捲動底留空 */
+#progress-list{ padding-bottom:28px !important; }
+.prog409-done{ border:1px solid #CDBFA9; border-radius:4px; background:#FBF7EE; margin:0 0 8px; padding:2px 10px; }
+.prog409-done summary{ min-height:44px; display:flex; align-items:center; font-weight:800; color:#43301c; cursor:pointer; }
+.prog409-done .prog71-row.done{ border:0 !important; border-top:1px solid #E3D7BE !important; border-radius:0 !important; background:transparent !important; margin:0 !important; }
+#progress-list .prog71-row{ box-shadow:none !important; border-radius:4px !important; }
+/* (4) 行程頁：收窄留白、書籤化進度掣、建議/成本入鏡 */
+#home-pane-plan .nb-left{ padding-top:6px !important; }
+#home-pane-plan .nb-range{ margin-bottom:4px !important; }
+#home-pane-plan .prog389-badge{
+  align-self:flex-end !important; min-height:44px !important; padding:6px 14px !important;
+  border-radius:4px 4px 0 0 !important; box-shadow:none !important; margin:0 8px 0 auto !important;
+}
+#home-pane-plan .nb-suggest400, #home-pane-plan .nb-cost400{ margin:4px 0 !important; }
+@media (max-height:900px){
+  #nb-days{ gap:6px !important; }
+  #nb-days .day-row{ min-height:104px !important; padding:6px 8px !important; }
+  #home-pane-plan .nb-title{ margin-bottom:2px !important; }
+}
+/* (5) 約會場景：拆深藍套框、肖像貼相、選項同權重紙籤 */
+#app #mask:not(.tut-on) .modal .date409 .dlg-stage{ background:#F7EEDF !important; background-image:none !important; border:1px solid #CDBFA9 !important; border-radius:4px !important; min-height:0 !important; padding:10px !important; box-shadow:none !important; }
+#app #mask:not(.tut-on) .modal .date409 .dlg-portrait{ width:28% !important; max-width:110px !important; border:1px solid #CDBFA9 !important; border-radius:4px !important; background:#FBF7EE !important; }
+#app #mask:not(.tut-on) .modal .date409 .dlg-name{ color:#43301c !important; }
+#app #mask:not(.tut-on) .modal .date409 .dlg-bubble{ background:#FBF7EE !important; border:1px solid #CDBFA9 !important; border-radius:4px !important; color:#2a2118 !important; min-height:0 !important; }
+.date409 .date-scene-bg407{ height:170px !important; border:1px solid #CDBFA9 !important; border-radius:4px !important; margin-bottom:8px !important; }
+.date409 .sub{ margin:6px 0 2px !important; }
+#modal-btns button.date409-choice{
+  flex:1 1 0 !important; background:#F7EEDF !important; color:#33241C !important;
+  border:1px solid #8A6D3B !important; border-radius:4px !important; box-shadow:none !important;
+  min-height:44px !important; font-weight:700 !important;
+}
+/* ===== v20a409 UI409 完 ===== */
+
 </style>
 </head>
 <body>
@@ -7692,12 +7746,12 @@ body.day-res-open .day-row{
               <div id="train71-picker"></div>
             </div>
           </div>
+          <!-- v20a409：建議＋成本一行放週格前，首屏入鏡（id 不變） -->
+          <div class="nb-suggest400" id="nb-suggest400" hidden></div>
+          <div class="nb-cost400" id="nb-cost400" hidden></div>
           <div id="nb-days"></div>
           <button type="button" class="nb-live-stress" id="nb-live-stress" aria-live="polite">壓力估 —</button>
           <div id="nb-stress-detail105" class="nb-stress-detail105" hidden></div>
-          <!-- v20a400：手帳建議列（訓練／壓力建議掣，renderSuggest400 填）＋改格機會成本行（showCost400 寫，留到下一次改格）。 -->
-          <div class="nb-suggest400" id="nb-suggest400" hidden></div>
-          <div class="nb-cost400" id="nb-cost400" hidden></div>
           <!-- v20a105 UI105 S-3：行程規則由開局導入卡搬嚟呢度（contextual）——
                玩家第一次編行程先至需要知，唔再塞喺入門卡度截斷。 -->
           <p class="nb-progress404" id="nb-progress404" role="note"></p>
@@ -26294,12 +26348,22 @@ function fold408Schedule(){
     const days = document.getElementById("nb-days");
     if(!pane || !days || pane.offsetParent === null) return;
     days.style.removeProperty("margin-top");
+    days.querySelectorAll(".day-row").forEach(r=>{ try{ r.style.removeProperty("min-height"); }catch(_e){} }); /* v20a409：重跑先還原格高再量 */
     void days.offsetHeight;
     const pr = pane.getBoundingClientRect();
     const rows = Array.from(days.querySelectorAll(".day-row"));
     const hit = rows.find(r=>{ const b = r.getBoundingClientRect(); return b.top < pr.bottom - 1 && b.bottom > pr.bottom + 1; });
     if(!hit) return;
-    const shift = Math.min(130, pr.bottom - hit.getBoundingClientRect().top);
+    /* v20a409：唔再用 margin 推格落去製造大片留白——先收矮日格（下限 84px，唔縮字），
+       令折位落完整兩排之間；收唔夠先至用細幅 margin 兜底（上限 40px）。 */
+    const hb = hit.getBoundingClientRect();
+    const overflow409 = hb.bottom - pr.bottom;
+    const per409 = Math.ceil(overflow409 / 2) + 2;
+    rows.forEach(r=>{ try{ const curH = r.getBoundingClientRect().height; r.style.setProperty("min-height", Math.max(84, curH - per409) + "px", "important"); }catch(_e){} });
+    void days.offsetHeight;
+    const hit2 = rows.find(r=>{ const b = r.getBoundingClientRect(); return b.top < pr.bottom - 1 && b.bottom > pr.bottom + 1; });
+    if(!hit2) return;
+    const shift = Math.min(40, pr.bottom - hit2.getBoundingClientRect().top);
     if(shift > 1){
       const cur = parseFloat(getComputedStyle(days).marginTop) || 0;
       days.style.setProperty("margin-top", (cur + shift) + "px", "important");
@@ -29974,15 +30038,15 @@ function rom159DateScene(who, spot, L, ended, summary){
       modal(`<h3>約會 · ${w.name}</h3>${dlg379(line)}<p class="gold">${deltaTxt}</p>${ended?`<p class="dayres-stamp397">一週完結</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()} · 約會用咗一日</p>`,
         [{label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}], {onDismiss: go, keepScene397:true}); /* v20a398 UI398-5：44 號約會結果卡用 scene 模式 */
     };
-    modal(`<h3>約會 · ${w.name}（${spot.label}）</h3>${bg407}${dlg379(spot.intro)}<p class="sub">揀一句回應——講啱咗，兩個人近啲；講錯咗，佢會冷淡啲。</p>`,[
-      {label: spot.good.label, role:"p", on:()=>{
+    modal(`<div class="date409"><h3>約會 · ${w.name}（${spot.label}）</h3>${bg407}${dlg379(spot.intro)}<p class="sub">揀一句回應——講啱咗，兩個人近啲；講錯咗，佢會冷淡啲。</p></div>`,[
+      {label: spot.good.label, role:"g", cls:"date409-choice", on:()=>{ /* v20a409：兩回應同權重，取消金底預設 */
         /* v20a378（B12）：rel 上限 7——顯示實際落數，撞頂唔再假報 +1。 */
         let b378 = 0; try{ b378 = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
         try{ if(typeof StoryOC!=="undefined" && StoryOC.bumpRel) StoryOC.bumpRel(w.relKey, 1); }catch(_e){}
         let a378 = b378; try{ a378 = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
         showResult(a378-b378, spot.good.line);
       }},
-      {label: spot.bad.label, role:"g", on:()=>{
+      {label: spot.bad.label, role:"g", cls:"date409-choice", on:()=>{
         let b378 = 0; try{ b378 = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
         try{ if(typeof StoryOC!=="undefined" && StoryOC.bumpRel) StoryOC.bumpRel(w.relKey, -1); }catch(_e){}
         let a378 = b378; try{ a378 = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
@@ -32734,7 +32798,7 @@ function syncProg389Badge(){
   b.textContent = txt;
 }
 function openProgressDrawer389(){
-  modal(`<h3>主線進度</h3><div class="journal-scroll" id="progress-list" aria-label="主線進度"></div>`, [
+  modal(`<div class="journal-scroll" id="progress-list" aria-label="主線進度"></div>`, [ /* v20a409：刪重複標題，renderProgressPane71 已出 prog71-h */
     {label:"關閉", role:"g"}
   ]);
   try{ renderProgressPane71(); }catch(_e){}
@@ -32746,7 +32810,7 @@ function renderStats389Pane(){
   try{
     const p = ledgerStatsParts();
     box.innerHTML = `<div class="stats389-card"><h3>阿偉資料卡</h3><p class="sub">${p.dateLine}</p><div class="stats-grid">${p.grid}</div>`
-      + `<p class="sub">幕前聲望 <b>${p.stageVolume}</b> · 業內信用 <b>${p.industryCredit}</b></p>`
+      + `<p class="sub">業內信用 <b>${p.industryCredit}</b></p>` /* v20a409：聲望已喺格入面，刪重複行 */
       + `<p>存款 <b class="gold">$ ${p.money.toLocaleString()}</b></p>`
       + `<p style="font-size:.78rem;color:var(--muted)">已報名訓練：${p.enrollLine}</p></div>`;
   }catch(_e){ box.innerHTML = `<p class="sub">資料暫時讀唔到。</p>`; }
@@ -33062,11 +33126,15 @@ function renderProgressPane71(){
      插入行，玩家數落去會多咗。段界＝鎖住插入行；done／open／missed 行唔截斷。 */
   const segOf198 = {};
   { let seg198 = 0; rows.forEach((r, j)=>{ segOf198[j] = seg198; if(r && storyActIsInsert(r.id) && r.state==="locked") seg198++; }); }
+  /* v20a409：已完成幕摺疊成一張紙條，第 6 幕起做主焦 */
+  const done409 = []; for(const r409 of rows){ if(r409 && r409.state==="done") done409.push(r409); else break; } /* 只摺開頭連續完成幕，保 DOM 次序 */
+  if(done409.length){
+    html.push('<details class="prog409-done"><summary>已完成 '+done409.length+' 幕 ✓</summary>'
+      + done409.map(r=>'<div class="prog71-row done"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag ok">✓ 已完成</span></div></div>').join("")
+      + '</details>');
+  }
   rows.forEach((r, i)=>{
-    if(r.state==="done"){
-      html.push('<div class="prog71-row done"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag ok">✓ 已完成</span></div></div>');
-      return;
-    }
+    if(r.state==="done" && done409.indexOf(r) >= 0){ return; }
     if(r.state==="open"){
       /* v20a165 STORY165：首播唔再經掣——條件滿足嘅幕返地圖嗰陣即播（goToMapForBrowse
          尾段 story165TryForcedPlay）。進度頁只做紀錄：已開放行唔再出「播呢幕」掣，
