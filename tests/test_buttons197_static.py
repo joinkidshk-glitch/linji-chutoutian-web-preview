@@ -1,3 +1,4 @@
+# v414 resync：B7 入場自動捲刪除（捲走全週概覽＋編輯對象離開視線），改入場唔捲＋撳日格捲去編輯區（Q2/Q6 呈現修復）；見 qa414/resync414.py。
 # v397 resync：「還原」搬入行程工具選單（v397 UI397-5），:disabled 選擇器跟新位置；見 qa397/resync397.py。
 # v20a207 resync：index.html 淨 +34 行（見 qa207/resync207.py，73 錨點對位零 mismatch，純漂移）。
 # -*- coding: utf-8 -*-
@@ -87,9 +88,9 @@ ok('B6：sheet-open 嗰陣 hint sticky 釘喺 scrollport 底、幾何同乾淨�
 ok('B7：#notebook 內容尾加 bar 高度 padding（932：84px；700：61px）',
    '.notebook{' in src and 'padding-bottom:84px;' in src
    and '.notebook{ padding-bottom:61px; }' in src)
-ok('B7：入 plan pane 嗰陣初 paint 分類掣俾 bar 冚住就捲返出嚟（只喺 scrollTop===0）',
+ok('B7：入場唔自動捲（先見全週頂部；撳日格捲去編輯區）',
    'function revealCatTabs197(){' in src
-   and 'if(nb.scrollTop!==0) return;' in src
+   and '入場唔自動捲' in src
    and 'revealCatTabs197()' in src)
 
 # --- C1：主分頁使用中嗰格唔改大細 ---

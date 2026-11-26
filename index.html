@@ -7650,6 +7650,57 @@ body.day-res-open .day-row{
 .awd62-stage{ background:radial-gradient(90% 30% at 50% 100%,rgba(180,150,82,.22) 0%,rgba(12,9,19,0) 70%),radial-gradient(120% 55% at 50% 0%,#2c2148 0%,#14101f 55%,#0c0913 100%) !important; }
 /* ===== v20a413 UI413 完 ===== */
 
+/* ===== v20a414 UI414：第十八輪 self-review 修復（只改呈現） ===== */
+/* Q1 進度 badge 併入分頁列右端：同一列、紙籤形，與分頁手寫字分開，唔再獨佔一行 */
+#home-subtabs .hsub-group[data-hsubgroup="plan"] .prog389-badge{
+  margin-left:auto !important; margin-bottom:0 !important; min-height:44px !important;
+  padding:5px 12px !important; background:#EDDFC2 !important; border:1px solid #cbb98d !important;
+  border-left:2px solid #823F35 !important; box-shadow:0 2px 0 rgba(70,50,30,.18) !important;
+  font-size:13px !important; white-space:nowrap;
+}
+/* Q2 行程首屏全週可讀：週格收緊內距（唔縮字、觸控目標仍 ≥44px），標題同日期範圍同一行；
+   圖示併入星期行（星期左、圖示右、活動名下一行），格高再收一截 */
+#nb-days .day-row{ min-height:84px !important; padding:6px 8px !important; gap:3px !important;
+  display:grid !important; grid-template-columns:1fr auto; grid-template-areas:"wd ic" "nm nm"; align-items:center; }
+#nb-days .day-row .wd{ grid-area:wd !important; justify-self:start !important; text-align:left !important; }
+#nb-days .day-row .nb-stk362, #nb-days .day-row .ic{ grid-area:ic !important; justify-self:end !important; }
+#nb-days .day-row .nb-stk362{ width:28px !important; height:28px !important; }
+#nb-days .day-row .nm{ grid-area:nm !important; }
+#nb-days .day-row .nm .plan-hint{ line-height:1.25 !important; }
+#nb-days .day-row:nth-child(7){ min-height:56px !important; display:flex !important; }
+#nb-days .day-row:nth-child(7) .nb-stk362{ width:32px !important; height:32px !important; }
+.nb-plan-mode{ padding:3px 8px !important; margin-bottom:4px !important; }
+.nb-left .nb-title{ display:inline-block !important; margin:0 10px 4px 0 !important; vertical-align:baseline; }
+.nb-left .nb-range{ display:inline-block !important; margin:0 0 4px !important; vertical-align:baseline; }
+/* Q3 資料卡：業內信用／存款併入格列，同七圍同一對讀方式 */
+#home-pane-stats389 .stats-grid .stat .v.gold414{ color:#8a5a00 !important; }
+/* Q4 hint 分段唔拆字：· 分段各自 nowrap，換行落段界，唔再剩單字孤行 */
+#nb-days .day-row .nm .plan-hint .hint-seg414{ white-space:nowrap; }
+/* Q7c 編輯區底留邊：捲到底嗰陣頂邊唔切壓力條 */
+#home-pane-plan .nb-right{ padding-bottom:28px !important; }
+/* Q7b 已安排活動籤 */
+.act-item .sel-tag414{ display:inline-block; margin-left:8px; font-size:10px; font-weight:700; color:#fff; background:#823F35; border-radius:3px; padding:1px 5px; line-height:1.4; vertical-align:middle; }
+/* Q7 編輯中日子格小籤 */
+#nb-days .day-row{ position:relative; }
+#nb-days .day-row .edit-tag414{ position:absolute; top:3px; left:50%; transform:translateX(-50%); font-size:10px; font-weight:700; color:#fff; background:#823F35; border-radius:3px; padding:1px 5px; line-height:1.4; }
+/* Q6 印章斜度收細（全高度）：旋轉角唔再俾屏底截走 */
+#nb-actions #btn-confirm-plan.is-locked{ transform:rotate(-3deg) !important; }
+/* Q5 短屏（≤740px）：週格再收少少，星期日頂露出折位做續頁提示 */
+@media (max-height:740px){
+  #nb-days .day-row{ min-height:72px !important; padding:3px 8px !important; gap:2px !important; }
+  #nb-days .day-row .nb-stk362{ width:18px !important; height:18px !important; }
+  #nb-days .day-row:nth-child(7) .nb-stk362{ width:22px !important; height:22px !important; }
+  #nb-days .day-row .nm .plan-hint{ line-height:1.1 !important; }
+  #nb-days{ gap:2px !important; }
+  #nb-days .day-row:nth-child(7){ min-height:42px !important; }
+  /* 短屏印章：高收一截＋bar 底留邊，斜框唔再俾屏底截 */
+  #nb-actions #btn-confirm-plan.is-locked{ height:46px !important; }
+  #nb-actions:has(#btn-confirm-plan.is-locked){ padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px)) !important; }
+  .nb-left .nb-range{ line-height:1.2 !important; margin-bottom:2px !important; }
+  #nb-actions #btn-confirm-plan.is-locked{ transform:rotate(-3deg) !important; }
+}
+/* ===== v20a414 UI414 完 ===== */
+
 </style>
 </head>
 <body>
@@ -7837,7 +7888,7 @@ body.day-res-open .day-row{
       <!-- v20a141 BOOK141（樣本 v2b）：#home-stats 改做備忘紙（內容由 enterHome 填 live 數字）；
            「返回地圖」改做牛皮紙吊牌（id＋book70ExitHome handler 不變；窿用 ::before，唔怕 textContent 清走）。 -->
       <div class="memo141-row">
-        <div class="memo141" id="home-stats" aria-label="銀包、幕前聲望與業內信用"></div>
+        <div class="memo141" id="home-stats" aria-label="存款、幕前聲望與業內信用"></div>
         <div class="tagwrap141 home-tab-exit" id="home-tab-exit">
           <div class="tag141-string" aria-hidden="true"></div>
           <button type="button" class="tag141" id="home-back-map-tabs">返回地圖</button>
@@ -7857,6 +7908,8 @@ body.day-res-open .day-row{
         <div class="hsub-group" data-hsubgroup="plan">
           <button type="button" class="home-tab hsub" id="htab-plan" role="tab" aria-selected="false" data-htab="plan">本週安排</button> <!-- v20a197 C7：主分頁「行程」同 sub-tab 撞名，sub-tab 改名「本週安排」 -->
           <button type="button" class="home-tab hsub" id="htab-wardrobe" role="tab" aria-selected="false" data-htab="wardrobe">衣櫃</button>
+          <!-- v20a414 UI18：進度 badge 併入分頁列右端（原獨立一行，省一列高度；id＋handler 不變） -->
+          <button type="button" class="prog389-badge" id="prog389-badge">進度</button>
         </div>
         <div class="hsub-group" data-hsubgroup="career">
           <button type="button" class="home-tab hsub" id="htab-works" role="tab" aria-selected="false" data-htab="works">作品</button>
@@ -7872,13 +7925,16 @@ body.day-res-open .day-row{
       <div class="home-pane on" id="home-pane-plan">
       <!-- v20a71 PART3C：「本週結算」摺疊卡成段移除（用戶 13:33：資訊太多）。
            寄居內容（結算重溫／本週章節／劇情提示）去向見 NOTES_V20A71＋報告 3C 節。 -->
-      <!-- v20a389 UI389：進度內聯 badge（撳開主線進度抽屜；進度子頁已取消） -->
-      <button type="button" class="prog389-badge" id="prog389-badge">進度</button>
+      <!-- v20a389 UI389：進度內聯 badge（撳開主線進度抽屜；進度子頁已取消）；v20a414 併入分頁列 -->
       <div class="notebook" id="notebook">
         <div class="nb-left">
           <p class="nb-title" id="nb-plan-title">本週行程</p>
           <p class="nb-plan-mode" id="nb-plan-mode" hidden></p>
           <p class="nb-range" id="nb-range">—</p>
+          <!-- v20a409：建議＋成本一行放週格前，首屏入鏡（id 不變） -->
+          <div class="nb-suggest400" id="nb-suggest400" hidden></div>
+          <div class="nb-cost400" id="nb-cost400" hidden></div>
+          <div id="nb-days"></div>
           <div class="nb-quick" id="nb-quick" aria-label="快捷安排">
             <!-- v20a397 UI397-5：行程工具收成一粒下拉掣——4 工具＋還原入選單，預設收起；id＋handler 全部保留。 -->
             <button type="button" id="nb-q-tools397" aria-expanded="false" aria-controls="nb-tools397-menu">行程工具 ▾</button>
@@ -7902,10 +7958,6 @@ body.day-res-open .day-row{
               <div id="train71-picker"></div>
             </div>
           </div>
-          <!-- v20a409：建議＋成本一行放週格前，首屏入鏡（id 不變） -->
-          <div class="nb-suggest400" id="nb-suggest400" hidden></div>
-          <div class="nb-cost400" id="nb-cost400" hidden></div>
-          <div id="nb-days"></div>
           <button type="button" class="nb-live-stress" id="nb-live-stress" aria-live="polite">壓力估 —</button>
           <div id="nb-stress-detail105" class="nb-stress-detail105" hidden></div>
           <!-- v20a105 UI105 S-3：行程規則由開局導入卡搬嚟呢度（contextual）——
@@ -7922,7 +7974,7 @@ body.day-res-open .day-row{
       <!-- v20a265 COSTUME265：屋企新增——瞓覺掣（只限今日未耗嗰陣出，見 wireHome265）。
            v20a389 UI389：衣櫃升做行程組子頁（home-pane-wardrobe），呢度只留瞓覺＋留話簿。 -->
       <div class="home265-row" id="home265-row">
-        <button type="button" class="paper" id="btn-sleep265">瞓覺</button>
+        <button type="button" class="paper" id="btn-sleep265">瞓覺（結束今日）</button>
         <button type="button" class="paper" id="btn-intel381">留話簿<span class="intel381-corner" id="intel381-corner" hidden>新留言</span></button>
       </div>
       <!-- v20a71 PART3B：「訓練一覽」摺疊段成段移除（用戶 13:30）——訓練資訊改入
@@ -23303,11 +23355,14 @@ function renderNotebook(){
     btn.className="day-row"+(planSelDay===i?" on":"")+(locked?" locked":"")+(editable && !locked?" hint-edit":"");
     /* v20a400 細改 3：日格 hint 寫機會成本（訓練進度／外出剩餘），見 nbDayHint400。 */
     const hint = (typeof nbDayHint400==="function") ? nbDayHint400(i, meta, editable, locked) : (locked ? "拍攝檔期已定 · 不可改" : (editable ? "" : (meta.hint||"")));
-    const hintHtml = hint ? `<span class="plan-hint">${hint}</span>` : "";
+    /* v20a414 UI18：hint 按 · 分段 nowrap，換行落段界唔拆單字 */
+    const hintHtml = hint ? `<span class="plan-hint">${String(hint).split("·").map(s=>`<span class="hint-seg414">${s.trim()}</span>`).join("·")}</span>` : "";
     /* v362 UI362：像素貼紙——有對應 fx 片嘅活動用細片做貼紙（真資產 assets/fx/），
        取代靜態 icon；冇片嘅活動（逛逛／街頭／咖啡店）照舊 icon。 */
     const stk362 = nbStickerHtml362(nbStickerKind362(planDraft[i]));
-    btn.innerHTML=`<span class="wd">週${weekdayName(i)}</span>${stk362||`<span class="ic">${iconHtml112(meta.icon)}</span>`}<span class="nm"><span class="plan-main">${meta.name}</span>${hintHtml}</span>`;
+    /* v20a414 UI18：編輯中嘅日子格加「編輯中」小籤，選中狀態一眼可辨 */
+    const editTag414 = (editable && !locked && planSelDay===i) ? `<span class="edit-tag414">編輯中</span>` : "";
+    btn.innerHTML=`<span class="wd">週${weekdayName(i)}</span>${stk362||`<span class="ic">${iconHtml112(meta.icon)}</span>`}<span class="nm"><span class="plan-main">${meta.name}</span>${hintHtml}</span>${editTag414}`;
     /* v362 UI362：逐行「⧉ 複製」刪走（7 粒 45×21 細目標，同「複製到…」批次功能重疊）；
        複製改行頂部「複製到…」一個入口。openCopyFromDay 函數保留（批次面板仍用）。 */
     btn.onclick=()=>{
@@ -23315,8 +23370,18 @@ function renderNotebook(){
       try{ if(typeof planCatForId==="function") planCat = planCatForId(planDraft[i]); }catch(_e){}
       renderNotebook();
       if(editable){
+        /* v20a414 UI18：撳日格捲到編輯標題頂（頂邊乾淨，唔切中壓力條） */
         const right=document.getElementById("nb-right")||document.getElementById("act-list");
-        if(right) setTimeout(()=>right.scrollIntoView({behavior:"smooth", block:"nearest"}), 30);
+        if(right) setTimeout(()=>{
+          try{
+            const nb414=document.getElementById("notebook");
+            const rt414=document.getElementById("nb-progress404")||document.getElementById("nb-right-title")||right;
+            if(nb414 && rt414){
+              const top414 = rt414.getBoundingClientRect().top - nb414.getBoundingClientRect().top + nb414.scrollTop - 8;
+              nb414.scrollTo({top: Math.max(0, top414), behavior:"auto"});
+            } else right.scrollIntoView({behavior:"smooth", block:"nearest"});
+          }catch(_t414){ right.scrollIntoView({behavior:"smooth", block:"nearest"}); }
+        }, 30);
       }
     };
     days.appendChild(btn);
@@ -23368,7 +23433,9 @@ function renderNotebook(){
       b.className="act-item"+(planDraft[planSelDay]===it.id?" on":"");
       b.disabled=!editable || selLocked || !!it.locked || String(it.id).startsWith("shoot:");
       try{ b.setAttribute("aria-label", `為週${weekdayName(planSelDay)}選擇：${it.name}`); }catch(_a){}
-      b.innerHTML=`<span class="ai">${iconHtml112(it.icon)}</span><span><div class="at">${it.name}</div><div class="ah">${it.hint||""}</div></span>`;
+      /* v20a414 UI18：已排入當日嘅活動加「已安排」籤，選中狀態一眼可辨 */
+      const selTag414 = (planDraft[planSelDay]===it.id) ? `<span class="sel-tag414">已安排</span>` : "";
+      b.innerHTML=`<span class="ai">${iconHtml112(it.icon)}</span><span><div class="at">${it.name}${selTag414}</div><div class="ah">${it.hint||""}</div></span>`;
       b.onclick=()=>{
         if(!editable || selLocked) return;
         if(dayPlanLocked(planDraft[planSelDay])){ toast("拍攝日檔期已定"); return; }
@@ -23391,7 +23458,7 @@ function renderNotebook(){
       modeEl.hidden = false;
       if(editable){
         modeEl.className = "nb-plan-mode edit";
-        modeEl.textContent = "改完要點擊確定才生效";
+        modeEl.textContent = "點選日子格，在下方選擇活動；改完點擊確定才生效";
       } else if(typeof nbShowingPrevWeek37==="function" && nbShowingPrevWeek37()){
         modeEl.className = "nb-plan-mode readonly";
         modeEl.textContent = "唯讀手帳 · 這版是上週已執行的行程；新一週行程在回家結算時編排";
@@ -23453,6 +23520,10 @@ function renderNotebook(){
   try{ if(typeof renderSuggest400==="function") renderSuggest400(editable); }catch(_s400){}
   /* v20a412 N3/N4：建議／成本列入鏡後重跑折位對齊，短屏折位落排與排之間 */
   try{ requestAnimationFrame(()=>{ try{ if(typeof fold408Schedule==="function") fold408Schedule(); }catch(_e412){} }); }catch(_e412b){}
+  /* v20a414 UI18：版面遲定（字體／圖片載入後手帳高變）嗰陣折位要覆核——350ms 後再行一次 */
+  try{ setTimeout(()=>{ try{ if(typeof fold408Schedule==="function") fold408Schedule(); }catch(_e414){} }, 350); }catch(_e414b){}
+  try{ setTimeout(()=>{ try{ if(typeof fold408Schedule==="function") fold408Schedule(); }catch(_e414){} }, 1200); }catch(_e414c){}
+  try{ setTimeout(()=>{ try{ if(typeof fold408Schedule==="function") fold408Schedule(); }catch(_e414){} }, 2500); }catch(_e414d){}
   if(editable){
     const wrap=document.getElementById("nb-copy-wrap");
     if(wrap && wrap.classList.contains("open")) renderCopyChips();
@@ -23554,7 +23625,7 @@ function enterHome(summary, editable, initialTab){
     const dual = syncDualTracks(S);
     /* v20a141 BOOK141：備忘紙三行（樣本 v2b）——數字同一數據源（S.money／syncDualTracks），
        唔寫死；.home-money 保留畀 refreshMoneyHud 即時刷錢數；h-stage-volume／h-industry-credit id 保留。 */
-    hs.innerHTML = `<span class="memo141-tape" aria-hidden="true"></span><p class="hand141 memo141-line">銀包　<span class="memo141-u home-money">$ ${(S.money||0).toLocaleString()}</span></p><p class="hand141 memo141-line">幕前聲望　<b id="h-stage-volume">${dual.stageVolume}</b></p><p class="hand141 memo141-line">業內信用　<b id="h-industry-credit">${dual.industryCredit}</b></p><span class="memo141-chop" aria-hidden="true">偉</span>`;
+    hs.innerHTML = `<span class="memo141-tape" aria-hidden="true"></span><p class="hand141 memo141-line">存款　<span class="memo141-u home-money">$${(S.money||0).toLocaleString()}</span></p><p class="hand141 memo141-line">幕前聲望　<b id="h-stage-volume">${dual.stageVolume}</b></p><p class="hand141 memo141-line">業內信用　<b id="h-industry-credit">${dual.industryCredit}</b></p><span class="memo141-chop" aria-hidden="true">偉</span>`;
   }
   /* v20a71 PART3C：「本週結算」摺疊卡成段移除（用戶 13:33：資訊太多）——
      enterHome 唔再填充任何卡面內容：summary（週結算）只喺結算流程 modal 出完就算，
@@ -26557,6 +26628,27 @@ function fold408Schedule(){
     if(nb412 && nb412.scrollTop > 2) return;
     const pr = nb412 ? nb412.getBoundingClientRect() : pane.getBoundingClientRect();
     const rows = Array.from(days.querySelectorAll(".day-row"));
+    /* v20a414 UI18：折位唔切主線進度 banner——banner 跨折位嗰陣推格落少少，
+       令 banner 頂落折位之下（星期日仍完整入鏡先推，推幅上限 40px） */
+    try{
+      const bn414 = document.getElementById("nb-progress404");
+      if(bn414 && bn414.offsetParent !== null){
+        const bb414 = bn414.getBoundingClientRect();
+        /* v20a414 UI18：banner＋點排說明視作一組——組跨折位嗰陣推格落去，令組頂落折位之下 */
+        const teach414 = document.getElementById("plan-teach105");
+        const unitBottom414 = (teach414 && teach414.offsetParent !== null) ? teach414.getBoundingClientRect().bottom : bb414.bottom;
+        if(bb414.top < pr.bottom - 1 && unitBottom414 > pr.bottom + 1){
+          const last414 = rows.length ? rows[rows.length-1].getBoundingClientRect() : null;
+          const need414 = pr.bottom - bb414.top;
+          const room414 = last414 ? (pr.bottom - last414.bottom) : 0;
+          if(need414 > 1 && need414 <= Math.min(120, room414)){
+            const cur414 = parseFloat(getComputedStyle(days).marginTop) || 0;
+            days.style.setProperty("margin-top", (cur414 + need414) + "px", "important");
+            return;
+          }
+        }
+      }
+    }catch(_b414){}
     const hit = rows.find(r=>{ const b = r.getBoundingClientRect(); return b.top < pr.bottom - 1 && b.bottom > pr.bottom + 1; });
     if(!hit) return;
     /* v20a409：唔再用 margin 推格落去製造大片留白——先收矮日格（下限 84px，唔縮字），
@@ -26564,10 +26656,14 @@ function fold408Schedule(){
     const hb = hit.getBoundingClientRect();
     const overflow409 = hb.bottom - pr.bottom;
     const per409 = Math.ceil(overflow409 / 2) + 2;
-    rows.forEach(r=>{ try{ const curH = r.getBoundingClientRect().height; r.style.setProperty("min-height", Math.max(84, curH - per409) + "px", "important"); }catch(_e){} });
+    /* v20a414 UI18：短屏格高下限 72（同 CSS media 一致），令星期日頂露出折位做續頁提示 */
+    const floor414 = (window.innerHeight <= 740) ? 72 : 84;
+    rows.forEach((r, ri414)=>{ if(ri414 === rows.length - 1) return; /* v20a414：星期日格高跟 CSS，唔跟收格下限 */ try{ const curH = r.getBoundingClientRect().height; r.style.setProperty("min-height", Math.max(floor414, curH - per409) + "px", "important"); }catch(_e){} });
     void days.offsetHeight;
     const hit2 = rows.find(r=>{ const b = r.getBoundingClientRect(); return b.top < pr.bottom - 1 && b.bottom > pr.bottom + 1; });
     if(!hit2) return;
+    /* v20a414 UI18：短屏星期日格跨折位嗰陣唔推落去——留返星期日標題露出折位做續頁提示 */
+    if(window.innerHeight <= 740 && hit2 === rows[rows.length - 1]) return;
     const shift = Math.min(140, pr.bottom - hit2.getBoundingClientRect().top); /* v20a412 N3：兜底推至折位落排頂——寧可留白唔切字（CSS 收格為主，呢度只係字體遲載兜底） */
     if(shift > 1){
       const cur = parseFloat(getComputedStyle(days).marginTop) || 0;
@@ -32899,19 +32995,9 @@ function book70ExitHome(){
    scrollTop===0（即係初 paint／未碌過）嗰陣，如果分類掣底俾 bar 冚住，就將
    #notebook 捲到剛好令分類掣完全見到；玩家自己碌過就唔郁。 */
 function revealCatTabs197(){
-  try{
-    const nb=document.getElementById("notebook");
-    const tabs=document.getElementById("cat-tabs");
-    const bar=document.getElementById("nb-actions");
-    if(!nb||!tabs||!bar) return;
-    if(nb.scrollTop!==0) return;
-    const tR=tabs.getBoundingClientRect();
-    const bR=bar.getBoundingClientRect();
-    if(!tR.height) return;
-    if(tR.bottom <= bR.top - 4) return;
-    const need = tR.bottom - (bR.top - 4);
-    nb.scrollTop = Math.min(nb.scrollHeight - nb.clientHeight, need);
-  }catch(_e){}
+  /* v20a414 UI18：入場唔自動捲——先見全週頂部（唯讀見全週概覽；編輯中見週一至六，
+     撳日格嗰陣 onclick 已有 scrollIntoView 帶玩家去編輯區，編輯對象唔會離開視線）。
+     舊 B7 自動捲會令被編輯嗰日離開畫面，刪除捲動、保留函數俾呼叫點不變。 */
 }
 function setHomeTab(tab){
   /* v20a70 BOOK70：tab 參數仍係子頁 id（全部既有呼叫不變），分組顯示交
@@ -33026,9 +33112,9 @@ function renderStats389Pane(){
   if(!box) return;
   try{
     const p = ledgerStatsParts();
-    box.innerHTML = `<div class="stats389-card"><h3>阿偉資料卡</h3><p class="sub">${p.dateLine}</p><div class="stats-grid">${p.grid}</div>`
-      + `<p class="sub">業內信用 <b>${p.industryCredit}</b></p>` /* v20a409：聲望已喺格入面，刪重複行 */
-      + `<p>存款 <b class="gold">$ ${p.money.toLocaleString()}</b></p>`
+    box.innerHTML = `<div class="stats389-card"><h3>阿偉資料卡</h3><p class="sub">${p.dateLine}</p><div class="stats-grid">${p.grid}` /* v20a414：業內信用／存款併入格列，金額格式同頂欄一致 */
+      + `<div class="stat"><div class="l">業內信用</div><div class="v">${p.industryCredit}</div></div>`
+      + `<div class="stat"><div class="l">存款</div><div class="v gold414">$${p.money.toLocaleString()}</div></div></div>`
       + `<p style="font-size:.78rem;color:var(--muted)">已報名訓練：${p.enrollLine}</p></div>`;
   }catch(_e){ box.innerHTML = `<p class="sub">資料暫時讀唔到。</p>`; }
 }

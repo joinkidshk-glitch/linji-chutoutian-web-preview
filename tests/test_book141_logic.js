@@ -1,3 +1,4 @@
+// v414 resync：備忘紙金額用詞統一「存款」＋格式 $9,000（Q4 呈現修復）；見 qa414/resync414.py。
 // v20a141 BOOK141 邏輯測試：備忘紙渲染用 live state（唔係寫死樣本數字）。
 // 做法：抽 enterHome 入面 #home-stats 嘅 innerHTML 模板字串，用兩組唔同 S／dual 值
 // eval，驗輸出跟住數字郁。反證：喺 pristine main 上行會 FAIL（舊模板係三粒 pill
@@ -25,18 +26,18 @@ function render(S, dual){
   return eval('`' + tpl.replace(/`/g, '\\`') + '`');
 }
 if(tpl){
-  ok('模板係備忘紙（有 memo141／銀包／偉字印）',
-    tpl.indexOf('memo141') >= 0 && tpl.indexOf('銀包') >= 0 && tpl.indexOf('偉') >= 0);
+  ok('模板係備忘紙（有 memo141／存款／偉字印）',
+    tpl.indexOf('memo141') >= 0 && tpl.indexOf('存款') >= 0 && tpl.indexOf('偉') >= 0);
   const S = { money: 12927 };
   const dual = { stageVolume: 5, industryCredit: 11 };
   const out1 = render(S, dual);
   ok('樣本數字 12,927／5／11 係 live 值而唔係寫死（第一組照出）',
-    out1.indexOf('$ 12,927') >= 0 && out1.indexOf('>5<') >= 0 && out1.indexOf('>11<') >= 0);
+    out1.indexOf('$12,927') >= 0 && out1.indexOf('>5<') >= 0 && out1.indexOf('>11<') >= 0);
   const S2 = { money: 5000 };
   const dual2 = { stageVolume: 9, industryCredit: 3 };
   const out2 = render(S2, dual2);
-  ok('換數字就跟住郁（$ 5,000／9／3），證明唔係寫死',
-    out2.indexOf('$ 5,000') >= 0 && out2.indexOf('>9<') >= 0 && out2.indexOf('>3<') >= 0
+  ok('換數字就跟住郁（$5,000／9／3），證明唔係寫死',
+    out2.indexOf('$5,000') >= 0 && out2.indexOf('>9<') >= 0 && out2.indexOf('>3<') >= 0
     && out2.indexOf('12,927') < 0);
   ok('錢數 span 保留 .home-money（refreshMoneyHud 刷得到）',
     out1.indexOf('home-money') >= 0);
