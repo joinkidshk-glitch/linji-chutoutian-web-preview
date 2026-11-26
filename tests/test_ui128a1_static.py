@@ -27,8 +27,8 @@ ok('標籤 舊座標唔見（星河 14%／金禧 44.5%）', 'top:calc(14% - 50%)
 
 # 浮「進度」掣取消，進度入口只留頂欄 chip（計劃 §5／§7 mockup；反轉 v108 S-8）
 ok('浮進度掣 HTML 已刪', 'id="map-progress-btn"' not in html)
-ok('進度入口：頂欄 chip 改靜態徽章（v404）', '<span class="chip chip-story" id="chip-story"' in html and '<button type="button" class="chip chip-story" id="chip-story"' not in html)
-ok('進度入口：chip click 已刪，改手帳行程頁顯示（v404）', 'cs.addEventListener("click"' not in html and 'id="nb-progress404"' in html)
+ok('進度入口：頂欄 chip 已刪，改手帳 badge（v408）', 'id="chip-story"' not in html and 'id="prog389-badge"' in html and '<button type="button" class="chip chip-story" id="chip-story"' not in html)
+ok('進度入口：chip click 已刪，改手帳行程頁顯示（v408）', 'cs.addEventListener("click"' not in html and 'id="nb-progress404"' in html and 'id="prog389-badge"' in html)
 # v20a135 MAP135：全部地點掣已由底部卡拎走（地圖熱區篤建築就入到，掣係多餘嘅）——
 # 模板（paintBar #map-hint innerHTML 段）入面唔可以再有呢個掣；舊 v128 斷言反轉。
 _i = html.find('document.getElementById("map-hint").innerHTML')

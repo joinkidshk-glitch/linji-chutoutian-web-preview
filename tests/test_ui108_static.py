@@ -67,11 +67,11 @@ ok('S-7 地區名光暈加厚', '0 0 4px #f3e7c8, 0 0 4px #f3e7c8, 0 0 4px #f3e7
 # S-8 頂欄進度 chip 只係徽章
 # v128 A1（計劃 §5／§7 mockup）：反轉——進度只留一個入口（頂欄 chip），地圖浮 pill 取消；
 # chip 恢復做 button＋click 接線，唔再係徽章。
-ok('S-8 chip 改靜態徽章（v404）', '<span class="chip chip-story" id="chip-story"' in html)
-ok('S-8 chip 唔再係 button（v404）', '<button type="button" class="chip chip-story" id="chip-story"' not in html)
-ok('S-8 chip click 接線已刪（v404）', 'cs.addEventListener("click"' not in html)
+ok('S-8 chip 已刪，進度改手帳 badge（v408）', 'id="chip-story"' not in html and 'id="prog389-badge"' in html)
+ok('S-8 chip 唔再係 button（v408）', '<button type="button" class="chip chip-story" id="chip-story"' not in html)
+ok('S-8 chip click 接線已刪（v408）', 'cs.addEventListener("click"' not in html)
 ok('S-8 地圖浮 pill 已取消', 'id="map-progress-btn"' not in html)
-ok('S-8 chip 唔再有 pointer 游標（v404）', '#app #chip-story{ cursor:pointer; }' not in html)
+ok('S-8 chip 唔再有 pointer 游標（v408）', '#app #chip-story{ cursor:pointer; }' not in html)
 
 # S-9 劇情高亮改柔光呼吸光暈（v108 規則喺舊規則之後，先覆蓋）
 _i_old = html.find('.pin.has-story-tip{box-shadow:0 0 0 2px rgba(196,138,42,.85)')

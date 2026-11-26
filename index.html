@@ -1100,54 +1100,7 @@ button.g, .start button.g{
 }
 /* 事態：細 pill，同 阿偉／☰ 齊高；常駐可見 — 無未讀淡、有未讀亮＋badge */
 .bar .bar-primary .chip,
-.bar .bar-primary .chip-story{
-  align-items:center;
-  justify-content:center;
-  height:28px !important;
-  min-height:28px !important;
-  max-height:28px !important;
-  padding:0 7px !important;
-  margin:0 !important;
-  font-size:.7rem !important;
-  font-weight:800 !important;
-  line-height:1 !important;
-  background:transparent !important;
-  border:1px solid rgba(201,162,39,.45) !important;
-  border-radius:999px !important;
-  box-shadow:none !important;
-  color:var(--cream) !important;
-}
 /* v19z30: always show; muted when no pending (.on off) */
-.bar .bar-primary .chip-story{
-  display:inline-flex !important;
-  gap:4px;
-  opacity:.42;
-  border-color:rgba(201,162,39,.28) !important;
-  color:rgba(245,230,192,.55) !important;
-  filter:saturate(.65);
-}
-.bar .bar-primary .chip-story.on{
-  display:inline-flex !important;
-  opacity:1;
-  filter:none;
-  border-color:rgba(201,162,39,.72) !important;
-  color:#f5e6c0 !important;
-}
-.bar .bar-primary .chip-story .chip-story-n{
-  display:none;
-  min-width:1.05em;
-  padding:0 4px;
-  border-radius:999px;
-  background:#c48a2a;
-  color:#1a1208;
-  font-size:.62rem;
-  font-weight:900;
-  line-height:1.35;
-  text-align:center;
-}
-.bar .bar-primary .chip-story.on .chip-story-n:not(:empty){
-  display:inline-block;
-}
 /* v19z30: row2 = one muted mid-dot line (left/center) + 「全部地點」hard-right under ☰ */
 .bar .bar-secondary.dual-hud{
   width:100%;
@@ -2748,23 +2701,6 @@ body.day-res-open #mask.day-res{
 .story-picker .sp-lead.sp-load-err{color:#8a2a22;font-weight:800}
 .story-picker .sp-empty.sp-load-err-qa{font-size:.72rem;color:#6b4e2e;font-weight:700}
 /* v17o HUD／選單入口 */
-.chip-story{
-  display:inline-flex;align-items:center;gap:4px;cursor:pointer;
-  border:1px solid rgba(200,160,80,.55)!important;
-  background:rgba(232,200,120,.22)!important;color:#f5e6c0!important;
-  font-weight:800;
-  opacity:.42;
-}
-.chip-story.on{display:inline-flex;opacity:1}
-.chip-story.is-load-err{
-  opacity:1 !important;
-  border-color:rgba(224,112,96,.85) !important;
-  background:rgba(160,48,32,.45) !important;
-}
-.chip-story .chip-story-n{
-  display:inline-block;min-width:1.1em;padding:0 4px;border-radius:999px;
-  background:#c48a2a;color:#1a1208;font-size:.62rem;font-weight:900;line-height:1.4;text-align:center;
-}
 .menu button.menu-story{
   font-weight:800;background:rgba(232,200,120,.28);border:1px solid rgba(180,130,40,.35);
   margin:2px 0;min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:8px;
@@ -4162,11 +4098,6 @@ body.day-res-open .day-row{
   overflow: visible !important;
   flex-shrink: 0 !important;
   z-index: 2;
-}
-.bar .bar-primary .chip-story{
-  flex-shrink: 0 !important;
-  visibility: visible !important;
-  white-space: nowrap !important;
 }
 .bar .bar-primary .iconbtn{
   flex-shrink: 0 !important;
@@ -6330,12 +6261,11 @@ body.day-res-open .day-row{
 #v-map .hud-stress-max{ color:#68513b !important; }
 #v-map .hud-stress-track{ background:rgba(183,139,101,.35) !important; }
 #v-map .hud-stress-fill{ background:#a44737 !important; }
-#v-map .bar .chip, #v-map .bar .chip-story, #v-map .bar .iconbtn{
+#v-map .bar .chip, #v-map .bar .iconbtn{
   background:#fbf3df !important; border:1px solid #b99b62 !important; color:var(--ink363) !important;
   min-height:44px !important; min-width:44px !important; border-radius:3px !important;
   box-shadow:0 1px 0 rgba(107,78,46,.35) !important;
 }
-#v-map .bar .chip-story.on{ background:#f3e2b7 !important; border-color:#a02e28 !important; }
 /* 撕頁日曆（JS 注入 .cal363，讀遊戲日期） */
 .cal363{
   flex:0 0 auto; width:52px; margin-left:2px; text-align:center; transform:rotate(3deg);
@@ -6575,7 +6505,6 @@ body.day-res-open .day-row{
 #mask:has(.sp-result) #modal-btns button.p{ min-height:52px !important; font-size:1.05rem !important; width:100%; }
 /* 日結／地圖細目標補 44px */
 #v-map #btn-menu{ min-width:44px !important; min-height:44px !important; }
-#v-map #chip-story{ min-height:44px !important; }
 #v-map #map-start-today{ min-height:48px !important; }
 
 /* 故事 modal 註腳加深，紙面上讀得到 */
@@ -7208,7 +7137,7 @@ body.day-res-open .day-row{
 /* (5) 預期日薪算式降為手寫式計算備註 */
 .board-calc397{
   font-family:var(--hand363,"LXGW WenKai","Kaiti TC",serif) !important;
-  font-size:.82rem !important; color:#6b4e2e !important; line-height:1.5 !important;
+  font-size:.82rem !important; color:#43301c !important; line-height:1.5 !important;
   background:transparent !important; border:0 !important;
   border-left:2px solid rgba(107,83,64,.35) !important;
   padding:2px 0 2px 8px !important; margin:8px 0 0 !important;
@@ -7301,7 +7230,6 @@ body.day-res-open .day-row{
 #app.menu-open402 #v-map .map-wrap{
   pointer-events:none !important; opacity:.55 !important; filter:saturate(.7) brightness(.92) !important;
 }
-#app.menu-open402 #chip-story{ pointer-events:none !important; opacity:.55 !important; }
 #app.menu-open402 #loc-sheet,
 #app.menu-open402 #menubar,
 #app.menu-open402 #btn-confirm-plan{
@@ -7355,7 +7283,6 @@ body.day-res-open .day-row{
 .gig-teaser.gt-featured .g-seal{ z-index:2; }
 /* v20a404 UI404-5：劇照人物合成（右下人物、場景做底）＋片酬大字行＋紅印加深。 */
 .gt-still404{ position:relative; overflow:hidden; }
-.gt-still404-fig{ position:absolute; right:6px; bottom:0; height:92%; width:auto; object-fit:contain; filter:drop-shadow(0 2px 3px rgba(26,20,16,.45)); }
 .gt-pay404{ display:block; font-size:1.02rem; font-weight:900; color:#7c1d12; letter-spacing:.02em; margin-bottom:2px; }
 /* 紅印加深：中位紙色亦 ≥4.5:1（第十一輪中位 2.90:1）——加深墨色，維持印章質感。 */
 #app .gig-teaser .g-seal, .gig-card .g-seal{ filter:contrast(1.25) saturate(1.2) brightness(.9) drop-shadow(0 1px 2px rgba(26,20,16,.35)) !important; }
@@ -7394,7 +7321,6 @@ body.day-res-open .day-row{
 
 /* ===== v20a406 UI406：第十二輪頭五項修復 ===== */
 /* (2) 全域對比：細字加深＋不透明底（像素實量 ≥4.5:1，大字 ≥3:1） */
-.bar .bar-primary .chip-story{ opacity:1 !important; color:#f7ead0 !important; background:rgba(26,20,16,.55) !important; border-color:rgba(247,234,208,.65) !important; filter:none !important; }
 #btn-menu{ color:#f7ead0 !important; background:#241a0e !important; border:1px solid rgba(247,234,208,.5) !important; border-radius:6px !important; }
 #app #v-start .start52 .start-sub{ color:#f7ead0 !important; font-weight:900 !important; background:rgba(26,20,16,.62) !important; border-radius:4px !important; padding:2px 10px !important; text-shadow:0 1px 2px rgba(0,0,0,.6) !important; }
 #app #v-start .start52 .start-subrow button{ color:#f7ead0 !important; background:#241a0e !important; border:1px solid #c9a227 !important; font-weight:900 !important; }
@@ -7471,12 +7397,49 @@ body.day-res-open .day-row{
 .debt-cta-wrap{ margin-top:5px !important; }
 /* (4) 通告欄質感：推介劇照同一鏡頭調色＋暗角；紅印字芯加深；整理改索引紙籤 */
 .gt-still404 .gt-still403-img{ filter:sepia(.22) contrast(1.06) brightness(.98) !important; }
-.gt-still404-fig{ filter:sepia(.18) contrast(1.05) drop-shadow(0 2px 3px rgba(26,20,16,.5)) !important; }
 .gt-still404::after{ content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse at 50% 42%, rgba(0,0,0,0) 55%, rgba(26,20,16,.28) 100%), linear-gradient(180deg, rgba(26,20,16,.14), rgba(0,0,0,0) 22%, rgba(0,0,0,0) 80%, rgba(26,20,16,.18)); }
 #app .gig-teaser .g-seal, .gig-card .g-seal{ filter:contrast(1.9) saturate(1.45) brightness(.6) drop-shadow(0 1px 2px rgba(26,20,16,.35)) !important; }
 .board-ctl397-btn{ background:#f7ecc8 !important; color:#43301c !important; border:1px solid #a98d4f !important; border-bottom:3px solid #9c302d !important; border-radius:2px 8px 2px 2px !important; transform:rotate(-1.2deg); box-shadow:1px 2px 4px rgba(70,50,30,.25) !important; font-weight:900 !important; letter-spacing:.08em !important; padding:6px 12px !important; min-height:44px !important; }
 .board-ctl397-btn:active{ transform:rotate(-1.2deg) translateY(1px); }
 /* ===== v20a406 UI406 完 ===== */
+/* ===== v20a408 UI408：第十三輪頭五項＋裁決修復 ===== */
+/* (1) 對比收尾：hit-test 過濾後實量未達 4.5:1 嘅細字逐項加深（唔縮字） */
+#v-map .bar .bar-primary .dual-money-sym{ color:#6b3f0e !important; }
+#v-map .map-hint .map-hint-travel.travel-done{ color:#7c1d12 !important; }
+#v-map .map-hint .map-hint-travel{ color:#5c3a14 !important; }
+#home-tabs .home-tab{ color:#43301c !important; }
+#app #v-start .start52 .start-sub{ background:rgba(26,20,16,.78) !important; }
+.gig-teaser .gt-hint{ color:#8f1d16 !important; }
+.cn-board-sub{ color:#43301c !important; }
+/* (3a) 手帳書籤移離「過一日」掣角：掣收窄留右邊書籤位，兩者唔疊；地圖高度不變 */
+#v-map #map-end-day, #v-map #map-start-today{ width:calc(100% - 76px) !important; }
+#v-map .map-hint .map-hint-story{ width:calc(100% - 76px) !important; }
+/* (3b) 選單面板移至狀態列下方，唔遮「壓力」數值（背景保留可見＋inert 照舊） */
+#v-map .menu{ top:94px !important; }
+/* (4) 旁白提示改標題旁蓋印：劇情播放期間 toast 收成右上角小印，唔遮章節標題 */
+#app.toast-up:has(#mask.story-play-on) .toast{
+  top:calc(10px + env(safe-area-inset-top,0px)) !important; bottom:auto !important;
+  left:auto !important; right:10px !important; transform:rotate(-6deg) !important;
+  width:auto !important; max-width:46% !important; aspect-ratio:auto !important;
+  padding:6px 12px !important; background:#fdf6e0 !important; background-image:none !important;
+  border:2px solid #9c302d !important; border-radius:4px !important;
+  color:#7c1d12 !important; font-size:.8rem !important; text-shadow:none !important;
+}
+#app.toast-up:has(#mask.story-play-on) .story-play .sp-head{ padding-right:110px !important; }
+/* (2) 折位家族：首屏折位落行間／格間靠 JS fold408 對齊（唔用 scroll-snap：
+   吸附會喺開板嗰陣自行捲走標題，實駕 m932 證實，反而製造切行） */
+/* (5) 通告欄低量板收高：板 modal 跟內容高＋收底墊，唔留大片空白 */
+#mask.board-tall392 .modal{ height:auto !important; }
+#mask.board-tall392:not(.tut-on):not(.casting-sheet-on) #modal-inner{ flex:0 1 auto !important; padding-bottom:8px !important; }
+#mask.board-tall392 .gig-board-list{ padding-bottom:8px !important; }
+/* (1b) 對比補漏：手帳印章字、確定印章、最接近行加深至 ≥4.5:1 */
+.memo141-chop{ background:#8f1d16 !important; opacity:1 !important; }
+#nb-actions #btn-confirm-plan.is-locked{ color:#8f1d16 !important; border-color:#8f1d16 !important; }
+#nb-actions #btn-confirm-plan:not(.is-locked){ color:#8f1d16 !important; border-color:#8f1d16 !important; }
+.board-closest392{ color:#43301c !important; }
+/* (8) 詳情合約卡收緊留白，首屏折位更易落行間 */
+#mask.casting-sheet-on .cn-contract401{ padding-top:6px !important; padding-bottom:6px !important; }
+/* ===== v20a408 UI408 完 ===== */
 </style>
 </head>
 <body>
@@ -7540,7 +7503,7 @@ body.day-res-open .day-row{
           <span class="dual-money-sym" aria-hidden="true">$</span><b id="c-money">0</b>
         </span>
         <div class="bar-tools">
-          <span class="chip chip-story" id="chip-story" title="主線進度（手帳行程頁查看）">進度<span class="chip-story-n" id="chip-story-n"></span></span>
+          <!-- v20a408 UI408-6：地圖「進度」併入手帳（手帳行程頁 #prog389-badge＋#nb-progress404），頂欄 chip 刪除 -->
           <button class="iconbtn" id="btn-menu" type="button" aria-label="選單">☰</button>
         </div>
       </div>
@@ -12345,7 +12308,8 @@ const StoryPlay = (()=>{
        參照相存 ~/workspace/linji-work154/refs/ref_rooftop_girard1989.webp）。
        兩節點都冇 locId，冇覆寫就會跌返 bg_generic_interior（灰色虛空）。 */
     const STORY_SCENE_OVERRIDE154 = {
-      "R_hiu_ending":"bg_154_rooftop"
+      "R_hiu_ending":"bg_154_rooftop",
+      "CMT_hiu_commit":"bg_154_rooftop" /* v20a408 UI408-7：廠景天台 commit 場景同用天台全景圖 */
     };
     const nid154 = (node && (node.id || node.nodeId)) || "";
     if(nid154 && STORY_SCENE_OVERRIDE154[nid154]) return STORY_SCENE_OVERRIDE154[nid154];
@@ -17475,7 +17439,9 @@ function ux68OrganizeLocSheet(L){
     items.forEach(it=>frag.appendChild(it.btn));
   });
   const lockedItems = info.filter(it=>it.locked);
-  if(lockedItems.length){
+  /* v20a408 UI408-6（掣量裁決）：茶餐廳未開放行動逐條真刪掣——locked 掣唔入 frag，
+     box.innerHTML 重建嗰陣成粒消失（唔係收埋）；其他地點維持靜態提示。 */
+  if(lockedItems.length && !(L && L.id==="cafe_cha")){
     /* v20a404 UI404-6（掣量裁決）：「未開放」改靜態提示，真刪展開掣——
        標題做靜態行，鎖住項目直接列出（撳落去照有 toast 講原因，唔使先展開）。 */
     const wrap = document.createElement("div");
@@ -20481,7 +20447,7 @@ function gigBoardTeaserHtml(g, opts){
   /* v20a404 UI404-5：推介卡真劇照式插畫——場景底＋阿偉人物合成（戲劇焦點），
      唔用大字字首，唔出成品海報、唔標主演（未開拍唔應有成品圖，人物只係試鏡劇照感）。 */
   const still402 = featured392
-    ? `<div class="gt-still402 gt-still403 gt-still404" data-type="${coarse396}"><img class="gt-still403-img" src="assets/story/locs/bg_loc_${(g && g.loc) || "tvb_harbour"}.jpg" alt="" onerror="this.style.display='none'"><img class="gt-still404-fig" src="assets/dialog/char_hero_bust_default.png" alt="" onerror="this.style.display='none'"><span class="gt-still402-sub">${coarse396}${(genre396 && genre396!==coarse396) ? " · " + genre396 : ""}</span></div>`
+    ? `<div class="gt-still402 gt-still403 gt-still404" data-type="${coarse396}"><img class="gt-still403-img" src="assets/story/locs/bg_loc_${(g && g.loc) || "tvb_harbour"}.jpg" alt="" onerror="this.style.display='none'"><span class="gt-still402-sub">${coarse396}${(genre396 && genre396!==coarse396) ? " · " + genre396 : ""}</span></div>`
     : "";
   return `<div class="gig-teaser${featured392 ? " gt-featured" : ""}" data-gid="${g.id}" data-board-state="${boardState}" role="button" tabindex="0">
     <img class="g-seal" src="${sealSrc}" alt="${badge94.label||sealKey}" onerror="this.style.display='none'"/>
@@ -24782,22 +24748,7 @@ function paintStoryEntryHints(){
       np404.textContent = (typeof n==="number" && n>0) ? ("主線進度：有 " + n + " 幕可播") : "主線進度：暫無可播";
     }
   }catch(_np404){}
-  const chip = document.getElementById("chip-story");
-  const chipN = document.getElementById("chip-story-n");
-  const fault = (typeof storyWireContentFault==="function") ? storyWireContentFault() : null;
-  if(chip){
-    const show = n>0;
-    const failed = !!(fault && fault.kind==="failed");
-    chip.classList.toggle("on", show || failed);
-    chip.classList.toggle("is-load-err", failed);
-    /* v19z30: chip 常駐；無未讀淡顯示，唔再 aria-hidden */
-    chip.setAttribute("aria-hidden", "false");
-    /* v20a77 HUB77：chip 改指進度頁，title 跟目的地改講「主線進度」，唔再指向舊劇情列表 */
-    chip.title = failed
-      ? (fault.player || "主線內容載入唔到，請再開多次")
-      : (show ? ("主線進度 · 有 "+n+" 幕可播") : ((fault && fault.kind==="pending") ? "主線內容載入中" : "主線進度（暫無可播）"));
-    if(chipN) chipN.textContent = show ? String(n) : "";
-  }
+  /* v20a408 UI408-6：頂欄進度 chip 已刪，進度入口只留手帳（#prog389-badge＋#nb-progress404）。 */
   /* v20a77 HUB77：#menu-story-badge 已隨選單「劇情」掣移除；呢度有 if 守衛，
      元素唔喺度會自動跳過（安全降級），唔好再加返選單徽章元素。 */
   const badge = document.getElementById("menu-story-badge");
@@ -26182,20 +26133,62 @@ function restoreMapLabels402(){
    頒獎結果卡首屏摺位放行與行之間＋紙邊「下接」提示（捲到底收起）。 */
 function align403ScrollEdges(root){
   try{
-    if(!root || root.scrollHeight <= root.clientHeight + 2) return;
+    if(!root) return;
+    /* v20a408：重跑先還原上次加嘅底墊再量——modal 未定高嗰陣量到「可捲」加咗墊，
+       定高後唔還原就會留低量板大片空白（實駕 run3 blank108）。還原會縮短 scrollHeight，
+       已捲到底嘅位置會俾瀏覽器夾走，頂沿落返行中間——記住捲底狀態，加返墊後捲返底。 */
+    const wasBottom408 = root.scrollTop >= root.scrollHeight - root.clientHeight - 4;
+    if(root._align408Pad){ try{ const cur0 = parseFloat(getComputedStyle(root).paddingBottom) || 0; root.style.setProperty("padding-bottom", Math.max(0, cur0 - root._align408Pad) + "px", "important"); }catch(_r){} root._align408Pad = 0; void root.offsetHeight; }
+    if(root.scrollHeight <= root.clientHeight + 2) return;
     const blocks = Array.from(root.querySelectorAll("p,h3,h4,li,.cn-sum-row,.gig-teaser,.debt-row,.result-line,.np214-short,.cn-req-cell,.cn-kv,.cn-kv-top,.cn-wd-sub,.cn-chance378,.notice_synopsis_frame,.cn-lab,.cn-pills,.cn-stars-role30v2")).filter(el=>el.offsetParent!==null || el===root.firstElementChild);
     if(!blocks.length) return;
     const rr = root.getBoundingClientRect();
-    const tops = blocks.flatMap(el=>{ const r = el.getBoundingClientRect(); return [(r.top - rr.top) + root.scrollTop, (r.bottom - rr.top) + root.scrollTop]; }).filter(v=>v>4).sort((a,b)=>a-b);
+    const iv408 = []; /* 行區間（內容座標）：頂沿候選唔可以切中任何一行 */
+    let tops = blocks.flatMap(el=>{ const r = el.getBoundingClientRect(); return [(r.top - rr.top) + root.scrollTop, (r.bottom - rr.top) + root.scrollTop]; });
+    /* v20a408 UI408-2：捲底頂沿要落行間——補入逐行文字盒邊界（多行段落嘅行頂／行底），
+       唔再淨靠 block 邊界（頒獎捲底頂沿半字根源）。 */
+    try{
+      const walker408 = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let n408;
+      while((n408 = walker408.nextNode())){
+        if(!n408.nodeValue || !n408.nodeValue.trim()) continue;
+        const pe408 = n408.parentElement;
+        if(!pe408 || pe408.offsetParent === null) continue;
+        if(pe408.closest("details:not([open])") && !pe408.closest("summary")) continue;
+        const range408 = document.createRange();
+        range408.selectNodeContents(n408);
+        for(const r408 of range408.getClientRects()){
+          const vert408 = r408.height > 40 && r408.width < 24;
+          if(r408.height > 0){ tops.push((r408.top - rr.top) + root.scrollTop, (r408.bottom - rr.top) + root.scrollTop); if(!vert408) iv408.push([(r408.top - rr.top) + root.scrollTop, (r408.bottom - rr.top) + root.scrollTop]); }
+          /* 直書欄（高>40、闊<24）：逐字邊界入表，捲底頂沿先落到字與字之間（頒獎快訊欄） */
+          if(vert408){
+            const txt408 = n408.nodeValue;
+            for(let ci408 = 0; ci408 < txt408.length; ci408++){
+              try{ range408.setStart(n408, ci408); range408.setEnd(n408, ci408 + 1); const cr408 = range408.getClientRects()[0]; if(cr408 && cr408.height > 0){ tops.push((cr408.top - rr.top) + root.scrollTop, (cr408.bottom - rr.top) + root.scrollTop); iv408.push([(cr408.top - rr.top) + root.scrollTop, (cr408.bottom - rr.top) + root.scrollTop]); } }catch(_c408){}
+            }
+          }
+        }
+      }
+    }catch(_e408){}
+    tops = tops.filter(v=>v>4).sort((a,b)=>a-b);
     if(!tops.length) return;
     const maxScroll = root.scrollHeight - root.clientHeight;
-    let next = tops.find(v=>v > maxScroll + 1);
+    /* 候選頂沿要同時唔切任何一行：逐個候選邊界驗證（直書逐字邊界同橫行邊界
+       未必重合，淨揀最近邊界會切中直書字，實駕 run6「晚」字差 6px）。 */
+    let next = null;
+    for(const c408 of tops){
+      if(c408 <= maxScroll + 1 || c408 > maxScroll + 120) continue;
+      if(!iv408.some(iv => iv[0] < c408 - 1 && iv[1] > c408 + 1)){ next = c408; break; }
+    }
+    if(next == null) next = tops.find(v=>v > maxScroll + 1);
     if(next == null) return;
     const add = Math.min(120, next - maxScroll);
     if(add > 1){
       const cur = parseFloat(getComputedStyle(root).paddingBottom) || 0;
       root.style.setProperty("padding-bottom", (cur + add) + "px", "important");
+      root._align408Pad = add;
     }
+    if(wasBottom408) root.scrollTop = root.scrollHeight;
   }catch(_e403){}
 }
 function awd403FoldAndHint(){
@@ -26244,6 +26237,74 @@ function awd403FoldAndHint(){
       if(shift404 > 1) sheet.style.marginTop = shift404 + "px";
     }
   }catch(_e403){}
+}
+/* v20a408 UI408-2：首屏折位對齊——搵俾折位切中嘅文字行，將其 block 下移至折位落行頂
+   （行與行之間），唔切字形。適用通告欄／詳情／頒獎（modal-inner＋notice_sheet_body）；
+   行程格由 fold408Schedule 處理（格間）。上限 96px，唔製造大片空白。 */
+function fold408Align(scroller){
+  try{
+    if(!scroller || scroller.scrollTop > 2) return;
+    /* 重跑先還原上次 shift 再量（圖片載入後版面會變，唔還原會疊加／量錯） */
+    if(scroller._fold408){ try{ const p = scroller._fold408; const cur = parseFloat(getComputedStyle(p.el).marginTop) || 0; p.el.style.setProperty("margin-top", Math.max(0, cur - p.shift) + "px", "important"); }catch(_r){} scroller._fold408 = null; void scroller.offsetHeight; }
+    if(scroller.scrollHeight <= scroller.clientHeight + 2) return;
+    const sr = scroller.getBoundingClientRect();
+    const fold = sr.bottom;
+    const walker = document.createTreeWalker(scroller, NodeFilter.SHOW_TEXT);
+    let hit = null, hitEl = null, hitRange = null, node;
+    while((node = walker.nextNode())){
+      if(!node.nodeValue || !node.nodeValue.trim()) continue;
+      const pe = node.parentElement;
+      if(!pe || pe.offsetParent === null) continue;
+      if(pe.closest("details:not([open])") && !pe.closest("summary")) continue;
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      for(const r of range.getClientRects()){
+        if(r.height > 0 && r.top < fold - 1 && r.bottom > fold + 1){ hit = r; hitEl = pe; hitRange = range; break; }
+      }
+      if(hit) break;
+    }
+    if(!hit || !hitEl) return;
+    const block = hitEl.closest(".gig-teaser,.cn-lab,.cn-sum-row,.cn-kv,.cn-kv-top,.cn-req-cell,.debt-row,.result-line,.np214-short,.notice_synopsis_frame,p,h3,h4,li") || hitEl;
+    /* +3 緩衝：字體載入後行高可漂移 1–2px，唔加緩衝折位會再切返字形（實駕 run2 差 1.3px）。
+       套用後覆量同一行：margin 摺疊會食咗部分 shift（詳情 cn-sum-row 實駕差 8px），
+       殘差補足至行頂真係落到折位之下。 */
+    let shift = Math.min(96, fold - hit.top + 3);
+    if(shift > 0.5){
+      const cur = parseFloat(getComputedStyle(block).marginTop) || 0;
+      block.style.setProperty("margin-top", (cur + shift) + "px", "important");
+      for(let k408 = 0; k408 < 3; k408++){
+        void scroller.offsetHeight;
+        const rr408 = hitRange.getClientRects();
+        let r408 = null;
+        for(const q408 of rr408){ if(q408.height > 0 && q408.top < fold - 1 && q408.bottom > fold + 1){ r408 = q408; break; } }
+        if(!r408) break;
+        const resid408 = Math.min(96 - shift, fold - r408.top + 3);
+        if(resid408 <= 0.5) break;
+        const cur408 = parseFloat(getComputedStyle(block).marginTop) || 0;
+        block.style.setProperty("margin-top", (cur408 + resid408) + "px", "important");
+        shift += resid408;
+      }
+      scroller._fold408 = { el: block, shift: shift };
+    }
+  }catch(_e408){}
+}
+function fold408Schedule(){
+  try{
+    const pane = document.getElementById("home-pane-plan");
+    const days = document.getElementById("nb-days");
+    if(!pane || !days || pane.offsetParent === null) return;
+    days.style.removeProperty("margin-top");
+    void days.offsetHeight;
+    const pr = pane.getBoundingClientRect();
+    const rows = Array.from(days.querySelectorAll(".day-row"));
+    const hit = rows.find(r=>{ const b = r.getBoundingClientRect(); return b.top < pr.bottom - 1 && b.bottom > pr.bottom + 1; });
+    if(!hit) return;
+    const shift = Math.min(130, pr.bottom - hit.getBoundingClientRect().top);
+    if(shift > 1){
+      const cur = parseFloat(getComputedStyle(days).marginTop) || 0;
+      days.style.setProperty("margin-top", (cur + shift) + "px", "important");
+    }
+  }catch(_e408){}
 }
 function modal(html, buttons, opts){
   opts=opts||{};
@@ -26320,7 +26381,7 @@ function modal(html, buttons, opts){
   }catch(_e){}
   // Prevent focus/layout from scrolling map-wrap under the phone frame
   restoreMapScroll();
-  try{ const _al403=()=>{ try{ awd403FoldAndHint(); }catch(_e){} try{ align403ScrollEdges(document.getElementById("modal-inner")); }catch(_e){} try{ const nb=document.querySelector("#modal-inner .notice_sheet_body"); if(nb) align403ScrollEdges(nb); }catch(_e){} }; requestAnimationFrame(_al403); setTimeout(_al403, 700); }catch(_e403){}
+  try{ const _al403=()=>{ try{ awd403FoldAndHint(); }catch(_e){} try{ fold408Align(document.getElementById("modal-inner")); }catch(_e){} try{ const nb408=document.querySelector("#modal-inner .notice_sheet_body"); if(nb408) fold408Align(nb408); }catch(_e){} try{ align403ScrollEdges(document.getElementById("modal-inner")); }catch(_e){} try{ const nb=document.querySelector("#modal-inner .notice_sheet_body"); if(nb) align403ScrollEdges(nb); }catch(_e){} }; requestAnimationFrame(_al403); setTimeout(_al403, 250); setTimeout(_al403, 700); setTimeout(_al403, 1200); setTimeout(_al403, 2000); try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(_al403); }catch(_ef){} }catch(_e403){}
 }
 function closeModal(){
   /* v20a122 AUD91FIX H1 保底：任何關 modal 嘅路都清晨報旗，免卡死吞鏈。 */
@@ -26364,7 +26425,7 @@ function closeModal(){
     const app=document.getElementById("app");
     if(app) app.classList.remove("mask-up");
     try{ if(typeof ensureLocSheetInteractive==="function") ensureLocSheetInteractive(); }catch(_ei){}
-    document.querySelectorAll('#menubar button, #bar button, [data-m="home"], #chip-story').forEach(el=>{
+    document.querySelectorAll('#menubar button, #bar button, [data-m="home"]').forEach(el=>{
       try{
         if(el && el.style && el.style.visibility==="hidden") el.style.visibility="";
         if(el && el.style && el.style.display==="none" && el.id!=="btn-cont"){ /* don't touch intentional hides */ }
@@ -29269,7 +29330,7 @@ const ROM159_WOMEN = {
           spots:["so_rec","so_central","so_harbour","so_airport","so_beach","so_cafe"] }
 }; /* v20a159 ROM159：Vera／海媚出局，葉敏芝／蘇芷茵入局；最終六人，37 場。DATES 條目見 ROM159_DATES（B1）。 */
 const ROM159_DATES = {
-  hiu_roof:     { who:"hiu", locId:"tvb_longmen", label:"廠景天台", cost:4,
+  hiu_roof:     { who:"hiu", locId:"tvb_longmen", label:"廠景天台", cost:4, bg:"assets/story/locs/bg_154_rooftop.jpg", /* v20a408 UI408-7：天台場景用天台全景圖，唔再借電視台室內圖 */
     intro:"收工之後，天台得返風聲同廠景燈。曉晴話，呢度係佢最靜得落嚟嘅地方。",
     good:{ label:"講返廠景嗰啲辛苦事，一齊笑", line:"佢笑住話：「原來你都記得嗰晚通宵嗰單嘢。」兩個人企喺天台，似係成個廠景都係佢哋嘅。" },
     bad:{ label:"淨係講自己幾辛苦", line:"佢聽住聽住，望咗望下面：「係呀，呢行邊個唔辛苦。」話題就咁凍咗。" } },
@@ -29898,7 +29959,7 @@ function rom159DateScene(who, spot, L, ended, summary){
       portrait379 = (face379 && typeof PORTRAITS!=="undefined") ? (PORTRAITS[face379] || "") : "";
     }catch(_p379){}
     let bg407 = "";
-    try{ const _b407 = (typeof LOC_SHEET_BG!=="undefined" && LOC_SHEET_BG) ? LOC_SHEET_BG[spot.locId] : ""; if(_b407) bg407 = `<div class="date-scene-bg407" style="background-image:url('${_b407}')"></div>`; }catch(_e407){}
+    try{ const _b407 = spot.bg || ((typeof LOC_SHEET_BG!=="undefined" && LOC_SHEET_BG) ? LOC_SHEET_BG[spot.locId] : ""); if(_b407) bg407 = `<div class="date-scene-bg407" style="background-image:url('${_b407}')"></div>`; }catch(_e407){}
     const dlg379 = (txt)=> portrait379
       ? `<div class="dlg"><div class="dlg-stage"><img class="dlg-portrait" src="${portrait379}" alt="${w.name}"/><div class="dlg-side"><div class="dlg-name">${w.name}</div><div class="dlg-bubble">${txt}</div></div></div></div>`
       : `<p>${txt}</p>`;
@@ -32692,7 +32753,7 @@ function renderStats389Pane(){
 }
 
 function syncHomeTabExit(tab){
-  try{ requestAnimationFrame(()=>{ try{ document.querySelectorAll("#v-home .journal-scroll, #v-home .notebook").forEach(el=>{ if(el.offsetParent!==null && typeof align403ScrollEdges==="function") align403ScrollEdges(el); }); }catch(_e403){} }); }catch(_e403){}
+  try{ requestAnimationFrame(()=>{ try{ document.querySelectorAll("#v-home .journal-scroll, #v-home .notebook").forEach(el=>{ if(el.offsetParent!==null && typeof align403ScrollEdges==="function") align403ScrollEdges(el); }); }catch(_e403){} try{ if(typeof fold408Schedule==="function") fold408Schedule(); }catch(_e408){} }); }catch(_e403){}
 /* v20a70 BOOK70：手帳恆常出口——任何大類／子頁／日子狀態都顯示，標籤恆定「返回地圖」。
      舊制（v19z 共用掣）根因：journal 頁出口要 #home-back-map 可見（srcShown）先出；
      排程可編輯嗰陣 #home-back-map 隱藏 → 成個手帳冇任何出口；強制／soft 日出口仲會
@@ -38438,8 +38499,10 @@ function np214ShowPage(btn, n){
     }
     const mi = document.getElementById("modal-inner");
     if(mi) mi.scrollTop = 0;
-    /* v20a404 UI404-2：切頁後折位重新對齊（第二版首屏唔再切行）。 */
-    try{ if(typeof awd403FoldAndHint==="function") requestAnimationFrame(()=>{ try{ awd403FoldAndHint(); }catch(_e404){} }); }catch(_e404b){}
+    /* v20a404 UI404-2：切頁後折位重新對齊（第二版首屏唔再切行）。
+       v20a408：切頁後內容高度變，捲底頂沿對齊（align403）同首屏折位（fold408）一併重跑，
+       唔再用第一版嘅底墊量第二版（實駕頒獎捲底頂沿切直書字根源）。 */
+    try{ requestAnimationFrame(()=>{ try{ if(typeof awd403FoldAndHint==="function") awd403FoldAndHint(); }catch(_e404){} try{ if(typeof fold408Align==="function") fold408Align(mi); }catch(_e408){} try{ if(typeof align403ScrollEdges==="function") align403ScrollEdges(mi); }catch(_e408b){} }); }catch(_e404b){}
   }catch(_e){}
 }
 try{ window.np214ShowPage = np214ShowPage; }catch(_e){} /* v20a214 工人 4：inline onclick="np214ShowPage(this,2/1)"

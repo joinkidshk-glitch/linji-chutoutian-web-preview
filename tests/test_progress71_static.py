@@ -41,8 +41,8 @@ ok('劇情列表兄弟句改完整子句（開了之後…就會觸發）', '開
 # --- 一（續）、v20a198 C1：地圖 hint renderer 已拎走（死 code），進度入口改行地圖「進度」掣＋手帳進度子頁 ---
 ok('v198 C1：地圖 hint renderer 已拎走', 'function storyMapHintHtml(){' not in src and 'function refreshMapHintStory(){' not in src)
 ok('v198 C1：地圖卡模板唔再有 hint 掣（data-prog71="1" 零出現）', src.count('data-prog71="1"') == 0)
-ok('v198 C1：進度入口仲喺度（頂欄 chip＋手帳進度 badge；v389 進度子頁改 badge＋抽屜）',
-   'id="chip-story"' in src and 'id="prog389-badge"' in src and 'enterHome(null, false, "progress")' in src)
+ok('v198 C1：進度入口仲喺度（v408 地圖 chip 已刪，改手帳進度 badge＋抽屜）',
+   'id="chip-story"' not in src and 'id="prog389-badge"' in src and 'enterHome(null, false, "progress")' in src)
 ok('v198 C1：storyMainProgressLine 保留（「下一幕」句式規格）', 'function storyMainProgressLine(){' in src)
 
 # --- 二、進度抽屜（v389：子頁取消，改 badge＋modal 抽屜） ---

@@ -61,15 +61,15 @@ ok('paintStoryEntryHints：badge 更新保留 if 守衛（元素缺席安全降�
 # --- 三、chip 改指進度頁 ---
 # v20a128 A1（計劃 §5／§7 mockup）：進度只留一個入口——頂欄 chip。chip 恢復做掣
 # （反轉 v108 S-8「chip 只係數字徽章、入口係 pill」；浮 pill 已取消，chip 唔做掣就冇入口）。
-ok('chip：標籤「進度」＋title 指去手帳（v404 靜態徽章）',
-   'id="chip-story" title="主線進度（手帳行程頁查看）">進度<span class="chip-story-n"' in src)
-ok('chip：靜態 span 徽章，唔再係掣（v404）',
-   '<span class="chip chip-story" id="chip-story"' in src
+ok('chip：頂欄進度 chip 已刪，入口改手帳 badge（v408）',
+   'id="chip-story"' not in src and 'id="prog389-badge"' in src)
+ok('chip：靜態 span 徽章亦已刪（v408）',
+   '<span class="chip chip-story" id="chip-story"' not in src
    and '<button type="button" class="chip chip-story" id="chip-story"' not in src)
-ok('chip：click 接線已刪，進度改手帳行程頁顯示（v404）', 'cs.addEventListener("click"' not in src and 'id="nb-progress404"' in src)
-ok('chip：唔再有 pointer 游標規則（v404 徽章）', '#app #chip-story{ cursor:pointer; }' not in src)
-ok('chip title 四態改主線進度語系',
-   '主線進度 · 有 ' in ps and '主線內容載入中' in ps and '主線進度（暫無可播）' in ps and '主線內容載入唔到' in ps)
+ok('chip：click 接線已刪，進度改手帳行程頁顯示（v408）', 'cs.addEventListener("click"' not in src and 'id="nb-progress404"' in src and 'id="prog389-badge"' in src)
+ok('chip：唔再有 pointer 游標規則（v408）', '#app #chip-story{ cursor:pointer; }' not in src)
+ok('進度文字改由手帳行程頁同步（v408）',
+   'id="prog389-badge"' in src and 'const np404=document.getElementById("nb-progress404");' in src)
 ok('chip 舊 title 文案清零', '有可播劇情 · ' not in src and '"劇情（暫無可播）"' not in src and '"劇情內容載入中"' not in src)
 
 # --- 四、進度頁播放門口（v20a165 STORY165 取代：掣拎走，首播改強制播） ---
