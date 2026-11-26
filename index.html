@@ -7597,6 +7597,59 @@ body.day-res-open .day-row{
 #home-pane-plan .notebook{ scroll-padding-top:8px; }
 /* ===== v20a412 UI412 完 ===== */
 
+/* ===== v20a413 UI413：第十七輪 self-review 修復 P1–P16（只改呈現） ===== */
+/* P1 手帳頁首密度：收緊頂距／頭像／備忘紙／分頁間距，唔縮字、觸控目標不變 */
+.home{ padding-top:6px !important; }
+.home-top{ margin-bottom:4px !important; }
+.home-top img{ width:50px !important; height:64px !important; }
+.memo141{ padding:10px 12px 7px !important; }
+.memo141-line{ line-height:1.5 !important; }
+#home-tabs{ padding-top:8px !important; }
+#home-subtabs{ padding-bottom:2px !important; }
+#home-pane-plan .prog389-badge{ padding-top:5px !important; padding-bottom:5px !important; }
+/* P3 進度分岔組：兩行同等高亮＋組標籤 */
+#progress-list .prog71-pair413-label{ margin:8px 2px 4px; font-size:.82rem; font-weight:800; color:#823F35; letter-spacing:.04em; }
+#progress-list .prog71-row.prog71-pair413{ background:#EDDFC2 !important; border-left:2px solid #823F35 !important; padding:8px 8px !important; }
+#progress-list .prog71-row.prog71-pair413 .prog71-top b{ font-size:1rem !important; }
+#progress-list .prog71-row.prog71-pair413 .prog71-tag.lock{ border-color:#823F35 !important; color:#823F35 !important; font-weight:800 !important; }
+/* P6 劇情期間完成卡降聲量：收窄、弱邊框、收起裝飾紅印，文字保留 */
+#app.toast-up:has(#mask.story-play-on) .toast{ max-width:170px !important; border-width:1px !important; box-shadow:0 2px 8px rgba(0,0,0,.3) !important; top:64px !important; }
+#progress-list .prog71-row.prog71-pair413 .prog71-act{ font-weight:900 !important; color:#823F35 !important; }
+#home-pane-stats389 .stats-grid .stat{ border-bottom:1px dotted rgba(107,83,64,.4) !important; }
+#app.toast-up:has(#mask.story-play-on) .toast .toast-stamp397, #app.toast-up:has(#mask.story-play-on) .toast [class*="stamp"]{ display:none !important; }
+/* P7 約會：mask 加深、場景圖加高 */
+#mask.on:has(.date409){ background:rgba(20,12,6,.68) !important; }
+.date409 .date-scene-bg407{ height:196px !important; }
+/* P8 資料卡兩欄，縮短標籤—數值對讀距離 */
+#home-pane-stats389 .stats-grid{ grid-template-columns:1fr 1fr !important; gap:0 16px !important; }
+#home-pane-stats389 .stats-grid .stat{ padding:5px 2px !important; }
+/* P9 報紙翻頁列：移去報頭下、靜態，唔再 sticky 遮內容 */
+.paper-sheet .np214-page.on{ display:flex !important; flex-direction:column; }
+.paper-sheet .np214-page.on > *{ order:2; }
+.paper-sheet .np214-page.on > .np214-masthead{ order:0; }
+.paper-sheet .np214-page.on > .np214-switchrow{ order:1; position:static !important; margin-top:6px !important; padding-top:0 !important; background:transparent !important; }
+.paper-sheet .np214-page.on > .np214-pagefoot{ order:3; }
+/* P10 存檔槽位紙本化 */
+.slot-row{ background:linear-gradient(180deg,#fbf4dd,#f3e7c8) !important; border:1px solid #c4a574 !important; color:#2a1c0c !important; }
+.slot-row .slot-meta{ color:#6b5340 !important; }
+.slot-list .slot-row .slot-meta{ color:#6b5340 !important; }
+.slot-row .slot-tag{ color:#a02c1b !important; font-weight:800; }
+.slot-row.is-active{ border-color:#a02c1b !important; box-shadow:0 0 0 1px #a02c1b inset; }
+/* P11 空狀態框：降高、實紙底 */
+.empty156-frame{ aspect-ratio:4/3 !important; background:#fbf4dd !important; }
+.empty156-wide{ min-height:150px !important; background:#fbf4dd !important; }
+/* P12 通告詳情角色行間距 */
+.cn-role30v2 .k{ margin-right:6px !important; }
+/* P13 地圖「可打聽」略放大加深 */
+#v-map .map-names68 .mn68-ask373::after{ font-size:11.5px !important; font-weight:800 !important; color:#7a3b12 !important; }
+/* P14 劇情通用背景加地面分界 */
+.story-play .sp-bg-layer.bg_loc_soft, .story-play .sp-bg-layer.bg_generic_interior{ background:linear-gradient(180deg,#ece1cf 0%,#e2d4ba 58%,#c9b48d 58.5%,#b7a37e 100%) !important; }
+/* P15 設定頁 checkbox 放大＋紙色 */
+.settings-row input[type="checkbox"]{ width:22px !important; height:22px !important; accent-color:#8a5a00; }
+/* P16 頒獎舞台腳燈略加強（佈局不變） */
+.awd62-stage{ background:radial-gradient(90% 30% at 50% 100%,rgba(180,150,82,.22) 0%,rgba(12,9,19,0) 70%),radial-gradient(120% 55% at 50% 0%,#2c2148 0%,#14101f 55%,#0c0913 100%) !important; }
+/* ===== v20a413 UI413 完 ===== */
+
 </style>
 </head>
 <body>
@@ -13211,7 +13264,7 @@ const StoryPlay = (()=>{
       const head = isOpening105 ? `<div class="sp-head sp-head-opening">
           <p class="sp-meta">${esc(playerMeta)}</p>
           ${actLabel191?`<p class="sp-act191">${esc(actLabel191)}：${esc(actTitle191)}</p>`:""}
-          <h3>${esc(n.title||n.id)}</h3>
+          ${(actTitle191 && actTitle191 === (n.title||n.id)) ? "" : `<h3>${esc(n.title||n.id)}</h3>`}<!-- v20a413 P5：幕號標題同節點標題相同唔重複 -->
           ${n.setting?`<div class="sp-setting">${esc((typeof storySettingStripRoute198==="function") ? storySettingStripRoute198(n.setting) : n.setting)}</div>`:""}
         </div>` : "";
       let stageBody = "";
@@ -21944,6 +21997,9 @@ function nbDayHint400(i, meta, editable, locked){
     if(typeof isMapDay==="function" && isMapDay(id)){
       const n400 = (planDraft||[]).filter(x=> isMapDay(x)).length;
       const txt400 = "本週外出機會剩 " + n400 + " 日";
+      /* v20a413 P2：總數只喺每週第一個外出格顯示，其餘外出格唔重複同句 */
+      const firstMap413 = (planDraft||[]).findIndex(x=> isMapDay(x));
+      if(i !== firstMap413) return editable ? "" : (meta.hint||"");
       return editable ? txt400 : ((meta.hint||"") ? (meta.hint + " · " + txt400) : txt400);
     }
   }catch(_e){}
@@ -30184,7 +30240,7 @@ function rom159DateScene(who, spot, L, ended, summary){
       let nv = 0;
       try{ if(typeof StoryOC!=="undefined" && StoryOC.getRel) nv = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
       const deltaTxt = delta>0 ? "好感 +1（而家 " + nv + "）" : (delta<0 ? "好感 -1（而家 " + nv + "）" : "好感 ±0");
-      modal(`<h3>約會 · ${w.name}</h3>${dlg379(line)}<p class="gold">${deltaTxt}</p>${ended?`<p class="dayres-stamp397">一週完結</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()} · 約會用咗一日</p>`,
+      modal(`<div class="date409"><h3>約會 · ${w.name}</h3>${bg407}${dlg379(line)}<p class="gold">${deltaTxt}</p>${ended?`<p class="dayres-stamp397">一週完結</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()} · 約會用咗一日</p></div>`, /* v20a413 P7：結果屏同主屏同一紙面＋場景圖 */
         [{label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}], {onDismiss: go, keepScene397:true}); /* v20a398 UI398-5：44 號約會結果卡用 scene 模式 */
     };
     modal(`<div class="date409"><h3>約會 · ${w.name}（${spot.label}）</h3>${bg407}${dlg379(spot.intro)}<p class="sub">揀一句回應——講啱咗，兩個人近啲；講錯咗，佢會冷淡啲。</p></div>`,[
@@ -33105,7 +33161,8 @@ function prog71GateItems(id){
   if(winHas){
     let wl = "";
     try{ if(typeof CALIB60_NODE_WINDOWS !== "undefined" && CALIB60_NODE_WINDOWS[id]) wl = CALIB60_NODE_WINDOWS[id].whenLabel || ""; }catch(_e){}
-    items.push({ ok:winOk, text:"時窗："+(wl || "指定年份／季節") });
+    const unmet413 = items.filter(it=>!it.ok).length;
+    items.push({ ok:winOk, text:(winOk ? "時間條件相符：" : "時間條件未到：")+(wl || "指定年份／季節")+((winOk && unmet413>0) ? "（尚有 "+unmet413+" 項未達）" : "") }); /* v20a413 P4：措辭講明只係時間條件，唔改判定 */
   }
   return items;
 }
@@ -33330,7 +33387,10 @@ function renderProgressPane71(){
       } else {
         body = '<p class="prog71-note">時機未到——先照常跑通告、見人，條件夠就會開。</p>';
       }
-      const next412Cls = (!next412Marked && !rows.some(x=>x && x.state==="open")) ? ' prog71-next412' : ''; if(next412Cls) next412Marked = true; /* v20a412 N5：冇已開放行嗰陣，第一個未開放逐項行做下一幕焦點 */
+      /* v20a413 P3：第 6 幕分岔組——N6／N6F 兩行同等高亮，組前加分岔標籤，唔再只高亮電視線 */
+      const pair413 = (r.id==="N6" || r.id==="N6F") && rows.some(x=>x && x.id==="N6" && x.state==="locked") && rows.some(x=>x && x.id==="N6F" && x.state==="locked");
+      if(pair413 && r.id==="N6") html.push('<p class="prog71-pair413-label">第 6 幕分岔：電視線／電影線二選一</p>');
+      const next412Cls = pair413 ? ' prog71-pair413' : ((!next412Marked && !rows.some(x=>x && x.state==="open")) ? ' prog71-next412' : ''); if(next412Cls) next412Marked = true; /* v20a412 N5：冇已開放行嗰陣，第一個未開放逐項行做下一幕焦點 */
       html.push('<div class="prog71-row locked'+(storyActIsInsert(r.id) ? ' prog71-insert' : '')+next412Cls+'"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag lock">未開放</span></div>'+body+'</div>');
       if(storyActIsInsert(r.id)) farMerged105 = false;
       return;

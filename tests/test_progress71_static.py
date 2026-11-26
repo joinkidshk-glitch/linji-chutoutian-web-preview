@@ -1,3 +1,4 @@
+# v413 resync：renderProgressPane71 加分岔組呈現（P3），seg71 窗 7000→7600 先覆蓋全函數；見 qa413/resync413.py。
 # v371 resync：index.html 淨 +99 行（頒獎專攻公式＋季節限期提示＋結局總結修正＋兼職數值）；釘行按 git hunk 段移位，錨點內容逐字核實純漂移。
 # -*- coding: utf-8 -*-
 # v20a71 PROGRESS71＋PART3 靜態測試：
@@ -60,7 +61,7 @@ ok('防劇透文案＋最近兩幕規則（fullLeft = 2）',
    '完成前面幕數後逐幕揭曉' in src and 'let fullLeft = 2' in src)  # v20a105 S-45：遠幕合併句取代逐幕 boilerplate
 i71 = src.find('function prog71Esc')
 j71 = src.find('function renderProgressPane71')
-seg71 = src[i71:j71 + 7000] if 0 <= i71 < j71 else ''  # v371 resync：renderProgressPane71 加主線期限欄 +9 行，窗 6000→7000 先覆蓋全函數（6960 字元）
+seg71 = src[i71:j71 + 7600] if 0 <= i71 < j71 else ''  # v371 resync：renderProgressPane71 加主線期限欄 +9 行，窗 6000→7000 先覆蓋全函數（6960 字元）
 ok('進度頁代碼冇舊年份／冇關海媚個名', 'prog71-row far' in seg71 and '1988' not in seg71 and '1989' not in seg71 and '關海媚' not in seg71)
 
 # --- 三 A、返回地圖去重 ---

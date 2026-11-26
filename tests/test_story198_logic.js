@@ -1,3 +1,4 @@
+// v413 resync：進度時間條件措辭改「時間條件相符／未到」（P4 呈現修復，判定不變）；見 qa413/resync413.py。
 // v20a198 STORY198・邏輯／真路徑測試
 // B1：強制播優先於 WF4 地點事件（wf4TryLocEvent 有強制播 pending 嗰陣 defer，唔計 locTries；
 //     boss01 本身唔郁，強制播完之後下一次入茶餐廳照出）
@@ -308,7 +309,7 @@ ok('(C1) storyMainProgressLine 仲行共用幕號', html.indexOf('storyActLabel(
   const paneA = pane71();
   if(DEBUG) console.log('paneA198:', paneA);
   ok('(C2) N18 鎖住行見到（番外・1990 冬〈上岸路〉＋未開放）', paneA.indexOf('番外・1990 冬') >= 0 && paneA.indexOf('上岸路') >= 0 && paneA.indexOf('未開放') >= 0);
-  ok('(C2) N18 鎖行講明解鎖條件（先完成 N5＋到第 48 週＋時窗）', paneA.indexOf('先完成第 5 幕〈筆記本〉') >= 0 && paneA.indexOf('到第 48 週（現在第 15 週）') >= 0 && paneA.indexOf('時窗：1990 年冬') >= 0);
+  ok('(C2) N18 鎖行講明解鎖條件（先完成 N5＋到第 48 週＋時窗）', paneA.indexOf('先完成第 5 幕〈筆記本〉') >= 0 && paneA.indexOf('到第 48 週（現在第 15 週）') >= 0 && paneA.indexOf('時間條件未到：1990 年冬') >= 0);
   ok('(C2) N19 鎖住行見到＋前置句在位（玩家面終於驗到）', paneA.indexOf('番外・1991 春') >= 0 && paneA.indexOf('賭枱邊') >= 0 && paneA.indexOf('先完成番外・1990 冬〈上岸路〉') >= 0);
   ok('(C2) N19 鎖行喺 N18 行之後、N7 行之前（次序跟播次序）', paneA.indexOf('番外・1990 冬') < paneA.indexOf('番外・1991 春') && paneA.indexOf('番外・1991 春') < paneA.indexOf('第 7 幕'));
   ok('(C2) 第 7 幕緊貼插入行之後搵得到', paneA.indexOf('第 7 幕') >= 0 && paneA.indexOf('番外・1991 春') < paneA.indexOf('第 7 幕'));
