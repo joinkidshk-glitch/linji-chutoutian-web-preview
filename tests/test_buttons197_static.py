@@ -113,8 +113,8 @@ ok('N2：「過一日」改紙色＋啡框（「開始今日行程」留返金�
    and 'border:2px solid #8a6f4d !important; box-shadow:none !important;' in src)
 
 # --- C3：地點 sheet 行動掣齊高 ---
-ok('N3：行動掣固定 60px 高，標題／描述單行截短',
-   'height: 60px !important;' in src
+ok('N3：行動掣最少 60px 高、長說明隨內容增長（v420 改固定高，唔再裁走長文尾行）',
+   'height: auto !important; min-height: 60px !important;' in src
    and 'white-space: nowrap !important;' in src
    and '-webkit-line-clamp: 1 !important;' in src)
 

@@ -184,7 +184,7 @@ ok(S.money === 5000 && !!S.conseq61.sick && S.conseq61.sick.done[10] === true, "
 /* 唔夠錢：資訊版 modal（一個掣），撳完照結算 */
 S = mkSick(baseSave(), 10, 12); S.money = 10; modalCalls = []; afterDayCalls = [];
 ok(hosp96TreatGate("rest") === true && modalCalls.length === 1, "唔夠錢：gate 照接管出資訊版");
-ok(modalCalls[0].btns.length === 1 && modalCalls[0].html.indexOf("唔夠畀") >= 0, "唔夠錢：文案講明醫唔起");
+ok(modalCalls[0].btns.length === 1 && modalCalls[0].html.indexOf("不足支付") >= 0, "唔夠錢：文案講明醫唔起");
 modalCalls[0].btns[0].on();
 ok(S.money === 10 && S.conseq61.sick.done[10] === true, "唔夠錢：照病假結算、冇扣錢");
 
@@ -197,7 +197,7 @@ const back236 = (modalCalls[1].btns || []).find(b => b.label === "返去揀過")
 ok(!!back236, "236：確認框有「返去揀過」掣");
 back236.on();
 ok(S.money === 5000 && !!S.conseq61.sick && afterDayCalls.length === 0, "236：返去唔扣錢、病程唔郁、唔結算");
-ok(modalCalls.length === 3 && modalCalls[2].html.indexOf("病到燶") >= 0, "236：返去重開治療選擇");
+ok(modalCalls.length === 3 && modalCalls[2].html.indexOf("病倒") >= 0, "236：返去重開治療選擇");
 
 /* ---------- (4) 探病 ---------- */
 console.log("[4] 探病場景");

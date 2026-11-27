@@ -2100,7 +2100,7 @@ button.g, .start button.g{
   box-sizing: border-box !important;
   text-align: left !important;
   width: 100% !important;
-  height: 60px !important; /* v20a197 C3：行動掣固定 60px 高，唔跟內容行數走 */
+  height: auto !important; min-height: 60px !important; /* v420：行動掣最少 60px、長說明隨內容增長（舊固定 60px 令四行說明溢出卡底被裁） */
   overflow: hidden !important;
   background: #efe6cf !important;
   border: 1.5px solid rgba(196,165,116,.7) !important;
@@ -2401,7 +2401,7 @@ body.day-res-open #mask.day-res{
 }
 #loc-sheet.sheet .act,
 #app #loc-sheet.sheet .act{
-  min-height: 44px !important; /* 只查看通告欄 41→44 */
+  min-height: 60px !important; /* v420：統一最少 60px（舊 44 會壓過上面 min-height:60，短卡得 53px） */
 }
 
 /* ===== v17y: #loc-sheet bottom sheet flush to #v-map／#app — never mid-float ===== */
@@ -3821,7 +3821,7 @@ body.day-res-open .day-row{
 }
 #loc-sheet.sheet .act.act-priority,
 #app #loc-sheet.sheet .act.act-priority{
-  min-height:48px !important;
+  min-height:60px !important; /* v420：同一般行動卡統一最少 60px */
 }
 /* ===== v20a120 LOCFULL120：地點面板改全屏幕（純呈現層）=====
    根源：v118 上線版沿用舊 bottom sheet 殼（.sheet max-height 72dvh／560px，場景圖只係
@@ -6474,6 +6474,8 @@ body.day-res-open .day-row{
 .story-play .dlg106-char{
   filter:drop-shadow(0 10px 6px rgba(20,14,6,.35));
 }
+/* v420：立繪腳底上移 28px，鞋身完全藏喺對話紙框後（框底距舞台底固定 79px，舊 bottom:10% 喺短屏令鞋尖伸出框底、似企喺枱面） */
+.story-play .dlg106-char, .story-play .dlg119-halo{ margin-bottom:28px; }
 .story-play .dlg106-char.char-in362{ animation:charFade362 .2s ease-out; }
 /* 抉擇紙（選項掣做通告紙） */
 #mask.story-play-on .sp-choices-layout #modal-btns button,
@@ -6773,7 +6775,7 @@ body.day-res-open .day-row{
   transform:rotate(-6deg); background:rgba(251,247,238,.8); pointer-events:none;
 }
 /* --- ④ 手帳週行程 --- */
-#nb-days{ display:grid !important; grid-template-columns:repeat(3,1fr); gap:10px 12px; }
+#nb-days{ display:grid !important; grid-template-columns:repeat(3,1fr); gap:6px 12px; } /* v420：行距收窄，844 入場分類掣同確定掣之間留返呼吸位 */
 #nb-days .day-row{
   display:flex !important; flex-direction:column; align-items:center; justify-content:flex-start;
   gap:5px; text-align:center; min-height:118px !important; padding:10px 8px !important;
@@ -7701,6 +7703,7 @@ body.day-res-open .day-row{
 /* Q7 編輯中日子格小籤 */
 #nb-days .day-row{ position:relative; }
 #nb-days .day-row .edit-tag414{ position:absolute; top:3px; left:50%; transform:translateX(-50%); font-size:10px; font-weight:700; color:#fff; background:#823F35; border-radius:3px; padding:1px 5px; line-height:1.4; }
+#nb-days .day-row:nth-child(7) .edit-tag414{ left:auto; right:8px; transform:none; } /* v420：週日闊格小籤靠右，唔遮活動名 */
 /* Q6 印章斜度收細（全高度）：旋轉角唔再俾屏底截走 */
 #nb-actions #btn-confirm-plan.is-locked{ transform:rotate(-3deg) !important; }
 /* Q5 短屏（≤740px）：週格再收少少，星期日頂露出折位做續頁提示 */
@@ -7745,8 +7748,8 @@ body.day-res-open .day-row{
 #home-pane-plan .nb-plan-mode{ padding:1px 8px !important; margin-bottom:2px !important; }
 #home-pane-plan .nb-left .nb-range{ margin-bottom:2px !important; line-height:1.15 !important; }
 #home-pane-plan #nb-days{ gap:3px !important; }
-#home-pane-plan #nb-days .day-row{ min-height:76px !important; }
-#home-pane-plan #nb-days .day-row:nth-child(7){ min-height:46px !important; padding:4px 8px !important; }
+#home-pane-plan #nb-days .day-row{ min-height:70px !important; } /* v420：76→70，844 入場分類掣同確定掣之間留返呼吸位（觸控仍 ≥44） */
+#home-pane-plan #nb-days .day-row:nth-child(7){ min-height:44px !important; padding:4px 8px !important; }
 #home-pane-plan #nb-right-title{ margin-bottom:2px !important; line-height:1.2 !important; }
 #home-pane-plan .nb-right{ padding-top:4px !important; }
 #home-pane-plan .cat-tab{ padding:4px 2px !important; }
@@ -7801,7 +7804,8 @@ body.day-res-open .day-row{
 /* R10 分類掣選中態圖示反白：深啡底上深色線圖示提亮無效，改反白令圖示同白字同層 */
 .cat-tab.on .ci img.ic112{ filter:invert(.92) sepia(.25) saturate(.6) brightness(1.05) !important; }
 /* R11 紙面底漸隱（全高度）：折位露邊嘅下一張卡淡出做續頁提示，唔似被截斷 */
-#notebook{ -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 10px),rgba(0,0,0,.45)) !important; mask-image:linear-gradient(180deg,#000 calc(100% - 10px),rgba(0,0,0,.45)) !important; }
+#notebook{ -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 24px),rgba(0,0,0,.42)) !important; mask-image:linear-gradient(180deg,#000 calc(100% - 24px),rgba(0,0,0,.42)) !important; } /* v420：摺位漸隱加闊但唔壓太暗，半行字唔實切、摺位字仍可讀 */
+#notebook.nb-end420{ -webkit-mask-image:none !important; mask-image:none !important; } /* v420：捲到底收起漸隱，尾行唔遮字 */
 /* R12 劇情選項副文加深：灰啡字掃讀唔夠快 */
 .story-play .sp-choice .sp-notes{ color:#4a3826 !important; font-size:.74rem !important; }
 /* R13 推介卡劇照角標同卡下類型籤重複，收起角標（類型籤保留） */
@@ -7832,7 +7836,7 @@ body.day-res-open .day-row{
 .story-play .sp-text{ padding-right:14px !important; }
 /* v416 batch3：編輯入場週格微收，分類掣離開紙面底漸隱 */
 .home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days{ gap:2px !important; }
-.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row{ min-height:73px !important; }
+.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row{ min-height:66px !important; } /* v420：73→66，844 入場分類掣離紙面底漸隱再遠啲 */
 .home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row:nth-child(7){ min-height:44px !important; }
 /* S4 週日寬格圖示同其他格一致（右上角） */
 #nb-days .day-row .ic, #nb-days .day-row .nb-stk362{ order:3 !important; } /* v416：週日寬格（flex 列）圖示排最右，同其他格右上一致；grid 格用 grid-column 定位，order 無副作用 */
@@ -7906,9 +7910,11 @@ body.day-res-open .day-row{
 /* U3 教學步數指示 */
 .tut-step418{ font-size:.72rem; color:#6f5420; font-weight:800; letter-spacing:.08em; margin-bottom:4px; }
 /* U4 行程入場捲動提示籤（黏底、唔遮掣：pointer-events none） */
-.plan-scroll-hint418{ width:max-content; max-width:88%; margin:6px auto; padding:5px 12px; background:#fbf3df; color:#5a4632; border:1px dashed #b99b62; border-radius:3px; font-size:13px; font-weight:700; pointer-events:none; } /* v419：提示籤版面內置於週格與編輯區之間，入場即見、唔遮內容 */
+.plan-scroll-hint418{ width:max-content; max-width:88%; margin:4px auto; padding:5px 12px; background:#fbf3df; color:#5a4632; border:1px dashed #b99b62; border-radius:3px; font-size:13px; font-weight:700; pointer-events:none; } /* v419：提示籤版面內置於週格與編輯區之間，入場即見、唔遮內容 */
 #home-pane-plan #plan-scroll-hint418{ order:6 !important; margin-left:auto !important; margin-right:auto !important; }
 .plan-scroll-hint418[hidden]{ display:none; }
+.prog420-scrollhint{ font-size:12px; padding:3px 10px; background:rgba(251,243,223,.94); margin:4px auto 0; width:fit-content; pointer-events:none; } /* v420：進度抽屜捲動提示放列表下方，唔遮任何文字 */
+#progress-list{ padding-bottom:44px; } /* v420：捲到底嗰陣尾行唔俾提示籤遮住 */
 /* U5 壓力刻度加 0／100 端標 */
 .stress-scale363 .ss363-track::before{ content:"0"; position:absolute; left:0; top:14px; font-size:9px; color:#7a5c33; }
 .stress-scale363 .ss363-track::after{ content:"100"; position:absolute; right:0; top:14px; font-size:9px; color:#7a5c33; }
@@ -8201,7 +8207,7 @@ body.day-res-open .day-row{
       <!-- v20a265 COSTUME265：屋企新增——瞓覺掣（只限今日未耗嗰陣出，見 wireHome265）。
            v20a389 UI389：衣櫃升做行程組子頁（home-pane-wardrobe），呢度只留瞓覺＋留話簿。 -->
       <div class="home265-row" id="home265-row">
-        <button type="button" class="paper" id="btn-sleep265">瞓覺（結束今日）</button>
+        <button type="button" class="paper" id="btn-sleep265">睡覺（結束今日）</button>
         <button type="button" class="paper" id="btn-intel381">留話簿<span class="intel381-corner" id="intel381-corner" hidden>新留言</span></button>
       </div>
       <!-- v20a71 PART3B：「訓練一覽」摺疊段成段移除（用戶 13:30）——訓練資訊改入
@@ -16522,18 +16528,19 @@ function hosp96TreatGate(id){
     if(today >= c.sick.to) return false; /* 最後一日：唞埋今日就好，唔使畀錢醫 */
     const fee = LOC96_CFG.treatFee;
     const saved = c.sick.to - today; /* 醫好後慳返嘅病假日數 */
+    const rem420 = saved + 1; /* 連今日在內尚餘病假日數（to 係包尾日） */
     const afford = (Number(S.money)||0) >= fee;
     const doResolve = ()=>{ try{ conseq61ResolveSickDay(id); }catch(_e){} };
     if(!afford){
-      modal(`<h3>病到燶</h3>
-        <p>你燒到成身滾，醫生紙寫明仲要唞 ${saved} 日先好返——嗰幾日嘅行程，全部要作廢。</p>
-        <p class="sub">仁康醫院急症室有吊針同特效藥，$${fee} 可以聽日就好返；不過你而家得 $${(Number(S.money)||0).toLocaleString()}，唔夠畀。唯有留喺屋企，慢慢唞。</p>`,
-        [{ label:"留喺屋企休養", role:"p", on:doResolve }], { onDismiss:doResolve, scenePaper401:true }); /* v20a401 UI401-1：醫院唔夠錢版診症紙＋場景 dim */
+      modal(`<h3>病倒</h3>
+        <p>你發高燒，醫生紙寫明連今天在內還要休息 ${rem420} 天才痊癒，期間的行程全部作廢。</p>
+        <p class="sub">仁康醫院急症室吊針服藥收費 $${fee}，明天即可痊癒；你現有 $${(Number(S.money)||0).toLocaleString()}，不足支付。只能留在家中休養，休息足 ${rem420} 天。</p>`,
+        [{ label:"留在家中休養", role:"p", on:doResolve }], { onDismiss:doResolve, scenePaper401:true }); /* v20a401 UI401-1：醫院唔夠錢版診症紙＋場景 dim */
       return true;
     }
-    modal(`<h3>病到燶——去唔去醫院？</h3>
-      <p>你燒到成身滾，醫生紙寫明仲要唞 ${saved} 日先好返——嗰幾日嘅行程，全部要作廢。</p>
-      <p>去仁康醫院睇急症、吊針食特效藥（<b class="gold">$${fee}</b>）：今日照唞，但聽日就好返，慳返 ${saved} 日病假。唔去，就留喺屋企慢慢唞，唔使錢。</p>`,
+    modal(`<h3>病倒——要不要去醫院？</h3>
+      <p>你發高燒，醫生紙寫明連今天在內還要休息 ${rem420} 天才痊癒，期間的行程全部作廢。</p>
+      <p>去仁康醫院急症室吊針服藥（<b class="gold">$${fee}</b>）：今天休息，明天痊癒復工，省回 ${saved} 天病假。不去醫院，則留在家中休養，不用付費，但要休息足 ${rem420} 天。</p>`,
       [
         { label:`去醫院治療（−$${fee}）`, role:"p", on:()=>{
           /* v20a236 RECONFIRM236：治療先確認後扣 $600＋改寫病程（首個選擇 modal 本身係抉擇屏，呢度係確認一步）。 */
@@ -16549,7 +16556,7 @@ function hosp96TreatGate(id){
             },
             onCancel: ()=>{ hosp96TreatGate(id); } });
         } },
-        { label:"留喺屋企休養", role:"g", on:doResolve }
+        { label:"留在家中休養", role:"g", on:doResolve }
       ], { onDismiss:doResolve, scenePaper401:true }); /* v20a401 UI401-1：醫院 offer 診症紙＋場景 dim */
     return true;
   }catch(_e){ return false; }
@@ -19233,7 +19240,7 @@ function toast(m, opts){
   {
     const _vh2 = document.getElementById("v-home");
     const _dl = document.getElementById("debt-list");
-    if(_vh2 && _vh2.classList.contains("on") && _dl && _dl.offsetParent!==null && msg.indexOf("已經逾期")>=0){
+    if(_vh2 && _vh2.classList.contains("on") && _dl && _dl.offsetParent!==null && (msg.indexOf("已經逾期")>=0 || msg.indexOf("季節已轉換")>=0)){ /* v420：季節轉換提示同樣唔浮疊人情卡 */
       try{ renderDebtPane(); }catch(_e419){}
       toast._msg = msg; toast._subKey = opts.sub ? String(opts.sub) : ""; toast._until = Date.now() + 1800;
       return;
@@ -23601,9 +23608,11 @@ function planScrollHint418(){
     if(nb.dataset.editing418!=="1" || !first){ hint.hidden=true; return; }
     /* v419：提示條件改睇成個活動列表——任何一張卡俾摺線切住都出提示，
        唔再只睇首卡（首卡完整但次卡只露頂邊嗰陣，玩家要知可以向下捲）。 */
-    const listEl=document.getElementById("act-list");
-    const lRect=listEl ? listEl.getBoundingClientRect() : first.getBoundingClientRect();
-    hint.hidden = !(lRect.bottom > nbRect.bottom - 24);
+    /* v420：提示改睇成個手帳捲動狀態——下面仲有內容就出提示籤；捲到底同時收起紙面底漸隱，
+       唔好尾行文字俾漸層遮住，捲動狀態一眼可辨。 */
+    const more420 = (nb.scrollHeight - nb.scrollTop - nb.clientHeight > 24);
+    hint.hidden = !more420;
+    nb.classList.toggle("nb-end420", !more420);
   }catch(_e){}
 }
 function renderNotebook(){
@@ -24554,7 +24563,7 @@ function dayEndContinueButtons(ended, goRunSchedule, opts){
     const rem = countRemainingAutoDays();
     if(rem>0){
       btns.push({
-        label:"想跳過本週剩餘日子？加速 →",
+        label:"想跳過本週剩餘日子？加速（自動結算）→",
         role:"link",
         on:()=>confirmWeekAccel(()=>{ if(typeof goRunSchedule==="function") goRunSchedule(); })
       });
@@ -26024,11 +26033,12 @@ function stressScale363(pv){
     sc.style.display = "";
     const clamp = v=>Math.max(0,Math.min(100,Number(v)||0));
     const low417 = (Number(pv.peak)||0) < 52; /* v417：高峰低壓時綠色，同摘要行一致 */
-    const close417 = Math.abs((Number(pv.peak)||0) - (Number(pv.start)||0)) <= 14;
+    const close417 = Math.abs((Number(pv.peak)||0) - (Number(pv.start)||0)) <= 24; /* v420：合併門檻放寬，兩籤各約 15% 軌闊，差 18 仍會疊 */
+    /* v420：標籤位置夾入軌道內，低壓時合併標籤唔再俾左邊裝訂影遮住 */
     const lab417 = close417
-      ? `<span class="ss363-lab${low417?" low":""}" style="left:${clamp(pv.peak)}%">現時 ${pv.start}・高峰 ${pv.peak}</span>`
-      : `<span class="ss363-lab start" style="left:${clamp(pv.start)}%">現時 ${pv.start}</span>`
-        + `<span class="ss363-lab${low417?" low":""}" style="left:${clamp(pv.peak)}%">高峰 ${pv.peak}</span>`;
+      ? `<span class="ss363-lab${low417?" low":""}" style="left:${Math.max(20, Math.min(80, clamp(pv.peak)))}%">現時 ${pv.start}・高峰 ${pv.peak}</span>`
+      : `<span class="ss363-lab start" style="left:${Math.max(10, Math.min(90, clamp(pv.start)))}%">現時 ${pv.start}</span>`
+        + `<span class="ss363-lab${low417?" low":""}" style="left:${Math.max(10, Math.min(90, clamp(pv.peak)))}%">高峰 ${pv.peak}</span>`;
     sc.innerHTML = `<span class="ss363-track"></span>`
       + `<span class="ss363-dot" style="left:${clamp(pv.start)}%"></span>`
       + `<span class="ss363-dot end" style="left:${clamp(pv.end)}%"></span>`
@@ -33755,15 +33765,7 @@ function renderProgressPane71(){
   const segOf198 = {};
   { let seg198 = 0; rows.forEach((r, j)=>{ segOf198[j] = seg198; if(r && storyActIsInsert(r.id) && r.state==="locked") seg198++; }); }
   /* v20a409：已完成幕摺疊成一張紙條，第 6 幕起做主焦 */
-  const done409 = []; for(const r409 of rows){ if(r409 && r409.state==="done") done409.push(r409); else break; } /* 只摺開頭連續完成幕，保 DOM 次序 */
-  if(done409.length){
-    /* v419：摺疊數只計開頭連續幕，非連續已完成幕（番外等）列喺下方——摘要講明，
-       免玩家將摘要數同下方已完成行數對唔上。 */
-    const extraDone419 = rows.filter(r=>r && r.state==="done" && done409.indexOf(r) < 0).length;
-    html.push('<details class="prog409-done"><summary>已完成 '+done409.length+' 幕 ✓'+(extraDone419 ? '（另有 '+extraDone419+' 幕已完成，列於下方）' : '')+'</summary>'
-      + done409.map(r=>'<div class="prog71-row done"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag ok">✓ 已完成</span></div></div>').join("")
-      + '</details>');
-  }
+  const done409 = rows.filter(r409=>r409 && r409.state==="done" && !storyActIsInsert(r409.id)); /* v420：主線已完成幕入摺疊（放未完成列表之後）；插入幕（N6F／番外）已完成行留原位，雙生次序不變 */
   let next412Marked = false; /* v20a412 N5：第一個未開放逐項行標記做「下一幕」層級 */
   rows.forEach((r, i)=>{
     if(r.state==="done" && done409.indexOf(r) >= 0){ return; }
@@ -33804,6 +33806,8 @@ function renderProgressPane71(){
       let body;
       if(items && items.length){
         body = '<ul class="prog71-items">'+items.map(it=>'<li class="'+(it.ok ? "ok" : "no")+'">'+(it.ok ? "✓ " : "○ ")+prog71Esc(it.text)+'</li>').join("")+'</ul>';
+        /* v420：列出條件全部達標但未開放——講明尚待時機，唔好全勾又寫未開放令玩家困惑 */
+        if(items.every(it=>it.ok)) body += '<p class="prog71-note">條件已達標，尚待時機——返回地圖時會再確認開放。</p>';
       } else {
         body = '<p class="prog71-note">時機未到——先照常跑通告、見人，條件夠就會開。</p>';
       }
@@ -33832,6 +33836,11 @@ function renderProgressPane71(){
       html.push('<div class="prog71-row far"><div class="prog71-top"><span class="prog71-act">'+farLbl198+'</span><span class="prog71-tag lock">未開放</span></div><p class="prog71-note">完成前面幕數後逐幕揭曉。</p></div>');
     }
   });
+  if(done409.length){
+    html.push('<details class="prog409-done"><summary>已完成 '+done409.length+' 幕 ✓（按此展開）</summary>'
+      + done409.map(r=>'<div class="prog71-row done"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag ok">✓ 已完成</span></div></div>').join("")
+      + '</details>');
+  }
   /* v20a142 A2a：進度頁尾「星途寄語」填補區塊——開局下半死位嘅有意設計（唔係佔位卡）；
      淨係加 pane 內內容，唔郁 pane 底色／外殼（v141 手帳殼進行中）。有未開嘅幕就寫
      之後嘅幕等緊你行過去；十七幕行晒就轉埋單口吻。 */
@@ -33843,6 +33852,16 @@ function renderProgressPane71(){
   }
   html.push('</div>');
   el.innerHTML = html.join("");
+  /* v420：進度抽屜捲動提示——內容超出可視高時底部黏提示籤，捲到底即收起，唔好有內容裁走唔知 */
+  try{
+    if(el.scrollHeight > el.clientHeight + 4){
+      const _h420 = document.createElement("p");
+      _h420.className = "plan-scroll-hint418 prog420-scrollhint";
+      _h420.textContent = "向下捲動查看更多 ↓";
+      el.parentNode.insertBefore(_h420, el.nextSibling); /* v420：提示籤放列表外下方，唔浮喺內容上面遮字 */
+      el.addEventListener("scroll", function(){ _h420.hidden = (el.scrollHeight - el.scrollTop - el.clientHeight <= 4); }, {passive:true});
+    }
+  }catch(_e420){}
   /* v20a175 C2：開頁嗰陣若全域 toast 仲生效，收佢入頂部 in-flow banner，唔好畀 overlay 蓋住行。 */
   try{ prog175AdoptToast(); }catch(_e){}
 }
@@ -37638,11 +37657,11 @@ function awards62PlayCeremony(pack, doneFn){
         const fwd208 = Math.min(1, beatElapsed / 500);
         slots.forEach((s, i)=>{
           if(i === ni208){
-            /* v20a212 C3：宣佈嗰位改用 reveal 級 spotlight207 光柱（舊 lightPool 淡池靜態睇唔出）＋行前 10→16，靜態都分到邊位俾人唱名。 */
+            /* v420：唱名改用柔光池＋行前半步，其餘唔再壓到 0.45——揭曉前唔好用 reveal 級光柱，免得似洩露得主。 */
             const fwdY212 = Math.round(16 * fwd208);
-            spotlight207(slotCx(i), s.kind === "player" ? 68 : 62, FLOOR + fwdY212);
+            lightPool(slotCx(i), s.kind === "player" ? 68 : 62);
             drawFigure(s, i, { alpha: 1, y: fwdY212 });
-          } else drawFigure(s, i, { alpha: 0.45 });
+          } else drawFigure(s, i, { alpha: 0.8 });
         });
         return;
       }
@@ -37670,12 +37689,7 @@ function awards62PlayCeremony(pack, doneFn){
       }
       if(id === "suspense"){
         ctx.fillStyle = "rgba(8,4,18,0.52)"; ctx.fillRect(0, 0, W, H);
-        const n = Math.max(1, slots.length);
-        const lit = Math.min(n - 1, Math.floor(beatElapsed / ((b.ms || 1400) / n)));
-        slots.forEach((s, i)=>{
-          if(i === lit){ lightPool(slotCx(i), s.kind === "player" ? 68 : 62); drawFigure(s, i, { alpha: 1 }); }
-          else drawFigure(s, i, { alpha: 0.75 }); /* v418：懸念拍非亮格唔再壓太暗，避免似洩露得主 */
-        });
+        slots.forEach((s, i)=>{ drawFigure(s, i, { alpha: 1 }); }); /* v420：懸念拍全員均光，唔再逐個亮燈，免得亮中得主似洩露賽果 */
         return;
       }
       if(id === "reveal"){
@@ -46341,7 +46355,7 @@ function rom183ApplyLineOverrides(){ /* C1：pack greet[0] 改粵語（runtime �
   try{
     const TUTS = [];
     if(typeof TUTORIAL!=="undefined" && TUTORIAL) TUTS.push(TUTORIAL);
-    const LINE183 = "去他們常出沒的地方，有機會撞到他們——撞到才可以傾談／送禮。";
+    const LINE183 = "去他們常出沒的地方，有機會撞到他們，撞到才可以傾談／送禮。";
     TUTS.forEach(t=>{
       const steps = (t && Array.isArray(t.steps)) ? t.steps : [];
       steps.forEach(st=>{

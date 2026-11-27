@@ -88,8 +88,8 @@ chk('N2：loop 入面 syncCards 照舊（逐 tick 跟進）',
     'syncCards(b, elapsed)' in play_fn)
 
 # --- (C3) 提名 spotlight 加強 ---
-chk('N3：提名 beat 宣佈嗰位用 spotlight207 光柱（唔再係淡 lightPool）',
-    'spotlight207(slotCx(i)' in play_fn)
+chk('N3：提名 beat 宣佈嗰位用柔光池 lightPool（v420 改，揭曉前唔用 reveal 級光柱免洩露感）',
+    'lightPool(slotCx(i)' in play_fn and 'spotlight207(slotCx(i)' not in play_fn)
 chk('N3：行前幅度加大（10→16）', '16 * fwd208' in play_fn)
 chk('N3：懸念 beat 照舊 lightPool（唔郁）',
     'lightPool(slotCx(i)' in play_fn)

@@ -131,13 +131,13 @@ else:
     ok('C5 對比度 ≥4.5:1', False)
 
 # ---- C6：教學提隨機巧遇 ----
-ok('C6 教學 inline TUT_NPC 有巧遇句', '去他們常出沒的地方，有機會撞到他們——撞到才可以傾談／送禮。' in html)
+ok('C6 教學 inline TUT_NPC 有巧遇句', '去他們常出沒的地方，有機會撞到他們，撞到才可以傾談／送禮。' in html)
 ok('N6 runtime 覆寫補 live pack TUT_NPC', 'st.id!=="TUT_NPC"' in html and 'LINE183' in html)
 # v241b: inline TUT_MAP 已刪（JSON 做唯一來源）；live TUT_MAP 只有兩句，巧遇句由 runtime LINE183 補入
 tut_json = json.load(open(os.path.join(root, 'content', 'tutorial_zh_HK.json'), encoding='utf-8'))
 tut_map_body = next(s for s in tut_json['steps'] if s['id'] == 'TUT_MAP')['body']
 ok('N6 修正：live TUT_MAP 只有兩句，巧遇句由 runtime LINE183 補入（inline 已刪）',
-   len(tut_map_body) == 2 and '去他們常出沒的地方，有機會撞到他們——撞到才可以傾談／送禮。' in html)
+   len(tut_map_body) == 2 and '去他們常出沒的地方，有機會撞到他們，撞到才可以傾談／送禮。' in html)
 ok('N6 runtime 覆寫補 live pack TUT_MAP', 'st.id==="TUT_MAP"' in html and 'st.body.push(LINE183)' in html)
 
 # ---- C7：700 禮物選擇器兩欄 ----

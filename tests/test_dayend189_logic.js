@@ -79,7 +79,7 @@ function findBtn(btns, sub){ return (btns || []).find(b => String(b.label || '')
   S.weekPlan = ['rest', 'street', 'rest', 'rest', 'rest', 'rest', 'scout_all'];
   const btns = dayEndContinueButtons(false, goRunSchedule);
   ok('a v196 soft has only schedule + accel-link (no 返回地圖)',
-    JSON.stringify(labels(btns)) === JSON.stringify(['執行今日行程', '想跳過本週剩餘日子？加速 →']));
+    JSON.stringify(labels(btns)) === JSON.stringify(['執行今日行程', '想跳過本週剩餘日子？加速（自動結算）→']));
   ok('a soft has no 返回地圖 button', !findBtn(btns, '返回地圖'));
   const schedBtn = findBtn(btns, '執行今日行程');
   ok('a soft schedule button IS goRunSchedule', schedBtn && schedBtn.on === goRunSchedule);

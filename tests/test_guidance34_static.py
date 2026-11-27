@@ -49,7 +49,7 @@ tut_map_body = ' '.join(tut_map.get('body', []))
 ok('tutorial ask guidance names only cafe/agency (both have ask)', '在茶餐廳或事務所「打聽」不耗日' in tut_map_body)
 ok('tutorial ask guidance EXACT override removed (dead map deleted, JSON carries written form)',
    '"能力不夠就去報名訓練；茶餐廳／事務所「打聽」不耗日，傳聞會記入手帳。":' not in html
-   and '能力不足，就去報名訓練；在茶餐廳或事務所「打聽」不耗日，情報會直接告訴你。' in tut_map_body)
+   and '能力不足，就去報名訓練；在茶餐廳或事務所「打聽」不耗日。' in tut_map_body)
 ok('v267 tutorial 唔再話傳聞記入手帳（情報站：直接講）',
    '打聽回來的傳聞會記入手帳' not in tut_map_body and '傳聞會記入手帳' not in html)
 
