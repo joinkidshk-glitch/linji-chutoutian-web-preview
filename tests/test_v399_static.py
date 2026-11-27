@@ -1,3 +1,4 @@
+# v419 resync：教學聚光挖空改橢圓，updateTutLabels399 改傳挖空 bbox；斷言字串更新，行為意圖不變。
 # v399：第七輪 UI 檢視頭五項必修 — 靜態測試（釘字串／接線／對比度實算）。
 # 用法：python3 tests/test_v399_static.py [repo-root]
 import os
@@ -76,7 +77,7 @@ ok("v399 撞圈標籤暫隱＋目標標籤浮貼 helper 在位",
    and '#tut-target-label399{' in src
    and ".tut-label-hide399{ visibility:hidden; }" in src)
 ok("v399 金圈定位後即避圈（refresh 內調 update，離開 step 1 即還原）",
-   "updateTutLabels399({left: pr.left - pad" in src
+   "updateTutLabels399({left: pcx - holeRx - 6" in src
    and 'if(!on){ ring.style.display = "none"; try{ restoreTutLabels399(); }catch(_e){}' in src  # v401 UI401-2：同一分支加清遮罩挖空，收圈＋還原標籤不變
    and 'mask.classList.remove("tut-hole401")' in src
    and "restoreTutLabels399();" in seg("function clearTutSpotlight(){", "function applyTutSpotlight("))

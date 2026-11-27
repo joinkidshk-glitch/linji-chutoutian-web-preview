@@ -1,3 +1,4 @@
+// v419 resync：頒獎 frame 撐滿舞台高，窄屏 media 加 min-height 除 1.06 補償；D1 斷言字串更新。
 // v20a387 第八輪評估 P2 收尾・邏輯測試
 // 合約：
 //   A 壓力峰值預覽校準（W3 P2-1）：stressDeltaForAct 拍攝日 = 12（實際 8+R(2,6) 平均）；
@@ -58,7 +59,7 @@ ok('C5 btn-load-mini 44px', html.includes('#btn-load-mini{ font-size:.75rem; pad
 ok('C6 子 tab 闊 44px', html.includes('#home-subtabs .home-tab{ min-height:44px !important; min-width:44px !important;'));
 
 /* ---------- D 頒獎舞台 ---------- */
-ok('D1 窄屏 frame scale', html.includes('@media (max-width:480px){ .awd62-frame{transform:scale(1.06);transform-origin:top center} }'));
+ok('D1 窄屏 frame scale', html.includes('@media (max-width:480px){ .awd62-frame{transform:scale(1.06);transform-origin:top center;min-height:calc((100dvh - 24px) / 1.06)} }'));
 ok('D2 stage overflow-x hidden', html.includes('.awd62-stage{overflow-x:hidden;'));
 
 /* ---------- E 落敗差額提示 ---------- */

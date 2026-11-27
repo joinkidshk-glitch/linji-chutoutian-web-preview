@@ -539,7 +539,8 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 #v-home.view.on{display:flex;flex-direction:column;overflow:hidden}
 .home{padding:10px 10px 0;max-width:none;margin:0 auto;width:100%;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
 .home-top{display:flex;gap:10px;align-items:center;margin-bottom:8px;flex:0 0 auto}
-.home-top img{width:56px;height:74px;object-fit:cover;object-position:top;border-radius:10px;border:2px solid var(--gold);background:#0a1424;flex-shrink:0}
+.home-top img{width:56px;height:60px;object-fit:cover;object-position:top;border-radius:10px;border:2px solid var(--gold);background:#0a1424;flex-shrink:0} /* v419：頭像收矮，行程入場分類掣完整入鏡 */
+#v-home .memo141-line{ line-height:1.3; }
 .home-top .txt h2{margin:0 0 2px;font-size:1rem}
 .home-top .txt p{margin:0;font-size:.78rem;color:#cbb8a0;line-height:1.35}
 .home-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px;flex:0 0 auto}
@@ -581,7 +582,7 @@ html.reduce-motion *::after, body.reduce-motion *::after{
   border-radius:12px;padding:8px 2px 6px;min-width:0;flex:1 1 0;cursor:pointer;
   font:inherit;font-size:.68rem;font-weight:800;line-height:1.1;text-align:center;
 }
-.cat-tab .ci{display:block;font-size:1.15rem;margin-bottom:2px}
+.cat-tab .ci{display:block;font-size:1rem;margin-bottom:0;line-height:1.1} /* v419：分類掣收矮，完整入鏡 */
 .cat-tab.on{background:#6b4e2e;color:#fff8e8;border-color:#4a351e}
 .act-list{display:grid;gap:8px;flex:0 0 auto;min-height:0;overflow:visible;padding-bottom:8px}
 .act-item{
@@ -808,25 +809,25 @@ button.work-card59 .work-name59,button.work-card59 .work-meta59{display:block}
 .psr-gate62{margin:6px 0 0;font-size:.84rem;line-height:1.55;color:#4a3a22}
 .psr-gate62.ok{color:#3d6038;font-weight:700}
 .awd62-stage{position:fixed;inset:0;z-index:9990;background:radial-gradient(120% 55% at 50% 0%,#2c2148 0%,#14101f 55%,#0c0913 100%);display:flex;align-items:flex-start;justify-content:center;padding:12px;overflow-y:auto} /* v20a379（第四輪評估 P2-3）：舞台底由平黑改聚光燈漸層——frame 頂釘死唔郁（v218），下半唔再係一片死黑，讀得出係劇院暗場；佈局一字唔郁。 */ /* v20a207 B2：overflow-y:auto——提名 700 幀高貼近 viewport，內容萬一超高都唔會頂裁，改捲唔改佈局；v20a218 C-C2／v197 B3：safe center 改 flex-start——frame 頂釘死，唔再垂直置中：之前字幕／卡列一收一放，frame 高一變，成個 frame 連跳過掣喺 viewport 上下跳（glamour 段＋空字幕 beat）；而家 frame 頂固定喺 12px，canvas＋跳過掣 viewport 位置全程唔郁，超高嗰陣照舊捲落去（flex-start 本身唔會頂裁）。 */
-.awd62-frame{position:relative;width:min(96vw,760px);container-type:inline-size}
+.awd62-frame{position:relative;width:min(96vw,760px);container-type:inline-size;display:flex;flex-direction:column;min-height:calc(100dvh - 24px)} /* v419：frame 撐滿舞台高，進度條錨底，下段唔再留大片黑底 */
 /* v20a387（第八輪評估 W2 P2-6）：直向手機舞台只佔上半屏、顯細——GPT 方案 C：frame 排版闊不變（96vw，頂釘死防跳位照舊），窄屏視覺放大 6%（transform-origin 頂置中，beat 變高唔跳位）；舞台加 overflow-x:hidden 防放大出界橫捲。下半暗場加腳燈暖光漸層，唔再死黑。 */
 .awd62-stage{overflow-x:hidden;background:radial-gradient(90% 30% at 50% 100%,rgba(180,150,82,.16) 0%,rgba(12,9,19,0) 70%),radial-gradient(120% 55% at 50% 0%,#2c2148 0%,#14101f 55%,#0c0913 100%)} /* v20a388（第九輪補跑 W1 P2）：腳燈／聚光燈圖層對調——CSS 先列層畫上面，舊版不透明聚光燈喺上遮蔽腳燈暖光（像素實測下半全 #0c0913）；GPT 方案腳燈放第一、聚光燈做底，.16 透明度不變 */
-@media (max-width:480px){ .awd62-frame{transform:scale(1.06);transform-origin:top center} }
+@media (max-width:480px){ .awd62-frame{transform:scale(1.06);transform-origin:top center;min-height:calc((100dvh - 24px) / 1.06)} }
 .awd62-canvaswrap{position:relative}
 .awd62-m5fx149{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none;display:none;z-index:2}
 .awd62-m5fx149.on{display:block}
 .awd62-m5fx149.b{transform:scaleX(-1);opacity:.85}
 canvas.awd62-canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;background:#241736;border:4px solid #0d0918;box-shadow:0 0 0 4px #8a6d2f,0 18px 50px rgba(0,0,0,.65)}
-.awd62-caption{margin-top:10px;background:#1d1430;border:3px solid #8a6d2f;box-shadow:4px 4px 0 #0d0918;color:#ffe9b0;padding:8px 12px;height:93px; /* v20a211 C2：字幕框高度釘死 93px（全域 border-box，93 即總高）——基線實測 names 69px／suspense 54px／reveal 54–93px 來回跳，frame 跟住跳 7–12px（music 提名 700 係 24px）；93＝實測最長揭曉字幕 3 行高，1–2 行留空唔縮，frame 全程唔郁。空字幕 beat（walkup／glamour）display:none 維持不變——嗰兩段跳位係 v174 已接受 trade-off（glamour 同時收起卡列）。 */font-size:15px;line-height:1.55;text-align:center;white-space:pre-line}
+.awd62-caption{margin-top:10px;background:#1d1430;border:3px solid #8a6d2f;box-shadow:4px 4px 0 #0d0918;color:#ffe9b0;padding:8px 12px;height:93px; /* v419：字幕框還原定高，密度由放大入圍卡填補 */font-size:15px;line-height:1.55;text-align:center;white-space:pre-line}
 .awd62-caption .gold{color:#f2c14e;font-weight:900}
 .awd62-caption .dim{color:#b9a8d9;font-size:13px}
 .awd62-skip{position:absolute;bottom:8px;right:8px; /* v20a207 B3：由右上角搬去右下角——舊位壓住「角逐」pill 右端數字；右下係地板前緣＋觀眾席暗帶，唔遮人物（腳底 FLOOR 之上）／唔遮數字條 */background:#3a2a12;color:#ffd968;border:3px solid #8a6d2f;box-shadow:3px 3px 0 #0d0918;padding:6px 14px;font-weight:900;font-size:14px;cursor:pointer;z-index:3;border-radius:0;min-height:44px;display:inline-flex;align-items:center;justify-content:center} /* v20a387（第八輪評估 W2 P2-7）：觸控高 38→44px（GPT 規格） */
 .awd62-skip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #0d0918}
 .awd62-skip.glamour-hide{display:none} /* v20a212 A1：glamour 期間收起跳過掣（見 syncGlamour） */
 .awd62-tap{margin-top:6px; /* v20a207 B2：8→6，提名 700 留 2px */text-align:center;color:#8d7db5;font-size:12px}
-.awd63-cards{display:flex;gap:24px;justify-content:center;margin-top:8px;visibility:hidden} /* v20a207 B2：margin-top 10→8，提名 700 留 2px */ /* v20a174 B2：卡列預留高度——由 display:none 改常駐 flex＋visibility 隱藏，names beat 開場 frame 高唔跳（開場全空 0.2s 消除）；.on 先可見；v20a187 C2：gap 8→24——「你」徽（右出 7px）同隔籬卡 🏆 徽（左出 7px）中間留 10px，唔再喺 8px 卡罅撞埋；4 卡總闊 376→424px，760 框仲放到 */
+.awd63-cards{display:flex;gap:24px;justify-content:center;margin-top:8px;visibility:hidden} /* v419：卡放大填密度（88→104px），卡罅 24px 保角標唔撞 */
 .awd63-cards.on{visibility:visible}.awd63-cards.preview212{visibility:visible}.awd63-cards.preview212 .awd63-card{opacity:.38;transform:none} /* v20a212 C1：格標題剪影——卡列預先淡入（dimmed，等宣佈先上色上名）；v20a379（第四輪評估 P2-3）：預覽不透明度 .22→.38，宣佈前都讀到名，唔再似空卡 */.awd63-cards.glamour-hide{display:none} /* v20a174 C2：glamour 期間卡列改 display:none 收短 frame（v168 visibility 留位嗰 174px 死位取消；下一 beat 除返即恢復） */
-.awd63-card{width:88px;background:linear-gradient(180deg,#fbf2da,#f3e5c3);border:2px solid #d9c491;border-radius:4px;padding:5px;box-shadow:0 3px 8px rgba(0,0,0,.45);opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease;position:relative}
+.awd63-card{width:104px;background:linear-gradient(180deg,#fbf2da,#f3e5c3);border:2px solid #d9c491;border-radius:4px;padding:5px;box-shadow:0 3px 8px rgba(0,0,0,.45);opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease;position:relative}
 .awd63-card.show{opacity:1;transform:none}
 .awd63-card img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;background:#2b2118}
 .awd63-card .t{font-size:11px;line-height:1.35;color:#4a3a20;text-align:center;margin-top:4px;font-weight:700;height:30px;overflow:hidden}
@@ -834,9 +835,12 @@ canvas.awd62-canvas{display:block;width:100%;height:auto;image-rendering:pixelat
 .awd63-card.me{border-color:#f2c14e;box-shadow:0 0 0 2px #f2c14e,0 4px 10px rgba(0,0,0,.5)}
 .awd63-card.me::after{content:"你";position:absolute;top:-9px;right:-7px;background:#c02727;color:#fff;font-size:10px;font-weight:900;border-radius:50%;width:19px;height:19px;line-height:19px;text-align:center;z-index:2}
 .awd63-card.win::after{content:"得獎";position:absolute;top:-9px;left:-7px;background:linear-gradient(180deg,#ffe9a8,#f2c14e);color:#3a2a12;font-size:10px;font-weight:900;border:1px solid #a97c1e;border-radius:999px;padding:2px 6px;line-height:1.3;text-align:center;z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.5);opacity:0} /* v418：得主標記改金色小籤，揭曉後先顯示，唔提早洩露 */
-.awd63-cards418.revealed418 .awd63-card.win::after{opacity:1}
-.awd63-cards418.revealed418 .awd63-card:not(.win){filter:brightness(.82)}
-.awd418-progress{margin:8px auto 2px;max-width:340px;text-align:center;color:#d8cfae;font-size:.78rem;letter-spacing:.04em}
+.awd63-cards418.revealed418 .awd63-card.win::after{opacity:1;font-size:11px;padding:3px 8px}
+.awd63-cards418.revealed418 .awd63-card.win{border-color:#f2c14e;box-shadow:0 0 0 2px #f2c14e,0 6px 14px rgba(0,0,0,.55);transform:scale(1.05);z-index:1} /* v419：揭曉後得主卡金邊放大，非得主明顯退後，一眼分得清 */
+.awd63-cards418.revealed418 .awd63-card:not(.win){opacity:.55;filter:saturate(.55) brightness(.8)}
+.awd419-phase{margin-top:8px;text-align:center;color:#f2c14e;font-size:.82rem;font-weight:800;letter-spacing:.22em;text-indent:.22em} /* v419：拍次條——入圍／即將揭曉／得獎者揭曉，拍次辨識唔靠猜 */
+.awd419-phase:empty{display:none}
+.awd418-progress{margin:12px auto 2px;padding-top:8px;max-width:340px;width:100%;text-align:center;color:#d8cfae;font-size:.78rem;letter-spacing:.04em} /* v419：進度貼近字幕，唔再隔大片空白 */
 .awd418-progress .awd418-bar{height:5px;border-radius:99px;background:rgba(242,193,78,.22);margin-top:5px;overflow:hidden}
 .awd418-progress .awd418-fill{height:100%;background:linear-gradient(90deg,#f2c14e,#ffe9a8)}
 
@@ -1754,9 +1758,9 @@ button.g, .start button.g{
   color: #8a7355;
   white-space: nowrap;
 }
-.nb-left{ padding-top: 8px !important; padding-bottom: 6px !important; }
-.nb-title,.nb-range{ padding: 2px 8px !important; margin: 0 0 4px !important; font-size: .78rem !important; }
-.nb-range{ margin-bottom: 6px !important; font-size: .68rem !important; }
+.nb-left{ padding-top: 4px !important; padding-bottom: 6px !important; }
+.nb-title,.nb-range{ padding: 2px 8px !important; margin: 0 0 2px !important; font-size: .78rem !important; }
+.nb-range{ margin-bottom: 3px !important; font-size: .68rem !important; }
 
 /* 3) Gig dots + shorter card */
 .gig-dots{ gap: 8px !important; margin: 6px 0 8px !important; align-items:center; }
@@ -2564,6 +2568,7 @@ body.day-res-open #mask.day-res{
   border:1px solid rgba(0,0,0,.14);
   display:flex;flex-direction:column;justify-content:flex-end;
 }
+@media (max-height:760px){ .story-play .sp-stage{ max-height:min(30dvh,240px); } .story-play .sp-stage:has(.sp-bust-stand){ min-height:min(30dvh,220px); max-height:min(34dvh,260px); } } /* v419：短屏收細舞台，對白唔再俾捲動邊切走半句 */
 /* v18m: choices-mode — shrink stage so BOTH choice buttons fit one phone screen (no page scroll) */
 .story-play .sp-stage.sp-mode-choices{
   flex:1 1 auto;min-height:96px;max-height:min(24dvh,150px);height:auto;
@@ -5715,6 +5720,7 @@ body.day-res-open .day-row{
 #mask.tut-on{ background:linear-gradient(180deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) var(--tut-shell-bottom,110px), rgba(0,0,0,.78) var(--tut-shell-bottom,110px), rgba(0,0,0,.78) 100%) !important; }
 /* S-5：B01 新場景＋全身企立 */
 .b01-scene108{ position:relative; height:210px; border-radius:12px; background-size:cover; background-position:center 30%; overflow:hidden; border:1px solid rgba(146,110,44,.55); margin:0 0 8px; }
+@media (max-height:760px){ .b01-scene108{ height:140px; } } /* v419：短屏收細開場場景，何生對白完整入鏡 */
 .b01-fig108{ position:absolute; bottom:0; height:96%; width:auto; filter:drop-shadow(0 2px 4px rgba(0,0,0,.35)); }
 .b01-fig-awi108{ left:4%; }
 .b01-fig-ho108{ right:4%; }
@@ -6123,7 +6129,7 @@ body.day-res-open .day-row{
 .nb-stk362 video{ width:100%; height:100%; object-fit:cover; display:block; }
 @keyframes stkBob362{ 0%,100%{ transform:translateY(0) rotate(-1deg); } 50%{ transform:translateY(-2px) rotate(1deg); } }
 #btn-confirm-plan{
-  min-height:54px !important; font-size:1.05rem !important; font-weight:900 !important;
+  min-height:48px !important; font-size:1.05rem !important; font-weight:900 !important; /* v419：確認欄收窄 54→48（觸控仍 ≥44），編輯區多露一截 */
   padding:12px 22px !important;
 }
 #btn-confirm-plan.is-locked{ animation:stampIn362 .3s ease-out; }
@@ -6394,15 +6400,16 @@ body.day-res-open .day-row{
 #v-home .home-subtabs .home-tab.on{ color:var(--inkred363) !important; box-shadow:inset 0 -2px 0 var(--inkred363) !important; }
 #nb-days .day-row{
   display:grid !important; grid-template-columns:42px minmax(0,1fr) 52px; align-items:center;
-  min-height:48px !important; padding:4px 8px !important;
+  min-height:44px !important; padding:2px 8px !important; /* v419：行高收窄（貼紙 44→38＋直向 padding 4→2），觸控高仍 ≥44；行程入場首張活動卡唔再俾紙邊切走 */
 }
-#nb-days .day-row .wd{ width:auto !important; font-family:var(--hand363); font-size:.95rem !important; grid-column:1; grid-row:1; }
-#nb-days .day-row .nm{ font-size:.88rem !important; grid-column:2; grid-row:1; min-width:0; }
+#nb-days .day-row .wd{ width:auto !important; font-family:var(--hand363); font-size:.95rem !important; grid-column:1; grid-row:1; line-height:1.15; } /* v419：日格行距收窄 */
+#nb-days .day-row .plan-hint{ line-height:1.15; }
+#nb-days .day-row .nm{ font-size:.88rem !important; grid-column:2; grid-row:1; min-width:0; line-height:1.25; } /* v419：日格文字行距收窄，分類掣完整入鏡 */
 #nb-days .day-row .nb-stk362, #nb-days .day-row .ic{ grid-column:3; grid-row:1; }
 #nb-days .day-row .nm .plan-main{ font-family:var(--print363) !important; font-weight:700; font-size:.92rem !important; }
 #nb-days .day-row .plan-hint{ font-family:var(--hand363); color:#314d65; }
 #nb-days .nb-stk362{
-  width:44px !important; height:44px !important; border-radius:3px !important;
+  width:34px !important; height:34px !important; border-radius:3px !important;
   border:2px solid #fff9e4 !important; background:transparent !important;
   box-shadow:0 2px 3px rgba(60,40,10,.3) !important; animation:none !important;
   justify-self:end;
@@ -7040,7 +7047,7 @@ body.day-res-open .day-row{
 /* (2) 教學遮罩：全幅均勻 dim（頂欄同步降亮，唔再留頂欄光）；有金圈嗰陣挖空圈內 */
 #mask.tut-on{ background:rgba(0,0,0,.78) !important; }
 #mask.tut-on.tut-hole401{
-  background:radial-gradient(circle var(--tut-hole-r,46px) at var(--tut-hole-x,50%) var(--tut-hole-y,50%), rgba(0,0,0,0) 0, rgba(0,0,0,0) calc(var(--tut-hole-r,46px) - 6px), rgba(0,0,0,.78) var(--tut-hole-r,46px)) !important;
+  background:radial-gradient(ellipse var(--tut-hole-rx,46px) var(--tut-hole-ry,46px) at var(--tut-hole-x,50%) var(--tut-hole-y,50%), rgba(0,0,0,0) 0, rgba(0,0,0,0) 88%, rgba(0,0,0,.78) 100%) !important; /* v419：挖空改橢圓貼合目標 pin，正圓半徑會照亮鄰近地點標籤 */
 }
 /* 教學期間隱去卡邊背景字：地圖提示列＋圖例（離開教學即還原，class 由 setTutMask 加／除） */
 #app.tut-stage397 .map-hint, #app.tut-stage397 .map-legend{ display:none !important; }
@@ -7264,6 +7271,11 @@ body.day-res-open .day-row{
 .debt-repay-btn{ min-height:44px !important; }
 /* v20a404 UI404-3：人情頁過期便條（佔位，唔浮疊正文）。 */
 .debt-overdue404{ margin:6px 0 8px; padding:8px 10px; background:#f7e3c8; border:1px solid #b98a2f; border-left:4px solid #9c302d; border-radius:3px; color:#43301c; font-size:.82rem; line-height:1.5; }
+/* v419：逾期待處理組——組題＋逾期卡紅邊，急事層級一眼分明。 */
+.debt-urgent-head419{ margin:8px 0 4px; font-weight:800; color:#9c302d; font-size:.86rem; letter-spacing:.06em; }
+#debt-list .debt-row.debt-urgent419{ border-left:5px solid #9c302d !important; box-shadow:inset 0 0 0 1px rgba(156,48,45,.35); }
+/* v419：toast 浮起嗰陣人情頁底距加深，尾卡唔俾 toast 遮住。 */
+#app.toast-up #debt-list{ padding-bottom:calc(152px + env(safe-area-inset-bottom, 0px)) !important; }
 /* v20a404 UI404-6：手帳進度行＋存檔管理槽列＋未開放靜態標題。 */
 .nb-progress404{ margin:4px 0 6px; padding:6px 10px; background:#f3e2b7; border:1px solid #b98a2f; border-radius:3px; color:#43301c; font-size:.82rem; font-weight:700; }
 .slot-manage404{ display:flex; align-items:center; gap:8px; }
@@ -7607,7 +7619,7 @@ body.day-res-open .day-row{
 /* P1 手帳頁首密度：收緊頂距／頭像／備忘紙／分頁間距，唔縮字、觸控目標不變 */
 .home{ padding-top:6px !important; }
 .home-top{ margin-bottom:4px !important; }
-.home-top img{ width:50px !important; height:64px !important; }
+.home-top img{ width:50px !important; height:52px !important; } /* v419：頭像收矮，行程入場分類掣完整入鏡 */
 .memo141{ padding:10px 12px 7px !important; }
 .memo141-line{ line-height:1.5 !important; }
 #home-tabs{ padding-top:8px !important; }
@@ -7755,7 +7767,7 @@ body.day-res-open .day-row{
    707 量度證明全週＋編輯掣幾何上唔可能同屏（週格本身高過紙面），保留兩段式 */
 @media (max-height:740px){
   #v-home .home-top img{ width:44px !important; height:56px !important; }
-  #v-home .memo141{ padding:7px 12px 5px !important; }
+  #v-home .memo141{ padding:5px 12px 3px !important; } /* v419：手帳頁首紙條收窄，行程入場多露活動卡 */
   #v-home .memo141-line{ line-height:1.42 !important; }
   #home-pane-plan #nb-days .day-row{ min-height:72px !important; }
   #home-pane-plan #nb-days .day-row:nth-child(7){ min-height:42px !important; }
@@ -7780,6 +7792,7 @@ body.day-res-open .day-row{
 .stress-scale363{ height:30px !important; min-height:30px !important; flex:none !important; margin-top:6px !important; margin-bottom:2px !important; }
 #home-pane-plan #nb-progress404{ margin-top:24px !important; } /* v415 batch3：banner 推落折位之下，撳格後折位落刻度與 banner 之間，唔露半截字 */
 #home-pane-plan .cat-tabs{ margin-bottom:3px !important; }
+#home-pane-plan .cat-tabs button{ padding-top:2px !important; padding-bottom:2px !important; } /* v419：分類掣收窄，活動卡早啲入鏡（觸控高由 min-height 保底） */
 #home-pane-plan .act-item{ padding:5px 9px !important; }
 #home-pane-plan #nb-quick{ margin-top:2px !important; }
 #home-pane-plan #nb-live-stress{ margin-top:2px !important; }
@@ -7893,7 +7906,7 @@ body.day-res-open .day-row{
 /* U3 教學步數指示 */
 .tut-step418{ font-size:.72rem; color:#6f5420; font-weight:800; letter-spacing:.08em; margin-bottom:4px; }
 /* U4 行程入場捲動提示籤（黏底、唔遮掣：pointer-events none） */
-.plan-scroll-hint418{ width:max-content; max-width:88%; margin:6px auto; padding:5px 12px; background:#fbf3df; color:#5a4632; border:1px dashed #b99b62; border-radius:3px; font-size:13px; font-weight:700; pointer-events:none; }
+.plan-scroll-hint418{ width:max-content; max-width:88%; margin:6px auto; padding:5px 12px; background:#fbf3df; color:#5a4632; border:1px dashed #b99b62; border-radius:3px; font-size:13px; font-weight:700; pointer-events:none; } /* v419：提示籤版面內置於週格與編輯區之間，入場即見、唔遮內容 */
 #home-pane-plan #plan-scroll-hint418{ order:6 !important; margin-left:auto !important; margin-right:auto !important; }
 .plan-scroll-hint418[hidden]{ display:none; }
 /* U5 壓力刻度加 0／100 端標 */
@@ -19215,6 +19228,17 @@ function toast(m, opts){
       }
     }
   }
+  /* v419：人情頁開住嗰陣，逾期提示唔再用底部 overlay 蓋卡——頁面已有佔位便條＋
+     逾期待處理組承載同一資訊，toast 只需刷新人情頁（跟 v20a175 進度頁先例）。 */
+  {
+    const _vh2 = document.getElementById("v-home");
+    const _dl = document.getElementById("debt-list");
+    if(_vh2 && _vh2.classList.contains("on") && _dl && _dl.offsetParent!==null && msg.indexOf("已經逾期")>=0){
+      try{ renderDebtPane(); }catch(_e419){}
+      toast._msg = msg; toast._subKey = opts.sub ? String(opts.sub) : ""; toast._until = Date.now() + 1800;
+      return;
+    }
+  }
   /* v20a412 N7：約會場景開住嗰陣，toast 延後到約會完結先出（資訊保留） */
   if(!opts._dateDefer412 && document.querySelector(".date409")){
     queueToastAfterDate412(msg, opts);
@@ -19273,7 +19297,7 @@ function hideToast211(){ /* v20a211 A1：結果卡開出嗰刻收起 toast——
   const app = document.getElementById("app");
   if(app) app.classList.remove("toast-up","keep-sheet");
 }
-function show(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("on"));document.getElementById(id).classList.add("on")}
+function show(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("on"));document.getElementById(id).classList.add("on"); if(id==="v-home"){ try{ requestAnimationFrame(function(){ planScrollHint418(); }); }catch(_e){} } } /* v419：手帳顯示嗰刻重計捲動提示（render 嗰陣可能未顯示） */
 
 function refreshNpc(){
   S.locNpc={};
@@ -19740,10 +19764,12 @@ function season371List(){
 }
 function season371LineText(it){
   const head = `《${it.title}》（${it.whenLabel}）`;
+  /* v419：列明實際日期，唔使玩家自己換算尚餘日數。 */
+  const date419 = (d)=>{ try{ const dt = new Date(START.y, START.m-1, START.d + (Number(d)||0)); return dt.getFullYear()+"年"+(dt.getMonth()+1)+"月"+dt.getDate()+"日"; }catch(_e){ return ""; } };
   let s;
-  if(!it.open) s = `${head} ${it.toOpen} 日後開放`;
+  if(!it.open) s = `${head} ${it.toOpen} 日後開放（${date419(it.startDay)}）`;
   else if(it.remain <= 0) s = `${head} 今日截止`;
-  else s = `${head} 尚餘 ${it.remain} 日`;
+  else s = `${head} 尚餘 ${it.remain} 日（截止 ${date419(it.endDay)}）`;
   if(it.open && it.remain <= 3 && it.remain > 0) s += "（即將截止）";
   if(it.need) s += ` · 須先完成《${it.need}》`;
   return s;
@@ -23564,10 +23590,20 @@ function planScrollHint418(){
       nb.addEventListener("scroll", function(){ planScrollHint418(); }, {passive:true});
     }
     const first=document.querySelector("#act-list .act-item");
-    if(nb.dataset.editing418!=="1" || !first){ hint.hidden=true; return; }
     const nbRect=nb.getBoundingClientRect();
-    const fRect=first.getBoundingClientRect();
-    hint.hidden = !(fRect.bottom > nbRect.bottom - 24);
+    /* v419：手帳未顯示／活動列表未渲染嗰陣計出嚟永遠收埋——未定就延遲重計（最多約 2 秒） */
+    if(nbRect.height===0 || (nb.dataset.editing418==="1" && !first)){
+      const n419 = Number(nb.dataset.hintRetry419||0);
+      if(n419 < 7){ nb.dataset.hintRetry419 = String(n419+1); setTimeout(function(){ planScrollHint418(); }, 300); }
+      return;
+    }
+    nb.dataset.hintRetry419 = "0";
+    if(nb.dataset.editing418!=="1" || !first){ hint.hidden=true; return; }
+    /* v419：提示條件改睇成個活動列表——任何一張卡俾摺線切住都出提示，
+       唔再只睇首卡（首卡完整但次卡只露頂邊嗰陣，玩家要知可以向下捲）。 */
+    const listEl=document.getElementById("act-list");
+    const lRect=listEl ? listEl.getBoundingClientRect() : first.getBoundingClientRect();
+    hint.hidden = !(lRect.bottom > nbRect.bottom - 24);
   }catch(_e){}
 }
 function renderNotebook(){
@@ -23717,6 +23753,8 @@ function renderNotebook(){
     const nb418=document.getElementById("notebook");
     if(nb418) nb418.dataset.editing418 = editable ? "1" : "0";
     requestAnimationFrame(function(){ planScrollHint418(); });
+    /* v419：render 嗰陣手帳可能未顯示（rect 全 0），延遲再計一次，免提示籤永遠收埋 */
+    setTimeout(function(){ planScrollHint418(); }, 350);
   }catch(_h418){}
   const confBtn=document.getElementById("btn-confirm-plan");
   if(confBtn){
@@ -33063,14 +33101,17 @@ function renderDebtPane(){
   const repayBtn = (id, isSeason)=>{
     return `<div class="debt-cta-wrap"><button type="button" class="debt-repay-btn" data-repay-id="${journalText(id)}" data-season="${isSeason?"1":"0"}">去還</button></div>`;
   };
-  const cardHtml=cards.map(c=>{
+  /* v419：季節卡帶逾期旗，逾期者抽出置頂（見組裝段）；逾期卡加紅邊強調 class。 */
+  const cardItems419=cards.map(c=>{
     const status=debtStatusLabel(c.status);
     const who=debtCreditorName(c);
     const amt = (c.amount!=null) ? ("金額約 $"+Number(c.amount).toLocaleString()) : "建議禮物或現金 $200";
     /* v20a34 引導包 P0-5(b)：開局季節卡補「來歷」一行（DEBT_ORIGIN_LINES34 對照） */
     const origin34 = ORIGIN34[c.id] ? `<p class="debt-origin">來歷：${journalText(ORIGIN34[c.id])}</p>` : "";
-    return `<article class="debt-row season-card" data-collect-id="${journalText(c.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(c.title)}</p><p class="collect-line">${journalText(c.line)}</p>${origin34}<p class="debt-amt">${journalText(amt)}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${repayBtn(c.id,true)}</article>`;
-  }).join("");
+    const overdue419 = (status==="已逾期" || status==="過期" || status==="逾期");
+    return { id:c.id, overdue419, html:`<article class="debt-row season-card${overdue419?" debt-urgent419":""}" data-collect-id="${journalText(c.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(c.title)}</p><p class="collect-line">${journalText(c.line)}</p>${origin34}<p class="debt-amt">${journalText(amt)}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${repayBtn(c.id,true)}</article>` };
+  });
+  const cardHtml=cardItems419.filter(c=>!c.overdue419).map(c=>c.html).join("");
   /* v20a259 R4：債權段分三組顯示——故事債權／茶餐廳幫手／已兌現（絕響＝灰階＋「人已不在香港」，
      無還款／收取掣；絕響債權歸故事債權組）。每組非空先出標題行；已兌現卡狀態寫「已兌現」。 */
   const creditCardHtml=(c)=>{
@@ -33103,32 +33144,38 @@ function renderDebtPane(){
     const amt = (d.amount!=null) ? ("金額約 $"+Number(d.amount).toLocaleString()) : ("人情："+journalText(d.weight)+" · 建議 $200／禮物");
     const dueLine = (d.dueDay!=null && typeof favorDueHintText==="function") ? favorDueHintText(d) : "";
     const ex = d.status==="絕響";
+    /* v419：逾期旗（同 overdue404 判定同源）——逾期債卡抽出置頂＋紅邊強調。 */
+    const overdue419 = !ex && (d.status==="過期" || d.status==="逾期" || status==="已逾期" || (d.dueDay!=null && (S.dayIndex|0) > (d.dueDay|0)));
     /* v20a26：鏈 G 第 3 拍——屋企債卡附家人態度字條（跟聲望三級），同卡渲染，唔另開頁 */
     const famLine = (d.id==="debt_family_home" && typeof familyAttitudeLine==="function") ? familyAttitudeLine() : "";
     /* v20a27：鏈 G 第 2 拍——首次點名後屋企回音字條（觸發後常駐，同態度字條分開一行） */
     const famEcho = (d.id==="debt_family_home" && typeof familyEchoNoteText==="function") ? familyEchoNoteText() : "";
     /* v20a34 引導包 P0-5(b)：開局 mockDebts 補「來歷」一行（DEBT_ORIGIN_LINES34 對照，純顯示） */
     const origin34 = ORIGIN34[d.id] ? `<p class="debt-origin">來歷：${journalText(ORIGIN34[d.id])}</p>` : "";
-    return { id:d.id, html:`<article class="debt-row${ex?" debt-exodus":""}" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p>${origin34}<p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${dueLine?`<p class="debt-meta">${journalText(dueLine)}</p>`:""}<p class="debt-note">${journalText(d.season)}</p>${famLine?`<p class="debt-note family-attitude">${journalText(famLine)}</p>`:""}${famEcho?`<p class="debt-note family-echo">${journalText(famEcho)}</p>`:""}${ex?"":repayBtn(d.id,false)}</article>` };
+    return { id:d.id, overdue419, html:`<article class="debt-row${ex?" debt-exodus":""}${overdue419?" debt-urgent419":""}" data-debt-id="${journalText(d.id)}"><p class="debt-who">債主：${journalText(who)}</p><p class="debt-title">${journalText(d.title)}</p>${origin34}<p class="debt-meta">${amt}</p><span class="debt-status" data-tone="${journalText(status)}">${journalText(status)}</span><p class="debt-fuzzy">${journalText(DEBT_FUZZY[status])}</p>${dueLine?`<p class="debt-meta">${journalText(dueLine)}</p>`:""}<p class="debt-note">${journalText(d.season)}</p>${famLine?`<p class="debt-note family-attitude">${journalText(famLine)}</p>`:""}${famEcho?`<p class="debt-note family-echo">${journalText(famEcho)}</p>`:""}${ex?"":repayBtn(d.id,false)}</article>` };
   });
   /* v20a27（4-3 覆檢跟進）：只改顯示次序——屋企債卡抽出嚟排全頁最前（鏈 G 第 1 拍原意：
      開局手帳第一筆唔係圈內債，係屋企）；季節卡／債權／其餘圈內債保持現有相對次序。
      S.mockDebts 陣列本身唔郁，免影響還款、壓力等其他邏輯。 */
-  const famCardsHtml=debtCards.filter(c=>c.id==="debt_family_home").map(c=>c.html).join("");
+  /* v419：逾期待處理組置頂（季節卡＋債卡，屋企債逾期亦入組）——急事第一眼可見；
+     無逾期時組別為空，屋企優先次序不變。 */
+  const urgent419=[...cardItems419.filter(c=>c.overdue419), ...debtCards.filter(c=>c.overdue419)];
+  const urgentHtml419=urgent419.length ? `<p class="debt-urgent-head419">逾期待處理</p>` + urgent419.map(c=>c.html).join("") : "";
+  const famCardsHtml=debtCards.filter(c=>c.id==="debt_family_home" && !c.overdue419).map(c=>c.html).join("");
   /* v20a30（Phase 4-7）：鏈 G 第 4 拍「屋企穩陣工」行動卡——緊貼屋企卡之後出（1990 冬起、
      未答先有）；可用性／旗把關喺 choice47FamilyCardHtml 內，答完即消失。 */
   const choice47Html=(typeof choice47FamilyCardHtml==="function") ? choice47FamilyCardHtml() : "";
-  const debtHtml=debtCards.filter(c=>c.id!=="debt_family_home").map(c=>c.html).join("");
+  const debtHtml=debtCards.filter(c=>c.id!=="debt_family_home" && !c.overdue419).map(c=>c.html).join("");
   const emptyHtml=(!rows.length && !cardHtml && !creditHtml) ? `<div class="debt-empty"><div class="debt-stamp" aria-hidden="true">清晒</div><p>${journalText(MOCK_EMPTY.debts)}</p><p class="sub" style="margin-top:8px"><button type="button" class="debt-repay-btn" data-repay-id="__goto_agency__" data-season="0">去何生事務所</button></p></div>` : "";
-  /* v20a404 UI404-3：過期提示改佔位便條——喺債卡之前佔版面位，唔再浮喺正文上遮字。 */
+  /* v20a404 UI404-3：過期提示改佔位便條——喺債卡之前佔版面位，唔再浮喺正文上遮字。
+     v419：計數包埋季節卡逾期（舊版只數 mockDebts，季節卡逾期嗰陣便條唔出、只剩浮動 toast）。 */
   let overdueNote404 = "";
   try{
-    const overdue404 = (rows||[]).filter(d=>d && (d.status==="過期" || d.status==="逾期" || (d.dueDay!=null && typeof S!=="undefined" && S && (S.dayIndex|0) > (d.dueDay|0) && d.status!=="絕響")));
-    if(overdue404.length){
-      overdueNote404 = `<p class="debt-overdue404" role="note">有 ${overdue404.length} 筆人情已過期，詳情見下面債卡——過期未還會作廢，盡快處理。</p>`;
+    if(urgent419.length){
+      overdueNote404 = `<p class="debt-overdue404" role="note">有 ${urgent419.length} 筆人情已過期，詳情見下面債卡——過期未還會作廢，盡快處理。</p>`;
     }
   }catch(_e404){}
-  box.innerHTML=banner+overdueNote404+famCardsHtml+choice47Html+cardHtml+creditHtml+debtHtml+emptyHtml;
+  box.innerHTML=banner+overdueNote404+urgentHtml419+famCardsHtml+choice47Html+cardHtml+creditHtml+debtHtml+emptyHtml;
   /* v19z11：委派點擊；debtId 必須嚟自該卡，永唔走 openHoRepaySheet／何生 fallback */
   box.onclick=(ev)=>{
     try{
@@ -33491,9 +33538,9 @@ function prog71GateItems(id){
        token 分返「行電視線／行電影線」）。 */
     if(tok.indexOf("route:")===0){ items.push({ ok:ok, text:(tok.indexOf("route_film")>=0 ? "行電影線" : "行電視線") }); return; }
     if(tok.indexOf("weekMin:")===0){ items.push({ ok:ok, text:"到第 "+(Number(tok.slice(8))||0)+" 週（現在第 "+wk+" 週）" }); return; }
-    if(tok.indexOf("fameGt:")===0){ items.push({ ok:ok, text:"聲望多於 "+(Number(tok.slice(7))||0)+"（而家 "+fame+"）" }); return; }
-    if(tok.indexOf("creditGt:")===0){ items.push({ ok:ok, text:"業內信用多於 "+(Number(tok.slice(9))||0)+"（而家 "+credit+"）" }); return; }
-    if(tok.indexOf("dualGt:")===0){ items.push({ ok:ok, text:"聲望＋信用總和多於 "+(Number(tok.slice(7))||0)+"（而家 "+(fame+credit)+"）" }); return; }
+    if(tok.indexOf("fameGt:")===0){ items.push({ ok:ok, text:"聲望多於 "+(Number(tok.slice(7))||0)+"（目前 "+fame+"）" }); return; }
+    if(tok.indexOf("creditGt:")===0){ items.push({ ok:ok, text:"業內信用多於 "+(Number(tok.slice(9))||0)+"（目前 "+credit+"）" }); return; }
+    if(tok.indexOf("dualGt:")===0){ items.push({ ok:ok, text:"聲望＋信用總和多於 "+(Number(tok.slice(7))||0)+"（目前 "+(fame+credit)+"）" }); return; }
     if(tok.indexOf("tagAny:")===0){
       const list = tok.slice(7).split("|");
       const fams = [];
@@ -33710,7 +33757,10 @@ function renderProgressPane71(){
   /* v20a409：已完成幕摺疊成一張紙條，第 6 幕起做主焦 */
   const done409 = []; for(const r409 of rows){ if(r409 && r409.state==="done") done409.push(r409); else break; } /* 只摺開頭連續完成幕，保 DOM 次序 */
   if(done409.length){
-    html.push('<details class="prog409-done"><summary>已完成 '+done409.length+' 幕 ✓</summary>'
+    /* v419：摺疊數只計開頭連續幕，非連續已完成幕（番外等）列喺下方——摘要講明，
+       免玩家將摘要數同下方已完成行數對唔上。 */
+    const extraDone419 = rows.filter(r=>r && r.state==="done" && done409.indexOf(r) < 0).length;
+    html.push('<details class="prog409-done"><summary>已完成 '+done409.length+' 幕 ✓'+(extraDone419 ? '（另有 '+extraDone419+' 幕已完成，列於下方）' : '')+'</summary>'
       + done409.map(r=>'<div class="prog71-row done"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag ok">✓ 已完成</span></div></div>').join("")
       + '</details>');
   }
@@ -33730,8 +33780,8 @@ function renderProgressPane71(){
          亦唔再分「在場／唔在場」——v155 B1 三態根因就係呢個掣嘅有無取決於 soft 路徑
          atLoc，live 根本唔跟地點。地點留返做場景資料（唔係觸發條件，唔寫「去 X 就會觸發」）。 */
       const openBody = '<p class="prog71-note">返回地圖時就會播出。' + (r.locName ? ("（場景：" + prog71Esc(r.locName) + "）") : "") + '</p>';
-      html.push('<div class="prog71-row open"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag open">已開放</span></div>'
-        + openBody + '</div>');
+      html.push('<div class="prog71-row open prog71-next412"><div class="prog71-top"><span class="prog71-act">'+prog71Esc(r.label || ("第 "+r.n+" 幕"))+'</span><b>'+prog71Esc(r.title)+'</b><span class="prog71-tag open">已開放</span></div>'
+        + openBody + '</div>'); /* v419：已開放行用下一幕焦點樣式，玩家一眼知下一步 */
       return;
     }
     if(r.state==="missed"){
@@ -37291,6 +37341,7 @@ function awards62PlayCeremony(pack, doneFn){
       + '<img class="awd62-m5fx149" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>'
       + '<img class="awd62-m5fx149 b" src="assets/fx/awd_confetti_m5.gif?v=20a149" alt=""/>' + awd181Html + '<div class="awd62-tap">點擊畫面揭曉下一張</div><button type="button" class="awd62-skip">跳過 ⏩</button>' + "</div>" + glamHtml /* v20a166 B1：glamour 層搬入 frame，absolute 對齊 canvas（唔再係 stage 全幅），左邊透明見到燕尾服；v20a181：邏輯座標 480×432（10:9，v20a207 B2），backing 720×648；v20a197 B3：跳過掣搬入 canvaswrap（480×360 固定比例，唔跟 beat 高度走）；v20a392 UI392 ⑤：快進提示一併搬入 canvaswrap 左下角，同跳過掣同一列 */
       + cardsHtml
+      + '<div class="awd419-phase" aria-hidden="true"></div>'
       + '<div class="awd62-caption"></div>'
       + '<div class="awd418-progress" aria-hidden="true"></div>'
       + "</div>";
@@ -37516,9 +37567,11 @@ function awards62PlayCeremony(pack, doneFn){
         const progEl418 = stage.querySelector(".awd418-progress");
         const total418 = Math.max(1, (pack && Array.isArray(pack.categories) ? pack.categories.length : 1));
         const cur418 = Math.min(total418, Math.max(1, (Number(b.catIdx) || 0) + 1));
-        if(progEl418) progEl418.innerHTML = "獎項進度：第 " + cur418 + " 格 · 共 " + total418 + " 格" + '<div class="awd418-bar"><div class="awd418-fill" style="width:' + Math.round(100 * cur418 / total418) + '%"></div></div>';
+        if(progEl418) progEl418.innerHTML = "獎項進度：第 " + cur418 + " 個 · 共 " + total418 + " 個" + (total418 > 1 ? '<div class="awd418-bar"><div class="awd418-fill" style="width:' + Math.round(100 * cur418 / total418) + '%"></div></div>' : ''); /* v419：得一個獎項嗰陣唔出滿格條，免誤讀做已完成 */
         const tap418 = stage.querySelector(".awd62-tap");
-        if(tap418) tap418.textContent = (b.id === "reveal" || b.id === "comfort" || b.id === "out") ? "點擊畫面繼續" : "點擊畫面揭曉下一張"; /* v418：揭曉後提示唔再叫玩家揭下一張 */
+        if(tap418) tap418.textContent = (b.id === "reveal" || b.id === "comfort" || b.id === "out") ? "點擊畫面繼續" : (b.id === "suspense" ? "點擊畫面揭曉得主" : "點擊畫面揭曉下一張"); /* v418：揭曉後提示唔再叫玩家揭下一張；v419：懸念拍講明揭曉得主 */
+        const phase419 = stage.querySelector(".awd419-phase"); /* v419：拍次條跟 beat 更新 */
+        if(phase419) phase419.textContent = (b.id === "names" || b.id === "nominee") ? "入圍名單" : (b.id === "suspense" ? "即將揭曉" : ((b.id === "reveal" || b.id === "comfort" || b.id === "out") ? "得獎者揭曉" : ""));
       }catch(_e418){}
       if(b.id === "names" && Array.isArray(b.lines) && b.lines.length){
         const li = Math.min(b.lines.length - 1, Math.floor((beatTick || 0) / 6));
@@ -37527,7 +37580,7 @@ function awards62PlayCeremony(pack, doneFn){
         /* v20a208：逐位宣佈——進度（第 n／共 N 位）＋獎項名。
            v20a392 UI392 ⑤：姓名＋作品唔再喺下方字幕重複——集中喺舞台吊牌（syncBoardSub392 500ms 後先揭），字幕只留進度，消雙焦。 */
         const prog208 = (b.nomineeTotal > 0 && b.nomineeIdx >= 0) ? (" " + (b.nomineeIdx + 1) + "/" + b.nomineeTotal) : "";
-        setCaption('<span class="dim">入圍名單' + prog208 + (b.catLabel ? " · " + b.catLabel : "") + '</span>');
+        setCaption('<span class="dim">已揭曉' + prog208 + ' 位' + (b.catLabel ? " · " + b.catLabel : "") + '</span>'); /* v419：講明係已揭曉人數 */
       } else if(b.id === "reveal"){
         const htmlTxt = String(b.caption || "").replace(/\n/g, "<br/>");
         setCaption(curOutcome208 === "won" ? ('<span class="gold">' + htmlTxt + "</span>") : htmlTxt);
@@ -51891,14 +51944,18 @@ function refreshTutSpotlight398(){
     const mask = document.getElementById("mask");
     const stepId = (mask && mask.dataset.tutStep) || null;
     const on = !!(_tut && _tut.active && stepId==="TUT_MAP" && mask && mask.classList.contains("tut-on"));
-    if(!on){ ring.style.display = "none"; try{ restoreTutLabels399(); }catch(_e){} try{ if(mask){ mask.classList.remove("tut-hole401"); mask.style.removeProperty("--tut-hole-x"); mask.style.removeProperty("--tut-hole-y"); mask.style.removeProperty("--tut-hole-r"); } }catch(_e2){} /* v20a401 UI401-2：唔係 TUT_MAP／教學完咗就清走遮罩挖空 */ return; }
+    if(!on){ ring.style.display = "none"; try{ restoreTutLabels399(); }catch(_e){} try{ if(mask){ mask.classList.remove("tut-hole401"); mask.style.removeProperty("--tut-hole-x"); mask.style.removeProperty("--tut-hole-y"); mask.style.removeProperty("--tut-hole-rx"); mask.style.removeProperty("--tut-hole-ry"); } }catch(_e2){} /* v20a401 UI401-2：唔係 TUT_MAP／教學完咗就清走遮罩挖空 */ return; }
     const pin = document.querySelector('.pin[data-loc="tvb_longmen"]') || document.querySelector(".pin:not(.dim)");
-    if(!pin || pin.offsetParent===null){ ring.style.display = "none"; try{ restoreTutLabels399(); }catch(_e){} return; }
-    /* drawMap 重建 pin 會洗走 class——每次補返（唔係 TUT_MAP 嗰陣唔郁其他步嘅光）。 */
+    /* v419：先補 tut-spotlight-target 先量度——drawMap 重建 pin 後新 pin 未有 class，
+       俾 tut-stage397 嘅 display:none 收起，舊次序會喺 offsetParent 檢查早期返回，
+       標籤還原晒但挖空仲喺度，鄰近地點標籤就俾聚光照亮。 */
     try{
-      document.querySelectorAll(".tut-spotlight-target").forEach(el=>{ if(el!==pin) el.classList.remove("tut-spotlight-target"); });
-      pin.classList.add("tut-spotlight-target");
+      if(pin){
+        document.querySelectorAll(".tut-spotlight-target").forEach(el=>{ if(el!==pin) el.classList.remove("tut-spotlight-target"); });
+        pin.classList.add("tut-spotlight-target");
+      }
     }catch(_e){}
+    if(!pin || pin.offsetParent===null){ ring.style.display = "none"; try{ restoreTutLabels399(); }catch(_e){} return; }
     const app = document.getElementById("app");
     const pr = pin.getBoundingClientRect();
     const ar = app ? app.getBoundingClientRect() : {left:0, top:0};
@@ -51908,8 +51965,12 @@ function refreshTutSpotlight398(){
     ring.style.top = (pr.top - ar.top - pad) + "px";
     ring.style.width = (pr.width + pad*2) + "px";
     ring.style.height = (pr.height + pad*2) + "px";
-    /* v20a399 UI399-3：金圈定位後，暫隱撞圈嘅非目標標籤＋浮貼目標標籤（跟 pin 中心，唔移偏）。 */
-    try{ updateTutLabels399({left: pr.left - pad, top: pr.top - pad, right: pr.right + pad, bottom: pr.bottom + pad}, ar); }catch(_e){}
+    /* v419：挖空改橢圓（rx／ry 分別貼合圈闊高＋6），唔再用正圓半徑照亮鄰近地點；
+       標籤避讓改用挖空 bbox，令 lit 範圍內嘅非目標標籤一併暫隱，聚光只剩單一目標。 */
+    const holeRx = (pr.width + pad*2) / 2 + 6;
+    const holeRy = (pr.height + pad*2) / 2 + 6;
+    const pcx = pr.left + pr.width / 2, pcy = pr.top + pr.height / 2;
+    try{ updateTutLabels399({left: pcx - holeRx - 6, top: pcy - holeRy - 6, right: pcx + holeRx + 6, bottom: pcy + holeRy + 6}, ar); }catch(_e){}
     /* v20a401 UI401-2：遮罩挖空圈內——金圈中心／半徑寫入 #mask CSS 變數（mask 坐標＝
        ring rect 減 mask rect，唔靠 #app 偏移假設），mask 掛 tut-hole401 用
        radial-gradient 挖空；圈內大樓唔再被壓暗。頂欄同步降亮由 v401 CSS（#mask.tut-on
@@ -51920,10 +51981,10 @@ function refreshTutSpotlight398(){
         const rr = ring.getBoundingClientRect();
         const cx = rr.left + rr.width / 2 - mr.left;
         const cy = rr.top + rr.height / 2 - mr.top;
-        const rad = Math.max(rr.width, rr.height) / 2 + 22; /* v418：挖空半徑加大 */
         mask.style.setProperty("--tut-hole-x", cx.toFixed(1) + "px");
         mask.style.setProperty("--tut-hole-y", cy.toFixed(1) + "px");
-        mask.style.setProperty("--tut-hole-r", rad.toFixed(1) + "px");
+        mask.style.setProperty("--tut-hole-rx", holeRx.toFixed(1) + "px");
+        mask.style.setProperty("--tut-hole-ry", holeRy.toFixed(1) + "px");
         mask.classList.add("tut-hole401");
       }
     }catch(_e){}
@@ -52058,7 +52119,7 @@ function setTutMask(on){
     const scene402 = m.classList.contains("scene-paper401") || m.classList.contains("day-res") || (m.dataset.tutStep === "TUT_BOARD");
     setUnderlyingInert(!!on || m.classList.contains("on"), scene402);
   }catch(_e){}
-  if(!on){ clearTutSpotlight(); try{ m.classList.remove("tut-hole401"); m.style.removeProperty("--tut-hole-x"); m.style.removeProperty("--tut-hole-y"); m.style.removeProperty("--tut-hole-r"); }catch(_e){} } /* v20a401 UI401-2：教學完咗清走遮罩挖空 */
+  if(!on){ clearTutSpotlight(); try{ m.classList.remove("tut-hole401"); m.style.removeProperty("--tut-hole-x"); m.style.removeProperty("--tut-hole-y"); m.style.removeProperty("--tut-hole-rx"); m.style.removeProperty("--tut-hole-ry"); }catch(_e){} } /* v20a401 UI401-2：教學完咗清走遮罩挖空 */
 }
 function showTutCard(entry, buttons){
   if(!entry){ return; }
