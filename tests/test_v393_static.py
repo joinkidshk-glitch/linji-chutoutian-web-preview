@@ -27,20 +27,21 @@ def fn_body(name):
                 return src[i:k + 1]
     return ""
 
-# ---- (1) 梯次序：六專長全部排喺 SS 之前 ----
+# ---- (1) 梯次序：v421 具體身份先判、SS 兜底（仍排 CR／E2 前） ----
 lad = fn_body("resolveEnding410")
 order = []
-for code in ['"E1"', '"E4"', '"FK"', '"TK"', '"SK"', '"GH"', '"CK"', '"AK"', '"SS"', '"E3"', '"E5"', '"ID"', '"CR"', '"E2"']:
+for code in ['"E1"', '"FK"', '"TK"', '"SK"', '"GH"', '"CK"', '"AK"', '"E3"', '"E5"', '"E4"', '"ID"', '"SS"', '"CR"', '"E2"']:
     idx = lad.find('career = ' + code)
     order.append((code, idx))
-ok(all(idx >= 0 for _, idx in order), "梯分支全部在位（E1/E4/FK/TK/SK/GH/CK/AK/SS/E3/E5/ID/CR/E2）")
+ok(all(idx >= 0 for _, idx in order), "梯分支全部在位（E1/FK/TK/SK/GH/CK/AK/E3/E5/E4/ID/SS/CR/E2）")
 ok([c for c, _ in order] == [c for c, _ in sorted(order, key=lambda t: t[1])],
-   "梯次序＝E1→E4→FK→TK→SK→GH→CK→AK→SS→E3→E5→ID→CR→E2")
+   "梯次序＝E1→FK→TK→SK→GH→CK→AK→E3→E5→E4→ID→SS→CR→E2（v421）")
 
 # ---- 門檻表 ----
-for frag in ["e4NetCreditBelow: 45", "crFameHi: 110", "ghVarietyMin: 8",
+for frag in ["crFameHi: 110", "ghVarietyMin: 8",
              "e4ExposureMin: 6", "e4ExposureMonths: 3"]:
     ok(frag in src, "門檻在位：" + frag)
+ok("e4NetCreditBelow" not in src, "v421：E4 net 欄 e4NetCreditBelow 已刪（曝光型）")
 ok("e4CreditBelow" not in src, "舊 E4 窗 e4CreditBelow 已刪")
 ok("e3BackstageTags:" not in src, "舊 E3 關鍵字欄 e3BackstageTags 已刪（註解提及除外）")
 
@@ -53,8 +54,9 @@ ok("variety392EnsureBoard(locId, shown, curSeason)" in fn_body("gigsForLocSeason
 ok("tvb_longmen" in fn_body("variety392EnsureBoard") and "tvb_kowloon" in fn_body("variety392EnsureBoard")
    and "tvb_harbour" in fn_body("variety392EnsureBoard"), "板面保證只針對三個電視台板")
 
-# ---- (4) E4：扣除 fame 後信用＋曝光 ----
-ok("(credit - 0.5*fame) < T.e4NetCreditBelow" in lad, "E4 讀扣除 fame 後信用 <45")
+# ---- (4) E4：v421 曝光型（曝光＋影視擔正皆 0，唔讀 net） ----
+ok("(lead229.byMedium.film||0)===0" in lad and "(lead229.byMedium.tv||0)===0" in lad,
+   "E4 要電影／電視擔正皆 0（v421 曝光型）")
 ok("expo392.count>=T95.e4ExposureMin" in lad and "expo392.months>=T95.e4ExposureMonths" in lad,
    "E4 要 ≥6 宗曝光＋橫跨 ≥3 個月")
 

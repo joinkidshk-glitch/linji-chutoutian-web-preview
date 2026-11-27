@@ -26,7 +26,7 @@ ok('resolveEnding410 defined', 'function resolveEnding410(st, opts)' in blk)
 ok('判定唔依賴軌跡分類（resolve 函數體內冇 trajectoryOf49）',
    'trajectoryOf49' not in block('function resolveEnding410(st, opts)', '/* 前夕抉擇選項生成'))
 ok('E6 只認 opts.quit 主動入口', 'opts.quit' in block('function resolveEnding410(st, opts)', '/* 前夕抉擇選項生成'))
-for frag in ['e4Fame: 50', 'e4NetCreditBelow: 45',   # v20a392：E4 改扣除 fame 後信用 <45（舊窗 credit<30 數學不可達）；v20a378（B10）：ENDING410_T e1Fame／e1Credit／e1Dual 死欄已刪，釘字串同步移除
+for frag in ['e4Fame: 50',   # v421：E4 改曝光型，e4NetCreditBelow 已刪；v20a378（B10）：ENDING410_T e1Fame／e1Credit／e1Dual 死欄已刪，釘字串同步移除
              'e4RescueCredits: 5', 'e2Credit: 42', 'e2Fame: 35', 'e3Credit: 42',
              'e5FavorTotal: 6', 'e5AgentRel: 60', 'almostRelMin: 4']:
     ok('threshold per design: '+frag, frag in blk)

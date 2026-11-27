@@ -14414,10 +14414,9 @@ const ENDING410_CAREER_NAMES = {
 const ENDING410_T = {
   /* v20a378（第三輪評估 B10）：e1Fame／e1Credit／e1Dual／e1NegMax 死欄已刪——結局判定只讀 ENDING95_T，
      呢四欄從無引用（weave410 靜態測試釘字串同步改）。 */
-  e4Fame: 50, e4NetCreditBelow: 45, e4RescueCredits: 5,         /* E4 泡沫偶像（v20a393：舊窗 credit<30 數學不可達——fame 95 單 fame 項已貢獻 47.5，
-     改只在 E4 判定扣除 fame 帶來的信用：credit − 0.5×fame < 45，另要 ≥6 宗自選曝光（見 ENDING95_T
-     e4ExposureMin／e4ExposureMonths）；全局 credit 繼供 dual 及其他結局用。45 係統籌定數——
-     GPT 原稿 (b) 寫 <45、(d) 驗收寫 ≤40，內部不一致，統籌定 45。沉唔死版債權門檻不變
+  e4Fame: 50, e4RescueCredits: 5,         /* E4 泡沫偶像（v421 改曝光型：fame≥50＋自選曝光 ≥6 宗橫跨 ≥3 月（見 ENDING95_T
+     e4ExposureMin／e4ExposureMonths）＋電影／電視擔正皆 0；v20a393 嘅 net 條件（credit − 0.5×fame < 45）
+     已刪——逐格真玩三局刻意壓 net 仍升至 109，net<45 與曝光≥6 時間上互斥。沉唔死版債權門檻不變
      （v20a373：2→5——全脊骨被動故事債權恒 4，舊門檻令真沉版全脊骨不可達；5＝要真經營人情網先有人撈） */
   e2Credit: 42, e2Fame: 35,                                 /* E2 甘草王 */
   e3Credit: 42, e3DirectorRel: 60,      /* E3 幕後之路（v20a393：e3BackstageTags 死欄已刪——舊「幕後標籤≥2」入口讀 castingTags 關鍵字，無授予來源係死路；入口改讀明確職務類別，見 endingE3Eligible410／backstageDuties392Of） */
@@ -15201,6 +15200,15 @@ function end95BuildGaps(ctx){
    E1→E4→FK→TK→SK→GH→CK→AK→SS→E3→E5→ID→CR→E2→E0；
    GH 讀自選綜藝佔比＋≥8 宗；E4 讀扣除 fame 後信用＋≥6 宗自選曝光；ID 讀對照信用；
    CR fame 窗 35–110；E2／CR 加低投入豁免（fame≤40 且活動 ≤2 者跌返 E0）。
+   v421（結局修復票，用戶 2026-11-26／27 拍板）：判定原則＝按成績派合資格入面最好嗰格，
+   有具體身份先過冇名堂嘅 SS，唔准靠負標籤避格。新梯
+   E1→FK→TK→SK→GH→CK→AK→E3→E5→E4→ID→SS→CR→E2→E0；
+   E4 改曝光型（fame≥50＋自選曝光≥6 宗橫跨≥3 月＋電影／電視擔正皆 0，刪 net 條件——
+   真玩三局壓 net 仍升至 109，net<45 與曝光≥6 互斥）；E3／E5 職務／人情證據強過曝光，排 E4 前；
+   E4 排 ID 前：真玩驗證曝光路線（fame 293／曝光 27 宗／擔正 0）被 ID 聲望帶截走——
+   「冇影視擔正＋曝光達標」係泡沫偶像嘅具體身份證據，比 ID 嘅聲望主導帶更具體；
+   ID 留畀有擔正或曝光未達標嘅聲望主導態。SS 做兜底但仍排 CR／E2 前（SS 雙軌 300 門檻
+   高過 CR／E2，派 SS 先合「最好」，且 SS 候選人必然合 E2，倒轉會封死 SS）。
    E6 只認 opts.quit（"job"｜"leave"）主動入口，旗本身唔會令純函數自己入 E6。
    opts.exodus 可由前夕抉擇覆寫去留軸（"leave"）。回傳 {career, careerVariant, romance, exodus, title, reasons, snapshot}。 */
 function resolveEnding410(st, opts){
@@ -15247,17 +15255,15 @@ function resolveEnding410(st, opts){
   const idCredit392 = (creditCounter392 == null) ? credit : creditCounter392;
   const duties392 = backstageDuties392Of(s);
   const forced392 = forcedCredit392Of(s);
-  /* v405 P1-3：GH 資格先計——自選綜藝同時係 E4 曝光來源，E4 排 GH 之前會截走
-     已達 GH 資格嘅低 net 態。GH 資格成立嗰陣 E4 唔截（綜藝專攻歸 GH，E4 留畀
-     非綜藝專攻嘅高曝光低信用態）。 */
-  const ghQualified405 = sum>=T95.ghDual && selShare95(sel95.byMedium.variety)>=T95.ghHostShare && (sel95.byMedium.variety|0)>=T95.ghVarietyMin && end95PangProgress(s);
+  /* v421 E0 浮沉收尾：1991 靠安全線過評核（drift421 標記）且最終雙軌仍低過 1992 地板 140 嘅玩家，
+     係真浮沉路線——主線強制 fame 會把 fame 推入 ID／CR／E2 窗，舊低投入定義（活動≤2）同評核地板
+     互斥（過 1990 地板要訓練，活動必然 >2），故以安全線標記做浮沉身份證據，免被 ID／CR／E2 截走。
+     最終雙軌 ≥140 即唔再係浮沉，照正常判定派更好嗰格。 */
+  const drift421Mark = !!(s.conseq61 && s.conseq61.reviews && s.conseq61.reviews[1991] && s.conseq61.reviews[1991].drift421);
+  const driftFinal421 = drift421Mark && sum < 140;
   let career = "E0", variant = "";
   if(fame>=T95.e1Fame && credit>=T95.e1Credit && sum>=T95.e1Dual && neg<=T95.e1NegMax && e1Qual95){
     career = "E1"; reasons.push("E1：聲望 "+fame+"≥"+T95.e1Fame+"、信用 "+credit+"≥"+T95.e1Credit+"、雙軌 "+sum+"≥"+T95.e1Dual+"、負標籤 "+neg+"≤"+T95.e1NegMax+"＋質性閘全齊（獎 "+awards95.wins+"／擔正媒介 "+leadMedia95.length+"／電影擔正 "+filmLead390+"／主線脊骨已走完）");
-  } else if(!ghQualified405 && fame>=T.e4Fame && (credit - 0.5*fame) < T.e4NetCreditBelow && expo392.count>=T95.e4ExposureMin && expo392.months>=T95.e4ExposureMonths){
-    career = "E4";
-    variant = (favor.creditsHeld>=T.e4RescueCredits) ? "rescued" : "sunk";
-    reasons.push("E4：聲望 "+fame+"≥"+T.e4Fame+"、扣除聲望後信用 "+(credit - 0.5*fame).toFixed(1)+"<"+T.e4NetCreditBelow+"（信用 "+credit+"−0.5×聲望 "+fame+"）、自選曝光 "+expo392.count+" 宗橫跨 "+expo392.months+" 個月；債權持有 "+favor.creditsHeld+" → "+(variant==="rescued"?"沉唔死版":"真沉版"));
   } else if(sum>=T95.fkDual && share95(stats95.byMedium.film)>=T95.fkFilmShare && (lead229.byMedium.film||0)>=T95.fkFilmLeads){
     career = "FK"; reasons.push("FK 影壇天王：雙軌 "+sum+"≥"+T95.fkDual+"、電影佔比 "+Math.round(share95(stats95.byMedium.film)*100)+"%≥50%、電影擔正 "+(lead229.byMedium.film||0)+"≥"+T95.fkFilmLeads);
   } else if(sum>=T95.tkDual && share95(stats95.byMedium.tv)>=T95.tkTvShare && (lead229.byMedium.tv||0)>=T95.tkTvLongLeads){
@@ -15270,8 +15276,6 @@ function resolveEnding410(st, opts){
     career = "CK"; reasons.push("CK 喜劇泰斗：雙軌 "+sum+"≥"+T95.ckDual+"、喜劇佔比（可辨識 "+stats95.genreIdentified+" 部）"+Math.round(genreShare95(stats95.genreComedy)*100)+"%≥50%、信用 "+credit+"≥"+T95.ckCredit);
   } else if(sum>=T95.akDual && stats95.genreIdentified>=T95.genreMinSample && genreShare95(stats95.genreAction)>=T95.akActionShare && ((s.trainCount && Number(s.trainCount.train_stamina))||0)>=T95.akStaminaLessons){
     career = "AK"; reasons.push("AK 動作巨星：雙軌 "+sum+"≥"+T95.akDual+"、動作佔比（可辨識 "+stats95.genreIdentified+" 部）"+Math.round(genreShare95(stats95.genreAction)*100)+"%≥50%、武師班 "+((s.trainCount && Number(s.trainCount.train_stamina))||0)+" 堂≥"+T95.akStaminaLessons);
-  } else if(sum>=T95.ssDual && fame>=T95.ssFame && credit>=T95.ssCredit && neg<=T95.ssNegMax){
-    career = "SS"; reasons.push("SS 一線巨星：雙軌 "+sum+"≥"+T95.ssDual+"、聲望 "+fame+"≥"+T95.ssFame+"、信用 "+credit+"≥"+T95.ssCredit+"、負標籤 "+neg+"≤"+T95.ssNegMax+"（未齊 E1 質性閘：獎 "+(awards95.hasWin?"有":"冇")+"／擔正媒介 "+leadMedia95.length+"／電影擔正 "+filmLead390+"／主線脊骨 "+(spine95.done?"已走完":"尚欠 "+spine95.missing.join("、"))+"）");
   /* v20a378（第三輪評估 B6）：ID 判定移後到 E3／E5 之後——舊次序 ID 排先，fame 60–70／credit 50–60
      段有幕後／人情證據都俾 ID 截走，E3／E5 實際守門變成 credit>=fame-9（W2 實證）。明確路線證據齊全
      應優先過 ID 呢格「紅而未沉」嘅預設格。
@@ -15284,11 +15288,23 @@ function resolveEnding410(st, opts){
     reasons.push("E3：信用 "+credit+"≥聲望 "+fame+"−10（信用主導帶）＋信用≥"+T.e3Credit+"、幕後職務 "+duties392.total+" 宗（"+duties392.kinds.join("、")+"／"+duties392.productions.length+" 個製作）／導演 rel "+directorRel+"；變體＝"+variant+"（人情總量 "+((favor.settled|0)+(favor.creditsHeld|0))+"、電影 "+(stats95.byMedium.film|0)+"／電視 "+(stats95.byMedium.tv|0)+"）");
   } else if(credit>=fame-10 && (favor.settled + favor.creditsHeld)>=T.e5FavorTotal && agentRel>=T.e5AgentRel){
     career = "E5"; reasons.push("E5：信用 "+credit+"≥聲望 "+fame+"−10（信用主導帶）＋已清債 "+favor.settled+"＋持有債權 "+favor.creditsHeld+"≥"+T.e5FavorTotal+"、何生 rel "+agentRel+"≥"+T.e5AgentRel);
-  } else if(fame>=T95.idFame && credit>=T95.idCreditLo && idCredit392<=Math.max(T95.idCreditHi, fame*0.9) && neg<=T95.idNegMax){
+  } else if(fame>=T.e4Fame && expo392.count>=T95.e4ExposureMin && expo392.months>=T95.e4ExposureMonths && (lead229.byMedium.film||0)===0 && (lead229.byMedium.tv||0)===0){
+    /* v421 E4 曝光型：靠廣告／綜藝曝光紅起、冇電影／電視擔正——泡沫偶像嘅身份證據就係曝光本身，
+       唔再讀 net（舊 net<45 同曝光≥6 時間上互斥，真玩近乎入唔到）。排 E3／E5 之後、ID 之前：
+       幕後職務／人情網證據強過曝光先派；「冇擔正＋曝光達標」比 ID 聲望主導帶更具體，
+       曝光路線真玩（fame 293／曝光 27 宗）曾被 ID 截走，故 E4 先判。 */
+    career = "E4";
+    variant = (favor.creditsHeld>=T.e4RescueCredits) ? "rescued" : "sunk";
+    reasons.push("E4：聲望 "+fame+"≥"+T.e4Fame+"、自選曝光 "+expo392.count+" 宗橫跨 "+expo392.months+" 個月、電影擔正 0／電視擔正 0（靠曝光紅起、未有影視擔正）；債權持有 "+favor.creditsHeld+" → "+(variant==="rescued"?"沉唔死版":"真沉版"));
+  } else if(fame>=T95.idFame && credit>=T95.idCreditLo && idCredit392<=Math.max(T95.idCreditHi, fame*0.9) && neg<=T95.idNegMax && !driftFinal421){
     career = "ID"; reasons.push("ID 人氣偶像：聲望 "+fame+"≥"+T95.idFame+"、對照信用 "+idCredit392+" 喺 "+T95.idCreditLo+"–"+Math.round(Math.max(T95.idCreditHi, fame*0.9))+"（聲望主導帶；實信用 "+credit+"、強制增量直寫 "+(forced392.direct|0)+"＋強制 fame "+(forced392.fame|0)+"）、負標籤 "+neg+"≤"+T95.idNegMax);
-  } else if(credit>=T95.crCredit && fame>=T95.crFameLo && fame<=T95.crFameHi && !lowAct392){
+  } else if(sum>=T95.ssDual && fame>=T95.ssFame && credit>=T95.ssCredit && neg<=T95.ssNegMax){
+    /* v421：SS 做兜底——具體身份格（專長／E3／E5／ID／E4）全部判完先到 SS；
+       仍排 CR／E2 前：SS 雙軌 300 門檻高過 CR／E2，合 SS 派 SS 先係最好嗰格。 */
+    career = "SS"; reasons.push("SS 一線巨星：雙軌 "+sum+"≥"+T95.ssDual+"、聲望 "+fame+"≥"+T95.ssFame+"、信用 "+credit+"≥"+T95.ssCredit+"、負標籤 "+neg+"≤"+T95.ssNegMax+"（未齊 E1 質性閘：獎 "+(awards95.hasWin?"有":"冇")+"／擔正媒介 "+leadMedia95.length+"／電影擔正 "+filmLead390+"／主線脊骨 "+(spine95.done?"已走完":"尚欠 "+spine95.missing.join("、"))+"）");
+  } else if(credit>=T95.crCredit && fame>=T95.crFameLo && fame<=T95.crFameHi && !lowAct392 && !driftFinal421){
     career = "CR"; reasons.push("CR 實力派演員：信用 "+credit+"≥"+T95.crCredit+"、聲望 "+fame+" 喺 "+T95.crFameLo+"–"+T95.crFameHi);
-  } else if(credit>=T.e2Credit && fame>=T.e2Fame && !lowAct392){
+  } else if(credit>=T.e2Credit && fame>=T.e2Fame && !lowAct392 && !driftFinal421){
     career = "E2"; reasons.push("E2：信用 "+credit+"≥"+T.e2Credit+"、聲望 "+fame+"≥"+T.e2Fame);
   } else {
     reasons.push("E0：以上皆不合，浮沉未定（預設；聲望 "+fame+"、三年投入 "+act392.total+" 宗＝自選通告 "+act392.wraps+"＋試鏡 "+act392.auditions+"＋訓練 "+act392.training+")");
@@ -19898,6 +19914,12 @@ function conseq61SettleEval(st, weekJustEnded, weekEarnIn){ /* v20a393：第三�
       if(dist<1 || dist>4) return;
       const d = conseq61DualOf(s);
       if(d.dual >= R.warnLine) return;
+      /* v421：1991 浮沉安全線狀態唔好再用「差幾多到條線」嚇人——嗰條路過到評核，
+         提示改講明係浮沉路線、約會續，但唔好當冇事。 */
+      if(Y === 1991 && d.fame <= 40 && d.dual >= 45){
+        lines.push(`<span class="var-note">何生提你：${Y} 年尾事務所要做評核。你而家聲望＋信用 ${d.dual}，名氣低、做嘢疏——呢種浮沉做人法，事務所唔會趕你走，但唔好當冇事。</span>`);
+        return;
+      }
       if(dist<=1){
         lines.push(`<span class="bad">何生把聲沉晒：「下週就係 ${Y} 年尾評核。你而家聲望＋信用得 ${d.dual}，離事務所肯留人嗰條線（${R.floor}）仲差 ${Math.max(0, R.floor-d.dual)}。呢個禮拜唔好再 hea——接工、開鏡，谷返上去。」</span>`);
       } else {
@@ -19912,11 +19934,18 @@ function conseq61SettleEval(st, weekJustEnded, weekEarnIn){ /* v20a393：第三�
       if(w !== R.boundaryWeek || c.reviews[Y]) return;
       if((typeof calib60YearOfWeek==="function") && calib60YearOfWeek(w)!==Y) return;
       const d = conseq61DualOf(s);
-      c.reviews[Y] = { dual: d.dual, floor: R.floor, passed: d.dual >= R.floor, week: w };
-      if(d.dual < R.floor){
+      /* v421 E0 安全線：1991 評核畀低聲望浮沉路線一條生路——fame≤40（同低投入定義同線）
+         且 dual≥45（1990 地板，hea 玩 dual≤31 早喺 1990 收場）就判通過，唔提早收場；
+         之後行到邊格照正常判定，安全線只免 1991 嗰次收場，唔係通行證。 */
+      const drift421 = (Y === 1991 && d.dual < R.floor && d.fame <= 40 && d.dual >= 45);
+      c.reviews[Y] = { dual: d.dual, floor: R.floor, passed: d.dual >= R.floor || drift421, week: w };
+      if(drift421) c.reviews[Y].drift421 = true;
+      if(d.dual < R.floor && !drift421){
         c.pendingEnding = { kind: "review", year: Y, dual: d.dual, floor: R.floor };
         endedNow = true;
         lines.push(`<span class="bad">${Y} 年尾評核結果出咗。何生約你聽朝返事務所——唔係傾新工，係傾去留。</span>`);
+      } else if(drift421){
+        lines.push(`<span class="var-note">${Y} 年尾評核：聲望＋信用 ${d.dual}，未到事務所條線（${R.floor}）。何生望住記數簿，冇出聲趕人：「你呢種浮下沉下嘅做人法，我見得多。約照續——不過唔好當冇事。」</span>`);
       } else {
         lines.push(`<span class="good">${Y} 年尾評核：聲望＋信用 ${d.dual}，過咗事務所條線（${R.floor}）。何生續你約：新一年，繼續做。</span>`);
       }

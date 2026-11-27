@@ -78,12 +78,16 @@ function mkState(fame, credit, dayIndex){
     dayIndex: dayIndex, weekEarn: 0, weekGigsDone: 1, weekTrainDone: 0,
     flags: {}, shoots: [], conseq61: null, ending410: null };
 }
-S = mkState(40, 40, 710); /* dual 80 < warnLine 130 */
+S = mkState(40, 40, 710); /* dual 80 < warnLine 130；v421：fame≤40＋dual≥45 係浮沉安全線態 */
 let lines = conseq61SettleEval(S, 102, 0);
 ok('F1a: dist=2 警告行生成', lines.some(l=>l.includes('1991 年尾事務所要做評核')));
+ok('F1a: 浮沉態警告講明唔趕人走（v421）', lines.some(l=>l.includes('唔會趕你走')));
+
+S = mkState(60, 40, 710); /* dual 100 < warnLine 130，fame>40 非浮沉態 */
+lines = conseq61SettleEval(S, 102, 0);
 ok('F1a: 警告行講明仲有 2 週', lines.some(l=>l.includes('仲有 2 週')));
 
-S = mkState(40, 40, 717);
+S = mkState(60, 40, 717);
 lines = conseq61SettleEval(S, 103, 0);
 ok('F1a: dist=1 強警告行生成', lines.some(l=>l.includes('下週就係 1991 年尾評核')));
 
@@ -92,10 +96,14 @@ lines = conseq61SettleEval(S, 102, 0);
 ok('F1a: dual 夠高唔出評核警告', !lines.some(l=>l.includes('評核')));
 
 /* ---- F2 回歸：1991 評核路徑唔郁 ---- */
-S = mkState(40, 40, 728);
+S = mkState(60, 30, 728); /* dual 90 < floor 100，fame>40 非浮沉態 */
 lines = conseq61SettleEval(S, 104, 0);
 ok('F2回歸: 1991 評核唔過寫 pendingEnding', !!(S.conseq61 && S.conseq61.pendingEnding && S.conseq61.pendingEnding.kind==='review' && S.conseq61.pendingEnding.year===1991));
 ok('F2回歸: 1991 評核唔過出結果行', lines.some(l=>l.includes('1991 年尾評核結果出咗')));
+
+S = mkState(40, 40, 728); /* v421 浮沉態：dual 80 安全線通過 */
+lines = conseq61SettleEval(S, 104, 0);
+ok('F2回歸: 浮沉態 1991 安全線通過唔寫 pendingEnding（v421）', !(S.conseq61 && S.conseq61.pendingEnding) && S.conseq61.reviews[1991].drift421 === true);
 
 S = mkState(80, 60, 728); /* dual 140 ≥ floor 100 */
 lines = conseq61SettleEval(S, 104, 0);

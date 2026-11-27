@@ -141,7 +141,9 @@ function R(save){ S = save; return resolveEnding410(S); }
     careerStats95: stats95({ total: 90, byMedium: { film: 25, tv: 25, music: 20, variety: 10, ad: 10 },
       leadByMedium: { film: 1, tv: 1 }, genreIdentified: 30, genreComedy: 8, genreAction: 8 }),
   }));
-  ok('SS 截格：無專長一般路線（dual 320）→ 仍落 SS', r.career === 'SS');
+  /* v421：ID（聲望主導帶）排 SS 前——fame 170／credit 150 對照信用 150 ≤ max(60,153)，
+     呢個聲望行先嘅 profile 派 ID；SS 留畀信用企得穩嘅高雙軌態。 */
+  ok('SS 截格：無專長一般路線（dual 320／聲望主導）→ ID（v421 ID 先過 SS）', r.career === 'ID');
 }
 {
   /* 雙專長重疊：電影＋電視都達標 → FK 排先（FK→TK 次序決勝） */
@@ -160,8 +162,9 @@ function R(save){ S = save; return resolveEnding410(S); }
     story: { flags: {}, rel: {}, done: { N11: true }, choices: {} },
   }));
   ok('GH：自選綜藝 8/16（50%）→ GH', mkSel(8, 16).career === 'GH');
-  ok('GH：自選綜藝 8/17（47%）→ 唔入 GH（落 SS）', mkSel(8, 17).career === 'SS');
-  ok('GH：自選綜藝 7/7（100% 但得 7 宗）→ 唔入 GH（落 SS）', mkSel(7, 7).career === 'SS');
+  /* v421：唔入 GH 之後唔再落 SS——fame 160／credit 140 喺 ID 聲望主導帶（140 ≤ 144），派 ID。 */
+  ok('GH：自選綜藝 8/17（47%）→ 唔入 GH（落 ID）', mkSel(8, 17).career === 'ID');
+  ok('GH：自選綜藝 7/7（100% 但得 7 宗）→ 唔入 GH（落 ID）', mkSel(7, 7).career === 'ID');
 }
 
 /* ============ (3) CR——fame 窗 35–110 ============ */
@@ -177,7 +180,7 @@ function R(save){ S = save; return resolveEnding410(S); }
   ok('CR：fame 111／credit 105 → 唔入 CR（落 E2）', mk(111, 105).career === 'E2');
 }
 
-/* ============ (4) E4——扣除 fame 後信用 <45＋曝光 ============ */
+/* ============ (4) E4——v421 曝光型（fame≥50＋曝光≥6 宗橫跨≥3 月＋影視擔正皆 0；net 已刪） ============ */
 {
   const expo6 = [
     { gigId: 'e1', type: '廣告', wrappedDay: 10 }, { gigId: 'e2', type: '廣告', wrappedDay: 15 },
@@ -185,12 +188,43 @@ function R(save){ S = save; return resolveEnding410(S); }
     { gigId: 'e5', type: '廣告', wrappedDay: 70 }, { gigId: 'e6', type: '廣告', wrappedDay: 75 },
   ];
   const mk = (fame, credit, wh) => R(arc(fame, credit, { wrapHistory: wh || expo6.slice() }));
-  /* fame 100／credit 94 → 94−50＝44 <45 → E4；credit 95 → 95−50＝45 → 唔入 E4（落 CR） */
-  ok('E4：fame 100／credit 94（扣除後 44）＋曝光 6 宗 → E4', mk(100, 94).career === 'E4');
-  ok('E4 邊界：fame 100／credit 95（扣除後 45）→ 唔入 E4（落 CR）', mk(100, 95).career === 'CR');
+  /* v421：net 已刪——信用幾高都唔再擋 E4，曝光＋冇影視擔正就係泡沫偶像身份證據 */
+  ok('E4：fame 100／credit 94＋曝光 6 宗 → E4', mk(100, 94).career === 'E4');
+  ok('E4 邊界：fame 100／credit 95＋曝光 6 宗 → E4（舊 net 邊界已刪）', mk(100, 95).career === 'E4');
   ok('E4 守門：曝光得 5 宗 → 唔入 E4（落 CR）', mk(100, 94, expo6.slice(0, 5)).career === 'CR');
-  /* 高信用偶像對照：fame 100／credit 120 → 扣除後 70 → 唔入 E4；ID 窗 120 > max(60,90) 唔入；落 CR */
-  ok('E4 對照：高信用偶像（fame 100／credit 120）→ 唔入 E4（落 CR）', mk(100, 120).career === 'CR');
+  /* 高信用偶像對照：fame 100／credit 120＋曝光 6 宗＋冇擔正 → E4（ID 窗 120 > max(60,90) 唔入 ID） */
+  ok('E4 對照：高信用偶像（fame 100／credit 120）＋曝光 → E4', mk(100, 120).career === 'E4');
+  /* v421：曝光態同時合 ID 聲望帶（fame 200／credit 150，對照信用 150 ≤ 180）→ 派 E4 唔派 ID
+     （真玩驗證：fame 293／曝光 27 宗／擔正 0 曾被 ID 截走） */
+  ok('E4 先過 ID：曝光達標＋冇擔正＋聲望主導 → E4', mk(200, 150).career === 'E4');
+  /* v421 守門：有電影擔正 → 唔入 E4（曝光型身份唔成立） */
+  const rLead = R(arc(100, 120, { wrapHistory: expo6.slice(),
+    careerStats95: stats95({ total: 20, byMedium: { film: 6, tv: 4, music: 2, variety: 4, ad: 4 }, leadByMedium: { film: 1 } }) }));
+  ok('E4 守門：有電影擔正＋曝光 → 唔入 E4（落 CR）', rLead.career === 'CR');
+}
+
+/* ============ (4b) v421 SS 兜底——具體身份先判、唔使負標籤 ============ */
+{
+  /* E3 態同時合 SS（dual 310／負標籤 0）→ 派 E3，唔使攞負標籤擋 SS */
+  const d2 = [{ kind: '場記', production: '甲組', gigId: 'duty392_clapper_a', day: 100 }, { kind: '剪接助理', production: '乙組', gigId: 'duty392_editor_a', day: 200 }];
+  const rE3 = R(arc(150, 160, { backstageDuties392: d2,
+    careerStats95: stats95({ total: 40, byMedium: { film: 15, tv: 10, music: 5, variety: 5, ad: 5 }, leadByMedium: { film: 1, tv: 1 } }) }));
+  ok('v421：E3 態合 SS 門檻＋負標籤 0 → E3（唔使負標籤避格）', rE3.career === 'E3' && rE3.snapshot.negTags === 0);
+  /* SS 仍可達：信用主導高雙軌、冇具體身份證據 → SS */
+  const rSS = R(arc(150, 220, {
+    careerStats95: stats95({ total: 60, byMedium: { film: 20, tv: 18, music: 10, variety: 6, ad: 6 }, leadByMedium: { film: 1, tv: 1 }, genreIdentified: 20, genreComedy: 4, genreAction: 4 }) }));
+  ok('v421：信用主導 dual 370 冇身份證據 → SS 兜底', rSS.career === 'SS');
+}
+
+/* ============ (4c) v421 E0 浮沉收尾——安全線標記免被 ID／CR／E2 截走 ============ */
+{
+  const drift = { conseq61: { reviews: { 1991: { dual: 78, floor: 100, passed: true, week: 104, drift421: true } } } };
+  /* 對照：冇標記 fame 68／credit 61（sum 129）→ ID（聲望帶成立） */
+  ok('E0 對照：冇浮沉標記 fame 68／credit 61 → ID', R(arc(68, 61)).career === 'ID');
+  /* 有標記＋sum<140 → E0（主線強制 fame 推入 ID 窗都唔截走真浮沉） */
+  ok('v421：浮沉標記＋sum 129 → E0（免 ID／CR／E2 截走）', R(arc(68, 61, drift)).career === 'E0');
+  /* 有標記但 sum≥140 → 唔再係浮沉，照正常判定 */
+  ok('v421：浮沉標記＋sum 150 → ID（雙軌回升照派更好格）', R(arc(80, 70, drift)).career === 'ID');
 }
 
 /* ============ (5) E3／E5 職務入口（單元） ============ */

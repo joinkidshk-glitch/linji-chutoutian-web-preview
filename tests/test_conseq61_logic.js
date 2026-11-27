@@ -220,6 +220,16 @@ console.log("[2] 評核：警告先行＋邊界判場");
   ok(S.conseq61.reviews[1991].passed === true && !S.conseq61.pendingEnding, "慢弧 dual 183 過 1991 評核");
 }
 {
+  /* v421 E0 安全線：低聲望（fame 20）dual 79 <100 → 1991 判通過唔收場；dual 15（<45）照收場 */
+  S = mkDual(79);
+  const wd = conseq61SettleEval(S, 104);
+  ok(S.conseq61.reviews[1991].passed === true && S.conseq61.reviews[1991].drift421 === true && !S.conseq61.pendingEnding, "v421：浮沉路線 dual 79 過 1991 安全線");
+  ok(wd.some(t => t.includes("浮下沉下")), "v421：安全線通過有何生浮沉行");
+  S = heaSave();
+  conseq61SettleEval(S, 104);
+  ok(S.conseq61.pendingEnding && S.conseq61.pendingEnding.year === 1991, "v421：dual 15（低過 45）1991 照收場，hea 玩冇豁免");
+}
+{
   S = mkDual(50); /* 地板 45 同警告線 65 之間：警告照出、但過關 */
   const w42 = conseq61SettleEval(S, 51);
   ok(w42.some(t => t.includes("年尾評核")), "貼線弧（dual 50）評核前照有警告");
