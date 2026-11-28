@@ -80,7 +80,7 @@ chk('④ showCost400 寫 #nb-cost400', 'getElementById("nb-cost400")' in sc)
 chk('⑤ 日格 hint 用 nbDayHint400', 'nbDayHint400(i, meta, editable, locked)' in rn)
 nh = slice_fn('nbDayHint400')
 chk('⑤ 訓練格 hint：再 N 堂升 X 級／已到三級', '再 " + nx400.left + " 堂升' in nh and '已到三級' in nh)
-chk('⑤ 外出日 hint：本週外出機會剩 X 日', '本週外出機會剩 ' in nh)
+chk('⑤ 外出日 hint：本週外出機會剩 X 日', '本週外出機會剩 ' in slice_fn('nbMapTotal400'))
 mini = slice_fn('train71CourseMini')
 chk('⑤ 細行加升下一級進度', 't70-mprog' in mini and 'prog75m' in mini)
 

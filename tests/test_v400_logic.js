@@ -57,7 +57,7 @@ for(const c of ['STAT_LABEL','COURSE_DEFS','PLAN_ITEMS','TRAIN75_SPEC','LEVELS75
   eval(extractConst(c).replace('const '+c+' =', 'var '+c+' ='));
 for(const f of ['weekNumNow','weekdayName','levels75Count','levels75Level','levels75Next','planMeta','isMapDay',
   'dayPlanLocked','stressDeltaForAct','previewWeekStress','lockShootsIntoDraft','defaultWeekPlan',
-  'lowestStatTrain400','weekStressPeak400','freeDays400','nbDayHint400','costLose400','costGain400',
+  'lowestStatTrain400','weekStressPeak400','freeDays400','nbDayHint400','nbMapTotal400','costLose400','costGain400',
   'costLine400','showCost400','renderSuggest400']) eval(extractFn(f));
 
 function mkS(dayIndex, o){
@@ -132,7 +132,8 @@ S = mkS(14, { trainCount:{ train_vocal:10 } });
 ok('5B 訓練格到頂：已到三級', nbDayHint400(1, planMeta("train_vocal"), true, false)==='已到三級', nbDayHint400(1, planMeta("train_vocal"), true, false));
 S = mkS(14, {});
 planDraft = ["scout_all","train_vocal","scout_all","scout_all","cafe_gig","street","rest"];
-ok('5C 外出日（可編輯）：本週外出機會剩 3 日', nbDayHint400(0, planMeta("scout_all"), true, false)==='本週外出機會剩 3 日', nbDayHint400(0, planMeta("scout_all"), true, false));
+ok('5C 外出日（可編輯）：hint 空（v423 總數移週標題行）', nbDayHint400(0, planMeta("scout_all"), true, false)==='', nbDayHint400(0, planMeta("scout_all"), true, false));
+ok('5C2 全週總數 helper：本週外出機會剩 3 日', nbMapTotal400()==='本週外出機會剩 3 日', nbMapTotal400());
 S = mkS(14, { trainCount:{ train_vocal:3 } });
 ok('5D 訓練格（唯讀）：原 hint＋進度', nbDayHint400(1, planMeta("train_vocal"), false, false)==='發聲／跟唱 · 再 2 堂升二級', nbDayHint400(1, planMeta("train_vocal"), false, false));
 ok('5E 鎖定格維持拍攝檔期已定', nbDayHint400(1, planMeta("train_vocal"), true, true)==='拍攝檔期已定 · 不可改');

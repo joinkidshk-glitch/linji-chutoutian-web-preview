@@ -2055,7 +2055,7 @@ button.g, .start button.g{
 /* v20a400：手帳建議列＋改格機會成本行（米紙卡，同 .nb-live-stress 一套）。 */
 .nb-suggest400{ display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 2px; }
 .nb-suggest400[hidden]{ display:none; }
-.nb-suggest400-btn{ appearance:none; -webkit-appearance:none; background:#fbf3df; border:1px solid #b99b62; border-radius:3px; box-shadow:0 1px 0 rgba(107,78,46,.35); color:#3a2e22; font-size:13px; font-weight:700; min-height:36px; padding:6px 10px; cursor:pointer; text-align:left; font-family:inherit; }
+.nb-suggest400-btn{ appearance:none; -webkit-appearance:none; background:#fbf3df; border:1px solid #b99b62; border-radius:3px; box-shadow:0 1px 0 rgba(107,78,46,.35); color:#3a2e22; font-size:13px; font-weight:700; min-height:44px; padding:6px 10px; cursor:pointer; text-align:left; font-family:inherit; } /* v423 UI25 A1：觸控目標補足 44px */
 .nb-suggest400-btn:active{ transform:scale(.98); background:#e8dfc8; }
 .nb-cost400{ margin:6px 0 2px; padding:7px 10px; border-radius:10px; background:#f2ebd8; border:1px solid rgba(196,165,116,.55); color:#1A1410; font-size:.74rem; font-weight:700; line-height:1.35; }
 .nb-cost400[hidden]{ display:none; }
@@ -2589,6 +2589,15 @@ body.day-res-open #mask.day-res{
 .story-play.sp-choices-layout .sp-choices{
   flex:0 0 auto;margin-top:auto;padding-top:2px;padding-bottom:2px;
   gap:6px;position:relative;z-index:3;
+}
+/* v423 UI25 A2：抉擇屏瘦身語境行——只出節點標題＋場景（唔出 meta／進度，守 v128
+   唔洩劇本結構原意），紙籤壓喺舞台頂，跳過對白嘅玩家都知身在何處、為何要揀。 */
+.story-play.sp-choices-layout .sp-choice-ctx423{
+  position:absolute;top:10px;left:12px;right:12px;z-index:4;
+  background:rgba(248,240,221,.94);border:1px solid #b99b62;border-radius:3px;
+  box-shadow:0 1px 0 rgba(107,78,46,.35);color:#3a2e22;
+  font-size:.72rem;font-weight:700;line-height:1.35;padding:6px 10px;
+  text-align:center;pointer-events:none;
 }
 .story-play.sp-choices-layout .sp-choice{
   min-height:64px;padding:8px 10px;font-size:.82rem; /* v20a218 D-v197C5：64px 寫入呢條 3-class rule——舊版 44px 蓋過咗上面 v197 C5 嗰條 64px（specificity 3 vs 2），抉擇卡 55 vs 70px 高矮不一；padding／字級維持 choices-layout 收緊版 */
@@ -7561,8 +7570,8 @@ body.day-res-open .day-row{
 /* ===== v20a411 UI411 完 ===== */
 /* ===== v20a412 UI412：第十六輪 self-review N1–N11 修復（只改呈現層） ===== */
 /* N1 地點面板尾列：淡出收輕（18px／最高 .82）＋行動列收 1px 內距，尾列標題／費用唔再似停用 */
-#loc-sheet.sheet.locpanel118 #loc-acts{ padding-bottom:22px !important; scroll-padding-bottom:24px; }
-#loc-sheet.sheet.locpanel118 #loc-acts.loc-acts-more171::after{ height:10px !important; margin-top:-10px !important; background:linear-gradient(to bottom, rgba(248,241,222,0), rgba(248,241,222,.82)) !important; }
+#loc-sheet.sheet.locpanel118 #loc-acts{ padding-bottom:34px !important; scroll-padding-bottom:36px; } /* v423 UI25 B3b：尾卡捲到底完整離開 footer，唔再似俾底部遮住 */
+#loc-sheet.sheet.locpanel118 #loc-acts.loc-acts-more171::after{ height:18px !important; margin-top:-18px !important; background:linear-gradient(to bottom, rgba(248,241,222,0), rgba(248,241,222,.9)) !important; }
 #loc-sheet.sheet.locpanel118 #loc-acts .act{ padding:9px 14px !important; }
 #loc-sheet.sheet.locpanel118 .ux68-ghead{ margin-bottom:4px !important; }
 /* N2 資料卡去橫線：平紙底＋標籤／數值兩欄，數值右齊（條形欄喺資料卡唔出，唔再擠數值去中間） */
@@ -7677,6 +7686,18 @@ body.day-res-open .day-row{
   padding:5px 12px !important; background:#EDDFC2 !important; border:1px solid #cbb98d !important;
   border-left:2px solid #823F35 !important; box-shadow:0 2px 0 rgba(70,50,30,.18) !important;
   font-size:13px !important; white-space:nowrap;
+}
+/* v423 UI25 B7：窄屏手帳頂部收擠迫——plan 組 gap／左 padding 收窄、進度徽章可縮、
+   尾 tab 紅圈 inset 收窄，標籤留喺紙邊之內；觸控目標維持 ≥44px。 */
+@media (max-width:430px){
+  .hsub-group[data-hsubgroup="plan"]{ gap:12px !important; padding:4px 10px 4px 14px !important; }
+  #home-subtabs .hsub-group[data-hsubgroup="plan"] .prog389-badge{
+    font-size:12px !important; padding:5px 8px !important;
+    max-width:44%; overflow:hidden; text-overflow:ellipsis;
+  }
+  #home-subtabs .hsub-group[data-hsubgroup="plan"] .home-tab.on::after{
+    left:-6px !important; width:calc(100% + 12px) !important;
+  }
 }
 /* Q2 行程首屏全週可讀：週格收緊內距（唔縮字、觸控目標仍 ≥44px），標題同日期範圍同一行；
    圖示併入星期行（星期左、圖示右、活動名下一行），格高再收一截 */
@@ -12818,6 +12839,13 @@ const StoryPlay = (()=>{
     const loc = (beat.locId && String(beat.locId).trim()) || (node.locId && String(node.locId).trim()) || "";
     if(loc && SP_KNOWN_LOCS[loc]) return "bg_loc_"+loc;
     if(loc) return "bg_loc_"+loc;
+    /* v423 UI25 A2：beat／node 都冇 loc 時，查節點嘅軟地點表（storyNodeLocId，
+       STORY_LOC_SOFT）——31 個 R_ 節點（如 R_hiu_meet→tvb_longmen）以前跌入
+       bg_generic_interior 米色漸變，廠景相其實存在，係解析鏈冇接上。 */
+    try{
+      const softLoc423 = (typeof storyNodeLocId==="function") ? storyNodeLocId(node) : null;
+      if(softLoc423) return "bg_loc_"+softLoc423;
+    }catch(_e423){}
     return "bg_generic_interior";
   }
   function spBgClass(beat, node){
@@ -13668,11 +13696,20 @@ const StoryPlay = (()=>{
       const charsChoice218 = choiceCur218 ? spDlgCharsHtml(choiceCur218, "narration") : "";
       /* v20a128 A3 D-7：頂部 meta 欄全程一致——幕標題＋場景描述只喺開場第一句閃現一次
          （v105 方向），對白步同抉擇步都唔再出。抉擇屏唔留 .sp-head，紙卡本身就係選項；
-         （舊版喺呢度重出 meta＋標題＋簡介，同開場重複，兼且洩劇本結構。） */
+         （舊版喺呢度重出 meta＋標題＋簡介，同開場重複，兼且洩劇本結構。）
+         v423 UI25 A2：抉擇屏加瘦身語境行（標題＋場景，唔係 .sp-head meta）——
+         「跳至選項」直入嘅玩家都要知身在何處；唔出進度／結構資訊。 */
+      const ctx423 = (()=>{ try{
+        const t423 = String(n.title||"").trim();
+        const s423 = n.setting ? String((typeof storySettingStripRoute198==="function") ? storySettingStripRoute198(n.setting) : n.setting).trim() : "";
+        const parts423 = [t423, s423].filter((x,i,a)=>x && a.indexOf(x)===i);
+        return parts423.length ? `<div class="sp-choice-ctx423">${esc(parts423.join(" · "))}</div>` : "";
+      }catch(_e423){ return ""; } })();
       inner = `<div class="story-play sp-cinematic sp-choices-layout" id="story-play-root">
         <div class="sp-stage sp-mode-choices${charsChoice218?" dlg106-on":""}" data-sp-kind="choices">
           <div class="sp-bg-layer ${esc(bgClass)}" data-sp-bg-fallbacks="${bgDataC}" aria-hidden="true"></div>
           <div class="sp-bg-scrim" aria-hidden="true"></div>
+          ${ctx423}
           ${charsChoice218}
         </div>
         <div class="sp-choices">${btns}</div>
@@ -21549,7 +21586,7 @@ function castingNoticeDetailHtml(g){
       ${chanceRow378}
       ${tape383DetailRow383}
       ${intel381DetailRow384}
-      ${(()=>{ try{ const rl=(typeof ref422Label==="function")?ref422Label(g):""; return rl?`<div class="cn-sum-row"><span class="k">${rl}</span><span class="v">此試鏡機會經${rl}取得，請於 14 日內到場試鏡</span></div>`:""; }catch(_e){ return ""; } })()}
+      ${(()=>{ try{ const rl=(typeof ref422Label==="function")?ref422Label(g):""; if(!rl) return ""; let exp423="14 日內"; try{ const k423=(typeof ref422KeptKind==="function")?ref422KeptKind(g):""; const s423=k423&&typeof ref422Slot==="function"?ref422Slot(k423):null; if(s423&&typeof dateObj==="function"){ const d423=new Date(dateObj().getTime()+(((s423.keptDay|0)+14)-((S&&S.dayIndex)|0))*86400000); exp423=d423.getFullYear()+"年"+(d423.getMonth()+1)+"月"+d423.getDate()+"日之前（14 日內）"; } }catch(_e423){} return `<div class="cn-sum-row"><span class="k">${rl}</span><span class="v">此試鏡機會經${rl}取得，請於 ${exp423}到場試鏡</span></div>`; }catch(_e){ return ""; } })()}
       ${(()=>{ try{ return (g && g.duty392 && typeof duty422ProgressText==="function")?`<div class="cn-sum-row"><span class="k">幕後履歷</span><span class="v">${duty422ProgressText()}</span></div>`:""; }catch(_e){ return ""; } })()}
       ${(()=>{ try{ return (typeof stamina422IsActionGig==="function" && stamina422IsActionGig(g))?`<div class="cn-sum-row"><span class="k">動作底子</span><span class="v">武師班 ${stamina422Lessons()} 堂${stamina422Lessons()>=5?"（已成形）":"（5 堂成形）"}</span></div>`:""; }catch(_e){ return ""; } })()}
       ${costume382DetailRowHtml(g)}
@@ -22368,15 +22405,28 @@ function nbDayHint400(i, meta, editable, locked){
       return editable ? prog400 : ((meta.hint||"") ? (meta.hint + " · " + prog400) : prog400);
     }
     if(typeof isMapDay==="function" && isMapDay(id)){
-      const n400 = (planDraft||[]).filter(x=> isMapDay(x)).length;
-      const txt400 = "本週外出機會剩 " + n400 + " 日";
-      /* v20a413 P2：總數只喺每週第一個外出格顯示，其餘外出格唔重複同句 */
-      const firstMap413 = (planDraft||[]).findIndex(x=> isMapDay(x));
-      if(i !== firstMap413) return editable ? "" : (meta.hint||"");
-      return editable ? txt400 : ((meta.hint||"") ? (meta.hint + " · " + txt400) : txt400);
+      /* v423 UI25 A1：全週外出總數唔再塞入第一個外出格（讀落似該日備註）——
+         改由 nbMapTotal400 出喺週標題日期行；外出格 hint 回復該日原 hint。 */
+      return editable ? "" : (meta.hint||"");
     }
   }catch(_e){}
   return editable ? "" : (meta.hint||"");
+}
+/* v423 UI25 A1：本週外出機會總數（planDraft 內 scout_* 格數，計數邏輯同舊版一致）——
+   出喺週標題日期行尾，唔再冒充單日 hint。 */
+function nbMapTotal400(){
+  try{
+    if(typeof isMapDay!=="function" || !Array.isArray(planDraft) || planDraft.length!==7) return "";
+    const n423 = planDraft.filter(x=> isMapDay(x)).length;
+    return "本週外出機會剩 " + n423 + " 日";
+  }catch(_e){ return ""; }
+}
+function nbRangeWithTotal400(){
+  try{
+    const base423 = (typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel();
+    const tot423 = nbMapTotal400();
+    return tot423 ? (base423 + " · " + tot423) : base423;
+  }catch(_e){ return (typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel(); }
 }
 function costLose400(id){
   /* v20a400 細改 3：改走舊格失去嘅嘢——收入實數跟 resolvePlannedDay（街演 R(35,60)／
@@ -22430,7 +22480,7 @@ function showCost400(fromId, toId, dayIdx){
     if(!el) return;
     const txt400 = costLine400(fromId, toId, dayIdx);
     if(!txt400) return;
-    el.textContent = txt400;
+    el.textContent = "剛才的變更：" + txt400; /* v423 UI25：講明係剛才改格嘅後果，唔同目前所選日混淆 */
     el.hidden = false;
   }catch(_e){}
 }
@@ -23200,7 +23250,7 @@ function syncDateChrome(){
       });
     }
     const range=document.getElementById("nb-range");
-    if(range) range.textContent = (typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel();
+    if(range) range.textContent = (typeof nbRangeWithTotal400==="function") ? nbRangeWithTotal400() : ((typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel());
   }catch(_e){}
 }
 function setUnderlyingInert(on, scene){
@@ -23680,7 +23730,7 @@ function planScrollHint418(){
 }
 function renderNotebook(){
   if(!planDraft || planDraft.length!==7) planDraft = (S.weekPlan && S.weekPlan.length===7) ? S.weekPlan.slice() : defaultWeekPlan();
-  document.getElementById("nb-range").textContent = (typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel();
+  document.getElementById("nb-range").textContent = (typeof nbRangeWithTotal400==="function") ? nbRangeWithTotal400() : ((typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel());
   const editable=!!S.homeEditable;
   /* v19z24：唯讀（或剛揀日）令右欄分類跟左列當日安排一致 */
   try{
@@ -23758,10 +23808,11 @@ function renderNotebook(){
   });
   const list=document.getElementById("act-list");
   list.innerHTML="";
-  document.getElementById("nb-right-title").textContent = editable
-    ? `編輯 · 週${weekdayName(planSelDay)}`
-    : `行程 · 週${weekdayName(planSelDay)}（唯讀）`;
   const selLocked=dayPlanLocked(planDraft[planSelDay]);
+  /* v423 UI25：鎖定日（拍攝檔期）標題講明不可改，唔再寫「編輯」同卡面矛盾 */
+  document.getElementById("nb-right-title").textContent = selLocked
+    ? `週${weekdayName(planSelDay)} · 拍攝檔期已定`
+    : (editable ? `編輯 · 週${weekdayName(planSelDay)}` : `行程 · 週${weekdayName(planSelDay)}（唯讀）`);
   let items = planCat==="work" ? workItems() : (PLAN_ITEMS[planCat]||[]);
   if(planCat==="train"){
     /* v20a71 PART3B：訓練分類改出按數值課程選擇器（同「全日訓練」同一套清單，
@@ -24716,6 +24767,17 @@ function morningChain196(finalFn, opts){
     try{
       if(typeof story165TryForcedPlay==="function" && story165TryForcedPlay(afterKind)) return;
     }catch(_e){}
+    /* v423 UI25 B1：晨鏈收尾 self-heal——mask 已關就強制解除底層 inert；存檔話
+       可編輯而手帳畫面顯示中，就重繪可編輯手帳。防剪報 modal 後手帳停喺
+       非編輯／出口撳唔郁嘅狀態同步競態（v419 E0 第 70／435 日實證）。 */
+    try{
+      const mask423 = document.getElementById("mask");
+      if(mask423 && !mask423.classList.contains("on")){
+        if(typeof setUnderlyingInert==="function") setUnderlyingInert(false);
+        const home423 = document.getElementById("v-home");
+        if(typeof S!=="undefined" && S && S.homeEditable && home423 && home423.classList.contains("on") && typeof renderNotebook==="function") renderNotebook();
+      }
+    }catch(_e423){}
     done();
   };
   step();
@@ -30696,10 +30758,12 @@ function rom159DateButtonInfo(rk){
     if(!w || !w.spots || !w.spots.length) return { show:false, ok:false, title:"", hint:"", cost:"", reason:"" };
     const gate = rom159DateGate(rk, null);
     const minCost = Math.min.apply(null, w.spots.map(id=>Number((ROM159_DATES[id]&&ROM159_DATES[id].cost)||0)));
+    /* v423 UI25 B5：花費一日＋金錢之前講明已達劇情階段上限（唔改任何好感數值） */
+    const capped423 = gate.ok && (typeof romance422PaceCapped==="function") && romance422PaceCapped(rk);
     return {
       show:true, ok:gate.ok,
       title:"約" + w.name + "出街",
-      hint: gate.ok ? ("約會用去一日 · " + w.spots.length + " 個地點可選，$" + minCost + " 起") : gate.reason,
+      hint: gate.ok ? ("約會用去一日 · " + w.spots.length + " 個地點可選，$" + minCost + " 起" + (capped423 ? " · 關係已達目前劇情階段上限，本次約會不會再增加好感" : "")) : gate.reason,
       cost:"耗一日",
       reason:gate.reason
     };
@@ -30723,9 +30787,11 @@ function rom159OpenDatePicker(who, L){
         <div class="cost">約</div>
       </button>`;
     }).join("");
+    const cappedPick423 = (typeof romance422PaceCapped==="function") && romance422PaceCapped(who);
     modal(`<h3>約${w.name}出街</h3>
       <p class="sub">約會用去一日，當日不能接通告，也不能訓練。相約之前請看清費用，以免約定後才發現存款不足。</p>
       <p class="sub">每人每週最多相約一次；一星期只可相約一人。約會本身不加分；場內回應合適時，關係可能更親近，但不會越過目前劇情階段的上限。</p>
+      ${cappedPick423 ? `<p class="sub">關係已達目前劇情階段上限，本次約會不會再增加好感；下一步要靠劇情推進。</p>` : ""}
       <div id="rom159-date-list">${rows}</div>`,[
       {label:"取消", role:"g", on:()=>{ if(L) openLoc(L.id, {travelFree:true}); }}
     ], {onDismiss:()=>{ if(L) openLoc(L.id, {travelFree:true}); }});
@@ -37439,6 +37505,7 @@ function awards62PlayCeremony(pack, doneFn){
     if(raf) cancelAnimationFrame(raf);
     if(stage && stage.parentNode) stage.parentNode.removeChild(stage);
     try{ document.getElementById("app").classList.remove("awd-stage-on402"); }catch(_e402){} /* v20a402 UI402-6④：舞台拆走即還原地圖＋頂欄。 */
+    try{ if(typeof setUnderlyingInert==="function") setUnderlyingInert(false); }catch(_e423){} /* v423 UI25 B2：cleanup 一致還原底層互動 */
   };
   const finish = ()=>{
     if(finished) return;
@@ -37568,6 +37635,7 @@ function awards62PlayCeremony(pack, doneFn){
       + "</div>";
     document.body.appendChild(stage);
     try{ document.getElementById("app").classList.add("awd-stage-on402"); }catch(_e402){} /* v20a402 UI402-6④：典禮接管嗰陣卸載地圖＋頂欄（CSS），只留跳過掣。 */
+    try{ if(typeof setUnderlyingInert==="function") setUnderlyingInert(true); }catch(_e423){} /* v423 UI25 B2：底層 view／地點面板入 inert，典禮期間只有舞台可互動 */
     const cv = stage.querySelector("canvas");
     const ctx = cv.getContext("2d");
     ctx.imageSmoothingEnabled = false;
@@ -39858,7 +39926,10 @@ function presentDueMorningPaper(thenFn){
   const edition = pullDueNewspaperEdition();
   if(!edition) return false;
   if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = true;
+  let doneOnce423 = false; /* v423 UI25 B1：once-guard——掣同 onDismiss 唔准重複行 continuation */
   const done = ()=>{
+    if(doneOnce423) return;
+    doneOnce423 = true;
     try{ commitMorningPaper(edition); }catch(_e){}
     if(FREEPLAY_FW) FREEPLAY_FW._paperShowing = false;
     cont();
@@ -45624,10 +45695,12 @@ function enc79SheetPresence(locId){
        幾時寫入呢行嘅邏輯同舊版完全一樣，冇郁巧遇觸發／派位。 */
     const def105 = (typeof enc79StarDef==="function") ? enc79StarDef(here[0]) : null;
     const name105 = (def105 && def105.name) || "";
-    const av105 = (typeof enc79StandCandidates==="function" && enc79StandCandidates(here[0]).length)
-      ? enc79StandCandidates(here[0])[0] : "";
+    /* v423 UI25 B8：缺檔星在場頭像用中性剪影（實檔存在），唔請求缺檔、唔靜默消失 */
+    const av105 = (typeof enc423NoArt==="function" && enc423NoArt(here[0]))
+      ? ENC105_STAND_SILHOUETTE
+      : ((typeof enc79StandCandidates==="function" && enc79StandCandidates(here[0]).length) ? enc79StandCandidates(here[0])[0] : "");
     const esc105 = (s)=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-    const row105 = `<span class="pres105">${av105?`<img class="pres105-av" src="${esc105(av105)}" alt="" onerror="this.style.display='none'">`:""}<span class="pres105-main"><b>${esc105(name105)}</b> <span class="pres105-tag">遠觀</span><br><span class="pres105-line">${esc105(line)}</span></span></span>`;
+    const row105 = `<span class="pres105">${av105?`<img class="pres105-av" src="${esc105(av105)}" alt="" onerror="this.onerror=null;this.src='${ENC105_STAND_SILHOUETTE}'">`:""}<span class="pres105-main"><b>${esc105(name105)}</b> <span class="pres105-tag">遠觀</span><br><span class="pres105-line">${esc105(line)}</span></span></span>`;
     if(!cur || cur.indexOf("暫時未見熟人")===0) el.innerHTML = row105;
     else el.innerHTML = esc105(cur) + "<br>" + row105;
   }catch(_e){}
@@ -45709,6 +45782,10 @@ function enc373CardSrc(sid){
     return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
   }catch(_e){ return ""; }
 }
+/* v423 UI25 B8：已知缺檔四星（era_stars 無 stand／bust 檔，頒獎 pixel 齊）——
+   呈現層直接行資料卡／剪影，唔再逐句重複請求缺檔。正式立繪入庫後由名單移除即回復真圖。 */
+const ENC423_NO_ART = { shum_yingsuet:1, kong_siying:1, wu_meilam:1, hon_sauting:1 };
+function enc423NoArt(sid){ return !!(sid && ENC423_NO_ART[sid]); }
 function enc79StandCandidates(starId){
   const out = [];
   /* v20a105 ENC105（D-2）：12 星企立圖（原生美術庫企立版入庫）做第一候補，
@@ -45788,6 +45865,11 @@ function enc79PlayEncounter(starId, locId, wasMet){
      （見 __dlg108Fit）；雙人未齊載入嗰陣唔做嘢，等齊兩張先計。 */
   [charL, charR].forEach(function(im){ if(im) im.onload = function(){ try{ window.__dlg108Fit && window.__dlg108Fit(im); }catch(_e){} }; });
   const extraCands106 = (sid)=>{
+    /* v423 UI25 B8：缺檔星直接用藝員資料卡（data URI 必載入），唔行 stand／bust 缺檔鏈 */
+    if(typeof enc423NoArt==="function" && enc423NoArt(sid)){
+      const card423 = (typeof enc373CardSrc==="function") ? enc373CardSrc(sid) : "";
+      return card423 ? [card423] : [ENC105_STAND_FALLBACK];
+    }
     if(sid==="awi"){
       const out = [];
       try{ if(typeof UI40_STAND!=="undefined" && UI40_STAND.awi) out.push(UI40_STAND.awi); }catch(_e){}
@@ -45812,6 +45894,9 @@ function enc79PlayEncounter(starId, locId, wasMet){
     img.dataset.k106 = key;
     const cands = dlg106Candidates(img._sid106, category);
     extraCands106(img._sid106).forEach(u=>{ if(u && cands.indexOf(u)<0) cands.push(u); });
+    /* v423 UI25 B8：資料卡係橫向紙卡，企位 bottom:10% 會俾對話框遮住大半——
+       缺檔星張卡上移至對話框之上完整可見（真立繪唔受影響）。 */
+    try{ img.style.bottom = (typeof enc423NoArt==="function" && enc423NoArt(img._sid106)) ? "32%" : ""; }catch(_e423){}
     if(!cands.length) return;
     img._chain106 = cands; img._ci106 = 0;
     img.onerror = ()=>{ tryNext(img); };
@@ -46703,6 +46788,8 @@ function enc79PeopleHtml(){
       /* v20a290 Q2：冇 BUST109_EXTRA 鍵嘅星（五位新星冇全身裁圖）唔用企立／bust 候補做首圖
          （兩檔都唔存在，兩級 404 會出破圖），縮圖直接用已入庫嘅中性剪影；12 星有 BUST109 鍵，唔變。 */
       try{ const hasB109v290=(typeof BUST109_EXTRA!=="undefined" && BUST109_EXTRA) ? !!BUST109_EXTRA[def.id] : false; if(!hasB109v290 && typeof ENC105_STAND_SILHOUETTE!=="undefined" && ENC105_STAND_SILHOUETTE) cands.unshift(ENC105_STAND_SILHOUETTE); }catch(_e){}
+      /* v423 UI25 B8：缺檔星縮圖鏈只留剪影＋SVG 兜底，onerror 唔再跌入缺檔 stand */
+      try{ if(typeof enc423NoArt==="function" && enc423NoArt(def.id)) cands.splice(0, cands.length, ENC105_STAND_SILHOUETTE, ENC105_STAND_FALLBACK); }catch(_e423){}
       const img = cands.length ? '<img src="'+cands[0]+'" alt="" onerror="this.onerror=null;this.src=\''+(cands[1]||"")+'\';if(!\''+(cands[1]||"")+'\')this.style.display=\'none\';" style="width:40px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/>' : "";
       return '<div class="people-row" style="margin:8px 0;display:flex;gap:8px;align-items:flex-start">' + img
         + '<span style="flex:1"><b>'+def.name+'</b> · 紅星（'+ENC79_TIER_NAMES[tier]+'）<br><span class="gold">'+hearts+' '+st.fav+'／100</span>'
@@ -48421,6 +48508,7 @@ function openLoc(id, opts){
       acts.appendChild(b);
     };
     let storyActAdded = false;
+    let shownStory423 = null; /* v423 UI25 B3a：已出卡嘅節點 id（第二張卡去重用） */
     if(typeof StoryOC!=="undefined"){
       StoryOC.ensure();
       /* tip path */
@@ -48447,6 +48535,7 @@ function openLoc(id, opts){
             try{ StoryPlay.start(nid); }catch(_e){ toast("無法開劇情"); }
           }, "act-priority act-story");
           storyActAdded = true;
+          shownStory423 = nid;
         }
       }
       if(!storyActAdded && !(tipHere && tipHere.commitId)){
@@ -48468,6 +48557,7 @@ function openLoc(id, opts){
             try{ StoryPlay.start(here.id); }catch(_e){ toast("無法開劇情"); }
           }, "act-priority act-story");
           storyActAdded = true;
+          shownStory423 = here.id;
         } else {
           /* Done-at-this-loc → gray label only (never 播事態／免費) */
           const doneHere = (oc.done||[]).find(r=>{
@@ -48480,6 +48570,30 @@ function openLoc(id, opts){
             storyActAdded = true;
           }
         }
+      }
+      /* v423 UI25 B3a：同地有第二段開放劇情時出第二張卡——舊版只出一張，
+         玩家播完第一段要次日再入先見到第二段（v419 idle-break 實證）。 */
+      if(storyActAdded && shownStory423){
+        try{
+          const oc423 = StoryOC.listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true }) || {};
+          const others423 = (oc423.open||[]).filter(r=>{
+            if(!r || !r.id || r.id===shownStory423) return false;
+            if(locStoryIsDone(r.id)) return false;
+            const n423 = StoryOC.findNodeRaw(r.id);
+            return locMatchesStory(n423, r);
+          });
+          if(others423.length){
+            const r423 = others423[0];
+            const n423 = StoryOC.findNodeRaw(r423.id);
+            const face423 = (typeof storyFaceLine==="function") ? storyFaceLine(n423||{}, r423) : (r423.playerHint || r423.title || "");
+            add(`播劇情：${r423.title||r423.id}`, face423,"免費", ()=>{
+              if(locStoryIsDone(r423.id)){ toast("劇情已完成，不必再播。"); try{ openLoc(L.id, {travelFree:true}); }catch(_e){} return; }
+              try{ if(typeof ensureWeekPlanCommittedForStory==="function") ensureWeekPlanCommittedForStory(); }catch(_ec){}
+              closeSheet();
+              try{ StoryPlay.start(r423.id); }catch(_e){ toast("無法開劇情"); }
+            }, "act-priority act-story");
+          }
+        }catch(_e423){}
       }
     }
   }catch(_e){}
