@@ -1,3 +1,4 @@
+// v422B resync：index.html 淨 +179 行（53212→53391）；釘行按 difflib 映射重寫，內容逐字核實純漂移；見 qa422/resync422b.py。
 // v20a383 TAPE383 自費試鏡帶・邏輯測試
 // 合約（用戶 2026-11-22 拍板次序③；方案 GPT-6.2-sol「自費試鏡帶」）：
 //   A 開閘：1991 年起（第二、三年）；每季一次（季鍵 year*4+季）；1990 年停用、本季已用停用。
@@ -26,23 +27,29 @@ function ok(name, cond, extra){
 
 /* ---------- 沙盒 ---------- */
 const START = { y: 1990, m: 1, d: 1 };
-var S = { dayIndex: 0, money: 10000, flags: {}, booked: [], pendingAud: [], shoots: [], tape383: null };
+var S = { dayIndex: 0, money: 10000, flags: {}, booked: [], pendingAud: [], shoots: [], tape383: null, fame: 99, acting: 99, stage: 99, vocal: 99, looks: 99, charm: 99, iq: 99, stamina: 99, wardrobeOwned: [] }; /* v422B：試鏡帶揀通告改查 req，沙盒玩家設為全達標 */
 var dateObj = function(){ return new Date(START.y, START.m - 1, START.d + (S.dayIndex | 0)); };
 var enc79PlayerTier = function(){ return 1; }; /* 配角 */
 var GIG_TIER_ORDER229 = ["臨記","初級","中級","高級","稀有"];
 var gigTierCanon229 = function(t){ return t || "初級"; };
 var isGigConsumed = function(){ return false; };
 var saveQ = function(){};
+var isGigWrapped = function(){ return false; };
+var isGigInProduction = function(){ return false; };
+var gigLifecycleStatus = function(){ return 'open'; };
+var STAT_KEYS = ['acting','stage','vocal','looks','charm','iq','stamina'];
 var toast = function(){};
 var triggerGigLocName229 = function(id){ return String(id || ""); };
 const allGigs = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/gigs_new.json'), 'utf8')).gigs;
 ok('gig pool 330', allGigs.length === 330, 'n=' + allGigs.length);
 var GIGS = allGigs.filter(g => g.year === 1991);
+S.wardrobeOwned = Array.from(new Set(allGigs.flatMap(g => (g.wardrobe && g.wardrobe.need) || [])));
 eval([
   extractFn('tape383QuarterKey'),
   extractFn('tape383Price'),
   extractFn('tape383Slot'),
   extractFn('tape383State'),
+  extractFn('fameFloor'), extractFn('gateTrainHint'), extractFn('costume382Gate'), extractFn('reqGap'), extractFn('canAudition'), extractFn('v422Auditionable'), extractFn('v422PickAuditionable'),
   extractFn('tape383PickGig'),
   extractFn('tape383FmtDay'),
   extractFn('tape383LocName'),

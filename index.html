@@ -8783,7 +8783,7 @@ const COURSE_DEFS = {
   train_looks:  { icon:"✨", name:"外貌／形象", hint:"健身造型", midOf:null },
   train_charm:  { icon:"😊", name:"魅力訓練", hint:"談吐社交", midOf:null },
   train_iq:     { icon:"📚", name:"智商／修養", hint:"讀書觀察", midOf:null },
-  train_stamina: { icon:"🥋", name:"武師班", hint:"拳腳／體能", midOf:null },
+  train_stamina: { icon:"🥋", name:"武師班", hint:"拳腳／體能 · 動作戲底子", midOf:null },
   /* v20a75 LEVELS75：舊制進階課唔再係獨立課——併入母課二級（見 TRAIN75_SPEC）；
      COURSE_DEFS 只剩 7 基礎課。 */
 };
@@ -14556,7 +14556,8 @@ function endingBackstageClose410(st){
    careerStats95Of（冇存檔計數器就即場衍生，唔寫入）。回填局限：舊檔種子只數到
    wrapHistory 最近 30 條，計數係下限唔係全史（NOTES 有交代）。 ===== */
 const ENDING95_T = {
-  e1Fame: 70, e1Credit: 65, e1Dual: 350, e1NegMax: 1,          /* E1 收緊（數字）＋質性閘（獎／≥2 媒介擔正／≥1 鏈） */
+  e1Fame: 70, e1Credit: 65, e1Dual: 350, e1NegMax: 1,          /* E1 數字門檻（v422 校準不變） */
+  e1AwardWins: 1, e1LeadFilm: 1, e1LeadTv: 1, e1LeadMusic: 1, e1LeadVariety: 3, e1LeadAd: 1, /* v422 E1 五媒介擔正組合（電影／電視／唱片／綜藝主持／廣告） */
   ssDual: 300, ssFame: 60, ssCredit: 55, ssNegMax: 1,          /* SS 一線巨星：爭少少上唔到天王嗰班 */
   fkDual: 200, fkFilmShare: 0.5, fkFilmLeads: 2,               /* FK 影壇天王 */
   tkDual: 200, tkTvShare: 0.5, tkTvLongLeads: 1,               /* TK 電視天王 */
@@ -15178,10 +15179,16 @@ function end95BuildGaps(ctx){
      E1/SS 上限係 1 個；有 2 個或以上要講明係邊瓣擋住。 */
   if((ctx.negTags | 0) >= 2) lines.push("負面印記，你身上有 " + (ctx.negTags | 0) + " 個——天王與巨星那兩格，最多容許一個。");
   if(!ctx.hasWin) lines.push("獎，你未曾拿過——頒獎禮那幾晚，你依然坐在台下。");
-  if((ctx.leadMediaCount | 0) <= 0) lines.push("擔正，你未曾站上那個位置——哪種媒介都沒有。");
-  else if(ctx.leadMediaCount < 2) lines.push("擔正，你只在一邊擔正過——還欠另一種媒介。");
-  /* v20a390：電影擔正缺口（E1 新閘）——已有 ≥2 媒介擔正但冇電影擔正嗰陣先講，唔同上面兩句疊。 */
-  else if((ctx.filmLead | 0) < 1) lines.push("電影擔正，你未曾站上那個位置——天王那一格，要有一部電影由你擔正。");
+  /* v422：擔正組合逐項列明尚欠邊一項（電影／電視／唱片／綜藝主持／廣告），
+     玩家要看得出差獎、擔正組合定主線邊一項，不靠猜。 */
+  const lb422 = ctx.leadByMedium || {};
+  const miss422 = [];
+  if((lb422.film | 0) < T.e1LeadFilm) miss422.push("電影擔正");
+  if((lb422.tv | 0) < T.e1LeadTv) miss422.push("電視擔正");
+  if((lb422.music | 0) < T.e1LeadMusic) miss422.push("唱片主唱");
+  if((lb422.variety | 0) < T.e1LeadVariety) miss422.push("綜藝主持");
+  if((lb422.ad | 0) < T.e1LeadAd) miss422.push("廣告主角");
+  if(miss422.length) lines.push("擔正組合尚欠" + miss422.join("、") + "——天王那一格，要在電影、電視、唱片、綜藝、廣告五方面都站得穩。");
   if(ctx.spine && !ctx.spine.done) lines.push("主線尚欠 " + ctx.spine.missing.join("、") + " 未完成——天王那一格，要走完整條主線，單靠接工作是堆不出來的。");
   if((ctx.dual | 0) < T.e1Dual) lines.push("聲望與信用合計，你還差 " + (T.e1Dual - (ctx.dual | 0)) + " 才到天王那條線。");
   if((ctx.fame | 0) < T.e1Fame) lines.push("聲望還差 " + (T.e1Fame - (ctx.fame | 0)) + "。");
@@ -15243,7 +15250,22 @@ function resolveEnding410(st, opts){
      唔刻意追唔會自然攞到）；衝刺政策電影擔正 2 部。雙軌門檻唔郁（正常 829 vs 衝刺 911，
      三局衝刺範圍 669–1010，方差太大，加門檻冇區分作用）。 */
   const filmLead390 = (lead229.byMedium.film || 0);
-  const e1Qual95 = awards95.hasWin && leadMedia95.length >= 2 && spine95.done && filmLead390 >= 1;
+  /* v422 E1 校準（用戶拍板「E1 要用心玩先可達」）：質性閘由「≥2 媒介擔正＋電影擔正 ≥1」
+     改為五媒介擔正組合——電影 ≥1、電視 ≥1、唱片 ≥1、綜藝主持 ≥3、廣告 ≥1。
+     理由：v419／v422 校準前真玩正常政策（跟建議＋最高片酬）雙軌 875–915、
+     電影擔正 4–5、獎 8–9 格，數字與單項質性閘全部自然齊全，唯獨綜藝主持
+     只有 0–1 次（主持通告總片酬低、只得 2–3 日，最高片酬策略系統性略過）；
+     衝 E1 政策主動安排媒介組合，主持 5 次、五媒介齊全。組合閘製造真取捨：
+     玩家須主動把試鏡機會分配到低片酬的主持／唱片／廣告擔正，不能只靠追
+     最高片酬累積。電影擔正維持 ≥1：正常局電影擔正反多於衝刺局，加到 ≥2
+     只會令衝刺局貼線、無區分作用。雙軌門檻維持 350，不靠推高數字區分；
+     組合各項均在稱號頁進度行與結局差邊瓣逐項列明，不靠隱藏公式、
+     負標籤或不可見守門。 */
+  const e1Lead422 = lead229.byMedium || {};
+  const e1Qual95 = awards95.wins >= T95.e1AwardWins && spine95.done
+    && (e1Lead422.film || 0) >= T95.e1LeadFilm && (e1Lead422.tv || 0) >= T95.e1LeadTv
+    && (e1Lead422.music || 0) >= T95.e1LeadMusic && (e1Lead422.variety || 0) >= T95.e1LeadVariety
+    && (e1Lead422.ad || 0) >= T95.e1LeadAd;
   /* v20a393 分流數值（純函數讀數）：自選履歷／曝光／活動量／對照信用／幕後職務 */
   const sel95 = careerStats392SelOf(s);
   const selTotal95 = Math.max(0, sel95.total | 0);
@@ -15263,7 +15285,7 @@ function resolveEnding410(st, opts){
   const driftFinal421 = drift421Mark && sum < 140;
   let career = "E0", variant = "";
   if(fame>=T95.e1Fame && credit>=T95.e1Credit && sum>=T95.e1Dual && neg<=T95.e1NegMax && e1Qual95){
-    career = "E1"; reasons.push("E1：聲望 "+fame+"≥"+T95.e1Fame+"、信用 "+credit+"≥"+T95.e1Credit+"、雙軌 "+sum+"≥"+T95.e1Dual+"、負標籤 "+neg+"≤"+T95.e1NegMax+"＋質性閘全齊（獎 "+awards95.wins+"／擔正媒介 "+leadMedia95.length+"／電影擔正 "+filmLead390+"／主線脊骨已走完）");
+    career = "E1"; reasons.push("E1：聲望 "+fame+"≥"+T95.e1Fame+"、信用 "+credit+"≥"+T95.e1Credit+"、雙軌 "+sum+"≥"+T95.e1Dual+"、負標籤 "+neg+"≤"+T95.e1NegMax+"＋質性閘全齊（獎 "+awards95.wins+"／擔正組合 電影 "+(e1Lead422.film||0)+"・電視 "+(e1Lead422.tv||0)+"・唱片 "+(e1Lead422.music||0)+"・綜藝主持 "+(e1Lead422.variety||0)+"・廣告 "+(e1Lead422.ad||0)+"／主線脊骨已走完）");
   } else if(sum>=T95.fkDual && share95(stats95.byMedium.film)>=T95.fkFilmShare && (lead229.byMedium.film||0)>=T95.fkFilmLeads){
     career = "FK"; reasons.push("FK 影壇天王：雙軌 "+sum+"≥"+T95.fkDual+"、電影佔比 "+Math.round(share95(stats95.byMedium.film)*100)+"%≥50%、電影擔正 "+(lead229.byMedium.film||0)+"≥"+T95.fkFilmLeads);
   } else if(sum>=T95.tkDual && share95(stats95.byMedium.tv)>=T95.tkTvShare && (lead229.byMedium.tv||0)>=T95.tkTvLongLeads){
@@ -15301,7 +15323,7 @@ function resolveEnding410(st, opts){
   } else if(sum>=T95.ssDual && fame>=T95.ssFame && credit>=T95.ssCredit && neg<=T95.ssNegMax){
     /* v421：SS 做兜底——具體身份格（專長／E3／E5／ID／E4）全部判完先到 SS；
        仍排 CR／E2 前：SS 雙軌 300 門檻高過 CR／E2，合 SS 派 SS 先係最好嗰格。 */
-    career = "SS"; reasons.push("SS 一線巨星：雙軌 "+sum+"≥"+T95.ssDual+"、聲望 "+fame+"≥"+T95.ssFame+"、信用 "+credit+"≥"+T95.ssCredit+"、負標籤 "+neg+"≤"+T95.ssNegMax+"（未齊 E1 質性閘：獎 "+(awards95.hasWin?"有":"冇")+"／擔正媒介 "+leadMedia95.length+"／電影擔正 "+filmLead390+"／主線脊骨 "+(spine95.done?"已走完":"尚欠 "+spine95.missing.join("、"))+"）");
+    career = "SS"; reasons.push("SS 一線巨星：雙軌 "+sum+"≥"+T95.ssDual+"、聲望 "+fame+"≥"+T95.ssFame+"、信用 "+credit+"≥"+T95.ssCredit+"、負標籤 "+neg+"≤"+T95.ssNegMax+"（未齊 E1 質性閘：獎 "+(awards95.hasWin?"有":"冇")+"／擔正組合 電影 "+(e1Lead422.film||0)+"・電視 "+(e1Lead422.tv||0)+"・唱片 "+(e1Lead422.music||0)+"・綜藝主持 "+(e1Lead422.variety||0)+"・廣告 "+(e1Lead422.ad||0)+"／主線脊骨 "+(spine95.done?"已走完":"尚欠 "+spine95.missing.join("、"))+"）");
   } else if(credit>=T95.crCredit && fame>=T95.crFameLo && fame<=T95.crFameHi && !lowAct392 && !driftFinal421){
     career = "CR"; reasons.push("CR 實力派演員：信用 "+credit+"≥"+T95.crCredit+"、聲望 "+fame+" 喺 "+T95.crFameLo+"–"+T95.crFameHi);
   } else if(credit>=T.e2Credit && fame>=T.e2Fame && !lowAct392 && !driftFinal421){
@@ -15342,7 +15364,7 @@ function resolveEnding410(st, opts){
   const titleName95 = (career==="E3" && variant) ? variant : (ENDING410_CAREER_NAMES[career] || career);
   const title = titleName95 + "・" + exodusWord;
   const gaps95 = end95BuildGaps({ career: career, fame: fame, credit: credit, dual: sum, negTags: neg,
-    hasWin: awards95.hasWin, leadMediaCount: leadMedia95.length, filmLead: filmLead390, chains: chains95, spine: spine95 });
+    hasWin: awards95.hasWin, leadMediaCount: leadMedia95.length, filmLead: filmLead390, leadByMedium: Object.assign({}, lead229.byMedium), chains: chains95, spine: spine95 });
   return {
     career: career, careerVariant: variant, baseCareer: baseCareer, baseVariant: baseVariant,
     romance: romance, exodus: exodus, title: title, reasons: reasons,
@@ -16464,7 +16486,7 @@ const GiftShop = (function(){
        回傳唔再帶呢個欄，唔好兩邊唔同。呼叫方（doGiveGift）一向睇 softSocialCostsDay，唔睇呢欄。 */
     return {
       ok:true, reason:"", itemId, name:(itemById(itemId)||{}).name||itemId,
-      kind, delta:applied378, softcap, line, relKey, before, after
+      kind, delta:applied378, softcap, paceCapped:(applied>0 && applied378<applied), line, relKey, before, after
     };
   }
   function inventoryList(){
@@ -18738,6 +18760,7 @@ function normalizeSaveObj(o){
   /* v20a381 INTEL381：舊檔補補位名額槽預設（null＝未買；已有就唔郁，冪等）。 */
   if(!o.intel381||typeof o.intel381!=="object") o.intel381=null;
   if(!o.tape383||typeof o.tape383!=="object") o.tape383=null; /* v20a383 TAPE383：自費試鏡帶單槽，舊存檔兼容 */
+  if(!o.ref422||typeof o.ref422!=="object"||Array.isArray(o.ref422)) o.ref422={}; /* v422：引薦槽（何生／幕後／彭少祺），舊存檔兼容 */
   if(!Array.isArray(o.contracts229)) o.contracts229=[];
   if(typeof o.vocal!=="number"||!isFinite(o.vocal))o.vocal=14;
   /* Soft: 壓力硬上限 100。舊檔高過 100 要夾落。體能係能力，跟 STAT_MAX，唔夾 100。 */
@@ -19816,7 +19839,7 @@ function renderMemoryPane60(){
     const m = missed[id] || {};
     return { id:id, title:String(m.title||id), whenLabel:String(m.whenLabel||""), week:Number(m.week)||0 };
   }).sort((a,b)=> (a.week-b.week) || a.id.localeCompare(b.id));
-  el.innerHTML = '<div class="mem-head60"><h3>回憶</h3><p class="dim">以下主線已經錯過時限，當時沒有遇上。這不會影響你繼續走下去，只是那段故事留在了回憶之中。</p></div>'
+  el.innerHTML = '<div class="mem-head60"><h3>回憶</h3><p class="dim">以下主線已經錯過時限，當時沒有遇上。這不會影響你繼續走下去，只是那段故事留在了回憶之中；天王接班一格需要走完整條主線，錯過一章，本輪已失去該格資格。</p></div>'
     + rows.map(r=>'<div class="mem-item60"><span class="mem-title60">《'+r.title+'》</span><span class="mem-when60">'+r.whenLabel+'</span><span class="dim">第'+(r.week||"—")+'週記低</span></div>').join("");
 }
 
@@ -20689,8 +20712,10 @@ function gigCardHtml(g, opts){
   /* v20a383 TAPE383：自費試鏡標籤＋試鏡截止日行（GPT 規格：卡上顯示同一截止日期） */
   let tape383Note = "";
   try{ const tl383 = (typeof tape383Label==="function") ? tape383Label(g) : ""; if(tl383){ trigBit += ` <span class="bp-tag tape383">${tl383}</span>`; const dd383 = (typeof tape383DeadlineText==="function") ? tape383DeadlineText(g) : ""; if(dd383) tape383Note = `<div class="tape383-note">自費試鏡 · 請於 ${dd383} 前到場試鏡</div>`; } }catch(_e){}
+  try{ const rl422 = (typeof ref422Label==="function") ? ref422Label(g) : ""; if(rl422) trigBit += ` <span class="bp-tag intel381">${rl422}</span>`; }catch(_e){}
   try{ const cr382 = (typeof costume382GigReq==="function") ? costume382GigReq(g) : null; if(cr382) trigBit += ` <span class="bp-tag costume382">自備戲服 · ${cr382}${costume382OwnedCat(cr382)?"":"（未持有）"}</span>`; }catch(_e){}
-  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+badge94.label):""}${seasonBit}${bpBit}${bridgeBit}${trigBit}</div><b class="g-title">${g.title}</b>${bridgeNote}${tape383Note}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}${favor158Html}</div>`;
+  const duty422Note = (()=>{ try{ return (g && g.duty392 && typeof duty422ProgressText==="function") ? `<div class="tape383-note">${duty422ProgressText()}</div>` : ""; }catch(_e){ return ""; } })();
+  return `<div class="gig-card">${sealImg}<div class="t">${locName}${g.type}${g.tier?(" · "+badge94.label):""}${seasonBit}${bpBit}${bridgeBit}${trigBit}</div><b class="g-title">${g.title}</b>${bridgeNote}${tape383Note}${duty422Note}<div class="req">${reqHtml(g)}<br>${rate}</div>${tip}${disc}${era}${meta}${blurb}${syn}${role}${intelHtml}${favor158Html}</div>`;
 }
 
 /* ===== v19c PLAN_GIG_PAY_EXACT_v1 + PLAN_GIG_BREACH_FEE_v1（顯示派生；引擎逾期可掛） ===== */
@@ -21025,6 +21050,7 @@ function gigBoardTeaserHtml(g, opts){
   try{ const il = (typeof intel381Label==="function") ? intel381Label(g) : ""; if(il) trigPill += `<span class="gt-pill gt-intel381">${il}</span>`; }catch(_e){}
   /* v20a383 TAPE383：自費試鏡標籤（沿用觸發標籤位） */
   try{ const tl383 = (typeof tape383Label==="function") ? tape383Label(g) : ""; if(tl383){ trigPill += `<span class="gt-pill gt-tape383">${tl383}</span>`; const ds384 = (typeof tape383DeadlineShortText==="function") ? tape383DeadlineShortText(g) : ""; if(ds384) trigPill += `<span class="gt-pill gt-tape383">${ds384}</span>`; } }catch(_e){}
+  try{ const rl422 = (typeof ref422Label==="function") ? ref422Label(g) : ""; if(rl422) trigPill += `<span class="gt-pill gt-intel381">${rl422}</span>`; }catch(_e){}
   /* v20a382 COSTUME382：自備戲服標籤（GPT 方案：細紙標籤跟觸發標籤同排，欠衫標「未持有」） */
   try{ const cp = (typeof costume382PillHtml==="function") ? costume382PillHtml(g) : ""; if(cp) trigPill += cp; }catch(_e){}
   /* v20a392 UI392 ③：推介大卡（opts.featured）——可接之中片酬最高者置頂，唔重複計數。 */
@@ -21523,6 +21549,9 @@ function castingNoticeDetailHtml(g){
       ${chanceRow378}
       ${tape383DetailRow383}
       ${intel381DetailRow384}
+      ${(()=>{ try{ const rl=(typeof ref422Label==="function")?ref422Label(g):""; return rl?`<div class="cn-sum-row"><span class="k">${rl}</span><span class="v">此試鏡機會經${rl}取得，請於 14 日內到場試鏡</span></div>`:""; }catch(_e){ return ""; } })()}
+      ${(()=>{ try{ return (g && g.duty392 && typeof duty422ProgressText==="function")?`<div class="cn-sum-row"><span class="k">幕後履歷</span><span class="v">${duty422ProgressText()}</span></div>`:""; }catch(_e){ return ""; } })()}
+      ${(()=>{ try{ return (typeof stamina422IsActionGig==="function" && stamina422IsActionGig(g))?`<div class="cn-sum-row"><span class="k">動作底子</span><span class="v">武師班 ${stamina422Lessons()} 堂${stamina422Lessons()>=5?"（已成形）":"（5 堂成形）"}</span></div>`:""; }catch(_e){ return ""; } })()}
       ${costume382DetailRowHtml(g)}
       <div class="cn-sum-row"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
       <div class="cn-sum-row"><span class="k">通告期間</span><span class="v">${period}</span></div>
@@ -22515,7 +22544,8 @@ function enrolledTrainItems(){
     const n=(S.trainCount&&S.trainCount[id])||0;
     /* v20a75 LEVELS75：手帳訓練清單 hint 寫明級別（舊 d.mid 分支隨進階課併入級別作廢） */
     const lvName75 = (typeof TRAIN75_SPEC !== "undefined" && TRAIN75_SPEC[id]) ? LEVELS75_NAMES[levels75Level(S, id)] : "";
-    items.push({ id, icon:d.icon, name:d.name, hint: lvName75 ? `${d.hint} · ${lvName75} · 已練 ${n} 次` : `${d.hint} · 已練 ${n} 次` });
+    const act422 = id==="train_stamina" ? (" · 動作底子 "+n+"／5 堂"+(n>=5?"（已成形）":"")) : "";
+    items.push({ id, icon:d.icon, name:d.name, hint: (lvName75 ? `${d.hint} · ${lvName75} · 已練 ${n} 次` : `${d.hint} · 已練 ${n} 次`) + act422 });
   });
   return items;
 }
@@ -22548,6 +22578,7 @@ function train75ApplyLesson(cid){
   const roll = levels75GainRoll(cid, lvBefore);
   if(roll) out.push(...applyGain60(roll));
   S.trainCount[cid] = (Number(S.trainCount[cid]) || 0) + 1;
+  if(cid==="train_stamina" && S.trainCount[cid]===5) out.push(`<span class="gold">武師班底子已成形——動作試鏡時，站位與拳腳已有根基。</span>`);
   const lvAfter = levels75Level(S, cid);
   if(lvAfter > lvBefore){
     const cname = ((typeof COURSE_DEFS !== "undefined" && COURSE_DEFS[cid]) || {}).name || cid;
@@ -22816,6 +22847,9 @@ function advanceDay(){
   /* v20a381 INTEL381：補位留言／資格到期 tick（同 enc271 並列） */
   try{ if(typeof intel381Tick==="function") intel381Tick(); }catch(_i381){}
   try{ if(typeof tape383Tick==="function") tape383Tick(); }catch(_t383){}
+  try{ if(typeof ref422Tick==="function") ref422Tick(); }catch(_r422){}
+  try{ if(typeof ho422Tick==="function") ho422Tick(); }catch(_h422){}
+  try{ if(typeof pang422Tick==="function") pang422Tick(); }catch(_p422){}
   try{ if(typeof rivalryTick==="function") rivalryTick(); }catch(_rv){}
   try{ if(typeof rivalryNewsTick==="function") rivalryNewsTick(); }catch(_rn){}
   try{ if(typeof exodusFenTick==="function") exodusFenTick(); }catch(_ex){}
@@ -24814,6 +24848,16 @@ function resolvePlannedDay(id){
                 const _got392 = applyCastingTags([_tagId392]);
                 if(_got392 && _got392.length) notes.push('<span class="var-note">幕後職務：'+_got392.map(t=>journalText(t.label||t.id)).join("、")+'</span>');
               }
+              /* v422：幕後進度即時交代；履歷成形即派專屬引薦（一次性）。 */
+              try{
+                const _dp422=(typeof duty422ProgressText==="function")?duty422ProgressText():"";
+                if(_dp422) notes.push('<span class="var-note">'+_dp422+'</span>');
+                const _dut422=(typeof backstageDuties392Of==="function")?backstageDuties392Of(S):null;
+                S.flags=S.flags||{};
+                if(_dut422 && _dut422.tagEntrance && !S.flags.dutyRef422Done && typeof ref422Grant==="function"){
+                  if(ref422Grant("duty", g=>g.type==="電影"||g.type==="電視劇", "幕後引薦：製作單位認住你的幕後履歷，替你爭取了一次試鏡機會。")){ S.flags.dutyRef422Done=1; notes.push('<span class="gold">幕後引薦已送到：通告會標示「幕後引薦」，請於 14 日內前往試鏡。</span>'); }
+                }
+              }catch(_d422e){}
             }
           }
         }catch(_dg392e){}
@@ -26285,6 +26329,7 @@ function refreshStoryMapTips(){
   if(typeof StoryOC==="undefined") return;
   try{
     StoryOC.ensure();
+    try{ if(typeof romance422SyncTailOffers==="function") romance422SyncTailOffers(); }catch(_r422){}
     const oc = StoryOC.listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true }) || {};
     const byLoc = {};
     (oc.open||[]).forEach(r=>{
@@ -26314,6 +26359,7 @@ function refreshStoryMapTips(){
         };
       });
     });
+    try{ if(typeof romance422AddCommitMapTips==="function") romance422AddCommitMapTips(byLoc); }catch(_r422c){}
     Object.keys(byLoc).forEach(loc=>{ S.mapTips[loc] = byLoc[loc]; });
   }catch(_e){}
 }
@@ -29922,7 +29968,7 @@ function commit48Available(id){
   const def = COMMIT48_DEFS[id];
   if(!def || !COMMIT48_NODES[id]) return false;
   if(choice47StoryFlag(def.flag)) return false;          /* 已 commit 本線 */
-  if(choice47StoryFlag(def.otherFlag)) return false;     /* 互斥：已 commit 另一線 */
+  if(choice47StoryFlag(def.otherFlag) || ["hiu","choi","lan","xu","yip","so"].some(k=>k!==String(def.relKey||"").replace(/^rel_/,"") && choice47StoryFlag("flag_"+k+"_commit"))) return false;     /* 互斥：已 commit 另一線 */
   /* v20a294 Q7：曉晴 HE 鎖死——揀咗「勸佢跟屋企走」（hiu_family_go），佢走咗冇得追，唔出 commit offer。 */
   if(id==="CMT_hiu_commit" && choice47StoryFlag("hiu_family_go")) return false;
   if(!choice47StoryDone(def.crisis)) return false;       /* 未行到該線 crisis，唔好提早收束 */
@@ -29949,6 +29995,106 @@ function commit48ActionsAt(locId){
     out.push({ id:id, title:def.actTitle || (COMMIT48_NODES[id] && COMMIT48_NODES[id].title) || id, hint:def.actHint || "" });
   });
   return out;
+}
+/* v422 感情尾段入口：鎖定女角的 crisis／ending 條件齊備時，主動寫入 offer，
+   令地圖標亮與手帳下一步同時指向正確地點；commit 則沿用 commit48Available 把關。
+   未鎖定、已 BE、已 commit 本線或另一線時一律不主動出線索。 */
+function romance422StoryFlag(key){
+  try{ if(typeof choice47StoryFlag==="function") return !!choice47StoryFlag(key); }catch(_e){}
+  try{ if(typeof StoryOC!=="undefined" && StoryOC.getFlag) return !!StoryOC.getFlag(key); }catch(_e2){}
+  try{ return !!(S && S.story && S.story.flags && S.story.flags[key]); }catch(_e3){ return false; }
+}
+function romance422AnyCommitExcept(who){
+  return ["hiu","choi","lan","xu","yip","so"].some(k=>k!==who && romance422StoryFlag("flag_"+k+"_commit"));
+}
+function romance422SyncTailOffers(){
+  try{
+    if(typeof S==="undefined" || !S || typeof StoryOC==="undefined" || typeof rom159LockedWho!=="function") return [];
+    const who = rom159LockedWho();
+    if(!who) return [];
+    if(romance422StoryFlag("flag_"+who+"_be")) return [];
+    if(romance422StoryFlag("flag_"+who+"_commit")) return [];
+    if(romance422AnyCommitExcept(who)) return [];
+    const opened = [];
+    const openTail = (id, why)=>{
+      const node = StoryOC.findNodeRaw ? StoryOC.findNodeRaw(id) : null;
+      if(!node || node.playerOffer===false) return;
+      if(StoryOC.isDone && StoryOC.isDone(id)) return;
+      if(StoryOC.hasPlayerOffer && StoryOC.hasPlayerOffer(node, null)) return;
+      const ev = StoryOC.evalNode ? StoryOC.evalNode(node, { checkNodePhase:true }) : null;
+      if(ev && ev.ok && StoryOC.openMeetOffer && StoryOC.openMeetOffer(id, why)) opened.push(id);
+    };
+    const crisisId = "R_"+who+"_crisis";
+    openTail(crisisId, "romance422:locked-crisis");
+    if(StoryOC.isDone && StoryOC.isDone(crisisId)) openTail("R_"+who+"_ending", "romance422:locked-ending");
+    return opened;
+  }catch(_e){ return []; }
+}
+function romance422AddCommitMapTips(byLoc){
+  try{
+    if(!byLoc || typeof commit48Available!=="function" || typeof COMMIT48_DEFS==="undefined") return;
+    Object.keys(COMMIT48_DEFS).forEach(id=>{
+      const def = COMMIT48_DEFS[id];
+      if(!def || !def.loc || byLoc[def.loc]) return;
+      if(!commit48Available(id)) return;
+      byLoc[def.loc] = {
+        kind: "story",
+        nodeId: id,
+        commitId: id,
+        title: def.actTitle || (typeof COMMIT48_NODES!=="undefined" && COMMIT48_NODES[id] && COMMIT48_NODES[id].title) || id,
+        untilDay: null,
+      };
+    });
+  }catch(_e){}
+}
+function romance422LocName(locId){
+  try{
+    const loc = (typeof LOCS!=="undefined" && LOCS) ? LOCS.find(l=>l && l.id===locId) : null;
+    return (loc && loc.name) || locId || "";
+  }catch(_e){ return locId || ""; }
+}
+function romance422TailClue(who){
+  try{
+    if(typeof S==="undefined" || !S || typeof StoryOC==="undefined" || typeof rom159LockedWho!=="function") return null;
+    if(rom159LockedWho()!==who || romance422StoryFlag("flag_"+who+"_be") || romance422StoryFlag("flag_"+who+"_commit") || romance422AnyCommitExcept(who)) return null;
+    romance422SyncTailOffers();
+    const commitId = "CMT_"+who+"_commit";
+    if(typeof commit48Available==="function" && commit48Available(commitId)){
+      const def = COMMIT48_DEFS[commitId] || {};
+      return { kind:"commit", id:commitId, loc:def.loc || "", locName:romance422LocName(def.loc), title:def.actTitle || "", hint:def.actHint || "" };
+    }
+    const crisisId = "R_"+who+"_crisis";
+    const endingId = "R_"+who+"_ending";
+    const storyClue = (id, kind)=>{
+      const node = StoryOC.findNodeRaw ? StoryOC.findNodeRaw(id) : null;
+      if(!node || (StoryOC.isDone && StoryOC.isDone(id))) return null;
+      if(StoryOC.hasPlayerOffer && !StoryOC.hasPlayerOffer(node, null)) return null;
+      const ev = StoryOC.evalNode ? StoryOC.evalNode(node, { checkNodePhase:true }) : null;
+      if(!ev || !ev.ok) return null;
+      const loc = (typeof storyNodeLocId==="function") ? storyNodeLocId(node) : (node.locId || "");
+      return { kind:kind, id:id, loc:loc || "", locName:romance422LocName(loc), title:node.title || id, hint:"" };
+    };
+    return storyClue(crisisId, "crisis") || ((StoryOC.isDone && StoryOC.isDone(crisisId)) ? storyClue(endingId, "ending") : null);
+  }catch(_e){ return null; }
+}
+function romance422PaceCap(who){
+  try{
+    if(!who || typeof ROM159_WOMEN==="undefined" || !ROM159_WOMEN[who]) return null;
+    if(typeof StoryOC!=="undefined" && StoryOC.isDone){
+      if(StoryOC.isDone("R_"+who+"_crisis")) return 7;
+      if(StoryOC.isDone("R_"+who+"_push2")) return 6;
+      if(StoryOC.isDone("R_"+who+"_push1")) return 5;
+    }
+    return 3;
+  }catch(_e){ return null; }
+}
+function romance422PaceCapped(who){
+  try{
+    const cap = romance422PaceCap(who);
+    if(cap==null) return false;
+    const rel = (typeof rom159RelOf==="function") ? rom159RelOf(who) : 0;
+    return rel >= cap;
+  }catch(_e){ return false; }
 }
 function commit48Play(id){
   try{
@@ -30579,7 +30725,7 @@ function rom159OpenDatePicker(who, L){
     }).join("");
     modal(`<h3>約${w.name}出街</h3>
       <p class="sub">約會用去一日，當日不能接通告，也不能訓練。相約之前請看清費用，以免約定後才發現存款不足。</p>
-      <p class="sub">每人每週最多相約一次；一星期只可相約一人。約會本身不加分，場內回應是否合適，才決定關係會否變化。</p>
+      <p class="sub">每人每週最多相約一次；一星期只可相約一人。約會本身不加分；場內回應合適時，關係可能更親近，但不會越過目前劇情階段的上限。</p>
       <div id="rom159-date-list">${rows}</div>`,[
       {label:"取消", role:"g", on:()=>{ if(L) openLoc(L.id, {travelFree:true}); }}
     ], {onDismiss:()=>{ if(L) openLoc(L.id, {travelFree:true}); }});
@@ -30678,10 +30824,11 @@ function rom159DateScene(who, spot, L, ended, summary){
       let nv = 0;
       try{ if(typeof StoryOC!=="undefined" && StoryOC.getRel) nv = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
       const deltaTxt = delta>0 ? "好感 +1（目前 " + nv + "）" : (delta<0 ? "好感 -1（目前 " + nv + "）" : "好感 ±0");
-      modal(`<div class="date409"><h3>約會 · ${w.name}</h3>${bg407}${dlg379(line)}<p class="gold">${deltaTxt}</p>${ended?`<p class="dayres-stamp397">一週完結</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()} · 約會用去一日</p></div>`, /* v20a413 P7：結果屏同主屏同一紙面＋場景圖 */
+      const paceNote422 = (delta===0 && typeof romance422PaceCapped==="function" && romance422PaceCapped(who)) ? `<p class="sub">關係已到目前劇情階段的上限；下一步要靠劇情推進，單靠約會不會再增加。</p>` : "";
+      modal(`<div class="date409"><h3>約會 · ${w.name}</h3>${bg407}${dlg379(line)}<p class="gold">${deltaTxt}</p>${paceNote422}${ended?`<p class="dayres-stamp397">一週完結</p>`:""}<p style="font-size:.75rem;color:var(--muted)">${fmtDate()} · 約會用去一日</p></div>`, /* v20a413 P7：結果屏同主屏同一紙面＋場景圖 */
         [{label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}], {onDismiss: go, keepScene397:true}); /* v20a398 UI398-5：44 號約會結果卡用 scene 模式 */
     };
-    modal(`<div class="date409"><h3>約會 · ${w.name}（${spot.label}）</h3>${bg407}${dlg379(spot.intro)}<p class="sub">請選擇一句回應——回應合適，兩人會更親近；回應不合適，她會變得冷淡。</p></div>`,[
+    modal(`<div class="date409"><h3>約會 · ${w.name}（${spot.label}）</h3>${bg407}${dlg379(spot.intro)}<p class="sub">請選擇一句回應——回應合適，兩人可能更親近，但不會越過目前劇情階段的上限；回應不合適，她會變得冷淡。</p></div>`,[
       {label: spot.good.label, role:"g", cls:"date409-choice", on:()=>{ /* v20a409：兩回應同權重，取消金底預設 */
         /* v20a378（B12）：rel 上限 7——顯示實際落數，撞頂唔再假報 +1。 */
         let b378 = 0; try{ b378 = Number(StoryOC.getRel(w.relKey))||0; }catch(_e){}
@@ -30729,11 +30876,19 @@ function rom159PeopleHtml(){
         line = "未見過面。佢係已成名嘅女星——你而家仲係臨記，佢唔會同你講呢啲。"; /* v20a159 ROM159：蘇層級閘提示，唔靜默 */
       }
       let extra = "";
+      try{
+        const clue422 = (locked===k && !committed && !be && typeof romance422TailClue==="function") ? romance422TailClue(k) : null;
+        if(clue422 && clue422.locName){
+          extra += clue422.kind==="commit"
+            ? `<div class="people-next">下一步：前往「${clue422.locName}」找她，她有話想說清楚。</div>`
+            : `<div class="people-next">下一步：前往「${clue422.locName}」找她，她有事想與你商量。</div>`;
+        }
+      }catch(_clue422){}
       if(w.spots && w.spots.length){
         const enc = Number((st.enc||{})[k])||0;
         const dt = Number((st.dates||{})[k])||0;
         const ph = rom159HasPhone(k);
-        extra = `<div class="people-next">今個星期：撞到 ${enc}／${ROM159_ENC_CAP} 次 · 約會 ${dt}／${ROM159_DATE_PER_WEEK} 次 · 電話 ${ph?"已交換":"未交換"}</div>`;
+        extra += `<div class="people-next">今個星期：撞到 ${enc}／${ROM159_ENC_CAP} 次 · 約會 ${dt}／${ROM159_DATE_PER_WEEK} 次 · 電話 ${ph?"已交換":"未交換"}</div>`;
         if(ph){
           const g = rom159DateGate(k, null);
           extra += `<div class="people-next"><button type="button" class="rom159-call" data-who="${k}">Call 機約佢出街</button>${g.ok?"":` <span class="sub">${g.reason||""}</span>`}</div>`;
@@ -32628,7 +32783,7 @@ const MOCK_ASK = {
     { id:"act_cha_gao_spotlight", title:"打聽高俊傑搶鏡事", hint:"向茶客打聽高俊傑片場八卦", cost:"請茶客食西多士", toast:"鄰桌燈光師爆料高俊傑所為。", source:"金龍茶餐廳", intelText:"高俊傑昨日拍戲時擅自加戲搶鏡，遭導演當場斥責。" },
     { id:"act_cha_hiu_news", title:"打聽曉晴近況", hint:"向化妝師打聽曉晴動向", cost:"請化妝師飲咖啡", toast:"化妝師指曉晴轉拍時裝喜劇。", source:"金龍茶餐廳", intelText:"曉晴剛拍畢古裝劇，近期轉接時裝喜劇，急需反應敏捷的臨記。" },
     /* v20a381 INTEL381：情報站補位試鏡（陸柏言好感≥25 開閘、每月一個名額；moneyCost 由 mockAskDefs 按月定價 $60–75） */
-    { id:"act_cha_intel381", title:"打聽補位消息", hint:"向陸柏言購買傳聞，取得獨家補位試鏡的消息。每月只可購買一次。", choiceHint:"向陸柏言購買傳聞，取得獨家補位試鏡的消息。每月只可購買一次。", cost:"情報費", toast:"", source:"金龍茶餐廳" },
+    { id:"act_cha_intel381", title:"打聽補位消息", hint:"向陸柏言購買傳聞，取得獨家補位試鏡的消息。名額已按你現時條件核對，可前往試鏡。每月只可購買一次。", choiceHint:"向陸柏言購買傳聞，取得獨家補位試鏡的消息。名額已按你現時條件核對，可前往試鏡。每月只可購買一次。", cost:"情報費", toast:"", source:"金龍茶餐廳" },
   ],
   agency_ho:[
     /* v20a389 UI389（共識項）：act_ho_tvb_rules（請教何生入廠守則）與茶餐廳
@@ -32637,7 +32792,7 @@ const MOCK_ASK = {
     { id:"act_ho_repay", title:"還人情 / 送禮", hint:"揀一筆何生人情債，用現金或庫存禮物還。", choiceHint:"揀一筆何生人情債，用現金或庫存禮物還。", cost:"禮物／現金", toast:"何生收低，話「大家自己人」。", resultHint:"何生心情好咗，提咗句年尾有筍盤。", source:"何生事務所", repay:true },
     { id:"act_ho_rumor", title:"聽風聲", hint:"何生每日有一單真風聲：邊位紅星呢幾日會出沒、邊套戲就嚟開鏡。", cost:"無", toast:"何生壓低聲講咗一單真風聲。", source:"何生事務所" },
     /* v20a383 TAPE383：自費試鏡帶（1991 年起每季一次；moneyCost 由 mockAskDefs 按季定價 $1,200–1,800，專屬流程 tape383OpenPicker） */
-    { id:"act_ho_tape383", title:"自費拍攝試鏡帶", hint:"1991 年起，每季可使用一次。自費拍攝並寄出試鏡帶，可取得所選類別一項通告的試鏡資格。試鏡按一般規則判定，不保證入選。", choiceHint:"1991 年起，每季可使用一次。自費拍攝並寄出試鏡帶，可取得所選類別一項通告的試鏡資格。試鏡按一般規則判定，不保證入選。", cost:"試鏡帶費", toast:"", source:"何生事務所" },
+    { id:"act_ho_tape383", title:"自費拍攝試鏡帶", hint:"1991 年起，每季可使用一次。自費拍攝並寄出試鏡帶，可取得所選類別一項通告的試鏡資格；付款前會列明通告，條件已核對。試鏡按一般規則判定，不保證入選。", choiceHint:"1991 年起，每季可使用一次。自費拍攝並寄出試鏡帶，可取得所選類別一項通告的試鏡資格；付款前會列明通告，條件已核對。試鏡按一般規則判定，不保證入選。", cost:"試鏡帶費", toast:"", source:"何生事務所" },
   ],
 };
 function mockAskDefs(locId){
@@ -32665,6 +32820,13 @@ function mockAskDefs(locId){
           ? Object.assign({}, d, { moneyCost:p381, cost:"$"+p381+" 情報費" })
           : d);
       }
+    }
+    if(locId==="agency_ho"){
+      /* v422：何生人情進度常駐事務所行動——玩家看得見信任與引薦回報的關係。 */
+      const rel422=Number(S&&S.npcs&&S.npcs.agent)||0;
+      out = out.map(d=> d.id==="act_ho_rumor"
+        ? Object.assign({}, d, { hint:String(d.hint||"")+" 何生信任 "+rel422+"／100；信任達 60，何生會親自引薦一次機會。", choiceHint:String(d.choiceHint||d.hint||"")+" 何生信任 "+rel422+"／100；信任達 60，何生會親自引薦一次機會。" })
+        : d);
     }
     if(locId==="agency_ho" && typeof tape383State==="function"){
       /* v20a383 TAPE383：試鏡帶掣原位常駐——可用時寫入實價；停用時（1990 年／本季已用）寫明狀態（GPT 規格，唔隱藏）。 */
@@ -33782,7 +33944,7 @@ function renderProgressPane71(){
     const _lst371 = (typeof season371List==="function") ? season371List() : [];
     if(_lst371.length){
       html.push('<div class="prog71-row open"><div class="prog71-top"><b>主線期限</b></div>'
-        + '<p class="prog71-note">錯過任何主線限期，該章將永久無法開啟，本輪亦無法達成最佳結局。</p>'
+        + '<p class="prog71-note">錯過任何主線限期，該章將永久無法開啟，本輪亦無法達成最佳結局——天王接班一格需要走完整條主線，錯過一章即失去該格資格。</p>'
         + _lst371.map(it=>'<p class="prog71-note">'+prog71Esc(season371LineText(it))+'</p>').join("") + '</div>');
     }
   }catch(_e371){}
@@ -33984,8 +34146,9 @@ function negTagWarn361(addedRows){
     const isNeg = (t)=> t && (ENDING_NEG_TAGS410.indexOf(String(t.label || "")) >= 0 || ENDING_NEG_TAGS410.indexOf(String(t.id || "")) >= 0);
     if(!rows.some(isNeg)) return;
     const n = (typeof endingNegTagCount410 === "function") ? endingNegTagCount410(S) : rows.filter(isNeg).length;
-    if(n >= 2) toast("負面印記已有兩個——天王與巨星那兩格，最多容許一個，這兩格已經關閉。");
-    else toast("這是負面印記，會影響結局——天王與巨星那兩格，最多容許一個。");
+    const names422 = rows.filter(isNeg).map(t=>String(t.label||t.id||"")).filter(Boolean).join("、");
+    if(n >= 2) toast("負面印記「"+names422+"」：現有 "+n+" 個——天王與巨星那兩格最多容許一個，這兩格已經關閉。");
+    else toast("負面印記「"+names422+"」會影響結局——天王與巨星那兩格最多容許一個，現有 "+n+" 個。");
   }catch(_e){}
 }
 /** Sink：殺青／事態可寫入選角標籤；雙軌 delta 可選套用一次。 */
@@ -34142,14 +34305,21 @@ function titles162Ladder162(){
     const name = (res.career==="E3" && res.careerVariant) ? res.careerVariant : (ENDING410_CAREER_NAMES[res.career] || res.career);
     const lad = res.ladder95 || {};
     const hasWin = !!lad.hasWin;
-    const leadN = Array.isArray(lad.leadMedia) ? lad.leadMedia.length : 0;
-    const filmLeadN = Number(lad.filmLead) || 0; /* v20a390：E1 電影擔正閘嘅第四項事實 */
-    const chains = Array.isArray(lad.chains) ? lad.chains.length : 0;
+    /* v422：進度行跟 E1 五媒介擔正組合同步——逐項講明尚欠邊一項，
+       主線行改讀脊骨完成狀態（E1 閘讀脊骨，唔讀主線鏈）。 */
+    const lb422 = lad.leadByMedium || {};
+    const T422 = (typeof ENDING95_T!=="undefined" && ENDING95_T) ? ENDING95_T : {};
+    const miss422 = [];
+    if((lb422.film|0) < (T422.e1LeadFilm||2)) miss422.push("電影擔正");
+    if((lb422.tv|0) < (T422.e1LeadTv||1)) miss422.push("電視擔正");
+    if((lb422.music|0) < (T422.e1LeadMusic||1)) miss422.push("唱片主唱");
+    if((lb422.variety|0) < (T422.e1LeadVariety||3)) miss422.push("綜藝主持");
+    if((lb422.ad|0) < (T422.e1LeadAd||1)) miss422.push("廣告主角");
+    const spineDone422 = !!(lad.spine95 && lad.spine95.done);
     const rows = [];
-    rows.push(hasWin ? "獎：攞過獎。" : "獎：仲未攞過獎。");
-    rows.push(leadN<=0 ? "擔正：未試過企正嗰個位。" : (leadN<2 ? "擔正：只係喺一種媒介企過正。" : "擔正：已經喺唔止一種媒介企過正。"));
-    rows.push(filmLeadN>=1 ? "電影擔正：企過電影正位。" : "電影擔正：未試過企正電影嗰個位。");
-    rows.push(chains<=0 ? "主線：未行完一條行內主線。" : "主線：有主線行到尾。");
+    rows.push(hasWin ? "獎：已經取得獎項。" : "獎：尚未取得獎項。");
+    rows.push(miss422.length ? ("擔正組合：尚未齊全，欠" + miss422.join("、") + "。") : "擔正組合：電影、電視、唱片、綜藝、廣告五方面都已站穩。");
+    rows.push(spineDone422 ? "主線：已走完整條主線。" : "主線：尚未走完整條主線。");
     return { career: res.career, name: name, rows: rows };
   }catch(_e){ return null; }
 }
@@ -34221,8 +34391,11 @@ function renderCastingTagsPane(){
       const bits = [];
       if(src) bits.push("嚟自"+src);
       if(grp) bits.push(TRAJ162_GROUP_LABEL[grp]);
+      const isNeg422 = (typeof ENDING_NEG_TAGS410!=="undefined") && (ENDING_NEG_TAGS410.indexOf(String(m.label||""))>=0 || ENDING_NEG_TAGS410.indexOf(String(m.id||""))>=0);
+      const neg422Line = isNeg422 ? `<p class="debt-meta sub">負面印記：天王與巨星兩格最多容許一個。</p>` : "";
       return `<article class="debt-row"><p class="debt-title">${lab}</p>`
         + (bits.length ? `<p class="debt-meta sub">${bits.map(esc).join(" · ")}</p>` : `<p class="debt-meta sub">選角標籤</p>`)
+        + neg422Line
         + `</article>`;
     }).join("");
   }
@@ -46554,7 +46727,8 @@ function enc79HoTrustLine(){
     if(hint) s += "（再加 " + hint.need + " 到「" + hint.label + "」）";
     else s += "（內幕情報已全開）";
     /* v20a105 UI105 S-24：結局路線條件句刪走（劇透＋塞版）；信任數字＋下一階提示保留，
-       結局條件留返人情頁／進度頁講。 */
+       結局條件留返人情頁／進度頁講。v422：加質性階段與引薦線索（不提結局名）。 */
+    s += rel>=60 ? "（自己人——何生會親自引薦機會）" : (rel>=30 ? "（已漸熟絡；信任達 60，何生會親自引薦一次機會）" : "（仍在建立信任；多來事務所，人情會累積）");
     return s;
   }catch(_e){ return ""; }
 }
@@ -46778,14 +46952,18 @@ function intel381PickGig(){
     const pt=(typeof enc79PlayerTier==="function")?enc79PlayerTier():0;
     const lo=Math.max(0,Math.min(order.length-1,pt));
     const hi=Math.max(lo,Math.min(order.length-1,pt+1));
-    const pool=(typeof GIGS!=="undefined"&&Array.isArray(GIGS)?GIGS:[]).filter(g=>{
-      if(!g||!g.id||g.trigger) return false;
-      const ti=order.indexOf(canon(g.tier)); if(ti<lo||ti>hi) return false;
+    const base=(typeof GIGS!=="undefined"&&Array.isArray(GIGS)?GIGS:[]).filter(g=>{
+      if(!g||!g.id||g.trigger||g.duty392) return false;
       if(typeof isGigConsumed==="function" && isGigConsumed(g)) return false;
       if(S.flags && S.flags["done_"+g.id]) return false;
       if(Array.isArray(S.booked)&&S.booked.some(b=>b&&b.gigId===g.id)) return false;
       return true;
     });
+    /* v422：補位名額必須查 req——只派玩家現時可試鏡的通告（canAudition 含 reqGap／聲望／戲服閘）；
+       貼近級別帶內無可試鏡者，擴至較低級別再找；全無則回 null，購買端不收費並交代原因。 */
+    const inBand=base.filter(g=>{ const ti=order.indexOf(canon(g.tier)); return ti>=lo&&ti<=hi; });
+    let pool=inBand.filter(g=>v422Auditionable(g));
+    if(!pool.length) pool=base.filter(g=>{ const ti=order.indexOf(canon(g.tier)); return ti>=0&&ti<=hi&&v422Auditionable(g); });
     if(!pool.length) return null;
     pool.sort((a,b)=>String(a.id).localeCompare(String(b.id)));
     const mk=intel381MonthKey();
@@ -46800,7 +46978,7 @@ function intel381Buy(def){
     if(s0 && s0.mk===mk) return {ok:false,toast:"本月補位名額已用，下月再來。"};
     if(typeof softSocialDailyCap==="function"){ const cap=softSocialDailyCap("tea"); if(!cap.ok) return {ok:false,toast:cap.reason}; }
     const gig=intel381PickGig();
-    if(!gig) return {ok:false,toast:"暫時沒有合適的補位空缺，情報費不收。"};
+    if(!gig) return {ok:false,toast:"現時未有符合你現時條件的補位空缺，情報費不收。練好基本功或累積聲望後，下月再來。"};
     const price=intel381Price();
     if((Number(S.money)||0)<price) return {ok:false,toast:"情報費不足 $"+price+"，先去接單賺回一些。"};
     S.money=(Number(S.money)||0)-price;
@@ -46808,7 +46986,7 @@ function intel381Buy(def){
     S.intel381={ mk:mk, gigId:String(gig.id), locId:String(gig.loc||""), title:String(gig.title||""), state:"msg", msgDay:(S.dayIndex|0), keptDay:0, price:price };
     try{ softSocialDailyUse("tea"); }catch(_c){}
     try{ saveQ(); }catch(_s){}
-    const text="有演員移民，劇組正安排補位試鏡。傳呼留言已留在家中電話。請返回深水埗住所，查看留話簿，並於留言後 5 日內覆電保留試鏡資格。";
+    const text="有演員移民，劇組正安排補位試鏡。此名額已按你現時條件核對，可前往試鏡。傳呼留言已留在家中電話。請返回深水埗住所，查看留話簿，並於留言後 5 日內覆電保留試鏡資格。";
     return { ok:true, added:true, updated:false, cleared:false, toast:"已付情報費 $"+price+"。"+text, rumorId:null, intelTitle:"收到補位消息", intelText:text };
   }catch(_e){ return {ok:false,toast:"暫時未能購買。"}; }
 }
@@ -46862,7 +47040,7 @@ function intel381OpenBook(){
     const stamp = s.state==="expired" ? `<span class="intel381-stamp">已失效</span>` : "";
     let stateLine="";
     if(s.state==="msg") stateLine=`<p>覆電限期：${intel381FmtDay((s.msgDay|0)+5)}（請於留言後 5 日內覆電。）</p>`;
-    else if(s.state==="kept") stateLine=`<p class="gold">已保留試鏡資格。請到${locName}的通告欄查看標有「補位」的通告，並於 ${intel381FmtDay((s.keptDay|0)+7)} 前前往試鏡。</p>`;
+    else if(s.state==="kept") stateLine=`<p class="gold">已保留試鏡資格。此通告已按你現時條件核對，可前往試鏡。請到${locName}的通告欄查看標有「補位」的通告，並於 ${intel381FmtDay((s.keptDay|0)+7)} 前前往試鏡。</p>`;
     /* v20a386（第七輪評估 P2-3）：失效文案按來源分開——覆電後失效係試鏡窗過期，唔係覆電限期
        （GPT-6.2-sol 文案，原稿 linji-drive386/gpt_text386.txt）。舊檔冇 expiredFrom 時以 keptDay 推斷。 */
     else if(s.state==="expired") stateLine = (s.expiredFrom==="kept" || (s.expiredFrom!=="msg" && (s.keptDay|0)>0))
@@ -46906,15 +47084,17 @@ function tape383PickGig(type){
     const pt=(typeof enc79PlayerTier==="function")?enc79PlayerTier():0;
     const lo=Math.max(0,Math.min(order.length-1,pt));
     const hi=Math.max(lo,Math.min(order.length-1,pt+1));
-    const pool=(typeof GIGS!=="undefined"&&Array.isArray(GIGS)?GIGS:[]).filter(g=>{
-      if(!g||!g.id||g.trigger) return false;
+    const base=(typeof GIGS!=="undefined"&&Array.isArray(GIGS)?GIGS:[]).filter(g=>{
+      if(!g||!g.id||g.trigger||g.duty392) return false;
       if(String(g.type||"")!==String(type||"")) return false;
-      const ti=order.indexOf(canon(g.tier)); if(ti<lo||ti>hi) return false;
       if(typeof isGigConsumed==="function" && isGigConsumed(g)) return false;
       if(S.flags && S.flags["done_"+g.id]) return false;
       if(Array.isArray(S.booked)&&S.booked.some(b=>b&&b.gigId===g.id)) return false;
       return true;
     });
+    /* v422：試鏡帶同樣查 req——只派玩家現時可試鏡的通告；帶內無則擴至較低級別；全無不收費。 */
+    let pool=base.filter(g=>{ const ti=order.indexOf(canon(g.tier)); return ti>=lo&&ti<=hi&&v422Auditionable(g); });
+    if(!pool.length) pool=base.filter(g=>{ const ti=order.indexOf(canon(g.tier)); return ti>=0&&ti<=hi&&v422Auditionable(g); });
     if(!pool.length) return null;
     pool.sort((a,b)=>String(a.id).localeCompare(String(b.id)));
     let th=0; const ts=String(type||""); for(let i=0;i<ts.length;i++) th+=ts.charCodeAt(i);
@@ -46940,8 +47120,9 @@ function tape383OpenPicker(L){
     if(st==="used"){ toast("本季已使用。下季可再次使用。"); return; }
     const price=tape383Price();
     const cats=["電影","電視劇","唱片通告","廣告","綜藝"];
-    const rows=cats.map(c=>`<button type="button" class="tape383-cat" data-tape383-cat="${c}"><span>${c}</span><span class="tape383-fee">$${price.toLocaleString()}</span></button>`).join("");
-    modal(`<h3>選擇試鏡類別</h3><p class="sub">自費拍攝並寄出試鏡帶，可取得所選類別一項通告的試鏡資格。試鏡按一般規則判定，不保證入選。</p><div id="tape383-cats">${rows}</div>`,[
+    /* v422：付款前先列明每類可試鏡通告（已查 req）；無合適通告的類別不收費。 */
+    const rows=cats.map(c=>{ const pg=tape383PickGig(c); const lab=pg?("可試鏡：《"+String(pg.title||"通告")+"》"):"暫無符合條件通告（不收費）"; const fee=pg?("$"+price.toLocaleString()):"—"; return `<button type="button" class="tape383-cat" data-tape383-cat="${c}"><span>${c} · ${lab}</span><span class="tape383-fee">${fee}</span></button>`; }).join("");
+    modal(`<h3>選擇試鏡類別</h3><p class="sub">自費拍攝並寄出試鏡帶，可取得所選類別一項通告的試鏡資格。以下通告已按你現時條件核對，可前往試鏡；資格於 7 日內有效，通告會標示「自費試鏡」。試鏡按一般規則判定，不保證入選。</p><div id="tape383-cats">${rows}</div>`,[
       {label:"取消", role:"g", on:reopen}
     ], {onDismiss:reopen});
     const box=document.getElementById("tape383-cats");
@@ -46957,11 +47138,11 @@ function tape383Confirm(type, L){
     const reopen=()=>{ try{ if(L) openLoc(L.id, {travelFree:true}); }catch(_e){} };
     if(tape383State()!=="ok"){ toast("本季已使用。下季可再次使用。"); reopen(); return; }
     const gig=tape383PickGig(type);
-    if(!gig){ toast("暫時沒有合適的"+String(type||"")+"通告，試鏡帶費不收。"); reopen(); return; }
+    if(!gig){ toast("現時未有符合你現時條件的"+String(type||"")+"通告，試鏡帶費不收。"); reopen(); return; }
     const price=tape383Price();
     confirmChoice236({
       choiceLabel:"自費拍攝試鏡帶（"+String(type||"")+"）",
-      consequence:"確認後將即時支付 $"+price.toLocaleString()+"，拍攝並寄出試鏡帶，取得一項"+String(type||"")+"通告的試鏡資格。本次付款將使用本季一次機會。試鏡按一般規則判定，不保證入選。",
+      consequence:"確認後將即時支付 $"+price.toLocaleString()+"，拍攝並寄出試鏡帶，取得《"+String(gig.title||"通告")+"》的試鏡資格。此通告已按你現時條件核對，可前往試鏡；請於 7 日內（"+tape383FmtDay((S.dayIndex|0)+7)+"前）到"+tape383LocName(gig.loc)+"試鏡。本次付款將使用本季一次機會。試鏡按一般規則判定，不保證入選。",
       onConfirm:()=>{
         if((Number(S.money)||0)<price){ toast("試鏡帶費不足 $"+price.toLocaleString()+"，先去接單賺回一些。"); reopen(); return; }
         S.money=(Number(S.money)||0)-price;
@@ -46996,6 +47177,128 @@ function tape383DeadlineText(g){ const s=tape383Slot(); if(!s||s.state!=="kept"|
 function tape383DeadlineShortText(g){ /* v20a384（第六輪評估 P2-3）：teaser 短卡截止提示（GPT 規格：「{月}月{日}日截止」同標籤同列） */
   const s=tape383Slot(); if(!s||s.state!=="kept"||!g||g.id!==s.gigId) return "";
   try{ const d=new Date(START.y, START.m-1, START.d+((s.keptDay|0)+7)); return (d.getMonth()+1)+"月"+d.getDate()+"日截止"; }catch(_e){ return ""; }
+}
+
+/* ===== v422 七系統加強：可試鏡保證＋引薦槽＋進度歸因 =====
+   共通標準：玩家有線索想試、試了有獨佔回報、回報看得出是發掘得來。
+   引薦槽 S.ref422 三格（ho 何生／duty 幕後／pang 彭少祺），每格一次性派一張
+   已查 req 的可試鏡通告，14 日窗，通告卡與試鏡結果標示來源。 */
+function v422Auditionable(g){
+  try{ return !!(g && typeof canAudition==="function" && canAudition(g).ok); }catch(_e){ return false; }
+}
+function v422PickAuditionable(filterFn, seed){
+  try{
+    const order=(typeof GIG_TIER_ORDER229!=="undefined"&&Array.isArray(GIG_TIER_ORDER229))?GIG_TIER_ORDER229:["臨記","初級","中級","高級","稀有"];
+    const canon=(typeof gigTierCanon229==="function")?gigTierCanon229:(t=>t||"初級");
+    const pt=(typeof enc79PlayerTier==="function")?enc79PlayerTier():0;
+    const hi=Math.max(0,Math.min(order.length-1,pt+1));
+    const pool=(typeof GIGS!=="undefined"&&Array.isArray(GIGS)?GIGS:[]).filter(g=>{
+      if(!g||!g.id||g.trigger||g.duty392) return false;
+      const ti=order.indexOf(canon(g.tier)); if(ti<0||ti>hi) return false;
+      if(typeof isGigConsumed==="function" && isGigConsumed(g)) return false;
+      if(S.flags && S.flags["done_"+g.id]) return false;
+      if(Array.isArray(S.booked)&&S.booked.some(b=>b&&b.gigId===g.id)) return false;
+      if(filterFn && !filterFn(g)) return false;
+      return v422Auditionable(g);
+    });
+    if(!pool.length) return null;
+    pool.sort((a,b)=>String(a.id).localeCompare(String(b.id)));
+    const sd=Math.abs(Number(seed)||0);
+    return pool[sd%pool.length];
+  }catch(_e){ return null; }
+}
+const REF422_LABELS={ ho:"何生引薦", duty:"幕後引薦", pang:"彭少祺引薦" };
+function ref422Slot(kind){
+  try{ return (typeof S!=="undefined" && S && S.ref422 && typeof S.ref422==="object" && S.ref422[kind] && typeof S.ref422[kind]==="object") ? S.ref422[kind] : null; }catch(_e){ return null; }
+}
+function ref422KeptKind(g){
+  try{
+    if(!g||!g.id) return "";
+    for(const k of ["ho","duty","pang"]){ const s=ref422Slot(k); if(s&&s.state==="kept"&&g.id===s.gigId) return k; }
+    return "";
+  }catch(_e){ return ""; }
+}
+function ref422Label(g){ const k=ref422KeptKind(g); return k ? REF422_LABELS[k] : ""; }
+function ref422Grant(kind, filterFn, toastText){
+  try{
+    if(typeof S==="undefined"||!S) return false;
+    if(ref422Slot(kind) && ref422Slot(kind).state==="kept") return false;
+    const gig=v422PickAuditionable(filterFn, (S.dayIndex|0)*7+kind.length*13);
+    if(!gig) return false;
+    if(!S.ref422||typeof S.ref422!=="object"||Array.isArray(S.ref422)) S.ref422={};
+    S.ref422[kind]={ gigId:String(gig.id), locId:String(gig.loc||""), title:String(gig.title||""), state:"kept", keptDay:(S.dayIndex|0) };
+    try{ saveQ(); }catch(_s){}
+    try{ toast(toastText+"《"+String(gig.title||"通告")+"》已標示「"+REF422_LABELS[kind]+"」，請於 14 日內前往"+intel381LocName(gig.loc)+"試鏡。"); }catch(_t){}
+    return true;
+  }catch(_e){ return false; }
+}
+function ref422Tick(){
+  try{
+    if(typeof S==="undefined"||!S||!S.ref422) return;
+    const today=(S.dayIndex|0);
+    for(const k of ["ho","duty","pang"]){
+      const s=ref422Slot(k); if(!s||s.state!=="kept") continue;
+      if(today > (s.keptDay|0)+14){
+        const used=(Array.isArray(S.pendingAud)&&S.pendingAud.some(p=>p&&p.gigId===s.gigId))||(Array.isArray(S.shoots)&&S.shoots.some(sh=>sh&&sh.gigId===s.gigId))||(S.flags&&S.flags["done_"+s.gigId]);
+        s.state=used?"used":"expired";
+        if(!used){ try{ toast("「"+REF422_LABELS[k]+"」試鏡資格已過期，名額已由他人頂上。"); }catch(_t){} }
+        try{ saveQ(); }catch(_s){}
+      }
+    }
+  }catch(_e){}
+}
+function v422SourceLabelForGig(g){
+  try{
+    if(!g) return "";
+    if(typeof intel381KeptGig==="function" && intel381KeptGig(g)) return "補位情報";
+    if(typeof tape383KeptGig==="function" && tape383KeptGig(g)) return "自費試鏡帶";
+    const rl=ref422Label(g); if(rl) return rl;
+    return "";
+  }catch(_e){ return ""; }
+}
+function ho422Tick(){
+  try{
+    if(typeof S==="undefined"||!S) return;
+    S.flags=S.flags||{};
+    const rel=Number(S.npcs&&S.npcs.agent)||0;
+    if(rel>=30 && !S.flags.ho422Clue){ S.flags.ho422Clue=1; try{ toast("何生已漸漸當你是自己人。信任達 60，他會親自引薦一次機會。"); }catch(_t){} try{ saveQ(); }catch(_s){} }
+    if(rel>=60 && !S.flags.hoRef422Done){
+      if(ref422Grant("ho", null, "何生引薦：何生親自開口，替你爭取了一次試鏡機會。")){ S.flags.hoRef422Done=1; try{ saveQ(); }catch(_s){} }
+    }
+  }catch(_e){}
+}
+function pang422Tick(){
+  try{
+    if(typeof S==="undefined"||!S) return;
+    S.flags=S.flags||{};
+    const st=(typeof enc79StarState==="function")?enc79StarState("pang_siuki"):null;
+    const fav=st?(Number(st.fav)||0):0;
+    if(fav>=45 && !S.flags.pang422Clue){ S.flags.pang422Clue=1; try{ toast("彭少祺已當你是拍檔。再熟絡些，他會親自引薦綜藝機會。"); }catch(_t){} try{ saveQ(); }catch(_s){} }
+    if(fav>=70 && !S.flags.pangRef422Done){
+      if(ref422Grant("pang", g=>g.type==="綜藝", "彭少祺引薦：彭少祺親自開口，替你爭取了一次綜藝試鏡機會。")){ S.flags.pangRef422Done=1; try{ saveQ(); }catch(_s){} }
+    }
+  }catch(_e){}
+}
+function duty422ProgressText(){
+  try{
+    const d=(typeof backstageDuties392Of==="function")?backstageDuties392Of(S):{total:0,kinds:[],productions:[]};
+    const kinds=(d.kinds||[]).length, prods=(d.productions||[]).length;
+    let tail="";
+    if(kinds>=2&&prods>=2) tail="幕後履歷已成形，製作單位開始以幕後身份記住你。";
+    else tail="集齊兩種職務與兩個製作，行內會開始以幕後身份找你。";
+    return "幕後履歷：已完成 "+(d.total|0)+" 宗 · "+kinds+" 種職務 · "+prods+" 個製作。"+tail;
+  }catch(_e){ return ""; }
+}
+function stamina422Lessons(){ try{ return Number(S&&S.trainCount&&S.trainCount.train_stamina)||0; }catch(_e){ return 0; } }
+function stamina422IsActionGig(g){
+  try{ return !!(g && (g.genre==="動作"||g.genre==="武俠"||g.roleLabel==="動作替身"||(g.req&&Number(g.req.stamina)>0))); }catch(_e){ return false; }
+}
+function stamina422AudNote(g){
+  try{
+    const n=stamina422Lessons();
+    if(n<=0||!stamina422IsActionGig(g)) return "";
+    return "武師班底子（"+n+" 堂）令你在動作試鏡中站位與拳腳更穩。";
+  }catch(_e){ return ""; }
 }
 
 /* ===== v20a83 ENC83：紅星巧遇 Phase 2（魏詠男／顧明輝／駱家聲／齊鎮海）＋ T4 提攜通用機制（D2 已批）。
@@ -48121,7 +48424,7 @@ function openLoc(id, opts){
     if(typeof StoryOC!=="undefined"){
       StoryOC.ensure();
       /* tip path */
-      if(tipHere && tipHere.kind==="story" && tipHere.nodeId){
+      if(tipHere && tipHere.kind==="story" && tipHere.nodeId && !tipHere.commitId){
         const nid = tipHere.nodeId;
         if(locStoryIsDone(nid)){
           try{ if(S.mapTips && S.mapTips[L.id] && S.mapTips[L.id].nodeId===nid) delete S.mapTips[L.id]; }catch(_p){}
@@ -48146,7 +48449,7 @@ function openLoc(id, opts){
           storyActAdded = true;
         }
       }
-      if(!storyActAdded){
+      if(!storyActAdded && !(tipHere && tipHere.commitId)){
         const oc = StoryOC.listOpen({ checkNodePhase:true, player:true, ignoreSheetLoc:true }) || {};
         /* Prefer a still-open node at this loc */
         const here = (oc.open||[]).find(r=>{
@@ -48202,6 +48505,15 @@ function openLoc(id, opts){
   /* v20a79 ENC79：遠觀掣退場——星在場但冇觸發巧遇（冷卻／上限／主線壓制）嗰陣，
      loc-who 行出一句遠觀式描寫（重用 distanceLook 文案），唔再出掣。 */
   try{ if(typeof enc79SheetPresence==="function") enc79SheetPresence(L.id); }catch(_e79s){}
+  if(L.id==="cafe_cha"){
+    /* v422：補位情報入口線索——未開閘也講明用途與條件，玩家才知要先與陸柏言熟絡。 */
+    try{
+      const fav422=(typeof intel381LukFav==="function")?intel381LukFav():0;
+      const whoEl=document.getElementById("loc-who");
+      const clue422 = fav422>=25 ? "補位情報：可在此購買獨家補位試鏡消息（每月一次，已按你現時條件核對）。" : ("補位情報：陸柏言好感達 25 後，可在此購買獨家補位試鏡消息（現 "+fav422+"／25）。");
+      if(whoEl) whoEl.textContent = (whoEl.textContent ? whoEl.textContent+" " : "") + clue422;
+    }catch(_c422){}
+  }
   if(L.id==="agency_ho"){
     document.getElementById("loc-who").textContent = "何生提醒：練好基本功，條件未合就暫未能報，不要硬闖。" + ((typeof enc79HoTrustLine==="function" && enc79HoTrustLine()) ? " " + enc79HoTrustLine() : "");
   }
@@ -49197,13 +49509,14 @@ function gigsForLocSeasonBoard(locId, curSeason){
     const isIntel381 = (typeof intel381KeptGig==="function" && intel381KeptGig(g));
     /* v20a383 TAPE383：自費試鏡帶保留嘅通告同理豁免（7 日試鏡窗就係檔期本身）。 */
     const isTape383 = (typeof tape383KeptGig==="function" && tape383KeptGig(g));
+    const isRef422 = (typeof ref422KeptKind==="function" && !!ref422KeptKind(g)); /* v422：引薦通告同理豁免（14 日窗就係檔期本身） */
     /* v20a88：錯季硬藏改提早窗判準（typeof 防禦：抽函數測試沙盒冇 88 函數時回退 v18k 語義）
        v20a279 G-L2：收割窗通告（wf3harvest）豁免季節閘——佢嘅檔期就係 7 日收割窗本身（由 S.wf3.liaoHarvest 計），唔係上映季；
        遲秋先搶鏡嘅玩家，窗開喺冬都照上板。其他 trigger 通告照舊跟季節窗。 */
-    if(!isIntel381 && !isTape383 && !(g.trigger && g.trigger.kind==="wf3harvest" && typeof triggerGigOn==="function" && triggerGigOn(g)) && (typeof gigSeasonHidden88==="function" ? gigSeasonHidden88(g, curSeason) : seasonRank(g, curSeason)>0)) return false;
+    if(!isIntel381 && !isTape383 && !isRef422 && !(g.trigger && g.trigger.kind==="wf3harvest" && typeof triggerGigOn==="function" && triggerGigOn(g)) && (typeof gigSeasonHidden88==="function" ? gigSeasonHidden88(g, curSeason) : seasonRank(g, curSeason)>0)) return false;
     /* v20a92 NAT92：未到上板日／已落板嘅庫存通告唔上板（typeof 防禦：冇 92 函數時唔生效）；
        已觸發通告豁免——觸發嗰刻就係上板嗰刻，唔好再俾 0–39 日開窗偏移／落板拉前擋死。 */
-    if(!isIntel381 && !isTape383 && !(g.trigger && typeof triggerGigOn==="function" && triggerGigOn(g)) && typeof gigBoardPosted92==="function" && !gigBoardPosted92(g)) return false;
+    if(!isIntel381 && !isTape383 && !isRef422 && !(g.trigger && typeof triggerGigOn==="function" && triggerGigOn(g)) && typeof gigBoardPosted92==="function" && !gigBoardPosted92(g)) return false;
     if(isGigConsumed(g)) return false;
     return true;
   });
@@ -50662,6 +50975,7 @@ function aud91CreatePending(gig, L, pre){
     fxActing: (pre && pre.fxActing) || 0, fxStress: (pre && pre.fxStress) || 0,
     fxFame: (pre && pre.fxFame) || 0, fxStressFail: (pre && pre.fxStressFail) || 0,
     via: (pre && pre.via) || "board",
+    src422: (pre && pre.src422) || ((typeof v422SourceLabelForGig==="function") ? v422SourceLabelForGig(gig) : ""), /* v422：試鏡來源歸因（補位／試鏡帶／引薦） */
     favorLabel: (pre && pre.favorLabel) || "" /* v20a158：免試鏡直聘嗰陣，公佈 modal 何生嗰句讀呢個名（紅棉武指／彭少祺） */
   };
   S.pendingAud.push(rec);
@@ -50838,6 +51152,8 @@ function aud91PresentOne(rec, next){
        信用／人脈微幅加分」含糊行成段刪走（結果已出，唔再講成數）。 */
     /* v20a158：人情免試鏡直聘（via favor158）唔係試鏡通過，唔講「試鏡通過」；何生嗰句講明邊邊應承咗直接用你。 */
     notes.push(`<span class="good">${(rec.via==="favor158") ? ("免試鏡直接獲聘，拍攝 "+rec.days+" 日") : (eventLine("AUD_PASS",{title:rec.title, shootDays:rec.days})||("試鏡通過，拍攝 "+rec.days+" 日"))}</span>`);
+    if(rec.src422) notes.push(`<span class="var-note">此試鏡經「${rec.src422}」取得。</span>`);
+    try{ const _sn422=(typeof stamina422AudNote==="function")?stamina422AudNote(gig):""; if(_sn422) notes.push(`<span class="var-note">${_sn422}</span>`); }catch(_sn422e){}
     if(rec.fxActing || rec.fxStress) notes.push(...apply({acting: rec.fxActing||0, stress: rec.fxStress||0}));
     const pay = Number(rec.pay)||0;
     const signPay = Math.round(pay*0.3); /* 簽約金＝合約額三成，公佈嗰刻即付 */
@@ -50888,6 +51204,8 @@ function aud91PresentOne(rec, next){
   notes.push(...apply({fame: rec.fxFame||0, stress: rec.fxStressFail||0}));
   const failLine = eventLine("AUD_FAIL",{title:rec.title})||"未獲錄用——不會開工。";
   notes.push(`<span class="bad">${failLine}</span>`);
+  if(rec.src422) notes.push(`<span class="var-note">此試鏡經「${rec.src422}」取得。</span>`);
+  try{ const _sn422f=(typeof stamina422AudNote==="function")?stamina422AudNote(gig):""; if(_sn422f) notes.push(`<span class="var-note">${_sn422f}</span>`); }catch(_sn422fe){}
   aud91LogPush({ day:S.dayIndex|0, title:rec.title, ok:false, signPay:0, balance:0 });
   let rivalTookHtml = "";
   try{ rivalTookHtml = rivalTookRoleLine(gig, rec); }catch(_e){}
@@ -51197,6 +51515,7 @@ function doAudition(gig, L){
   modal(`<h3>試鏡完畢・等消息 ${gig.title}</h3>
     <p>你照住要求演咗一輪，評判點頭抄低你個名，最後講咗句「返去等消息啦」——呢行唔興即場拍板，劇組要開完會先定到人。</p>
     ${advice229?`<p class="gold">鍾楚凝的忠告：臨試鏡前，阿偉想起她臨走時留下的那句話——「${advice229}」</p>`:""}
+    ${rec.src422?`<p class="var-note">此試鏡經「${rec.src422}」取得。</p>`:""}
     <p class="gold">何生話：${aud91WaitPhrase(rec.wait)}，佢一收到風就會打嚟通知你；真係獲聘嗰陣，先簽約收簽約金，之後先排拍攝日開工。</p>
     <p class="var-note">成功率約 ${Math.round(p*100)}%（成數受表現／壓力／信用影響）。等消息期間照常生活；手帳「事業」頁睇得到而家等緊邊幾張。等消息嘅日子可以照常試其他通告（最多同時等 ${AUD91_CAP} 張）或者做兼職，唔使空等。</p>
     ${ended?`<p class="dayres-stamp397">一週完結</p>`:""}
@@ -51306,7 +51625,7 @@ function openGiftPick(npcKey, L){
         const kindLine183 = kind183==="favorite" ? `<p class="sub">★ 最愛：他最喜歡這份禮物。</p>` : kind183==="liked" ? `<p class="sub">他頗喜歡這樣。</p>` : kind183==="dislike" ? `<p class="sub">他未必喜歡這樣，要想清楚。</p>` : "";
         /* v20a379（第四輪評估 P2-4）：好感已滿 7 嗰陣，確認前講明再送都唔會再升，唔好照食禮物＋一日先知。 */
         const relNow379 = (typeof rom183RelVal183==="function") ? rom183RelVal183(npcKey) : 0;
-        const capLine379 = relNow379 >= 7 ? `<p class="sub">好感已達上限（7／7）——再送都不會再升，禮物和日子照樣會用去。</p>` : "";
+        const capLine379 = relNow379 >= 7 ? `<p class="sub">好感已達上限（7／7）——再送都不會再升，禮物和日子照樣會用去。</p>` : ((typeof romance422PaceCapped==="function" && romance422PaceCapped(npcKey)) ? `<p class="sub">關係已到目前劇情階段的上限——再送都不會再升；下一步要靠劇情推進，禮物和日子照樣會用去。</p>` : "");
         modal(`<h3>確認送禮</h3>
           <p>把「<b>${(it&&it.name)||id}</b>」送給 <b>${name}</b>？</p>
           ${kindLine183}
@@ -51346,10 +51665,12 @@ function doGiveGift(npcKey, itemId, L){
   const dayNote = spendDay ? `${fmtDate()} · 送禮耗一日` : `${fmtDate()} · 送禮不計日子`;
   /* v369 UI369：反應分級講明（只顯示今次一級；鄧麗萍公事心意唔出，免誤會關係有變）。 */
   const kindLine369 = npcKey==="tang" ? "" : `<p class="gift-kind369">收禮反應：${(typeof giftKindLabel369==="function") ? giftKindLabel369(res.kind) : ""}</p>`;
+  const paceNote422 = res.paceCapped ? `<p class="sub">關係已到目前劇情階段的上限；下一步要靠劇情推進，單靠送禮不會再增加。</p>` : "";
   modal(`<h3>送禮結果</h3>
     ${lineHtml}
     ${kindLine369}
     <p class="gold">${deltaTxt}</p>
+    ${paceNote422}
     <p class="sub">${dayNote}</p>
     ${ended?`<p class="dayres-stamp397">一週完結</p>`:""}`,[
     {label: ended?"回家結算":"關閉", role: ended?"p":"g", on:go}

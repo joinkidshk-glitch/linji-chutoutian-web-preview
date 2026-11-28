@@ -1,3 +1,4 @@
+# v422 resync：giveGift 回傳新增 paceCapped 欄，斷言同步；見 qa422/resync422.py。
 # -*- coding: utf-8 -*-
 # v20a167 靜態測試：鄧麗萍咖啡豆 :liked 句補完（用戶 2026-11-13 拍板；v164 殘留 §1.2）。
 # 背景：v164 刻意將咖啡豆留喺 neutral——pack 得 :neutral 句（GR-tang-coffee｜neutral），
@@ -82,7 +83,7 @@ ok('一致：calcDelta 計 liked（raw +2 來自 deltaRel.liked；v372 最愛獨
 ok('一致：giveGift tang 專例照行（applied 強制 0，rel_tang 唔郁）',
    'let applied = (npcKey==="tang") ? 0 : rawDelta;' in src)
 ok('一致：giveGift 回傳 delta:applied（唔係 rawDelta；v176 拎走 costsDay:true 殘留）',
-   'kind, delta:applied378, softcap, line, relKey, before, after' in src)
+   'kind, delta:applied378, softcap, paceCapped:(applied>0 && applied378<applied), line, relKey, before, after' in src)
 ok('一致：結果 modal tang 顯示「排片關係不變」，唔顯示數字',
    'const deltaTxt = npcKey==="tang" ? "排片關係不變" :' in src)
 

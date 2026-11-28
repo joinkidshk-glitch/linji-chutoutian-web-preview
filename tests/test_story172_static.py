@@ -1,3 +1,4 @@
+# v422 resync：普通 eval 呼叫點由 2 處增至 4 處（新增 romance422SyncTailOffers 主動同步＋romance422TailClue 線索讀取）；見 qa422/resync422.py。
 # -*- coding: utf-8 -*-
 # v20a191：前置句改行共用幕號 storyActLabel（渲染字不變，見 test_story179_logic.js）；source 檢查跟新寫法。
 # v20a172 STORY172 靜態測試：v165 review B1＋C1 修復（用戶 2026-11-13 12:33 拍板修晒）
@@ -109,8 +110,8 @@ ok('範圍：第三條返地圖路 #home-back-map 已掛強制播（v20a218 D-v1
    and 'story165ModalOpen' in seg('function leaveHomeFromNotebook(mode){', 'document.getElementById("home-back-map").onclick', 2000))
 ok('範圍：closeSheet() 本體仍然唔掛強制播',
    'story165TryForcedPlay' not in seg('function closeSheet(opts){', '/* ===== v20a35', 2500))
-ok('範圍：普通 eval 只剩 enterLoc／doTalk 兩處寫 offer（start 已轉交 ignoreSheetLoc，見 §四）',
-   src.count('StoryOC.evalNode(node, { checkNodePhase:true })') == 2)
+ok('範圍：普通 eval 只剩 enterLoc／doTalk／v422 感情尾段同步／v422 線索讀取四處（start 已轉交 ignoreSheetLoc，見 §四）',
+   src.count('StoryOC.evalNode(node, { checkNodePhase:true })') == 4)
 ok('SAVE key／softRev／?v= 不變', 'starVolunteer_map_v19w' in src and 's107' in src and 'v20a10' in src)
 
 print('FAILURES: ' + ' | '.join(fails) if fails else 'ALL PASS')

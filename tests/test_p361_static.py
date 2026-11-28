@@ -1,3 +1,4 @@
+# v422B resync：index.html 淨 +179 行（53212→53391）；釘行按 difflib 映射重寫，內容逐字核實純漂移；見 qa422/resync422b.py。
 # v20a361 P1 兩項平衡修復靜態釘：A 頒獎天花板（ad_lead/music_lead/variety_host_lead）B 結局可達性
 # （合約信用＋E3/E5 提前＋floor 140＋F2 豁免＋負標籤預警）。
 # 內容錨點（唔釘行號，免漂移）；行為驗證見 qa361/qa361_harness.js（36 項，真引擎/真函數）。
@@ -92,7 +93,7 @@ chk('B3 F2 覆寫改行 ending361FloorExempt', '!ending361FloorExempt(res.career
 # B4：負標籤即時預警＋gaps95 交代
 ntw = slice_fn('negTagWarn361')
 chk('B4 negTagWarn361 兩段文案在位',
-    '這是負面印記，會影響結局' in ntw and '負面印記已有兩個' in ntw)
+    '負面印記「' in ntw and '天王與巨星那兩格最多容許一個' in ntw and '現有' in ntw)
 ac = slice_fn('applyCastingTags')
 chk('B4 applyCastingTags 新增後呼叫 negTagWarn361', 'negTagWarn361(added)' in ac)
 bg = slice_fn('end95BuildGaps')

@@ -1,3 +1,4 @@
+# v422B resync：index.html 淨 +179 行（53212→53391）；釘行按 difflib 映射重寫，內容逐字核實純漂移；見 qa422/resync422b.py。
 # v20a58 擴展 static tests: 新課程「武師班」九處接線齊全、數值同同級課程對齊、
 # 週結三處 stamina 暗加已收、相關文案唔再承諾瞓覺回體能、硬規則（SAVE key）冇郁。
 # 反證: run against the rest-only (pre-extension) index -> 課程不存在＋暗加仍在 -> FAIL.
@@ -14,7 +15,7 @@ def chk(name, cond):
         fails.append(name)
 
 # --- 新課程接線（9 處） ---
-chk('COURSE_DEFS: train_stamina 武師班', 'train_stamina: { icon:"🥋", name:"武師班", hint:"拳腳／體能", midOf:null }' in src)
+chk('COURSE_DEFS: train_stamina 武師班', 'train_stamina: { icon:"🥋", name:"武師班", hint:"拳腳／體能 · 動作戲底子", midOf:null }' in src)
 chk('COURSE_ENROLL_EXTRA: film 附帶武師班', 'film: ["train_iq", "train_stamina"]' in src)
 chk('EVENTS: TRAIN_RESULT_stamina 有句', 'TRAIN_RESULT_stamina' in _ev)
 chk('EVENTS: UNLOCK_STAMINA 有句', 'UNLOCK_STAMINA' in _ev)

@@ -152,7 +152,7 @@ const SPINE95_DONE = { N1:true, N2:true, N3:true, N4:true, N5:true, N6:true, N7:
   const st = arc(190, 215, {
     careerStats95: stats95({ total: 100,
       byMedium: { film: 34, tv: 26, music: 22, variety: 10, ad: 8 },
-      leadByMedium: { film: 3, tv: 2, music: 1 },
+      leadByMedium: { film: 3, tv: 2, music: 1, variety: 3, ad: 1 },
       tvLongLeads: 2, genreIdentified: 36, genreComedy: 9, genreAction: 9 }),
     awardsLog: [{ medium: 'film', categories: [{ id: 'w', outcome: 'won', repTitle: '丙片' }] }],
     wf3: { liaoHarvestDone: 1 },
@@ -160,7 +160,7 @@ const SPINE95_DONE = { N1:true, N2:true, N3:true, N4:true, N5:true, N6:true, N7:
   });
   const r = R(st);
   ok('弧2 近乎完美弧：雙軌 405 → E1 天王接班', r.career === 'E1' && r.snapshot.dual === 405);
-  ok('弧2：質性閘三件齊（獎／兩媒介擔正／脊骨行完）', r.ladder95.hasWin === true && r.ladder95.leadMedia.length === 3 && r.ladder95.spine95.done === true && r.ladder95.chains.join() === 'B');
+  ok('弧2：質性閘齊全（獎／五媒介擔正組合／脊骨行完）', r.ladder95.hasWin === true && r.ladder95.leadMedia.length === 5 && r.ladder95.spine95.done === true && r.ladder95.chains.join() === 'B');
   ok('弧2：E1 差邊瓣＝不差嗰句', r.gaps95.length === 1 && /不差/.test(r.gaps95[0]));
 }
 
@@ -169,7 +169,7 @@ const SPINE95_DONE = { N1:true, N2:true, N3:true, N4:true, N5:true, N6:true, N7:
   const mk = (credit) => arc(170, credit, {
     careerStats95: stats95({ total: 90,
       byMedium: { film: 30, tv: 26, music: 20, variety: 8, ad: 6 },
-      leadByMedium: { film: 3, tv: 2 },
+      leadByMedium: { film: 3, tv: 2, music: 1, variety: 3, ad: 1 },
       tvLongLeads: 2, genreIdentified: 30, genreComedy: 8, genreAction: 8 }),
     awardsLog: [{ medium: 'film', categories: [{ id: 'w', outcome: 'won', repTitle: '丙片' }] }],
     wf3: { liaoHarvestDone: 1 },
@@ -182,11 +182,33 @@ const SPINE95_DONE = { N1:true, N2:true, N3:true, N4:true, N5:true, N6:true, N7:
   const rNoChain = R(arc(190, 215, {
     careerStats95: stats95({ total: 100,
       byMedium: { film: 34, tv: 26, music: 22, variety: 10, ad: 8 },
-      leadByMedium: { film: 3, tv: 2, music: 1 },
+      leadByMedium: { film: 3, tv: 2, music: 1, variety: 3, ad: 1 },
       tvLongLeads: 2, genreIdentified: 36, genreComedy: 9, genreAction: 9 }),
     awardsLog: [{ medium: 'film', categories: [{ id: 'w', outcome: 'won', repTitle: '丙片' }] }],
   }));
   ok('E1 閘拆解：雙軌 405＋獎＋擔正、脊骨未行完 → SS，差邊瓣講主線未行到尾', rNoChain.career === 'SS' && rNoChain.gaps95.some(g => /主線/.test(g)));
+  /* v422 組合閘拆解：其餘全齊、唯獨綜藝主持只有 1 次（正常最高片酬弧形狀）→ SS，
+     差邊瓣逐項列明欠綜藝主持；補齊主持 3 次即入 E1（弧2 已證）。 */
+  const rNoVariety = R(arc(190, 215, {
+    careerStats95: stats95({ total: 100,
+      byMedium: { film: 34, tv: 26, music: 22, variety: 10, ad: 8 },
+      leadByMedium: { film: 5, tv: 3, music: 2, variety: 1, ad: 5 },
+      tvLongLeads: 2, genreIdentified: 36, genreComedy: 9, genreAction: 9 }),
+    awardsLog: [{ medium: 'film', categories: [{ id: 'w', outcome: 'won', repTitle: '丙片' }] }],
+    wf3: { liaoHarvestDone: 1 },
+    story: { flags: {}, rel: {}, done: SPINE95_DONE, choices: {} },
+  }));
+  ok('v422 E1 組合閘：綜藝主持只有 1 次 → SS，差邊瓣列明欠綜藝主持', rNoVariety.career === 'SS' && rNoVariety.gaps95.some(g => /綜藝主持/.test(g)));
+  const rNoAd = R(arc(190, 215, {
+    careerStats95: stats95({ total: 100,
+      byMedium: { film: 34, tv: 26, music: 22, variety: 10, ad: 8 },
+      leadByMedium: { film: 3, tv: 2, music: 1, variety: 3, ad: 0 },
+      tvLongLeads: 2, genreIdentified: 36, genreComedy: 9, genreAction: 9 }),
+    awardsLog: [{ medium: 'film', categories: [{ id: 'w', outcome: 'won', repTitle: '丙片' }] }],
+    wf3: { liaoHarvestDone: 1 },
+    story: { flags: {}, rel: {}, done: SPINE95_DONE, choices: {} },
+  }));
+  ok('v422 E1 組合閘：欠廣告主角 → SS，差邊瓣列明欠廣告主角', rNoAd.career === 'SS' && rNoAd.gaps95.some(g => /廣告主角/.test(g)));
   const rOneLead = R(arc(190, 215, {
     careerStats95: stats95({ total: 100,
       byMedium: { film: 60, tv: 15, music: 12, variety: 7, ad: 6 },

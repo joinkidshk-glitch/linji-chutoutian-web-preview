@@ -72,7 +72,7 @@ ok('v251 GRANT229：B 組 17 鍵齊（N7×3／N8×3／N9×2／N10×3／N11×2／
    and '"N10:*":' not in src and '"N11:*":' not in src and '"N12:*":' not in src
    and '"N19:*":' not in src)
 ok('v249 E1：end95SpineDone 在位＋e1Qual95 用 spine95.done',
-   'function end95SpineDone(st){' in src and 'leadMedia95.length >= 2 && spine95.done' in src)
+   'function end95SpineDone(st){' in src and 'awards95.wins >= T95.e1AwardWins && spine95.done' in src)
 ok('v249 E1：snapshot／ladder95 有 spine95',
    'spine95: { done: spine95.done, missing: spine95.missing.slice() }' in src)
 

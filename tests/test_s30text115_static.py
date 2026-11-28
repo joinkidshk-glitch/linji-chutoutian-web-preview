@@ -1,3 +1,4 @@
+# v422B resync：index.html 淨 +179 行（53212→53391）；釘行按 difflib 映射重寫，內容逐字核實純漂移；見 qa422/resync422b.py。
 # v20a115 S-30 TEXT115・靜態守門測試：通告詳情卡混亂文字重寫（《賀歲特輯》用戶實玩反饋）。
 # 用法：python3 tests/test_s30text115_static.py [path-to-index.html]
 # 反證意識：每項同時驗「新寫法在」＋「舊寫法不在」（舊寫法出現即 FAIL）。
@@ -17,7 +18,7 @@ def body_of(fname, span=12000):
     i = html.find(fname)
     return html[i:i + span] if i >= 0 else ''
 
-b = body_of('function castingNoticeDetailHtml', 12000)
+b = body_of('function castingNoticeDetailHtml', 15000)
 
 # --- 1. 檔期行：一個概念（label 用值入面嘅動詞，值刪前綴）---
 ok('T1 檔期行 label 係「預計播出」', '<span class="k">${relMatch115 ? "預計"+relMatch115[1] : "預計播出"}</span>' in b)

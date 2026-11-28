@@ -101,8 +101,8 @@ if 'const rows = []; ' in blk or 'const rows = [];' in blk:
     _re = blk.index('return { career: res.career')
     _rows_ok = '仲差' not in blk[_rs:_re] and blk.count('仲差') == 1
 ok('LADDER 數字行唔出（梯三行程式碼入面冇「仲差」；「仲差」只出現喺區塊頭註解講禁令嗰句）', _rows_ok)
-ok('LADDER 質性三行：獎／擔正／主線鏈',
-   '獎：攞過獎。' in blk and '擔正：未試過企正嗰個位。' in blk and '主線：未行完一條行內主線。' in blk)
+ok('LADDER 質性三行：獎／擔正組合／主線脊骨',
+   '獎：已經取得獎項。' in blk and '擔正組合：尚未齊全，欠' in blk and '主線：尚未走完整條主線。' in blk)
 ok('LADDER gaps95 句子唔逐字照搬（回望口吻註解有交代）',
    '唔逐字照搬' in blk and '頒獎禮嗰幾晚' in blk)
 

@@ -265,14 +265,14 @@ ok('B11 wrap＋PSR 鏡像同一殺青 → 取 max 係 1，唔係 2', countYearMe
         byMedium: { film: 34, tv: 26, music: 22, variety: 10, ad: 8 },
         leadByMedium: { film: 0, tv: 0, music: 0, variety: 0, ad: 0 },
         tvLongLeads: 0, genreIdentified: 36, genreComedy: 9, genreAction: 9 }),
-      leadStats229: { byMedium: { film: 1, tv: 1, music: 0, variety: 0, ad: 0 } },
+      leadStats229: { byMedium: { film: 2, tv: 1, music: 1, variety: 3, ad: 1 } },
       awardsLog: win, wf3: { liaoHarvestDone: 1 },
       /* v20a249：E1 質性閘 ③ 改做主線脊骨——fixture 要行完整條脊骨先上 E1 */
       story: { flags: {}, rel: {}, done: { N1:true, N2:true, N3:true, N4:true, N5:true, N6:true, N7:true, N8:true, N9:true, N10:true, N11:true, N12:true, N13:true, N14:true, N15:true, N16:true, N17:true }, choices: {} }
     });
     const r = R(st);
-    ok('F1 E1：舊計數器零擔正、新計數器兩媒介擔正 → 照上 E1（讀新唔讀舊）',
-      r.career === 'E1' && r.ladder95.leadMedia.length === 2);
+    ok('F1 E1：舊計數器零擔正、新計數器五媒介組合齊全 → 照上 E1（讀新唔讀舊）',
+      r.career === 'E1' && r.ladder95.leadMedia.length === 5);
   }
   {
     const st = arc(190, 215, {

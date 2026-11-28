@@ -345,7 +345,7 @@ ok('(4) 通告庫總數 330 張（v280 0 張新開＋v284 1 張 film_114＋v291 
 
 /* ---- (5) 3.10 結局門檻未郁 ---- */
 ok('(5) E1 數字：ENDING95_T 聲望 70／信用 65／雙軌 350／負標籤 ≤1', ENDING95_T.e1Fame===70 && ENDING95_T.e1Credit===65 && ENDING95_T.e1Dual===350 && ENDING95_T.e1NegMax===1);
-ok('(5) E1 質性閘：獎 ≥1＋擔正媒介 ≥2＋主線脊骨（live 判定式未郁）', html.indexOf('awards95.hasWin && leadMedia95.length >= 2 && spine95.done')>=0 && html.indexOf('fame>=T95.e1Fame && credit>=T95.e1Credit && sum>=T95.e1Dual && neg<=T95.e1NegMax && e1Qual95')>=0);
+ok('(5) E1 質性閘：獎 ≥1＋五媒介擔正組合（電影≥1／電視≥1／唱片≥1／綜藝主持≥3／廣告≥1）＋主線脊骨', ENDING95_T.e1AwardWins===1 && ENDING95_T.e1LeadFilm===1 && ENDING95_T.e1LeadTv===1 && ENDING95_T.e1LeadMusic===1 && ENDING95_T.e1LeadVariety===3 && ENDING95_T.e1LeadAd===1 && html.indexOf('awards95.wins >= T95.e1AwardWins && spine95.done')>=0 && html.indexOf('fame>=T95.e1Fame && credit>=T95.e1Credit && sum>=T95.e1Dual && neg<=T95.e1NegMax && e1Qual95')>=0);
 ok('(5) E2 數字：信用 ≥42＋聲望 ≥35', ENDING410_T.e2Credit===42 && ENDING410_T.e2Fame===35);
 ok('(5) E2 邊界 live 行為：信用 42／聲望 35 入閘，差 1 唔入', (()=> {
   resetS(1050); S.fame = 35; S.industryCreditDelta = 24; /* base round(35×0.5)=18，信用 42 */
