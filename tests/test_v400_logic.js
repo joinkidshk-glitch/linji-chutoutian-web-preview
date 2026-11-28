@@ -137,7 +137,7 @@ ok('5C 外出日（可編輯）：hint 空（v423 總數移週標題行）', nbD
 ok('5C2 全週總數 helper：本週外出機會剩3日', nbMapTotal400()==='本週外出機會剩3日', nbMapTotal400());
 S = mkS(14, { trainCount:{ train_vocal:3 } });
 ok('5D 訓練格（唯讀）：原 hint＋進度', nbDayHint400(1, planMeta("train_vocal"), false, false)==='發聲／跟唱 · 再 2 堂升二級', nbDayHint400(1, planMeta("train_vocal"), false, false));
-ok('5E 鎖定格維持拍攝檔期已定', nbDayHint400(1, planMeta("train_vocal"), true, true)==='拍攝檔期已定 · 不可改');
+ok('5E 鎖定格維持拍攝檔期已定', nbDayHint400(1, planMeta("train_vocal"), true, true)==='檔期已定 · 不可改');
 
 /* ================= (6) 改格成本行文案 ================= */
 S = mkS(14, { trainCount:{ train_vocal:3 } });

@@ -3141,6 +3141,19 @@ body.day-res-open #mask.day-res{
 .cn-summary .cn-contract401 .cn-sum-row:last-child{ border-top:0 !important; }
 .cn-summary .cn-contract401 .cn-sum-row .v{ overflow-wrap:anywhere; word-break:normal; line-height:1.3; }
 .cn-summary .cn-contract401 .cn-pay{ white-space:normal; }
+/* v425 UI27：合約三欄共用標籤列／主金額列／附註列——主金額同字級同基線，附註降一級。
+   欄內由頂排起（撤 space-between 底部對齊），標籤／主金額／附註逐列對齊。 */
+.cn-summary .cn-contract401 .cn-sum-row{ justify-content:flex-start !important; }
+.cn-summary .cn-contract401 .cn-money-main425{ display:block; font-size:1rem; font-weight:800; line-height:1.3; text-align:left; font-variant-numeric:tabular-nums; }
+.cn-summary .cn-contract401 .cn-money-note425{ display:block; margin-top:1px; font-size:var(--tx-secondary); font-weight:600; color:var(--ink-secondary-paper); line-height:1.35; text-align:left; font-variant-numeric:tabular-nums; }
+@media (max-height:760px){
+  /* v425 UI27：短屏收緊合約同分段，檔期段保留喺首屏（底部成本句佔高由內文密度抵銷）。 */
+  .cn-summary .cn-contract401{ padding:6px 12px 8px !important; margin:6px 0 2px !important; }
+  .cn-summary .cn-contract401 .cn-money-note425{ font-size:var(--tx-label); line-height:1.3; }
+  .cn-summary .cn-sec424{ margin:3px 0 1px; padding-top:3px; }
+  .notice_sheet_frame.cn-paper30v2 .cn-req-cell{ padding:3px 6px 2px; }
+  .notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row{ line-height:1.25; }
+}
 .cn-summary .cn-sched425{ display:grid; grid-template-columns:1fr 1fr; gap:3px 12px; }
 .cn-summary .cn-sched425 .cn-sum-row{ flex-direction:row; align-items:baseline; justify-content:flex-start; gap:6px; margin:0; }
 .cn-summary .cn-sched425 .cn-sum-row .v{ overflow-wrap:anywhere; word-break:normal; }
@@ -3232,6 +3245,23 @@ body.day-res-open #mask.day-res{
   background:#2f6fed !important;
   color:#fff !important;
   border:2px solid #1a4fb8 !important;
+}
+/* v425 UI27：詳情底部層級——成本句全行、主操作最闊、次操作全寬次行、返回同主操作同列；
+   觸控目標 ≥44px；主操作 52px。 */
+#mask.casting-sheet-on #modal-btns .modal-note202{ flex:1 1 100%; font-size:var(--tx-secondary); line-height:1.4; padding:0 4px 2px; }
+#mask.casting-sheet-on #modal-btns button.btn_audition425{ flex:1.6 1 0; min-height:52px; font-size:1rem; font-weight:900; }
+#mask.casting-sheet-on #modal-btns button.btn_favor425{ flex:1 1 100%; order:3; min-height:44px; }
+#mask.casting-sheet-on #modal-btns button.btn_favor425.p{ flex:1 1 100%; order:0; min-height:52px; font-size:1rem; font-weight:900; }
+#mask.casting-sheet-on #modal-btns button.btn_train_second425{ flex:1.6 1 0; min-height:44px; }
+#mask.casting-sheet-on #modal-btns button.btn_leave{ flex:1 1 0; min-height:44px; }
+@media (max-height:760px){
+  /* v425 UI27：短屏底部收緊＋紙框底墊收窄，檔期段保留首屏。 */
+  #mask.casting-sheet-on #modal-btns{ gap:6px !important; padding-top:6px !important; margin-top:4px !important; }
+  #mask.casting-sheet-on #modal-btns button{ padding-top:6px; padding-bottom:6px; }
+  #mask.casting-sheet-on #modal-btns button.btn_audition425{ min-height:48px; }
+  #mask.casting-sheet-on #modal-btns .modal-note202{ padding-bottom:0; }
+  #mask.casting-sheet-on .notice_sheet_frame{ padding-bottom:8px !important; }
+  #mask.casting-sheet-on #modal-inner{ padding-bottom:8px !important; }
 }
 .cn-train-jump{margin:10px 0 4px;padding:8px 10px;border-radius:10px;background:rgba(47,111,237,.08);border:1px solid rgba(47,111,237,.28)}
 .cn-train-jump-title{margin:0 0 4px;font-weight:800;color:#1a4fb8;font-size:.82rem}
@@ -5717,6 +5747,7 @@ body.day-res-open .day-row{
    (3) 要求值改格並排：每格「現值／要求」＋✓／✕；唔合格＝紅字＋✕＋淡紅底三重。
    (4) 正文字唔細過 13px（.82rem）：摘要行由 .78rem 升上嚟。（v20a117：原句「掣＋詳細條件行」隨詳細區刪除而更新。） */
 #mask.casting-sheet-on:not(.tut-on) .modal{ max-height:min(88dvh,760px) !important; }
+@media (max-height:760px){ #mask.casting-sheet-on:not(.tut-on) .modal{ max-height:min(94dvh,760px) !important; } } /* v425 UI27：短屏詳情紙加高，檔期段保留首屏 */
 /* v20a207 C3：頒獎結果卡矮屏放寬到 94dvh（只限掛咗 awd-sheet-on 嘅結果卡，請柬唔郁）——
    78dvh 喺 700 高得 546px，旁聽版 scroll 579 vs client 439；94dvh（modal 658／inner ~551）＋收緊 ~73px
    先令旁聽版齊見；提名版 scroll 601 vs client 509，要再慳 ~50px 內容（.awd-sheet C3-nom）＋btns／modal
@@ -7247,8 +7278,9 @@ body.day-res-open .day-row{
 /* (5a) 板頭同一橫列：統計剪報標籤靠左、整理紙籤靠右，唔再上下兩行。 */
 /* v425 UI26評級修復：板頭改兩行格——計數獨佔首行（篩選態長字串完整可見，唔俾公式掣遮），
    公式入口＋整理同列第二行。 */
-.board-head392{ display:grid !important; grid-template-columns:minmax(0,1fr) auto !important; grid-template-areas:"sum sum" "formula ctl" !important; align-items:center !important; gap:4px 8px !important; }
+.board-head392{ display:grid !important; grid-template-columns:minmax(0,1fr) auto !important; grid-template-areas:"sum sum" "state state" "formula ctl" !important; align-items:center !important; gap:4px 8px !important; }
 .board-head392 .board-sum392{ grid-area:sum !important; min-width:0 !important; justify-self:start !important; }
+.board-head392 .board-state425{ grid-area:state !important; }
 .board-head392 .board-ctl397{ grid-area:ctl !important; margin-top:0 !important; justify-self:end !important; }
 /* (5b) 整理選單做側邊索引紙：由紙籤拉出、貼右緣、窄身、米紙底＋紅筆剔號（剔號本身
    已喺 v401 .board-chip392.on::after；呢度補紙身，唔再係一列裸掣似表單面板）。 */
@@ -7586,7 +7618,7 @@ body.day-res-open .day-row{
 /* ===== v20a411 UI411：第十五輪頭五項修復（GPT-6.2-sol 加強方案，只改視覺層） ===== */
 /* (1) 彈窗／資料卡去報表：拆逐行分隔、狀態改細字印章、合約算式退註腳 */
 #modal-inner .cn-contract401 .cn-sum-row{ border-bottom:0 !important; padding:2px 0 !important; }
-#modal-inner .cn-contract401 .cn-sum-row:last-child{ border-top:1px solid #CDBFA9 !important; padding-top:5px !important; margin-top:3px !important; }
+#modal-inner .cn-contract401 .cn-sum-row:last-child{ border-top:0 !important; padding-top:2px !important; margin-top:0 !important; } /* v425 UI27：三欄同列，末欄唔再加頂線/偏移，標籤同主金額對齊 */
 #modal-inner .cn-contract401 .cn-sum-row:last-child .v{ font-size:1rem !important; }
 #modal-inner .board-calc397{ font-family:var(--hand363,"LXGW WenKai","Kaiti TC",serif) !important; font-size:.75rem !important; color:#5C4D3D !important; margin-top:5px !important; }
 #modal-inner .cn-kv{ line-height:1.45 !important; margin-bottom:3px !important; }
@@ -7948,6 +7980,13 @@ body.day-res-open .day-row{
 .board-formula424 summary::-webkit-details-marker{ display:none; }
 .board-formula424 .board-lead-formula415{ display:block; padding:4px 2px 0; }
 .board-formula424:not([open]) .board-lead-formula415{ display:none; } /* v424 UI26：收起時唔佔幾何 */
+/* v425 UI27：板頭狀態行——排序／媒介常駐顯示；篩選生效時媒介做紙籤＋解除篩選掣。 */
+.board-state425{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 8px; font-size:var(--tx-secondary); color:var(--ink-secondary-paper); line-height:1.4; }
+.board-state425:focus{ outline:2px solid #8a6a2f; outline-offset:2px; }
+.board-state-seg425{ white-space:nowrap; }
+.board-media-tag425{ display:inline-block; padding:2px 8px; border-radius:3px; font-weight:800; color:var(--ink-body-paper); background:#fbf4dd; border:1px dashed #a98d4f; box-shadow:0 1px 2px rgba(60,40,10,.25); white-space:nowrap; }
+.board-clear425{ min-height:44px; padding:6px 10px; font-size:var(--tx-secondary); font-weight:800; color:#8a3028; background:transparent; border:1px solid #8a3028; border-radius:3px; cursor:pointer; }
+.board-state-small425{ margin:0 0 8px; }
 /* R15 衣櫃項目資料行均衡斷行，避免單字孤行 */
 #home-pane-wardrobe .wardrobe265-row .h{ text-wrap:pretty !important; line-break:strict !important; }
 /* R16 batch3：鎖定態明細文字加深（灰字疊淺金底難讀）；短屏明細標題做續頁提示、卡身唔露半截 */
@@ -8766,7 +8805,7 @@ function openClothingShop265(L){
   }).join("") || `<p class="sub">本週暫無貨。</p>`;
   try{ closeSheet(); }catch(_e){}
   modal(`<h3>花園街成衣店</h3>
-    <p class="sub shop-sub417">旺角花園街 · 買入不耗日 · 著衫加成只喺接通告／試鏡嗰陣計</p>
+    <p class="sub shop-sub417">旺角花園街 · 買入不耗日 · 服裝加成只在試鏡時計算</p>
     <p>存款 <b class="gold">$${(S.money||0).toLocaleString()}</b></p>
     <p class="sub">揀中一件衫之後，按「購買」確認。</p>
     <div id="clothing-shop265-list">${body}</div>`,[
@@ -8826,7 +8865,7 @@ function renderWardrobe265(){
   }).join("");
   box.innerHTML = `<h3 class="wardrobe265-h">衣櫃</h3>`
     + `<p class="sub">而家著緊：<b>${eqName}</b>${eqBonus?("（"+eqBonus+"）"):""}</p>`
-    + `<p class="sub ward-intro417">換衫免費、即時，唔耗日；加成只喺接通告／試鏡嗰陣計，唔會寫入能力值。未購入嘅衫可以去花園街成衣店買。</p>`
+    + `<p class="sub ward-intro417">換衫免費、即時，唔耗日；加成只在試鏡時計算，不會寫入能力值。未購入嘅衫可以去花園街成衣店買。</p>`
     + rows;
   box.querySelectorAll("[data-equip265]").forEach(b=>{
     b.addEventListener("click", ()=>{
@@ -17820,7 +17859,7 @@ function train71PickerHtml(ctx){
     h += '<p class="train73-note train73-zero">你仲未報名任何課程。下面會用文字寫明各堂去邊度報名；報咗名之後，返嚟呢度就排得入行程。</p>';
   if(stat === "fame" || stat === "popularity"){
     h += '<div class="guide68-row"><div class="guide68-cname">' + ux68Esc(SL[stat]) + '冇訓練課</div>'
-      + '<div class="guide68-meta">呢個數值靠接通告、拍攝同播出累積——戲份越重、作品越出，升得越快。去大地圖地點開通告欄揀工。</div>'
+      + '<div class="guide68-meta">呢個數值靠獲聘、拍攝同播出累積——戲份越重、作品越出，升得越快。去大地圖地點開通告欄揀工。</div>'
       + '</div>';
   } else if(stat === "stress"){
     h += '<div class="guide68-row"><div class="guide68-cname">壓力靠休息減</div>'
@@ -19362,9 +19401,9 @@ function payContractNote(gig, lockedPay, roll){
     const base=Number(roll.basePay)||0;
     const bonus=Number(roll.bonusPay)||0;
     const sign=bonus>0?"+":"−";
-    return `合約鎖定 $${lock.toLocaleString()}（約酬區間 $${Number(lo).toLocaleString()}–$${Number(hi).toLocaleString()}；牌面擲出 $${base.toLocaleString()} ${sign} ${roll.bonusLabel||"加成"} $${Math.abs(bonus).toLocaleString()} ＝ $${lock.toLocaleString()}）；殺青實收按此入帳。`;
+    return `合約鎖定 $${lock.toLocaleString()}（預計片酬範圍 $${Number(lo).toLocaleString()}–$${Number(hi).toLocaleString()}；牌面擲出 $${base.toLocaleString()} ${sign} ${roll.bonusLabel||"加成"} $${Math.abs(bonus).toLocaleString()} ＝ $${lock.toLocaleString()}）；殺青實收按此入帳。`;
   }
-  return `合約鎖定 $${lock.toLocaleString()}（約酬區間 $${Number(lo).toLocaleString()}–$${Number(hi).toLocaleString()}）；殺青實收按此入帳。`;
+  return `合約鎖定 $${lock.toLocaleString()}（預計片酬範圍 $${Number(lo).toLocaleString()}–$${Number(hi).toLocaleString()}）；殺青實收按此入帳。`;
 }
 function payWrapNote(sh){
   const pay=Number(sh&&sh.pay)||0;
@@ -19739,7 +19778,7 @@ function refreshMoneyHud(){
     /* 手帳／任何殘留 .home-money 一齊刷（唔只 #home-stats 底下第一個） */
     document.querySelectorAll(".home-money").forEach(el=>{
       try{
-        el.textContent = "$ "+amt;
+        el.textContent = "$"+amt;
         el.classList.toggle("money-warn", lv==="warn");
         el.classList.toggle("money-critical", lv==="critical");
         el.classList.toggle("money-broke", lv==="broke");
@@ -19752,7 +19791,7 @@ function refreshMoneyHud(){
       try{
         const span=document.createElement("span");
         span.className="hs-i home-money";
-        span.textContent="$ "+amt;
+        span.textContent="$"+amt;
         hs.insertBefore(span, hs.firstChild);
       }catch(_e){}
     }
@@ -19781,7 +19820,7 @@ function apply(delta){
       S.money=Math.max(0,(Number(S.money)||0)+v);
       if(v>0){ S.weekEarn=(Number(S.weekEarn)||0)+v; }
       moneyTouched=true;
-      notes.push(v>0?`<span class="good">+$ ${v.toLocaleString()}</span>`:`<span class="bad">−$ ${Math.abs(v).toLocaleString()}</span>`);
+      notes.push(v>0?`<span class="good">+$${v.toLocaleString()}</span>`:`<span class="bad">−$${Math.abs(v).toLocaleString()}</span>`);
     } else if(k in STAT_LABEL || k==="stamina"){
       const before=Number(S[k])||0;
       S[k]=clamp(before+v,0,statHardMax(k));      const d=S[k]-before;
@@ -20858,8 +20897,8 @@ function gigCardHtml(g, opts){
   /* PLAN §2.1 板面短標 */
   /* v20a34 引導包 P0-1：鎖定卡直接寫埋欠幾多（差額計法喺 gigGapLine34，同詳情頁同一套） */
   const rate = !gate.ok
-    ? `<span class="sp-lock-ico" aria-hidden="true"></span> 暫未能報 · 條件未合${(()=>{ try{ const gl=(typeof gigGapBoardLine37==="function")?gigGapBoardLine37(g):((typeof gigGapLine34==="function")?gigGapLine34(g):""); return gl?`<br><span class="req-gap">${gl}</span>`:""; }catch(_e){ return ""; } })()}`
-    : `可接通告 · <b class="gold">${p}%</b>`;
+    ? `<span class="sp-lock-ico" aria-hidden="true"></span> 試鏡報名未開放 · 條件未合${(()=>{ try{ const gl=(typeof gigGapBoardLine37==="function")?gigGapBoardLine37(g):((typeof gigGapLine34==="function")?gigGapLine34(g):""); return gl?`<br><span class="req-gap">${gl}</span>`:""; }catch(_e){ return ""; } })()}`
+    : `可報名試鏡 · 成功率 <b class="gold">${p}%</b>`;
   const rk=gigTierKey(g);
   /* v20a94 PRESS94「臨」徽章：臨記級通告（同見報門檻共用 press94RoleClass）印章＋級別字改「臨」；
      tier 數據本身唔郁（篩選／排序／門檻照舊跟 tier）。急件印章優先。
@@ -20920,13 +20959,20 @@ function gigPayExactText(g, opts){
   if(opts && opts.card) return "$"+n.toLocaleString();
   if(g && Array.isArray(g.pay) && g.pay.length>1){
     const lo=Number(g.pay[0]), hi=Number(g.pay[1]);
-    if(Number.isFinite(lo) && Number.isFinite(hi) && hi>lo) return "$"+n.toLocaleString()+"（約酬 $"+lo.toLocaleString()+"–$"+hi.toLocaleString()+"）";
+    if(Number.isFinite(lo) && Number.isFinite(hi) && hi>lo) return "$"+n.toLocaleString()+"（預計片酬範圍 $"+lo.toLocaleString()+"–$"+hi.toLocaleString()+"）"; /* v425 UI27：範圍用「預計片酬範圍」，唔再用「約酬」 */
   }
   return "$"+n.toLocaleString();
 }
 function gigPayExactHtml(g){
-  const t=gigPayExactText(g);
-  return t ? (`<span class="cn-pay">${t}</span>`) : "—";
+  /* v425 UI27：主金額同範圍分層——主金額同簽約金／違約金主金額同基線，範圍入附註列。 */
+  const n=gigPayExact(g);
+  if(n==null) return "—";
+  let note="";
+  if(g && Array.isArray(g.pay) && g.pay.length>1){
+    const lo=Number(g.pay[0]), hi=Number(g.pay[1]);
+    if(Number.isFinite(lo) && Number.isFinite(hi) && hi>lo) note=`<span class="cn-money-note425">預計片酬範圍 $${lo.toLocaleString()}–$${hi.toLocaleString()}</span>`;
+  }
+  return `<span class="cn-money-main425">$${n.toLocaleString()}</span>${note}`;
 }
 function gigBreachFee(g){
   if(!g) return null;
@@ -21627,8 +21673,9 @@ function castingNoticeDetailHtml(g){
   const payStr=gigPayExactHtml(g);
   const breachStr=gigBreachFeeHtml(g);
   /* v20a108 UI108 S-33：簽約金數字行升上摘要區（獲聘後即收；v20a115 更正：簽約金只喺公佈獲聘嗰刻入帳，見 aud91PresentOne「公佈嗰刻即付」，接通告嗰刻唔入帳）；違約金只喺有數嗰陣先出。 */
-  const signFee108=(()=>{ try{ const ex=gigPayExact(g); return (ex!=null && ex>0) ? ("約 $"+Math.round(ex*0.3).toLocaleString()+"（獲聘後即收）") : "合約額三成（獲聘後即收）"; }catch(_e){ return "合約額三成（獲聘後即收）"; } })(); /* v425：三成口徑由試鏡段流程句承載，合約格唔重複 */
-  const breachRow108=(()=>{ try{ return (typeof gigBreachFee==="function" && gigBreachFee(g)!=null) ? `<div class="cn-sum-row"><span class="k">違約金</span><span class="v">${breachStr}</span></div>` : ""; }catch(_e){ return ""; } })();
+  /* v425 UI27：簽約金主金額同「獲聘後即收」分層（主金額列／附註列），同片酬主金額同基線。 */
+  const signFee108=(()=>{ try{ const ex=gigPayExact(g); return (ex!=null && ex>0) ? (`<span class="cn-money-main425">約 $${Math.round(ex*0.3).toLocaleString()}</span><span class="cn-money-note425">獲聘後即收</span>`) : `<span class="cn-money-main425">合約額三成</span><span class="cn-money-note425">獲聘後即收</span>`; }catch(_e){ return `<span class="cn-money-main425">合約額三成</span><span class="cn-money-note425">獲聘後即收</span>`; } })();
+  const breachRow108=(()=>{ try{ return (typeof gigBreachFee==="function" && gigBreachFee(g)!=null) ? `<div class="cn-sum-row"><span class="k">違約金</span><span class="v"><span class="cn-money-main425">${breachStr}</span></span></div>` : ""; }catch(_e){ return ""; } })();
   /* v20a117 S-30 DEDUP117：condParts（詳細區「條件」表）隨詳細區刪除——同摘要區
      要求格（reqGridHtml，現／要對照）同一組數，只係冇現值，純重複。 */
   /* v20a252 CAST252：簡介按 §6.2——臨記通告顯示 blurb（散工簡介），其餘顯示 synopsis。 */
@@ -21717,12 +21764,12 @@ function castingNoticeDetailHtml(g){
     try{
       if(boardState!=="ready" || typeof chance!=="function") return "";
       const p378 = Math.round(chance(g)*100);
-      return `<div class="cn-chance378"><span class="cn-chance378-lab">試鏡成功率</span><strong class="cn-chance378-val">約 ${p378}%</strong></div><p class="cn-flow417">按「接通告」即報名試鏡，並非即時開工；獲聘後先收取簽約金（片酬三成，計入片酬總額）。</p>`; /* v417：講明接通告＝報名試鏡＋簽約金口徑；v425：非對白改書面語 */
+      return `<div class="cn-chance378"><span class="cn-chance378-lab">試鏡成功率</span><strong class="cn-chance378-val">約 ${p378}%</strong></div><p class="cn-flow417">獲聘後才收取簽約金（片酬三成，計入片酬總額）。</p>`; /* v425 UI27：試鏡語意由底部成本句承載，流程句只講簽約金時機 */
     }catch(_e){ return ""; }
   })();
   /* v425 UI26評級修復：預期日薪數值＋精確算式合併一處（原通用公式行同 sheet 外常駐算式重複講同一數，
      合併後算式入試鏡段捲動區，唔再常駐底部擠壓首屏；精確值同取整規則保留） */
-  const expRow424 = (()=>{ try{ if(boardState!=="ready" || typeof board392ExpDaily!=="function") return ""; const e424=board392ExpDaily(g); if(e424==null || !(e424>0)) return ""; let calc425=""; try{ const c425=(typeof boardExpCalc397==="function")?boardExpCalc397(g):null; if(c425) calc425=`<p class="board-calc397"><span class="calc412-formula">片酬 $${c425.pay} × 成功率 ${parseFloat((c425.chance*100).toFixed(2))}% ÷ ${c425.days} 日＝$${c425.raw.toFixed(1)}，四捨五入（成功率用精確值）</span></p>`; }catch(_c425){} if(!calc425) calc425=`<p class="cn-formula424">預期日薪 ＝ 片酬 × 成功率 ÷ 日數</p>`; return `<div class="cn-sum-row"><span class="k">預期日薪</span><span class="v">約 $${Math.round(e424)}／日</span></div>${calc425}`; }catch(_e){ return ""; } })();
+  const expRow424 = (()=>{ try{ if(boardState!=="ready" || typeof board392ExpDaily!=="function") return ""; const e424=board392ExpDaily(g); if(e424==null || !(e424>0)) return ""; let calc425=""; try{ const c425=(typeof boardExpCalc397==="function")?boardExpCalc397(g):null; if(c425) calc425=`<p class="board-calc397"><span class="calc412-formula">片酬 $${c425.pay} × 成功率 ${parseFloat((c425.chance*100).toFixed(2))}% ÷ ${c425.days} 日＝$${c425.raw.toFixed(1)}，四捨五入（成功率用精確值）</span></p>`; }catch(_c425){} if(!calc425) calc425=`<p class="cn-formula424">預期日薪 ＝ 片酬 × 成功率 ÷ 日數</p>`; return `<div class="cn-sum-row"><span class="k">預期日薪</span><span class="v">$${Math.round(e424)}／日</span></div>${calc425}`; }catch(_e){ return ""; } })();
   /* v20a383 TAPE383：詳情頁自費試鏡截止日行（GPT 規格：通告卡顯示同一截止日期） */
   const tape383DetailRow383 = (()=>{
     try{
@@ -21755,7 +21802,7 @@ function castingNoticeDetailHtml(g){
         return `<span class="gap-no">✗ ${lab} 差 ${x.gap}（現 ${x.cur}／要 ${x.need}）</span>`;
       }).join("<br>") + `</div>`;
     } else if(boardState==="ready" || (typeof canAudition==="function" && canAudition(g).ok)){
-      sumGaps = `<div class="cn-sum-gaps"><span class="gap-ok">✓ 條件已達標，可接通告</span></div>`;
+      sumGaps = `<div class="cn-sum-gaps"><span class="gap-ok">✓ 條件已達標，可報名試鏡</span></div>`;
     }
   }catch(_e){}
   /* v20a267：傳聞拼合已刪，詳情頁唔出情報行。 */
@@ -21798,7 +21845,7 @@ function castingNoticeDetailHtml(g){
       ${difficultyRow424}
       ${chanceRow378}
       ${expRow424}
-      <p class="var-note">成數受表現／壓力／信用影響。<br>片酬為約數，實收按合約；餘額於殺青後收取。</p>
+      <p class="var-note">成數受表現／壓力／信用影響。<br>片酬為預計金額，實收按合約；餘額於殺青後收取。</p>
       ${tape383DetailRow383}
       ${intel381DetailRow384}
       ${(()=>{ try{ const rl=(typeof ref422Label==="function")?ref422Label(g):""; if(!rl) return ""; let exp423="14 日內"; try{ const k423=(typeof ref422KeptKind==="function")?ref422KeptKind(g):""; const s423=k423&&typeof ref422Slot==="function"?ref422Slot(k423):null; if(s423&&typeof dateObj==="function"){ const d423=new Date(dateObj().getTime()+(((s423.keptDay|0)+14)-((S&&S.dayIndex)|0))*86400000); exp423=d423.getFullYear()+"年"+(d423.getMonth()+1)+"月"+d423.getDate()+"日之前（14 日內）"; } }catch(_e423){} return `<div class="cn-sum-row"><span class="k">${rl}</span><span class="v">此試鏡機會經${rl}取得，請於 ${exp423}到場試鏡</span></div>`; }catch(_e){ return ""; } })()}
@@ -21959,11 +22006,7 @@ function openCastingNoticeDetail(g, L){
   if(gate.ok){
     /* v425 UI26評級修復：精確算式已併入 castingNoticeDetailHtml 試鏡段（expRow424），
        唔再喺 sheet 外常駐追加，避免同預期日薪行重複兼擠壓首屏。 */
-    const softEntry = (typeof softPreviewOn==="function" && softPreviewOn());
-    if(softEntry){
-      body += `<p class="var-note">試鏡需用一日，結果由何生通知。</p>`; /* v425：書面語 */
-    }
-    /* v20a378（第三輪評估 B11）：接通告前檔期撞期警告（唔阻止，只交代） */
+    /* v20a378（第三輪評估 B11）：報名前檔期撞期警告（唔阻止，只交代） */
     const risk378 = (typeof aud378ScheduleRisk==="function") ? aud378ScheduleRisk(g) : "";
     if(risk378){
       body += `<p class="bad">${risk378}</p>`;
@@ -21974,13 +22017,19 @@ function openCastingNoticeDetail(g, L){
     if(ch158){
       body += `<p class="gold">${ch158.hint}</p>`;
     }
-    btns.push({label: softEntry ? "去試鏡" : copy.readyLabel, role:"p", on:()=>{
-      confirmSpendDay(softEntry
-        ? `去試鏡：${g.title||"通告"}`
-        : `接通告：${g.title||"通告"}`, ()=>doAudition(g, L));
+    /* v425 UI27：底部層級——成本句常駐、報名試鏡為唯一主操作、人情免試鏡為次操作、返回最末。 */
+    btns.push({label:"試鏡需用 1 日，能否獲聘視乎試鏡結果。", role:"note"});
+    btns.push({label: copy.readyLabel, role:"p", cls:"btn_audition425", on:()=>{
+      confirmSpendDay(`報名試鏡：${g.title||"通告"}`, ()=>doAudition(g, L), {
+        title:"報名試鏡",
+        bodyHtml:`<h3>報名試鏡</h3><p>「<b>${g.title||"通告"}</b>」確認報名後會用去 1 日，並進入試鏡。能否獲聘視乎試鏡結果。</p>`,
+        confirmLabel:"確認報名", cancelLabel:"取消",
+        onCancel:()=>openCastingNoticeDetail(g, L),
+        onDismiss:()=>openCastingNoticeDetail(g, L)
+      });
     }});
     if(ch158){
-      btns.push({label:"用人情免試鏡", role:"p", on:()=>{
+      btns.push({label:"用人情免試鏡", role:"g", cls:"btn_favor425", on:()=>{
         if(typeof favor158UseChannel==="function") favor158UseChannel(g, L);
       }});
     }
@@ -21990,11 +22039,12 @@ function openCastingNoticeDetail(g, L){
     const ch158Locked = (typeof favor158ChannelForGig==="function") ? favor158ChannelForGig(g) : null;
     if(ch158Locked){
       body += `<p class="gold">${ch158Locked.hint}</p>`;
-      btns.push({label:"用人情免試鏡", role:"p", on:()=>{ if(typeof favor158UseChannel==="function") favor158UseChannel(g, L); }});
+      /* v425 UI27：鎖定但人情可用時，人情升為主操作，修正去向降為次操作。 */
+      btns.push({label:"用人情免試鏡", role:"p", cls:"btn_favor425", on:()=>{ if(typeof favor158UseChannel==="function") favor158UseChannel(g, L); }});
     }
     /* v20a389 UI389（共識項＋GPT 方案）：鎖定掣改狀態標籤——純文字註記，
        唔再係掣（唔震、唔彈提示）；差額已併入要求格。 */
-    body = `<p class="cn-locked389"><span class="sp-lock-ico" aria-hidden="true"></span>暫未能報名</p>` + body;
+    body = `<p class="cn-locked389"><span class="sp-lock-ico" aria-hidden="true"></span>試鏡報名未開放</p>` + body;
     /* v19z1：鎖定 Detail 一定有可見「去訓練／手帳」CTA（mobile sheet 全寬） */
     let plan = null;
     try{ plan = bestTrainJumpForGig(g); }catch(_e){ plan = null; }
@@ -22021,7 +22071,7 @@ function openCastingNoticeDetail(g, L){
       if(plan && plan.frozenVocal){
         body += `<p class="cn-train-jump-frozen60">阿偉從未練過歌藝——唱片／音樂通告會一直欠這一項。去唱片公司報「歌藝訓練」；手帳預設計劃現在會輪流排歌藝堂。</p>`;
       }
-      btns.push({label:ctaLabel, role:"p", cls:"btn_train_jump", on:()=>{
+      btns.push({label:ctaLabel, role: ch158Locked ? "g" : "p", cls: ch158Locked ? "btn_train_second425" : "btn_train_jump", on:()=>{
         if(costumeOnly382){
           try{ closeModal(); }catch(_e){}
           try{ closeSheet(); }catch(_e){}
@@ -22597,7 +22647,7 @@ function nbDayHint400(i, meta, editable, locked){
      外出日「本週外出機會剩 X 日」（X＝planDraft 入面 scout_* 格數）。可編輯態只寫成本行；
      唯讀態保留原有 hint 再加成本行；鎖定格維持「拍攝檔期已定」。 */
   try{
-    if(locked) return "拍攝檔期已定 · 不可改";
+    if(locked) return "檔期已定 · 不可改"; /* v425 UI27：緊湊日格縮短鎖定標籤（全句喺編輯摘要可讀），唔再左右裁切 */
     const id = (typeof planDraft!=="undefined" && planDraft) ? planDraft[i] : "";
     if(typeof COURSE_DEFS!=="undefined" && COURSE_DEFS[id] && typeof levels75Next==="function"){
       const nx400 = levels75Next((typeof S!=="undefined" ? S : null), id);
@@ -23279,7 +23329,7 @@ function settleWeek(){
       pushFlavor(`<span class="var-note">${(typeof moneyRecoveryHint==="function")?moneyRecoveryHint():""}</span>`);
       S.flags = S.flags||{}; S.flags.cashTightTelegraph = true;
     } else if(bal<0 && cashNow < nextEst*2){
-      pushFlavor(`<span class="bad">本週入不敷支。存款 $${cashNow.toLocaleString()}，宜下週多接通告。</span>`);
+      pushFlavor(`<span class="bad">本週入不敷支。存款 $${cashNow.toLocaleString()}，宜下週多報名試鏡。</span>`);
     }
   }catch(_cash){}
   /* v20a378（第三輪評估 B8／B11）：拍攝限期交代——尚欠日數多過限期前可拍日子（或限期 ≤3 日仍未拍完）
@@ -23533,12 +23583,13 @@ function confirmSpendDay(actionLabel, onYes, opts){
   } else {
     nextLine = `之後會依手帳執行週${next.name}「<b>${next.planName}</b>」。`;
   }
-  modal(`<h3>呢步要用一日</h3>
+  /* v425 UI27：opts 可覆寫標題／正文／掣名／dismiss（試鏡確認用）；預設行為不變。 */
+  modal(opts.bodyHtml || `<h3>${opts.title||"呢步要用一日"}</h3>
     <p>「<b>${actionLabel}</b>」會用掉今天（週${todayWd}）。</p>
     <p class="sub">${nextLine}</p>`,[
-    {label:"取消", role:"g", on: opts.onCancel||null},
-    {label:"確定進行", role:"p", on: onYes}
-  ], {keepScene397:true}); /* v20a398 UI398-5：43 號確認卡用 scene 模式（場景＋淺 dim） */
+    {label:opts.cancelLabel||"取消", role:"g", on: opts.onCancel||null},
+    {label:opts.confirmLabel||"確定進行", role:"p", on: onYes}
+  ], {keepScene397:true, onDismiss: opts.onDismiss||null}); /* v20a398 UI398-5：43 號確認卡用 scene 模式（場景＋淺 dim） */
 }
 
 /* ===== v20a236 RECONFIRM236：共用抉擇再確認 =====
@@ -23667,7 +23718,7 @@ function shootPendingLine38(sh){
   /* v20a91 AUD91：簽約金已入帳嗰啲，講明餘額先係殺青入帳嗰筆 */
   const signed = num(sh.signedPaid);
   if(pay!=null && signed!=null && signed>0) bits.push(`簽約金 $${signed.toLocaleString()} 已入帳 · 餘額 $${Math.max(0,pay-signed).toLocaleString()}`);
-  else if(pay!=null) bits.push(`約酬 $${pay.toLocaleString()}`);
+  else if(pay!=null) bits.push(`預計片酬 $${pay.toLocaleString()}`);
   if(fame!=null) bits.push(`聲望 +${fame}`);
   if(pop!=null) bits.push(`人氣 +${pop}`);
   return "殺青後入帳：" + bits.join(" · ");
@@ -23962,7 +24013,7 @@ function renderNotebook(){
     btn.type="button";
     btn.className="day-row"+(planSelDay===i?" on":"")+(locked?" locked":"")+(editable && !locked?" hint-edit":"");
     /* v20a400 細改 3：日格 hint 寫機會成本（訓練進度／外出剩餘），見 nbDayHint400。 */
-    const hint = (typeof nbDayHint400==="function") ? nbDayHint400(i, meta, editable, locked) : (locked ? "拍攝檔期已定 · 不可改" : (editable ? "" : (meta.hint||"")));
+    const hint = (typeof nbDayHint400==="function") ? nbDayHint400(i, meta, editable, locked) : (locked ? "檔期已定 · 不可改" : (editable ? "" : (meta.hint||"")));
     /* v20a414 UI18：hint 按 · 分段 nowrap，換行落段界唔拆單字 */
     /* v425 UI26評級修復：鎖定日標籤兩段各佔一行（「拍攝檔期」／「不可改」），緊湊格唔再擠迫拆行 */
     const hintHtml = hint ? (locked
@@ -25086,7 +25137,7 @@ function resolvePlannedDay(id){
         notes.push(shootDayLine(sh));
         notes.push(`<span class="good">${eventLine("SHOOT_WRAP",{
           title:sh.title,
-          pay:"$ "+wrapPay91.toLocaleString(),
+          pay:"$"+wrapPay91.toLocaleString(),
           fame:"+"+(sh.fame||0),
           popularity:"+"+pop
         })||"殺青：酬勞入帳，聲望／人氣結算。"}</span>`);
@@ -31013,7 +31064,7 @@ function rom159OpenDatePicker(who, L){
     }).join("");
     const cappedPick423 = (typeof romance422PaceCapped==="function") && romance422PaceCapped(who);
     modal(`<h3>約${w.name}出街</h3>
-      <p class="sub">約會用去一日，當日不能接通告，也不能訓練。相約之前請看清費用，以免約定後才發現存款不足。</p>
+      <p class="sub">約會用去一日，當日不能報名試鏡，也不能訓練。相約之前請看清費用，以免約定後才發現存款不足。</p>
       <p class="sub">每人每週最多相約一次；一星期只可相約一人。約會本身不加分；場內回應合適時，關係可能更親近，但不會越過目前劇情階段的上限。</p>
       ${cappedPick423 ? `<p class="sub">關係已達目前劇情階段上限，本次約會不會再增加好感；下一步要靠劇情推進。</p>` : ""}
       <div id="rom159-date-list">${rows}</div>`,[
@@ -34086,7 +34137,7 @@ function prog71StubItems(id){
     items.push({ ok:Number(p.week)>=Number(p.weekMin), text:"到第 "+p.weekMin+" 週（現在第 "+p.week+" 週）" });
   }
   if(Number(p.gigNeed)>0){
-    items.push({ ok:Number(p.gigHave)>=Number(p.gigNeed), text:"接通告 "+Math.min(Number(p.gigHave)||0, Number(p.gigNeed))+"／"+p.gigNeed+" 張" });
+    items.push({ ok:Number(p.gigHave)>=Number(p.gigNeed), text:"完成通告 "+Math.min(Number(p.gigHave)||0, Number(p.gigNeed))+"／"+p.gigNeed+" 張" });
   }
   (Array.isArray(p.remain) ? p.remain : []).forEach(rawItem=>{
     const s = String(rawItem||"");
@@ -47956,19 +48007,19 @@ function phase3InlineMock(){
       actionLabel:"遠觀", resultToast:s.resultToast,
     })),
     castingCta:{
-      canCast:{ buttonLabel:"接通告", successToast:"劇組通知：接通告成功！" },
+      canCast:{ buttonLabel:"報名試鏡", successToast:"劇組通知：獲聘！" },
       cannotCast:{
         buttonLabel:"暫未能報", tapFeedback:"shake", toast:"條件未合",
         subLine:"試鏡表現未夠火候，建議先跟班觀摩再作安排。",
-        leaveActionLabel:"離開",
+        leaveActionLabel:"返回通告欄",
       },
     },
     boardCardStates:[
-      { stateKey:"locked", boardTag:"暫未能報 · 條件未合", detailSub:"角色已鎖定，暫未能報；可選擇離開。", secondaryAction:"離開" },
-      { stateKey:"ready", boardTag:"可接通告", detailSub:"條件符合，可接通告。" },
+      { stateKey:"locked", boardTag:"試鏡報名未開放", detailSub:"條件未合，暫時不可報名試鏡；可選擇離開。", secondaryAction:"返回通告欄" },
+      { stateKey:"ready", boardTag:"可報名試鏡", detailSub:"條件符合，可報名試鏡。" },
     ],
     devAppendix:{ chai_chunhoi:"齊鎮海後輪可選；首輪唔入 starSightings／唔強掛地圖" },
-    toasts:{ sightingNoted:"已記下紅星蹤影。", castAccepted:"劇組通知：接通告成功！", castBlocked:"條件未合" },
+    toasts:{ sightingNoted:"已記下紅星蹤影。", castAccepted:"劇組通知：獲聘！", castBlocked:"條件未合" },
   };
 }
 function phase3ApplyMock(data, src){
@@ -48032,16 +48083,16 @@ function phase3Stars(){
 }
 function phase3CastCopy(){
   const live = {
-    readyLabel:"接通告",
-    successToast:"劇組通知：接通告成功！",
+    readyLabel:"報名試鏡", /* v425 UI27：撳掣只係報名試鏡，唔係即時接工 */
+    successToast:"劇組通知：獲聘！",
     lockedLabel:"暫未能報",
     lockedToast:"條件未合",
     subLine:"試鏡表現未夠火候，建議先跟班觀摩再作安排。",
-    leaveLabel:"離開",
-    lockedTag:"暫未能報",
-    lockedSub:"角色已鎖定，暫未能報；可選擇離開。",
-    readyTag:"可接通告",
-    readySub:"條件符合，可接通告。",
+    leaveLabel:"返回通告欄",
+    lockedTag:"試鏡報名未開放",
+    lockedSub:"條件未合，暫時不可報名試鏡；可選擇離開。",
+    readyTag:"可報名試鏡",
+    readySub:"條件符合，可報名試鏡。",
     shake:true,
   };
   if(!phase3SoftOn()) return live;
@@ -48441,7 +48492,7 @@ function rom159OpenDateWhoPicker(keys, L){
       </button>`;
     }).join("");
     modal(`<h3>約人出街</h3>
-      <p class="sub">約會用去一日，當日不能接通告，也不能訓練。每人每週最多相約一次；一星期只可相約一人。</p>
+      <p class="sub">約會用去一日，當日不能報名試鏡，也不能訓練。每人每週最多相約一次；一星期只可相約一人。</p>
       <div id="rom159-date-who-list">${rows}</div>`,[
       {label:"返回", role:"g", on:()=>{ if(L) openLoc(L.id, {forceRestore:true}); }}
     ], {onDismiss:()=>{ if(L) openLoc(L.id, {forceRestore:true}); }});
@@ -50002,7 +50053,8 @@ function doScout(L){
     const readyF392 = ready392.filter(inFilter392);
     const lockedF392 = locked392.filter(inFilter392);
     const layered392 = shown.length > 3;
-    const lockedShown392 = layered392 ? lockedF392 : locked392;
+    /* v425 UI27：細板承接既有媒介篩選時同樣按篩選出卡（filter=all 時同未篩選一致）。 */
+    const lockedShown392 = lockedF392;
     /* v20a34／v20a37「最接近」：只計今次渲染嘅未達標列，過界卡唔入候選。 */
     let closest34 = null, closestGap34 = Infinity;
     try{
@@ -50016,9 +50068,9 @@ function doScout(L){
     readyF392.forEach(g=>{ try{ if(!featured392 || (gigPayExact(g)||0) > (gigPayExact(featured392)||0)) featured392 = g; }catch(_e){} });
     const readyList392 = featured392 ? readyF392.filter(g=>g!==featured392) : readyF392;
     let lead;
-    if(!anyOk) lead = `今日冇可接通告。不耗日查看通告。`;
-    else if(anyOk && anyHard) lead = `不耗日查看通告 · 達標可接通告（耗一日）。<br><span class="board-lead-mix">有些通告條件未合；可點開查看詳情。</span>`;
-    else lead = `不耗日查看通告 · 達標可接通告（耗一日）。`;
+    if(!anyOk) lead = `今日沒有可報名試鏡的通告。不耗日查看通告。`;
+    else if(anyOk && anyHard) lead = `不耗日查看通告 · 達標可報名試鏡（耗一日）。<br><span class="board-lead-mix">有些通告條件未合；可點開查看詳情。</span>`;
+    else lead = `不耗日查看通告 · 達標可報名試鏡（耗一日）。`;
     /* v20a396 UI396 ②：預設排序係預期日薪嗰陣，lead 行改做一行計法＋置頂說明
        （唔加行，保住第一眼 5 張卡）；其他排序沿用原 lead。 */
     if(_boardSort392==="exp") lead = `不耗日查看 · 推介置頂`; /* v424 UI26：公式收埋板頭「預期日薪如何計算」入口（v425 改書面語），lead 收成一行 */
@@ -50039,18 +50091,24 @@ function doScout(L){
     if(layered392){
       /* v20a396 UI396 ②：篩選生效嗰陣，總數行出篩選後數目（顯示 X／總數），唔係成板總數。 */
       const sum392 = filter392==="all"
-        ? `<span class="bc-seg417">共 ${shown.length} 張</span><span class="bc-seg417">可接 ${ready108.length} 張</span><span class="bc-seg417">未達標 ${locked108.length} 張</span>`
-        : `<span class="bc-seg417">顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張</span><span class="bc-seg417">可接 ${readyF392.length}</span><span class="bc-seg417">未達標 ${lockedF392.length}</span>`; /* v417：分段 nowrap，折行唔留分隔點喺行尾／行首 */ /* v416：縮短總數行，唔再俾整理掣截字 */
+        ? `<span class="bc-seg417">共 ${shown.length} 張</span><span class="bc-seg417">可報名 ${ready108.length} 張</span><span class="bc-seg417">未達標 ${locked108.length} 張</span>`
+        : `<span class="bc-seg417">顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張</span><span class="bc-seg417">可報名 ${readyF392.length}</span><span class="bc-seg417">未達標 ${lockedF392.length}</span>`; /* v417：分段 nowrap，折行唔留分隔點喺行尾／行首 */ /* v416：縮短總數行，唔再俾整理掣截字 */
+      /* v425 UI27：板頭常駐狀態行——排序同媒介一眼睇明；篩選生效時出媒介紙籤＋解除篩選。 */
+      const sortLabel425 = _boardSort392==="exp" ? "預期日薪" : (_boardSort392==="pay" ? "總片酬" : "成功率");
+      const state425 = filter392==="all"
+        ? `<span class="board-state-seg425">排序：${sortLabel425}</span><span class="board-state-seg425">媒介：全部</span>`
+        : `<span class="board-state-seg425">排序：${sortLabel425}</span><span class="board-media-tag425">媒介：${filter392}</span><button type="button" class="board-clear425" data-clear-filter425>解除篩選</button>`;
       body+=`<div class="board-head392">`
         + `<div class="board-sum392">${sum392}</div>`
+        + `<div class="board-state425" data-board-state425 tabindex="-1">${state425}</div>`
         + (_boardSort392==="exp" ? `<details class="board-formula424"><summary>預期日薪如何計算</summary><span class="board-lead-formula415">預期日薪 ＝ 片酬 × 成功率 ÷ 日數</span></details>` : "") /* v424 UI26：公式入口同總數／整理同區 */
-        + `<div class="board-ctl397"><div class="board-sort392"><button type="button" class="board-chip392 board-ctl397-btn" data-board-menu397="organize" aria-expanded="false">整理 · ${_boardSort392==="exp"?"預期日薪":(_boardSort392==="pay"?"總片酬":"成功率")} ▾</button>` /* v415 batch3：整理掣顯示目前排序 */
+        + `<div class="board-ctl397"><div class="board-sort392"><button type="button" class="board-chip392 board-ctl397-btn" data-board-menu397="organize" aria-haspopup="true" aria-expanded="false">排序與篩選 ▾</button>` /* v425 UI27：掣名講明排序同篩選，狀態由狀態行顯示 */
         + `<div class="board-menu397" data-board-menu-list397="organize" hidden>`
         + `<div class="board-menu-group397">排序</div>`
-        + ["exp","pay","chance"].map(k=>`<button type="button" class="board-chip392${_boardSort392===k?" on":""}" data-sort392="${k}">${k==="exp"?"預期日薪":(k==="pay"?"總片酬":"成功率")}</button>`).join("")
+        + ["exp","pay","chance"].map(k=>`<button type="button" class="board-chip392${_boardSort392===k?" on":""}" data-sort392="${k}" aria-pressed="${_boardSort392===k}">${k==="exp"?"預期日薪":(k==="pay"?"總片酬":"成功率")}</button>`).join("")
         + `<div class="board-menu-group397">媒介</div>`
-        + `<div class="board-filter392"><button type="button" class="board-chip392${filter392==="all"?" on":""}" data-filter392="all">全部</button>`
-        + media392.map(m=>`<button type="button" class="board-chip392${filter392===m?" on":""}" data-filter392="${m}">${m}</button>`).join("")
+        + `<div class="board-filter392"><button type="button" class="board-chip392${filter392==="all"?" on":""}" data-filter392="all" aria-pressed="${filter392==="all"}">全部</button>`
+        + media392.map(m=>`<button type="button" class="board-chip392${filter392===m?" on":""}" data-filter392="${m}" aria-pressed="${filter392===m}">${m}</button>`).join("")
         + `</div></div></div></div></div>`;
       body+=`<div class="gig-board-list" id="gig-board-list">`;
       if(featured392) body+=gigBoardTeaserHtml(featured392, { closest:false, featured:true });
@@ -50059,9 +50117,11 @@ function doScout(L){
       if(lockedF392.length) body+=lockedDetails392(lockedF392);
       body+=`</div>`;
     } else {
+      /* v425 UI27：細板若承接既有媒介篩選，照篩選出卡並顯示媒介＋解除篩選；解除後保留排序。 */
+      if(filter392!=="all") body+=`<div class="board-state425 board-state-small425" data-board-state425 tabindex="-1"><span class="board-state-seg425">顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張</span><span class="board-media-tag425">媒介：${filter392}</span><button type="button" class="board-clear425" data-clear-filter425>解除篩選</button></div>`;
       body+=`<div class="gig-board-list" id="gig-board-list">`;
-      ready392.forEach((g)=>{ body+=gigBoardTeaserHtml(g, { closest: closestMark392(g) }); });
-      if(locked392.length) body+=lockedDetails392(locked392);
+      readyF392.forEach((g)=>{ body+=gigBoardTeaserHtml(g, { closest: closestMark392(g) }); });
+      if(lockedF392.length) body+=lockedDetails392(lockedF392);
       body+=`</div>`;
     }
   }
@@ -50082,7 +50142,7 @@ function doScout(L){
     try{ if(L) openLoc(L.id, { forceRestore:true }); }catch(_e){}
   };
   modal(`<h3>通告欄 · ${L.name}</h3>${body}`,[
-    {label:"返去地點",role:"g",on:reopenLoc}
+    {label:"返回地點",role:"g",on:reopenLoc}
   ], { onDismiss: reopenLoc, keepSheetContent: true, boardTall: true });
   document.getElementById("modal-inner").querySelectorAll(".gig-teaser").forEach(card=>{
     const open=()=>{
@@ -50105,6 +50165,10 @@ function doScout(L){
     });
     document.getElementById("modal-inner").querySelectorAll("[data-filter392]").forEach(btn=>{
       btn.addEventListener("click", ev=>{ ev.preventDefault(); _boardFilter392 = btn.getAttribute("data-filter392") || "all"; try{ doScout(L); }catch(_e){} });
+    });
+    /* v425 UI27：解除篩選——媒介回復全部，排序保留；焦點落返狀態行。 */
+    document.getElementById("modal-inner").querySelectorAll("[data-clear-filter425]").forEach(btn=>{
+      btn.addEventListener("click", ev=>{ ev.preventDefault(); _boardFilter392 = "all"; try{ doScout(L); }catch(_e){} setTimeout(()=>{ try{ const st=document.querySelector("[data-board-state425]"); if(st) st.focus(); }catch(_e){} }, 60); });
     });
     /* v20a397 UI397-3：下拉掣開合——撳開先展開選項，撳第二次收起；一次只開一粒。 */
     document.getElementById("modal-inner").querySelectorAll("[data-board-menu397]").forEach(btn=>{
@@ -50766,7 +50830,7 @@ function rollAuditionPay(gig){
         pay = Math.round(pay * 1.35);
         bonusPay = pay - basePay;
         bonusLabel = "入門加成（+35%）";
-        note = "入門加成：牌面擲出後再加 35%，合約額可以高過牌面約酬區間；合約行會拆開列明，加總對得返。";
+        note = "入門加成：牌面擲出後再加 35%，合約額可以高過牌面預計片酬範圍；合約行會拆開列明，加總對得返。";
       }
     }
   }catch(_e){}
@@ -51458,7 +51522,7 @@ function chk101Html(opts){
     <span class="ck-date">${chk101DateStr()}</span>
     <span class="ck-payee">${CHK101_PAYEE}</span>
     <span class="ck-words">港幣${chk101AmountWords(amount)}</span>
-    <span class="ck-amt">$ ${amount.toLocaleString()}</span>
+    <span class="ck-amt">$${amount.toLocaleString()}</span>
     <span class="ck-memo">${memo}</span>
   </figure>`;
 }
@@ -51497,7 +51561,7 @@ function aud91PresentOne(rec, next){
     const pay = Number(rec.pay)||0;
     const signPay = Math.round(pay*0.3); /* 簽約金＝合約額三成，公佈嗰刻即付 */
     if(signPay>0) notes.push(...apply({money: signPay}));
-    notes.push(`<span class="good">簽約金 $ ${signPay.toLocaleString()} 已入帳（合約 $ ${pay.toLocaleString()} 的三成）；餘額 $ ${(pay-signPay).toLocaleString()} 殺青當日才入帳。</span>`);
+    notes.push(`<span class="good">簽約金 $${signPay.toLocaleString()} 已入帳（合約 $${pay.toLocaleString()} 的三成）；餘額 $${(pay-signPay).toLocaleString()} 殺青當日才入帳。</span>`);
     /* 聲望／人氣跟返 v37 規則：唔係簽約嗰刻入帳，存入 shoot record，殺青日先落帳 */
     notes.push(`殺青嗰日先結算：${(typeof STAT_LABEL!=="undefined" && STAT_LABEL && STAT_LABEL.fame)||"幕前聲望"} +${rec.fame} · ${(typeof STAT_LABEL!=="undefined" && STAT_LABEL && STAT_LABEL.popularity)||"人氣"} +${rec.pop}`);
     if(rec.payNote) notes.push(`<span class="var-note">${rec.payNote}</span>`);
@@ -52098,7 +52162,7 @@ function ledgerStatsHtml(){
   return `<div class="ledger-head"><h3>記數簿</h3><p class="sub">${p.dateLine}</p>
     <p class="sub">幕前聲望 <b>${p.stageVolume}</b> · 業內信用 <b>${p.industryCredit}</b></p></div>
     <div class="stats-grid">${p.grid}</div>
-    <p class="ledger-money">存款 <b class="gold">$ ${p.money.toLocaleString()}</b></p>
+    <p class="ledger-money">存款 <b class="gold">$${p.money.toLocaleString()}</b></p>
     <p class="ledger-enroll">已報名訓練：${p.enrollLine}</p>`;
 }
 function renderLedgerPane(){
@@ -52134,7 +52198,7 @@ function showStats(){
     const p = ledgerStatsParts();
     modal(`<h3>記數簿</h3><p>${p.dateLine}</p><div class="stats-grid">${p.grid}</div>
       <p class="sub">幕前聲望 <b>${p.stageVolume}</b> · 業內信用 <b>${p.industryCredit}</b></p>
-      <p>存款 <b class="gold">$ ${p.money.toLocaleString()}</b></p>
+      <p>存款 <b class="gold">$${p.money.toLocaleString()}</b></p>
       <p style="font-size:var(--tx-secondary);color:var(--ink-secondary-paper)">已報名訓練：${p.enrollLine}</p>`,[{label:"關閉",role:"g"}]);
   }catch(_e2){}
 }
@@ -52472,7 +52536,7 @@ function jobs72SectionHtml(){
     log91.slice(0, 6).forEach(en=>{
       body += `<div class="req" style="margin-bottom:8px">
         <b>${iconHtml112(en.ok?"✅":"📞")} ${en.title}</b> · ${en.ok?"獲聘":"未獲聘"}
-        <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${en.ok?`簽約金 $ ${(en.signPay||0).toLocaleString()} 已入帳 · 餘額 $ ${(en.balance||0).toLocaleString()} 殺青入帳`:"這張通告完結，再試其他。"}</div>
+        <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${en.ok?`簽約金 $${(en.signPay||0).toLocaleString()} 已入帳 · 餘額 $${(en.balance||0).toLocaleString()} 殺青入帳`:"這張通告完結，再試其他。"}</div>
       </div>`;
     });
   }
@@ -52487,7 +52551,7 @@ function jobs72SectionHtml(){
         <b>${iconHtml112("🎥")} ${sh.title}</b> · ${sh.type||""} · <span class="gold">${stLab}</span>
         <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${L?L.name+" · ":""}進度 ${sh.doneDays||0}/${sh.totalDays} · 剩餘 ${rem} 日</div>
         ${hud?`<div style="font-size:.72rem;color:var(--gold,#c9a227);margin-top:2px">拍攝限期：${hud}</div>`:""}
-        <div style="font-size:.72rem;color:#b3a284">${(sh.contract229 && typeof contract229CardLine==="function") ? contract229CardLine(sh) : ((Number(sh.signedPaid)||0)>0 ? `合約 $ ${(sh.pay||0).toLocaleString()} · 簽約金 $ ${(Number(sh.signedPaid)||0).toLocaleString()} 已入帳 · 餘額 $ ${Math.max(0,(sh.pay||0)-(Number(sh.signedPaid)||0)).toLocaleString()} 殺青入帳` : `完成約酬 $ ${(sh.pay||0).toLocaleString()}（殺青後入帳）`)} · 聲望 +${sh.fame||0} · 人氣 +${sh.popularity!=null?sh.popularity:0}</div>
+        <div style="font-size:.72rem;color:#b3a284">${(sh.contract229 && typeof contract229CardLine==="function") ? contract229CardLine(sh) : ((Number(sh.signedPaid)||0)>0 ? `合約 $${(sh.pay||0).toLocaleString()} · 簽約金 $${(Number(sh.signedPaid)||0).toLocaleString()} 已入帳 · 餘額 $${Math.max(0,(sh.pay||0)-(Number(sh.signedPaid)||0)).toLocaleString()} 殺青入帳` : `完成片酬 $${(sh.pay||0).toLocaleString()}（殺青後入帳）`)} · 聲望 +${sh.fame||0} · 人氣 +${sh.popularity!=null?sh.popularity:0}</div>
       </div>`;
     });
   }
@@ -52508,7 +52572,7 @@ function jobs72SectionHtml(){
     hist.forEach(h=>{
       body += `<div class="req wrap-clip375" data-type="${h.type||""}" style="margin-bottom:8px">
         <b>${iconHtml112("✅")} ${h.title||"通告"}</b> · ${h.type||""}
-        <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${h.totalDays||0} 日 · 片酬 $ ${(h.pay||0).toLocaleString()} · 聲望 +${h.fame||0}</div>
+        <div style="font-size:.78rem;color:#b3a284;margin-top:4px">${h.totalDays||0} 日 · 片酬 $${(h.pay||0).toLocaleString()} · 聲望 +${h.fame||0}</div>
         <div style="font-size:.72rem;color:#b3a284">評價：${h.rating||"已殺青"}</div><span class="clip-stamp375">殺青</span>
       </div>`;
     });
@@ -52735,8 +52799,8 @@ function showTutBoardStage(){
   let anyOk=false;
   try{ anyOk=shown.some(g=>typeof canAudition==="function" && canAudition(g).ok); }catch(_e){ anyOk=false; }
   const lead = anyOk
-    ? "免費查看通告 · 達標可接通告（耗一日）。"
-    : "免費查看通告 · 有通告暫未能報（條件未合）。";
+    ? "免費查看通告 · 達標可報名試鏡（耗一日）。"
+    : "免費查看通告 · 有通告試鏡報名未開放（條件未合）。";
   const where = L ? `${L.name}${L.area?(" · "+L.area):""}` : "通告欄";
   const cards = shown.map(g=>{
     try{ return gigBoardTeaserHtml(g); }catch(_e){ return ""; }

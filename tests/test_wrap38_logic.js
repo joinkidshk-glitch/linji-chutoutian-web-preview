@@ -205,7 +205,7 @@ function noRepeatWithin(seq, w){
   S.shoots = [{ id: 'sh_t1', gigId: 'g1', title: '《試作劇》街坊', totalDays: 3, doneDays: 1, pay: 1164, fame: 5, popularity: 17, locId: 'tvb_longmen' }];
   const items = workItems();
   const row = items.find(x => x.id === 'shoot:sh_t1');
-  ok('c1 拍攝中卡有待入帳標示連正確數額', !!row && row.hint.indexOf('殺青後入帳：約酬 $1,164 · 聲望 +5 · 人氣 +17') >= 0);
+  ok('c1 拍攝中卡有待入帳標示連正確數額', !!row && row.hint.indexOf('殺青後入帳：預計片酬 $1,164 · 聲望 +5 · 人氣 +17') >= 0);
   ok('c2 拍攝中卡保留原有檔期／進度字樣', !!row && row.hint.indexOf('檔期已定') >= 0 && row.hint.indexOf('進度 1/3') >= 0);
 
   /* 舊 record：冇 pay/fame/popularity → 定性版、冇 NaN、唔爆 */
@@ -214,12 +214,12 @@ function noRepeatWithin(seq, w){
   try{ row2 = workItems().find(x => x.id === 'shoot:sh_old'); }catch(_e){ threw = true; }
   ok('c3 舊 record 渲染唔爆', !threw && !!row2);
   ok('c4 舊 record 出定性版「殺青後入帳」', !!row2 && row2.hint.indexOf('殺青後入帳') >= 0);
-  ok('c5 舊 record 冇 NaN／冇約酬數字', !!row2 && row2.hint.indexOf('NaN') < 0 && row2.hint.indexOf('約酬') < 0);
+  ok('c5 舊 record 冇 NaN／冇約酬數字', !!row2 && row2.hint.indexOf('NaN') < 0 && row2.hint.indexOf('預計片酬') < 0);
 
   /* 半舊 record：得 pay → 出約酬、唔出 NaN */
   S.shoots = [{ id: 'sh_p', gigId: 'g3', title: '《半舊》路人', totalDays: 2, doneDays: 0, pay: 500, locId: 'x' }];
   const row3 = workItems().find(x => x.id === 'shoot:sh_p');
-  ok('c6 半舊 record 出約酬＋冇 NaN', !!row3 && row3.hint.indexOf('約酬 $500') >= 0 && row3.hint.indexOf('NaN') < 0);
+  ok('c6 半舊 record 出約酬＋冇 NaN', !!row3 && row3.hint.indexOf('預計片酬 $500') >= 0 && row3.hint.indexOf('NaN') < 0);
 })();
 
 console.log('');

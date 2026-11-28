@@ -99,7 +99,7 @@ ok("v398 金碟夜相本身唔郁（音樂典禮照用原相）",
 
 # ---- (4) 通告欄頂部報表感＋底欄截印章＋86% 規則 ----
 ok("v398 排序＋媒介合併做一粒「整理」掣（選項分兩組，功能唔減）",
-   'data-board-menu397="organize"' in src and "整理 · " in src and "預期日薪" in src
+   'data-board-menu397="organize"' in src and "排序與篩選" in src and "預期日薪" in src
    and "board-menu-group397" in src
    and 'data-board-menu397="sort"' not in src
    and 'data-board-menu397="filter"' not in src)
@@ -147,8 +147,8 @@ ok("v398 休息卡 scene 模式唔郁（已有 keepScene397）",
 ok("v398 SAVE key 不變 starVolunteer_map_v19w", "starVolunteer_map_v19w" in src)
 ok("v398 softRev 不變 s107", 'SOFT_REV = "s107"' in src)
 ok("v398 ?v= 不變 v=20a10", "v=20a10" in src)
-ok("v398 靜態 <button 總數 109（v407 刪切層掣 −1）（v406：選單刪「返回」列 −1）（v397：112，兩粒板掣合併做一粒）",
-   src.count("<button") == 109)
+ok("v398 靜態 <button 總數 111（v425：解除篩選掣 ×2 模板）（v407 刪切層掣 −1）（v406：選單刪「返回」列 −1）（v397：112，兩粒板掣合併做一粒）",
+   src.count("<button") == 111)
 
 print(f"\n{total[0] - len(fails)}/{total[0]} passed")
 sys.exit(1 if fails else 0)

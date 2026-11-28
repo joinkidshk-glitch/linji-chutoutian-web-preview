@@ -97,12 +97,12 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
   ok('a7 teaser closest marker when flagged', tClose.indexOf('最接近') >= 0);
   const tReady = gigBoardTeaserHtml(gigReady);
   ok('a8 teaser ready has NO gap row', tReady.indexOf('gt-gap') < 0 && tReady.indexOf('欠：') < 0);
-  ok('a9 teaser ready badge intact', tReady.indexOf('可接通告') >= 0);
+  ok('a9 teaser ready badge intact', tReady.indexOf('可報名試鏡') >= 0);
 
   const cLock = gigCardHtml(gigLocked, {});
   ok('a10 gigCardHtml locked shows gap', cLock.indexOf('聲望 3／需 16（差 13）；演技 8／需 20（差 12）；智商 10／需 15（差 5）') >= 0);
   const cReady = gigCardHtml(gigReady, {});
-  ok('a11 gigCardHtml ready has no gap text', cReady.indexOf('（差 ') < 0 && cReady.indexOf('可接通告') >= 0);
+  ok('a11 gigCardHtml ready has no gap text', cReady.indexOf('（差 ') < 0 && cReady.indexOf('可報名試鏡') >= 0);
 })();
 
 /* ================================================================

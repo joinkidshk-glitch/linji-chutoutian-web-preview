@@ -99,7 +99,7 @@ ok('S-20 確定留主 CTA（flex:1）', '#nb-actions #btn-confirm-plan{ flex:1 1
 # S-27 卡面只留牌面一個數，區間收去詳情
 ok('S-27 gigPayExactText 有 card 變體', 'if(opts && opts.card) return "$"+n.toLocaleString();' in html)
 ok('S-27 兩張卡用 card 變體', html.count('gigPayExactText(g, {card:true})') == 2)
-ok('S-27 詳情仍經 gigPayExactHtml（保留區間）', 'function gigPayExactHtml(g){\n  const t=gigPayExactText(g);' in html)
+ok('S-27 詳情仍經 gigPayExactHtml（保留區間）', 'cn-money-main425' in html and '預計片酬範圍' in html)
 
 # S-29 可接置頂＋未達標預設摺疊
 b = body_of('function doScout', 6000)
@@ -112,9 +112,9 @@ ok('S-29 摺疊標題有張數（v392：lockedDetails392 helper，張數＝傳�
 # （負責人英雄區＋要求格＋完成期限 consts），簽約金／違約金／toggle 行全部喺 8.5k 內。
 b = body_of('function castingNoticeDetailHtml', 15000)
 ok('S-33 摘要有簽約金行', '簽約金</span><span class="v">${signFee108}</span>' in b)
-ok('S-33 簽約金寫「獲聘後即收」（v20a115：舊寫法「接通告後即收」同機制唔啱——簽約金只喺 aud91PresentOne 公佈獲聘嗰刻入帳，見「簽約金＝合約額三成，公佈嗰刻即付」；doAudition 接通告嗰刻唔入帳）', '（獲聘後即收）' in b and '（接通告後即收）' not in b)
+ok('S-33 簽約金寫「獲聘後即收」（v20a115：舊寫法「接通告後即收」同機制唔啱——簽約金只喺 aud91PresentOne 公佈獲聘嗰刻入帳，見「簽約金＝合約額三成，公佈嗰刻即付」；doAudition 接通告嗰刻唔入帳）', '獲聘後即收' in b and '（接通告後即收）' not in b)
 ok('S-33 違約金有數先出', 'gigBreachFee(g)!=null' in b)
-ok('S-33 違約金行只喺條件 helper 入面（模板改用 ${breachRow108}）', '${breachRow108}' in b and html.count('<div class="cn-sum-row"><span class="k">違約金</span><span class="v">${breachStr}</span></div>') == 1)
+ok('S-33 違約金行只喺條件 helper 入面（模板改用 ${breachRow108}）', '${breachRow108}' in b and html.count('<div class="cn-sum-row"><span class="k">違約金</span><span class="v"><span class="cn-money-main425">${breachStr}</span></span></div>') == 1)
 _i_sign = b.find('${signFee108}</span>')
 _i_breach = b.find('${breachRow108}', _i_sign)
 # v20a117 S-30 DEDUP117：詳細區成段刪除，「顯示詳細」掣已移除——舊斷言

@@ -69,7 +69,7 @@ ok("2 confirmPlaceShoot 無 onDismiss（撳遮罩只收起）",
 # --- (3) 通告欄峰值分層 ---
 ok("3 board392ExpDaily 在位（預期日薪＝成功率×片酬÷日數）", "function board392ExpDaily(g)" in src)
 ok("3 board392Compare 在位", "function board392Compare(a, b, key)" in src)
-ok("3 板頂總數行 board-sum392", "board-sum392" in src and "共 " in src and "可接 " in src)
+ok("3 板頂總數行 board-sum392", "board-sum392" in src and "共 " in src and "可報名 " in src)
 ok("3 排序掣 data-sort392（預期日薪／總片酬／成功率）",
     "data-sort392" in src and '["exp","pay","chance"]' in src
     and "預期日薪" in src and "總片酬" in src and "成功率" in src)
@@ -78,7 +78,7 @@ ok("3 板頭 sticky 釘住", ".board-head392{ position:sticky; top:0;" in src)
 ok("3 推介卡 gt-featured＋推介標籤", "gt-featured" in src and "推介" in src)
 ok("3 未達標組有「最接近」預覽行", "board-closest392" in src and "最接近：" in src)
 ok("3 短卡 meta 併一行（$｜日｜%）", "metaLine392" in src)
-ok("3 0 張可接直寫「今日冇可接通告」", "今日冇可接通告" in src)
+ok("3 0 張可報名直寫「今日沒有可報名試鏡的通告」", "今日沒有可報名試鏡的通告" in src)
 ok("3 細板（≤3 張）唔加分層（layered392 門檻）", "layered392 = shown.length > 3" in src)
 ok("3 gt-meta／gt-meta-line class 保留（s30 測試釘住）",
     ".gt-meta" in src and ".gt-meta-line" in src)

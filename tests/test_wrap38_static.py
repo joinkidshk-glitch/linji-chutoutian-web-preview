@@ -43,7 +43,7 @@ ok('fix2 build passes scene38 to all channels',
 ok('fix3 pending line helper defined', 'function shootPendingLine38(' in html)
 wi_seg = seg('function workItems(){', 'function dayPlanLocked(')
 ok('fix3 workItems card carries pending line', 'shootPendingLine38(sh)' in wi_seg and '(pend?' in wi_seg)
-ok('fix3 pending line format (約酬/聲望/人氣)', '殺青後入帳：' in html and '約酬 $' in seg('function shootPendingLine38(', 'function workItems(){'))
+ok('fix3 pending line format (約酬/聲望/人氣)', '殺青後入帳：' in html and '預計片酬 $' in seg('function shootPendingLine38(', 'function workItems(){'))
 
 # ---- 紅線 ----
 ok('redline SAVE key untouched', 'starVolunteer_map_v19w' in html)

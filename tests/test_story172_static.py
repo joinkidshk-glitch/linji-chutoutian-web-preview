@@ -66,7 +66,7 @@ ok('N1：兩條 checklist（GateItems N6–N17／StubItems N1–N5）入面無�
 ok('N1：傳聞提示「聽到傳聞」已隨傳聞閘一併清走（v267：鎖行唔再有傳聞條件）',
    '聽到傳聞' not in src and 'rumorHearHint' not in src and '未聽聞' not in src)
 ok('N1：鎖行其餘條件句唔變（前置／週數／通告／聲望／季節）',
-   '"先完成"+(storyActLabel(d)' in stub and '到第 ' in stub and '接通告 ' in stub
+   '"先完成"+(storyActLabel(d)' in stub and '到第 ' in stub and '完成通告 ' in stub
    and '需要多於' in stub and '等到合適的季節' in stub)
 
 # --- 三、B1(a)：live 模式驗證要求有耐久記錄 ---

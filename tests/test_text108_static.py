@@ -137,7 +137,7 @@ ok('覆核 S-24 事務所信任行冇結局配方', '江湖撈家' not in body_o
 ok('覆核 S-24 人情頁有江湖路指向（統籌裁決分工）', '日後自有一條江湖路給阿偉走' in html)
 ok('覆核 S-28 未達標格式「現值／需 X（差 N）」', '／需 ${b.need}（差 ${b.gap}）' in html)
 hired = seg('function aud91PresentOne', '/* 落選')
-ok('覆核 S-35 獲聘 modal 有簽約金行', '簽約金 $ ${signPay' in hired)
+ok('覆核 S-35 獲聘 modal 有簽約金行', '簽約金 $${signPay' in hired)
 ok('覆核 S-35 獲聘 modal 有殺青結算行', '殺青嗰日先結算' in hired)
 ok('覆核 S-35 獲聘 modal 冇成功率行', '成功率約' not in hired)
 ok('覆核 S-37 殺青對帳只留 payWrapNote 一段', 'payWrapNote(sh)' in html)
