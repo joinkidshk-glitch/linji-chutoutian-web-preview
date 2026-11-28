@@ -612,16 +612,16 @@ function makeEl(){
   }
   S = nbSave(2);
   renderNotebook();
-  ok('seg4 上週 plan（戳=2）標頭顯示上週範圍', __els['nb-range'].textContent === weekRangeLabelFor(7));
+  ok('seg4 上週 plan（戳=2）標頭顯示上週範圍', (__els['nb-range'].innerHTML || '').replace(/<[^>]+>/g, '') === weekRangeLabelFor(7)); /* v425：日期行分段 span，剝標籤驗文字 */
   ok('seg4 上週 plan 標題講明「上週行程（唯讀）」', __els['nb-plan-title'].textContent.indexOf('上週行程') >= 0);
   S = nbSave(3);
   renderNotebook();
-  ok('seg4 本週 plan（戳=3）標頭顯示本週範圍', __els['nb-range'].textContent === weekRangeLabelFor(14));
+  ok('seg4 本週 plan（戳=3）標頭顯示本週範圍', (__els['nb-range'].innerHTML || '').replace(/<[^>]+>/g, '') === weekRangeLabelFor(14));
   ok('seg4 本週 plan 標題係「本週行程（唯讀）」', __els['nb-plan-title'].textContent.indexOf('本週行程') >= 0);
   const legacy = nbSave(undefined); delete legacy.weekPlanWeek37;
   S = legacy;
   renderNotebook();
-  ok('seg4 舊檔冇戳：當本週（零回歸）', __els['nb-range'].textContent === weekRangeLabelFor(14));
+  ok('seg4 舊檔冇戳：當本週（零回歸）', (__els['nb-range'].innerHTML || '').replace(/<[^>]+>/g, '') === weekRangeLabelFor(14));
   S = nbSave(2); stampWeekPlan37();
   ok('seg4 stampWeekPlan37 寫入當前週數', S.weekPlanWeek37 === 3);
 })();

@@ -1,3 +1,4 @@
+# v424 意圖更新：短卡差額貼回要求欄（gigReqSummary424），舊 gt-gap 獨立行退役。
 # v20a348 resync：tutorial TUT_MAP 句經官方 qwen4-max 潤飾收緊（意思不變），釘句改查新句。
 # 引導包（v20a34）靜態測試：接線斷言＋P0-3 指引文案核對＋壓力真碼分支釘住。
 import re, sys, json, os
@@ -17,7 +18,7 @@ ok('gap calc reuses fameFloor + req + STAT_LABEL (same source as detail)',
    'fameFloor(g)' in gap_seg and 'g.req' in gap_seg and 'STAT_LABEL' in gap_seg)
 ok('gap calc does not touch canAudition', 'canAudition' not in gap_seg)
 teaser_seg = seg('function gigBoardTeaserHtml(', 'function gigTypeCoarse(')
-ok('teaser renders gap only when locked', 'boardState==="locked"' in teaser_seg and 'gt-gap' in teaser_seg and 'gigGapLine34(g)' in teaser_seg)
+ok('teaser renders gap only when locked', 'gigReqSummary424' in teaser_seg and 'gt-lab424">要求' in teaser_seg and '尚欠' in html and 'gigGapLine34(g)' in html)
 ok('teaser closest marker via opts', 'opts.closest' in teaser_seg and '最接近' in teaser_seg)
 scout_seg = seg('function doScout(L){', 'function applyTrainLesson(')
 ok('doScout computes closest without reordering shown', 'closest34' in scout_seg and 'gigGapTotal34(g)' in scout_seg)

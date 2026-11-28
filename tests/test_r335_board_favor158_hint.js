@@ -1,3 +1,4 @@
+// v424 意圖更新：teaser 改用 gigReqSummary424／gigSchedSummary424，抽取清單同步。
 // v20a335 板短卡補返人情免試鏡金色提示（gigBoardTeaserHtml＋addLocGigActs）
 //   背景：v158 實駕抽檢（77 PASS／2 FAIL）搵到——金提示 favor158Html 只寫喺 gigCardHtml，
 //   live 唯一 call 位係手帳待試鏡列表（L46187）；板短卡由 gigBoardTeaserHtml 另行渲染，
@@ -91,6 +92,8 @@ freshS();
 eval(extractConstVar('FAVOR158_MAK_CREDIT_ID'));
 eval(extractConstVar('FAVOR158_PANG_CREDIT_ID'));
 eval(extractFn('gigBoardCardState'));
+eval(extractFn('gigReqSummary424'));
+eval(extractFn('gigSchedSummary424'));
 eval(extractFn('favor158CreditHeld'));
 eval(extractFn('isMakWuzhiGig158'));
 eval(extractFn('isPangCharityGig158'));

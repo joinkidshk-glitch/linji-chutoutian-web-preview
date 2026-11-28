@@ -42,6 +42,12 @@ html, body, button, a, [role=button], .sp-choice, .sp-next, .sp-skip, .sp-play, 
   --font:"PingFang HK","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
   /* ui-physical tokens v2 */
   --cream:#F2EBD8; --paper:#E6D2A8; --ink:#1A1410; --muted-ink:#6B5340;
+  /* v424 UI26 文字角色 token：字級分角色、墨色分底面（紙面／深底／相片籤／印章）。
+     次文同行內操作 >=14px；有語義文字最小 12px；紙面次文墨 #4a3826 對紙底 >=7:1。 */
+  --tx-body:16px; --tx-secondary:14px; --tx-label:12px; --tx-numeric:14px; --tx-footnote:12px;
+  --ink-body-paper:#2a2118; --ink-secondary-paper:#4a3826; --ink-label-paper:#4a3826;
+  --ink-body-dark:#f2ebd8; --ink-secondary-dark:#d9c9a3;
+  --ink-on-stamp:#8f1d16; --ink-photo-tag:#2a2118;
   --navy:#1A1A2E; --gold-seal:#C9A227; --stamp-red:#C43C2A;
   --jade:#4A8F7A; --sky:#5A8FBF; --rose:#C46A8A; --violet:#8A6AB0;
   --shell:#C8BDB0; --shell-dark:#2E2A26;
@@ -109,14 +115,14 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
   }
 }
 /* v20a117 S-30 DEDUP117：.cn-detail-toggle／.cn-detail 已隨詳細區刪除，CSS 一併清。 */
-.cn-summary .cn-sum-row{display:flex;justify-content:space-between;gap:8px;margin:4px 0;font-size:.82rem}
+.cn-summary .cn-sum-row{display:flex;justify-content:space-between;gap:8px;margin:4px 0;font-size:var(--tx-secondary)} /* v424 UI26 */
 /* v20a378（U6）：詳情頁成功率行（GPT 規格：紙底金邊、標籤 13px、數值 14px 粗體） */
 .cn-chance378{display:flex;align-items:baseline;justify-content:space-between;gap:12px;min-height:40px;margin:8px 0 10px;padding:8px 10px;color:#1A1410;background:#F8F1DE;border:1px solid rgba(201,162,39,.72);border-radius:3px;box-sizing:border-box}
-.cn-chance378-lab{font-size:13px;line-height:20px;font-weight:600}
-.cn-chance378-val{font-size:14px;line-height:20px;font-weight:700;white-space:nowrap}
-.cn-summary .cn-sum-row .k{color:#6B5340;font-weight:700}
-.cn-summary .cn-sum-row .v{font-weight:800;color:#1A1410;text-align:right}
-.cn-sum-gaps{margin:6px 0 0;font-size:.78rem;line-height:1.4}
+.cn-chance378-lab{font-size:var(--tx-secondary);line-height:1.4;font-weight:600} /* v424 UI26 */
+.cn-chance378-val{font-size:var(--tx-numeric);line-height:1.4;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums} /* v424 UI26 */
+.cn-summary .cn-sum-row .k{color:var(--ink-secondary-paper);font-weight:700} /* v424 UI26 */
+.cn-summary .cn-sum-row .v{font-weight:800;color:var(--ink-body-paper);text-align:right;font-variant-numeric:tabular-nums} /* v424 UI26 */
+.cn-sum-gaps{margin:6px 0 0;font-size:var(--tx-secondary);line-height:1.45} /* v424 UI26 */
 .week-accel-hint{font-size:.72rem;color:var(--muted);margin:4px 0 0}
 .map-start-today{
   display:inline-block;margin:4px 0 2px;padding:6px 10px;border-radius:8px;
@@ -130,10 +136,10 @@ html,body{margin:0;height:100%;font-family:var(--font);background:var(--bg);colo
   border:2px solid #8a6f4d !important; box-shadow:none !important;
 }
 /* v20a34 引導包：通告卡差額／頁面白話說明／債來歷／雙軌解釋／壓力後果 */
-.gt-gap{margin-top:4px;font-size:.74rem;font-weight:700;color:#8a5a12}
+.gt-gap{margin-top:4px;font-size:var(--tx-numeric);font-weight:700;color:var(--ink-on-stamp)} /* v424 UI26 */
 .gt-chance{margin-top:4px;font-size:.74rem;font-weight:700;color:#6b5a48}
 .gt-chance b{color:#8a5a20}
-.gt-closest{display:inline-block;margin-left:6px;padding:0 6px;border-radius:999px;background:#C9A227;color:#1A1410;font-size:.68rem;font-weight:800}
+.gt-closest{display:inline-block;margin-left:6px;padding:0 6px;border-radius:999px;background:#C9A227;color:#1A1410;font-size:var(--tx-label);font-weight:800} /* v424 UI26 */
 .req-gap{font-weight:700;color:#8a5a12}
 .pane-intro{margin:0 0 8px;font-size:.78rem;line-height:1.5;color:#5a4328;background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.35);border-radius:8px;padding:6px 8px}
 .debt-row .debt-origin{margin:6px 0 0;font-size:.75rem;line-height:1.4;color:#6b4e2e}
@@ -257,7 +263,7 @@ body{background:var(--shell-dark); color:var(--cream)}
 .gig-card .t{color:var(--stamp-red); font-weight:800; padding-right:56px}
 .gig-card b{color:var(--navy); font-size:1.02rem; display:block; margin:2px 0 4px; padding-right:48px; line-height:1.3}
 .gig-card .blurb{color:var(--ink); font-weight:600}
-.gig-card .syn{color:var(--muted-ink)}
+.gig-card .syn{color:var(--ink-secondary-paper);font-size:var(--tx-secondary);line-height:1.5} /* v424 UI26 */
 .gig-card .syn-toggle{display:block;margin:4px 0 8px;padding:8px 10px;min-height:36px;color:var(--stamp-red);font-weight:700}
 .gig-card .role{color:#6b4e2e}
 .gig-card .meta{color:var(--muted-ink); white-space:normal; overflow:visible; text-overflow:clip; line-height:1.4}
@@ -426,7 +432,7 @@ button.g{
 .settings-row .lab{font-size:.84rem;font-weight:600}
 .settings-row .hint{font-size:.68rem;color:#5c4a1f;margin-top:2px}
 .settings-row select,.settings-row input[type="range"]{font:inherit;max-width:140px}
-.var-note{font-size:.72rem;color:var(--muted);line-height:1.4;margin:4px 0 0}
+.var-note{font-size:var(--tx-footnote);color:var(--ink-secondary-paper);line-height:1.5;margin:4px 0 0} /* v424 UI26 */
 .sp-line.sp-revealing{min-height:1.2em}
 html.reduce-motion *, body.reduce-motion *,
 html.reduce-motion *::before, body.reduce-motion *::before,
@@ -507,7 +513,7 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .req .ok{color:var(--good)}.req .no{color:var(--bad)}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 .stat{background:var(--panel2);border-radius:10px;padding:8px;border:1px solid #8a7355}
-.stat .l{font-size:.68rem;color:var(--cream);font-weight:700}.stat .v{font-weight:800;color:var(--cream)}
+.stat .l{font-size:var(--tx-label);color:var(--cream);font-weight:700} /* v424 UI26：屬性標籤最低 12px */.stat .v{font-weight:800;color:var(--cream)}
 .barline{height:5px;background:#081018;border-radius:4px;margin-top:4px;overflow:hidden}
 .barline i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--gold))}
 /* Dialogue */
@@ -530,7 +536,7 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .gig-card .syn-toggle{display:block;margin:4px 0 8px;padding:8px 10px;min-height:36px;font-size:.7rem;color:var(--gold);background:transparent;border:0;border-radius:8px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 .gig-card .syn-toggle:active{opacity:.7}
 .gig-card .role{font-size:.72rem;color:#cbb8a0;margin:0 0 4px}
-.gig-card .meta{font-size:.68rem;color:var(--muted);margin:0 0 4px;line-height:1.4;white-space:normal;overflow:visible;text-overflow:clip}
+.gig-card .meta{font-size:var(--tx-secondary);color:var(--ink-secondary-paper);margin:0 0 4px;line-height:1.45;white-space:normal;overflow:visible;text-overflow:clip} /* v424 UI26 */
 
 /* Home / week planner — mobile stack */
 #v-home{background:
@@ -561,7 +567,7 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .nb-left,.nb-right{padding:12px;position:relative}
 .nb-left{flex:0 0 auto;max-height:none;overflow:visible;border-bottom:2px dashed rgba(196,165,116,.55);background:transparent}
 .nb-right{flex:0 0 auto;min-height:0;display:flex;flex-direction:column;overflow:visible;background:transparent} /* grows with content; parent .notebook scrolls */
-.nb-title{font-size:.85rem;font-weight:800;color:#6b4e2e;margin:0 0 4px}
+.nb-title{font-size:var(--tx-body);font-weight:800;color:var(--ink-body-paper);margin:0 0 4px} /* v424 UI26 */
 .nb-range{font-size:.72rem;color:#6b543a;margin:0 0 8px}
 .day-row{
   display:flex;align-items:center;gap:10px;width:100%;text-align:left;
@@ -580,7 +586,7 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .cat-tab{
   appearance:none;border:1px solid #c4a574;background:#fff8e8;color:#5a4328;
   border-radius:12px;padding:8px 2px 6px;min-width:0;flex:1 1 0;cursor:pointer;
-  font:inherit;font-size:.68rem;font-weight:800;line-height:1.1;text-align:center;
+  font:inherit;font-size:var(--tx-secondary);font-weight:800;line-height:1.2;text-align:center; /* v424 UI26：分類掣係行內操作，14px */
 }
 .cat-tab .ci{display:block;font-size:1rem;margin-bottom:0;line-height:1.1} /* v419：分類掣收矮，完整入鏡 */
 .cat-tab.on{background:#6b4e2e;color:#fff8e8;border-color:#4a351e}
@@ -593,9 +599,9 @@ html.reduce-motion *::after, body.reduce-motion *::after{
 .act-item:hover,.act-item.on{border-color:#6b4e2e;background:#f5e6c0}
 .act-item:disabled{opacity:.55}
 .act-item .ai{font-size:1.25rem}
-.act-item .at{font-size:.9rem;font-weight:800}
-.act-item .ah{font-size:.72rem;color:#8a7355;margin-top:2px}
-.act-empty{font-size:.82rem;color:#8a7355;padding:12px 4px;line-height:1.45}
+.act-item .at{font-size:var(--tx-body);font-weight:800;line-height:1.25} /* v424 UI26 */
+.act-item .ah{font-size:var(--tx-secondary);color:var(--ink-secondary-paper);margin-top:1px;line-height:1.4} /* v424 UI26 */
+.act-empty{font-size:var(--tx-secondary);color:var(--ink-secondary-paper);padding:12px 4px;line-height:1.5} /* v424 UI26 */
 .nb-actions{
   position:sticky;bottom:0;z-index:8;display:flex;gap:8px;justify-content:stretch;
   padding:10px 10px calc(10px + env(safe-area-inset-bottom));
@@ -763,7 +769,7 @@ button.work-card59 .work-name59,button.work-card59 .work-meta59{display:block}
 /* v20a142 A2b：作品牆空狀態示意畫框——未有作品都見到面牆係點樣；上面兩段機制說明一字唔郁。 */
 .works-frames142{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 2px 2px}
 .works-frame142{aspect-ratio:3/4;border:2px dashed rgba(185,138,47,.6);border-radius:6px;background:rgba(255,248,232,.55);display:flex;align-items:center;justify-content:center;color:rgba(139,90,32,.4);font-size:1.3rem}
-.works-frames142-cap{font-size:.78rem;color:var(--muted-ink);line-height:1.5;margin:8px 2px 2px}
+.works-frames142-cap{font-size:var(--tx-footnote);color:var(--ink-secondary-paper);line-height:1.5;margin:8px 2px 2px} /* v424 UI26 */
 /* v20a156 EMPTY156：手帳三組空狀態佔位框——跟作品牆 .works-frames142 同一套語言
    （虛線金框＋米紙底＋☆＋手寫字說明句），只喺空狀態渲染；有內容嗰陣唔出。
    幾何：獎項 2×2（四場典禮各一格）、剪報闊框＋三格、庫存兩行×三格禮物格；
@@ -1589,9 +1595,9 @@ button.g, .start button.g{
   overflow-wrap: normal !important;
 }
 .board-lead{
-  font-size:.82rem;
+  font-size:var(--tx-secondary); /* v424 UI26 */
   line-height:1.45;
-  color:var(--muted,#6b5a48);
+  color:var(--ink-secondary-paper);
 }
 /* spotlight hole hint (confirm / focus ring) */
 .tut-spotlight-target{
@@ -1651,11 +1657,11 @@ button.g, .start button.g{
 }
 #btn-confirm-plan.is-locked:active{ transform:none; }
 .nb-plan-mode{
-  margin:0 0 6px; font-size:.72rem; font-weight:700; color:#6b4e2e;
+  margin:0 0 6px; font-size:var(--tx-secondary); font-weight:700; color:var(--ink-secondary-paper); line-height:1.35; /* v424 UI26 */
   background:#f3e6c8; border:1px solid #c4a574; border-radius:8px; padding:4px 8px;
 }
 .nb-plan-mode.readonly{ color:#5a4030; background:#efe6d4; }
-.nb-plan-mode.edit{ color:#2f4a2f; background:#e5efd8; border-color:#8aaa6a; }
+.nb-plan-mode.edit{ color:#24401f; background:#e5efd8; border-color:#8aaa6a; } /* v424 UI26：編輯模式句加深保對比 */
 .map-hint-story-remain{ display:block; font-size:.7rem; opacity:.92; margin-top:2px; font-weight:600; }
 .dual-hud .dual-stage,.dual-hud .dual-credit{ min-width:0; overflow:hidden; text-overflow:ellipsis; }
 
@@ -1759,8 +1765,8 @@ button.g, .start button.g{
   white-space: nowrap;
 }
 .nb-left{ padding-top: 4px !important; padding-bottom: 6px !important; }
-.nb-title,.nb-range{ padding: 2px 8px !important; margin: 0 0 2px !important; font-size: .78rem !important; }
-.nb-range{ margin-bottom: 3px !important; font-size: .68rem !important; }
+.nb-title,.nb-range{ padding: 2px 8px !important; margin: 0 0 2px !important; font-size: var(--tx-secondary) !important; } /* v424 UI26 */
+.nb-range{ margin-bottom: 3px !important; font-size: var(--tx-secondary) !important; color:var(--ink-secondary-paper) !important; } /* v424 UI26：日期範圍係決策資訊，唔降級 */
 
 /* 3) Gig dots + shorter card */
 .gig-dots{ gap: 8px !important; margin: 6px 0 8px !important; align-items:center; }
@@ -1936,7 +1942,7 @@ button.g, .start button.g{
 }
 #modal-inner .board-lead{
   margin: 0 0 6px !important;
-  font-size: .78rem !important;
+  font-size: var(--tx-secondary) !important; /* v424 UI26 */
   line-height: 1.35 !important;
 }
 /* Soft modal scroll: tutorial plate stays capped. Inner scrolls; skip stays under 下一步. Step 5/6 art remains HOLD. */
@@ -2045,19 +2051,19 @@ button.g, .start button.g{
 .nb-live-stress{
   display:none; margin:6px 0 2px; padding:7px 10px; border-radius:10px;
   background:#f2ebd8; border:1px solid rgba(196,165,116,.55);
-  color:#1A1410; font-size:.74rem; font-weight:800; line-height:1.35;
+  color:var(--ink-body-paper); font-size:var(--tx-numeric); font-weight:800; line-height:1.4; font-variant-numeric:tabular-nums;
   cursor:pointer; text-align:left; width:100%; font-family:inherit;
 }
-.nb-live-stress.show{ display:block; }
+.nb-live-stress.show{ display:block; } /* v424 UI26：壓力讀數用 numeric token＋等寬數字 */
 .nb-live-stress .good{ color:#1f7a5c !important; font-weight:800; }
 .nb-live-stress .bad{ color:#c62828 !important; font-weight:800; }
-.nb-live-stress .muted{ color:#5a4328; font-weight:700; font-size:.68rem; }
+.nb-live-stress .muted{ color:var(--ink-secondary-paper); font-weight:700; font-size:var(--tx-secondary); } /* v424 UI26 */
 /* v20a400：手帳建議列＋改格機會成本行（米紙卡，同 .nb-live-stress 一套）。 */
 .nb-suggest400{ display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 2px; }
 .nb-suggest400[hidden]{ display:none; }
-.nb-suggest400-btn{ appearance:none; -webkit-appearance:none; background:#fbf3df; border:1px solid #b99b62; border-radius:3px; box-shadow:0 1px 0 rgba(107,78,46,.35); color:#3a2e22; font-size:13px; font-weight:700; min-height:44px; padding:6px 10px; cursor:pointer; text-align:left; font-family:inherit; } /* v423 UI25 A1：觸控目標補足 44px */
+.nb-suggest400-btn{ appearance:none; -webkit-appearance:none; background:#fbf3df; border:1px solid #b99b62; border-radius:3px; box-shadow:0 1px 0 rgba(107,78,46,.35); color:var(--ink-body-paper); font-size:var(--tx-secondary); font-weight:700; min-height:44px; padding:6px 10px; cursor:pointer; text-align:left; font-family:inherit; } /* v423 UI25 A1：觸控目標補足 44px；v424 UI26：行內操作 14px */
 .nb-suggest400-btn:active{ transform:scale(.98); background:#e8dfc8; }
-.nb-cost400{ margin:6px 0 2px; padding:7px 10px; border-radius:10px; background:#f2ebd8; border:1px solid rgba(196,165,116,.55); color:#1A1410; font-size:.74rem; font-weight:700; line-height:1.35; }
+.nb-cost400{ margin:6px 0 2px; padding:7px 10px; border-radius:10px; background:#f2ebd8; border:1px solid rgba(196,165,116,.55); color:var(--ink-body-paper); font-size:var(--tx-secondary); font-weight:700; line-height:1.4; } /* v424 UI26 */
 .nb-cost400[hidden]{ display:none; }
 .day-row .cp{
   flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center;
@@ -2086,7 +2092,8 @@ button.g, .start button.g{
   font-weight: 800 !important;
 }
 #loc-sheet.sheet .sub{
-  color: #3a2e22 !important; /* muted-ink; NOT var(--muted) light-on-dark */
+  color: var(--ink-secondary-paper) !important; /* v424 UI26 */
+  font-size: var(--tx-secondary) !important; /* v424 UI26：地點說明係次文 */
 }
 /* v17k: loc-sheet act left/right vertical center + padding (all regions) */
 #loc-sheet.sheet .act,
@@ -2116,7 +2123,8 @@ button.g, .start button.g{
   gap: 2px !important;
 }
 #loc-sheet.sheet .act .n{
-  color: #1A1410 !important;
+  color: var(--ink-body-paper) !important; /* v424 UI26 */
+  font-size: var(--tx-body) !important; /* v424 UI26：行動標題正文級 */
   font-weight: 800 !important;
   line-height: 1.25 !important;
   white-space: nowrap !important; /* v20a197 C3：標題單行截短 */
@@ -2124,9 +2132,10 @@ button.g, .start button.g{
   text-overflow: ellipsis !important;
 }
 #loc-sheet.sheet .act .h{
-  color: #5a4328 !important;
+  color: var(--ink-secondary-paper) !important; /* v424 UI26 */
   opacity: 1 !important;
-  line-height: 1.2 !important;
+  font-size: var(--tx-secondary) !important; /* v424 UI26：行動說明係次文 14px */
+  line-height: 1.4 !important;
   margin-top: 0 !important;
   display: -webkit-box !important; /* v20a197 C3：描述單行截短 */
   -webkit-line-clamp: 1 !important;
@@ -2134,7 +2143,7 @@ button.g, .start button.g{
   overflow: hidden !important;
 }
 /* v20a335：接通告掣人情提示行——同詳情頁同一句金色字，掣內描述尺寸（.66rem），深金免同米白掣底撞色。 */
-#loc-sheet.sheet .act .gold{ color:#8a5a00; font-weight:700; font-size:.66rem; line-height:1.4; margin-top:2px; }
+#loc-sheet.sheet .act .gold{ color:#8a5a00; font-weight:700; font-size:var(--tx-secondary); line-height:1.4; margin-top:2px; } /* v424 UI26：決策提示唔降級 */
 #loc-sheet.sheet .act .cost,
 #app #loc-sheet.sheet .act .cost{
   flex: 0 0 auto !important;
@@ -2147,6 +2156,8 @@ button.g, .start button.g{
      加深至 #A93222（同底 5.36:1，≥4.5:1）；只改呢條 loc-sheet 規則，--stamp-red 原值唔郁。 */
   color: #A93222 !important;
   font-weight: 800 !important;
+  font-size: var(--tx-numeric) !important; /* v424 UI26：費用／日數係數值決策文 */
+  font-variant-numeric: tabular-nums;
 }
 #loc-sheet.sheet .act.act-priority,
 #app #loc-sheet.sheet .act.act-priority{
@@ -2218,7 +2229,7 @@ button.g, .start button.g{
 /* v18a: notebook HUD — two tight lines, no cramped wrap */
 #v-home .home-top .txt h2{ font-size:.92rem !important; margin:0 0 2px !important; line-height:1.2 !important; }
 #v-home .home-top .txt .home-date-line{
-  margin:0 0 2px !important; font-size:.72rem !important; line-height:1.25 !important;
+  margin:0 0 2px !important; font-size:var(--tx-label) !important; line-height:1.25 !important; /* v424 UI26：日期標籤最低 12px */
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 #v-home .home-top .txt .home-stats-line{
@@ -2301,7 +2312,7 @@ body.day-res-open #mask.day-res{
 }
 .cat-tab{
   min-height: 44px !important;
-  padding: 6px 2px 6px !important;
+  padding: 2px !important; /* v424 UI26：分類掣收至 44px 地板 */
   box-sizing: border-box !important;
   display: flex !important;
   flex-direction: column !important;
@@ -2628,6 +2639,17 @@ body.day-res-open #mask.day-res{
 }
 .story-play .sp-mode-narration .sp-bg-scrim{
   background:linear-gradient(180deg,rgba(18,12,8,.35) 0%,rgba(18,12,8,.28) 100%);
+}
+/* v424 UI26：人物附近局部調色（柔邊暖灰，強度按場景背景亮度由 JS 寫 --sp-grade424，深色場景 0） */
+.story-play .sp-grade424{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 40% 56% at 24% 52%, rgb(112 96 74 / var(--sp-grade424,0)) 0%, rgb(112 96 74 / 0) 78%),
+    radial-gradient(ellipse 40% 56% at 76% 52%, rgb(112 96 74 / var(--sp-grade424,0)) 0%, rgb(112 96 74 / 0) 78%); /* v424 UI26：調色覆蓋人物頭至腰，唔壓人物本體 */
+}
+/* v424 UI26：枱面前景層（同背景圖同 cover 對位，clip 由 JS 按枱沿錨點計；pointer-events none） */
+.story-play .sp-fg424{
+  position:absolute;inset:0;z-index:2;pointer-events:none;background-repeat:no-repeat;
 }
 /* loc solid placeholders — key bg_loc_{locId}; no fake photos */
 .story-play .sp-bg-layer.bg_loc_tvb_longmen{background:linear-gradient(145deg,#3a4558 0%,#5a6a7e 40%,#c4a574 100%)}
@@ -2973,22 +2995,29 @@ body.day-res-open #mask.day-res{
 .gig-teaser .gt-pill,
 .gig-teaser .notice_tag_type{
   display:inline-block; padding:2px 8px; border-radius:3px;
-  font-size:.68rem; font-weight:800; background:#fbf4dd; color:#4a3a20;
+  font-size:var(--tx-label); font-weight:800; background:#fbf4dd; color:var(--ink-label-paper); /* v424 UI26 */
   border:1px dashed #a98d4f; box-shadow:0 1px 2px rgba(60,40,10,.25);
 }
 .gig-teaser .gt-badge,
 .gig-teaser .notice_tag_recruiting{
   display:inline-block; padding:2px 8px; border-radius:4px;
-  font-size:.68rem; font-weight:900; background:transparent; color:#b3261e;
+  font-size:var(--tx-label); font-weight:900; background:transparent; color:var(--ink-on-stamp); /* v424 UI26 */
   border:2px solid #b3261e; outline:1px solid #b3261e; outline-offset:2px;
   letter-spacing:.14em; transform:rotate(-3deg); box-shadow:none;
 }
 .gig-teaser .gt-badge.done{ background:transparent; color:#6a6a6a; border-color:#6a6a6a; outline-color:#6a6a6a; }
-.gig-teaser .gt-meta{ font-size:.72rem; color:#6b5a48; line-height:1.4; }
-.gig-teaser .gt-meta-line{ display:block; }
-.gig-teaser .gt-hint{ font-size:.7rem; color:#a33; font-weight:700; margin-top:6px; }
+.gig-teaser .gt-meta{ font-size:var(--tx-secondary); color:var(--ink-secondary-paper); line-height:1.4; } /* v424 UI26 */
+/* v424 UI26 三欄決策帶：片酬／要求／檔期，標籤 12px、數值 14px 等寬數字 */
+.gig-teaser .gt-band424{ display:grid; grid-template-columns:minmax(60px,auto) 1fr 1fr; gap:3px 8px; margin-top:2px; } /* v425：檔期欄闊返，完整詞組入欄 */
+.gig-teaser .gt-seg425{ display:block; word-break:keep-all; overflow-wrap:anywhere; } /* v425 UI26評級修復：要求／檔期逐段一行，詞組唔拆（超欄先緊急斷） */
+.gig-teaser .gt-col424{ display:flex; flex-direction:column; gap:1px; min-width:0; }
+.gig-teaser .gt-lab424{ font-size:var(--tx-label); font-weight:800; color:var(--ink-label-paper); letter-spacing:.06em; }
+.gig-teaser .gt-val424{ font-size:var(--tx-numeric); font-weight:700; color:var(--ink-body-paper); line-height:1.35; word-break:keep-all; line-break:strict; overflow-wrap:anywhere; font-variant-numeric:tabular-nums; } /* v424 UI26：詞彙唔拆字折行 */
+.gig-teaser .gt-val424[data-req424="locked"]{ color:var(--ink-on-stamp); }
+.gig-teaser .gt-meta-line{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-top:3px; font-size:var(--tx-secondary); }
+.gig-teaser .gt-hint{ font-size:var(--tx-secondary); color:var(--ink-on-stamp); font-weight:700; margin-top:6px; } /* v424 UI26 */
 /* v20a335：板短卡人情提示行——同詳情頁同一句金色字，短卡版式收細（跟 .gt-meta 同級 .72rem）。 */
-.gig-teaser .gold{ font-size:.72rem; line-height:1.45; margin:6px 0 0; }
+.gig-teaser .gold{ font-size:var(--tx-secondary); line-height:1.45; margin:6px 0 0; } /* v424 UI26 */
 .gig-teaser .g-seal{ position:absolute; top:8px; right:8px; height:28px; width:auto; }
 
 /* sheet-first stacked casting notice — v18w polish */
@@ -3026,17 +3055,17 @@ body.day-res-open #mask.day-res{
 .notice_director_slot{ display:none; } /* legacy chip 停用 */
 .cn-pills{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 8px; }
 .cn-pills .cn-lab-inline{
-  flex:0 0 auto; font-size:.78rem; font-weight:800; color:#3a6ea5;
+  flex:0 0 auto; font-size:var(--tx-label); font-weight:800; color:#2c557f; /* v424 UI26：藍標籤加深保對比 */
   letter-spacing:.04em; padding:0 2px;
 }
 .notice_tag_type{
   display:inline-block; padding:3px 10px; border-radius:999px;
-  font-size:.72rem; font-weight:800; background:#3a6ea5; color:#fff;
+  font-size:var(--tx-label); font-weight:800; background:#2c557f; color:#fff; /* v424 UI26 */
   min-height:28px; line-height:22px; box-sizing:border-box;
 }
 .notice_tag_recruiting{
   display:inline-block; padding:3px 10px; border-radius:4px;
-  font-size:.72rem; font-weight:800; background:#c43c2e; color:#fff;
+  font-size:var(--tx-label); font-weight:800; background:#a93226; color:#fff; /* v424 UI26：加深保白字對比 */
   min-height:28px; line-height:22px; box-sizing:border-box;
 }
 .notice_tag_recruiting.alt{ background:#6a6a6a; }
@@ -3055,19 +3084,19 @@ body.day-res-open #mask.day-res{
   margin:0 0 5px; line-height:1.35;
 }
 .cn-kv .k{
-  color:#5a4a38; font-weight:700;
+  color:var(--ink-secondary-paper); font-weight:700; font-size:var(--tx-secondary); /* v424 UI26 */
   flex:0 0 auto; min-width:3em;
   white-space:nowrap; word-break:keep-all; line-break:strict;
 }
 .cn-kv .v{
-  color:#1A1410; font-weight:800; text-align:right;
+  color:var(--ink-body-paper); font-weight:800; text-align:right; font-size:var(--tx-numeric); font-variant-numeric:tabular-nums; /* v424 UI26 */
   word-break:keep-all; line-break:strict; overflow-wrap:normal;
   min-width:0; margin-left:auto;
 }
 .cn-pay{
   display:inline-block;
   white-space:nowrap; word-break:keep-all; overflow-wrap:normal;
-  letter-spacing:-.01em; font-size:.92em;
+  letter-spacing:-.01em; font-size:var(--tx-numeric); /* v424 UI26：片酬數值唔縮細 */
 }
 .cn-kv-weekly{ flex-direction:column; align-items:stretch; gap:2px; }
 .cn-kv-weekly .cn-kv-top{
@@ -3076,7 +3105,7 @@ body.day-res-open #mask.day-res{
 .cn-kv-weekly .cn-kv-top .k{ flex:0 0 auto; min-width:3em; white-space:nowrap; word-break:keep-all; }
 .cn-kv-weekly .cn-kv-top .v{ margin-left:auto; text-align:right; }
 .cn-wd-sub{
-  font-size:.7rem; font-weight:700; color:#6b5a48;
+  font-size:var(--tx-secondary); font-weight:700; color:var(--ink-secondary-paper); /* v424 UI26 */
   text-align:right; line-height:1.35;
   word-break:keep-all; line-break:strict;
   white-space:normal;
@@ -3098,15 +3127,35 @@ body.day-res-open #mask.day-res{
 }
 .notice_synopsis_frame .cn-lab{
   flex:0 0 auto;
-  margin-bottom:4px; font-weight:900; color:#6b5340; font-size:.72rem; letter-spacing:.04em;
+  margin-bottom:4px; font-weight:900; color:var(--ink-label-paper); font-size:var(--tx-label); letter-spacing:.04em; /* v424 UI26 */
 }
+.cn-summary .cn-lab{ font-size:var(--tx-label); font-weight:900; color:var(--ink-label-paper); letter-spacing:.04em; } /* v424 UI26：陣容／資料小標籤 */
+/* v424 UI26 詳情分段標籤＋公式行 */
+.cn-summary .cn-sec424{ margin:5px 0 2px; font-size:var(--tx-label); font-weight:900; color:var(--ink-label-paper); letter-spacing:.08em; border-top:1px dashed rgba(107,83,64,.4); padding-top:4px; line-height:1.25; } /* v425：分段收緊，首屏容納三段決策資訊 */
+.cn-summary .cn-sec424:first-of-type{ border-top:0; padding-top:0; }
+/* v425 UI26評級修復：詳情首屏密度——角色職位併入分段標籤行、合約三格並排、檔期兩欄格 */
+.cn-summary .cn-sec425{ display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 12px; }
+.cn-summary .cn-sec425 .cn-stars-role30v2{ margin:0; font-size:var(--tx-secondary); letter-spacing:0; }
+.cn-summary .cn-contract401{ display:grid; grid-template-columns:repeat(auto-fit,minmax(88px,1fr)); gap:2px 10px; }
+.cn-summary .cn-contract401 .cn-sum-row{ flex-direction:column; align-items:flex-start; gap:0; border:0 !important; margin:0 !important; padding:2px 0 !important; }
+.cn-summary .cn-contract401 .cn-sum-row:last-child{ border-top:0 !important; }
+.cn-summary .cn-contract401 .cn-sum-row .v{ overflow-wrap:anywhere; word-break:normal; line-height:1.3; }
+.cn-summary .cn-contract401 .cn-pay{ white-space:normal; }
+.cn-summary .cn-sched425{ display:grid; grid-template-columns:1fr 1fr; gap:3px 12px; }
+.cn-summary .cn-sched425 .cn-sum-row{ flex-direction:row; align-items:baseline; justify-content:flex-start; gap:6px; margin:0; }
+.cn-summary .cn-sched425 .cn-sum-row .v{ overflow-wrap:anywhere; word-break:normal; }
+.cn-summary .cn-sched425 .cn-sched-wide425{ grid-column:1 / -1; }
+.cn-summary .cn-sched425 .cn-kv-weekly{ grid-column:1 / -1; display:flex; flex-direction:row; flex-wrap:wrap; align-items:baseline; gap:2px 10px; margin:0; }
+.cn-summary .cn-sched425 .cn-kv-weekly .cn-kv-top{ display:contents; }
+.cn-summary .cn-sched425 .cn-kv-weekly .cn-kv-top .v{ margin-left:0; text-align:left; }
+.cn-formula424{ margin:2px 0 6px; font-size:var(--tx-secondary); color:var(--ink-secondary-paper); line-height:1.4; }
 .notice_synopsis_frame .cn-syn-scroll{
   flex:0 0 auto;
   min-height:0;
   overflow:visible;
 }
 .notice_synopsis_frame p{
-  margin:0; font-size:.78rem; line-height:1.5; color:#2a2118;
+  margin:0; font-size:var(--tx-secondary); line-height:1.55; color:var(--ink-body-paper); /* v424 UI26 */
   white-space:pre-wrap;
   word-break:keep-all; line-break:strict;
   padding-bottom:2px; /* last glyphs fully paint */
@@ -3115,7 +3164,7 @@ body.day-res-open #mask.day-res{
   margin:8px 0 0; font-size:.74rem; color:#6b4e2e; line-height:1.4;
   word-break:keep-all; line-break:strict;
 }
-.cn-role-note{ margin:8px 0 0; font-size:.74rem; color:#6b4e2e; line-height:1.4; word-break:keep-all; line-break:strict; }
+.cn-role-note{ margin:8px 0 0; font-size:var(--tx-secondary); color:var(--ink-secondary-paper); line-height:1.45; word-break:keep-all; line-break:strict; } /* v424 UI26 */
 /* v19g: casting sheet — pin orange work title; scroll only .notice_sheet_body */
 #mask.casting-sheet-on #modal-inner{
   display:flex !important;
@@ -3134,7 +3183,7 @@ body.day-res-open #mask.day-res{
   overflow:hidden; /* clip to sheet; header stays put */
   display:flex;
   flex-direction:column;
-  padding-bottom:12px;
+  padding-bottom:6px; /* v425：紙框底收窄，捲動區高返 */
 }
 #mask.casting-sheet-on .notice_header_orange{
   flex:0 0 auto;
@@ -3641,7 +3690,7 @@ body.day-res-open .day-row{
 .settle-notes, #settle-body, .train-result-notes{ white-space:pre-line; line-height:1.45 }
 .result-notes{ margin:6px 0 0; display:flex; flex-direction:column; gap:4px }
 .result-notes .result-line{ display:block; line-height:1.45; font-size:.88rem }
-.day-row .nm .plan-hint{ display:block; font-weight:600; color:#8a7355; font-size:.68rem; margin-top:2px; white-space:normal; opacity:.85 }
+.day-row .nm .plan-hint{ display:block; font-weight:600; color:var(--ink-secondary-paper); font-size:var(--tx-secondary); margin-top:2px; white-space:normal; line-height:1.3 } /* v424 UI26：撤 .68rem＋opacity 降級 */
 .day-row .nm .plan-main{ display:block }
 .sp-row.locked-play{ opacity:.72 }
 .sp-row.locked-play .sp-play{ pointer-events:none; opacity:.55; background:#d8cbb0; color:#5a4a32; border-color:#c4b090 }
@@ -3777,12 +3826,12 @@ body.day-res-open .day-row{
    v20a120 LOCFULL120：呢版 sheet 已經唔係 bottom sheet，改行全屏幕（見下面
    LOCFULL120 一節）；下面三條 banner 高度規則由全幅底規則取代，短屏改收標題／pill 字。 */
 @media (max-height:860px){ #loc-sheet.locpanel118 #loc-title{ font-size:1.05rem; } }
-@media (max-height:720px){ #loc-sheet.locpanel118 #loc-title{ font-size:1rem; } #loc-sheet.locpanel118 .locpanel118-quota{ font-size:12px; } }
+@media (max-height:720px){ #loc-sheet.locpanel118 #loc-title{ font-size:1rem; } } /* v424 UI26：短屏唔再縮額度字 */
 #loc-sheet .locpanel118-quota{
   position:absolute; top:26px; left:12px; z-index:5;
   display:flex; flex-direction:column; align-items:flex-start; gap:2px;
   background:rgba(28,20,12,.88); border:1px solid #c9a86a; border-radius:12px;
-  padding:7px 11px; font-size:13px; color:#f3e9d2; box-shadow:0 2px 10px rgba(0,0,0,.45);
+  padding:7px 11px; font-size:var(--tx-secondary); color:#f3e9d2; /* v424 UI26：額度係次文 14px */ box-shadow:0 2px 10px rgba(0,0,0,.45);
   max-width:252px;
 }
 #loc-sheet .locpanel118-quota .lp118-l1{ display:inline-flex; align-items:center; gap:8px; white-space:nowrap; }
@@ -3791,7 +3840,7 @@ body.day-res-open .day-row{
 #loc-sheet .locpanel118-quota .lp118-dot{ width:11px; height:11px; border-radius:50%; border:1.5px solid #d8b96a; }
 #loc-sheet .locpanel118-quota .lp118-dot.used{ background:#d8b96a; }
 #loc-sheet .locpanel118-quota b{ color:#e8c97a; }
-#loc-sheet .locpanel118-quota .lp118-arrived{ font-size:12px; color:#ffe9b0; }
+#loc-sheet .locpanel118-quota .lp118-arrived{ font-size:var(--tx-label); color:#ffe9b0; } /* v424 UI26 */
 #loc-sheet.locpanel118-nobg .locpanel118-quota{ position:static; margin:2px 0 6px; max-width:none; }
 #loc-sheet .locpanel118-owner{
   position:absolute; right:8px; z-index:3; pointer-events:none;
@@ -3960,7 +4009,7 @@ body.day-res-open .day-row{
    並無重疊：描述行底 y120、pill 頂 y133）。跟返標題／描述同一套相上處理。
    （放喺素底規則之後，唔推郁 LOCFULL120 9000 字窗口。）
    例外：素底態（locpanel118-nobg，冇圖、米紙實底）要深色字＋冇陰影，唔可以淺字落淺紙。 */
-#app #loc-sheet.sheet.locpanel118 .pres105-line{ color:#f8f1de !important; text-shadow:0 1px 6px rgba(0,0,0,.6); }
+#app #loc-sheet.sheet.locpanel118 .pres105-line{ color:#f8f1de !important; font-size:var(--tx-secondary) !important; text-shadow:0 1px 6px rgba(0,0,0,.6); } /* v424 UI26 */
 #app #loc-sheet.sheet.locpanel118.locpanel118-nobg .pres105-line{ color:#1A1410 !important; text-shadow:none; }
 .toast.has-sub{
   max-height:148px !important;
@@ -3991,7 +4040,7 @@ body.day-res-open .day-row{
   60%{ transform:translateX(-4px); }
   80%{ transform:translateX(4px); }
 }
-.cn-board-sub{ margin:0 0 8px; font-size:.78rem; font-weight:700; color:#5a4328; }
+.cn-board-sub{ margin:0 0 8px; font-size:var(--tx-secondary); font-weight:700; color:var(--ink-secondary-paper); } /* v424 UI26 */
 
 /* v19w nits: toast yields to bottom controls; synopsis scroll clears the sticky CTA */
 #app.toast-up.keep-sheet:has(#v-map.view.on) .toast{
@@ -4189,10 +4238,11 @@ body.day-res-open .day-row{
 #home-pane-ledger .ledger-head{ margin:0 0 8px; }
 #home-pane-ledger .ledger-head h3{ margin:0 0 4px; font-size:.95rem; }
 #home-pane-ledger .stats-grid .stat{ background:#fff8e8; border-color:#c4a574; }
-#home-pane-ledger .stats-grid .stat .l{ color:#6b4e2e; }
+#home-pane-ledger .stats-grid .stat .l{ color:var(--ink-label-paper); } /* v424 UI26 */
 #home-pane-ledger .stats-grid .stat .v{ color:#1A1410; }
 #home-pane-ledger .ledger-money{ margin:10px 0 6px; font-weight:800; }
-#home-pane-ledger .ledger-enroll{ font-size:.78rem; color:var(--muted); margin:0; }
+#home-pane-ledger .ledger-money .gold{ color:#8a5a00; } /* v424 UI26：紙面金字加深保對比 */
+#home-pane-ledger .ledger-enroll{ font-size:var(--tx-secondary); margin:0; } /* v424 UI26：次文 14px；顏色由紙面規則承載 */
 .ending410-title-card{ background:#fff8e8; border:1px solid #c4a574; border-radius:10px; padding:10px 12px; margin:8px 0; }
 /* v20a380（第五輪評估 P2-6，GPT 方案）：結局頭兩頁場景框實色米紙底——觸發時 mask 帶 story-play-on，紙底規則被排除，啡字壓近黑遮罩對比極低；內容框自己帶紙底，唔改轉頁流程（原生版對應 Color Assets EndingPaper/EndingInk/EndingGold） */
 .ending410-scene{ background:#f2ebd8; color:#33241C; border:1px solid #a88443; border-radius:10px; padding:12px 14px; }
@@ -4299,7 +4349,7 @@ body.day-res-open .day-row{
 .sleep265-cap{ text-align:center; font-size:.92rem; color:#6b4f2a; margin:2px 0 8px; }
 /* v20a265 COSTUME265：手帳行程頁底——瞓覺／衣櫃掣列＋衣櫃區 */
 .home265-row{ display:flex; gap:8px; margin:10px 0 0; }
-.home265-row button{ flex:1; min-height:44px; }
+.home265-row button{ flex:1; min-height:44px; font-size:var(--tx-secondary); } /* v424 UI26：操作掣字 14px */
 /* v20a381 INTEL381：留話簿未讀紙角＋留言簿版式＋補位標籤（GPT 規格：淡赭紙底深墨字） */
 #btn-intel381{ position:relative; }
 .intel381-corner{ position:absolute; top:-7px; right:-4px; padding:1px 6px; background:#f3e3bd; color:#5a3d1e; border:1px solid rgba(120,95,60,.55); border-radius:2px 8px 2px 8px; font-size:.68rem; font-weight:800; transform:rotate(4deg); box-shadow:0 1px 3px rgba(60,40,20,.25); }
@@ -4427,7 +4477,7 @@ body.day-res-open .day-row{
   box-shadow:0 1px 2px rgba(26,20,16,.55);
 }
 #app .gig-teaser .gt-title{ color:#241a10; text-shadow:0 1px 0 rgba(255,252,240,.55); }
-#app .gig-teaser .gt-meta{ color:#5f4c33; }
+/* v424 UI26：gt-meta 顏色已遷移去 token（原 #5f4c33 宣告刪除） */
 #app .gig-teaser .gt-hint{ color:#a33327; }
 #app .gig-teaser .g-seal{
   filter:drop-shadow(0 1px 2px rgba(26,20,16,.35));
@@ -5353,7 +5403,7 @@ body.day-res-open .day-row{
 .ux68-ghead:first-child{ margin-top:2px; }
 .ux68-ghead-urgent{ color:#9c3d1e; border-bottom-color:rgba(180,80,40,.55); }
 .ux68-note{ font-size:.8rem; font-weight:700; color:#9c3d1e; padding:1px 2px 5px; line-height:1.45; }
-.ux68-why{ display:block; font-size:.74rem; font-weight:700; color:#9c3d1e; margin-top:3px; line-height:1.4; } /* v20a169 B2：#loc-acts 由 grid 轉 flex 直欄＋掣 flex-shrink:0——grid auto 行高跟 max-content（唔換行）計，長簡介卡被夾喺 50px 行高溢出框外（實測文字欄 91px、掣 50px）；flex 直欄＋唔縮先係卡高隨內容增長（實測 push 卡 115px、零重疊；機制見 NOTES_V20A169 §2）——flex 規則唔可以寫入 #loc-acts 原規則行：locfull120 測試用 9000 字元窗切 LOCFULL120 段，長註解會推走窗尾 nobg 規則，呢行喺窗外 */ #loc-sheet.sheet.locpanel118 #loc-acts{ display:flex !important; flex-direction:column !important; } #loc-sheet.sheet.locpanel118 #loc-acts .act{ flex-shrink:0; } /* v20a171 C1：#loc-acts 捲動提示——內容超出可視高而且未捲到底嗰陣（JS syncLocActsFade171 掛 loc-acts-more171 class），底緣 30px 淡出漸變提示下面仲有嘢；sticky ::after 唔佔位（margin-top:-30px 抵消 30px 高＋margin-bottom:-7px 抵消 #loc-acts flex row-gap 7px，scrollHeight 唔郁，否則多 7px）。v20a173：實色 stop 78%→60%——932 淡出更早變實，「還人情」底邊溶得更明顯；高仲係 30px、margin 抵消唔郁，唔郁掣高／卡片（B2） */ #loc-sheet.sheet.locpanel118 #loc-acts.loc-acts-more171::after{ content:""; position:sticky; bottom:0; flex:0 0 auto; align-self:stretch; height:30px; margin-top:-30px; margin-bottom:-7px; pointer-events:none; z-index:5; background:linear-gradient(to bottom, rgba(248,241,222,0), #f8f1de 60%); } /* v20a171 C2：鎖住態（庫存空／今日已送）掣身變灰——底轉灰米 #e6dfcc＋邊框轉灰 #a89a7c，標題／hint 微淡（opacity .72）；費用欄轉深啡灰 #6b5636（同鎖住底對比度 5.25:1，高過 B1 實測 4.21:1，唔會灰到讀唔到）；只做視覺區分——disabled／aria／點擊／toast 全部唔郁，撳落去照有 toast 講原因。v20a173：.h 加 !important——舊 rule L2016 opacity 1 !important 贏咗 v171 條無 !important 嘅，hint 實測 opacity 1；加返先同標題一齊淡 */ #app #loc-sheet.sheet .act.act-locked171{ background:#e6dfcc !important; border-color:#a89a7c !important; } #app #loc-sheet.sheet .act.act-locked171 .n{ opacity:.72; } #app #loc-sheet.sheet .act.act-locked171 .h{ opacity:.72 !important; color:#3a2e22 !important; } /* v20a218 D-v173C1：鎖住態 hint 色改深到 #3a2e22 睇齊 priority——舊版沿用 base #5a4328，0.72 混合後只得 3.64:1，未達 4.5；#3a2e22 混合後 4.63:1（同 priority 嗰粒一樣，review 已 live 量度）。只改鎖住態，未鎖住嘅 hint 唔郁 */ #app #loc-sheet.sheet .act.act-locked171 .cost{ color:#6b5636 !important; }
+.ux68-why{ display:block; font-size:var(--tx-secondary); font-weight:700; color:#9c3d1e; /* v424 UI26：待觸發提示係決策次文 */ margin-top:3px; line-height:1.4; } /* v20a169 B2：#loc-acts 由 grid 轉 flex 直欄＋掣 flex-shrink:0——grid auto 行高跟 max-content（唔換行）計，長簡介卡被夾喺 50px 行高溢出框外（實測文字欄 91px、掣 50px）；flex 直欄＋唔縮先係卡高隨內容增長（實測 push 卡 115px、零重疊；機制見 NOTES_V20A169 §2）——flex 規則唔可以寫入 #loc-acts 原規則行：locfull120 測試用 9000 字元窗切 LOCFULL120 段，長註解會推走窗尾 nobg 規則，呢行喺窗外 */ #loc-sheet.sheet.locpanel118 #loc-acts{ display:flex !important; flex-direction:column !important; } #loc-sheet.sheet.locpanel118 #loc-acts .act{ flex-shrink:0; } /* v20a171 C1：#loc-acts 捲動提示——內容超出可視高而且未捲到底嗰陣（JS syncLocActsFade171 掛 loc-acts-more171 class），底緣 30px 淡出漸變提示下面仲有嘢；sticky ::after 唔佔位（margin-top:-30px 抵消 30px 高＋margin-bottom:-7px 抵消 #loc-acts flex row-gap 7px，scrollHeight 唔郁，否則多 7px）。v20a173：實色 stop 78%→60%——932 淡出更早變實，「還人情」底邊溶得更明顯；高仲係 30px、margin 抵消唔郁，唔郁掣高／卡片（B2） */ #loc-sheet.sheet.locpanel118 #loc-acts.loc-acts-more171::after{ content:""; position:sticky; bottom:0; flex:0 0 auto; align-self:stretch; height:30px; margin-top:-30px; margin-bottom:-7px; pointer-events:none; z-index:5; background:linear-gradient(to bottom, rgba(248,241,222,0), #f8f1de 60%); } /* v20a171 C2：鎖住態（庫存空／今日已送）掣身變灰——底轉灰米 #e6dfcc＋邊框轉灰 #a89a7c，標題／hint 微淡（opacity .72）；費用欄轉深啡灰 #6b5636（同鎖住底對比度 5.25:1，高過 B1 實測 4.21:1，唔會灰到讀唔到）；只做視覺區分——disabled／aria／點擊／toast 全部唔郁，撳落去照有 toast 講原因。v20a173：.h 加 !important——舊 rule L2016 opacity 1 !important 贏咗 v171 條無 !important 嘅，hint 實測 opacity 1；加返先同標題一齊淡 */ #app #loc-sheet.sheet .act.act-locked171{ background:#e6dfcc !important; border-color:#a89a7c !important; } #app #loc-sheet.sheet .act.act-locked171 .n{ opacity:.72; } #app #loc-sheet.sheet .act.act-locked171 .h{ opacity:.72 !important; color:#3a2e22 !important; } /* v20a218 D-v173C1：鎖住態 hint 色改深到 #3a2e22 睇齊 priority——舊版沿用 base #5a4328，0.72 混合後只得 3.64:1，未達 4.5；#3a2e22 混合後 4.63:1（同 priority 嗰粒一樣，review 已 live 量度）。只改鎖住態，未鎖住嘅 hint 唔郁 */ #app #loc-sheet.sheet .act.act-locked171 .cost{ color:#6b5636 !important; }
 .ux68-locked-toggle{ width:100%; margin-top:12px; padding:9px 10px; min-height:44px; text-align:left; cursor:pointer; /* v20a388（第九輪補跑 W2 P2）：觸控高 39→44px（同 v387 口徑） */
   background:transparent; border:1px dashed rgba(120,95,60,.55); border-radius:10px;
   color:#7a6248; font:inherit; font-size:.8rem; font-weight:700; }
@@ -5433,7 +5483,7 @@ body.day-res-open .day-row{
 .pres105{ display:flex; gap:8px; align-items:flex-start; }
 .pres105-av{ width:34px; height:34px; border-radius:50%; object-fit:cover; object-position:top center; flex:0 0 auto; background:#e8dcc0; }
 .pres105-main{ flex:1 1 auto; min-width:0; }
-.pres105-tag{ font-size:.68rem; font-weight:800; color:#7a4d12; background:#f3e3bb; border:1px solid #c9a227; border-radius:999px; padding:1px 7px; }
+.pres105-tag{ font-size:var(--tx-label); font-weight:800; color:#7a4d12; /* v424 UI26 */ background:#f3e3bb; border:1px solid #c9a227; border-radius:999px; padding:1px 7px; }
 .pres105-line{ color:#6b5636; }
 /* S-6：地圖面板按地圖圖比例收高（唔再 flex 填滿成個 wrap 喺圖下方留死位）；
    舞台／熱區幾何唔郁（圖仍闊度-bound、stage 高度由圖比例決定）。 */
@@ -5513,7 +5563,7 @@ body.day-res-open .day-row{
    active 嗰陣唔出 slab，toast 票根本身（z520、一粒浮票）唔受影響。 */
 #app.toast-up:has(#v-home.view.on)::after{ display:none !important; }
 .pane-go72{ margin-top:10px; background:#6b4e2e; color:#fff8e8; border:0; border-radius:10px;
-  padding:8px 16px; font:inherit; font-weight:800; font-size:.82rem; cursor:pointer; min-height:44px; } /* v20a373：觸控目標補足 44px */
+  padding:8px 16px; font:inherit; font-weight:800; font-size:var(--tx-secondary); cursor:pointer; min-height:44px; } /* v424 UI26：操作掣字 14px */
 .jobs72-h{ margin:0 0 4px; font-size:.95rem; color:#43301c; }
 .jobs72-sec{ margin:10px 0 6px; font-weight:800; color:#8a5a20; }
 /* === v20a68 UX68 皮膚完 === */
@@ -5580,13 +5630,13 @@ body.day-res-open .day-row{
 .jobs72-h{ color:#ecdfc2; }
 .works-empty59 h3, .mem-empty60 h3, .mem-head60 h3{ color:#ecdfc2; }
 #home-pane-works .req{ color:#d9c9a3; }
-#home-pane-ledger .ledger-enroll{ color:#c3b096; }
+/* v424 UI26：ledger-enroll 深底淺字宣告已刪（紙面墨色喺 B2 規則） */
 #home-pane-favor389 .people-next{ color:#c3b096; }
 #home-pane-favor389 .pane-intro{ color:#e6d7ae; }
 #v-home .home-top .txt .home-money:not(.money-warn):not(.money-critical):not(.money-broke),
 #v-home .home-top .txt .home-stats-line .hs-i.home-money:not(.money-warn):not(.money-critical):not(.money-broke){ color:#e3c565 !important; }
-.day-row .nm .plan-hint{ color:#59452a; }
-.act-item .ah{ color:#59452a; }
+/* v424 UI26：plan-hint 顏色已遷移（手寫藍墨 #314d65 保留喺 #nb-days 規則，原 #59452a 宣告刪除） */
+/* v424 UI26：.act-item .ah 顏色已遷移去 --ink-secondary-paper（原 #59452a 宣告刪除） */
 .act-item:disabled .ah{ color:#241a10; }
 .t70-cell span{ color:#6b5636; }
 .guide68-note{ color:#6b5636; }
@@ -5677,17 +5727,17 @@ body.day-res-open .day-row{
    注意：原規則（約 3657 行）用咗 !important，呢度都要 !important 先壓得過。 */
 #mask.casting-sheet-on .notice_sheet_frame.cn-paper30v2 .notice_sheet_body{ padding-bottom:12px !important; }
 /* ---- (2) 負責人英雄區：企喺卡後面，margin-bottom 負值等卡疊上嚟；圖缺失嗰陣成區隱藏，卡自動歸位 ---- */
-#mask.casting-sheet-on #modal-inner .cn-issuer30v2{ flex:0 0 auto; position:relative; height:240px; /* v20a132：還原 240px 上限（v116 胸口以上 crop 原設計；v128 改 auto 令全身圖 609px 擠壓卡面，真機上標題被切、摘要隱形） */ margin-bottom:-100px; overflow:hidden; background:radial-gradient(120% 110% at 50% 0%, #f6ead0 0%, #ecd9ac 62%, #e0c78e 100%); }
+#mask.casting-sheet-on #modal-inner .cn-issuer30v2{ flex:0 0 auto; position:relative; height:150px; /* v425 UI26評級修復：發出人區收高，片酬／要求／檔期入首屏（肖像仍完整露出胸口以上） */ margin-bottom:-60px; overflow:hidden; background:radial-gradient(120% 110% at 50% 0%, #f6ead0 0%, #ecd9ac 62%, #e0c78e 100%); }
 #mask.casting-sheet-on #modal-inner .cn-issuer30v2 .cn-issuer-img30v2{ display:block; width:60%; max-width:230px; height:auto; margin:0 auto; }
-#mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2{ position:absolute; left:12px; bottom:106px; z-index:2; background:#fbf4dd; border:1px solid #a98d4f; border-radius:6px; box-shadow:0 1px 3px rgba(60,40,10,.3); padding:5px 9px; line-height:1.3; }
+#mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2{ position:absolute; left:12px; bottom:66px; z-index:2; background:#fbf4dd; border:1px solid #a98d4f; border-radius:6px; box-shadow:0 1px 3px rgba(60,40,10,.3); padding:5px 9px; line-height:1.3; } /* v425：跟發出人區新高對位 */
 #mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2 b{ display:block; font-size:.95rem; color:#2a2118; }
-#mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2 span{ display:block; font-size:.82rem; font-weight:700; color:#6b5340; }
+#mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2 span{ display:block; font-size:var(--tx-secondary); font-weight:700; color:var(--ink-secondary-paper); } /* v424 UI26 */
 /* ---- (1) 米紙卡（v1 規則，原樣搬入 cn-paper30v2 範圍） ---- */
 .notice_sheet_frame.cn-paper30v2{ position:relative; z-index:2; background:linear-gradient(172deg,#f8f0dc,#f3e8c9 60%,#eee0b8); color:#2a2118; border:1px solid #b39a5f; border-radius:6px; box-shadow:0 6px 18px rgba(30,20,8,.35), inset 0 0 0 3px rgba(255,252,240,.5); }
-.notice_sheet_frame.cn-paper30v2 .notice_header_orange{ background:transparent; border-bottom:3px double #8a6d2f; border-radius:0; padding:10px 12px 8px; }
+.notice_sheet_frame.cn-paper30v2 .notice_header_orange{ background:transparent; border-bottom:3px double #8a6d2f; border-radius:0; padding:7px 12px 6px; } /* v425：標題區收緊入首屏 */
 .notice_sheet_frame.cn-paper30v2 .notice_header_orange .cn-work{ color:#2a2118; text-shadow:none; font-family:"Kaiti SC","KaiTi",serif; letter-spacing:.06em; }
 .notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row .v{ font-family:"Kaiti SC","KaiTi",serif; }
-.notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row .k{ color:#6b5340; }
+/* v424 UI26：cn-sum-row .k 顏色已遷移去 token（原 #6b5340 宣告刪除） */
 /* 狀態膠囊 -> 紅印章（原 notice_tag_recruiting class 保留，邏輯不變） */
 .notice_sheet_frame.cn-paper30v2 .notice_tag_recruiting.cn-stamp30{ background:transparent; color:#b3261e; border:2px solid #b3261e; outline:1px solid #b3261e; outline-offset:2px; border-radius:4px; font-weight:900; letter-spacing:.14em; transform:rotate(-3deg); padding:2px 8px; box-shadow:none; }
 /* 類型膠囊 -> 紙籤 */
@@ -5695,30 +5745,30 @@ body.day-res-open .day-row{
 /* 標籤藍字 -> 墨色；角色職位白盒 -> 紙籤 */
 .notice_sheet_frame.cn-paper30v2 .cn-lab-inline{ color:#6b5340; }
 /* ---- (3) 要求格並排對照 ---- */
-.notice_sheet_frame.cn-paper30v2 .cn-req-grid30v2{ display:grid; grid-template-columns:repeat(auto-fit,minmax(72px,1fr)); gap:6px; margin:0 0 6px; }
-.notice_sheet_frame.cn-paper30v2 .cn-req-cell{ border:1px solid #b39a5f; border-radius:6px; background:#fbf4dd; padding:5px 6px 4px; min-width:0; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-grid30v2{ display:grid; grid-template-columns:repeat(auto-fit,minmax(72px,1fr)); gap:5px; margin:0 0 4px; } /* v425：要求格收緊入首屏 */
+.notice_sheet_frame.cn-paper30v2 .cn-req-cell{ border:1px solid #b39a5f; border-radius:6px; background:#fbf4dd; padding:4px 6px 3px; min-width:0; }
 .notice_sheet_frame.cn-paper30v2 .cn-req-top{ display:flex; justify-content:space-between; align-items:baseline; gap:4px; }
-.notice_sheet_frame.cn-paper30v2 .cn-req-lab{ font-size:.82rem; font-weight:900; color:#4a3a20; }
-.notice_sheet_frame.cn-paper30v2 .cn-req-mark{ font-size:.82rem; font-weight:900; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-lab{ font-size:var(--tx-label); font-weight:900; color:var(--ink-label-paper); } /* v424 UI26 */
+.notice_sheet_frame.cn-paper30v2 .cn-req-mark{ font-size:var(--tx-label); font-weight:900; } /* v424 UI26 */
 .notice_sheet_frame.cn-paper30v2 .cn-req-cell.ok .cn-req-mark{ color:#1f7a4d; }
-.notice_sheet_frame.cn-paper30v2 .cn-req-val{ font-size:.82rem; font-weight:800; color:#1A1410; line-height:1.35; word-break:keep-all; }
+.notice_sheet_frame.cn-paper30v2 .cn-req-val{ font-size:var(--tx-numeric); font-weight:800; color:var(--ink-body-paper); line-height:1.4; word-break:keep-all; font-variant-numeric:tabular-nums; } /* v424 UI26 */
 .notice_sheet_frame.cn-paper30v2 .cn-req-cell.no{ background:#fbe7e0; border-color:#c0392b; }
 .notice_sheet_frame.cn-paper30v2 .cn-req-cell.no .cn-req-lab, .notice_sheet_frame.cn-paper30v2 .cn-req-cell.no .cn-req-val, .notice_sheet_frame.cn-paper30v2 .cn-req-cell.no .cn-req-mark{ color:#a93226; }
 /* 要求格已承載條件，摘要嘅重複行收起（純呈現，邏輯不變；格本身有「組製暫無額外能力條件」後備） */
 .notice_sheet_frame.cn-paper30v2 .cn-sum-gaps, .notice_sheet_frame.cn-paper30v2 .cn-board-sub{ display:none; }
 /* 星級＋職位合併一行 */
-.notice_sheet_frame.cn-paper30v2 .cn-stars-role30v2{ display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 8px; font-size:.82rem; margin:0 0 6px; }
+.notice_sheet_frame.cn-paper30v2 .cn-stars-role30v2{ display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 8px; font-size:var(--tx-secondary); margin:0 0 6px; } /* v424 UI26 */
 .notice_sheet_frame.cn-paper30v2 .cn-stars-role30v2 .cn-lab-inline{ color:#6b5340; }
 .notice_sheet_frame.cn-paper30v2 .cn-role30v2 .k{ font-weight:900; color:#6b5340; }
 .notice_sheet_frame.cn-paper30v2 .cn-role30v2 .v{ font-weight:700; color:#1A1410; }
 /* ---- (4) 密度：摘要行唔細過 13px ---- */
-.notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row{ margin:2px 0; line-height:1.35; }
+.notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row{ margin:1px 0; line-height:1.3; } /* v425 */
 .notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row .v{ word-break:keep-all; overflow-wrap:normal; }
 /* S-30v2 期間拆行：摘要 .v 上面已有 keep-all；
    限 cn-paper30v2 範圍，唔改全局。 */
 /* 承上：值唔肯斷詞之後，flex 會反過來壓縮左邊標籤（「通告期／間」）——標籤鎖死唔換行，闊度畀值。 */
 .notice_sheet_frame.cn-paper30v2 .cn-summary .cn-sum-row .k{ flex:0 0 auto; white-space:nowrap; }
-.notice_sheet_frame.cn-paper30v2 .cn-pills{ margin:0 0 6px; }
+.notice_sheet_frame.cn-paper30v2 .cn-pills{ margin:0; flex:0 1 auto; justify-content:flex-end; } /* v425：類型列併入標題行，首屏省一行 */
 /* S-32 保留：卡高按內容收（v105 已修，紙框唔加固定高度） */
 
 /* ===== v20a108 UI108 視覺統一包（B 級）===== */
@@ -5839,7 +5889,7 @@ body.day-res-open .day-row{
    企中間、矮一截（52% vs 60%）、z-index 低過兩位主角，讀做企後少少嘅第三者。 */
 #enc79-overlay .e79-char3{ position:absolute; left:50%; bottom:10%; height:52%; max-width:40%;
   object-fit:contain; object-position:bottom center; transform:translateX(-50%); z-index:2;
-  filter:drop-shadow(0 6px 14px rgba(0,0,0,.5)); display:none; }
+  filter:brightness(var(--speaker-brightness,1)) drop-shadow(0 1px 3px rgba(30,22,14,.42)); display:none; } /* v424 UI26 */
 #enc79-overlay .e79-char3.on{ display:block; }
 #enc79-overlay .e79-char3-halo{ position:absolute; left:50%; bottom:10%; height:52%; max-width:40%;
   object-fit:contain; object-position:bottom center; transform:translateX(-50%); z-index:1; display:none; }
@@ -6031,7 +6081,7 @@ body.day-res-open .day-row{
 /* B2 附帶：三處為深底加嘅淺字覆寫，喺紙面還原返墨色（同 v131 B2 做法）——
    ledger-enroll #c3b096／people-next #c3b096／debt pane-intro #e6d7ae；
    傳聞頁已刪（v20a267），相關覆寫一併移除。 */
-#home-pane-ledger .ledger-enroll{ color:#6b4e2e; }
+#home-pane-ledger .ledger-enroll{ color:var(--ink-secondary-paper); } /* v424 UI26 */
 #home-pane-favor389 .people-next{ color:#6b4e2e; }
 #home-pane-favor389 .pane-intro{ color:#5a4328; }
 /* B2 附帶（續）：v76 為深底加嘅淺字覆寫仲有三處喺新紙面頁——.jobs72-h（庫存／人脈標題，
@@ -6127,7 +6177,7 @@ body.day-res-open .day-row{
   font-size:.95rem;
 }
 #home-tabs .home-tab{ min-height:44px !important; }
-#home-subtabs .home-tab{ min-height:44px !important; min-width:44px !important; font-size:.8rem !important; } /* v20a387（第八輪評估 W2 P2-2）：子 tab 闊 30→44px——非 plan 組 5851 行 min-width:0 蓋走 v373 嘅 44，呢度補返闊（GPT 規格：觸控區 44、紅圈視覺不變） */
+#home-subtabs .home-tab{ min-height:44px !important; min-width:44px !important; font-size:var(--tx-secondary) !important; } /* v424 UI26：子分頁係操作標籤 14px */ /* v20a387（第八輪評估 W2 P2-2）：子 tab 闊 30→44px——非 plan 組 5851 行 min-width:0 蓋走 v373 嘅 44，呢度補返闊（GPT 規格：觸控區 44、紅圈視覺不變） */
 #nb-live-stress{ min-height:44px !important; }
 .nb-stk362{
   flex:0 0 auto; width:38px; height:38px; border-radius:8px; overflow:hidden;
@@ -6160,7 +6210,7 @@ body.day-res-open .day-row{
 #mask.story-play-on:has(.sp-mode-narration) .story-play .dlg106-plate{
   background:linear-gradient(174deg,#fdf6e0,#f6ead0 70%,#f1e2ba) !important;
   border:1px solid #c9ab6a !important; border-radius:3px !important;
-  box-shadow:0 6px 16px rgba(30,20,8,.35) !important;
+  box-shadow:0 2px 5px rgba(30,20,8,.30) !important; /* v424 UI26：對白紙短影，跟紙邊走 */
   transform:rotate(-.5deg);
 }
 #mask.story-play-on:has(.sp-mode-dialogue) .story-play .dlg106-plate::before,
@@ -6411,7 +6461,7 @@ body.day-res-open .day-row{
   display:grid !important; grid-template-columns:42px minmax(0,1fr) 52px; align-items:center;
   min-height:44px !important; padding:2px 8px !important; /* v419：行高收窄（貼紙 44→38＋直向 padding 4→2），觸控高仍 ≥44；行程入場首張活動卡唔再俾紙邊切走 */
 }
-#nb-days .day-row .wd{ width:auto !important; font-family:var(--hand363); font-size:.95rem !important; grid-column:1; grid-row:1; line-height:1.15; } /* v419：日格行距收窄 */
+#nb-days .day-row .wd{ width:auto !important; font-family:var(--hand363); font-size:var(--tx-label) !important; font-weight:700; grid-column:1; grid-row:1; line-height:1.3; } /* v424 UI26：星期係標籤角色 12px */
 #nb-days .day-row .plan-hint{ line-height:1.15; }
 #nb-days .day-row .nm{ font-size:.88rem !important; grid-column:2; grid-row:1; min-width:0; line-height:1.25; } /* v419：日格文字行距收窄，分類掣完整入鏡 */
 #nb-days .day-row .nb-stk362, #nb-days .day-row .ic{ grid-column:3; grid-row:1; }
@@ -6437,7 +6487,7 @@ body.day-res-open .day-row{
 .stress-scale363 .ss363-dot{ position:absolute; top:6px; width:10px; height:10px; margin-left:-5px; border-radius:50%; border:2px solid #8a6a3a; background:#fbf3df; }
 .stress-scale363 .ss363-dot.end{ background:#a44737; border-color:#8e3027; }
 .stress-scale363 .ss363-peak{ position:absolute; top:3px; width:2px; height:16px; margin-left:-1px; background:var(--inkred363); }
-.stress-scale363 .ss363-lab{ position:absolute; top:-2px; transform:translateX(-50%); font:10px/12px var(--hand363); color:#5a4632; white-space:nowrap; }
+.stress-scale363 .ss363-lab{ position:absolute; top:-2px; transform:translateX(-50%); font-size:var(--tx-label); line-height:1.3; font-family:var(--hand363); color:var(--ink-secondary-paper); white-space:nowrap; } /* v424 UI26 */
 /* 確定蓋章（JS 注入 .stamp363 落 .nb-actions） */
 .nb-actions{ position:relative; }
 .stamp363{
@@ -6481,7 +6531,8 @@ body.day-res-open .day-row{
   border:1px solid #c9ab6a; transform:rotate(2deg); font-family:var(--print363);
 }
 .story-play .dlg106-char{
-  filter:drop-shadow(0 10px 6px rgba(20,14,6,.35));
+  /* v424 UI26：JS 只寫 --speaker-brightness，CSS 合成 brightness＋短影（唔再俾 inline filter 蓋走陰影） */
+  filter:brightness(var(--speaker-brightness,1)) drop-shadow(0 1px 3px rgba(30,22,14,.42));
 }
 /* v420：立繪腳底上移 28px，鞋身完全藏喺對話紙框後（框底距舞台底固定 79px，舊 bottom:10% 喺短屏令鞋尖伸出框底、似企喺枱面） */
 .story-play .dlg106-char, .story-play .dlg119-halo{ margin-bottom:28px; }
@@ -6616,7 +6667,7 @@ body.day-res-open .day-row{
 .favor-badge369{
   position:absolute; top:-7px; right:-6px; z-index:2;
   background:#9E2F2F; color:#fdf6e0; border-radius:99px;
-  font-size:10px; font-weight:900; line-height:1; padding:3px 6px;
+  font-size:var(--tx-label); font-weight:900; line-height:1; padding:3px 5px; /* v424 UI26：狀態徽章最低 12px */
   box-shadow:0 1px 3px rgba(60,20,10,.4); pointer-events:none;
   animation:favorBadge369 .16s ease-out;
 }
@@ -6656,7 +6707,7 @@ body.day-res-open .day-row{
 .prog389-badge{
   display:inline-flex; align-items:center; min-height:44px; margin:0 0 8px;
   padding:6px 14px; border-radius:99px; background:#e9dcbc; color:#3a2e22;
-  border:1px solid #cbb98d; font-family:inherit; font-size:13px; font-weight:700;
+  border:1px solid #cbb98d; font-family:inherit; font-size:var(--tx-secondary); font-weight:700; /* v424 UI26 */
   letter-spacing:.04em; cursor:pointer;
 }
 /* 人情分段掣 */
@@ -6734,6 +6785,8 @@ body.day-res-open .day-row{
 }
 #mask.story-play-on .story-play .sp-speaker{
   display:inline-block; background:#E6D9BD; padding:1px 8px; border-radius:2px;
+  /* v424 UI26：名牌收窄至文字寬（flex column 唔再 stretch 成長條），左緣同正文對齊 */
+  align-self:flex-start; width:fit-content; max-width:100%; box-sizing:border-box;
 }
 .story-play .sp-line{ animation:lineIn375 .14s ease-out; }
 @keyframes lineIn375{ from{ opacity:.35; } to{ opacity:1; } }
@@ -6827,7 +6880,7 @@ body.day-res-open .day-row{
 @media (max-width:767px){
   #nb-days{ grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:8px !important; width:100% !important; min-width:0 !important; box-sizing:border-box !important; }
   #nb-days .day-row{ min-height:118px !important; height:auto !important; padding:10px 8px !important; min-width:44px !important; }
-  #nb-days .day-row .wd{ font-size:15px !important; line-height:1.35 !important; }
+  #nb-days .day-row .wd{ font-size:var(--tx-label) !important; line-height:1.3 !important; } /* v424 UI26 */
   #nb-days .day-row .nm .plan-main{ font-size:14px !important; line-height:1.45 !important; }
   .nb-left, .nb-right{ min-width:0 !important; max-width:100% !important; }
 }
@@ -6882,7 +6935,7 @@ body.day-res-open .day-row{
 #app #home-pane-works .tags389-fold #tags-list{ max-height:none; overflow:visible; }
 #app #home-pane-works .tags389-fold #tags-list .jobs72-h{ display:none !important; }
 #app #home-pane-works .tags389-fold #tags-list p,
-#app #home-pane-works .tags389-fold #tags-list .sub{ color:#3a2e22 !important; }
+#app #home-pane-works .sub{ color:var(--ink-secondary-paper) !important; font-size:var(--tx-secondary) !important; } /* v424 UI26 */
 #app #home-pane-works .tags389-fold #tags-list p.gold{
   color:#6b3f0e !important; font-weight:800; letter-spacing:.06em;
   border-bottom:1px solid rgba(107,63,14,.35); padding-bottom:2px;
@@ -6971,7 +7024,7 @@ body.day-res-open .day-row{
    v20a398 UI398-4：頭板唔再做報表工具列——透明貼紙底、冇框冇漸變；總數行縮成一枚紅印紙章。 --- */
 .board-head392{ position:sticky; top:0; z-index:5; background:var(--paper); border:0; border-radius:0; box-shadow:none; padding:4px 2px 6px; margin:0 0 6px; }
 /* v20a399 UI399-5：統計列改剪報標籤——虛線裁邊＋米紙底＋微斜＋紙影，唔再係紅框統計框；同一句，唔改數。 */
-.board-sum392{ display:inline-block; font-weight:800; color:#9E2F2F; font-size:.8rem; border:1.5px dashed #9E2F2F; border-radius:2px; padding:3px 10px; background:linear-gradient(100deg,#fff6dc,#f9edca 75%,#ead8ad); transform:rotate(-1deg); box-shadow:1px 2px 3px rgba(70,50,30,.25); }
+.board-sum392{ display:inline-block; font-weight:800; color:#9E2F2F; font-size:.8rem; border:1.5px dashed #9E2F2F; border-radius:2px; padding:3px 6px; /* v424 UI26：板頭三件同列，總數唔俾公式掣遮 */ background:linear-gradient(100deg,#fff6dc,#f9edca 75%,#ead8ad); transform:rotate(-1deg); box-shadow:1px 2px 3px rgba(70,50,30,.25); }
 .board-sort392, .board-filter392{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:5px; }
 /* v20a397 UI397-3：頂欄縮薄＋排序／篩選各收納成一粒下拉掣（顯示已套用條件）。
    兩粒掣並排一行；選單平時收起（hidden），撳開先展開選項（in-flow，唔疊內容）。
@@ -7000,7 +7053,7 @@ body.day-res-open .day-row{
    嗰條 78dvh 係 !important，同權重下冇 !important 贏唔到（day-res 前例同理）。 */
 #mask.board-tall392 .modal{ max-height:min(92dvh,92svh,780px) !important; }
 .board-cap392{ font-size:.75rem; font-weight:800; color:#6b4e2e; margin-right:2px; }
-.board-chip392{ min-height:26px; padding:1px 9px; border-radius:20px; border:1px solid #a98d4f; background:#fbf4dd; color:#4a3a20; font-size:.75rem; font-weight:700; cursor:pointer; }
+.board-chip392{ min-height:44px; padding:1px 6px; /* v424 UI26 */ border-radius:20px; border:1px solid #a98d4f; background:#fbf4dd; color:#4a3a20; font-size:var(--tx-secondary); font-weight:700; cursor:pointer; } /* v424 UI26：整理選項係操作掣，字 14px＋觸控 44px */
 .board-chip392.on{ background:#8a6d1f; color:#fff8e1; border-color:#8a6d1f; }
 .board-closest392{ flex-basis:100%; font-size:.72rem; font-weight:700; color:#6b4e2e; margin-top:2px; }
 .gig-locked108 summary{ flex-wrap:wrap; }
@@ -7008,7 +7061,7 @@ body.day-res-open .day-row{
 #app .gig-teaser .gt-title{ margin:0 0 4px; }
 #app .gig-teaser .gt-row{ margin:0 0 4px; }
 .gig-teaser.gt-featured{ border:2px solid #c9a227; box-shadow:0 3px 12px rgba(26,20,16,.35), inset 0 0 26px rgba(160,124,32,.15); }
-.gt-featured-tag{ display:inline-block; padding:1px 8px; border-radius:3px; font-size:.68rem; font-weight:900; background:#b3261e; color:#fff8e1; letter-spacing:.14em; transform:rotate(-3deg); margin-left:6px; vertical-align:2px; }
+.gt-featured-tag{ display:inline-block; padding:1px 8px; border-radius:3px; font-size:var(--tx-label); font-weight:900; background:#b3261e; color:#fff8e1; letter-spacing:.14em; transform:rotate(-3deg); margin-left:6px; vertical-align:2px; } /* v424 UI26 */
 /* --- (4) 18 拍攝簿截字：作品頁改整頁捲動——#works-list 唔再係被 flex 夾扁嘅內捲容器，
      拍攝簿標題完整入流；頁底改紙色，等稱號段接返上頁，唔再露深色斷層。稱號段本身唔郁。 --- */
 #app #home-pane-works{ overflow-y:auto; background:#f3e6c8; }
@@ -7192,9 +7245,11 @@ body.day-res-open .day-row{
   -webkit-box-orient:horizontal !important; overflow:visible !important;
 }
 /* (5a) 板頭同一橫列：統計剪報標籤靠左、整理紙籤靠右，唔再上下兩行。 */
-.board-head392{ display:flex !important; align-items:flex-start !important; justify-content:space-between !important; gap:8px !important; }
-.board-head392 .board-sum392{ flex:1 1 auto !important; min-width:0 !important; }
-.board-head392 .board-ctl397{ flex:0 0 auto !important; margin-top:0 !important; }
+/* v425 UI26評級修復：板頭改兩行格——計數獨佔首行（篩選態長字串完整可見，唔俾公式掣遮），
+   公式入口＋整理同列第二行。 */
+.board-head392{ display:grid !important; grid-template-columns:minmax(0,1fr) auto !important; grid-template-areas:"sum sum" "formula ctl" !important; align-items:center !important; gap:4px 8px !important; }
+.board-head392 .board-sum392{ grid-area:sum !important; min-width:0 !important; justify-self:start !important; }
+.board-head392 .board-ctl397{ grid-area:ctl !important; margin-top:0 !important; justify-self:end !important; }
 /* (5b) 整理選單做側邊索引紙：由紙籤拉出、貼右緣、窄身、米紙底＋紅筆剔號（剔號本身
    已喺 v401 .board-chip392.on::after；呢度補紙身，唔再係一列裸掣似表單面板）。 */
 .board-menu397{
@@ -7207,11 +7262,17 @@ body.day-res-open .day-row{
    （.work-csscard59 媒介底色＋角標）做細幅橫式劇照——大字首字＋媒介／劇種，打破等高卡列。
    有海報嗰日 poster59Path 回值再換真圖，呢個 class 到時退場。 */
 .gig-teaser.gt-featured .gt-still402{
-  position:relative; height:62px; border-radius:6px; margin:2px 0 8px; overflow:hidden;
-  display:flex; align-items:center; gap:10px; padding:8px 10px 8px 12px;
+  /* v424 UI26：推介場景圖改卡首側邊縮圖 60px（完整場景圖喺詳情發出人區同場景底） */
+  position:relative; width:60px; height:60px; border-radius:6px; margin:0; overflow:hidden;
+  display:flex; align-items:center; gap:10px; padding:0;
   background:#F2DFBD; border:1px solid rgba(138,48,40,.35);
   box-shadow:inset 0 0 0 3px rgba(255,248,232,.35);
 }
+.gig-teaser.gt-featured{ display:grid; grid-template-columns:60px minmax(0,1fr); column-gap:10px; }
+.gig-teaser.gt-featured .gt-still402{ grid-column:1; grid-row:1 / 3; align-self:start; }
+.gig-teaser.gt-featured > :not(.gt-still402){ grid-column:2; min-width:0; }
+/* v425 UI26評級修復：決策帶同補充行全卡闊，有／無縮圖三欄起點一致，逐張比較唔使重新搵位 */
+.gig-teaser.gt-featured > .gt-meta, .gig-teaser.gt-featured > .gold{ grid-column:1 / -1; }
 .gig-teaser.gt-featured .gt-still402::before{
   content:attr(data-type); position:absolute; top:6px; right:6px;
   font-size:10px; font-weight:800; letter-spacing:.08em; color:#8A3028;
@@ -7306,7 +7367,7 @@ body.day-res-open .day-row{
   font-size:.72rem; font-weight:800; letter-spacing:.14em; padding:2px 8px; pointer-events:none; }
 .awd-next403[hidden]{ display:none !important; }
 /* (4) 推介真劇照：場景圖做主體，右上預留印章位，單一媒介角標。 */
-.gig-teaser.gt-featured .gt-still403{ margin-right:42px; padding:0; align-items:flex-end; }
+.gig-teaser.gt-featured .gt-still403{ margin-right:0; padding:0; align-items:flex-end; } /* v424 UI26：縮圖唔再預留印章闊度 */
 .gt-still403-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
 .gig-teaser.gt-featured .gt-still403 .gt-still402-sub{ position:relative; z-index:1; background:rgba(245,238,219,.88); padding:1px 6px; border-radius:2px; margin:0 0 5px 6px; }
 .gig-teaser.gt-featured .g-seal{ z-index:2; }
@@ -7343,7 +7404,8 @@ body.day-res-open .day-row{
 #home-pane-stats389 .stats389-card{ background:repeating-linear-gradient(180deg,#fbf4dd 0 27px,#e7d9b8 27px 28px) !important; border:1px solid #a98d4f !important; border-radius:4px !important; box-shadow:1px 2px 6px rgba(70,50,30,.25); transform:rotate(-.4deg); }
 #home-pane-stats389 .stats-grid{ grid-template-columns:1fr !important; gap:0 !important; }
 #home-pane-stats389 .stats-grid .stat{ background:transparent !important; border:0 !important; border-bottom:1px dashed rgba(107,83,64,.35) !important; border-radius:0 !important; display:flex; justify-content:space-between; padding:4px 2px !important; font-family:var(--hand363,"LXGW WenKai","Kaiti TC",serif); }
-#home-pane-stats389 .stats-grid .stat .l{ color:#6b4e2e !important; }
+#home-pane-stats389 .stats-grid .stat .l{ color:var(--ink-label-paper) !important; } /* v424 UI26 */
+#home-pane-stats389 .sub{ font-size:var(--tx-secondary) !important; } /* v424 UI26 */
 #home-pane-stats389 .stats-grid .stat .v{ color:#1A1410 !important; }
 /* (6) toast 唔擋暗角撳（純顯示層，撳穿去 mask dismiss）。 */
 #app.mask-up .toast, #app.ui-inert #toast, .toast{ pointer-events:none !important; }
@@ -7355,8 +7417,7 @@ body.day-res-open .day-row{
 #btn-menu{ color:#f7ead0 !important; background:#241a0e !important; border:1px solid rgba(247,234,208,.5) !important; border-radius:6px !important; }
 #app #v-start .start52 .start-sub{ color:#f7ead0 !important; font-weight:900 !important; background:rgba(26,20,16,.62) !important; border-radius:4px !important; padding:2px 10px !important; text-shadow:0 1px 2px rgba(0,0,0,.6) !important; }
 #app #v-start .start52 .start-subrow button{ color:#f7ead0 !important; background:#241a0e !important; border:1px solid #c9a227 !important; font-weight:900 !important; }
-#app .gig-teaser .gt-meta, .gig-teaser .gt-meta{ color:#3d2c1a !important; }
-.gig-teaser .gt-meta-line{ color:#3d2c1a !important; }
+/* v424 UI26：gt-meta／gt-meta-line 顏色已遷移去 token（原 #3d2c1a 宣告刪除） */
 .modal .ending410-title-card .sub, .ending410-scene .sub{ color:#43301c !important; font-weight:700 !important; }
 .season-banner{ color:#43301c !important; }
 .season-banner .season-mark{ opacity:1 !important; color:#5c3a14 !important; }
@@ -7401,14 +7462,14 @@ body.day-res-open .day-row{
 /* (10) 地圖和紙膠紙刪走（用戶實機提問）：裝飾唔可以遮建築／道路／標籤。 */
 #v-map .map-polaroid::after{ display:none !important; }
 @media (max-height:760px){
-  #mask.casting-sheet-on #modal-inner .cn-issuer30v2{ height:168px !important; margin-bottom:-72px !important; }
-  #mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2{ bottom:80px !important; }
+  #mask.casting-sheet-on #modal-inner .cn-issuer30v2{ height:132px !important; margin-bottom:-44px !important; } /* v425：短屏露出面孔（可見帶 88px），決策資訊靠內文密度入首屏 */
+  #mask.casting-sheet-on #modal-inner .cn-issuer-cap30v2{ bottom:48px !important; }
 }
 .story-play .sp-meta{ color:#3d2c1a !important; }
 .debt-row .debt-meta, .debt-row .debt-note, .debt-row .debt-origin, .debt-fuzzy{ color:#43301c !important; }
 .debt-amt{ color:#241a0e !important; font-weight:900 !important; }
 #v-map .map-names68 .mn68{ color:#2a1e10 !important; background:#f7ecc8 !important; }
-.cn-summary .cn-sum-row .k{ color:#43301c !important; }
+/* v424 UI26：cn-sum-row .k 顏色已遷移去 token（原 #43301c 宣告刪除） */
 .awd-next403{ color:#43301c !important; }
 /* (3) 里程碑首屏密度：結局長內容尾段首屏完整（唔縮字，收段距＋行距） */
 .ending375-sheet{ padding:6px 14px 10px !important; }
@@ -7441,7 +7502,7 @@ body.day-res-open .day-row{
 #home-tabs .home-tab{ color:#43301c !important; }
 #app #v-start .start52 .start-sub{ background:rgba(26,20,16,.78) !important; }
 .gig-teaser .gt-hint{ color:#8f1d16 !important; }
-.cn-board-sub{ color:#43301c !important; }
+/* v424 UI26：cn-board-sub 顏色已遷移去 token（原 #43301c 宣告刪除） */
 /* (3a) 手帳書籤移離「過一日」掣角：掣收窄留右邊書籤位，兩者唔疊；地圖高度不變 */
 #v-map #map-end-day, #v-map #map-start-today{ width:calc(100% - 76px) !important; }
 #v-map .map-hint .map-hint-story{ width:calc(100% - 76px) !important; }
@@ -7484,7 +7545,7 @@ body.day-res-open .day-row{
 #modal-inner .gig-card, #modal-inner .cn-contract401, #modal-inner .cn-req-cell{
   box-shadow:none !important; border:1px solid #CDBFA9 !important; border-radius:4px !important;
 }
-#modal-inner .cn-board-sub{ font-size:.72rem !important; }
+#modal-inner .cn-board-sub{ font-size:var(--tx-secondary) !important; } /* v424 UI26 */
 #home-pane-stats389 .stats-grid .stat, #home-pane-ledger .stats-grid .stat{
   background:transparent !important; border:0 !important; border-bottom:1px solid #CDBFA9 !important;
   border-radius:0 !important; box-shadow:none !important; padding:6px 2px !important;
@@ -7555,7 +7616,7 @@ body.day-res-open .day-row{
 }
 @media (max-width:440px) and (max-height:740px){
   #nb-days .day-row{ min-height:80px !important; }
-  #home-pane-plan .nb-range{ line-height:22px !important; }
+  #home-pane-plan .nb-range{ line-height:22px !important; letter-spacing:-.04em !important; } /* v424 UI26 */
 }
 /* (4) 約會場景：拆對白內框改紙上正文、相片貼角、隱背景標籤、收提示留白 */
 #app #mask:not(.tut-on) .modal .date409 .dlg-bubble{ background:transparent !important; border:0 !important; border-radius:0 !important; padding:2px 0 0 !important; }
@@ -7599,8 +7660,8 @@ body.day-res-open .day-row{
 #progress-list .prog71-row.prog71-next412 .prog71-tag.lock{ border-color:#823F35 !important; color:#823F35 !important; font-weight:800 !important; }
 #progress-list .prog71-next142{ margin-top:8px !important; }
 /* N6 詳情算式：主數一行、公式一行（JS 分段），字級略放大、行距放鬆 */
-#modal-inner .board-calc397{ font-family:var(--hand363,"LXGW WenKai","Kaiti TC",serif) !important; font-size:.8rem !important; line-height:1.55 !important; color:#4a3a28 !important; }
-#modal-inner .board-calc397 .calc412-main{ display:block; font-size:.86rem; font-weight:800; color:#33241C; }
+#modal-inner .board-calc397{ font-family:var(--hand363,"LXGW WenKai","Kaiti TC",serif) !important; font-size:var(--tx-secondary) !important; line-height:1.55 !important; color:var(--ink-secondary-paper) !important; } /* v424 UI26：公式唔降級 */
+#modal-inner .board-calc397 .calc412-main{ display:block; font-size:var(--tx-numeric); font-weight:800; color:var(--ink-body-paper); } /* v424 UI26 */
 #modal-inner .board-calc397 .calc412-formula{ display:block; margin-top:1px; }
 /* N8 旁白完成卡：還原印章右邊留白，紅印唔再壓住尾字 */
 #app.toast-up:has(#mask.story-play-on) .toast{ max-width:42% !important; font-size:.78rem !important; }
@@ -7609,7 +7670,7 @@ body.day-res-open .day-row{
 /* N9 次要文字 targeted 放大／加深：槽位、通告卡 meta、報紙小字、頒獎字幕次行 */
 .slot-row .slot-meta{ font-size:.8rem !important; line-height:1.45 !important; }
 .slot-row .slot-tag{ font-size:.74rem !important; }
-.gig-teaser .gt-meta{ font-size:.78rem !important; line-height:1.45 !important; }
+/* v424 UI26：gt-meta 字級已遷移去 --tx-secondary（原 .78rem 宣告刪除） */
 .paper-sheet .np214-dateline{ font-size:12px !important; }
 .paper-sheet .np214-kicker{ font-size:12px !important; }
 .paper-sheet .np214-caption{ font-size:12px !important; }
@@ -7685,14 +7746,14 @@ body.day-res-open .day-row{
   margin-left:auto !important; margin-bottom:0 !important; min-height:44px !important;
   padding:5px 12px !important; background:#EDDFC2 !important; border:1px solid #cbb98d !important;
   border-left:2px solid #823F35 !important; box-shadow:0 2px 0 rgba(70,50,30,.18) !important;
-  font-size:13px !important; white-space:nowrap;
+  font-size:var(--tx-secondary) !important; white-space:nowrap; /* v424 UI26 */
 }
 /* v423 UI25 B7：窄屏手帳頂部收擠迫——plan 組 gap／左 padding 收窄、進度徽章可縮、
    尾 tab 紅圈 inset 收窄，標籤留喺紙邊之內；觸控目標維持 ≥44px。 */
 @media (max-width:430px){
   .hsub-group[data-hsubgroup="plan"]{ gap:12px !important; padding:4px 10px 4px 14px !important; }
   #home-subtabs .hsub-group[data-hsubgroup="plan"] .prog389-badge{
-    font-size:12px !important; padding:5px 8px !important;
+    font-size:var(--tx-secondary) !important; padding:5px 8px !important; /* v424 UI26：窄屏唔縮操作字 */
     max-width:44%; overflow:hidden; text-overflow:ellipsis;
   }
   #home-subtabs .hsub-group[data-hsubgroup="plan"] .home-tab.on::after{
@@ -7717,14 +7778,17 @@ body.day-res-open .day-row{
 #home-pane-stats389 .stats-grid .stat .v.gold414{ color:#8a5a00 !important; }
 /* Q4 hint 分段唔拆字：· 分段各自 nowrap，換行落段界，唔再剩單字孤行 */
 #nb-days .day-row .nm .plan-hint .hint-seg414{ white-space:nowrap; }
+/* v425 UI26評級修復：鎖定日標籤兩段各一行＋短名均衡斷行（唔拆到剩單字）；日期行分段唔拆詞組 */
+#nb-days .day-row .nm .plan-hint-locked425{ display:flex; flex-direction:column; align-items:center; gap:0; line-height:1.3; }
+#nb-days .day-row.locked .nm .plan-main{ word-break:keep-all; overflow-wrap:anywhere; text-wrap:balance; }
+#home-pane-plan .nb-range .nb-seg425{ white-space:nowrap; }
 /* Q7c 編輯區底留邊：捲到底嗰陣頂邊唔切壓力條 */
 #home-pane-plan .nb-right{ padding-bottom:28px !important; }
 /* Q7b 已安排活動籤 */
-.act-item .sel-tag414{ display:inline-block; margin-left:8px; font-size:10px; font-weight:700; color:#fff; background:#823F35; border-radius:3px; padding:1px 5px; line-height:1.4; vertical-align:middle; }
+.act-item .sel-tag414{ display:inline-block; margin-left:8px; font-size:var(--tx-label); font-weight:700; color:#fff; background:#823F35; border-radius:3px; padding:1px 6px; line-height:1.4; vertical-align:middle; } /* v424 UI26 */
 /* Q7 編輯中日子格小籤 */
 #nb-days .day-row{ position:relative; }
-#nb-days .day-row .edit-tag414{ position:absolute; top:3px; left:50%; transform:translateX(-50%); font-size:10px; font-weight:700; color:#fff; background:#823F35; border-radius:3px; padding:1px 5px; line-height:1.4; }
-#nb-days .day-row:nth-child(7) .edit-tag414{ left:auto; right:8px; transform:none; } /* v420：週日闊格小籤靠右，唔遮活動名 */
+/* v425 UI26評級修復：刪「編輯中」小籤樣式（狀態去重，金框＋摘要已講明） */
 /* Q6 印章斜度收細（全高度）：旋轉角唔再俾屏底截走 */
 #nb-actions #btn-confirm-plan.is-locked{ transform:rotate(-3deg) !important; }
 /* Q5 短屏（≤740px）：週格再收少少，星期日頂露出折位做續頁提示 */
@@ -7753,26 +7817,31 @@ body.day-res-open .day-row{
 #home-pane-plan #nb-plan-title{ order:1 !important; }
 #home-pane-plan #nb-plan-mode{ order:2 !important; }
 #home-pane-plan #nb-range{ order:3 !important; }
-#home-pane-plan #nb-suggest400{ order:4 !important; }
-#home-pane-plan #nb-cost400{ order:5 !important; }
-#home-pane-plan #nb-days{ order:6 !important; width:auto !important; }
-#home-pane-plan .nb-right{ order:7 !important; border-top:2px dashed rgba(196,165,116,.55) !important; padding-top:6px !important; }
-#home-pane-plan #nb-quick{ order:8 !important; }
-#home-pane-plan #nb-live-stress{ order:9 !important; }
-#home-pane-plan #stress-scale363{ order:10 !important; }
-#home-pane-plan #nb-stress-detail105{ order:11 !important; }
-#home-pane-plan #nb-progress404{ order:12 !important; }
-#home-pane-plan #plan-teach105{ order:13 !important; }
+/* v424 UI26 首屏次序：標題→模式→範圍→七日格→編輯摘要＋活動區→提示→建議／最近變更→工具→壓力→說明 */
+#home-pane-plan #nb-days{ order:4 !important; width:auto !important; }
+#home-pane-plan .nb-right{ order:5 !important; border-top:2px dashed rgba(196,165,116,.55) !important; padding-top:6px !important; }
+#home-pane-plan #nb-suggest400{ order:7 !important; }
+#home-pane-plan #nb-cost400{ order:8 !important; }
+#home-pane-plan #nb-quick{ order:9 !important; }
+#home-pane-plan #nb-live-stress{ order:10 !important; }
+#home-pane-plan #stress-scale363{ order:11 !important; }
+#home-pane-plan #nb-stress-detail105{ order:12 !important; }
+#home-pane-plan #nb-progress404{ order:13 !important; }
+#home-pane-plan #plan-teach105{ order:14 !important; }
 /* R2 頁首收緊（唔縮字）：標題／模式／範圍邊距收細，週格下限跟內容（84→78，星期日 56→50），
    格距 8→6——編輯入場喺 390／932 見到分類掣，唔使犧牲全週概覽 */
 #home-pane-plan .nb-left .nb-title{ margin-top:2px !important; margin-bottom:2px !important; }
-#home-pane-plan .nb-plan-mode{ padding:1px 8px !important; margin-bottom:2px !important; }
+#home-pane-plan .nb-plan-mode{ padding:1px 8px !important; margin-bottom:2px !important; line-height:1.3 !important; } /* v424 UI26 */
 #home-pane-plan .nb-left .nb-range{ margin-bottom:2px !important; line-height:1.15 !important; }
 #home-pane-plan #nb-days{ gap:3px !important; }
 #home-pane-plan #nb-days .day-row{ min-height:70px !important; } /* v420：76→70，844 入場分類掣同確定掣之間留返呼吸位（觸控仍 ≥44） */
 #home-pane-plan #nb-days .day-row:nth-child(7){ min-height:44px !important; padding:4px 8px !important; }
-#home-pane-plan #nb-right-title{ margin-bottom:2px !important; line-height:1.2 !important; }
-#home-pane-plan .nb-right{ padding-top:4px !important; }
+#home-pane-plan #nb-right-title{ margin-bottom:3px !important; line-height:1.3 !important;
+  /* v424 UI26 編輯摘要籤：紙籤底＋金邊，次文 14px，長名容許換行唔截字 */
+  font-size:var(--tx-secondary) !important; font-weight:800 !important; color:var(--ink-body-paper) !important;
+  background:#fbf3df !important; border:1px solid #b99b62 !important; border-left:4px solid #C9A227 !important;
+  border-radius:3px !important; padding:2px 7px !important; line-height:1.25 !important; letter-spacing:-.02em !important; box-sizing:border-box !important; } /* v424 UI26：長名摘要一行入鏡 */
+#home-pane-plan .nb-right{ padding-top:3px !important; } /* v424 UI26 */
 #home-pane-plan .cat-tab{ padding:4px 2px !important; }
 #home-pane-plan .cat-tab .ci{ font-size:.95rem !important; }
 #home-pane-plan #stress-scale363{ margin-top:12px !important; }
@@ -7791,22 +7860,23 @@ body.day-res-open .day-row{
    707 量度證明全週＋編輯掣幾何上唔可能同屏（週格本身高過紙面），保留兩段式 */
 @media (max-height:740px){
   #v-home .home-top img{ width:44px !important; height:56px !important; }
-  #v-home .memo141{ padding:5px 12px 3px !important; } /* v419：手帳頁首紙條收窄，行程入場多露活動卡 */
-  #v-home .memo141-line{ line-height:1.42 !important; }
+  #v-home .memo141{ padding:3px 12px 2px !important; } /* v424 UI26：短屏頁首再收，紙面高返畀活動卡完整入鏡 */
+  #v-home .memo141-line{ line-height:1.3 !important; }
+  #home-pane-plan .nb-left{ padding-top:2px !important; }
   #home-pane-plan #nb-days .day-row{ min-height:72px !important; }
   #home-pane-plan #nb-days .day-row:nth-child(7){ min-height:42px !important; }
 }
 /* R7 second opinion 覆核修復：編輯態留話簿移去確認掣之下，編輯→確定路徑唔再俾全寬條打斷 */
 .home:has(#btn-confirm-plan:not(.is-locked)) #nb-actions{ order:8 !important; }
-.home:has(#btn-confirm-plan:not(.is-locked)) #home265-row{ order:9 !important; margin-top:6px !important; }
+.home:has(#btn-confirm-plan:not(.is-locked)) #home265-row{ order:9 !important; margin-top:2px !important; } /* v424 UI26：補返 44px 掣高佔位 */
 /* R8 鎖定態週格收緊：唯讀格唔使編輯觸控高度，慳返空間令詳情卡完整入鏡 */
 .home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row{ padding:4px 6px !important; min-height:58px !important; }
 .home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row:nth-child(7){ min-height:38px !important; }
 .home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row .nm{ line-height:1.15 !important; font-size:.84rem !important; }
 .home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row .wd{ font-size:.8rem !important; line-height:1.1 !important; }
 .home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days{ gap:3px !important; }
-.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row .nm small{ font-size:.64rem !important; line-height:1.05 !important; }
-.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row .plan-hint{ font-size:.64rem !important; line-height:1.05 !important; }
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row .nm small{ font-size:var(--tx-footnote) !important; line-height:1.3 !important; } /* v424 UI26：撤鎖定降級 */
+.home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-days .day-row .plan-hint{ font-size:var(--tx-secondary) !important; line-height:1.3 !important; } /* v424 UI26：鎖定 hint 同一般提示同級可讀 */
 .home:has(#btn-confirm-plan.is-locked) #home-pane-plan .nb-title{ margin-bottom:0 !important; }
 .home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-mode{ margin-top:1px !important; margin-bottom:1px !important; }
 .home:has(#btn-confirm-plan.is-locked) #home-pane-plan #nb-range{ margin-top:0 !important; margin-bottom:2px !important; }
@@ -7817,7 +7887,7 @@ body.day-res-open .day-row{
 #home-pane-plan #nb-progress404{ margin-top:24px !important; } /* v415 batch3：banner 推落折位之下，撳格後折位落刻度與 banner 之間，唔露半截字 */
 #home-pane-plan .cat-tabs{ margin-bottom:3px !important; }
 #home-pane-plan .cat-tabs button{ padding-top:2px !important; padding-bottom:2px !important; } /* v419：分類掣收窄，活動卡早啲入鏡（觸控高由 min-height 保底） */
-#home-pane-plan .act-item{ padding:5px 9px !important; }
+#home-pane-plan .act-item{ padding:4px 9px !important; } /* v424 UI26 */
 #home-pane-plan #nb-quick{ margin-top:2px !important; }
 #home-pane-plan #nb-live-stress{ margin-top:2px !important; }
 #home-pane-plan .act-list{ padding-bottom:2px !important; }
@@ -7845,24 +7915,39 @@ body.day-res-open .day-row{
 .ward-lock415{ white-space:nowrap; }
 /* v416 batch2：second opinion 覆核修復 */
 .gig-teaser .gt-badge, .gig-teaser .notice_tag_recruiting{ outline:none !important; background:rgba(179,38,30,.08) !important; border-width:1.5px !important; }
-.gig-teaser .gt-more416{ float:right; font-weight:800; color:#7a3b12; }
+.gig-teaser .gt-more416{ margin-left:auto; font-weight:800; color:#7a3b12; white-space:nowrap; } /* v424 UI26：固定指示取代右浮動文字 */
 .gig-board-list{ -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 24px),rgba(0,0,0,.35)) !important; mask-image:linear-gradient(180deg,#000 calc(100% - 24px),rgba(0,0,0,.35)) !important; }
 #nb-days .day-row:nth-child(7){ align-items:flex-start !important; }
 #home-pane-plan #nb-quick{ max-width:230px !important; }
-.stress-scale363 .ss363-lab{ font-size:11px !important; font-weight:800 !important; color:#7a2a1e !important; }
+.stress-scale363 .ss363-lab{ font-weight:800 !important; color:var(--ink-on-stamp) !important; } /* v424 UI26：字級由 label token 統一，原 11px 宣告刪除 */
 #home-subtabs .prog389-badge{ border-width:1px !important; box-shadow:none !important; font-weight:700 !important; }
 .cost-pick416{ color:#7a4d12 !important; }
 .cost-lock416{ color:#8a7a5f !important; }
 #clothing-shop265-list{ -webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 22px),rgba(0,0,0,.4)) !important; mask-image:linear-gradient(180deg,#000 calc(100% - 22px),rgba(0,0,0,.4)) !important; }
 .story-play .sp-text{ padding-right:14px !important; }
-/* v416 batch3：編輯入場週格微收，分類掣離開紙面底漸隱 */
-.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days{ gap:2px !important; }
-.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row{ min-height:66px !important; } /* v420：73→66，844 入場分類掣離紙面底漸隱再遠啲 */
-.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row:nth-child(7){ min-height:44px !important; }
+/* v416 batch3：編輯入場週格微收，分類掣離開紙面底漸隱
+   v424 UI26：編輯態週格改四欄兩行緊湊格（觸控仍 >=44；活動全名喺編輯摘要同格內照出，
+   長名容許換行令格身長高，唔截字）——707 首屏同屏見七日格＋摘要＋分類＋首張活動卡。 */
+.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days{ grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:3px 4px !important; padding-top:6px !important; }
+.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row{ display:grid !important; grid-template-columns:minmax(0,1fr) auto; grid-template-rows:auto auto; align-items:start; min-height:46px !important; padding:4px 5px 3px !important; gap:1px 4px !important; }
+.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row:nth-child(7){ grid-column:span 2 !important; min-height:46px !important; }
+.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row .wd{ grid-column:1 !important; grid-row:1 !important; justify-self:start !important; text-align:left !important; }
+.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row .nb-stk362,
+.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row .ic{ grid-column:2 !important; grid-row:1 !important; width:18px !important; height:18px !important; justify-self:end !important; }
+.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row .nm{ grid-column:1 / -1 !important; grid-row:2 !important; text-align:center !important; }
+/* v425：編輯中索引籤已刪（見上） */
+.home:has(#btn-confirm-plan:not(.is-locked)) #home-pane-plan #nb-days .day-row:nth-child(7) .nm{ text-align:left !important; justify-self:start !important; } /* v424 UI26：週日闊格活動名同其他格一樣靠左 */
+/* v425：編輯中籤已刪，選中格唔再額外落 padding */
 /* S4 週日寬格圖示同其他格一致（右上角） */
 #nb-days .day-row .ic, #nb-days .day-row .nb-stk362{ order:3 !important; } /* v416：週日寬格（flex 列）圖示排最右，同其他格右上一致；grid 格用 grid-column 定位，order 無副作用 */
 /* R14 通告欄 lead 計法行：獨立一行，字級略細同主行分層 */
-.board-lead-formula415{ font-size:.86em !important; opacity:.85 !important; }
+.board-lead-formula415{ font-size:var(--tx-secondary) !important; } /* v424 UI26：撤公式降級（原 .86em＋opacity .85 刪除） */
+/* v424 UI26：公式收埋入口（板頭同區），展開先出公式全文；v425：入口改書面語「預期日薪如何計算」，置板頭第二行 */
+.board-formula424{ grid-area:formula; justify-self:start; min-width:0; }
+.board-formula424 summary{ min-height:44px; display:flex; align-items:center; padding:4px 6px; /* v424 UI26 */ cursor:pointer; font-size:var(--tx-secondary); font-weight:800; color:var(--ink-body-paper); background:#fbf3df; border:1px solid #b99b62; border-radius:3px; box-shadow:0 1px 0 rgba(107,78,46,.35); list-style:none; }
+.board-formula424 summary::-webkit-details-marker{ display:none; }
+.board-formula424 .board-lead-formula415{ display:block; padding:4px 2px 0; }
+.board-formula424:not([open]) .board-lead-formula415{ display:none; } /* v424 UI26：收起時唔佔幾何 */
 /* R15 衣櫃項目資料行均衡斷行，避免單字孤行 */
 #home-pane-wardrobe .wardrobe265-row .h{ text-wrap:pretty !important; line-break:strict !important; }
 /* R16 batch3：鎖定態明細文字加深（灰字疊淺金底難讀）；短屏明細標題做續頁提示、卡身唔露半截 */
@@ -7874,13 +7959,11 @@ body.day-res-open .day-row{
 /* R17 batch3：衣櫃未合要求標示加強掃讀 */
 #home-pane-wardrobe .ward-lock415{ color:#a33b2a !important; font-weight:700 !important; }
 /* R20 batch4：活動列表推落少少，折位唔露下一張卡頂邊；短屏留話簿收細畀紙面高返；未選子頁再加深 */
-#home-pane-plan .act-list{ margin-top:6px !important; }
+#home-pane-plan .act-list{ margin-top:3px !important; } /* v424 UI26 */
 #home-subtabs .hsub-group .home-tab:not(.on){ color:#5f4a2e !important; }
-@media (max-height:740px){
-  .home:has(#btn-confirm-plan:not(.is-locked)) #home265-row button{ min-height:36px !important; padding-top:4px !important; padding-bottom:4px !important; }
-}
+/* v424 UI26：短屏唔再縮瞓覺／留話簿掣（觸控目標維持 44px，舊 36px 規則刪除） */
 /* R19 batch3：通告欄總數行保單行（整理掣加排序名後唔折「張」孤字） */
-.board-sum392{ font-size:.72rem !important; white-space:normal !important; line-height:1.35 !important; text-wrap:balance !important; word-break:keep-all !important; } /* v416：篩選後總數行唔再俾整理掣截字，折行均衡唔留孤字 */
+.board-sum392{ font-size:var(--tx-secondary) !important; white-space:normal !important; line-height:1.4 !important; text-wrap:balance !important; word-break:keep-all !important; } /* v416：篩選後總數行唔再俾整理掣截字，折行均衡唔留孤字；v424 UI26：總數係決策資訊，次文 14px */
 /* R18 batch3：地圖選單紙本化，同手帳／紙籤同一世界 */
 #v-map .menu{ background:#f7efdb !important; border:1px solid #c9b183 !important; box-shadow:0 6px 18px rgba(40,28,16,.35) !important; }
 #v-map .menu button{ color:#2e2118 !important; }
@@ -7889,7 +7972,7 @@ body.day-res-open .day-row{
 .gt-pay404{ font-size:.95rem !important; font-weight:700 !important; color:#8a4a20 !important; }
 .bc-seg417{ white-space:nowrap !important; }
 /* T3 壓力刻度：現時標籤＋高峰低壓時綠色，同摘要行顏色一致 */
-.stress-scale363 .ss363-lab.start{ color:#5a4632 !important; }
+.stress-scale363 .ss363-lab.start{ color:var(--ink-secondary-paper) !important; } /* v424 UI26 */
 .stress-scale363 .ss363-peak.low{ background:#2e5d3a !important; }
 .stress-scale363 .ss363-lab.low{ color:#2e5d3a !important; }
 /* T4 確認彈窗：返去揀過做次要掣，唔同確定搶焦點 */
@@ -7920,7 +8003,7 @@ body.day-res-open .day-row{
 .nowrap417{ white-space:nowrap !important; }
 .sick-nowrap417{ white-space:nowrap !important; }
 /* T2 詳情流程小字 */
-.cn-flow417{ margin:2px 0 0 !important; font-size:.78rem !important; color:#5a4632 !important; line-height:1.5 !important; }
+.cn-flow417{ margin:2px 0 0 !important; font-size:var(--tx-secondary) !important; color:var(--ink-secondary-paper) !important; line-height:1.5 !important; } /* v424 UI26 */
 /* ===== v20a415 UI415 完 ===== */
 /* ===== v418 UI418：第二十二輪 self-review 修復（只改呈現） ===== */
 /* U1 子頁籤視覺統一：進度徽章改紙標籤手寫字，同子頁籤同一紙本語言（佈局不變） */
@@ -7937,8 +8020,8 @@ body.day-res-open .day-row{
 .prog420-scrollhint{ font-size:12px; padding:3px 10px; background:rgba(251,243,223,.94); margin:4px auto 0; width:fit-content; pointer-events:none; } /* v420：進度抽屜捲動提示放列表下方，唔遮任何文字 */
 #progress-list{ padding-bottom:44px; } /* v420：捲到底嗰陣尾行唔俾提示籤遮住 */
 /* U5 壓力刻度加 0／100 端標 */
-.stress-scale363 .ss363-track::before{ content:"0"; position:absolute; left:0; top:14px; font-size:9px; color:#7a5c33; }
-.stress-scale363 .ss363-track::after{ content:"100"; position:absolute; right:0; top:14px; font-size:9px; color:#7a5c33; }
+.stress-scale363 .ss363-track::before{ content:"0"; position:absolute; left:0; top:14px; font-size:var(--tx-label); color:var(--ink-secondary-paper); } /* v424 UI26 */
+.stress-scale363 .ss363-track::after{ content:"100"; position:absolute; right:0; top:14px; font-size:var(--tx-label); color:var(--ink-secondary-paper); } /* v424 UI26 */
 /* U6 通告整理選單改覆蓋式下拉，唔再擠走列表留大片空白 */
 .board-sort392{ position:relative; }
 .board-menu397{ position:absolute !important; right:0; top:calc(100% + 4px); z-index:8; transform:rotate(-.6deg); box-shadow:0 6px 18px rgba(58,42,18,.35) !important; }
@@ -11689,6 +11772,7 @@ window.__spApplyBgPhotos = function(root){
           try{
             el.style.backgroundImage = 'url("' + url.replace(/"/g, "%22") + '")';
             el.classList.add("has-photo");
+            try{ if(typeof spFg424ApplyBg==="function") spFg424ApplyBg(el, url, im.naturalWidth, im.naturalHeight); }catch(_e424){} /* v424 UI26 */
           }catch(_e){}
         };
         im.onerror = tryNext;
@@ -11698,6 +11782,59 @@ window.__spApplyBgPhotos = function(root){
     });
   }catch(_e){}
 };
+
+/* ===== v424 UI26 劇情融合：局部調色強度＋枱沿前景錨點 =====
+   調色強度按場景背景圖平均亮度分級（實測 bg_loc_*.jpg：>=170 用 .10、130-170 用 .08、
+   100-130 用 .05、<100 用 0 深色場景唔調）；非相片底（漸變佔位）一律 0。
+   枱沿錨點：bg_loc_agency_ho 枱面前緣喺圖高 0.915（720x1280 圖三欄邊緣掃描中位），
+   前景層用同圖同 cover 像素對位，clip 頂邊＝錨點映射到舞台嘅 y。其他場景未量度錨點，
+   唔出前景層（交美術／跟進票補獨立前景或逐場量度）。 */
+const SP_GRADE424 = { bg_loc_ad_adm:.08, bg_loc_ad_central:.08, bg_loc_agency_ho:.08, bg_loc_cafe_cha:.05,
+  bg_loc_clothing_shop:.10, bg_loc_film_cotton:.05, bg_loc_film_harbour:.05, bg_loc_film_lion:.05,
+  bg_loc_gift_shop:0, bg_loc_hospital:.08, bg_loc_rec_hk:.05, bg_loc_rec_star:.10, bg_loc_rec_wanchai:.08,
+  bg_loc_tvb_harbour:.10, bg_loc_tvb_kowloon:.08, bg_loc_tvb_longmen:.08 };
+const SP_FG424_ANCHOR = { bg_loc_agency_ho: 0.915 };
+function spFg424BgClassOf(el){
+  try{
+    const m = String(el.className||"").match(/bg_[a-z0-9_]+/i);
+    return m ? m[0] : "";
+  }catch(_e){ return ""; }
+}
+function spFg424ApplyBg(bgEl, url, natW, natH){
+  try{
+    const stage = bgEl.closest(".sp-stage");
+    if(!stage) return;
+    const cls = spFg424BgClassOf(bgEl);
+    const grade = stage.querySelector(".sp-grade424");
+    if(grade) grade.style.setProperty("--sp-grade424", String(SP_GRADE424[cls] != null ? SP_GRADE424[cls] : 0));
+    const fg = stage.querySelector(".sp-fg424");
+    if(!fg) return;
+    const f = SP_FG424_ANCHOR[cls];
+    if(f == null || !natW || !natH){ fg.style.display = "none"; return; }
+    fg.dataset.sp424Url = url; fg.dataset.sp424NatW = String(natW); fg.dataset.sp424NatH = String(natH); fg.dataset.sp424F = String(f);
+    spFg424Layout(fg);
+  }catch(_e){}
+}
+function spFg424Layout(fg){
+  try{
+    const stage = fg.closest(".sp-stage");
+    if(!stage) return;
+    const W = stage.clientWidth, H = stage.clientHeight;
+    const natW = Number(fg.dataset.sp424NatW)||0, natH = Number(fg.dataset.sp424NatH)||0, f = Number(fg.dataset.sp424F);
+    if(!W || !H || !natW || !natH || !(f >= 0)) return;
+    const scale = Math.max(W/natW, H/natH);
+    const dispW = natW*scale, dispH = natH*scale;
+    const offX = (W-dispW)/2, offY = (H-dispH)/2; /* background-position:center */
+    fg.style.display = "";
+    fg.style.backgroundImage = 'url("' + String(fg.dataset.sp424Url||"").replace(/"/g, "%22") + '")';
+    fg.style.backgroundSize = dispW.toFixed(2) + "px " + dispH.toFixed(2) + "px";
+    fg.style.backgroundPosition = offX.toFixed(2) + "px " + offY.toFixed(2) + "px";
+    fg.style.clipPath = "inset(" + Math.max(0, offY + f*dispH).toFixed(2) + "px 0 0 0)";
+  }catch(_e){}
+}
+try{
+  window.addEventListener("resize", ()=>{ try{ document.querySelectorAll(".sp-fg424").forEach(spFg424Layout); }catch(_e){} });
+}catch(_e){}
 
 /* ===== v20a106 DLG106 對話呈現層（雙人全身企立＋表情＋視線）=====
    規格：底本 linji-fullbody-regen 樣本（390×844、人物高 50%、講者 brightness(1)／
@@ -13255,7 +13392,7 @@ const StoryPlay = (()=>{
       const halo119 = stem119
         ? `<img class="dlg119-halo ${slot.pos}" src="${esc(dlg119HaloUrl(stem119))}" alt="" data-dlg-id="${esc(slot.id)}" draggable="false" style="z-index:2" onerror="this.style.visibility='hidden'"/>`
         : "";
-      return halo119 + `<img class="dlg106-char ${slot.pos}${slot.flip?" dlg106-flip":""}" src="${esc(cands[0])}" alt="" data-dlg-id="${esc(slot.id)}"${stem119?" data-dlg119-shadow=\"1\"":""} data-dlg-fallbacks="${esc(cands.slice(1).join("|"))}" draggable="false" style="filter:brightness(${bright});z-index:${z}" onload="try{window.__dlg108Fit&&window.__dlg108Fit(this)}catch(_e){}" onerror="try{window.__dlg106Err&&window.__dlg106Err(this)}catch(_e){}"/>`;
+      return halo119 + `<img class="dlg106-char ${slot.pos}${slot.flip?" dlg106-flip":""}" src="${esc(cands[0])}" alt="" data-dlg-id="${esc(slot.id)}"${stem119?" data-dlg119-shadow=\"1\"":""} data-dlg-fallbacks="${esc(cands.slice(1).join("|"))}" draggable="false" style="--speaker-brightness:${bright};z-index:${z}" onload="try{window.__dlg108Fit&&window.__dlg108Fit(this)}catch(_e){}" onerror="try{window.__dlg106Err&&window.__dlg106Err(this)}catch(_e){}"/>`;
     }).join("");
     return html ? `<div class="dlg106-chars" aria-hidden="true">${html}</div>` : "";
   }
@@ -13593,7 +13730,9 @@ const StoryPlay = (()=>{
         stageBody = `<div class="sp-stage sp-mode-narration${charsNar106?" dlg106-on":""}" data-sp-kind="system">
           <div class="sp-bg-layer ${esc(bgClass)}" data-sp-bg-fallbacks="${bgDataS}" aria-hidden="true"></div>
           <div class="sp-bg-scrim" aria-hidden="true"></div>
+          <div class="sp-grade424" aria-hidden="true"></div>
           ${charsNar106}
+          <div class="sp-fg424" aria-hidden="true"></div>
           <div class="sp-stage-inner">
             <div class="sp-plate sp-plate-narration105 dlg106-plate">
               <div class="sp-line sp-narration">${esc(cur.text)}</div>
@@ -13610,7 +13749,9 @@ const StoryPlay = (()=>{
         stageBody = `<div class="sp-stage sp-mode-dialogue dlg106-on" data-sp-kind="dialogue" data-speaker-id="${esc(cur.speakerId||"")}">
           <div class="sp-bg-layer ${esc(bgClass)}" data-sp-bg-fallbacks="${bgDataD}" aria-hidden="true"></div>
           <div class="sp-bg-scrim" aria-hidden="true"></div>
+          <div class="sp-grade424" aria-hidden="true"></div>
           ${chars106}
+          <div class="sp-fg424" aria-hidden="true"></div>
           <div class="sp-stage-inner">
             <div class="sp-plate dlg106-plate${cur.dlgPhone?" dlg106-plate-phone":""}">
               <div class="sp-speaker${cur.dlgPhone?" dlg106-phone-name":""}">${esc(name106)}</div>
@@ -20898,7 +21039,7 @@ function gigApplyDeadlineText(g){
   const n=gigApplyDeadlineDays(g);
   if(n==null) return "";
   /* v20a105 UI105 S-31：唔再寫「報名截止 X 日 · 招募完結」（易讀成已經完結） */
-  return `仲有 ${n} 日截止`;
+  return `尚有${n}日截止`; /* v425：非對白改書面語＋詞組唔拆 */
 }
 function gigCastPeriodLine(g, opts105){
   if(!g) return "";
@@ -21009,6 +21150,59 @@ function gigGapBoardLine37(g){
   if(gigGapFar37(g)) return "長遠目標 · 暫未及（點開睇詳情）";
   return gigGapLine34(g);
 }
+/* v424 UI26：短卡要求摘要——主要門檻＋目前值；鎖定差額貼回要求欄；多項標「另有 N 項」。
+   只讀現有門檻資料（fameFloor／req／industryCreditMin），唔改判定。 */
+function gigReqSummary424(g){
+  try{
+    const bits=[];
+    const floor=(typeof fameFloor==="function")?fameFloor(g):0;
+    if(floor>0) bits.push({label:(typeof STAT_LABEL!=="undefined"&&STAT_LABEL.fame)||"幕前聲望", cur:Number(S&&S.fame)||0, need:floor});
+    Object.entries((g&&g.req)||{}).forEach(([k,v])=>{ bits.push({label:(typeof STAT_LABEL!=="undefined"&&STAT_LABEL[k])||k, cur:Number(S&&S[k])||0, need:Number(v)||0}); });
+    try{
+      if(g && g.industryCreditMin!=null && g.industryCreditMin!=="" && Number(g.industryCreditMin)>0){
+        let cur=0;
+        try{ const dual=(typeof readDualTracks==="function")?readDualTracks(S):null; cur=dual?Number(dual.industryCredit)||0:(Number(S&&S.industryCredit)||0); }catch(_e){ cur=Number(S&&S.industryCredit)||0; }
+        bits.push({label:"業內信用", cur:cur, need:Number(g.industryCreditMin)});
+      }
+    }catch(_e){}
+    /* v425 UI26評級修復：要求分段逐行（段內唔拆「目前／70」），窄欄掃讀唔再斷詞組 */
+    const seg425=(segs)=>({text:segs.join(" · "), html:segs.map(s=>`<span class="gt-seg425">${s}</span>`).join("")});
+    if(!bits.length){
+      /* 無可比較數值：可接就寫明無額外要求；鎖定就沿用原鎖定原因文字 */
+      try{ if(typeof canAudition==="function" && !canAudition(g).ok) return {text:gigLockReasonLine(g), html:gigLockReasonLine(g), locked:true}; }catch(_e){}
+      return Object.assign(seg425(["無額外要求"]), {locked:false});
+    }
+    const gaps=bits.filter(b=>b.cur<b.need);
+    if(gaps.length){
+      if(typeof gigGapFar37==="function" && gigGapFar37(g)) return Object.assign(seg425(["長遠目標","暫未及"]), {locked:true});
+      gaps.sort((a,b)=>((b.need-b.cur)-(a.need-a.cur)) || String(a.label).localeCompare(String(b.label)));
+      const b=gaps[0];
+      const segs=[`${b.label}要求${b.need}`,`目前${b.cur}`,`尚欠${b.need-b.cur}`];
+      if(gaps.length>1) segs.push(`另有${gaps.length-1}項`);
+      return Object.assign(seg425(segs), {locked:true});
+    }
+    bits.sort((a,b)=>((a.cur-a.need)-(b.cur-b.need)) || String(a.label).localeCompare(String(b.label)));
+    const b=bits[0];
+    const segs=[`${b.label}要求${b.need}`,`目前${b.cur}`];
+    if(bits.length>1) segs.push(`另有${bits.length-1}項`);
+    return Object.assign(seg425(segs), {locked:false});
+  }catch(_e){ return {text:"", html:"", locked:false}; }
+}
+/* v424 UI26：短卡檔期摘要——只用現有資料可支持嘅排期（日數／逢週幾／截止／獲聘後期限），唔虛構日期。 */
+function gigSchedSummary424(g){
+  try{
+    const parts=[];
+    const verb=(typeof gigScheduleVerb==="function")?gigScheduleVerb(g):"拍攝";
+    let daysN=null;
+    try{ daysN=effectiveShootDays(g); }catch(_e){}
+    if(daysN!=null) parts.push(`${verb}約${daysN}日`);
+    try{ const hint424=(typeof gigCastingWeekdayHint==="function")?gigCastingWeekdayHint(g):""; const lab=hint424?(hint424+verb):shootWeekdayLabel(effectiveShootWeekdays(g), g); if(lab) parts.push(lab); }catch(_e){} /* v424 UI26：連續日用「逢週一至五」短寫，窄欄唔逐字折 */
+    try{ const at=gigApplyDeadlineText(g); if(at) parts.push(at); }catch(_e){}
+    try{ const ddl=effectiveShootDeadlineDays(g, effectiveShootDays(g)); if(ddl) parts.push(`聘後${ddl}日內完成`); }catch(_e){} /* v425：短寫令完整詞組入欄唔拆 */
+    /* v425 UI26評級修復：檔期逐段一行，完整詞組唔拆（「拍攝約4日」唔再斷「日」） */
+    return parts.map(s=>`<span class="gt-seg425">${s}</span>`).join("");
+  }catch(_e){ return ""; }
+}
 function gigBoardTeaserHtml(g, opts){
   opts=opts||{};
   /* 通告欄短卡；點開先出招募單 Detail */
@@ -21035,29 +21229,31 @@ function gigBoardTeaserHtml(g, opts){
   /* v20a392：片酬／日數／成功率併做一行；鎖定卡唔出假成功率。
      容器／行 class 唔變（S-30 測試釘）。
      v20a403：推介卡 meta 首項出總片酬。 */
+  /* v424 UI26：短卡三欄決策帶——片酬／要求／檔期固定次序＋文字標籤；成功率降補充行。
+     容器 .gt-meta＋補充行 .gt-meta-line 保留（S-30 測試釘）；片酬值同單位沿用 gigPayExactText。 */
   let metaLine392 = "";
   {
     const payTxt=gigPayExactText(g, {card:true});
-    let daysN=null;
-    try{ daysN=effectiveShootDays(g); }catch(_e){}
     let exp396 = null;
     try{ if(typeof board392ExpDaily==="function") exp396 = board392ExpDaily(g); }catch(_e){}
     let sortIsExp396 = false;
     try{ sortIsExp396 = (typeof _boardSort392!=="undefined") && _boardSort392==="exp"; }catch(_e){}
-    const bits392=[];
-    /* v20a396：預期日薪排序嗰陣可接卡出「預期 $X／日」，
-       鎖定卡／其他排序出片酬總額。typeof 守衛防沙盒未定義。
-       （計法見板頭 lead 行。）
-       */
-    /* v20a404 UI404-5：推介卡片酬獨立一行大字（第一眼可見），唔同日數／成功率擠同一行。 */
-    if(opts.featured && payTxt) bits392.push(`<span class="gt-pay404">片酬 ${payTxt}</span>`) /* v417：推介卡同普通卡同一欄名，唔再似兩種數字 */;
-    if(payTxt && !opts.featured) bits392.push(`片酬 ${payTxt}`); /* v416：所有卡都出總片酬，同推介卡一眼可比 */
-    if(boardState==="ready" && sortIsExp396 && exp396!=null && exp396>0) bits392.push(`<span class="gt-exp416">預期 $${Math.round(exp396)}／日</span>`);
-    if(daysN!=null) bits392.push(`${daysN} 日`);
+    const payVal424 = payTxt
+      ? (opts.featured ? `<span class="gt-pay404">${payTxt}</span>` : payTxt) /* v417：推介卡同普通卡同一欄名 */
+      : "—";
+    const expHtml424 = (boardState==="ready" && sortIsExp396 && exp396!=null && exp396>0)
+      ? `<span class="gt-exp416">預期 $${Math.round(exp396)}／日</span>` : "";
+    const req424 = gigReqSummary424(g);
+    const sched424 = gigSchedSummary424(g);
+    let supp424 = "";
     if(boardState==="ready"){
-      try{ if(typeof chance==="function") bits392.push(`成功率約 ${Math.round(chance(g)*100)}%`); }catch(_e){} /* v20a398 UI398-4：列表成功率加「約」（計法行註明用精確值，見 openCastingNoticeDetail）；v415 batch3：就地標明係成功率 */
+      try{ if(typeof chance==="function") supp424 = `成功率約 ${Math.round(chance(g)*100)}%`; }catch(_e){} /* v20a398 UI398-4：成功率加「約」 */
     }
-    if(bits392.length) metaLine392 = bits392.join("｜");
+    metaLine392 = `<div class="gt-band424">`
+      + `<div class="gt-col424"><span class="gt-lab424">片酬</span><span class="gt-val424">${payVal424}</span>${expHtml424}</div>`
+      + `<div class="gt-col424"><span class="gt-lab424">要求</span><span class="gt-val424" data-req424="${req424.locked?"locked":"ready"}">${req424.html||req424.text}${(boardState==="locked"&&opts.closest)?`<span class="gt-closest">最接近</span>`:""}</span></div>`
+      + `<div class="gt-col424"><span class="gt-lab424">檔期</span><span class="gt-val424">${sched424}</span></div>`
+      + `</div><div class="gt-meta-line">${supp424?`<span>${supp424}</span>`:""}<span class="gt-more416">查看詳情 ›</span></div>`;
   }
   /* v20a392：lifeKey／boardState 已搬上 meta-line 區塊之前（見上），呢度唔再重複聲明。 */
   const castCopy = phase3CastCopy();
@@ -21071,13 +21267,8 @@ function gigBoardTeaserHtml(g, opts){
   try{ const fh = (typeof favor158ChannelHintHtml==="function") ? favor158ChannelHintHtml(g) : ""; if(fh) favor158Html = fh; }catch(_e){}
   /* v20a34 引導包 P0-1：鎖定短卡直接列差額，唔使逐張點入詳情先知欠幾多；
      齊條件（ready）卡唔加字。opts.closest 由 doScout 計（全板差額最少嗰張）先傳入。 */
+  /* v424 UI26：鎖定差額＋「最接近」已貼回要求欄（見上面決策帶），唔再另開差額行。 */
   let gapHtml = "";
-  if(boardState==="locked"){
-    try{
-      const gl = (typeof gigGapBoardLine37==="function") ? gigGapBoardLine37(g) : gigGapLine34(g);
-      if(gl) gapHtml = `<div class="gt-gap">${gl}${opts.closest?`<span class="gt-closest">最接近</span>`:""}</div>`;
-    }catch(_e){}
-  }
   /* v20a372 成功率已經併入上面一行 meta（v392），呢度唔再另出成功率行。 */
   /* v20a229 B5 觸發標籤：已觸發上板嘅通告標「引薦」（credit）／「邀約」（其餘五種）；
      未觸發嘅根本唔會入板，呢度唔使再驗。 */
@@ -21104,7 +21295,7 @@ function gigBoardTeaserHtml(g, opts){
     ${still402}
     <div class="gt-title">${work}${featured392 ? `<span class="gt-featured-tag">推介</span>` : ""}</div>
     <div class="gt-row">${genrePills396}${trigPill}<span class="${badgeCls}">${badgeText}</span></div>
-    ${metaLine392?`<div class="gt-meta"><div class="gt-meta-line">${metaLine392}<span class="gt-more416">查看詳情 ›</span></div></div>`:""}
+    ${metaLine392?`<div class="gt-meta">${metaLine392}</div>`:""}
     ${intelMark}
     ${favor158Html}
     ${gapHtml}
@@ -21436,7 +21627,7 @@ function castingNoticeDetailHtml(g){
   const payStr=gigPayExactHtml(g);
   const breachStr=gigBreachFeeHtml(g);
   /* v20a108 UI108 S-33：簽約金數字行升上摘要區（獲聘後即收；v20a115 更正：簽約金只喺公佈獲聘嗰刻入帳，見 aud91PresentOne「公佈嗰刻即付」，接通告嗰刻唔入帳）；違約金只喺有數嗰陣先出。 */
-  const signFee108=(()=>{ try{ const ex=gigPayExact(g); return (ex!=null && ex>0) ? ("約 $"+Math.round(ex*0.3).toLocaleString()+"（片酬三成，獲聘後即收）") : "合約額三成（獲聘後即收）"; }catch(_e){ return "合約額三成（獲聘後即收）"; } })();
+  const signFee108=(()=>{ try{ const ex=gigPayExact(g); return (ex!=null && ex>0) ? ("約 $"+Math.round(ex*0.3).toLocaleString()+"（獲聘後即收）") : "合約額三成（獲聘後即收）"; }catch(_e){ return "合約額三成（獲聘後即收）"; } })(); /* v425：三成口徑由試鏡段流程句承載，合約格唔重複 */
   const breachRow108=(()=>{ try{ return (typeof gigBreachFee==="function" && gigBreachFee(g)!=null) ? `<div class="cn-sum-row"><span class="k">違約金</span><span class="v">${breachStr}</span></div>` : ""; }catch(_e){ return ""; } })();
   /* v20a117 S-30 DEDUP117：condParts（詳細區「條件」表）隨詳細區刪除——同摘要區
      要求格（reqGridHtml，現／要對照）同一組數，只係冇現值，純重複。 */
@@ -21448,7 +21639,9 @@ function castingNoticeDetailHtml(g){
   const roleLabel30v2 = (typeof gigRoleLabelText==="function") ? gigRoleLabelText(g) : "";
   /* 注意：呢度在 starHtml 起出之前執行，故星星由 stars.n 即場砌，唔讀 starHtml（避 TDZ）。 */
   const starsGlyph30v2 = Array.from({length:5},(_,i)=> i<stars.n ? "★" : "☆").join("");
-  const starsRoleRow30v2 = `<div class="cn-stars-role30v2"><span class="cn-lab-inline">難易度</span><span class="cn-stars" role="img" aria-label="難易度 ${stars.n} 星">${starsGlyph30v2}</span>${roleLabel30v2?`<span class="cn-role30v2"><span class="k">角色職位</span><span class="v">${roleLabel30v2}</span></span>`:""}</div>`;
+  /* v424 UI26：角色職位入「角色與要求」、難易度入「試鏡與接單」（原合併行拆開，class 保留） */
+  const starsRoleRow30v2 = roleLabel30v2 ? `<div class="cn-stars-role30v2"><span class="cn-role30v2"><span class="k">角色職位</span><span class="v">${roleLabel30v2}</span></span></div>` : "";
+  const difficultyRow424 = `<div class="cn-stars-role30v2"><span class="cn-lab-inline">難易度</span><span class="cn-stars" role="img" aria-label="難易度 ${stars.n} 星">${starsGlyph30v2}</span></div>`;
   const reqGridHtml = (()=>{
     const cells=[];
     const floor30v2=(typeof fameFloor==="function") ? fameFloor(g) : 0;
@@ -21459,7 +21652,7 @@ function castingNoticeDetailHtml(g){
       const ok=cur>=need;
       /* v20a389 UI389（共識項＋GPT 方案）：未達標格直接標差額（「差 N」），
          取代詳情下方成版「差幾多達標」重複數字。 */
-      cells.push(`<div class="cn-req-cell ${ok?"ok":"no"}"><div class="cn-req-top"><span class="cn-req-lab">${lab}</span><span class="cn-req-mark">${ok?"✓":"✕"}</span></div><div class="cn-req-val">現 ${cur} ／ 要 ${need}${bonus265?` · 衫 +${bonus265}`:""}${ok?"":` · <b class="cn-req-gap389">差 ${need-cur}</b>`}</div></div>`);
+      cells.push(`<div class="cn-req-cell ${ok?"ok":"no"}"><div class="cn-req-top"><span class="cn-req-lab">${lab}</span><span class="cn-req-mark">${ok?"✓":"✕"}</span></div><div class="cn-req-val">現${cur}／要${need}${bonus265?`·衫+${bonus265}`:""}${ok?"":`·<b class="cn-req-gap389">差${need-cur}</b>`}</div></div>`); /* v425：數值詞組唔拆行 */
     };
     if(floor30v2>0) push30v2("fame",(STAT_LABEL&&STAT_LABEL.fame)||"幕前聲望",floor30v2);
     const ORDER30v2=["acting","vocal","stage","charm","looks","stamina","iq"];
@@ -21524,9 +21717,12 @@ function castingNoticeDetailHtml(g){
     try{
       if(boardState!=="ready" || typeof chance!=="function") return "";
       const p378 = Math.round(chance(g)*100);
-      return `<div class="cn-chance378"><span class="cn-chance378-lab">試鏡成功率</span><strong class="cn-chance378-val">約 ${p378}%</strong></div><p class="cn-flow417">按「接通告」即報名試鏡，唔係即刻開工；獲聘後先收簽約金（片酬三成，計入片酬總額）。</p>`; /* v417：講明接通告＝報名試鏡＋簽約金口徑 */
+      return `<div class="cn-chance378"><span class="cn-chance378-lab">試鏡成功率</span><strong class="cn-chance378-val">約 ${p378}%</strong></div><p class="cn-flow417">按「接通告」即報名試鏡，並非即時開工；獲聘後先收取簽約金（片酬三成，計入片酬總額）。</p>`; /* v417：講明接通告＝報名試鏡＋簽約金口徑；v425：非對白改書面語 */
     }catch(_e){ return ""; }
   })();
+  /* v425 UI26評級修復：預期日薪數值＋精確算式合併一處（原通用公式行同 sheet 外常駐算式重複講同一數，
+     合併後算式入試鏡段捲動區，唔再常駐底部擠壓首屏；精確值同取整規則保留） */
+  const expRow424 = (()=>{ try{ if(boardState!=="ready" || typeof board392ExpDaily!=="function") return ""; const e424=board392ExpDaily(g); if(e424==null || !(e424>0)) return ""; let calc425=""; try{ const c425=(typeof boardExpCalc397==="function")?boardExpCalc397(g):null; if(c425) calc425=`<p class="board-calc397"><span class="calc412-formula">片酬 $${c425.pay} × 成功率 ${parseFloat((c425.chance*100).toFixed(2))}% ÷ ${c425.days} 日＝$${c425.raw.toFixed(1)}，四捨五入（成功率用精確值）</span></p>`; }catch(_c425){} if(!calc425) calc425=`<p class="cn-formula424">預期日薪 ＝ 片酬 × 成功率 ÷ 日數</p>`; return `<div class="cn-sum-row"><span class="k">預期日薪</span><span class="v">約 $${Math.round(e424)}／日</span></div>${calc425}`; }catch(_e){ return ""; } })();
   /* v20a383 TAPE383：詳情頁自費試鏡截止日行（GPT 規格：通告卡顯示同一截止日期） */
   const tape383DetailRow383 = (()=>{
     try{
@@ -21568,42 +21764,50 @@ function castingNoticeDetailHtml(g){
     <div class="notice_poster_wall" aria-hidden="true"></div>
     <div class="notice_header_orange cn-paper30-head">
       <h2 class="cn-work">${work}</h2>
-    </div>
-    <div class="notice_sheet_body">
-    <div class="cn-summary">
       <div class="cn-pills">
         ${gigGenrePillsHtml(g)}
         <span class="${statusCls} cn-stamp30" data-board-state="${boardState}">${stateLabel}</span>
       </div>
+    </div>
+    <div class="notice_sheet_body">
+    <div class="cn-summary">
       ${stateSub?`<p class="cn-board-sub">${stateSub}</p>`:""}
-      ${starsRoleRow30v2}
-      ${reqGridHtml}
+      <div class="cn-lab cn-sec424">片酬與合約</div>
       <div class="cn-contract401">
       <div class="cn-sum-row"><span class="k">片酬</span><span class="v">${payStr}</span></div>
       <div class="cn-sum-row"><span class="k">簽約金</span><span class="v">${signFee108}</span></div>
       ${breachRow108}
       </div>
-      ${chanceRow378}
-      ${tape383DetailRow383}
-      ${intel381DetailRow384}
-      ${(()=>{ try{ const rl=(typeof ref422Label==="function")?ref422Label(g):""; if(!rl) return ""; let exp423="14 日內"; try{ const k423=(typeof ref422KeptKind==="function")?ref422KeptKind(g):""; const s423=k423&&typeof ref422Slot==="function"?ref422Slot(k423):null; if(s423&&typeof dateObj==="function"){ const d423=new Date(dateObj().getTime()+(((s423.keptDay|0)+14)-((S&&S.dayIndex)|0))*86400000); exp423=d423.getFullYear()+"年"+(d423.getMonth()+1)+"月"+d423.getDate()+"日之前（14 日內）"; } }catch(_e423){} return `<div class="cn-sum-row"><span class="k">${rl}</span><span class="v">此試鏡機會經${rl}取得，請於 ${exp423}到場試鏡</span></div>`; }catch(_e){ return ""; } })()}
+      <div class="cn-lab cn-sec424 cn-sec425">角色與要求${starsRoleRow30v2}</div>
+      ${reqGridHtml}
+      ${sumGaps}
+      ${limitsHtml}
+      ${costume382DetailRowHtml(g)}
       ${(()=>{ try{ return (g && g.duty392 && typeof duty422ProgressText==="function")?`<div class="cn-sum-row"><span class="k">幕後履歷</span><span class="v">${duty422ProgressText()}</span></div>`:""; }catch(_e){ return ""; } })()}
       ${(()=>{ try{ return (typeof stamina422IsActionGig==="function" && stamina422IsActionGig(g))?`<div class="cn-sum-row"><span class="k">動作底子</span><span class="v">武師班 ${stamina422Lessons()} 堂${stamina422Lessons()>=5?"（已成形）":"（5 堂成形）"}</span></div>`:""; }catch(_e){ return ""; } })()}
-      ${costume382DetailRowHtml(g)}
+      <div class="cn-lab cn-sec424">檔期</div>
+      <div class="cn-sched425">
       <div class="cn-sum-row"><span class="k">通告日數</span><span class="v">${totalLabel}</span></div>
-      <div class="cn-sum-row"><span class="k">通告期間</span><span class="v">${period}</span></div>
+      <div class="cn-sum-row cn-sched-wide425"><span class="k">通告期間</span><span class="v">${period}</span></div>
       ${deadlineRow30v2}
       ${ddlRow105}
       ${releaseRow88}
-      ${limitsHtml}
+      ${weeklyRow117}
+      </div>
+      <div class="cn-lab cn-sec424">試鏡與接單</div>
+      ${difficultyRow424}
+      ${chanceRow378}
+      ${expRow424}
+      <p class="var-note">成數受表現／壓力／信用影響。<br>片酬為約數，實收按合約；餘額於殺青後收取。</p>
+      ${tape383DetailRow383}
+      ${intel381DetailRow384}
+      ${(()=>{ try{ const rl=(typeof ref422Label==="function")?ref422Label(g):""; if(!rl) return ""; let exp423="14 日內"; try{ const k423=(typeof ref422KeptKind==="function")?ref422KeptKind(g):""; const s423=k423&&typeof ref422Slot==="function"?ref422Slot(k423):null; if(s423&&typeof dateObj==="function"){ const d423=new Date(dateObj().getTime()+(((s423.keptDay|0)+14)-((S&&S.dayIndex)|0))*86400000); exp423=d423.getFullYear()+"年"+(d423.getMonth()+1)+"月"+d423.getDate()+"日之前（14 日內）"; } }catch(_e423){} return `<div class="cn-sum-row"><span class="k">${rl}</span><span class="v">此試鏡機會經${rl}取得，請於 ${exp423}到場試鏡</span></div>`; }catch(_e){ return ""; } })()}
+      <div class="cn-lab cn-sec424">製作資料</div>
       ${directorRow117}
       ${producerLine}
       ${castRows252}
-      ${weeklyRow117}
       ${synopsisFrame117}
-      ${sumGaps}
       ${intelHtml}
-      <p class="var-note">成數受表現／壓力／信用影響。<br>片酬牌面係約數，實收按合約。<br>獲聘先收三成簽約金，餘額殺青先收。</p>
     </div>
     </div>
   </div>`;
@@ -21753,15 +21957,11 @@ function openCastingNoticeDetail(g, L){
   const copy = phase3CastCopy();
   /* Soft／LIVE Detail：只 ready｜locked。唔讀 isSoftTryGig，禁 soft-try／搏一搏／第三態試投。 */
   if(gate.ok){
-    /* v20a397 UI397-3：詳情列預期日薪實際計法＋取整規則——$82 唔係 378×86%÷4，
-       係用未取整成功率計（86.5% → 81.7 → 四捨五入 $82）。 */
-    try{
-      const calc397 = (typeof boardExpCalc397==="function") ? boardExpCalc397(g) : null;
-      if(calc397) body += `<p class="board-calc397"><span class="calc412-main">預期日薪 $${calc397.rounded}／日</span><span class="calc412-formula">片酬 $${calc397.pay} × 成功率 ${parseFloat((calc397.chance*100).toFixed(2))}% ÷ ${calc397.days} 日＝$${calc397.raw.toFixed(1)}，四捨五入（成功率用精確值）</span></p>`; /* v20a412 N6：主數／公式分行，數字不變 */
-    }catch(_c397){}
+    /* v425 UI26評級修復：精確算式已併入 castingNoticeDetailHtml 試鏡段（expRow424），
+       唔再喺 sheet 外常駐追加，避免同預期日薪行重複兼擠壓首屏。 */
     const softEntry = (typeof softPreviewOn==="function" && softPreviewOn());
     if(softEntry){
-      body += `<p class="var-note">去試鏡要用一日，結果等何生通知。</p>`;
+      body += `<p class="var-note">試鏡需用一日，結果由何生通知。</p>`; /* v425：書面語 */
     }
     /* v20a378（第三輪評估 B11）：接通告前檔期撞期警告（唔阻止，只交代） */
     const risk378 = (typeof aud378ScheduleRisk==="function") ? aud378ScheduleRisk(g) : "";
@@ -22418,14 +22618,14 @@ function nbMapTotal400(){
   try{
     if(typeof isMapDay!=="function" || !Array.isArray(planDraft) || planDraft.length!==7) return "";
     const n423 = planDraft.filter(x=> isMapDay(x)).length;
-    return "本週外出機會剩 " + n423 + " 日";
+    return "本週外出機會剩" + n423 + "日"; /* v424 UI26：收空格令日期行一行入鏡（資訊不變） */
   }catch(_e){ return ""; }
 }
 function nbRangeWithTotal400(){
   try{
-    const base423 = (typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel();
+    const base423 = ((typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel()).replace("– ","–"); /* v424 UI26：日期行收一格令 14px 一行入鏡 */
     const tot423 = nbMapTotal400();
-    return tot423 ? (base423 + " · " + tot423) : base423;
+    return tot423 ? (base423 + "·" + tot423) : base423; /* v424 UI26 */
   }catch(_e){ return (typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel(); }
 }
 function costLose400(id){
@@ -22480,7 +22680,7 @@ function showCost400(fromId, toId, dayIdx){
     if(!el) return;
     const txt400 = costLine400(fromId, toId, dayIdx);
     if(!txt400) return;
-    el.textContent = "剛才的變更：" + txt400; /* v423 UI25：講明係剛才改格嘅後果，唔同目前所選日混淆 */
+    el.textContent = "最近變更 · " + txt400; /* v424 UI26：成本行標明「最近變更」＋日期，同「正在編輯」分開兩個角色 */
     el.hidden = false;
   }catch(_e){}
 }
@@ -23730,7 +23930,12 @@ function planScrollHint418(){
 }
 function renderNotebook(){
   if(!planDraft || planDraft.length!==7) planDraft = (S.weekPlan && S.weekPlan.length===7) ? S.weekPlan.slice() : defaultWeekPlan();
-  document.getElementById("nb-range").textContent = (typeof nbRangeWithTotal400==="function") ? nbRangeWithTotal400() : ((typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel());
+  /* v425 UI26評級修復：日期行分段 nowrap——折行只落段界，「剩3日」唔再拆開（文字內容不變） */
+  try{
+    const base425 = ((typeof nbRangeLabel37==="function") ? nbRangeLabel37() : weekRangeLabel());
+    const tot425 = (typeof nbMapTotal400==="function") ? nbMapTotal400() : "";
+    document.getElementById("nb-range").innerHTML = `<span class="nb-seg425">${base425}</span>` + (tot425 ? `<span class="nb-seg425">·${tot425}</span>` : "");
+  }catch(_r425){ document.getElementById("nb-range").textContent = (typeof nbRangeWithTotal400==="function") ? nbRangeWithTotal400() : weekRangeLabel(); }
   const editable=!!S.homeEditable;
   /* v19z24：唯讀（或剛揀日）令右欄分類跟左列當日安排一致 */
   try{
@@ -23759,33 +23964,36 @@ function renderNotebook(){
     /* v20a400 細改 3：日格 hint 寫機會成本（訓練進度／外出剩餘），見 nbDayHint400。 */
     const hint = (typeof nbDayHint400==="function") ? nbDayHint400(i, meta, editable, locked) : (locked ? "拍攝檔期已定 · 不可改" : (editable ? "" : (meta.hint||"")));
     /* v20a414 UI18：hint 按 · 分段 nowrap，換行落段界唔拆單字 */
-    const hintHtml = hint ? `<span class="plan-hint">${String(hint).split("·").map(s=>`<span class="hint-seg414">${s.trim()}</span>`).join("·")}</span>` : "";
+    /* v425 UI26評級修復：鎖定日標籤兩段各佔一行（「拍攝檔期」／「不可改」），緊湊格唔再擠迫拆行 */
+    const hintHtml = hint ? (locked
+      ? `<span class="plan-hint plan-hint-locked425">${String(hint).split("·").map(s=>`<span class="hint-seg414">${s.trim()}</span>`).join("")}</span>`
+      : `<span class="plan-hint">${String(hint).split("·").map(s=>`<span class="hint-seg414">${s.trim()}</span>`).join("·")}</span>`) : "";
     /* v362 UI362：像素貼紙——有對應 fx 片嘅活動用細片做貼紙（真資產 assets/fx/），
        取代靜態 icon；冇片嘅活動（逛逛／街頭／咖啡店）照舊 icon。 */
     const stk362 = nbStickerHtml362(nbStickerKind362(planDraft[i]));
-    /* v20a414 UI18：編輯中嘅日子格加「編輯中」小籤，選中狀態一眼可辨 */
-    const editTag414 = (editable && !locked && planSelDay===i) ? `<span class="edit-tag414">編輯中</span>` : "";
-    btn.innerHTML=`<span class="wd">週${weekdayName(i)}</span>${stk362||`<span class="ic">${iconHtml112(meta.icon)}</span>`}<span class="nm"><span class="plan-main">${meta.name}</span>${hintHtml}</span>${editTag414}`;
+    /* v425 UI26評級修復：刪「編輯中」小籤——選中狀態已由金框＋編輯摘要講明，同一狀態唔重複講三次 */
+    btn.dataset.day424 = String(i); /* v424 UI26：重繪後還原焦點用 */
+    /* v424 UI26：日格短名（全名喺編輯摘要＋aria-label 可讀，唔截字唔失資訊）
+       v425：鎖定拍攝日短名去「拍攝中：」前綴同書名號（《電視一族》→電視一族），緊湊格唔拆名；
+       全名喺編輯摘要「目前安排」同 aria-label 可達 */
+    let short424 = ({ "咖啡店駐場小表演":"咖啡表演" })[meta.name] || meta.name;
+    if(locked) short424 = String(short424).replace(/^拍攝[日中]?[:：]/,"").replace(/《([^》]+)》/,"$1");
+    try{ btn.setAttribute("aria-label", `週${weekdayName(i)}：${meta.name}`); }catch(_a424){}
+    btn.innerHTML=`<span class="wd">週${weekdayName(i)}</span>${stk362||`<span class="ic">${iconHtml112(meta.icon)}</span>`}<span class="nm"><span class="plan-main">${short424}</span>${hintHtml}</span>`;
     /* v362 UI362：逐行「⧉ 複製」刪走（7 粒 45×21 細目標，同「複製到…」批次功能重疊）；
        複製改行頂部「複製到…」一個入口。openCopyFromDay 函數保留（批次面板仍用）。 */
     btn.onclick=()=>{
       planSelDay=i;
       try{ if(typeof planCatForId==="function") planCat = planCatForId(planDraft[i]); }catch(_e){}
+      /* v424 UI26：撳日格原位刷新（摘要＋活動區即時更新），唔再跳捲；保留捲動位置同焦點 */
+      const nb424=document.getElementById("notebook");
+      const st424 = nb424 ? nb424.scrollTop : 0;
       renderNotebook();
-      if(editable){
-        /* v20a414 UI18：撳日格捲到編輯標題頂（頂邊乾淨，唔切中壓力條） */
-        const right=document.getElementById("nb-right")||document.getElementById("act-list");
-        if(right) setTimeout(()=>{
-          try{
-            const nb414=document.getElementById("notebook");
-            const rt414=document.getElementById("nb-right-title")||document.getElementById("nb-progress404")||right; /* v20a415 UI19：編輯區搬去週格之下，撳格捲去編輯標題（唔再捲去 banner） */
-            if(nb414 && rt414){
-              const top414 = rt414.getBoundingClientRect().top - nb414.getBoundingClientRect().top + nb414.scrollTop - 8;
-              nb414.scrollTo({top: Math.max(0, top414), behavior:"auto"});
-            } else right.scrollIntoView({behavior:"smooth", block:"nearest"});
-          }catch(_t414){ right.scrollIntoView({behavior:"smooth", block:"nearest"}); }
-        }, 30);
-      }
+      try{
+        if(nb424) nb424.scrollTop = st424;
+        const nb2=document.querySelector(`.day-row[data-day424="${i}"]`);
+        if(nb2) nb2.focus({preventScroll:true});
+      }catch(_f424){}
     };
     days.appendChild(btn);
   }
@@ -23796,23 +24004,30 @@ function renderNotebook(){
     b.type="button";
     b.className="cat-tab"+(planCat===c.id?" on":"");
     b.innerHTML=`<span class="ci">${iconHtml112(c.icon)}</span>${c.name}`;
+    b.dataset.cat424 = c.id; /* v424 UI26：重繪後還原焦點用 */
     b.onclick=()=>{
       planCat=c.id;
+      /* v424 UI26：切分類原位刷新，唔跳捲；保留捲動位置同焦點 */
+      const nb424=document.getElementById("notebook");
+      const st424 = nb424 ? nb424.scrollTop : 0;
       renderNotebook();
-      if(editable){
-        const right=document.getElementById("nb-right")||document.getElementById("act-list");
-        if(right) setTimeout(()=>right.scrollIntoView({behavior:"smooth", block:"nearest"}), 30);
-      }
+      try{
+        if(nb424) nb424.scrollTop = st424;
+        const cb=document.querySelector(`.cat-tab[data-cat424="${c.id}"]`);
+        if(cb) cb.focus({preventScroll:true});
+      }catch(_f424){}
     };
     tabs.appendChild(b);
   });
   const list=document.getElementById("act-list");
   list.innerHTML="";
   const selLocked=dayPlanLocked(planDraft[planSelDay]);
-  /* v423 UI25：鎖定日（拍攝檔期）標題講明不可改，唔再寫「編輯」同卡面矛盾 */
+  /* v423 UI25：鎖定日（拍攝檔期）標題講明不可改，唔再寫「編輯」同卡面矛盾
+     v424 UI26：標題升做編輯摘要——「正在編輯 週X｜目前安排：全名」，同成本行「最近變更」分開 */
+  const curName424 = (()=>{ try{ return planMeta(planDraft[planSelDay]).name || ""; }catch(_e){ return ""; } })();
   document.getElementById("nb-right-title").textContent = selLocked
-    ? `週${weekdayName(planSelDay)} · 拍攝檔期已定`
-    : (editable ? `編輯 · 週${weekdayName(planSelDay)}` : `行程 · 週${weekdayName(planSelDay)}（唯讀）`);
+    ? `週${weekdayName(planSelDay)} · 拍攝檔期已定｜目前安排：${curName424}`
+    : (editable ? `正在編輯 · 週${weekdayName(planSelDay)}｜目前安排：${curName424}` : `行程 · 週${weekdayName(planSelDay)}（唯讀）｜目前安排：${curName424}`);
   let items = planCat==="work" ? workItems() : (PLAN_ITEMS[planCat]||[]);
   if(planCat==="train"){
     /* v20a71 PART3B：訓練分類改出按數值課程選擇器（同「全日訓練」同一套清單，
@@ -23839,6 +24054,7 @@ function renderNotebook(){
       try{ b.setAttribute("aria-label", `為週${weekdayName(planSelDay)}選擇：${it.name}`); }catch(_a){}
       /* v20a414 UI18：已排入當日嘅活動加「已安排」籤，選中狀態一眼可辨 */
       const selTag414 = (planDraft[planSelDay]===it.id) ? `<span class="sel-tag414">已安排</span>` : "";
+      b.dataset.act424 = String(it.id); /* v424 UI26：重繪後還原焦點用 */
       b.innerHTML=`<span class="ai">${iconHtml112(it.icon)}</span><span><div class="at">${it.name}${selTag414}</div><div class="ah">${it.hint||""}</div></span>`;
       b.onclick=()=>{
         if(!editable || selLocked) return;
@@ -23848,7 +24064,15 @@ function renderNotebook(){
         planDraft[planSelDay]=it.id;
         if(typeof COURSE_DEFS!=="undefined" && COURSE_DEFS[it.id] && typeof S!=="undefined" && S) S.lastTrain400 = it.id;
         if(typeof showCost400==="function") showCost400(from400, it.id, planSelDay);
+        /* v424 UI26：選活動後保留捲動位置同焦點，週格同摘要即時更新 */
+        const nb424=document.getElementById("notebook");
+        const st424 = nb424 ? nb424.scrollTop : 0;
         renderNotebook();
+        try{
+          if(nb424) nb424.scrollTop = st424;
+          const ab=document.querySelector(`.act-item[data-act424="${it.id}"]`);
+          if(ab) ab.focus({preventScroll:true});
+        }catch(_f424){}
       };
       list.appendChild(b);
     });
@@ -23862,7 +24086,7 @@ function renderNotebook(){
       modeEl.hidden = false;
       if(editable){
         modeEl.className = "nb-plan-mode edit";
-        modeEl.textContent = "點選日期編輯行程；完成後按「確定本週行程」生效"; /* v418：非對白改書面語（原「點日格去編輯區」口語） */
+        modeEl.textContent = "點選日期編輯行程；完成後按確定生效"; /* v424 UI26：收成一行（確定掣喺正下方，資訊不變） */
       } else if(typeof nbShowingPrevWeek37==="function" && nbShowingPrevWeek37()){
         modeEl.className = "nb-plan-mode readonly";
         modeEl.textContent = "唯讀手帳 · 這版是上週已執行的行程；新一週行程在回家結算時編排";
@@ -29189,7 +29413,7 @@ function wf4DlgCharsHtml108(ev, b){
       let bright = "0.6", z = 3;
       if(!isNarr && isActive){ bright = "1"; z = 4; }
       /* v20a199 DLG199：WF4 阿偉獨角同樣經 __dlg108Fit（單人天花板），唔再行 60% 預設。 */
-      return `<img class="dlg106-char ${slot.pos}${slot.flip?" dlg106-flip":""}" src="${wf4Esc(cands[0])}" alt="" data-dlg-id="${wf4Esc(slot.id)}" data-dlg-fallbacks="${wf4Esc(cands.slice(1).join("|"))}" draggable="false" style="filter:brightness(${bright});z-index:${z}" onload="try{window.__dlg108Fit&&window.__dlg108Fit(this)}catch(_e){}" onerror="try{window.__dlg106Err&&window.__dlg106Err(this)}catch(_e){}"/>`;
+      return `<img class="dlg106-char ${slot.pos}${slot.flip?" dlg106-flip":""}" src="${wf4Esc(cands[0])}" alt="" data-dlg-id="${wf4Esc(slot.id)}" data-dlg-fallbacks="${wf4Esc(cands.slice(1).join("|"))}" draggable="false" style="--speaker-brightness:${bright};z-index:${z}" onload="try{window.__dlg108Fit&&window.__dlg108Fit(this)}catch(_e){}" onerror="try{window.__dlg106Err&&window.__dlg106Err(this)}catch(_e){}"/>`;
     }).join("");
     return html ? `<div class="dlg106-chars" aria-hidden="true">${html}</div>` : "";
   }catch(_e){ return ""; }
@@ -33694,7 +33918,7 @@ function renderStats389Pane(){
     box.innerHTML = `<div class="stats389-card"><h3>阿偉資料卡</h3><p class="sub">${p.dateLine}</p><div class="stats-grid">${p.grid}` /* v20a414：業內信用／存款併入格列，金額格式同頂欄一致 */
       + `<div class="stat"><div class="l">業內信用</div><div class="v">${p.industryCredit}</div></div>`
       + `<div class="stat"><div class="l">存款</div><div class="v gold414">$${p.money.toLocaleString()}</div></div></div>`
-      + `<p style="font-size:.78rem;color:var(--muted)">已報名訓練：${p.enrollLine}</p></div>`;
+      + `<p style="font-size:var(--tx-secondary);color:var(--ink-secondary-paper)">已報名訓練：${p.enrollLine}</p></div>`;
   }catch(_e){ box.innerHTML = `<p class="sub">資料暫時讀唔到。</p>`; }
 }
 
@@ -45724,7 +45948,7 @@ function enc79EnsureCss(){
          （選項掣還原舊全寬深色掣）。
          v20a197 B1：「下一句」改全寬深色掣，同主線 #modal-btns 同一粒（370×44、同一位
          同一樣，置中；文字鏈設計作廢）。選項掣同樣 370px 置中。 */
-      "#enc79-overlay .e79-char{position:absolute;bottom:10%;height:var(--dlg108-char-h,60%);max-width:48%;object-fit:contain;object-position:bottom center;transition:filter 250ms ease;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));}",
+      "#enc79-overlay .e79-char{position:absolute;bottom:10%;height:var(--dlg108-char-h,60%);max-width:48%;object-fit:contain;object-position:bottom center;transition:filter 250ms ease;filter:brightness(var(--speaker-brightness,1)) drop-shadow(0 1px 3px rgba(30,22,14,.42));}", /* v424 UI26 */
       "#enc79-overlay .e79-char-l{left:2%;}",
       "#enc79-overlay .e79-char-r{right:2%;}",
       "#enc79-overlay .e79-char.flip{transform:scaleX(-1);}",
@@ -45913,7 +46137,7 @@ function enc79PlayEncounter(starId, locId, wasMet){
             || ("assets/story/fullbody/"+tp128.stem+"_base.webp?v=20a106");
           if(charM128.dataset.k128 !== src128){ charM128.dataset.k128 = src128; charM128.src = src128; }
           charM128.classList.add("on");
-          charM128.style.filter = "brightness(1)";
+          charM128.style.setProperty("--speaker-brightness", "1"); /* v424 UI26 */
           charM128.style.zIndex = 4;
         } else {
           charM128.classList.remove("on");
@@ -45928,7 +46152,7 @@ function enc79PlayEncounter(starId, locId, wasMet){
           charMHalo128.classList.remove("on");
         }
       }
-      if(!step || step.choice){ [charL, charR].forEach(im=>{ if(im){ im.style.filter = "brightness(0.6)"; im.style.zIndex = 3; } }); return; }
+      if(!step || step.choice){ [charL, charR].forEach(im=>{ if(im){ im.style.setProperty("--speaker-brightness", "0.6"); im.style.zIndex = 3; } }); return; } /* v424 UI26 */
       const activeId = step.who==="S" ? starId : (step.who==="A" ? "awi" : null);
       const phone106 = /電話聲/.test(String(step.text||""));
       nameEl.classList.toggle("phone", !!phone106);
@@ -45939,7 +46163,7 @@ function enc79PlayEncounter(starId, locId, wasMet){
         paintChar106(im, cat);
         let b = "0.6";
         if(phone106) b = "0.8"; else if(isActive) b = "1";
-        im.style.filter = "brightness(" + b + ")";
+        im.style.setProperty("--speaker-brightness", b); /* v424 UI26 */
         im.style.zIndex = isActive ? 4 : 3;
       });
     }catch(_e){}
@@ -49797,7 +50021,7 @@ function doScout(L){
     else lead = `不耗日查看通告 · 達標可接通告（耗一日）。`;
     /* v20a396 UI396 ②：預設排序係預期日薪嗰陣，lead 行改做一行計法＋置頂說明
        （唔加行，保住第一眼 5 張卡）；其他排序沿用原 lead。 */
-    if(_boardSort392==="exp") lead = `不耗日查看 · 推介置頂<br><span class="board-lead-formula415">預期日薪 ＝ 片酬 × 成功率 ÷ 日數</span>`; /* v415：lead 兩行，計法獨立一行易掃讀 */
+    if(_boardSort392==="exp") lead = `不耗日查看 · 推介置頂`; /* v424 UI26：公式收埋板頭「預期日薪如何計算」入口（v425 改書面語），lead 收成一行 */
     body=`<p class="board-lead">${lead}</p>`;
     const closestMark392 = g=> !!(closest34 && g && g.id===closest34);
     const lockedDetails392 = (list)=>{
@@ -49819,6 +50043,7 @@ function doScout(L){
         : `<span class="bc-seg417">顯示 ${readyF392.length+lockedF392.length}／${shown.length} 張</span><span class="bc-seg417">可接 ${readyF392.length}</span><span class="bc-seg417">未達標 ${lockedF392.length}</span>`; /* v417：分段 nowrap，折行唔留分隔點喺行尾／行首 */ /* v416：縮短總數行，唔再俾整理掣截字 */
       body+=`<div class="board-head392">`
         + `<div class="board-sum392">${sum392}</div>`
+        + (_boardSort392==="exp" ? `<details class="board-formula424"><summary>預期日薪如何計算</summary><span class="board-lead-formula415">預期日薪 ＝ 片酬 × 成功率 ÷ 日數</span></details>` : "") /* v424 UI26：公式入口同總數／整理同區 */
         + `<div class="board-ctl397"><div class="board-sort392"><button type="button" class="board-chip392 board-ctl397-btn" data-board-menu397="organize" aria-expanded="false">整理 · ${_boardSort392==="exp"?"預期日薪":(_boardSort392==="pay"?"總片酬":"成功率")} ▾</button>` /* v415 batch3：整理掣顯示目前排序 */
         + `<div class="board-menu397" data-board-menu-list397="organize" hidden>`
         + `<div class="board-menu-group397">排序</div>`
@@ -51910,7 +52135,7 @@ function showStats(){
     modal(`<h3>記數簿</h3><p>${p.dateLine}</p><div class="stats-grid">${p.grid}</div>
       <p class="sub">幕前聲望 <b>${p.stageVolume}</b> · 業內信用 <b>${p.industryCredit}</b></p>
       <p>存款 <b class="gold">$ ${p.money.toLocaleString()}</b></p>
-      <p style="font-size:.78rem;color:var(--muted)">已報名訓練：${p.enrollLine}</p>`,[{label:"關閉",role:"g"}]);
+      <p style="font-size:var(--tx-secondary);color:var(--ink-secondary-paper)">已報名訓練：${p.enrollLine}</p>`,[{label:"關閉",role:"g"}]);
   }catch(_e2){}
 }
 /* 對手線強化票 R1：手帳人脈頁高俊傑行嘅對抗狀態——讀 S.rivalry＋開閘進度＋當輪門檻＋雙軌即時值，

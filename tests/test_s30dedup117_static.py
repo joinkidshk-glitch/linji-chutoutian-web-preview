@@ -1,3 +1,4 @@
+# v424 意圖更新：短卡三欄決策帶，D3 斷言同步（見下）。
 # v417 意圖更新：推介卡欄名統一「片酬」（同普通卡同一欄），斷言同步。
 # v404 意圖更新：推介卡片酬改獨立大字行（gt-pay404「總片酬」），D3 斷言同步。
 # v20a117 S-30 DEDUP117・靜態守門測試：詳情區刪除＋唯一資料搬摘要＋欄卡 meta 拆行。
@@ -20,7 +21,7 @@ def body_of(fname, span=12000):
     i = html.find(fname)
     return html[i:i + span] if i >= 0 else ''
 
-b = body_of('function castingNoticeDetailHtml', 14000)
+b = body_of('function castingNoticeDetailHtml', 16000)  # v425：詳情函數變長（首屏重排），擷取窗 14000→16000
 t = body_of('function gigBoardTeaserHtml', 9000)  # v404：推介卡複合劇照令函數變長，擷取窗 6000→9000
 
 # --- 1. 詳細區成段刪除：掣＋.cn-detail＋死接線＋死 CSS ---
@@ -46,8 +47,12 @@ _i_rel = b.find('${releaseRow88}')
 _i_gaps = b.find('${sumGaps}')
 ok('D2 摘要區有齊五個搬入位', all(x in b for x in
    ['${limitsHtml}', '${directorRow117}', '${producerLine}', '${weeklyRow117}', '${synopsisFrame117}']))
-ok('D2 搬入行喺預計播出之後、差距提示之前（事實行尾）',
-   0 < _i_rel < b.find('${limitsHtml}') < b.find('${directorRow117}') < b.find('${producerLine}') < b.find('${weeklyRow117}') < b.find('${synopsisFrame117}') < _i_gaps)
+# v424 UI26 意圖更新：詳情按「片酬與合約→角色與要求→檔期→試鏡與接單→製作資料」重排；
+# 特殊限制入要求段、預計播出同每週開工入檔期段、導演／製作人／簡介入製作段、差距提示跟要求格。
+ok('D2 搬入行按 v424 分段次序（合約→要求→檔期→試鏡→製作）',
+   0 < b.find('cn-contract401') < b.find('${reqGridHtml}') < _i_gaps < b.find('${limitsHtml}')
+   < b.find('${releaseRow88}') < b.find('${weeklyRow117}') < b.find('${difficultyRow424}')
+   < b.find('${directorRow117}') < b.find('${producerLine}') < b.find('${synopsisFrame117}'))
 ok('D2 特殊限制：gigSpecialLimitsHtml 照用（空即隱藏）', 'const limitsHtml = gigSpecialLimitsHtml(g);' in b)
 ok('D2 導演：只出真名 helper 在', 'function gigDirectorRealName117' in html and 'const directorRow117' in b)
 ok('D2 導演：8 個職銜值＋fallback 全部喺 generic 集',
@@ -63,17 +68,19 @@ ok('D2 劇情簡介：搬入摘要（原樣 markup，唔係刪除）',
 ok('D2 POSTER90 標記註保留（詳情頁仍唔出成品海報／主演行）', 'POSTER90' in b)
 
 # --- 3. 通告欄卡片 meta 拆行（實駕：實際只得兩段） ---
-ok('D3 meta 渲染（v404：推介卡片酬獨立大字行 gt-pay404＋其餘併一行 gt-meta-line）', 'metaLine392' in t and 'gt-meta-line' in t and '.gt-meta-line{' in html and 'gt-pay404' in t)
+# v424 UI26 意圖更新：短卡改三欄決策帶（片酬／要求／檔期標籤＋值），成功率降補充行 gt-meta-line；
+# 推介卡片酬值保留 gt-pay404。舊 bits392「｜」串連寫法退役。
+ok('D3 meta 渲染（v424：三欄決策帶 gt-band424＋補充行 gt-meta-line＋推介片酬 gt-pay404）', 'metaLine392' in t and 'gt-band424' in t and 'gt-meta-line' in t and '.gt-meta-line{' in html and 'gt-pay404' in t)
 ok('D3 舊寫法「 · 」串連已刪', 'join(" · ")' not in t)
-ok('D3 meta 內容：片酬＋日數＋成功率（可接先出成功率，鎖定卡唔出假成功率）',
-   'bits392.join("｜")' in t and 'if(boardState==="ready")' in t and '片酬 ${payTxt}' in t)
+ok('D3 meta 內容：片酬／要求／檔期三欄＋成功率補充（可接先出成功率，鎖定卡唔出假成功率）',
+   'gt-lab424">片酬' in t and 'gt-lab424">要求' in t and 'gt-lab424">檔期' in t and 'gigReqSummary424' in t and 'gigSchedSummary424' in t and 'if(boardState==="ready")' in t and '成功率約' in t)
 ok('D3 gt-meta 容器保留（v404 模板改條件渲染）', '<div class="gt-meta">' in t)
 
 # --- 4. 紀律：v115 文字＋紅線不變 ---
 ok('D4 v115 簽約金行「獲聘後即收」仍在', '（獲聘後即收）' in b)
 ok('D4 v115 舊寫法「接通告後即收」仍清零', '（接通告後即收）' not in html)
-ok('D4 v115 var-note 三行短句仍在',
-   '成數受表現／壓力／信用影響。<br>片酬牌面係約數，實收按合約。<br>獲聘先收三成簽約金，餘額殺青先收。' in b)
+ok('D4 var-note 短句仍在（v425：改書面語＋去重，簽約金時點由簽約金行承載）',
+   '成數受表現／壓力／信用影響。<br>片酬為約數，實收按合約；餘額於殺青後收取。' in b)
 ok('D4 紅線 SAVE key 不變', 'starVolunteer_map_v19w' in html)
 ok('D4 紅線 softRev s107 不變', 's107' in html)
 ok('D4 紅線產品 ?v= v20a10 不變', 'v=20a10' in html)

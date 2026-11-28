@@ -16,11 +16,11 @@ def ok(name, cond):
 m = re.search(r'#mask\.casting-sheet-on #modal-inner \.cn-issuer30v2\{([^}]*)\}', html)
 ok('S30 英雄區規則存在', m is not None)
 rule = m.group(1) if m else ''
-ok('S30 英雄區高度 240px（還原 v116 胸口以上 crop）', 'height:240px' in rule)
+ok('S30 英雄區高度 150px（v425 首屏優先收窄）', 'height:150px' in rule)
 ok('S30 英雄區唔再 height:auto（v128 回歸寫法）', 'height:auto' not in rule)
 ok('S30 英雄區 overflow:hidden 保留（由底裁走）', 'overflow:hidden' in rule)
-ok('S30 英雄區負 margin -100px 保留（卡疊上嚟）', 'margin-bottom:-100px' in rule)
-ok('S30 名牌 bottom:106px 唔郁（為 240px 高設計）', '.cn-issuer-cap30v2{ position:absolute; left:12px; bottom:106px;' in html)
+ok('S30 英雄區負 margin -60px 保留（卡疊上嚟；v425）', 'margin-bottom:-60px' in rule)
+ok('S30 名牌 bottom:66px（v425 對 150px 英雄區）', '.cn-issuer-cap30v2{ position:absolute; left:12px; bottom:66px;' in html)
 ok('S30 英雄圖闊 60%／上限 230px 唔郁', 'width:60%; max-width:230px' in html)
 
 print('TOTAL ' + ('PASS' if not fails else 'FAIL %d' % len(fails)))

@@ -146,12 +146,12 @@ function imgOf(stageHtml){
   ok('st03 beat0（旁白）行 narration 舞台＋narration 板', s0.includes('sp-mode-narration') && s0.includes('sp-plate-narration105'));
   ok('st03 beat0 冇名牌（sp-speaker 唔出現）', !s0.includes('sp-speaker'));
   const im0 = imgOf(s0);
-  ok('st03 beat0 阿偉 base＋0.6（聽者／旁白態）', !!im0 && im0.src.includes('awi_base.webp') && im0.style.includes('brightness(0.6)'));
+  ok('st03 beat0 阿偉 base＋--speaker-brightness:0.6（聽者／旁白態）', !!im0 && im0.src.includes('awi_base.webp') && im0.style.includes('--speaker-brightness:0.6'));
   const s1 = wf4BeatStageHtml108(ev, ev.beats[1], 'assets/story/locs/cafe_cha.png');
   ok('st03 beat1（阿偉）行 dialogue 舞台＋名牌「阿偉」', s1.includes('sp-mode-dialogue') && s1.includes('<div class="sp-speaker">阿偉</div>'));
   const im1 = imgOf(s1);
-  ok('st03 beat1 阿偉 think 圖＋brightness(1)＋z-index 4（表情切換睇得出）',
-    !!im1 && im1.src.includes('awi_think.webp') && im1.style.includes('brightness(1)') && im1.style.includes('z-index:4'));
+  ok('st03 beat1 阿偉 think 圖＋--speaker-brightness:1＋z-index 4（表情切換睇得出）',
+    !!im1 && im1.src.includes('awi_think.webp') && im1.style.includes('--speaker-brightness:1') && im1.style.includes('z-index:4'));
   ok('st03 兩句同一人但圖／明暗唔同（base 0.6 → think 1.0）',
     !!im0 && !!im1 && im0.src !== im1.src && im0.style !== im1.style);
 }
@@ -161,16 +161,16 @@ function imgOf(stageHtml){
   const ev = byId('wf4_ev_cha02');
   const s0 = wf4BeatStageHtml108(ev, ev.beats[0], 'assets/story/locs/cafe_cha.png');
   ok('cha02 beat0（阿成）名牌「阿成」、阿偉 base 0.6 在場',
-    s0.includes('<div class="sp-speaker">阿成</div>') && (imgOf(s0) || {}).style.includes('brightness(0.6)'));
+    s0.includes('<div class="sp-speaker">阿成</div>') && (imgOf(s0) || {}).style.includes('--speaker-brightness:0.6'));
   const s1 = wf4BeatStageHtml108(ev, ev.beats[1], 'assets/story/locs/cafe_cha.png');
   const im1 = imgOf(s1);
-  ok('cha02 beat1（阿偉）base 全光', !!im1 && im1.src.includes('awi_base.webp') && im1.style.includes('brightness(1)'));
+  ok('cha02 beat1（阿偉）base 全光', !!im1 && im1.src.includes('awi_base.webp') && im1.style.includes('--speaker-brightness:1'));
   const d2 = byId('wf4_ev_day02');
   const imD = imgOf(wf4BeatStageHtml108(d2, d2.beats[1], ''));
-  ok('day02 阿偉句出 sad 圖＋全光', !!imD && imD.src.includes('awi_sad.webp') && imD.style.includes('brightness(1)'));
+  ok('day02 阿偉句出 sad 圖＋全光', !!imD && imD.src.includes('awi_sad.webp') && imD.style.includes('--speaker-brightness:1'));
   const b3 = byId('wf4_ev_boss03');
   const imB = imgOf(wf4BeatStageHtml108(b3, b3.beats[2], ''));
-  ok('boss03 阿偉句出 smile 圖＋全光', !!imB && imB.src.includes('awi_smile.webp') && imB.style.includes('brightness(1)'));
+  ok('boss03 阿偉句出 smile 圖＋全光', !!imB && imB.src.includes('awi_smile.webp') && imB.style.includes('--speaker-brightness:1'));
   ok('冇場景圖（scene105 空字串）照出舞台（漸變底兜底）', wf4BeatStageHtml108(d2, d2.beats[1], '').includes('sp-bg-layer'));
 }
 

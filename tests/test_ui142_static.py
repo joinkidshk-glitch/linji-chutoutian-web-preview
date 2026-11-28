@@ -26,9 +26,9 @@ ok('A1 modal() 開 modal 歸零 #app.scrollTop', "getElementById(\"app\").scroll
 ok('A1 modal() 開 modal 歸零 #modal-inner.scrollTop', '_mi142.scrollTop=0' in modal_body)
 ok('A1 modal() focus 用 preventScroll', 'focus({preventScroll:true})' in modal_body)
 ok('A1 modal() focus 後再歸零 #app.scrollTop 兜底', modal_body.count('scrollTop=0') >= 3)
-ok('A1 英雄區高度 240px 唔郁（v132 定案）', 'height:240px' in html)
-ok('A1 名牌 bottom:106px 唔郁', '.cn-issuer-cap30v2{ position:absolute; left:12px; bottom:106px;' in html)
-ok('A1 英雄區負 margin -100px 唔郁', 'margin-bottom:-100px' in html)
+ok('A1 英雄區高度 150px（v425 首屏優先收窄）', 'height:150px' in html)
+ok('A1 名牌 bottom:66px（v425）', '.cn-issuer-cap30v2{ position:absolute; left:12px; bottom:66px;' in html)
+ok('A1 英雄區負 margin -60px（v425）', 'margin-bottom:-60px' in html)
 
 # --- A2a：進度頁星途寄語 ---
 ok('A2a renderProgress71 有星途寄語填補區塊', 'prog71-next142' in html)

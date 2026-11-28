@@ -1,3 +1,4 @@
+# v424 意圖更新：pres105-line 字級遷移去次文 token（米白＋陰影不變）。
 # v20a128 A2 地點模板一致性・靜態守門測試（N13／N2／N3／S-23／打聽卡圖標）。
 # 用法：python3 tests/test_ui128a2_static.py [path-to-index.html]
 # 反證意識：每項同時驗「新寫法在」＋「舊寫法不在」。
@@ -15,7 +16,7 @@ def ok(name, cond):
 
 # N13：茶餐廳在場星描述行——實測幾何無重疊，根因係對比度（啡字落相）；
 # 修法係跟標題同一套相上處理（米白＋陰影），唔係搬位。
-ok('N13 pres105-line 米白＋陰影', '#app #loc-sheet.sheet.locpanel118 .pres105-line{ color:#f8f1de !important; text-shadow:0 1px 6px rgba(0,0,0,.6); }' in html)
+ok('N13 pres105-line 米白＋陰影', '#app #loc-sheet.sheet.locpanel118 .pres105-line{ color:#f8f1de !important; font-size:var(--tx-secondary) !important; text-shadow:0 1px 6px rgba(0,0,0,.6); }' in html)
 
 # N2：冇企立圖嘅地點唔浮名牌（霞姐／禮品老闆娘；B1 另案先畫圖）
 # （舊版已有 tagrow.hidden=true 喺 hospital 分支，斷言要指明 noFig 分支先識分。）

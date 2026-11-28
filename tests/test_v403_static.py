@@ -1,3 +1,4 @@
+# v424 意圖更新：推介卡片酬入三欄決策帶片酬欄（gt-pay404 值＋片酬標籤）。
 # v417 意圖更新：推介卡欄名統一「片酬」（同普通卡同一欄），斷言同步。
 # v20a403 UI403（第十輪頭五項＋暗角 dismiss）靜態釘。
 # 內容錨點（唔釘行號）；行為驗證見實駕 linji-drive403。
@@ -36,7 +37,7 @@ chk('③ 26px mask 已拆', 'calc(100% - 26px),transparent 100%)' not in src)
 chk('③ 紙邊下接提示', 'awd-next403' in src and 'awd403FoldAndHint' in src)
 # (4) 通告欄
 chk('④ 推介真劇照（場景圖）', 'gt-still403-img' in src and 'assets/story/locs/bg_loc_' in src)
-chk('④ 推介卡片酬第一眼', '片酬 ${payTxt}' in src)
+chk('④ 推介卡片酬第一眼', 'gt-pay404">${payTxt}' in src and 'gt-lab424">片酬' in src)
 chk('④ 整理索引紙籤去方框', '.board-menu397 .board-chip392::before{ display:none' in src)
 chk('④ 詳情合約紙去框', '.cn-req-cell{ border:0' in src)
 # (5) 里程碑

@@ -18,7 +18,7 @@ def body_of(fname, span=12000):
     i = html.find(fname)
     return html[i:i + span] if i >= 0 else ''
 
-b = body_of('function castingNoticeDetailHtml', 14000)
+b = body_of('function castingNoticeDetailHtml', 16000)  # v425：詳情函數變長（首屏重排），擷取窗 14000→16000
 
 # --- 1. 舊窮舉已刪，新關鍵字規則在 ---
 ok('R1 舊 GIG_DIRECTOR_GENERIC117 Set 已刪', 'GIG_DIRECTOR_GENERIC117' not in html)

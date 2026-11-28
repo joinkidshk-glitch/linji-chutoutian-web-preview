@@ -43,9 +43,9 @@ ok('S-28 gigGapLine34 喺度', bool(b))
 ok('S-28 有（差 N）格式', '（差 ' in html)
 ok('S-28 gigGapLine34 冇舊「欠：」前綴', '欠：' not in b)
 
-# S-31 報名截止：獨立一行＋「仲有 N 日截止」
+# S-31 報名截止：獨立一行＋「尚有N日截止」（v425 書面語）
 b = body_of('function gigApplyDeadlineText', 600)
-ok('S-31 截止句式「仲有 N 日截止」', '仲有 ' in b and '日截止' in b)
+ok('S-31 截止句式「尚有N日截止」', '尚有' in b and '日截止' in b)
 ok('S-31 詳情有獨立報名截止行', 'ddlRow105' in html)
 
 # S-32 通告詳情卡高按內容收

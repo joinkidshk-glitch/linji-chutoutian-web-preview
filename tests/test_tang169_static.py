@@ -1,3 +1,4 @@
+# v424 意圖更新：ux68-why 字級遷移去次文 token（display／紅字不變）。
 # v404 意圖更新：茶餐廳打聽掣合一點菜紙，organizer 早退條件加 cafe404 觸發。
 # -*- coding: utf-8 -*-
 # v20a169 靜態測試：v164 review B1＋B2＋C1＋C2。
@@ -69,7 +70,7 @@ ok('B2：舊寫法（badge 直接 append 入 .act）已無',
 ok('B2：badge 仍然只加一次（querySelector 守門仲喺度）',
    'if(!it.btn.querySelector(".ux68-why")){' in src)
 ok('B2：.ux68-why 樣式唔郁（display:block、紅字，入欄後即係簡介之下橫排一行）',
-   '.ux68-why{ display:block; font-size:.74rem; font-weight:700; color:#9c3d1e;' in src)
+   '.ux68-why{ display:block; font-size:var(--tx-secondary); font-weight:700; color:#9c3d1e;' in src)
 ok('B2：#loc-acts 由 grid 轉 flex 直欄（卡高隨內容增長，唔再被 grid 行高夾住）',
    '#loc-sheet.sheet.locpanel118 #loc-acts{ display:flex !important; flex-direction:column !important; }' in src)
 ok('B2：#loc-acts 掣 flex-shrink:0（容器唔夠高嗰陣唔壓縮卡高，改為內滾）',

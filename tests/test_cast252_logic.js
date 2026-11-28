@@ -1,3 +1,4 @@
+// v424 意圖更新：詳情分段重排，每週開工入檔期段（製作資料之前）。
 // v20a252 詳情頁按類型分流＋作品牆陣容行邏輯測試（SPEC-v2 §6.2／§2.3，D-v2-6／D-v2-3）
 // 合約：
 //   A 詳情頁按類型分流：電影／電視四角（男主角／女主角／男配角／女配角），玩家格標「應徵中」
@@ -245,8 +246,8 @@ const findGig = id=>PACK_NEW.gigs.find(g=>g.id===id);
   const dj = html.indexOf('\nfunction ', di + 100);
   const detail = html.slice(di, dj);
   ok('detail wiring: 模板有插 ${castRows252}', detail.indexOf('${castRows252}')>=0);
-  ok('detail wiring: 順序 producerLine → castRows252 → weeklyRow117（s30dedup 順序不變）',
-    detail.indexOf('${producerLine}') < detail.indexOf('${castRows252}') && detail.indexOf('${castRows252}') < detail.indexOf('${weeklyRow117}'));
+  ok('detail wiring: 順序 weeklyRow117（檔期段）→ producerLine → castRows252（製作段）（v424 分段次序）',
+    detail.indexOf('${weeklyRow117}') < detail.indexOf('${producerLine}') && detail.indexOf('${producerLine}') < detail.indexOf('${castRows252}'));
   ok('detail wiring: 唔出舊主演行字面（POSTER90）', detail.indexOf('<span class="k">主演</span>')<0);
   ok('detail wiring: 導演行已收窄到電影／電視作品', detail.indexOf('directorType252')>=0 && detail.indexOf('g.category === "作品"')>=0);
   ok('detail wiring: 臨記簡介用 blurb', detail.indexOf('g.category === "臨記通告" && g.blurb')>=0);

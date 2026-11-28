@@ -1,3 +1,4 @@
+// v424 意圖更新：teaser 改用 gigReqSummary424／gigSchedSummary424，抽取清單同步。
 // 引導包（v20a34）邏輯／路徑測試：P0-1 差額卡／P0-3 死路修正／P0-4 過一日掣／
 // P0-5 系統出場交代／P1-1(a) 壓力後果／P1-1(b) 雙軌解釋。
 // 跟 v20a22 教訓行真路徑：真 gigBoardTeaserHtml＋真 canAudition 鏈、真 BehaviorGate
@@ -69,7 +70,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
    'isGigConsumed','gateTrainHint','canAudition','chance','gigTierKey','gigWorkTitle',
    'gigTypeCoarse','gigLifecycleStatus','gigRecruitStatus','gigBoardCardState',
    'phase3CastCopy','reqHtml','gigLockReasonLine',
-   'gigGapBits34','gigGapTotal34','gigGapLine34','gigBoardTeaserHtml','gigCardHtml'];
+   'gigGapBits34','gigGapTotal34','gigGapLine34','gigReqSummary424','gigSchedSummary424','gigBoardTeaserHtml','gigCardHtml'];
   for(let i=0;i<FNS_A.length;i++) eval(extractFn(FNS_A[i]));
 
   const gigLocked = { id:'g34_locked', title:'《試鏡甲》主角', workTitle:'試鏡甲',
@@ -90,7 +91,7 @@ function dayIndexOf(y, m, d){ return Math.round((Date.UTC(y, m-1, d) - Date.UTC(
      lr.indexOf('聲望現 3／需要 16') >= 0 && lr.indexOf('演技現 8／需要 20') >= 0 && lr.indexOf('智商現 10／需要 15') >= 0);
 
   const tLock = gigBoardTeaserHtml(gigLocked);
-  ok('a5 teaser locked shows gap line', tLock.indexOf('<div class="gt-gap">聲望 3／需 16（差 13）；演技 8／需 20（差 12）；智商 10／需 15（差 5）</div>') >= 0);
+  ok('a5 teaser locked shows gap line', tLock.indexOf('幕前聲望要求16') >= 0 && tLock.indexOf('目前3') >= 0 && tLock.indexOf('尚欠13') >= 0 && tLock.indexOf('另有2項') >= 0); /* v425：分段逐行，內容不變 */
   ok('a6 teaser locked no closest by default', tLock.indexOf('最接近') < 0);
   const tClose = gigBoardTeaserHtml(gigLocked, { closest:true });
   ok('a7 teaser closest marker when flagged', tClose.indexOf('最接近') >= 0);

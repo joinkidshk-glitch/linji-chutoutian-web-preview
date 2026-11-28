@@ -1,3 +1,4 @@
+// v424 意圖更新：日期行收空格令 14px 一行入鏡，總數資訊不變。
 // v20a400 細改 1–3・邏輯測試：
 // (1) 預設唔再自動揀課：第 2 週起訓練位預填自由日，第 1 週引導照舊；建議邏輯抽去
 //     lowestStatTrain400，只限已報名課（唔再建議未報名課，v360 遺留問題隨之解決）。
@@ -133,7 +134,7 @@ ok('5B 訓練格到頂：已到三級', nbDayHint400(1, planMeta("train_vocal"),
 S = mkS(14, {});
 planDraft = ["scout_all","train_vocal","scout_all","scout_all","cafe_gig","street","rest"];
 ok('5C 外出日（可編輯）：hint 空（v423 總數移週標題行）', nbDayHint400(0, planMeta("scout_all"), true, false)==='', nbDayHint400(0, planMeta("scout_all"), true, false));
-ok('5C2 全週總數 helper：本週外出機會剩 3 日', nbMapTotal400()==='本週外出機會剩 3 日', nbMapTotal400());
+ok('5C2 全週總數 helper：本週外出機會剩3日', nbMapTotal400()==='本週外出機會剩3日', nbMapTotal400());
 S = mkS(14, { trainCount:{ train_vocal:3 } });
 ok('5D 訓練格（唯讀）：原 hint＋進度', nbDayHint400(1, planMeta("train_vocal"), false, false)==='發聲／跟唱 · 再 2 堂升二級', nbDayHint400(1, planMeta("train_vocal"), false, false));
 ok('5E 鎖定格維持拍攝檔期已定', nbDayHint400(1, planMeta("train_vocal"), true, true)==='拍攝檔期已定 · 不可改');

@@ -1,3 +1,4 @@
+# v424 意圖更新：詳情函數因分段重排變長，S-33 視窗 11000→15000（斷言意圖不變）。
 # v404 意圖更新：地圖頂欄「進度」掣按第十一輪裁決刪走——chip 改靜態徽章（span、無 click），進度數字改顯示喺手帳行程頁（#nb-progress404）；斷言同步。
 # v397 resync：金禧錨點 top:24%→calc(24% + 30px)（venue99 相疊修正）；見 qa397/resync397.py。
 # v20a108 UI108 視覺統一包（B 級）・靜態守門測試（工人 C 範圍：D-5＋S-1/2/4/5/7/8/9/11/18/20/27/29/33/34/36）。
@@ -109,7 +110,7 @@ ok('S-29 摺疊標題有張數（v392：lockedDetails392 helper，張數＝傳�
 # S-33 簽約金行升摘要＋違約金有數先出
 # 視窗 7000→11000：S-30v2 令 castingNoticeDetailHtml 由 ~6.9k 漲到 9750 字元
 # （負責人英雄區＋要求格＋完成期限 consts），簽約金／違約金／toggle 行全部喺 8.5k 內。
-b = body_of('function castingNoticeDetailHtml', 11000)
+b = body_of('function castingNoticeDetailHtml', 15000)
 ok('S-33 摘要有簽約金行', '簽約金</span><span class="v">${signFee108}</span>' in b)
 ok('S-33 簽約金寫「獲聘後即收」（v20a115：舊寫法「接通告後即收」同機制唔啱——簽約金只喺 aud91PresentOne 公佈獲聘嗰刻入帳，見「簽約金＝合約額三成，公佈嗰刻即付」；doAudition 接通告嗰刻唔入帳）', '（獲聘後即收）' in b and '（接通告後即收）' not in b)
 ok('S-33 違約金有數先出', 'gigBreachFee(g)!=null' in b)

@@ -1,3 +1,4 @@
+# v424 意圖更新：ledger-enroll 墨色遷移去 token（比 #6b4e2e 更深）。
 # -*- coding: utf-8 -*-
 # v20a145 BOOK145 靜態測試：手帳紙面化收尾（v143 review B1＋B2＋B3）。
 # 反證：喺 pristine main（c881530）index 上行會 FAIL（冇 BOOK145 段）。
@@ -43,7 +44,7 @@ ok('B2：紙面係事業頁同一套（#f3e6c8＋金邊 #c4a574＋圓角 14px＋
    and 'border-radius:14px 14px 0 0; border:2px solid #c4a574; border-bottom:0;' in seg
    and 'padding:12px 10px 16px;' in seg)
 ok('B2：三處深底淺字覆寫還原返墨色（ledger-enroll／people-next／debt pane-intro；v389 人情合併頁）',
-   '#home-pane-ledger .ledger-enroll{ color:#6b4e2e; }' in seg
+   '#home-pane-ledger .ledger-enroll{ color:var(--ink-secondary-paper); }' in seg
    and '#home-pane-favor389 .people-next{ color:#6b4e2e; }' in seg
    and '#home-pane-favor389 .pane-intro{ color:#5a4328; }' in seg)
 ok('B2 續：v76 淺字覆寫 .jobs72-h（庫存／人脈標題）＋進度抽屜 .prog71-h／.prog71-intro 還原返墨色（v389）',

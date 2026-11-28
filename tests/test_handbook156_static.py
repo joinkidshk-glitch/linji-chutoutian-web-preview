@@ -1,3 +1,4 @@
+# v424 意圖更新：作品牆圖說遷移去 footnote token＋紙面次墨。
 # -*- coding: utf-8 -*-
 # v20a156 HAND156 靜態測試：v145 review B1（空狀態三組佔位框）＋B3（700 picker 捲到 chips）。
 # 反證：喺 pristine main（e08a070）index 上行會 FAIL（冇 EMPTY156／PICKER156 段）。
@@ -23,7 +24,7 @@ ok('v145 BOOK145 段仲喺度（本票冇郁佢）', 'v20a145 BOOK145' in src an
 ok('作品牆佔位框寫法原封不動（.works-frames142／.works-frame142／cap）',
    '.works-frames142{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 2px 2px}' in src
    and '.works-frame142{aspect-ratio:3/4;border:2px dashed rgba(185,138,47,.6);' in src
-   and '.works-frames142-cap{font-size:.78rem;color:var(--muted-ink);line-height:1.5;margin:8px 2px 2px}' in src)
+   and '.works-frames142-cap{font-size:var(--tx-footnote);color:var(--ink-secondary-paper);line-height:1.5;margin:8px 2px 2px}' in src)
 
 # --- B1：共用 CSS（跟作品牆同一套語言） ---
 ok('EMPTY156 段在場', 'v20a156 EMPTY156' in src and 'EMPTY156 完' in src)

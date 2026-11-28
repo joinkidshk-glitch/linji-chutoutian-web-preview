@@ -1,3 +1,4 @@
+# v424 意圖更新：ledger-enroll 紙面墨色遷移去 token，深底淺字宣告已刪。
 # v20a76 CONTRAST76 static tests：手帳對比度普查修正規則齊（深底亮字組／
 # 紙面加深組／金錢晶片／jobs72 inline 副行）、故意淡化項冇被誤改、
 # 紅線（SAVE key／softRev／?v=）冇郁。
@@ -24,7 +25,7 @@ chk('拍攝簿／庫存／人脈標題提亮', '.jobs72-h{ color:#ecdfc2; }' in 
 chk('作品牆／回憶（空＋錯過態）標題提亮',
     '.works-empty59 h3, .mem-empty60 h3, .mem-head60 h3{ color:#ecdfc2; }' in src)
 chk('拍攝簿條目 .req 提亮（限作品頁）', '#home-pane-works .req{ color:#d9c9a3; }' in src)
-chk('記數簿報名行提亮', '#home-pane-ledger .ledger-enroll{ color:#c3b096; }' in src)
+chk('記數簿報名行提亮', '#home-pane-ledger .ledger-enroll{ color:var(--ink-secondary-paper); }' in src and '--ink-secondary-paper:#4a3826' in src)
 chk('人脈提示提亮（v389 人情合併頁）', '#home-pane-favor389 .people-next{ color:#c3b096; }' in src)
 chk('人情債引言提亮（v48 留低嗰頁；v389 人情合併頁）', '#home-pane-favor389 .pane-intro{ color:#e6d7ae; }' in src)
 chk('v267 傳聞鬼影字已刪（.weak-whisper 隨傳聞頁刪除）', '.weak-whisper' not in src)
@@ -38,9 +39,10 @@ chk('money 狀態色原規則冇郁', '.home-money.money-warn{ color:#b86a00 !im
     and '.home-money.money-critical{ color:#c0392b !important; }' in src)
 
 # --- (B) 紙面加深組：修前比值 2.89–4.42 ---
-chk('行程 hint 加深', '.day-row .nm .plan-hint{ color:#59452a; }' in src)
+# v424 UI26 意圖更新：hint／ah 顏色遷移去 --ink-secondary-paper（#4a3826，比 #59452a 更深，對比地板不降反升）
+chk('行程 hint 加深', '--ink-secondary-paper:#4a3826' in src and 'plan-hint{ display:block; font-weight:600; color:var(--ink-secondary-paper)' in src)
 chk('.act-item .ah 加深＋disabled 額外加深保地板',
-    '.act-item .ah{ color:#59452a; }' in src and '.act-item:disabled .ah{ color:#241a10; }' in src)
+    '.act-item .ah{font-size:var(--tx-secondary);color:var(--ink-secondary-paper)' in src and '.act-item:disabled .ah{ color:#241a10; }' in src)
 chk('picker 格標籤＋指南附註加深', '.t70-cell span{ color:#6b5636; }' in src
     and '.guide68-note{ color:#6b5636; }' in src)
 chk('壓力綠字加深', '#v-home .home-summary .good, #v-home .nb-live-stress .good{ color:#19684d !important; }' in src)

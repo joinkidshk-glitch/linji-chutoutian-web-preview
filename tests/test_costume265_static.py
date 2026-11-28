@@ -138,8 +138,8 @@ ok("reqGap 用 costume265EffStat（通告接取／試鏡門檻）",
    "costume265EffStat(k)" in extract_fn("reqGap"))
 ok("gigMissingReqGaps 用 costume265EffStat（差距顯示同門檻一致）",
    "costume265EffStat(k)" in extract_fn("gigMissingReqGaps"))
-ok("reqGridHtml 卡面標明衫貢獻（衫 +N）",
-   "衫 +${bonus265}" in src and "costume265BonusMap()[key]" in src)
+ok("reqGridHtml 卡面標明衫貢獻（衫+N；v425 數值詞組唔拆行）",
+   "衫+${bonus265}" in src and "costume265BonusMap()[key]" in src)
 ok("canAudition 經 reqGap 行（唔繞過有效數值）",
    "reqGap(gig)" in extract_fn("canAudition"))
 
